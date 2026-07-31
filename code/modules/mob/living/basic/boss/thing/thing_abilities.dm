@@ -4,6 +4,8 @@
 	var/list/available_in_phases = list(1,2,3)
 
 /datum/action/cooldown/mob_cooldown/the_thing/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/boss/thing/the_thing = owner
 	if(!istype(the_thing))
 		return ..()
@@ -20,6 +22,8 @@
 	cooldown_time = 10 SECONDS
 
 /datum/action/cooldown/mob_cooldown/the_thing/decimate/Activate(atom/caster)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT_FROM(caster, TRAIT_IMMOBILIZED, MEGAFAUNA_TRAIT))
 		return
 	. = ..()
@@ -33,6 +37,8 @@
 	addtimer(CALLBACK(src, PROC_REF(make_spikes), caster), 1.5 SECONDS)
 
 /datum/action/cooldown/mob_cooldown/the_thing/decimate/proc/make_spikes(atom/caster)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(caster, TRAIT_IMMOBILIZED, MEGAFAUNA_TRAIT)
 	for(var/turf/open/target in RANGE_TURFS(2, caster))
 		if(locate(/obj/structure/thing_boss_spike) in target)
@@ -47,6 +53,8 @@
 	charge_past = 3
 
 /datum/action/cooldown/mob_cooldown/charge/the_thing/charge_sequence(atom/movable/charger, atom/target_atom, delay, past)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT_FROM(owner, TRAIT_IMMOBILIZED, MEGAFAUNA_TRAIT))
 		return
 	var/mob/living/basic/boss/thing/the_thing = owner
@@ -55,6 +63,8 @@
 		do_charge(owner, target_atom, charge_delay * i, charge_past)
 
 /datum/action/cooldown/mob_cooldown/charge/the_thing/do_charge_indicator(atom/charger, atom/charge_target)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(charge_target)
 	if(!target_turf)
 		return
@@ -63,6 +73,8 @@
 	animate(decoy, alpha = 0, color = COLOR_RED, transform = matrix()*2, time = 3)
 
 /datum/action/cooldown/mob_cooldown/charge/the_thing/hit_target(atom/movable/source, mob/living/target, damage_dealt)
+	procstart = null
+	src.procstart = null
 	target.visible_message(span_danger("[source] lunges into [target]!"), span_userdanger("[source] knocks you into the ground, slashing you in the process!"))
 	target.apply_damage(damage_dealt, BRUTE)
 	target.Knockdown(0.5 SECONDS)
@@ -80,6 +92,8 @@
 	available_in_phases = list(2,3)
 
 /datum/action/cooldown/mob_cooldown/the_thing/big_tendrils/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT_FROM(owner, TRAIT_IMMOBILIZED, MEGAFAUNA_TRAIT))
 		return
 	. = ..()
@@ -94,6 +108,8 @@
 	addtimer(CALLBACK(src, PROC_REF(make_spikes), target), delay)
 
 /datum/action/cooldown/mob_cooldown/the_thing/big_tendrils/proc/make_spikes(atom/epicenter)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_owner = owner
 	var/radius = living_owner.health <= living_owner.maxHealth/3 ? 2 : 1
 	for(var/turf/open/target in RANGE_TURFS(radius, epicenter))
@@ -115,6 +131,8 @@
 	available_in_phases = list(2,3)
 
 /datum/action/cooldown/mob_cooldown/the_thing/shriek/Activate(atom/caster)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT_FROM(caster, TRAIT_IMMOBILIZED, MEGAFAUNA_TRAIT))
 		return
 	. = ..()
@@ -125,6 +143,8 @@
 	addtimer(CALLBACK(src, PROC_REF(shriek), owner), 1.2 SECONDS)
 
 /datum/action/cooldown/mob_cooldown/the_thing/shriek/proc/shriek(atom/caster)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(caster, TRAIT_IMMOBILIZED, MEGAFAUNA_TRAIT)
 	caster.visible_message(span_danger("[caster] shrieks! The sheer frequency of the sound makes your skin hurt and you feel like your brain is on fire!"))
 	SEND_SOUND(caster, sound('sound/effects/screech.ogg'))
@@ -152,6 +172,8 @@
 	var/range = 9
 
 /datum/action/cooldown/mob_cooldown/the_thing/cardinal_tendrils/Activate(atom/targetted_turf)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT_FROM(owner, TRAIT_IMMOBILIZED, MEGAFAUNA_TRAIT))
 		return
 	. = ..()
@@ -164,6 +186,8 @@
 	addtimer(CALLBACK(src, PROC_REF(make_spikes), target_turfs, owner), 1.5 SECONDS)
 
 /datum/action/cooldown/mob_cooldown/the_thing/cardinal_tendrils/proc/find_turfs(atom/caster)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/direction in GLOB.cardinals)
 		for(var/turf/potential_turf as anything in get_line(caster, get_ranged_target_turf(caster, direction, range)))
@@ -172,6 +196,8 @@
 			. += potential_turf
 
 /datum/action/cooldown/mob_cooldown/the_thing/cardinal_tendrils/proc/make_spikes(list/target_turfs, atom/caster)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(caster, TRAIT_IMMOBILIZED, MEGAFAUNA_TRAIT)
 	for(var/turf/open/target as anything in target_turfs)
 		if(locate(/obj/structure/thing_boss_spike) in target)
@@ -191,6 +217,8 @@
 	available_in_phases = list(3)
 
 /datum/action/cooldown/mob_cooldown/the_thing/acid_spit/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT_FROM(owner, TRAIT_IMMOBILIZED, MEGAFAUNA_TRAIT))
 		return
 	. = ..()

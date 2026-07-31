@@ -40,6 +40,8 @@ GLOBAL_LIST_EMPTY(order_console_products)
 	var/blackbox_key
 
 /obj/machinery/computer/order_console/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(GLOB.order_console_products.len)
@@ -50,12 +52,16 @@ GLOBAL_LIST_EMPTY(order_console_products)
 		GLOB.order_console_products += new path
 
 /obj/machinery/computer/order_console/proc/get_total_cost()
+	procstart = null
+	src.procstart = null
 	var/cost = 0
 	for(var/datum/orderable_item/item as anything in grocery_list)
 		cost += grocery_list[item] * item.cost_per_order
 	return cost
 
 /obj/machinery/computer/order_console/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -68,9 +74,13 @@ GLOBAL_LIST_EMPTY(order_console_products)
  * card - The ID card we retrieve these points from
  */
 /obj/machinery/computer/order_console/proc/retrieve_points(obj/item/card/id/id_card)
+	procstart = null
+	src.procstart = null
 	return round(id_card.registered_account?.account_balance)
 
 /obj/machinery/computer/order_console/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["total_cost"] = get_total_cost()
 	data["off_cooldown"] = COOLDOWN_FINISHED(src, order_cooldown)
@@ -91,6 +101,8 @@ GLOBAL_LIST_EMPTY(order_console_products)
 	return data
 
 /obj/machinery/computer/order_console/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["credit_type"] = credit_type
 	data["express_tooltip"] = express_tooltip
@@ -117,6 +129,8 @@ GLOBAL_LIST_EMPTY(order_console_products)
 	return data
 
 /obj/machinery/computer/order_console/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -208,6 +222,8 @@ GLOBAL_LIST_EMPTY(order_console_products)
  * returns TRUE if we can afford, FALSE otherwise.
  */
 /obj/machinery/computer/order_console/proc/purchase_items(obj/item/card/id/card, express = FALSE)
+	procstart = null
+	src.procstart = null
 	var/final_cost = round(get_total_cost() * (express ? express_cost_multiplier : cargo_cost_multiplier))
 	if(subtract_points(final_cost, card))
 		return TRUE
@@ -222,6 +238,8 @@ GLOBAL_LIST_EMPTY(order_console_products)
  * returns TRUE if successfull
  */
 /obj/machinery/computer/order_console/proc/subtract_points(final_cost, obj/item/card/id/card)
+	procstart = null
+	src.procstart = null
 	return card.registered_account.adjust_money(-final_cost, "[name]: Purchase")
 
 /**
@@ -232,6 +250,8 @@ GLOBAL_LIST_EMPTY(order_console_products)
  * groceries - the list of orders to be placed
  */
 /obj/machinery/computer/order_console/proc/order_groceries(mob/living/purchaser, obj/item/card/id/card, list/groceries)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/aas_config_entry/order_console
@@ -240,12 +260,16 @@ GLOBAL_LIST_EMPTY(order_console_products)
 	general_tooltip = "Used to make announces, when consoles listed here placing new order"
 
 /datum/aas_config_entry/order_console/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/machinery/computer/order_console/subconsole as anything in subtypesof(/obj/machinery/computer/order_console))
 		if(subconsole.blackbox_key)
 			announcement_lines_map[capitalize(subconsole.blackbox_key)] = subconsole.announcement_line
 
 /datum/aas_config_entry/order_console/compile_announce(list/variables_map, announcement_line)
+	procstart = null
+	src.procstart = null
 	if (!announcement_lines_map.len)
 		announcement_lines_map["Error"] = "Unknown Error happened, while we tried to procceed an order, please report this to Nanotrasen."
 	. = ..()

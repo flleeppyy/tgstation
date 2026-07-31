@@ -6,6 +6,8 @@
 	var/datum/reagents/plumbing/holder
 
 /datum/component/plumbing/automated_iv/Initialize(ducting_layer)
+	procstart = null
+	src.procstart = null
 	if(!istype(parent, /obj/machinery/iv_drip/plumbing))
 		return COMPONENT_INCOMPATIBLE
 	. = ..()
@@ -14,19 +16,27 @@
 	holder.my_atom = drip
 
 /datum/component/plumbing/automated_iv/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(holder)
 	return ..()
 
 /datum/component/plumbing/automated_iv/can_give(amount, reagent)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/iv_drip/plumbing/drip = parent
 	return ..() && drip.mode == IV_TAKING
 
 /datum/component/plumbing/automated_iv/send_request(dir)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/iv_drip/plumbing/drip = parent
 	if(drip.mode == IV_INJECTING)
 		return ..()
 
 /datum/component/plumbing/automated_iv/transfer_to(datum/component/plumbing/target, amount, reagent, datum/ductnet/net, round_robin = TRUE)
+	procstart = null
+	src.procstart = null
 	reagents.trans_to(holder, reagents.total_volume)
 	reagents = holder
 	. = ..()

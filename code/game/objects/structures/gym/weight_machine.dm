@@ -50,6 +50,8 @@
 	)
 
 /obj/structure/weightmachine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	weight_action = new(src)
@@ -69,10 +71,14 @@
 	AddElement(/datum/element/contextual_screentip_tools, tool_behaviors)
 
 /obj/structure/weightmachine/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(weight_action)
 	return ..()
 
 /obj/structure/weightmachine/buckle_feedback(mob/living/being_buckled, mob/buckler)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(being_buckled, TRAIT_RESTRAINED))
 		return ..()
 
@@ -90,6 +96,8 @@
 		)
 
 /obj/structure/weightmachine/unbuckle_feedback(mob/living/being_unbuckled, mob/unbuckler)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(being_unbuckled, TRAIT_RESTRAINED))
 		return ..()
 
@@ -107,20 +115,28 @@
 		)
 
 /obj/structure/weightmachine/buckle_mob(mob/living/buckled, force, check_loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	weight_action.Grant(buckled)
 
 /obj/structure/weightmachine/unbuckle_mob(mob/living/buckled_mob, force, can_fall)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	weight_action.Remove(buckled_mob)
 
 /obj/structure/weightmachine/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(src)
 	balloon_alert(user, anchored ? "unsecured" : "secured")
 	anchored = !anchored
 	return TRUE
 
 /obj/structure/weightmachine/crowbar_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(anchored)
 		balloon_alert(user, "still secured!")
 		return FALSE
@@ -135,6 +151,8 @@
 	return TRUE
 
 /obj/structure/weightmachine/proc/perform_workout(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.nutrition <= NUTRITION_LEVEL_STARVING)
 		user.balloon_alert(user, "too hungry to workout!")
 		return
@@ -176,6 +194,8 @@
 	end_workout()
 
 /obj/structure/weightmachine/proc/end_workout()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/machines/click.ogg', 60, TRUE)
 	STOP_PROCESSING(SSobj, src)
 	icon_state = initial(icon_state)
@@ -184,6 +204,8 @@
 #define WORKOUT_LENGTH 8
 
 /obj/structure/weightmachine/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!has_buckled_mobs())
 		end_workout()
 		return FALSE

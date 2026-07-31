@@ -3,6 +3,8 @@
 /// `add_item_context()` will *not* be called unless this is run.
 /// This is not necessary for Type-A interactions, as you can just apply the flag and register to the signal yourself.
 /obj/item/proc/register_item_context()
+	procstart = null
+	src.procstart = null
 	item_flags |= ITEM_HAS_CONTEXTUAL_SCREENTIPS
 	RegisterSignal(
 		src,

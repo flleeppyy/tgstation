@@ -6,6 +6,8 @@
 /datum/element/content_barfer
 
 /datum/element/content_barfer/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isliving(target))
@@ -14,10 +16,14 @@
 	RegisterSignals(target, list(COMSIG_LIVING_DEATH, COMSIG_LIVING_ON_WABBAJACKED, COMSIG_LIVING_UNSHAPESHIFTED, COMSIG_MOB_CHANGED_TYPE), PROC_REF(barf_contents))
 
 /datum/element/content_barfer/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, list(COMSIG_LIVING_DEATH, COMSIG_LIVING_ON_WABBAJACKED, COMSIG_LIVING_UNSHAPESHIFTED, COMSIG_MOB_CHANGED_TYPE))
 	return ..()
 
 /datum/element/content_barfer/proc/barf_contents(mob/living/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/atom/movable/barfed_out as anything in target)

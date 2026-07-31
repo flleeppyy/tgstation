@@ -62,10 +62,14 @@
 		apply_fill(fillcol)
 
 /datum/component/ingredients_holder/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(top_overlay)
 	return ..()
 
 /datum/component/ingredients_holder/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	var/atom/atom_parent = parent
 	atom_parent.flags_1 |= HAS_CONTEXTUAL_SCREENTIPS_1
 	RegisterSignal(parent, COMSIG_ATOM_ATTACKBY, PROC_REF(customizable_attack))
@@ -77,6 +81,8 @@
 	ADD_TRAIT(parent, TRAIT_INGREDIENTS_HOLDER, INNATE_TRAIT)
 
 /datum/component/ingredients_holder/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ATOM_ATTACKBY,
 		COMSIG_ATOM_EXAMINE,
@@ -88,6 +94,8 @@
 	REMOVE_TRAIT(parent, TRAIT_INGREDIENTS_HOLDER, INNATE_TRAIT)
 
 /datum/component/ingredients_holder/PostTransfer(datum/new_parent)
+	procstart = null
+	src.procstart = null
 	if(!isatom(new_parent))
 		return COMPONENT_INCOMPATIBLE
 	var/atom/atom_parent = new_parent
@@ -96,6 +104,8 @@
 
 ///Handles when the customizable food is examined.
 /datum/component/ingredients_holder/proc/on_examine(atom/A, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/atom_parent = parent
@@ -106,6 +116,8 @@
 
 //// Proc that checks if an ingredient is valid or not, returning false if it isnt and true if it is.
 /datum/component/ingredients_holder/proc/valid_ingredient(obj/ingredient)
+	procstart = null
+	src.procstart = null
 	if (HAS_TRAIT(ingredient, TRAIT_INGREDIENTS_HOLDER))
 		return FALSE
 	if(HAS_TRAIT(ingredient, TRAIT_ODD_CUSTOMIZABLE_FOOD_INGREDIENT))
@@ -119,6 +131,8 @@
 
 ///Handles when the customizable food is attacked by something.
 /datum/component/ingredients_holder/proc/customizable_attack(datum/source, obj/ingredient, mob/attacker, silent = FALSE, force = FALSE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!valid_ingredient(ingredient))
@@ -139,6 +153,8 @@
 
 ///Extract the filling color from the ingredient, than calls apply_fill()
 /datum/component/ingredients_holder/proc/get_fill(obj/item/ingredient)
+	procstart = null
+	src.procstart = null
 	// get average color
 	var/icon/icon = new(ingredient.icon, ingredient.icon_state)
 	if(ingredient.color)
@@ -150,6 +166,8 @@
 
 ///Add a filling overlay to the parent atom.
 /datum/component/ingredients_holder/proc/apply_fill(fill_color)
+	procstart = null
+	src.procstart = null
 	if(fill_type == CUSTOM_INGREDIENT_ICON_NOCHANGE)
 		//don't bother doing the icon procs
 		return
@@ -190,6 +208,8 @@
 
 ///Takes the reagents from an ingredient.
 /datum/component/ingredients_holder/proc/handle_reagents(obj/item/ingredient)
+	procstart = null
+	src.procstart = null
 	var/atom/atom_parent = parent
 	if (atom_parent.reagents && ingredient.reagents)
 		atom_parent.reagents.maximum_volume += ingredient.reagents.maximum_volume // If we don't do this custom food starts voiding reagents past a certain point.
@@ -199,6 +219,8 @@
 
 ///Adds a new ingredient and updates the parent's name.
 /datum/component/ingredients_holder/proc/add_ingredient(obj/item/ingredient)
+	procstart = null
+	src.procstart = null
 	var/atom/atom_parent = parent
 
 	if (replacement)
@@ -231,6 +253,8 @@
 
 ///Rebuilds the custom materials the holder is composed of based on the materials of each ingredient
 /datum/component/ingredients_holder/proc/handle_materials(obj/item/ingredient, remove = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ingredient.custom_materials)
 		return
 	var/atom/atom_parent = parent
@@ -241,6 +265,8 @@
 
 ///Gives an adjective to describe the size of the custom food.
 /datum/component/ingredients_holder/proc/custom_adjective()
+	procstart = null
+	src.procstart = null
 	switch(LAZYLEN(ingredient_names))
 		if (0 to 2)
 			return "small"
@@ -256,6 +282,8 @@
 
 ///Gives the type of custom food (based on what the first ingredient was).
 /datum/component/ingredients_holder/proc/set_custom_name(obj/item/ingredient)
+	procstart = null
+	src.procstart = null
 	if (istype(ingredient, /obj/item/food/meat))
 		var/obj/item/food/meat/meat = ingredient
 		if (meat.subjectname)
@@ -268,6 +296,8 @@
 
 ///Returns the color of the input mixed with the top_overlay's color.
 /datum/component/ingredients_holder/proc/mix_color(color)
+	procstart = null
+	src.procstart = null
 	if(length(filling_colors) == 1 || !top_overlay)
 		return color
 	var/list/rgbcolor = list(0,0,0,0)
@@ -282,6 +312,8 @@
 
 ///Copies over the parent's fillings and name of ingredients to the processing results (such as slices when the parent is cut).
 /datum/component/ingredients_holder/proc/on_processed(datum/source, mob/living/user, obj/item/ingredient, list/atom/results)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Reagents are not transferred since that should be handled elsewhere
@@ -291,6 +323,8 @@
 
 /// Pizzas have unique slicing interaction so we need to do this
 /datum/component/ingredients_holder/proc/on_slice_taken(datum/source, mob/living/user, obj/item/slice)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	slice.AddComponent(/datum/component/ingredients_holder, null, fill_type, ingredient_type = ingredient_type, max_ingredients = max_ingredients, processed_holder = src)
 
@@ -303,6 +337,8 @@
  * * user - refers to user who will see the screentip when the proper context and tool are there
  */
 /datum/component/ingredients_holder/proc/on_requesting_context_from_item(datum/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// only accept valid ingredients
@@ -315,6 +351,8 @@
 
 /// Clear refs if our food "goes away" somehow
 /datum/component/ingredients_holder/proc/food_exited(datum/source, atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	LAZYREMOVE(ingredient_names, "\a [gone.name]")
 	handle_materials(gone, remove = TRUE)

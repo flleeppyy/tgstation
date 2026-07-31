@@ -17,15 +17,21 @@
 	var/max_range = 1
 
 /obj/item/circuit_component/id_getter/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("Maximum Range: [max_range] tiles.", "orange", "info")
 
 /obj/item/circuit_component/id_getter/populate_ports()
+	procstart = null
+	src.procstart = null
 	target = add_input_port("Target", PORT_TYPE_ATOM)
 	prioritize_hands = add_input_port("Prioritize Hands", PORT_TYPE_BOOLEAN)
 	id_port = add_output_port("ID", PORT_TYPE_ATOM)
 
 /obj/item/circuit_component/id_getter/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target_mob = target.value
 	var/turf/current_turf = get_location()
 	if(!istype(target_mob) || get_dist(current_turf, target_mob) > max_range || current_turf.z != target_mob.z)

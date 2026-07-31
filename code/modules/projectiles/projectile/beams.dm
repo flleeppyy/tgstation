@@ -57,6 +57,8 @@
 	var/max_scale = 4
 
 /obj/projectile/beam/laser/accelerator/reduce_range()
+	procstart = null
+	src.procstart = null
 	..()
 	damage += 7
 	transform = matrix()
@@ -81,6 +83,8 @@
 	exposed_wound_bonus = 15
 
 /obj/projectile/beam/laser/flare/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target))
 		return
@@ -96,6 +100,8 @@
 	impact_type = /obj/effect/projectile/impact/heavy_laser
 
 /obj/projectile/beam/laser/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(target))
 		var/mob/living/carbon/M = target
@@ -217,6 +223,8 @@
 	wound_bonus = 10
 
 /obj/projectile/beam/pulse/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!QDELETED(target) && (isturf(target) || isstructure(target)))
 		if(isobj(target))
@@ -234,6 +242,8 @@
 	var/pierce_hits = 2
 
 /obj/projectile/beam/pulse/heavy/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	if(pierce_hits <= 0)
 		projectile_piercing = NONE
 	pierce_hits -= 1
@@ -249,6 +259,8 @@
 	exposed_wound_bonus = 70
 
 /obj/projectile/beam/emitter/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return //don't want the emitters to miss
 
 /obj/projectile/beam/emitter/hitscan
@@ -301,6 +313,8 @@
 	var/healing_done = 5
 
 /obj/projectile/beam/emitter/hitscan/bioregen/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(target))
 		return
@@ -322,6 +336,8 @@
 	psi_change = -0.1
 
 /obj/projectile/beam/emitter/hitscan/incend/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target))
 		return
@@ -343,6 +359,8 @@
 	psi_change = 0.25
 
 /obj/projectile/beam/emitter/hitscan/psy/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target))
 		return
@@ -362,6 +380,8 @@
 	damage = 0
 
 /obj/projectile/beam/emitter/hitscan/magnetic/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/turf_to_magnet = get_turf(target)
 	goonchem_vortex(turf_to_magnet, FALSE, 4)
@@ -381,6 +401,8 @@
 
 
 /obj/projectile/beam/emitter/hitscan/blast/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/turf_to_explode = get_turf(target)
 	explosion(turf_to_explode, 0, 1, 2)

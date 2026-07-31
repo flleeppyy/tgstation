@@ -2,6 +2,8 @@
 /datum/unit_test/door_click
 
 /datum/unit_test/door_click/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/tider = EASY_ALLOCATE()
 	var/obj/machinery/door/airlock/public/glass/door = EASY_ALLOCATE()
 
@@ -16,6 +18,8 @@
 /datum/unit_test/keyring_on_door
 
 /datum/unit_test/keyring_on_door/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/janitor = EASY_ALLOCATE()
 	var/obj/machinery/door/airlock/instant/real_door = allocate(/obj/machinery/door/airlock/instant, get_step(run_loc_floor_bottom_left, EAST))
 	var/obj/item/access_key/keyring = EASY_ALLOCATE()

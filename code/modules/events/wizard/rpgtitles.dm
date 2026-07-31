@@ -9,6 +9,8 @@
 	max_wizard_trigger_potency = 7
 
 /datum/round_event/wizard/rpgtitles/start()
+	procstart = null
+	src.procstart = null
 	GLOB.rpgtitle_controller = new /datum/rpgtitle_controller
 
 ///Holds the global datum for rpgtitle, so anywhere may check for its existence (it signals into whatever it needs to modify, so it shouldn't require fetching)
@@ -17,17 +19,23 @@ GLOBAL_DATUM(rpgtitle_controller, /datum/rpgtitle_controller)
 /datum/rpgtitle_controller
 
 /datum/rpgtitle_controller/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSdcs, COMSIG_GLOB_CREWMEMBER_JOINED, PROC_REF(on_crewmember_join))
 	RegisterSignal(SSdcs, COMSIG_GLOB_MOB_LOGGED_IN, PROC_REF(on_mob_login))
 	handle_current_jobs()
 
 /datum/rpgtitle_controller/Destroy(force)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(SSdcs, list(COMSIG_GLOB_CREWMEMBER_JOINED, COMSIG_GLOB_MOB_LOGGED_IN))
 	. = ..()
 
 ///signal sent by a player list expanding
 /datum/rpgtitle_controller/proc/on_mob_login(datum/source, mob/new_login)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isliving(new_login))
 		var/mob/living/living_login = new_login
@@ -36,6 +44,8 @@ GLOBAL_DATUM(rpgtitle_controller, /datum/rpgtitle_controller)
 
 ///signal sent by a crewmember joining
 /datum/rpgtitle_controller/proc/on_crewmember_join(datum/source, mob/living/new_crewmember, rank)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/job/job = SSjob.get_job(rank)
@@ -115,5 +125,7 @@ GLOBAL_DATUM(rpgtitle_controller, /datum/rpgtitle_controller)
  * If the item it is giving fantasy to is a storage item, there's a chance it'll drop in an item fortification scroll. neat!
  */
 /datum/rpgtitle_controller/proc/handle_current_jobs()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/player as anything in GLOB.alive_player_list)
 		on_crewmember_join(SSdcs, player, player.mind?.assigned_role.title)

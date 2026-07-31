@@ -1,4 +1,6 @@
 /proc/meta_gas_list()
+	procstart = null
+	src.procstart = null
 	var/list/gas_info = new (META_GAS_LENGTH)
 	for (var/array_idx in 1 to gas_info.len)
 		gas_info[array_idx] = list()
@@ -21,6 +23,8 @@
 	return gas_info
 
 /proc/generate_gas_overlays(old_offset, new_offset, datum/gas/gas_type)
+	procstart = null
+	src.procstart = null
 	var/list/to_return = list()
 	for(var/i in old_offset to new_offset)
 		var/fill = list()
@@ -31,6 +35,8 @@
 	return to_return
 
 /proc/gas_id2path(id)
+	procstart = null
+	src.procstart = null
 	var/list/meta_gas_id = GLOB.meta_gas_info[META_GAS_ID]
 	if(id in meta_gas_id)
 		return id
@@ -321,12 +327,16 @@
 	var/plane_offset = 0
 
 /obj/effect/overlay/gas/New(state, alph, offset)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = state
 	alpha = alph
 	plane_offset = offset
 
 /obj/effect/overlay/gas/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SET_PLANE_W_SCALAR(src, initial(plane), plane_offset)
 

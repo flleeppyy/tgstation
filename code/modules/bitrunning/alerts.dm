@@ -10,6 +10,8 @@
 	clickable_glow = TRUE
 
 /atom/movable/screen/alert/bitrunning/qserver_domain_complete/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

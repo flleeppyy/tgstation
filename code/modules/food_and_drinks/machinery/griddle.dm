@@ -24,6 +24,8 @@
 	var/max_items = 8
 
 /obj/machinery/griddle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	grill_loop = new(src, FALSE)
 	if(isnum(variant))
@@ -33,10 +35,14 @@
 	RegisterSignal(src, COMSIG_STORAGE_DUMP_CONTENT, PROC_REF(on_storage_dump))
 
 /obj/machinery/griddle/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(grill_loop)
 	return ..()
 
 /obj/machinery/griddle/crowbar_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = default_deconstruction_crowbar(user, I)
 	if(.)
 		return
@@ -45,12 +51,18 @@
 	update_appearance()
 
 /obj/machinery/griddle/can_crowbar_deconstruct()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/machinery/griddle/IsContainedAtomAccessible(atom/contained, atom/movable/user)
+	procstart = null
+	src.procstart = null
 	return ..() || (contained in griddled_objects)
 
 /obj/machinery/griddle/proc/on_expose_reagent(atom/parent_atom, datum/reagent/exposing_reagent, reac_volume, methods)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(griddled_objects.len >= max_items || !istype(exposing_reagent, /datum/reagent/consumable/pancakebatter) || reac_volume < 5)
@@ -67,6 +79,8 @@
 	return NONE
 
 /obj/machinery/griddle/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 
@@ -116,6 +130,8 @@
 
 
 /obj/machinery/griddle/item_interaction_secondary(mob/living/user, obj/item/item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isnull(item.atom_storage))
 		return NONE
 
@@ -124,14 +140,20 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/griddle/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	toggle_mode()
 
 /obj/machinery/griddle/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	toggle_mode()
 
 /obj/machinery/griddle/proc/toggle_mode()
+	procstart = null
+	src.procstart = null
 	on = !on
 	if(on)
 		begin_processing()
@@ -141,16 +163,22 @@
 	update_grill_audio()
 
 /obj/machinery/griddle/begin_processing()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/item_to_grill as anything in griddled_objects)
 		SEND_SIGNAL(item_to_grill, COMSIG_ITEM_GRILL_TURNED_ON)
 
 /obj/machinery/griddle/end_processing()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/item_to_grill as anything in griddled_objects)
 		SEND_SIGNAL(item_to_grill, COMSIG_ITEM_GRILL_TURNED_OFF)
 
 /obj/machinery/griddle/proc/AddToGrill(obj/item/item_to_grill, mob/user)
+	procstart = null
+	src.procstart = null
 	vis_contents += item_to_grill
 	griddled_objects += item_to_grill
 	item_to_grill.vis_flags |= VIS_INHERIT_PLANE
@@ -165,6 +193,8 @@
 	update_appearance()
 
 /obj/machinery/griddle/proc/ItemRemovedFromGrill(obj/item/ungrill)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	ungrill.vis_flags &= ~VIS_INHERIT_PLANE
 	griddled_objects -= ungrill
@@ -173,25 +203,35 @@
 	update_grill_audio()
 
 /obj/machinery/griddle/proc/ItemMoved(obj/item/I, atom/OldLoc, Dir, Forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	ItemRemovedFromGrill(I)
 
 /obj/machinery/griddle/proc/GrillCompleted(obj/item/source, atom/grilled_result)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	AddToGrill(grilled_result)
 
 /obj/machinery/griddle/proc/update_grill_audio()
+	procstart = null
+	src.procstart = null
 	if(on && griddled_objects.len)
 		grill_loop.start()
 	else
 		grill_loop.stop()
 
 /obj/machinery/griddle/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool, time = 2 SECONDS)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/griddle/proc/on_storage_dump(datum/source, datum/storage/storage, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/obj/item/to_dump in storage.real_location)
@@ -209,6 +249,8 @@
 	return STORAGE_DUMP_HANDLED
 
 /obj/machinery/griddle/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/griddled_item as anything in griddled_objects)
 		if(SEND_SIGNAL(griddled_item, COMSIG_ITEM_GRILL_PROCESS, src, seconds_per_tick) & COMPONENT_HANDLED_GRILLING)
 			continue
@@ -223,6 +265,8 @@
 		griddle_loc.hotspot_expose(800, 100)
 
 /obj/machinery/griddle/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "griddle[variant]_[on ? "on" : "off"]"
 	return ..()
 
@@ -232,5 +276,7 @@
 	variant = "stand"
 
 /obj/machinery/griddle/stand/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "front_bar"

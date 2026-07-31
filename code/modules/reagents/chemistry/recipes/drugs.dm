@@ -32,6 +32,8 @@
 
 //The less pure it is, the faster it heats up. tg please don't hate me for making your meth even more dangerous
 /datum/chemical_reaction/methamphetamine/reaction_step(datum/reagents/holder, datum/equilibrium/reaction, delta_t, delta_ph, step_reaction_vol)
+	procstart = null
+	src.procstart = null
 	var/datum/reagent/meth = holder.has_reagent(/datum/reagent/drug/methamphetamine)
 	if(!meth)//First step
 		reaction.thermic_mod = (1-delta_ph)*5
@@ -39,14 +41,20 @@
 	reaction.thermic_mod = (1-meth.purity)*5
 
 /datum/chemical_reaction/methamphetamine/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	temp_meth_explosion(holder, equilibrium.reacted_vol)
 
 /datum/chemical_reaction/methamphetamine/overly_impure(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	temp_meth_explosion(holder, equilibrium.reacted_vol)
 
 /datum/chemical_reaction/methamphetamine/reaction_finish(datum/reagents/holder, datum/equilibrium/reaction, react_vol)
+	procstart = null
+	src.procstart = null
 	var/datum/reagent/meth = holder.has_reagent(/datum/reagent/drug/methamphetamine)
 	if(!meth)//Other procs before this can already blow us up
 		return ..()
@@ -57,6 +65,8 @@
 
 //Refactoring of explosions is coming later, this is till then so it still explodes
 /datum/chemical_reaction/methamphetamine/proc/temp_meth_explosion(datum/reagents/holder, explode_vol)
+	procstart = null
+	src.procstart = null
 	var/power = 5 + round(explode_vol/12, 1) //meth strengthdiv is 12
 	if(power <= 0)
 		return
@@ -89,6 +99,8 @@
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_DRUG | REACTION_TAG_ORGAN | REACTION_TAG_DAMAGING
 
 /datum/chemical_reaction/meth_crystal/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 
 	var/datum/reagent/consumable/ethanol/dummy_reagent = holder.has_reagent(/datum/reagent/consumable/ethanol)
@@ -172,6 +184,8 @@
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_DRUG | REACTION_TAG_ORGAN | REACTION_TAG_DAMAGING | REACTION_TAG_ACTIVE
 
 /datum/chemical_reaction/moon_rock/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	for(var/i in 1 to created_volume)
 		var/obj/item/food/drug/moon_rock/new_rock = new(location)
@@ -188,6 +202,8 @@
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_DRUG | REACTION_TAG_ORGAN | REACTION_TAG_DAMAGING | REACTION_TAG_ACTIVE
 
 /datum/chemical_reaction/blastoff_ampoule/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	for(var/iteration in 1 to created_volume)
 		var/obj/item/reagent_containers/cup/blastoff_ampoule/new_ampoule = new(location)
@@ -201,6 +217,8 @@
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_DRUG | REACTION_TAG_ORGAN | REACTION_TAG_DAMAGING | REACTION_TAG_ACTIVE
 
 /datum/chemical_reaction/saturnx_glob/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	for(var/iteration in 1 to created_volume)
 		var/obj/item/food/drug/saturnx/new_glob = new(location)

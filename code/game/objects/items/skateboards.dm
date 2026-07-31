@@ -15,6 +15,8 @@
 	var/board_item_type = /obj/vehicle/ridden/scooter/skateboard
 
 /obj/item/melee/skateboard/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/vehicle/ridden/scooter/skateboard/board = new board_item_type(get_turf(user), src)//this probably has fucky interactions with telekinesis but for the record it wasn't my fault
 	board.buckle_mob(user)
 	forceMove(board)
@@ -61,5 +63,7 @@
 	board_item_type = /obj/vehicle/ridden/scooter/skateboard/hoverboard/holyboarded
 
 /obj/item/melee/skateboard/holyboard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/nullrod_core)

@@ -17,6 +17,8 @@
 	var/update_warning = FALSE
 
 /datum/appearance_debugger/New(datum/admins/owner)
+	procstart = null
+	src.procstart = null
 	src.owner = owner
 	proxy_view_hover = new()
 	proxy_view_hover.generate_view("appearance_debugger_[REF(owner)]_proxy_hover")
@@ -24,6 +26,8 @@
 	proxy_view_selected.generate_view("appearance_debugger_[REF(owner)]_proxy_selected")
 
 /datum/appearance_debugger/Destroy()
+	procstart = null
+	src.procstart = null
 	if (owner)
 		owner.appearance_debug = null
 		owner = null
@@ -37,6 +41,8 @@
 	return ..()
 
 /datum/appearance_debugger/proc/get_appearance_data(atom/appearance_owner)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/target = appearance_owner
 	if (isatom(appearance_owner))
 		target = appearance_cache["[REF(appearance_owner)]"] || new /mutable_appearance(appearance_owner.appearance)
@@ -132,11 +138,15 @@
 	return data
 
 /datum/appearance_debugger/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		"updateWarning" = update_warning,
 	)
 
 /datum/appearance_debugger/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		"mainAppearance" = get_appearance_data(debug_target),
 		"planeToText" = GLOB.admin_readable_planes,
@@ -149,6 +159,8 @@
 	)
 
 /datum/appearance_debugger/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -199,12 +211,18 @@
 			usr.client.debug_variables(appearance_copies[appearance_id])
 
 /datum/appearance_debugger/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(get_asset_datum(/datum/asset/simple/plane_background))
 
 /datum/appearance_debugger/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_DEBUG)
 
 /datum/appearance_debugger/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AppearanceDebug")
@@ -213,6 +231,8 @@
 		proxy_view_selected.display_to(user, ui.window)
 
 /datum/appearance_debugger/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Reset appearances when the UI is closed
 	proxy_view_hover.appearance = new /mutable_appearance()
@@ -223,6 +243,8 @@
 		UnregisterSignal(debug_target, COMSIG_ATOM_UPDATE_APPEARANCE)
 
 /datum/appearance_debugger/proc/set_target(mutable_appearance/new_target)
+	procstart = null
+	src.procstart = null
 	if (isatom(debug_target))
 		UnregisterSignal(debug_target, COMSIG_ATOM_UPDATE_APPEARANCE)
 	update_warning = FALSE
@@ -239,5 +261,7 @@
 	update_static_data_for_all_viewers()
 
 /datum/appearance_debugger/proc/warn_update()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_warning = TRUE

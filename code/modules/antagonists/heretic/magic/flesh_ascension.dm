@@ -22,6 +22,8 @@
 	var/scare_radius = 9
 
 /datum/action/cooldown/spell/shapeshift/shed_human_form/do_shapeshift(mob/living/caster)
+	procstart = null
+	src.procstart = null
 	// When we transform into the worm, everyone nearby gets freaked out
 	for(var/mob/living/carbon/human/nearby_human in view(scare_radius, caster))
 		if(IS_HERETIC_OR_MONSTER(nearby_human) || nearby_human == caster)
@@ -37,10 +39,14 @@
 	return ..()
 
 /datum/action/cooldown/spell/shapeshift/shed_human_form/do_unshapeshift(mob/living/basic/heretic_summon/armsy/caster)
+	procstart = null
+	src.procstart = null
 	if(istype(caster))
 		segment_length = caster.get_length() - 1 // Don't count the head
 
 	return ..()
 
 /datum/action/cooldown/spell/shapeshift/shed_human_form/create_shapeshift_mob(atom/loc)
+	procstart = null
+	src.procstart = null
 	return new shapeshift_type(loc, TRUE, segment_length)

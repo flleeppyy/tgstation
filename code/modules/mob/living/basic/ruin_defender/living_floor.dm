@@ -40,12 +40,16 @@
 	var/desc_aggro = "This flooring is alive and filled with teeth, better not step on that. Being covered in plating, it is immune to damage. Seems vulnerable to prying though."
 
 /mob/living/basic/living_floor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_GODMODE, TRAIT_IMMOBILIZED), INNATE_TRAIT) //nothing but crowbars may kill us
 	var/static/list/connections = list(COMSIG_ATOM_ENTERED = PROC_REF(look_aggro), COMSIG_ATOM_EXITED = PROC_REF(look_deaggro))
 	AddComponent(/datum/component/connect_range, tracked = src, connections = connections, range = 1, works_in_containers = FALSE)
 
 /mob/living/basic/living_floor/proc/look_aggro(datum/source, mob/living/victim)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(victim) || istype(victim, /mob/living/basic/living_floor) || victim.stat == DEAD)
 		return
@@ -57,6 +61,8 @@
 	desc = desc_aggro
 
 /mob/living/basic/living_floor/proc/look_deaggro(datum/source, mob/living/victim)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(victim) && !istype(victim, /mob/living/basic/living_floor))
 		return
@@ -64,12 +70,18 @@
 	desc = initial(desc_aggro)
 
 /mob/living/basic/living_floor/med_hud_set_health()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/basic/living_floor/med_hud_set_status()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/basic/living_floor/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	balloon_alert(user, "prying...")
 	playsound(src, 'sound/items/tools/crowbar.ogg', 45, TRUE)
 	if(!do_after(user, 5 SECONDS, src))

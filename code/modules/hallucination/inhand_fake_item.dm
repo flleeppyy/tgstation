@@ -10,6 +10,8 @@
 	var/obj/item/template_item_type
 
 /datum/hallucination/fake_item/start()
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS(hallucinator))
 		return FALSE
 
@@ -40,6 +42,8 @@
 	return TRUE
 
 /datum/hallucination/fake_item/proc/make_fake_item(where_to_put_it, equip_flags)
+	procstart = null
+	src.procstart = null
 	var/obj/item/hallucinated/hallucinated_item = new(hallucinator, src)
 	hallucinated_item.screen_loc = where_to_put_it
 
@@ -55,6 +59,8 @@
 	template_item_type = /obj/item/grenade/c4
 
 /datum/hallucination/fake_item/c4/make_fake_item(where_to_put_it, equip_flags)
+	procstart = null
+	src.procstart = null
 	if(prob(50))
 		template_item_type = /obj/item/grenade/c4/x4
 	return ..()
@@ -68,6 +74,8 @@
 	valid_slots = ITEM_SLOT_HANDS|ITEM_SLOT_LPOCKET|ITEM_SLOT_RPOCKET
 
 /datum/hallucination/fake_item/esword/make_fake_item(where_to_put_it, equip_flags)
+	procstart = null
+	src.procstart = null
 	// Make the item via parent call
 	var/obj/item/hallucinated/hallucinated_item = ..()
 
@@ -85,6 +93,8 @@
 	valid_slots = ITEM_SLOT_HANDS|ITEM_SLOT_BELT
 
 /datum/hallucination/fake_item/baton/make_fake_item(where_to_put_it, equip_flags)
+	procstart = null
+	src.procstart = null
 	var/obj/item/hallucinated/hallucinated_item = ..()
 
 	// If we were placed in our mob's hands there's a 30% chance to make it appear active
@@ -100,6 +110,8 @@
 	valid_slots = ITEM_SLOT_HANDS|ITEM_SLOT_LPOCKET|ITEM_SLOT_RPOCKET
 
 /datum/hallucination/fake_item/emag/make_fake_item(where_to_put_it, equip_flags)
+	procstart = null
+	src.procstart = null
 	if(prob(50))
 		template_item_type  = /obj/item/card/emag/doorjack
 	return ..()
@@ -109,6 +121,8 @@
 	valid_slots = ITEM_SLOT_HANDS
 
 /datum/hallucination/fake_item/flashbang/make_fake_item(where_to_put_it, equip_flags)
+	procstart = null
+	src.procstart = null
 	var/obj/item/hallucinated/hallucinated_item = ..()
 	if(prob(15))
 		// Yes this can break if someone changse grenade icon stuff
@@ -123,6 +137,8 @@
 	valid_slots = ITEM_SLOT_HANDS
 
 /datum/hallucination/fake_item/summon_guns/make_fake_item(where_to_put_it, equip_flags)
+	procstart = null
+	src.procstart = null
 	template_item_type = pick(GLOB.summoned_guns)
 	. = ..()
 	hallucinator.playsound_local(get_turf(hallucinator), 'sound/effects/magic/summon_guns.ogg', 50, TRUE)
@@ -132,6 +148,8 @@
 	valid_slots = ITEM_SLOT_HANDS
 
 /datum/hallucination/fake_item/summon_magic/make_fake_item(where_to_put_it, equip_flags)
+	procstart = null
+	src.procstart = null
 	template_item_type = pick(GLOB.summoned_magic + GLOB.summoned_special_magic)
 	. = ..()
 	hallucinator.playsound_local(get_turf(hallucinator), 'sound/effects/magic/summon_magic.ogg', 50, TRUE)
@@ -146,6 +164,8 @@
 	var/datum/hallucination/parent
 
 /obj/item/hallucinated/Initialize(mapload, datum/hallucination/parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!parent)
 		stack_trace("[type] was created without a parent hallucination.")
@@ -157,12 +177,16 @@
 	add_traits(list(TRAIT_NODROP, TRAIT_EXAMINE_SKIP), INNATE_TRAIT)
 
 /obj/item/hallucinated/Destroy(force)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_QDELETING)
 	parent = null
 	return ..()
 
 /// Signal proc for [COMSIG_QDELETING], if our associated hallucination deletes, we should too
 /obj/item/hallucinated/proc/parent_deleting(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(src)

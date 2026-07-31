@@ -14,6 +14,8 @@
 	max_charges = 10
 
 /obj/item/gun/magic/wand/tentacles/zap_self(mob/living/user, suicide)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/tentacle_type = suicide ? /obj/effect/wizard_tentacle/suicide : /obj/effect/wizard_tentacle
 	var/turf/target_turf = get_turf(user)
@@ -21,6 +23,8 @@
 		new tentacle_type(target_turf, user)
 
 /obj/item/gun/magic/wand/tentacles/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return user.has_status_effect(/datum/status_effect/incapacitating/immobilized/wizard_tentacle/suicide) ? MANUAL_SUICIDE : SHAME
 
@@ -33,6 +37,8 @@
 	icon_state = "tentacle_end"
 
 /obj/projectile/magic/tentacle_staff/on_hit(mob/living/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. == BULLET_ACT_BLOCK || !istype(target) || blocked >= 100)
 		return
@@ -54,6 +60,8 @@
 	var/status_applied = /datum/status_effect/incapacitating/immobilized/wizard_tentacle
 
 /obj/effect/wizard_tentacle/Initialize(mapload, mob/living/victim)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isgroundlessturf(loc) || isnull(victim))
 		return INITIALIZE_HINT_QDEL
@@ -72,6 +80,8 @@
 		retract()
 
 /obj/effect/wizard_tentacle/user_unbuckle_mob(mob/living/buckled_mob, mob/user)
+	procstart = null
+	src.procstart = null
 	if (buckled_mob == user)
 		balloon_alert(user, "can't reach!")
 		return
@@ -79,6 +89,8 @@
 
 /// We're done now
 /obj/effect/wizard_tentacle/proc/retract()
+	procstart = null
+	src.procstart = null
 	if (icon_state == "goliath_tentacle_retract")
 		return // Already retracting
 	icon_state = "goliath_tentacle_retract"
@@ -99,12 +111,16 @@
 	var/removable = TRUE
 
 /datum/status_effect/incapacitating/immobilized/wizard_tentacle/on_creation(mob/living/new_owner, set_duration, obj/effect/wizard_tentacle/tentacle)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
 	src.tentacle = tentacle
 
 /datum/status_effect/incapacitating/immobilized/wizard_tentacle/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (removable)
 		RegisterSignal(owner, COMSIG_CARBON_PRE_MISC_HELP, PROC_REF(on_helped))
@@ -112,6 +128,8 @@
 	RegisterSignal(tentacle, COMSIG_QDELETING, PROC_REF(on_tentacle_left))
 
 /datum/status_effect/incapacitating/immobilized/wizard_tentacle/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(owner, list(COMSIG_CARBON_PRE_MISC_HELP, SIGNAL_ADDTRAIT(TRAIT_TENTACLE_IMMUNE)))
 	if (isnull(tentacle))
@@ -122,6 +140,8 @@
 
 /// Some kind soul has rescued us
 /datum/status_effect/incapacitating/immobilized/wizard_tentacle/proc/on_helped(mob/source, mob/helping)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (helping == owner)
 		owner.balloon_alert(owner, "can't reach!")
@@ -132,11 +152,15 @@
 
 /// Something happened to make the tentacle let go
 /datum/status_effect/incapacitating/immobilized/wizard_tentacle/proc/release()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /// Something happened to our associated tentacle
 /datum/status_effect/incapacitating/immobilized/wizard_tentacle/proc/on_tentacle_left()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(tentacle, COMSIG_QDELETING)
 	tentacle = null
@@ -147,10 +171,14 @@
 	removable = FALSE
 
 /datum/status_effect/incapacitating/immobilized/wizard_tentacle/suicide/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.Stun(6 SECONDS, ignore_canstun = TRUE)
 
 /datum/status_effect/incapacitating/immobilized/wizard_tentacle/suicide/on_remove()
+	procstart = null
+	src.procstart = null
 	var/had_tentacle = !!tentacle
 	. = ..()
 	if (!owner || !had_tentacle)

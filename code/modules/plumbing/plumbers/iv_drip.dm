@@ -10,6 +10,8 @@
 	processing_flags = START_PROCESSING_MANUALLY
 
 /obj/machinery/iv_drip/plumbing/Initialize(mapload, layer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		begin_processing()
@@ -17,12 +19,18 @@
 	AddElement(/datum/element/simple_rotation)
 
 /obj/machinery/iv_drip/plumbing/quick_toggle(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/iv_drip/plumbing/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	return NONE
 
 /obj/machinery/iv_drip/plumbing/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(held_item) || held_item.tool_behaviour != TOOL_WRENCH)
 		return
@@ -30,6 +38,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/iv_drip/plumbing/plunger_act(obj/item/plunger/attacking_plunger, mob/living/user, reinforced)
+	procstart = null
+	src.procstart = null
 	user.balloon_alert_to_viewers("furiously plunging...", "plunging iv drip...")
 	if(!do_after(user, 3 SECONDS, target = src))
 		return TRUE
@@ -39,6 +49,8 @@
 	return TRUE
 
 /obj/machinery/iv_drip/plumbing/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(default_unfasten_wrench(user, tool) != SUCCESSFUL_UNFASTEN)
 		return ITEM_INTERACT_BLOCKING
 	if(anchored)

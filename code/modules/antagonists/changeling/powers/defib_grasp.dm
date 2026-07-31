@@ -14,11 +14,15 @@
 	var/heal_flags = HEAL_DAMAGE|HEAL_BODY|HEAL_STATUS|HEAL_CC_STATUS
 
 /datum/action/changeling/defib_grasp/on_purchase(mob/user, is_respec)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(user, COMSIG_DEFIBRILLATOR_PRE_HELP_ZAP, PROC_REF(on_defibbed))
 
 /// Signal proc for [COMSIG_DEFIBRILLATOR_PRE_HELP_ZAP].
 /datum/action/changeling/defib_grasp/proc/on_defibbed(mob/living/carbon/source, mob/living/defibber, obj/item/shockpaddles/defib)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source.stat != DEAD && !HAS_TRAIT_FROM(source, TRAIT_FAKEDEATH, CHANGELING_TRAIT))
@@ -29,6 +33,8 @@
 
 /// Executes the defib action, causing the changeling to fully heal and get up.
 /datum/action/changeling/defib_grasp/proc/execute_defib(mob/living/carbon/changeling, mob/living/defibber, obj/item/shockpaddles/defib)
+	procstart = null
+	src.procstart = null
 	remove_arms(changeling, defibber, defib)
 
 	if(changeling.stat == DEAD)
@@ -51,6 +57,8 @@
 /// Removes the arms of the defibber if they're a carbon, and stuns them for a bit.
 /// If they're a cyborg, they'll just get stunned instead.
 /datum/action/changeling/defib_grasp/proc/remove_arms(mob/living/carbon/changeling, mob/living/defibber, obj/item/shockpaddles/defib)
+	procstart = null
+	src.procstart = null
 
 	if(iscyborg(defibber))
 		if(defibber.flash_act(affect_silicon = TRUE))

@@ -6,20 +6,28 @@
 	withdrawal_stage_messages = list("I feel aches in my bodies..", "I need some pain relief...", "It aches all over...I need some opioids!")
 
 /datum/addiction/opioids/withdrawal_stage_1_process(mob/living/carbon/affected_carbon, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(SPT_PROB(10, seconds_per_tick))
 		affected_carbon.emote("yawn")
 
 /datum/addiction/opioids/withdrawal_enters_stage_2(mob/living/carbon/affected_carbon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_carbon.apply_status_effect(/datum/status_effect/high_blood_pressure)
 
 /datum/addiction/opioids/withdrawal_stage_3_process(mob/living/carbon/affected_carbon, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(affected_carbon.disgust < DISGUST_LEVEL_DISGUSTED && SPT_PROB(7.5, seconds_per_tick))
 		affected_carbon.adjust_disgust(12.5 * seconds_per_tick)
 
 /datum/addiction/opioids/end_withdrawal(mob/living/carbon/affected_carbon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_carbon.remove_status_effect(/datum/status_effect/high_blood_pressure)
 	affected_carbon.set_disgust(affected_carbon.disgust * 0.5) //half their disgust to help
@@ -33,18 +41,26 @@
 	withdrawal_stage_messages = list("You feel a bit tired...You could really use a pick me up.", "You are getting a bit woozy...", "So...Tired...")
 
 /datum/addiction/stimulants/withdrawal_enters_stage_1(mob/living/carbon/affected_carbon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_carbon.add_actionspeed_modifier(/datum/actionspeed_modifier/stimulants)
 
 /datum/addiction/stimulants/withdrawal_enters_stage_2(mob/living/carbon/affected_carbon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_carbon.apply_status_effect(/datum/status_effect/woozy)
 
 /datum/addiction/stimulants/withdrawal_enters_stage_3(mob/living/carbon/affected_carbon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_carbon.add_movespeed_modifier(/datum/movespeed_modifier/stimulants)
 
 /datum/addiction/stimulants/end_withdrawal(mob/living/carbon/affected_carbon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_carbon.remove_actionspeed_modifier(ACTIONSPEED_ID_STIMULANTS)
 	affected_carbon.remove_status_effect(/datum/status_effect/woozy)
@@ -58,15 +74,21 @@
 	withdrawal_stage_messages = list("I could use a drink...", "Maybe the bar is still open?..", "God I need a drink!")
 
 /datum/addiction/alcohol/withdrawal_stage_1_process(mob/living/carbon/affected_carbon, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_carbon.set_jitter_if_lower(10 SECONDS * seconds_per_tick)
 
 /datum/addiction/alcohol/withdrawal_stage_2_process(mob/living/carbon/affected_carbon, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_carbon.set_jitter_if_lower(20 SECONDS * seconds_per_tick)
 	affected_carbon.set_hallucinations_if_lower(10 SECONDS)
 
 /datum/addiction/alcohol/withdrawal_stage_3_process(mob/living/carbon/affected_carbon, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_carbon.set_jitter_if_lower(30 SECONDS * seconds_per_tick)
 	affected_carbon.set_hallucinations_if_lower(10 SECONDS)
@@ -80,6 +102,8 @@
 	withdrawal_stage_messages = list("I feel so empty...", "I wonder what the machine elves are up to?..", "I need to see the beautiful colors again!!")
 
 /datum/addiction/hallucinogens/withdrawal_enters_stage_2(mob/living/carbon/affected_carbon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/movable/plane_master_controller/game_plane_master_controller = affected_carbon.hud_used.plane_master_controllers[PLANE_MASTERS_GAME]
 	game_plane_master_controller.add_filter("hallucinogen_blur", 10, angular_blur_filter(0, 0, 3))
@@ -87,10 +111,14 @@
 
 
 /datum/addiction/hallucinogens/withdrawal_enters_stage_3(mob/living/carbon/affected_carbon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_carbon.apply_status_effect(/datum/status_effect/trance, 40 SECONDS, TRUE)
 
 /datum/addiction/hallucinogens/end_withdrawal(mob/living/carbon/affected_carbon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/movable/plane_master_controller/game_plane_master_controller = affected_carbon.hud_used.plane_master_controllers[PLANE_MASTERS_GAME]
 	game_plane_master_controller.remove_filter("hallucinogen_blur")
@@ -105,15 +133,21 @@
 	withdrawal_stage_messages = list("", "", "")
 
 /datum/addiction/maintenance_drugs/withdrawal_enters_stage_1(mob/living/carbon/affected_carbon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_carbon.apply_status_effect(/datum/status_effect/grouped/screwy_hud/fake_healthy, type)
 
 /datum/addiction/maintenance_drugs/withdrawal_stage_1_process(mob/living/carbon/affected_carbon, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(SPT_PROB(7.5, seconds_per_tick))
 		affected_carbon.emote("growls")
 
 /datum/addiction/maintenance_drugs/withdrawal_enters_stage_2(mob/living/carbon/affected_carbon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(affected_carbon))
 		return
@@ -130,6 +164,8 @@
 	tongue.toxic_foodtypes = ~GROSS
 
 /datum/addiction/maintenance_drugs/withdrawal_enters_stage_3(mob/living/carbon/affected_carbon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(affected_carbon))
 		return
@@ -137,6 +173,8 @@
 	ADD_TRAIT(affected_carbon, TRAIT_NIGHT_VISION, type)
 
 /datum/addiction/maintenance_drugs/withdrawal_stage_3_process(mob/living/carbon/affected_carbon, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(affected_carbon))
 		return
 	var/mob/living/carbon/human/affected_human = affected_carbon
@@ -150,6 +188,8 @@
 		affected_carbon.clear_mood_event("too_bright")
 
 /datum/addiction/maintenance_drugs/end_withdrawal(mob/living/carbon/affected_carbon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_carbon.remove_status_effect(/datum/status_effect/grouped/screwy_hud/fake_healthy, type)
 	//restore tongue's tastes
@@ -173,6 +213,8 @@
 	var/datum/weakref/health_doll_ref
 
 /datum/addiction/medicine/withdrawal_enters_stage_1(mob/living/carbon/affected_carbon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(affected_carbon))
 		return
@@ -187,11 +229,15 @@
 	health_doll_ref = WEAKREF(health_doll)
 
 /datum/addiction/medicine/withdrawal_stage_1_process(mob/living/carbon/affected_carbon, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(SPT_PROB(1, seconds_per_tick))
 		affected_carbon.emote("cough")
 
 /datum/addiction/medicine/withdrawal_enters_stage_2(mob/living/carbon/affected_carbon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/possibilities = list()
 
@@ -220,6 +266,8 @@
 	fake_alert_ref = WEAKREF(fake_alert)
 
 /datum/addiction/medicine/withdrawal_stage_2_process(mob/living/carbon/affected_carbon, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(SPT_PROB(2, seconds_per_tick))
 		affected_carbon.emote("cough")
@@ -238,10 +286,14 @@
 		return
 
 /datum/addiction/medicine/withdrawal_enters_stage_3(mob/living/carbon/affected_carbon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_carbon.apply_status_effect(/datum/status_effect/grouped/screwy_hud/fake_crit, type)
 
 /datum/addiction/medicine/withdrawal_stage_3_process(mob/living/carbon/affected_carbon, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(SPT_PROB(5, seconds_per_tick))
 		affected_carbon.emote("cough")
@@ -269,6 +321,8 @@
 	to_chat(affected_carbon, span_warning("You feel a dull pain in your [organ.name]."))
 
 /datum/addiction/medicine/end_withdrawal(mob/living/carbon/affected_carbon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_carbon.remove_status_effect(/datum/status_effect/grouped/screwy_hud/fake_crit, type)
 	QDEL_NULL(fake_alert_ref)
@@ -286,16 +340,22 @@
 	severe_withdrawal_moodlet = /datum/mood_event/nicotine_withdrawal_severe
 
 /datum/addiction/nicotine/withdrawal_enters_stage_1(mob/living/carbon/affected_carbon, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_carbon.set_jitter_if_lower(10 SECONDS * seconds_per_tick)
 
 /datum/addiction/nicotine/withdrawal_stage_2_process(mob/living/carbon/affected_carbon, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_carbon.set_jitter_if_lower(20 SECONDS * seconds_per_tick)
 	if(SPT_PROB(2, seconds_per_tick))
 		affected_carbon.emote("cough")
 
 /datum/addiction/nicotine/withdrawal_stage_3_process(mob/living/carbon/affected_carbon, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_carbon.set_jitter_if_lower(30 SECONDS * seconds_per_tick)
 	if(SPT_PROB(5, seconds_per_tick))

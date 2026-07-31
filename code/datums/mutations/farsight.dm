@@ -10,6 +10,8 @@
 	power_path = /datum/action/cooldown/spell/farsight
 
 /datum/mutation/farsight/setup()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/action/cooldown/spell/farsight/to_modify = .
 	if(istype(to_modify))
@@ -33,11 +35,15 @@
 	VAR_PRIVATE/active = FALSE
 
 /datum/action/cooldown/spell/farsight/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(var_name == NAMEOF(src, sight_range))
 		set_sight_range(sight_range)
 
 /datum/action/cooldown/spell/farsight/proc/set_sight_range(new_value)
+	procstart = null
+	src.procstart = null
 	if(sight_range == new_value)
 		return
 	sight_range = new_value
@@ -45,6 +51,8 @@
 		owner?.client?.view_size.setTo(sight_range)
 
 /datum/action/cooldown/spell/farsight/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/caster = cast_on
 	if(active)
@@ -58,12 +66,18 @@
 	build_all_button_icons(UPDATE_BUTTON_STATUS)
 
 /datum/action/cooldown/spell/farsight/get_caster_from_target(atom/target)
+	procstart = null
+	src.procstart = null
 	return target // This ability only effect's the caster's client, no reason to try and fail to effect the closet or mech we're inside.
 
 /datum/action/cooldown/spell/farsight/is_action_active(atom/movable/screen/movable/action_button/current_button)
+	procstart = null
+	src.procstart = null
 	return active
 
 /datum/action/cooldown/spell/farsight/Remove(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		remove_from.client?.view_size.resetToDefault()

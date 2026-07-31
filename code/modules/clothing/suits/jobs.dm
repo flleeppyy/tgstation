@@ -57,6 +57,8 @@
 	flags_1 = IS_PLAYER_COLORABLE_1
 
 /obj/item/clothing/suit/apron/overalls/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -4)
 
@@ -135,6 +137,8 @@
 	acid = 45
 
 /obj/item/clothing/suit/toggle/jacket/det_trench/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed = GLOB.detective_vest_allowed
 
@@ -152,6 +156,8 @@
 	inhand_icon_state = null
 
 /obj/item/clothing/suit/jacket/det_suit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed = GLOB.detective_vest_allowed
 
@@ -195,6 +201,8 @@
 	species_exception = list(/datum/species/golem)
 
 /obj/item/clothing/suit/hazardvest/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "[icon_state]-emissive", src, alpha = src.alpha, effect_type = EMISSIVE_SPECULAR)
@@ -258,6 +266,8 @@
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 
 /obj/item/clothing/suit/jacket/quartermaster/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += list(
 		/obj/item/stamp,
@@ -363,6 +373,8 @@
 	)
 
 /obj/item/clothing/suit/apron/surgical/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -3) // FISH DOCTOR?!
 
@@ -443,6 +455,8 @@
 	acid = 50
 
 /obj/item/clothing/suit/atmos_overalls/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "[icon_state]-emissive", src, alpha = src.alpha, effect_type = EMISSIVE_SPECULAR)

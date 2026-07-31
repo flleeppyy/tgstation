@@ -54,6 +54,8 @@ GLOBAL_VAR_INIT(chicken_count, 0)
 	sound = 'sound/mobs/non-humanoids/chicken/bagawk.ogg'
 
 /mob/living/basic/chicken/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.chicken_count++
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
@@ -77,10 +79,14 @@ GLOBAL_VAR_INIT(chicken_count, 0)
 	)
 
 /mob/living/basic/chicken/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.chicken_count--
 	return ..()
 
 /mob/living/basic/chicken/proc/egg_laid(obj/item/egg)
+	procstart = null
+	src.procstart = null
 	if(GLOB.chicken_count <= MAX_CHICKENS && fertile && prob(25))
 		egg.AddComponent(\
 			/datum/component/fertile_egg,\

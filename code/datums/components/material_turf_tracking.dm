@@ -45,6 +45,8 @@
 	))
 
 /datum/component/material_turf_tracking/Initialize(datum/material/owner_material)
+	procstart = null
+	src.procstart = null
 	if (!isopenturf(parent) && !isobj(parent))
 		return COMPONENT_INCOMPATIBLE
 	src.owner_material = owner_material
@@ -52,10 +54,14 @@
 		requires_elevation = TRUE
 
 /datum/component/material_turf_tracking/Destroy(force)
+	procstart = null
+	src.procstart = null
 	owner_material = null
 	return ..()
 
 /datum/component/material_turf_tracking/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = parent
 	if (ismovable(parent))
 		var/atom/movable/as_movable = parent
@@ -78,6 +84,8 @@
 	RegisterSignal(target_turf, COMSIG_ATOM_EXITED, PROC_REF(on_exited))
 
 /datum/component/material_turf_tracking/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isturf(parent))
 		on_source_exiting(parent)
@@ -88,6 +96,8 @@
 	on_source_exiting(as_movable.loc)
 
 /datum/component/material_turf_tracking/proc/on_source_entering(atom/movable/source, atom/entering, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!isopenturf(entering))
@@ -101,6 +111,8 @@
 	on_turf_gained(entering)
 
 /datum/component/material_turf_tracking/proc/on_source_exiting(atom/movable/source, atom/exiting)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!isturf(exiting))
@@ -110,6 +122,8 @@
 	on_turf_lost(exiting)
 
 /datum/component/material_turf_tracking/proc/on_turf_gained(turf/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	RegisterSignal(source, COMSIG_ATOM_ENTERED, PROC_REF(on_entered))
@@ -119,6 +133,8 @@
 		on_entered(source, thing)
 
 /datum/component/material_turf_tracking/proc/on_turf_lost(turf/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(source, list(COMSIG_ATOM_ENTERED, COMSIG_TURF_MOVABLE_THROW_LANDED, COMSIG_ATOM_EXITED))
@@ -126,6 +142,8 @@
 		UnregisterSignal(thing, list(SIGNAL_ADDTRAIT(TRAIT_MOB_ELEVATED), COMSIG_MOVETYPE_FLAG_DISABLED))
 
 /datum/component/material_turf_tracking/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (arrived.throwing || arrived.invisibility >= INVISIBILITY_ABSTRACT || arrived == parent)
@@ -156,11 +174,15 @@
 	trigger_effect(arrived)
 
 /datum/component/material_turf_tracking/proc/on_exited(datum/source, atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(gone, list(SIGNAL_ADDTRAIT(TRAIT_MOB_ELEVATED), COMSIG_MOVETYPE_FLAG_DISABLED))
 
 /datum/component/material_turf_tracking/proc/trigger_effect(atom/movable/arrived)
+	procstart = null
+	src.procstart = null
 	if (!isliving(arrived))
 		SEND_SIGNAL(owner_material, COMSIG_MATERIAL_EFFECT_STEP, parent, arrived, null, null, FALSE)
 		return
@@ -178,6 +200,8 @@
 	SEND_SIGNAL(owner_material, COMSIG_MATERIAL_EFFECT_STEP, parent, arrived, null, pick(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG), !!skin_contact)
 
 /datum/component/material_turf_tracking/proc/on_mob_elevated(mob/living/source, trait)
+	procstart = null
+	src.procstart = null
 	if (source.throwing || source.invisibility >= INVISIBILITY_ABSTRACT || (source.movement_type & MOVETYPES_NOT_TOUCHING_GROUND))
 		return
 
@@ -187,6 +211,8 @@
 	trigger_effect(source)
 
 /datum/component/material_turf_tracking/proc/on_move_flag_disabled(atom/movable/source, flag, old_state)
+	procstart = null
+	src.procstart = null
 	if (source.throwing || source.invisibility >= INVISIBILITY_ABSTRACT || (source.movement_type & MOVETYPES_NOT_TOUCHING_GROUND))
 		return
 

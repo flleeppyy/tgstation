@@ -7,10 +7,14 @@
 	range = 10
 
 /obj/projectile/energy/snare/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SpinAnimation()
 
 /obj/projectile/energy/snare/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	var/obj/item/dragnet_beacon/destination_beacon = null
 	var/obj/item/gun/energy/e_gun/dragnet/our_dragnet = fired_from
 	if(our_dragnet && istype(our_dragnet))
@@ -27,6 +31,8 @@
 	. = ..()
 
 /obj/projectile/energy/snare/on_range()
+	procstart = null
+	src.procstart = null
 	do_sparks(1, TRUE, src)
 	. = ..()
 
@@ -39,11 +45,15 @@
 	anchored = TRUE
 
 /obj/effect/nettingportal/Initialize(mapload, destination_beacon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/dragnet_beacon/teletarget = destination_beacon
 	addtimer(CALLBACK(src, PROC_REF(pop), teletarget), 3 SECONDS)
 
 /obj/effect/nettingportal/proc/pop(teletarget)
+	procstart = null
+	src.procstart = null
 	if(teletarget)
 		for(var/mob/living/living_mob in get_turf(src))
 			do_teleport(living_mob, get_turf(teletarget), 1, channel = TELEPORT_CHANNEL_BLUESPACE) //Teleport what's in the tile to the beacon
@@ -54,9 +64,13 @@
 	qdel(src)
 
 /obj/effect/nettingportal/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/nettingportal/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/dragnet_beacon
@@ -72,6 +86,8 @@
 	var/locked = FALSE
 
 /obj/item/dragnet_beacon/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/gun/energy/e_gun/dragnet))
 		var/obj/item/gun/energy/e_gun/dragnet/dragnet_to_link = tool
 		dragnet_to_link.link_beacon(user, src)
@@ -94,6 +110,8 @@
 			balloon_alert(user, "no access!")
 
 /obj/item/dragnet_beacon/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.is_holding(src))
 		balloon_alert(user, "put it down first!")
 		return ITEM_INTERACT_BLOCKING
@@ -111,6 +129,8 @@
 	user.balloon_alert_to_viewers("[anchored ? "anchored" : "unanchored"]")
 
 /obj/item/dragnet_beacon/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED

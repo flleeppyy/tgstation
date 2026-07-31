@@ -39,6 +39,8 @@
 	var/list/shocked_things = list()
 
 /obj/energy_ball/Initialize(mapload, starting_energy = 50, is_miniball = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	energy = starting_energy
@@ -53,6 +55,8 @@
 		investigate_log("was created at [AREACOORD(spawned_turf)].", INVESTIGATE_ENGINE)
 
 /obj/energy_ball/Destroy()
+	procstart = null
+	src.procstart = null
 	if(orbiting && istype(orbiting.parent, /obj/energy_ball))
 		var/obj/energy_ball/parent_energy_ball = orbiting.parent
 		parent_energy_ball.orbiting_balls -= src
@@ -63,6 +67,8 @@
 	return ..()
 
 /obj/energy_ball/process()
+	procstart = null
+	src.procstart = null
 	if(orbiting)
 		energy = 0 // ensure we dont have miniballs of miniballs
 	else
@@ -89,11 +95,15 @@
 		shocked_things += shocking_info
 
 /obj/energy_ball/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(orbiting_balls.len)
 		. += "There are [orbiting_balls.len] mini-balls orbiting it."
 
 /obj/energy_ball/proc/move(move_amount)
+	procstart = null
+	src.procstart = null
 	var/list/dirs = GLOB.alldirs.Copy()
 	if(shocked_things.len)
 		for (var/i in 1 to 30)
@@ -111,6 +121,8 @@
 				dust_mobs(mob_to_dust)
 
 /obj/energy_ball/proc/can_move(turf/to_move)
+	procstart = null
+	src.procstart = null
 	if (!to_move)
 		return FALSE
 
@@ -122,6 +134,8 @@
 	return TRUE
 
 /obj/energy_ball/proc/handle_energy()
+	procstart = null
+	src.procstart = null
 	if(energy >= energy_to_raise)
 		energy_to_lower = energy_to_raise - 20
 		energy_to_raise = energy_to_raise * 1.25
@@ -136,6 +150,8 @@
 		qdel(Orchiectomy_target)
 
 /obj/energy_ball/proc/new_mini_ball()
+	procstart = null
+	src.procstart = null
 	if(!loc)
 		return
 
@@ -153,12 +169,18 @@
 	miniball.orbit(src, orbitsize, pick(FALSE, TRUE), rand(10, 25), pick(3, 4, 5, 6, 36))
 
 /obj/energy_ball/Bump(atom/A)
+	procstart = null
+	src.procstart = null
 	dust_mobs(A)
 
 /obj/energy_ball/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	dust_mobs(AM)
 
 /obj/energy_ball/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user))
 		return
 	var/mob/living/carbon/jedi = user
@@ -172,11 +194,15 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /obj/energy_ball/orbit(obj/energy_ball/target)
+	procstart = null
+	src.procstart = null
 	if (istype(target))
 		target.orbiting_balls += src
 	. = ..()
 
 /obj/energy_ball/stop_orbit(datum/component/orbiter/orbiters, refreshing = FALSE)
+	procstart = null
+	src.procstart = null
 	if(refreshing)
 		return ..()
 	if (orbiting && istype(orbiting.parent, /obj/energy_ball))
@@ -188,6 +214,8 @@
 
 
 /obj/energy_ball/proc/dust_mobs(atom/A)
+	procstart = null
+	src.procstart = null
 	if(isliving(A))
 		var/mob/living/living = A
 		if(living.incorporeal_move || HAS_TRAIT(living, TRAIT_GODMODE))
@@ -202,6 +230,8 @@
 	C.dust()
 
 /proc/tesla_zap(atom/source, zap_range = 3, power, cutoff = 4e5, zap_flags = ZAP_DEFAULT_FLAGS, list/shocked_targets = list())
+	procstart = null
+	src.procstart = null
 	if(QDELETED(source))
 		return
 	if(!(zap_flags & ZAP_ALLOW_DUPLICATES))

@@ -12,6 +12,8 @@ GLOBAL_LIST_INIT(most_common_words_alphabetical, init_common_words_by_alphabetic
 GLOBAL_LIST_INIT(most_common_words_frequency, init_common_words_by_frequency())
 
 /proc/init_language_prototypes()
+	procstart = null
+	src.procstart = null
 	var/list/lang_list = list()
 	for(var/datum/language/lang_type as anything in typesof(/datum/language))
 		if(!initial(lang_type.key))
@@ -21,6 +23,8 @@ GLOBAL_LIST_INIT(most_common_words_frequency, init_common_words_by_frequency())
 	return lang_list
 
 /proc/init_all_languages()
+	procstart = null
+	src.procstart = null
 	var/list/lang_list = list()
 	for(var/datum/language/lang_type as anything in typesof(/datum/language))
 		if(!initial(lang_type.key))
@@ -29,6 +33,8 @@ GLOBAL_LIST_INIT(most_common_words_frequency, init_common_words_by_frequency())
 	return lang_list
 
 /proc/init_language_types_by_name()
+	procstart = null
+	src.procstart = null
 	var/list/lang_list = list()
 	for(var/datum/language/lang_type as anything in typesof(/datum/language))
 		if(!initial(lang_type.key))
@@ -37,6 +43,8 @@ GLOBAL_LIST_INIT(most_common_words_frequency, init_common_words_by_frequency())
 	return lang_list
 
 /proc/init_common_words_by_alphabetical()
+	procstart = null
+	src.procstart = null
 	var/list/word_to_commonness_list = list()
 	var/i = 1
 	for(var/word in world.file2list("strings/1400_most_common_alpha.txt"))
@@ -45,6 +53,8 @@ GLOBAL_LIST_INIT(most_common_words_frequency, init_common_words_by_frequency())
 	return word_to_commonness_list
 
 /proc/init_common_words_by_frequency()
+	procstart = null
+	src.procstart = null
 	var/list/word_to_commonness_list = list()
 	var/i = 1
 	for(var/word in world.file2list("strings/1000_most_common_frequency.txt"))

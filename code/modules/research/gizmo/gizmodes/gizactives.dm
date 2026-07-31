@@ -39,6 +39,8 @@
 
 /// Pick the paths to generate and instantiate them
 /datum/gizmodes/proc/generate_modes(list/trigger_callbacks, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	src.interface = interface
 
 	var/list/modes_to_spawn = list()
@@ -67,6 +69,8 @@
 
 /// Activate this gizmode which in turn activates the active gizpulse (you following me here?)
 /datum/gizmodes/proc/activate(atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	if(current_active.affect_timer)
 		if(!COOLDOWN_FINISHED(src, cooldown_timer))
 			return
@@ -81,6 +85,8 @@
 
 /// Activate it do so stuff
 /datum/gizpulse/proc/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Changes the currently activate gizpulse and adds a way to activate gizpulses
@@ -89,25 +95,35 @@
 
 /// Select how activating the pulzes interacts with the gizpulses
 /datum/gizpulse/mode_controle/proc/setup_mode_controle(datum/gizmodes/master, list/active_gizmodes, list/trigger_callbacks)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Adds a puzzle for every possible made to select it, and a single wire to activate the selected mode
 /datum/gizpulse/mode_controle/select_mode/setup_mode_controle(datum/gizmodes/master, list/active_gizmodes, list/trigger_callbacks)
+	procstart = null
+	src.procstart = null
 	for(var/active in active_gizmodes)
 		trigger_callbacks += CALLBACK(src, PROC_REF(select_mode), master, active)
 	trigger_callbacks += CALLBACK(master, PROC_REF(activate))
 
 /datum/gizpulse/mode_controle/select_mode/proc/select_mode(datum/gizmodes/master, new_active_mode, atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	master.current_active = new_active_mode
 	// Give a hint to the user that something DID happen
 	return GIZMO_PUZZLE_SOLVED_MODE_CONTROL
 
 /// Adds a puzzle to cycle to the next gizpulse, and a puzzle to activate the currently active mode
 /datum/gizpulse/mode_controle/cycle_mode/setup_mode_controle(datum/gizmodes/master, list/active_gizmodes, list/trigger_callbacks)
+	procstart = null
+	src.procstart = null
 	trigger_callbacks += CALLBACK(src, PROC_REF(cycle_mode), master)
 	trigger_callbacks += CALLBACK(master, PROC_REF(activate))
 
 /datum/gizpulse/mode_controle/cycle_mode/proc/cycle_mode(datum/gizmodes/master, atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	// Move to the next mode in the list (and loop back to 1 if needed)
 	master.current_active = master.active_gizmodes[((master.active_gizmodes.Find(master.current_active)) % (master.active_gizmodes.len)) + 1]
 	// Give a hint to the user that something DID happen
@@ -115,17 +131,25 @@
 
 /// Adds a puzzle for every gizpulse that just immediately activates that gizpulse
 /datum/gizpulse/mode_controle/direct_activate/setup_mode_controle(datum/gizmodes/master, list/active_gizmodes, list/trigger_callbacks)
+	procstart = null
+	src.procstart = null
 	for(var/active in active_gizmodes)
 		trigger_callbacks += CALLBACK(src, PROC_REF(switch_and_activate), master, active)
 
 /datum/gizpulse/mode_controle/direct_activate/proc/switch_and_activate(datum/gizmodes/master, datum/gizpulse/active, atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	master.current_active = active
 	master.activate(holder)
 
 /// Adds a single wire, that cycles and then activates
 /datum/gizpulse/mode_controle/cycle_mode/activate/setup_mode_controle(datum/gizmodes/master, list/active_gizmodes, list/trigger_callbacks)
+	procstart = null
+	src.procstart = null
 	trigger_callbacks += CALLBACK(src, PROC_REF(cycle_mode), master)
 
 /datum/gizpulse/mode_controle/cycle_mode/activate/cycle_mode(datum/gizmodes/master, atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	..()
 	master.activate(holder)

@@ -14,6 +14,8 @@
 	sight = SEE_TURFS
 
 /mob/living/basic/heretic_summon/ash_spirit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/actions_to_add = list(
 		/datum/action/cooldown/spell/fire_sworn,
@@ -22,5 +24,7 @@
 	grant_actions_by_list(actions_to_add)
 
 /mob/living/basic/heretic_summon/ash_spirit/Life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	adjust_brute_loss(-3) // 3 health passively healing

@@ -12,6 +12,8 @@
 	var/list/payees = list()
 
 /datum/component/pricetag/Initialize(list/pay_to_account, profit_ratio = 1, delete_on_unwrap = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!isobj(parent)) //Has to account for both objects and sellable structures like crates.
 		return COMPONENT_INCOMPATIBLE
 
@@ -37,11 +39,15 @@
 	src.delete_on_unwrap = delete_on_unwrap
 
 /datum/component/pricetag/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ITEM_EXPORTED, PROC_REF(on_parent_sold))
 	// Register this regardless of delete_on_unwrap because it could change by inherited components.
 	RegisterSignal(parent, COMSIG_ITEM_UNWRAPPED, PROC_REF(on_parent_unwrap))
 
 /datum/component/pricetag/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ITEM_EXPORTED,
 		COMSIG_ITEM_UNWRAPPED,
@@ -61,6 +67,8 @@
  * (Don't go from non-deleting to deleting)
  */
 /datum/component/pricetag/InheritComponent(datum/component/pricetag/new_comp, i_am_original, pay_to_account, profit_ratio = 1, delete_on_unwrap = TRUE)
+	procstart = null
+	src.procstart = null
 	if(length(payees) == 1)
 		if(!isnull(payees[pay_to_account]) && payees[pay_to_account] >= profit_ratio) // They're already getting a better ratio, don't scam them
 			return
@@ -78,6 +86,8 @@
  * (if delete_on_unwrap is TRUE)
  */
 /datum/component/pricetag/proc/on_parent_unwrap(obj/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!delete_on_unwrap)
@@ -91,6 +101,8 @@
  * Pays out money to everyone in the payees list.
  */
 /datum/component/pricetag/proc/on_parent_sold(obj/source, datum/export/export, datum/export_report/report, item_value)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isnum(item_value))

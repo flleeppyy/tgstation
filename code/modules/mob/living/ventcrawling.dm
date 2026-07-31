@@ -1,12 +1,16 @@
 // VENTCRAWLING
 
 /mob/living/proc/notify_ventcrawler_on_login()
+	procstart = null
+	src.procstart = null
 	var/ventcrawler = HAS_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS) || HAS_TRAIT(src, TRAIT_VENTCRAWLER_NUDE)
 	if(!ventcrawler)
 		return
 	to_chat(src, span_notice("You can ventcrawl! Use alt+click on vents to quickly travel about the station."))
 
 /mob/living/carbon/human/notify_ventcrawler_on_login()
+	procstart = null
+	src.procstart = null
 	if(!ismonkey(src))
 		return ..()
 	if(!istype(head, /obj/item/clothing/head/helmet/monkey_sentience)) //don't notify them about ventcrawling if they're wearing the sentience helmet, because they can't ventcrawl with it on, and if they take it off they'll no longer be in control of the mob.
@@ -16,6 +20,8 @@
 
 /// Checks if the mob is able to enter the vent, and provides feedback if they are unable to.
 /mob/living/proc/can_enter_vent(obj/machinery/atmospherics/components/ventcrawl_target, provide_feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	// Being able to always ventcrawl trumps being only able to ventcrawl when wearing nothing
 	var/required_nudity = HAS_TRAIT(src, TRAIT_VENTCRAWLER_NUDE) && !HAS_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS)
 	// Cache the vent_movement bitflag var from atmos machineries
@@ -67,6 +73,8 @@
 
 /// Handles the entrance and exit on ventcrawling
 /mob/living/proc/handle_ventcrawl(obj/machinery/atmospherics/components/ventcrawl_target)
+	procstart = null
+	src.procstart = null
 	if(!can_enter_vent(ventcrawl_target))
 		return
 
@@ -107,6 +115,8 @@
 			to_chat(src, span_warning("This ventilation duct is not connected to anything!"))
 
 /mob/living/basic/slime/can_enter_vent(obj/machinery/atmospherics/components/ventcrawl_target, provide_feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	if(buckled)
 		if(provide_feedback)
 			to_chat(src, span_warning("You can't vent crawl while feeding!"))
@@ -120,6 +130,8 @@
  * * ventcrawl_target - The vent into which we are moving the mob
  */
 /mob/living/proc/move_into_vent(obj/machinery/atmospherics/components/ventcrawl_target)
+	procstart = null
+	src.procstart = null
 	forceMove(ventcrawl_target)
 	ADD_TRAIT(src, TRAIT_MOVE_VENTCRAWLING, VENTCRAWLING_TRAIT)
 	update_pipe_vision()
@@ -131,6 +143,8 @@
  * We move first and then call update. Dont flip this around
  */
 /mob/living/proc/update_pipe_vision(full_refresh = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!isnull(ai_controller) && isnull(client)) // we don't care about pipe vision if we have an AI controller with no client (typically means we are clientless).
 		return
 

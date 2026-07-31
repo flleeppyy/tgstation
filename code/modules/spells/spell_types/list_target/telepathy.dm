@@ -18,6 +18,8 @@
 	var/bold_telepathy_span = "boldnotice"
 
 /datum/action/cooldown/spell/list_target/telepathy/before_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & SPELL_CANCEL_CAST)
 		return
@@ -35,6 +37,8 @@
 		return . | SPELL_CANCEL_CAST
 
 /datum/action/cooldown/spell/list_target/telepathy/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	log_directed_talk(owner, cast_on, message, LOG_SAY, name)
 

@@ -2,6 +2,8 @@
 /datum/unit_test/slime_mood
 
 /datum/unit_test/slime_mood/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/slime/emoting_slime = allocate(/mob/living/basic/slime)
 
 	for(var/key in GLOB.emote_list)

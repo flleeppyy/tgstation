@@ -1,4 +1,6 @@
 /obj/machinery/netpod/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(!is_operational || occupant)
 		return
 
@@ -10,6 +12,8 @@
 
 
 /obj/machinery/netpod/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["netsuit"] = netsuit
@@ -17,6 +21,8 @@
 
 
 /obj/machinery/netpod/ui_static_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	if(!length(cached_outfits))
@@ -28,6 +34,8 @@
 
 
 /obj/machinery/netpod/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -42,4 +50,6 @@
 
 
 /obj/machinery/netpod/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	return panel_open ? UI_CLOSE : ..()

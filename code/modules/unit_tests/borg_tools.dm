@@ -4,6 +4,8 @@
 	var/turf/targetturf
 
 /datum/unit_test/borg_tools/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/ourborg = EASY_ALLOCATE()
 	ourborg.model.transform_to(/obj/item/robot_model/engineering, TRUE, FALSE)
 	targetturf = locate(ourborg.x + 1, ourborg.y, ourborg.z)
@@ -32,6 +34,8 @@
 	ourborg.deactivate_module(rcd)
 
 /datum/unit_test/borg_tools/Destroy()
+	procstart = null
+	src.procstart = null
 	targetturf.ChangeTurf(oldturftype)
 	return ..()
 

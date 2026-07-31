@@ -8,6 +8,8 @@
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /obj/effect/glowing_rune/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_y = rand(-6, 6)
 	pixel_x = rand(-6, 6)

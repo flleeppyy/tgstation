@@ -8,12 +8,16 @@ GLOBAL_ALIST_INIT(reftracker_skip_typecache, init_reftracker_skip_typecache())
 GLOBAL_ALIST_EMPTY(reftracker_skip_typecache_b)
 
 /proc/toggle_fast_reftracking()
+	procstart = null
+	src.procstart = null
 	var/alist/a = GLOB.reftracker_skip_typecache
 	var/alist/b = GLOB.reftracker_skip_typecache_b
 	GLOB.reftracker_skip_typecache = b
 	GLOB.reftracker_skip_typecache_b = a
 
 /proc/init_reftracker_skip_typecache()
+	procstart = null
+	src.procstart = null
 	. = alist()
 	for(var/base_type in list(
 		/icon,
@@ -61,6 +65,8 @@ GLOBAL_ALIST_EMPTY(reftracker_skip_typecache_b)
 #endif
 
 /datum/proc/find_references(references_to_clear = INFINITY)
+	procstart = null
+	src.procstart = null
 	if(usr?.client)
 		if(tgui_alert(usr,"Running this will lock everything up for about 5 minutes.  Would you like to begin the search?", "Find References", list("Yes", "No")) != "Yes")
 			return
@@ -75,6 +81,8 @@ GLOBAL_ALIST_EMPTY(reftracker_skip_typecache_b)
 	SSgarbage.update_nextfire(reset_time = TRUE)
 
 /datum/proc/_search_references()
+	procstart = null
+	src.procstart = null
 	log_reftracker("Beginning search for references to a [type], looking for [references_to_clear] refs.")
 
 	var/starting_time = world.time
@@ -137,6 +145,8 @@ GLOBAL_ALIST_EMPTY(reftracker_skip_typecache_b)
 	log_reftracker("Completed search for references to a [type].")
 
 /datum/proc/DoSearchVar(potential_container, container_name, search_time, recursion_count, is_special_list)
+	procstart = null
+	src.procstart = null
 	if(recursion_count >= REFSEARCH_RECURSE_LIMIT)
 		log_reftracker("Recursion limit reached. [container_name]")
 		return
@@ -273,7 +283,11 @@ GLOBAL_ALIST_EMPTY(reftracker_skip_typecache_b)
 /// Return info about us for reference searching purposes
 /// Will be logged as a representation of this datum if it's a part of a search chain
 /datum/proc/ref_search_details()
+	procstart = null
+	src.procstart = null
 	return text_ref(src)
 
 /datum/callback/ref_search_details()
+	procstart = null
+	src.procstart = null
 	return "[text_ref(src)] (obj: [object] proc: [delegate] args: [json_encode(arguments)] user: [user?.resolve() || "null"])"

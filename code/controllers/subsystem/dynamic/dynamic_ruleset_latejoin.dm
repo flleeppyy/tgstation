@@ -4,16 +4,22 @@
 	repeatable = TRUE
 
 /datum/dynamic_ruleset/latejoin/set_config_value(nvar, nval)
+	procstart = null
+	src.procstart = null
 	if(nvar == NAMEOF(src, min_antag_cap) || nvar == NAMEOF(src, max_antag_cap))
 		return FALSE
 	return ..()
 
 /datum/dynamic_ruleset/latejoin/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	if(var_name == NAMEOF(src, min_antag_cap) || var_name == NAMEOF(src, max_antag_cap))
 		return FALSE
 	return ..()
 
 /datum/dynamic_ruleset/latejoin/is_valid_candidate(mob/candidate, client/candidate_client)
+	procstart = null
+	src.procstart = null
 	if(isnull(candidate.mind))
 		return FALSE
 	if(candidate.mind.assigned_role.title in get_blacklisted_roles())
@@ -33,6 +39,8 @@
 	)
 
 /datum/dynamic_ruleset/latejoin/traitor/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	candidate.add_antag_datum(/datum/antagonist/traitor)
 
 /datum/dynamic_ruleset/latejoin/changeling
@@ -48,6 +56,8 @@
 	)
 
 /datum/dynamic_ruleset/latejoin/changeling/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	candidate.add_antag_datum(/datum/antagonist/changeling)
 
 /datum/dynamic_ruleset/latejoin/revolution
@@ -64,6 +74,8 @@
 	var/heads_necessary = 3
 
 /datum/dynamic_ruleset/latejoin/revolution/can_be_selected()
+	procstart = null
+	src.procstart = null
 	if(GLOB.revolution_handler)
 		return FALSE
 	var/head_check = 0
@@ -73,16 +85,22 @@
 	return head_check >= heads_necessary
 
 /datum/dynamic_ruleset/latejoin/revolution/get_always_blacklisted_roles()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/job/job as anything in SSjob.all_occupations)
 		if(job.job_flags & JOB_HEAD_OF_STAFF)
 			. |= job.title
 
 /datum/dynamic_ruleset/latejoin/revolution/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	LAZYADD(candidate.special_roles, "Dormant Head Revolutionary")
 	addtimer(CALLBACK(src, PROC_REF(reveal_head), candidate), 1 MINUTES, TIMER_DELETE_ME)
 
 /datum/dynamic_ruleset/latejoin/revolution/proc/reveal_head(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(candidate.special_roles, "Dormant Head Revolutionary")
 
 	var/head_check = 0

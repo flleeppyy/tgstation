@@ -17,11 +17,15 @@
 	var/obj/item/disk/computer/disk_host
 
 /datum/computer_file/New()
+	procstart = null
+	src.procstart = null
 	..()
 	uid = file_uid++
 	RegisterSignal(src, COMSIG_COMPUTER_FILE_STORE, PROC_REF(on_install))
 
 /datum/computer_file/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(computer)
 		computer = null
 	if(disk_host)
@@ -35,10 +39,14 @@
  * * potential_host - the ModPC that is attempting to store this file.
  */
 /datum/computer_file/proc/can_store_file(obj/item/modular_computer/potential_host)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 // Returns independent copy of this file.
 /datum/computer_file/proc/clone(rename = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/temp = new type
 	temp.undeletable = undeletable
 	temp.size = size
@@ -51,6 +59,8 @@
 
 ///Called post-installation of an application in a computer, after 'computer' var is set. Remember, the user is optional
 /datum/computer_file/proc/on_install(datum/computer_file/source, obj/item/modular_computer/computer_installing, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SHOULD_CALL_PARENT(TRUE)
 	computer_installing.stored_files.Add(src)
@@ -64,10 +74,14 @@
  * note: please replace this with signals when hdd's are removed and program's New() already has the tablet set.
  */
 /datum/computer_file/proc/on_examine(obj/item/modular_computer/source, mob/user)
+	procstart = null
+	src.procstart = null
 	return null
 
 /// Called on modular computer item_interaction, checking if any application uses the given item. Uses the item interaction chain flags.
 /datum/computer_file/proc/application_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return NONE
 
 /**
@@ -79,6 +93,8 @@
  * * forced - Whether we are forced to eject everything (usually by the app being deleted)
  */
 /datum/computer_file/proc/try_eject(mob/living/user, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /**
@@ -87,6 +103,8 @@
  * * background - Whether the app is running in the background.
  */
 /datum/computer_file/program/proc/event_powerfailure()
+	procstart = null
+	src.procstart = null
 	kill_program()
 
 /**
@@ -95,6 +113,8 @@
  * * background - Whether the app is running in the background.
  */
 /datum/computer_file/program/proc/event_networkfailure(background)
+	procstart = null
+	src.procstart = null
 	kill_program()
 	if(background)
 		computer.visible_message(span_danger("\The [computer]'s screen displays a \"Process [filename].[filetype] (PID [rand(100,999)]) terminated - Network Error\" error"))

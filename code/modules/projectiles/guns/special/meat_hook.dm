@@ -21,9 +21,13 @@
 	can_muzzle_flash = FALSE
 
 /obj/item/gun/magic/hook/shoot_with_empty_chamber(mob/living/user)
+	procstart = null
+	src.procstart = null
 	balloon_alert(user, "not ready yet!")
 
 /obj/item/gun/magic/hook/can_trigger_gun(mob/living/user, akimbo_usage) // This isn't really a gun, so it shouldn't be checking for TRAIT_NOGUNS, a firing pin (pinless), or a trigger guard (guardless)
+	procstart = null
+	src.procstart = null
 	if(akimbo_usage)
 		return FALSE //this would be kinda weird while shooting someone down.
 	if(HAS_TRAIT(user, TRAIT_IMMOBILIZED))
@@ -31,6 +35,8 @@
 	return TRUE
 
 /obj/item/gun/magic/hook/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/head/removable = user.get_bodypart(BODY_ZONE_HEAD)
 	if(isnull(removable))
 		user.visible_message(span_suicide("[user] stuffs the chain of the [src] down the hole where their head should be! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -43,6 +49,8 @@
 	return BRUTELOSS
 
 /obj/item/gun/magic/hook/on_mail_unwrap(mob/user, obj/item/mail/traitor/letter)
+	procstart = null
+	src.procstart = null
 	return NONE
 
 /obj/item/ammo_casing/magic/hook
@@ -66,6 +74,8 @@
 	var/datum/beam/initial_chain
 
 /obj/projectile/hook/fire(setAngle)
+	procstart = null
+	src.procstart = null
 	if(firer)
 		initial_chain = firer.Beam(src, icon_state = "chain", emissive = FALSE)
 		ADD_TRAIT(firer, TRAIT_IMMOBILIZED, REF(src))
@@ -73,6 +83,8 @@
 	return ..()
 
 /obj/projectile/hook/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(target))
 		return
@@ -88,6 +100,8 @@
 	REMOVE_TRAIT(firer, TRAIT_IMMOBILIZED, REF(src))
 
 /obj/projectile/hook/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(initial_chain)
 	return ..()
 
@@ -120,12 +134,16 @@
 	)
 
 /datum/hook_and_move/Destroy(force)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	QDEL_NULL(return_chain)
 	return ..()
 
 /// Uses fastprocessing to move our victim to the destination at a rather fast speed.
 /datum/hook_and_move/proc/begin_pulling(atom/movable/firer, atom/movable/victim, atom/destination)
+	procstart = null
+	src.procstart = null
 	return_chain = firer.Beam(victim, icon_state = "chain", emissive = FALSE)
 
 	firer_ref_string = REF(firer)
@@ -143,6 +161,8 @@
 
 /// Cancels processing and removes the trait from the victim.
 /datum/hook_and_move/proc/end_movement()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/firer = firer_ref?.resolve()
 	if(!QDELETED(firer))
 		firer.remove_traits(prevent_movement_traits, REF(src))
@@ -154,6 +174,8 @@
 	qdel(src)
 
 /datum/hook_and_move/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/victim = victim_ref?.resolve()
 	var/atom/destination = destination_ref?.resolve()
 	if(QDELETED(victim) || QDELETED(destination))
@@ -172,6 +194,8 @@
 /// second_attempt is a boolean to prevent infinite recursion.
 /// If this whole series of events wasn't reliant on SSfastprocess firing as fast as it does, it would have been more useful to make this a move loop datum. But, we need the speed.
 /datum/hook_and_move/proc/attempt_movement(atom/movable/subject, atom/target, second_attempt = FALSE)
+	procstart = null
+	src.procstart = null
 	var/actually_moved = FALSE
 	if(!second_attempt)
 		actually_moved = step_towards(subject, target)

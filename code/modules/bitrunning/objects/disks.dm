@@ -14,6 +14,8 @@
 	var/choice_made
 
 /obj/item/disk/bitrunning/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	icon_state = "[base_icon_state][rand(0, 7)]"
@@ -24,9 +26,13 @@
 	)
 
 /obj/item/disk/bitrunning/setup_reskins()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/disk/bitrunning/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_infoplain("This disk must be carried on your person into a netpod to be used.")
 
@@ -39,6 +45,8 @@
 
 /// Handles loading our stuff onto avatars
 /obj/item/disk/bitrunning/proc/load_onto_avatar(mob/living/carbon/human/neo, mob/living/carbon/human/avatar, domain_flags)
+	procstart = null
+	src.procstart = null
 	return NONE
 
 /obj/item/disk/bitrunning/ability
@@ -49,6 +57,8 @@
 	var/list/datum/action/selectable_actions = list()
 
 /obj/item/disk/bitrunning/ability/load_onto_avatar(mob/living/carbon/human/neo, mob/living/carbon/human/avatar, domain_flags)
+	procstart = null
+	src.procstart = null
 	if(domain_flags & DOMAIN_FORBIDS_ABILITIES)
 		return BITRUNNER_GEAR_LOAD_BLOCKED
 
@@ -63,6 +73,8 @@
 	return NONE
 
 /obj/item/disk/bitrunning/ability/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	// Not calling parent to not flip the protection tab
 
 	if(choice_made)
@@ -121,6 +133,8 @@
 	var/list/obj/selectable_items = list()
 
 /obj/item/disk/bitrunning/item/load_onto_avatar(mob/living/carbon/human/neo, mob/living/carbon/human/avatar, domain_flags)
+	procstart = null
+	src.procstart = null
 	if(domain_flags & DOMAIN_FORBIDS_ITEMS)
 		return BITRUNNER_GEAR_LOAD_BLOCKED
 
@@ -131,6 +145,8 @@
 	return NONE
 
 /obj/item/disk/bitrunning/item/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(choice_made)

@@ -10,11 +10,15 @@
 	var/initial_duration = 30 SECONDS
 
 /obj/effect/forcefield/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(initial_duration > 0 SECONDS)
 		QDEL_IN(src, initial_duration)
 
 /obj/effect/forcefield/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /// The wizard's forcefield, summoned by forcewall
@@ -25,12 +29,16 @@
 	var/datum/weakref/caster_weakref
 
 /obj/effect/forcefield/wizard/Initialize(mapload, mob/caster, flags = MAGIC_RESISTANCE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(caster)
 		caster_weakref = WEAKREF(caster)
 	antimagic_flags = flags
 
 /obj/effect/forcefield/wizard/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	if(IS_WEAKREF_OF(mover, caster_weakref))
 		return TRUE
 	if(isliving(mover))
@@ -63,6 +71,8 @@
 	alpha = 0
 
 /obj/effect/forcefield/mime/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/loc_connections = list(
 		COMSIG_MOUSEDROPPED_ONTO = PROC_REF(mousedrop_receive),
@@ -70,6 +80,8 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/effect/forcefield/mime/proc/mousedrop_receive(atom/source, atom/movable/dropped, mob/user, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Reroute the call to ourselves so leanable component can trigger
 	if (dropped == user)
@@ -77,6 +89,8 @@
 		return COMPONENT_CANCEL_MOUSEDROPPED_ONTO
 
 /obj/effect/forcefield/mime/mouse_drop_receive(mob/living/dropping, mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	LoadComponent(/datum/component/leanable, dropping)
 
@@ -115,6 +129,8 @@ GLOBAL_LIST_EMPTY_TYPED(active_cosmic_fields, /obj/effect/forcefield/cosmic_fiel
 	var/slows_projectiles = FALSE
 
 /obj/effect/forcefield/cosmic_field/Initialize(mapload, flags = MAGIC_RESISTANCE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	antimagic_flags = flags
 	var/static/list/loc_connections = list(
@@ -127,6 +143,8 @@ GLOBAL_LIST_EMPTY_TYPED(active_cosmic_fields, /obj/effect/forcefield/cosmic_fiel
 		on_entered(src, thing)
 
 /obj/effect/forcefield/cosmic_field/Destroy(force)
+	procstart = null
+	src.procstart = null
 	// Make sure when the field goes away that the effects don't persist
 	for(var/atom/movable/thing in get_turf(src))
 		on_loc_exited(src, thing)
@@ -134,6 +152,8 @@ GLOBAL_LIST_EMPTY_TYPED(active_cosmic_fields, /obj/effect/forcefield/cosmic_fiel
 	return ..()
 
 /obj/effect/forcefield/cosmic_field/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	if(!isliving(mover))
 		return ..()
 	var/mob/living/living_mover = mover
@@ -151,6 +171,8 @@ GLOBAL_LIST_EMPTY_TYPED(active_cosmic_fields, /obj/effect/forcefield/cosmic_fiel
 	return ..()
 
 /obj/effect/forcefield/cosmic_field/proc/on_entered(datum/source, atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isprojectile(thing) && slows_projectiles)
 		var/obj/projectile/bullet = thing
@@ -168,6 +190,8 @@ GLOBAL_LIST_EMPTY_TYPED(active_cosmic_fields, /obj/effect/forcefield/cosmic_fiel
 	living_mover.add_movespeed_modifier(/datum/movespeed_modifier/cosmic_field)
 
 /obj/effect/forcefield/cosmic_field/proc/on_loc_exited(datum/source, atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isprojectile(thing) && slows_projectiles)
 		var/obj/projectile/bullet = thing
@@ -186,10 +210,14 @@ GLOBAL_LIST_EMPTY_TYPED(active_cosmic_fields, /obj/effect/forcefield/cosmic_fiel
 
 /// Adds the ability to slow down any projectiles that enters any turf we occupy
 /obj/effect/forcefield/cosmic_field/proc/slows_projectiles()
+	procstart = null
+	src.procstart = null
 	slows_projectiles = TRUE
 
 /// Adds our cosmic field to the global list which bombs check to see if they have to stop exploding
 /obj/effect/forcefield/cosmic_field/proc/prevents_explosions()
+	procstart = null
+	src.procstart = null
 	GLOB.active_cosmic_fields += src
 
 /datum/movespeed_modifier/cosmic_field

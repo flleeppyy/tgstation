@@ -20,6 +20,8 @@
 	graft_gene = /datum/plant_gene/trait/plant_type/weed_hardy
 
 /obj/item/seeds/starthistle/harvest(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/hydroponics/parent = loc
 	var/seed_count = yield
 	if(prob(getYield() * 20))

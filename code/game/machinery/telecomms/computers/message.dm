@@ -32,10 +32,14 @@
 	var/password = ""
 
 /obj/machinery/computer/message_monitor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/computer/message_monitor/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//Is the server isn't linked to a server, and there's a server available, default it to the first one in the list.
 	if(!linked_server)
@@ -44,10 +48,14 @@
 			break
 
 /obj/machinery/computer/message_monitor/Destroy()
+	procstart = null
+	src.procstart = null
 	set_linked_server(null)
 	return ..()
 
 /obj/machinery/computer/message_monitor/proc/set_linked_server(obj/machinery/telecomms/message_server/new_server)
+	procstart = null
+	src.procstart = null
 	if(linked_server)
 		linked_server.listening_computers -= src
 	linked_server = new_server
@@ -55,9 +63,13 @@
 		linked_server.listening_computers += src
 
 /obj/machinery/computer/message_monitor/proc/is_server_responsive()
+	procstart = null
+	src.procstart = null
 	return !!(linked_server && !(linked_server.machine_stat & (NOPOWER|BROKEN)))
 
 /obj/machinery/computer/message_monitor/screwdriver_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		//Stops people from just unscrewing the monitor and putting it back to get the console working again.
 		to_chat(user, span_warning("It is too hot to mess with!"))
@@ -65,6 +77,8 @@
 	return ..()
 
 /obj/machinery/computer/message_monitor/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	if(isnull(linked_server))
@@ -85,12 +99,16 @@
 
 /// Remove the emag effect from the console
 /obj/machinery/computer/message_monitor/proc/unemag_console()
+	procstart = null
+	src.procstart = null
 	screen = MSG_MON_SCREEN_MAIN
 	linked_server.toggled = TRUE
 	error_message = ""
 	obj_flags &= ~EMAGGED
 
 /obj/machinery/computer/message_monitor/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list(
 		"screen" = screen,
 		"error_message" = error_message,
@@ -121,12 +139,16 @@
 	return data
 
 /obj/machinery/computer/message_monitor/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["is_on_station"] = is_on_station()
 	return data
 
 /// Check if this console is on the station and in a valid area
 /obj/machinery/computer/message_monitor/proc/is_on_station()
+	procstart = null
+	src.procstart = null
 	if(!is_station_level(z))
 		return FALSE
 	var/area/station/area = get_area(src)
@@ -135,6 +157,8 @@
 	return TRUE
 
 /obj/machinery/computer/message_monitor/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -293,6 +317,8 @@
 	return TRUE
 
 /obj/machinery/computer/message_monitor/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
@@ -300,6 +326,8 @@
 		ui.open()
 
 /obj/machinery/computer/message_monitor/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += get_asset_datum(/datum/asset/spritesheet_batched/chat)
 
@@ -314,6 +342,8 @@
 	name = "monitor decryption key"
 
 /obj/item/paper/monitorkey/Initialize(mapload, obj/machinery/telecomms/message_server/server)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (server)
 		print(server)
@@ -324,11 +354,15 @@
  * Handles printing the monitor key for a given server onto this piece of paper.
  */
 /obj/item/paper/monitorkey/proc/print(obj/machinery/telecomms/message_server/server)
+	procstart = null
+	src.procstart = null
 	add_raw_text("<center><h2>Daily Key Reset</h2></center><br>The new message monitor key is <b>[server.decryptkey]</b>.<br>Please keep this a secret and away from the clown.<br>If necessary, change the password to a more secure one.")
 	add_overlay("paper_words")
 	update_appearance()
 
 /obj/item/paper/monitorkey/LateInitialize()
+	procstart = null
+	src.procstart = null
 	for (var/obj/machinery/telecomms/message_server/preset/server in GLOB.telecomm_machines)
 		if (server.decryptkey)
 			print(server)

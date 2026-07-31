@@ -1,7 +1,9 @@
 // Blob Overmind Controls
 
 
-/mob/eye/blob/ClickOn(atom/clicked_on, params) //Expand blob
+/mob/eye/blob/ClickOn(atom/clicked_on, params)
+	procstart = null
+	src.procstart = null //Expand blob
 	var/list/modifiers = params2list(params)
 	if(LAZYACCESS(modifiers, MIDDLE_CLICK))
 		MiddleClickOn(clicked_on, params)
@@ -19,18 +21,24 @@
 	if(target_turf)
 		expand_blob(target_turf)
 
-/mob/eye/blob/MiddleClickOn(atom/clicked_on) //Rally spores
+/mob/eye/blob/MiddleClickOn(atom/clicked_on)
+	procstart = null
+	src.procstart = null //Rally spores
 	. = ..()
 	var/turf/target_turf = get_turf(clicked_on)
 	if(target_turf)
 		rally_spores(target_turf)
 
-/mob/eye/blob/CtrlClickOn(atom/clicked_on) //Create a shield
+/mob/eye/blob/CtrlClickOn(atom/clicked_on)
+	procstart = null
+	src.procstart = null //Create a shield
 	var/turf/target_turf = get_turf(clicked_on)
 	if(target_turf)
 		create_shield(target_turf)
 
-/mob/eye/blob/proc/blob_click_alt(atom/clicked_on) //Remove a blob
+/mob/eye/blob/proc/blob_click_alt(atom/clicked_on)
+	procstart = null
+	src.procstart = null //Remove a blob
 	var/turf/target_turf = get_turf(clicked_on)
 	if(target_turf)
 		remove_blob(target_turf)

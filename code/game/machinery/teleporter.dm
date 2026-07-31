@@ -14,16 +14,22 @@
 	var/calibrated = FALSE//Calibration prevents mutation
 
 /obj/machinery/teleport/hub/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	link_power_station()
 
 /obj/machinery/teleport/hub/Destroy()
+	procstart = null
+	src.procstart = null
 	if (power_station)
 		power_station.teleporter_hub = null
 		power_station = null
 	return ..()
 
 /obj/machinery/teleport/hub/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/A = 0
 	for(var/datum/stock_part/matter_bin/matter_bin in component_parts)
@@ -31,11 +37,15 @@
 	accuracy = A
 
 /obj/machinery/teleport/hub/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
 		. += span_notice("The status display reads: Success chance is <b>[70 + (accuracy * 10)]%</b>.")
 
 /obj/machinery/teleport/hub/proc/link_power_station()
+	procstart = null
+	src.procstart = null
 	if(power_station)
 		return
 	for(var/direction in GLOB.cardinals)
@@ -46,6 +56,8 @@
 	return power_station
 
 /obj/machinery/teleport/hub/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(is_centcom_level(z))
 		to_chat(AM, span_warning("You can't use this here!"))
 		return
@@ -53,17 +65,25 @@
 		teleport(AM)
 
 /obj/machinery/teleport/hub/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/teleport/hub/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/teleport/hub/on_set_panel_open(old_value)
+	procstart = null
+	src.procstart = null
 	if(panel_open && power_station?.engaged)
 		power_station.engaged = FALSE
 		update_appearance()
 
 /obj/machinery/teleport/hub/proc/teleport(atom/movable/M as mob|obj, turf/T)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/computer/teleporter/com = power_station.teleporter_console
 	if (QDELETED(com))
 		return
@@ -95,13 +115,19 @@
 	calibrated = FALSE
 
 /obj/machinery/teleport/hub/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][panel_open ? "-o" : (is_ready() ? 1 : 0)]"
 	return ..()
 
 /obj/machinery/teleport/hub/proc/is_ready()
+	procstart = null
+	src.procstart = null
 	. = !panel_open && !(machine_stat & (BROKEN|NOPOWER)) && power_station && power_station.engaged && !(power_station.machine_stat & (BROKEN|NOPOWER))
 
 /obj/machinery/teleport/hub/syndicate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	LAZYADD(component_parts, GLOB.stock_part_datums[/datum/stock_part/matter_bin/tier3])
 	RefreshParts()
@@ -119,10 +145,14 @@
 	var/efficiency = 0
 
 /obj/machinery/teleport/station/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	link_console_and_hub()
 
 /obj/machinery/teleport/station/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/E
 	for(var/datum/stock_part/capacitor/C in component_parts)
@@ -130,6 +160,8 @@
 	efficiency = E - 1
 
 /obj/machinery/teleport/station/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!panel_open)
 		. += span_notice("The panel is <i>screwed</i> in, obstructing the linking device and wiring panel.")
@@ -139,6 +171,8 @@
 		. += span_notice("The status display reads: This station can be linked to <b>[efficiency]</b> other station(s).")
 
 /obj/machinery/teleport/station/proc/link_console_and_hub()
+	procstart = null
+	src.procstart = null
 	for(var/direction in GLOB.cardinals)
 		teleporter_hub = locate(/obj/machinery/teleport/hub, get_step(src, direction))
 		if(teleporter_hub)
@@ -153,6 +187,8 @@
 
 
 /obj/machinery/teleport/station/Destroy()
+	procstart = null
+	src.procstart = null
 	if(teleporter_hub)
 		teleporter_hub.power_station = null
 		teleporter_hub.update_appearance()
@@ -163,6 +199,8 @@
 	return ..()
 
 /obj/machinery/teleport/station/multitool_act(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	. = NONE
 
 	if(panel_open)
@@ -180,15 +218,23 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/teleport/station/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/teleport/station/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/teleport/station/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	toggle(user)
 
 /obj/machinery/teleport/station/proc/toggle(mob/user)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (BROKEN|NOPOWER) || !teleporter_hub || !teleporter_console )
 		return
 	if (teleporter_console.target_ref?.resolve())
@@ -206,11 +252,15 @@
 	add_fingerprint(user)
 
 /obj/machinery/teleport/station/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(teleporter_hub)
 		teleporter_hub.update_appearance()
 
 /obj/machinery/teleport/station/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		icon_state = "[base_icon_state]-o"
 		return ..()

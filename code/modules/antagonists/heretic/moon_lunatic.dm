@@ -20,6 +20,8 @@
 	var/datum/action/cooldown/spell/touch/mansus_grasp/mad_touch
 
 /datum/antagonist/lunatic/on_gain()
+	procstart = null
+	src.procstart = null
 	owner.current.log_message("has become a Lunatic!", LOG_ATTACK, color="red")
 	// Masters gain an objective before so we dont want duplicates
 	. = ..()
@@ -36,16 +38,22 @@
 	moon_track.Grant(owner.current)
 
 /datum/antagonist/lunatic/on_removal()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(moon_track)
 	QDEL_NULL(mad_touch)
 	return ..()
 
 /datum/antagonist/lunatic/on_removal()
+	procstart = null
+	src.procstart = null
 	owner?.current?.log_message("lost their Lunatic status!", LOG_ATTACK, color="red")
 	return ..()
 
 /// Runs when the moon heretic creates us, used to give the lunatic a master
 /datum/antagonist/lunatic/proc/set_master(datum/mind/heretic_master, mob/living/carbon/human/heretic_body)
+	procstart = null
+	src.procstart = null
 	src.ascended_heretic = heretic_master
 	src.ascended_body = heretic_body
 
@@ -55,6 +63,8 @@
 	to_chat(owner, span_boldnotice("Ruin the lie, save the truth through obeying [heretic_master] the ringleader!"))
 
 /datum/antagonist/lunatic/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/our_mob = mob_override || owner.current
 	handle_clown_mutation(our_mob, "Ancient knowledge from the moon has allowed you to overcome your clownish nature, allowing you to wield weapons without harming yourself.")
 	our_mob.add_faction(FACTION_HERETIC)
@@ -62,6 +72,8 @@
 	ADD_TRAIT(our_mob, TRAIT_MADNESS_IMMUNE, REF(src))
 
 /datum/antagonist/lunatic/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/our_mob = mob_override || owner.current
 	handle_clown_mutation(our_mob, removing = FALSE)
 	our_mob.remove_faction(FACTION_HERETIC)
@@ -79,6 +91,8 @@
 	var/is_master = FALSE
 
 /datum/objective/lunatic/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_master)
 		explanation_text = "Lead your lunatics to further your own goals!"
@@ -91,6 +105,8 @@
 	antag_hud_name = "lunatic_master"
 
 /datum/antagonist/lunatic/master/on_gain()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/lunatic/loony = new()
 	objectives += loony
 	loony.is_master = TRUE
@@ -98,8 +114,12 @@
 	return ..()
 
 /datum/antagonist/lunatic/master/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/our_mob = mob_override || owner.current
 	add_team_hud(our_mob, /datum/antagonist/lunatic)
 
 /datum/antagonist/lunatic/master/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	return

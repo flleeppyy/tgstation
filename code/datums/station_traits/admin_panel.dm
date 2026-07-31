@@ -6,6 +6,8 @@ ADMIN_VERB(station_traits_panel, R_FUN, "Modify Station Traits", "Modify the sta
 	var/static/list/future_traits
 
 /datum/station_traits_panel/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["too_late_to_revert"] = too_late_to_revert()
@@ -24,6 +26,8 @@ ADMIN_VERB(station_traits_panel, R_FUN, "Modify Station Traits", "Modify the sta
 	return data
 
 /datum/station_traits_panel/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/list/valid_station_traits = list()
@@ -39,6 +43,8 @@ ADMIN_VERB(station_traits_panel, R_FUN, "Modify Station Traits", "Modify the sta
 	return data
 
 /datum/station_traits_panel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -114,15 +120,23 @@ ADMIN_VERB(station_traits_panel, R_FUN, "Modify Station Traits", "Modify the sta
 			return TRUE
 
 /datum/station_traits_panel/proc/too_late_for_future_traits()
+	procstart = null
+	src.procstart = null
 	return SSticker.current_state >= GAME_STATE_FINISHED
 
 /datum/station_traits_panel/proc/too_late_to_revert()
+	procstart = null
+	src.procstart = null
 	return SSticker.current_state >= GAME_STATE_PLAYING
 
 /datum/station_traits_panel/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	return check_rights_for(user.client, R_FUN) ? UI_INTERACTIVE : UI_CLOSE
 
 /datum/station_traits_panel/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "StationTraitsPanel")

@@ -1,4 +1,6 @@
 /mob/living/silicon/ai/Login()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !client)
 		return FALSE

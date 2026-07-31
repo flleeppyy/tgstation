@@ -18,11 +18,15 @@
 	var/spawn_decoys = TRUE
 
 /obj/effect/anomaly/hallucination/Initialize(mapload, new_lifespan)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	apply_wibbly_filters(src)
 	generate_decoys()
 
 /obj/effect/anomaly/hallucination/anomalyEffect(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ticks += seconds_per_tick
 	if(ticks < release_delay)
@@ -40,6 +44,8 @@
 	)
 
 /obj/effect/anomaly/hallucination/detonate()
+	procstart = null
+	src.procstart = null
 	if(!isturf(loc))
 		return
 
@@ -52,6 +58,8 @@
 	)
 
 /obj/effect/anomaly/hallucination/proc/generate_decoys()
+	procstart = null
+	src.procstart = null
 	if(!spawn_decoys)
 		return
 
@@ -65,6 +73,8 @@
 	var/report_text
 
 /obj/effect/anomaly/hallucination/decoy/Initialize(mapload, new_lifespan)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_ILLUSORY_EFFECT, INNATE_TRAIT)
 	report_text = pick(
@@ -90,20 +100,28 @@
 	)
 
 /obj/effect/anomaly/hallucination/decoy/anomalyEffect(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 #ifndef UNIT_TESTS // These might move away during a CI run and cause a flaky mapping nearstation errors
 	if(SPT_PROB(move_chance, seconds_per_tick))
 		move_anomaly()
 #endif
 
 /obj/effect/anomaly/hallucination/decoy/analyzer_act(mob/living/user, obj/item/analyzer/tool)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You activate [tool]. [replacetext(report_text, "%TOOL%", "[tool]")]"))
 	return ITEM_INTERACT_BLOCKING
 
 /obj/effect/anomaly/hallucination/decoy/detonate()
+	procstart = null
+	src.procstart = null
 	do_sparks(3, source = src)
 	return
 
 /obj/effect/anomaly/hallucination/decoy/generate_decoys()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Subtype for the SM that doesn't spawn decoys, because otherwise the whole area gets flooded with dummies.

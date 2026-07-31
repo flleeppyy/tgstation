@@ -53,14 +53,20 @@
 	messenger = /obj/item/storage/backpack/messenger/science
 
 /datum/outfit/job/scientist/pre_equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	..()
 	try_giving_horrible_tie()
 
 /datum/outfit/job/scientist/proc/try_giving_horrible_tie()
+	procstart = null
+	src.procstart = null
 	if (prob(0.4))
 		neck = /obj/item/clothing/neck/tie/horrible
 
 /datum/outfit/job/scientist/get_types_to_preload()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += /obj/item/clothing/neck/tie/horrible
 
@@ -69,4 +75,6 @@
 	name = "Scientist - Consistent"
 
 /datum/outfit/job/scientist/consistent/try_giving_horrible_tie()
+	procstart = null
+	src.procstart = null
 	return

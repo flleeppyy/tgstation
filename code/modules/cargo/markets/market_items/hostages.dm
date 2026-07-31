@@ -10,6 +10,8 @@
 	var/obj/item/assembly/signaler/signaler
 
 /datum/market_item/hostage/New(mob/living/mob, new_price)
+	procstart = null
+	src.procstart = null
 	..()
 	set_item(mob)
 	name = "[mob.real_name]"
@@ -31,14 +33,20 @@
 	RegisterSignal(mob, COMSIG_LIVING_RETURN_FROM_CAPTURE, PROC_REF(on_return_from_capture))
 
 /datum/market_item/hostage/proc/on_return_from_capture(mob/living/source, turf/destination)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src) //as if we never existed, our mentions we'll be removed from the market.
 
 /datum/market_item/hostage/Destroy()
+	procstart = null
+	src.procstart = null
 	signaler = null
 	return ..()
 
 /datum/market_item/hostage/buy(obj/item/market_uplink/uplink, mob/buyer, shipping_method)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/humie = item
 	if(!. || !istype(humie) || !prob(57)) // 3 in 7 chance of the electropack set not spawning...
@@ -51,10 +59,14 @@
 	to_chat(buyer, span_notice("A [signaler] appears [buyer.is_holding(signaler) ? "in your hands" : "at your feet"]!"))
 
 /datum/market_item/hostage/proc/clear_signaler_ref(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	signaler = null
 
 /datum/market_item/hostage/spawn_item(loc, datum/market_purchase/purchase)
+	procstart = null
+	src.procstart = null
 	var/mob/living/mob = item
 	UnregisterSignal(mob, COMSIG_LIVING_RETURN_FROM_CAPTURE)
 	if(!IS_UNCONSCIOUS(mob))

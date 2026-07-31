@@ -46,6 +46,8 @@ GLOBAL_VAR(department_cd_override)
 
 /// Sets the passed department type as the active department for this computer file.
 /datum/computer_file/program/department_order/proc/set_linked_department(datum/job_department/department)
+	procstart = null
+	src.procstart = null
 	linked_department = department
 	var/datum/job_department/linked_department_real = SSjob.get_department_type(linked_department)
 	if (isnull(linked_department_real))
@@ -61,9 +63,13 @@ GLOBAL_VAR(department_cd_override)
 	computer.update_static_data_for_all_viewers()
 
 /datum/computer_file/program/department_order/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	check_cooldown()
 
 /datum/computer_file/program/department_order/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["no_link"] = !linked_department
 	data["id_inside"] = !!computer.stored_id
@@ -72,6 +78,8 @@ GLOBAL_VAR(department_cd_override)
 	return data
 
 /datum/computer_file/program/department_order/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/job_department/linked_department_real = SSjob.get_department_type(linked_department)
 	if(isnull(linked_department_real))
 		return list("supplies" = list())
@@ -106,6 +114,8 @@ GLOBAL_VAR(department_cd_override)
 
 /// Checks if we can "see" the passed supply pack
 /datum/computer_file/program/department_order/proc/can_see_pack(datum/supply_pack/to_check)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	if((to_check.order_flags & ORDER_EMAG_ONLY) && !(computer.obj_flags & EMAGGED))
 		return FALSE
@@ -117,6 +127,8 @@ GLOBAL_VAR(department_cd_override)
 
 /// Looks through all possible departments and finds one this ID card "corresponds" to.
 /datum/computer_file/program/department_order/proc/find_department_to_link(obj/item/card/id/id_card)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	if(id_card.type != /obj/item/card/id/advanced/silver)
 		// I don't want to introduce weird "access order" behavior with Captain's ID / Chameleon ids / etc, so only silver IDs work
@@ -130,6 +142,8 @@ GLOBAL_VAR(department_cd_override)
 	return null
 
 /datum/computer_file/program/department_order/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -185,6 +199,8 @@ GLOBAL_VAR(department_cd_override)
 
 /// Submits the order with the specified supply pack id as the specified orderer
 /datum/computer_file/program/department_order/proc/submit_order(mob/living/orderer, id)
+	procstart = null
+	src.procstart = null
 	id = text2path(id) || id
 
 	var/datum/job_department/linked_department_real = SSjob.get_department_type(linked_department)
@@ -238,6 +254,8 @@ GLOBAL_VAR(department_cd_override)
 
 /// Signal when the supply shuttle begins to spawn orders. We forget the current order preventing it from being overridden (since it's already past the point of no return on undoing the order)
 /datum/computer_file/program/department_order/proc/finalize_department_order(datum/subsystem)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isnull(department_order) && (department_order in SSshuttle.shopping_list))
 		department_order = null
@@ -245,6 +263,8 @@ GLOBAL_VAR(department_cd_override)
 
 /// Calculates the cooldown it will take for this department's free order, based on its credit cost
 /datum/computer_file/program/department_order/proc/calculate_cooldown(credits)
+	procstart = null
+	src.procstart = null
 	if(isnull(GLOB.department_cd_override))
 		var/time_y = DEPARTMENTAL_ORDER_COOLDOWN_COEFFICIENT * (log(10, credits) ** DEPARTMENTAL_ORDER_COOLDOWN_EXPONENT) * (1 SECONDS)
 		department_cooldowns[linked_department] = world.time + time_y
@@ -253,6 +273,8 @@ GLOBAL_VAR(department_cd_override)
 		department_cooldowns[linked_department] = world.time + time_y
 
 /datum/computer_file/program/department_order/process_tick(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!check_cooldown() || alert_silenced || !alert_able)
 		return
 	aas_config_announce(/datum/aas_config_entry/department_orders, list(), computer.physical, list(radio_channel), "Cooldown Reset")
@@ -260,6 +282,8 @@ GLOBAL_VAR(department_cd_override)
 
 /// Checks if the cooldown is up and resets it if so.
 /datum/computer_file/program/department_order/proc/check_cooldown()
+	procstart = null
+	src.procstart = null
 	if(department_cooldowns[linked_department] > 0 && department_cooldowns[linked_department] <= world.time)
 		department_cooldowns[linked_department] = 0
 		return TRUE

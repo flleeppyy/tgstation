@@ -33,13 +33,19 @@
 	var/shapechange_type = /datum/status_effect/shapechange_mob/from_spell
 
 /datum/action/cooldown/spell/shapeshift/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	unshift_owner()
 	return ..()
 
 /datum/action/cooldown/spell/shapeshift/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return isliving(cast_on)
 
 /datum/action/cooldown/spell/shapeshift/before_cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & SPELL_CANCEL_CAST)
 		return
@@ -87,6 +93,8 @@
 		return . | SPELL_CANCEL_CAST
 
 /datum/action/cooldown/spell/shapeshift/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cast_on.buckled?.unbuckle_mob(cast_on, force = TRUE)
 
@@ -115,6 +123,8 @@
 /// and enters a state in which they are no longer a ventcrawler,
 /// they are brutally ejected from the vents. In the form of gibs.
 /datum/action/cooldown/spell/shapeshift/proc/eject_from_vents(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/atmospherics/pipe_you_die_in = cast_on.loc
 	var/datum/pipeline/our_pipeline
 	var/pipenets = pipe_you_die_in.return_pipenets()
@@ -139,6 +149,8 @@
 
 /// Callback for the radial that allows the user to choose their species.
 /datum/action/cooldown/spell/shapeshift/proc/check_menu(mob/living/caster)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return FALSE
 	if(QDELETED(caster))
@@ -148,6 +160,8 @@
 
 /// Actually does the shapeshift, for the caster.
 /datum/action/cooldown/spell/shapeshift/proc/do_shapeshift(mob/living/caster)
+	procstart = null
+	src.procstart = null
 	var/mob/living/new_shape = create_shapeshift_mob(caster.loc)
 	var/datum/status_effect/shapechange_mob/shapechange = new_shape.apply_status_effect(shapechange_type, caster, src)
 	if(!shapechange)
@@ -174,6 +188,8 @@
 
 /// Actually does the un-shapeshift, from the caster. (Caster is a shapeshifted mob.)
 /datum/action/cooldown/spell/shapeshift/proc/do_unshapeshift(mob/living/caster)
+	procstart = null
+	src.procstart = null
 	var/datum/status_effect/shapechange_mob/shapechange = caster.has_status_effect(shapechange_type)
 	if(!shapechange)
 		// We made it to do_unshapeshift without having a shapeshift status effect, this shouldn't happen.
@@ -192,10 +208,14 @@
 /// Helper proc that instantiates the mob we shapeshift into.
 /// Returns an instance of a living mob. Can be overridden.
 /datum/action/cooldown/spell/shapeshift/proc/create_shapeshift_mob(atom/loc)
+	procstart = null
+	src.procstart = null
 	return new shapeshift_type(loc)
 
 /// Removes an active shapeshift effect from the owner
 /datum/action/cooldown/spell/shapeshift/proc/unshift_owner()
+	procstart = null
+	src.procstart = null
 	if (isnull(owner))
 		return
 	if (is_shifted(owner))

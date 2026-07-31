@@ -25,6 +25,8 @@
 	)
 
 /mob/living/basic/pet/gondola/gondolapod/Initialize(mapload, pod)
+	procstart = null
+	src.procstart = null
 	linked_pod = pod || new(src)
 	name = linked_pod.name
 	desc = linked_pod.desc
@@ -33,18 +35,26 @@
 	return ..()
 
 /mob/living/basic/pet/gondola/gondolapod/death()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(linked_pod) //Will cause the open() proc for the linked supplypod to be called with the "broken" parameter set to true, meaning that it will dump its contents on death
 	return ..()
 
 /mob/living/basic/pet/gondola/gondolapod/create_gondola()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/basic/pet/gondola/gondolapod/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(opened)
 		. += "[icon_state]_open"
 
 /mob/living/basic/pet/gondola/gondolapod/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (contents.len)
 		. += span_notice("It looks like it hasn't made its delivery yet.")
@@ -52,12 +62,16 @@
 		. += span_notice("It looks like it has already made its delivery.")
 
 /mob/living/basic/pet/gondola/gondolapod/set_opened()
+	procstart = null
+	src.procstart = null
 	opened = TRUE
 	layer = initial(layer)
 	update_appearance()
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom/, set_closed)), 5 SECONDS)
 
 /mob/living/basic/pet/gondola/gondolapod/set_closed()
+	procstart = null
+	src.procstart = null
 	opened = FALSE
 	layer = LOW_MOB_LAYER
 	update_appearance()
@@ -71,6 +85,8 @@
 	check_flags = AB_CHECK_PHASED
 
 /datum/action/innate/deliver_gondola_package/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -91,6 +107,8 @@
 	check_flags = AB_CHECK_PHASED
 
 /datum/action/innate/check_gondola_contents/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

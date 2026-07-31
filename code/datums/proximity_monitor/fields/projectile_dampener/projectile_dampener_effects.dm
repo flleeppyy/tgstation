@@ -12,6 +12,8 @@
 	var/projectile_stamina_multiplier = 0.66
 
 /datum/dampener_projectile_effects/proc/apply_effects(obj/projectile/bullet)
+	procstart = null
+	src.procstart = null
 	if(projectile_speed_multiplier)
 		bullet.speed *= projectile_speed_multiplier
 	if(projectile_damage_multiplier)
@@ -24,6 +26,8 @@
 		bullet.stun *= projectile_stun_multiplier
 
 /datum/dampener_projectile_effects/proc/remove_effects(obj/projectile/bullet)
+	procstart = null
+	src.procstart = null
 	bullet.speed /= projectile_speed_multiplier
 	bullet.damage /= projectile_damage_multiplier
 	bullet.knockdown /= projectile_knockdown_multiplier

@@ -20,6 +20,8 @@
 	)
 
 /obj/item/circuit_component/decimal_conversion/populate_ports()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/circuit_component_add_port, \
 		port_list = bit_array, \
 		add_action = "add", \
@@ -32,6 +34,8 @@
 	number = add_output_port("Number", PORT_TYPE_NUMBER, order = 1.1)
 
 /obj/item/circuit_component/decimal_conversion/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!length(bit_array))
 		return
 

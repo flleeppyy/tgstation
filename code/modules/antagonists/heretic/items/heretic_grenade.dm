@@ -14,6 +14,8 @@
 	grenade_sound_vary = FALSE
 
 /obj/item/grenade/chem_grenade/rust_sower/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		icon_state = "[base_icon_state]_active"
@@ -21,6 +23,8 @@
 		icon_state = base_icon_state
 
 /obj/item/grenade/chem_grenade/rust_sower/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/tool_blocker, TOOL_SCREWDRIVER, TOOL_ACT_PRIMARY)
 	AddElement(/datum/element/tool_blocker, TOOL_WRENCH, TOOL_ACT_PRIMARY)
@@ -38,12 +42,16 @@
 	beakers += beaker_two
 
 /obj/item/grenade/chem_grenade/rust_sower/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(src, 'sound/items/weapons/rust_sower_explode.ogg', 70, FALSE)
 	qdel(src)
 
 /// Returns -1 so that you cant extract the chems
 /obj/item/grenade/chem_grenade/rust_sower/proc/on_try_grind()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return -1
 
@@ -57,12 +65,16 @@
 	default_container = /obj/item/reagent_containers/cup/bottle/capsaicin
 
 /datum/reagent/heretic_rust/expose_atom(atom/exposed_atom, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ismecha(exposed_atom))
 		var/obj/vehicle/sealed/mecha/to_wreck = exposed_atom
 		to_wreck.take_damage(300, BURN)
 
 /datum/reagent/heretic_rust/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(exposed_mob))
 		if(issilicon(exposed_mob) || ismecha(exposed_mob) || isbot(exposed_mob))
@@ -104,10 +116,14 @@
 				victim.vomit(VOMIT_CATEGORY_DEFAULT)
 
 /datum/reagent/heretic_rust/expose_turf(turf/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	exposed_turf.rust_heretic_act(RUST_RESISTANCE_TITANIUM)
 
 /datum/reagent/heretic_rust/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!holder.has_reagent(/datum/reagent/consumable/milk))
 		if(SPT_PROB(5, seconds_per_tick))

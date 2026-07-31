@@ -32,6 +32,8 @@
 	acid = 70
 
 /obj/machinery/prisongate/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!powered())
 		visible_message(span_notice("[src] momentarily flickers before the hardlight barrier loses cohesion and dissipates into thin air!"))
@@ -47,6 +49,8 @@
 		update_use_power(ACTIVE_POWER_USE)
 
 /obj/machinery/prisongate/CanAllowThrough(atom/movable/gate_toucher, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(gate_toucher))
 		if(!isstructure(gate_toucher))
@@ -88,6 +92,8 @@
 	return FALSE
 
 /obj/machinery/prisongate/proc/allow_prisoner_id(obj/item/card/id/advanced/prisoner/prison_id)
+	procstart = null
+	src.procstart = null
 	if(!prison_id.timed)
 		return SKIP_EXIT
 	if(prison_id.time_to_assign)
@@ -112,6 +118,8 @@
 	name = "labor camp gate scanner"
 
 /obj/machinery/prisongate/labour/allow_prisoner_id(obj/item/card/id/advanced/prisoner/prison_id)
+	procstart = null
+	src.procstart = null
 	if(!prison_id.goal)
 		return SKIP_EXIT
 	if(prison_id.points >= prison_id.goal)

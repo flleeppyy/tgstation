@@ -16,22 +16,32 @@
 	)
 
 /obj/machinery/telecomms/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/telecomms/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	attack_hand(user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/telecomms/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/telecomms/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Telecomms")
 		ui.open()
 
 /obj/machinery/telecomms/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data += add_option()
@@ -74,6 +84,8 @@
 	return data
 
 /obj/machinery/telecomms/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -151,6 +163,8 @@
 
 /// Adds new_connection to src's links list AND vice versa. Also updates `links_by_telecomms_type`.
 /obj/machinery/telecomms/proc/add_new_link(obj/machinery/telecomms/new_connection, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(new_connection) || new_connection == src)
 		return FALSE
 
@@ -169,6 +183,8 @@
 
 /// Removes old_connection from src's links list AND vice versa. Also updates `links_by_telecomms_type`.
 /obj/machinery/telecomms/proc/remove_link(obj/machinery/telecomms/old_connection, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(old_connection) || old_connection == src)
 		return FALSE
 
@@ -190,6 +206,8 @@
  * Returns information (name and color) about all channels in machine's network
  */
 /obj/machinery/telecomms/proc/get_channels()
+	procstart = null
+	src.procstart = null
 	var/list/channels = list()
 	for(var/channel_freq in GLOB.reserved_radio_frequencies)
 		var/channel_name = GLOB.reserved_radio_frequencies[channel_freq]
@@ -237,15 +255,21 @@
  * Returns a list, or `null` if it wasn't implemented by the machine.
  */
 /obj/machinery/telecomms/proc/add_option()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/telecomms/bus/add_option()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["type"] = "bus"
 	data["changefrequency"] = change_frequency
 	return data
 
 /obj/machinery/telecomms/relay/add_option()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["type"] = "relay"
 	data["broadcasting"] = broadcasting
@@ -253,6 +277,8 @@
 	return data
 
 /obj/machinery/telecomms/server/add_option()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["type"] = "server"
 	var/list/infos = list()
@@ -274,9 +300,13 @@
  * Returns `TRUE` if the action was handled, nothing if not.
  */
 /obj/machinery/telecomms/proc/add_act(action, params)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/telecomms/relay/add_act(action, params)
+	procstart = null
+	src.procstart = null
 	switch(action)
 		if("broadcast")
 			broadcasting = !broadcasting
@@ -286,6 +316,8 @@
 			. = TRUE
 
 /obj/machinery/telecomms/bus/add_act(action, params)
+	procstart = null
+	src.procstart = null
 	switch(action)
 		if("change_freq")
 			var/newfreq = text2num(params["value"]) * 10
@@ -297,6 +329,8 @@
 					change_frequency = 0
 
 /obj/machinery/telecomms/server/add_act(action, params)
+	procstart = null
+	src.procstart = null
 	switch(action)
 		if("delete")
 			frequency_infos.Remove(num2text(params["value"]))
@@ -346,6 +380,8 @@
 
 /// Returns a multitool from a user depending on their mobtype.
 /obj/machinery/telecomms/proc/get_multitool(mob/user)
+	procstart = null
+	src.procstart = null
 	. = null
 	if(isAI(user))
 		var/mob/living/silicon/ai/U = user

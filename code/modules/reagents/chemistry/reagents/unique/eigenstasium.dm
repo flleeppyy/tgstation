@@ -30,12 +30,16 @@
 	var/turf/open/location_return = null
 
 /datum/reagent/eigenstate/on_new(list/data)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!data)
 		return
 	location_created = data["location_created"]
 
 /datum/reagent/eigenstate/expose_mob(mob/living/living_mob, methods, reac_volume, show_message, touch_protection)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(methods & INGEST) || !iscarbon(living_mob))
 		return
@@ -53,6 +57,8 @@
 
 //Main functions
 /datum/reagent/eigenstate/proc/make_appearance(mob/living/living_mob, spawn_loc)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/overlay/holo_pad_hologram/spirit = new (spawn_loc)
 	spirit.appearance = living_mob.appearance
 	spirit.alpha = 170
@@ -65,6 +71,8 @@
 	return spirit
 
 /datum/reagent/eigenstate/on_mob_add(mob/living/living_mob, amount)
+	procstart = null
+	src.procstart = null
 	//make hologram at return point to indicate where someone will go back to
 	eigenstate = make_appearance(living_mob, living_mob.loc)
 
@@ -78,11 +86,15 @@
 	return ..()
 
 /datum/reagent/eigenstate/on_mob_life(mob/living/carbon/living_mob, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(20))
 		do_sparks(5,FALSE,living_mob)
 
-/datum/reagent/eigenstate/on_mob_delete(mob/living/living_mob) //returns back to original location
+/datum/reagent/eigenstate/on_mob_delete(mob/living/living_mob)
+	procstart = null
+	src.procstart = null //returns back to original location
 	. = ..()
 	to_chat(living_mob, span_userdanger("You feel strangely whole again."))
 	if(living_mob.reagents.has_reagent(/datum/reagent/stabilizing_agent))
@@ -94,7 +106,9 @@
 
 	qdel(eigenstate)
 
-/datum/reagent/eigenstate/overdose_start(mob/living/living_mob, metabolization_ratio) //Overdose, makes you teleport randomly
+/datum/reagent/eigenstate/overdose_start(mob/living/living_mob, metabolization_ratio)
+	procstart = null
+	src.procstart = null //Overdose, makes you teleport randomly
 	. = ..()
 	to_chat(living_mob, span_userdanger("You feel like your perspective is being ripped apart as you begin flitting in and out of reality!"))
 	living_mob.set_jitter_if_lower(40 SECONDS)
@@ -104,7 +118,9 @@
 		carbon_mob.apply_status_effect(/datum/status_effect/eigenstasium)
 	return ..()
 
-/datum/reagent/eigenstate/overdose_process(mob/living/living_mob, metabolization_ratio) //Overdose, makes you teleport randomly
+/datum/reagent/eigenstate/overdose_process(mob/living/living_mob, metabolization_ratio)
+	procstart = null
+	src.procstart = null //Overdose, makes you teleport randomly
 	. = ..()
 	do_teleport(living_mob, get_turf(living_mob), 10, asoundin = 'sound/effects/phasein.ogg')
 

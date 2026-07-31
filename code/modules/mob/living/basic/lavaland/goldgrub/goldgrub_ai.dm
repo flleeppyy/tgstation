@@ -30,6 +30,8 @@
 	speech_commands = list("spit", "ores")
 
 /datum/pet_command/grub_spit/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/datum/action/cooldown/spit_ability = controller.blackboard[BB_SPIT_ABILITY]
 	if(!spit_ability?.IsAvailable())
 		return
@@ -38,6 +40,8 @@
 	controller.clear_blackboard_key(BB_ACTIVE_PET_COMMAND)
 
 /datum/pet_command/grub_spit/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return "signals [living_pet] to spit its ores!"
 
 
@@ -52,6 +56,8 @@
 /datum/bt_node/ai_behavior/dig_away_from_danger
 
 /datum/bt_node/ai_behavior/dig_away_from_danger/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/currently_underground = is_jaunting(controller.pawn)
 	var/storm_approaching = controller.blackboard[BB_STORM_APPROACHING]
 	var/datum/action/cooldown/dig_ability = controller.blackboard[BB_BURROW_ABILITY]
@@ -85,6 +91,8 @@
 	time_between_perform = 10 SECONDS
 
 /datum/bt_node/ai_behavior/burrow_through_ground/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	var/atom/target = controller.blackboard[BB_CURRENT_TARGET]
 	if(!is_jaunting(living_pawn) || QDELETED(target))
@@ -118,6 +126,8 @@
 	var/range = 9
 
 /datum/bt_node/ai_behavior/find_ore/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/grub_pawn = controller.pawn
 	var/list/forbidden = controller.blackboard[BB_ORE_IGNORE_TYPES]
 	var/pet_target = controller.blackboard[BB_CURRENT_PET_TARGET]
@@ -137,6 +147,8 @@
 	time_between_perform = 5 SECONDS
 
 /datum/bt_node/ai_behavior/find_boulder/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/grub_pawn = controller.pawn
 	var/pet_target = controller.blackboard[BB_CURRENT_PET_TARGET]
 	for(var/obj/item/boulder/candidate in oview(9, grub_pawn))
@@ -153,6 +165,8 @@
 	time_between_perform = 10 SECONDS
 
 /datum/bt_node/ai_behavior/find_ore_vent/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(!SPT_PROB(25, seconds_per_tick))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
 	var/mob/living/grub_pawn = controller.pawn
@@ -178,6 +192,8 @@
 	time_between_perform = 10 SECONDS
 
 /datum/bt_node/ai_behavior/find_grub_egg/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(!SPT_PROB(75, seconds_per_tick))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
 	var/mob/living/grub_pawn = controller.pawn
@@ -196,6 +212,8 @@
 	time_between_perform = 3 SECONDS
 
 /datum/bt_node/ai_behavior/grub_eat/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[target_key]
 	if(QDELETED(target))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
@@ -205,6 +223,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/grub_eat/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(target_key)
 

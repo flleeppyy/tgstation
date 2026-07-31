@@ -40,14 +40,20 @@
 /// Returns a list of every turf state considered "broken".
 /// Will be randomly chosen if a turf breaks at runtime.
 /turf/open/proc/broken_states()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /// Returns a list of every turf state considered "burnt".
 /// Will be randomly chosen if a turf is burnt at runtime.
 /turf/open/proc/burnt_states()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /turf/open/break_tile()
+	procstart = null
+	src.procstart = null
 	if(isnull(damaged_dmi) || broken)
 		return FALSE
 	broken = TRUE
@@ -58,6 +64,8 @@
 	return TRUE
 
 /turf/open/burn_tile()
+	procstart = null
+	src.procstart = null
 	if(isnull(damaged_dmi) || burnt)
 		return FALSE
 	burnt = TRUE
@@ -68,6 +76,8 @@
 	return TRUE
 
 /turf/open/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(broken)
 		if(isnull(damaged_dmi))
@@ -131,9 +141,13 @@
 				. += exit_overlay
 
 /turf/open/examine_descriptor(mob/user)
+	procstart = null
+	src.procstart = null
 	return "floor"
 
 /turf/open/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(leave_footprints && (footprint_entrance_dirs || footprint_exit_dirs) && (LAZYLEN(footprint_shoe_types) || LAZYLEN(footprint_species_types)))
 		. += "You recognise the footprints as belonging to:"
@@ -147,6 +161,8 @@
 
 //direction is direction of travel of A
 /turf/open/zPassIn(direction)
+	procstart = null
+	src.procstart = null
 	if(direction != DOWN)
 		return FALSE
 	for(var/obj/on_us in contents)
@@ -156,6 +172,8 @@
 
 //direction is direction of travel of an atom
 /turf/open/zPassOut(direction)
+	procstart = null
+	src.procstart = null
 	if(direction != UP)
 		return FALSE
 	for(var/obj/on_us in contents)
@@ -165,34 +183,48 @@
 
 //direction is direction of travel of air
 /turf/open/zAirIn(direction, turf/source)
+	procstart = null
+	src.procstart = null
 	return (direction == DOWN)
 
 //direction is direction of travel of air
 /turf/open/zAirOut(direction, turf/source)
+	procstart = null
+	src.procstart = null
 	return (direction == UP)
 
 /turf/open/update_icon()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_visuals()
 
 //ATTACK GHOST IGNORING PARENT RETURN VALUE
 /turf/open/attack_ghost(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(destination_z)
 		var/turf/T = locate(destination_x, destination_y, destination_z)
 		user.forceMove(T)
 
 /turf/open/proc/CanBuildHere()
+	procstart = null
+	src.procstart = null
 	if(destination_z)
 		return FALSE
 	return TRUE
 
 /turf/open/is_transition_turf()
+	procstart = null
+	src.procstart = null
 	if(destination_x || destination_y || destination_z)
 		return TRUE
 
 /// Add the passed mob's footprint to the turf with the given movement direction
 /turf/open/proc/add_footprint(mob/living/carbon/human/walker, movement_direction)
+	procstart = null
+	src.procstart = null
 	if(walker.body_position != STANDING_UP || walker.buckled || (walker.movement_type & MOVETYPES_NOT_TOUCHING_GROUND))
 		return
 
@@ -217,6 +249,8 @@
 
 /// Clear all footprints on the turf
 /turf/open/proc/clear_footprints()
+	procstart = null
+	src.procstart = null
 	footprint_entrance_dirs = NONE
 	footprint_exit_dirs = NONE
 	LAZYNULL(footprint_shoe_types)
@@ -224,6 +258,8 @@
 	update_appearance()
 
 /turf/open/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!arrived || src != arrived.loc)
 		return
@@ -264,6 +300,8 @@
 		current_pull = current_pull.pulling
 
 /turf/open/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone && direction && leave_footprints && !broken && !burnt && isturf(gone.loc) && ishuman(gone))
 		add_footprint(gone, direction)
@@ -276,6 +314,8 @@
  * Flags argument is passed directly to ChangeTurf or PlaceOnTop
  */
 /turf/open/proc/replace_floor(turf/open/new_floor_path, flags)
+	procstart = null
+	src.procstart = null
 	if (!overfloor_placed && initial(new_floor_path.overfloor_placed))
 		place_on_top(new_floor_path, flags = flags)
 		return
@@ -293,13 +333,19 @@
 	tiled_turf = TRUE
 
 /turf/open/indestructible/Melt()
+	procstart = null
+	src.procstart = null
 	to_be_destroyed = FALSE
 	return src
 
 /turf/open/indestructible/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/indestructible/TerraformTurf(path, new_baseturf, flags, defer_change = FALSE, ignore_air = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -334,6 +380,8 @@
 	icon_state = "darkfull"
 
 /turf/open/indestructible/permalube/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/wet_floor, TURF_WET_LUBE, INFINITY, 0, INFINITY, TRUE)
 
@@ -347,10 +395,14 @@
 	var/sound = 'sound/effects/footstep/clownstep1.ogg'
 
 /turf/open/indestructible/honk/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/wet_floor, TURF_WET_SUPERLUBE, INFINITY, 0, INFINITY, TRUE)
 
 /turf/open/indestructible/honk/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ismob(arrived))
 		playsound(src, sound, 50, TRUE)
@@ -369,6 +421,8 @@
 	tiled_turf = FALSE
 
 /turf/open/indestructible/necropolis/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(12))
 		icon_state = "necro[rand(2,3)]"
@@ -403,10 +457,14 @@
 	var/emissive_icon = 'icons/turf/floors/hierophant_floor_e.dmi'
 
 /turf/open/indestructible/hierophant/set_smoothed_icon_state(new_junction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_OVERLAYS)
 
 /turf/open/indestructible/hierophant/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance(emissive_icon, icon_state, src)
 
@@ -419,6 +477,8 @@
 	emissive_icon = 'icons/turf/floors/hierophant_floor_alt_e.dmi'
 
 /turf/open/indestructible/hierophant/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/open/indestructible/paper
@@ -486,6 +546,8 @@
 	name = /turf/open/floor/stone::name
 
 /turf/open/Initalize_Atmos(time)
+	procstart = null
+	src.procstart = null
 	excited = FALSE
 	update_visuals()
 
@@ -493,16 +555,24 @@
 	init_immediate_calculate_adjacent_turfs()
 
 /turf/open/GetHeatCapacity()
+	procstart = null
+	src.procstart = null
 	. = air.heat_capacity()
 
 /turf/open/GetTemperature()
+	procstart = null
+	src.procstart = null
 	. = air.temperature
 
 /turf/open/TakeTemperature(temp)
+	procstart = null
+	src.procstart = null
 	air.temperature += temp
 	air_update_turf(FALSE, FALSE)
 
 /turf/open/proc/freeze_turf()
+	procstart = null
+	src.procstart = null
 	for(var/obj/I in contents)
 		if(!HAS_TRAIT(I, TRAIT_FROZEN) && !(I.resistance_flags & FREEZE_PROOF))
 			I.AddElement(/datum/element/frozen)
@@ -514,6 +584,8 @@
 	return TRUE
 
 /turf/open/proc/water_vapor_gas_act()
+	procstart = null
+	src.procstart = null
 	MakeSlippery(TURF_WET_WATER, min_wet_time = 100, wet_time_to_add = 50)
 
 	for(var/mob/living/basic/slime/M in src)
@@ -523,6 +595,8 @@
 	return TRUE
 
 /turf/open/handle_slip(mob/living/slipper, knockdown_amount, obj/slippable, lube, paralyze_amount, daze_amount, force_drop)
+	procstart = null
+	src.procstart = null
 	if(slipper.movement_type & MOVETYPES_NOT_TOUCHING_GROUND)
 		return FALSE
 	if(!has_gravity(src))
@@ -592,21 +666,31 @@
 	return TRUE
 
 /turf/open/proc/MakeSlippery(wet_setting = TURF_WET_WATER, min_wet_time = 0, wet_time_to_add = 0, max_wet_time = MAXIMUM_WET_TIME, permanent = FALSE, should_display_overlay = TRUE)
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/wet_floor, wet_setting, min_wet_time, wet_time_to_add, max_wet_time, permanent, should_display_overlay)
 
 /turf/open/proc/MakeDry(wet_setting = TURF_WET_WATER, immediate = FALSE, amount = INFINITY)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_TURF_MAKE_DRY, wet_setting, immediate, amount)
 
 /turf/open/get_dumping_location()
+	procstart = null
+	src.procstart = null
 	return src
 
-/turf/open/proc/ClearWet()//Nuclear option of immediately removing slipperiness from the tile instead of the natural drying over time
+/turf/open/proc/ClearWet()
+	procstart = null
+	src.procstart = null//Nuclear option of immediately removing slipperiness from the tile instead of the natural drying over time
 	qdel(GetComponent(/datum/component/wet_floor))
 
 /// Builds with rods. This doesn't exist to be overridden, just to remove duplicate logic for turfs that want
 /// To support floor tile creation
 /// I'd make it a component, but one of these things is space. So no.
 /turf/open/proc/build_with_rods(obj/item/stack/rods/used_rods, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/lattice/catwalk_bait = locate(/obj/structure/lattice, src)
 	var/obj/structure/lattice/catwalk/existing_catwalk = locate(/obj/structure/lattice/catwalk, src)
 	if(existing_catwalk)
@@ -634,6 +718,8 @@
 /// Very similar to build_with_rods, this exists to allow consistent behavior between different types in terms of how
 /// Building floors works
 /turf/open/proc/build_with_floor_tiles(obj/item/stack/tile/iron/used_tiles, user)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/lattice/lattice = locate(/obj/structure/lattice, src)
 	if(!has_valid_support() && !lattice)
 		balloon_alert(user, "needs support, place rods!")
@@ -652,6 +738,8 @@
 		new_plating.lattice_underneath = FALSE
 
 /turf/open/proc/has_valid_support()
+	procstart = null
+	src.procstart = null
 	for (var/direction in GLOB.cardinals)
 		if(istype(get_step(src, direction), /turf/open/floor))
 			return TRUE
@@ -660,6 +748,8 @@
 /// Very similar to build_with_rods, this exists to allow consistent behavior between different types in terms of how
 /// Building floors works
 /turf/open/proc/build_with_transport_tiles(obj/item/stack/thermoplastic/used_tiles, user)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/transport/linear/platform = locate(/obj/structure/transport/linear, src)
 	if(!platform)
 		balloon_alert(user, "no tram base!")
@@ -672,6 +762,8 @@
 	new used_tiles.tile_type(src)
 
 /turf/open/apply_main_material_effects(datum/material/main_material, amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!main_material.turf_sound_override)
 		return
@@ -682,6 +774,8 @@
 
 /// Very similar to build_with_rods, this exists to allow building transport/tram girders on openspace
 /turf/open/proc/build_with_titanium(obj/item/stack/sheet/mineral/titanium/used_stack, user)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/transport/linear/platform = locate(/obj/structure/transport/linear, src)
 	if(!platform)
 		to_chat(user, span_warning("There is no transport frame to attach the anchor!"))

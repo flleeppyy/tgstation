@@ -31,6 +31,8 @@
 	var/datum/looping_sound/tape_recorder_hiss/soundloop
 
 /obj/item/taperecorder/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(starting_tape_type)
 		mytape = new starting_tape_type(src)
@@ -38,11 +40,15 @@
 	update_appearance()
 
 /obj/item/taperecorder/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(soundloop)
 	QDEL_NULL(mytape)
 	return ..()
 
 /obj/item/taperecorder/proc/readout()
+	procstart = null
+	src.procstart = null
 	if(mytape)
 		if(playing)
 			return span_notice("<b>PLAYING</b>")
@@ -54,16 +60,22 @@
 	return span_notice("<b>NO TAPE INSERTED</b>")
 
 /obj/item/taperecorder/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(in_range(src, user) || isobserver(user))
 		. += span_notice("The display reads:")
 		. += "[readout()]"
 
 /obj/item/taperecorder/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	play()
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/taperecorder/proc/update_available_icons()
+	procstart = null
+	src.procstart = null
 	icons_available = list()
 
 	if(!playing && !recording)
@@ -79,12 +91,16 @@
 		icons_available += list("Eject" = image(radial_icon_file,"eject"))
 
 /obj/item/taperecorder/proc/update_sound()
+	procstart = null
+	src.procstart = null
 	if(!playing && !recording)
 		soundloop.stop()
 	else
 		soundloop.start()
 
 /obj/item/taperecorder/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(mytape || !istype(tool, /obj/item/tape))
 		return NONE
 	if(!user.transferItemToLoc(tool,src))
@@ -96,6 +112,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/taperecorder/proc/eject(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!mytape)
 		balloon_alert(user, "no tape!")
 		return
@@ -110,16 +128,22 @@
 	update_appearance()
 
 /obj/item/taperecorder/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	mytape?.unspool() //Fires unspool the tape, which makes sense if you don't think about it
 	return ..()
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/taperecorder/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(loc != user || !mytape || !user.is_holding(src))
 		return ..()
 	eject(user)
 
 /obj/item/taperecorder/proc/can_use(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user && ismob(user))
 		if(!user.incapacitated)
 			return TRUE
@@ -138,6 +162,8 @@ GAME_VERB(/obj/item/taperecorder, ejectverb, "Eject Tape", null)
 
 
 /obj/item/taperecorder/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!mytape)
 		icon_state = "taperecorder_empty"
 		return ..()
@@ -152,6 +178,8 @@ GAME_VERB(/obj/item/taperecorder, ejectverb, "Eject Tape", null)
 
 
 /obj/item/taperecorder/Hear(atom/movable/speaker, message_langs, raw_message, radio_freq, radio_freq_name, radio_freq_color, spans, list/message_mods = list(), message_range)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(message_mods[MODE_RELAY] || !mytape || istype(speaker, /obj/item/taperecorder))
 		return
@@ -270,6 +298,8 @@ GAME_VERB(/obj/item/taperecorder, play, "Play Tape", null)
 
 
 /obj/item/taperecorder/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!mytape)
 		balloon_alert(user, "it's empty!")
 		return
@@ -388,6 +418,8 @@ GAME_VERB(/obj/item/taperecorder, print_transcript, "Print Transcript", null)
 	var/radial_icon_file = 'icons/hud/radial_tape.dmi'
 
 /obj/item/tape/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	initial_icon_state = icon_state //random tapes will set this after choosing their icon
 
@@ -400,15 +432,21 @@ GAME_VERB(/obj/item/taperecorder, print_transcript, "Print Transcript", null)
 		tapeflip()
 
 /obj/item/tape/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(unspooled)
 		. += span_notice("It looks like the tape is unspooled. A screwdriver might fix this.")
 
 /obj/item/tape/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	unspool()
 	..()
 
 /obj/item/tape/proc/update_available_icons()
+	procstart = null
+	src.procstart = null
 	icons_available = list()
 
 	if(!unspooled)
@@ -416,6 +454,8 @@ GAME_VERB(/obj/item/taperecorder, print_transcript, "Print Transcript", null)
 	icons_available += list("Flip tape" = image(radial_icon_file,"tape_flip"))
 
 /obj/item/tape/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	update_available_icons()
 	if(icons_available)
 		var/selection = show_radial_menu(user, src, icons_available, radius = 38, require_near = TRUE, tooltips = TRUE)
@@ -435,21 +475,29 @@ GAME_VERB(/obj/item/taperecorder, print_transcript, "Print Transcript", null)
 				balloon_alert(user, "unspooled tape")
 
 /obj/item/tape/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(prob(50))
 		tapeflip()
 	. = ..()
 
 /obj/item/tape/proc/unspool()
+	procstart = null
+	src.procstart = null
 	//Let's not add infinite amounts of overlays when our fire_act is called repeatedly
 	if(!unspooled)
 		add_overlay("ribbonoverlay")
 	unspooled = TRUE
 
 /obj/item/tape/proc/respool()
+	procstart = null
+	src.procstart = null
 	cut_overlay("ribbonoverlay")
 	unspooled = FALSE
 
 /obj/item/tape/proc/tapeflip()
+	procstart = null
+	src.procstart = null
 	//first we save a copy of our current side
 	var/list/storedinfo_currentside = storedinfo.Copy()
 	var/list/timestamp_currentside = timestamp.Copy()
@@ -469,6 +517,8 @@ GAME_VERB(/obj/item/taperecorder, print_transcript, "Print Transcript", null)
 		icon_state = initial_icon_state
 
 /obj/item/tape/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!unspooled)
 		return FALSE
 	balloon_alert(user, "respooling tape...")
@@ -483,6 +533,8 @@ GAME_VERB(/obj/item/taperecorder, print_transcript, "Print Transcript", null)
 	icon_state = "random_tape"
 
 /obj/item/tape/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	icon_state = "tape_[pick("white", "blue", "red", "yellow", "purple", "greyscale")]"
 	. = ..()
 

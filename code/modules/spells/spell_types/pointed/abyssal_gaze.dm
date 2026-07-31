@@ -24,9 +24,13 @@
 	var/amount_to_cool = 200
 
 /datum/action/cooldown/spell/pointed/abyssal_gaze/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return iscarbon(cast_on)
 
 /datum/action/cooldown/spell/pointed/abyssal_gaze/cast(mob/living/carbon/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cast_on.can_block_magic(antimagic_flags))
 		to_chat(owner, span_warning("The spell had no effect!"))

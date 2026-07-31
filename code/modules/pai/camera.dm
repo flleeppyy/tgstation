@@ -3,6 +3,8 @@
 	light_color = COLOR_PAI_GREEN
 
 /obj/item/camera/siliconcam/pai_camera/after_picture(mob/user, datum/picture/picture)
+	procstart = null
+	src.procstart = null
 	var/number = length(stored)
 	picture.picture_name = "Image [number] (taken by [loc.name])"
 	stored[picture] = TRUE
@@ -18,6 +20,8 @@
  * 	FALSE otherwise.
 */
 /obj/item/camera/siliconcam/pai_camera/proc/pai_print(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/pai/pai = loc
 	var/datum/picture/selection = selectpicture(user)
 	if(!istype(selection))
@@ -37,6 +41,8 @@
  * @returns {boolean} - TRUE if the camera worked.
  */
 /mob/living/silicon/pai/proc/use_camera(mob/user, mode)
+	procstart = null
+	src.procstart = null
 	if(!aicamera || isnull(mode))
 		return FALSE
 	switch(mode)

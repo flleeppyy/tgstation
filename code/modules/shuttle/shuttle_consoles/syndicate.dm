@@ -14,10 +14,14 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 
 /obj/machinery/computer/shuttle/syndicate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/tool_blocker, TOOL_SCREWDRIVER, TOOL_ACT_PRIMARY)
 
 /obj/machinery/computer/shuttle/syndicate/launch_check(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -46,6 +50,8 @@
 	possible_destinations = null
 
 /obj/machinery/computer/shuttle/syndicate/drop_pod/launch_check(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

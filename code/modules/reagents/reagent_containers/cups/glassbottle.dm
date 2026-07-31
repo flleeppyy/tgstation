@@ -31,12 +31,16 @@
 	var/obj/item/message_in_a_bottle
 
 /obj/item/reagent_containers/cup/glass/bottle/Initialize(mapload, vol)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/recipes =  list(/datum/crafting_recipe/molotov)
 	AddElement(/datum/element/slapcrafting, recipes)
 	register_item_context()
 
 /obj/item/reagent_containers/cup/glass/bottle/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(message_in_a_bottle)
 		return NONE
 	if(istype(held_item, /obj/item/paper) || istype(held_item, /obj/item/stack/spacecash) || istype(held_item, /obj/item/photo))
@@ -45,12 +49,16 @@
 	return NONE
 
 /obj/item/reagent_containers/cup/glass/bottle/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(message_in_a_bottle && HAS_TRAIT(target, TRAIT_MESSAGE_IN_A_BOTTLE_LOCATION))
 		context[SCREENTIP_CONTEXT_RMB] = "Toss message"
 		return CONTEXTUAL_SCREENTIP_SET
 	return NONE
 
 /obj/item/reagent_containers/cup/glass/bottle/on_reagent_change(datum/reagents/holder, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!reagents?.total_volume)
 		tool_behaviour = TOOL_ROLLINGPIN // Glass bottles can be used as rolling pins when empty
@@ -58,6 +66,8 @@
 		tool_behaviour = null
 
 /obj/item/reagent_containers/cup/glass/bottle/Exited(atom/movable/gone, atom/newloc)
+	procstart = null
+	src.procstart = null
 	if(gone == message_in_a_bottle)
 		message_in_a_bottle = null
 		if(!QDELETED(src))
@@ -65,10 +75,14 @@
 	return ..()
 
 /obj/item/reagent_containers/cup/glass/bottle/used_in_craft(atom/result, datum/crafting_recipe/current_recipe)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	message_in_a_bottle?.forceMove(drop_location())
 
 /obj/item/reagent_containers/cup/glass/bottle/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(message_in_a_bottle)
 		. += span_info("there's \a [message_in_a_bottle] inside it. Break it to take it out, or find a beach or ocean and toss it with [EXAMINE_HINT("right-click")].")
@@ -76,6 +90,8 @@
 		. += span_tinynoticeital("you could place a paper, photo or space cash inside it...")
 
 /obj/item/reagent_containers/cup/glass/bottle/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(message_in_a_bottle)
 		var/overlay = add_message_overlay()
@@ -83,6 +99,8 @@
 			. += overlay
 
 /obj/item/reagent_containers/cup/glass/bottle/interact_with_atom_secondary(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode || !HAS_TRAIT(target, TRAIT_MESSAGE_IN_A_BOTTLE_LOCATION))
 		return ..()
 	if(!user.temporarilyRemoveItemFromInventory(src))
@@ -95,6 +113,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/cup/glass/bottle/item_interaction(mob/living/user, obj/item/item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isGlass)
 		return NONE
 	if(!istype(item, /obj/item/paper) && !istype(item, /obj/item/stack/spacecash) && !istype(item, /obj/item/photo))
@@ -111,6 +131,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/cup/glass/bottle/proc/add_message_overlay()
+	procstart = null
+	src.procstart = null
 	if(istype(message_in_a_bottle, /obj/item/paper))
 		return "paper_in_bottle"
 	if(istype(message_in_a_bottle, /obj/item/photo))
@@ -126,17 +148,23 @@
 	custom_price = PAYCHECK_CREW * 0.9
 
 /obj/item/reagent_containers/cup/glass/bottle/post_smash(atom/target, atom/thrower, datum/thrownthing/throwingdatum, obj/item/broken_bottle/broken)
+	procstart = null
+	src.procstart = null
 	if(!throwingdatum && ismob(thrower))
 		astype(thrower, /mob).put_in_hands(broken)
 	broken.inhand_icon_state = broken_inhand_icon_state
 	message_in_a_bottle?.forceMove(drop_location())
 
 /obj/item/reagent_containers/cup/glass/bottle/try_splash(mob/user, atom/target)
+	procstart = null
+	src.procstart = null
 	if(!isGlass)
 		return ..()
 	return FALSE // instead of splashing, hit them with the bottle!
 
 /obj/item/reagent_containers/cup/glass/bottle/afterattack(atom/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isGlass)
 		return
 
@@ -175,6 +203,8 @@
  * * intensity = how strong the effect is, both visually and in the amount of reagents lost. comes in three flavours
 */
 /obj/item/reagent_containers/cup/glass/bottle/proc/make_froth(offset_x, offset_y, intensity)
+	procstart = null
+	src.procstart = null
 	if(!intensity)
 		return
 
@@ -226,6 +256,8 @@
 	var/static/icon/flipped_broken_outline = icon('icons/obj/drinks/drink_effects.dmi', "broken-flipped")
 
 /obj/item/broken_bottle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/caltrop, min_damage = force)
 	AddComponent(/datum/component/butchering, \
@@ -236,6 +268,8 @@
 /// Mimics the appearance and properties of the passed in bottle.
 /// Takes the broken bottle to mimic, and the thing the bottle was broken agaisnt as args
 /obj/item/broken_bottle/proc/mimic_broken(obj/item/reagent_containers/cup/glass/to_mimic, atom/target, break_top)
+	procstart = null
+	src.procstart = null
 	icon_state = to_mimic.icon_state
 	var/icon/drink_icon = new(to_mimic.icon, icon_state)
 	if(break_top) //if the bottle breaks its top off instead of the bottom
@@ -389,6 +423,8 @@
 	list_reagents = list(/datum/reagent/water/holywater = 100)
 
 /obj/item/reagent_containers/cup/glass/bottle/holywater/add_message_overlay()
+	procstart = null
+	src.procstart = null
 	return //looks too weird...
 
 /obj/item/reagent_containers/cup/glass/bottle/holywater/hell
@@ -432,6 +468,8 @@
 	drink_type = FRUIT | ALCOHOL
 
 /obj/item/reagent_containers/cup/glass/bottle/wine/add_initial_reagents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/wine_info = generate_vintage()
 	var/datum/reagent/consumable/ethanol/wine/located_wine = locate() in reagents.reagent_list
@@ -439,6 +477,8 @@
 		LAZYSET(located_wine.data, "vintage", wine_info)
 
 /obj/item/reagent_containers/cup/glass/bottle/wine/proc/generate_vintage()
+	procstart = null
+	src.procstart = null
 	return "[CURRENT_STATION_YEAR] Nanotrasen Light Red"
 
 /obj/item/reagent_containers/cup/glass/bottle/wine/unlabeled
@@ -446,6 +486,8 @@
 	desc = "There's no label on this wine bottle."
 
 /obj/item/reagent_containers/cup/glass/bottle/wine/unlabeled/generate_vintage()
+	procstart = null
+	src.procstart = null
 	var/year = rand(CURRENT_STATION_YEAR - 50, CURRENT_STATION_YEAR)
 	var/type = pick(
 		"Bold Red",
@@ -473,10 +515,14 @@
 	drink_type = ALCOHOL
 
 /obj/item/reagent_containers/cup/glass/bottle/absinthe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	redact()
 
 /obj/item/reagent_containers/cup/glass/bottle/absinthe/proc/redact()
+	procstart = null
+	src.procstart = null
 	// There was a large fight in the coderbus about a player reference
 	// in absinthe. Ergo, this is why the name generation is now so
 	// complicated. Judge us kindly.
@@ -523,6 +569,8 @@
 	drink_type = ALCOHOL
 
 /obj/item/reagent_containers/cup/glass/bottle/absinthe/premium/redact()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/reagent_containers/cup/glass/bottle/lizardwine
@@ -562,6 +610,8 @@
 	drink_type = ALCOHOL
 
 /obj/item/reagent_containers/cup/glass/bottle/sake/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(prob(10))
 		name = "Fluffy Tail Sake"
 		desc += " On the bottle is a picture of a kitsune with nine touchable tails."
@@ -573,6 +623,8 @@
 	return ..()
 
 /obj/item/reagent_containers/cup/glass/bottle/sake/add_message_overlay()
+	procstart = null
+	src.procstart = null
 	if(icon_state == "sakebottle_k") //doesn't fit the sprite
 		return
 	return ..()
@@ -603,6 +655,8 @@
 	drink_type = ALCOHOL
 
 /obj/item/reagent_containers/cup/glass/bottle/curacao/add_message_overlay()
+	procstart = null
+	src.procstart = null
 	return //doesn't fit the sprite
 
 /obj/item/reagent_containers/cup/glass/bottle/navy_rum
@@ -651,12 +705,16 @@
 	var/sabraged = FALSE
 
 /obj/item/reagent_containers/cup/glass/bottle/champagne/add_message_overlay()
+	procstart = null
+	src.procstart = null
 	return //doesn't stylistically fit the sprite
 
 /obj/item/reagent_containers/cup/glass/bottle/champagne/cursed
 	sabrage_success_percentile = 0 //force of the sharp item used to sabrage will not increase success chance
 
 /obj/item/reagent_containers/cup/glass/bottle/champagne/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(is_open_container())
 		return ..()
 	balloon_alert(user, "fiddling with cork...")
@@ -664,6 +722,8 @@
 		return pop_cork(user, sabrage = FALSE, froth_severity = pick(0, 1))
 
 /obj/item/reagent_containers/cup/glass/bottle/champagne/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -718,6 +778,8 @@
 	return smash(target = user, break_top = TRUE) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 
 /obj/item/reagent_containers/cup/glass/bottle/champagne/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_open_container())
 		if(sabraged)
@@ -728,6 +790,8 @@
 		icon_state = base_icon_state
 
 /obj/item/reagent_containers/cup/glass/bottle/champagne/proc/pop_cork(mob/living/user, sabrage, froth_severity)
+	procstart = null
+	src.procstart = null
 	if(!sabrage)
 		user.visible_message(
 			span_danger("[user] loosens the cork of [src], causing it to pop out of the bottle with great force."),
@@ -776,6 +840,8 @@
 	var/drop_type = /obj/item/trash/champagne_cork
 
 /obj/projectile/bullet/champagne_cork/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/projectile_drop, drop_type)
 
@@ -817,6 +883,8 @@
 	drink_type = ALCOHOL
 
 /obj/item/reagent_containers/cup/glass/bottle/hooch/add_message_overlay()
+	procstart = null
+	src.procstart = null
 	return //doesn't fit the sprite
 
 /obj/item/reagent_containers/cup/glass/bottle/moonshine
@@ -827,6 +895,8 @@
 	drink_type = ALCOHOL
 
 /obj/item/reagent_containers/cup/glass/bottle/moonshine/add_message_overlay()
+	procstart = null
+	src.procstart = null
 	return //doesn't fit the sprite
 
 /obj/item/reagent_containers/cup/glass/bottle/mushi_kombucha
@@ -906,6 +976,8 @@
 	)
 
 /obj/item/reagent_containers/cup/glass/bottle/molotov/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	var/obj/item/reagent_containers/cup/glass/bottle/bottle = locate() in components
 	if(!bottle)
 		return ..()
@@ -917,9 +989,13 @@
 	return ..()
 
 /obj/item/reagent_containers/cup/glass/bottle/molotov/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum, do_splash = FALSE)
+	procstart = null
+	src.procstart = null
 	..(hit_atom, throwingdatum, do_splash = FALSE)
 
 /obj/item/reagent_containers/cup/glass/bottle/molotov/smash(atom/target, mob/thrower, datum/thrownthing/throwingdatum, break_top)
+	procstart = null
+	src.procstart = null
 	var/firestarter = FALSE
 	for(var/datum/reagent/contained_reagent in reagents.reagent_list)
 		for(var/accelerant_type in accelerants)
@@ -933,6 +1009,8 @@
 		new /obj/effect/hotspot(get_turf(target))
 
 /obj/item/reagent_containers/cup/glass/bottle/molotov/item_interaction(mob/living/user, obj/item/item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(item.get_temperature() < FIRE_MINIMUM_TEMPERATURE_TO_EXIST || active)
 		return NONE
 
@@ -946,6 +1024,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/cup/glass/bottle/molotov/proc/explode()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return
 	if(get_turf(src))
@@ -958,6 +1038,8 @@
 	qdel(src)
 
 /obj/item/reagent_containers/cup/glass/bottle/molotov/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(active)
 		if(!isGlass)
 			to_chat(user, span_danger("The flame's spread too far on it!"))
@@ -980,10 +1062,14 @@
 	var/fermentation_timer /// store the timer id of fermentation
 
 /obj/item/reagent_containers/cup/glass/bottle/pruno/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_MOVABLE_MOVED, PROC_REF(check_fermentation))
 
 /obj/item/reagent_containers/cup/glass/bottle/pruno/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(src, COMSIG_MOVABLE_MOVED)
 	return ..()
 
@@ -991,6 +1077,8 @@
 // TODO: make it so the washer spills reagents if a reagent container is in there, for now, you can wash pruno
 
 /obj/item/reagent_containers/cup/glass/bottle/pruno/proc/check_fermentation()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!(ismachinery(loc) || isstructure(loc)))
 		if(fermentation_timer)
@@ -1008,6 +1096,8 @@
 // actually ferment
 
 /obj/item/reagent_containers/cup/glass/bottle/pruno/proc/do_fermentation()
+	procstart = null
+	src.procstart = null
 	fermentation_time_remaining = null
 	fermentation_timer = null
 	reagents.remove_reagent(/datum/reagent/consumable/prunomix, 50)

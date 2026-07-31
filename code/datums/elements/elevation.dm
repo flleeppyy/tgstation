@@ -9,6 +9,8 @@
 	var/pixel_shift
 
 /datum/element/elevation/Attach(datum/target, pixel_shift)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(target))
 		return ELEMENT_INCOMPATIBLE
@@ -24,12 +26,16 @@
 	register_turf(atom_target, atom_target.loc)
 
 /datum/element/elevation/Detach(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, list(COMSIG_ATOM_ENTERING, COMSIG_ATOM_EXITING))
 	unregister_turf(source, source.loc)
 	REMOVE_TRAIT(source, TRAIT_ELEVATING_OBJECT, ref(src))
 	return ..()
 
 /datum/element/elevation/proc/reset_elevation(turf/target)
+	procstart = null
+	src.procstart = null
 	var/list/current_values[2]
 	SEND_SIGNAL(target, COMSIG_TURF_RESET_ELEVATION, current_values)
 	var/current_pixel_shift = current_values[ELEVATION_CURRENT_PIXEL_SHIFT]
@@ -42,18 +48,26 @@
 		target.AddElement(/datum/element/elevation_core, new_pixel_shift)
 
 /datum/element/elevation/proc/check_elevation(turf/source, list/current_values)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	current_values[ELEVATION_MAX_PIXEL_SHIFT] = max(current_values[ELEVATION_MAX_PIXEL_SHIFT], pixel_shift)
 
 /datum/element/elevation/proc/on_source_entering(atom/movable/source, atom/entering, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	register_turf(source, entering)
 
 /datum/element/elevation/proc/on_source_exiting(atom/movable/source, atom/exiting)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	unregister_turf(source, exiting)
 
 /datum/element/elevation/proc/register_turf(atom/movable/source, atom/location)
+	procstart = null
+	src.procstart = null
 	if(!isturf(location))
 		return
 	if(!HAS_TRAIT(location, TRAIT_TURF_HAS_ELEVATED_OBJ(pixel_shift)))
@@ -63,6 +77,8 @@
 	ADD_TRAIT(location, TRAIT_TURF_HAS_ELEVATED_OBJ(pixel_shift), ref(source))
 
 /datum/element/elevation/proc/unregister_turf(atom/movable/source, atom/location)
+	procstart = null
+	src.procstart = null
 	if(!isturf(location))
 		return
 	REMOVE_TRAIT(location, TRAIT_TURF_HAS_ELEVATED_OBJ(pixel_shift), ref(source))
@@ -75,6 +91,8 @@
 /// object with the new turf. We need to do this because turfs do not keep their traits when changed, and so the check for
 /// TRAIT_TURF_HAS_ELEVATED_OBJ above will fail and cause override runtimes when we attempt to register the signals again.
 /datum/element/elevation/proc/pre_change_turf(turf/changed, path, list/new_baseturfs, flags, list/post_change_callbacks)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for (var/atom/movable/content as anything in changed)
 		if(HAS_TRAIT_FROM(content, TRAIT_ELEVATING_OBJECT, ref(src)))
@@ -100,6 +118,8 @@
 	var/pixel_shift
 
 /datum/element/elevation_core/Attach(datum/target, pixel_shift)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isturf(target))
 		return ELEMENT_INCOMPATIBLE
@@ -119,6 +139,8 @@
 		register_new_mob(living)
 
 /datum/element/elevation_core/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	/**
 	 * Since the element can be removed outside of Destroy(),
 	 * and even then, signals are passed down to the new turf,
@@ -137,6 +159,8 @@
 	return ..()
 
 /datum/element/elevation_core/proc/on_entered(turf/source, atom/movable/entered, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// If the movement has been aborted by something else within the chain we need to abort
 	if(!isliving(entered) || entered.loc != source)
@@ -146,11 +170,15 @@
 		register_new_mob(entered, elevate_time = isturf(old_loc) && source.Adjacent(old_loc) ? ELEVATE_TIME : 0)
 
 /datum/element/elevation_core/proc/on_initialized_on(turf/source, atom/movable/spawned)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isliving(spawned))
 		register_new_mob(spawned, elevate_time = 0)
 
 /datum/element/elevation_core/proc/on_exited(turf/source, atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if((isnull(gone.loc) || !HAS_TRAIT_FROM(gone.loc, TRAIT_ELEVATED_TURF, ELEVATION_SOURCE(src))) && isliving(gone))
 		// Always unregister the signals, we're still leaving even if not affected by elevation.
@@ -159,6 +187,8 @@
 
 /// Registers a new mob to be elevated, and elevates it.
 /datum/element/elevation_core/proc/register_new_mob(mob/living/new_mob, elevate_time = ELEVATE_TIME)
+	procstart = null
+	src.procstart = null
 	elevate_mob(new_mob, elevate_time = elevate_time)
 	// mobs can reasonably be reigstered twice if the element is attached and then their init finishes
 	RegisterSignal(new_mob, COMSIG_LIVING_SET_BUCKLED, PROC_REF(on_set_buckled), override = TRUE)
@@ -176,6 +206,8 @@
  * ...And that something is a mob, we will be elevated (but not the other mob).
  */
 /datum/element/elevation_core/proc/elevate_mob(mob/living/target, elevate_time = ELEVATE_TIME, force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(target, TRAIT_IGNORE_ELEVATION) && !force)
 		return
 	// while the offset system can natively handle this,
@@ -200,6 +232,8 @@
 
 /// Reverts elevation of the mob.
 /datum/element/elevation_core/proc/deelevate_mob(mob/living/target, elevate_time = ELEVATE_TIME)
+	procstart = null
+	src.procstart = null
 	target.remove_offsets(ELEVATION_SOURCE(src), animate = elevate_time > 0)
 	if(isvehicle(target.buckled))
 		animate(target.buckled, pixel_z = -pixel_shift, time = elevate_time, flags = ANIMATION_RELATIVE|ANIMATION_PARALLEL)
@@ -214,6 +248,8 @@
  * or something anchored to the floor than atop of whatever else is on the same turf.
  */
 /datum/element/elevation_core/proc/on_set_buckled(mob/living/source, atom/movable/new_buckled)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(HAS_TRAIT(source, TRAIT_IGNORE_ELEVATION))
 		return
@@ -241,14 +277,20 @@
 			source.remove_offsets(ELEVATION_SOURCE(src))
 
 /datum/element/elevation_core/proc/on_ignore_elevation_add(mob/living/source, trait)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	deelevate_mob(source)
 
 /datum/element/elevation_core/proc/on_ignore_elevation_remove(mob/living/source, trait)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	elevate_mob(source)
 
 /datum/element/elevation_core/proc/on_reset_elevation(turf/source, list/current_values)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	current_values[ELEVATION_CURRENT_PIXEL_SHIFT] = pixel_shift
 

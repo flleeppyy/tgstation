@@ -15,11 +15,15 @@
 	attack_verb_simple = list("smash", "bash")
 
 /obj/item/reagent_containers/cup/glass/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum, do_splash = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.) //if the bottle wasn't caught
 		smash(hit_atom, throwingdatum?.get_thrower(), throwingdatum)
 
 /obj/item/reagent_containers/cup/glass/proc/smash(atom/target, atom/thrower, datum/thrownthing/throwingdatum, break_top = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!isGlass)
 		return FALSE
 	if(QDELING(src) || !target) //Invalid loc
@@ -36,9 +40,13 @@
 	return TRUE
 
 /obj/item/reagent_containers/cup/glass/proc/post_smash(atom/target, atom/thrower, datum/thrownthing/throwingdatum, obj/item/broken_bottle/broken)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/reagent_containers/cup/glass/bullet_act(obj/projectile/proj)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(src))
 		return
@@ -77,6 +85,8 @@
 	volume = 150
 
 /obj/item/reagent_containers/cup/glass/trophy/gold_cup/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/cuffable_item) //closed handles
 
@@ -93,6 +103,8 @@
 	volume = 100
 
 /obj/item/reagent_containers/cup/glass/trophy/silver_cup/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/cuffable_item) //closed handle
 
@@ -133,21 +145,29 @@
 	lid_open = TRUE
 
 /obj/item/reagent_containers/cup/glass/coffee/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Alt-click to toggle cup lid.")
 	return
 
 /obj/item/reagent_containers/cup/glass/coffee/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "[lid_open ? "Add" : "Remove"] Lid"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/reagent_containers/cup/glass/coffee/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	lid_open = !lid_open
 	update_icon_state()
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/reagent_containers/cup/glass/coffee/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(lid_open)
 		icon_state = reagents.total_volume ? "[base_icon_state]_full" : "[base_icon_state]_empty"
 	else
@@ -176,10 +196,14 @@
 	inhand_icon_state = "coffee"
 
 /obj/item/reagent_containers/cup/glass/mug/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/cuffable_item)
 
 /obj/item/reagent_containers/cup/glass/mug/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][reagents.total_volume ? null : "_empty"]"
 	return ..()
 
@@ -215,6 +239,8 @@
 	isGlass = FALSE
 
 /obj/item/reagent_containers/cup/glass/coffee_cup/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = reagents.total_volume ? base_icon_state : "[base_icon_state]_e"
 	return ..()
 
@@ -250,6 +276,8 @@
 	reagent_container_liquid_sound = SFX_PLASTIC_BOTTLE_LIQUID_SLOSH
 
 /obj/item/reagent_containers/cup/glass/waterbottle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	cap_overlay = mutable_appearance(cap_icon, cap_icon_state)
 	. = ..()
 	if(start_capped)
@@ -258,11 +286,15 @@
 		update_appearance()
 
 /obj/item/reagent_containers/cup/glass/waterbottle/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!is_open_container())
 		. += cap_overlay
 
 /obj/item/reagent_containers/cup/glass/waterbottle/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cap_lost)
 		. += span_notice("The cap seems to be missing.")
@@ -272,6 +304,8 @@
 		. += span_notice("The cap has been taken off. Alt-click to put a cap on.")
 
 /obj/item/reagent_containers/cup/glass/waterbottle/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(cap_lost)
 		to_chat(user, span_warning("The cap seems to be missing! Where did it go?"))
 		return CLICK_ACTION_BLOCKING
@@ -295,6 +329,8 @@
 
 // heehoo bottle flipping
 /obj/item/reagent_containers/cup/glass/waterbottle/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(src))
 		return
@@ -309,6 +345,8 @@
 		animate(src, transform = matrix(prob(50)? 90 : -90, MATRIX_ROTATE), time = 3, loop = 0)
 
 /obj/item/reagent_containers/cup/glass/waterbottle/pickup(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, transform = null, time = 1, loop = 0)
 
@@ -337,6 +375,8 @@
 	flip_chance = 100 // FLIPP
 
 /obj/item/reagent_containers/cup/glass/waterbottle/relic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	var/reagent_id = get_random_reagent_id()
 	var/datum/reagent/random_reagent = new reagent_id
 	list_reagents = list(random_reagent.type = 50)
@@ -355,6 +395,8 @@
 	custom_materials = list(/datum/material/paper = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/reagent_containers/cup/glass/sillycup/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = reagents.total_volume ? "water_cup" : "water_cup_e"
 	return ..()
 
@@ -368,6 +410,8 @@
 	custom_materials = list(/datum/material/cardboard = SHEET_MATERIAL_AMOUNT)
 
 /obj/item/reagent_containers/cup/glass/bottle/juice/smallcarton/Initialize(mapload, vol)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/takes_reagent_appearance, \
@@ -391,6 +435,8 @@
 	var/random_sprite = TRUE
 
 /obj/item/reagent_containers/cup/glass/colocup/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(-4,4)
 	pixel_y = rand(-4,4)
@@ -431,6 +477,8 @@
 	var/custom_drink_desc = "Mixed by your favourite bartender!"
 
 /obj/item/reagent_containers/cup/glass/shaker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(10))
 		name = "\improper Nanotrasen 20th Anniversary Shaker"
@@ -438,11 +486,15 @@
 		icon_state = "shaker_n"
 
 /obj/item/reagent_containers/cup/glass/shaker/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "[using_custom_drinks ? "Disable" : "Enable"] custom drinks"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/reagent_containers/cup/glass/shaker/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Alt-click to [using_custom_drinks ? "disable" : "enable"] custom drink naming")
 	if(using_custom_drinks)
@@ -450,6 +502,8 @@
 		. += span_notice("Drinks poured from this shaker will have the following description: [custom_drink_desc]")
 
 /obj/item/reagent_containers/cup/glass/shaker/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(using_custom_drinks)
 		using_custom_drinks = FALSE
 		disable_custom_drinks()
@@ -483,12 +537,18 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/reagent_containers/cup/glass/shaker/proc/enable_custom_drinks()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(src, COMSIG_REAGENTS_CUP_TRANSFER_TO, PROC_REF(handle_transfer))
 
 /obj/item/reagent_containers/cup/glass/shaker/proc/disable_custom_drinks()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(src, COMSIG_REAGENTS_CUP_TRANSFER_TO)
 
 /obj/item/reagent_containers/cup/glass/shaker/proc/handle_transfer(atom/origin, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Should only work on drinking/shot glasses
 	if(!istype(target, /obj/item/reagent_containers/cup/glass/drinkingglass))

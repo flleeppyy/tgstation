@@ -18,6 +18,8 @@
 	var/turf/recharging_turf
 
 /obj/machinery/mech_bay_recharge_port/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	recharging_turf = get_step(loc, dir)
 
@@ -34,15 +36,21 @@
 	GLOB.roundstart_station_mechcharger_areas += area_name
 
 /obj/machinery/mech_bay_recharge_port/Destroy()
+	procstart = null
+	src.procstart = null
 	if (recharge_console?.recharge_port == src)
 		recharge_console.recharge_port = null
 	return ..()
 
 /obj/machinery/mech_bay_recharge_port/setDir(new_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	recharging_turf = get_step(loc, dir)
 
 /obj/machinery/mech_bay_recharge_port/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/total_rating = 0
 	for(var/datum/stock_part/capacitor/capacitor in component_parts)
@@ -50,11 +58,15 @@
 	recharge_power = total_rating * 0.0125 * STANDARD_CELL_RATE
 
 /obj/machinery/mech_bay_recharge_port/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
 		. += span_notice("The status display reads: Recharge power <b>[siunit(recharge_power, "W", 1)]</b>.")
 
 /obj/machinery/mech_bay_recharge_port/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & NOPOWER || !recharge_console)
 		return
 	var/obj/vehicle/sealed/mecha/recharging_mech = recharging_mech_ref?.resolve()
@@ -77,16 +89,24 @@
 		recharge_console.update_appearance()
 
 /obj/machinery/mech_bay_recharge_port/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]-o" : base_icon_state
 
 /obj/machinery/mech_bay_recharge_port/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/mech_bay_recharge_port/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/mech_bay_recharge_port/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = default_change_direction_wrench(user, tool)
 	recharging_turf = get_step(loc, dir)
 	return .
@@ -103,15 +123,21 @@
 	var/obj/machinery/mech_bay_recharge_port/recharge_port
 
 /obj/machinery/computer/mech_bay_power_console/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reconnect()
 
 /obj/machinery/computer/mech_bay_power_console/Destroy()
+	procstart = null
+	src.procstart = null
 	if (recharge_port?.recharge_console == src)
 		recharge_port.recharge_console = null
 	return ..()
 
 /obj/machinery/computer/mech_bay_power_console/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -119,6 +145,8 @@
 		ui.open()
 
 /obj/machinery/computer/mech_bay_power_console/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -129,6 +157,8 @@
 			update_appearance()
 
 /obj/machinery/computer/mech_bay_power_console/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	if(QDELETED(recharge_port))
 		return data
@@ -150,6 +180,8 @@
 
 ///Checks for nearby recharge ports to link to
 /obj/machinery/computer/mech_bay_power_console/proc/reconnect()
+	procstart = null
+	src.procstart = null
 	if(recharge_port)
 		return
 	recharge_port = locate(/obj/machinery/mech_bay_recharge_port) in range(1, src)
@@ -168,6 +200,8 @@
 		recharge_port = null
 
 /obj/machinery/computer/mech_bay_power_console/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & (NOPOWER|BROKEN))
 		return

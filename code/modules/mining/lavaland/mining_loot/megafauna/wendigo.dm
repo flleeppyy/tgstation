@@ -7,6 +7,8 @@
 	icon_state = "vial"
 
 /obj/item/wendigo_blood/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return
 	var/mob/living/carbon/human/human_user = user

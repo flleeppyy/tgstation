@@ -16,6 +16,8 @@
 	COOLDOWN_DECLARE(massdriver_countdown)
 
 /obj/machinery/computer/pod/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/machinery/mass_driver/M in range(range, src))
 		if(M.id == id)
@@ -23,6 +25,8 @@
 			break
 
 /obj/machinery/computer/pod/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(COOLDOWN_FINISHED(src, massdriver_countdown))
 		timing = FALSE
 		// alarm() sleeps, so we want to end processing first and can't rely on return PROCESS_KILL
@@ -33,6 +37,8 @@
  * Initiates launching sequence by checking if all components are functional, opening poddoors, firing mass drivers and then closing poddoors
  */
 /obj/machinery/computer/pod/proc/alarm()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (NOPOWER|BROKEN))
 		return
 
@@ -56,6 +62,8 @@
 			M.close()
 
 /obj/machinery/computer/pod/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -63,6 +71,8 @@
 		ui.open()
 
 /obj/machinery/computer/pod/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	// If the cooldown has finished, just display the time. If the cooldown hasn't finished, display the cooldown.
 	var/display_time = COOLDOWN_FINISHED(src, massdriver_countdown) ? time : COOLDOWN_TIMELEFT(src, massdriver_countdown) * 0.1
@@ -79,6 +89,8 @@
 	return data
 
 /obj/machinery/computer/pod/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

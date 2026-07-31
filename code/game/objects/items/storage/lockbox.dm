@@ -18,6 +18,8 @@
 	var/icon_broken = "lockbox+b"
 
 /obj/item/storage/lockbox/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	register_context()
@@ -26,6 +28,8 @@
 
 ///screentips for lockboxes
 /obj/item/storage/lockbox/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!held_item)
 		return NONE
 	if(broken)
@@ -36,6 +40,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/storage/lockbox/tool_act(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/card = tool.GetID()
 	if(isnull(card))
 		return ..()
@@ -47,6 +53,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/storage/lockbox/proc/can_unlock(mob/living/user, obj/item/card/id/id_card, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(check_access(id_card))
 		return TRUE
 	if(!silent)
@@ -54,10 +62,14 @@
 	return FALSE
 
 /obj/item/storage/lockbox/proc/toggle_locked(mob/living/user)
+	procstart = null
+	src.procstart = null
 	atom_storage.set_locked(atom_storage.locked ? STORAGE_NOT_LOCKED : STORAGE_FULLY_LOCKED)
 	balloon_alert(user, atom_storage.locked ? "locked" : "unlocked")
 
 /obj/item/storage/lockbox/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(broken)
 		icon_state = icon_broken
@@ -69,6 +81,8 @@
 		icon_state = icon_closed
 
 /obj/item/storage/lockbox/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(!broken)
 		broken = TRUE
 		atom_storage.set_locked(STORAGE_NOT_LOCKED)
@@ -79,16 +93,22 @@
 	return FALSE
 
 /obj/item/storage/lockbox/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(broken)
 		. += span_notice("It appears to be broken.")
 
 /obj/item/storage/lockbox/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	open = TRUE
 	update_appearance()
 
 /obj/item/storage/lockbox/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	open = TRUE
 	update_appearance()
@@ -98,6 +118,8 @@
 	req_access = list(ACCESS_SECURITY)
 
 /obj/item/storage/lockbox/loyalty/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/implantcase/mindshield(src)
 	new /obj/item/implanter/mindshield(src)
@@ -108,6 +130,8 @@
 	req_access = list(ACCESS_SECURITY)
 
 /obj/item/storage/lockbox/clusterbang/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/grenade/clusterbuster(src)
 
 /obj/item/storage/lockbox/medal
@@ -126,17 +150,23 @@
 	storage_type = /datum/storage/lockbox/medal
 
 /obj/item/storage/lockbox/medal/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!atom_storage.locked)
 		. += span_notice("Alt-click to [open ? "close":"open"] it.")
 
 /obj/item/storage/lockbox/medal/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!atom_storage.locked)
 		open = !open
 		update_appearance()
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/storage/lockbox/medal/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/accessory/medal/gold/captain(src)
 	new /obj/item/clothing/accessory/medal/silver/valor(src)
 	new /obj/item/clothing/accessory/medal/silver/valor(src)
@@ -148,6 +178,8 @@
 		new /obj/item/clothing/accessory/medal/conduct(src)
 
 /obj/item/storage/lockbox/medal/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!contents || !open)
 		return
@@ -172,6 +204,8 @@
 	icon_closed = "hopbox"
 
 /obj/item/storage/lockbox/medal/hop/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/accessory/medal/silver/bureaucracy(src)
 	new /obj/item/clothing/accessory/medal/gold/ordom(src)
@@ -193,12 +227,16 @@
 	icon_closed = "medbox"
 
 /obj/item/storage/lockbox/medal/med/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/accessory/medal/med_medal(src)
 	new /obj/item/clothing/accessory/medal/med_medal2(src)
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/accessory/medal/silver/emergency_services/medical(src)
 
 /obj/item/storage/lockbox/medal/sec/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/accessory/medal/silver/security(src)
 
@@ -211,6 +249,8 @@
 	icon_closed = "cargobox"
 
 /obj/item/storage/lockbox/medal/cargo/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/accessory/medal/ribbon/cargo(src)
 
 /obj/item/storage/lockbox/medal/service
@@ -222,6 +262,8 @@
 	icon_closed = "srvbox"
 
 /obj/item/storage/lockbox/medal/service/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/accessory/medal/silver/excellence(src)
 
 /obj/item/storage/lockbox/medal/sci
@@ -234,6 +276,8 @@
 
 
 /obj/item/storage/lockbox/medal/sci/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/accessory/medal/plasma/nobel_science(src)
 
@@ -246,6 +290,8 @@
 	icon_closed = "engbox"
 
 /obj/item/storage/lockbox/medal/engineering/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/accessory/medal/silver/emergency_services/engineering(src)
 	new /obj/item/clothing/accessory/medal/silver/elder_atmosian(src)
@@ -265,12 +311,16 @@
 	var/datum/bank_account/buyer_account
 
 /obj/item/storage/lockbox/order/Initialize(mapload, datum/bank_account/_buyer_account)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	buyer_account = _buyer_account
 	ADD_TRAIT(src, TRAIT_NO_MISSING_ITEM_ERROR, TRAIT_GENERIC)
 	ADD_TRAIT(src, TRAIT_NO_MANIFEST_CONTENTS_ERROR, TRAIT_GENERIC)
 
 /obj/item/storage/lockbox/order/can_unlock(mob/living/user, obj/item/card/id/id_card, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(id_card.registered_account == buyer_account)
 		return TRUE
 	if(!silent)
@@ -294,6 +344,8 @@
 	storage_type = /datum/storage/lockbox/dueling
 
 /obj/item/storage/lockbox/dueling/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/gun/energy/dueling/gun_A = new(src)
 	var/obj/item/gun/energy/dueling/gun_B = new(src)
@@ -319,6 +371,8 @@
 	var/loot_path
 
 /obj/item/storage/lockbox/bitrunning/encrypted/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/item/storage/lockbox/bitrunning/decrypted
@@ -350,5 +404,7 @@
 	playsound(src, 'sound/effects/magic/blink.ogg', 50, TRUE)
 
 /obj/item/storage/lockbox/bitrunning/decrypted/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/choice = SSbitrunning.pick_secondary_loot(source_domain)
 	new choice(src)

@@ -69,6 +69,8 @@
 	eldritch_passive = /datum/status_effect/heretic_passive/blade
 
 /datum/heretic_knowledge/limited_amount/starting/base_blade/on_mansus_grasp(mob/living/source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!check_behind(source, target))
@@ -81,6 +83,8 @@
 	playsound(target, 'sound/items/weapons/guillotine.ogg', 100, TRUE)
 
 /datum/heretic_knowledge/limited_amount/starting/base_blade/create_mark(mob/living/source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	var/datum/status_effect/eldritch/blade/blade_mark = ..()
 	if(istype(blade_mark))
 		var/area/to_lock_to = get_area(target)
@@ -89,6 +93,8 @@
 	return blade_mark
 
 /datum/heretic_knowledge/limited_amount/starting/base_blade/trigger_mark(mob/living/source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -125,6 +131,8 @@
 	var/in_duelist_stance = FALSE
 
 /datum/heretic_knowledge/duel_stance/on_gain(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(user, TRAIT_NODISMEMBER, type)
 	RegisterSignal(user, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 	RegisterSignal(user, COMSIG_CARBON_GAIN_WOUND, PROC_REF(on_wound_gain))
@@ -133,6 +141,8 @@
 	on_health_update(user) // Run this once, so if the knowledge is learned while hurt it activates properly
 
 /datum/heretic_knowledge/duel_stance/on_lose(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(user, TRAIT_NODISMEMBER, type)
 	if(in_duelist_stance)
 		user.remove_traits(list(TRAIT_HARDLY_WOUNDED), type)
@@ -143,6 +153,8 @@
 	UnregisterSignal(user, list(COMSIG_ATOM_EXAMINE, COMSIG_CARBON_GAIN_WOUND, COMSIG_LIVING_HEALTH_UPDATE))
 
 /datum/heretic_knowledge/duel_stance/proc/on_examine(mob/living/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/held_item = source.get_active_held_item()
@@ -150,6 +162,8 @@
 		examine_list += span_warning("[source] looks unnaturally poised[held_item?.force >= 15 ? " and ready to strike out":""].")
 
 /datum/heretic_knowledge/duel_stance/proc/on_wound_gain(mob/living/source, datum/wound/gained_wound, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(gained_wound.blood_flow <= 0)
@@ -158,6 +172,8 @@
 	gained_wound.adjust_blood_flow(gained_wound.severity * BLOOD_FLOW_PER_SEVEIRTY)
 
 /datum/heretic_knowledge/duel_stance/proc/on_health_update(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(in_duelist_stance && source.health > source.maxHealth * 0.5)
@@ -212,18 +228,26 @@
 		You may only have up to four charges at once."
 
 /datum/heretic_knowledge/spell/wolves_among_sheep/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	charges = 1 // start with one, can go up to four
 
 /datum/heretic_knowledge/spell/wolves_among_sheep/on_gain(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(our_heretic, COMSIG_HERETIC_SACRIFICE, PROC_REF(on_sacrifice))
 
 /datum/heretic_knowledge/spell/wolves_among_sheep/on_lose(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(our_heretic, COMSIG_HERETIC_SACRIFICE)
 
 /datum/heretic_knowledge/spell/wolves_among_sheep/proc/on_sacrifice(datum/source, mob/living/sacrifice, high_value)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	add_charges(1)
 
@@ -243,16 +267,22 @@
 	var/last_weapon_force = -1
 
 /datum/heretic_knowledge/blade_upgrade/blade/on_gain(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(user, COMSIG_TOUCH_HANDLESS_CAST, PROC_REF(on_grasp_cast))
 	RegisterSignal(user, COMSIG_MOB_EQUIPPED_ITEM, PROC_REF(on_blade_equipped))
 
 /datum/heretic_knowledge/blade_upgrade/blade/on_lose(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, list(COMSIG_TOUCH_HANDLESS_CAST, COMSIG_MOB_EQUIPPED_ITEM))
 
 ///Tries to infuse our held blade with our mansus grasp
 /datum/heretic_knowledge/blade_upgrade/blade/proc/on_grasp_cast(mob/living/carbon/cast_on)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/held_item = cast_on.get_active_held_item()
@@ -274,6 +304,8 @@
 	return COMPONENT_CAST_HANDLESS
 
 /datum/heretic_knowledge/blade_upgrade/blade/do_melee_effects(mob/living/source, atom/target, obj/item/melee/sickly_blade/blade)
+	procstart = null
+	src.procstart = null
 	if(target == source)
 		return
 
@@ -289,6 +321,8 @@
 	addtimer(CALLBACK(src, PROC_REF(follow_up_attack), source, target, off_hand), 0.25 SECONDS)
 
 /datum/heretic_knowledge/blade_upgrade/blade/proc/follow_up_attack(mob/living/source, atom/target, obj/item/melee/sickly_blade/blade)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(source) || QDELETED(target) || QDELETED(blade))
 		return
 	// Sanity to ensure that the blade we're delivering an offhand attack with is ACTUALLY our offhand
@@ -318,6 +352,8 @@
 
 ///Modifies our blade demolition modifier so we can take down doors with it
 /datum/heretic_knowledge/blade_upgrade/blade/proc/on_blade_equipped(mob/user, obj/item/equipped, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(istype(equipped, /obj/item/melee/sickly_blade/dark))
 		equipped.demolition_mod = 2.5
@@ -340,14 +376,20 @@
 	transmute_text = "Can be manually recharged by completing a ritual with a knife - this will return half of the spell's maximum charges."
 
 /datum/heretic_knowledge/spell/furious_steel/on_gain(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(user, COMSIG_MOB_BLADE_BARRIER_TRIGGERED, PROC_REF(blade_barrier_triggered))
 
 /datum/heretic_knowledge/spell/furious_steel/on_lose(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, COMSIG_MOB_BLADE_BARRIER_TRIGGERED)
 
 /datum/heretic_knowledge/spell/furious_steel/proc/blade_barrier_triggered(mob/living/target, datum/status_effect/barrier)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/action/cooldown/spell/pointed/projectile/furious_steel/spell = created_action_ref
@@ -371,6 +413,8 @@
 	announcement_sound = 'sound/music/antag/heretic/ascend_blade.ogg'
 
 /datum/heretic_knowledge/ultimate/blade_final/is_valid_sacrifice(mob/living/carbon/human/sacrifice)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -378,6 +422,8 @@
 	return !sacrifice.get_bodypart(BODY_ZONE_HEAD) || HAS_TRAIT(sacrifice, TRAIT_HAS_CRANIAL_FISSURE)
 
 /datum/heretic_knowledge/ultimate/blade_final/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(user, TRAIT_NEVER_WOUNDED, type)
 	RegisterSignal(user, COMSIG_HERETIC_BLADE_ATTACK, PROC_REF(on_eldritch_blade))
@@ -403,6 +449,8 @@
 	heretic.physiology.knockdown_mod = 0.75 // Otherwise knockdowns would probably overpower the stun absorption effect.
 
 /datum/heretic_knowledge/ultimate/blade_final/proc/on_eldritch_blade(mob/living/source, mob/living/target, obj/item/melee/sickly_blade/blade)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(target == source)

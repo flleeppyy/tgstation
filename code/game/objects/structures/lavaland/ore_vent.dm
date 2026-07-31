@@ -79,6 +79,8 @@
 	COOLDOWN_DECLARE(manual_vent_cooldown)
 
 /obj/structure/ore_vent/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(mapload)
 		generate_description()
 	register_context()
@@ -101,6 +103,8 @@
 	return ..()
 
 /obj/structure/ore_vent/Destroy()
+	procstart = null
+	src.procstart = null
 	SSore_generation.possible_vents -= src
 	reset_drone(success = FALSE)
 	if(tapped)
@@ -108,6 +112,8 @@
 	return ..()
 
 /obj/structure/ore_vent/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!is_type_in_list(tool, scanning_equipment))
 		return NONE
 
@@ -119,6 +125,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/ore_vent/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -136,12 +144,16 @@
 	visible_message(span_notice("You've successfully produced a boulder! Boy are your arms tired."))
 
 /obj/structure/ore_vent/attack_basic_mob(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(user, TRAIT_BOULDER_BREAKER))
 		produce_boulder(TRUE)
 		return TRUE
 
 /obj/structure/ore_vent/is_buckle_possible(mob/living/target, force, check_loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(tapped)
 		return FALSE
@@ -149,6 +161,8 @@
 		return TRUE
 
 /obj/structure/ore_vent/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(discovered)
 		switch(boulder_size)
@@ -164,6 +178,8 @@
 		. += span_notice("This vent has a low chance to produce an [span_bold("artifact boulder.")] These may contain rare minerals or strange artifacts.")
 
 /obj/structure/ore_vent/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(is_type_in_list(held_item, scanning_equipment))
 		context[SCREENTIP_CONTEXT_LMB] = "Scan vent"
 		return CONTEXTUAL_SCREENTIP_SET
@@ -181,6 +197,8 @@
  * @params map_loading Is this vent being spawned in at mapload? If so, we use the ore_generation subsystem's ore_vent_minerals list to pick minerals. Otherwise, we pick randomly from ore_vent_minerals_lavaland.
  */
 /obj/structure/ore_vent/proc/generate_mineral_breakdown(new_minerals = MINERAL_TYPE_OPTIONS_RANDOM, map_loading = FALSE)
+	procstart = null
+	src.procstart = null
 	if(new_minerals < 1)
 		CRASH("generate_mineral_breakdown called with new_minerals < 1.")
 
@@ -224,12 +242,16 @@
  * @params ore_floor The number of minerals already rolled. Used to scale the logarithmic function.
  */
 /obj/structure/ore_vent/proc/ore_quantity_function(ore_floor, ore_per_size = HALF_SHEET_MATERIAL_AMOUNT)
+	procstart = null
+	src.procstart = null
 	return ore_per_size * max(round(boulder_size * (log(rand(1 + ore_floor, 4 + ore_floor)) ** -1)), 1)
 
 /**
  * This confirms that the user wants to start the wave defense event, and that they can start it.
  */
 /obj/structure/ore_vent/proc/pre_wave_defense(mob/user, spawn_drone = TRUE, mech_scan = FALSE)
+	procstart = null
+	src.procstart = null
 	if(tgui_alert(user, excavation_warning, "Begin defending ore vent?", list("Yes", "No")) != "Yes")
 		return FALSE
 	if(!can_interact(user) && !mech_scan)
@@ -285,6 +307,8 @@
  * Will summon a number of waves of mobs, ending in the vent being tapped after the final wave.
  */
 /obj/structure/ore_vent/proc/start_wave_defense()
+	procstart = null
+	src.procstart = null
 	AddComponent(\
 		/datum/component/spawner, \
 		spawn_types = defending_mobs, \
@@ -308,6 +332,8 @@
  * Also gives xp and mining points to all nearby miners in equal measure.
  */
 /obj/structure/ore_vent/proc/handle_wave_conclusion(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	SEND_SIGNAL(src, COMSIG_VENT_WAVE_CONCLUDED)
@@ -330,6 +356,8 @@
  * Handles reseting our ore vent to its original state so we can start over
  */
 /obj/structure/ore_vent/proc/initiate_wave_loss(loss_message)
+	procstart = null
+	src.procstart = null
 	visible_message(span_danger(loss_message))
 	update_appearance(UPDATE_ICON_STATE)
 	reset_drone(success = FALSE)
@@ -338,6 +366,8 @@
  * Handles winning the event, gives everyone a payout and start boulder production
  */
 /obj/structure/ore_vent/proc/initiate_wave_win(forced = FALSE)
+	procstart = null
+	src.procstart = null
 	tapped = TRUE //The Node Drone has survived the wave defense, and the ore vent is tapped.
 	SSore_generation.processed_vents += src
 	if(!forced)
@@ -366,6 +396,8 @@
 			user_id_card.registered_account.bank_card_talk("You have been awarded [point_reward_val] mining points for your efforts.")
 
 /obj/structure/ore_vent/proc/add_tapped_visual()
+	procstart = null
+	src.procstart = null
 	if (vent_visual)
 		vis_contents |= vent_visual
 		return
@@ -378,6 +410,8 @@
 	vis_contents += vent_visual
 
 /obj/structure/ore_vent/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if (tapped)
 		icon_state = "[base_icon_state]_active"
 	else
@@ -387,11 +421,15 @@
 	return ..()
 
 /obj/structure/ore_vent/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_turf_tracking()
 
 /// Update the turf which we track for mobs entering/exiting
 /obj/structure/ore_vent/proc/set_turf_tracking()
+	procstart = null
+	src.procstart = null
 	if (tracked_turf)
 		UnregisterSignal(tracked_turf, list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_EXITED))
 
@@ -401,6 +439,8 @@
 		RegisterSignal(tracked_turf, COMSIG_ATOM_EXITED, PROC_REF(on_exited))
 
 /obj/structure/ore_vent/proc/on_entered(atom/source, atom/movable/entered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!isliving(entered))
@@ -410,6 +450,8 @@
 		trim_vent()
 
 /obj/structure/ore_vent/proc/on_exited(atom/source, atom/movable/exited, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!isliving(exited) || !isnull(locate(/mob/living) in tracked_turf))
@@ -420,6 +462,8 @@
 
 /// Turn the top part of the vent transparent and clickthrough
 /obj/structure/ore_vent/proc/trim_vent()
+	procstart = null
+	src.procstart = null
 	trimmed = TRUE
 	update_appearance(UPDATE_ICON_STATE)
 
@@ -441,6 +485,8 @@
 
 /// Revert the transparency of the top half of the vent
 /obj/structure/ore_vent/proc/untrim_vent()
+	procstart = null
+	src.procstart = null
 	trimmed = FALSE
 	update_appearance(UPDATE_ICON_STATE)
 
@@ -457,6 +503,8 @@
  * Sends our node back to base and cleans up after the reference
  */
 /obj/structure/ore_vent/proc/reset_drone(success)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(node))
 		node.pre_escape(success = success)
 		UnregisterSignal(node, list(COMSIG_QDELETING, COMSIG_MOVABLE_MOVED))
@@ -470,6 +518,8 @@
  * @params mech_scan If TRUE, will bypass interaction checks to allow mechs to be able to begin the wave defense.
  */
 /obj/structure/ore_vent/proc/scan_and_confirm(mob/living/user, mech_scan = FALSE)
+	procstart = null
+	src.procstart = null
 	if(tapped)
 		balloon_alert_to_viewers("vent tapped!")
 		return
@@ -506,6 +556,8 @@
  * Ore_string is passed to examine().
  */
 /obj/structure/ore_vent/proc/generate_description(mob/user)
+	procstart = null
+	src.procstart = null
 	ore_string = ""
 	var/list/mineral_names = list()
 	for(var/datum/material/resource as anything in mineral_breakdown)
@@ -519,6 +571,8 @@
  * If undiscovered, adds a single overlay with the icon_state "unknown".
  */
 /obj/structure/ore_vent/proc/add_mineral_overlays()
+	procstart = null
+	src.procstart = null
 	if(mineral_breakdown.len && !discovered)
 		var/atom/movable/flick_visual/visual = flick_overlay_view(mutable_appearance('icons/effects/vent_overlays.dmi', "unknown"), 4.5 SECONDS)
 		animate(visual, alpha = 0, time = 4.5 SECONDS, easing = CIRCULAR_EASING|EASE_IN)
@@ -539,6 +593,8 @@
  * @params apply_cooldown Should we apply a cooldown to producing boulders? Default's false, used by manual boulder production (goldgrubs, golems, etc).
  */
 /obj/structure/ore_vent/proc/produce_boulder(apply_cooldown = FALSE)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/obj/item/boulder)
 
 	//cooldown applies only for manual processing by hand
@@ -586,12 +642,16 @@
  * Explosion matches a gibtonite light explosion, as a way to clear nearby solid structures, with a high likelihood of breaking the NODE drone.
  */
 /obj/structure/ore_vent/proc/anti_cheese()
+	procstart = null
+	src.procstart = null
 	explosion(src, heavy_impact_range = 1, light_impact_range = 3, flame_range = 0, flash_range = 0, adminlog = FALSE)
 
 /**
  * Handle logging for mobs spawned
  */
 /obj/structure/ore_vent/proc/log_mob_spawned(datum/source, mob/living/created)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	log_game("Ore vent [key_name_and_tag(src)] spawned the following mob: [key_name_and_tag(created)]")
 	SSblackbox.record_feedback("tally", "ore_vent_mobs_spawned", 1, created.type)
@@ -601,6 +661,8 @@
  * Handle logging for mobs killed
  */
 /obj/structure/ore_vent/proc/log_mob_killed(datum/source, mob/living/killed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	log_game("Vent-spawned mob [key_name_and_tag(killed)] was killed")
 	SSblackbox.record_feedback("tally", "ore_vent_mobs_killed", 1, killed.type)
@@ -611,6 +673,8 @@
  * @param force_size: An override we use for map_generation, when we know what size boulder we need from this ore vent already. Use the standard ore_vent size defines.
  */
 /obj/structure/ore_vent/proc/vent_size_setup(random = FALSE, force_size, map_loading)
+	procstart = null
+	src.procstart = null
 	var/string_boulder_size
 
 	if(force_size)
@@ -655,6 +719,8 @@
 	)
 
 /obj/structure/ore_vent/starter_resources/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	generate_description()
 
@@ -662,6 +728,8 @@
 	// Todo: determine if we need a boulder_size default thats unique from the override performed in vent_size_setup.
 
 /obj/structure/ore_vent/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!unique_vent && !mapload)
 		generate_mineral_breakdown(map_loading = mapload) //Default to random mineral breakdowns, unless this is a unique vent or we're still setting up default vent distribution.
@@ -670,6 +738,8 @@
 		vent_size_setup(random = TRUE) // We only do this here specific to random distribution ore vents, and within mapload we handle this manually within SSore_generation.
 
 /obj/structure/ore_vent/random/LateInitialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!length(mineral_breakdown))
 		CRASH("We generated an ore vent, and after init, it had no mineral breakdown!")
@@ -730,10 +800,14 @@
 	var/summoned_boss = null
 
 /obj/structure/ore_vent/boss/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	summoned_boss = pick(defending_mobs)
 
 /obj/structure/ore_vent/boss/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/boss_string = ""
 	switch(summoned_boss)
@@ -750,6 +824,8 @@
 	. += span_notice("[boss_string] is etched onto the side of the vent.")
 
 /obj/structure/ore_vent/boss/start_wave_defense()
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, wave_cooldown))
 		return
 	// Completely override the normal wave defense, and just spawn the boss.
@@ -760,6 +836,8 @@
 	boss.say(boss.summon_line, language = /datum/language/common, forced = "summon line") //Pull their specific summon line to say. Default is meme text so make sure that they have theirs set already.
 
 /obj/structure/ore_vent/boss/handle_wave_conclusion()
+	procstart = null
+	src.procstart = null
 	node = new /mob/living/basic/node_drone(loc) //We're spawning the vent after the boss dies, so the player can just focus on the boss.
 	SSblackbox.record_feedback("tally", "ore_vent_mobs_killed", 1, summoned_boss)
 	COOLDOWN_RESET(src, wave_cooldown)
@@ -787,6 +865,8 @@
 	)
 
 /obj/structure/ore_vent/debug/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/material/choice = tgui_input_list(user, "Choose a material to add/remove.", "New material", subtypesof(/datum/material))
 	if(!choice)
@@ -803,6 +883,8 @@
 	generate_description()
 
 /obj/structure/ore_vent/debug/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/choice = tgui_input_list(user, "Choose a vent size.", "New size", list(SMALL_VENT_TYPE, MEDIUM_VENT_TYPE, LARGE_VENT_TYPE))
 	if(!choice)
@@ -814,6 +896,8 @@
 	icon_state = "mining_epicenter"
 
 /obj/effect/landmark/mining_center/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 
 	for(var/obj/mining_mark as anything in GLOB.mining_center)

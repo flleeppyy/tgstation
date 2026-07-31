@@ -35,6 +35,8 @@
 	var/cargo_account = ACCOUNT_CAR
 
 /datum/computer_file/program/budgetorders/proc/is_visible_pack(mob/user, paccess_to_check, list/access, contraband)
+	procstart = null
+	src.procstart = null
 	if(HAS_SILICON_ACCESS(user)) //Borgs can't buy things.
 		return FALSE
 	if(computer.obj_flags & EMAGGED)
@@ -58,6 +60,8 @@
 	return FALSE
 
 /datum/computer_file/program/budgetorders/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["location"] = SSshuttle.supply.getStatusText()
 	data["department"] = "Cargo"
@@ -170,6 +174,8 @@
 	return data
 
 /datum/computer_file/program/budgetorders/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["max_order"] = CARGO_MAX_ORDER
 	data["displayed_currency_full_name"] = " [MONEY_NAME]"
@@ -177,6 +183,8 @@
 	return data
 
 /datum/computer_file/program/budgetorders/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/user = ui.user
 	switch(action)
@@ -343,6 +351,8 @@
 		post_signal(cargo_shuttle)
 
 /datum/computer_file/program/budgetorders/proc/post_signal(command)
+	procstart = null
+	src.procstart = null
 
 	var/datum/radio_frequency/frequency = SSradio.return_frequency(FREQ_STATUS_DISPLAYS)
 

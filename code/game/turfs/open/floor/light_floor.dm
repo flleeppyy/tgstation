@@ -26,9 +26,13 @@
 	var/cycle = FALSE
 
 /turf/open/floor/light/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("light_broken")
 
 /turf/open/floor/light/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("There's a <b>small crack</b> on the edge of it.")
 	. += span_notice("Use a multitool on it to change colors.")
@@ -38,6 +42,8 @@
 
 ///create radial menu
 /turf/open/floor/light/proc/populate_lighttile_designs()
+	procstart = null
+	src.procstart = null
 	lighttile_designs = list(
 		LIGHT_COLOR_CYAN = image(icon = src.icon, icon_state = "light_on-1"),
 		COLOR_SOFT_RED = image(icon = src.icon, icon_state = "light_on-2"),
@@ -52,17 +58,23 @@
 		)
 
 /turf/open/floor/light/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 	if(!length(lighttile_designs))
 		populate_lighttile_designs()
 
 /turf/open/floor/light/break_tile()
+	procstart = null
+	src.procstart = null
 	..()
 	state = pick(LIGHTFLOOR_FLICKER, LIGHTFLOOR_BREAKING, LIGHTFLOOR_BROKEN)/// pick a broken state
 	update_appearance()
 
 /turf/open/floor/light/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!on)
 		set_light(0)
@@ -83,6 +95,8 @@
 			set_light(0)
 
 /turf/open/floor/light/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!on)
 		icon_state = "light_off"
 		return ..()
@@ -107,10 +121,14 @@
 	return ..()
 
 /turf/open/floor/light/ChangeTurf(path, new_baseturfs, flags)
+	procstart = null
+	src.procstart = null
 	set_light(0)
 	return ..()
 
 /turf/open/floor/light/screwdriver_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!can_modify_colour && !cycle)
 		return
@@ -118,6 +136,8 @@
 	update_appearance()
 
 /turf/open/floor/light/multitool_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -130,6 +150,8 @@
 	update_appearance()
 
 /turf/open/floor/light/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ITEM_INTERACT_ANY_BLOCKER & .)
 		return .
@@ -156,6 +178,8 @@
 
 
 /turf/open/floor/light/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -192,6 +216,8 @@
  * * multitool The multitool used to interact with a menu
  */
 /turf/open/floor/light/proc/check_menu(mob/living/user, obj/item/multitool)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated)

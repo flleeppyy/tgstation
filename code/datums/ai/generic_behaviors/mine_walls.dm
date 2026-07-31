@@ -5,6 +5,8 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/find_mineral_wall/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living_pawn = controller.pawn
 	for(var/turf/closed/mineral/potential_wall in oview(9, living_pawn))
 		if(!check_if_mineable(controller, potential_wall))
@@ -15,6 +17,8 @@
 
 /// Returns TRUE if the given wall can be approached and mined.
 /datum/bt_node/ai_behavior/find_mineral_wall/proc/check_if_mineable(datum/ai_controller/controller, turf/target_wall)
+	procstart = null
+	src.procstart = null
 	var/mob/living/source = controller.pawn
 	var/direction_to_turf = get_dir(target_wall, source)
 	if(!ISDIAGONALDIR(direction_to_turf))
@@ -35,6 +39,8 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/mine_wall/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/living_pawn = controller.pawn
 	var/turf/closed/mineral/target = controller.blackboard[target_key]
 	if(QDELETED(target))
@@ -49,5 +55,7 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/mine_wall/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(target_key)

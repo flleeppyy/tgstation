@@ -9,6 +9,8 @@
 	preview_outfit = /datum/outfit/paradox_clone
 
 /datum/antagonist/paradox_clone/get_preview_icon()
+	procstart = null
+	src.procstart = null
 	var/datum/universal_icon/final_icon = render_preview_outfit(preview_outfit)
 
 	final_icon.blend_icon(make_background_clone_icon(preview_outfit), ICON_UNDERLAY, -8, 0)
@@ -17,6 +19,8 @@
 	return finish_preview_icon(final_icon)
 
 /datum/antagonist/paradox_clone/proc/make_background_clone_icon(datum/outfit/clone_fit)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy/consistent/clone = new
 
 	var/datum/universal_icon/clone_icon = render_preview_outfit(clone_fit, clone)
@@ -26,6 +30,8 @@
 	return clone_icon
 
 /datum/antagonist/paradox_clone/proc/setup_clone(datum/mind/original_mind)
+	procstart = null
+	src.procstart = null
 	if(isnull(original_mind))
 		CRASH("Tried to set up a paradox clone without an original mind!")
 
@@ -58,6 +64,8 @@
 	original_mind.quick_copy_all_memories(owner)
 
 /datum/antagonist/paradox_clone/roundend_report_header()
+	procstart = null
+	src.procstart = null
 	return span_header("A paradox clone appeared on the station!<br>")
 
 /datum/objective/paradox_clone_replace
@@ -66,9 +74,13 @@
 	var/name_and_job
 
 /datum/objective/paradox_clone_replace/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	explanation_text = "Take [name_and_job || "someone's"]'s place. Avoid collateral damage - remember, your mission is to blend in!"
 
 /datum/objective/paradox_clone_replace/check_completion()
+	procstart = null
+	src.procstart = null
 	return completed || considered_alive(owner)
 
 /datum/outfit/paradox_clone

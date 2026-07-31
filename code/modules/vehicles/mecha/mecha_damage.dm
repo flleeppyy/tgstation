@@ -15,6 +15,8 @@
 
 /// returns a number for the damage multiplier for this relative angle/dir
 /obj/vehicle/sealed/mecha/proc/get_armour_facing(relative_dir)
+	procstart = null
+	src.procstart = null
 	switch(relative_dir)
 		if(180) // BACKSTAB!
 			return facing_modifiers[MECHA_BACK_ARMOUR]
@@ -24,6 +26,8 @@
 
 ///tries to deal internal damaget depending on the damage amount
 /obj/vehicle/sealed/mecha/proc/try_deal_internal_damage(damage)
+	procstart = null
+	src.procstart = null
 	var/internal_damage_threshold = (max_integrity/10) /// Mech internal damage can only occur if the resulting hit exceeds a tenth of the mecha's maximum integrity in a single blow.
 	if(damage < internal_damage_threshold)
 		return
@@ -36,6 +40,8 @@
 
 /// tries to repair any internal damage and plays fluff for it
 /obj/vehicle/sealed/mecha/proc/try_repair_int_damage(mob/user, flag_to_heal)
+	procstart = null
+	src.procstart = null
 	balloon_alert(user, get_int_repair_fluff_start(flag_to_heal))
 	log_message("[key_name(user)] starting internal damage repair for flag [flag_to_heal]", LOG_MECHA)
 	if(!do_after(user, 10 SECONDS, src))
@@ -48,6 +54,8 @@
 
 ///gets the starting balloon alert flufftext
 /obj/vehicle/sealed/mecha/proc/get_int_repair_fluff_start(flag)
+	procstart = null
+	src.procstart = null
 	switch(flag)
 		if(MECHA_INT_FIRE)
 			return "activating internal fire supression..."
@@ -62,6 +70,8 @@
 
 ///gets the successful finish balloon alert flufftext
 /obj/vehicle/sealed/mecha/proc/get_int_repair_fluff_end(flag)
+	procstart = null
+	src.procstart = null
 	switch(flag)
 		if(MECHA_INT_FIRE)
 			return "internal fire supressed"
@@ -76,6 +86,8 @@
 
 ///gets the on-fail balloon alert flufftext
 /obj/vehicle/sealed/mecha/proc/get_int_repair_fluff_fail(flag)
+	procstart = null
+	src.procstart = null
 	switch(flag)
 		if(MECHA_INT_FIRE)
 			return "fire supression canceled"
@@ -89,12 +101,16 @@
 			return "capacitor flush failure"
 
 /obj/vehicle/sealed/mecha/proc/set_internal_damage(int_dam_flag)
+	procstart = null
+	src.procstart = null
 	internal_damage |= int_dam_flag
 	log_message("Internal damage of type [int_dam_flag].", LOG_MECHA)
 	SEND_SOUND(occupants, sound('sound/machines/warning-buzzer.ogg',wait=0))
 	diag_hud_set_mechstat()
 
 /obj/vehicle/sealed/mecha/proc/clear_internal_damage(int_dam_flag)
+	procstart = null
+	src.procstart = null
 	if(internal_damage & int_dam_flag)
 		switch(int_dam_flag)
 			if(MECHA_INT_TEMP_CONTROL)

@@ -9,6 +9,8 @@
 	max_wizard_trigger_potency = 7
 
 /datum/round_event/wizard/ghost/start()
+	procstart = null
+	src.procstart = null
 	var/msg = span_warning("You suddenly feel extremely obvious...")
 	set_observer_default_invisibility(0, msg)
 
@@ -24,6 +26,8 @@
 	description = "Ghosts become visible and gain the power of possession."
 
 /datum/round_event/wizard/possession/start()
+	procstart = null
+	src.procstart = null
 	for(var/mob/dead/observer/ghost_player in GLOB.player_list)
 		ghost_player.fun_verbs = TRUE
 		to_chat(ghost_player, span_hypnophrase("You suddenly feel a welling of new spooky powers..."))

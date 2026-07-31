@@ -18,16 +18,22 @@
 	var/static_visibility_range = 16
 
 /mob/eye/camera/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.camera_eyes += src
 
 /mob/eye/camera/Destroy()
+	procstart = null
+	src.procstart = null
 	clear_camera_chunks()
 	GLOB.camera_eyes -= src
 	return ..()
 
 /// Clears us from any visible camera chunks.
 /mob/eye/camera/proc/clear_camera_chunks()
+	procstart = null
+	src.procstart = null
 	for(var/datum/camerachunk/chunk in visibleCameraChunks)
 		chunk.remove(src)
 
@@ -38,6 +44,8 @@
  * Subtypes are expected to overload this proc and make it return something meaningful.
  */
 /mob/eye/camera/proc/GetViewerClient()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/client)
 	SHOULD_BE_PURE(TRUE)
 
@@ -48,6 +56,8 @@
  * It will also attempt to update visible chunks.
  */
 /mob/eye/camera/proc/setLoc(destination, force_update = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 
 	destination = get_turf(destination)
@@ -66,6 +76,8 @@
 /// Sends a visibility query to the cameranet.
 /// Can be used as a signal handler.
 /mob/eye/camera/proc/update_visibility()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	PROTECTED_PROC(TRUE)
 	SHOULD_CALL_PARENT(TRUE)
@@ -74,10 +86,14 @@
 		SScameras.update_eye_chunk(src)
 
 /mob/eye/camera/zMove(dir, turf/target, z_move_flags = NONE, recursions_left = 1, list/falling_movs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		setLoc(loc, force_update = TRUE)
 
 /mob/eye/camera/Move()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	return

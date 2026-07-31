@@ -4,6 +4,8 @@
 	randomize = TRUE
 
 /datum/wires/syndicatebomb/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	setup_wires()
 	return ..()
 
@@ -14,6 +16,8 @@
  * * num_duds: The number of dud wires to add.
  */
 /datum/wires/syndicatebomb/proc/setup_wires(num_booms = 2, num_duds = 0)
+	procstart = null
+	src.procstart = null
 	wires = list(
 		WIRE_ACTIVATE,
 		WIRE_DELAY,
@@ -26,19 +30,27 @@
 
 /// Adds a number of wires which will explode the bomb if pulse/cut
 /datum/wires/syndicatebomb/proc/add_booms(booms = 2)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to booms)
 		wires += "[WIRE_BOOM] [i]"
 
 /datum/wires/syndicatebomb/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/syndicatebomb/bomb = holder
 	return ..() && bomb.open_panel
 
 /// Translates numbered boom wires into WIRE_BOOM.
 /datum/wires/syndicatebomb/proc/parse_wire(wire)
+	procstart = null
+	src.procstart = null
 	return findtext(wire, WIRE_BOOM) ? WIRE_BOOM : wire
 
 /// Checks if the bomb, if detonated, is dangerous to the user.
 /datum/wires/syndicatebomb/proc/is_dangerous()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/syndicatebomb/bomb = holder
 	if(isnull(bomb.payload))
 		return FALSE
@@ -47,6 +59,8 @@
 	return TRUE
 
 /datum/wires/syndicatebomb/on_pulse(wire, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/syndicatebomb/bomb = holder
 	switch(parse_wire(wire))
 		if(WIRE_BOOM)
@@ -99,6 +113,8 @@
 				bomb.delayedlittle = TRUE
 
 /datum/wires/syndicatebomb/on_cut(wire, mend, source)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/syndicatebomb/bomb = holder
 	switch(parse_wire(wire))
 		if(WIRE_BOOM)
@@ -136,6 +152,8 @@
 					add_memory_in_range(bomb, 7, /datum/memory/bomb_defuse_success, protagonist = source, antagonist = bomb, bomb_time_left = bomb_time_left)
 
 /datum/wires/syndicatebomb/proc/tell_admins(obj/machinery/syndicatebomb/bomb, atom/source, what_happened)
+	procstart = null
+	src.procstart = null
 	var/turf/bombloc = get_turf(bomb)
 	log_game("\A [bomb] was [what_happened] at [AREACOORD(bombloc)] by [source || "nothing(?)"].")
 	message_admins("\A [bomb] was [what_happened] at [ADMIN_VERBOSEJMP(bombloc)] by [source ? ADMIN_LOOKUPFLW(source) : "nothing(?)"].")

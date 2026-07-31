@@ -36,13 +36,17 @@
 	/// Who's getting scanned?
 	var/datum/weakref/patient_ref //If scanning someone else, this will be the target.
 
-/obj/machinery/medical_kiosk/Initialize(mapload) //loaded subtype for mapping use
+/obj/machinery/medical_kiosk/Initialize(mapload)
+	procstart = null
+	src.procstart = null //loaded subtype for mapping use
 	. = ..()
 	AddComponent(/datum/component/payment, get_cost(), SSeconomy.get_dep_account(ACCOUNT_MED), PAYMENT_FRIENDLY)
 	register_context()
 	scanner_wand = new/obj/item/scanner_wand(src)
 
 /obj/machinery/medical_kiosk/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/screentip_change = FALSE
 
@@ -63,7 +67,9 @@
 		context[SCREENTIP_CONTEXT_LMB] = "Return the scanner wand"
 		return screentip_change = TRUE
 
-/obj/machinery/medical_kiosk/proc/inuse()  //Verifies that the user can use the interface, followed by showing medical information.
+/obj/machinery/medical_kiosk/proc/inuse()
+	procstart = null
+	src.procstart = null  //Verifies that the user can use the interface, followed by showing medical information.
 	var/mob/living/carbon/human/paying = paying_ref?.resolve()
 	if(!paying)
 		paying_ref = null
@@ -84,12 +90,16 @@
 	say("Thank you for your patronage!")
 	return
 
-/obj/machinery/medical_kiosk/proc/clearScans() //Called it enough times to be it's own proc
+/obj/machinery/medical_kiosk/proc/clearScans()
+	procstart = null
+	src.procstart = null //Called it enough times to be it's own proc
 	scan_active = NONE
 	update_appearance()
 	return
 
 /obj/machinery/medical_kiosk/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		icon_state = "[base_icon_state]_open"
 		return ..()
@@ -99,13 +109,17 @@
 	icon_state = "[base_icon_state][scan_active ? "_active" : null]"
 	return ..()
 
-/obj/machinery/medical_kiosk/wrench_act(mob/living/user, obj/item/tool) //Allows for wrenching/unwrenching the machine.
+/obj/machinery/medical_kiosk/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null //Allows for wrenching/unwrenching the machine.
 	..()
 	default_unfasten_wrench(user, tool, time = 0.1 SECONDS)
 	return ITEM_INTERACT_SUCCESS
 
 ///Returns the active cost of the board
 /obj/machinery/medical_kiosk/proc/get_cost()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/obj/item/circuitboard/machine/medical_kiosk/board = circuit
@@ -113,12 +127,18 @@
 	return board.custom_cost
 
 /obj/machinery/medical_kiosk/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/medical_kiosk/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/medical_kiosk/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/scanner_wand))
 		return NONE
 
@@ -144,6 +164,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/medical_kiosk/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
@@ -163,10 +185,14 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/medical_kiosk/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(scanner_wand)
 	return ..()
 
 /obj/machinery/medical_kiosk/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(obj_flags & EMAGGED)
 		return
@@ -181,6 +207,8 @@
 	return TRUE
 
 /obj/machinery/medical_kiosk/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(scanner_wand == null)
 		. += span_notice("\The [src] is missing its scanner.")
@@ -188,6 +216,8 @@
 		. += span_notice("\The [src] has its scanner clipped to the side. Right Click to remove.")
 
 /obj/machinery/medical_kiosk/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	var/patient_distance = 0
 	if(!ishuman(user))
 		to_chat(user, span_warning("[src] is unable to interface with non-humanoids!"))
@@ -213,6 +243,8 @@
 		paying_ref = WEAKREF(paying)
 
 /obj/machinery/medical_kiosk/ui_data(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/patient = patient_ref?.resolve()
 	var/list/data = list()
 	if(!patient)
@@ -386,6 +418,8 @@
 	return data
 
 /obj/machinery/medical_kiosk/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

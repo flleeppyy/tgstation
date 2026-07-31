@@ -21,6 +21,8 @@
 	var/forensicPrintCount = 0
 
 /obj/item/detective_scanner/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_UNCONSCIOUS_OR_CRIT(user) || !user.can_read(src) || user.is_blind())
 		return ITEM_INTERACT_BLOCKING
@@ -33,10 +35,14 @@
  * Calls print_report(), and should a runtime occur within we can still reset the 'busy' state
  */
 /obj/item/detective_scanner/proc/safe_print_report()
+	procstart = null
+	src.procstart = null
 	print_report()
 	scanner_busy = FALSE
 
 /obj/item/detective_scanner/proc/print_report()
+	procstart = null
+	src.procstart = null
 	// Create our paper
 	var/obj/item/paper/report_paper = new(get_turf(src))
 
@@ -63,12 +69,16 @@
 	log_data = list()
 
 /obj/item/detective_scanner/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(SHOULD_SKIP_INTERACTION(interacting_with, src, user))
 		return NONE // lets us put our scanner away without trying to scan the bag
 	safe_scan(user, interacting_with)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/detective_scanner/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	safe_scan(user, interacting_with)
 	return ITEM_INTERACT_SUCCESS
 
@@ -78,6 +88,8 @@
  * calls scan(), and should a runtime occur within we can still reset the 'busy' state
  */
 /obj/item/detective_scanner/proc/safe_scan(mob/user, atom/atom_to_scan)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(scanner_busy)
 		balloon_alert(user, "scanner busy!")
@@ -92,6 +104,8 @@
  * This should always return TRUE barring a runtime
  */
 /obj/item/detective_scanner/proc/scan(mob/user, atom/scanned_atom)
+	procstart = null
+	src.procstart = null
 	if(loc != user)
 		return TRUE
 	// Can scan items we hold and store
@@ -180,21 +194,29 @@
 	return TRUE
 
 /obj/item/detective_scanner/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return clear_logs()
 
 /obj/item/detective_scanner/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(length(log_data) && !scanner_busy)
 		. += span_notice("Alt-click to clear scanner logs.")
 
 
 /obj/item/detective_scanner/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ForensicScanner", "Forensic Scanner")
 		ui.open()
 
 /obj/item/detective_scanner/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/logs = list()
 	for(var/datum/detective_scanner_log/log as anything in log_data)
 		UNTYPED_LIST_ADD(logs, log.ui_data(user))
@@ -204,6 +226,8 @@
 	return data
 
 /obj/item/detective_scanner/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/categories = list()
 	for(var/key,value in GLOB.detective_scan_categories)
 		var/datum/detective_scan_category/category = value
@@ -220,6 +244,8 @@
 	return data
 
 /obj/item/detective_scanner/ui_act(action, params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -250,6 +276,8 @@
 			addtimer(CALLBACK(src, PROC_REF(safe_print_report)), 3 SECONDS)
 
 /obj/item/detective_scanner/proc/clear_logs(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!length(log_data))
 		balloon_alert(user, "no logs!")
 		return CLICK_ACTION_BLOCKING

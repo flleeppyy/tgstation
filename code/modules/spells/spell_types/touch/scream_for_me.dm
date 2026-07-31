@@ -16,6 +16,8 @@
 	hand_path = /obj/item/melee/touch_attack/scream_for_me
 
 /datum/action/cooldown/spell/touch/scream_for_me/on_antimagic_triggered(obj/item/melee/touch_attack/hand, mob/living/victim, mob/living/carbon/caster)
+	procstart = null
+	src.procstart = null
 	caster.visible_message(
 		span_warning("The feedback mutilates [caster]'s arm!"),
 		span_userdanger("The spell bounces from [victim]'s skin back into your arm!"),
@@ -24,6 +26,8 @@
 	caster.cause_wound_of_type_and_severity(WOUND_SLASH, to_wound, WOUND_SEVERITY_MODERATE, WOUND_SEVERITY_CRITICAL)
 
 /datum/action/cooldown/spell/touch/scream_for_me/cast_on_hand_hit(obj/item/melee/touch_attack/hand, mob/living/victim, mob/living/carbon/caster)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(victim))
 		return
 	var/mob/living/carbon/human/human_victim = victim

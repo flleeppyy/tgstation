@@ -15,6 +15,8 @@
 	list_reagents = list(/datum/reagent/toxin/plantbgone/weedkiller = 100)
 
 /obj/item/reagent_containers/spray/weedspray/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is huffing [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return TOXLOSS
 
@@ -31,6 +33,8 @@
 	list_reagents = list(/datum/reagent/toxin/pestkiller = 100)
 
 /obj/item/reagent_containers/spray/pestspray/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is huffing [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return TOXLOSS
 
@@ -53,6 +57,8 @@
 	hitsound = 'sound/items/weapons/bladeslice.ogg'
 
 /obj/item/cultivator/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is scratching [user.p_their()] back as hard as [user.p_they()] can with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 
@@ -69,6 +75,8 @@
 	flags_1 = NONE
 
 /obj/item/cultivator/rake/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
@@ -76,6 +84,8 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/item/cultivator/rake/proc/on_entered(datum/source, atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!ishuman(AM))
 		return
@@ -122,6 +132,8 @@
 	fall_chance = 10
 
 /obj/item/hatchet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/butchering, \
 	speed = 7 SECONDS, \
@@ -129,6 +141,8 @@
 	)
 
 /obj/item/hatchet/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is chopping at [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(src, 'sound/items/weapons/bladeslice.ogg', 50, TRUE, -1)
 	return BRUTELOSS
@@ -173,12 +187,16 @@
 	var/swiping = FALSE
 
 /obj/item/scythe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/butchering, speed = 9 SECONDS, effectiveness = 105)
 	AddComponent(/datum/component/bane, affected_biotypes = MOB_PLANT, damage_multiplier = 1.5)
 	AddComponent(/datum/component/walking_aid)
 
 /obj/item/scythe/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is beheading [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user
@@ -189,6 +207,8 @@
 	return BRUTELOSS
 
 /obj/item/scythe/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(target, /obj/structure/alien/resin/flower_bud) && !istype(target, /obj/structure/spacevine))
 		return ..()
 	if(swiping || get_turf(target) == get_turf(user))
@@ -231,6 +251,8 @@
 
 ///Catch right clicks so we can stylize!
 /obj/item/secateurs/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 
@@ -239,6 +261,8 @@
 
 ///Send a signal to whatever we clicked and ask them if they wanna be PLANT RESTYLED YEAAAAAAAH
 /obj/item/secateurs/proc/restyle(atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(target, COMSIG_ATOM_RESTYLE, user, target, user.zone_selected, EXTERNAL_RESTYLE_PLANT, 6 SECONDS)
 
 /obj/item/secateurs/cyborg
@@ -278,6 +302,8 @@
 	possible_transfer_amounts = list(1,2,5,10,15,25,50)
 
 /obj/item/reagent_containers/cup/bottle/nutrient/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = base_pixel_x + rand(-5, 5)
 	pixel_y = base_pixel_y + rand(-5, 5)

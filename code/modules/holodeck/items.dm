@@ -22,6 +22,8 @@
 	active_heat = 0
 
 /obj/item/melee/energy/sword/holographic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!sword_color_icon)
 		sword_color_icon = pick("red", "blue", "green", "purple")
@@ -36,11 +38,15 @@
 	desc = "A deck of holographic playing cards."
 
 /obj/item/toy/cards/deck/syndicate/holographic/Initialize(mapload, obj/machinery/computer/holodeck/holodeck)
+	procstart = null
+	src.procstart = null
 	src.holodeck = holodeck
 	RegisterSignal(src, COMSIG_QDELETING, PROC_REF(handle_card_delete))
 	. = ..()
 
 /obj/item/toy/cards/deck/syndicate/holographic/proc/handle_card_delete(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	//if any REAL cards have been inserted into the deck they are moved outside before destroying it
@@ -59,6 +65,8 @@
 	w_class = WEIGHT_CLASS_BULKY //Stops people from hiding it in their bags/pockets
 
 /obj/item/toy/dodgeball/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	..()
 	if((ishuman(hit_atom)))
 		var/mob/living/carbon/M = hit_atom
@@ -86,17 +94,25 @@
 	power_channel = AREA_USAGE_ENVIRON
 
 /obj/machinery/readybutton/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("The station AI is not to interact with these devices!"))
 	return
 
 /obj/machinery/readybutton/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("You are too primitive to use this device!"))
 	return
 
 /obj/machinery/readybutton/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("The device is a solid button, there's nothing you can do with it!"))
 
 /obj/machinery/readybutton/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -130,6 +146,8 @@
 		begin_event()
 
 /obj/machinery/readybutton/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ready && is_operational)
 		. += mutable_appearance(icon, "auth_on")
@@ -137,6 +155,8 @@
 
 
 /obj/machinery/readybutton/proc/begin_event()
+	procstart = null
+	src.procstart = null
 
 	eventstarted = TRUE
 
@@ -152,6 +172,8 @@
 /obj/machinery/conveyor/holodeck
 
 /obj/machinery/conveyor/holodeck/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!user.transferItemToLoc(tool, drop_location()))
 		return ..()
 
@@ -170,5 +192,7 @@
 	desc = "A holographic copy of the EightO brand professional skateboard."
 	instability = 6
 
-/obj/vehicle/ridden/scooter/skateboard/pro/holodeck/pick_up_board() //picking up normal skateboards spawned in the holodeck gets rid of the holo flag, now you cant pick them up.
+/obj/vehicle/ridden/scooter/skateboard/pro/holodeck/pick_up_board()
+	procstart = null
+	src.procstart = null //picking up normal skateboards spawned in the holodeck gets rid of the holo flag, now you cant pick them up.
 	return

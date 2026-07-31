@@ -15,11 +15,15 @@
 	var/tick_counter = 1
 
 /datum/round_event/market_crash/setup()
+	procstart = null
+	src.procstart = null
 	start_when = 1
 	end_when = rand(100, 50)
 	announce_when = 2
 
 /datum/round_event/market_crash/announce(fake)
+	procstart = null
+	src.procstart = null
 	var/list/poss_reasons = list("the alignment of the moon and the sun",\
 		"some risky housing market outcomes",\
 		"the B.E.P.I.S. team's untimely downfall",\
@@ -36,12 +40,16 @@
 	priority_announce("Due to [reason], prices for on-station vendors will be increased for a short period.", "Nanotrasen Accounting Division")
 
 /datum/round_event/market_crash/start()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSeconomy.update_vending_prices()
 	SSeconomy.price_update()
 	ADD_TRAIT(SSeconomy, TRAIT_MARKET_CRASHING, MARKET_CRASH_EVENT_TRAIT)
 
 /datum/round_event/market_crash/end()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(SSeconomy, TRAIT_MARKET_CRASHING, MARKET_CRASH_EVENT_TRAIT)
 	SSeconomy.price_update()
@@ -49,6 +57,8 @@
 	priority_announce("Prices for on-station vendors have now stabilized.", "Nanotrasen Accounting Division")
 
 /datum/round_event/market_crash/tick()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tick_counter = tick_counter++
 	SSeconomy.inflation_value = 5.5*(log(activeFor+1))

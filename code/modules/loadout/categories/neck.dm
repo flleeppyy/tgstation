@@ -9,6 +9,8 @@
 	abstract_type = /datum/loadout_item/neck
 
 /datum/loadout_item/neck/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	outfit.neck = item_path
 
 /datum/loadout_item/neck/scarf_greyscale

@@ -64,6 +64,8 @@
 	src.drift_force = drift_force
 
 /datum/component/jetpack/InheritComponent(datum/component/component, original, stabilize, drift_force = 1 NEWTONS, activation_signal, deactivation_signal, return_flag, datum/callback/check_on_move, datum/callback/check_on_activation, datum/effect_system/trail_follow/effect_type)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, src.activation_signal)
 	if(src.deactivation_signal)
 		UnregisterSignal(parent, src.deactivation_signal)
@@ -84,18 +86,24 @@
 		setup_trail(trail.holder)
 
 /datum/component/jetpack/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(trail)
 	check_on_move = null
 	check_on_activation = null
 	return ..()
 
 /datum/component/jetpack/proc/setup_trail(mob/user)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(trail)
 	trail = new effect_type(user)
 	trail.auto_process = FALSE
 	trail.start()
 
 /datum/component/jetpack/proc/activate(datum/source, mob/new_user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isnull(check_on_activation) && !check_on_activation.Invoke())
@@ -112,6 +120,8 @@
 	new_user.inertia_move_multiplier_active /= drift_force // lower multiplier = faster drifting
 
 /datum/component/jetpack/proc/deactivate(datum/source, mob/old_user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!active)
@@ -129,6 +139,8 @@
 	old_user.inertia_move_multiplier_active *= drift_force
 
 /datum/component/jetpack/proc/move_react(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!should_trigger(source))
 		return
@@ -138,6 +150,8 @@
 
 /// Handles all active 0g movement, including both manual (trying to move a direction in 0g) and automatic (drifting idly in 0g)
 /datum/component/jetpack/proc/stabilize(mob/source, movement_dir, continuous_move, backup)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	/*
 	 * Checks if we should stop any active movement
@@ -156,6 +170,8 @@
 	return NONE
 
 /datum/component/jetpack/proc/should_trigger(mob/source)
+	procstart = null
+	src.procstart = null
 	if(!source || !source.client)//Don't allow jet self using
 		return FALSE
 	if(!isturf(source.loc))//You can't use jet in nowhere or from mecha/closet
@@ -169,10 +185,14 @@
 	return TRUE
 
 /datum/component/jetpack/proc/pre_move_react(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	trail?.oldposition = get_turf(source)
 
 /datum/component/jetpack/proc/on_input_block(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!should_trigger(source))
@@ -184,6 +204,8 @@
 	return DRIFT_ALLOW_INPUT
 
 /datum/component/jetpack/proc/on_pushoff(mob/source, movement_dir, continuous_move, atom/backup)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (get_dir(source, backup) == movement_dir || source.loc == backup.loc)

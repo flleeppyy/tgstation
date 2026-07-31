@@ -52,10 +52,14 @@ GLOBAL_DATUM_INIT(status_font, /datum/font, new /datum/font/tiny_unicode/size_12
 
 //makes it go on the wall when built
 /obj/machinery/status_display/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/machinery/status_display/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	balloon_alert(user, "[anchored ? "un" : ""]securing...")
 	tool.play_tool_sound(src)
@@ -66,6 +70,8 @@ GLOBAL_DATUM_INIT(status_font, /datum/font, new /datum/font/tiny_unicode/size_12
 		return TRUE
 
 /obj/machinery/status_display/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return
 	if(atom_integrity >= max_integrity)
@@ -81,6 +87,8 @@ GLOBAL_DATUM_INIT(status_font, /datum/font, new /datum/font/tiny_unicode/size_12
 	return TRUE
 
 /obj/machinery/status_display/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	if(!disassembled)
 		new /obj/item/stack/sheet/iron(drop_location(), 2)
 		new /obj/item/shard(drop_location())
@@ -90,6 +98,8 @@ GLOBAL_DATUM_INIT(status_font, /datum/font, new /datum/font/tiny_unicode/size_12
 
 /// Immediately change the display to the given picture.
 /obj/machinery/status_display/proc/set_picture(state)
+	procstart = null
+	src.procstart = null
 	if(state != current_picture)
 		current_picture = state
 
@@ -97,6 +107,8 @@ GLOBAL_DATUM_INIT(status_font, /datum/font, new /datum/font/tiny_unicode/size_12
 
 /// Immediately change the display to the given two lines.
 /obj/machinery/status_display/proc/set_messages(line1, line2)
+	procstart = null
+	src.procstart = null
 	line1 = uppertext(line1)
 	line2 = uppertext(line2)
 
@@ -117,12 +129,16 @@ GLOBAL_DATUM_INIT(status_font, /datum/font, new /datum/font/tiny_unicode/size_12
  * Don't call this in subclasses.
  */
 /obj/machinery/status_display/proc/clear_display()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	clear_text()
 	clear_green_screen()
 
 /// Clears text off the display.
 /obj/machinery/status_display/proc/clear_text()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	var/obj/effect/overlay/status_display_text/overlay_1 = get_status_text(message_key_1)
 	message_key_1 = null
@@ -133,6 +149,8 @@ GLOBAL_DATUM_INIT(status_font, /datum/font, new /datum/font/tiny_unicode/size_12
 
 /// Clears the green screen display.
 /obj/machinery/status_display/proc/clear_green_screen()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	speakers?.set_listening(FALSE)
 	if(LAZYLEN(active_displays))
@@ -143,6 +161,8 @@ GLOBAL_DATUM_INIT(status_font, /datum/font, new /datum/font/tiny_unicode/size_12
 GLOBAL_LIST_EMPTY(key_to_status_display)
 
 /proc/generate_status_text(line_y, message, x_offset, text_color, header_text_color, line_pair)
+	procstart = null
+	src.procstart = null
 	var/key = "[line_y]-[message]-[x_offset]-[text_color]-[header_text_color]-[line_pair]"
 	var/obj/effect/overlay/status_display_text/new_overlay = GLOB.key_to_status_display[key]
 	if(!new_overlay)
@@ -151,6 +171,8 @@ GLOBAL_LIST_EMPTY(key_to_status_display)
 	return new_overlay
 
 /proc/get_status_text(key)
+	procstart = null
+	src.procstart = null
 	return GLOB.key_to_status_display[key]
 
 /**
@@ -165,6 +187,8 @@ GLOBAL_LIST_EMPTY(key_to_status_display)
  * Returns new /obj/effect/overlay/status_display_text or null if unchanged.
  */
 /obj/machinery/status_display/proc/update_message(current_key, line_y, message, x_offset, line_pair)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/overlay/status_display_text/current_overlay = get_status_text(current_key)
 	var/obj/effect/overlay/status_display_text/new_overlay = generate_status_text(line_y, message, x_offset, text_color, header_text_color, line_pair)
 
@@ -176,6 +200,8 @@ GLOBAL_LIST_EMPTY(key_to_status_display)
 	return new_overlay.status_key
 
 /obj/machinery/status_display/update_appearance(updates=ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if( \
 		(machine_stat & (NOPOWER|BROKEN)) || \
@@ -187,6 +213,8 @@ GLOBAL_LIST_EMPTY(key_to_status_display)
 	set_light(1.5, 0.7, LIGHT_COLOR_FAINT_CYAN) // blue light
 
 /obj/machinery/status_display/update_overlays(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(machine_stat & (NOPOWER|BROKEN))
@@ -228,6 +256,8 @@ GLOBAL_LIST_EMPTY(key_to_status_display)
 
 // Timed process - performs nothing in the base class
 /obj/machinery/status_display/process()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & NOPOWER)
 		// No power, no processing.
 		update_appearance()
@@ -236,14 +266,20 @@ GLOBAL_LIST_EMPTY(key_to_status_display)
 
 /// Updates the display and starts it processing again if needed
 /obj/machinery/status_display/proc/update()
+	procstart = null
+	src.procstart = null
 	if (process(SSMACHINES_DT) != PROCESS_KILL)
 		START_PROCESSING(SSmachines, src)
 
 /obj/machinery/status_display/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update()
 
 /obj/machinery/status_display/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((machine_stat & (NOPOWER|BROKEN)) || (. & EMP_PROTECT_SELF))
 		return
@@ -251,6 +287,8 @@ GLOBAL_LIST_EMPTY(key_to_status_display)
 	set_picture("ai_bsod")
 
 /obj/machinery/status_display/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(LAZYLEN(active_displays))
 		. += span_notice("<hr>It's currently broadcasting. You can see...")
@@ -273,6 +311,8 @@ GLOBAL_LIST_EMPTY(key_to_status_display)
 
 // Helper procs for child display types.
 /obj/machinery/status_display/proc/display_shuttle_status(obj/docking_port/mobile/shuttle)
+	procstart = null
+	src.procstart = null
 	if(!shuttle)
 		// the shuttle is missing - no processing
 		set_messages("shutl","not in service")
@@ -287,6 +327,8 @@ GLOBAL_LIST_EMPTY(key_to_status_display)
 		set_messages("", "")
 
 /obj/machinery/status_display/Destroy()
+	procstart = null
+	src.procstart = null
 	clear_display()
 	QDEL_NULL(speakers)
 	return ..()
@@ -312,6 +354,8 @@ GLOBAL_LIST_EMPTY(key_to_status_display)
 	var/static/regex/header_regex = regex("^-.*-$")
 
 /obj/effect/overlay/status_display_text/Initialize(mapload, maptext_y, message, text_color, header_text_color, xoffset = 0, line_pair, status_key)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	src.maptext_y = maptext_y
@@ -347,18 +391,24 @@ GLOBAL_LIST_EMPTY(key_to_status_display)
 		maptext_x = xoffset //Defaults to 0, this would be centered unless overided
 
 /obj/effect/overlay/status_display_text/Destroy(force)
+	procstart = null
+	src.procstart = null
 	GLOB.key_to_status_display -= status_key
 	return ..()
 
 /// Status displays are static, shared by everyone who needs them
 /// This marks us as being used by one more guy
 /obj/effect/overlay/status_display_text/proc/own(atom/movable/owned_by)
+	procstart = null
+	src.procstart = null
 	owned_by.vis_contents += src
 	use_count += 1
 
 /// Status displays are static, shared by everyone who needs them
 /// This marks us as no longer being used by a guy
 /obj/effect/overlay/status_display_text/proc/disown(atom/movable/disowned_by)
+	procstart = null
+	src.procstart = null
 	disowned_by.vis_contents -= src
 	use_count -= 1
 	if(use_count <= 0)
@@ -372,6 +422,8 @@ GLOBAL_LIST_EMPTY(key_to_status_display)
  * * text_color - the text color
  */
 /obj/effect/overlay/status_display_text/proc/generate_text(text, center, text_color)
+	procstart = null
+	src.procstart = null
 	return {"<div style="color:[text_color];font:[FONT_STYLE][center ? ";text-align:center" : "text-align:right"]" valign="top">[text]</div>"}
 
 /// Evac display which shows shuttle timer or message set by Command.
@@ -399,6 +451,8 @@ GLOBAL_LIST_EMPTY(key_to_status_display)
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 
 /obj/machinery/status_display/evac/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// register for radio system
 	SSradio.add_object(src, frequency)
@@ -409,6 +463,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 		find_and_mount_on_atom()
 
 /obj/machinery/status_display/evac/Destroy()
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src,frequency)
 	UnregisterSignal(SSsecurity_level, COMSIG_SECURITY_LEVEL_CHANGED)
 	// Clean up our timer so we don't have ghost timers floating around
@@ -418,6 +474,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 	return ..()
 
 /obj/machinery/status_display/evac/process()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & NOPOWER)
 		// No power, no processing.
 		update_appearance()
@@ -453,6 +511,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 /// Figures out what we should be showing based on what's happening on the station
 /// Returns a list with the mode, priority, and other details
 /obj/machinery/status_display/evac/proc/get_highest_priority_display()
+	procstart = null
+	src.procstart = null
 	// Shuttle stuff gets top priority - but only when it's actually doing something
 	if(SSshuttle?.emergency)
 		switch(SSshuttle.emergency.mode)
@@ -470,6 +530,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 /// Tries to change what the display is showing, but respects priority levels
 /// Returns TRUE if we actually changed it, FALSE if something more important was already showing
 /obj/machinery/status_display/evac/proc/set_display_with_priority(new_mode, priority, picture_state = null, message1 = null, message2 = null, force_override = FALSE)
+	procstart = null
+	src.procstart = null
 	// Allow manual overrides to always work (except when temporary alerts are showing)
 	if(!force_override && priority < current_priority && current_priority != DISPLAY_PRIORITY_ALERT_TEMP)
 		return FALSE
@@ -516,6 +578,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 	return TRUE
 
 /obj/machinery/status_display/evac/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	switch(signal.data["command"])
 		if("blank")
 			set_display_with_priority(SD_BLANK, DISPLAY_PRIORITY_MESSAGE, force_override = TRUE)
@@ -595,6 +659,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 	update()
 
 /obj/machinery/status_display/evac/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vname == NAMEOF(src, current_mode))
 		update_appearance()
@@ -602,6 +668,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 
 /// Gets called when security changes the alert level - shows it for 30 seconds then goes back to normal
 /obj/machinery/status_display/evac/proc/on_sec_level_change(datum/source, new_level)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Get the alert level icon
@@ -613,6 +681,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 /// Shows a temporary display for 30 seconds then reverts to previous display
 /// Can interrupt lower priority displays but respects higher priority temporary displays
 /obj/machinery/status_display/evac/proc/show_temporary_display(temp_mode, temp_priority, picture_state = null, message1 = null, message2 = null)
+	procstart = null
+	src.procstart = null
 	// Don't interrupt higher priority temporary displays
 	if(alert_display_timer && current_priority >= temp_priority)
 		return
@@ -645,6 +715,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 
 /// Goes back to showing whatever we were displaying before the alert level interrupt
 /obj/machinery/status_display/evac/proc/revert_from_alert_display()
+	procstart = null
+	src.procstart = null
 	alert_display_timer = null
 
 	// Figure out what we should be showing now
@@ -670,6 +742,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 	header_text_color = COLOR_DISPLAY_YELLOW
 
 /obj/machinery/status_display/supply/process()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & NOPOWER)
 		// No power, no processing.
 		update_appearance()
@@ -705,6 +779,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 	header_text_color = COLOR_DISPLAY_CYAN
 
 /obj/machinery/status_display/shuttle/process()
+	procstart = null
+	src.procstart = null
 	if(!shuttle_id || (machine_stat & NOPOWER))
 		// No power, no processing.
 		update_appearance()
@@ -713,6 +789,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 	return display_shuttle_status(SSshuttle.getShuttle(shuttle_id))
 
 /obj/machinery/status_display/shuttle/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -721,6 +799,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 			update()
 
 /obj/machinery/status_display/shuttle/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
+	procstart = null
+	src.procstart = null
 	if(port)
 		shuttle_id = port.shuttle_id
 	update()
@@ -739,6 +819,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/ai, 32)
 
 /obj/machinery/status_display/ai/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// register for radio system to receive AI emote signals
 	SSradio.add_object(src, frequency)
@@ -746,10 +828,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/ai, 32)
 		find_and_mount_on_atom()
 
 /obj/machinery/status_display/ai/Destroy()
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, frequency)
 	return ..()
 
 /obj/machinery/status_display/ai/attack_ai(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	if(!isAI(user))
 		return
 
@@ -759,6 +845,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/ai, 32)
 	user.status_display_picker.ui_interact(user)
 
 /obj/machinery/status_display/ai/process()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & NOPOWER)
 		update_appearance()
 		return PROCESS_KILL
@@ -781,6 +869,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/ai, 32)
 	return PROCESS_KILL
 
 /obj/machinery/status_display/ai/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	switch(signal.data["command"])
 		if("friendcomputer")
 			friendc = !friendc
@@ -810,10 +900,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/ai, 32)
 	var/list/picture_map
 
 /obj/item/circuit_component/status_display/populate_ports()
+	procstart = null
+	src.procstart = null
 	message1 = add_input_port("Message 1", PORT_TYPE_STRING)
 	message2 = add_input_port("Message 2", PORT_TYPE_STRING)
 
 /obj/item/circuit_component/status_display/populate_options()
+	procstart = null
+	src.procstart = null
 	var/static/list/command_options = list(
 		"Blank" = "blank",
 		"Shuttle" = "shuttle",
@@ -847,15 +941,21 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/ai, 32)
 	picture_map = picture_options
 
 /obj/item/circuit_component/status_display/register_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/machinery/status_display))
 		connected_display = shell
 
 /obj/item/circuit_component/status_display/unregister_usb_parent(atom/movable/parent)
+	procstart = null
+	src.procstart = null
 	connected_display = null
 	return ..()
 
 /obj/item/circuit_component/status_display/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	// Just use command handling built into status display.
 	// The option inputs thankfully sanitize command and picture for us.
 
@@ -879,6 +979,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/ai, 32)
 	var/list/firstline_to_secondline = list()
 
 /obj/machinery/status_display/random_message/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(firstline_to_secondline?.len)
 		message1 = pick(firstline_to_secondline)
 		message2 = firstline_to_secondline[message1]
@@ -906,6 +1008,8 @@ GLOBAL_LIST_EMPTY_TYPED(greenscreen_displays, /obj/effect/abstract/greenscreen_d
 	layer = BELOW_OPEN_DOOR_LAYER
 
 /obj/effect/abstract/greenscreen_location_indicator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_filter("greenscreen_indicator", 1, outline_filter(1.5, COLOR_YELLOW))
 	animate(get_filter("greenscreen_indicator"), alpha = 0, time = 2.5 SECONDS, loop = -1)
@@ -916,11 +1020,15 @@ GLOBAL_LIST_EMPTY_TYPED(greenscreen_displays, /obj/effect/abstract/greenscreen_d
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /obj/effect/abstract/greenscreen_appearance_holder/Initialize(mapload, atom/movable/to_copy)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(to_copy))
 		copy_appearance(to_copy)
 
 /obj/effect/abstract/greenscreen_appearance_holder/proc/copy_appearance(atom/movable/from)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/copy = copy_appearance_filter_overlays(from.appearance)
 	// if they have keep apart overlays we NEED to manually propogate the mask
 	for(var/mutable_appearance/subcopy as anything in list() + copy.underlays + copy.overlays)
@@ -951,6 +1059,8 @@ GLOBAL_LIST_EMPTY_TYPED(greenscreen_displays, /obj/effect/abstract/greenscreen_d
 	VAR_FINAL/list/atom/movable/displaying = list()
 
 /obj/effect/abstract/greenscreen_display/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.greenscreen_displays += src
 	// crops out the bits that don't fit the screen
@@ -960,12 +1070,16 @@ GLOBAL_LIST_EMPTY_TYPED(greenscreen_displays, /obj/effect/abstract/greenscreen_d
 	add_overlay(mutable_appearance(generate_icon_alpha_mask('icons/effects/effects.dmi', "scanline"), alpha = 20))
 
 /obj/effect/abstract/greenscreen_display/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/thing in displaying)
 		remove_from_display(thing)
 	GLOB.greenscreen_displays -= src
 	return ..()
 
 /obj/effect/abstract/greenscreen_display/proc/add_to_display(atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	if(displaying[thing])
 		return
 
@@ -981,6 +1095,8 @@ GLOBAL_LIST_EMPTY_TYPED(greenscreen_displays, /obj/effect/abstract/greenscreen_d
 	vis_contents += displaying[thing]
 
 /obj/effect/abstract/greenscreen_display/proc/remove_from_display(atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!displaying[thing])
@@ -999,6 +1115,8 @@ GLOBAL_LIST_EMPTY_TYPED(greenscreen_displays, /obj/effect/abstract/greenscreen_d
 	displaying -= thing
 
 /obj/effect/abstract/greenscreen_display/proc/thing_changed(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/effect/abstract/greenscreen_appearance_holder/holder = displaying[source]
@@ -1028,19 +1146,27 @@ GLOBAL_LIST_EMPTY_TYPED(greenscreen_displays, /obj/effect/abstract/greenscreen_d
 	VAR_PRIVATE/obj/item/radio/entertainment/microphone/mic
 
 /obj/machinery/greenscreen_camera/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_rotation, ROTATION_IGNORE_ANCHORED)
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/greenscreen_camera/Destroy()
+	procstart = null
+	src.procstart = null
 	deactivate_feed()
 	return ..()
 
 /obj/machinery/greenscreen_camera/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It's currently [isnull(display) ? "not " : ""]broadcasting. <i>Click it to change that.</i>")
 
 /obj/machinery/greenscreen_camera/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -1049,6 +1175,8 @@ GLOBAL_LIST_EMPTY_TYPED(greenscreen_displays, /obj/effect/abstract/greenscreen_d
 	return TRUE
 
 /obj/machinery/greenscreen_camera/proc/toggle_feed()
+	procstart = null
+	src.procstart = null
 	if(isnull(display))
 		if(!is_operational)
 			return
@@ -1066,6 +1194,8 @@ GLOBAL_LIST_EMPTY_TYPED(greenscreen_displays, /obj/effect/abstract/greenscreen_d
 	balloon_alert_to_viewers("feed [isnull(display) ? "de" : ""]activated")
 
 /obj/machinery/greenscreen_camera/proc/activate_feed()
+	procstart = null
+	src.procstart = null
 	greenscreen_turf = find_displayed_turf()
 	if(isnull(greenscreen_turf))
 		return
@@ -1092,11 +1222,15 @@ GLOBAL_LIST_EMPTY_TYPED(greenscreen_displays, /obj/effect/abstract/greenscreen_d
 
 /// Sends a signal to all relevant status displays to update their greenscreen
 /obj/machinery/greenscreen_camera/proc/update_status_displays(list/signal_args)
+	procstart = null
+	src.procstart = null
 	// update the display on all status displays
 	var/datum/radio_frequency/frequency = SSradio.return_frequency(FREQ_STATUS_DISPLAYS)
 	frequency?.post_signal(src, new /datum/signal(signal_args))
 
 /obj/machinery/greenscreen_camera/proc/deactivate_feed()
+	procstart = null
+	src.procstart = null
 	if(!isnull(greenscreen_turf))
 		for(var/obj/effect/abstract/greenscreen_location_indicator/indicator in greenscreen_turf)
 			qdel(indicator)
@@ -1113,6 +1247,8 @@ GLOBAL_LIST_EMPTY_TYPED(greenscreen_displays, /obj/effect/abstract/greenscreen_d
 
 /// Check if the passed atom can be shown on the display
 /obj/machinery/greenscreen_camera/proc/can_broadcast(atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	// blacklist underfloor, just in case
 	// i would also blacklist invisible, but i figure it might be funny to see a ghost
 	if(HAS_TRAIT(thing, TRAIT_UNDERFLOOR))
@@ -1126,15 +1262,21 @@ GLOBAL_LIST_EMPTY_TYPED(greenscreen_displays, /obj/effect/abstract/greenscreen_d
 	return FALSE
 
 /obj/machinery/greenscreen_camera/proc/turf_entered(datum/source, atom/movable/entered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(can_broadcast(entered))
 		display.add_to_display(entered)
 
 /obj/machinery/greenscreen_camera/proc/turf_exited(datum/source, atom/movable/exited)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	display.remove_from_display(exited)
 
 /obj/machinery/greenscreen_camera/proc/find_displayed_turf()
+	procstart = null
+	src.procstart = null
 	var/list/turf/line = get_line(src, get_ranged_target_turf(src, dir, 5))
 	for(var/i in 1 to length(line))
 		var/turf/current = line[i]
@@ -1162,6 +1304,8 @@ GLOBAL_LIST_EMPTY_TYPED(greenscreen_displays, /obj/effect/abstract/greenscreen_d
 	return null
 
 /obj/machinery/greenscreen_camera/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(display))
 		return
@@ -1169,6 +1313,8 @@ GLOBAL_LIST_EMPTY_TYPED(greenscreen_displays, /obj/effect/abstract/greenscreen_d
 	deactivate_feed()
 
 /obj/machinery/greenscreen_camera/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	var/old_dir
 	. = ..()
 	if(dir == old_dir || isnull(display))
@@ -1177,6 +1323,8 @@ GLOBAL_LIST_EMPTY_TYPED(greenscreen_displays, /obj/effect/abstract/greenscreen_d
 	deactivate_feed()
 
 /obj/machinery/greenscreen_camera/set_anchored(anchorvalue)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(anchored || isnull(display))
 		return
@@ -1184,6 +1332,8 @@ GLOBAL_LIST_EMPTY_TYPED(greenscreen_displays, /obj/effect/abstract/greenscreen_d
 	deactivate_feed()
 
 /obj/machinery/greenscreen_camera/on_set_is_operational(old_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_operational || isnull(display))
 		return
@@ -1192,6 +1342,8 @@ GLOBAL_LIST_EMPTY_TYPED(greenscreen_displays, /obj/effect/abstract/greenscreen_d
 	toggle_feed()
 
 /obj/machinery/greenscreen_camera/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(display))
 		. += "camera_off"
@@ -1202,6 +1354,8 @@ GLOBAL_LIST_EMPTY_TYPED(greenscreen_displays, /obj/effect/abstract/greenscreen_d
 /// Send an emergency alert signal to all status displays
 /// alert_type: The picture state to display ("biohazard", "lockdown", "radiation", etc.)
 /proc/send_status_display_alert(alert_type)
+	procstart = null
+	src.procstart = null
 	var/datum/radio_frequency/frequency = SSradio.return_frequency(FREQ_STATUS_DISPLAYS)
 	if(frequency)
 		var/datum/signal/alert_signal = new
@@ -1216,6 +1370,8 @@ GLOBAL_LIST_EMPTY_TYPED(greenscreen_displays, /obj/effect/abstract/greenscreen_d
 /// emergency_type: The specific type to clear ("biohazard", "lockdown", "radiation", etc.)
 /// If emergency_type is null, clears ALL emergencies
 /proc/clear_status_display_emergency(emergency_type = null)
+	procstart = null
+	src.procstart = null
 	var/datum/radio_frequency/frequency = SSradio.return_frequency(FREQ_STATUS_DISPLAYS)
 	if(frequency)
 		var/datum/signal/clear_signal = new
@@ -1228,22 +1384,34 @@ GLOBAL_LIST_EMPTY_TYPED(greenscreen_displays, /obj/effect/abstract/greenscreen_d
 
 /// Send a biohazard alert signal to all status displays
 /proc/send_status_display_biohazard_alert()
+	procstart = null
+	src.procstart = null
 	send_status_display_alert("biohazard")
 
 /// Send a lockdown alert signal to all status displays
 /proc/send_status_display_lockdown_alert()
+	procstart = null
+	src.procstart = null
 	send_status_display_alert("lockdown")
 
 /// Send a radiation alert signal to all status displays
 /proc/send_status_display_radiation_alert()
+	procstart = null
+	src.procstart = null
 	send_status_display_alert("radiation")
 
 /// Clear specific emergency types
 /proc/clear_status_display_biohazard()
+	procstart = null
+	src.procstart = null
 	clear_status_display_emergency("biohazard")
 
 /proc/clear_status_display_lockdown()
+	procstart = null
+	src.procstart = null
 	clear_status_display_emergency("lockdown")
 
 /proc/clear_status_display_radiation()
+	procstart = null
+	src.procstart = null
 	clear_status_display_emergency("radiation")

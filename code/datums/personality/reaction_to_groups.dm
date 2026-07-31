@@ -26,10 +26,14 @@
 	groups = list(PERSONALITY_GROUP_PEOPLE_FEAR)
 
 /datum/personality/paranoid/remove_from_mob(mob/living/who)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	who.clear_mood_event("paranoia_personality")
 
 /datum/personality/paranoid/on_tick(mob/living/subject, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/list/nearby_people = list()
 	for(var/mob/living/carbon/human/nearby in view(subject, 5))
 		if(nearby == subject || !is_dangerous_mob(subject, nearby))
@@ -47,6 +51,8 @@
 			subject.add_mood_event("paranoia_personality", /datum/mood_event/paranoid/large_group)
 
 /datum/personality/paranoid/proc/is_dangerous_mob(mob/living/subject, mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS(target))
 		return FALSE
 	if(target.invisibility > subject.see_invisible || target.alpha < 20)

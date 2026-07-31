@@ -9,10 +9,14 @@ MOVEMENT_SUBSYSTEM_DEF(ai_movement)
 	var/list/movement_types
 
 /datum/controller/subsystem/movement/ai_movement/Initialize()
+	procstart = null
+	src.procstart = null
 	SetupAIMovementInstances()
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/movement/ai_movement/proc/SetupAIMovementInstances()
+	procstart = null
+	src.procstart = null
 	movement_types = list()
 	for(var/key in subtypesof(/datum/ai_movement))
 		var/datum/ai_movement/ai_movement = new key

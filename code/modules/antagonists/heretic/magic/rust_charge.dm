@@ -9,6 +9,8 @@
 	charge_past = 0
 
 /datum/action/cooldown/mob_cooldown/charge/rust/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	var/turf/open/start_turf = get_turf(owner)
 	if(!istype(start_turf) || !HAS_TRAIT(start_turf, TRAIT_RUSTY))
 		return FALSE
@@ -22,6 +24,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/charge/rust/on_move(atom/source, atom/new_loc, atom/target)
+	procstart = null
+	src.procstart = null
 	var/turf/victim = get_turf(owner)
 	if(!actively_moving)
 		return COMPONENT_MOVABLE_BLOCK_PRE_MOVE
@@ -35,6 +39,8 @@
 			living_owner.do_rust_heretic_act(nearby_turf)
 
 /datum/action/cooldown/mob_cooldown/charge/rust/DestroySurroundings(atom/movable/charger)
+	procstart = null
+	src.procstart = null
 	if(!destroy_objects)
 		return
 	for(var/dir in GLOB.alldirs)
@@ -45,6 +51,8 @@
 		SSexplosions.medturf += next_turf
 
 /datum/action/cooldown/mob_cooldown/charge/rust/on_bump(atom/movable/source, atom/target)
+	procstart = null
+	src.procstart = null
 	if(owner == target)
 		return
 	if(destroy_objects)
@@ -57,6 +65,8 @@
 	try_hit_target(source, target, charge_damage)
 
 /datum/action/cooldown/mob_cooldown/charge/rust/proc/affect_aoe()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(owner, COMSIG_FINISHED_CHARGE)
 	for(var/mob/living/nearby_mob in view(1, owner))

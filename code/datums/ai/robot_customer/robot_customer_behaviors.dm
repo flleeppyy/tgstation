@@ -3,6 +3,8 @@
 /datum/bt_node/ai_behavior/robot_customer/find_seat
 
 /datum/bt_node/ai_behavior/robot_customer/find_seat/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/robot_customer/customer_pawn = controller.pawn
 	var/datum/customer_data/customer_data = controller.blackboard[BB_CUSTOMER_CUSTOMERINFO]
 	var/datum/venue/attending_venue = controller.blackboard[BB_CUSTOMER_ATTENDING_VENUE]
@@ -36,6 +38,8 @@
 /datum/bt_node/ai_behavior/robot_customer/order_food
 
 /datum/bt_node/ai_behavior/robot_customer/order_food/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/async_flags = handle_async()
 	if(async_flags)
 		return async_flags
@@ -51,6 +55,8 @@
 	return start_async()
 
 /datum/bt_node/ai_behavior/robot_customer/order_food/perform_async(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/robot_customer/customer_pawn = controller.pawn
 	var/datum/customer_data/customer_data = controller.blackboard[BB_CUSTOMER_CUSTOMERINFO]
 	var/datum/venue/attending_venue = controller.blackboard[BB_CUSTOMER_ATTENDING_VENUE]
@@ -70,6 +76,8 @@
 /datum/bt_node/ai_behavior/robot_customer/wait_for_food
 
 /datum/bt_node/ai_behavior/robot_customer/wait_for_food/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(controller.blackboard[BB_CUSTOMER_EATING])
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
@@ -99,6 +107,8 @@
 	return AI_BEHAVIOR_DELAY
 
 /datum/bt_node/ai_behavior/robot_customer/wait_for_food/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/basic/robot_customer/customer_pawn = controller.pawn
 	var/datum/customer_data/customer_data = controller.blackboard[BB_CUSTOMER_CUSTOMERINFO]
@@ -117,6 +127,8 @@
 /datum/bt_node/ai_behavior/robot_customer/find_exit_portal
 
 /datum/bt_node/ai_behavior/robot_customer/find_exit_portal/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(!isnull(controller.blackboard[BB_CUSTOMER_EXIT_PORTAL]))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_SUCCEEDED
 	var/datum/venue/attending_venue = controller.blackboard[BB_CUSTOMER_ATTENDING_VENUE]
@@ -134,6 +146,8 @@
 /datum/bt_node/ai_behavior/robot_customer/leave_venue
 
 /datum/bt_node/ai_behavior/robot_customer/leave_venue/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	qdel(controller.pawn)
 	return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_SUCCEEDED
 

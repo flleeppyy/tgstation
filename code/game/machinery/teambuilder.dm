@@ -18,6 +18,8 @@
 	var/team_radio = FREQ_COMMON
 
 /obj/machinery/teambuilder/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_filter("teambuilder", 2, list("type" = "outline", "color" = team_color, "size" = 2))
 	var/static/list/loc_connections = list(
@@ -26,10 +28,14 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/machinery/teambuilder/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You see a hastily written note on the side, it says '1215-1217, PICK A SIDE'.")
 
 /obj/machinery/teambuilder/proc/on_entered(datum/source, atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!ishuman(AM) && humans_only)
 		return

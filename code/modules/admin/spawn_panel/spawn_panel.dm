@@ -49,24 +49,34 @@
 	var/precise_mode = PRECISE_MODE_OFF
 
 /datum/spawnpanel/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	offset = list("X" = 0, "Y" = 0, "Z" = 0)
 
 /datum/spawnpanel/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SpawnPanel")
 		ui.open()
 
 /datum/spawnpanel/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (precise_mode && precise_mode != PRECISE_MODE_OFF)
 		toggle_precise_mode(PRECISE_MODE_OFF)
 
 /datum/spawnpanel/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_SPAWN)
 
 /datum/spawnpanel/ui_act(action, params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(..() || !check_rights_for(ui.user.client, R_SPAWN))
 		return FALSE
 
@@ -179,6 +189,8 @@
 			return TRUE
 
 /datum/spawnpanel/proc/toggle_precise_mode(precise_type)
+	procstart = null
+	src.procstart = null
 	precise_mode = precise_type
 	var/client/admin_client = usr.client
 	if (!admin_client)
@@ -204,6 +216,8 @@
 	holder_mob?.update_mouse_pointer()
 
 /datum/spawnpanel/proc/InterceptClickOn(mob/user, params, atom/target)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 	var/left_click = LAZYACCESS(modifiers, LEFT_CLICK)
 	var/right_click = LAZYACCESS(modifiers, RIGHT_CLICK)
@@ -264,6 +278,8 @@
 		return TRUE
 
 /datum/spawnpanel/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["icon"] = selected_atom_icon
 	data["iconState"] = selected_atom_icon_state
@@ -279,6 +295,8 @@
 	return data
 
 /datum/spawnpanel/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/json/spawnpanel),
 	)

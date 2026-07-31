@@ -23,6 +23,8 @@
 	var/max_tp_range = 8
 
 /obj/item/teleport_rod/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	particles = new /particles/teleport_flux/small()
 
@@ -34,6 +36,8 @@
 	max_tp_range = INFINITY
 
 /obj/item/teleport_rod/equipped(mob/living/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(user))
 		return
@@ -46,6 +50,8 @@
 	user.apply_status_effect(/datum/status_effect/teleport_flux/perma)
 
 /obj/item/teleport_rod/dropped(mob/living/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(user))
 		return
@@ -56,6 +62,8 @@
 	permaflux?.delayed_remove(src)
 
 /obj/item/teleport_rod/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_BLOCKING
 	var/turf/start_turf = get_turf(user)
 	var/turf/target_turf = get_turf(interacting_with)
@@ -127,6 +135,8 @@
 	randomdir = FALSE
 
 /obj/effect/temp_visual/teleport_flux/Initialize(mapload, copy_dir = SOUTH)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	setDir(copy_dir)
 	particles = new /particles/teleport_flux()
@@ -148,13 +158,19 @@
 	var/tp_damage_type = BRUTE
 
 /datum/status_effect/teleport_flux/on_apply()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(owner, COMSIG_MOVABLE_POST_TELEPORT, PROC_REF(teleported))
 	return TRUE
 
 /datum/status_effect/teleport_flux/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_MOVABLE_POST_TELEPORT)
 
 /datum/status_effect/teleport_flux/proc/teleported(mob/living/source, turf/destination, channel)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(channel != TELEPORT_CHANNEL_MAGIC)
@@ -169,6 +185,8 @@
 	log_combat(owner, owner, "teleported too soon")
 
 /datum/status_effect/teleport_flux/update_particles()
+	procstart = null
+	src.procstart = null
 	if(isnull(particle_effect))
 		particle_effect = new(owner, /particles/teleport_flux)
 
@@ -179,6 +197,8 @@
 	animate(particle_effect, alpha = 50, time = original_duration)
 
 /datum/status_effect/teleport_flux/refresh(effect, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_particles()
 
@@ -190,14 +210,20 @@
 	remove_on_fullheal = FALSE
 
 /datum/status_effect/teleport_flux/perma/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_MAGICALLY_GIFTED), PROC_REF(gained_gift))
 
 /datum/status_effect/teleport_flux/perma/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_MAGICALLY_GIFTED))
 
 /datum/status_effect/teleport_flux/perma/proc/gained_gift(mob/living/source, trait)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	delayed_remove()
@@ -206,6 +232,8 @@
 /// This cannot be interrupted, but if a new permaflux effect is applied,
 /// this one will be deleted instantly anyways, making it moot
 /datum/status_effect/teleport_flux/perma/proc/delayed_remove()
+	procstart = null
+	src.procstart = null
 	var/del_duration = /datum/status_effect/teleport_flux::duration
 	QDEL_IN(src, del_duration)
 	animate(particle_effect, alpha = 50, del_duration)

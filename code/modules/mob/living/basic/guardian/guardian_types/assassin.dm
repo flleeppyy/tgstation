@@ -20,11 +20,15 @@
 	var/stealth_cooldown_time = 16 SECONDS
 
 /mob/living/basic/guardian/assassin/Initialize(mapload, datum/guardian_fluff/theme)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_GUARDIAN_ASSASSIN_REVEALED, PROC_REF(on_forced_unstealth))
 
 // Toggle stealth
 /mob/living/basic/guardian/assassin/toggle_modes()
+	procstart = null
+	src.procstart = null
 	var/stealthed = has_status_effect(/datum/status_effect/guardian_stealth)
 	var/datum/action/cooldown/guardian/toggle_mode/assassin/stealth_ability = locate() in actions
 	if (stealthed)
@@ -42,6 +46,8 @@
 
 /// Called when we are removed from stealth involuntarily
 /mob/living/basic/guardian/assassin/proc/on_forced_unstealth(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	visible_message(span_danger("\The [src] suddenly appears!"))
 	COOLDOWN_START(src, manifest_cooldown, 4 SECONDS)
@@ -59,6 +65,8 @@
 	var/stealth_wound_bonus = -20
 
 /datum/status_effect/guardian_stealth/on_apply()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/guardian/phase/out(get_turf(owner))
 	owner.melee_damage_lower += damage_bonus
 	owner.melee_damage_upper += damage_bonus
@@ -75,6 +83,8 @@
 	return TRUE
 
 /datum/status_effect/guardian_stealth/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.melee_damage_lower -= damage_bonus
 	owner.melee_damage_upper -= damage_bonus
 	if (isbasicmob(owner))
@@ -87,6 +97,8 @@
 
 /// If we take damage, exit the status effect
 /datum/status_effect/guardian_stealth/proc/on_health_changed(mob/living/our_mob, type, amount, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (amount <= 0)
 		return
@@ -94,6 +106,8 @@
 
 /// Forcibly exit the status effect
 /datum/status_effect/guardian_stealth/proc/forced_exit()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SEND_SIGNAL(owner, COMSIG_GUARDIAN_ASSASSIN_REVEALED)
 	qdel(src)

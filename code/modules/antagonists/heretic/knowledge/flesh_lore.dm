@@ -68,6 +68,8 @@
 	eldritch_passive = /datum/status_effect/heretic_passive/flesh
 
 /datum/heretic_knowledge/limited_amount/starting/base_flesh/on_research(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/objective/heretic_summon/summon_objective = new()
 	summon_objective.owner = our_heretic.owner
@@ -77,6 +79,8 @@
 	our_heretic.owner.announce_objectives()
 
 /datum/heretic_knowledge/limited_amount/starting/base_flesh/on_mansus_grasp(mob/living/source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(target.stat != DEAD)
@@ -108,6 +112,8 @@
 
 /// Makes [victim] into a ghoul.
 /datum/heretic_knowledge/limited_amount/starting/base_flesh/proc/make_ghoul(mob/living/user, mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	user.log_message("created a ghoul, controlled by [key_name(victim)].", LOG_GAME)
 	message_admins("[ADMIN_LOOKUPFLW(user)] created a ghoul, [ADMIN_LOOKUPFLW(victim)].")
 
@@ -121,10 +127,14 @@
 
 /// Callback for the ghoul status effect - Tracking all of our ghouls
 /datum/heretic_knowledge/limited_amount/starting/base_flesh/proc/apply_to_ghoul(mob/living/ghoul)
+	procstart = null
+	src.procstart = null
 	LAZYADD(created_items, WEAKREF(ghoul))
 
 /// Callback for the ghoul status effect - Tracking all of our ghouls
 /datum/heretic_knowledge/limited_amount/starting/base_flesh/proc/remove_from_ghoul(mob/living/ghoul)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(created_items, WEAKREF(ghoul))
 
 /datum/heretic_knowledge/limited_amount/flesh_ghoul
@@ -145,6 +155,8 @@
 	research_tree_icon_state = "ghoul_voiceless"
 
 /datum/heretic_knowledge/limited_amount/flesh_ghoul/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -164,6 +176,8 @@
 	return FALSE
 
 /datum/heretic_knowledge/limited_amount/flesh_ghoul/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/soon_to_be_ghoul = locate() in selected_atoms
 	if(QDELETED(soon_to_be_ghoul)) // No body? No ritual
 		stack_trace("[type] reached on_finished_recipe without a human in selected_atoms to make a ghoul out of.")
@@ -191,6 +205,8 @@
 
 /// Makes [victim] into a ghoul.
 /datum/heretic_knowledge/limited_amount/flesh_ghoul/proc/make_ghoul(mob/living/user, mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	user.log_message("created a voiceless dead, controlled by [key_name(victim)].", LOG_GAME)
 	message_admins("[ADMIN_LOOKUPFLW(user)] created a voiceless dead, [ADMIN_LOOKUPFLW(victim)].")
 
@@ -204,11 +220,15 @@
 
 /// Callback for the ghoul status effect - Tracks all of our ghouls and applies effects
 /datum/heretic_knowledge/limited_amount/flesh_ghoul/proc/apply_to_ghoul(mob/living/ghoul)
+	procstart = null
+	src.procstart = null
 	LAZYADD(created_items, WEAKREF(ghoul))
 	ADD_TRAIT(ghoul, TRAIT_MUTE, MAGIC_TRAIT)
 
 /// Callback for the ghoul status effect - Tracks all of our ghouls and applies effects
 /datum/heretic_knowledge/limited_amount/flesh_ghoul/proc/remove_from_ghoul(mob/living/ghoul)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(created_items, WEAKREF(ghoul))
 	REMOVE_TRAIT(ghoul, TRAIT_MUTE, MAGIC_TRAIT)
 
@@ -268,6 +288,8 @@
 	var/wound_type = /datum/wound/slash/flesh/severe
 
 /datum/heretic_knowledge/blade_upgrade/flesh/do_melee_effects(mob/living/source, mob/living/target, obj/item/melee/sickly_blade/blade)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(target) || source == target)
 		return
 
@@ -316,6 +338,8 @@
 	announcement_sound = 'sound/music/antag/heretic/ascend_flesh.ogg'
 
 /datum/heretic_knowledge/ultimate/flesh_final/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/action/cooldown/spell/shapeshift/shed_human_form/worm_spell = new(user.mind)
 	worm_spell.Grant(user)

@@ -51,6 +51,8 @@
 	uses_integrity = TRUE
 
 /obj/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	if(vname == NAMEOF(src, obj_flags))
 		if ((obj_flags & DANGEROUS_POSSESSION) && !(vval & DANGEROUS_POSSESSION))
 			return FALSE
@@ -60,6 +62,8 @@
 GLOBAL_LIST_EMPTY(objects_by_id_tag)
 
 /obj/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	check_on_table()
@@ -70,6 +74,8 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 		SScameras.update_visibility(src)
 
 /obj/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(!ismachinery(src))
 		STOP_PROCESSING(SSobj, src) // TODO: Have a processing bitflag to reduce on unnecessary loops through the processing lists
 	if(opacity)
@@ -79,6 +85,8 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 	. = ..()
 
 /obj/attacked_by(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!attacking_item.force)
 		return 0
 
@@ -121,24 +129,32 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 	return damage
 
 /obj/assume_air(datum/gas_mixture/giver)
+	procstart = null
+	src.procstart = null
 	if(loc)
 		return loc.assume_air(giver)
 	else
 		return null
 
 /obj/remove_air(amount)
+	procstart = null
+	src.procstart = null
 	if(loc)
 		return loc.remove_air(amount)
 	else
 		return null
 
 /obj/return_air()
+	procstart = null
+	src.procstart = null
 	if(loc)
 		return loc.return_air()
 	else
 		return null
 
 /obj/proc/handle_internal_lifeform(mob/lifeform_inside_me, breath_request)
+	procstart = null
+	src.procstart = null
 	//Return: (NONSTANDARD)
 	// null if object handles breathing logic for lifeform
 	// datum/air_group to tell lifeform to process using that breath return
@@ -152,6 +168,8 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 		return null
 
 /obj/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -159,6 +177,8 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 	ui_interact(user)
 
 /obj/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(move_resist == INFINITY)
 		return
@@ -166,15 +186,21 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 		step_towards(src, singularity)
 
 /obj/get_dumping_location()
+	procstart = null
+	src.procstart = null
 	return get_turf(src)
 
 /obj/vv_get_dropdown()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	VV_DROPDOWN_OPTION("", "--- /obj ---")
 	VV_DROPDOWN_OPTION(VV_HK_MASS_DEL_TYPE, "Delete all of type")
 	VV_DROPDOWN_OPTION(VV_HK_OSAY, "Object Say")
 
 /obj/vv_do_topic(list/href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)
@@ -221,11 +247,15 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 				message_admins(span_notice("[key_name(usr)] deleted all objects of type or subtype of [O_type] ([i] objects deleted) "))
 
 /obj/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(desc_controls)
 		. += span_notice(desc_controls)
 
 /obj/examine_tags(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(obj_flags & UNIQUE_RENAME)
 		.["renameable"] = "Use a pen on it to rename it or change its description."
@@ -233,25 +263,35 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 		.["conductive"] = "It appears to be a good conductor of electricity."
 
 /obj/analyzer_act(mob/living/user, obj/item/analyzer/tool)
+	procstart = null
+	src.procstart = null
 	if(atmos_scan(user=user, target=src, silent=FALSE))
 		return TRUE
 	return ..()
 
 /obj/proc/plunger_act(obj/item/plunger/attacking_plunger, mob/living/user, reinforced)
+	procstart = null
+	src.procstart = null
 	return SEND_SIGNAL(src, COMSIG_PLUNGER_ACT, attacking_plunger, user, reinforced)
 
 // Should move all contained objects to its location.
 /obj/proc/dump_contents()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Unimplemented.")
 
 /obj/handle_ricochet(obj/projectile/proj)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && receive_ricochet_damage_coeff)
 		take_damage(proj.damage * receive_ricochet_damage_coeff, proj.damage_type, proj.armor_flag, 0, REVERSE_DIR(proj.dir), proj.armour_penetration) // pass along receive_ricochet_damage_coeff damage to the structure for the ricochet
 
 /// Handles exposing an object to reagents.
 /obj/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & COMPONENT_NO_EXPOSE_REAGENTS)
 		return
@@ -263,6 +303,8 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 
 /// Attempt to freeze this obj if possible. returns TRUE if it succeeded, FALSE otherwise.
 /obj/proc/freeze()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_FROZEN))
 		return FALSE
 	if(resistance_flags & FREEZE_PROOF)
@@ -273,10 +315,14 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 
 /// Unfreezes this obj if its frozen
 /obj/proc/unfreeze()
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_OBJ_UNFREEZE)
 
 /// If we can unwrench this object; returns SUCCESSFUL_UNFASTEN and FAILED_UNFASTEN, which are both TRUE, or CANT_UNFASTEN, which isn't.
 /obj/proc/can_be_unfasten_wrench(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	if(!is_anchorable_floor(loc) && !anchored)
 		if(!silent)
 			to_chat(user, span_warning("[src] needs to be on the floor to be secured!"))
@@ -285,6 +331,8 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 
 /// Try to unwrench an object in a WONDERFUL DYNAMIC WAY
 /obj/proc/default_unfasten_wrench(mob/user, obj/item/wrench, time = 2 SECONDS)
+	procstart = null
+	src.procstart = null
 	if(wrench.tool_behaviour != TOOL_WRENCH)
 		return CANT_UNFASTEN
 
@@ -313,6 +361,8 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 
 /// For the do_after, this checks if unfastening conditions are still valid
 /obj/proc/unfasten_wrench_check(prev_anchored, mob/user)
+	procstart = null
+	src.procstart = null
 	if(anchored != prev_anchored)
 		return FALSE
 	if(can_be_unfasten_wrench(user, TRUE) != SUCCESSFUL_UNFASTEN) //if we aren't explicitly successful, cancel the fuck out
@@ -321,6 +371,8 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 
 /// Adjusts the vertical pixel_z offset when the object is anchored on a tile with table
 /obj/proc/check_on_table()
+	procstart = null
+	src.procstart = null
 	if(anchored_tabletop_offset == 0)
 		return
 	if(istype(src, /obj/structure/table))
@@ -332,17 +384,23 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 		pixel_z = initial(pixel_z)
 
 /obj/apply_single_mat_effect(datum/material/material, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(material_flags & MATERIAL_AFFECT_STATISTICS)
 		change_material_strength(material, mat_amount, multiplier)
 
 /obj/remove_single_mat_effect(datum/material/material, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(material_flags & MATERIAL_AFFECT_STATISTICS)
 		change_material_strength(material, mat_amount, multiplier, remove = TRUE)
 
 /// Changes force and throwforce of an item based on its properties. Split into a separate proc as to allow items to change theirs based on sharpness and behavior
 /obj/proc/change_material_strength(datum/material/material, mat_amount, multiplier, remove = FALSE)
+	procstart = null
+	src.procstart = null
 	var/density = material.get_property(MATERIAL_DENSITY)
 	var/hardness = material.get_property(MATERIAL_HARDNESS)
 	var/flexibility = material.get_property(MATERIAL_FLEXIBILITY)
@@ -360,6 +418,8 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 
 /// Returns modifier to how much damage this object does to a target considered vulnerable to "demolition" (other objects, robots, etc)
 /obj/proc/get_demolition_modifier(obj/target)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(target, TRAIT_IGNORE_DEMOLITION))
 		return 1
 	if(HAS_TRAIT(target, TRAIT_INVERTED_DEMOLITION))
@@ -368,18 +428,26 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 
 /// Checks performed by a renamable object(through UNIQUE_RENAME obj_flag) before renaming begins.
 /obj/proc/rename_checks(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Returns the final name of the object, and does any side effects of renaming, such as sounds.
 /obj/proc/nameformat(input, mob/living/user)
+	procstart = null
+	src.procstart = null
 	return input
 
 /// Same as nameformat, but for desc.
 /obj/proc/descformat(input, mob/living/user)
+	procstart = null
+	src.procstart = null
 	return input
 
 /// Called when UNIQUE_RENAME is reset
 /obj/proc/rename_reset()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -400,6 +468,8 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
  * Returns FALSE if the shock failed for any reason
  */
 /obj/proc/shock(mob/living/shocking, chance = 100, shock_source, siemens_coeff = 1)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(!isliving(shocking))
 		return FALSE

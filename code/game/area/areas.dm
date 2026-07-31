@@ -159,6 +159,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * The returned list of turfs is sorted by name
  */
 /proc/process_teleport_locs()
+	procstart = null
+	src.procstart = null
 	for(var/area/AR as anything in get_sorted_areas())
 		if(istype(AR, /area/shuttle) || AR.area_flags & NOTELEPORT)
 			continue
@@ -175,6 +177,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  *  Adds the item to the GLOB.areas_by_type list based on area type
  */
 /area/New()
+	procstart = null
+	src.procstart = null
 	// This interacts with the map loader, so it needs to be set immediately
 	// rather than waiting for atoms to initialize.
 	if (area_flags_mapping & UNIQUE_AREA)
@@ -193,6 +197,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * returns INITIALIZE_HINT_LATELOAD
  */
 /area/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	icon_state = ""
 	if(!ambientsounds)
 		ambientsounds = GLOB.ambience_assoc[ambience_index]
@@ -222,6 +228,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * Sets machine power levels in the area
  */
 /area/LateInitialize()
+	procstart = null
+	src.procstart = null
 	power_change() // all machines set to current power level, also updates icon
 	update_beauty()
 	if(motion_monitored)
@@ -229,6 +237,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 /// Generate turfs, including cool cave wall gen
 /area/proc/RunTerrainGeneration()
+	procstart = null
+	src.procstart = null
 	if (!use_mapgen || !map_generator)
 		return
 	map_generator = get_generator()
@@ -239,6 +249,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 /// Populate the previously generated terrain with mobs and objects
 /area/proc/RunTerrainPopulation()
+	procstart = null
+	src.procstart = null
 	if (!use_mapgen || !map_generator)
 		return
 	map_generator = get_generator()
@@ -248,6 +260,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	map_generator.populate_terrain(turfs, src)
 
 /area/proc/test_gen()
+	procstart = null
+	src.procstart = null
 	if (!use_mapgen || !map_generator)
 		return
 	map_generator = get_generator()
@@ -258,6 +272,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 /// Gets own, or shared, map generator
 /area/proc/get_generator()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/map_generator)
 	if (!map_generator)
 		return
@@ -282,6 +298,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 /// Returns the highest zlevel that this area contains turfs for
 /area/proc/get_highest_zlevel()
+	procstart = null
+	src.procstart = null
 	for (var/area_zlevel in length(turfs_by_zlevel) to 1 step -1)
 		if (length(turfs_to_uncontain_by_zlevel) >= area_zlevel)
 			if (length(turfs_by_zlevel[area_zlevel]) - length(turfs_to_uncontain_by_zlevel[area_zlevel]) > 0)
@@ -294,6 +312,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 /// Returns a nested list of lists with all turfs split by zlevel.
 /// only zlevels with turfs are returned. The order of the list is not guaranteed.
 /area/proc/get_zlevel_turf_lists()
+	procstart = null
+	src.procstart = null
 	if(length(turfs_to_uncontain_by_zlevel))
 		cannonize_contained_turfs()
 
@@ -307,6 +327,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 /// Returns a list with all turfs in this zlevel.
 /area/proc/get_turfs_by_zlevel(zlevel)
+	procstart = null
+	src.procstart = null
 	if (length(turfs_to_uncontain_by_zlevel) >= zlevel && length(turfs_to_uncontain_by_zlevel[zlevel]))
 		cannonize_contained_turfs_by_zlevel(zlevel)
 
@@ -318,12 +340,16 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 /// Merges a list containing all of the turfs zlevel lists from get_zlevel_turf_lists inside one list. Use get_zlevel_turf_lists() or get_turfs_by_zlevel() unless you need all the turfs in one list to avoid generating large lists
 /area/proc/get_turfs_from_all_zlevels()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for (var/list/zlevel_turfs as anything in get_zlevel_turf_lists())
 		. += zlevel_turfs
 
 /// Ensures that the contained_turfs list properly represents the turfs actually inside us
 /area/proc/cannonize_contained_turfs_by_zlevel(zlevel_to_clean, _autoclean = TRUE)
+	procstart = null
+	src.procstart = null
 	// This is massively suboptimal for LARGE removal lists
 	// Try and keep the mass removal as low as you can. We'll do this by ensuring
 	// We only actually add to contained turfs after large changes (Also the management subsystem)
@@ -352,6 +378,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 /// Ensures that the contained_turfs list properly represents the turfs actually inside us
 /area/proc/cannonize_contained_turfs()
+	procstart = null
+	src.procstart = null
 	for (var/area_zlevel in 1 to length(turfs_to_uncontain_by_zlevel))
 		cannonize_contained_turfs_by_zlevel(area_zlevel, _autoclean = FALSE)
 
@@ -360,6 +388,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 /// Returns TRUE if we have contained turfs, FALSE otherwise
 /area/proc/has_contained_turfs()
+	procstart = null
+	src.procstart = null
 	for (var/area_zlevel in 1 to length(turfs_by_zlevel))
 		if (length(turfs_to_uncontain_by_zlevel) >= area_zlevel)
 			if (length(turfs_by_zlevel[area_zlevel]) - length(turfs_to_uncontain_by_zlevel[area_zlevel]) > 0)
@@ -375,6 +405,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * Ensures the item is added to the SSmapping.areas_in_z list for this z
  */
 /area/proc/reg_in_areas_in_z()
+	procstart = null
+	src.procstart = null
 	if(!has_contained_turfs())
 		return
 	var/list/areas_in_z = SSmapping.areas_in_z
@@ -395,6 +427,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * who am I to argue with old coders
  */
 /area/Destroy()
+	procstart = null
+	src.procstart = null
 	if(GLOB.areas_by_type[type] == src)
 		GLOB.areas_by_type[type] = null
 	//this is not initialized until get_sorted_areas() is called so we have to do a null check
@@ -425,6 +459,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * Does this need to exist on area? probably not
  */
 /area/proc/close_and_lock_door(obj/machinery/door/DOOR)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	DOOR.close()
 	if(DOOR.density)
@@ -438,6 +474,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * Alarm auto resets after 600 ticks
  */
 /area/proc/burglaralert(obj/trigger)
+	procstart = null
+	src.procstart = null
 	//Trigger alarm effect
 	set_fire_effect(TRUE)
 	//Lockdown airlocks
@@ -451,6 +489,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * Allows interested parties (lights and fire alarms) to react
  */
 /area/proc/set_fire_effect(new_fire, fault_type, fault_source)
+	procstart = null
+	src.procstart = null
 	if(new_fire == fire)
 		return
 	fire = new_fire
@@ -468,6 +508,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * states on areas?? where the heck would that even display?
  */
 /area/update_icon_state()
+	procstart = null
+	src.procstart = null
 	var/weather_icon
 	for(var/V in SSweather.processing)
 		var/datum/weather/W = V
@@ -482,6 +524,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * Update the icon of the area (overridden to always be null for space
  */
 /area/space/update_icon_state()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	icon_state = null
 
@@ -492,7 +536,9 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * evaluates a mixture of variables mappers can set, requires_power, always_unpowered and then
  * per channel power_equip, power_light, power_environ
  */
-/area/proc/powered(chan) // return true if the area has power to given channel
+/area/proc/powered(chan)
+	procstart = null
+	src.procstart = null // return true if the area has power to given channel
 
 	if(!requires_power)
 		return TRUE
@@ -511,7 +557,9 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 /**
  * Space is not powered ever, so this returns false
  */
-/area/space/powered(chan) //Nope.avi
+/area/space/powered(chan)
+	procstart = null
+	src.procstart = null //Nope.avi
 	return FALSE
 
 /**
@@ -520,6 +568,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * Updates the area icon, calls power change on all machinees in the area, and sends the `COMSIG_AREA_POWER_CHANGE` signal.
  */
 /area/proc/power_change()
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_AREA_POWER_CHANGE)
 	update_appearance()
 
@@ -533,6 +583,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * *AREA_USAGE_STATIC_ENVIRON
  */
 /area/proc/addStaticPower(value, powerchannel)
+	procstart = null
+	src.procstart = null
 	value = power_to_energy(value)
 	switch(powerchannel)
 		if(AREA_USAGE_STATIC_START to AREA_USAGE_STATIC_END)
@@ -547,6 +599,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * *AREA_USAGE_STATIC_ENVIRON
  */
 /area/proc/removeStaticPower(value, powerchannel)
+	procstart = null
+	src.procstart = null
 	value = power_to_energy(value)
 	switch(powerchannel)
 		if(AREA_USAGE_STATIC_START to AREA_USAGE_STATIC_END)
@@ -558,6 +612,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * Clears all power used for the dynamic equipment, light and environment channels
  */
 /area/proc/clear_usage()
+	procstart = null
+	src.procstart = null
 	energy_usage[AREA_USAGE_EQUIP] = 0
 	energy_usage[AREA_USAGE_LIGHT] = 0
 	energy_usage[AREA_USAGE_ENVIRON] = 0
@@ -568,6 +624,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * Add a power value amount to the stored used_x variables
  */
 /area/proc/use_energy(amount, chan)
+	procstart = null
+	src.procstart = null
 	switch(chan)
 		if(AREA_USAGE_STATIC_START to AREA_USAGE_STATIC_END)
 			return
@@ -582,6 +640,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * If the area has ambience, then it plays some ambience music to the ambience channel
  */
 /area/Entered(atom/movable/arrived, area/old_area)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	SEND_SIGNAL(src, COMSIG_AREA_ENTERED, arrived, old_area)
 
@@ -600,6 +660,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * Sends signals COMSIG_AREA_EXITED and COMSIG_EXIT_AREA (to a list of atoms)
  */
 /area/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_AREA_EXITED, gone, direction)
 	SEND_SIGNAL(gone, COMSIG_MOVABLE_EXITED_AREA, src, direction)
 
@@ -610,6 +672,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 ///Divides total beauty in the room by roomsize to allow us to get an average beauty per tile.
 /area/proc/update_beauty()
+	procstart = null
+	src.procstart = null
 	if(!areasize)
 		beauty = 0
 		return FALSE
@@ -625,6 +689,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * Sets the area name, sets all status var's to false and adds the area to the sorted area list
  */
 /area/proc/setup(a_name)
+	procstart = null
+	src.procstart = null
 	name = a_name
 	power_equip = FALSE
 	power_light = FALSE
@@ -639,6 +705,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  *
  */
 /area/proc/update_areasize()
+	procstart = null
+	src.procstart = null
 	if(outdoors)
 		return FALSE
 	areasize = 0
@@ -650,21 +718,29 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * Causes a runtime error
  */
 /area/AllowDrop()
+	procstart = null
+	src.procstart = null
 	CRASH("Bad op: area/AllowDrop() called")
 
 /**
  * Causes a runtime error
  */
 /area/drop_location()
+	procstart = null
+	src.procstart = null
 	CRASH("Bad op: area/drop_location() called")
 
 /// A hook so areas can modify the incoming args of ChangeTurf
 /area/proc/place_on_top_react(list/new_baseturfs, turf/added_layer, flags)
+	procstart = null
+	src.procstart = null
 	return flags
 
 
 /// Called when a living mob that spawned here, joining the round, receives the player client.
 /area/proc/on_joining_game(mob/living/boarder)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -675,6 +751,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  */
 
 /area/proc/get_original_area_name()
+	procstart = null
+	src.procstart = null
 	if(name == initial(name))
 		return name
 	return "[name] ([initial(name)])"

@@ -206,6 +206,8 @@
 	acid = 100
 
 /obj/vehicle/sealed/mecha/Initialize(mapload, built_manually)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui_view = new()
 	ui_view.generate_view("mech_view_[REF(src)]")
@@ -253,6 +255,8 @@
 	AddElement(/datum/element/hostile_machine)
 
 /obj/vehicle/sealed/mecha/Destroy()
+	procstart = null
+	src.procstart = null
 	// If the former occupants get polymorphed, mutated, chestburstered,
 	// or otherwise replaced by another mob, that mob is no longer in .occupants
 	// and gets deleted with the mech. However, they do remain in .contents
@@ -287,6 +291,8 @@
 
 /// Add parts on mech spawning. Skipped in manual construction.
 /obj/vehicle/sealed/mecha/proc/populate_parts()
+	procstart = null
+	src.procstart = null
 	cell = new /obj/item/stock_parts/power_store/cell/high(src)
 	scanmod = new /obj/item/stock_parts/scanning_module(src)
 	capacitor = new /obj/item/stock_parts/capacitor(src)
@@ -294,6 +300,8 @@
 	update_part_values()
 
 /obj/vehicle/sealed/mecha/proc/locate_parts()
+	procstart = null
+	src.procstart = null
 	cell = locate(/obj/item/stock_parts/power_store) in contents
 	diag_hud_set_mechcell()
 	scanmod = locate(/obj/item/stock_parts/scanning_module) in contents
@@ -303,6 +311,8 @@
 
 
 /obj/vehicle/sealed/mecha/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = get_mecha_occupancy_state()
 	return ..()
 
@@ -312,6 +322,8 @@
  * Handles enabling or disabling the safety function.
  */
 /obj/vehicle/sealed/mecha/proc/set_safety(mob/user)
+	procstart = null
+	src.procstart = null
 	weapons_safety = !weapons_safety
 	if(!safety_sound_custom)
 		SEND_SOUND(user, sound('sound/machines/beep/beep.ogg', volume = 25))
@@ -328,6 +340,8 @@
  * correct and then updates it for each mob in the occupants list.
  */
 /obj/vehicle/sealed/mecha/proc/set_mouse_pointer()
+	procstart = null
+	src.procstart = null
 	if(weapons_safety)
 		mouse_pointer = ""
 	else
@@ -341,10 +355,14 @@
 
 //override this proc if you need to split up mecha control between multiple people (see savannah_ivanov.dm)
 /obj/vehicle/sealed/mecha/auto_assign_occupant_flags(mob/occupant)
+	procstart = null
+	src.procstart = null
 	if(driver_amount() < max_drivers)
 		add_control_flags(occupant, FULL_MECHA_CONTROL)
 
 /obj/vehicle/sealed/mecha/generate_actions()
+	procstart = null
+	src.procstart = null
 	initialize_passenger_action_type(/datum/action/vehicle/sealed/mecha/mech_eject)
 	if(mecha_flags & IS_ENCLOSED)
 		initialize_controller_action_type(/datum/action/vehicle/sealed/mecha/mech_toggle_cabin_seal, VEHICLE_CONTROL_SETTINGS)
@@ -356,16 +374,22 @@
 	initialize_controller_action_type(/datum/action/vehicle/sealed/mecha/strafe, VEHICLE_CONTROL_DRIVE)
 
 /obj/vehicle/sealed/mecha/add_occupant(mob/M, control_flags, forced)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		generate_equipment_actions(M)
 
 /obj/vehicle/sealed/mecha/remove_occupant(mob/M)
+	procstart = null
+	src.procstart = null
 	remove_all_equipment_actions(M)
 	return ..()
 
 /// Generates action buttons for all eligible equipment and grants them to the occupant with VEHICLE_CONTROL_SETTINGS flag.
 /obj/vehicle/sealed/mecha/proc/generate_equipment_actions(mob/occupant)
+	procstart = null
+	src.procstart = null
 	if(!(occupant in occupants) || !(occupants[occupant] & VEHICLE_CONTROL_SETTINGS))
 		return
 	for(var/obj/item/mecha_parts/mecha_equipment/equipment in flat_equipment)
@@ -376,6 +400,8 @@
 
 /// Removes all equipment actions from a specific occupant.
 /obj/vehicle/sealed/mecha/proc/remove_all_equipment_actions(mob/occupant)
+	procstart = null
+	src.procstart = null
 	var/list/actions = LAZYACCESS(occupant_actions, occupant)
 	if(!actions)
 		return
@@ -390,6 +416,8 @@
  * Creates a new action, sets up the chassis and equipment references, and grants it to the mob.
  */
 /obj/vehicle/sealed/mecha/proc/grant_equipment_action(mob/occupant, obj/item/mecha_parts/mecha_equipment/equipment)
+	procstart = null
+	src.procstart = null
 	var/datum/action/vehicle/sealed/mecha/equipment/action = new equipment.action_type // We cannot use grant_action_type_to_mob() because:
 	action.set_chassis(src) 									  					  // 1. grant_action_type_to_mob() works with a single predefined action type
 	action.set_equipment(equipment) 							 					 // 2. We create unique action instances for each equipment with specific equipment references
@@ -404,6 +432,8 @@
  * Grants equipment actions to current occupants with VEHICLE_CONTROL_SETTINGS flag.
  */
 /obj/vehicle/sealed/mecha/proc/on_equipment_attach(obj/item/mecha_parts/mecha_equipment/equipment)
+	procstart = null
+	src.procstart = null
 	if(!is_equipment_valid_for_action(equipment))
 		return
 
@@ -417,11 +447,15 @@
  * Removes equipment actions from all current occupants.
  */
 /obj/vehicle/sealed/mecha/proc/on_equipment_detach(obj/item/mecha_parts/mecha_equipment/equipment)
+	procstart = null
+	src.procstart = null
 	for(var/mob/occupant in occupants)
 		remove_action_type_from_mob(equipment.type, occupant)
 
 /// Create actions only for equipment that can be toggled or triggered, excluding air tanks.
 /obj/vehicle/sealed/mecha/proc/is_equipment_valid_for_action(obj/item/mecha_parts/mecha_equipment/equipment)
+	procstart = null
+	src.procstart = null
 	if(!(equipment.can_be_toggled || equipment.can_be_triggered))
 		return FALSE
 
@@ -431,6 +465,8 @@
 	return TRUE
 
 /obj/vehicle/sealed/mecha/proc/get_mecha_occupancy_state()
+	procstart = null
+	src.procstart = null
 	if((mecha_flags & SILICON_PILOT) && silicon_icon_state)
 		return silicon_icon_state
 	if(LAZYLEN(occupants))
@@ -438,13 +474,19 @@
 	return "[base_icon_state]-open"
 
 /obj/vehicle/sealed/mecha/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/vehicle/sealed/mecha/rust_heretic_act()
+	procstart = null
+	src.procstart = null
 	take_damage(500, BRUTE)
 	return TRUE
 
 /obj/vehicle/sealed/mecha/proc/restore_equipment()
+	procstart = null
+	src.procstart = null
 	equipment_disabled = FALSE
 	for(var/occupant in occupants)
 		var/mob/mob_occupant = occupant
@@ -454,6 +496,8 @@
 
 /// Updates the values given by scanning module and capacitor tier, called when a part is removed or inserted.
 /obj/vehicle/sealed/mecha/proc/update_part_values()
+	procstart = null
+	src.procstart = null
 	update_energy_drain()
 
 	if(capacitor)
@@ -462,6 +506,8 @@
 		overclock_temp_danger = initial(overclock_temp_danger)
 
 /obj/vehicle/sealed/mecha/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(LAZYLEN(flat_equipment))
 		. += span_notice("It's equipped with:")
@@ -496,6 +542,8 @@
 	. += span_notice("It has a <a href='byond://?src=[REF(src)];list_armor=1'>tag</a> listing its protection classes.")
 
 /obj/vehicle/sealed/mecha/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(href_list["list_armor"])
@@ -530,6 +578,8 @@
 		to_chat(usr, boxed_message(formatted_readout))
 
 /obj/vehicle/sealed/mecha/generate_integrity_message()
+	procstart = null
+	src.procstart = null
 	var/examine_text = ""
 	var/integrity = atom_integrity / max_integrity * 100
 
@@ -549,11 +599,15 @@
 
 /// Locate an internal tack in the utility modules
 /obj/vehicle/sealed/mecha/proc/get_internal_tank()
+	procstart = null
+	src.procstart = null
 	var/obj/item/mecha_parts/mecha_equipment/air_tank/module = locate(/obj/item/mecha_parts/mecha_equipment/air_tank) in equip_by_category[MECHA_UTILITY]
 	return module?.internal_tank
 
 //processing internal damage, temperature, air regulation, alert updates, lights power use.
 /obj/vehicle/sealed/mecha/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(overclock_mode || overclock_temp > 0)
 		process_overclock_effects(seconds_per_tick)
 	if(internal_damage)
@@ -569,6 +623,8 @@
 	diag_hud_set_mechstat()
 
 /obj/vehicle/sealed/mecha/proc/process_overclock_effects(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!overclock_mode && overclock_temp > 0)
 		overclock_temp -= seconds_per_tick
 		return
@@ -586,6 +642,8 @@
 		take_damage(seconds_per_tick, BURN, 0, 0)
 
 /obj/vehicle/sealed/mecha/proc/process_internal_damage_effects(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(internal_damage & MECHA_INT_FIRE)
 		if(!(internal_damage & MECHA_INT_TEMP_CONTROL) && SPT_PROB(2.5, seconds_per_tick))
 			clear_internal_damage(MECHA_INT_FIRE)
@@ -610,6 +668,8 @@
 		cell.maxcharge -= min(damage_energy_consumption, cell.maxcharge)
 
 /obj/vehicle/sealed/mecha/proc/process_cabin_air(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!(internal_damage & MECHA_INT_TEMP_CONTROL) && cabin_air && cabin_air.return_volume() > 0)
 		var/heat_capacity = cabin_air.heat_capacity()
 		var/required_energy = abs(T20C - cabin_air.temperature) * heat_capacity
@@ -624,6 +684,8 @@
 				cabin_air.temperature -= delta_temperature
 
 /obj/vehicle/sealed/mecha/proc/process_occupants(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/occupant as anything in occupants)
 		if(!(mecha_flags & IS_ENCLOSED) && occupant?.incapacitated) //no sides mean it's easy to just sorta fall out if you're incapacitated.
 			mob_exit(occupant, randomstep = TRUE) //bye bye
@@ -668,6 +730,8 @@
 			checking = checking.loc
 
 /obj/vehicle/sealed/mecha/proc/process_constant_power_usage(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(mecha_flags & LIGHTS_ON && !use_energy(light_power_drain * seconds_per_tick))
 		mecha_flags &= ~LIGHTS_ON
 		set_light_on(mecha_flags & LIGHTS_ON)
@@ -676,6 +740,8 @@
 
 /// Called when a driver clicks somewhere. Handles everything like equipment, punches, etc.
 /obj/vehicle/sealed/mecha/proc/on_mouseclick(mob/user, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(LAZYACCESS(modifiers, MIDDLE_CLICK))
 		set_safety(user)
@@ -744,6 +810,8 @@
 		TIMER_COOLDOWN_START(src, COOLDOWN_MECHA_MELEE_ATTACK, melee_cooldown)
 
 /obj/vehicle/sealed/mecha/proc/can_interact_with(atom/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(completely_disabled || is_currently_ejecting || (mecha_flags & CANNOT_INTERACT))
 		return FALSE
 	if(user.incapacitated)
@@ -754,6 +822,8 @@
 
 /// Driver alt clicks anything while in mech
 /obj/vehicle/sealed/mecha/proc/on_click_alt(mob/user, atom/target, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	. = COMSIG_MOB_CANCEL_CLICKON // Cancel base_click_alt
@@ -773,12 +843,16 @@
 
 /// Middle mouse click signal wrapper for AI users
 /obj/vehicle/sealed/mecha/proc/on_middlemouseclick(mob/user, atom/target, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isAI(user))
 		on_mouseclick(user, target, params)
 
 /// Displays a special speech bubble when someone inside the mecha speaks
 /obj/vehicle/sealed/mecha/proc/display_speech_bubble(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/list/speech_bubble_recipients = list()
 	for(var/mob/listener in get_hearers_in_view(7, src))
@@ -790,30 +864,42 @@
 
 // Atmospheric stuff
 /obj/vehicle/sealed/mecha/remove_air(amount)
+	procstart = null
+	src.procstart = null
 	if((mecha_flags & IS_ENCLOSED) && cabin_sealed)
 		return cabin_air.remove(amount)
 	return ..()
 
 /obj/vehicle/sealed/mecha/return_air()
+	procstart = null
+	src.procstart = null
 	if((mecha_flags & IS_ENCLOSED) && cabin_sealed)
 		return cabin_air
 	return ..()
 
 /obj/vehicle/sealed/mecha/return_analyzable_air()
+	procstart = null
+	src.procstart = null
 	return cabin_air
 
 /// Fetches pressure of the gas mixture we are using
 /obj/vehicle/sealed/mecha/proc/return_pressure()
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/air = return_air()
 	return air?.return_pressure()
 
 /// Fetches temp of the gas mixture we are using
 /obj/vehicle/sealed/mecha/return_temperature()
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/air = return_air()
 	return air?.return_temperature()
 
 /// Makes cabin unsealed, dumping cabin air outside or airtight filling the cabin with external air mix
 /obj/vehicle/sealed/mecha/proc/set_cabin_seal(mob/user, cabin_sealed)
+	procstart = null
+	src.procstart = null
 	if(!(mecha_flags & IS_ENCLOSED))
 		balloon_alert(user, "cabin can't be sealed!")
 		log_message("Tried to seal cabin. This mech can't be airtight.", LOG_MECHA)
@@ -857,6 +943,8 @@
 
 /// Special light eater handling
 /obj/vehicle/sealed/mecha/proc/on_light_eater(obj/vehicle/sealed/source, datum/light_eater)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(mecha_flags & HAS_LIGHTS)
 		visible_message(span_danger("[src]'s lights burn out!"))
@@ -867,6 +955,8 @@
 	return COMPONENT_BLOCK_LIGHT_EATER
 
 /obj/vehicle/sealed/mecha/on_saboteur(datum/source, disrupt_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((mecha_flags & HAS_LIGHTS) && light_on)
 		set_light_on(FALSE)
@@ -874,11 +964,15 @@
 
 /// Apply corresponding accesses
 /obj/vehicle/sealed/mecha/proc/update_access()
+	procstart = null
+	src.procstart = null
 	req_access = one_access ? list() : accesses
 	req_one_access = one_access ? accesses : list()
 
 /// Electrocute user from power celll
 /obj/vehicle/sealed/mecha/shock(mob/living/shocking, chance = 100, shock_source, siemens_coeff)
+	procstart = null
+	src.procstart = null
 	if(get_charge() < 1)
 		return FALSE
 	if(isnull(siemens_coeff))
@@ -887,6 +981,8 @@
 
 /// Toggle mech overclock with a button or by hacking
 /obj/vehicle/sealed/mecha/proc/toggle_overclock(forced_state = null)
+	procstart = null
+	src.procstart = null
 	if(!isnull(forced_state))
 		if(overclock_mode == forced_state)
 			return FALSE
@@ -911,6 +1007,8 @@
 
 /// Update the energy drain according to parts and status
 /obj/vehicle/sealed/mecha/proc/update_energy_drain()
+	procstart = null
+	src.procstart = null
 	if(servo)
 		step_energy_drain = initial(step_energy_drain) / servo.rating
 	else
@@ -928,6 +1026,8 @@
 
 /// Toggle lights on/off
 /obj/vehicle/sealed/mecha/proc/toggle_lights(forced_state = null, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!(mecha_flags & HAS_LIGHTS))
 		if(user)
 			balloon_alert(user, "mech has no lights!")
@@ -950,6 +1050,8 @@
 		act.build_all_button_icons()
 
 /obj/vehicle/sealed/mecha/proc/melee_attack_effect(mob/living/victim, heavy)
+	procstart = null
+	src.procstart = null
 	if(heavy)
 		victim.Unconscious(2 SECONDS)
 	else

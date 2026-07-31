@@ -9,6 +9,8 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 3)
 
 /obj/item/ammo_casing/strilka310/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddElement(/datum/element/caseless)
@@ -82,6 +84,8 @@
 	name = "40mm riot suppression grenade shells design disk"
 
 /obj/item/disk/design_disk/liberator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	blueprints += new /datum/design/tear_gas_40mm
 	blueprints += new /datum/design/rubber_40mm
@@ -99,10 +103,14 @@
 	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/ammo_casing/rebar/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/caseless, TRUE)
 
 /obj/item/ammo_casing/rebar/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state]"
 
@@ -144,6 +152,8 @@
 	var/heals_left = 6 SECONDS
 
 /obj/item/ammo_casing/rebar/healium/ready_proj(atom/target, mob/living/user, quiet, zone_override, atom/fired_from)
+	procstart = null
+	src.procstart = null
 	if (loaded_projectile)
 		var/obj/projectile/bullet/rebar/healium/bolt = loaded_projectile
 		bolt.heals_left = heals_left
@@ -165,6 +175,8 @@
 	var/can_sleep = TRUE
 
 /datum/embedding/rebar_healium/on_successful_embed(mob/living/carbon/victim, obj/item/bodypart/target_limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/bodypart/limb as anything in victim.get_bodyparts())
 		for(var/obj/item/ammo_casing/rebar/healium/other_rebar in limb.embedded_objects)
@@ -176,6 +188,8 @@
 				return
 
 /datum/embedding/rebar_healium/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/ammo_casing/rebar/healium/casing = parent
 	casing.heals_left -= seconds_per_tick * 1 SECONDS
@@ -196,6 +210,8 @@
 		fall_out()
 
 /datum/embedding/rebar_healium/remove_embedding(mob/living/to_hands)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/ammo_casing/rebar/healium/casing = parent
 	casing.heals_left = initial(casing.heals_left)

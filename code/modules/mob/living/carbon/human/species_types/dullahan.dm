@@ -35,11 +35,15 @@
 	var/owner_first_client_connection_handled = FALSE
 
 /datum/species/dullahan/check_roundstart_eligible()
+	procstart = null
+	src.procstart = null
 	if(check_holidays(HALLOWEEN))
 		return TRUE
 	return ..()
 
 /datum/species/dullahan/on_species_gain(mob/living/carbon/human/human, datum/species/old_species, pref_load, regenerate_icons)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	human.lose_hearing_sensitivity(TRAIT_GENERIC)
 	RegisterSignal(human, COMSIG_CARBON_ATTACH_LIMB, PROC_REF(on_gained_part))
@@ -67,6 +71,8 @@
 
 /// If we gained a new body part, it had better not be a head
 /datum/species/dullahan/proc/on_gained_part(mob/living/carbon/human/dullahan, obj/item/bodypart/part)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(part.body_zone != BODY_ZONE_HEAD)
 		return
@@ -78,6 +84,8 @@
 
 /// If our head is destroyed, so are we
 /datum/species/dullahan/proc/on_head_destroyed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/human = my_head?.owner
 	if(QDELETED(human))
@@ -88,6 +96,8 @@
 
 /// Head was butchered? No more dullahan
 /datum/species/dullahan/proc/on_relay_move()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(QDELETED(my_head?.owner) || !isdullahan(my_head?.owner))
 		return
@@ -95,10 +105,14 @@
 	QDEL_NULL(my_head)
 
 /datum/species/dullahan/proc/defib_check(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return human.can_defib_brain(locate(/obj/item/organ/brain) in my_head.loc) || DEFIB_POSSIBLE
 
 /datum/species/dullahan/on_species_loss(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(my_head)
 		var/obj/item/bodypart/head/detached_head = my_head.loc
@@ -116,6 +130,8 @@
 	human.reset_perspective(human)
 
 /datum/species/dullahan/proc/update_vision_perspective(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/eyes/eyes = human.get_organ_slot(ORGAN_SLOT_EYES)
 	if(eyes)
 		human.update_tint()
@@ -127,6 +143,8 @@
 			prevent_perspective_change = TRUE
 
 /datum/species/dullahan/on_owner_login(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/eyes/eyes = owner.get_organ_slot(ORGAN_SLOT_EYES)
 	if(owner_first_client_connection_handled)
 		if(!eyes.tint)
@@ -141,14 +159,20 @@
 	owner_first_client_connection_handled = TRUE
 
 /datum/species/dullahan/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "A dullahan is much like a human, but their head is detached from their body and must be carried around."
 
 /datum/species/dullahan/get_species_description()
+	procstart = null
+	src.procstart = null
 	return "An angry spirit, hanging onto the land of the living for \
 		unfinished business. Or that's what the books say. They're quite nice \
 		when you get to know them."
 
 /datum/species/dullahan/get_species_lore()
+	procstart = null
+	src.procstart = null
 	return list(
 		"\"No wonder they're all so grumpy! Their hands are always full! I used to think, \
 		\"Wouldn't this be cool?\" but after watching these creatures suffer from their head \
@@ -156,6 +180,8 @@
 	)
 
 /datum/species/dullahan/create_pref_unique_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 
 	to_add += list(list(
@@ -171,6 +197,8 @@
 
 // There isn't a "Minor Undead" biotype, so we have to explain it in an override (see: vampires)
 /datum/species/dullahan/create_pref_biotypes_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 
 	to_add += list(list(
@@ -195,6 +223,8 @@
 	modifies_speech = TRUE
 
 /obj/item/organ/tongue/dullahan/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human = owner
 		if(isdullahan(human))
@@ -225,6 +255,8 @@
 	desc = "Switch between seeing normally from your head, or blindly from your body."
 
 /datum/action/item_action/organ_action/dullahan/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/eyes/dullahan/dullahan_eyes = target
 	dullahan_eyes.tint = dullahan_eyes.tint ? NONE : INFINITY
 	if(!isdullahan(owner))
@@ -241,6 +273,8 @@
 	var/mob/living/owner
 
 /obj/item/dullahan_relay/Initialize(mapload, mob/living/carbon/human/new_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!new_owner)
 		return INITIALIZE_HINT_QDEL
@@ -255,12 +289,16 @@
 	become_hearing_sensitive(ROUNDSTART_TRAIT)
 
 /obj/item/dullahan_relay/Destroy()
+	procstart = null
+	src.procstart = null
 	lose_hearing_sensitivity(ROUNDSTART_TRAIT)
 	owner = null
 	return ..()
 
 /// Updates our names after applying name prefs
 /obj/item/dullahan_relay/proc/on_prefs_loaded(mob/living/carbon/human/headless)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/item/bodypart/head/detached_head = loc
 	if (!istype(detached_head))
@@ -276,6 +314,8 @@
 	detached_head.update_icon_dropped()
 
 /obj/item/dullahan_relay/Hear(atom/movable/speaker, message_language, raw_message, radio_freq, radio_freq_name, radio_freq_color, list/spans, list/message_mods = list(), message_range)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(owner))
 		return FALSE
@@ -291,11 +331,15 @@
 
 ///Stops dullahans from gibbing when regenerating limbs
 /obj/item/dullahan_relay/proc/unlist_head(datum/source, list/excluded_zones)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	excluded_zones |= BODY_ZONE_HEAD
 
 ///Retrieving the owner's head for better ahealing.
 /obj/item/dullahan_relay/proc/retrieve_head(datum/source, full_heal_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!(full_heal_flags & HEAL_ADMIN))
 		return

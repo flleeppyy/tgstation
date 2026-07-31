@@ -17,6 +17,8 @@
 	fishing_datum = /datum/fish_source/cursed_spring
 
 /turf/open/water/hot_spring/cursed/dip_in(atom/movable/movable)
+	procstart = null
+	src.procstart = null
 	if(!isliving(movable))
 		return ..()
 	var/mob/living/living = movable

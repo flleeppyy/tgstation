@@ -9,6 +9,8 @@
 	var/lore
 
 /datum/element/examine_lore/Attach(datum/target, lore_hint, lore)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	src.lore_hint = lore_hint || span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [target].")
@@ -23,6 +25,8 @@
 
 
 /datum/element/examine_lore/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	UnregisterSignal(source, list(
@@ -31,9 +35,13 @@
 	))
 
 /datum/element/examine_lore/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_list += lore_hint
 
 /datum/element/examine_lore/proc/on_examine_more(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_list += "<i>[lore]</i>"

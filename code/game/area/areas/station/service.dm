@@ -41,6 +41,8 @@
 	sound_environment = SOUND_AREA_WOODFLOOR
 
 /area/station/service/bar/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.bar_areas += src
 

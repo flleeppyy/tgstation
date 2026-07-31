@@ -11,6 +11,8 @@
 	light_color = LIGHT_COLOR_CYAN
 
 /obj/item/gun/energy/e_gun/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Only actual eguns can be converted
 	if(type != /obj/item/gun/energy/e_gun)
@@ -23,6 +25,8 @@
 	)
 
 /obj/item/gun/energy/e_gun/add_seclight_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/seclite_attachable, \
 		light_overlay_icon = 'icons/obj/weapons/guns/flashlights.dmi', \
 		light_overlay = "flight", \
@@ -41,6 +45,8 @@
 	single_shot_type_overlay = FALSE
 
 /obj/item/gun/energy/e_gun/mini/add_seclight_point()
+	procstart = null
+	src.procstart = null
 	// The mini energy gun's light comes attached but is unremovable.
 	AddComponent(/datum/component/seclite_attachable, \
 		starting_light = new /obj/item/flashlight/seclite(src), \
@@ -107,14 +113,20 @@
 	var/obj/item/dragnet_beacon/linked_beacon
 
 /obj/item/gun/energy/e_gun/dragnet/add_seclight_point()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/energy/e_gun/dragnet/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/dragnet_beacon))
 		link_beacon(user, tool)
 
 ///Sets the linked_beacon var on the dragnet, which becomes the snare round's teleport destination.
 /obj/item/gun/energy/e_gun/dragnet/proc/link_beacon(mob/living/user, obj/item/dragnet_beacon/our_beacon)
+	procstart = null
+	src.procstart = null
 	if(linked_beacon)
 		if(our_beacon == linked_beacon)
 			balloon_alert(user, "already synced!")
@@ -128,6 +140,8 @@
 
 ///Handles clearing the linked_beacon reference in the event that it is deleted.
 /obj/item/gun/energy/e_gun/dragnet/proc/handle_beacon_disable(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	visible_message(span_warning("A light on the [src] flashes, indicating that it is no longer linked with a DRAGnet beacon!"))
 	linked_beacon = null
@@ -145,6 +159,8 @@
 	ammo_x_offset = 2
 
 /obj/item/gun/energy/e_gun/turret/add_seclight_point()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/energy/e_gun/nuclear
@@ -168,16 +184,22 @@
 	var/fail_chance = 0
 
 /obj/item/gun/energy/e_gun/nuclear/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(fail_tick > 0)
 		fail_tick -= seconds_per_tick * 0.5
 	..()
 
 /obj/item/gun/energy/e_gun/nuclear/shoot_live_shot(mob/living/user, pointblank = 0, atom/pbtarget = null, message = 1)
+	procstart = null
+	src.procstart = null
 	failcheck()
 	update_appearance()
 	..()
 
 /obj/item/gun/energy/e_gun/nuclear/proc/failcheck()
+	procstart = null
+	src.procstart = null
 	if(prob(fail_chance) && isliving(loc))
 		var/mob/living/M = loc
 		switch(fail_tick)
@@ -192,12 +214,16 @@
 				to_chat(M, span_userdanger("Your [name]'s reactor overloads!"))
 
 /obj/item/gun/energy/e_gun/nuclear/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
 	fail_chance = min(fail_chance + round(15/severity), 100)
 
 /obj/item/gun/energy/e_gun/nuclear/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(reactor_overloaded)
 		. += "[icon_state]_fail_3"

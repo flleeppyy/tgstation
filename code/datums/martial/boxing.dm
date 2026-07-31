@@ -28,14 +28,20 @@
 	var/list/boxing_traits = list(TRAIT_BOXING_READY)
 
 /datum/martial_art/boxing/can_teach(mob/living/new_holder)
+	procstart = null
+	src.procstart = null
 	return ishuman(new_holder)
 
 /datum/martial_art/boxing/activate_style(mob/living/new_holder)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new_holder.add_traits(boxing_traits, BOXING_TRAIT)
 	RegisterSignal(new_holder, COMSIG_LIVING_CHECK_BLOCK, PROC_REF(check_block))
 
 /datum/martial_art/boxing/deactivate_style(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	remove_from.remove_traits(boxing_traits, BOXING_TRAIT)
 	UnregisterSignal(remove_from, list(COMSIG_LIVING_CHECK_BLOCK))
 	return ..()
@@ -43,6 +49,8 @@
 ///Unlike most instances of this proc, this is actually called in _proc/tussle()
 ///Returns a multiplier on our skill damage bonus.
 /datum/martial_art/boxing/proc/check_streak(mob/living/attacker, mob/living/defender, obj/item/bodypart/arm/active_arm)
+	procstart = null
+	src.procstart = null
 	if(check_behind(attacker, defender) && !honorable_boxer)
 		reset_streak()
 		return CRAVEN_BLOW
@@ -78,21 +86,29 @@
 
 /// An extra effect on some moves and attacks.
 /datum/martial_art/boxing/proc/perform_extra_effect(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/martial_art/boxing/disarm_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(honor_check(defender))
 		add_to_streak("D", defender)
 	tussle(attacker, defender)
 	return MARTIAL_ATTACK_SUCCESS
 
 /datum/martial_art/boxing/grab_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(honorable_boxer && !ignore_grab_restriction)
 		attacker.balloon_alert(attacker, "no grabbing while boxing!")
 		return MARTIAL_ATTACK_FAIL
 	return MARTIAL_ATTACK_INVALID //UNLESS YOU'RE EVIL
 
 /datum/martial_art/boxing/harm_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(honor_check(defender))
 		add_to_streak("H", defender)
 	tussle(attacker, defender)
@@ -100,6 +116,8 @@
 
 // Our only boxing move, which occurs on literally all attacks; the tussle. However, quite a lot morphs the results of this proc. Combos, unlike most martial arts attacks, are checked in this proc rather than our standard unarmed procs
 /datum/martial_art/boxing/proc/tussle(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 
 	if(honorable_boxer) //Being a good sport, you never hit someone on the ground or already knocked down. It shows you're the better person.
 		if((defender.body_position == LYING_DOWN && defender.get_stamina_loss() >= 100) || IS_UNCONSCIOUS(defender)) //If they're in stamcrit or unconscious, don't bloody punch them
@@ -276,6 +294,8 @@
 
 /// Our crit effect. For normal boxing, this applies a stagger, then applies a knockout if they're staggered. Other types of boxing apply different kinds of effects.
 /datum/martial_art/boxing/proc/crit_effect(mob/living/attacker, mob/living/defender, armor_block = 0, damage_type = STAMINA, damage = 0)
+	procstart = null
+	src.procstart = null
 	if(defender.get_timed_status_effect_duration(/datum/status_effect/staggered))
 		defender.visible_message(
 			span_danger("[attacker] knocks [defender] out with a haymaker!"),
@@ -306,6 +326,8 @@
 
 /// Returns whether whoever is checked by this proc is complying with the rules of boxing. The boxer cannot block non-boxers, and cannot apply their scariest moves against non-boxers.
 /datum/martial_art/boxing/proc/honor_check(mob/living/possible_boxer)
+	procstart = null
+	src.procstart = null
 	if(!honorable_boxer)
 		return TRUE //You scoundrel!!
 
@@ -316,6 +338,8 @@
 
 /// Handles our instances of experience gain while boxing. It also applies the exercised status effect.
 /datum/martial_art/boxing/proc/skill_experience_adjustment(mob/living/boxer, mob/living/defender, experience_value)
+	procstart = null
+	src.procstart = null
 	//Boxing in heavier gravity gives you more experience
 	var/gravity_modifier = boxer.has_gravity() > STANDARD_GRAVITY ? 1 : 2
 
@@ -325,6 +349,8 @@
 
 /// Handles our blocking signals, similar to hit_reaction() on items. Only blocks while the boxer is in throw mode.
 /datum/martial_art/boxing/proc/check_block(mob/living/boxer, atom/movable/hitby, damage, attack_text, attack_type, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!can_use(boxer) || !boxer.throw_mode || INCAPACITATED_IGNORING(boxer, INCAPABLE_GRAB))
@@ -375,11 +401,15 @@
 	return SUCCESSFUL_BLOCK
 
 /datum/martial_art/boxing/can_use(mob/living/martial_artist)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(martial_artist))
 		return FALSE
 	return ..()
 
 /datum/martial_art/boxing/get_style_help()
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	. += "<b><i>You focus on your form, visualizing how best to throw a punch.</i></b>"
@@ -408,6 +438,8 @@
 	boxing_traits = list(TRAIT_BOXING_READY, TRAIT_STRENGTH, TRAIT_STIMMED)
 
 /datum/martial_art/boxing/evil/get_style_help()
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	. += "<b><i>You contemplate on the violence ahead, visualizing how best to throw a punch.</i></b>"
@@ -440,6 +472,8 @@
 	var/list/second_word_strike = list(" Punch", " Pawnch", "-punch", " Jab", " Hook", " Fist", " Uppercut", " Straight", " Strike", " Lunge")
 
 /datum/martial_art/boxing/hunter/get_style_help()
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	. += "<b><i>You focus on your Fists. You focus on Adventure. You focus on the Hunt.</i></b>"
@@ -457,6 +491,8 @@
 	return .
 
 /datum/martial_art/boxing/hunter/honor_check(mob/living/possible_boxer)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(possible_boxer, TRAIT_BOXING_READY))
 		return TRUE
 
@@ -471,6 +507,8 @@
 // Our hunter boxer applies a rebuke and double damage against the target of their crit. If the target is humanoid, we just perform our regular crit effect instead.
 
 /datum/martial_art/boxing/hunter/crit_effect(mob/living/attacker, mob/living/defender, armor_block = 0, damage_type = STAMINA, damage = 0)
+	procstart = null
+	src.procstart = null
 	if(defender.mob_biotypes & MOB_HUMANOID && !istype(defender, /mob/living/simple_animal/hostile/megafauna))
 		return ..() //Applies the regular crit effect if it is a normal human, and not a megafauna
 
@@ -499,12 +537,16 @@
 // Our hunter boxer does a sizable amount of extra damage on a successful combo or block
 
 /datum/martial_art/boxing/hunter/perform_extra_effect(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(defender.mob_biotypes & MOB_HUMANOID && !istype(defender, /mob/living/simple_animal/hostile/megafauna))
 		return // Does not apply to humans (who aren't megafauna)
 
 	defender.apply_damage(rand(15,20), default_damage_type, BODY_ZONE_CHEST)
 
 /datum/martial_art/boxing/hunter/skill_experience_adjustment(mob/living/boxer, mob/living/defender, experience_value)
+	procstart = null
+	src.procstart = null
 	if(defender.mob_biotypes & MOB_HUMANOID && !istype(defender, /mob/living/simple_animal/hostile/megafauna))
 		return ..() //IF they're a normal human, we give the normal amount of experience instead
 

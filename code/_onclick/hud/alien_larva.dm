@@ -2,6 +2,8 @@
 	ui_style = 'icons/hud/screen_alien.dmi'
 
 /datum/hud/larva/initialize_screen_objects()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_screen_object(/atom/movable/screen/combattoggle/flashy, HUD_MOB_INTENTS, HUD_GROUP_INFO, ui_style)
 	add_screen_object(/atom/movable/screen/floor_changer, HUD_MOB_FLOOR_CHANGER, HUD_GROUP_STATIC, ui_style, ui_alien_floor_change)

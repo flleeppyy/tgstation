@@ -18,6 +18,8 @@
 	var/list/added_reagents
 
 /datum/component/bakeable/Initialize(bake_result, required_bake_time, positive_result, use_large_steam_sprit, list/added_reagents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(parent)) //Only items support baking at the moment
 		return COMPONENT_INCOMPATIBLE
@@ -43,6 +45,8 @@
 
 // Inherit the new values passed to the component
 /datum/component/bakeable/InheritComponent(datum/component/bakeable/new_comp, original, bake_result, required_bake_time, positive_result, use_large_steam_sprite)
+	procstart = null
+	src.procstart = null
 	if(!original)
 		return
 	if(bake_result)
@@ -53,16 +57,22 @@
 		src.positive_result = positive_result
 
 /datum/component/bakeable/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ITEM_OVEN_PLACED_IN, PROC_REF(on_baking_start))
 	RegisterSignal(parent, COMSIG_ITEM_OVEN_PROCESS, PROC_REF(on_bake))
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/component/bakeable/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ITEM_OVEN_PLACED_IN, COMSIG_ITEM_OVEN_PROCESS, COMSIG_ATOM_EXAMINE))
 	REMOVE_TRAIT(parent, TRAIT_BAKEABLE, REF(src))
 
 /// Signal proc for [COMSIG_ITEM_OVEN_PLACED_IN] when baking starts (parent enters an oven)
 /datum/component/bakeable/proc/on_baking_start(datum/source, atom/used_oven, mob/baker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(baker && baker.mind)
@@ -70,6 +80,8 @@
 
 ///Ran every time an item is baked by something
 /datum/component/bakeable/proc/on_bake(datum/source, atom/used_oven, seconds_per_tick = 1)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Let our signal know if we're baking something good or ... burning something
@@ -83,6 +95,8 @@
 
 ///Ran when an object finished baking
 /datum/component/bakeable/proc/finish_baking(atom/used_oven)
+	procstart = null
+	src.procstart = null
 	var/atom/original_object = parent
 	var/obj/item/plate/oven_tray/used_tray = original_object.loc
 	var/atom/baked_result = new bake_result(used_tray)
@@ -131,6 +145,8 @@
 
 ///Gives info about the items baking status so you can see if its almost done
 /datum/component/bakeable/proc/on_examine(atom/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!current_bake_time) //Not baked yet

@@ -20,6 +20,8 @@
 /// This list will just be full of typepaths that we expect.
 /// More detailed information about each item (mainly, how much of each should exist) is set on a per item basis
 /datum/unit_test/maptest_required_map_items/proc/setup_expected_types()
+	procstart = null
+	src.procstart = null
 	expected_types += subtypesof(/obj/item/stamp/head)
 	expected_types += subtypesof(/obj/machinery/modular_computer/preset/cargochat)
 	expected_types += subtypesof(/obj/machinery/fax/heads)
@@ -48,10 +50,14 @@
 /// Types that must never be mapped in.
 /// Anything listed here is expected to be spawned by code instead.
 /datum/unit_test/maptest_required_map_items/proc/setup_banned_types()
+	procstart = null
+	src.procstart = null
 // Your typepaths here!
 	return
 
 /datum/unit_test/maptest_required_map_items/Run()
+	procstart = null
+	src.procstart = null
 	setup_expected_types()
 	setup_banned_types()
 
@@ -94,6 +100,8 @@
 	var/maximum_amount = 1
 
 /datum/required_item/New(tracked_type, minimum_amount = 1, maximum_amount = 1)
+	procstart = null
+	src.procstart = null
 	src.tracked_type = tracked_type
 	src.minimum_amount = minimum_amount
 	src.maximum_amount = maximum_amount

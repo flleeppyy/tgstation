@@ -21,17 +21,23 @@
 	var/color
 
 /datum/component/face_decal/Initialize(icon_state, layers, color)
+	procstart = null
+	src.procstart = null
 	src.icon_state = icon_state
 	src.layers = layers
 	src.color = color
 
 /datum/component/face_decal/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	normal_overlay = null
 	my_head = null
 	QDEL_NULL(bodypart_overlay)
 
 /datum/component/face_decal/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	if(iscarbon(parent))
 		var/mob/living/carbon/human/carbon_parent = parent
 		my_head = carbon_parent.get_bodypart(BODY_ZONE_HEAD)
@@ -69,9 +75,13 @@
 		atom_parent.update_appearance()
 
 /datum/component/face_decal/proc/get_normal_overlay()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/component/face_decal/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_COMPONENT_CLEAN_ACT,
 		COMSIG_COMPONENT_CLEAN_FACE_ACT))
@@ -89,6 +99,8 @@
 
 ///Callback to remove our decal
 /datum/component/face_decal/proc/clean_up(datum/source, clean_types)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(clean_types & CLEAN_TYPE_BLOOD))
@@ -99,6 +111,8 @@
 
 /// Ensures normal_overlay overlay in case the mob is not a carbon
 /datum/component/face_decal/proc/update_overlays(atom/parent_atom, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(normal_overlay)
@@ -106,6 +120,8 @@
 
 /// Removes the decal when the head gets dismembered
 /datum/component/face_decal/proc/lost_head(obj/item/bodypart/source, mob/living/carbon/owner, dismembered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
@@ -122,6 +138,8 @@ GLOBAL_LIST_INIT(splattable, zebra_typecacheof(list(
 	var/mood_event_type
 
 /datum/component/face_decal/splat/Initialize(icon_state, layers, color, memory_type = /datum/memory/witnessed_creampie, mood_event_type = /datum/mood_event/creampie)
+	procstart = null
+	src.procstart = null
 	if(!is_type_in_typecache(parent, GLOB.splattable))
 		return COMPONENT_INCOMPATIBLE
 
@@ -132,15 +150,21 @@ GLOBAL_LIST_INIT(splattable, zebra_typecacheof(list(
 	src.mood_event_type = mood_event_type
 
 /datum/component/face_decal/splat/get_normal_overlay()
+	procstart = null
+	src.procstart = null
 	return mutable_appearance('icons/mob/effects/face_decal.dmi', "[icon_state]_[is_type_in_list(parent, GLOB.splattable, zebra = TRUE)]")
 
 /datum/component/face_decal/splat/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(parent))
 		var/mob/living/carbon/human/carbon_parent = parent
 		carbon_parent.add_mood_event("splat", mood_event_type)
 
 /datum/component/face_decal/splat/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(parent))
 		var/mob/living/carbon/carbon_parent = parent

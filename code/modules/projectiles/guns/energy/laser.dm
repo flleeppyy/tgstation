@@ -10,6 +10,8 @@
 	light_color = COLOR_SOFT_RED
 
 /obj/item/gun/energy/laser/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Only regular lasguns can be slapcrafted
 	if(type != /obj/item/gun/energy/laser)
@@ -21,6 +23,8 @@
 	)
 
 /obj/item/gun/energy/laser/add_seclight_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/seclite_attachable, \
 		light_overlay_icon = 'icons/obj/weapons/guns/flashlights.dmi', \
 		light_overlay = "flight", \
@@ -38,6 +42,8 @@
 	ammo_type = list(/obj/item/ammo_casing/energy/lasergun/pistol)
 
 /obj/item/gun/energy/laser/pistol/add_seclight_point()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/energy/laser/assault
@@ -58,6 +64,8 @@
 	SET_BASE_PIXEL(-8, 0)
 
 /obj/item/gun/energy/laser/assault/add_seclight_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/seclite_attachable, \
 		light_overlay_icon = 'icons/obj/weapons/guns/flashlights.dmi', \
 		light_overlay = "flight", \
@@ -73,6 +81,8 @@
 	gun_flags = NOT_A_REAL_GUN
 
 /obj/item/gun/energy/laser/practice/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/energy/laser/retro
@@ -112,10 +122,14 @@
 	ammo_x_offset = 1
 
 /obj/item/gun/energy/laser/cybersun/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/automatic_fire, 0.15 SECONDS, allow_akimbo = FALSE)
 
 /obj/item/gun/energy/laser/cybersun/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/energy/laser/cybersun/unrestricted
@@ -130,6 +144,8 @@
 	gun_flags = NOT_A_REAL_GUN
 
 /obj/item/gun/energy/laser/carbine/practice/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/energy/laser/retro/old
@@ -137,6 +153,8 @@
 	ammo_type = list(/obj/item/ammo_casing/energy/lasergun/old)
 
 /obj/item/gun/energy/laser/retro/old/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/energy/laser/hellgun
@@ -178,6 +196,8 @@
 
 
 /obj/item/gun/energy/laser/captain/scattershot/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/energy/laser/cyborg
@@ -187,10 +207,14 @@
 	ammo_x_offset = 1
 
 /obj/item/gun/energy/laser/cyborg/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_ALL)
 
 /obj/item/gun/energy/laser/cyborg/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/energy/laser/scatter
@@ -200,6 +224,8 @@
 	ammo_x_offset = 1
 
 /obj/item/gun/energy/laser/scatter/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/energy/laser/scatter/shotty
@@ -269,6 +295,8 @@
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/bluetag/hitscan)
 
 /obj/item/gun/energy/laser/bluetag/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/energy/laser/redtag
@@ -284,6 +312,8 @@
 	gun_flags = NOT_A_REAL_GUN
 
 /obj/item/gun/energy/laser/redtag/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/energy/laser/redtag/hitscan
@@ -304,6 +334,8 @@
 // Laser Gun
 
 /obj/item/gun/energy/laser/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/examine_lore, \
 		lore_hint = span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [src]."), \
 		lore = "The NT Type 5 Heat Delivery System (sometimes referred to as the HDS-5 in promotional material) is what truly put Nanotrasen \
@@ -324,6 +356,8 @@
 // Retro Laser Gun
 
 /obj/item/gun/energy/laser/retro/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/examine_lore, \
 		lore_hint = span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [src]."), \
 		lore = "The NT Type 1 Heat Delivery System (sometimes referred to as the HDS-1 in older weapon catalogs) was a weapon that \
@@ -344,6 +378,8 @@
 // Soulful Laser Gun
 
 /obj/item/gun/energy/laser/soul/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/examine_lore, \
 		lore_hint = span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [src]."), \
 		lore = "The NT Type 3 Heat Delivery System (sometimes referred to as the HDS-3 in the memories of security officers) is quite possibly \
@@ -366,6 +402,8 @@
 // hellfire laser gun
 
 /obj/item/gun/energy/laser/hellgun/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/examine_lore, \
 		lore_hint = span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [src]."), \
 		lore = "The NT Type 4 Heat Delivery System (sometimes referred to as the HDS-4 in legal documentation) is considered a notable \
@@ -394,6 +432,8 @@
 // Antique Laser Gun
 
 /obj/item/gun/energy/laser/captain/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/examine_lore, \
 		lore_hint = span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [src]."), \
 		lore = "For a brief period, Nanotrasen produced a series of custom-made Type 4 laser guns for a select group of \
@@ -421,6 +461,8 @@
 // X-ray Laser Gun
 
 /obj/item/gun/energy/laser/xray/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/examine_lore, \
 		lore_hint = span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [src]."), \
 		lore = "The NT Type 6 Heat Delivery System (sometimes referred to as the HDS6 in research notes) is a breakthrough in the \
@@ -444,6 +486,8 @@
 // Laser Carbine
 
 /obj/item/gun/energy/laser/carbine/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/examine_lore, \
 		lore_hint = span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [src]."), \
 		lore = "The NT Type 5/R Rapid Heat Delivery System (sometimes referred to as the HDS-5/R in briefing manuals, and 'that piece of shit flashlight' \

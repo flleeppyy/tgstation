@@ -13,16 +13,22 @@
 	VAR_PRIVATE/timed_out = FALSE
 
 /datum/bt_node/decorator/true_for_time/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	timer_id = addtimer(CALLBACK(src, PROC_REF(on_timeout)), duration, TIMER_STOPPABLE|TIMER_DELETE_ME)
 	return TRUE
 
 /datum/bt_node/decorator/true_for_time/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	if(timer_id)
 		deltimer(timer_id)
 		timer_id = null
 	timed_out = FALSE
 
 /datum/bt_node/decorator/true_for_time/proc/on_timeout()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	timer_id = null
 	timed_out = TRUE
@@ -32,9 +38,13 @@
 		on_observed_change(owning_controller, null)
 
 /datum/bt_node/decorator/true_for_time/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	return !timed_out
 
 /datum/bt_node/decorator/true_for_time/tick(datum/ai_controller/controller, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(succeed_on_timeout && timed_out)
 		if(child_active && child)
 			child.reset_subtree_tick_states()

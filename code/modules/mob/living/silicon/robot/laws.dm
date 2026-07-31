@@ -1,10 +1,14 @@
 /mob/living/silicon/robot/deadchat_lawchange()
+	procstart = null
+	src.procstart = null
 	if(lawupdate)
 		return
 
 	return ..()
 
 /mob/living/silicon/robot/show_laws()
+	procstart = null
+	src.procstart = null
 	if(lawupdate)
 		if (!QDELETED(connected_ai))
 			if(IS_UNCONSCIOUS_OR_CRIT(connected_ai) || connected_ai.control_disabled)
@@ -33,9 +37,13 @@
  * For cyborgs, checks if we have a master AI and, if lawupdate is set, syncs law and misc. with it
  */
 /mob/living/silicon/proc/try_sync_laws()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/silicon/robot/try_sync_laws()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(connected_ai) || !lawupdate)
 		return FALSE
 
@@ -43,10 +51,14 @@
 	return TRUE
 
 /mob/living/silicon/robot/proc/sync_to_ai()
+	procstart = null
+	src.procstart = null
 	picturesync()
 	lawsync()
 
 /mob/living/silicon/robot/proc/picturesync()
+	procstart = null
+	src.procstart = null
 	if(isnull(connected_ai?.aicamera) || isnull(aicamera))
 		return
 	for(var/i in aicamera.stored)
@@ -55,11 +67,15 @@
 		aicamera.stored[i] = TRUE
 
 /mob/living/silicon/robot/proc/lawsync()
+	procstart = null
+	src.procstart = null
 	connected_ai?.laws?.ai_to_cyborg(laws)
 
 	var/datum/computer_file/program/robotact/program = modularInterface.get_robotact()
 	program?.computer?.update_static_data_for_all_viewers()
 
 /mob/living/silicon/robot/announce_law_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(logevent),"Law update processed."), 0, TIMER_UNIQUE | TIMER_OVERRIDE) //Post_Lawchange gets spammed by some law boards, so let's wait it out

@@ -1,5 +1,7 @@
 
 /mob/living/carbon/alien/proc/findQueen()
+	procstart = null
+	src.procstart = null
 	if(!hud_used)
 		return
 	var/atom/movable/screen/alien/alien_queen_finder/finder = hud_used.screen_objects[HUD_ALIEN_QUEEN_FINDER]
@@ -27,4 +29,6 @@
 	finder.add_overlay(finder_eye)
 
 /mob/living/carbon/alien/adult/royal/queen/findQueen()
+	procstart = null
+	src.procstart = null
 	return //Queen already knows where she is. Hopefully.

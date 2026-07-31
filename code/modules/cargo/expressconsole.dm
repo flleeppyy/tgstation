@@ -30,6 +30,8 @@
 	COOLDOWN_DECLARE(beacon_print_cooldown)
 
 /obj/machinery/computer/cargo/express/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	landingzone = GLOB.areas_by_type[landingzone]
 	if (isnull(landingzone))
@@ -37,11 +39,15 @@
 		landingzone = get_area(src)
 
 /obj/machinery/computer/cargo/express/Destroy()
+	procstart = null
+	src.procstart = null
 	if(beacon)
 		beacon.unlink_console()
 	return ..()
 
 /obj/machinery/computer/cargo/express/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (tool.GetID() && allowed(user))
 		locked = !locked
 		to_chat(user, span_notice("You [locked ? "lock" : "unlock"] the interface."))
@@ -70,6 +76,8 @@
 	return NONE
 
 /obj/machinery/computer/cargo/express/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	if(user)
@@ -85,6 +93,8 @@
 	return TRUE
 
 /obj/machinery/computer/cargo/express/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/canBeacon = beacon && (isturf(beacon.loc) || ismob(beacon.loc))//is the beacon in a valid location?
 	var/list/data = list()
 	var/datum/bank_account/account = SSeconomy.get_dep_account(cargo_account)
@@ -113,9 +123,13 @@
 	return data
 
 /obj/machinery/computer/cargo/express/get_discount()
+	procstart = null
+	src.procstart = null
 	return (obj_flags & EMAGGED) ? EXPRESS_EMAG_DISCOUNT : 1
 
 /obj/machinery/computer/cargo/express/ui_act(action, params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

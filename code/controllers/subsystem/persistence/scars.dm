@@ -1,5 +1,7 @@
 ///Saves all scars for everyone's original characters
 /datum/controller/subsystem/persistence/proc/save_scars()
+	procstart = null
+	src.procstart = null
 	for(var/i in GLOB.joined_player_list)
 		var/mob/living/carbon/human/ending_human = get_mob_by_ckey(i)
 		if(!istype(ending_human) || !ending_human.mind?.original_character_slot_index || !ending_human.client?.prefs.read_preference(/datum/preference/toggle/persistent_scars))

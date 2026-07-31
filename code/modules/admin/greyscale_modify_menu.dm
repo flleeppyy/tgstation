@@ -40,6 +40,8 @@
 	var/unlocked = FALSE
 
 /datum/greyscale_modify_menu/New(datum/target, client/user, list/allowed_configs, datum/callback/apply_callback, starting_icon_state = "", starting_config, starting_colors, unlocked = FALSE)
+	procstart = null
+	src.procstart = null
 	src.target = target
 	var/atom/atom_target
 	if(isatom(target))
@@ -81,6 +83,8 @@
 	refresh_preview()
 
 /datum/greyscale_modify_menu/Destroy()
+	procstart = null
+	src.procstart = null
 	target = null
 	user = null
 	apply_callback = null
@@ -88,18 +92,26 @@
 	return ..()
 
 /datum/greyscale_modify_menu/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return unlocked ? GLOB.always_state : GLOB.greyscale_menu_state
 
 /datum/greyscale_modify_menu/ui_close()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /datum/greyscale_modify_menu/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "GreyscaleModifyMenu")
 		ui.open()
 
 /datum/greyscale_modify_menu/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["greyscale_config"] = "[config.name]"
 
@@ -121,6 +133,8 @@
 	return data
 
 /datum/greyscale_modify_menu/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -241,6 +255,8 @@ This is highly likely to cause massive amounts of lag as every object in the gam
 			config.EnableAutoRefresh(config_owner_type)
 
 /datum/greyscale_modify_menu/proc/ReadColorsFromString(colorString)
+	procstart = null
+	src.procstart = null
 	//length validation
 	var/list/colors = splittext(colorString, "#")
 	if(length(colors) <= 1) //doesn't even begin with a # so isn't even a color
@@ -262,23 +278,31 @@ This is highly likely to cause massive amounts of lag as every object in the gam
 	return TRUE
 
 /datum/greyscale_modify_menu/proc/randomize_color(color_index)
+	procstart = null
+	src.procstart = null
 	var/new_color = "#"
 	for(var/i in 1 to 3)
 		new_color += num2hex(rand(0, 255), 2)
 	split_colors[color_index] = new_color
 
 /datum/greyscale_modify_menu/proc/change_config(datum/greyscale_config/new_config)
+	procstart = null
+	src.procstart = null
 	if(config)
 		UnregisterSignal(config, COMSIG_GREYSCALE_CONFIG_REFRESHED)
 	config = new_config
 	RegisterSignal(config, COMSIG_GREYSCALE_CONFIG_REFRESHED, PROC_REF(queue_refresh))
 
 /datum/greyscale_modify_menu/proc/queue_refresh()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	refreshing = TRUE
 	addtimer(CALLBACK(src, PROC_REF(refresh_preview)), 1 SECONDS, TIMER_UNIQUE | TIMER_OVERRIDE)
 
 /datum/greyscale_modify_menu/proc/refresh_preview()
+	procstart = null
+	src.procstart = null
 	for(var/i in length(split_colors) + 1 to config.expected_colors)
 		LAZYADD(split_colors, rgb(100, 100, 100))
 	var/list/used_colors = split_colors.Copy(1, config.expected_colors+1)
@@ -328,15 +352,21 @@ This is highly likely to cause massive amounts of lag as every object in the gam
 	refreshing = FALSE
 
 /datum/greyscale_modify_menu/proc/Unlock()
+	procstart = null
+	src.procstart = null
 	allowed_configs = SSgreyscale.configurations
 	unlocked = TRUE
 
 /datum/greyscale_modify_menu/proc/DefaultApply()
+	procstart = null
+	src.procstart = null
 	var/atom/atom_target = target
 	atom_target.set_greyscale(split_colors, config.type)
 
 /// Gets the top level type that first uses the configuration in this type path
 /datum/greyscale_modify_menu/proc/SetupConfigOwner()
+	procstart = null
+	src.procstart = null
 	if(!isatom(target))
 		return
 
@@ -354,10 +384,14 @@ This is highly likely to cause massive amounts of lag as every object in the gam
 	var/obj/item/toy/crayon/spraycan/spraycan = null
 
 /datum/greyscale_modify_menu/spray_paint/New(atom/target, client/user, list/allowed_configs, datum/callback/apply_callback, starting_icon_state, starting_config, starting_colors, obj/item/toy/crayon/spraycan/used_spraycan)
+	procstart = null
+	src.procstart = null
 	..()
 	spraycan = used_spraycan
 
 /datum/greyscale_modify_menu/spray_paint/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	return min(
 		ui_status_only_living(user, target),
 		ui_status_user_is_abled(user, target),

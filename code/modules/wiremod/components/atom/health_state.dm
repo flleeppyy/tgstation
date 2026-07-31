@@ -18,10 +18,14 @@
 	var/max_range = 5
 
 /obj/item/circuit_component/compare/health_state/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("Maximum Range: [max_range] tiles", "orange", "info")
 
 /obj/item/circuit_component/compare/health_state/populate_options()
+	procstart = null
+	src.procstart = null
 	input_port = add_input_port("Organism", PORT_TYPE_ATOM)
 
 	var/static/component_options = list(
@@ -34,6 +38,8 @@
 	state_option = add_option_port("Comparison Option", component_options)
 
 /obj/item/circuit_component/compare/health_state/do_comparisons()
+	procstart = null
+	src.procstart = null
 	var/mob/living/organism = input_port.value
 	var/turf/current_turf = get_location()
 	var/turf/target_location = get_turf(organism)

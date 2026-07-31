@@ -1,5 +1,7 @@
 /// Ensure the frequency is within bounds of what it should be sending/receiving at
 /proc/sanitize_frequency(frequency, free = FALSE, syndie = FALSE)
+	procstart = null
+	src.procstart = null
 	frequency = round(frequency)
 	if(free)
 		. = clamp(frequency, MIN_FREE_FREQ, MAX_FREE_FREQ)
@@ -12,16 +14,22 @@
 
 /// Format frequency by moving the decimal.
 /proc/format_frequency(frequency)
+	procstart = null
+	src.procstart = null
 	frequency = text2num(frequency)
 	return "[round(frequency / 10)].[frequency % 10]"
 
 ///Opposite of format, returns as a number
 /proc/unformat_frequency(frequency)
+	procstart = null
+	src.procstart = null
 	frequency = text2num(frequency)
 	return frequency * 10
 
 ///returns a random unused frequency between MIN_FREE_FREQ & MAX_FREE_FREQ if free = TRUE, and MIN_FREQ & MAX_FREQ if FALSE
 /proc/return_unused_frequency(free = FALSE)
+	procstart = null
+	src.procstart = null
 	var/start = free ? MIN_FREE_FREQ : MIN_FREQ
 	var/end = free ? MAX_FREE_FREQ : MAX_FREQ
 

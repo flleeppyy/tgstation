@@ -10,6 +10,8 @@
 	var/maximum_slowdown
 
 /datum/element/basic_stamina_slowdown/Attach(datum/target, minium_stamina_threshold = 40, maximum_stamina = 120, maximum_slowdown = 12)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -20,11 +22,15 @@
 	RegisterSignal(target, COMSIG_LIVING_STAMINA_UPDATE, PROC_REF(on_stamina_changed))
 
 /datum/element/basic_stamina_slowdown/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_LIVING_STAMINA_UPDATE)
 
 /// When our stamina changes check how slow we should be
 /datum/element/basic_stamina_slowdown/proc/on_stamina_changed(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (source.staminaloss >= minium_stamina_threshold)
 		var/current_slowdown = (source.staminaloss / maximum_stamina) * maximum_slowdown

@@ -11,6 +11,8 @@
 	var/rgb_code
 
 /datum/slime_type/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(!force)
 		stack_trace("Something tried to delete a \"/datum/slime_type\", this should never happen as could lead to slime colors being broken!")
 		return QDEL_HINT_LETMELIVE

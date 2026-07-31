@@ -32,6 +32,8 @@
 	)
 
 /datum/symptom/genetic_mutation/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -45,6 +47,8 @@
 		no_reset = TRUE
 
 /datum/symptom/genetic_mutation/Activate(datum/disease/advance/disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -62,6 +66,8 @@
 			given_mutation?.scrambled = TRUE
 
 /datum/symptom/genetic_mutation/End(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

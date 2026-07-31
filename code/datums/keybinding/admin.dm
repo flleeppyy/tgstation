@@ -3,6 +3,8 @@
 	weight = WEIGHT_ADMIN
 
 /datum/keybinding/admin/can_use(client/user)
+	procstart = null
+	src.procstart = null
 	return user.holder ? TRUE : FALSE
 
 /datum/keybinding/admin/admin_say
@@ -20,6 +22,8 @@
 	keybind_signal = COMSIG_KB_ADMIN_AGHOST_DOWN
 
 /datum/keybinding/admin/admin_ghost/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -34,6 +38,8 @@
 	keybind_signal = COMSIG_KB_ADMIN_JUMPTOGHOST_DOWN
 
 /datum/keybinding/admin/jump_to_ghost/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -48,6 +54,8 @@
 	keybind_signal = COMSIG_KB_ADMIN_PLAYERPANELNEW_DOWN
 
 /datum/keybinding/admin/player_panel_new/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -62,6 +70,8 @@
 	keybind_signal = COMSIG_KB_ADMIN_TOGGLEBUILDMODE_DOWN
 
 /datum/keybinding/admin/toggle_buildmode_self/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -76,6 +86,8 @@
 	keybind_signal = COMSIG_KB_ADMIN_STEALTHMODETOGGLE_DOWN
 
 /datum/keybinding/admin/stealthmode/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -90,6 +102,8 @@
 	keybind_signal = COMSIG_KB_ADMIN_INVISIMINTOGGLE_DOWN
 
 /datum/keybinding/admin/invisimin/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -104,6 +118,8 @@
 	keybind_signal = COMSIG_KB_ADMIN_DSAY_DOWN
 
 /datum/keybinding/admin/deadsay/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -118,6 +134,8 @@
 	keybind_signal = COMSIG_KB_ADMIN_DEADMIN_DOWN
 
 /datum/keybinding/admin/deadmin/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -132,6 +150,8 @@
 	keybind_signal = COMSIG_KB_ADMIN_READMIN_DOWN
 
 /datum/keybinding/admin/readmin/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -146,6 +166,8 @@
 	keybind_signal = COMSIG_KB_ADMIN_VIEWTAGS_DOWN
 
 /datum/keybinding/admin/view_tags/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

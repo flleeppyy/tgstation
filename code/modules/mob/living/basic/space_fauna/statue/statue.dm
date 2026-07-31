@@ -55,6 +55,8 @@
 	ai_controller = /datum/ai_controller/basic_controller/statue
 
 /mob/living/basic/statue/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_MUTE, TRAIT_UNOBSERVANT), INNATE_TRAIT)
 	AddComponent(/datum/component/unobserved_actor, unobserved_flags = NO_OBSERVED_MOVEMENT | NO_OBSERVED_ATTACKS)
@@ -67,9 +69,13 @@
 	ai_controller.set_blackboard_key(BB_HUNT_TARGET_LIST, typecacheof(list(/obj/machinery/light)))
 
 /mob/living/basic/statue/med_hud_set_health()
+	procstart = null
+	src.procstart = null
 	return //we're a statue we're invincible
 
 /mob/living/basic/statue/med_hud_set_status()
+	procstart = null
+	src.procstart = null
 	return //we're a statue we're invincible
 
 // Cannot talk
@@ -77,6 +83,8 @@
 // Turn to dust when gibbed
 
 /mob/living/basic/statue/gib()
+	procstart = null
+	src.procstart = null
 	dust()
 
 // Statue powers
@@ -92,6 +100,8 @@
 	aoe_radius = 14
 
 /datum/action/cooldown/spell/aoe/flicker_lights/get_things_to_cast_on(atom/center)
+	procstart = null
+	src.procstart = null
 	var/list/things = list()
 	for(var/obj/machinery/light/nearby_light in range(aoe_radius, center))
 		if(!nearby_light.on)
@@ -102,6 +112,8 @@
 	return things
 
 /datum/action/cooldown/spell/aoe/flicker_lights/cast_on_thing_in_aoe(obj/machinery/light/victim, atom/caster)
+	procstart = null
+	src.procstart = null
 	victim.flicker()
 
 //Blind AOE
@@ -114,10 +126,14 @@
 	aoe_radius = 14
 
 /datum/action/cooldown/spell/aoe/blindness/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	cast_on.visible_message(span_danger("[cast_on] glares their eyes."))
 	return ..()
 
 /datum/action/cooldown/spell/aoe/blindness/get_things_to_cast_on(atom/center)
+	procstart = null
+	src.procstart = null
 	var/list/things = list()
 	for(var/mob/living/nearby_mob in range(aoe_radius, center))
 		if(nearby_mob == owner || nearby_mob == center)
@@ -128,6 +144,8 @@
 	return things
 
 /datum/action/cooldown/spell/aoe/blindness/cast_on_thing_in_aoe(mob/living/victim, atom/caster)
+	procstart = null
+	src.procstart = null
 	victim.adjust_temp_blindness(8 SECONDS)
 
 /datum/ai_controller/basic_controller/statue
@@ -151,5 +169,7 @@
 	faction = list(FACTION_STATUE,FACTION_MINING)
 
 /mob/living/basic/statue/frosty/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/death_drops, /obj/item/dnainjector/geladikinesis)

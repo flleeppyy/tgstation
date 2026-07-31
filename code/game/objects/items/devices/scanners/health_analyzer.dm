@@ -39,19 +39,27 @@
 	var/datum/weakref/last_healthy_scanned
 
 /obj/item/healthanalyzer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_item_context()
 
 /obj/item/healthanalyzer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(src.mode != SCANNER_NO_MODE)
 		. += span_notice("Alt-click [src] to toggle the limb damage readout. Ctrl-shift-click to print readout report.")
 
 /obj/item/healthanalyzer/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins to analyze [user.p_them()]self with [src]! The display shows that [user.p_theyre()] dead!"))
 	return BRUTELOSS
 
 /obj/item/healthanalyzer/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.can_read(src) || user.is_blind())
 		return
 
@@ -63,6 +71,8 @@
 			to_chat(user, span_notice("You switch the health analyzer to report extra info on wounds."))
 
 /obj/item/healthanalyzer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isliving(interacting_with))
 		return NONE
 
@@ -113,6 +123,8 @@
 	add_fingerprint(user)
 
 /obj/item/healthanalyzer/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isliving(interacting_with))
 		return NONE
 	if(user.can_read(src) && !user.is_blind())
@@ -149,6 +161,8 @@
  * tochat - Whether to immediately post the result into the chat of the user, otherwise it will return the results.
  */
 /proc/healthscan(mob/user, mob/living/target, mode = SCANNER_VERBOSE, scanpower = SCANPOWER_BASIC, tochat = TRUE)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated)
 		return
 
@@ -476,6 +490,8 @@
 	return .
 
 /obj/item/healthanalyzer/click_ctrl_shift(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!LAZYLEN(last_scan_text))
 		balloon_alert(user, "no scans!")
@@ -488,6 +504,8 @@
 	addtimer(CALLBACK(src, PROC_REF(print_report), user), 2 SECONDS)
 
 /obj/item/healthanalyzer/proc/print_report(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/paper/medical_report/report_paper = new(get_turf(src))
 
 	report_paper.color = "#99ccff"
@@ -511,6 +529,8 @@
  * Applies traits to the patient if the scanning is eligable to turn in for a bounty, with callbacks to remove after a cooldown.
  */
 /obj/item/healthanalyzer/proc/resolve_patient_eligibility(obj/item/paper/medical_report/report_paper, mob/scanner)
+	procstart = null
+	src.procstart = null
 	var/mob/living/patient = last_healthy_scanned?.resolve()
 	if(!patient)
 		return FALSE
@@ -527,6 +547,8 @@
 	return TRUE
 
 /obj/item/healthanalyzer/proc/clear_treatment(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return
 	if(QDELETED(target))
@@ -535,6 +557,8 @@
 	return TRUE
 
 /proc/chemscan(mob/living/user, mob/living/target, reagent_types_to_check = null, tochat = TRUE)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated)
 		return
 
@@ -609,6 +633,8 @@
 			return jointext(render_list, "")
 
 /obj/item/healthanalyzer/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(mode == SCANNER_NO_MODE)
 		return CLICK_ACTION_BLOCKING
 
@@ -637,6 +663,8 @@
 
 /// Displays wounds with extended information on their status vs medscanners
 /proc/woundscan(mob/user, mob/living/carbon/patient, obj/item/healthanalyzer/scanner, simple_scan = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(patient) || user.incapacitated)
 		return
 
@@ -691,6 +719,8 @@
 	var/scan_for_what = "serious injuries"
 
 /obj/item/healthanalyzer/simple/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(next_encouragement < world.time)
 		playsound(src, 'sound/machines/ping.ogg', 50, FALSE)
 		to_chat(user, span_notice("[src] makes a happy ping and [pick(encouragements)]!"))
@@ -702,10 +732,14 @@
 		violence(user)
 
 /obj/item/healthanalyzer/simple/proc/greed_warning(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("[src] displays an eerily high-definition frowny face, chastizing you for asking it for too much encouragement."))
 	show_emotion(AID_EMOTION_ANGRY)
 
 /obj/item/healthanalyzer/simple/proc/violence(mob/user)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50, FALSE)
 	if(isliving(user))
 		var/mob/living/L = user
@@ -716,9 +750,13 @@
 		show_emotion(AID_EMOTION_HAPPY)
 
 /obj/item/healthanalyzer/simple/proc/violence_damage(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.adjust_brute_loss(4)
 
 /obj/item/healthanalyzer/simple/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isliving(interacting_with))
 		return NONE
 	if(!user.can_read(src) || user.is_blind())
@@ -742,9 +780,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/healthanalyzer/simple/proc/do_the_scan(mob/living/carbon/scanning, mob/living/user)
+	procstart = null
+	src.procstart = null
 	woundscan(user, scanning, src, simple_scan = TRUE)
 
 /obj/item/healthanalyzer/simple/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(emotion)
 		if(AID_EMOTION_HAPPY)
@@ -758,6 +800,8 @@
 
 /// Sets a new emotion display on the scanner, and resets back to neutral in a moment
 /obj/item/healthanalyzer/simple/proc/show_emotion(new_emotion)
+	procstart = null
+	src.procstart = null
 	emotion = new_emotion
 	update_appearance(UPDATE_OVERLAYS)
 	if (emotion != AID_EMOTION_NEUTRAL)
@@ -765,6 +809,8 @@
 
 // Resets visible emotion back to neutral
 /obj/item/healthanalyzer/simple/proc/reset_emotions()
+	procstart = null
+	src.procstart = null
 	emotion = AID_EMOTION_NEUTRAL
 	update_appearance(UPDATE_OVERLAYS)
 
@@ -784,13 +830,19 @@
 	scan_for_what = "diseases"
 
 /obj/item/healthanalyzer/simple/disease/violence_damage(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.adjust_brute_loss(1)
 	user.reagents.add_reagent(/datum/reagent/toxin, rand(1, 3))
 
 /obj/item/healthanalyzer/simple/disease/do_the_scan(mob/living/carbon/scanning, mob/living/user)
+	procstart = null
+	src.procstart = null
 	diseasescan(user, scanning, src)
 
 /obj/item/healthanalyzer/simple/disease/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(emotion)
 		if(AID_EMOTION_HAPPY)
@@ -806,6 +858,8 @@
 
 /// Checks the individual for any diseases that are visible to the scanner, and displays the diseases in the attacked to the attacker.
 /proc/diseasescan(mob/user, mob/living/carbon/patient, obj/item/healthanalyzer/simple/scanner)
+	procstart = null
+	src.procstart = null
 	if(!istype(patient) || user.incapacitated)
 		return
 
@@ -836,6 +890,8 @@
 	var/datum/weakref/last_healthy_scanned_mob
 
 /obj/item/paper/medical_report/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(last_healthy_scanned_mob)
 		. += span_notice("This medical report is applicable for medical bounties.")

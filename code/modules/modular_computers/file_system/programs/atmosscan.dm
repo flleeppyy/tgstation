@@ -20,6 +20,8 @@
 
 /// Secondary attack self.
 /datum/computer_file/program/atmosscan/proc/turf_analyze(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(atmozphere_mode != ATMOZPHERE_SCAN_CLICK)
 		return
@@ -29,6 +31,8 @@
 
 /// Keep this in sync with its tool based counterpart [/obj/proc/analyzer_act] and [/atom/proc/tool_act]
 /datum/computer_file/program/atmosscan/tap(atom/tapped_atom, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(atmozphere_mode != ATMOZPHERE_SCAN_CLICK)
 		return FALSE
 	if(!atmos_scan(user, tapped_atom))
@@ -38,6 +42,8 @@
 
 /// Updates our gasmix data if on click mode.
 /datum/computer_file/program/atmosscan/proc/on_analyze(datum/source, atom/target)
+	procstart = null
+	src.procstart = null
 	var/mixture = target.return_analyzable_air()
 	if(!mixture)
 		return FALSE
@@ -51,9 +57,13 @@
 	last_gasmix_data = new_gasmix_data
 
 /datum/computer_file/program/atmosscan/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return return_atmos_handbooks()
 
 /datum/computer_file/program/atmosscan/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/turf/turf = get_turf(computer)
 	data["atmozphereMode"] = atmozphere_mode
@@ -68,6 +78,8 @@
 	return data
 
 /datum/computer_file/program/atmosscan/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(action)
 		if("scantoggle")

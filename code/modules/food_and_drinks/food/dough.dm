@@ -11,10 +11,14 @@
 	crafting_complexity = FOOD_COMPLEXITY_0
 
 /obj/item/food/dough/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/bread/plain, rand(30 SECONDS, 45 SECONDS), TRUE, TRUE)
 
 // Dough + rolling pin = flat dough
 /obj/item/food/dough/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_ROLLINGPIN, /obj/item/food/flatdough, 1, 3 SECONDS, table_required = TRUE, screentip_verb = "Flatten", sound_to_play = SFX_ROLLING_PIN_ROLLING)
 
 /obj/item/food/flatdough
@@ -28,10 +32,14 @@
 	crafting_complexity = FOOD_COMPLEXITY_0
 
 /obj/item/food/flatdough/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/pizzabread, rand(30 SECONDS, 45 SECONDS), TRUE, TRUE)
 
 // sliceable into 3xdoughslices
 /obj/item/food/flatdough/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/doughslice, 3, 3 SECONDS, table_required = TRUE, screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/pizzabread
@@ -45,6 +53,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/pizzabread/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ingredients_holder, /obj/item/food/pizza/custom, CUSTOM_INGREDIENT_ICON_SCATTER, max_ingredients = 12)
 
@@ -60,9 +70,13 @@
 	crafting_complexity = FOOD_COMPLEXITY_0
 
 /obj/item/food/doughslice/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/bun, rand(20 SECONDS, 25 SECONDS), TRUE, TRUE)
 
 /obj/item/food/doughslice/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/bait/doughball, 5, 3 SECONDS, screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/bun
@@ -77,6 +91,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/bun/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ingredients_holder, /obj/item/food/burger/empty, CUSTOM_INGREDIENT_ICON_STACKPLUSTOP)
 
@@ -91,9 +107,13 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/cakebatter/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/cake/plain, rand(70 SECONDS, 90 SECONDS), TRUE, TRUE)
 
 /obj/item/food/cakebatter/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_ROLLINGPIN, /obj/item/food/piedough, 1, 3 SECONDS, table_required = TRUE, screentip_verb = "Flatten", sound_to_play = SFX_ROLLING_PIN_ROLLING)
 
 /obj/item/food/cakebatter/vegan
@@ -102,6 +122,8 @@
 	foodtypes = GRAIN
 
 /obj/item/food/cakebatter/vegan/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/cake/plain/vegan, rand(70 SECONDS, 90 SECONDS), TRUE, TRUE)
 
 /obj/item/food/piedough
@@ -115,9 +137,13 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/piedough/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/pie/plain, rand(30 SECONDS, 45 SECONDS), TRUE, TRUE)
 
 /obj/item/food/piedough/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/rawpastrybase, 6, 3 SECONDS, table_required = TRUE, screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/rawpastrybase
@@ -132,6 +158,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/rawpastrybase/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/pastrybase, rand(20 SECONDS, 25 SECONDS), TRUE, TRUE)
 
 /obj/item/food/pastrybase

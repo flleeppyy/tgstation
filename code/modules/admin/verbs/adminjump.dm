@@ -78,6 +78,8 @@ ADMIN_VERB_AND_CONTEXT_MENU(get_mob, R_ADMIN, "Get Mob", "Teleport a mob to your
 
 /// Proc to hook user-enacted teleporting behavior and keep logging of the event.
 /atom/movable/proc/admin_teleport(atom/new_location)
+	procstart = null
+	src.procstart = null
 	if(isnull(new_location))
 		log_admin("[key_name(usr)] teleported [key_name(src)] to nullspace")
 		moveToNullspace()
@@ -87,6 +89,8 @@ ADMIN_VERB_AND_CONTEXT_MENU(get_mob, R_ADMIN, "Get Mob", "Teleport a mob to your
 		forceMove(new_location)
 
 /mob/admin_teleport(atom/new_location)
+	procstart = null
+	src.procstart = null
 	var/turf/location = get_turf(new_location)
 	var/msg = "[key_name_admin(usr)] teleported [ADMIN_LOOKUPFLW(src)] to [isnull(new_location) ? "nullspace" : ADMIN_VERBOSEJMP(location)]"
 	message_admins(msg)

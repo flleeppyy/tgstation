@@ -35,6 +35,8 @@
 	rpg_title = "Tavernkeeper"
 
 /datum/job/bartender/award_service(client/winner, award)
+	procstart = null
+	src.procstart = null
 	winner.give_award(award, winner.mob)
 
 	var/datum/venue/bar = SSrestaurant.all_venues[/datum/venue/bar]
@@ -64,6 +66,8 @@
 	skillchips = list(/obj/item/skillchip/drunken_brawler)
 
 /datum/outfit/job/bartender/post_equip(mob/living/carbon/human/H, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/obj/item/card/id/W = H.wear_id

@@ -40,6 +40,8 @@
 	)
 
 /mob/living/basic/shade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_flying)
 	add_traits(list(TRAIT_HEALS_FROM_CULT_PYLONS, TRAIT_SPACEWALK, TRAIT_VENTCRAWLER_ALWAYS), INNATE_TRAIT)
@@ -51,12 +53,16 @@
 		AddElement(/datum/element/death_drops, remains)
 
 /mob/living/basic/shade/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(theme))
 		icon_state = "shade_[theme]"
 	icon_living = icon_state
 
 /mob/living/basic/shade/death()
+	procstart = null
+	src.procstart = null
 	if(IS_CULTIST(src))
 		SSblackbox.record_feedback("tally", "cult_shade_killed", 1)
 	if(death_message == initial(death_message))
@@ -64,16 +70,22 @@
 	..()
 
 /mob/living/basic/shade/can_suicide()
+	procstart = null
+	src.procstart = null
 	if(istype(loc, /obj/item/soulstone)) //do not suicide inside the soulstone
 		return FALSE
 	return ..()
 
 /mob/living/basic/shade/suicide_log(obj/item/suicide_tool)
+	procstart = null
+	src.procstart = null
 	if(IS_CULTIST(src))
 		SSblackbox.record_feedback("tally", "cult_shade_suicided", 1)
 	..()
 
 /mob/living/basic/shade/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/soulstone))
 		return ..()
 

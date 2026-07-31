@@ -11,6 +11,8 @@
  * so we don't want to falsely identify it as a wire tool in some contexts.
  */
 /proc/is_wire_tool(obj/item/tool, check_secured = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool))
 		return FALSE
 	if(tool.tool_behaviour == TOOL_WIRECUTTER || tool.tool_behaviour == TOOL_MULTITOOL)
@@ -22,6 +24,8 @@
 	return FALSE
 
 /atom/proc/attempt_wire_interaction(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(wires))
 		return WIRE_INTERACTION_FAIL
 	if(!IsReachableBy(user))
@@ -79,6 +83,8 @@
 	)
 
 /datum/wires/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!istype(holder, holder_type))
 		CRASH("Wire holder is not of the expected type!")
@@ -100,6 +106,8 @@
 			colors = GLOB.wire_color_directory[key]
 
 /datum/wires/Destroy()
+	procstart = null
+	src.procstart = null
 	holder = null
 	//properly clear refs to avoid harddels & other problems
 	for(var/color in assemblies)
@@ -111,6 +119,8 @@
 
 /// Adds a number of wires which do absolutely nothing.
 /datum/wires/proc/add_duds(duds)
+	procstart = null
+	src.procstart = null
 	while(duds)
 		var/dud = WIRE_DUD_PREFIX + "[--duds]"
 		if(dud in wires)
@@ -119,11 +129,15 @@
 
 ///Called when holder is qdeleted for us to clean ourselves as not to leave any unlawful references.
 /datum/wires/proc/on_holder_qdel(atom/source, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(src)
 
 /datum/wires/proc/randomize()
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(wires) > length(default_possible_colors))
 		stack_trace("Wire type [type] has more wires than possible colors, consider adding more colors or removing wires.")
 
@@ -135,48 +149,72 @@
 		LAZYSET(colors, pick_n_take(possible_colors), wire)
 
 /datum/wires/proc/shuffle_wires()
+	procstart = null
+	src.procstart = null
 	LAZYCLEARLIST(colors)
 	randomize()
 
 /datum/wires/proc/repair()
+	procstart = null
+	src.procstart = null
 	for(var/wire in cut_wires)
 		cut(wire) // I KNOW I KNOW OK
 
 /datum/wires/proc/get_wire(color)
+	procstart = null
+	src.procstart = null
 	return LAZYACCESS(colors, color)
 
 /datum/wires/proc/get_color_of_wire(wire_type)
+	procstart = null
+	src.procstart = null
 	for(var/color in colors)
 		var/other_type = colors[color]
 		if(wire_type == other_type)
 			return color
 
 /datum/wires/proc/get_attached(color)
+	procstart = null
+	src.procstart = null
 	if(LAZYACCESS(assemblies, color))
 		return LAZYACCESS(assemblies, color)
 	return null
 
 /datum/wires/proc/is_attached(color)
+	procstart = null
+	src.procstart = null
 	if(LAZYACCESS(assemblies, color))
 		return TRUE
 
 /datum/wires/proc/is_cut(wire)
+	procstart = null
+	src.procstart = null
 	return (wire in cut_wires)
 
 /datum/wires/proc/is_color_cut(color)
+	procstart = null
+	src.procstart = null
 	return is_cut(get_wire(color))
 
 /datum/wires/proc/is_all_cut()
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(cut_wires) == LAZYLEN(wires))
 		return TRUE
 
 /datum/wires/proc/is_dud(wire)
+	procstart = null
+	src.procstart = null
 	return findtext(wire, WIRE_DUD_PREFIX, 1, length(WIRE_DUD_PREFIX) + 1)
 
 /datum/wires/proc/is_dud_color(color)
+	procstart = null
+	src.procstart = null
 	return is_dud(get_wire(color))
 
 /datum/wires/proc/cut(wire, mob/living/source)
+	procstart = null
+	src.procstart = null
 	if(is_cut(wire))
 		LAZYREMOVE(cut_wires, wire)
 		SEND_SIGNAL(src, COMSIG_MEND_WIRE(wire), wire)
@@ -187,31 +225,45 @@
 		on_cut(wire, mend = FALSE, source = source)
 
 /datum/wires/proc/cut_color(color, mob/living/source)
+	procstart = null
+	src.procstart = null
 	cut(get_wire(color), source)
 
 /datum/wires/proc/cut_random(source)
+	procstart = null
+	src.procstart = null
 	cut(LAZYACCESS(wires, rand(1, LAZYLEN(wires))), source)
 
 /datum/wires/proc/cut_all(source)
+	procstart = null
+	src.procstart = null
 	for(var/wire in wires)
 		cut(wire, source)
 
 /datum/wires/proc/pulse(wire, mob/living/user, force=FALSE)
+	procstart = null
+	src.procstart = null
 	if(!force && is_cut(wire))
 		return
 	SEND_SIGNAL(src, COMSIG_PULSE_WIRE, wire, user)
 	on_pulse(wire, user)
 
 /datum/wires/proc/pulse_color(color, mob/living/user, force=FALSE)
+	procstart = null
+	src.procstart = null
 	pulse(get_wire(color), user, force)
 
 /datum/wires/proc/pulse_assembly(obj/item/assembly/assembly)
+	procstart = null
+	src.procstart = null
 	for(var/color, our_assembly in assemblies)
 		if(assembly == our_assembly)
 			pulse_color(color, force=TRUE)
 			return TRUE
 
 /datum/wires/proc/attach_assembly(color, obj/item/assembly/assembly)
+	procstart = null
+	src.procstart = null
 	if(assembly && istype(assembly) && assembly.assembly_behavior && !is_attached(color) && !(SEND_SIGNAL(assembly, COMSIG_ASSEMBLY_PRE_ATTACH, holder) & COMPONENT_CANCEL_ATTACH))
 		LAZYSET(assemblies, color, assembly)
 		assembly.forceMove(holder)
@@ -220,6 +272,8 @@
 		return assembly
 
 /datum/wires/proc/detach_assembly(color)
+	procstart = null
+	src.procstart = null
 	var/obj/item/assembly/assembly = get_attached(color)
 	if(assembly && istype(assembly))
 		LAZYREMOVE(assemblies, color)
@@ -228,6 +282,8 @@
 
 /// Called from [/atom/proc/emp_act]
 /datum/wires/proc/emp_pulse()
+	procstart = null
+	src.procstart = null
 	var/list/possible_wires = shuffle(wires)
 	var/remaining_pulses = MAXIMUM_EMP_WIRES
 
@@ -240,22 +296,32 @@
 
 // Overridable Procs
 /datum/wires/proc/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if((SEND_SIGNAL(user, COMSIG_TRY_WIRES_INTERACT, holder) & COMPONENT_CANT_INTERACT_WIRES))
 		return FALSE
 	return TRUE
 
 /datum/wires/proc/get_status()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /datum/wires/proc/on_cut(wire, mend = FALSE, mob/living/source = null)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/wires/proc/on_pulse(wire, mob/living/user)
+	procstart = null
+	src.procstart = null
 	return
 // End Overridable Procs
 
 /datum/wires/proc/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!interactable(user))
 		return FALSE
 	ui_interact(user)
@@ -274,6 +340,8 @@
  * * user - The mob to check when deciding whether to reveal wires.
  */
 /datum/wires/proc/can_reveal_wires(mob/user)
+	procstart = null
+	src.procstart = null
 	// Admin ghost can see a purpose of each wire.
 	if(isAdminGhostAI(user))
 		return TRUE
@@ -302,6 +370,8 @@
  * * color - Color string of the wire to check.
  */
 /datum/wires/proc/always_reveal_wire(color)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 #define STUDY_INTERACTION_KEY "studying_photo"
@@ -310,6 +380,8 @@
  * Attempts to study a photo for blueprints.
  */
 /datum/wires/proc/try_study_photo(mob/user)
+	procstart = null
+	src.procstart = null
 	if(randomize)
 		return
 	if(isnull(user.mind))
@@ -336,17 +408,25 @@
 #undef STUDY_INTERACTION_KEY
 
 /datum/wires/ui_host()
+	procstart = null
+	src.procstart = null
 	return holder
 
 /datum/wires/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(interactable(user))
 		return ..()
 	return UI_CLOSE
 
 /datum/wires/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.physical_state
 
 /datum/wires/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		ui = new(user, src, "Wires", "[holder.name] Wires")
@@ -354,6 +434,8 @@
 	try_study_photo(user)
 
 /datum/wires/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/payload = list()
 	var/reveal_wires = can_reveal_wires(user)
@@ -373,6 +455,8 @@
 	return data
 
 /datum/wires/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !interactable(usr))
 		return

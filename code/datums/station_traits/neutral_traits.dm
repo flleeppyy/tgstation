@@ -8,6 +8,8 @@
 	trait_to_give = STATION_TRAIT_BANANIUM_SHIPMENTS
 
 /datum/station_trait/bananium_shipment/get_pulsar_message()
+	procstart = null
+	src.procstart = null
 	var/advisory_string = "Advisory Level: <b>Clown Planet</b></center><BR>"
 	advisory_string += "Your sector's advisory level is Clown Planet! Our bike horns have picked up on a large bananium stash. Clowns show a large influx of clowns on your station. We highly advise you to slip any threats to keep Honkotrasen assets within the Banana Sector. The Department of Intelligence advises defending chemistry from any clowns that are trying to make baldium or space lube."
 	return advisory_string
@@ -54,6 +56,8 @@
 	trait_to_give = STATION_TRAIT_UNIQUE_AI
 
 /datum/station_trait/unique_ai/on_round_start()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/mob/living/silicon/ai/ai as anything in GLOB.ai_list)
 		ai.show_laws()
@@ -67,6 +71,8 @@
 	report_message = "Ian has gone exploring somewhere in the station."
 
 /datum/station_trait/ian_adventure/on_round_start()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/basic/pet/dog/corgi/dog in GLOB.mob_list)
 		if(!(istype(dog, /mob/living/basic/pet/dog/corgi/ian) || istype(dog, /mob/living/basic/pet/dog/corgi/puppy/ian)))
 			continue
@@ -89,6 +95,8 @@
 
 /// Moves the new dog somewhere safe, equips it with the old one's inventory and makes it deadchat_playable.
 /datum/station_trait/ian_adventure/proc/do_corgi_respawn(mob/living/basic/pet/dog/corgi/old_dog, mob/living/basic/pet/dog/corgi/new_dog, gibbed, lives_left)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/turf/current_turf = get_turf(new_dog)
@@ -136,10 +144,14 @@
 	blacklist = list(/datum/station_trait/announcement_medbot, /datum/station_trait/birthday)
 
 /datum/station_trait/announcement_intern/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSstation.announcer = /datum/centcom_announcer/intern
 
 /datum/station_trait/announcement_intern/get_pulsar_message()
+	procstart = null
+	src.procstart = null
 	var/advisory_string = "Advisory Level: <b>(TITLE HERE)</b></center><BR>"
 	advisory_string += "(Copy/Paste the summary provided by the Threat Intelligence Office in this field. You shouldn't have any trouble with this just make sure to replace this message before hitting the send button. Also, make sure there's coffee ready for the meeting at 06:00 when you're done.)"
 	return advisory_string
@@ -153,6 +165,8 @@
 	blacklist = list(/datum/station_trait/announcement_intern, /datum/station_trait/birthday)
 
 /datum/station_trait/announcement_medbot/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSstation.announcer = /datum/centcom_announcer/medbot
 
@@ -166,6 +180,8 @@
 	blacklist = list(/datum/station_trait/assistant_gimmicks)
 
 /datum/station_trait/colored_assistants/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/new_colored_assistant_type = pick(subtypesof(/datum/colored_assistant) - get_configured_colored_assistant_type())
@@ -187,15 +203,21 @@
 	var/birthday_override_ckey
 
 /datum/station_trait/birthday/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignals(SSdcs, list(COMSIG_GLOB_JOB_AFTER_SPAWN), PROC_REF(on_job_after_spawn))
 
 /datum/station_trait/birthday/revert()
+	procstart = null
+	src.procstart = null
 	for (var/obj/effect/landmark/start/hangover/party_spot in GLOB.start_landmarks_list)
 		QDEL_LIST(party_spot.party_debris)
 	return ..()
 
 /datum/station_trait/birthday/on_round_start()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(birthday_override_ckey)
 		if(!check_valid_override())
@@ -213,6 +235,8 @@
 	addtimer(CALLBACK(src, PROC_REF(announce_birthday)), 10 SECONDS)
 
 /datum/station_trait/birthday/proc/check_valid_override()
+	procstart = null
+	src.procstart = null
 
 	var/mob/living/carbon/human/birthday_override_mob = get_mob_by_ckey(birthday_override_ckey)
 
@@ -228,6 +252,8 @@
 
 
 /datum/station_trait/birthday/proc/announce_birthday()
+	procstart = null
+	src.procstart = null
 	report_message = "We here at Nanotrasen would all like to wish [birthday_person ? birthday_person_name : "Employee Name"] a very happy birthday."
 	priority_announce("Happy birthday to [birthday_person ? birthday_person_name : "Employee Name"]! Nanotrasen wishes you a very happy [birthday_person ? thtotext(birthday_person.age + 1) : "255th"] birthday.")
 	if(birthday_person)
@@ -236,6 +262,8 @@
 		birthday_person = null
 
 /datum/station_trait/birthday/proc/on_job_after_spawn(datum/source, datum/job/job, mob/living/spawned_mob)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/hat = pick_weight(list(
@@ -272,6 +300,8 @@
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/birthday_invite/proc/setup_card(birthday_name)
+	procstart = null
+	src.procstart = null
 	desc = "A card stating that its [birthday_name]'s birthday today."
 	icon_state = "paperslip_words"
 	icon = 'icons/obj/service/bureaucracy.dmi'
@@ -294,6 +324,8 @@
 	)
 
 /obj/item/clothing/head/costume/party/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	set_greyscale(colors = list(pick(hat_colors)))
 	return ..()
 
@@ -312,10 +344,14 @@
 	report_message = "Nanotrasen has chosen your station for an experiment - everyone has free scryers! Use these to talk to other people easily and privately."
 
 /datum/station_trait/scryers/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSdcs, COMSIG_GLOB_JOB_AFTER_SPAWN, PROC_REF(on_job_after_spawn))
 
 /datum/station_trait/scryers/proc/on_job_after_spawn(datum/source, datum/job/job, mob/living/spawned, client/player_client)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!ishuman(spawned))
 		return
@@ -343,10 +379,14 @@
 	report_message = "It has become temporarily fashionable to use a wallet, so everyone on the station has been issued one."
 
 /datum/station_trait/wallets/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSdcs, COMSIG_GLOB_JOB_AFTER_SPAWN, PROC_REF(on_job_after_spawn))
 
 /datum/station_trait/wallets/proc/on_job_after_spawn(datum/source, datum/job/job, mob/living/living_mob, mob/M, joined_late)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/card/id/advanced/id_card = living_mob.get_item_by_slot(ITEM_SLOT_ID)
@@ -393,6 +433,8 @@
 		You might lose some of your belongings... or gain some new ones!"
 
 /datum/station_trait/linked_closets/on_round_start()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/roundstart_closets = GLOB.roundstart_station_closets.Copy()
 
@@ -424,23 +466,33 @@
 	var/list/skubbers = list()
 
 /datum/station_trait/skub/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSdcs, COMSIG_GLOB_JOB_AFTER_SPAWN, PROC_REF(on_job_after_spawn))
 
 /datum/station_trait/skub/setup_lobby_button(atom/movable/screen/lobby/button/sign_up/lobby_button)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(lobby_button, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(on_lobby_button_update_overlays))
 	lobby_button.desc = "Are you pro-skub or anti-skub? Click to cycle through pro-skub, anti-skub, random and neutral."
 	return ..()
 
 /// Let late-joiners jump on this gimmick too.
 /datum/station_trait/skub/can_display_lobby_button(client/player)
+	procstart = null
+	src.procstart = null
 	return sign_up_button
 
 /// We don't destroy buttons on round start for those who are still in the lobby.
 /datum/station_trait/skub/on_round_start()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/station_trait/skub/on_lobby_button_update_icon(atom/movable/screen/lobby/button/sign_up/lobby_button, location, control, params, mob/dead/new_player/user)
+	procstart = null
+	src.procstart = null
 	var/mob/player = lobby_button.get_mob()
 	var/skub_stance = skubbers[player.ckey]
 	switch(skub_stance)
@@ -452,6 +504,8 @@
 			lobby_button.base_icon_state = "signup_neutral"
 
 /datum/station_trait/skub/on_lobby_button_click(atom/movable/screen/lobby/button/sign_up/lobby_button, updates)
+	procstart = null
+	src.procstart = null
 	var/mob/player = lobby_button.get_mob()
 	var/skub_stance = skubbers[player.ckey]
 	switch(skub_stance)
@@ -469,6 +523,8 @@
 			lobby_button.balloon_alert(player, "pro-skub")
 
 /datum/station_trait/skub/proc/on_lobby_button_update_overlays(atom/movable/screen/lobby/button/sign_up/lobby_button, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/player = lobby_button.get_mob()
 	var/skub_stance = skubbers[player.ckey]
@@ -483,6 +539,8 @@
 			overlays += "random_skub"
 
 /datum/station_trait/skub/proc/on_job_after_spawn(datum/source, datum/job/job, mob/living/spawned, client/player_client)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/skub_stance = skubbers[player_client.ckey]
@@ -524,10 +582,14 @@
 	dynamic_threat_id = "Background Checks"
 
 /datum/station_trait/background_checks/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSdynamic, COMSIG_DYNAMIC_PRE_ROUNDSTART, PROC_REF(modify_config))
 
 /datum/station_trait/background_checks/proc/modify_config(datum/source, list/dynamic_config)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/datum/dynamic_ruleset/ruleset as anything in subtypesof(/datum/dynamic_ruleset))
@@ -544,21 +606,31 @@
 	sign_up_button = TRUE
 
 /datum/station_trait/pet_day/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSdcs, COMSIG_GLOB_JOB_AFTER_SPAWN, PROC_REF(on_job_after_spawn))
 
 /datum/station_trait/pet_day/setup_lobby_button(atom/movable/screen/lobby/button/sign_up/lobby_button)
+	procstart = null
+	src.procstart = null
 	lobby_button.desc = "Want to bring your innocent pet to a giant metal deathtrap? Click here to customize it!"
 	RegisterSignal(lobby_button, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(on_lobby_button_update_overlays))
 	return ..()
 
 /datum/station_trait/pet_day/can_display_lobby_button(client/player)
+	procstart = null
+	src.procstart = null
 	return sign_up_button
 
 /datum/station_trait/pet_day/on_round_start()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/station_trait/pet_day/on_lobby_button_click(atom/movable/screen/lobby/button/sign_up/lobby_button, updates)
+	procstart = null
+	src.procstart = null
 	var/mob/our_player = lobby_button.get_mob()
 	var/client/player_client = our_player.client
 	if(isnull(player_client))
@@ -569,6 +641,8 @@
 	INVOKE_ASYNC(customization, TYPE_PROC_REF(/datum, ui_interact), our_player)
 
 /datum/station_trait/pet_day/proc/on_job_after_spawn(datum/source, datum/job/job, mob/living/spawned, client/player_client)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/pet_customization/customization = GLOB.customized_pets[REF(player_client)]
@@ -577,6 +651,8 @@
 	INVOKE_ASYNC(customization, TYPE_PROC_REF(/datum/pet_customization, create_pet), spawned, player_client)
 
 /datum/station_trait/pet_day/proc/on_lobby_button_update_overlays(atom/movable/screen/lobby/button/sign_up/lobby_button, list/overlays)
+	procstart = null
+	src.procstart = null
 	overlays += "select_pet"
 
 /// We're pulling a Jim Kramer with this one boys

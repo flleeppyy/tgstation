@@ -10,14 +10,20 @@
 	var/atom/marked_atom
 
 /obj/item/multitool/circuit/Destroy()
+	procstart = null
+	src.procstart = null
 	marked_atom = null
 	return ..()
 
 /obj/item/multitool/circuit/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It has [marked_atom? "a" : "no"] marked entity registered.")
 
 /obj/item/multitool/circuit/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -29,6 +35,8 @@
 	return TRUE
 
 /obj/item/multitool/circuit/melee_attack_chain(mob/user, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/is_right_clicking = LAZYACCESS(modifiers, RIGHT_CLICK)
 
 	if(marked_atom || !user.Adjacent(target) || is_right_clicking)
@@ -41,6 +49,8 @@
 	mark_target(target)
 
 /obj/item/multitool/circuit/proc/mark_target(atom/target)
+	procstart = null
+	src.procstart = null
 	say("Marked [target].")
 	marked_atom = target
 	RegisterSignal(marked_atom, COMSIG_QDELETING, PROC_REF(cleanup_marked_atom))
@@ -51,6 +61,8 @@
 
 /// Allow users to mark items equipped by the target that are visible.
 /obj/item/multitool/circuit/proc/mark_mob_or_contents(mob/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	var/list/visible_items
 	var/mob/living/carbon/carbon_target
 	if(iscarbon(target))
@@ -96,9 +108,13 @@
 		balloon_alert(user, "cannot mark entity")
 
 /obj/item/multitool/circuit/proc/check_menu(mob/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	return !marked_atom && user.is_holding(src) && user.Adjacent(target)
 
 /obj/item/multitool/circuit/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cut_overlays()
 	if(marked_atom)
@@ -106,6 +122,8 @@
 
 /// Clears the current marked atom
 /obj/item/multitool/circuit/proc/clear_marked_atom()
+	procstart = null
+	src.procstart = null
 	if(!marked_atom)
 		return
 	UnregisterSignal(marked_atom, COMSIG_QDELETING)
@@ -113,6 +131,8 @@
 	update_icon()
 
 /obj/item/multitool/circuit/proc/cleanup_marked_atom(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(source == marked_atom)
 		clear_marked_atom()

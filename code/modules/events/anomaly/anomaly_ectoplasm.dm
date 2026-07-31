@@ -24,6 +24,8 @@
 	var/orbit_override
 
 /datum/round_event/anomaly/anomaly_ectoplasm/start()
+	procstart = null
+	src.procstart = null
 	if(!effect_override || !orbit_override)
 		return ..() //If we provide no override, just run the usual startup.
 
@@ -39,6 +41,8 @@
 		announce_to_ghosts(newAnomaly)
 
 /datum/round_event/anomaly/anomaly_ectoplasm/announce(fake)
+	procstart = null
+	src.procstart = null
 	if(isnull(impact_area))
 		impact_area = placer.findValidArea()
 	priority_announce("Paranormal ectoplasmic outburst detected on [ANOMALY_ANNOUNCE_HARMFUL_TEXT] [impact_area.name].", "Anomaly Alert")
@@ -50,6 +54,8 @@
 	var/ghost_override
 
 /datum/event_admin_setup/anomaly_ectoplasm/prompt_admins()
+	procstart = null
+	src.procstart = null
 	if(tgui_alert(usr, "Override the anomaly effect and power?", "You'll be ruining the authenticity.", list("Yes", "No")) == "Yes")
 		var/list/power_values = list(ANOMALY_INTENSITY_MINOR, ANOMALY_INTENSITY_MODERATE, ANOMALY_INTENSITY_MAJOR)
 		chosen_effect = tgui_input_list(usr, "Provide effect override", "Criiiiinge.", power_values)
@@ -69,6 +75,8 @@
 			chosen_effect = 50
 
 /datum/event_admin_setup/anomaly_ectoplasm/apply_to_event(datum/round_event/anomaly/anomaly_ectoplasm/event)
+	procstart = null
+	src.procstart = null
 	event.effect_override = chosen_effect
 	event.orbit_override = ghost_override
 

@@ -55,6 +55,8 @@
 
 
 /datum/component/pellet_cloud/Initialize(projectile_type=/obj/item/shrapnel, magnitude=5)
+	procstart = null
+	src.procstart = null
 	if(!isammocasing(parent) && !isgrenade(parent) && !islandmine(parent) && !issupplypod(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -70,6 +72,8 @@
 		radius = magnitude
 
 /datum/component/pellet_cloud/Destroy(force)
+	procstart = null
+	src.procstart = null
 	purple_hearts = null
 	pellets = null
 	targets_hit = null
@@ -78,6 +82,8 @@
 	return ..()
 
 /datum/component/pellet_cloud/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_PREQDELETED, PROC_REF(nullspace_parent))
 	if(isammocasing(parent))
 		RegisterSignal(parent, COMSIG_FIRE_CASING, PROC_REF(create_casing_pellets))
@@ -90,6 +96,8 @@
 		RegisterSignal(parent, COMSIG_SUPPLYPOD_LANDED, PROC_REF(create_blast_pellets))
 
 /datum/component/pellet_cloud/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_PREQDELETED, COMSIG_FIRE_CASING, COMSIG_GRENADE_DETONATE, COMSIG_GRENADE_ARMED, COMSIG_MOVABLE_MOVED, COMSIG_MINE_TRIGGERED, COMSIG_ITEM_DROPPED))
 
 /**
@@ -99,6 +107,8 @@
  * The arguments really don't matter, while this proc is triggered by COMSIG_FIRE_CASING, it's just a big mess of the state vars we need for doing the stuff over here.
  */
 /datum/component/pellet_cloud/proc/create_casing_pellets(obj/item/ammo_casing/shell, atom/target, mob/living/user, fired_from, randomspread, spread, zone_override, params, distro, obj/projectile/proj)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	shooter = user
@@ -152,6 +162,8 @@
  * * punishable_triggerer- For grenade lances or people who step on the landmines (if we shred the triggerer), we spawn extra shrapnel for them in addition to the normal spread
  */
 /datum/component/pellet_cloud/proc/create_blast_pellets(obj/O, mob/living/triggerer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/A = parent
@@ -185,6 +197,8 @@
  * Note we track anyone who's alive and client'd when they get shredded in var/list/purple_hearts, for achievement checking later
  */
 /datum/component/pellet_cloud/proc/handle_martyrs(mob/living/punishable_triggerer)
+	procstart = null
+	src.procstart = null
 	var/magnitude_absorbed
 	var/list/martyrs = list()
 
@@ -233,6 +247,8 @@
 
 ///One of our pellets hit something, record what it was and check if we're done (terminated == num_pellets)
 /datum/component/pellet_cloud/proc/pellet_hit(obj/projectile/proj, atom/movable/firer, atom/target, Angle, hit_zone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	pellets -= proj
@@ -269,6 +285,8 @@
 
 ///One of our pellets disappeared due to hitting their max range (or just somehow got qdel'd), remove it from our list and check if we're done (terminated == num_pellets)
 /datum/component/pellet_cloud/proc/pellet_range(obj/projectile/proj)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	pellets -= proj
 	terminated++
@@ -278,6 +296,8 @@
 
 /// Minor convenience function for creating each shrapnel piece with circle explosions, mostly stolen from the MIRV component
 /datum/component/pellet_cloud/proc/pew(atom/target, landmine_victim)
+	procstart = null
+	src.procstart = null
 	var/obj/projectile/pellet = new projectile_type(get_turf(parent))
 
 	//Shooting Code:
@@ -297,6 +317,8 @@
 
 ///All of our pellets are accounted for, time to go target by target and tell them how many things they got hit by.
 /datum/component/pellet_cloud/proc/finalize()
+	procstart = null
+	src.procstart = null
 	var/obj/projectile/proj_type = projectile_type
 	var/proj_name = initial(proj_type.name)
 
@@ -360,6 +382,8 @@
 
 /// Look alive, we're armed! Now we start watching to see if anyone's covering us
 /datum/component/pellet_cloud/proc/grenade_armed(obj/item/nade)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(ismob(nade.loc))
@@ -374,6 +398,8 @@
 
 /// Someone dropped the grenade, so set them to the shooter in case they're on top of it when it goes off
 /datum/component/pellet_cloud/proc/grenade_dropped(obj/item/nade, mob/living/slick_willy)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	shooter = slick_willy
@@ -381,6 +407,8 @@
 
 /// Our grenade has moved, reset var/list/bodies so we're "on top" of any mobs currently on the tile
 /datum/component/pellet_cloud/proc/grenade_moved()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	LAZYCLEARLIST(bodies)
@@ -390,12 +418,16 @@
 
 /// Someone who was originally "under" the grenade has moved off the tile and is now eligible for being a martyr and "covering" it
 /datum/component/pellet_cloud/proc/grenade_uncrossed(datum/source, atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	bodies -= gone
 
 /// Our grenade or landmine or caseless shell or whatever tried deleting itself, so we intervene and nullspace it until we're done here
 /datum/component/pellet_cloud/proc/nullspace_parent()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/movable/AM = parent
@@ -405,6 +437,8 @@
 
 /// Someone who was originally "under" the grenade has moved off the tile and is now eligible for being a martyr and "covering" it
 /datum/component/pellet_cloud/proc/on_target_qdel(atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(target, COMSIG_QDELETING)

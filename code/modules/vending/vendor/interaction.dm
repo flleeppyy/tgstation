@@ -1,5 +1,7 @@
 //===============================HAND INTERACTION===================================
 /obj/machinery/vending/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(seconds_electrified && !(machine_stat & NOPOWER))
 		if(shock(user, 100))
 			return
@@ -14,11 +16,15 @@
 
 //================================TOOL ACTS==============================================
 /obj/machinery/vending/crowbar_act(mob/living/user, obj/item/attack_item)
+	procstart = null
+	src.procstart = null
 	if(!component_parts)
 		return ITEM_INTERACT_FAILURE
 	return default_deconstruction_crowbar(user, attack_item)
 
 /obj/machinery/vending/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(!panel_open)
 		return ITEM_INTERACT_FAILURE
@@ -27,12 +33,16 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/vending/screwdriver_act(mob/living/user, obj/item/attack_item)
+	procstart = null
+	src.procstart = null
 	if(anchored)
 		return default_deconstruction_screwdriver(user, attack_item)
 	to_chat(user, span_warning("You must first secure [src]."))
 	return ITEM_INTERACT_FAILURE
 
 /obj/machinery/vending/on_set_panel_open(old_value)
+	procstart = null
+	src.procstart = null
 	update_appearance(UPDATE_OVERLAYS)
 
 //=======================================RESTOCKING==========================================
@@ -43,6 +53,8 @@
  * * user - mob that is doing the loading of the vending machine
  */
 /obj/machinery/vending/proc/compartmentLoadAccessCheck(mob/user)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	return !req_access || allowed(user) || (obj_flags & EMAGGED) || !scan_id
@@ -55,6 +67,8 @@
  * * user - the user doing the loading
  */
 /obj/machinery/vending/proc/canLoadItem(obj/item/loaded_item, mob/user, send_message = TRUE)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	if(!length(loaded_item.contents) && (products[loaded_item.type] || premium[loaded_item.type] || contraband[loaded_item.type]))
@@ -72,6 +86,8 @@
  * user - mob who's trying to insert the item
  */
 /obj/machinery/vending/proc/loadingAttempt(obj/item/inserted_item, mob/user)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	. = TRUE
@@ -96,6 +112,8 @@
 		break
 
 /obj/machinery/vending/item_interaction(mob/living/user, obj/item/attack_item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -150,6 +168,8 @@
  * * restocked - the amount of items we've been refilled with
  */
 /obj/machinery/vending/proc/post_restock(mob/living/user, restocked)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	if(!restocked)
@@ -165,6 +185,8 @@
 	credits_contained = 0
 
 /obj/machinery/vending/exchange_parts(mob/user, obj/item/storage/part_replacer/replacer)
+	procstart = null
+	src.procstart = null
 	if(!istype(replacer) || !component_parts || !refill_canister)
 		return FALSE
 
@@ -193,6 +215,8 @@
  * freebies - number of free items to vend
  */
 /obj/machinery/vending/proc/freebie(freebies)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	visible_message(span_notice("[src] yields [freebies > 1 ? "several free goodies" : "a free goody"][credits_contained > 0 ? " and some [MONEY_NAME]" : ""]!"))
@@ -215,6 +239,8 @@
 		SSblackbox.record_feedback("amount", "vending machine looted", holochip.credits)
 
 /obj/machinery/vending/attacked_by(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!tiltable || tilted || . <= 0)
 		return
@@ -235,9 +261,13 @@
 			tilt(user)
 
 /obj/machinery/vending/attack_tk_grab(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("[src] seems to resist your mental grasp!"))
 
 /obj/machinery/vending/attack_robot_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!Adjacent(user, src))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN

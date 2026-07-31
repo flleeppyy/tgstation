@@ -82,6 +82,8 @@
 	var/datum/action/cooldown/mob_cooldown/lava_swoop/lava_swoop
 
 /mob/living/simple_animal/hostile/megafauna/dragon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	fire_cone = new(src)
 	meteors = new(src)
@@ -98,6 +100,8 @@
 	AddElement(/datum/element/change_force_on_death, move_force = MOVE_FORCE_DEFAULT)
 
 /mob/living/simple_animal/hostile/megafauna/dragon/Destroy()
+	procstart = null
+	src.procstart = null
 	fire_cone = null
 	meteors = null
 	mass_fire = null
@@ -105,6 +109,8 @@
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/dragon/OpenFire()
+	procstart = null
+	src.procstart = null
 	if(swooping)
 		return
 
@@ -132,26 +138,36 @@
 		meteors.Trigger(target = target)
 
 /mob/living/simple_animal/hostile/megafauna/dragon/proc/start_attack(mob/living/owner, datum/action/cooldown/activated)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(activated == lava_swoop)
 		icon_state = "dragon_shadow"
 		swooping = SWOOP_DAMAGEABLE
 
 /mob/living/simple_animal/hostile/megafauna/dragon/proc/swoop_invulnerability_started()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	swooping = SWOOP_INVULNERABLE
 
 /mob/living/simple_animal/hostile/megafauna/dragon/proc/finished_attack(mob/living/owner, datum/action/cooldown/finished)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(finished == lava_swoop)
 		icon_state = initial(icon_state)
 		swooping = NONE
 
 /mob/living/simple_animal/hostile/megafauna/dragon/proc/on_arena_fail()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(arena_escape_enrage))
 
-/mob/living/simple_animal/hostile/megafauna/dragon/proc/arena_escape_enrage() // you ran somehow / teleported away from my arena attack now i'm mad fucker
+/mob/living/simple_animal/hostile/megafauna/dragon/proc/arena_escape_enrage()
+	procstart = null
+	src.procstart = null // you ran somehow / teleported away from my arena attack now i'm mad fucker
 	SLEEP_CHECK_DEATH(0, src)
 	visible_message(span_boldwarning("[src] starts to glow vibrantly as its wounds close up!"))
 	adjust_brute_loss(-250) // yeah you're gonna pay for that, don't run nerd
@@ -166,11 +182,15 @@
 	set_light_range(initial(light_range))
 
 /mob/living/simple_animal/hostile/megafauna/dragon/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(severity <= EXPLODE_LIGHT)
 		return FALSE
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/dragon/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	anger_modifier = clamp(((maxHealth - health)/60),0,20)
 	lava_swoop.enraged = DRAKE_ENRAGED
 	if(!forced && (swooping & SWOOP_INVULNERABLE))
@@ -178,23 +198,33 @@
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/dragon/visible_message(message, self_message, blind_message, vision_distance = DEFAULT_MESSAGE_RANGE, list/ignored_mobs, visible_message_flags = NONE)
+	procstart = null
+	src.procstart = null
 	if(swooping & SWOOP_INVULNERABLE) //to suppress attack messages without overriding every single proc that could send a message saying we got hit
 		return
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/dragon/AttackingTarget(atom/attacked_target)
+	procstart = null
+	src.procstart = null
 	if(!swooping)
 		return ..()
 
 /mob/living/simple_animal/hostile/megafauna/dragon/DestroySurroundings()
+	procstart = null
+	src.procstart = null
 	if(!swooping)
 		..()
 
 /mob/living/simple_animal/hostile/megafauna/dragon/Move()
+	procstart = null
+	src.procstart = null
 	if(!swooping)
 		..()
 
 /mob/living/simple_animal/hostile/megafauna/dragon/Goto(target, delay, minimum_distance)
+	procstart = null
+	src.procstart = null
 	if(!swooping)
 		..()
 
@@ -207,12 +237,16 @@
 	var/mob/owner
 
 /obj/effect/temp_visual/lava_warning/Initialize(mapload, reset_time = 10)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	INVOKE_ASYNC(src, PROC_REF(fall), reset_time)
 	src.alpha = 63.75
 	animate(src, alpha = 255, time = duration)
 
 /obj/effect/temp_visual/lava_warning/proc/fall(reset_time)
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	playsound(our_turf,'sound/effects/magic/fleshtostone.ogg', 80, TRUE)
 	sleep(duration)
@@ -273,6 +307,8 @@
 	pixel_z = 270
 
 /obj/effect/temp_visual/fireball/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, pixel_z = 0, time = duration)
 
@@ -285,10 +321,14 @@
 	duration = 9
 
 /obj/effect/temp_visual/target/Initialize(mapload, list/flame_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	INVOKE_ASYNC(src, PROC_REF(fall), flame_hit)
 
 /obj/effect/temp_visual/target/proc/fall(list/flame_hit)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	playsound(T,'sound/effects/magic/fleshtostone.ogg', 80, TRUE)
 	new /obj/effect/temp_visual/fireball(T)
@@ -327,12 +367,16 @@
 	attack_action_types = list()
 
 /mob/living/simple_animal/hostile/megafauna/dragon/lesser/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	meteors.Remove(src)
 	mass_fire.Remove(src)
 	lava_swoop.cooldown_time = 20 SECONDS
 
 /mob/living/simple_animal/hostile/megafauna/dragon/lesser/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	lava_swoop?.enraged = FALSE // In case taking damage caused us to start deleting ourselves
 

@@ -9,12 +9,16 @@ GLOBAL_LIST_INIT(_preloader_path, null)
 	var/target_path
 
 /world/proc/preloader_setup(list/the_attributes, path)
+	procstart = null
+	src.procstart = null
 	if(the_attributes.len)
 		GLOB.use_preloader = TRUE
 		GLOB._preloader_attributes = the_attributes
 		GLOB._preloader_path = path
 
 /world/proc/preloader_load(atom/what)
+	procstart = null
+	src.procstart = null
 	GLOB.use_preloader = FALSE
 	var/list/attributes = GLOB._preloader_attributes
 	for(var/attribute in attributes)

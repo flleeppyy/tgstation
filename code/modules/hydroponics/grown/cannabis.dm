@@ -104,11 +104,15 @@
 	instability = 0
 
 /obj/item/seeds/cannabis/anti/Initialize(mapload, nogenes)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_atom_colour(COLOR_MATRIX_INVERT, FIXED_COLOUR_PRIORITY)
 	transform = transform.Turn(180)
 
 /obj/item/seeds/cannabis/anti/get_tray_overlay(age, status)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/plant = ..()
 	plant.color = COLOR_MATRIX_INVERT
 	return plant
@@ -162,6 +166,8 @@
 	icon_state = "ocannabis"
 
 /obj/item/food/grown/cannabis/anti/Initialize(mapload, obj/item/seeds/new_seed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_atom_colour(COLOR_MATRIX_INVERT, FIXED_COLOUR_PRIORITY)
 	transform = transform.Turn(180)

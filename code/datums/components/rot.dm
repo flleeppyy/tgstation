@@ -23,6 +23,8 @@
 
 
 /datum/component/rot/Initialize(delay, scaling, severity)
+	procstart = null
+	src.procstart = null
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 	if(isliving(parent))
@@ -57,12 +59,16 @@
 	start_up(NONE) //If nothing's blocking it, start
 
 /datum/component/rot/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ismovable(parent))
 		qdel(GetComponent(/datum/component/connect_loc_behalf))
 
 ///One of two procs that modifies blockers, this one handles removing a blocker and potentially restarting the rot
 /datum/component/rot/proc/start_up(blocker_type)
+	procstart = null
+	src.procstart = null
 	blockers &= ~blocker_type //Yeet the type
 	if(blockers || active)  //If it's not empty
 		return
@@ -71,6 +77,8 @@
 
 ///One of two procs that modifies blockers, this one handles adding a blocker and potentially ending the rot
 /datum/component/rot/proc/rest(blocker_type)
+	procstart = null
+	src.procstart = null
 	var/old_blockers = blockers
 	blockers |= blocker_type
 	if(old_blockers || !active) //If it had anything before this
@@ -79,10 +87,14 @@
 	active = FALSE
 
 /datum/component/rot/proc/react_to_revive()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /datum/component/rot/proc/check_reagent(datum/reagents/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source.has_reagent(/datum/reagent/toxin/formaldehyde, 15) || source.has_reagent(/datum/reagent/cryostylane))
@@ -91,6 +103,8 @@
 	start_up(REAGENT_BLOCKER)
 
 /datum/component/rot/proc/check_for_temperature(datum/source, old_temp, new_temp)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(new_temp <= T0C-10)
 		rest(TEMPERATURE_BLOCKER)
@@ -98,6 +112,8 @@
 	start_up(TEMPERATURE_BLOCKER)
 
 /datum/component/rot/proc/check_husk_trait()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(HAS_TRAIT(parent, TRAIT_HUSK))
 		rest(HUSK_BLOCKER)
@@ -105,20 +121,28 @@
 	start_up(HUSK_BLOCKER)
 
 /datum/component/rot/proc/rot_hit_react(datum/source, obj/item/hit_with, mob/living/attacker, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	rot_react_touch(source, attacker)
 
 /datum/component/rot/proc/rot_react_touch(datum/source, mob/living/react_to)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	rot_react(source, react_to, pick(GLOB.arm_zones))
 
 /// Triggered when something enters the component's parent.
 /datum/component/rot/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	rot_react(source, arrived)
 
 ///The main bit of logic for the rot component, does a temperature check and has a chance to infect react_to
 /datum/component/rot/proc/rot_react(source, mob/living/react_to, target_zone = null)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isliving(react_to))
 		return

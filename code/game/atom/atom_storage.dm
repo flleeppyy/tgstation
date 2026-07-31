@@ -31,6 +31,8 @@
  * Imperfect, does not copy over ALL variables, only important ones (max storage size, etc)
  */
 /atom/proc/clone_storage(datum/storage/cloning)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/storage)
 
 	if(atom_storage)

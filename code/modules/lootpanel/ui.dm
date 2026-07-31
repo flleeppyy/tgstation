@@ -1,5 +1,7 @@
 /// UI helper for converting the associative list to a list of lists
 /datum/lootpanel/proc/get_contents()
+	procstart = null
+	src.procstart = null
 	var/list/items = list()
 
 	for(var/datum/search_object/index as anything in contents)
@@ -16,6 +18,8 @@
 
 /// Clicks an object from the contents. Validates the object and the user
 /datum/lootpanel/proc/grab(mob/user, list/params)
+	procstart = null
+	src.procstart = null
 	var/ref = params["ref"]
 	if(isnull(ref))
 		return FALSE

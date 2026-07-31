@@ -5,6 +5,8 @@ GLOBAL_DATUM_INIT(known_alts, /datum/known_alts, new)
 	COOLDOWN_DECLARE(cache_cooldown)
 
 /datum/known_alts/Topic(href, list/href_list)
+	procstart = null
+	src.procstart = null
 	if (!check_rights(R_ADMIN))
 		return
 
@@ -127,6 +129,8 @@ GLOBAL_DATUM_INIT(known_alts, /datum/known_alts, new)
 /// Returns the list of known alts, will return an empty list if the DB could not be connected to.
 /// This proc can block.
 /datum/known_alts/proc/load_known_alts()
+	procstart = null
+	src.procstart = null
 	if (!isnull(cached_known_alts) && !COOLDOWN_FINISHED(src, cache_cooldown))
 		return cached_known_alts
 
@@ -158,6 +162,8 @@ GLOBAL_DATUM_INIT(known_alts, /datum/known_alts, new)
 	return cached_known_alts
 
 /datum/known_alts/proc/show_panel(client/client)
+	procstart = null
+	src.procstart = null
 	if (!check_rights_for(client, R_ADMIN))
 		return
 

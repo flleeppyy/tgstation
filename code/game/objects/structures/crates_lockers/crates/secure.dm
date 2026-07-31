@@ -20,17 +20,23 @@
 	acid = 80
 
 /obj/structure/closet/crate/secure/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_MISSING_ITEM_ERROR, TRAIT_GENERIC)
 	ADD_TRAIT(src, TRAIT_NO_MANIFEST_CONTENTS_ERROR, TRAIT_GENERIC)
 
 /obj/structure/closet/crate/secure/take_damage(damage_amount, damage_type = BRUTE, damage_flag = "", sound_effect = TRUE, attack_dir, armour_penetration = 0)
+	procstart = null
+	src.procstart = null
 	if(prob(tamperproof) && damage_amount >= DAMAGE_PRECISION)
 		boom()
 	else
 		return ..()
 
 /obj/structure/closet/crate/secure/proc/boom(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user)
 		to_chat(user, span_danger("The crate's anti-tamper system activates!"))
 		log_bomber(user, "has detonated a", src)
@@ -76,6 +82,8 @@
 	req_access = list(ACCESS_KITCHEN)
 
 /obj/structure/closet/crate/secure/freezer/pizza/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/spawner/random/food_or_drink/pizzaparty(src)
 
@@ -137,6 +145,8 @@
 /obj/structure/closet/crate/secure/trashcart/filled
 
 /obj/structure/closet/crate/secure/trashcart/filled/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in 1 to rand(8,12))
 		new /obj/effect/spawner/random/trash/deluxe_garbage(src)
@@ -161,10 +171,14 @@
 	var/department_purchase = FALSE
 
 /obj/structure/closet/crate/secure/owned/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It's locked with a privacy lock, and can only be unlocked by the buyer's ID.")
 
 /obj/structure/closet/crate/secure/owned/Initialize(mapload, datum/bank_account/_buyer_account)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	buyer_account = _buyer_account
 	if(IS_DEPARTMENTAL_ACCOUNT(buyer_account))
@@ -172,6 +186,8 @@
 		department_account = buyer_account
 
 /obj/structure/closet/crate/secure/owned/togglelock(mob/living/user, silent)
+	procstart = null
+	src.procstart = null
 	if(privacy_lock)
 		if(!broken)
 			var/obj/item/card/id/id_card = user.get_idcard(TRUE)
@@ -207,6 +223,8 @@
 	desc = "This is an Interdyne Pharmaceuticals branded freezer. It's made to contain fresh, high-quality blood."
 
 /obj/structure/closet/crate/secure/freezer/interdyne/blood/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in 1 to 13)
 		new /obj/item/reagent_containers/blood/random(src)

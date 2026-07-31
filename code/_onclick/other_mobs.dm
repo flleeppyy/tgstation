@@ -1,5 +1,7 @@
 /// Checks for RIGHT_CLICK in modifiers and runs resolve_right_click_attack if so. Returns TRUE if normal chain blocked.
 /mob/living/proc/right_click_attack_chain(atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!LAZYACCESS(modifiers, RIGHT_CLICK))
 		return
 	var/secondary_result = resolve_right_click_attack(target, modifiers)
@@ -15,9 +17,13 @@
  * (Potentially) gives feedback to the mob if they cannot.
  */
 /mob/living/proc/can_unarmed_attack()
+	procstart = null
+	src.procstart = null
 	return !HAS_TRAIT(src, TRAIT_HANDS_BLOCKED)
 
 /mob/living/carbon/can_unarmed_attack()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -34,6 +40,8 @@
 	return TRUE
 
 /mob/living/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// The sole reason for this signal needing to exist is making FotNS incompatible with Hulk.
 	// Note that it is send before [proc/can_unarmed_attack] is called, keep this in mind.
 	var/sigreturn = SEND_SIGNAL(src, COMSIG_LIVING_EARLY_UNARMED_ATTACK, attack_target, proximity_flag, modifiers)
@@ -56,6 +64,8 @@
 	return TRUE
 
 /mob/living/carbon/human/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// Humans can always check themself regardless of having their hands blocked or w/e
 	if(src == attack_target && !combat_mode && HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
 		check_self_for_injuries()
@@ -64,19 +74,27 @@
 	return ..()
 
 /mob/living/carbon/resolve_unarmed_attack(atom/attack_target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_target.attack_paw(src, modifiers)
 
 /mob/living/carbon/human/resolve_unarmed_attack(atom/attack_target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!ISADVANCEDTOOLUSER(src))
 		return ..()
 
 	return attack_target.attack_hand(src, modifiers)
 
 /mob/living/carbon/human/resolve_right_click_attack(atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return target.attack_hand_secondary(src, modifiers)
 
 /// Return TRUE to cancel other attack hand effects that respect it. Modifiers is the assoc list for click info such as if it was a right click.
 /atom/proc/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(!(interaction_flags_atom & INTERACT_ATOM_NO_FINGERPRINT_ATTACK_HAND))
 		add_fingerprint(user)
@@ -88,12 +106,16 @@
 /// When the user uses their hand on an item while holding right-click
 /// Returns a SECONDARY_ATTACK_* value.
 /atom/proc/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_HAND_SECONDARY, user, modifiers) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	return SECONDARY_ATTACK_CALL_NORMAL
 
 //Return a non FALSE value to cancel whatever called this from propagating, if it respects it.
 /atom/proc/_try_interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isAdminGhostAI(user)) //admin abuse
 		return interact(user)
 	if(can_interact(user))
@@ -101,6 +123,8 @@
 	return FALSE
 
 /atom/proc/can_interact(mob/user, require_adjacent_turf = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!user.can_interact_with(src, interaction_flags_atom & INTERACT_ATOM_ALLOW_USER_LOCATION))
 		return FALSE
 	if((interaction_flags_atom & INTERACT_ATOM_REQUIRES_DEXTERITY) && !ISADVANCEDTOOLUSER(user))
@@ -118,12 +142,16 @@
 	return TRUE
 
 /atom/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//Check if both user and atom are at the same location
 	if(!can_interact(user))
 		. = min(., UI_UPDATE)
 
 /atom/movable/can_interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -131,6 +159,8 @@
 		return FALSE
 
 /atom/proc/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(interaction_flags_atom & INTERACT_ATOM_NO_FINGERPRINT_INTERACT)
 		add_hiddenprint(user)
 	else
@@ -142,6 +172,8 @@
 
 
 /mob/living/carbon/human/RangedAttack(atom/A, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -159,6 +191,8 @@
  * This will call an attack proc that can vary from mob type to mob type on the target.
  */
 /mob/living/proc/resolve_unarmed_attack(atom/attack_target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	attack_target.attack_animal(src, modifiers)
 
 /**
@@ -169,12 +203,16 @@
  * Otherwise, it should just return SECONDARY_ATTACK_CALL_NORMAL. Failure to do so will result in an exception (runtime error).
  */
 /mob/living/proc/resolve_right_click_attack(atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return target.attack_animal_secondary(src, modifiers)
 
 /**
  * Called when a simple animal is unarmed attacking / clicking on this atom.
  */
 /atom/proc/attack_animal(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_ANIMAL, user, modifiers)
 
 /**
@@ -182,10 +220,14 @@
  * Returns a SECONDARY_ATTACK_* value.
  */
 /atom/proc/attack_animal_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return SECONDARY_ATTACK_CALL_NORMAL
 
 ///When a basic mob attacks something, either by AI or user.
 /atom/proc/attack_basic_mob(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_BASIC_MOB, user) & COMSIG_BASIC_ATTACK_CANCEL_CHAIN)
 		return FALSE
@@ -194,10 +236,14 @@
 ///This exists so stuff can override the default call of attack_animal for attack_basic_mob
 ///Remove this when simple animals are removed and everything can be handled on attack basic mob.
 /atom/proc/handle_basic_attack(user, modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_animal(user, modifiers)
 
 ///Attacked by monkey. It doesn't need its own *_secondary proc as it just uses attack_hand_secondary instead.
 /atom/proc/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_PAW, user, modifiers) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return TRUE
 	if(interaction_flags_atom & INTERACT_ATOM_ATTACK_PAW)
@@ -209,12 +255,18 @@
 	Defaults to same as monkey in most places
 */
 /mob/living/carbon/alien/resolve_unarmed_attack(atom/attack_target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	attack_target.attack_alien(src, modifiers)
 
 /mob/living/carbon/alien/resolve_right_click_attack(atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return target.attack_alien_secondary(src, modifiers)
 
 /atom/proc/attack_alien(mob/living/carbon/alien/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_paw(user, modifiers)
 
 /**
@@ -222,19 +274,29 @@
  * Returns a SECONDARY_ATTACK_* value.
  */
 /atom/proc/attack_alien_secondary(mob/living/carbon/alien/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return SECONDARY_ATTACK_CALL_NORMAL
 
 // Babby aliens
 /mob/living/carbon/alien/larva/resolve_unarmed_attack(atom/attack_target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	attack_target.attack_larva(src, modifiers)
 
 /mob/living/carbon/alien/larva/resolve_right_click_attack(atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return target.attack_larva_secondary(src, modifiers)
 
-/mob/living/carbon/alien/larva/can_unarmed_attack() //We bite stuff, and our head is always free.
+/mob/living/carbon/alien/larva/can_unarmed_attack()
+	procstart = null
+	src.procstart = null //We bite stuff, and our head is always free.
 	return TRUE
 
 /atom/proc/attack_larva(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_LARVA, user, modifiers)
 
 /**
@@ -242,6 +304,8 @@
  * Returns a SECONDARY_ATTACK_* value.
  */
 /atom/proc/attack_larva_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return SECONDARY_ATTACK_CALL_NORMAL
 
 /*
@@ -249,13 +313,19 @@
 */
 
 /mob/living/basic/drone/resolve_unarmed_attack(atom/attack_target, proximity_flag, list/modifiers)
+	procstart = null
+	src.procstart = null
 	attack_target.attack_drone(src, modifiers)
 
 /mob/living/basic/drone/resolve_right_click_attack(atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return target.attack_drone_secondary(src, modifiers)
 
 /// Defaults to attack_hand. Override it when you don't want drones to do same stuff as humans.
 /atom/proc/attack_drone(mob/living/basic/drone/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	attack_hand(user, modifiers)
 
 /**
@@ -264,13 +334,17 @@
  * When overriding it, remember that it ought to return a SECONDARY_ATTACK_* value.
  */
 /atom/proc/attack_drone_secondary(mob/living/basic/drone/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand_secondary(user, modifiers)
 
 /*
 	Brain
 */
 
-/mob/living/brain/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)//Stops runtimes due to attack_animal being the default
+/mob/living/brain/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
+	procstart = null
+	src.procstart = null//Stops runtimes due to attack_animal being the default
 	return
 
 
@@ -279,12 +353,18 @@
 */
 
 /mob/living/silicon/pai/resolve_unarmed_attack(atom/attack_target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	attack_target.attack_pai(src, modifiers)
 
 /mob/living/silicon/pai/resolve_right_click_attack(atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return target.attack_pai_secondary(src, modifiers)
 
 /atom/proc/attack_pai(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -292,6 +372,8 @@
  * Returns a SECONDARY_ATTACK_* value.
  */
 /atom/proc/attack_pai_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return SECONDARY_ATTACK_CALL_NORMAL
 
 /*
@@ -299,6 +381,8 @@
 */
 
 /mob/living/simple_animal/hostile/resolve_unarmed_attack(atom/attack_target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	GiveTarget(attack_target)
 	INVOKE_ASYNC(src, PROC_REF(AttackingTarget), attack_target)
 
@@ -307,4 +391,6 @@
 	Have no reason to click on anything at all.
 */
 /mob/dead/new_player/ClickOn()
+	procstart = null
+	src.procstart = null
 	return

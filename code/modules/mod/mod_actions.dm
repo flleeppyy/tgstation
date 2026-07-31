@@ -7,6 +7,8 @@
 	var/ai_action = FALSE
 
 /datum/action/item_action/mod/New(Target)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!istype(Target, /obj/item/mod/control))
 		qdel(src)
@@ -15,6 +17,8 @@
 		background_icon_state = ACTION_BUTTON_DEFAULT_BACKGROUND
 
 /datum/action/item_action/mod/Grant(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/mod/control/mod = target
 	if(ai_action && user != mod.ai_assistant)
 		return
@@ -23,6 +27,8 @@
 	return ..()
 
 /datum/action/item_action/mod/Remove(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/mod/control/mod = target
 	if(ai_action && user != mod.ai_assistant)
 		return
@@ -31,6 +37,8 @@
 	return ..()
 
 /datum/action/item_action/mod/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	var/obj/item/mod/control/mod = target
 	if(mod.malfunctioning && prob(MOD_MALFUNCTION_PROB))
 		mod.balloon_alert(usr, "button malfunctions!")
@@ -43,6 +51,8 @@
 	button_icon_state = "deploy"
 
 /datum/action/item_action/mod/deploy/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -63,6 +73,8 @@
 	var/ready = FALSE
 
 /datum/action/item_action/mod/activate/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -78,6 +90,8 @@
 
 /// Resets the state requiring to be doubleclicked again.
 /datum/action/item_action/mod/activate/proc/reset_ready()
+	procstart = null
+	src.procstart = null
 	ready = FALSE
 	button_icon_state = initial(button_icon_state)
 	build_all_button_icons()
@@ -91,6 +105,8 @@
 	button_icon_state = "module"
 
 /datum/action/item_action/mod/module/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -106,6 +122,8 @@
 	button_icon_state = "panel"
 
 /datum/action/item_action/mod/panel/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -120,6 +138,8 @@
 	var/mob/pinner
 
 /datum/action/item_action/mod/pinnable/New(Target, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/mod/control/mod = Target
 	if(user == mod.ai_assistant)
@@ -128,12 +148,16 @@
 	RegisterSignal(user, COMSIG_QDELETING, PROC_REF(pinner_deleted))
 
 /datum/action/item_action/mod/pinnable/Grant(mob/user)
+	procstart = null
+	src.procstart = null
 	if(pinner != user)
 		return
 	return ..()
 
 /// If the guy whose UI we are pinned to got deleted
 /datum/action/item_action/mod/pinnable/proc/pinner_deleted()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	pinner = null
 	qdel(src)
@@ -148,6 +172,8 @@
 	var/cooldown_timer
 
 /datum/action/item_action/mod/pinnable/module/New(Target, mob/user, obj/item/mod/module/linked_module)
+	procstart = null
+	src.procstart = null
 	button_icon = linked_module.icon
 	button_icon_state = linked_module.icon_state
 	. = ..()
@@ -166,6 +192,8 @@
 	RegisterSignal(linked_module, COMSIG_MODULE_COOLDOWN_STARTED, PROC_REF(cooldown_started))
 
 /datum/action/item_action/mod/pinnable/module/Destroy()
+	procstart = null
+	src.procstart = null
 	deltimer(cooldown_timer)
 	UnregisterSignal(module, list(
 		COMSIG_MODULE_ACTIVATED,
@@ -179,12 +207,16 @@
 	return ..()
 
 /datum/action/item_action/mod/pinnable/module/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	module.on_select(owner)
 
 /datum/action/item_action/mod/pinnable/module/apply_button_overlay(atom/movable/screen/movable/action_button/current_button, force)
+	procstart = null
+	src.procstart = null
 	current_button.cut_overlays()
 	if(override)
 		return ..()
@@ -199,11 +231,15 @@
 	return ..()
 
 /datum/action/item_action/mod/pinnable/module/proc/module_interacted_with(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	build_all_button_icons(UPDATE_BUTTON_OVERLAY|UPDATE_BUTTON_STATUS)
 
 /datum/action/item_action/mod/pinnable/module/proc/cooldown_started(datum/source, cooldown_time)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	deltimer(cooldown_timer)

@@ -6,10 +6,14 @@
 	storage_type = /datum/storage/box/flat
 
 /obj/item/storage/box/flat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/undertile, TRAIT_T_RAY_VISIBLE, INVISIBILITY_OBSERVER, use_anchor = TRUE, tilt_tile = TRUE)
 
 /obj/item/storage/box/proc/flatten_box()
+	procstart = null
+	src.procstart = null
 	if(istype(loc, /obj/item/storage) || type != /obj/item/storage/box || contents.len)
 		return
 
@@ -27,6 +31,8 @@
 	icon_state = "flat"
 
 /obj/item/storage/box/flat/fentanylpatches/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i = 1 to 3)
 		new /obj/item/reagent_containers/applicator/patch/fent(src)

@@ -1,4 +1,6 @@
 /datum/unit_test/harm_punch/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/puncher = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/victim = allocate(/mob/living/carbon/human/consistent)
 
@@ -11,6 +13,8 @@
 	TEST_ASSERT(victim.get_brute_loss() > 0, "Victim took no brute damage after being punched")
 
 /datum/unit_test/harm_melee/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/tider = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/victim = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/storage/toolbox/toolbox = allocate(/obj/item/storage/toolbox)
@@ -22,6 +26,8 @@
 	TEST_ASSERT(victim.get_brute_loss() > 0, "Victim took no brute damage after being hit by a toolbox")
 
 /datum/unit_test/harm_different_damage/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/attacker = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/victim = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/weldingtool/welding_tool = allocate(/obj/item/weldingtool)
@@ -41,18 +47,26 @@
 	var/pre_attack_hit
 
 /datum/unit_test/attack_chain/proc/attack_hit()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	attack_hit = TRUE
 
 /datum/unit_test/attack_chain/proc/post_attack_hit()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	post_attack_hit = TRUE
 
 /datum/unit_test/attack_chain/proc/pre_attack_hit()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	pre_attack_hit = TRUE
 
 /datum/unit_test/attack_chain/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/attacker = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/victim = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/storage/toolbox/toolbox = allocate(/obj/item/storage/toolbox)
@@ -70,6 +84,8 @@
 	TEST_ASSERT(post_attack_hit, "Post-attack signal was not fired")
 
 /datum/unit_test/disarm/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/attacker = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/victim = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/storage/toolbox/toolbox = allocate(/obj/item/storage/toolbox)
@@ -104,6 +120,8 @@
 /datum/unit_test/self_punch
 
 /datum/unit_test/self_punch/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 	ADD_TRAIT(dummy, TRAIT_PERFECT_ATTACKER, TRAIT_SOURCE_UNIT_TESTS)
 	dummy.set_combat_mode(TRUE)
@@ -114,6 +132,8 @@
 /datum/unit_test/handcuff_punch
 
 /datum/unit_test/handcuff_punch/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/attacker = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/victim = allocate(/mob/living/carbon/human/consistent)
 	ADD_TRAIT(attacker, TRAIT_PERFECT_ATTACKER, TRAIT_SOURCE_UNIT_TESTS)
@@ -130,6 +150,8 @@
 /datum/unit_test/handcuff_bite
 
 /datum/unit_test/handcuff_bite/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/attacker = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/victim = allocate(/mob/living/carbon/human/consistent)
 	ADD_TRAIT(attacker, TRAIT_PERFECT_ATTACKER, TRAIT_SOURCE_UNIT_TESTS)
@@ -143,6 +165,8 @@
 /datum/unit_test/soundbang
 
 /datum/unit_test/soundbang/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/victim = allocate(/mob/living/carbon/human/consistent)
 	victim.soundbang_act(intensity = SOUNDBANG_NORMAL, damage_pwr = 10, deafen_pwr = 20 SECONDS)
 	TEST_ASSERT_EQUAL(victim.get_organ_loss(ORGAN_SLOT_EARS), 10, "victim didn't take the right amount of ears damage")

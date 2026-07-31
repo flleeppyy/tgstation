@@ -36,19 +36,27 @@
 	var/honorific_title
 
 /obj/item/card/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins to swipe [user.p_their()] neck with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 
 /obj/item/card/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cached_flat_icon = null
 
 /// Called to get what name this card represents
 /obj/item/card/proc/get_displayed_name(honorifics = FALSE)
+	procstart = null
+	src.procstart = null
 	return null
 
 /// If no cached_flat_icon exists, this proc creates it and crops it. This proc then returns the cached_flat_icon. Intended for use displaying ID card icons in chat.
 /obj/item/card/proc/get_cached_flat_icon()
+	procstart = null
+	src.procstart = null
 	if(!cached_flat_icon)
 		cached_flat_icon = getFlatIcon(src)
 		cached_flat_icon.Crop(ID_ICON_BORDERS)
@@ -132,6 +140,8 @@
 	acid = 100
 
 /obj/item/card/id/apply_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(bonus >= 15)
 		add_access(SSid_access.get_region_access_list(list(REGION_ALL_GLOBAL)), mode = FORCE_ADD_ALL)
@@ -141,6 +151,8 @@
 		clear_access()
 
 /obj/item/card/id/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/datum/bank_account/blank_bank_account = new("Unassigned", SSjob.get_job_type(/datum/job/unassigned), player_account = FALSE)
@@ -166,6 +178,8 @@
 		ADD_TRAIT(src, TRAIT_TASTEFULLY_THICK_ID_CARD, ROUNDSTART_TRAIT)
 
 /obj/item/card/id/Destroy()
+	procstart = null
+	src.procstart = null
 	clear_account()
 	QDEL_NULL(my_store)
 	if (isitem(loc))
@@ -173,6 +187,8 @@
 	return ..()
 
 /obj/item/card/id/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	if(isitem(old_loc))
 		unequip_from_item_loc(old_loc)
 	. = ..()
@@ -180,6 +196,8 @@
 		equip_to_item_loc(loc)
 
 /obj/item/card/id/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (slot & ITEM_SLOT_ID)
 		RegisterSignal(user, COMSIG_MOVABLE_POINTED, PROC_REF(on_pointed))
@@ -193,6 +211,8 @@
 		UnregisterSignal(user, COMSIG_MOB_RETRIEVE_ACCESS)
 
 /obj/item/card/id/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(user, list(COMSIG_MOVABLE_POINTED, COMSIG_MOB_RETRIEVE_ACCESS))
 	if(isitem(loc))
 		equip_to_item_loc(loc) // "dropped" into an item, like a worn wallet
@@ -202,6 +222,8 @@
 	return ..()
 
 /obj/item/card/id/dropped(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ishuman(user))
 		var/mob/living/carbon/human/as_human = user
@@ -209,12 +231,16 @@
 
 /// Getter for the registered name, with optional honorifics
 /obj/item/card/id/get_displayed_name(honorifics = FALSE)
+	procstart = null
+	src.procstart = null
 	if(honorifics && honorific_position != HONORIFIC_POSITION_NONE && honorific_title)
 		return honorific_title
 	return registered_name
 
 /// ID card is being equipped to an item (like a pda or wallet)
 /obj/item/card/id/proc/equip_to_item_loc(atom/new_loc)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(new_loc, COMSIG_ITEM_EQUIPPED, PROC_REF(on_loc_equipped), override = TRUE)
 	RegisterSignal(new_loc, COMSIG_ITEM_DROPPED, PROC_REF(on_loc_dropped), override = TRUE)
 	if (ismob(new_loc.loc))
@@ -225,11 +251,15 @@
 
 /// ID card is being unequipped from an item (like a pda or wallet)
 /obj/item/card/id/proc/unequip_from_item_loc(atom/old_loc)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(old_loc, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED))
 	if (ismob(old_loc.loc))
 		UnregisterSignal(old_loc.loc, list(COMSIG_MOVABLE_POINTED, COMSIG_MOB_RETRIEVE_ACCESS))
 
 /obj/item/card/id/proc/on_loc_equipped(datum/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (slot & ITEM_SLOT_ID)
@@ -238,15 +268,21 @@
 		RegisterSignal(equipper, COMSIG_MOB_RETRIEVE_ACCESS, PROC_REF(retrieve_access))
 
 /obj/item/card/id/proc/on_loc_dropped(datum/source, mob/dropper)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(dropper, list(COMSIG_MOVABLE_POINTED, COMSIG_MOB_RETRIEVE_ACCESS))
 
 ///Called when we're being used as access.
 /obj/item/card/id/proc/retrieve_access(datum/source, list/player_access)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	player_access += GetAccess()
 
 /obj/item/card/id/proc/on_pointed(mob/living/user, atom/pointed, obj/effect/temp_visual/point/point)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if ((!big_pointer && !pointer_color) || HAS_TRAIT(user, TRAIT_UNKNOWN_APPEARANCE))
 		return
@@ -267,10 +303,14 @@
 		point.add_overlay(highlight)
 
 /obj/item/card/id/get_id_examine_strings(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += list("[icon2html(get_cached_flat_icon(), user, extra_classes = "hugeicon")]")
 
 /obj/item/card/id/get_examine_icon(mob/user)
+	procstart = null
+	src.procstart = null
 	return icon2html(get_cached_flat_icon(), user)
 
 /**
@@ -282,6 +322,8 @@
  * * try_wildcard - If not null, will attempt to add wildcards for this wildcard specifically and will return FALSE if the card cannot hold all wildcards in this slot.
  */
 /obj/item/card/id/proc/can_add_wildcards(list/wildcard_list, try_wildcard = null)
+	procstart = null
+	src.procstart = null
 	if(!length(wildcard_list))
 		return TRUE
 
@@ -324,6 +366,8 @@
  * * mode - The method to use when adding wildcards. See define for ERROR_ON_FAIL
  */
 /obj/item/card/id/proc/add_wildcards(list/wildcard_list, try_wildcard = null, mode = ERROR_ON_FAIL)
+	procstart = null
+	src.procstart = null
 	var/wildcard_allocated
 	// Iterate through each wildcard in our list. Get its access flag. Then iterate over wildcard slots and try to fit it in.
 	for(var/wildcard in wildcard_list)
@@ -380,6 +424,8 @@
  * * wildcard_list - List of accesses to remove.
  */
 /obj/item/card/id/proc/remove_wildcards(list/wildcard_list)
+	procstart = null
+	src.procstart = null
 	var/wildcard_removed
 	// Iterate through each wildcard in our list. Get its access flag. Then iterate over wildcard slots and try to remove it.
 	for(var/wildcard in wildcard_list)
@@ -427,6 +473,8 @@
  * * mode - The method to use when adding accesses. See define for ERROR_ON_FAIL
  */
 /obj/item/card/id/proc/add_access(list/add_accesses, try_wildcard = null, mode = ERROR_ON_FAIL)
+	procstart = null
+	src.procstart = null
 	var/list/wildcard_access = list()
 	var/list/normal_access = list()
 
@@ -452,6 +500,8 @@
  * * rem_accesses - List of accesses to remove.
  */
 /obj/item/card/id/proc/remove_access(list/rem_accesses)
+	procstart = null
+	src.procstart = null
 	var/list/wildcard_access = list()
 	var/list/normal_access = list()
 
@@ -469,6 +519,8 @@
  * * mode - The method to use when setting accesses. See define for ERROR_ON_FAIL
  */
 /obj/item/card/id/proc/set_access(list/new_access_list, mode = ERROR_ON_FAIL)
+	procstart = null
+	src.procstart = null
 	var/list/wildcard_access = list()
 	var/list/normal_access = list()
 
@@ -491,6 +543,8 @@
 
 /// Clears all accesses from the ID card - both wildcard and normal.
 /obj/item/card/id/proc/clear_access()
+	procstart = null
+	src.procstart = null
 	// Go through the wildcards and reset them.
 	for(var/flag_name in wildcard_slots)
 		var/list/wildcard_info = wildcard_slots[flag_name]
@@ -502,6 +556,8 @@
 
 /// Sets the bank account for the ID card.
 /obj/item/card/id/proc/set_account(datum/bank_account/account, transfer_funds = FALSE)
+	procstart = null
+	src.procstart = null
 	if(registered_account == account)
 		return
 	if(!isnull(registered_account))
@@ -520,6 +576,8 @@
 
 /// Clears the economy account from the ID card.
 /obj/item/card/id/proc/clear_account()
+	procstart = null
+	src.procstart = null
 	if(isnull(registered_account))
 		return
 
@@ -542,6 +600,8 @@
  * * wildcard_access_list - Mandatory argument. The proc modifies the list passed in this argument and adds accesses the trim does not support to it.
  */
 /obj/item/card/id/proc/build_access_lists(list/accesses, list/basic_access_list, list/wildcard_access_list)
+	procstart = null
+	src.procstart = null
 	if(!length(accesses) || isnull(basic_access_list) || isnull(wildcard_access_list))
 		CRASH("Invalid parameters passed to build_access_lists")
 
@@ -557,12 +617,16 @@
 
 /// Helper proc that determines if a card can be used in certain types of payment transactions.
 /obj/item/card/id/proc/can_be_used_in_payment(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || isnull(registered_account?.account_job) || !isliving(user))
 		return FALSE
 
 	return TRUE
 
 /obj/item/card/id/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(Adjacent(user))
 		var/minor
 		if(registered_name && registered_age && registered_age < AGE_MINOR)
@@ -571,12 +635,16 @@
 	add_fingerprint(user)
 
 /obj/item/card/id/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!check_allowed_items(interacting_with) || !isfloorturf(interacting_with))
 		return NONE
 	try_project_paystand(user, interacting_with)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/card/id/attack_self_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -584,6 +652,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/card/id/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	context[SCREENTIP_CONTEXT_RMB] = "Project pay stand"
@@ -604,12 +674,16 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/card/id/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscash(target))
 		context[SCREENTIP_CONTEXT_LMB] = "Insert into card"
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/card/id/proc/try_project_paystand(mob/user, turf/target)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, last_holopay_projection))
 		balloon_alert(user, "still recharging")
 		return
@@ -651,6 +725,8 @@
  * * TRUE if the target is a valid holopay location, FALSE otherwise.
  */
 /obj/item/card/id/proc/can_proj_holopay(turf/target)
+	procstart = null
+	src.procstart = null
 	if(!isfloorturf(target))
 		return FALSE
 	if(target.density)
@@ -671,6 +747,8 @@
  * * new_logo - The new logo to be set.
  */
 /obj/item/card/id/proc/set_holopay_logo(new_logo)
+	procstart = null
+	src.procstart = null
 	if(!available_logos.Find(new_logo))
 		CRASH("User input a holopay shop logo that didn't exist.")
 	holopay_logo = new_logo
@@ -682,6 +760,8 @@
  * * new_fee - The new fee to be set.
  */
 /obj/item/card/id/proc/set_holopay_fee(new_fee)
+	procstart = null
+	src.procstart = null
 	if(!isnum(new_fee))
 		CRASH("User input a non number into the holopay fee field.")
 	if(new_fee < holopay_min_fee || new_fee > holopay_max_fee)
@@ -695,6 +775,8 @@
  * * new_name - The new name to be set.
  */
 /obj/item/card/id/proc/set_holopay_name(name)
+	procstart = null
+	src.procstart = null
 	if(length(name) < 3 || length(name) > MAX_NAME_LEN)
 		to_chat(usr, span_warning("Must be between 3 - 42 characters."))
 	else
@@ -702,6 +784,8 @@
 
 
 /obj/item/card/id/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		switch(var_name)
@@ -713,6 +797,8 @@
 					SSid_access.apply_trim_to_card(src, trim)
 
 /obj/item/card/id/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/rupee))
 		to_chat(user, span_warning("Your ID smartly rejects the strange shard of glass. Who knew, apparently it's not ACTUALLY valuable!"))
 		return ITEM_INTERACT_BLOCKING
@@ -738,6 +824,8 @@
  * physical_currency - Boolean, whether this is a physical currency such as a coin and not a holochip.
  */
 /obj/item/card/id/proc/insert_money(obj/item/money, mob/user)
+	procstart = null
+	src.procstart = null
 	var/physical_currency
 	if(istype(money, /obj/item/stack/spacecash) || istype(money, /obj/item/coin) || istype(money, /obj/item/poker_chip))
 		physical_currency = TRUE
@@ -769,6 +857,8 @@
  * user - The user inserting the items.
  */
 /obj/item/card/id/proc/mass_insert_money(list/money, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!registered_account)
 		to_chat(user, span_warning("[src] doesn't have a linked account to deposit into!"))
 		return FALSE
@@ -791,12 +881,16 @@
 
 /// Helper proc. Can the user alt-click the ID?
 /obj/item/card/id/proc/alt_click_can_use_id(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		return FALSE
 	return TRUE
 
 /// Attempts to set a new bank account on the ID card.
 /obj/item/card/id/proc/set_new_account(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(loc != user)
 		to_chat(user, span_warning("You must be holding the ID to continue!"))
@@ -819,6 +913,8 @@
 	return TRUE
 
 /obj/item/card/id/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!alt_click_can_use_id(user))
 		return NONE
 	if (LAZYLEN(registered_account.being_dumped))
@@ -859,12 +955,16 @@
 
 
 /obj/item/card/id/click_alt_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!alt_click_can_use_id(user))
 		return
 	if(!registered_account || registered_account.replaceable)
 		set_new_account(user)
 
 /obj/item/card/id/proc/pay_debt(user)
+	procstart = null
+	src.procstart = null
 	var/amount_to_pay = tgui_input_number(user, "How much do you want to pay? (Max: [registered_account.account_balance] [MONEY_SYMBOL])", "Debt Payment", max_value = min(registered_account.account_balance, registered_account.account_debt))
 	if(!amount_to_pay || QDELETED(src) || loc != user || !alt_click_can_use_id(user))
 		return
@@ -877,6 +977,8 @@
 		to_chat(user, message)
 
 /obj/item/card/id/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!user.can_read(src))
 		return
@@ -903,6 +1005,8 @@
 	. += span_notice("<i>There's more information below, you can look again to take a closer look...</i>")
 
 /obj/item/card/id/proc/drop_card(mob/user)
+	procstart = null
+	src.procstart = null
 	user.stop_sound_channel(CHANNEL_HEARTBEAT)
 	REMOVE_TRAIT(src, TRAIT_NODROP, "psycho")
 	if(user.is_holding(src))
@@ -914,6 +1018,8 @@
 		break
 
 /obj/item/card/id/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!user.can_read(src))
 		return
@@ -949,6 +1055,8 @@
 	return .
 
 /obj/item/card/id/GetAccess()
+	procstart = null
+	src.procstart = null
 	var/list/total_access = access.Copy()
 
 	// Add all RETA temporary access from all departments - code/modules/reta/reta_system.dm
@@ -959,13 +1067,19 @@
 	return total_access
 
 /obj/item/card/id/GetID()
+	procstart = null
+	src.procstart = null
 	return src
 
 /obj/item/card/id/remove_id()
+	procstart = null
+	src.procstart = null
 	return src
 
 /// Called on COMSIG_ATOM_UPDATED_ICON. Updates the visuals of the wallet this card is in.
 /obj/item/card/id/proc/update_in_wallet()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(loc, /obj/item/storage/wallet))
@@ -976,6 +1090,8 @@
 
 /// Updates the name based on the card's vars and state.
 /obj/item/card/id/proc/update_label()
+	procstart = null
+	src.procstart = null
 	var/name_string
 	if(registered_name)
 		if(trim && (honorific_position & ~HONORIFIC_POSITION_NONE))
@@ -1003,6 +1119,8 @@
 
 /// Re-generates the honorific title. Returns the compiled honorific_title value
 /obj/item/card/id/proc/update_honorific()
+	procstart = null
+	src.procstart = null
 	switch(honorific_position)
 		if(HONORIFIC_POSITION_FIRST)
 			honorific_title = "[chosen_honorific] [first_name(registered_name)]"
@@ -1016,18 +1134,26 @@
 
 /// Returns the trim assignment name.
 /obj/item/card/id/proc/get_trim_assignment()
+	procstart = null
+	src.procstart = null
 	return trim?.assignment || assignment
 
 /// Returns the trim sechud icon state.
 /obj/item/card/id/proc/get_trim_sechud_icon_state()
+	procstart = null
+	src.procstart = null
 	return trim?.sechud_icon_state || SECHUD_UNKNOWN
 
 /obj/item/card/id/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(iscash(interacting_with))
 		return insert_money(interacting_with, user) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 	return NONE
 
 /obj/item/card/id/item_ctrl_click(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!in_contents_of(user) || user.incapacitated) //Check if the ID is in the ID slot, so it can be changed from there too.
 		return
 
@@ -1137,6 +1263,8 @@
 	registered_age = null
 
 /obj/item/card/id/departmental_budget/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/bank_account/department_account = SSeconomy.get_dep_account(department_ID)
 	if(department_account)
@@ -1146,10 +1274,14 @@
 	SSeconomy.dep_cards += src
 
 /obj/item/card/id/departmental_budget/Destroy()
+	procstart = null
+	src.procstart = null
 	SSeconomy.dep_cards -= src
 	return ..()
 
 /obj/item/card/id/departmental_budget/update_label()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/card/id/departmental_budget/car
@@ -1158,6 +1290,8 @@
 	icon_state = "car_budget" //saving up for a new tesla
 
 /obj/item/card/id/departmental_budget/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	registered_account.bank_card_talk(span_warning("Withdrawing is not compatible with this card design."), TRUE) //prevents the vault bank machine being useless and putting money from the budget to your card to go over personal crates
 	return CLICK_ACTION_BLOCKING
 
@@ -1193,27 +1327,37 @@
 	var/inherent_assigned_name
 
 /obj/item/card/id/advanced/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ITEM_EQUIPPED, PROC_REF(update_intern_status))
 	RegisterSignal(src, COMSIG_ITEM_DROPPED, PROC_REF(remove_intern_status))
 
 /obj/item/card/id/advanced/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(src, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED))
 
 	return ..()
 
 /obj/item/card/id/advanced/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(held_item, /obj/item/toy/crayon))
 		context[SCREENTIP_CONTEXT_LMB] = "Recolor ID"
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/card/id/advanced/proc/after_input_check(mob/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(user) || QDELETED(src) || !user.client || !user.can_perform_action(src, NEED_DEXTERITY|FORBID_TELEKINESIS_REACH))
 		return FALSE
 	return TRUE
 
 /obj/item/card/id/advanced/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -1222,6 +1366,8 @@
 		return recolor_id(user, tool)
 
 /obj/item/card/id/advanced/proc/recolor_id(mob/living/user, obj/item/toy/crayon/our_crayon)
+	procstart = null
+	src.procstart = null
 	if(our_crayon.is_capped)
 		balloon_alert(user, "take the cap off first!")
 		return ITEM_INTERACT_BLOCKING
@@ -1250,16 +1396,22 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/card/id/advanced/on_loc_equipped(datum/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(loc, /obj/item/storage/wallet) || istype(loc, /obj/item/modular_computer))
 		update_intern_status(source, equipper, slot)
 
 /obj/item/card/id/advanced/on_loc_dropped(datum/source, mob/dropper)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(loc, /obj/item/storage/wallet) || istype(loc, /obj/item/modular_computer))
 		remove_intern_status(source, dropper)
 
 /obj/item/card/id/advanced/proc/update_intern_status(datum/source, mob/user, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!user?.client)
@@ -1286,6 +1438,8 @@
 	update_label()
 
 /obj/item/card/id/advanced/proc/remove_intern_status(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!is_intern)
@@ -1295,6 +1449,8 @@
 	update_label()
 
 /obj/item/card/id/advanced/update_label()
+	procstart = null
+	src.procstart = null
 	if(inherent_assigned_name && registered_name == inherent_assigned_name)
 		name = "[initial(name)][(!assignment || assignment == inherent_assigned_name) ? "" : " ([assignment])"]"
 		return
@@ -1302,6 +1458,8 @@
 	return ..()
 
 /obj/item/card/id/advanced/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(registered_name && registered_name != "Captain")
@@ -1329,6 +1487,8 @@
 	. += mutable_appearance(trim_icon_file, trim_icon_state)
 
 /obj/item/card/id/advanced/get_trim_assignment()
+	procstart = null
+	src.procstart = null
 	if(trim_assignment_override)
 		return trim_assignment_override
 
@@ -1340,6 +1500,8 @@
 
 /// Returns the trim sechud icon state.
 /obj/item/card/id/advanced/get_trim_sechud_icon_state()
+	procstart = null
+	src.procstart = null
 	return sechud_icon_state_override || ..()
 
 /obj/item/card/id/advanced/rainbow
@@ -1382,6 +1544,8 @@
 	wildcard_slots = WILDCARD_LIMIT_PLATINUM
 
 /obj/item/card/id/advanced/platinum/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_TASTEFULLY_THICK_ID_CARD, INNATE_TRAIT)
 
@@ -1394,6 +1558,8 @@
 	wildcard_slots = WILDCARD_LIMIT_GOLD
 
 /obj/item/card/id/advanced/gold/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_TASTEFULLY_THICK_ID_CARD, INNATE_TRAIT)
 
@@ -1509,6 +1675,8 @@
 	wildcard_slots = WILDCARD_LIMIT_ADMIN
 
 /obj/item/card/id/advanced/debug/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_account(new /datum/bank_account(player_account = FALSE))
 	registered_account.account_id = ADMIN_ACCOUNT_ID // this is so bank_card_talk() can work.
@@ -1516,6 +1684,8 @@
 	registered_account.account_balance += 999999 // MONEY! We add more money to the account every time we spawn because it's a debug item and infinite money whoopie
 
 /obj/item/card/id/advanced/debug/alt_click_can_use_id(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || isnull(user.client?.holder)) // admins only as a safety so people don't steal all the dollars. spawn in a holochip if you want them to get some dosh
 		registered_account.bank_card_talk(span_warning("Only authorized representatives of Nanotrasen may use this card."), force = TRUE)
@@ -1524,6 +1694,8 @@
 	return TRUE
 
 /obj/item/card/id/advanced/debug/can_be_used_in_payment(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || isnull(user.client?.holder))
 		registered_account.bank_card_talk(span_warning("Only authorized representatives of Nanotrasen may use this card."), force = TRUE)
@@ -1554,12 +1726,16 @@
 	var/time_left = 0
 
 /obj/item/card/id/advanced/prisoner/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isidcard(held_item))
 		context[SCREENTIP_CONTEXT_LMB] = "Set sentence time"
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/card/id/advanced/prisoner/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -1568,6 +1744,8 @@
 		return set_sentence_time(user, tool)
 
 /obj/item/card/id/advanced/prisoner/proc/set_sentence_time(mob/living/user, obj/item/card/id/our_card)
+	procstart = null
+	src.procstart = null
 	var/list/id_access = our_card.GetAccess()
 	if(!(ACCESS_BRIG in id_access))
 		balloon_alert(user, "access denied!")
@@ -1593,10 +1771,14 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/card/id/advanced/prisoner/proc/start_timer()
+	procstart = null
+	src.procstart = null
 	say("Sentence started, welcome to the corporate rehabilitation center!")
 	START_PROCESSING(SSobj, src)
 
 /obj/item/card/id/advanced/prisoner/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -1613,6 +1795,8 @@
 	. += span_notice("Remember to [EXAMINE_HINT("swipe")] the card on a genpop locker to link it.")
 
 /obj/item/card/id/advanced/prisoner/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!timed)
 		return
 	time_left -= seconds_per_tick
@@ -1621,6 +1805,8 @@
 		STOP_PROCESSING(SSobj, src)
 
 /obj/item/card/id/advanced/prisoner/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(usr, span_notice("You have accumulated [points] out of the [goal] points you need for freedom."))
 
 /obj/item/card/id/advanced/prisoner/one
@@ -1678,12 +1864,16 @@
 	var/alt_trim = /datum/id_trim/job/assistant
 
 /obj/item/card/id/advanced/plainclothes/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(held_item) || (held_item == src))
 		context[SCREENTIP_CONTEXT_LMB] = "Show/Flip ID"
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/card/id/advanced/plainclothes/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(trim_assignment_override)
 		. += span_smallnotice("it's currently under plainclothes identity.")
@@ -1691,6 +1881,8 @@
 		. += span_smallnotice("flip it to switch to the plainclothes identity.")
 
 /obj/item/card/id/advanced/plainclothes/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/popup_input = tgui_input_list(user, "Choose Action", "Two-Sided ID", list("Show", "Flip"))
 	if(!popup_input || !after_input_check(user))
 		return TRUE
@@ -1705,6 +1897,8 @@
 	update_appearance()
 
 /obj/item/card/id/advanced/plainclothes/update_label()
+	procstart = null
+	src.procstart = null
 	if(!trim_assignment_override)
 		return ..()
 	var/name_string = registered_name ? "[registered_name]'s ID Card" : initial(name)
@@ -1728,24 +1922,34 @@
 	var/datum/weakref/theft_target
 
 /obj/item/card/id/advanced/chameleon/Destroy()
+	procstart = null
+	src.procstart = null
 	theft_target = null
 	return ..()
 
 /obj/item/card/id/advanced/chameleon/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (slot & ITEM_SLOT_ID)
 		RegisterSignal(user, COMSIG_LIVING_CAN_TRACK, PROC_REF(can_track))
 
 /obj/item/card/id/advanced/chameleon/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(user, COMSIG_LIVING_CAN_TRACK)
 	return ..()
 
 /obj/item/card/id/advanced/chameleon/proc/can_track(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return COMPONENT_CANT_TRACK
 
 /obj/item/card/id/advanced/chameleon/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isidcard(interacting_with))
 		theft_target = WEAKREF(interacting_with)
 		ui_interact(user)
@@ -1753,6 +1957,8 @@
 	return ..()
 
 /obj/item/card/id/advanced/chameleon/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// If we're attacking a human, we want it to be covert. We're not ATTACKING them, we're trying
 	// to sneakily steal their accesses by swiping our agent ID card near them. As a result, we
 	// return ITEM_INTERACT_BLOCKING to cancel any part of the following the attack chain.
@@ -1800,12 +2006,16 @@
 	return NONE
 
 /obj/item/card/id/advanced/chameleon/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ChameleonCard", name)
 		ui.open()
 
 /obj/item/card/id/advanced/chameleon/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["wildcardFlags"] = SSid_access.wildcard_flags_by_wildcard
 	data["accessFlagNames"] = SSid_access.access_flag_string_by_flag
@@ -1813,13 +2023,19 @@
 	return data
 
 /obj/item/card/id/advanced/chameleon/ui_host(mob/user)
+	procstart = null
+	src.procstart = null
 	// Hook our UI to the theft target ID card for UI state checks.
 	return theft_target?.resolve()
 
 /obj/item/card/id/advanced/chameleon/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 /obj/item/card/id/advanced/chameleon/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	var/target = theft_target?.resolve()
 
 	if(!target)
@@ -1840,6 +2056,8 @@
 	return status
 
 /obj/item/card/id/advanced/chameleon/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["showBasic"] = FALSE
@@ -1863,6 +2081,8 @@
 	return data
 
 /obj/item/card/id/advanced/chameleon/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -1911,6 +2131,8 @@
 			return TRUE
 
 /obj/item/card/id/advanced/chameleon/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.can_perform_action(user, NEED_DEXTERITY| FORBID_TELEKINESIS_REACH))
 		return ..()
 	var/popup_input = tgui_input_list(user, "Choose Action", "Agent ID", list("Show", "Forge/Reset", "Change Account ID"))
@@ -1991,6 +2213,8 @@
 		to_chat(user, span_notice("Your account number has been automatically assigned."))
 
 /obj/item/card/id/advanced/chameleon/add_item_context(obj/item/source, list/context, atom/target, mob/living/user,)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!in_range(user, target))
@@ -2085,19 +2309,27 @@
 	drop_sound = 'sound/items/handling/materials/cardboard_drop.ogg'
 
 /obj/item/card/cardboard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/item/card/cardboard/get_displayed_name(honorifics = FALSE)
+	procstart = null
+	src.procstart = null
 	return scribbled_name
 
 /obj/item/card/cardboard/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.can_write(tool, TRUE))
 		INVOKE_ASYNC(src, PROC_REF(modify_card), user, tool)
 		return ITEM_INTERACT_SUCCESS
 
 ///Lets the user write a name, assignment or trim on the card, or reset it. Only the name is important for the component.
 /obj/item/card/cardboard/proc/modify_card(mob/living/user, obj/item/item)
+	procstart = null
+	src.procstart = null
 	if(!user.mind)
 		return
 	var/popup_input = tgui_input_list(user, "What To Change", "Cardboard ID", list("Name", "Assignment", "Trim", "Reset"))
@@ -2147,6 +2379,8 @@
 
 ///Checks that the conditions to be able to modify the cardboard card are still present after user input calls.
 /obj/item/card/cardboard/proc/after_input_check(mob/living/user, obj/item/item, input, value)
+	procstart = null
+	src.procstart = null
 	if(!input || (value && input == value))
 		return FALSE
 	if(QDELETED(user) || QDELETED(item) || QDELETED(src) || user.incapacitated || !user.is_holding(item) || !IsReachableBy(user) || !user.can_write(item))
@@ -2154,12 +2388,16 @@
 	return TRUE
 
 /obj/item/card/cardboard/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!Adjacent(user))
 		return
 	user.visible_message(span_notice("[user] shows you: [icon2html(src, viewers(user))] [name]."), span_notice("You show \the [name]."))
 	add_fingerprint(user)
 
 /obj/item/card/cardboard/update_name()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!scribbled_name)
 		name = initial(name)
@@ -2167,6 +2405,8 @@
 	name = "[scribbled_name]'s ID Card ([scribbled_assignment])"
 
 /obj/item/card/cardboard/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(scribbled_name)
 		var/mutable_appearance/name_overlay = mutable_appearance(icon, "cardboard_name")
@@ -2185,17 +2425,25 @@
 		. += trim_overlay
 
 /obj/item/card/cardboard/get_id_examine_strings(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += list("[icon2html(get_cached_flat_icon(), user, extra_classes = "hugeicon")]")
 
 /obj/item/card/cardboard/get_examine_icon(mob/user)
+	procstart = null
+	src.procstart = null
 	return icon2html(get_cached_flat_icon(), user)
 
 /obj/item/card/cardboard/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You could use a pen or crayon to forge a name, assignment or trim.")
 
 /obj/item/card/cardboard/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(held_item) || (held_item == src))
 		context[SCREENTIP_CONTEXT_LMB] = "Show ID"

@@ -8,6 +8,8 @@
  * special_callback - optional callback to be invoked mid-cinematic.
  */
 /proc/play_cinematic(datum/cinematic/cinematic_type, watchers, datum/callback/special_callback)
+	procstart = null
+	src.procstart = null
 	if(!ispath(cinematic_type, /datum/cinematic))
 		CRASH("play_cinematic called with a non-cinematic type. (Got: [cinematic_type])")
 	var/datum/cinematic/playing = new cinematic_type(watchers, special_callback)
@@ -46,6 +48,8 @@
 	var/stop_ooc = TRUE
 
 /datum/cinematic/New(watcher, datum/callback/special_callback)
+	procstart = null
+	src.procstart = null
 	screen = new(src)
 	if(watcher == world)
 		is_global = TRUE
@@ -53,6 +57,8 @@
 	src.special_callback = special_callback
 
 /datum/cinematic/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(screen)
 	special_callback = null
 	watching.Cut()
@@ -61,6 +67,8 @@
 
 /// Actually goes through the process of showing the cinematic to the list of watchers.
 /datum/cinematic/proc/start_cinematic(list/watchers)
+	procstart = null
+	src.procstart = null
 	if(SEND_GLOBAL_SIGNAL(COMSIG_GLOB_PLAY_CINEMATIC, src) & COMPONENT_GLOB_BLOCK_CINEMATIC)
 		return
 
@@ -88,6 +96,8 @@
 
 /// Cleans up the cinematic after a set timer of it sticking on the end screen.
 /datum/cinematic/proc/clean_up_cinematic(was_ooc_toggled = FALSE)
+	procstart = null
+	src.procstart = null
 	if(was_ooc_toggled)
 		toggle_ooc(TRUE)
 
@@ -95,6 +105,8 @@
 
 /// Whenever another cinematic starts to play over us, we have the chacne to block it.
 /datum/cinematic/proc/handle_replacement_cinematics(datum/source, datum/cinematic/other)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Stop our's and allow others to play if we're local and it's global
@@ -106,6 +118,8 @@
 
 /// Whenever a mob watching the cinematic logs in, show them the ongoing cinematic
 /datum/cinematic/proc/show_to(mob/watching_mob, client/watching_client)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!HAS_TRAIT_FROM(watching_mob, TRAIT_NO_TRANSFORM, CINEMATIC_SOURCE))
@@ -122,6 +136,8 @@
 
 /// Simple helper for playing sounds from the cinematic.
 /datum/cinematic/proc/play_cinematic_sound(sound_to_play)
+	procstart = null
+	src.procstart = null
 	if(is_global)
 		SEND_SOUND(world, sound_to_play)
 	else
@@ -131,14 +147,20 @@
 /// Invoke any special callbacks for actual effects synchronized with animation.
 /// (Such as a real nuke explosion happening midway)
 /datum/cinematic/proc/invoke_special_callback()
+	procstart = null
+	src.procstart = null
 	special_callback?.Invoke()
 
 /// The actual cinematic occurs here.
 /datum/cinematic/proc/play_cinematic()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Stops the cinematic and removes it from all the viewers.
 /datum/cinematic/proc/stop_cinematic()
+	procstart = null
+	src.procstart = null
 	for(var/client/viewing_client as anything in watching)
 		remove_watcher(viewing_client)
 
@@ -149,11 +171,15 @@
 
 /// Locks a mob, preventing them from moving, being hurt, or acting
 /datum/cinematic/proc/lock_mob(mob/to_lock)
+	procstart = null
+	src.procstart = null
 	locked += WEAKREF(to_lock)
 	ADD_TRAIT(to_lock, TRAIT_NO_TRANSFORM, CINEMATIC_SOURCE)
 
 /// Unlocks a previously locked weakref
 /datum/cinematic/proc/unlock_mob(datum/weakref/mob_ref)
+	procstart = null
+	src.procstart = null
 	var/mob/locked_mob = mob_ref.resolve()
 	if(isnull(locked_mob))
 		return
@@ -162,6 +188,8 @@
 
 /// Removes the passed client from our watching list.
 /datum/cinematic/proc/remove_watcher(client/no_longer_watching)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(no_longer_watching in watching))

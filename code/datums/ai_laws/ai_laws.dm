@@ -13,6 +13,8 @@ GLOBAL_VAR(round_default_lawset)
  * This requires config, so it is generated at the first request to use this var.
  */
 /proc/get_round_default_lawset()
+	procstart = null
+	src.procstart = null
 	if(!GLOB.round_default_lawset)
 		GLOB.round_default_lawset = setup_round_default_laws()
 	return GLOB.round_default_lawset
@@ -33,6 +35,8 @@ GLOBAL_VAR(round_default_lawset)
 ///first called when something wants round default laws for the first time in a round, considers config
 ///returns a law datum that GLOB._round_default_lawset will be set to.
 /proc/setup_round_default_laws()
+	procstart = null
+	src.procstart = null
 	var/list/law_ids = CONFIG_GET(keyed_list/random_laws)
 	var/list/specified_law_ids = CONFIG_GET(keyed_list/specified_laws)
 
@@ -77,6 +81,8 @@ GLOBAL_VAR(round_default_lawset)
 
 ///returns a law datum based off of config. will never roll asimov as the weighted datum if the station has a unique AI.
 /proc/pick_weighted_lawset()
+	procstart = null
+	src.procstart = null
 	var/datum/ai_laws/lawtype
 	var/list/law_weights = CONFIG_GET(keyed_list/law_weight)
 	var/list/specified_law_ids = CONFIG_GET(keyed_list/specified_laws)
@@ -103,6 +109,8 @@ GLOBAL_VAR(round_default_lawset)
 
 ///returns the law datum with the lawid in question, law boards and law datums should share this id.
 /proc/lawid_to_type(lawid)
+	procstart = null
+	src.procstart = null
 	var/all_ai_laws = subtypesof(/datum/ai_laws)
 	for(var/al in all_ai_laws)
 		var/datum/ai_laws/ai_law = al
@@ -141,6 +149,8 @@ GLOBAL_VAR(round_default_lawset)
 
 /// Makes a copy of the lawset and returns a new law datum.
 /datum/ai_laws/proc/copy_lawset()
+	procstart = null
+	src.procstart = null
 	var/datum/ai_laws/new_lawset = new type()
 	new_lawset.protected_zeroth = protected_zeroth
 	new_lawset.zeroth = zeroth
@@ -152,6 +162,8 @@ GLOBAL_VAR(round_default_lawset)
 
 /// Applies all laws from this lawset to the passed lawset, treating it as if it was a cyborg lawset
 /datum/ai_laws/proc/ai_to_cyborg(datum/ai_laws/cyborg_laws)
+	procstart = null
+	src.procstart = null
 	cyborg_laws.protected_zeroth = protected_zeroth
 	cyborg_laws.zeroth = zeroth_borg || zeroth
 	cyborg_laws.inherent = inherent.Copy()
@@ -167,7 +179,9 @@ GLOBAL_VAR(round_default_lawset)
 	name = "Default Silicon Laws"
 	id = "config_custom"
 
-/datum/ai_laws/custom/New() //This reads silicon_laws.txt and allows server hosts to set custom AI starting laws.
+/datum/ai_laws/custom/New()
+	procstart = null
+	src.procstart = null //This reads silicon_laws.txt and allows server hosts to set custom AI starting laws.
 	. = ..()
 	for(var/line in world.file2list("[global.config.directory]/silicon_laws.txt"))
 		if(!line)
@@ -194,6 +208,8 @@ GLOBAL_VAR(round_default_lawset)
  * The zeroth borg law allows for AIs with zeroth laws to give a differing zeroth law to their child cyborgs
  */
 /datum/ai_laws/proc/set_zeroth_law(law, law_borg, force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(zeroth && !force && protected_zeroth)
 		return
 	zeroth = law
@@ -208,6 +224,8 @@ GLOBAL_VAR(round_default_lawset)
  * Returns TRUE on success, or false otherwise
  */
 /datum/ai_laws/proc/clear_zeroth_law(force = FALSE)
+	procstart = null
+	src.procstart = null
 	// Protected zeroeth laws (malf, admin) shouldn't be wiped
 	if(!force && protected_zeroth)
 		return FALSE
@@ -221,6 +239,8 @@ GLOBAL_VAR(round_default_lawset)
 /// Can optionally be supplied an index to insert the law at.
 /// No duplicate laws allowed.
 /datum/ai_laws/proc/add_inherent_law(law, index)
+	procstart = null
+	src.procstart = null
 	if(isnull(index) || index > length(inherent))
 		inherent |= law
 		return
@@ -230,35 +250,53 @@ GLOBAL_VAR(round_default_lawset)
 
 /// Removes the passed law from the inherent law list.
 /datum/ai_laws/proc/remove_inherent_law(law)
+	procstart = null
+	src.procstart = null
 	inherent -= law
 
 /// Clears all inherent laws from this lawset.
 /datum/ai_laws/proc/clear_inherent_laws()
+	procstart = null
+	src.procstart = null
 	inherent.Cut()
 
 /// Adds the passed law as an hacked law.
 /datum/ai_laws/proc/add_hacked_law(law)
+	procstart = null
+	src.procstart = null
 	hacked += law
 
 /// Removes the passed law from the hacked law list.
 /datum/ai_laws/proc/remove_hacked_law(law)
+	procstart = null
+	src.procstart = null
 	hacked -= law
 
 /// Clears all hacked laws.
 /datum/ai_laws/proc/clear_hacked_laws()
+	procstart = null
+	src.procstart = null
 	hacked.Cut()
 
 /datum/ai_laws/proc/add_supplied_law(law)
+	procstart = null
+	src.procstart = null
 	supplied += law
 
 /datum/ai_laws/proc/remove_supplied_law(law)
+	procstart = null
+	src.procstart = null
 	supplied -= law
 
 /// Clears all supplied laws.
 /datum/ai_laws/proc/clear_supplied_laws()
+	procstart = null
+	src.procstart = null
 	supplied.Cut()
 
 /datum/ai_laws/proc/show_laws(mob/to_who)
+	procstart = null
+	src.procstart = null
 	var/list/printable_laws = get_law_list(include_zeroth = TRUE)
 	to_chat(to_who, boxed_message(jointext(printable_laws, "\n")))
 
@@ -271,6 +309,8 @@ GLOBAL_VAR(round_default_lawset)
  * * render_html - Operator controlling if HTML tags are rendered on the returned laws
  */
 /datum/ai_laws/proc/get_law_list(include_zeroth = FALSE, show_numbers = TRUE, render_html = TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	if (include_zeroth && zeroth)

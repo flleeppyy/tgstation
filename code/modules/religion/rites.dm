@@ -16,17 +16,23 @@
 	var/rite_flags = RITE_AUTO_DELETE
 
 /datum/religion_rites/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!GLOB?.religious_sect)
 		return
 	LAZYADD(GLOB.religious_sect.active_rites, src)
 
 /datum/religion_rites/Destroy()
+	procstart = null
+	src.procstart = null
 	if(GLOB?.religious_sect)
 		LAZYREMOVE(GLOB.religious_sect.active_rites, src)
 	return ..()
 
 /datum/religion_rites/proc/can_afford(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(GLOB.religious_sect?.favor < favor_cost)
 		to_chat(user, span_warning("This rite requires more favor!"))
 		return FALSE
@@ -34,6 +40,8 @@
 
 ///Called to perform the invocation of the rite, with args being the performer and the altar where it's being performed. Maybe you want it to check for something else?
 /datum/religion_rites/proc/perform_rite(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	if(!can_afford(user))
 		return FALSE
 	to_chat(user, span_notice("You begin to perform the rite of [name]..."))
@@ -61,18 +69,24 @@
 
 ///Does the thing if the rite was successfully performed. return value denotes that the effect successfully (IE a harm rite does harm)
 /datum/religion_rites/proc/invoke_effect(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	GLOB.religious_sect.on_riteuse(user, religious_tool)
 	return TRUE
 
 ///Called if invoke effect returns TRUE, for effects meant to occur only if the rite passes.
 /datum/religion_rites/proc/post_invoke_effects(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(!(rite_flags & RITE_ONE_TIME_USE))
 		return
 	GLOB.religious_sect.rites_list.Remove(src.type)
 
 /datum/religion_rites/proc/refund(percent = 1.0)
+	procstart = null
+	src.procstart = null
 	GLOB.religious_sect.adjust_favor(favor_cost * percent)
 
 /**** Mechanical God ****/
@@ -88,6 +102,8 @@
 	favor_cost = 1000
 
 /datum/religion_rites/synthconversion/perform_rite(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(religious_tool))
 		to_chat(user, span_warning("This rite requires a religious device that individuals can be buckled to."))
 		return FALSE
@@ -107,6 +123,8 @@
 	return ..()
 
 /datum/religion_rites/synthconversion/invoke_effect(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!ismovable(religious_tool))
 		CRASH("[name]'s perform_rite had a movable atom that has somehow turned into a non-movable!")
@@ -138,6 +156,8 @@
 	favor_cost = 2000
 
 /datum/religion_rites/machine_blessing/invoke_effect(mob/living/user, atom/movable/religious_tool)
+	procstart = null
+	src.procstart = null
 	..()
 	var/altar_turf = get_turf(religious_tool)
 	var/blessing = pick_weight_recursive(
@@ -184,6 +204,8 @@
 	var/money_cost = 0
 
 /datum/religion_rites/greed/can_afford(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/datum/bank_account/account = user.get_bank_account()
 	if(!account)
 		to_chat(user, span_warning("You need a way to pay for the rite!"))
@@ -194,6 +216,8 @@
 	return TRUE
 
 /datum/religion_rites/greed/invoke_effect(mob/living/user, atom/movable/religious_tool)
+	procstart = null
+	src.procstart = null
 	var/datum/bank_account/account = user.get_bank_account()
 	if(!account || account.account_balance < money_cost)
 		to_chat(user, span_warning("This rite requires more money!"))
@@ -208,6 +232,8 @@
 	money_cost = 300
 
 /datum/religion_rites/greed/vendatray/invoke_effect(mob/living/user, atom/movable/religious_tool)
+	procstart = null
+	src.procstart = null
 	..()
 	var/altar_turf = get_turf(religious_tool)
 	new /obj/structure/displaycase/forsale(altar_turf)
@@ -221,6 +247,8 @@
 	money_cost = 1000 //quite a step up from vendatray
 
 /datum/religion_rites/greed/custom_vending/invoke_effect(mob/living/user, atom/movable/religious_tool)
+	procstart = null
+	src.procstart = null
 	..()
 	var/altar_turf = get_turf(religious_tool)
 	new /obj/machinery/vending/custom/greed(altar_turf)
@@ -240,6 +268,8 @@
 	favor_cost = 150 //150u of organic slurry
 
 /datum/religion_rites/maint_adaptation/perform_rite(mob/living/carbon/human/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return FALSE
 	//uses HAS_TRAIT_FROM because junkies are also hopelessly addicted
@@ -249,6 +279,8 @@
 	return ..()
 
 /datum/religion_rites/maint_adaptation/invoke_effect(mob/living/user, atom/movable/religious_tool)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, span_warning("You feel your genes rattled and reshaped. <b>You're becoming something new.</b>"))
 	user.emote("laugh")
@@ -271,6 +303,8 @@
 	favor_cost = 300 //300u of organic slurry, i'd consider this a reward of the sect
 
 /datum/religion_rites/adapted_eyes/perform_rite(mob/living/carbon/human/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return FALSE
 	if(!HAS_TRAIT_FROM(user, TRAIT_HOPELESSLY_ADDICTED, "maint_adaptation"))
@@ -283,6 +317,8 @@
 	return ..()
 
 /datum/religion_rites/adapted_eyes/invoke_effect(mob/living/carbon/human/user, atom/movable/religious_tool)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/organ/eyes/oldeyes = user.get_organ_slot(ORGAN_SLOT_EYES)
 	to_chat(user, span_warning("You feel your eyes adapt to the darkness!"))
@@ -302,6 +338,8 @@
 	var/obj/item/food/mold_target
 
 /datum/religion_rites/adapted_food/perform_rite(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/food/could_mold in get_turf(religious_tool))
 		if(istype(could_mold, /obj/item/food/badrecipe/moldy))
 			continue
@@ -311,6 +349,8 @@
 	return FALSE
 
 /datum/religion_rites/adapted_food/invoke_effect(mob/living/user, atom/movable/religious_tool)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/food/moldify = mold_target
 	mold_target = null
@@ -332,6 +372,8 @@
 	var/obj/item/stack/sheet/mineral/wood/converted
 
 /datum/religion_rites/ritual_totem/perform_rite(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/stack/sheet/mineral/wood/could_totem in get_turf(religious_tool))
 		converted = could_totem //totemify this o great one
 		return ..()
@@ -339,6 +381,8 @@
 	return FALSE
 
 /datum/religion_rites/ritual_totem/invoke_effect(mob/living/user, atom/movable/religious_tool)
+	procstart = null
+	src.procstart = null
 	..()
 	var/altar_turf = get_turf(religious_tool)
 	var/obj/item/stack/sheet/mineral/wood/padala = converted
@@ -363,6 +407,8 @@
 	var/obj/item/paper/contract_target
 
 /datum/religion_rites/sparring_contract/perform_rite(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/paper/could_contract in get_turf(religious_tool))
 		if(could_contract.get_total_length()) //blank paper pls
 			continue
@@ -372,6 +418,8 @@
 	return FALSE
 
 /datum/religion_rites/sparring_contract/invoke_effect(mob/living/user, atom/movable/religious_tool)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/paper/blank_paper = contract_target
 	var/turf/tool_turf = get_turf(religious_tool)
@@ -399,6 +447,8 @@
 	var/area/area_instance
 
 /datum/religion_rites/declare_arena/perform_rite(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	var/list/filtered = list()
 	for(var/area/unfiltered_area as anything in get_sorted_areas())
 		if(istype(unfiltered_area, /area/centcom)) //youuu dont need thaaat
@@ -411,6 +461,8 @@
 	. = ..()
 
 /datum/religion_rites/declare_arena/invoke_effect(mob/living/user, atom/movable/religious_tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/religion_sect/spar/sect = GLOB.religious_sect
 	sect.arenas[area_instance.name] = area_instance.type
@@ -426,6 +478,8 @@
 	var/obj/item/stack/sheet/converted
 
 /datum/religion_rites/ceremonial_weapon/perform_rite(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	var/not_rigid = null
 	var/datum/material_requirement/requirement = SSmaterials.requirements[/datum/material_requirement/rigid_material]
 	for(var/obj/item/stack/sheet/could_blade in get_turf(religious_tool))
@@ -447,6 +501,8 @@
 	return FALSE
 
 /datum/religion_rites/ceremonial_weapon/invoke_effect(mob/living/user, atom/movable/religious_tool)
+	procstart = null
+	src.procstart = null
 	..()
 	var/altar_turf = get_turf(religious_tool)
 	var/obj/item/stack/sheet/used_for_blade = converted
@@ -470,6 +526,8 @@
 	favor_cost = 4 //4 duels won
 
 /datum/religion_rites/unbreakable/perform_rite(mob/living/carbon/human/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return FALSE
 	if(HAS_TRAIT_FROM(user, TRAIT_UNBREAKABLE, INNATE_TRAIT))
@@ -478,6 +536,8 @@
 	return ..()
 
 /datum/religion_rites/unbreakable/invoke_effect(mob/living/carbon/human/user, atom/movable/religious_tool)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, span_nicegreen("You feel [GLOB.deity]'s will to keep fighting pouring into you!"))
 	user.AddComponent(/datum/component/unbreakable)
@@ -490,6 +550,8 @@
 	favor_cost = 3 //3 duels won
 
 /datum/religion_rites/tenacious/perform_rite(mob/living/carbon/human/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return FALSE
 	if(HAS_TRAIT_FROM(user, TRAIT_TENACIOUS, INNATE_TRAIT))
@@ -498,6 +560,8 @@
 	return ..()
 
 /datum/religion_rites/tenacious/invoke_effect(mob/living/carbon/human/user, atom/movable/religious_tool)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, span_nicegreen("You feel [GLOB.deity]'s tenacity pouring into you!"))
 	user.AddElement(/datum/element/tenacious)

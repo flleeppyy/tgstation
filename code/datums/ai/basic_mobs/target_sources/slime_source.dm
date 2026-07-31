@@ -1,6 +1,8 @@
 /datum/target_source/oview_living_no_slimes
 
 /datum/target_source/oview_living_no_slimes/collect_candidates(mob/living/pawn, datum/ai_controller/controller, range)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/candidates = list()
 	for(var/mob/living/living_candidate in oview(range, pawn))

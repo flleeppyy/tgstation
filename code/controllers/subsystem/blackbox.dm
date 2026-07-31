@@ -19,6 +19,8 @@ SUBSYSTEM_DEF(blackbox)
 						) //associative list of any feedback variables that have had their format changed since creation and their current version, remember to update this
 
 /datum/controller/subsystem/blackbox/Initialize()
+	procstart = null
+	src.procstart = null
 	triggertime = world.time
 	record_feedback("amount", "random_seed", Master.random_seed)
 	record_feedback("amount", "dm_version", DM_VERSION)
@@ -29,6 +31,8 @@ SUBSYSTEM_DEF(blackbox)
 
 //poll population
 /datum/controller/subsystem/blackbox/fire()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE //for population query
 
 	CheckPlayerCount()
@@ -38,6 +42,8 @@ SUBSYSTEM_DEF(blackbox)
 			update_exp(10)
 
 /datum/controller/subsystem/blackbox/proc/CheckPlayerCount()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	if(!SSdbcore.Connect())
@@ -58,16 +64,22 @@ SUBSYSTEM_DEF(blackbox)
 	qdel(query_record_playercount)
 
 /datum/controller/subsystem/blackbox/Recover()
+	procstart = null
+	src.procstart = null
 	feedback_list = SSblackbox.feedback_list
 	sealed = SSblackbox.sealed
 
 //no touchie
 /datum/controller/subsystem/blackbox/vv_get_var(var_name)
+	procstart = null
+	src.procstart = null
 	if(var_name == NAMEOF(src, feedback_list))
 		return debug_variable(var_name, deep_copy_list(feedback_list), 0, src)
 	return ..()
 
 /datum/controller/subsystem/blackbox/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	switch(var_name)
 		if(NAMEOF(src, feedback_list))
 			return FALSE
@@ -79,6 +91,8 @@ SUBSYSTEM_DEF(blackbox)
 
 //Recorded on subsystem shutdown
 /datum/controller/subsystem/blackbox/proc/FinalFeedback()
+	procstart = null
+	src.procstart = null
 	record_feedback("tally", "ahelp_stats", GLOB.ahelp_tickets.active_tickets.len, "unresolved")
 	for (var/obj/machinery/telecomms/message_server/messages in GLOB.telecomm_machines)
 		if (messages.pda_msgs.len)
@@ -90,6 +104,8 @@ SUBSYSTEM_DEF(blackbox)
 		record_feedback("tally", "client_byond_version", 1, PC.full_byond_version())
 
 /datum/controller/subsystem/blackbox/Shutdown()
+	procstart = null
+	src.procstart = null
 	sealed = FALSE
 	FinalFeedback()
 
@@ -117,6 +133,8 @@ SUBSYSTEM_DEF(blackbox)
 	SSdbcore.MassInsert(format_table_name("feedback"), sqlrowlist, ignore_errors = TRUE, special_columns = special_columns)
 
 /datum/controller/subsystem/blackbox/proc/Seal()
+	procstart = null
+	src.procstart = null
 	if(sealed)
 		return FALSE
 	if(IsAdminAdvancedProcCall())
@@ -126,6 +144,8 @@ SUBSYSTEM_DEF(blackbox)
 	return TRUE
 
 /datum/controller/subsystem/blackbox/proc/LogBroadcast(freq)
+	procstart = null
+	src.procstart = null
 	if(sealed)
 		return
 	switch(freq)
@@ -165,6 +185,8 @@ SUBSYSTEM_DEF(blackbox)
 			record_feedback("tally", "radio_usage", 1, "other")
 
 /datum/controller/subsystem/blackbox/proc/find_feedback_datum(key, key_type)
+	procstart = null
+	src.procstart = null
 	var/datum/feedback_variable/FV = feedback_list[key]
 	if(FV)
 		return FV
@@ -229,6 +251,8 @@ Versioning
 						"gun_fired" = 2)
 */
 /datum/controller/subsystem/blackbox/proc/record_feedback(key_type, key, increment, data, overwrite)
+	procstart = null
+	src.procstart = null
 	if(sealed || !key_type || !istext(key) || !isnum(increment || !data))
 		return
 	var/datum/feedback_variable/FV = find_feedback_datum(key, key_type)
@@ -270,6 +294,8 @@ Versioning
 			CRASH("Invalid feedback key_type: [key_type]")
 
 /datum/controller/subsystem/blackbox/proc/record_feedback_recurse_list(list/L, list/key_list, increment, depth = 1)
+	procstart = null
+	src.procstart = null
 	if(depth == key_list.len)
 		if(L.Find(key_list[depth]))
 			L["[key_list[depth]]"] += increment
@@ -289,10 +315,14 @@ Versioning
 	var/list/json = list()
 
 /datum/feedback_variable/New(new_key, new_key_type)
+	procstart = null
+	src.procstart = null
 	key = new_key
 	key_type = new_key_type
 
 /datum/controller/subsystem/blackbox/proc/LogAhelp(ticket, action, message, recipient, sender, urgent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		return
 
@@ -315,6 +345,8 @@ Versioning
 
 
 /datum/controller/subsystem/blackbox/proc/ReportDeath(mob/living/L)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(sealed)
 		return
@@ -366,6 +398,8 @@ Versioning
 		qdel(query_report_death)
 
 /datum/controller/subsystem/blackbox/proc/ReportCitation(citation, sender, sender_ic, recipient, message, description, fine = 0, paid = 0)
+	procstart = null
+	src.procstart = null
 	var/action = "Citation Created"
 	if(!fine)
 		action = "Crime Created"
@@ -418,6 +452,8 @@ Versioning
 		qdel(query_report_citation)
 
 /datum/controller/subsystem/blackbox/proc/ReportRoundstartManifest(list/characters)
+	procstart = null
+	src.procstart = null
 	var/list/query_rows = list()
 	var/list/special_columns = list("server_ip" = "INET_ATON(?)")
 	for(var/mob_ckey in characters)
@@ -435,6 +471,8 @@ Versioning
 	SSdbcore.MassInsert(format_table_name("manifest"), query_rows, special_columns = special_columns)
 
 /datum/controller/subsystem/blackbox/proc/ReportManifest(ckey, character, job, special, latejoin)
+	procstart = null
+	src.procstart = null
 	var/datum/db_query/query_report_manifest = SSdbcore.NewQuery({"INSERT INTO [format_table_name("manifest")]
 	(server_ip,
 	server_port,

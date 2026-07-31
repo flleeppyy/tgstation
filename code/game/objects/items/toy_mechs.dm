@@ -52,6 +52,8 @@
 	var/losses = 0
 
 /obj/item/toy/mecha/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/series, /obj/item/toy/mecha, "Mini-Mecha action figures")
 	AddElement(/datum/element/toy_talk)
@@ -83,6 +85,8 @@
  * * opponent - (optional) the defender controller in the battle, for PvP
  */
 /obj/item/toy/mecha/proc/combat_sleep(delay, obj/item/toy/mecha/attacker, mob/living/carbon/attacker_controller, mob/living/carbon/opponent)
+	procstart = null
+	src.procstart = null
 	if(!attacker_controller)
 		return FALSE
 
@@ -126,6 +130,8 @@
 
 //all credit to skasi for toy mech fun ideas
 /obj/item/toy/mecha/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(timer < world.time)
 		to_chat(user, span_notice("You play with [src]."))
 		timer = world.time + cooldown
@@ -135,6 +141,8 @@
 		. = ..()
 
 /obj/item/toy/mecha/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -145,6 +153,8 @@
  * If you attack a mech with a mech, initiate combat between them
  */
 /obj/item/toy/mecha/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/toy/mecha))
 		return NONE
 	var/obj/item/toy/mecha/challenger = tool
@@ -155,6 +165,8 @@
  * Attack is called from the user's toy, aimed at target(another human), checking for target's toy.
  */
 /obj/item/toy/mecha/attack(mob/living/carbon/human/target, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(target == user)
 		to_chat(user, span_notice("Target another toy mech if you want to start a battle with yourself."))
 		return
@@ -190,6 +202,8 @@
  * Overrides attack_tk - Sorry, you have to be face to face to initiate a battle, it's good sportsmanship
  */
 /obj/item/toy/mecha/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(timer < world.time)
 		to_chat(user, span_notice("You telekinetically play with [src]."))
 		timer = world.time + cooldown
@@ -206,6 +220,8 @@
  * * user - the user wanting to do battle
  */
 /obj/item/toy/mecha/proc/withdraw_offer(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(wants_to_battle)
 		wants_to_battle = FALSE
 		to_chat(user, span_notice("You get the feeling they don't want to battle."))
@@ -213,6 +229,8 @@
  * Starts a battle, toy mech vs player. Player... doesn't win.
  */
 /obj/item/toy/mecha/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(in_combat)
 		to_chat(user, span_notice("[src] is in battle, let it finish first."))
 		return
@@ -254,6 +272,8 @@
 	return BRUTELOSS
 
 /obj/item/toy/mecha/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("This toy's special attack is [special_attack_cry], [special_attack_type_message]")
 	if(in_combat)
@@ -266,6 +286,8 @@
 		. += span_notice("This toy has [wins] wins, and [losses] losses.")
 
 /obj/item/toy/mecha/can_speak(allow_mimes)
+	procstart = null
+	src.procstart = null
 	return !quiet && ..()
 
 /**
@@ -282,6 +304,8 @@
  * * opponent - optional arg used in Mech PvP battles: the other person who is taking part in the fight (controls src)
  */
 /obj/item/toy/mecha/proc/mecha_brawl(obj/item/toy/mecha/attacker, mob/living/carbon/attacker_controller, mob/living/carbon/opponent)
+	procstart = null
+	src.procstart = null
 	//A GOOD DAY FOR A SWELL BATTLE!
 	attacker_controller.visible_message(span_danger("[attacker_controller.name] collides [attacker] with [src]! Looks like they're preparing for a brawl!"), \
 						span_danger("You collide [attacker] into [src], sparking a fierce battle!"), \
@@ -442,6 +466,8 @@
  * * target: optional arg used in Mech PvP battles (if used, attacker is target's toy)
  */
 /obj/item/toy/mecha/proc/check_battle_start(mob/living/carbon/user, obj/item/toy/mecha/attacker, mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	if(attacker?.in_combat)
 		to_chat(user, span_notice("[target?target.p_their() : "Your" ] [attacker.name] is in combat."))
 		to_chat(target, span_notice("Your [attacker.name] is in combat."))
@@ -469,6 +495,8 @@
  * * victim - the toy being hit by the special move
  */
 /obj/item/toy/mecha/proc/special_attack_move(obj/item/toy/mecha/victim)
+	procstart = null
+	src.procstart = null
 	say(special_attack_cry + "!!")
 
 	special_attack_charged = FALSE
@@ -498,6 +526,8 @@
  * * victim - the toy being hit by the super special move (doesn't necessarily need to be used)
  */
 /obj/item/toy/mecha/proc/super_special_attack(obj/item/toy/mecha/victim)
+	procstart = null
+	src.procstart = null
 	visible_message(span_notice("[src] does a cool flip."))
 
 /obj/item/toy/mecha/ripley
@@ -572,6 +602,8 @@
 	special_attack_cry = "MEGA HORN"
 
 /obj/item/toy/mecha/honk/super_special_attack(obj/item/toy/mecha/victim)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/mobs/non-humanoids/honkbot/honkbot_evil_laugh.ogg', 20, TRUE)
 	victim.special_attack_cooldown += 3 //Adds cooldown to the other mech and gives a minor self heal
 	combat_health++
@@ -606,6 +638,8 @@
 	special_attack_cry = "KILLER CLAMP"
 
 /obj/item/toy/mecha/deathripley/super_special_attack(obj/item/toy/mecha/victim)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/items/weapons/sonic_jackhammer.ogg', 20, TRUE)
 	if(victim.combat_health < combat_health) //Instantly kills the other mech if its health is below ours.
 		say("EXECUTE!!")
@@ -623,6 +657,8 @@
 	special_attack_cry = "*wave"
 
 /obj/item/toy/mecha/reticence/super_special_attack(obj/item/toy/mecha/victim)
+	procstart = null
+	src.procstart = null
 	special_attack_cooldown-- //Has a lower cooldown...
 	victim.special_attack_cooldown++ //and increases the opponent's cooldown by 1...
 	victim.combat_health-- //and some free damage.

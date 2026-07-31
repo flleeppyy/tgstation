@@ -22,18 +22,24 @@
 	melee_attack_cooldown = 1.5 SECONDS
 
 /mob/living/basic/construct/proteon/hostile/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/callback/retaliate_callback = CALLBACK(src, PROC_REF(ai_retaliate_behaviour))
 	AddComponent(/datum/component/ai_retaliate_advanced, retaliate_callback)
 
 /// Set a timer to clear our retaliate list
 /mob/living/basic/construct/proteon/hostile/proc/ai_retaliate_behaviour(mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	if (!istype(attacker))
 		return
 	var/random_timer = rand(2 SECONDS, 4 SECONDS) //for unpredictability
 	addtimer(CALLBACK(src, PROC_REF(clear_retaliate_list)), random_timer)
 
 /mob/living/basic/construct/proteon/hostile/proc/clear_retaliate_list()
+	procstart = null
+	src.procstart = null
 	if(!ai_controller.blackboard_key_exists(BB_BASIC_MOB_RETALIATE_LIST))
 		return
 	ai_controller.clear_blackboard_key(BB_BASIC_MOB_RETALIATE_LIST)

@@ -3,9 +3,13 @@
 	feature_key = FEATURE_MUTANT_COLOR
 
 /datum/dna_block/feature/mutant_color/create_unique_block(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	return sanitize_hexcolor(target.dna.features[feature_key], include_crunch = FALSE)
 
 /datum/dna_block/feature/mutant_color/apply_to_mob(mob/living/carbon/human/target, dna_hash)
+	procstart = null
+	src.procstart = null
 	target.dna.features[feature_key] = sanitize_hexcolor(get_block(dna_hash))
 
 /datum/dna_block/feature/ethereal_color
@@ -13,9 +17,13 @@
 	feature_key = FEATURE_ETHEREAL_COLOR
 
 /datum/dna_block/feature/ethereal_color/create_unique_block(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	return sanitize_hexcolor(target.dna.features[FEATURE_ETHEREAL_COLOR], include_crunch = FALSE)
 
 /datum/dna_block/feature/ethereal_color/apply_to_mob(mob/living/carbon/human/target, dna_hash)
+	procstart = null
+	src.procstart = null
 	target.dna.features[feature_key] = sanitize_hexcolor(get_block(dna_hash))
 
 /// Features tied to a sprite accessory
@@ -23,11 +31,15 @@
 	abstract_type = /datum/dna_block/feature/accessory
 
 /datum/dna_block/feature/accessory/create_unique_block(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	var/block_value = SSaccessories.feature_list[feature_key].Find(target.dna.features[feature_key])
 	var/max_value = length(SSaccessories.feature_list[feature_key])
 	return construct_block(block_value, max_value)
 
 /datum/dna_block/feature/accessory/apply_to_mob(mob/living/carbon/human/target, dna_hash)
+	procstart = null
+	src.procstart = null
 	var/block_value = get_block(dna_hash)
 	var/max_value = length(SSaccessories.feature_list[feature_key])
 	var/deconstructed = deconstruct_block(block_value, max_value)
@@ -66,6 +78,8 @@
 	feature_key = FEATURE_MOTH_WINGS
 
 /datum/dna_block/feature/accessory/moth_wing/create_unique_block(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	if(target.dna.features[feature_key] == "Burnt Off") // Why is this snowflake check a thing. Please find a way to fix this later
 		return random_string(block_length, GLOB.hex_characters)
 	return ..()
@@ -74,6 +88,8 @@
 	feature_key = FEATURE_MOTH_ANTENNAE
 
 /datum/dna_block/feature/accessory/moth_antenna/create_unique_block(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	if(target.dna.features[feature_key] == "Burnt Off")
 		return random_string(block_length, GLOB.hex_characters)
 	return ..()

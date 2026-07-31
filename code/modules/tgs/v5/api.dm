@@ -34,17 +34,23 @@
 	var/datum/tgs_http_handler/http_handler
 
 /datum/tgs_api/v5/New(datum/tgs_event_handler/event_handler, datum/tgs_version/version, datum/tgs_http_handler/http_handler)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	interop_version = version
 	src.http_handler = http_handler
 	TGS_DEBUG_LOG("V5 API created: [json_encode(args)]")
 
 /datum/tgs_api/v5/ApiVersion()
+	procstart = null
+	src.procstart = null
 	return new /datum/tgs_version(
 		#include "__interop_version.dm"
 	)
 
 /datum/tgs_api/v5/OnWorldNew(minimum_required_security_level)
+	procstart = null
+	src.procstart = null
 	TGS_DEBUG_LOG("OnWorldNew()")
 	server_port = world.params[DMAPI5_PARAM_SERVER_PORT]
 	access_identifier = world.params[DMAPI5_PARAM_ACCESS_IDENTIFIER]
@@ -122,6 +128,8 @@
 	return TRUE
 
 /datum/tgs_api/v5/proc/GetTopicPort()
+	procstart = null
+	src.procstart = null
 #if defined(OPENDREAM) && defined(OPENDREAM_TOPIC_PORT_EXISTS)
 	return "[world.opendream_topic_port]"
 #else
@@ -129,6 +137,8 @@
 #endif
 
 /datum/tgs_api/v5/proc/RequireInitialBridgeResponse()
+	procstart = null
+	src.procstart = null
 	TGS_DEBUG_LOG("RequireInitialBridgeResponse()")
 	var/logged = FALSE
 	while(!initial_bridge_request_received)
@@ -141,9 +151,13 @@
 	TGS_DEBUG_LOG("RequireInitialBridgeResponse: Passed")
 
 /datum/tgs_api/v5/OnInitializationComplete()
+	procstart = null
+	src.procstart = null
 	Bridge(DMAPI5_BRIDGE_COMMAND_PRIME)
 
 /datum/tgs_api/v5/OnTopic(T)
+	procstart = null
+	src.procstart = null
 	TGS_DEBUG_LOG("OnTopic()")
 	RequireInitialBridgeResponse()
 	TGS_DEBUG_LOG("OnTopic passed bridge request gate")
@@ -160,6 +174,8 @@
 	return ProcessTopicJson(json, TRUE)
 
 /datum/tgs_api/v5/OnReboot()
+	procstart = null
+	src.procstart = null
 	var/list/result = Bridge(DMAPI5_BRIDGE_COMMAND_REBOOT)
 	if(!result)
 		return
@@ -178,22 +194,32 @@
 		TGS_ERROR_LOG("Unable to set port to [port]!")
 
 /datum/tgs_api/v5/InstanceName()
+	procstart = null
+	src.procstart = null
 	RequireInitialBridgeResponse()
 	return instance_name
 
 /datum/tgs_api/v5/TestMerges()
+	procstart = null
+	src.procstart = null
 	RequireInitialBridgeResponse()
 	return test_merges.Copy()
 
 /datum/tgs_api/v5/EndProcess()
+	procstart = null
+	src.procstart = null
 	Bridge(DMAPI5_BRIDGE_COMMAND_KILL)
 
 /datum/tgs_api/v5/Revision()
+	procstart = null
+	src.procstart = null
 	RequireInitialBridgeResponse()
 	return revision
 
 // Common proc b/c it's used by the V3/V4 APIs
 /datum/tgs_api/proc/UpgradeDeprecatedChatMessage(datum/tgs_message_content/message)
+	procstart = null
+	src.procstart = null
 	if(!istext(message))
 		return message
 
@@ -201,6 +227,8 @@
 	return new /datum/tgs_message_content(message)
 
 /datum/tgs_api/v5/ChatBroadcast(datum/tgs_message_content/message2, list/channels)
+	procstart = null
+	src.procstart = null
 	if(!length(channels))
 		channels = ChatChannelInfo()
 
@@ -212,6 +240,8 @@
 	SendChatMessageRaw(message2, ids)
 
 /datum/tgs_api/v5/ChatTargetedBroadcast(datum/tgs_message_content/message2, admin_only)
+	procstart = null
+	src.procstart = null
 	var/list/channels = list()
 	for(var/I in ChatChannelInfo())
 		var/datum/tgs_chat_channel/channel = I
@@ -221,9 +251,13 @@
 	SendChatMessageRaw(message2, channels)
 
 /datum/tgs_api/v5/ChatPrivateMessage(datum/tgs_message_content/message2, datum/tgs_chat_user/user)
+	procstart = null
+	src.procstart = null
 	SendChatMessageRaw(message2, list(user.channel.id))
 
 /datum/tgs_api/v5/proc/SendChatMessageRaw(datum/tgs_message_content/message2, list/channel_ids)
+	procstart = null
+	src.procstart = null
 	message2 = UpgradeDeprecatedChatMessage(message2)
 
 	if (!length(channel_ids))
@@ -253,14 +287,20 @@
 		SendChatDataRaw(data)
 
 /datum/tgs_api/v5/proc/SendChatDataRaw(list/data)
+	procstart = null
+	src.procstart = null
 	Bridge(DMAPI5_BRIDGE_COMMAND_CHAT_SEND, list(DMAPI5_BRIDGE_PARAMETER_CHAT_MESSAGE = data))
 
 /datum/tgs_api/v5/ChatChannelInfo()
+	procstart = null
+	src.procstart = null
 	RequireInitialBridgeResponse()
 	WaitForReattach(TRUE)
 	return chat_channels.Copy()
 
 /datum/tgs_api/v5/TriggerEvent(event_name, list/parameters, wait_for_completion)
+	procstart = null
+	src.procstart = null
 	RequireInitialBridgeResponse()
 	WaitForReattach(TRUE)
 
@@ -295,6 +335,8 @@
 	return TRUE
 
 /datum/tgs_api/v5/TriggerDeployment(event_name, list/parameters, wait_for_completion)
+	procstart = null
+	src.procstart = null
 	RequireInitialBridgeResponse()
 	WaitForReattach(TRUE)
 
@@ -308,6 +350,8 @@
 	return TRUE
 
 /datum/tgs_api/v5/proc/DecodeChannels(chat_update_json)
+	procstart = null
+	src.procstart = null
 	TGS_DEBUG_LOG("DecodeChannels()")
 	var/list/chat_channels_json = chat_update_json[DMAPI5_CHAT_UPDATE_CHANNELS]
 	if(istype(chat_channels_json))
@@ -320,6 +364,8 @@
 		TGS_WARNING_LOG("Failed to decode [DMAPI5_CHAT_UPDATE_CHANNELS] from channel update!")
 
 /datum/tgs_api/v5/proc/DecodeChannel(channel_json)
+	procstart = null
+	src.procstart = null
 	var/datum/tgs_chat_channel/channel = new
 	channel.id = channel_json[DMAPI5_CHAT_CHANNEL_ID]
 	channel.friendly_name = channel_json[DMAPI5_CHAT_CHANNEL_FRIENDLY_NAME]
@@ -331,9 +377,13 @@
 	return channel
 
 /datum/tgs_api/v5/SecurityLevel()
+	procstart = null
+	src.procstart = null
 	RequireInitialBridgeResponse()
 	return security_level
 
 /datum/tgs_api/v5/Visibility()
+	procstart = null
+	src.procstart = null
 	RequireInitialBridgeResponse()
 	return visibility

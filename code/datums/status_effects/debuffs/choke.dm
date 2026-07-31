@@ -19,12 +19,16 @@
 	var/delta_x = 0
 
 /datum/status_effect/choke/on_creation(mob/living/new_owner, atom/movable/choke_on, flaming = FALSE, vomit_delay = -1)
+	procstart = null
+	src.procstart = null
 	choking_on_ref = WEAKREF(choke_on)
 	src.flaming = flaming
 	src.duration = vomit_delay
 	return ..()
 
 /datum/status_effect/choke/on_apply()
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(owner)) // Ghosts do not have stomachs, and non carbons can't vomit
 		return FALSE
 	var/atom/movable/choking_on = choking_on_ref?.resolve()
@@ -72,15 +76,21 @@
 	return TRUE
 
 /datum/status_effect/choke/proc/should_do_effects()
+	procstart = null
+	src.procstart = null
 	return owner.stat != DEAD && !HAS_TRAIT(owner, TRAIT_NOBREATH)
 
 /datum/status_effect/choke/proc/check_audio_state()
+	procstart = null
+	src.procstart = null
 	if(!should_do_effects())
 		choke_loop.stop()
 		return
 	choke_loop.start()
 
 /datum/status_effect/choke/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.clear_mood_event(id)
 	REMOVE_TRAIT(owner, TRAIT_MUTE, CHOKING_TRAIT)
 	clean_client()
@@ -91,6 +101,8 @@
 	return ..()
 
 /datum/status_effect/choke/proc/clean_client()
+	procstart = null
+	src.procstart = null
 	// juuust in case, reset our x and y's
 	var/client/client_owner = owner.canon_client
 	if(client_owner)
@@ -101,11 +113,15 @@
 	delta_y = 0
 
 /datum/status_effect/choke/proc/clear_flame()
+	procstart = null
+	src.procstart = null
 	flaming = FALSE
 	if(ash)
 		QDEL_NULL(ash)
 
 /datum/status_effect/choke/proc/vomit_up()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/choking_on = choking_on_ref?.resolve()
 	if(choking_on && iscarbon(owner))
 		var/mob/living/carbon/carbon_owner = owner
@@ -113,6 +129,8 @@
 		carbon_owner.vomit(vomit_flags = (VOMIT_CATEGORY_DEFAULT | MOB_VOMIT_FORCE), lost_nutrition = 20, distance = 2)
 
 /datum/status_effect/choke/proc/on_vomit(mob/source, distance, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/movable/choking_on = choking_on_ref?.resolve()
 	if(choking_on)
@@ -122,14 +140,20 @@
 		choking_on.throw_at(target, distance, 1, source)
 
 /datum/status_effect/choke/get_examine_text()
+	procstart = null
+	src.procstart = null
 	return span_boldwarning("[owner.p_They()] [owner.p_are()] choking!")
 
 /datum/status_effect/choke/proc/remove_choke(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!QDELETED(src))
 		qdel(src)
 
 /datum/status_effect/choke/proc/hazard_moved(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(QDELETED(src))
 		return
@@ -137,45 +161,63 @@
 		qdel(src)
 
 /datum/status_effect/choke/proc/no_breathing(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	RegisterSignal(source, SIGNAL_REMOVETRAIT(TRAIT_NOBREATH), PROC_REF(on_breathable))
 	check_audio_state()
 
 /datum/status_effect/choke/proc/on_breathable(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(source, SIGNAL_REMOVETRAIT(TRAIT_NOBREATH))
 	check_audio_state()
 
 /datum/status_effect/choke/proc/on_logout(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	clean_client()
 
 /datum/status_effect/choke/proc/on_death(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	RegisterSignal(source, COMSIG_LIVING_REVIVE, PROC_REF(on_revive))
 	check_audio_state()
 
 /datum/status_effect/choke/proc/on_revive(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(source, COMSIG_LIVING_REVIVE)
 	check_audio_state()
 
 /datum/status_effect/choke/proc/attempt_eat(mob/source, atom/eating)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	source.balloon_alert(source, "can't get it down!")
 	return BLOCK_EAT_ATTEMPT
 
 /datum/status_effect/choke/proc/helped(mob/source, mob/helping)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(heimlich), source, helping)
 	return COMPONENT_BLOCK_HELP_ACT
 
 /datum/status_effect/choke/proc/shook(mob/source, mob/helping)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(heimlich), source, helping)
 	return COMPONENT_BLOCK_MISC_HELP
 
 /datum/status_effect/choke/proc/heimlich(mob/victim, mob/aggressor)
+	procstart = null
+	src.procstart = null
 	if(victim == aggressor)
 		return
 	if(DOING_INTERACTION_WITH_TARGET(aggressor, victim))
@@ -221,10 +263,14 @@
 	vomit_up()
 
 /datum/status_effect/choke/proc/mirror_dir(atom/source, old_dir, new_dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	owner.dir = new_dir
 
 /datum/status_effect/choke/proc/thrusting_continues(mob/living/victim, mob/aggressor, before_work = FALSE)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(aggressor))
 		var/free_hands = 0
 		// Listen bud, you need at least 2 free hands for this
@@ -268,6 +314,8 @@
 	return TRUE
 
 /datum/status_effect/choke/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(!should_do_effects())
 		return
 
@@ -278,12 +326,16 @@
 		do_vfx(client_owner)
 
 /datum/status_effect/choke/proc/deal_damage(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	owner.losebreath += 1 * seconds_between_ticks // 1 breath loss a second. This will deal additional breath damage, and prevent breathing
 	if(flaming)
 		owner.apply_damage(2 * seconds_between_ticks, BURN, BODY_ZONE_HEAD, attacking_item = "choking")
 		owner.apply_damage(2 * seconds_between_ticks, STAMINA)
 
 /datum/status_effect/choke/proc/do_vfx(client/vfx_on)
+	procstart = null
+	src.procstart = null
 	var/old_x = delta_x
 	delta_x = WRAP(delta_x + rand(1, 6), -13, 13)
 	var/old_y = delta_y

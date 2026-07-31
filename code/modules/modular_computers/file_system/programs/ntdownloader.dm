@@ -34,11 +34,15 @@
 	)
 
 /datum/computer_file/program/ntnetdownload/kill_program(mob/user)
+	procstart = null
+	src.procstart = null
 	abort_file_download()
 	ui_header = null
 	. = ..()
 
 /datum/computer_file/program/ntnetdownload/proc/begin_file_download(filename, mob/user)
+	procstart = null
+	src.procstart = null
 	if(downloaded_file)
 		return FALSE
 
@@ -74,6 +78,8 @@
 		complete_file_download()
 
 /datum/computer_file/program/ntnetdownload/proc/abort_file_download()
+	procstart = null
+	src.procstart = null
 	if(!downloaded_file)
 		return
 	generate_network_log("Aborted download of file [hacked_download ? "**ENCRYPTED**" : "[downloaded_file.filename].[downloaded_file.filetype]"].")
@@ -83,6 +89,8 @@
 	download_user = null
 
 /datum/computer_file/program/ntnetdownload/proc/complete_file_download()
+	procstart = null
+	src.procstart = null
 	if(!downloaded_file)
 		return
 	generate_network_log("Completed download of file [hacked_download ? "**ENCRYPTED**" : "[downloaded_file.filename].[downloaded_file.filetype]"].")
@@ -95,6 +103,8 @@
 	download_user = null
 
 /datum/computer_file/program/ntnetdownload/process_tick(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!downloaded_file)
 		return
 	if(download_completion >= downloaded_file.size)
@@ -119,6 +129,8 @@
 	download_completion = min(download_completion  + download_netspeed, downloaded_file.size)
 
 /datum/computer_file/program/ntnetdownload/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(action)
 		if("PRG_downloadfile")
@@ -134,6 +146,8 @@
 	return FALSE
 
 /datum/computer_file/program/ntnetdownload/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/access = computer.GetAccess()
 
@@ -173,6 +187,8 @@
 
 ///Checks if a provided `program_to_check` is compatible to be downloaded on our computer.
 /datum/computer_file/program/ntnetdownload/proc/check_compatibility(datum/computer_file/program/program_to_check)
+	procstart = null
+	src.procstart = null
 	if(!program_to_check || !program_to_check.is_supported_by_hardware(hardware_flag = computer.hardware_flag, loud = FALSE))
 		return FALSE
 	return TRUE

@@ -11,6 +11,8 @@
 	COOLDOWN_DECLARE(rabbit_cooldown)
 
 /obj/item/clothing/head/hats/tophat/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/gun/magic/wand))
 		return ..()
 
@@ -18,6 +20,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/clothing/head/hats/tophat/proc/abracadabra(obj/item/hitby_wand, mob/magician)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, rabbit_cooldown))
 		to_chat(magician, span_warning("You can't find another rabbit in [src]! Seems another hasn't gotten lost in there yet..."))
 		return

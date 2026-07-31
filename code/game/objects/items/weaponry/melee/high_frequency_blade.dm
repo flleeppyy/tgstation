@@ -33,6 +33,8 @@
 	embed_chance = 100
 
 /obj/item/highfrequencyblade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/two_handed, \
 		wield_callback = CALLBACK(src, PROC_REF(on_wield)), \
@@ -41,10 +43,14 @@
 	AddElement(/datum/element/update_icon_updates_onmob)
 
 /obj/item/highfrequencyblade/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "hfrequency[HAS_TRAIT(src, TRAIT_WIELDED)]"
 	return ..()
 
 /obj/item/highfrequencyblade/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(attack_type == PROJECTILE_ATTACK)
 		if(HAS_TRAIT(src, TRAIT_WIELDED) || prob(final_block_chance))
 			owner.visible_message(span_danger("[owner] deflects [attack_text] with [src]!"))
@@ -58,6 +64,8 @@
 	return FALSE
 
 /obj/item/highfrequencyblade/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -70,13 +78,19 @@
 
 /// triggered on wield of two handed item
 /obj/item/highfrequencyblade/proc/on_wield(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	update_icon(UPDATE_ICON_STATE)
 
 /// triggered on unwield of two handed item
 /obj/item/highfrequencyblade/proc/on_unwield(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	update_icon(UPDATE_ICON_STATE)
 
 /obj/item/highfrequencyblade/proc/slash(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	user.do_attack_animation(target, "nothing")
 	var/damage_mod = 1
 	var/x_slashed = text2num(modifiers[ICON_X]) || ICON_SIZE_X/2 //in case we arent called by a client
@@ -122,6 +136,8 @@
 	plane = ABOVE_GAME_PLANE
 
 /obj/effect/temp_visual/slash/Initialize(mapload, atom/target, x_slashed, y_slashed, slash_color)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!target)
 		return
@@ -146,6 +162,8 @@
 	exposed_wound_bonus = 25
 
 /obj/item/highfrequencyblade/wizard/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	if(!HAS_MIND_TRAIT(user, TRAIT_MAGICALLY_GIFTED))
 		balloon_alert(user, "you're too weak!")
 		return

@@ -17,6 +17,8 @@
 	var/mach = 0
 
 /datum/station_state/proc/count()
+	procstart = null
+	src.procstart = null
 	floor = 0
 	wall = 0
 	r_wall = 0
@@ -64,6 +66,8 @@
 		CHECK_TICK
 
 /datum/station_state/proc/score(datum/station_state/result)
+	procstart = null
+	src.procstart = null
 	if(!result)
 		return 0
 	var/output = 0

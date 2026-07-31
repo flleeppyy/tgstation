@@ -21,6 +21,8 @@
 	var/author_ckey
 
 /datum/picture/New(name, desc, mobs_spotted, dead_spotted, names, image, icon, size_x, size_y, bp, caption_, autogenerate_icon, can_see_ghosts, author_ckey_)
+	procstart = null
+	src.procstart = null
 	if(!isnull(name))
 		picture_name = name
 	if(!isnull(desc))
@@ -54,11 +56,15 @@
 		author_ckey = author_ckey
 
 /datum/picture/proc/get_small_icon(iconstate)
+	procstart = null
+	src.procstart = null
 	if(!picture_icon)
 		regenerate_small_icon(iconstate)
 	return picture_icon
 
 /datum/picture/proc/regenerate_small_icon(iconstate)
+	procstart = null
+	src.procstart = null
 	if(!picture_image)
 		return
 	var/icon/small_img = icon(picture_image)
@@ -68,6 +74,8 @@
 	picture_icon = ic
 
 /datum/picture/serialize_list(list/options, list/semvers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	.["id"] = id
@@ -83,6 +91,8 @@
 	return .
 
 /datum/picture/deserialize_list(list/input, list/options)
+	procstart = null
+	src.procstart = null
 	if((SCHEMA_VERSION in options))
 		switch(options[SCHEMA_VERSION])
 			if("1.0.0")
@@ -112,12 +122,16 @@
 		picture_name = input["name"]
 
 /proc/load_photo_from_disk(id, location)
+	procstart = null
+	src.procstart = null
 	var/datum/picture/P = load_picture_from_disk(id)
 	if(istype(P))
 		var/obj/item/photo/old/p = new(location, P)
 		return p
 
 /proc/load_picture_from_disk(id)
+	procstart = null
+	src.procstart = null
 	var/pathstring = log_path_from_picture_ID(id)
 	if(!pathstring)
 		return
@@ -143,6 +157,8 @@
 	return P
 
 /proc/log_path_from_picture_ID(id)
+	procstart = null
+	src.procstart = null
 	if(!istext(id))
 		return
 	. = "data/picture_logs/"
@@ -170,6 +186,8 @@
 
 //BE VERY CAREFUL WITH THIS PROC, TO AVOID DUPLICATION.
 /datum/picture/proc/log_to_file()
+	procstart = null
+	src.procstart = null
 	if(!picture_image)
 		return
 	if(!CONFIG_GET(flag/log_pictures))
@@ -193,6 +211,8 @@
 	WRITE_FILE(jsonpath, json_encode(json))
 
 /datum/picture/proc/Copy(greyscale = FALSE, cropx = 0, cropy = 0)
+	procstart = null
+	src.procstart = null
 	var/datum/picture/P = new
 	P.picture_name = picture_name
 	P.picture_desc = picture_desc

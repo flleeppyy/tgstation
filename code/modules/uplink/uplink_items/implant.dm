@@ -14,6 +14,8 @@
 	cost = 5
 
 /datum/uplink_item/implants/freedom/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc += " Implant has enough energy for [FREEDOM_IMPLANT_CHARGES] uses before it becomes inert and harmlessly self-destructs."
 
@@ -52,6 +54,8 @@
 	purchasable_from = parent_type::purchasable_from & ~UPLINK_SPY
 
 /datum/uplink_item/implants/uplink/spawn_item(spawn_path, mob/user, datum/uplink_handler/uplink_handler, atom/movable/source)
+	procstart = null
+	src.procstart = null
 	var/obj/item/storage/box/syndie_kit/uplink_box = ..()
 	uplink_box.name = "Uplink Implant Box"
 	new /obj/item/implanter/uplink(uplink_box, uplink_handler)

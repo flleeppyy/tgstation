@@ -21,14 +21,20 @@
 	var/used_up = FALSE
 
 /obj/item/reagent_containers/hypospray/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/item/reagent_containers/hypospray/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isliving(interacting_with))
 		return NONE
 	return inject(interacting_with, user) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 
 /obj/item/reagent_containers/hypospray/interact_with_atom_secondary(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!target.reagents)
 		return NONE
 
@@ -55,6 +61,8 @@
 
 ///Handles all injection checks, injection and logging.
 /obj/item/reagent_containers/hypospray/proc/inject(mob/living/affected_mob, mob/user)
+	procstart = null
+	src.procstart = null
 	if(used_up)
 		to_chat(user, span_warning("[src] tip is broken and is now unusable!"))
 		return FALSE
@@ -122,6 +130,8 @@
 	list_reagents = list(/datum/reagent/medicine/adminordrazine/quantum_heal = 80, /datum/reagent/medicine/synaptizine = 20)
 
 /obj/item/reagent_containers/hypospray/combat/nanites/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][(reagents.total_volume > 0) ? null : 0]"
 	return ..()
 
@@ -159,10 +169,14 @@
 	var/label_text
 
 /obj/item/reagent_containers/hypospray/medipen/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins to choke on \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return OXYLOSS//ironic. he could save others from oxyloss, but not himself.
 
 /obj/item/reagent_containers/hypospray/medipen/inject(mob/living/affected_mob, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && !reagents.total_volume)
 		used_up = TRUE //Makes them useless afterwards
@@ -170,18 +184,26 @@
 		update_appearance()
 
 /obj/item/reagent_containers/hypospray/medipen/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.can_perform_action(src, FORBID_TELEKINESIS_REACH|ALLOW_RESTING))
 		inject(user, user)
 
 /obj/item/reagent_containers/hypospray/medipen/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][(reagents.total_volume > 0) ? null : 0]"
 	return ..()
 
 /obj/item/reagent_containers/hypospray/medipen/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	label_text = span_notice("There is a sticker pasted onto the side which reads, 'WARNING: This medipen contains [pretty_string_from_reagent_list(reagents.reagent_list, names_only = TRUE, join_text = ", ", final_and = TRUE, capitalize_names = TRUE)], do not use if allergic to any listed chemicals.")
 
 /obj/item/reagent_containers/hypospray/medipen/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (label_examine)
 		. += label_text
@@ -278,6 +300,8 @@
 	list_reagents = list(/datum/reagent/vaccine/fungal_tb = 20)
 
 /obj/item/reagent_containers/hypospray/medipen/tuberculosiscure/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(reagents.total_volume >= volume)
 		icon_state = base_icon_state
@@ -295,6 +319,8 @@
 	list_reagents = list( /datum/reagent/medicine/epinephrine = 8, /datum/reagent/medicine/c2/aiuri = 8, /datum/reagent/medicine/c2/libital = 8, /datum/reagent/medicine/leporazine = 6)
 
 /obj/item/reagent_containers/hypospray/medipen/survival/inject(mob/living/affected_mob, mob/user)
+	procstart = null
+	src.procstart = null
 	if(lavaland_equipment_pressure_check(get_turf(user)))
 		amount_per_transfer_from_this = initial(amount_per_transfer_from_this)
 		return ..()

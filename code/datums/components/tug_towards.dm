@@ -38,6 +38,8 @@
 	), PROC_REF(update_tug))
 
 /datum/component/tug_towards/Destroy(force)
+	procstart = null
+	src.procstart = null
 	tugging_to_targets.Cut()
 
 	if(isliving(parent))
@@ -65,6 +67,8 @@
 	add_tugging_to_target(tugging_to, strength)
 
 /datum/component/tug_towards/proc/remove_tug_target(atom/target)
+	procstart = null
+	src.procstart = null
 	tugging_to_targets -= target
 
 	if (tugging_to_targets.len == 0)
@@ -85,6 +89,8 @@
 	update_tug()
 
 /datum/component/tug_towards/proc/on_tugging_to_qdeleting(datum/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	PRIVATE_PROC(TRUE)
 
@@ -95,6 +101,8 @@
 		update_tug()
 
 /datum/component/tug_towards/proc/update_tug()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	PRIVATE_PROC(TRUE)
 

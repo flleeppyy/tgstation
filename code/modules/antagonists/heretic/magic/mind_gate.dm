@@ -21,12 +21,18 @@
 	antimagic_flags = MAGIC_RESISTANCE_MOON
 
 /datum/action/cooldown/spell/pointed/mind_gate/can_cast_spell(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	return ..() && isliving(owner)
 
 /datum/action/cooldown/spell/pointed/mind_gate/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return ..() && ishuman(cast_on)
 
 /datum/action/cooldown/spell/pointed/mind_gate/cast(mob/living/carbon/human/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cast_on.can_block_magic(antimagic_flags))
 		to_chat(cast_on, span_notice("Your mind feels closed."))

@@ -30,20 +30,30 @@
 	var/datum/movement_detector/pedometer
 
 /obj/item/food/egg/watcher/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pedometer = new(src, CALLBACK(src, PROC_REF(on_stepped)))
 
 /obj/item/food/egg/watcher/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(pedometer)
 
 /obj/item/food/egg/watcher/spawn_impact_chick(turf/spawn_turf)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/spawner/random/lavaland_mob/watcher(spawn_turf)
 
 /obj/item/food/egg/watcher/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	return ..() + span_notice("<i>Watch it more closely to see how it is doing...</i>")
 
 /obj/item/food/egg/watcher/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (steps_travelled < (steps_to_hatch * WATCHER_EGG_ACTIVE_MOD))
 		return . + span_notice("Something stirs listlessly inside.")
@@ -53,6 +63,8 @@
 
 /// Called when we are moved, whether inside an inventory or by ourself somehow
 /obj/item/food/egg/watcher/proc/on_stepped(atom/movable/egg, atom/mover, atom/old_loc, direction)
+	procstart = null
+	src.procstart = null
 	var/new_loc = get_turf(egg)
 	if (isnull(new_loc) || new_loc == get_turf(old_loc))
 		return // Didn't actually go anywhere
@@ -70,6 +82,8 @@
 
 /// Animate the egg
 /obj/item/food/egg/watcher/proc/jiggle()
+	procstart = null
+	src.procstart = null
 	var/animation = isturf(loc) ? rand(1, 3) : 1 // Pixel_x/y animations don't work in an inventory
 	switch(animation)
 		if (1)
@@ -102,6 +116,8 @@
 	var/mob/living/owner
 
 /obj/item/watcher_hatchling/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isnull(orbiter))
 		watcher_return()
@@ -113,6 +129,8 @@
 	RegisterSignal(orbiter, COMSIG_QDELETING, PROC_REF(remove_orbiter))
 
 /obj/item/watcher_hatchling/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isnull(orbiter))
 		return
@@ -122,17 +140,23 @@
 
 /// If the guy we are orbiting is deleted but somehow we aren't
 /obj/item/watcher_hatchling/proc/remove_owner()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(owner, COMSIG_QDELETING)
 	owner = null
 
 /// In the more likely event that our orbiter is deleted, stop holding a reference to it
 /obj/item/watcher_hatchling/proc/remove_orbiter()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	orbiter = null // No need to unregister signal because we only call this when it deletes
 
 /// Get back in your ball pikachu
 /obj/item/watcher_hatchling/proc/watcher_return()
+	procstart = null
+	src.procstart = null
 	qdel(orbiter)
 	remove_owner()
 
@@ -164,6 +188,8 @@
 	var/list/target_faction = list(FACTION_MINING)
 
 /obj/effect/watcher_orbiter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(LAZYLEN(target_faction))
 		target_faction = string_list(target_faction)
@@ -171,14 +197,20 @@
 
 // Shuttle rotation fucks with our position, we just want to stick with our guy
 /obj/effect/watcher_orbiter/shuttleRotate(rotation, params)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/watcher_orbiter/Destroy(force)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	QDEL_NULL(tracker)
 	return ..()
 
 /obj/effect/watcher_orbiter/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if (!COOLDOWN_FINISHED(src, shot_cooldown))
 		return
 	for (var/mob/living/potential_target in oview(5, src))
@@ -191,6 +223,8 @@
 
 /// Take a shot
 /obj/effect/watcher_orbiter/proc/shoot_at(atom/target)
+	procstart = null
+	src.procstart = null
 	var/list/ignore_targets = list(parent)
 	if(isliving(parent))
 		var/mob/living/living_parent = parent
@@ -203,6 +237,8 @@
 
 /// Set ourselves up to track and orbit around a guy
 /obj/effect/watcher_orbiter/proc/follow(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	parent = target
 	glide_size = target.glide_size
 	animate(src, pixel_y = 26, alpha = 255, time = 0.5 SECONDS)
@@ -215,6 +251,8 @@
 
 /// Do our orbiting animation
 /obj/effect/watcher_orbiter/proc/orbit_animation()
+	procstart = null
+	src.procstart = null
 	animate(src, pixel_y = 26, time = 1 SECONDS, loop = -1, easing = SINE_EASING, flags = ANIMATION_PARALLEL)
 	animate(pixel_y = 18, time = 1 SECONDS, easing = SINE_EASING)
 	animate(src, pixel_x = 20, time = 0.5 SECONDS, loop = -1, easing = SINE_EASING | EASE_OUT, flags = ANIMATION_PARALLEL)
@@ -224,6 +262,8 @@
 
 /// Follow our parent
 /obj/effect/watcher_orbiter/proc/on_parent_moved(atom/movable/parent, atom/mover, atom/old_loc, direction)
+	procstart = null
+	src.procstart = null
 	if(parent.loc == old_loc)
 		return
 	var/turf/new_turf = get_turf(parent)
@@ -235,23 +275,31 @@
 
 /// Make sure we glide at the same speed as our parent
 /obj/effect/watcher_orbiter/proc/on_glide_size_changed(atom/source, new_glide_size)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	glide_size = new_glide_size
 
 /// Called if the guy we're tracking is deleted somehow
 /obj/effect/watcher_orbiter/proc/on_parent_deleted()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	parent = null
 	qdel(src)
 
 /// We must guard this corpse
 /obj/effect/watcher_orbiter/proc/on_parent_died(mob/living/parent)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	visible_message(span_notice("[src] emits a piteous keening in mourning of [parent]!"))
 	fire_delay /= on_death_multiplier
 
 /// Exit hyperactive mode
 /obj/effect/watcher_orbiter/proc/on_parent_revived(mob/living/parent)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	visible_message(span_notice("[src] chirps happily as [parent] suddenly gasps for breath!"))
 	fire_delay *= on_death_multiplier
@@ -266,5 +314,7 @@
 	speed = 0.5
 
 /obj/projectile/baby_watcher_blast/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transform = transform.Scale(0.5)

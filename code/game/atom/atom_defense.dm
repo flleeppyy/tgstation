@@ -15,6 +15,8 @@
 
 /// The essential proc to call when an atom must receive damage of any kind.
 /atom/proc/take_damage(damage_amount, damage_type = BRUTE, damage_flag = "", sound_effect = TRUE, attack_dir, armour_penetration = 0)
+	procstart = null
+	src.procstart = null
 	if(!uses_integrity)
 		CRASH("[src] had /atom/proc/take_damage() called on it without it being a type that has uses_integrity = TRUE!")
 	if(QDELETED(src))
@@ -49,6 +51,8 @@
 
 /// Proc for recovering atom_integrity. Returns the amount repaired by
 /atom/proc/repair_damage(amount)
+	procstart = null
+	src.procstart = null
 	if(amount <= 0) // We only recover here
 		return
 	var/new_integrity = min(max_integrity, atom_integrity + amount)
@@ -61,6 +65,8 @@
 
 /// Handles the integrity of an atom changing. This must be called instead of changing integrity directly.
 /atom/proc/update_integrity(new_value)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if(!uses_integrity)
 		CRASH("/atom/proc/update_integrity() was called on [src] when it doesn't use integrity!")
@@ -74,22 +80,30 @@
 
 /// Handle updates to your atom's integrity
 /atom/proc/on_update_integrity(old_value, new_value)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_ATOM_INTEGRITY_CHANGED, old_value, new_value)
 
 /// This mostly exists to keep atom_integrity private. Might be useful in the future.
 /atom/proc/get_integrity()
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 	return atom_integrity
 
 /// Similar to get_integrity, but returns the percentage as [0-1] instead.
 /atom/proc/get_integrity_percentage()
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 	return round(atom_integrity / max_integrity, 0.01)
 
 ///returns the damage value of the attack after processing the atom's various armor protections
 /atom/proc/run_atom_armor(damage_amount, damage_type, damage_flag = 0, attack_dir, armour_penetration = 0)
+	procstart = null
+	src.procstart = null
 	if(!uses_integrity)
 		CRASH("/atom/proc/run_atom_armor was called on [src] without being implemented as a type that uses integrity!")
 	if(damage_flag == MELEE && damage_amount < damage_deflection)
@@ -105,6 +119,8 @@
 
 ///the sound played when the atom is damaged.
 /atom/proc/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(damage_amount)
@@ -116,9 +132,13 @@
 
 ///Called to get the damage that hulks will deal to the atom.
 /atom/proc/hulk_damage()
+	procstart = null
+	src.procstart = null
 	return 150 //the damage hulks do on punches to this atom, is affected by melee armor
 
-/atom/proc/attack_generic(mob/user, damage_amount = 0, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, armor_penetration = 0) //used by attack_alien, attack_animal
+/atom/proc/attack_generic(mob/user, damage_amount = 0, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, armor_penetration = 0)
+	procstart = null
+	src.procstart = null //used by attack_alien, attack_animal
 	if(!uses_integrity)
 		CRASH("unimplemented /atom/proc/attack_generic()!")
 	user.do_attack_animation(src)
@@ -127,21 +147,29 @@
 
 /// Called after the atom takes damage and integrity is below integrity_failure level
 /atom/proc/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_ATOM_BREAK, damage_flag)
 
 /// Called when integrity is repaired above the breaking point having been broken before
 /atom/proc/atom_fix()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_ATOM_FIX)
 
 ///what happens when the atom's integrity reaches zero.
 /atom/proc/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_ATOM_DESTRUCTION, damage_flag)
 
 ///changes max_integrity while retaining current health percentage, returns TRUE if the atom got broken.
 /atom/proc/modify_max_integrity(new_max, can_break = TRUE, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(!uses_integrity)
 		CRASH("/atom/proc/modify_max_integrity() was called on [src] when it doesn't use integrity!")
 	var/current_integrity = atom_integrity
@@ -161,6 +189,8 @@
 
 /// A cut-out proc for [/atom/proc/bullet_act] so living mobs can have their own armor behavior checks without causing issues with needing their own on_hit call
 /atom/proc/check_projectile_armor(def_zone, obj/projectile/impacting_projectile, is_silent)
+	procstart = null
+	src.procstart = null
 	if(uses_integrity)
 		return clamp(PENETRATE_ARMOUR(get_armor_rating(impacting_projectile.armor_flag), impacting_projectile.armour_penetration), 0, 100)
 	return 0

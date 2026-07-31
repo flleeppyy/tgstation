@@ -3,6 +3,8 @@
 #define METABOLIZE_FREE_CONSTANT(value)((value * REAGENTS_METABOLISM) / metabolization_rate)
 
 /proc/chem_recipes_do_conflict(datum/chemical_reaction/r1, datum/chemical_reaction/r2)
+	procstart = null
+	src.procstart = null
 	//We have to check to see if either is competitive so can ignore it (competitive reagents are supposed to conflict)
 	if((r1.reaction_flags & REACTION_COMPETITIVE) || (r2.reaction_flags & REACTION_COMPETITIVE))
 		return FALSE
@@ -77,6 +79,8 @@
 
 //Creates foam from the reagent. Metaltype is for metal foam, notification is what to show people in textbox
 /datum/reagents/proc/create_foam(foamtype, foam_volume, result_type = null, notification = null, log = FALSE, lifetime, slippery)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(my_atom)
 
 	var/datum/effect_system/fluid_spread/foam/foam = new foamtype(location, null, foam_volume, my_atom, carry = src, result_type = result_type)
@@ -90,6 +94,8 @@
 
 ///Converts the pH into a tgui readable color - i.e. white and black text is readable over it. This is NOT the colourwheel for pHes however.
 /proc/convert_ph_to_readable_color(pH)
+	procstart = null
+	src.procstart = null
 	switch(pH)
 		if(-INFINITY to 1)
 			return "red"
@@ -151,6 +157,8 @@
 
 ///Returns a list of chemical_reaction datums that have the input STRING as a product
 /proc/get_reagent_type_from_product_string(string)
+	procstart = null
+	src.procstart = null
 	var/input_reagent = replacetext(LOWER_TEXT(string), " ", "") //95% of the time, the reagent id is a lowercase/no spaces version of the name
 	if (isnull(input_reagent))
 		return
@@ -175,6 +183,8 @@
  * If not provided, defaults to all reagent subtypes.
  */
 /proc/get_random_reagent_id(randomization_flags = REAGENT_SPAWN_RANDOM_PRODUCERS, list/blacklist = list(), list/whitelist = subtypesof(/datum/reagent))
+	procstart = null
+	src.procstart = null
 	var/list/reagent_list_to_process = list()
 	for(var/datum/reagent/reagent_path as anything in whitelist - blacklist)
 		if(reagent_path::randomized_spawns & randomization_flags)
@@ -183,12 +193,16 @@
 
 ///Returns reagent datum from reagent name string
 /proc/get_chem_id(chem_name)
+	procstart = null
+	src.procstart = null
 	for(var/X in GLOB.chemical_reagents_list)
 		var/datum/reagent/R = GLOB.chemical_reagents_list[X]
 		if(ckey(chem_name) == ckey(LOWER_TEXT(R.name)))
 			return X
 
 /proc/reagent_paths_list_to_text(list/reagents, addendum)
+	procstart = null
+	src.procstart = null
 	var/list/temp = list()
 	for(var/datum/reagent/R as anything in reagents)
 		temp |= initial(R.name)

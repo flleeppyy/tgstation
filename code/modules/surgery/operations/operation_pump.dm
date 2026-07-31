@@ -12,15 +12,23 @@
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_ORGANS_CUT
 
 /datum/surgery_operation/organ/stomach_pump/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(/atom/movable/screen/alert/disgusted::overlay_icon, /atom/movable/screen/alert/disgusted::overlay_state)
 
 /datum/surgery_operation/organ/stomach_pump/all_required_strings()
+	procstart = null
+	src.procstart = null
 	return ..() + list("the patient must not be husked")
 
 /datum/surgery_operation/organ/stomach_pump/state_check(obj/item/organ/stomach/organ)
+	procstart = null
+	src.procstart = null
 	return !HAS_TRAIT(organ.owner, TRAIT_HUSK)
 
 /datum/surgery_operation/organ/stomach_pump/on_preop(obj/item/organ/stomach/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		organ.owner,
@@ -31,6 +39,8 @@
 	display_pain(organ.owner, "You feel a horrible sloshing feeling in your gut! You're going to be sick!")
 
 /datum/surgery_operation/organ/stomach_pump/on_success(obj/item/organ/stomach/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		organ.owner,
@@ -41,6 +51,8 @@
 	organ.owner.vomit((MOB_VOMIT_MESSAGE | MOB_VOMIT_STUN), lost_nutrition = 20, purge_ratio = 0.67)
 
 /datum/surgery_operation/organ/stomach_pump/on_failure(obj/item/organ/stomach/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		organ.owner,

@@ -14,12 +14,16 @@
 	)
 
 /datum/ai_controller/basic_controller/bot/mulebot/get_able_to_run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bot/mulebot/bot_pawn = pawn
 	if(!bot_pawn.has_power())
 		return AI_UNABLE_TO_RUN
 	return ..()
 
 /datum/ai_controller/basic_controller/bot/mulebot/setup_able_to_run()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/basic/bot/my_bot = pawn
 	var/static/list/wire_signals = list(
@@ -41,6 +45,8 @@
 	time_between_perform = 1 SECONDS
 
 /datum/bt_node/ai_behavior/handle_delivery/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/navbeacon/beacon = controller.blackboard[target_key]
 	if(QDELETED(beacon))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED

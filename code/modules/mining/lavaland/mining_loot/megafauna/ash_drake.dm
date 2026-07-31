@@ -8,10 +8,14 @@
 	custom_materials = list(/datum/material/bone = SHEET_MATERIAL_AMOUNT * 10)
 
 /obj/item/drake_remains/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_shared_particles(/particles/bonfire)
 
 /obj/item/drake_remains/Destroy(force)
+	procstart = null
+	src.procstart = null
 	remove_shared_particles(/particles/bonfire)
 	return ..()
 
@@ -42,6 +46,8 @@
 	wound = 10
 
 /obj/item/clothing/suit/hooded/cloak/drake/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed = GLOB.mining_suit_allowed
 
@@ -86,6 +92,8 @@
 	COOLDOWN_DECLARE(summon_cooldown)
 
 /obj/item/melee/ghost_sword/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spirits = list()
 	START_PROCESSING(SSobj, src)
@@ -100,6 +108,8 @@
 	)
 
 /obj/item/melee/ghost_sword/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/mob/dead/observer/ghost in spirits)
 		ghost.RemoveInvisibility(type)
 	spirits.Cut()
@@ -107,6 +117,8 @@
 	. = ..()
 
 /obj/item/melee/ghost_sword/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, summon_cooldown))
 		to_chat(user, span_warning("You just recently called out for aid. You don't want to annoy the spirits!"))
 		return
@@ -121,9 +133,13 @@
 	)
 
 /obj/item/melee/ghost_sword/process()
+	procstart = null
+	src.procstart = null
 	ghost_check()
 
 /obj/item/melee/ghost_sword/proc/ghost_check()
+	procstart = null
+	src.procstart = null
 	var/turf/cur_turf = get_turf(src)
 	var/list/contents = cur_turf.get_all_contents()
 	var/mob/dead/observer/current_spirits = list()
@@ -144,11 +160,15 @@
 	return length(spirits)
 
 /obj/item/melee/ghost_sword/attack(mob/living/target, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	var/ghost_counter = ghost_check()
 	user.visible_message(span_danger("[user] strikes with the force of [ghost_counter] vengeful spirits!"))
 	. = ..()
 
 /obj/item/melee/ghost_sword/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	var/ghost_counter = ghost_check()
 	final_block_chance += clamp((ghost_counter * 5), 0, 75)
 	owner.visible_message(span_danger("[owner] is protected by a ring of [ghost_counter] ghosts!"))
@@ -163,6 +183,8 @@
 	icon_state = "vial"
 
 /obj/item/dragons_blood/attack_self(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return
 
@@ -235,12 +257,16 @@
 	COOLDOWN_DECLARE(use_cooldown)
 
 /obj/item/lava_staff/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(interacting_with.atom_storage || SHOULD_SKIP_INTERACTION(interacting_with, src, user))
 		return NONE
 
 	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/lava_staff/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, use_cooldown))
 		return NONE
 

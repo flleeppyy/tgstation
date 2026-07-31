@@ -158,6 +158,8 @@
 	tier = DNA_MUTANT_TIER_ZERO
 
 /datum/infuser_entry/plants/get_output_organs(mob/living/carbon/human/target, atom/movable/infused_from)
+	procstart = null
+	src.procstart = null
 	// Prioritize pod hair since it's the only thing that matters here
 	if(!target.get_organ_by_type(/obj/item/organ/pod_hair))
 		return list(/obj/item/organ/pod_hair)

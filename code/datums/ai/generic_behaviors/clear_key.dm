@@ -4,5 +4,7 @@
 	var/key
 
 /datum/bt_node/ai_behavior/clear_key/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.clear_blackboard_key(key)
 	return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_SUCCEEDED

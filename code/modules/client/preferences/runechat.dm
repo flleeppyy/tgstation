@@ -27,4 +27,6 @@
 	maximum = CHAT_MESSAGE_MAX_LENGTH
 
 /datum/preference/numeric/max_chat_length/create_default_value()
+	procstart = null
+	src.procstart = null
 	return CHAT_MESSAGE_MAX_LENGTH

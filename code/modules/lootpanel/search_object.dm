@@ -16,6 +16,8 @@
 
 
 /datum/search_object/New(client/owner, atom/item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	src.item = item
@@ -61,6 +63,8 @@
 
 
 /datum/search_object/Destroy(force)
+	procstart = null
+	src.procstart = null
 	item = null
 	icon = null
 
@@ -69,11 +73,15 @@
 
 /// Generates the icon for the search object. This is the expensive part.
 /datum/search_object/proc/generate_icon(client/owner)
+	procstart = null
+	src.procstart = null
 	icon = costly_icon2html(item, owner, sourceonly = TRUE)
 
 
 /// Parent item has been altered, search object no longer valid
 /datum/search_object/proc/on_item_moved(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(QDELETED(src))
@@ -84,6 +92,8 @@
 
 /// Parent tile has been altered, entire search needs reset
 /datum/search_object/proc/on_turf_change(turf/source, path, list/new_baseturfs, flags, list/post_change_callbacks)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	post_change_callbacks += CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(qdel), src)

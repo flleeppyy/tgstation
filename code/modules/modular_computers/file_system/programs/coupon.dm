@@ -15,17 +15,23 @@
 	detomatix_resistance = DETOMATIX_RESIST_MALUS
 
 /datum/computer_file/program/coupon/on_install(datum/computer_file/source, obj/item/modular_computer/computer_installing, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	///set the discount_coupons list, which means SSmodular_computers will now begin to periodically produce new coupon codes.
 	LAZYINITLIST(SSmodular_computers.discount_coupons)
 	ADD_TRAIT(computer, TRAIT_MODPC_HALVED_DOWNLOAD_SPEED, REF(src)) //All that glitters is not gold
 
 /datum/computer_file/program/coupon/Destroy()
+	procstart = null
+	src.procstart = null
 	if(computer)
 		REMOVE_TRAIT(computer, TRAIT_MODPC_HALVED_DOWNLOAD_SPEED, REF(src))
 	return ..()
 
 /datum/computer_file/program/coupon/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["printed_coupons"] = list()
 	data["redeemed_coupons"] = list()
@@ -45,6 +51,8 @@
 	return data
 
 /datum/computer_file/program/coupon/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/card/id/user_id = computer.stored_id
 	if(!(user_id?.registered_account.add_to_accounts))
@@ -89,6 +97,8 @@
  * to be less lazy and fitting to the "I gotta go print it before it expires" aspect of it.
  */
 /datum/computer_file/program/coupon/tap(atom/tapped_atom, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tapped_atom, /obj/machinery/photocopier))
 		return FALSE
 	var/obj/item/card/id/user_id = computer.stored_id
@@ -109,6 +119,8 @@
 	return TRUE
 
 /datum/computer_file/program/coupon/proc/print_coupon(datum/bank_account/account)
+	procstart = null
+	src.procstart = null
 	var/datum/coupon_code/coupon
 	for(var/datum/coupon_code/possible_coupon as anything in account.redeemed_coupons)
 		if(!possible_coupon.printed)

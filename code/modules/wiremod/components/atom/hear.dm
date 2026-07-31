@@ -23,6 +23,8 @@
 	var/datum/port/output/trigger_port
 
 /obj/item/circuit_component/hear/populate_ports()
+	procstart = null
+	src.procstart = null
 	on = add_input_port("On", PORT_TYPE_BOOLEAN, default = TRUE)
 	message_port = add_output_port("Message", PORT_TYPE_STRING)
 	language_port = add_output_port("Language", PORT_TYPE_STRING)
@@ -32,18 +34,26 @@
 	become_hearing_sensitive(ROUNDSTART_TRAIT)
 
 /obj/item/circuit_component/hear/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	if(parent.loc != shell)
 		shell.become_hearing_sensitive(CIRCUIT_HEAR_TRAIT)
 		RegisterSignal(shell, COMSIG_MOVABLE_HEAR, PROC_REF(on_shell_hear))
 
 /obj/item/circuit_component/hear/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(shell, TRAIT_HEARING_SENSITIVE, CIRCUIT_HEAR_TRAIT)
 
 /obj/item/circuit_component/hear/proc/on_shell_hear(datum/source, list/arguments)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return Hear(arglist(arguments))
 
 /obj/item/circuit_component/hear/Hear(atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, radio_freq_name, radio_freq_color, list/spans, list/message_mods, message_range)
+	procstart = null
+	src.procstart = null
 	if(!on.value)
 		return FALSE
 	if(speaker == parent?.shell)

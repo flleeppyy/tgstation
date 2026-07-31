@@ -34,6 +34,8 @@ ADMIN_VERB_ONLY_CONTEXT_MENU(select_equipment, R_FUN, "Select Equipment", mob/ta
 	var/cached_for_identifier
 
 /datum/select_equipment/New(_user, mob/target)
+	procstart = null
+	src.procstart = null
 	user = CLIENT_FROM_VAR(_user)
 
 	if(!ishuman(target) && !isobserver(target))
@@ -42,6 +44,8 @@ ADMIN_VERB_ONLY_CONTEXT_MENU(select_equipment, R_FUN, "Select Equipment", mob/ta
 	target_mob = target
 
 /datum/select_equipment/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SelectEquipment", "Select Equipment")
@@ -49,18 +53,26 @@ ADMIN_VERB_ONLY_CONTEXT_MENU(select_equipment, R_FUN, "Select Equipment", mob/ta
 		ui.set_autoupdate(FALSE)
 
 /datum/select_equipment/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_FUN)
 
 /datum/select_equipment/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target_mob))
 		return UI_CLOSE
 	return ..()
 
 /datum/select_equipment/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	clear_human_dummy(dummy_key)
 	qdel(src)
 
 /datum/select_equipment/proc/init_dummy()
+	procstart = null
+	src.procstart = null
 	dummy_key = "selectequipmentUI_[target_mob]"
 	generate_dummy_lookalike(dummy_key, target_mob)
 	unset_busy_human_dummy(dummy_key)
@@ -86,11 +98,15 @@ ADMIN_VERB_ONLY_CONTEXT_MENU(select_equipment, R_FUN, "Select Equipment", mob/ta
  */
 
 /datum/select_equipment/proc/outfit_entry(category, identifier, name, priority=FALSE, custom_entry=FALSE)
+	procstart = null
+	src.procstart = null
 	if(custom_entry)
 		return list("category" = category, "ref" = identifier, "name" = name, "priority" = priority)
 	return list("category" = category, "path" = identifier, "name" = name, "priority" = priority)
 
 /datum/select_equipment/proc/make_outfit_entries(category="General", list/outfit_list)
+	procstart = null
+	src.procstart = null
 	var/list/entries = list()
 	for(var/path in outfit_list)
 		var/datum/outfit/outfit = path
@@ -99,12 +115,16 @@ ADMIN_VERB_ONLY_CONTEXT_MENU(select_equipment, R_FUN, "Select Equipment", mob/ta
 
 //GLOB.custom_outfits lists outfit *objects* so we'll need to do some custom handling for it
 /datum/select_equipment/proc/make_custom_outfit_entries(list/outfit_list)
+	procstart = null
+	src.procstart = null
 	var/list/entries = list()
 	for(var/datum/outfit/outfit as anything in outfit_list)
 		entries += list(outfit_entry("Custom", REF(outfit), outfit.name, custom_entry=TRUE)) //it's either this or special handling on the UI side
 	return entries
 
 /datum/select_equipment/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	if(!dummy_key)
 		init_dummy()
@@ -134,6 +154,8 @@ ADMIN_VERB_ONLY_CONTEXT_MENU(select_equipment, R_FUN, "Select Equipment", mob/ta
 
 
 /datum/select_equipment/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	if(!cached_outfits)
 		cached_outfits = list()
@@ -147,6 +169,8 @@ ADMIN_VERB_ONLY_CONTEXT_MENU(select_equipment, R_FUN, "Select Equipment", mob/ta
 
 
 /datum/select_equipment/proc/resolve_outfit(text)
+	procstart = null
+	src.procstart = null
 
 	var/path = text2path(text)
 	if(ispath(path, /datum/outfit))
@@ -159,6 +183,8 @@ ADMIN_VERB_ONLY_CONTEXT_MENU(select_equipment, R_FUN, "Select Equipment", mob/ta
 
 
 /datum/select_equipment/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	. = TRUE
@@ -201,6 +227,8 @@ ADMIN_VERB_ONLY_CONTEXT_MENU(select_equipment, R_FUN, "Select Equipment", mob/ta
 			user.prefs.save_preferences()
 
 /client/proc/admin_apply_outfit(mob/target, dresscode)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(target) && !isobserver(target))
 		tgui_alert(usr,"Invalid mob")
 		return

@@ -21,13 +21,19 @@
 	var/p_init_dir = ALL_CARDINALS
 
 /obj/machinery/pipedispenser/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/machinery/pipedispenser/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list("paint_colors" = GLOB.pipe_paint_colors)
 	return data
 
 /obj/machinery/pipedispenser/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list(
 		"category" = category,
 		"piping_layer" = piping_layer,
@@ -63,6 +69,8 @@
 	return data
 
 /obj/machinery/pipedispenser/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -146,12 +154,16 @@
 	return TRUE
 
 /obj/machinery/pipedispenser/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PipeDispenser", name)
 		ui.open()
 
 /obj/machinery/pipedispenser/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if (!istype(tool, /obj/item/pipe) && !istype(tool, /obj/item/pipe_meter))
 		return NONE
@@ -160,6 +172,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/pipedispenser/proc/verify_recipe(recipes, path)
+	procstart = null
+	src.procstart = null
 	for(var/category in recipes)
 		var/list/cat_recipes = recipes[category]
 		for(var/i in cat_recipes)
@@ -169,6 +183,8 @@
 	return FALSE
 
 /obj/machinery/pipedispenser/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool, time = 4 SECONDS)
 	return ITEM_INTERACT_SUCCESS
@@ -184,6 +200,8 @@
 
 //Allow you to drag-drop disposal pipes and transit tubes into it
 /obj/machinery/pipedispenser/disposal/mouse_drop_receive(obj/structure/pipe, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (!istype(pipe, /obj/structure/disposalconstruct) && !istype(pipe, /obj/structure/c_transit_tube) && !istype(pipe, /obj/structure/c_transit_tube_pod))
 		return
 

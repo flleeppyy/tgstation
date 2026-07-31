@@ -79,6 +79,8 @@
 	)
 
 /datum/dynamic_tier/New(list/dynamic_config)
+	procstart = null
+	src.procstart = null
 	for(var/new_var in dynamic_config?[config_tag])
 		if(!(new_var in vars))
 			continue
@@ -86,6 +88,8 @@
 
 /// Used for parsing config entries to validate them
 /datum/dynamic_tier/proc/set_config_value(new_var, new_val)
+	procstart = null
+	src.procstart = null
 	switch(new_var)
 		if(NAMEOF(src, tier), NAMEOF(src, config_tag), NAMEOF(src, vars))
 			return FALSE
@@ -104,6 +108,8 @@
 	return TRUE
 
 /datum/dynamic_tier/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	switch(var_name)
 		if(NAMEOF(src, tier))
 			return FALSE

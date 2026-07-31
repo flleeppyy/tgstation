@@ -2,6 +2,8 @@
 /datum/unit_test/plane_double_transform
 
 /datum/unit_test/plane_double_transform/Run()
+	procstart = null
+	src.procstart = null
 	// We're going to operate off the actual plane master setup of an actual mob
 	// It's not perfect, but it'll help things a lot
 	var/mob/living/carbon/human/judger = allocate(/mob/living/carbon/human/consistent)

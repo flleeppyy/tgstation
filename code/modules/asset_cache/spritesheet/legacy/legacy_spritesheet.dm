@@ -28,6 +28,8 @@
 	VAR_PRIVATE/should_refresh = null
 
 /datum/asset/spritesheet/proc/should_load_immediately()
+	procstart = null
+	src.procstart = null
 #ifdef DO_NOT_DEFER_ASSETS
 	return TRUE
 #else
@@ -36,6 +38,8 @@
 
 
 /datum/asset/spritesheet/should_refresh()
+	procstart = null
+	src.procstart = null
 	if (..())
 		return TRUE
 
@@ -46,6 +50,8 @@
 	return should_refresh
 
 /datum/asset/spritesheet/unregister()
+	procstart = null
+	src.procstart = null
 	SSassets.transport.unregister_asset("spritesheet_[name].css")
 	if(length(sizes))
 		for(var/size_id in sizes)
@@ -55,6 +61,8 @@
 			SSassets.transport.unregister_asset(sheet)
 
 /datum/asset/spritesheet/regenerate()
+	procstart = null
+	src.procstart = null
 	unregister()
 	sprites = list()
 	fdel("[ASSET_CROSS_ROUND_CACHE_DIRECTORY]/spritesheet.[name].css")
@@ -75,6 +83,8 @@
 	load_immediately = old_load
 
 /datum/asset/spritesheet/register()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if (!name)
@@ -95,6 +105,8 @@
 		SSasset_loading.queue_asset(src)
 
 /datum/asset/spritesheet/proc/realize_spritesheets(yield)
+	procstart = null
+	src.procstart = null
 	if(fully_generated)
 		return
 	while(length(to_generate))
@@ -130,14 +142,20 @@
 	SSasset_loading.dequeue_asset(src)
 
 /datum/asset/spritesheet/queued_generation()
+	procstart = null
+	src.procstart = null
 	realize_spritesheets(yield = TRUE)
 
 /datum/asset/spritesheet/ensure_ready()
+	procstart = null
+	src.procstart = null
 	if(!fully_generated)
 		realize_spritesheets(yield = FALSE)
 	return ..()
 
 /datum/asset/spritesheet/send(client/client)
+	procstart = null
+	src.procstart = null
 	if (!name)
 		return
 
@@ -150,6 +168,8 @@
 	. = SSassets.transport.send_assets(client, all)
 
 /datum/asset/spritesheet/get_url_mappings()
+	procstart = null
+	src.procstart = null
 	if (!name)
 		return
 
@@ -161,6 +181,8 @@
 		.["[name]_[size_id].png"] = SSassets.transport.get_asset_url("[name]_[size_id].png")
 
 /datum/asset/spritesheet/proc/ensure_stripped(sizes_to_strip = sizes)
+	procstart = null
+	src.procstart = null
 	for(var/size_id in sizes_to_strip)
 		var/size = sizes[size_id]
 		if (size[SPRSZ_STRIPPED])
@@ -182,6 +204,8 @@
 		fdel(file_directory)
 
 /datum/asset/spritesheet/proc/generate_css()
+	procstart = null
+	src.procstart = null
 	var/list/out = list()
 
 	for (var/size_id in sizes)
@@ -207,15 +231,23 @@
 	return out.Join("\n")
 
 /datum/asset/spritesheet/proc/css_cache_filename()
+	procstart = null
+	src.procstart = null
 	return "[ASSET_CROSS_ROUND_CACHE_DIRECTORY]/spritesheet.[name].css"
 
 /datum/asset/spritesheet/proc/data_cache_filename()
+	procstart = null
+	src.procstart = null
 	return "[ASSET_CROSS_ROUND_CACHE_DIRECTORY]/spritesheet.[name].json"
 
 /datum/asset/spritesheet/proc/read_from_cache()
+	procstart = null
+	src.procstart = null
 	return read_css_from_cache() && read_data_from_cache()
 
 /datum/asset/spritesheet/proc/read_css_from_cache()
+	procstart = null
+	src.procstart = null
 	var/replaced_css = rustg_file_read(css_cache_filename())
 
 	var/regex/find_background_urls = regex(@"background-image:url\('%(.+?)%'\)", "g")
@@ -243,6 +275,8 @@
 	return TRUE
 
 /datum/asset/spritesheet/proc/read_data_from_cache()
+	procstart = null
+	src.procstart = null
 	var/json = json_decode(rustg_file_read(data_cache_filename()))
 
 	if (islist(json["sprites"]))
@@ -251,6 +285,8 @@
 	return TRUE
 
 /datum/asset/spritesheet/proc/send_from_cache(client/client)
+	procstart = null
+	src.procstart = null
 	if (isnull(cached_spritesheets_needed))
 		stack_trace("cached_spritesheets_needed was null when sending assets from [type] from cache")
 		cached_spritesheets_needed = list()
@@ -259,16 +295,22 @@
 
 /// Returns the URL to put in the background:url of the CSS asset
 /datum/asset/spritesheet/proc/get_background_url(asset)
+	procstart = null
+	src.procstart = null
 	if (generating_cache)
 		return "%[asset]%"
 	else
 		return SSassets.transport.get_asset_url(asset)
 
 /datum/asset/spritesheet/proc/write_to_cache()
+	procstart = null
+	src.procstart = null
 	write_css_to_cache()
 	write_data_to_cache()
 
 /datum/asset/spritesheet/proc/write_css_to_cache()
+	procstart = null
+	src.procstart = null
 	for (var/size_id in sizes)
 		fcopy(SSassets.cache["[name]_[size_id].png"].resource, "[ASSET_CROSS_ROUND_CACHE_DIRECTORY]/spritesheet.[name]_[size_id].png")
 
@@ -279,11 +321,15 @@
 	rustg_file_write(mock_css, css_cache_filename())
 
 /datum/asset/spritesheet/proc/write_data_to_cache()
+	procstart = null
+	src.procstart = null
 	rustg_file_write(json_encode(list(
 		"sprites" = sprites,
 	)), data_cache_filename())
 
 /datum/asset/spritesheet/proc/get_cached_url_mappings()
+	procstart = null
+	src.procstart = null
 	var/list/mappings = list()
 	mappings["spritesheet_[name].css"] = SSassets.transport.get_asset_url("spritesheet_[name].css")
 
@@ -295,15 +341,21 @@
 /// Override this in order to start the creation of the spritehseet.
 /// This is where all your Insert, InsertAll, etc calls should be inside.
 /datum/asset/spritesheet/proc/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	CRASH("create_spritesheets() not implemented for [type]!")
 
 /datum/asset/spritesheet/proc/Insert(sprite_name, icon/inserted_icon, icon_state="", dir=SOUTH, frame=1, moving=FALSE)
+	procstart = null
+	src.procstart = null
 	if(should_load_immediately())
 		queuedInsert(sprite_name, inserted_icon, icon_state, dir, frame, moving)
 	else
 		to_generate += list(args.Copy())
 
 /datum/asset/spritesheet/proc/queuedInsert(sprite_name, icon/inserted_icon, icon_state="", dir=SOUTH, frame=1, moving=FALSE)
+	procstart = null
+	src.procstart = null
 #ifdef UNIT_TESTS
 	if (inserted_icon && icon_state && !icon_exists(inserted_icon, icon_state)) // check the base icon prior to extracting the state we want
 		stack_trace("Tried to insert nonexistent icon_state '[icon_state]' from [inserted_icon] into spritesheet [name] ([type])")
@@ -352,9 +404,13 @@
  * * I: icon being turned into an asset
  */
 /datum/asset/spritesheet/proc/ModifyInserted(icon/pre_asset)
+	procstart = null
+	src.procstart = null
 	return pre_asset
 
 /datum/asset/spritesheet/proc/InsertAll(prefix, icon/inserted_icon, list/directions)
+	procstart = null
+	src.procstart = null
 	if (length(prefix))
 		prefix = "[prefix]-"
 
@@ -367,12 +423,18 @@
 			Insert("[prefix][prefix2][icon_state_name]", inserted_icon, icon_state=icon_state_name, dir=direction)
 
 /datum/asset/spritesheet/proc/css_tag()
+	procstart = null
+	src.procstart = null
 	return {"<link rel="stylesheet" href="[css_filename()]" />"}
 
 /datum/asset/spritesheet/proc/css_filename()
+	procstart = null
+	src.procstart = null
 	return SSassets.transport.get_asset_url("spritesheet_[name].css")
 
 /datum/asset/spritesheet/proc/icon_tag(sprite_name)
+	procstart = null
+	src.procstart = null
 	var/sprite = sprites[sprite_name]
 	if (!sprite)
 		return null
@@ -380,6 +442,8 @@
 	return {"<span class='[name][size_id] [sprite_name]'></span>"}
 
 /datum/asset/spritesheet/proc/icon_class_name(sprite_name)
+	procstart = null
+	src.procstart = null
 	var/sprite = sprites[sprite_name]
 	if (!sprite)
 		return null
@@ -393,6 +457,8 @@
  * * sprite_name - The sprite to get the size of
  */
 /datum/asset/spritesheet/proc/icon_size_id(sprite_name)
+	procstart = null
+	src.procstart = null
 	var/sprite = sprites[sprite_name]
 	if (!sprite)
 		return null
@@ -414,5 +480,7 @@
 	var/list/assets
 
 /datum/asset/spritesheet/simple/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	for (var/key in assets)
 		Insert(key, assets[key])

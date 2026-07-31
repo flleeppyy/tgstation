@@ -69,6 +69,8 @@
 
 // Greatest Common Divisor - Euclid's algorithm
 /proc/Gcd(a, b)
+	procstart = null
+	src.procstart = null
 	return b ? Gcd(b, (a) % (b)) : a
 
 // Least Common Multiple
@@ -112,6 +114,8 @@
 // The quadratic formula. Returns a list with the solutions, or an empty list
 // if they are imaginary.
 /proc/SolveQuadratic(a, b, c)
+	procstart = null
+	src.procstart = null
 	ASSERT(a)
 	. = list()
 	var/d = b*b - 4 * a * c
@@ -143,6 +147,8 @@
 
 //Finds the shortest angle that angle A has to change to get to angle B. Aka, whether to move clock or counterclockwise.
 /proc/closer_angle_difference(a, b)
+	procstart = null
+	src.procstart = null
 	if(!isnum(a) || !isnum(b))
 		return
 	a = SIMPLIFY_DEGREES(a)
@@ -168,6 +174,8 @@
 //98% chance that the number is within 3stddev...etc
 #define ACCURACY 10000
 /proc/gaussian(mean, stddev)
+	procstart = null
+	src.procstart = null
 	var/static/gaussian_next
 	var/R1;var/R2;var/working
 	if(gaussian_next != null)
@@ -186,6 +194,8 @@
 #undef ACCURACY
 
 /proc/get_turf_in_angle(angle, turf/starting, increments)
+	procstart = null
+	src.procstart = null
 	var/pixel_x = 0
 	var/pixel_y = 0
 	for(var/i in 1 to increments)
@@ -211,6 +221,8 @@
 
 // Returns a list where [1] is all x values and [2] is all y values that overlap between the given pair of rectangles
 /proc/get_overlap(x1, y1, x2, y2, x3, y3, x4, y4)
+	procstart = null
+	src.procstart = null
 	var/list/region_x1 = list()
 	var/list/region_y1 = list()
 	var/list/region_x2 = list()

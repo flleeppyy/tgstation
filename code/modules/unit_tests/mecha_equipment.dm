@@ -2,6 +2,8 @@
 /datum/unit_test/mech_generator
 
 /datum/unit_test/mech_generator/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/robotocist = EASY_ALLOCATE()
 	var/obj/vehicle/sealed/mecha/ripley/our_mech = EASY_ALLOCATE()
 	var/obj/item/mecha_parts/mecha_equipment/generator/prefilled_generator = EASY_ALLOCATE()

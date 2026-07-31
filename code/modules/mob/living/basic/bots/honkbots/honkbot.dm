@@ -27,6 +27,8 @@
 	cuff_type = /obj/item/restraints/handcuffs/cable/zipties/fake
 
 /mob/living/basic/bot/secbot/honkbot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/clown_friends = typecacheof(list(
 		/mob/living/carbon/human,
@@ -52,20 +54,30 @@
 	)
 
 /mob/living/basic/bot/secbot/honkbot/generate_speak_list()
+	procstart = null
+	src.procstart = null
 	return honkbot_sounds
 
 /mob/living/basic/bot/secbot/honkbot/proc/pre_slip()
+	procstart = null
+	src.procstart = null
 	return (prob(70) && ai_controller?.blackboard_key_exists(BB_CURRENT_TARGET))
 
 /mob/living/basic/bot/secbot/honkbot/proc/post_slip()
+	procstart = null
+	src.procstart = null
 	INVOKE_ASYNC(src, TYPE_PROC_REF(/mob/living/basic/bot, speak), HONKBOT_VOICED_HONK_SAD)
 	set_attacking_state()
 
 /mob/living/basic/bot/secbot/honkbot/proc/set_attacking_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state]-c"
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, update_appearance)), 0.2 SECONDS)
 
 /mob/living/basic/bot/secbot/honkbot/post_arrest(mob/living/carbon/current_target)
+	procstart = null
+	src.procstart = null
 	playsound(src, (bot_access_flags & BOT_COVER_EMAGGED ? SFX_HONKBOT_E : 'sound/items/bikehorn.ogg'), 50, FALSE)
 	icon_state = bot_access_flags & BOT_COVER_EMAGGED ? "[base_icon_state]-e" : "[base_icon_state]-c"
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, update_appearance)), 3 SECONDS, TIMER_OVERRIDE|TIMER_UNIQUE)
@@ -74,10 +86,14 @@
 	playsound(src, 'sound/mobs/non-humanoids/honkbot/honkbot_evil_laugh.ogg', 75, TRUE, -1) // evil laughter
 
 /mob/living/basic/bot/secbot/honkbot/retrieve_emag_message()
+	procstart = null
+	src.procstart = null
 	audible_message(span_danger("[src] gives out an evil laugh!"))
 	playsound(src, 'sound/mobs/non-humanoids/honkbot/honkbot_evil_laugh.ogg', 75, TRUE, -1) // evil laughter
 
 /mob/living/basic/bot/secbot/honkbot/post_stun(mob/living/carbon/current_target)
+	procstart = null
+	src.procstart = null
 	if(!istype(current_target))
 		return
 
@@ -90,6 +106,8 @@
 	sound_damage(deafen = 10 SECONDS)
 
 /mob/living/basic/bot/secbot/honkbot/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 	if(!(bot_access_flags & BOT_COVER_LOCKED) || HAS_SILICON_ACCESS(user))
 		data["custom_controls"]["slip_people"] = security_mode_flags & HONKBOT_MODE_SLIP
@@ -99,6 +117,8 @@
 	return data
 
 /mob/living/basic/bot/secbot/honkbot/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/user = ui.user
 	if(. || !isliving(user) || (bot_access_flags & BOT_COVER_LOCKED) && !HAS_SILICON_ACCESS(user))
@@ -114,6 +134,8 @@
 			security_mode_flags ^= SECBOT_CHECK_RECORDS
 
 /mob/living/basic/bot/secbot/honkbot/retrieve_secbot_drops(atom/drop_location)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bot_assembly/honkbot/honkbot_assembly = new(drop_location)
 	honkbot_assembly.build_step = ASSEMBLY_FIRST_STEP
 	honkbot_assembly.created_name = name

@@ -10,6 +10,8 @@
 	var/current_tame_chance
 
 /datum/component/tameable/Initialize(food_types, tame_chance, bonus_tame_chance, unique = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!isatom(parent)) //yes, you could make a tameable toolbox.
 		return COMPONENT_INCOMPATIBLE
 
@@ -28,6 +30,8 @@
 	RegisterSignal(parent, COMSIG_SIMPLEMOB_TRANSFERPOTION, PROC_REF(on_tame)) //Instantly succeeds
 
 /datum/component/tameable/proc/try_tame(atom/source, obj/item/food, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(attacker) || already_friends(attacker))
@@ -47,6 +51,8 @@
 
 /// Check if the passed mob is already considered one of our friends
 /datum/component/tameable/proc/already_friends(mob/living/potential_friend)
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return FALSE // Figure this out when we actually need it
 	var/mob/living/living_parent = parent
@@ -54,6 +60,8 @@
 
 ///Ran once taming succeeds
 /datum/component/tameable/proc/on_tame(atom/source, mob/living/tamer, obj/item/food, inform_tamer = FALSE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	source.tamed(tamer, food)//Run custom behavior if needed
 	if(isliving(parent))
@@ -72,6 +80,8 @@
 		current_tame_chance = tame_chance
 
 /datum/component/tameable/proc/rename_pet(mob/living/animal, mob/living/tamer)
+	procstart = null
+	src.procstart = null
 	var/chosen_name = sanitize_name(tgui_input_text(tamer, "Choose your pet's name!", "Name pet", animal.name, MAX_NAME_LEN), allow_numbers = TRUE)
 	if(QDELETED(animal) || chosen_name == animal.name)
 		return

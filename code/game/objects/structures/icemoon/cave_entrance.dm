@@ -25,6 +25,8 @@ GLOBAL_LIST_INIT(ore_probability, list(
 	spawner_gps_id = "Animal Den"
 
 /obj/structure/spawner/ice_moon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	clear_rock()
 
@@ -33,6 +35,8 @@ GLOBAL_LIST_INIT(ore_probability, list(
  *
  */
 /obj/structure/spawner/ice_moon/proc/clear_rock()
+	procstart = null
+	src.procstart = null
 	for(var/turf/potential in RANGE_TURFS(2, src))
 		if(abs(src.x - potential.x) + abs(src.y - potential.y) > 3)
 			continue
@@ -41,6 +45,8 @@ GLOBAL_LIST_INIT(ore_probability, list(
 			clearable.ScrapeAway(flags = CHANGETURF_IGNORE_AIR)
 
 /obj/structure/spawner/ice_moon/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	destroy_effect()
 	drop_loot()
 
@@ -49,6 +55,8 @@ GLOBAL_LIST_INIT(ore_probability, list(
  *
  */
 /obj/structure/spawner/ice_moon/proc/destroy_effect()
+	procstart = null
+	src.procstart = null
 	playsound(loc,'sound/effects/explosion/explosionfar.ogg', 200, TRUE)
 	visible_message(span_bolddanger("[src] collapses, sealing everything inside!</span>\n<span class='warning'>Ores fall out of the cave as it is destroyed!"))
 
@@ -57,6 +65,8 @@ GLOBAL_LIST_INIT(ore_probability, list(
  *
  */
 /obj/structure/spawner/ice_moon/proc/drop_loot()
+	procstart = null
+	src.procstart = null
 	for(var/type in GLOB.ore_probability)
 		var/chance = GLOB.ore_probability[type]
 		if(!prob(chance))
@@ -70,6 +80,8 @@ GLOBAL_LIST_INIT(ore_probability, list(
 	mob_gps_id = "BR" // bear
 
 /obj/structure/spawner/ice_moon/polarbear/clear_rock()
+	procstart = null
+	src.procstart = null
 	for(var/turf/potential in RANGE_TURFS(1, src))
 		if(ismineralturf(potential) && !(potential.turf_flags & NO_CLEARING))
 			var/turf/closed/mineral/clearable = potential
@@ -86,10 +98,14 @@ GLOBAL_LIST_INIT(ore_probability, list(
 	spawner_gps_id = "Netheric Distortion"
 
 /obj/structure/spawner/ice_moon/demonic_portal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/gps, "Netheric Signal")
 
 /obj/structure/spawner/ice_moon/demonic_portal/clear_rock()
+	procstart = null
+	src.procstart = null
 	for(var/turf/potential in RANGE_TURFS(3, src))
 		if(abs(src.x - potential.x) + abs(src.y - potential.y) > 5)
 			continue
@@ -98,9 +114,13 @@ GLOBAL_LIST_INIT(ore_probability, list(
 			clearable.ScrapeAway(flags = CHANGETURF_IGNORE_AIR)
 
 /obj/structure/spawner/ice_moon/demonic_portal/destroy_effect()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/collapsing_demonic_portal(loc)
 
 /obj/structure/spawner/ice_moon/demonic_portal/drop_loot()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/spawner/ice_moon/demonic_portal/ice_whelp
@@ -121,6 +141,8 @@ GLOBAL_LIST_INIT(ore_probability, list(
 	density = TRUE
 
 /obj/effect/collapsing_demonic_portal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(loc,'sound/effects/tendril_destroyed.ogg', 200, FALSE, 50, TRUE, TRUE)
 	visible_message(span_bolddanger("[src] begins to collapse, cutting it off from this world!"))
@@ -132,6 +154,8 @@ GLOBAL_LIST_INIT(ore_probability, list(
  *
  */
 /obj/effect/collapsing_demonic_portal/proc/collapse()
+	procstart = null
+	src.procstart = null
 	drop_loot()
 	qdel(src)
 
@@ -140,6 +164,8 @@ GLOBAL_LIST_INIT(ore_probability, list(
  *
  */
 /obj/effect/collapsing_demonic_portal/proc/drop_loot()
+	procstart = null
+	src.procstart = null
 	visible_message(span_warning("Something slips out of [src]!"))
 	var/loot = rand(1, 100)
 	switch(loot)

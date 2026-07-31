@@ -4,6 +4,8 @@
 /obj/item/cargo_unit_test_container
 
 /obj/item/cargo_unit_test_container/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/cargo_unit_test_content(src)
 
@@ -18,6 +20,8 @@
 	export_types = list(/obj/item/cargo_unit_test_content)
 
 /datum/unit_test/cargo_selling/Run()
+	procstart = null
+	src.procstart = null
 	for(var/datum/export/subtype as anything in valid_subtypesof(/datum/export))
 		if(subtype::k_recovery_time < SSprocessing.wait)
 			TEST_FAIL("[subtype] should have k_recovery time >= [SSprocessing.wait]")

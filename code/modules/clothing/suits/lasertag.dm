@@ -12,6 +12,8 @@
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON
 
 /obj/item/clothing/suit/bluetag/equipped(mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (slot != ITEM_SLOT_OCLOTHING)
 		return
@@ -19,6 +21,8 @@
 
 
 /obj/item/clothing/suit/bluetag/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.RemoveComponentSource(REF(src), /datum/component/lasertag)
 
@@ -36,6 +40,8 @@
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON
 
 /obj/item/clothing/suit/redtag/equipped(mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (slot != ITEM_SLOT_OCLOTHING)
 		return
@@ -43,5 +49,7 @@
 
 
 /obj/item/clothing/suit/redtag/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.RemoveComponentSource(REF(src), /datum/component/lasertag)

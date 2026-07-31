@@ -7,15 +7,21 @@ SUBSYSTEM_DEF(bitrunning)
 	var/list/all_domains = list()
 
 /datum/controller/subsystem/bitrunning/Initialize()
+	procstart = null
+	src.procstart = null
 	InitializeDomains()
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/bitrunning/proc/InitializeDomains()
+	procstart = null
+	src.procstart = null
 	for(var/path in subtypesof(/datum/lazy_template/virtual_domain))
 		all_domains += new path()
 
 /// Compiles a list of available domains.
 /datum/controller/subsystem/bitrunning/proc/get_available_domains(scanner_tier, points)
+	procstart = null
+	src.procstart = null
 	var/list/levels = list()
 
 	for(var/datum/lazy_template/virtual_domain/domain as anything in all_domains)
@@ -39,6 +45,8 @@ SUBSYSTEM_DEF(bitrunning)
 	return levels
 
 /datum/controller/subsystem/bitrunning/proc/pick_secondary_loot(completed_domain)
+	procstart = null
+	src.procstart = null
 	var/datum/lazy_template/virtual_domain/domain = completed_domain
 	var/choice
 
@@ -55,6 +63,8 @@ SUBSYSTEM_DEF(bitrunning)
 	desc = "Something went wrong here."
 
 /obj/item/paper/paperslip/bitrunning_error/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	default_raw_text = "Your reward for collecting the encrypted curiosity failed to arrive, please report this to technical support."
 	return ..()
 

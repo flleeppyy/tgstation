@@ -13,6 +13,8 @@
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 
 /obj/structure/extinguisher_cabinet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		opened = TRUE
@@ -23,6 +25,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 	register_context()
 
 /obj/structure/extinguisher_cabinet/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isnull(held_item))
@@ -44,11 +48,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 	return .
 
 /obj/structure/extinguisher_cabinet/Destroy()
+	procstart = null
+	src.procstart = null
 	if(stored_extinguisher)
 		QDEL_NULL(stored_extinguisher)
 	return ..()
 
 /obj/structure/extinguisher_cabinet/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	if(!stored_extinguisher)
 		return
 
@@ -61,11 +69,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 			SSexplosions.low_mov_atom += stored_extinguisher
 
 /obj/structure/extinguisher_cabinet/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if(gone == stored_extinguisher)
 		stored_extinguisher = null
 		update_appearance(UPDATE_ICON)
 
 /obj/structure/extinguisher_cabinet/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(stored_extinguisher)
 		balloon_alert(user, "must be empty!")
 		return ITEM_INTERACT_BLOCKING
@@ -79,6 +91,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/extinguisher_cabinet/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(user) || isalien(user))
 		return NONE
 	if(user.combat_mode)
@@ -97,6 +111,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/extinguisher_cabinet/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -113,12 +129,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 		toggle_cabinet(user)
 
 /obj/structure/extinguisher_cabinet/attack_hand_secondary(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user.can_perform_action(src, NEED_DEXTERITY|NEED_HANDS|ALLOW_RESTING))
 		return ..()
 	toggle_cabinet(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/structure/extinguisher_cabinet/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	. = COMPONENT_CANCEL_ATTACK_CHAIN
 	if(stored_extinguisher)
 		stored_extinguisher.forceMove(loc)
@@ -132,9 +152,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 
 
 /obj/structure/extinguisher_cabinet/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/structure/extinguisher_cabinet/proc/toggle_cabinet(mob/user)
+	procstart = null
+	src.procstart = null
 	if(opened && broken)
 		user.balloon_alert(user, "it's broken!")
 	else
@@ -143,6 +167,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 		update_appearance(UPDATE_ICON)
 
 /obj/structure/extinguisher_cabinet/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "extinguisher"
 
 	if(isnull(stored_extinguisher))
@@ -159,10 +185,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 	return ..()
 
 /obj/structure/extinguisher_cabinet/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += mutable_appearance(icon, opened ? "door_open" : "door")
 
 /obj/structure/extinguisher_cabinet/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!broken)
 		broken = 1
@@ -174,6 +204,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 
 
 /obj/structure/extinguisher_cabinet/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(disassembled)
 		new /obj/item/wallframe/extinguisher_cabinet(loc)
 	else

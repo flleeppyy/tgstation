@@ -1,4 +1,6 @@
 /mob/living/basic/attack_hand(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// so that martial arts don't double dip
 	if (..())
 		return TRUE
@@ -40,6 +42,8 @@
 	return TRUE
 
 /mob/living/basic/get_shoving_message(mob/living/shover, obj/item/weapon, shove_flags)
+	procstart = null
+	src.procstart = null
 	if(weapon) // no "gently pushing aside" if you're pressing a shield at them.
 		return ..()
 	var/moved = !(shove_flags & SHOVE_BLOCKED)
@@ -53,6 +57,8 @@
 	to_chat(src, span_userdanger("You're [moved ? "pushed" : "shoved"] by [shover.name]!"))
 
 /mob/living/basic/attack_hulk(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -63,6 +69,8 @@
 	apply_damage(15, damagetype = BRUTE)
 
 /mob/living/basic/attack_paw(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(..()) //successful monkey bite.
 		if(stat != DEAD)
 			return apply_damage(rand(1, 3))
@@ -76,6 +84,8 @@
 
 
 /mob/living/basic/attack_alien(mob/living/carbon/alien/adult/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -95,6 +105,8 @@
 	log_combat(user, src, "attacked")
 
 /mob/living/basic/attack_larva(mob/living/carbon/alien/larva/attacking_larva, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && stat != DEAD) //successful larva bite
 		var/damage_done = apply_damage(rand(attacking_larva.melee_damage_lower, attacking_larva.melee_damage_upper), BRUTE)
@@ -102,19 +114,27 @@
 			attacking_larva.amount_grown = min(attacking_larva.amount_grown + damage_done, attacking_larva.max_grown)
 
 /mob/living/basic/attack_drone(mob/living/basic/drone/attacking_drone)
+	procstart = null
+	src.procstart = null
 	if(attacking_drone.combat_mode) //No kicking dogs even as a rogue drone. Use a weapon.
 		return
 	return ..()
 
 /mob/living/basic/attack_drone_secondary(mob/living/basic/drone/attacking_drone)
+	procstart = null
+	src.procstart = null
 	if(attacking_drone.combat_mode)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	return ..()
 
 /mob/living/basic/check_projectile_armor(def_zone, obj/projectile/impacting_projectile, is_silent)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /mob/living/basic/ex_act(severity, target, origin)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || QDELETED(src))
 		return FALSE
@@ -143,12 +163,16 @@
 	return TRUE
 
 /mob/living/basic/blob_act(obj/structure/blob/attacking_blob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
 	apply_damage(20, damagetype = BRUTE)
 
 /mob/living/basic/do_attack_animation(atom/attacked_atom, visual_effect_icon, used_item, no_effect)
+	procstart = null
+	src.procstart = null
 	if(!no_effect && !visual_effect_icon && melee_damage_upper)
 		if(attack_vis_effect && !iswallturf(attacked_atom)) // override the standard visual effect.
 			visual_effect_icon = attack_vis_effect
@@ -159,6 +183,8 @@
 	..()
 
 /mob/living/basic/update_stat()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_GODMODE))
 		return
 	if(stat != DEAD)
@@ -169,11 +195,15 @@
 	med_hud_set_status()
 
 /mob/living/basic/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mob_biotypes & MOB_ROBOTIC)
 		emp_reaction(severity)
 
 /mob/living/basic/proc/emp_reaction(severity)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(EMP_LIGHT)
 			visible_message(span_danger("[src] shakes violently, its parts coming loose!"))

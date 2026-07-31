@@ -10,10 +10,14 @@
 	remove_on_fullheal = TRUE
 
 /datum/status_effect/eye_blur/on_creation(mob/living/new_owner, duration = 10 SECONDS)
+	procstart = null
+	src.procstart = null
 	src.duration = duration
 	return ..()
 
 /datum/status_effect/eye_blur/on_apply()
+	procstart = null
+	src.procstart = null
 	if(owner.mob_biotypes & (MOB_ROBOTIC|MOB_SPIRIT|MOB_SPECIAL))
 		return FALSE
 
@@ -25,6 +29,8 @@
 	return TRUE
 
 /datum/status_effect/eye_blur/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_MOB_LOGIN)
 	if(!owner.hud_used)
 		return
@@ -33,12 +39,16 @@
 	game_plane_master_controller.remove_filter("eye_blur")
 
 /datum/status_effect/eye_blur/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	// Blur lessens the closer we are to expiring, so we update per tick.
 	update_blur()
 
 /// Updates the blur of the owner of the status effect.
 /// Also a signal proc for [COMSIG_MOB_LOGIN], to trigger then when the mob gets a client.
 /datum/status_effect/eye_blur/proc/update_blur(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!owner.hud_used)

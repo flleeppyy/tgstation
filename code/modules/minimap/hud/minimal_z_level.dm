@@ -4,6 +4,8 @@
 	screen_loc = "BOTTOM+4,RIGHT"
 
 /atom/movable/screen/minimap_z_indicator/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(hud_owner.mymob))
 		RegisterSignal(hud_owner.mymob, COMSIG_MOVABLE_Z_CHANGED, PROC_REF(on_z_level_change))
@@ -13,11 +15,15 @@
 
 ///sets the currently indicated relative floor
 /atom/movable/screen/minimap_z_indicator/proc/on_z_level_change(turf/old_turf, turf/new_turf, same_z_layer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/used_z = get_displayed_z_level(new_turf)
 	set_floor_text(used_z)
 
 /atom/movable/screen/minimap_z_indicator/proc/on_minimap_change_request(mob/hud_owner, new_z_change)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/movable/screen/minimap_display/current_display = hud?.screen_objects[HUD_TAC_MINIMAP]
 	if(isnull(current_display))
@@ -31,12 +37,16 @@
 	set_floor_text(requested_z)
 
 /atom/movable/screen/minimap_z_indicator/proc/get_displayed_z_level(turf/current_turf)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/screen/minimap_display/current_display = hud?.screen_objects[HUD_TAC_MINIMAP]
 	if(!isnull(current_display?.fixed_z_level))
 		return current_display.minimap?.z
 	return current_turf?.z
 
 /atom/movable/screen/minimap_z_indicator/proc/set_floor_text(used_z)
+	procstart = null
+	src.procstart = null
 	if(isnull(used_z))
 		return
 	var/bottom_z = used_z
@@ -53,6 +63,8 @@
 	screen_loc = "BOTTOM+4,RIGHT-1"
 
 /atom/movable/screen/minimap_z_up/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	flick("uppressed", src)
 	SEND_SIGNAL(hud.mymob, COMSIG_MINIMAP_CHANGE_Z_LEVEL, 1) // +1 z level
 
@@ -64,5 +76,7 @@
 	screen_loc = "BOTTOM+4,RIGHT-1"
 
 /atom/movable/screen/minimap_z_down/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	flick("downpressed", src)
 	SEND_SIGNAL(hud.mymob, COMSIG_MINIMAP_CHANGE_Z_LEVEL, -1) // -1 z level

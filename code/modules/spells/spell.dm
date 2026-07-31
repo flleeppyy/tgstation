@@ -87,6 +87,8 @@
 	var/smoke_amt = 0
 
 /datum/action/cooldown/spell/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	// If our spell is mind-bound, we only wanna grant it to our mind
 	if(istype(target, /datum/mind))
 		var/datum/mind/mind_target = target
@@ -111,6 +113,8 @@
 	owner.client?.stat_panel.send_message("check_spells")
 
 /datum/action/cooldown/spell/Remove(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 
 	remove_from.client?.stat_panel.send_message("check_spells")
 	UnregisterSignal(remove_from, list(
@@ -128,9 +132,13 @@
 	return ..()
 
 /datum/action/cooldown/spell/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	return ..() && can_cast_spell(feedback)
 
 /datum/action/cooldown/spell/set_click_ability(mob/on_who)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(on_who, COMSIG_MOB_SPELL_ACTIVATED, src) & SPELL_CANCEL_CAST)
 		return FALSE
 
@@ -138,6 +146,8 @@
 
 // Where the cast chain starts
 /datum/action/cooldown/spell/PreActivate(atom/target)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(owner, COMSIG_MOB_ABILITY_STARTED, src, target) & COMPONENT_BLOCK_ABILITY_START)
 		return FALSE
 	if(target == owner)
@@ -150,6 +160,8 @@
 /// Checks if the owner of the spell can currently cast it.
 /// Does not check anything involving potential targets.
 /datum/action/cooldown/spell/proc/can_cast_spell(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		CRASH("[type] - can_cast_spell called on a spell without an owner!")
 
@@ -230,6 +242,8 @@
  * Return TRUE if cast_on is valid, FALSE otherwise
  */
 /datum/action/cooldown/spell/proc/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /**
@@ -238,6 +252,8 @@
  * Allows for some atoms to be used as casting sources if a spell caster is located within.
  */
 /datum/action/cooldown/spell/proc/get_caster_from_target(atom/target)
+	procstart = null
+	src.procstart = null
 	var/atom/cast_loc = target.loc
 	if(isnull(cast_loc))
 		return null // No magic in nullspace
@@ -258,6 +274,8 @@
 // You should generally not be overriding or extending Activate() for spells.
 // Defer to any of the cast chain procs instead.
 /datum/action/cooldown/spell/Activate(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	// Pre-casting of the spell
@@ -299,6 +317,8 @@
  * - SPELL_NO_IMMEDIATE_COOLDOWN will prevent the spell from starting its cooldown between cast and before after_cast.
  */
 /datum/action/cooldown/spell/proc/before_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	// Bonus invocation check done here:
@@ -343,6 +363,8 @@
  * For click spells, [cast_on] is whatever the owner clicked on in casting the spell.
  */
 /datum/action/cooldown/spell/proc/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	SEND_SIGNAL(src, COMSIG_SPELL_CAST, cast_on)
@@ -360,6 +382,8 @@
  * or to clean up variables or references post-cast.
  */
 /datum/action/cooldown/spell/proc/after_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(!owner) // Could have been destroyed by the effect of the spell
 		SEND_SIGNAL(src, COMSIG_SPELL_AFTER_CAST, cast_on)
@@ -376,6 +400,8 @@
 
 /// Provides feedback after a spell cast occurs, in the form of a cast sound and/or invocation
 /datum/action/cooldown/spell/proc/spell_feedback(mob/living/invoker)
+	procstart = null
+	src.procstart = null
 	if(!invoker)
 		return
 
@@ -386,6 +412,8 @@
 
 /// The invocation that accompanies the spell, called from spell_feedback() before cast().
 /datum/action/cooldown/spell/proc/invocation(mob/living/invoker)
+	procstart = null
+	src.procstart = null
 	//lists can be sent by reference, a string would be sent by value
 	var/list/invocation_list = list(invocation, invocation_type, garbled_invocation_prob)
 	SEND_SIGNAL(invoker, COMSIG_MOB_PRE_INVOCATION, src, invocation_list)
@@ -415,6 +443,8 @@
 
 /// Checks if the current OWNER of the spell is in a valid state to say the spell's invocation
 /datum/action/cooldown/spell/proc/try_invoke(mob/living/invoker, feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	if(spell_requirements & SPELL_CASTABLE_WITHOUT_INVOCATION)
 		return TRUE
 
@@ -448,6 +478,8 @@
 /// Resets the cooldown of the spell, sending COMSIG_SPELL_CAST_RESET
 /// and allowing it to be used immediately (+ updating button icon accordingly)
 /datum/action/cooldown/spell/proc/reset_spell_cooldown()
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_SPELL_CAST_RESET)
 	next_use_time -= cooldown_time // Basically, ensures that the ability can be used now
 	build_all_button_icons()
@@ -457,6 +489,8 @@
  * If bypass_cap is TRUE, will level the spell up past it's set cap.
  */
 /datum/action/cooldown/spell/proc/level_spell(bypass_cap = FALSE)
+	procstart = null
+	src.procstart = null
 	// Spell cannot be levelled
 	if(spell_max_level <= 1)
 		return FALSE
@@ -475,6 +509,8 @@
  * Levels the spell down a single level, down to 1.
  */
 /datum/action/cooldown/spell/proc/delevel_spell()
+	procstart = null
+	src.procstart = null
 	// Spell cannot be levelled
 	if(spell_max_level <= 1)
 		return FALSE
@@ -494,6 +530,8 @@
 
 /// Gets the title of the spell based on its level.
 /datum/action/cooldown/spell/proc/get_spell_title()
+	procstart = null
+	src.procstart = null
 	switch(spell_level)
 		if(2)
 			return "Efficient "

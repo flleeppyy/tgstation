@@ -91,12 +91,16 @@
 		RegisterSignal(parent, COMSIG_ITEM_REMOVE_FANTASY_BONUSES, PROC_REF(remove_fantasy_bonuses))
 
 /datum/component/slippery/Destroy(force)
+	procstart = null
+	src.procstart = null
 	can_slip_callback = null
 	on_slip_callback = null
 	holder = null
 	return ..()
 
 /datum/component/slippery/proc/apply_fantasy_bonuses(obj/item/source, bonus)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	knockdown_time = source.modify_fantasy_variable("knockdown_time", knockdown_time, bonus)
 	if(bonus >= 5)
@@ -107,6 +111,8 @@
 		lube_flags |= GALOSHES_DONT_HELP|SLIP_WHEN_CRAWLING
 
 /datum/component/slippery/proc/remove_fantasy_bonuses(obj/item/source, bonus)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	knockdown_time = source.reset_fantasy_variable("knockdown_time", knockdown_time)
 	paralyze_time = source.reset_fantasy_variable("paralyze_time", paralyze_time)
@@ -116,6 +122,8 @@
 		lube_flags = previous_lube_flags
 
 /datum/component/slippery/proc/add_connect_loc_behalf_to_parent()
+	procstart = null
+	src.procstart = null
 	var/list/connections_to_use
 	if(isliving(parent))
 		connections_to_use = mob_connections
@@ -163,6 +171,8 @@
  * * arrived - the atom/movable that is being slipped.
  */
 /datum/component/slippery/proc/Slip(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isliving(arrived))
 		return
@@ -189,6 +199,8 @@
  * * slot - the slot we're equipping the slippery thing to on the equipper.
  */
 /datum/component/slippery/proc/on_equip(datum/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if((!slot || (slot & slot_whitelist)) && isliving(equipper))
@@ -206,6 +218,8 @@
  * * possible_holder - the mob being deleted.
  */
 /datum/component/slippery/proc/holder_deleted(datum/source, datum/possible_holder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(possible_holder == holder)
@@ -220,6 +234,8 @@
  * * user - the mob that was formerly wearing our slippery item.
  */
 /datum/component/slippery/proc/on_drop(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(user, COMSIG_QDELETING)
@@ -238,6 +254,8 @@
  * * arrived - the atom/movable that slipped on us.
  */
 /datum/component/slippery/proc/slip_on_mob(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/living = holder || parent
@@ -245,5 +263,7 @@
 		Slip(source, arrived)
 
 /datum/component/slippery/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(GetComponent(/datum/component/connect_loc_behalf))

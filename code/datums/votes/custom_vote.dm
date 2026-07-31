@@ -7,15 +7,21 @@
 
 // Custom votes ares always accessible.
 /datum/vote/custom_vote/is_accessible_vote()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/vote/custom_vote/reset()
+	procstart = null
+	src.procstart = null
 	default_choices = null
 	override_question = null
 	count_method = VOTE_COUNT_METHOD_SINGLE
 	return ..()
 
 /datum/vote/custom_vote/can_be_initiated(forced)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. != VOTE_AVAILABLE)
 		return .
@@ -27,6 +33,8 @@
 	return "Only admins can create custom votes."
 
 /datum/vote/custom_vote/create_vote(mob/vote_creator)
+	procstart = null
+	src.procstart = null
 	var/custom_count_method = tgui_input_list(
 		user = vote_creator,
 		message = "Single or multiple choice?",
@@ -114,6 +122,8 @@
 	return ..()
 
 /datum/vote/custom_vote/initiate_vote(initiator, duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "\n[override_question]"
 

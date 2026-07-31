@@ -34,40 +34,58 @@
 	light_range = 3
 
 /datum/computer_file/program/maintenance/camera/on_install(datum/computer_file/source, obj/item/modular_computer/computer_installing, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	internal_camera = new(computer)
 	RegisterSignal(internal_camera, COMSIG_CAMERA_IMAGE_CAPTURED, PROC_REF(on_image_captured))
 
 /datum/computer_file/program/maintenance/camera/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(internal_camera)
 	QDEL_NULL(internal_picture)
 	return ..()
 
 /datum/computer_file/program/maintenance/camera/tap(atom/tapped_atom, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	take_picture(user, get_turf(tapped_atom))
 
 /datum/computer_file/program/maintenance/camera/on_made_active_program(user)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(computer, COMSIG_RANGED_ITEM_INTERACTING_WITH_ATOM_SECONDARY, PROC_REF(on_computer_ranged_interact))
 
 /datum/computer_file/program/maintenance/camera/kill_program(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(computer, COMSIG_RANGED_ITEM_INTERACTING_WITH_ATOM_SECONDARY)
 	QDEL_NULL(internal_picture)
 
 /datum/computer_file/program/maintenance/camera/background_program(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(computer, COMSIG_RANGED_ITEM_INTERACTING_WITH_ATOM_SECONDARY)
 
 /datum/computer_file/program/maintenance/camera/proc/on_computer_ranged_interact(_source, mob/user, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	take_picture(user, get_turf(target))
 
 /datum/computer_file/program/maintenance/camera/proc/take_picture(mob/user, turf/target)
+	procstart = null
+	src.procstart = null
 	internal_camera.see_ghosts = (locate(/datum/computer_file/program/maintenance/spectre_meter) in computer.stored_files) ?  CAMERA_SEE_GHOSTS_BASIC : CAMERA_NO_GHOSTS
 	internal_camera.attempt_picture(target, user)
 
 /datum/computer_file/program/maintenance/camera/proc/on_image_captured(cam, target, user, datum/picture/picture)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	QDEL_NULL(internal_picture)
@@ -80,6 +98,8 @@
 	picture_number++
 
 /datum/computer_file/program/maintenance/camera/proc/commit_metadata()
+	procstart = null
+	src.procstart = null
 	if(can_edit_metadata)
 		internal_picture.picture_name = current_picture_name
 		internal_picture.picture_desc = "[current_picture_desc] - [internal_picture.picture_desc]"
@@ -87,6 +107,8 @@
 		can_edit_metadata = FALSE
 
 /datum/computer_file/program/maintenance/camera/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		"maxNameLength" = 32,
 		"maxDescLength" = 128,
@@ -97,6 +119,8 @@
 	)
 
 /datum/computer_file/program/maintenance/camera/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	if(!isnull(internal_picture))
@@ -114,6 +138,8 @@
 	return data
 
 /datum/computer_file/program/maintenance/camera/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

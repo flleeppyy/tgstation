@@ -76,20 +76,28 @@ GLOBAL_LIST_INIT(magicarp_spell_colours, list(
 	var/datum/action/cooldown/mob_cooldown/projectile_attack/magicarp_bolt/spell
 
 /mob/living/basic/carp/magic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed_projectile_types = spell_list()
 	assign_spell()
 
 /mob/living/basic/carp/magic/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(spell)
 	return ..()
 
 /// Returns the list of spells we are allowed to cast
 /mob/living/basic/carp/magic/proc/spell_list()
+	procstart = null
+	src.procstart = null
 	return GLOB.magicarp_spell_types
 
 /// Updates name based on chosen spell
 /mob/living/basic/carp/magic/proc/assign_spell()
+	procstart = null
+	src.procstart = null
 	var/obj/projectile/spell_type = pick(allowed_projectile_types)
 	name = "[GLOB.magicarp_spell_types[spell_type]] [name]"
 	set_greyscale(colors = list(GLOB.magicarp_spell_colours[spell_type]))
@@ -103,6 +111,8 @@ GLOBAL_LIST_INIT(magicarp_spell_colours, list(
 
 /// If you have certain spells, use a different targeting strategy
 /mob/living/basic/carp/magic/proc/assign_spell_ai(spell_type)
+	procstart = null
+	src.procstart = null
 	var/static/list/spell_special_targeting = list(
 		/obj/projectile/magic/animate = MAGICARP_SPELL_OBJECTS,
 		/obj/projectile/magic/door = MAGICARP_SPELL_WALLS,
@@ -113,6 +123,8 @@ GLOBAL_LIST_INIT(magicarp_spell_colours, list(
 
 /// Shoot when you click away from you
 /mob/living/basic/carp/magic/RangedAttack(atom/atom_target, modifiers)
+	procstart = null
+	src.procstart = null
 	spell.Trigger(target = atom_target)
 
 /***
@@ -129,6 +141,8 @@ GLOBAL_LIST_INIT(magicarp_spell_colours, list(
 	health = 75
 
 /mob/living/basic/carp/magic/chaos/assign_spell()
+	procstart = null
+	src.procstart = null
 	var/datum/action/cooldown/mob_cooldown/projectile_attack/magicarp_bolt/chaos/chaos_bolt = new(src)
 	chaos_bolt.permitted_projectiles = allowed_projectile_types
 	chaos_bolt.Grant(src)
@@ -141,10 +155,14 @@ GLOBAL_LIST_INIT(magicarp_spell_colours, list(
 	gold_core_spawnable = HOSTILE_SPAWN
 
 /mob/living/basic/carp/magic/xenobiology/spell_list()
+	procstart = null
+	src.procstart = null
 	return GLOB.xenobiology_magicarp_spell_types
 
 /mob/living/basic/carp/magic/chaos/xenobiology
 	gold_core_spawnable = HOSTILE_SPAWN
 
 /mob/living/basic/carp/magic/chaos/xenobiology/spell_list()
+	procstart = null
+	src.procstart = null
 	return GLOB.xenobiology_magicarp_spell_types

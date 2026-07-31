@@ -21,6 +21,8 @@
 	var/base_hitsound = null
 
 /datum/component/alternative_sharpness/Initialize(alt_sharpness, verbs_continuous = null, verbs_simple = null, force_mod = 0, required_trait = null, alt_hitsound = null,)
+	procstart = null
+	src.procstart = null
 	if (!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 	var/obj/item/weapon = parent
@@ -35,10 +37,14 @@
 	base_hitsound = weapon.hitsound
 
 /datum/component/alternative_sharpness/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ITEM_PRE_ATTACK_SECONDARY, PROC_REF(on_secondary_attack))
 	RegisterSignal(parent, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
 /datum/component/alternative_sharpness/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, list(
 		COMSIG_ITEM_PRE_ATTACK_SECONDARY,
@@ -46,6 +52,8 @@
 	))
 
 /datum/component/alternative_sharpness/proc/on_secondary_attack(obj/item/source, atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (alt_attacking || (required_trait && !HAS_TRAIT(source, required_trait)))
@@ -68,6 +76,8 @@
 	addtimer(CALLBACK(src, PROC_REF(disable_alt_attack)), 1)
 
 /datum/component/alternative_sharpness/proc/disable_alt_attack()
+	procstart = null
+	src.procstart = null
 	var/obj/item/weapon = parent
 	alt_attacking = FALSE
 	weapon.attack_verb_continuous = base_continuous
@@ -77,6 +87,8 @@
 
 // If our weapon is transforming, we listen for the transformation to adjust our base_hitsound as needed so we're not caught out by the callback adding inappropriate values.
 /datum/component/alternative_sharpness/proc/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	base_continuous = source.attack_verb_continuous

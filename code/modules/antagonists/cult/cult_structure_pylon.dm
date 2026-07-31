@@ -14,6 +14,8 @@
 	COOLDOWN_DECLARE(corruption_cooldown)
 
 /obj/structure/destructible/cult/pylon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddComponent( \
@@ -32,10 +34,14 @@
 	START_PROCESSING(SSfastprocess, src)
 
 /obj/structure/destructible/cult/pylon/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	return ..()
 
 /obj/structure/destructible/cult/pylon/process()
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		return
 	if(!COOLDOWN_FINISHED(src, corruption_cooldown))
@@ -75,9 +81,13 @@
 	COOLDOWN_START(src, corruption_cooldown, corruption_cooldown_duration)
 
 /obj/structure/destructible/cult/pylon/conceal()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	STOP_PROCESSING(SSfastprocess, src)
 
 /obj/structure/destructible/cult/pylon/reveal()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSfastprocess, src)

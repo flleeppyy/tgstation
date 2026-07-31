@@ -7,6 +7,8 @@
  * * forced If we should force update the adjustment of the mob's health no matter the restrictions, like TRAIT_GODMODE
  */
 /mob/living/simple_animal/proc/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(forced || !HAS_TRAIT(src, TRAIT_GODMODE))
 		var/old_loss = bruteloss
@@ -20,12 +22,16 @@
 		toggle_ai(AI_ON)
 
 /mob/living/simple_animal/get_damage_mod(damage_type)
+	procstart = null
+	src.procstart = null
 	var/modifier = ..()
 	if (damage_type in damage_coeff)
 		return modifier * damage_coeff[damage_type]
 	return modifier
 
 /mob/living/simple_animal/adjust_brute_loss(amount, updating_health = TRUE, forced = FALSE, required_bodytype)
+	procstart = null
+	src.procstart = null
 	if(!can_adjust_brute_loss(amount, forced, required_bodytype))
 		return 0
 	if(forced)
@@ -34,6 +40,8 @@
 		. = adjustHealth(amount * damage_coeff[BRUTE] * CONFIG_GET(number/damage_multiplier), updating_health, forced)
 
 /mob/living/simple_animal/adjust_fire_loss(amount, updating_health = TRUE, forced = FALSE, required_bodytype)
+	procstart = null
+	src.procstart = null
 	if(!can_adjust_fire_loss(amount, forced, required_bodytype))
 		return 0
 	if(forced)
@@ -42,6 +50,8 @@
 		. = adjustHealth(amount * damage_coeff[BURN] * CONFIG_GET(number/damage_multiplier), updating_health, forced)
 
 /mob/living/simple_animal/adjust_oxy_loss(amount, updating_health = TRUE, forced = FALSE, required_biotype)
+	procstart = null
+	src.procstart = null
 	if(!can_adjust_oxy_loss(amount, forced, required_biotype))
 		return 0
 	if(forced)
@@ -50,6 +60,8 @@
 		. = adjustHealth(amount * damage_coeff[OXY] * CONFIG_GET(number/damage_multiplier), updating_health, forced)
 
 /mob/living/simple_animal/adjust_tox_loss(amount, updating_health = TRUE, forced = FALSE, required_biotype)
+	procstart = null
+	src.procstart = null
 	if(!can_adjust_tox_loss(amount, forced, required_biotype))
 		return 0
 	if(forced)
@@ -58,6 +70,8 @@
 		. = adjustHealth(amount * damage_coeff[TOX] * CONFIG_GET(number/damage_multiplier), updating_health, forced)
 
 /mob/living/simple_animal/adjust_stamina_loss(amount, updating_stamina = TRUE, forced = FALSE, required_biotype)
+	procstart = null
+	src.procstart = null
 	if(!can_adjust_stamina_loss(amount, forced, required_biotype))
 		return 0
 	var/old_stamloss = staminaloss
@@ -70,4 +84,6 @@
 	return old_stamloss - staminaloss
 
 /mob/living/simple_animal/received_stamina_damage(current_level, amount_actual, amount)
+	procstart = null
+	src.procstart = null
 	return

@@ -2,6 +2,8 @@
 /datum/unit_test/eyestab
 
 /datum/unit_test/eyestab/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/attacker = EASY_ALLOCATE()
 	var/mob/living/carbon/human/consistent/victim = EASY_ALLOCATE()
 	var/obj/item/screwdriver/stabber = EASY_ALLOCATE()

@@ -7,6 +7,8 @@
  * * verb - typepath to a verb, or a list of verbs, supports lists of lists
  */
 /proc/add_verb(client/target, verb_or_list_to_add)
+	procstart = null
+	src.procstart = null
 	if(!target)
 		CRASH("add_verb called without a target")
 	if(IsAdminAdvancedProcCall())
@@ -57,6 +59,8 @@
  * * verb - typepath to a verb, or a list of verbs, supports lists of lists
  */
 /proc/remove_verb(client/target, verb_or_list_to_remove)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		return
 

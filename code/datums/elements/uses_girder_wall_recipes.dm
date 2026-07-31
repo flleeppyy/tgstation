@@ -3,16 +3,22 @@
 /datum/element/uses_girder_wall_recipes
 
 /datum/element/uses_girder_wall_recipes/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isstructure(target))
 		return ELEMENT_INCOMPATIBLE
 	RegisterSignals(target, list(COMSIG_ATOM_ITEM_INTERACTION, COMSIG_ATOM_ITEM_INTERACTION_SECONDARY), PROC_REF(on_item_interaction))
 
 /datum/element/uses_girder_wall_recipes/Detach(datum/target, ...)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, list(COMSIG_ATOM_ITEM_INTERACTION, COMSIG_ATOM_ITEM_INTERACTION_SECONDARY))
 	return ..()
 
 /datum/element/uses_girder_wall_recipes/proc/on_item_interaction(obj/structure/structure, mob/living/user, obj/item/stack/stack, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!isstack(stack))
 		return NONE
@@ -42,6 +48,8 @@
 
 /// Returns the main wall recipe of the stack for the structure, if any.
 /datum/element/uses_girder_wall_recipes/proc/get_main_recipe(obj/structure/structure, obj/item/stack/stack)
+	procstart = null
+	src.procstart = null
 	for (var/datum/girder_wall_recipe/recipe as anything in GLOB.main_girder_wall_recipes)
 		if (!istype(stack, recipe.stack_type))
 			continue
@@ -53,6 +61,8 @@
 
 /// Returns the material wall recipe of the stack for the structure, if any.
 /datum/element/uses_girder_wall_recipes/proc/get_material_recipe(obj/structure/structure, obj/item/stack/stack)
+	procstart = null
+	src.procstart = null
 	for (var/datum/girder_wall_recipe/recipe as anything in GLOB.material_girder_wall_recipes)
 		if (!istype(structure, recipe.girder_type))
 			continue
@@ -63,11 +73,15 @@
 /// Has the user attempt the wall recipe asynchronously.
 /// Assumes that the structure and stack are of valid types for the recipe.
 /datum/element/uses_girder_wall_recipes/proc/attempt_recipe_async(obj/structure/structure, mob/living/user, obj/item/stack/stack, datum/girder_wall_recipe/recipe, is_material_recipe)
+	procstart = null
+	src.procstart = null
 	INVOKE_ASYNC(src, PROC_REF(attempt_recipe), structure, user, stack, recipe, is_material_recipe)
 
 /// Has the user attempt the wall recipe.
 /// Assumes that the structure and stack are of valid types for the recipe.
 /datum/element/uses_girder_wall_recipes/proc/attempt_recipe(obj/structure/structure, mob/living/user, obj/item/stack/stack, datum/girder_wall_recipe/recipe, is_material_recipe)
+	procstart = null
+	src.procstart = null
 	if (!check_recipe(structure, user, recipe))
 		return
 	if (!stack.tool_start_check(user, recipe.stack_amount))
@@ -109,6 +123,8 @@
 
 /// Checks if the user can do the wall recipe.
 /datum/element/uses_girder_wall_recipes/proc/check_recipe(obj/structure/structure, mob/living/user, datum/girder_wall_recipe/recipe)
+	procstart = null
+	src.procstart = null
 	if(iswallturf(structure.loc) || (locate(/obj/structure/falsewall) in structure.loc.contents))
 		structure.balloon_alert(user, "wall already present!")
 		return FALSE
@@ -125,6 +141,8 @@
 
 /// Checks if the girder state of the structure matches the required girder state of the wall recipe.
 /datum/element/uses_girder_wall_recipes/proc/check_girder_state(obj/structure/structure, datum/girder_wall_recipe/recipe)
+	procstart = null
+	src.procstart = null
 	if (istype(structure, /obj/structure/girder))
 		var/obj/structure/girder/girder = structure
 		if (girder.state != recipe.girder_state)

@@ -3,6 +3,8 @@
 	proper_name = "APC"
 
 /datum/wires/apc/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(
 		WIRE_EQUIPMENT,
 		WIRE_LIGHT,
@@ -16,6 +18,8 @@
 	..()
 
 /datum/wires/apc/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/obj/machinery/power/apc/A = holder
@@ -23,6 +27,8 @@
 		return TRUE
 
 /datum/wires/apc/get_status()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/power/apc/A = holder
 	var/list/status = list()
 	status += "The interface light is [A.locked ? "red" : "green"]."
@@ -34,6 +40,8 @@
 	return status
 
 /datum/wires/apc/on_pulse(wire, user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/power/apc/A = holder
 	switch(wire)
 		if(WIRE_EQUIPMENT)
@@ -61,6 +69,8 @@
 				addtimer(CALLBACK(A, TYPE_PROC_REF(/obj/machinery/power/apc, reset), wire), 1 SECONDS)
 
 /datum/wires/apc/on_cut(wire, mend, source)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/power/apc/A = holder
 	switch(wire)
 		if(WIRE_EQUIPMENT)
@@ -87,6 +97,8 @@
 			A.aidisabled = !mend
 
 /datum/wires/apc/can_reveal_wires(mob/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(user, TRAIT_KNOW_ENGI_WIRES))
 		return TRUE
 

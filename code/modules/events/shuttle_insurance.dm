@@ -8,6 +8,8 @@
 	description = "A sketchy but legit insurance offer."
 
 /datum/round_event_control/shuttle_insurance/can_spawn_event(players, allow_magic = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -28,9 +30,13 @@
 	var/insurance_evaluation = 0
 
 /datum/round_event/shuttle_insurance/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("Incoming subspace communication. Secure channel opened at all communication consoles.", "Incoming Message", SSstation.announcer.get_rand_report_sound())
 
 /datum/round_event/shuttle_insurance/setup()
+	procstart = null
+	src.procstart = null
 	ship_name = pick(strings(PIRATE_NAMES_FILE, "rogue_names"))
 	for(var/shuttle_id in SSmapping.shuttle_templates)
 		var/datum/map_template/shuttle/template = SSmapping.shuttle_templates[shuttle_id]
@@ -41,11 +47,15 @@
 		insurance_evaluation = 5000 //gee i dunno
 
 /datum/round_event/shuttle_insurance/start()
+	procstart = null
+	src.procstart = null
 	insurance_message = new("Shuttle Insurance", "Hey, pal, this is the [ship_name]. Can't help but notice you're rocking a wild and crazy shuttle there with NO INSURANCE! Crazy. What if something happened to it, huh?! We've done a quick evaluation on your rates in this sector and we're offering [insurance_evaluation] to cover for your shuttle in case of any disaster.", list("Purchase Insurance.","Reject Offer."))
 	insurance_message.answer_callback = CALLBACK(src, PROC_REF(answered))
 	GLOB.communications_controller.send_message(insurance_message, unique = TRUE)
 
 /datum/round_event/shuttle_insurance/proc/answered()
+	procstart = null
+	src.procstart = null
 	if(EMERGENCY_AT_LEAST_DOCKED)
 		priority_announce("You are definitely too late to purchase insurance, my friends. Our agents don't work on site.",sender_override = ship_name, color_override = "red")
 		return

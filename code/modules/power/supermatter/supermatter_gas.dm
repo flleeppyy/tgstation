@@ -1,4 +1,6 @@
 /proc/init_sm_gas()
+	procstart = null
+	src.procstart = null
 	var/list/gas_list = list()
 	for (var/sm_gas_path in subtypesof(/datum/sm_gas))
 		var/datum/sm_gas/sm_gas = new sm_gas_path
@@ -8,6 +10,8 @@
 /// Return a list info of the SM gases.
 /// Can only run after init_sm_gas
 /proc/sm_gas_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	for (var/gas_path in GLOB.sm_gas_behavior)
 		var/datum/sm_gas/sm_gas = GLOB.sm_gas_behavior[gas_path]
@@ -80,6 +84,8 @@ GLOBAL_LIST_INIT(sm_gas_behavior, init_sm_gas())
 	var/desc
 
 /datum/sm_gas/proc/extra_effects(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/sm_gas/oxygen
@@ -101,6 +107,8 @@ GLOBAL_LIST_INIT(sm_gas_behavior, init_sm_gas())
 
 /// Can be on Oxygen or CO2, but better lump it here since CO2 is rarer.
 /datum/sm_gas/carbon_dioxide/extra_effects(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	if(!sm.gas_percentage[/datum/gas/carbon_dioxide] || !sm.gas_percentage[/datum/gas/oxygen])
 		return
 	var/co2_pp = sm.absorbed_gasmix.return_pressure() * sm.gas_percentage[/datum/gas/carbon_dioxide]
@@ -155,6 +163,8 @@ GLOBAL_LIST_INIT(sm_gas_behavior, init_sm_gas())
 
 /// Start to emit radballs at a maximum of 30% chance per tick
 /datum/sm_gas/bz/extra_effects(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	if(sm.gas_percentage[/datum/gas/bz] > 0.4 && prob(30 * sm.gas_percentage[/datum/gas/bz]))
 		sm.fire_nuclear_particle()
 
@@ -171,6 +181,8 @@ GLOBAL_LIST_INIT(sm_gas_behavior, init_sm_gas())
 
 ///Miasma is really just microscopic particulate. It gets consumed like anything else that touches the crystal.
 /datum/sm_gas/miasma/extra_effects(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	if(!sm.gas_percentage[/datum/gas/miasma])
 		return
 	var/miasma_pp = sm.absorbed_gasmix.return_pressure() * sm.gas_percentage[/datum/gas/miasma]
@@ -216,6 +228,8 @@ GLOBAL_LIST_INIT(sm_gas_behavior, init_sm_gas())
 	desc = "Will generate electrical zaps."
 
 /datum/sm_gas/zauker/extra_effects(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	if(!prob(sm.gas_percentage[/datum/gas/zauker] * 100))
 		return
 	playsound(sm.loc, 'sound/items/weapons/emitter2.ogg', 100, TRUE, extrarange = 10)

@@ -8,6 +8,8 @@
 	description = "Sets the station's lights to Night Shift mode for the next 20 minutes."
 
 /datum/round_event_control/nightshift/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!CONFIG_GET(flag/enable_night_shifts))
 		max_occurrences = 0
@@ -25,9 +27,13 @@
 	var/list/currentrun
 
 /datum/round_event/nightshift/announce(fake)
+	procstart = null
+	src.procstart = null
 	update_nightshift(active = TRUE, announce = TRUE)
 
 /datum/round_event/nightshift/tick()
+	procstart = null
+	src.procstart = null
 	var/emergency = (SSsecurity_level.get_current_level_as_number() >= SEC_LEVEL_RED)
 	if(nightshift_disabled != emergency)
 		nightshift_disabled = emergency
@@ -39,10 +45,14 @@
 	update_machines()
 
 /datum/round_event/nightshift/end()
+	procstart = null
+	src.procstart = null
 	update_nightshift(active = FALSE, announce = TRUE)
 
 ///Called several times, to start & stop nightlights including during red alert/de-red alerting.
 /datum/round_event/nightshift/proc/update_nightshift(active, resume = FALSE, announce = FALSE)
+	procstart = null
+	src.procstart = null
 	currentrun = SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/power/apc)
 
 	if(announce)
@@ -61,6 +71,8 @@
 
 ///Called on process that will slowly update all APCs to be nightlight
 /datum/round_event/nightshift/proc/update_machines()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/power/apc/APC as anything in currentrun)
 		currentrun -= APC
 		if (APC.area && (APC.area.type in GLOB.the_station_areas))
@@ -70,6 +82,8 @@
 
 ///Custom messages sent throughout the event that we'll do here, instead of using the `announce` proc that's only at the start.
 /datum/round_event/nightshift/proc/send_announcement(message)
+	procstart = null
+	src.procstart = null
 	priority_announce(
 		text = message,
 		sound = 'sound/announcer/notice/notice2.ogg',

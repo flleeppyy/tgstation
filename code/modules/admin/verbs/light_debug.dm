@@ -1,5 +1,7 @@
 
 /proc/debug_light_sources()
+	procstart = null
+	src.procstart = null
 	GLOB.light_debug_enabled = TRUE
 	var/list/sum = list()
 	var/total = 0
@@ -25,11 +27,15 @@
 	message_admins(text)
 
 /datum/controller/subsystem/processing/dcs/proc/on_client_connect(datum/source, client/new_lad)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/datum/action/spawn_light/let_there_be = new (new_lad.mob.mind || new_lad.mob)
 	let_there_be.Grant(new_lad.mob)
 
 /proc/undebug_light_sources()
+	procstart = null
+	src.procstart = null
 	GLOB.light_debug_enabled = FALSE
 	for(var/datum/weakref/button_ref as anything in GLOB.light_debugged_atoms)
 		var/atom/button = button_ref.resolve()
@@ -45,6 +51,8 @@ GLOBAL_LIST_EMPTY(light_debugged_atoms)
 /// Sets up this light source to be debugged, setting up in world buttons to control and move it
 /// Also freezes it, so it can't change in future
 /atom/proc/debug_lights()
+	procstart = null
+	src.procstart = null
 	if(isturf(src) || HAS_TRAIT(src, TRAIT_LIGHTING_DEBUGGED))
 		return
 	ADD_TRAIT(src, TRAIT_LIGHTING_DEBUGGED, LIGHT_DEBUG_TRAIT)
@@ -66,6 +74,8 @@ GLOBAL_LIST_EMPTY(light_debugged_atoms)
 
 /// Disables light debugging, so you can let a scene fall to what it visually should be, or just fix admin fuckups
 /atom/proc/undebug_lights()
+	procstart = null
+	src.procstart = null
 	// I don't really want to undebug a light if it's off rn
 	// Loses control if we turn it back on again
 	if(isturf(src) || !HAS_TRAIT(src, TRAIT_LIGHTING_DEBUGGED) || !light)
@@ -92,10 +102,14 @@ GLOBAL_LIST_EMPTY(light_debugged_atoms)
 	var/datum/weakref/last_hovored_ref
 
 /atom/movable/screen/light_button/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	attach_to(loc)
 
 /atom/movable/screen/light_button/proc/attach_to(atom/new_owner)
+	procstart = null
+	src.procstart = null
 	if(loc)
 		UnregisterSignal(loc, COMSIG_QDELETING)
 		var/atom/movable/mislead_areas = loc
@@ -107,6 +121,8 @@ GLOBAL_LIST_EMPTY(light_debugged_atoms)
 	lie_to_areas.vis_contents += src
 
 /atom/movable/screen/light_button/proc/delete_self(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
@@ -114,6 +130,8 @@ GLOBAL_LIST_EMPTY(light_debugged_atoms)
 // Very much byond logic, but I want nice for my highlighting, so we fake it with drag
 // Copypasta from action buttons
 /atom/movable/screen/light_button/MouseDrag(atom/over_object, src_location, over_location, src_control, over_control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_WEAKREF_OF(over_object, last_hovored_ref))
 		return
@@ -130,13 +148,19 @@ GLOBAL_LIST_EMPTY(light_debugged_atoms)
 	over_object.MouseEntered(over_location, over_control, params)
 
 /atom/movable/screen/light_button/mouse_drop_dragged(atom/over, mob/user, src_location, over_location, params)
+	procstart = null
+	src.procstart = null
 	last_hovored_ref = null
 
 /atom/movable/screen/light_button/MouseEntered(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, alpha = 255, time = 2)
 
 /atom/movable/screen/light_button/MouseExited(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, alpha = initial(alpha), time = 2)
 
@@ -146,6 +170,8 @@ GLOBAL_LIST_EMPTY(light_debugged_atoms)
 	icon_state = "light_enable"
 
 /atom/movable/screen/light_button/toggle/attach_to(atom/new_owner)
+	procstart = null
+	src.procstart = null
 	if(loc)
 		UnregisterSignal(loc, COMSIG_ATOM_UPDATE_LIGHT_ON)
 	. = ..()
@@ -153,6 +179,8 @@ GLOBAL_LIST_EMPTY(light_debugged_atoms)
 	update_appearance()
 
 /atom/movable/screen/light_button/toggle/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!check_rights_for(usr.client, R_DEBUG))
 		return
@@ -162,10 +190,14 @@ GLOBAL_LIST_EMPTY(light_debugged_atoms)
 	parent.light_flags |= LIGHT_FROZEN
 
 /atom/movable/screen/light_button/toggle/proc/on_changed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_appearance()
 
 /atom/movable/screen/light_button/toggle/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(loc.light_on)
 		icon_state = "light_enable"
@@ -178,29 +210,43 @@ GLOBAL_LIST_EMPTY(light_debugged_atoms)
 	icon_state = "light_focus"
 
 /atom/movable/screen/light_button/edit/attach_to(atom/new_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SStgui.try_update_ui(usr, src, null)
 
 /atom/movable/screen/light_button/edit/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui_interact(usr)
 
 /atom/movable/screen/light_button/edit/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_DEBUG)
 
 /atom/movable/screen/light_button/edit/can_interact()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /atom/movable/screen/light_button/edit/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "LightController")
 		ui.open()
 
 /atom/movable/screen/light_button/edit/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(get_asset_datum(/datum/asset/spritesheet_batched/lights))
 
 /atom/movable/screen/light_button/edit/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/atom/parent = loc
@@ -218,6 +264,8 @@ GLOBAL_LIST_EMPTY(light_debugged_atoms)
 	return data
 
 /atom/movable/screen/light_button/edit/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/data = list()
 	data["templates"] = list()
@@ -246,6 +294,8 @@ GLOBAL_LIST_EMPTY(light_debugged_atoms)
 	return data
 
 /atom/movable/screen/light_button/edit/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -286,6 +336,8 @@ GLOBAL_LIST_EMPTY(light_debugged_atoms)
 /// Hides all the lights around a source temporarially, for the sake of figuring out how bad a light bleeds
 /// (Except for turf lights, because they're a part of the "scene" and rarely modified)
 /proc/isolate_light(atom/source, delay = 7 SECONDS)
+	procstart = null
+	src.procstart = null
 	var/list/datum/lighting_corner/interesting_corners = source.light?.effect_str
 
 	var/list/atom/sources = list()
@@ -318,6 +370,8 @@ GLOBAL_LIST_EMPTY(light_debugged_atoms)
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(repopulate_lights), sources), delay)
 
 /proc/repopulate_lights(list/atom/sources)
+	procstart = null
+	src.procstart = null
 	for(var/atom/light_source as anything in sources)
 		light_source.light_flags &= ~LIGHT_FROZEN
 		light_source.set_light(l_on = TRUE)
@@ -330,6 +384,8 @@ GLOBAL_LIST_EMPTY(light_debugged_atoms)
 	mouse_drag_pointer = 'icons/effects/mouse_pointers/light_drag.dmi'
 
 /atom/movable/screen/light_button/move/mouse_drop_dragged(atom/over_object)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(loc))
 		return
 	var/atom/movable/movable_owner = loc
@@ -342,44 +398,64 @@ GLOBAL_LIST_EMPTY(light_debugged_atoms)
 	button_icon_state = "light_spawn"
 
 /datum/action/spawn_light/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSdcs, COMSIG_LIGHT_DEBUG_DISABLED, PROC_REF(debug_disabled))
 
 /datum/action/spawn_light/proc/debug_disabled()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /datum/action/spawn_light/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(grant_to.client, COMSIG_CLIENT_MOB_LOGIN, PROC_REF(move_action), override = TRUE)
 
 /datum/action/spawn_light/proc/move_action(client/source, mob/new_mob)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	Grant(new_mob)
 
 /datum/action/spawn_light/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	ui_interact(usr)
 
 /datum/action/spawn_light/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_DEBUG)
 
 /datum/action/spawn_light/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "LightSpawn")
 		ui.open()
 
 /datum/action/spawn_light/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(get_asset_datum(/datum/asset/spritesheet_batched/lights))
 
 /datum/action/spawn_light/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	return data
 
 /datum/action/spawn_light/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/data = list()
 	data["templates"] = list()
@@ -408,6 +484,8 @@ GLOBAL_LIST_EMPTY(light_debugged_atoms)
 	return data
 
 /datum/action/spawn_light/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

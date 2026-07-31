@@ -4,6 +4,8 @@
 	actions_types = list(/datum/action/item_action/camouflage)
 
 /obj/item/implant/camouflage/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(prob(15 * severity))
@@ -22,12 +24,16 @@
 	var/cloaking = FALSE
 
 /datum/action/item_action/camouflage/Remove(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	if(owner)
 		remove_cloaking()
 
 	return ..()
 
 /datum/action/item_action/camouflage/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -47,6 +53,8 @@
  */
 
 /datum/action/item_action/camouflage/proc/remove_cloaking()
+	procstart = null
+	src.procstart = null
 	do_sparks(2, FALSE, owner)
 	owner.alpha = initial(owner.alpha)
 	to_chat(owner, span_notice("You disable your camouflage, and become visible once again."))

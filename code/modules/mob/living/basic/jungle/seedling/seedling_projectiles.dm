@@ -12,6 +12,8 @@
 	nondirectional_sprite = TRUE
 
 /obj/projectile/seedling/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	if(!isliving(target))
 		return ..()
 

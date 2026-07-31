@@ -8,6 +8,8 @@
 // no_effects: disable the default effectin/effectout of sparks
 // forced: whether or not to ignore no_teleport
 /proc/do_teleport(atom/movable/teleatom, atom/destination, precision=null, datum/effect_system/effectin=null, datum/effect_system/effectout=null, asoundin=null, asoundout=null, no_effects=FALSE, channel=TELEPORT_CHANNEL_BLUESPACE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	// teleporting most effects just deletes them
 	var/static/list/delete_atoms = zebra_typecacheof(list(
 		/obj/effect = TRUE,
@@ -119,6 +121,8 @@
 			teleatom.buckle_mob(rider, force=TRUE)
 
 /proc/tele_play_specials(atom/movable/teleatom, atom/location, datum/effect_system/effect, sound)
+	procstart = null
+	src.procstart = null
 	if(!location)
 		return
 
@@ -137,6 +141,8 @@
  * **BUT** there is a chance of it being null if an extremely large portion of a z-level is unsafe or blocked.
  */
 /proc/find_safe_turf(zlevel_or_levels, extended_safety_checks = FALSE, dense_atoms = FALSE) as /turf/open/floor
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 	RETURN_TYPE(/turf/open/floor)
 
@@ -172,6 +178,8 @@
  * Returns TRUE if all conditions pass, FALSE otherwise.
  */
 /proc/is_safe_turf(turf/random_location, extended_safety_checks = FALSE, dense_atoms = FALSE, no_teleport = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 
 	. = FALSE
@@ -223,6 +231,8 @@
 
 ///Check for turfs within range of the center turf and perform simple checks to see which is a valid teleportation target. If so, add it to a list to pick the final destination from at the end.
 /proc/get_valid_teleport_turf(turf/origin, turf/center, range = 0, skip_restrictions = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/turfs = list()
 	var/area/origin_area = origin.loc
 	for(var/turf/turf as anything in RANGE_TURFS(range, center))
@@ -247,6 +257,8 @@
 
 /// Validates that the teleport being attempted is valid or not
 /proc/check_teleport_valid(atom/teleported_atom, atom/destination, channel, atom/original_destination = null)
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 
 	if(isnull(destination))
@@ -276,6 +288,8 @@
 
 //Gets the topmost teleportable container
 /proc/get_teleportable_container(atom/movable/teleportable, container_flags = ALL)
+	procstart = null
+	src.procstart = null
 	while(ismovable(teleportable.loc))
 		if(!(container_flags & TELEPORT_CONTAINER_INCLUDE_STORAGE) && isitem(teleportable))
 			var/obj/item/item = teleportable

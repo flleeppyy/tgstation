@@ -11,6 +11,8 @@
 	var/datum/weakref/pull_component_weakref
 
 /obj/item/clothing/gloves/cargo_gauntlet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ITEM_EQUIPPED, PROC_REF(on_glove_equip))
 	RegisterSignal(src, COMSIG_ITEM_POST_UNEQUIP, PROC_REF(on_glove_unequip))
@@ -18,6 +20,8 @@
 
 /// Called when the glove is equipped. Adds a component to the equipper and stores a weak reference to it.
 /obj/item/clothing/gloves/cargo_gauntlet/proc/on_glove_equip(datum/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(slot & ITEM_SLOT_GLOVES))
@@ -39,6 +43,8 @@
  * as having them equipped, or even in pockets. They only give the component when they're worn on the hands.
  */
 /obj/item/clothing/gloves/cargo_gauntlet/proc/on_glove_unequip(datum/source, force, atom/newloc, no_move, invdrop, silent)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/component/strong_pull/pull_component = pull_component_weakref?.resolve()
@@ -58,6 +64,8 @@
 	clothing_traits = list(TRAIT_FINGERPRINT_PASSTHROUGH)
 
 /obj/item/clothing/gloves/rapid/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/wearertargeting/punchcooldown)
 	AddElement(/datum/element/adjust_fishing_difficulty, -9)
@@ -78,6 +86,8 @@
 	greyscale_colors = "#2f2e31"
 
 /obj/item/clothing/gloves/race/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -9)
 
@@ -98,6 +108,8 @@
 	clothing_traits = list(TRAIT_FAST_CUFFING)
 
 /obj/item/clothing/gloves/captain/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -6)
 
@@ -130,6 +142,8 @@
 	clothing_traits = list(TRAIT_QUICKER_CARRY, TRAIT_FASTMED)
 
 /obj/item/clothing/gloves/latex/nitrile/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -6)
 
@@ -142,6 +156,8 @@
 	clothing_traits = list(TRAIT_QUICK_CARRY, TRAIT_FASTMED)
 
 /obj/item/clothing/gloves/latex/coroner/add_blood_DNA(list/blood_DNA_to_add, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/item/clothing/gloves/tinkerer
@@ -173,6 +189,8 @@
 	clothing_flags = parent_type::clothing_flags | THICKMATERIAL|STOPSPRESSUREDAMAGE
 
 /obj/item/clothing/gloves/atmos/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, 6)
 
@@ -186,22 +204,30 @@
 	var/datum/fishing_challenge/challenge
 
 /obj/item/clothing/gloves/fishing/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/profound_fisher, new /obj/item/fishing_rod/mob_fisher/athletic(src))
 	AddElement(/datum/element/adjust_fishing_difficulty, -4) //on top of the extra that you get from the athletics skill.
 
 /obj/item/clothing/gloves/fishing/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot == ITEM_SLOT_GLOVES)
 		RegisterSignal(user, COMSIG_MOB_BEGIN_FISHING_MINIGAME, PROC_REF(begin_workout))
 
 /obj/item/clothing/gloves/fishing/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(user, COMSIG_MOB_BEGIN_FISHING_MINIGAME)
 	if(challenge)
 		stop_workout(user)
 	return ..()
 
 /obj/item/clothing/gloves/fishing/proc/begin_workout(datum/source, datum/fishing_challenge/challenge)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	RegisterSignal(source, COMSIG_MOB_COMPLETE_FISHING, PROC_REF(stop_workout))
 	if(HAS_TRAIT(source, TRAIT_PROFOUND_FISHER)) //Only begin working out if we're fishing with these gloves and not some other fishing rod..
@@ -209,12 +235,16 @@
 		src.challenge = challenge
 
 /obj/item/clothing/gloves/fishing/proc/stop_workout(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(source, COMSIG_MOB_COMPLETE_FISHING)
 	challenge = null
 	STOP_PROCESSING(SSprocessing, src)
 
 /obj/item/clothing/gloves/fishing/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/mob/living/wearer = loc
 	var/stamina_exhaustion = 2 + challenge.difficulty * 0.02
 	var/is_heavy_gravity = wearer.has_gravity() > STANDARD_GRAVITY
@@ -246,17 +276,25 @@
 	show_in_wiki = TRUE //Show this cool pair of gloves in the wiki.
 
 /obj/item/fishing_rod/mob_fisher/athletic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_FISHING_ROD_CAUGHT_FISH, PROC_REF(noodling_is_dangerous))
 
 /obj/item/fishing_rod/mob_fisher/athletic/get_fishing_overlays()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /obj/item/fishing_rod/mob_fisher/athletic/hook_hit(atom/atom_hit_by_hook_projectile, mob/user)
+	procstart = null
+	src.procstart = null
 	difficulty_modifier = -3 * (user.mind?.get_skill_level(/datum/skill/athletics) - 1)
 	return ..()
 
 /obj/item/fishing_rod/mob_fisher/athletic/proc/noodling_is_dangerous(datum/source, atom/movable/reward, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isfish(reward))
 		return

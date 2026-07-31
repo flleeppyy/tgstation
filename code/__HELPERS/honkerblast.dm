@@ -1,5 +1,7 @@
 ///Unleashes a honkerblast similar to the honkmech weapon, but with more granular control.
 /proc/honkerblast(atom/origin, light_range = 1, medium_range = 0, heavy_range = 0)
+	procstart = null
+	src.procstart = null
 	var/origin_turf = get_turf(origin)
 	var/list/lightly_honked = list()
 	var/list/properly_honked = list()

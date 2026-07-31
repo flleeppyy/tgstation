@@ -20,17 +20,23 @@
 	var/obj/docking_port/stationary/target_dock  // for badminry
 
 /obj/docking_port/mobile/arrivals/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	preferred_direction = dir
 	return INITIALIZE_HINT_LATELOAD //for latejoin list
 
 /obj/docking_port/mobile/arrivals/register()
+	procstart = null
+	src.procstart = null
 	..()
 	if(SSshuttle.arrivals)
 		log_mapping("More than one arrivals docking_port placed on map! Ignoring duplicates.")
 	SSshuttle.arrivals = src
 
 /obj/docking_port/mobile/arrivals/LateInitialize()
+	procstart = null
+	src.procstart = null
 	areas = list()
 
 	var/list/new_latejoin = list()
@@ -58,6 +64,8 @@
 	SSjob.latejoin_trackers = new_latejoin
 
 /obj/docking_port/mobile/arrivals/check()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(perma_docked)
@@ -104,6 +112,8 @@
 		Launch(FALSE)
 
 /obj/docking_port/mobile/arrivals/proc/find_console(datum/source, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	//clear ref to old deleted console
@@ -122,6 +132,8 @@
 					return
 
 /obj/docking_port/mobile/arrivals/proc/CheckTurfsPressure()
+	procstart = null
+	src.procstart = null
 	for(var/I in SSjob.latejoin_trackers)
 		var/turf/open/T = get_turf(I)
 		var/pressure = T.air.return_pressure()
@@ -130,18 +142,24 @@
 	return FALSE
 
 /obj/docking_port/mobile/arrivals/proc/PersonCheck()
+	procstart = null
+	src.procstart = null
 	for(var/mob/player as anything in GLOB.player_list)
 		if((get_area(player) in areas) && (player.stat != DEAD) && !HAS_TRAIT(player, TRAIT_BLOCK_SHUTTLE_MOVEMENT))
 			return TRUE
 	return FALSE
 
 /obj/docking_port/mobile/arrivals/proc/NukeDiskCheck()
+	procstart = null
+	src.procstart = null
 	for (var/obj/item/disk/nuclear/N in SSpoints_of_interest.real_nuclear_disks)
 		if (get_area(N) in areas)
 			return TRUE
 	return FALSE
 
 /obj/docking_port/mobile/arrivals/proc/SendToStation()
+	procstart = null
+	src.procstart = null
 	var/dockTime = CONFIG_GET(number/arrivals_shuttle_dock_window)
 	if(mode == SHUTTLE_CALL && timeLeft(1) > dockTime)
 		if(console)
@@ -150,6 +168,8 @@
 		setTimer(dockTime)
 
 /obj/docking_port/mobile/arrivals/initiate_docking(obj/docking_port/stationary/S1, force=FALSE)
+	procstart = null
+	src.procstart = null
 	var/docked = S1 == assigned_transit
 	sound_played = FALSE
 	if(docked) //about to launch
@@ -175,17 +195,23 @@
 		LAZYCLEARLIST(queued_announces)
 
 /obj/docking_port/mobile/arrivals/check_effects()
+	procstart = null
+	src.procstart = null
 	..()
 	if(mode == SHUTTLE_CALL && !sound_played && timeLeft(1) <= HYPERSPACE_END_TIME)
 		sound_played = TRUE
 		hyperspace_sound(HYPERSPACE_END, areas)
 
 /obj/docking_port/mobile/arrivals/canDock(obj/docking_port/stationary/S)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SHUTTLE_ALREADY_DOCKED)
 		. = SHUTTLE_CAN_DOCK
 
 /obj/docking_port/mobile/arrivals/proc/Launch(pickingup)
+	procstart = null
+	src.procstart = null
 	if(pickingup)
 		force_depart = TRUE
 	if(mode == SHUTTLE_IDLE)
@@ -197,6 +223,8 @@
 		request(target) //we will intentionally never return SHUTTLE_ALREADY_DOCKED
 
 /obj/docking_port/mobile/arrivals/proc/RequireUndocked(mob/user)
+	procstart = null
+	src.procstart = null
 	if(mode == SHUTTLE_CALL || damaged)
 		return
 
@@ -214,12 +242,16 @@
  * * rank - The job of the arriving mob.
  */
 /obj/docking_port/mobile/arrivals/proc/QueueAnnounce(mob, rank)
+	procstart = null
+	src.procstart = null
 	if(mode != SHUTTLE_CALL)
 		announce_arrival(mob, rank)
 	else
 		LAZYADD(queued_announces, CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(announce_arrival), mob, rank))
 
 /obj/docking_port/mobile/arrivals/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	switch(var_name)
 		if(NAMEOF(src, perma_docked))
 			SSblackbox.record_feedback("nested tally", "admin_secrets_fun_used", 1, list("arrivals shuttle", "[var_value ? "stopped" : "started"]"))

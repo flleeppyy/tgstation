@@ -52,9 +52,13 @@
 
 
 /datum/job/captain/get_captaincy_announcement(mob/living/captain)
+	procstart = null
+	src.procstart = null
 	return "Captain [captain.real_name] on deck!"
 
 /datum/job/captain/get_radio_information()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "\nYou have access to all radio channels, but they are not automatically tuned. Check your radio for more information."
 
@@ -94,6 +98,8 @@
 	var/special_charter
 
 /datum/outfit/job/captain/pre_equip(mob/living/carbon/human/H, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	special_charter = CHECK_MAP_JOB_CHANGE(JOB_CAPTAIN, "special_charter")
 	if(!special_charter)
@@ -107,6 +113,8 @@
 		r_hand = /obj/item/station_charter/banner
 
 /datum/outfit/job/captain/post_equip(mob/living/carbon/human/equipped, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(visuals_only || !special_charter)
 		return

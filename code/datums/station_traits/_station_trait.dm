@@ -37,6 +37,8 @@ GLOBAL_LIST_EMPTY(lobby_station_traits)
 	var/dynamic_threat_id
 
 /datum/station_trait/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	RegisterSignal(SSticker, COMSIG_TICKER_ROUND_STARTING, PROC_REF(on_round_start))
@@ -51,6 +53,8 @@ GLOBAL_LIST_EMPTY(lobby_station_traits)
 		ADD_TRAIT(SSstation, trait_to_give, STATION_TRAIT)
 
 /datum/station_trait/Destroy()
+	procstart = null
+	src.procstart = null
 	destroy_lobby_buttons()
 	SSstation.station_traits -= src
 	GLOB.lobby_station_traits -= src
@@ -59,10 +63,14 @@ GLOBAL_LIST_EMPTY(lobby_station_traits)
 
 /// Returns the type of info the centcom report has on this trait, if any.
 /datum/station_trait/proc/get_report()
+	procstart = null
+	src.procstart = null
 	return "<i>[name]</i> - [report_message]"
 
 /// Will attempt to revert the station trait, used by admins.
 /datum/station_trait/proc/revert()
+	procstart = null
+	src.procstart = null
 	if (!can_revert)
 		CRASH("revert() was called on [type], which can't be reverted!")
 
@@ -73,14 +81,20 @@ GLOBAL_LIST_EMPTY(lobby_station_traits)
 
 /// Return a color for the decals, if any
 /datum/station_trait/proc/get_decal_color(thing_to_color, pattern)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Return TRUE if we want to show a lobby button, by default we assume we don't want it after the round begins
 /datum/station_trait/proc/can_display_lobby_button(client/player)
+	procstart = null
+	src.procstart = null
 	return sign_up_button && !SSticker.HasRoundStarted()
 
 /// Apply any additional handling we need to our lobby button
 /datum/station_trait/proc/setup_lobby_button(atom/movable/screen/lobby/button/sign_up/lobby_button)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	lobby_button.name = name
 	lobby_buttons |= lobby_button
@@ -91,26 +105,36 @@ GLOBAL_LIST_EMPTY(lobby_station_traits)
 
 /// Called when our lobby button is clicked on
 /datum/station_trait/proc/on_lobby_button_click(atom/movable/screen/lobby/button/sign_up/lobby_button, location, control, params, mob/dead/new_player/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return
 
 /// Called when our lobby button tries to update its appearance
 /datum/station_trait/proc/on_lobby_button_update_icon(atom/movable/screen/lobby/button/sign_up/lobby_button, updates)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return
 
 /// Don't hold references to deleted buttons
 /datum/station_trait/proc/on_lobby_button_destroyed(atom/movable/screen/lobby/button/sign_up/lobby_button)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	lobby_buttons -= lobby_button
 
 /// Proc ran when round starts. Use this for roundstart effects. By default we clean up our buttons here.
 /datum/station_trait/proc/on_round_start()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	destroy_lobby_buttons()
 
 /// Remove all of our active lobby buttons
 /datum/station_trait/proc/destroy_lobby_buttons()
+	procstart = null
+	src.procstart = null
 	for (var/atom/movable/screen/button as anything in lobby_buttons)
 		var/mob/dead/new_player/hud_owner = button.get_mob()
 		if (QDELETED(hud_owner))
@@ -124,4 +148,6 @@ GLOBAL_LIST_EMPTY(lobby_station_traits)
 
 /// Called when overriding a pulsar star command report message.
 /datum/station_trait/proc/get_pulsar_message()
+	procstart = null
+	src.procstart = null
 	return

@@ -6,6 +6,8 @@
 	var/reduction
 
 /datum/element/slow_target_click_cd_attack/Attach(datum/target, reduction = 0.2 SECONDS)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -14,10 +16,14 @@
 	RegisterSignal(target, COMSIG_ITEM_AFTERATTACK, PROC_REF(try_slow))
 
 /datum/element/slow_target_click_cd_attack/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_ITEM_AFTERATTACK)
 
 /datum/element/slow_target_click_cd_attack/proc/try_slow(obj/item/source, atom/hit, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(hit))
@@ -38,11 +44,15 @@
 	var/source
 
 /datum/status_effect/cd_slow/on_creation(mob/living/new_owner, reduction, source)
+	procstart = null
+	src.procstart = null
 	src.reduction = reduction
 	src.source = source
 	return ..()
 
 /datum/status_effect/cd_slow/on_apply()
+	procstart = null
+	src.procstart = null
 	for(var/datum/status_effect/cd_slow/slow in owner)
 		if(slow.source == src.source)
 			slow.reduction = max(slow.reduction, src.reduction)
@@ -51,4 +61,6 @@
 	return TRUE
 
 /datum/status_effect/cd_slow/nextmove_adjust()
+	procstart = null
+	src.procstart = null
 	return reduction

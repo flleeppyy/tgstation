@@ -15,6 +15,8 @@
 	max_charges = 8
 
 /obj/item/gun/magic/wand/booze/zap_self(mob/living/user, suicide = FALSE)
+	procstart = null
+	src.procstart = null
 	playsound(user, fire_sound, 50, TRUE)
 	if (!suicide)
 		user.log_message("zapped [user.p_them()]self with a <b>[src]</b>", LOG_ATTACK)
@@ -26,6 +28,8 @@
 	charges--
 
 /obj/item/gun/magic/wand/booze/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.visible_message(span_suicide("[user] pours a constant stream of booze into [user.p_their()] mouth, [user.p_theyre()] about to pop!"))
 	if (!do_after(user, 3 SECONDS, target = src))
@@ -37,6 +41,8 @@
 
 /// Creates a beer blast when someone bursts themselves
 /obj/item/gun/magic/wand/booze/proc/flood_beer(turf/flood_point)
+	procstart = null
+	src.procstart = null
 	if (!flood_point)
 		return
 	var/datum/reagents/beer = new /datum/reagents(100)
@@ -52,10 +58,14 @@
 	icon_state = "energy"
 
 /obj/projectile/magic/booze/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(max_vol = 10)
 	reagents.add_reagent(/datum/reagent/consumable/ethanol/bacchus_blessing, 10)
 
 /obj/projectile/magic/booze/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.trans_to(target, 10, methods = INGEST)

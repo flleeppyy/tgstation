@@ -36,6 +36,8 @@ GLOBAL_LIST_INIT(battle_royale_regions, list(
 	var/linked = FALSE
 
 /obj/item/royale_implanter/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isliving(interacting_with))
 		if (!istype(interacting_with, /obj/item/royale_remote))
 			return NONE
@@ -84,17 +86,23 @@ GLOBAL_LIST_INIT(battle_royale_regions, list(
 	var/list/implanted_implants = list()
 
 /obj/item/royale_remote/Destroy(force)
+	procstart = null
+	src.procstart = null
 	linked_implanters = null
 	implanted_implants = null
 	return ..()
 
 /obj/item/royale_remote/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!istype(interacting_with, /obj/item/royale_implanter))
 		return NONE
 	link_implanter(interacting_with)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/royale_remote/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -113,6 +121,8 @@ GLOBAL_LIST_INIT(battle_royale_regions, list(
 
 /// Link to an implanter
 /obj/item/royale_remote/proc/link_implanter(obj/item/royale_implanter/implanter, mob/user)
+	procstart = null
+	src.procstart = null
 	if (implanter in linked_implanters)
 		if (user)
 			balloon_alert(user, "already linked!")
@@ -128,16 +138,22 @@ GLOBAL_LIST_INIT(battle_royale_regions, list(
 
 /// Record that someone just got implanted
 /obj/item/royale_remote/proc/record_contestant(obj/item/implanter, obj/item/implant)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	implanted_implants |= implant
 	RegisterSignal(implant, COMSIG_QDELETING, PROC_REF(implant_destroyed))
 
 /// A linked implanter was destroyed
 /obj/item/royale_remote/proc/implanter_destroyed(obj/item/implanter)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	linked_implanters -= implanter
 
 /obj/item/royale_remote/proc/implant_destroyed(obj/item/implant)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	implanted_implants -= implant
 
@@ -150,6 +166,8 @@ GLOBAL_DATUM_INIT(battle_royale_master, /datum/battle_royale_master, new)
 
 /// Start a new battle royale using a passed list of implants
 /datum/battle_royale_master/proc/start_battle(list/competitors)
+	procstart = null
+	src.procstart = null
 	var/datum/battle_royale_controller/controller = new()
 	if (!controller.start(competitors))
 		return FALSE
@@ -161,6 +179,8 @@ GLOBAL_DATUM_INIT(battle_royale_master, /datum/battle_royale_master, new)
 
 /// Drop reference when it kills itself
 /datum/battle_royale_master/proc/battle_ended(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	LAZYREMOVE(active_battles, source)
 	if (!LAZYLEN(active_battles))
@@ -215,11 +235,15 @@ GLOBAL_DATUM_INIT(battle_royale_master, /datum/battle_royale_master, new)
 	)
 
 /datum/battle_royale_controller/Destroy(force)
+	procstart = null
+	src.procstart = null
 	contestant_implants = null
 	return ..()
 
 /// Start a battle royale with the list of provided implants
 /datum/battle_royale_controller/proc/start(list/implants, battle_time = 10 MINUTES)
+	procstart = null
+	src.procstart = null
 	chosen_area = pick(GLOB.battle_royale_regions)
 	for (var/obj/item/implant/explosive/battle_royale/contestant_implant in implants)
 		contestant_implant.start_battle(chosen_area, GLOB.battle_royale_regions[chosen_area])
@@ -252,6 +276,8 @@ GLOBAL_DATUM_INIT(battle_royale_master, /datum/battle_royale_master, new)
 
 /// An implant was destroyed, hopefully because it exploded. Count how many competitors remain.
 /datum/battle_royale_controller/proc/implant_destroyed(obj/item/implant/implant)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	contestant_implants -= implant
 	if (!battle_running)
@@ -276,6 +302,8 @@ GLOBAL_DATUM_INIT(battle_royale_master, /datum/battle_royale_master, new)
 
 /// There's only one person left, we have a winner!
 /datum/battle_royale_controller/proc/announce_winner(obj/item/implant/losing_implant)
+	procstart = null
+	src.procstart = null
 	battle_running = FALSE
 	if (length(contestant_implants) > 1)
 		return
@@ -314,6 +342,8 @@ GLOBAL_DATUM_INIT(battle_royale_master, /datum/battle_royale_master, new)
 
 /// Called halfway through the battle, if you've not made it to the designated battle zone we kill you
 /datum/battle_royale_controller/proc/limit_area()
+	procstart = null
+	src.procstart = null
 	priority_announce(
 		text = "We're halfway done folks! And bad news to anyone who hasn't made it to the [chosen_area]... you're out!",
 		title = "Rumble Royale Update",
@@ -328,6 +358,8 @@ GLOBAL_DATUM_INIT(battle_royale_master, /datum/battle_royale_master, new)
 
 /// Well you're out of time, bad luck
 /datum/battle_royale_controller/proc/finish()
+	procstart = null
+	src.procstart = null
 	battle_running = FALSE
 
 	priority_announce(

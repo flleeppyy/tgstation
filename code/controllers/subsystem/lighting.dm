@@ -16,11 +16,15 @@ SUBSYSTEM_DEF(lighting)
 #endif
 
 /datum/controller/subsystem/lighting/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg = "\n  Sources:[length(sources_queue)]|Corners:[length(corners_queue)]|Objects:[length(objects_queue)]"
 	return ..()
 
 
 /datum/controller/subsystem/lighting/Initialize()
+	procstart = null
+	src.procstart = null
 	if(!initialized)
 		create_all_lighting_objects()
 		initialized = TRUE
@@ -31,6 +35,8 @@ SUBSYSTEM_DEF(lighting)
 
 
 /datum/controller/subsystem/lighting/proc/create_all_lighting_objects()
+	procstart = null
+	src.procstart = null
 	for(var/area/area as anything in GLOB.areas)
 		if(!area.static_lighting)
 			continue
@@ -43,6 +49,8 @@ SUBSYSTEM_DEF(lighting)
 		CHECK_TICK
 
 /datum/controller/subsystem/lighting/fire(resumed, init_tick_checks)
+	procstart = null
+	src.procstart = null
 	MC_SPLIT_TICK_INIT(3)
 	if(!init_tick_checks)
 		MC_SPLIT_TICK
@@ -131,12 +139,16 @@ SUBSYSTEM_DEF(lighting)
 
 
 /datum/controller/subsystem/lighting/Recover()
+	procstart = null
+	src.procstart = null
 	initialized = SSlighting.initialized
 	..()
 
 /// Takes a list of turfs in, and sets up static lighting for them as needed.
 /// Exactly what it says on the tin.
 /datum/controller/subsystem/lighting/proc/setup_static_lighting_if_needed(list/turfs)
+	procstart = null
+	src.procstart = null
 	for(var/turf/unlit as anything in turfs)
 		if(unlit.space_lit)
 			continue

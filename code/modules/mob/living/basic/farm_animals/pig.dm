@@ -41,6 +41,8 @@
 	sound = SFX_PIG_OINK
 
 /mob/living/basic/pig/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/pet_bonus, "oink")
 	AddElement(/datum/element/ai_retaliate)
@@ -50,10 +52,14 @@
 
 ///wrapper for the tameable component addition so you can have non tamable cow subtypes
 /mob/living/basic/pig/proc/make_tameable()
+	procstart = null
+	src.procstart = null
 	var/list/food_types = string_list(list(/obj/item/food/grown/carrotlike/carrot))
 	AddComponent(/datum/component/tameable, food_types = food_types, tame_chance = 25, bonus_tame_chance = 15)
 
 /mob/living/basic/pig/tamed(mob/living/tamer, atom/food)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/pig)
 	visible_message(span_notice("[src] snorts respectfully."))

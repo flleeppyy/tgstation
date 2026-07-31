@@ -35,6 +35,8 @@
 	var/window_colour = "#ffffff"
 
 /datum/dimension_theme/New()
+	procstart = null
+	src.procstart = null
 	if (material)
 		var/datum/material/using_mat = SSmaterials.get_material(material)
 		window_colour = using_mat.color
@@ -48,6 +50,8 @@
  * * show_effect - if the temp visual effect should be shown.
  */
 /datum/dimension_theme/proc/apply_theme(turf/affected_turf, skip_sound = FALSE, show_effect = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!replace_turf(affected_turf))
 		return
 	if (!skip_sound)
@@ -69,6 +73,8 @@
  * * list/turf/all_turfs - List of turfs to transform.
  */
 /datum/dimension_theme/proc/apply_theme_to_list_of_turfs(list/turf/all_turfs)
+	procstart = null
+	src.procstart = null
 	var/every_nth_turf = 0
 	for (var/turf/turf as anything in all_turfs)
 		if(can_convert(turf))
@@ -83,6 +89,8 @@
  * * affected_turf - Turf to transform.
  */
 /datum/dimension_theme/proc/can_convert(turf/affected_turf)
+	procstart = null
+	src.procstart = null
 	if (isspaceturf(affected_turf))
 		return FALSE
 	if (isfloorturf(affected_turf))
@@ -104,6 +112,8 @@
  * * affected_turf - Turf to transform.
  */
 /datum/dimension_theme/proc/replace_turf(turf/affected_turf)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	if (isfloorturf(affected_turf))
@@ -127,6 +137,8 @@
  * * affected_floor - Floor turf to transform.
  */
 /datum/dimension_theme/proc/transform_floor(turf/open/floor/affected_floor)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	if (replace_floors.len == 0)
@@ -141,6 +153,8 @@
  * * object - Object to replace.
  */
 /datum/dimension_theme/proc/replace_object(obj/object)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	if (istype(object, /obj/structure/window))
@@ -173,6 +187,8 @@
  * * object - Object to transform.
  */
 /datum/dimension_theme/proc/get_replacement_object_typepath(obj/object)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	for (var/type in replace_objs)
@@ -187,6 +203,8 @@
  * * object - Object to transform.
  */
 /datum/dimension_theme/proc/transform_window(obj/structure/window/window)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	if (!window.fulltile)
@@ -216,6 +234,8 @@
  * * object - Object to transform.
  */
 /datum/dimension_theme/proc/permit_replace_material(obj/object)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	return is_type_in_list(object, PERMITTED_MATERIAL_REPLACE_TYPES)
@@ -228,6 +248,8 @@
  * * affected_turf - Turf to transform.
  */
 /datum/dimension_theme/proc/apply_materials(turf/affected_turf)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	var/list/custom_materials = list(SSmaterials.get_material(material) = SHEET_MATERIAL_AMOUNT)
@@ -404,6 +426,8 @@
 	var/list/valid_tables
 
 /datum/dimension_theme/fancy/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	valid_carpets = list(
 		/turf/open/floor/carpet/black,
@@ -423,10 +447,14 @@
 	randomize_theme()
 
 /datum/dimension_theme/fancy/proc/randomize_theme()
+	procstart = null
+	src.procstart = null
 	replace_floors = list(pick(valid_carpets) = 1)
 	replace_objs[/obj/structure/table/wood] = list(pick(valid_tables) = 1)
 
 /datum/dimension_theme/fancy/apply_theme(turf/affected_turf, skip_sound = FALSE, show_effect = FALSE)
+	procstart = null
+	src.procstart = null
 	if(COOLDOWN_FINISHED(src, carpet_switch_cd))
 		randomize_theme()
 		COOLDOWN_START(src, carpet_switch_cd, 90 SECONDS)
@@ -440,6 +468,8 @@
 	replace_floors = list(/turf/open/floor/light = 1)
 
 /datum/dimension_theme/disco/transform_floor(turf/open/floor/affected_floor)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return

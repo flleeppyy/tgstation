@@ -3,6 +3,8 @@ GLOBAL_LIST_EMPTY(exploration_sites)
 
 // Band is general distance group. Cost of scanning bands increasly exponentialy.
 /proc/generate_exploration_sites()
+	procstart = null
+	src.procstart = null
 	var/band = GLOB.exoscanner_controller.wide_scan_band
 	var/site_count = 1+rand(band-1,band+1)
 	var/site_types = subtypesof(/datum/exploration_site) //cache?
@@ -40,6 +42,8 @@ GLOBAL_LIST_EMPTY(exploration_sites)
 	var/list/datum/scan_condition/scan_conditions
 
 /datum/exploration_site/New(band)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	distance = max(band+pick(-1,0,1,2),1)
 	coordinates = "ℓ:[rand(0,360)]°,𝑏:[rand(0,90)]°" // ℓ and 𝑏 are symbols for longitude/inclination in made-up station centric coordinate system.
@@ -47,6 +51,8 @@ GLOBAL_LIST_EMPTY(exploration_sites)
 	generate_scan_conditions()
 
 /datum/exploration_site/proc/generate_events()
+	procstart = null
+	src.procstart = null
 	/// Try to find aventure first since they're the meat of the system.
 	var/datum/exploration_event/adventure = generate_adventure(site_traits)
 	if(adventure)
@@ -75,12 +81,16 @@ GLOBAL_LIST_EMPTY(exploration_sites)
 			add_event(event)
 
 /datum/exploration_site/proc/generate_scan_conditions()
+	procstart = null
+	src.procstart = null
 	var/condition_count = pick(3;0,2;1,1;2) //scale this with distance maybe ?
 	var/list/possible_conditions = GLOB.scan_conditions.Copy()
 	for(var/i in 1 to condition_count)
 		LAZYADD(scan_conditions,pick_n_take(possible_conditions))
 
 /datum/exploration_site/proc/generate_adventure(site_traits)
+	procstart = null
+	src.procstart = null
 	var/list/possible_adventures = list()
 	for(var/datum/adventure_db_entry/entry in GLOB.explorer_drone_adventure_db_entries)
 		if(entry.valid_for_use(site_traits))
@@ -96,6 +106,8 @@ GLOBAL_LIST_EMPTY(exploration_sites)
 	return adventure_event
 
 /datum/exploration_site/proc/generate_event(site_traits,event_root_type)
+	procstart = null
+	src.procstart = null
 	/// List of exploration event requirements indexed by type, .[/datum/exploration_site/a] = list("required"=list(trait),"blacklisted"=list(other_trait))
 	var/static/exploration_event_requirements_cache = list()
 	if(!length(exploration_event_requirements_cache))
@@ -117,6 +129,8 @@ GLOBAL_LIST_EMPTY(exploration_sites)
 	return new chosen_type()
 
 /datum/exploration_site/proc/build_exploration_event_requirements_cache()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/event_type in valid_subtypesof(/datum/exploration_event))
 		var/datum/exploration_event/event = event_type
@@ -125,6 +139,8 @@ GLOBAL_LIST_EMPTY(exploration_sites)
 		//Should be no event refs,GC'd naturally
 
 /datum/exploration_site/proc/add_event(datum/exploration_event/event)
+	procstart = null
+	src.procstart = null
 	events += event
 	/// Add up event band values to ours
 	for(var/band in event.band_values)
@@ -135,6 +151,8 @@ GLOBAL_LIST_EMPTY(exploration_sites)
 	return
 
 /datum/exploration_site/proc/on_drone_arrival(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	var/was_known_before = revealed
 	reveal()
 	if(!was_known_before)
@@ -143,12 +161,18 @@ GLOBAL_LIST_EMPTY(exploration_sites)
 		drone.drone_log("Arrived at [display_name()].")
 
 /datum/exploration_site/proc/reveal()
+	procstart = null
+	src.procstart = null
 	revealed = TRUE
 
 /datum/exploration_site/proc/display_name()
+	procstart = null
+	src.procstart = null
 	return revealed ? name : "Anomaly"
 
 /datum/exploration_site/proc/display_description()
+	procstart = null
+	src.procstart = null
 	if(!revealed)
 		return "No Data"
 	var/list/descriptions = list(description)
@@ -161,6 +185,8 @@ GLOBAL_LIST_EMPTY(exploration_sites)
 
 /// Data for ui_data, exploration
 /datum/exploration_site/proc/site_data(exploration=FALSE)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["ref"] = ref(src)
 	.["name"] = display_name()
@@ -180,6 +206,8 @@ GLOBAL_LIST_EMPTY(exploration_sites)
 
 /// Helper proc for exploration site listings in ui.
 /proc/build_exploration_site_ui_data()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/datum/exploration_site/site in GLOB.exploration_sites)
 		. += list(site.site_data())
@@ -200,6 +228,8 @@ GLOBAL_LIST_EMPTY(exploration_sites)
 	fluff_type = "fluff_trading"
 
 /datum/exploration_site/trader_post/New(band)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/chosen_name = pick_list(EXODRONE_FILE,"trading_station_names")
 	name = "\"[chosen_name]\" trading station"
@@ -224,6 +254,8 @@ GLOBAL_LIST_EMPTY(exploration_sites)
 	site_traits = list(EXPLORATION_SITE_SURFACE)
 
 /datum/exploration_site/uncharted_planet/New(band)
+	procstart = null
+	src.procstart = null
 	/// Planet Type, Atmosphere
 	var/list/planet_info = pick_list(EXODRONE_FILE,"planet_types")
 	name = planet_info["name"]

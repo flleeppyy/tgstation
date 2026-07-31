@@ -4,6 +4,8 @@
 	armor_flag = ENERGY
 
 /obj/projectile/energy/flora/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	if(!isliving(target))
 		return ..()
 
@@ -20,6 +22,8 @@
 
 /// Called when we hit a mob with plant biotype
 /obj/projectile/energy/flora/proc/on_hit_plant_effect(mob/living/hit_plant)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/projectile/energy/flora/mut
@@ -27,6 +31,8 @@
 	icon_state = "energy"
 
 /obj/projectile/energy/flora/mut/on_hit_plant_effect(mob/living/hit_plant)
+	procstart = null
+	src.procstart = null
 	if(prob(85))
 		hit_plant.adjust_fire_loss(rand(5, 15))
 		hit_plant.show_message(span_userdanger("The radiation beam singes you!"))
@@ -54,6 +60,8 @@
 	icon_state = "energy2"
 
 /obj/projectile/energy/flora/yield/on_hit_plant_effect(mob/living/hit_plant)
+	procstart = null
+	src.procstart = null
 	hit_plant.set_nutrition(min(hit_plant.nutrition + 30, NUTRITION_LEVEL_FULL))
 
 /obj/projectile/energy/flora/evolution
@@ -61,6 +69,8 @@
 	icon_state = "energy3"
 
 /obj/projectile/energy/flora/evolution/on_hit_plant_effect(mob/living/hit_plant)
+	procstart = null
+	src.procstart = null
 	hit_plant.show_message(span_notice("The radiation beam leaves you feeling disoriented!"))
 	hit_plant.set_dizzy_if_lower(30 SECONDS)
 	hit_plant.emote("flip")

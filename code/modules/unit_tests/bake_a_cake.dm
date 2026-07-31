@@ -2,6 +2,8 @@
  * Confirm that it is possible to bake a cake, get the food buff from a hand-made food and confirm that the reagents are consistent throughout the process
  */
 /datum/unit_test/bake_a_cake/Run()
+	procstart = null
+	src.procstart = null
 	var/turf/table_loc = run_loc_floor_bottom_left
 	var/turf/oven_loc = get_step(run_loc_floor_bottom_left, EAST)
 	var/turf/human_loc = get_step(run_loc_floor_bottom_left, NORTHEAST)

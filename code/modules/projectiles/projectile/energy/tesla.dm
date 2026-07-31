@@ -8,11 +8,15 @@
 	var/power = 1e4
 
 /obj/projectile/energy/tesla/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tesla_zap(source = src, zap_range = zap_range, power = power, cutoff = 1e3, zap_flags = zap_flags)
 	qdel(src)
 
 /obj/projectile/energy/tesla/process()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//Many coders have given their blood for this speed
 	tesla_zap(source = src, zap_range = zap_range, power = power, cutoff = 1e3, zap_flags = zap_flags)
@@ -34,6 +38,8 @@
 	var/shock_damage = 10
 
 /obj/projectile/energy/tesla_cannon/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	firer.Beam(target, icon_state = "tesla", time = 1, icon_state_variants = 24)
 

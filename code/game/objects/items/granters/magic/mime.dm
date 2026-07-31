@@ -6,6 +6,8 @@
 	book_sounds = list('sound/effects/space_wind.ogg')
 
 /obj/item/book/granter/action/spell/mime/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

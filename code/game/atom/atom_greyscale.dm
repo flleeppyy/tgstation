@@ -8,6 +8,8 @@
 /// The colors argument can be either a list or the full color string.
 /// Child procs should call parent last so the update happens after all changes.
 /atom/proc/set_greyscale(list/colors, new_config)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(istype(colors))
 		colors = colors.Join("")
@@ -21,6 +23,8 @@
 
 /// Checks if this atom uses the GAGS system and if so updates the icon
 /atom/proc/update_greyscale()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(greyscale_colors && greyscale_config)
 		icon = SSgreyscale.GetColoredIconByType(greyscale_config, greyscale_colors)

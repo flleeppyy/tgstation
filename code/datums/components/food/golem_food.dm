@@ -10,6 +10,8 @@
 	var/datum/callback/extra_validation
 
 /datum/component/golem_food/Initialize(consume_on_eat = TRUE, golem_food_key, datum/callback/extra_validation)
+	procstart = null
+	src.procstart = null
 	if (!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 	if (!golem_food_key || !is_path_in_list(golem_food_key, GLOB.golem_stack_food_directory))
@@ -21,15 +23,21 @@
 
 
 /datum/component/golem_food/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_ITEM_ATTACK, PROC_REF(on_attack))
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/component/golem_food/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ITEM_ATTACK, COMSIG_ATOM_EXAMINE))
 	return ..()
 
 /datum/component/golem_food/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(golem_snack)
 	snack_type = null
 	extra_validation = null
@@ -37,6 +45,8 @@
 
 /// Attempt to feed this item to golem
 /datum/component/golem_food/proc/on_attack(atom/source, mob/living/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (user.combat_mode || !HAS_TRAIT(target, TRAIT_ROCK_EATER))
 		return
@@ -53,6 +63,8 @@
 
 /// Creates our golem snack atom instance
 /datum/component/golem_food/proc/create_golem_snack(atom/source)
+	procstart = null
+	src.procstart = null
 	golem_snack = new(null)
 	golem_snack.setup(
 		name = source.name,
@@ -64,11 +76,15 @@
 
 /// Reference handling for abstract food object
 /datum/component/golem_food/proc/on_food_destroyed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	golem_snack = null
 
 /// Add extra examine text to people who have golem brains
 /datum/component/golem_food/proc/on_examine(datum/source, mob/user, list/examine_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!HAS_TRAIT(user, TRAIT_ROCK_METAMORPHIC))
 		return
@@ -103,15 +119,21 @@
 
 /// Clean ourselves up if our parent dies
 /obj/item/food/golem_food/proc/on_parent_destroyed(datum/destroyed_thing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /obj/item/food/golem_food/make_edible()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponentFrom(SOURCE_EDIBLE_INNATE, /datum/component/edible, after_eat = CALLBACK(src, PROC_REF(took_bite)), volume = INFINITY)
 
 /// Called when someone bites this food, subtract one charge from our material stack
 /obj/item/food/golem_food/proc/took_bite(mob/eater)
+	procstart = null
+	src.procstart = null
 	if (!owner)
 		qdel(src)
 		return

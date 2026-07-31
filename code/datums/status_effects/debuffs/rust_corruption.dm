@@ -5,6 +5,8 @@
 	remove_on_fullheal = TRUE
 
 /datum/status_effect/rust_corruption/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(issilicon(owner) || isbot(owner))
 		owner.adjust_brute_loss(10 * seconds_between_ticks)
 		return

@@ -46,6 +46,8 @@ GLOBAL_LIST_EMPTY(telecomm_machines)
 
 /// relay signal to all linked machinery that are of type [filter]. If signal has been sent [amount] times, stop sending
 /obj/machinery/telecomms/proc/relay_information(datum/signal/subspace/signal, filter, copysig, amount = 20)
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return
 
@@ -87,10 +89,14 @@ GLOBAL_LIST_EMPTY(telecomm_machines)
 
 /// Sends a signal directly to a machine.
 /obj/machinery/telecomms/proc/relay_direct_information(datum/signal/signal, obj/machinery/telecomms/machine)
+	procstart = null
+	src.procstart = null
 	machine.receive_information(signal, src)
 
 /// Receive information from linked machinery
 /obj/machinery/telecomms/proc/receive_information(datum/signal/signal, obj/machinery/telecomms/machine_from)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -99,15 +105,21 @@ GLOBAL_LIST_EMPTY(telecomm_machines)
  * Returns `TRUE` if found, `FALSE` if not.
  */
 /obj/machinery/telecomms/proc/is_freq_listening(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	return signal && (!length(freq_listening) || (signal.frequency in freq_listening))
 
 /obj/machinery/telecomms/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.telecomm_machines += src
 	if(mapload && autolinkers.len)
 		return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/telecomms/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/connected_zs = SSmapping.get_connected_levels(get_turf(src))
 	for(var/obj/machinery/telecomms/telecomms_machine as anything in GLOB.telecomm_machines)
@@ -121,6 +133,8 @@ GLOBAL_LIST_EMPTY(telecomm_machines)
 		add_new_link(telecomms_machine)
 
 /obj/machinery/telecomms/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.telecomm_machines -= src
 	for(var/obj/machinery/telecomms/comm as anything in GLOB.telecomm_machines)
 		remove_link(comm)
@@ -128,10 +142,14 @@ GLOBAL_LIST_EMPTY(telecomm_machines)
 	return ..()
 
 /obj/machinery/telecomms/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)][panel_open ? "_o" : null][on ? null : "_off"]"
 	return ..()
 
 /obj/machinery/telecomms/on_set_panel_open(old_value)
+	procstart = null
+	src.procstart = null
 	update_appearance()
 	return ..()
 
@@ -141,6 +159,8 @@ GLOBAL_LIST_EMPTY(telecomm_machines)
  * or it's EMP'd. Handles updating appearance based on that power change.
  */
 /obj/machinery/telecomms/proc/update_power()
+	procstart = null
+	src.procstart = null
 	var/old_on = on
 	if(toggled)
 		if(machine_stat & (BROKEN|NOPOWER|EMPED)) // if powered, on. if not powered, off. if too damaged, off
@@ -153,12 +173,16 @@ GLOBAL_LIST_EMPTY(telecomm_machines)
 		update_appearance()
 
 /obj/machinery/telecomms/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	update_power()
 
 	if(traffic > 0)
 		traffic -= netspeed * seconds_per_tick
 
 /obj/machinery/telecomms/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -169,4 +193,6 @@ GLOBAL_LIST_EMPTY(telecomm_machines)
 
 /// Handles the machine stopping being affected by an EMP.
 /obj/machinery/telecomms/proc/de_emp()
+	procstart = null
+	src.procstart = null
 	set_machine_stat(machine_stat & ~EMPED)

@@ -4,6 +4,8 @@
 	randomize = TRUE
 
 /datum/wires/rnd/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(
 		WIRE_HACK, WIRE_DISABLE,
 		WIRE_SHOCK
@@ -12,6 +14,8 @@
 	..()
 
 /datum/wires/rnd/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/obj/machinery/rnd/R = holder
@@ -19,6 +23,8 @@
 		return TRUE
 
 /datum/wires/rnd/get_status()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/rnd/R = holder
 	var/list/status = list()
 	status += "The red light is [R.disabled ? "off" : "on"]."
@@ -26,6 +32,8 @@
 	return status
 
 /datum/wires/rnd/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	var/obj/machinery/rnd/R = holder
 	switch(wire)
@@ -35,6 +43,8 @@
 			R.disabled = !R.disabled
 
 /datum/wires/rnd/on_cut(wire, mend, source)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/rnd/R = holder
 	switch(wire)
 		if(WIRE_HACK)

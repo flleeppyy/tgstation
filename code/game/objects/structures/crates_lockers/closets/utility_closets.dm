@@ -21,6 +21,8 @@
 	anchored = TRUE
 
 /obj/structure/closet/emcloset/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(SSstation, STATION_TRAIT_RADIOACTIVE_NEBULA) && prob(30))
 		new /obj/structure/closet/radiation(loc)
 		return INITIALIZE_HINT_QDEL
@@ -31,6 +33,8 @@
 		return INITIALIZE_HINT_QDEL
 
 /obj/structure/closet/emcloset/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 
 	if (prob(40))
@@ -69,6 +73,8 @@
 	icon_state = "fire"
 
 /obj/structure/closet/firecloset/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 
 	new /obj/item/clothing/suit/utility/fire/firefighter(src)
@@ -79,6 +85,8 @@
 	new /obj/item/crowbar/large/emergency(src)
 
 /obj/structure/closet/firecloset/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/suit/utility/fire/firefighter(src)
 	new /obj/item/clothing/mask/gas(src)
 	new /obj/item/flashlight(src)
@@ -97,6 +105,8 @@
 	icon_door = "eng_tool"
 
 /obj/structure/closet/toolcloset/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	if(prob(40))
 		new /obj/item/clothing/suit/hazardvest(src)
@@ -130,6 +140,8 @@
 
 
 /obj/structure/closet/toolcloset/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Since they're a traitor objective, they have to be generated immediately.
@@ -146,6 +158,8 @@
 	icon_door = "eng_rad"
 
 /obj/structure/closet/radiation/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/geiger_counter(src)
 	new /obj/item/clothing/suit/utility/radiation(src)
@@ -160,6 +174,8 @@
 	icon_state = "bomb"
 
 /obj/structure/closet/bombcloset/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/suit/utility/bomb_suit(src)
 	new /obj/item/clothing/under/color/black(src)
@@ -167,12 +183,16 @@
 	new /obj/item/clothing/head/utility/bomb_hood(src)
 
 /obj/structure/closet/bombcloset/security/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/suit/utility/bomb_suit/security(src)
 	new /obj/item/clothing/under/rank/security/officer(src)
 	new /obj/item/clothing/shoes/jackboots(src)
 	new /obj/item/clothing/head/utility/bomb_hood/security(src)
 
 /obj/structure/closet/bombcloset/white/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/suit/utility/bomb_suit/white(src)
 	new /obj/item/clothing/under/color/black(src)
 	new /obj/item/clothing/shoes/sneakers/black(src)

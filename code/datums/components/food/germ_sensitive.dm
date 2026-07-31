@@ -18,6 +18,8 @@ GLOBAL_LIST_INIT(floor_diseases, list(
 	var/infective = FALSE
 
 /datum/component/germ_sensitive/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(!isobj(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -44,6 +46,8 @@ GLOBAL_LIST_INIT(floor_diseases, list(
 		handle_movement()
 
 /datum/component/germ_sensitive/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(parent, TRAIT_GERM_SENSITIVE, REF(src))
 	UnregisterSignal(parent, list(
 		COMSIG_ATOM_ENTERED,
@@ -59,16 +63,22 @@ GLOBAL_LIST_INIT(floor_diseases, list(
 	))
 
 /datum/component/germ_sensitive/Destroy()
+	procstart = null
+	src.procstart = null
 	remove_timer()
 	return ..()
 
 /datum/component/germ_sensitive/proc/remove_timer()
+	procstart = null
+	src.procstart = null
 	if(!timer_id)
 		return
 	deltimer(timer_id)
 	timer_id = null
 
 /datum/component/germ_sensitive/proc/handle_movement()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/parent_object = parent
@@ -91,20 +101,28 @@ GLOBAL_LIST_INIT(floor_diseases, list(
 	timer_id = addtimer(CALLBACK(src, PROC_REF(expose_to_germs)), GERM_EXPOSURE_DELAY, TIMER_STOPPABLE | TIMER_UNIQUE)
 
 /datum/component/germ_sensitive/proc/picked_up()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SEND_SIGNAL(parent, COMSIG_ATOM_GERM_UNEXPOSED, src)
 	remove_timer()
 
 /datum/component/germ_sensitive/proc/dropped()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	handle_movement()
 
 /datum/component/germ_sensitive/proc/examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(infective)
 		examine_list += span_warning("[parent] looks dirty and not safe to consume.")
 
 /datum/component/germ_sensitive/proc/expose_to_germs()
+	procstart = null
+	src.procstart = null
 	// Admin spawned items are never exposed
 	var/atom/parent_atom = parent
 	if(parent_atom.flags_1 & ADMIN_SPAWNED_1)
@@ -120,6 +138,8 @@ GLOBAL_LIST_INIT(floor_diseases, list(
 	parent.AddComponent(/datum/component/infective, new random_disease, weak = TRUE)
 
 /datum/component/germ_sensitive/proc/delete_germs()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	. = NONE

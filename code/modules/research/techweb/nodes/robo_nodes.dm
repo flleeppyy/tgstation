@@ -54,6 +54,8 @@
 	announce_channels = list(RADIO_CHANNEL_SCIENCE)
 
 /datum/techweb_node/ai/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(SSstation, STATION_TRAIT_HUMAN_AI))
 		design_ids -= list(

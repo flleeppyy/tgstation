@@ -20,10 +20,14 @@
 
 
 /obj/item/circuit_component/laserpointer/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("Maximum Range: [max_range] tiles", "orange", "info")
 
 /obj/item/circuit_component/laserpointer/populate_options()
+	procstart = null
+	src.procstart = null
 	var/static/component_options = list(
 		"red",
 		"green",
@@ -34,12 +38,16 @@
 
 
 /obj/item/circuit_component/laserpointer/populate_ports()
+	procstart = null
+	src.procstart = null
 	target_input = add_input_port("Target", PORT_TYPE_ATOM)
 	image_pixel_x = add_input_port("X-Axis Shift", PORT_TYPE_NUMBER)
 	image_pixel_y = add_input_port("Y-Axis Shift", PORT_TYPE_NUMBER)
 
 
 /obj/item/circuit_component/laserpointer/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 
 	var/atom/target = target_input.value
 	var/atom/movable/shell = parent.shell

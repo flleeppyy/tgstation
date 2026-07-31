@@ -26,11 +26,15 @@ SUBSYSTEM_DEF(cameras)
 	var/list/current_run = list()
 
 /datum/controller/subsystem/cameras/Initialize()
+	procstart = null
+	src.procstart = null
 	update_offsets(SSmapping.max_plane_offset)
 	RegisterSignal(SSmapping, COMSIG_PLANE_OFFSET_INCREASE, PROC_REF(on_offset_growth))
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/cameras/fire(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!resumed)
 		src.current_run = chunks_to_update.Copy()
 		chunks_to_update = list()
@@ -44,11 +48,15 @@ SUBSYSTEM_DEF(cameras)
 			break
 
 /datum/controller/subsystem/cameras/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg = "Cams: [length(cameras)] | Chunks: [length(chunks)] | Updating: [length(chunks_to_update)]"
 	return ..()
 
 /// Updates the images for new plane offsets
 /datum/controller/subsystem/cameras/proc/update_offsets(new_offset)
+	procstart = null
+	src.procstart = null
 	for(var/i in length(obscured_images) to new_offset)
 		var/image/obscured = new('icons/effects/cameravis.dmi')
 		SET_PLANE_W_SCALAR(obscured, CAMERA_STATIC_PLANE, i)
@@ -57,11 +65,15 @@ SUBSYSTEM_DEF(cameras)
 		obscured_images += obscured
 
 /datum/controller/subsystem/cameras/proc/on_offset_growth(datum/source, old_offset, new_offset)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_offsets(new_offset)
 
 /// Checks if a chunk has been generated in x, y, z.
 /datum/controller/subsystem/cameras/proc/get_camera_chunk(x, y, z)
+	procstart = null
+	src.procstart = null
 	x = GET_CHUNK_COORD(x)
 	y = GET_CHUNK_COORD(y)
 	if(GET_LOWEST_STACK_OFFSET(z) != 0)
@@ -73,6 +85,8 @@ SUBSYSTEM_DEF(cameras)
 // Returns the chunk in the x, y, z.
 // If there is no chunk, it creates a new chunk and returns that.
 /datum/controller/subsystem/cameras/proc/generate_chunk(x, y, z)
+	procstart = null
+	src.procstart = null
 	x = GET_CHUNK_COORD(x)
 	y = GET_CHUNK_COORD(y)
 	var/turf/lowest = get_lowest_turf(locate(x, y, z))
@@ -85,6 +99,8 @@ SUBSYSTEM_DEF(cameras)
 /// Updates what the camera eye can see.
 /// It is recommended you use this when a camera eye moves or its location is set.
 /datum/controller/subsystem/cameras/proc/update_eye_chunk(mob/eye/camera/eye)
+	procstart = null
+	src.procstart = null
 	var/list/visibleChunks = list()
 	//Get the eye's turf in case its located in an object like a mecha
 	var/turf/eye_turf = get_turf(eye)
@@ -117,16 +133,22 @@ SUBSYSTEM_DEF(cameras)
 
 /// Updates the chunks that the turf is located in. Use this when obstacles are destroyed or when doors open.
 /datum/controller/subsystem/cameras/proc/update_visibility(atom/relevant_atom)
+	procstart = null
+	src.procstart = null
 	if(!SSticker)
 		return
 	major_chunk_change(relevant_atom, IGNORE_CAMERA)
 
 /// Removes a camera from a chunk.
 /datum/controller/subsystem/cameras/proc/remove_camera_from_chunk(obj/machinery/camera/old_cam)
+	procstart = null
+	src.procstart = null
 	major_chunk_change(old_cam, REMOVE_CAMERA)
 
 /// Add a camera to a chunk.
 /datum/controller/subsystem/cameras/proc/add_camera_to_chunk(obj/machinery/camera/new_cam)
+	procstart = null
+	src.procstart = null
 	if(new_cam.can_use())
 		major_chunk_change(new_cam, ADD_CAMERA)
 
@@ -136,6 +158,8 @@ SUBSYSTEM_DEF(cameras)
  * camera'd guy moving doesn't absolutely spam updates to watching ais (laggin the server)
 */
 /datum/controller/subsystem/cameras/proc/camera_moved(obj/machinery/camera/updating_camera, turf/old_turf, turf/new_turf, update_delay_buffer)
+	procstart = null
+	src.procstart = null
 	if(old_turf == new_turf)
 		return
 
@@ -191,6 +215,8 @@ SUBSYSTEM_DEF(cameras)
  * to change the time between static updates.
  */
 /datum/controller/subsystem/cameras/proc/major_chunk_change(atom/center_or_camera, choice = IGNORE_CAMERA, update_delay_buffer = 0)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	if(QDELETED(center_or_camera) && choice == ADD_CAMERA)
@@ -221,6 +247,8 @@ SUBSYSTEM_DEF(cameras)
 /// A faster, turf only version of [/datum/controller/subsystem/cameras/proc/major_chunk_change]
 /// For use in sensitive code, be careful with it
 /datum/controller/subsystem/cameras/proc/bare_major_chunk_change(turf/changed)
+	procstart = null
+	src.procstart = null
 	var/range_difference = MAX_CAMERA_RANGE + 1
 	var/x1 = max(1, changed.x - range_difference)
 	var/y1 = max(1, changed.y - range_difference)
@@ -234,11 +262,15 @@ SUBSYSTEM_DEF(cameras)
 /// Will check if an atom is on a viewable turf.
 /// Returns TRUE if the atom is visible by any camera, FALSE otherwise.
 /datum/controller/subsystem/cameras/proc/is_visible_by_cameras(atom/target)
+	procstart = null
+	src.procstart = null
 	return turf_visible_by_cameras(get_turf(target))
 
 /// Checks if the passed turf is visible by any camera.
 /// Returns TRUE if the turf is visible by any camera, FALSE otherwise.
 /datum/controller/subsystem/cameras/proc/turf_visible_by_cameras(turf/position)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	if(isnull(position))
 		return FALSE
@@ -253,6 +285,8 @@ SUBSYSTEM_DEF(cameras)
 /// Gets the camera chunk the passed turf is in.
 /// Returns the chunk if it exists and is visible, null otherwise.
 /datum/controller/subsystem/cameras/proc/get_turf_camera_chunk(turf/position)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/camerachunk)
 	var/datum/camerachunk/chunk = generate_chunk(position.x, position.y, position.z)
 	if(!chunk)
@@ -265,6 +299,8 @@ SUBSYSTEM_DEF(cameras)
 /// Returns list of available cameras, ready to use for UIs displaying list of them
 /// The format is: list("name" = "camera.c_tag", ref = REF(camera))
 /datum/controller/subsystem/cameras/proc/get_available_cameras_data(list/networks_available, list/z_levels_available)
+	procstart = null
+	src.procstart = null
 	var/list/available_cameras_data = list()
 	for(var/obj/machinery/camera/camera as anything in get_filtered_and_sorted_cameras(networks_available, z_levels_available))
 		available_cameras_data += list(list(
@@ -285,6 +321,8 @@ SUBSYSTEM_DEF(cameras)
  *  sort_by_ctag - If the resulting list should be sorted by `c_tag`.
  */
 /datum/controller/subsystem/cameras/proc/get_available_camera_by_tag_list(list/networks_available, list/z_levels_available)
+	procstart = null
+	src.procstart = null
 	var/list/available_cameras_by_tag = list()
 	for(var/obj/machinery/camera/camera as anything in get_filtered_and_sorted_cameras(networks_available, z_levels_available))
 		available_cameras_by_tag["[camera.c_tag][camera.can_use() ? null : " (Deactivated)"]"] = camera
@@ -293,6 +331,8 @@ SUBSYSTEM_DEF(cameras)
 
 /// Returns list of all cameras that passed `is_camera_available` filter and sorted by `cmp_camera_ctag_asc`
 /datum/controller/subsystem/cameras/proc/get_filtered_and_sorted_cameras(list/networks_available, list/z_levels_available)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/list/filtered_cameras = list()
@@ -306,6 +346,8 @@ SUBSYSTEM_DEF(cameras)
 
 /// Checks if the `camera_to_check` meets the requirements of availability.
 /datum/controller/subsystem/cameras/proc/is_camera_available(obj/machinery/camera/camera_to_check, list/networks_available, list/z_levels_available)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(!camera_to_check.c_tag)

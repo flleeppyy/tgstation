@@ -90,6 +90,8 @@
 
 
 /datum/component/avatar_connection/PostTransfer(datum/new_parent)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/netpod/pod = netpod_ref?.resolve()
 	if(isnull(pod))
 		return COMPONENT_INCOMPATIBLE
@@ -101,6 +103,8 @@
 
 
 /datum/component/avatar_connection/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(parent, TRAIT_TEMPORARY_BODY, REF(src))
 	/**
 	 * Things that cause safe disconnection:
@@ -115,6 +119,8 @@
 
 
 /datum/component/avatar_connection/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(parent, TRAIT_TEMPORARY_BODY, REF(src))
 	UnregisterSignal(parent, list(
 		COMSIG_BITRUNNER_ALERT_SEVER,
@@ -129,6 +135,8 @@
 
 /// Updates our avatar's ID to match our avatar's name.
 /datum/component/avatar_connection/proc/update_avatar_id()
+	procstart = null
+	src.procstart = null
 	var/mob/living/avatar = parent
 	var/obj/item/card/id/our_id = locate() in avatar.get_all_contents()
 	if(isnull(our_id))
@@ -143,6 +151,8 @@
 
 /// Disconnects the avatar and returns the mind to the old_body.
 /datum/component/avatar_connection/proc/full_avatar_disconnect(cause_damage = FALSE, datum/source)
+	procstart = null
+	src.procstart = null
 #ifndef UNIT_TESTS
 	return_to_old_body()
 #endif
@@ -161,6 +171,8 @@
 
 /// Triggers whenever the server gets a loot crate pushed to goal area
 /datum/component/avatar_connection/proc/on_domain_completed(datum/source, atom/entered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/avatar = parent
@@ -174,6 +186,8 @@
 
 /// Transfers damage from the avatar to the old_body
 /datum/component/avatar_connection/proc/on_linked_damage(datum/source, damage, damage_type, def_zone, blocked, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/carbon/old_body = old_body_ref?.resolve()
@@ -200,6 +214,8 @@
 
 /// Handles minds being swapped around in subsequent avatars
 /datum/component/avatar_connection/proc/on_mind_transfer(datum/mind/source, mob/living/previous_body)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/action/avatar_domain_info/action = locate() in previous_body.actions
@@ -211,6 +227,8 @@
 
 /// Triggers when someone starts prying open our netpod
 /datum/component/avatar_connection/proc/on_netpod_crowbar(datum/source, mob/living/intruder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/avatar = parent
@@ -226,6 +244,8 @@
 
 /// Triggers when the netpod is taking damage and is under 50%
 /datum/component/avatar_connection/proc/on_netpod_damaged(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/avatar = parent
@@ -240,6 +260,8 @@
 
 //if your bitrunning avatar somehow manages to acquire and consume a red pill, they will be ejected from the Matrix
 /datum/component/avatar_connection/proc/disconnect_if_red_pill(datum/source, obj/item/reagent_containers/applicator/pill/pill, mob/feeder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(pill.icon_state == "pill4")
 		full_avatar_disconnect()
@@ -247,6 +269,8 @@
 
 /// Triggers when a safe disconnect is called
 /datum/component/avatar_connection/proc/on_safe_disconnect(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	full_avatar_disconnect()
@@ -254,6 +278,8 @@
 
 /// Received message to sever connection
 /datum/component/avatar_connection/proc/on_sever_connection(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	full_avatar_disconnect(cause_damage = TRUE, source = source)
@@ -261,6 +287,8 @@
 
 /// Triggers when the server is shutting down
 /datum/component/avatar_connection/proc/on_shutting_down(datum/source, mob/living/hackerman)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/avatar = parent
@@ -276,6 +304,8 @@
 
 /// Triggers whenever an antag steps onto an exit turf and the server is emagged
 /datum/component/avatar_connection/proc/on_station_spawn(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/avatar = parent
@@ -291,6 +321,8 @@
 
 /// Server has spawned a ghost role threat
 /datum/component/avatar_connection/proc/on_threat_created(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/avatar = parent
@@ -305,6 +337,8 @@
 
 /// Returns the mind to the old body
 /datum/component/avatar_connection/proc/return_to_old_body()
+	procstart = null
+	src.procstart = null
 	var/datum/mind/old_mind = old_mind_ref?.resolve()
 	var/mob/living/old_body = old_body_ref?.resolve()
 	var/mob/living/avatar = parent

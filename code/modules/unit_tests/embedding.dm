@@ -1,6 +1,8 @@
 /datum/unit_test/embedding
 
 /datum/unit_test/embedding/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/victim = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/firer = allocate(/mob/living/carbon/human/consistent)
 	var/obj/projectile/bullet/c38/bullet = new(get_turf(firer))

@@ -6,6 +6,8 @@
 	var/closed
 
 /datum/color_matrix_editor/New(user, atom/_target = null)
+	procstart = null
+	src.procstart = null
 	owner = CLIENT_FROM_VAR(user)
 	if(islist(_target?.color))
 		current_color = _target.color
@@ -27,25 +29,35 @@
 	proxy_view.color = current_color
 
 /datum/color_matrix_editor/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(proxy_view)
 	return ..()
 
 /datum/color_matrix_editor/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_VAREDIT)
 
 /datum/color_matrix_editor/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["mapRef"] = proxy_view.assigned_map
 
 	return data
 
 /datum/color_matrix_editor/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["currentColor"] = current_color
 
 	return data
 
 /datum/color_matrix_editor/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ColorMatrixEditor")
@@ -53,6 +65,8 @@
 		proxy_view.display_to(owner.mob, ui.window)
 
 /datum/color_matrix_editor/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -65,19 +79,27 @@
 			SStgui.close_uis(src)
 
 /datum/color_matrix_editor/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	closed = TRUE
 
 /datum/color_matrix_editor/proc/on_confirm()
+	procstart = null
+	src.procstart = null
 	var/atom/target_atom = target?.resolve()
 	if(istype(target_atom))
 		target_atom.vv_edit_var("color", current_color)
 
 /datum/color_matrix_editor/proc/wait()
+	procstart = null
+	src.procstart = null
 	while(!closed)
 		stoplag(1)
 
 /client/proc/open_color_matrix_editor(atom/in_atom)
+	procstart = null
+	src.procstart = null
 	var/datum/color_matrix_editor/editor = new /datum/color_matrix_editor(src, in_atom)
 	editor.ui_interact(mob)
 	editor.wait()

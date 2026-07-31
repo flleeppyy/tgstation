@@ -1,5 +1,7 @@
 ///Override on subtype to add behaviour. Whatever happens when we are sabotaged
 /atom/proc/on_saboteur(datum/source, disrupt_duration)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(SEND_SIGNAL(src, COMSIG_ATOM_SABOTEUR_ACT, disrupt_duration) & COMSIG_SABOTEUR_SUCCESS) //Signal handles datums for the most part
 		return TRUE
@@ -17,6 +19,8 @@
 	var/disrupt_duration = 15 SECONDS
 
 /obj/projectile/energy/fisher/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/things_to_disrupt = list(target)
 	if(isliving(target))

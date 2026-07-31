@@ -10,17 +10,23 @@
 	var/datum/techweb/stored_research
 
 /obj/machinery/computer/rdservercontrol/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!CONFIG_GET(flag/no_default_techweb_link) && !stored_research)
 		CONNECT_TO_RND_SERVER_ROUNDSTART(stored_research, src)
 
 /obj/machinery/computer/rdservercontrol/multitool_act(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(tool.buffer) && istype(tool.buffer, /datum/techweb))
 		stored_research = tool.buffer
 		balloon_alert(user, "techweb connected")
 	return TRUE
 
 /obj/machinery/computer/rdservercontrol/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -29,6 +35,8 @@
 	return TRUE
 
 /obj/machinery/computer/rdservercontrol/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -36,6 +44,8 @@
 		ui.open()
 
 /obj/machinery/computer/rdservercontrol/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["server_connected"] = !!stored_research
@@ -63,6 +73,8 @@
 	return data
 
 /obj/machinery/computer/rdservercontrol/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE

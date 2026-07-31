@@ -18,11 +18,15 @@
 		providing no tracking functionality. Automatically deactivates ten minutes after the host's death."
 
 /obj/item/implant/beacon/is_shown_on_console(obj/machinery/computer/prisoner/management/console)
+	procstart = null
+	src.procstart = null
 	if(imp_in.stat == DEAD && imp_in.timeofdeath + lifespan_postmortem < world.time)
 		return FALSE
 	return TRUE
 
 /obj/item/implant/beacon/get_management_console_data()
+	procstart = null
+	src.procstart = null
 	var/list/info_shown = ..()
 
 	var/area/destination_area = get_area(imp_in)

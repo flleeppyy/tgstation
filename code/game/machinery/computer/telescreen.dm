@@ -16,6 +16,8 @@
 	generate_map_preview = FALSE
 
 /obj/machinery/computer/security/telescreen/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		find_and_mount_on_atom()
@@ -30,9 +32,13 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 2.5)
 
 /obj/machinery/computer/security/telescreen/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	new frame_type(loc)
 
 /obj/machinery/computer/security/telescreen/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = initial(icon_state)
 	if(machine_stat & BROKEN)
 		icon_state += "b"
@@ -55,10 +61,14 @@
 	var/icon_state_on = "entertainment"
 
 /obj/machinery/computer/security/telescreen/entertainment/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	context[SCREENTIP_CONTEXT_CTRL_LMB] = "Toggle mute button"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/computer/security/telescreen/entertainment/click_ctrl(mob/user)
+	procstart = null
+	src.procstart = null
 	balloon_alert(user, speakers.should_be_listening ? "muted" : "unmuted")
 	speakers.toggle_mute()
 	return CLICK_ACTION_SUCCESS
@@ -72,31 +82,43 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/security/telescreen/entertai
 	result_path = /obj/machinery/computer/security/telescreen/entertainment
 
 /obj/item/wallframe/telescreen/entertainment/Initialize(mapload, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transform.Scale(0.8)
 
 /obj/machinery/computer/security/telescreen/entertainment/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 	RegisterSignal(SSdcs, COMSIG_GLOB_NETWORK_BROADCAST_UPDATED, PROC_REF(on_network_broadcast_updated))
 	speakers = new(src)
 
 /obj/machinery/computer/security/telescreen/entertainment/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(SSdcs, COMSIG_GLOB_NETWORK_BROADCAST_UPDATED)
 	QDEL_NULL(speakers)
 	return ..()
 
 /obj/machinery/computer/security/telescreen/entertainment/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += length(network) ? span_notice("The TV is broadcasting something!") : span_notice("<i>There's nothing on TV.</i>")
 	. += span_notice("The volume is currently [speakers.should_be_listening ? "on" : "off"].")
 
 /obj/machinery/computer/security/telescreen/entertainment/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 // Snowflake ui status to allow mobs to watch TV from across the room,
 // but only allow adjacent mobs / tk users / silicon to change the channel
 /obj/machinery/computer/security/telescreen/entertainment/ui_status(mob/living/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(!can_watch_tv(user))
 		return UI_CLOSE
 	if(!isliving(user))
@@ -121,6 +143,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/security/telescreen/entertai
 	return UI_UPDATE
 
 /obj/machinery/computer/security/telescreen/entertainment/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(world.time <= usr.next_click + 1)
 		return // just so someone can't turn an auto clicker on and spam tvs
 
@@ -133,6 +157,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/security/telescreen/entertai
 	INVOKE_ASYNC(src, TYPE_PROC_REF(/atom, interact), usr)
 
 /obj/machinery/computer/security/telescreen/entertainment/proc/can_watch_tv(mob/living/watcher)
+	procstart = null
+	src.procstart = null
 	if(!is_operational)
 		return FALSE
 	if((watcher.sight & SEE_OBJS) || HAS_SILICON_ACCESS(watcher))
@@ -147,6 +173,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/security/telescreen/entertai
 
 /// Sets the monitor's icon to the selected state, and says an announcement
 /obj/machinery/computer/security/telescreen/entertainment/proc/notify(on, announcement)
+	procstart = null
+	src.procstart = null
 	if(on)
 		icon_screen = icon_state_on
 	else
@@ -157,6 +185,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/security/telescreen/entertai
 
 /// Adds a camera network ID to the entertainment monitor, and turns off the monitor if network list is empty
 /obj/machinery/computer/security/telescreen/entertainment/proc/on_network_broadcast_updated(datum/source, tv_show_id, is_show_active, announcement)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!network)
 		return
@@ -176,6 +206,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/security/telescreen/entertai
  * * announcement - Optional, what announcement to make when the show starts.
  */
 /proc/start_broadcasting_network(camera_net, announcement)
+	procstart = null
+	src.procstart = null
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NETWORK_BROADCAST_UPDATED, camera_net, TRUE, announcement)
 
 /**
@@ -185,6 +217,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/security/telescreen/entertai
  * * announcement - Optional, what announcement to make when the show ends.
  */
 /proc/stop_broadcasting_network(camera_net, announcement)
+	procstart = null
+	src.procstart = null
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NETWORK_BROADCAST_UPDATED, camera_net, FALSE, announcement)
 
 /**
@@ -199,6 +233,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/security/telescreen/entertai
  * Likewise, there's no way to differentiate off -> on and on -> off, unless you handle that yourself.
  */
 /proc/set_network_broadcast_status(camera_net, is_show_active, announcement)
+	procstart = null
+	src.procstart = null
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NETWORK_BROADCAST_UPDATED, camera_net, is_show_active, announcement)
 
 /obj/machinery/computer/security/telescreen/rd
@@ -523,6 +559,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/security/telescreen/deep_sto
 	id = "showtime_1"
 
 /obj/machinery/button/showtime/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(device)
 		var/obj/item/assembly/control/showtime/ours = device
@@ -553,6 +591,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/security/telescreen/deep_sto
 	)
 
 /obj/item/assembly/control/showtime/activate()
+	procstart = null
+	src.procstart = null
 	is_show_active = !is_show_active
 	say("The [tv_show_name] show has [is_show_active ? "begun" : "ended"]")
 	var/announcement = is_show_active ? pick(tv_starters) : pick(tv_enders)

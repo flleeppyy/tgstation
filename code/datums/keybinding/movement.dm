@@ -38,6 +38,8 @@
 	keybind_signal = COMSIG_KB_MOVEMENT_ZLEVEL_MOVEUP_DOWN
 
 /datum/keybinding/movement/zlevel_upwards/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -52,6 +54,8 @@
 	keybind_signal = COMSIG_KB_MOVEMENT_ZLEVEL_MOVEDOWN_DOWN
 
 /datum/keybinding/movement/zlevel_downwards/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

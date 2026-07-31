@@ -48,6 +48,8 @@
 	acid = 50
 
 /obj/item/construction/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spark_system = new(5, FALSE, src)
 	spark_system.attach(src)
@@ -56,11 +58,15 @@
 	update_appearance()
 
 /obj/item/construction/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(silo_mats)
 	return ..()
 
 ///An do_after() specially designed for rhd devices
 /obj/item/construction/proc/build_delay(mob/user, delay, atom/target)
+	procstart = null
+	src.procstart = null
 	if(delay <= 0)
 		return TRUE
 
@@ -69,21 +75,29 @@
 	return do_after(user, delay, target, extra_checks = CALLBACK(src, PROC_REF(blueprint_change)))
 
 /obj/item/construction/proc/blueprint_change()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	return !blueprint_changed
 
 ///used for examining the RCD and for its UI
 /obj/item/construction/proc/get_silo_iron()
+	procstart = null
+	src.procstart = null
 	if(silo_link && silo_mats.mat_container && !silo_mats.on_hold())
 		return silo_mats.mat_container.get_material_amount(/datum/material/iron) / SILO_USE_AMOUNT
 	return 0
 
 ///returns local matter units available. overridden by rcd borg to return power units available
 /obj/item/construction/proc/get_matter(mob/user)
+	procstart = null
+	src.procstart = null
 	return matter
 
 /obj/item/construction/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "It currently holds [get_matter(user)]/[max_matter] matter-units."
 	if(construction_upgrades & RCD_UPGRADE_SILO_LINK)
@@ -93,11 +107,15 @@
 			. += "Remote connection has iron in equivalent to [iron] RCD unit\s." //1 matter for 1 floor tile, as 4 tiles are produced from 1 iron
 
 /obj/item/construction/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(spark_system)
 	silo_mats = null
 	return ..()
 
 /obj/item/construction/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(istype(interacting_with, /obj/item/rcd_upgrade))
@@ -108,6 +126,8 @@
 	return ..()
 
 /obj/item/construction/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(istype(tool, /obj/item/rcd_upgrade))
@@ -119,6 +139,8 @@
 
 /// Installs an upgrade into the RCD checking if it is already installed, or if it is a banned upgrade
 /obj/item/construction/proc/install_upgrade(obj/item/rcd_upgrade/design_disk, mob/user)
+	procstart = null
+	src.procstart = null
 	if(design_disk.upgrade & construction_upgrades)
 		balloon_alert(user, "already installed!")
 		return FALSE
@@ -135,6 +157,8 @@
 
 /// Inserts matter into the RCD allowing it to build
 /obj/item/construction/proc/insert_matter(obj/item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(user))
 		return FALSE
 
@@ -158,6 +182,8 @@
 	return loaded
 
 /obj/item/construction/proc/loadwithsheets(obj/item/stack/the_stack, mob/user)
+	procstart = null
+	src.procstart = null
 	if(the_stack.matter_amount <= 0)
 		balloon_alert(user, "invalid sheets!")
 		return FALSE
@@ -172,11 +198,15 @@
 	return FALSE
 
 /obj/item/construction/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	playsound(loc, 'sound/effects/pop.ogg', 50, FALSE)
 	if(prob(20))
 		spark_system.start()
 
 /obj/item/construction/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(has_ammobar)
 		var/ratio = ceil((matter / max_matter) * ammo_sections)
@@ -192,6 +222,8 @@
  * * dry_run - if TRUE will only check if the amount of resource is available but will not use any
 */
 /obj/item/construction/proc/useResource(amount, mob/user, dry_run = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!silo_mats || !silo_link)
 		if(matter < amount)
 			if(has_ammobar)
@@ -218,12 +250,16 @@
 	return dry_run ? TRUE : amount
 
 /obj/item/construction/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	.["silo_upgraded"] = !!(construction_upgrades & RCD_UPGRADE_SILO_LINK)
 
 ///shared data for rcd,rld & plumbing
 /obj/item/construction/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	//matter in the rcd
@@ -237,6 +273,8 @@
 	return data
 
 /obj/item/construction/proc/toggle_silo(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!silo_mats)
 		to_chat(user, span_warning("no remote storage connection."))
 		return FALSE
@@ -251,6 +289,8 @@
 
 ///shared action for toggling silo link rcd,rld & plumbing
 /obj/item/construction/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -266,9 +306,13 @@
 
 /// overwrite to insert custom ui handling for subtypes
 /obj/item/construction/proc/handle_ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/item/construction/proc/range_check(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(target.z != user.z)
 		return
 	if(!(target in dview(7, get_turf(user))))
@@ -286,6 +330,8 @@
  * * remote_anchor The remote anchor for the menu
  */
 /obj/item/construction/proc/check_menu(mob/living/user, remote_anchor)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated)

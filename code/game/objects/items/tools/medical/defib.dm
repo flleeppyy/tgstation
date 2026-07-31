@@ -49,21 +49,29 @@
 	acid = 50
 
 /obj/item/defibrillator/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
-/obj/item/defibrillator/Initialize(mapload) //starts without a cell for rnd
+/obj/item/defibrillator/Initialize(mapload)
+	procstart = null
+	src.procstart = null //starts without a cell for rnd
 	. = ..()
 	paddles = new paddle_type(src)
 	update_power()
 	RegisterSignal(paddles, COMSIG_DEFIBRILLATOR_SUCCESS, PROC_REF(on_defib_success))
 	AddElement(/datum/element/drag_pickup)
 
-/obj/item/defibrillator/loaded/Initialize(mapload) //starts with hicap
+/obj/item/defibrillator/loaded/Initialize(mapload)
+	procstart = null
+	src.procstart = null //starts with hicap
 	. = ..()
 	cell = new(src)
 	update_power()
 
 /obj/item/defibrillator/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!cell_removable)
 		return
@@ -73,16 +81,22 @@
 		. += span_warning("It has no power cell!")
 
 /obj/item/defibrillator/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(paddles?.loc == src)
 		paddles.fire_act(exposed_temperature, exposed_volume)
 
 /obj/item/defibrillator/extinguish()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(paddles?.loc == src)
 		paddles.extinguish()
 
 /obj/item/defibrillator/proc/update_power()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(cell))
 		if(QDELETED(paddles) || cell.charge < paddles.revivecost)
 			powered = FALSE
@@ -95,6 +109,8 @@
 		loc.update_appearance()
 
 /obj/item/defibrillator/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!on && paddle_state)
@@ -111,15 +127,21 @@
 		. += emagged_state
 
 /obj/item/defibrillator/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cell = locate(/obj/item/stock_parts/power_store) in contents
 	update_power()
 
 /obj/item/defibrillator/ui_action_click(mob/user, actiontype)
+	procstart = null
+	src.procstart = null
 	INVOKE_ASYNC(src, PROC_REF(toggle_paddles), user)
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/defibrillator/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(loc == user)
 		if(user.get_slot_by_item(src) & slot_flags)
 			ui_action_click(user, modifiers)
@@ -131,6 +153,8 @@
 	return ..()
 
 /obj/item/defibrillator/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!cell || !cell_removable)
 		return FALSE
 
@@ -142,6 +166,8 @@
 	return TRUE
 
 /obj/item/defibrillator/item_interaction(mob/living/user, obj/item/item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(item == paddles)
 		toggle_paddles(user)
 		return NONE
@@ -164,6 +190,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/defibrillator/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 
 	safety = !safety
 
@@ -173,6 +201,8 @@
 	return TRUE
 
 /obj/item/defibrillator/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cell && !(. & EMP_PROTECT_CONTENTS))
 		deductcharge(STANDARD_CELL_CHARGE / severity)
@@ -182,6 +212,8 @@
 	update_power()
 
 /obj/item/defibrillator/proc/toggle_paddles(mob/living/user)
+	procstart = null
+	src.procstart = null
 	on = !on
 	if(on)
 		//Detach the paddles into the user's hands
@@ -199,18 +231,24 @@
 
 
 /obj/item/defibrillator/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!(slot_flags & slot))
 		remove_paddles(user)
 		update_power()
 
-/obj/item/defibrillator/proc/remove_paddles(mob/user) //this fox the bug with the paddles when other player stole you the defib when you have the paddles equiped
+/obj/item/defibrillator/proc/remove_paddles(mob/user)
+	procstart = null
+	src.procstart = null //this fox the bug with the paddles when other player stole you the defib when you have the paddles equiped
 	if(ismob(paddles.loc))
 		var/mob/M = paddles.loc
 		M.dropItemToGround(paddles, TRUE)
 	return
 
 /obj/item/defibrillator/Destroy()
+	procstart = null
+	src.procstart = null
 	if(on)
 		var/M = get(paddles, /mob)
 		remove_paddles(M)
@@ -219,6 +257,8 @@
 	return ..()
 
 /obj/item/defibrillator/proc/deductcharge(chrgdeductamt)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(cell))
 		return
 
@@ -230,9 +270,13 @@
 	update_power()
 
 /obj/item/defibrillator/proc/cooldowncheck()
+	procstart = null
+	src.procstart = null
 	addtimer(CALLBACK(src, PROC_REF(finish_charging)), cooldown_duration)
 
 /obj/item/defibrillator/proc/finish_charging()
+	procstart = null
+	src.procstart = null
 	if(cell)
 		if(cell.charge >= paddles.revivecost)
 			visible_message(span_notice("[src] beeps: Unit ready."))
@@ -245,6 +289,8 @@
 	update_power()
 
 /obj/item/defibrillator/proc/on_defib_success(obj/item/shockpaddles/source)
+	procstart = null
+	src.procstart = null
 	deductcharge(source.revivecost)
 	source.cooldown = TRUE
 	cooldowncheck()
@@ -266,6 +312,8 @@
 	emagged_state = "defibcompact-emagged"
 
 /obj/item/defibrillator/compact/loaded/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cell = new(src)
 	update_power()
@@ -293,6 +341,8 @@
 	cell_removable = FALSE // Don't let people just have an infinite power cell
 
 /obj/item/defibrillator/compact/combat/loaded/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cell = new /obj/item/stock_parts/power_store/cell/infinite(src)
 	update_power()
@@ -333,16 +383,22 @@
 	var/combat = FALSE //If it penetrates armor and gives additional functionality
 
 /obj/item/shockpaddles/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_BACK)
 	AddComponent(/datum/component/two_handed, force_unwielded=8, force_wielded=12)
 	RegisterSignal(src, COMSIG_HUMAN_NON_STORAGE_HOTKEY, PROC_REF(on_non_storage_hotkey))
 
 /obj/item/shockpaddles/Destroy()
+	procstart = null
+	src.procstart = null
 	defib = null
 	return ..()
 
 /obj/item/shockpaddles/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!req_defib)
 		return
@@ -350,15 +406,21 @@
 	RegisterSignal(defib, COMSIG_MOVABLE_MOVED, PROC_REF(check_range))
 
 /obj/item/shockpaddles/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	check_range()
 
 /obj/item/shockpaddles/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((req_defib && defib) && loc != defib)
 		defib.fire_act(exposed_temperature, exposed_volume)
 
 /obj/item/shockpaddles/proc/check_range()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!req_defib || !defib)
@@ -372,6 +434,8 @@
 		snap_back()
 
 /obj/item/shockpaddles/proc/recharge(time = 0)
+	procstart = null
+	src.procstart = null
 	if(req_defib)
 		return
 	cooldown = TRUE
@@ -379,6 +443,8 @@
 	addtimer(CALLBACK(src, PROC_REF(finish_recharge)), time)
 
 /obj/item/shockpaddles/proc/finish_recharge()
+	procstart = null
+	src.procstart = null
 	var/turf/current_turf = get_turf(src)
 	current_turf.audible_message(span_notice("[src] beeps: Unit is recharged."))
 	playsound(src, 'sound/machines/defib/defib_ready.ogg', 50, FALSE)
@@ -386,6 +452,8 @@
 	update_appearance()
 
 /obj/item/shockpaddles/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_STORAGE_INSERT, TRAIT_GENERIC) //stops shockpaddles from being inserted in BoH
 	if(!req_defib)
@@ -397,6 +465,8 @@
 	update_appearance()
 
 /obj/item/shockpaddles/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_danger("[user] is putting the live paddles on [user.p_their()] chest! It looks like [user.p_theyre()] trying to commit suicide!"))
 	if(req_defib)
 		defib.deductcharge(revivecost)
@@ -404,6 +474,8 @@
 	return OXYLOSS
 
 /obj/item/shockpaddles/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][HAS_TRAIT(src, TRAIT_WIELDED)]"
 	inhand_icon_state = icon_state
 	if(cooldown)
@@ -411,6 +483,8 @@
 	return ..()
 
 /obj/item/shockpaddles/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!req_defib)
 		return ..()
 	UnregisterSignal(defib, COMSIG_MOVABLE_MOVED)
@@ -421,6 +495,8 @@
 	return ..()
 
 /obj/item/shockpaddles/proc/snap_back()
+	procstart = null
+	src.procstart = null
 	if(!defib)
 		return
 	defib.on = FALSE
@@ -428,6 +504,8 @@
 	defib.update_power()
 
 /obj/item/shockpaddles/attack(mob/M, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(busy)
 		return
 	defib?.update_power()
@@ -476,6 +554,8 @@
 
 /// Called whenever the paddles successfully shock something
 /obj/item/shockpaddles/proc/do_success()
+	procstart = null
+	src.procstart = null
 	if(busy)
 		busy = FALSE
 
@@ -486,12 +566,16 @@
 
 /// Called whenever the paddles fail to shock something after a do_x proc
 /obj/item/shockpaddles/proc/do_cancel()
+	procstart = null
+	src.procstart = null
 	if(busy)
 		busy = FALSE
 
 	update_appearance()
 
 /obj/item/shockpaddles/proc/shock_pulling(dmg, mob/H)
+	procstart = null
+	src.procstart = null
 	if(isliving(H.pulledby)) //CLEAR!
 		var/mob/living/M = H.pulledby
 		if(M.electrocute_act(dmg, H))
@@ -499,6 +583,8 @@
 			M.emote("scream")
 
 /obj/item/shockpaddles/proc/do_disarm(mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!DEFIB_CAN_HURT(src))
 		return
 	busy = TRUE
@@ -515,6 +601,8 @@
 	do_success()
 
 /obj/item/shockpaddles/proc/do_harm(mob/living/carbon/H, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!DEFIB_CAN_HURT(src))
 		return
 	user.visible_message(span_warning("[user] begins to place [src] on [H]'s chest."),
@@ -558,6 +646,8 @@
 	do_cancel()
 
 /obj/item/shockpaddles/proc/do_help(mob/living/carbon/H, mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_warning("[user] begins to place [src] on [H]'s chest."), span_warning("You begin to place [src] on [H]'s chest..."))
 	busy = TRUE
 	update_appearance()
@@ -665,9 +755,13 @@
 	do_cancel()
 
 /obj/item/shockpaddles/proc/is_wielded()
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(src, TRAIT_WIELDED)
 
 /obj/item/shockpaddles/proc/on_non_storage_hotkey(datum/source,  mob/living/carbon/human/user, obj/item/possible_storage)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(possible_storage == defib)
 		user.dropItemToGround(src)
@@ -682,6 +776,8 @@
 	req_defib = FALSE
 
 /obj/item/shockpaddles/cyborg/attack(mob/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(user))
 		var/mob/living/silicon/robot/R = user
 		if(R.emagged)

@@ -2,6 +2,8 @@
 /datum/cinematic/malf
 
 /datum/cinematic/malf/play_cinematic()
+	procstart = null
+	src.procstart = null
 	flick("intro_malf", screen)
 	stoplag(7.6 SECONDS)
 	flick("station_explode_fade_red", screen)

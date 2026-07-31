@@ -1,5 +1,7 @@
 ///Gets the centcom bans of the given ckey.
 /datum/admins/proc/open_centcom_bans(ckey)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_ADMIN))
 		return
 
@@ -64,6 +66,8 @@
 
 ///Returns the amount of permabans they have on centcom.
 /datum/admins/proc/check_centcom_permabans(ckey)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_ADMIN))
 		return
 

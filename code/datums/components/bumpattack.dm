@@ -19,6 +19,8 @@
 	var/attack_cooldown = CLICK_CD_MELEE
 
 /datum/component/bumpattack/Initialize(valid_inventory_slot, obj/item/proxy_weapon)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 	src.valid_inventory_slot = valid_inventory_slot
@@ -27,13 +29,19 @@
 	return ..()
 
 /datum/component/bumpattack/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(check_equip))
 	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(check_drop))
 
 /datum/component/bumpattack/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED))
 
 /datum/component/bumpattack/proc/check_equip(obj/item/source, mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!user) // iunno, thoroughness
 		return
@@ -43,10 +51,14 @@
 		deactivate()
 
 /datum/component/bumpattack/proc/check_drop(datum/source, mob/living/dropper)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	deactivate()
 
 /datum/component/bumpattack/proc/activate(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return
 	active = TRUE
@@ -54,12 +66,16 @@
 	RegisterSignal(user, COMSIG_LIVING_MOB_BUMP, PROC_REF(check_bump))
 
 /datum/component/bumpattack/proc/deactivate()
+	procstart = null
+	src.procstart = null
 	active = FALSE
 	if(wearer)
 		UnregisterSignal(wearer, COMSIG_LIVING_MOB_BUMP)
 	wearer = null
 
 /datum/component/bumpattack/proc/check_bump(mob/living/bumper, mob/living/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/item/our_weapon = proxy_weapon || parent
 	if(!istype(our_weapon))

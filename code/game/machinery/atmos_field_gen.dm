@@ -37,6 +37,8 @@
 	acid = 50
 
 /obj/machinery/atmos_shield_gen/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 	AddElement(/datum/element/simple_rotation)
@@ -46,16 +48,22 @@
 		return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/atmos_shield_gen/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	process_early() // not risking processing falling behind and letting gas out
 
 /obj/machinery/atmos_shield_gen/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(fields)
 	master?.turn_off()
 	master = null
 	return ..()
 
 /obj/machinery/atmos_shield_gen/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 
 	if(!isnull(held_item))
@@ -76,6 +84,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/atmos_shield_gen/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. += ..()
 	if(!in_range(user, src) && !isobserver(user))
 		return
@@ -91,6 +101,8 @@
 		. += span_notice("It can be [EXAMINE_HINT("pried")] apart.")
 
 /obj/machinery/atmos_shield_gen/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/stock_part/capacitor/capacitor = locate() in component_parts
 	active_power_usage = initial(active_power_usage) / capacitor.tier // 0.25kw per tile at tier 4
@@ -98,6 +110,8 @@
 	max_range = laser.tier + 2
 
 /obj/machinery/atmos_shield_gen/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & NOPOWER)
 		return
@@ -107,18 +121,24 @@
 	. += emissive_appearance(icon, on == GENERATOR_ACTIVE ? "active" : "wantpower", src, alpha = src.alpha)
 
 /obj/machinery/atmos_shield_gen/screwdriver_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!panel_open && locked)
 		balloon_alert(user, "locked!")
 		return ITEM_INTERACT_FAILURE
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/atmos_shield_gen/crowbar_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(on)
 		balloon_alert(user, "turn off first!")
 		return ITEM_INTERACT_FAILURE
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/atmos_shield_gen/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(on)
 		balloon_alert(user, "turn off first!")
 		return ITEM_INTERACT_FAILURE
@@ -130,6 +150,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/atmos_shield_gen/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!anchored)
 		balloon_alert(user, "not anchored!")
@@ -140,6 +162,8 @@
 	toggle(user)
 
 /obj/machinery/atmos_shield_gen/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -151,6 +175,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/atmos_shield_gen/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	add_fingerprint(user)
 	if(is_wire_tool(tool) && panel_open)
@@ -162,6 +188,8 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/atmos_shield_gen/process_early()
+	procstart = null
+	src.procstart = null
 	if(on == GENERATOR_ACTIVE && !powered())
 		turn_off(power_failure = TRUE)
 	else if(on == GENERATOR_WANTPOWER && powered())
@@ -207,6 +235,8 @@
 		fields += new /obj/effect/atmos_shield(line_turf, src)
 
 /obj/machinery/atmos_shield_gen/proc/toggle(mob/user)
+	procstart = null
+	src.procstart = null
 	if(on)
 		turn_off()
 	else
@@ -216,6 +246,8 @@
 		balloon_alert(user, "turned [on ? "on" : "off"]")
 
 /obj/machinery/atmos_shield_gen/proc/turn_off(power_failure = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return
 	if(power_failure)
@@ -230,6 +262,8 @@
 
 /// Changes our master variable and (un)registers signals. Does not check whether active and stuff. Will activate generator if new_master is not null
 /obj/machinery/atmos_shield_gen/proc/change_master(new_master)
+	procstart = null
+	src.procstart = null
 	if(master == new_master)
 		return
 	if(!isnull(master) && master != new_master)
@@ -245,19 +279,29 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/atmos_shield_gen/proc/master_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	turn_off()
 
 /obj/machinery/atmos_shield_gen/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/atmos_shield_gen/attack_ai_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand_secondary(user)
 
 /obj/machinery/atmos_shield_gen/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/atmos_shield_gen/attack_robot_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand_secondary(user)
 
 /obj/machinery/atmos_shield_gen/active
@@ -287,6 +331,8 @@
 	var/obj/machinery/atmos_shield_gen/owner
 
 /obj/effect/atmos_shield/Initialize(mapload, owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.owner = owner
 	QUEUE_SMOOTH(src)
@@ -297,29 +343,43 @@
 	AddElement(/datum/element/give_turf_traits, string_list(list(TRAIT_FIREDOOR_STOP)))
 
 /obj/effect/atmos_shield/block_superconductivity()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/effect/atmos_shield/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance(icon, icon_state, src, alpha = src.alpha)
 
 /obj/effect/atmos_shield/Destroy(force)
+	procstart = null
+	src.procstart = null
 	owner = null
 	return ..()
 
 /obj/effect/atmos_shield/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	owner?.turn_off()
 	return ..()
 
 /obj/effect/atmos_shield/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	owner?.turn_off()
 	qdel(src)
 
 /obj/effect/atmos_shield/singularity_act()
+	procstart = null
+	src.procstart = null
 	owner?.turn_off()
 	qdel(src)
 
 /obj/effect/atmos_shield/proc/turf_changed(datum/source, path, new_baseturfs, flags, post_change_callback)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(ispath(path, /turf/closed))
 		atom_destruction(ENERGY)

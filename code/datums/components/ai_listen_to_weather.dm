@@ -8,19 +8,27 @@
 	var/weather_key
 
 /datum/component/ai_listen_to_weather/Initialize(weather_type = /datum/weather/particle/ash_storm, weather_key = BB_STORM_APPROACHING)
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 	src.weather_type = weather_type
 	src.weather_key = weather_key
 
 /datum/component/ai_listen_to_weather/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(SSdcs, COMSIG_WEATHER_START(weather_type), PROC_REF(storm_start))
 	RegisterSignal(SSdcs, COMSIG_WEATHER_END(weather_type), PROC_REF(storm_end))
 
 /datum/component/ai_listen_to_weather/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(SSdcs, list(COMSIG_WEATHER_START(weather_type), COMSIG_WEATHER_END(weather_type)))
 
 /datum/component/ai_listen_to_weather/proc/storm_start()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/basic/source = parent
@@ -30,6 +38,8 @@
 	source.ai_controller.set_blackboard_key(weather_key, TRUE)
 
 /datum/component/ai_listen_to_weather/proc/storm_end()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/basic/source = parent

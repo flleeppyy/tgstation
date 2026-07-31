@@ -12,6 +12,8 @@
 	normal_floor_required = TRUE
 
 /datum/unit_test/frame_stacking/Run()
+	procstart = null
+	src.procstart = null
 	// First test - RCDs stacking frames.
 	var/obj/item/construction/rcd/rcd = allocate(/obj/item/construction/rcd/combat/admin)
 	var/mob/living/carbon/human/engineer = allocate(/mob/living/carbon/human/consistent)

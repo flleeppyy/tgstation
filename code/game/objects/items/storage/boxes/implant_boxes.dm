@@ -5,6 +5,8 @@
 	illustration = "implant"
 
 /obj/item/storage/box/trackimp/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/implantcase/tracking = 4,
 		/obj/item/implanter = 1,
@@ -19,6 +21,8 @@
 	illustration = "implant"
 
 /obj/item/storage/box/minertracker/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/implantcase/tracking = 2,
 		/obj/item/implantcase/beacon = 2,
@@ -35,6 +39,8 @@
 	illustration = "implant"
 
 /obj/item/storage/box/minerdeathrattle/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/static/items_inside = list(
 		/obj/item/implantcase/deathrattle/lavaland = 5, // 3 miners 1 QM/paramed/etc, 1 for saving config, presumably
 		/obj/item/implanter = 1,
@@ -48,6 +54,8 @@
 	illustration = "implant"
 
 /obj/item/storage/box/chemimp/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/implantcase/chem = 5,
 		/obj/item/implanter = 1,
@@ -61,6 +69,8 @@
 	illustration = "implant"
 
 /obj/item/storage/box/exileimp/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/implantcase/exile = 5,
 		/obj/item/implanter = 1,
@@ -75,6 +85,8 @@
 	illustration = "implant"
 
 /obj/item/storage/box/beaconimp/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/implantcase/beacon = 3,
 		/obj/item/implanter = 1,
@@ -88,6 +100,8 @@
 	illustration = "implant"
 
 /obj/item/storage/box/teleport_blocker/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/implantcase/teleport_blocker = 2,
 		/obj/item/implanter = 1,
@@ -102,6 +116,8 @@
 	icon_state = "cyber_implants"
 
 /obj/item/storage/box/cyber_implants/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/autosurgeon/syndicate/xray_eyes(src)
 	new /obj/item/autosurgeon/syndicate/anti_stun(src)
 	new /obj/item/autosurgeon/syndicate/reviver(src)

@@ -16,6 +16,8 @@
 	VAR_PRIVATE/atom/tracked_target
 
 /datum/bt_node/ai_behavior/move_to_target/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[target_key]
 	if(QDELETED(target))
 		return FALSE
@@ -27,10 +29,14 @@
 	return TRUE
 
 /datum/bt_node/ai_behavior/move_to_target/proc/on_movement_failed(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	movement_failed = TRUE
 
 /datum/bt_node/ai_behavior/move_to_target/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(movement_failed)
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED
 	var/atom/target = controller.blackboard[target_key]
@@ -46,6 +52,8 @@
 	return AI_BEHAVIOR_INSTANT
 
 /datum/bt_node/ai_behavior/move_to_target/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(controller.pawn, COMSIG_MOB_AI_MOVEMENT_FAILED)
 	movement_failed = FALSE
 	tracked_target = null

@@ -6,6 +6,8 @@
 	var/target_layer = ABOVE_LYING_MOB_LAYER
 
 /datum/element/above_mob_drop/Attach(datum/target, target_layer = ABOVE_LYING_MOB_LAYER)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!ismovable(target))
 		return ELEMENT_INCOMPATIBLE
@@ -15,6 +17,8 @@
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved))
 
 /datum/element/above_mob_drop/proc/on_moved(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (source.layer == target_layer)
 		source.layer = initial(source.layer)

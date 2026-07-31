@@ -1,6 +1,8 @@
 
 
 /mob/living/carbon/alien/adult/attack_hulk(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -15,6 +17,8 @@
 	to_chat(user, span_danger("You [hitverb] [src]!"))
 
 /mob/living/carbon/alien/adult/attack_hand(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -39,6 +43,8 @@
 		to_chat(user, span_warning("Your punch misses [src]!"))
 
 /mob/living/carbon/alien/adult/do_attack_animation(atom/A, visual_effect_icon, obj/item/used_item, no_effect)
+	procstart = null
+	src.procstart = null
 	if(!no_effect && !visual_effect_icon)
 		visual_effect_icon = ATTACK_EFFECT_CLAW
 	..()

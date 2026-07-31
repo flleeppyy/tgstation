@@ -33,6 +33,8 @@
 	var/open_throwforce = 20
 
 /obj/item/melee/cleaving_saw/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/transforming, \
@@ -48,22 +50,30 @@
 	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
 /obj/item/melee/cleaving_saw/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It is [HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE) ? "open, will cleave enemies in a wide arc and deal additional damage to fauna":"closed, and can be used for rapid consecutive attacks that cause fauna to bleed"].")
 	. += span_notice("Both modes will build up existing bleed effects, doing a burst of high damage if the bleed is built up high enough.")
 	. += span_notice("Transforming it immediately after an attack causes the next attack to come out faster.")
 
 /obj/item/melee/cleaving_saw/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is [HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE) ? "closing [src] on [user.p_their()] neck" : "opening [src] into [user.p_their()] chest"]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	attack_self(user)
 	return BRUTELOSS
 
 /obj/item/melee/cleaving_saw/melee_attack_chain(mob/user, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		user.changeNext_move(CLICK_CD_MELEE * 0.5) //when closed, it attacks very rapidly
 
 /obj/item/melee/cleaving_saw/attack(mob/living/target, mob/living/carbon/human/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	var/is_open = HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE)
 	if(!is_open || swiping || !target.density || get_turf(target) == get_turf(user))
 		for(var/found_faction in target.get_faction())
@@ -94,6 +104,8 @@
  * target - the mob being attacked
  */
 /obj/item/melee/cleaving_saw/proc/nemesis_effects(mob/living/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(istype(target, /mob/living/simple_animal/hostile/asteroid/elite))
 		return
 	var/datum/status_effect/stacking/saw_bleed/existing_bleed = target.has_status_effect(/datum/status_effect/stacking/saw_bleed)
@@ -108,6 +120,8 @@
  * Gives feedback and makes the nextmove after transforming much quicker.
  */
 /obj/item/melee/cleaving_saw/proc/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	user.changeNext_move(CLICK_CD_MELEE * 0.25)
@@ -134,6 +148,8 @@
 
 //best butchering tool
 /obj/item/knife/hunting/wildhunter/set_butchering()
+	procstart = null
+	src.procstart = null
 	AddComponent(\
 		/datum/component/butchering, \
 		speed = 1.5 SECONDS , \
@@ -142,10 +158,14 @@
 	)
 
 /obj/item/knife/hunting/wildhunter/make_stabby()
+	procstart = null
+	src.procstart = null
 	return
 
 //cut those trophies
 /obj/item/knife/hunting/wildhunter/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(interacting_with, /obj/item/crusher_trophy))
 		return NONE
 	var/obj/item/crusher_trophy/trophy = interacting_with

@@ -4,6 +4,8 @@ ADMIN_VERB(message_pda, R_ADMIN, "PDA Message", "Send a message to a user's PDA.
 
 ///Opens up the PDA Message Panel
 /datum/admins/proc/message_pda()
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_ADMIN))
 		return
 
@@ -18,15 +20,21 @@ ADMIN_VERB(message_pda, R_ADMIN, "PDA Message", "Send a message to a user's PDA.
 /datum/admin_pda_panel
 
 /datum/admin_pda_panel/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AdminPDA")
 		ui.open()
 
 /datum/admin_pda_panel/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_ADMIN)
 
 /datum/admin_pda_panel/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/available_messengers = list()
 	for(var/datum/computer_file/program/messenger/messenger as anything in GLOB.pda_messengers_by_name)
@@ -39,6 +47,8 @@ ADMIN_VERB(message_pda, R_ADMIN, "PDA Message", "Send a message to a user's PDA.
 	return data
 
 /datum/admin_pda_panel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 

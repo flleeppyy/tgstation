@@ -6,6 +6,8 @@
 /datum/bt_node/ai_behavior/change_slime_face
 
 /datum/bt_node/ai_behavior/change_slime_face/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(!prob(5))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED
 
@@ -38,6 +40,8 @@
 /datum/bt_node/decorator/slime_wants_to_eat
 
 /datum/bt_node/decorator/slime_wants_to_eat/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/slime/slime_pawn = controller.pawn
 	if(!istype(slime_pawn) || slime_pawn.buckled)
 		return FALSE
@@ -53,6 +57,8 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/feed_on_slime_target/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/slime/slime_pawn = controller.pawn
 	if(!istype(slime_pawn)) //bro lmao comeon
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
@@ -82,6 +88,8 @@
 
 
 /datum/bt_node/ai_behavior/feed_on_slime_target/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/basic/slime/slime_pawn = controller.pawn
 	slime_pawn.stop_feeding()

@@ -8,6 +8,8 @@
 	VAR_FINAL/mob/living/observed_mob = null
 
 /datum/bt_node/decorator/target_health_below_fraction/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = owning_controller?.blackboard[key]
 	if(isliving(target))
 		observed_mob = target
@@ -16,12 +18,16 @@
 	return TRUE
 
 /datum/bt_node/decorator/target_health_below_fraction/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	if(observed_mob)
 		UnregisterSignal(observed_mob, COMSIG_LIVING_HEALTH_UPDATE)
 		observed_mob = null
 	UnregisterSignal(pawn, list(COMSIG_AI_BLACKBOARD_KEY_SET(key), COMSIG_AI_BLACKBOARD_KEY_CLEARED(key)))
 
 /datum/bt_node/decorator/target_health_below_fraction/proc/on_mob_key_changed(atom/source, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/target = owning_controller?.blackboard[key]
 	if(target == observed_mob)
@@ -36,6 +42,8 @@
 		on_observed_change(owning_controller, null)
 
 /datum/bt_node/decorator/target_health_below_fraction/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = controller.blackboard[key]
 	if(!isliving(target))
 		return FALSE

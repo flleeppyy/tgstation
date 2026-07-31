@@ -11,6 +11,8 @@
 	var/toggle_noun
 
 /datum/component/toggle_icon/Initialize(toggle_noun = "buttons")
+	procstart = null
+	src.procstart = null
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -21,11 +23,15 @@
 	src.inferred_base_icon_state = atom_parent.post_init_icon_state || atom_parent.icon_state
 
 /datum/component/toggle_icon/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_CLICK_ALT, PROC_REF(on_click_alt))
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 	RegisterSignal(parent, COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM, PROC_REF(on_adding_context))
 
 /datum/component/toggle_icon/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_CLICK_ALT, COMSIG_ATOM_EXAMINE, COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM))
 
 /*
@@ -37,6 +43,8 @@
  * user - the mob doing the click
  */
 /datum/component/toggle_icon/proc/on_click_alt(atom/source, mob/living/living_user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(living_user) || !living_user.can_perform_action(source))
@@ -58,6 +66,8 @@
  * examine_list - the list of things within the examine output
  */
 /datum/component/toggle_icon/proc/on_examine(atom/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += span_notice("Alt-click on [source] to toggle the [toggle_noun].")
@@ -72,6 +82,8 @@
  * user - the mob requesting context
  */
 /datum/component/toggle_icon/proc/on_adding_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "Toggle [toggle_noun]"
@@ -85,6 +97,8 @@
  * user - the mob doing the toggling
  */
 /datum/component/toggle_icon/proc/do_icon_toggle(atom/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	source.balloon_alert(user, "toggled [toggle_noun]")
 
 	toggled = !toggled

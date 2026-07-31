@@ -7,11 +7,15 @@
 	ui_name = "AntagInfoGlitch"
 
 /datum/antagonist/domain_ghost_actor/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.current.AddComponent(/datum/component/npc_friendly) //Just in case
 	forge_objectives()
 
 /datum/antagonist/domain_ghost_actor/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/bitrunner_ghost_fluff/objective = new()
 	objective.owner = owner
 	objectives += objective
@@ -19,4 +23,6 @@
 /datum/objective/bitrunner_ghost_fluff
 
 /datum/objective/bitrunner_ghost_fluff/New()
+	procstart = null
+	src.procstart = null
 	explanation_text = "Defend your domain from the intruders!"

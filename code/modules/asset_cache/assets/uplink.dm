@@ -4,6 +4,8 @@
 	early = TRUE
 
 /datum/asset/json/uplink/generate()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/categories = list()
 	var/list/items = list()

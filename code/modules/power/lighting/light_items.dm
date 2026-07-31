@@ -18,6 +18,8 @@
 	var/switchcount = 0
 
 /obj/item/light/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(LIGHT_REAGENT_CAPACITY, INJECTABLE | DRAINABLE | SEALED_CONTAINER | TRANSPARENT)
 	AddComponent(/datum/component/caltrop, min_damage = force)
@@ -30,9 +32,13 @@
 	AddComponent(/datum/component/golem_food, golem_food_key = /obj/item/light, extra_validation = CALLBACK(src, PROC_REF(is_intact)))
 
 /obj/item/light/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/silicon = 5, /datum/reagent/nitrogen = 10)
 
 /obj/item/light/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/lightreplacer))
 		return NONE
 	tool.item_interaction(user, src)
@@ -40,9 +46,13 @@
 
 /// Returns true if bulb is intact
 /obj/item/light/proc/is_intact()
+	procstart = null
+	src.procstart = null
 	return status == LIGHT_OK
 
 /obj/item/light/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (status == LIGHT_BROKEN)
 		user.visible_message(span_suicide("[user] begins to stab [user.p_them()]self with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	else
@@ -62,6 +72,8 @@
 	custom_price = PAYCHECK_CREW * 0.5
 
 /obj/item/light/tube/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(status)
 		if(LIGHT_BURNED)
@@ -91,12 +103,16 @@
 	sharpness = SHARP_POINTY
 
 /obj/item/light/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(!..()) //not caught by a mob
 		shatter()
 
 // update the icon state and description of the light
 
 /obj/item/light/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(status)
 		if(LIGHT_OK)
@@ -107,6 +123,8 @@
 			icon_state = "[base_state]-broken"
 
 /obj/item/light/update_desc()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(status)
 		if(LIGHT_OK)
@@ -117,6 +135,8 @@
 			desc = "A broken [name]."
 
 /obj/item/light/proc/on_entered(datum/source, atom/movable/moving_atom)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isliving(moving_atom))
 		return
@@ -127,14 +147,20 @@
 			shatter(moving_mob)
 
 /obj/item/light/attack(mob/living/M, mob/living/user, def_zone)
+	procstart = null
+	src.procstart = null
 	..()
 	shatter(M)
 
 /obj/item/light/attack_atom(obj/attacked_obj, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	..()
 	shatter(attacked_obj)
 
 /obj/item/light/proc/shatter(target)
+	procstart = null
+	src.procstart = null
 	if(status == LIGHT_OK || status == LIGHT_BURNED)
 		visible_message(span_danger("[src] shatters."),span_hear("You hear a small glass object shatter."))
 		status = LIGHT_BROKEN

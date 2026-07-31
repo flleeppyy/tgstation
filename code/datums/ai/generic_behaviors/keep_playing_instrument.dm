@@ -6,6 +6,8 @@
 	var/song_instrument_key
 
 /datum/bt_node/ai_behavior/keep_playing_instrument/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/item/instrument/song_player = controller.blackboard[song_instrument_key]
 	if(QDELETED(song_player))
 		controller.clear_blackboard_key(song_instrument_key)

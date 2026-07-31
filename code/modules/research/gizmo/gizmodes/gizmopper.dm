@@ -32,12 +32,16 @@
 	var/reagent_flags = AMOUNT_VISIBLE
 
 /datum/gizmodes/mopper/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	for(var/i in 1 to random_reagents_to_add)
 		reagents += get_random_reagent_id()
 
 /datum/gizmodes/mopper/activate(atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	if(!holder.reagents)
 		holder.create_reagents(max_volume, reagent_flags)
 		holder.reagents.add_reagent(active_reagent, max_volume)
@@ -46,10 +50,14 @@
 	return ..()
 
 /datum/gizmodes/mopper/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	reagent_holder.add_reagent(active_reagent, regeneration_speed * seconds_per_tick)
 
 /// Wet the surounding tiles
 /datum/gizpulse/wet_tiles/activate(atom/movable/holder, datum/gizmodes/mopper/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	var/list/tiles = get_tiles(holder)
 	for(var/turf/open/tile in tiles)
 		tile.expose_reagents(holder.reagents.reagent_list, holder.reagents)
@@ -59,6 +67,8 @@
 
 /// Get the tiles to wet
 /datum/gizpulse/wet_tiles/proc/get_tiles(atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Dump reagents in a circle
@@ -67,6 +77,8 @@
 	var/size = 0
 
 /datum/gizpulse/wet_tiles/fluid_circle/get_tiles(atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	return RANGE_TURFS(size, holder)
 
 /// In a small circle
@@ -83,10 +95,14 @@
 
 /// Make a smoke cloud of our fluid
 /datum/gizpulse/fluid_smoke/activate(atom/movable/holder, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	do_chem_smoke(3, holder, get_turf(holder), carry = holder.reagents)
 	holder.reagents.clear_reagents()
 
 /// Select different reagents
 /datum/gizpulse/swap_reagent/activate(atom/movable/holder, datum/gizmodes/mopper/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	holder.reagents.clear_reagents()
 	master.active_reagent = pick(master.reagents - master.active_reagent) //maybe also add a cycle one instead of random

@@ -16,6 +16,8 @@
 	element_flags = ELEMENT_DETACH_ON_HOST_DESTROY
 
 /datum/element/block_area_power_fail/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isarea(target)) // practically just a complicated way to do add trait
 		ADD_TRAIT(target, TRAIT_AREA_BLOCK_POWER_FAIL, AREA_TRAIT_SOURCE(target))
@@ -35,6 +37,8 @@
 		return ELEMENT_INCOMPATIBLE
 
 /datum/element/block_area_power_fail/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isarea(source))
 		REMOVE_TRAIT(source, TRAIT_AREA_BLOCK_POWER_FAIL, AREA_TRAIT_SOURCE(source))
@@ -51,12 +55,16 @@
 		REMOVE_TRAIT(turf_source.loc, TRAIT_AREA_BLOCK_POWER_FAIL, TURF_TRAIT_SOURCE(turf_source))
 
 /datum/element/block_area_power_fail/proc/on_movable_entered_area(atom/movable/source, area/new_area)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(new_area)
 		ADD_TRAIT(new_area, TRAIT_AREA_BLOCK_POWER_FAIL, MOVABLE_TRAIT_SOURCE(source))
 
 /datum/element/block_area_power_fail/proc/on_movable_exited_area(atom/movable/source, area/old_area)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(old_area)

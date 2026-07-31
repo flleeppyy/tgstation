@@ -21,15 +21,21 @@
 	var/list/beam_parts = list()
 
 /datum/action/cooldown/mob_cooldown/brimbeam/Grant(mob/granted_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(owner)
 		owner.AddElement(/datum/element/relay_attackers)
 
 /datum/action/cooldown/mob_cooldown/brimbeam/Destroy()
+	procstart = null
+	src.procstart = null
 	extinguish_laser()
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/brimbeam/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	StartCooldown(360 SECONDS)
 
 	abort_blast = FALSE
@@ -69,15 +75,21 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/brimbeam/proc/on_owner_attacked(datum/source, atom/attacker, attack_flags, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!(attack_flags & ATTACK_RANGED) && !(direction & owner.dir))
 		abort_blast = TRUE
 
 /datum/action/cooldown/mob_cooldown/brimbeam/proc/beam_charge_check()
+	procstart = null
+	src.procstart = null
 	return !abort_blast
 
 /// Create a laser in the direction we are facing
 /datum/action/cooldown/mob_cooldown/brimbeam/proc/fire_laser()
+	procstart = null
+	src.procstart = null
 	owner.visible_message(span_danger("[owner] fires a brimbeam!"))
 	playsound(owner, 'sound/mobs/non-humanoids/brimdemon/brimdemon.ogg', 150, FALSE, 0, 3)
 	var/turf/target_turf = get_ranged_target_turf(owner, owner.dir, beam_range)
@@ -111,6 +123,8 @@
 
 /// Get rid of our laser when we are done with it
 /datum/action/cooldown/mob_cooldown/brimbeam/proc/extinguish_laser()
+	procstart = null
+	src.procstart = null
 	if(!length(beam_parts))
 		return FALSE
 	if (owner)
@@ -138,14 +152,20 @@
 	var/datum/weakref/creator
 
 /obj/effect/brimbeam/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSfastprocess, src)
 
 /obj/effect/brimbeam/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	return ..()
 
 /obj/effect/brimbeam/process()
+	procstart = null
+	src.procstart = null
 	var/ignore = creator?.resolve()
 	for(var/mob/living/hit_mob in get_turf(src))
 		if(hit_mob != ignore)
@@ -153,9 +173,13 @@
 
 /// Ignore damage dealt to this mob
 /obj/effect/brimbeam/proc/assign_creator(mob/living/maker)
+	procstart = null
+	src.procstart = null
 	creator = WEAKREF(maker)
 
 /// Disappear
 /obj/effect/brimbeam/proc/disperse()
+	procstart = null
+	src.procstart = null
 	animate(src, time = 0.5 SECONDS, alpha = 0)
 	QDEL_IN(src, 0.5 SECONDS)

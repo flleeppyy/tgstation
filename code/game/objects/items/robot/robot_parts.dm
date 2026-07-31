@@ -37,10 +37,14 @@
 	var/panel_locked = TRUE
 
 /obj/item/robot_suit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/item/robot_suit/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(l_arm)
 	QDEL_NULL(r_arm)
 	QDEL_NULL(l_leg)
@@ -50,6 +54,8 @@
 	return ..()
 
 /obj/item/robot_suit/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == l_arm)
 		l_arm = null
@@ -65,6 +71,8 @@
 		head = null
 
 /obj/item/robot_suit/prebuilt/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	l_arm = new(src)
 	r_arm = new(src)
@@ -79,6 +87,8 @@
 	update_appearance()
 
 /obj/item/robot_suit/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(l_arm)
 		. += "[initial(l_arm.icon_state)]+o"
@@ -94,12 +104,16 @@
 		. += "[initial(head.icon_state)]+o"
 
 /obj/item/robot_suit/proc/check_completion()
+	procstart = null
+	src.procstart = null
 	if(l_arm && r_arm && l_leg && r_leg && head && head.flash1 && head.flash2 && chest && chest.wired && chest.cell)
 		SSblackbox.record_feedback("amount", "cyborg_frames_built", 1)
 		return TRUE
 	return FALSE
 
-/obj/item/robot_suit/wrench_act(mob/living/user, obj/item/I) //Deconstucts empty borg shell. Flashes remain unbroken because they haven't been used yet
+/obj/item/robot_suit/wrench_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null //Deconstucts empty borg shell. Flashes remain unbroken because they haven't been used yet
 	. = ..()
 	var/turf/T = get_turf(src)
 	if(l_leg || r_leg || chest || l_arm || r_arm || head)
@@ -113,6 +127,8 @@
 /// Drops all included parts to the passed location
 /// This will also dissassemble the parts being dropped into components as well
 /obj/item/robot_suit/proc/drop_all_parts(atom/drop_to = drop_location())
+	procstart = null
+	src.procstart = null
 	l_leg?.forceMove(drop_to)
 	r_leg?.forceMove(drop_to)
 	l_arm?.forceMove(drop_to)
@@ -127,12 +143,16 @@
 		head.drop_organs()
 
 /obj/item/robot_suit/proc/put_in_hand_or_drop(mob/living/user, obj/item/I) //normal put_in_hands() drops the item ontop of the player, this drops it at the suit's loc
+	procstart = null
+	src.procstart = null
 	if(!user.put_in_hands(I))
 		I.forceMove(drop_location())
 		return FALSE
 	return TRUE
 
 /obj/item/robot_suit/screwdriver_act(mob/living/user, obj/item/I) //Swaps the power cell if you're holding a new one in your other hand.
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -166,6 +186,8 @@
 
 //ADD <-- what is the purpose of this code comment? is it an abbreviation?
 /obj/item/robot_suit/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/stack/sheet/iron))
 		var/obj/item/stack/sheet/iron/iron_sheet = tool
 		if(l_arm || r_arm || l_leg || r_leg || chest || head)
@@ -366,6 +388,8 @@
 	return NONE
 
 /obj/item/robot_suit/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!check_completion())
 		to_chat(user, span_warning("The endoskeleton must be assembled before debugging can begin!"))
 		return ITEM_INTERACT_SKIP_TO_ATTACK
@@ -373,6 +397,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/robot_suit/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(isobserver(user))
 		return ..()
 	var/obj/item/held_item = user.get_active_held_item()
@@ -382,15 +408,21 @@
 	return UI_CLOSE
 
 /obj/item/robot_suit/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.physical_state
 
 /obj/item/robot_suit/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "CyborgBootDebug", "Cyborg Boot Debug")
 		ui.open()
 
 /obj/item/robot_suit/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["designation"] = created_name
 	data["locomotion"] = locomotion
@@ -401,6 +433,8 @@
 	return data
 
 /obj/item/robot_suit/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -456,12 +490,16 @@
 
 /// Sets [forced_ai] and [forced_ai_name] to the passed AI
 /obj/item/robot_suit/proc/set_forced_ai(mob/living/silicon/ai/ai)
+	procstart = null
+	src.procstart = null
 	forced_ai = ai
 	forced_ai_name = ai.name
 	RegisterSignal(ai, COMSIG_QDELETING, PROC_REF(ai_die))
 
 /// Clears [forced_ai] and [forced_ai_name]
 /obj/item/robot_suit/proc/clear_forced_ai()
+	procstart = null
+	src.procstart = null
 	if(forced_ai)
 		UnregisterSignal(forced_ai, COMSIG_QDELETING)
 		forced_ai = null
@@ -469,6 +507,8 @@
 
 /// Clears the forced_ai ref
 /obj/item/robot_suit/proc/ai_die(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Does not use [proc/clear_forced_ai] because we'd like to keep the AI name tracked for metagaming purposes
 	UnregisterSignal(forced_ai, COMSIG_QDELETING)

@@ -22,19 +22,27 @@
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/defibrillator_mount, 28)
 
 /obj/machinery/defibrillator_mount/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		find_and_mount_on_atom()
 
-/obj/machinery/defibrillator_mount/loaded/Initialize(mapload) //loaded subtype for mapping use
+/obj/machinery/defibrillator_mount/loaded/Initialize(mapload)
+	procstart = null
+	src.procstart = null //loaded subtype for mapping use
 	. = ..()
 	defib = new/obj/item/defibrillator/loaded(src)
 
 /obj/machinery/defibrillator_mount/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(defib)
 	return ..()
 
 /obj/machinery/defibrillator_mount/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == defib)
 		// Make sure processing ends before the defib is nulled
@@ -43,6 +51,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/defibrillator_mount, 28)
 		update_appearance()
 
 /obj/machinery/defibrillator_mount/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(defib)
 		. += span_notice("There is a defib unit hooked up. Alt-click to remove it.")
@@ -52,6 +62,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/defibrillator_mount, 28)
 			. += span_notice("Its locking clamps can be [clamps_locked ? "dis" : ""]engaged by swiping an ID with access.")
 
 /obj/machinery/defibrillator_mount/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(defib))
 		return
@@ -73,6 +85,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/defibrillator_mount, 28)
 
 //defib interaction
 /obj/machinery/defibrillator_mount/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!defib)
 		to_chat(user, span_warning("There's no defibrillator unit loaded!"))
@@ -86,6 +100,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/defibrillator_mount, 28)
 	user.put_in_hands(defib.paddles)
 
 /obj/machinery/defibrillator_mount/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/defibrillator))
 		if(defib)
 			to_chat(user, span_warning("There's already a defibrillator in [src]!"))
@@ -127,6 +143,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/defibrillator_mount, 28)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/defibrillator_mount/multitool_act(mob/living/user, obj/item/multitool)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!defib)
 		to_chat(user, span_warning("There isn't any defibrillator to clamp in!"))
@@ -147,6 +165,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/defibrillator_mount, 28)
 	return TRUE
 
 /obj/machinery/defibrillator_mount/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!wallframe_type)
 		return ..()
 	if(user.combat_mode)
@@ -162,6 +182,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/defibrillator_mount, 28)
 	return TRUE
 
 /obj/machinery/defibrillator_mount/click_alt(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!defib)
 		to_chat(user, span_warning("It'd be hard to remove a defib unit from a mount that has none."))
 		return CLICK_ACTION_BLOCKING
@@ -187,12 +209,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/defibrillator_mount, 28)
 
 
 /obj/machinery/defibrillator_mount/charging/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_operational)
 		begin_processing()
 
 
 /obj/machinery/defibrillator_mount/charging/on_set_is_operational(old_value)
+	procstart = null
+	src.procstart = null
 	if(old_value) //Turned off
 		end_processing()
 	else //Turned on
@@ -200,6 +226,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/defibrillator_mount, 28)
 
 
 /obj/machinery/defibrillator_mount/charging/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(isnull(defib))
 		return
 	var/obj/item/stock_parts/power_store/defib_cell = defib.get_cell()
@@ -238,13 +266,19 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/defibrillator_mount, 28)
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5.15, /datum/material/silver = SHEET_MATERIAL_AMOUNT, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 1.5)
 
 /obj/machinery/defibrillator_mount/mobile/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/noisy_movement)
 
 /obj/machinery/defibrillator_mount/mobile/find_and_mount_on_atom(mark_for_late_init, late_init)
+	procstart = null
+	src.procstart = null
 	return //its mobile
 
 /obj/machinery/defibrillator_mount/mobile/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return ..()
 	if(defib)
@@ -259,6 +293,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/defibrillator_mount, 28)
 	return TRUE
 
 /obj/machinery/defibrillator_mount/mobile/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	var/atom/drop = drop_location()
 	if(disassembled)
 		new /obj/item/stack/sheet/iron(drop, 5)

@@ -193,11 +193,15 @@ GLOBAL_LIST_INIT(dye_registry, list(
 	var/total_load = 0
 
 /obj/machinery/washing_machine/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!busy)
 		. += span_notice("<b>Right-click</b> with an empty hand to start a wash cycle.")
 
 /obj/machinery/washing_machine/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/total_volume = 0
 	for(var/obj/item/reagent_containers/cup/beaker/beaker in component_parts)
@@ -208,6 +212,8 @@ GLOBAL_LIST_INIT(dye_registry, list(
 		time_to_wash = 20 SECONDS / servo.tier
 
 /obj/machinery/washing_machine/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!busy)
 		animate(src, transform=matrix(), time=2)
 		return PROCESS_KILL
@@ -225,6 +231,8 @@ GLOBAL_LIST_INIT(dye_registry, list(
 		animate(src, transform=M, time=2)
 
 /obj/machinery/washing_machine/wash(clean_types)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!busy && bloody_mess && (clean_types & CLEAN_TYPE_BLOOD))
 		bloody_mess = FALSE
@@ -232,6 +240,8 @@ GLOBAL_LIST_INIT(dye_registry, list(
 		. |= COMPONENT_CLEANED
 
 /obj/machinery/washing_machine/proc/wash_cycle(mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/X in contents)
 		var/atom/movable/AM = X
 		AM.wash(CLEAN_WASH)
@@ -247,6 +257,8 @@ GLOBAL_LIST_INIT(dye_registry, list(
 	use_energy(active_power_usage)
 
 /obj/item/proc/dye_item(dye_color, dye_key_override)
+	procstart = null
+	src.procstart = null
 	var/dye_key_selector = dye_key_override || dying_key
 	if(undyeable || !dye_key_selector)
 		return FALSE
@@ -289,32 +301,46 @@ GLOBAL_LIST_INIT(dye_registry, list(
 
 //what happens to this object when washed inside a washing machine
 /atom/movable/proc/machine_wash(obj/machinery/washing_machine/washer)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/stack/sheet/hairlesshide/machine_wash(obj/machinery/washing_machine/washer)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/wethide(drop_location(), amount)
 	qdel(src)
 
 /obj/item/clothing/suit/hooded/ian_costume/machine_wash(obj/machinery/washing_machine/washer)
+	procstart = null
+	src.procstart = null
 	new /obj/item/food/meat/slab/corgi(loc)
 	qdel(src)
 
 /mob/living/basic/pet/machine_wash(obj/machinery/washing_machine/washer)
+	procstart = null
+	src.procstart = null
 	washer.bloody_mess = TRUE
 	investigate_log("has been gibbed by a washing machine.", INVESTIGATE_DEATHS)
 	gib()
 
 /mob/living/carbon/human/machine_wash(obj/machinery/washing_machine/washer, mob/user)
+	procstart = null
+	src.procstart = null
 	adjust_wet_stacks(8)
 	adjust_disgust(40, DISGUST_LEVEL_VERYDISGUSTED)
 	adjust_oxy_loss(12)
 	log_combat(user, src, "machine washed (oxy)")
 
 /obj/item/machine_wash(obj/machinery/washing_machine/washer)
+	procstart = null
+	src.procstart = null
 	if(washer.color_source)
 		dye_item(washer.color_source.dye_color)
 
 /obj/item/clothing/under/dye_item(dye_color, dye_key)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		var/obj/item/clothing/under/U = .
@@ -323,22 +349,32 @@ GLOBAL_LIST_INIT(dye_registry, list(
 			toggle_jumpsuit_adjust()
 
 /obj/item/mob_holder/machine_wash(obj/machinery/washing_machine/washer)
+	procstart = null
+	src.procstart = null
 	..()
 	held_mob.machine_wash(washer)
 
 /obj/item/clothing/shoes/sneakers/orange/machine_wash(obj/machinery/washing_machine/washer)
+	procstart = null
+	src.procstart = null
 	attached_cuffs?.forceMove(loc)
 	return ..()
 
 /obj/machinery/washing_machine/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	container_resist_act(user)
 
 /obj/machinery/washing_machine/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!busy)
 		add_fingerprint(user)
 		open_machine()
 
 /obj/machinery/washing_machine/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(busy)
 		icon_state = "wm_running_[bloody_mess]"
 		return ..()
@@ -351,23 +387,31 @@ GLOBAL_LIST_INIT(dye_registry, list(
 	return ..()
 
 /obj/machinery/washing_machine/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(panel_open)
 		. += "wm_panel"
 
 /obj/machinery/washing_machine/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!panel_open || busy)
 		return NONE
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/washing_machine/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(state_open)
 		return NONE
 
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/washing_machine/item_interaction(mob/living/user, obj/item/item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 	if (!state_open)
@@ -390,6 +434,8 @@ GLOBAL_LIST_INIT(dye_registry, list(
 
 
 /obj/machinery/washing_machine/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -425,9 +471,13 @@ GLOBAL_LIST_INIT(dye_registry, list(
 		update_appearance()
 
 /obj/machinery/washing_machine/proc/check_aggro_grab(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return user.grab_state >= GRAB_AGGRESSIVE
 
 /obj/machinery/washing_machine/attack_hand_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -452,12 +502,18 @@ GLOBAL_LIST_INIT(dye_registry, list(
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/washing_machine/attack_ai_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand_secondary(user, modifiers)
 
 /obj/machinery/washing_machine/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/iron(drop_location(), 2)
 
 /obj/machinery/washing_machine/open_machine(drop = TRUE, density_to_set = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_density(TRUE) //because machinery/open_machine() sets it to FALSE
 	color_source = null

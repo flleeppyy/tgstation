@@ -51,22 +51,32 @@
 	var/examinable_countdown = TRUE
 
 /obj/machinery/syndicatebomb/proc/try_detonate(ignore_active = FALSE)
+	procstart = null
+	src.procstart = null
 	. = (payload in src) && (active || ignore_active)
 	if(.)
 		payload.detonate()
 
 /obj/machinery/syndicatebomb/atom_break()
+	procstart = null
+	src.procstart = null
 	if(!try_detonate())
 		..()
 
 /obj/machinery/syndicatebomb/atom_destruction()
+	procstart = null
+	src.procstart = null
 	if(!try_detonate())
 		..()
 
 /obj/machinery/syndicatebomb/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/syndicatebomb/process()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return PROCESS_KILL
 
@@ -101,6 +111,8 @@
 		try_detonate(TRUE)
 
 /obj/machinery/syndicatebomb/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_wires(new /datum/wires/syndicatebomb(src))
 	if(payload)
@@ -110,11 +122,15 @@
 	end_processing()
 
 /obj/machinery/syndicatebomb/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(countdown)
 	end_processing()
 	return ..()
 
 /obj/machinery/syndicatebomb/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "The patented external shell design is resistant to \"probably all\" forms of external explosive compression, protecting the electronically-trigged bomb core from accidental early detonation."
 	if(istype(payload))
@@ -127,10 +143,14 @@
 		. += span_notice({"The digital display on it is inactive."})
 
 /obj/machinery/syndicatebomb/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)][active ? "-active" : "-inactive"][open_panel ? "-wires" : ""]"
 	return ..()
 
 /obj/machinery/syndicatebomb/proc/seconds_remaining()
+	procstart = null
+	src.procstart = null
 	if(active)
 		. = max(0, round((detonation_timer - world.time) / 10))
 
@@ -138,6 +158,8 @@
 		. = timer_set
 
 /obj/machinery/syndicatebomb/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!can_unanchor)
 		return FALSE
 	if(!anchored)
@@ -160,6 +182,8 @@
 	return TRUE
 
 /obj/machinery/syndicatebomb/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(src, 50)
 	open_panel = !open_panel
 	update_appearance()
@@ -167,6 +191,8 @@
 	return TRUE
 
 /obj/machinery/syndicatebomb/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	if(open_panel && wires.is_all_cut())
 		if(payload)
@@ -182,6 +208,8 @@
 		to_chat(user, span_warning("The cover is screwed on, it won't pry off!"))
 
 /obj/machinery/syndicatebomb/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(payload || !wires.is_all_cut() || !open_panel)
 		return FALSE
 
@@ -197,6 +225,8 @@
 
 
 /obj/machinery/syndicatebomb/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(is_wire_tool(tool) && open_panel)
 		wires.interact(user)
 		return ITEM_INTERACT_SUCCESS
@@ -214,12 +244,16 @@
 	return NONE
 
 /obj/machinery/syndicatebomb/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	var/old_integ = atom_integrity
 	. = ..()
 	if((old_integ > atom_integrity) && active && payload)
 		to_chat(user, span_warning("That seems like a really bad idea..."))
 
 /obj/machinery/syndicatebomb/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	wires.interact(user)
 	if(!open_panel)
 		if(!active)
@@ -228,6 +262,8 @@
 			to_chat(user, span_warning("The bomb is bolted to the floor!"))
 
 /obj/machinery/syndicatebomb/proc/activate()
+	procstart = null
+	src.procstart = null
 	active = TRUE
 	begin_processing()
 	countdown.start()
@@ -249,6 +285,8 @@
 	update_appearance()
 
 /obj/machinery/syndicatebomb/proc/defuse()
+	procstart = null
+	src.procstart = null
 	active = FALSE
 	delayedlittle = FALSE
 	delayedbig = FALSE
@@ -264,6 +302,8 @@
 	update_appearance()
 
 /obj/machinery/syndicatebomb/proc/settings(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.can_perform_action(src, ALLOW_SILICON_REACH) || !user.can_interact_with(src))
 		return
 	var/new_timer = tgui_input_number(user, "Set the timer[add_boom_wires ? " (the longer the timer, the harder to defuse!)" : ""]", "Countdown", timer_set, maximum_timer, minimum_timer)
@@ -328,6 +368,8 @@
 	timer_set = 120
 
 /obj/machinery/syndicatebomb/empty/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	wires.cut_all()
 
@@ -339,6 +381,8 @@
 	timer_set = 120
 
 /obj/machinery/syndicatebomb/nukie/empty/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	wires.cut_all()
 
@@ -370,16 +414,22 @@
 	/// Whether this core explodes when burnt
 	var/explodes_when_burnt = TRUE
 
-/obj/item/bombcore/ex_act(severity, target) // Little boom can chain a big boom.
+/obj/item/bombcore/ex_act(severity, target)
+	procstart = null
+	src.procstart = null // Little boom can chain a big boom.
 	detonate()
 	return TRUE
 
 /obj/item/bombcore/burn()
+	procstart = null
+	src.procstart = null
 	if(explodes_when_burnt)
 		detonate()
 	..()
 
 /obj/item/bombcore/proc/detonate()
+	procstart = null
+	src.procstart = null
 	if(adminlog)
 		message_admins(adminlog)
 		log_game(adminlog)
@@ -389,6 +439,8 @@
 	qdel(src)
 
 /obj/item/bombcore/proc/defuse()
+	procstart = null
+	src.procstart = null
 //Note: the machine's defusal is mostly done from the wires code, this is here if you want the core itself to do anything.
 
 ///Bomb Core Subtypes///
@@ -400,6 +452,8 @@
 	explodes_when_burnt = FALSE
 
 /obj/item/bombcore/syndicate/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/item/bombcore/syndicate/large
@@ -416,6 +470,8 @@
 	var/attempts = 0
 
 /obj/item/bombcore/training/proc/reset()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/syndicatebomb/holder = loc
 	if(istype(holder))
 		if(holder.wires)
@@ -428,6 +484,8 @@
 		STOP_PROCESSING(SSfastprocess, holder)
 
 /obj/item/bombcore/training/detonate()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/syndicatebomb/holder = loc
 	if(istype(holder))
 		attempts++
@@ -437,6 +495,8 @@
 		qdel(src)
 
 /obj/item/bombcore/training/defuse()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/syndicatebomb/holder = loc
 	if(istype(holder))
 		attempts++
@@ -448,7 +508,9 @@
 	name = "badmin payload"
 	desc = "If you're seeing this someone has either made a mistake or gotten dangerously savvy with var editing!"
 
-/obj/item/bombcore/badmin/defuse() //because we wouldn't want them being harvested by players
+/obj/item/bombcore/badmin/defuse()
+	procstart = null
+	src.procstart = null //because we wouldn't want them being harvested by players
 	var/obj/machinery/syndicatebomb/B = loc
 	qdel(B)
 	qdel(src)
@@ -458,6 +520,8 @@
 	var/amt_summon = 1
 
 /obj/item/bombcore/badmin/summon/detonate()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/syndicatebomb/B = loc
 	for(var/atom/spawned as anything in spawn_and_random_walk(summon_path, src, amt_summon, walk_chance=50, admin_spawn=TRUE, cardinals_only = FALSE))
 		ADD_TRAIT(spawned, TRAIT_SPAWNED_MOB, INNATE_TRAIT)
@@ -471,6 +535,8 @@
 	amt_summon = 50
 
 /obj/item/bombcore/badmin/summon/clown/defuse()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/misc/sadtrombone.ogg', 50)
 	..()
 
@@ -507,10 +573,14 @@
 	var/time_release = 0
 
 /obj/item/bombcore/chemical/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(core_holder_volume)
 
 /obj/item/bombcore/chemical/detonate()
+	procstart = null
+	src.procstart = null
 
 	if(time_release > 0)
 		var/total_volume = reagents.total_volume
@@ -559,6 +629,8 @@
 	playsound(loc, 'sound/effects/bamf.ogg', 75, TRUE, 5)
 
 /obj/item/bombcore/chemical/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/reagent_containers/cup/beaker) && !istype(tool, /obj/item/reagent_containers/cup/bottle))
 		return NONE
 	if(beakers.len >= max_beakers)
@@ -571,6 +643,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/bombcore/chemical/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!beakers.len)
 		return NONE
 	tool.play_tool_sound(src)
@@ -580,6 +654,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/bombcore/chemical/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	// Using different grenade casings, causes the payload to have different properties.
 	var/obj/item/stock_parts/matter_bin/bin = locate(/obj/item/stock_parts/matter_bin) in components
 	if(bin)
@@ -627,6 +703,8 @@
 	range_medium = 25
 
 /obj/item/bombcore/emp/detonate()
+	procstart = null
+	src.procstart = null
 	if(adminlog)
 		message_admins(adminlog)
 		log_game(adminlog)
@@ -644,10 +722,14 @@
 	var/datum/dimension_theme/chosen_theme
 
 /obj/item/bombcore/dimensional/Destroy()
+	procstart = null
+	src.procstart = null
 	chosen_theme = null
 	return ..()
 
 /obj/item/bombcore/dimensional/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	range_heavy = 13
 	for(var/obj/item/grenade/chem_grenade/nade in components)
@@ -663,10 +745,14 @@
 			range_heavy += 4
 
 /obj/item/bombcore/dimensional/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Use in hand to change the linked dimension. Current dimension: [chosen_theme?.name || "None, output will be random"].")
 
 /obj/item/bombcore/dimensional/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/choosable_dimensions = list()
 	var/datum/radial_menu_choice/null_choice = new
@@ -688,11 +774,15 @@
 	balloon_alert(user, "set to [chosen_theme?.name || DIMENSION_CHOICE_RANDOM]")
 
 /obj/item/bombcore/dimensional/proc/check_menu(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.is_holding(src) || user.incapacitated)
 		return FALSE
 	return TRUE
 
 /obj/item/bombcore/dimensional/detonate()
+	procstart = null
+	src.procstart = null
 	var/list/affected_turfs = circle_range_turfs(src, range_heavy)
 	var/theme_count = length(SSmaterials.dimensional_themes)
 	var/num_affected = 0
@@ -730,6 +820,8 @@
 	var/existent = 0
 
 /obj/item/syndicatedetonator/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(timer < world.time)
 		for(var/obj/machinery/syndicatebomb/B as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/syndicatebomb))
 			if(B.active)

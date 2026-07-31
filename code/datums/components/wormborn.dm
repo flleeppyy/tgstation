@@ -1,19 +1,27 @@
 /datum/component/wormborn
 
 /datum/component/wormborn/Initialize(...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 
 /datum/component/wormborn/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_LIVING_DEATH, PROC_REF(second_breath))
 
 /datum/component/wormborn/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, COMSIG_LIVING_DEATH)
 
 /datum/component/wormborn/proc/second_breath(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(get_area(source) == GLOB.areas_by_type[/area/centcom/wizard_station])
@@ -48,12 +56,18 @@
 	mob_biotypes = MOB_ORGANIC|MOB_SPECIAL
 
 /mob/living/basic/wizard_worm/has_gravity(turf/gravity_turf)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /mob/living/basic/wizard_worm/can_be_pulled(user, force)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/basic/wizard_worm/Initialize(mapload, spawn_bodyparts = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/wall_tearer)
 
@@ -61,6 +75,8 @@
 		build_tail()
 
 /mob/living/basic/wizard_worm/proc/build_tail(mob/living/tail)
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/mob_chain, vary_icon_state = TRUE)
 	var/mob/living/basic/wizard_worm/prev = src
 	for(var/i in 1 to 5)
@@ -68,6 +84,8 @@
 	update_appearance(UPDATE_ICON_STATE)
 
 /mob/living/basic/wizard_worm/proc/new_segment(mob/living/basic/wizard_worm/behind)
+	procstart = null
+	src.procstart = null
 	var/mob/living/segment = new type(drop_location(), FALSE)
 	ADD_TRAIT(segment, TRAIT_PERMANENTLY_MORTAL, INNATE_TRAIT)
 	segment.AddComponent(/datum/component/mob_chain, front = behind, vary_icon_state = TRUE)

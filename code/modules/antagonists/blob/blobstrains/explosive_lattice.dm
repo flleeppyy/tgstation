@@ -12,6 +12,8 @@
 	reagent = /datum/reagent/blob/explosive_lattice
 
 /datum/blobstrain/reagent/explosive_lattice/damage_reaction(obj/structure/blob/B, damage, damage_type, damage_flag)
+	procstart = null
+	src.procstart = null
 	if(damage_flag == BOMB)
 		return 0
 	else if(damage_flag != MELEE && damage_flag != BULLET && damage_flag != LASER)
@@ -19,6 +21,8 @@
 	return ..()
 
 /datum/blobstrain/reagent/explosive_lattice/on_sporedeath(mob/living/dead_spore, death_cloud_size)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/temp_visual/explosion/fast/effect = new /obj/effect/temp_visual/explosion/fast(get_turf(dead_spore))
 	effect.alpha = 150
 	for(var/mob/living/actor in orange(get_turf(dead_spore), death_cloud_size))
@@ -36,6 +40,8 @@
 	color = "#8B2500"
 
 /datum/reagent/blob/explosive_lattice/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message, touch_protection, mob/eye/blob/overmind)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/brute_loss = 0
 	var/burn_loss = 0

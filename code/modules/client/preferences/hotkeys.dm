@@ -4,4 +4,6 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/toggle/hotkeys/apply_to_client(client/client, value)
+	procstart = null
+	src.procstart = null
 	client.hotkeys = value

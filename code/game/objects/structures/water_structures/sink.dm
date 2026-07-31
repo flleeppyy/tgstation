@@ -24,6 +24,8 @@
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sink, (-14))
 
 /obj/structure/sink/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	create_reagents(capacity, NO_REACT)
@@ -37,9 +39,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sink, (-14))
 		return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/sink/LateInitialize()
+	procstart = null
+	src.procstart = null
 	find_and_mount_on_atom(late_init = TRUE)
 
 /obj/structure/sink/atom_deconstruct(dissambled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(buildstacktype)
 		new buildstacktype(loc,buildstackamount)
 	else
@@ -50,15 +56,23 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sink, (-14))
 		new /obj/item/stock_parts/water_recycler(drop_location())
 
 /obj/structure/sink/is_mountable_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	return !isgroundlessturf(target)
 
 /obj/structure/sink/get_turfs_to_mount_on()
+	procstart = null
+	src.procstart = null
 	return list(get_turf(src))
 
 /obj/structure/sink/get_mountable_objects()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /obj/structure/sink/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(isnull(held_item))
 		context[SCREENTIP_CONTEXT_LMB] = "Wash hands"
@@ -85,12 +99,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sink, (-14))
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/sink/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(has_water_reclaimer)
 		. += span_notice("A water recycler is installed. It looks like you could pry it out.")
 	. += span_notice("[reagents.total_volume]/[reagents.maximum_volume] liquids remaining.")
 
 /obj/structure/sink/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -139,6 +157,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sink, (-14))
 						span_notice("You wash your [washing_face ? "face" : "hands"] using [src]."))
 
 /obj/structure/sink/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(busy)
 		to_chat(user, span_warning("Someone's already washing here!"))
@@ -220,11 +240,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sink, (-14))
 		return ITEM_INTERACT_SUCCESS
 
 /obj/structure/sink/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(src)
 	deconstruct(TRUE)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/sink/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!has_water_reclaimer)
@@ -238,6 +262,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sink, (-14))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/sink/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	// Water reclamation complete?
 	if(!has_water_reclaimer || reagents.holder_full())
 		return PROCESS_KILL
@@ -265,6 +291,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sink/kitchen, (-16))
 	has_water_reclaimer = FALSE
 
 /obj/structure/sink/greyscale/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	return ..(REVERSE_DIR(newdir))
 
 /obj/structure/sink/greyscale/filled
@@ -282,6 +310,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sink/kitchen, (-16))
 	throw_range = 1
 
 /obj/item/wallframe/sinkframe/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(held_item, /obj/item/stock_parts/water_recycler) && result_path == /obj/structure/sink/greyscale)
 		context[SCREENTIP_CONTEXT_LMB] = "Install recycler"
 		return CONTEXTUAL_SCREENTIP_SET
@@ -289,6 +319,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sink/kitchen, (-16))
 	return ..()
 
 /obj/item/wallframe/sinkframe/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(result_path == /obj/structure/sink/greyscale/filled)
 		. += span_notice("It has a [EXAMINE_HINT("water recycler")] installed.")
@@ -296,6 +328,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sink/kitchen, (-16))
 		. += span_notice("It can be fitted with a [EXAMINE_HINT("water recycler")].")
 
 /obj/item/wallframe/sinkframe/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(istype(tool, /obj/item/stock_parts/water_recycler) && result_path == /obj/structure/sink/greyscale)
 		qdel(tool)
@@ -305,5 +339,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sink/kitchen, (-16))
 		return ITEM_INTERACT_SUCCESS
 
 /obj/item/wallframe/sinkframe/after_attach(obj/structure/sink/greyscale/attached_to)
+	procstart = null
+	src.procstart = null
 	attached_to.set_custom_materials(custom_materials)
 	attached_to.update_appearance(UPDATE_OVERLAYS)

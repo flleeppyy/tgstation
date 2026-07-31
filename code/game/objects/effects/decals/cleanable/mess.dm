@@ -18,11 +18,15 @@
 	reagent_amount = 30
 
 /obj/effect/decal/cleanable/ash/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = base_pixel_x + rand(-5, 5)
 	pixel_y = base_pixel_y + rand(-5, 5)
 
 /obj/effect/decal/cleanable/ash/NeverShouldHaveComeHere(turf/here_turf)
+	procstart = null
+	src.procstart = null
 	return !istype(here_turf, /obj/structure/bodycontainer/crematorium) && ..()
 
 /obj/effect/decal/cleanable/ash/large
@@ -40,12 +44,16 @@
 	beauty = -100
 
 /obj/effect/decal/cleanable/glass/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == INITIALIZE_HINT_QDEL)
 		return
 	setDir(pick(GLOB.cardinals))
 
 /obj/effect/decal/cleanable/glass/ex_act()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 	return TRUE
 
@@ -78,6 +86,8 @@
 	var/is_tileable = TRUE
 
 /obj/effect/decal/cleanable/dirt/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == INITIALIZE_HINT_QDEL)
 		return
@@ -95,6 +105,8 @@
 		QUEUE_SMOOTH_NEIGHBORS(src)
 
 /obj/effect/decal/cleanable/dirt/Destroy()
+	procstart = null
+	src.procstart = null
 	if(smoothing_flags & USES_SMOOTHING)
 		QUEUE_SMOOTH_NEIGHBORS(src)
 	return ..()
@@ -107,6 +119,8 @@
 	is_tileable = FALSE
 
 /obj/effect/decal/cleanable/dirt/dust/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = base_icon_state
 
@@ -120,6 +134,8 @@
 	beauty = -300
 
 /obj/effect/decal/cleanable/greenglow/ex_act()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/effect/decal/cleanable/greenglow/filled
@@ -127,6 +143,8 @@
 	reagent_amount = 5
 
 /obj/effect/decal/cleanable/greenglow/filled/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	decal_reagent = pick(/datum/reagent/uranium, /datum/reagent/uranium/radium)
 	. = ..()
 
@@ -143,6 +161,8 @@
 	light_color = LIGHT_COLOR_NUCLEAR
 
 /obj/effect/decal/cleanable/greenglow/radioactive/Initialize(mapload, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == INITIALIZE_HINT_QDEL)
 		return
@@ -196,6 +216,8 @@
 	beauty = -150
 
 /obj/effect/decal/cleanable/vomit/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !ishuman(user))
 		return
@@ -233,6 +255,8 @@ GLOBAL_LIST_EMPTY(nebula_vomits)
 	beauty = 10
 
 /obj/effect/decal/cleanable/vomit/nebula/Initialize(mapload, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == INITIALIZE_HINT_QDEL)
 		return
@@ -240,10 +264,14 @@ GLOBAL_LIST_EMPTY(nebula_vomits)
 	GLOB.nebula_vomits += src
 
 /obj/effect/decal/cleanable/vomit/nebula/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance(icon, icon_state, src, alpha = src.alpha)
 
 /obj/effect/decal/cleanable/vomit/nebula/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	GLOB.nebula_vomits -= src
@@ -252,6 +280,8 @@ GLOBAL_LIST_EMPTY(nebula_vomits)
 /obj/effect/decal/cleanable/vomit/nebula/worms
 
 /obj/effect/decal/cleanable/vomit/nebula/worms/Initialize(mapload, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == INITIALIZE_HINT_QDEL)
 		return
@@ -263,6 +293,8 @@ GLOBAL_LIST_EMPTY(nebula_vomits)
 	desc = "You try not to look at the chunks, and fail."
 
 /obj/effect/decal/cleanable/vomit/old/Initialize(mapload, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == INITIALIZE_HINT_QDEL)
 		return
@@ -291,6 +323,8 @@ GLOBAL_LIST_EMPTY(nebula_vomits)
 	mergeable_decal = FALSE
 
 /obj/effect/decal/cleanable/shreds/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(severity >= EXPLODE_DEVASTATE) //so shreds created during an explosion aren't deleted by the explosion.
 		qdel(src)
 		return TRUE
@@ -298,6 +332,8 @@ GLOBAL_LIST_EMPTY(nebula_vomits)
 	return FALSE
 
 /obj/effect/decal/cleanable/shreds/Initialize(mapload, oldname)
+	procstart = null
+	src.procstart = null
 	pixel_x = rand(-10, 10)
 	pixel_y = rand(-10, 10)
 	if(!isnull(oldname))
@@ -313,6 +349,8 @@ GLOBAL_LIST_EMPTY(nebula_vomits)
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /obj/effect/decal/cleanable/glitter/Initialize(mapload, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == INITIALIZE_HINT_QDEL)
 		return
@@ -377,6 +415,8 @@ GLOBAL_LIST_EMPTY(nebula_vomits)
 	clean_type = CLEAN_TYPE_HARD_DECAL
 
 /obj/effect/decal/cleanable/garbage/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == INITIALIZE_HINT_QDEL)
 		return
@@ -395,6 +435,8 @@ GLOBAL_LIST_EMPTY(nebula_vomits)
 	is_mopped = FALSE
 
 /obj/effect/decal/cleanable/rubble/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == INITIALIZE_HINT_QDEL)
 		return

@@ -10,6 +10,8 @@
 	lace_time = 20 SECONDS // how the hell do these laces even work??
 
 /obj/item/clothing/shoes/clown_shoes/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	create_storage(storage_type = /datum/storage/pockets/shoes/clown)
@@ -19,6 +21,8 @@
 	AddElement(/datum/element/ignites_matches)
 
 /obj/item/clothing/shoes/clown_shoes/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot & ITEM_SLOT_FEET)
 		if(enabled_waddle)
@@ -27,12 +31,16 @@
 			user.add_mood_event("clownshoes", /datum/mood_event/clownshoes)
 
 /obj/item/clothing/shoes/clown_shoes/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(user, TRAIT_WADDLING, SHOES_TRAIT)
 	if(is_clown_job(user.mind?.assigned_role))
 		user.clear_mood_event("clownshoes")
 
 /obj/item/clothing/shoes/clown_shoes/item_ctrl_click(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		return CLICK_ACTION_BLOCKING
 	if(user.get_active_held_item() != src)
@@ -93,6 +101,8 @@
 	acid = 50
 
 /obj/item/clothing/shoes/clown_shoes/combat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	create_storage(storage_type = /datum/storage/pockets/shoes)
@@ -123,6 +133,8 @@
 	acid = 50
 
 /obj/item/clothing/shoes/clown_shoes/banana_shoes/combat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	create_storage(storage_type = /datum/storage/pockets/shoes)
@@ -131,11 +143,15 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/item/clothing/shoes/clown_shoes/banana_shoes/combat/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/bananium_amount = bananium.get_material_amount(/datum/material/bananium)
 	if(bananium_amount < BANANA_SHOES_MAX_CHARGE)
 		bananium.insert_amount_mat(min(BANANA_SHOES_RECHARGE_RATE * seconds_per_tick, BANANA_SHOES_MAX_CHARGE - bananium_amount), /datum/material/bananium)
 
 /obj/item/clothing/shoes/clown_shoes/banana_shoes/combat/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	ui_action_click(user)
 
 #undef BANANA_SHOES_RECHARGE_RATE

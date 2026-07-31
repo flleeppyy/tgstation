@@ -22,6 +22,8 @@
 	COOLDOWN_DECLARE(spawn_delay)
 
 /datum/component/spawner/Initialize(spawn_types = list(), spawn_time = 30 SECONDS, max_spawned = 5, max_spawn_per_attempt = 1 , faction = list(FACTION_MINING), spawn_text = null, datum/callback/spawn_callback = null, spawn_distance = 1, spawn_distance_exclude = 0, initial_spawn_delay = 0 SECONDS)
+	procstart = null
+	src.procstart = null
 	if (!islist(spawn_types))
 		CRASH("invalid spawn_types to spawn specified for spawner component!")
 	src.spawn_time = spawn_time
@@ -42,10 +44,14 @@
 	START_PROCESSING((spawn_time < 2 SECONDS ? SSfastprocess : SSprocessing), src)
 
 /datum/component/spawner/process()
+	procstart = null
+	src.procstart = null
 	try_spawn_mob()
 
 /// Stop spawning mobs
 /datum/component/spawner/proc/stop_spawning(force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	STOP_PROCESSING(SSprocessing, src)
@@ -53,6 +59,8 @@
 
 /// Try to create a new mob
 /datum/component/spawner/proc/try_spawn_mob()
+	procstart = null
+	src.procstart = null
 	if(!length(spawn_types))
 		return
 	if(!COOLDOWN_FINISHED(src, spawn_delay))
@@ -102,6 +110,8 @@
 
 /// Remove weakrefs to atoms which have been killed or deleted without us picking it up somehow
 /datum/component/spawner/proc/validate_references()
+	procstart = null
+	src.procstart = null
 	for (var/datum/weakref/weak_thing as anything in spawned_things)
 		var/atom/previously_spawned = weak_thing?.resolve()
 		if (!previously_spawned)
@@ -116,11 +126,15 @@
 
 /// Called when an atom we spawned is deleted, remove it from the list
 /datum/component/spawner/proc/on_deleted(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	spawned_things -= WEAKREF(source)
 
 /// Called when a mob we spawned dies, remove it from the list and unregister signals
 /datum/component/spawner/proc/mob_stat_changed(mob/living/source)
+	procstart = null
+	src.procstart = null
 	if (source.stat != DEAD)
 		return
 	spawned_things -= WEAKREF(source)

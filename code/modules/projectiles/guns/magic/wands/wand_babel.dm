@@ -12,6 +12,8 @@
 	max_charges = 6
 
 /obj/item/gun/magic/wand/babel/zap_self(mob/living/user, suicide = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	charges--
 	if (HAS_TRAIT(user, TRAIT_TOWER_OF_BABEL))
@@ -19,6 +21,8 @@
 	curse_of_babel(user)
 
 /obj/item/gun/magic/wand/babel/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.say("Someone please kill me!", forced = "failed babel wand suicide")
 	return SHAME

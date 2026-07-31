@@ -9,6 +9,8 @@
 	pointer_color = COLOR_GREEN
 
 /datum/id_trim/admin/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Every single access in the game, all on one handy trim.
 	access = SSid_access.get_region_access_list(list(REGION_ALL_GLOBAL))
@@ -21,5 +23,7 @@
 	subdepartment_color = COLOR_SERVICE_LIME
 
 /datum/id_trim/highlander/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	access = SSid_access.get_region_access_list(list(REGION_CENTCOM, REGION_ALL_STATION))

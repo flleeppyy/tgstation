@@ -14,10 +14,14 @@
 	actions_types = list(/datum/action/change_pointer_color)
 
 /obj/item/skillchip/big_pointer/on_activate(mob/living/carbon/user, silent=FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(user, COMSIG_MOVABLE_POINTED, PROC_REF(fancier_pointer))
 
 /obj/item/skillchip/big_pointer/on_deactivate(mob/living/carbon/user, silent=FALSE)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(user, COMSIG_MOVABLE_POINTED)
 	var/datum/action/change_pointer_color/action = locate() in actions
 	action?.arrow_color = null
@@ -25,6 +29,8 @@
 	return ..()
 
 /obj/item/skillchip/big_pointer/proc/fancier_pointer(mob/living/user, atom/pointed, obj/effect/temp_visual/point/point)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(HAS_TRAIT(user, TRAIT_UNKNOWN_APPEARANCE))
 		return
@@ -50,10 +56,14 @@
 	var/mutable_appearance/arrow_overlay
 
 /datum/action/change_pointer_color/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	arrow_overlay = null
 
 /datum/action/change_pointer_color/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -72,6 +82,8 @@
 		build_all_button_icons(update_flags = UPDATE_BUTTON_ICON, force = TRUE)
 
 /datum/action/change_pointer_color/proc/pick_color(mob/user)
+	procstart = null
+	src.procstart = null
 	var/ncolor = tgui_color_picker(owner, "Pick new color", "Pointer Color", arrow_color)
 	if(user != owner || !IsAvailable(feedback = TRUE))
 		return
@@ -80,6 +92,8 @@
 	build_all_button_icons(update_flags = UPDATE_BUTTON_ICON, force = TRUE)
 
 /datum/action/change_pointer_color/apply_button_icon(atom/movable/screen/movable/action_button/current_button, force = FALSE)
+	procstart = null
+	src.procstart = null
 	var/initial_icon = /obj/effect/temp_visual/point::icon
 	current_button.cut_overlay(arrow_overlay)
 	if(!arrow_color)

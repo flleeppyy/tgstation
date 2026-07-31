@@ -24,6 +24,8 @@
 	)
 
 /datum/status_effect/heretic_passive/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	heretic_datum = GET_HERETIC(owner)
 	RegisterSignal(heretic_datum, COMSIG_HERETIC_PASSIVE_UPGRADE_FIRST, PROC_REF(heretic_level_upgrade))
@@ -40,6 +42,8 @@
 		return
 
 /datum/status_effect/heretic_passive/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(heretic_datum, list(
 		COMSIG_HERETIC_PASSIVE_UPGRADE_FIRST,
 		COMSIG_HERETIC_PASSIVE_UPGRADE_FINAL,
@@ -49,6 +53,8 @@
 
 /// Gives our first upgrade
 /datum/status_effect/heretic_passive/proc/heretic_level_upgrade()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SHOULD_CALL_PARENT(TRUE)
 	passive_level = HERETIC_LEVEL_UPGRADE
@@ -59,6 +65,8 @@
 
 /// Gives our final upgrade
 /datum/status_effect/heretic_passive/proc/heretic_level_final()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SHOULD_CALL_PARENT(TRUE)
 	if(passive_level == HERETIC_LEVEL_START)
@@ -68,6 +76,8 @@
 	heretic_datum.update_data_for_all_viewers()
 
 /datum/status_effect/heretic_passive/proc/recharge_spells()
+	procstart = null
+	src.procstart = null
 	owner.balloon_alert(owner, "spells recharged")
 	var/list/main_path_knowledge = heretic_datum.get_researched_knowledge_by_category(HERETIC_KNOWLEDGE_TREE) \
 		+ heretic_datum.get_researched_knowledge_by_category(HERETIC_KNOWLEDGE_START)
@@ -95,22 +105,32 @@
 	var/seconds_of_fire = 0
 
 /datum/status_effect/heretic_passive/ash/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.add_traits(list(TRAIT_RESISTHEAT, TRAIT_ASHSTORM_IMMUNE), REF(src))
 
 /datum/status_effect/heretic_passive/ash/heretic_level_upgrade()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(owner, TRAIT_LAVA_IMMUNE, REF(src))
 
 /datum/status_effect/heretic_passive/ash/heretic_level_final()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.add_traits(list(TRAIT_RESISTHIGHPRESSURE, TRAIT_RESISTLOWPRESSURE), REF(src))
 
 /datum/status_effect/heretic_passive/ash/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_traits(list(TRAIT_RESISTHEAT, TRAIT_ASHSTORM_IMMUNE, TRAIT_LAVA_IMMUNE, TRAIT_RESISTHIGHPRESSURE, TRAIT_RESISTLOWPRESSURE), REF(src))
 	return ..()
 
 /datum/status_effect/heretic_passive/ash/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/seconds_gained = 0
 	for(var/mob/living/nearby_guy in view(owner, 3))
@@ -159,11 +179,15 @@
 	VAR_PRIVATE/list/recently_attacked_us_refs
 
 /datum/status_effect/heretic_passive/blade/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_LIVING_CHECK_BLOCK, PROC_REF(on_shield_reaction))
 	RegisterSignal(owner, COMSIG_USER_PRE_ITEM_ATTACK, PROC_REF(hit_someone))
 
 /datum/status_effect/heretic_passive/blade/proc/hit_someone(mob/living/source, mob/living/target, obj/item/used_weapon)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(target) || target == source)
@@ -178,26 +202,38 @@
 		addtimer(CALLBACK(src, PROC_REF(check_crit), target), 0.2 SECONDS, TIMER_DELETE_ME|TIMER_UNIQUE)
 
 /datum/status_effect/heretic_passive/blade/proc/check_crit(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target) || target.stat == STABLE)
 		return
 	recharge_spells()
 
 /datum/status_effect/heretic_passive/blade/heretic_level_upgrade()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_LIVING_Z_IMPACT, PROC_REF(z_impact_react))
 
 /datum/status_effect/heretic_passive/blade/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(owner, list(COMSIG_LIVING_CHECK_BLOCK, COMSIG_LIVING_Z_IMPACT, COMSIG_USER_PRE_ITEM_ATTACK))
 
 /datum/status_effect/heretic_passive/blade/proc/remove_attacked_ref(attacked_key)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(recently_attacked_refs, attacked_key)
 
 /datum/status_effect/heretic_passive/blade/proc/remove_attacker_ref(attacker_key)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(recently_attacked_us_refs, attacker_key)
 
 /// Blocks the effects from falling
 /datum/status_effect/heretic_passive/blade/proc/z_impact_react(datum/source, levels, turf/fell_on)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	new /obj/effect/temp_visual/mook_dust(fell_on)
 	owner.visible_message(span_notice("[owner] lands on [fell_on] safely, and quite stylishly on [p_their()] feet!"))
@@ -270,6 +306,8 @@
 
 /// Does the actual counter-attack
 /datum/status_effect/heretic_passive/blade/proc/counter_attack(mob/living/carbon/human/source, mob/living/target, obj/item/melee/sickly_blade/weapon, attack_text)
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(source), 'sound/items/weapons/parry.ogg', 100, TRUE)
 	source.balloon_alert(source, "riposte used")
 	source.visible_message(
@@ -281,6 +319,8 @@
 
 /// Gives feedback to the user
 /datum/status_effect/heretic_passive/blade/proc/reset_riposte(mob/living/carbon/human/source)
+	procstart = null
+	src.procstart = null
 	riposte_ready = TRUE
 	source.balloon_alert(source, "riposte ready")
 
@@ -299,20 +339,28 @@
 	)
 
 /datum/status_effect/heretic_passive/cosmic/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(locate(/obj/effect/forcefield/cosmic_field) in get_turf(owner))
 		var/delta_time = DELTA_WORLD_TIME(SSmobs) * 0.5 // SSmobs.wait is 2 secs, so this should be halved.
 		owner.adjust_stamina_loss(-15 * delta_time, updating_stamina = FALSE)
 
 /datum/status_effect/heretic_passive/cosmic/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_USER_PRE_ITEM_ATTACK, PROC_REF(hit_someone))
 
 /datum/status_effect/heretic_passive/cosmic/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(owner, COMSIG_USER_PRE_ITEM_ATTACK)
 
 /datum/status_effect/heretic_passive/cosmic/proc/hit_someone(mob/living/source, mob/living/target, obj/item/used_weapon)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(target) || target == source || target.stat <= HARD_CRIT)
@@ -322,6 +370,8 @@
 		addtimer(CALLBACK(src, PROC_REF(check_crit), target), 0.2 SECONDS, TIMER_DELETE_ME|TIMER_UNIQUE)
 
 /datum/status_effect/heretic_passive/cosmic/proc/check_crit(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target) || target.stat == STABLE)
 		return
 	recharge_spells()
@@ -335,6 +385,8 @@
  * * Optional `type`: Makes a specific type of cosmic field if we don't want the default
  */
 /proc/create_cosmic_field(loc, mob/living/creator, type = /obj/effect/forcefield/cosmic_field)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/forcefield/cosmic_field/new_field
 	new_field = new type(loc)
 
@@ -367,15 +419,21 @@
 	)
 
 /datum/status_effect/heretic_passive/flesh/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.add_traits(list(TRAIT_VIRUSIMMUNE, TRAIT_SPACE_ANT_IMMUNITY), REF(src))
 	RegisterSignal(owner, COMSIG_HERETIC_SUMMONED_MOB, PROC_REF(on_summon))
 
 /datum/status_effect/heretic_passive/flesh/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.set_disgust(0)
 
 /datum/status_effect/heretic_passive/flesh/heretic_level_upgrade()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_LIVING_EAT_FOOD, PROC_REF(on_eat))
 	owner.add_traits(list(TRAIT_FAT_IGNORE_SLOWDOWN, TRAIT_VORACIOUS, TRAIT_GLUTTON), REF(src))
@@ -390,6 +448,8 @@
 
 /// Any time you take a bite of something, if it's meat or an organ you will heal some damage
 /datum/status_effect/heretic_passive/flesh/proc/on_eat(mob/eater, atom/food)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/item/organ/consumed_organ = food
 	if(istype(consumed_organ) && consumed_organ.foodtype_flags & MEAT)
@@ -400,6 +460,8 @@
 		heal_glutton() // Heal the owner if they eat meat
 
 /datum/status_effect/heretic_passive/flesh/proc/heal_glutton()
+	procstart = null
+	src.procstart = null
 	var/healed_amount = owner.heal_overall_damage(2, 2, updating_health = FALSE)
 	healed_amount += owner.adjust_oxy_loss(-2, FALSE)
 	healed_amount += owner.adjust_tox_loss(-2, FALSE, TRUE)
@@ -416,6 +478,8 @@
 		new /obj/effect/temp_visual/heal(get_turf(owner), COLOR_RED)
 
 /datum/status_effect/heretic_passive/flesh/heretic_level_final()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(owner))
 		return
@@ -425,6 +489,8 @@
 
 /// Gives/Removes damage resistance when we become/lose fatness
 /datum/status_effect/heretic_passive/flesh/proc/on_fat(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!ishuman(owner))
 		return
@@ -437,10 +503,14 @@
 		REMOVE_TRAIT(heretic, TRAIT_BATON_RESISTANCE, REF(src))
 
 /datum/status_effect/heretic_passive/flesh/proc/on_summon(datum/source, mob/living/summoned)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	recharge_spells()
 
 /datum/status_effect/heretic_passive/flesh/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.remove_traits(list(TRAIT_VIRUSIMMUNE, TRAIT_SPACE_ANT_IMMUNITY, TRAIT_FAT_IGNORE_SLOWDOWN, TRAIT_VORACIOUS, TRAIT_GLUTTON, TRAIT_BATON_RESISTANCE), REF(src))
 	UnregisterSignal(owner, list(COMSIG_LIVING_EAT_FOOD, SIGNAL_ADDTRAIT(TRAIT_FAT), SIGNAL_REMOVETRAIT(TRAIT_FAT), COMSIG_HERETIC_SUMMONED_MOB))
@@ -470,21 +540,29 @@
 	var/points_to_recharge = 2
 
 /datum/status_effect/heretic_passive/lock/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(owner, TRAIT_SHOCKIMMUNE, REF(src))
 	RegisterSignal(heretic_datum, COMSIG_HERETIC_SHOP_SETUP, PROC_REF(on_shop_setup)) // Just in case we are applying this after the shop was set up
 	RegisterSignal(heretic_datum, COMSIG_HERETIC_RESEARCHED_KNOWLEDGE, PROC_REF(on_research)) // Recharge spells whenever we research something
 
 /datum/status_effect/heretic_passive/lock/heretic_level_upgrade()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(owner, TRAIT_XRAY_VISION, REF(src))
 	owner.update_sight()
 
 /datum/status_effect/heretic_passive/lock/heretic_level_final()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(owner, TRAIT_LOCK_GRASP_UPGRADED, REF(src))
 
 /datum/status_effect/heretic_passive/lock/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(heretic_datum, COMSIG_HERETIC_SHOP_SETUP)
 	UnregisterSignal(heretic_datum, COMSIG_HERETIC_RESEARCHED_KNOWLEDGE)
 	owner.remove_traits(list(TRAIT_SHOCKIMMUNE, TRAIT_XRAY_VISION, TRAIT_LOCK_GRASP_UPGRADED), REF(src))
@@ -492,6 +570,8 @@
 	return ..()
 
 /datum/status_effect/heretic_passive/lock/proc/on_shop_setup(datum/antagonist/heretic/heretic_datum)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/list/shop = heretic_datum.heretic_shops[HERETIC_KNOWLEDGE_SHOP]
 	for(var/knowledge_type in shop)
@@ -500,6 +580,8 @@
 			heretic_info[HKT_COST] = max(1, heretic_info[HKT_COST] - 1) // Reduce cost by 1, minimum of 1
 
 /datum/status_effect/heretic_passive/lock/proc/on_research(datum/source, datum/heretic_knowledge/researched_knowledge)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	points_to_recharge -= researched_knowledge.cost
@@ -531,6 +613,8 @@
 	var/amulet_equipped = FALSE
 
 /datum/status_effect/heretic_passive/moon/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_MOB_APPLIED_MOONLIGHT_AMULET, PROC_REF(on_amulet))
 	var/obj/item/organ/brain/our_brain = owner.get_organ_slot(ORGAN_SLOT_BRAIN)
@@ -541,15 +625,21 @@
 	RegisterSignal(owner, COMSIG_ATOM_WAS_ATTACKED, PROC_REF(on_attacked))
 
 /datum/status_effect/heretic_passive/moon/proc/on_amulet(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	recharge_spells()
 
 /// Saves world.time when we are attacked by anything
 /datum/status_effect/heretic_passive/moon/proc/on_attacked(mob/victim, atom/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	last_attack = world.time
 
 /datum/status_effect/heretic_passive/moon/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/healing_amount = ((world.time > last_attack + combat_lockout) ? -1 * passive_level * seconds_between_ticks : -2 * passive_level * seconds_between_ticks)
 	if(heretic_datum.ascended)
@@ -566,14 +656,20 @@
 			our_brain.cure_trauma_type(trauma.type, trauma.resilience)
 
 /datum/status_effect/heretic_passive/moon/heretic_level_upgrade()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(owner, TRAIT_SLEEPIMMUNE, REF(src))
 
 /datum/status_effect/heretic_passive/moon/heretic_level_final()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	amulet = new()
 
 /datum/status_effect/heretic_passive/moon/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_MOB_APPLIED_MOONLIGHT_AMULET)
 	var/obj/item/organ/brain/our_brain = owner.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(!our_brain)
@@ -605,26 +701,36 @@
 	var/rust_counter_required = 60
 
 /datum/status_effect/heretic_passive/rust/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
 	RegisterSignal(owner, COMSIG_LIVING_LIFE, PROC_REF(on_life))
 	RegisterSignal(owner, COMSIG_MOB_RUST_HERETIC_ACT, PROC_REF(on_rust_tile_rusted))
 
 /datum/status_effect/heretic_passive/rust/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(owner, list(COMSIG_MOVABLE_MOVED, COMSIG_LIVING_LIFE, COMSIG_MOB_RUST_HERETIC_ACT))
 
 /datum/status_effect/heretic_passive/rust/heretic_level_upgrade()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(heretic_datum.rust_strength < 2)
 		heretic_datum.increase_rust_strength() // Bring us up to 2
 
 /datum/status_effect/heretic_passive/rust/heretic_level_final()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(heretic_datum.rust_strength < 3)
 		heretic_datum.increase_rust_strength() // Bring us up to 3
 
 /datum/status_effect/heretic_passive/rust/proc/on_rust_tile_rusted(mob/living/heretic, turf/rusted_target, result)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isturf(rusted_target) || !HAS_TRAIT(rusted_target, TRAIT_RUSTY) || !result)
@@ -642,6 +748,8 @@
  * Checks if we should have baton resistance on the new turf.
  */
 /datum/status_effect/heretic_passive/rust/proc/on_move(mob/source, atom/old_loc, dir, forced, list/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source.is_touching_rust())
@@ -656,6 +764,8 @@
  * including baton knockdown and stamina damage.
  */
 /datum/status_effect/heretic_passive/rust/proc/on_life(mob/living/source, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!source.is_touching_rust())
@@ -714,24 +824,34 @@
 	var/list/gained_charges_from
 
 /datum/status_effect/heretic_passive/void/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.add_traits(list(TRAIT_RESISTCOLD, TRAIT_RESISTLOWPRESSURE), REF(src))
 	RegisterSignal(owner, COMSIG_USER_PRE_ITEM_ATTACK, PROC_REF(hit_someone))
 
 /datum/status_effect/heretic_passive/void/heretic_level_upgrade()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(owner, TRAIT_NOBREATH, REF(src))
 
 /datum/status_effect/heretic_passive/void/heretic_level_final()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.add_traits(list(TRAIT_NO_SLIP_WATER, TRAIT_NO_SLIP_ICE, TRAIT_NO_SLIP_SLIDE), REF(src))
 
 /datum/status_effect/heretic_passive/void/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.remove_traits(list(TRAIT_RESISTCOLD, TRAIT_RESISTLOWPRESSURE, TRAIT_NOBREATH, TRAIT_NO_SLIP_WATER, TRAIT_NO_SLIP_ICE, TRAIT_NO_SLIP_SLIDE), REF(src))
 	UnregisterSignal(owner, COMSIG_USER_PRE_ITEM_ATTACK)
 
 /datum/status_effect/heretic_passive/void/proc/hit_someone(mob/living/source, mob/living/target, obj/item/used_weapon)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(target) || target == source || target.stat <= HARD_CRIT || LAZYFIND(gained_charges_from, REF(target)))
@@ -742,6 +862,8 @@
 		addtimer(CALLBACK(src, PROC_REF(check_crit), target), 0.2 SECONDS, TIMER_DELETE_ME|TIMER_UNIQUE)
 
 /datum/status_effect/heretic_passive/void/proc/check_crit(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target) || target.stat == STABLE)
 		return
 	LAZYADD(gained_charges_from, REF(target))
@@ -749,6 +871,8 @@
 	recharge_spells()
 
 /datum/status_effect/heretic_passive/void/proc/remove_gained_from(target_ref)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(gained_charges_from, target_ref)
 
 #undef HERETIC_LEVEL_START

@@ -2,6 +2,8 @@
 /datum/unit_test/status_effect_ticks
 
 /datum/unit_test/status_effect_ticks/Run()
+	procstart = null
+	src.procstart = null
 	for(var/datum/status_effect/checking as anything in subtypesof(/datum/status_effect))
 		if(initial(checking.id) == STATUS_EFFECT_ID_ABSTRACT)
 			continue
@@ -32,6 +34,8 @@
 /datum/unit_test/status_effect_duration
 
 /datum/unit_test/status_effect_duration/Run()
+	procstart = null
+	src.procstart = null
 	for(var/datum/status_effect/checking as anything in subtypesof(/datum/status_effect))
 		if(initial(checking.id) == STATUS_EFFECT_ID_ABSTRACT)
 			continue
@@ -61,6 +65,8 @@
 /datum/unit_test/status_effect_tick_counts
 
 /datum/unit_test/status_effect_tick_counts/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/user = allocate(/mob/living/carbon/human/consistent, run_loc_floor_bottom_left)
 
 	var/datum/status_effect/unit_test_tick_counter/counter = user.apply_status_effect(/datum/status_effect/unit_test_tick_counter)
@@ -94,6 +100,8 @@
 	var/total_seconds = 0
 
 /datum/status_effect/unit_test_tick_counter/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	total_tick_count++
 	total_seconds += seconds_between_ticks
 
@@ -101,6 +109,8 @@
 /datum/unit_test/status_effect_alert
 
 /datum/unit_test/status_effect_alert/Run()
+	procstart = null
+	src.procstart = null
 	// The base typepath is used to indicate "I didn't set an alert type"
 	var/bad_alert_type = /datum/status_effect::alert_type
 	TEST_ASSERT_NOTNULL(bad_alert_type, "No alert type defined in /datum/status_effect - This test may be redundant now.")
@@ -117,6 +127,8 @@
 /datum/unit_test/status_effect_ids
 
 /datum/unit_test/status_effect_ids/Run()
+	procstart = null
+	src.procstart = null
 	// The base id is used to indicate "I didn't set an id"
 	var/bad_id = /datum/status_effect::id
 	TEST_ASSERT_NOTNULL(bad_id, "No id defined in /datum/status_effect - This test may be redundant now.")

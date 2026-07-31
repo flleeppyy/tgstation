@@ -53,6 +53,8 @@
 	var/anger_boost = 50
 
 /mob/living/basic/tree/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/seethrough_mob)
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_PINE, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
@@ -60,6 +62,8 @@
 	AddComponent(/datum/component/aggro_emote, emote_list = string_list(list("growls")), emote_chance = 20)
 
 /mob/living/basic/tree/Life(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.) //dead or deleted
 		return
@@ -76,6 +80,8 @@
 		our_turf.atmos_spawn_air("[GAS_O2]=[amt]")
 
 /mob/living/basic/tree/melee_attack(atom/target, list/modifiers, ignore_cooldown = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)

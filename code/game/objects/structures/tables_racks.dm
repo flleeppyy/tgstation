@@ -60,6 +60,8 @@
 	var/flipped_table_sound = 'sound/items/trayhit/trayhit1.ogg'
 
 /obj/structure/table/Initialize(mapload, obj/structure/table_frame/frame_used, obj/item/stack/stack_used)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(frame_used)
 		apply_frame_properties(frame_used)
@@ -95,22 +97,30 @@
 
 /// Applies additional properties based on the frame used to construct this table.
 /obj/structure/table/proc/apply_frame_properties(obj/structure/table_frame/frame_used)
+	procstart = null
+	src.procstart = null
 	frame = frame_used.type
 	framestack = frame_used.framestack
 	framestackamount = frame_used.framestackamount
 
 /// Applies additional properties based on the stack used to construct this table.
 /obj/structure/table/proc/apply_stack_properties(obj/item/stack/stack_used)
+	procstart = null
+	src.procstart = null
 	return
 
 ///Adds the element used to make the object climbable, and also the one that shift the mob buckled to it up.
 /obj/structure/table/proc/make_climbable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/climb_walkable)
 	AddElement(/datum/element/climbable)
 	AddElement(/datum/element/elevation, pixel_shift = 12)
 
 //proc that adds elements present in normal tables
 /obj/structure/table/proc/unflip_table()
+	procstart = null
+	src.procstart = null
 	playsound(src, unflip_table_sound, 100)
 	make_climbable()
 	AddElement(/datum/element/give_turf_traits, turf_traits)
@@ -131,6 +141,8 @@
 
 //proc that removes elements present in now-flipped tables
 /obj/structure/table/proc/flip_table(new_dir = SOUTH)
+	procstart = null
+	src.procstart = null
 	playsound(src, flipped_table_sound, 100)
 	RemoveElement(/datum/element/climb_walkable)
 	RemoveElement(/datum/element/climbable)
@@ -181,6 +193,8 @@
 	is_flipped = TRUE
 
 /obj/structure/table/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isnull(held_item))
@@ -204,15 +218,21 @@
 	return . || NONE
 
 /obj/structure/table/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_flipped)
 		. += span_notice("It's been flipped on its side!")
 	. += deconstruction_hints(user)
 
 /obj/structure/table/proc/deconstruction_hints(mob/user)
+	procstart = null
+	src.procstart = null
 	return span_notice("The top is <b>screwed</b> on, but the main <b>bolts</b> are also visible.")
 
 /obj/structure/table/proc/on_exit(datum/source, atom/movable/leaving, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!is_flipped)
 		return
@@ -234,6 +254,8 @@
 		return COMPONENT_ATOM_BLOCK_EXIT
 
 /obj/structure/table/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -256,25 +278,35 @@
 	return TRUE
 
 /obj/structure/table/update_icon(updates=ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((updates & UPDATE_SMOOTHING) && (smoothing_flags & USES_SMOOTHING))
 		QUEUE_SMOOTH(src)
 		QUEUE_SMOOTH_NEIGHBORS(src)
 
 /obj/structure/table/narsie_act()
+	procstart = null
+	src.procstart = null
 	var/atom/A = loc
 	qdel(src)
 	new /obj/structure/table/wood(A)
 
 /obj/structure/table/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/structure/table/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(is_flipped)
 		return
 	return ..()
 
 /obj/structure/table/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -300,6 +332,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/structure/table/proc/is_able_to_throw(obj/structure/table, atom/movable/movable_entity)
+	procstart = null
+	src.procstart = null
 	if (movable_entity == table) //Thing is not the table
 		return FALSE
 	if (movable_entity.anchored) //Thing isn't anchored
@@ -312,9 +346,13 @@
 	return TRUE
 
 /obj/structure/table/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/table/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	procstart = null
+	src.procstart = null
 	if(!density)
 		return TRUE
 	if(pass_info.pass_flags & PASSTABLE)
@@ -322,6 +360,8 @@
 	return FALSE
 
 /obj/structure/table/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!deconstruction_ready)
 		return NONE
 	to_chat(user, span_notice("You start disassembling [src]..."))
@@ -330,6 +370,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/table/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!deconstruction_ready)
 		return NONE
 	to_chat(user, span_notice("You start deconstructing [src]..."))
@@ -341,6 +383,8 @@
 
 // This extends base item interaction because tables default to blocking 99% of interactions
 /obj/structure/table/base_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -363,6 +407,8 @@
 	return NONE
 
 /obj/structure/table/proc/tray_act(mob/living/user, obj/item/storage/bag/tray/used_tray)
+	procstart = null
+	src.procstart = null
 	if(used_tray.contents.len <= 0)
 		return NONE // If the tray IS empty, continue on (tray will be placed on the table like other items)
 
@@ -373,6 +419,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/table/proc/deck_act(mob/living/user, obj/item/toy/cards/deck/dealer_deck, list/modifiers, flip)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(dealer_deck, TRAIT_WIELDED))
 		return NONE
 
@@ -385,6 +433,8 @@
 
 // Where putting things on tables is handled.
 /obj/structure/table/proc/table_place_act(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(tool.item_flags & ABSTRACT)
 		return NONE
 
@@ -402,9 +452,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/table/proc/AfterPutItemOnTable(obj/item/thing, mob/living/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/table/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(src)
 	if(buildstack)
 		new buildstack(target_turf, buildstackamount)
@@ -418,11 +472,15 @@
 		new framestack(get_turf(src), framestackamount)
 
 /obj/structure/table/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	if(the_rcd.mode == RCD_DECONSTRUCT)
 		return list("delay" = 2.4 SECONDS, "cost" = 16)
 	return FALSE
 
 /obj/structure/table/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	procstart = null
+	src.procstart = null
 	if(rcd_data[RCD_DESIGN_MODE] == RCD_DECONSTRUCT)
 		qdel(src)
 		return TRUE
@@ -436,11 +494,15 @@
 	buildstack = null //No buildstack, so generate from mat datums
 
 /obj/structure/table/greyscale/apply_stack_properties(obj/item/stack/stack_used)
+	procstart = null
+	src.procstart = null
 	if(!stack_used.material_type)
 		return
 	set_custom_materials(list(stack_used.material_type = SHEET_MATERIAL_AMOUNT))
 
 /obj/structure/table/greyscale/finalize_material_effects(list/materials)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/english_list = get_material_english_list(materials)
 	desc = "A square [(length(materials) > 1) ? "amalgamation" : "piece"] of [english_list] on four legs. It can not move."
@@ -461,16 +523,22 @@
 	can_flip = FALSE
 
 /obj/structure/table/rolling/Initialize(mapload, obj/structure/table_frame/frame_used, obj/item/stack/stack_used)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/noisy_movement)
 
 /obj/structure/table/rolling/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/item in attached_items)
 		clear_item_reference(item)
 	LAZYNULL(attached_items) // safety
 	return ..()
 
 /obj/structure/table/rolling/item_interaction(mob/living/user, obj/item/rolling_table_dock/rable, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(!istype(rable))
 		return
@@ -489,12 +557,16 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/table/rolling/AfterPutItemOnTable(obj/item/thing, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	LAZYADD(attached_items, thing)
 	RegisterSignal(thing, COMSIG_MOVABLE_MOVED, PROC_REF(on_item_moved))
 
 /// Handles cases where any attached item moves, with or without the table. If we get picked up or anything, unregister the signal so we don't move with the table after removal from the surface.
 /obj/structure/table/rolling/proc/on_item_moved(datum/source, atom/old_loc, dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/thing = source // let it runtime if it doesn't work because that is mad wack
@@ -505,6 +577,8 @@
 
 /// Handles movement of the table itself, as well as moving along any atoms we have on our surface.
 /obj/structure/table/rolling/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isnull(loc)) // aw hell naw
@@ -519,6 +593,8 @@
 
 /// Removes the signal and the entrance from the list.
 /obj/structure/table/rolling/proc/clear_item_reference(obj/item/thing)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(thing, COMSIG_MOVABLE_MOVED)
 	LAZYREMOVE(attached_items, thing)
 
@@ -544,6 +620,8 @@
 	acid = 100
 
 /obj/structure/table/glass/Initialize(mapload, obj/structure/table_frame/frame_used, obj/item/stack/stack_used)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
@@ -552,6 +630,8 @@
 	AddElement(/datum/element/give_turf_traits, string_list(list(TRAIT_AI_AVOID_TURF)))
 
 /obj/structure/table/glass/proc/on_entered(datum/source, atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(AM))
@@ -563,16 +643,22 @@
 		check_break(AM)
 
 /obj/structure/table/glass/proc/throw_check(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.loc == get_turf(src))
 		check_break(M)
 
 /obj/structure/table/glass/proc/check_break(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(is_flipped)
 		return FALSE
 	if(M.has_gravity() && M.mob_size > MOB_SIZE_SMALL && !(M.movement_type & MOVETYPES_NOT_TOUCHING_GROUND))
 		table_shatter(M)
 
 /obj/structure/table/glass/proc/table_shatter(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	visible_message(span_warning("[src] breaks!"),
 		span_danger("You hear breaking glass."))
 
@@ -587,6 +673,8 @@
 	qdel(src)
 
 /obj/structure/table/glass/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(disassembled)
 		..()
 		return
@@ -598,6 +686,8 @@
 		new glass_shard_type(loc)
 
 /obj/structure/table/glass/narsie_act()
+	procstart = null
+	src.procstart = null
 	color = NARSIE_WINDOW_COLOUR
 
 /obj/structure/table/glass/plasmaglass
@@ -631,6 +721,8 @@
 	custom_materials = list(/datum/material/wood = SHEET_MATERIAL_AMOUNT)
 
 /obj/structure/table/wood/after_smash(mob/living/smashed_onto)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || prob(66))
 		return
 	visible_message(
@@ -645,6 +737,8 @@
 	deconstruct(FALSE)
 
 /obj/structure/table/wood/narsie_act(total_override = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!total_override)
 		..()
 
@@ -657,9 +751,13 @@
 	buildstack = /obj/item/stack/tile/carpet
 
 /obj/structure/table/wood/poker/apply_stack_properties(obj/item/stack/stack_used)
+	procstart = null
+	src.procstart = null
 	buildstack = stack_used.type
 
 /obj/structure/table/wood/poker/narsie_act()
+	procstart = null
+	src.procstart = null
 	..(FALSE)
 
 /obj/structure/table/wood/fancy
@@ -675,6 +773,8 @@
 	canSmoothWith = SMOOTH_GROUP_FANCY_WOOD_TABLES
 
 /obj/structure/table/wood/fancy/Initialize(mapload, obj/structure/table_frame/frame_used, obj/item/stack/stack_used)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Needs to be set dynamically because table smooth sprites are 32x34,
 	// which the editor treats as a two-tile-tall object. The sprites are that
@@ -682,6 +782,8 @@
 	// the sprites in the editor to see why.
 
 /obj/structure/table/wood/fancy/apply_stack_properties(obj/item/stack/stack_used)
+	procstart = null
+	src.procstart = null
 	buildstack = stack_used.type
 
 /obj/structure/table/wood/fancy/black
@@ -764,6 +866,8 @@
 	acid = 70
 
 /obj/structure/table/reinforced/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isnull(held_item))
@@ -776,12 +880,16 @@
 	return . || NONE
 
 /obj/structure/table/reinforced/deconstruction_hints(mob/user)
+	procstart = null
+	src.procstart = null
 	if(deconstruction_ready)
 		return span_notice("The top cover has been <i>welded</i> loose and the main frame's <b>bolts</b> are exposed.")
 	else
 		return span_notice("The top cover is firmly <b>welded</b> on.")
 
 /obj/structure/table/reinforced/welder_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(tool.tool_start_check(user, amount = 0))
 		if(attempt_electrocution(user))
 			return ITEM_INTERACT_BLOCKING
@@ -801,17 +909,23 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/structure/table/reinforced/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(tool.tool_behaviour == TOOL_WELDER)
 		return NONE
 
 	return ..()
 
 /obj/structure/table/reinforced/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(deconstruction_ready && attempt_electrocution(user))
 		return ITEM_INTERACT_BLOCKING
 	return ..()
 
 /obj/structure/table/reinforced/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(deconstruction_ready && attempt_electrocution(user))
 		return ITEM_INTERACT_BLOCKING
 	return ..()
@@ -819,6 +933,8 @@
 /// Attempts to shock the user, given the table is hooked up and they're within range.
 /// Returns TRUE on successful electrocution, FALSE otherwise.
 /obj/structure/table/reinforced/proc/attempt_electrocution(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!anchored) // If for whatever reason it's not anchored, it can't be shocked either.
 		return FALSE
 	if(!in_range(src, user)) // To prevent TK and mech users from getting shocked.
@@ -850,6 +966,8 @@
 	can_flip = FALSE
 
 /obj/structure/table/bronze/after_smash(mob/living/smashed_onto)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/magic/clockwork/fellowship_armory.ogg', 50, TRUE)
 
 /obj/structure/table/reinforced/rglass
@@ -919,6 +1037,8 @@
 	var/obj/item/clothing/mask/breath/breath_mask = null
 
 /obj/structure/table/optable/Initialize(mapload, obj/structure/table_frame/frame_used, obj/item/stack/stack_used)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/direction in GLOB.alldirs)
 		computer = locate(/obj/machinery/computer/operating) in get_step(src, direction)
@@ -937,6 +1057,8 @@
 		mark_patient(potential_patient)
 
 /obj/structure/table/optable/Destroy()
+	procstart = null
+	src.procstart = null
 	if(computer && computer.table == src)
 		computer.table = null
 	patient = null
@@ -947,6 +1069,8 @@
 	return ..()
 
 /obj/structure/table/optable/buckle_feedback(mob/living/being_buckled, mob/buckler)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(being_buckled, TRAIT_RESTRAINED))
 		return ..()
 
@@ -964,6 +1088,8 @@
 		)
 
 /obj/structure/table/optable/unbuckle_feedback(mob/living/being_unbuckled, mob/unbuckler)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(being_unbuckled, TRAIT_RESTRAINED))
 		return ..()
 
@@ -981,6 +1107,8 @@
 		)
 
 /obj/structure/table/optable/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(held_item))
 		if (breath_mask?.loc == src)
@@ -1007,6 +1135,8 @@
 			. |= CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/table/optable/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/drop_loc = drop_location()
 	if (!drop_loc)
@@ -1026,10 +1156,14 @@
 	breath_mask = null
 
 /obj/structure/table/optable/make_climbable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/elevation, pixel_shift = 12)
 
 // surgical tools cannot be placed on the op table while a patient is also on it
 /obj/structure/table/optable/table_place_act(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isnull(patient) && (tool.item_flags & SURGICAL_TOOL))
 		tool.melee_attack_chain(user, patient, modifiers)
 		return ITEM_INTERACT_SUCCESS
@@ -1038,16 +1172,22 @@
 
 ///Align the mob with the table when buckled.
 /obj/structure/table/optable/post_buckle_mob(mob/living/buckled)
+	procstart = null
+	src.procstart = null
 	buckled.add_offsets(type, z_add = 6)
 	buckled.AddComponentFrom(type, /datum/component/free_operation)
 
 ///Disalign the mob with the table when unbuckled.
 /obj/structure/table/optable/post_unbuckle_mob(mob/living/buckled)
+	procstart = null
+	src.procstart = null
 	buckled.remove_offsets(type)
 	buckled.RemoveComponentSource(type, /datum/component/free_operation)
 
 /// Any mob that enters our tile will be marked as a potential patient. They will be turned into a patient if they lie down.
 /obj/structure/table/optable/proc/mark_patient(datum/source, mob/living/potential_patient)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(potential_patient))
 		return
@@ -1056,6 +1196,8 @@
 
 /// Unmark the potential patient.
 /obj/structure/table/optable/proc/unmark_patient(datum/source, mob/living/potential_patient)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(potential_patient))
 		return
@@ -1067,6 +1209,8 @@
 /// potential_patient is the mob that had one of those four things change.
 /// The check is a bit broad so we can find a replacement patient.
 /obj/structure/table/optable/proc/recheck_patient(mob/living/carbon/potential_patient)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(patient && patient != potential_patient)
@@ -1091,6 +1235,8 @@
 
 /// Updates [var/patient] with out new patient, re-registers surgery related signals, updates UI data for operation computers and vital monitors if those connected.
 /obj/structure/table/optable/proc/set_patient(mob/living/new_patient)
+	procstart = null
+	src.procstart = null
 	if (patient)
 		UnregisterSignal(patient, list(
 			SIGNAL_ADDTRAIT(TRAIT_READY_TO_OPERATE),
@@ -1119,11 +1265,15 @@
 	RegisterSignal(patient, COMSIG_ATOM_BEING_OPERATED_ON, PROC_REF(get_surgeries))
 
 /obj/structure/table/optable/proc/on_surgery_change(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_appearance()
 	computer?.update_static_data_batched()
 
 /obj/structure/table/optable/proc/get_surgeries(datum/source, mob/living/surgeon, list/operations)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(computer))
@@ -1132,6 +1282,8 @@
 	operations |= computer.advanced_surgeries
 
 /obj/structure/table/optable/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (istype(tool, /obj/item/clothing/mask/breath))
 		if (breath_mask && breath_mask != tool)
 			balloon_alert(user, "mask already attached!")
@@ -1171,6 +1323,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/table/optable/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if (!breath_mask)
 		return NONE
 
@@ -1188,6 +1342,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/table/optable/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if (!air_tank)
 		return NONE
 	balloon_alert(user, "detaching the tank...")
@@ -1207,6 +1363,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/table/optable/attack_hand_secondary(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -1215,6 +1373,8 @@
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/structure/table/optable/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (air_tank)
 		. += span_notice("It has \a [air_tank] secured to it with a couple of [EXAMINE_HINT("bolts")].")
@@ -1230,6 +1390,8 @@
 		. += span_notice("There's a port for a breathing mask tube on its side.")
 
 /obj/structure/table/optable/proc/detach_mask(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (!istype(user) || !IsReachableBy(user) || !user.can_interact_with(src))
 		return FALSE
 
@@ -1246,6 +1408,8 @@
 	return TRUE
 
 /obj/structure/table/optable/mouse_drop_dragged(atom/over, mob/living/user, src_location, over_location, params)
+	procstart = null
+	src.procstart = null
 
 	if (over != patient || !istype(user) || !IsReachableBy(user) || !user.can_interact_with(src))
 		return
@@ -1278,6 +1442,8 @@
 	to_chat(patient, span_userdanger("[user] connects [src]'s [air_tank] to your [internals]!"))
 
 /obj/structure/table/optable/proc/on_mask_moved(datum/source, atom/oldloc, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (oldloc != src)
 		UnregisterSignal(oldloc, COMSIG_MOVABLE_MOVED)
@@ -1286,11 +1452,15 @@
 	check_mask_range()
 
 /obj/structure/table/optable/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (breath_mask)
 		check_mask_range()
 
 /obj/structure/table/optable/proc/check_mask_range()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Check if the mask is inside of us, or if its being *directly held* by someone and not in their backpack
@@ -1305,6 +1475,8 @@
 	snap_mask_back()
 
 /obj/structure/table/optable/proc/snap_mask_back()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (ismob(breath_mask.loc))
 		var/mob/as_mob = breath_mask.loc
@@ -1313,6 +1485,8 @@
 	update_appearance()
 
 /obj/structure/table/optable/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (air_tank)
 		. += mutable_appearance(icon, air_tank.tank_holder_icon_state)
@@ -1347,6 +1521,8 @@
 	custom_materials = list(/datum/material/bone = SHEET_MATERIAL_AMOUNT)
 
 /obj/structure/rack/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/climbable)
 	AddElement(/datum/element/elevation, pixel_shift = 12)
@@ -1354,6 +1530,8 @@
 	ADD_TRAIT(src, TRAIT_COMBAT_MODE_SKIP_INTERACTION, INNATE_TRAIT)
 
 /obj/structure/rack/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item))
 		return NONE
 
@@ -1364,10 +1542,14 @@
 	return NONE
 
 /obj/structure/rack/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It's held together by a couple of <b>bolts</b>.")
 
 /obj/structure/rack/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -1375,11 +1557,15 @@
 		return TRUE
 
 /obj/structure/rack/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(src)
 	deconstruct(TRUE)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/rack/base_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -1390,9 +1576,13 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/structure/rack/attack_paw(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	attack_hand(user, modifiers)
 
 /obj/structure/rack/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -1404,6 +1594,8 @@
 	take_damage(rand(4,8), BRUTE, MELEE, 1)
 
 /obj/structure/rack/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(damage_amount)
@@ -1418,6 +1610,8 @@
  */
 
 /obj/structure/rack/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	set_density(FALSE)
 	var/obj/item/rack_parts/newparts = new(loc)
 	transfer_fingerprints_to(newparts)
@@ -1438,10 +1632,14 @@
 	var/building = FALSE
 
 /obj/item/rack_parts/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/item/rack_parts/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item))
 		return NONE
 
@@ -1456,14 +1654,20 @@
 	return NONE
 
 /obj/item/rack_parts/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(src)
 	deconstruct(TRUE)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/rack_parts/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/iron(drop_location())
 
 /obj/item/rack_parts/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(building)
 		return
 	building = TRUE

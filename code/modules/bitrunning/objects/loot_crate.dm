@@ -23,6 +23,8 @@
 	resistance_flags =  INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
 /obj/structure/closet/crate/secure/bitrunning/encrypted/can_unlock(mob/living/user, obj/item/card/id/player_id, obj/item/card/id/registered_id)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// The bitrunner den - side of the bitrunning crate. Appears in the receive location.
@@ -45,6 +47,8 @@
 	PopulateContents(completed_domain.reward_points, completed_domain.completion_loot, rewards_multiplier)
 
 /obj/structure/closet/crate/secure/bitrunning/decrypted/PopulateContents(reward_points, list/completion_loot, rewards_multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spawn_loot(completion_loot)
 
@@ -66,6 +70,8 @@
 
 /// Handles generating random numbers & calculating loot totals
 /obj/structure/closet/crate/secure/bitrunning/decrypted/proc/calculate_loot(reward_points, rewards_multiplier, ore_multiplier)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/base = rewards_multiplier + reward_points
@@ -74,6 +80,8 @@
 
 /// Handles spawning completion loot. This tries to handle bad flat and assoc lists
 /obj/structure/closet/crate/secure/bitrunning/decrypted/proc/spawn_loot(list/completion_loot)
+	procstart = null
+	src.procstart = null
 	for(var/path in completion_loot)
 		if(!ispath(path))
 			return FALSE

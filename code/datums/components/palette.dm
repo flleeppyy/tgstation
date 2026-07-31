@@ -22,6 +22,8 @@
 	var/list/datum/radial_menu_choice/menu_choices
 
 /datum/component/palette/Initialize(max_colors, selected_color)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -37,6 +39,8 @@
 	RegisterSignal(parent, COMSIG_PAINTING_TOOL_SET_COLOR, PROC_REF(on_painting_tool_set_color))
 
 /datum/component/palette/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(color_picker_menu)
 	QDEL_LIST(menu_choices)
 	UnregisterSignal(parent, list(COMSIG_ITEM_ATTACK_SELF_SECONDARY, COMSIG_ATOM_EXAMINE,
@@ -44,12 +48,16 @@
 	return ..()
 
 /datum/component/palette/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += span_notice("<b>Right-Click</b> this item while it's in your active hand to open/close its color picker menu.")
 	examine_list += span_notice("In the color picker, <b>Left-Click</b> a color button to pick it or <b>Right-Click</b> to remove it.")
 
 /datum/component/palette/proc/on_attack_self_secondary(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!color_picker_menu)
@@ -60,6 +68,8 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/component/palette/proc/open_radial_menu(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/choices = build_radial_list()
 
 	color_picker_menu = show_radial_menu_persistent(user, parent, choices, select_proc = CALLBACK(src, PROC_REF(choice_selected), user), tooltips = TRUE, radial_slice_icon = "palette_bg")
@@ -67,6 +77,8 @@
 	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(close_radial_menu))
 
 /datum/component/palette/proc/build_radial_list()
+	procstart = null
+	src.procstart = null
 	var/radial_list = list()
 	var/color_count = length(colors)
 	LAZYSETLEN(menu_choices, max(color_count+1))
@@ -99,18 +111,24 @@
 	return radial_list
 
 /datum/component/palette/proc/close_radial_menu()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	QDEL_NULL(color_picker_menu)
 	UnregisterSignal(parent, COMSIG_ITEM_DROPPED)
 
 /datum/component/palette/proc/update_radial_list()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(color_picker_menu))
 		return
 	var/list/choices = build_radial_list()
 	color_picker_menu.change_choices(choices, tooltips = TRUE, keep_same_page = TRUE)
 
 /datum/component/palette/proc/choice_selected(mob/user, choice, params)
+	procstart = null
+	src.procstart = null
 	if(!choice || user.incapacitated) // center button or incapacitated but still holding on the item.
 		close_radial_menu()
 		return
@@ -129,6 +147,8 @@
 		parent_item.set_painting_tool_color(colors[index]) // This will send a signal back to us. See below.
 
 /datum/component/palette/proc/on_painting_tool_set_color(datum/source, chosen_color)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	selected_color = chosen_color

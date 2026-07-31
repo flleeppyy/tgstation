@@ -26,9 +26,13 @@
 	var/list/required_job
 
 /datum/mood_event/New(category)
+	procstart = null
+	src.procstart = null
 	src.category = category
 
 /datum/mood_event/Destroy()
+	procstart = null
+	src.procstart = null
 	if(owner)
 		remove_effects()
 		owner = null
@@ -45,6 +49,8 @@
  * Return FALSE if the mob should be unaffected
  */
 /datum/mood_event/proc/can_effect_mob(datum/mood/home, mob/living/who, ...)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(LAZYLEN(required_job) && !is_type_in_list(who.mind?.assigned_role, required_job))
 		return FALSE
@@ -74,6 +80,8 @@
  * * mood_args - any other arguments that are passed to the mood event
  */
 /datum/mood_event/proc/on_add(datum/mood/home, mob/living/who, list/mood_args)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	owner = who
@@ -113,12 +121,16 @@
  * * ... - Any arguments passed to add_mood_event after the typepath are passed here
  */
 /datum/mood_event/proc/add_effects(...)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
  * Called when the event is cleared from a mob
  */
 /datum/mood_event/proc/remove_effects()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -131,6 +143,8 @@
  * Return ALLOW_NEW_MOOD to allow the new mood event to be added - note this implicitly deletes [src]
  */
 /datum/mood_event/proc/be_refreshed(datum/mood/home, ...)
+	procstart = null
+	src.procstart = null
 	// Base behavior is refresh the timer
 	if(timeout)
 		addtimer(CALLBACK(home, TYPE_PROC_REF(/datum/mood, clear_mood_event), category), timeout, (TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_NO_HASH_WAIT))
@@ -147,6 +161,8 @@
  * Return ALLOW_NEW_MOOD to allow the new mood event to be added - note this implicitly deletes [src]
  */
 /datum/mood_event/proc/be_replaced(datum/mood/home, datum/mood_event/new_event, ...)
+	procstart = null
+	src.procstart = null
 	return ALLOW_NEW_MOOD
 
 /// Subtype of mood event that iterates over all subtypes of itself to find a suitable one to apply
@@ -157,6 +173,8 @@
 	var/priority = 0
 
 /datum/mood_event/conditional/can_effect_mob(datum/mood/home, mob/living/who, ...)
+	procstart = null
+	src.procstart = null
 	return ..() && condition_fulfilled(arglist(args.Copy(2)))
 
 /**
@@ -166,7 +184,11 @@
  * * ... - any other arguments that are passed to the mood event
  */
 /datum/mood_event/conditional/proc/condition_fulfilled(mob/living/who, ...)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /datum/mood_event/conditional/be_replaced(datum/mood/home, datum/mood_event/conditional/new_event, ...)
+	procstart = null
+	src.procstart = null
 	return initial(new_event.priority) > initial(priority) ? ALLOW_NEW_MOOD : BLOCK_NEW_MOOD

@@ -20,6 +20,8 @@
  * they aren't the same type so everything that works with one isn't guaranteed to work with the other.
  */
 /datum/unit_test/hydroponics_harvest/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/hydroponics/soil/testing_soil = allocate(/obj/machinery/hydroponics/soil)
 	var/obj/item/seeds/planted_food_seed = allocate(/obj/item/seeds/apple) //grown food
 	var/obj/item/seeds/planted_not_food_seed = allocate(/obj/item/seeds/sunflower) //grown inedible
@@ -45,6 +47,8 @@
 	test_seed(testing_soil, planted_densified_seed, human)
 
 /datum/unit_test/hydroponics_harvest/proc/plant_and_update_seed(obj/machinery/hydroponics/tray, obj/item/seeds/seed)
+	procstart = null
+	src.procstart = null
 	seed.set_yield(10) // Sets the seed yield to 10. This gets clamped to 5 if the plant has traits to half the yield.
 	seed.set_potency(100) // Sets the seed potency to 100.
 	seed.set_instability(0) // Sets the seed instability to 0, to prevent mutations.
@@ -58,6 +62,8 @@
 	tray.set_plant_status(HYDROTRAY_PLANT_HARVESTABLE)
 
 /datum/unit_test/hydroponics_harvest/proc/test_seed(obj/machinery/hydroponics/tray, obj/item/seeds/seed, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	tray.reagents.add_reagent(/datum/reagent/plantnutriment/eznutriment, 20)
 	plant_and_update_seed(tray, seed)
 	var/saved_name = tray.name // Name gets cleared when some plants are harvested.

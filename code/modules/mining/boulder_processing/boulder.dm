@@ -30,6 +30,8 @@
 	var/platform_lifespan = PLATFORM_LIFE_DEFAULT
 
 /obj/item/boulder/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 	AddComponent(/datum/component/two_handed, require_twohands = TRUE, force_unwielded = 0, force_wielded = 5) //Heavy as all hell, it's a boulder, dude.
@@ -37,11 +39,15 @@
 	AddComponent(/datum/component/bane, affected_biotypes = MOB_SPECIAL, added_damage = 20)
 
 /obj/item/boulder/Destroy(force)
+	procstart = null
+	src.procstart = null
 	SSore_generation.available_boulders -= src
 	processed_by = null
 	return ..()
 
 /obj/item/boulder/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(held_item && (held_item.tool_behaviour == TOOL_MINING || HAS_TRAIT(held_item, TRAIT_BOULDER_BREAKER)))
 		context[SCREENTIP_CONTEXT_LMB] = "Crush boulder into ore"
 		return CONTEXTUAL_SCREENTIP_SET
@@ -53,16 +59,22 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/boulder/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("This boulder would take [durability] more steps to refine or break.")
 	if(HAS_TRAIT(user, TRAIT_BOULDER_BREAKER))
 		. += span_notice("You can crush this boulder with your bare hands.")
 
 /obj/item/boulder/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("[span_bold("Boulders")] can either be cracked open by [span_bold("mining tools")], or processed into sheets with [span_bold("refineries or smelters")]. Undisturbed boulders can be collected by the [span_bold("BRM")].")
 
 /obj/item/boulder/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(boulder_size)
 		if(BOULDER_SIZE_SMALL)
@@ -75,11 +87,15 @@
 			icon_state = "[boulder_string]_small"
 
 /obj/item/boulder/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	if(istype(mover, /obj/item/boulder)) //This way, boulders can only go one at a time on conveyor belts, but everyone else can go through.
 		return FALSE
 	return ..()
 
 /obj/item/boulder/attack_self(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -88,6 +104,8 @@
 		return
 
 /obj/item/boulder/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -96,6 +114,8 @@
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/boulder/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (HAS_TRAIT(tool, TRAIT_BOULDER_BREAKER))
 		manual_process(tool, user, INATE_BOULDER_SPEED_MULTIPLIER)
 		return ITEM_INTERACT_SUCCESS
@@ -105,6 +125,8 @@
 	return NONE
 
 /obj/item/boulder/attack_basic_mob(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -113,6 +135,8 @@
 		return TRUE
 
 /obj/item/boulder/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(interacting_with, /turf/open/lava))
 		if(!create_platform(interacting_with, user, null))
@@ -120,12 +144,16 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/item/boulder/throw_at(atom/target, range, speed, mob/thrower, spin, diagonals_first, datum/callback/callback, force, gentle, quickstart, throw_type_path)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(target, /turf/open/lava))
 		if(!create_platform(target, thrower))
 			return FALSE
 
 /obj/item/boulder/proc/create_platform(atom/interacting_with, mob/living/user, timer_override = null)
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/structure/lattice/catwalk/boulder, interacting_with))
 		if(user)
 			to_chat(user, span_warning("There is already a boulder platform here!"))
@@ -150,6 +178,8 @@
  * @param continued Whether or not this is a continued process, or the first one. If true, we don't play the "You swing at the boulder" message.
  */
 /obj/item/boulder/proc/manual_process(obj/item/weapon, mob/living/user, override_speed_multiplier, continued = FALSE)
+	procstart = null
+	src.procstart = null
 	var/process_speed = 0
 	//Handle weapon conditions.
 	var/skill_modifier = user.mind?.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER) || 1
@@ -200,6 +230,8 @@
  * target_destination: Optional - Sets the location directly instead of dropping it
  */
 /obj/item/boulder/proc/convert_to_ore(atom/target_destination)
+	procstart = null
+	src.procstart = null
 	for(var/datum/material/picked in custom_materials)
 		var/obj/item/stack/ore/cracked_ore // Take the associated value and convert it into ore stacks...
 		var/quantity = clamp(round((custom_materials[picked] - SHEET_MATERIAL_AMOUNT)/SHEET_MATERIAL_AMOUNT), 1, 10) //but less resources than if they processed it by hand.
@@ -216,6 +248,8 @@
 
 ///Moves boulder contents to the drop location, and then deletes the boulder.
 /obj/item/boulder/proc/break_apart()
+	procstart = null
+	src.procstart = null
 	if(length(contents))
 		var/list/quips = list("Clang!", "Crack!", "Bang!", "Clunk!", "Clank!")
 		visible_message(span_notice("[pick(quips)] Something falls out of \the [src]!"))

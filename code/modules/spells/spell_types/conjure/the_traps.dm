@@ -24,6 +24,8 @@
 	var/trap_charges = 1
 
 /datum/action/cooldown/spell/conjure/the_traps/post_summon(atom/summoned_object, atom/cast_on)
+	procstart = null
+	src.procstart = null
 	if(!istype(summoned_object, /obj/structure/trap))
 		return
 

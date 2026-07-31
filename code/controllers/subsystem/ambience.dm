@@ -12,6 +12,8 @@ SUBSYSTEM_DEF(ambience)
 	var/list/currentrun = list()
 
 /datum/controller/subsystem/ambience/fire(resumed)
+	procstart = null
+	src.procstart = null
 	if(!resumed)
 		currentrun = ambience_listening_clients.Copy()
 	var/list/cached_clients = currentrun
@@ -57,6 +59,8 @@ SUBSYSTEM_DEF(ambience)
 
 ///Attempts to play an ambient sound to a mob, returning the cooldown in deciseconds
 /area/proc/play_ambience(mob/M, sound/override_sound, volume = 27)
+	procstart = null
+	src.procstart = null
 	var/sound/new_sound = override_sound || pick(ambientsounds)
 	if(!new_sound) // Dont try to play a sound if we dont have any.
 		return 1 MINUTES
@@ -72,6 +76,8 @@ SUBSYSTEM_DEF(ambience)
 	return sound_length + rand(min_ambience_cooldown, max_ambience_cooldown)
 
 /datum/controller/subsystem/ambience/proc/remove_ambience_client(client/to_remove)
+	procstart = null
+	src.procstart = null
 	ambience_listening_clients -= to_remove
 	client_old_areas -= to_remove
 	currentrun -= to_remove
@@ -93,6 +99,8 @@ SUBSYSTEM_DEF(ambience)
 	)
 
 /area/station/maintenance/play_ambience(mob/M, sound/override_sound, volume)
+	procstart = null
+	src.procstart = null
 	if(!M.has_light_nearby() && prob(0.5))
 		return ..(M, pick(minecraft_cave_noises))
 	return ..()
@@ -102,6 +110,8 @@ SUBSYSTEM_DEF(ambience)
  */
 
 /mob/proc/update_ambience_area(area/new_area)
+	procstart = null
+	src.procstart = null
 
 	var/old_tracked_area = ambience_tracked_area
 	if(old_tracked_area)
@@ -116,6 +126,8 @@ SUBSYSTEM_DEF(ambience)
 	refresh_looping_ambience()
 
 /mob/proc/refresh_looping_ambience()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!client || isobserver(client.mob)) // If a tree falls in the woods. sadboysuss: Don't refresh for ghosts, it sounds bad

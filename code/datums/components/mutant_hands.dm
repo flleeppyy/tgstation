@@ -22,12 +22,16 @@
 	var/obj/item/mutant_hand_path = /obj/item/mutant_hand
 
 /datum/component/mutant_hands/Initialize(obj/item/mutant_hand_path = /obj/item/mutant_hand)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(parent))
 		return COMPONENT_INCOMPATIBLE
 
 	src.mutant_hand_path = mutant_hand_path
 
 /datum/component/mutant_hands/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	// Give them a hand before registering ANYTHING just so it's clean
 	INVOKE_ASYNC(src, PROC_REF(apply_mutant_hands))
 
@@ -36,6 +40,8 @@
 	RegisterSignal(parent, COMSIG_MOB_UNEQUIPPED_ITEM, PROC_REF(mob_dropped_item))
 
 /datum/component/mutant_hands/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_CARBON_POST_ATTACH_LIMB,
 		COMSIG_CARBON_POST_REMOVE_LIMB,
@@ -55,6 +61,8 @@
  * * If a hand slot is filled with a hand already, does nothing.
  */
 /datum/component/mutant_hands/proc/apply_mutant_hands()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_parent = parent
 	for(var/obj/item/hand_slot as anything in human_parent.held_items)
 		// This slot is already a mutant hand
@@ -78,6 +86,8 @@
  * Removes all mutant idems from the parent's hand slots
  */
 /datum/component/mutant_hands/proc/remove_mutant_hands()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_parent = parent
 	for(var/obj/item/hand_slot in human_parent.held_items)
 		// Not a mutant hand, don't need to delete it
@@ -93,6 +103,8 @@
  * Always try to re-insert mutanthands if we gain or lose hands
  */
 /datum/component/mutant_hands/proc/try_reapply_hands(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(QDELING(src) || QDELING(parent))
@@ -106,6 +118,8 @@
  * This is a failsafe - the mob managed to pick up something that isn't a mutant hand
  */
 /datum/component/mutant_hands/proc/mob_equipped_item(mob/living/carbon/human/source, obj/item/thing, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(slot & ITEM_SLOT_HANDS)) // Who cares
@@ -127,6 +141,8 @@
  * This is another failsafe - the mob dropped something, maybe from their hands, so try to re-equip
  */
 /datum/component/mutant_hands/proc/mob_dropped_item(mob/living/carbon/human/source, obj/item/thing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(QDELING(src) || QDELING(parent))
@@ -152,10 +168,14 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
 /obj/item/mutant_hand/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, HAND_REPLACEMENT_TRAIT)
 
 /obj/item/mutant_hand/visual_equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!base_icon_state)

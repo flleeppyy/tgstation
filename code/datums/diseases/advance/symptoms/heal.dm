@@ -14,6 +14,8 @@
 	var/healable_bodytypes = BODYTYPE_ORGANIC // What types of body parts we can heal
 
 /datum/symptom/heal/Activate(datum/disease/advance/our_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -35,12 +37,18 @@
 	return
 
 /datum/symptom/heal/proc/CanHeal(datum/disease/advance/our_disease)
+	procstart = null
+	src.procstart = null
 	return power
 
 /datum/symptom/heal/proc/Heal(mob/living/living_host, datum/disease/advance/our_disease, actual_power)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/symptom/heal/proc/passive_message_condition(mob/living/living_host)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /*Starlight Condensation
@@ -72,6 +80,8 @@
 #define STARLIGHT_MAX_RANGE 2
 
 /datum/symptom/heal/starlight/Start(datum/disease/advance/our_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -81,6 +91,8 @@
 		power = 2
 
 /datum/symptom/heal/starlight/proc/CanTileHealDirectional(turf/turf_to_check, direction)
+	procstart = null
+	src.procstart = null
 	if(direction == UP)
 		turf_to_check = GET_TURF_ABOVE(turf_to_check)
 		if(!turf_to_check)
@@ -128,6 +140,8 @@
 		return STARLIGHT_CANNOT_HEAL // Hit a non-space, Non-transparent turf - no healsies
 
 /datum/symptom/heal/starlight/proc/CanTileHeal(turf/original_turf, satisfied_with_penalty)
+	procstart = null
+	src.procstart = null
 	var/current_heal_level = CanTileHealDirectional(original_turf, DOWN)
 	if(current_heal_level == STARLIGHT_CAN_HEAL)
 		return current_heal_level
@@ -140,6 +154,8 @@
 		return current_heal_level
 
 /datum/symptom/heal/starlight/CanHeal(datum/disease/advance/our_disease)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_host = our_disease.affected_mob
 	var/turf/turf_of_mob = get_turf(living_host)
 	switch(CanTileHeal(turf_of_mob, FALSE))
@@ -157,6 +173,8 @@
 #undef STARLIGHT_MAX_RANGE
 
 /datum/symptom/heal/starlight/Heal(mob/living/carbon/carbon_host, datum/disease/advance/our_disease, actual_power)
+	procstart = null
+	src.procstart = null
 	var/heal_amt = actual_power
 	if(carbon_host.get_tox_loss() && prob(5))
 		to_chat(carbon_host, span_notice("Your skin tingles as the starlight seems to heal you."))
@@ -168,6 +186,8 @@
 	return TRUE
 
 /datum/symptom/heal/starlight/passive_message_condition(mob/living/living_host)
+	procstart = null
+	src.procstart = null
 	if(living_host.get_brute_loss() || living_host.get_fire_loss() || living_host.get_tox_loss())
 		return TRUE
 	return FALSE
@@ -195,6 +215,8 @@
 	var/food_conversion = FALSE
 
 /datum/symptom/heal/chem/Start(datum/disease/advance/our_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -204,6 +226,8 @@
 		power = 2
 
 /datum/symptom/heal/chem/Heal(mob/living/living_host, datum/disease/advance/our_disease, actual_power)
+	procstart = null
+	src.procstart = null
 	for(var/datum/reagent/each_reagent in living_host.reagents.reagent_list) //Not just toxins!
 		var/food = living_host.reagents.remove_reagent(each_reagent.type, actual_power)
 		if(food_conversion)
@@ -239,6 +263,8 @@
 	var/reduced_hunger = FALSE
 
 /datum/symptom/heal/metabolism/Start(datum/disease/advance/our_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -248,6 +274,8 @@
 		reduced_hunger = TRUE
 
 /datum/symptom/heal/metabolism/Heal(mob/living/carbon/carbon_host, datum/disease/advance/our_disease, actual_power)
+	procstart = null
+	src.procstart = null
 	var/metabolic_boost = triple_metabolism ? 2 : 1
 	carbon_host.reagents.metabolize(carbon_host, metabolic_boost * SSMOBS_DT, 0, can_overdose=TRUE) //this works even without a liver; it's intentional since the virus is metabolizing by itself
 	carbon_host.overeatduration = max(carbon_host.overeatduration - 4 SECONDS, 0)
@@ -278,6 +306,8 @@
 	)
 
 /datum/symptom/heal/darkness/Start(datum/disease/advance/our_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -285,6 +315,8 @@
 		power = 2
 
 /datum/symptom/heal/darkness/CanHeal(datum/disease/advance/our_disease)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_host = our_disease.affected_mob
 	var/light_amount = 0
 	if(isturf(living_host.loc)) //else, there's considered to be no light
@@ -294,6 +326,8 @@
 			return power
 
 /datum/symptom/heal/darkness/Heal(mob/living/carbon/carbon_host, datum/disease/advance/our_disease, actual_power)
+	procstart = null
+	src.procstart = null
 	var/heal_amt = 2 * actual_power
 	carbon_host.heal_overall_damage(heal_amt, heal_amt * 0.5, required_bodytype = healable_bodytypes)
 	if(prob(5))
@@ -301,6 +335,8 @@
 	return TRUE
 
 /datum/symptom/heal/darkness/passive_message_condition(mob/living/living_host)
+	procstart = null
+	src.procstart = null
 	if(living_host.get_brute_loss() || living_host.get_fire_loss())
 		return TRUE
 	return FALSE
@@ -331,6 +367,8 @@
 	)
 
 /datum/symptom/heal/coma/Start(datum/disease/advance/our_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -341,7 +379,9 @@
 	if(our_disease.totalStealth() >= 2)
 		deathgasp = TRUE
 
-/datum/symptom/heal/coma/on_stage_change(datum/disease/advance/our_disease)  //mostly copy+pasted from the code for self-respiration's TRAIT_NOBREATH stuff
+/datum/symptom/heal/coma/on_stage_change(datum/disease/advance/our_disease)
+	procstart = null
+	src.procstart = null  //mostly copy+pasted from the code for self-respiration's TRAIT_NOBREATH stuff
 	. = ..()
 	if(!.)
 		return FALSE
@@ -352,6 +392,8 @@
 	return TRUE
 
 /datum/symptom/heal/coma/End(datum/disease/advance/our_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -360,6 +402,8 @@
 	REMOVE_TRAIT(our_disease.affected_mob, TRAIT_NOCRITDAMAGE, DISEASE_TRAIT)
 
 /datum/symptom/heal/coma/CanHeal(datum/disease/advance/our_disease)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_host = our_disease.affected_mob
 	if(HAS_TRAIT(living_host, TRAIT_DEATHCOMA))
 		return power
@@ -377,12 +421,16 @@
 
 
 /datum/symptom/heal/coma/proc/coma(mob/living/living_host)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(living_host) || living_host.stat == DEAD || HAS_TRAIT(living_host, TRAIT_NOSOFTCRIT))
 		return
 	living_host.fakedeath("regenerative_coma", !deathgasp)
 	addtimer(CALLBACK(src, PROC_REF(uncoma), living_host), 30 SECONDS)
 
 /datum/symptom/heal/coma/proc/uncoma(mob/living/living_host)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(living_host) || !active_coma)
 		return
 	active_coma = FALSE
@@ -390,6 +438,8 @@
 
 
 /datum/symptom/heal/coma/Heal(mob/living/carbon/carbon_host, datum/disease/advance/our_disease, actual_power)
+	procstart = null
+	src.procstart = null
 	var/heal_amt = 4 * actual_power
 	carbon_host.heal_overall_damage(heal_amt, heal_amt, required_bodytype = healable_bodytypes)
 	if(active_coma && carbon_host.get_brute_loss() + carbon_host.get_fire_loss() == 0)
@@ -397,6 +447,8 @@
 	return 1
 
 /datum/symptom/heal/coma/passive_message_condition(mob/living/living_host)
+	procstart = null
+	src.procstart = null
 	if((living_host.get_brute_loss() + living_host.get_fire_loss()) > living_host.maxHealth * 0.3)
 		return TRUE
 	return FALSE
@@ -418,6 +470,8 @@
 	var/absorption_coeff = 1
 
 /datum/symptom/heal/water/Start(datum/disease/advance/our_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -427,6 +481,8 @@
 		absorption_coeff = 0.25
 
 /datum/symptom/heal/water/CanHeal(datum/disease/advance/our_disease)
+	procstart = null
+	src.procstart = null
 	. = 0
 	var/mob/living/carbon/carbon_host = our_disease.affected_mob
 
@@ -441,12 +497,16 @@
 		. += power * 0.5
 
 /datum/symptom/heal/water/Heal(mob/living/carbon/carbon_host, datum/disease/advance/our_disease, actual_power)
+	procstart = null
+	src.procstart = null
 	var/heal_amt = 2 * actual_power
 	if(carbon_host.heal_overall_damage(heal_amt * 0.5, heal_amt, required_bodytype = healable_bodytypes) && prob(5))
 		to_chat(carbon_host, span_notice("You feel yourself absorbing the water around you to soothe your damaged skin."))
 	return TRUE
 
 /datum/symptom/heal/water/passive_message_condition(mob/living/carbon/carbon_host)
+	procstart = null
+	src.procstart = null
 	if(carbon_host.get_brute_loss() || carbon_host.get_fire_loss())
 		return TRUE
 
@@ -482,6 +542,8 @@
 	var/temp_rate = 1
 
 /datum/symptom/heal/plasma/Start(datum/disease/advance/our_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -492,6 +554,8 @@
 
 // We do this to prevent liver damage from injecting plasma when plasma fixation virus reaches stage 4 and beyond
 /datum/symptom/heal/plasma/on_stage_change(datum/disease/advance/our_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -503,6 +567,8 @@
 	return TRUE
 
 /datum/symptom/heal/plasma/End(datum/disease/advance/our_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -511,6 +577,8 @@
 
 // Check internals breath, environmental plasma, and plasma in bloodstream to determine the heal power
 /datum/symptom/heal/plasma/CanHeal(datum/disease/advance/our_disease)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/carbon_host = our_disease.affected_mob
 	var/datum/gas_mixture/environment
 	. = 0
@@ -537,6 +605,8 @@
 		. += power * MAX_HEAL_COEFFICIENT_BLOODSTREAM //Determines how much the symptom heals if injected or ingested
 
 /datum/symptom/heal/plasma/Heal(mob/living/carbon/carbon_host, datum/disease/advance/our_disease, actual_power)
+	procstart = null
+	src.procstart = null
 	var/heal_amt = BASE_HEAL_PLASMA_FIXATION * actual_power
 
 	if(prob(5))
@@ -581,6 +651,8 @@
 	)
 
 /datum/symptom/heal/radiation/Start(datum/disease/advance/our_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -588,9 +660,13 @@
 		power = 2
 
 /datum/symptom/heal/radiation/CanHeal(datum/disease/advance/our_disease)
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(our_disease.affected_mob, TRAIT_IRRADIATED) ? power : 0
 
 /datum/symptom/heal/radiation/Heal(mob/living/carbon/carbon_host, datum/disease/advance/our_disease, actual_power)
+	procstart = null
+	src.procstart = null
 	var/heal_amt = actual_power
 	var/needs_update = FALSE
 	needs_update += carbon_host.adjust_tox_loss(-2 * heal_amt, updating_health = FALSE)
@@ -603,6 +679,8 @@
 	return TRUE
 
 /datum/symptom/heal/radiation/can_generate_randomly()
+	procstart = null
+	src.procstart = null
 	return ..() && !HAS_TRAIT(SSstation, STATION_TRAIT_RADIOACTIVE_NEBULA) // Because people can never really suffer enough
 
 /datum/symptom/heal/aggressive_healing
@@ -625,8 +703,12 @@
 	var/severity_heal_bonus = 0.25
 
 /datum/symptom/heal/aggressive_healing/CanHeal(datum/disease/advance/our_disease)
+	procstart = null
+	src.procstart = null
 	return power + our_disease.totalSeverity() * severity_heal_bonus
 
 /datum/symptom/heal/aggressive_healing/Heal(mob/living/carbon/carbon_host, datum/disease/advance/our_disease, actual_power)
+	procstart = null
+	src.procstart = null
 	carbon_host.heal_overall_damage(actual_power, actual_power, required_bodytype = healable_bodytypes)
 	return TRUE

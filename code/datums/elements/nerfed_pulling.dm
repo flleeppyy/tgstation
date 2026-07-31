@@ -7,6 +7,8 @@
 	var/list/typecache
 
 /datum/element/nerfed_pulling/Attach(datum/target, list/typecache)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (!isliving(target))
@@ -18,6 +20,8 @@
 	RegisterSignal(target, COMSIG_LIVING_UPDATING_PULL_MOVESPEED, PROC_REF(on_updating_pull_movespeed))
 
 /datum/element/nerfed_pulling/Detach(mob/living/source)
+	procstart = null
+	src.procstart = null
 	source.remove_movespeed_modifier(/datum/movespeed_modifier/nerfed_bump)
 	source.remove_movespeed_modifier(/datum/movespeed_modifier/nerfed_pull)
 
@@ -26,6 +30,8 @@
 	return ..()
 
 /datum/element/nerfed_pulling/proc/on_push_movable(mob/living/source, atom/movable/being_pushed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!will_slow_down(being_pushed))
@@ -35,6 +41,8 @@
 	addtimer(CALLBACK(source, TYPE_PROC_REF(/mob, remove_movespeed_modifier), /datum/movespeed_modifier/nerfed_bump), 1 SECONDS, TIMER_OVERRIDE | TIMER_UNIQUE)
 
 /datum/element/nerfed_pulling/proc/on_updating_pull_movespeed(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!will_slow_down(source.pulling))
@@ -44,6 +52,8 @@
 	source.add_movespeed_modifier(/datum/movespeed_modifier/nerfed_pull)
 
 /datum/element/nerfed_pulling/proc/will_slow_down(datum/input)
+	procstart = null
+	src.procstart = null
 	return !isnull(input) && typecache[input.type]
 
 /datum/movespeed_modifier/nerfed_pull

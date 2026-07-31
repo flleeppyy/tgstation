@@ -19,12 +19,16 @@
 	var/status = PROMISE_PENDING
 
 /datum/promise/New(...)
+	procstart = null
+	src.procstart = null
 	if(!usr)
 		usr = GLOB.lua_usr
 	callback = CALLBACK(arglist(args))
 	INVOKE_ASYNC(src, PROC_REF(perform))
 
 /datum/promise/proc/perform()
+	procstart = null
+	src.procstart = null
 	try
 		return_value = callback.Invoke()
 		status = PROMISE_RESOLVED

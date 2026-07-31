@@ -18,11 +18,15 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 	var/ruinSpawned = FALSE
 
 /obj/item/hilbertshotel/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//Load templates
 	INVOKE_ASYNC(src, PROC_REF(prepare_rooms))
 
 /obj/item/hilbertshotel/proc/prepare_rooms()
+	procstart = null
+	src.procstart = null
 	hotelRoomTemp = new()
 	hotelRoomTempEmpty = new()
 	hotelRoomTempLore = new()
@@ -31,10 +35,14 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 		ruinSpawned = TRUE
 
 /obj/item/hilbertshotel/Destroy()
+	procstart = null
+	src.procstart = null
 	ejectRooms()
 	return ..()
 
 /obj/item/hilbertshotel/attack(mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(M.mind)
 		to_chat(user, span_notice("You invite [M] to the hotel."))
 		promptAndCheckIn(user, M)
@@ -42,14 +50,20 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 		to_chat(user, span_warning("[M] is not intelligent enough to understand how to use this device!"))
 
 /obj/item/hilbertshotel/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	promptAndCheckIn(user, user)
 
 /obj/item/hilbertshotel/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("\The [src] actively rejects your mind as the bluespace energies surrounding it disrupt your telekinesis."))
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /obj/item/hilbertshotel/proc/promptAndCheckIn(mob/user, mob/target)
+	procstart = null
+	src.procstart = null
 	var/chosenRoomNumber
 
 	// Input text changes depending on if you're using this in yourself or someone else.
@@ -110,6 +124,8 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 	sendToNewRoom(chosenRoomNumber, target)
 
 /obj/item/hilbertshotel/proc/tryActiveRoom(roomNumber, mob/user)
+	procstart = null
+	src.procstart = null
 	if(activeRooms["[roomNumber]"])
 		var/datum/turf_reservation/roomReservation = activeRooms["[roomNumber]"]
 		do_sparks(3, FALSE, get_turf(user))
@@ -123,6 +139,8 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 	return FALSE
 
 /obj/item/hilbertshotel/proc/tryStoredRoom(roomNumber, mob/user)
+	procstart = null
+	src.procstart = null
 	if(storedRooms["[roomNumber]"])
 		var/datum/turf_reservation/roomReservation = SSmapping.request_turf_block_reservation(hotelRoomTemp.width, hotelRoomTemp.height, 1)
 		var/turf/room_turf = roomReservation.bottom_left_turfs[1]
@@ -161,6 +179,8 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 	return FALSE
 
 /obj/item/hilbertshotel/proc/sendToNewRoom(roomNumber, mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/turf_reservation/roomReservation = SSmapping.request_turf_block_reservation(hotelRoomTemp.width, hotelRoomTemp.height, 1)
 	var/turf/bottom_left = roomReservation.bottom_left_turfs[1]
 	var/datum/map_template/load_from = hotelRoomTemp
@@ -179,6 +199,8 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 	))
 
 /obj/item/hilbertshotel/proc/linkTurfs(datum/turf_reservation/currentReservation, currentRoomnumber)
+	procstart = null
+	src.procstart = null
 	var/turf/room_bottom_left = currentReservation.bottom_left_turfs[1]
 	var/area/misc/hilbertshotel/currentArea = get_area(room_bottom_left)
 	currentArea.name = "Hilbert's Hotel Room [currentRoomnumber]"
@@ -198,6 +220,8 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 		BSturf.parentSphere = src
 
 /obj/item/hilbertshotel/proc/ejectRooms()
+	procstart = null
+	src.procstart = null
 	if(length(activeRooms))
 		for(var/active_room, turf_reservation in activeRooms)
 			var/datum/turf_reservation/room = turf_reservation
@@ -291,14 +315,20 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 	var/obj/item/hilbertshotel/parentSphere
 
 /turf/open/space/bluespace/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon_state()
 
 /turf/open/space/bluespace/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = base_icon_state
 	return ..()
 
 /turf/open/space/bluespace/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(parentSphere && arrived.forceMove(get_turf(parentSphere)))
 		do_sparks(3, FALSE, get_turf(arrived))
@@ -312,35 +342,49 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 	var/list/mob/peeking_users
 
 /turf/closed/indestructible/hoteldoor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /turf/closed/indestructible/hoteldoor/Destroy(force)
+	procstart = null
+	src.procstart = null
 	LAZYNULL(peeking_users)
 	return ..()
 
 /turf/closed/indestructible/hoteldoor/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "Peek through"
 	return CONTEXTUAL_SCREENTIP_SET
 
 // Cancel the peeking of anyone peeking out of this door when the turf changes
 /turf/closed/indestructible/hoteldoor/ChangeTurf(path, list/new_baseturfs, flags)
+	procstart = null
+	src.procstart = null
 	for(var/mob/user in peeking_users)
 		cancel_peek(user)
 	return ..()
 
 /// Cancel the peeking of anyone peeking out of this door while they are deleted
 /turf/closed/indestructible/hoteldoor/proc/on_peeker_qdeleted(datum/source, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	LAZYREMOVE(peeking_users, source)
 
 /// Cancels a user's peeking
 /turf/closed/indestructible/hoteldoor/proc/cancel_peek(mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/datum/action/peephole_cancel/cancel_action in user.actions)
 		INVOKE_ASYNC(cancel_action, TYPE_PROC_REF(/datum/action/peephole_cancel, Trigger))
 
 /turf/closed/indestructible/hoteldoor/proc/promptExit(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		return
 	if(!user.mind)
@@ -355,34 +399,52 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 		do_sparks(3, FALSE, get_turf(user))
 
 /turf/closed/indestructible/hoteldoor/attack_ghost(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	if(!isobserver(user) || !parentSphere)
 		return ..()
 	user.forceMove(get_turf(parentSphere))
 
 //If only this could be simplified...
 /turf/closed/indestructible/hoteldoor/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	return //need to be close.
 
 /turf/closed/indestructible/hoteldoor/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	promptExit(user)
 
 /turf/closed/indestructible/hoteldoor/attack_animal(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	promptExit(user)
 
 /turf/closed/indestructible/hoteldoor/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	promptExit(user)
 
 /turf/closed/indestructible/hoteldoor/attack_hulk(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	promptExit(user)
 
 /turf/closed/indestructible/hoteldoor/attack_larva(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	promptExit(user)
 
 /turf/closed/indestructible/hoteldoor/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	if(get_dist(get_turf(src), get_turf(user)) <= 1)
 		promptExit(user)
 
 /turf/closed/indestructible/hoteldoor/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.is_blind())
 		to_chat(user, span_warning("Drats! Your vision is too poor to use this!"))
 		return CLICK_ACTION_BLOCKING
@@ -399,6 +461,8 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 	return CLICK_ACTION_SUCCESS
 
 /turf/closed/indestructible/hoteldoor/proc/check_eye(mob/user, atom/oldloc, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(get_dist(get_turf(src), get_turf(user)) < 2)
 		return
@@ -413,6 +477,8 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 	var/turf/closed/indestructible/hoteldoor/door
 
 /datum/action/peephole_cancel/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -424,6 +490,8 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 	qdel(src)
 
 /datum/action/peephole_cancel/Destroy(force)
+	procstart = null
+	src.procstart = null
 	door = null
 	return ..()
 
@@ -444,6 +512,8 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 	var/turf/storageTurf
 
 /area/misc/hilbertshotel/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(arrived, /obj/item/hilbertshotel))
 		relocate(arrived)
@@ -453,6 +523,8 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 			relocate(hotel_item)
 
 /area/misc/hilbertshotel/proc/relocate(obj/item/hilbertshotel/hotel_item)
+	procstart = null
+	src.procstart = null
 	if(prob(0.135685)) //Because screw you
 		qdel(hotel_item)
 		return
@@ -480,6 +552,8 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 	hotel_item.forceMove(targetturf)
 
 /area/misc/hilbertshotel/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ismob(gone))
 		var/mob/gone_mob = gone
@@ -494,6 +568,8 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 				storeRoom()
 
 /area/misc/hilbertshotel/proc/storeRoom()
+	procstart = null
+	src.procstart = null
 	var/turf/room_bottom_left = reservation.bottom_left_turfs[1]
 	var/turf/room_top_right = reservation.top_right_turfs[1]
 	var/roomSize = \
@@ -542,6 +618,8 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 	var/list/wallmounted_contents
 
 /obj/item/abstracthotelstorage/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	if(istype(arrived, /obj/machinery/light))
 		var/obj/machinery/light/entered_light = arrived
 		entered_light.end_processing()
@@ -551,10 +629,14 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 		ADD_TRAIT(target, TRAIT_NO_TRANSFORM, REF(src))
 
 /obj/item/abstracthotelstorage/Destroy(force)
+	procstart = null
+	src.procstart = null
 	LAZYNULL(wallmounted_contents)
 	return ..()
 
 /obj/item/abstracthotelstorage/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ismob(gone))
 		var/mob/target = gone
@@ -577,6 +659,8 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 	worn_icon_state = "analyzer"
 
 /obj/item/analyzer/hilbertsanalyzer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(interacting_with, /obj/item/hilbertshotel))
 		return ..()
 	if(!interacting_with.IsReachableBy(user))
@@ -642,6 +726,8 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 	id_trim = /datum/id_trim/away/hilbert
 
 /datum/outfit/doctorhilbert/pre_equip(mob/living/carbon/human/hilbert, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!visuals_only)
 		hilbert.gender = MALE
@@ -651,6 +737,8 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 	name = "note to the institute"
 
 /obj/item/paper/crumpled/ruins/note_institute/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	default_raw_text = {"Note to the Institute<br>
 	If you're reading this, I hope you're from the Institute. First things first, I should apologise. I won't be coming back to teach in the new semester.<br>
 	We've made some powerful enemies. Very powerful. More powerful than any of you can imagine, and so we can't come back.<br>
@@ -754,6 +842,8 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 	desc = "Nothing plays."
 
 /obj/structure/showcase/machinery/tv/broken/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_overlay("television_broken")
 

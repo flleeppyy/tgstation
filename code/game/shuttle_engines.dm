@@ -36,6 +36,8 @@
 	acid = 70
 
 /obj/machinery/power/shuttle_engine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_rotation)
 	register_context()
@@ -44,12 +46,16 @@
 		anchored = FALSE
 
 /obj/machinery/power/shuttle_engine/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(engine_state == ENGINE_WELDED)
 		alter_engine_power(-engine_power)
 	unsync_ship()
 	return ..()
 
 /obj/machinery/power/shuttle_engine/on_construction(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(anchored)
 		engine_state = ENGINE_WRENCHED
@@ -58,6 +64,8 @@
 			AddElement(/datum/element/connect_loc, connections)
 
 /obj/machinery/power/shuttle_engine/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!port)
 		return FALSE
@@ -69,6 +77,8 @@
 		alter_engine_power(engine_power)
 
 /obj/machinery/power/shuttle_engine/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(engine_state)
 		if(ENGINE_UNWRENCHED)
@@ -79,6 +89,8 @@
 			. += span_notice("\The [src] is welded to the floor and can be unwelded. It is currently fully installed.")
 
 /obj/machinery/power/shuttle_engine/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(held_item?.tool_behaviour == TOOL_WELDER && engine_state == ENGINE_WRENCHED)
 		context[SCREENTIP_CONTEXT_LMB] = "Weld to Floor"
 	if(held_item?.tool_behaviour == TOOL_WELDER && engine_state == ENGINE_WELDED)
@@ -93,6 +105,8 @@
  * Called on destroy and when we need to unsync an engine from their ship.
  */
 /obj/machinery/power/shuttle_engine/proc/unsync_ship()
+	procstart = null
+	src.procstart = null
 	if(connected_ship)
 		connected_ship.engine_list -= src
 		connected_ship = null
@@ -100,6 +114,8 @@
 
 //Ugh this is a lot of copypasta from emitters, welding need some boilerplate reduction
 /obj/machinery/power/shuttle_engine/can_be_unfasten_wrench(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	if(engine_state == ENGINE_WELDED)
 		if(!silent)
 			to_chat(user, span_warning("[src] is welded to the floor!"))
@@ -107,6 +123,8 @@
 	return ..()
 
 /obj/machinery/power/shuttle_engine/default_unfasten_wrench(mob/user, obj/item/tool, time = 20)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SUCCESSFUL_UNFASTEN)
 		if(anchored)
@@ -119,15 +137,21 @@
 			engine_state = ENGINE_UNWRENCHED
 
 /obj/machinery/power/shuttle_engine/proc/on_turf_added_to_shuttle(turf/source, obj/docking_port/mobile/port)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	connect_to_shuttle(port = port)
 
 /obj/machinery/power/shuttle_engine/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/shuttle_engine/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(engine_state)
 		if(ENGINE_UNWRENCHED)
@@ -161,6 +185,8 @@
 
 //Propagates the change to the shuttle.
 /obj/machinery/power/shuttle_engine/proc/alter_engine_power(mod)
+	procstart = null
+	src.procstart = null
 	if(mod && connected_ship)
 		connected_ship.alter_engines(mod)
 

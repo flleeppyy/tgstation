@@ -14,6 +14,8 @@
  * During the night, Seancers speaking will instead be talking to deadchat.
  */
 /datum/mafia_ability/seance/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(host_role.mafia_game_controller.phase != MAFIA_PHASE_NIGHT)
 		return FALSE

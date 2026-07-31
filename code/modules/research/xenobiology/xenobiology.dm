@@ -22,14 +22,20 @@
 	var/recurring = FALSE
 
 /obj/item/slime_extract/grind_results()
+	procstart = null
+	src.procstart = null
 	return can_grind ? list(/datum/reagent/toxin/slimejelly = 20) : list()
 
 /obj/item/slime_extract/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(extract_uses > 1)
 		. += "It has [extract_uses] uses remaining."
 
 /obj/item/slime_extract/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/slimepotion/enhancer))
 		return NONE
 	if(extract_uses >= 5 || recurring)
@@ -45,6 +51,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/slime_extract/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(100, INJECTABLE | DRAWABLE | SEALED_CONTAINER)
 
@@ -58,6 +66,8 @@
 * * arg3 - Whether or not the activation is major or minor. Major activations have large, complex effects, minor are simple.
 */
 /obj/item/slime_extract/proc/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("Nothing happened... This slime extract cannot be activated this way."))
 	return FALSE
 
@@ -67,6 +77,8 @@
 * By using a valid core on a living adult slime, then feeding it nine more of the same type, you can mutate it into more useful items. Not every slime type has an implemented core cross.
 */
 /obj/item/slime_extract/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/slime/target_slime = interacting_with
 	if(!istype(target_slime))
 		return NONE
@@ -99,6 +111,8 @@
 * * arg1 - The reaction being triggered. If null, a random reaction is picked
 */
 /obj/item/slime_extract/proc/auto_activate_reaction(datum/chemical_reaction/slime/slime_reaction = null)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 
@@ -116,6 +130,8 @@
 GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate_reaction_list())
 
 /proc/init_slime_auto_activate_reaction_list()
+	procstart = null
+	src.procstart = null
 	var/list/recipe_list = list()
 
 	// Only reactions with these reagent requirements are allowed to auto_activate
@@ -158,6 +174,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	crossbreed_modification = "reproductive"
 
 /obj/item/slime_extract/grey/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
+	procstart = null
+	src.procstart = null
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			var/obj/item/food/monkeycube/M = new
@@ -184,6 +202,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 
 
 /obj/item/slime_extract/gold/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
+	procstart = null
+	src.procstart = null
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			user.visible_message(span_warning("[user] starts shaking!"),span_notice("Your [name] starts pulsing gently..."))
@@ -214,6 +234,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 
 
 /obj/item/slime_extract/silver/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
+	procstart = null
+	src.procstart = null
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			var/food_type = get_random_food()
@@ -239,6 +261,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	crossbreed_modification = "industrial"
 
 /obj/item/slime_extract/metal/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
+	procstart = null
+	src.procstart = null
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			var/obj/item/stack/sheet/glass/O = new(null, 5)
@@ -262,6 +286,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	crossbreed_modification = "regenerative"
 
 /obj/item/slime_extract/purple/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
+	procstart = null
+	src.procstart = null
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			user.adjust_nutrition(50)
@@ -280,6 +306,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	crossbreed_modification = "self-sustaining"
 
 /obj/item/slime_extract/darkpurple/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
+	procstart = null
+	src.procstart = null
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			var/obj/item/stack/sheet/mineral/plasma/O = new(null, 1)
@@ -302,6 +330,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	crossbreed_modification = "burning"
 
 /obj/item/slime_extract/orange/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
+	procstart = null
+	src.procstart = null
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			to_chat(user, span_notice("You activate [src]. You start feeling hot!"))
@@ -321,6 +351,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	crossbreed_modification = "charged"
 
 /obj/item/slime_extract/yellow/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
+	procstart = null
+	src.procstart = null
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			if(species.glow_intensity != LUMINESCENT_DEFAULT_GLOW)
@@ -344,6 +376,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	crossbreed_modification = "sanguine"
 
 /obj/item/slime_extract/red/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
+	procstart = null
+	src.procstart = null
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			to_chat(user, span_notice("You activate [src]. You start feeling fast!"))
@@ -363,6 +397,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	crossbreed_modification = "stabilized"
 
 /obj/item/slime_extract/blue/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
+	procstart = null
+	src.procstart = null
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			to_chat(user, span_notice("You activate [src]. Your genome feels more stable!"))
@@ -381,6 +417,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	crossbreed_modification = "chilling"
 
 /obj/item/slime_extract/darkblue/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
+	procstart = null
+	src.procstart = null
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			to_chat(user, span_notice("You activate [src]. You start feeling colder!"))
@@ -403,6 +441,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	crossbreed_modification = "gentle"
 
 /obj/item/slime_extract/pink/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
+	procstart = null
+	src.procstart = null
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			if(user.gender != MALE && user.gender != FEMALE)
@@ -430,6 +470,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	crossbreed_modification = "mutative"
 
 /obj/item/slime_extract/green/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
+	procstart = null
+	src.procstart = null
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			to_chat(user, span_warning("You feel yourself reverting to human form..."))
@@ -453,6 +495,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	crossbreed_modification = "loyal"
 
 /obj/item/slime_extract/lightpink/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
+	procstart = null
+	src.procstart = null
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			var/obj/item/slimepotion/renaming/O = new(null, 1)
@@ -476,6 +520,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	crossbreed_modification = "transformative"
 
 /obj/item/slime_extract/black/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
+	procstart = null
+	src.procstart = null
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			to_chat(user, span_userdanger("You feel something <i>wrong</i> inside you..."))
@@ -496,6 +542,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	crossbreed_modification = "detonating"
 
 /obj/item/slime_extract/oil/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
+	procstart = null
+	src.procstart = null
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			to_chat(user, span_warning("You vomit slippery oil."))
@@ -519,6 +567,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	crossbreed_modification = "crystalline"
 
 /obj/item/slime_extract/adamantine/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
+	procstart = null
+	src.procstart = null
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			if(HAS_TRAIT(user, TRAIT_ADAMANTINE_EXTRACT_ARMOR))
@@ -539,6 +589,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 			to_chat(user, span_notice("You stop feeding [src], and your body returns to its slimelike state."))
 
 /obj/item/slime_extract/adamantine/proc/reset_armor(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(user, TRAIT_ADAMANTINE_EXTRACT_ARMOR, ADAMANTINE_EXTRACT_TRAIT)
 	user.physiology.damage_resistance -= 25
 
@@ -552,6 +604,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	var/teleport_z = 0
 
 /obj/item/slime_extract/bluespace/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
+	procstart = null
+	src.procstart = null
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			to_chat(user, span_warning("You feel your body vibrating..."))
@@ -583,6 +637,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	crossbreed_modification = "prismatic"
 
 /obj/item/slime_extract/pyrite/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
+	procstart = null
+	src.procstart = null
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			var/chosen = pick(difflist(subtypesof(/obj/item/toy/crayon),typesof(/obj/item/toy/crayon/spraycan)))
@@ -609,6 +665,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	crossbreed_modification = "recurring"
 
 /obj/item/slime_extract/cerulean/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
+	procstart = null
+	src.procstart = null
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			user.reagents.add_reagent(/datum/reagent/medicine/salbutamol,15)
@@ -628,6 +686,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	crossbreed_modification = "lengthened"
 
 /obj/item/slime_extract/sepia/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
+	procstart = null
+	src.procstart = null
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			var/obj/item/camera/O = new(null, 1)
@@ -649,6 +709,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	crossbreed_modification = "hyperchromatic"
 
 /obj/item/slime_extract/rainbow/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
+	procstart = null
+	src.procstart = null
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			user.dna.features[FEATURE_MUTANT_COLOR] = "#[pick("7F", "FF")][pick("7F", "FF")][pick("7F", "FF")]"
@@ -686,6 +748,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/slimepotion/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(is_reagent_container(interacting_with))
 		to_chat(user, span_warning("You cannot transfer [src] to [interacting_with]! \
 			It appears the potion must be given directly to a slime or other object to absorb.") )
@@ -693,6 +757,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	return NONE
 
 /obj/item/slimepotion/slime/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -703,6 +769,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 		return NONE
 
 /obj/item/slimepotion/slime/proc/interact_with_slime(mob/living/basic/slime/interacting_slime, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/slimepotion/slime/docility
@@ -711,6 +779,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	icon_state = "potsilver"
 
 /obj/item/slimepotion/slime/docility/interact_with_slime(mob/living/basic/slime/interacting_slime, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(interacting_slime))
 		to_chat(user, span_warning("The slime is dead!"))
 		return ITEM_INTERACT_BLOCKING
@@ -743,22 +813,32 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	var/potion_reason
 
 /obj/item/slimepotion/sentience/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Alt-click to set potion offer reason. [potion_reason ? "Current reason: [span_warning(potion_reason)]" : null]")
 
 /obj/item/slimepotion/sentience/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	register_context()
 	return ..()
 
 /obj/item/slimepotion/sentience/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "Set potion offer reason"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/slimepotion/sentience/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	potion_reason = tgui_input_text(user, "Enter reason for offering potion", "Intelligence Potion", potion_reason, max_length = MAX_MESSAGE_LEN, multiline = TRUE)
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/slimepotion/sentience/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -793,6 +873,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 
 /// Assign the chosen ghost to the mob
 /obj/item/slimepotion/sentience/proc/on_poll_concluded(mob/user, mob/living/dumb_mob, mob/dead/observer/ghost)
+	procstart = null
+	src.procstart = null
 	if(isnull(ghost))
 		balloon_alert(user, "try again later!")
 		being_used = FALSE
@@ -812,6 +894,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	qdel(src)
 
 /obj/item/slimepotion/sentience/proc/after_success(mob/living/user, mob/living/smart_mob)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/slimepotion/sentience/nuclear
@@ -819,6 +903,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	desc = "A miraculous chemical mix that grants human like intelligence to living beings. It has been modified with Syndicate technology to also grant an internal radio implant to the target and authenticate with identification systems."
 
 /obj/item/slimepotion/sentience/nuclear/after_success(mob/living/user, mob/living/smart_mob)
+	procstart = null
+	src.procstart = null
 	var/obj/item/implant/radio/syndicate/imp = new(src)
 	imp.implant(smart_mob, user)
 	smart_mob.AddComponent(/datum/component/simple_access, list(ACCESS_SYNDICATE, ACCESS_MAINT_TUNNELS))
@@ -838,6 +924,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	var/animal_type = SENTIENCE_ORGANIC
 
 /obj/item/slimepotion/transference/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -892,6 +980,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	icon_state = "potred"
 
 /obj/item/slimepotion/slime/steroid/interact_with_slime(mob/living/basic/slime/interacting_slime, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(interacting_slime.life_stage == SLIME_LIFE_STAGE_ADULT) //Can't steroidify adults
 		to_chat(user, span_warning("Only baby slimes can use the steroid!"))
 		return ITEM_INTERACT_BLOCKING
@@ -918,6 +1008,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	icon_state = "potcyan"
 
 /obj/item/slimepotion/slime/stabilizer/interact_with_slime(mob/living/basic/slime/interacting_slime, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(interacting_slime))
 		to_chat(user, span_warning("The slime is dead!"))
 		return ITEM_INTERACT_BLOCKING
@@ -936,6 +1028,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	icon_state = "potgreen"
 
 /obj/item/slimepotion/slime/mutator/interact_with_slime(mob/living/basic/slime/interacting_slime, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(interacting_slime))
 		to_chat(user, span_warning("The slime is dead!"))
 		return ITEM_INTERACT_BLOCKING
@@ -958,6 +1052,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	icon_state = "potred"
 
 /obj/item/slimepotion/speed/interact_with_atom(obj/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -1000,6 +1096,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	var/uses = 3
 
 /obj/item/slimepotion/fireproof/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -1031,6 +1129,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	icon_state = "potrainbow"
 
 /obj/item/slimepotion/genderchange/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -1068,6 +1168,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	var/being_used = FALSE
 
 /obj/item/slimepotion/renaming/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -1106,6 +1208,8 @@ GLOBAL_LIST_INIT(slime_extract_auto_activate_reactions, init_slime_auto_activate
 	icon_state = "potbluespace"
 
 /obj/item/slimepotion/slimeradio/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .

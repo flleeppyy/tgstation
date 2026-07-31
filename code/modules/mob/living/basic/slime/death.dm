@@ -1,4 +1,6 @@
 /mob/living/basic/slime/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		return
 	if(!gibbed && life_stage == SLIME_LIFE_STAGE_ADULT)
@@ -22,5 +24,7 @@
 	return ..(gibbed)
 
 /mob/living/basic/slime/gib()
+	procstart = null
+	src.procstart = null
 	death(TRUE)
 	qdel(src)

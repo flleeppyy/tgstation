@@ -8,6 +8,8 @@ GLOBAL_VAR(antag_prototypes)
 //Move objective initialization/editing stuff from mind to objectives and completely remove mind.objectives
 
 /proc/cmp_antagpanel(datum/antagonist/A,datum/antagonist/B)
+	procstart = null
+	src.procstart = null
 	var/a_cat = initial(A.antagpanel_category)
 	var/b_cat = initial(B.antagpanel_category)
 	if(!a_cat && !b_cat)
@@ -15,6 +17,8 @@ GLOBAL_VAR(antag_prototypes)
 	return sorttext(b_cat,a_cat)
 
 /datum/mind/proc/add_antag_wrapper(antag_type,mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/new_antag = new antag_type()
 	new_antag.admin_add(src,user)
 	//If something gone wrong/admin-add assign another antagonist due to whatever clean it up
@@ -22,12 +26,16 @@ GLOBAL_VAR(antag_prototypes)
 		qdel(new_antag)
 
 /proc/listtrim(list/L)
+	procstart = null
+	src.procstart = null
 	for(var/x in L)
 		if(istext(x) && !x)
 			L -= x
 	return L
 
 /datum/antagonist/proc/antag_panel()
+	procstart = null
+	src.procstart = null
 	var/list/commands = list()
 	for(var/command in get_admin_commands())
 		commands += "<a href='byond://?src=[REF(src)];command=[command]'>[command]</a>"
@@ -40,6 +48,8 @@ GLOBAL_VAR(antag_prototypes)
 	return parts.Join("<br>")
 
 /datum/antagonist/proc/antag_panel_objectives()
+	procstart = null
+	src.procstart = null
 	var/result = "<i><b>Personal Objectives</b></i>:<br>"
 	if (objectives.len == 0)
 		result += "EMPTY<br>"
@@ -58,6 +68,8 @@ GLOBAL_VAR(antag_prototypes)
 	return result
 
 /datum/mind/proc/get_common_admin_commands()
+	procstart = null
+	src.procstart = null
 	var/common_commands = "<span>Common Commands:</span>"
 	if(ishuman(current))
 		common_commands += "<a href='byond://?src=[REF(src)];common=undress'>undress</a>"
@@ -78,6 +90,8 @@ GLOBAL_VAR(antag_prototypes)
  * Returns a list of "statuses" this mind has - like "Infected", "Mindshielded", etc
  */
 /datum/mind/proc/get_special_statuses()
+	procstart = null
+	src.procstart = null
 	var/list/result = LAZYCOPY(special_statuses)
 	if(!current)
 		result += span_bad("No body!")
@@ -91,6 +105,8 @@ GLOBAL_VAR(antag_prototypes)
  * Returns a list of "roles" this mind has - like "Traitor", "Ex Head Rev", "Emagged", etc
  */
 /datum/mind/proc/get_special_roles()
+	procstart = null
+	src.procstart = null
 	var/list/roles = LAZYCOPY(special_roles)
 	if(iscyborg(current))
 		var/mob/living/silicon/robot/robot = current
@@ -99,6 +115,8 @@ GLOBAL_VAR(antag_prototypes)
 	return roles
 
 /datum/mind/proc/traitor_panel()
+	procstart = null
+	src.procstart = null
 	if(!SSticker.HasRoundStarted())
 		tgui_alert(usr, "Not before round-start!", "Alert")
 		return

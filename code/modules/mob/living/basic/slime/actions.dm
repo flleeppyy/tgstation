@@ -11,6 +11,8 @@
 	var/nutrition_cost = 0
 
 /datum/action/innate/slime/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -39,6 +41,8 @@
 
 ///Turns a baby slime into an adult slime
 /datum/action/innate/slime/evolve/Activate()
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(owner))
 		if(owner.stat == DEAD)
 			owner.balloon_alert(owner, "dead!")
@@ -77,11 +81,15 @@
 	needs_growth = TRUE
 
 /datum/action/innate/slime/reproduce/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/slime/slime_owner = owner
 	slime_owner.reproduce()
 
 ///Splits the slime into multiple children if possible
 /mob/living/basic/slime/proc/reproduce()
+	procstart = null
+	src.procstart = null
 
 	if(IS_UNCONSCIOUS_OR_CRIT(src))
 		if(stat == DEAD)
@@ -153,6 +161,8 @@
 	mutator_used = FALSE
 
 /mob/living/basic/slime/proc/get_random_mutation()
+	procstart = null
+	src.procstart = null
 	if(mutation_chance >= 100)
 		return /datum/slime_type/rainbow
 	else if(prob(mutation_chance))

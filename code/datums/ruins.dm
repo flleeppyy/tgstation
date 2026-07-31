@@ -34,6 +34,8 @@
 	var/terrain_padding = 0
 
 /datum/map_template/ruin/New()
+	procstart = null
+	src.procstart = null
 	if(!name && id)
 		name = id
 

@@ -3,6 +3,8 @@
 	hallucination_tier = HALLUCINATION_TIER_COMMON
 
 /datum/hallucination/telepathy/start()
+	procstart = null
+	src.procstart = null
 	var/datum/action/cooldown/spell/list_target/telepathy/mimiced_type = pick(typesof(/datum/action/cooldown/spell/list_target/telepathy))
 	hallucinator.balloon_alert(hallucinator, "you hear a voice")
 	to_chat(hallucinator, "\
@@ -12,6 +14,8 @@
 	return TRUE
 
 /datum/hallucination/telepathy/proc/get_telepath_message()
+	procstart = null
+	src.procstart = null
 	if(prob(0.001))
 		return "horse"
 

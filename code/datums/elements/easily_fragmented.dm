@@ -10,6 +10,8 @@
 	var/break_chance
 
 /datum/element/easily_fragmented/Attach(datum/target, break_chance)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -20,18 +22,26 @@
 	RegisterSignal(target, COMSIG_ITEM_TOOL_ACTED, PROC_REF(on_tool_use))
 
 /datum/element/easily_fragmented/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, list(COMSIG_ITEM_AFTERATTACK, COMSIG_ITEM_TOOL_ACTED))
 
 /datum/element/easily_fragmented/proc/on_afterattack(datum/source, atom/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	try_break(source, user)
 
 /datum/element/easily_fragmented/proc/on_tool_use(datum/source, atom/target, mob/user, tool_type, result)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	try_break(source, user)
 
 /datum/element/easily_fragmented/proc/try_break(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	if(prob(break_chance))
 		user.visible_message(span_danger("[user]'s [source.name] snap[source.p_s()] into tiny pieces in [user.p_their()] hand."))
 		source.deconstruct(disassembled = FALSE)

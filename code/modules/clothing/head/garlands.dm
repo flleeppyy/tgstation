@@ -5,11 +5,15 @@
 	worn_icon_state = "garland"
 
 /obj/item/clothing/head/costume/garland/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot_flags & slot)
 		user.add_mood_event("garland", /datum/mood_event/garland)
 
 /obj/item/clothing/head/costume/garland/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.clear_mood_event("garland")
 
@@ -21,6 +25,8 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 0.3, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 0.3) //tied together with cable coil
 
 /obj/item/clothing/head/costume/garland/rainbowbunch/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/crown_type = rand(1,4)
 	icon_state = "[base_icon_state]_[crown_type]"

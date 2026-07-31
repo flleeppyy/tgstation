@@ -25,10 +25,14 @@
 	var/list/matching_paintings
 
 /datum/computer_file/program/portrait_printer/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["is_console"] = computer.hardware_flag & PROGRAM_CONSOLE
 
 /datum/computer_file/program/portrait_printer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["paintings"] = matching_paintings || SSpersistent_paintings.painting_ui_data()
 	data["search_string"] = search_string
@@ -36,11 +40,15 @@
 	return data
 
 /datum/computer_file/program/portrait_printer/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/simple/portraits)
 	)
 
 /datum/computer_file/program/portrait_printer/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(action)
 		if("search")
@@ -58,12 +66,16 @@
 			download_painting(params["selected"])
 
 /datum/computer_file/program/portrait_printer/proc/generate_matching_paintings_list()
+	procstart = null
+	src.procstart = null
 	matching_paintings = null
 	if(!search_string)
 		return
 	matching_paintings = SSpersistent_paintings.painting_ui_data(filter = search_mode, search_text = search_string)
 
 /datum/computer_file/program/portrait_printer/proc/print_painting(selected_painting)
+	procstart = null
+	src.procstart = null
 	if(!(computer.hardware_flag & PROGRAM_CONSOLE))
 		return
 	if(computer.stored_paper < CANVAS_PAPER_COST)
@@ -82,6 +94,8 @@
 	playsound(computer.physical, 'sound/machines/printer.ogg', 100, TRUE)
 
 /datum/computer_file/program/portrait_printer/proc/download_painting(selected_painting)
+	procstart = null
+	src.procstart = null
 	var/datum/painting/chosen_portrait = locate(selected_painting) in SSpersistent_paintings.paintings
 	var/icon/portrait_icon = chosen_portrait.get_icon()
 	var/datum/computer_file/image/image_file = new(portrait_icon, display_name = chosen_portrait.title, source_photo_or_painting = chosen_portrait)

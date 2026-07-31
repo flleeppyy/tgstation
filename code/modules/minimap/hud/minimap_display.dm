@@ -47,6 +47,8 @@
 	var/locator_blip_tag = "locator"
 
 /atom/movable/screen/minimap_display/Initialize(mapload, datum/hud/hud_owner, datum/minimap/minimap, list/minimap_blip_tags, initial_fixed_z_level, annotation_share_tag, can_draw = TRUE)
+	procstart = null
+	src.procstart = null
 	src.can_draw = can_draw
 	. = ..()
 	if(isnull(minimap))
@@ -69,6 +71,8 @@
 	show_tagged_blips()
 
 /atom/movable/screen/minimap_display/proc/apply_fixed_z_minimap(target_z)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || isnull(target_z) || fixed_z_level != target_z)
 		return
 	var/datum/minimap/fixed_minimap = get_minimap_for_z(target_z)
@@ -77,6 +81,8 @@
 	set_minimap(fixed_minimap)
 
 /atom/movable/screen/minimap_display/Destroy()
+	procstart = null
+	src.procstart = null
 	set_cursor_icon(null)
 	if(active_button)
 		active_button.on_deactivate()
@@ -106,6 +112,8 @@
 	return ..()
 
 /atom/movable/screen/minimap_display/set_new_hud(datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	var/mob/old_owner = get_mob()
 	if(hud)
 		for(var/key in toolbar_button_types)
@@ -131,6 +139,8 @@
 	hud_owner.show_hud(hud_owner.hud_version)
 
 /atom/movable/screen/minimap_display/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(..() || usr != get_mob())
 		return
 	var/list/modifiers = params2list(params)
@@ -142,6 +152,8 @@
 		return
 
 /atom/movable/screen/minimap_display/proc/remove_nearest_label(icon_x, icon_y, mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/labels_for_z = get_or_create_annotation_list(/atom/movable/screen/minimap_element/label, minimap.z)
 	if(!length(labels_for_z))
 		return
@@ -165,9 +177,13 @@
 	log_minimap_drawing("[key_name(user)] removed a minimap label")
 
 /atom/movable/screen/minimap_display/MouseEntered(location, control, params)
+	procstart = null
+	src.procstart = null
 	MouseMove(location, control, params)
 
 /atom/movable/screen/minimap_display/MouseDrag(over_object, src_location, over_location, src_control, over_control, params)
+	procstart = null
+	src.procstart = null
 	if(usr != get_mob())
 		return
 	if(!active_button)
@@ -181,11 +197,15 @@
 	active_button.on_mouse_drag(x, y)
 
 /atom/movable/screen/minimap_display/proc/on_client_mouseup(client/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(active_button)
 		active_button.on_mouse_up()
 
 /atom/movable/screen/minimap_display/MouseMove(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(usr != get_mob())
 		return
 	var/list/modifiers = params2list(params)
@@ -200,6 +220,8 @@
 	screentip.pixel_z = icon_y
 
 /atom/movable/screen/minimap_display/proc/get_hover_text(x, y)
+	procstart = null
+	src.procstart = null
 	var/closest_blip_name
 	var/closest_blip_distance
 	for(var/atom/movable/screen/minimap_element/blip/blip in visible_minimap_elements)
@@ -228,6 +250,8 @@
 	return area_name
 
 /atom/movable/screen/minimap_display/MouseExited(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(usr != get_mob())
 		return
 	screentip.maptext = ""
@@ -235,6 +259,8 @@
 		active_button.on_mouse_up()
 
 /atom/movable/screen/minimap_display/proc/on_z_level_change(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/turf/mob_loc = get_turf(source)
 	if(!mob_loc || mob_loc.z != minimap.z)
@@ -247,6 +273,8 @@
 
 
 /atom/movable/screen/minimap_display/proc/resolve_and_change_z_level(new_z)
+	procstart = null
+	src.procstart = null
 	if(isnull(new_z))
 		return
 	var/datum/minimap/new_minimap = get_minimap_for_z(new_z)
@@ -255,6 +283,8 @@
 	change_z_level(new_z, new_minimap)
 
 /atom/movable/screen/minimap_display/proc/change_z_level(new_z, datum/minimap/new_minimap)
+	procstart = null
+	src.procstart = null
 	if(isnull(new_minimap))
 		return
 	if(!isnull(fixed_z_level))
@@ -262,11 +292,15 @@
 	set_minimap(new_minimap)
 
 /atom/movable/screen/minimap_display/proc/set_fixed_z_level(new_fixed_z, apply_immediately = FALSE)
+	procstart = null
+	src.procstart = null
 	fixed_z_level = new_fixed_z
 	if(apply_immediately)
 		INVOKE_ASYNC(src, PROC_REF(resolve_and_change_z_level), new_fixed_z)
 
 /atom/movable/screen/minimap_display/proc/show_tagged_blips()
+	procstart = null
+	src.procstart = null
 	if(!length(valid_minimap_blip_tags))
 		return
 	for(var/blip_flag in valid_minimap_blip_tags)
@@ -277,6 +311,8 @@
 			on_tagged_blip_add(null, blip)
 
 /atom/movable/screen/minimap_display/proc/on_tagged_blip_add(datum/source, atom/movable/screen/minimap_element/blip/blip)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isnull(blip) || QDELETED(blip) || isnull(minimap))
 		return
@@ -291,12 +327,16 @@
 	show_minimap_element(blip)
 
 /atom/movable/screen/minimap_display/proc/on_tagged_blip_remove(datum/source, atom/movable/screen/minimap_element/blip/blip)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isnull(blip))
 		return
 	hide_minimap_element(blip)
 
 /atom/movable/screen/minimap_display/proc/set_minimap(datum/minimap/minimap)
+	procstart = null
+	src.procstart = null
 	if(isnull(minimap))
 		return
 	icon = minimap.base_map
@@ -315,6 +355,8 @@
 
 /// adds a local blip that's not added to the global list
 /atom/movable/screen/minimap_display/proc/add_blip(name, icon_state, x, y, large = FALSE, layer = 12)
+	procstart = null
+	src.procstart = null
 	if(blips[name])
 		return
 	var/atom/movable/screen/minimap_element/blip/new_blip = new(null, null, get_mob(), icon_state, large)
@@ -324,6 +366,8 @@
 	show_minimap_element(new_blip)
 
 /atom/movable/screen/minimap_display/proc/update_blip(name, x, y)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/screen/minimap_element/blip/blip = blips[name]
 	if(!blip)
 		return
@@ -332,6 +376,8 @@
 	blip.pixel_z = MINIMAP_WORLD_TO_PIXEL(y, minimap.min_y, half_size)
 
 /atom/movable/screen/minimap_display/proc/remove_blip(name)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/screen/minimap_element/blip/blip = blips[name]
 	if(!blip)
 		return
@@ -340,6 +386,8 @@
 	qdel(blip)
 
 /atom/movable/screen/minimap_display/proc/remove_all_blips()
+	procstart = null
+	src.procstart = null
 	for(var/blip_name in blips)
 		var/atom/movable/screen/minimap_element/blip/blip = blips[blip_name]
 		hide_minimap_element(blip)
@@ -348,17 +396,23 @@
 	hide_visible_elements_by_type(/atom/movable/screen/minimap_element/blip)
 
 /atom/movable/screen/minimap_display/proc/z_change_request(mob/hud_owner, new_z_change)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/current_z = get_viewed_z_level()
 	var/new_z = get_clamped_connected_z(current_z + new_z_change, current_z)
 	INVOKE_ASYNC(src, PROC_REF(resolve_and_change_z_level), new_z)
 
 /atom/movable/screen/minimap_display/proc/get_viewed_z_level()
+	procstart = null
+	src.procstart = null
 	if(!isnull(fixed_z_level))
 		return fixed_z_level
 	return minimap?.z
 
 /atom/movable/screen/minimap_display/proc/get_clamped_connected_z(requested_z, source_z)
+	procstart = null
+	src.procstart = null
 	if(isnull(source_z))
 		return requested_z
 	var/list/connected_levels = SSmapping.get_connected_levels(source_z)
@@ -377,6 +431,8 @@
 
 /// Activates a toolbar button as the active tool.
 /atom/movable/screen/minimap_display/proc/activate_button(atom/movable/screen/minimap_toolbar_button/button)
+	procstart = null
+	src.procstart = null
 	if(!button)
 		return
 
@@ -393,6 +449,8 @@
 
 /// Deactivates the current tool button.
 /atom/movable/screen/minimap_display/proc/deactivate_button()
+	procstart = null
+	src.procstart = null
 	if(active_button)
 		active_button.on_deactivate()
 		active_button = null
@@ -400,12 +458,16 @@
 
 /// Sets the mouse cursor icon for the HUD client. Pass null to reset to default.
 /atom/movable/screen/minimap_display/proc/set_cursor_icon(icon/cursor_icon)
+	procstart = null
+	src.procstart = null
 	var/mob/owner = get_mob()
 	if(owner?.client)
 		owner.client.mouse_pointer_icon = cursor_icon
 
 /// Calculates the actual screen pixel size based on the client's view
 /atom/movable/screen/minimap_display/proc/get_screen_pixel_size()
+	procstart = null
+	src.procstart = null
 	var/mob/owner = get_mob()
 	if(!owner?.client)
 		return SCREEN_PIXEL_SIZE  // fallback to constant if no client
@@ -414,6 +476,8 @@
 	return max(view_pixels[1], view_pixels[2])
 
 /atom/movable/screen/minimap_display/proc/update_toolbar_button_states()
+	procstart = null
+	src.procstart = null
 	if(!hud)
 		return
 	for(var/hud_key in toolbar_button_types)
@@ -422,6 +486,8 @@
 			button.update_active_state()
 
 /atom/movable/screen/minimap_display/proc/reposition_toolbar_buttons()
+	procstart = null
+	src.procstart = null
 	if(!hud || !minimap)
 		return
 	// origin_px[1] is the minimap's left edge; place toolbar one icon-width to its left.
@@ -439,6 +505,8 @@
 			button.screen_loc = "1:[btn_x],1:[btn_top_y - ICON_SIZE_Y - button.button_slot * ICON_SIZE_Y]"
 
 /atom/movable/screen/minimap_display/proc/clear_canvas(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!can_draw)
 		return
 	drawing.clear_canvas(minimap?.base_map)
@@ -446,6 +514,8 @@
 	to_chat(user, span_warning("Cleared all minimap drawings."))
 
 /atom/movable/screen/minimap_display/proc/clear_all_annotations(mob/user, annotation_type = /atom/movable/screen/minimap_element/label, annotation_type_name = "label")
+	procstart = null
+	src.procstart = null
 	var/alist/annotation_store = GLOB.minimap_annotations[annotation_share_tag]
 	var/alist/items_by_z = annotation_store?[annotation_type]
 	if(isnull(items_by_z))
@@ -463,6 +533,8 @@
 	log_minimap_drawing("[user_name] has cleared all [annotation_type_name] annotations on z-level [current_z]")
 
 /atom/movable/screen/minimap_display/proc/async_place_label(mob/user, icon_x, icon_y)
+	procstart = null
+	src.procstart = null
 	var/x = clamp(MINIMAP_ICON_TO_WORLD(icon_x, minimap.min_x), 1, world.maxx)
 	var/y = clamp(MINIMAP_ICON_TO_WORLD(icon_y, minimap.min_y), 1, world.maxy)
 	var/area_name = minimap.map_position_to_name["[x]:[y]"]
@@ -498,6 +570,8 @@
 	log_minimap_drawing("[key_name(user)] placed label '[label_text]' at [area_name]")
 
 /atom/movable/screen/minimap_display/proc/get_or_create_annotation_list(annotation_type, z_level)
+	procstart = null
+	src.procstart = null
 	var/alist/annotation_store = GLOB.minimap_annotations[annotation_share_tag]
 	if(isnull(annotation_store))
 		annotation_store = alist()
@@ -513,6 +587,8 @@
 	return items
 
 /atom/movable/screen/minimap_display/proc/refresh_visible_annotations()
+	procstart = null
+	src.procstart = null
 	if(isnull(minimap))
 		return
 	var/list/drawings = get_or_create_annotation_list(/atom/movable/screen/minimap_element/drawing, minimap.z)
@@ -534,6 +610,8 @@
 	show_minimap_element(screentip)
 
 /atom/movable/screen/minimap_display/proc/sync_visible_objects(z_level)
+	procstart = null
+	src.procstart = null
 	if(isnull(z_level))
 		return
 	var/list/displays_for_tag = GLOB.minimap_annotation_viewers[annotation_share_tag]
@@ -545,6 +623,8 @@
 		display.refresh_visible_annotations()
 
 /atom/movable/screen/minimap_display/proc/show_minimap_element(atom/movable/screen/minimap_element/element)
+	procstart = null
+	src.procstart = null
 	if(isnull(element))
 		return
 	if(!(element in visible_minimap_elements))
@@ -552,20 +632,28 @@
 	vis_contents |= element
 
 /atom/movable/screen/minimap_display/proc/hide_minimap_element(atom/movable/screen/minimap_element/element)
+	procstart = null
+	src.procstart = null
 	if(isnull(element))
 		return
 	visible_minimap_elements -= element
 	vis_contents -= element
 
 /atom/movable/screen/minimap_display/proc/show_minimap_elements(list/elements)
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/screen/minimap_element/element as anything in elements)
 		show_minimap_element(element)
 
 /atom/movable/screen/minimap_display/proc/hide_minimap_elements(list/elements)
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/screen/minimap_element/element as anything in elements)
 		hide_minimap_element(element)
 
 /atom/movable/screen/minimap_display/proc/hide_visible_elements_by_type(element_type)
+	procstart = null
+	src.procstart = null
 	if(isnull(element_type))
 		return
 	for(var/atom/movable/screen/minimap_element/element as anything in visible_minimap_elements.Copy())
@@ -573,6 +661,8 @@
 			hide_minimap_element(element)
 
 /atom/movable/screen/minimap_display/proc/clear_tagged_blips()
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/screen/minimap_element/blip/blip as anything in visible_minimap_elements.Copy())
 		if(!length(blip.blip_tag))
 			continue

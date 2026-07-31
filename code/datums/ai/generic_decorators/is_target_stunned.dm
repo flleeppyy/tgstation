@@ -5,6 +5,8 @@
 	var/key = BB_CURRENT_TARGET
 
 /datum/bt_node/decorator/is_target_stunned/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = controller.blackboard[key]
 	if(QDELETED(target) || !isliving(target))
 		return FALSE

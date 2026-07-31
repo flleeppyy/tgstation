@@ -13,17 +13,23 @@
 
 
 /obj/machinery/power/terminal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddElement(/datum/element/undertile, TRAIT_T_RAY_VISIBLE, use_alpha = TRUE)
 
 /obj/machinery/power/terminal/Destroy()
+	procstart = null
+	src.procstart = null
 	if(master)
 		master.disconnect_terminal()
 		master = null
 	return ..()
 
 /obj/machinery/power/terminal/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!QDELETED(powernet))
 		. += span_notice("It's operating on the [LOWER_TEXT(GLOB.cable_layer_to_name["[cable_layer]"])].")
@@ -31,22 +37,32 @@
 		. += span_warning("It's disconnected from the [LOWER_TEXT(GLOB.cable_layer_to_name["[cable_layer]"])].")
 
 /obj/machinery/power/terminal/should_have_node()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/machinery/power/proc/can_terminal_dismantle()
+	procstart = null
+	src.procstart = null
 	. = FALSE
 
 /obj/machinery/power/apc/can_terminal_dismantle()
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(opened)
 		. = TRUE
 
 /obj/machinery/power/smes/can_terminal_dismantle()
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(panel_open)
 		. = TRUE
 
 /obj/machinery/power/terminal/proc/dismantle(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(isturf(loc))
 		var/turf/T = loc
 		if(T.underfloor_accessibility < UNDERFLOOR_INTERACTABLE)
@@ -73,6 +89,8 @@
 		cable.balloon_alert(user, "cable terminal dismantled")
 
 /obj/machinery/power/terminal/wirecutter_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	..()
 	dismantle(user, I)
 	return TRUE

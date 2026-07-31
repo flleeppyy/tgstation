@@ -7,6 +7,8 @@
 	Note that AI have no need for the adjacency proc, and so this proc is a lot cleaner.
 */
 /mob/living/silicon/ai/DblClickOn(atom/A, params)
+	procstart = null
+	src.procstart = null
 	if(control_disabled || incapacitated)
 		return
 
@@ -16,6 +18,8 @@
 		A.move_camera_by_click()
 
 /mob/living/silicon/ai/ClickOn(atom/A, params)
+	procstart = null
+	src.procstart = null
 	if(world.time <= next_click)
 		return
 	next_click = world.time + 1
@@ -92,16 +96,22 @@
 	it functions and re-insert it above.
 */
 /mob/living/silicon/ai/UnarmedAttack(atom/A, proximity_flag, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(A, COMSIG_ATOM_ATTACK_AI, src) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return
 	A.attack_ai(src)
 
 /mob/living/silicon/ai/RangedAttack(atom/A)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(A, COMSIG_ATOM_ATTACK_AI, src) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return
 	A.attack_ai(src)
 
 /atom/proc/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -112,6 +122,8 @@
  * * modifiers The list of the custom click modifiers
  */
 /atom/proc/attack_ai_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return SECONDARY_ATTACK_CALL_NORMAL
 
 /*
@@ -121,19 +133,27 @@
 */
 
 /mob/living/silicon/ai/CtrlShiftClickOn(atom/target)
+	procstart = null
+	src.procstart = null
 	target.AICtrlShiftClick(src)
 
 /mob/living/silicon/ai/ShiftClickOn(atom/target)
+	procstart = null
+	src.procstart = null
 	if(target.AIShiftClick(src))
 		return
 	return ..()
 
 /mob/living/silicon/ai/CtrlClickOn(atom/target)
+	procstart = null
+	src.procstart = null
 	target.AICtrlClick(src)
 
 
 /// Reimplementation of base_click_alt for AI
 /mob/living/silicon/ai/proc/ai_base_click_alt(atom/target)
+	procstart = null
+	src.procstart = null
 	// If for some reason we can't alt click
 	if(SEND_SIGNAL(src, COMSIG_MOB_ALTCLICKON, target) & COMSIG_MOB_CANCEL_CLICKON)
 		return
@@ -158,20 +178,30 @@
 
 /* Atom Procs */
 /atom/proc/AICtrlClick(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/proc/ai_click_alt(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	return
 
 /atom/proc/AIShiftClick(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /atom/proc/AICtrlShiftClick(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /* Airlocks */
-/obj/machinery/door/airlock/AICtrlClick(mob/living/silicon/ai/user) // Bolts doors
+/obj/machinery/door/airlock/AICtrlClick(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null // Bolts doors
 	if(obj_flags & EMAGGED)
 		return
 
@@ -179,6 +209,8 @@
 	add_hiddenprint(user)
 
 /obj/machinery/door/airlock/ai_click_alt(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return NONE
 
@@ -188,7 +220,9 @@
 		shock_restore(user)
 	return CLICK_ACTION_SUCCESS
 
-/obj/machinery/door/airlock/AIShiftClick(mob/living/silicon/ai/user)  // Opens and closes doors!
+/obj/machinery/door/airlock/AIShiftClick(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null  // Opens and closes doors!
 	if(obj_flags & EMAGGED)
 		return FALSE
 
@@ -196,7 +230,9 @@
 	add_hiddenprint(user)
 	return TRUE
 
-/obj/machinery/door/airlock/AICtrlShiftClick(mob/living/silicon/ai/user)  // Sets/Unsets Emergency Access Override
+/obj/machinery/door/airlock/AICtrlShiftClick(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null  // Sets/Unsets Emergency Access Override
 	if(obj_flags & EMAGGED)
 		return
 
@@ -209,6 +245,8 @@
 
 /// Toggle APC power settings
 /obj/machinery/power/apc/AICtrlClick(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	if(!can_use(user, loud = TRUE))
 		return
 
@@ -216,6 +254,8 @@
 
 /// Toggle APC environment settings (atmos)
 /obj/machinery/power/apc/AICtrlShiftClick(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	if(!can_use(user, loud = TRUE))
 		return
 
@@ -233,6 +273,8 @@
 
 /// Toggle APC lighting settings
 /obj/machinery/power/apc/AIShiftClick(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	if(!can_use(user, loud = TRUE))
 		return FALSE
 
@@ -251,6 +293,8 @@
 
 /// Toggle APC equipment settings
 /obj/machinery/power/apc/ai_click_alt(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	if(!can_use(user, loud = TRUE))
 		return NONE
 
@@ -268,11 +312,15 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/power/apc/attack_ai_secondary(mob/living/silicon/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(can_use(user, loud = TRUE))
 		togglelock(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /mob/living/silicon/ai/ShiftMiddleClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	if(control_disabled || incapacitated)
 		return
 	if(!can_see(A))
@@ -282,19 +330,25 @@
 	log_message("points at [A] using holopad", LOG_EMOTE)
 
 /* AI Turrets */
-/obj/machinery/turretid/ai_click_alt(mob/living/silicon/ai/user) //toggles lethal on turrets
+/obj/machinery/turretid/ai_click_alt(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null //toggles lethal on turrets
 	if(ailock)
 		return CLICK_ACTION_BLOCKING
 	toggle_lethal(user)
 	return CLICK_ACTION_SUCCESS
 
-/obj/machinery/turretid/AICtrlClick(mob/living/silicon/ai/user) //turns off/on Turrets
+/obj/machinery/turretid/AICtrlClick(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null //turns off/on Turrets
 	if(ailock)
 		return
 	toggle_on(user)
 
 /* Holopads */
 /obj/machinery/holopad/ai_click_alt(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	if (user)
 		balloon_alert(user, "disrupted all active calls")
 		add_hiddenprint(user)
@@ -306,4 +360,6 @@
 //
 
 /mob/living/silicon/ai/TurfAdjacent(turf/target_turf)
+	procstart = null
+	src.procstart = null
 	return (SScameras.is_visible_by_cameras(target_turf))

@@ -26,13 +26,19 @@
 	)
 
 /datum/action/cooldown/spell/touch/duffelbag/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return iscarbon(cast_on)
 
 /datum/action/cooldown/spell/touch/duffelbag/on_antimagic_triggered(obj/item/melee/touch_attack/hand, mob/living/carbon/victim, mob/living/carbon/caster)
+	procstart = null
+	src.procstart = null
 	to_chat(caster, span_warning("The spell can't seem to affect [victim]!"))
 	to_chat(victim, span_warning("You really don't feel like talking about your [pick(elaborate_backstory)] with complete strangers today."))
 
 /datum/action/cooldown/spell/touch/duffelbag/cast_on_hand_hit(obj/item/melee/touch_attack/hand, mob/living/carbon/victim, mob/living/carbon/caster)
+	procstart = null
+	src.procstart = null
 
 	// To get it started, stun and knockdown the person being hit
 	victim.flash_act()

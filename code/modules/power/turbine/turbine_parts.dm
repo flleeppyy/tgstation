@@ -14,6 +14,8 @@
 	var/current_tier = TURBINE_PART_TIER_ONE
 
 /obj/item/turbine_parts/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("This is a tier [current_tier] turbine part, rated for [get_tier_value(TURBINE_MAX_RPM)] rpm and [get_tier_value(TURBINE_MAX_TEMP)] K.")
 
@@ -29,6 +31,8 @@
  * param - see code/__DEFINES/turbine_defines/.dm
  */
 /obj/item/turbine_parts/proc/get_tier_value(param)
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 
 	var/max_value = 0
@@ -55,6 +59,8 @@
 
 ///Returns a list containing the typepath & amount of it required to upgrade to the next tier
 /obj/item/turbine_parts/proc/get_tier_upgrades()
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	SHOULD_BE_PURE(TRUE)
 	RETURN_TYPE(/list)
@@ -68,6 +74,8 @@
 			return list(TURBINE_UPGRADE_PART = /obj/item/stack/sheet/mineral/metal_hydrogen, TURBINE_UPGRADE_AMOUNT = 5)
 
 /obj/item/turbine_parts/item_interaction(mob/living/user, obj/item/attacking_item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 
 	var/list/required_parts = get_tier_upgrades()
@@ -105,6 +113,8 @@
 	icon_state = "stator_part"
 
 /obj/item/turbine_parts/stator/get_tier_value(param)
+	procstart = null
+	src.procstart = null
 	if(param == TURBINE_MAX_EFFICIENCY)
 		var/max_value = 0
 		for(var/_ in 1 to current_tier)
@@ -117,6 +127,8 @@
 	return ..()
 
 /obj/item/turbine_parts/stator/get_tier_upgrades()
+	procstart = null
+	src.procstart = null
 	switch(current_tier)
 		if(TURBINE_PART_TIER_ONE)
 			return list(TURBINE_UPGRADE_PART = /obj/item/stack/sheet/mineral/titanium, TURBINE_UPGRADE_AMOUNT = 15)

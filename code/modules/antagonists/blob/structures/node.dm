@@ -20,18 +20,26 @@
 	laser = 25
 
 /obj/structure/blob/special/node/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	GLOB.blob_nodes += src
 	START_PROCESSING(SSobj, src)
 	. = ..()
 
 /obj/structure/blob/special/node/scannerreport()
+	procstart = null
+	src.procstart = null
 	return "Gradually expands and sustains nearby blob spores and blobbernauts."
 
 /obj/structure/blob/special/node/update_icon()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	color = null
 
 /obj/structure/blob/special/node/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/blob_overlay = mutable_appearance('icons/mob/nonhuman-player/blob.dmi', "blob")
 	if(overmind)
@@ -43,10 +51,14 @@
 	. += mutable_appearance('icons/mob/nonhuman-player/blob.dmi', "blob_node_overlay")
 
 /obj/structure/blob/special/node/creation_action()
+	procstart = null
+	src.procstart = null
 	if(overmind)
 		overmind.node_blobs += src
 
 /obj/structure/blob/special/node/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.blob_nodes -= src
 	STOP_PROCESSING(SSobj, src)
 	if(overmind)
@@ -54,6 +66,8 @@
 	return ..()
 
 /obj/structure/blob/special/node/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(overmind)
 		pulse_area(overmind, claim_range, pulse_range, expand_range)
 		reinforce_area(seconds_per_tick)

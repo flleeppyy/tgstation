@@ -20,16 +20,22 @@
 	var/true_owner_ckey
 
 /obj/item/mod/module/eradication_lock/on_install()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(mod, COMSIG_MOD_ACTIVATE, PROC_REF(on_mod_activation))
 	RegisterSignal(mod, COMSIG_MOD_MODULE_REMOVAL, PROC_REF(on_mod_removal))
 
 /obj/item/mod/module/eradication_lock/on_uninstall(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(mod, COMSIG_MOD_ACTIVATE)
 	UnregisterSignal(mod, COMSIG_MOD_MODULE_REMOVAL)
 
 /obj/item/mod/module/eradication_lock/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	true_owner_ckey = mod.wearer.ckey
 	balloon_alert(activator, "user remembered")
 	playsound(src, 'sound/items/pshoom/pshoom.ogg', 25, TRUE)
@@ -37,6 +43,8 @@
 
 ///Signal fired when the modsuit tries activating
 /obj/item/mod/module/eradication_lock/proc/on_mod_activation(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!true_owner_ckey || user.ckey == true_owner_ckey)
@@ -48,6 +56,8 @@
 
 ///Signal fired when the modsuit tries removing a module.
 /obj/item/mod/module/eradication_lock/proc/on_mod_removal(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(true_owner_ckey && user.ckey != true_owner_ckey)
@@ -70,6 +80,8 @@
 	required_slots = list(ITEM_SLOT_BACK)
 
 /obj/item/mod/module/rewinder/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	balloon_alert(activator, "anchor point set")
 	playsound(src, 'sound/items/modsuit/time_anchor_set.ogg', 50, TRUE)
 	//stops all mods from triggering during rewinding
@@ -81,18 +93,24 @@
 
 ///Unregisters the modsuit deactivation blocking signal, after dejavu functionality finishes.
 /obj/item/mod/module/rewinder/proc/unblock_suit_activation()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/mod/module/module as anything in mod.modules)
 		UnregisterSignal(module, COMSIG_MODULE_TRIGGERED)
 	UnregisterSignal(mod, COMSIG_MOD_ACTIVATE)
 
 ///Signal fired when wearer attempts to activate/deactivate suits
 /obj/item/mod/module/rewinder/proc/on_activate_block(datum/source, user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	balloon_alert(user, "not while rewinding!")
 	return MOD_CANCEL_ACTIVATE
 
 ///Signal fired when wearer attempts to trigger modules, if attempting while time is stopped
 /obj/item/mod/module/rewinder/proc/on_module_triggered(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	balloon_alert(user, "not while rewinding!")
 	return MOD_ABORT_USE
@@ -114,12 +132,16 @@
 	var/obj/effect/timestop/channelled/timestop
 
 /obj/item/mod/module/timestopper/used(mob/activator)
+	procstart = null
+	src.procstart = null
 	if(timestop)
 		mod.balloon_alert(activator, "already freezing time!")
 		return FALSE
 	return ..()
 
 /obj/item/mod/module/timestopper/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	//stops all mods from triggering during timestop- including timestop itself
 	for(var/obj/item/mod/module/module as anything in mod.modules)
 		RegisterSignal(module, COMSIG_MODULE_TRIGGERED, PROC_REF(on_module_triggered))
@@ -128,6 +150,8 @@
 
 ///Unregisters the modsuit deactivation blocking signal, after timestop functionality finishes.
 /obj/item/mod/module/timestopper/proc/unblock_suit_activation(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/obj/item/mod/module/module as anything in mod.modules)
 		UnregisterSignal(module, COMSIG_MODULE_TRIGGERED)
@@ -137,12 +161,16 @@
 
 ///Signal fired when wearer attempts to trigger modules, if attempting while time is stopped
 /obj/item/mod/module/timestopper/proc/on_module_triggered(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	balloon_alert(mod.wearer, "not while stopping time!")
 	return MOD_ABORT_USE
 
 ///Signal fired when wearer attempts to activate/deactivate suits, if attempting while time is stopped
 /obj/item/mod/module/timestopper/proc/on_activate_block(datum/source, user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	balloon_alert(user, "not while stopping time!")
 	return MOD_CANCEL_ACTIVATE
@@ -163,6 +191,8 @@
 	var/obj/effect/dummy/phased_mob/chrono/phased_mob
 
 /obj/item/mod/module/timeline_jumper/used(mob/activator)
+	procstart = null
+	src.procstart = null
 	var/area/noteleport_check = get_area(mod.wearer)
 	if(noteleport_check && !check_teleport_valid(mod.wearer, get_turf(mod.wearer)))
 		to_chat(activator, span_danger("Some dull, universal force is between you and the [phased_mob ? "current timeline" : "stream between timelines"]."))
@@ -170,6 +200,8 @@
 	return ..()
 
 /obj/item/mod/module/timeline_jumper/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	if(!phased_mob)
 		//phasing out
 		mod.visible_message(span_warning("[mod.wearer] leaps out of the timeline!"))
@@ -189,6 +221,8 @@
 
 ///Signal fired when wearer attempts to activate/deactivate suits while phased out
 /obj/item/mod/module/timeline_jumper/proc/on_activate_block(datum/source, user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	//has to be a to_chat because you're phased out.
 	to_chat(user, span_warning("Deactivating your suit while inbetween timelines would be a very bad idea."))
@@ -218,6 +252,8 @@
 	var/turf/startpos
 
 /obj/item/mod/module/tem/on_select_use(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -233,6 +269,8 @@
 	INVOKE_ASYNC(chrono_beam, TYPE_PROC_REF(/obj/projectile, fire))
 
 /obj/item/mod/module/tem/on_uninstall(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!field)
 		return
@@ -248,6 +286,8 @@
  * * field: chronofield we are attempting to link to this module.
  */
 /obj/item/mod/module/tem/proc/field_connect(obj/structure/chrono_field/field)
+	procstart = null
+	src.procstart = null
 	if(field.tem)
 		if(field.captured)
 			balloon_alert(mod.wearer, "already has connection!")
@@ -268,6 +308,8 @@
  * * field: chronofield we are attempting to unlink from this module.
  */
 /obj/item/mod/module/tem/proc/field_disconnect(obj/structure/chrono_field/field)
+	procstart = null
+	src.procstart = null
 	if(field)
 		if(field.tem == src)
 			field.tem = null
@@ -285,6 +327,8 @@
  * * field: chronofield we're checking the connection's validity on.
  */
 /obj/item/mod/module/tem/proc/field_check(obj/structure/chrono_field/field)
+	procstart = null
+	src.procstart = null
 	if(!field)
 		return FALSE
 	var/turf/currentpos = get_turf(src)
@@ -301,6 +345,8 @@
 	var/datum/weakref/tem_weakref
 
 /obj/projectile/energy/chrono_beam/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	var/obj/item/mod/module/tem/tem = tem_weakref.resolve()
 	if(target && tem && isliving(target))
 		var/obj/structure/chrono_field/field = new(target.loc, target, tem)
@@ -333,6 +379,8 @@
 	var/attached = TRUE
 
 /obj/structure/chrono_field/Initialize(mapload, mob/living/target, obj/item/mod/module/tem/tem)
+	procstart = null
+	src.procstart = null
 	if(isliving(target))
 		if(!tem)
 			attached = FALSE
@@ -355,11 +403,15 @@
 	return ..()
 
 /obj/structure/chrono_field/Destroy()
+	procstart = null
+	src.procstart = null
 	if(tem)
 		tem.field_disconnect(src)
 	return ..()
 
 /obj/structure/chrono_field/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/ttk_frame = 1 - (timetokill / initial(timetokill))
 	ttk_frame = clamp(ceil(ttk_frame * CHRONO_FRAME_COUNT), 1, CHRONO_FRAME_COUNT)
@@ -370,6 +422,8 @@
 		underlays += mob_underlay
 
 /obj/structure/chrono_field/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!captured)
 		qdel(src)
 		return
@@ -404,6 +458,8 @@
 
 
 /obj/structure/chrono_field/projectile_hit(obj/projectile/hitting_projectile, def_zone, piercing_hit, blocked)
+	procstart = null
+	src.procstart = null
 	if(!istype(hitting_projectile, /obj/projectile/energy/chrono_beam))
 		return ..()
 
@@ -414,9 +470,13 @@
 	return BULLET_ACT_HIT
 
 /obj/structure/chrono_field/assume_air()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
-/obj/structure/chrono_field/return_air() //we always have nominal air and temperature
+/obj/structure/chrono_field/return_air()
+	procstart = null
+	src.procstart = null //we always have nominal air and temperature
 	var/datum/gas_mixture/fresh_air = new
 	fresh_air.set_gas(/datum/gas/oxygen, MOLES_O2STANDARD)
 	fresh_air.set_gas(/datum/gas/nitrogen, MOLES_N2STANDARD)
@@ -424,15 +484,23 @@
 	return fresh_air
 
 /obj/structure/chrono_field/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/chrono_field/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/chrono_field/ex_act()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/structure/chrono_field/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	return
 
 #undef CHRONO_BEAM_RANGE

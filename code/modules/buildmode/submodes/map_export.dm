@@ -7,6 +7,8 @@
 	var/save_flag = ALL
 
 /datum/buildmode_mode/map_export/change_settings(client/builder)
+	procstart = null
+	src.procstart = null
 	var/static/list/options = list(
 		"Object Saving" = SAVE_OBJECTS,
 		"Mob Saving" = SAVE_MOBS,
@@ -23,12 +25,16 @@
 	to_chat(builder, span_notice("[what_to_change] is now [save_flag & options[what_to_change] ? "ENABLED" : "DISABLED"]."))
 
 /datum/buildmode_mode/map_export/show_help(client/builder)
+	procstart = null
+	src.procstart = null
 	to_chat(builder, span_purple(boxed_message(
 		"[span_bold("Select corner")] -> Left Mouse Button on obj/turf/mob\n\
 		[span_bold("Set export options")] -> Right Mouse Button on buildmode button"))
 	)
 
 /datum/buildmode_mode/map_export/handle_selected_area(client/builder, params)
+	procstart = null
+	src.procstart = null
 	var/list/listed_params = params2list(params)
 	var/left_click = listed_params.Find("left")
 
@@ -57,6 +63,8 @@
 GLOBAL_VAR_INIT(map_writing_running, FALSE)
 /// Hey bud don't call this directly, it exists so we can invoke async and prevent the buildmode datum being qdel'd from halting this proc
 /proc/_save_map(turf/cornerA, turf/cornerB, save_flag, shuttle_flag)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_DEBUG))
 		message_admins("[ckey(usr)] tried to run the map save generator but was rejected due to insufficient perms.")
 		to_chat(usr, span_warning("You must have +ADMIN rights to use this."))

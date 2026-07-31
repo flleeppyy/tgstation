@@ -30,6 +30,8 @@
 	high_light_cutoff = list(45, 35, 10)
 
 /obj/item/organ/eyes/night_vision/rat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_Their eyes have deep, shifty black pupils, surrounded by a sickening yellow sclera.", BODY_ZONE_PRECISE_EYES)
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/rat)
@@ -48,6 +50,8 @@
 	hunger_modifier = 10
 
 /obj/item/organ/stomach/rat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/rat)
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_Their mouth is drooling excessively.", BODY_ZONE_PRECISE_MOUTH)
@@ -65,12 +69,16 @@
 	organ_traits = list(TRAIT_DWARF)
 
 /obj/item/organ/heart/rat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/rat)
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_They hunch%PRONOUN_es over unnaturally!")
 	AddElement(/datum/element/update_icon_blocker)
 
 /obj/item/organ/heart/rat/on_mob_insert(mob/living/carbon/receiver)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(receiver))
 		return
@@ -79,6 +87,8 @@
 	human_receiver.physiology?.damage_resistance -= 50
 
 /obj/item/organ/heart/rat/on_mob_remove(mob/living/carbon/heartless, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(heartless))
 		return
@@ -101,11 +111,15 @@
 	toxic_foodtypes = NONE
 
 /obj/item/organ/tongue/rat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_Their teeth are oddly shaped and yellowing.", BODY_ZONE_PRECISE_MOUTH)
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/rat)
 
 /obj/item/organ/tongue/rat/proc/whimsy_check(mob/living/checking)
+	procstart = null
+	src.procstart = null
 	if(check_holidays(APRIL_FOOLS))
 		return TRUE
 	if(HAS_PERSONALITY(checking, /datum/personality/whimsical))
@@ -115,6 +129,8 @@
 	return FALSE
 
 /obj/item/organ/tongue/rat/modify_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!whimsy_check(source))
 		return
@@ -125,24 +141,34 @@
 		speech_args[SPEECH_MESSAGE] = "Um... cheesed to meet you?"
 
 /obj/item/organ/tongue/rat/on_mob_insert(mob/living/carbon/tongue_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(tongue_owner, COMSIG_LIVING_ITEM_GIVEN, PROC_REF(its_on_the_mouse))
 
 /obj/item/organ/tongue/rat/on_mob_remove(mob/living/carbon/tongue_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(tongue_owner, COMSIG_LIVING_ITEM_GIVEN)
 
 /obj/item/organ/tongue/rat/proc/on_item_given(mob/living/carbon/offerer, mob/living/taker, obj/item/given)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!whimsy_check(offerer))
 		return
 	INVOKE_ASYNC(src, PROC_REF(its_on_the_mouse), offerer, taker)
 
 /obj/item/organ/tongue/rat/proc/its_on_the_mouse(mob/living/carbon/offerer, mob/living/taker)
+	procstart = null
+	src.procstart = null
 	offerer.say("For you, it's on the mouse.")
 	taker.add_mood_event("it_was_on_the_mouse", /datum/mood_event/it_was_on_the_mouse)
 
 /obj/item/organ/tongue/rat/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(5))
 		owner.emote("squeaks")

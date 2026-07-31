@@ -28,11 +28,15 @@
 	COOLDOWN_DECLARE(message_cooldown)
 
 /obj/machinery/experimental_cloner_scanner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	soundloop = new (src)
 
 /// Scan the occupant, eventually producing a [/datum/experimental_cloning_record]. Returns FALSE if unsuccessful.
 /obj/machinery/experimental_cloner_scanner/proc/start_scan()
+	procstart = null
+	src.procstart = null
 	if (machine_stat & BROKEN || machine_stat & NOPOWER || isnull(occupant))
 		playsound(src, 'sound/machines/scanner/scanbuzz.ogg', vol = 100)
 		return FALSE
@@ -47,6 +51,8 @@
 
 /// Successfully produce a scan record
 /obj/machinery/experimental_cloner_scanner/proc/complete_scan()
+	procstart = null
+	src.procstart = null
 	if (isnull(occupant))
 		fail_scan()
 		return
@@ -58,11 +64,15 @@
 
 /// There's nobody in the tank, so nothing to scan
 /obj/machinery/experimental_cloner_scanner/proc/fail_scan()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/machines/scanner/scanbuzz.ogg', vol = 100)
 	on_scan_stopped()
 
 /// Generic stuff to do when we're done scanning
 /obj/machinery/experimental_cloner_scanner/proc/on_scan_stopped()
+	procstart = null
+	src.procstart = null
 	update_use_power(NO_POWER_USE)
 	scanning = FALSE
 	if (locked)
@@ -72,16 +82,22 @@
 	deltimer(scan_timer)
 
 /obj/machinery/experimental_cloner_scanner/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (machine_stat & NOPOWER && scanning)
 		fail_scan()
 
 /obj/machinery/experimental_cloner_scanner/open_machine(drop, density_to_set)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (scanning)
 		fail_scan()
 
 /obj/machinery/experimental_cloner_scanner/update_icon_state()
+	procstart = null
+	src.procstart = null
 	//no power or maintenance
 	if (machine_stat & (NOPOWER|BROKEN))
 		icon_state = "[base_icon_state][state_open ? "_open" : null]_unpowered"
@@ -97,6 +113,8 @@
 	return ..()
 
 /obj/machinery/experimental_cloner_scanner/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (!locked)
 		open_machine()
 		return
@@ -119,6 +137,8 @@
 	open_machine()
 
 /obj/machinery/experimental_cloner_scanner/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if (IS_UNCONSCIOUS_OR_CRIT(user) || locked)
 		if (COOLDOWN_FINISHED(src, message_cooldown))
 			COOLDOWN_START(src, message_cooldown, breakout_time)
@@ -128,15 +148,21 @@
 	open_machine()
 
 /obj/machinery/experimental_cloner_scanner/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	toggle_open(user)
 
 /obj/machinery/experimental_cloner_scanner/mouse_drop_receive(atom/target, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (!iscarbon(target))
 		return
 	close_machine(target)
 
 /// Try opening the machine if it's not locked
 /obj/machinery/experimental_cloner_scanner/proc/toggle_open(mob/user)
+	procstart = null
+	src.procstart = null
 	if (state_open)
 		close_machine()
 		return
@@ -148,6 +174,8 @@
 	open_machine()
 
 /obj/machinery/experimental_cloner_scanner/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if (user.combat_mode)
 		return NONE
 
@@ -161,6 +189,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/experimental_cloner_scanner/multitool_act(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	tool.set_buffer(src)
 	balloon_alert(user, "frequency stored")
 	return ITEM_INTERACT_SUCCESS

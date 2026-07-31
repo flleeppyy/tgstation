@@ -8,6 +8,8 @@
 	shared_cooldown = NONE
 
 /datum/action/cooldown/mob_cooldown/fire_breath/carp/on_burn_mob(mob/living/barbecued, mob/living/source)
+	procstart = null
+	src.procstart = null
 	if (!source.faction_check_atom(barbecued))
 		return ..()
 	to_chat(barbecued, span_notice("[source]'s fiery breath fills you with energy!"))
@@ -20,6 +22,8 @@
 	duration = 8 SECONDS
 
 /datum/status_effect/carp_invigoration/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -27,5 +31,7 @@
 	owner.add_movespeed_modifier(/datum/movespeed_modifier/dragon_rage)
 
 /datum/status_effect/carp_invigoration/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_filter("anger_glow")
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/dragon_rage)

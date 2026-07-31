@@ -20,6 +20,8 @@
 	var/expended = FALSE
 
 /obj/item/traitor_spraycan/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!check_allowed_items(interacting_with) || !isliving(user))
 		return NONE
 
@@ -50,6 +52,8 @@
  * * target_turf - the place the rune's being drawn
  */
 /obj/item/traitor_spraycan/proc/try_draw_new_rune(mob/living/user, turf/target_turf)
+	procstart = null
+	src.procstart = null
 	for(var/turf/nearby_turf as anything in RANGE_TURFS(1, target_turf))
 		if (!isopenturf(nearby_turf) || is_type_in_typecache(nearby_turf, no_draw_turfs))
 			user.balloon_alert(user, "you need a clear 3x3 area!")
@@ -65,6 +69,8 @@
  * * target_turf - the place the rune's being drawn
  */
 /obj/item/traitor_spraycan/proc/draw_rune(mob/living/user, turf/target_turf)
+	procstart = null
+	src.procstart = null
 	if (!try_draw_step("drawing outline...", user, target_turf))
 		return
 	try_complete_rune(user, new /obj/effect/decal/cleanable/traitor_rune(target_turf))
@@ -78,6 +84,8 @@
  * * target - what they're trying to draw, or the place they are trying to draw on
  */
 /obj/item/traitor_spraycan/proc/try_draw_step(start_output, mob/living/user, atom/target)
+	procstart = null
+	src.procstart = null
 	drawing_rune = TRUE
 	user.balloon_alert(user, "[start_output]")
 	var/wait_time = SYNDIE_DRAW_TIME
@@ -107,6 +115,8 @@
  * * target_turf - the place the rune's being drawn
  */
 /obj/item/traitor_spraycan/proc/try_complete_rune(mob/living/user, obj/effect/decal/cleanable/traitor_rune/rune)
+	procstart = null
+	src.procstart = null
 	switch(rune.drawn_stage)
 		if (RUNE_STAGE_OUTLINE)
 			if (!try_draw_step("... finalising design...", user, rune))
@@ -134,6 +144,8 @@
 
 /// Copying the functionality from normal spraycans, but doesn't need all the optional checks
 /obj/item/traitor_spraycan/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(expended)
 		user.visible_message(span_suicide("[user] shakes up [src] with a rattle and lifts it to [user.p_their()] mouth, but nothing happens!"))
 		user.say("MEDIOCRE!!", forced="spraycan suicide")
@@ -148,6 +160,8 @@
 
 ///Checks if the user is still adjacent to the target (used for do_after extra_checks)
 /obj/item/traitor_spraycan/proc/adjacency_check(mob/user, atom/target)
+	procstart = null
+	src.procstart = null
 	if(!user.Adjacent(target))
 		user.balloon_alert(user, "moved too far away!")
 		return FALSE
@@ -179,11 +193,15 @@
 	var/protected_timer
 
 /obj/effect/decal/cleanable/traitor_rune/Destroy()
+	procstart = null
+	src.procstart = null
 	deltimer(protected_timer)
 	QDEL_NULL(demoraliser)
 	return ..()
 
 /obj/effect/decal/cleanable/traitor_rune/HasProximity(atom/movable/proximity_check_mob)
+	procstart = null
+	src.procstart = null
 	if (isliving(proximity_check_mob) && get_dist(proximity_check_mob, src) <= 1)
 		slip(proximity_check_mob)
 	return ..()
@@ -195,6 +213,8 @@
  * * victim - whoever just slipped, point and laugh at them
  */
 /obj/effect/decal/cleanable/traitor_rune/proc/slip(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	if(victim.movement_type & MOVETYPES_NOT_TOUCHING_GROUND)
 		return
 	if (!victim.slip(slip_time, src, slip_flags))
@@ -209,6 +229,8 @@
  * * stage - new stage to apply
  */
 /obj/effect/decal/cleanable/traitor_rune/proc/set_stage(stage)
+	procstart = null
+	src.procstart = null
 	drawn_stage = stage
 	switch(drawn_stage)
 		if (RUNE_STAGE_OUTLINE)
@@ -229,6 +251,8 @@
 			protected_timer = addtimer(CALLBACK(src, PROC_REF(set_stage), RUNE_STAGE_REMOVABLE), 5 MINUTES)
 
 /obj/effect/decal/cleanable/traitor_rune/wash(clean_types)
+	procstart = null
+	src.procstart = null
 	if (clean_proof)
 		return NONE
 

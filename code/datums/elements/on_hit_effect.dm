@@ -7,6 +7,8 @@
 /datum/element/on_hit_effect
 
 /datum/element/on_hit_effect/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(target, TRAIT_ON_HIT_EFFECT))
 		stack_trace("[type] added to [target] without adding TRAIT_ON_HIT_EFFECT first. Please use AddElementTrait instead.")
@@ -26,6 +28,8 @@
 	RegisterSignal(target, COMSIG_MOVABLE_IMPACT, PROC_REF(on_thrown_hit))
 
 /datum/element/on_hit_effect/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, list(
 		COMSIG_PROJECTILE_ON_HIT,
 		COMSIG_ITEM_AFTERATTACK,
@@ -36,11 +40,15 @@
 	return ..()
 
 /datum/element/on_hit_effect/proc/item_afterattack(obj/item/source, atom/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	on_hit(source, user, target, user.zone_selected)
 
 /datum/element/on_hit_effect/proc/hostile_attackingtarget(mob/living/attacker, atom/target, success)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!success)
@@ -50,21 +58,31 @@
 
 
 /datum/element/on_hit_effect/proc/human_punched(mob/living/carbon/human/attacker, mob/living/carbon/human/target, damage, damage_type, obj/item/bodypart/hit, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	on_hit(attacker, attacker, target, hit.body_zone)
 
 /datum/element/on_hit_effect/proc/on_projectile_hit(datum/fired_from, atom/movable/firer, atom/target, angle, body_zone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	on_hit(fired_from, firer, target, body_zone)
 
 /datum/element/on_hit_effect/proc/on_projectile_self_hit(datum/source, mob/firer, atom/target, angle, body_zone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	on_hit(source, firer, target, body_zone)
 
 /datum/element/on_hit_effect/proc/on_thrown_hit(datum/source, atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	on_hit(source, source, hit_atom, null, TRUE)
 
 /datum/element/on_hit_effect/proc/on_hit(atom/source, atom/movable/attacker, atom/target, body_zone, throw_hit = FALSE)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(source, COMSIG_ON_HIT_EFFECT, attacker, target, body_zone, throw_hit)

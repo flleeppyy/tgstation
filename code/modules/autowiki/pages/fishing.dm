@@ -2,6 +2,8 @@
 	page = "Template:Autowiki/Content/Fish"
 
 /datum/autowiki/fish/generate()
+	procstart = null
+	src.procstart = null
 	var/output = ""
 
 	var/datum/reagent/def_food = /obj/item/fish::food
@@ -69,6 +71,8 @@
 	return output
 
 /datum/autowiki/fish/proc/generate_baits(list/baits, bad = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/list = list()
 	if(!length(baits))
 		return list("None")
@@ -89,6 +93,8 @@
 	return list
 
 /datum/autowiki/fish/proc/generate_traits(list/traits)
+	procstart = null
+	src.procstart = null
 	var/output = ""
 
 	for(var/trait_type in traits)
@@ -104,6 +110,8 @@
 	page = "Template:Autowiki/Content/Fish/Trait"
 
 /datum/autowiki/fish_trait/generate()
+	procstart = null
+	src.procstart = null
 	var/output = ""
 
 	for(var/trait_type in GLOB.fish_traits)
@@ -127,6 +135,8 @@
 	page = "Template:Autowiki/Content/Fish/Bait"
 
 /datum/autowiki/fish_bait/generate()
+	procstart = null
+	src.procstart = null
 	var/output = ""
 
 	var/list/generated_icons = list()
@@ -203,6 +213,8 @@
 	page = "Template:Autowiki/Content/Fish/Line"
 
 /datum/autowiki/fishing_line/generate()
+	procstart = null
+	src.procstart = null
 	var/output = ""
 
 	var/list/generated_icons = list()
@@ -225,6 +237,8 @@
 	page = "Template:Autowiki/Content/Fish/Hook"
 
 /datum/autowiki/fishing_hook/generate()
+	procstart = null
+	src.procstart = null
 	var/output = ""
 
 	var/list/generated_icons = list()
@@ -247,6 +261,8 @@
 	page = "Template:Autowiki/Content/Fish/Rod"
 
 /datum/autowiki/fishing_rod/generate()
+	procstart = null
+	src.procstart = null
 	var/output = ""
 
 	var/list/generated_icons = list()
@@ -280,6 +296,8 @@
 	page = "Template:Autowiki/Content/Fish/Source"
 
 /datum/autowiki/fish_sources/generate()
+	procstart = null
+	src.procstart = null
 	var/output = ""
 
 	for(var/source_type in GLOB.preset_fish_sources)
@@ -299,6 +317,8 @@
 	return output
 
 /datum/autowiki/fish_sources/proc/get_contents(datum/fish_source/source)
+	procstart = null
+	src.procstart = null
 	var/output = ""
 	var/list/data = source.generate_wiki_contents(src)
 	sortTim(data, GLOBAL_PROC_REF(cmp_autowiki_fish_sources_content))
@@ -314,6 +334,8 @@
 
 ///Sort the autowiki fish entries by their weight. However, duds always come first.
 /proc/cmp_autowiki_fish_sources_content(list/A, list/B)
+	procstart = null
+	src.procstart = null
 	if(A[FISH_SOURCE_AUTOWIKI_NAME] == FISH_SOURCE_AUTOWIKI_DUD)
 		return -1
 	if(B[FISH_SOURCE_AUTOWIKI_NAME] == FISH_SOURCE_AUTOWIKI_DUD)
@@ -328,6 +350,8 @@
 	page = "Template:Autowiki/Content/Fish/Scan"
 
 /datum/autowiki/fish_scan/generate()
+	procstart = null
+	src.procstart = null
 	var/output = ""
 
 	var/list/generated_icons = list()
@@ -349,6 +373,8 @@
 	return output
 
 /datum/autowiki/fish_scan/proc/build_requirements(datum/experiment/scanning/fish/scan)
+	procstart = null
+	src.procstart = null
 	var/output = ""
 	for(var/obj/item/type as anything in scan.required_atoms)
 		var/name = initial(type.name)
@@ -362,6 +388,8 @@
 	return output
 
 /datum/autowiki/fish_scan/proc/build_rewards(datum/experiment/scanning/fish/scan, list/generated_icons)
+	procstart = null
+	src.procstart = null
 	var/output = ""
 	var/datum/fish_source/portal/reward = GLOB.preset_fish_sources[scan.fish_source_reward]
 	var/filename = SANITIZE_FILENAME("fishing_portal_[reward.radial_state]")
@@ -386,6 +414,8 @@
 	page = "Template:Autowiki/Content/Fish/Evolution"
 
 /datum/autowiki/fish_evolution/generate()
+	procstart = null
+	src.procstart = null
 	var/output = ""
 
 	for(var/evo_type in GLOB.fish_evolutions)
@@ -404,6 +434,8 @@
 	return output
 
 /datum/autowiki/fish_evolution/proc/get_fish(evo_type)
+	procstart = null
+	src.procstart = null
 	var/output = ""
 
 	for(var/obj/item/fish/fish as anything in GLOB.fishes_by_fish_evolution[evo_type])
@@ -420,6 +452,8 @@
 	page = "Template:Autowiki/Content/Fish/Lure"
 
 /datum/autowiki/fish_lure/generate()
+	procstart = null
+	src.procstart = null
 	var/output = ""
 
 	for(var/obj/item/fishing_lure/lure as anything in SSfishing.lure_catchables)
@@ -437,6 +471,8 @@
 	return output
 
 /datum/autowiki/fish_lure/proc/build_catchables(list/catchables)
+	procstart = null
+	src.procstart = null
 	var/output = ""
 
 	for(var/obj/item/fish/fish as anything in catchables)

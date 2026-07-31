@@ -8,6 +8,8 @@ GLOBAL_LIST_INIT(VVpixelmovement, list("bound_x", "bound_y", "step_x", "step_y",
 GLOBAL_PROTECT(VVpixelmovement)
 
 /client/proc/vv_parse_text(O, new_var)
+	procstart = null
+	src.procstart = null
 	if(O && findtext(new_var,"\["))
 		var/process_vars = tgui_alert(usr,"\[] detected in string, process as variables?","Process Variables?",list("Yes","No"))
 		if(process_vars == "Yes")
@@ -18,6 +20,8 @@ GLOBAL_PROTECT(VVpixelmovement)
 //TRUE = Yes subtypes
 //NULL = User cancelled at the prompt or invalid type given
 /client/proc/vv_subtype_prompt(type)
+	procstart = null
+	src.procstart = null
 	if (!ispath(type))
 		return
 	var/list/subtypes = subtypesof(type)
@@ -33,6 +37,8 @@ GLOBAL_PROTECT(VVpixelmovement)
 				return
 
 /client/proc/vv_reference_list(type, subtypes)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/list/types = list(type)
 	if (subtypes)
@@ -64,7 +70,9 @@ GLOBAL_PROTECT(VVpixelmovement)
 
 		.["[D]([shorttype])[REF(D)]#[i]"] = D
 
-/client/proc/mod_list_add_ass(atom/O) //hehe
+/client/proc/mod_list_add_ass(atom/O)
+	procstart = null
+	src.procstart = null //hehe
 	var/list/L = vv_get_value(restricted_classes = list(VV_RESTORE_DEFAULT))
 	var/class = L["class"]
 	if (!class)
@@ -80,6 +88,8 @@ GLOBAL_PROTECT(VVpixelmovement)
 
 
 /client/proc/mod_list_add(list/L, atom/O, original_name, objectvar)
+	procstart = null
+	src.procstart = null
 	var/list/LL = vv_get_value(restricted_classes = list(VV_RESTORE_DEFAULT))
 	var/class = LL["class"]
 	if (!class)
@@ -108,6 +118,8 @@ GLOBAL_PROTECT(VVpixelmovement)
 	message_admins("[key_name_admin(src)] modified [original_name]'s [objectvar]: ADDED=[var_value]")
 
 /client/proc/mod_list(list/L, atom/O, original_name, objectvar, index, autodetect_class = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_VAREDIT))
 		return
 	if(!istype(L, /list))
@@ -278,6 +290,8 @@ GLOBAL_PROTECT(VVpixelmovement)
 	message_admins("[key_name_admin(src)] modified [original_name]'s varlist [objectvar]: [original_var]=[new_var]")
 
 /proc/vv_varname_lockcheck(param_var_name)
+	procstart = null
+	src.procstart = null
 	if(param_var_name in GLOB.VVlocked)
 		if(!check_rights(R_DEBUG))
 			return FALSE
@@ -290,6 +304,8 @@ GLOBAL_PROTECT(VVpixelmovement)
 	return TRUE
 
 /client/proc/modify_variables(atom/O, param_var_name = null, autodetect_class = 0)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_VAREDIT))
 		return
 

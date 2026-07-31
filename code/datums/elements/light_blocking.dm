@@ -6,6 +6,8 @@
 
 
 /datum/element/light_blocking/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(target))
 		return ELEMENT_INCOMPATIBLE
@@ -18,6 +20,8 @@
 
 
 /datum/element/light_blocking/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, list(COMSIG_MOVABLE_MOVED))
 	var/atom/movable/movable_target = target
@@ -29,6 +33,8 @@
 
 ///Updates old and new turf loc opacities.
 /datum/element/light_blocking/proc/on_target_move(atom/movable/source, atom/old_loc, dir, forced, list/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isturf(old_loc))
 		if(old_locs)

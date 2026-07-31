@@ -17,6 +17,8 @@
 	var/used = FALSE
 
 /datum/component/faction_granter/Initialize(faction_to_grant, holy_role_required = NONE, grant_message)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 	if(!grant_message) //Yes we could do this in the init call with default args, but it scares people
@@ -26,14 +28,20 @@
 	src.grant_message = grant_message
 
 /datum/component/faction_granter/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, PROC_REF(on_self_attack))
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/component/faction_granter/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ITEM_ATTACK_SELF, COMSIG_ATOM_EXAMINE))
 
 ///signal called on parent being examined
 /datum/component/faction_granter/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(used)
 		examine_list += span_notice("[parent]'s favor granting power has been used up.")
@@ -42,6 +50,8 @@
 
 ///signal called on parent being interacted with in hand
 /datum/component/faction_granter/proc/on_self_attack(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(used)
 		to_chat(user, span_warning("The power of [parent] has been used up!"))

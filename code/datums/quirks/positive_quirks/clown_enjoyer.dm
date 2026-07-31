@@ -24,4 +24,6 @@
 	)
 
 /datum/quirk/item_quirk/clown_enjoyer/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	give_item_to_holder(/obj/item/clothing/accessory/clown_enjoyer_pin, list(LOCATION_BACKPACK, LOCATION_HANDS))

@@ -16,6 +16,8 @@
  * * timeout - The timeout of the textbox, after which the modal will close and qdel itself. Set to zero for no timeout.
  */
 /proc/tgui_input_text(mob/user, message = "", title = "Text Input", default, max_length, multiline = FALSE, encode = TRUE, timeout = 0, ui_state = GLOB.always_state)
+	procstart = null
+	src.procstart = null
 	if (!user)
 		user = usr
 	if (!istype(user))
@@ -78,6 +80,8 @@
 	var/datum/ui_state/state
 
 /datum/tgui_input_text/New(mob/user, message, title, default, max_length, multiline, encode, timeout, ui_state)
+	procstart = null
+	src.procstart = null
 	src.default = default
 	src.encode = encode
 	src.max_length = max_length
@@ -91,6 +95,8 @@
 		QDEL_IN(src, timeout)
 
 /datum/tgui_input_text/Destroy(force)
+	procstart = null
+	src.procstart = null
 	SStgui.close_uis(src)
 	state = null
 	return ..()
@@ -100,23 +106,33 @@
  * the window was closed by the user.
  */
 /datum/tgui_input_text/proc/wait()
+	procstart = null
+	src.procstart = null
 	while (!entry && !closed && !QDELETED(src))
 		stoplag(1)
 
 /datum/tgui_input_text/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "TextInputModal")
 		ui.open()
 
 /datum/tgui_input_text/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	closed = TRUE
 
 /datum/tgui_input_text/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return state
 
 /datum/tgui_input_text/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["large_buttons"] = user.client.prefs.read_preference(/datum/preference/toggle/tgui_input_large)
 	data["max_length"] = max_length
@@ -128,12 +144,16 @@
 	return data
 
 /datum/tgui_input_text/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	if(timeout)
 		data["timeout"] = CLAMP01((timeout - (world.time - start_time) - 1 SECONDS) / (timeout - 1 SECONDS))
 	return data
 
 /datum/tgui_input_text/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -160,6 +180,8 @@
  * If the string is longer than the max length, it will be clipped.
  */
 /datum/tgui_input_text/proc/set_entry(entry)
+	procstart = null
+	src.procstart = null
 	if(!isnull(entry))
 		var/converted_entry = encode ? html_encode(entry) : entry
 		src.entry = max_length ? trim(converted_entry, PREVENT_CHARACTER_TRIM_LOSS(max_length)) : converted_entry

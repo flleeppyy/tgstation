@@ -23,18 +23,26 @@
 	var/starlight_color
 
 /turf/open/floor/glass/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("glass-damaged1", "glass-damaged2", "glass-damaged3")
 
 /turf/open/floor/glass/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	icon_state = "" //Prevent the normal icon from appearing behind the smooth overlays
 	..()
 	return INITIALIZE_HINT_LATELOAD
 
 /turf/open/floor/glass/LateInitialize()
+	procstart = null
+	src.procstart = null
 	ADD_TURF_TRANSPARENCY(src, INNATE_TRAIT)
 	setup_glow()
 
 /turf/open/floor/glass/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_LIST(glow_stuff)
 	UnregisterSignal(SSdcs, COMSIG_STARLIGHT_COLOR_CHANGED)
@@ -42,6 +50,8 @@
 /// If this turf is at the bottom of the local rendering stack
 /// Then we're gonna make it emissive block so the space below glows
 /turf/open/floor/glass/proc/setup_glow()
+	procstart = null
+	src.procstart = null
 	if(GET_TURF_PLANE_OFFSET(src) != GET_LOWEST_STACK_OFFSET(z)) // We ain't the bottom brother
 		return
 	// We assume no parallax means no space means no light
@@ -56,6 +66,8 @@
 	set_light(2, 1, starlight_color || GLOB.starlight_color, l_height = LIGHTING_HEIGHT_SPACE)
 
 /turf/open/floor/glass/proc/starlight_changed(datum/source, old_star, new_star)
+	procstart = null
+	src.procstart = null
 	if(light_color == old_star)
 		set_light(l_color = new_star)
 

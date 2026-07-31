@@ -27,6 +27,8 @@
 	death_sound = 'sound/effects/magic/demon_dies.ogg'
 
 /mob/living/basic/mining/ice_demon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/innate_actions = list(
 		/datum/action/cooldown/mob_cooldown/slippery_ice_floors = BB_DEMON_SLIP_ABILITY,
@@ -45,6 +47,8 @@
 	AddElement(/datum/element/simple_flying)
 
 /mob/living/basic/mining/ice_demon/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(prob(5))
 		new /obj/item/raw_anomaly_core/bluespace(loc)
 	return ..()
@@ -74,6 +78,8 @@
 
 // Passable, but mining mobs avoid pathing through them
 /mob/living/basic/mining/demon_afterimage/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	procstart = null
+	src.procstart = null
 	var/mob/living/requester = pass_info.requester_ref?.resolve()
 	// Only block mining mobs so that drones etc can still path through
 	if (istype(requester) && (requester.mob_biotypes & MOB_MINING) && requester.loc != loc)
@@ -81,6 +87,8 @@
 	return ..()
 
 /mob/living/basic/mining/demon_afterimage/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_flying)
 	fade_into_nothing(life_time = existence_period)

@@ -71,6 +71,8 @@
  * * color - optional, set a div color other than default
  */
 /proc/create_announcement_div(message, color = "default")
+	procstart = null
+	src.procstart = null
 	return "<div class='chat_alert_[color]'>[message]</div>"
 
 /**
@@ -81,4 +83,6 @@
  * * message - required, the message contents
  */
 /proc/create_ooc_announcement_div(message)
+	procstart = null
+	src.procstart = null
 	return "<div class='ooc_alert'>[message]</div>"

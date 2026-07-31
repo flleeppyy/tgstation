@@ -84,6 +84,8 @@
 	var/projectile_vars = list()
 
 /obj/item/ammo_casing/energy/chameleon/ready_proj()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	loaded_projectile.name = projectile_vars["name"]
@@ -186,9 +188,13 @@
 	firing_effect_type = /obj/effect/temp_visual/dir_setting/firing_effect/red
 
 /obj/item/ammo_casing/laser/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/caseless)
 
 /obj/item/ammo_casing/laser/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state]"

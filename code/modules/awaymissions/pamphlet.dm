@@ -56,25 +56,35 @@
 	var/obj/item/organ/heart/cybernetic/sample
 
 /obj/item/paper/pamphlet/cybernetics/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	sample = new(src)
 	update_desc()
 
 /obj/item/paper/pamphlet/cybernetics/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = "A pamphlet encouraging the reader to implant themselves.[sample ? " Has an attached \"sample\"..." : ""]"
 
 /obj/item/paper/pamphlet/cybernetics/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(sample)
 	return ..()
 
 /obj/item/paper/pamphlet/cybernetics/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == sample)
 		sample = null
 		update_desc()
 
 /obj/item/paper/pamphlet/cybernetics/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(user, span_notice("As you read the pamphlet, a free sample falls out!"))
 	sample.forceMove(drop_location())

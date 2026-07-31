@@ -11,6 +11,8 @@ GLOBAL_LIST_INIT_TYPED(preset_fish_sources, /datum/fish_source, init_subtypes_w_
 GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
 
 /proc/generate_specific_fish_icons()
+	procstart = null
+	src.procstart = null
 	var/list/return_list = zebra_typecacheof(list(
 		/datum/data/vending_product = FISH_ICON_COIN,
 		/mob/living/basic/axolotl = FISH_ICON_CRITTER,
@@ -124,6 +126,8 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
 	var/list/safe_turfs_blacklist
 
 /datum/fish_source/New()
+	procstart = null
+	src.procstart = null
 	if(!SSfishing.initialized && associated_safe_turfs) //This is only needed during world init
 		associated_safe_turfs = typecacheof(associated_safe_turfs)
 		if(safe_turfs_blacklist)
@@ -140,23 +144,33 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
 			fish_count_regen[path] = 30 MINUTES
 
 /datum/fish_source/Destroy()
+	procstart = null
+	src.procstart = null
 	if(explosive_fishing_score)
 		STOP_PROCESSING(SSprocessing, src)
 	return ..()
 
 ///Called when src is set as the fish source of a fishing spot component
 /datum/fish_source/proc/on_fishing_spot_init(datum/component/fishing_spot/spot)
+	procstart = null
+	src.procstart = null
 	return
 
 ///Called whenever a fishing spot with this fish source attached is deleted
 /datum/fish_source/proc/on_fishing_spot_del(datum/component/fishing_spot/spot)
+	procstart = null
+	src.procstart = null
 
 /// Can we fish in this spot at all. Returns DENIAL_REASON or null if we're good to go
 /datum/fish_source/proc/reason_we_cant_fish(obj/item/fishing_rod/rod, mob/fisherman, atom/parent)
+	procstart = null
+	src.procstart = null
 	return rod.reason_we_cant_fish(src)
 
 /// Called below above proc, in case the fishing source has anything to do that isn't denial
 /datum/fish_source/proc/on_start_fishing(obj/item/fishing_rod/rod, mob/fisherman, atom/parent)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -168,6 +182,8 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
  * This is the version to call while we are in the fishing minigame phase.
  */
 /datum/fish_source/proc/calculate_difficulty_minigame(datum/fishing_challenge/challenge, reward_path, obj/item/fishing_rod/rod, mob/fisherman)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	. = 0 // begin with a fresh calculation each time
 	. += calculate_difficulty(reward_path, rod, fisherman)
@@ -188,6 +204,8 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
  * For non-fish, it's just the source's fishing difficulty minus the fisherman skill.
  */
 /datum/fish_source/proc/calculate_difficulty(result, obj/item/fishing_rod/rod, mob/fisherman)
+	procstart = null
+	src.procstart = null
 	. = fishing_difficulty
 
 	// Difficulty modifier added by having the Settler quirk
@@ -245,16 +263,22 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
 
 ///Comsig proc from the fishing minigame for 'roll_reward'
 /datum/fish_source/proc/roll_reward_minigame(datum/source, obj/item/fishing_rod/rod, mob/fisherman, atom/location, list/rewards)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SHOULD_NOT_OVERRIDE(TRUE)
 	rewards += roll_reward(rod, fisherman, location)
 
 /// Returns a typepath, instance or another special value which we use for dispensing a reward later.
 /datum/fish_source/proc/roll_reward(obj/item/fishing_rod/rod, mob/fisherman, atom/location)
+	procstart = null
+	src.procstart = null
 	return pick_weight(get_modified_fish_table(rod, fisherman, location)) || FISHING_DUD
 
 /// Version of roll_reward() that blacklists objects that shouldn't be caught by ai-controlled mobs.
 /datum/fish_source/proc/roll_mindless_reward(obj/item/fishing_rod/rod, mob/fisherman, atom/location)
+	procstart = null
+	src.procstart = null
 	var/list/final_table = get_modified_fish_table(rod, fisherman, location)
 	final_table -= profound_fisher_blacklist
 	return pick_weight(final_table) || FISHING_DUD
@@ -264,10 +288,14 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
  * and before the minigame starts.
  */
 /datum/fish_source/proc/pre_challenge_started(obj/item/fishing_rod/rod, mob/user, datum/fishing_challenge/challenge)
+	procstart = null
+	src.procstart = null
 	return
 
 ///Proc called when the challenge is interrupted within the fish source code.
 /datum/fish_source/proc/interrupt_challenge(reason)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_FISHING_SOURCE_INTERRUPT_CHALLENGE, reason)
 
 /**
@@ -275,6 +303,8 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
  * Check if we've succeeded. If so, write into memory and dispense the reward.
  */
 /datum/fish_source/proc/on_challenge_completed(mob/user, datum/fishing_challenge/challenge, success)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SHOULD_CALL_PARENT(TRUE)
 	UnregisterSignal(user, COMSIG_MOB_COMPLETE_FISHING)
@@ -290,6 +320,8 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
 
 /// Gives out the reward if possible
 /datum/fish_source/proc/dispense_reward(reward_path, mob/fisherman, atom/fishing_spot, obj/item/fishing_rod/rod)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/reward = simple_dispense_reward(reward_path, get_turf(fisherman), fishing_spot)
 	if(!reward) //balloon alert instead
 		fisherman.balloon_alert(fisherman, pick(duds))
@@ -311,6 +343,8 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
 
 ///Simplified version of dispense_reward that doesn't need a fisherman.
 /datum/fish_source/proc/simple_dispense_reward(reward_path, atom/spawn_location, atom/fishing_spot)
+	procstart = null
+	src.procstart = null
 	if(isnull(reward_path))
 		return null
 	var/area/area = get_area(fishing_spot)
@@ -330,6 +364,8 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
 	return reward
 
 /datum/fish_source/proc/regen_count(reward_path)
+	procstart = null
+	src.procstart = null
 	if(!LAZYACCESS(currently_on_regen, reward_path))
 		return
 	fish_counts[reward_path] += 1
@@ -342,6 +378,8 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
 
 /// Spawns a reward from a atom path right where the fisherman is. Part of the dispense_reward() logic.
 /datum/fish_source/proc/spawn_reward(reward_path, atom/spawn_location, atom/fishing_spot)
+	procstart = null
+	src.procstart = null
 	if(reward_path == FISHING_DUD)
 		return
 	if(ismovable(reward_path))
@@ -361,6 +399,8 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
 
 /// Returns the fish table, with with the unavailable items from fish_counts removed.
 /datum/fish_source/proc/get_fish_table(atom/location, from_explosion = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/table = fish_table.Copy()
 	//message bottles cannot spawn from explosions. They're meant to be one-time messages (rarely) and photos from past rounds
 	//and it would suck if the pool of bottle messages were constantly being emptied by explosive fishing.
@@ -373,6 +413,8 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
 
 /// Builds a fish weights table modified by bait/rod/user properties
 /datum/fish_source/proc/get_modified_fish_table(obj/item/fishing_rod/rod, mob/fisherman, atom/location)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bait = rod.bait
 	///An exponent used to level out the table weight differences between fish depending on bait quality.
 	var/leveling_exponent = 0
@@ -426,6 +468,8 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
 
 ///A proc that levels out the weights of various fish, leading to rarer fishes being more common.
 /datum/fish_source/proc/level_out_fish(list/table, exponent)
+	procstart = null
+	src.procstart = null
 	var/highest_fish_weight
 	var/list/collected_fish_weights = list()
 	for(var/fishable in table)
@@ -442,6 +486,8 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
 		table[fish] += round(difference**exponent, 1)
 
 /datum/fish_source/proc/get_fish_trait_catch_mods(weight, obj/item/fish/fish, obj/item/fishing_rod/rod, mob/user, atom/location)
+	procstart = null
+	src.procstart = null
 	var/is_fish_instance = isfish(fish)
 	if(!ispath(fish, /obj/item/fish) && !is_fish_instance)
 		return weight
@@ -461,6 +507,8 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
 
 ///returns true if this fishing spot has fish that are shown in the catalog.
 /datum/fish_source/proc/has_known_fishes(atom/location)
+	procstart = null
+	src.procstart = null
 	var/show_anyway = fish_source_flags & FISH_SOURCE_FLAG_IGNORE_HIDDEN_ON_CATALOG
 	for(var/reward in get_fish_table(location))
 		if(!ispath(reward, /obj/item/fish) && !isfish(reward))
@@ -472,6 +520,8 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
 
 ///Add a string with the names of catchable fishes to the examine text.
 /datum/fish_source/proc/get_catchable_fish_names(mob/user, atom/location, list/examine_text)
+	procstart = null
+	src.procstart = null
 	var/list/known_fishes = list()
 	var/show_anyway = fish_source_flags & FISH_SOURCE_FLAG_IGNORE_HIDDEN_ON_CATALOG
 
@@ -535,6 +585,8 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
 #define EXPLOSIVE_FISHING_RECOVERY_RATE 0.18
 
 /datum/fish_source/proc/spawn_reward_from_explosion(atom/location, severity)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(fish_source_flags & FISH_SOURCE_FLAG_EXPLOSIVE_NONE)
 		return
@@ -564,6 +616,8 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
 			reward.ex_act(EXPLODE_LIGHT)
 
 /datum/fish_source/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	explosive_fishing_score -= EXPLOSIVE_FISHING_RECOVERY_RATE * seconds_per_tick
 	if(explosive_fishing_score <= 0)
 		STOP_PROCESSING(SSprocessing, src)
@@ -574,6 +628,8 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
 
 ///Called when releasing a fish in a fishing spot with the TRAIT_CATCH_AND_RELEASE trait.
 /datum/fish_source/proc/readd_fish(atom/location, obj/item/fish/fish, mob/living/releaser)
+	procstart = null
+	src.procstart = null
 	if(releaser)
 		var/is_morbid = HAS_MIND_TRAIT(releaser, TRAIT_MORBID)
 		var/is_naive = HAS_MIND_TRAIT(releaser, TRAIT_NAIVE)
@@ -601,6 +657,8 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
  * detailing the contents of this fish source.
  */
 /datum/fish_source/proc/generate_wiki_contents(datum/autowiki/fish_sources/wiki)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/only_fish = list()
 

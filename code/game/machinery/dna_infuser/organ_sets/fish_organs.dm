@@ -31,6 +31,8 @@
 	var/color_active = FALSE
 
 /datum/status_effect/organ_set_bonus/fish/enable_bonus(obj/item/organ/inserted_organ)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -55,6 +57,8 @@
 	owner.grant_language(/datum/language/carptongue, ALL, type)
 
 /datum/status_effect/organ_set_bonus/fish/disable_bonus(obj/item/organ/removed_organ)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(owner, list(
 		COMSIG_CARBON_GAIN_ORGAN,
@@ -80,6 +84,8 @@
 	owner.remove_language(/datum/language/carptongue, ALL, type)
 
 /datum/status_effect/organ_set_bonus/fish/set_organs(new_value, obj/item/organ/organ)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!iscarbon(owner))
 		return
@@ -105,6 +111,8 @@
 	color_active = FALSE
 
 /datum/status_effect/organ_set_bonus/fish/texture_limb(atom/source, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!color_active || !iscarbon(owner))
 		return
@@ -115,11 +123,15 @@
 		limb.add_color_override(tail_color, LIMB_COLOR_FISH_INFUSION)
 
 /datum/status_effect/organ_set_bonus/fish/untexture_limb(atom/source, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (color_active)
 		limb.remove_color_override(LIMB_COLOR_FISH_INFUSION)
 
 /datum/status_effect/organ_set_bonus/fish/proc/get_perceived_food_quality(datum/source, datum/component/edible/edible, list/extra_quality)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(HAS_TRAIT(edible.parent, TRAIT_GREAT_QUALITY_BAIT))
 		extra_quality += LIKED_FOOD_QUALITY_CHANGE * 3
@@ -129,6 +141,8 @@
 		extra_quality += LIKED_FOOD_QUALITY_CHANGE
 
 /datum/status_effect/organ_set_bonus/fish/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!bonus_active || !HAS_TRAIT(owner, TRAIT_IS_WET))
 		return
@@ -136,6 +150,8 @@
 	owner.adjust_stamina_loss(-1.5 * seconds_between_ticks)
 
 /datum/status_effect/organ_set_bonus/fish/proc/update_wetness(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(HAS_TRAIT(owner, TRAIT_IS_WET)) //remove the debuffs from being dry
 		remove_debuff()
@@ -147,6 +163,8 @@
 		remove_speed_buff()
 
 /datum/status_effect/organ_set_bonus/fish/proc/apply_debuff()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_GRABRESISTANCE, REF(src))
 	owner.add_movespeed_modifier(/datum/movespeed_modifier/fish_waterless)
 	owner.add_mood_event("fish_organs_bonus", /datum/mood_event/fish_waterless)
@@ -162,6 +180,8 @@
 	human.physiology.damage_resistance -= 16 //from +8% to -8%
 
 /datum/status_effect/organ_set_bonus/fish/proc/remove_debuff()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(owner, TRAIT_GRABRESISTANCE, TRAIT_STATUS_EFFECT(id)) //harder to grab when wet.
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/fish_waterless)
 	owner.add_mood_event("fish_organs_bonus", /datum/mood_event/fish_water)
@@ -177,6 +197,8 @@
 	human.physiology.damage_resistance += 16 //from -8% to +8%
 
 /datum/status_effect/organ_set_bonus/fish/proc/check_tail(mob/living/carbon/source, obj/item/organ/organ, special)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// We need to snowflake the tongue because it doesn't count towards the set bonus
 	if (istype(organ, /obj/item/organ/tongue/inky))
@@ -191,16 +213,22 @@
 	add_speed_buff()
 
 /datum/status_effect/organ_set_bonus/fish/proc/add_speed_buff(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	RegisterSignal(owner, COMSIG_LIVING_SET_BODY_POSITION, PROC_REF(check_body_position))
 	check_body_position()
 
 /datum/status_effect/organ_set_bonus/fish/proc/remove_speed_buff(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(owner, COMSIG_LIVING_SET_BODY_POSITION)
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/fish_flopping)
 
 /datum/status_effect/organ_set_bonus/fish/proc/check_body_position(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(owner.body_position == LYING_DOWN)
 		owner.add_movespeed_modifier(/datum/movespeed_modifier/fish_flopping)
@@ -240,12 +268,16 @@
 	var/fillet_amount = 5
 
 /obj/item/organ/tail/fish/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/fish)
 	var/time_to_fillet = fillet_amount * 0.5 SECONDS
 	AddElement(/datum/element/processable, TOOL_KNIFE, fillet_type, fillet_amount, time_to_fillet, screentip_verb = "Cut")
 
 /obj/item/organ/tail/fish/on_mob_insert(mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.AddElementTrait(TRAIT_WADDLING, type, /datum/element/waddling)
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(check_location))
@@ -253,6 +285,8 @@
 	check_location(owner, null)
 
 /obj/item/organ/tail/fish/on_mob_remove(mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.remove_traits(list(TRAIT_WADDLING, TRAIT_NO_STAGGER), type)
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/fish_on_water)
@@ -260,14 +294,20 @@
 	UnregisterSignal(owner, list(COMSIG_MOVABLE_MOVED, COMSIG_LIVING_GIBBER_ACT))
 
 /obj/item/organ/tail/fish/proc/on_gibber_processed(mob/living/carbon/owner, mob/living/user, obj/machinery/gibber, list/results)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/iteration in 1 to fillet_amount * 0.5)
 		results += new fillet_type
 
 /obj/item/organ/tail/fish/get_greyscale_color_from_draw_color()
+	procstart = null
+	src.procstart = null
 	set_greyscale(bodypart_overlay.draw_color)
 
 /obj/item/organ/tail/fish/proc/check_location(mob/living/carbon/source, atom/movable/old_loc, dir, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/was_water = istype(old_loc, /turf/open/water)
 	var/is_water = istype(source.loc, /turf/open/water) && !HAS_TRAIT(source.loc, TRAIT_TURF_IGNORE_SLOWDOWN)
@@ -286,6 +326,8 @@
 	draw_on_husks = HUSK_OVERLAY_GRAYSCALE
 
 /datum/bodypart_overlay/mutant/tail/fish/on_mob_insert(obj/item/organ/parent, mob/living/carbon/receiver)
+	procstart = null
+	src.procstart = null
 	//Initialize the related dna feature block if we don't have any so it doesn't error out.
 	//This isn't tied to any species, but I kinda want it to be mutable instead of having a fixed sprite accessory.
 	if(imprint_on_next_insertion && !receiver.dna.features[feature_key])
@@ -295,6 +337,8 @@
 	return ..()
 
 /datum/bodypart_overlay/mutant/tail/fish/override_color(obj/item/bodypart/bodypart_owner)
+	procstart = null
+	src.procstart = null
 	//If the owner uses mutant colors, inherit the color of the bodypart
 	if(!bodypart_owner.owner || HAS_TRAIT(bodypart_owner.owner, TRAIT_MUTANT_COLORS))
 		return bodypart_owner.draw_color
@@ -322,6 +366,8 @@
 	var/has_gills = TRUE
 
 /obj/item/organ/lungs/fish/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_gas_reaction(/datum/gas/water_vapor, always = PROC_REF(breathe_water))
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/fish)
@@ -332,25 +378,35 @@
 	AddComponent(/datum/component/speechmod, replacements = strings("crustacean_replacement.json", "crustacean"))
 
 /obj/item/organ/lungs/fish/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(gills)
 	return ..()
 
 /obj/item/organ/lungs/fish/on_bodypart_insert(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gills)
 		limb.add_bodypart_overlay(gills)
 
 /obj/item/organ/lungs/fish/on_bodypart_remove(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gills)
 		limb.remove_bodypart_overlay(gills)
 
 /obj/item/organ/lungs/fish/on_mob_remove(mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.clear_alert(ALERT_NOT_ENOUGH_WATER)
 
 /// Requires the spaceman to have either water vapor or be wet.
 /obj/item/organ/lungs/fish/proc/breathe_water(mob/living/carbon/breather, datum/gas_mixture/breath, water_pp, old_water_pp)
+	procstart = null
+	src.procstart = null
 	var/need_to_breathe = !HAS_TRAIT(breather, TRAIT_NO_BREATHLESS_DAMAGE) && !HAS_TRAIT(breather, TRAIT_IS_WET)
 	if(water_pp < safe_water_level && need_to_breathe)
 		on_low_water(breather, breath, water_pp)
@@ -368,6 +424,8 @@
 
 /// Called when there isn't enough water to breath
 /obj/item/organ/lungs/fish/proc/on_low_water(mob/living/carbon/breather, datum/gas_mixture/breath, water_pp)
+	procstart = null
+	src.procstart = null
 	breather.throw_alert(ALERT_NOT_ENOUGH_WATER, /atom/movable/screen/alert/not_enough_water)
 	var/gas_breathed = handle_suffocation(breather, water_pp, safe_water_level, breath.moles[/datum/gas/water_vapor])
 	if(water_pp)
@@ -381,6 +439,8 @@
 	draw_on_husks = HUSK_OVERLAY_GRAYSCALE
 
 /datum/bodypart_overlay/simple/gills/get_image(obj/item/bodypart/limb, layer_index, layer_real)
+	procstart = null
+	src.procstart = null
 	return image(
 		icon = icon,
 		icon_state = "[icon_state]_[layer_index]",
@@ -400,6 +460,8 @@
 	var/should_breathe_oxygen = FALSE
 
 /obj/item/organ/lungs/fish/amphibious/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	/**
 	 * We're setting the gas reaction for breathing oxygen here,
@@ -411,14 +473,20 @@
 	add_gas_reaction(/datum/gas/oxygen, always = PROC_REF(breathe_oxygen))
 
 /obj/item/organ/lungs/fish/amphibious/check_breath(datum/gas_mixture/breath, mob/living/carbon/human/breather)
+	procstart = null
+	src.procstart = null
 	should_breathe_oxygen = FALSE //assume we don't have to breathe oxygen until we fail to breathe water
 	return ..()
 
 /obj/item/organ/lungs/fish/amphibious/on_low_water(mob/living/carbon/breather, datum/gas_mixture/breath, water_pp)
+	procstart = null
+	src.procstart = null
 	should_breathe_oxygen = TRUE
 	return
 
 /obj/item/organ/lungs/fish/amphibious/breathe_oxygen(mob/living/carbon/breather, datum/gas_mixture/breath, o2_pp, old_o2_pp)
+	procstart = null
+	src.procstart = null
 	if(!should_breathe_oxygen)
 		if(breather.failed_last_breath) //in case we had neither oxygen nor water last tick.
 			breather.clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
@@ -447,6 +515,8 @@
 	)
 
 /obj/item/organ/stomach/fish/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/fish)
 
@@ -499,10 +569,14 @@
 	)
 
 /obj/item/organ/tongue/inky/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/noticable_organ, "Slick black ink seldom rivulets from %PRONOUN_their mouth.", BODY_ZONE_PRECISE_MOUTH)
 
 /obj/item/organ/tongue/inky/get_possible_languages()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += /datum/language/carptongue
 
@@ -526,10 +600,14 @@
 	food_tastes = list("fish" = 1)
 
 /obj/item/organ/liver/fish/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/fish)
 
 /obj/item/organ/liver/fish/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/nutriment/peptides = 5, /datum/reagent/toxin/tetrodotoxin = 5)
 
 #undef FISH_ORGAN_COLOR

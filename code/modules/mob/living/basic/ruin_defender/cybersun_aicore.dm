@@ -36,6 +36,8 @@
 	var/selfdestruct_queue_id = "hauntedtradingpost_sd"
 
 /mob/living/basic/cybersun_ai_core/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_IMMOBILIZED, INNATE_TRAIT)
 	AddElement(/datum/element/death_drops, /obj/effect/temp_visual/cybersun_ai_core_death)
@@ -52,6 +54,8 @@
 		return INITIALIZE_HINT_LATELOAD
 
 /mob/living/basic/cybersun_ai_core/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Lights
@@ -74,16 +78,22 @@
 	. += emissive_appearance(icon, screen_state, src)
 
 /mob/living/basic/cybersun_ai_core/LateInitialize()
+	procstart = null
+	src.procstart = null
 	SSqueuelinks.add_to_queue(src, selfdestruct_queue_id)
 	SSqueuelinks.pop_link(selfdestruct_queue_id)
 
 /mob/living/basic/cybersun_ai_core/MatchedLinks(id, list/partners) // id == queue id (for multiple queue objects)
+	procstart = null
+	src.procstart = null
 	if(id != selfdestruct_queue_id)
 		return
 	for(var/datum/partner as anything in partners) // all our partners in the selfdestruct queue are now registered to qdel if I die
 		partner.RegisterSignal(src, COMSIG_QDELETING, TYPE_PROC_REF(/datum, selfdelete))
 
 /mob/living/basic/cybersun_ai_core/death(gibbed)
+	procstart = null
+	src.procstart = null
 	do_sparks(number = 5, source = src)
 	return ..()
 
@@ -93,6 +103,8 @@
 	duration = 2 SECONDS
 
 /obj/effect/temp_visual/cybersun_ai_core_death/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_overlay("ai-red_dead")
 
@@ -101,6 +113,8 @@
 	addtimer(CALLBACK(src, PROC_REF(gib)), duration - 1, TIMER_DELETE_ME)
 
 /obj/effect/temp_visual/cybersun_ai_core_death/proc/gib()
+	procstart = null
+	src.procstart = null
 ///dramatic death animations
 	var/turf/my_turf = get_turf(src)
 	new /obj/effect/gibspawner/robot(my_turf)
@@ -134,6 +148,8 @@
 	var/lightning_delay = 1 SECONDS
 
 /datum/action/cooldown/spell/pointed/lightning_strike/cast(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//this is where the spell will hit. it will not move even if the target does, allowing the spell to be dodged.
 	new/obj/effect/temp_visual/lightning_strike(get_turf(target))
@@ -154,11 +170,15 @@
 		)
 
 /obj/effect/temp_visual/lightning_strike/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	damage_blacklist_typecache = typecacheof(damage_blacklist_typecache)
 	addtimer(CALLBACK(src, PROC_REF(zap)), duration, TIMER_DELETE_ME)
 
 /obj/effect/temp_visual/lightning_strike/proc/zap()
+	procstart = null
+	src.procstart = null
 	new/obj/effect/temp_visual/lightning_strike_zap(loc)
 	playsound(src, 'sound/effects/magic/lightningbolt.ogg', vol = 70, vary = TRUE)
 	if (!isturf(loc))
@@ -177,6 +197,8 @@
 	duration = 0.4 SECONDS
 
 /obj/effect/temp_visual/lightning_strike_zap/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	do_sparks(number = rand(1,3), source = src)
 
@@ -196,6 +218,8 @@
 	var/turf/lockon_zone
 
 /datum/action/cooldown/spell/pointed/projectile/cybersun_barrage/cast(atom/target, atom/cast_on)
+	procstart = null
+	src.procstart = null
 	var/turf/my_turf = get_turf(owner)
 	lockon_zone = get_turf(target)
 	if(lockon_zone == my_turf)
@@ -206,6 +230,8 @@
 	return ..()
 
 /datum/action/cooldown/spell/pointed/projectile/cybersun_barrage/fire_projectile(atom/target)
+	procstart = null
+	src.procstart = null
 	target = lockon_zone
 	if(do_after(owner, barrage_delay))
 		return ..()

@@ -6,6 +6,8 @@
 	var/icon/final_icon
 
 /datum/unit_test/transformation_sting/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/ling = setup_ling()
 	var/mob/living/carbon/human/victim = setup_victim()
 	var/datum/antagonist/changeling/ling_datum = IS_CHANGELING(ling)
@@ -45,6 +47,8 @@
 
 /// Adds both mobs to the screenshot test, if both_species is TRUE, it also adds the victim in lizard form
 /datum/unit_test/transformation_sting/proc/add_to_screenshot(mob/living/carbon/human/ling, mob/living/carbon/human/victim, both_species = FALSE)
+	procstart = null
+	src.procstart = null
 	if(isnull(final_icon))
 		final_icon = icon('icons/effects/effects.dmi', "nothing")
 
@@ -64,12 +68,16 @@
 	last_frame += 1
 
 /datum/unit_test/transformation_sting/proc/setup_victim()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/victim = allocate(/mob/living/carbon/human/consistent)
 	base_victim_name = victim.real_name
 	victim.mind_initialize()
 	return victim
 
 /datum/unit_test/transformation_sting/proc/setup_ling()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/ling = allocate(/mob/living/carbon/human/consistent)
 	// Because we use two consistent humans, we need to change some of the features to know they're actually updating to new values.
 	// The more DNA features and random things we change, the more likely we are to catch something not updating correctly.

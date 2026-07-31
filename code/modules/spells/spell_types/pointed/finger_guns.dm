@@ -27,6 +27,8 @@
 	projectile_amount = 3
 
 /datum/action/cooldown/spell/pointed/projectile/finger_guns/try_invoke(mob/living/invoker, feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	if(invocation_type == INVOCATION_EMOTE)
 		if(!ishuman(invoker))
 			return FALSE

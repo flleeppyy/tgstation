@@ -67,6 +67,8 @@
 	category = CAT_WEAPON_RANGED
 
 /datum/crafting_recipe/advancedegun/New()
+	procstart = null
+	src.procstart = null
 	LAZYADD(blacklist, typecacheof(/obj/item/gun/energy/e_gun, ignore_root_path = TRUE))
 	return ..()
 
@@ -81,6 +83,8 @@
 	category = CAT_WEAPON_RANGED
 
 /datum/crafting_recipe/tempgun/New()
+	procstart = null
+	src.procstart = null
 	LAZYADD(blacklist, typecacheof(/obj/item/gun/energy/e_gun, ignore_root_path = TRUE))
 	return ..()
 
@@ -114,6 +118,8 @@
 	var/static/list/laser_blacklist
 
 /datum/crafting_recipe/laser/New()
+	procstart = null
+	src.procstart = null
 	if(isnull(laser_blacklist))
 		laser_blacklist = typecacheof(/obj/item/gun/energy/laser, ignore_root_path = TRUE)
 	blacklist = laser_blacklist
@@ -286,6 +292,8 @@
 	crafting_flags = CRAFT_CHECK_DENSITY | CRAFT_MUST_BE_LEARNED
 
 /datum/crafting_recipe/deagle_prime/New()
+	procstart = null
+	src.procstart = null
 	LAZYADD(blacklist, typecacheof(/obj/item/gun/ballistic/automatic/pistol, ignore_root_path = TRUE))
 	return ..()
 

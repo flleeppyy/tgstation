@@ -1,6 +1,8 @@
 /obj/effect/appearance_clone
 
 /obj/effect/appearance_clone/New(loc, atom/our_atom) //Intentionally not Initialize(), to make sure the clone assumes the intended appearance in time for the camera getFlatIcon.
+	procstart = null
+	src.procstart = null
 	if(!istype(our_atom))
 		return ..()
 	if(!isopenspaceturf(our_atom))
@@ -15,6 +17,8 @@
 #define PHYSICAL_POSITION(atom) ((atom.y * ICON_SIZE_Y) + (atom.pixel_y))
 
 /obj/item/camera/proc/camera_get_icon(list/turfs, turf/center, datum/turf_reservation/clone_area)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/list/atoms = list()

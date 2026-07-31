@@ -15,11 +15,15 @@
 	customization_options = list(/datum/preference/choiced/glasses)
 
 /datum/quirk/item_quirk/nearsighted/is_species_appropriate(datum/species/mob_species)
+	procstart = null
+	src.procstart = null
 	if(ispath(mob_species, /datum/species/dullahan))
 		return FALSE
 	return ..()
 
 /datum/quirk/item_quirk/nearsighted/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/glasses_name = client_source?.prefs.read_preference(/datum/preference/choiced/glasses) || "Regular"
 	var/obj/item/clothing/glasses/glasses_type
 
@@ -33,7 +37,11 @@
 	))
 
 /datum/quirk/item_quirk/nearsighted/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	quirk_holder.become_nearsighted(QUIRK_TRAIT)
 
 /datum/quirk/item_quirk/nearsighted/remove()
+	procstart = null
+	src.procstart = null
 	quirk_holder.cure_nearsighted(QUIRK_TRAIT)

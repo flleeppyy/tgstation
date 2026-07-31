@@ -2,6 +2,8 @@ GLOBAL_LIST_INIT_TYPED(all_quirk_constant_data, /datum/quirk_constant_data, gene
 
 /// Constructs [GLOB.all_quirk_constant_data] by iterating through a typecache of pregen data, ignoring abstract types, and instantiating the rest.
 /proc/generate_quirk_constant_data()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list/datum/quirk_constant_data)
 
 	var/list/datum/quirk_constant_data/all_constant_data = list()
@@ -33,12 +35,16 @@ GLOBAL_LIST_INIT_TYPED(all_quirk_constant_data, /datum/quirk_constant_data, gene
 	var/list/datum/preference/customization_options
 
 /datum/quirk_constant_data/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	ASSERT(abstract_type != type && !isnull(associated_typepath), "associated_typepath null - please set it! occurred on: [src.type]")
 
 /// Returns a list of savefile_keys derived from the preference typepaths in [customization_options]. Used in quirks middleware to supply the preferences to render.
 /datum/quirk_constant_data/proc/get_customization_data()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 
 	var/list/customization_data = list()
@@ -56,9 +62,13 @@ GLOBAL_LIST_INIT_TYPED(all_quirk_constant_data, /datum/quirk_constant_data, gene
 /// Is this quirk customizable? If true, a button will appear within the quirk's description box in the quirks page, and upon clicking it,
 /// will open a customization menu for the quirk.
 /datum/quirk_constant_data/proc/is_customizable()
+	procstart = null
+	src.procstart = null
 	return LAZYLEN(customization_options) > 0
 
 /datum/quirk_constant_data/Destroy(force)
+	procstart = null
+	src.procstart = null
 	var/error_message = "[src], a singleton quirk constant data instance, was destroyed! This should not happen!"
 	if (force)
 		error_message += " NOTE: This Destroy() was called with force == TRUE. This instance will be deleted and replaced with a new one."

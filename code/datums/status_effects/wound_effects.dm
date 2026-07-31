@@ -12,6 +12,8 @@
 	remove_on_fullheal = TRUE
 
 /datum/status_effect/determined/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.visible_message(span_danger("[owner]'s body tenses up noticeably, gritting against [owner.p_their()] pain!"), span_notice("<b>Your senses sharpen as your body tenses up from the wounds you've sustained!</b>"), \
 		vision_distance=COMBAT_MESSAGE_RANGE)
@@ -20,6 +22,8 @@
 		human_owner.physiology.bleed_mod *= WOUND_DETERMINATION_BLEED_MOD
 
 /datum/status_effect/determined/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.visible_message(span_danger("[owner]'s body slackens noticeably!"), span_warning("<b>Your adrenaline rush dies off, and the pain from your wounds come aching back in...</b>"), vision_distance=COMBAT_MESSAGE_RANGE)
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
@@ -49,6 +53,8 @@
 	var/limp_chance_right = 0
 
 /datum/status_effect/limp/on_apply()
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(owner))
 		return FALSE
 	var/mob/living/carbon/carbon_owner = owner
@@ -61,6 +67,8 @@
 	return TRUE
 
 /datum/status_effect/limp/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, list(COMSIG_MOVABLE_MOVED, COMSIG_CARBON_GAIN_WOUND, COMSIG_CARBON_POST_LOSE_WOUND, COMSIG_CARBON_ATTACH_LIMB, COMSIG_CARBON_REMOVE_LIMB))
 	left = null
 	right = null
@@ -71,6 +79,8 @@
 	icon_state = "injury"
 
 /datum/status_effect/limp/proc/check_step(mob/whocares, OldLoc, Dir, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!owner.client || owner.body_position == LYING_DOWN || !owner.has_gravity() || (owner.movement_type & (FLYING|FLOATING)) || forced || owner.buckled)
@@ -101,6 +111,8 @@
 
 /// We need to make sure that we properly clear these refs if one of the owner's limbs gets deleted
 /datum/status_effect/limp/proc/on_limb_removed(datum/source, obj/item/bodypart/limb_lost, special, dismembered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(limb_lost == left)
@@ -111,6 +123,8 @@
 	update_limp() // calling this with no arg so we know it's coming from here and not a signal
 
 /datum/status_effect/limp/proc/update_limp(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/carbon/carbon_mob = owner
@@ -151,6 +165,8 @@
 	alert_type = null
 
 /datum/status_effect/limp/quirk/update_limp(datum/source)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/carbon_mob = owner
 	left = carbon_mob.get_bodypart(BODY_ZONE_L_LEG)
 	right = carbon_mob.get_bodypart(BODY_ZONE_R_LEG)	
@@ -183,16 +199,22 @@
 	alert_type = NONE
 
 /datum/status_effect/wound/on_creation(mob/living/new_owner, incoming_wound)
+	procstart = null
+	src.procstart = null
 	linked_wound = incoming_wound
 	linked_limb = linked_wound.limb
 	return ..()
 
 /datum/status_effect/wound/on_remove()
+	procstart = null
+	src.procstart = null
 	linked_wound = null
 	linked_limb = null
 	UnregisterSignal(owner, COMSIG_CARBON_LOSE_WOUND)
 
 /datum/status_effect/wound/on_apply()
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(owner))
 		return FALSE
 	RegisterSignal(owner, COMSIG_CARBON_LOSE_WOUND, PROC_REF(check_remove))
@@ -200,12 +222,16 @@
 
 /// check if the wound getting removed is the wound we're tied to
 /datum/status_effect/wound/proc/check_remove(mob/living/L, datum/wound/W)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(W == linked_wound)
 		qdel(src)
 
 /datum/status_effect/wound/nextmove_modifier()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/C = owner
 
 	if(C.get_active_hand() == linked_limb)
@@ -214,6 +240,8 @@
 	return ..()
 
 /datum/status_effect/wound/nextmove_adjust()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/C = owner
 
 	if(C.get_active_hand() == linked_limb)

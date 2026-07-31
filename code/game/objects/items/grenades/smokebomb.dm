@@ -32,11 +32,15 @@
 
 ///Here we generate the extremely insightful description.
 /obj/item/grenade/smokebomb/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = "The word '[pick(bruh_moment)]' is scribbled on it in crayon."
 
 ///Here we generate some smoke and also damage blobs??? for some reason. Honestly not sure why we do that.
 /obj/item/grenade/smokebomb/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

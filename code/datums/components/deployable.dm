@@ -27,6 +27,8 @@
 	var/deployed_name
 
 /datum/component/deployable/Initialize(deploy_time = 5 SECONDS, thing_to_be_deployed, multiple_deployments = FALSE, deployments = 1, add_description_hint = TRUE, direction_setting = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -46,14 +48,20 @@
 	deployed_name = initial(typecast.name)
 
 /datum/component/deployable/proc/examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_list += span_notice("It can be used <b>in hand</b> to deploy into [((deployments > 1) && multiple_deployments) ? "[deployments]" : "a"] [deployed_name].")
 
 /datum/component/deployable/proc/on_attack_hand(datum/source, mob/user, location, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(deploy), source, user, location, direction)
 
-/datum/component/deployable/proc/deploy(obj/source, mob/user, location, direction) //If there's no user, location and direction are used
+/datum/component/deployable/proc/deploy(obj/source, mob/user, location, direction)
+	procstart = null
+	src.procstart = null //If there's no user, location and direction are used
 	// The object we are going to create
 	var/atom/deployed_object
 	// The turf our object is going to be deployed to

@@ -23,6 +23,8 @@
 	impact_effect_type = /obj/effect/temp_visual/leaper_projectile_impact
 
 /obj/projectile/leaper/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(target))
 		return
@@ -33,6 +35,8 @@
 	bubbled.apply_damage(30)
 
 /obj/projectile/leaper/on_range()
+	procstart = null
+	src.procstart = null
 	new /obj/structure/leaper_bubble(get_turf(src))
 	return ..()
 
@@ -44,6 +48,8 @@
 	duration = 3 SECONDS
 
 /obj/effect/temp_visual/leaper_projectile_impact/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/decal/cleanable/leaper_sludge(get_turf(src))
 
@@ -63,6 +69,8 @@
 	taste_mult = 1.3
 
 /datum/reagent/toxin/leaper_venom/on_mob_life(mob/living/carbon/poisoned_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(volume <= 5)
 		return
@@ -79,6 +87,8 @@
 	density = FALSE
 
 /obj/structure/leaper_bubble/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/movetype_handler)
 	ADD_TRAIT(src, TRAIT_MOVE_FLOATING, LEAPER_BUBBLE_TRAIT)
@@ -89,11 +99,15 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/structure/leaper_bubble/Destroy()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/leaper_projectile_impact(get_turf(src))
 	playsound(src,'sound/effects/snap.ogg', 50, TRUE)
 	return ..()
 
 /obj/structure/leaper_bubble/proc/on_entered(datum/source, atom/movable/bubbled)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isliving(bubbled) || istype(bubbled, /mob/living/basic/leaper))
 		return
@@ -124,6 +138,8 @@
 	var/fire_interval = 0.1 SECONDS
 
 /datum/action/cooldown/mob_cooldown/blood_rain/Activate(mob/living/firer, atom/target)
+	procstart = null
+	src.procstart = null
 	var/list/possible_turfs = list()
 	for(var/turf/possible_turf in oview(5, owner))
 		if(possible_turf.is_blocked_turf() || isopenspaceturf(possible_turf) || isspaceturf(possible_turf))
@@ -142,11 +158,15 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/blood_rain/proc/fire_droplets(list/possible_turfs)
+	procstart = null
+	src.procstart = null
 	var/fire_count = min(volley_count, possible_turfs.len)
 	for(var/i in 1 to fire_count)
 		addtimer(CALLBACK(src, PROC_REF(fall_effect), pick_n_take(possible_turfs)), i * fire_interval)
 
 /datum/action/cooldown/mob_cooldown/blood_rain/proc/fall_effect(turf/selected_turf)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/blood_drop_falling(selected_turf)
 	var/obj/effect/temp_visual/falling_shadow = new /obj/effect/temp_visual/shadow_telegraph(selected_turf)
 	animate(falling_shadow, transform = matrix().Scale(0.1, 0.1), time = falling_shadow.duration)
@@ -160,6 +180,8 @@
 	duration = 1 SECONDS
 
 /obj/effect/temp_visual/blood_drop_rising/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, pixel_y = base_pixel_y + 150, time = duration)
 
@@ -172,11 +194,15 @@
 	pixel_y = 60
 
 /obj/effect/temp_visual/blood_drop_falling/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(create_blood_structure)), duration)
 	animate(src, pixel_y = 0, time = duration)
 
 /obj/effect/temp_visual/blood_drop_falling/proc/create_blood_structure()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/snap.ogg', 50, TRUE)
 	new /obj/structure/leaper_bubble(get_turf(src))
 
@@ -197,6 +223,8 @@
 	shared_cooldown = NONE
 
 /datum/action/cooldown/mob_cooldown/belly_flop/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(target)
 	if(isclosedturf(target_turf) || isspaceturf(target_turf))
 		owner.balloon_alert(owner, "base not suitable!")
@@ -207,6 +235,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/belly_flop/proc/flop_on_turf(turf/target, original_pixel_y)
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(owner), 'sound/effects/meteorimpact.ogg', 200, TRUE)
 	for(var/mob/living/victim in oview(1, owner))
 		if(victim in owner.buckled_mobs)
@@ -245,6 +275,8 @@
 	max_summons = 2
 
 /datum/action/cooldown/spell/conjure/limit_summons/create_suicide_toads/post_summon(atom/summoned_object, atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/summoned_toad = summoned_object
 	SET_FACTION_AND_ALLIES_FROM(summoned_toad, owner) // so they dont attack the leaper or the wizard master

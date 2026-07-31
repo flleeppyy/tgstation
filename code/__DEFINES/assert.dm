@@ -7,6 +7,8 @@
 	}
 
 /proc/assertion_message(file, line, condition, message)
+	procstart = null
+	src.procstart = null
 	if (!isnull(message))
 		message = " - [message]"
 

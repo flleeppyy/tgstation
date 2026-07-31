@@ -8,6 +8,8 @@
 	var/list/trait_sources = list()
 
 /datum/element/give_turf_traits/Attach(atom/movable/target, list/traits)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(target))
 		return ELEMENT_INCOMPATIBLE
@@ -19,6 +21,8 @@
 		add_to_occupied_turfs(target.loc, target)
 
 /datum/element/give_turf_traits/Detach(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, COMSIG_MOVABLE_MOVED)
 	if(isturf(source.loc))
 		remove_from_occupied_turfs(source.loc, source)
@@ -26,6 +30,8 @@
 
 /// Removes the trait from the old turf and adds it to the new one.
 /datum/element/give_turf_traits/proc/on_moved(atom/movable/source, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isturf(old_loc))
 		remove_from_occupied_turfs(old_loc, source)
@@ -38,6 +44,8 @@
  * Otherwise, it just adds the movable to the assoc value of lists occupying the turf.
  */
 /datum/element/give_turf_traits/proc/add_to_occupied_turfs(turf/location, atom/movable/source)
+	procstart = null
+	src.procstart = null
 	var/trait_source = REF(source)
 	if(isnull(trait_sources) || isnull(trait_sources[location]))
 		RegisterSignal(location, COMSIG_TURF_CHANGE, PROC_REF(pre_change_turf))
@@ -55,6 +63,8 @@
  * Otherwise, it just removes the movable from the assoc value of lists occupying the turf.
  */
 /datum/element/give_turf_traits/proc/remove_from_occupied_turfs(turf/location, atom/movable/source)
+	procstart = null
+	src.procstart = null
 	var/trait_source = REF(source)
 	LAZYREMOVEASSOC(trait_sources, location, trait_source)
 	if(isnull(trait_sources) || isnull(trait_sources[location]))
@@ -69,11 +79,15 @@
 
 /// Signals are carried over when the turf is changed, but traits aren't, so they've to be readded post-change.
 /datum/element/give_turf_traits/proc/pre_change_turf(turf/changed, path, list/new_baseturfs, flags, list/post_change_callbacks)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	post_change_callbacks += CALLBACK(src, PROC_REF(reoccupy_turf))
 
 /// Reapply turf traits to the provided turf
 /datum/element/give_turf_traits/proc/reoccupy_turf(turf/changed)
+	procstart = null
+	src.procstart = null
 	for(var/trait in traits)
 		for(var/source in trait_sources[changed])
 			ADD_TRAIT(changed, trait, source)

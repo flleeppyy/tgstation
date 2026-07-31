@@ -19,6 +19,8 @@
 	VAR_PRIVATE/list/candidate_stash
 
 /datum/bt_node/ai_behavior/bot_search/perform(seconds_per_tick, datum/ai_controller/basic_controller/bot/controller)
+	procstart = null
+	src.procstart = null
 	if(!istype(controller))
 		stack_trace("attempted to give [controller.pawn] the bot search behavior!")
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
@@ -53,6 +55,8 @@
 	return start_async()
 
 /datum/bt_node/ai_behavior/bot_search/perform_async(datum/ai_controller/basic_controller/bot/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	var/found = FALSE
 	for(var/atom/potential_target as anything in candidate_stash)
@@ -68,13 +72,19 @@
 	finish_async(found ? AI_BEHAVIOR_SUCCEEDED : AI_BEHAVIOR_FAILED)
 
 /datum/bt_node/ai_behavior/bot_search/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	candidate_stash = null
 
 /datum/bt_node/ai_behavior/bot_search/proc/get_looking_for_typecache()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/bt_node/ai_behavior/bot_search/proc/valid_target(datum/ai_controller/basic_controller/bot/controller, atom/my_target)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 
@@ -85,6 +95,8 @@
 	time_between_perform = 5 SECONDS
 
 /datum/bt_node/ai_behavior/bot_speech/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/datum/action/cooldown/bot_announcement/announcement = controller.blackboard[announce_key]
 	if(isnull(announcement) || !length(list_to_pick_from))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
@@ -98,6 +110,8 @@
 	var/clear_target = TRUE
 
 /datum/bt_node/ai_behavior/bot_interact/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/living_pawn = controller.pawn
 	var/atom/target = controller.blackboard[target_key]
 	if(QDELETED(target))
@@ -108,6 +122,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/bot_interact/finish_action(datum/ai_controller/basic_controller/bot/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/target = controller.blackboard[target_key]
 	if(clear_target)
@@ -128,6 +144,8 @@
 	time_between_perform = 2 SECONDS
 
 /datum/bt_node/ai_behavior/find_delivery_beacon/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/beacon_tag = controller.blackboard[tag_key]
 	if(isnull(beacon_tag))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
@@ -143,6 +161,8 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/find_first_beacon_target/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/closest_distance = INFINITY
 	var/mob/living/basic/bot/bot_pawn = controller.pawn
 	var/atom/final_target
@@ -170,6 +190,8 @@
 	time_between_perform = 5 SECONDS
 
 /datum/bt_node/ai_behavior/find_next_beacon_target/perform(seconds_per_tick, datum/ai_controller/basic_controller/bot/controller)
+	procstart = null
+	src.procstart = null
 
 	var/mob/living/basic/bot/bot_pawn = controller.pawn
 	var/obj/machinery/navbeacon/prev_beacon = controller.blackboard[BB_PREVIOUS_BEACON_TARGET]
@@ -193,6 +215,8 @@
 	return AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/find_next_beacon_target/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 
@@ -201,6 +225,8 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/arrive_at_beacon/perform(seconds_per_tick, datum/ai_controller/basic_controller/bot/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/navbeacon/beacon = controller.blackboard[target_key]
 	if(QDELETED(beacon))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED
@@ -216,6 +242,8 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/complete_summon_travel/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bot/bot_pawn = controller.pawn
 	if(QDELETED(bot_pawn))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED
@@ -232,6 +260,8 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/find_valid_authority/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/nearby_mob in oview(7, controller.pawn))
 		if(!HAS_TRAIT(nearby_mob, TRAIT_COMMISSIONED))
 			continue
@@ -245,6 +275,8 @@
 	var/salute_keys
 
 /datum/bt_node/ai_behavior/salute_authority/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(!controller.blackboard_key_exists(target_key))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
 	var/list/salute_list = controller.blackboard[salute_keys]
@@ -258,6 +290,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/salute_authority/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(target_key)
 

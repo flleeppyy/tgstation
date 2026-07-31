@@ -47,6 +47,8 @@
 	acid = 20
 
 /obj/structure/plasticflaps/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	alpha = 0
 	gen_overlay()
@@ -61,6 +63,8 @@
 	AddComponent(/datum/component/connect_range, tracked = src, connections = adjacent_loc_connections, range = 1, works_in_containers = FALSE)
 
 /obj/structure/plasticflaps/proc/play_plastic_sound(obj/source, atom/movable/exiting)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isitem(exiting))
 		var/obj/item/item_exiter = exiting
@@ -84,6 +88,8 @@
 	playsound(src, 'sound/effects/plasticflaps.ogg', 50, TRUE, ignore_walls = FALSE, falloff_exponent = 8, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
 
 /obj/structure/plasticflaps/proc/check_melt(turf/source, datum/gas_mixture/air, temperature)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(temperature < FIRE_MINIMUM_TEMPERATURE_TO_EXIST * 1.5)
 		return
@@ -96,27 +102,37 @@
 	take_damage(max_integrity * percent_damage_taken, BURN, FIRE, sound_effect = FALSE)
 
 /obj/structure/plasticflaps/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(damage_flag == FIRE)
 		visible_message(span_warning("[src] start\s to melt from the heat!"))
 	return ..()
 
 /obj/structure/plasticflaps/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(damage_flag == FIRE)
 		visible_message(span_warning("[src] melt\s away into plastic goo!"))
 	return ..()
 
 /obj/structure/plasticflaps/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	if(!same_z_layer)
 		SSvis_overlays.remove_vis_overlay(src, managed_vis_overlays)
 		gen_overlay()
 	return ..()
 
 /obj/structure/plasticflaps/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSvis_overlays.remove_vis_overlay(src, managed_vis_overlays)
 	gen_overlay()
 
 /obj/structure/plasticflaps/proc/gen_overlay()
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	//you see mobs under it, but you hit them like they are above it
 	SSvis_overlays.add_vis_overlay(src, icon, icon_state,
@@ -128,6 +144,8 @@
 	)
 
 /obj/structure/plasticflaps/vv_edit_var(var_name, var_val)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/relevant_vars = list(
 		NAMEOF(src, flaps_layer),
@@ -141,6 +159,8 @@
 		gen_overlay()
 
 /obj/structure/plasticflaps/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(anchored)
 		. += span_notice("[src] are <b>screwed</b> to the floor.")
@@ -148,6 +168,8 @@
 		. += span_notice("[src] are no longer <i>screwed</i> to the floor, and the flaps can be <b>cut</b> apart.")
 
 /obj/structure/plasticflaps/screwdriver_act(mob/living/user, obj/item/W)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 	add_fingerprint(user)
@@ -164,9 +186,13 @@
 
 ///Update the flaps behaviour to gases, if not anchored will let air pass through
 /obj/structure/plasticflaps/proc/update_atmos_behaviour()
+	procstart = null
+	src.procstart = null
 	can_atmos_pass = anchored ? ATMOS_PASS_NO : ATMOS_PASS_YES
 
 /obj/structure/plasticflaps/wirecutter_act(mob/living/user, obj/item/W)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!anchored)
 		user.visible_message(span_warning("[user] cuts apart [src]."), span_notice("You start to cut apart [src]."), span_hear("You hear cutting."))
@@ -181,11 +207,15 @@
 		return TRUE
 
 /obj/structure/plasticflaps/proc/check_anchored_state(check_anchored)
+	procstart = null
+	src.procstart = null
 	if(anchored != check_anchored)
 		return FALSE
 	return TRUE
 
 /obj/structure/plasticflaps/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	procstart = null
+	src.procstart = null
 	if(!require_resting)
 		return TRUE
 	if(pass_info.is_living)
@@ -201,6 +231,8 @@
 
 
 /obj/structure/plasticflaps/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mover.pass_flags & PASSFLAPS) //For anything specifically engineered to cross plastic flaps.
 		return TRUE
@@ -233,9 +265,13 @@
 	return .
 
 /obj/structure/plasticflaps/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/plastic/five(loc)
 
 /obj/structure/plasticflaps/Destroy()
+	procstart = null
+	src.procstart = null
 	var/atom/oldloc = loc
 	. = ..()
 	if (oldloc)

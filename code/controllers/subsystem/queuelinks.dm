@@ -1,4 +1,6 @@
 /atom/proc/MatchedLinks(id, list/partners)
+	procstart = null
+	src.procstart = null
 
 SUBSYSTEM_DEF(queuelinks)
 	name = "Queue Links"
@@ -9,6 +11,8 @@ SUBSYSTEM_DEF(queuelinks)
 ///Creates or adds to a queue with the id supplied, if the queue is now or above the size of the queue, calls MatchedLinks and clears queue.
 /// queues with a size of 0 wait never pop until something is added with an actual queue_max
 /datum/controller/subsystem/queuelinks/proc/add_to_queue(atom/what, id, queue_max = 0)
+	procstart = null
+	src.procstart = null
 	if(!isatom(what))
 		CRASH("Attempted to add a non-atom to queue; [what]!")
 	if(isnull(id))
@@ -27,6 +31,8 @@ SUBSYSTEM_DEF(queuelinks)
  * This is useful for those links that do not have a fixed size and thus may not pop.
  */
 /datum/controller/subsystem/queuelinks/proc/pop_link(id)
+	procstart = null
+	src.procstart = null
 	if(isnull(id))
 		CRASH("Attempted to pop a queue with no ID")
 
@@ -47,11 +53,15 @@ SUBSYSTEM_DEF(queuelinks)
 	var/id
 
 /datum/queue_link/New(new_id)
+	procstart = null
+	src.procstart = null
 	id = new_id
 	return ..()
 
 ///adds an atom to the queue, if we are popping this returns TRUE
 /datum/queue_link/proc/add(atom/what, max = 0)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(what in partners)
 		return
@@ -70,14 +80,20 @@ SUBSYSTEM_DEF(queuelinks)
 	return TRUE
 
 /datum/queue_link/proc/pop()
+	procstart = null
+	src.procstart = null
 	for(var/atom/item as anything in partners)
 		item.MatchedLinks(id, partners - item)
 	qdel(src)
 
-/datum/queue_link/proc/link_object_deleted(datum/source) // because CI and stuff
+/datum/queue_link/proc/link_object_deleted(datum/source)
+	procstart = null
+	src.procstart = null // because CI and stuff
 	SIGNAL_HANDLER
 	partners -= source
 
 /datum/queue_link/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	partners = null

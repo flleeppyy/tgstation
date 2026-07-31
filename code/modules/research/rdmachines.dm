@@ -20,11 +20,15 @@
 	var/obj/item/loaded_item
 
 /obj/machinery/rnd/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_wires(new /datum/wires/rnd(src))
 	register_context()
 
 /obj/machinery/rnd/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!CONFIG_GET(flag/no_default_techweb_link) && !stored_research)
 		CONNECT_TO_RND_SERVER_ROUNDSTART(stored_research, src)
@@ -32,12 +36,16 @@
 		on_connected_techweb()
 
 /obj/machinery/rnd/Destroy()
+	procstart = null
+	src.procstart = null
 	if(stored_research)
 		log_research("[src] disconnected from techweb [stored_research] (destroyed).")
 		stored_research = null
 	return ..()
 
 /obj/machinery/rnd/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!in_range(user, src) && !isobserver(user))
 		return
@@ -49,6 +57,8 @@
 		. += span_notice("The machine can be [EXAMINE_HINT("pried")] apart.")
 
 /obj/machinery/rnd/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(isnull(held_item))
 		return
@@ -79,6 +89,8 @@
 
 ///Called when attempting to connect the machine to a techweb, forgetting the old.
 /obj/machinery/rnd/proc/connect_techweb(datum/techweb/new_techweb)
+	procstart = null
+	src.procstart = null
 	if(stored_research)
 		log_research("[src] disconnected from techweb [stored_research] when connected to [new_techweb].")
 	stored_research = new_techweb
@@ -87,29 +99,45 @@
 
 ///Called post-connection to a new techweb.
 /obj/machinery/rnd/proc/on_connected_techweb()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 
 ///Reset the state of this machine
 /obj/machinery/rnd/proc/reset_busy()
+	procstart = null
+	src.procstart = null
 	busy = FALSE
 
 /obj/machinery/rnd/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state || initial(icon_state)]_t" : (base_icon_state || initial(icon_state))
 
 /obj/machinery/rnd/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/rnd/crowbar_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return crowbar_act(user, tool)
 
 /obj/machinery/rnd/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/rnd/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return screwdriver_act(user, tool)
 
 /obj/machinery/rnd/multitool_act(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		wires.interact(user)
 		return ITEM_INTERACT_SUCCESS
@@ -118,19 +146,27 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/rnd/multitool_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return multitool_act(user, tool)
 
 /obj/machinery/rnd/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_BLOCKING
 	if(panel_open)
 		wires.interact(user)
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/rnd/wirecutter_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return wirecutter_act(user, tool)
 
 //whether the machine can have an item inserted in its current state.
 /obj/machinery/rnd/proc/is_insertion_ready(mob/user)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		balloon_alert(user, "panel open!")
 		return FALSE
@@ -153,6 +189,8 @@
 
 //we eject the loaded item when deconstructing the machine
 /obj/machinery/rnd/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	if(loaded_item)
 		loaded_item.forceMove(drop_location())
 	..()

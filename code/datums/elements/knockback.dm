@@ -11,6 +11,8 @@
 	var/throw_gentle
 
 /datum/element/knockback/Attach(datum/target, throw_distance = 1, throw_anchored = FALSE, throw_gentle = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ismachinery(target) || isstructure(target) || isgun(target) || isprojectilespell(target)) // turrets, etc
 		RegisterSignal(target, COMSIG_PROJECTILE_ON_HIT, PROC_REF(projectile_hit))
@@ -26,17 +28,23 @@
 	src.throw_gentle = throw_gentle
 
 /datum/element/knockback/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, list(COMSIG_ITEM_AFTERATTACK, COMSIG_HOSTILE_POST_ATTACKINGTARGET, COMSIG_PROJECTILE_ON_HIT))
 	return ..()
 
 /// triggered after an item attacks something
 /datum/element/knockback/proc/item_afterattack(obj/item/source, atom/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	do_knockback(target, user, get_dir(source, target))
 
 /// triggered after a hostile simplemob attacks something
 /datum/element/knockback/proc/hostile_attackingtarget(mob/living/simple_animal/hostile/attacker, atom/target, success)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!success)
 		return
@@ -44,6 +52,8 @@
 
 /// triggered after a projectile hits something
 /datum/element/knockback/proc/projectile_hit(datum/fired_from, atom/movable/firer, atom/target, Angle)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	do_knockback(target, null, angle2dir(Angle))
@@ -58,6 +68,8 @@
  * * throw_dir - Direction to throw the atom
  */
 /datum/element/knockback/proc/do_knockback(atom/target, mob/thrower, throw_dir)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(target) || throw_dir == null)
 		return
 	var/atom/movable/throwee = target

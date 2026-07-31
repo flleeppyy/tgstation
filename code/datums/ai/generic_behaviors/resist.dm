@@ -1,4 +1,6 @@
 /datum/bt_node/ai_behavior/resist/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/async_flags = handle_async()
 	if(async_flags)
 		return async_flags
@@ -6,6 +8,8 @@
 	return start_async()
 
 /datum/bt_node/ai_behavior/resist/perform_async(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 
 	if(!async_still_valid())
 		return

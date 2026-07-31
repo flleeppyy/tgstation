@@ -18,6 +18,8 @@
 	var/is_mopped = TRUE
 
 /obj/effect/decal/cleanable/Initialize(mapload, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (LAZYLEN(random_icon_states))
 		icon_state = pick(random_icon_states)
@@ -42,12 +44,16 @@
 		SSblackbox.record_feedback("tally", "station_mess_created", 1, name)
 
 /obj/effect/decal/cleanable/Destroy()
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	if (our_turf && is_station_level(our_turf.z))
 		SSblackbox.record_feedback("tally", "station_mess_destroyed", 1, name)
 	return ..()
 
 /obj/effect/decal/cleanable/proc/add_diseases(list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	var/list/datum/disease/diseases_to_add = list()
 	for (var/datum/disease/disease as anything in diseases)
 		if (disease.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
@@ -57,16 +63,22 @@
 
 /// Check if we should give up in favor of the pre-existing decal
 /obj/effect/decal/cleanable/proc/replace_decal(obj/effect/decal/cleanable/other)
+	procstart = null
+	src.procstart = null
 	if (mergeable_decal)
 		return TRUE
 
 /obj/effect/decal/cleanable/wash(clean_types)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. || clean_types & clean_type)
 		qdel(src)
 		. |= COMPONENT_CLEANED|COMPONENT_CLEANED_GAIN_XP
 
 /obj/effect/decal/cleanable/proc/handle_merge_decal(obj/effect/decal/cleanable/merger)
+	procstart = null
+	src.procstart = null
 	if (!reagents && !decal_reagent)
 		return
 
@@ -79,12 +91,16 @@
 
 /// Returns reagents datum if it exists, or lazyloads one if it doesn't
 /obj/effect/decal/cleanable/proc/lazy_init_reagents()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/reagents)
 	if (reagents)
 		return reagents
 	return init_reagents(decal_reagent, reagent_amount)
 
 /obj/effect/decal/cleanable/proc/init_reagents(reagent = null, amount = null)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/reagents)
 
 	if (!reagent)
@@ -95,6 +111,8 @@
 	return reagents
 
 /obj/effect/decal/cleanable/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// Why are rags cups???
 	if (!istype(tool, /obj/item/reagent_containers/cup) || istype(tool, /obj/item/rag))
 		return NONE
@@ -114,6 +132,8 @@
 
 /// Checks if this decal can be bloodcrawled in
 /obj/effect/decal/cleanable/proc/can_bloodcrawl_in()
+	procstart = null
+	src.procstart = null
 	if (decal_reagent == /datum/reagent/blood || reagents?.has_reagent(/datum/reagent/blood))
 		return TRUE
 
@@ -124,6 +144,8 @@
 			return TRUE
 
 /obj/effect/decal/cleanable/attackby(obj/item/weapon, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if (!isliving(user))
 		return ..()
 	var/mob/living/as_living = user
@@ -135,6 +157,8 @@
 /// Use this if your decal is one of one, and thus we should not spawn it if it's there already
 /// Returns either the existing cleanable, the one we created, or null if we can't spawn on that turf
 /turf/proc/spawn_unique_cleanable(obj/effect/decal/cleanable/cleanable_type)
+	procstart = null
+	src.procstart = null
 	var/turf/checkturf = src
 	while (isgroundlessturf(checkturf) && checkturf.zPassOut(DOWN))
 		var/turf/below = GET_TURF_BELOW(checkturf)
@@ -149,5 +173,7 @@
 	return new cleanable_type(checkturf)
 
 /turf/proc/spawn_glitter(glitter_colors)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/decal/cleanable/glitter/new_glitter = spawn_unique_cleanable(/obj/effect/decal/cleanable/glitter)
 	new_glitter.color = pick_weight(glitter_colors)

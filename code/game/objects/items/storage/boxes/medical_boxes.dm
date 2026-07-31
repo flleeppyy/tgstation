@@ -6,6 +6,8 @@
 	illustration = "syringe"
 
 /obj/item/storage/box/syringes/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/syringe(src)
 
@@ -13,6 +15,8 @@
 	name = "syringe variety box"
 
 /obj/item/storage/box/syringes/variety/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/reagent_containers/syringe(src)
 	new /obj/item/reagent_containers/syringe/lethal(src)
 	new /obj/item/reagent_containers/syringe/piercing(src)
@@ -24,6 +28,8 @@
 	illustration = "epipen"
 
 /obj/item/storage/box/medipens/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/hypospray/medipen(src)
 
@@ -33,6 +39,8 @@
 	illustration = "epipen"
 
 /obj/item/storage/box/medipens/utility/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..() // includes regular medipens.
 	for(var/i in 1 to 5)
 		new /obj/item/reagent_containers/hypospray/medipen/stimpack(src)
@@ -42,6 +50,8 @@
 	illustration = "beaker"
 
 /obj/item/storage/box/beakers/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/cup/beaker( src )
 
@@ -50,6 +60,8 @@
 	illustration = "beaker"
 
 /obj/item/storage/box/beakers/big/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/cup/beaker/large(src)
 
@@ -58,6 +70,8 @@
 	illustration = "beaker"
 
 /obj/item/storage/box/beakers/bluespace/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/cup/beaker/bluespace(src)
 
@@ -65,6 +79,8 @@
 	name = "beaker variety box"
 
 /obj/item/storage/box/beakers/variety/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/reagent_containers/cup/beaker(src)
 	new /obj/item/reagent_containers/cup/beaker/bluespace(src)
 	new /obj/item/reagent_containers/cup/beaker/large(src)
@@ -78,6 +94,8 @@
 	illustration = "medgel"
 
 /obj/item/storage/box/medigels/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/medigel( src )
 
@@ -87,6 +105,8 @@
 	illustration = "dna"
 
 /obj/item/storage/box/injectors/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/dnainjector/h2m = 3,
 		/obj/item/dnainjector/m2h = 3,
@@ -99,6 +119,8 @@
 	illustration = "bodybags"
 
 /obj/item/storage/box/bodybags/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 7)
 		new /obj/item/bodybag(src)
@@ -109,10 +131,14 @@
 	illustration = "pillbox"
 
 /obj/item/storage/box/pillbottles/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/storage/pill_bottle(src)
 
 /obj/item/storage/box/plumbing/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/stock_parts/water_recycler = 2,
 		/obj/item/stack/ducts/fifty = 1,
@@ -127,6 +153,8 @@
 	illustration = "beaker"
 
 /obj/item/storage/box/evilmeds/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/reagent_containers/cup/beaker/meta/omnizine = 1,
 		/obj/item/reagent_containers/cup/beaker/meta/sal_acid = 1,
@@ -154,10 +182,14 @@
 	storage_type = /datum/storage/box/bandages
 
 /obj/item/storage/box/bandages/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 5)
 		new /obj/item/stack/medical/bandage(src)
 
 /obj/item/storage/box/bandages/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(length(contents))
 		if(5)
@@ -176,6 +208,8 @@
 	custom_price = PAYCHECK_CREW
 
 /obj/item/storage/box/triage_cards/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/paper_bin/triage/minor(src)
 	new /obj/item/paper_bin/triage/major(src)
 	new /obj/item/paper_bin/triage/critical(src)
@@ -195,6 +229,8 @@
 	var/severity = "none"
 
 /obj/item/paper/triage/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	name = "\"[severity]\" [name]"
 	default_raw_text = {"
 		<center>
@@ -216,6 +252,8 @@
 	return ..()
 
 /obj/item/paper/triage/proc/severity_to_subtitle()
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(SEVERITY_DEAD)
 			return "NO RESPIRATION"
@@ -228,6 +266,8 @@
 	return "UNKNOWN"
 
 /obj/item/paper/triage/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(severity)
 		if(SEVERITY_DEAD)
@@ -242,6 +282,8 @@
 	. += span_smallnoticeital("There is a guide to triage on the back of the card, if you <i>look closer</i>.")
 
 /obj/item/paper/triage/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("<i>The back of [src] has a guide to performing triage:</i>")
 	. += "&bull; \"Is the victim walking and can respond to simple orders?\" If so, mark as <b>minimal</b>."
@@ -250,6 +292,8 @@
 	. += "&bull; Otherwise, mark as <b>delayed</b>."
 
 /obj/item/paper/triage/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isliving(interacting_with))
 		return NONE
 
@@ -296,6 +340,8 @@
 	total_paper = 20
 
 /obj/item/paper_bin/triage/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	total_paper -= round(exposed_volume / 25, 1)
 	if(total_paper <= 0)
 		qdel(src)
@@ -303,16 +349,22 @@
 		update_appearance()
 
 /obj/item/paper_bin/triage/dump_contents(atom/droppoint, collapse = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(total_paper <= 0)
 		qdel(src)
 
 /obj/item/paper_bin/triage/remove_paper(amount)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(total_paper <= 0)
 		qdel(src)
 
 /obj/item/paper_bin/triage/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(total_paper <= 0 && !QDELING(src))
 		qdel(src)

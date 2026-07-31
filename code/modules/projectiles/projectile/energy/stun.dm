@@ -16,13 +16,19 @@
 	VAR_PRIVATE/datum/weakref/initial_firer_weakref
 
 /obj/projectile/energy/electrode/is_hostile_projectile()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/projectile/energy/electrode/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(beam_weakref)
 	return ..()
 
 /obj/projectile/energy/electrode/fire(fire_angle, atom/direct_target)
+	procstart = null
+	src.procstart = null
 	if(firer)
 		beam_weakref = WEAKREF(firer.Beam(
 			BeamTarget = src,
@@ -35,6 +41,8 @@
 	return ..()
 
 /obj/projectile/energy/electrode/on_hit(mob/living/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(pierce_hit)
 		return
@@ -60,7 +68,9 @@
 		/*tase_range = */maximum_range + 1,
 	)
 
-/obj/projectile/energy/electrode/on_range() //to ensure the bolt sparks when it reaches the end of its range if it didn't hit a target yet
+/obj/projectile/energy/electrode/on_range()
+	procstart = null
+	src.procstart = null //to ensure the bolt sparks when it reaches the end of its range if it didn't hit a target yet
 	do_sparks(1, TRUE, src)
 	return ..()
 
@@ -116,6 +126,8 @@
 
 /// Checks if the passed atom is captable of being used to tase someone
 /datum/status_effect/tased/proc/can_tase_with(datum/with_what)
+	procstart = null
+	src.procstart = null
 	if(istype(with_what, /obj/item/gun/energy))
 		var/obj/item/gun/energy/taser_gun = with_what
 		if(isnull(taser_gun.cell))
@@ -131,6 +143,8 @@
 /// Actually does the tasing with the passed atom
 /// Returns TRUE if the tasing was successful, FALSE if it failed
 /datum/status_effect/tased/proc/do_tase_with(atom/with_what, seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(!can_see(taser, owner, 5))
 		return FALSE
 	if(istype(with_what, /obj/item/gun/energy))
@@ -162,6 +176,8 @@
 	return TRUE
 
 /datum/status_effect/tased/on_apply()
+	procstart = null
+	src.procstart = null
 	if(issilicon(owner) || isbot(owner) || isdrone(owner) || HAS_TRAIT(owner, TRAIT_PIERCEIMMUNE))
 		owner.visible_message(span_warning("[capitalize(electrode_name)] fail to catch [owner][isfloorturf(owner.loc) ? ", falling to [owner.loc]" : ""]!"))
 		return FALSE
@@ -190,6 +206,8 @@
 	return TRUE
 
 /datum/status_effect/tased/on_remove()
+	procstart = null
+	src.procstart = null
 	if(istype(taser, /obj/machinery/porta_turret))
 		var/obj/machinery/porta_turret/taser_turret = taser
 		taser_turret.manual_control = initial(taser_turret.manual_control)
@@ -216,6 +234,8 @@
 		tase_line = null
 
 /datum/status_effect/tased/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(!do_tase_with(taser, seconds_between_ticks))
 		end_tase()
 		return
@@ -242,6 +262,8 @@
 
 /// Sets the passed atom as the "taser"
 /datum/status_effect/tased/proc/set_taser(datum/new_taser)
+	procstart = null
+	src.procstart = null
 	taser = new_taser
 	RegisterSignals(taser, list(COMSIG_QDELETING, COMSIG_ITEM_DROPPED, COMSIG_ITEM_EQUIPPED), PROC_REF(end_tase))
 	RegisterSignal(taser, COMSIG_GUN_TRY_FIRE, PROC_REF(block_firing))
@@ -256,6 +278,8 @@
 
 /// Sets the passed atom as the person operating the taser, the "firer"
 /datum/status_effect/tased/proc/set_firer(atom/new_firer)
+	procstart = null
+	src.procstart = null
 	firer = new_firer
 	if(taser != firer) // Turrets, notably, are both
 		RegisterSignal(firer, COMSIG_QDELETING, PROC_REF(end_tase))
@@ -286,10 +310,14 @@
 	tase_line.RegisterSignal(owner, COMSIG_LIVING_SET_BODY_POSITION, TYPE_PROC_REF(/datum/beam, redrawing))
 
 /datum/status_effect/tased/proc/block_firing(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return COMPONENT_CANCEL_GUN_FIRE
 
 /datum/status_effect/tased/proc/user_cancel_tase(mob/living/source, atom/clicked_on, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(clicked_on != owner)
 		return NONE
@@ -300,6 +328,8 @@
 	return COMSIG_MOB_CANCEL_CLICKON
 
 /datum/status_effect/tased/proc/end_tase(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(QDELING(src))
 		return
@@ -310,15 +340,21 @@
 	qdel(src)
 
 /datum/status_effect/tased/proc/try_remove_taser(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(try_remove_taser_async), owner)
 
 /datum/status_effect/tased/proc/someome_removing_taser(datum/source, mob/living/helper)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(try_remove_taser_async), helper)
 	return COMPONENT_BLOCK_MISC_HELP
 
 /datum/status_effect/tased/proc/try_remove_taser_async(mob/living/remover)
+	procstart = null
+	src.procstart = null
 	if(DOING_INTERACTION(remover, id))
 		return
 	owner.shake_up_animation()
@@ -337,9 +373,13 @@
 	end_tase()
 
 /datum/status_effect/tased/proc/try_remove_taser_checks()
+	procstart = null
+	src.procstart = null
 	return !QDELETED(src)
 
 /datum/status_effect/tased/proc/disrupt_tase(datum/beam/source, obj/effect/ebeam/beam_effect, atom/movable/entering)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(entering) || entering == taser || entering == firer || entering == owner)
@@ -376,6 +416,8 @@
 	clickable_glow = TRUE
 
 /atom/movable/screen/alert/tazed/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

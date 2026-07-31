@@ -9,7 +9,9 @@
 	icon = 'icons/mob/nonhuman-player/blob.dmi'
 	color = rgb(145, 150, 0)
 
-/obj/effect/gluttony/CanAllowThrough(atom/movable/mover, border_dir)//So bullets will fly over and stuff.
+/obj/effect/gluttony/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null//So bullets will fly over and stuff.
 	. = ..()
 	if(ishuman(mover))
 		var/mob/living/carbon/human/H = mover
@@ -38,6 +40,8 @@
 	hitsound = 'sound/items/weapons/bladeslice.ogg'
 
 /obj/item/knife/envy/afterattack(atom/target, mob/living/carbon/human/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) || !ishuman(target) || QDELETED(target))
 		return
 

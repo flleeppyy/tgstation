@@ -1,4 +1,6 @@
 /mob/proc/overlay_fullscreen(category, type, severity)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/screen/fullscreen/screen = screens[category]
 	if (!screen || screen.type != type)
 		// needs to be recreated
@@ -20,6 +22,8 @@
 	return screen
 
 /mob/proc/clear_fullscreen(category, animated = 10)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/screen/fullscreen/screen = screens[category]
 	if(!screen)
 		return
@@ -35,20 +39,28 @@
 		qdel(screen)
 
 /mob/proc/clear_fullscreen_after_animate(atom/movable/screen/fullscreen/screen)
+	procstart = null
+	src.procstart = null
 	if(client)
 		client.screen -= screen
 	qdel(screen)
 
 /mob/proc/clear_fullscreens()
+	procstart = null
+	src.procstart = null
 	for(var/category in screens)
 		clear_fullscreen(category)
 
 /mob/proc/hide_fullscreens()
+	procstart = null
+	src.procstart = null
 	if(client)
 		for(var/category in screens)
 			client.screen -= screens[category]
 
 /mob/proc/reload_fullscreen()
+	procstart = null
+	src.procstart = null
 	if(client)
 		var/atom/movable/screen/fullscreen/screen
 		for(var/category in screens)
@@ -60,11 +72,15 @@
 				client.screen -= screen
 
 /mob/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!same_z_layer)
 		relayer_fullscreens()
 
 /mob/proc/relayer_fullscreens()
+	procstart = null
+	src.procstart = null
 	var/turf/our_lad = get_turf(src)
 	var/offset = GET_TURF_PLANE_OFFSET(our_lad)
 	for(var/category in screens)
@@ -85,17 +101,23 @@
 	var/needs_offsetting = TRUE
 
 /atom/movable/screen/fullscreen/proc/update_for_view(client_view)
+	procstart = null
+	src.procstart = null
 	if (screen_loc == "CENTER-7,CENTER-7" && view != client_view)
 		var/list/actualview = getviewsize(client_view)
 		view = client_view
 		transform = matrix(actualview[1]/FULLSCREEN_OVERLAY_RESOLUTION_X, 0, 0, 0, actualview[2]/FULLSCREEN_OVERLAY_RESOLUTION_Y, 0)
 
 /atom/movable/screen/fullscreen/proc/should_show_to(mob/mymob)
+	procstart = null
+	src.procstart = null
 	if(!show_when_dead && mymob.stat == DEAD)
 		return FALSE
 	return TRUE
 
 /atom/movable/screen/fullscreen/Destroy()
+	procstart = null
+	src.procstart = null
 	severity = 0
 	. = ..()
 
@@ -169,6 +191,8 @@
 	blend_mode = BLEND_MULTIPLY
 
 /atom/movable/screen/fullscreen/high/update_for_view(client_view)
+	procstart = null
+	src.procstart = null
 
 	animate(src, flags = ANIMATION_END_NOW) //Stop all animations.
 
@@ -182,6 +206,8 @@
 	addtimer(CALLBACK(src, PROC_REF(start_hue_rotation)), 5 SECONDS)
 
 /atom/movable/screen/fullscreen/high/proc/start_hue_rotation()
+	procstart = null
+	src.procstart = null
 	animate(src, color = color_matrix_rotate_hue(1), loop = -1, time = 2 SECONDS) //Start the loop.
 	var/step_precision = 18 //Larger is more precise rotations.
 	for(var/current_step in 1 to step_precision - 1) //We do the -1 here because 360 == 0 when it comes to angles.

@@ -23,6 +23,8 @@
 	var/hood_up = FALSE
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(slot_flags & slot))
 		return
@@ -33,28 +35,42 @@
 	on_robes_gained(user)
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	on_robes_lost(user)
 
 /// Adds effects to the user when they equip their robes
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/proc/on_robes_gained(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Removes any effects that our robes have, returns `TRUE` if the item dropped was not robes
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/proc/on_robes_lost(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Applies a punishment to the user when the robes are equipped
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/proc/robes_side_effect(mob/living/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE) // sleep here would fuck over the timing
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/proc/is_equipped(mob/wearer)
+	procstart = null
+	src.procstart = null
 	return wearer.get_slot_by_item(src) & slot_flags
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/on_hood_up(obj/item/clothing/head/hooded/hood)
+	procstart = null
+	src.procstart = null
 	hood_up = TRUE
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/on_hood_down(obj/item/clothing/head/hooded/hood)
+	procstart = null
+	src.procstart = null
 	hood_up = FALSE
 
 /obj/item/clothing/head/hooded/cult_hoodie/eldritch
@@ -106,16 +122,22 @@
 	COOLDOWN_DECLARE(flame_creation)
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/ash/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/radiation_protected_clothing)
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/ash/on_robes_gained(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		return
 	var/mob/living/wearer = user
 	wearer.fire_stack_decay_rate = 0
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/ash/on_robes_lost(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		return
 	var/mob/living/wearer = user
@@ -124,6 +146,8 @@
 		toggle_flames(wearer)
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/ash/robes_side_effect(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user))
 		return
 	var/mob/living/carbon/victim = user
@@ -135,6 +159,8 @@
 		addtimer(CALLBACK(src, PROC_REF(burn_limbs), limb), 1 SECONDS * iteration)
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/ash/proc/burn_limbs(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(limb) || !limb.owner || !is_equipped(limb.owner))
 		return
 	limb.dismember(BURN)
@@ -144,6 +170,8 @@
 	button_icon_state = "fireball"
 
 /datum/action/item_action/toggle/flames/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/suit/hooded/cultrobes/eldritch/ash/item_target = target
 	if(!item_target || !istype(item_target))
 		return FALSE
@@ -151,6 +179,8 @@
 
 /// Starts/Stops the passive generation of fire stacks on our wearer
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/ash/proc/toggle_flames(mob/living/user)
+	procstart = null
+	src.procstart = null
 	flame_generation = !flame_generation
 
 	if(flame_generation)
@@ -164,6 +194,8 @@
 	// Extinguishes the wearer after they disable the flames
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/ash/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, flame_creation))
 		return
 	var/mob/living/wearer = loc
@@ -206,19 +238,27 @@
 	var/murdering_with_blades = FALSE
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/blade/on_robes_gained(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.add_traits(list(TRAIT_SHOCKIMMUNE, TRAIT_BATON_RESISTANCE), REF(src))
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/blade/on_robes_lost(mob/user, obj/item/clothing/suit/hooded/cultrobes/eldritch/robes)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
 	user.remove_traits(list(TRAIT_SHOCKIMMUNE, TRAIT_BATON_RESISTANCE), REF(src))
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/blade/robes_side_effect(mob/living/user)
+	procstart = null
+	src.procstart = null
 	INVOKE_ASYNC(src, PROC_REF(start_throwing_blades), user)
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/blade/proc/start_throwing_blades(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(murdering_with_blades)
 		return
 	murdering_with_blades = TRUE
@@ -234,11 +274,15 @@
 	murdering_with_blades = FALSE
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/blade/proc/should_keep_cutting(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(target.stat == DEAD || !is_equipped(target))
 		return FALSE
 	return TRUE
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/blade/proc/cut_em_good(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(!should_keep_cutting(target))
 		return
 	var/list/turf/valid_turfs = get_blade_turfs(get_turf(target))
@@ -251,6 +295,8 @@
 	throw_blade(pick(valid_turfs), target)
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/blade/proc/get_blade_turfs(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/turfs_around_us = get_perimeter(user, 4)
 	var/list/valid_turfs = list()
 	for(var/turf/open/valid_turf in turfs_around_us)
@@ -268,6 +314,8 @@
 	pass_flags = ALL
 
 /obj/item/knife/kitchen/magic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/movetype_handler)
 	add_traits(list(TRAIT_MOVE_PHASING, TRAIT_MOVE_FLOATING, TRAIT_UNCATCHABLE), INNATE_TRAIT)
@@ -275,6 +323,8 @@
 	set_embed(/datum/embedding/magic_knife)
 
 /obj/item/knife/kitchen/magic/get_demolition_modifier(obj/target)
+	procstart = null
+	src.procstart = null
 	if(!ismob(target))
 		return 100
 	return ..()
@@ -287,6 +337,8 @@
 	ignore_throwspeed_threshold = TRUE
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/blade/proc/throw_blade(turf/target_turf, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/knife/kitchen/magic/knife = new(target_turf)
 	knife.alpha = 0
 	knife.throw_at()
@@ -339,17 +391,23 @@
 	var/weightless_enabled = FALSE
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/cosmic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/radiation_protected_clothing)
 
 // Removes your antigravity if you lose the robes
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/cosmic/on_robes_lost(mob/user, obj/item/clothing/suit/hooded/cultrobes/eldritch/robes)
+	procstart = null
+	src.procstart = null
 	if(.)
 		return
 	if(weightless_enabled)
 		toggle_gravity(user)
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/cosmic/robes_side_effect(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/victim_brain = user.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(!victim_brain)
 		return
@@ -361,6 +419,8 @@
 	button_icon_state = "magicm"
 
 /datum/action/item_action/toggle/gravity/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/suit/hooded/cultrobes/eldritch/cosmic/item_target = target
 	if(!item_target || !istype(item_target))
 		return FALSE
@@ -368,6 +428,8 @@
 
 /// Gives us free movement in 0 gravity when enabled
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/cosmic/proc/toggle_gravity(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!weightless_enabled)
 		user.add_traits(list(TRAIT_NEGATES_GRAVITY, TRAIT_MOVE_FLYING, TRAIT_FREE_HYPERSPACE_MOVEMENT), REF(src))
 		user.balloon_alert(user, "enabled")
@@ -387,6 +449,8 @@
 	min_cold_protection_temperature = SPACE_HELM_MIN_TEMP_PROTECT
 
 /obj/item/clothing/head/hooded/cult_hoodie/eldritch/cosmic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/radiation_protected_clothing)
 
@@ -414,6 +478,8 @@
 	var/datum/component/healing_aura
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/flesh/on_robes_gained(mob/living/user)
+	procstart = null
+	src.procstart = null
 	healing_aura = user.AddComponent( \
 		/datum/component/aura_healing, \
 		range = 15, \
@@ -430,9 +496,13 @@
 	)
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/flesh/on_robes_lost(mob/user, obj/item/clothing/suit/hooded/cultrobes/eldritch/robes)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(healing_aura)
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/flesh/robes_side_effect(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user))
 		return
 	var/mob/living/carbon/victim = user
@@ -467,14 +537,20 @@
 	flags_inv = parent_type::flags_inv | HIDEMUTWINGS
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/lock/on_robes_gained(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.AddElement(/datum/element/digitalcamo)
 	user.add_traits(list(TRAIT_SILENT_FOOTSTEPS, TRAIT_UNKNOWN_APPEARANCE, TRAIT_UNKNOWN_VOICE), REF(src))
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/lock/on_robes_lost(mob/user, obj/item/clothing/suit/hooded/cultrobes/eldritch/robes)
+	procstart = null
+	src.procstart = null
 	user.RemoveElement(/datum/element/digitalcamo)
 	user.remove_traits(list(TRAIT_SILENT_FOOTSTEPS, TRAIT_UNKNOWN_APPEARANCE, TRAIT_UNKNOWN_VOICE), REF(src))
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/lock/robes_side_effect(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user))
 		return
 	var/mob/living/carbon/victim = user
@@ -553,6 +629,8 @@
 	var/damage_modifier = 1.15
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/moon/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(user) || !(slot_flags & slot))
 		return
@@ -596,6 +674,8 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/moon/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(user))
 		return
@@ -611,6 +691,8 @@
 	on_hud_remove(user)
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/moon/proc/on_apply_modifiers(mob/living/user, damage_mods, damage, damagetype, def_zone, sharpness, attack_direction, attacking_item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(braindead)
 		return
@@ -618,11 +700,15 @@
 	handle_damage(user, damage)
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/moon/proc/adjust_damage(mob/living/user, type, amount, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	handle_damage(user, amount)
 	return COMPONENT_IGNORE_CHANGE
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/moon/proc/handle_damage(mob/living/user, damage)
+	procstart = null
+	src.procstart = null
 	if(damage <= 0 || braindead)
 		return
 	user.adjust_organ_loss(ORGAN_SLOT_BRAIN, damage * damage_modifier)
@@ -630,12 +716,16 @@
 
 /// Some sources of damage directly damage the limbs, so we have to handle physical damage on the limbs, not just mob-level damage
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/moon/proc/limb_damage(mob/living/user, obj/item/bodypart/part, brute, burn)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	handle_damage(user, max(brute, 0) + max(burn, 0))
 	return COMPONENT_PREVENT_LIMB_DAMAGE
 
 /// Gives the health HUD to the wearer
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/moon/proc/on_hud_created(mob/living/carbon/human/wearer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/datum/hud/original_hud = wearer.hud_used
 
@@ -652,6 +742,8 @@
 
 /// Removes the HUD element from the wearer
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/moon/proc/on_hud_remove(mob/living/carbon/human/wearer)
+	procstart = null
+	src.procstart = null
 	var/datum/hud/original_hud = wearer.hud_used
 	QDEL_NULL(original_hud.screen_objects[HUD_HERETIC_MOON_HEALTH])
 	// Restore the old health elements
@@ -664,6 +756,8 @@
 	wearer.mob_mood.modify_hud()
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/moon/can_mob_unequip(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return ..()
 	var/mob/living/carbon/human/wearer = user
@@ -673,6 +767,8 @@
 	return ..()
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/moon/proc/item_attack_response(mob/living/victim, obj/item/weapon, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/visible_message = pick(visible_message_list)
 	visible_message = replacetext(visible_message, "%USER", victim.get_visible_name())
@@ -687,6 +783,8 @@
 
 /// Once you reach this point you're completely brain dead, so lets play our effects before you eat shit
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/moon/proc/kill_wearer(mob/living/carbon/human/wearer)
+	procstart = null
+	src.procstart = null
 	if(IS_HERETIC(wearer))
 		var/datum/action/cooldown/spell/aoe/moon_ringleader/temp_spell = new(wearer)
 		temp_spell.cast(wearer)
@@ -697,6 +795,8 @@
 
 /// Blows up your head when you die
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/moon/proc/on_death(mob/wearer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!ishuman(wearer))
 		return
@@ -711,6 +811,8 @@
 	qdel(to_explode)
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/moon/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/wearer = loc
 	if(!istype(wearer) || wearer.wear_suit != src || wearer.stat == DEAD)
 		return ..()
@@ -746,6 +848,8 @@
 
 /// Checks if you are brain dead, starts the dying process once you've reached it
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/moon/proc/check_braindeath(mob/living/carbon/human/wearer)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/our_brain = wearer.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(braindead || our_brain.damage < our_brain.maxHealth)
 		return
@@ -780,6 +884,8 @@
 	screen_loc = "EAST-1:0, SOUTH+6:16"
 
 /atom/movable/screen/moon_health/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(hud_owner) || !ishuman(hud_owner.mymob))
 		return INITIALIZE_HINT_QDEL
@@ -792,6 +898,8 @@
 
 /// Changes the icon based on the brain health of the wearer
 /atom/movable/screen/moon_health/proc/update_health(obj/item/organ/brain, damage_amount, maximum, required_organ_flag)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!brain.owner || !ishuman(brain.owner))
 		qdel(src)
@@ -844,6 +952,8 @@
 	var/turf/listening_turf
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/rust/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	overlay_id++
 	if(!object_overlay)
@@ -852,6 +962,8 @@
 		hood_object_overlay = image('icons/obj/clothing/head/helmet.dmi', icon_state = "rust_armor_overlay")
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/rust/on_robes_gained(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
 	register_turf_listener(user)
@@ -866,6 +978,8 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/rust/on_robes_lost(mob/user, obj/item/clothing/suit/hooded/cultrobes/eldritch/robes)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -883,6 +997,8 @@
 	QDEL_NULL(rust_appearance)
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/rust/robes_side_effect(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(user))
 		return
@@ -900,6 +1016,8 @@
 		addtimer(CALLBACK(src, PROC_REF(vomit_your_guts_out), victim), 1 SECONDS * iteration)
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/rust/proc/vomit_your_guts_out(mob/living/carbon/victim)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(victim) || !is_equipped(victim))
 		return
 	victim.vomit(MOB_VOMIT_BLOOD | MOB_VOMIT_MESSAGE | MOB_VOMIT_HARM | MOB_VOMIT_FORCE)
@@ -907,6 +1025,8 @@
 
 /// Keeps our turf rust listener aligned with where the wearer currently stands.
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/rust/proc/register_turf_listener(mob/source)
+	procstart = null
+	src.procstart = null
 	var/turf/new_turf = get_turf(source)
 	if(listening_turf == new_turf)
 		return
@@ -917,6 +1037,8 @@
 		RegisterSignal(listening_turf, SIGNAL_ADDTRAIT(TRAIT_RUSTY), PROC_REF(on_turf_became_rusty))
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/rust/proc/on_turf_became_rusty(turf/source, rust_trait)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/wearer = loc
 	if(!isliving(wearer) || !is_equipped(wearer))
@@ -924,6 +1046,8 @@
 	update_rust_state(wearer)
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/rust/proc/update_rust_state(mob/source)
+	procstart = null
+	src.procstart = null
 	if(source.is_touching_rust())
 		set_armor(/datum/armor/eldritch_armor/rust/on_rust)
 
@@ -957,12 +1081,16 @@
  * Checks if our armor values should be increased on the new turf
  */
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/rust/proc/on_move(mob/source, atom/old_loc, dir, forced, list/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	register_turf_listener(source)
 	update_rust_state(source)
 
 /// Updates the icon of our overlay and applies the animation
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/rust/proc/update_rust()
+	procstart = null
+	src.procstart = null
 	// Animation + Update the overlay sprite on our armor
 	if(!rusted)
 		rust_overlay?.icon_state = null
@@ -976,6 +1104,8 @@
 	hood?.add_overlay(hood_object_overlay)
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/rust/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Should basically catch toggling the hood on/off while standing on rust
 	if(rusted)
@@ -993,6 +1123,8 @@
 	armor_type = /datum/armor/eldritch_armor/rust
 
 /obj/item/clothing/head/hooded/cult_hoodie/eldritch/rust/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(slot_flags & slot))
 		UnregisterSignal(user, list(COMSIG_MOVABLE_MOVED))
@@ -1005,6 +1137,8 @@
  * Checks if our armor values should be increased on the new turf
  */
 /obj/item/clothing/head/hooded/cult_hoodie/eldritch/rust/proc/on_move(mob/source, atom/old_loc, dir, forced, list/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/turf/mover_turf = get_turf(source)
@@ -1051,6 +1185,8 @@
 	var/stealth_timer
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/void/on_robes_lost(mob/user, obj/item/clothing/suit/hooded/cultrobes/eldritch/robes)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !timeleft(stealth_timer))
 		return
@@ -1059,6 +1195,8 @@
 	end_stealth(user)
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/void/robes_side_effect(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.adjust_bodytemperature(-INFINITY)
 	ADD_TRAIT(user, TRAIT_HYPOTHERMIC, REF(src))
@@ -1068,6 +1206,8 @@
 	victim.apply_status_effect(/datum/status_effect/frozenstasis/irresistable)
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/void/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text, final_block_chance, damage, attack_type, damage_type)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!COOLDOWN_FINISHED(src, stealth_cooldown))
 		return
@@ -1077,6 +1217,8 @@
 	return TRUE
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/void/proc/end_stealth(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	animate(owner, time = 1 SECONDS, alpha = initial(owner.alpha))
 
 /obj/item/clothing/head/hooded/cult_hoodie/eldritch/void
@@ -1118,6 +1260,8 @@
 	wound = 10
 
 /obj/item/clothing/head/hooded/cult_hoodie/void/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_NO_STRIP, TRAIT_EXAMINE_SKIP), INNATE_TRAIT)
 
@@ -1146,37 +1290,53 @@
 	wound = 10
 
 /obj/item/clothing/suit/hooded/cultrobes/void/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_storage(storage_type = /datum/storage/pockets/void_cloak)
 	make_visible()
 	ADD_TRAIT(src, TRAIT_CONTRABAND_BLOCKER, INNATE_TRAIT)
 
 /obj/item/clothing/suit/hooded/cultrobes/void/on_hood_up(obj/item/clothing/head/hooded/hood)
+	procstart = null
+	src.procstart = null
 	hood_up = TRUE
 
 /obj/item/clothing/suit/hooded/cultrobes/void/on_hood_down(obj/item/clothing/head/hooded/hood)
+	procstart = null
+	src.procstart = null
 	hood_up = FALSE
 
 /obj/item/clothing/suit/hooded/cultrobes/void/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot & ITEM_SLOT_OCLOTHING)
 		RegisterSignal(user, COMSIG_MOB_EQUIPPED_ITEM, PROC_REF(hide_item))
 		RegisterSignal(user, COMSIG_MOB_UNEQUIPPED_ITEM, PROC_REF(show_item))
 
 /obj/item/clothing/suit/hooded/cultrobes/void/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, list(COMSIG_MOB_UNEQUIPPED_ITEM, COMSIG_MOB_EQUIPPED_ITEM))
 
 /obj/item/clothing/suit/hooded/cultrobes/void/proc/hide_item(datum/source, obj/item/item, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(slot & ITEM_SLOT_SUITSTORE)
 		item.add_traits(list(TRAIT_NO_STRIP, TRAIT_NO_WORN_ICON, TRAIT_EXAMINE_SKIP), REF(src))
 
 /obj/item/clothing/suit/hooded/cultrobes/void/proc/show_item(datum/source, obj/item/item, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	item.remove_traits(list(TRAIT_NO_STRIP, TRAIT_NO_WORN_ICON, TRAIT_EXAMINE_SKIP), REF(src))
 
 /obj/item/clothing/suit/hooded/cultrobes/void/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!IS_HERETIC(user) || !hood_up)
 		return
@@ -1186,10 +1346,14 @@
 	. += span_notice("Is space worthy as long as the hood is down.")
 
 /obj/item/clothing/suit/hooded/cultrobes/void/on_hood_down(obj/item/clothing/head/hooded/hood)
+	procstart = null
+	src.procstart = null
 	make_visible()
 	return ..()
 
 /obj/item/clothing/suit/hooded/cultrobes/void/can_create_hood()
+	procstart = null
+	src.procstart = null
 	if(!isliving(loc))
 		CRASH("[src] attempted to make a hood on a non-living thing: [loc]")
 	var/mob/living/wearer = loc
@@ -1200,11 +1364,15 @@
 	return FALSE
 
 /obj/item/clothing/suit/hooded/cultrobes/void/on_hood_created(obj/item/clothing/head/hooded/hood)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	make_invisible()
 
 /// Makes our cloak "invisible". Not the wearer, the cloak itself.
 /obj/item/clothing/suit/hooded/cultrobes/void/proc/make_invisible()
+	procstart = null
+	src.procstart = null
 	add_traits(list(TRAIT_NO_STRIP, TRAIT_EXAMINE_SKIP), REF(src))
 	flags_cover |= ALLOW_SURGERY_THROUGH
 
@@ -1216,6 +1384,8 @@
 
 /// Makes our cloak "visible" again.
 /obj/item/clothing/suit/hooded/cultrobes/void/proc/make_visible()
+	procstart = null
+	src.procstart = null
 	remove_traits(list(TRAIT_NO_STRIP, TRAIT_EXAMINE_SKIP), REF(src))
 	flags_cover &= ~ALLOW_SURGERY_THROUGH
 

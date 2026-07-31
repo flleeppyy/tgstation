@@ -6,6 +6,8 @@
 	allow_negative_cost = TRUE
 
 /datum/export/paperwork/get_base_cost(obj/item/paperwork/sold_paperwork)
+	procstart = null
+	src.procstart = null
 	return sold_paperwork.stamped ? ..() : -cost
 
 /datum/export/photocopy
@@ -19,6 +21,8 @@
 	var/backfired = FALSE
 
 /datum/export/photocopy/get_base_cost(obj/item/paperwork/photocopy/sold_paperwork)
+	procstart = null
+	src.procstart = null
 	if(sold_paperwork.stamped && !backfired) //Upon backfiring, no more photocopies are processed or sold until the next cargo shipment
 		if(sold_paperwork.voided)
 			return 0 //Voided photocopies do nothing
@@ -35,6 +39,8 @@
 		return -cost
 
 /datum/export/photocopy/total_printout(datum/export_report/ex, notes)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(backfired)

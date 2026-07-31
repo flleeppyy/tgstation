@@ -29,6 +29,8 @@ GLOBAL_LIST_INIT_TYPED(addictions, /datum/addiction, init_subtypes_w_path_keys(/
 
 ///Called when you gain addiction points somehow. Takes a mind as argument and sees if you gained the addiction
 /datum/addiction/proc/on_gain_addiction_points(datum/mind/victim_mind, new_amount = 0, last_amount = 0)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if(new_amount < addiction_gain_threshold) // Not enough to become addicted
 		return
@@ -38,12 +40,16 @@ GLOBAL_LIST_INIT_TYPED(addictions, /datum/addiction, init_subtypes_w_path_keys(/
 
 ///Called when you become addicted
 /datum/addiction/proc/become_addicted(datum/mind/victim_mind)
+	procstart = null
+	src.procstart = null
 	LAZYSET(victim_mind.active_addictions, type, 1) //Start at first cycle.
 	SEND_SIGNAL(victim_mind.current, COMSIG_CARBON_GAIN_ADDICTION, victim_mind)
 	victim_mind.current.log_message("has become addicted to [name].", LOG_GAME)
 
 ///Called when you lose addiction poitns somehow. Takes a mind as argument and sees if you lost the addiction
 /datum/addiction/proc/on_lose_addiction_points(datum/mind/victim_mind, new_amount = 0, last_amount = 0)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if(last_amount < addiction_loss_threshold) // Was not addicted last check
 		return FALSE
@@ -53,6 +59,8 @@ GLOBAL_LIST_INIT_TYPED(addictions, /datum/addiction, init_subtypes_w_path_keys(/
 	return TRUE
 
 /datum/addiction/proc/lose_addiction(datum/mind/victim_mind)
+	procstart = null
+	src.procstart = null
 	victim_mind.current.clear_mood_event("[type]_addiction")
 	SEND_SIGNAL(victim_mind.current, COMSIG_CARBON_LOSE_ADDICTION, victim_mind)
 	to_chat(victim_mind.current, span_notice("You feel like you've gotten over your need for drugs."))
@@ -60,6 +68,8 @@ GLOBAL_LIST_INIT_TYPED(addictions, /datum/addiction, init_subtypes_w_path_keys(/
 	LAZYREMOVE(victim_mind.active_addictions, type)
 
 /datum/addiction/proc/process_addiction(mob/living/carbon/affected_carbon, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	// Acts as if you're on the drug at all times, while also forcibly preventing the effects of withdrawal by returning early.
 	if(HAS_TRAIT(affected_carbon, TRAIT_NO_WITHDRAWALS))
 		end_withdrawal(affected_carbon)
@@ -118,31 +128,45 @@ GLOBAL_LIST_INIT_TYPED(addictions, /datum/addiction, init_subtypes_w_path_keys(/
 
 /// Called when addiction enters stage 1
 /datum/addiction/proc/withdrawal_enters_stage_1(mob/living/carbon/affected_carbon)
+	procstart = null
+	src.procstart = null
 	affected_carbon.add_mood_event("[type]_addiction", light_withdrawal_moodlet, name)
 
 /// Called when addiction enters stage 2
 /datum/addiction/proc/withdrawal_enters_stage_2(mob/living/carbon/affected_carbon)
+	procstart = null
+	src.procstart = null
 	affected_carbon.add_mood_event("[type]_addiction", medium_withdrawal_moodlet, name)
 
 /// Called when addiction enters stage 3
 /datum/addiction/proc/withdrawal_enters_stage_3(mob/living/carbon/affected_carbon)
+	procstart = null
+	src.procstart = null
 	affected_carbon.add_mood_event("[type]_addiction", severe_withdrawal_moodlet, name)
 
 /datum/addiction/proc/end_withdrawal(mob/living/carbon/affected_carbon)
+	procstart = null
+	src.procstart = null
 	LAZYSET(affected_carbon.mind.active_addictions, type, 1) //Keeps withdrawal at first cycle.
 	affected_carbon.clear_mood_event("[type]_addiction")
 
 /// Called when addiction is in stage 1 every process
 /datum/addiction/proc/withdrawal_stage_1_process(mob/living/carbon/affected_carbon, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(SPT_PROB(5, seconds_per_tick))
 		to_chat(affected_carbon, span_danger("[withdrawal_stage_messages[1]]"))
 
 /// Called when addiction is in stage 2 every process
 /datum/addiction/proc/withdrawal_stage_2_process(mob/living/carbon/affected_carbon, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(SPT_PROB(10, seconds_per_tick) )
 		to_chat(affected_carbon, span_danger("[withdrawal_stage_messages[2]]"))
 
 /// Called when addiction is in stage 3 every process
 /datum/addiction/proc/withdrawal_stage_3_process(mob/living/carbon/affected_carbon, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(SPT_PROB(15, seconds_per_tick))
 		to_chat(affected_carbon, span_danger("[withdrawal_stage_messages[3]]"))

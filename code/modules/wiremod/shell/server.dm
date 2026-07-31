@@ -14,10 +14,14 @@
 	light_on = FALSE
 
 /obj/structure/server/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/shell, null, SHELL_CAPACITY_VERY_LARGE, SHELL_FLAG_REQUIRE_ANCHOR|SHELL_FLAG_USB_PORT)
 
 /obj/structure/server/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	set_anchored(!anchored)
 	tool.play_tool_sound(src)
 	balloon_alert(user, anchored ? "secured" : "unsecured")

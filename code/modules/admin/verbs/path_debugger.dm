@@ -9,15 +9,21 @@ GLOBAL_DATUM_INIT(pathfind_dude, /obj/pathfind_guy, new())
 	var/datum/action/innate/path_debug/sssp/sssp_debug
 
 /datum/pathfind_debug/New(datum/admins/owner)
+	procstart = null
+	src.procstart = null
 	src.owner = owner
 	hook_client()
 
 /datum/pathfind_debug/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(jps_debug)
 	QDEL_NULL(sssp_debug)
 	return ..()
 
 /datum/pathfind_debug/proc/hook_client()
+	procstart = null
+	src.procstart = null
 	if(!owner.owner)
 		return
 	QDEL_NULL(jps_debug)
@@ -29,6 +35,8 @@ GLOBAL_DATUM_INIT(pathfind_dude, /obj/pathfind_guy, new())
 	RegisterSignal(owner.owner.mob, COMSIG_MOB_LOGOUT, PROC_REF(on_logout))
 
 /datum/pathfind_debug/proc/on_logout(mob/logging_out)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(logging_out, COMSIG_MOB_LOGOUT)
 	var/mob/new_mob = owner.owner?.mob
@@ -38,6 +46,8 @@ GLOBAL_DATUM_INIT(pathfind_dude, /obj/pathfind_guy, new())
 	hook_client()
 
 /datum/pathfind_debug/proc/on_login(mob/logging_in)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(logging_in, list(COMSIG_MOB_LOGOUT, COMSIG_MOB_LOGIN))
 	hook_client()
@@ -46,17 +56,23 @@ GLOBAL_DATUM_INIT(pathfind_dude, /obj/pathfind_guy, new())
 	var/list/image/display_images = list()
 
 /datum/action/innate/path_debug/Activate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_MOB_CLICKON, PROC_REF(clicked_somethin))
 	active = TRUE
 
 /datum/action/innate/path_debug/Deactivate()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_MOB_CLICKON)
 	clear_visuals()
 	active = FALSE
 	return ..()
 
 /datum/action/innate/path_debug/proc/clicked_somethin(datum/source, atom/clicked, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(LAZYACCESS(modifiers, SHIFT_CLICK))
 		return NONE
@@ -75,37 +91,57 @@ GLOBAL_DATUM_INIT(pathfind_dude, /obj/pathfind_guy, new())
 		pathfind()
 
 /datum/action/innate/path_debug/proc/left_clicked(turf/clicked_on)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/action/innate/path_debug/proc/right_clicked(turf/clicked_on)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/action/innate/path_debug/proc/update_visuals()
+	procstart = null
+	src.procstart = null
 	clear_visuals()
 	build_visuals()
 	owner.client?.images += display_images
 
 /datum/action/innate/path_debug/proc/clear_visuals()
+	procstart = null
+	src.procstart = null
 	owner.client?.images -= display_images
 	display_images = list()
 
 /datum/action/innate/path_debug/proc/build_visuals()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/action/innate/path_debug/proc/path_ready()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /datum/action/innate/path_debug/proc/pathfind()
+	procstart = null
+	src.procstart = null
 	INVOKE_ASYNC(src, PROC_REF(run_the_path), GLOB.pathfind_dude)
 	GLOB.pathfind_dude.moveToNullspace()
 
 /datum/action/innate/path_debug/proc/run_the_path(atom/movable/middle_man)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/action/innate/path_debug/proc/render_path(list/turf/draw_list)
+	procstart = null
+	src.procstart = null
 	return SSpathfinder.render_path_images(draw_list)
 
 /datum/action/innate/path_debug/proc/render_turf(turf/draw, direction)
+	procstart = null
+	src.procstart = null
 	return SSpathfinder.render_path_arrow(draw, direction)
 
 /datum/action/innate/path_debug/jps
@@ -125,6 +161,8 @@ GLOBAL_DATUM_INIT(pathfind_dude, /obj/pathfind_guy, new())
 	var/list/turf/display_turfs
 
 /datum/action/innate/path_debug/jps/Activate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	max_distance = tgui_input_number(owner, "How far should we be allowed to try and path", "Max Distance", min_value = 1, default = 30)
 	min_distance = tgui_input_number(owner, "How close should we try and get to the target before stopping", "Min Distance", min_value = 0, default = 0)
@@ -144,20 +182,28 @@ GLOBAL_DATUM_INIT(pathfind_dude, /obj/pathfind_guy, new())
 			diagonal_handling = DIAGONAL_REMOVE_CLUNKY
 
 /datum/action/innate/path_debug/jps/Deactivate()
+	procstart = null
+	src.procstart = null
 	source_turf = null
 	target_turf = null
 	display_turfs = list()
 	return ..()
 
 /datum/action/innate/path_debug/jps/left_clicked(turf/clicked_on)
+	procstart = null
+	src.procstart = null
 	source_turf = clicked_on
 	display_turfs = list()
 
 /datum/action/innate/path_debug/jps/right_clicked(turf/clicked_on)
+	procstart = null
+	src.procstart = null
 	target_turf = clicked_on
 	display_turfs = list()
 
 /datum/action/innate/path_debug/jps/build_visuals()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(source_turf)
 		var/image/start = image('icons/turf/debug.dmi', source_turf, "start", PATH_DEBUG_LAYER)
@@ -171,9 +217,13 @@ GLOBAL_DATUM_INIT(pathfind_dude, /obj/pathfind_guy, new())
 	display_images += render_path(display_turfs)
 
 /datum/action/innate/path_debug/jps/path_ready()
+	procstart = null
+	src.procstart = null
 	return (source_turf && target_turf)
 
 /datum/action/innate/path_debug/jps/run_the_path(atom/movable/middle_man)
+	procstart = null
+	src.procstart = null
 	middle_man.forceMove(source_turf)
 	display_turfs = get_path_to(middle_man, target_turf, max_distance, min_distance, list(), allowed_on_space, blacklisted_turf, skip_first = FALSE, diagonal_handling = diagonal_handling)
 	update_visuals()
@@ -194,6 +244,8 @@ GLOBAL_DATUM_INIT(pathfind_dude, /obj/pathfind_guy, new())
 	var/datum/path_map/shown_map
 
 /datum/action/innate/path_debug/sssp/Activate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	max_distance = tgui_input_number(owner, "How far should we be allowed to try and path", "Max Distance", min_value = 1, default = 30)
 	allowed_on_space = tgui_alert(owner, "Are we allowed to path over space?", "Space Pathing", buttons = list("Yes", "No")) == "Yes"
@@ -204,22 +256,30 @@ GLOBAL_DATUM_INIT(pathfind_dude, /obj/pathfind_guy, new())
 		blacklisted_turf = null
 
 /datum/action/innate/path_debug/sssp/Deactivate()
+	procstart = null
+	src.procstart = null
 	source_turf = null
 	target_turf = null
 	shown_map = null
 	return ..()
 
 /datum/action/innate/path_debug/sssp/left_clicked(turf/clicked_on)
+	procstart = null
+	src.procstart = null
 	source_turf = clicked_on
 	shown_map = null
 
 /datum/action/innate/path_debug/sssp/right_clicked(turf/clicked_on)
+	procstart = null
+	src.procstart = null
 	if(clicked_on == target_turf)
 		target_turf = null
 		return
 	target_turf = clicked_on
 
 /datum/action/innate/path_debug/sssp/build_visuals()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(source_turf)
 		var/image/start = image('icons/turf/debug.dmi', source_turf, "start", PATH_DEBUG_LAYER)
@@ -243,9 +303,13 @@ GLOBAL_DATUM_INIT(pathfind_dude, /obj/pathfind_guy, new())
 			display_images += render_turf(next_dude, get_dir(next_dude, next_closest[next_dude]))
 
 /datum/action/innate/path_debug/sssp/path_ready()
+	procstart = null
+	src.procstart = null
 	return (source_turf && source_turf != shown_map?.start)
 
 /datum/action/innate/path_debug/sssp/run_the_path(atom/movable/middle_man)
+	procstart = null
+	src.procstart = null
 	middle_man.forceMove(source_turf)
 	shown_map = get_sssp(middle_man, max_distance, list(), allowed_on_space, blacklisted_turf)
 	update_visuals()

@@ -13,6 +13,8 @@
 
 //Attack self
 /obj/item/toy/plush/carpplushie/dehy_carp/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(owner)
 		return ..()
 	add_fingerprint(user)
@@ -21,6 +23,8 @@
 	RegisterSignal(owner, COMSIG_QDELETING, PROC_REF(owner_deleted))
 
 /obj/item/toy/plush/carpplushie/dehy_carp/proc/Swell()
+	procstart = null
+	src.procstart = null
 	if(swelling)
 		return
 	swelling = TRUE
@@ -34,6 +38,8 @@
 	addtimer(CALLBACK(src, PROC_REF(spawn_carp)), 0.6 SECONDS)
 
 /obj/item/toy/plush/carpplushie/dehy_carp/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] starts eating [src]. It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(src, 'sound/items/eatfood.ogg', 50, TRUE)
 	if(!istype(user))
@@ -54,6 +60,8 @@
 	return BRUTELOSS
 
 /obj/item/toy/plush/carpplushie/dehy_carp/proc/spawn_carp()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))//we got toasted while animating
 		return
 	//Make space carp
@@ -67,6 +75,8 @@
 	qdel(src)
 
 /obj/item/toy/plush/carpplushie/dehy_carp/proc/owner_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(owner, COMSIG_QDELETING)

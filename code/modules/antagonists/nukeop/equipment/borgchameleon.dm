@@ -29,22 +29,32 @@
 	var/animation_playing = FALSE
 
 /obj/item/borg_chameleon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	friendlyName = pick(GLOB.ai_names)
 
 /obj/item/borg_chameleon/Destroy()
+	procstart = null
+	src.procstart = null
 	listeningTo = null
 	return ..()
 
 /obj/item/borg_chameleon/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	disrupt(user)
 
 /obj/item/borg_chameleon/equipped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	disrupt(user)
 
 /obj/item/borg_chameleon/attack_self(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null
 	if (user && user.cell && user.cell.charge >  ACTIVATION_COST)
 		if (isturf(user.loc))
 			toggle(user)
@@ -54,6 +64,8 @@
 		to_chat(user, span_warning("You need at least [display_energy(ACTIVATION_COST)] of charge in your cell to use [src]!"))
 
 /obj/item/borg_chameleon/proc/toggle(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null
 	if(active)
 		playsound(src, 'sound/effects/pop.ogg', 100, TRUE, -6)
 		to_chat(user, span_notice("You deactivate \the [src]."))
@@ -77,6 +89,8 @@
 		animation_playing = FALSE
 
 /obj/item/borg_chameleon/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if (user)
 		if (!user.cell || !user.cell.use(ACTIVATION_UP_KEEP * seconds_per_tick))
 			disrupt(user)
@@ -84,6 +98,8 @@
 		return PROCESS_KILL
 
 /obj/item/borg_chameleon/proc/activate(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSobj, src)
 	src.user = user
 	savedName = user.name
@@ -102,6 +118,8 @@
 	listeningTo = user
 
 /obj/item/borg_chameleon/proc/deactivate(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	if(listeningTo)
 		UnregisterSignal(listeningTo, signalCache)
@@ -116,6 +134,8 @@
 	src.user = user
 
 /obj/item/borg_chameleon/proc/disrupt(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(active)
 		to_chat(user, span_danger("Your chameleon field deactivates."))

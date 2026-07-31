@@ -19,6 +19,8 @@
 	var/limbless_slowdown_modifier = 0.6 // reduces slowdown by 40%
 
 /datum/component/walking_aid/Initialize(limbless_slowdown_modifier = 0.6, required_trait = null, waddling = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -27,10 +29,14 @@
 	src.limbless_slowdown_modifier = limbless_slowdown_modifier
 
 /datum/component/walking_aid/Destroy(force)
+	procstart = null
+	src.procstart = null
 	remove_support()
 	return ..()
 
 /datum/component/walking_aid/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equip))
 	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(on_drop))
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE_TAGS, PROC_REF(get_examine_tags))
@@ -40,6 +46,8 @@
 	RegisterSignal(parent, SIGNAL_REMOVETRAIT(required_trait), PROC_REF(update_legs))
 
 /datum/component/walking_aid/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ITEM_EQUIPPED,
 		COMSIG_ITEM_DROPPED,
@@ -52,6 +60,8 @@
 	remove_support()
 
 /datum/component/walking_aid/proc/on_equip(datum/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	remove_support()
@@ -63,22 +73,30 @@
 	apply_support(equipper)
 
 /datum/component/walking_aid/proc/on_drop(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	remove_support()
 
 /datum/component/walking_aid/proc/get_examine_tags(atom/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list["walking-aid"] = "It can help lessen the slowdown caused from a missing or injured leg, when held on the same side as the injury."
 
 // Updates our leg status when wielded/unwielded a two handed walking aid like a spear
 /datum/component/walking_aid/proc/update_legs(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/user = current_user_ref?.resolve()
 	user?.update_usable_leg_status()
 
 /datum/component/walking_aid/proc/apply_support(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(current_user_ref)
 		remove_support()
 
@@ -91,6 +109,8 @@
 		user.AddElementTrait(TRAIT_WADDLING, REF(src), /datum/element/waddling)
 
 /datum/component/walking_aid/proc/remove_support()
+	procstart = null
+	src.procstart = null
 	var/mob/living/user = current_user_ref?.resolve()
 	current_user_ref = null
 	if(isnull(user))
@@ -102,6 +122,8 @@
 		REMOVE_TRAIT(user, TRAIT_WADDLING, REF(src))
 
 /datum/component/walking_aid/proc/is_active()
+	procstart = null
+	src.procstart = null
 	// if both hands are holding it, then it is not being used for support
 	if(HAS_TRAIT(parent, TRAIT_WIELDED))
 		return FALSE
@@ -112,6 +134,8 @@
 	return HAS_TRAIT(parent, required_trait)
 
 /datum/component/walking_aid/proc/handle_limping(mob/living/user, obj/item/bodypart/limping_leg)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!is_active())
@@ -128,6 +152,8 @@
 	return COMPONENT_CANCEL_LIMP
 
 /datum/component/walking_aid/proc/handle_slowdown(mob/living/user, limbless_slowdown, list/slowdown_mods)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!is_active())
@@ -150,6 +176,8 @@
 	slowdown_mods += limbless_slowdown_modifier
 
 /datum/component/walking_aid/proc/get_supported_leg_zone(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/held_hand_zone = user.get_hand_zone_of_item(parent)
 
 	switch(held_hand_zone)

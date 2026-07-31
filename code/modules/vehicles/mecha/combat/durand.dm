@@ -38,32 +38,44 @@
 	acid = 100
 
 /obj/vehicle/sealed/mecha/durand/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	shield = new(src, src)
 	vis_contents += shield
 
 /obj/vehicle/sealed/mecha/durand/Destroy()
+	procstart = null
+	src.procstart = null
 	if(shield)
 		QDEL_NULL(shield)
 	return ..()
 
 /obj/vehicle/sealed/mecha/durand/generate_actions()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	initialize_passenger_action_type(/datum/action/vehicle/sealed/mecha/mech_defense_mode)
 
 /obj/vehicle/sealed/mecha/durand/process()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Defence mode can only be on with a occupant so we check if one of them can toggle it and toggle
 	if(defense_mode && !use_energy(0.01 * STANDARD_CELL_CHARGE))
 		toggle_defense()
 
 /obj/vehicle/sealed/mecha/durand/mob_exit(mob/M, silent = FALSE, randomstep = FALSE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(defense_mode)
 		toggle_defense()
 	return ..()
 
 //Redirects projectiles to the shield if defense_check decides they should be blocked and returns true.
 /obj/vehicle/sealed/mecha/durand/projectile_hit(obj/projectile/hitting_projectile, def_zone, piercing_hit, blocked)
+	procstart = null
+	src.procstart = null
 	if(defense_check(hitting_projectile.loc) && shield)
 		return shield.projectile_hit(hitting_projectile, def_zone, piercing_hit, blocked)
 	return ..()
@@ -73,6 +85,8 @@
  * Expects a turf. Returns true if the attack should be blocked, false if not.
  **/
 /obj/vehicle/sealed/mecha/durand/proc/defense_check(turf/aloc)
+	procstart = null
+	src.procstart = null
 	if (!defense_mode || !shield || switching)
 		return FALSE
 
@@ -87,6 +101,8 @@
 			return abs(y - aloc.y) <= (x - aloc.x) * 2
 
 /obj/vehicle/sealed/mecha/durand/proc/toggle_defense(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(occupants))
 		return
 
@@ -126,12 +142,16 @@
 	addtimer(VARSET_CALLBACK(src, switching, FALSE), 0.7 SECONDS) // Shield animation length
 
 /obj/vehicle/sealed/mecha/durand/attack_generic(mob/user, damage_amount = 0, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, armor_penetration = 0)
+	procstart = null
+	src.procstart = null
 	if(defense_check(get_turf(user)))
 		log_message("Attack absorbed by defense field. Attacker - [user].", LOG_MECHA, color="orange")
 		return shield.attack_generic(user, damage_amount, damage_type, damage_flag, sound_effect, armor_penetration)
 	return ..()
 
 /obj/vehicle/sealed/mecha/durand/blob_act(obj/structure/blob/blob)
+	procstart = null
+	src.procstart = null
 	if(!defense_check(get_turf(blob)))
 		return ..()
 	log_message("Attack by blob. Attacker - [blob].", LOG_MECHA, color="red")
@@ -139,12 +159,16 @@
 	return shield.blob_act(blob)
 
 /obj/vehicle/sealed/mecha/durand/attackby(obj/item/weapon, mob/user as mob, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(defense_check(get_turf(user)))
 		log_message("Attack absorbed by defense field. Attacker - [user], with [weapon]", LOG_MECHA, color="orange")
 		return shield.attackby(weapon, user, modifiers)
 	return ..()
 
 /obj/vehicle/sealed/mecha/durand/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(defense_check(get_turf(AM)))
 		log_message("Impact with [AM] absorbed by defense field.", LOG_MECHA, color="orange")
 		return shield.hitby(AM, skipcatch, hitpush, blocked, throwingdatum)
@@ -156,6 +180,8 @@
 	button_icon_state = "mech_defense_mode_off"
 
 /datum/action/vehicle/sealed/mecha/mech_defense_mode/Trigger(mob/clicker, trigger_flags, forced_state = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -192,16 +218,22 @@
 	var/obj/vehicle/sealed/mecha/durand/chassis
 
 /obj/durand_shield/Initialize(mapload, obj/vehicle/sealed/mecha/durand/chassis)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.chassis = chassis
 
 /obj/durand_shield/Destroy()
+	procstart = null
+	src.procstart = null
 	if(chassis)
 		chassis.shield = null
 		chassis = null
 	return ..()
 
 /obj/durand_shield/take_damage(damage_amount, damage_type = BRUTE, damage_flag = "", sound_effect = TRUE, attack_dir, armour_penetration = 0)
+	procstart = null
+	src.procstart = null
 	if(!chassis)
 		qdel(src)
 		return
@@ -217,8 +249,12 @@
 	atom_integrity = 10000
 
 /obj/durand_shield/play_attack_sound()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/vehicles/mecha/mech_shield_deflect.ogg', 100, TRUE)
 
 /obj/durand_shield/bullet_act()
+	procstart = null
+	src.procstart = null
 	play_attack_sound()
 	. = ..()

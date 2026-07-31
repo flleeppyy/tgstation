@@ -11,6 +11,8 @@
 	VAR_PRIVATE/list/active_weathers
 
 /obj/effect/anomaly/weather/Initialize(mapload, new_lifespan, drops_core, forced_anomaly_type = src.weather_type, forced_thunder_chance = src.thunder_chance)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	add_atom_colour(COLOR_MATRIX_INVERT, FIXED_COLOUR_PRIORITY)
@@ -49,11 +51,15 @@
 	active_weathers += weather
 
 /obj/effect/anomaly/weather/proc/clear_ref(datum/weather/weather_datum)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	active_weathers -= weather_datum
 	UnregisterSignal(weather_datum, COMSIG_QDELETING)
 
 /obj/effect/anomaly/weather/proc/select_weather()
+	procstart = null
+	src.procstart = null
 	return pick(
 		/datum/weather/particle/rain_storm,
 		/datum/weather/snow_storm,
@@ -62,6 +68,8 @@
 
 /// steps outward from src to find an area that is not the impact_area.
 /obj/effect/anomaly/weather/proc/find_adjacent_impacted_area(check_dir)
+	procstart = null
+	src.procstart = null
 	var/limit = 9
 	var/turf/next_turf = get_step(src, check_dir)
 	while(next_turf.loc == impact_area && limit > 0)
@@ -73,11 +81,15 @@
 	return next_turf.loc
 
 /obj/effect/anomaly/weather/anomalyNeutralize()
+	procstart = null
+	src.procstart = null
 	for(var/datum/weather/weather_datum as anything in active_weathers)
 		weather_datum?.wind_down()
 	return ..()
 
 /obj/effect/anomaly/weather/detonate()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/magic/repulse.ogg', 100, TRUE)
 	for(var/atom/movable/repulsed in range(src, 5))
 		if(repulsed == src || repulsed.anchored)
@@ -86,6 +98,8 @@
 		repulsed.safe_throw_at(throwtarget, 6, 2, src, force = MOVE_FORCE_EXTREMELY_STRONG)
 
 /obj/effect/anomaly/weather/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/datum/weather/weather_datum as anything in active_weathers)
 		clear_ref(weather_datum)
 	return ..()

@@ -7,10 +7,14 @@
 	duration = 2 SECONDS
 
 /obj/effect/temp_visual/telegraphing/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/effect/temp_visual/telegraphing/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance(icon, icon_state, src, alpha = 90)
 
@@ -20,6 +24,8 @@
 /obj/effect/temp_visual/telegraphing/lift_travel
 
 /obj/effect/temp_visual/telegraphing/lift_travel/Initialize(mapload, duration)
+	procstart = null
+	src.procstart = null
 	src.duration = duration
 	return ..()
 

@@ -16,6 +16,8 @@
 	var/story_value
 
 /datum/component/engraved/Initialize(engraved_description, persistent_save, story_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isclosedturf(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -53,6 +55,8 @@
 	engraved_wall.update_appearance()
 
 /datum/component/engraved/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(!parent)
 		return ..()
 	parent.RemoveElement(/datum/element/art)
@@ -64,12 +68,16 @@
 	return ..() //call this after since we null out the parent
 
 /datum/component/engraved/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 	//supporting component transfer means putting these here instead of initialize
 	SSpersistence.wall_engravings += src
 	ADD_TRAIT(parent, TRAIT_NOT_ENGRAVABLE, ENGRAVED_TRAIT)
 
 /datum/component/engraved/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_ATOM_EXAMINE)
 	//supporting component transfer means putting these here instead of destroy
 	SSpersistence.wall_engravings -= src
@@ -77,17 +85,23 @@
 
 /// Used to maintain the acid overlay on the parent [/atom].
 /datum/component/engraved/proc/on_update_overlays(atom/parent_atom, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	overlays += mutable_appearance('icons/turf/wall_overlays.dmi', "engraving[icon_state_append]")
 
 ///signal called on parent being examined
 /datum/component/engraved/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_list += span_boldnotice(engraved_description)
 
 ///returns all the information SSpersistence needs in a list to load up this engraving on a future round!
 /datum/component/engraved/proc/save_persistent()
+	procstart = null
+	src.procstart = null
 	var/list/saved_data = list()
 	saved_data["story"] = engraved_description
 	saved_data["story_value"] = story_value

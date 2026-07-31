@@ -27,6 +27,8 @@
 	var/target_dept
 
 /obj/machinery/pdapainter/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & BROKEN)
 		icon_state = "[base_icon_state]-broken"
 		return ..()
@@ -34,6 +36,8 @@
 	return ..()
 
 /obj/machinery/pdapainter/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(machine_stat & BROKEN)
@@ -43,6 +47,8 @@
 		. += "[initial(icon_state)]-closed"
 
 /obj/machinery/pdapainter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
@@ -64,11 +70,15 @@
 			card_trims |= trim_list
 
 /obj/machinery/pdapainter/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(stored_pda)
 	QDEL_NULL(stored_id_card)
 	return ..()
 
 /obj/machinery/pdapainter/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	// Don't use ejection procs as we're gonna be destroyed anyway, so no need to update icons or anything.
 	if(stored_pda)
 		stored_pda.forceMove(loc)
@@ -78,6 +88,8 @@
 		stored_id_card = null
 
 /obj/machinery/pdapainter/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
 			if(stored_pda)
@@ -96,6 +108,8 @@
 				SSexplosions.low_mov_atom += stored_id_card
 
 /obj/machinery/pdapainter/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == stored_pda)
 		stored_pda = null
@@ -105,6 +119,8 @@
 		update_appearance(UPDATE_ICON)
 
 /obj/machinery/pdapainter/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item))
 		context[SCREENTIP_CONTEXT_LMB] = "Open UI"
 		if(stored_pda)
@@ -130,12 +146,16 @@
 	return NONE
 
 /obj/machinery/pdapainter/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(default_unfasten_wrench(user, tool))
 		power_change()
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/pdapainter/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!(machine_stat & BROKEN) && (atom_integrity >= max_integrity))
 		balloon_alert(user, "isn't broken!")
 		return ITEM_INTERACT_BLOCKING
@@ -152,6 +172,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/pdapainter/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/modular_computer/pda))
 		return insert_pda(tool, user) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 	if(isidcard(tool))
@@ -159,6 +181,8 @@
 	return NONE
 
 /obj/machinery/pdapainter/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -178,6 +202,8 @@
  * * user - The user attempting to insert the PDA.
  */
 /obj/machinery/pdapainter/proc/insert_pda(obj/item/modular_computer/pda/new_pda, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user && !user.transferItemToLoc(new_pda, src, silent = FALSE))
 		return FALSE
 	else
@@ -199,6 +225,8 @@
  * * user - The user to try and eject the PDA into the hands of.
  */
 /obj/machinery/pdapainter/proc/eject_pda(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(stored_pda))
 		return
 
@@ -217,6 +245,8 @@
  * * user - The user attempting to insert the ID.
  */
 /obj/machinery/pdapainter/proc/insert_id_card(obj/item/card/id/new_id_card, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!new_id_card.trim_changeable)
 		balloon_alert(user, "rejected!")
 		playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50, TRUE)
@@ -244,6 +274,8 @@
  * * user - The user to try and eject the ID card into the hands of.
  */
 /obj/machinery/pdapainter/proc/eject_id_card(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(stored_id_card))
 		return FALSE
 
@@ -254,12 +286,16 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/machinery/pdapainter/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PaintingMachine", name)
 		ui.open()
 
 /obj/machinery/pdapainter/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/data = list()
 
 	if(stored_pda)
@@ -279,6 +315,8 @@
 	return data
 
 /obj/machinery/pdapainter/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/data = list()
 
 	data["pdaTypes"] = pda_types
@@ -287,6 +325,8 @@
 	return data
 
 /obj/machinery/pdapainter/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

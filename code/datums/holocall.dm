@@ -1,4 +1,6 @@
 /mob/eye/camera/remote/holo/setLoc(turf/destination, force_update = FALSE)
+	procstart = null
+	src.procstart = null
 	// If we're moving outside the space of our projector, then just... don't
 	var/obj/machinery/holopad/H = origin_ref?.resolve()
 	if(!H?.move_hologram(user_ref?.resolve(), destination))
@@ -7,6 +9,8 @@
 	return ..()
 
 /obj/machinery/holopad/remove_eye_control(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/mob/eye/camera/remote/eye = user.remote_control
 	if(!istype(eye))
 		CRASH("Attempted to remove eye control from non-camera eye. Something has gone horribly wrong.")
@@ -37,6 +41,8 @@
 
 //creates a holocall made by `call_source` from `calling_pad` to `callees`
 /datum/holocall/New(mob/living/call_source, obj/machinery/holopad/calling_pad, list/callees, elevated_access = FALSE)
+	procstart = null
+	src.procstart = null
 	call_start_time = world.time
 	user = call_source
 	calling_pad.outgoing_call = src
@@ -66,6 +72,8 @@
 
 //cleans up ALL references :)
 /datum/holocall/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(hangup)
 	QDEL_NULL(eye)
 
@@ -99,6 +107,8 @@
 
 //Gracefully disconnects a holopad `H` from a call. Pads not in the call are ignored. Notifies participants of the disconnection
 /datum/holocall/proc/Disconnect(obj/machinery/holopad/H)
+	procstart = null
+	src.procstart = null
 	testing("Holocall disconnect")
 	if(H == connected_holopad)
 		var/area/A = get_area(connected_holopad)
@@ -110,6 +120,8 @@
 
 //Forcefully disconnects disconnected_holopad from a call. Pads not in the call are ignored.
 /datum/holocall/proc/ConnectionFailure(obj/machinery/holopad/disconnected_holopad, graceful = FALSE)
+	procstart = null
+	src.procstart = null
 	testing("Holocall connection failure: graceful [graceful]")
 	if(disconnected_holopad == connected_holopad || disconnected_holopad == calling_holopad)
 		if(!graceful && disconnected_holopad != calling_holopad)
@@ -128,6 +140,8 @@
 
 ///Answers a call made to answering_holopad which cannot be the calling holopad. Pads not in the call are ignored
 /datum/holocall/proc/Answer(obj/machinery/holopad/answering_holopad)
+	procstart = null
+	src.procstart = null
 	testing("Holocall answer")
 	if(answering_holopad == calling_holopad)
 		CRASH("How cute, a holopad tried to answer itself.")
@@ -166,6 +180,8 @@
 
 //Checks the validity of a holocall and qdels itself if it's not. Returns TRUE if valid, FALSE otherwise
 /datum/holocall/proc/Check()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/holopad/dialed_holopad as anything in dialed_holopads)
 		if(!dialed_holopad.is_operational)
 			ConnectionFailure(dialed_holopad)
@@ -192,10 +208,14 @@
 	var/datum/holocall/hcall
 
 /datum/action/innate/end_holocall/New(Target, datum/holocall/HC)
+	procstart = null
+	src.procstart = null
 	..()
 	hcall = HC
 
 /datum/action/innate/end_holocall/Activate()
+	procstart = null
+	src.procstart = null
 	hcall.Disconnect(hcall.calling_holopad)
 
 
@@ -207,6 +227,8 @@
 	var/language = /datum/language/common //Initial language, can be changed by HOLORECORD_LANGUAGE entries
 
 /datum/holorecord/proc/set_caller_image(mob/user)
+	procstart = null
+	src.procstart = null
 	var/olddir = user.dir
 	user.setDir(SOUTH)
 	caller_image = image(user)
@@ -224,15 +246,21 @@
 	var/preset_record_text
 
 /obj/item/disk/holodisk/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(preset_record_text)
 		INVOKE_ASYNC(src, PROC_REF(build_record))
 
 /obj/item/disk/holodisk/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(record)
 	return ..()
 
 /obj/item/disk/holodisk/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/disk/holodisk))
 		return NONE
 
@@ -255,6 +283,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/disk/holodisk/proc/build_record()
+	procstart = null
+	src.procstart = null
 	record = new
 	var/list/lines = splittext(preset_record_text,"\n")
 	for(var/line in lines)
@@ -302,6 +332,8 @@
 	var/species_type = /datum/species/human
 
 /datum/preset_holoimage/proc/build_image()
+	procstart = null
+	src.procstart = null
 	if(nonhuman_mobtype)
 		var/mob/living/L = nonhuman_mobtype
 		. = image(initial(L.icon),initial(L.icon_state))

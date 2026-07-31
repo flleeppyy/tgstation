@@ -10,6 +10,8 @@
 	var/datum/weakref/war_button_ref
 
 /datum/team/nuclear/New()
+	procstart = null
+	src.procstart = null
 	..()
 	syndicate_name = syndicate_name()
 
@@ -21,6 +23,8 @@
 	addtimer(CALLBACK(src, PROC_REF(assign_nuke_delayed)), 5 SECONDS)
 
 /datum/team/nuclear/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 	parts += span_header("[syndicate_name] Operatives:")
 
@@ -83,12 +87,16 @@
 	return "<div class='panel redborder'>[parts.Join("<br>")]</div>"
 
 /datum/team/nuclear/antag_listing_name()
+	procstart = null
+	src.procstart = null
 	if(syndicate_name)
 		return "[syndicate_name] Syndicates"
 	else
 		return "Syndicates"
 
 /datum/team/nuclear/antag_listing_entry()
+	procstart = null
+	src.procstart = null
 	var/disk_report = "<b>Nuclear Disk(s)</b><br>"
 	disk_report += "<table cellspacing=5>"
 	for(var/obj/item/disk/nuclear/N in SSpoints_of_interest.real_nuclear_disks)
@@ -134,6 +142,8 @@
 	return final_report
 
 /datum/team/nuclear/proc/rename_team(new_name)
+	procstart = null
+	src.procstart = null
 	syndicate_name = new_name
 	name = "[syndicate_name] Team"
 	for(var/datum/mind/synd_mind in members)
@@ -141,6 +151,8 @@
 		synd_datum?.give_alias()
 
 /datum/team/nuclear/proc/admin_spawn_reinforcement(mob/admin)
+	procstart = null
+	src.procstart = null
 	if(!check_rights_for(admin.client, R_ADMIN))
 		return
 
@@ -217,6 +229,8 @@
 	tgui_alert(admin, "Reinforcement spawned at [infil_or_nukebase] with [tc_to_spawn].", "Reinforcements have arrived", list("God speed"))
 
 /datum/team/nuclear/proc/is_disk_rescued()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/disk/nuclear/nuke_disk in SSpoints_of_interest.real_nuclear_disks)
 		//If emergency shuttle is in transit disk is only safe on it
 		if(SSshuttle.emergency.mode == SHUTTLE_ESCAPE)
@@ -233,12 +247,16 @@
 	return TRUE
 
 /datum/team/nuclear/proc/are_all_operatives_dead()
+	procstart = null
+	src.procstart = null
 	for(var/datum/mind/operative_mind as anything in members)
 		if(ishuman(operative_mind.current) && (operative_mind.current.stat != DEAD))
 			return FALSE
 	return TRUE
 
 /datum/team/nuclear/proc/get_result()
+	procstart = null
+	src.procstart = null
 	var/shuttle_evacuated = EMERGENCY_ESCAPED_OR_ENDGAMED
 	var/shuttle_landed_base = SSshuttle.emergency.is_hijacked()
 	var/disk_rescued = is_disk_rescued()
@@ -298,6 +316,8 @@
 
 /// Returns whether or not syndicate operatives escaped.
 /proc/is_infiltrator_docked_at_syndiebase()
+	procstart = null
+	src.procstart = null
 	var/obj/docking_port/mobile/infiltrator/infiltrator_port = SSshuttle.getShuttle("syndicate")
 
 	var/datum/lazy_template/nukie_base/nukie_template = GLOB.lazy_templates[LAZY_TEMPLATE_KEY_NUKIEBASE]
@@ -311,10 +331,14 @@
 	return FALSE
 
 /datum/team/nuclear/add_member(datum/mind/new_member)
+	procstart = null
+	src.procstart = null
 	..()
 	SEND_SIGNAL(src, COMSIG_NUKE_TEAM_ADDITION, new_member.current)
 
 /datum/team/nuclear/proc/assign_nuke_delayed(attempts = 0)
+	procstart = null
+	src.procstart = null
 	if(!assign_nuke())
 		if(attempts > 5)
 			stack_trace("Failed to assign nuke to team after multiple attempts. \
@@ -328,6 +352,8 @@
 		synd_datum?.memorize_code()
 
 /datum/team/nuclear/proc/assign_nuke()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/nuclearbomb/syndicate/nuke = locate() in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/nuclearbomb/syndicate)
 	if(!nuke)
 		return FALSE
@@ -348,6 +374,8 @@
 /datum/team/nuclear/loneop
 
 /datum/team/nuclear/loneop/assign_nuke()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/nuclearbomb/selfdestruct/nuke = locate() in SSmachines.get_machines_by_type(/obj/machinery/nuclearbomb/selfdestruct)
 	if(!nuke)
 		return FALSE

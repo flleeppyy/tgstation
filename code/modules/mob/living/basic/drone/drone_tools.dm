@@ -8,11 +8,15 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
 /obj/item/storage/drone_tools/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	ADD_TRAIT(src, TRAIT_NODROP, ABSTRACT_ITEM_TRAIT)
 
 /obj/item/storage/drone_tools/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/builtintools = list()
 	builtintools += new /obj/item/crowbar/drone(src)
 	builtintools += new /obj/item/screwdriver/drone(src)
@@ -50,6 +54,8 @@
 	greyscale_colors = null
 
 /obj/item/screwdriver/drone/separate_worn_overlays(mutable_appearance/standing, mutable_appearance/draw_target, isinhands = FALSE, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isinhands)
 		return

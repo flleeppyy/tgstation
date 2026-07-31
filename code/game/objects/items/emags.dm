@@ -18,14 +18,20 @@
 	var/type_blacklist //List of types that require a specialized emag
 
 /obj/item/card/emag/get_displayed_name(honorifics = FALSE)
+	procstart = null
+	src.procstart = null
 	return name // That's Grey Tider (as "cryptographic sequencer")
 
-/obj/item/card/emag/attack_self(mob/user) //for traitors with balls of plastitanium
+/obj/item/card/emag/attack_self(mob/user)
+	procstart = null
+	src.procstart = null //for traitors with balls of plastitanium
 	if(Adjacent(user))
 		user.visible_message(span_notice("[user] shows you: [icon2html(src, viewers(user))] [name]."), span_notice("You show [src]."))
 	add_fingerprint(user)
 
 /obj/item/card/emag/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(isnull(user) || !istype(emag_card))
 		return FALSE
 	var/emag_count = 0
@@ -61,6 +67,8 @@
 	return TRUE
 
 /obj/item/card/emag/proc/contemplation_period(mob/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(user))
 		return
 	if(QDELETED(src))
@@ -69,6 +77,8 @@
 		to_chat(user, span_warning("Well, shit. Those are never coming apart now."))
 
 /obj/item/card/emag/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(gone, /obj/item/card/emag))
 		// This is here so if(when) admins fish it out of contents it doesn't become glitchy
@@ -105,14 +115,20 @@
 	var/exploding = FALSE
 
 /obj/item/card/emagfake/get_displayed_name(honorifics = FALSE)
+	procstart = null
+	src.procstart = null
 	return name // That's Grey Tider (as "cryptographic sequencer")
 
-/obj/item/card/emagfake/attack_self(mob/user) //for assistants with balls of plasteel
+/obj/item/card/emagfake/attack_self(mob/user)
+	procstart = null
+	src.procstart = null //for assistants with balls of plasteel
 	if(Adjacent(user))
 		user.visible_message(span_notice("[user] shows you: [icon2html(src, viewers(user))] [name]."), span_notice("You show [src]."))
 	add_fingerprint(user)
 
 /obj/item/card/emagfake/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(exploding)
 		playsound(src, 'sound/items/bikehorn.ogg', 50, TRUE, frequency = 2)
 	else if(obj_flags & EMAGGED)
@@ -126,11 +142,15 @@
 	return ITEM_INTERACT_SKIP_TO_ATTACK // So it does the attack animation.
 
 /obj/item/card/emagfake/proc/blow_up()
+	procstart = null
+	src.procstart = null
 	visible_message(span_boldwarning("[src] explodes!"))
 	explosion(src, light_impact_range = 1, explosion_cause = src)
 	qdel(src)
 
 /obj/item/card/emagfake/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	playsound(src, SFX_SPARKS, 50, TRUE, SILENCED_SOUND_EXTRARANGE)
@@ -142,10 +162,14 @@
 	return TRUE
 
 /obj/item/card/emag/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	type_blacklist = list(typesof(/obj/machinery/door/airlock) + typesof(/obj/machinery/door/window/) +  typesof(/obj/machinery/door/firedoor) - typesof(/obj/machinery/door/airlock/tram)) //list of all typepaths that require a specialized emag to hack.
 
 /obj/item/card/emag/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(SHOULD_SKIP_INTERACTION(interacting_with, src, user))
 		return NONE // lets us put things in bags without trying to emag them
 	if(!can_emag(interacting_with, user))
@@ -157,9 +181,13 @@
 	return NONE // In a perfect world this would be blocking, but this is not a perfect world
 
 /obj/item/card/emag/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return prox_check ? NONE : interact_with_atom(interacting_with, user)
 
 /obj/item/card/emag/proc/can_emag(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	for (var/subtypelist in type_blacklist)
 		if (target.type in subtypelist)
 			to_chat(user, span_warning("The [target] cannot be affected by the [src]! A more specialized hacking device is required."))
@@ -181,26 +209,36 @@
 	var/charge_time = 1800 //three minutes
 
 /obj/item/card/emag/doorjack/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	type_whitelist = list(typesof(/obj/machinery/door/airlock), typesof(/obj/machinery/door/window/), typesof(/obj/machinery/door/firedoor)) //list of all acceptable typepaths that this device can affect
 
 /obj/item/card/emag/doorjack/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// only for doorjacks since regular emags still need to be able to break locks on storage items
 	if(interacting_with.atom_storage)
 		return NONE
 	. = ..()
 
 /obj/item/card/emag/doorjack/proc/use_charge(mob/user)
+	procstart = null
+	src.procstart = null
 	charges --
 	to_chat(user, span_notice("You use [src]. It now has [charges] charge[charges == 1 ? "" : "s"] remaining."))
 	charge_timers.Add(addtimer(CALLBACK(src, PROC_REF(recharge)), charge_time, TIMER_STOPPABLE))
 
 /obj/item/card/emag/doorjack/proc/recharge(mob/user)
+	procstart = null
+	src.procstart = null
 	charges = min(charges+1, max_charges)
 	playsound(src,'sound/machines/beep/twobeep.ogg',10,TRUE, extrarange = SILENCED_SOUND_EXTRARANGE, falloff_distance = 0)
 	charge_timers.Remove(charge_timers[1])
 
 /obj/item/card/emag/doorjack/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It has [charges] charges remaining.")
 	if (length(charge_timers))
@@ -211,6 +249,8 @@
 		. += span_notice("<b>CHARGE #[i]: [loadingbar] ([DisplayTimeText(timeleft)])</b>")
 
 /obj/item/card/emag/doorjack/can_emag(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if (charges <= 0)
 		to_chat(user, span_warning("[src] is recharging!"))
 		return FALSE
@@ -235,14 +275,20 @@
 	var/datum/team/battlecruiser/team
 
 /obj/item/card/emag/battlecruiser/proc/use_charge(mob/user)
+	procstart = null
+	src.procstart = null
 	used = TRUE
 	to_chat(user, span_boldwarning("You use [src], and it interfaces with the communication console. No going back..."))
 
 /obj/item/card/emag/battlecruiser/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It can only be used on the communications console.")
 
 /obj/item/card/emag/battlecruiser/can_emag(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(used)
 		to_chat(user, span_warning("[src] is used up."))
 		return FALSE

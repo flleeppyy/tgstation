@@ -3,6 +3,8 @@ GLOBAL_DATUM_INIT(event_logger, /datum/event_logger, new())
 
 /// Enables event logging for a datum. If display_on is supplied then it will report the events as if theyre happening on that datum
 /datum/proc/enable_evlogging(datum/display_on = null)
+	procstart = null
+	src.procstart = null
 	if(display_on)
 		GLOB.event_logger.display_map[REF(src)] = REF(display_on)
 	if(datum_flags & DF_EVLOGGING)
@@ -12,6 +14,8 @@ GLOBAL_DATUM_INIT(event_logger, /datum/event_logger, new())
 
 /// Disables event logging for a datum. If display_on was supplied during enable_evlogging, it will also remove the display mapping.
 /datum/proc/disable_evlogging()
+	procstart = null
+	src.procstart = null
 	GLOB.event_logger.display_map -= REF(src)
 	if(!(datum_flags & DF_EVLOGGING))
 		return
@@ -31,11 +35,15 @@ GLOBAL_DATUM_INIT(event_logger, /datum/event_logger, new())
 	var/list/info = list()
 
 /datum/event_logger_track/New(track_ref, track_name, list/info_data = list())
+	procstart = null
+	src.procstart = null
 	ref = track_ref
 	name = track_name
 	info = info_data
 
 /datum/event_logger_track/Destroy()
+	procstart = null
+	src.procstart = null
 	events = null
 	info = null
 	return ..()
@@ -72,6 +80,8 @@ GLOBAL_DATUM_INIT(event_logger, /datum/event_logger, new())
 	var/list/display_map = list()
 
 /datum/event_logger/Destroy()
+	procstart = null
+	src.procstart = null
 	_clear_all_overlays()
 	QDEL_LIST_ASSOC_VAL(tracks)
 	tracks = null
@@ -81,6 +91,8 @@ GLOBAL_DATUM_INIT(event_logger, /datum/event_logger, new())
 	return ..()
 
 /datum/event_logger/proc/start()
+	procstart = null
+	src.procstart = null
 	if(running)
 		return
 	running = TRUE
@@ -88,10 +100,14 @@ GLOBAL_DATUM_INIT(event_logger, /datum/event_logger, new())
 		time_start = world.time
 
 /datum/event_logger/proc/stop()
+	procstart = null
+	src.procstart = null
 	running = FALSE
 
 /// Enter pick-target mode: the next atom the user clicks gets DF_EVLOGGING set.
 /datum/event_logger/proc/toggle_pick_target(mob/user)
+	procstart = null
+	src.procstart = null
 	if(awaiting_pick_user)
 		_end_pick_target()
 	else
@@ -100,6 +116,8 @@ GLOBAL_DATUM_INIT(event_logger, /datum/event_logger, new())
 
 /// Signal handler: fired when the user clicks something while in pick-target mode.
 /datum/event_logger/proc/on_pick_target_click(mob/source, atom/clicked, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	clicked.enable_evlogging()
 	_end_pick_target()
@@ -107,6 +125,8 @@ GLOBAL_DATUM_INIT(event_logger, /datum/event_logger, new())
 
 /// Ends pick-target mode, unregistering the click signal and clearing the awaiting_pick_user var.
 /datum/event_logger/proc/_end_pick_target()
+	procstart = null
+	src.procstart = null
 	if(isnull(awaiting_pick_user))
 		return
 	UnregisterSignal(awaiting_pick_user, COMSIG_MOB_CLICKON)
@@ -114,12 +134,16 @@ GLOBAL_DATUM_INIT(event_logger, /datum/event_logger, new())
 
 /// Ensures a track exists for ref_string. Safe to call multiple times.
 /datum/event_logger/proc/add_track(ref_string, track_name, list/info_data)
+	procstart = null
+	src.procstart = null
 	if(tracks[ref_string])
 		return
 	tracks[ref_string] = new /datum/event_logger_track(ref_string, track_name, info_data)
 
 /// Internal: Sets the event up, making a track if necesary. Also turns the instance into a REF() at this point
 /datum/event_logger/proc/_add_event(datum/source, list/event_data)
+	procstart = null
+	src.procstart = null
 	if(!running)
 		return
 	// Resolve display routing: if source has a display_on target, log under that datum's track instead
@@ -158,6 +182,8 @@ GLOBAL_DATUM_INIT(event_logger, /datum/event_logger, new())
 
 /// Log a plain text event. Has no world-visuals, just puts text into the menu
 /datum/event_logger/proc/log_event_text(datum/source, category, info_string)
+	procstart = null
+	src.procstart = null
 	_add_event(source, list(
 		"log_type" = EVLOG_TYPE_TEXT,
 		"category" = category,
@@ -166,6 +192,8 @@ GLOBAL_DATUM_INIT(event_logger, /datum/event_logger, new())
 
 /// Log a location event (highlights a single tile). I should remove this one as turfs does the same thing essentially
 /datum/event_logger/proc/log_event_location(datum/source, category, info_string, turf/T)
+	procstart = null
+	src.procstart = null
 	_add_event(source, list(
 		"log_type" = EVLOG_TYPE_LOCATION,
 		"category" = category,
@@ -177,6 +205,8 @@ GLOBAL_DATUM_INIT(event_logger, /datum/event_logger, new())
 
 /// Log a turfs event (highlights a set of tiles).
 /datum/event_logger/proc/log_event_turfs(datum/source, category, info_string, list/turfs)
+	procstart = null
+	src.procstart = null
 	var/list/coords = list()
 	for(var/turf/T as anything in turfs)
 		coords += list(list("x" = T.x, "y" = T.y, "z" = T.z))
@@ -189,6 +219,8 @@ GLOBAL_DATUM_INIT(event_logger, /datum/event_logger, new())
 
 /// Log a line event (draws a line between 2 turfs).
 /datum/event_logger/proc/log_event_lines(datum/source, category, info_string, turf/A, turf/B)
+	procstart = null
+	src.procstart = null
 	_add_event(source, list(
 		"log_type" = EVLOG_TYPE_LINES,
 		"category" = category,
@@ -203,6 +235,8 @@ GLOBAL_DATUM_INIT(event_logger, /datum/event_logger, new())
 
 /// Log a path event (renders directional arrows + start/end markers for a list of turfs in order from start to finish).
 /datum/event_logger/proc/log_event_path(datum/source, category, info_string, list/turfs)
+	procstart = null
+	src.procstart = null
 	var/list/coords = list()
 	for(var/turf/T as anything in turfs)
 		coords += list(list("x" = T.x, "y" = T.y, "z" = T.z))
@@ -215,6 +249,8 @@ GLOBAL_DATUM_INIT(event_logger, /datum/event_logger, new())
 
 /// Log a maptext event (renders a floating text label at the turf when selected). text_string is the string to display at the turf.
 /datum/event_logger/proc/log_event_maptext(datum/source, category, info_string, turf/T, text_string)
+	procstart = null
+	src.procstart = null
 	_add_event(source, list(
 		"log_type" = EVLOG_TYPE_MAPTEXT,
 		"category" = category,
@@ -227,6 +263,8 @@ GLOBAL_DATUM_INIT(event_logger, /datum/event_logger, new())
 
 /// Remove all overlays for a specific user.
 /datum/event_logger/proc/_clear_user_overlays(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user_overlays[user])
 		return
 	if(user.client)
@@ -235,11 +273,15 @@ GLOBAL_DATUM_INIT(event_logger, /datum/event_logger, new())
 
 /// Remove all overlays for all users.
 /datum/event_logger/proc/_clear_all_overlays()
+	procstart = null
+	src.procstart = null
 	for(var/mob/user as anything in user_overlays)
 		_clear_user_overlays(user)
 
 /// Push world-space highlight overlays to the user's client for the given events.
 /datum/event_logger/proc/_apply_event_overlays(mob/user, list/events_to_show)
+	procstart = null
+	src.procstart = null
 	_clear_user_overlays(user)
 	if(!user.client || !length(events_to_show))
 		return
@@ -298,6 +340,8 @@ GLOBAL_DATUM_INIT(event_logger, /datum/event_logger, new())
 
 ///Draw a line of images similar to beams but client-side. I couldn't find anything like this yet so here we are. Maybe making this a global is a good idea.
 /datum/event_logger/proc/_make_line_images(turf/turf_A, turf/turf_B, color)
+	procstart = null
+	src.procstart = null
 	var/list/images = list()
 	var/beam_icon = 'icons/turf/debug.dmi'
 	var/beam_icon_state = "beam"
@@ -358,6 +402,8 @@ GLOBAL_DATUM_INIT(event_logger, /datum/event_logger, new())
 
 /// Creates a single coloured tile overlay image.
 /datum/event_logger/proc/_make_tile_image(turf/selected_turf, icon_state, color, alpha_fraction)
+	procstart = null
+	src.procstart = null
 	var/image/img = image('icons/turf/debug.dmi', selected_turf, icon_state, PATH_DEBUG_LAYER)
 	SET_PLANE_EXPLICIT(img, BALLOON_CHAT_PLANE, selected_turf)
 	img.color = color
@@ -366,10 +412,14 @@ GLOBAL_DATUM_INIT(event_logger, /datum/event_logger, new())
 
 /// Returns the hex color string for a category, or white if unknown.
 /datum/event_logger/proc/get_category_color(category)
+	procstart = null
+	src.procstart = null
 	return category_colors[category] || "#ffffff"
 
 /// Clears all tracks, categories and overlays.
 /datum/event_logger/proc/clear()
+	procstart = null
+	src.procstart = null
 	_clear_all_overlays()
 	QDEL_LIST_ASSOC_VAL(tracks)
 	tracks = list()
@@ -385,26 +435,36 @@ GLOBAL_DATUM_INIT(event_logger, /datum/event_logger, new())
 
 
 /datum/event_logger/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/simple/chat_dark),
 	)
 
 /datum/event_logger/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "EventLogger", "Event Logger")
 		ui.open()
 
 /datum/event_logger/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	_clear_user_overlays(user)
 	if(awaiting_pick_user == user)
 		_end_pick_target()
 
 /datum/event_logger/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_DEBUG)
 
 /datum/event_logger/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["running"] = running
@@ -440,6 +500,8 @@ GLOBAL_DATUM_INIT(event_logger, /datum/event_logger, new())
 	return data
 
 /datum/event_logger/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

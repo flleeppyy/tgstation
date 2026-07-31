@@ -38,6 +38,8 @@
 	var/deac_sound = 'sound/items/tools/welderdeactivate.ogg'
 
 /obj/item/flamethrower/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/flamethrower)
@@ -48,6 +50,8 @@
 	)
 
 /obj/item/flamethrower/Destroy()
+	procstart = null
+	src.procstart = null
 	if(weldtool)
 		QDEL_NULL(weldtool)
 	if(igniter)
@@ -57,6 +61,8 @@
 	return ..()
 
 /obj/item/flamethrower/process()
+	procstart = null
+	src.procstart = null
 	if(!lit || !igniter)
 		return PROCESS_KILL
 	var/turf/location = loc
@@ -69,10 +75,14 @@
 
 
 /obj/item/flamethrower/update_icon_state()
+	procstart = null
+	src.procstart = null
 	inhand_icon_state = "flamethrower_[lit]"
 	return ..()
 
 /obj/item/flamethrower/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(igniter)
 		. += "+igniter[status]"
@@ -82,6 +92,8 @@
 		. += "+lit"
 
 /obj/item/flamethrower/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!ptank)
 		return NONE
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
@@ -96,6 +108,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/flamethrower/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_SUCCESS
 	if(status)
 		return ITEM_INTERACT_BLOCKING
@@ -114,6 +128,8 @@
 	qdel(src)
 
 /obj/item/flamethrower/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(igniter && !lit)
 		tool.play_tool_sound(src)
 		status = !status
@@ -122,6 +138,8 @@
 		return TRUE
 
 /obj/item/flamethrower/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isigniter(tool))
 		var/obj/item/assembly/igniter/inserting_igniter = tool
 		if(inserting_igniter.secured)
@@ -151,15 +169,21 @@
 	return NONE
 
 /obj/item/flamethrower/return_analyzable_air()
+	procstart = null
+	src.procstart = null
 	if(ptank)
 		return ptank.return_analyzable_air()
 	else
 		return null
 
 /obj/item/flamethrower/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	toggle_igniter(user)
 
 /obj/item/flamethrower/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(ptank))
 		return NONE
 
@@ -170,11 +194,15 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/flamethrower/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ptank)
 		. += span_notice("\The [src] has \a [ptank] attached. Alt-click to remove it.")
 
 /obj/item/flamethrower/proc/toggle_igniter(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ptank)
 		to_chat(user, span_notice("Attach a plasma tank first!"))
 		return
@@ -196,6 +224,8 @@
 	update_appearance()
 
 /obj/item/flamethrower/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	. =..()
 	weldtool = locate(/obj/item/weldingtool) in contents
 	igniter = locate(/obj/item/assembly/igniter) in contents
@@ -206,6 +236,8 @@
 
 //Called from turf.dm turf/dblclick
 /obj/item/flamethrower/proc/flame_turf(turflist)
+	procstart = null
+	src.procstart = null
 	if(!lit || operating)
 		return
 	operating = TRUE
@@ -225,6 +257,8 @@
 	operating = FALSE
 
 /obj/item/flamethrower/proc/default_ignite(turf/target, release_amount = 0.05)
+	procstart = null
+	src.procstart = null
 	//TODO: DEFERRED Consider checking to make sure tank pressure is high enough before doing this...
 	//Transfer 5% of current tank air contents to turf
 	var/datum/gas_mixture/tank_mix = ptank.return_air()
@@ -239,6 +273,8 @@
 	//location.hotspot_expose(1000,500,1)
 
 /obj/item/flamethrower/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(\
 	/datum/component/bullet_intercepting,\
@@ -269,6 +305,8 @@
 	create_with_tank = TRUE
 
 /obj/item/flamethrower/proc/intercepted_bullet_reaction(mob/living/holder, obj/projectile/bullet)
+	procstart = null
+	src.procstart = null
 	holder.visible_message(span_danger("\The [bullet] hits the fuel tank on [holder]'s [name], rupturing it! What a shot!"))
 	var/turf/target_turf = get_turf(holder)
 	holder.log_message("held a flamethrower tank detonated by a projectile ([bullet])", LOG_GAME)
@@ -276,15 +314,23 @@
 	qdel(ptank)
 
 /obj/item/flamethrower/proc/check_tank()
+	procstart = null
+	src.procstart = null
 	return ptank
 
 /obj/item/assembly/igniter/proc/flamethrower_process(turf/open/location)
+	procstart = null
+	src.procstart = null
 	location.hotspot_expose(heat,2)
 
 /obj/item/assembly/igniter/proc/ignite_turf(obj/item/flamethrower/F,turf/open/location,release_amount = 0.05)
+	procstart = null
+	src.procstart = null
 	F.default_ignite(location,release_amount)
 
 /obj/item/flamethrower/proc/instant_refill()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(ptank)
 		var/datum/gas_mixture/tank_mix = ptank.return_air()

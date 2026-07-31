@@ -31,6 +31,8 @@
 	var/flatpack_time = 4.5 SECONDS
 
 /obj/machinery/flatpacker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	register_context()
 
 	materials = new ( \
@@ -44,12 +46,16 @@
 	return ..()
 
 /obj/machinery/flatpacker/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(materials)
 	QDEL_NULL(inserted_board)
 	QDEL_LIST(flatpacked_components)
 	return ..()
 
 /obj/machinery/flatpacker/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(!QDELETED(inserted_board))
 		context[SCREENTIP_CONTEXT_CTRL_LMB] = "Eject board"
@@ -72,6 +78,8 @@
 			return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/flatpacker/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. += ..()
 	if(!in_range(user, src) && !isobserver(user))
 		return
@@ -100,6 +108,8 @@
 					. += span_warning("[component_name]: [to_insert[component_name]].")
 
 /obj/machinery/flatpacker/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!QDELETED(inserted_board))
@@ -112,6 +122,8 @@
  * * obj/item/component - the component typepath we are trying to get the name
  */
 /obj/machinery/flatpacker/proc/get_flatpack_component_name(obj/item/component)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(ispath(component, /obj/item/vending_refill))
@@ -128,6 +140,8 @@
  * * obj/item/type - the component type we are trying to count
  */
 /obj/machinery/flatpacker/proc/get_flatpack_component_count(obj/item/type)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	. = 0
@@ -136,6 +150,8 @@
 			. += 1
 
 /obj/machinery/flatpacker/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == inserted_board)
 		inserted_board = null
@@ -146,6 +162,8 @@
 		flatpacked_components -= gone
 
 /obj/machinery/flatpacker/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/mat_capacity = 0
@@ -162,6 +180,8 @@
 	creation_efficiency = max(1.2, round(efficiency, 0.1))
 
 /obj/machinery/flatpacker/proc/AfterMaterialInsert(container, obj/item/item_inserted, last_inserted_id, mats_consumed, amount_inserted, atom/context)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	//we use initial(active_power_usage) because higher tier parts will have higher active usage but we have no benefit from it
@@ -190,6 +210,8 @@
  * * count - the number of parts to compute the cost of
  */
 /obj/machinery/flatpacker/proc/analyze_cost(part_type, costs, count)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/comp_type = part_type
@@ -219,6 +241,8 @@
 	return costs
 
 /obj/machinery/flatpacker/base_item_interaction(mob/living/user, obj/item/attacking_item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(attacking_item.flags_1 & HOLOGRAM_1)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 
@@ -262,31 +286,45 @@
 	return ..()
 
 /obj/machinery/flatpacker/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]_o" : base_icon_state
 
 /obj/machinery/flatpacker/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/flatpacker/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/flatpacker/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Flatpacker")
 		ui.open()
 
 /obj/machinery/flatpacker/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/sheetmaterials),
 		get_asset_datum(/datum/asset/spritesheet_batched/research_designs),
 	)
 
 /obj/machinery/flatpacker/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return materials.ui_static_data()
 
 /obj/machinery/flatpacker/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	.["materials"] = materials.ui_data()
@@ -323,6 +361,8 @@
 	.["design"] = design
 
 /obj/machinery/flatpacker/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -383,6 +423,8 @@
  * * board - the board to put inside the flatpack
  */
 /obj/machinery/flatpacker/proc/finish_build(board)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	busy = FALSE
@@ -395,6 +437,8 @@
 	SStgui.update_uis(src)
 
 /obj/machinery/flatpacker/click_ctrl(mob/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(inserted_board) || busy)
 		return CLICK_ACTION_BLOCKING
 

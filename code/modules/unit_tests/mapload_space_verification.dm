@@ -6,6 +6,8 @@
 	priority = TEST_LONGER
 
 /datum/unit_test/maptest_mapload_space_verification/Run()
+	procstart = null
+	src.procstart = null
 	// Is our current map a planetary station (NO space turfs allowed)? If so, check for ANY space turfs.
 	if(SSmapping.is_planetary())
 		validate_planetary_map()
@@ -43,6 +45,8 @@
 /// Verifies that there are ZERO space turfs on a valid planetary station. We NEVER want space turfs here, so we do not check for /area/space here since something completely undesirable is happening.
 /// There are also a few considerations specific to planetary stations included within, so let's spin it out into a separate proc for clarity.
 /datum/unit_test/maptest_mapload_space_verification/proc/validate_planetary_map()
+	procstart = null
+	src.procstart = null
 	// We want to get both the station level and the mining level (if the two are seperate for any reason).
 	var/list/testable_levels = list()
 	testable_levels += SSmapping.levels_by_trait(ZTRAIT_STATION) // Station z-levels get to be in by default because they can derail an entire round and cause LINDA to weep if a space turf is present.

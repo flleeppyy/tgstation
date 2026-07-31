@@ -39,14 +39,20 @@
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/auxiliary_base, 32)
 
 /obj/machinery/computer/auxiliary_base/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/gps, "NT_AUX")
 
-/obj/machinery/computer/auxiliary_base/Destroy() // Shouldn't be destroyable... but just in case
+/obj/machinery/computer/auxiliary_base/Destroy()
+	procstart = null
+	src.procstart = null // Shouldn't be destroyable... but just in case
 	LAZYCLEARLIST(turrets)
 	return ..()
 
 /obj/machinery/computer/auxiliary_base/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -54,6 +60,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/auxiliary_base, 32)
 		ui.open()
 
 /obj/machinery/computer/auxiliary_base/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/options = params2list(possible_destinations)
 	var/obj/docking_port/mobile/M = SSshuttle.getShuttle(shuttleId)
@@ -128,12 +136,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/auxiliary_base, 32)
  * * user - The mob trying to initiate the launch
  */
 /obj/machinery/computer/auxiliary_base/proc/launch_check(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!is_station_level(z) && shuttleId == "colony_drop")
 		to_chat(user, span_warning("You can't move the base again!"))
 		return FALSE
 	return TRUE
 
 /obj/machinery/computer/auxiliary_base/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -198,12 +210,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/auxiliary_base, 32)
 			return TRUE
 
 /obj/machinery/computer/auxiliary_base/proc/set_mining_mode()
+	procstart = null
+	src.procstart = null
 	if(is_mining_level(z)) //The console switches to controlling the mining shuttle once landed.
 		req_one_access = list()
 		shuttleId = "mining" //The base can only be dropped once, so this gives the console a new purpose.
 		possible_destinations = "mining_home;mining_away;landing_zone_dock;mining_public"
 
 /obj/machinery/computer/auxiliary_base/proc/set_landing_zone(turf/T, mob/user, no_restrictions)
+	procstart = null
+	src.procstart = null
 	var/obj/docking_port/mobile/auxiliary_base/base_dock = locate(/obj/docking_port/mobile/auxiliary_base) in SSshuttle.mobile_docking_ports
 	if(!base_dock) //Not all maps have an Aux base. This object is useless in that case.
 		to_chat(user, span_warning("This station is not equipped with an auxiliary base. Please contact your Nanotrasen contractor."))
@@ -268,6 +284,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/auxiliary_base, 32)
 	var/no_restrictions = FALSE //Badmin variable to let you drop the colony ANYWHERE.
 
 /obj/item/assault_pod/mining/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(setting)
 		return
 
@@ -314,6 +332,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/auxiliary_base, 32)
 	shuttle_id = "colony_drop"
 
 /obj/docking_port/mobile/auxiliary_base/takeoff(list/old_turfs, list/new_turfs, list/moved_atoms, rotation, movement_direction, old_dock, area/underlying_old_area)
+	procstart = null
+	src.procstart = null
 	for(var/i in new_turfs)
 		var/turf/place = i
 		if(ismineralturf(place))
@@ -343,6 +363,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/auxiliary_base, 32)
 	var/console_range = 15 //Wifi range of the beacon to find the aux base console
 
 /obj/structure/mining_shuttle_beacon/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -435,9 +457,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/auxiliary_base, 32)
 	log_shuttle("[key_name(usr)] has registered the mining shuttle beacon at [COORD(landing_spot)].")
 
 /obj/structure/mining_shuttle_beacon/proc/clear_cooldown()
+	procstart = null
+	src.procstart = null
 	anti_spam_cd = 0
 
 /obj/structure/mining_shuttle_beacon/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user) //So borgies can help
 
 #undef ZONE_SET

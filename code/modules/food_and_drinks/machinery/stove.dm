@@ -18,6 +18,8 @@
 	icon_state_preview = "range_off"
 
 /obj/machinery/stove/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/stove, container_x = -6, container_y = 16)
 
@@ -49,11 +51,15 @@
 	var/list/obj/item/added_ingredients
 
 /obj/item/reagent_containers/cup/soup_pot/Initialize(mapload, vol)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/cuffable_item)
 	RegisterSignal(src, COMSIG_ATOM_REAGENT_EXAMINE, PROC_REF(reagent_special_examine))
 
 /obj/item/reagent_containers/cup/soup_pot/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item))
 		context[SCREENTIP_CONTEXT_RMB] = "Remove ingredient"
 		return CONTEXTUAL_SCREENTIP_SET
@@ -65,6 +71,8 @@
 	return NONE
 
 /obj/item/reagent_containers/cup/soup_pot/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("There's room for <b>[max_ingredients - LAZYLEN(added_ingredients)]</b> more ingredients \
 		or <b>[reagents.maximum_volume - reagents.total_volume]</b> more units of reagents in there.")
@@ -74,6 +82,8 @@
  * including the ingredients we have within as well
  */
 /obj/item/reagent_containers/cup/soup_pot/proc/reagent_special_examine(datum/source, mob/user, list/examine_list, can_see_insides = FALSE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += "Inside, you can see:"
@@ -114,6 +124,8 @@
 	return STOP_GENERIC_REAGENT_EXAMINE
 
 /obj/item/reagent_containers/cup/soup_pot/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	LAZYREMOVE(added_ingredients, gone)
 
@@ -125,6 +137,8 @@
  * * user: the entity adding ingredients via a container to a soup pot. Must not be null.
  */
 /obj/item/reagent_containers/cup/soup_pot/proc/transfer_from_container_to_pot(obj/item/transfer_from, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!transfer_from.atom_storage)
 		return
 
@@ -146,6 +160,8 @@
 	return TRUE
 
 /obj/item/reagent_containers/cup/soup_pot/item_interaction(mob/living/user, obj/item/item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -174,9 +190,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/cup/soup_pot/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return transfer_from_container_to_pot(tool, user)
 
 /obj/item/reagent_containers/cup/soup_pot/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(added_ingredients))
 		return SECONDARY_ATTACK_CALL_NORMAL
 
@@ -193,6 +213,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/reagent_containers/cup/soup_pot/proc/can_add_ingredient(obj/item/ingredient)
+	procstart = null
+	src.procstart = null
 	// Let default reagent handling take this
 	if(ingredient.is_open_container())
 		return FALSE
@@ -206,11 +228,15 @@
 	return TRUE
 
 /obj/item/reagent_containers/cup/soup_pot/try_splash(mob/user, atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. && LAZYLEN(added_ingredients))
 		dump_ingredients()
 
 /obj/item/reagent_containers/cup/soup_pot/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum, do_splash)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. && LAZYLEN(added_ingredients))
 		dump_ingredients()
@@ -223,6 +249,8 @@
  * * y_offset - How much pixel Y offset to give every ingredient, if not set will be random
  */
 /obj/item/reagent_containers/cup/soup_pot/proc/dump_ingredients(atom/drop_loc = drop_location(), x_offset, y_offset)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/ingredient as anything in added_ingredients)
 		ingredient.forceMove(drop_loc)
 		ingredient.pixel_x += (isnum(x_offset) ? x_offset : rand(-4, 4))
@@ -231,6 +259,8 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/item/reagent_containers/cup/soup_pot/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(length(added_ingredients) <= 0 && reagents.total_volume <= 0)
 		return

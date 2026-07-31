@@ -9,6 +9,8 @@
 	var/display_active = TRUE
 
 /obj/item/clothing/glasses/hud/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(obj_flags & EMAGGED || . & EMP_PROTECT_SELF)
 		return
@@ -16,6 +18,8 @@
 	desc = "[desc] The display is flickering slightly."
 
 /obj/item/clothing/glasses/hud/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -24,6 +28,8 @@
 	return TRUE
 
 /obj/item/clothing/glasses/hud/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.is_blind())
 		return SHAME
 	var/mob/living/living_user = user
@@ -38,10 +44,14 @@
 	return OXYLOSS
 
 /obj/item/clothing/glasses/hud/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	display_active = TRUE
 
 /obj/item/clothing/glasses/hud/proc/toggle_hud_display(mob/living/carbon/eye_owner)
+	procstart = null
+	src.procstart = null
 	if(display_active)
 		display_active = FALSE
 		for(var/hud_trait in clothing_traits)
@@ -81,6 +91,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 0.6, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 0.6, /datum/material/uranium = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/silver = SMALL_MATERIAL_AMOUNT * 3.5)
 
 /obj/item/clothing/glasses/hud/health/night/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = length(color_cutoffs) ? initial(icon_state) : "night_off"
 
@@ -107,6 +119,8 @@
 	custom_materials = list(/datum/material/glass = SHEET_MATERIAL_AMOUNT * 0.8, /datum/material/iron = SHEET_MATERIAL_AMOUNT * 0.55)
 
 /obj/item/clothing/glasses/hud/health/sunglasses/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/hudsunmedremoval)
 
@@ -136,6 +150,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 0.6, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 0.6, /datum/material/uranium = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/plasma = SMALL_MATERIAL_AMOUNT * 3)
 
 /obj/item/clothing/glasses/hud/diagnostic/night/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = length(color_cutoffs) ? initial(icon_state) : "night_off"
 
@@ -151,6 +167,8 @@
 	custom_materials = list(/datum/material/glass = SHEET_MATERIAL_AMOUNT * 0.8, /datum/material/iron = SHEET_MATERIAL_AMOUNT * 0.55)
 
 /obj/item/clothing/glasses/hud/diagnostic/sunglasses/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/hudsundiagremoval)
 
@@ -180,6 +198,8 @@
 	actions_types = list(/datum/action/item_action/flip)
 
 /obj/item/clothing/glasses/hud/security/sunglasses/eyepatch/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = (icon_state == base_icon_state) ? "[base_icon_state]_flipped" : base_icon_state
 	user.update_worn_glasses()
@@ -196,6 +216,8 @@
 	custom_materials = list(/datum/material/glass = SHEET_MATERIAL_AMOUNT * 0.8, /datum/material/iron = SHEET_MATERIAL_AMOUNT * 0.55)
 
 /obj/item/clothing/glasses/hud/security/sunglasses/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/hudsunsecremoval)
 
@@ -217,6 +239,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 0.6, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 0.6, /datum/material/uranium = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/gold = SMALL_MATERIAL_AMOUNT * 3.5)
 
 /obj/item/clothing/glasses/hud/security/night/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = length(color_cutoffs) ? initial(icon_state) : "night_off"
 
@@ -249,6 +273,8 @@
 	actions_types = list(/datum/action/item_action/switch_hud)
 
 /obj/item/clothing/glasses/hud/toggle/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return
 	var/mob/living/carbon/human/wearer = user
@@ -277,6 +303,8 @@
 	clothing_traits = list(TRAIT_SECURITY_HUD)
 
 /obj/item/clothing/glasses/hud/toggle/thermal/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	var/hud_type
 	if (LAZYLEN(clothing_traits))
@@ -298,6 +326,8 @@
 	user.update_worn_glasses()
 
 /obj/item/clothing/glasses/hud/toggle/thermal/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return

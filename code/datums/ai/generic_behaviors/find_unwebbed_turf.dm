@@ -8,6 +8,8 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/find_unwebbed_turf/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/spider = controller.pawn
 	var/atom/current_target = controller.blackboard[target_key]
 	if(current_target && !(locate(/obj/structure/spider/stickyweb) in current_target))
@@ -39,6 +41,8 @@
 	return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/find_unwebbed_turf/proc/is_valid_web_turf(turf/target_turf, mob/living/spider)
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/structure/spider/stickyweb) in target_turf)
 		return FALSE
 	if(HAS_TRAIT(target_turf, TRAIT_SPINNING_WEB_TURF))

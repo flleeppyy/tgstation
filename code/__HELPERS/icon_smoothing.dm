@@ -71,6 +71,8 @@ xxx xxx xxx
 /// Returns a list accessable by a border object's dir, the direction between it and a target, and a target
 /// Said list will return the direction the two objects connect, if any exists (if the target isn't a border object and the direction is fine, return the inverse of the direction in use)
 /proc/generate_adjacent_directions()
+	procstart = null
+	src.procstart = null
 	// Have to hold all conventional dir pairs, so we size to the largest
 	// We don't HAVE diagonal border objects, so I'm gonna pretend they'll never exist
 
@@ -120,6 +122,8 @@ xxx xxx xxx
 /// Helper proc for smoothing border objects. Return this from smoothing_allowed() to get the desired effect
 /// Indexes into some global lists that encode direction bullshit
 /proc/should_border_obj_smooth(atom/border_obj, atom/target, direction)
+	procstart = null
+	src.procstart = null
 	// If the target is also a border obj, take its dirs into account
 	if(target.smoothing_flags & SMOOTH_BORDER_OBJECT)
 		return GLOB.adjacent_direction_lookup[border_obj?.dir || NORTH][direction + 1]?[target.dir]
@@ -130,6 +134,8 @@ xxx xxx xxx
 
 ///do not use, use QUEUE_SMOOTH(atom)
 /atom/proc/smooth_icon()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	smoothing_flags &= ~SMOOTH_QUEUED
@@ -145,6 +151,8 @@ xxx xxx xxx
 // As a rule, movables will most always care about smoothing changes
 // Turfs on the other hand, don't, so we don't do the update for THEM unless they explicitly request it
 /atom/movable/smooth_icon()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(~UPDATE_SMOOTHING)
 
@@ -162,6 +170,8 @@ xxx xxx xxx
  * Returns the junction to use (you almost always want this to just be junction)
 */
 /atom/proc/smoothing_allowed(atom/smoothing_with, direction, junction)
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 	stack_trace("Unoverrided call to allow_smooth by [type], if you're going to have SMOOTH_PROC_FILTER (or SMOOTH_BORDER_OBJECT) set you need to do something with it")
 	return NONE
@@ -173,6 +183,8 @@ xxx xxx xxx
  *
 */
 /atom/proc/bitmask_smooth()
+	procstart = null
+	src.procstart = null
 	var/new_junction = NONE
 
 	// cache for sanic speed
@@ -283,11 +295,15 @@ xxx xxx xxx
 
 ///Changes the icon state based on the new junction bitmask
 /atom/proc/set_smoothed_icon_state(new_junction)
+	procstart = null
+	src.procstart = null
 	. = smoothing_junction
 	smoothing_junction = new_junction
 	icon_state = "[base_icon_state]-[smoothing_junction]"
 
 /turf/closed/set_smoothed_icon_state(new_junction)
+	procstart = null
+	src.procstart = null
 	// Avoid calling ..() here to avoid setting icon_state twice, which is expensive given how hot this proc is
 	var/old_junction = smoothing_junction
 	smoothing_junction = new_junction
@@ -330,6 +346,8 @@ xxx xxx xxx
 			icon_state = "[base_icon_state]-[smoothing_junction]"
 
 /turf/open/floor/set_smoothed_icon_state(new_junction)
+	procstart = null
+	src.procstart = null
 	if(broken || burnt)
 		return
 	return ..()
@@ -339,6 +357,8 @@ xxx xxx xxx
 
 //Icon smoothing helpers
 /proc/smooth_zlevel(zlevel, now = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/away_turfs = Z_TURFS(zlevel)
 	for(var/turf/turf_to_smooth as anything in away_turfs)
 		if(turf_to_smooth.smoothing_flags & USES_SMOOTHING)
@@ -354,12 +374,16 @@ xxx xxx xxx
 					QUEUE_SMOOTH(movable_to_smooth)
 
 /atom/proc/set_can_smooth_with(canSmoothWith)
+	procstart = null
+	src.procstart = null
 	if(!canSmoothWith)
 		src.canSmoothWith = null
 		return
 	PARSE_CAN_SMOOTH_WITH(canSmoothWith, src.canSmoothWith, smoothing_flags)
 
 /atom/proc/set_smoothing_groups(smoothing_groups)
+	procstart = null
+	src.procstart = null
 	if(!smoothing_groups)
 		src.smoothing_groups = null
 		return
@@ -367,6 +391,8 @@ xxx xxx xxx
 
 /// Takes a direction, turns it into all the junctions that contain it
 /proc/dir_to_all_junctions(dir)
+	procstart = null
+	src.procstart = null
 	var/handback = NONE
 	if(dir & NORTH)
 		handback |= NORTH_JUNCTION | NORTHEAST_JUNCTION | NORTHWEST_JUNCTION
@@ -380,6 +406,8 @@ xxx xxx xxx
 
 /// Takes a direction, turns it into all the junctions that it lines up with
 /proc/all_junctions_of_dir(dir)
+	procstart = null
+	src.procstart = null
 	if(dir == NORTH)
 		return NORTH_JUNCTION | NORTHEAST_JUNCTION | NORTHWEST_JUNCTION
 	if(dir == SOUTH)
@@ -391,6 +419,8 @@ xxx xxx xxx
 	return NONE
 
 /proc/dir_to_junction(dir)
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			return NORTH_JUNCTION
@@ -412,6 +442,8 @@ xxx xxx xxx
 			return NONE
 
 /proc/reverse_junction(junction)
+	procstart = null
+	src.procstart = null
 	var/handback = NONE
 	if(junction & NORTH_JUNCTION)
 		handback |= SOUTH_JUNCTION
@@ -432,6 +464,8 @@ xxx xxx xxx
 	return handback
 
 /proc/reverse_ndir(ndir)
+	procstart = null
+	src.procstart = null
 	switch(ndir)
 		if(NORTH_JUNCTION)
 			return NORTH

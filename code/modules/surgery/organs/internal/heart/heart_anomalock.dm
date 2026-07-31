@@ -31,6 +31,8 @@
 	var/core_removable = TRUE
 
 /obj/item/organ/heart/cybernetic/anomalock/Destroy()
+	procstart = null
+	src.procstart = null
 	if(lightning_timer)
 		deltimer(lightning_timer)
 	if(lightning_overlay)
@@ -39,10 +41,14 @@
 	return ..()
 
 /obj/item/organ/heart/cybernetic/anomalock/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info("The voltaic boost will avoid healing toxin damage at all in slime-based humanoids, to prevent harmful side effects.")
 
 /obj/item/organ/heart/cybernetic/anomalock/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!core)
 		return
@@ -53,6 +59,8 @@
 	RegisterSignal(organ_owner, COMSIG_ATOM_EMP_ACT, PROC_REF(on_emp_act))
 
 /obj/item/organ/heart/cybernetic/anomalock/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!core)
 		return
@@ -64,6 +72,8 @@
 	QDEL_IN(src, 0)
 
 /obj/item/organ/heart/cybernetic/anomalock/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(target_mob != user || !istype(target_mob) || !core)
 		return ..()
 
@@ -81,10 +91,14 @@
 	return TRUE
 
 /obj/item/organ/heart/cybernetic/anomalock/proc/on_emp_act(severity)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	add_lightning_overlay(10 SECONDS)
 
 /obj/item/organ/heart/cybernetic/anomalock/proc/add_lightning_overlay(time_to_last = 10 SECONDS)
+	procstart = null
+	src.procstart = null
 	if(lightning_overlay)
 		lightning_timer = addtimer(CALLBACK(src, PROC_REF(clear_lightning_overlay), owner), time_to_last, (TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_STOPPABLE|TIMER_DELETE_ME))
 		return
@@ -93,12 +107,16 @@
 	lightning_timer = addtimer(CALLBACK(src, PROC_REF(clear_lightning_overlay), owner), time_to_last, (TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_STOPPABLE|TIMER_DELETE_ME))
 
 /obj/item/organ/heart/cybernetic/anomalock/proc/clear_lightning_overlay(mob/organ_owner)
+	procstart = null
+	src.procstart = null
 	organ_owner?.cut_overlay(lightning_overlay)
 	if(lightning_timer)
 		deltimer(lightning_timer)
 	lightning_overlay = null
 
 /obj/item/organ/heart/cybernetic/anomalock/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -107,6 +125,8 @@
 		return attack(user, user, modifiers)
 
 /obj/item/organ/heart/cybernetic/anomalock/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!core)
 		return
@@ -129,12 +149,16 @@
 	cell.give(cell.max_charge() * 0.1)
 
 /obj/item/organ/heart/cybernetic/anomalock/proc/activate_survival_comsig(mob/living/carbon/organ_owner, new_stat, old_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(new_stat == SOFT_CRIT || new_stat == HARD_CRIT)
 		activate_survival(organ_owner)
 
 /// Does a few things to try to help you live whatever you may be going through. Returns TRUE if it activated successfully.
 /obj/item/organ/heart/cybernetic/anomalock/proc/activate_survival(mob/living/carbon/organ_owner)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, survival_cooldown))
 		return FALSE
 
@@ -146,10 +170,14 @@
 
 ///Alerts our owner that the organ is ready to do its thing again
 /obj/item/organ/heart/cybernetic/anomalock/proc/notify_cooldown(mob/living/carbon/organ_owner)
+	procstart = null
+	src.procstart = null
 	balloon_alert(organ_owner, "your heart strengthtens")
 	playsound(organ_owner, 'sound/items/eshield_recharge.ogg', 40)
 
 /obj/item/organ/heart/cybernetic/anomalock/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, required_anomaly))
 		return NONE
 	if(core)
@@ -166,6 +194,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/organ/heart/cybernetic/anomalock/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!core)
 		balloon_alert(user, "no core!")
@@ -186,10 +216,14 @@
 	update_icon_state()
 
 /obj/item/organ/heart/cybernetic/anomalock/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = initial(icon_state) + (core ? "-core" : "")
 
 /obj/item/organ/heart/cybernetic/anomalock/prebuilt/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	core = new /obj/item/assembly/signaler/anomaly/flux(src)
 	add_organ_trait(TRAIT_SHOCKIMMUNE)
@@ -204,6 +238,8 @@
 	processing_speed = STATUS_EFFECT_PRIORITY
 
 /datum/status_effect/voltaic_overdrive/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(owner.health > owner.crit_threshold)
 		return
@@ -216,6 +252,8 @@
 		owner.updatehealth()
 
 /datum/status_effect/voltaic_overdrive/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(on_organ_lost))
 	owner.add_movespeed_mod_immunities(type, /datum/movespeed_modifier/damage_slowdown)
@@ -225,6 +263,8 @@
 	owner.add_traits(list(TRAIT_NOSOFTCRIT, TRAIT_NOHARDCRIT, TRAIT_ANALGESIA), REF(src))
 
 /datum/status_effect/voltaic_overdrive/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(owner, COMSIG_CARBON_LOSE_ORGAN)
 	owner.remove_movespeed_mod_immunities(type, /datum/movespeed_modifier/damage_slowdown)
@@ -234,6 +274,8 @@
 
 /// Called when an organ is lost in the owner. In the event the owner just lost their voltaic (presumably, the one giving this effect), ends the buff and clears the overlay.
 /datum/status_effect/voltaic_overdrive/proc/on_organ_lost(mob/living/carbon/source, obj/item/organ/organ, special)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(istype(organ, /obj/item/organ/heart/cybernetic/anomalock))
 		qdel(src)
@@ -245,6 +287,8 @@
 	desc = "Voltaic energy is flooding your muscles, keeping your body upright. You have 30 seconds before it falters!"
 
 /obj/item/organ/heart/cybernetic/anomalock/hear_beat_noise(mob/living/hearer)
+	procstart = null
+	src.procstart = null
 	if(prob(1))
 		to_chat(hearer, span_danger("Yeah. Press a metal disk to the chest of a living arc flash hazard. See what that gets you.")) //the guy is LITERALLY sparking like a tesla coil.
 	else

@@ -15,6 +15,8 @@ GLOBAL_ALIST_EMPTY(minimaps)
 	var/min_y = 1
 
 /datum/minimap/proc/load_z(z)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(!isnum(z) || z > length(SSmapping.z_list))
 		CRASH("Tried to create minimap for invalid Z-level ([z])")
@@ -69,7 +71,9 @@ GLOBAL_ALIST_EMPTY(minimaps)
 	return TRUE
 
 /// Gets the `/datum/minimap` for a Z-level - generating it if it hasn't been yet.
-/proc/get_minimap_for_z(z) as /datum/minimap
+/proc/get_minimap_for_z(z)
+	procstart = null
+	src.procstart = null
 	var/static/generating_minimap = FALSE
 	UNTIL(!generating_minimap)
 

@@ -33,15 +33,23 @@
 	var/healing_multiplier = 0.07
 
 /datum/surgery_operation/basic/tend_wounds/all_required_strings()
+	procstart = null
+	src.procstart = null
 	return ..() + list("the patient must have brute or burn damage")
 
 /datum/surgery_operation/basic/tend_wounds/state_check(mob/living/patient)
+	procstart = null
+	src.procstart = null
 	return patient.get_brute_loss() > 0 || patient.get_fire_loss() > 0
 
 /datum/surgery_operation/basic/tend_wounds/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(/obj/item/storage/medkit)
 
 /datum/surgery_operation/basic/tend_wounds/get_radial_options(mob/living/patient, obj/item/tool, operating_zone)
+	procstart = null
+	src.procstart = null
 	var/list/options = list()
 
 	if(can_heal & COMBO_SURGERY)
@@ -94,6 +102,8 @@
 	return options
 
 /datum/surgery_operation/basic/tend_wounds/can_loop(mob/living/patient, mob/living/operating_on, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -108,6 +118,8 @@
 	return FALSE
 
 /datum/surgery_operation/basic/tend_wounds/on_preop(mob/living/patient, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	var/woundtype
 	var/brute_heal = operation_args[OPERATION_BRUTE_HEAL] > 0
 	var/burn_heal = operation_args[OPERATION_BURN_HEAL] > 0
@@ -130,6 +142,8 @@
 
 /// Returns a string letting the surgeon know roughly how much longer the surgery is estimated to take at the going rate
 /datum/surgery_operation/basic/tend_wounds/proc/get_progress(mob/living/surgeon, mob/living/patient, brute_healed, burn_healed)
+	procstart = null
+	src.procstart = null
 	var/estimated_remaining_steps = 0
 	if(brute_healed > 0)
 		estimated_remaining_steps = max(0, (patient.get_brute_loss() / brute_healed))
@@ -165,6 +179,8 @@
 
 /// Checks whether we show precise damage stats during the surgery
 /datum/surgery_operation/basic/tend_wounds/proc/show_stats(mob/living/surgeon, mob/living/patient)
+	procstart = null
+	src.procstart = null
 	if(surgeon.is_holding_item_of_type(/obj/item/healthanalyzer))
 		return TRUE
 	for(var/obj/machinery/vitals_reader/vitals in view(4, patient))
@@ -181,6 +197,8 @@
 #undef CONDITIONAL_DAMAGE_MESSAGE
 
 /datum/surgery_operation/basic/tend_wounds/on_success(mob/living/patient, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	var/user_msg = "You succeed in fixing some of [patient]'s wounds" //no period, add initial space to "addons"
 	var/target_msg = "[surgeon] fixes some of [patient]'s wounds" //see above
 
@@ -216,6 +234,8 @@
 	)
 
 /datum/surgery_operation/basic/tend_wounds/on_failure(mob/living/patient, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		patient,

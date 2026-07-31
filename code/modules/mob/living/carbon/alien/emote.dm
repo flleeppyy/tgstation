@@ -16,5 +16,7 @@
 	vary = TRUE
 
 /datum/emote/living/alien/roar/get_sound(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isalienadult(user))
 		return 'sound/mobs/non-humanoids/hiss/hiss5.ogg'

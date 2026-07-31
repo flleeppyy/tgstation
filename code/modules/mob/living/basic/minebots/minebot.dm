@@ -62,6 +62,8 @@
 	)
 
 /mob/living/basic/mining_drone/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	neutral_overlay = mutable_appearance(icon = 'icons/mob/silicon/aibots.dmi', icon_state = "mining_drone_grey")
 	combat_overlay = mutable_appearance(icon = 'icons/mob/silicon/aibots.dmi', icon_state = "mining_drone_offense_grey")
@@ -91,11 +93,15 @@
 	assign_access()
 
 /mob/living/basic/mining_drone/set_combat_mode(new_mode, silent = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = combat_mode ? "mining_drone_offense" : "mining_drone"
 	balloon_alert(src, "now [combat_mode ? "attacking" : "collecting"]")
 
 /mob/living/basic/mining_drone/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(health < maxHealth)
 		if(health >= maxHealth * 0.5)
@@ -115,6 +121,8 @@
 
 
 /mob/living/basic/mining_drone/welder_act(mob/living/user, obj/item/welder)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return FALSE
 	if(combat_mode)
@@ -129,6 +137,8 @@
 	return TRUE
 
 /mob/living/basic/mining_drone/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/borg/upgrade/modkit))
 		return ..()
 
@@ -136,10 +146,14 @@
 	return ITEM_INTERACT_SUCCESS
 
 /mob/living/basic/mining_drone/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.melee_attack_chain(user, stored_gun)
 	return ITEM_INTERACT_SUCCESS
 
 /mob/living/basic/mining_drone/attack_hand(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!user.combat_mode)
 		if(ai_controller && ai_controller.ai_status == AI_STATUS_OFF)
 			ai_controller.reset_ai_status() //wakes a performance-slept bot, no-op if it is off for a real reason
@@ -149,12 +163,16 @@
 	return ..()
 
 /mob/living/basic/mining_drone/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "MineBot", name)
 		ui.open()
 
 /mob/living/basic/mining_drone/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["auto_defend"] = ai_controller.blackboard[BB_MINEBOT_AUTO_DEFEND]
 	data["repair_node_drone"] = ai_controller.blackboard[BB_MINEBOT_REPAIR_DRONE]
@@ -173,6 +191,8 @@
 	return data
 
 /mob/living/basic/mining_drone/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["bot_icon"] = icon2base64(getFlatIcon(src, no_anim = TRUE))
 	data["possible_colors"] = list()
@@ -184,6 +204,8 @@
 	return data
 
 /mob/living/basic/mining_drone/ui_act(action, params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(action)
 		if("change_min_distance")
@@ -209,6 +231,8 @@
 	return TRUE
 
 /mob/living/basic/mining_drone/proc/change_color(new_color)
+	procstart = null
+	src.procstart = null
 	selected_color = new_color
 	if(!isnull(selected_color))
 		neutral_overlay.color = selected_color
@@ -216,6 +240,8 @@
 	update_appearance()
 
 /mob/living/basic/mining_drone/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return CLICK_ACTION_BLOCKING
 	set_combat_mode(!combat_mode)
@@ -223,11 +249,15 @@
 	return CLICK_ACTION_SUCCESS
 
 /mob/living/basic/mining_drone/RangedAttack(atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!combat_mode)
 		return
 	stored_gun.try_fire_gun(target, src, list2params(modifiers))
 
 /mob/living/basic/mining_drone/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!. || !proximity_flag || combat_mode)
@@ -238,11 +268,15 @@
 		target_ore.forceMove(src)
 
 /mob/living/basic/mining_drone/proc/drop_ore()
+	procstart = null
+	src.procstart = null
 	to_chat(src, span_notice("You dump your stored ore."))
 	for(var/obj/item/stack/ore/dropped_item in contents)
 		dropped_item.forceMove(get_turf(src))
 
 /mob/living/basic/mining_drone/death(gibbed)
+	procstart = null
+	src.procstart = null
 	drop_ore()
 
 	if(isnull(stored_gun))
@@ -254,10 +288,14 @@
 	return ..()
 
 /mob/living/basic/mining_drone/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(stored_gun)
 	return ..()
 
 /mob/living/basic/mining_drone/early_melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -268,12 +306,16 @@
 	return BASIC_MOB_END_ATTACK_CHAIN_COOLDOWN
 
 /mob/living/basic/mining_drone/proc/repair_node_drone(mob/living/my_target)
+	procstart = null
+	src.procstart = null
 	do_sparks(5, FALSE, source = my_target)
 	if(!do_after(src, 6 SECONDS, my_target))
 		return
 	my_target.heal_overall_damage(brute = 50)
 
 /mob/living/basic/mining_drone/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat == DEAD || isnull(selected_color))
 		return
@@ -281,6 +323,8 @@
 	. += combat_mode ? combat_overlay : neutral_overlay
 
 /mob/living/basic/mining_drone/proc/assign_access()
+	procstart = null
+	src.procstart = null
 	var/static/list/required_access
 	if(isnull(required_access))
 		var/datum/id_trim/access_card = SSid_access.trim_singletons_by_path[/datum/id_trim/job/shaft_miner]

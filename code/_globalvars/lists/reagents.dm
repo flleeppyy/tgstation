@@ -72,6 +72,8 @@ GLOBAL_LIST_INIT(stacked_metabolization_effect, init_chemical_side_effects())
 
 /// Initialises all /datum/reagent into a list indexed by reagent id
 /proc/init_chemical_reagent_list()
+	procstart = null
+	src.procstart = null
 	var/list/reagent_list = list()
 
 	for(var/datum/reagent/path as anything in valid_subtypesof(/datum/reagent))
@@ -82,6 +84,8 @@ GLOBAL_LIST_INIT(stacked_metabolization_effect, init_chemical_side_effects())
 	return reagent_list
 
 /proc/check_recipe_for_conflicts(datum/chemical_reaction/reaction, list/reaction_lookup)
+	procstart = null
+	src.procstart = null
 	for(var/x in reaction.required_reagents)
 		for(var/datum/chemical_reaction/competitor in reaction_lookup[x])
 			if(chem_recipes_do_conflict(competitor, reaction))
@@ -97,6 +101,8 @@ GLOBAL_LIST_INIT(stacked_metabolization_effect, init_chemical_side_effects())
  * For chemical reactions list lookup list - creates a bit list of info passed to the UI. This is saved to reduce lag from new windows opening, since it's a lot of data.
  */
 /proc/build_chemical_reactions_lists()
+	procstart = null
+	src.procstart = null
 	if(GLOB.chemical_reactions_list_reactant_index)
 		return
 
@@ -214,6 +220,8 @@ GLOBAL_LIST_INIT(stacked_metabolization_effect, init_chemical_side_effects())
 
 /// Builds map of reagent name to its datum path
 /proc/build_name2reagentlist()
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	//build map with keys stored separately
@@ -233,6 +241,8 @@ GLOBAL_LIST_INIT(stacked_metabolization_effect, init_chemical_side_effects())
 		.[name] = name_to_reagent[name]
 
 /proc/init_chemical_side_effects()
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	for(var/datum/stacked_metabolization_effect/effect as anything in valid_subtypesof(/datum/stacked_metabolization_effect))

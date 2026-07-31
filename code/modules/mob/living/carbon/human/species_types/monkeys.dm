@@ -38,16 +38,22 @@
 	ai_controlled_species = TRUE
 
 /datum/species/monkey/on_species_gain(mob/living/carbon/human/human_who_gained_species, datum/species/old_species, pref_load, regenerate_icons)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (pref_load)
 		ADD_TRAIT(human_who_gained_species, TRAIT_BORN_MONKEY, INNATE_TRAIT) // Not a species trait, you cannot escape your genetic destiny
 	human_who_gained_species.dna.add_mutation(/datum/mutation/race, MUTATION_SOURCE_ACTIVATED)
 
 /datum/species/monkey/on_species_loss(mob/living/carbon/human/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	C.dna.remove_mutation(/datum/mutation/race, MUTATION_SOURCE_ACTIVATED)
 
 /datum/species/monkey/check_roundstart_eligible()
+	procstart = null
+	src.procstart = null
 	// STOP ADDING MONKEY SUBTYPES YOU HEATHEN
 	// ok we killed monkey subtypes but we're keeping this in cause we can't trust you fuckers
 	if(check_holidays(MONKEYDAY) && id == SPECIES_MONKEY)
@@ -55,21 +61,31 @@
 	return ..()
 
 /datum/species/monkey/get_scream_sound(mob/living/carbon/human/monkey)
+	procstart = null
+	src.procstart = null
 	return get_sfx(SFX_SCREECH)
 
 /datum/species/monkey/get_hiss_sound(mob/living/carbon/human/monkey)
+	procstart = null
+	src.procstart = null
 	return 'sound/mobs/humanoids/human/hiss/human_hiss.ogg'
 	// we're both great apes, or something..
 
 /datum/species/monkey/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "Monkeys are slippery, can crawl into vents, and are more dextrous than humans.. but only when stealing things. \
 		Natural monkeys cannot operate machinery or most tools with their paws, but unusually clever monkeys or those that were once something else can."
 
 /datum/species/monkey/get_species_description()
+	procstart = null
+	src.procstart = null
 	return "Monkeys are a type of primate that exist between humans and animals on the evolutionary chain. \
 		Every year, on Monkey Day, Nanotrasen shows their respect for the little guys by allowing them to roam the station freely."
 
 /datum/species/monkey/get_species_lore()
+	procstart = null
+	src.procstart = null
 	return list(
 		"Monkeys are commonly used as test subjects on board Space Station Thirteen. \
 		But what if... for one day... the Monkeys were allowed to be the scientists? \
@@ -78,6 +94,8 @@
 	)
 
 /datum/species/monkey/create_pref_unique_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 
 	to_add += list(
@@ -100,6 +118,8 @@
 	return to_add
 
 /datum/species/monkey/create_pref_language_perk()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 	// Holding these variables so we can grab the exact names for our perk.
 	var/datum/language/common_language = /datum/language/common
@@ -124,6 +144,8 @@
 	var/tripping = TRUE
 
 /obj/item/organ/brain/primate/get_replaceability(obj/item/organ/new_organ_type, obj/item/organ/expected_organ_type, datum/species/old_species, replace_current = TRUE)
+	procstart = null
+	src.procstart = null
 	///Real monkeys retain their ape brains when humanized (further species change can override it). If old_species is null,
 	if(HAS_TRAIT(owner, TRAIT_BORN_MONKEY) && (!old_species || istype(old_species, /datum/species/monkey)))
 		return FALSE
@@ -137,6 +159,8 @@
 	overlay_icon_state = "bg_default_border"
 
 /datum/action/item_action/organ_action/toggle_trip/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/primate/monkey_brain = target
 	if(monkey_brain.tripping)
 		monkey_brain.tripping = FALSE
@@ -150,16 +174,22 @@
 	return TRUE
 
 /obj/item/organ/brain/primate/on_mob_insert(mob/living/carbon/primate)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(primate, COMSIG_LIVING_MOB_BUMPED, PROC_REF(on_mob_bump))
 	primate.AddElement(/datum/element/human_biter)
 
 /obj/item/organ/brain/primate/on_mob_remove(mob/living/carbon/primate)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(primate, COMSIG_LIVING_MOB_BUMPED)
 	primate.RemoveElement(/datum/element/human_biter)
 
 /obj/item/organ/brain/primate/proc/on_mob_bump(mob/source, mob/living/crossing_mob)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!tripping || !crossing_mob.combat_mode)
 		return
@@ -172,6 +202,8 @@
 	crossing_mob.knockOver(owner)
 
 /obj/item/organ/brain/primate/get_attacking_limb(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(owner, TRAIT_ADVANCEDTOOLUSER) || HAS_TRAIT(owner, TRAIT_FERAL_BITER))
 		return owner.get_bodypart(BODY_ZONE_HEAD)
 	return ..()

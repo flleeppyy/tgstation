@@ -4,5 +4,7 @@
 	var/ability_key = BB_GENERIC_ACTION
 
 /datum/bt_node/decorator/ability_available/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/datum/action/action = controller.blackboard[ability_key]
 	return !QDELETED(action) && action.IsAvailable()

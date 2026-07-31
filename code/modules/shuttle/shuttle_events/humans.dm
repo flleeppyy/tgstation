@@ -4,12 +4,16 @@
 	var/datum/outfit/outfit = /datum/outfit/job/assistant
 
 /datum/shuttle_event/simple_spawner/player_controlled/human/post_spawn(atom/movable/spawnee)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(ishuman(spawnee))
 		prepare_human(spawnee)
 
 /datum/shuttle_event/simple_spawner/player_controlled/human/proc/prepare_human(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	human.equipOutfit(new outfit ())
 
 /datum/shuttle_event/simple_spawner/player_controlled/human/greytide
@@ -45,6 +49,8 @@
 	ghost_alert_string = "Would you like to be a centcom intern shot at the shuttle?"
 
 /datum/shuttle_event/simple_spawner/player_controlled/human/greytide/interns/activate()
+	procstart = null
+	src.procstart = null
 	..()
 
 	minor_announce("We're sending you our bravest interns, please let them in when they arrive.",

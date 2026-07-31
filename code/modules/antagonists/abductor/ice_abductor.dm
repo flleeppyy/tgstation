@@ -7,6 +7,8 @@
 	deconstructible = FALSE
 
 /obj/structure/fluff/iced_abductor/Destroy()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	new /obj/effect/mob_spawn/corpse/human/abductor(T)
 	. = ..()

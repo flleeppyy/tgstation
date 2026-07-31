@@ -10,10 +10,14 @@
 	interaction_flags_mouse_drop = NEED_DEXTERITY
 
 /obj/machinery/fugitive_capture/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Add a prisoner by dragging them into the machine.")
 
 /obj/machinery/fugitive_capture/mouse_drop_receive(mob/target, mob/user, params)
+	procstart = null
+	src.procstart = null
 	var/mob/living/fugitive_hunter = user
 	if(!isliving(fugitive_hunter) || !ishuman(target))
 		return
@@ -26,6 +30,8 @@
 		add_prisoner(fugitive, fug_antag)
 
 /obj/machinery/fugitive_capture/proc/add_prisoner(mob/living/carbon/human/fugitive, datum/antagonist/fugitive/antag)
+	procstart = null
+	src.procstart = null
 	fugitive.forceMove(src)
 	antag.is_captured = TRUE
 	to_chat(fugitive, span_userdanger("You are thrown into a vast void of bluespace, and as you fall further into oblivion the comparatively small entrance to reality gets smaller and smaller until you cannot see it anymore. You have failed to avoid capture."))
@@ -54,6 +60,8 @@
 	base_icon_state = "o2crate"
 
 /obj/structure/closet/crate/eva/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/suit/space/eva(src)
@@ -79,7 +87,9 @@
 	name = "psyker recreation cell"
 	desc = "A repurposed recreation chamber frequently used by psykers, which soothes its user by bombarding them with loud noises and painful stimuli. Repurposed for the storage of prisoners, and should have no (lasting) side effects on non-psykers forced into it."
 
-/obj/machinery/fugitive_capture/psyker/process() //I have no fucking idea how to make click-dragging work for psykers so this one just sucks them in.
+/obj/machinery/fugitive_capture/psyker/process()
+	procstart = null
+	src.procstart = null //I have no fucking idea how to make click-dragging work for psykers so this one just sucks them in.
 	for(var/mob/living/carbon/human/potential_victim in range(1, get_turf(src)))
 		var/datum/antagonist/fugitive/fug_antag = potential_victim.mind.has_antag_datum(/datum/antagonist/fugitive)
 		if(fug_antag)
@@ -107,10 +117,14 @@
 	color = "#d6ad8b"
 
 /obj/item/clothing/suit/armor/reactive/psykerboost/cooldown_activation(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	do_sparks(1, TRUE, src)
 	return ..()
 
 /obj/item/clothing/suit/armor/reactive/psykerboost/reactive_activation(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	owner.visible_message(span_danger("[src] blocks [attack_text], psykerboosting [owner]'s mental powers!"))
 	for(var/datum/action/cooldown/spell/psychic_ability in owner.actions)
 		if(psychic_ability.school == SCHOOL_PSYCHIC)
@@ -119,6 +133,8 @@
 	return TRUE
 
 /obj/item/clothing/suit/armor/reactive/psykerboost/emp_activation(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	owner.visible_message(span_danger("[src] blocks [attack_text], draining [owner]'s mental powers!"))
 	for(var/datum/action/cooldown/spell/psychic_ability in owner.actions)
 		if(psychic_ability.school == SCHOOL_PSYCHIC)
@@ -136,6 +152,8 @@
 	layer = OBJ_LAYER
 
 /obj/structure/bouncy_castle/Initialize(mapload, mob/gored)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gored)
 		name = gored.real_name
@@ -150,6 +168,8 @@
 	AddComponent(/datum/component/bloody_spreader)
 
 /obj/structure/bouncy_castle/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(damage_amount)
@@ -183,6 +203,8 @@
 	COOLDOWN_DECLARE(locate_cooldown)
 
 /obj/machinery/fugitive_locator/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, locate_cooldown))
 		balloon_alert_to_viewers("locator recharging!", vision_distance = 3)
 		return
@@ -196,6 +218,8 @@
 
 ///Locates a random fugitive via their antag datum and returns them.
 /obj/machinery/fugitive_locator/proc/locate_fugitive()
+	procstart = null
+	src.procstart = null
 	var/list/datum_list = shuffle(GLOB.antagonists)
 	for(var/datum/antagonist/fugitive/fugitive_datum in datum_list)
 		if(!fugitive_datum.owner)
@@ -217,11 +241,15 @@
 	freerange = TRUE
 
 /obj/item/radio/headset/psyker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/wearertargeting/earprotection)
 	set_frequency(FREQ_FUGITIVE_HUNTER)
 
 /obj/item/radio/headset/psyker/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(user, TRAIT_ECHOLOCATOR))
 		ADD_TRAIT(user, TRAIT_SIGHT_BYPASS, REF(src))
@@ -229,6 +257,8 @@
 		REMOVE_TRAIT(user, TRAIT_SIGHT_BYPASS, REF(src))
 
 /obj/item/radio/headset/psyker/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(user, TRAIT_SIGHT_BYPASS, REF(src))
 
@@ -240,6 +270,8 @@
 	freerange = TRUE
 
 /obj/item/radio/headset/psyker_seer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/wearertargeting/earprotection)
 	set_frequency(FREQ_FUGITIVE_HUNTER)
@@ -247,6 +279,8 @@
 /obj/item/storage/belt/holster/psyker
 
 /obj/item/storage/belt/holster/psyker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	atom_storage.max_slots = 5
 	atom_storage.max_total_storage = /obj/item/gun/ballistic/revolver/c38::w_class + (4 * /obj/item/ammo_box/speedloader/c38::w_class)

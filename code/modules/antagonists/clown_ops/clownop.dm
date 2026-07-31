@@ -13,20 +13,28 @@
 	infiltrator_id = "infiltrator_clown"
 
 /datum/antagonist/nukeop/clownop/admin_add(datum/mind/new_owner,mob/admin)
+	procstart = null
+	src.procstart = null
 	new_owner.add_antag_datum(src)
 	message_admins("[key_name_admin(admin)] has clown op'ed [key_name_admin(new_owner)].")
 	log_admin("[key_name(admin)] has clown op'ed [key_name(new_owner)].")
 
 /datum/antagonist/nukeop/clownop/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/L = owner.current || mob_override
 	ADD_TRAIT(L.mind, TRAIT_NAIVE, CLOWNOP_TRAIT)
 
 /datum/antagonist/nukeop/clownop/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/L = owner.current || mob_override
 	REMOVE_TRAIT(L.mind, TRAIT_NAIVE, CLOWNOP_TRAIT)
 
 /datum/antagonist/nukeop/clownop/equip_op()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/current_mob = owner.current
 	var/obj/item/organ/liver/liver = current_mob.get_organ_slot(ORGAN_SLOT_LIVER)
@@ -34,6 +42,8 @@
 		ADD_TRAIT(liver, TRAIT_COMEDY_METABOLISM, CLOWNOP_TRAIT)
 
 /datum/antagonist/nukeop/leader/clownop/give_alias()
+	procstart = null
+	src.procstart = null
 	title ||= pick("Head Honker", "Slipmaster", "Clown King", "Honkbearer")
 	. = ..()
 	if(ishuman(owner.current))
@@ -51,15 +61,21 @@
 	infiltrator_id = "infiltrator_clown"
 
 /datum/antagonist/nukeop/leader/clownop/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/L = owner.current || mob_override
 	ADD_TRAIT(L.mind, TRAIT_NAIVE, CLOWNOP_TRAIT)
 
 /datum/antagonist/nukeop/leader/clownop/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/L = owner.current || mob_override
 	REMOVE_TRAIT(L.mind, TRAIT_NAIVE, CLOWNOP_TRAIT)
 
 /datum/antagonist/nukeop/leader/clownop/equip_op()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/L = owner.current
 	var/obj/item/organ/liver/liver = L.get_organ_slot(ORGAN_SLOT_LIVER)

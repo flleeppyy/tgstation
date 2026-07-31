@@ -47,9 +47,13 @@
 	acid = 10
 
 /obj/machinery/space_heater/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/machinery/space_heater/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ispath(cell))
 		cell = new cell(src)
@@ -75,26 +79,36 @@
 	AddElement(/datum/element/elevation, pixel_shift = 8)
 
 /obj/machinery/space_heater/Destroy()
+	procstart = null
+	src.procstart = null
 	SSair.stop_processing_machine(src)
 	QDEL_NULL(cell)
 	return..()
 
 /obj/machinery/space_heater/on_construction()
+	procstart = null
+	src.procstart = null
 	set_panel_open(TRUE)
 	QDEL_NULL(cell)
 
 /obj/machinery/space_heater/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	if(cell)
 		LAZYADD(component_parts, cell)
 		cell = null
 	return ..()
 
 /obj/machinery/space_heater/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == cell)
 		cell = null
 
 /obj/machinery/space_heater/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "\The [src] is [on ? "on" : "off"], and the hatch is [panel_open ? "open" : "closed"]."
 	if(cell)
@@ -107,16 +121,22 @@
 
 ///Returns the heating power of this machine as an examine
 /obj/machinery/space_heater/proc/heating_examine()
+	procstart = null
+	src.procstart = null
 	var/target_temp = round(target_temperature - T0C, 1)
 	var/min_temp = max(settable_temperature_median - settable_temperature_range, TCMB) - T0C
 	var/max_temp = settable_temperature_median + settable_temperature_range - T0C
 	return span_notice("The status display reads:<br>Heating power: <b>[display_power(heating_energy, convert = TRUE, scheduler = SSair)] at [(efficiency / 20) * 100]% efficiency.</b><br>Target temperature: <b>[target_temp]°C [min_temp]°C - [max_temp]°C]</b>\n")
 
 /obj/machinery/space_heater/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state]-[on ? mode : "off"]"
 
 /obj/machinery/space_heater/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(on)
@@ -126,10 +146,14 @@
 		. += emissive_blocker(icon, "[base_icon_state]-open", src, alpha = src.alpha)
 
 /obj/machinery/space_heater/on_set_panel_open()
+	procstart = null
+	src.procstart = null
 	update_appearance()
 	return ..()
 
 /obj/machinery/space_heater/process_atmos()
+	procstart = null
+	src.procstart = null
 	if(!on || !is_operational || QDELETED(cell) || cell.charge <= 1)
 		if (on) // If it's broken, turn it off too
 			on = FALSE
@@ -177,6 +201,8 @@
 	cell.use((required_energy * length(turfs)) / efficiency, force = TRUE)
 
 /obj/machinery/space_heater/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/laser = 0
 	var/cap = 0
@@ -195,6 +221,8 @@
 		settable_temperature_median + settable_temperature_range)
 
 /obj/machinery/space_heater/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & (NOPOWER|BROKEN) || . & EMP_PROTECT_CONTENTS)
 		return
@@ -202,10 +230,14 @@
 		cell.emp_act(severity)
 
 /obj/machinery/space_heater/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/space_heater/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = default_deconstruction_screwdriver(user, tool)
 	user.visible_message(
 		span_notice("[user] [panel_open ? "opens" : "closes"] the hatch on [src]."),
@@ -214,9 +246,13 @@
 	return .
 
 /obj/machinery/space_heater/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/space_heater/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/stock_parts/power_store/cell))
 		add_fingerprint(user)
 		if(!panel_open)
@@ -239,18 +275,24 @@
 	return NONE
 
 /obj/machinery/space_heater/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!can_interact(user))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	toggle_power(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/space_heater/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SpaceHeater", name)
 		ui.open()
 
 /obj/machinery/space_heater/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["open"] = panel_open
 	data["on"] = on
@@ -277,6 +319,8 @@
 	return data
 
 /obj/machinery/space_heater/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -305,6 +349,8 @@
 				. = TRUE
 
 /obj/machinery/space_heater/proc/toggle_power(user)
+	procstart = null
+	src.procstart = null
 	on = !on
 	mode = HEATER_MODE_STANDBY
 	if(!isnull(user))
@@ -338,14 +384,20 @@
 	var/datum/controller/subsystem/processing/our_subsystem
 
 /obj/machinery/space_heater/improvised_chem_heater/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	our_subsystem = locate(subsystem_type) in Master.subsystems
 	. = ..()
 
 /obj/machinery/space_heater/improvised_chem_heater/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(beaker)
 
 /obj/machinery/space_heater/improvised_chem_heater/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(crafter))
 		return
@@ -358,6 +410,8 @@
 	try_insert_cell(user, cell, TRUE) //puts it into the heater
 
 /obj/machinery/space_heater/improvised_chem_heater/heating_examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Conducted energy per joule of thermal energy difference in a tick.
 	var/conduction_energy = beaker_conduction_power * (set_mode == HEATER_MODE_AUTO ? 0.5 : 1) * our_subsystem.wait / (1 SECONDS)
@@ -365,11 +419,15 @@
 	. += span_notice("Reagent conduction power: <b>[conduction_energy < 1 ? display_power(-log(1 - conduction_energy) SECONDS / our_subsystem.wait, convert = FALSE) : "∞W"]/J</b>")
 
 /obj/machinery/space_heater/improvised_chem_heater/toggle_power(user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(on)
 		begin_processing()
 
 /obj/machinery/space_heater/improvised_chem_heater/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!on || !is_operational || QDELETED(cell) || cell.charge <= 1 || QDELETED(beaker))
 		if (on) // If it's broken, turn it off too
 			on = FALSE
@@ -405,12 +463,16 @@
 	update_appearance()
 
 /obj/machinery/space_heater/improvised_chem_heater/ui_data()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["chemHacked"] = TRUE
 	.["beaker"] = beaker
 	.["currentTemp"] = beaker ? (round(beaker.reagents.chem_temp - T0C)) : "N/A"
 
 /obj/machinery/space_heater/improvised_chem_heater/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -422,6 +484,8 @@
 
 ///Slightly modified to ignore the open_hatch - it's always open, we hacked it.
 /obj/machinery/space_heater/improvised_chem_heater/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(istype(tool, /obj/item/stock_parts/power_store/cell))
 		return try_insert_cell(user, tool)
@@ -443,6 +507,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/space_heater/improvised_chem_heater/proc/try_insert_cell(mob/living/user, obj/item/stock_parts/power_store/cell/battery, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(cell)
 		to_chat(user, span_warning("There is already a power cell inside!"))
 		return ITEM_INTERACT_BLOCKING
@@ -459,10 +525,14 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/space_heater/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/space_heater/improvised_chem_heater/on_deconstruction(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(disassembled)
 		beaker?.forceMove(drop_location())
@@ -478,6 +548,8 @@
 			new item(get_turf(loc))
 
 /obj/machinery/space_heater/improvised_chem_heater/proc/replace_beaker(mob/living/user, obj/item/reagent_containers/new_beaker)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return FALSE
 	if(beaker)
@@ -489,10 +561,14 @@
 	return TRUE
 
 /obj/machinery/space_heater/improvised_chem_heater/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	replace_beaker(user)
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/space_heater/improvised_chem_heater/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!on || !beaker || !cell)
 		icon_state = "sheater-off"
@@ -510,12 +586,16 @@
 	emissive_state = null
 
 /obj/machinery/space_heater/improvised_chem_heater/update_overlays()
+	procstart = null
+	src.procstart = null
 	. += ..()
 	. += "[icon_state]-beaker"
 	. += "[base_icon_state]-rigged"
 	. += emissive_blocker(icon, "[base_icon_state]-rigged", src, alpha = src.alpha)
 
 /obj/machinery/space_heater/improvised_chem_heater/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/lasers_rating = 0
 	var/capacitors_rating = 0

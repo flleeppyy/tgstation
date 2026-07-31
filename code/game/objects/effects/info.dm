@@ -11,20 +11,28 @@
 	var/tooltip_theme
 
 /obj/effect/abstract/info/Initialize(mapload, info_text)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (!isnull(info_text))
 		src.info_text = info_text
 
 /obj/effect/abstract/info/Click()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(usr, boxed_message("[span_boldnotice(name)]<br>[span_info(info_text)]"))
 
 /obj/effect/abstract/info/MouseEntered(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "info_hovered"
 	openToolTip(usr, src, params, title = name, content = info_text, theme = tooltip_theme)
 
 /obj/effect/abstract/info/MouseExited()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = initial(icon_state)

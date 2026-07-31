@@ -106,6 +106,8 @@
 	can_adjust = FALSE
 
 /obj/item/clothing/under/rank/civilian/lawyer/dye_item(dye_color, dye_key_override)
+	procstart = null
+	src.procstart = null
 	if(dye_color == DYE_COSMIC || dye_color == DYE_SYNDICATE)
 		if(dying_key == DYE_REGISTRY_JUMPSKIRT)
 			return ..(dye_color, DYE_LAWYER_SPECIAL_SKIRT)

@@ -3,5 +3,7 @@
 	var/trait = null
 
 /datum/bt_node/decorator/pawn_turf_has_trait/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/turf/my_turf_in_the_middle_of_my_turf = get_turf(controller.pawn)
 	return HAS_TRAIT(my_turf_in_the_middle_of_my_turf, trait)

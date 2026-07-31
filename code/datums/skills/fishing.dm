@@ -10,6 +10,8 @@
 	skill_item_path = /obj/item/clothing/head/soft/fishing_hat
 
 /datum/skill/fishing/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	levelUpMessages[SKILL_LEVEL_NOVICE] = span_nicegreen("I'm starting to figure out what [name] really is! I can guess a fish size and weight at a glance.")
 	levelUpMessages[SKILL_LEVEL_APPRENTICE] = span_nicegreen("I'm getting a little better at [name]! I can tell if a fish is hungry, dying and otherwise.")
@@ -17,6 +19,8 @@
 	levelUpMessages[SKILL_LEVEL_MASTER] = span_nicegreen("I've begun to truly understand the surprising depth behind [name]. As a master [title], I can guess what I'm going to catch now!")
 
 /datum/skill/fishing/level_gained(datum/mind/mind, new_level, old_level, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(new_level >= SKILL_LEVEL_NOVICE && old_level < SKILL_LEVEL_NOVICE)
 		ADD_TRAIT(mind, TRAIT_EXAMINE_FISH, SKILL_TRAIT)
@@ -28,6 +32,8 @@
 		ADD_TRAIT(mind, TRAIT_REVEAL_FISH, SKILL_TRAIT)
 
 /datum/skill/fishing/level_lost(datum/mind/mind, new_level, old_level, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(old_level >= SKILL_LEVEL_MASTER && new_level < SKILL_LEVEL_MASTER)
 		REMOVE_TRAIT(mind, TRAIT_REVEAL_FISH, SKILL_TRAIT)

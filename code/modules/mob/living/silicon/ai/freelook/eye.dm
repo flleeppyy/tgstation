@@ -13,10 +13,14 @@
 	var/ai_detector_color = COLOR_RED
 
 /mob/eye/camera/ai/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_ai_detect_hud()
 
 /mob/eye/camera/ai/Destroy()
+	procstart = null
+	src.procstart = null
 	if(ai)
 		ai.all_eyes -= src
 		ai = null
@@ -32,6 +36,8 @@
  * Note that this will return an empty list if the camera's loc is not a turf.
  */
 /mob/eye/camera/ai/proc/get_visible_turfs()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list/turf)
 	SHOULD_BE_PURE(TRUE)
 	SHOULD_CALL_PARENT(TRUE)
@@ -45,6 +51,8 @@
 	return block(lowerleft, upperright)
 
 /mob/eye/camera/ai/proc/update_ai_detect_hud()
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/ai_detector/hud = GLOB.huds[DATA_HUD_AI_DETECT]
 	var/list/old_images = hud_list[AI_DETECT_HUD]
 	if(!ai_detector_visible)
@@ -83,6 +91,8 @@
 	hud.add_atom_to_hud(src)
 
 /mob/eye/camera/ai/setLoc(destination, force_update = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ai)
 		return
 	if(!isturf(ai.loc))
@@ -105,17 +115,23 @@
 		ai.master_multicam.refresh_view()
 
 /mob/eye/camera/ai/update_visibility()
+	procstart = null
+	src.procstart = null
 	if(ai)
 		ai.camera_visibility(src)
 	else
 		..()
 
 /mob/eye/camera/ai/GetViewerClient()
+	procstart = null
+	src.procstart = null
 	if(ai)
 		return ai.client
 	return null
 
-/mob/eye/camera/ai/examine(mob/user) //Displays a silicon's laws to ghosts
+/mob/eye/camera/ai/examine(mob/user)
+	procstart = null
+	src.procstart = null //Displays a silicon's laws to ghosts
 	. = ..()
 	if(istype(ai) && ai.laws && isobserver(user))
 		. += "<b>[ai] has the following laws:</b>"
@@ -123,6 +139,8 @@
 			. += law
 
 /mob/eye/camera/ai/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(same_z_layer)
 		return
@@ -132,6 +150,8 @@
 /*----------------------------------------------------*/
 
 /atom/proc/move_camera_by_click()
+	procstart = null
+	src.procstart = null
 	if(!isAI(usr))
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -146,6 +166,8 @@
 #define MAX_SPRINT 50
 #define SPRINT_PER_STEP 20
 /mob/living/silicon/ai/proc/AIMove(direction)
+	procstart = null
+	src.procstart = null
 	if(last_moved && last_moved + 1 < world.timeofday)
 		// Decay sprint based off how long it took us to input this next move
 		var/missed_sprint = max((world.timeofday + 1) - last_moved, 0) * SPRINT_PER_TICK
@@ -176,6 +198,8 @@
 
 // Return to the Core.
 /mob/living/silicon/ai/proc/view_core()
+	procstart = null
+	src.procstart = null
 	if(istype(current,/obj/machinery/holopad))
 		var/obj/machinery/holopad/H = current
 		H.clear_holo(src)
@@ -193,6 +217,8 @@
 	eyeobj?.setLoc(loc)
 
 /mob/living/silicon/ai/proc/create_eye()
+	procstart = null
+	src.procstart = null
 	if(eyeobj)
 		return
 	eyeobj = new /mob/eye/camera/ai()
@@ -203,6 +229,8 @@
 	set_eyeobj_visible(TRUE)
 
 /mob/living/silicon/ai/proc/set_eyeobj_visible(state = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!eyeobj)
 		return
 	eyeobj.mouse_opacity = state ? MOUSE_OPACITY_ICON : initial(eyeobj.mouse_opacity)
@@ -219,6 +247,8 @@ GAME_VERB(/mob/living/silicon/ai, toggle_acceleration, "Toggle Camera Accelerati
 	to_chat(usr, "Camera acceleration has been toggled [acceleration ? "on" : "off"].")
 
 /mob/eye/camera/ai/Hear(atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, radio_freq_name, radio_freq_color, list/spans, list/message_mods = list(), message_range)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(relay_speech && speaker && ai && !radio_freq && speaker != ai && SScameras.is_visible_by_cameras(speaker))
 		ai.relay_speech(speaker, message_language, raw_message, radio_freq, spans, message_mods)

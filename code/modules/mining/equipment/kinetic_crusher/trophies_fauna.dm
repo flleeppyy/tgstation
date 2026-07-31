@@ -14,9 +14,13 @@
 	custom_materials = list(/datum/material/diamond = SHEET_MATERIAL_AMOUNT * 10, /datum/material/bone = SHEET_MATERIAL_AMOUNT * 5)
 
 /obj/item/crusher_trophy/watcher_wing/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "mark detonation to prevent certain creatures from using certain attacks for <b>[bonus_value*0.1]</b> second\s"
 
 /obj/item/crusher_trophy/watcher_wing/on_mark_detonation(mob/living/target, mob/living/user, obj/item/kinetic_crusher/pkc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishostile(target))
 		return
@@ -40,19 +44,27 @@
 	var/list/mob/living/marked_targets = list()
 
 /obj/item/crusher_trophy/magma_wing/Destroy(force)
+	procstart = null
+	src.procstart = null
 	marked_targets.Cut()
 	return ..()
 
 /obj/item/crusher_trophy/magma_wing/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "attacks of marked enemies to cause mark detonation"
 
 /obj/item/crusher_trophy/magma_wing/remove_from(obj/item/kinetic_crusher/crusher, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for (var/mob/living/mark_on as anything in marked_targets)
 		UnregisterSignal(mark_on, list(COMSIG_LIVING_STATUS_REMOVED, COMSIG_HOSTILE_POST_ATTACKINGTARGET, COMSIG_QDELETING))
 	marked_targets.Cut()
 
 /obj/item/crusher_trophy/magma_wing/on_mark_applied(mob/living/target, mob/living/user, datum/status_effect/crusher_mark)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Shouldn't happen, but just in case
 	if (marked_targets[target])
@@ -63,6 +75,8 @@
 	RegisterSignal(target, COMSIG_QDELETING, PROC_REF(on_target_deleted))
 
 /obj/item/crusher_trophy/magma_wing/proc/on_status_removed(mob/living/source, datum/status_effect/removed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (istype(removed, /datum/status_effect/crusher_mark))
@@ -70,12 +84,16 @@
 		marked_targets -= source
 
 /obj/item/crusher_trophy/magma_wing/proc/on_target_deleted(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(source, list(COMSIG_LIVING_STATUS_REMOVED, COMSIG_HOSTILE_POST_ATTACKINGTARGET, COMSIG_QDELETING))
 	marked_targets -= source
 
 /obj/item/crusher_trophy/magma_wing/proc/on_hostile_attacking(mob/living/source, atom/target, result)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!isliving(target) || !istype(loc, /obj/item/kinetic_crusher))
@@ -103,9 +121,13 @@
 	custom_materials = list(/datum/material/diamond = SHEET_MATERIAL_AMOUNT * 6, /datum/material/bone = SHEET_MATERIAL_AMOUNT * 3)
 
 /obj/item/crusher_trophy/ice_wing/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "user to backstep [bonus_value] tile\s when detonating a mark"
 
 /obj/item/crusher_trophy/ice_wing/on_mark_detonation(mob/living/target, mob/living/user, obj/item/kinetic_crusher/pkc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!user)
 		return
@@ -132,14 +154,20 @@
 	custom_materials = list(/datum/material/bone = SHEET_MATERIAL_AMOUNT * 5)
 
 /obj/item/crusher_trophy/legion_skull/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "a kinetic crusher to recharge <b>[bonus_value*0.1]</b> second\s faster"
 
 /obj/item/crusher_trophy/legion_skull/add_to(obj/item/kinetic_crusher/pkc, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		pkc.charge_time -= bonus_value
 
 /obj/item/crusher_trophy/legion_skull/remove_from(obj/item/kinetic_crusher/pkc, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		pkc.charge_time += bonus_value
@@ -158,9 +186,13 @@
 	var/missing_health_ratio = 0.1
 
 /obj/item/crusher_trophy/goliath_tentacle/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "mark detonation to do <b>[bonus_value]</b> more damage for every <b>[1 / missing_health_ratio]</b> health you are missing"
 
 /obj/item/crusher_trophy/goliath_tentacle/on_mark_detonation(mob/living/target, mob/living/user, obj/item/kinetic_crusher/pkc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!user)
 		return
@@ -182,9 +214,13 @@
 	custom_materials = list(/datum/material/meat = SHEET_MATERIAL_AMOUNT * 12, /datum/material/bone = SHEET_MATERIAL_AMOUNT * 5)
 
 /obj/item/crusher_trophy/lobster_claw/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "mark detonation to briefly rebuke the target for [bonus_value] second[bonus_value > 1 ? "s" : ""]"
 
 /obj/item/crusher_trophy/lobster_claw/on_mark_detonation(mob/living/target, mob/living/user, obj/item/kinetic_crusher/pkc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	target.apply_status_effect(/datum/status_effect/rebuked, bonus_value SECONDS)
 
@@ -200,9 +236,13 @@
 	var/static/list/comic_phrases = list("BOOM", "BANG", "KABLOW", "KAPOW", "OUCH", "BAM", "KAPOW", "WHAM", "POW", "KABOOM")
 
 /obj/item/crusher_trophy/brimdemon_fang/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "mark detonation to create visual and audiosensory effects at the target"
 
 /obj/item/crusher_trophy/brimdemon_fang/on_mark_detonation(mob/living/target, mob/living/user, obj/item/kinetic_crusher/pkc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	target.loc.balloon_alert_to_viewers("[pick(comic_phrases)]!")
 	playsound(target, 'sound/mobs/non-humanoids/brimdemon/brimdemon_crush.ogg', 100)
@@ -220,31 +260,45 @@
 	var/datum/action/cooldown/mob_cooldown/projectile_attack/dir_shots/spewlet/ability
 
 /obj/item/crusher_trophy/bileworm_spewlet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ability = new()
 
 /obj/item/crusher_trophy/bileworm_spewlet/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(ability)
 
 /obj/item/crusher_trophy/bileworm_spewlet/add_to(obj/item/kinetic_crusher/crusher, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		crusher.add_item_action(ability)
 
 /obj/item/crusher_trophy/bileworm_spewlet/remove_from(obj/item/kinetic_crusher/crusher, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	crusher.remove_item_action(ability)
 
 /obj/item/crusher_trophy/bileworm_spewlet/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "mark detonation launches projectiles in cardinal directions on a 10 second cooldown. Also gives you an AOE when mining minerals"
 
 /obj/item/crusher_trophy/bileworm_spewlet/on_mark_detonation(mob/living/target, mob/living/user, obj/item/kinetic_crusher/pkc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//ability itself handles cooldowns.
 	ability.InterceptClickOn(user, null, target)
 
 /obj/item/crusher_trophy/bileworm_spewlet/on_projectile_hit_mineral(turf/closed/mineral, mob/living/user)
+	procstart = null
+	src.procstart = null
 	for(var/turf/closed/mineral/mineral_turf in RANGE_TURFS(1, mineral) - mineral)
 		mineral_turf.drill_aoe(user, 0.2)
 
@@ -257,6 +311,8 @@
 	projectile_sound = 'sound/mobs/non-humanoids/bileworm/bileworm_spit.ogg'
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/dir_shots/spewlet/New(Target)
+	procstart = null
+	src.procstart = null
 	firing_directions = GLOB.cardinals.Copy()
 	return ..()
 
@@ -274,10 +330,14 @@
 	damage_type = BRUTE // Otherwise the mobs take heavily reduced damage
 
 /obj/projectile/bileworm_acid/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/parriable_projectile)
 
 /obj/projectile/bileworm_acid/prehit_pierce(atom/target)
+	procstart = null
+	src.procstart = null
 	if (!isliving(target))
 		return ..()
 	var/mob/living/as_living = target
@@ -303,9 +363,13 @@
 	COOLDOWN_DECLARE(summon_cooldown)
 
 /obj/item/crusher_trophy/ice_demon_cube/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "mark detonation to unleash demonic ice clones upon the target"
 
 /obj/item/crusher_trophy/ice_demon_cube/on_mark_detonation(mob/living/target, mob/living/user, obj/item/kinetic_crusher/pkc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(target) || !COOLDOWN_FINISHED(src, summon_cooldown))
 		return
@@ -319,6 +383,8 @@
 
 ///try to make them spawn all around the target to surround him
 /obj/item/crusher_trophy/ice_demon_cube/proc/find_dropoff_turf(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/list/turfs_list = get_adjacent_open_turfs(target)
 	for(var/turf/possible_turf in turfs_list)
 		if(possible_turf.is_blocked_turf())
@@ -336,9 +402,13 @@
 	denied_type = /obj/item/crusher_trophy/wolf_ear
 
 /obj/item/crusher_trophy/wolf_ear/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "mark detonation to gain a slight speed boost temporarily"
 
 /obj/item/crusher_trophy/wolf_ear/on_mark_detonation(mob/living/target, mob/living/user, obj/item/kinetic_crusher/pkc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.apply_status_effect(/datum/status_effect/speed_boost, 1 SECONDS)
 
@@ -351,9 +421,13 @@
 	denied_type = /obj/item/crusher_trophy/bear_paw
 
 /obj/item/crusher_trophy/bear_paw/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "mark detonation to attack twice if you are below half your life"
 
 /obj/item/crusher_trophy/bear_paw/on_mark_detonation(mob/living/target, mob/living/user, obj/item/kinetic_crusher/pkc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user.health / user.maxHealth > 0.5)
 		return
@@ -371,7 +445,11 @@
 	wildhunter_drops = list(/obj/item/food/meat/slab/chicken = 1)
 
 /obj/item/crusher_trophy/raptor_feather/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "your shots to go through your allies"
 
 /obj/item/crusher_trophy/raptor_feather/on_projectile_fire(obj/projectile/destabilizer/marker, mob/living/user)
+	procstart = null
+	src.procstart = null
 	marker.ignore_allies = TRUE

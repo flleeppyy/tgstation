@@ -8,6 +8,8 @@
 	var/max_hits = 15
 
 /datum/corpse_damage/cause_of_death/melee_weapon/apply_to_body(mob/living/carbon/human/body, severity, list/storage, list/datum/callback/on_revive_and_player_occupancy)
+	procstart = null
+	src.procstart = null
 	weapon = get_weapon(body)
 
 	var/hits = ((max_hits - min_hits) * severity + min_hits)
@@ -16,6 +18,8 @@
 		body.zone_selected = pick(body.get_all_limbs())
 
 /datum/corpse_damage/cause_of_death/melee_weapon/proc/get_weapon(mob/living/carbon/human/body)
+	procstart = null
+	src.procstart = null
 	return new weapon(null)
 
 /datum/corpse_damage/cause_of_death/melee_weapon/esword
@@ -23,6 +27,8 @@
 	cause_of_death = "when I was attacked by a filthy traitor!"
 
 /datum/corpse_damage/cause_of_death/melee_weapon/esword/get_weapon(mob/living/carbon/human/body)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/obj/item/melee/energy/sword/esword = .
@@ -41,5 +47,7 @@
 	cause_of_death = "when a flipping heretic attacked me!"
 
 /datum/corpse_damage/cause_of_death/melee_weapon/heretic/get_weapon(mob/living/carbon/human/body)
+	procstart = null
+	src.procstart = null
 	var/obj/item/melee/sickly_blade/blade = pick(subtypesof(/obj/item/melee/sickly_blade)) //pick a random blade, can be a bunch of fun stuff
 	return new blade (null)

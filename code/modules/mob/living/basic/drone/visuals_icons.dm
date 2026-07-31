@@ -1,17 +1,23 @@
 // Drone overlays and visuals
 
 /mob/living/basic/drone/proc/apply_overlay(cache_index)
+	procstart = null
+	src.procstart = null
 	if((. = drone_overlays[cache_index]))
 		add_overlay(.)
 
 
 /mob/living/basic/drone/proc/remove_overlay(cache_index)
+	procstart = null
+	src.procstart = null
 	var/overlay = drone_overlays[cache_index]
 	if(overlay)
 		cut_overlay(overlay)
 		drone_overlays[cache_index] = null
 
 /mob/living/basic/drone/update_clothing(slot_flags)
+	procstart = null
+	src.procstart = null
 	if(slot_flags & ITEM_SLOT_HEAD)
 		update_worn_head()
 	if(slot_flags & ITEM_SLOT_MASK)
@@ -22,9 +28,13 @@
 		update_inv_internal_storage()
 
 /mob/living/basic/drone/proc/update_inv_internal_storage()
+	procstart = null
+	src.procstart = null
 	hud_used?.update_inventory_slot(ITEM_SLOT_DEX_STORAGE)
 
 /mob/living/basic/drone/update_worn_head()
+	procstart = null
+	src.procstart = null
 	remove_overlay(DRONE_HEAD_LAYER)
 	hud_used?.update_inventory_slot(ITEM_SLOT_HEAD)
 
@@ -40,9 +50,13 @@
 	apply_overlay(DRONE_HEAD_LAYER)
 
 /mob/living/basic/drone/update_worn_mask()
+	procstart = null
+	src.procstart = null
 	update_worn_head()
 
 /mob/living/basic/drone/regenerate_icons()
+	procstart = null
+	src.procstart = null
 	// Drones only have 4 slots, which in this specific instance
 	// is a small blessing.
 	update_held_items()
@@ -57,6 +71,8 @@
  * Called on [/mob/proc/Login]
  */
 /mob/living/basic/drone/proc/pickVisualAppearance()
+	procstart = null
+	src.procstart = null
 	picked = FALSE
 	var/list/drone_icons = list(
 		"Maintenance Drone" = image(icon = 'icons/mob/silicon/drone.dmi', icon_state = "[MAINTDRONE]_grey"),
@@ -101,6 +117,8 @@
  * check_menu: Checks if we are allowed to interact with a radial menu
  */
 /mob/living/basic/drone/proc/check_menu()
+	procstart = null
+	src.procstart = null
 	if(!istype(src))
 		return FALSE
 	if(incapacitated)
@@ -108,6 +126,8 @@
 	return TRUE
 
 /mob/living/basic/drone/proc/getItemPixelShiftY()
+	procstart = null
+	src.procstart = null
 	switch(visualAppearance)
 		if(MAINTDRONE)
 			. = 0

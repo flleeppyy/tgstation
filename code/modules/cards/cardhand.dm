@@ -7,17 +7,23 @@
 	worn_icon_state = "card"
 
 /obj/item/toy/cards/cardhand/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	register_context()
 	update_appearance()
 
 /obj/item/toy/cards/cardhand/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is slitting [user.p_their()] wrists with \the [src]! It looks like [user.p_they()] [user.p_have()] a crummy hand!"))
 	playsound(src, 'sound/items/cards/cardshuffle.ogg', 50, TRUE)
 	return BRUTELOSS
 
 /obj/item/toy/cards/cardhand/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("There are [count_cards()] cards.")
 	var/broadcast_check = FALSE
@@ -36,6 +42,8 @@
 
 
 /obj/item/toy/cards/cardhand/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(istype(held_item, /obj/item/toy/cards/deck))
 		var/obj/item/toy/cards/deck/dealer_deck = held_item
 		if(HAS_TRAIT(dealer_deck, TRAIT_WIELDED))
@@ -53,6 +61,8 @@
 	return NONE
 
 /obj/item/toy/cards/cardhand/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user) || !user.can_perform_action(src, NEED_DEXTERITY| FORBID_TELEKINESIS_REACH))
 		return
 
@@ -76,9 +86,13 @@
 		qdel(src) // cardhand is empty now so delete it
 
 /obj/item/toy/cards/cardhand/proc/check_menu(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return isliving(user) && !user.incapacitated
 
 /obj/item/toy/cards/cardhand/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/obj/item/toy/singlecard/card
 	var/interacting_with_deck = FALSE
 	if(istype(tool, /obj/item/toy/singlecard))
@@ -116,6 +130,8 @@
 #define CARDS_ANGLE_OFFSET -45 // start out displaying the 1st card -45 degrees counter clockwise
 
 /obj/item/toy/cards/cardhand/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// This isn't strictly necessary, but this isn't expensive enough in reality

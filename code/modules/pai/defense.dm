@@ -1,8 +1,12 @@
 
 /mob/living/silicon/pai/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/silicon/pai/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -26,6 +30,8 @@
 		set_active_language(get_random_spoken_language())
 
 /mob/living/silicon/pai/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	take_holo_damage(50 * severity)
 	switch(severity)
 		if(EXPLODE_DEVASTATE) //RIP
@@ -41,6 +47,8 @@
 	return TRUE
 
 /mob/living/silicon/pai/attack_hand(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!user.combat_mode)
 		visible_message(span_notice("[user] gently pats [src] on the head, eliciting an off-putting buzzing from its holographic field."))
 		return
@@ -57,15 +65,21 @@
 		user.visible_message(span_notice("[user] promptly scoops up [user.p_their()] pAI's card."))
 
 /mob/living/silicon/pai/bullet_act(obj/projectile/hitting_projectile, def_zone, piercing_hit = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == BULLET_ACT_HIT && (hitting_projectile.stun || hitting_projectile.paralyze))
 		fold_in(force = TRUE)
 		visible_message(span_warning("The electrically-charged projectile disrupts [src]'s holomatrix, forcing [p_them()] to fold in!"))
 
 /mob/living/silicon/pai/ignite_mob(silent)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/silicon/pai/proc/take_holo_damage(amount)
+	procstart = null
+	src.procstart = null
 	holochassis_health = clamp((holochassis_health - amount), -50, HOLOCHASSIS_MAX_HEALTH)
 	if(holochassis_health < 0)
 		fold_in(force = TRUE)
@@ -75,18 +89,26 @@
 
 /// Called when we take burn or brute damage, pass it to the shell instead
 /mob/living/silicon/pai/proc/on_shell_damaged(datum/hurt, type, amount, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	take_holo_damage(amount)
 	return COMPONENT_IGNORE_CHANGE
 
 /// Called when we take stamina damage, pass it to the shell instead
 /mob/living/silicon/pai/proc/on_shell_weakened(datum/hurt, type, amount, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	take_holo_damage(amount * ((forced) ? 1 : 0.25))
 	return COMPONENT_IGNORE_CHANGE
 
 /mob/living/silicon/pai/get_brute_loss()
+	procstart = null
+	src.procstart = null
 	return HOLOCHASSIS_MAX_HEALTH - holochassis_health
 
 /mob/living/silicon/pai/get_fire_loss()
+	procstart = null
+	src.procstart = null
 	return HOLOCHASSIS_MAX_HEALTH - holochassis_health

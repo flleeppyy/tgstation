@@ -18,6 +18,8 @@
 	var/max_range = 7
 
 /datum/action/cooldown/mob_cooldown/skull_launcher/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -27,6 +29,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/skull_launcher/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(target)
 
 	if (get_dist(owner, target_turf) > max_range)
@@ -61,6 +65,8 @@
 
 /// Actually create a mob
 /datum/action/cooldown/mob_cooldown/skull_launcher/proc/spawn_skull(turf/spawn_location, target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/mining/legion_brood/brood = new spawn_type(spawn_location)
 	if (istype(brood))
 		brood.assign_creator(owner)
@@ -81,6 +87,8 @@
 
 /// Copy appearance from the passed atom type
 /obj/effect/temp_visual/legion_skull_depart/proc/set_appearance(atom/spawned_type)
+	procstart = null
+	src.procstart = null
 	icon = initial(spawned_type.icon)
 	icon_state = initial(spawned_type.icon_state)
 	animate(src, alpha = 0, pixel_y = 72, time = duration)
@@ -96,6 +104,8 @@
 
 /// Copy appearance from the passed atom type and store what to do on animation complete
 /obj/effect/temp_visual/legion_skull_land/proc/set_appearance(atom/spawned_type, datum/callback/on_completed)
+	procstart = null
+	src.procstart = null
 	icon = initial(spawned_type.icon)
 	icon_state = initial(spawned_type.icon_state)
 	animate(src, alpha = 0, pixel_y = 72, time = duration / 2)
@@ -112,6 +122,8 @@
 	icon_state = "skull"
 
 /obj/effect/temp_visual/legion_brood_indicator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, alpha = 255, time = 0.5 SECONDS)
 	animate(alpha = 0, time = 0.25 SECONDS)

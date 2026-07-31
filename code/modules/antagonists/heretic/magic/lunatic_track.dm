@@ -9,11 +9,15 @@
 	cooldown_time = 4 SECONDS
 
 /datum/action/cooldown/lunatic_track/Grant(mob/granted)
+	procstart = null
+	src.procstart = null
 	if(!IS_LUNATIC(granted))
 		return
 	return ..()
 
 /datum/action/cooldown/lunatic_track/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/lunatic/lunatic_datum = IS_LUNATIC(owner)
 	var/mob/living/carbon/human/ascended_heretic = lunatic_datum.ascended_body
 	if(!(ascended_heretic))
@@ -32,6 +36,8 @@
 
 /// Gets the balloon message for the heretic we are tracking.
 /datum/action/cooldown/lunatic_track/proc/get_balloon_message(mob/living/carbon/human/tracked_mob)
+	procstart = null
+	src.procstart = null
 	var/balloon_message = generate_balloon_message(tracked_mob)
 	if(tracked_mob.stat == DEAD)
 		balloon_message = "they're dead, " + balloon_message
@@ -40,6 +46,8 @@
 
 /// Create the text for the balloon message
 /datum/action/cooldown/lunatic_track/proc/generate_balloon_message(mob/living/carbon/human/tracked_mob)
+	procstart = null
+	src.procstart = null
 	var/balloon_message = "error text!"
 	var/turf/their_turf = get_turf(tracked_mob)
 	var/turf/our_turf = get_turf(owner)

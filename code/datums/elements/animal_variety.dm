@@ -7,6 +7,8 @@
 /datum/element/animal_variety
 
 /datum/element/animal_variety/Attach(datum/target, icon_prefix, chosen_sprite_suffix, modify_pixels = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isanimal(target))
 		var/mob/living/simple_animal/animal = target
@@ -31,6 +33,8 @@
 	return ELEMENT_INCOMPATIBLE
 
 /datum/element/animal_variety/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	if(isanimal(target))
 		var/mob/living/simple_animal/animal = target
 		animal.icon_state = initial(animal.icon_state)

@@ -13,6 +13,8 @@
 	pixel_shift = 30
 
 /obj/item/wallframe/picture/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/photo))
 		return NONE
 	if(displayed)
@@ -26,6 +28,8 @@
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/wallframe/picture/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.get_inactive_held_item() != src)
 		..()
 		return
@@ -38,9 +42,13 @@
 	return ..()
 
 /obj/item/wallframe/picture/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	user.examinate(src)
 
 /obj/item/wallframe/picture/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.is_holding(src) && displayed)
 		displayed.show(user)
 		return list()
@@ -48,11 +56,15 @@
 		return ..()
 
 /obj/item/wallframe/picture/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(displayed)
 		. += displayed
 
 /obj/item/wallframe/picture/after_attach(obj/O)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/structure/sign/picture_frame/PF = O
 	PF.copy_overlays(src)
@@ -75,26 +87,36 @@
 	var/can_decon = TRUE
 
 /obj/structure/sign/picture_frame/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/art, art_value)
 	if (!SSpersistence.initialized)
 		LAZYADD(SSpersistence.queued_photo_frames, src)
 
 /obj/structure/sign/picture_frame/Destroy()
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(SSpersistence.queued_photo_frames, src)
 	return ..()
 
 /obj/structure/sign/picture_frame/proc/get_photo_id()
+	procstart = null
+	src.procstart = null
 	if(istype(framed) && istype(framed.picture))
 		return framed.picture.id
 
 //Manual loading, DO NOT USE FOR HARDCODED/MAPPED IN ALBUMS. This is for if an album needs to be loaded mid-round from an ID.
 /obj/structure/sign/picture_frame/proc/persistence_load()
+	procstart = null
+	src.procstart = null
 	var/list/data = SSpersistence.photo_frames_database.get_key(persistence_id)
 	if(!isnull(data))
 		load_from_id(data)
 
 /obj/structure/sign/picture_frame/proc/load_from_id(id)
+	procstart = null
+	src.procstart = null
 	var/obj/item/photo/old/P = load_photo_from_disk(id)
 	if(istype(P))
 		if(istype(framed))
@@ -106,6 +128,8 @@
 
 /// Given a photo (or null), will change the contained picture, and queue a persistent save.
 /obj/structure/sign/picture_frame/proc/set_and_save_framed(obj/item/photo/photo)
+	procstart = null
+	src.procstart = null
 	framed = photo
 
 	if (isnull(persistence_id))
@@ -114,12 +138,16 @@
 	SSpersistence.photo_frames_database.set_key(persistence_id, photo?.picture?.id)
 
 /obj/structure/sign/picture_frame/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(in_range(src, user))
 		framed?.show(user)
 
 /// Internal proc
 /obj/structure/sign/picture_frame/proc/try_deconstruct(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!can_decon)
 		return FALSE
 	to_chat(user, span_notice("You start unsecuring [name]..."))
@@ -130,12 +158,18 @@
 	return TRUE
 
 /obj/structure/sign/picture_frame/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return try_deconstruct(user, tool)
 
 /obj/structure/sign/picture_frame/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return try_deconstruct(user, tool)
 
 /obj/structure/sign/picture_frame/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if (!framed)
 		return FALSE
 	tool.play_tool_sound(src)
@@ -147,6 +181,8 @@
 
 
 /obj/structure/sign/picture_frame/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/photo))
 		return NONE
 	if(framed)
@@ -159,6 +195,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/sign/picture_frame/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -166,11 +204,15 @@
 		framed.show(user)
 
 /obj/structure/sign/picture_frame/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(framed)
 		. += framed
 
 /obj/structure/sign/picture_frame/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/wallframe/picture/showcase = new /obj/item/wallframe/picture(loc)
 	if(framed)
 		showcase.displayed = framed
@@ -195,6 +237,8 @@
 	var/portrait_desc
 
 /obj/structure/sign/picture_frame/portrait/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(rand(1,4))
 		if(1) // Deempisi
@@ -219,6 +263,8 @@
 	portrait_desc = desc
 
 /obj/structure/sign/picture_frame/portrait/update_name(updates)
+	procstart = null
+	src.procstart = null
 	if(framed)
 		name = initial(name)
 	else
@@ -226,6 +272,8 @@
 	return ..()
 
 /obj/structure/sign/picture_frame/portrait/update_icon_state(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(framed)
 		icon_state = "frame-overlay"
@@ -233,6 +281,8 @@
 		icon_state = portrait_state
 
 /obj/structure/sign/picture_frame/portrait/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(framed)
 		desc = "Every time you look it makes you laugh."
@@ -240,6 +290,8 @@
 		desc = portrait_desc
 
 /obj/structure/sign/picture_frame/portrait/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!framed)
 		. += span_notice("The frame and the picture are glued together, but you guess you could slip a photo between the two.")
@@ -275,6 +327,8 @@
 
 ///Generates a persistence id unique to the current map. Every bar should feel a little bit different after all.
 /obj/structure/sign/picture_frame/portrait/bar/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(SSmapping.current_map.map_path != CUSTOM_MAP_PATH) //skip adminloaded custom maps.
 		persistence_id = "frame_bar_[SSmapping.current_map.map_name]"
 	return ..()

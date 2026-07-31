@@ -22,11 +22,15 @@
 	RegisterSignal(target, COMSIG_LIVING_WALL_EXITED, PROC_REF(exit_wall))
 
 /datum/element/wall_walker/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, list(COMSIG_LIVING_WALL_BUMP, COMSIG_LIVING_WALL_EXITED))
 	return ..()
 
 /// If the wall is of the proper type, pass into it and keep hold on whatever you're pulling
 /datum/element/wall_walker/proc/try_pass_wall(mob/living/passing_mob, turf/closed/bumped_wall)
+	procstart = null
+	src.procstart = null
 	if(wall_type && !istype(bumped_wall, wall_type))
 		return
 
@@ -44,6 +48,8 @@
 
 /// If the wall is of the proper type, pull whatever you're pulling into it
 /datum/element/wall_walker/proc/exit_wall(mob/living/passing_mob, turf/closed/exited_wall)
+	procstart = null
+	src.procstart = null
 	if(!istype(exited_wall, wall_type))
 		return
 

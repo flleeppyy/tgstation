@@ -30,6 +30,8 @@
 	var/cult_converted = FALSE
 
 /mob/living/basic/sheep/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/mob_harvest, \
 		harvest_tool = /obj/item/razor, \
@@ -47,6 +49,8 @@
 	RegisterSignal(src, COMSIG_LIVING_CULT_SACRIFICED, PROC_REF(on_sacrificed))
 
 /mob/living/basic/sheep/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat == DEAD)
 		return
@@ -55,6 +59,8 @@
 
 /// Signal proc for [COMSIG_LIVING_CULT_SACRIFICED] to have special interaction with sacrificing a lamb
 /mob/living/basic/sheep/proc/on_sacrificed(datum/source, list/invokers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(cult_converted)
@@ -71,6 +77,8 @@
 	return STOP_SACRIFICE
 
 /mob/living/basic/sheep/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	if(vname != NAMEOF(src, cult_converted))
 		return ..()
 

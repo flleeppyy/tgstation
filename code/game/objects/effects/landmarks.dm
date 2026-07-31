@@ -9,18 +9,26 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
 /obj/effect/landmark/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/landmark/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 
 /obj/effect/landmark/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.landmarks_list += src
 
 /obj/effect/landmark/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.landmarks_list -= src
 	return ..()
 
@@ -35,6 +43,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	var/used = FALSE
 
 /obj/effect/landmark/start/proc/after_round_start()
+	procstart = null
+	src.procstart = null
 	// We'd like to keep these around for unit tests, so we can check that they exist.
 #if !defined(UNIT_TESTS) && !defined(MAP_TEST)
 	if(delete_after_roundstart)
@@ -42,6 +52,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 #endif
 
 /obj/effect/landmark/start/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.start_landmarks_list += src
 	if(jobspawn_override)
@@ -50,6 +62,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 		tag = "start*[name]"
 
 /obj/effect/landmark/start/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.start_landmarks_list -= src
 	if(jobspawn_override)
 		LAZYREMOVEASSOC(GLOB.jobspawn_overrides, name, src)
@@ -210,6 +224,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	var/latejoin_active = TRUE
 
 /obj/effect/landmark/start/ai/after_round_start()
+	procstart = null
+	src.procstart = null
 	if(latejoin_active && !used)
 		new /obj/structure/ai_core/latejoin_inactive(loc)
 	return ..()
@@ -229,10 +245,14 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	var/department
 
 /obj/effect/landmark/start/depsec/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	LAZYADDASSOCLIST(GLOB.department_security_spawns, department, src)
 
 /obj/effect/landmark/start/depsec/Destroy()
+	procstart = null
+	src.procstart = null
 	LAZYREMOVEASSOC(GLOB.department_security_spawns, department, src)
 	return ..()
 
@@ -260,6 +280,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	icon_state = "wiznerd_spawn"
 
 /obj/effect/landmark/start/wizard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.wizardstart += loc
 	return INITIALIZE_HINT_QDEL
@@ -279,12 +301,16 @@ GLOBAL_LIST_EMPTY(nukeop_elevator_start)
 	icon_state = "snukeop_spawn"
 
 /obj/effect/landmark/start/nukeop_base/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	var/list/add_to = get_global_list()
 	add_to += loc
 	return INITIALIZE_HINT_QDEL
 
 /obj/effect/landmark/start/nukeop_base/proc/get_global_list()
+	procstart = null
+	src.procstart = null
 	return GLOB.nukeop_base_start
 
 /obj/effect/landmark/start/nukeop_base/leader
@@ -293,6 +319,8 @@ GLOBAL_LIST_EMPTY(nukeop_elevator_start)
 	icon_state = "snukeop_leader_spawn"
 
 /obj/effect/landmark/start/nukeop_base/leader/get_global_list()
+	procstart = null
+	src.procstart = null
 	return GLOB.nukeop_base_leader_start
 
 /obj/effect/landmark/start/nukeop_base/overwatch
@@ -301,6 +329,8 @@ GLOBAL_LIST_EMPTY(nukeop_elevator_start)
 	icon_state = "snukeop_leader_spawn"
 
 /obj/effect/landmark/start/nukeop_base/overwatch/get_global_list()
+	procstart = null
+	src.procstart = null
 	return GLOB.nukeop_base_overwatch_start
 
 /obj/effect/landmark/start/nukeop_elevator
@@ -309,6 +339,8 @@ GLOBAL_LIST_EMPTY(nukeop_elevator_start)
 	icon_state = /obj/effect/landmark/start/nukeop_base::icon_state
 
 /obj/effect/landmark/start/nukeop_elevator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.nukeop_elevator_start += loc
 	return INITIALIZE_HINT_QDEL
@@ -330,6 +362,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	name = "New Player"
 
 /obj/effect/landmark/start/new_player/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.newplayer_start += loc
 	return INITIALIZE_HINT_QDEL
@@ -343,6 +377,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	name = "JoinLate"
 
 /obj/effect/landmark/latejoin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	SSjob.latejoin_trackers += loc
 	return INITIALIZE_HINT_QDEL
@@ -363,6 +399,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	icon_state = "xeno_spawn"
 
 /obj/effect/landmark/generic_maintenance_landmark/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.generic_maintenance_landmarks += loc
 	return INITIALIZE_HINT_QDEL
@@ -374,6 +412,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	icon_state = "blob_start"
 
 /obj/effect/landmark/blobstart/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.blobstart += loc
 	return INITIALIZE_HINT_QDEL
@@ -384,6 +424,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	icon_state = "secequipment"
 
 /obj/effect/landmark/secequipment/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.secequipment += loc
 	return INITIALIZE_HINT_QDEL
@@ -394,6 +436,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	icon_state = "prisonwarp"
 
 /obj/effect/landmark/prisonwarp/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.prisonwarp += loc
 	return INITIALIZE_HINT_QDEL
@@ -403,6 +447,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	icon_state = "ert_spawn"
 
 /obj/effect/landmark/ert_spawn/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.emergencyresponseteamspawn += loc
 	return INITIALIZE_HINT_QDEL
@@ -421,6 +467,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	icon_state = "holding_facility"
 
 /obj/effect/landmark/holding_facility/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.holdingfacility += loc
 	return INITIALIZE_HINT_QDEL
@@ -430,6 +478,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	icon_state = "tdome_observer"
 
 /obj/effect/landmark/thunderdome/observe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.tdomeobserve += loc
 	return INITIALIZE_HINT_QDEL
@@ -439,6 +489,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	icon_state = "tdome_t1"
 
 /obj/effect/landmark/thunderdome/one/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.tdome1 += loc
 	return INITIALIZE_HINT_QDEL
@@ -448,6 +500,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	icon_state = "tdome_t2"
 
 /obj/effect/landmark/thunderdome/two/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.tdome2 += loc
 	return INITIALIZE_HINT_QDEL
@@ -457,6 +511,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	icon_state = "tdome_admin"
 
 /obj/effect/landmark/thunderdome/admin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.tdomeadmin += loc
 	return INITIALIZE_HINT_QDEL
@@ -474,10 +530,14 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	icon_state = "generic_event"
 
 /obj/effect/landmark/event_spawn/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.generic_event_spawns += src
 
 /obj/effect/landmark/event_spawn/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.generic_event_spawns -= src
 	return ..()
 
@@ -485,12 +545,16 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	var/datum/map_template/ruin/ruin_template
 
 /obj/effect/landmark/ruin/Initialize(mapload, my_ruin_template)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "ruin_[GLOB.ruin_landmarks.len + 1]"
 	ruin_template = my_ruin_template
 	GLOB.ruin_landmarks |= src
 
 /obj/effect/landmark/ruin/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.ruin_landmarks -= src
 	ruin_template = null
 	. = ..()
@@ -522,15 +586,21 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	var/list/party_debris = list()
 
 /obj/effect/landmark/start/hangover/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/landmark/start/hangover/Destroy()
+	procstart = null
+	src.procstart = null
 	hangover_debris = null
 	party_debris = null
 	return ..()
 
 /obj/effect/landmark/start/hangover/LateInitialize()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(SSstation, STATION_TRAIT_BIRTHDAY))
 		party_debris += new /obj/effect/decal/cleanable/confetti(get_turf(src)) //a birthday celebration can also be a hangover
 		var/list/bonus_confetti = GLOB.alldirs
@@ -570,6 +640,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 
 ///Spawns the mob with some drugginess/drunkenness, and some disgust.
 /obj/effect/landmark/start/hangover/proc/make_hungover(mob/hangover_mob)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(hangover_mob))
 		return
 
@@ -595,6 +667,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 		spawned_carbon.adjust_drugginess(rand(30 SECONDS, 40 SECONDS))
 
 /obj/effect/landmark/start/hangover/JoinPlayerHere(mob/joining_mob, buckle)
+	procstart = null
+	src.procstart = null
 	var/mob/created_joining_mob = ..()
 	make_hungover(created_joining_mob)
 	for(var/obj/structure/closet/closet in get_turf(src))
@@ -609,10 +683,14 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	icon_state = "flap-install"
 
 /obj/effect/landmark/flaps_install/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.cargo_shuttle_flaps_landmarks += src
 
 /obj/effect/landmark/flaps_install/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.cargo_shuttle_flaps_landmarks -= src
 	return ..()
 
@@ -623,10 +701,14 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	var/location
 
 /obj/effect/landmark/navigate_destination/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/landmark/navigate_destination/LateInitialize()
+	procstart = null
+	src.procstart = null
 	if(!location)
 		var/obj/machinery/door/airlock/A = locate(/obj/machinery/door/airlock) in loc
 		location = A ? format_text(A.name) : get_area_name(src, format_text = TRUE)

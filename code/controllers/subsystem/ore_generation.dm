@@ -28,6 +28,8 @@ SUBSYSTEM_DEF(ore_generation)
 	var/list/list/list/ore_spread_probabilities = list()
 
 /datum/controller/subsystem/ore_generation/Initialize()
+	procstart = null
+	src.procstart = null
 	/// First, lets sort each ore_vent here based on their distance to the landmark, then we'll assign sizes.
 	var/list/sort_vents = list()
 	for(var/obj/structure/ore_vent/vent as anything in possible_vents)
@@ -90,6 +92,8 @@ SUBSYSTEM_DEF(ore_generation)
 
 /// Generates debug data about ore spread among rock turfs
 /datum/controller/subsystem/ore_generation/proc/calculate_ore_spread()
+	procstart = null
+	src.procstart = null
 	var/list/result = list()
 	var/list/totals = list("chance" = 0, "raw_sum" = 0)
 	var/summary_count = 0
@@ -142,6 +146,8 @@ SUBSYSTEM_DEF(ore_generation)
 	ore_spread_probabilities = result
 
 /datum/controller/subsystem/ore_generation/fire(resumed)
+	procstart = null
+	src.procstart = null
 	available_boulders.Cut() // reset upon new fire.
 	for(var/obj/structure/ore_vent/current_vent as anything in processed_vents)
 

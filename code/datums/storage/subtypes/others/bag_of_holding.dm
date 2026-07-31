@@ -5,6 +5,8 @@
 	allow_big_nesting = TRUE
 
 /datum/storage/bag_of_holding/attempt_insert(obj/item/to_insert, mob/user, override, force, messages)
+	procstart = null
+	src.procstart = null
 	var/list/obj/item/storage/backpack/holding/matching = typecache_filter_list(to_insert.get_all_contents(), typecacheof(/obj/item/storage/backpack/holding, /obj/item/mod/control, /obj/item/mod/module/storage))
 	matching -= parent
 	matching -= real_location
@@ -21,10 +23,14 @@
 	return ..()
 
 /datum/storage/bag_of_holding/proc/recursive_insertion(obj/item/to_insert, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(confirm_recursive_insertion(to_insert, user))
 		create_rift(to_insert, user)
 
 /datum/storage/bag_of_holding/proc/confirm_recursive_insertion(obj/item/to_insert, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/area/bag_area = get_area(user)
 	var/safety = tgui_alert(user, "Doing this will have extremely dire consequences for the station and its crew. Be sure you know what you're doing.", "Put in [to_insert.name]?", list("Proceed", "Abort"))
 	return safety == "Proceed" \
@@ -37,6 +43,8 @@
 		&& !(bag_area.area_flags & NO_BOH)
 
 /datum/storage/bag_of_holding/proc/create_rift(obj/item/inserted, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/turf/rift_loc = get_turf(parent)
 	user.visible_message(
 		span_userdanger("The Bluespace interfaces of the two devices catastrophically malfunction!"),

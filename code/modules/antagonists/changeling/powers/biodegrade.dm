@@ -13,6 +13,8 @@
 	var/static/bio_acid_color = "#9455ff"
 
 /datum/action/changeling/biodegrade/sting_action(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	var/list/obj/restraints = list()
 	var/obj/handcuffs = user.get_item_by_slot(ITEM_SLOT_HANDCUFFED)
@@ -78,10 +80,14 @@
 
 /// Spawn green acid puddle underneath obj, used for callback
 /datum/action/changeling/biodegrade/proc/make_puddle(obj/melted_restraint)
+	procstart = null
+	src.procstart = null
 	if (melted_restraint) // incase obj gets qdel'd
 		return new /obj/effect/decal/cleanable/greenglow(get_turf(melted_restraint))
 
 /datum/action/changeling/biodegrade/proc/acid_blast(atom/movable/user, atom/movable/target)
+	procstart = null
+	src.procstart = null
 	var/datum/reagents/ephemeral_acid = new
 	ephemeral_acid.add_reagent(bio_acid_path, bio_acid_amount_per_spray)
 	var/mutable_appearance/splash_animation = mutable_appearance('icons/effects/effects.dmi', "splash")
@@ -90,6 +96,8 @@
 	ephemeral_acid.expose(target, TOUCH)
 
 /datum/action/changeling/biodegrade/proc/punish_with_acid(mob/living/carbon/human/user, mob/living/hapless_manhandler)
+	procstart = null
+	src.procstart = null
 	acid_blast(user, hapless_manhandler)
 	playsound(user, 'sound/mobs/non-humanoids/bileworm/bileworm_spit.ogg', 50, TRUE)
 	if(IS_CHANGELING(hapless_manhandler))

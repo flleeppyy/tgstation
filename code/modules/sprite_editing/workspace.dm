@@ -36,6 +36,8 @@
 	layers = list(list("name" = "Background", visible = TRUE, "data" = create_layer_data(initial_layer_color)))
 
 /datum/sprite_editor_workspace/proc/copy(preserve_history = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/sprite_editor_workspace/new_workspace = new(width, height, dirs, color_mode, config_flags, tool_flags)
 	new_workspace.layers = deep_copy_list_alt(layers)
 	if(preserve_history)
@@ -46,6 +48,8 @@
 	return new_workspace
 
 /datum/sprite_editor_workspace/proc/create_layer_data(color = "#00000000")
+	procstart = null
+	src.procstart = null
 	var/list/out = list()
 	for(var/i in 1 to dirs)
 		var/list/layer = list()
@@ -62,6 +66,8 @@
  * Returns TRUE if the transaction was valid.
  */
 /datum/sprite_editor_workspace/proc/new_transaction(transaction)
+	procstart = null
+	src.procstart = null
 	if(!can_transact(transaction))
 		return
 	preprocess_new_transaction(transaction)
@@ -75,6 +81,8 @@
 	return TRUE
 
 /datum/sprite_editor_workspace/proc/undo()
+	procstart = null
+	src.procstart = null
 	if(!(config_flags & SPRITE_EDITOR_ALLOW_UNDO))
 		return
 	if(length(undo_stack))
@@ -85,6 +93,8 @@
 		redo_names += transaction["name"]
 
 /datum/sprite_editor_workspace/proc/redo()
+	procstart = null
+	src.procstart = null
 	if(!(config_flags & SPRITE_EDITOR_ALLOW_UNDO))
 		return
 	if(length(redo_stack))
@@ -95,6 +105,8 @@
 		undo_names += transaction["name"]
 
 /datum/sprite_editor_workspace/proc/toggle_layer_visible(layer)
+	procstart = null
+	src.procstart = null
 	if(!(config_flags & SPRITE_EDITOR_ALLOW_LAYERS))
 		return
 	if(!isnum(layer))
@@ -104,6 +116,8 @@
 	layers[layer]["visible"] = !layers[layer]["visible"]
 
 /datum/sprite_editor_workspace/proc/is_valid_color(color)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_SPRITE_EDITOR_VALIDATE_COLOR, color))
 		return FALSE
 	var/list/rgb_color = split_color(color)
@@ -118,6 +132,8 @@
 			return TRUE
 
 /datum/sprite_editor_workspace/proc/can_transact(list/transaction)
+	procstart = null
+	src.procstart = null
 	switch(transaction["type"])
 		if("pencil")
 			return tool_flags & SPRITE_EDITOR_TOOL_PENCIL && is_valid_color(transaction["color"])
@@ -131,6 +147,8 @@
 			return FALSE
 
 /datum/sprite_editor_workspace/proc/preprocess_new_transaction(list/transaction)
+	procstart = null
+	src.procstart = null
 	switch(transaction["type"])
 		if("pencil", "eraser")
 			var/layer = transaction["layer"]
@@ -162,6 +180,8 @@
 			transaction["oldLayer"] = old_layer
 
 /datum/sprite_editor_workspace/proc/transact(list/transaction)
+	procstart = null
+	src.procstart = null
 	switch(transaction["type"])
 		if("pencil", "bucket")
 			var/layer = transaction["layer"]
@@ -213,6 +233,8 @@
 			layers.Cut(layer, layer+1)
 
 /datum/sprite_editor_workspace/proc/reverse_transact(list/transaction)
+	procstart = null
+	src.procstart = null
 	switch(transaction["type"])
 		if("pencil", "eraser", "bucket")
 			var/layer = transaction["layer"]
@@ -250,6 +272,8 @@
 			layers.Insert(layer, old_layer)
 
 /datum/sprite_editor_workspace/proc/sprite_editor_ui_data()
+	procstart = null
+	src.procstart = null
 	return list(
 		"colorMode" = color_mode,
 		"toolFlags" = tool_flags,
@@ -266,9 +290,13 @@
 
 /// Get a reference to the pixel data for the first layer of the given dir
 /datum/sprite_editor_workspace/proc/get_first_layer_pixel_data(dir = SOUTH)
+	procstart = null
+	src.procstart = null
 	return layers[1]["data"]["[dir]"]
 
 /datum/sprite_editor_workspace/proc/to_icon()
+	procstart = null
+	src.procstart = null
 	var/metadata = json_encode(list(
 		"width" = width,
 		"height" = height,

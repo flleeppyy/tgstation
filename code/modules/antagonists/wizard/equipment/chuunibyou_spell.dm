@@ -13,6 +13,8 @@
 	spell_max_level = 1
 
 /datum/action/cooldown/spell/chuuni_invocations/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	to_chat(cast_on, span_green("You focus your arcane knowledge into a slice-of-life format..."))

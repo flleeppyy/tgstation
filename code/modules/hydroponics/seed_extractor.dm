@@ -14,6 +14,8 @@
  * *
  */
 /proc/seedify(obj/item/object, t_max, obj/machinery/seed_extractor/extractor, mob/living/user)
+	procstart = null
+	src.procstart = null
 	//try to get the seed from this item
 	var/obj/item/seeds/seed = object.get_plant_seed()
 	if(isnull(seed))
@@ -56,6 +58,8 @@
 	var/seed_multiplier = 1
 
 /obj/machinery/seed_extractor/Initialize(mapload, obj/item/seeds/new_seed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
@@ -78,6 +82,8 @@
 	return NONE
 
 /obj/machinery/seed_extractor/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/stock_part/matter_bin/matter_bin in component_parts)
 		max_seeds = initial(max_seeds) * matter_bin.tier
@@ -85,26 +91,38 @@
 		seed_multiplier = initial(seed_multiplier) * servo.tier
 
 /obj/machinery/seed_extractor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
 		. += span_notice("The status display reads: Extracting <b>[seed_multiplier] to [seed_multiplier * 4]</b> seed(s) per piece of produce.<br>Machine can store up to <b>[max_seeds]</b> seeds.")
 
 /obj/machinery/seed_extractor/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]_open" : base_icon_state
 
 /obj/machinery/seed_extractor/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/seed_extractor/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/seed_extractor/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_pry_open(user, tool, close_after_pry = TRUE, deconstruct_on_fail = TRUE)
 
 /obj/machinery/seed_extractor/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/storage/bag/plants))
 		var/loaded = 0
 		for(var/obj/item/seeds/to_store in tool.contents)
@@ -164,6 +182,8 @@
  * * O - seed to generate the string from
  */
 /obj/machinery/seed_extractor/proc/generate_seed_hash(obj/item/seeds/O)
+	procstart = null
+	src.procstart = null
 	var/genes = list2params(O.genes)
 	return md5("[O.name][O.lifespan][O.endurance][O.maturation][O.production][O.yield][O.potency][O.instability][genes]");
 
@@ -176,6 +196,8 @@
  * taking_from - where are we taking the seed from? A mob, a bag, etc? If null its means it's just laying on the turf so force move it in
  **/
 /obj/machinery/seed_extractor/proc/add_seed(obj/item/seeds/to_add, atom/taking_from)
+	procstart = null
+	src.procstart = null
 	var/seed_id = generate_seed_hash(to_add)
 	var/list/seed_data
 	var/has_seed_data // so we remember to add a seed obj weakref to piles[seed_id] at the end of the proc. That way if some reason we runtime in this proc it won't incorrectly add data to the list
@@ -208,15 +230,21 @@
 	return TRUE
 
 /obj/machinery/seed_extractor/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.notcontained_state
 
 /obj/machinery/seed_extractor/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SeedExtractor", name)
 		ui.open()
 
 /obj/machinery/seed_extractor/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/seeds = list()
 	for(var/seed_id in piles)
 		if (!length(piles[seed_id]["refs"]))
@@ -232,6 +260,8 @@
 	.["seeds"] = seeds
 
 /obj/machinery/seed_extractor/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["cycle_seconds"] = HYDROTRAY_CYCLE_DELAY / 10
 	data["trait_db"] = list()
@@ -246,6 +276,8 @@
 	return data
 
 /obj/machinery/seed_extractor/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

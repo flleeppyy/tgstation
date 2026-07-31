@@ -5,6 +5,8 @@
 	var/trippy = TRUE
 
 /datum/reagent/drug/on_mob_end_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(trippy)
 		affected_mob.clear_mood_event("[type]_high")
@@ -20,6 +22,8 @@
 	addiction_types = list(/datum/addiction/hallucinogens = 60)
 
 /datum/reagent/drug/space_drugs/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.set_drugginess(30 SECONDS * metabolization_ratio * seconds_per_tick)
 	if(isturf(affected_mob.loc) && !isspaceturf(affected_mob.loc) && !HAS_TRAIT(affected_mob, TRAIT_IMMOBILIZED) && SPT_PROB(5, seconds_per_tick))
@@ -28,11 +32,15 @@
 		affected_mob.emote(pick("twitch","drool","moan","giggle"))
 
 /datum/reagent/drug/space_drugs/overdose_start(mob/living/affected_mob, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(affected_mob, span_userdanger("You start tripping hard!"))
 	affected_mob.add_mood_event("[type]_overdose", /datum/mood_event/overdose, name)
 
 /datum/reagent/drug/space_drugs/overdose_process(mob/living/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/hallucination_duration_in_seconds = (affected_mob.get_timed_status_effect_duration(/datum/status_effect/hallucination) / 10)
 	if(hallucination_duration_in_seconds < volume && SPT_PROB(10, seconds_per_tick))
@@ -51,6 +59,8 @@
 	var/cleared_aggressive = FALSE
 
 /datum/reagent/drug/cannabis/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.apply_status_effect(/datum/status_effect/stoned)
 	if(SPT_PROB(1, seconds_per_tick))
@@ -74,6 +84,8 @@
 			cleared_aggressive = TRUE
 
 /datum/reagent/drug/cannabis/on_mob_delete(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cleared_aggressive)
 		affected_mob.ai_controller?.set_blackboard_key(BB_MONKEY_AGGRESSIVE, TRUE)
@@ -93,10 +105,14 @@
 
 	//Nicotine is used as a pesticide IRL.
 /datum/reagent/drug/nicotine/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 	mytray.adjust_toxic(round(volume))
 	mytray.adjust_pestlevel(-rand(1, 2))
 
 /datum/reagent/drug/nicotine/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(SPT_PROB(0.5, seconds_per_tick))
 		var/smoke_message = pick("You feel relaxed.", "You feel calmed.","You feel alert.","You feel rugged.")
@@ -111,6 +127,8 @@
 	return UPDATE_MOB_HEALTH
 
 /datum/reagent/drug/nicotine/overdose_process(mob/living/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/need_mob_update
 	need_mob_update = affected_mob.adjust_tox_loss(0.4 * metabolization_ratio * seconds_per_tick, updating_health = FALSE, required_biotype = affected_biotype)
@@ -131,6 +149,8 @@
 	addiction_types = list(/datum/addiction/opioids = 30)
 
 /datum/reagent/drug/krokodil/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/high_message = pick("You feel calm.", "You feel collected.", "You feel like you need to relax.")
 	if(SPT_PROB(2.5, seconds_per_tick))
@@ -153,6 +173,8 @@
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/drug/krokodil/overdose_process(mob/living/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/need_mob_update = affected_mob.adjust_organ_loss(ORGAN_SLOT_BRAIN, 0.25 * metabolization_ratio * seconds_per_tick, required_organ_flag = affected_organ_flags)
 	need_mob_update |= affected_mob.adjust_tox_loss(0.25 * metabolization_ratio * seconds_per_tick, updating_health = FALSE, required_biotype = affected_biotype)
@@ -173,6 +195,8 @@
 	metabolized_traits = list(TRAIT_STIMULATED)
 
 /datum/reagent/drug/methamphetamine/on_new(data)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//the more pure, the less non-blue colors get involved - best case scenario is rgb(135, 200, 250) AKA #78C8FA
 	//worst case scenario is rgb(250, 250, 250) AKA #FAFAFA
@@ -183,19 +207,27 @@
 
 //we need to update the color whenever purity gets changed
 /datum/reagent/drug/methamphetamine/on_merge(list/mix_data, amount)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/effective_impurity = min(1, (1 - creation_purity)/0.5)
 	color = BlendRGB(initial(color), "#FAFAFA", effective_impurity)
 
 /datum/reagent/drug/methamphetamine/on_mob_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.add_movespeed_modifier(/datum/movespeed_modifier/reagent/methamphetamine)
 
 /datum/reagent/drug/methamphetamine/on_mob_end_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/methamphetamine)
 
 /datum/reagent/drug/methamphetamine/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/high_message = pick("You feel hyper.", "You feel like you need to go faster.", "You feel like you can run the world.", "You understand now.")
 	if(SPT_PROB(2.5, seconds_per_tick))
@@ -212,6 +244,8 @@
 		affected_mob.emote(pick("twitch", "shiver"))
 
 /datum/reagent/drug/methamphetamine/overdose_process(mob/living/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(affected_mob, TRAIT_IMMOBILIZED) && !ismovable(affected_mob.loc))
 		for(var/i in 1 to round(2.67 * metabolization_ratio * seconds_per_tick, 1))
@@ -243,6 +277,8 @@
 	var/datum/brain_trauma/special/psychotic_brawling/bath_salts/rage
 
 /datum/reagent/drug/bath_salts/on_mob_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(affected_mob))
 		var/mob/living/carbon/carbon_mob = affected_mob
@@ -250,11 +286,15 @@
 		carbon_mob.gain_trauma(rage, TRAUMA_RESILIENCE_ABSOLUTE)
 
 /datum/reagent/drug/bath_salts/on_mob_end_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(rage)
 		QDEL_NULL(rage)
 
 /datum/reagent/drug/bath_salts/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/high_message = pick("You feel amped up.", "You feel ready.", "You feel like you can push it to the limit.")
 	if(SPT_PROB(2.5, seconds_per_tick))
@@ -271,6 +311,8 @@
 		step(affected_mob, pick(GLOB.cardinals))
 
 /datum/reagent/drug/bath_salts/overdose_process(mob/living/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.adjust_hallucinations(10 SECONDS * metabolization_ratio * seconds_per_tick)
 	if(!HAS_TRAIT(affected_mob, TRAIT_IMMOBILIZED) && !ismovable(affected_mob.loc))
@@ -293,6 +335,8 @@
 	metabolized_traits = list(TRAIT_STIMULATED)
 
 /datum/reagent/drug/aranesp/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/high_message = pick("You feel amped up.", "You feel ready.", "You feel like you can push it to the limit.")
 	if(SPT_PROB(2.5, seconds_per_tick))
@@ -320,14 +364,20 @@
 	metabolized_traits = list(TRAIT_FEARLESS, TRAIT_ANALGESIA)
 
 /datum/reagent/drug/happiness/on_mob_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.add_mood_event("happiness_drug", /datum/mood_event/happiness_drug)
 
 /datum/reagent/drug/happiness/on_mob_delete(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.clear_mood_event("happiness_drug")
 
 /datum/reagent/drug/happiness/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.remove_status_effect(/datum/status_effect/jitter)
 	affected_mob.remove_status_effect(/datum/status_effect/confusion)
@@ -336,6 +386,8 @@
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/drug/happiness/overdose_process(mob/living/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(SPT_PROB(16, seconds_per_tick))
 		var/reaction = rand(1,3)
@@ -364,6 +416,8 @@
 	metabolized_traits = list(TRAIT_BATON_RESISTANCE, TRAIT_ANALGESIA, TRAIT_STIMULATED)
 
 /datum/reagent/drug/pumpup/on_mob_metabolize(mob/living/carbon/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/organ/liver/liver = affected_mob.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(liver && HAS_TRAIT(liver, TRAIT_MAINTENANCE_METABOLISM))
@@ -371,6 +425,8 @@
 		metabolization_rate *= 0.8
 
 /datum/reagent/drug/pumpup/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.set_jitter_if_lower(2.5 SECONDS * metabolization_ratio * seconds_per_tick)
 
@@ -382,10 +438,14 @@
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/drug/pumpup/overdose_start(mob/living/affected_mob, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(affected_mob, span_userdanger("You can't stop shaking, your heart beats faster and faster..."))
 
 /datum/reagent/drug/pumpup/overdose_process(mob/living/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.set_jitter_if_lower(2.5 SECONDS * metabolization_ratio * seconds_per_tick)
 	var/need_mob_update
@@ -407,6 +467,8 @@
 	chemical_flags = NONE
 
 /datum/reagent/drug/maint/on_mob_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(affected_mob))
 		return
@@ -428,6 +490,8 @@
 	addiction_types = list(/datum/addiction/maintenance_drugs = 50)
 
 /datum/reagent/drug/maint/powder/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.adjust_organ_loss(ORGAN_SLOT_BRAIN, 0.1 * metabolization_ratio * seconds_per_tick, required_organ_flag = affected_organ_flags)
 	// 5x if you want to OD, you can potentially go higher, but good luck managing the brain damage.
@@ -436,11 +500,15 @@
 	affected_mob?.mind?.experience_multiplier_reasons[type] = 1 * amt * metabolization_ratio * seconds_per_tick
 
 /datum/reagent/drug/maint/powder/on_mob_end_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob?.mind?.experience_multiplier_reasons[type] = null
 	affected_mob?.mind?.experience_multiplier_reasons -= type
 
 /datum/reagent/drug/maint/powder/overdose_process(mob/living/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(affected_mob.adjust_organ_loss(ORGAN_SLOT_BRAIN, 6 * metabolization_ratio * seconds_per_tick, required_organ_flag = affected_organ_flags))
 		return UPDATE_MOB_HEALTH
@@ -457,11 +525,15 @@
 	metabolized_traits = list(TRAIT_HARDLY_WOUNDED, TRAIT_ANALGESIA)
 
 /datum/reagent/drug/maint/sludge/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(affected_mob.adjust_tox_loss(0.125 * metabolization_ratio * seconds_per_tick, required_biotype = affected_biotype))
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/drug/maint/sludge/overdose_process(mob/living/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(affected_mob))
 		return
@@ -485,12 +557,16 @@
 	addiction_types = list(/datum/addiction/maintenance_drugs = 120)
 
 /datum/reagent/drug/maint/tar/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.AdjustAllImmobility(-10 * metabolization_ratio * seconds_per_tick)
 	affected_mob.adjust_organ_loss(ORGAN_SLOT_LIVER, 1.5 * metabolization_ratio * seconds_per_tick, required_organ_flag = affected_organ_flags)
 	return UPDATE_MOB_HEALTH
 
 /datum/reagent/drug/maint/tar/overdose_process(mob/living/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/need_update
 	need_update = affected_mob.adjust_tox_loss(5 * metabolization_ratio * seconds_per_tick, updating_health = FALSE, required_biotype = affected_biotype)
@@ -511,6 +587,8 @@
 	addiction_types = list(/datum/addiction/hallucinogens = 20)
 
 /datum/reagent/drug/mushroomhallucinogen/on_mob_life(mob/living/carbon/psychonaut, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	psychonaut.set_slurring_if_lower(2.5 SECONDS * metabolization_ratio * seconds_per_tick)
 
@@ -528,6 +606,8 @@
 				psychonaut.emote(pick("twitch","giggle"))
 
 /datum/reagent/drug/mushroomhallucinogen/on_mob_metabolize(mob/living/psychonaut)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	psychonaut.add_mood_event("tripping", /datum/mood_event/high)
@@ -566,6 +646,8 @@
 		animate(filter, time = 64 SECONDS, loop = -1, easing = LINEAR_EASING, offset = 32, flags = ANIMATION_PARALLEL)
 
 /datum/reagent/drug/mushroomhallucinogen/on_mob_end_metabolize(mob/living/psychonaut)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	psychonaut.clear_mood_event("tripping")
 	if(!psychonaut.hud_used)
@@ -575,6 +657,8 @@
 	game_plane_master_controller.remove_filter("psilocybin_wave")
 
 /datum/reagent/drug/mushroomhallucinogen/overdose_process(mob/living/psychonaut, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(SPT_PROB(10, seconds_per_tick))
 		psychonaut.emote(pick("twitch","drool","moan"))
@@ -601,6 +685,8 @@
 	var/super_flip_requirement = 3
 
 /datum/reagent/drug/blastoff/on_mob_metabolize(mob/living/dancer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	dancer.add_mood_event("vibing", /datum/mood_event/high)
@@ -632,6 +718,8 @@
 	dancer.sound_environment_override = SOUND_ENVIRONMENT_PSYCHOTIC
 
 /datum/reagent/drug/blastoff/on_mob_end_metabolize(mob/living/dancer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	dancer.clear_mood_event("vibing")
@@ -648,6 +736,8 @@
 	dancer.sound_environment_override = NONE
 
 /datum/reagent/drug/blastoff/on_mob_life(mob/living/carbon/dancer, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(dancer.adjust_organ_loss(ORGAN_SLOT_LUNGS, 0.3 * metabolization_ratio * seconds_per_tick, required_organ_flag = affected_organ_flags))
 		. = UPDATE_MOB_HEALTH
@@ -657,6 +747,8 @@
 		dancer.emote("flip")
 
 /datum/reagent/drug/blastoff/overdose_process(mob/living/dancer, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(dancer.adjust_organ_loss(ORGAN_SLOT_LUNGS, 0.3 * metabolization_ratio * seconds_per_tick, required_organ_flag = affected_organ_flags))
 		. = UPDATE_MOB_HEALTH
@@ -666,6 +758,8 @@
 
 ///This proc listens to the flip signal and throws the mob every third flip
 /datum/reagent/drug/blastoff/proc/on_flip()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!iscarbon(holder.my_atom))
@@ -683,6 +777,8 @@
 
 ///This proc listens to the spin signal and throws the mob every third spin
 /datum/reagent/drug/blastoff/proc/on_spin()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!iscarbon(holder.my_atom))
@@ -720,11 +816,15 @@
 	addiction_types = list(/datum/addiction/maintenance_drugs = 30)
 
 /datum/reagent/drug/saturnx/on_mob_life(mob/living/carbon/invisible_man, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(invisible_man.adjust_organ_loss(ORGAN_SLOT_LIVER, 0.3 * metabolization_ratio * seconds_per_tick, required_organ_flag = affected_organ_flags))
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/drug/saturnx/on_mob_metabolize(mob/living/invisible_man)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(invisible_man, 'sound/effects/chemistry/saturnx_fade.ogg', 40)
 	to_chat(invisible_man, span_nicegreen("You feel pins and needles all over your skin as your body suddenly becomes transparent!"))
@@ -757,6 +857,8 @@
 
 ///This proc turns the living mob passed as the arg "invisible_man"s invisible by giving him the invisible man trait and updating his body, this changes the sprite of all his organic limbs to a 1 alpha version.
 /datum/reagent/drug/saturnx/proc/turn_man_invisible(mob/living/carbon/invisible_man, requires_liver = TRUE)
+	procstart = null
+	src.procstart = null
 	if(requires_liver)
 		if(!invisible_man.get_organ_slot(ORGAN_SLOT_LIVER))
 			return
@@ -773,6 +875,8 @@
 	invisible_man.sound_environment_override = SOUND_ENVIROMENT_PHASED
 
 /datum/reagent/drug/saturnx/on_mob_end_metabolize(mob/living/carbon/invisible_man)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT_FROM(invisible_man, TRAIT_INVISIBLE_MAN, type))
 		invisible_man.add_to_all_human_data_huds() //Is this safe, what do you think, Floyd?
@@ -790,6 +894,8 @@
 	game_plane_master_controller.remove_filter("saturnx_blur")
 
 /datum/reagent/drug/saturnx/overdose_process(mob/living/invisible_man, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(SPT_PROB(7.5, seconds_per_tick))
 		invisible_man.emote("giggle")
@@ -828,6 +934,8 @@ If you have at over 25u in your body you restore more than 20 stamina per cycle,
 	metabolized_traits = list(TRAIT_STIMULATED)
 
 /datum/reagent/drug/kronkaine/on_new(data)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Kronkaine also makes for a great fishing bait (found in "natural" baits)
 	if(!istype(holder?.my_atom, /obj/item/food))
@@ -835,16 +943,22 @@ If you have at over 25u in your body you restore more than 20 stamina per cycle,
 	ADD_TRAIT(holder.my_atom, TRAIT_GREAT_QUALITY_BAIT, type)
 
 /datum/reagent/drug/kronkaine/Destroy()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(holder.my_atom, TRAIT_GREAT_QUALITY_BAIT, type)
 	return ..()
 
 /datum/reagent/drug/kronkaine/on_mob_metabolize(mob/living/kronkaine_fiend)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	kronkaine_fiend.add_actionspeed_modifier(/datum/actionspeed_modifier/kronkaine)
 	kronkaine_fiend.sound_environment_override = SOUND_ENVIRONMENT_HANGAR
 	SEND_SOUND(kronkaine_fiend, sound('sound/effects/health/fastbeat.ogg', repeat = TRUE, channel = CHANNEL_HEARTBEAT, volume = 30))
 
 /datum/reagent/drug/kronkaine/on_mob_end_metabolize(mob/living/kronkaine_fiend)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	kronkaine_fiend.remove_actionspeed_modifier(/datum/actionspeed_modifier/kronkaine)
 	kronkaine_fiend.sound_environment_override = NONE
@@ -853,6 +967,8 @@ If you have at over 25u in your body you restore more than 20 stamina per cycle,
 		kronkaine_fiend.stop_sound_channel(CHANNEL_HEARTBEAT)
 
 /datum/reagent/drug/kronkaine/expose_mob(mob/living/carbon/druggo, methods, trans_volume, show_message, touch_protection)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(druggo))
 		return
@@ -872,6 +988,8 @@ If you have at over 25u in your body you restore more than 20 stamina per cycle,
 	druggo.adjust_stamina_loss(-stamina_heal_per_unit * trans_volume)
 
 /datum/reagent/drug/kronkaine/on_mob_life(mob/living/carbon/kronkaine_fiend, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/need_mob_update
 	kronkaine_fiend.add_mood_event("tweaking", /datum/mood_event/stimulant_medium)
@@ -900,6 +1018,8 @@ If you have at over 25u in your body you restore more than 20 stamina per cycle,
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/drug/kronkaine/overdose_process(mob/living/kronkaine_fiend, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(kronkaine_fiend.adjust_organ_loss(ORGAN_SLOT_HEART, 0.34 * metabolization_ratio * seconds_per_tick, required_organ_flag = affected_organ_flags))
 		. = UPDATE_MOB_HEALTH
@@ -908,6 +1028,8 @@ If you have at over 25u in your body you restore more than 20 stamina per cycle,
 		to_chat(kronkaine_fiend, span_danger(pick("Your heart is racing!", "Your ears are ringing!", "You sweat like a pig!", "You clench your jaw and grind your teeth.", "You feel prickles of pain in your chest.")))
 
 /datum/reagent/drug/kronkaine/overdose_start(mob/living/affected_mob, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SEND_SOUND(affected_mob, sound('sound/effects/health/fastbeat.ogg', repeat = TRUE, channel = CHANNEL_HEARTBEAT, volume = 90))
 
@@ -920,17 +1042,23 @@ If you have at over 25u in your body you restore more than 20 stamina per cycle,
 	chemical_flags = NONE
 
 /datum/reagent/drug/kronkaine/gore/on_mob_metabolize(mob/living/gored)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(gored, TRAIT_ECHOLOCATOR))
 		to_chat(gored, span_nicegreen("OH YEAH! THAT'S THE STUFF! THAT'S GORE!"))
 
 /datum/reagent/drug/kronkaine/gore/on_mob_life(mob/living/gored, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(gored, TRAIT_ECHOLOCATOR))
 		gored.adjust_brute_loss(-2 * metabolization_ratio * seconds_per_tick)
 		gored.adjust_fire_loss(-2 * metabolization_ratio * seconds_per_tick)
 
 /datum/reagent/drug/kronkaine/gore/overdose_start(mob/living/gored, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	gored.visible_message(
 		span_danger("[gored] explodes in a shower of gore!"),
@@ -955,6 +1083,8 @@ If you have at over 25u in your body you restore more than 20 stamina per cycle,
 	VAR_PRIVATE/datum/weakref/active_hallucination_weakref
 
 /datum/reagent/drug/syndol/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/organ/liver = affected_mob.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(isnull(liver) || !(liver.organ_flags & affected_organ_flags))
@@ -983,10 +1113,14 @@ If you have at over 25u in your body you restore more than 20 stamina per cycle,
 		affected_mob.adjust_hallucinations_up_to(4 SECONDS * metabolization_ratio * seconds_per_tick, 30 SECONDS)
 
 /datum/reagent/drug/syndol/on_mob_end_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.adjust_hallucinations(-16 SECONDS)
 	QDEL_NULL(active_hallucination_weakref)
 
 /datum/reagent/drug/syndol/overdose_start(mob/living/affected_mob, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	// no message, just refresh the hallucination
 	QDEL_NULL(active_hallucination_weakref)

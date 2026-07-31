@@ -34,6 +34,8 @@
 	ai_controller = /datum/ai_controller/basic_controller/space_bat
 
 /mob/living/basic/bat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_flying)
 	AddElement(/datum/element/ai_retaliate)

@@ -15,6 +15,8 @@
 	disabled_by_fire = FALSE
 
 /datum/action/changeling/strained_muscles/sting_action(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	..()
 	active = !active
 	if(active)
@@ -32,10 +34,14 @@
 	return TRUE
 
 /datum/action/changeling/strained_muscles/Remove(mob/user)
+	procstart = null
+	src.procstart = null
 	user.remove_movespeed_modifier(/datum/movespeed_modifier/strained_muscles)
 	return ..()
 
 /datum/action/changeling/strained_muscles/proc/muscle_loop(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	while(active)
 		if(QDELETED(src) || QDELETED(user))
 			return

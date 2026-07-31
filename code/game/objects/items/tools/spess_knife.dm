@@ -25,9 +25,13 @@
 	var/wrong_tool_prob = 10
 
 /obj/item/spess_knife/get_all_tool_behaviours()
+	procstart = null
+	src.procstart = null
 	return list(TOOL_KNIFE, TOOL_SCREWDRIVER, TOOL_WIRECUTTER)
 
 /obj/item/spess_knife/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/butchering, \
 		speed = 8 SECONDS, \
@@ -42,6 +46,8 @@
 	)
 
 /obj/item/spess_knife/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/old_tool_behaviour = tool_behaviour
 	var/new_tool_behaviour = show_radial_menu(user, src, options, require_near = TRUE, tooltips = TRUE)
@@ -73,6 +79,8 @@
 
 /// Used to pick random tool behavior for the knife
 /obj/item/spess_knife/proc/pick_tool()
+	procstart = null
+	src.procstart = null
 	tool_behaviour = pick_weight(list(
 		TOOL_KNIFE = 10,
 		TOOL_SCREWDRIVER = 10,
@@ -85,6 +93,8 @@
 
 /// Used to update sounds and tool parameters during switching
 /obj/item/spess_knife/proc/update_tool_parameters()
+	procstart = null
+	src.procstart = null
 	var/datum/component/butchering/butchering = src.GetComponent(/datum/component/butchering)
 	butchering.butchering_enabled = tool_behaviour == TOOL_KNIFE
 	RemoveElement(/datum/element/eyestab)
@@ -125,6 +135,8 @@
 		usesound = initial(reference.usesound)
 
 /obj/item/spess_knife/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(tool_behaviour)
@@ -133,6 +145,8 @@
 		. += "It's folded."
 
 /obj/item/spess_knife/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = initial(icon_state)
 
 	if (tool_behaviour)

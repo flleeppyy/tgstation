@@ -18,18 +18,26 @@
 	hand_path = /obj/item/melee/touch_attack/mansus_fist
 
 /datum/action/cooldown/spell/touch/mansus_grasp/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return TRUE // This baby can hit anything
 
 /datum/action/cooldown/spell/touch/mansus_grasp/can_cast_spell(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	return ..() && (!!IS_HERETIC(owner) || !!IS_LUNATIC(owner))
 
 /datum/action/cooldown/spell/touch/mansus_grasp/on_antimagic_triggered(obj/item/melee/touch_attack/hand, atom/victim, mob/living/carbon/caster)
+	procstart = null
+	src.procstart = null
 	victim.visible_message(
 		span_danger("The spell bounces off of [victim]!"),
 		span_danger("The spell bounces off of you!"),
 	)
 
 /datum/action/cooldown/spell/touch/mansus_grasp/cast_on_hand_hit(obj/item/melee/touch_attack/hand, atom/victim, mob/living/carbon/caster)
+	procstart = null
+	src.procstart = null
 	if(!isliving(victim))
 		return FALSE
 
@@ -70,6 +78,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/touch/mansus_grasp/cast_on_secondary_hand_hit(obj/item/melee/touch_attack/hand, atom/victim, mob/living/carbon/caster)
+	procstart = null
+	src.procstart = null
 	if(isliving(victim)) // if it's a living mob, go with our normal afterattack
 		return SECONDARY_ATTACK_CALL_NORMAL
 
@@ -87,6 +97,8 @@
 	inhand_icon_state = "mansus"
 
 /obj/item/melee/touch_attack/mansus_fist/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/effect_remover, \
 		success_feedback = "You remove %THEEFFECT.", \
@@ -99,6 +111,8 @@
  * Callback for effect_remover component.
  */
 /obj/item/melee/touch_attack/mansus_fist/proc/after_clear_rune(obj/effect/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/drawing_heretic_rune/fail(target.loc, target.greyscale_colors)
 	var/datum/action/cooldown/spell/touch/mansus_grasp/grasp = spell_which_made_us?.resolve()
 	grasp?.spell_feedback(user)
@@ -106,10 +120,14 @@
 	remove_hand_with_no_refund(user)
 
 /obj/item/melee/touch_attack/mansus_fist/ignition_effect(atom/to_light, mob/user)
+	procstart = null
+	src.procstart = null
 	. = span_rose("[user] effortlessly snaps [user.p_their()] fingers near [to_light], igniting it with eldritch energies. Fucking badass!")
 	remove_hand_with_no_refund(user)
 
 /obj/item/melee/touch_attack/mansus_fist/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] covers [user.p_their()] face with [user.p_their()] sickly-looking hand! It looks like [user.p_theyre()] trying to commit suicide!"))
 	var/mob/living/carbon/carbon_user = user //iscarbon already used in spell's parent
 	var/datum/action/cooldown/spell/touch/mansus_grasp/source = spell_which_made_us?.resolve()

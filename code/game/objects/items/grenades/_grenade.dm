@@ -60,11 +60,15 @@
 	var/list/possible_fuse_time = list("Instant", "3", "4", "5")
 
 /obj/item/grenade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_ODD_CUSTOMIZABLE_FOOD_INGREDIENT, type)
 	RegisterSignal(src, COMSIG_ITEM_USED_AS_INGREDIENT, PROC_REF(on_used_as_ingredient))
 
 /obj/item/grenade/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] primes [src], then eats it! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(src, 'sound/items/eatfood.ogg', 50, TRUE)
 	arm_grenade(user, det_time)
@@ -73,18 +77,26 @@
 	return dud_flags ? SHAME : BRUTELOSS
 
 /obj/item/grenade/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!disassembled)
 		detonate()
 
 /obj/item/grenade/apply_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	apply_grenade_fantasy_bonuses(bonus)
 
 /obj/item/grenade/remove_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	remove_grenade_fantasy_bonuses(bonus)
 	return ..()
 
 /obj/item/grenade/proc/apply_grenade_fantasy_bonuses(quality)
+	procstart = null
+	src.procstart = null
 	if(ex_dev == 0 && ex_heavy == 0 && ex_light == 0 && ex_flame == 0)
 		return
 	var/devIncrease = round(quality / 10)
@@ -95,6 +107,8 @@
 	ex_light = modify_fantasy_variable("ex_light", ex_light, lightIncrease, 0)
 
 /obj/item/grenade/proc/remove_grenade_fantasy_bonuses(quality)
+	procstart = null
+	src.procstart = null
 	ex_dev = reset_fantasy_variable("ex_dev", ex_dev)
 	ex_heavy = reset_fantasy_variable("ex_heavy", ex_heavy)
 	ex_light = reset_fantasy_variable("ex_light", ex_light)
@@ -106,6 +120,8 @@
  * * mob/living/carbon/human/user - who is priming our grenade?
  */
 /obj/item/grenade/proc/botch_check(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(sticky && prob(50)) // to add risk to sticky tape grenade cheese, no return cause we still prime as normal after.
 		to_chat(user, span_warning("What the... [src] is stuck to your hand!"))
 		ADD_TRAIT(src, TRAIT_NODROP, STICKY_NODROP)
@@ -121,6 +137,8 @@
 		return TRUE
 
 /obj/item/grenade/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(display_timer)
 		if(det_time > 0)
@@ -131,6 +149,8 @@
 		. += span_warning("It looks like [p_theyve()] already been used.")
 
 /obj/item/grenade/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NODROP))
 		to_chat(user, span_notice("You try prying [src] off your hand..."))
 		if(do_after(user, 7 SECONDS, target = src))
@@ -144,6 +164,8 @@
 		arm_grenade(user)
 
 /obj/item/grenade/proc/log_grenade(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!type_cluster)
 		log_bomber(user, "has primed a", src, "for detonation", message_admins = dud_flags == NONE)
 
@@ -152,6 +174,8 @@
  * Grenades with other triggers like remote igniters probably skip this step and go straight to [/obj/item/grenade/proc/detonate]
  */
 /obj/item/grenade/proc/arm_grenade(mob/user, delayoverride, msg = TRUE, volume = 60)
+	procstart = null
+	src.procstart = null
 	log_grenade(user) //Inbuilt admin procs already handle null users
 	if(user)
 		add_fingerprint(user)
@@ -175,6 +199,8 @@
  * * lanced_by- If this grenade was detonated by an elance, we need to pass that along with the COMSIG_GRENADE_DETONATE signal for pellet clouds
  */
 /obj/item/grenade/proc/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	if (dud_flags)
 		active = FALSE
 		update_appearance()
@@ -199,12 +225,16 @@
 	return TRUE
 
 /obj/item/grenade/proc/update_mob()
+	procstart = null
+	src.procstart = null
 	if(ismob(loc))
 		var/mob/mob = loc
 		mob.dropItemToGround(src)
 
 ///Signal sent by someone putting the grenade in as an ingredient. Registers signals onto what it was put into so it can explode.
 /obj/item/grenade/proc/on_used_as_ingredient(datum/source, atom/used_in)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	RegisterSignal(used_in, COMSIG_FOOD_EATEN, PROC_REF(ingredient_detonation))
@@ -213,6 +243,8 @@
 
 ///Signal sent by someone eating food this is an ingredient in "used_in". Makes the grenade go kerblooey, destroying the food.
 /obj/item/grenade/proc/ingredient_detonation(atom/used_in, mob/living/target, mob/living/user, bitecount, bitesize)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	detonate()
@@ -220,6 +252,8 @@
 	return DESTROY_FOOD
 
 /obj/item/grenade/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(active)
 		return FALSE
 	if(change_det_time())
@@ -231,6 +265,8 @@
 		return TRUE
 
 /obj/item/grenade/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		return FALSE
@@ -257,6 +293,8 @@
  * Cycles the duration of the fuse of the grenade `det_time` based on the options provided in list/possible_fuse_time
 */
 /obj/item/grenade/proc/change_det_time(time)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	//Multitool
 	if(!isnull(time))
@@ -281,9 +319,13 @@
 	det_time = text2num(det_time) SECONDS
 
 /obj/item/grenade/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/item/grenade/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(damage && attack_type == PROJECTILE_ATTACK && damage_type != STAMINA && prob(15))
 		owner.visible_message(span_danger("[attack_text] hits [owner]'s [src], setting it off! What a shot!"))
 		var/turf/source_turf = get_turf(src)
@@ -298,6 +340,8 @@
 		return TRUE //It hit the grenade, not them
 
 /obj/item/grenade/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(active)
 		user.throw_item(interacting_with)
 		return ITEM_INTERACT_SUCCESS

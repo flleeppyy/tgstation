@@ -6,6 +6,8 @@
 	var/family_name
 
 /datum/component/heirloom/Initialize(new_owner, new_family_name)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -15,6 +17,8 @@
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/component/heirloom/Destroy(force)
+	procstart = null
+	src.procstart = null
 	owner = null
 	return ..()
 
@@ -24,6 +28,8 @@
  * Shows who owns the heirloom on examine.
  */
 /datum/component/heirloom/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/mind/examiner_mind = user.mind

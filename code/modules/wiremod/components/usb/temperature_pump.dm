@@ -36,6 +36,8 @@
 	var/obj/machinery/atmospherics/components/binary/temperature_pump/connected_pump
 
 /obj/item/circuit_component/atmos_temperature_pump/populate_ports()
+	procstart = null
+	src.procstart = null
 	heat_transfer_rate = add_input_port("Set Heat Transfer Rate", PORT_TYPE_NUMBER, trigger = PROC_REF(set_pump_heat_rate))
 	on = add_input_port("Turn On", PORT_TYPE_SIGNAL, trigger = PROC_REF(set_pump_on))
 	off = add_input_port("Turn Off", PORT_TYPE_SIGNAL, trigger = PROC_REF(set_pump_off))
@@ -52,20 +54,28 @@
 	turned_off = add_output_port("Turned Off", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/atmos_temperature_pump/register_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/machinery/atmospherics/components/binary/temperature_pump))
 		connected_pump = shell
 		RegisterSignal(connected_pump, COMSIG_ATMOS_MACHINE_SET_ON, PROC_REF(handle_pump_activation))
 
 /obj/item/circuit_component/atmos_temperature_pump/unregister_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(connected_pump, COMSIG_ATMOS_MACHINE_SET_ON)
 	connected_pump = null
 	return ..()
 
 /obj/item/circuit_component/atmos_temperature_pump/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	heat_transfer_rate.set_value(clamp(heat_transfer_rate.value, 0, connected_pump ? connected_pump.max_heat_transfer_rate : 100))
 
 /obj/item/circuit_component/atmos_temperature_pump/proc/handle_pump_activation(datum/source, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	is_active.set_output(active)
 	if(active)
@@ -74,18 +84,24 @@
 		turned_off.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/atmos_temperature_pump/proc/set_pump_heat_rate()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!connected_pump)
 		return
 	connected_pump.heat_transfer_rate = heat_transfer_rate.value
 
 /obj/item/circuit_component/atmos_temperature_pump/proc/set_pump_on()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!connected_pump)
 		return
 	connected_pump.set_on(TRUE)
 
 /obj/item/circuit_component/atmos_temperature_pump/proc/set_pump_off()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!connected_pump)
 		return
@@ -93,6 +109,8 @@
 	connected_pump.update_appearance(UPDATE_ICON)
 
 /obj/item/circuit_component/atmos_temperature_pump/proc/request_pump_data()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!connected_pump)
 		return

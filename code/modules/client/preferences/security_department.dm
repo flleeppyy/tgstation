@@ -8,20 +8,30 @@
 
 // This is what that #warn wants you to remove :)
 /datum/preference/choiced/security_department/deserialize(input, datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if (!(input in GLOB.security_depts_prefs))
 		return SEC_DEPT_NONE
 	return ..(input, preferences)
 
 /datum/preference/choiced/security_department/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return GLOB.security_depts_prefs
 
 /datum/preference/choiced/security_department/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/preference/choiced/security_department/create_default_value()
+	procstart = null
+	src.procstart = null
 	return SEC_DEPT_NONE
 
 /datum/preference/choiced/security_department/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if (!..(preferences))
 		return FALSE
 

@@ -9,6 +9,8 @@
 	var/chosen_effect
 
 /datum/element/effect_trail/Attach(datum/target, chosen_effect = /obj/effect/forcefield/cosmic_field)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(target))
 		return ELEMENT_INCOMPATIBLE
@@ -16,11 +18,15 @@
 	src.chosen_effect = chosen_effect
 
 /datum/element/effect_trail/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, COMSIG_MOVABLE_MOVED)
 	return ..()
 
 /// Generates an effect
 /datum/element/effect_trail/proc/generate_effect(atom/movable/target_object)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/turf/open/open_turf = get_turf(target_object)
@@ -30,6 +36,8 @@
 
 /// If we are a cosmic heretic, this will return the appropriate effect trail based on our passive level. returns the default trail otherwise
 /proc/cosmic_trail_based_on_passive(mob/living/source)
+	procstart = null
+	src.procstart = null
 	if(isstargazer(source))
 		return /datum/element/effect_trail/cosmic_field/antiprojectile
 
@@ -47,11 +55,15 @@
 	var/slows_projectiles = FALSE
 
 /datum/element/effect_trail/cosmic_field/Attach(datum/target, chosen_effect)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ispath(chosen_effect, /obj/effect/forcefield/cosmic_field))
 		stack_trace("Tried to attach a cosmic_field effect trail with a non-cosmic field as the chosen effect")
 
 /datum/element/effect_trail/cosmic_field/generate_effect(atom/movable/target_object)
+	procstart = null
+	src.procstart = null
 	var/turf/open/open_turf = get_turf(target_object)
 	if(!istype(open_turf))
 		return

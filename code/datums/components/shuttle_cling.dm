@@ -28,6 +28,8 @@
 	var/not_clinging_move_delay = 0.2 SECONDS
 
 /datum/component/shuttle_cling/Initialize(direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!ismovable(parent))
@@ -51,14 +53,20 @@
 	update_state(parent) //otherwise we'll get moved 1 tile before we can correct ourselves, which isnt super bad but just looks jank
 
 /datum/component/shuttle_cling/proc/initialize_loop()
+	procstart = null
+	src.procstart = null
 	hyperloop = GLOB.move_manager.move(moving = parent, direction = direction, delay = not_clinging_move_delay, subsystem = SShyperspace_drift, priority = MOVEMENT_ABOVE_SPACE_PRIORITY, flags = MOVEMENT_LOOP_NO_DIR_UPDATE|MOVEMENT_LOOP_OUTSIDE_CONTROL)
 	update_state()
 
 /datum/component/shuttle_cling/proc/clear_loop()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(hyperloop)
 
 ///Check if we're in hyperspace and our state in hyperspace
 /datum/component/shuttle_cling/proc/update_state()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!is_on_hyperspace(parent))
@@ -97,6 +105,8 @@
 
 ///Check if we're "holding on" to the shuttle
 /datum/component/shuttle_cling/proc/is_holding_on(atom/movable/movee)
+	procstart = null
+	src.procstart = null
 	if(movee.pulledby || !isturf(movee.loc) || HAS_TRAIT(movee, TRAIT_FREE_HYPERSPACE_MOVEMENT))
 		return ALL_GOOD
 
@@ -129,16 +139,22 @@
 
 ///Are we on a hyperspace tile? There's some special bullshit with lattices so we just wrap this check
 /datum/component/shuttle_cling/proc/is_on_hyperspace(atom/movable/clinger)
+	procstart = null
+	src.procstart = null
 	if(istype(clinger.loc, hyperspace_type) && !HAS_TRAIT(clinger.loc, TRAIT_HYPERSPACE_STOPPED))
 		return TRUE
 	return FALSE
 
 ///Launch the atom very hard, away from hyperspace
 /datum/component/shuttle_cling/proc/launch_very_hard(atom/movable/byebye)
+	procstart = null
+	src.procstart = null
 	byebye.safe_throw_at(get_edge_target_turf(byebye, direction), 200, 1, spin = TRUE, force = MOVE_FORCE_EXTREMELY_STRONG)
 
 ///Check if we arent just being blocked, and if we are give us some diagonal push so we cant just infinitely cling to the front
 /datum/component/shuttle_cling/proc/update_drift_direction(atom/movable/clinger)
+	procstart = null
+	src.procstart = null
 	var/turf/potential_blocker = get_step(clinger, direction)
 	//We are not being blocked, so just give us cardinal drift
 	if(!is_tile_solid(potential_blocker))
@@ -164,6 +180,8 @@
 
 ///Check if it's a closed turf or contains a dense object
 /datum/component/shuttle_cling/proc/is_tile_solid(turf/maybe_solid)
+	procstart = null
+	src.procstart = null
 	if(isclosedturf(maybe_solid))
 		return TRUE
 	for(var/obj/blocker in maybe_solid.contents)
@@ -173,11 +191,15 @@
 
 ///This is just for signals and doesn't run for most removals, so dont add behaviour here expecting it to do much
 /datum/component/shuttle_cling/proc/do_remove()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(src)
 
 /datum/component/shuttle_cling/Destroy(force)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(parent, TRAIT_HYPERSPACED, REF(src))
 	QDEL_NULL(hyperloop)
 

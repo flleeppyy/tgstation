@@ -63,6 +63,8 @@
 	cost = 2
 
 /datum/uplink_item/explosives/emp/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(HAS_TRAIT(SSstation, STATION_TRAIT_CYBERNETIC_REVOLUTION))
 		cost *= 3
@@ -103,6 +105,8 @@
 	limited_discount_stock = 4
 
 /datum/uplink_item/explosives/syndicate_bomb/emp/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(HAS_TRAIT(SSstation, STATION_TRAIT_CYBERNETIC_REVOLUTION))
 		cost *= 2
@@ -131,6 +135,8 @@
 	limited_discount_stock = 2
 
 /datum/uplink_item/explosives/syndicate_bomb/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = replacetext(desc, "%MIN_BOMB_TIMER", SYNDIEBOMB_MIN_TIMER_SECONDS)
 

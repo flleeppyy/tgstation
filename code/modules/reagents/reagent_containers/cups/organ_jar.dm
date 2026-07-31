@@ -19,17 +19,23 @@
 	var/full_of_formaldehyde = FALSE
 
 /obj/item/reagent_containers/cup/beaker/organ_jar/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info("Any organ inside the jar will be preserved if it is entirely filled with formaldehyde.")
 	if(held_organ && held_organ.GetComponent(/datum/component/ghostrole_on_revive))
 		. += span_smallnoticeital("The brain is twitching...") // Guaranteed to be a brain if it has that component
 
 /obj/item/reagent_containers/cup/beaker/organ_jar/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(held_organ)
 
 // Alt click lets you take the organ out, if it's present
 /obj/item/reagent_containers/cup/beaker/organ_jar/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(held_organ)
 		balloon_alert(user, "removed [held_organ]")
 		user.put_in_hands(held_organ)
@@ -44,6 +50,8 @@
 // Clicking on the jar with an organ lets you put the organ inside, if there isn't one already
 // Otherwise it should act like a normal bottle
 /obj/item/reagent_containers/cup/beaker/organ_jar/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/organ))
 		return ..()
 	if(held_organ)
@@ -64,6 +72,8 @@
 #define JAR_INNER_ICON_SIZE 24
 
 /obj/item/reagent_containers/cup/beaker/organ_jar/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Draw the organ icon inside the jar, if present
 	if(!isnull(held_organ))
@@ -81,12 +91,16 @@
 #undef JAR_INNER_ICON_SIZE
 
 /obj/item/reagent_containers/cup/beaker/organ_jar/on_reagent_change(datum/reagents/holder, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	full_of_formaldehyde = !!holder.has_reagent(/datum/reagent/toxin/formaldehyde, amount = holder.maximum_volume)
 	check_organ_freeze()
 
 // Proc that stops the held organ from rotting if the jar is full of formaldehyde
 /obj/item/reagent_containers/cup/beaker/organ_jar/proc/check_organ_freeze()
+	procstart = null
+	src.procstart = null
 	if(isnull(held_organ))
 		return
 	if(full_of_formaldehyde)
@@ -108,10 +122,14 @@
 	var/note_type = NOTE_STUCK_IN_MAIL
 
 /obj/item/reagent_containers/cup/beaker/organ_jar/brain_in_a_jar/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("<i>You can see a note attached to the bottom..</i>")
 
 /obj/item/reagent_containers/cup/beaker/organ_jar/brain_in_a_jar/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Flavor for why the brain is scarred
 	switch(note_type)
@@ -130,6 +148,8 @@
 
 
 /obj/item/reagent_containers/cup/beaker/organ_jar/brain_in_a_jar/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	note_type = rand(0, 2) // Attach a random note to it
 	var/obj/item/organ/brain/scarred_brain = new() // Make a new brain
@@ -147,6 +167,8 @@
 
 // All this does is add a random special brain trauma + add recovered crew antag datum for logging
 /obj/item/reagent_containers/cup/beaker/organ_jar/brain_in_a_jar/proc/handle_revival(obj/item/organ/brain/brain_to_scar)
+	procstart = null
+	src.procstart = null
 	brain_to_scar.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_ABSOLUTE, natural_gain = TRUE)
 	var/mob/living/carbon/human/owner = brain_to_scar.owner
 	owner.mind.add_antag_datum(/datum/antagonist/recovered_crew) // for tracking mostly (c)

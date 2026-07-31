@@ -1,6 +1,8 @@
 
 // The proc you should always use to set the light of this atom.
 /atom/proc/set_light(l_range, l_power, l_color = NONSENSICAL_VALUE, l_angle, l_dir, l_height, l_on)
+	procstart = null
+	src.procstart = null
 	// We null everything but l_dir, because we don't want to allow for modifications while frozen
 	if(light_flags & LIGHT_FROZEN)
 		l_range = null
@@ -42,6 +44,8 @@
 /// Will update the light (duh).
 /// Creates or destroys it if needed, makes it update values, makes sure it's got the correct source turf...
 /atom/proc/update_light()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 
 	if(light_system != COMPLEX_LIGHT)
@@ -68,6 +72,8 @@
  * It notifies (potentially) affected light sources so they can update (if needed).
  */
 /atom/proc/set_opacity(new_opacity)
+	procstart = null
+	src.procstart = null
 	if (new_opacity == opacity || light_flags & LIGHT_FROZEN)
 		return
 	SEND_SIGNAL(src, COMSIG_ATOM_SET_OPACITY, new_opacity)
@@ -76,6 +82,8 @@
 	return .
 
 /atom/movable/set_opacity(new_opacity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.) || !isturf(loc))
 		return
@@ -88,26 +96,36 @@
 	SScameras.update_visibility(src)
 
 /turf/set_opacity(new_opacity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.))
 		return
 	recalculate_directional_opacity()
 
 /atom/proc/flash_lighting_fx(range = FLASH_LIGHT_RANGE, power = FLASH_LIGHT_POWER, color = COLOR_WHITE, duration = FLASH_LIGHT_DURATION, light_type = /obj/effect/dummy/lighting_obj)
+	procstart = null
+	src.procstart = null
 	if(!duration)
 		stack_trace("Lighting FX obj created on \[[type]\] without a duration")
 	var/obj/effect/dummy/light_obj = new light_type(get_turf(src), range, power, color, duration)
 	return light_obj
 
 /mob/living/flash_lighting_fx(range = FLASH_LIGHT_RANGE, power = FLASH_LIGHT_POWER, color = COLOR_WHITE, duration = FLASH_LIGHT_DURATION, light_type = /obj/effect/dummy/lighting_obj/moblight)
+	procstart = null
+	src.procstart = null
 	return mob_light(range, power, color, duration)
 
 /mob/living/proc/mob_light(range, power, color, duration, light_type = /obj/effect/dummy/lighting_obj/moblight)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/dummy/lighting_obj/moblight/mob_light_obj = new light_type(src, range, power, color, duration)
 	return mob_light_obj
 
 /// Setter for the light power of this atom.
 /atom/proc/set_light_power(new_power)
+	procstart = null
+	src.procstart = null
 	if(new_power == light_power || light_flags & LIGHT_FROZEN)
 		return
 	if(SEND_SIGNAL(src, COMSIG_ATOM_SET_LIGHT_POWER, new_power) & COMPONENT_BLOCK_LIGHT_UPDATE)
@@ -119,6 +137,8 @@
 
 /// Setter for the light range of this atom.
 /atom/proc/set_light_range(new_range)
+	procstart = null
+	src.procstart = null
 	if(new_range == light_range || light_flags & LIGHT_FROZEN)
 		return
 	if(SEND_SIGNAL(src, COMSIG_ATOM_SET_LIGHT_RANGE, new_range) & COMPONENT_BLOCK_LIGHT_UPDATE)
@@ -130,6 +150,8 @@
 
 /// Setter for the light color of this atom.
 /atom/proc/set_light_color(new_color)
+	procstart = null
+	src.procstart = null
 	if(new_color == light_color || light_flags & LIGHT_FROZEN)
 		return
 	if(SEND_SIGNAL(src, COMSIG_ATOM_SET_LIGHT_COLOR, new_color) & COMPONENT_BLOCK_LIGHT_UPDATE)
@@ -141,6 +163,8 @@
 
 /// Setter for whether or not this atom's light is on.
 /atom/proc/set_light_on(new_value)
+	procstart = null
+	src.procstart = null
 	if(new_value == light_on || light_flags & LIGHT_FROZEN)
 		return
 	if(SEND_SIGNAL(src, COMSIG_ATOM_SET_LIGHT_ON, new_value) & COMPONENT_BLOCK_LIGHT_UPDATE)
@@ -152,6 +176,8 @@
 
 /// Setter for the light flags of this atom.
 /atom/proc/set_light_flags(new_value)
+	procstart = null
+	src.procstart = null
 	if(new_value == light_flags || (light_flags & LIGHT_FROZEN && new_value & LIGHT_FROZEN))
 		return
 	if(SEND_SIGNAL(src, COMSIG_ATOM_SET_LIGHT_FLAGS, new_value) & COMPONENT_BLOCK_LIGHT_UPDATE)
@@ -165,6 +191,8 @@
 
 /// Setter for an optional render_source to apply to this atom's light overlay
 /atom/proc/set_light_render_source(new_source)
+	procstart = null
+	src.procstart = null
 	if(new_source == light_flags || light_flags & LIGHT_FROZEN)
 		return
 	if(SEND_SIGNAL(src, COMSIG_ATOM_SET_LIGHT_RENDER_SOURCE, new_source) & COMPONENT_BLOCK_LIGHT_UPDATE)
@@ -178,6 +206,8 @@
 
 /// Setter for the light angle of this atom
 /atom/proc/set_light_angle(new_value)
+	procstart = null
+	src.procstart = null
 	if(new_value == light_angle || light_flags & LIGHT_FROZEN)
 		return
 	if(SEND_SIGNAL(src, COMSIG_ATOM_SET_LIGHT_ANGLE, new_value) & COMPONENT_BLOCK_LIGHT_UPDATE)
@@ -189,6 +219,8 @@
 
 /// Setter for the light direction of this atom
 /atom/proc/set_light_dir(new_value)
+	procstart = null
+	src.procstart = null
 	// No frozen check here because we allow direction changes in a freeze
 	if(new_value == light_dir)
 		return
@@ -201,6 +233,8 @@
 
 /// Setter for the height of our light
 /atom/proc/set_light_height(new_value)
+	procstart = null
+	src.procstart = null
 	if(new_value == light_height || light_flags & LIGHT_FROZEN)
 		return
 	if(SEND_SIGNAL(src, COMSIG_ATOM_SET_LIGHT_HEIGHT, new_value) & COMPONENT_BLOCK_LIGHT_UPDATE)
@@ -212,10 +246,14 @@
 
 
 /atom/proc/get_light_offset()
+	procstart = null
+	src.procstart = null
 	return list(0, 0)
 
 /// Returns a list of x and y offsets to apply to our visual lighting position
 /proc/calculate_light_offset(atom/get_offset)
+	procstart = null
+	src.procstart = null
 	var/list/hand_back
 	if(!(get_offset.light_flags & LIGHT_IGNORE_OFFSET))
 		hand_back = get_visual_offset(get_offset)

@@ -103,6 +103,8 @@
  * Sends a [COMSIG_TOPIC] signal
  */
 /datum/Topic(href, href_list[])
+	procstart = null
+	src.procstart = null
 	..()
 	SEND_SIGNAL(src, COMSIG_TOPIC, usr, href_list)
 
@@ -123,6 +125,8 @@
  * Returns [QDEL_HINT_QUEUE]
  */
 /datum/proc/Destroy(force = FALSE)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 	SHOULD_NOT_SLEEP(TRUE)
@@ -171,6 +175,8 @@
 ///Only override this if you know what you're doing. You do not know what you're doing
 ///This is a threat
 /datum/proc/_clear_signal_refs()
+	procstart = null
+	src.procstart = null
 	var/list/lookup = _listen_lookup
 	if(lookup)
 		for(var/sig in lookup)
@@ -188,6 +194,8 @@
 
 #ifdef DATUMVAR_DEBUGGING_MODE
 /datum/proc/save_vars()
+	procstart = null
+	src.procstart = null
 	cached_vars = list()
 	for(var/i in vars)
 		if(i == "cached_vars")
@@ -195,6 +203,8 @@
 		cached_vars[i] = vars[i]
 
 /datum/proc/check_changed_vars()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/i in vars)
 		if(i == "cached_vars")
@@ -203,6 +213,8 @@
 			.[i] = list(cached_vars[i], vars[i])
 
 /datum/proc/txt_changed_vars()
+	procstart = null
+	src.procstart = null
 	var/list/l = check_changed_vars()
 	var/t = "[src]([REF(src)]) changed vars:"
 	for(var/i in l)
@@ -210,11 +222,15 @@
 	t += "."
 
 /datum/proc/to_chat_check_changed_vars(target = world)
+	procstart = null
+	src.procstart = null
 	to_chat(target, txt_changed_vars())
 #endif
 
 /// Return a list of data which can be used to investigate the datum, also ensure that you set the semver in the options list
 /datum/proc/serialize_list(list/options, list/semvers)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	. = list()
@@ -225,11 +241,15 @@
 
 ///Accepts a LIST from deserialize_datum. Should return whether or not the deserialization was successful.
 /datum/proc/deserialize_list(json, list/options)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	return TRUE
 
 ///Serializes into JSON. Does not encode type.
 /datum/proc/serialize_json(list/options)
+	procstart = null
+	src.procstart = null
 	. = serialize_list(options, list())
 	if(!islist(.))
 		. = null
@@ -238,6 +258,8 @@
 
 ///Deserializes from JSON. Does not parse type.
 /datum/proc/deserialize_json(list/input, list/options)
+	procstart = null
+	src.procstart = null
 	var/list/jsonlist = json_decode(input)
 	. = deserialize_list(jsonlist)
 	if(!istype(., /datum))
@@ -245,6 +267,8 @@
 
 ///Convert a datum into a json blob
 /proc/json_serialize_datum(datum/D, list/options)
+	procstart = null
+	src.procstart = null
 	if(!istype(D))
 		return
 	var/list/jsonlist = D.serialize_list(options)
@@ -254,6 +278,8 @@
 
 /// Convert a list of json to datum
 /proc/json_deserialize_datum(list/jsonlist, list/options, target_type, strict_target_type = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!islist(jsonlist))
 		if(!istext(jsonlist))
 			CRASH("Invalid JSON")
@@ -293,6 +319,8 @@
  * This sends a signal reporting the cooldown end.
  */
 /proc/end_cooldown(datum/source, index)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(source))
 		return
 	SEND_SIGNAL(source, COMSIG_CD_STOP(index))
@@ -309,6 +337,8 @@
  * This sends a signal reporting the cooldown end, passing the time left as an argument.
  */
 /proc/reset_cooldown(datum/source, index)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(source))
 		return
 	SEND_SIGNAL(source, COMSIG_CD_RESET(index), S_TIMER_COOLDOWN_TIMELEFT(source, index))
@@ -319,6 +349,8 @@
 ///Really just don't use this, you don't need it, global lists will do just fine MOST of the time
 ///We really only use it for mobs to make id'ing people easier
 /datum/proc/GenerateTag()
+	procstart = null
+	src.procstart = null
 	datum_flags |= DF_USE_TAG
 
 /** Add a filter to the datum.
@@ -332,6 +364,8 @@
  * * update - If we should update our actual filters list, or wait until something updates it later
  */
 /datum/proc/add_filter(name, priority, list/params, update = TRUE)
+	procstart = null
+	src.procstart = null
 	ASSERT(isatom(src) || isimage(src))
 	var/atom/atom_cast = src // filters only work with images or atoms.
 	LAZYINITLIST(filter_data)
@@ -363,6 +397,8 @@
 
 /// A version of add_filter that takes a list of filters to add rather than being individual, to limit appearance updates
 /datum/proc/add_filters(list/list/filters, update = TRUE)
+	procstart = null
+	src.procstart = null
 	ASSERT(isatom(src) || isimage(src))
 	var/atom/atom_cast = src // filters only work with images or atoms.
 	for (var/list/individual_filter as anything in filters)
@@ -372,6 +408,8 @@
 
 /// Reapplies all the filters. If start_index is passed, only a portion of all filters are reapplied starting from said index
 /datum/proc/update_filters(start_index = null)
+	procstart = null
+	src.procstart = null
 	ASSERT(isatom(src) || isimage(src))
 	var/atom/atom_cast = src // filters only work with images or atoms.
 	if (start_index)
@@ -392,6 +430,8 @@
 	UNSETEMPTY(filter_data)
 
 /obj/item/update_filters(start_index = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_item_action_buttons()
 
@@ -404,6 +444,8 @@
  * * update - If we should apply our filter cache to our actual filters
  */
 /datum/proc/modify_filter(name, list/new_params, overwrite = FALSE, update = TRUE)
+	procstart = null
+	src.procstart = null
 	ASSERT(isatom(src) || isimage(src))
 	var/atom/atom_cast = src // filters only work with images or atoms.
 	for (var/index in 1 to length(filter_data))
@@ -436,6 +478,8 @@
  * * loop - loop arg of the BYOND animate() proc.
  */
 /datum/proc/transition_filter(name, list/new_params, time, easing, loop)
+	procstart = null
+	src.procstart = null
 	var/filter = get_filter(name)
 	if (!filter)
 		return
@@ -451,6 +495,8 @@
 * * easing - the type of easing this step has
 */
 /proc/filter_chain_step(params, duration, easing, flags)
+	procstart = null
+	src.procstart = null
 	params -= "type"
 	return list("params" = params, "duration" = duration, "easing" = easing, "flags" = flags)
 
@@ -467,6 +513,8 @@
  * The above code would edit a color_matrix_filter() to slowly turn blue over 10 seconds before returning back to white 10 seconds after, repeating this chain forever.
  */
 /datum/proc/transition_filter_chain(name, num_loops, ...)
+	procstart = null
+	src.procstart = null
 	var/list/transition_steps = args.Copy(3)
 	var/filter = get_filter(name)
 	if (!filter)
@@ -479,6 +527,8 @@
 
 /// Updates the priority of the passed filter key
 /datum/proc/change_filter_priority(name, new_priority)
+	procstart = null
+	src.procstart = null
 	for (var/list/filter_info as anything in filter_data)
 		if (filter_info["name"] != name)
 			continue
@@ -489,18 +539,24 @@
 
 /// Returns the filter associated with the passed key
 /datum/proc/get_filter(name)
+	procstart = null
+	src.procstart = null
 	ASSERT(isatom(src) || isimage(src))
 	var/atom/atom_cast = src // filters only work with images or atoms.
 	return atom_cast.filters[name]
 
 /// Returns filter data associated with the passed key
 /datum/proc/get_filter_data(name)
+	procstart = null
+	src.procstart = null
 	for (var/list/filter_info as anything in filter_data)
 		if (filter_info["name"] == name)
 			return filter_info.Copy()
 
 /// Removes the passed filter, or multiple filters, if supplied with a list.
 /datum/proc/remove_filter(name_or_names, update = TRUE)
+	procstart = null
+	src.procstart = null
 	ASSERT(isatom(src) || isimage(src))
 	if(!filter_data)
 		return
@@ -521,6 +577,8 @@
 	return .
 
 /datum/proc/clear_filters()
+	procstart = null
+	src.procstart = null
 	ASSERT(isatom(src) || isimage(src))
 	var/atom/atom_cast = src // filters only work with images or atoms.
 	filter_data = null
@@ -529,6 +587,8 @@
 
 /// Calls qdel on itself, because signals dont allow callbacks
 /datum/proc/selfdelete()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
@@ -536,10 +596,14 @@
 /// Optional, you should use this for cases where replication is difficult and extra context is required
 /// Can be called more then once per object, use harddel_deets_dumped to avoid duplicate calls (I am so sorry)
 /datum/proc/dump_harddel_info()
+	procstart = null
+	src.procstart = null
 	return
 
 ///images are pretty generic, this should help a bit with tracking harddels related to them
 /image/dump_harddel_info()
+	procstart = null
+	src.procstart = null
 	if(harddel_deets_dumped)
 		return
 	harddel_deets_dumped = TRUE

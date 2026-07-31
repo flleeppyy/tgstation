@@ -79,6 +79,8 @@ SUBSYSTEM_DEF(sounds)
 	)
 
 /datum/controller/subsystem/sounds/Initialize()
+	procstart = null
+	src.procstart = null
 	setup_available_channels()
 	find_all_available_sounds()
 	init_sound_keys()
@@ -96,6 +98,8 @@ SUBSYSTEM_DEF(sounds)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/sounds/proc/setup_available_channels()
+	procstart = null
+	src.procstart = null
 	channel_list = list()
 	reserved_channels = list()
 	using_channels = list()
@@ -106,11 +110,15 @@ SUBSYSTEM_DEF(sounds)
 	channel_reserve_high = length(channel_list)
 
 /datum/controller/subsystem/sounds/proc/find_all_available_sounds()
+	procstart = null
+	src.procstart = null
 	all_sounds = list()
 	all_sounds = pathwalk("sound/", byond_sound_extensions)
 
 /// Removes a channel from using list.
 /datum/controller/subsystem/sounds/proc/free_sound_channel(channel)
+	procstart = null
+	src.procstart = null
 	var/text_channel = num2text(channel)
 	var/using = using_channels[text_channel]
 	using_channels -= text_channel
@@ -122,6 +130,8 @@ SUBSYSTEM_DEF(sounds)
 
 /// Frees all the channels a datum is using.
 /datum/controller/subsystem/sounds/proc/free_datum_channels(datum/D)
+	procstart = null
+	src.procstart = null
 	var/list/L = using_channels_by_datum[D]
 	if(!L)
 		return
@@ -132,10 +142,14 @@ SUBSYSTEM_DEF(sounds)
 
 /// Frees all datumless channels
 /datum/controller/subsystem/sounds/proc/free_datumless_channels()
+	procstart = null
+	src.procstart = null
 	free_datum_channels(DATUMLESS)
 
 /// Reserve a sound channel. Free it later with free_sound_channel()
 /datum/controller/subsystem/sounds/proc/reserve_sound_channel()
+	procstart = null
+	src.procstart = null
 	. = reserve_channel()
 	if(!.) //oh no..
 		return FALSE
@@ -146,6 +160,8 @@ SUBSYSTEM_DEF(sounds)
 
 /// Reserves a channel for a datum. Automatic cleanup only when the datum is deleted. Returns an integer for channel.
 /datum/controller/subsystem/sounds/proc/reserve_sound_channel_for_datum(datum/D)
+	procstart = null
+	src.procstart = null
 	if(!D) //i don't like typechecks but someone will fuck it up
 		CRASH("Attempted to reserve sound channel without datum using the managed proc.")
 	.= reserve_channel()
@@ -162,6 +178,8 @@ SUBSYSTEM_DEF(sounds)
  * Reserves a channel and updates the datastructure. Private proc.
  */
 /datum/controller/subsystem/sounds/proc/reserve_channel()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	if(channel_reserve_high <= random_channels_min) // out of channels
 		return
@@ -173,6 +191,8 @@ SUBSYSTEM_DEF(sounds)
  * Frees a channel and updates the datastructure. Private proc.
  */
 /datum/controller/subsystem/sounds/proc/free_channel(number)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	var/text_channel = num2text(number)
 	var/index = reserved_channels[text_channel]
@@ -192,21 +212,29 @@ SUBSYSTEM_DEF(sounds)
 
 /// Random available channel, returns text.
 /datum/controller/subsystem/sounds/proc/random_available_channel_text()
+	procstart = null
+	src.procstart = null
 	if(channel_random_low > channel_reserve_high)
 		channel_random_low = 1
 	. = "[channel_list[channel_random_low++]]"
 
 /// Random available channel, returns number
 /datum/controller/subsystem/sounds/proc/random_available_channel()
+	procstart = null
+	src.procstart = null
 	if(channel_random_low > channel_reserve_high)
 		channel_random_low = 1
 	. = channel_list[channel_random_low++]
 
 /// How many channels we have left.
 /datum/controller/subsystem/sounds/proc/available_channels_left()
+	procstart = null
+	src.procstart = null
 	return length(channel_list) - random_channels_min
 
 /datum/controller/subsystem/sounds/proc/precache_sounds()
+	procstart = null
+	src.procstart = null
 	if(!length(sounds_to_precache))
 		return
 
@@ -220,6 +248,8 @@ SUBSYSTEM_DEF(sounds)
 
 /// Cache a list of sound lengths.
 /datum/controller/subsystem/sounds/proc/cache_sounds(list/paths)
+	procstart = null
+	src.procstart = null
 	var/list/reconstructed = list()
 	reconstructed.len = length(paths)
 
@@ -233,6 +263,8 @@ SUBSYSTEM_DEF(sounds)
 
 /// Cache and return a single sound.
 /datum/controller/subsystem/sounds/proc/get_sound_length(file_path)
+	procstart = null
+	src.procstart = null
 	. = 0
 	if(!istext(file_path))
 		if(!isfile(file_path))
@@ -257,6 +289,8 @@ SUBSYSTEM_DEF(sounds)
 	return as_num
 
 /datum/controller/subsystem/sounds/proc/init_sound_keys()
+	procstart = null
+	src.procstart = null
 	for(var/datum/sound_effect/sfx as anything in subtypesof(/datum/sound_effect))
 		// this is for the assoc subtype
 		if(!isnull(sfx.key))
@@ -265,6 +299,8 @@ SUBSYSTEM_DEF(sounds)
 
 ///Call to free all channels reserved by a datum.
 /datum/controller/subsystem/sounds/proc/stop_tracking_datum(datum/D)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	using_channels_by_datum -= D
@@ -272,6 +308,8 @@ SUBSYSTEM_DEF(sounds)
 
 /// Handles a tracked datum being deleted, automatically freeing the channels.
 /datum/controller/subsystem/sounds/proc/tracked_datum_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	PRIVATE_PROC(TRUE)
 

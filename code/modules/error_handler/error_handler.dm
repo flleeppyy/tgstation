@@ -5,6 +5,8 @@ GLOBAL_VAR_INIT(total_runtimes_skipped, 0)
 #define ERROR_USEFUL_LEN 2
 
 /world/Error(exception/E, datum/e_src)
+	procstart = null
+	src.procstart = null
 	GLOB.total_runtimes++
 
 	if(!istype(E)) //Something threw an unusual exception
@@ -180,6 +182,8 @@ GLOBAL_VAR_INIT(total_runtimes_skipped, 0)
 
 /// Exists to trigger infinite recursion runtimes in testing
 /proc/recurse(times)
+	procstart = null
+	src.procstart = null
 	if(times <= 0)
 		return
 	recurse(times - 1)

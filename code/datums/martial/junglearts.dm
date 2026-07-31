@@ -4,15 +4,23 @@
 	pacifist_style = TRUE
 
 /datum/martial_art/jungle_arts/disarm_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	return jungle_attack(attacker, defender)
 
 /datum/martial_art/jungle_arts/grab_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	return jungle_attack(attacker, defender, TRUE)
 
 /datum/martial_art/jungle_arts/harm_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	return jungle_attack(attacker, defender)
 
 /datum/martial_art/jungle_arts/proc/jungle_attack(mob/living/attacker, mob/living/defender, grab_attack)
+	procstart = null
+	src.procstart = null
 	var/atk_verb
 	switch(rand(1,6))
 		if(1)

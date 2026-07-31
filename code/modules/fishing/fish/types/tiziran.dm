@@ -29,12 +29,16 @@
 	var/egg_laying_time = 2.75 MINUTES
 
 /obj/item/fish/moonfish/Initialize(mapload, apply_qualities = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/fish_growth, /obj/item/food/moonfish_eggs, egg_laying_time, use_drop_loc = FALSE, del_on_grow = FALSE, inherit_name = FALSE)
 	RegisterSignal(src, COMSIG_FISH_BEFORE_GROWING, PROC_REF(egg_checks))
 
 ///Stop laying eggs if we're in an unsafe environment, starving of if there are simply too many eggs already.
 /obj/item/fish/moonfish/proc/egg_checks(datum/source, seconds_per_tick, growth, result_path)
+	procstart = null
+	src.procstart = null
 	if(result_path != /obj/item/food/moonfish_eggs) //Don't stop the growth of the dwarf subtype.
 		return
 	if(!proper_environment() || get_starvation_mult())
@@ -62,6 +66,8 @@
 	evolution_types = list(/datum/fish_evolution/moonfish)
 
 /obj/item/fish/moonfish/dwarf/update_size_and_weight(new_size = average_size, new_weight = average_weight, update_materials = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/multiplier = (size / (average_size * 1.5)) * (weight / (average_weight * 1.5))
 
@@ -87,13 +93,19 @@
 	)
 
 /obj/item/fish/gunner_jellyfish/Initialize(mapload, apply_qualities = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/quality_food_ingredient, FOOD_COMPLEXITY_2)
 
 /obj/item/fish/gunner_jellyfish/get_fish_taste()
+	procstart = null
+	src.procstart = null
 	return list("cold jelly" = 2)
 
 /obj/item/fish/gunner_jellyfish/get_fish_taste_cooked()
+	procstart = null
+	src.procstart = null
 	return list("crunchy tenderness" = 2)
 
 /obj/item/fish/needlefish
@@ -114,6 +126,8 @@
 	required_temperature_max = MIN_AQUARIUM_TEMP+32
 
 /obj/item/fish/needlefish/Initialize(mapload, apply_qualities = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_FISHING_BAIT, TRAIT_GOOD_QUALITY_BAIT), INNATE_TRAIT)
 
@@ -135,11 +149,17 @@
 	required_temperature_max = MIN_AQUARIUM_TEMP+32
 
 /obj/item/fish/armorfish/Initialize(mapload, apply_qualities = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_FISHING_BAIT, TRAIT_GOOD_QUALITY_BAIT), INNATE_TRAIT)
 
 /obj/item/fish/armorfish/get_fish_taste()
+	procstart = null
+	src.procstart = null
 	return list("raw prawn" = 2)
 
 /obj/item/fish/armorfish/get_fish_taste_cooked()
+	procstart = null
+	src.procstart = null
 	return list("cooked prawn" = 2)

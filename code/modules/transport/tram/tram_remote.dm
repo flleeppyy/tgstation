@@ -13,12 +13,16 @@
 	COOLDOWN_DECLARE(tram_remote)
 
 /obj/item/assembly/control/transport/remote/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!id_tag)
 		id_tag = assign_random_name()
 	SStransport.hello(src, name, id_tag)
 
 /obj/item/assembly/control/transport/remote/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(!specific_transport_id)
 		context[SCREENTIP_CONTEXT_LMB] = "Link tram"
@@ -31,6 +35,8 @@
 
 //set tram destination
 /obj/item/assembly/control/transport/remote/attack_self_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/available_platforms = list()
 	for(var/obj/effect/landmark/transport/nav_beacon/tram/platform/platform as anything in SStransport.nav_beacons[specific_transport_id])
 		LAZYADD(available_platforms, platform.name)
@@ -46,6 +52,8 @@
 
 ///set safety bypass
 /obj/item/assembly/control/transport/remote/item_ctrl_click(mob/user)
+	procstart = null
+	src.procstart = null
 	switch(options)
 		if(!RAPID_MODE)
 			options |= RAPID_MODE
@@ -56,6 +64,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/assembly/control/transport/remote/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!specific_transport_id)
 		. += "There is an X showing on the display."
@@ -72,6 +82,8 @@
 	. += "Alt-click to change configured tram."
 
 /obj/item/assembly/control/transport/remote/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!specific_transport_id)
@@ -81,11 +93,15 @@
 	icon_state = "tramremote_ob"
 
 /obj/item/assembly/control/transport/remote/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(options & RAPID_MODE)
 		. += mutable_appearance(icon, "tramremote_emag")
 
 /obj/item/assembly/control/transport/remote/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!specific_transport_id)
 		link_tram(user)
 		return
@@ -99,6 +115,8 @@
 
 ///send our selected commands to the tram
 /obj/item/assembly/control/transport/remote/activate(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!specific_transport_id)
 		balloon_alert(user, "no tram linked!")
 		return
@@ -109,10 +127,14 @@
 	SEND_SIGNAL(src, COMSIG_TRANSPORT_REQUEST, specific_transport_id, destination, options)
 
 /obj/item/assembly/control/transport/remote/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	link_tram(user)
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/assembly/control/transport/remote/proc/link_tram(mob/user)
+	procstart = null
+	src.procstart = null
 	specific_transport_id = null
 	var/list/transports_available
 	for(var/datum/transport_controller/linear/tram/tram as anything in SStransport.transports_by_type[TRANSPORT_TYPE_TRAM])

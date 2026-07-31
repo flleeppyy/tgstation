@@ -31,6 +31,8 @@
 	var/ranged_scan_distance = 1
 
 /obj/item/analyzer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_TOOL_ATOM_ACTED_PRIMARY(tool_behaviour), PROC_REF(on_analyze))
 
@@ -44,26 +46,38 @@
 	)
 
 /obj/item/analyzer/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/mercury = 5, /datum/reagent/iron = 5, /datum/reagent/silicon = 5)
 
 /obj/item/analyzer/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(user, TRAIT_DETECT_STORM, CLOTHING_TRAIT)
 
 /obj/item/analyzer/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(user, TRAIT_DETECT_STORM, CLOTHING_TRAIT)
 
 /obj/item/analyzer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Right-click [src] to open the gas reference.")
 	. += span_notice("Alt-click [src] to activate the barometer function.")
 
 /obj/item/analyzer/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins to analyze [user.p_them()]self with [src]! The display shows that [user.p_theyre()] dead!"))
 	return BRUTELOSS
 
-/obj/item/analyzer/click_alt(mob/user) //Barometer output for measuring when the next storm happens
+/obj/item/analyzer/click_alt(mob/user)
+	procstart = null
+	src.procstart = null //Barometer output for measuring when the next storm happens
 	if(cooldown)
 		to_chat(user, span_warning("[src]'s barometer function is preparing itself."))
 		return CLICK_ACTION_BLOCKING
@@ -106,6 +120,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/analyzer/proc/ping()
+	procstart = null
+	src.procstart = null
 	if(isliving(loc))
 		var/mob/living/L = loc
 		to_chat(L, span_notice("[src]'s barometer function is ready!"))
@@ -114,6 +130,8 @@
 
 /// Applies the barometer inaccuracy to the gas reading.
 /obj/item/analyzer/proc/butchertime(amount)
+	procstart = null
+	src.procstart = null
 	if(!amount)
 		return
 	if(barometer_accuracy)
@@ -125,31 +143,43 @@
 	return DisplayTimeText(max(1,amount))
 
 /obj/item/analyzer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "GasAnalyzer", "Gas Analyzer")
 		ui.open()
 
 /obj/item/analyzer/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return return_atmos_handbooks()
 
 /obj/item/analyzer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	LAZYINITLIST(last_gasmix_data)
 	return list("gasmixes" = last_gasmix_data)
 
 /obj/item/analyzer/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(user) || !user.can_read(src) || user.is_blind())
 		return
 	atmos_scan(user=user, target=get_turf(src), silent=FALSE)
 	on_analyze(source=src, target=get_turf(src))
 
 /obj/item/analyzer/attack_self_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(user) || !user.can_read(src) || user.is_blind())
 		return
 
 	ui_interact(user)
 
 /obj/item/analyzer/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(interacting_with, /obj/effect/anomaly) && can_see(user, interacting_with, ranged_scan_distance))
 		var/obj/effect/anomaly/ranged_anomaly = interacting_with
 		ranged_anomaly.analyzer_act(user, src)
@@ -157,12 +187,16 @@
 	return interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/analyzer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(interacting_with, TRAIT_COMBAT_MODE_SKIP_INTERACTION) && can_see(user, interacting_with, ranged_scan_distance))
 		atmos_scan(user, (interacting_with.return_analyzable_air() ? interacting_with : get_turf(interacting_with)))
 	return NONE // Non-blocking
 
 /// Called when our analyzer is used on something
 /obj/item/analyzer/proc/on_analyze(datum/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mixture = target.return_analyzable_air()
 	if(!mixture)
@@ -183,6 +217,8 @@
  * Also used in other chat-based gas scans.
  */
 /proc/atmos_scan(mob/user, atom/target, silent=FALSE)
+	procstart = null
+	src.procstart = null
 	var/mixture = target.return_analyzable_air()
 	if(!mixture)
 		return FALSE
@@ -239,4 +275,6 @@
 	ranged_scan_distance = 15
 
 /obj/item/analyzer/ranged/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/mercury = 5, /datum/reagent/iron = 5, /datum/reagent/silicon = 5)

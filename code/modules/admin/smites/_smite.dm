@@ -11,9 +11,13 @@
 /// Use this to prompt the user configuration options.
 /// Return FALSE if the smite should not be used.
 /datum/smite/proc/configure(client/user)
+	procstart = null
+	src.procstart = null
 
 /// Invoked externally to actually perform the smite
 /datum/smite/proc/do_effect(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(smite_flags & SMITE_DIVINE)
 		playsound(target, 'sound/effects/pray.ogg', 50, FALSE, -1)
 		target.apply_status_effect(
@@ -31,11 +35,15 @@
 
 /// Called after a delay if the smite has the SMITE_DELAY flag
 /datum/smite/proc/delayed_effect(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target))
 		return
 	effect(user, target)
 
 /// The effect of the smite, make sure to call this in your own smites
 /datum/smite/proc/effect(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if (should_log)
 		user.punish_log(target, name)

@@ -15,12 +15,16 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/map_view)
 	var/list/datum/weakref/viewers_to_huds = list()
 
 /atom/movable/screen/map_view/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/datum/weakref/client_ref in viewers_to_huds)
 		hide_from_client(client_ref.resolve())
 
 	return ..()
 
 /atom/movable/screen/map_view/proc/generate_view(map_key)
+	procstart = null
+	src.procstart = null
 	// Map keys have to start and end with an A-Z character,
 	// and definitely NOT with a square bracket or even a number.
 	// I wasted 6 hours on this. :agony:
@@ -40,17 +44,23 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/map_view)
  * * window - Optional. TGUI window which needs map view
  */
 /atom/movable/screen/map_view/proc/display_to(mob/show_to, datum/tgui_window/window)
+	procstart = null
+	src.procstart = null
 	if(window && !window.visible)
 		RegisterSignal(window, COMSIG_TGUI_WINDOW_VISIBLE, PROC_REF(display_on_ui_visible))
 	else
 		display_to_client(show_to.client)
 
 /atom/movable/screen/map_view/proc/display_on_ui_visible(datum/tgui_window/window, client/show_to)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	display_to_client(show_to)
 	UnregisterSignal(window, COMSIG_TGUI_WINDOW_VISIBLE)
 
 /atom/movable/screen/map_view/proc/display_to_client(client/show_to)
+	procstart = null
+	src.procstart = null
 	show_to.register_map_obj(src)
 	// We need to add planesmasters to the popup, otherwise
 	// blending fucks up massively. Any planesmaster on the main screen does
@@ -74,9 +84,13 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/map_view)
 	return pop_planes
 
 /atom/movable/screen/map_view/proc/hide_from(mob/hide_from)
+	procstart = null
+	src.procstart = null
 	hide_from_client(hide_from?.canon_client)
 
 /atom/movable/screen/map_view/proc/hide_from_client(client/hide_from)
+	procstart = null
+	src.procstart = null
 	if(!hide_from)
 		return
 	hide_from.clear_map(assigned_map)

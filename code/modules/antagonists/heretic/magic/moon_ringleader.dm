@@ -20,11 +20,15 @@
 	var/obj/effect/moon_effect = /obj/effect/temp_visual/moon_ringleader
 
 /datum/action/cooldown/spell/aoe/moon_ringleader/cast(mob/living/caster)
+	procstart = null
+	src.procstart = null
 	new moon_effect(get_turf(caster))
 	caster.add_ally("ringleader([REF(caster)])")
 	return ..()
 
 /datum/action/cooldown/spell/aoe/moon_ringleader/get_things_to_cast_on(atom/center, radius_override)
+	procstart = null
+	src.procstart = null
 	var/list/stuff = list()
 	var/list/o_range = orange(center, radius_override || aoe_radius) - list(owner, center)
 	for(var/mob/living/carbon/nearby_mob in o_range)
@@ -42,6 +46,8 @@
 	return stuff
 
 /datum/action/cooldown/spell/aoe/moon_ringleader/cast_on_thing_in_aoe(mob/living/carbon/victim, mob/living/caster)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/illusion/shover/shove_clone = new(pick(RANGE_TURFS(2, victim)))
 	shove_clone.full_setup(
 		caster,
@@ -56,6 +62,8 @@
 
 /// Used by Ringleaders Rise, illusions created by this spell will explode when they are interacted with
 /datum/action/cooldown/spell/aoe/moon_ringleader/proc/on_attacked(mob/victim, atom/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isliving(attacker))
 		var/mob/living/living_attacker = attacker
@@ -93,5 +101,7 @@
 	duration = 6
 
 /obj/effect/temp_visual/moon_ringleader/ringleader/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transform = transform.Scale(10)

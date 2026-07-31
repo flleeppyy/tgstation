@@ -181,6 +181,8 @@ GLOBAL_LIST_INIT(rdd_designs, list(
 	var/selected_design_name
 
 /obj/item/construction/rdd/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	selected_category = GLOB.rdd_designs[1]
 	var/list/category_designs = GLOB.rdd_designs[selected_category]
@@ -190,25 +192,35 @@ GLOBAL_LIST_INIT(rdd_designs, list(
 		selected_design_name = first_design["name"]
 
 /obj/item/construction/rdd/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info("Currently set to produce: [span_bold(initial(selected_decoration.name))].")
 
 /obj/item/construction/rdd/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui_interact(user)
 
 /obj/item/construction/rdd/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "RapidDecorationDevice", name)
 		ui.open()
 
 /obj/item/construction/rdd/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/rdd),
 	)
 
 /obj/item/construction/rdd/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 
 	data["categories"] = list()
@@ -224,6 +236,8 @@ GLOBAL_LIST_INIT(rdd_designs, list(
 	return data
 
 /obj/item/construction/rdd/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 
 	var/total_matter = get_matter(user)
@@ -235,6 +249,8 @@ GLOBAL_LIST_INIT(rdd_designs, list(
 	return data
 
 /obj/item/construction/rdd/handle_ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -254,6 +270,8 @@ GLOBAL_LIST_INIT(rdd_designs, list(
 	return TRUE
 
 /obj/item/construction/rdd/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -291,6 +309,8 @@ GLOBAL_LIST_INIT(rdd_designs, list(
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/construction/rdd/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(interacting_with)
 	if(!target_turf)
 		return NONE
@@ -317,6 +337,8 @@ GLOBAL_LIST_INIT(rdd_designs, list(
 	var/energyfactor = 0.1 * STANDARD_CELL_CHARGE
 
 /obj/item/construction/rdd/borg/get_matter(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!iscyborg(user))
 		return 0
 	var/mob/living/silicon/robot/borgy = user
@@ -326,6 +348,8 @@ GLOBAL_LIST_INIT(rdd_designs, list(
 	return borgy.cell.charge
 
 /obj/item/construction/rdd/borg/useResource(amount, mob/user, dry_run)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/borgy = user
 	if(!iscyborg(borgy))
 		return FALSE

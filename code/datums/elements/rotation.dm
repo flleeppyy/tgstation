@@ -14,6 +14,8 @@
  * * post_rotation (optional) Callback proc that is used after the object is rotated (sound effects, balloon alerts, etc.)
  **/
 /datum/element/simple_rotation/Attach(datum/target, rotation_flags = NONE, post_rotation_proccall)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(target))
 		return ELEMENT_INCOMPATIBLE
@@ -30,6 +32,8 @@
 	RegisterSignal(target, COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM, PROC_REF(on_requesting_context_from_item))
 
 /datum/element/simple_rotation/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, list(
 		COMSIG_CLICK_ALT,
@@ -40,21 +44,29 @@
 	return ..()
 
 /datum/element/simple_rotation/proc/ExamineMessage(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(rotation_flags & ROTATION_REQUIRE_WRENCH)
 		examine_list += span_notice("This requires a wrench to be rotated.")
 
 /datum/element/simple_rotation/proc/rotate_right(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	rotate(user, source, ROTATION_CLOCKWISE)
 	return CLICK_ACTION_SUCCESS
 
 /datum/element/simple_rotation/proc/rotate_left(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	rotate(user, source, ROTATION_COUNTERCLOCKWISE)
 	return CLICK_ACTION_SUCCESS
 
 /datum/element/simple_rotation/proc/rotate(mob/user, obj/object_to_rotate, degrees)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(user))
 		CRASH("[src] is being rotated [user ? "with a qdeleting" : "without a"] user")
 	if(!istype(user))
@@ -73,6 +85,8 @@
 		call(object_to_rotate, post_rotation_proccall)(user, degrees)
 
 /datum/element/simple_rotation/proc/can_user_rotate(mob/user, obj/object_to_rotate, degrees)
+	procstart = null
+	src.procstart = null
 	if(isliving(user) && user.can_perform_action(object_to_rotate, NEED_DEXTERITY))
 		return TRUE
 	if((rotation_flags & ROTATION_GHOSTS_ALLOWED) && isobserver(user) && CONFIG_GET(flag/ghost_interaction))
@@ -80,6 +94,8 @@
 	return FALSE
 
 /datum/element/simple_rotation/proc/can_be_rotated(mob/user, obj/object_to_rotate, degrees, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!object_to_rotate.Adjacent(user))
 		silent = TRUE
 
@@ -119,6 +135,8 @@
 
 // maybe we don't need the item context proc but instead the hand one? since we don't need to check held_item
 /datum/element/simple_rotation/proc/on_requesting_context_from_item(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/rotation_screentip = FALSE

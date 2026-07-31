@@ -16,6 +16,8 @@
 	var/datum/weakref/stored_swap_ref
 
 /obj/item/book/granter/action/spell/mindswap/on_reading_finished()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	visible_message(span_notice("[src] begins to shake and shift."))
 	action_name = pick(
@@ -31,6 +33,8 @@
 	name = "spellbook of [action_name]"
 
 /obj/item/book/granter/action/spell/mindswap/recoil(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/real_stored_swap = stored_swap_ref?.resolve()
 	if(QDELETED(real_stored_swap))

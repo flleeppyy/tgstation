@@ -21,10 +21,14 @@
 	var/max_uses = 3
 
 /obj/item/gun_maintenance_supplies/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info("This kit has [uses] uses out of [max_uses] left.")
 
 /obj/item/gun_maintenance_supplies/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return ITEM_INTERACT_BLOCKING
@@ -65,6 +69,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/gun_maintenance_supplies/proc/use_the_kit()
+	procstart = null
+	src.procstart = null
 	uses --
 	if(!uses)
 		qdel(src)

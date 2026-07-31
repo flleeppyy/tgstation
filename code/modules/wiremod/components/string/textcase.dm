@@ -22,6 +22,8 @@
 	circuit_flags = CIRCUIT_FLAG_INPUT_SIGNAL|CIRCUIT_FLAG_OUTPUT_SIGNAL
 
 /obj/item/circuit_component/textcase/populate_options()
+	procstart = null
+	src.procstart = null
 	var/static/component_options = list(
 		COMP_TEXT_LOWER,
 		COMP_TEXT_UPPER,
@@ -29,10 +31,14 @@
 	textcase_options = add_option_port("Textcase Options", component_options)
 
 /obj/item/circuit_component/textcase/populate_ports()
+	procstart = null
+	src.procstart = null
 	input_port = add_input_port("Input", PORT_TYPE_STRING)
 	output = add_output_port("Output", PORT_TYPE_STRING)
 
 /obj/item/circuit_component/textcase/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 
 	var/value = input_port.value
 	if(isnull(value))

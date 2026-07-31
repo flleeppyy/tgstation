@@ -34,6 +34,8 @@
 	))
 
 /datum/component/thermite/Initialize(amount = 50, thermite_overlay = default_thermite_overlay)
+	procstart = null
+	src.procstart = null
 	if(!isturf(parent))
 		return COMPONENT_INCOMPATIBLE
 	//not actually incompatible, but not valid
@@ -53,6 +55,8 @@
 	src.thermite_overlay = thermite_overlay
 
 /datum/component/thermite/Destroy()
+	procstart = null
+	src.procstart = null
 	thermite_overlay = null
 	if(burn_timer)
 		deltimer(burn_timer)
@@ -64,6 +68,8 @@
 	return ..()
 
 /datum/component/thermite/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_ATTACKBY, PROC_REF(attackby_react))
 	RegisterSignal(parent, COMSIG_ATOM_ATTACK_HAND, PROC_REF(on_attack_hand))
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
@@ -75,6 +81,8 @@
 	turf_parent.update_appearance()
 
 /datum/component/thermite/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ATOM_ATTACKBY,
 		COMSIG_ATOM_ATTACK_HAND,
@@ -88,6 +96,8 @@
 	turf_parent.update_appearance()
 
 /datum/component/thermite/InheritComponent(datum/component/thermite/new_comp, i_am_original, amount)
+	procstart = null
+	src.procstart = null
 	if(!i_am_original)
 		return
 	src.amount += amount
@@ -97,12 +107,16 @@
 
 /// Alerts the user that this turf is, in fact, covered with thermite.
 /datum/component/thermite/proc/on_examine(turf/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += span_warning("[source.p_Theyre()] covered in thermite.")
 
 /// Used to maintain the thermite overlay on the parent [/turf].
 /datum/component/thermite/proc/on_update_overlays(turf/parent_turf, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(thermite_overlay)
@@ -115,6 +129,8 @@
  * * mob/user - The user igniting the thermite
  */
 /datum/component/thermite/proc/thermite_melt(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/parent_turf = parent
 	playsound(parent_turf, 'sound/items/tools/welder.ogg', 100, TRUE)
 	fakefire = new(parent_turf)
@@ -130,6 +146,8 @@
  * * mob/user - The user that ignited the thermite
  */
 /datum/component/thermite/proc/burn_parent(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/parent_turf = parent
 	if(fakefire)
 		QDEL_NULL(fakefire)
@@ -145,6 +163,8 @@
  * Wash reaction, used to clean off thermite from parent
  */
 /datum/component/thermite/proc/clean_react(datum/source, strength)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	. = NONE
@@ -163,6 +183,8 @@
  * * exposed_volume - The volume of the flame
  */
 /datum/component/thermite/proc/on_fire_act(datum/source, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// This is roughly the real life requirement to ignite thermite
@@ -172,6 +194,8 @@
 
 /// Handles searing the hand of anyone who tries to touch parent without protection, while burning
 /datum/component/thermite/proc/on_attack_hand(atom/source, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	//not burning
@@ -197,6 +221,8 @@
  * * params - params
  */
 /datum/component/thermite/proc/attackby_react(datum/source, obj/item/thing, mob/user, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(thing.get_temperature() >= FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
@@ -204,6 +230,8 @@
 
 /// Signal handler for COMSIG_QDELETING, necessary because turfs can be weird with qdel()
 /datum/component/thermite/proc/parent_qdeleting(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!QDELING(src))

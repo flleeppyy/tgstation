@@ -38,6 +38,8 @@
 	acid = 70
 
 /obj/machinery/button/get_save_vars()
+	procstart = null
+	src.procstart = null
 	return ..() + NAMEOF(src, id)
 
 /**
@@ -45,6 +47,8 @@
  */
 
 /obj/machinery/button/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		set_panel_open(TRUE)
@@ -66,11 +70,15 @@
 	register_context()
 
 /obj/machinery/button/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(device)
 	QDEL_NULL(board)
 	return ..()
 
 /obj/machinery/button/proc/setup_device(mapload)
+	procstart = null
+	src.procstart = null
 	if(mapload && !device && device_type)
 		device = new device_type(src)
 	if(id && istype(device, /obj/item/assembly/control))
@@ -79,6 +87,8 @@
 	initialized_button = TRUE
 
 /obj/machinery/button/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
+	procstart = null
+	src.procstart = null
 	if(id)
 		id = "[port.shuttle_id]_[id]"
 		setup_device()
@@ -89,6 +99,8 @@
  */
 
 /obj/machinery/button/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][skin]"
 	if(panel_open)
 		icon_state += "-open"
@@ -97,6 +109,8 @@
 	return ..()
 
 /obj/machinery/button/update_appearance()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(panel_open || (machine_stat & (NOPOWER|BROKEN)))
@@ -105,6 +119,8 @@
 		set_light(initial(light_range), light_power, light_color)
 
 /obj/machinery/button/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(panel_open && board)
@@ -119,6 +135,8 @@
 		. += emissive_appearance(icon, "[base_icon_state]-light-mask", src, alpha = src.alpha)
 
 /obj/machinery/button/on_set_panel_open(old_value)
+	procstart = null
+	src.procstart = null
 	if(panel_open) // Only allow renaming while the panel is open
 		obj_flags |= UNIQUE_RENAME
 	else
@@ -130,6 +148,8 @@
  */
 
 /obj/machinery/button/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		return NONE
 
@@ -139,6 +159,8 @@
 		return airlock_electronics_act(user, tool)
 
 /obj/machinery/button/proc/assembly_act(mob/living/user, obj/item/assembly/new_device)
+	procstart = null
+	src.procstart = null
 	if(device)
 		to_chat(user, span_warning("The button already contains a device!"))
 		return ITEM_INTERACT_BLOCKING
@@ -157,6 +179,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/button/proc/airlock_electronics_act(mob/living/user, obj/item/electronics/airlock/new_board)
+	procstart = null
+	src.procstart = null
 	if(board)
 		to_chat(user, span_warning("The button already contains a board!"))
 		return ITEM_INTERACT_BLOCKING
@@ -175,6 +199,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/button/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(panel_open || allowed(user))
 		return default_deconstruction_screwdriver(user, tool)
 
@@ -183,6 +209,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/machinery/button/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		balloon_alert(user, "open button first!")
 		return ITEM_INTERACT_BLOCKING
@@ -200,6 +228,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/button/base_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -209,6 +239,8 @@
 
 
 /obj/machinery/button/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(obj_flags & EMAGGED)
 		return
@@ -224,13 +256,19 @@
 	return TRUE
 
 /obj/machinery/button/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!silicon_access_disabled && !panel_open)
 		return attempt_press(user)
 
 /obj/machinery/button/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_ai(user)
 
 /obj/machinery/button/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -260,6 +298,8 @@
 		balloon_alert(user, "style swapped")
 
 /obj/machinery/button/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!initialized_button)
 		setup_device()
 	add_fingerprint(user)
@@ -277,6 +317,8 @@
 	return ..()
 
 /obj/machinery/button/proc/remove_assembly(mob/user)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(device, COMSIG_ASSEMBLY_REMOVED_FROM_BUTTON, src, user)
 	user.put_in_hands(device)
 	to_chat(user, span_notice("You remove \the [device] from the button frame."))
@@ -284,6 +326,8 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/machinery/button/proc/remove_airlock_electronics(mob/user)
+	procstart = null
+	src.procstart = null
 	user.put_in_hands(board)
 	to_chat(user, span_notice("You remove the board from the button frame."))
 	req_access = list()
@@ -292,6 +336,8 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/machinery/button/proc/attempt_press(mob/user)
+	procstart = null
+	src.procstart = null
 	if((machine_stat & (NOPOWER|BROKEN)))
 		return FALSE
 
@@ -317,10 +363,14 @@
  */
 
 /obj/machinery/button/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	var/obj/item/wallframe/button/dropped_frame = new /obj/item/wallframe/button(drop_location())
 	transfer_fingerprints_to(dropped_frame)
 
 /obj/machinery/button/dump_inventory_contents(list/subset)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	device = null
 	board = null
@@ -333,6 +383,8 @@
  */
 
 /obj/machinery/button/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!panel_open)
 		return
@@ -344,6 +396,8 @@
 		. += span_notice("There is nothing currently installed in \the [src].")
 
 /obj/machinery/button/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		if(isnull(held_item))
 			if(board && device)
@@ -399,6 +453,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/button/door, 24)
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
 /obj/machinery/button/door/setup_device(mapload)
+	procstart = null
+	src.procstart = null
 	if(mapload)
 		device = normaldoorcontrol ? new /obj/item/assembly/control/airlock(src) : new /obj/item/assembly/control/blast_door(src)
 
@@ -497,6 +553,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/button/door, 24)
 	var/sync_doors = TRUE
 
 /obj/machinery/button/curtain/setup_device(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/assembly/control/curtain = device
 	if(istype(curtain))
@@ -523,9 +581,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/button/door, 24)
 	pixel_shift = 24
 
 /obj/item/wallframe/button/find_support_structure(atom/structure)
+	procstart = null
+	src.procstart = null
 	return istype(structure, /obj/structure/table) ? structure : ..()
 
 /obj/item/wallframe/button/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(interacting_with, /obj/structure/table))
 		return user.combat_mode ? ..() : NONE
 	return ..()

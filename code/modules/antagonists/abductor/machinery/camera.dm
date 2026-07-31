@@ -15,12 +15,16 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 
 /obj/machinery/computer/camera_advanced/abductor/Destroy()
+	procstart = null
+	src.procstart = null
 	if(console)
 		console.camera = null
 		console = null
 	return ..()
 
 /obj/machinery/computer/camera_advanced/abductor/CreateEye()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//For observers
 	eyeobj.icon = 'icons/mob/eyemob.dmi'
@@ -29,6 +33,8 @@
 	eyeobj.set_user_icon(eyeobj.icon, eyeobj.icon_state)
 
 /obj/machinery/computer/camera_advanced/abductor/GrantActions(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!abduct_created)
 		abduct_created = TRUE
 		actions += new /datum/action/innate/teleport_in(console.pad)
@@ -40,6 +46,8 @@
 	..()
 
 /obj/machinery/computer/camera_advanced/abductor/proc/IsScientist(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(H, TRAIT_ABDUCTOR_SCIENTIST_TRAINING)
 
 /datum/action/innate/teleport_in
@@ -52,6 +60,8 @@
 	button_icon_state = "beam_down_pad"
 
 /datum/action/innate/teleport_in/Activate()
+	procstart = null
+	src.procstart = null
 	if(!target || !iscarbon(owner))
 		return
 	if(world.time < use_delay)
@@ -81,6 +91,8 @@
 	button_icon_state = "beam_up"
 
 /datum/action/innate/teleport_out/Activate()
+	procstart = null
+	src.procstart = null
 	if(!target || !iscarbon(owner))
 		return
 	var/obj/machinery/abductor/console/console = target
@@ -96,6 +108,8 @@
 	button_icon_state = "beam_down"
 
 /datum/action/innate/teleport_self/Activate()
+	procstart = null
+	src.procstart = null
 	if(!target || !iscarbon(owner))
 		return
 	if(world.time < use_delay)
@@ -125,6 +139,8 @@
 	button_icon_state = "vest_mode"
 
 /datum/action/innate/vest_mode_swap/Activate()
+	procstart = null
+	src.procstart = null
 	if(!target || !iscarbon(owner))
 		return
 	var/obj/machinery/abductor/console/console = target
@@ -137,6 +153,8 @@
 	button_icon_state = "vest_disguise"
 
 /datum/action/innate/vest_disguise_swap/Activate()
+	procstart = null
+	src.procstart = null
 	if(!target || !iscarbon(owner))
 		return
 	var/obj/machinery/abductor/console/console = target
@@ -148,6 +166,8 @@
 	button_icon_state = "set_drop"
 
 /datum/action/innate/set_droppoint/Activate()
+	procstart = null
+	src.procstart = null
 	if(!target || !iscarbon(owner))
 		return
 

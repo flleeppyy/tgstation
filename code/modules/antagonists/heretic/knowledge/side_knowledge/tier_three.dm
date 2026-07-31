@@ -81,6 +81,8 @@
 	drafting_tier = 3
 
 /datum/heretic_knowledge/limited_amount/risen_corpse/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -106,6 +108,8 @@
 	return FALSE
 
 /datum/heretic_knowledge/limited_amount/risen_corpse/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/soon_to_be_ghoul = locate() in selected_atoms
 	if(QDELETED(soon_to_be_ghoul)) // No body? No ritual
 		stack_trace("[type] reached on_finished_recipe without a human in selected_atoms to make a ghoul out of.")
@@ -124,6 +128,8 @@
 
 /// Make [victim] into a shattered risen ghoul.
 /datum/heretic_knowledge/limited_amount/risen_corpse/proc/make_risen(mob/living/user, mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	user.log_message("created a shattered risen out of [key_name(victim)].", LOG_GAME)
 	victim.log_message("became a shattered risen of [key_name(user)]'s.", LOG_VICTIM, log_globally = FALSE)
 	message_admins("[ADMIN_LOOKUPFLW(user)] created a shattered risen, [ADMIN_LOOKUPFLW(victim)].")
@@ -138,11 +144,15 @@
 
 /// Callback for the ghoul status effect - what effects are applied to the ghoul.
 /datum/heretic_knowledge/limited_amount/risen_corpse/proc/apply_to_risen(mob/living/risen)
+	procstart = null
+	src.procstart = null
 	LAZYADD(created_items, WEAKREF(risen))
 	risen.AddComponent(/datum/component/mutant_hands, mutant_hand_path = /obj/item/mutant_hand/shattered_risen)
 
 /// Callback for the ghoul status effect - cleaning up effects after the ghoul status is removed.
 /datum/heretic_knowledge/limited_amount/risen_corpse/proc/remove_from_risen(mob/living/risen)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(created_items, WEAKREF(risen))
 	qdel(risen.GetComponent(/datum/component/mutant_hands))
 
@@ -201,12 +211,16 @@
 	drafting_tier = 3
 
 /datum/heretic_knowledge/mad_mask/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/flashlight/flare/candle/candle in atoms)
 		if(!candle.light_on)
 			atoms -= candle
 
 /datum/heretic_knowledge/mad_mask/prepare_atom_for_ritual_test(atom/what)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(what, /obj/item/flashlight/flare/candle))
 		what.set_light_on(TRUE)
@@ -234,9 +248,13 @@
 	VAR_PRIVATE/used = FALSE
 
 /datum/heretic_knowledge/mansus_gate/can_be_invoked(datum/antagonist/heretic/invoker)
+	procstart = null
+	src.procstart = null
 	return !used
 
 /datum/heretic_knowledge/mansus_gate/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/closet/locker = locate() in selected_atoms
 	if(isnull(locker))
 		stack_trace("Locker not found in selected atoms for mansus gate recipe!")
@@ -247,11 +265,15 @@
 	return TRUE
 
 /datum/heretic_knowledge/mansus_gate/cleanup_atoms(list/selected_atoms)
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/closet/locker in selected_atoms)
 		selected_atoms -= locker
 	return ..()
 
 /datum/heretic_knowledge/mansus_gate/proc/setup_link(obj/structure/closet/crate/locker)
+	procstart = null
+	src.procstart = null
 	var/datum/map_template/masus_backdoor/backdoor = new()
 	var/datum/turf_reservation/reservation = SSmapping.request_turf_block_reservation(
 		width = backdoor.width,
@@ -276,6 +298,8 @@
 	RegisterSignal(locker, COMSIG_CLOSET_TELEPORTER_PRE_SENDING, PROC_REF(closet_teleport_logic))
 
 /datum/heretic_knowledge/mansus_gate/proc/closet_teleport_logic(obj/structure/closet/crate/locker, atom/movable/sending_through)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!is_station_level(locker.z))
@@ -294,6 +318,8 @@
 	return CLOSET_TELEPORT_FORCED
 
 /datum/heretic_knowledge/mansus_gate/proc/consents_to_entry(mob/living/entering)
+	procstart = null
+	src.procstart = null
 	if(IS_HERETIC_OR_MONSTER(entering))
 		return TRUE
 	if(!INCAPACITATED_IGNORING(entering, INCAPABLE_GRAB|INCAPABLE_STASIS))
@@ -320,6 +346,8 @@
 	base_lighting_color = "#FFF4AA"
 
 /area/centcom/heretic_backdoor/Entered(atom/movable/arrived, area/old_area)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(arrived))
 		var/mob/living/arrived_mob = arrived
@@ -331,6 +359,8 @@
 			arrived_mob.apply_status_effect(/datum/status_effect/necropolis_curse, CURSE_BLINDING)
 
 /area/centcom/heretic_backdoor/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(gone))
 		var/mob/living/gone_mob = gone
@@ -340,6 +370,8 @@
 		gone_mob.adjust_eye_blur(2 SECONDS)
 
 /area/centcom/heretic_backdoor/proc/greet_message(mob/living/arrived_mob)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(arrived_mob) || get_area(arrived_mob) != src)
 		return
 	to_chat(arrived_mob, span_mansus("A hollow sun shines down from above."))

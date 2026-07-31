@@ -23,11 +23,15 @@
 	var/target_temperature = 300
 
 /obj/machinery/plumbing/reaction_chamber/Initialize(mapload, layer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/plumbing/reaction_chamber, layer)
 
 /// Handles stopping the emptying process when the chamber empties.
 /obj/machinery/plumbing/reaction_chamber/proc/on_reagent_change(datum/reagents/plumbing/reaction_chamber/holder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!holder.get_catalyst_excluded_volume()) //we were emptying, but now we aren't
@@ -36,6 +40,8 @@
 		UnregisterSignal(reagents, COMSIG_REAGENTS_HOLDER_UPDATED)
 
 /obj/machinery/plumbing/reaction_chamber/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!is_operational || !reagents.total_volume)
 		return
 
@@ -55,22 +61,30 @@
  * * seconds_per_tick - passed down from process()
  */
 /obj/machinery/plumbing/reaction_chamber/proc/handle_reagents(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	return
 
 /obj/machinery/plumbing/reaction_chamber/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	icon_state = initial(icon_state) + "[use_power != NO_POWER_USE ? "_on" : ""]"
 
 /obj/machinery/plumbing/reaction_chamber/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ChemMixingChamber", name)
 		ui.open()
 
 /obj/machinery/plumbing/reaction_chamber/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	var/list/reagents_data = list()
@@ -95,6 +109,8 @@
 	.["isReacting"] = reagents.is_reacting
 
 /obj/machinery/plumbing/reaction_chamber/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -162,6 +178,8 @@
 
 /// For custom handling of ui actions from inside a subtype
 /obj/machinery/plumbing/reaction_chamber/proc/handle_ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	return null
@@ -181,6 +199,8 @@
 	var/datum/reagents/alkaline_beaker
 
 /obj/machinery/plumbing/reaction_chamber/chem/Initialize(mapload, layer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/datum/component/plumbing/buffered/acidic_input = AddComponent(/datum/component/plumbing/buffered/acidic_input)
@@ -190,6 +210,8 @@
 	alkaline_beaker = basic_input.recipient_reagents_holder()
 
 /obj/machinery/plumbing/reaction_chamber/chem/handle_reagents(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(reagents.ph < acidic_limit || reagents.ph > alkaline_limit)
 		//nothing to react with
 		var/num_of_reagents = length(reagents.reagent_list)
@@ -214,18 +236,24 @@
 		use_energy(active_power_usage * 0.03 * buffer_amount)
 
 /obj/machinery/plumbing/reaction_chamber/chem/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ChemReactionChamber", name)
 		ui.open()
 
 /obj/machinery/plumbing/reaction_chamber/chem/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["ph"] = round(reagents.ph, 0.01)
 	.["reagentAcidic"] = acidic_limit
 	.["reagentAlkaline"] = alkaline_limit
 
 /obj/machinery/plumbing/reaction_chamber/chem/handle_ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 
 	switch(action)

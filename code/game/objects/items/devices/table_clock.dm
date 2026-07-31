@@ -18,15 +18,21 @@
 	var/times_broken
 
 /obj/item/table_clock/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	soundloop = new(src, TRUE)
 	AddElement(/datum/element/beauty, 200)
 
 /obj/item/table_clock/Destroy(force)
+	procstart = null
+	src.procstart = null
 	soundloop.stop()
 	return ..()
 
 /obj/item/table_clock/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(broken)
 		. += span_info("It appears to be currently broken. You can use it in-hand to repair it.")
@@ -36,6 +42,8 @@
 			. += span_info("That means it is currently [round_timestamp()] into the shift.")
 
 /obj/item/table_clock/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(attacking_item.force < 5 || broken)
 		return
@@ -47,12 +55,16 @@
 		)
 
 /obj/item/table_clock/throw_at(atom/target, range, speed, mob/thrower, spin, diagonals_first, datum/callback/callback, force, gentle, quickstart, throw_type_path = /datum/thrownthing)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	break_clock(break_sound = 'sound/effects/footstep/glass_step.ogg')
 
 /obj/item/table_clock/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!broken)
 		to_chat(user, span_warning("Touch the clock? And risk breaking it? Are you crazy??"))
@@ -69,6 +81,8 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/item/table_clock/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][broken ? "_broken" : null]"
 	return ..()
 
@@ -77,6 +91,8 @@
  * Returns TRUE if it successfully breaks, FALSE otherwise.
  */
 /obj/item/table_clock/proc/break_clock(break_sound)
+	procstart = null
+	src.procstart = null
 	if(broken)
 		return FALSE
 

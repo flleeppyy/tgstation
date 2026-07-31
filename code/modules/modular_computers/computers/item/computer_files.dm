@@ -6,6 +6,8 @@
  * user is optional: If set, the action was done by a mob/player
  */
 /obj/item/modular_computer/proc/store_file(datum/computer_file/file_storing, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!file_storing || !istype(file_storing))
 		return FALSE
 	if(!can_store_file(file_storing))
@@ -29,6 +31,8 @@
  * Returns TRUE if successfully completed, FALSE otherwise
  */
 /obj/item/modular_computer/proc/remove_file(datum/computer_file/file_removing)
+	procstart = null
+	src.procstart = null
 	if(!file_removing || !istype(file_removing))
 		return FALSE
 	if(!(file_removing in stored_files))
@@ -51,6 +55,8 @@
  * returns TRUE if possible, FALSE otherwise.
  */
 /obj/item/modular_computer/proc/can_store_file(datum/computer_file/file)
+	procstart = null
+	src.procstart = null
 	if(!file || !istype(file))
 		return FALSE
 	if(file in stored_files)
@@ -76,6 +82,8 @@
  * If a computer disk is passed instead, it will check the disk over the computer.
  */
 /obj/item/modular_computer/proc/find_file_by_name(filename, obj/item/disk/computer/target_disk)
+	procstart = null
+	src.procstart = null
 	if(!istext(filename))
 		return null
 	if(isnull(target_disk))
@@ -96,6 +104,8 @@
  * If a computer disk is passed instead, it will check the disk over the computer.
  */
 /obj/item/modular_computer/proc/find_file_by_full_name(full_path, obj/item/disk/computer/target_disk)
+	procstart = null
+	src.procstart = null
 	if(!istext(full_path))
 		return null
 	if(isnull(target_disk))
@@ -116,6 +126,8 @@
  * If a computer disk is passed instead, it will check the disk over the computer.
  */
 /obj/item/modular_computer/proc/find_file_by_uid(uid, obj/item/disk/computer/target_disk)
+	procstart = null
+	src.procstart = null
 	if(!isnum(uid))
 		return null
 	if(isnull(target_disk))

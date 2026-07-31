@@ -23,6 +23,8 @@ ADMIN_VERB_ONLY_CONTEXT_MENU(cmd_admin_headset_message, R_ADMIN, "Headset Messag
 	user.admin_headset_message(target)
 
 /client/proc/admin_headset_message(mob/target in GLOB.mob_list, sender = null)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_recipient
 	var/mob/living/silicon/silicon_recipient
 
@@ -205,6 +207,8 @@ ADMIN_VERB(delay_command_report, R_FUN, "Delay Command Report", "Prevents the ro
 
 ///Reformats a narration message. First provides a prompt asking if the user wants to reformat their message, then allows them to pick from a list of spans to use.
 /client/proc/reformat_narration(input)
+	procstart = null
+	src.procstart = null
 	if(tgui_alert(mob, "Set a custom text format?", "Make it snazzy!", list("Yes", "No")) == "Yes")
 		var/text_span = tgui_input_list(mob, "Select a span!", "Immersion! Yeah!", GLOB.spanname_to_formatting)
 		if(isnull(text_span)) //In case the user just quit the prompt.

@@ -25,6 +25,8 @@
 	pet_ability_key = BB_SOLARBEAM_ABILITY
 
 /datum/pet_command/use_ability/solarbeam/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return isnull(target) ? null : "signals [living_pet] to use a solar beam on [target]!"
 
 
@@ -37,4 +39,6 @@
 	pet_ability_key = BB_RAPIDSEEDS_ABILITY
 
 /datum/pet_command/use_ability/rapidseeds/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return isnull(target) ? null : "signals [living_pet] to unleash a volley of seeds on [target]!"

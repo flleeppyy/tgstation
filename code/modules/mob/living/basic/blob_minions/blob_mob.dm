@@ -27,11 +27,15 @@
 	var/loot = /obj/item/food/spore_sack
 
 /mob/living/basic/blob_minion/New(loc, blob_borne)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(blob_borne)
 		pass_flags = PASSBLOB
 
 /mob/living/basic/blob_minion/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_BLOB_ALLY, TRAIT_MUTE), INNATE_TRAIT)
 	AddComponent(/datum/component/blob_minion, on_strain_changed = CALLBACK(src, PROC_REF(on_strain_updated)), new_death_cloud_size = death_cloud_size)
@@ -43,15 +47,21 @@
 
 /// Called when our blob overmind changes their variant, update some of our mob properties
 /mob/living/basic/blob_minion/proc/on_strain_updated(mob/eye/blob/overmind, datum/blobstrain/new_strain)
+	procstart = null
+	src.procstart = null
 	//revert independent blob mobs to the pale sprite so they can be recoloured
 	if(new_strain)
 		icon_state = base_icon_state
 
 /// Associates this mob with a specific blob factory node
 /mob/living/basic/blob_minion/proc/link_to_factory(obj/structure/blob/special/factory/factory)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(factory, COMSIG_QDELETING, PROC_REF(on_factory_destroyed))
 
 /// Called when our factory is destroyed
 /mob/living/basic/blob_minion/proc/on_factory_destroyed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	to_chat(src, span_userdanger("Your factory was destroyed! You feel yourself dying!"))

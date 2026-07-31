@@ -5,6 +5,8 @@
 	var/desc
 
 /datum/component/construction/Initialize()
+	procstart = null
+	src.procstart = null
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -13,35 +15,47 @@
 	update_parent(index)
 
 /datum/component/construction/proc/examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(desc)
 		examine_list += desc
 
 /datum/component/construction/proc/on_step()
+	procstart = null
+	src.procstart = null
 	if(index > steps.len)
 		spawn_result()
 	else
 		update_parent(index)
 
 /datum/component/construction/proc/action(datum/source, obj/item/I, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	ASYNC //This proc will never actually sleep, it calls do_after with a time of 0.
 		. = check_step(I, user)
 	return .
 
 /datum/component/construction/proc/update_index(diff)
+	procstart = null
+	src.procstart = null
 	index += diff
 	on_step()
 
 /datum/component/construction/proc/check_step(obj/item/I, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/diff = is_right_key(I)
 	if(diff && custom_action(I, user, diff))
 		update_index(diff)
 		return TRUE
 	return FALSE
 
-/datum/component/construction/proc/is_right_key(obj/item/I) // returns index step
+/datum/component/construction/proc/is_right_key(obj/item/I)
+	procstart = null
+	src.procstart = null // returns index step
 	var/list/L = steps[index]
 	if(check_used_item(I, L["key"]))
 		return FORWARD //to the first step -> forward
@@ -50,6 +64,8 @@
 	return FALSE
 
 /datum/component/construction/proc/check_used_item(obj/item/I, key)
+	procstart = null
+	src.procstart = null
 	if(!key)
 		return FALSE
 
@@ -62,6 +78,8 @@
 	return FALSE
 
 /datum/component/construction/proc/custom_action(obj/item/I, mob/living/user, diff)
+	procstart = null
+	src.procstart = null
 	var/target_index = index + diff
 	var/list/current_step = steps[index]
 	var/list/target_step
@@ -108,6 +126,8 @@
 					new target_step_key(drop_location(), target_step["amount"])
 
 /datum/component/construction/proc/spawn_result()
+	procstart = null
+	src.procstart = null
 	// Some constructions result in new components being added.
 	if(ispath(result, /datum/component))
 		parent.AddComponent(result)
@@ -118,6 +138,8 @@
 		qdel(parent)
 
 /datum/component/construction/proc/update_parent(step_index)
+	procstart = null
+	src.procstart = null
 	var/list/step = steps[step_index]
 	var/atom/parent_atom = parent
 
@@ -128,6 +150,8 @@
 		parent_atom.icon_state = step["icon_state"]
 
 /datum/component/construction/proc/drop_location()
+	procstart = null
+	src.procstart = null
 	var/atom/parent_atom = parent
 	return parent_atom.drop_location()
 
@@ -137,6 +161,8 @@
 // Takes a list of part types, to be added in any order, as steps.
 // Calls spawn_result() when every type has been added.
 /datum/component/construction/unordered/check_step(obj/item/I, mob/living/user)
+	procstart = null
+	src.procstart = null
 	for(var/typepath in steps)
 		if(istype(I, typepath) && custom_action(I, user, typepath))
 			steps -= typepath
@@ -145,13 +171,19 @@
 	return FALSE
 
 /datum/component/construction/unordered/on_step()
+	procstart = null
+	src.procstart = null
 	if(!steps.len)
 		spawn_result()
 	else
 		update_parent(steps.len)
 
 /datum/component/construction/unordered/update_parent(steps_left)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/component/construction/unordered/custom_action(obj/item/I, mob/living/user, typepath)
+	procstart = null
+	src.procstart = null
 	return TRUE

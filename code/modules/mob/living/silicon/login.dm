@@ -1,4 +1,6 @@
 /mob/living/silicon/Login()
+	procstart = null
+	src.procstart = null
 	if(mind)
 		mind?.remove_antags_for_borging()
 	if(SStts.tts_enabled)
@@ -12,6 +14,8 @@
 
 
 /mob/living/silicon/auto_deadmin_on_login()
+	procstart = null
+	src.procstart = null
 	if(!client?.holder)
 		return TRUE
 	if(CONFIG_GET(flag/auto_deadmin_silicons) || (client.prefs?.toggles & DEADMIN_POSITION_SILICON))

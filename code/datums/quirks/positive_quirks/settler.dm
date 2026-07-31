@@ -24,12 +24,16 @@
 	)
 
 /datum/quirk/settler/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_quirkholder = quirk_holder
 	human_quirkholder.set_mob_height(HUMAN_HEIGHT_SHORTEST)
 	human_quirkholder.add_movespeed_modifier(/datum/movespeed_modifier/settler)
 	human_quirkholder.add_traits(settler_traits, QUIRK_TRAIT)
 
 /datum/quirk/settler/remove()
+	procstart = null
+	src.procstart = null
 	if(QDELING(quirk_holder))
 		return
 	var/mob/living/carbon/human/human_quirkholder = quirk_holder

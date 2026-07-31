@@ -14,30 +14,42 @@
 	var/datum/material/bonus_mat
 
 /obj/item/boulder/artifact/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	artifact_inside = new artifact_type(src) /// This could be poggers for archaeology in the future.
 	if(bonus_mat)
 		add_bonus_mats()
 
 /obj/item/boulder/artifact/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(artifact_inside)
 	return ..()
 
 /obj/item/boulder/artifact/convert_to_ore()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	artifact_inside.forceMove(drop_location())
 	artifact_inside = null
 
 /obj/item/boulder/artifact/break_apart()
+	procstart = null
+	src.procstart = null
 	artifact_inside = null
 	return ..()
 
 /obj/item/boulder/artifact/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = initial(icon_state) // Hardset to artifact sprites for consistency
 
 /// Adds a random amount of material to an artifact boulder, determined by BONUS_MAT defines and of the type bonus_mat defined on the boulder.
 /obj/item/boulder/artifact/proc/add_bonus_mats()
+	procstart = null
+	src.procstart = null
 	var/list/bonus_mats = list()
 	if(custom_materials)
 		bonus_mats = custom_materials.Copy()
@@ -66,6 +78,8 @@
 	desc = "Smash it with a pickaxe to get a bunch of ore at once. This rocks."
 
 /obj/item/boulder/gulag/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	/// Static list of all minerals to populate gulag boulders with.

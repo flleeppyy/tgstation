@@ -9,6 +9,8 @@
 	var/datum/weakref/module_list
 
 /obj/item/borg/cleaner_box/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/silicon/robot = loc
 	if(!istype(robot))
@@ -32,6 +34,8 @@
 	update_icon(UPDATE_OVERLAYS)
 
 /obj/item/borg/cleaner_box/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(hose?.borg_hose)
 		QDEL_NULL(hose.borg_hose)
 	if(deployed)
@@ -40,12 +44,16 @@
 	return ..()
 
 /obj/item/borg/cleaner_box/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(deployed)
 		hose.retract_hose()
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /obj/item/borg/cleaner_box/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(deployed)
 		hose.retract_hose()
 	locked = !locked
@@ -53,6 +61,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/borg/cleaner_box/on_offered(mob/living/offerer, mob/living/carbon/offered)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	if(SEND_SIGNAL(src, COMSIG_ITEM_OFFERING, offerer) & COMPONENT_OFFER_INTERRUPT)
 		return
@@ -73,6 +83,8 @@
 	return
 
 /obj/item/borg/cleaner_box/on_offer_taken(mob/living/offerer, mob/living/taker)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -94,6 +106,8 @@
 	return TRUE
 
 /obj/item/borg/cleaner_box/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(deployed)
 		. += "cleanerbox_on"
@@ -103,6 +117,8 @@
 		. += "cleanerbox_locked"
 
 /obj/item/borg/cleaner_box/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("<b>Alt-Click</b> to <b>[locked ? "unlock" : "lock"]</b> the [src].")
 
@@ -126,10 +142,14 @@
 	var/cleaning = FALSE
 
 /obj/item/vacuum_item/Destroy(force)
+	procstart = null
+	src.procstart = null
 	bag = null
 	return ..()
 
 /obj/item/vacuum_item/interact_with_atom(obj/item/thing, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(thing))
 		return NONE
@@ -148,6 +168,8 @@
 		break
 
 /obj/item/vacuum_item/proc/on_transform(obj/item/source, mob/living/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	cleaning = !cleaning
@@ -167,10 +189,14 @@
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
 /obj/item/vacuum_item/proc/clean_sound()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/items/vacuum/vacuum_steam.ogg', 10, TRUE)
 	return CLEAN_ALLOWED
 
 /obj/item/vacuum_item/proc/retract_hose()
+	procstart = null
+	src.procstart = null
 	var/obj/item/borg/cleaner_box/cleaner_resolved = cleaner_box?.resolve()
 	if(!cleaner_resolved)
 		CRASH("Somehow [src] doesn't have a source to return to!")
@@ -188,6 +214,8 @@
 	cleaner_resolved.update_icon(UPDATE_OVERLAYS)
 
 /obj/item/vacuum_item/proc/generate_hose(mob/living/offerer, mob/living/taker)
+	procstart = null
+	src.procstart = null
 	var/datum/beam/held/vacuum/generated_borg_hose = new(taker, offerer, icon_state = "hosebeam", max_distance = 7, emissive = FALSE, beam_layer = BELOW_MOB_LAYER)
 	var/index = taker.get_held_index_of_item(src)
 	generated_borg_hose.lefthand = IS_LEFT_INDEX(index)
@@ -197,9 +225,13 @@
 	return generated_borg_hose
 
 /obj/item/vacuum_item/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("<b>Interact</b> to switch to [cleaning ? "<b>vacuum</b>" : "<b>cleaning</b>"] mode.")
 /obj/item/vacuum_item/proc/on_update()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/mob = borg_hose.origin
 	if(istype(mob))
@@ -209,6 +241,8 @@
 		playsound(src, 'sound/items/vacuum/vacuum_hose.ogg', 50, TRUE)
 
 /obj/item/vacuum_item/proc/on_drop(obj/item/vacuum, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(user == loc)
 		return

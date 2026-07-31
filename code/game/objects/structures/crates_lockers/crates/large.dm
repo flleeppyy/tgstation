@@ -21,10 +21,14 @@
 	divable = FALSE
 
 /obj/structure/closet/crate/large/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_MISSING_ITEM_ERROR, TRAIT_GENERIC)
 
 /obj/structure/closet/crate/large/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(manifest)
 		tear_manifest(user)
@@ -32,6 +36,8 @@
 		to_chat(user, span_warning("You need a crowbar to pry this open!"))
 
 /obj/structure/closet/crate/large/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return ITEM_INTERACT_SKIP_TO_ATTACK //Stops it from opening and turning invisible when items are used on it.
 
@@ -40,6 +46,8 @@
 								  //The large crate has no non-attack interactions other than the crowbar, anyway.
 
 /obj/structure/closet/crate/large/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(manifest)
 		tear_manifest(user)
 	if(!open(user))
@@ -58,6 +66,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/closet/crate/large/hats/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for (var/i in 1 to 5)
 		new /obj/effect/spawner/random/clothing/funny_hats(src)

@@ -14,12 +14,16 @@
 	)
 
 /datum/ai_controller/basic_controller/bot/vibebot/TryPossessPawn(atom/new_pawn)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & AI_CONTROLLER_INCOMPATIBLE)
 		return
 	RegisterSignal(new_pawn, COMSIG_AI_BLACKBOARD_KEY_SET(BB_VIBEBOT_PARTY_TARGET), PROC_REF(play_music))
 
 /datum/ai_controller/basic_controller/bot/vibebot/proc/play_music(datum/source, blackboard_key)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/basic/bot/living_bot = pawn
@@ -43,6 +47,8 @@
 
 /// Valid if the target is a conscious human who's in a bad mood or having a birthday  someone who could use cheering up.
 /datum/targeting_strategy/capable_human/party_friend/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -54,6 +60,8 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/vibebot_party/perform(seconds_per_tick, datum/ai_controller/basic_controller/bot/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_target = controller.blackboard[target_key]
 	if(QDELETED(living_target))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
@@ -68,6 +76,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/vibebot_party/finish_action(datum/ai_controller/basic_controller/bot/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/target = controller.blackboard[target_key]
 	if(!isnull(target))

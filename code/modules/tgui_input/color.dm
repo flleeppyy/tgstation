@@ -9,6 +9,8 @@
  * * autofocus - The bool that controls if this picker should grab window focus.
  */
 /proc/tgui_color_picker(mob/user, message, title, default = "#000000", timeout = 0, autofocus = TRUE)
+	procstart = null
+	src.procstart = null
 	if (!user)
 		user = usr
 	if (!istype(user))
@@ -51,6 +53,8 @@
 	var/closed
 
 /datum/tgui_color_picker/New(mob/user, message, title, default, timeout, autofocus)
+	procstart = null
+	src.procstart = null
 	src.autofocus = autofocus
 	src.title = title
 	src.default = default
@@ -61,6 +65,8 @@
 		QDEL_IN(src, timeout)
 
 /datum/tgui_color_picker/Destroy(force)
+	procstart = null
+	src.procstart = null
 	SStgui.close_uis(src)
 	return ..()
 
@@ -69,10 +75,14 @@
  * the window was closed by the user.
  */
 /datum/tgui_color_picker/proc/wait()
+	procstart = null
+	src.procstart = null
 	while (!choice && !closed && !QDELETED(src))
 		stoplag(1)
 
 /datum/tgui_color_picker/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ColorPickerModal")
@@ -80,13 +90,19 @@
 		ui.set_autoupdate(timeout > 0)
 
 /datum/tgui_color_picker/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	closed = TRUE
 
 /datum/tgui_color_picker/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 /datum/tgui_color_picker/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["autofocus"] = autofocus
 	.["large_buttons"] = !user.client?.prefs || user.client.prefs.read_preference(/datum/preference/toggle/tgui_input_large)
@@ -96,11 +112,15 @@
 	.["message"] = message
 
 /datum/tgui_color_picker/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(timeout)
 		.["timeout"] = CLAMP01((timeout - (world.time - start_time) - 1 SECONDS) / (timeout - 1 SECONDS))
 
 /datum/tgui_color_picker/ui_act(action, list/params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -120,4 +140,6 @@
 			return TRUE
 
 /datum/tgui_color_picker/proc/set_choice(choice)
+	procstart = null
+	src.procstart = null
 	src.choice = choice

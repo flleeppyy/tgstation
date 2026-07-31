@@ -3,12 +3,16 @@
 	var/is_mook = FALSE
 
 /datum/action/cooldown/mob_cooldown/mook_ability/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(owner))
 		return
 	is_mook = istype(owner, /mob/living/basic/mining/mook)
 
 /datum/action/cooldown/mob_cooldown/mook_ability/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)
@@ -37,6 +41,8 @@
 	var/times_to_attack = 4
 
 /datum/action/cooldown/mob_cooldown/mook_ability/mook_leap/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	if(target.IsReachableBy(owner))
 		attack_combo(target)
 		StartCooldown()
@@ -51,6 +57,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/mook_ability/mook_leap/proc/launch_towards_target(atom/target)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(owner) || QDELETED(target))
 		return
 	var/turf/target_turf = get_turf(target)
@@ -78,6 +86,8 @@
 	owner.throw_at(target = final_turf, range = 7, speed = 1, spin = FALSE, callback = CALLBACK(src, PROC_REF(attack_combo), target))
 
 /datum/action/cooldown/mob_cooldown/mook_ability/mook_leap/proc/attack_combo(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!target.IsReachableBy(owner))
 		return FALSE
 
@@ -85,6 +95,8 @@
 		addtimer(CALLBACK(src, PROC_REF(attack_target), target), i * attack_interval)
 
 /datum/action/cooldown/mob_cooldown/mook_ability/mook_leap/proc/attack_target(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!target.IsReachableBy(owner) || owner.stat == DEAD)
 		return
 	var/mob/living/basic/basic_owner = owner
@@ -98,6 +110,8 @@
 	click_to_activate = FALSE
 
 /datum/action/cooldown/mob_cooldown/mook_ability/mook_jump/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/landmark/drop_zone = locate(/obj/effect/landmark/mook_village) in GLOB.landmarks_list
 	if(drop_zone?.z == owner.z)
 		var/turf/jump_destination = get_turf(drop_zone)
@@ -115,6 +129,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/mook_ability/mook_jump/proc/jump_to_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	if(is_mook)
 		var/mob/living/basic/mining/mook/mook_owner = owner
 		mook_owner.change_combatant_state(state = MOOK_ATTACK_ACTIVE)
@@ -124,6 +140,8 @@
 	addtimer(CALLBACK(src, PROC_REF(land_on_turf), target), 0.5 SECONDS)
 
 /datum/action/cooldown/mob_cooldown/mook_ability/mook_jump/proc/land_on_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	do_teleport(owner, target, precision = 3,  no_effects = TRUE)
 	animate(owner, pixel_z = -146, time = 0.5 SECONDS, flags = ANIMATION_RELATIVE)
 	new /obj/effect/temp_visual/mook_dust(get_turf(owner))
@@ -146,5 +164,7 @@
 /obj/effect/temp_visual/mook_dust/small
 
 /obj/effect/temp_visual/mook_dust/small/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transform = transform.Scale(0.5)

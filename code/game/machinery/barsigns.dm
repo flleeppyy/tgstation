@@ -26,6 +26,8 @@
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign, 32)
 
 /obj/machinery/barsign/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//Roundstart/map specific barsigns "belong" in their area and should be renaming it, signs created from wallmounts will not.
 	change_area_name = mapload
@@ -34,6 +36,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign, 32)
 		find_and_mount_on_atom()
 
 /obj/machinery/barsign/proc/set_sign(datum/barsign/sign)
+	procstart = null
+	src.procstart = null
 	if(!istype(sign))
 		return
 
@@ -45,6 +49,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign, 32)
 	update_appearance()
 
 /obj/machinery/barsign/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!(machine_stat & BROKEN) && (!(machine_stat & NOPOWER) || machine_stat & EMPED) && chosen_sign && chosen_sign.icon_state)
 		icon_state = chosen_sign.icon_state
 	else
@@ -53,12 +59,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign, 32)
 	return ..()
 
 /obj/machinery/barsign/update_desc()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(chosen_sign && chosen_sign.desc)
 		desc = chosen_sign.desc
 
 /obj/machinery/barsign/update_name()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(chosen_sign && chosen_sign.rename_area)
 		name = "[initial(name)] ([chosen_sign.name])"
@@ -66,6 +76,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign, 32)
 		name = "[initial(name)]"
 
 /obj/machinery/barsign/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(((machine_stat & NOPOWER) && !(machine_stat & EMPED)) || (machine_stat & BROKEN))
@@ -75,6 +87,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign, 32)
 		. += emissive_appearance(icon, "[chosen_sign.icon_state]-light-mask", src)
 
 /obj/machinery/barsign/update_appearance(updates=ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & (NOPOWER|BROKEN))
 		set_light(0)
@@ -83,17 +97,23 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign, 32)
 		set_light(MINIMUM_USEFUL_LIGHT_RANGE, 0.7, chosen_sign.neon_color)
 
 /obj/machinery/barsign/proc/set_sign_by_name(sign_name)
+	procstart = null
+	src.procstart = null
 	for(var/datum/barsign/sign as anything in subtypesof(/datum/barsign))
 		if(initial(sign.name) == sign_name)
 			var/new_sign = new sign
 			set_sign(new_sign)
 
 /obj/machinery/barsign/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & BROKEN)
 		set_sign(new /datum/barsign/hiddensigns/signoff)
 
 /obj/machinery/barsign/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	if(disassembled)
 		new disassemble_result(drop_location())
 	else
@@ -101,6 +121,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign, 32)
 		new /obj/item/stack/cable_coil(drop_location(), 2)
 
 /obj/machinery/barsign/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			playsound(src.loc, 'sound/effects/glass/glasshit.ogg', 75, TRUE)
@@ -108,9 +130,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign, 32)
 			playsound(src.loc, 'sound/items/tools/welder.ogg', 100, TRUE)
 
 /obj/machinery/barsign/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/barsign/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -123,6 +149,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign, 32)
 	pick_sign(user)
 
 /obj/machinery/barsign/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(src)
 	panel_open = !panel_open
 	if(panel_open)
@@ -140,6 +168,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign, 32)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/barsign/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		balloon_alert(user, "open the panel first!")
 		return ITEM_INTERACT_BLOCKING
@@ -153,6 +183,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign, 32)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/barsign/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 
 	if(istype(tool, /obj/item/blueprints) && !change_area_name)
 		if(!panel_open)
@@ -183,6 +215,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign, 32)
 	return NONE
 
 /obj/machinery/barsign/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -193,6 +227,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign, 32)
 
 /// Callback to un-emp the sign some time.
 /obj/machinery/barsign/proc/fix_emp(datum/barsign/sign)
+	procstart = null
+	src.procstart = null
 	set_machine_stat(machine_stat & ~EMPED)
 	if(!istype(sign))
 		return
@@ -200,6 +236,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign, 32)
 	set_sign(sign)
 
 /obj/machinery/barsign/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (NOPOWER|BROKEN|EMPED))
 		balloon_alert(user, "controls are unresponsive!")
 		return FALSE
@@ -210,9 +248,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign, 32)
 
 /// Timer proc, called after ~10 seconds after [emag_act], since [emag_act] returns a value and cannot sleep
 /obj/machinery/barsign/proc/finish_emag_act()
+	procstart = null
+	src.procstart = null
 	set_sign(new /datum/barsign/hiddensigns/syndibarsign)
 
 /obj/machinery/barsign/proc/pick_sign(mob/user)
+	procstart = null
+	src.procstart = null
 	var/picked_name = tgui_input_list(user, "Available Signage", "Bar Sign", sort_list(get_bar_names()))
 	if(isnull(picked_name))
 		return
@@ -220,6 +262,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign, 32)
 	SSblackbox.record_feedback("tally", "barsign_picked", 1, chosen_sign.type)
 
 /proc/get_bar_names()
+	procstart = null
+	src.procstart = null
 	var/list/names = list()
 	for(var/d in subtypesof(/datum/barsign))
 		var/datum/barsign/D = d
@@ -244,6 +288,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign, 32)
 	var/neon_color
 
 /datum/barsign/New()
+	procstart = null
+	src.procstart = null
 	if(!desc)
 		desc = "It displays \"[name]\"."
 
@@ -568,10 +614,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign/all_access, 32)
 	pixel_shift = 32
 
 /obj/item/wallframe/barsign/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc += " Can be registered with a set of [span_bold("station blueprints")] to associate the sign with the area it occupies."
 
 /obj/item/wallframe/barsign/try_build(turf/on_wall, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .

@@ -17,6 +17,8 @@ This element is used in vat growing to allow for the object to be
 
 ///Listens for the swab signal and then generate a sample based on pre-determined lists that are saved as GLOBs. this allows us to have very few swabbable element instances.
 /datum/element/swabable/Attach(datum/target, cell_line_define, virus_define, cell_line_amount = 1, virus_chance = 10)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(target) || isarea(target))
 		return ELEMENT_INCOMPATIBLE
@@ -30,6 +32,8 @@ This element is used in vat growing to allow for the object to be
 
 ///Stops listening to the swab signal; you can no longer be swabbed.
 /datum/element/swabable/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(source) || isarea(source))
 		return ELEMENT_INCOMPATIBLE
@@ -37,6 +41,8 @@ This element is used in vat growing to allow for the object to be
 
 ///Ran when the parent is swabbed by an object that can swab that type of obj. The list is sent by ref, which means the thing which sent the signal will still have the updated list.
 /datum/element/swabable/proc/GetSwabbed(datum/source, list/mutable_results)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	. = COMPONENT_SWAB_FOUND //Return this so the swabbing component knows hes a good boy and found something that needs swabbing.
 
@@ -45,6 +51,8 @@ This element is used in vat growing to allow for the object to be
 
 ///Generates a /datum/biological_sample
 /datum/element/swabable/proc/GenerateSample()
+	procstart = null
+	src.procstart = null
 	var/datum/biological_sample/generated_sample = new
 	generated_sample.GenerateSample(cell_line_define, virus_define, cell_line_amount, virus_chance)
 	return generated_sample

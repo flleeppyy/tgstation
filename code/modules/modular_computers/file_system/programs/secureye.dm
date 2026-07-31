@@ -70,6 +70,8 @@
 	spying = TRUE
 
 /datum/computer_file/program/secureye/on_install(datum/computer_file/source, obj/item/modular_computer/computer_installing, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Map name has to start and end with an A-Z character,
 	// and definitely NOT with a square bracket or even a number.
@@ -83,17 +85,23 @@
 	cam_screen.generate_view(map_name)
 
 /datum/computer_file/program/secureye/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(cam_screen)
 	QDEL_NULL(internal_tracker)
 	last_camera_turf = null
 	return ..()
 
 /datum/computer_file/program/secureye/kill_program(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user)
 		ui_close(user)
 	return ..()
 
 /datum/computer_file/program/secureye/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	// Update the camera, showing static if necessary and updating data if the location has moved.
 	update_active_camera_screen()
 
@@ -107,12 +115,16 @@
 	cam_screen.display_to(user, ui.window)
 
 /datum/computer_file/program/secureye/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == UI_DISABLED)
 		return UI_CLOSE
 	return .
 
 /datum/computer_file/program/secureye/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["activeCamera"] = null
 	var/obj/machinery/camera/active_camera = camera_ref?.resolve()
@@ -125,6 +137,8 @@
 	return data
 
 /datum/computer_file/program/secureye/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["network"] = network
 	data["mapRef"] = cam_screen.assigned_map
@@ -133,6 +147,8 @@
 	return data
 
 /datum/computer_file/program/secureye/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -167,6 +183,8 @@
 			return TRUE
 
 /datum/computer_file/program/secureye/proc/on_track_target(datum/trackable/source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/target_turf = get_turf(target)
 	var/datum/camerachunk/target_camerachunk = SScameras.get_turf_camera_chunk(target_turf)
@@ -184,6 +202,8 @@
 		return
 
 /datum/computer_file/program/secureye/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//don't track anyone while we're shutting off.
 	if(internal_tracker)
@@ -205,6 +225,8 @@
 			playsound(computer, 'sound/machines/terminal/terminal_off.ogg', 25, FALSE)
 
 /datum/computer_file/program/secureye/proc/update_active_camera_screen()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/camera/active_camera = camera_ref?.resolve()
 	// Show static if can't use the camera
 	if(!active_camera?.can_use())

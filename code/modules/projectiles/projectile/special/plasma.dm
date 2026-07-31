@@ -14,6 +14,8 @@
 	var/mine_range = 4
 
 /obj/projectile/plasma/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!ismineralturf(target))
 		return

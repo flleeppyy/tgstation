@@ -18,11 +18,15 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 	var/energy_rating = 1
 
 /obj/item/stock_parts/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = base_pixel_x + rand(-5, 5)
 	pixel_y = base_pixel_y + rand(-5, 5)
 
 /obj/item/stock_parts/get_part_rating()
+	procstart = null
+	src.procstart = null
 	return rating
 
 //Rating 1

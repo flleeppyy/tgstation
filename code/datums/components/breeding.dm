@@ -16,6 +16,8 @@
 	var/datum/callback/post_birth
 
 /datum/component/breed/Initialize(list/can_breed_with = list(), breed_timer = 40 SECONDS, baby_paths = list(), post_birth)
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -34,17 +36,23 @@
 	ADD_TRAIT(parent, TRAIT_SUBTREE_REQUIRED_OPERATIONAL_DATUM, type)
 
 /datum/component/breed/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(breed_with_partner))
 	ADD_TRAIT(parent, TRAIT_MOB_BREEDER, REF(src))
 	var/mob/living/parent_mob = parent
 	parent_mob.ai_controller?.set_blackboard_key(breed_key, TRUE)
 
 /datum/component/breed/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_HOSTILE_PRE_ATTACKINGTARGET)
 	REMOVE_TRAIT(parent, TRAIT_MOB_BREEDER, REF(src))
 	post_birth = null
 
 /datum/component/breed/proc/breed_with_partner(mob/living/source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source.combat_mode)
@@ -77,6 +85,8 @@
 	return COMPONENT_HOSTILE_NO_ATTACK
 
 /datum/component/breed/proc/toggle_status(mob/living/source)
+	procstart = null
+	src.procstart = null
 	ready_to_breed = !ready_to_breed
 	source.ai_controller?.set_blackboard_key(BB_BREED_READY, ready_to_breed)
 

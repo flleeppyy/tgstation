@@ -39,6 +39,8 @@
 	var/weld_z = 0
 
 /obj/structure/closet/crate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/climbable, climb_time = crate_climb_time, climb_stun = 0) //add element in closed state before parent init opens it(if it does)
 	if(elevation)
 		AddElement(/datum/element/climb_walkable)
@@ -67,10 +69,14 @@
 	AddComponent(/datum/component/soapbox)
 
 /obj/structure/closet/crate/Destroy()
+	procstart = null
+	src.procstart = null
 	manifest = null
 	return ..()
 
 /obj/structure/closet/crate/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(mover, /obj/structure/closet))
 		var/obj/structure/closet/crate/locatedcrate = locate(/obj/structure/closet/crate) in get_turf(mover)
@@ -81,10 +87,14 @@
 				return TRUE
 
 /obj/structure/closet/crate/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[isnull(base_icon_state) ? initial(icon_state) : base_icon_state][opened ? "open" : ""]"
 	return ..()
 
 /obj/structure/closet/crate/closet_update_overlays(list/new_overlays)
+	procstart = null
+	src.procstart = null
 	. = new_overlays
 	if(manifest)
 		. += "manifest"
@@ -111,12 +121,16 @@
 		. += lid
 
 /obj/structure/closet/crate/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
 	tear_manifest(user)
 
 /obj/structure/closet/crate/after_open(mob/living/user, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RemoveElement(/datum/element/climbable, climb_time = crate_climb_time, climb_stun = 0)
 	AddElement(/datum/element/climbable, climb_time = crate_climb_time * 0.5, climb_stun = 0)
@@ -129,6 +143,8 @@
 	tear_manifest()
 
 /obj/structure/closet/crate/after_close(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RemoveElement(/datum/element/climbable, climb_time = crate_climb_time * 0.5, climb_stun = 0)
 	AddElement(/datum/element/climbable, climb_time = crate_climb_time, climb_stun = 0)
@@ -140,6 +156,8 @@
 
 ///Spawns two to six maintenance spawners inside the closet
 /obj/structure/closet/proc/populate_with_random_maint_loot()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for (var/i in 1 to rand(2,6))
@@ -149,6 +167,8 @@
 
 ///Removes the supply manifest from the closet
 /obj/structure/closet/crate/proc/tear_manifest(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/paper/fluff/jobs/cargo/manifest/our_manifest = manifest?.resolve()
 	if(QDELETED(our_manifest))
 		manifest = null
@@ -205,6 +225,8 @@
 	can_weld_shut = FALSE
 
 /obj/structure/closet/crate/trashcart/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_SLUDGE, CELL_VIRUS_TABLE_GENERIC, rand(2,3), 15)
 	AddElement(/datum/element/noisy_movement)
@@ -212,11 +234,15 @@
 /obj/structure/closet/crate/trashcart/filled
 
 /obj/structure/closet/crate/trashcart/filled/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		new /obj/effect/spawner/random/trash/grime(loc) //needs to be done before the trashcart is opened because it spawns things in a range outside of the trashcart
 
 /obj/structure/closet/crate/trashcart/filled/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in 1 to rand(7,15))
 		new /obj/effect/spawner/random/trash/garbage(src)
@@ -264,6 +290,8 @@
 	var/minimum_temperature = T0C - 60
 
 /obj/structure/closet/crate/freezer/process_internal_air(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(opened)
 		var/datum/gas_mixture/current_exposed_air = loc.return_air()
 		if(!current_exposed_air)
@@ -282,6 +310,8 @@
 	desc = "A freezer containing packs of blood."
 
 /obj/structure/closet/crate/freezer/blood/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/reagent_containers/blood(src)
 	new /obj/item/reagent_containers/blood(src)
@@ -301,6 +331,8 @@
 	desc = "A crate containing an assortment of cheap prosthetic limbs."
 
 /obj/structure/closet/crate/freezer/surplus_limbs/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/bodypart/arm/left/robot/surplus(src)
 	new /obj/item/bodypart/arm/left/robot/surplus(src)
@@ -316,6 +348,8 @@
 	desc = "A freezer containing a set of organic organs."
 
 /obj/structure/closet/crate/freezer/organ/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/organ/heart(src)
 	new /obj/item/organ/lungs(src)
@@ -403,6 +437,8 @@
 	base_icon_state = "engi_crate"
 
 /obj/structure/closet/crate/rcd/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 4)
 		new /obj/item/rcd_ammo(src)
@@ -425,6 +461,8 @@
 	base_icon_state = "robo"
 
 /obj/structure/closet/crate/mod/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 3)
 		new /obj/item/mod/core/standard(src)
@@ -437,6 +475,8 @@
 	base_icon_state = "engi_e_crate"
 
 /obj/structure/closet/crate/solarpanel_small/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 13)
 		new /obj/item/solar_assembly(src)
@@ -452,10 +492,14 @@
 
 //subtype that comes with roundstart items.
 /obj/structure/closet/crate/goldcrate/stocked/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/storage/belt/champion(src)
 
 /obj/structure/closet/crate/goldcrate/stocked/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in 1 to 3)
 		new /obj/item/stack/sheet/mineral/gold(src, 1, FALSE)
@@ -467,6 +511,8 @@
 	base_icon_state = "silver"
 
 /obj/structure/closet/crate/silvercrate/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 5)
 		new /obj/item/coin/silver(src)
@@ -476,11 +522,15 @@
 	base_icon_state = "engi_crate"
 
 /obj/structure/closet/crate/decorations/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in 1 to 4)
 		new /obj/effect/spawner/random/decoration/generic(src)
 
 /obj/structure/closet/crate/add_to_roundstart_list()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/closet/crate/glitter
@@ -492,6 +542,8 @@
 	var/glitter_color = "#ff8080"
 
 /obj/structure/closet/crate/glitter/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/turf/old_turf = get_turf(old_loc)
@@ -515,16 +567,22 @@
 	base_icon_state = "shield2"
 
 /obj/structure/closet/crate/market/after_open(mob/living/user, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	visible_message(span_notice("[src] pops as [user] touches it!"))
 	pop_crate()
 
 /obj/structure/closet/crate/market/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pop_crate()
 
 /// Called when the bubble either arrives at the station, or is interacted with someone/something.
 /obj/structure/closet/crate/market/proc/pop_crate()
+	procstart = null
+	src.procstart = null
 	do_sparks(1, TRUE, get_turf(src))
 	dump_contents()
 	qdel(src)

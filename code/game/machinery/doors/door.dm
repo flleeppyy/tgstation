@@ -99,6 +99,8 @@
 	acid = 70
 
 /obj/machinery/door/on_object_saved()
+	procstart = null
+	src.procstart = null
 	var/data
 
 	if(welded)
@@ -107,6 +109,8 @@
 	return data
 
 /obj/machinery/door/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/blocks_explosives)
 	. = ..()
 	set_init_door_layer()
@@ -143,6 +147,8 @@
 	update_appearance()
 
 /obj/machinery/door/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(red_alert_access)
 		if(SSsecurity_level.get_current_level_as_number() >= SEC_LEVEL_RED)
@@ -153,6 +159,8 @@
 		. += span_notice("Its maintenance panel is [panel_open ? "open" : "<b>screwed</b> in place"].")
 
 /obj/machinery/door/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!can_open_with_hands)
@@ -166,17 +174,23 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/door/check_access_list(list/access_list)
+	procstart = null
+	src.procstart = null
 	if(red_alert_access && SSsecurity_level.get_current_level_as_number() >= SEC_LEVEL_RED)
 		return TRUE
 	return ..()
 
 /obj/machinery/door/proc/set_init_door_layer()
+	procstart = null
+	src.procstart = null
 	if(density)
 		layer = closingLayer
 	else
 		layer = initial(layer)
 
 /obj/machinery/door/Destroy()
+	procstart = null
+	src.procstart = null
 	if(elevator_mode)
 		GLOB.elevator_doors -= src
 	QDEL_NULL(spark_system)
@@ -185,6 +199,8 @@
 	return ..()
 
 /obj/machinery/door/Move()
+	procstart = null
+	src.procstart = null
 	if(multi_tile)
 		set_filler()
 	return ..()
@@ -196,6 +212,8 @@
  * If the airlock already has a filler object, it will move it to the correct location.
  */
 /obj/machinery/door/proc/set_filler()
+	procstart = null
+	src.procstart = null
 	if(!multi_tile)
 		return
 	if(!filler)
@@ -215,6 +233,8 @@
  * @return adjusted direction
  */
 /obj/machinery/door/proc/get_adjusted_dir(dir)
+	procstart = null
+	src.procstart = null
 	if(dir in list(NORTH, SOUTH))
 		return EAST
 	else
@@ -228,6 +248,8 @@
  * * new_level The new security level that is in effect
  */
 /obj/machinery/door/proc/check_security_level(datum/source, new_level)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(new_level <= SEC_LEVEL_BLUE)
@@ -238,6 +260,8 @@
 	playsound(src, 'sound/machines/airlock/boltsup.ogg', 50, TRUE)
 
 /obj/machinery/door/proc/try_safety_unlock(mob/user)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /**
@@ -249,9 +273,13 @@
  * * user - the mob attempting to remove the seal
  */
 /obj/machinery/door/proc/try_remove_seal(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/door/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(operating || (obj_flags & EMAGGED) || (!can_open_with_hands && density))
 		return
@@ -287,12 +315,16 @@
 		return
 
 /obj/machinery/door/Move()
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 	. = ..()
 	if(density) //Gotta be closed my friend
 		move_update_air(T)
 
 /obj/machinery/door/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -301,9 +333,13 @@
 		return !opacity
 
 /obj/machinery/door/proc/bumpopen(mob/user)
+	procstart = null
+	src.procstart = null
 	try_to_activate_door(user, access_bypass = FALSE, bumped = TRUE)
 
 /obj/machinery/door/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -320,15 +356,21 @@
 	return try_to_activate_door(user)
 
 /obj/machinery/door/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(requiresID() && !allowed(null))
 		return
 	return ..()
 
 /obj/machinery/door/allowed(mob/accessor)
+	procstart = null
+	src.procstart = null
 	return ..() || emergency
 
 /// A mob is trying to open or close the door
 /obj/machinery/door/proc/try_to_activate_door(mob/user, access_bypass = FALSE, bumped = FALSE)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(operating || (obj_flags & EMAGGED))
 		return FALSE
@@ -353,6 +395,8 @@
 
 /// Used in try_to_activate_door
 /obj/machinery/door/proc/user_can_activate_door(mob/user)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	if(allowed(user))
 		return TRUE
@@ -365,11 +409,15 @@
 
 /// Allows for specific side of airlocks to be unrestricted (IE, can exit maint freely, but need access to enter)
 /obj/machinery/door/proc/unrestricted_side(mob/opener)
+	procstart = null
+	src.procstart = null
 	return get_dir(src, opener) & unres_sides
 
 /// Initiates a do_after to open the door after a delay for unrestricted openers
 /// Returns TRUE if we successfully finished the do_after, FALSE otherwise
 /obj/machinery/door/proc/attempt_delayed_unres_open(mob/opener)
+	procstart = null
+	src.procstart = null
 	if(opener.do_after_count() > 0) // not allowed to do this if you're doing something else. just wait lad.
 		return FALSE
 
@@ -397,6 +445,8 @@
 /// While activating the door, we are able to block pressure pushes since we're "grasping the override handle" or something similar to that.
 /// This basically exists to prevent the door's delay from being SUPREMELY annoying when you're trying to escape pressure-based damage during the unrestricted latch do_after.
 /obj/machinery/door/proc/stop_pressure_during_unres_open(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(QDELETED(source))
 		return
@@ -412,6 +462,8 @@
 
 /// Exists to ensure that we always deregister the pressure push blocking signal. Can be called multiple times safely as we check the trait.
 /obj/machinery/door/proc/deregister_pressure_push_signal(mob/opener)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT_FROM(opener, TRAIT_UNRESTRICTED_AIRLOCK_OPENING, REF(src)))
 		return
 
@@ -420,25 +472,37 @@
 
 
 /obj/machinery/door/proc/try_to_weld(obj/item/weldingtool/W, mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called when the user right-clicks on the door with a welding tool.
 /obj/machinery/door/proc/try_to_weld_secondary(obj/item/weldingtool/tool, mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 
 /obj/machinery/door/proc/try_to_crowbar(obj/item/acting_object, mob/user, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called when the user right-clicks on the door with a crowbar.
 /obj/machinery/door/proc/try_to_crowbar_secondary(obj/item/acting_object, mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/door/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	try_to_weld(tool, user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/door/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	var/forced_open = FALSE
 	if(istype(tool, /obj/item/crowbar))
 		var/obj/item/crowbar/crowbar = tool
@@ -447,9 +511,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/door/try_to_crowbar_secondary(obj/item/acting_object, mob/user)
+	procstart = null
+	src.procstart = null
 	try_to_crowbar(null, user, FALSE)
 
 /obj/machinery/door/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/access_key))
 		var/obj/item/access_key/key = tool
 		if(!key.attempt_open_door(user, src))
@@ -473,16 +541,22 @@
 	return NONE
 
 /obj/machinery/door/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// allows you to crowbar doors while in combat mode
 	if(user.combat_mode && tool.tool_behaviour == TOOL_CROWBAR)
 		return crowbar_act_secondary(user, tool)
 	return ..()
 
 /obj/machinery/door/welder_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	try_to_weld_secondary(tool, user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/door/crowbar_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	var/forced_open = FALSE
 	if(istype(tool, /obj/item/crowbar))
 		var/obj/item/crowbar/crowbar = tool
@@ -491,12 +565,16 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/door/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && atom_integrity > 0)
 		if(damage_amount >= 10 && prob(30))
 			spark_system.start()
 
 /obj/machinery/door/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(glass)
@@ -509,6 +587,8 @@
 			playsound(src.loc, 'sound/items/tools/welder.ogg', 100, TRUE)
 
 /obj/machinery/door/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. & EMP_PROTECT_SELF)
 		return
@@ -516,6 +596,8 @@
 		INVOKE_ASYNC(src, PROC_REF(open))
 
 /obj/machinery/door/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(animation)
 		if(DOOR_OPENING_ANIMATION)
@@ -535,6 +617,8 @@
 			icon_state = "[base_icon_state]_[density ? "closed" : "open"]"
 
 /obj/machinery/door/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(panel_open)
 		. += mutable_appearance(icon, "panel_open")
@@ -542,6 +626,8 @@
 /// Returns the delay to use for the passed in animation
 /// We'll do our cleanup once the delay runs out
 /obj/machinery/door/proc/animation_length(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if(DOOR_OPENING_ANIMATION)
 			return 0.6 SECONDS
@@ -553,6 +639,8 @@
 /// Returns the time required to hit particular points in an animation
 /// Used to manage delays for opening/closing and such
 /obj/machinery/door/proc/animation_segment_delay(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if(DOOR_OPENING_PASSABLE)
 			return 0.5 SECONDS
@@ -565,23 +653,31 @@
 
 /// Override this to do misc tasks on animation start
 /obj/machinery/door/proc/animation_effects(animation, force_type = DEFAULT_DOOR_CHECKS)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Used to start a new animation
 /// Accepts the animation to start as an arg
 /obj/machinery/door/proc/run_animation(animation, force_type = DEFAULT_DOOR_CHECKS)
+	procstart = null
+	src.procstart = null
 	set_animation(animation)
 	addtimer(CALLBACK(src, PROC_REF(set_animation), null), animation_length(animation), TIMER_UNIQUE|TIMER_OVERRIDE)
 	animation_effects(animation, force_type)
 
 // React to our animation changing
 /obj/machinery/door/proc/set_animation(animation)
+	procstart = null
+	src.procstart = null
 	src.animation = animation
 	update_appearance()
 
 /// Public proc that simply handles opening the door. Returns TRUE if the door was opened, FALSE otherwise.
 /// Use argument "forced" in conjunction with try_to_force_door_open if you want/need additional checks depending on how sorely you need the door opened.
 /obj/machinery/door/proc/open(forced = DEFAULT_DOOR_CHECKS)
+	procstart = null
+	src.procstart = null
 	if(!density)
 		return TRUE
 	if(operating)
@@ -608,11 +704,15 @@
 /// Private proc that runs a series of checks to see if we should forcibly open the door. Returns TRUE if we should open the door, FALSE otherwise. Implemented in child types.
 /// In case a specific behavior isn't covered, we should default to TRUE just to be safe (simply put, this proc should have an explicit reason to return FALSE).
 /obj/machinery/door/proc/try_to_force_door_open(force_type = DEFAULT_DOOR_CHECKS)
+	procstart = null
+	src.procstart = null
 	return TRUE // the base "door" can always be forced open since there's no power or anything like emagging it to prevent an open, not even invoked on the base type anyways.
 
 /// Public proc that simply handles closing the door. Returns TRUE if the door was closed, FALSE otherwise.
 /// Use argument "forced" in conjuction with try_to_force_door_shut if you want/need additional checks depending on how sorely you need the door closed.
 /obj/machinery/door/proc/close(forced = DEFAULT_DOOR_CHECKS)
+	procstart = null
+	src.procstart = null
 	if(density)
 		return TRUE
 	if(operating || welded)
@@ -652,14 +752,20 @@
 /// Private proc that runs a series of checks to see if we should forcibly shut the door. Returns TRUE if we should shut the door, FALSE otherwise. Implemented in child types.
 /// In case a specific behavior isn't covered, we should default to TRUE just to be safe (simply put, this proc should have an explicit reason to return FALSE).
 /obj/machinery/door/proc/try_to_force_door_shut(force_type = DEFAULT_DOOR_CHECKS)
+	procstart = null
+	src.procstart = null
 	return TRUE // the base "door" can always be forced shut
 
 /obj/machinery/door/proc/CheckForMobs()
+	procstart = null
+	src.procstart = null
 	if(locate(/mob/living) in get_turf(src))
 		sleep(0.1 SECONDS)
 		open()
 
 /obj/machinery/door/proc/crush()
+	procstart = null
+	src.procstart = null
 	for(var/turf/checked_turf in locs)
 		for(var/mob/living/future_pancake in checked_turf)
 			future_pancake.visible_message(span_warning("[src] closes on [future_pancake], crushing [future_pancake.p_them()]!"), span_userdanger("[src] closes on you and crushes you!"))
@@ -685,19 +791,29 @@
 			log_combat(src, mech, "crushed")
 
 /obj/machinery/door/proc/autoclose()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(src) && !density && !operating && !locked && !welded && autoclose)
 		close()
 
 /obj/machinery/door/proc/autoclose_in(wait)
+	procstart = null
+	src.procstart = null
 	addtimer(CALLBACK(src, PROC_REF(autoclose)), wait, TIMER_UNIQUE | TIMER_NO_HASH_WAIT | TIMER_OVERRIDE)
 
 /obj/machinery/door/proc/requiresID()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /obj/machinery/door/proc/hasPower()
+	procstart = null
+	src.procstart = null
 	return !(machine_stat & NOPOWER)
 
-/obj/machinery/door/block_superconductivity() // All non-glass airlocks block heat, this is intended.
+/obj/machinery/door/block_superconductivity()
+	procstart = null
+	src.procstart = null // All non-glass airlocks block heat, this is intended.
 	if(opacity || heat_proof)
 		return 1
 	return 0
@@ -706,19 +822,27 @@
 	icon = 'icons/obj/doors/doormorgue.dmi'
 
 /obj/machinery/door/morgue/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/redirect_attack_hand_from_turf, interact_check = CALLBACK(src, PROC_REF(drag_check)))
 
 // if dragging, block redirect_Attack_hand_from_turf
 /obj/machinery/door/morgue/proc/drag_check(mob/user)
+	procstart = null
+	src.procstart = null
 	if (user.pulling)
 		return FALSE
 	return TRUE
 
 /obj/machinery/door/get_dumping_location()
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/machinery/door/morgue/animation_length(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if(DOOR_OPENING_ANIMATION)
 			return 1.5 SECONDS
@@ -728,6 +852,8 @@
 			return 0.1 SECONDS
 
 /obj/machinery/door/morgue/animation_segment_delay(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if(DOOR_OPENING_PASSABLE)
 			return 1.4 SECONDS
@@ -739,48 +865,70 @@
 			return 1.5 SECONDS
 
 /obj/machinery/door/proc/lock()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/door/proc/unlock()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/door/proc/hostile_lockdown(mob/origin)
+	procstart = null
+	src.procstart = null
 	if(!machine_stat) //So that only powered doors are closed.
 		close() //Close ALL the doors!
 
 /obj/machinery/door/proc/disable_lockdown()
+	procstart = null
+	src.procstart = null
 	if(!machine_stat) //Opens only powered doors.
 		open() //Open everything!
 
 /obj/machinery/door/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	//if it blows up a wall it should blow up a door
 	return ..(severity ? min(EXPLODE_DEVASTATE, severity + 1) : EXPLODE_NONE, target)
 
 /obj/machinery/door/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && !(machine_stat & NOPOWER))
 		autoclose_in(DOOR_CLOSE_WAIT)
 
 /obj/machinery/door/zap_act(power, zap_flags)
+	procstart = null
+	src.procstart = null
 	zap_flags &= ~ZAP_OBJ_DAMAGE
 	. = ..()
 
 /// Signal proc for [COMSIG_ATOM_MAGICALLY_UNLOCKED]. Open up when someone casts knock.
 /obj/machinery/door/proc/on_magic_unlock(datum/source, datum/action/cooldown/spell/aoe/knock/spell, atom/caster)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(open))
 
 /obj/machinery/door/set_density(new_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_explosive_block()
 
 /obj/machinery/door/proc/update_explosive_block()
+	procstart = null
+	src.procstart = null
 	set_explosion_block(real_explosion_block)
 
 // Kinda roundabout, essentially if we're dense, we respect real_explosion_block
 // Otherwise, we block nothing
 /obj/machinery/door/set_explosion_block(explosion_block)
+	procstart = null
+	src.procstart = null
 	real_explosion_block = explosion_block
 	if(density)
 		return ..()

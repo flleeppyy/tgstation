@@ -39,6 +39,8 @@
 	var/list/minion_commands
 
 /mob/living/basic/cockroach/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	if(SSmapping.level_trait(our_turf.z, ZTRAIT_SNOWSTORM) || SSmapping.level_trait(our_turf.z, ZTRAIT_ICE_RUINS) || SSmapping.level_trait(our_turf.z, ZTRAIT_ICE_RUINS_UNDERGROUND))
 		name = "ice-[name]"
@@ -66,13 +68,19 @@
 
 /// Decide what this should be able to be told to do
 /mob/living/basic/cockroach/proc/set_pet_commands()
+	procstart = null
+	src.procstart = null
 	minion_commands = GLOB.regal_rat_minion_commands
 
-/mob/living/basic/cockroach/ex_act() //Explosions are a terrible way to handle a cockroach.
+/mob/living/basic/cockroach/ex_act()
+	procstart = null
+	src.procstart = null //Explosions are a terrible way to handle a cockroach.
 	return FALSE
 
 // Roach goop is the gibs to drop
 /mob/living/basic/cockroach/get_gibs_type(drop_bitflags = NONE)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Roach which tries to ineffectually attack you
@@ -99,10 +107,14 @@
 	maxHealth = 3 // Wow!!
 
 /mob/living/basic/cockroach/bloodroach/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/death_drops, /obj/effect/decal/cleanable/blood/gibs/old)
 
 /mob/living/basic/cockroach/bloodroach/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_BUGKILLER_DEATH))
 		return ..()
 	// explode into a pile of blood if not pest controlled
@@ -136,6 +148,8 @@
 	minion_path = /mob/living/basic/cockroach/hauberoach/imperial
 
 /mob/living/basic/cockroach/hauberoach/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/caltrop, min_damage = 10, max_damage = 15, flags = (CALTROP_BYPASS_SHOES | CALTROP_SILENT))
 	AddComponent( \
@@ -148,6 +162,8 @@
 
 ///Proc used to override the squashing behavior of the normal cockroach.
 /mob/living/basic/cockroach/hauberoach/proc/on_squish(mob/living/cockroach, mob/living/living_target)
+	procstart = null
+	src.procstart = null
 	if(!istype(living_target))
 		return FALSE //We failed to run the invoke. Might be because we're a structure. Let the squashable element handle it then!
 	if(!HAS_TRAIT(living_target, TRAIT_PIERCEIMMUNE))
@@ -187,6 +203,8 @@
 	var/ranged_cooldown = 1 SECONDS
 
 /mob/living/basic/cockroach/glockroach/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(\
 		/datum/component/ranged_attacks,\
@@ -198,6 +216,8 @@
 		AddComponent(/datum/component/ranged_mob_full_auto)
 
 /mob/living/basic/cockroach/glockroach/set_pet_commands()
+	procstart = null
+	src.procstart = null
 	var/static/list/glockroach_commands = list(
 		/datum/pet_command/idle,
 		/datum/pet_command/free,

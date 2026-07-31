@@ -30,6 +30,8 @@
 	unfreeze_object_duration = 30 SECONDS
 
 /datum/action/cooldown/spell/cone/staggered/cone_of_cold/void/do_mob_cone_effect(mob/living/target_mob, atom/caster, level)
+	procstart = null
+	src.procstart = null
 	if(IS_HERETIC_OR_MONSTER(target_mob))
 		return
 

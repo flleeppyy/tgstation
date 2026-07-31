@@ -4,6 +4,8 @@
  * Also tests for edge cases such as undroppable items.
  */
 /datum/unit_test/dismemberment/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 
 	var/obj/item/testing_item = allocate(/obj/item/analyzer)
@@ -18,6 +20,8 @@
 
 
 /datum/unit_test/dismemberment/proc/test_item(mob/living/carbon/human/dummy, obj/item/testing_item, status_text = "")
+	procstart = null
+	src.procstart = null
 	//Check both to make sure being the active hand doesn't make a difference.
 	dummy.put_in_l_hand(testing_item)
 	check_dismember(dummy, BODY_ZONE_L_ARM, status_text)
@@ -27,6 +31,8 @@
 
 
 /datum/unit_test/dismemberment/proc/check_dismember(mob/living/carbon/human/dummy, which_arm, status_text)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/dismembered_limb = dummy.get_bodypart(which_arm)
 	var/obj/item/held_item = dummy.get_item_for_held_index(dismembered_limb.held_index)
 

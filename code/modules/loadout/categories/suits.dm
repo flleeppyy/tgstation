@@ -8,6 +8,8 @@
 	abstract_type = /datum/loadout_item/suit
 
 /datum/loadout_item/suit/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(outfit.suit)
 		LAZYADD(outfit.backpack_contents, outfit.suit)
 	if(outfit.suit_store)

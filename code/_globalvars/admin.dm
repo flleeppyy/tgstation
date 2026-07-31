@@ -3,6 +3,8 @@ GLOBAL_LIST_EMPTY(stickybanadmintexts) //stores the entire stickyban list tempor
 GLOBAL_VAR(stickbanadminexemptiontimerid) //stores the timerid of the callback that restores all stickybans after an admin joins
 
 /proc/init_smites()
+	procstart = null
+	src.procstart = null
 	var/list/smites = list()
 	for (var/_smite_path in subtypesof(/datum/smite))
 		var/datum/smite/smite_path = _smite_path
@@ -20,6 +22,8 @@ GLOBAL_LIST_INIT(vv_special_lists, init_special_list_names())
 GLOBAL_VAR(logout_timer_set)
 
 /proc/init_special_list_names()
+	procstart = null
+	src.procstart = null
 	var/list/output = list()
 	var/obj/sacrifice = new
 	for(var/varname in sacrifice.vars)

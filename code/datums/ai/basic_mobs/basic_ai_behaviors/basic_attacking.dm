@@ -8,6 +8,8 @@
 	var/hiding_location_key
 
 /datum/bt_node/ai_behavior/basic_melee_attack/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 
@@ -21,6 +23,8 @@
 		return FALSE
 
 /datum/bt_node/ai_behavior/basic_melee_attack/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[target_key]
 	if (isnull(target))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED
@@ -59,6 +63,8 @@
 /datum/bt_node/ai_behavior/basic_melee_attack/interact_once
 
 /datum/bt_node/ai_behavior/basic_melee_attack/interact_once/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(target_key)
 
@@ -74,6 +80,8 @@
 	var/avoid_friendly_fire = FALSE
 
 /datum/bt_node/ai_behavior/basic_ranged_attack/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(controller.pawn, TRAIT_HANDS_BLOCKED))
 		return FALSE
@@ -83,6 +91,8 @@
 	return TRUE
 
 /datum/bt_node/ai_behavior/basic_ranged_attack/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/basic_mob = controller.pawn
 	var/atom/target = controller.blackboard[target_key]
 
@@ -106,6 +116,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/basic_ranged_attack/proc/check_friendly_in_path(mob/living/source, atom/target, datum/targeting_strategy/targeting_strategy)
+	procstart = null
+	src.procstart = null
 	var/list/turfs_list = calculate_trajectory(source, target)
 	for(var/turf/possible_turf as anything in turfs_list)
 		for(var/mob/living/potential_friend in possible_turf)
@@ -114,6 +126,8 @@
 	return FALSE
 
 /datum/bt_node/ai_behavior/basic_ranged_attack/proc/adjust_position(mob/living/living_pawn, atom/target)
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(living_pawn)
 	var/list/possible_turfs = list()
 	for(var/direction in GLOB.alldirs)
@@ -129,6 +143,8 @@
 	step(living_pawn, get_dir(living_pawn, picked_turf))
 
 /datum/bt_node/ai_behavior/basic_ranged_attack/proc/calculate_trajectory(mob/living/source, atom/target)
+	procstart = null
+	src.procstart = null
 	var/list/turf_list = get_line(source, target)
 	var/list_length = length(turf_list) - 1
 	for(var/i in 1 to list_length)

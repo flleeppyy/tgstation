@@ -12,6 +12,8 @@
 
 /// Returns a string description of materials that'd fit this requirement
 /datum/material_requirement/proc/get_description()
+	procstart = null
+	src.procstart = null
 	var/list/flag_strings = list()
 	for (var/flag in bitfield_to_list(required_flags))
 		flag_strings += GLOB.material_flags_to_string[flag]
@@ -33,6 +35,8 @@
 	return "[capitalize(english_list(flag_strings, and_text = " or "))] material with [english_list(prop_reqs)]"
 
 /datum/material_requirement/proc/valid_material(datum/material/material)
+	procstart = null
+	src.procstart = null
 	if (required_flags && !(material.mat_flags & required_flags))
 		return FALSE
 

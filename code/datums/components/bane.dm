@@ -49,6 +49,8 @@
 	src.label_text = label_text
 
 /datum/component/bane/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	if(isitem(parent))
 		RegisterSignal(parent, COMSIG_ITEM_WEAPON_LABEL_READOUT, PROC_REF(label_readout))
 		RegisterSignal(parent, COMSIG_ITEM_PRE_ATTACK, PROC_REF(pre_attack))
@@ -58,6 +60,8 @@
 		RegisterSignal(parent, COMSIG_PROJECTILE_SELF_ON_HIT, PROC_REF(projectile_hit))
 
 /datum/component/bane/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	if(isitem(parent))
 		UnregisterSignal(parent, COMSIG_ITEM_WEAPON_LABEL_READOUT)
 		UnregisterSignal(parent, COMSIG_ITEM_PRE_ATTACK)
@@ -67,6 +71,8 @@
 		UnregisterSignal(parent, COMSIG_PROJECTILE_SELF_ON_HIT)
 
 /datum/component/bane/proc/is_bane_target(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!isliving(target))
 		return FALSE
 
@@ -77,6 +83,8 @@
 	return isnull(should_bane_callback) ? TRUE : should_bane_callback.Invoke(target)
 
 /datum/component/bane/proc/label_readout(obj/item/source, list/readout)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(damage_multiplier == 1 && added_damage == 0 && !label_text)
@@ -134,6 +142,8 @@
 
 // Item attack handling
 /datum/component/bane/proc/pre_attack(datum/source, atom/target, mob/living/attacker, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!is_bane_target(target))
@@ -147,6 +157,8 @@
 	pre_bane_callback?.Invoke(target, attacker, attack_modifiers)
 
 /datum/component/bane/proc/after_attack(datum/source, atom/target, mob/living/attacker, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!is_bane_target(target))
@@ -157,6 +169,8 @@
 
 // Throw impact handling
 /datum/component/bane/proc/on_thrown_hit(datum/source, atom/hit_atom, hit_zone, blocked, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!is_bane_target(hit_atom))
@@ -179,6 +193,8 @@
 
 // Projectile hit handling
 /datum/component/bane/proc/projectile_hit(datum/source, atom/firer, atom/target, angle, hit_zone, blocked, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!is_bane_target(target))

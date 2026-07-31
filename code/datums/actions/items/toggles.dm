@@ -1,6 +1,8 @@
 /datum/action/item_action/toggle
 
 /datum/action/item_action/toggle/New(Target)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/item_target = target
 	name = "Toggle [item_target.name]"
@@ -44,6 +46,8 @@
 	button_icon_state = "thermal_off"
 
 /datum/action/item_action/toggle_spacesuit/apply_button_icon(atom/movable/screen/movable/action_button/button, force)
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/suit/space/suit = target
 	if(istype(suit))
 		button_icon_state = "thermal_[suit.thermal_on ? "on" : "off"]"
@@ -72,6 +76,8 @@
 	name = "Toggle Jetpack Stabilization"
 
 /datum/action/item_action/jetpack_stabilization/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/tank/jetpack/linked_jetpack = target
 	if(!istype(linked_jetpack) || !linked_jetpack.on)
 		return FALSE
@@ -82,6 +88,8 @@
 	desc = "Disables your HUD implant's visuals. You can still access examine information."
 
 /datum/action/item_action/organ_action/toggle_hud/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/cyberimp/eyes/hud/hud_implant = target
 	hud_implant.toggle_hud(owner)
 	return TRUE
@@ -116,6 +124,8 @@
 	desc = "Toggles your wearable HUD. You can still access examine information while it's off."
 
 /datum/action/item_action/toggle_wearable_hud/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/glasses/hud/hud_display = target
 	hud_display.toggle_hud_display(owner)
 	return TRUE
@@ -126,10 +136,14 @@
 	var/stored_colour
 
 /datum/action/item_action/toggle_nv/New(obj/item/clothing/glasses/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	target.AddElement(/datum/element/update_icon_updates_onmob)
 
 /datum/action/item_action/toggle_nv/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	if(!istype(target, /obj/item/clothing/glasses))
 		return ..()
 	var/obj/item/clothing/glasses/goggles = target

@@ -14,6 +14,8 @@
 	required_organ = ORGAN_SLOT_TONGUE
 
 /datum/disease/pierrot_throat/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -34,10 +36,14 @@
 
 
 /datum/disease/pierrot_throat/after_add()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(affected_mob, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 
 
 /datum/disease/pierrot_throat/proc/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/message = speech_args[SPEECH_MESSAGE]
@@ -57,9 +63,13 @@
 
 
 /datum/disease/pierrot_throat/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(affected_mob, COMSIG_MOB_SAY)
 	return ..()
 
 /datum/disease/pierrot_throat/remove_disease()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(affected_mob, COMSIG_MOB_SAY)
 	return ..()

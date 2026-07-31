@@ -29,6 +29,8 @@
 	var/wind_sign = 0
 
 /datum/weather/particle/New(list/z_levels, list/weather_data)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isnull(particle_type) && isnull(emissive_type))
 		CRASH("[src] ([type]) attempted to initialize without normal or emissive particle types!")
@@ -52,6 +54,8 @@
 	SSweather.add_weather_objects(weather_objects)
 
 /datum/weather/particle/Destroy()
+	procstart = null
+	src.procstart = null
 	SSweather.remove_weather_objects(weather_objects)
 	for(var/list/object_list as anything in weather_objects)
 		QDEL_LIST(object_list)
@@ -59,12 +63,16 @@
 	return ..()
 
 /datum/weather/particle/telegraph(list/weather_data)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
 	animate_severity(0)
 
 /datum/weather/particle/end()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -72,6 +80,8 @@
 
 /// Adjust our severity by a random number based on our stage
 /datum/weather/particle/proc/process_particles()
+	procstart = null
+	src.procstart = null
 	if (last_severity_tick + severity_cooldown > world.time)
 		return
 
@@ -92,6 +102,8 @@
 	animate_severity(new_severity)
 
 /datum/weather/particle/proc/animate_severity(new_severity)
+	procstart = null
+	src.procstart = null
 	if (!wind_sign)
 		wind_sign = pick(-1, 1)
 
@@ -102,6 +114,8 @@
 			particle_effect.animate_severity(severity / MAXIMUM_WEATHER_SEVERITY, wind_sign)
 
 /datum/weather/particle/generate_overlay_cache()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (stage == END_STAGE)
@@ -141,6 +155,8 @@
 
 /// Changes the strength of the weather visual effect, severity should be between 0 and 1
 /particles/weather/proc/animate_severity(severity, wind_sign)
+	procstart = null
+	src.procstart = null
 	// Stop spawning if severity is zero or negative
 	if (severity <= 0)
 		spawning = 0

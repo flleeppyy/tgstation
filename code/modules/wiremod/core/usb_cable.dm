@@ -18,11 +18,15 @@
 	var/defer_range_checks = FALSE
 
 /obj/item/usb_cable/Destroy()
+	procstart = null
+	src.procstart = null
 	attached_circuit = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/usb_cable/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved))
 	var/static/list/connections = list(
@@ -33,12 +37,16 @@
 	AddComponent(/datum/component/connect_containers, src, connections)
 
 /obj/item/usb_cable/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (!isnull(attached_circuit))
 		. += span_notice("It is attached to [attached_circuit.shell || attached_circuit].")
 
 /obj/item/usb_cable/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -77,10 +85,14 @@
 	return FALSE
 
 /obj/item/usb_cable/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is wrapping [src] around [user.p_their()] neck! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return OXYLOSS
 
 /obj/item/usb_cable/proc/on_moved()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(defer_range_checks)
@@ -88,25 +100,35 @@
 	check_in_range()
 
 /obj/item/usb_cable/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	before_shuttle_move()
 
 /obj/item/usb_cable/proc/before_shuttle_move()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	defer_range_checks = TRUE
 
 /obj/item/usb_cable/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	after_shuttle_move()
 
 /obj/item/usb_cable/proc/after_shuttle_move()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	defer_range_checks = FALSE
 	check_in_range()
 
 /obj/item/usb_cable/proc/check_in_range()
+	procstart = null
+	src.procstart = null
 	if (isnull(attached_circuit))
 		return FALSE
 
@@ -118,6 +140,8 @@
 	return TRUE
 
 /obj/item/usb_cable/proc/on_circuit_qdeling()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	attached_circuit = null

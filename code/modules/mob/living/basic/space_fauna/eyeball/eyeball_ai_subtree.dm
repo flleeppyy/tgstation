@@ -8,6 +8,8 @@
 	behavior_tree_json = "code/modules/mob/living/basic/space_fauna/eyeball/eyeball.bt.json"
 
 /datum/targeting_strategy/basic/eyeball/is_valid_target(mob/living/owner, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

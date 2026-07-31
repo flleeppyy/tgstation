@@ -36,6 +36,8 @@
 	acid = 100
 
 /obj/structure/displaycase/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(start_showpiece_type)
 		showpiece = new start_showpiece_type (src)
@@ -43,11 +45,15 @@
 	alarm_manager = new(src)
 
 /obj/structure/displaycase/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vname in list(NAMEOF(src, open), NAMEOF(src, showpiece), NAMEOF(src, custom_glass_overlay)))
 		update_appearance()
 
 /obj/structure/displaycase/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == electronics)
 		electronics = null
@@ -56,12 +62,16 @@
 		update_appearance()
 
 /obj/structure/displaycase/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(electronics)
 	QDEL_NULL(showpiece)
 	QDEL_NULL(alarm_manager)
 	return ..()
 
 /obj/structure/displaycase/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(alert)
 		. += span_notice("Hooked up with an anti-theft system.")
@@ -70,11 +80,15 @@
 
 ///Removes the showpiece from the displaycase
 /obj/structure/displaycase/proc/dump()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(showpiece))
 		return
 	showpiece.forceMove(drop_location())
 
 /obj/structure/displaycase/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			playsound(src, 'sound/effects/glass/glasshit.ogg', 75, TRUE)
@@ -82,12 +96,16 @@
 			playsound(src, 'sound/items/tools/welder.ogg', 100, TRUE)
 
 /obj/structure/displaycase/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	dump()
 	if(!disassembled)
 		new /obj/item/shard(drop_location())
 		trigger_alarm()
 
 /obj/structure/displaycase/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!broken)
 		set_density(FALSE)
@@ -99,6 +117,8 @@
 
 ///Anti-theft alarm triggered when broken.
 /obj/structure/displaycase/proc/trigger_alarm()
+	procstart = null
+	src.procstart = null
 	if(!alert)
 		return
 	var/area/alarmed = get_area(src)
@@ -110,6 +130,8 @@
 	playsound(src, 'sound/effects/alert.ogg', 50, TRUE)
 
 /obj/structure/displaycase/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(showpiece)
 		var/mutable_appearance/showpiece_overlay = mutable_appearance(showpiece.icon, showpiece.icon_state)
@@ -126,6 +148,8 @@
 		return
 
 /obj/structure/displaycase/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(tool.GetID() && !broken)
 		if(!allowed(user))
 			to_chat(user, span_alert("Access denied."))
@@ -159,6 +183,8 @@
 	return NONE
 
 /obj/structure/displaycase/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode || broken)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 
@@ -179,6 +205,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/displaycase/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(alert) //Only applies to the lab cage and player made display cases
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 
@@ -202,6 +230,8 @@
 
 ///Handles placing an item into the display case. Returns TRUE if the item failed to be placed inside the container, useful for descendants
 /obj/structure/displaycase/proc/insert_showpiece(obj/item/new_showpiece, mob/user)
+	procstart = null
+	src.procstart = null
 	if(showpiece_type && !istype(new_showpiece, showpiece_type))
 		to_chat(user, span_notice("This doesn't belong in this kind of display."))
 		return TRUE
@@ -212,14 +242,20 @@
 
 ///Opens and closes the display case
 /obj/structure/displaycase/proc/toggle_lock(mob/user)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/machines/click.ogg', 20, TRUE)
 	open = !open
 	update_appearance()
 
 /obj/structure/displaycase/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/structure/displaycase/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -258,10 +294,14 @@
 	var/obj/item/electronics/airlock/electronics
 
 /obj/structure/displaycase_chassis/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/structure/displaycase_chassis/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(held_item))
 		return .
@@ -281,12 +321,16 @@
 	return .
 
 /obj/structure/displaycase_chassis/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!electronics)
 		. += span_notice("You can attach [EXAMINE_HINT("airlock electronics")] to give it access restrictions.")
 	. += span_notice("[src] can be finalized using [EXAMINE_HINT("10 glass sheets")], or turned into a Vend-A-Tray using a [EXAMINE_HINT("card reader")].")
 
 /obj/structure/displaycase_chassis/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	balloon_alert(user, "disassembling...")
 	tool.play_tool_sound(src)
@@ -300,6 +344,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/displaycase_chassis/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/electronics/airlock))
 		balloon_alert(user, "installing electronics...")
 		if(!do_after(user, 3 SECONDS, target = src) || !user.transferItemToLoc(tool, src))
@@ -336,6 +382,8 @@
 
 ///Makes the final result of the chassis, then deletes itself.
 /obj/structure/displaycase_chassis/proc/make_final_result(obj/structure/displaycase/display_type)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/displaycase/display = new display_type(loc)
 	if(electronics)
 		electronics.forceMove(display)
@@ -376,15 +424,21 @@
 	var/trophy_message = ""
 
 /obj/structure/displaycase/trophy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.trophy_cases += src
 
 /obj/structure/displaycase/trophy/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.trophy_cases -= src
 	return ..()
 
 ///Creates a showpiece dummy to display, using persistent data
 /obj/structure/displaycase/trophy/proc/set_up_trophy(datum/trophy_data/chosen_trophy)
+	procstart = null
+	src.procstart = null
 	showpiece = new /obj/item/showpiece_dummy(src, text2path(chosen_trophy.path))
 	trophy_message = trim(chosen_trophy.message, MAX_PLAQUE_LEN)
 	if(trophy_message == "")
@@ -394,12 +448,16 @@
 	update_appearance()
 
 /obj/structure/displaycase/trophy/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/key/displaycase))
 		return ..()
 	toggle_historian_mode(user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/displaycase/trophy/dump()
+	procstart = null
+	src.procstart = null
 	if (showpiece)
 		if(holographic_showpiece)
 			visible_message(span_danger("[showpiece] fizzles and vanishes!"))
@@ -412,6 +470,8 @@
 		trophy_message = null
 
 /obj/structure/displaycase/trophy/insert_showpiece(obj/item/new_showpiece, mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 	if(showpiece == new_showpiece)
@@ -419,16 +479,22 @@
 
 ///Toggles the mode that shows the historian panel on the UI, enabling saving the looks and the trophy message of the current trophy
 /obj/structure/displaycase/trophy/proc/toggle_historian_mode(mob/user)
+	procstart = null
+	src.procstart = null
 	historian_mode = !historian_mode
 	balloon_alert(user, "[historian_mode ? "enabled" : "disabled"] historian mode.")
 	playsound(src, 'sound/machines/beep/twobeep.ogg', 10, vary = 50)
 	SStgui.update_uis(src)
 
 /obj/structure/displaycase/trophy/toggle_lock(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	SStgui.close_uis(src)
 
 /obj/structure/displaycase/trophy/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["historian_mode"] = historian_mode
 	data["holographic_showpiece"] = holographic_showpiece
@@ -440,12 +506,16 @@
 	return data
 
 /obj/structure/displaycase/trophy/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	if(showpiece)
 		data["showpiece_icon"] = icon2base64(getFlatIcon(showpiece, no_anim=TRUE))
 	return data
 
 /obj/structure/displaycase/trophy/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -472,6 +542,8 @@
 			return TRUE
 
 /obj/structure/displaycase/trophy/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(open)
 		return
 	if(isliving(usr))
@@ -492,6 +564,8 @@
 	name = "holographic replica"
 
 /obj/item/showpiece_dummy/Initialize(mapload, path)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/item_path = path
 	name = initial(item_path.name)
@@ -518,28 +592,40 @@
 	var/datum/bank_account/payments_acc = null
 
 /obj/structure/displaycase/forsale/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)][broken ? "_broken" : (open ? "_open" : (!showpiece ? "_empty" : null))]"
 	return ..()
 
 /obj/structure/displaycase/forsale/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!broken && !open)
 		. += "[initial(icon_state)]_overlay"
 
 /obj/structure/displaycase/forsale/insert_showpiece(obj/item/new_showpiece, mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 	update_static_data_for_all_viewers()
 
 /obj/structure/displaycase/forsale/dump()
+	procstart = null
+	src.procstart = null
 	..()
 	update_static_data_for_all_viewers()
 
 /obj/structure/displaycase/forsale/toggle_lock()
+	procstart = null
+	src.procstart = null
 	..()
 	SStgui.update_uis(src)
 
 /obj/structure/displaycase/forsale/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Vendatray", name)
@@ -547,6 +633,8 @@
 		ui.open()
 
 /obj/structure/displaycase/forsale/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["owner_name"] = payments_acc ? payments_acc.account_holder : null
 	data["product_name"] = showpiece ?capitalize(format_text(showpiece.name)) : null
@@ -556,11 +644,15 @@
 	return data
 
 /obj/structure/displaycase/forsale/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["product_icon"] = showpiece ? icon2base64(getFlatIcon(showpiece, no_anim=TRUE)) : null
 	return data
 
 /obj/structure/displaycase/forsale/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -644,6 +736,8 @@
 	. = TRUE
 
 /obj/structure/displaycase/forsale/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isidcard(tool))
 		//Card Registration
 		var/obj/item/card/id/potential_acc = tool
@@ -664,6 +758,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/displaycase/forsale/multitool_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(atom_integrity <= (integrity_failure * max_integrity))
 		to_chat(user, span_notice("You start recalibrating [src]'s hover field..."))
@@ -674,6 +770,8 @@
 		return TRUE
 
 /obj/structure/displaycase/forsale/wrench_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(open && !user.combat_mode)
 		if(anchored)
@@ -694,6 +792,8 @@
 		return
 
 /obj/structure/displaycase/forsale/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	payments_acc = null
 	req_access = list()
@@ -702,6 +802,8 @@
 	return TRUE
 
 /obj/structure/displaycase/forsale/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(showpiece && !open)
 		. += span_notice("[showpiece] is for sale for [sale_price] [MONEY_NAME].")
@@ -709,6 +811,8 @@
 		. += span_notice("[src] is sparking and the hover field generator seems to be overloaded. Use a multitool to fix it.")
 
 /obj/structure/displaycase/forsale/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!broken)
 		broken = TRUE

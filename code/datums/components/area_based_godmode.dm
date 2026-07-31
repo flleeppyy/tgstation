@@ -41,6 +41,8 @@
 	RegisterSignal(mob_target, COMSIG_ENTER_AREA, PROC_REF(check_area))
 
 /datum/component/area_based_godmode/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_ENTER_AREA)
 
 /datum/component/area_based_godmode/on_source_add(
@@ -66,6 +68,8 @@
 		check_area(mob_target)
 
 /datum/component/area_based_godmode/on_source_remove(source)
+	procstart = null
+	src.procstart = null
 	sources_to_area_type -= source
 	var/mob/mob_target = parent
 	mob_target.lose_area_sensitivity("[REF(src)]:[source]")
@@ -74,6 +78,8 @@
 	return ..()
 
 /datum/component/area_based_godmode/proc/check_in_valid_area(mob/checking)
+	procstart = null
+	src.procstart = null
 	var/list/area/allowed_areas = list()
 	for(var/source in sources_to_area_type)
 		var/list/source_map = sources_to_area_type[source]
@@ -98,6 +104,8 @@
 	return FALSE
 
 /datum/component/area_based_godmode/proc/check_area(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/has_godmode = HAS_TRAIT(source, TRAIT_GODMODE)

@@ -9,6 +9,8 @@
 	click_to_activate = TRUE
 
 /datum/action/cooldown/mob_cooldown/bot/build_girder/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -18,6 +20,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/bot/build_girder/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	if(DOING_INTERACTION(owner, BUILDING_WALL_ABILITY))
 		return TRUE
 	if(!isopenturf(target) || isgroundlessturf(target))
@@ -54,21 +58,29 @@
 	))
 
 /datum/action/repairbot_resources/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	ui_interact(owner)
 
 /datum/action/repairbot_resources/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "RepairbotResources")
 		ui.open()
 
 /datum/action/repairbot_resources/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 /datum/action/repairbot_resources/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["stacks"] = list()
 	for(var/obj/item/stack/managed_stack in user.contents)
@@ -84,6 +96,8 @@
 	return data
 
 /datum/action/repairbot_resources/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["repairbot_icon"] = 'icons/ui/repairbotmanagement/repairbot_smile.dmi'
 	data["repairbot_icon_state"] = "repairbot_smile"
@@ -91,6 +105,8 @@
 
 
 /datum/action/repairbot_resources/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

@@ -6,6 +6,8 @@ GLOBAL_LIST(uplink_purchase_logs_by_key) //assoc key = /datum/uplink_purchase_lo
 	var/total_spent = 0
 
 /datum/uplink_purchase_log/New(_owner, datum/component/uplink/_parent)
+	procstart = null
+	src.procstart = null
 	owner = _owner
 	LAZYINITLIST(GLOB.uplink_purchase_logs_by_key)
 	if(owner)
@@ -16,12 +18,16 @@ GLOBAL_LIST(uplink_purchase_logs_by_key) //assoc key = /datum/uplink_purchase_lo
 	purchase_log = list()
 
 /datum/uplink_purchase_log/Destroy()
+	procstart = null
+	src.procstart = null
 	purchase_log = null
 	if(GLOB.uplink_purchase_logs_by_key[owner] == src)
 		GLOB.uplink_purchase_logs_by_key -= owner
 	return ..()
 
 /datum/uplink_purchase_log/proc/MergeWithAndDel(datum/uplink_purchase_log/other)
+	procstart = null
+	src.procstart = null
 	if(!istype(other))
 		return
 	. = owner == other.owner
@@ -37,15 +43,21 @@ GLOBAL_LIST(uplink_purchase_logs_by_key) //assoc key = /datum/uplink_purchase_lo
 	qdel(other)
 
 /datum/uplink_purchase_log/proc/TotalTelecrystalsSpent()
+	procstart = null
+	src.procstart = null
 	. = total_spent
 
 /datum/uplink_purchase_log/proc/generate_render(show_key = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ""
 	for(var/hash in purchase_log)
 		var/datum/uplink_purchase_entry/UPE = purchase_log[hash]
 		. += "<span class='tooltip_container'>\[[UPE.icon_b64][show_key?"([owner])":""]<span class='tooltip_hover'><b>[UPE.name]</b><br>[UPE.spent_cost ? "[UPE.spent_cost] TC" : "[UPE.base_cost] TC<br>(Surplus)"]<br>[UPE.desc]</span>[(UPE.amount_purchased > 1) ? "x[UPE.amount_purchased]" : ""]\]</span>"
 
 /datum/uplink_purchase_log/proc/LogPurchase(atom/A, datum/uplink_item/uplink_item, spent_cost)
+	procstart = null
+	src.procstart = null
 	var/datum/uplink_purchase_entry/UPE
 	var/hash = hash_purchase(uplink_item, spent_cost)
 	if(purchase_log[hash])
@@ -64,6 +76,8 @@ GLOBAL_LIST(uplink_purchase_logs_by_key) //assoc key = /datum/uplink_purchase_lo
 	total_spent += spent_cost
 
 /datum/uplink_purchase_log/proc/hash_purchase(datum/uplink_item/uplink_item, spent_cost)
+	procstart = null
+	src.procstart = null
 	return "[uplink_item.type]|[uplink_item.name]|[uplink_item.cost]|[spent_cost]"
 
 /datum/uplink_purchase_entry

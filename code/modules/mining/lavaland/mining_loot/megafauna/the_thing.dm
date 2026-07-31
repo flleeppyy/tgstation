@@ -5,6 +5,8 @@
 	button_icon_state = "ai_core"
 
 /datum/action/innate/brain_undeployment/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/obj/item/organ/brain/cybernetic/ai/shell_to_disconnect = owner.get_organ_by_type(/obj/item/organ/brain/cybernetic/ai)
@@ -26,16 +28,22 @@
 	var/datum/weakref/radio_weakref
 
 /obj/item/organ/brain/cybernetic/ai/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_Their eyes move with machine precision, their expression completely blank.")
 
 /obj/item/organ/brain/cybernetic/ai/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	undeploy()
 	mainframe = null
 	QDEL_NULL(undeployment_action)
 
 /obj/item/organ/brain/cybernetic/ai/on_mob_insert(mob/living/carbon/brain_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	brain_owner.add_traits(list(TRAIT_BASIC_HEALTH_HUD_VISIBLE, TRAIT_NO_MINDSWAP, TRAIT_CORPSELOCKED), REF(src))
 	update_med_hud_status(brain_owner)
@@ -51,6 +59,8 @@
 	radio_weakref = WEAKREF(radio)
 
 /obj/item/organ/brain/cybernetic/ai/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	undeploy()
 	. = ..()
 	organ_owner.remove_traits(list(TRAIT_BASIC_HEALTH_HUD_VISIBLE, TRAIT_NO_MINDSWAP, TRAIT_CORPSELOCKED), REF(src))
@@ -62,16 +72,22 @@
 	connected_ai = null
 
 /obj/item/organ/brain/cybernetic/ai/proc/cancel_rolls(mob/living/source, datum/mind/mind, antag_flag)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return antag_flag == ROLE_MALF ? NONE : CANCEL_ROLL
 
 /obj/item/organ/brain/cybernetic/ai/proc/get_status_tab_item(mob/living/source, list/items)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!mainframe)
 		return
 	items += mainframe.get_status_tab_items()
 
 /obj/item/organ/brain/cybernetic/ai/proc/update_med_hud_status(mob/living/mob_parent)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/image/holder = mob_parent.hud_list?[STATUS_HUD]
 	if(isnull(holder))
@@ -87,9 +103,13 @@
 
 // no thoughts only wifi
 /obj/item/organ/brain/cybernetic/ai/can_gain_trauma(datum/brain_trauma/trauma, resilience, natural_gain = FALSE)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/item/organ/brain/cybernetic/ai/proc/owner_clicked(datum/source, atom/location, control, params, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isAI(user))
 		return
@@ -109,6 +129,8 @@
 	to_chat(user, boxed_message(jointext(lines, "\n")), type = MESSAGE_TYPE_INFO)
 
 /obj/item/organ/brain/cybernetic/ai/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!href_list["ai_take_control"] || !is_sufficiently_augmented() || mainframe)
 		return
@@ -134,6 +156,8 @@
 	to_chat(owner, span_boldbig("You are still considered a silicon/cyborg/AI. Follow your laws."))
 
 /obj/item/organ/brain/cybernetic/ai/proc/deploy_init(mob/living/silicon/ai/AI)
+	procstart = null
+	src.procstart = null
 	//todo camera maybe
 	mainframe = AI
 	connected_ai = AI
@@ -154,6 +178,8 @@
 			LAZYSET(implant.radio.secure_radio_connections, channel, add_radio(implant.radio, GLOB.default_radio_channels[channel]))
 
 /obj/item/organ/brain/cybernetic/ai/proc/undeploy(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!owner?.mind || !mainframe)
 		return
@@ -180,6 +206,8 @@
 	update_med_hud_status(owner)
 
 /obj/item/organ/brain/cybernetic/ai/proc/is_sufficiently_augmented()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/carb_owner = owner
 	. = TRUE
 	if(!istype(carb_owner))
@@ -191,12 +219,16 @@
 			return FALSE
 
 /obj/item/organ/brain/cybernetic/ai/proc/on_organ_gain(datum/source, obj/item/organ/new_organ, special)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!is_sufficiently_augmented())
 		to_chat(owner, span_danger("Connection failure. Organics detected."))
 		undeploy()
 
 /obj/item/organ/brain/cybernetic/ai/proc/ai_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	to_chat(owner, span_danger("Your core has been rendered inoperable..."))
 	undeploy()

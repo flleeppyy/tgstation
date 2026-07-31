@@ -21,6 +21,8 @@
 
 
 /obj/machinery/recharge_station/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	materials = new (
@@ -47,6 +49,8 @@
 	GLOB.roundstart_station_borgcharger_areas += area_name
 
 /obj/machinery/recharge_station/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(materials)
 	charge_cell = null
 	return ..()
@@ -59,6 +63,8 @@
  * * seconds_per_tick - supplied from process()
  */
 /obj/machinery/recharge_station/proc/charge_target_cell(obj/item/stock_parts/power_store/cell/target, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	//charge the cell, account for heat loss from work done
@@ -69,6 +75,8 @@
 	return charge_given
 
 /obj/machinery/recharge_station/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	recharge_speed = 0
 	repairs = 0
@@ -80,6 +88,8 @@
 		recharge_speed *= cell.maxcharge
 
 /obj/machinery/recharge_station/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
 		. += span_notice("The status display reads: Recharging: <b>[display_power(recharge_speed, convert = FALSE)]</b>.")
@@ -89,17 +99,23 @@
 			. += span_notice("[src] has been upgraded to support automatic repairs.")
 
 /obj/machinery/recharge_station/on_set_is_operational(old_value)
+	procstart = null
+	src.procstart = null
 	if(old_value) //Turned off
 		end_processing()
 	else //Turned on
 		begin_processing()
 
 /obj/machinery/recharge_station/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(user))
 		return
 	open_machine()
 
 /obj/machinery/recharge_station/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(machine_stat & (BROKEN|NOPOWER)))
 		if(occupant && !(. & EMP_PROTECT_CONTENTS))
@@ -108,20 +124,30 @@
 			open_machine()
 
 /obj/machinery/recharge_station/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return state_open ? default_deconstruction_screwdriver(user, tool) : NONE
 
 /obj/machinery/recharge_station/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_pry_open(user, tool, close_after_pry = FALSE, open_density = FALSE, closed_density = TRUE, deconstruct_on_fail = TRUE)
 
 /obj/machinery/recharge_station/attack_ai_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	toggle_restock(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/recharge_station/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	toggle_restock(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/recharge_station/proc/toggle_restock(mob/user)
+	procstart = null
+	src.procstart = null
 	if(sendmats)
 		sendmats = FALSE
 		say("Restocking from ore silo: disabled.")
@@ -140,10 +166,14 @@
 	say("Restocking from ore silo: enabled.")
 
 /obj/machinery/recharge_station/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	toggle_open()
 	return TRUE
 
 /obj/machinery/recharge_station/proc/toggle_open()
+	procstart = null
+	src.procstart = null
 	if(state_open)
 		close_machine(density_to_set = TRUE)
 		toggle_restock() //defaults to enabled
@@ -151,17 +181,23 @@
 		open_machine()
 
 /obj/machinery/recharge_station/open_machine(drop = TRUE, density_to_set = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	sendmats = FALSE
 	update_use_power(IDLE_POWER_USE)
 
 /obj/machinery/recharge_station/close_machine(atom/movable/target, density_to_set = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(occupant)
 		update_use_power(ACTIVE_POWER_USE) //It always tries to charge, even if it can't.
 		add_fingerprint(occupant)
 
 /obj/machinery/recharge_station/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		icon_state = "borgdecon2"
 		return ..()
@@ -172,6 +208,8 @@
 	return ..()
 
 /obj/machinery/recharge_station/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(occupant) || !is_operational)
 		return
 

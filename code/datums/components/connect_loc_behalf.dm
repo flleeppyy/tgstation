@@ -13,6 +13,8 @@
 	var/atom/tracked_loc
 
 /datum/component/connect_loc_behalf/Initialize(atom/movable/tracked, list/connections)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!istype(tracked))
 		return COMPONENT_INCOMPATIBLE
@@ -20,11 +22,15 @@
 	src.tracked = tracked
 
 /datum/component/connect_loc_behalf/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(tracked, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved))
 	RegisterSignal(tracked, COMSIG_QDELETING, PROC_REF(handle_tracked_qdel))
 	update_signals()
 
 /datum/component/connect_loc_behalf/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	unregister_signals()
 	UnregisterSignal(tracked, list(
 		COMSIG_MOVABLE_MOVED,
@@ -34,10 +40,14 @@
 	tracked = null
 
 /datum/component/connect_loc_behalf/proc/handle_tracked_qdel()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /datum/component/connect_loc_behalf/proc/update_signals()
+	procstart = null
+	src.procstart = null
 	unregister_signals()
 	//You may ask yourself, isn't this just silencing an error?
 	//The answer is yes, but there's no good cheap way to fix it
@@ -56,6 +66,8 @@
 		parent.RegisterSignal(tracked_loc, signal, connections[signal])
 
 /datum/component/connect_loc_behalf/proc/unregister_signals()
+	procstart = null
+	src.procstart = null
 	if(isnull(tracked_loc))
 		return
 
@@ -64,6 +76,8 @@
 	tracked_loc = null
 
 /datum/component/connect_loc_behalf/proc/on_moved(sigtype, atom/movable/tracked, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_signals()
 

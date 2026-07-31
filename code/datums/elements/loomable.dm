@@ -38,17 +38,23 @@
 	RegisterSignal(target, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/element/loomable/Detach(obj/item/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, list(COMSIG_ITEM_ATTACK_ATOM, COMSIG_ATOM_EXAMINE))
 
 /// Adds an examine blurb to the description of any item that can be loomed
 /datum/element/loomable/proc/on_examine(obj/item/source, mob/examiner, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += span_notice("You could probably process [source] at \a <b>[initial(loom_type.name)]</b>.")
 
 /// Checks if the thing we clicked on can be used as a loom, and if we can actually loom the source at present (an example being does the stack have enough in it (if its a stack))
 /datum/element/loomable/proc/try_and_loom_me(obj/item/source, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(target, loom_type))
@@ -71,6 +77,8 @@
 
 /// If a do_after of the specified loom_time passes, will create a new one of resulting_atom and either delete the item, or .use the required amount if its a stack
 /datum/element/loomable/proc/loom_me(obj/item/source, mob/living/user, atom/target)
+	procstart = null
+	src.procstart = null
 	//this allows us to count the amount of times it has successfully used the stack's required amount
 	var/spawning_amount = 0
 	if(isstack(source))

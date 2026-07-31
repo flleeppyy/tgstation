@@ -17,6 +17,8 @@
  * If applicable, "assigned_map" has to be assigned before this proc call.
  */
 /atom/movable/screen/proc/set_position(x, y, px = 0, py = 0)
+	procstart = null
+	src.procstart = null
 	if(assigned_map)
 		screen_loc = "[assigned_map]:[x]:[px],[y]:[py]"
 	else
@@ -28,6 +30,8 @@
  * If applicable, "assigned_map" has to be assigned before this proc call.
  */
 /atom/movable/screen/proc/fill_rect(x1, y1, x2, y2)
+	procstart = null
+	src.procstart = null
 	if(assigned_map)
 		screen_loc = "[assigned_map]:[x1],[y1] to [x2],[y2]"
 	else
@@ -38,6 +42,8 @@
  * assigned map, and becomes a part of the assigned map's lifecycle.
  */
 /client/proc/register_map_obj(atom/movable/screen/screen_obj)
+	procstart = null
+	src.procstart = null
 	if(!screen_obj.assigned_map)
 		CRASH("Can't register [screen_obj] without 'assigned_map' property.")
 	if(!screen_maps[screen_obj.assigned_map])
@@ -51,6 +57,8 @@
  * Clears the map of registered screen objects.
  */
 /client/proc/clear_map(map_name)
+	procstart = null
+	src.procstart = null
 	if(!map_name || !screen_maps[map_name])
 		return FALSE
 	for(var/atom/movable/screen/screen_obj in screen_maps[map_name])
@@ -64,6 +72,8 @@
  * Clears all the maps of registered screen objects.
  */
 /client/proc/clear_all_maps()
+	procstart = null
+	src.procstart = null
 	for(var/map_name in screen_maps)
 		clear_map(map_name)
 
@@ -76,6 +86,8 @@
  * Returns a map name.
  */
 /client/proc/create_popup(name, title, ratiox = 100, ratioy = 100)
+	procstart = null
+	src.procstart = null
 	winclone(src, "popupwindow", name)
 	var/list/winparams = list()
 	winparams["title"] = title
@@ -122,6 +134,8 @@
  * Closes a popup.
  */
 /client/proc/close_popup(popup)
+	procstart = null
+	src.procstart = null
 	winshow(src, popup, 0)
 	handle_popup_close(popup)
 

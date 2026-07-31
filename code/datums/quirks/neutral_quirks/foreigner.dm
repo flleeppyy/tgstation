@@ -9,12 +9,16 @@
 	mail_goodies = list(/obj/item/taperecorder) // for translation
 
 /datum/quirk/foreigner/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	human_holder.add_blocked_language(/datum/language/common)
 	if(ishumanbasic(human_holder))
 		human_holder.grant_language(/datum/language/uncommon, source = LANGUAGE_QUIRK)
 
 /datum/quirk/foreigner/remove()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(quirk_holder))
 		return
 	var/mob/living/carbon/human/human_holder = quirk_holder

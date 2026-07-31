@@ -51,10 +51,14 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 3)
 
 /obj/item/ammo_box/speedloader/c38/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state]-base"
 
 /obj/item/ammo_box/speedloader/c38/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!LAZYLEN(stored_ammo))
 		return

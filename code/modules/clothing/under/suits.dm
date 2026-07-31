@@ -103,6 +103,8 @@
 	inhand_icon_state = null
 
 /obj/item/clothing/under/suit/tuxedo/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, 4) //You aren't going to fish with this are you?
 
@@ -114,5 +116,7 @@
 	clothing_flags = parent_type::clothing_flags | CARP_STYLE_FACTOR
 
 /obj/item/clothing/under/suit/carpskin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -4)

@@ -93,19 +93,27 @@
 	previous_attempts = list()
 
 /datum/component/uplink/proc/handle_uplink_handler_update()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SStgui.update_uis(src)
 
 /datum/component/uplink/InheritComponent(datum/component/uplink/uplink)
+	procstart = null
+	src.procstart = null
 	lockable |= uplink.lockable
 	active |= uplink.active
 	uplink_handler.uplink_flag |= uplink.uplink_handler.uplink_flag
 
 /datum/component/uplink/Destroy()
+	procstart = null
+	src.procstart = null
 	purchase_log = null
 	return ..()
 
 /datum/component/uplink/proc/load_tc(mob/user, obj/item/stack/telecrystal/telecrystals, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!silent)
 		to_chat(user, span_notice("You slot [telecrystals] into [parent] and charge its internal uplink."))
 	var/amt = telecrystals.amount
@@ -114,6 +122,8 @@
 	log_uplink("[key_name(user)] loaded [amt] telecrystals into [parent]'s uplink")
 
 /datum/component/uplink/proc/OnAttackBy(datum/source, obj/item/item, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!active)
 		return //no hitting everyone/everything just to try to slot tcs in!
@@ -127,6 +137,8 @@
 	SEND_SIGNAL(item, COMSIG_ITEM_ATTEMPT_TC_REIMBURSE, user, src)
 
 /datum/component/uplink/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(user != owner)
@@ -138,6 +150,8 @@
 		examine_list += span_warning("The failsafe code is [span_boldwarning(failsafe_code)].")
 
 /datum/component/uplink/proc/interact(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(locked)
@@ -150,9 +164,13 @@
 
 
 /datum/component/uplink/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.inventory_state
 
 /datum/component/uplink/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	active = TRUE
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -163,6 +181,8 @@
 		ui.open()
 
 /datum/component/uplink/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.mind)
 		return
 	var/list/data = list()
@@ -221,6 +241,8 @@
 	return data
 
 /datum/component/uplink/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["uplink_flag"] = uplink_handler.uplink_flag
 	data["has_progression"] = uplink_handler.has_progression
@@ -231,11 +253,15 @@
 	return data
 
 /datum/component/uplink/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/json/uplink),
 	)
 
 /datum/component/uplink/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -273,12 +299,16 @@
 
 /// Proc that locks uplinks
 /datum/component/uplink/proc/lock_uplink()
+	procstart = null
+	src.procstart = null
 	active = FALSE
 	locked = TRUE
 	SStgui.close_uis(src)
 
 // Implant signal responses
 /datum/component/uplink/proc/implant_activation()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/implant/implant = parent
@@ -286,6 +316,8 @@
 	interact(null, implant.imp_in)
 
 /datum/component/uplink/proc/implanting(datum/source, list/arguments)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/user = arguments[2]
@@ -298,12 +330,16 @@
 			purchase_log = new(owner, src)
 
 /datum/component/uplink/proc/old_implant(datum/source, list/arguments, obj/item/implant/new_implant)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// It kinda has to be weird like this until implants are components
 	return SEND_SIGNAL(new_implant, COMSIG_IMPLANT_EXISTING_UPLINK, src)
 
 /datum/component/uplink/proc/new_implant(datum/source, datum/component/uplink/uplink)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return COMPONENT_DELETE_NEW_IMPLANT
@@ -311,6 +347,8 @@
 // PDA signal responses
 
 /datum/component/uplink/proc/new_ringtone(datum/source, mob/living/user, new_ring_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(trim(LOWER_TEXT(new_ring_text)) != trim(LOWER_TEXT(unlock_code)))
@@ -325,6 +363,8 @@
 	return COMPONENT_STOP_RINGTONE_CHANGE
 
 /datum/component/uplink/proc/check_detonate()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return COMPONENT_TABLET_NO_DETONATE
@@ -332,6 +372,8 @@
 // Radio signal responses
 
 /datum/component/uplink/proc/new_frequency(datum/source, list/arguments)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/radio/master = parent
@@ -345,6 +387,8 @@
 		interact(null, master.loc)
 
 /datum/component/uplink/proc/new_message(datum/source, mob/living/user, message, channel)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(channel != RADIO_CHANNEL_UPLINK)
@@ -362,6 +406,8 @@
 // Pen signal responses
 
 /datum/component/uplink/proc/pen_rotation(datum/source, degrees, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/pen/master = parent
@@ -380,6 +426,8 @@
 		failsafe(user)
 
 /datum/component/uplink/proc/setup_unlock_code()
+	procstart = null
+	src.procstart = null
 	unlock_code = generate_code()
 	var/obj/item/P = parent
 	if(istype(parent,/obj/item/modular_computer))
@@ -390,6 +438,8 @@
 		unlock_note = "<B>Uplink Degrees:</B> [english_list(unlock_code)] ([P.name])."
 
 /datum/component/uplink/proc/generate_code()
+	procstart = null
+	src.procstart = null
 	var/returnable_code = ""
 
 	if(istype(parent, /obj/item/modular_computer))
@@ -417,6 +467,8 @@
 	return returnable_code
 
 /datum/component/uplink/proc/failsafe(atom/source)
+	procstart = null
+	src.procstart = null
 	if(!parent)
 		return
 	var/turf/T = get_turf(parent)

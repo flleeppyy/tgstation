@@ -27,6 +27,8 @@
 	var/unsafe = FALSE //over the cold threshold
 
 /datum/symptom/chills/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -37,6 +39,8 @@
 		power = 2.5
 
 /datum/symptom/chills/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -56,6 +60,8 @@
  * * datum/disease/advance/A The disease applying the symptom
  */
 /datum/symptom/chills/proc/set_body_temp(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(unsafe) // when unsafe the shivers can cause cold damage
 		M.add_body_temperature_change(CHILLS_CHANGE, -6 * power * A.stage)
 	else
@@ -65,12 +71,16 @@
 
 /// Update the body temp change based on the new stage
 /datum/symptom/chills/on_stage_change(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		set_body_temp(A.affected_mob, A)
 
 /// remove the body temp change when removing symptom
 /datum/symptom/chills/End(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/M = A.affected_mob
 	if(M)
 		M.remove_body_temperature_change(CHILLS_CHANGE)

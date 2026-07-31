@@ -16,16 +16,22 @@
 	VAR_FINAL/datum/weakref/antimagic_component
 
 /obj/item/organ/brain/psyker/on_mob_insert(mob/living/carbon/inserted_into)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	echolocation_component = WEAKREF(inserted_into.AddComponent(/datum/component/echolocation, echo_icon = "psyker"))
 	antimagic_component = WEAKREF(inserted_into.AddComponent(/datum/component/anti_magic, antimagic_flags = MAGIC_RESISTANCE_MIND))
 
 /obj/item/organ/brain/psyker/on_mob_remove(mob/living/carbon/removed_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(echolocation_component)
 	qdel(antimagic_component)
 
 /obj/item/organ/brain/psyker/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/bodypart/head/psyker/psyker_head = owner.get_bodypart(zone)
 	if(istype(psyker_head))
@@ -44,11 +50,15 @@
 	head_flags = HEAD_DEBRAIN | HEAD_NO_DISFIGURE // ignore disfigurement by damage, as we're always disfigured
 
 /obj/item/bodypart/head/psyker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_DISFIGURED, INNATE_TRAIT)
 
 /// flavorful variant of psykerizing that deals damage and sends messages before calling psykerize()
 /mob/living/carbon/human/proc/slow_psykerize()
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD || !get_bodypart(BODY_ZONE_HEAD) || istype(get_bodypart(BODY_ZONE_HEAD), /obj/item/bodypart/head/psyker))
 		return
 	to_chat(src, span_userdanger("You feel unwell..."))
@@ -69,6 +79,8 @@
 
 /// Proc with no side effects that turns someone into a psyker. returns FALSE if it could not psykerize.
 /mob/living/carbon/human/proc/psykerize()
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/head/old_head = get_bodypart(BODY_ZONE_HEAD)
 	var/obj/item/organ/brain/old_brain = get_organ_slot(ORGAN_SLOT_BRAIN)
 	var/obj/item/organ/old_eyes = get_organ_slot(ORGAN_SLOT_EYES)
@@ -99,6 +111,8 @@
 	var/obj/item/nullrod/transformation_target
 
 /datum/religion_rites/nullrod_transformation/perform_rite(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return FALSE
 	var/mob/living/carbon/human/human_user = user
@@ -114,6 +128,8 @@
 	return FALSE
 
 /datum/religion_rites/nullrod_transformation/invoke_effect(mob/living/user, atom/movable/religious_tool)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/null_rod = transformation_target
 	transformation_target = null
@@ -177,20 +193,28 @@
 	)
 
 /obj/item/gun/ballistic/revolver/chaplain/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/nullrod_core, FALSE)
 	name = pick(possible_names)
 	desc = possible_names[name]
 
 /obj/item/gun/ballistic/revolver/chaplain/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "Habemus Papam"
 	desc = "I announce to you a great joy."
 
 /obj/item/gun/ballistic/revolver/chaplain/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	pray_refill(user)
 
 /obj/item/gun/ballistic/revolver/chaplain/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (isammocasing(tool) || istype(tool, /obj/item/ammo_box))
 		user.balloon_alert(user, "no manual reloads!")
 		return ITEM_INTERACT_BLOCKING
@@ -198,6 +222,8 @@
 	return ..()
 
 /obj/item/gun/ballistic/revolver/chaplain/proc/pray_refill(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(DOING_INTERACTION_WITH_TARGET(user, src) || !istype(user))
 		return
 	var/datum/brain_trauma/special/burdened/burden = user.has_trauma_type(/datum/brain_trauma/special/burdened)
@@ -240,6 +266,8 @@
 	embed_type = null
 
 /obj/projectile/bullet/c38/holy/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/roll_them_bones = rand(1,38)
 	if(roll_them_bones == 1 && isliving(target))
@@ -264,6 +292,8 @@
 	var/projection_duration = 10 SECONDS
 
 /datum/action/cooldown/spell/pointed/psychic_projection/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -273,6 +303,8 @@
 	return !living_target.has_status_effect(/datum/status_effect/psychic_projection)
 
 /datum/action/cooldown/spell/pointed/psychic_projection/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cast_on.can_block_magic(antimagic_flags))
 		to_chat(cast_on, span_notice("Your mind feels weird, but it passes momentarily."))
@@ -295,10 +327,14 @@
 	var/firing_delay = 0
 
 /datum/status_effect/psychic_projection/on_creation(mob/living/new_owner, duration = 10 SECONDS)
+	procstart = null
+	src.procstart = null
 	src.duration = duration
 	return ..()
 
 /datum/status_effect/psychic_projection/on_apply()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/plane_master_controller/game_plane_master_controller = owner.hud_used?.plane_master_controllers[PLANE_MASTERS_GAME]
 	if(!game_plane_master_controller)
 		return FALSE
@@ -307,6 +343,8 @@
 	return TRUE
 
 /datum/status_effect/psychic_projection/on_remove()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/plane_master_controller/game_plane_master_controller = owner.hud_used?.plane_master_controllers[PLANE_MASTERS_GAME]
 	if(!game_plane_master_controller)
 		return
@@ -314,6 +352,8 @@
 	game_plane_master_controller.remove_filter("psychic_wave")
 
 /datum/status_effect/psychic_projection/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	var/obj/item/gun/held_gun = owner?.is_holding_item_of_type(/obj/item/gun)
 	if(!held_gun)
 		return
@@ -350,16 +390,22 @@
 	var/effect_time = 10 SECONDS
 
 /datum/action/cooldown/spell/charged/psychic_booster/Destroy()
+	procstart = null
+	src.procstart = null
 	if(boosted)
 		stop_effects()
 	return ..()
 
 /datum/action/cooldown/spell/charged/psychic_booster/Remove(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	if(boosted)
 		stop_effects()
 	return ..()
 
 /datum/action/cooldown/spell/charged/psychic_booster/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(boosted)
 		return
@@ -370,12 +416,16 @@
 	addtimer(CALLBACK(src, PROC_REF(stop_effects)), effect_time)
 
 /datum/action/cooldown/spell/charged/psychic_booster/proc/stop_effects()
+	procstart = null
+	src.procstart = null
 	boosted = FALSE
 	to_chat(owner, span_danger("Your trigger fingers feel weaker."))
 	REMOVE_TRAIT(owner, TRAIT_DOUBLE_TAP, type)
 	UnregisterSignal(owner, COMSIG_PROJECTILE_FIRER_BEFORE_FIRE)
 
 /datum/action/cooldown/spell/charged/psychic_booster/proc/modify_projectile(datum/source, obj/projectile/bullet, atom/firer, atom/original_target)
+	procstart = null
+	src.procstart = null
 	var/atom/target = original_target
 	if(isturf(target) || (isobj(target) && !target.density)) //if weird target, we try to compensate in our homing
 		for(var/mob/living/shooting_target in range(1, get_turf(target)))
@@ -402,5 +452,7 @@
 	wall_type = /obj/effect/forcefield/psychic
 
 /datum/action/cooldown/spell/forcewall/psychic_wall/spawn_wall(turf/cast_turf)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	play_fov_effect(cast_turf, 5, "forcefield", time = 10 SECONDS)

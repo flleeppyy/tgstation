@@ -7,6 +7,8 @@
 	description = "Gives everyone a random race."
 
 /datum/round_event/wizard/race/start()
+	procstart = null
+	src.procstart = null
 
 	var/all_the_same = 0
 	var/all_species = list()

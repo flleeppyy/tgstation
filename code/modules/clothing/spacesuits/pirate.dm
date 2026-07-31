@@ -41,6 +41,8 @@
 	icon_state = "spacetophat"
 
 /obj/item/clothing/head/helmet/space/pirate/tophat/add_stabilizer(loose_hat = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/clothing/suit/space/pirate/silverscale

@@ -78,6 +78,8 @@
 	paralyze = 10
 
 /obj/projectile/bullet/shotgun_frag12/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	..()
 	explosion(target, devastation_range = -1, light_impact_range = 1, explosion_cause = src)
 	return BULLET_ACT_HIT
@@ -134,6 +136,8 @@
 	var/tile_dropoff_ricochet = 4
 
 /obj/projectile/bullet/pellet/shotgun_rubbershot/reduce_range()
+	procstart = null
+	src.procstart = null
 	if(ricochet_chance > 0)
 		ricochet_chance -= tile_dropoff_ricochet
 	. = ..()

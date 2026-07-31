@@ -1,5 +1,7 @@
 /// If broken via signal, disconnects all users
 /obj/machinery/quantum_server/proc/on_broken(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	sever_connections()
@@ -7,6 +9,8 @@
 
 /// Whenever a corpse spawner makes a new corpse, add it to the list of potential mutations
 /obj/machinery/quantum_server/proc/on_corpse_spawned(datum/source, mob/living/corpse)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	mutation_candidate_refs.Add(WEAKREF(corpse))
@@ -14,6 +18,8 @@
 
 /// Being qdeleted - make sure the circuit and connected mobs go with it
 /obj/machinery/quantum_server/proc/on_delete(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	sever_connections()
@@ -31,6 +37,8 @@
 
 /// Whenever something enters the send tiles, check if it's a loot crate. If so, alert players.
 /obj/machinery/quantum_server/proc/on_goal_turf_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/machinery/byteforge/chosen_forge = get_random_nearby_forge()
@@ -57,6 +65,8 @@
 
 /// Handles examining the server. Shows cooldown time and efficiency.
 /obj/machinery/quantum_server/proc/on_goal_turf_examined(datum/source, mob/examiner, list/examine_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_text += span_info("Beneath your gaze, the floor pulses subtly with streams of encoded data.")
@@ -65,6 +75,8 @@
 
 /// Scans over the inbound created_atoms from lazy templates
 /obj/machinery/quantum_server/proc/on_template_loaded(datum/lazy_template/source, list/created_atoms)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/thing in created_atoms)
@@ -111,6 +123,8 @@
 
 /// Handles when cybercops are summoned into the area or ghosts click a ghost role spawner
 /obj/machinery/quantum_server/proc/on_threat_created(datum/source, mob/living/threat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	add_threats(threat)

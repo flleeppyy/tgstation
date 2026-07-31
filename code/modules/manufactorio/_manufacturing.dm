@@ -14,6 +14,8 @@
 	var/allow_mob_bump_intake = FALSE
 
 /obj/machinery/power/manufacturing/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(may_be_moved)
 		AddElement(/datum/element/simple_rotation)
@@ -21,6 +23,8 @@
 		connect_to_network()
 
 /obj/machinery/power/manufacturing/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(may_be_moved)
 		. += "It receives power via cable, but certain buildings do not need power."
@@ -33,7 +37,9 @@
 		. += text
 
 
-/obj/machinery/power/manufacturing/Bumped(atom/movable/bumped_atom) //attempt to put in whatever is pushed into us via conveyor
+/obj/machinery/power/manufacturing/Bumped(atom/movable/bumped_atom)
+	procstart = null
+	src.procstart = null //attempt to put in whatever is pushed into us via conveyor
 	. = ..()
 	if((!allow_mob_bump_intake && ismob(bumped_atom)) || !anchored) //only uncomment if youre brave
 		return
@@ -43,6 +49,8 @@
 	receive_resource(bumped_atom, bumped_atom.loc, get_dir(src, bumped_atom))
 
 /obj/machinery/power/manufacturing/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!may_be_moved)
 		return
@@ -54,16 +62,24 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/manufacturing/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/power/manufacturing/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/power/manufacturing/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/power/manufacturing/proc/generate_io_overlays(direction, color, offsets_override)
+	procstart = null
+	src.procstart = null
 	var/list/dir_offset
 	if(islist(offsets_override))
 		dir_offset = offsets_override
@@ -82,13 +98,19 @@
 
 /// Returns whatever object it may output, or null if it cant do that
 /obj/machinery/power/manufacturing/proc/request_resource()
+	procstart = null
+	src.procstart = null
 
 
 /obj/machinery/power/manufacturing/proc/receive_resource(atom/movable/receiving, atom/from, receive_dir)
+	procstart = null
+	src.procstart = null
 	CRASH("Unimplemented!") //check can_receive_resource here
 
 //use dir please
 /obj/machinery/power/manufacturing/proc/send_resource(atom/movable/sending, atom/what_or_dir)
+	procstart = null
+	src.procstart = null
 	if(isobj(what_or_dir))
 		var/obj/machinery/power/manufacturing/target = what_or_dir
 		return target.receive_resource(sending, src, get_step(src, what_or_dir))
@@ -110,6 +132,8 @@
 
 /// Checks if this stack (if not a stack does not do anything) can merge WITHOUT creating two stacks in contents
 /obj/machinery/power/manufacturing/proc/may_merge_in_contents(obj/item/stack/stack)
+	procstart = null
+	src.procstart = null
 	if(!istype(stack))
 		return
 	for(var/obj/item/stack/other in contents - circuit)
@@ -119,12 +143,16 @@
 			return other
 
 /obj/machinery/power/manufacturing/proc/may_merge_in_contents_and_do_so(obj/item/stack/stack)
+	procstart = null
+	src.procstart = null
 	var/merging_into = may_merge_in_contents(stack)
 	if(isnull(merging_into))
 		return
 	return stack.merge(merging_into)
 
 /obj/machinery/power/manufacturing/proc/get_overfloor_objects(turf/target)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(isnull(target))
 		target = get_turf(src)

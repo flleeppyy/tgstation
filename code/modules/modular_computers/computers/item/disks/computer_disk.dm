@@ -11,12 +11,16 @@
 	var/list/datum/computer_file/starting_programs = list()
 
 /obj/item/disk/computer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/programs in starting_programs)
 		var/datum/computer_file/program_type = new programs
 		add_file(program_type)
 
 /obj/item/disk/computer/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_LIST(stored_files)
 
@@ -26,6 +30,8 @@
  * Attempts to add an already existing file to the computer disk, then adds that capacity to the used capicity.
  */
 /obj/item/disk/computer/proc/add_file(datum/computer_file/file)
+	procstart = null
+	src.procstart = null
 	if((file.size + used_capacity) > max_capacity)
 		return FALSE
 	stored_files.Add(file)
@@ -39,6 +45,8 @@
  * Removes an app from the stored_files list, then removes their size from the capacity.
  */
 /obj/item/disk/computer/proc/remove_file(datum/computer_file/file)
+	procstart = null
+	src.procstart = null
 	if(!(file in stored_files))
 		return FALSE
 	stored_files.Remove(file)

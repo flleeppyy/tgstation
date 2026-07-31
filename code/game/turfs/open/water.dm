@@ -43,6 +43,8 @@
 	var/datum/reagent/reagent_to_extract = /datum/reagent/water
 
 /turf/open/water/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON, PROC_REF(on_atom_inited))
 	AddElement(/datum/element/watery_tile)
@@ -54,6 +56,8 @@
 
 ///We lazily add the immerse element when something is spawned or crosses this turf and not before.
 /turf/open/water/proc/on_atom_inited(datum/source, atom/movable/movable)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(src, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON)
 	make_immersed(movable)
@@ -64,11 +68,15 @@
  * before we add the immerse element.
  */
 /turf/open/water/Entered(atom/movable/arrived)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	make_immersed(arrived)
 
 ///Makes this turf immersable, return true if we actually did anything so child procs don't have to repeat our checks
 /turf/open/water/proc/make_immersed(atom/movable/triggering_atom)
+	procstart = null
+	src.procstart = null
 	if(immerse_added || is_type_in_typecache(triggering_atom, GLOB.immerse_ignored_movable))
 		return FALSE
 	AddElement(/datum/element/immerse, immerse_overlay, immerse_overlay_alpha)
@@ -78,6 +86,8 @@
 	return TRUE
 
 /turf/open/water/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(src, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON)
 	return ..()
 
@@ -116,6 +126,8 @@
 	reagent_to_extract = /datum/reagent/water/salt
 
 /turf/open/water/beach/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_MESSAGE_IN_A_BOTTLE_LOCATION, INNATE_TRAIT)
 
@@ -154,6 +166,8 @@
 	var/shale_junction = NONE
 
 /turf/open/water/lavaland_atmos/basalt/bitmask_smooth()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	basalt_junction = ALL_SMOOTHING_JUNCTIONS
 	siderite_junction = ALL_SMOOTHING_JUNCTIONS
@@ -183,10 +197,14 @@
 				shale_junction &= ~junction
 
 /turf/open/water/lavaland_atmos/basalt/smooth_icon()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(~UPDATE_SMOOTHING)
 
 /turf/open/water/lavaland_atmos/basalt/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (basalt_junction != ALL_SMOOTHING_JUNCTIONS)
 		. += mutable_appearance('icons/turf/floors/basalt_outline.dmi', "basalt_outline-[basalt_junction]")
@@ -196,6 +214,8 @@
 		. += mutable_appearance('icons/turf/floors/shale_outline.dmi', "shale_outline-[shale_junction]")
 
 /turf/open/water/lavaland_atmos/basalt/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	underlay_appearance.icon = /turf/open/misc/asteroid/basalt::icon
 	underlay_appearance.icon_state = /turf/open/misc/asteroid/basalt::icon_state
 	return TRUE
@@ -224,6 +244,8 @@
 	reagent_to_extract = /datum/reagent/water/mineral
 
 /turf/open/water/hot_spring/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// We need to add the immerse element now because the icon_states are randomized and
 	// we don't want to end up with 4 different immerse elements, which would cause
@@ -244,6 +266,8 @@
 	animate(offset = 0, time = 3 SECONDS, easing = QUAD_EASING)
 
 /turf/open/water/hot_spring/Destroy()
+	procstart = null
+	src.procstart = null
 	remove_shared_particles("hot_springs_[GET_TURF_PLANE_OFFSET(src)]")
 	remove_filter("hot_spring_waves")
 	for(var/atom/movable/movable as anything in contents)
@@ -251,6 +275,8 @@
 	return ..()
 
 /turf/open/water/hot_spring/Entered(atom/movable/arrived, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(flags_1 & INITIALIZED_1))
 		return
@@ -259,10 +285,14 @@
 	enter_hot_spring(arrived)
 
 /turf/open/water/hot_spring/on_atom_inited(datum/source, atom/movable/movable)
+	procstart = null
+	src.procstart = null
 	enter_hot_spring(movable)
 
 ///Registers the signals from the immerse element and calls dip_in if the movable has the required trait.
 /turf/open/water/hot_spring/proc/enter_hot_spring(atom/movable/movable)
+	procstart = null
+	src.procstart = null
 	if(is_type_in_typecache(movable, GLOB.immerse_ignored_movable)) // So we don't immerse weird things like turf decals/effects, projectiles, etc
 		return FALSE
 	RegisterSignal(movable, SIGNAL_ADDTRAIT(TRAIT_IMMERSED), PROC_REF(dip_in))
@@ -274,6 +304,8 @@
 
 ///Handles washing the movable and adding a status effect plus mood event to living mobs.
 /turf/open/water/hot_spring/proc/dip_in(atom/movable/movable)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	movable.wash(CLEAN_RAD | CLEAN_WASH)
 	if(!isliving(movable))
@@ -289,11 +321,15 @@
 		living.add_mood_event("hot_spring", /datum/mood_event/hot_spring_hater)
 
 /turf/open/water/hot_spring/Exited(atom/movable/gone, atom/new_loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	exit_hot_spring(gone)
 
 //Unregister the signals and remove the status effect from mobs unless they're moving to another hot spring turf.
 /turf/open/water/hot_spring/proc/exit_hot_spring(atom/movable/movable)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(movable, list(SIGNAL_ADDTRAIT(TRAIT_IMMERSED), SIGNAL_REMOVETRAIT(TRAIT_IMMERSED)))
 	if(!isliving(movable))
 		return
@@ -304,6 +340,8 @@
 
 ///Handles removing the status effect from mobs.
 /turf/open/water/hot_spring/proc/dip_out(mob/living/living)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	living.remove_status_effect(/datum/status_effect/washing_regen/hot_spring)
 	if(!HAS_TRAIT(living, TRAIT_WATER_HATER) || HAS_TRAIT(living, TRAIT_WATER_ADAPTATION))

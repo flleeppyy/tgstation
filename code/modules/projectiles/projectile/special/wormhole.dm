@@ -17,12 +17,16 @@
 	color = "#FF6600"
 
 /obj/projectile/beam/wormhole/Initialize(mapload, obj/item/ammo_casing/energy/wormhole/casing)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(casing)
 		gun = casing.gun
 
 
 /obj/projectile/beam/wormhole/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	var/obj/item/gun/energy/wormhole_projector/projector = gun.resolve()
 	if(!projector)
 		qdel(src)

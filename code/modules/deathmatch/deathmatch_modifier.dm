@@ -15,6 +15,8 @@
 
 ///Whether or not this modifier can be selected, for both host and player-selected modifiers.
 /datum/deathmatch_modifier/proc/selectable(datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(!random_exempted && (/datum/deathmatch_modifier/random in lobby.modifiers))
 		return FALSE
@@ -29,6 +31,8 @@
 
 /// Returns TRUE if map.type is in our blacklisted maps, FALSE otherwise.
 /datum/deathmatch_modifier/proc/map_incompatible(datum/lazy_template/deathmatch/map)
+	procstart = null
+	src.procstart = null
 	if (map?.type in blacklisted_maps)
 		return TRUE
 
@@ -36,14 +40,20 @@
 
 ///Called when selecting the deathmatch modifier.
 /datum/deathmatch_modifier/proc/on_select(datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	return
 
 ///When the host changes his mind and unselects it.
 /datum/deathmatch_modifier/proc/unselect(datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	return
 
 ///Called when the host chooses to change map. Returns FALSE if the new map is incompatible, TRUE otherwise.
 /datum/deathmatch_modifier/proc/on_map_changed(datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	if (map_incompatible(lobby.map))
 		lobby.unselect_modifier(src)
 		return FALSE
@@ -51,14 +61,20 @@
 
 ///Called as the game is about to start.
 /datum/deathmatch_modifier/proc/on_start_game(datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	return
 
 ///Called as the game has ended, right before the reservation is deleted.
 /datum/deathmatch_modifier/proc/on_end_game(datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	return
 
 ///Apply the modifier to the newly spawned player as the game is about to start
 /datum/deathmatch_modifier/proc/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/deathmatch_modifier/health
@@ -68,6 +84,8 @@
 	var/multiplier = 2
 
 /datum/deathmatch_modifier/health/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	player.maxHealth *= multiplier
 	player.health *= multiplier
 
@@ -89,6 +107,8 @@
 	description = "Unaffected by critical condition and pain"
 
 /datum/deathmatch_modifier/tenacity/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	player.add_traits(list(TRAIT_NOSOFTCRIT, TRAIT_NOHARDCRIT, TRAIT_ANALGESIA, TRAIT_NO_DAMAGE_OVERLAY), DEATHMATCH_TRAIT)
 
 /datum/deathmatch_modifier/no_wounds
@@ -96,6 +116,8 @@
 	description = "Ah, the good ol' days when people did't have literal dents in their skulls..."
 
 /datum/deathmatch_modifier/no_wounds/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(player, TRAIT_NEVER_WOUNDED, DEATHMATCH_TRAIT)
 
 /datum/deathmatch_modifier/no_knockdown
@@ -103,6 +125,8 @@
 	description = "I'M FUCKING INVINCIBLE!"
 
 /datum/deathmatch_modifier/no_knockdown/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	player.add_traits(list(TRAIT_STUNIMMUNE, TRAIT_SLEEPIMMUNE), DEATHMATCH_TRAIT)
 
 /datum/deathmatch_modifier/no_slowdown
@@ -110,6 +134,8 @@
 	description = "You're too slow!"
 
 /datum/deathmatch_modifier/no_slowdown/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(player, TRAIT_IGNORESLOWDOWN, DEATHMATCH_TRAIT)
 
 /datum/deathmatch_modifier/teleport
@@ -121,15 +147,21 @@
 	COOLDOWN_DECLARE(teleport_cd)
 
 /datum/deathmatch_modifier/teleport/on_select(datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	if(isnull(signed_lobbies))
 		START_PROCESSING(SSprocessing, src)
 	LAZYADD(signed_lobbies, lobby)
 	RegisterSignal(lobby, COMSIG_QDELETING, PROC_REF(remove_lobby))
 
 /datum/deathmatch_modifier/teleport/unselect(datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	remove_lobby(lobby)
 
 /datum/deathmatch_modifier/teleport/proc/remove_lobby(datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	LAZYREMOVE(signed_lobbies, lobby)
 	UnregisterSignal(lobby, COMSIG_QDELETING)
@@ -137,6 +169,8 @@
 		STOP_PROCESSING(SSprocessing, src)
 
 /datum/deathmatch_modifier/teleport/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, teleport_cd))
 		return
 
@@ -170,6 +204,8 @@
 	blacklisted_modifiers = list(/datum/deathmatch_modifier/no_gravity)
 
 /datum/deathmatch_modifier/snail_crawl/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	player.AddElement(/datum/element/lube_walking, require_resting = TRUE)
 
 /datum/deathmatch_modifier/blinking_and_breathing
@@ -177,6 +213,8 @@
 	description = "Ruin everyone's fun by forcing them to breathe and blink manually"
 
 /datum/deathmatch_modifier/blinking_and_breathing/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	player.AddComponent(/datum/component/manual_blinking)
 	player.AddComponent(/datum/component/manual_breathing)
 
@@ -185,6 +223,8 @@
 	description = "You leave short-living unpassable forcefields in your wake"
 
 /datum/deathmatch_modifier/forcefield_trail/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	player.AddElement(/datum/element/effect_trail, /obj/effect/forcefield/cosmic_field/extrafast)
 
 /datum/deathmatch_modifier/xray
@@ -193,6 +233,8 @@
 	blacklisted_modifiers = list(/datum/deathmatch_modifier/thermal)
 
 /datum/deathmatch_modifier/xray/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(player, TRAIT_XRAY_VISION, DEATHMATCH_TRAIT)
 
 /datum/deathmatch_modifier/thermal
@@ -201,6 +243,8 @@
 	blacklisted_modifiers = list(/datum/deathmatch_modifier/xray)
 
 /datum/deathmatch_modifier/thermal/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(player, TRAIT_THERMAL_VISION, DEATHMATCH_TRAIT)
 
 /datum/deathmatch_modifier/regen
@@ -208,6 +252,8 @@
 	description = "The closest thing to free health insurance you can get"
 
 /datum/deathmatch_modifier/regen/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	player.AddComponent(/datum/component/regenerator, regeneration_delay = 4 SECONDS, brute_per_second = 2.5, burn_per_second = 2.5, tox_per_second = 2.5)
 
 /datum/deathmatch_modifier/nearsightness
@@ -215,6 +261,8 @@
 	description = "Oops, I forgot my glasses at home"
 
 /datum/deathmatch_modifier/nearsightness/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	player.become_nearsighted(DEATHMATCH_TRAIT)
 
 /datum/deathmatch_modifier/ocelot
@@ -223,16 +271,22 @@
 	blacklisted_modifiers = list(/datum/deathmatch_modifier/stormtrooper)
 
 /datum/deathmatch_modifier/ocelot/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	player.add_traits(list(TRAIT_NICE_SHOT, TRAIT_DOUBLE_TAP), DEATHMATCH_TRAIT)
 	RegisterSignal(player, COMSIG_MOB_FIRED_GUN, PROC_REF(reduce_spread))
 	RegisterSignal(player, COMSIG_PROJECTILE_FIRER_BEFORE_FIRE, PROC_REF(apply_ricochet))
 
 /datum/deathmatch_modifier/ocelot/proc/reduce_spread(mob/user, obj/item/gun/gun_fired, target, params, zone_override, list/bonus_spread_values)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	bonus_spread_values[MIN_BONUS_SPREAD_INDEX] -= 50
 	bonus_spread_values[MAX_BONUS_SPREAD_INDEX] -= 50
 
 /datum/deathmatch_modifier/ocelot/proc/apply_ricochet(mob/user, obj/projectile/projectile, datum/fired_from, atom/clicked_atom)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	projectile.ricochets_max += 2
 	projectile.min_ricochets += 2
@@ -245,9 +299,13 @@
 	blacklisted_modifiers = list(/datum/deathmatch_modifier/ocelot)
 
 /datum/deathmatch_modifier/stormtrooper/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(player, COMSIG_MOB_FIRED_GUN, PROC_REF(increase_spread))
 
 /datum/deathmatch_modifier/stormtrooper/proc/increase_spread(mob/user, obj/item/gun/gun_fired, target, params, zone_override, list/bonus_spread_values)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	bonus_spread_values[MIN_BONUS_SPREAD_INDEX] += 10
 	bonus_spread_values[MAX_BONUS_SPREAD_INDEX] += 35
@@ -257,6 +315,8 @@
 	description = "When one pair isn't enough..."
 
 /datum/deathmatch_modifier/four_hands/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	player.change_number_of_hands(4)
 
 /datum/deathmatch_modifier/paraplegic
@@ -264,6 +324,8 @@
 	description = "Wheelchairs. For. Everyone."
 
 /datum/deathmatch_modifier/paraplegic/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	player.gain_trauma(/datum/brain_trauma/severe/paralysis/paraplegic, TRAUMA_RESILIENCE_ABSOLUTE)
 	///Mounts are being used. Do not spawn wheelchairs.
 	if(/datum/deathmatch_modifier/mounts in lobby.modifiers)
@@ -277,6 +339,8 @@
 	description = "A horse! A horse! My kingdom for a horse!"
 
 /datum/deathmatch_modifier/mounts/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	///We do a bit of fun over balance here, some mounts may be better than others.
 	var/mount_path = pick(list(
 		/mob/living/basic/carp,
@@ -303,12 +367,16 @@
 	blacklisted_modifiers = list(/datum/deathmatch_modifier/mounts, /datum/deathmatch_modifier/paraplegic, /datum/deathmatch_modifier/minefield)
 
 /datum/deathmatch_modifier/no_gravity/on_start_game(datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	ASYNC
 		for(var/turf/turf as anything in lobby.location.reserved_turfs)
 			turf.AddElement(/datum/element/forced_gravity, 0)
 			CHECK_TICK
 
 /datum/deathmatch_modifier/no_gravity/on_end_game(datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	for(var/turf/turf as anything in lobby.location.reserved_turfs)
 		turf.RemoveElement(/datum/element/forced_gravity, 0)
 
@@ -329,19 +397,27 @@
 	COOLDOWN_DECLARE(drop_pod_cd)
 
 /datum/deathmatch_modifier/drop_pod/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	populate_contents()
 
 /datum/deathmatch_modifier/drop_pod/on_select(datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	if(isnull(signed_lobbies))
 		START_PROCESSING(SSprocessing, src)
 	LAZYADD(signed_lobbies, lobby)
 	RegisterSignal(lobby, COMSIG_QDELETING, PROC_REF(remove_lobby))
 
 /datum/deathmatch_modifier/drop_pod/unselect(datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	remove_lobby(lobby)
 
 /datum/deathmatch_modifier/drop_pod/proc/remove_lobby(datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	LAZYREMOVE(signed_lobbies, lobby)
 	UnregisterSignal(lobby, COMSIG_QDELETING)
@@ -349,6 +425,8 @@
 		STOP_PROCESSING(SSprocessing, src)
 
 /datum/deathmatch_modifier/drop_pod/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, drop_pod_cd))
 		return
 	var/pod_spawned = FALSE
@@ -381,6 +459,8 @@
 		COOLDOWN_START(src, drop_pod_cd, rand(interval[1], interval[2]))
 
 /datum/deathmatch_modifier/drop_pod/proc/populate_contents()
+	procstart = null
+	src.procstart = null
 	contents = typesof(/mob/living/basic/trooper/syndicate)
 	for(var/typepath in contents) //Make sure to set even weights for the keys or `pick_weight` won't work.
 		contents[typepath] = 1
@@ -390,6 +470,8 @@
 	description = "Monsters are raining from the sky!"
 
 /datum/deathmatch_modifier/drop_pod/monsters/populate_contents()
+	procstart = null
+	src.procstart = null
 	contents = list(
 		/mob/living/basic/ant = 2,
 		/mob/living/basic/construct/proteon = 2,
@@ -421,6 +503,8 @@
 	amount = list(1, 3)
 
 /datum/deathmatch_modifier/drop_pod/missiles/populate_contents()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/deathmatch_modifier/explode_on_death
@@ -428,9 +512,13 @@
 	description = "Everyone gets a microbomb that cannot be manually activated."
 
 /datum/deathmatch_modifier/explode_on_death/on_start_game(datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(lobby, TRAIT_DEATHMATCH_EXPLOSIVE_IMPLANTS, DEATHMATCH_TRAIT)
 
 /datum/deathmatch_modifier/explode_on_death/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	var/obj/item/implant/explosive/deathmatch/implant = new()
 	implant.implant(player, silent = TRUE, force = TRUE)
 
@@ -439,6 +527,8 @@
 	description = "Cursed hands are being thrown at you!"
 
 /datum/deathmatch_modifier/helgrasp/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	var/metabolism_rate = /datum/reagent/inverse/helgrasp/heretic::metabolization_rate
 	player.reagents.add_reagent(/datum/reagent/inverse/helgrasp/heretic, initial(lobby.map.automatic_gameend_time) / metabolism_rate)
 
@@ -447,6 +537,8 @@
 	description = "You've had one drink too many"
 
 /datum/deathmatch_modifier/wasted/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	player.adjust_drunk_effect(rand(30, 35))
 	var/metabolism_rate = /datum/reagent/consumable/ethanol/jack_rose::metabolization_rate
 	player.reagents.add_reagent(/datum/reagent/consumable/ethanol/jack_rose, initial(lobby.map.automatic_gameend_time) * 0.35 / metabolism_rate)
@@ -456,6 +548,8 @@
 	description = "Go back, I want to be monkey!"
 
 /datum/deathmatch_modifier/monkeys/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	//we don't call monkeyize(), because it'd set the player name to a generic "monkey(number)".
 	player.set_species(/datum/species/monkey)
 
@@ -464,6 +558,8 @@
 	description = "Up is down, left is right"
 
 /datum/deathmatch_modifier/inverted_movement/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	player.AddElement(/datum/element/inverted_movement)
 
 /datum/deathmatch_modifier/minefield
@@ -471,6 +567,8 @@
 	description = "Oh, it seems you've trotted on a mine!"
 
 /datum/deathmatch_modifier/minefield/on_start_game(datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	var/list/mines = subtypesof(/obj/effect/mine)
 	mines -= list(
 		/obj/effect/mine/explosive, //too lethal.
@@ -500,6 +598,8 @@
 	random_exempted = TRUE
 
 /datum/deathmatch_modifier/random/on_select(datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	///remove any other global modifier if chosen. It'll pick random ones when the time comes.
 	for(var/modpath in lobby.modifiers)
 		var/datum/deathmatch_modifier/modifier = GLOB.deathmatch_game.modifiers[modpath]
@@ -509,6 +609,8 @@
 		lobby.modifiers -= modpath
 
 /datum/deathmatch_modifier/random/on_start_game(datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	lobby.modifiers -= type //remove it before attempting to select other modifiers, or they'll fail.
 
 	var/static/list/static_pool
@@ -539,18 +641,26 @@
 	random_exempted = TRUE
 
 /datum/deathmatch_modifier/any_loadout/selectable(datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	return lobby.map.allowed_loadouts
 
 /datum/deathmatch_modifier/any_loadout/on_select(datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	lobby.loadouts = GLOB.deathmatch_game.loadouts
 
 /datum/deathmatch_modifier/any_loadout/unselect(datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	lobby.loadouts = lobby.map.allowed_loadouts
 
 /datum/deathmatch_modifier/any_loadout/on_map_changed(datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	if(lobby.loadouts == GLOB.deathmatch_game.loadouts) //This arena already allows any loadout for some reason.
 		lobby.unselect_modifier(src)
 	else
@@ -562,6 +672,8 @@
 	random_exempted = TRUE
 
 /datum/deathmatch_modifier/hear_global_chat/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	player.add_traits(list(TRAIT_SIXTHSENSE, TRAIT_XRAY_HEARING), DEATHMATCH_TRAIT)
 
 /datum/deathmatch_modifier/apply_quirks
@@ -569,6 +681,8 @@
 	description = "Applies selected quirks to all players"
 
 /datum/deathmatch_modifier/apply_quirks/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	if (!player.client)
 		return
 
@@ -592,6 +706,8 @@
 	)
 
 /datum/deathmatch_modifier/martial_artistry/apply(mob/living/carbon/player, datum/deathmatch_lobby/lobby)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/datum/martial_art/picked_art_path = pick_weight(weighted_martial_arts)

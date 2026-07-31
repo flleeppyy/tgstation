@@ -53,10 +53,14 @@
 	src.regen_check = regen_check
 
 /datum/component/regenerator/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_MOB_APPLY_DAMAGE, PROC_REF(on_take_damage))
 
 /datum/component/regenerator/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(regeneration_start_timer)
 		deltimer(regeneration_start_timer)
@@ -64,6 +68,8 @@
 	stop_regenerating()
 
 /datum/component/regenerator/Destroy(force)
+	procstart = null
+	src.procstart = null
 	stop_regenerating()
 	. = ..()
 	if(regeneration_start_timer)
@@ -71,6 +77,8 @@
 
 /// When you take damage, reset the cooldown and start processing
 /datum/component/regenerator/proc/on_take_damage(datum/source, damage, damagetype, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (damagetype in ignore_damage_types)
@@ -79,11 +87,15 @@
 	reset_regeneration_timer()
 
 /datum/component/regenerator/proc/reset_regeneration_timer()
+	procstart = null
+	src.procstart = null
 	stop_regenerating()
 	regeneration_start_timer = addtimer(CALLBACK(src, PROC_REF(start_regenerating)), regeneration_delay, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_STOPPABLE)
 
 /// Start processing health regeneration, and show animation if provided
 /datum/component/regenerator/proc/start_regenerating()
+	procstart = null
+	src.procstart = null
 	if (!should_be_regenning(parent))
 		return
 	var/mob/living/living_parent = parent
@@ -98,6 +110,8 @@
 	animate(alpha = 0, time = 0.5 SECONDS)
 
 /datum/component/regenerator/proc/stop_regenerating()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	var/mob/living/living_parent = parent
 	var/filter = living_parent.get_filter(REGENERATION_FILTER)
@@ -105,6 +119,8 @@
 	living_parent.remove_filter(REGENERATION_FILTER)
 
 /datum/component/regenerator/process(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	if (!should_be_regenning(parent))
 		stop_regenerating()
 		return
@@ -135,6 +151,8 @@
 
 /// Checks if the passed mob is in a valid state to be regenerating
 /datum/component/regenerator/proc/should_be_regenning(mob/living/who)
+	procstart = null
+	src.procstart = null
 	if(who.stat == DEAD)
 		return FALSE
 

@@ -1,5 +1,7 @@
 ///Returns location. Returns null if no location was found.
 /proc/get_teleport_loc(turf/location, mob/target, distance = 1, density_check = FALSE, closed_turf_check = FALSE, errorx = 0, errory = 0, eoffsetx = 0, eoffsety = 0)
+	procstart = null
+	src.procstart = null
 /*
 Location where the teleport begins, target that will teleport, distance to go, density checking 0/1(yes/no), closed turf checking.
 Random error in tile placement x, error in tile placement y, and block offset.
@@ -114,6 +116,8 @@ Turf and target are separate in case you want to teleport some distance from a t
  * * return_any - if set to TRUE, will return last movable found even if its not of the passed type
  **/
 /proc/get_atom_on_turf(atom/movable/something_in_turf, stop_type = null, return_any = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(something_in_turf))
 		CRASH("get_atom_on_turf was not passed an /atom/movable! Got [isnull(something_in_turf) ? "null":"type: [something_in_turf.type]"]")
 
@@ -129,6 +133,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 
 ///Returns the turf located at the map edge in the specified direction relative to target_atom used for mass driver
 /proc/get_edge_target_turf(atom/target_atom, direction)
+	procstart = null
+	src.procstart = null
 	var/turf/target = locate(target_atom.x, target_atom.y, target_atom.z)
 	if(!target_atom || !target)
 		return 0
@@ -155,6 +161,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 // note range is non-pythagorean
 // used for disposal system
 /proc/get_ranged_target_turf(atom/target_atom, direction, range)
+	procstart = null
+	src.procstart = null
 
 	var/x = target_atom.x
 	var/y = target_atom.y
@@ -181,6 +189,8 @@ Turf and target are separate in case you want to teleport some distance from a t
  * * offset - Angle offset, 180 input would make the returned target turf be in the opposite direction
  */
 /proc/get_ranged_target_turf_direct(atom/starting_atom, atom/target, range, offset)
+	procstart = null
+	src.procstart = null
 	var/angle = ATAN2(target.x - starting_atom.x, target.y - starting_atom.y)
 	if(offset)
 		angle += offset
@@ -196,6 +206,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 
 /// returns turf relative to target_atom offset in dx and dy tiles, bound to map limits
 /proc/get_offset_target_turf(atom/target_atom, dx, dy)
+	procstart = null
+	src.procstart = null
 	var/x = min(world.maxx, max(1, target_atom.x + dx))
 	var/y = min(world.maxy, max(1, target_atom.y + dy))
 	return locate(x, y, target_atom.z)
@@ -212,6 +224,8 @@ Turf and target are separate in case you want to teleport some distance from a t
  * if the bounds are odd, the true middle turf of the atom is returned
 **/
 /proc/get_turf_pixel(atom/checked_atom)
+	procstart = null
+	src.procstart = null
 	var/turf/atom_turf = get_turf(checked_atom) //use checked_atom's turfs, as its coords are the same as checked_atom's AND checked_atom's coords are lost if it is inside another atom
 	if(!atom_turf)
 		return null
@@ -229,6 +243,8 @@ Turf and target are separate in case you want to teleport some distance from a t
  * Icon width/height
 **/
 /proc/get_visual_offset(atom/checked_atom)
+	procstart = null
+	src.procstart = null
 	//Find checked_atom's matrix so we can use its X/Y pixel shifts
 	var/matrix/atom_matrix = matrix(checked_atom.transform)
 
@@ -249,6 +265,8 @@ Turf and target are separate in case you want to teleport some distance from a t
  * Takes a turf, and a list of x and y pixel offsets and returns the turf that the offset position best lands in
 **/
 /proc/pixel_offset_turf(turf/offset_from, list/offsets)
+	procstart = null
+	src.procstart = null
 	//DY and DX
 	var/rough_x = round(round(offsets[1], ICON_SIZE_X) / ICON_SIZE_X)
 	var/rough_y = round(round(offsets[2], ICON_SIZE_Y) / ICON_SIZE_Y)
@@ -262,6 +280,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 
 ///Returns a turf based on text inputs, original turf and viewing client
 /proc/parse_caught_click_modifiers(list/modifiers, turf/origin, client/viewing_client)
+	procstart = null
+	src.procstart = null
 	if(!modifiers)
 		return null
 
@@ -305,6 +325,8 @@ Turf and target are separate in case you want to teleport some distance from a t
  *   but using ratios (as implemented in the proc) is the recommended approach
  */
 /proc/get_loc_from_mousepos(mousepos_x, mousepos_y, sizex, sizey, client/viewing_client)
+	procstart = null
+	src.procstart = null
 	if(sizex == 0 || sizey == 0) //contexts where this information is not availible should return 0 in size, aka tgui passthrough
 		return list(null, 0, 0)
 	var/turf/baseloc = get_turf(viewing_client.eye)
@@ -355,6 +377,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 
 ///Almost identical to the params_to_turf(), but unused (remove?)
 /proc/screen_loc_to_turf(text, turf/origin, client/C)
+	procstart = null
+	src.procstart = null
 	if(!text)
 		return null
 	var/tZ = splittext(text, ",")
@@ -370,6 +394,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 
 ///similar function to RANGE_TURFS(), but will search spiralling outwards from the center (like the above, but only turfs)
 /proc/spiral_range_turfs(dist = 0, center = usr, orange = FALSE, list/outlist = list(), tick_checked)
+	procstart = null
+	src.procstart = null
 	outlist.Cut()
 	if(!dist)
 		outlist += center
@@ -424,12 +450,16 @@ Turf and target are separate in case you want to teleport some distance from a t
 
 ///Returns a random turf on the station
 /proc/get_random_station_turf()
+	procstart = null
+	src.procstart = null
 	var/list/turfs = get_area_turfs(pick(GLOB.the_station_areas))
 	if (length(turfs))
 		return pick(turfs)
 
 ///Returns a random turf on the station, excludes dense turfs (like walls) and areas that have valid_territory set to FALSE
 /proc/get_safe_random_station_turf(list/areas_to_pick_from = GLOB.the_station_areas)
+	procstart = null
+	src.procstart = null
 	for (var/i in 1 to 5)
 		var/list/turf_list = get_area_turfs(pick(areas_to_pick_from))
 		var/turf/target
@@ -452,6 +482,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 
 ///Returns a random department of areas to pass into get_safe_random_station_turf() for more equal spawning.
 /proc/get_safe_random_station_turf_equal_weight()
+	procstart = null
+	src.procstart = null
 	// Big list of departments, each with lists of each area subtype.
 	var/static/list/department_areas
 	if(isnull(department_areas))
@@ -492,6 +524,8 @@ Turf and target are separate in case you want to teleport some distance from a t
  * * is_fulltile - Whether the thing you're attempting to move to this turf takes up the entire tile or whether it supports multiple movable atoms on its tile.
  */
 /proc/valid_build_direction(turf/dest_turf, test_dir, is_fulltile = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!dest_turf)
 		return FALSE
 	for(var/obj/turf_content in dest_turf)
@@ -513,6 +547,8 @@ Turf and target are separate in case you want to teleport some distance from a t
  * * type_to_find - The typepath whose presence you are checking for
  */
 /proc/is_type_on_turf(turf/location, type_to_find)
+	procstart = null
+	src.procstart = null
 	if(!location)
 		return
 	var/found_type = locate(type_to_find) in location
@@ -526,6 +562,8 @@ Turf and target are separate in case you want to teleport some distance from a t
  * - viewsize: The viewsize we're getting the turfs around central_turf of.
  */
 /proc/get_blueprint_data(turf/central_turf, viewsize)
+	procstart = null
+	src.procstart = null
 	var/list/blueprint_data_returned = list()
 	var/list/dimensions = getviewsize(viewsize)
 	var/horizontal_radius = dimensions[1] / 2
@@ -537,6 +575,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 
 /// Returns the diffrence in pressure between a turf from surrounding turfs
 /turf/proc/return_turf_delta_p()
+	procstart = null
+	src.procstart = null
 	var/pressure_greatest = 0
 	var/pressure_smallest = INFINITY //Freaking terrified to use INFINITY, man
 	for(var/turf/open/turf_adjacent in RANGE_TURFS(1, src)) //Begin processing the delta pressure across the wall.
@@ -547,6 +587,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 
 ///Runs through all adjacent open turfs and checks if any are planetary_atmos returns true if even one passes.
 /turf/proc/is_nearby_planetary_atmos()
+	procstart = null
+	src.procstart = null
 	for(var/turf/open/turf_adjacent in RANGE_TURFS(1, src))
 		if(turf_adjacent.planetary_atmos)
 			return TRUE
@@ -561,6 +603,8 @@ Turf and target are separate in case you want to teleport some distance from a t
  * Returns FALSE otherwise
  */
 /turf/proc/is_sunlight_blocked(occlusion_distance = 20)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_TURF_SUN_BLOCKED))
 		return TRUE
 

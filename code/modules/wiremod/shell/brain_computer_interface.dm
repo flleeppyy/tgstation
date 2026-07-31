@@ -7,6 +7,8 @@
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/organ/cyberimp/bci/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	RegisterSignal(src, COMSIG_CIRCUIT_ACTION_COMPONENT_REGISTERED, PROC_REF(action_comp_registered))
@@ -44,10 +46,14 @@
 	return ..()
 
 /obj/item/organ/cyberimp/bci/proc/action_comp_registered(datum/source, obj/item/circuit_component/equipment_action/action_comp)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	LAZYADD(actions, new/datum/action/innate/circuit_equipment_action(src, action_comp))
 
 /obj/item/organ/cyberimp/bci/proc/action_comp_unregistered(datum/source, obj/item/circuit_component/equipment_action/action_comp)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/datum/action/innate/circuit_equipment_action/action = action_comp.granted_to[REF(src)]
 	if(!istype(action))
@@ -71,6 +77,8 @@
 	var/obj/item/organ/cyberimp/bci/bci
 
 /obj/item/circuit_component/bci_core/populate_ports()
+	procstart = null
+	src.procstart = null
 
 	message = add_input_port("Message", PORT_TYPE_STRING, trigger = null)
 	send_message_signal = add_input_port("Send Message", PORT_TYPE_SIGNAL)
@@ -79,10 +87,14 @@
 	user_port = add_output_port("User", PORT_TYPE_USER)
 
 /obj/item/circuit_component/bci_core/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(charge_action)
 	return ..()
 
 /obj/item/circuit_component/bci_core/proc/update_charge_action()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if (show_charge_meter.value)
 		if (charge_action)
@@ -100,6 +112,8 @@
 		QDEL_NULL(charge_action)
 
 /obj/item/circuit_component/bci_core/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	bci = shell
 
 	show_charge_meter.set_value(TRUE)
@@ -108,6 +122,8 @@
 	RegisterSignal(shell, COMSIG_ORGAN_REMOVED, PROC_REF(on_organ_removed))
 
 /obj/item/circuit_component/bci_core/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	bci = shell
 
 	if (charge_action)
@@ -122,6 +138,8 @@
 	))
 
 /obj/item/circuit_component/bci_core/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if (!COMPONENT_TRIGGERED_BY(send_message_signal, port))
 		return
 
@@ -138,6 +156,8 @@
 	to_chat(bci.owner, "<i>You hear a strange, robotic voice in your head...</i> \"[span_robot("[html_encode(sent_message)]")]\"")
 
 /obj/item/circuit_component/bci_core/proc/on_organ_implanted(datum/source, mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	update_charge_action()
@@ -149,6 +169,8 @@
 	RegisterSignal(owner, COMSIG_LIVING_ELECTROCUTE_ACT, PROC_REF(on_electrocute))
 
 /obj/item/circuit_component/bci_core/proc/on_organ_removed(datum/source, mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	user_port.set_output(null)
@@ -160,6 +182,8 @@
 	))
 
 /obj/item/circuit_component/bci_core/proc/on_borg_charge(datum/source, datum/callback/charge_cell, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (isnull(parent.cell))
@@ -168,6 +192,8 @@
 	charge_cell.Invoke(parent.cell, seconds_per_tick)
 
 /obj/item/circuit_component/bci_core/proc/on_electrocute(datum/source, shock_damage, shock_source, siemens_coefficient, flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (isnull(parent.cell))
@@ -180,12 +206,16 @@
 	to_chat(source, span_notice("You absorb some of the shock into your [parent.name]!"))
 
 /obj/item/circuit_component/bci_core/proc/on_examine(datum/source, mob/mob, list/examine_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (isobserver(mob))
 		examine_text += span_notice("[source.p_They()] [source.p_have()] <a href='byond://?src=[REF(src)];open_bci=1'>\a [parent] implanted in [source.p_them()]</a>.")
 
 /obj/item/circuit_component/bci_core/Topic(href, list/href_list)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if (!isobserver(usr))
@@ -203,6 +233,8 @@
 	var/obj/item/circuit_component/bci_core/circuit_component
 
 /datum/action/innate/bci_charge_action/New(obj/item/circuit_component/bci_core/circuit_component)
+	procstart = null
+	src.procstart = null
 	..()
 
 	src.circuit_component = circuit_component
@@ -212,12 +244,16 @@
 	START_PROCESSING(SSobj, src)
 
 /datum/action/innate/bci_charge_action/create_button(mob/viewer)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/screen/movable/action_button/button = ..()
 	button.maptext_x = 2
 	button.maptext_y = 0
 	return button
 
 /datum/action/innate/bci_charge_action/Destroy()
+	procstart = null
+	src.procstart = null
 	circuit_component.charge_action = null
 	circuit_component = null
 
@@ -226,6 +262,8 @@
 	return ..()
 
 /datum/action/innate/bci_charge_action/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/obj/item/stock_parts/power_store/cell/cell = circuit_component.parent.cell
@@ -237,9 +275,13 @@
 		to_chat(owner, span_info("You can recharge it by using a cyborg recharging station."))
 
 /datum/action/innate/bci_charge_action/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	build_all_button_icons(UPDATE_BUTTON_STATUS)
 
 /datum/action/innate/bci_charge_action/update_button_status(atom/movable/screen/movable/action_button/button, force = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/stock_parts/power_store/cell/cell = circuit_component.parent.cell
 	button.maptext = cell ? MAPTEXT("[cell.percent()]%") : ""
@@ -265,17 +307,25 @@
 	COOLDOWN_DECLARE(message_cooldown)
 
 /obj/machinery/bci_implanter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	occupant_typecache = typecacheof(/mob/living/carbon)
 
 /obj/machinery/bci_implanter/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	drop_stored_bci()
 
 /obj/machinery/bci_implanter/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(bci_to_implant)
 	return ..()
 
 /obj/machinery/bci_implanter/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isnull(bci_to_implant))
 		. += span_notice("There is no BCI inserted.")
@@ -283,11 +333,15 @@
 		. += span_notice("Right-click to remove current BCI.")
 
 /obj/machinery/bci_implanter/proc/set_busy(status, working_icon)
+	procstart = null
+	src.procstart = null
 	busy = status
 	busy_icon_state = working_icon
 	update_appearance()
 
 /obj/machinery/bci_implanter/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if (occupant)
 		icon_state = busy ? busy_icon_state : "[base_icon_state]_occupied"
 		return ..()
@@ -295,6 +349,8 @@
 	return ..()
 
 /obj/machinery/bci_implanter/update_overlays()
+	procstart = null
+	src.procstart = null
 	var/list/overlays = ..()
 
 	if ((machine_stat & MAINT) || panel_open)
@@ -315,6 +371,8 @@
 	return overlays
 
 /obj/machinery/bci_implanter/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return .
@@ -335,6 +393,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/bci_implanter/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!istype(tool, /obj/item/organ/cyberimp/bci))
 		return NONE
 
@@ -354,12 +414,18 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/bci_implanter/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return isnull(occupant) ? default_deconstruction_screwdriver(user, tool) : NONE
 
 /obj/machinery/bci_implanter/crowbar_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_pry_open(user, user, tool, close_after_pry = FALSE, open_density = FALSE, closed_density = TRUE, deconstruct_on_fail = TRUE)
 
 /obj/machinery/bci_implanter/proc/start_process()
+	procstart = null
+	src.procstart = null
 	if (machine_stat & (NOPOWER|BROKEN))
 		return
 	if ((machine_stat & MAINT) || panel_open)
@@ -378,6 +444,8 @@
 	addtimer(CALLBACK(src, PROC_REF(complete_process), locked_state), 3 SECONDS)
 
 /obj/machinery/bci_implanter/proc/complete_process(locked_state)
+	procstart = null
+	src.procstart = null
 	update_use_power(IDLE_POWER_USE)
 	locked = locked_state
 	set_busy(FALSE)
@@ -405,6 +473,8 @@
 		bci_to_implant.Insert(carbon_occupant)
 
 /obj/machinery/bci_implanter/open_machine(drop = TRUE, density_to_set = FALSE)
+	procstart = null
+	src.procstart = null
 	if(state_open)
 		return FALSE
 
@@ -413,6 +483,8 @@
 	return TRUE
 
 /obj/machinery/bci_implanter/close_machine(mob/living/carbon/user, density_to_set = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!state_open)
 		return FALSE
 
@@ -430,6 +502,8 @@
 	return TRUE
 
 /obj/machinery/bci_implanter/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	var/message
 
 	if (locked)
@@ -447,6 +521,8 @@
 	open_machine()
 
 /obj/machinery/bci_implanter/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if (state_open)
 		close_machine(null, user)
 		return
@@ -457,16 +533,22 @@
 	open_machine()
 
 /obj/machinery/bci_implanter/proc/drop_stored_bci()
+	procstart = null
+	src.procstart = null
 	if (isnull(bci_to_implant))
 		return
 	bci_to_implant.forceMove(drop_location())
 
 /obj/machinery/bci_implanter/dump_inventory_contents(list/subset)
+	procstart = null
+	src.procstart = null
 	// Prevents opening the machine dropping the BCI.
 	// "dump_contents()" still drops the BCI.
 	return ..(contents - bci_to_implant)
 
 /obj/machinery/bci_implanter/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if (gone == bci_to_implant)
 		bci_to_implant = null
 	return ..()

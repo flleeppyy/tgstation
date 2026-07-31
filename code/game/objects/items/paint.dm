@@ -17,6 +17,8 @@
 	var/paintleft = 200
 
 /obj/item/paint/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/falling_hazard, damage = 20, wound_bonus = 5, hardhat_safety = TRUE, crushes = FALSE) // You ever watched home alone?
 
@@ -64,6 +66,8 @@
 	paintleft = INFINITY
 
 /obj/item/paint/anycolor/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(paintleft <= 0)
 		balloon_alert(user, "no paint left!")
 		return	// Don't do any of the following because there's no paint left to be able to change the color of
@@ -104,6 +108,8 @@
  * * user The mob interacting with the menu
  */
 /obj/item/paint/anycolor/proc/check_menu(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(!user.is_holding(src))
@@ -113,6 +119,8 @@
 	return TRUE
 
 /obj/item/paint/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isturf(interacting_with) || isspaceturf(interacting_with))
 		return NONE
 	if(paintleft <= 0)
@@ -134,6 +142,8 @@
 	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/paint/paint_remover/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isturf(interacting_with) || !isobj(interacting_with))
 		return NONE
 	if(interacting_with.color != initial(interacting_with.color))

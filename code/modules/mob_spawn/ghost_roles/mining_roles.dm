@@ -17,6 +17,8 @@
 	allow_custom_character = ALL
 
 /obj/effect/mob_spawn/ghost_role/human/hermit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	outfit = new outfit //who cares equip outfit works with outfit as a path or an instance
 	var/arrpee = rand(1,4)
@@ -44,6 +46,8 @@
 			it, and after a terrifying and fast ride for days, you landed here. You've had time to wisen up since then, and you think that your old friends wouldn't be laughing now."
 
 /obj/effect/mob_spawn/ghost_role/human/hermit/Destroy()
+	procstart = null
+	src.procstart = null
 	new/obj/structure/fluff/empty_cryostasis_sleeper(get_turf(src))
 	return ..()
 
@@ -90,6 +94,8 @@
 	allow_custom_character = NONE
 
 /obj/effect/mob_spawn/ghost_role/human/beach/lifeguard/special(mob/living/carbon/human/lifeguard, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	lifeguard.gender = FEMALE
 	lifeguard.update_body()
@@ -103,6 +109,8 @@
 	r_pocket = /obj/item/storage/wallet/random
 
 /datum/outfit/beachbum/post_equip(mob/living/carbon/human/bum, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(visuals_only)
 		return
@@ -136,6 +144,8 @@
 	shoes = /obj/item/clothing/shoes/sneakers/black
 
 /datum/outfit/spacebartender/post_equip(mob/living/carbon/human/bartender, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/card/id/id_card = bartender.wear_id
 	if(bartender.age < AGE_MINOR)
@@ -160,11 +170,15 @@
 	spawner_job_path = /datum/job/lifebringer
 
 /obj/effect/mob_spawn/ghost_role/human/seed_vault/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	mob_name = pick("Tomato", "Potato", "Broccoli", "Carrot", "Ambrosia", "Pumpkin", "Ivy", "Kudzu", "Banana", "Moss", "Flower", "Bloom", "Root", "Bark", "Glowshroom", "Petal", "Leaf", \
 	"Venus", "Sprout","Cocoa", "Strawberry", "Citrus", "Oak", "Cactus", "Pepper", "Juniper")
 
 /obj/effect/mob_spawn/ghost_role/human/seed_vault/Destroy()
+	procstart = null
+	src.procstart = null
 	new/obj/structure/fluff/empty_terrarium(get_turf(src))
 	return ..()
 
@@ -179,7 +193,9 @@
 	max_integrity = 80
 	var/obj/effect/mob_spawn/ghost_role/human/ash_walker/egg
 
-/obj/structure/ash_walker_eggshell/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0) //lifted from xeno eggs
+/obj/structure/ash_walker_eggshell/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null //lifted from xeno eggs
 	switch(damage_type)
 		if(BRUTE)
 			if(damage_amount)
@@ -190,12 +206,16 @@
 			if(damage_amount)
 				playsound(loc, 'sound/items/tools/welder.ogg', 100, TRUE)
 
-/obj/structure/ash_walker_eggshell/attack_ghost(mob/user) //Pass on ghost clicks to the mob spawner
+/obj/structure/ash_walker_eggshell/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null //Pass on ghost clicks to the mob spawner
 	if(egg)
 		egg.attack_ghost(user)
 	. = ..()
 
 /obj/structure/ash_walker_eggshell/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!egg)
 		return ..()
 	var/mob/living/carbon/human/yolk = new(get_turf(src), /datum/species/lizard/ashwalker)
@@ -226,10 +246,14 @@
 	var/obj/structure/ash_walker_eggshell/eggshell
 
 /obj/effect/mob_spawn/ghost_role/human/ash_walker/Destroy()
+	procstart = null
+	src.procstart = null
 	eggshell = null
 	return ..()
 
 /obj/effect/mob_spawn/ghost_role/human/ash_walker/allow_spawn(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(isnull(team))
 		return FALSE
 	if(!(user.ckey in team.players_spawned))//one per person unless you get a bonus spawn
@@ -239,6 +263,8 @@
 	return FALSE
 
 /obj/effect/mob_spawn/ghost_role/human/ash_walker/special(mob/living/carbon/human/spawned_human, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spawned_human.fully_replace_character_name(null, spawned_human.generate_random_mob_name(TRUE))
 	to_chat(spawned_human, "<b>Drag the corpses of men and beasts to your nest. It will absorb them to create more of your kind. Invade the strange structure of the outsiders if you must. Do not cause unnecessary destruction, as littering the wastes with ugly wreckage is certain to not gain you favor. Glory to the Necropolis!</b>")
@@ -251,6 +277,8 @@
 	QDEL_NULL(eggshell)
 
 /obj/effect/mob_spawn/ghost_role/human/ash_walker/Initialize(mapload, datum/team/ashwalkers/ashteam)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/area/spawner_area = get_area(src)
 	team = ashteam
@@ -292,6 +320,8 @@
 	allow_custom_character = ALL
 
 /obj/effect/mob_spawn/ghost_role/human/lavaland_syndicate/special(mob/living/new_spawn, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new_spawn.grant_language(/datum/language/codespeak, source = LANGUAGE_MIND)
 
@@ -321,6 +351,8 @@
 	implants = list(/obj/item/implant/weapons_auth)
 
 /datum/outfit/lavaland_syndicate/post_equip(mob/living/carbon/human/syndicate, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	syndicate.add_faction(ROLE_SYNDICATE)
 
 /datum/outfit/lavaland_syndicate/comms
@@ -337,6 +369,8 @@
 	shoes = /obj/item/clothing/shoes/winterboots/ice_boots/eva
 
 /obj/item/clothing/mask/chameleon/gps/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/gps, "Encrypted Signal")
 

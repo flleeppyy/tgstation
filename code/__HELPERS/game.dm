@@ -3,6 +3,8 @@
 
 ///Returns the name of the area the atom is in
 /proc/get_area_name(atom/checked_atom, format_text = FALSE)
+	procstart = null
+	src.procstart = null
 	var/area/checked_area = isarea(checked_atom) ? checked_atom : get_area(checked_atom)
 	if(!checked_area)
 		return null
@@ -10,6 +12,8 @@
 
 ///Tries to move an atom to an adjacent turf, return TRUE if successful
 /proc/try_move_adjacent(atom/movable/atom_to_move, trydir)
+	procstart = null
+	src.procstart = null
 	var/turf/atom_turf = get_turf(atom_to_move)
 	if(trydir)
 		if(atom_to_move.Move(get_step(atom_turf, trydir)))
@@ -21,6 +25,8 @@
 
 ///Return the mob type that is being controlled by a ckey
 /proc/get_mob_by_key(key)
+	procstart = null
+	src.procstart = null
 	var/ckey = ckey(key)
 	for(var/player in GLOB.player_list)
 		var/mob/player_mob = player
@@ -37,6 +43,8 @@
  * Returns TRUE if they're alive, FALSE otherwise
  */
 /proc/considered_alive(datum/mind/player_mind, enforce_human = TRUE)
+	procstart = null
+	src.procstart = null
 	if(player_mind?.current)
 		if(enforce_human)
 			var/mob/living/carbon/human/player_mob = player_mind.current
@@ -61,6 +69,8 @@
  * an away mission. Returns FALSE if any of those conditions aren't met.
  */
 /proc/considered_exiled(datum/mind/player_mind)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(player_mind?.current))
 		return FALSE
 	for(var/obj/item/implant/implant_check in player_mind.current.implants)
@@ -69,10 +79,14 @@
 
 ///Checks if a player is considered AFK
 /proc/considered_afk(datum/mind/player_mind)
+	procstart = null
+	src.procstart = null
 	return !player_mind || !player_mind.current || !player_mind.current.client || player_mind.current.client.is_afk()
 
 ///Return an object with a new maptext (not currently in use)
 /proc/screen_text(atom/movable/object_to_change, maptext = "", screen_loc = "CENTER-7,CENTER-7", maptext_height = 480, maptext_width = 480)
+	procstart = null
+	src.procstart = null
 	if(!istype(object_to_change))
 		object_to_change = new /atom/movable/screen/text()
 	object_to_change.maptext = MAPTEXT(maptext)
@@ -83,24 +97,34 @@
 
 /// Adds an image to a client's `.images`. Useful as a callback.
 /proc/add_image_to_client(image/image_to_remove, client/add_to)
+	procstart = null
+	src.procstart = null
 	add_to?.images += image_to_remove
 
 /// Like add_image_to_client, but will add the image from a list of clients
 /proc/add_image_to_clients(image/image_to_remove, list/show_to)
+	procstart = null
+	src.procstart = null
 	for(var/client/add_to in show_to)
 		add_to.images += image_to_remove
 
 /// Removes an image from a client's `.images`. Useful as a callback.
 /proc/remove_image_from_client(image/image_to_remove, client/remove_from)
+	procstart = null
+	src.procstart = null
 	remove_from?.images -= image_to_remove
 
 /// Like remove_image_from_client, but will remove the image from a list of clients
 /proc/remove_image_from_clients(image/image_to_remove, list/hide_from)
+	procstart = null
+	src.procstart = null
 	for(var/client/remove_from in hide_from)
 		remove_from.images -= image_to_remove
 
 /// Add an image to a list of clients and calls a proc to remove it after a duration
 /proc/flick_overlay_global(image/image_to_show, list/show_to, duration)
+	procstart = null
+	src.procstart = null
 	if(!show_to || !length(show_to) || !image_to_show)
 		return
 	for(var/client/add_to in show_to)
@@ -109,6 +133,8 @@
 
 ///Flicks a certain overlay onto an atom, handling icon_state strings
 /atom/proc/flick_overlay(image_to_show, list/show_to, duration, layer)
+	procstart = null
+	src.procstart = null
 	var/image/passed_image = \
 		istext(image_to_show) \
 			? image(icon, src, image_to_show, layer) \
@@ -124,6 +150,8 @@
 /// Takes the passed in MA/icon_state, mirrors it onto ourselves, and displays that in world for duration seconds
 /// Returns the displayed object, you can animate it and all, but you don't own it, we'll delete it after the duration
 /atom/proc/flick_overlay_view(mutable_appearance/display, duration)
+	procstart = null
+	src.procstart = null
 	if(!display)
 		return null
 
@@ -147,10 +175,14 @@
 	return visual
 
 /area/flick_overlay_view(mutable_appearance/display, duration)
+	procstart = null
+	src.procstart = null
 	return
 
 ///Get active players who are playing in the round
 /proc/get_active_player_list(alive_check = FALSE, afk_check = FALSE, human_check = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/active_players = list()
 	for(var/mob/player_mob as anything in GLOB.player_list)
 		if(!player_mob?.client)
@@ -172,10 +204,14 @@
 
 ///Counts active players who are playing in the round
 /proc/get_active_player_count(alive_check = FALSE, afk_check = FALSE, human_check = FALSE)
+	procstart = null
+	src.procstart = null
 	return length(get_active_player_list(alive_check, afk_check, human_check))
 
 ///Uses stripped down and bastardized code from respawn character
 /proc/make_body(mob/dead/observer/ghost_player)
+	procstart = null
+	src.procstart = null
 	if(!ghost_player || !ghost_player.key)
 		return
 
@@ -191,12 +227,16 @@
 
 ///sends a whatever to all playing players; use instead of to_chat(world, where needed)
 /proc/send_to_playing_players(thing)
+	procstart = null
+	src.procstart = null
 	for(var/player_mob in GLOB.player_list)
 		if(player_mob && !isnewplayer(player_mob))
 			to_chat(player_mob, thing)
 
 ///Flash the window of a player
 /proc/window_flash(client/flashed_client, ignorepref = FALSE)
+	procstart = null
+	src.procstart = null
 	if(ismob(flashed_client))
 		var/mob/player_mob = flashed_client
 		if(player_mob.client)
@@ -214,6 +254,8 @@
  * * type - the location(typepath or solid atom) the target maybe stored in
  */
 /proc/recursive_loc_check(atom/movable/target, type)
+	procstart = null
+	src.procstart = null
 	var/atom/atom_to_find = null
 
 	if(ispath(type))
@@ -239,6 +281,8 @@
 
 ///Send a message in common radio when a player arrives
 /proc/announce_arrival(mob/living/carbon/human/character, rank, announce_to_ghosts = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!SSticker.IsRoundInProgress() || QDELETED(character))
 		return
 	if (announce_to_ghosts)
@@ -249,6 +293,8 @@
 
 ///Check if the turf pressure allows specialized equipment to work
 /proc/lavaland_equipment_pressure_check(turf/turf_to_check)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(!istype(turf_to_check))
 		return
@@ -261,6 +307,8 @@
 
 ///Find an obstruction free turf that's within the range of the center. Can also condition on if it is of a certain area type.
 /proc/find_obstruction_free_location(range, atom/center, area/specific_area)
+	procstart = null
+	src.procstart = null
 	var/list/possible_loc = list()
 
 	for(var/turf/found_turf as anything in RANGE_TURFS(range, center))
@@ -280,6 +328,8 @@
 
 ///Checks to see if `atom/source` is behind `atom/target`
 /proc/check_behind(atom/source, atom/target)
+	procstart = null
+	src.procstart = null
 	// Let's see if source is behind target
 	// "Behind" is defined as 3 tiles directly to the back of the target
 	// x . .
@@ -314,6 +364,8 @@
  * * duration_max - the maximum duration of the power failure in seconds (not deciseconds)
  */
 /proc/power_fail(duration_min, duration_max)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/power/apc/current_apc as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/power/apc))
 		if(!current_apc.cell || !SSmapping.level_trait(current_apc.z, ZTRAIT_STATION) || HAS_TRAIT(current_apc.area, TRAIT_AREA_BLOCK_POWER_FAIL))
 			continue
@@ -328,6 +380,8 @@
  * just make sure they don't also have html characters like <, > and ' which will be garbled.
  */
 /proc/send_tip_of_the_round(target, selected_tip, source = "Tip of the round")
+	procstart = null
+	src.procstart = null
 	var/message
 	if(selected_tip)
 		message = selected_tip

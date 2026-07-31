@@ -53,6 +53,8 @@
 	var/custom_signal = FALSE
 
 /obj/item/circuit_component/signal_handler/populate_options()
+	procstart = null
+	src.procstart = null
 	var/static/list/component_options = list(
 		COMP_SIGNAL_HANDLER_OBJECT,
 		COMP_SIGNAL_HANDLER_GLOBAL,
@@ -63,6 +65,8 @@
 	signal_map = GLOB.integrated_circuit_signal_ids
 
 /obj/item/circuit_component/signal_handler/populate_ports()
+	procstart = null
+	src.procstart = null
 	instant = add_input_port("Instant", PORT_TYPE_BOOLEAN, order = 0.5, trigger = null, default = TRUE)
 	register = add_input_port("Register", PORT_TYPE_SIGNAL, order = 2, trigger = PROC_REF(register_signals))
 	unregister = add_input_port("Unregister", PORT_TYPE_SIGNAL, order = 2, trigger = PROC_REF(unregister_signals))
@@ -72,6 +76,8 @@
 	event_triggered = add_output_port("Triggered", PORT_TYPE_INSTANT_SIGNAL, order = 2)
 
 /obj/item/circuit_component/signal_handler/proc/add_source_entity()
+	procstart = null
+	src.procstart = null
 	if(target)
 		remove_input_port(target)
 	if(entity)
@@ -81,11 +87,15 @@
 	entity = add_output_port("Source Entity", PORT_TYPE_DATUM, order = 0)
 
 /obj/item/circuit_component/signal_handler/save_data_to_list(list/component_data)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	component_data["signal_id"] = signal_id.value
 	component_data["signal_port_data"] = signal_ports
 
 /obj/item/circuit_component/signal_handler/load_data_from_list(list/component_data)
+	procstart = null
+	src.procstart = null
 	signal_id.set_value(component_data["signal_id"], force = TRUE)
 	registered_signal = signal_id.value
 	load_new_ports(component_data["signal_port_data"])
@@ -94,6 +104,8 @@
 
 
 /obj/item/circuit_component/signal_handler/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(signal_id.value != registered_signal)
 		custom_signal = FALSE
 		unregister_signals_all(port)
@@ -106,6 +118,8 @@
 		set_signal_options(port)
 
 /obj/item/circuit_component/signal_handler/proc/set_signal_options(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 
 	switch(signal_handler_options.value)
@@ -126,6 +140,8 @@
 	unregister_signals_all(port)
 
 /obj/item/circuit_component/signal_handler/proc/register_signals(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	var/datum/target_datum = target?.value
 	if(signal_handler_options.value == COMP_SIGNAL_HANDLER_GLOBAL)
@@ -138,6 +154,8 @@
 		registered_entities |= WEAKREF(target_datum)
 
 /obj/item/circuit_component/signal_handler/proc/load_new_ports(list/ports_to_load)
+	procstart = null
+	src.procstart = null
 	for(var/datum/port/input/input_port as anything in input_signal_ports)
 		remove_input_port(input_port)
 	for(var/datum/port/output/output_port as anything in output_signal_ports)
@@ -155,6 +173,8 @@
 
 
 /obj/item/circuit_component/signal_handler/proc/unregister_signals_all(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	for(var/datum/weakref/weakref_of_object as anything in registered_entities)
 		var/datum/datum_to_unregister = weakref_of_object.resolve()
@@ -164,6 +184,8 @@
 	registered_entities.Cut()
 
 /obj/item/circuit_component/signal_handler/proc/unregister_signals(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 
 	var/datum/registered_datum = target?.value
@@ -177,6 +199,8 @@
 	registered_entities -= WEAKREF(registered_datum)
 
 /obj/item/circuit_component/signal_handler/proc/run_ports_on_args(list/arguments)
+	procstart = null
+	src.procstart = null
 	var/first_arg = popleft(arguments)
 	if(entity)
 		entity.set_output(first_arg)
@@ -186,6 +210,8 @@
 	event_triggered.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/signal_handler/proc/handle_signal_received(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/list/arguments = args.Copy()
 
@@ -214,6 +240,8 @@
 	return output["bitflag"] || NONE
 
 /obj/item/circuit_component/signal_handler/proc/handle_bitflag_received(datum/port/input/port, list/return_values)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!return_values)
 		return

@@ -36,6 +36,8 @@
 	var/tantrum_time_duration = 3.5 SECONDS
 
 /mob/living/basic/mad_piano/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/connections = list(COMSIG_ATOM_ENTERED = PROC_REF(aggro_tantrum))
 	AddComponent(/datum/component/connect_range, tracked = src, connections = connections, range = 1, works_in_containers = FALSE)
@@ -48,11 +50,15 @@
 	desc_calm = desc
 
 /mob/living/basic/mad_piano/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 
 	if (COOLDOWN_FINISHED(src, tantrum_time))
 		calm_down()
 
 /mob/living/basic/mad_piano/proc/aggro_tantrum(datum/source, mob/living/victim)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(victim, /mob/living/carbon) || victim.stat == DEAD)
 		return
@@ -66,6 +72,8 @@
 	START_PROCESSING(SSprocessing, src)
 
 /mob/living/basic/mad_piano/proc/calm_down(datum/source)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, tantrum_time))
 		return
 	icon_state = icon_calm
@@ -75,13 +83,19 @@
 	ADD_TRAIT(src, TRAIT_PACIFISM, TRAIT_GENERIC)
 	STOP_PROCESSING(SSprocessing, src)
 
-/mob/living/basic/mad_piano/med_hud_set_health() //sneaky sneaky sneaky
+/mob/living/basic/mad_piano/med_hud_set_health()
+	procstart = null
+	src.procstart = null //sneaky sneaky sneaky
 	return
 
 /mob/living/basic/mad_piano/med_hud_set_status()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/basic/mad_piano/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSprocessing, src)
 	return ..()
 

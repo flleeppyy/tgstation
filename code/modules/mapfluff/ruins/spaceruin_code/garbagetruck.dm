@@ -15,10 +15,14 @@
 	var/used = FALSE
 
 /obj/item/eyesnatcher/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state][used ? "-used" : ""]"
 
 /obj/item/eyesnatcher/attack(mob/living/carbon/human/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(used || !istype(target) || !target.Adjacent(user)) //Works only once, no TK use
 		return ..()
 
@@ -83,11 +87,15 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/item/eyesnatcher/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(used)
 		. += span_notice("It has been used up.")
 
 /obj/item/eyesnatcher/proc/eyeballs_exist(obj/item/organ/eyes/eyeballies, obj/item/bodypart/head/head, mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	if(!eyeballies || QDELETED(eyeballies))
 		return FALSE
 	if(!head || QDELETED(head))

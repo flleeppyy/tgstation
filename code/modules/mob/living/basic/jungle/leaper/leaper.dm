@@ -51,6 +51,8 @@
 	)
 
 /mob/living/basic/leaper/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(\
 		/datum/element/change_force_on_death,\
@@ -76,6 +78,8 @@
 	ai_controller.set_blackboard_key(BB_LEAPER_SUMMON, toads)
 
 /mob/living/basic/leaper/proc/set_color_overlay(toad_color)
+	procstart = null
+	src.procstart = null
 	dead_overlay = mutable_appearance(icon, "[icon_state]_dead_overlay")
 	dead_overlay.color = toad_color
 
@@ -84,6 +88,8 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /mob/living/basic/leaper/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat == DEAD && dead_overlay)
 		. += dead_overlay
@@ -93,9 +99,13 @@
 		. += living_overlay
 
 /mob/living/basic/leaper/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback, force, gentle = FALSE, quickstart = TRUE, throw_type_path = /datum/thrownthing)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(src, TRAIT_IMMOBILIZED, LEAPING_TRAIT)
 	return ..()
 
 /mob/living/basic/leaper/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, LEAPING_TRAIT)

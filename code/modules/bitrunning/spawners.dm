@@ -10,6 +10,8 @@
 
 
 /obj/effect/mob_spawn/ghost_role/human/virtual_domain/special(mob/living/spawned_mob, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	var/datum/mind/ghost_mind = mob_possessor.mind
 	if(ghost_mind) // Preserves any previous bodies before making the switch
 		spawned_mob.AddComponent(/datum/component/temporary_body, ghost_mind, return_on_death = TRUE)
@@ -22,6 +24,8 @@
 
 /// Simulates a ghost role spawn without calling special(), ie a bitrunner spawn instead of a ghost.
 /obj/effect/mob_spawn/ghost_role/human/virtual_domain/proc/artificial_spawn(mob/living/runner)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_BITRUNNER_SPAWNED, runner)
 
 //Beach Bums (Friendly)
@@ -44,6 +48,8 @@
 	allow_custom_character = NONE
 
 /obj/effect/mob_spawn/ghost_role/human/virtual_domain/beach/lifeguard/special(mob/living/carbon/human/lifeguard, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	lifeguard.gender = FEMALE
 	lifeguard.update_body()
@@ -77,6 +83,8 @@
 	shoes = /obj/item/clothing/shoes/pirate/armored
 
 /obj/effect/mob_spawn/ghost_role/human/virtual_domain/pirate/special(mob/living/spawned_mob, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spawned_mob.fully_replace_character_name(spawned_mob.real_name, "[pick(strings(PIRATE_NAMES_FILE, "generic_beginnings"))][pick(strings(PIRATE_NAMES_FILE, "generic_endings"))]")
 
@@ -102,4 +110,6 @@
 	implants = list(/obj/item/implant/weapons_auth)
 
 /datum/outfit/virtual_syndicate/post_equip(mob/living/carbon/human/user, visuals_only)
+	procstart = null
+	src.procstart = null
 	user.add_faction(ROLE_SYNDICATE)

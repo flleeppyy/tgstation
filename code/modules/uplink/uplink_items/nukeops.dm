@@ -594,6 +594,8 @@
 	cost = 8
 
 /datum/uplink_item/explosives/military_grade/syndicate_bomb/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = replacetext(desc, "%MIN_BOMB_TIMER", SYNDIEBOMB_MIN_TIMER_SECONDS)
 
@@ -604,6 +606,8 @@
 	cost = 6
 
 /datum/uplink_item/explosives/military_grade/syndicate_bomb/emp/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(SSstation, STATION_TRAIT_CYBERNETIC_REVOLUTION))
 		cost *= 2

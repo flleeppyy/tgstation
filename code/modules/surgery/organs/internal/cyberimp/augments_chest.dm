@@ -16,6 +16,8 @@
 	slot = ORGAN_SLOT_STOMACH_AID
 
 /obj/item/organ/cyberimp/chest/nutriment/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(synthesizing)
@@ -31,9 +33,13 @@
 		addtimer(CALLBACK(src, PROC_REF(synth_cool)), 5 SECONDS)
 
 /obj/item/organ/cyberimp/chest/nutriment/proc/synth_cool()
+	procstart = null
+	src.procstart = null
 	synthesizing = FALSE
 
 /obj/item/organ/cyberimp/chest/nutriment/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!owner || . & EMP_PROTECT_SELF)
 		return
@@ -59,6 +65,8 @@
 	poison_amount = 15
 
 /obj/item/organ/cyberimp/chest/nutriment/black_market/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(owner.nutrition >= NUTRITION_LEVEL_FAT && owner.overeatduration <= OVEREAT_TIME_LIMIT)
 		owner.overeatduration = min(owner.overeatduration + 40 SECONDS, OVEREAT_TIME_LIMIT)
@@ -77,16 +85,22 @@
 	COOLDOWN_DECLARE(defib_cooldown)
 
 /obj/item/organ/cyberimp/chest/reviver/on_death(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(isnull(owner)) // owner can be null, on_death() gets called by /obj/item/organ/process() for decay
 		return
 	try_heal() // Allows implant to work even on dead people
 
 /obj/item/organ/cyberimp/chest/reviver/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	try_heal()
 
 /obj/item/organ/cyberimp/chest/reviver/proc/try_heal()
+	procstart = null
+	src.procstart = null
 	if(reviving)
 		if(!IS_UNCONSCIOUS_OR_CRIT(owner))
 			COOLDOWN_START(src, reviver_cooldown, revive_cost)
@@ -107,6 +121,8 @@
 
 
 /obj/item/organ/cyberimp/chest/reviver/proc/heal()
+	procstart = null
+	src.procstart = null
 	if(COOLDOWN_FINISHED(src, defib_cooldown))
 		revive_dead()
 
@@ -135,6 +151,8 @@
 
 
 /obj/item/organ/cyberimp/chest/reviver/proc/revive_dead()
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, defib_cooldown) || owner.stat != DEAD || owner.can_defib() != DEFIB_POSSIBLE)
 		return
 	owner.notify_revival("You are being revived by [src]!")
@@ -155,6 +173,8 @@
 
 
 /obj/item/organ/cyberimp/chest/reviver/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!owner || . & EMP_PROTECT_SELF)
 		return
@@ -172,6 +192,8 @@
 			addtimer(CALLBACK(src, PROC_REF(undo_heart_attack)), 600 / severity)
 
 /obj/item/organ/cyberimp/chest/reviver/proc/undo_heart_attack()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_owner = owner
 	if(!istype(human_owner))
 		return
@@ -195,6 +217,8 @@
 	var/on = FALSE
 
 /obj/item/organ/cyberimp/chest/thrusters/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/jetpack, \
@@ -209,20 +233,28 @@
 	)
 
 /obj/item/organ/cyberimp/chest/thrusters/Remove(mob/living/carbon/thruster_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	if(on)
 		deactivate(silent = TRUE)
 	..()
 
 /obj/item/organ/cyberimp/chest/thrusters/ui_action_click()
+	procstart = null
+	src.procstart = null
 	toggle()
 
 /obj/item/organ/cyberimp/chest/thrusters/proc/toggle(silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(on)
 		deactivate()
 	else
 		activate()
 
 /obj/item/organ/cyberimp/chest/thrusters/proc/activate(silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(on)
 		return
 	if(organ_flags & ORGAN_FAILING)
@@ -240,6 +272,8 @@
 	owner.update_body_parts()
 
 /obj/item/organ/cyberimp/chest/thrusters/proc/deactivate(silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return
 	SEND_SIGNAL(src, COMSIG_THRUSTER_DEACTIVATED, owner)
@@ -251,10 +285,14 @@
 	owner.update_body_parts()
 
 /obj/item/organ/cyberimp/chest/thrusters/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][on ? "-on" : null]"
 	return ..()
 
 /obj/item/organ/cyberimp/chest/thrusters/proc/allow_thrust(num, use_fuel = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return FALSE
 
@@ -290,9 +328,13 @@
 	return FALSE
 
 /obj/item/organ/cyberimp/chest/thrusters/get_overlay_state(image_layer, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	return "[aug_overlay][on ? "_on" : ""]"
 
 /obj/item/organ/cyberimp/chest/thrusters/get_overlay(image_layer, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for (var/image/overlay as anything in .)
 		overlay.layer = -BODYPARTS_HIGH_LAYER // makes absolutely zero sense why it would layer ontop of jumpsuits but it looks cool
@@ -318,6 +360,8 @@
 	var/mutable_appearance/stone_overlay
 
 /obj/item/organ/cyberimp/chest/spine/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!owner || . & EMP_PROTECT_SELF)
 		return
@@ -325,6 +369,8 @@
 	owner.apply_damage(20/severity, BRUTE, def_zone = BODY_ZONE_CHEST)
 
 /obj/item/organ/cyberimp/chest/spine/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	stone_overlay = mutable_appearance(icon = 'icons/effects/effects.dmi', icon_state = "stone")
 	organ_owner.add_overlay(stone_overlay)
@@ -334,6 +380,8 @@
 		add_organ_trait(TRAIT_STURDY_FRAME)
 
 /obj/item/organ/cyberimp/chest/spine/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	remove_organ_trait(TRAIT_BOULDER_BREAKER)
 	if(stone_overlay)
@@ -344,6 +392,8 @@
 		remove_organ_trait(TRAIT_STURDY_FRAME)
 
 /obj/item/organ/cyberimp/chest/spine/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/assembly/signaler/anomaly/grav))
 		return NONE
 

@@ -14,10 +14,14 @@
 	var/siphon_per_tick = 5
 
 /obj/machinery/shuttle_scrambler/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/machinery/shuttle_scrambler/process()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return PROCESS_KILL
 
@@ -32,6 +36,8 @@
 
 ///Turns on the siphoning, and its various side effects
 /obj/machinery/shuttle_scrambler/proc/toggle_on(mob/user)
+	procstart = null
+	src.procstart = null
 	SSshuttle.registerTradeBlockade(src)
 	AddComponent(/datum/component/gps, "Nautical Signal")
 	active = TRUE
@@ -40,6 +46,8 @@
 	START_PROCESSING(SSobj,src)
 
 /obj/machinery/shuttle_scrambler/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(active)
 		dump_loot(user)
 		return
@@ -54,6 +62,8 @@
 
 /// Handles interrupting research
 /obj/machinery/shuttle_scrambler/proc/interrupt_research()
+	procstart = null
+	src.procstart = null
 	var/datum/techweb/science_web = locate(/datum/techweb/science) in SSresearch.techwebs
 	for(var/obj/machinery/rnd/server/research_server as anything in science_web.techweb_servers)
 		if(research_server.machine_stat & (NOPOWER|BROKEN|EMPED))
@@ -63,6 +73,8 @@
 
 /// Handles expelling all the siphoned credits as holochips
 /obj/machinery/shuttle_scrambler/proc/dump_loot(mob/user)
+	procstart = null
+	src.procstart = null
 	if(credits_stored) // Prevents spamming empty holochips
 		new /obj/item/holochip(drop_location(), credits_stored)
 		to_chat(user,span_notice("You retrieve the siphoned [MONEY_NAME]!"))
@@ -72,19 +84,27 @@
 
 /// Alerts the crew about the siphon
 /obj/machinery/shuttle_scrambler/proc/send_notification()
+	procstart = null
+	src.procstart = null
 	priority_announce("Data theft signal detected; source registered on local GPS units.")
 
 /// Switches off the siphon
 /obj/machinery/shuttle_scrambler/proc/toggle_off(mob/user)
+	procstart = null
+	src.procstart = null
 	SSshuttle.clearTradeBlockade(src)
 	active = FALSE
 	STOP_PROCESSING(SSobj,src)
 
 /obj/machinery/shuttle_scrambler/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = active ? "dominator-Blue" : "dominator"
 	return ..()
 
 /obj/machinery/shuttle_scrambler/Destroy()
+	procstart = null
+	src.procstart = null
 	toggle_off()
 	return ..()
 
@@ -130,6 +150,8 @@
 	COOLDOWN_DECLARE(locate_cooldown)
 
 /obj/machinery/loot_locator/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, locate_cooldown))
 		balloon_alert_to_viewers("locator recharging!", vision_distance = 3)
 		return
@@ -143,6 +165,8 @@
 
 /// Looks across the station for items that are pirate specific exports
 /obj/machinery/loot_locator/proc/find_random_loot()
+	procstart = null
+	src.procstart = null
 	var/list/possible_loot = list()
 	for(var/datum/export/pirate/possible_export in GLOB.exports_list)
 		possible_loot += possible_export
@@ -182,6 +206,8 @@
 	var/cargo_hold_id
 
 /obj/machinery/piratepad/multitool_act(mob/living/user, obj/item/multitool/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (istype(I))
 		I.set_buffer(src)
@@ -189,28 +215,42 @@
 		return TRUE
 
 /obj/machinery/piratepad/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/piratepad/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return screwdriver_act(user, tool)
 
 /obj/machinery/piratepad/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/piratepad/crowbar_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return crowbar_act(user, tool)
 
 /obj/machinery/piratepad/proc/set_is_sending(value)
+	procstart = null
+	src.procstart = null
 	if(is_sending == value)
 		return
 	is_sending = value
 	update_appearance()
 
 /obj/machinery/piratepad/proc/finish_sending()
+	procstart = null
+	src.procstart = null
 	set_is_sending(FALSE)
 	flick("[base_icon_state]-beam", src)
 
 /obj/machinery/piratepad/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(panel_open)
 		icon_state = "[base_icon_state]-open"
@@ -246,12 +286,16 @@
 	var/load_holding_facility = TRUE
 
 /obj/machinery/computer/piratepad_control/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	if(isnull(nosell_typecache))
 		nosell_typecache = typecacheof(/mob/living/silicon/robot)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/computer/piratepad_control/multitool_act(mob/living/user, obj/item/multitool/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (istype(I) && istype(I.buffer,/obj/machinery/piratepad))
 		to_chat(user, span_notice("You link [src] with [I.buffer] in [I] buffer."))
@@ -259,6 +303,8 @@
 		return TRUE
 
 /obj/machinery/computer/piratepad_control/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cargo_hold_id)
 		for(var/obj/machinery/piratepad/P as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/piratepad))
@@ -270,6 +316,8 @@
 		pad_ref = WEAKREF(pad)
 
 /obj/machinery/computer/piratepad_control/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -277,6 +325,8 @@
 		ui.open()
 
 /obj/machinery/computer/piratepad_control/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["points"] = points
 	data["pad"] = pad_ref?.resolve() ? TRUE : FALSE
@@ -285,6 +335,8 @@
 	return data
 
 /obj/machinery/computer/piratepad_control/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -304,6 +356,8 @@
 
 /// Calculates the predicted value of the items on the pirate pad
 /obj/machinery/computer/piratepad_control/proc/recalc()
+	procstart = null
+	src.procstart = null
 	if(sending)
 		return
 
@@ -325,6 +379,8 @@
  * Sorts through all items on the control pad via pirate_export_loop, then generates a printout to view in the TGUI.
  */
 /obj/machinery/computer/piratepad_control/proc/send(check_global = FALSE, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!sending)
 		return
 
@@ -362,6 +418,8 @@
 
 ///The loop that calculates the value of stuff on a pirate pad, or plain sell them if dry_run is FALSE.
 /obj/machinery/computer/piratepad_control/proc/pirate_export_loop(obj/machinery/piratepad/pad, dry_run = TRUE)
+	procstart = null
+	src.procstart = null
 	var/datum/export_report/report = new
 	for(var/atom/movable/item_on_pad as anything in get_turf(pad))
 		if(item_on_pad == pad)
@@ -389,6 +447,8 @@
 
 /// Prepares to sell the items on the pad
 /obj/machinery/computer/piratepad_control/proc/start_sending(check_global = FALSE, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/piratepad/pad = pad_ref?.resolve()
 	if(!pad)
 		status_report = "No pad detected. Build or link a pad."
@@ -411,6 +471,8 @@
 
 /// Finishes the sending state of the pad
 /obj/machinery/computer/piratepad_control/proc/stop_sending(custom_report)
+	procstart = null
+	src.procstart = null
 	if(!sending)
 		return
 	sending = FALSE
@@ -427,6 +489,8 @@
 
 /// Attempts to find the thing on station
 /datum/export/pirate/proc/find_loot()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/export/pirate/ransom
@@ -435,6 +499,8 @@
 	export_types = list(/mob/living/carbon/human)
 
 /datum/export/pirate/ransom/find_loot()
+	procstart = null
+	src.procstart = null
 	var/list/head_minds = SSjob.get_living_heads()
 	var/list/head_mobs = list()
 	for(var/datum/mind/M as anything in head_minds)
@@ -443,6 +509,8 @@
 		return pick(head_mobs)
 
 /datum/export/pirate/ransom/get_base_cost(mob/living/carbon/human/ransomee)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(ransomee) || !ransomee.mind || HAS_TRAIT(ransomee.mind, TRAIT_HAS_BEEN_KIDNAPPED)) //mint condition only
 		return 0
 	else if(ransomee.has_faction(FACTION_PIRATE)) //can't ransom your fellow pirates to CentCom!
@@ -453,6 +521,8 @@
 		return 1000
 
 /datum/export/pirate/ransom/sell_object(mob/living/carbon/human/sold_item, datum/export_report/report, dry_run = TRUE, apply_elastic = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == EXPORT_NOT_SOLD || dry_run)
 		return
@@ -473,6 +543,8 @@
 
 ///Send them back to the station after a while.
 /datum/export/pirate/ransom/proc/send_back_to_station(mob/living/prisoner)
+	procstart = null
+	src.procstart = null
 	///Deleted or already bailed out of the place.
 	if(QDELETED(prisoner) || !istype(get_area(prisoner), /area/centcom/central_command_areas/holding))
 		return
@@ -485,6 +557,8 @@
 	export_types = list(/mob/living/basic/parrot)
 
 /datum/export/pirate/parrot/find_loot()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/basic/parrot/current_parrot in GLOB.alive_mob_list)
 		var/turf/parrot_turf = get_turf(current_parrot)
 		if(parrot_turf && is_station_level(parrot_turf.z))
@@ -497,9 +571,13 @@
 	export_types = list(/obj/item/stack/spacecash)
 
 /datum/export/pirate/cash/get_amount(obj/item/stack/spacecash/cash)
+	procstart = null
+	src.procstart = null
 	return cash.amount
 
 /datum/export/pirate/cash/get_base_cost(obj/item/stack/spacecash/cash)
+	procstart = null
+	src.procstart = null
 	return cash.value
 
 /datum/export/pirate/holochip
@@ -508,4 +586,6 @@
 	export_types = list(/obj/item/holochip)
 
 /datum/export/pirate/holochip/get_base_cost(obj/item/holochip/chip)
+	procstart = null
+	src.procstart = null
 	return chip.credits

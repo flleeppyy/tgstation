@@ -6,6 +6,8 @@
 	almost anything into a trash can.
 */
 /atom/MouseDrop(atom/over, src_location, over_location, src_control, over_control, params)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(!usr || !over)
@@ -24,6 +26,8 @@
  * or other checks
  */
 /atom/proc/base_mouse_drop_handler(atom/over, src_location, over_location, params)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	SHOULD_NOT_OVERRIDE(TRUE)
 
@@ -53,12 +57,16 @@
 
 /// The proc that should be overridden by subtypes to handle mouse drop. Called on the atom being dragged
 /atom/proc/mouse_drop_dragged(atom/over, mob/user, src_location, over_location, params)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	return
 
 /// The proc that should be overridden by subtypes to handle mouse drop. Called on the atom receiving a dragged object
 /atom/proc/mouse_drop_receive(atom/dropped, mob/user, params)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	return
@@ -67,6 +75,8 @@
 /// Does some other stuff adjacent to trying to figure out what the user actually "wanted" to click
 /// Returns TRUE if it caused a click, FALSE otherwise
 /client/proc/check_drag_proximity(atom/dragging, atom/over, src_location, over_location, src_control, over_control, params)
+	procstart = null
+	src.procstart = null
 	// We will swap which thing we're trying to check for clickability based off the type
 	// Assertion is if you drag a turf to anything else, you really just wanted to click the anything else
 	// And slightly misseed. I'm not interested in making this game pixel percise, so if it fits our other requirements
@@ -97,6 +107,8 @@
 /// Does the logic for checking if a drag counts as a click or not
 /// Returns true if it does, false otherwise
 /client/proc/is_drag_clickable(atom/dragging, atom/over, params)
+	procstart = null
+	src.procstart = null
 	if(dragging == over)
 		return TRUE
 	if(world.time - drag_start > LENIENCY_TIME) // Time's up bestie
@@ -122,6 +134,8 @@
 	return TRUE
 
 /client/MouseDown(datum/object, location, control, params)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(object)) //Yep, you can click on qdeleted things before they have time to nullspace. Fun.
 		return
 	SEND_SIGNAL(src, COMSIG_CLIENT_MOUSEDOWN, object, location, control, params)
@@ -136,6 +150,8 @@
 			sleep(delay)
 
 /client/MouseUp(object, location, control, params)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_CLIENT_MOUSEUP, object, location, control, params) & COMPONENT_CLIENT_MOUSEUP_INTERCEPT)
 		click_intercept_time = world.time
 	if(mouse_up_icon)
@@ -143,8 +159,12 @@
 	selected_target[1] = null
 
 /mob/proc/CanMobAutoclick(object, location, params)
+	procstart = null
+	src.procstart = null
 
 /mob/living/carbon/CanMobAutoclick(atom/object, location, params)
+	procstart = null
+	src.procstart = null
 	if(!object.IsAutoclickable())
 		return
 	var/obj/item/h = get_active_held_item()
@@ -152,17 +172,27 @@
 		. = h.CanItemAutoclick(object, location, params)
 
 /obj/item/proc/CanItemAutoclick(object, location, params)
+	procstart = null
+	src.procstart = null
 
 /atom/proc/IsAutoclickable()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /atom/movable/screen/IsAutoclickable()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /atom/movable/screen/click_catcher/IsAutoclickable()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /client/MouseDrag(src_object,atom/over_object,src_location,over_location,src_control,over_control,params)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 	if (LAZYACCESS(modifiers, MIDDLE_CLICK))
 		if (src_object && src_location != over_location)
@@ -184,6 +214,8 @@
 	return ..()
 
 /client/MouseDrop(atom/src_object, atom/over_object, atom/src_location, atom/over_location, src_control, over_control, params)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if (IS_WEAKREF_OF(src_object, middle_drag_atom_ref))

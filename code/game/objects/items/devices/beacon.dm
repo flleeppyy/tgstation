@@ -12,6 +12,8 @@
 	var/renamed = FALSE
 
 /obj/item/beacon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (enabled)
 		GLOB.teleportbeacons += src
@@ -20,10 +22,14 @@
 	register_context()
 
 /obj/item/beacon/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.teleportbeacons -= src
 	return ..()
 
 /obj/item/beacon/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item))
 		context[SCREENTIP_CONTEXT_RMB] = "Toggle beacon"
 		return CONTEXTUAL_SCREENTIP_SET
@@ -31,11 +37,15 @@
 	return NONE
 
 /obj/item/beacon/proc/turn_off()
+	procstart = null
+	src.procstart = null
 	icon_state = "beacon-off"
 	GLOB.teleportbeacons -= src
 	SEND_SIGNAL(src, COMSIG_BEACON_DISABLED)
 
 /obj/item/beacon/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	enabled = !enabled
 	if (enabled)
 		icon_state = "beacon"
@@ -46,5 +56,7 @@
 	return
 
 /obj/item/beacon/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	attack_self(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN

@@ -12,6 +12,8 @@
 	var/annoying_ambience = list('sound/ambience/misc/ambimalf.ogg')
 
 /area/station/ai/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!secure)
 		ambientsounds = null
@@ -46,6 +48,8 @@
 	annoying_ambience = null
 
 /area/station/ai/satellite/chamber/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/block_area_power_fail)
 

@@ -37,16 +37,22 @@ The console is located at computer/gulag_teleporter.dm
 	))
 
 /obj/machinery/gulag_teleporter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	locate_reclaimer()
 
 /obj/machinery/gulag_teleporter/Destroy()
+	procstart = null
+	src.procstart = null
 	if(linked_reclaimer)
 		linked_reclaimer.linked_teleporter = null
 	linked_reclaimer = null
 	return ..()
 
 /obj/machinery/gulag_teleporter/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(locked)
 		to_chat(user, span_warning("[src] is locked!"))
@@ -54,12 +60,18 @@ The console is located at computer/gulag_teleporter.dm
 	toggle_open()
 
 /obj/machinery/gulag_teleporter/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return isnull(occupant) ? default_deconstruction_screwdriver(user, tool) : NONE
 
 /obj/machinery/gulag_teleporter/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_pry_open(user, tool, deconstruct_on_fail = TRUE)
 
 /obj/machinery/gulag_teleporter/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][state_open ? "_open" : null]"
 	//no power or maintenance
 	if(machine_stat & (NOPOWER|BROKEN))
@@ -79,6 +91,8 @@ The console is located at computer/gulag_teleporter.dm
 
 
 /obj/machinery/gulag_teleporter/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(user))
 		return
 	if(locked)
@@ -89,6 +103,8 @@ The console is located at computer/gulag_teleporter.dm
 	open_machine()
 
 /obj/machinery/gulag_teleporter/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/resist_time = breakout_time
 	if(!locked)
 		if(!HAS_TRAIT(user, TRAIT_RESTRAINED))
@@ -113,11 +129,15 @@ The console is located at computer/gulag_teleporter.dm
 		open_machine()
 
 /obj/machinery/gulag_teleporter/proc/locate_reclaimer()
+	procstart = null
+	src.procstart = null
 	linked_reclaimer = locate(/obj/machinery/gulag_item_reclaimer)
 	if(linked_reclaimer)
 		linked_reclaimer.linked_teleporter = src
 
 /obj/machinery/gulag_teleporter/proc/toggle_open()
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		to_chat(usr, span_notice("Close the maintenance panel first."))
 		return
@@ -131,6 +151,8 @@ The console is located at computer/gulag_teleporter.dm
 /// Strips the occupant of any items that are not allowed to be teleported to the gulag.
 /// Will either place those items in the linked_reclaimer or on the ground if the reclaimer is deleted.
 /obj/machinery/gulag_teleporter/proc/strip_prisoner(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(linked_reclaimer))
 		linked_reclaimer.stored_items[victim] = list()
 
@@ -149,6 +171,8 @@ The console is located at computer/gulag_teleporter.dm
 		thing.forceMove(linked_reclaimer)
 
 /obj/machinery/gulag_teleporter/proc/handle_prisoner(obj/item/id, datum/record/crew/target)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(occupant))
 		return
 	strip_prisoner(occupant)

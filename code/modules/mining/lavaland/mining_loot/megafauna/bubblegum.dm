@@ -7,6 +7,8 @@
 	icon_state = "vial"
 
 /obj/item/mayhem/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(tgui_alert(user, "Breaking the bottle will cause nearby crewmembers to go into a murderous frenzy. Be sure you know what you are doing...", "Break the bottle?", list("Break it!", "DON'T")) != "Break it!")
 		return
 
@@ -56,12 +58,16 @@
 	acid = 100
 
 /obj/item/clothing/suit/hooded/hostile_environment/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/radiation_protected_clothing)
 	AddElement(/datum/element/gags_recolorable)
 	allowed = GLOB.mining_suit_allowed
 
 /obj/item/clothing/suit/hooded/hostile_environment/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/wearer = loc
 	if(istype(wearer) && SPT_PROB(1, seconds_per_tick)) //cursed by bubblegum
 		if(prob(7.5))
@@ -96,6 +102,8 @@
 	flags_1 = IS_PLAYER_COLORABLE_1
 
 /obj/item/clothing/head/hooded/hostile_environment/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 	AddComponent(/datum/component/butchering/wearable, \
@@ -111,14 +119,20 @@
 	AddElement(/datum/element/gags_recolorable)
 
 /obj/item/clothing/head/hooded/hostile_environment/equipped(mob/user, slot, initial = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(user, span_notice("You feel a bloodlust. You can now butcher corpses with your bare arms."))
 
 /obj/item/clothing/head/hooded/hostile_environment/dropped(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(user, span_notice("You lose your bloodlust."))
 
 /obj/item/clothing/head/hooded/hostile_environment/proc/consume(mob/living/user, mob/living/butchered)
+	procstart = null
+	src.procstart = null
 	if(butchered.mob_biotypes & (MOB_ROBOTIC | MOB_SPIRIT))
 		return
 	var/health_consumed = butchered.maxHealth * 0.1

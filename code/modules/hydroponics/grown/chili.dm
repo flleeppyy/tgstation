@@ -106,4 +106,6 @@
 	foodtypes = VEGETABLES
 
 /obj/item/food/grown/bell_pepper/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/roasted_bell_pepper, rand(15 SECONDS, 25 SECONDS), TRUE, TRUE)

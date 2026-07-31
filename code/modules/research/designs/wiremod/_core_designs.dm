@@ -46,6 +46,8 @@
 	)
 
 /datum/design/component/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(build_path)
 		var/obj/item/circuit_component/component_path = build_path

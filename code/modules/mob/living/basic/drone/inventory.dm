@@ -1,6 +1,8 @@
 // Drone inventory procs
 
 /mob/living/basic/drone/doUnEquip(obj/item/item_dropping, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(..())
 		update_held_items()
 		if(item_dropping == head)
@@ -14,6 +16,8 @@
 
 
 /mob/living/basic/drone/can_equip(obj/item/item, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE, ignore_equipped = FALSE, indirect_action = FALSE)
+	procstart = null
+	src.procstart = null
 	switch(slot)
 		if(ITEM_SLOT_HEAD)
 			if(head)
@@ -29,6 +33,8 @@
 
 
 /mob/living/basic/drone/get_item_by_slot(slot_id)
+	procstart = null
+	src.procstart = null
 	switch(slot_id)
 		if(ITEM_SLOT_HEAD)
 			return head
@@ -38,6 +44,8 @@
 	return ..()
 
 /mob/living/basic/drone/get_slot_by_item(obj/item/looking_for)
+	procstart = null
+	src.procstart = null
 	if(internal_storage == looking_for)
 		return ITEM_SLOT_DEX_STORAGE
 	if(head == looking_for)
@@ -45,6 +53,8 @@
 	return ..()
 
 /mob/living/basic/drone/equip_to_slot(obj/item/equipping, slot, initial = FALSE, redraw_mob = FALSE, indirect_action = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!slot)
 		return
 	if(!istype(equipping))
@@ -77,4 +87,6 @@
 	has_equipped(equipping, slot)
 
 /mob/living/basic/drone/getBackSlot()
+	procstart = null
+	src.procstart = null
 	return ITEM_SLOT_DEX_STORAGE

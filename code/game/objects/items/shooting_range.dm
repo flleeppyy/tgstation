@@ -10,6 +10,8 @@
 	var/list/bullethole_overlays
 
 /obj/item/target/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(tool.use_tool(src, user, 0 SECONDS, volume = 40))
 		LAZYNULL(bullethole_overlays)
 		balloon_alert(user, "target repaired")
@@ -17,10 +19,14 @@
 	return TRUE
 
 /obj/item/target/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. |= bullethole_overlays
 
 /obj/item/target/bullet_act(obj/projectile/hitting_projectile, def_zone, piercing_hit = FALSE)
+	procstart = null
+	src.procstart = null
 	if(prob(25))
 		return ..() // RNG change to just not leave a mark, like walls
 	if(length(overlays) > 35)
@@ -83,5 +89,7 @@
 	max_integrity = 2000
 
 /obj/item/target/clown/bullet_act(obj/projectile/proj)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(src, 'sound/items/bikehorn.ogg', 50, TRUE)

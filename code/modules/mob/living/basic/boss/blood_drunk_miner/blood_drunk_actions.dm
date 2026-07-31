@@ -11,6 +11,8 @@
 	charge_speed = 0.3
 
 /datum/action/cooldown/mob_cooldown/charge/basic_charge/blood_drunk_miner/hit_target(atom/movable/source, atom/target, damage_dealt)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isbasicmob(source) || !isliving(target))
 		return
@@ -28,6 +30,8 @@
 	var/max_cooldown_time = 10 SECONDS
 
 /datum/action/cooldown/mob_cooldown/transform_weapon/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	disable_cooldown_actions()
 	do_transform()
 	StartCooldown(rand(cooldown_time, max_cooldown_time), 0)
@@ -35,6 +39,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/transform_weapon/proc/do_transform()
+	procstart = null
+	src.procstart = null
 	if(!istype(owner, /mob/living/basic/boss/blood_drunk_miner))
 		return
 	var/mob/living/basic/boss/blood_drunk_miner/blood_drunk_miner = owner
@@ -60,6 +66,8 @@
 	var/reload_delay = 0.1 SECONDS
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/kinetic_accelerator/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	owner.visible_message(span_danger("[owner] fires the proto-kinetic accelerator!"))
 	owner.face_atom(target_atom)
 	owner.do_alert_animation(alert_delay + (shot_count - 1) * shot_delay)
@@ -69,11 +77,15 @@
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/kinetic_accelerator/attack_sequence(mob/living/firer, atom/target)
+	procstart = null
+	src.procstart = null
 	SLEEP_CHECK_DEATH(prefire_delay, firer)
 	. = ..()
 	sleep(reload_delay)
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/kinetic_accelerator/shoot_projectile(atom/origin, atom/target, set_angle, mob/firer, projectile_spread, speed_multiplier, override_projectile_type, override_homing)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/temp_visual/dir_setting/firing_effect(get_turf(firer), firer.dir)
 

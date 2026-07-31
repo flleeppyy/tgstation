@@ -2,6 +2,8 @@
 	var/list/blacklisted_emotes = list("me", "help")
 
 /datum/emote_panel/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/list/emotes = list()
@@ -30,6 +32,8 @@
 	return data
 
 /datum/emote_panel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -57,6 +61,8 @@
 			to_chat(ui.user, span_warning("Previewed sound for [emote.name]."), type = MESSAGE_TYPE_INFO)
 
 /datum/emote_panel/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "EmotePanel")
@@ -64,4 +70,6 @@
 		ui.open()
 
 /datum/emote_panel/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state

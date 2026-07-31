@@ -106,17 +106,23 @@
 	src.heal_color = heal_color
 
 /datum/component/healing_touch/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_parent = parent
 	living_parent.ai_controller?.set_blackboard_key(BB_BASIC_MOB_HEALER, FALSE)
 	UnregisterSignal(parent, list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_HOSTILE_PRE_ATTACKINGTARGET))
 	return ..()
 
 /datum/component/healing_touch/Destroy(force)
+	procstart = null
+	src.procstart = null
 	extra_checks = null
 	return ..()
 
 /// Validate our target, and interrupt the attack chain to start healing it if it is allowed
 /datum/component/healing_touch/proc/try_healing(mob/living/healer, atom/target, proximity, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!isliving(target))
 		return
@@ -163,6 +169,8 @@
 
 /// Returns true if the target has a kind of damage which we can heal
 /datum/component/healing_touch/proc/has_healable_damage(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if (!isnull(valid_biotypes) && !(valid_biotypes & target.mob_biotypes))
 		return FALSE
 	if (target.get_stamina_loss() > 0 && heal_stamina)
@@ -184,6 +192,8 @@
 
 /// Perform a do_after and then heal our target
 /datum/component/healing_touch/proc/heal_target(mob/living/healer, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if (action_text)
 		healer.visible_message(span_notice("[format_string(action_text, healer, target)]"))
 
@@ -223,6 +233,8 @@
 
 /// Reformats the passed string with the replacetext keys
 /datum/component/healing_touch/proc/format_string(string, atom/source, atom/target)
+	procstart = null
+	src.procstart = null
 	var/final_message = replacetext(string, MEND_REPLACE_KEY_SOURCE, "[source]")
 	final_message = replacetext(final_message, MEND_REPLACE_KEY_TARGET, "[target]")
 	return final_message

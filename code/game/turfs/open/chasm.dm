@@ -15,34 +15,50 @@
 	rust_resistance = RUST_RESISTANCE_ABSOLUTE
 
 /turf/open/chasm/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	apply_components(mapload)
 
 /// Lets people walk into chasms.
 /turf/open/chasm/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return TRUE
 
 /turf/open/chasm/proc/set_target(turf/target)
+	procstart = null
+	src.procstart = null
 	var/datum/component/chasm/chasm_component = GetComponent(/datum/component/chasm)
 	chasm_component.target_turf = target
 
 /turf/open/chasm/proc/drop(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	var/datum/component/chasm/chasm_component = GetComponent(/datum/component/chasm)
 	chasm_component.drop(AM)
 
 /turf/open/chasm/MakeSlippery(wet_setting, min_wet_time, wet_time_to_add, max_wet_time, permanent)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/chasm/MakeDry()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/chasm/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	if(the_rcd.mode == RCD_TURF && the_rcd.rcd_design_path == /turf/open/floor/plating/rcd)
 		return list("delay" = 0, "cost" = 3)
 	return FALSE
 
 /turf/open/chasm/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	procstart = null
+	src.procstart = null
 	if(rcd_data[RCD_DESIGN_MODE] == RCD_TURF && rcd_data[RCD_DESIGN_PATH] == /turf/open/floor/plating/rcd)
 		place_on_top(/turf/open/floor/plating, flags = CHANGETURF_INHERIT_AIR)
 		return TRUE
@@ -51,11 +67,15 @@
 
 
 /turf/open/chasm/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	underlay_appearance.icon = /turf/open/misc/asteroid/basalt::icon
 	underlay_appearance.icon_state = /turf/open/misc/asteroid/basalt::icon_state
 	return TRUE
 
 /turf/open/chasm/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ITEM_INTERACT_ANY_BLOCKER & .)
 		return .
@@ -71,9 +91,13 @@
 
 /// Handles adding the chasm component to the turf (So stuff falls into it!)
 /turf/open/chasm/proc/apply_components(mapload)
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/chasm, GET_TURF_BELOW(src), mapload)
 
 /turf/open/chasm/can_cross_safely(atom/movable/crossing)
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(src, TRAIT_CHASM_STOPPED) || HAS_TRAIT(crossing, TRAIT_MOVE_FLYING)
 
 // Chasms for Lavaland, with planetary atmos and lava glow
@@ -98,6 +122,8 @@
 	light_color = LIGHT_COLOR_PURPLE
 
 /turf/open/chasm/icemoon/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	underlay_appearance.icon = /turf/open/misc/asteroid/snow/icemoon::icon
 	underlay_appearance.icon_state = /turf/open/misc/asteroid/snow/icemoon::icon_state
 	return TRUE
@@ -111,6 +137,8 @@
 	baseturfs = /turf/open/chasm/jungle
 
 /turf/open/chasm/jungle/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	underlay_appearance.icon = /turf/open/misc/dirt::icon
 	underlay_appearance.icon_state = /turf/open/misc/dirt::icon_state
 	return TRUE
@@ -121,18 +149,26 @@
 	baseturfs = /turf/open/chasm/true
 
 /turf/open/chasm/true/apply_components(mapload)
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/chasm, null, mapload) //Don't pass anything for below_turf.
 
 /turf/open/chasm/true/no_smooth
 	smoothing_flags = NONE
 
 /turf/open/chasm/true/no_smooth/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/open/chasm/true/no_smooth/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/open/chasm/true/no_smooth/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/stack/rods))
 		return ITEM_INTERACT_BLOCKING
 

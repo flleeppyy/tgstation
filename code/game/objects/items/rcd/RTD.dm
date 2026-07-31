@@ -65,6 +65,8 @@
 
 /// decompress a single tile design list element from GLOB.floor_designs into its individual variables
 /datum/tile_info/New(list/design)
+	procstart = null
+	src.procstart = null
 	name = design["name"]
 	tile_type = design["type"]
 	turf_type = initial(tile_type.turf_type)
@@ -79,6 +81,8 @@
 
 /// fill all information to be sent to the UI
 /datum/tile_info/proc/fill_ui_data(list/data, selected_direction)
+	procstart = null
+	src.procstart = null
 	data["selected_recipe"] = name
 	data["selected_icon"] = icon_css_class
 
@@ -91,6 +95,8 @@
 
 ///convinience proc to quickly convert the tile design into an physical tile to lay on the plating
 /datum/tile_info/proc/new_tile(loc, selected_direction)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/tile/final_tile = new tile_type(loc, 1)
 	final_tile.turf_dir = selected_direction
 	return final_tile
@@ -114,6 +120,8 @@
 
 //decompressing nessasary information required to re-create an mutable appearance
 /datum/overlay_info/New(mutable_appearance/appearance)
+	procstart = null
+	src.procstart = null
 	icon = appearance.icon
 	icon_state = appearance.icon_state
 	alpha = appearance.alpha
@@ -122,9 +130,13 @@
 
 /// re create the appearance
 /datum/overlay_info/proc/add_decal(turf/the_turf)
+	procstart = null
+	src.procstart = null
 	the_turf.AddElement(/datum/element/decal, icon, icon_state, direction, null, null, alpha, color, null, FALSE, null)
 
 /obj/item/construction/rtd/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/design = GLOB.floor_designs[root_category][design_category][1]
 	if(!design["datum"])
@@ -132,11 +144,15 @@
 	selected_design = design["datum"]
 
 /obj/item/construction/rtd/Destroy()
+	procstart = null
+	src.procstart = null
 	selected_design = null
 	QDEL_LIST(design_overlays)
 	return ..()
 
 /obj/item/construction/rtd/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "RapidTilingDevice", name)
@@ -144,15 +160,21 @@
 
 
 /obj/item/construction/rtd/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/rtd),
 	)
 
 /obj/item/construction/rtd/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui_interact(user)
 
 /obj/item/construction/rtd/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 
 	data["root_categories"] = list()
@@ -177,6 +199,8 @@
 	return data
 
 /obj/item/construction/rtd/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 
 	data["selected_category"] = design_category
@@ -185,6 +209,8 @@
 	return data
 
 /obj/item/construction/rtd/handle_ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	playsound(src, SFX_TOOL_SWITCH, 20, TRUE)
 
 	var/floor_designs = GLOB.floor_designs
@@ -223,11 +249,15 @@
 	return TRUE
 
 /obj/item/construction/rtd/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!ranged || !range_check(interacting_with, user))
 		return NONE
 	return try_tiling(interacting_with, user)
 
 /obj/item/construction/rtd/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -242,6 +272,8 @@
  * * mob/living/user - the mob trying to do the plating
  */
 /obj/item/construction/rtd/proc/try_tiling(atom/interacting_with, mob/living/user)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(HAS_TRAIT(interacting_with, TRAIT_COMBAT_MODE_SKIP_INTERACTION))
@@ -322,11 +354,15 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/construction/rtd/ranged_interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!ranged || !range_check(interacting_with, user))
 		return NONE
 	return interact_with_atom_secondary(interacting_with, user, modifiers)
 
 /obj/item/construction/rtd/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/turf/open/floor/floor = interacting_with
 	if(!istype(floor))
 		return NONE
@@ -399,9 +435,13 @@
 
 ///Cannot deconstruct floors
 /obj/item/construction/rtd/borg/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return NONE
 
 /obj/item/construction/rtd/borg/get_matter(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!iscyborg(user))
 		return 0
 	var/mob/living/silicon/robot/borgy = user
@@ -411,6 +451,8 @@
 	return borgy.cell.charge
 
 /obj/item/construction/rtd/borg/useResource(amount, mob/user, dry_run)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/borgy = user
 	if(!iscyborg(borgy))
 		return FALSE

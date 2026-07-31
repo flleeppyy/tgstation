@@ -9,6 +9,8 @@
 	var/range = 3
 
 /datum/bt_node/ai_behavior/find_valid_teleport_location/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = controller.blackboard[target_key]
 	if(QDELETED(target))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED

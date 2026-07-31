@@ -26,15 +26,21 @@
 	COOLDOWN_DECLARE(message_cooldown)
 
 /obj/machinery/dna_infuser/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	occupant_typecache = typecacheof(/mob/living/carbon/human)
 
 /obj/machinery/dna_infuser/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//dump_inventory_contents called by parent, emptying infusing_from
 	infusing_into = null
 
 /obj/machinery/dna_infuser/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!occupant)
 		. += span_notice("Requires [span_bold("a subject")].")
@@ -54,11 +60,15 @@
 	. += span_notice("Examine further for more information.")
 
 /obj/machinery/dna_infuser/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("If you infuse a Tier [DNA_MUTANT_TIER_ONE] entry until it unlocks the bonus, it will upgrade the maximum tier and allow more complicated infusions.")
 	. += span_notice("The maximum level it can reach is Tier [DNA_INFUSER_MAX_TIER].")
 
 /obj/machinery/dna_infuser/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user == occupant)
 		toggle_open(user)
 		return
@@ -75,6 +85,8 @@
 	toggle_open(user)
 
 /obj/machinery/dna_infuser/proc/start_infuse()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_occupant = occupant
 	infusing = TRUE
 	visible_message(span_notice("[src] hums to life, beginning the infusion process!"))
@@ -99,6 +111,8 @@
 	update_appearance()
 
 /obj/machinery/dna_infuser/proc/end_infuse(fail_explanation, fail_title)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_occupant = occupant
 	if(human_occupant.infuse_organ(infusing_into, infusing_from))
 		check_tier_progression(human_occupant)
@@ -119,6 +133,8 @@
 
 /// checks to see if the machine should progress a new tier.
 /obj/machinery/dna_infuser/proc/check_tier_progression(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	if(
 		max_tier_allowed != DNA_INFUSER_MAX_TIER \
 		&& infusing_into.tier == max_tier_allowed \
@@ -129,6 +145,8 @@
 		visible_message(span_notice("[src] dings as it records the results of the full infusion."))
 
 /obj/machinery/dna_infuser/update_icon_state()
+	procstart = null
+	src.procstart = null
 	//out of order
 	if(machine_stat & (NOPOWER | BROKEN))
 		icon_state = base_icon_state
@@ -146,6 +164,8 @@
 	return ..()
 
 /obj/machinery/dna_infuser/proc/toggle_open(mob/user)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		if(user)
 			balloon_alert(user, "close panel first!")
@@ -162,12 +182,18 @@
 	dump_inventory_contents(list(occupant))
 
 /obj/machinery/dna_infuser/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return infusing ? NONE : default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/dna_infuser/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return infusing ? NONE : default_pry_open(user, tool, deconstruct_on_fail = TRUE)
 
 /obj/machinery/dna_infuser/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 	// if the machine already has a infusion target, or the target is not valid then no adding.
@@ -180,6 +206,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/dna_infuser/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(user))
 		if(COOLDOWN_FINISHED(src, message_cooldown))
 			COOLDOWN_START(src, message_cooldown, 4 SECONDS)
@@ -196,6 +224,8 @@
 
 // mostly good for dead mobs like corpses (drag to add).
 /obj/machinery/dna_infuser/mouse_drop_receive(atom/target, mob/user, params)
+	procstart = null
+	src.procstart = null
 	// if the machine is closed, already has a infusion target, or the target is not valid then no mouse drop.
 	if(!is_valid_infusion(target, user))
 		return
@@ -204,6 +234,8 @@
 
 /// Verify that the given infusion source/mob is a dead creature.
 /obj/machinery/dna_infuser/proc/is_valid_infusion(atom/movable/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(infusing_from)
 		balloon_alert(user, "empty the machine first!")
 		return FALSE
@@ -218,6 +250,8 @@
 	return TRUE
 
 /obj/machinery/dna_infuser/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(infusing)
 		balloon_alert(user, "not while it's on!")
 		return CLICK_ACTION_BLOCKING

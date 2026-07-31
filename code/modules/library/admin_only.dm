@@ -15,15 +15,21 @@
 
 
 /obj/machinery/computer/libraryconsole/admin_only_do_not_map_in_you_fucker/can_db_request()
+	procstart = null
+	src.procstart = null
 	if(sending_request)
 		return FALSE
 	return TRUE
 
 /obj/machinery/computer/libraryconsole/admin_only_do_not_map_in_you_fucker/hash_search_info()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return "[.]-[ckey]-[show_deleted]"
 
 /obj/machinery/computer/libraryconsole/admin_only_do_not_map_in_you_fucker/update_page_contents()
+	procstart = null
+	src.procstart = null
 	if(sending_request) //Final defense against nerds spamming db requests
 		return
 	sending_request = TRUE
@@ -59,6 +65,8 @@
 	qdel(query_library_list_books)
 
 /obj/machinery/computer/libraryconsole/admin_only_do_not_map_in_you_fucker/update_page_count()
+	procstart = null
+	src.procstart = null
 	var/bookcount = 0
 	var/datum/db_query/query_library_count_books = SSdbcore.NewQuery({"
 		SELECT COUNT(id) FROM [format_table_name("library")]
@@ -81,6 +89,8 @@
 	search_page = clamp(search_page, 0, page_count)
 
 /obj/machinery/computer/libraryconsole/admin_only_do_not_map_in_you_fucker/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(!check_rights_for(user.client, R_BAN))
 		return UI_CLOSE
 	if(!SSdbcore.Connect())
@@ -89,6 +99,8 @@
 	return UI_INTERACTIVE
 
 /obj/machinery/computer/libraryconsole/admin_only_do_not_map_in_you_fucker/ui_act(action, params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		// We'll always trigger a search attempt if the parent does something, this ensures the ui is v fast to update
@@ -136,6 +148,8 @@
 			return TRUE
 
 /obj/machinery/computer/libraryconsole/admin_only_do_not_map_in_you_fucker/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["view_raw"] = view_raw
 	.["show_deleted"] = show_deleted
@@ -148,6 +162,8 @@
 	.["history"] = histories
 
 /obj/machinery/computer/libraryconsole/admin_only_do_not_map_in_you_fucker/proc/view_book(id, mob/show_to)
+	procstart = null
+	src.procstart = null
 	if (!SSdbcore.Connect())
 		can_connect = FALSE
 		message_admins("Failed to establish database connection.")
@@ -179,6 +195,8 @@
 	qdel(query_library_view)
 
 /obj/machinery/computer/libraryconsole/admin_only_do_not_map_in_you_fucker/proc/get_book_history(id)
+	procstart = null
+	src.procstart = null
 	var/datum/db_query/query_book_history = SSdbcore.NewQuery({"
 		SELECT id, book, reason, ckey, datetime, action, INET_NTOA(ip_addr)
 			FROM [format_table_name("library_action")] WHERE book=:id
@@ -204,6 +222,8 @@
 	return full_history
 
 /obj/machinery/computer/libraryconsole/admin_only_do_not_map_in_you_fucker/proc/hide_book(id, reason, client/admin)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		can_connect = FALSE
 		to_chat(admin, span_danger("Failed to establish database connection."))
@@ -239,6 +259,8 @@
 	update_db_info()
 
 /obj/machinery/computer/libraryconsole/admin_only_do_not_map_in_you_fucker/proc/unhide_book(id, reason, client/admin)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		can_connect = FALSE
 		to_chat(admin, span_danger("Failed to establish database connection."))
@@ -290,6 +312,8 @@
 	var/ip_addr
 
 /datum/book_history_entry/proc/serialize()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["id"] = id
 	data["book"] = book
@@ -328,10 +352,14 @@
 	var/list/datum/book_history_entry/history
 
 /datum/admin_book_viewer/proc/set_owner(obj/machinery/computer/libraryconsole/admin_only_do_not_map_in_you_fucker/owner)
+	procstart = null
+	src.procstart = null
 	owner_ref = WEAKREF(owner)
 	view_raw = owner.view_raw
 
 /datum/admin_book_viewer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -340,11 +368,15 @@
 		ui.open()
 
 /datum/admin_book_viewer/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(!check_rights_for(user.client, R_BAN))
 		return UI_CLOSE
 	return UI_INTERACTIVE
 
 /datum/admin_book_viewer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["view_raw"] = view_raw
 	data["id"] = id

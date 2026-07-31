@@ -18,17 +18,23 @@
 	var/obj/machinery/power/supermatter_crystal/focused_supermatter
 
 /datum/computer_file/program/supermatter_monitor/on_start(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	refresh()
 
 /// Apparently destroy calls this [/datum/computer_file/Destroy]. Here just to clean our references.
 /datum/computer_file/program/supermatter_monitor/kill_program(mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/supermatter in supermatters)
 		clear_supermatter(supermatter)
 	return ..()
 
 /// Refreshes list of active supermatter crystals
 /datum/computer_file/program/supermatter_monitor/proc/refresh()
+	procstart = null
+	src.procstart = null
 	for(var/supermatter in supermatters)
 		clear_supermatter(supermatter)
 	var/turf/user_turf = get_turf(computer.ui_host())
@@ -42,11 +48,15 @@
 		RegisterSignal(sm, COMSIG_QDELETING, PROC_REF(clear_supermatter))
 
 /datum/computer_file/program/supermatter_monitor/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["gas_metadata"] = sm_gas_data()
 	return data
 
 /datum/computer_file/program/supermatter_monitor/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["sm_data"] = list()
 	for (var/obj/machinery/power/supermatter_crystal/sm as anything in supermatters)
@@ -55,6 +65,8 @@
 	return data
 
 /datum/computer_file/program/supermatter_monitor/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(action)
 		if("PRG_refresh")
@@ -72,6 +84,8 @@
 /// Sends an SM delam alert to the computer if our focused supermatter is delaminating.
 /// [var/obj/machinery/power/supermatter_crystal/focused_supermatter].
 /datum/computer_file/program/supermatter_monitor/proc/send_alert()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!computer.get_ntnet_status())
 		return
@@ -79,6 +93,8 @@
 	alert_pending = TRUE
 
 /datum/computer_file/program/supermatter_monitor/proc/clear_supermatter(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	supermatters -= sm
 	if(focused_supermatter == sm)
@@ -86,6 +102,8 @@
 	UnregisterSignal(sm, COMSIG_QDELETING)
 
 /datum/computer_file/program/supermatter_monitor/proc/focus_supermatter(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	if(sm == focused_supermatter)
 		return
 	if(focused_supermatter)
@@ -94,17 +112,23 @@
 	focused_supermatter = sm
 
 /datum/computer_file/program/supermatter_monitor/proc/unfocus_supermatter()
+	procstart = null
+	src.procstart = null
 	if(!focused_supermatter)
 		return
 	UnregisterSignal(focused_supermatter, COMSIG_SUPERMATTER_DELAM_ALARM)
 	focused_supermatter = null
 
 /datum/computer_file/program/supermatter_monitor/proc/get_status()
+	procstart = null
+	src.procstart = null
 	. = SUPERMATTER_INACTIVE
 	for(var/obj/machinery/power/supermatter_crystal/S in supermatters)
 		. = max(., S.get_status())
 
 /datum/computer_file/program/supermatter_monitor/process_tick(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	..()
 	var/new_status = get_status()
 	if(last_status != new_status)

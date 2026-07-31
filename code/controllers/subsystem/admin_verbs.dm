@@ -14,24 +14,34 @@ SUBSYSTEM_DEF(admin_verbs)
 	var/list/admins_pending_subsytem_init = list()
 
 /datum/controller/subsystem/admin_verbs/Initialize()
+	procstart = null
+	src.procstart = null
 	setup_verb_list()
 	process_pending_admins()
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/admin_verbs/Recover()
+	procstart = null
+	src.procstart = null
 	admin_verbs_by_type = SSadmin_verbs.admin_verbs_by_type
 
 /datum/controller/subsystem/admin_verbs/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg = "V:[length(admin_verbs_by_type)]"
 	return ..()
 
 /datum/controller/subsystem/admin_verbs/proc/process_pending_admins()
+	procstart = null
+	src.procstart = null
 	var/list/pending_admins = admins_pending_subsytem_init
 	admins_pending_subsytem_init = null
 	for(var/admin_ckey in pending_admins)
 		assosciate_admin(GLOB.directory[admin_ckey])
 
 /datum/controller/subsystem/admin_verbs/proc/setup_verb_list()
+	procstart = null
+	src.procstart = null
 	if(length(admin_verbs_by_type))
 		CRASH("Attempting to setup admin verbs twice!")
 	for(var/datum/admin_verb/verb_type as anything in subtypesof(/datum/admin_verb))
@@ -47,6 +57,8 @@ SUBSYSTEM_DEF(admin_verbs)
 			admin_verbs_by_visibility_flag[verb_singleton.visibility_flag] |= list(verb_singleton)
 
 /datum/controller/subsystem/admin_verbs/proc/get_valid_verbs_for_admin(client/admin)
+	procstart = null
+	src.procstart = null
 	if(isnull(admin.holder))
 		CRASH("Why are we checking a non-admin for their valid... ahem... admin verbs?")
 
@@ -72,10 +84,14 @@ SUBSYSTEM_DEF(admin_verbs)
 	return valid_verbs
 
 /datum/controller/subsystem/admin_verbs/proc/verify_visibility(client/admin, datum/admin_verb/verb_singleton)
+	procstart = null
+	src.procstart = null
 	var/needed_flag = verb_singleton.visibility_flag
 	return !needed_flag || (needed_flag in admin_visibility_flags[admin.ckey])
 
 /datum/controller/subsystem/admin_verbs/proc/update_visibility_flag(client/admin, flag, state)
+	procstart = null
+	src.procstart = null
 	if(state)
 		admin_visibility_flags[admin.ckey] |= list(flag)
 		assosciate_admin(admin)
@@ -88,6 +104,8 @@ SUBSYSTEM_DEF(admin_verbs)
 	admin.init_verbs()
 
 /datum/controller/subsystem/admin_verbs/proc/dynamic_invoke_verb(client/admin, datum/admin_verb/verb_type, ...)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		message_admins("PERMISSION ELEVATION: [key_name_admin(admin)] attempted to dynamically invoke admin verb '[verb_type]'.")
 		return
@@ -122,6 +140,8 @@ SUBSYSTEM_DEF(admin_verbs)
  * Assosciates and/or resyncs an admin with their accessible admin verbs.
  */
 /datum/controller/subsystem/admin_verbs/proc/assosciate_admin(client/admin)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		return
 
@@ -144,6 +164,8 @@ SUBSYSTEM_DEF(admin_verbs)
  * This might be a performance issue in the future if we have a lot of admin verbs.
  */
 /datum/controller/subsystem/admin_verbs/proc/deassosciate_admin(client/admin)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		return
 

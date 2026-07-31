@@ -11,18 +11,26 @@
 	var/mutation_duration = 10 SECONDS
 
 /datum/action/cooldown/spell/apply_mutations/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spell_requirements |= SPELL_REQUIRES_HUMAN // The spell involves mutations, so it always require human / dna
 
 /datum/action/cooldown/spell/apply_mutations/Remove(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	remove_mutations(remove_from)
 	return ..()
 
 /datum/action/cooldown/spell/apply_mutations/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_caster = cast_on // Requires human anyways
 	return !!human_caster.dna
 
 /datum/action/cooldown/spell/apply_mutations/cast(mob/living/carbon/human/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/mutation in mutations_to_add)
 		cast_on.dna.add_mutation(mutation, MUTATION_SOURCE_SPELL)
@@ -30,6 +38,8 @@
 
 /// Removes the mutations we added from casting our spell
 /datum/action/cooldown/spell/apply_mutations/proc/remove_mutations(mob/living/carbon/human/cast_on)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(cast_on) || !is_valid_target(cast_on))
 		return
 
@@ -50,6 +60,8 @@
 	mutation_duration = 30 SECONDS
 
 /datum/action/cooldown/spell/apply_mutations/mutate/cast(mob/living/carbon/human/cast_on)
+	procstart = null
+	src.procstart = null
 	..()
 	if(HAS_TRAIT(cast_on, TRAIT_USES_SKINTONES) || HAS_TRAIT(cast_on, TRAIT_MUTANT_COLORS))
 		return
@@ -57,6 +69,8 @@
 	cast_on.add_atom_colour(COLOR_VIBRANT_LIME, TEMPORARY_COLOUR_PRIORITY)
 
 /datum/action/cooldown/spell/apply_mutations/mutate/remove_mutations(mob/living/carbon/human/cast_on)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(cast_on) || !is_valid_target(cast_on)) // Not 100% sure if this check is still needed, leaving it just in case
 		return
 	..()

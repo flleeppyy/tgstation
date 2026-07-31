@@ -1,6 +1,8 @@
 GLOBAL_LIST_INIT_TYPED(detective_scan_categories, /datum/detective_scan_category, initialize_detective_scan_categories())
 
 /proc/initialize_detective_scan_categories()
+	procstart = null
+	src.procstart = null
 	var/list/categories = list()
 	for(var/datum/detective_scan_category/category_path as anything in subtypesof(/datum/detective_scan_category))
 		var/datum/detective_scan_category/existing_category = categories[category_path::id]
@@ -26,6 +28,8 @@ GLOBAL_LIST_INIT_TYPED(detective_scan_categories, /datum/detective_scan_category
 
 /// Generates report data used in `/datum/detective_scanner_log/proc/generate_report_text()`
 /datum/detective_scan_category/proc/generate_report_data(list/data)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	var/list/report_text = list()
@@ -39,6 +43,8 @@ GLOBAL_LIST_INIT_TYPED(detective_scan_categories, /datum/detective_scan_category
 
 /// Formats entered log data. Can be used to have unique formating per each category
 /datum/detective_scan_category/proc/format_report_entry(entry, entry_associated_value)
+	procstart = null
+	src.procstart = null
 	return "[entry]<br>"
 
 /datum/detective_scan_category/fingers
@@ -56,6 +62,8 @@ GLOBAL_LIST_INIT_TYPED(detective_scan_categories, /datum/detective_scan_category
 	ui_icon_color = "red"
 
 /datum/detective_scan_category/blood/format_report_entry(entry, entry_associated_value)
+	procstart = null
+	src.procstart = null
 	return "[entry], [entry_associated_value]<br>"
 
 /datum/detective_scan_category/fiber
@@ -73,6 +81,8 @@ GLOBAL_LIST_INIT_TYPED(detective_scan_categories, /datum/detective_scan_category
 	ui_icon_color = "blue"
 
 /datum/detective_scan_category/drink/format_report_entry(entry, entry_associated_value)
+	procstart = null
+	src.procstart = null
 	return "<b>[entry]</b>: [entry_associated_value] u.<br>"
 
 /datum/detective_scan_category/access
@@ -83,6 +93,8 @@ GLOBAL_LIST_INIT_TYPED(detective_scan_categories, /datum/detective_scan_category
 	ui_icon_color = "blue"
 
 /datum/detective_scan_category/access/format_report_entry(entry, entry_associated_value)
+	procstart = null
+	src.procstart = null
 	var/list/associated_value_list = entry_associated_value
 	return "<b>[entry]</b>: [associated_value_list]<br>"
 

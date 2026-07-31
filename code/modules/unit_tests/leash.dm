@@ -11,6 +11,8 @@
 	var/datum/leash_wait/leash_wait
 
 /datum/unit_test/leash/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	owner = allocate(/obj/item/pen)
@@ -23,24 +25,34 @@
 	RegisterSignal(pet, COMSIG_LEASH_PATH_COMPLETE, PROC_REF(on_leash_path_complete))
 
 /datum/unit_test/leash/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(owner)
 	QDEL_NULL(pet)
 
 	return ..()
 
 /datum/unit_test/leash/proc/on_leash_force_teleport()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	forcibly_teleported = TRUE
 
 /datum/unit_test/leash/proc/on_leash_path_complete()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	leash_wait?.completed()
 
 /datum/unit_test/leash/proc/on_leash_path_started()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	leash_wait?.started()
 
 /datum/unit_test/leash/proc/move_away(atom/movable/mover, distance)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/leash_wait)
 	leash_wait = new
 
@@ -56,18 +68,28 @@
 	var/timed_out = FALSE
 
 /datum/leash_wait/New()
+	procstart = null
+	src.procstart = null
 	addtimer(VARSET_CALLBACK(src, timed_out, TRUE), 80 SECONDS)
 
 /datum/leash_wait/proc/completed()
+	procstart = null
+	src.procstart = null
 	completed = TRUE
 
 /datum/leash_wait/proc/started()
+	procstart = null
+	src.procstart = null
 	started = TRUE
 
 /datum/leash_wait/proc/assert_unmoved()
+	procstart = null
+	src.procstart = null
 	ASSERT(!started, "Leash started to move when it should not have")
 
 /datum/leash_wait/proc/wait()
+	procstart = null
+	src.procstart = null
 	ASSERT(started, "Leash doesn't plan on moving")
 
 	UNTIL(completed || timed_out)
@@ -78,6 +100,8 @@
 /datum/unit_test/leash/no_teleport
 
 /datum/unit_test/leash/no_teleport/Run()
+	procstart = null
+	src.procstart = null
 	move_away(owner, 1).assert_unmoved()
 	TEST_ASSERT_EQUAL(get_dist(owner, pet), 1, "Pet should not have moved")
 
@@ -90,6 +114,8 @@
 /datum/unit_test/leash/will_teleport
 
 /datum/unit_test/leash/will_teleport/Run()
+	procstart = null
+	src.procstart = null
 	leash_wait = new
 	owner.forceMove(locate(1, 1, 1))
 	leash_wait.wait()
@@ -99,5 +125,7 @@
 /datum/unit_test/leash/limit_range
 
 /datum/unit_test/leash/limit_range/Run()
+	procstart = null
+	src.procstart = null
 	move_away(pet, max_distance + 1)
 	TEST_ASSERT_EQUAL(get_dist(owner, pet), max_distance, "Pet should not have moved farther than max_distance")

@@ -68,11 +68,15 @@
 	acid = 30
 
 /obj/machinery/newscaster/pai/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.deep_inventory_state
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 
 /obj/machinery/newscaster/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.allCasters += src
 	GLOB.allbountyboards += src
@@ -81,6 +85,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 		find_and_mount_on_atom()
 
 /obj/machinery/newscaster/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.allCasters -= src
 	GLOB.allbountyboards -= src
 	current_channel = null
@@ -91,6 +97,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 	return ..()
 
 /obj/machinery/newscaster/update_appearance(updates=ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & (NOPOWER|BROKEN))
 		set_light(0)
@@ -98,6 +106,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 	set_light(1.5, 0.7, "#34D352") // green light
 
 /obj/machinery/newscaster/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 
@@ -125,6 +135,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 			. += emissive_blocker(icon, "crack3", src, alpha = src.alpha)
 
 /obj/machinery/newscaster/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -134,6 +146,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 	update_icon()
 
 /obj/machinery/newscaster/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/message_list = list()
 
@@ -257,6 +271,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 	return data
 
 /obj/machinery/newscaster/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/channel_list = list()
 	for(var/datum/feed_channel/channel as anything in GLOB.news_network.network_channels)
@@ -273,6 +289,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 
 
 /obj/machinery/newscaster/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -487,10 +505,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 	return TRUE
 
 /obj/machinery/newscaster/on_set_machine_stat(old_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/machinery/newscaster/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/paper))
 		return NONE
 	if(!user.temporarilyRemoveItemFromInventory(tool))
@@ -502,9 +524,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 
 ///returns (machine_stat & broken)
 /obj/machinery/newscaster/proc/needs_repair()
+	procstart = null
+	src.procstart = null
 	return (machine_stat & BROKEN)
 
 /obj/machinery/newscaster/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return
 	. = ITEM_INTERACT_SUCCESS
@@ -523,6 +549,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 	set_machine_stat(machine_stat & ~BROKEN)
 
 /obj/machinery/newscaster/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You start [anchored ? "un" : ""]securing [src]..."))
 	if(!tool.use_tool(src, user, 60, volume=50))
 		return
@@ -539,6 +567,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/newscaster/play_attack_sound(damage, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(machine_stat & BROKEN)
@@ -550,23 +580,31 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 
 
 /obj/machinery/newscaster/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/iron(loc, 2)
 	new /obj/item/shard(loc)
 	new /obj/item/shard(loc)
 
 /obj/machinery/newscaster/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		playsound(loc, 'sound/effects/glass/glassbr3.ogg', 100, TRUE)
 
 
 /obj/machinery/newscaster/attack_paw(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!user.combat_mode)
 		to_chat(user, span_warning("The newscaster controls are far too complicated for your tiny brain!"))
 	else
 		take_damage(5, BRUTE, MELEE)
 
 /obj/machinery/newscaster/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
@@ -574,6 +612,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
  * Sends photo data to build the newscaster article.
  */
 /obj/machinery/newscaster/proc/send_photo_data()
+	procstart = null
+	src.procstart = null
 	if(!current_image)
 		return null
 	return current_image
@@ -583,6 +623,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
  * *user: The mob who is being checked for a held photo object.
  */
 /obj/machinery/newscaster/proc/attach_photo(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/photo/photo = user.is_holding_item_of_type(/obj/item/photo)
 	if(photo)
 		current_image = photo.picture
@@ -615,6 +657,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
  * The newscaster then prints the paper to the floor.
  */
 /obj/machinery/newscaster/proc/print_paper(mob/user)
+	procstart = null
+	src.procstart = null
 	if(paper_remaining <= 0)
 		balloon_alert_to_viewers("out of paper!")
 		return TRUE
@@ -628,6 +672,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
  * This clears alerts on the newscaster from a new message being published and updates the newscaster's appearance.
  */
 /obj/machinery/newscaster/proc/remove_alert()
+	procstart = null
+	src.procstart = null
 	alert = FALSE
 	update_appearance()
 
@@ -635,6 +681,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
  * When a new feed message is made that will alert all newscasters, this causes the newscasters to sent out a spoken message as well as create a sound.
  */
 /obj/machinery/newscaster/proc/news_alert(channel)
+	procstart = null
+	src.procstart = null
 	if(channel)
 		alert = TRUE
 		say("Breaking news from [channel]!")
@@ -652,6 +700,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
  *
  */
 /obj/machinery/newscaster/proc/create_channel(mob/user, channel_locked, cross_sector)
+	procstart = null
+	src.procstart = null
 	if(!channel_name)
 		return
 	if(cross_sector)
@@ -708,6 +758,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 	channel_approval_timer = addtimer(CALLBACK(src, PROC_REF(finish_channel_creation), user, channel_locked, TRUE, approval_time), approval_time, TIMER_STOPPABLE)
 
 /obj/machinery/newscaster/proc/finish_channel_creation(mob/user, channel_locked, cross_sector, cross_sector_delay)
+	procstart = null
+	src.procstart = null
 	channel_approval_timer = null
 	awaiting_approval = FALSE
 	GLOB.news_network.create_feed_channel(channel_name, newscaster_username, channel_desc, locked = channel_locked, author_ckey = user.ckey, cross_sector = cross_sector, cross_sector_delay = cross_sector_delay)
@@ -715,6 +767,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 	update_static_data(user)
 
 /obj/machinery/newscaster/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if (!href_list["reject_channel_creation"])
 		return ..()
 
@@ -738,6 +792,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
  * Constructs a comment to attach to the currently selected feed_message of choice, assuming that a user can be found and that a message body has been written.
  */
 /obj/machinery/newscaster/proc/create_comment(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!comment_text)
 		creating_comment = FALSE
 		return TRUE
@@ -753,6 +809,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
  * Otherwise, sets creating_channel to TRUE.
  */
 /obj/machinery/newscaster/proc/start_create_channel(mob/user)
+	procstart = null
+	src.procstart = null
 	//This first block checks for pre-existing reasons to prevent you from making a new channel, like being censored, or if you have a channel already.
 	var/list/existing_authors = list()
 	for(var/datum/feed_channel/iterated_feed_channel as anything in GLOB.news_network.network_channels)
@@ -773,6 +831,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
  * Finally, it submits the message to the network, is logged globally, and clears all message-specific variables from the machine.
  */
 /obj/machinery/newscaster/proc/create_story(mob/user, channel_id)
+	procstart = null
+	src.procstart = null
 	var/datum/feed_channel/potential_channel = GLOB.news_network.network_channels_by_id["[channel_id]"]
 	if(isnull(potential_channel))
 		return
@@ -798,6 +858,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
  * If a photo is still held in the newscaster, it will otherwise clear it from the machine.
  */
 /obj/machinery/newscaster/proc/toggle_photo(mob/user)
+	procstart = null
+	src.procstart = null
 	if(current_image)
 		balloon_alert(user, "current photo cleared.")
 		current_image = null
@@ -810,6 +872,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 		balloon_alert(user, "no photo identified.")
 
 /obj/machinery/newscaster/proc/clear_wanted_issue(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/id/id_card
 	if(isliving(user))
 		var/mob/living/living_user = user
@@ -824,6 +888,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
  * This proc removes a station_request from the global list of requests, after checking that the owner of that request is the one who is trying to remove it.
  */
 /obj/machinery/newscaster/proc/delete_bounty_request()
+	procstart = null
+	src.procstart = null
 	if(!active_request || !current_user)
 		playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 20, TRUE)
 		return TRUE
@@ -838,6 +904,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
  * For more info, see datum/station_request.
  */
 /obj/machinery/newscaster/proc/create_bounty()
+	procstart = null
+	src.procstart = null
 	if(!current_user || !bounty_text)
 		playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 20, TRUE)
 		return TRUE
@@ -855,6 +923,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
  * Then, adds the current user to the list of applicants to that bounty.
  */
 /obj/machinery/newscaster/proc/apply_to_bounty()
+	procstart = null
+	src.procstart = null
 	if(!current_user)
 		say("No ID detected.")
 		return TRUE
@@ -871,6 +941,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
  * This pays out the current request_target the amount held by the active request's assigned value, and then clears the active request from the global list.
  */
 /obj/machinery/newscaster/proc/pay_applicant(datum/bank_account/payment_target)
+	procstart = null
+	src.procstart = null
 	if(!current_user)
 		return TRUE
 	if(!current_user.has_money(active_request.value) || (current_user.account_holder != active_request.owner))

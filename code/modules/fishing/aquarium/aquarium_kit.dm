@@ -31,10 +31,14 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT, /datum/material/plastic = SMALL_MATERIAL_AMOUNT)
 
 /obj/item/storage/fish_case/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/fish_safe_storage)
 
 /obj/item/storage/fish_case/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/fish_type = get_fish_type()
 	if(fish_type)
 		var/obj/item/fish/spawned_fish = new fish_type(null)
@@ -42,6 +46,8 @@
 		spawned_fish.forceMove(src) // trigger storage.handle_entered
 
 /obj/item/storage/fish_case/proc/get_fish_type()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/storage/fish_case/random
@@ -49,6 +55,8 @@
 	var/fluid_type
 
 /obj/item/storage/fish_case/random/get_fish_type()
+	procstart = null
+	src.procstart = null
 	return random_fish_type(fluid_type)
 
 /obj/item/storage/fish_case/random/freshwater
@@ -61,6 +69,8 @@
 	name = "ominous fish case"
 
 /obj/item/storage/fish_case/syndicate/get_fish_type()
+	procstart = null
+	src.procstart = null
 	var/datum/fish_source/portal/syndicate = GLOB.preset_fish_sources[/datum/fish_source/portal/syndicate]
 	var/list/picks = syndicate.fish_table.Copy()
 	for(var/fish in picks)
@@ -72,6 +82,8 @@
 	name = "imported fish case"
 
 /obj/item/storage/fish_case/tiziran/get_fish_type()
+	procstart = null
+	src.procstart = null
 	return pick_weight(list(
 		/obj/item/fish/moonfish/dwarf = 2,
 		/obj/item/fish/gunner_jellyfish = 2,
@@ -86,6 +98,8 @@
 	desc = "A resizable case keeping the fish inside in stasis. This one holds a faint cadaverine smell."
 
 /obj/item/storage/fish_case/blackmarket/get_fish_type()
+	procstart = null
+	src.procstart = null
 	var/static/list/weighted_list = list(
 		/obj/item/fish/clownfish/lube = 2,
 		/obj/item/fish/pufferfish = 2,
@@ -104,6 +118,8 @@
 	return pick_weight(weighted_list)
 
 /obj/item/storage/fish_case/blackmarket/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/fish/fish as anything in contents)
 		fish.set_status(FISH_DEAD)
@@ -125,6 +141,8 @@
 	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/aquarium_kit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/recipes = list(/datum/crafting_recipe/aquarium, /datum/crafting_recipe/fish_tank)
 	AddElement(/datum/element/slapcrafting, recipes)
@@ -140,6 +158,8 @@
 	var/beauty = 150
 
 /obj/item/aquarium_prop/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//It's important that we register the signals before the component is attached.
 	RegisterSignal(src, COMSIG_AQUARIUM_CONTENT_GENERATE_APPEARANCE, PROC_REF(generate_aquarium_appearance))
@@ -149,12 +169,16 @@
 	RegisterSignal(src, COMSIG_MOVABLE_GET_AQUARIUM_BEAUTY, PROC_REF(get_aquarium_beauty))
 
 /obj/item/aquarium_prop/proc/generate_aquarium_appearance(datum/source, obj/effect/aquarium/visual, atom/movable/aquarium)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	visual.icon = aquarium.icon
 	visual.icon_state = "[icon_state][isitem(aquarium) ? "_fish_tank" : ""]"
 	visual.layer_mode = layer_mode
 
 /obj/item/aquarium_prop/proc/get_aquarium_beauty(datum/source, list/beauty_holder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	beauty_holder += beauty
 

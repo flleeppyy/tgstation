@@ -6,38 +6,58 @@
 	gc_share = TRUE
 
 /datum/gas_mixture/immutable/New()
+	procstart = null
+	src.procstart = null
 	..()
 	garbage_collect()
 
 /datum/gas_mixture/immutable/garbage_collect()
+	procstart = null
+	src.procstart = null
 	temperature = temperature_archived = initial_temperature
 	moles.Cut()
 	moles_archive.Cut()
 
 /datum/gas_mixture/immutable/archive()
+	procstart = null
+	src.procstart = null
 	return TRUE //nothing changes, so we do nothing and the archive is successful
 
 /datum/gas_mixture/immutable/merge()
+	procstart = null
+	src.procstart = null
 	return FALSE //we're immutable.
 
 /datum/gas_mixture/immutable/share(datum/gas_mixture/sharer, our_coeff, sharer_coeff)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	sharer.temperature = initial_temperature
 	garbage_collect()
 
 /datum/gas_mixture/immutable/react()
+	procstart = null
+	src.procstart = null
 	return FALSE //we're immutable.
 
 /datum/gas_mixture/immutable/copy()
+	procstart = null
+	src.procstart = null
 	return new type //we're immutable, so we can just return a new instance.
 
 /datum/gas_mixture/immutable/copy_from()
+	procstart = null
+	src.procstart = null
 	return FALSE //we're immutable.
 
 /datum/gas_mixture/immutable/copy_from_ratio()
+	procstart = null
+	src.procstart = null
 	return FALSE //we're immutable.
 
 /datum/gas_mixture/immutable/temperature_share(datum/gas_mixture/sharer, conduction_coefficient, sharer_temperature, sharer_heat_capacity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	temperature = initial_temperature
 
@@ -46,12 +66,18 @@
 	initial_temperature = TCMB
 
 /datum/gas_mixture/immutable/space/heat_capacity()
+	procstart = null
+	src.procstart = null
 	return HEAT_CAPACITY_VACUUM
 
 /datum/gas_mixture/immutable/space/remove()
+	procstart = null
+	src.procstart = null
 	return copy() //we're always empty, so we can just return a copy.
 
 /datum/gas_mixture/immutable/space/remove_ratio()
+	procstart = null
+	src.procstart = null
 	return copy() //we're always empty, so we can just return a copy.
 
 //planet side stuff
@@ -60,11 +86,15 @@
 
 // Intentionally duplicate code to save microseconds on a call to parent
 /datum/gas_mixture/immutable/planetary/garbage_collect()
+	procstart = null
+	src.procstart = null
 	temperature = temperature_archived = initial_temperature
 	moles = initial_gas.Copy()
 	moles_archive = initial_gas.Copy()
 
-/datum/gas_mixture/immutable/planetary/proc/parse_string_immutable(gas_string) //I know I know, I need this tho
+/datum/gas_mixture/immutable/planetary/proc/parse_string_immutable(gas_string)
+	procstart = null
+	src.procstart = null //I know I know, I need this tho
 	gas_string = SSair.preprocess_gas_string(gas_string)
 
 	var/list/mix = initial_gas

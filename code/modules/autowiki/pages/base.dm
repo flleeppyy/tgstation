@@ -9,6 +9,8 @@
 /// Override and return the new text of the page.
 /// This proc can be impure, usually to call `upload_file`.
 /datum/autowiki/proc/generate()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("[type] does not implement generate()!")
 
@@ -20,6 +22,8 @@
 /// Lists, which must be array-like (no keys), will be turned into a flat list with their key and a number,
 /// such that list("food" = list("fruit", "candy")) -> food1=fruit|food2=candy
 /datum/autowiki/proc/include_template(name, parameters)
+	procstart = null
+	src.procstart = null
 	var/template_text = "{{[name]"
 
 	var/list/prepared_parameters = list()
@@ -42,6 +46,8 @@
 /// Takes an icon and uploads it to Autowiki-name.png.
 /// Do your best to make sure this is unique, so it doesn't clash with other autowiki icons.
 /datum/autowiki/proc/upload_icon(icon/icon, name)
+	procstart = null
+	src.procstart = null
 	// Fuck you
 	if (IsAdminAdvancedProcCall())
 		return
@@ -55,5 +61,7 @@
 
 /// Escape a parameter such that it can be correctly put inside a wiki output
 /datum/autowiki/proc/escape_value(parameter)
+	procstart = null
+	src.procstart = null
 	// | is a special character in MediaWiki, and must be escaped by...using another template.
 	return replacetextEx(parameter, "|", "{{!}}")

@@ -5,6 +5,8 @@
 
 
 /datum/component/virtual_entity/Initialize(obj/machinery/quantum_server)
+	procstart = null
+	src.procstart = null
 	if(quantum_server.obj_flags & EMAGGED)
 		jailbreak_mobs()
 		return COMPONENT_REDUNDANT
@@ -15,6 +17,8 @@
 
 /// Self-destructs the component, allowing free-roam by all entities with this restriction.
 /datum/component/virtual_entity/proc/jailbreak_mobs()
+	procstart = null
+	src.procstart = null
 	to_chat(parent, span_bolddanger("You shiver for a moment with a sense of clarity you haven't felt before."))
 	to_chat(parent, span_notice("You could go <i>anywhere</i>, do <i>anything</i>! You could leave this simulation right now if you wanted!"))
 	to_chat(parent, span_danger("But be warned, quantum entanglement will interfere with any previous lives."))
@@ -23,6 +27,8 @@
 
 /// Remove any restrictions AFTER the mob has spawned
 /datum/component/virtual_entity/proc/on_emagged(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	jailbreak_mobs()
@@ -31,6 +37,8 @@
 
 /// Prevents entry to a certain area if it has flags preventing virtual entities from entering.
 /datum/component/virtual_entity/proc/on_parent_pre_move(atom/movable/source, atom/new_location)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/area/location_area = get_area(new_location)

@@ -196,6 +196,8 @@
 	icon_state = "chanterelle"
 
 /obj/item/food/grown/mushroom/chanterelle/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/kitchen/spoon))
 		return NONE
 
@@ -268,6 +270,8 @@
 	wine_power = 50
 
 /obj/item/food/grown/mushroom/glowshroom/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isspaceturf(user.loc))
 		return FALSE
 	if(!isturf(user.loc))
@@ -341,6 +345,8 @@
 	wine_power = 60
 
 /obj/item/food/grown/mushroom/glowshroom/shadowshroom/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		investigate_log("was planted by [key_name(user)] at [AREACOORD(user)]", INVESTIGATE_BOTANY)

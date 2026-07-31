@@ -1,5 +1,7 @@
 
 /obj/machinery/airalarm/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(buildstage != AIR_ALARM_BUILD_NO_WIRES)
 		return
 	user.visible_message(span_notice("[user.name] removes the electronics from [name]."), \
@@ -15,6 +17,8 @@
 	return TRUE
 
 /obj/machinery/airalarm/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(buildstage != AIR_ALARM_BUILD_COMPLETE)
 		return
 	tool.play_tool_sound(src)
@@ -24,6 +28,8 @@
 	return TRUE
 
 /obj/machinery/airalarm/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!(buildstage == AIR_ALARM_BUILD_COMPLETE && panel_open && wires.is_all_cut()))
 		return
 	tool.play_tool_sound(src)
@@ -35,6 +41,8 @@
 	return TRUE
 
 /obj/machinery/airalarm/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(buildstage != AIR_ALARM_BUILD_NO_CIRCUIT)
 		return
 	to_chat(user, span_notice("You detach \the [src] from the wall."))
@@ -46,11 +54,15 @@
 
 
 /obj/machinery/airalarm/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	if((buildstage == AIR_ALARM_BUILD_NO_CIRCUIT) && (the_rcd.construction_upgrades & RCD_UPGRADE_SIMPLE_CIRCUITS))
 		return list("delay" = 2 SECONDS, "cost" = 1)
 	return FALSE
 
 /obj/machinery/airalarm/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	procstart = null
+	src.procstart = null
 	if(rcd_data[RCD_DESIGN_MODE] == RCD_WALLFRAME)
 		balloon_alert(user, "circuit installed")
 		buildstage = AIR_ALARM_BUILD_NO_WIRES
@@ -59,6 +71,8 @@
 	return FALSE
 
 /obj/machinery/airalarm/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!can_interact(user))
 		return
@@ -68,6 +82,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/airalarm/proc/togglelock(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (NOPOWER|BROKEN))
 		to_chat(user, span_warning("It does nothing!"))
 	else
@@ -83,6 +99,8 @@
 			to_chat(user, span_danger("Access denied."))
 
 /obj/machinery/airalarm/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -92,6 +110,8 @@
 	return TRUE
 
 /obj/machinery/airalarm/on_deconstruction(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/iron(loc, 2)
 	if((buildstage == AIR_ALARM_BUILD_NO_WIRES) || (buildstage == AIR_ALARM_BUILD_COMPLETE))
 		var/obj/item/electronics/airalarm/alarm = new(loc)
@@ -101,6 +121,8 @@
 		new /obj/item/stack/cable_coil(loc, 3)
 
 /obj/machinery/airalarm/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	update_last_used(user)
 	switch(buildstage)
 		if(AIR_ALARM_BUILD_COMPLETE)
@@ -169,6 +191,8 @@
 	return NONE
 
 /obj/machinery/airalarm/proc/reset(wire)
+	procstart = null
+	src.procstart = null
 	switch(wire)
 		if(WIRE_POWER)
 			if(!wires.is_cut(WIRE_POWER))
@@ -179,6 +203,8 @@
 				aidisabled = FALSE
 
 /obj/machinery/airalarm/shock(mob/living/shocking, chance, shock_source, siemens_coeff)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & NOPOWER) // unpowered, no shock
 		return FALSE
 	return ..()
@@ -196,6 +222,8 @@
 	pixel_shift = 27
 
 /obj/item/wallframe/airalarm/try_build(atom/support, mob/user)
+	procstart = null
+	src.procstart = null
 	var/area/A = get_area(user)
 	if(A.always_unpowered)
 		balloon_alert(user, "cannot place in this area!")

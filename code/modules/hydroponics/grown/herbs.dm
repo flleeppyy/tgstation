@@ -25,7 +25,11 @@
 	distill_reagent = /datum/reagent/consumable/ethanol/fernet
 
 /obj/item/food/grown/herbs/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/nutriment = 0)
 
 /obj/item/food/grown/herbs/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/nutriment

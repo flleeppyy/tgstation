@@ -13,6 +13,8 @@
 	teeth_count = 0 // lol?
 
 /obj/item/bodypart/head/stump/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "stump"
 	// these traits are largely redundant, as many places that check for disabled limbs filter stumps.
@@ -28,6 +30,8 @@
 	bodypart_flags = BODYPART_UNREMOVABLE | BODYPART_STUMP | BODYPART_VIRGIN
 
 /obj/item/bodypart/leg/left/stump/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "stump"
 	ADD_TRAIT(src, TRAIT_PARALYSIS, INNATE_TRAIT)
@@ -41,6 +45,8 @@
 	bodypart_flags = BODYPART_UNREMOVABLE | BODYPART_STUMP | BODYPART_VIRGIN
 
 /obj/item/bodypart/leg/right/stump/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "stump"
 	ADD_TRAIT(src, TRAIT_PARALYSIS, INNATE_TRAIT)
@@ -54,6 +60,8 @@
 	bodypart_flags = BODYPART_UNREMOVABLE | BODYPART_STUMP | BODYPART_VIRGIN
 
 /obj/item/bodypart/arm/left/stump/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "stump"
 	ADD_TRAIT(src, TRAIT_PARALYSIS, INNATE_TRAIT)
@@ -67,6 +75,8 @@
 	bodypart_flags = BODYPART_UNREMOVABLE | BODYPART_STUMP | BODYPART_VIRGIN
 
 /obj/item/bodypart/arm/right/stump/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "stump"
 	ADD_TRAIT(src, TRAIT_PARALYSIS, INNATE_TRAIT)

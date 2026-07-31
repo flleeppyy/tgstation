@@ -3,10 +3,14 @@
 	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/blob/MouseEntered(location,control,params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	openToolTip(usr,src,params,title = name,content = desc, theme = "blob")
 
 /atom/movable/screen/blob/MouseExited()
+	procstart = null
+	src.procstart = null
 	closeToolTip(usr)
 
 /atom/movable/screen/blob/jump_to_node
@@ -16,6 +20,8 @@
 	screen_loc = ui_inventory
 
 /atom/movable/screen/blob/jump_to_node/Click()
+	procstart = null
+	src.procstart = null
 	if(!isovermind(usr))
 		return FALSE
 	var/mob/eye/blob/blob = usr
@@ -28,6 +34,8 @@
 	screen_loc = ui_zonesel
 
 /atom/movable/screen/blob/jump_to_core/MouseEntered(location,control,params)
+	procstart = null
+	src.procstart = null
 	if(hud?.mymob && isovermind(hud.mymob))
 		var/mob/eye/blob/B = hud.mymob
 		if(!B.placed)
@@ -39,6 +47,8 @@
 	return ..()
 
 /atom/movable/screen/blob/jump_to_core/Click()
+	procstart = null
+	src.procstart = null
 	if(!isovermind(usr))
 		return FALSE
 	var/mob/eye/blob/blob = usr
@@ -54,11 +64,15 @@
 	screen_loc = ui_belt
 
 /atom/movable/screen/blob/blobbernaut/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "Produce Blobbernaut ([BLOBMOB_BLOBBERNAUT_RESOURCE_COST])"
 	desc = "Produces a strong, smart blobbernaut from a factory blob for [BLOBMOB_BLOBBERNAUT_RESOURCE_COST] resources.<br>The factory blob used will become fragile and unable to produce spores."
 
 /atom/movable/screen/blob/blobbernaut/Click()
+	procstart = null
+	src.procstart = null
 	if(!isovermind(usr))
 		return FALSE
 	var/mob/eye/blob/blob = usr
@@ -72,11 +86,15 @@
 	screen_loc = ui_back
 
 /atom/movable/screen/blob/resource_blob/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "Produce Resource Blob ([BLOB_STRUCTURE_RESOURCE_COST])"
 	desc = "Produces a resource blob for [BLOB_STRUCTURE_RESOURCE_COST] resources.<br>Resource blobs will give you resources every few seconds."
 
 /atom/movable/screen/blob/resource_blob/Click()
+	procstart = null
+	src.procstart = null
 	if(!isovermind(usr))
 		return FALSE
 	var/mob/eye/blob/blob = usr
@@ -89,11 +107,15 @@
 	icon_state = "ui_node"
 
 /atom/movable/screen/blob/node_blob/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "Produce Node Blob ([BLOB_STRUCTURE_NODE_COST])"
 	desc = "Produces a node blob for [BLOB_STRUCTURE_NODE_COST] resources.<br>Node blobs will expand and activate nearby resource and factory blobs."
 
 /atom/movable/screen/blob/node_blob/Click()
+	procstart = null
+	src.procstart = null
 	if(!isovermind(usr))
 		return FALSE
 	var/mob/eye/blob/blob = usr
@@ -106,11 +128,15 @@
 	icon_state = "ui_factory"
 
 /atom/movable/screen/blob/factory_blob/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "Produce Factory Blob ([BLOB_STRUCTURE_FACTORY_COST])"
 	desc = "Produces a factory blob for [BLOB_STRUCTURE_FACTORY_COST] resources.<br>Factory blobs will produce spores every few seconds."
 
 /atom/movable/screen/blob/factory_blob/Click()
+	procstart = null
+	src.procstart = null
 	if(!isovermind(usr))
 		return FALSE
 	var/mob/eye/blob/blob = usr
@@ -124,6 +150,8 @@
 	screen_loc = ui_storage1
 
 /atom/movable/screen/blob/readapt_strain/MouseEntered(location,control,params)
+	procstart = null
+	src.procstart = null
 	if(hud?.mymob && isovermind(hud.mymob))
 		var/mob/eye/blob/B = hud.mymob
 		if(B.free_strain_rerolls)
@@ -135,6 +163,8 @@
 	return ..()
 
 /atom/movable/screen/blob/readapt_strain/Click()
+	procstart = null
+	src.procstart = null
 	if(isovermind(usr))
 		var/mob/eye/blob/B = usr
 		B.strain_reroll()
@@ -147,11 +177,15 @@
 	screen_loc = ui_storage2
 
 /atom/movable/screen/blob/relocate_core/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "Relocate Core ([BLOB_POWER_RELOCATE_COST])"
 	desc = "Swaps a node and your core for [BLOB_POWER_RELOCATE_COST] resources."
 
 /atom/movable/screen/blob/relocate_core/Click()
+	procstart = null
+	src.procstart = null
 	if(isovermind(usr))
 		var/mob/eye/blob/B = usr
 		B.relocate_core()

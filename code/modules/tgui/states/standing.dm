@@ -9,6 +9,8 @@ GLOBAL_DATUM_INIT(standing_state, /datum/ui_state/not_incapacitated_state/standi
 /datum/ui_state/not_incapacitated_state/standing
 
 /datum/ui_state/not_incapacitated_state/standing/can_use_topic(src_object, mob/user)
+	procstart = null
+	src.procstart = null
 	if (!isliving(user))
 		return ..()
 	var/mob/living/living_user = user

@@ -9,6 +9,8 @@
 	deckstyle = "tarot"
 
 /obj/item/toy/cards/deck/tarot/initialize_cards()
+	procstart = null
+	src.procstart = null
 	for(var/suit in list("Hearts", "Pikes", "Clovers", "Tiles"))
 		for(var/i in 1 to 10)
 			initial_cards += "[i] of [suit]"
@@ -18,6 +20,8 @@
 		initial_cards += trump
 
 /obj/item/toy/cards/deck/tarot/draw(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(50))
 		var/obj/item/toy/singlecard/card = .
@@ -29,6 +33,8 @@
 		card.transform = M
 
 /obj/item/toy/cards/deck/tarot/pick_card(mob/living/user, list/obj/item/toy/singlecard/cards)
+	procstart = null
+	src.procstart = null
 	// If the user is cursed they have increase chance of drawing Death or The Tower
 	if(!HAS_TRAIT(user, TRAIT_CURSED))
 		return ..()
@@ -52,6 +58,8 @@
 	COOLDOWN_DECLARE(ghost_alert_cooldown)
 
 /obj/item/toy/cards/deck/tarot/haunted/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/two_handed, \
@@ -61,6 +69,8 @@
 	)
 
 /obj/item/toy/cards/deck/tarot/haunted/proc/on_wield(obj/item/source, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(user, TRAIT_SIXTHSENSE, MAGIC_TRAIT)
 	to_chat(user, span_notice("The veil to the underworld is opened. You can sense the dead souls calling out..."))
 
@@ -77,6 +87,8 @@
 	)
 
 /obj/item/toy/cards/deck/tarot/haunted/proc/on_unwield(obj/item/source, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(user, TRAIT_SIXTHSENSE, MAGIC_TRAIT)
 	to_chat(user, span_notice("The veil to the underworld closes shut. You feel your senses returning to normal."))
 

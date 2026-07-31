@@ -6,6 +6,8 @@
 	var/notice
 
 /obj/machinery/computer/sat_control/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -13,6 +15,8 @@
 		ui.open()
 
 /obj/machinery/computer/sat_control/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -23,6 +27,8 @@
 			. = TRUE
 
 /obj/machinery/computer/sat_control/proc/toggle(toggled_id)
+	procstart = null
+	src.procstart = null
 	var/turf/current_turf = get_turf(src)
 	for(var/obj/machinery/satellite/satellite as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/satellite))
 		if(satellite.id != toggled_id)
@@ -34,6 +40,8 @@
 			satellite.toggle()
 
 /obj/machinery/computer/sat_control/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["satellites"] = list()

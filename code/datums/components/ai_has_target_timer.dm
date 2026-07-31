@@ -12,6 +12,8 @@
 	var/reset_clock_timer
 
 /datum/component/ai_target_timer/Initialize(increment_key = BB_BASIC_MOB_HAS_TARGET_TIME, target_key = BB_CURRENT_TARGET)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -22,23 +24,31 @@
 	src.target_key = target_key
 
 /datum/component/ai_target_timer/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_AI_BLACKBOARD_KEY_SET(target_key), PROC_REF(changed_target))
 	RegisterSignal(parent, COMSIG_AI_BLACKBOARD_KEY_CLEARED(target_key), PROC_REF(lost_target))
 	ADD_TRAIT(parent, TRAIT_SUBTREE_REQUIRED_OPERATIONAL_DATUM, type)
 
 /datum/component/ai_target_timer/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	finalise_losing_target()
 	UnregisterSignal(parent, list(COMSIG_AI_BLACKBOARD_KEY_SET(target_key), COMSIG_AI_BLACKBOARD_KEY_CLEARED(target_key)))
 	REMOVE_TRAIT(parent, TRAIT_SUBTREE_REQUIRED_OPERATIONAL_DATUM, type)
 	return ..()
 
 /datum/component/ai_target_timer/Destroy(force)
+	procstart = null
+	src.procstart = null
 	finalise_losing_target()
 	return ..()
 
 /// When we get a new target, reset the timer and start processing
 /datum/component/ai_target_timer/proc/changed_target(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/living_parent = parent
 	var/atom/new_target = living_parent.ai_controller.blackboard[target_key]
@@ -55,11 +65,15 @@
 
 /// When we lose our target, start a short timer in case we reacquire it very quickly
 /datum/component/ai_target_timer/proc/lost_target()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	reset_clock_timer = addtimer(CALLBACK(src, PROC_REF(finalise_losing_target)), 3 SECONDS, TIMER_STOPPABLE | TIMER_DELETE_ME)
 
 /// Called if we have had no target for long enough
 /datum/component/ai_target_timer/proc/finalise_losing_target()
+	procstart = null
+	src.procstart = null
 	deltimer(reset_clock_timer)
 	STOP_PROCESSING(SSdcs, src)
 	if (!isnull(last_target))
@@ -71,9 +85,13 @@
 
 /// Store the current time on our timer in our blackboard key
 /datum/component/ai_target_timer/proc/store_current_time()
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_parent = parent
 	living_parent.ai_controller.set_blackboard_key(increment_key, time_on_target)
 
 /datum/component/ai_target_timer/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	time_on_target += seconds_per_tick SECONDS
 	store_current_time()

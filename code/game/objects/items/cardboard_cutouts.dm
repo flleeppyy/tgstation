@@ -19,6 +19,8 @@
 	var/datum/component/tactical/tacticool
 
 /obj/item/cardboard_cutout/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(starting_cutout)
 		return INITIALIZE_HINT_LATELOAD
@@ -26,10 +28,14 @@
 		tacticool = AddComponent(/datum/component/tactical)
 
 /obj/item/cardboard_cutout/Destroy()
+	procstart = null
+	src.procstart = null
 	tacticool = null
 	return ..()
 
 /obj/item/cardboard_cutout/LateInitialize()
+	procstart = null
+	src.procstart = null
 	ASSERT(!isnull(starting_cutout))
 
 	var/datum/cardboard_cutout/cutout
@@ -47,6 +53,8 @@
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/cardboard_cutout/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!user.combat_mode || pushed_over || !isturf(loc))
 		return ..()
 	user.visible_message(span_warning("[user] pushes over [src]!"), span_danger("You push over [src]!"))
@@ -54,15 +62,21 @@
 	push_over()
 
 /obj/item/cardboard_cutout/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//Because of the tactical element, the user won't tilt left and right, but it'll still hop.
 	user.AddElementTrait(TRAIT_WADDLING, REF(src), /datum/element/waddling)
 
 /obj/item/cardboard_cutout/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(user, TRAIT_WADDLING, REF(src))
 
 /obj/item/cardboard_cutout/proc/push_over()
+	procstart = null
+	src.procstart = null
 	appearance = initial(appearance)
 	desc = "[initial(desc)] It's been pushed over."
 	icon_state = "cutout_pushed_over"
@@ -71,6 +85,8 @@
 	QDEL_NULL(tacticool)
 
 /obj/item/cardboard_cutout/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!pushed_over)
 		return
 	to_chat(user, span_notice("You right [src]."))
@@ -81,21 +97,29 @@
 	tacticool = AddComponent(/datum/component/tactical)
 
 /obj/item/cardboard_cutout/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/toy/crayon))
 		return NONE
 	change_appearance(tool, user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/cardboard_cutout/take_damage(damage_amount, damage_type, damage_flag, sound_effect, attack_dir, armour_penetration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/damage_sustained = . || 0
 	if((damage_flag == BULLET || damage_flag == MELEE) && (damage_type == BRUTE) && prob(damage_sustained))
 		push_over()
 
 /obj/item/cardboard_cutout/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/cardboard(loc)
 
 /proc/get_cardboard_cutout_instance(datum/cardboard_cutout/cardboard_cutout)
+	procstart = null
+	src.procstart = null
 	ASSERT(ispath(cardboard_cutout), "[cardboard_cutout] is not a path of /datum/cardboard_cutout")
 
 	var/static/list/cardboard_cutouts = list()
@@ -113,6 +137,8 @@
  * * user The mob choosing a skin of the cardboard cutout
  */
 /obj/item/cardboard_cutout/proc/change_appearance(obj/item/toy/crayon/crayon, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/list/appearances_by_name = list()
 	var/list/possible_appearances = list()
 
@@ -147,6 +173,8 @@
  * * crayon The crayon used to interact with a menu
  */
 /obj/item/cardboard_cutout/proc/check_menu(mob/living/user, obj/item/toy/crayon/crayon)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated)
@@ -199,6 +227,8 @@
 	var/species = /datum/species/human
 
 /datum/cardboard_cutout/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(direct_icon)
 		preview_appearance = mutable_appearance(direct_icon, direct_icon_state)
@@ -207,10 +237,14 @@
 
 /// This proc returns the name that the cardboard cutout item will use.
 /datum/cardboard_cutout/proc/get_name()
+	procstart = null
+	src.procstart = null
 	return applied_name
 
 /// This proc sets the cardboard cutout item's vars.
 /datum/cardboard_cutout/proc/apply(obj/item/cardboard_cutout/cutouts)
+	procstart = null
+	src.procstart = null
 	if(isnull(applied_appearance))
 		applied_appearance = image(fcopy_rsc(getFlatIcon(preview_appearance, no_anim = TRUE)))
 	applied_appearance.plane = cutouts.plane
@@ -228,6 +262,8 @@
 	mob_spawner = /obj/effect/mob_spawn/corpse/human/generic_assistant
 
 /datum/cardboard_cutout/assistant/get_name()
+	procstart = null
+	src.procstart = null
 	return "[pick(GLOB.first_names_male)] [pick(GLOB.last_names)]"
 
 /datum/cardboard_cutout/clown
@@ -237,6 +273,8 @@
 	outfit = /datum/outfit/job/clown
 
 /datum/cardboard_cutout/clown/get_name()
+	procstart = null
+	src.procstart = null
 	return pick(GLOB.clown_names)
 
 /datum/cardboard_cutout/mime
@@ -246,6 +284,8 @@
 	outfit = /datum/outfit/job/mime
 
 /datum/cardboard_cutout/mime/get_name()
+	procstart = null
+	src.procstart = null
 	return pick(GLOB.mime_names)
 
 /datum/cardboard_cutout/traitor
@@ -255,6 +295,8 @@
 	outfit = /datum/outfit/traitor_cutout
 
 /datum/cardboard_cutout/traitor/get_name()
+	procstart = null
+	src.procstart = null
 	return pick("Unknown", "Captain")
 
 /datum/cardboard_cutout/nuclear_operative
@@ -264,6 +306,8 @@
 	outfit = /datum/outfit/syndicate/full
 
 /datum/cardboard_cutout/nuclear_operative/get_name()
+	procstart = null
+	src.procstart = null
 	return pick("Unknown", "COMMS", "Telecomms", "AI", "stealthy op", "STEALTH", "sneakybeaky", "MEDIC", "Medic")
 
 /datum/cardboard_cutout/cultist
@@ -285,6 +329,8 @@
 	outfit = /datum/outfit/wizard/bookless
 
 /datum/cardboard_cutout/wizard/get_name()
+	procstart = null
+	src.procstart = null
 	return "[pick(GLOB.wizard_first)] [pick(GLOB.wizard_second)]"
 
 /datum/cardboard_cutout/nightmare
@@ -294,6 +340,8 @@
 	species = /datum/species/shadow/nightmare
 
 /datum/cardboard_cutout/nightmare/get_name()
+	procstart = null
+	src.procstart = null
 	return pick(GLOB.nightmare_names)
 
 /datum/cardboard_cutout/xenomorph
@@ -304,6 +352,8 @@
 	direct_icon_state = "alienh"
 
 /datum/cardboard_cutout/xenomorph/get_name()
+	procstart = null
+	src.procstart = null
 	return applied_name + " ([rand(1, 999)])"
 
 /datum/cardboard_cutout/xenomorph_maid
@@ -314,6 +364,8 @@
 	direct_icon_state = "maid"
 
 /datum/cardboard_cutout/xenomorph_maid/get_name()
+	procstart = null
+	src.procstart = null
 	return applied_name + " ([rand(1, 999)])"
 
 /datum/cardboard_cutout/ash_walker
@@ -324,6 +376,8 @@
 	outfit = /datum/outfit/ashwalker/spear
 
 /datum/cardboard_cutout/ash_walker/get_name()
+	procstart = null
+	src.procstart = null
 	return generate_random_name_species_based(species_type = /datum/species/lizard)
 
 /datum/cardboard_cutout/death_squad
@@ -333,6 +387,8 @@
 	outfit = /datum/outfit/centcom/death_commando
 
 /datum/cardboard_cutout/death_squad/get_name()
+	procstart = null
+	src.procstart = null
 	return pick(GLOB.commando_names)
 
 /datum/cardboard_cutout/ian

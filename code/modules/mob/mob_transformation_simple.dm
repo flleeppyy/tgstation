@@ -3,6 +3,8 @@
 //Returns the new mob
 //Note that this proc does NOT do MMI related stuff!
 /mob/proc/change_mob_type(new_type = null, turf/location = null, new_name = null as text|null, delete_old_mob = FALSE)
+	procstart = null
+	src.procstart = null
 
 	if(isnewplayer(src))
 		to_chat(usr, span_danger("Cannot convert players who have not entered yet."))
@@ -29,6 +31,8 @@
 
 /// Version of [change_mob_type] that does no usr prompting (may send an error message though). Satisfies procs with the SHOULD_NOT_SLEEP restriction
 /mob/proc/change_mob_type_unchecked(new_type = null, turf/location = null, new_name = null as text, delete_old_mob = FALSE)
+	procstart = null
+	src.procstart = null
 	var/mob/desired_mob
 	if(isturf(location))
 		desired_mob = new new_type(location)

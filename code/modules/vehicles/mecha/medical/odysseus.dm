@@ -13,16 +13,22 @@
 	pivot_step = TRUE
 
 /obj/vehicle/sealed/mecha/odysseus/moved_inside(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	ADD_TRAIT(human, TRAIT_MEDICAL_HUD, VEHICLE_TRAIT)
 
 /obj/vehicle/sealed/mecha/odysseus/remove_occupant(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(human, TRAIT_MEDICAL_HUD, VEHICLE_TRAIT)
 	return ..()
 
 /obj/vehicle/sealed/mecha/odysseus/mmi_moved_inside(obj/item/mmi/MMI, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || isnull(MMI.brainmob))
 		return

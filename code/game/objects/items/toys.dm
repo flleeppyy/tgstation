@@ -40,6 +40,8 @@
 	var/floor_placeable = FALSE
 
 /obj/item/toy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(floor_placeable)
 		AddElement(/datum/element/floor_placeable)
@@ -56,14 +58,20 @@
 	custom_materials = list(/datum/material/plastic = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/toy/waterballoon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 	create_reagents(10)
 
 /obj/item/toy/waterballoon/attack(mob/living/carbon/human/M, mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/toy/waterballoon/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!istype(interacting_with, /obj/structure/reagent_dispensers))
 		return NONE
 	var/obj/structure/reagent_dispensers/RD = interacting_with
@@ -80,6 +88,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/toy/waterballoon/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/reagent_containers/cup) && tool.reagents)
 		if(tool.reagents.total_volume <= 0)
 			to_chat(user, span_warning("[tool] is empty."))
@@ -102,10 +112,14 @@
 	return NONE
 
 /obj/item/toy/waterballoon/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(!..()) //was it caught by a mob?
 		balloon_burst(hit_atom)
 
 /obj/item/toy/waterballoon/proc/balloon_burst(atom/AT)
+	procstart = null
+	src.procstart = null
 	if(reagents.total_volume >= 1)
 		var/turf/T
 		if(AT)
@@ -120,6 +134,8 @@
 		qdel(src)
 
 /obj/item/toy/waterballoon/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(reagents.total_volume >= 1)
 		icon_state = "waterballoon"
 		inhand_icon_state = "balloon"
@@ -175,6 +191,8 @@
 
 
 /obj/item/toy/balloon/long/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/toy/balloon/long) || !HAS_TRAIT(user, TRAIT_BALLOON_SUTRA))
 		return ..()
 
@@ -199,12 +217,16 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/toy/balloon/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/ammo_casing/foam_dart) || !ismonkey(user))
 		return NONE
 	pop_balloon(monkey_pop = TRUE)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/toy/balloon/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	var/mob/thrower = throwingdatum?.get_thrower()
 	if(ismonkey(thrower) && istype(AM, /obj/item/ammo_casing/foam_dart))
 		pop_balloon(monkey_pop = TRUE)
@@ -212,18 +234,24 @@
 		return ..()
 
 /obj/item/toy/balloon/bullet_act(obj/projectile/proj)
+	procstart = null
+	src.procstart = null
 	if((istype(proj, /obj/projectile/bullet/p50) || istype(proj,/obj/projectile/bullet/foam_dart)) && ismonkey(proj.firer))
 		pop_balloon(monkey_pop = TRUE)
 		return BULLET_ACT_HIT
 	return ..()
 
 /obj/item/toy/balloon/proc/pop_balloon(monkey_pop = FALSE)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/cartoon_sfx/cartoon_pop.ogg', 50, vary = TRUE)
 	if(monkey_pop) // Monkeys make money from popping bloons
 		new /obj/item/coin/iron(get_turf(src))
 	qdel(src)
 
 /obj/item/toy/balloon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 	if(!random_color)
@@ -232,21 +260,29 @@
 	update_appearance()
 
 /obj/item/toy/balloon/update_name(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[current_color ? "[current_color] ":null][initial(name)]"
 
 /obj/item/toy/balloon/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vname == NAMEOF(src, current_color))
 		update_appearance()
 
 /obj/item/toy/balloon/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/new_icon = "[initial(icon_state)][current_color ? "_[current_color]":null]"
 	inhand_icon_state = new_icon
 	icon_state = "[new_icon][isturf(loc) ? null : "_storage"]"
 
 /obj/item/toy/balloon/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
@@ -272,16 +308,22 @@
 	random_color = FALSE
 
 /obj/item/toy/balloon/syndicate/pickup(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user && user.mind && user.mind.has_antag_datum(/datum/antagonist, TRUE))
 		user.add_mood_event("badass_antag", /datum/mood_event/badass_antag)
 
 /obj/item/toy/balloon/syndicate/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user)
 		user.clear_mood_event("badass_antag")
 	. = ..()
 
 /obj/item/toy/balloon/syndicate/Destroy()
+	procstart = null
+	src.procstart = null
 	if(ismob(loc))
 		var/mob/living/M = loc
 		M.clear_mood_event("badass_antag")
@@ -414,10 +456,14 @@
 	var/current_mode = CAPTAINSAID_MODE_OFF
 
 /obj/item/toy/captainsaid/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You could swear you've been hearing advertisments for the 'soon upcoming' release of a tablet version for the better part of 3 years...")
 
 /obj/item/toy/captainsaid/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	current_mode++
 	playsound(src, 'sound/items/tools/screwdriver2.ogg', 50, vary = TRUE)
 	if (current_mode <= modes.len)
@@ -445,6 +491,8 @@
 	item_flags = NO_PIXEL_RANDOM_DROP
 
 /obj/item/toy/spinningtoy/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (!iscarbon(user))
 		user.visible_message(span_suicide("[user] consumes [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 		user.spin(8 SECONDS, 1)
@@ -469,6 +517,8 @@
  * * user - Whoever is doing the suiciding
  */
 /obj/item/toy/spinningtoy/proc/manual_suicide(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return
 	if(!user.is_holding(src)) // Half digestion? Start choking to death
@@ -524,10 +574,14 @@
 	var/bullets = 7
 
 /obj/item/toy/gun/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "There [bullets == 1 ? "is" : "are"] [bullets] cap\s left."
 
 /obj/item/toy/gun/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 
 	if(!istype(tool, /obj/item/toy/ammo/gun))
 		return NONE
@@ -550,6 +604,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/toy/gun/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!ISADVANCEDTOOLUSER(user))
 		to_chat(user, span_warning("You don't have the dexterity to do this!"))
 		return ITEM_INTERACT_BLOCKING
@@ -578,10 +634,14 @@
 	var/amount_left = 7
 
 /obj/item/toy/ammo/gun/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "357OLD-[amount_left]"
 	return ..()
 
 /obj/item/toy/ammo/gun/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "There [amount_left == 1 ? "is" : "are"] [amount_left] cap\s left."
 
@@ -607,6 +667,8 @@
 	var/saber_color = "blue"
 
 /obj/item/toy/sword/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/transforming, \
@@ -631,6 +693,8 @@
  * Updates our icon to have the correct color, and give some feedback.
  */
 /obj/item/toy/sword/proc/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(user)
@@ -641,10 +705,14 @@
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
 /obj/item/toy/sword/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It has a lighting dial currently set to [saber_color] which looks like it can be turned with a <b>screwdriver</b>.")
 
 /obj/item/toy/sword/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	switch(saber_color)
 		if("red")
 			saber_color = "blue"
@@ -661,17 +729,23 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/toy/sword/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vname == NAMEOF(src, saber_color))
 		update_appearance(UPDATE_ICON)
 
 /obj/item/toy/sword/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/last_part = HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE) ? "_on[saber_color ? "_[saber_color]" : null]" : null
 	icon_state = "[initial(icon_state)][last_part]"
 	inhand_icon_state = "[initial(inhand_icon_state)][last_part]"
 
 /obj/item/toy/sword/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(hacked)
 		to_chat(user, span_warning("It's already fabulous!"))
 		return
@@ -681,6 +755,8 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/item/toy/sword/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/toy/sword))
 		return NONE
 	var/obj/item/toy/sword/attatched_sword = tool
@@ -735,10 +811,14 @@
 	var/active = FALSE
 
 /obj/item/toy/windup_toolbox/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/item/toy/windup_toolbox/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		. += "single_latch_open"
@@ -746,6 +826,8 @@
 		. += "single_latch"
 
 /obj/item/toy/windup_toolbox/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!active)
 		to_chat(user, span_notice("You wind up [src], it begins to rumble."))
 		active = TRUE
@@ -757,6 +839,8 @@
 		to_chat(user, span_warning("[src] is already active!"))
 
 /obj/item/toy/windup_toolbox/proc/Rumble()
+	procstart = null
+	src.procstart = null
 	var/static/list/transforms
 	if(!transforms)
 		var/matrix/M1 = matrix()
@@ -774,6 +858,8 @@
 	animate(transform=transforms[4], time=0.3)
 
 /obj/item/toy/windup_toolbox/proc/stopRumble()
+	procstart = null
+	src.procstart = null
 	active = FALSE
 	update_appearance()
 	visible_message(span_warning("[src] slowly stops rattling and falls still, its latch snapping shut.")) //subtle difference
@@ -795,12 +881,18 @@
 	attack_verb_simple = list("attack", "strike", "hit")
 
 /obj/item/dualsaber/toy/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	return 0
 
-/obj/item/dualsaber/toy/IsReflect() //Stops Toy Dualsabers from reflecting energy projectiles
+/obj/item/dualsaber/toy/IsReflect()
+	procstart = null
+	src.procstart = null //Stops Toy Dualsabers from reflecting energy projectiles
 	return 0
 
-/obj/item/dualsaber/toy/impale(mob/living/user)//Stops Toy Dualsabers from injuring clowns
+/obj/item/dualsaber/toy/impale(mob/living/user)
+	procstart = null
+	src.procstart = null//Stops Toy Dualsabers from injuring clowns
 	to_chat(user, span_warning("You twirl around a bit before losing your balance and impaling yourself on [src]."))
 	user.adjust_stamina_loss(25)
 
@@ -825,6 +917,8 @@
 	var/list/alt_simple = list("stab", "pierce", "impale")
 
 /obj/item/toy/katana/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	alt_continuous = string_list(alt_continuous)
 	alt_simple = string_list(alt_simple)
@@ -842,6 +936,8 @@
 	var/ash_type = /obj/effect/decal/cleanable/ash
 
 /obj/item/toy/snappop/proc/pop_burst(n = 3, c = TRUE)
+	procstart = null
+	src.procstart = null
 	do_sparks(n, c, src)
 	new ash_type(loc)
 	visible_message(span_warning("[src] explodes!"),
@@ -850,13 +946,19 @@
 	qdel(src)
 
 /obj/item/toy/snappop/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	pop_burst()
 
 /obj/item/toy/snappop/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		pop_burst()
 
 /obj/item/toy/snappop/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
@@ -864,6 +966,8 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/item/toy/snappop/proc/on_entered(datum/source, H as mob|obj)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(ishuman(H) || issilicon(H)) //i guess carp and shit shouldn't set them off
 		var/mob/living/carbon/M = H
@@ -880,10 +984,14 @@
 	var/respawn_time = 300
 
 /obj/effect/decal/cleanable/ash/snappop_phoenix/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(respawn)), respawn_time)
 
 /obj/effect/decal/cleanable/ash/snappop_phoenix/proc/respawn()
+	procstart = null
+	src.procstart = null
 	new /obj/item/toy/snappop/phoenix(get_turf(src))
 	qdel(src)
 
@@ -904,9 +1012,13 @@
 
 // Talking toys are language universal, and thus all species can use them
 /obj/item/toy/talking/attack_alien(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/item/toy/talking/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!cooldown)
 		activation_message(user)
 		playsound(loc, 'sound/machines/click.ogg', 20, TRUE)
@@ -919,20 +1031,28 @@
 	..()
 
 /obj/item/toy/talking/proc/activation_message(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(
 		span_notice("[user] pulls the string on \the [src]."),
 		span_notice("You pull the string on \the [src]."),
 		span_notice("You hear a string being pulled."))
 
 /obj/item/toy/talking/proc/generate_messages()
+	procstart = null
+	src.procstart = null
 	return list(pick(messages))
 
 /obj/item/toy/talking/proc/do_toy_talk(mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/message in generate_messages())
 		toy_talk(user, message)
 		sleep(1 SECONDS)
 
 /obj/item/toy/talking/proc/toy_talk(mob/user, message)
+	procstart = null
+	src.procstart = null
 	say(message, spans = list(span))
 	if(chattering)
 		chatter(message, phomeme, user)
@@ -947,6 +1067,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/toy/talking/ai/generate_messages()
+	procstart = null
+	src.procstart = null
 	return list(generate_ion_law())
 
 /obj/item/toy/talking/codex_gigas
@@ -961,6 +1083,8 @@
 	recharge_time = 60
 
 /obj/item/toy/talking/codex_gigas/activation_message(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(
 		span_notice("[user] presses the button on \the [src]."),
 		span_notice("You press the button on \the [src]."),
@@ -997,6 +1121,8 @@
 	var/cooldown = 0
 
 /obj/item/toy/nuke/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if (obj_flags & EMAGGED && cooldown < world.time)
 		cooldown = world.time + 600
 		user.audible_message(span_hear("You hear the click of a button."), self_message = span_notice("You activate [src], it plays a loud noise!"))
@@ -1022,6 +1148,8 @@
 		sleep(0.5 SECONDS)
 
 /obj/item/toy/nuke/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if (obj_flags & EMAGGED)
 		return FALSE
 	balloon_alert(user, "explosive simulation enabled")
@@ -1041,6 +1169,8 @@
 	floor_placeable = TRUE
 
 /obj/item/toy/minimeteor/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if (obj_flags & EMAGGED)
 		return FALSE
 	to_chat(user, span_warning("You short circuit whatever electronics exist inside. The \"meteor\" suddenly feels a lot heavier...?"))
@@ -1049,6 +1179,8 @@
 	return TRUE
 
 /obj/item/toy/minimeteor/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/meteorimpact.ogg', 40, TRUE)
 	for(var/mob/M in urange(10, src))
 		if(!IS_UNCONSCIOUS_OR_CRIT(M) && !isAI(M))
@@ -1069,6 +1201,8 @@
 	var/cooldown = 0
 
 /obj/item/toy/redbutton/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if (cooldown < world.time)
 		cooldown = (world.time + 300) // Sets cooldown at 30 seconds
 		user.visible_message(span_warning("[user] presses the big red button."), span_notice("You press the button, it plays a loud noise!"), span_hear("The button clicks loudly."))
@@ -1095,10 +1229,14 @@
 	custom_materials = list(/datum/material/snow = SHEET_MATERIAL_AMOUNT)
 
 /obj/item/toy/snowball/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	user.throw_item(interacting_with)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/toy/snowball/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		playsound(src, 'sound/effects/pop.ogg', 20, TRUE)
 		qdel(src)
@@ -1142,6 +1280,8 @@
 	var/cooldown = 0
 
 /obj/item/toy/clockwork_watch/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if (cooldown < world.time)
 		cooldown = world.time + 1800 //3 minutes
 		user.visible_message(span_warning("[user] rotates a cogwheel on [src]."), span_notice("You rotate a cogwheel on [src], it plays a loud noise!"), span_hear("You hear cogwheels turning."))
@@ -1150,6 +1290,8 @@
 		to_chat(user, span_alert("The cogwheels are already turning!"))
 
 /obj/item/toy/clockwork_watch/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info("Station Time: [server_timestamp(ic_time = TRUE, twelve_hour_clock = user.client?.prefs.read_preference(/datum/preference/toggle/twelve_hour))]")
 	if(user.is_literate())
@@ -1182,6 +1324,8 @@
 	var/cooldown = 0
 
 /obj/item/toy/toy_xeno/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(cooldown <= world.time)
 		cooldown = (world.time + 50) //5 second cooldown
 		user.visible_message(span_notice("[user] pulls back the string on [src]."))
@@ -1221,11 +1365,15 @@
 	var/toysound = 'sound/machines/click.ogg'
 
 /obj/item/toy/figure/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = "A \"Space Life\" brand [src]."
 	AddElement(/datum/element/toy_talk)
 
 /obj/item/toy/figure/attack_self(mob/user as mob)
+	procstart = null
+	src.procstart = null
 	if(cooldown <= world.time)
 		cooldown = world.time + 50
 		to_chat(user, span_notice("[src] says \"[toysay]\""))
@@ -1456,6 +1604,8 @@
 
 //Add changing looks when i feel suicidal about making 20 inhands for these.
 /obj/item/toy/dummy/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/new_name = tgui_input_text(usr, "What would you like to name the dummy?", "Doll Name", doll_name, max_length = MAX_NAME_LEN)
 	if(!new_name || !user.is_holding(src))
 		return
@@ -1464,10 +1614,14 @@
 	name = "[initial(name)] - [doll_name]"
 
 /obj/item/toy/dummy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/toy_talk)
 
 /obj/item/toy/dummy/get_voice(add_id_name)
+	procstart = null
+	src.procstart = null
 	return doll_name
 
 /obj/item/toy/seashell
@@ -1479,6 +1633,8 @@
 	var/static/list/possible_colors = list("" = 2, COLOR_PURPLE_GRAY = 1, COLOR_OLIVE = 1, COLOR_PALE_BLUE_GRAY = 1, COLOR_RED_GRAY = 1)
 
 /obj/item/toy/seashell/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(-5, 5)
 	pixel_y = rand(-5, 5)
@@ -1495,6 +1651,8 @@
 	var/cooldown = 0
 
 /obj/item/toy/brokenradio/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(cooldown <= world.time)
 		cooldown = (world.time + 300)
 		user.visible_message(span_notice("[user] adjusts the dial on [src]."))
@@ -1511,6 +1669,8 @@
 	var/cooldown = 0
 
 /obj/item/toy/braintoy/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(cooldown <= world.time)
 		cooldown = (world.time + 10)
 		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(playsound), src, 'sound/effects/blob/blobattack.ogg', 50, FALSE), 0.5 SECONDS)
@@ -1534,6 +1694,8 @@
 	var/timer_id
 
 /obj/item/toy/eldritch_book/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -1545,6 +1707,8 @@
 
 /// Plays a little animation that shows the book opening and closing.
 /obj/item/toy/eldritch_book/proc/open_animation()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state]_open"
 	flick("[base_icon_state]_opening", src)
 	book_open = TRUE
@@ -1553,6 +1717,8 @@
 
 /// Plays a closing animation and resets the icon state.
 /obj/item/toy/eldritch_book/proc/close_animation()
+	procstart = null
+	src.procstart = null
 	icon_state = base_icon_state
 	flick("[base_icon_state]_closing", src)
 	book_open = FALSE
@@ -1581,6 +1747,8 @@
 	COOLDOWN_DECLARE(foamfinger_cooldown)
 
 /obj/item/toy/foamfinger/attack_self(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, foamfinger_cooldown))
 		return
 	COOLDOWN_START(src, foamfinger_cooldown, 5 SECONDS)
@@ -1654,7 +1822,9 @@ GLOBAL_LIST_EMPTY(intento_players)
 	/// Time until we reset the icon of the Intento
 	COOLDOWN_DECLARE(next_icon_reset)
 
-/obj/item/toy/intento/attack_self(mob/user, modifiers) //added params to attack_self, the alternative is registering a signal on clickon but i was advised not to
+/obj/item/toy/intento/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null //added params to attack_self, the alternative is registering a signal on clickon but i was advised not to
 	..()
 	if(state == STATE_OFF)
 		boot()
@@ -1681,6 +1851,8 @@ GLOBAL_LIST_EMPTY(intento_players)
 	player_input(user, input)
 
 /obj/item/toy/intento/proc/boot()
+	procstart = null
+	src.procstart = null
 	say("Game starting!")
 	playsound(src, 'sound/machines/synth/synth_yes.ogg', 50, FALSE)
 
@@ -1689,6 +1861,8 @@ GLOBAL_LIST_EMPTY(intento_players)
 	START_PROCESSING(SSfastprocess, src)
 
 /obj/item/toy/intento/proc/player_input(mob/player, intent)
+	procstart = null
+	src.procstart = null
 	// All branches of this proc lead to us wanting to process
 	START_PROCESSING(SSfastprocess, src)
 
@@ -1708,6 +1882,8 @@ GLOBAL_LIST_EMPTY(intento_players)
 		COOLDOWN_START(src, next_process, TIME_TO_BEGIN)
 
 /obj/item/toy/intento/process()
+	procstart = null
+	src.procstart = null
 	if(next_icon_reset && next_icon_reset <= world.time)
 		icon_state = initial(icon_state)
 		COOLDOWN_RESET(src, next_icon_reset)
@@ -1732,6 +1908,8 @@ GLOBAL_LIST_EMPTY(intento_players)
 		return PROCESS_KILL
 
 /obj/item/toy/intento/proc/process_start()
+	procstart = null
+	src.procstart = null
 	player_sequence.Cut()
 
 	current_sequence += pick(list(HELP, DISARM, GRAB, HARM))
@@ -1741,6 +1919,8 @@ GLOBAL_LIST_EMPTY(intento_players)
 	index = 1
 
 /obj/item/toy/intento/proc/process_demo()
+	procstart = null
+	src.procstart = null
 	if(index > length(current_sequence))
 		state = STATE_AWAITING_PLAYER_INPUT
 		COOLDOWN_RESET(src, next_process)
@@ -1753,6 +1933,8 @@ GLOBAL_LIST_EMPTY(intento_players)
 	COOLDOWN_START(src, next_process, TIME_PER_DEMO_STEP)
 
 /obj/item/toy/intento/proc/process_end(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user && GLOB.intento_players[user.ckey] < score)
 		GLOB.intento_players[user.ckey] = score
 		var/award_status = user.client.get_award_status(/datum/award/score/intento_score)
@@ -1774,6 +1956,8 @@ GLOBAL_LIST_EMPTY(intento_players)
 		cleanup()
 
 /obj/item/toy/intento/proc/process_retaliation()
+	procstart = null
+	src.procstart = null
 	var/mob/living/victim = loc
 	if(!isliving(victim) || index > length(current_sequence))
 		cleanup()
@@ -1799,6 +1983,8 @@ GLOBAL_LIST_EMPTY(intento_players)
 	COOLDOWN_START(src, next_process, TIME_PER_DEMO_STEP)
 
 /obj/item/toy/intento/proc/cleanup()
+	procstart = null
+	src.procstart = null
 	score = 0
 	index = 1
 	player_sequence.Cut()
@@ -1809,6 +1995,8 @@ GLOBAL_LIST_EMPTY(intento_players)
 	REMOVE_TRAIT(src, TRAIT_NODROP, type)
 
 /obj/item/toy/intento/proc/render(input)
+	procstart = null
+	src.procstart = null
 	icon_state = input
 	playsound(src, sound_by_intent[input], 50, FALSE)
 
@@ -1816,6 +2004,8 @@ GLOBAL_LIST_EMPTY(intento_players)
 	COOLDOWN_START(src, next_icon_reset, TIME_TO_RESET_ICON)
 
 /obj/item/toy/intento/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -1823,6 +2013,8 @@ GLOBAL_LIST_EMPTY(intento_players)
 	return TRUE
 
 /obj/item/toy/intento/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	return ..()
 
@@ -1878,6 +2070,8 @@ GLOBAL_LIST_EMPTY(intento_players)
 	desc = "A novelty extendo-hand produced by the ACME corporation. Originally designed to knock out roadrunners."
 
 /obj/item/extendohand/attack(atom/M, mob/living/carbon/human/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	var/dist = get_dist(M, user)
 	if(dist < min_reach)
 		to_chat(user, span_warning("[M] is too close to use [src] on."))
@@ -1907,10 +2101,14 @@ GLOBAL_LIST_EMPTY(intento_players)
 	acid = 70
 
 /obj/item/banhammer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/kneejerk)
 
 /obj/item/banhammer/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is hitting [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to ban [user.p_them()]self from life."))
 	return (BRUTELOSS|FIRELOSS|TOXLOSS|OXYLOSS)
 /*
@@ -1919,6 +2117,8 @@ mrdoombringer sez: and remember kids, if you try and PR a fix for this item's gr
 for further reading, please see: https://github.com/tgstation/tgstation/pull/30173 and https://translate.google.com/translate?sl=auto&tl=en&js=y&prev=_t&hl=en&ie=UTF-8&u=%2F%2Flurkmore.to%2FSS13&edit-text=&act=url
 */
 /obj/item/banhammer/attack(mob/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.zone_selected == BODY_ZONE_HEAD)
 		M.visible_message(span_danger("[user] are stroking the head of [M] with a bangammer."), span_userdanger("[user] are stroking your head with a bangammer."), span_hear("You hear a bangammer stroking a head.")) // see above comment
 	else

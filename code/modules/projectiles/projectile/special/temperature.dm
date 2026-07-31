@@ -7,9 +7,13 @@
 	var/temperature = -50 // reduce the body temperature by 50 points
 
 /obj/projectile/temp/is_hostile_projectile()
+	procstart = null
+	src.procstart = null
 	return temperature != 0 // our damage is done by cooling or heating (casting to boolean here)
 
 /obj/projectile/temp/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(target))
 		var/mob/living/carbon/hit_mob = target
@@ -37,6 +41,8 @@
 	temperature = 100 // Raise the body temp by 100 points
 
 /obj/projectile/temp/hot/on_hit(atom/target, blocked = FALSE, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isliving(target))
@@ -49,6 +55,8 @@
 	temperature = -350 // Single slow shot reduces temp greatly
 
 /obj/projectile/temp/cryo/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isliving(target))
@@ -56,6 +64,8 @@
 		living_target.apply_status_effect(/datum/status_effect/freezing_blast)
 
 /obj/projectile/temp/cryo/on_range()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(isopenturf(T))
 		var/turf/open/O = T
@@ -69,6 +79,8 @@
 	temperature = 350
 
 /obj/projectile/temp/pyro/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -89,6 +101,8 @@
 		living_target.ignite_mob()
 
 /obj/projectile/temp/pyro/on_range()
+	procstart = null
+	src.procstart = null
 	var/turf/location = get_turf(src)
 	new /obj/effect/hotspot(location)
 	location.hotspot_expose(700, 50, 1)

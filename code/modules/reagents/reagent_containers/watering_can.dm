@@ -13,6 +13,8 @@
 	possible_transfer_amounts = list(20,100)
 
 /obj/item/reagent_containers/cup/watering_can/Initialize(mapload, vol)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		AddElement(/datum/element/swabable, CELL_LINE_TABLE_SNAIL, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
@@ -38,15 +40,21 @@
 	var/datum/reagent/refill_reagent = /datum/reagent/water
 
 /obj/item/reagent_containers/cup/watering_can/advanced/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/reagent_containers/cup/watering_can/advanced/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	///How much to refill
 	var/refill_add = min(volume - reagents.total_volume, refill_rate * seconds_per_tick)
 	if(refill_add > 0)
 		reagents.add_reagent(refill_reagent, refill_add)
 
 /obj/item/reagent_containers/cup/watering_can/advanced/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()

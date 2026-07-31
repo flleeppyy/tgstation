@@ -10,14 +10,20 @@
 	custom_materials = null
 
 /obj/structure/decoration/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 /obj/structure/decoration/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!disassembled)
 		new /obj/effect/decal/cleanable/plastic(loc)
 	return
 
 /obj/structure/decoration/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It's made of cheap, hollow plastic.")
 
@@ -37,6 +43,8 @@
 	icon_state = /obj/structure/flora/grass/green/style_3::icon_state
 
 /obj/structure/decoration/grass/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "snowgrass[rand(1, 3)]gb"
 	update_appearance()
@@ -54,6 +62,8 @@
 	icon_state = /obj/structure/flora/grass/brown/style_3::icon_state
 
 /obj/structure/decoration/grass/brown/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "snowgrass[rand(1, 3)]bb"
 	update_appearance()
@@ -79,6 +89,8 @@
 	icon_state = /obj/structure/flora/grass/jungle/a/style_5::icon_state
 
 /obj/structure/decoration/jungle_grass/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "grassa[rand(1, 5)]"
 	update_appearance()
@@ -102,6 +114,8 @@
 	icon_state = /obj/structure/flora/grass/jungle/b/style_5::icon_state
 
 /obj/structure/decoration/jungle_grass/b/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "grassb[rand(1, 5)]"
 	update_appearance()
@@ -124,6 +138,8 @@
 	icon_state = /obj/structure/flora/bush/style_4::icon_state
 
 /obj/structure/decoration/bush/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "firstbush_[rand(1, 4)]"
 	update_appearance()
@@ -145,6 +161,8 @@
 	icon_state = /obj/structure/flora/bush/reed/style_4::icon_state
 
 /obj/structure/decoration/bush/reed/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "reedbush_[rand(1, 4)]"
 	update_appearance()
@@ -163,6 +181,8 @@
 	icon_state = /obj/structure/flora/bush/leavy/style_3::icon_state
 
 /obj/structure/decoration/bush/leafy/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "leafybush_[rand(1, 3)]"
 	update_appearance()
@@ -184,6 +204,8 @@
 	icon_state = /obj/structure/flora/bush/pale/style_4::icon_state
 
 /obj/structure/decoration/bush/pale/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "palebush_[rand(1, 4)]"
 	update_appearance()
@@ -202,6 +224,8 @@
 	icon_state = /obj/structure/flora/bush/stalky/style_3::icon_state
 
 /obj/structure/decoration/bush/stalky/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "stalkybush_[rand(1, 3)]"
 	update_appearance()
@@ -223,6 +247,8 @@
 	icon_state = /obj/structure/flora/bush/grassy/style_4::icon_state
 
 /obj/structure/decoration/bush/grassy/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "grassybush_[rand(1, 4)]"
 	update_appearance()
@@ -241,6 +267,8 @@
 	icon_state = /obj/structure/flora/bush/sparsegrass/style_3::icon_state
 
 /obj/structure/decoration/bush/sparsegrass/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "sparsegrass_[rand(1, 3)]"
 	update_appearance()
@@ -259,6 +287,8 @@
 	icon_state = /obj/structure/flora/bush/fullgrass/style_3::icon_state
 
 /obj/structure/decoration/bush/fullgrass/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "fullgrass_[rand(1, 3)]"
 	update_appearance()
@@ -277,6 +307,8 @@
 	icon_state = /obj/structure/flora/bush/ferny/style_3::icon_state
 
 /obj/structure/decoration/bush/ferny/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "fernybush_[rand(1, 3)]"
 	update_appearance()
@@ -295,6 +327,8 @@
 	icon_state = /obj/structure/flora/bush/sunny/style_3::icon_state
 
 /obj/structure/decoration/bush/sunny/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "sunnybush_[rand(1, 3)]"
 	update_appearance()
@@ -316,6 +350,8 @@
 	icon_state = /obj/structure/flora/bush/generic/style_4::icon_state
 
 /obj/structure/decoration/bush/generic/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "genericbush_[rand(1, 4)]"
 	update_appearance()
@@ -337,6 +373,8 @@
 	icon_state = /obj/structure/flora/bush/pointy/style_4::icon_state
 
 /obj/structure/decoration/bush/pointy/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "pointybush_[rand(1, 4)]"
 	update_appearance()
@@ -358,6 +396,8 @@
 	icon_state = /obj/structure/flora/bush/lavendergrass/style_4::icon_state
 
 /obj/structure/decoration/bush/lavendergrass/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "lavendergrass_[rand(1, 4)]"
 	update_appearance()
@@ -376,6 +416,8 @@
 	icon_state = /obj/structure/flora/bush/flowers_yw/style_3::icon_state
 
 /obj/structure/decoration/bush/flowers_yw/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "ywflowers_[rand(1, 3)]"
 	update_appearance()
@@ -394,6 +436,8 @@
 	icon_state = /obj/structure/flora/bush/flowers_br/style_3::icon_state
 
 /obj/structure/decoration/bush/flowers_br/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "brflowers_[rand(1, 3)]"
 	update_appearance()
@@ -412,6 +456,8 @@
 	icon_state = /obj/structure/flora/bush/flowers_pp/style_3::icon_state
 
 /obj/structure/decoration/bush/flowers_pp/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "ppflowers_[rand(1, 3)]"
 	update_appearance()
@@ -440,6 +486,8 @@
 	icon_state = /obj/structure/flora/bush/snow/style_6::icon_state
 
 /obj/structure/decoration/bush/snow/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "snowbush[rand(1, 6)]"
 	update_appearance()
@@ -459,6 +507,8 @@
 	icon_state = /obj/structure/flora/bush/jungle/a/style_3::icon_state
 
 /obj/structure/decoration/bush/jungle/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "busha[rand(1, 3)]"
 	update_appearance()
@@ -476,6 +526,8 @@
 	icon_state = /obj/structure/flora/bush/jungle/b/style_3::icon_state
 
 /obj/structure/decoration/bush/jungle/b/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "bushb[rand(1, 3)]"
 	update_appearance()
@@ -493,6 +545,8 @@
 	icon_state = /obj/structure/flora/bush/jungle/c/style_3::icon_state
 
 /obj/structure/decoration/bush/jungle/c/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "bushc[rand(1, 3)]"
 	update_appearance()
@@ -517,6 +571,8 @@
 	icon_state = /obj/structure/flora/bush/large/style_3::icon_state
 
 /obj/structure/decoration/bush/large/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "bush[rand(1, 3)]"
 	update_appearance()
@@ -539,6 +595,8 @@
 	icon_state = /obj/structure/flora/rock/style_4::icon_state
 
 /obj/structure/decoration/rock/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "basalt[rand(1, 4)]"
 	update_appearance()
@@ -558,6 +616,8 @@
 	icon_state = /obj/structure/flora/rock/pile/style_3::icon_state
 
 /obj/structure/decoration/rock/pile/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "lavarocks[pick(3;1,3;2,1;3)]"
 	update_appearance()
@@ -583,6 +643,8 @@
 	icon_state = /obj/structure/flora/rock/pile/jungle/style_5::icon_state
 
 /obj/structure/decoration/rock/pile/jungle/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "rock[rand(1, 5)]"
 	update_appearance()
@@ -604,6 +666,8 @@
 	icon_state = /obj/structure/flora/rock/pile/jungle/large/style_3::icon_state
 
 /obj/structure/decoration/rock/pile/jungle/large/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "rocks[rand(1, 3)]"
 	update_appearance()

@@ -4,6 +4,8 @@
 	name_extension = "(Computer Board)"
 
 /obj/item/circuitboard/computer/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(GetComponent(/datum/component/gps))
 		. += span_info("there's a small, blinking light!")
@@ -41,11 +43,15 @@
 	station_only = TRUE
 
 /obj/item/circuitboard/computer/atmos_alert/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info("The board is configured to [station_only ? "track all station and mining alarms" : "track alarms on the same z-level"].")
 	. += span_notice("The board mode can be changed with a [EXAMINE_HINT("multitool")].")
 
 /obj/item/circuitboard/computer/atmos_alert/multitool_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	station_only = !station_only
 	balloon_alert(user, "tracking set to [station_only ? "station" : "z-level"]")
 	return TRUE
@@ -274,6 +280,8 @@
 	build_path = /obj/machinery/computer/libraryconsole/bookmanagement
 
 /obj/item/circuitboard/computer/libraryconsole/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(build_path == /obj/machinery/computer/libraryconsole/bookmanagement)
 		name = "Library Visitor Console"
 		build_path = /obj/machinery/computer/libraryconsole
@@ -319,6 +327,8 @@
 	)
 
 /obj/item/circuitboard/computer/slot_machine/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/current_theme = "Unknown"
 	for(var/theme_name in slot_themes)
@@ -328,6 +338,8 @@
 	. += span_info("[src] is set to the [current_theme] theme. You can use a screwdriver to reconfigure it.")
 
 /obj/item/circuitboard/computer/slot_machine/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		balloon_alert(user, "board mode is broken!")
 		return FALSE
@@ -340,6 +352,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/circuitboard/computer/slot_machine/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 
@@ -362,10 +376,14 @@
 	var/moved = FALSE
 
 /obj/item/circuitboard/computer/syndicate_shuttle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.syndicate_shuttle_boards += src
 
 /obj/item/circuitboard/computer/syndicate_shuttle/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.syndicate_shuttle_boards -= src
 	return ..()
 
@@ -397,11 +415,15 @@
 	split_mode = TRUE
 
 /obj/item/circuitboard/computer/tram_controls/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info("The board is configured for [split_mode ? "split window" : "normal window"].")
 	. += span_notice("The board mode can be changed with a [EXAMINE_HINT("multitool")].")
 
 /obj/item/circuitboard/computer/tram_controls/multitool_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	split_mode = !split_mode
 	to_chat(user, span_notice("[src] positioning set to [split_mode ? "split window" : "normal window"]."))
 	return TRUE
@@ -473,12 +495,16 @@
 	locked = FALSE
 
 /obj/item/circuitboard/computer/rdconsole/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info("The board is configured to [silence_announcements ? "silence" : "announce"] researched nodes on radio.")
 	. += span_notice("The board mode can be changed with a [EXAMINE_HINT("multitool")].")
 	. += span_notice("The board is [locked ? "locked" : "unlocked"], and can be [locked ? "unlocked" : "locked"] with an ID that has research access.")
 
 /obj/item/circuitboard/computer/rdconsole/multitool_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(obj_flags & EMAGGED)
 		balloon_alert(user, "board mode is broken!")
@@ -487,6 +513,8 @@
 	balloon_alert(user, "announcements [silence_announcements ? "enabled" : "disabled"]")
 
 /obj/item/circuitboard/computer/rdconsole/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if (locked)
 		locked = FALSE
 		to_chat(user, span_notice("You magnetically trigger the locking mechanism, causing it to unlock."))
@@ -500,6 +528,8 @@
 	return TRUE
 
 /obj/item/circuitboard/computer/rdconsole/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (user.combat_mode || !isidcard(tool))
 		return NONE
 	if (!check_access(tool))
@@ -608,6 +638,8 @@
 	var/contraband = FALSE
 
 /obj/item/circuitboard/computer/cargo/multitool_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(obj_flags & EMAGGED))
 		contraband = !contraband
@@ -616,6 +648,8 @@
 		to_chat(user, span_alert("The spectrum chip is unresponsive."))
 
 /obj/item/circuitboard/computer/cargo/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if (obj_flags & EMAGGED)
 		return FALSE
 
@@ -625,6 +659,8 @@
 	return TRUE
 
 /obj/item/circuitboard/computer/cargo/configure_machine(obj/machinery/computer/cargo/machine)
+	procstart = null
+	src.procstart = null
 	if(!istype(machine))
 		CRASH("Cargo board attempted to configure incorrect machine type: [machine] ([machine?.type])")
 
@@ -639,6 +675,8 @@
 	build_path = /obj/machinery/computer/cargo/express
 
 /obj/item/circuitboard/computer/cargo/express/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if (obj_flags & EMAGGED)
 		return FALSE
 
@@ -648,6 +686,8 @@
 	return TRUE
 
 /obj/item/circuitboard/computer/cargo/express/multitool_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (!(obj_flags & EMAGGED))
 		contraband = !contraband
 		to_chat(user, span_notice("Receiver spectrum set to [contraband ? "Broad" : "Standard"]."))
@@ -716,6 +756,8 @@
 	var/shuttle_id
 
 /obj/item/circuitboard/computer/shuttle/configure_machine(obj/machinery/machine)
+	procstart = null
+	src.procstart = null
 	var/obj/docking_port/mobile/custom/shuttle = shuttle_id ? SSshuttle.getShuttle(shuttle_id) : SSshuttle.get_containing_shuttle(machine)
 	if(!shuttle)
 		var/on_shuttle_frame = HAS_TRAIT((get_turf(machine)), TRAIT_SHUTTLE_CONSTRUCTION_TURF)

@@ -9,6 +9,8 @@
 	var/hud_icon
 
 /datum/spellbook_entry/perks/buy_spell(mob/living/carbon/human/user, obj/item/spellbook/book, log_buy)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/wizard/wizard_datum = user.mind.has_antag_datum(/datum/antagonist/wizard)
 	if(wizard_datum)
 		wizard_datum.perks += src
@@ -20,6 +22,8 @@
 	return TRUE
 
 /datum/spellbook_entry/perks/proc/on_hud_created(mob/living/carbon/human/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/hud/user_hud = source.hud_used
@@ -37,6 +41,8 @@
 	hud_icon = "fourhands"
 
 /datum/spellbook_entry/perks/fourhands/buy_spell(mob/living/carbon/human/user, obj/item/spellbook/book, log_buy)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.change_number_of_hands(4)
 
@@ -48,6 +54,8 @@
 	no_coexistence_typecache = list(/datum/action/cooldown/spell/lichdom)
 
 /datum/spellbook_entry/perks/wormborn/buy_spell(mob/living/carbon/human/user, obj/item/spellbook/book, log_buy)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.AddComponent(/datum/component/wormborn)
 
@@ -57,10 +65,14 @@
 	hud_icon = "dejavu"
 
 /datum/spellbook_entry/perks/dejavu/buy_spell(mob/living/carbon/human/user, obj/item/spellbook/book, log_buy)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(user, COMSIG_ENTER_AREA, PROC_REF(give_dejavu))
 
 /datum/spellbook_entry/perks/dejavu/proc/give_dejavu(mob/living/carbon/human/wizard, area/new_area)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(new_area, /area/centcom))
@@ -74,6 +86,8 @@
 	hud_icon = "spellottery"
 
 /datum/spellbook_entry/perks/spell_lottery/buy_spell(mob/living/carbon/human/user, obj/item/spellbook/book, log_buy)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(user, TRAIT_SPELLS_LOTTERY, REF(src))
 
@@ -83,6 +97,8 @@
 	hud_icon = "gamble"
 
 /datum/spellbook_entry/perks/gamble/buy_spell(mob/living/carbon/human/user, obj/item/spellbook/book, log_buy)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/antagonist/wizard/check_perks = user.mind.has_antag_datum(/datum/antagonist/wizard)
 	var/perks_allocated = 0
@@ -112,6 +128,8 @@
 	hud_icon = "hearteater"
 
 /datum/spellbook_entry/perks/heart_eater/buy_spell(mob/living/carbon/human/user, obj/item/spellbook/book, log_buy)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.AddComponent(/datum/component/heart_eater)
 
@@ -122,6 +140,8 @@
 	hud_icon = "slimefriends"
 
 /datum/spellbook_entry/perks/slime_friends/buy_spell(mob/living/carbon/human/user, obj/item/spellbook/book, log_buy)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.AddComponent(/datum/component/slime_friends)
 
@@ -132,6 +152,8 @@
 	hud_icon = "transparence"
 
 /datum/spellbook_entry/perks/transparence/buy_spell(mob/living/carbon/human/user, obj/item/spellbook/book, log_buy)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.maxHealth *= 0.75
 	user.alpha = 125
@@ -139,6 +161,8 @@
 	RegisterSignal(user, COMSIG_ENTER_AREA, PROC_REF(make_stalker))
 
 /datum/spellbook_entry/perks/transparence/proc/make_stalker(mob/living/carbon/human/wizard, area/new_area)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(new_area, /area/centcom/wizard_station))
@@ -153,6 +177,8 @@
 	hud_icon = "magnetism"
 
 /datum/spellbook_entry/perks/magnetism/buy_spell(mob/living/carbon/human/user, obj/item/spellbook/book, log_buy)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/movable/magnitizm = new /obj/effect/wizard_magnetism(get_turf(user))
 	magnitizm.orbit(user, 20)
@@ -165,10 +191,14 @@
 	var/datum/weakref/owner
 
 /obj/effect/wizard_magnetism/New(loc, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transform *= 0.4
 
 /obj/effect/wizard_magnetism/orbit(atom/new_owner, radius, clockwise, rotation_speed, rotation_segments, pre_rotation)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(new_owner))
 		return
@@ -177,6 +207,8 @@
 	RegisterSignal(new_owner, COMSIG_LIVING_DEATH, PROC_REF(on_owner_death))
 
 /obj/effect/wizard_magnetism/proc/check_area(mob/living/wizard, area/new_area)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(new_area == GLOB.areas_by_type[/area/centcom/wizard_station])
@@ -185,11 +217,15 @@
 	UnregisterSignal(wizard, COMSIG_ENTER_AREA)
 
 /obj/effect/wizard_magnetism/proc/on_owner_death()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	stop_orbit()
 
 /obj/effect/wizard_magnetism/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(isnull(owner))
 		stop_orbit()
 		return
@@ -206,6 +242,8 @@
 			step_towards(living_mov, wizard)
 
 /obj/effect/wizard_magnetism/stop_orbit(datum/component/orbiter/orbiter, refreshing = FALSE)
+	procstart = null
+	src.procstart = null
 	if(refreshing)
 		return ..()
 	STOP_PROCESSING(SSprocessing, src)

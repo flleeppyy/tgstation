@@ -26,6 +26,8 @@
 	species_cookie = /obj/item/food/nugget
 
 /datum/species/human/felinid/on_species_gain(mob/living/carbon/human/human_who_gained_species, datum/species/old_species, pref_load, regenerate_icons = TRUE, replace_missing = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!pref_load) //Hah! They got forcefully purrbation'd. Force default felinid parts on them if they have no mutant parts in those areas!
 		if(human_who_gained_species.dna.features[FEATURE_TAIL_CAT] == SPRITE_ACCESSORY_NONE)
 			human_who_gained_species.dna.features[FEATURE_TAIL_CAT] = get_consistent_feature_entry(SSaccessories.feature_list[FEATURE_TAIL_CAT])
@@ -38,19 +40,27 @@
 	return ..()
 
 /datum/species/human/felinid/get_hiss_sound(mob/living/carbon/human/felinid)
+	procstart = null
+	src.procstart = null
 	return 'sound/mobs/humanoids/felinid/felinid_hiss.ogg'
 
 /proc/mass_purrbation()
+	procstart = null
+	src.procstart = null
 	for(var/mob in GLOB.human_list)
 		purrbation_apply(mob)
 		CHECK_TICK
 
 /proc/mass_remove_purrbation()
+	procstart = null
+	src.procstart = null
 	for(var/mob in GLOB.human_list)
 		purrbation_remove(mob)
 		CHECK_TICK
 
 /proc/purrbation_toggle(mob/living/carbon/human/target_human, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(target_human))
 		return
 	if(!istype(target_human.get_organ_slot(ORGAN_SLOT_EARS), /obj/item/organ/ears/cat))
@@ -61,6 +71,8 @@
 		. = FALSE
 
 /proc/purrbation_apply(mob/living/carbon/human/soon_to_be_felinid, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(soon_to_be_felinid) || isfelinid(soon_to_be_felinid))
 		return
 	if(ishumanbasic(soon_to_be_felinid))
@@ -89,6 +101,8 @@
 		playsound(get_turf(soon_to_be_felinid), 'sound/effects/meow1.ogg', 50, TRUE, -1)
 
 /proc/purrbation_remove(mob/living/carbon/human/purrbated_human, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(isfelinid(purrbated_human))
 		var/datum/species/human/felinid/cat_species = purrbated_human.dna.species
 		if(cat_species.original_felinid)
@@ -122,6 +136,8 @@
 		to_chat(purrbated_human, span_boldnotice("You are no longer a cat."))
 
 /datum/species/human/felinid/prepare_human_for_preview(mob/living/carbon/human/human_for_preview)
+	procstart = null
+	src.procstart = null
 	human_for_preview.set_haircolor("#ffcccc", update = FALSE) // pink
 	human_for_preview.set_hairstyle("Hime Cut", update = TRUE)
 
@@ -131,15 +147,21 @@
 		human_for_preview.update_hair()
 
 /datum/species/human/felinid/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "Felinids are very similar to humans in almost all respects, with their biggest differences being the ability to lick their wounds, \
 		and an increased sensitivity to noise, which is often detrimental. They are also rather fond of eating oranges."
 
 /datum/species/human/felinid/get_species_description()
+	procstart = null
+	src.procstart = null
 	return "Felinids are one of the many types of bespoke genetic \
 		modifications to come of humanity's mastery of genetic science, and are \
 		also one of the most common. Meow?"
 
 /datum/species/human/felinid/get_species_lore()
+	procstart = null
+	src.procstart = null
 	return list(
 		"Bio-engineering at its felinest, Felinids are the peak example of humanity's mastery of genetic code. \
 			One of many \"Animalid\" variants, Felinids are the most popular and common, as well as one of the \
@@ -156,6 +178,8 @@
 // Felinids are subtypes of humans.
 // This shouldn't call parent or we'll get a buncha human related perks (though it doesn't have a reason to).
 /datum/species/human/felinid/create_pref_unique_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 
 	to_add += list(

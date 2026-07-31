@@ -7,6 +7,8 @@
 GLOBAL_DATUM_INIT(book_state, /datum/ui_state/book, new)
 
 /datum/ui_state/book/can_use_topic(src_object, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.can_read(src_object))
 		return UI_CLOSE
 	if(user.is_blind())

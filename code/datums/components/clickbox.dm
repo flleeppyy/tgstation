@@ -24,6 +24,8 @@
 	var/mutable_appearance/clickbox_underlay
 
 /datum/component/clickbox/Initialize(icon_state = "sphere", x_offset = 0, y_offset = 0, max_scale = 2, min_scale = 0.5, dead_state)
+	procstart = null
+	src.procstart = null
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -49,12 +51,16 @@
 	update_underlay(clickbox_icon_state)
 
 /datum/component/clickbox/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/mov_parent = parent
 	UnregisterSignal(mov_parent, list(COMSIG_ATOM_VV_MODIFY_TRANSFORM, COMSIG_LIVING_POST_UPDATE_TRANSFORM, COMSIG_LIVING_DEATH, COMSIG_LIVING_REVIVE))
 	mov_parent.underlays -= clickbox_underlay
 
 /// Removes the old underlay and adds a new one. The underlay is scaled up/down if necessary
 /datum/component/clickbox/proc/update_underlay(clickbox_icon_state, width, height)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/mov_parent = parent
 	if(!clickbox_icon_state)
 		clickbox_icon_state = clickbox_underlay?.icon_state || icon_state
@@ -82,20 +88,28 @@
 	mov_parent.underlays += clickbox_underlay
 
 /datum/component/clickbox/proc/on_vv_modify_transform(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/width = source.transform.a
 	var/height = source.transform.e
 	update_underlay(clickbox_underlay.icon_state, width, height)
 
 /datum/component/clickbox/proc/on_update_transform(mob/living/source, previous_size)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_underlay(clickbox_underlay.icon_state , source.current_size, source.current_size)
 
 /datum/component/clickbox/proc/on_death(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_underlay(dead_state, source.current_size, source.current_size)
 
 /datum/component/clickbox/proc/on_revive(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_underlay(icon_state, source.current_size, source.current_size)
 

@@ -39,11 +39,15 @@ To add a crossbreed:
 	throw_range = 6
 
 /obj/item/slimecross/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(effect_desc)
 		. += span_notice("[effect_desc]")
 
 /obj/item/slimecross/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = effect + " " + colour + " extract"
 	var/itemcolor = COLOR_WHITE
@@ -99,6 +103,8 @@ To add a crossbreed:
 	var/list/list_reagents
 
 /obj/item/slimecrossbeaker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(50, INJECTABLE | DRAWABLE | SEALED_CONTAINER)
 	if(list_reagents)
@@ -108,10 +114,14 @@ To add a crossbreed:
 		START_PROCESSING(SSobj,src)
 
 /obj/item/slimecrossbeaker/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj,src)
 	return ..()
 
 /obj/item/slimecrossbeaker/process()
+	procstart = null
+	src.procstart = null
 	if(!reagents.total_volume)
 		visible_message(span_notice("[src] has been drained completely, and melts away."))
 		qdel(src)
@@ -139,10 +149,14 @@ To add a crossbreed:
 	var/self_use_only = FALSE
 
 /obj/item/slimecrossbeaker/autoinjector/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.flags = DRAWABLE // Cannot be refilled, since it's basically an autoinjector!
 
 /obj/item/slimecrossbeaker/autoinjector/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(interacting_with))
 		return NONE
 	var/mob/living/carbon/injecting_mob = interacting_with
@@ -186,6 +200,8 @@ To add a crossbreed:
 	list_reagents = list(/datum/reagent/pax/peaceborg = 10, /datum/reagent/drug/space_drugs = 15) //Peace, dudes
 
 /obj/item/slimecrossbeaker/autoinjector/peaceandlove/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.flags = NONE // It won't be *that* easy to get your hands on pax.
 

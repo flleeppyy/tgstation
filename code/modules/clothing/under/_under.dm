@@ -48,6 +48,8 @@
 	wound = 5
 
 /obj/item/clothing/under/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(random_sensor)
 		//make the sensor mode favor higher levels, except coords.
@@ -59,6 +61,8 @@
 	AddElement(/datum/element/update_icon_updates_onmob, flags = ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING|ITEM_SLOT_NECK, body = TRUE)
 
 /obj/item/clothing/under/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/clothing/under/any_original = locate() in components
 	if(!any_original)
@@ -68,10 +72,14 @@
 	set_sensor_mode(any_original.sensor_mode)
 
 /obj/item/clothing/under/used_in_craft(atom/result, datum/crafting_recipe/current_recipe)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	dump_attachments()
 
 /obj/item/clothing/under/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/changed = FALSE
@@ -108,6 +116,8 @@
 	return changed ? CONTEXTUAL_SCREENTIP_SET : .
 
 /obj/item/clothing/under/worn_overlays(mutable_appearance/standing, isinhands = FALSE, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isinhands)
 		return
@@ -116,6 +126,8 @@
 	. += get_accessory_overlays()
 
 /obj/item/clothing/under/separate_worn_overlays(mutable_appearance/standing, mutable_appearance/draw_target, isinhands = FALSE, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isinhands)
 		return
@@ -124,6 +136,8 @@
 		. += blood_overlay
 
 /obj/item/clothing/under/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/stack/cable_coil))
 		if(!repair_sensors(user))
 			return ITEM_INTERACT_BLOCKING
@@ -156,6 +170,8 @@
 	return ..()
 
 /obj/item/clothing/under/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(has_sensor == NO_SENSORS)
 		balloon_alert(user, "doesn't have sensors!")
 		return ITEM_INTERACT_BLOCKING
@@ -173,6 +189,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/clothing/under/attack_hand_secondary(mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -181,6 +199,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/clothing/under/attack_self_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -189,6 +209,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/clothing/under/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(damaged_state == CLOTHING_SHREDDED && has_sensor > NO_SENSORS)
 		break_sensors()
@@ -197,6 +219,8 @@
 	update_appearance()
 
 /obj/item/clothing/under/visual_equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(adjusted == ALT_STYLE)
 		adjust_to_normal()
@@ -208,10 +232,14 @@
 			update_appearance()
 
 /obj/item/clothing/under/generate_digitigrade_icons(icon/base_icon, greyscale_colors)
+	procstart = null
+	src.procstart = null
 	var/icon/legs = icon(SSgreyscale.GetColoredIconByType(/datum/greyscale_config/digitigrade, greyscale_colors), "jumpsuit_worn")
 	return replace_icon_legs(base_icon, legs)
 
 /obj/item/clothing/under/machine_wash()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stubborn_stains)
 		return
@@ -223,6 +251,8 @@
 	QDEL_IN(fresh_mood, 2 MINUTES)
 
 /obj/item/clothing/under/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(slot & ITEM_SLOT_ICLOTHING)
 		if(freshly_laundered)
@@ -231,6 +261,8 @@
 		update_wearer_status()
 
 /obj/item/clothing/under/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user.get_item_by_slot(ITEM_SLOT_ICLOTHING) == src)
 		GLOB.suit_sensors_list -= user
@@ -239,6 +271,8 @@
 
 /// Change the suit sensor state to broken and update the mob's status on the global sensor list
 /obj/item/clothing/under/proc/break_sensors()
+	procstart = null
+	src.procstart = null
 	if(has_sensor == BROKEN_SENSORS || has_sensor == NO_SENSORS)
 		return
 
@@ -251,6 +285,8 @@
  * Can be called either through player action such as repairing with coil, or as part of a general fixing proc
  */
 /obj/item/clothing/under/proc/repair_sensors(mob/user)
+	procstart = null
+	src.procstart = null
 	if(has_sensor != BROKEN_SENSORS)
 		if(user)
 			balloon_alert(user, "sensors [has_sensor == NO_SENSORS ? "missing" : "not broken"]!")
@@ -262,12 +298,16 @@
 
 /// If the item is being worn, a gentle reminder every 3-5 minutes that the sensors are broken
 /obj/item/clothing/under/proc/sensor_malfunction()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(src) && has_sensor == BROKEN_SENSORS && ishuman(loc))
 		do_sparks(number = 2, cardinal_only = FALSE, source = src)
 		addtimer(CALLBACK(src, PROC_REF(sensor_malfunction)), rand(BROKEN_SPARKS_MIN, BROKEN_SPARKS_MAX * 0.5), TIMER_UNIQUE | TIMER_NO_HASH_WAIT)
 
 /// Changes whether the suit sensor has a sensor, or if it's broken, etc. and handles updating mob status if applicable
 /obj/item/clothing/under/proc/set_has_sensor(new_has_sensor)
+	procstart = null
+	src.procstart = null
 	if(new_has_sensor == has_sensor)
 		return FALSE
 	if(new_has_sensor < BROKEN_SENSORS || new_has_sensor > LOCKED_SENSORS)
@@ -279,6 +319,8 @@
 
 /// Changes the active sensor mode of the suit and handles updating mob status if applicable
 /obj/item/clothing/under/proc/set_sensor_mode(new_sensor_mode)
+	procstart = null
+	src.procstart = null
 	if(new_sensor_mode == sensor_mode)
 		return FALSE
 	if(new_sensor_mode < SENSOR_OFF || new_sensor_mode > SENSOR_COORDS)
@@ -290,6 +332,8 @@
 
 /// Updates the sensor status and any mobs status if applicable
 /obj/item/clothing/under/proc/update_wearer_status()
+	procstart = null
+	src.procstart = null
 	if(has_sensor <= NO_SENSORS || sensor_mode <= SENSOR_VITALS)
 		detach_clothing_traits(TRAIT_BASIC_HEALTH_HUD_VISIBLE)
 	else
@@ -310,6 +354,8 @@
 	wearer.med_hud_set_status()
 
 /obj/item/clothing/under/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -331,6 +377,8 @@
  * * silent: If TRUE, will return blank if everything is fine
  */
 /obj/item/clothing/under/proc/get_sensor_text(silent = TRUE)
+	procstart = null
+	src.procstart = null
 	if(has_sensor == BROKEN_SENSORS)
 		return "<font color='#ffcc33'>Non-Functional: Repair with cable coil</font>"
 
@@ -351,6 +399,8 @@
 
 /// Attach the passed accessory to the clothing item
 /obj/item/clothing/under/proc/attach_accessory(obj/item/clothing/accessory/accessory, mob/living/user, attach_message = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!istype(accessory))
 		return
 	if(!accessory.can_attach_accessory(src, user))
@@ -371,6 +421,8 @@
 
 /// Removes (pops) the topmost accessory from the accessories list and puts it in the user's hands if supplied
 /obj/item/clothing/under/proc/pop_accessory(mob/living/user, attach_message = TRUE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/accessory/popped_accessory = attached_accessories[1]
 	remove_accessory(popped_accessory)
 
@@ -383,6 +435,8 @@
 
 /// Removes the passed accesory from our accessories list
 /obj/item/clothing/under/proc/remove_accessory(obj/item/clothing/accessory/removed, update = TRUE)
+	procstart = null
+	src.procstart = null
 	// Remove it from the list before detaching
 	LAZYREMOVE(attached_accessories, removed)
 	removed.detach(src, update)
@@ -390,11 +444,15 @@
 
 /// Get a list of all accessory overlays
 /obj/item/clothing/under/proc/get_accessory_overlays()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/obj/item/clothing/accessory/accessory as anything in attached_accessories)
 		. += accessory.generate_accessory_overlay(src)
 
 /obj/item/clothing/under/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// If one of our accessories was moved out, handle it
 	if(gone in attached_accessories)
@@ -402,6 +460,8 @@
 
 /// Helper to remove all attachments to the passed location
 /obj/item/clothing/under/proc/dump_attachments(atom/drop_to = drop_location())
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/clothing/accessory/worn_accessory as anything in attached_accessories)
 		remove_accessory(worn_accessory, update = FALSE)
 		worn_accessory.forceMove(drop_to)
@@ -411,14 +471,20 @@
 		wearer.update_clothing(slot_flags)
 
 /obj/item/clothing/under/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	dump_attachments()
 	return ..()
 
 /obj/item/clothing/under/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LAZYLIST(attached_accessories)
 	return ..()
 
 /obj/item/clothing/under/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(can_adjust)
 		. += "Alt-click on [src] to wear it [adjusted == ALT_STYLE ? "normally" : "casually"]."
@@ -444,6 +510,8 @@
 
 /// Helper to list out all accessories with an icon besides it, for use in examine
 /obj/item/clothing/under/proc/list_accessories_with_icon(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/all_accessories = list()
 	for(var/obj/item/clothing/accessory/attached as anything in attached_accessories)
 		all_accessories += attached.examine_title(user)
@@ -475,6 +543,8 @@ GAME_VERB_SRC(/obj/item/clothing/under, toggle, usr, "Adjust Suit Sensors", null
 				to_chat(user_mob, span_notice("Your suit will now report your exact vital lifesigns as well as your coordinate position."))
 
 /obj/item/clothing/under/item_ctrl_click(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!can_toggle_sensors(user))
 		return CLICK_ACTION_BLOCKING
 
@@ -484,6 +554,8 @@ GAME_VERB_SRC(/obj/item/clothing/under, toggle, usr, "Adjust Suit Sensors", null
 
 /// Checks if the toggler is allowed to toggle suit sensors currently
 /obj/item/clothing/under/proc/can_toggle_sensors(mob/toggler)
+	procstart = null
+	src.procstart = null
 	if(!can_use(toggler) || toggler.stat == DEAD) //make sure they didn't hold the window open.
 		return FALSE
 	if(get_dist(toggler, src) > 1)
@@ -504,6 +576,8 @@ GAME_VERB_SRC(/obj/item/clothing/under, toggle, usr, "Adjust Suit Sensors", null
 	return TRUE
 
 /obj/item/clothing/under/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!can_adjust)
 		balloon_alert(user, "can't be adjusted!")
 		return CLICK_ACTION_BLOCKING
@@ -513,6 +587,8 @@ GAME_VERB_SRC(/obj/item/clothing/under, toggle, usr, "Adjust Suit Sensors", null
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/clothing/under/click_alt_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(attached_accessories))
 		balloon_alert(user, "no accessories to remove!")
 		return
@@ -528,6 +604,8 @@ GAME_VERB_SRC(/obj/item/clothing/under, jumpsuit_adjust, usr, "Adjust Jumpsuit S
 	rolldown()
 
 /obj/item/clothing/under/proc/rolldown()
+	procstart = null
+	src.procstart = null
 	if(toggle_jumpsuit_adjust())
 		to_chat(usr, span_notice("You adjust the suit to wear it more casually."))
 	else
@@ -538,6 +616,8 @@ GAME_VERB_SRC(/obj/item/clothing/under, jumpsuit_adjust, usr, "Adjust Jumpsuit S
 /// Helper to toggle the jumpsuit style, if possible
 /// Returns the new state
 /obj/item/clothing/under/proc/toggle_jumpsuit_adjust()
+	procstart = null
+	src.procstart = null
 	switch(adjusted)
 		if(DIGITIGRADE_STYLE)
 			return
@@ -553,6 +633,8 @@ GAME_VERB_SRC(/obj/item/clothing/under, jumpsuit_adjust, usr, "Adjust Jumpsuit S
 
 /// Helper to reset to normal jumpsuit state
 /obj/item/clothing/under/proc/adjust_to_normal()
+	procstart = null
+	src.procstart = null
 	adjusted = NORMAL_STYLE
 	female_sprite_flags = initial(female_sprite_flags)
 	if(!alt_covers_chest)
@@ -566,6 +648,8 @@ GAME_VERB_SRC(/obj/item/clothing/under, jumpsuit_adjust, usr, "Adjust Jumpsuit S
 
 /// Helper to adjust to alt jumpsuit state
 /obj/item/clothing/under/proc/adjust_to_alt()
+	procstart = null
+	src.procstart = null
 	adjusted = ALT_STYLE
 	if(!(female_sprite_flags & FEMALE_UNIFORM_TOP_ONLY))
 		female_sprite_flags = NO_FEMALE_UNIFORM
@@ -574,6 +658,8 @@ GAME_VERB_SRC(/obj/item/clothing/under, jumpsuit_adjust, usr, "Adjust Jumpsuit S
 		body_parts_covered &= ~ARMS
 
 /obj/item/clothing/under/can_use(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ismob(user) && !user.can_perform_action(src, NEED_DEXTERITY|NEED_HANDS|ALLOW_RESTING))
 		return FALSE
 	return ..()

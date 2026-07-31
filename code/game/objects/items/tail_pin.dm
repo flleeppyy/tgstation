@@ -36,6 +36,8 @@
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/party_game, 32)
 
 /obj/structure/sign/poster/party_game/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/tail_pin))//We're using the same trick that tables use for placing objects x and y onto the click location.
 		return NONE
 

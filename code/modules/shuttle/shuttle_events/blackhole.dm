@@ -33,6 +33,8 @@
 	var/obj/machinery/power/singularity_beacon/syndicate/no_escape/beacon
 
 /datum/shuttle_event/simple_spawner/black_hole/no_escape/proc/announcement()
+	procstart = null
+	src.procstart = null
 	priority_announce(
 		text = "Sensors indicate that a black hole's gravitational field is affecting the region of space we are heading through.",
 		title = "The Orion Trail",
@@ -43,12 +45,16 @@
 	)
 
 /datum/shuttle_event/simple_spawner/black_hole/no_escape/activate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	addtimer(CALLBACK(src, PROC_REF(announcement)), 5 SECONDS)
 	port.setTimer(port.timeLeft(1) + 1 MINUTES) // the singularity causes a time distortion
 
 /datum/shuttle_event/simple_spawner/black_hole/no_escape/event_process()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -69,6 +75,8 @@
 		return SHUTTLE_EVENT_CLEAR
 
 /datum/shuttle_event/simple_spawner/black_hole/no_escape/get_spawn_turf()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/turf)
 
 	if(beacon && beacon.active)

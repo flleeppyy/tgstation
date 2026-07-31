@@ -2,6 +2,8 @@
 	name = "plumbing-tgui"
 
 /datum/asset/spritesheet_batched/plumbing/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	//load only what we need from the icon files,format is icon_file_name = list of icon_states we need from this file
 	var/list/essentials = list(
 		'icons/obj/medical/iv_drip.dmi' = list("plumb"),

@@ -32,6 +32,8 @@
 	var/list/linked_seats = list()
 
 /datum/venue/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, visit_cooldown))
 		return
 	COOLDOWN_START(src, visit_cooldown, rand(min_time_between_visitor, max_time_between_visitor))
@@ -40,6 +42,8 @@
 
 ///Spawns a new customer at the portal
 /datum/venue/proc/create_new_customer()
+	procstart = null
+	src.procstart = null
 	var/list/customer_types_to_choose = customer_types
 	var/datum/customer_data/customer_type
 	var/obj/machinery/restaurant_portal/chosen_portal = pick(restaurant_portals)
@@ -65,6 +69,8 @@
 	current_visitors[new_customer] = WEAKREF(chosen_portal)
 
 /datum/venue/proc/order_food(mob/living/basic/robot_customer/customer_pawn, datum/customer_data/customer_data)
+	procstart = null
+	src.procstart = null
 	var/order = pick_weight(customer_data.orderable_objects[venue_type])
 	var/list/order_args // Only for custom orders - arguments passed into New
 	var/image/food_image
@@ -100,6 +106,8 @@
 
 ///Checks if the object used is correct for the venue
 /datum/venue/proc/is_correct_order(atom/movable/object_used, wanted_item)
+	procstart = null
+	src.procstart = null
 	if(istype(wanted_item, /datum/custom_order))
 		var/datum/custom_order/custom_order = wanted_item
 		return custom_order.is_correct_order(object_used)
@@ -107,14 +115,20 @@
 
 ///gets the appearance of the ordered object that shows up when hovering your cursor over the customer mob.
 /datum/venue/proc/get_food_appearance(order)
+	procstart = null
+	src.procstart = null
 	return
 
 ///The line the robot says when ordering
 /datum/venue/proc/order_food_line(order)
+	procstart = null
+	src.procstart = null
 	return "broken venue pls call a coder"
 
 ///Effects for when a customer receives their order at this venue
 /datum/venue/proc/on_get_order(mob/living/basic/robot_customer/customer_pawn, obj/item/order_item)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	// This is an item typepath, a reagent typepath, or a custom order datum instance.
@@ -138,12 +152,16 @@
 
 ///Toggles whether the venue is open or not
 /datum/venue/proc/toggle_open()
+	procstart = null
+	src.procstart = null
 	if(open)
 		close()
 	else
 		open()
 
 /datum/venue/proc/open()
+	procstart = null
+	src.procstart = null
 	open = TRUE
 	for (var/obj/machinery/restaurant_portal/portal as anything in restaurant_portals)
 		portal.update_icon()
@@ -151,6 +169,8 @@
 	START_PROCESSING(SSobj, src)
 
 /datum/venue/proc/close()
+	procstart = null
+	src.procstart = null
 	open = FALSE
 	for (var/obj/machinery/restaurant_portal/portal as anything in restaurant_portals)
 		portal.update_icon()
@@ -186,6 +206,8 @@
 	acid = 100
 
 /obj/machinery/restaurant_portal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 	if (!linked_venue)
@@ -196,25 +218,35 @@
 	linked_venue.restaurant_portals += src
 
 /obj/machinery/restaurant_portal/Destroy()
+	procstart = null
+	src.procstart = null
 	turned_on_portal = null
 	linked_venue.restaurant_portals -= src
 	linked_venue = null
 	return ..()
 
 /obj/machinery/restaurant_portal/on_construction(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	circuit.configure_machine(src)
 
 /obj/machinery/restaurant_portal/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!linked_venue?.open) //Any open venues
 		. += mutable_appearance(icon, "portal_door")
 
 /obj/machinery/restaurant_portal/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]-open" : base_icon_state
 
 /obj/machinery/restaurant_portal/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/id/used_id = user.get_idcard(TRUE)
 
 	if(!used_id)
@@ -228,6 +260,8 @@
 	update_icon()
 
 /obj/machinery/restaurant_portal/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!tool.GetID())
 		return NONE
 
@@ -268,12 +302,18 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/restaurant_portal/screwdriver_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/restaurant_portal/crowbar_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/restaurant_portal/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		balloon_alert(user, "open the panel first!")
 		return ITEM_INTERACT_BLOCKING
@@ -283,6 +323,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/machinery/restaurant_portal/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(isnull(held_item))
 		return
@@ -313,6 +355,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/holosign_creator/robot_seat/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/holosign/robot_seat
@@ -325,18 +369,26 @@
 	var/datum/venue/linked_venue = /datum/venue
 
 /obj/structure/holosign/robot_seat/Initialize(mapload, loc, source_projector)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	linked_venue = SSrestaurant.all_venues[linked_venue]
 	linked_venue.linked_seats[src] += null
 
 /obj/structure/holosign/robot_seat/attack_holosign(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/holosign/robot_seat/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(tool.type == projector?.type && !linked_venue.linked_seats[src])
 		qdel(src)
 		return ITEM_INTERACT_SUCCESS
 
 /obj/structure/holosign/robot_seat/Destroy()
+	procstart = null
+	src.procstart = null
 	linked_venue.linked_seats -= src
 	return ..()

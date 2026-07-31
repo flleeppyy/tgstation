@@ -13,10 +13,14 @@
 	shrapnel_type = null
 
 /obj/projectile/bullet/honker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SpinAnimation()
 
 /obj/projectile/bullet/honker/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/M = target
 	if(istype(M))
@@ -31,6 +35,8 @@
 	damage = 40
 
 /obj/projectile/bullet/mime/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target))
 		return
@@ -54,6 +60,8 @@
 	var/ricoshot_level = 0
 
 /obj/projectile/bullet/marksman/Initialize(mapload, obj/item/ammo_casing/casing, incoming_ricoshot_level)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnum(incoming_ricoshot_level))
 		ricoshot_level = incoming_ricoshot_level
@@ -67,6 +75,8 @@
 			tracer_type = /obj/effect/projectile/tracer/solar
 
 /obj/projectile/bullet/marksman/scan_moved_turf()
+	procstart = null
+	src.procstart = null
 	var/turf/cur_turf = get_turf(src) // check to see if we're passing over a turf with a coin on it
 	var/obj/projectile/bullet/coin/coin_check = cur_turf ? locate(/obj/projectile/bullet/coin) in cur_turf.contents : null
 
@@ -98,6 +108,8 @@
 	var/mob/original_firer
 
 /obj/projectile/bullet/coin/Initialize(mapload, turf/the_target, mob/original_firer)
+	procstart = null
+	src.procstart = null
 	src.original_firer = original_firer
 	target_turf = the_target
 	range = (get_dist(original_firer, target_turf) + 3) * 3 // 3 tiles past the origin (the *3 is because reduce_range() ticks 3 times a tile because of the slower speed)
@@ -112,11 +124,15 @@
 	firing_client.images += crosshair_indicator
 
 /obj/projectile/bullet/coin/Destroy()
+	procstart = null
+	src.procstart = null
 	remove_crosshair_indicator()
 	return ..()
 
 // the coin must be on the target turf to be directly targetable
 /obj/projectile/bullet/coin/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!valid && get_dist(loc, target_turf) < 1)
 		original_firer?.playsound_local(src, 'sound/machines/ping.ogg', 30)
@@ -127,12 +143,16 @@
 
 /// Remove the crosshair indicator from the original firer if it exists
 /obj/projectile/bullet/coin/proc/remove_crosshair_indicator()
+	procstart = null
+	src.procstart = null
 	if(original_firer?.client && crosshair_indicator)
 		original_firer.client.images -= crosshair_indicator
 	QDEL_NULL(crosshair_indicator)
 
 /// We've been shot by a marksman revolver shot, or the ricochet off another coin, check if we can actually ricochet. The forced var being TRUE means it's a ricochet from another coin
 /obj/projectile/bullet/coin/proc/check_splitshot(mob/living/shooter, obj/projectile/bullet/marksman/incoming_shot, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!forced && get_dist(src, target_turf) > 1)
 		return FALSE
 
@@ -144,11 +164,15 @@
 
 /// Now we actually create all the splitshots, loop through however many splits we'll create and fire them
 /obj/projectile/bullet/coin/proc/iterate_splitshots(mob/living/shooter, obj/projectile/incoming_shot)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to num_of_splitshots)
 		fire_splitshot(incoming_shot)
 
 /// Shoot an individual splitshot at a new target
 /obj/projectile/bullet/coin/proc/fire_splitshot(obj/projectile/bullet/marksman/incoming_shot)
+	procstart = null
+	src.procstart = null
 	var/atom/next_target = find_next_target()
 
 	ADD_TRAIT(next_target, TRAIT_RECENTLY_COINED, "[type]")
@@ -176,6 +200,8 @@
 
 /// Find what the splitshots will want to target next, with the order roughly based off the UK coin
 /obj/projectile/bullet/coin/proc/find_next_target()
+	procstart = null
+	src.procstart = null
 	var/list/valid_targets = shuffle(oview(4, loc))
 	valid_targets -= firer
 

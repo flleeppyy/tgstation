@@ -1,6 +1,8 @@
 /datum/unit_test/holder_loving
 
 /datum/unit_test/holder_loving/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/person = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/storage/backpack/duffelbag/bag = allocate(/obj/item/storage/backpack/duffelbag)
 	var/obj/item/storage/backpack/duffelbag/testbag = allocate(/obj/item/storage/backpack/duffelbag)

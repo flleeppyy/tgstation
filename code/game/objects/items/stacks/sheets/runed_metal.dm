@@ -82,9 +82,13 @@ GLOBAL_LIST_INIT(runed_metal_recipes, list( \
 	use_radial = TRUE
 
 /obj/item/stack/sheet/runed_metal/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/iron = 5, /datum/reagent/blood = 15)
 
 /obj/item/stack/sheet/runed_metal/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!IS_CULTIST(user))
 		to_chat(user, span_warning("Only one with forbidden knowledge could hope to work this metal..."))
 		return FALSE
@@ -102,9 +106,13 @@ GLOBAL_LIST_INIT(runed_metal_recipes, list( \
 	return ..()
 
 /obj/item/stack/sheet/runed_metal/radial_check(mob/builder)
+	procstart = null
+	src.procstart = null
 	return ..() && IS_CULTIST(builder)
 
 /obj/item/stack/sheet/runed_metal/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.runed_metal_recipes
 

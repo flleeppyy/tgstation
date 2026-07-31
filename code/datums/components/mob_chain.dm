@@ -15,6 +15,8 @@
 	var/mob/living/back
 
 /datum/component/mob_chain/Initialize(mob/living/front, pass_damage_back = TRUE, vary_icon_state = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -29,6 +31,8 @@
 		living_parent.set_glide_size(front.glide_size)
 
 /datum/component/mob_chain/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if (!isnull(front))
 		SEND_SIGNAL(front, COMSIG_MOB_LOST_CHAIN_TAIL, parent)
 	front = null
@@ -36,6 +40,8 @@
 	return ..()
 
 /datum/component/mob_chain/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_MOB_GAINED_CHAIN_TAIL, PROC_REF(on_gained_tail))
 	RegisterSignal(parent, COMSIG_MOB_LOST_CHAIN_TAIL, PROC_REF(on_lost_tail))
 	RegisterSignal(parent, COMSIG_MOB_CHAIN_CONTRACT, PROC_REF(on_contracted))
@@ -57,6 +63,8 @@
 	shrink.Grant(parent)
 
 /datum/component/mob_chain/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ATOM_CAN_BE_PULLED,
 		COMSIG_ATOM_UPDATE_ICON_STATE,
@@ -83,6 +91,8 @@
 
 /// Update how we look
 /datum/component/mob_chain/proc/update_mob_appearance()
+	procstart = null
+	src.procstart = null
 	if (!vary_icon_state)
 		return
 	var/mob/living/body = parent
@@ -90,18 +100,24 @@
 
 /// Called when something sets us as ITS front
 /datum/component/mob_chain/proc/on_gained_tail(mob/living/body, mob/living/tail)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	back = tail
 	update_mob_appearance()
 
 /// Called when our tail loses its chain component
 /datum/component/mob_chain/proc/on_lost_tail()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	back = null
 	update_mob_appearance()
 
 /// Called when our tail gets pulled up to our body
 /datum/component/mob_chain/proc/on_contracted(mob/living/shrinking)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (isnull(back))
 		return
@@ -113,18 +129,24 @@
 
 /// If we die so does the guy behind us, then stop following the leader
 /datum/component/mob_chain/proc/on_death()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	back?.death()
 	qdel(src)
 
 /// If we get deleted so does the guy behind us
 /datum/component/mob_chain/proc/on_deletion()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	QDEL_NULL(back)
 	front?.update_appearance(UPDATE_ICON)
 
 /// Pull our tail behind us when we move
 /datum/component/mob_chain/proc/on_moved(mob/living/mover, turf/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isnull(back) || back.loc == old_loc)
 		return
@@ -132,6 +154,8 @@
 
 /// Update our visuals based on if we have someone in front and behind
 /datum/component/mob_chain/proc/on_update_icon_state(mob/living/our_mob)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/current_icon_state = our_mob.base_icon_state
 	if(isnull(front))
@@ -148,12 +172,16 @@
 
 /// Do not allow someone to be pulled out of the chain
 /datum/component/mob_chain/proc/on_pulled(mob/living/our_mob)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!isnull(front))
 		return COMSIG_ATOM_CANT_PULL
 
 /// Tell our tail to attack too
 /datum/component/mob_chain/proc/on_attack(mob/living/our_mob, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (target == back || target == front)
 		return COMPONENT_CANCEL_ATTACK_CHAIN
@@ -163,11 +191,15 @@
 
 /// Maintain glide size backwards
 /datum/component/mob_chain/proc/on_glide_size_changed(mob/living/our_mob, new_size)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	back?.set_glide_size(new_size)
 
 /// On gain or lose stamina, adjust our tail too
 /datum/component/mob_chain/proc/on_adjust_stamina(mob/living/our_mob, type, amount, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (forced)
 		return
@@ -175,6 +207,8 @@
 
 /// On damage or heal, affect our furthest segment
 /datum/component/mob_chain/proc/on_adjust_damage(mob/living/our_mob, type, amount, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (isnull(back) || forced)
 		return
@@ -191,6 +225,8 @@
 
 /// Special handling for if damage is delegated to a mob's limbs instead of its overall damage
 /datum/component/mob_chain/proc/on_limb_damage(mob/living/our_mob, limb, brute, burn)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (isnull(back))
 		return
@@ -216,5 +252,7 @@
 	melee_cooldown_time = 0 SECONDS
 
 /datum/action/cooldown/worm_contract/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(owner, COMSIG_MOB_CHAIN_CONTRACT)
 	StartCooldown()

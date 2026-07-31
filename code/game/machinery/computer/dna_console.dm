@@ -174,6 +174,8 @@
 	var/crispr_charges = 0
 
 /obj/machinery/computer/dna_console/process()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// This is for pulsing the UI element with genetic damage as part of genetic makeup
@@ -183,6 +185,8 @@
 		return
 
 /obj/machinery/computer/dna_console/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// Store chromosomes in the console if there's room
 	if (istype(tool, /obj/item/chromosome))
 		tool.forceMove(src)
@@ -231,15 +235,21 @@
 	return NONE
 
 /obj/machinery/computer/dna_console/multitool_act(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(tool.buffer) && istype(tool.buffer, /datum/techweb))
 		stored_research = tool.buffer
 	return TRUE
 
 /obj/machinery/computer/dna_console/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	eject_disk(user)
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/computer/dna_console/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Connect with a nearby DNA Scanner on init
@@ -255,6 +265,8 @@
 	set_default_state()
 
 /obj/machinery/computer/dna_console/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Link machine with research techweb. Used for discovering and accessing
 	// already discovered mutations
@@ -263,6 +275,8 @@
 
 
 /obj/machinery/computer/dna_console/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Most of ui_interact is spent setting variables for passing to the tgui
 	//  interface.
@@ -313,10 +327,14 @@
 		ui.open()
 
 /obj/machinery/computer/dna_console/ui_assets()
+	procstart = null
+	src.procstart = null
 	. = ..() || list()
 	. += get_asset_datum(/datum/asset/simple/genetics)
 
 /obj/machinery/computer/dna_console/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["view"] = tgui_view_state
@@ -420,6 +438,8 @@
 	return data
 
 /obj/machinery/computer/dna_console/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	var/static/list/gene_letters = list("A", "T", "C", "G");
 	var/static/gene_letter_count = length(gene_letters)
 
@@ -1653,6 +1673,8 @@
  * * buffer_slot - Index of the enzyme buffer to apply
  */
 /obj/machinery/computer/dna_console/proc/apply_genetic_makeup(type, buffer_slot)
+	procstart = null
+	src.procstart = null
 	// Note - This proc is only called from code that has already performed the
 	//  necessary occupant guard checks. If you call this code yourself, please
 	//  apply can_modify_occupant() or equivalent checks first.
@@ -1728,12 +1750,16 @@
  * Checks if there is a connected DNA Scanner that is operational
  */
 /obj/machinery/computer/dna_console/proc/scanner_operational()
+	procstart = null
+	src.procstart = null
 	return connected_scanner?.is_operational
 
 /**
  * Gets the damage coefficient of the connected DNA Scanner, or 1 if there isn't an operational one
  */
 /obj/machinery/computer/dna_console/proc/get_injector_damage_coeff()
+	procstart = null
+	src.procstart = null
 	if(scanner_operational())
 		return connected_scanner.damage_coeff
 	return 1
@@ -1753,6 +1779,8 @@
  * Converts a string (from tgui) to a series of flags determine what we should put in a DNA Injector
  */
 /obj/machinery/computer/dna_console/proc/dna_injector_type_to_flag(injector_type)
+	procstart = null
+	src.procstart = null
 	switch(injector_type)
 		if("ui")
 			return DNA_INJECTOR_FLAG_UI
@@ -1768,6 +1796,8 @@
  * Pass an injector flag and a genetic makeup buffer slot to create a DNA Injector
  */
 /obj/machinery/computer/dna_console/proc/make_cosmetic_dna_injector(dna_flag, list/buffer_slot = list())
+	procstart = null
+	src.procstart = null
 	if(!dna_flag || !length(buffer_slot))
 		return FALSE
 
@@ -1815,6 +1845,8 @@
 	* Requires that the scanner can be operated and will return early if it can't
  */
 /obj/machinery/computer/dna_console/proc/can_modify_occupant()
+	procstart = null
+	src.procstart = null
 	// GUARD CHECK - We always want to perform the scanner operational check as
 	//  part of checking if we can modify the occupant.
 	// We can never modify the occupant of a broken scanner.
@@ -1845,6 +1877,8 @@
 	* Links itself to the DNA Scanner to receive door open and close events.
  */
 /obj/machinery/computer/dna_console/proc/connect_to_scanner()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/dna_scannernew/test_scanner = null
 	var/obj/machinery/dna_scannernew/broken_scanner = null
 
@@ -1873,6 +1907,8 @@
 	* is queued.
  */
 /obj/machinery/computer/dna_console/proc/on_scanner_close()
+	procstart = null
+	src.procstart = null
 	// Set the appropriate occupant now the scanner is closed
 	if(connected_scanner.occupant)
 		scanner_occupant = connected_scanner.occupant
@@ -1898,6 +1934,8 @@
 	* scanner occupant var.
  */
 /obj/machinery/computer/dna_console/proc/on_scanner_open()
+	procstart = null
+	src.procstart = null
 	// If we had a genetic damage pulse action ongoing, we want to stop this.
 	// Imagine it being like a microwave stopping when you open the door.
 	genetic_damage_pulse_index = 0
@@ -1909,6 +1947,8 @@
  * Builds the genetic makeup list which will be sent to tgui interface.
  */
 /obj/machinery/computer/dna_console/proc/build_genetic_makeup_list()
+	procstart = null
+	src.procstart = null
 	// No code will ever null this list, we can safely Cut it.
 	tgui_genetic_makeup.Cut()
 
@@ -1926,6 +1966,8 @@
 	* structures which get passed to the tgui interface.
  */
 /obj/machinery/computer/dna_console/proc/build_mutation_list(can_modify_occ)
+	procstart = null
+	src.procstart = null
 	// No code will ever null these lists. We can safely Cut them.
 	tgui_occupant_mutations.Cut()
 	tgui_diskette_mutations.Cut()
@@ -2150,6 +2192,8 @@
  * * mutation - The mutation to check chromosome compatibility with
  */
 /obj/machinery/computer/dna_console/proc/build_chrom_list(mutation)
+	procstart = null
+	src.procstart = null
 	var/list/chromosomes = list()
 
 	for(var/obj/item/chromosome/CM in stored_chromosomes)
@@ -2160,6 +2204,8 @@
 
 /// Returns a class declarations based on what sources the mutation has
 /obj/machinery/computer/dna_console/proc/get_mutation_class(datum/mutation/mutation)
+	procstart = null
+	src.procstart = null
 	if(length(mutation.sources - list(MUTATION_SOURCE_MUTATOR, MUTATION_SOURCE_ACTIVATED))) //It has other sources as well...
 		return SCANNER_MUTATION_CLASS_OTHER
 	if(MUTATION_SOURCE_ACTIVATED in mutation.sources) //activated mutation priority over added ones.
@@ -2177,6 +2223,8 @@
  * * alias - Alias of the mutation to check (ie "Mutation 51" or "Mutation 12")
  */
 /obj/machinery/computer/dna_console/proc/check_discovery(alias)
+	procstart = null
+	src.procstart = null
 	// Note - All code paths that call this have already done checks on the
 	//  current occupant to prevent cheese and other abuses. If you call this
 	//  proc please also do the following checks first:
@@ -2216,6 +2264,8 @@
 	* * target_flags - Flags for storage mediums to search, see #defines
  */
 /obj/machinery/computer/dna_console/proc/get_mut_by_ref(ref, target_flags)
+	procstart = null
+	src.procstart = null
 	var/mutation
 
 	// Assume the occupant is valid and the check has been carried out before
@@ -2254,6 +2304,8 @@
 	* * number_of_blocks - Number of individual data blocks in the pulsed enzyme
  */
 /obj/machinery/computer/dna_console/proc/randomize_GENETIC_DAMAGE_accuracy(position, pulse_duration, number_of_blocks)
+	procstart = null
+	src.procstart = null
 	var/val = round(gaussian(0, GENETIC_DAMAGE_ACCURACY_MULTIPLIER/pulse_duration) + position, 1)
 	return WRAP(val, 1, number_of_blocks+1)
 
@@ -2267,6 +2319,8 @@
 	* * rs - Strength of genetic damage pulse, increases the range of possible outcomes
  */
 /obj/machinery/computer/dna_console/proc/scramble(input,rs)
+	procstart = null
+	src.procstart = null
 	var/length = length(input)
 	var/ran = gaussian(0, rs*GENETIC_DAMAGE_STRENGTH_MULTIPLIER)
 	if(ran == 0)
@@ -2284,6 +2338,8 @@
 		* there is a genetic damage pulse in progress. Ends processing.
 	  */
 /obj/machinery/computer/dna_console/proc/genetic_damage_pulse()
+	procstart = null
+	src.procstart = null
 	// GUARD CHECK - Can we genetically modify the occupant? Includes scanner
 	//  operational guard checks.
 	// If we can't, abort the procedure.
@@ -2326,6 +2382,8 @@
  * Sets the default state for the tgui interface.
  */
 /obj/machinery/computer/dna_console/proc/set_default_state()
+	procstart = null
+	src.procstart = null
 	tgui_view_state["consoleMode"] = "storage"
 	tgui_view_state["storageMode"] = "console"
 	tgui_view_state["storageConsSubMode"] = "mutations"
@@ -2341,6 +2399,8 @@
  * * user - The mob that is attempting to eject the diskette.
  */
 /obj/machinery/computer/dna_console/proc/eject_disk(mob/user)
+	procstart = null
+	src.procstart = null
 	// Check for diskette.
 	if(!diskette)
 		return
@@ -2356,6 +2416,8 @@
 	diskette = null
 
 /obj/machinery/computer/dna_console/proc/set_connected_scanner(new_scanner)
+	procstart = null
+	src.procstart = null
 	if(connected_scanner)
 		UnregisterSignal(connected_scanner, COMSIG_QDELETING)
 		if(connected_scanner.linked_console == src)
@@ -2366,6 +2428,8 @@
 		connected_scanner.set_linked_console(src)
 
 /obj/machinery/computer/dna_console/proc/react_to_scanner_del(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_connected_scanner(null)
 

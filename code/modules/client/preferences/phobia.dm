@@ -5,13 +5,19 @@
 	should_update_preview = FALSE
 
 /datum/preference/choiced/phobia/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return GLOB.phobia_types
 
 /datum/preference/choiced/phobia/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if (!..(preferences))
 		return FALSE
 
 	return /datum/brain_trauma/mild/phobia::name in preferences.all_quirks
 
 /datum/preference/choiced/phobia/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return

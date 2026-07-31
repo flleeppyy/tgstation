@@ -18,34 +18,52 @@
 	interaction_flags_atom = INTERACT_ATOM_ATTACK_HAND | INTERACT_ATOM_UI_INTERACT | INTERACT_ATOM_REQUIRES_ANCHORED
 
 /obj/machinery/power/port_gen/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	soundloop = new(src, active)
 
 /obj/machinery/power/port_gen/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(soundloop)
 	return ..()
 
 /obj/machinery/power/port_gen/should_have_node()
+	procstart = null
+	src.procstart = null
 	return anchored
 
 /obj/machinery/power/port_gen/connect_to_network()
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		return FALSE
 	. = ..()
 
-/obj/machinery/power/port_gen/proc/HasFuel() //Placeholder for fuel check.
+/obj/machinery/power/port_gen/proc/HasFuel()
+	procstart = null
+	src.procstart = null //Placeholder for fuel check.
 	return TRUE
 
-/obj/machinery/power/port_gen/proc/UseFuel() //Placeholder for fuel use.
+/obj/machinery/power/port_gen/proc/UseFuel()
+	procstart = null
+	src.procstart = null //Placeholder for fuel use.
 	return
 
 /obj/machinery/power/port_gen/proc/DropFuel()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/power/port_gen/proc/handleInactive()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/power/port_gen/proc/TogglePower()
+	procstart = null
+	src.procstart = null
 	if(active)
 		active = FALSE
 		update_appearance()
@@ -57,10 +75,14 @@
 		soundloop.start()
 
 /obj/machinery/power/port_gen/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state]_[active]"
 	return ..()
 
 /obj/machinery/power/port_gen/process()
+	procstart = null
+	src.procstart = null
 	if(active)
 		if(!HasFuel() || !anchored)
 			TogglePower()
@@ -72,6 +94,8 @@
 		handleInactive()
 
 /obj/machinery/power/port_gen/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "It is[!active?"n't":""] running."
 
@@ -91,6 +115,8 @@
 	var/current_heat = 0
 
 /obj/machinery/power/port_gen/pacman/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(anchored)
 		connect_to_network()
@@ -99,10 +125,14 @@
 	sheet_name = initial(S.name)
 
 /obj/machinery/power/port_gen/pacman/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	DropFuel()
 	return ..()
 
 /obj/machinery/power/port_gen/pacman/on_construction(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/circuitboard/machine/pacman/our_board = circuit
 	if(our_board.high_production_profile)
 		icon_state = "portgen1_0"
@@ -113,22 +143,30 @@
 		sheet_path = /obj/item/stack/sheet/mineral/uranium
 
 /obj/machinery/power/port_gen/pacman/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("The generator has [sheets] units of [sheet_name] fuel left, producing [display_power(power_gen)].")
 	if(anchored)
 		. += span_notice("It is anchored to the ground.")
 
 /obj/machinery/power/port_gen/pacman/HasFuel()
+	procstart = null
+	src.procstart = null
 	if(sheets >= 1 / (time_per_sheet / power_output) - sheet_left)
 		return TRUE
 	return FALSE
 
 /obj/machinery/power/port_gen/pacman/DropFuel()
+	procstart = null
+	src.procstart = null
 	if(sheets)
 		new sheet_path(drop_location(), sheets)
 		sheets = 0
 
 /obj/machinery/power/port_gen/pacman/UseFuel()
+	procstart = null
+	src.procstart = null
 	var/needed_sheets = 1 / (time_per_sheet / power_output)
 	var/temp = min(needed_sheets, sheet_left)
 	needed_sheets -= temp
@@ -159,14 +197,20 @@
 		qdel(src)
 
 /obj/machinery/power/port_gen/pacman/handleInactive()
+	procstart = null
+	src.procstart = null
 	current_heat = max(current_heat - 2, 0)
 	if(current_heat == 0)
 		STOP_PROCESSING(SSmachines, src)
 
 /obj/machinery/power/port_gen/pacman/proc/overheat()
+	procstart = null
+	src.procstart = null
 	explosion(src, devastation_range = 2, heavy_impact_range = 5, light_impact_range = 2, flash_range = -1)
 
 /obj/machinery/power/port_gen/pacman/set_anchored(anchorvalue)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.))
 		return //no need to process if we didn't change anything.
@@ -176,6 +220,8 @@
 		disconnect_from_network()
 
 /obj/machinery/power/port_gen/pacman/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, sheet_path))
 		return ..()
 	var/obj/item/stack/addstack = tool
@@ -189,6 +235,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/port_gen/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(active)
 		return NONE
 	toggle_panel_open()
@@ -197,6 +245,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/port_gen/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(active)
 		return NONE
 	if(!anchored && !isinspace())
@@ -210,11 +260,15 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/port_gen/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(active)
 		return NONE
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/power/port_gen/pacman/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -223,18 +277,26 @@
 	return TRUE
 
 /obj/machinery/power/port_gen/pacman/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	interact(user)
 
 /obj/machinery/power/port_gen/pacman/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	interact(user)
 
 /obj/machinery/power/port_gen/pacman/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PortableGenerator", name)
 		ui.open()
 
 /obj/machinery/power/port_gen/pacman/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 
 	data["active"] = active
@@ -252,6 +314,8 @@
 	. = data
 
 /obj/machinery/power/port_gen/pacman/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

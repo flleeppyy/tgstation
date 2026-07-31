@@ -3,6 +3,8 @@
 	var/client/holder //client of whoever is using this datum
 
 /datum/skill_panel/New(user, datum/mind/mind)//H can either be a client or a mob due to byondcode(tm)
+	procstart = null
+	src.procstart = null
 	targetmind = mind
 	if (istype(user,/client))
 		var/client/userClient = user
@@ -12,15 +14,21 @@
 		holder = userMob.client //if its a mob, assign the mob's client to holder
 
 /datum/skill_panel/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_ADMIN)
 
 /datum/skill_panel/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SkillPanel")
 		ui.open()
 
-/datum/skill_panel/ui_data(mob/user) //Sends info about the skills to UI
+/datum/skill_panel/ui_data(mob/user)
+	procstart = null
+	src.procstart = null //Sends info about the skills to UI
 	. = list()
 	if(user?.mind)
 		for (var/type in GLOB.skill_types)
@@ -36,6 +44,8 @@
 			.["skills"] += list(list("playername" = targetmind.current, "path" = type, "name" = S.name, "desc" = S.desc, "lvlnum" = lvl_num, "lvl" = lvl_name, "exp" = exp, "exp_prog" = xp_req_to_level - xp_prog_to_level, "exp_req" = xp_req_to_level, "exp_percent" = exp_percent, "max_exp" = SKILL_EXP_LIST[length(SKILL_EXP_LIST)]))
 
 /datum/skill_panel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

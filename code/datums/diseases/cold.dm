@@ -12,12 +12,16 @@
 	required_organ = ORGAN_SLOT_LUNGS
 
 /datum/disease/cold/cure(add_resistance)
+	procstart = null
+	src.procstart = null
 	// buy one, get one free
 	if(add_resistance && affected_mob)
 		LAZYOR(affected_mob.disease_resistances, "[/datum/disease/cold9]")
 	return ..()
 
 /datum/disease/cold/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

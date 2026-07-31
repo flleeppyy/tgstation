@@ -12,6 +12,8 @@
 	cooldown_time = 21 SECONDS
 
 /datum/action/cooldown/ink_spit/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/as_carbon = owner
 	if(istype(as_carbon) && as_carbon.is_mouth_covered(ITEM_SLOT_MASK))
 		return FALSE
@@ -20,6 +22,8 @@
 	return ..()
 
 /datum/action/cooldown/ink_spit/set_click_ability(mob/on_who)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -28,6 +32,8 @@
 	build_all_button_icons()
 
 /datum/action/cooldown/ink_spit/unset_click_ability(mob/on_who, refund_cooldown = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -38,6 +44,8 @@
 // because we use the click parameters for aiming the projectile
 // (or something like that)
 /datum/action/cooldown/ink_spit/InterceptClickOn(mob/living/clicker, params, atom/target)
+	procstart = null
+	src.procstart = null
 	if(!LAZYACCESS(params2list(params), RIGHT_CLICK))
 		return
 	. = ..()
@@ -60,4 +68,6 @@
 
 // Has to return TRUE, otherwise is skipped.
 /datum/action/cooldown/ink_spit/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	return TRUE

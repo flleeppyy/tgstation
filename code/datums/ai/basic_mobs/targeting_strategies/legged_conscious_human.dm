@@ -2,6 +2,8 @@
 /datum/targeting_strategy/legged_conscious_human
 
 /datum/targeting_strategy/legged_conscious_human/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

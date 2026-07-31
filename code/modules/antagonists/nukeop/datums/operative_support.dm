@@ -5,12 +5,16 @@
 	nukeop_outfit = /datum/outfit/syndicate/support
 
 /datum/antagonist/nukeop/support/greet()
+	procstart = null
+	src.procstart = null
 	owner.current.playsound_local(get_turf(owner.current), 'sound/machines/printer.ogg', 100, 0, use_reverb = FALSE)
 	to_chat(owner, span_big("You are a [name]! You've been temporarily assigned to provide camera overwatch and manage communications for a nuclear operative team!"))
 	to_chat(owner, span_red("Use your tools to set up your equipment however you like, but do NOT attempt to leave your outpost."))
 	owner.announce_objectives()
 
 /datum/antagonist/nukeop/support/on_gain()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/datum/mind/teammate_mind in nuke_team.members)
 		var/mob/living/our_teammate = teammate_mind.current
@@ -32,14 +36,20 @@
 	owner.current.grant_language(/datum/language/codespeak)
 
 /datum/antagonist/nukeop/support/get_spawnpoint()
+	procstart = null
+	src.procstart = null
 	return pick(GLOB.nukeop_base_overwatch_start)
 
 /datum/antagonist/nukeop/support/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/overwatch/objective = new
 	objective.owner = owner
 	objectives += objective
 
 /datum/antagonist/nukeop/support/proc/late_bodycam(datum/source, mob/living/new_teammate)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	new_teammate.AddComponent( \
 		/datum/component/simple_bodycam, \
@@ -54,4 +64,6 @@
 	explanation_text = "Provide intelligence support and overwatch to your operative team!"
 
 /datum/objective/overwatch/check_completion()
+	procstart = null
+	src.procstart = null
 	return GLOB.station_was_nuked

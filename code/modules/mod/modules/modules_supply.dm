@@ -16,10 +16,14 @@
 	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/mod/module/gps/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/gps/item, "MOD0", state = GLOB.deep_inventory_state, overlay_state = FALSE)
 
 /obj/item/mod/module/gps/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	attack_self(mod.wearer) // todo: refactor to make compatable with pAIs.  Maybe ui_interact(activator)
 
 ///Hydraulic Clamp - Lets you pick up and drop crates.
@@ -50,6 +54,8 @@
 	var/list/stored_crates = list()
 
 /obj/item/mod/module/clamp/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	accepted_items = typecacheof(list(
 		/obj/structure/closet/crate,
@@ -57,6 +63,8 @@
 	))
 
 /obj/item/mod/module/clamp/on_select_use(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -94,6 +102,8 @@
 		balloon_alert(mod.wearer, "invalid target!")
 
 /obj/item/mod/module/clamp/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	if(deleting)
 		return
 	for(var/atom/movable/crate as anything in stored_crates)
@@ -101,6 +111,8 @@
 		stored_crates -= crate
 
 /obj/item/mod/module/clamp/proc/check_crate_pickup(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	if(length(stored_crates) >= max_crates)
 		balloon_alert(mod.wearer, "too many crates!")
 		return FALSE
@@ -149,11 +161,15 @@
 	COOLDOWN_DECLARE(gibtonite_warning_cd)
 
 /obj/item/mod/module/drill/on_install()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(mod, COMSIG_MOD_MODULE_ACTIVATED, PROC_REF(on_module_activated))
 	RegisterSignal(mod, COMSIG_MOD_MODULE_DEACTIVATED, PROC_REF(on_module_deactivated))
 
 /obj/item/mod/module/drill/on_uninstall(deleting)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(mod, list(COMSIG_MOD_MODULE_ACTIVATED, COMSIG_MOD_MODULE_DEACTIVATED))
 	toolspeed = initial(toolspeed)
@@ -162,18 +178,24 @@
 	ballin = FALSE
 
 /obj/item/mod/module/drill/on_activation(mob/activator)
+	procstart = null
+	src.procstart = null
 	if (ballin)
 		return
 	tool_behaviour = TOOL_MINING
 	RegisterSignal(mod.wearer, COMSIG_MOVABLE_BUMP, PROC_REF(bump_mine))
 
 /obj/item/mod/module/drill/on_deactivation(mob/activator, display_message = TRUE, deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	if (ballin)
 		return
 	tool_behaviour = NONE
 	UnregisterSignal(mod.wearer, COMSIG_MOVABLE_BUMP)
 
 /obj/item/mod/module/drill/on_select_use(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !mod.wearer.Adjacent(target))
 		return
@@ -185,6 +207,8 @@
 		target.base_item_interaction(mod.wearer, src)
 
 /obj/item/mod/module/drill/proc/bump_mine(mob/living/carbon/human/bumper, atom/bumped_into, proximity)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (world.time == last_bumpmine_tick)
@@ -208,6 +232,8 @@
 	to_chat(bumper, span_warning("[icon2html(src, bumper)] Unstable gibtonite ore deposit detected!"))
 
 /obj/item/mod/module/drill/proc/mine_rock(turf/closed/mineral/rock, mob/living/carbon/human/bumper)
+	procstart = null
+	src.procstart = null
 	// Even faster if it has ore!
 	var/has_ore = !isnull(rock.mineral_type)
 	if (has_ore)
@@ -217,6 +243,8 @@
 		toolspeed *= 2
 
 /obj/item/mod/module/drill/proc/on_module_activated(datum/source, obj/item/mod/module/module)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!istype(module, /obj/item/mod/module/sphere_transform))
 		return
@@ -229,6 +257,8 @@
 	ballin = TRUE
 
 /obj/item/mod/module/drill/proc/on_module_deactivated(datum/source, obj/item/mod/module/module)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!istype(module, /obj/item/mod/module/sphere_transform))
 		return
@@ -258,17 +288,23 @@
 	var/dropping_ores = FALSE
 
 /obj/item/mod/module/orebag/on_equip()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(mod.wearer, COMSIG_MOVABLE_MOVED, PROC_REF(on_wearer_moved))
 	if (mod.wearer.loc)
 		RegisterSignal(mod.wearer.loc, COMSIG_ATOM_ENTERED, PROC_REF(on_obj_entered))
 		RegisterSignal(mod.wearer.loc, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON, PROC_REF(on_atom_initialized_on))
 
 /obj/item/mod/module/orebag/on_unequip()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(mod.wearer, COMSIG_MOVABLE_MOVED)
 	if (mod.wearer.loc)
 		UnregisterSignal(mod.wearer.loc, list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON))
 
 /obj/item/mod/module/orebag/proc/on_wearer_moved(atom/movable/source, atom/old_loc, dir, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(old_loc)
 		UnregisterSignal(old_loc, list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON))
@@ -286,6 +322,8 @@
 		playsound(mod.wearer, SFX_RUSTLE, 50, TRUE)
 
 /obj/item/mod/module/orebag/proc/move_ore(obj/item/stack/ore)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/stack/ore/stored_ore as anything in src)
 		if(!ore.can_merge(stored_ore))
 			continue
@@ -295,6 +333,8 @@
 	ore.forceMove(src)
 
 /obj/item/mod/module/orebag/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	dropping_ores = TRUE
 	for(var/obj/item/ore as anything in src)
 		ore.forceMove(mod.drop_location())
@@ -302,12 +342,16 @@
 	drain_power(use_energy_cost)
 
 /obj/item/mod/module/orebag/proc/on_obj_entered(atom/new_loc, atom/movable/arrived, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(istype(arrived, /obj/item/stack/ore) && !dropping_ores && old_loc != mod.wearer)
 		INVOKE_ASYNC(src, PROC_REF(move_ore), arrived)
 		playsound(mod.wearer, SFX_RUSTLE, 50, TRUE)
 
 /obj/item/mod/module/orebag/proc/on_atom_initialized_on(atom/loc, atom/new_atom)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(is_type_in_list(new_atom, /obj/item/stack/ore))
 		INVOKE_ASYNC(src, PROC_REF(move_ore), new_atom)
@@ -332,6 +376,8 @@
 	var/mutable_appearance/lightning
 
 /obj/item/mod/module/hydraulic/on_select_use(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -362,6 +408,8 @@
 		callback = CALLBACK(src, PROC_REF(on_throw_end), mod.wearer, -angle))
 
 /obj/item/mod/module/hydraulic/proc/on_throw_end(mob/user, angle)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return
 	user.transform = user.transform.Turn(angle)
@@ -378,20 +426,30 @@
 	var/disposal_tag = NONE
 
 /obj/item/mod/module/disposal_connector/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	disposal_tag = pick(GLOB.TAGGERLOCATIONS)
 
 /obj/item/mod/module/disposal_connector/on_part_activation()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(mod.wearer, COMSIG_MOVABLE_DISPOSING, PROC_REF(disposal_handling))
 
 /obj/item/mod/module/disposal_connector/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(mod.wearer, COMSIG_MOVABLE_DISPOSING)
 
 /obj/item/mod/module/disposal_connector/get_configuration()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["disposal_tag"] = add_ui_configuration("Disposal Tag", "list", GLOB.TAGGERLOCATIONS[disposal_tag], GLOB.TAGGERLOCATIONS)
 
 /obj/item/mod/module/disposal_connector/configure_edit(key, value)
+	procstart = null
+	src.procstart = null
 	switch(key)
 		if("disposal_tag")
 			for(var/tag in 1 to length(GLOB.TAGGERLOCATIONS))
@@ -400,6 +458,8 @@
 					break
 
 /obj/item/mod/module/disposal_connector/proc/disposal_handling(datum/disposal_source, obj/structure/disposalholder/disposal_holder, obj/machinery/disposal/disposal_machine, hasmob)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	disposal_holder.destinationTag = disposal_tag
@@ -418,6 +478,8 @@
 	required_slots = list(ITEM_SLOT_BACK)
 
 /obj/item/mod/module/magnet/on_select_use(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -440,10 +502,14 @@
 		callback = CALLBACK(src, PROC_REF(check_locker), locker))
 
 /obj/item/mod/module/magnet/on_deactivation(mob/activator, display_message = TRUE, deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	if(istype(mod.wearer.pulling, /obj/structure/closet))
 		mod.wearer.stop_pulling()
 
 /obj/item/mod/module/magnet/proc/check_locker(obj/structure/closet/locker)
+	procstart = null
+	src.procstart = null
 	if(!mod?.wearer)
 		return
 	if(!locker.Adjacent(mod.wearer) || !isturf(locker.loc) || !isturf(mod.wearer.loc))
@@ -453,6 +519,8 @@
 	RegisterSignal(locker, COMSIG_ATOM_NO_LONGER_PULLED, PROC_REF(on_stop_pull))
 
 /obj/item/mod/module/magnet/proc/on_stop_pull(obj/structure/closet/locker, atom/movable/last_puller)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	REMOVE_TRAIT(locker, TRAIT_STRONGPULL, REF(mod.wearer))
@@ -489,6 +557,8 @@
 	bomb = 3
 
 /obj/item/mod/module/ash_accretion/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!accretion_turfs)
 		accretion_turfs = typecacheof(list(
@@ -511,11 +581,15 @@
 		))
 
 /obj/item/mod/module/ash_accretion/on_part_activation()
+	procstart = null
+	src.procstart = null
 	mod.wearer.add_traits(list(TRAIT_ASHSTORM_IMMUNE, TRAIT_SNOWSTORM_IMMUNE), REF(src))
 	RegisterSignal(mod.wearer, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
 	RegisterSignal(mod, COMSIG_MOD_UPDATE_SPEED, PROC_REF(on_update_speed))
 
 /obj/item/mod/module/ash_accretion/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	mod.wearer.remove_traits(list(TRAIT_ASHSTORM_IMMUNE, TRAIT_SNOWSTORM_IMMUNE), REF(src))
 	UnregisterSignal(mod.wearer, COMSIG_MOVABLE_MOVED)
 	UnregisterSignal(mod, COMSIG_MOD_UPDATE_SPEED)
@@ -529,15 +603,21 @@
 	traveled_tiles = 0
 
 /obj/item/mod/module/ash_accretion/generate_worn_overlay(obj/item/source, mutable_appearance/standing)
+	procstart = null
+	src.procstart = null
 	overlay_state_inactive = "[initial(overlay_state_inactive)]-[mod.skin]"
 	return ..()
 
 /obj/item/mod/module/ash_accretion/proc/on_update_speed(datum/source, list/module_slowdowns, prevent_slowdown)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (traveled_tiles == max_traveled_tiles)
 		module_slowdowns += speed_added
 
 /obj/item/mod/module/ash_accretion/proc/on_move(atom/source, atom/oldloc, dir, forced)
+	procstart = null
+	src.procstart = null
 	if(!isturf(mod.wearer.loc)) //dont lose ash from going in a locker
 		return
 
@@ -611,16 +691,22 @@
 	bomb = 20
 
 /obj/item/mod/module/sphere_transform/on_install()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(mod, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(on_item_interaction))
 
 // Isn't supposed to happen outside of deletion but just in case
 /obj/item/mod/module/sphere_transform/on_uninstall(deleting)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// No need to drop the hide as we're supposed to be inbuilt and unremovable
 	UnregisterSignal(mod, COMSIG_ATOM_ITEM_INTERACTION)
 
 /obj/item/mod/module/sphere_transform/proc/on_item_interaction(atom/movable/source, mob/living/user, obj/item/item, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(item, /obj/item/stack/sheet/animalhide/bileworm))
@@ -645,12 +731,16 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/mod/module/sphere_transform/activate(mob/activator)
+	procstart = null
+	src.procstart = null
 	if(!mod.wearer.has_gravity())
 		balloon_alert(activator, "no gravity!")
 		return FALSE
 	return ..()
 
 /obj/item/mod/module/sphere_transform/on_activation(mob/activator)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/items/modsuit/ballin.ogg', 100, TRUE)
 	mod.wearer.add_filter("mod_ball", 1, alpha_mask_filter(icon = icon('icons/mob/clothing/modsuit/mod_modules.dmi', "ball_mask"), flags = MASK_INVERSE))
 	mod.wearer.add_filter("mod_blur", 2, angular_blur_filter(size = 15))
@@ -669,6 +759,8 @@
 		part.set_armor(part.get_armor().add_other_armor(armor_mod))
 
 /obj/item/mod/module/sphere_transform/on_deactivation(mob/activator, display_message = TRUE, deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!deleting)
 		playsound(src, 'sound/items/modsuit/ballin.ogg', 100, TRUE, frequency = -1)
 	mod.wearer.remove_offsets(REF(src))
@@ -685,6 +777,8 @@
 		part.set_armor(part.get_armor().subtract_other_armor(armor_mod))
 
 /obj/item/mod/module/sphere_transform/proc/replace_fire_overlay(datum/source, stacks, on_fire, fire_icon, list/overrides)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mutable_appearance/fire_overlay = mutable_appearance(
@@ -697,6 +791,8 @@
 	overrides += fire_overlay
 
 /obj/item/mod/module/sphere_transform/used(mob/activator)
+	procstart = null
+	src.procstart = null
 	if(!lavaland_equipment_pressure_check(get_turf(src)))
 		balloon_alert(activator, "too much pressure!")
 		playsound(src, 'sound/items/weapons/gun/general/dry_fire.ogg', 25, TRUE)
@@ -704,6 +800,8 @@
 	return ..()
 
 /obj/item/mod/module/sphere_transform/on_select_use(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -713,6 +811,8 @@
 		addtimer(CALLBACK(src, PROC_REF(fire_missile), target), 0.2 SECONDS * i)
 
 /obj/item/mod/module/sphere_transform/proc/fire_missile(atom/target)
+	procstart = null
+	src.procstart = null
 	var/obj/projectile/bullet/mining_missile/missile = new(mod.wearer.loc)
 	missile.aim_projectile(target, mod.wearer)
 	missile.firer = mod.wearer
@@ -722,10 +822,14 @@
 	missile.fire()
 
 /obj/item/mod/module/sphere_transform/on_active_process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!mod.wearer.has_gravity())
 		deactivate() //deactivate in no grav
 
 /obj/item/mod/module/sphere_transform/proc/on_statchange(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(IS_UNCONSCIOUS_OR_CRIT(mod.wearer))
 		deactivate()
@@ -750,6 +854,8 @@
 	var/fauna_boost = 4
 
 /obj/projectile/bullet/mining_missile/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(target), 'sound/items/weapons/sonic_jackhammer.ogg', 75, TRUE)
 	if (ismineralturf(target))
 		. = ..()
@@ -771,6 +877,8 @@
 	spawn_particles(target)
 
 /obj/projectile/bullet/mining_missile/proc/spawn_particles(atom/target)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/abstract/particle_holder/impact_particles = new(get_turf(target), /particles/micromissile_impact)
 	impact_particles.particles.position = generator(GEN_BOX, list(impact_x - 2, impact_y - 2), list(impact_x + 2, impact_y + 2), NORMAL_RAND)
 	impact_particles.particles.velocity = generator(GEN_BOX, list(movement_vector.pixel_x * 0.5 * speed * ICON_SIZE_X - 2, movement_vector.pixel_y * 0.5 * speed * ICON_SIZE_Y - 2, ), list(movement_vector.pixel_x * 0.5 * speed * ICON_SIZE_X + 2, movement_vector.pixel_y * 0.5 * speed * ICON_SIZE_Y + 2), NORMAL_RAND)

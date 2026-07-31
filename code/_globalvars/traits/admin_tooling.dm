@@ -435,6 +435,8 @@ GLOBAL_LIST_INIT(admin_visible_traits, list(
 GLOBAL_LIST(admin_trait_name_map)
 
 /proc/generate_admin_trait_name_map()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/key in GLOB.admin_visible_traits)
 		for(var/tname in GLOB.admin_visible_traits[key])

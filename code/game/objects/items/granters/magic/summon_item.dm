@@ -14,6 +14,8 @@
 	)
 
 /obj/item/book/granter/action/spell/summonitem/recoil(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(user,span_warning("[src] suddenly vanishes!"))
 	qdel(src)

@@ -5,6 +5,8 @@
 /datum/unit_test/mecha_damage
 
 /datum/unit_test/mecha_damage/Run()
+	procstart = null
+	src.procstart = null
 	// "Loaded Mauler" was chosen deliberately here.
 	// We need a mech that starts with arm equipment and has fair enough armor.
 	var/obj/vehicle/sealed/mecha/demo_mech = allocate(/obj/vehicle/sealed/mecha/marauder/mauler/loaded)
@@ -80,6 +82,8 @@
 
 /// Simple helper to check if the integrity of an atom involved has taken damage, and if they took the amount of damage it should have.
 /datum/unit_test/mecha_damage/proc/check_integrity(atom/checking, pre_integrity, expected_damage, hit_by_phrase)
+	procstart = null
+	src.procstart = null
 	var/post_hit_health = checking.get_integrity()
 	TEST_ASSERT(post_hit_health < pre_integrity, "[checking] was [hit_by_phrase], but didn't take any damage.")
 

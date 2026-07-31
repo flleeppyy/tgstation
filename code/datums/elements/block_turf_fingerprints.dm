@@ -7,6 +7,8 @@
 	element_flags = ELEMENT_DETACH_ON_HOST_DESTROY
 
 /datum/element/block_turf_fingerprints/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(target))
 		return ELEMENT_INCOMPATIBLE
@@ -18,6 +20,8 @@
 	RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(move_turf))
 
 /datum/element/block_turf_fingerprints/Detach(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isturf(target.loc))
 		remove_from_turf(target.loc)
@@ -25,6 +29,8 @@
 	UnregisterSignal(target, COMSIG_MOVABLE_MOVED)
 
 /datum/element/block_turf_fingerprints/proc/apply_to_turf(turf/the_turf)
+	procstart = null
+	src.procstart = null
 	// It's possible two things with this element could be on the same turf, so let's avoid double-applying
 	if(the_turf.interaction_flags_atom & INTERACT_ATOM_NO_FINGERPRINT_ATTACK_HAND)
 		// But what if the turf has this flag by default? We still need to override register a signal.
@@ -41,10 +47,14 @@
 	RegisterSignal(the_turf, COMSIG_TURF_CHANGE, PROC_REF(replace_our_turf))
 
 /datum/element/block_turf_fingerprints/proc/remove_from_turf(turf/the_turf)
+	procstart = null
+	src.procstart = null
 	the_turf.interaction_flags_atom &= ~INTERACT_ATOM_NO_FINGERPRINT_ATTACK_HAND
 	UnregisterSignal(the_turf, COMSIG_TURF_CHANGE)
 
 /datum/element/block_turf_fingerprints/proc/move_turf(atom/movable/source, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isturf(old_loc))
 		remove_from_turf(old_loc)
@@ -52,5 +62,7 @@
 		apply_to_turf(source.loc)
 
 /datum/element/block_turf_fingerprints/proc/replace_our_turf(datum/source, path, new_baseturfs, flags, post_change_callbacks)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	post_change_callbacks += CALLBACK(src, PROC_REF(apply_to_turf))

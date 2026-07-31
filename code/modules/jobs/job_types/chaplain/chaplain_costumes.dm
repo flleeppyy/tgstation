@@ -6,6 +6,8 @@
 	worn_icon = 'icons/mob/clothing/suits/chaplain.dmi'
 
 /obj/item/clothing/suit/chaplainsuit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed = GLOB.chaplain_suit_allowed
 
@@ -30,6 +32,8 @@
 	allowed = null
 
 /obj/item/clothing/suit/hooded/chaplainsuit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed = GLOB.chaplain_suit_allowed
 
@@ -143,6 +147,8 @@
 	slowdown = 0
 
 /obj/item/clothing/suit/chaplainsuit/armor/clock/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/item_equipped_movement_rustle, SFX_PLATE_ARMOR_RUSTLE, 8)
 
@@ -167,6 +173,8 @@
 	slowdown = 0
 
 /obj/item/clothing/suit/chaplainsuit/armor/templar/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/item_equipped_movement_rustle, SFX_PLATE_ARMOR_RUSTLE, 8)
 
@@ -192,6 +200,8 @@
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS
 
 /obj/item/clothing/suit/chaplainsuit/armor/ancient/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/item_equipped_movement_rustle, SFX_PLATE_ARMOR_RUSTLE, 8)
 
@@ -228,6 +238,8 @@
 	armor_type = /datum/armor/armor_crusader
 
 /obj/item/clothing/suit/chaplainsuit/armor/crusader/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/item_equipped_movement_rustle, SFX_PLATE_ARMOR_RUSTLE, 8)
 
@@ -274,6 +286,8 @@
 	hoodtype = /obj/item/clothing/head/hooded/chaplain_hood
 
 /obj/item/clothing/suit/hooded/chaplain_hoodie/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed = GLOB.chaplain_suit_allowed
 

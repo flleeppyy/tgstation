@@ -9,6 +9,8 @@
 	bonus_deactivate_text = null
 
 /datum/status_effect/organ_set_bonus/fly/enable_bonus(obj/item/organ/inserted_organ)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !ishuman(owner))
 		return
@@ -21,6 +23,8 @@
 	RegisterSignal(inserted_organ, COMSIG_ORGAN_BODYPART_INSERTED, PROC_REF(flyify))
 
 /datum/status_effect/organ_set_bonus/fly/proc/flyify(obj/item/organ/source, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/carbon/human/new_fly = owner
 	// just in case?
@@ -43,6 +47,8 @@
 	iris_overlay = null
 
 /obj/item/organ/eyes/fly/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/fly)
 
@@ -66,17 +72,23 @@
 
 
 /obj/item/organ/tongue/fly/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/speechmod, replacements = speech_replacements, should_modify_speech = CALLBACK(src, PROC_REF(should_modify_speech)))
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/fly)
 
 /obj/item/organ/tongue/fly/get_possible_languages()
+	procstart = null
+	src.procstart = null
 	return ..() + /datum/language/buzzwords
 
 /obj/item/organ/heart/fly
 	desc = FLY_INFUSED_ORGAN_DESC
 
 /obj/item/organ/heart/fly/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = odd_organ_name()
 	icon_state = FLY_INFUSED_ORGAN_ICON
@@ -87,6 +99,8 @@
 	desc = FLY_INFUSED_ORGAN_DESC
 
 /obj/item/organ/lungs/fly/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = odd_organ_name()
 	icon_state = FLY_INFUSED_ORGAN_ICON
@@ -97,6 +111,8 @@
 	alcohol_tolerance = 0.007 //flies eat vomit, so a lower alcohol tolerance is perfect!
 
 /obj/item/organ/liver/fly/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = odd_organ_name()
 	icon_state = FLY_INFUSED_ORGAN_ICON
@@ -106,12 +122,16 @@
 	desc = FLY_INFUSED_ORGAN_DESC
 
 /obj/item/organ/stomach/fly/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = odd_organ_name()
 	icon_state = FLY_INFUSED_ORGAN_ICON
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/fly)
 
 /obj/item/organ/stomach/fly/after_eat(edible)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/body = owner
 	ASSERT(istype(body))
 	// we do not lose any nutrition as a fly when vomiting out food
@@ -127,12 +147,16 @@
 	desc = FLY_INFUSED_ORGAN_DESC
 
 /obj/item/organ/appendix/fly/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = odd_organ_name()
 	icon_state = FLY_INFUSED_ORGAN_ICON
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/fly)
 
 /obj/item/organ/appendix/fly/update_appearance(updates=ALL)
+	procstart = null
+	src.procstart = null
 	return ..(updates & ~(UPDATE_NAME|UPDATE_ICON)) //don't set name or icon thank you
 
 //useless organs we throw in just to fuck with surgeons a bit more. they aren't part of a bonus, just the (absolute) state of flies
@@ -140,6 +164,8 @@
 	desc = FLY_INFUSED_ORGAN_DESC
 
 /obj/item/organ/fly/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = odd_organ_name()
 	icon_state = FLY_INFUSED_ORGAN_ICON

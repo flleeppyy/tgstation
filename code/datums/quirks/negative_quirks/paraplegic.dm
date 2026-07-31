@@ -14,6 +14,8 @@
 	customization_options = list(/datum/preference/choiced/paraplegic)
 
 /datum/quirk/paraplegic/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	if(quirk_holder.buckled) // Handle late joins being buckled to arrival shuttle chairs.
 		quirk_holder.buckled.unbuckle_mob(quirk_holder)
 
@@ -42,14 +44,20 @@
 		delete_legs(quirk_holder)
 
 /datum/quirk/paraplegic/proc/delete_legs(mob/living/carbon/human/human_holder)
+	procstart = null
+	src.procstart = null
 	qdel(human_holder.get_item_by_slot(ITEM_SLOT_FEET))
 	qdel(human_holder.get_bodypart(BODY_ZONE_L_LEG))
 	qdel(human_holder.get_bodypart(BODY_ZONE_R_LEG))
 
 /datum/quirk/paraplegic/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	human_holder.gain_trauma(/datum/brain_trauma/severe/paralysis/paraplegic, TRAUMA_RESILIENCE_ABSOLUTE)
 
 /datum/quirk/paraplegic/remove()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	human_holder.cure_trauma_type(/datum/brain_trauma/severe/paralysis/paraplegic, TRAUMA_RESILIENCE_ABSOLUTE)

@@ -22,6 +22,8 @@
 	var/blood_dna_info
 
 /obj/machinery/gibber/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(on_cleaned))
 	if(prob(5))
@@ -34,6 +36,8 @@
 		update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/gibber/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	gibtime = 40
 	efficiency = initial(efficiency)
@@ -45,6 +49,8 @@
 			ignore_clothing = TRUE
 
 /obj/machinery/gibber/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
 		. += span_notice("The status display reads: Outputting <b>[efficiency]%</b> of meat after <b>[gibtime*0.1]</b> seconds of processing.")
@@ -53,6 +59,8 @@
 				. += span_notice("[src] has been upgraded to process inorganic materials.")
 
 /obj/machinery/gibber/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(dirty)
 		var/mutable_appearance/blood_overlay = mutable_appearance(icon, "grinder_bloody", appearance_flags = RESET_COLOR|KEEP_APART)
@@ -76,18 +84,28 @@
 	. += emissive_appearance(icon, "grinder_loaded", src, alpha = src.alpha)
 
 /obj/machinery/gibber/on_set_panel_open(old_value)
+	procstart = null
+	src.procstart = null
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/gibber/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/machinery/gibber/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	go_out()
 
 /obj/machinery/gibber/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	go_out()
 
 /obj/machinery/gibber/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -131,17 +149,25 @@
 		start_gibbing(user)
 
 /obj/machinery/gibber/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/gibber/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/gibber/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_pry_open(user, tool, close_after_pry = TRUE, deconstruct_on_fail = TRUE)
 
 /obj/machinery/gibber/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]_open" : base_icon_state
 
@@ -156,10 +182,14 @@ GAME_VERB_SRC(/obj/machinery/gibber, eject, oview(1), "Empty gibber", null)
 	return
 
 /obj/machinery/gibber/proc/go_out()
+	procstart = null
+	src.procstart = null
 	dump_inventory_contents()
 	update_appearance()
 
 /obj/machinery/gibber/proc/start_gibbing(mob/user)
+	procstart = null
+	src.procstart = null
 	if(operating)
 		return
 
@@ -274,6 +304,8 @@ GAME_VERB_SRC(/obj/machinery/gibber, eject, oview(1), "Empty gibber", null)
 	qdel(victim)
 
 /obj/machinery/gibber/proc/spawn_meat(mob/living/victim, meat_type = /obj/item/food/meat/slab, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	var/obj/item/food/meat/meat = new meat_type(src, blood_dna_info)
 	meat.name = "[victim.real_name]'s [meat.name]"
 	meat.set_custom_materials(list(SSmaterials.get_material(/datum/material/meat/mob_meat, victim) = 4 * SHEET_MATERIAL_AMOUNT))
@@ -286,6 +318,8 @@ GAME_VERB_SRC(/obj/machinery/gibber, eject, oview(1), "Empty gibber", null)
 	return meat
 
 /obj/machinery/gibber/proc/process_results(mob/living/victim, list/obj/item/results)
+	procstart = null
+	src.procstart = null
 	var/reagents_in_produced = 0
 	for(var/obj/item/result as anything in results)
 		if(result.reagents)
@@ -297,6 +331,8 @@ GAME_VERB_SRC(/obj/machinery/gibber, eject, oview(1), "Empty gibber", null)
 		result.reagents?.add_reagent(/datum/reagent/consumable/nutriment/fat, victim.nutrition / /datum/reagent/consumable/nutriment/fat::nutriment_factor / reagents_in_produced)
 
 /obj/machinery/gibber/proc/finish_gibbing(list/obj/item/results, gibs_type, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	playsound(src.loc, 'sound/effects/splat.ogg', 50, TRUE)
 	operating = FALSE
 	if (!dirty && prob(50))
@@ -340,6 +376,8 @@ GAME_VERB_SRC(/obj/machinery/gibber, eject, oview(1), "Empty gibber", null)
 	var/input_dir = NORTH
 
 /obj/machinery/gibber/autogibber/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	var/atom/input = get_step(src, input_dir)
 	if(isliving(AM))
 		var/mob/living/victim = AM
@@ -349,6 +387,8 @@ GAME_VERB_SRC(/obj/machinery/gibber, eject, oview(1), "Empty gibber", null)
 			victim.gib(DROP_ALL_REMAINS)
 
 /obj/machinery/gibber/proc/on_cleaned(obj/source_component, obj/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	. = NONE

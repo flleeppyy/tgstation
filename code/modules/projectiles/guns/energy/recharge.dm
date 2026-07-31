@@ -19,29 +19,41 @@
 	var/unique_frequency = FALSE
 
 /obj/item/gun/energy/recharge/apply_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	recharge_time = modify_fantasy_variable("recharge_time", recharge_time, -bonus, minimum = 0.2 SECONDS)
 
 /obj/item/gun/energy/recharge/remove_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	recharge_time = reset_fantasy_variable("recharge_time", recharge_time)
 	return ..()
 
 /obj/item/gun/energy/recharge/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!holds_charge)
 		empty()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_ALL)
 
 /obj/item/gun/energy/recharge/shoot_live_shot(mob/living/user, pointblank = 0, atom/pbtarget = null, message = 1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	attempt_reload()
 
 /obj/item/gun/energy/recharge/equipped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!can_shoot())
 		attempt_reload()
 
 /obj/item/gun/energy/recharge/dropped()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!QDELING(src) && !holds_charge)
 		// Put it on a delay because moving item from slot to hand
@@ -49,20 +61,28 @@
 		addtimer(CALLBACK(src, PROC_REF(empty_if_not_held)), 0.1 SECONDS)
 
 /obj/item/gun/energy/recharge/handle_chamber()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	attempt_reload()
 
 /obj/item/gun/energy/recharge/proc/empty_if_not_held()
+	procstart = null
+	src.procstart = null
 	if(!ismob(loc))
 		empty()
 		deltimer(recharge_timerid)
 
 /obj/item/gun/energy/recharge/proc/empty()
+	procstart = null
+	src.procstart = null
 	if(cell)
 		cell.use(cell.charge)
 	update_appearance()
 
 /obj/item/gun/energy/recharge/proc/attempt_reload(set_recharge_time)
+	procstart = null
+	src.procstart = null
 	if(!cell)
 		return
 	if(cell.charge == cell.maxcharge)
@@ -80,6 +100,8 @@
 	recharge_timerid = addtimer(CALLBACK(src, PROC_REF(reload)), set_recharge_time * carried, TIMER_STOPPABLE)
 
 /obj/item/gun/energy/recharge/proc/reload()
+	procstart = null
+	src.procstart = null
 	cell.give(cell.maxcharge)
 	if(!suppressed && recharge_sound)
 		playsound(src.loc, recharge_sound, 60, TRUE)
@@ -88,11 +110,15 @@
 	update_appearance()
 
 /obj/item/gun/energy/recharge/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!no_charge_state && !can_shoot())
 		. += "[base_icon_state]_empty"
 
 /obj/item/gun/energy/recharge/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(no_charge_state)
 		if(can_shoot())
@@ -121,6 +147,8 @@
 	unique_frequency = TRUE
 
 /obj/item/gun/energy/recharge/ebow/add_bayonet_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bayonet_attachable, offset_x = 20, offset_y = 12)
 
 /obj/item/gun/energy/recharge/ebow/halloween
@@ -164,6 +192,8 @@
 	ammo_type = list(/obj/item/ammo_casing/energy/fisher)
 
 /obj/item/gun/energy/recharge/fisher/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/examine_lore, \
 		lore = "The SC/FISHER is an illegally-modified kinetic accelerator that's been cut down and refit into a miniature energy gun chassis, \
@@ -182,6 +212,8 @@
 	)
 
 /obj/item/gun/energy/recharge/fisher/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -190,6 +222,8 @@
 	simulated_hit.on_hit(target_mob)
 
 /obj/item/gun/energy/recharge/fisher/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	// ...you reeeeeally just shoot them, but in case you can't/won't
 	. = ..()
 	var/obj/projectile/energy/fisher/melee/simulated_hit = new

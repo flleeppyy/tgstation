@@ -6,6 +6,8 @@
 	do_rustle = FALSE
 
 /datum/storage/pockets/attempt_insert(obj/item/to_insert, mob/user, override, force, messages)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -69,6 +71,8 @@
 	))
 
 /datum/storage/pockets/chefhat/can_insert(obj/item/to_insert, mob/user, messages, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ispickedupmob(to_insert))
 		var/obj/item/mob_holder/mausholder = to_insert

@@ -6,6 +6,8 @@
 	var/distance_key
 
 /datum/bt_node/decorator/pawn_farther_than_from_key/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/anchor = controller.blackboard[anchor_key]
 	if(QDELETED(anchor))
 		return FALSE

@@ -13,22 +13,30 @@
 	COOLDOWN_DECLARE(big_attack_dodge_cd)
 
 /datum/status_effect/organ_set_bonus/stoat/enable_bonus(obj/item/organ/inserted_organ)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_LIVING_CHECK_BLOCK, PROC_REF(dodge_bigger_attack))
 
 /datum/status_effect/organ_set_bonus/stoat/disable_bonus(obj/item/organ/removed_organ)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(owner, COMSIG_LIVING_CHECK_BLOCK)
 	owner.clear_mood_event("stoat_enemy")
 	owner.clear_mood_event("stoat_friendly")
 
 /datum/status_effect/organ_set_bonus/stoat/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(owner, COMSIG_LIVING_CHECK_BLOCK)
 	owner.clear_mood_event("stoat_enemy")
 	owner.clear_mood_event("stoat_friendly")
 
 /datum/status_effect/organ_set_bonus/stoat/proc/dodge_bigger_attack(datum/source, atom/movable/hit_by, damage, the_attack, attack_type, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(attack_type != UNARMED_ATTACK && attack_type != OVERWHELMING_ATTACK && attack_type != LEAP_ATTACK)
@@ -58,6 +66,8 @@
 	return SUCCESSFUL_BLOCK
 
 /datum/status_effect/organ_set_bonus/stoat/proc/is_dangerous_mob(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS(target))
 		return FALSE
 	if(istype(target, /mob/living/basic/stoat))
@@ -72,6 +82,8 @@
 	return FALSE
 
 /datum/status_effect/organ_set_bonus/stoat/proc/is_friendly_mob(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS(target))
 		return FALSE
 	if(istype(target, /mob/living/basic/stoat))
@@ -81,6 +93,8 @@
 	return FALSE
 
 /datum/status_effect/organ_set_bonus/stoat/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!bonus_active)
 		return
@@ -128,6 +142,8 @@
 	organ_traits = list(TRAIT_TOO_TALL) //noodly boy
 
 /obj/item/organ/heart/stoat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/stoat)
 	AddElement(/datum/element/update_icon_blocker)
@@ -148,15 +164,21 @@
 	organ_traits = list(TRAIT_FERAL_BITER)
 
 /obj/item/organ/tongue/stoat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/stoat)
 
 /obj/item/organ/tongue/stoat/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(1))
 		playsound(owner, 'sound/mobs/non-humanoids/stoat/stoat_sounds.ogg', 100)
 
 /obj/item/organ/tongue/stoat/on_mob_insert(mob/living/carbon/receiver, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignals(receiver, COMSIG_LIVING_GET_PERCEIVED_FOOD_QUALITY, PROC_REF(get_perceived_food_quality))
 	if(ishuman(receiver))
@@ -164,6 +186,8 @@
 		human_receiver.physiology.hunger_mod *= 2
 
 /obj/item/organ/tongue/stoat/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(organ_owner, COMSIG_LIVING_GET_PERCEIVED_FOOD_QUALITY)
 	if(ishuman(organ_owner))
@@ -171,6 +195,8 @@
 		human_remover.physiology.hunger_mod /= 2
 
 /obj/item/organ/tongue/stoat/on_bodypart_insert(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	limb.unarmed_damage_low += 7
 	limb.unarmed_damage_high += 7
@@ -180,6 +206,8 @@
 	limb.unarmed_sharpness = SHARP_POINTY
 
 /obj/item/organ/tongue/stoat/on_bodypart_remove(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	limb.unarmed_damage_low -= 7
 	limb.unarmed_damage_high -= 7
@@ -189,6 +217,8 @@
 	limb.unarmed_sharpness = initial(limb.unarmed_sharpness)
 
 /obj/item/organ/tongue/stoat/proc/get_perceived_food_quality(mob/living/carbon/consumer, obj/item/food/consumed_food, list/extra_quality)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(organ_flags & ORGAN_FAILING)
@@ -211,6 +241,8 @@
 	penlight_message = "shine green"
 
 /obj/item/organ/eyes/stoat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/stoat)
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_Their eyes are black orbs.", zone)
@@ -227,15 +259,21 @@
 	maxHealth = parent_type::maxHealth * 0.8 // weaker ears
 
 /obj/item/organ/ears/stoat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/stoat)
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_Their ears are furred, and twitch occasionally.", zone)
 
 /obj/item/organ/ears/stoat/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	organ_owner.eavesdrop_range += 2
 
 /obj/item/organ/ears/stoat/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	organ_owner.eavesdrop_range -= 2
 
@@ -243,6 +281,8 @@
 	name = "stoat snout"
 
 /obj/item/organ/snout/stoat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/stoat)
 

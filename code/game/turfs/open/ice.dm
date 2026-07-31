@@ -26,34 +26,48 @@
 	)
 
 /turf/open/misc/ice/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	MakeSlippery(TURF_WET_PERMAFROST, INFINITY, 0, INFINITY, TRUE, FALSE)
 	if(can_make_hole)
 		AddElement(/datum/element/contextual_screentip_tools, tool_screentips)
 
 /turf/open/misc/ice/break_tile()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/misc/ice/burn_tile()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/misc/ice/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(can_make_hole)
 		. += span_info("You could use a [EXAMINE_HINT("shovel")] or a [EXAMINE_HINT("pick")] to dig a fishing hole here.")
 
 /turf/open/misc/ice/attack_animal(mob/living/animal, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(animal, TRAIT_MOB_CAN_DIG))
 		dig_hole(animal)
 
 /turf/open/misc/ice/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(tool.tool_behaviour != TOOL_SHOVEL && tool.tool_behaviour != TOOL_MINING)
 		return ..()
 
 	return dig_hole(user) ? ITEM_INTERACT_SUCCESS : NONE
 
 /turf/open/misc/ice/proc/dig_hole(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!can_make_hole)
 		return FALSE
 	balloon_alert(user, "digging...")
@@ -65,6 +79,8 @@
 	return TRUE
 
 /turf/open/misc/ice/proc/spawn_hole()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/fishing_spot, GLOB.preset_fish_sources[/datum/fish_source/ice_fishing])
 	ADD_TRAIT(src, TRAIT_CATCH_AND_RELEASE, INNATE_TRAIT)
 	add_overlay(mutable_appearance('icons/turf/overlays.dmi', "ice_hole"))
@@ -92,6 +108,8 @@
 /turf/open/misc/ice/icemoon/no_planet_atmos/holed
 
 /turf/open/misc/ice/icemoon/no_planet_atmos/holed/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spawn_hole()
 

@@ -19,6 +19,8 @@
 
 /// Links this up with a mob
 /atom/movable/screen/fullscreen/cursor_catcher/proc/assign_to_mob(mob/owner)
+	procstart = null
+	src.procstart = null
 	src.owner = owner
 	view_list = getviewsize(owner.client.view)
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
@@ -27,6 +29,8 @@
 
 /// Update when the mob we're assigned to has moved
 /atom/movable/screen/fullscreen/cursor_catcher/proc/on_move(atom/source, atom/oldloc, dir, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!given_turf)
@@ -37,22 +41,30 @@
 
 /// Update when our screen size changes
 /atom/movable/screen/fullscreen/cursor_catcher/proc/on_viewdata_update(datum/source, view)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	view_list = getviewsize(view)
 
 /atom/movable/screen/fullscreen/cursor_catcher/MouseEntered(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	MouseMove(location, control, params)
 	if(usr == owner)
 		calculate_params()
 
 /atom/movable/screen/fullscreen/cursor_catcher/MouseMove(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(usr != owner)
 		return
 	mouse_params = params
 
 /atom/movable/screen/fullscreen/cursor_catcher/proc/calculate_params()
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(mouse_params)
 	var/icon_x = text2num(LAZYACCESS(modifiers, VIS_X))
 	if(isnull(icon_x))

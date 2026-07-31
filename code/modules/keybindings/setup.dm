@@ -1,16 +1,24 @@
 // Set a client's focus to an object and override these procs on that object to let it handle keypresses
 
-/datum/proc/key_down(key, client/user, full_key) // Called when a key is pressed down initially
+/datum/proc/key_down(key, client/user, full_key)
+	procstart = null
+	src.procstart = null // Called when a key is pressed down initially
 	SHOULD_CALL_PARENT(TRUE)
 	return
-/datum/proc/key_up(key, client/user) // Called when a key is released
+/datum/proc/key_up(key, client/user)
+	procstart = null
+	src.procstart = null // Called when a key is released
 	return
-/datum/proc/keyLoop(client/user) // Called once every frame
+/datum/proc/keyLoop(client/user)
+	procstart = null
+	src.procstart = null // Called once every frame
 	set waitfor = FALSE
 	return
 
 // removes all the existing macros
 /client/proc/erase_all_macros()
+	procstart = null
+	src.procstart = null
 	var/erase_output = ""
 	var/list/macro_set = params2list(winget(src, "default.*", "command")) // The third arg doesnt matter here as we're just removing them all
 	for(var/k in 1 to length(macro_set))
@@ -20,6 +28,8 @@
 	winset(src, null, erase_output)
 
 /client/proc/set_macros()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	//Reset the buffer
@@ -37,6 +47,8 @@
 
 /// Manually clears any held keys, in case due to lag or other undefined behavior a key gets stuck.
 /client/proc/reset_held_keys()
+	procstart = null
+	src.procstart = null
 	for(var/key in keys_held)
 		keyUp(key)
 

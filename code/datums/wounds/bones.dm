@@ -42,6 +42,8 @@
 	Overwriting of base procs
 */
 /datum/wound/blunt/bone/wound_injury(datum/wound/old_wound = null, attack_direction = null)
+	procstart = null
+	src.procstart = null
 	// hook into gaining/losing gauze so crit bone wounds can re-enable/disable depending if they're slung or not
 	if(limb.body_zone == BODY_ZONE_HEAD && brain_trauma_group)
 		processes = TRUE
@@ -60,6 +62,8 @@
 	return ..()
 
 /datum/wound/blunt/bone/set_victim(new_victim)
+	procstart = null
+	src.procstart = null
 
 	if (victim)
 		UnregisterSignal(victim, list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_MOB_FIRED_GUN))
@@ -70,12 +74,16 @@
 	return ..()
 
 /datum/wound/blunt/bone/remove_wound(ignore_limb, replaced, destroying)
+	procstart = null
+	src.procstart = null
 	limp_slowdown = 0
 	limp_chance = 0
 	QDEL_NULL(active_trauma)
 	return ..()
 
 /datum/wound/blunt/bone/handle_process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (!victim || HAS_TRAIT(victim, TRAIT_STASIS))
@@ -114,6 +122,8 @@
 
 /// If we're a human who's punching something with a broken arm, we might hurt ourselves doing so
 /datum/wound/blunt/bone/proc/attack_with_hurt_hand(mob/M, atom/target, proximity)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(victim.get_active_hand() != limb || !proximity || !victim.combat_mode || !ismob(target) || severity <= WOUND_SEVERITY_MODERATE)
@@ -138,6 +148,8 @@
 
 /// If we're a human who's firing a gun with a broken arm, we might hurt ourselves doing so
 /datum/wound/blunt/bone/proc/firing_with_messed_up_hand(datum/source, obj/item/gun/gun, atom/firing_at, params, zone, bonus_spread_values)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	switch(limb.body_zone)
@@ -166,6 +178,8 @@
 		bonus_spread_values[MAX_BONUS_SPREAD_INDEX] += (15 * severity * limb.get_splint_factor())
 
 /datum/wound/blunt/bone/receive_damage(wounding_type, wounding_dmg, wound_bonus)
+	procstart = null
+	src.procstart = null
 	if(!victim || wounding_dmg < WOUND_MINIMUM_DAMAGE || !victim.can_bleed())
 		return
 
@@ -200,6 +214,8 @@
 				victim.add_splatter_floor(get_step(victim.loc, victim.dir))
 
 /datum/wound/blunt/bone/modify_desc_before_span(desc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
@@ -210,6 +226,8 @@
 			. += ", [span_notice("with fizzing flecks of blue bone gel sparking off the bone!")]"
 
 /datum/wound/blunt/get_limb_examine_description()
+	procstart = null
+	src.procstart = null
 	return span_warning("The bones in this limb appear badly cracked.")
 
 /*
@@ -217,6 +235,8 @@
 */
 
 /datum/wound/blunt/bone/get_scar_file(obj/item/bodypart/scarred_limb, add_to_scars)
+	procstart = null
+	src.procstart = null
 	if (scarred_limb.biological_state & BIO_BONE && (!(scarred_limb.biological_state & BIO_FLESH))) // only bone
 		return BONE_SCAR_FILE
 	else if (scarred_limb.biological_state & BIO_FLESH && (!(scarred_limb.biological_state & BIO_BONE)))
@@ -258,11 +278,15 @@
 	threshold_minimum = 35
 
 /datum/wound/blunt/bone/moderate/Destroy()
+	procstart = null
+	src.procstart = null
 	if(victim)
 		UnregisterSignal(victim, COMSIG_LIVING_DOORCRUSHED)
 	return ..()
 
 /datum/wound/blunt/bone/moderate/set_victim(new_victim)
+	procstart = null
+	src.procstart = null
 
 	if (victim)
 		UnregisterSignal(victim, COMSIG_LIVING_DOORCRUSHED)
@@ -272,10 +296,14 @@
 	return ..()
 
 /datum/wound/blunt/bone/moderate/get_self_check_description(self_aware)
+	procstart = null
+	src.procstart = null
 	return span_warning("It feels dislocated!")
 
 /// Getting smushed in an airlock/firelock is a last-ditch attempt to try relocating your limb
 /datum/wound/blunt/bone/moderate/proc/door_crush()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(prob(40))
 		victim.visible_message(span_danger("[victim]'s dislocated [limb.plaintext_zone] pops back into place!"), span_userdanger("Your dislocated [limb.plaintext_zone] pops back into place! Ow!"))
@@ -284,6 +312,8 @@
 	return NONE
 
 /datum/wound/blunt/bone/moderate/try_handling(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.usable_hands <= 0 || user.pulling != victim)
 		return FALSE
 	if(!isnull(user.hud_used?.screen_objects[HUD_MOB_ZONE_SELECTOR]) && user.zone_selected != limb.body_zone)
@@ -304,6 +334,8 @@
 
 /// If someone is snapping our dislocated joint back into place by hand with an aggro grab and help intent
 /datum/wound/blunt/bone/moderate/proc/chiropractice(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	var/time = base_treat_time
 
 	if(!do_after(user, time, target=victim, extra_checks = CALLBACK(src, PROC_REF(still_exists))))
@@ -323,6 +355,8 @@
 
 /// If someone is snapping our dislocated joint into a fracture by hand with an aggro grab and harm or disarm intent
 /datum/wound/blunt/bone/moderate/proc/malpractice(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	var/time = base_treat_time
 
 	if(!do_after(user, time, target=victim, extra_checks = CALLBACK(src, PROC_REF(still_exists))))
@@ -340,6 +374,8 @@
 		malpractice(user)
 
 /datum/wound/blunt/bone/moderate/treat(obj/item/tool, mob/user)
+	procstart = null
+	src.procstart = null
 	var/scanned = HAS_TRAIT(src, TRAIT_WOUND_SCANNED)
 	var/self_penalty_mult = user == victim ? 1.5 : 1
 	var/scanned_mult = scanned ? 0.5 : 1
@@ -449,6 +485,8 @@
 
 // doesn't make much sense for "a" bone to stick out of your head
 /datum/wound/blunt/bone/critical/apply_wound(obj/item/bodypart/L, silent = FALSE, datum/wound/old_wound = null, smited = FALSE, attack_direction = null, wound_source = "Unknown", replacing = FALSE)
+	procstart = null
+	src.procstart = null
 	if(L.body_zone == BODY_ZONE_HEAD)
 		occur_text = "splits open, exposing a bare, cracked skull through the flesh and blood"
 		examine_desc = "has an unsettling indent, with bits of skull poking out"
@@ -456,6 +494,8 @@
 
 /// if someone is using bone gel on our wound
 /datum/wound/blunt/bone/proc/gel(obj/item/stack/medical/bone_gel/I, mob/user)
+	procstart = null
+	src.procstart = null
 	// skellies get treated nicer with bone gel since their "reattach dismembered limbs by hand" ability sucks when it's still critically wounded
 	if((limb.biological_state & BIO_BONE) && !(limb.biological_state & (BIO_FLESH|BIO_CHITIN)))
 		return skelly_gel(I, user)
@@ -489,6 +529,8 @@
 
 /// skellies are less averse to bone gel, since they're literally all bone
 /datum/wound/blunt/bone/proc/skelly_gel(obj/item/stack/medical/bone_gel/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(gelled)
 		to_chat(user, span_warning("[user == victim ? "Your" : "[victim]'s"] [limb.plaintext_zone] is already coated with bone gel!"))
 		return
@@ -511,6 +553,8 @@
 
 /// if someone is using surgical tape on our wound
 /datum/wound/blunt/bone/proc/tape(obj/item/stack/medical/wrap/sticky_tape/surgical/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!gelled)
 		to_chat(user, span_warning("[user == victim ? "Your" : "[victim]'s"] [limb.plaintext_zone] must be coated with bone gel to perform this emergency operation!"))
 		return TRUE
@@ -538,16 +582,22 @@
 	return TRUE
 
 /datum/wound/blunt/bone/item_can_treat(obj/item/potential_treater, mob/user)
+	procstart = null
+	src.procstart = null
 	// assume that - if working on a ready-to-operate limb - the surgery wants to do the real surgery instead of bone regeneration
 	return ..() && !HAS_TRAIT(limb, TRAIT_READY_TO_OPERATE)
 
 /datum/wound/blunt/bone/treat(obj/item/tool, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/stack/medical/bone_gel))
 		gel(tool, user)
 	if(istype(tool, /obj/item/stack/medical/wrap/sticky_tape/surgical))
 		tape(tool, user)
 
 /datum/wound/blunt/bone/get_scanner_description(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	. += "<div class='ml-3'>"

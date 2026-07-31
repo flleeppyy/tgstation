@@ -43,6 +43,8 @@
 
 
 /datum/component/limb_applicable/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ITEM_INTERACTING_WITH_ATOM, PROC_REF(on_apply))
 	RegisterSignal(parent, COMSIG_ITEM_REQUESTING_CONTEXT_FOR_TARGET, PROC_REF(add_context))
 
@@ -50,16 +52,22 @@
 	applying_item.flags_1 |= HAS_CONTEXTUAL_SCREENTIPS_1
 
 /datum/component/limb_applicable/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_ITEM_INTERACTING_WITH_ATOM)
 	UnregisterSignal(parent, COMSIG_ITEM_REQUESTING_CONTEXT_FOR_TARGET)
 
 /datum/component/limb_applicable/proc/add_context(obj/item/source, list/context, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isliving(target))
 		context[SCREENTIP_CONTEXT_LMB] = "Apply [source.name]"
 		return CONTEXTUAL_SCREENTIP_SET
 	return NONE
 
 /datum/component/limb_applicable/proc/on_apply(datum/source, mob/user, atom/interacting_with)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(interacting_with))
@@ -91,6 +99,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /datum/component/limb_applicable/proc/on_apply_async(mob/user, mob/living/target, obj/item/bodypart/applying_to)
+	procstart = null
+	src.procstart = null
 	if(!do_apply?.Invoke(user, target, applying_to))
 		return
 	var/obj/item/applying = parent

@@ -41,17 +41,23 @@
 	var/loop_drink = FALSE
 
 /obj/item/reagent_containers/cup/Initialize(mapload, vol)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(heatable)
 		AddElement(/datum/element/reagents_item_heatable)
 	register_context()
 
 /obj/item/reagent_containers/cup/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(lid_assembly)
 	QDEL_NULL(attached_cell)
 	return ..()
 
 /obj/item/reagent_containers/cup/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cell_wired && held_item.tool_behaviour == TOOL_WIRECUTTER)
 		context[SCREENTIP_CONTEXT_LMB] = "Cut wires"
@@ -70,6 +76,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/reagent_containers/cup/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(drink_type)
 		var/list/types = bitfield_to_list(drink_type, FOOD_FLAGS)
@@ -86,6 +94,8 @@
  * This is a bunch of copypaste from the edible component, consider reworking this to use it!
  */
 /obj/item/reagent_containers/cup/proc/checkLiked(fraction, mob/eater)
+	procstart = null
+	src.procstart = null
 	if(last_check_time + 5 SECONDS > world.time)
 		return FALSE
 	if(!ishuman(eater))
@@ -112,6 +122,8 @@
 			gourmand.add_mood_event("fav_food", /datum/mood_event/favorite_food)
 
 /obj/item/reagent_containers/cup/proc/try_drink(mob/living/target_mob, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!canconsume(target_mob, user))
 		return ITEM_INTERACT_BLOCKING
 
@@ -174,6 +186,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/cup/interact_with_atom(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -197,6 +211,8 @@
 /// QoL helper for pouring concrete directly from container just by clicking.
 /// Easier than splashing onto turf or object, but requires a little delay.
 /obj/item/reagent_containers/cup/proc/pour_concrete(atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/datum/reagent/concrete/concrete = reagents.has_reagent(/datum/reagent/concrete, check_subtypes=TRUE)
 	if (!concrete)
 		return NONE
@@ -223,6 +239,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/cup/interact_with_atom_secondary(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -235,6 +253,8 @@
 	return NONE
 
 /obj/item/reagent_containers/cup/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(has_lid && istype(tool, /obj/item/assembly_holder))
 		if (lid_assembly)
 			to_chat(user, span_warning("[src]'s lid already has an assembly attached to it!"))
@@ -302,21 +322,29 @@
  * On accidental consumption, make sure the container is partially glass, and continue to the reagent_container proc
  */
 /obj/item/reagent_containers/cup/on_accidental_consumption(mob/living/carbon/M, mob/living/carbon/user, obj/item/source_item, discover_after = TRUE)
+	procstart = null
+	src.procstart = null
 	if(isGlass && !custom_materials)
 		set_custom_materials(list(SSmaterials.get_material(/datum/material/glass) = 5))//sets it to glass so, later on, it gets picked up by the glass catch (hope it doesn't 'break' things lol)
 	return ..()
 
 /// Callback for [datum/component/takes_reagent_appearance] to inherent style footypes
 /obj/item/reagent_containers/cup/proc/on_cup_change(datum/glass_style/has_foodtype/style)
+	procstart = null
+	src.procstart = null
 	if(!istype(style))
 		return
 	drink_type = style.drink_type
 
 /// Callback for [datum/component/takes_reagent_appearance] to reset to no foodtypes
 /obj/item/reagent_containers/cup/proc/on_cup_reset()
+	procstart = null
+	src.procstart = null
 	drink_type = NONE
 
 /obj/item/reagent_containers/cup/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (has_lid)
 		. += mutable_appearance(icon, "[icon_state]_lid")
@@ -329,21 +357,31 @@
 
 // For player convinience, assume that the lids are rubber and can be pierced with a syringe
 /obj/item/reagent_containers/cup/is_refillable()
+	procstart = null
+	src.procstart = null
 	return ..() && !has_lid
 
 /obj/item/reagent_containers/cup/is_drainable()
+	procstart = null
+	src.procstart = null
 	return ..() && !has_lid
 
 /obj/item/reagent_containers/cup/is_dunkable()
+	procstart = null
+	src.procstart = null
 	return ..() && !has_lid
 
 /obj/item/reagent_containers/cup/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if (!lid_assembly)
 		return ..()
 	lid_assembly.attack_self(user)
 	return TRUE
 
 /obj/item/reagent_containers/cup/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if (!can_lid)
 		return NONE
 
@@ -378,6 +416,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/reagent_containers/cup/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if (user.combat_mode || !cell_wired)
 		return NONE
 
@@ -389,6 +429,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/cup/proc/attach_assembly(obj/item/assembly_holder/assembly, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (!user.transferItemToLoc(assembly, src))
 		to_chat(user, span_warning("[assembly] is stuck to your hand!"))
 		return FALSE
@@ -406,10 +448,14 @@
 	return TRUE
 
 /obj/item/reagent_containers/cup/on_found(mob/finder)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	lid_assembly?.on_found(finder)
 
 /obj/item/reagent_containers/cup/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (gone == lid_assembly)
 		lid_assembly = null
@@ -421,6 +467,8 @@
 		update_appearance()
 
 /obj/item/reagent_containers/cup/proc/on_igniter_activate(datum/source, obj/item/assembly/igniter/igniter)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// We've got an attached cell wired up, so we'll try to spend all of its current first
 	if (attached_cell && cell_wired)
@@ -457,10 +505,14 @@
 	assembly_pixel_y = 4
 
 /obj/item/reagent_containers/cup/beaker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/item/reagent_containers/cup/beaker/get_part_rating()
+	procstart = null
+	src.procstart = null
 	return reagents.maximum_volume
 
 /obj/item/reagent_containers/cup/beaker/jar
@@ -614,6 +666,8 @@
 	)
 
 /obj/item/reagent_containers/cup/bucket/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/cuffable_item)
 
@@ -635,6 +689,8 @@
 	acid = 50
 
 /obj/item/reagent_containers/cup/bucket/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/mop))
 		if(reagents.total_volume < 1)
 			user.balloon_alert(user, "empty!")
@@ -653,6 +709,8 @@
 	return ..()
 
 /obj/item/reagent_containers/cup/bucket/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (slot & ITEM_SLOT_HEAD)
 		if(reagents.total_volume)
@@ -662,10 +720,14 @@
 		update_container_flags(NONE)
 
 /obj/item/reagent_containers/cup/bucket/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reset_container_flags()
 
 /obj/item/reagent_containers/cup/bucket/equip_to_best_slot(mob/M)
+	procstart = null
+	src.procstart = null
 	if(reagents.total_volume) //If there is water in a bucket, don't quick equip it to the head
 		var/index = slot_equipment_priority.Find(ITEM_SLOT_HEAD)
 		slot_equipment_priority.Remove(ITEM_SLOT_HEAD)
@@ -697,6 +759,8 @@
 	var/obj/item/grinded
 
 /obj/item/reagent_containers/cup/mortar/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!grinded)
 		return CLICK_ACTION_BLOCKING
 	grinded.forceMove(drop_location())
@@ -705,6 +769,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/reagent_containers/cup/mortar/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -744,11 +810,15 @@
 	return NONE
 
 /obj/item/reagent_containers/cup/mortar/blended(obj/item/blended_item, grinded)
+	procstart = null
+	src.procstart = null
 	src.grinded = null
 
 	return ..()
 
 /obj/item/reagent_containers/cup/mortar/proc/grind_item(obj/item/item, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(item.flags_1 & HOLOGRAM_1)
 		to_chat(user, span_notice("You try to grind [item], but it fades away!"))
 		qdel(item)
@@ -764,6 +834,8 @@
 	to_chat(user, span_notice("You grind [item] into a nice powder."))
 
 /obj/item/reagent_containers/cup/mortar/proc/juice_item(obj/item/item, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(item.flags_1 & HOLOGRAM_1)
 		to_chat(user, span_notice("You try to juice [item], but it fades away!"))
 		qdel(item)
@@ -807,5 +879,7 @@
 	can_lid = TRUE
 
 /obj/item/reagent_containers/cup/tube/attach_assembly(obj/item/assembly_holder/assembly, mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("[src]'s lid is too small to fit [assembly]!"))
 	return FALSE

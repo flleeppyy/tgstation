@@ -18,6 +18,8 @@
 	var/ready = FALSE
 
 /obj/effect/mob_spawn/ghost_role/venus_human_trap/Destroy()
+	procstart = null
+	src.procstart = null
 	if(flower_bud) // anti harddel checks
 		if(!QDELETED(flower_bud))
 			qdel(flower_bud)
@@ -25,6 +27,8 @@
 	return ..()
 
 /obj/effect/mob_spawn/ghost_role/venus_human_trap/equip(mob/living/basic/venus_human_trap/spawned_human_trap)
+	procstart = null
+	src.procstart = null
 	if(spawned_human_trap && flower_bud)
 		if(flower_bud.trait_flags & SPACEVINE_HEAT_RESISTANT)
 			spawned_human_trap.unsuitable_heat_damage = 0
@@ -32,11 +36,15 @@
 			spawned_human_trap.unsuitable_cold_damage = 0
 
 /obj/effect/mob_spawn/ghost_role/venus_human_trap/special(mob/living/spawned_mob, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spawned_mob.mind.add_antag_datum(/datum/antagonist/venus_human_trap)
 
 /// Called when the attached flower bud has borne fruit (ie. is ready)
 /obj/effect/mob_spawn/ghost_role/venus_human_trap/proc/bear_fruit()
+	procstart = null
+	src.procstart = null
 	ready = TRUE
 	notify_ghosts(
 		"[src] has borne fruit!",
@@ -47,6 +55,8 @@
 	)
 
 /obj/effect/mob_spawn/ghost_role/venus_human_trap/allow_spawn(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

@@ -12,10 +12,14 @@
 	supports_smart_equip = FALSE
 
 /datum/storage/bag/trash/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(cant_hold_list = /obj/item/disk/nuclear)
 
 /datum/storage/bag/trash/remove_single(mob/removing, obj/item/thing, atom/remove_to_loc, silent)
+	procstart = null
+	src.procstart = null
 	real_location.visible_message(
 		span_notice("[removing] starts fishing around inside [parent]."),
 		span_notice("You start digging around in [parent] to try and pull something out."),
@@ -37,6 +41,8 @@
 	silent_for_user = TRUE
 
 /datum/storage/bag/ore/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/stack/ore)
 
@@ -52,6 +58,8 @@
 	max_slots = 100
 
 /datum/storage/bag/plants/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/food/grown,
@@ -66,6 +74,8 @@
 	max_total_storage = 150
 
 /datum/storage/bag/sheet_snatcher/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(
 		can_hold_list = /obj/item/stack/sheet,
@@ -87,6 +97,8 @@
 	max_total_storage = 5000
 
 /datum/storage/bag/sheet_snatcher_debug/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/stack/sheet,
@@ -100,6 +112,8 @@
 	max_slots = 7
 
 /datum/storage/bag/books/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/book,
@@ -115,6 +129,8 @@
 	max_total_storage = 16
 
 /datum/storage/bag/tray/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(
 		can_hold_list = list(
@@ -144,6 +160,8 @@
 	max_slots = 50
 
 /datum/storage/bag/chemistry/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/reagent_containers/chem_pack,
@@ -163,6 +181,8 @@
 	max_slots = 25
 
 /datum/storage/bag/bio/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/bodypart,
@@ -184,6 +204,8 @@
 	max_slots = 25
 
 /datum/storage/bag/xeno/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/bodypart,
@@ -207,6 +229,8 @@
 	max_specific_storage = WEIGHT_CLASS_SMALL
 
 /datum/storage/bag/construction/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/assembly,
@@ -230,6 +254,8 @@
 	max_total_storage = 100
 
 /datum/storage/bag/harpoon_quiver/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/ammo_casing/harpoon)
 
@@ -240,6 +266,8 @@
 	max_total_storage = 15
 
 /datum/storage/bag/rebar_quiver/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/ammo_casing/rebar,
@@ -257,6 +285,8 @@
 	numerical_stacking = FALSE
 
 /datum/storage/bag/mail/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/mail,
@@ -274,6 +304,8 @@
 	allow_big_nesting = TRUE
 
 /datum/storage/bag/garment/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(
 		can_hold_list = list(/obj/item/clothing, /obj/item/storage/backpack),
@@ -281,6 +313,8 @@
 	)
 
 /datum/storage/bag/garment/can_insert(obj/item/to_insert, mob/user, messages, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -293,22 +327,30 @@
 	return TRUE
 
 /datum/storage/bag/garment/item_init(datum/source, obj/item/inited)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(inited, /obj/item/storage/backpack))
 		return
 	RegisterSignal(inited, COMSIG_ATOM_PRE_STORED_ITEM, PROC_REF(block_inner_storage))
 
 /datum/storage/bag/garment/handle_enter(datum/source, obj/item/arrived)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(arrived, /obj/item/storage/backpack))
 		return
 	RegisterSignal(arrived, COMSIG_ATOM_PRE_STORED_ITEM, PROC_REF(block_inner_storage))
 
 /datum/storage/bag/garment/handle_exit(datum/source, obj/item/gone)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(gone, COMSIG_ATOM_PRE_STORED_ITEM)
 
 /datum/storage/bag/garment/proc/block_inner_storage(obj/item/backpack, to_insert, user, force, messages)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(user && messages)
@@ -322,6 +364,8 @@
 	max_total_storage = 100
 
 /datum/storage/bag/quiver/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/ammo_casing/arrow)
 
@@ -334,6 +378,8 @@
 	max_slots = 1
 
 /datum/storage/bag/quiver/endless/handle_exit(datum/source, obj/item/gone)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/storage/bag/quiver/endless/store = real_location
 	new store.arrow_path(store)
@@ -345,6 +391,8 @@
 	max_slots = 1000
 
 /datum/storage/bag/money/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/coin,
@@ -365,5 +413,7 @@
 	max_slots = 21
 
 /datum/storage/bag/fishing/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/fish)

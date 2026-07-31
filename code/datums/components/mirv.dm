@@ -4,6 +4,8 @@
 	var/override_projectile_range
 
 /datum/component/mirv/Initialize(projectile_type, radius=1, override_projectile_range)
+	procstart = null
+	src.procstart = null
 	if(!isgun(parent) && !ismachinery(parent) && !isstructure(parent) && !isgrenade(parent) && !isprojectilespell(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -15,18 +17,26 @@
 		parent.AddComponent(/datum/component/pellet_cloud, projectile_type=projectile_type)
 
 /datum/component/mirv/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	if(ismachinery(parent) || isstructure(parent) || isgun(parent) || isprojectilespell(parent)) // turrets, etc
 		RegisterSignal(parent, COMSIG_PROJECTILE_ON_HIT, PROC_REF(projectile_hit))
 
 /datum/component/mirv/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_PROJECTILE_ON_HIT))
 
 /datum/component/mirv/proc/projectile_hit(datum/fired_from, atom/movable/firer, atom/target, Angle)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(do_shrapnel), firer, target)
 
 /datum/component/mirv/proc/do_shrapnel(mob/firer, atom/target)
+	procstart = null
+	src.procstart = null
 	if(radius < 1)
 		return
 	var/turf/target_turf = get_turf(target)

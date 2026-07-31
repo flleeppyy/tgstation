@@ -109,6 +109,8 @@ GLOBAL_LIST_INIT(hailer_phrases, list(
 	fishing_modifier = 0
 
 /obj/item/clothing/mask/gas/sechailer/screwdriver_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(aggressiveness == AGGR_BROKEN)
 		to_chat(user, span_danger("You adjust the restrictor but nothing happens, probably because it's broken."))
@@ -118,6 +120,8 @@ GLOBAL_LIST_INIT(hailer_phrases, list(
 	aggressiveness = aggressiveness % 3 + 1 // loop AGGR_GOOD_COP -> AGGR_SHIT_COP
 
 /obj/item/clothing/mask/gas/sechailer/wirecutter_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(aggressiveness != AGGR_BROKEN)
 		to_chat(user, span_danger("You broke the restrictor!"))
@@ -125,9 +129,13 @@ GLOBAL_LIST_INIT(hailer_phrases, list(
 		return
 
 /obj/item/clothing/mask/gas/sechailer/ui_action_click(mob/user, actiontype)
+	procstart = null
+	src.procstart = null
 	halt()
 
 /obj/item/clothing/mask/gas/sechailer/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(safety)
 		safety = FALSE
 		balloon_alert(user, "vocal circuit fried")
@@ -163,6 +171,8 @@ GAME_VERB_SRC(/obj/item/clothing/mask/gas/sechailer, halt, usr, "HALT", null)
 	play_phrase(usr, GLOB.hailer_phrases[select_phrase()])
 
 /obj/item/clothing/mask/gas/sechailer/proc/select_phrase()
+	procstart = null
+	src.procstart = null
 	if(!safety)
 		return EMAG_PHRASE
 	else
@@ -177,6 +187,8 @@ GAME_VERB_SRC(/obj/item/clothing/mask/gas/sechailer, halt, usr, "HALT", null)
 		return rand(aggressiveness == AGGR_BROKEN ? BROKE_PHRASES : EMAG_PHRASE + 1, upper_limit)
 
 /obj/item/clothing/mask/gas/sechailer/proc/play_phrase(mob/user, datum/hailer_phrase/phrase)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, hailer_cooldown))
 		return
 	COOLDOWN_START(src, hailer_cooldown, PHRASE_COOLDOWN)
@@ -185,6 +197,8 @@ GAME_VERB_SRC(/obj/item/clothing/mask/gas/sechailer, halt, usr, "HALT", null)
 	return TRUE
 
 /obj/item/clothing/mask/gas/sechailer/proc/reset_overuse_cooldown()
+	procstart = null
+	src.procstart = null
 	overuse_cooldown = FALSE
 
 /obj/item/clothing/mask/whistle
@@ -200,6 +214,8 @@ GAME_VERB_SRC(/obj/item/clothing/mask/gas/sechailer, halt, usr, "HALT", null)
 	COOLDOWN_DECLARE(whistle_cooldown)
 
 /obj/item/clothing/mask/whistle/ui_action_click(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, whistle_cooldown))
 		return
 	COOLDOWN_START(src, whistle_cooldown, 10 SECONDS)
@@ -219,6 +235,8 @@ GAME_VERB_SRC(/obj/item/clothing/mask/gas/sechailer, halt, usr, "HALT", null)
 	COOLDOWN_DECLARE(horn_cooldown)
 
 /obj/item/clothing/mask/party_horn/ui_action_click(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, horn_cooldown))
 		return
 	COOLDOWN_START(src, horn_cooldown, 10 SECONDS)

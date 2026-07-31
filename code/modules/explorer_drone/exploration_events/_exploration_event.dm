@@ -23,6 +23,8 @@
 
 /// Main event functionality, called when exploring randomly/revisiting.
 /datum/exploration_event/proc/encounter(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(!visited)
 		var/log = get_discovery_message(drone)
@@ -32,10 +34,14 @@
 
 /// Override this if you need to modify discovery message
 /datum/exploration_event/proc/get_discovery_message(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	return discovery_log
 
 /// Should this event show up on site exploration list.
 /datum/exploration_event/proc/is_targetable()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// Simple events, not a full fledged adventure, consist only of single encounter screen
@@ -53,31 +59,45 @@
 
 /// On exploration, only display our information with the act/ignore options
 /datum/exploration_event/simple/encounter(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	drone.current_event_ui_data = build_ui_event(drone)
 
 /// After choosing not to ignore the event, THIS IS DONE AFTER UNKNOWN DELAY SO YOU NEED TO VALIDATE IF ACTION IS POSSIBLE AGAIN
 /datum/exploration_event/simple/proc/fire(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Ends simple event and cleans up display data
 /datum/exploration_event/simple/proc/end(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	drone.current_event_ui_data = null
 
 /// Description shown below image
 /datum/exploration_event/simple/proc/get_description(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	return description
 
 /// Text on the act button
 /datum/exploration_event/simple/proc/get_action_text(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	return action_text
 
 /// Button to act disabled or not
 /datum/exploration_event/simple/proc/action_enabled(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Creates ui data for displaying the event
 /datum/exploration_event/simple/proc/build_ui_event(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["image"] = ui_image
 	.["description"] = get_description(drone)

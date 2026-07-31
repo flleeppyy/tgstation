@@ -28,12 +28,16 @@
 	var/list/genetic_makeup_buffer = list()
 
 /obj/item/sequence_scanner/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Use primary attack to scan mutations, Secondary attack to scan genetic makeup")
 	if(LAZYLEN(genetic_makeup_buffer) > 0)
 		. += span_notice("It has the genetic makeup of \"[genetic_makeup_buffer["name"]]\" stored inside its buffer")
 
 /obj/item/sequence_scanner/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(interacting_with, /obj/machinery/computer/dna_console))
 		var/obj/machinery/computer/dna_console/console = interacting_with
 		if(console.stored_research)
@@ -60,6 +64,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/sequence_scanner/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(interacting_with, /obj/machinery/computer/dna_console))
 		var/obj/machinery/computer/dna_console/console = interacting_with
 		var/buffer_index = tgui_input_number(user, "Slot:", "Which slot to export:", 1, LAZYLEN(console.genetic_makeup_buffer), 1)
@@ -86,13 +92,19 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/sequence_scanner/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	display_sequence(user)
 
 /obj/item/sequence_scanner/attack_self_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 ///proc for scanning someone's mutations
 /obj/item/sequence_scanner/proc/gene_scan(mob/living/carbon/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(target) || !target.has_dna())
 		return
 
@@ -114,6 +126,8 @@
 
 ///proc for scanning someone's genetic makeup
 /obj/item/sequence_scanner/proc/makeup_scan(mob/living/carbon/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(target) || !target.has_dna())
 		return
 
@@ -126,6 +140,8 @@
 	"blood_type"=target.get_bloodtype())
 
 /obj/item/sequence_scanner/proc/display_sequence(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(buffer) || !ready)
 		return
 	var/list/options = list()
@@ -158,10 +174,14 @@
 	addtimer(CALLBACK(src, PROC_REF(recharge)), cooldown, TIMER_UNIQUE)
 
 /obj/item/sequence_scanner/proc/recharge()
+	procstart = null
+	src.procstart = null
 	icon_state = initial(icon_state)
 	ready = TRUE
 
 /obj/item/sequence_scanner/proc/get_display_name(mutation)
+	procstart = null
+	src.procstart = null
 	var/datum/mutation/mutation_instance = GET_INITIALIZED_MUTATION(mutation)
 	if(!mutation_instance)
 		return "ERROR"

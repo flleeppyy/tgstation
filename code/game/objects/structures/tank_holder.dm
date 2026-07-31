@@ -18,6 +18,8 @@
 	var/obj/item/tank
 
 /obj/structure/tank_holder/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(tank)
 		var/obj/item/tank_ = new tank(null)
@@ -25,15 +27,21 @@
 		SEND_SIGNAL(tank_, COMSIG_CONTAINER_TRY_ATTACH, src, null)
 
 /obj/structure/tank_holder/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(tank)
 	return ..()
 
 /obj/structure/tank_holder/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(mover) && mover.throwing)
 		return TRUE
 
 /obj/structure/tank_holder/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(anchored)
 		. += span_notice("It is <b>bolted</b> to the floor.")
@@ -46,6 +54,8 @@
 	. += span_notice("It is held together by some <b>screws</b>.")
 
 /obj/structure/tank_holder/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 
@@ -56,6 +66,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/tank_holder/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 
@@ -68,6 +80,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/tank_holder/screwdriver_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 	if(tank)
@@ -77,15 +91,21 @@
 	return TRUE
 
 /obj/structure/tank_holder/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/atom/Tsec = drop_location()
 	new /obj/item/stack/rods(Tsec, 2)
 	if(tank)
 		tank.forceMove(Tsec)
 
 /obj/structure/tank_holder/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/structure/tank_holder/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!tank)
 		return ..()
 	if(!Adjacent(user) || issilicon(user))
@@ -96,11 +116,15 @@
 	user.put_in_hands(tank)
 
 /obj/structure/tank_holder/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == tank)
 		after_detach_tank()
 
 /obj/structure/tank_holder/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	if(!tank)
 		return
 
@@ -115,6 +139,8 @@
 /// Call this after taking the tank from contents in order to update references, icon
 /// and density.
 /obj/structure/tank_holder/proc/after_detach_tank()
+	procstart = null
+	src.procstart = null
 	tank = null
 	set_density(FALSE)
 	icon_state = "holder"

@@ -38,6 +38,8 @@
 	reaction_tags = REACTION_TAG_MODERATE | REACTION_TAG_DANGEROUS | REACTION_TAG_CHEMICAL | REACTION_TAG_COMPETITIVE
 
 /datum/chemical_reaction/catalyst_precursor_ph/reaction_step(datum/reagents/holder, datum/equilibrium/reaction, delta_t, delta_ph, step_reaction_vol)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(holder.has_reagent(/datum/reagent/gold))
 		holder.remove_reagent(/datum/reagent/gold, 1)
@@ -92,7 +94,11 @@
 	purity_min = 0
 
 /datum/chemical_reaction/medical_speed_catalyst/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
+	procstart = null
+	src.procstart = null
 	explode_invert_smoke(holder, equilibrium) //Will be better when the inputs have proper invert chems
 
 /datum/chemical_reaction/medical_speed_catalyst/overly_impure(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
+	procstart = null
+	src.procstart = null
 	explode_invert_smoke(holder, equilibrium)

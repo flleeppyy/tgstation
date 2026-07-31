@@ -13,6 +13,8 @@ GLOBAL_VAR_INIT(roaches_deployed, FALSE)
 	light_mask = "wardrobe-light-mask"
 
 /obj/machinery/vending/wardrobe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		return
@@ -24,6 +26,8 @@ GLOBAL_VAR_INIT(roaches_deployed, FALSE)
 
 
 /obj/machinery/vending/wardrobe/on_dispense(obj/item/clothing/food, dispense_returned = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(food))
 		return
 	for(var/mob/living/basic/mothroach/roach in contents)
@@ -32,6 +36,8 @@ GLOBAL_VAR_INIT(roaches_deployed, FALSE)
 		food.take_damage(food.get_integrity() * damage_mult)
 
 /obj/machinery/vending/wardrobe/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/mob/living/basic/mothroach/roach in contents)
 		roach.ai_controller.set_blackboard_key(BB_BASIC_MOB_FLEE_TARGET, src) //scatter away!

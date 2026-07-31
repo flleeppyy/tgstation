@@ -1,6 +1,8 @@
 /datum/unit_test/stacked_metabolization_effect_verify
 
 /datum/unit_test/stacked_metabolization_effect_verify/Run()
+	procstart = null
+	src.procstart = null
 	for(var/datum/stacked_metabolization_effect/effect as anything in valid_subtypesof(/datum/stacked_metabolization_effect))
 		effect = new effect()
 

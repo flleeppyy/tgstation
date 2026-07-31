@@ -20,25 +20,35 @@
 	var/shock_cooldown = FALSE
 
 /obj/item/electropack/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_frequency(frequency)
 
 /obj/item/electropack/Destroy()
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, frequency)
 	return ..()
 
 /obj/item/electropack/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] hooks [user.p_them()]self to the electropack and spams the trigger! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return FIRELOSS
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/electropack/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.get_item_by_slot(ITEM_SLOT_BACK) == src)
 		to_chat(user, span_warning("You need help taking this off!"))
 		return
 	return ..()
 
 /obj/item/electropack/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/clothing/head/helmet))
 		return NONE
 	if(!user.temporarilyRemoveItemFromInventory(tool))
@@ -62,6 +72,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/electropack/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	if(!signal || signal.data["code"] != code)
 		return
 	if(isliving(loc) && on)
@@ -83,20 +95,28 @@
 		master.receive_signal()
 
 /obj/item/electropack/proc/set_frequency(new_frequency)
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	SSradio.add_object(src, frequency, RADIO_SIGNALER)
 
 /obj/item/electropack/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.hands_state
 
 /obj/item/electropack/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Electropack", name)
 		ui.open()
 
 /obj/item/electropack/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["power"] = on
 	data["frequency"] = frequency
@@ -104,12 +124,16 @@
 	return data
 
 /obj/item/electropack/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["minFrequency"] = MIN_FREE_FREQ
 	data["maxFrequency"] = MAX_FREE_FREQ
 	return data
 
 /obj/item/electropack/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

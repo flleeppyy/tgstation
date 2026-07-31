@@ -7,6 +7,8 @@
  * @param assistant_failsafe Do we guarentee one assistant bounty per generated list? Used for non-assistant jobs to give an easier alternative to that job's default bounties.
  */
 /datum/id_trim/proc/generate_bounty_list(bounty_rolls = 3, assistant_failsafe = TRUE)
+	procstart = null
+	src.procstart = null
 	var/datum/job/our_job = find_job()
 	var/bounty_type = our_job?.bounty_types || CIV_JOB_RANDOM
 
@@ -34,6 +36,8 @@
 
 /// Helper to see if there's a duplicate bounty in a list of bounties
 /datum/id_trim/proc/has_duplicate_bounty(list/datum/bounty/bounty_list, datum/bounty/check_bounty)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	for(var/datum/bounty/existing as anything in bounty_list)
@@ -47,6 +51,8 @@
 
 /// Returns a /datum/bounty typepath for a given bounty type
 /datum/id_trim/proc/get_random_bounty_type(input_bounty_type)
+	procstart = null
+	src.procstart = null
 	if(!input_bounty_type || input_bounty_type == CIV_JOB_RANDOM)
 		input_bounty_type = rand(1, MAXIMUM_BOUNTY_JOBS)
 

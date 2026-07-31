@@ -60,6 +60,8 @@
 
 ///Clean up on the mobs seat etc when its deleted (Either by murder or because it left)
 /mob/living/basic/robot_customer/Destroy()
+	procstart = null
+	src.procstart = null
 	var/datum/venue/attending_venue = ai_controller.blackboard[BB_CUSTOMER_ATTENDING_VENUE]
 	var/obj/structure/holosign/robot_seat/our_seat = ai_controller.blackboard[BB_CUSTOMER_MY_SEAT]
 	attending_venue.current_visitors -= src
@@ -69,20 +71,28 @@
 	return ..()
 
 /mob/living/basic/robot_customer/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(grime_carried && prob(grime_carried * 20) && !throwing && !(movement_type & MOVETYPES_NOT_TOUCHING_GROUND) && has_gravity())
 		new /obj/effect/decal/cleanable/dirt(old_loc)
 		grime_carried--
 
 /mob/living/basic/robot_customer/MouseEntered(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	hud_to_show_on_hover?.show_to(usr)
 
 /mob/living/basic/robot_customer/MouseExited(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	hud_to_show_on_hover?.hide_from(usr)
 
 /mob/living/basic/robot_customer/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/datum/customer_data/customer_info = ai_controller.blackboard[BB_CUSTOMER_CUSTOMERINFO]
@@ -100,11 +110,15 @@
 		. += bonus_overlays
 
 /mob/living/basic/robot_customer/send_speech(message, message_range, obj/source, bubble_type, list/spans, datum/language/message_language, list/message_mods, forced, tts_message, list/tts_filter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/customer_data/customer_info = ai_controller.blackboard[BB_CUSTOMER_CUSTOMERINFO]
 	playsound(src, customer_info.speech_sound, 30, extrarange = MEDIUM_RANGE_SOUND_EXTRARANGE, falloff_distance = 5)
 
 /mob/living/basic/robot_customer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(ai_controller.blackboard[BB_CUSTOMER_CURRENT_ORDER]))
 		return
@@ -122,6 +136,8 @@
 	. += span_notice("Their order was: \"[order].\"")
 
 /mob/living/basic/robot_customer/death()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/gibspawner/robot(drop_location())
 
 	return ..()

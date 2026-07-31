@@ -32,6 +32,8 @@
 	var/pointercolor = "green"
 
 /datum/computer_file/program/radar/on_start(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -41,21 +43,29 @@
 	START_PROCESSING(SSfastprocess, src)
 
 /datum/computer_file/program/radar/kill_program(mob/user)
+	procstart = null
+	src.procstart = null
 	objects = list()
 	selected = null
 	STOP_PROCESSING(SSfastprocess, src)
 	return ..()
 
 /datum/computer_file/program/radar/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	return ..()
 
 /datum/computer_file/program/radar/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/simple/radar_assets),
 	)
 
 /datum/computer_file/program/radar/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["selected"] = selected
 	data["scanning"] = !COOLDOWN_FINISHED(src, next_scan)
@@ -68,6 +78,8 @@
 	return data
 
 /datum/computer_file/program/radar/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(action)
 		if("selecttarget")
@@ -87,6 +99,8 @@
 
 /// Returns all ref()s that are being tracked currently
 /datum/computer_file/program/radar/proc/trackable_object_refs()
+	procstart = null
+	src.procstart = null
 	var/list/all_refs = list()
 	for(var/list/object_list as anything in objects)
 		all_refs += object_list["ref"]
@@ -102,6 +116,8 @@
  *
 */
 /datum/computer_file/program/radar/proc/track()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/signal = find_atom()
 	if(!trackable(signal))
 		return
@@ -144,6 +160,8 @@
  **arg1 is the atom being evaluated.
 */
 /datum/computer_file/program/radar/proc/trackable(atom/movable/signal)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(isnull(signal) || isnull(computer))
 		return RADAR_NOT_TRACKABLE
@@ -171,6 +189,8 @@
  *somewhat costly loops.
 */
 /datum/computer_file/program/radar/proc/scan()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -185,6 +205,8 @@
  *return an atom reference.
 */
 /datum/computer_file/program/radar/proc/find_atom()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	var/list/atom_container = list(null)
 	SEND_SIGNAL(computer, COMSIG_MODULAR_COMPUTER_RADAR_FIND_ATOM, atom_container)
@@ -192,6 +214,8 @@
 
 //We use SSfastprocess for the program icon state because it runs faster than process_tick() does.
 /datum/computer_file/program/radar/process()
+	procstart = null
+	src.procstart = null
 	if(computer.active_program != src)
 		//We're not the active program, it's time to stop.
 		return PROCESS_KILL
@@ -226,6 +250,8 @@
 
 //We can use process_tick to restart fast processing, since the computer will be running this constantly either way.
 /datum/computer_file/program/radar/process_tick(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(computer.active_program == src)
 		START_PROCESSING(SSfastprocess, src)
 
@@ -244,9 +270,13 @@
 	circuit_comp_type = /obj/item/circuit_component/mod_program/radar/medical
 
 /datum/computer_file/program/radar/lifeline/find_atom()
+	procstart = null
+	src.procstart = null
 	return ..() || (locate(selected) in GLOB.human_list)
 
 /datum/computer_file/program/radar/lifeline/scan()
+	procstart = null
+	src.procstart = null
 	objects = list()
 	for(var/i in GLOB.human_list)
 		var/mob/living/carbon/human/humanoid = i
@@ -264,6 +294,8 @@
 		objects += list(crewinfo)
 
 /datum/computer_file/program/radar/lifeline/trackable(mob/living/carbon/human/humanoid)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. != RADAR_TRACKABLE)
 		return .
@@ -289,9 +321,13 @@
 	circuit_comp_type = /obj/item/circuit_component/mod_program/radar/janitor
 
 /datum/computer_file/program/radar/custodial_locator/find_atom()
+	procstart = null
+	src.procstart = null
 	return ..() || (locate(selected) in GLOB.janitor_devices)
 
 /datum/computer_file/program/radar/custodial_locator/scan()
+	procstart = null
+	src.procstart = null
 	objects = list()
 	for(var/obj/custodial_tools as anything in GLOB.janitor_devices)
 		if(!trackable(custodial_tools))
@@ -334,6 +370,8 @@
 	circuit_comp_type = /obj/item/circuit_component/mod_program/radar/nukie
 
 /datum/computer_file/program/radar/fission360/on_start(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -341,17 +379,25 @@
 	RegisterSignal(SSdcs, COMSIG_GLOB_NUKE_DEVICE_ARMED, PROC_REF(on_nuke_armed))
 
 /datum/computer_file/program/radar/fission360/kill_program(mob/user)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(SSdcs, COMSIG_GLOB_NUKE_DEVICE_ARMED)
 	return ..()
 
 /datum/computer_file/program/radar/fission360/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(SSdcs, COMSIG_GLOB_NUKE_DEVICE_ARMED)
 	return ..()
 
 /datum/computer_file/program/radar/fission360/find_atom()
+	procstart = null
+	src.procstart = null
 	return ..() || SSpoints_of_interest.get_poi_atom_by_ref(selected)
 
 /datum/computer_file/program/radar/fission360/scan()
+	procstart = null
+	src.procstart = null
 	objects = list()
 
 	// All the nukes
@@ -380,6 +426,8 @@
 
 ///Shows how long until the nuke detonates, if one is active.
 /datum/computer_file/program/radar/fission360/on_examine(obj/item/modular_computer/source, mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/examine_list = list()
 
 	for(var/obj/machinery/nuclearbomb/bomb as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/nuclearbomb))
@@ -392,6 +440,8 @@
  * Warns anyone nearby or holding the computer that a nuke was armed.
  */
 /datum/computer_file/program/radar/fission360/proc/on_nuke_armed(datum/source, obj/machinery/nuclearbomb/bomb)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!computer)
@@ -425,6 +475,8 @@
 	circuit_flags = CIRCUIT_FLAG_INPUT_SIGNAL|CIRCUIT_FLAG_OUTPUT_SIGNAL
 
 /obj/item/circuit_component/mod_program/radar/populate_ports()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	target = add_input_port("Target", PORT_TYPE_ATOM)
 	selected_by_app = add_output_port("Selected From Program", PORT_TYPE_ATOM)
@@ -432,12 +484,16 @@
 	y_pos = add_output_port("Y", PORT_TYPE_NUMBER)
 
 /obj/item/circuit_component/mod_program/radar/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(associated_program.computer, COMSIG_MODULAR_COMPUTER_RADAR_TRACKABLE, PROC_REF(can_track))
 	RegisterSignal(associated_program.computer, COMSIG_MODULAR_COMPUTER_RADAR_FIND_ATOM, PROC_REF(get_atom))
 	RegisterSignal(associated_program.computer, COMSIG_MODULAR_COMPUTER_RADAR_SELECTED, PROC_REF(on_selected))
 
 /obj/item/circuit_component/mod_program/radar/unregister_shell()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(associated_program.computer, list(
 		COMSIG_MODULAR_COMPUTER_RADAR_TRACKABLE,
 		COMSIG_MODULAR_COMPUTER_RADAR_FIND_ATOM,
@@ -446,11 +502,15 @@
 	return ..()
 
 /obj/item/circuit_component/mod_program/radar/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("Max range for unsupported entities: [MAX_RADAR_CIRCUIT_DISTANCE] tiles", "orange", FA_ICON_BULLSEYE)
 
 ///Set the selected ref of the program to the target (if it exists) and update the x/y pos ports (if trackable) when triggered.
 /obj/item/circuit_component/mod_program/radar/input_received(datum/port/port)
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/program/radar/radar = associated_program
 	var/atom/radar_atom = radar.find_atom()
 	if(target.value != radar_atom)
@@ -470,6 +530,8 @@
  * they won't get filtered by the maximum distance, because they're "supported entities".
  */
 /obj/item/circuit_component/mod_program/radar/proc/can_track(datum/source, atom/signal, signal_turf, computer_turf)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(target.value && get_dist_euclidean(computer_turf, signal_turf) > MAX_RADAR_CIRCUIT_DISTANCE)
 		return COMPONENT_RADAR_DONT_TRACK
@@ -477,6 +539,8 @@
 
 ///Return the value of the target port.
 /obj/item/circuit_component/mod_program/radar/proc/get_atom(datum/source, list/atom_container)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	atom_container[1] = target.value
 
@@ -485,6 +549,8 @@
  * and set selected_by_app port to the target atom.
  */
 /obj/item/circuit_component/mod_program/radar/proc/on_selected(datum/source, selected_ref)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	target.set_value(null)
 	var/datum/computer_file/program/radar/radar = associated_program
@@ -505,6 +571,8 @@
 	associated_program = /datum/computer_file/program/radar/lifeline
 
 /obj/item/circuit_component/mod_program/radar/medical/can_track(datum/source, atom/signal, signal_turf, computer_turf)
+	procstart = null
+	src.procstart = null
 	if(target.value in GLOB.human_list)
 		return NONE
 	return ..()
@@ -513,6 +581,8 @@
 	associated_program = /datum/computer_file/program/radar/custodial_locator
 
 /obj/item/circuit_component/mod_program/radar/janitor/can_track(datum/source, atom/signal, signal_turf, computer_turf)
+	procstart = null
+	src.procstart = null
 	if(target.value in GLOB.janitor_devices)
 		return NONE
 	return ..()
@@ -520,6 +590,8 @@
 	associated_program = /datum/computer_file/program/radar/fission360
 
 /obj/item/circuit_component/mod_program/radar/nukie/can_track(datum/source, atom/signal, signal_turf, computer_turf)
+	procstart = null
+	src.procstart = null
 	if(target.value in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/nuclearbomb))
 		return NONE
 	if(target.value in SSpoints_of_interest.real_nuclear_disks)

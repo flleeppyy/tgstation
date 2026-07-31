@@ -44,6 +44,8 @@
 	ai_controller = /datum/ai_controller/basic_controller/festivus_pole
 
 /mob/living/basic/festivus/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/seethrough_mob)
 	AddElement(/datum/element/death_drops, /obj/item/stack/rods)
@@ -60,6 +62,8 @@
 	ai_movement = /datum/ai_movement/basic_avoidance
 
 /mob/living/basic/festivus/attack_hand(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user.combat_mode)
 		return

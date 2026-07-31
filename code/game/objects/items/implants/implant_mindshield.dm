@@ -10,6 +10,8 @@
 		such as reprogrammed flashbulbs, hypnotic suggestion, and, theoretically, magical induction into cults."
 
 /obj/item/implant/mindshield/implant(mob/living/target, mob/user, silent = FALSE, force = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -31,6 +33,8 @@
 	return TRUE
 
 /obj/item/implant/mindshield/removed(mob/target, silent = FALSE, special = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

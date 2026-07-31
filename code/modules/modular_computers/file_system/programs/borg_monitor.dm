@@ -16,17 +16,23 @@
 	var/DL_progress = -1 ///Progress of current download, 0 to 100, -1 for no current download
 
 /datum/computer_file/program/borg_monitor/Destroy()
+	procstart = null
+	src.procstart = null
 	loglist = null
 	DL_source = null
 	return ..()
 
 /datum/computer_file/program/borg_monitor/kill_program(mob/user)
+	procstart = null
+	src.procstart = null
 	loglist = null //Not everything is saved if you close an app
 	DL_source = null
 	DL_progress = 0
 	return ..()
 
 /datum/computer_file/program/borg_monitor/tap(atom/tapped_atom, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/borgo = tapped_atom
 	if(!istype(borgo) || !borgo.modularInterface)
 		return FALSE
@@ -43,6 +49,8 @@
 	return TRUE
 
 /datum/computer_file/program/borg_monitor/process_tick(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!DL_source)
 		DL_progress = -1
 		return
@@ -69,6 +77,8 @@
 	DL_progress += 25
 
 /datum/computer_file/program/borg_monitor/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["card"] = FALSE
@@ -107,6 +117,8 @@
 	return data
 
 /datum/computer_file/program/borg_monitor/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(action)
 		if("messagebot")
@@ -115,6 +127,8 @@
 			return TRUE
 
 /datum/computer_file/program/borg_monitor/proc/message_robot(mob/living/silicon/robot/robot, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(robot))
 		return TRUE
 	var/ID = checkID()
@@ -129,6 +143,8 @@
 	send_message(message, robot, user)
 
 /datum/computer_file/program/borg_monitor/proc/send_message(message, mob/living/silicon/robot/robot, mob/user)
+	procstart = null
+	src.procstart = null
 	var/ID = checkID()
 	if(!ID)
 		return FALSE
@@ -149,6 +165,8 @@
 
 ///This proc is used to determin if a borg should be shown in the list (based on the borg's scrambledcodes var). Syndicate version overrides this to show only syndicate borgs.
 /datum/computer_file/program/borg_monitor/proc/evaluate_borg(mob/living/silicon/robot/R)
+	procstart = null
+	src.procstart = null
 	if(!is_valid_z_level(get_turf(computer), get_turf(R)))
 		return FALSE
 	if(R.scrambledcodes)
@@ -157,6 +175,8 @@
 
 ///Gets the ID's name, if one is inserted into the device. This is a separate proc solely to be overridden by the syndicate version of the app.
 /datum/computer_file/program/borg_monitor/proc/checkID()
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/id/ID = computer.GetID()
 	if(!ID)
 		if(computer.obj_flags & EMAGGED)
@@ -178,6 +198,8 @@
 	circuit_comp_type = /obj/item/circuit_component/mod_program/borg_monitor/syndie
 
 /datum/computer_file/program/borg_monitor/syndicate/evaluate_borg(mob/living/silicon/robot/R)
+	procstart = null
+	src.procstart = null
 	if(!is_valid_z_level(get_turf(computer), get_turf(R)))
 		return FALSE
 	if(!R.scrambledcodes)
@@ -185,6 +207,8 @@
 	return TRUE
 
 /datum/computer_file/program/borg_monitor/syndicate/checkID()
+	procstart = null
+	src.procstart = null
 	return "\[CLASSIFIED\]" //no ID is needed for the syndicate version's message function, and the borg will see "[CLASSIFIED]" as the message sender.
 
 /obj/item/circuit_component/mod_program/borg_monitor
@@ -197,14 +221,20 @@
 	var/datum/port/input/set_message
 
 /obj/item/circuit_component/mod_program/borg_monitor/populate_ports()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	target_robot = add_input_port("Receiver", PORT_TYPE_ATOM)
 	set_message = add_input_port("Set Message", PORT_TYPE_STRING, trigger = PROC_REF(sanitize_borg_message))
 
 /obj/item/circuit_component/mod_program/borg_monitor/proc/sanitize_borg_message(datum/port/port)
+	procstart = null
+	src.procstart = null
 	set_message.set_value(trim(html_encode(set_message.value), MAX_MESSAGE_LEN))
 
 /obj/item/circuit_component/mod_program/borg_monitor/input_received(datum/port/port)
+	procstart = null
+	src.procstart = null
 	if(!length(set_message.value) || !iscyborg(target_robot.value))
 		return
 	var/mob/living/silicon/robot/robot = target_robot.value

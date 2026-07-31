@@ -24,6 +24,8 @@
 	var/base_decon_state = "r_wall"
 
 /turf/closed/wall/r_wall/deconstruction_hints(mob/user)
+	procstart = null
+	src.procstart = null
 	switch(d_state)
 		if(INTACT)
 			return span_notice("The outer <b>grille</b> is fully intact.")
@@ -41,13 +43,19 @@
 			return span_notice("The support rods have been <i>sliced through</i>, and the outer sheath is <b>connected loosely</b> to the girder.")
 
 /turf/closed/wall/r_wall/devastate_wall()
+	procstart = null
+	src.procstart = null
 	new sheet_type(src, sheet_amount)
 	new /obj/item/stack/sheet/iron(src, 2)
 
 /turf/closed/wall/r_wall/hulk_recoil(obj/item/bodypart/arm, mob/living/carbon/human/hulkman, damage = 41)
+	procstart = null
+	src.procstart = null
 	return ..()
 
 /turf/closed/wall/r_wall/try_decon(obj/item/W, mob/user, turf/T)
+	procstart = null
+	src.procstart = null
 	//DECONSTRUCTION
 	switch(d_state)
 		if(INTACT)
@@ -191,6 +199,8 @@
 	return FALSE
 
 /turf/closed/wall/r_wall/update_icon(updates=ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(d_state != INTACT)
 		smoothing_flags = NONE
@@ -203,6 +213,8 @@
 
 // We don't react to smoothing changing here because this else exists only to "revert" intact changes
 /turf/closed/wall/r_wall/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(d_state != INTACT)
 		icon = 'icons/turf/walls/reinforced_states.dmi'
 		icon_state = "[base_decon_state]-[d_state]"
@@ -212,11 +224,15 @@
 	return ..()
 
 /turf/closed/wall/r_wall/wall_singularity_pull(current_size)
+	procstart = null
+	src.procstart = null
 	if(current_size >= STAGE_FIVE)
 		if(prob(30))
 			dismantle_wall()
 
 /turf/closed/wall/r_wall/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	if (the_rcd.construction_mode == RCD_WALLFRAME)
 		return ..()
 	if(!the_rcd.canRturf)
@@ -226,10 +242,14 @@
 		.["delay"] *= RCD_RWALL_DELAY_MULT
 
 /turf/closed/wall/r_wall/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	procstart = null
+	src.procstart = null
 	if(the_rcd.canRturf || rcd_data[RCD_DESIGN_MODE] == RCD_WALLFRAME)
 		return ..()
 
 /turf/closed/wall/r_wall/rust_turf(magic = FALSE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_RUSTY))
 		ChangeTurf(/turf/closed/wall/rust)
 		return TRUE
@@ -265,6 +285,8 @@
 	explosive_resistance = 20
 
 /turf/closed/wall/r_wall/plastitanium/syndicate/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/closed/wall/r_wall/plastitanium/syndicate/nodiagonal

@@ -17,6 +17,8 @@
 }; \
 ##owner_type/verb/##verb_path_name(##verb_args) \
 { \
+	procstart = null; \
+	src.procstart = null; \
 	set name = ##verb_name; \
 	set desc = ##verb_desc; \
 	set hidden = ##is_hidden; \
@@ -26,6 +28,8 @@
 	__gvb_##verb_path_name(arglist(args)); \
 }; \
 ##owner_type/proc/__gvb_##verb_path_name(##verb_args)
+	procstart = null;
+	src.procstart;
 
 #define GAME_VERB(owner_type, verb_path_name, verb_name, verb_category, verb_args...) \
 _GAME_VERB(owner_type, verb_path_name, verb_name, "", verb_category, TRUE, FALSE, FALSE, ##verb_args)
@@ -50,6 +54,8 @@ _GAME_VERB(owner_type, verb_path_name, verb_name, "", null, FALSE, TRUE, TRUE, #
 }; \
 ##owner_type/proc/##verb_path_name(##verb_args) \
 { \
+	procstart = null; \
+	src.procstart = null; \
 	set name = ##verb_name; \
 	set desc = ##verb_desc; \
 	set hidden = ##is_hidden; \
@@ -58,6 +64,8 @@ _GAME_VERB(owner_type, verb_path_name, verb_name, "", null, FALSE, TRUE, TRUE, #
 	__gvb_##verb_path_name(arglist(args)); \
 }; \
 ##owner_type/proc/__gvb_##verb_path_name(##verb_args)
+	procstart = null;
+	src.procstart = null;
 
 #define GAME_VERB_PROC(owner_type, verb_path_name, verb_name, verb_category, verb_args...) \
 _GAME_VERB_PROC(owner_type, verb_path_name, verb_name, "", verb_category, TRUE, FALSE, ##verb_args)
@@ -76,6 +84,8 @@ _GAME_VERB_PROC(owner_type, verb_path_name, verb_name, verb_desc, verb_category,
 }; \
 ##owner_type/verb/##verb_path_name(##verb_args) \
 { \
+	procstart = null; \
+	src.procstart = null; \
 	set name = ##verb_name; \
 	set desc = ##verb_desc; \
 	set hidden = ##is_hidden; \
@@ -85,6 +95,8 @@ _GAME_VERB_PROC(owner_type, verb_path_name, verb_name, verb_desc, verb_category,
 	__gvb_##verb_path_name(arglist(args)); \
 }; \
 ##owner_type/proc/__gvb_##verb_path_name(##verb_args)
+	procstart = null;
+	src.procstart;
 
 #define GAME_VERB_SRC(owner_type, verb_path_name, src_value, verb_name, verb_category, verb_args...) \
 _GAME_VERB_SRC(owner_type, verb_path_name, src_value, verb_name, "", verb_category, TRUE, FALSE, ##verb_args)
@@ -103,6 +115,8 @@ _GAME_VERB_SRC(owner_type, verb_path_name, src_value, verb_name, verb_desc, verb
 }; \
 /proc/##verb_path_name(##verb_args) \
 { \
+	procstart = null; \
+	src.procstart = null; \
 	set name = ##verb_name; \
 	set desc = ##verb_desc; \
 	set hidden = ##is_hidden; \
@@ -110,6 +124,8 @@ _GAME_VERB_SRC(owner_type, verb_path_name, src_value, verb_name, verb_desc, verb
 	__gvb_##verb_path_name(arglist(args)); \
 }; \
 /proc/__gvb_##verb_path_name(##verb_args)
+	procstart = null;
+	src.procstart = null;
 
 #define GAME_VERB_GLOBAL_PROC(verb_path_name, verb_name, verb_desc, verb_category, verb_args...) \
 _GAME_VERB_GLOBAL_PROC(verb_path_name, verb_name, verb_desc, verb_category, FALSE, ##verb_args)

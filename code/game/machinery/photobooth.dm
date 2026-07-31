@@ -41,10 +41,14 @@
 	button_id = "photobooth_machine_security"
 
 /obj/machinery/photobooth/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/machinery/photobooth/interact(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(taking_pictures)
 		balloon_alert(user, "machine busy!")
@@ -55,6 +59,8 @@
 		open_machine()
 
 /obj/machinery/photobooth/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(taking_pictures)
 		balloon_alert(user, "machine busy!")
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
@@ -67,6 +73,8 @@
 	return ..()
 
 /obj/machinery/photobooth/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (BROKEN|NOPOWER) || !isnull(held_item))
 		return NONE
 
@@ -77,6 +85,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/photobooth/close_machine(mob/user, density_to_set = TRUE)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		balloon_alert(user, "close panel first!")
 		return
@@ -84,10 +94,14 @@
 	return ..()
 
 /obj/machinery/photobooth/open_machine(drop = TRUE, density_to_set = FALSE)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/curtain.ogg', 50, TRUE)
 	return ..()
 
 /obj/machinery/photobooth/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & (BROKEN|NOPOWER))
 		icon_state = "[base_icon_state]_off"
@@ -97,17 +111,25 @@
 		icon_state = "[base_icon_state]_closed"
 
 /obj/machinery/photobooth/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((machine_stat & MAINT) || panel_open)
 		. += "[base_icon_state]_panel"
 
 /obj/machinery/photobooth/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return has_buckled_mobs() ? NONE : default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/photobooth/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/photobooth/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	req_access = list() //in case someone sets this to something
@@ -121,6 +143,8 @@
  * to actually update the records.
  */
 /obj/machinery/photobooth/proc/start_taking_pictures()
+	procstart = null
+	src.procstart = null
 	taking_pictures = TRUE
 	if(obj_flags & EMAGGED)
 		var/mob/living/carbon/carbon_occupant = occupant
@@ -150,6 +174,8 @@
 
 ///Updates the records (if possible), giving feedback, and spitting the user out if all's well.
 /obj/machinery/photobooth/proc/finish_taking_pictures()
+	procstart = null
+	src.procstart = null
 	taking_pictures = FALSE
 	if(!GLOB.manifest.change_pictures(occupant.name, occupant, add_height_chart = add_height_chart))
 		balloon_alert(occupant, "record not found!")
@@ -159,11 +185,15 @@
 
 ///Mimicing the camera, gives a flash effect by turning the light on and calling flash_end.
 /obj/machinery/photobooth/proc/flash()
+	procstart = null
+	src.procstart = null
 	set_light_on(TRUE)
 	addtimer(CALLBACK(src, PROC_REF(flash_end)), FLASH_LIGHT_DURATION, TIMER_OVERRIDE|TIMER_UNIQUE)
 
 ///Called by a timer to turn the light off to end the flash effect.
 /obj/machinery/photobooth/proc/flash_end()
+	procstart = null
+	src.procstart = null
 	set_light_on(FALSE)
 
 
@@ -175,12 +205,16 @@
 	id = "photobooth_machine_default"
 
 /obj/machinery/button/photobooth/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(device)
 		var/obj/item/assembly/control/photobooth_control/ours = device
 		ours.id = id
 
 /obj/machinery/button/photobooth/multitool_act(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(tool.buffer && !istype(tool.buffer, /obj/machinery/photobooth))
 		return
@@ -197,14 +231,20 @@
 	var/datum/weakref/booth_machine_ref
 
 /obj/item/assembly/control/photobooth_control/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/item/assembly/control/photobooth_control/LateInitialize()
+	procstart = null
+	src.procstart = null
 	find_machine()
 
 /// Locate the photobooth we're linked via ID
 /obj/item/assembly/control/photobooth_control/proc/find_machine()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/photobooth/booth as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/photobooth))
 		if(booth.button_id == id)
 			booth_machine_ref = WEAKREF(booth)
@@ -213,6 +253,8 @@
 	return FALSE
 
 /obj/item/assembly/control/photobooth_control/activate(mob/activator)
+	procstart = null
+	src.procstart = null
 	if(!booth_machine_ref)
 		return
 	var/obj/machinery/photobooth/machine = booth_machine_ref.resolve()

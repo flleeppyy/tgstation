@@ -19,6 +19,8 @@
 	var/smooth_icon = 'icons/turf/floors/ash.dmi'
 
 /turf/open/misc/ashplanet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(smoothing_flags & SMOOTH_BITMASK)
 		var/matrix/M = new
@@ -28,9 +30,13 @@
 		icon_state = "[icon_state]-[smoothing_junction]"
 
 /turf/open/misc/ashplanet/break_tile()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/misc/ashplanet/burn_tile()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/misc/ashplanet/ash
@@ -67,6 +73,8 @@
 	rust_resistance = RUST_RESISTANCE_ORGANIC
 
 /turf/open/misc/ashplanet/wateryrock/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	icon_state = "[icon_state][rand(1, 9)]"
 	. = ..()
 

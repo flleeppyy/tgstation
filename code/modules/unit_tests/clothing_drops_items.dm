@@ -2,10 +2,14 @@
 /datum/unit_test/clothing_drops_items
 
 /datum/unit_test/clothing_drops_items/Run()
+	procstart = null
+	src.procstart = null
 	test_human()
 	test_android()
 
 /datum/unit_test/clothing_drops_items/proc/test_human()
+	procstart = null
+	src.procstart = null
 	var/list/dummy_items = allocate_items()
 	var/mob/living/carbon/human/consistent/dummy = allocate(__IMPLIED_TYPE__)
 
@@ -25,6 +29,8 @@
 			TEST_ASSERT_EQUAL(item.loc, dummy.loc, "[item] should have been dropped when unequipping the jumpsuit from \a [/datum/species/human::name].")
 
 /datum/unit_test/clothing_drops_items/proc/test_android()
+	procstart = null
+	src.procstart = null
 	var/list/robo_dummy_items = allocate_items()
 	var/mob/living/carbon/human/consistent/robo_dummy = allocate(__IMPLIED_TYPE__)
 	robo_dummy.set_species(/datum/species/android)
@@ -42,6 +48,8 @@
 		TEST_ASSERT_EQUAL(item.loc, robo_dummy, "[item] should not have been dropped when unequipping the jumpsuit from \a [/datum/species/android::name].")
 
 /datum/unit_test/clothing_drops_items/proc/allocate_items()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[ITEM_SLOT_ICLOTHING]" = allocate(/obj/item/clothing/under/color/rainbow), // do this one first, it holds everything
 		"[ITEM_SLOT_FEET]" = allocate(/obj/item/clothing/shoes/jackboots),

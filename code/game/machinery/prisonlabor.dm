@@ -10,6 +10,8 @@
 	var/pressing = FALSE
 
 /obj/machinery/plate_press/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!is_operational)
 		icon_state = "offline"
 		return ..()
@@ -23,10 +25,14 @@
 	return ..()
 
 /obj/machinery/plate_press/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(current_plate)
 	. = ..()
 
 /obj/machinery/plate_press/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stack/license_plates/empty))
 		return NONE
 	if(!is_operational)
@@ -43,12 +49,16 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/plate_press/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!pressing && current_plate)
 		work_press(user)
 
 ///This proc attempts to create a plate. User cannot move during this process.
 /obj/machinery/plate_press/proc/work_press(mob/living/user)
+	procstart = null
+	src.procstart = null
 
 	pressing = TRUE
 	update_appearance()

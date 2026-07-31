@@ -27,6 +27,8 @@
 	var/init_mode = AQUARIUM_MODE_AUTO
 
 /obj/structure/aquarium/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/aquarium, aquarium_zone_min_pw, aquarium_zone_max_pw, aquarium_zone_min_pz, aquarium_zone_max_pz, default_beauty, init_mode = init_mode)
 	AddComponent(/datum/component/plumbing/aquarium)
@@ -34,16 +36,22 @@
 	update_appearance()
 
 /obj/structure/aquarium/update_icon()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	///"aquarium_map" is used for mapping, so mappers can tell what it's.
 	icon_state = base_icon_state + "_base"
 
 /obj/structure/aquarium/proc/on_aquarium_liquid_changed(datum/source, fluid_type)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	src.fluid_type = fluid_type
 	update_appearance()
 
 /obj/structure/aquarium/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(src, TRAIT_AQUARIUM_PANEL_OPEN))
 		. += base_icon_state + "_panel"
@@ -57,11 +65,15 @@
 	. += mutable_appearance(icon, base_icon_state + "_borders", layer = layer + AQUARIUM_BORDERS_LAYER)
 
 /obj/structure/aquarium/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/aquarium/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stack/sheet/glass))
 		return
 	if(!broken)
@@ -81,11 +93,15 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/aquarium/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!broken)
 		aquarium_smash()
 
 /obj/structure/aquarium/proc/aquarium_smash()
+	procstart = null
+	src.procstart = null
 	broken = TRUE
 	var/possible_destinations_for_fish = list()
 	var/droploc = drop_location()
@@ -107,6 +123,8 @@
 	init_mode = AQUARIUM_MODE_SAFE
 
 /obj/structure/aquarium/prefilled/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	new /obj/item/aquarium_prop/sand(src)
@@ -159,6 +177,8 @@
 	var/init_mode = AQUARIUM_MODE_AUTO
 
 /obj/item/fish_tank/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 	AddComponent(\
@@ -179,22 +199,30 @@
 	RegisterSignal(src, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON, PROC_REF(on_new_fish))
 
 /obj/item/fish_tank/update_icon()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	///"aquarium_map" is used for mapping, so mappers can tell what it's.
 	icon_state = base_icon_state
 
 /obj/item/fish_tank/proc/on_aquarium_liquid_changed(datum/source, fluid_type)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	src.fluid_type = fluid_type
 	update_appearance()
 
 /obj/item/fish_tank/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "[base_icon_state]_panel[HAS_TRAIT(src, TRAIT_AQUARIUM_PANEL_OPEN) ? "_open" : ""]"
 	. += mutable_appearance(icon, "[base_icon_state]_[fluid_type == AQUARIUM_FLUID_AIR ? "air" : "water"]", layer = layer + AQUARIUM_GLASS_LAYER)
 	. += mutable_appearance(icon, "[base_icon_state]_borders", layer = layer + AQUARIUM_BORDERS_LAYER)
 
 /obj/item/fish_tank/proc/can_insert(atom/movable/source, obj/item/item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isfish(item))
 		return
@@ -208,10 +236,14 @@
 	return COMSIG_CAN_INSERT_IN_AQUARIUM
 
 /obj/item/fish_tank/Entered(atom/movable/entered)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	on_new_fish(src, entered)
 
 /obj/item/fish_tank/proc/on_new_fish(datum/source, atom/movable/movable)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isfish(movable))
 		return
@@ -220,10 +252,14 @@
 	RegisterSignal(fish, COMSIG_FISH_UPDATE_SIZE_AND_WEIGHT, PROC_REF(on_fish_size_weight_updated))
 
 /obj/item/fish_tank/proc/on_fish_size_weight_updated(obj/item/fish/source, new_size, new_weight)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	change_size_weight(new_size - source.size, new_weight - source.weight)
 
 /obj/item/fish_tank/Exited(atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	if(isfish(gone))
 		var/obj/item/fish/fish = gone
 		change_size_weight(-fish.size, -fish.weight)
@@ -231,6 +267,8 @@
 	return ..()
 
 /obj/item/fish_tank/proc/change_size_weight(size_change, weight_change)
+	procstart = null
+	src.procstart = null
 	current_summed_size += size_change
 	current_summed_weight += weight_change
 	if(current_summed_size > max_total_size)
@@ -251,6 +289,8 @@
 	throwforce = force
 
 /obj/item/fish_tank/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT_FROM(src, TRAIT_STOP_FISH_REPRODUCTION_AND_GROWTH, INNATE_TRAIT))
 		. += span_warning("It's cramped in there. There's no more room for fish to reproduce and grow!")
@@ -260,6 +300,8 @@
 	init_mode = AQUARIUM_MODE_SAFE
 
 /obj/item/fish_tank/lawyer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	new /obj/item/aquarium_prop/sand(src)

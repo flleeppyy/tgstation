@@ -16,6 +16,8 @@
 	var/has_already_popped = FALSE
 
 /datum/antagonist/blob/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/basic_report = ..()
 	//Display max blobpoints for blebs that lost
 	if(isovermind(owner.current)) //embarrasing if not
@@ -26,6 +28,8 @@
 	return basic_report
 
 /datum/antagonist/blob/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.announce_objectives()
 	if(!isovermind(owner.current))
@@ -34,14 +38,20 @@
 		has_already_popped = TRUE
 
 /datum/antagonist/blob/on_gain()
+	procstart = null
+	src.procstart = null
 	create_objectives()
 	. = ..()
 
 /datum/antagonist/blob/remove_innate_effects()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(pop_action)
 	return ..()
 
 /datum/antagonist/blob/get_preview_icon()
+	procstart = null
+	src.procstart = null
 	var/datum/blobstrain/reagent/reactive_spines/reactive_spines = /datum/blobstrain/reagent/reactive_spines
 
 	var/datum/universal_icon/icon = uni_icon('icons/mob/nonhuman-player/blob.dmi', "blob_core")
@@ -53,6 +63,8 @@
 
 
 /datum/antagonist/blob/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["objectives"] = get_objectives()
@@ -73,11 +85,15 @@
 	return data
 
 /datum/antagonist/blob/proc/create_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/blob_takeover/main = new
 	main.owner = owner
 	objectives += main
 
 /datum/antagonist/blob/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	if(isovermind(owner.current) || has_already_popped)
 		return FALSE
 	if(!pop_action)
@@ -98,12 +114,16 @@
 	var/autoplace_time = OVERMIND_STARTING_AUTO_PLACE_TIME
 
 /datum/action/innate/blobpop/Grant(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(owner)
 		addtimer(CALLBACK(src, PROC_REF(Activate), TRUE), autoplace_time, TIMER_UNIQUE|TIMER_OVERRIDE)
 		to_chat(owner, span_bolddanger("You will automatically pop and place your blob core in [DisplayTimeText(autoplace_time)]."))
 
 /datum/action/innate/blobpop/Activate(timer_activated = FALSE)
+	procstart = null
+	src.procstart = null
 	var/mob/living/old_body = owner
 	if(!owner)
 		return
@@ -146,6 +166,8 @@
 	)
 
 /datum/antagonist/blob/antag_listing_status()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(owner?.current)
 		var/mob/eye/blob/blob_cam = owner.current
@@ -159,6 +181,8 @@
 	pref_flag = ROLE_BLOB_INFECTION
 
 /datum/antagonist/blob/infection/get_preview_icon()
+	procstart = null
+	src.procstart = null
 	var/datum/universal_icon/blob_icon = ..()
 
 	var/datum/blobstrain/reagent/reactive_spines/reactive_spines = /datum/blobstrain/reagent/reactive_spines
@@ -174,13 +198,19 @@
 	return blob_icon
 
 /atom/proc/can_blob_attack()
+	procstart = null
+	src.procstart = null
 	return !(HAS_TRAIT(src, TRAIT_MAGICALLY_PHASED))
 
 /mob/living/can_blob_attack()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	return !incorporeal_move
 
 /obj/effect/dummy/phased_mob/can_blob_attack()
+	procstart = null
+	src.procstart = null
 	return FALSE

@@ -19,10 +19,14 @@
 	var/obj/item/hat
 
 /mob/living/basic/statue/mannequin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /mob/living/basic/statue/mannequin/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(held_item)
 		. += mutable_appearance(held_item::righthand_file, held_item::inhand_icon_state)

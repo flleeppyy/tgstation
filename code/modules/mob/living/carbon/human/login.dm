@@ -1,4 +1,6 @@
 /mob/living/carbon/human/Login()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	dna?.species?.on_owner_login(src)

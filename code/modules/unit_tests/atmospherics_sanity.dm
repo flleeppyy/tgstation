@@ -22,6 +22,8 @@
 	var/crawls = 0
 
 /datum/unit_test/atmospherics_sanity/proc/prepare_crawl()
+	procstart = null
+	src.procstart = null
 	starting_areas = list()
 	forbidden_areas = list()
 	crawled_areas = list()
@@ -93,6 +95,8 @@
 		remaining_areas -= get_area(ignore_marker)
 
 /datum/unit_test/atmospherics_sanity/proc/mark_station_areas_as_goals()
+	procstart = null
+	src.procstart = null
 	// We don't care if we find these
 	var/list/area/ignored_types = list(
 		/area/station/asteroid,
@@ -130,6 +134,8 @@
 			forbidden_areas += forbidden_area
 
 /datum/unit_test/atmospherics_sanity/Run()
+	procstart = null
+	src.procstart = null
 	prepare_crawl()
 	for(var/area/start_area as anything in starting_areas)
 		ASYNC
@@ -142,6 +148,8 @@
 
 /// Crawls through an area, iterating over all vents/scrubbers and their connected pipelines
 /datum/unit_test/atmospherics_sanity/proc/crawl_area(area/the_area)
+	procstart = null
+	src.procstart = null
 	if(the_area in crawled_areas)
 		return
 
@@ -167,6 +175,8 @@
 
 /// Crawls through a pipeline, iterating over all connected machines and their connected areas
 /datum/unit_test/atmospherics_sanity/proc/crawl_pipeline(datum/pipeline/pipeline)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/atmospherics/machinery in pipeline.other_atmos_machines)
 		var/area/other_area = get_area(machinery)
 		remaining_areas -= other_area

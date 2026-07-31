@@ -11,6 +11,8 @@
 	var/series_name
 
 /datum/element/series/Attach(datum/target, subtype, series_name)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
@@ -23,11 +25,15 @@
 	RegisterSignal(attached, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/element/series/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_ATOM_EXAMINE)
 
 ///signal called examining
 /datum/element/series/proc/on_examine(datum/target, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/series_number = subtype_list.Find(target.type)

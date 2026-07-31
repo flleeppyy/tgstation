@@ -29,11 +29,15 @@
 	var/list/bindings = null
 
 /datum/bt_node/subtree/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(root)
 	QDEL_NULL(override_node)
 	return ..()
 
 /datum/bt_node/subtree/tick(datum/ai_controller/controller, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(override_node)
 		return override_node.tick(controller, seconds_per_tick)
 	if(!root)
@@ -41,16 +45,22 @@
 	return root.tick(controller, seconds_per_tick)
 
 /datum/bt_node/subtree/get_children()
+	procstart = null
+	src.procstart = null
 	if(override_node)
 		return override_node.root ? list(override_node.root) : null
 	return root ? list(root) : null
 
 /datum/bt_node/subtree/has_active_descendants()
+	procstart = null
+	src.procstart = null
 	if(override_node)
 		return override_node.has_active_descendants()
 	return root && root.has_active_descendants()
 
 /datum/bt_node/subtree/finalize_node(datum/ai_controller/controller, list/to_visit)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!isnull(override_id))
 		LAZYINITLIST(controller.override_slots)
@@ -63,21 +73,29 @@
 		to_visit += override_node
 
 /datum/bt_node/subtree/append_active_nodes(list/lines, indent)
+	procstart = null
+	src.procstart = null
 	if(root && root.has_active_descendants())
 		root.append_active_nodes(lines, indent)
 
 /datum/bt_node/subtree/collect_reset_children(list/to_visit)
+	procstart = null
+	src.procstart = null
 	if(root)
 		to_visit += root
 	if(override_node)
 		to_visit += override_node
 
 /datum/bt_node/subtree/append_full_tree_state(list/lines, indent)
+	procstart = null
+	src.procstart = null
 	..()
 	if(root)
 		root.append_full_tree_state(lines, "[indent]  ")
 
 /datum/bt_node/subtree/assign_execution_indices(counter)
+	procstart = null
+	src.procstart = null
 	execution_index = counter
 	counter++
 	if(root)

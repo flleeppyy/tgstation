@@ -25,6 +25,8 @@
 	var/allow_duplicates = FALSE
 
 /obj/item/borg/upgrade/proc/action(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	if(borg.stat == DEAD)
 		to_chat(user, span_warning("[src] will not function on a deceased cyborg!"))
 		return FALSE
@@ -44,6 +46,8 @@
 	return TRUE
 
 /obj/item/borg/upgrade/proc/deactivate(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	if (!(src in borg.upgrades))
 		return FALSE
 
@@ -56,6 +60,8 @@
 
 // Handles adding items with the module
 /obj/item/borg/upgrade/proc/install_items(mob/living/silicon/robot/borg, mob/living/user = usr, list/items)
+	procstart = null
+	src.procstart = null
 	for(var/item_to_add in items)
 		var/obj/item/module_item = new item_to_add(borg.model)
 		borg.model.basic_modules += module_item
@@ -64,6 +70,8 @@
 
 // Handles removing some items as the module is installed
 /obj/item/borg/upgrade/proc/remove_items(mob/living/silicon/robot/borg, mob/living/user = usr, list/items)
+	procstart = null
+	src.procstart = null
 	for(var/item_to_remove in items)
 		var/obj/item/module_item = locate(item_to_remove) in borg.model.modules
 		if (module_item)
@@ -80,6 +88,8 @@
 	var/heldname = ""
 
 /obj/item/borg/upgrade/rename/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/new_heldname = sanitize_name(tgui_input_text(user, "Enter new robot name", "Cyborg Reclassification", heldname, MAX_NAME_LEN), allow_numbers = TRUE)
 	if(!new_heldname || !user.is_holding(src))
 		return
@@ -87,6 +97,8 @@
 	user.log_message("set \"[heldname]\" as a name in a cyborg reclassification board at [loc_name(user)]", LOG_GAME)
 
 /obj/item/borg/upgrade/rename/action(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -110,6 +122,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 10, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 3, /datum/material/gold = SHEET_MATERIAL_AMOUNT, /datum/material/diamond = SHEET_MATERIAL_AMOUNT)
 
 /obj/item/borg/upgrade/disablercooler/action(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -126,6 +140,8 @@
 	disabler.charge_delay = max(2 , disabler.charge_delay - 4)
 
 /obj/item/borg/upgrade/disablercooler/deactivate(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -141,6 +157,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 3, /datum/material/uranium = SHEET_MATERIAL_AMOUNT * 3, /datum/material/plasma = SHEET_MATERIAL_AMOUNT * 2.5)
 
 /obj/item/borg/upgrade/thrusters/action(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -152,6 +170,8 @@
 	borg.toggle_ionpulse() //Enabled by default
 
 /obj/item/borg/upgrade/thrusters/deactivate(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -247,10 +267,14 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 7.5, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 7.5, /datum/material/diamond = SHEET_MATERIAL_AMOUNT * 5)
 
 /obj/item/borg/upgrade/syndicate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CONTRABAND, INNATE_TRAIT)
 
 /obj/item/borg/upgrade/syndicate/action(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -264,6 +288,8 @@
 	return TRUE
 
 /obj/item/borg/upgrade/syndicate/deactivate(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -280,12 +306,16 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5, /datum/material/titanium = SHEET_MATERIAL_AMOUNT * 2.5, /datum/material/plasma = SHEET_MATERIAL_AMOUNT * 2)
 
 /obj/item/borg/upgrade/lavaproof/action(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
 	borg.add_traits(list(TRAIT_LAVA_IMMUNE, TRAIT_SNOWSTORM_IMMUNE), type)
 
 /obj/item/borg/upgrade/lavaproof/deactivate(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -307,6 +337,8 @@
 	var/datum/action/toggle_action
 
 /obj/item/borg/upgrade/selfrepair/action(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -315,6 +347,8 @@
 	toggle_action.Grant(borg)
 
 /obj/item/borg/upgrade/selfrepair/deactivate(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -323,6 +357,8 @@
 	deactivate_sr()
 
 /obj/item/borg/upgrade/selfrepair/ui_action_click()
+	procstart = null
+	src.procstart = null
 	if(on)
 		to_chat(toggle_action.owner, span_notice("You deactivate the self-repair module."))
 		deactivate_sr()
@@ -332,6 +368,8 @@
 
 
 /obj/item/borg/upgrade/selfrepair/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(toggle_action)
 		icon_state = "selfrepair_[on ? "on" : "off"]"
 	else
@@ -339,16 +377,22 @@
 	return ..()
 
 /obj/item/borg/upgrade/selfrepair/proc/activate_sr()
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSobj, src)
 	on = TRUE
 	update_appearance()
 
 /obj/item/borg/upgrade/selfrepair/proc/deactivate_sr()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	on = FALSE
 	update_appearance()
 
 /obj/item/borg/upgrade/selfrepair/process()
+	procstart = null
+	src.procstart = null
 	if(world.time < next_repair)
 		return
 
@@ -402,6 +446,8 @@
 	var/list/additional_reagents = list()
 
 /obj/item/borg/upgrade/hypospray/action(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -409,6 +455,8 @@
 		hypo.upgrade_hypo()
 
 /obj/item/borg/upgrade/hypospray/deactivate(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -429,6 +477,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 7.5, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 7.5, /datum/material/titanium = SHEET_MATERIAL_AMOUNT * 2.5, /datum/material/diamond = SHEET_MATERIAL_AMOUNT * 1.5)
 
 /obj/item/borg/upgrade/piercing_hypospray/action(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -448,6 +498,8 @@
 		hypo.bypass_protection = TRUE
 
 /obj/item/borg/upgrade/piercing_hypospray/deactivate(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -471,6 +523,8 @@
 	items_to_remove = list(/obj/item/healthanalyzer)
 
 /obj/item/borg/upgrade/surgery_omnitool/action(mob/living/silicon/robot/cyborg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -479,6 +533,8 @@
 		omnitool.set_upgraded(TRUE)
 
 /obj/item/borg/upgrade/surgery_omnitool/deactivate(mob/living/silicon/robot/cyborg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -497,6 +553,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5, /datum/material/titanium = SHEET_MATERIAL_AMOUNT * 3, /datum/material/gold = SHEET_MATERIAL_AMOUNT * 2)
 
 /obj/item/borg/upgrade/engineering_omnitool/action(mob/living/silicon/robot/cyborg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -506,6 +564,8 @@
 		welder.toolspeed = initial(welder.toolspeed) - 0.3
 
 /obj/item/borg/upgrade/engineering_omnitool/deactivate(mob/living/silicon/robot/cyborg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -527,6 +587,8 @@
 	items_to_add = list(/obj/item/shockpaddles/cyborg)
 
 /obj/item/borg/upgrade/defib/action(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	var/obj/item/borg/upgrade/defib/backpack/defib_pack = locate() in borg //If a full defib unit was used to upgrade prior, we can just pop it out now and replace
 	if(defib_pack)
 		defib_pack.deactivate(borg, user)
@@ -538,6 +600,8 @@
 	var/obj/item/defibrillator/defib_instance
 
 /obj/item/borg/upgrade/defib/backpack/Initialize(mapload, obj/item/defibrillator/defib)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(defib))
 		defib = new /obj/item/defibrillator
@@ -547,17 +611,23 @@
 	RegisterSignals(defib_instance, list(COMSIG_QDELETING, COMSIG_MOVABLE_MOVED), PROC_REF(on_defib_instance_qdel_or_moved))
 
 /obj/item/borg/upgrade/defib/backpack/proc/on_defib_instance_qdel_or_moved(obj/item/defibrillator/defib)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	defib_instance = null
 	if(!QDELETED(src))
 		qdel(src)
 
 /obj/item/borg/upgrade/defib/backpack/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(defib_instance))
 		QDEL_NULL(defib_instance)
 	return ..()
 
 /obj/item/borg/upgrade/defib/backpack/deactivate(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -584,6 +654,8 @@
 	custom_materials = list(/datum/material/glass = SMALL_MATERIAL_AMOUNT * 7.5, /datum/material/iron = SMALL_MATERIAL_AMOUNT * 6, /datum/material/gold = SMALL_MATERIAL_AMOUNT * 2)
 
 /obj/item/borg/upgrade/ai/action(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -594,6 +666,8 @@
 	borg.make_shell(src)
 
 /obj/item/borg/upgrade/ai/deactivate(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !borg.shell)
 		return .
@@ -608,6 +682,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 100, /datum/material/titanium = SHEET_MATERIAL_AMOUNT * 2.5)
 
 /obj/item/borg/upgrade/expand/action(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || HAS_TRAIT(borg, TRAIT_NO_TRANSFORM))
 		return FALSE
@@ -639,6 +715,8 @@
 	borg.update_transform(2)
 
 /obj/item/borg/upgrade/expand/deactivate(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -667,6 +745,8 @@
 	items_to_add = list(/obj/item/storage/part_replacer/cyborg/small)
 
 /obj/item/borg/upgrade/rped/action(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -701,6 +781,8 @@
 	var/datum/action/crew_monitor
 
 /obj/item/borg/upgrade/pinpointer/action(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -710,6 +792,8 @@
 
 
 /obj/item/borg/upgrade/pinpointer/deactivate(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -718,6 +802,8 @@
 	QDEL_NULL(crew_monitor)
 
 /obj/item/borg/upgrade/pinpointer/ui_action_click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/robot/borg = usr
@@ -733,6 +819,8 @@
 	var/obj/item/robot_model/new_model = null
 
 /obj/item/borg/upgrade/transform/action(mob/living/silicon/robot/borg, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && new_model)
 		borg.model.transform_to(new_model)
@@ -889,6 +977,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 10, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 2.5)
 
 /obj/item/borg_restart_board/pre_attack(mob/living/silicon/robot/borgo, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(borgo))
 		return ..()
 	if(!borgo.opened)

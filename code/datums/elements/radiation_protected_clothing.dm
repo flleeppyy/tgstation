@@ -4,6 +4,8 @@
 /datum/element/radiation_protected_clothing
 
 /datum/element/radiation_protected_clothing/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (!isclothing(target))
@@ -13,12 +15,16 @@
 	RegisterSignal(target, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/element/radiation_protected_clothing/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(source, TRAIT_RADIATION_PROTECTED_CLOTHING, REF(src))
 	UnregisterSignal(source, COMSIG_ATOM_EXAMINE)
 
 	return ..()
 
 /datum/element/radiation_protected_clothing/proc/on_examine(datum/source, mob/user, list/examine_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_text += span_notice("A patch with a hazmat sign on the side suggests it would <b>protect you from radiation</b>.")

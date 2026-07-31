@@ -10,6 +10,8 @@
 	var/max_organs = 8
 
 /datum/corpse_damage/post_mortem/organ_loss/apply_to_body(mob/living/carbon/human/body, severity, list/saved_movables, list/datum/callback/on_revive_and_player_occupancy)
+	procstart = null
+	src.procstart = null
 	var/organs_to_take = round(min_organs + (max_organs - min_organs) * severity)
 	var/list/organs_we_can_take = body.organs - body.get_organ_slot(ORGAN_SLOT_BRAIN)
 
@@ -35,6 +37,8 @@
 	var/max_limbs = 4
 
 /datum/corpse_damage/post_mortem/limb_loss/apply_to_body(mob/living/carbon/human/body, severity, list/saved_movables, list/datum/callback/on_revive_and_player_occupancy)
+	procstart = null
+	src.procstart = null
 	var/limbs_to_take = round(min_limbs + (max_limbs - min_limbs) * severity)
 	var/list/limbs_we_can_take = list()
 	for(var/zone in GLOB.limb_zones)

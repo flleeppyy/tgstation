@@ -11,6 +11,8 @@
 	ex_flame = 2
 
 /obj/item/grenade/syndieminibomb/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -43,6 +45,8 @@
 	shrapnel_radius = 12
 
 /obj/item/grenade/frag/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -63,6 +67,8 @@
 	var/temp_adjust = -230
 
 /obj/item/grenade/gluon/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

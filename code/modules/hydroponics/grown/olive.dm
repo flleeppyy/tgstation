@@ -25,4 +25,6 @@
 	tastes = list("olive" = 1)
 
 /obj/item/food/grown/olive/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/olivepaste = 0)

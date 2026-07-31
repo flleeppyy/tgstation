@@ -21,18 +21,24 @@ SUBSYSTEM_DEF(points_of_interest)
  * Turns new_poi into a new point of interest by adding the /datum/element/point_of_interest element to it.
  */
 /datum/controller/subsystem/points_of_interest/proc/make_point_of_interest(atom/new_poi)
+	procstart = null
+	src.procstart = null
 	new_poi.AddElement(/datum/element/point_of_interest)
 
 /**
  * Stops old_poi from being a point of interest by removing the /datum/element/point_of_interest element from it.
  */
 /datum/controller/subsystem/points_of_interest/proc/remove_point_of_interest(atom/old_poi)
+	procstart = null
+	src.procstart = null
 	old_poi.RemoveElement(/datum/element/point_of_interest)
 
 /**
  * Called by [/datum/element/point_of_interest] when it gets removed from old_poi.
  */
 /datum/controller/subsystem/points_of_interest/proc/on_poi_element_added(atom/new_poi)
+	procstart = null
+	src.procstart = null
 	var/datum/point_of_interest/new_poi_datum
 	if(ismob(new_poi))
 		new_poi_datum = new /datum/point_of_interest/mob_poi(new_poi)
@@ -58,6 +64,8 @@ SUBSYSTEM_DEF(points_of_interest)
  * Called by [/datum/element/point_of_interest] when it gets removed from old_poi.
  */
 /datum/controller/subsystem/points_of_interest/proc/on_poi_element_removed(atom/old_poi)
+	procstart = null
+	src.procstart = null
 	var/poi_ref = REF(old_poi)
 	var/datum/point_of_interest/poi_to_remove = points_of_interest_by_target_ref[poi_ref]
 
@@ -88,6 +96,8 @@ SUBSYSTEM_DEF(points_of_interest)
  * If there is a valid POI for a given reference, it returns that POI's associated atom. Otherwise, it returns null.
  */
 /datum/controller/subsystem/points_of_interest/proc/get_poi_atom_by_ref(reference)
+	procstart = null
+	src.procstart = null
 	return points_of_interest_by_target_ref[reference]?.target
 
 /**
@@ -101,6 +111,8 @@ SUBSYSTEM_DEF(points_of_interest)
  * * append_dead_role - [OPTIONAL] If TRUE, adds a ghost tag to the end of observer names and a dead tag to the end of any other mob which is not alive.
  */
 /datum/controller/subsystem/points_of_interest/proc/get_mob_pois(datum/callback/poi_validation_override = null, append_dead_role = TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/pois = list()
 	var/list/used_name_list = list()
 
@@ -135,6 +147,8 @@ SUBSYSTEM_DEF(points_of_interest)
  * * poi_validation_override - [OPTIONAL] Callback to a proc that takes a single argument for the POI and returns TRUE if this POI should be included. Overrides standard POI validation.
  */
 /datum/controller/subsystem/points_of_interest/proc/get_other_pois(datum/callback/poi_validation_override = null)
+	procstart = null
+	src.procstart = null
 	var/list/pois = list()
 	var/list/used_name_list = list()
 
@@ -153,6 +167,8 @@ SUBSYSTEM_DEF(points_of_interest)
 
 /// Returns TRUE if potential_poi has an associated poi_datum that validates.
 /datum/controller/subsystem/points_of_interest/proc/is_valid_poi(atom/potential_poi, datum/callback/poi_validation_override = null)
+	procstart = null
+	src.procstart = null
 	var/datum/point_of_interest/poi_datum = points_of_interest_by_target_ref[REF(potential_poi)]
 
 	if(!poi_datum)
@@ -171,6 +187,8 @@ SUBSYSTEM_DEF(points_of_interest)
 	var/poi_type = /atom
 
 /datum/point_of_interest/New(poi_target)
+	procstart = null
+	src.procstart = null
 	if(!istype(poi_target, poi_type))
 		CRASH("Incorrect target type provided to /datum/point_of_interest/New: Expected \[[poi_type]\]")
 
@@ -178,6 +196,8 @@ SUBSYSTEM_DEF(points_of_interest)
 
 /// Validates the POI. Returns TRUE if the POI has valid state, returns FALSE if the POI has invalid state.
 /datum/point_of_interest/proc/validate()
+	procstart = null
+	src.procstart = null
 	// In nullspace, invalid as a POI.
 	if(!target.loc)
 		return FALSE
@@ -186,6 +206,8 @@ SUBSYSTEM_DEF(points_of_interest)
 
 /// Comparison proc used to sort POIs. Override to implement logic used doing binary sort insertions.
 /datum/point_of_interest/proc/compare_to(datum/point_of_interest/rhs)
+	procstart = null
+	src.procstart = null
 	return cmp_name_asc(target, rhs.target)
 
 /datum/point_of_interest/mob_poi
@@ -193,6 +215,8 @@ SUBSYSTEM_DEF(points_of_interest)
 
 /// Validation for mobs is expanded to invalidate stealthmins and /mob/dead/new_player as POIs.
 /datum/point_of_interest/mob_poi/validate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)
@@ -212,6 +236,8 @@ SUBSYSTEM_DEF(points_of_interest)
 
 /// Mob POIs are sorted by a simple priority list depending on their type. When their type priority is identical, they're sub-sorted by name.
 /datum/point_of_interest/mob_poi/compare_to(datum/point_of_interest/mob_poi/rhs)
+	procstart = null
+	src.procstart = null
 	var/sort_difference = get_type_sort_priority() - rhs.get_type_sort_priority()
 
 	// If they're equal in priority, call parent to sort by name.
@@ -223,6 +249,8 @@ SUBSYSTEM_DEF(points_of_interest)
 
 /// Priority list broadly stolen from /proc/sortmobs(). Lower numbers are higher priorities when sorted and appear closer to the top or start of lists.
 /datum/point_of_interest/mob_poi/proc/get_type_sort_priority()
+	procstart = null
+	src.procstart = null
 	if(isAI(target))
 		return 0
 	if(iseyemob(target))

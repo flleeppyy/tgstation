@@ -15,6 +15,8 @@
 	var/label = ""
 
 /datum/bt_node/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!label)
 		var/t = "[type]"
@@ -25,15 +27,21 @@
 
 ///Ticked by the ai_controller. Returns BT_SUCCESS, BT_FAILURE, or BT_RUNNING which can change how the parent responds.
 /datum/bt_node/proc/tick(datum/ai_controller/controller, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 	return BT_FAILURE
 
 /// Resets per-tick state for this node instance. Override in subtypes that hold tick state.
 /datum/bt_node/proc/reset_tick_state()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Resets this node and all of its descendants, cancelling any behaviors still running in the subtree.
 /datum/bt_node/proc/reset_subtree_tick_states()
+	procstart = null
+	src.procstart = null
 	var/list/to_visit = list(src)
 	var/index = 1
 	while(index <= length(to_visit))
@@ -46,12 +54,16 @@
  * Called once per controller tree by finalize_tree().
  */
 /datum/bt_node/proc/assign_execution_indices(counter)
+	procstart = null
+	src.procstart = null
 	execution_index = counter
 	last_execution_index = counter
 	return counter + 1
 
 /// Apply a configuration list to this node instance by assigning vars directly.
 /datum/bt_node/proc/configure(list/config)
+	procstart = null
+	src.procstart = null
 	for(var/var_name in config)
 		vars[var_name] = config[var_name]
 
@@ -60,14 +72,20 @@
  * Returns null for leaf nodes (default). Overridden in composites, decorators, and subtrees.
  */
 /datum/bt_node/proc/get_children()
+	procstart = null
+	src.procstart = null
 	return null
 
 /// Returns TRUE if this node or any descendant has an active (running) ai_behavior leaf.
 /datum/bt_node/proc/has_active_descendants()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// Walks descendants to find the node with the given execution_index. Returns null if not found.
 /datum/bt_node/proc/find_by_index(target_index)
+	procstart = null
+	src.procstart = null
 	if(execution_index == target_index)
 		return src
 	var/list/ch = get_children()
@@ -81,29 +99,43 @@
 
 /// Appends this node's active/upcoming state to lines for display. No-op for plain leaf nodes.
 /datum/bt_node/proc/append_active_nodes(list/lines, indent)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called during finalize_tree() to set owning_controller, register overrides, and enqueue children.
 /datum/bt_node/proc/finalize_node(datum/ai_controller/controller, list/to_visit)
+	procstart = null
+	src.procstart = null
 	owning_controller = controller
 
 /// Called during build_node_from_descriptor() to resolve and assign child nodes from JSON descriptors.
 /datum/bt_node/proc/set_descriptor_children(list/children_descs, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Returns a single-character status marker for display. Overridden by ai_behavior to check running.
 /datum/bt_node/proc/get_status_marker()
+	procstart = null
+	src.procstart = null
 	return "o"
 
 /// Appends this node's full tree state (status + label + children) to lines for display.
 /datum/bt_node/proc/append_full_tree_state(list/lines, indent)
+	procstart = null
+	src.procstart = null
 	lines += "[indent][get_status_marker()] [label]"
 
 /// Adds all children that must be visited during reset to to_visit. No-op for leaf nodes.
 /datum/bt_node/proc/collect_reset_children(list/to_visit)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/bt_node/Destroy()
+	procstart = null
+	src.procstart = null
 	parent_node = null
 	owning_controller = null
 	return ..()

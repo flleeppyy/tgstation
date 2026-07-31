@@ -32,6 +32,8 @@
 	var/maximum_timer = 60000
 
 /obj/item/grenade/c4/apply_grenade_fantasy_bonuses(quality)
+	procstart = null
+	src.procstart = null
 	var/devIncrease = round(quality / 10)
 	var/heavyIncrease = round(quality / 5)
 	var/lightIncrease = round(quality / 2)
@@ -40,31 +42,43 @@
 	boom_sizes[3] = modify_fantasy_variable("lightIncrease", boom_sizes[3], lightIncrease)
 
 /obj/item/grenade/c4/remove_grenade_fantasy_bonuses(quality)
+	procstart = null
+	src.procstart = null
 	boom_sizes[1] = reset_fantasy_variable("devIncrease", boom_sizes[1])
 	boom_sizes[2] = reset_fantasy_variable("heavyIncrease", boom_sizes[2])
 	boom_sizes[3] = reset_fantasy_variable("lightIncrease", boom_sizes[3])
 
 /obj/item/grenade/c4/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_WIRES)
 	plastic_overlay = mutable_appearance(icon, "[inhand_icon_state]2", HIGH_OBJ_LAYER)
 	set_wires(new /datum/wires/explosive/c4(src))
 
 /obj/item/grenade/c4/Destroy()
+	procstart = null
+	src.procstart = null
 	target = null
 	return ..()
 
 /obj/item/grenade/c4/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("The wire panel can be accessed without a screwdriver."))
 	return TRUE
 
 /obj/item/grenade/c4/attackby(obj/item/item, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(is_wire_tool(item))
 		wires.interact(user)
 	else
 		return ..()
 
 /obj/item/grenade/c4/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return FALSE
 	if(dud_flags)
@@ -94,9 +108,13 @@
 
 //assembly stuff
 /obj/item/grenade/c4/receive_signal()
+	procstart = null
+	src.procstart = null
 	detonate()
 
 /obj/item/grenade/c4/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/newtime = tgui_input_number(user, "Please set the timer", "C4 Timer", minimum_timer, maximum_timer, minimum_timer)
 	if(!newtime || QDELETED(user) || QDELETED(src) || !usr.can_perform_action(src, FORBID_TELEKINESIS_REACH))
 		return
@@ -104,6 +122,8 @@
 	to_chat(user, "Timer set for [det_time] seconds.")
 
 /obj/item/grenade/c4/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// Here lies C4 ghosts. We hardly knew ye
 	if(isdead(interacting_with))
 		return NONE
@@ -111,6 +131,8 @@
 	return plant_c4(interacting_with, user) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 
 /obj/item/grenade/c4/proc/plant_c4(atom/bomb_target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(bomb_target != user && HAS_TRAIT(user, TRAIT_PACIFISM) && isliving(bomb_target))
 		to_chat(user, span_warning("You don't want to harm other living beings!"))
 		return FALSE
@@ -155,6 +177,8 @@
 	return TRUE
 
 /obj/item/grenade/c4/proc/shout_syndicate_crap(mob/player)
+	procstart = null
+	src.procstart = null
 	if(!player)
 		CRASH("[src] proc shout_syndicate_crap called without a mob to shout crap from!")
 
@@ -170,6 +194,8 @@
 	player.say(final_message, forced = "C4 suicide")
 
 /obj/item/grenade/c4/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	message_admins("[ADMIN_LOOKUPFLW(user)] suicided with [src] at [ADMIN_VERBOSEJMP(user)]")
 	user.log_message("suicided with [src].", LOG_ATTACK)
 	log_game("[key_name(user)] suicided with [src] at [AREACOORD(user)]")

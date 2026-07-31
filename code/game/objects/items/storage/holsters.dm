@@ -10,11 +10,15 @@
 	storage_type = /datum/storage/holster
 
 /obj/item/storage/belt/holster/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot & (ITEM_SLOT_BELT|ITEM_SLOT_SUITSTORE))
 		ADD_CLOTHING_TRAIT(user, TRAIT_GUNFLIP)
 
 /obj/item/storage/belt/holster/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_CLOTHING_TRAIT(user, TRAIT_GUNFLIP)
 
@@ -28,6 +32,8 @@
 	desc = "A rather plain pair of shoulder holsters with a bit of insulated padding inside. Meant to hold a twinned pair of thermal pistols, but can fit several kinds of energy handguns as well."
 
 /obj/item/storage/belt/holster/energy/thermal/PopulateContents()
+	procstart = null
+	src.procstart = null
 	generate_items_inside(list(
 		/obj/item/gun/energy/laser/thermal/inferno = 1,
 		/obj/item/gun/energy/laser/thermal/cryo = 1,
@@ -37,18 +43,24 @@
 	desc = "A rather plain pair of shoulder holsters with a bit of insulated padding inside. Designed to hold energy weaponry. A production stamp indicates that it was shipped with a disabler."
 
 /obj/item/storage/belt/holster/energy/disabler/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/gun/energy/disabler(src)
 
 /obj/item/storage/belt/holster/energy/laser_pistol
 	desc = "A rather plain pair of shoulder holsters with a bit of insulated padding inside. Designed to hold energy weaponry. A production stamp indicates that it was shipped with a Type 5C laser pistol."
 
 /obj/item/storage/belt/holster/energy/laser_pistol/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/gun/energy/laser/pistol(src)
 
 /obj/item/storage/belt/holster/energy/smoothbore
 	desc = "A rather plain pair of shoulder holsters with a bit of insulated padding inside. Designed to hold energy weaponry. Seems it was meant to fit two smoothbores."
 
 /obj/item/storage/belt/holster/energy/smoothbore/PopulateContents()
+	procstart = null
+	src.procstart = null
 	generate_items_inside(list(
 		/obj/item/gun/energy/disabler/smoothbore = 2,
 	),src)
@@ -60,6 +72,8 @@
 	storage_type = /datum/storage/holster/detective
 
 /obj/item/storage/belt/holster/detective/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	generate_items_inside(list(
 		/obj/item/ammo_box/speedloader/c38 = 2,
 		/obj/item/gun/ballistic/revolver/c38/detective = 1,
@@ -73,6 +87,8 @@
 	worn_icon_state = "syndicate_holster"
 
 /obj/item/storage/belt/holster/detective/full/ert/PopulateContents()
+	procstart = null
+	src.procstart = null
 	generate_items_inside(list(
 		/obj/item/ammo_box/magazine/m45 = 2,
 		/obj/item/gun/ballistic/automatic/pistol/m1911 = 1,
@@ -102,6 +118,8 @@
 	storage_type = /datum/storage/holster/nukie/cowboy
 
 /obj/item/storage/belt/holster/nukie/cowboy/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	generate_items_inside(list(
 		/obj/item/ammo_box/speedloader/c357 = 2,
 		/obj/item/gun/ballistic/revolver/cowboy/nuclear = 1,

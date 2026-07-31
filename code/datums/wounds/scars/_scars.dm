@@ -31,6 +31,8 @@
 	var/check_any_biostates
 
 /datum/scar/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(limb)
 		LAZYREMOVE(limb.scars, src)
 	if(victim)
@@ -50,6 +52,8 @@
  * * add_to_scars- Should always be TRUE unless you're just storing a scar for later usage, like how cuts want to store a scar for the highest severity of cut, rather than the severity when the wound is fully healed (probably demoted to moderate)
  */
 /datum/scar/proc/generate(obj/item/bodypart/BP, datum/wound/W, add_to_scars=TRUE)
+	procstart = null
+	src.procstart = null
 
 	if (!W.can_scar)
 		qdel(src)
@@ -100,6 +104,8 @@
 
 /// Used when we finalize a scar from a healing cut
 /datum/scar/proc/lazy_attach(obj/item/bodypart/BP, datum/wound/W)
+	procstart = null
+	src.procstart = null
 	LAZYADD(BP.scars, src)
 	if(BP.owner)
 		victim = BP.owner
@@ -107,6 +113,8 @@
 
 /// Used to "load" a persistent scar
 /datum/scar/proc/load(obj/item/bodypart/BP, version, description, specific_location, severity = WOUND_SEVERITY_SEVERE, required_limb_biostate = BIO_STANDARD_UNJOINTED, char_slot, check_any_biostates = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!BP.scarrable)
 		qdel(src)
 		return
@@ -145,11 +153,15 @@
 	return src
 
 /datum/scar/proc/limb_gone()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /// What will show up in examine_more() if this scar is visible
 /datum/scar/proc/get_examine_description(mob/viewer)
+	procstart = null
+	src.procstart = null
 	if(!victim || !is_visible(viewer))
 		return
 
@@ -168,6 +180,8 @@
 
 /// Whether a scar can currently be seen by the viewer
 /datum/scar/proc/is_visible(mob/viewer)
+	procstart = null
+	src.procstart = null
 	if(!victim || !viewer)
 		return
 	if(get_dist(viewer, victim) > visibility)
@@ -189,9 +203,13 @@
 
 /// Used to format a scar to save for either persistent scars, or for changeling disguises
 /datum/scar/proc/format()
+	procstart = null
+	src.procstart = null
 	return "[SCAR_CURRENT_VERSION]|[limb.body_zone]|[description]|[precise_location]|[severity]|[required_limb_biostate]|[persistent_character_slot]|[check_any_biostates]"
 
 /// Used to format a scar to save in preferences for persistent scars
 /datum/scar/proc/format_amputated(body_zone, scar_file = FLESH_SCAR_FILE)
+	procstart = null
+	src.procstart = null
 	description = pick_list(scar_file, "dismember")
 	return "[SCAR_CURRENT_VERSION]|[body_zone]|[description]|amputated|[WOUND_SEVERITY_LOSS]|[required_limb_biostate]|[persistent_character_slot]|[check_any_biostates]"

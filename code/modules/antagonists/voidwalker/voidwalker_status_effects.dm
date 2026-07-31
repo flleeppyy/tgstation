@@ -8,6 +8,8 @@
 	alert_type = /atom/movable/screen/alert/status_effect/veryhighgravity
 
 /datum/status_effect/planet_allergy/tick()
+	procstart = null
+	src.procstart = null
 	owner.adjust_brute_loss(1)
 
 /atom/movable/screen/alert/status_effect/veryhighgravity
@@ -24,9 +26,13 @@
 	alert_type = null
 
 /datum/status_effect/void_chomped/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(owner, TRAIT_NODEATH, TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/void_chomped/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(owner, TRAIT_NODEATH, TRAIT_STATUS_EFFECT(id))

@@ -84,6 +84,8 @@
 	distill_reagent = null
 
 /obj/item/food/grown/bungofruit/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/bungojuice
 
 /obj/item/food/grown/bungopit
@@ -100,6 +102,8 @@
 	tastes = list("acrid bitterness" = 1)
 
 /obj/item/food/grown/bungopit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. =..()
 	reagents.clear_reagents()
 	reagents.add_reagent(/datum/reagent/toxin/bungotoxin, seed.potency * 0.10) //More than this will kill at too low potency

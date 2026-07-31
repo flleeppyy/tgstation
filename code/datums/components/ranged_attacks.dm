@@ -44,6 +44,8 @@
 	src.burst_intervals = burst_intervals
 
 /datum/component/ranged_attacks/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(parent, TRAIT_SUBTREE_REQUIRED_OPERATIONAL_DATUM, type)
 	RegisterSignal(parent, COMSIG_MOB_ATTACK_RANGED, PROC_REF(fire_ranged_attack))
@@ -52,11 +54,15 @@
 	RegisterSignal(parent, COMSIG_LIVING_STATUS_REMOVED, PROC_REF(on_status_removed))
 
 /datum/component/ranged_attacks/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, list(COMSIG_MOB_ATTACK_RANGED, COMSIG_MOB_TROPHY_ACTIVATED(TROPHY_WATCHER), COMSIG_LIVING_STATUS_APPLIED, COMSIG_LIVING_STATUS_REMOVED))
 	REMOVE_TRAIT(parent, TRAIT_SUBTREE_REQUIRED_OPERATIONAL_DATUM, type)
 
 /datum/component/ranged_attacks/proc/fire_ranged_attack(mob/living/basic/firer, atom/target, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!COOLDOWN_FINISHED(src, fire_cooldown))
 		return
@@ -71,6 +77,8 @@
 
 /// Actually fire the damn thing
 /datum/component/ranged_attacks/proc/async_fire_ranged_attack(mob/living/basic/firer, atom/target, modifiers)
+	procstart = null
+	src.procstart = null
 	firer.face_atom(target)
 	if(projectile_type)
 		firer.fire_projectile(projectile_type, target, projectile_sound)
@@ -93,12 +101,16 @@
 
 /// Delay the attack when hit by a watcher trophy detonation
 /datum/component/ranged_attacks/proc/disable_attack(mob/source, obj/item/crusher_trophy/used_trophy, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/stun_duration = (used_trophy.bonus_value * 0.1) SECONDS
 	COOLDOWN_INCREMENT(src, fire_cooldown, stun_duration)
 
 /// Increase CD when rebuked
 /datum/component/ranged_attacks/proc/on_status_applied(mob/living/source, datum/status_effect/effect)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!istype(effect, /datum/status_effect/rebuked))
 		return
@@ -109,6 +121,8 @@
 
 /// Reduce CD back when the rebuked status runs out
 /datum/component/ranged_attacks/proc/on_status_removed(mob/living/source, datum/status_effect/effect)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!istype(effect, /datum/status_effect/rebuked))
 		return

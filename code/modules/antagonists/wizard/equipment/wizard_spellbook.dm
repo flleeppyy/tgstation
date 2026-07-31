@@ -22,11 +22,15 @@
 	var/list/entries = list()
 
 /obj/item/spellbook/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	prepare_spells()
 	RegisterSignal(src, COMSIG_ITEM_MAGICALLY_CHARGED, PROC_REF(on_magic_charge))
 
 /obj/item/spellbook/Destroy(force)
+	procstart = null
+	src.procstart = null
 	owner = null
 	entries.Cut()
 	return ..()
@@ -37,6 +41,8 @@
  * Has no effect on charge, but gives a funny message to people who think they're clever.
  */
 /obj/item/spellbook/proc/on_magic_charge(datum/source, datum/action/cooldown/spell/spell, mob/living/caster)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	to_chat(caster, span_warning("Glowing red letters appear on the front cover..."))
@@ -51,6 +57,8 @@
 	return COMPONENT_ITEM_BURNT_OUT
 
 /obj/item/spellbook/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(owner)
 		. += "There is a small signature on the front cover: \"[owner]\"."
@@ -58,6 +66,8 @@
 		. += "It appears to have no author."
 
 /obj/item/spellbook/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		if(!user.mind)
 			return
@@ -75,6 +85,8 @@
 	return ..()
 
 /obj/item/spellbook/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// This can be generalized in the future, but for now it stays
 	var/datum/spellbook_entry/item/spawner_entry
 	var/success_string
@@ -110,6 +122,8 @@
 
 /// Instantiates our list of spellbook entries.
 /obj/item/spellbook/proc/prepare_spells()
+	procstart = null
+	src.procstart = null
 	var/entry_types = subtypesof(/datum/spellbook_entry)
 	for(var/type in entry_types)
 		var/datum/spellbook_entry/possible_entry = new type()
@@ -121,12 +135,16 @@
 		entries |= possible_entry
 
 /obj/item/spellbook/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Spellbook")
 		ui.open()
 
 /obj/item/spellbook/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["owner"] = owner
 	data["points"] = uses
@@ -134,6 +152,8 @@
 
 //This is a MASSIVE amount of data, please be careful if you remove it from static.
 /obj/item/spellbook/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	// Collect all info from each intry.
 	var/list/entry_data = list()
@@ -157,6 +177,8 @@
 	return data
 
 /obj/item/spellbook/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -205,6 +227,8 @@
 
 /// Attempts to purchased the passed entry [to_buy] for [user].
 /obj/item/spellbook/proc/purchase_entry(datum/spellbook_entry/to_buy, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(to_buy))
 		CRASH("Spellbook attempted to buy an invalid entry. Got: [to_buy ? "[to_buy] ([to_buy.type])" : "null"]")
 	if(!to_buy.can_buy(user, src))
@@ -222,6 +246,8 @@
 
 /// Purchases a wizard loadout [loadout] for [wizard].
 /obj/item/spellbook/proc/wizard_loadout(mob/living/carbon/human/wizard, loadout)
+	procstart = null
+	src.procstart = null
 	var/list/wanted_spells
 	switch(loadout)
 		if(WIZARD_LOADOUT_CLASSIC) //(Fireball>2, MM>2, Smite>2, Jauntx2>4) = 10
@@ -286,6 +312,8 @@
 /// Purchases a semi-random wizard loadout for [wizard]
 /// If passed a number [bonus_to_give], the wizard is given additional uses on their spellbook, used in randomization.
 /obj/item/spellbook/proc/semirandomize(mob/living/carbon/human/wizard, bonus_to_give = 0)
+	procstart = null
+	src.procstart = null
 	var/list/needed_cats = list("Offensive", "Mobility")
 	var/list/shuffled_entries = shuffle(entries)
 	for(var/i in 1 to 2)
@@ -304,6 +332,8 @@
 /// Purchases a fully random wizard loadout for [wizard], with a point bonus [bonus_to_give].
 /// If passed a number [bonus_to_give], the wizard is given additional uses on their spellbook, used in randomization.
 /obj/item/spellbook/proc/randomize(mob/living/carbon/human/wizard, bonus_to_give = 0)
+	procstart = null
+	src.procstart = null
 	var/list/entries_copy = entries.Copy()
 	uses += bonus_to_give
 	while(uses > 0 && length(entries_copy))

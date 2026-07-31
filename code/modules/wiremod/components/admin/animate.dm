@@ -24,6 +24,8 @@
 	var/datum/port/output/animate_event
 
 /obj/item/circuit_component/begin_animation/populate_options()
+	procstart = null
+	src.procstart = null
 	var/static/list/component_options = list(
 		COMP_ANIMATE_ATOM,
 		COMP_ANIMATE_FILTER,
@@ -32,6 +34,8 @@
 	atom_or_filter = add_option_port("Target Options", component_options)
 
 /obj/item/circuit_component/begin_animation/populate_ports()
+	procstart = null
+	src.procstart = null
 	target = add_input_port("Target", PORT_TYPE_ATOM)
 	parallel = add_input_port("Parallel", PORT_TYPE_BOOLEAN, default = TRUE)
 	animation_loops = add_input_port("Loops", PORT_TYPE_NUMBER)
@@ -39,6 +43,8 @@
 	animate_event = add_output_port("Perform Animation", PORT_TYPE_INSTANT_SIGNAL)
 
 /obj/item/circuit_component/begin_animation/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(port == atom_or_filter)
 		if(filter_target)
 			remove_input_port(filter_target)
@@ -48,12 +54,16 @@
 			filter_target = add_input_port("Filter Name", PORT_TYPE_STRING, order = 0.5)
 
 /obj/item/circuit_component/begin_animation/proc/stop_animations(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!target.value)
 		return
 	animate(target.value, null)
 
 /obj/item/circuit_component/begin_animation/input_received(datum/port/input/port, list/return_values)
+	procstart = null
+	src.procstart = null
 	if(!target.value)
 		return
 
@@ -108,12 +118,16 @@
 	var/datum/port/input/animation_flags
 
 /obj/item/circuit_component/animation_step/populate_ports()
+	procstart = null
+	src.procstart = null
 	animation_variables = add_input_port("Variables", PORT_TYPE_ASSOC_LIST(PORT_TYPE_STRING, PORT_TYPE_ANY), order = 1.66)
 	animation_time = add_input_port("Time", PORT_TYPE_NUMBER, order = 1.66)
 	animation_easing = add_input_port("Easing", PORT_TYPE_NUMBER, order = 1.66)
 	animation_flags = add_input_port("Flags", PORT_TYPE_NUMBER, order = 1.66)
 
 /obj/item/circuit_component/animation_step/input_received(datum/port/input/port, list/return_values)
+	procstart = null
+	src.procstart = null
 	if(!return_values)
 		return
 

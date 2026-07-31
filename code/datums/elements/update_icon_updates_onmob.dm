@@ -9,6 +9,8 @@
 	var/update_body = FALSE
 
 /datum/element/update_icon_updates_onmob/Attach(datum/target, flags, body = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -17,6 +19,8 @@
 	update_body = body
 
 /datum/element/update_icon_updates_onmob/proc/update_onmob(obj/item/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(ismob(target.loc))

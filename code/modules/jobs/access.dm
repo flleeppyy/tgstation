@@ -4,6 +4,8 @@
  * * accessor - mob trying to access this object, !!CAN BE NULL!! because of telekiesis because we're in hell
  */
 /atom/movable/proc/allowed(mob/accessor)
+	procstart = null
+	src.procstart = null
 	//check if it doesn't require any access at all, or the user is an Adminghost
 	if(check_access(null) || isAdminGhostAI(accessor))
 		return TRUE
@@ -34,9 +36,13 @@
 
 // Check if an item has access to this object
 /atom/movable/proc/check_access(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return check_access_list(I ? I.GetAccess() : null)
 
 /atom/movable/proc/check_access_list(list/access_list)
+	procstart = null
+	src.procstart = null
 	if(!length(req_access) && !length(req_one_access))
 		return TRUE
 
@@ -55,13 +61,21 @@
 	return TRUE
 
 /obj/item/proc/GetAccess()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /obj/item/proc/GetID()
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/item/proc/remove_id()
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/item/proc/insert_id()
+	procstart = null
+	src.procstart = null
 	return FALSE

@@ -2,6 +2,8 @@
 /datum/element/grilled_item
 
 /datum/element/grilled_item/Attach(datum/target, grill_time)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
@@ -32,6 +34,8 @@
 	ADD_TRAIT(this_food, TRAIT_FOOD_BBQ_GRILLED, ELEMENT_TRAIT(type))
 
 /datum/element/grilled_item/Detach(atom/source, ...)
+	procstart = null
+	src.procstart = null
 	source.name = initial(source.name)
 	source.desc = initial(source.desc)
 	source.RemoveComponentSource(SOURCE_EDIBLE_GRILLED, /datum/component/edible)

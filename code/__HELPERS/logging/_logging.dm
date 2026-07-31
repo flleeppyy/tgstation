@@ -1,12 +1,16 @@
 //print a warning message to world.log
 #define WARNING(MSG) warning("[MSG] in [__FILE__] at line [__LINE__] src: [UNLINT(src)] usr: [usr].")
 /proc/warning(msg)
+	procstart = null
+	src.procstart = null
 	msg = "## WARNING: [msg]"
 	log_world(msg)
 
 //not an error or a warning, but worth to mention on the world log, just in case.
 #define NOTICE(MSG) notice(MSG)
 /proc/notice(msg)
+	procstart = null
+	src.procstart = null
 	msg = "## NOTICE: [msg]"
 	log_world(msg)
 
@@ -16,6 +20,8 @@
 /// Checks if the actual semver is equal or later than the wanted semver
 /// Must be passed as TEXT; you're probably looking for CHECK_SERIALIZATION_SEMVER, look right above
 /proc/__check_serialization_semver(wanted, actual)
+	procstart = null
+	src.procstart = null
 	if(wanted == actual)
 		return TRUE
 
@@ -66,6 +72,8 @@ GLOBAL_LIST_INIT(testing_global_profiler, list("_PROFILE_NAME" = "Global"))
 
 #if defined(UNIT_TESTS) || defined(SPACEMAN_DMM)
 /proc/log_test(text)
+	procstart = null
+	src.procstart = null
 	WRITE_LOG(GLOB.test_log, text)
 	SEND_TEXT(world.log, text)
 #endif
@@ -74,6 +82,8 @@ GLOBAL_LIST_INIT(testing_global_profiler, list("_PROFILE_NAME" = "Global"))
 #define log_reftracker(msg) log_harddel("## REF SEARCH [msg]")
 
 /proc/log_harddel(text)
+	procstart = null
+	src.procstart = null
 	WRITE_LOG(GLOB.harddel_log, text)
 
 #elif defined(REFERENCE_TRACKING) // Doing it locally
@@ -96,6 +106,8 @@ GLOBAL_LIST_INIT(testing_global_profiler, list("_PROFILE_NAME" = "Global"))
  * * log_globally - boolean checking whether or not we write this log to the log file
  */
 /atom/proc/log_message(message, message_type, color = null, log_globally = TRUE, list/data)
+	procstart = null
+	src.procstart = null
 	if(!log_globally)
 		return
 
@@ -150,15 +162,21 @@ GLOBAL_LIST_INIT(testing_global_profiler, list("_PROFILE_NAME" = "Global"))
 
 /* For logging round startup. */
 /proc/start_log(log)
+	procstart = null
+	src.procstart = null
 	WRITE_LOG(log, "Starting up round ID [GLOB.round_id].\n-------------------------")
 
 /* Close open log handles. This should be called as late as possible, and no logging should hapen after. */
 /proc/shutdown_logging()
+	procstart = null
+	src.procstart = null
 	rustg_log_close_all()
 	logger.shutdown_logging()
 
 /* Helper procs for building detailed log lines */
 /proc/key_name(whom, include_link = null, include_name = TRUE)
+	procstart = null
+	src.procstart = null
 	var/mob/M
 	var/client/C
 	var/key
@@ -241,9 +259,13 @@ GLOBAL_LIST_INIT(testing_global_profiler, list("_PROFILE_NAME" = "Global"))
 	return .
 
 /proc/key_name_admin(whom, include_name = TRUE)
+	procstart = null
+	src.procstart = null
 	return key_name(whom, TRUE, include_name)
 
 /proc/key_name_and_tag(whom, include_link = null, include_name = TRUE)
+	procstart = null
+	src.procstart = null
 	var/tag = "!tagless!" // whom can be null in key_name() so lets set this as a safety
 	if(isatom(whom))
 		var/atom/subject = whom
@@ -251,6 +273,8 @@ GLOBAL_LIST_INIT(testing_global_profiler, list("_PROFILE_NAME" = "Global"))
 	return "[key_name(whom, include_link, include_name)] ([tag])"
 
 /proc/loc_name(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!istype(A))
 		return "(INVALID LOCATION)"
 

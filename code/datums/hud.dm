@@ -74,6 +74,8 @@ GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 	var/uses_global_hud_category = TRUE
 
 /datum/atom_hud/New()
+	procstart = null
+	src.procstart = null
 	GLOB.all_huds += src
 	for(var/z_level in 1 to world.maxz)
 		hud_atoms += list(list())
@@ -88,6 +90,8 @@ GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 			GLOB.huds_by_category[hud_icon] += list(src)
 
 /datum/atom_hud/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/mob/mob as anything in hud_users_all_z_levels)
 		hide_from(mob)
 
@@ -102,12 +106,16 @@ GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 	return ..()
 
 /datum/atom_hud/proc/add_z_level_huds()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	hud_atoms += list(list())
 	hud_users += list(list())
 
 ///returns a list of all hud atoms in the given z level and linked lower z levels (because hud users in higher z levels can see below)
 /datum/atom_hud/proc/get_hud_atoms_for_z_level(z_level)
+	procstart = null
+	src.procstart = null
 	if(z_level <= 0)
 		return FALSE
 	if(z_level > length(hud_atoms))
@@ -133,6 +141,8 @@ GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 
 ///returns a list of all hud users in the given z level and linked upper z levels (because hud users in higher z levels can see below)
 /datum/atom_hud/proc/get_hud_users_for_z_level(z_level)
+	procstart = null
+	src.procstart = null
 	if(z_level > length(hud_users) || z_level <= 0)
 		stack_trace("get_hud_atoms_for_z_level() was given a z level index [z_level] out of bounds 1->[length(hud_users)] of hud_atoms!")
 		return FALSE
@@ -156,6 +166,8 @@ GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 
 ///show this hud to the passed in user
 /datum/atom_hud/proc/show_to(mob/new_viewer)
+	procstart = null
+	src.procstart = null
 	if(!new_viewer)
 		return
 
@@ -186,6 +198,8 @@ GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 ///Hides the images in this hud from former_viewer
 ///If absolute is set to true, this will forcefully remove the hud, even if sources in theory remain
 /datum/atom_hud/proc/hide_from(mob/former_viewer, absolute = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!former_viewer || !hud_users_all_z_levels[former_viewer])
 		return
 
@@ -215,6 +229,8 @@ GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 
 /// add new_hud_atom to this hud
 /datum/atom_hud/proc/add_atom_to_hud(atom/new_hud_atom)
+	procstart = null
+	src.procstart = null
 	if(!new_hud_atom)
 		return FALSE
 
@@ -236,6 +252,8 @@ GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 
 /// remove this atom from this hud completely
 /datum/atom_hud/proc/remove_atom_from_hud(atom/hud_atom_to_remove)
+	procstart = null
+	src.procstart = null
 	if(!hud_atom_to_remove || !hud_atoms_all_z_levels[hud_atom_to_remove])
 		return FALSE
 
@@ -259,6 +277,8 @@ GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 
 ///adds a newly active hud category's image on a hud atom to every mob that could see it
 /datum/atom_hud/proc/add_single_hud_category_on_atom(atom/hud_atom, hud_category_to_add)
+	procstart = null
+	src.procstart = null
 	if(!hud_atom?.active_hud_list?[hud_category_to_add] || QDELING(hud_atom) || !(hud_category_to_add in hud_icons))
 		return FALSE
 
@@ -281,6 +301,8 @@ GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 ///removes the image or images in hud_atom.hud_list[hud_category_to_remove] from every mob that can see it but leaves every other image
 ///from that atom there.
 /datum/atom_hud/proc/remove_single_hud_category_on_atom(atom/hud_atom, hud_category_to_remove)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(hud_atom) || !(hud_category_to_remove in hud_icons) || !hud_atoms_all_z_levels[hud_atom])
 		return FALSE
 
@@ -302,6 +324,8 @@ GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 ///when a hud atom or hud user changes z levels this makes sure it gets the images it needs and removes the images it doesn't need.
 ///because of how signals work we need the same proc to handle both use cases because being a hud atom and being a hud user aren't mutually exclusive
 /datum/atom_hud/proc/on_atom_or_user_z_level_changed(atom/movable/moved_atom, turf/old_turf, turf/new_turf)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(old_turf)
 		if(hud_users_all_z_levels[moved_atom])
@@ -330,6 +354,8 @@ GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 /// (change the huds the user sees on other people, not the hud other people see on the user)
 /// Used for mobs that see through a separate eye mob, and looking up/down.
 /datum/atom_hud/proc/on_look_z_level_changed(atom/movable/user, turf/old_turf, turf/new_turf)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// handle removing hud images from the old z-level
 	if (old_turf && hud_users_all_z_levels[user]) // old_turf can be null if we tried to look through the ceiling or through the floor
@@ -345,7 +371,9 @@ GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 
 
 /// add just hud_atom's hud images (that are part of this atom_hud) to requesting_mob's client.images list
-/datum/atom_hud/proc/add_atom_to_single_mob_hud(mob/requesting_mob, atom/hud_atom) //unsafe, no sanity apart from client
+/datum/atom_hud/proc/add_atom_to_single_mob_hud(mob/requesting_mob, atom/hud_atom)
+	procstart = null
+	src.procstart = null //unsafe, no sanity apart from client
 	if(!requesting_mob || !requesting_mob.client || !hud_atom)
 		return
 
@@ -355,7 +383,9 @@ GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 
 /// all passed in hud_atoms's hud images (that are part of this atom_hud) to requesting_mob's client.images list
 /// optimization of [/datum/atom_hud/proc/add_atom_to_single_mob_hud] for hot cases, we assert that no nulls will be passed in via the list
-/datum/atom_hud/proc/add_all_atoms_to_single_mob_hud(mob/requesting_mob, list/atom/hud_atoms) //unsafe, no sanity apart from client
+/datum/atom_hud/proc/add_all_atoms_to_single_mob_hud(mob/requesting_mob, list/atom/hud_atoms)
+	procstart = null
+	src.procstart = null //unsafe, no sanity apart from client
 	if(!requesting_mob || !requesting_mob.client)
 		return
 
@@ -374,7 +404,9 @@ GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 
 /// add just hud_atom's hud images (that are part of this atom_hud) to all the requesting_mobs's client.images list
 /// optimization of [/datum/atom_hud/proc/add_atom_to_single_mob_hud] for hot cases, we assert that no nulls will be passed in via the list
-/datum/atom_hud/proc/add_atom_to_all_mob_huds(list/mob/requesting_mobs, atom/hud_atom) //unsafe, no sanity apart from client
+/datum/atom_hud/proc/add_atom_to_all_mob_huds(list/mob/requesting_mobs, atom/hud_atom)
+	procstart = null
+	src.procstart = null //unsafe, no sanity apart from client
 	if(!hud_atom?.active_hud_list)
 		return
 
@@ -392,6 +424,8 @@ GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 
 /// remove every hud image for this hud on atom_to_remove from client_mob's client.images list
 /datum/atom_hud/proc/remove_atom_from_single_hud(mob/client_mob, atom/atom_to_remove)
+	procstart = null
+	src.procstart = null
 	if(!client_mob || !client_mob.client || !atom_to_remove?.active_hud_list)
 		return
 	for(var/hud_image in hud_icons)
@@ -400,6 +434,8 @@ GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 /// remove every hud image for this hud pulled from atoms_to_remove from client_mob's client.images list
 /// optimization of [/datum/atom_hud/proc/remove_atom_from_single_hud] for hot cases, we assert that no nulls will be passed in via the list
 /datum/atom_hud/proc/remove_all_atoms_from_single_hud(mob/client_mob, list/atom/atoms_to_remove)
+	procstart = null
+	src.procstart = null
 	if(!client_mob || !client_mob.client)
 		return
 	for(var/hud_image in hud_icons)
@@ -409,6 +445,8 @@ GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 /// remove every hud image for this hud on atom_to_remove from client_mobs's client.images list
 /// optimization of [/datum/atom_hud/proc/remove_atom_from_single_hud] for hot cases, we assert that no nulls will be passed in via the list
 /datum/atom_hud/proc/remove_atom_from_all_huds(list/mob/client_mobs, atom/atom_to_remove)
+	procstart = null
+	src.procstart = null
 	if(!atom_to_remove?.active_hud_list)
 		return
 
@@ -422,11 +460,15 @@ GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 		client_mob.client.images -= images_to_remove
 
 /datum/atom_hud/proc/unregister_atom(datum/source, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	hide_from(source, TRUE)
 	remove_atom_from_hud(source)
 
 /datum/atom_hud/proc/hide_single_atomhud_from(mob/hud_user, atom/hidden_atom)
+	procstart = null
+	src.procstart = null
 
 	if(hud_users_all_z_levels[hud_user])
 		remove_atom_from_single_hud(hud_user, hidden_atom)
@@ -437,6 +479,8 @@ GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 		hud_exceptions[hud_user] += hidden_atom
 
 /datum/atom_hud/proc/unhide_single_atomhud_from(mob/hud_user, atom/hidden_atom)
+	procstart = null
+	src.procstart = null
 	hud_exceptions[hud_user] -= hidden_atom
 
 	var/turf/hud_atom_turf = get_turf(hidden_atom)
@@ -448,6 +492,8 @@ GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 		add_atom_to_single_mob_hud(hud_user, hidden_atom)
 
 /datum/atom_hud/proc/show_hud_images_after_cooldown(mob/queued_hud_user)
+	procstart = null
+	src.procstart = null
 	if(!queued_to_see[queued_hud_user])
 		return
 
@@ -463,6 +509,8 @@ GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 
 //MOB PROCS
 /mob/proc/reload_huds()
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	if(!our_turf)
 		return
@@ -473,10 +521,16 @@ GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 				hud.add_atom_to_single_mob_hud(src, hud_atom)
 
 /mob/dead/new_player/reload_huds()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/proc/add_click_catcher()
+	procstart = null
+	src.procstart = null
 	client.screen += client.void
 
 /mob/dead/new_player/add_click_catcher()
+	procstart = null
+	src.procstart = null
 	return

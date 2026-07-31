@@ -15,16 +15,22 @@ GLOBAL_LIST_EMPTY(monkey_recyclers)
 	var/cube_production = 0.2
 
 /obj/machinery/monkey_recycler/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (mapload)
 		GLOB.monkey_recyclers += src
 	add_overlay("grinder_monkey")
 
 /obj/machinery/monkey_recycler/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.monkey_recyclers -= src
 	return ..()
 
-/obj/machinery/monkey_recycler/RefreshParts() //Ranges from 0.2 to 0.8 per monkey recycled
+/obj/machinery/monkey_recycler/RefreshParts()
+	procstart = null
+	src.procstart = null //Ranges from 0.2 to 0.8 per monkey recycled
 	. = ..()
 	cube_production = 0
 	for(var/datum/stock_part/servo/servo in component_parts)
@@ -33,33 +39,47 @@ GLOBAL_LIST_EMPTY(monkey_recyclers)
 		cube_production += matter_bin.tier * 0.1
 
 /obj/machinery/monkey_recycler/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
 		. += span_notice("The status display reads: Producing <b>[cube_production]</b> cubes for every monkey inserted.")
 
 /obj/machinery/monkey_recycler/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(default_unfasten_wrench(user, tool))
 		power_change()
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/monkey_recycler/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/monkey_recycler/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_pry_open(user, tool, close_after_pry = TRUE, deconstruct_on_fail = TRUE)
 
 /obj/machinery/monkey_recycler/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]_open" : base_icon_state
 
 /obj/machinery/monkey_recycler/mouse_drop_receive(mob/living/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(!istype(target))
 		return
 	if(ismonkey(target))
 		stuff_monkey_in(target, user)
 
 /obj/machinery/monkey_recycler/proc/stuff_monkey_in(mob/living/carbon/human/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(target))
 		return
 	if(!IS_UNCONSCIOUS_OR_CRIT(target))
@@ -79,6 +99,8 @@ GLOBAL_LIST_EMPTY(monkey_recyclers)
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), user, span_notice("The machine now has [stored_matter] monkey\s worth of material stored.")))
 
 /obj/machinery/monkey_recycler/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(stored_matter >= 1)
 		to_chat(user, span_notice("The machine hisses loudly as it condenses the ground monkey meat. After a moment, it dispenses a brand new monkey cube."))
 		playsound(src.loc, 'sound/machines/hiss.ogg', 50, TRUE)
@@ -90,6 +112,8 @@ GLOBAL_LIST_EMPTY(monkey_recyclers)
 		to_chat(user, span_danger("The machine needs at least 1 monkey worth of material to produce a monkey cube. It currently has [stored_matter]."))
 
 /obj/machinery/monkey_recycler/multitool_act(mob/living/user, obj/item/multitool/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(I))
 		I.set_buffer(src)

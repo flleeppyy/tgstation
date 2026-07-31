@@ -21,16 +21,22 @@
 	var/light_level = VISION_ACTION_LIGHT_OFF
 
 /datum/action/adjust_vision/Grant(mob/living/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light_level(VISION_ACTION_LIGHT_LOW)
 	RegisterSignal(grant_to, COMSIG_MOB_UPDATE_SIGHT, PROC_REF(on_update_sight))
 
 /datum/action/adjust_vision/Remove(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	set_light_level(VISION_ACTION_LIGHT_OFF)
 	UnregisterSignal(remove_from, COMSIG_MOB_UPDATE_SIGHT)
 	. = ..()
 
 /datum/action/adjust_vision/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -46,10 +52,14 @@
 			set_light_level(VISION_ACTION_LIGHT_OFF)
 
 /datum/action/adjust_vision/proc/set_light_level(new_level)
+	procstart = null
+	src.procstart = null
 	light_level = new_level
 	owner.update_sight()
 
 /datum/action/adjust_vision/proc/on_update_sight(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/list/color_from
 	switch(light_level)

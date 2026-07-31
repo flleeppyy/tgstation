@@ -14,6 +14,8 @@ GLOBAL_LIST_INIT(skill_types, subtypesof(/datum/skill))
 	var/list/levelDownMessages = list()
 
 /datum/skill/proc/get_skill_modifier(modifier, level)
+	procstart = null
+	src.procstart = null
 	return modifiers[modifier][level] //Levels range from 1 (None) to 7 (Legendary)
 /**
  * new: sets up some lists.
@@ -21,6 +23,8 @@ GLOBAL_LIST_INIT(skill_types, subtypesof(/datum/skill))
  *Can't happen in the datum's definition because these lists are not constant expressions
  */
 /datum/skill/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	levelUpMessages = list(span_nicegreen("What the hell is [name]? Tell an admin if you see this message."), //This first index shouldn't ever really be used
 	span_nicegreen("I'm starting to figure out what [name] really is!"),
@@ -48,6 +52,8 @@ GLOBAL_LIST_INIT(skill_types, subtypesof(/datum/skill))
  * * silent - Silences the announcement if TRUE
  */
 /datum/skill/proc/level_gained(datum/mind/mind, new_level, old_level, silent)
+	procstart = null
+	src.procstart = null
 	if(silent)
 		return
 	to_chat(mind.current, levelUpMessages[new_level]) //new_level will be a value from 1 to 6, so we get appropriate message from the 6-element levelUpMessages list
@@ -55,6 +61,8 @@ GLOBAL_LIST_INIT(skill_types, subtypesof(/datum/skill))
  * level_lost: See level_gained, same idea but fires on skill level-down
  */
 /datum/skill/proc/level_lost(datum/mind/mind, new_level, old_level, silent)
+	procstart = null
+	src.procstart = null
 	if(silent)
 		return
 	to_chat(mind.current, levelDownMessages[old_level]) //old_level will be a value from 1 to 6, so we get appropriate message from the 6-element levelUpMessages list
@@ -68,6 +76,8 @@ GLOBAL_LIST_INIT(skill_types, subtypesof(/datum/skill))
  * * new_level - The current level of the user. Used to check if it meets the requirements for a reward
  */
 /datum/skill/proc/try_skill_reward(datum/mind/mind, new_level)
+	procstart = null
+	src.procstart = null
 	if (new_level != SKILL_LEVEL_LEGENDARY)
 		return
 	if (!ispath(skill_item_path))

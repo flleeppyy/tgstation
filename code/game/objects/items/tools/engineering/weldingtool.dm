@@ -56,6 +56,8 @@
 	acid = 30
 
 /obj/item/weldingtool/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_OVERLAY_LIGHT_SYSTEM(light_system))
 		middleman = new(src, "weldingtool")
@@ -71,10 +73,14 @@
 	update_appearance()
 
 /obj/item/weldingtool/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(middleman)
 	return ..()
 
 /obj/item/weldingtool/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(welding)
 		inhand_icon_state = "[initial(inhand_icon_state)]1"
 	else
@@ -83,6 +89,8 @@
 
 
 /obj/item/weldingtool/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(change_icons)
 		var/ratio = get_fuel() / max_fuel
@@ -93,6 +101,8 @@
 
 
 /obj/item/weldingtool/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(welding)
 		force = 15
 		damtype = BURN
@@ -115,14 +125,20 @@
 
 
 /obj/item/weldingtool/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] welds [user.p_their()] every orifice closed! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return FIRELOSS
 
 /obj/item/weldingtool/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	flamethrower_screwdriver(tool, user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/weldingtool/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stack/rods))
 		return NONE
 	flamethrower_rods(tool, user)
@@ -130,11 +146,15 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/weldingtool/cyborg_unequip(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isOn())
 		return
 	switched_on(user)
 
 /obj/item/weldingtool/use_tool(atom/target, mob/living/user, delay, amount, volume, datum/callback/extra_checks)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/sparks = mutable_appearance('icons/effects/welding_effect.dmi', "welding_sparks", GASFIRE_LAYER, src, ABOVE_LIGHTING_PLANE)
 	target.add_overlay(sparks)
 	LAZYADD(target.update_overlays_on_z, sparks)
@@ -143,6 +163,8 @@
 	target.cut_overlay(sparks)
 
 /obj/item/weldingtool/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!status && interacting_with.is_refillable())
 		reagents.trans_to(interacting_with, reagents.total_volume, transferred_by = user)
 		to_chat(user, span_notice("You empty [src]'s fuel tank into [interacting_with]."))
@@ -156,10 +178,14 @@
 	return try_heal_loop(interacting_with, user)
 
 /obj/item/weldingtool/proc/light_updated(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	fire_flicker_middleman(middleman)
 
 /obj/item/weldingtool/proc/try_heal_loop(atom/interacting_with, mob/living/user, repeating = FALSE)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/attacked_humanoid = interacting_with
 	var/obj/item/bodypart/affecting = attacked_humanoid.get_bodypart(check_zone(user.zone_selected))
 	if(isnull(affecting) || !IS_ROBOTIC_LIMB(affecting))
@@ -185,6 +211,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/weldingtool/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isOn())
 		return
 	use(1)
@@ -198,6 +226,8 @@
 		user.log_message("set [key_name(attacked_mob)] on fire with [src].", LOG_ATTACK)
 
 /obj/item/weldingtool/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(reagents.spark_act(0, SPARK_ACT_ENCLOSED, banned_reagents = /datum/reagent/fuel) & SPARK_ACT_DESTRUCTIVE)
 		message_admins("[ADMIN_LOOKUPFLW(user)] activated a rigged welder at [AREACOORD(user)].")
 		user.log_message("activated a rigged welder", LOG_VICTIM)
@@ -209,10 +239,14 @@
 
 /// Returns the amount of fuel in the welder
 /obj/item/weldingtool/proc/get_fuel()
+	procstart = null
+	src.procstart = null
 	return reagents.get_reagent_amount(/datum/reagent/fuel) + reagents.get_reagent_amount(/datum/reagent/toxin/plasma)
 
 /// Uses fuel from the welding tool.
 /obj/item/weldingtool/use(used = 0)
+	procstart = null
+	src.procstart = null
 	if(!isOn() || !check_fuel())
 		return FALSE
 
@@ -229,6 +263,8 @@
 
 /// Toggles the welding value.
 /obj/item/weldingtool/proc/set_welding(new_value)
+	procstart = null
+	src.procstart = null
 	if(welding == new_value)
 		return
 	. = welding
@@ -238,6 +274,8 @@
 
 /// Turns off the welder if there is no more fuel (does this really need to be its own proc?)
 /obj/item/weldingtool/proc/check_fuel(mob/user)
+	procstart = null
+	src.procstart = null
 	if(get_fuel() <= 0 && welding)
 		set_light_on(FALSE)
 		switched_on(user)
@@ -247,6 +285,8 @@
 
 // /Switches the welder on
 /obj/item/weldingtool/proc/switched_on(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!status)
 		balloon_alert(user, "unsecured!")
 		return
@@ -268,6 +308,8 @@
 
 /// Switches the welder off
 /obj/item/weldingtool/proc/switched_off()
+	procstart = null
+	src.procstart = null
 	set_welding(FALSE)
 
 	force = 3
@@ -277,18 +319,26 @@
 
 
 /obj/item/weldingtool/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "It contains [get_fuel()] unit\s of fuel out of [max_fuel]."
 
 /obj/item/weldingtool/get_temperature()
+	procstart = null
+	src.procstart = null
 	return welding * heat
 
 /// Returns whether or not the welding tool is currently on.
 /obj/item/weldingtool/proc/isOn()
+	procstart = null
+	src.procstart = null
 	return welding
 
 /// If welding tool ran out of fuel during a construction task, construction fails.
 /obj/item/weldingtool/tool_use_check(mob/living/user, amount, heat_required)
+	procstart = null
+	src.procstart = null
 	if(!isOn() || !check_fuel())
 		to_chat(user, span_warning("[src] has to be on to complete this task!"))
 		return FALSE
@@ -302,6 +352,8 @@
 
 /// Ran when the welder is attacked by a screwdriver.
 /obj/item/weldingtool/proc/flamethrower_screwdriver(obj/item/tool, mob/user)
+	procstart = null
+	src.procstart = null
 	if(welding)
 		to_chat(user, span_warning("Turn it off first!"))
 		return
@@ -316,6 +368,8 @@
 
 /// First step of building a flamethrower (when a welder is attacked by rods)
 /obj/item/weldingtool/proc/flamethrower_rods(obj/item/tool, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!status)
 		var/obj/item/stack/rods/used_rods = tool
 		if (used_rods.use(1))
@@ -330,6 +384,8 @@
 			to_chat(user, span_warning("You need one rod to start building a flamethrower!"))
 
 /obj/item/weldingtool/ignition_effect(atom/ignitable_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	if(use_tool(ignitable_atom, user, 0))
 		return span_rose("[user] casually lights [ignitable_atom] with [src], what a badass.")
 	else
@@ -347,6 +403,8 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 0.7, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 0.6)
 
 /obj/item/weldingtool/largetank/flamethrower_screwdriver()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/weldingtool/largetank/empty
@@ -370,6 +428,8 @@
 	change_icons = FALSE
 
 /obj/item/weldingtool/mini/flamethrower_screwdriver()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/weldingtool/mini/empty
@@ -388,6 +448,8 @@
 	change_icons = FALSE
 
 /obj/item/weldingtool/abductor/process()
+	procstart = null
+	src.procstart = null
 	if(get_fuel() <= max_fuel)
 		reagents.add_reagent(/datum/reagent/fuel, 1)
 	..()
@@ -416,6 +478,8 @@
 	var/nextrefueltick = 0
 
 /obj/item/weldingtool/experimental/process()
+	procstart = null
+	src.procstart = null
 	..()
 	if(get_fuel() < max_fuel && nextrefueltick < world.time)
 		nextrefueltick = world.time + 10

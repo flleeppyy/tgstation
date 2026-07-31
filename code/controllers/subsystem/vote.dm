@@ -21,6 +21,8 @@ SUBSYSTEM_DEF(vote)
 	var/last_vote_time = -INFINITY
 
 /datum/controller/subsystem/vote/Initialize()
+	procstart = null
+	src.procstart = null
 	for(var/vote_type in subtypesof(/datum/vote))
 		var/datum/vote/vote = new vote_type()
 		if(!vote.is_accessible_vote())
@@ -33,6 +35,8 @@ SUBSYSTEM_DEF(vote)
 
 // Called by master_controller
 /datum/controller/subsystem/vote/fire()
+	procstart = null
+	src.procstart = null
 	if(!current_vote)
 		return
 	current_vote.time_remaining = round((current_vote.started_time + CONFIG_GET(number/vote_period) - world.time) / 10)
@@ -41,6 +45,8 @@ SUBSYSTEM_DEF(vote)
 
 /// Ends the current vote.
 /datum/controller/subsystem/vote/proc/end_vote()
+	procstart = null
+	src.procstart = null
 	ASSERT(current_vote)
 	process_vote_result()
 	SStgui.close_uis(src)
@@ -48,6 +54,8 @@ SUBSYSTEM_DEF(vote)
 
 /// Resets all of our vars after votes conclude / are cancelled.
 /datum/controller/subsystem/vote/proc/reset()
+	procstart = null
+	src.procstart = null
 	voted.Cut()
 	voting.Cut()
 
@@ -65,6 +73,8 @@ SUBSYSTEM_DEF(vote)
  * and finally follows through with the effects of the vote.
  */
 /datum/controller/subsystem/vote/proc/process_vote_result()
+	procstart = null
+	src.procstart = null
 
 	// First collect all the non-voters we have.
 	var/list/non_voters = GLOB.directory.Copy() - voted
@@ -127,6 +137,8 @@ SUBSYSTEM_DEF(vote)
  * One selection per person, and the selection with the most votes wins.
  */
 /datum/controller/subsystem/vote/proc/submit_single_vote(mob/voter, their_vote)
+	procstart = null
+	src.procstart = null
 	if(!current_vote)
 		return
 	if(!voter?.ckey)
@@ -151,6 +163,8 @@ SUBSYSTEM_DEF(vote)
  * Any number of selections per person, and the selection with the most votes wins.
  */
 /datum/controller/subsystem/vote/proc/submit_multi_vote(mob/voter, their_vote)
+	procstart = null
+	src.procstart = null
 	if(!current_vote)
 		return
 	if(!voter?.ckey)
@@ -180,6 +194,8 @@ SUBSYSTEM_DEF(vote)
  * * forced - Whether we're forcing the vote to go through regardless of existing votes or other circumstances.
  */
 /datum/controller/subsystem/vote/proc/initiate_vote(vote_type, vote_initiator_name, mob/vote_initiator, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!can_vote_start(vote_initiator, forced))
 		return FALSE
 
@@ -255,6 +271,8 @@ SUBSYSTEM_DEF(vote)
  * Returns TRUE if we can start a vote, FALSE if we can't.
  */
 /datum/controller/subsystem/vote/proc/can_vote_start(mob/vote_initiator, forced)
+	procstart = null
+	src.procstart = null
 	// Even if it's forced we can't vote before we're set up
 	if(!MC_RUNNING(init_stage))
 		if(vote_initiator)
@@ -278,6 +296,8 @@ SUBSYSTEM_DEF(vote)
 	return TRUE
 
 /datum/controller/subsystem/vote/proc/toggle_dead_voting(mob/toggle_initiator)
+	procstart = null
+	src.procstart = null
 	var/switch_deadvote_config = !CONFIG_GET(flag/no_dead_vote)
 	CONFIG_SET(flag/no_dead_vote, switch_deadvote_config)
 	var/text_verb = !switch_deadvote_config ? "enabled" : "disabled"
@@ -287,9 +307,13 @@ SUBSYSTEM_DEF(vote)
 	update_static_data_for_all_viewers()
 
 /datum/controller/subsystem/vote/ui_state()
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 /datum/controller/subsystem/vote/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	// Tracks who is currently voting
 	voting |= user.client?.ckey
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -298,6 +322,8 @@ SUBSYSTEM_DEF(vote)
 		ui.open()
 
 /datum/controller/subsystem/vote/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/is_lower_admin = !!user.client?.holder
@@ -353,12 +379,16 @@ SUBSYSTEM_DEF(vote)
 	return data
 
 /datum/controller/subsystem/vote/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["VoteCD"] = CONFIG_GET(number/vote_delay)
 	data["deadVoteEnabled"] = CONFIG_GET(flag/no_dead_vote)
 	return data
 
 /datum/controller/subsystem/vote/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -438,6 +468,8 @@ SUBSYSTEM_DEF(vote)
 			return TRUE
 
 /datum/controller/subsystem/vote/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	voting -= user.client?.ckey
 
 /// Mob level verb that allows players to vote on the current vote.
@@ -456,9 +488,13 @@ GAME_VERB(/mob, vote, "Vote", "OOC")
 	show_to_observers = FALSE
 
 /datum/action/vote/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	return TRUE // Democracy is always available to the free people
 
 /datum/action/vote/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -468,6 +504,8 @@ GAME_VERB(/mob, vote, "Vote", "OOC")
 
 // We also need to remove our action from the player actions when we're cleaning up.
 /datum/action/vote/Remove(mob/removed_from)
+	procstart = null
+	src.procstart = null
 	if(removed_from.persistent_client)
 		removed_from.persistent_client.player_actions -= src
 

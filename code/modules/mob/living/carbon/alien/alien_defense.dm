@@ -1,11 +1,17 @@
 
 /mob/living/carbon/alien/get_eye_protection()
+	procstart = null
+	src.procstart = null
 	return ..() + FLASH_PROTECTION_WELDER //potential cyber implants + natural eye protection
 
 /mob/living/carbon/alien/get_ear_protection(ignore_deafness = FALSE)
+	procstart = null
+	src.procstart = null
 	return ..() + EAR_PROTECTION_HEAVY //no ears
 
 /mob/living/carbon/alien/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	..(AM, skipcatch = TRUE, hitpush = FALSE)
 
 
@@ -14,6 +20,8 @@ As such, they can either help or harm other aliens. Help works like the human he
 In all, this is a lot like the monkey code. /N
 */
 /mob/living/carbon/alien/attack_alien(mob/living/carbon/alien/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!user.combat_mode)
 		if(user == src && check_self_for_injuries())
 			return
@@ -38,10 +46,14 @@ In all, this is a lot like the monkey code. /N
 
 
 /mob/living/carbon/alien/attack_larva(mob/living/carbon/alien/larva/L, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_alien(L)
 
 
 /mob/living/carbon/alien/attack_hand(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -56,17 +68,23 @@ In all, this is a lot like the monkey code. /N
 		return TRUE
 
 /mob/living/carbon/alien/get_shove_flags(mob/living/shover, obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(weapon) || IS_UNCONSCIOUS_OR_CRIT(src))
 		. &= ~(SHOVE_CAN_MOVE|SHOVE_CAN_HIT_SOMETHING|SHOVE_CAN_STAGGER)
 
 /mob/living/carbon/alien/attack_paw(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(..())
 		if (stat != DEAD)
 			var/obj/item/bodypart/affecting = get_bodypart(get_random_valid_zone(user.zone_selected))
 			apply_damage(rand(1, 3), BRUTE, affecting)
 
 /mob/living/carbon/alien/ex_act(severity, target, origin)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || QDELETED(src))
 		return FALSE
@@ -88,7 +106,11 @@ In all, this is a lot like the monkey code. /N
 	return TRUE
 
 /mob/living/carbon/alien/acid_act(acidpwr, acid_volume)
+	procstart = null
+	src.procstart = null
 	return FALSE//aliens are immune to acid.
 
 /mob/living/carbon/alien/on_fire_stack(seconds_per_tick, datum/status_effect/fire_handler/fire_stacks/fire_handler)
+	procstart = null
+	src.procstart = null
 	adjust_bodytemperature((BODYTEMP_HEATING_MAX + (fire_handler.stacks * 12)) * 0.5 * seconds_per_tick)

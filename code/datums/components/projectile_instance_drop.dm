@@ -4,6 +4,8 @@
 	var/atom/movable/dropped_atom
 
 /datum/component/projectile_instance_drop/Initialize(atom/movable/dropped_atom)
+	procstart = null
+	src.procstart = null
 	if(!isprojectile(parent))
 		return COMPONENT_INCOMPATIBLE
 	if (!dropped_atom)
@@ -12,29 +14,39 @@
 	src.dropped_atom = dropped_atom
 
 /datum/component/projectile_instance_drop/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	dropped_atom.forceMove(parent)
 	RegisterSignal(parent, COMSIG_PROJECTILE_RANGE_OUT, PROC_REF(drop_item))
 	RegisterSignal(parent, COMSIG_PROJECTILE_SELF_ON_HIT, PROC_REF(on_projectile_hit))
 	RegisterSignals(dropped_atom, list(COMSIG_MOVABLE_MOVED, COMSIG_QDELETING), PROC_REF(on_instance_left))
 
 /datum/component/projectile_instance_drop/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_PROJECTILE_RANGE_OUT, COMSIG_PROJECTILE_SELF_ON_HIT))
 	if (dropped_atom)
 		UnregisterSignal(dropped_atom, list(COMSIG_MOVABLE_MOVED, COMSIG_QDELETING))
 		QDEL_NULL(dropped_atom) // If it left our atom's contents then this is a null reference, if it didn't then it's fucked I guess
 
 /datum/component/projectile_instance_drop/Destroy(force)
+	procstart = null
+	src.procstart = null
 	dropped_atom = null
 	return ..()
 
 /// When we hit something check if we should hit the floor
 /datum/component/projectile_instance_drop/proc/on_projectile_hit(obj/projectile/source, atom/movable/firer, atom/target, angle, hit_limb_zone, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (blocked < 100 && !pierce_hit)
 		drop_item(source)
 
 /// Drop item to ground
 /datum/component/projectile_instance_drop/proc/drop_item(obj/projectile/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/turf/drop_turf = source.drop_location()
 	var/atom/movable/dropping = dropped_atom
@@ -45,6 +57,8 @@
 
 /// If our projectile exits our contents then remove the component
 /datum/component/projectile_instance_drop/proc/on_instance_left()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	dropped_atom = null
 	qdel(src)

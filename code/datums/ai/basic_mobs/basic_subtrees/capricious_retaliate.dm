@@ -5,6 +5,8 @@
 	time_between_perform = 1 SECONDS
 
 /datum/bt_node/ai_behavior/capricious_retaliate/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/pawn = controller.pawn
 
 	if(controller.blackboard_key_exists(BB_BASIC_MOB_RETALIATE_LIST))
@@ -49,9 +51,13 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/capricious_retaliate/proc/failed_targeting(atom/pawn)
+	procstart = null
+	src.procstart = null
 	pawn.visible_message(span_notice("[pawn] grumbles."))
 
 /datum/bt_node/ai_behavior/capricious_retaliate/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(succeeded || !ignore_faction)
 		return

@@ -25,6 +25,8 @@
 	var/crit_timer
 
 /obj/item/light_eater/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, HAND_REPLACEMENT_TRAIT)
 	AddComponent(/datum/component/butchering, \
@@ -34,6 +36,8 @@
 	AddComponent(/datum/component/light_eater)
 
 /obj/item/light_eater/equipped(mob/user, slot, initial = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!user?.mind?.has_antag_datum(/datum/antagonist/nightmare))
 		return
@@ -41,6 +45,8 @@
 	RegisterSignal(user, COMSIG_MOB_AFTER_EXIT_JAUNT, PROC_REF(stop_crit_timer))
 
 /obj/item/light_eater/dropped(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!user?.mind?.has_antag_datum(/datum/antagonist/nightmare))
 		return
@@ -49,6 +55,8 @@
 	remove_crit()
 
 /obj/item/light_eater/attack(mob/living/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!has_crit)
 		return
@@ -64,12 +72,18 @@
 	remove_crit()
 
 /obj/item/light_eater/proc/prepare_crit_timer()
+	procstart = null
+	src.procstart = null
 	crit_timer = addtimer(CALLBACK(src, PROC_REF(add_crit)), 7 SECONDS, TIMER_DELETE_ME | TIMER_STOPPABLE)
 
 /obj/item/light_eater/proc/stop_crit_timer()
+	procstart = null
+	src.procstart = null
 	deltimer(crit_timer)
 
 /obj/item/light_eater/proc/add_crit()
+	procstart = null
+	src.procstart = null
 	if(has_crit)
 		return
 	has_crit = TRUE
@@ -78,6 +92,8 @@
 		loc.balloon_alert(loc, "critical strike ready")
 
 /obj/item/light_eater/proc/remove_crit()
+	procstart = null
+	src.procstart = null
 	if(!has_crit)
 		return
 	has_crit = FALSE

@@ -36,6 +36,8 @@
  * required id string A unique window identifier.
  */
 /datum/tgui_window/New(client/client, id, pooled = FALSE)
+	procstart = null
+	src.procstart = null
 	src.id = id
 	src.client = client
 	src.client.tgui_windows[id] = src
@@ -119,6 +121,8 @@
  * Reinitializes the panel with previous data used for initialization.
  */
 /datum/tgui_window/proc/reinitialize()
+	procstart = null
+	src.procstart = null
 	initialize(
 		strict_mode = initial_strict_mode,
 		assets = initial_assets,
@@ -137,6 +141,8 @@
  * return bool
  */
 /datum/tgui_window/proc/is_ready()
+	procstart = null
+	src.procstart = null
 	return status == TGUI_WINDOW_READY
 
 /**
@@ -147,6 +153,8 @@
  * return bool
  */
 /datum/tgui_window/proc/can_be_suspended()
+	procstart = null
+	src.procstart = null
 	return !fatally_errored \
 		&& pooled \
 		&& pool_index > 0 \
@@ -165,6 +173,8 @@
  * optional ui /datum/tgui
  */
 /datum/tgui_window/proc/acquire_lock(datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	locked = TRUE
 	locked_by = ui
 
@@ -174,6 +184,8 @@
  * Release the window lock.
  */
 /datum/tgui_window/proc/release_lock()
+	procstart = null
+	src.procstart = null
 	// Clean up assets sent by tgui datum which requested the lock
 	if(locked)
 		sent_assets = list()
@@ -190,6 +202,8 @@
  * to support multiple subscribers.
  */
 /datum/tgui_window/proc/subscribe(datum/object, delegate)
+	procstart = null
+	src.procstart = null
 	subscriber_object = object
 	subscriber_delegate = delegate
 
@@ -199,6 +213,8 @@
  * Unsubscribes the datum. Do not forget to call this when cleaning up.
  */
 /datum/tgui_window/proc/unsubscribe(datum/object)
+	procstart = null
+	src.procstart = null
 	subscriber_object = null
 	subscriber_delegate = null
 
@@ -210,6 +226,8 @@
  * optional can_be_suspended bool
  */
 /datum/tgui_window/proc/close(can_be_suspended = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return
 	if(can_be_suspended && can_be_suspended())
@@ -242,6 +260,8 @@
  * optional force bool Send regardless of the ready status.
  */
 /datum/tgui_window/proc/send_message(type, payload, force)
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return
 	var/message = TGUI_CREATE_MESSAGE(type, payload)
@@ -264,6 +284,8 @@
  * optional force bool Send regardless of the ready status.
  */
 /datum/tgui_window/proc/send_raw_message(message, force)
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return
 	// Place into queue if window is still loading
@@ -286,6 +308,8 @@
  * return bool - TRUE if any assets had to be sent to the client
  */
 /datum/tgui_window/proc/send_asset(datum/asset/asset)
+	procstart = null
+	src.procstart = null
 	if(!client || !asset)
 		return
 	sent_assets |= list(asset)
@@ -304,6 +328,8 @@
  * Sends queued messages if the queue wasn't empty.
  */
 /datum/tgui_window/proc/flush_message_queue()
+	procstart = null
+	src.procstart = null
 	if(!client || !message_queue)
 		return
 	for(var/message in message_queue)
@@ -320,6 +346,8 @@
  * required inline_html string HTML to inject
  */
 /datum/tgui_window/proc/replace_html(inline_html = "")
+	procstart = null
+	src.procstart = null
 	client << output(url_encode(inline_html), is_browser \
 		? "[id]:replaceHtml" \
 		: "[id].browser:replaceHtml")
@@ -330,6 +358,8 @@
  * Callback for handling incoming tgui messages.
  */
 /datum/tgui_window/proc/on_message(type, payload, href_list)
+	procstart = null
+	src.procstart = null
 	// Status can be READY if user has refreshed the window.
 	if(type == "ready" && status == TGUI_WINDOW_READY)
 		// Resend the assets
@@ -387,9 +417,13 @@
 			send_message("acknowledgePayloadChunk", list("id" = payload_id))
 
 /datum/tgui_window/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	return var_name != NAMEOF(src, id) && ..()
 
 /datum/tgui_window/proc/create_oversized_payload(payload_id, message_type, chunk_count)
+	procstart = null
+	src.procstart = null
 	if(oversized_payloads[payload_id])
 		stack_trace("Attempted to create oversized tgui payload with duplicate ID.")
 		return
@@ -401,6 +435,8 @@
 	)
 
 /datum/tgui_window/proc/append_payload_chunk(payload_id, chunk)
+	procstart = null
+	src.procstart = null
 	var/list/payload = oversized_payloads[payload_id]
 	if(!payload)
 		return
@@ -416,4 +452,6 @@
 		payload["timeout"] = addtimer(CALLBACK(src, PROC_REF(remove_oversized_payload), payload_id), 1 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_STOPPABLE)
 
 /datum/tgui_window/proc/remove_oversized_payload(payload_id)
+	procstart = null
+	src.procstart = null
 	oversized_payloads -= payload_id

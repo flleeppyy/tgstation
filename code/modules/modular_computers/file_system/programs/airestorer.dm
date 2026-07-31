@@ -16,6 +16,8 @@
 	var/restoring = FALSE
 
 /datum/computer_file/program/ai_restorer/on_examine(obj/item/modular_computer/source, mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/examine_text = list()
 	if(!stored_card)
 		examine_text += "It has a slot installed for an intelliCard."
@@ -29,10 +31,14 @@
 	return examine_text
 
 /datum/computer_file/program/ai_restorer/kill_program(mob/user)
+	procstart = null
+	src.procstart = null
 	try_eject(forced = TRUE)
 	return ..()
 
 /datum/computer_file/program/ai_restorer/process_tick(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!restoring) //Put the check here so we don't check for an ai all the time
 		return
@@ -58,10 +64,14 @@
 	return TRUE
 
 /datum/computer_file/program/ai_restorer/application_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/aicard))
 		return aicard_act(user, tool)
 
 /datum/computer_file/program/ai_restorer/proc/aicard_act(mob/living/user, obj/item/aicard/used_aicard)
+	procstart = null
+	src.procstart = null
 	if(!computer)
 		return NONE
 	if(stored_card)
@@ -75,6 +85,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /datum/computer_file/program/ai_restorer/try_eject(mob/living/user, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!stored_card)
 		if(user)
 			to_chat(user, span_warning("There is no card in \the [computer.name]."))
@@ -97,6 +109,8 @@
 
 
 /datum/computer_file/program/ai_restorer/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(action)
 		if("PRG_beginReconstruction")
@@ -113,6 +127,8 @@
 				return TRUE
 
 /datum/computer_file/program/ai_restorer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["ejectable"] = TRUE

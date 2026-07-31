@@ -22,6 +22,8 @@
 	jaunt_out_type = /obj/effect/temp_visual/dir_setting/ash_shift/out
 
 /datum/action/cooldown/spell/jaunt/ethereal_jaunt/ash/do_steam_effects()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/action/cooldown/spell/jaunt/ethereal_jaunt/ash/long

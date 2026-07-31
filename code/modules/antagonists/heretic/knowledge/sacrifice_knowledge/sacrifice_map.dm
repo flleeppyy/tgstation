@@ -11,10 +11,14 @@ GLOBAL_LIST_EMPTY(heretic_sacrifice_landmarks)
 	var/for_heretic_path = PATH_START
 
 /obj/effect/landmark/heretic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.heretic_sacrifice_landmarks[for_heretic_path] = src
 
 /obj/effect/landmark/heretic/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.heretic_sacrifice_landmarks[for_heretic_path] = null
 	return ..()
 
@@ -68,6 +72,8 @@ GLOBAL_LIST_EMPTY(heretic_sacrifice_landmarks)
 	area_flags = NOTELEPORT | HIDDEN_AREA | BLOCK_SUICIDE | NO_BOH
 
 /area/centcom/heretic_sacrifice/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(!ambientsounds)
 		ambientsounds = GLOB.ambience_assoc[ambience_index] + 'sound/ambience/misc/ambiatm1.ogg'
 	return ..()

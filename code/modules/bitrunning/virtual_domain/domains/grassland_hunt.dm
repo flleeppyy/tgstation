@@ -10,12 +10,16 @@
 
 
 /datum/lazy_template/virtual_domain/grasslands_hunt/setup_domain(list/created_atoms)
+	procstart = null
+	src.procstart = null
 	for(var/obj/effect/landmark/bitrunning/mob_segment/landmark in created_atoms)
 		RegisterSignal(landmark, COMSIG_BITRUNNING_MOB_SEGMENT_SPAWNED, PROC_REF(on_spawned))
 
 
 /// The mob segment has concluded spawning
 /datum/lazy_template/virtual_domain/grasslands_hunt/proc/on_spawned(datum/source, list/mobs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/mob/living/fauna as anything in mobs)
@@ -24,6 +28,8 @@
 
 /// Handles deer being slain
 /datum/lazy_template/virtual_domain/grasslands_hunt/proc/on_death(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	add_points(3.5)

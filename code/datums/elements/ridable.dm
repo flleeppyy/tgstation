@@ -14,6 +14,8 @@
 	var/riding_component_type = /datum/component/riding
 
 /datum/element/ridable/Attach(atom/movable/target, component_type = /datum/component/riding, force_rider_standup = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(target))
 		return COMPONENT_INCOMPATIBLE
@@ -35,6 +37,8 @@
 		RegisterSignal(target, COMSIG_MOB_STATCHANGE, PROC_REF(on_stat_change))
 
 /datum/element/ridable/Detach(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	target.buckle_lying = target::buckle_lying
 	target.can_buckle = target::can_buckle
 	UnregisterSignal(target, list(COMSIG_MOVABLE_PREBUCKLE, COMSIG_SPEED_POTION_APPLIED, COMSIG_MOB_STATCHANGE))
@@ -42,6 +46,8 @@
 
 /// Someone is buckling to this movable, which is literally the only thing we care about (other than speed potions)
 /datum/element/ridable/proc/check_mounting(atom/movable/target_movable, mob/living/potential_rider, force = FALSE, ride_check_flags = NONE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT(potential_rider, TRAIT_CANT_RIDE))
@@ -80,6 +86,8 @@
 
 /// Try putting the appropriate number of [riding offhand items][/obj/item/riding_offhand] into the target's hands, return FALSE if we can't
 /datum/element/ridable/proc/equip_buckle_inhands(mob/living/carbon/human/user, amount_required = 1, atom/movable/target_movable, riding_target_override = null)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = target_movable
 	var/amount_equipped = 0
 	for(var/amount_needed = amount_required, amount_needed > 0, amount_needed--)
@@ -116,6 +124,8 @@
 
 /// Checks to see if we've been hit with a red xenobio potion to make us faster. This is only registered if we're a vehicle
 /datum/element/ridable/proc/check_potion(atom/movable/ridable_atom, obj/item/slimepotion/speed/speed_potion, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT(ridable_atom, TRAIT_SPEED_POTIONED))
@@ -133,6 +143,8 @@
 
 /// Remove all of the relevant [riding offhand items][/obj/item/riding_offhand] from the target
 /datum/element/ridable/proc/unequip_buckle_inhands(mob/living/carbon/user, atom/movable/target_movable)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = target_movable
 	for(var/obj/item/riding_offhand/O in user.contents)
 		if(O.parent != AM)
@@ -144,6 +156,8 @@
 	return TRUE
 
 /datum/element/ridable/proc/on_stat_change(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// If we're dead, don't let anyone buckle onto us
@@ -167,16 +181,22 @@
 	var/selfdeleting = FALSE
 
 /obj/item/riding_offhand/dropped()
+	procstart = null
+	src.procstart = null
 	selfdeleting = TRUE
 	. = ..()
 
 /obj/item/riding_offhand/equipped()
+	procstart = null
+	src.procstart = null
 	if(loc != rider && loc != parent)
 		selfdeleting = TRUE
 		qdel(src)
 	. = ..()
 
 /obj/item/riding_offhand/Destroy()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = parent
 	if(selfdeleting)
 		if(rider in AM.buckled_mobs)
@@ -184,6 +204,8 @@
 	. = ..()
 
 /obj/item/riding_offhand/on_thrown(mob/living/carbon/user, atom/target)
+	procstart = null
+	src.procstart = null
 	if(rider == user)
 		return //Piggyback user.
 	user.unbuckle_mob(rider)
@@ -193,6 +215,8 @@
 	return rider
 
 /obj/item/riding_offhand/interact_with_atom(atom/movable/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(interacting_with) || !interacting_with.can_buckle)
 		return NONE
 	if(rider == user) // Piggyback user

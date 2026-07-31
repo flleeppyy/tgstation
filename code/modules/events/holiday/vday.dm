@@ -27,6 +27,8 @@
 	)
 
 /datum/round_event/valentines/proc/is_valid_valentine(mob/living/guy)
+	procstart = null
+	src.procstart = null
 	if(guy.stat == DEAD)
 		return FALSE
 	if(isnull(guy.mind))
@@ -36,6 +38,8 @@
 	return TRUE
 
 /datum/round_event/valentines/proc/give_valentines_things(mob/living/guy)
+	procstart = null
+	src.procstart = null
 	var/datum/round_event_control/valentines/controller = control
 	if(!istype(controller))
 		return
@@ -51,16 +55,22 @@
 			guy.put_in_hands(thing)
 
 /datum/round_event/valentines/proc/forge_valentines_objective(mob/living/lover, mob/living/date)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/valentine/valentine = new()
 	valentine.date = date.mind
 	lover.mind.add_antag_datum(valentine) //These really should be teams but i can't be assed to incorporate third wheels right now
 
 /datum/round_event/valentines/proc/forge_third_wheel(mob/living/sad_one, mob/living/date_one, mob/living/date_two)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/valentine/third_wheel/third_wheel = new()
 	third_wheel.date = pick(date_one.mind, date_two.mind)
 	sad_one.mind.add_antag_datum(third_wheel)
 
 /datum/round_event/valentines/start()
+	procstart = null
+	src.procstart = null
 	var/datum/round_event_control/valentines/controller = control
 	if(!istype(controller))
 		return
@@ -120,6 +130,8 @@
 		candidates_pruned[1].mind.add_antag_datum(/datum/antagonist/heartbreaker)
 
 /datum/round_event/valentines/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("It's Valentine's Day! Give a valentine to that special someone!")
 
 /obj/item/paper/valentine
@@ -130,6 +142,8 @@
 	show_written_words = FALSE
 
 /obj/item/paper/valentine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	default_raw_text = pick_list(VALENTINE_FILE, "valentines") || "A generic message of love or whatever."
 	return ..()
 
@@ -142,6 +156,8 @@
 	junkiness = 5
 
 /obj/item/food/candyheart/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = pick(strings(VALENTINE_FILE, "candyhearts"))
 	icon_state = pick("candyheart", "candyheart2", "candyheart3", "candyheart4")

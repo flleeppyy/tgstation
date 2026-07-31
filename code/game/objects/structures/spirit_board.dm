@@ -24,12 +24,16 @@
 	var/required_user_count = 2
 
 /obj/structure/spirit_board/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(1))
 		name = "luigi board"
 	planchette = ghosty_options[1]
 
 /obj/structure/spirit_board/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(planchette)
 		. += span_notice("The planchette is currently at the letter \"[planchette]\".")
@@ -37,6 +41,8 @@
 		. += span_notice("The planchette is in the middle of the board on no particular letter.")
 
 /obj/structure/spirit_board/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -44,6 +50,8 @@
 	return TRUE
 
 /obj/structure/spirit_board/attack_ghost(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -51,6 +59,8 @@
 	return TRUE
 
 /obj/structure/spirit_board/proc/spirit_board_pick_letter(mob/ghost)
+	procstart = null
+	src.procstart = null
 	if(!spirit_board_checks(ghost))
 		return
 
@@ -78,6 +88,8 @@
 	)
 
 /obj/structure/spirit_board/proc/spirit_board_checks(mob/ghost)
+	procstart = null
+	src.procstart = null
 	var/cd_penalty = (ghost.ckey == lastuser) ? 1 SECONDS : 0 SECONDS //Give some other people a chance, hog.
 
 	if(next_use - cd_penalty > world.time)

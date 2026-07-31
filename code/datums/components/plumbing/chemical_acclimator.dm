@@ -3,11 +3,15 @@
 	supply_connects = EAST
 
 /datum/component/plumbing/acclimator/Initialize(ducting_layer)
+	procstart = null
+	src.procstart = null
 	if(!istype(parent, /obj/machinery/plumbing/acclimator))
 		return COMPONENT_INCOMPATIBLE
 	return ..()
 
 /datum/component/plumbing/acclimator/send_request(dir)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/plumbing/acclimator/myacclimator = parent
 	if(myacclimator.acclimate_state == AC_FILLING)
 		if(reagents.total_volume < myacclimator.max_volume)
@@ -19,6 +23,8 @@
 		myacclimator.update_appearance(UPDATE_ICON_STATE)
 
 /datum/component/plumbing/acclimator/can_give(amount, reagent)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/plumbing/acclimator/myacclimator = parent
 
 	return myacclimator.acclimate_state == AC_EMPTYING && !reagents.is_reacting && ..()

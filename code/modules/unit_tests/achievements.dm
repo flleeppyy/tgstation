@@ -2,6 +2,8 @@
 /datum/unit_test/achievements
 
 /datum/unit_test/achievements/Run()
+	procstart = null
+	src.procstart = null
 	var/list/collected_ids = list()
 	for(var/datum/award/award as anything in subtypesof(/datum/award))
 		if(!initial(award.name)) //Skip abstract achievements types
@@ -24,6 +26,8 @@
 /datum/unit_test/unlockable_themes
 
 /datum/unit_test/unlockable_themes/Run()
+	procstart = null
+	src.procstart = null
 	var/list/collected_ids = list()
 	for(var/datum/computer_file/program/maintenance/theme/theme as anything in typesof(/datum/computer_file/program/maintenance/theme))
 		if(theme::abstract_type == theme)

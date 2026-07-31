@@ -12,6 +12,8 @@ GLOBAL_PROTECT(poll_options)
  *
  */
 /mob/dead/new_player/proc/handle_player_polling()
+	procstart = null
+	src.procstart = null
 	var/list/output = list("<div align='center'><B>Player polls</B><hr><table>")
 	var/rs = REF(src)
 	for(var/p in GLOB.polls)
@@ -27,6 +29,8 @@ GLOBAL_PROTECT(poll_options)
  *
  */
 /mob/dead/new_player/proc/poll_player(datum/poll_question/poll)
+	procstart = null
+	src.procstart = null
 	if(!poll)
 		return
 	if(!SSdbcore.Connect())
@@ -51,6 +55,8 @@ GLOBAL_PROTECT(poll_options)
  *
  */
 /mob/dead/new_player/proc/poll_player_option(datum/poll_question/poll)
+	procstart = null
+	src.procstart = null
 	var/datum/db_query/query_option_get_voted = SSdbcore.NewQuery({"
 		SELECT optionid FROM [format_table_name("poll_vote")]
 		WHERE pollid = :pollid AND ckey = :ckey AND deleted = 0
@@ -95,6 +101,8 @@ GLOBAL_PROTECT(poll_options)
  *
  */
 /mob/dead/new_player/proc/poll_player_text(datum/poll_question/poll)
+	procstart = null
+	src.procstart = null
 	var/datum/db_query/query_text_get_replytext = SSdbcore.NewQuery({"
 		SELECT replytext FROM [format_table_name("poll_textreply")]
 		WHERE pollid = :pollid AND ckey = :ckey AND deleted = 0
@@ -132,6 +140,8 @@ GLOBAL_PROTECT(poll_options)
  *
  */
 /mob/dead/new_player/proc/poll_player_rating(datum/poll_question/poll)
+	procstart = null
+	src.procstart = null
 	var/datum/db_query/query_rating_get_votes = SSdbcore.NewQuery({"
 		SELECT optionid, rating FROM [format_table_name("poll_vote")]
 		WHERE pollid = :pollid AND ckey = :ckey AND deleted = 0
@@ -187,6 +197,8 @@ GLOBAL_PROTECT(poll_options)
  *
  */
 /mob/dead/new_player/proc/poll_player_multi(datum/poll_question/poll)
+	procstart = null
+	src.procstart = null
 	var/datum/db_query/query_multi_get_votes = SSdbcore.NewQuery({"
 		SELECT optionid FROM [format_table_name("poll_vote")]
 		WHERE pollid = :pollid AND ckey = :ckey AND deleted = 0
@@ -231,6 +243,8 @@ GLOBAL_PROTECT(poll_options)
  *
  */
 /mob/dead/new_player/proc/poll_player_irv(datum/poll_question/poll)
+	procstart = null
+	src.procstart = null
 	var/datum/asset/irv_assets = get_asset_datum(/datum/asset/group/irv)
 	irv_assets.send(src)
 	var/datum/db_query/query_irv_get_votes = SSdbcore.NewQuery({"
@@ -319,6 +333,8 @@ GLOBAL_PROTECT(poll_options)
  *
  */
 /mob/dead/new_player/proc/vote_on_poll_handler(datum/poll_question/poll, href_list)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		to_chat(src, span_danger("Failed to establish database connection."))
 		return
@@ -386,6 +402,8 @@ GLOBAL_PROTECT(poll_options)
  *
  */
 /mob/dead/new_player/proc/vote_on_poll_option(datum/poll_question/poll, href_list, admin_rank, sql_poll_id, vote_id)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		to_chat(src, span_danger("Failed to establish database connection."))
 		return
@@ -418,6 +436,8 @@ GLOBAL_PROTECT(poll_options)
  *
  */
 /mob/dead/new_player/proc/vote_on_poll_text(href_list, admin_rank, sql_poll_id, vote_id)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		to_chat(src, span_danger("Failed to establish database connection."))
 		return
@@ -450,6 +470,8 @@ GLOBAL_PROTECT(poll_options)
  *
  */
 /mob/dead/new_player/proc/vote_on_poll_rating(datum/poll_question/poll, list/href_list, admin_rank, sql_poll_id)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		to_chat(src, span_danger("Failed to establish database connection."))
 		return
@@ -493,6 +515,8 @@ GLOBAL_PROTECT(poll_options)
  *
  */
 /mob/dead/new_player/proc/vote_on_poll_multi(datum/poll_question/poll, list/href_list, admin_rank, sql_poll_id)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		to_chat(src, span_danger("Failed to establish database connection."))
 		return
@@ -540,6 +564,8 @@ GLOBAL_PROTECT(poll_options)
  *
  */
 /mob/dead/new_player/proc/vote_on_poll_irv(datum/poll_question/poll, list/href_list, admin_rank, sql_poll_id)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		to_chat(src, span_danger("Failed to establish database connection."))
 		return

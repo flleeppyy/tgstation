@@ -38,10 +38,14 @@
 	var/fillet_name = "%NAME fillet"
 
 /obj/item/food/fishmeat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_FOOD_DONT_INHERIT_NAME_FROM_PROCESSED, INNATE_TRAIT)
 
 /obj/item/food/fishmeat/OnCreatedFromProcessing(mob/living/user, obj/item/work_tool, list/chosen_option, atom/original_atom)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = replacetext(fillet_name, "%NAME", original_atom.name)
 	material_flags &= ~MATERIAL_ADD_PREFIX //don't double down on material prefixes
@@ -57,6 +61,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/fishmeat/quality/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/quality_food_ingredient, FOOD_COMPLEXITY_1)
 
@@ -73,6 +79,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/fishmeat/salmon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/quality_food_ingredient, FOOD_COMPLEXITY_1)
 
@@ -88,6 +96,8 @@
 	var/cell_line = CELL_LINE_TABLE_CARP
 
 /obj/item/food/fishmeat/carp/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cell_line)
 		AddElement(/datum/element/swabable, cell_line, CELL_VIRUS_TABLE_GENERIC_MOB)
@@ -102,6 +112,8 @@
 /obj/item/food/fishmeat/carp/no_tox
 
 /obj/item/food/fishmeat/carp/no_tox/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	food_reagents -= /datum/reagent/toxin/carpotoxin
 	return ..()
 
@@ -112,6 +124,8 @@
 	icon_state = "moonfish_fillet"
 
 /obj/item/food/fishmeat/moonfish/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/grilled_moonfish, rand(40 SECONDS, 50 SECONDS), TRUE, TRUE)
 
 /obj/item/food/fishmeat/gunner_jellyfish
@@ -151,6 +165,8 @@
 	fillet_name = "%NAME tentacle"
 
 /obj/item/food/fishmeat/octopus/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/grilled_octopus, rand(15 SECONDS, 25 SECONDS), TRUE, TRUE)
 
 /obj/item/food/fishmeat/fish_tail
@@ -166,6 +182,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/fishmeat/fish_tail/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/quality_food_ingredient, FOOD_COMPLEXITY_1)
 
@@ -229,6 +247,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/vegetariansushiroll/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/vegetariansushislice, 4, screentip_verb = "Chop")
 
 /obj/item/food/vegetariansushislice
@@ -260,6 +280,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/spicyfiletsushiroll/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/spicyfiletsushislice, 4, screentip_verb = "Chop")
 
 /obj/item/food/spicyfiletsushislice
@@ -287,6 +309,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/sushi/empty/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/sushislice/empty, 4, screentip_verb = "Chop")
 
 /obj/item/food/sushislice/empty
@@ -359,6 +383,8 @@
 
 // sliceable into 4xtempehslices
 /obj/item/food/tempeh/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/tempehslice, 4, 5 SECONDS, table_required = TRUE, screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
 //add an icon for slices
@@ -414,6 +440,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/food/spiderleg/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/boiledspiderleg, rand(50 SECONDS, 60 SECONDS), TRUE, TRUE)
 
 /obj/item/food/cornedbeef
@@ -463,9 +491,13 @@
 	var/patty_type = /obj/item/food/raw_patty
 
 /obj/item/food/raw_meatball/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, meatball_type, rand(30 SECONDS, 40 SECONDS), TRUE)
 
 /obj/item/food/raw_meatball/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_ROLLINGPIN, patty_type, 1, table_required = TRUE, screentip_verb = "Flatten", sound_to_play = SFX_ROLLING_PIN_ROLLING)
 
 /obj/item/food/raw_meatball/human
@@ -540,6 +572,8 @@
 	var/patty_type = /obj/item/food/patty/plain
 
 /obj/item/food/raw_patty/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, patty_type, rand(30 SECONDS, 40 SECONDS), TRUE)
 
 /obj/item/food/raw_patty/human
@@ -617,6 +651,8 @@
 	custom_materials = list(/datum/material/meat = MEATSLAB_MATERIAL_AMOUNT)
 
 /obj/item/food/raw_sausage/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/sausage, rand(60 SECONDS, 75 SECONDS), TRUE)
 
 /obj/item/food/sausage
@@ -639,6 +675,8 @@
 	custom_materials = list(/datum/material/meat = MEATSLAB_MATERIAL_AMOUNT)
 
 /obj/item/food/sausage/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/salami, 6, 3 SECONDS, table_required = TRUE,  screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/sausage/american, 1, 3 SECONDS, table_required = TRUE,  screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
@@ -648,6 +686,8 @@
 	icon_state = "american_sausage"
 
 /obj/item/food/sausage/american/make_processable()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/food/salami
@@ -681,6 +721,8 @@
 	custom_materials = list(/datum/material/meat = MEATDISH_MATERIAL_AMOUNT)
 
 /obj/item/food/rawkhinkali/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/khinkali, rand(50 SECONDS, 60 SECONDS), TRUE)
 
 /obj/item/food/khinkali
@@ -781,6 +823,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/sashimi/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CARP, CELL_VIRUS_TABLE_GENERIC_MOB)
 
@@ -805,6 +849,8 @@
 	var/meat_source = "\"chicken\""
 
 /obj/item/food/nugget/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/shape = pick("lump", "star", "lizard", "corgi")
 	desc = "A [meat_source] nugget vaguely shaped like a [shape]."
@@ -868,6 +914,8 @@
 	custom_materials = list(/datum/material/meat = MEATSLAB_MATERIAL_AMOUNT)
 
 /obj/item/food/meatclown/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/slippery, 3 SECONDS)
 
@@ -993,6 +1041,8 @@
 	custom_materials = list(/datum/material/meat = MEATSLAB_MATERIAL_AMOUNT)
 
 /obj/item/food/fried_chicken/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(50))
 		icon_state = "fried_chicken2"
@@ -1033,6 +1083,8 @@
 	custom_materials = list(/datum/material/meat = MEATDISH_MATERIAL_AMOUNT * 4)
 
 /obj/item/food/beef_wellington/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE,  /obj/item/food/beef_wellington_slice, 3, 3 SECONDS, table_required = TRUE,  screentip_verb = "Cut")
 
 /obj/item/food/beef_wellington_slice
@@ -1068,6 +1120,8 @@
 	custom_materials = list(/datum/material/meat = MEATDISH_MATERIAL_AMOUNT * 4)
 
 /obj/item/food/korta_wellington/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE,  /obj/item/food/korta_wellington_slice, 3, 3 SECONDS, table_required = TRUE,  screentip_verb = "Cut")
 
 /obj/item/food/korta_wellington_slice
@@ -1103,6 +1157,8 @@
 	custom_materials = list(/datum/material/meat = MEATSLAB_MATERIAL_AMOUNT * 2)
 
 /obj/item/food/roast_dinner/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE,  /obj/item/food/roast_slice, 3, 3 SECONDS, table_required = TRUE,  screentip_verb = "Cut")
 
 /obj/item/food/roast_slice
@@ -1138,6 +1194,8 @@
 	custom_materials = list(/datum/material/meat = MEATSLAB_MATERIAL_AMOUNT * 2)
 
 /obj/item/food/roast_dinner_lizzy/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE,  /obj/item/food/roast_slice_lizzy, 3, 3 SECONDS, table_required = TRUE,  screentip_verb = "Cut")
 
 /obj/item/food/roast_slice_lizzy
@@ -1172,6 +1230,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_5
 
 /obj/item/food/roast_dinner_tofu/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE,  /obj/item/food/roast_slice_tofu, 3, 3 SECONDS, table_required = TRUE,  screentip_verb = "Cut")
 
 /obj/item/food/roast_slice_tofu
@@ -1222,6 +1282,8 @@
 	custom_materials = list(/datum/material/meat = MEATSLAB_MATERIAL_AMOUNT * 2)
 
 /obj/item/food/raw_meatloaf/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/meatloaf, rand(30 SECONDS, 40 SECONDS), TRUE, TRUE)
 
 /obj/item/food/meatloaf
@@ -1241,6 +1303,8 @@
 	custom_materials = list(/datum/material/meat = MEATSLAB_MATERIAL_AMOUNT * 2)
 
 /obj/item/food/meatloaf/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE,  /obj/item/food/meatloaf_slice, 4, 3 SECONDS, table_required = TRUE,  screentip_verb = "Cut")
 
 /obj/item/food/meatloaf_slice
@@ -1303,6 +1367,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/futomaki_sushi_roll/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/futomaki_sushi_slice, 4, screentip_verb = "Chop")
 
 /obj/item/food/futomaki_sushi_slice
@@ -1334,6 +1400,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/philadelphia_sushi_roll/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/philadelphia_sushi_slice, 4, screentip_verb = "Chop")
 
 /obj/item/food/philadelphia_sushi_slice

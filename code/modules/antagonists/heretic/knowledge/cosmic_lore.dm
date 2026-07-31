@@ -66,6 +66,8 @@
 
 /// Aplies the effect of the mansus grasp when it hits a target.
 /datum/heretic_knowledge/limited_amount/starting/base_cosmic/on_mansus_grasp(mob/living/source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	to_chat(target, span_danger("A cosmic ring appeared above your head!"))
@@ -155,6 +157,8 @@
 	var/max_attack_range = 2
 
 /datum/heretic_knowledge/blade_upgrade/cosmic/on_ranged_eldritch_blade(mob/living/source, mob/living/target, obj/item/melee/sickly_blade/blade)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target) || get_dist(source, target) > max_attack_range || !target.has_status_effect(/datum/status_effect/star_mark))
 		return
@@ -162,6 +166,8 @@
 	return blade.attack(target, source)
 
 /datum/heretic_knowledge/blade_upgrade/cosmic/do_melee_effects(mob/living/source, mob/living/target, obj/item/melee/sickly_blade/blade)
+	procstart = null
+	src.procstart = null
 	if(source == target || !isliving(target))
 		return
 	target.apply_status_effect(/datum/status_effect/star_mark, source)
@@ -202,6 +208,8 @@
 
 /// Resets the combo.
 /datum/heretic_knowledge/blade_upgrade/cosmic/proc/reset_combo(mob/living/source)
+	procstart = null
+	src.procstart = null
 	second_target = null
 	third_target = null
 	source.RemoveElement(cosmic_trail_based_on_passive(source), /obj/effect/forcefield/cosmic_field/fast)
@@ -213,6 +221,8 @@
 
 /// Increases the combo duration.
 /datum/heretic_knowledge/blade_upgrade/cosmic/proc/increase_combo_duration()
+	procstart = null
+	src.procstart = null
 	if(combo_duration < max_combo_duration)
 		combo_duration += increase_amount
 
@@ -260,6 +270,8 @@
 	var/static/list/stargazer_traits = list(TRAIT_RESISTLOWPRESSURE, TRAIT_RESISTHIGHPRESSURE, TRAIT_RESISTCOLD, TRAIT_RESISTHEAT, TRAIT_BOMBIMMUNE, TRAIT_XRAY_VISION)
 
 /datum/heretic_knowledge/ultimate/cosmic_final/is_valid_sacrifice(mob/living/carbon/human/sacrifice)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -267,6 +279,8 @@
 	return sacrifice.has_status_effect(/datum/status_effect/star_mark)
 
 /datum/heretic_knowledge/ultimate/cosmic_final/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.add_traits(ascended_traits, type)
 	if(ishuman(user))
@@ -323,6 +337,8 @@
 	var/datum/weakref/bad_dog
 
 /datum/action/cooldown/mob_cooldown/replace_star_gazer/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	StartCooldown(5 MINUTES)
 
 	var/mob/living/to_reset = bad_dog.resolve()

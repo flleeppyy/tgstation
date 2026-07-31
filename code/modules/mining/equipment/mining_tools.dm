@@ -21,6 +21,8 @@
 	attack_verb_simple = list("hit", "pierce", "slice", "attack")
 
 /obj/item/pickaxe/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins digging into [user.p_their()] chest! It looks like [user.p_theyre()] trying to commit suicide!"))
 	if(use_tool(user, user, 30, volume=50))
 		return BRUTELOSS
@@ -75,6 +77,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 3, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/pickaxe/drill/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/cuffable_item) //closed handle
 
@@ -133,6 +137,8 @@
 	sharpness = SHARP_EDGED
 
 /obj/item/shovel/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/butchering, \
 	speed = 15 SECONDS, \
@@ -142,6 +148,8 @@
 	AddElement(/datum/element/gravedigger)
 
 /obj/item/shovel/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins digging their own grave! It looks like [user.p_theyre()] trying to commit suicide!"))
 	if(use_tool(user, user, 30, volume=50))
 		return BRUTELOSS
@@ -189,10 +197,14 @@
 	custom_materials = list(/datum/material/bone = SHEET_MATERIAL_AMOUNT * 4, /datum/material/iron = SMALL_MATERIAL_AMOUNT * 0.5)
 
 /obj/item/shovel/serrated/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/bane, affected_biotypes = MOB_ORGANIC, damage_multiplier = 2) //You may be horridly cursed now, but at least you kill the living a whole lot more easily!
 
 /obj/item/shovel/serrated/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if( !(user.mind && HAS_TRAIT(user.mind, TRAIT_MORBID)) )
 		return
@@ -227,20 +239,28 @@
 	wound_bonus = 10
 
 /obj/item/trench_tool/get_all_tool_behaviours()
+	procstart = null
+	src.procstart = null
 	return list(TOOL_MINING, TOOL_SHOVEL, TOOL_WRENCH)
 
 /obj/item/trench_tool/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 	AddElement(/datum/element/gravedigger)
 
 /obj/item/trench_tool/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Use in hand to switch configuration.")
 	. += span_notice("It functions as a [tool_behaviour] tool.")
 	. += span_danger("<i>This weapon has no random critical hits.</i>")
 
 /obj/item/trench_tool/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(tool_behaviour)
 		if(TOOL_WRENCH)
@@ -251,6 +271,8 @@
 			icon_state = inhand_icon_state = "[initial(icon_state)]_pick"
 
 /obj/item/trench_tool/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!user)
 		return
@@ -291,6 +313,8 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/item/trench_tool/proc/check_menu(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated || !user.Adjacent(src))
@@ -335,6 +359,8 @@
 	var/do_launch = TRUE
 
 /obj/item/shovel/giant_wrench/get_all_tool_behaviours()
+	procstart = null
+	src.procstart = null
 	return list(TOOL_SHOVEL, TOOL_WRENCH)
 
 /datum/armor/giant_wrench
@@ -346,6 +372,8 @@
 	melee = 30
 
 /obj/item/shovel/giant_wrench/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transform = transform.Translate(-16, -16)
 	AddComponent(/datum/component/two_handed, require_twohands=TRUE)
@@ -363,6 +391,8 @@
 
 /// Used when the tool is transformed through the transforming component.
 /obj/item/shovel/giant_wrench/proc/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	usesound = (active ? 'sound/items/tools/ratchet.ogg' : initial(usesound))
@@ -377,6 +407,8 @@
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
 /obj/item/shovel/giant_wrench/attack(mob/living/target_mob, mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(QDELETED(target_mob))
 		return

@@ -68,6 +68,8 @@ multiple modular subtrees with behaviors
 	var/able_to_run = FALSE
 
 /datum/ai_controller/New(atom/new_pawn)
+	procstart = null
+	src.procstart = null
 	change_ai_movement_type(ai_movement)
 	initialize_behavior_tree()
 
@@ -75,6 +77,8 @@ multiple modular subtrees with behaviors
 		PossessPawn(new_pawn)
 
 /datum/ai_controller/Destroy(force)
+	procstart = null
+	src.procstart = null
 	UnpossessPawn(FALSE)
 	if(ai_status)
 		SSai_controllers.ai_controllers_by_status[ai_status] -= src
@@ -90,10 +94,14 @@ multiple modular subtrees with behaviors
 
 ///Overrides the current ai_movement of this controller with a new one
 /datum/ai_controller/proc/change_ai_movement_type(datum/ai_movement/new_movement)
+	procstart = null
+	src.procstart = null
 	ai_movement = SSai_movement.movement_types[new_movement]
 
 ///Completely replaces the behavior_nodes with a new set based on argument provided.
 /datum/ai_controller/proc/replace_behavior_nodes(list/typepaths_of_new_subtrees)
+	procstart = null
+	src.procstart = null
 	var/list/old_nodes = behavior_nodes
 	behavior_nodes = typepaths_of_new_subtrees
 	initialize_behavior_tree()
@@ -102,6 +110,8 @@ multiple modular subtrees with behaviors
 /// Resolves the children/child of a composite or decorator node, creating configured instances.
 /// Safe to call on any node type; non-composite/non-decorator nodes are a no-op.
 /datum/ai_controller/proc/resolve_node_children(datum/bt_node/node)
+	procstart = null
+	src.procstart = null
 	if(istype(node, /datum/bt_node/composite))
 		var/datum/bt_node/composite/comp = node
 		if(!LAZYLEN(comp.children_typepaths) || LAZYLEN(comp.children))
@@ -135,6 +145,8 @@ multiple modular subtrees with behaviors
 
 // Always creates a fresh instance regardless of whether config is provided.
 /datum/ai_controller/proc/resolve_child_node(child_type, list/config)
+	procstart = null
+	src.procstart = null
 	if(!ispath(child_type, /datum/bt_node))
 		return null
 	var/datum/bt_node/child = new child_type
@@ -144,6 +156,8 @@ multiple modular subtrees with behaviors
 	return child
 
 /datum/ai_controller/proc/get_or_build_node(entry)
+	procstart = null
+	src.procstart = null
 	if(ispath(entry))
 		if(!ispath(entry, /datum/bt_node))
 			stack_trace("get_or_build_node() received non-BT typepath: [entry]")
@@ -158,6 +172,8 @@ multiple modular subtrees with behaviors
 
 ///Loads and decodes a compiled BT JSON file into a node tree.
 /datum/ai_controller/proc/load_tree_from_json(path)
+	procstart = null
+	src.procstart = null
 	var/file = file(path)
 	var/list/desc = json_decode(file2text(file))
 	return build_node_from_descriptor(desc)
@@ -168,6 +184,8 @@ multiple modular subtrees with behaviors
  * Returns a new descriptor with BT_DESC_BINDINGS stripped and placeholders resolved.
  */
 /datum/ai_controller/proc/apply_bindings_to_descriptor(list/desc, list/call_site_bindings)
+	procstart = null
+	src.procstart = null
 	var/list/merged = list()
 	var/list/declared = desc[BT_DESC_BINDINGS]
 	for(var/name in declared)
@@ -178,6 +196,8 @@ multiple modular subtrees with behaviors
 
 /// Recursively walks a descriptor list, replacing "$name" strings with their bound values.
 /datum/ai_controller/proc/_substitute_bindings(list/desc, list/merged)
+	procstart = null
+	src.procstart = null
 	var/list/out = list()
 	for(var/key in desc)
 		if(key == BT_DESC_BINDINGS)
@@ -194,6 +214,8 @@ multiple modular subtrees with behaviors
 
 /// Substitutes bindings inside a descriptor value list, preserving assoc entries
 /datum/ai_controller/proc/_substitute_bindings_in_list(list/input, list/merged)
+	procstart = null
+	src.procstart = null
 	var/list/resolved_list = list()
 	for(var/item in input)
 		var/assoc_value = isnum(item) ? null : input[item]
@@ -226,6 +248,8 @@ multiple modular subtrees with behaviors
  * If you put / in a string then yeah that might cause issues, should probably fix that later!
  */
 /datum/ai_controller/proc/build_node_from_descriptor(list/desc)
+	procstart = null
+	src.procstart = null
 	var/raw_type = desc[BT_DESC_TYPE]
 	if(!raw_type) // This can happen if we have an overriden type with no binding. (e.g. subtrees not being overriden and default to null)
 		return null
@@ -258,6 +282,8 @@ multiple modular subtrees with behaviors
 
 /// Builds the per-controller BT node tree from behavior_nodes typepaths or descriptors, then finalizes it.
 /datum/ai_controller/proc/initialize_behavior_tree()
+	procstart = null
+	src.procstart = null
 	if(!isnull(behavior_tree_json) && !LAZYLEN(behavior_nodes))
 		var/compiled_path = BT_COMPILED_PATH(behavior_tree_json) //Find the compiled version of this BT
 		var/datum/bt_node/root = load_tree_from_json(compiled_path)
@@ -290,6 +316,8 @@ multiple modular subtrees with behaviors
 /// override_slots, and assigns pre-order execution indices. Called after initialize_behavior_tree() and
 /// after set_behavior_tree_override() installs or removes an override node.
 /datum/ai_controller/proc/finalize_tree()
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(behavior_nodes))
 		return
 	override_slots = null
@@ -306,6 +334,8 @@ multiple modular subtrees with behaviors
 
 ///Proc to move from one pawn to another, this will destroy the target's existing controller.
 /datum/ai_controller/proc/PossessPawn(atom/new_pawn)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(pawn) //Reset any old signals
 		UnpossessPawn(FALSE)
@@ -345,11 +375,15 @@ multiple modular subtrees with behaviors
 	RegisterSignal(pawn, COMSIG_MOVABLE_MOVED, PROC_REF(update_grid))
 
 /datum/ai_controller/proc/update_grid(datum/source, datum/spatial_grid_cell/new_cell)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	set_new_cells()
 
 /datum/ai_controller/proc/set_new_cells()
+	procstart = null
+	src.procstart = null
 	if(isnull(our_cells))
 		return
 
@@ -371,6 +405,8 @@ multiple modular subtrees with behaviors
 
 ///Returns TRUE if a living mob with a client is in one of our tracked spatial grid cells
 /datum/ai_controller/proc/has_nearby_client()
+	procstart = null
+	src.procstart = null
 	if(isnull(our_cells))
 		return FALSE
 	for(var/datum/spatial_grid_cell/grid as anything in our_cells.member_cells)
@@ -380,6 +416,8 @@ multiple modular subtrees with behaviors
 
 ///Check if mob should go into idle/low-priority (from spatial cells)
 /datum/ai_controller/proc/recalculate_idle(datum/exited)
+	procstart = null
+	src.procstart = null
 	if(ai_status == AI_STATUS_OFF)
 		return
 
@@ -397,6 +435,8 @@ multiple modular subtrees with behaviors
 	reset_ai_status()
 
 /datum/ai_controller/proc/on_client_enter(datum/source, list/target_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(ai_status == AI_STATUS_ON)
@@ -408,12 +448,16 @@ multiple modular subtrees with behaviors
 	reset_ai_status()
 
 /datum/ai_controller/proc/on_client_exit(datum/source, datum/exited)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	recalculate_idle(exited)
 
 /// Sets the AI on or off based on current conditions, call to reset after you've manually disabled it somewhere
 /datum/ai_controller/proc/reset_ai_status()
+	procstart = null
+	src.procstart = null
 	set_ai_status(get_expected_ai_status())
 
 /**
@@ -422,11 +466,15 @@ multiple modular subtrees with behaviors
  * from stat changes, z-level changes, client login/logout and the like.
  */
 /datum/ai_controller/proc/force_ai_off(additional_flags = NONE)
+	procstart = null
+	src.procstart = null
 	forced_off = TRUE
 	set_ai_status(AI_STATUS_OFF, additional_flags)
 
 /// Undoes force_ai_off() and recalculates what status we should be in.
 /datum/ai_controller/proc/clear_forced_off()
+	procstart = null
+	src.procstart = null
 	forced_off = FALSE
 	reset_ai_status()
 
@@ -437,6 +485,8 @@ multiple modular subtrees with behaviors
  * Otherwise returns AI_STATUS_ON or AI_STATUS_ON_LOW, see get_active_ai_status().
  */
 /datum/ai_controller/proc/get_expected_ai_status()
+	procstart = null
+	src.procstart = null
 
 
 /*
@@ -478,6 +528,8 @@ multiple modular subtrees with behaviors
  * else its AI_STATUS_OFF
  */
 /datum/ai_controller/proc/get_active_ai_status()
+	procstart = null
+	src.procstart = null
 	var/turf/pawn_turf = get_turf(pawn)
 	var/area/pawn_area = pawn_turf ? get_area(pawn_turf) : null
 	// AI actually standing on the station or a shuttle always stays high priority
@@ -494,6 +546,8 @@ multiple modular subtrees with behaviors
 
 ///Called when the AI controller pawn changes z levels, we check if there's any clients on the new one and wake up the AI if there is.
 /datum/ai_controller/proc/on_changed_z_level(atom/source, turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (ismob(pawn))
 		var/mob/mob_pawn = pawn
@@ -508,10 +562,14 @@ multiple modular subtrees with behaviors
 
 ///Abstract proc for initializing the pawn to the new controller
 /datum/ai_controller/proc/TryPossessPawn(atom/new_pawn)
+	procstart = null
+	src.procstart = null
 	return
 
 ///Proc for deinitializing the pawn to the old controller
 /datum/ai_controller/proc/UnpossessPawn(destroy)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(isnull(pawn))
 		return // instantiated without an applicable pawn, fine
@@ -533,6 +591,8 @@ multiple modular subtrees with behaviors
 
 ///Call reset tick state on every node in the tree.
 /datum/ai_controller/proc/reset_bt_tick_states()
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(behavior_nodes))
 		return
 	var/list/to_visit = behavior_nodes.Copy()
@@ -549,6 +609,8 @@ multiple modular subtrees with behaviors
  * override_subtree - actual subtree we're setting
  */
 /datum/ai_controller/proc/set_behavior_tree_override(id, override_subtree)
+	procstart = null
+	src.procstart = null
 	var/datum/bt_node/subtree/slot = LAZYACCESS(override_slots, id)
 	if(isnull(slot))
 		return
@@ -574,13 +636,19 @@ multiple modular subtrees with behaviors
 	SEND_SIGNAL(pawn, COMSIG_AI_OVERRIDE_SLOT_CHANGED(id), override_subtree)
 
 /datum/ai_controller/proc/setup_able_to_run()
+	procstart = null
+	src.procstart = null
 	// paused_until is handled by PauseAi() manually
 	RegisterSignals(pawn, list(SIGNAL_ADDTRAIT(TRAIT_AI_PAUSED), SIGNAL_REMOVETRAIT(TRAIT_AI_PAUSED)), PROC_REF(update_able_to_run))
 
 /datum/ai_controller/proc/clear_able_to_run()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(pawn, list(SIGNAL_ADDTRAIT(TRAIT_AI_PAUSED), SIGNAL_REMOVETRAIT(TRAIT_AI_PAUSED)))
 
 /datum/ai_controller/proc/update_able_to_run()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/run_flags = get_able_to_run()
 	if(run_flags & AI_UNABLE_TO_RUN)
@@ -592,6 +660,8 @@ multiple modular subtrees with behaviors
 
 ///Returns TRUE if the ai controller can actually run at the moment, FALSE otherwise
 /datum/ai_controller/proc/get_able_to_run()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(pawn, TRAIT_AI_PAUSED))
 		return AI_UNABLE_TO_RUN
 	if(world.time < paused_until)
@@ -600,10 +670,14 @@ multiple modular subtrees with behaviors
 
 ///Can this pawn interact with objects?
 /datum/ai_controller/proc/ai_can_interact(atom/target)
+	procstart = null
+	src.procstart = null
 	return !QDELETED(pawn) && !QDELETED(target)
 
 ///Interact with objects
 /datum/ai_controller/proc/ai_interact(target, combat_mode, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/atom/final_target = isdatum(target) ? target : blackboard[target] //incase we got a blackboard key instead
 
 	if(!ai_can_interact(final_target))
@@ -624,6 +698,8 @@ multiple modular subtrees with behaviors
 
 ///This is where you decide what actions are taken by the AI.
 /datum/ai_controller/proc/SelectBehaviors(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 	cancelled_during_tick = FALSE
 	if(LAZYLEN(polling_observers))
@@ -635,6 +711,8 @@ multiple modular subtrees with behaviors
 
 ///This proc handles changing ai status and updates the planning subsystem list.
 /datum/ai_controller/proc/set_ai_status(new_ai_status, additional_flags = NONE)
+	procstart = null
+	src.procstart = null
 	if(ai_status == new_ai_status)
 		return FALSE //no change
 
@@ -655,17 +733,23 @@ multiple modular subtrees with behaviors
 
 
 /datum/ai_controller/proc/cancel_current_plan()
+	procstart = null
+	src.procstart = null
 	active_execution_index = 0
 	cancelled_during_tick = TRUE
 	reset_bt_tick_states()
 
 /// Turn the controller on or off based on if you're alive, we only register to this if the flag is present so don't need to check again
 /datum/ai_controller/proc/on_stat_changed(mob/living/source, new_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	reset_ai_status()
 	update_able_to_run()
 
 /datum/ai_controller/proc/on_sentience_gained()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(pawn, COMSIG_MOB_LOGIN)
 	if(!continue_processing_when_client)
@@ -673,6 +757,8 @@ multiple modular subtrees with behaviors
 	RegisterSignal(pawn, COMSIG_MOB_LOGOUT, PROC_REF(on_sentience_lost))
 
 /datum/ai_controller/proc/on_sentience_lost()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(pawn, COMSIG_MOB_LOGOUT)
 	reset_ai_status() //resume AI control now that the client is gone
@@ -680,6 +766,8 @@ multiple modular subtrees with behaviors
 
 // Turn the controller off if the pawn has been qdeleted
 /datum/ai_controller/proc/on_pawn_qdeleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	sig_remove_from_blackboard(source)
 	set_ai_status(AI_STATUS_OFF)
@@ -688,6 +776,8 @@ multiple modular subtrees with behaviors
 
 /// Use this proc to define how your controller defines what access the pawn has for the sake of pathfinding. Return the access list you want to use
 /datum/ai_controller/proc/get_access()
+	procstart = null
+	src.procstart = null
 	if(!isliving(pawn))
 		return
 	var/mob/living/living_pawn = pawn
@@ -695,6 +785,8 @@ multiple modular subtrees with behaviors
 
 /// Returns TRUE if the pawn can path to the target. minimum_distance is how close the path must get (0 = onto/adjacent to the target's turf); searches pass it from their own acquire_target leaf.
 /datum/ai_controller/proc/can_reach_target(atom/target, distance = 10, minimum_distance = 0)
+	procstart = null
+	src.procstart = null
 	if(!isdatum(target)) //we dont need to check if its not a datum!
 		return TRUE
 	if(get_turf(pawn) == get_turf(target))
@@ -705,10 +797,14 @@ multiple modular subtrees with behaviors
 
 /// Called when a target was found but couldn't be reached. Base no-op; override to record the target (e.g. add it to an ignore list).
 /datum/ai_controller/proc/note_unreachable_target(atom/target)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Returns true if we have a blackboard key with the provided key and it is not qdeleting
 /datum/ai_controller/proc/blackboard_key_exists(key)
+	procstart = null
+	src.procstart = null
 	var/datum/key_value = blackboard[key]
 	if (isdatum(key_value))
 		return !QDELETED(key_value)
@@ -769,6 +865,8 @@ multiple modular subtrees with behaviors
  * * track_datum - whether we should track this ref for deletion, this should always be TRUE unless you really know wtf you're doing
  */
 /datum/ai_controller/proc/set_blackboard_key(key, thing, track_datum = TRUE)
+	procstart = null
+	src.procstart = null
 	// Assume it is an error when trying to set a value overtop a list
 	if(islist(blackboard[key]))
 		CRASH("set_blackboard_key attempting to set a blackboard value to key [key] when it's a list!")
@@ -798,6 +896,8 @@ multiple modular subtrees with behaviors
  * * thing - a value to set the blackboard key to.
  */
 /datum/ai_controller/proc/override_blackboard_key(key, thing)
+	procstart = null
+	src.procstart = null
 	if(blackboard[key] == thing)
 		return
 
@@ -814,6 +914,8 @@ multiple modular subtrees with behaviors
  * * value - what to set the inner list's value to
  */
 /datum/ai_controller/proc/set_blackboard_key_assoc(key, thing, value)
+	procstart = null
+	src.procstart = null
 	if(!islist(blackboard[key]))
 		CRASH("set_blackboard_key_assoc called on non-list key [key]!")
 	// Don't do anything if it's already got this value
@@ -834,6 +936,8 @@ multiple modular subtrees with behaviors
  * * value - what to set the inner list's value to
  */
 /datum/ai_controller/proc/set_blackboard_key_assoc_lazylist(key, thing, value)
+	procstart = null
+	src.procstart = null
 	LAZYINITLIST(blackboard[key])
 	// Don't do anything if it's already got this value
 	if (blackboard[key][thing] == value)
@@ -848,6 +952,8 @@ multiple modular subtrees with behaviors
  * Called after we set a blackboard key, forwards signal information.
  */
 /datum/ai_controller/proc/post_blackboard_key_set(key)
+	procstart = null
+	src.procstart = null
 	if (isnull(pawn))
 		return
 	SEND_SIGNAL(pawn, COMSIG_AI_BLACKBOARD_KEY_SET(key), key)
@@ -861,6 +967,8 @@ multiple modular subtrees with behaviors
  * * thing - a value to set the blackboard key to.
  */
 /datum/ai_controller/proc/add_blackboard_key(key, thing)
+	procstart = null
+	src.procstart = null
 	TRACK_AI_DATUM_TARGET(thing, key)
 	blackboard[key] += thing
 
@@ -872,6 +980,8 @@ multiple modular subtrees with behaviors
  * * thing - a value to set the blackboard key to.
  */
 /datum/ai_controller/proc/insert_blackboard_key(key, thing)
+	procstart = null
+	src.procstart = null
 	if(!islist(blackboard[key]))
 		CRASH("insert_blackboard_key called on non-list key [key]!")
 	TRACK_AI_DATUM_TARGET(thing, key)
@@ -885,6 +995,8 @@ multiple modular subtrees with behaviors
  * * thing - a value to set the blackboard key to.
  */
 /datum/ai_controller/proc/add_blackboard_key_lazylist(key, thing)
+	procstart = null
+	src.procstart = null
 	LAZYINITLIST(blackboard[key])
 	TRACK_AI_DATUM_TARGET(thing, key)
 	blackboard[key] += thing
@@ -896,6 +1008,8 @@ multiple modular subtrees with behaviors
  * * thing - a value to set the blackboard key to.
  */
 /datum/ai_controller/proc/insert_blackboard_key_lazylist(key, thing)
+	procstart = null
+	src.procstart = null
 	LAZYINITLIST(blackboard[key])
 	TRACK_AI_DATUM_TARGET(thing, key)
 	blackboard[key] |= thing
@@ -910,6 +1024,8 @@ multiple modular subtrees with behaviors
  * * value - what to set the inner list's value to
  */
 /datum/ai_controller/proc/add_blackboard_key_assoc(key, thing, value)
+	procstart = null
+	src.procstart = null
 	if(!islist(blackboard[key]))
 		CRASH("add_blackboard_key_assoc called on non-list key [key]!")
 	TRACK_AI_DATUM_TARGET(thing, key)
@@ -926,6 +1042,8 @@ multiple modular subtrees with behaviors
  * * value - what to set the inner list's value to
  */
 /datum/ai_controller/proc/add_blackboard_key_assoc_lazylist(key, thing, value)
+	procstart = null
+	src.procstart = null
 	LAZYINITLIST(blackboard[key])
 	TRACK_AI_DATUM_TARGET(thing, key)
 	TRACK_AI_DATUM_TARGET(value, key)
@@ -939,6 +1057,8 @@ multiple modular subtrees with behaviors
  * * key - A blackboard key
  */
 /datum/ai_controller/proc/clear_blackboard_key(key)
+	procstart = null
+	src.procstart = null
 	if(isnull(blackboard[key]))
 		return
 	if(pawn && (SEND_SIGNAL(pawn, COMSIG_AI_BLACKBOARD_KEY_PRECLEAR(key))))
@@ -958,6 +1078,8 @@ multiple modular subtrees with behaviors
  * * thing - a value to set the blackboard key to.
  */
 /datum/ai_controller/proc/remove_thing_from_blackboard_key(key, thing)
+	procstart = null
+	src.procstart = null
 	var/associated_value = blackboard[key]
 	if(isnull(associated_value))
 		return
@@ -987,6 +1109,8 @@ multiple modular subtrees with behaviors
 
 ///removes a tracked object from a lazylist
 /datum/ai_controller/proc/remove_from_blackboard_lazylist_key(key, thing)
+	procstart = null
+	src.procstart = null
 	var/lazylist = blackboard[key]
 	if(isnull(lazylist))
 		return
@@ -1000,6 +1124,8 @@ multiple modular subtrees with behaviors
 
 /// Signal proc to go through every key and remove the datum from all keys it finds
 /datum/ai_controller/proc/sig_remove_from_blackboard(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/list/list/remove_queue = list(blackboard)
@@ -1037,27 +1163,37 @@ multiple modular subtrees with behaviors
 
 /// When the pawn gets DF_EVLOGGING, propagate it to this controller too.
 /datum/ai_controller/proc/on_pawn_evlogging_enabled(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	enable_evlogging(pawn)
 
 /// When the pawn gets DF_EVLOGGING disabled, propagate it to this controller too.
 /datum/ai_controller/proc/on_pawn_evlogging_disabled(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	disable_evlogging(pawn)
 
 ///Register for an event being added so we can update track info
 /datum/ai_controller/enable_evlogging()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_EVLOG_EVENT_ADDED, PROC_REF(on_evlog_event_added))
 
 ///Unregister the evlog event added event, as we're no longer updating track info
 /datum/ai_controller/disable_evlogging()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(src, COMSIG_EVLOG_EVENT_ADDED)
 
 
 /// Called whenever an event is logged for this controller. Attaches a snapshot of current behaviors and blackboard state to the event via track_info.
 /datum/ai_controller/proc/on_evlog_event_added(datum/source, datum/event_logger_track/track, list/event_data)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/list/track_info = list()
 

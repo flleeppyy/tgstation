@@ -29,17 +29,23 @@
 	var/datum/looping_sound/reverse_bear_trap_beep/soundloop2
 
 /obj/item/reverse_bear_trap/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	soundloop = new(src)
 	soundloop2 = new(src)
 
 /obj/item/reverse_bear_trap/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(soundloop)
 	QDEL_NULL(soundloop2)
 	STOP_PROCESSING(SSprocessing, src)
 	return ..()
 
 /obj/item/reverse_bear_trap/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!ticking)
 		return
 	soundloop2.mid_length = max(0.5, COOLDOWN_TIMELEFT(src, kill_countdown) - 5) //beepbeepbeepbeepbeep
@@ -47,6 +53,8 @@
 		trigger()
 
 /obj/item/reverse_bear_trap/proc/trigger()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/machines/microwave/microwave-end.ogg', 100, FALSE)
 	soundloop.stop()
 	soundloop2.stop()
@@ -55,6 +63,8 @@
 	COOLDOWN_RESET(src, kill_countdown) // reset the countdown in case it wasn't finished
 
 /obj/item/reverse_bear_trap/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(user))
 		return
@@ -91,6 +101,8 @@
 	struggling = FALSE
 
 /obj/item/reverse_bear_trap/attack(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(target.get_item_by_slot(ITEM_SLOT_HEAD))
 		to_chat(user, span_warning("Remove [target.p_their()] headgear first!"))
 		return
@@ -117,6 +129,8 @@
 	)
 
 /obj/item/reverse_bear_trap/proc/snap()
+	procstart = null
+	src.procstart = null
 	reset()
 	var/mob/living/carbon/human/victim = loc
 	if(!istype(victim) || victim.get_item_by_slot(ITEM_SLOT_HEAD) != src)
@@ -134,6 +148,8 @@
 		flash_color(jill, flash_color = "#FF0000", flash_time = 100)
 
 /obj/item/reverse_bear_trap/proc/reset()
+	procstart = null
+	src.procstart = null
 	ticking = FALSE
 	update_appearance(UPDATE_OVERLAYS)
 	REMOVE_TRAIT(src, TRAIT_NODROP, REVERSE_BEAR_TRAP_TRAIT)
@@ -142,13 +158,17 @@
 	STOP_PROCESSING(SSprocessing, src)
 
 /obj/item/reverse_bear_trap/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ticking != TRUE)
 		return
 	/// note: this timer overlay increments one frame every second (to simulate a clock ticking). If you want to instead have it do a full cycle in a minute, set the 'delay' of each frame of the icon overlay to 75 rather than 10, and the worn overlay to twice that.
 	. += "rbt_ticking"
 
-/obj/item/reverse_bear_trap/proc/arm() //hulen
+/obj/item/reverse_bear_trap/proc/arm()
+	procstart = null
+	src.procstart = null //hulen
 	ticking = TRUE
 	update_appearance(UPDATE_OVERLAYS)
 	escape_chance = initial(escape_chance) //we keep these vars until re-arm, for tracking purposes

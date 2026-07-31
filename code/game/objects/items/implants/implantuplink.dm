@@ -12,6 +12,8 @@
 	var/uplink_handler
 
 /obj/item/implant/uplink/Initialize(mapload, uplink_handler)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!uplink_flag)
 		uplink_flag = src.uplink_flag
@@ -19,6 +21,8 @@
 	RegisterSignal(src, COMSIG_COMPONENT_REMOVING, PROC_REF(on_component_removing))
 
 /obj/item/implant/uplink/implant(mob/living/carbon/target, mob/user, silent, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/component/uplink/new_uplink = AddComponent(/datum/component/uplink, owner = target?.key, lockable = TRUE, enabled = FALSE, uplink_handler_override = uplink_handler, starting_tc = starting_tc)
 	new_uplink.unlock_text = "Your Syndicate Uplink has been cunningly implanted in you, for a small TC fee. Simply trigger the uplink to access it."
@@ -35,6 +39,8 @@
  * the component, so delete itself.
  */
 /obj/item/implant/uplink/proc/on_component_removing(datum/source, datum/component/component)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (QDELING(src))
@@ -48,6 +54,8 @@
 	imp_type = /obj/item/implant/uplink
 
 /obj/item/implanter/uplink/Initialize(mapload, uplink_handler)
+	procstart = null
+	src.procstart = null
 	imp = new imp_type(src, uplink_handler)
 	return ..()
 

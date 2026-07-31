@@ -16,6 +16,8 @@
 	potency = 30
 
 /obj/item/seeds/seedling/harvest(mob/harvester)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/hydroponics/parent = loc
 	var/list/grow_locations = get_adjacent_open_turfs(parent)
 	var/turf/final_location = length(grow_locations) ? pick(grow_locations) : get_turf(parent)

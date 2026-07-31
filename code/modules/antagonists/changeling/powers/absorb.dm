@@ -10,6 +10,8 @@
 	var/datum/looping_sound/changeling_absorb/absorbing_loop
 
 /datum/action/changeling/absorb_dna/can_sting(mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 
@@ -29,6 +31,8 @@
 	return changeling.can_absorb_dna(target)
 
 /datum/action/changeling/absorb_dna/sting_action(mob/owner)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE) // the only reason to call parent is for proper blackbox logging, and we do that ourselves in a snowflake way
 
 	var/datum/antagonist/changeling/changeling = IS_CHANGELING(owner)
@@ -82,6 +86,8 @@
 	return TRUE
 
 /datum/action/changeling/absorb_dna/proc/absorb_memories(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	var/datum/mind/suckedbrain = target.mind
 
 	var/datum/antagonist/changeling/changeling = IS_CHANGELING(owner)
@@ -149,6 +155,8 @@
 		fallen.objectives = copied_objectives
 
 /datum/action/changeling/absorb_dna/proc/attempt_absorb(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	for(var/absorbing_iteration in 1 to 3)
 		switch(absorbing_iteration)
 			if(1)
@@ -179,16 +187,22 @@
 	var/alerted = FALSE
 
 /mob/eye/imaginary_friend/hivemind/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CHANGELING_HIVEMIND, INNATE_TRAIT)
 	var/datum/action/innate/exit_hivemind/exit_action = new(src)
 	exit_action.Grant(src)
 
 /mob/eye/imaginary_friend/hivemind/Login()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	client.eye = owner || src
 
 /mob/eye/imaginary_friend/hivemind/greet()
+	procstart = null
+	src.procstart = null
 
 	var/greet_message = ""
 	greet_message += separator_hr(span_danger(span_slightly_larger("You are absorbed by the changeling!")))
@@ -205,6 +219,8 @@
 		alert_hivemind("You sense the presence of [real_name] in the hivemind.")
 
 /mob/eye/imaginary_friend/hivemind/send_speech(message, range, obj/source, bubble_type, list/spans, datum/language/message_language, list/message_mods = list(), forced)
+	procstart = null
+	src.procstart = null
 	// chops any message mods, even though they won't actually do anything
 	message = get_message_mods(message, message_mods)
 	// forces message through the changeling saymode
@@ -212,11 +228,15 @@
 	saymode.handle_message(src, message, spans, message_language, message_mods)
 
 /mob/eye/imaginary_friend/hivemind/Topic(href, list/href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(href_list["exit_hivemind"] && !QDELETED(src))
 		exit_hivemind()
 
 /mob/eye/imaginary_friend/hivemind/proc/exit_hivemind()
+	procstart = null
+	src.procstart = null
 	var/response = tgui_alert(src, "Are you sure you want to exit the hivemind? \
 		You can't re-enter it, though you can still be revived.", "Confirm Exit", list("Exit", "Stay"))
 	if(response != "Exit" || QDELETED(src))
@@ -224,6 +244,8 @@
 	ghostize(TRUE)
 
 /mob/eye/imaginary_friend/hivemind/ghostize(can_reenter_corpse, forced)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(forced)
 		return
@@ -233,11 +255,15 @@
 		qdel(src)
 
 /mob/eye/imaginary_friend/hivemind/proc/alert_hivemind(message)
+	procstart = null
+	src.procstart = null
 	var/datum/saymode/changeling/saymode = SSradio.saymodes[/datum/saymode/changeling::key]
 	for(var/mob/ling_mob as anything in saymode.get_lings() - src)
 		to_chat(ling_mob, span_changeling("<i>[message]</i>"))
 
 /mob/eye/imaginary_friend/hivemind/attach_to_owner(mob/living/imaginary_friend_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	client?.eye = owner
 	if(locate(/datum/action/changeling/eject_from_hivemind) in owner.actions)
@@ -246,6 +272,8 @@
 	ejector.Grant(owner)
 
 /mob/eye/imaginary_friend/hivemind/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/mob/eye/imaginary_friend/hivemind/other_member in owner.imaginary_group - src)
 		return ..()
 
@@ -259,6 +287,8 @@
 	// button_icon_state = "exit_hivemind"
 
 /datum/action/innate/exit_hivemind/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/eye/imaginary_friend/hivemind/member = owner
 	member.exit_hivemind()
 
@@ -271,6 +301,8 @@
 	dna_cost = CHANGELING_POWER_UNOBTAINABLE
 
 /datum/action/changeling/eject_from_hivemind/sting_action(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/list/freeloaders = list()
 	for(var/mob/eye/imaginary_friend/hivemind/freeloader in user.imaginary_group)
 		freeloaders[freeloader.real_name] = freeloader

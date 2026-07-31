@@ -22,16 +22,22 @@
 	var/list/dispensable_reagents = list()
 
 /obj/item/storage/portable_chem_mixer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 	AddElement(/datum/element/drag_pickup)
 
 /obj/item/storage/portable_chem_mixer/Destroy()
+	procstart = null
+	src.procstart = null
 	dispensable_reagents.Cut()
 	QDEL_NULL(beaker)
 	return ..()
 
 /obj/item/storage/portable_chem_mixer/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	context[SCREENTIP_CONTEXT_CTRL_LMB] = "[atom_storage.locked ? "Un" : ""]Lock storage"
 	if(atom_storage.locked && !QDELETED(beaker))
 		context[SCREENTIP_CONTEXT_ALT_LMB] = "Eject beaker"
@@ -49,6 +55,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/storage/portable_chem_mixer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!atom_storage.locked)
 		. += span_notice("Use [EXAMINE_HINT("Ctrl Click")] to lock in order to use its interface.")
@@ -61,6 +69,8 @@
 		. += span_notice("It can be ejected with [EXAMINE_HINT("Alt Click")].")
 
 /obj/item/storage/portable_chem_mixer/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!atom_storage.locked)
 		icon_state = "portablechemicalmixer_open"
 		return ..()
@@ -71,12 +81,16 @@
 	return ..()
 
 /obj/item/storage/portable_chem_mixer/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!atom_storage.locked)
 		update_contents()
 
 /// Reload dispensable reagents from new contents
 /obj/item/storage/portable_chem_mixer/proc/update_contents()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	dispensable_reagents.Cut()
@@ -92,6 +106,8 @@
 		dispensable_reagents[key_type]["reagents"] += container.reagents
 
 /obj/item/storage/portable_chem_mixer/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == beaker)
 		beaker = null
@@ -99,9 +115,13 @@
 		update_contents()
 
 /obj/item/storage/portable_chem_mixer/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	return severity > EXPLODE_LIGHT ? ..() : FALSE
 
 /obj/item/storage/portable_chem_mixer/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!atom_storage.locked || \
 		(tool.item_flags & ABSTRACT) || \
 		(tool.flags_1 & HOLOGRAM_1) || \
@@ -123,6 +143,8 @@
  * * obj/item/reagent_containers/new_beaker - The new beaker that the user wants to put into the device
  */
 /obj/item/storage/portable_chem_mixer/proc/replace_beaker(mob/living/user, obj/item/reagent_containers/new_beaker)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(!QDELETED(beaker))
@@ -134,11 +156,15 @@
 		beaker = new_beaker
 
 /obj/item/storage/portable_chem_mixer/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(loc != user)
 		return UI_CLOSE
 	return ..()
 
 /obj/item/storage/portable_chem_mixer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(!atom_storage.locked)
 		balloon_alert(user, "lock it first!")
 		return
@@ -155,6 +181,8 @@
 	ui.set_autoupdate(!is_hallucinating) // to not ruin the immersion by constantly changing the fake chemicals
 
 /obj/item/storage/portable_chem_mixer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["amount"] = amount
 
@@ -192,6 +220,8 @@
 	.["beaker"] = beaker_data
 
 /obj/item/storage/portable_chem_mixer/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -241,6 +271,8 @@
 			return TRUE
 
 /obj/item/storage/portable_chem_mixer/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!atom_storage.locked)
 		balloon_alert(user, "lock first to use alt eject!")
 		return CLICK_ACTION_BLOCKING
@@ -250,6 +282,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/storage/portable_chem_mixer/item_ctrl_click(mob/user)
+	procstart = null
+	src.procstart = null
 	if(atom_storage.locked == STORAGE_FULLY_LOCKED)
 		replace_beaker(user)
 		SStgui.close_uis(src)

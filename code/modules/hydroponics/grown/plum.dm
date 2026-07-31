@@ -26,6 +26,8 @@
 	distill_reagent = /datum/reagent/consumable/ethanol/plumwine
 
 /obj/item/food/grown/plum/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/plumjuice
 
 // Plumb

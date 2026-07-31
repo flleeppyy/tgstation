@@ -7,6 +7,8 @@ ADMIN_VERB(borg_panel, R_ADMIN, "Show Borg Panel", ADMIN_VERB_NO_DESCRIPTION, AD
 	var/user
 
 /datum/borgpanel/New(to_user, mob/living/silicon/robot/to_borg)
+	procstart = null
+	src.procstart = null
 	if(!istype(to_borg))
 		qdel(src)
 		CRASH("Borg panel is only available for borgs")
@@ -16,15 +18,21 @@ ADMIN_VERB(borg_panel, R_ADMIN, "Show Borg Panel", ADMIN_VERB_NO_DESCRIPTION, AD
 	borg = to_borg
 
 /datum/borgpanel/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_ADMIN)
 
 /datum/borgpanel/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "BorgPanel")
 		ui.open()
 
 /datum/borgpanel/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["borg"] = list(
 		"ref" = REF(borg),
@@ -65,6 +73,8 @@ ADMIN_VERB(borg_panel, R_ADMIN, "Show Borg Panel", ADMIN_VERB_NO_DESCRIPTION, AD
 
 
 /datum/borgpanel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

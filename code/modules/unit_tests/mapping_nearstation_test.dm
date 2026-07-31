@@ -4,6 +4,8 @@
 	priority = TEST_PRE
 
 /datum/unit_test/maptest_mapping_nearstation_test/Run()
+	procstart = null
+	src.procstart = null
 	if(SSmapping.is_planetary())
 		return //No need to test for orphaned spaced atoms on this map.
 

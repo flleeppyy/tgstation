@@ -9,18 +9,24 @@
 	var/unfoldedbag_path = /obj/structure/closet/body_bag
 
 /obj/item/bodybag/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.is_holding(src))
 		deploy_bodybag(user, get_turf(user))
 	else
 		deploy_bodybag(user, get_turf(src))
 
 /obj/item/bodybag/interact_with_atom(atom/interacting_with, mob/living/user, flags)
+	procstart = null
+	src.procstart = null
 	if(isopenturf(interacting_with))
 		deploy_bodybag(user, interacting_with)
 		return ITEM_INTERACT_SUCCESS
 	return NONE
 
 /obj/item/bodybag/attempt_pickup(mob/user)
+	procstart = null
+	src.procstart = null
 	// can't pick ourselves up if we are inside of the bodybag, else very weird things may happen
 	if(contains(user))
 		return TRUE
@@ -32,6 +38,8 @@
  * * atom/location: the place/entity/mob where the body bag is being deployed from.
  */
 /obj/item/bodybag/proc/deploy_bodybag(mob/user, atom/location)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/closet/body_bag/item_bag = new unfoldedbag_path(location)
 	item_bag.open(user)
 	item_bag.add_fingerprint(user)
@@ -40,6 +48,8 @@
 	return item_bag
 
 /obj/item/bodybag/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isopenturf(user.loc))
 		user.visible_message(span_suicide("[user] is crawling into [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 		var/obj/structure/closet/body_bag/R = new unfoldedbag_path(user.loc)
@@ -62,12 +72,16 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 1.5, /datum/material/plasma = SHEET_MATERIAL_AMOUNT, /datum/material/diamond = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/bluespace = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/bodybag/bluespace/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(contents.len)
 		var/s = contents.len == 1 ? "" : "s"
 		. += span_notice("You can make out the shape[s] of [contents.len] object[s] through the fabric.")
 
 /obj/item/bodybag/bluespace/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/A in contents)
 		A.forceMove(get_turf(src))
 		if(isliving(A))
@@ -75,6 +89,8 @@
 	return ..()
 
 /obj/item/bodybag/bluespace/deploy_bodybag(mob/user, atom/location)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/closet/body_bag/item_bag = new unfoldedbag_path(location)
 	for(var/atom/movable/inside in contents)
 		inside.forceMove(item_bag)
@@ -87,6 +103,8 @@
 	return item_bag
 
 /obj/item/bodybag/bluespace/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated)
 		to_chat(user, span_warning("You can't get out while you're restrained like this!"))
 		return
@@ -149,6 +167,8 @@
 	custom_materials = list(/datum/material/plastic = SHEET_MATERIAL_AMOUNT * 10, /datum/material/silver = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/bodybag/stasis/deploy_bodybag(mob/user, atom/location)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/closet/body_bag/environmental/stasis/bag = ..()
 	bag.last_filter_update = -1
 	bag.update_integrity(get_integrity())

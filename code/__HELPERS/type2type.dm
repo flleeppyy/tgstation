@@ -12,12 +12,16 @@
 //Splits the text of a file at seperator and returns them in a list.
 //returns an empty list if the file doesn't exist
 /world/proc/file2list(filename, seperator="\n", trim = TRUE)
+	procstart = null
+	src.procstart = null
 	if (trim)
 		return splittext(trim(file2text(filename)),seperator)
 	return splittext(file2text(filename),seperator)
 
 //Turns a direction into text
 /proc/dir2text(direction)
+	procstart = null
+	src.procstart = null
 	switch(direction)
 		if(NORTH)
 			return "north"
@@ -40,6 +44,8 @@
 
 //Turns text into proper directions
 /proc/text2dir(direction)
+	procstart = null
+	src.procstart = null
 	switch(uppertext(direction))
 		if("NORTH")
 			return NORTH
@@ -65,6 +71,8 @@ GLOBAL_LIST_INIT(modulo_angle_to_dir, list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,
 #define angle2dir(X) (GLOB.modulo_angle_to_dir[round((((X%360)+382.5)%360)/45)+1])
 
 /proc/angle2dir_cardinal(degree)
+	procstart = null
+	src.procstart = null
 	degree = SIMPLIFY_DEGREES(degree)
 	switch(round(degree, 0.1))
 		if(315.5 to 360, 0 to 45.5)
@@ -78,6 +86,8 @@ GLOBAL_LIST_INIT(modulo_angle_to_dir, list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,
 
 //returns the north-zero clockwise angle in degrees, given a direction
 /proc/dir2angle(D)
+	procstart = null
+	src.procstart = null
 	switch(D)
 		if(NORTH)
 			return 0
@@ -103,10 +113,14 @@ GLOBAL_LIST_INIT(modulo_angle_to_dir, list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,
 
 //Returns the angle in english
 /proc/angle2text(degree)
+	procstart = null
+	src.procstart = null
 	return dir2text(angle2dir(degree))
 
 /// Returns a list(x, y), being the change in position required to step in the passed in direction
 /proc/dir2offset(dir)
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			return list(0, 1)
@@ -129,6 +143,8 @@ GLOBAL_LIST_INIT(modulo_angle_to_dir, list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,
 
 //Converts a blend_mode constant to one acceptable to icon.Blend()
 /proc/blendMode2iconMode(blend_mode)
+	procstart = null
+	src.procstart = null
 	switch(blend_mode)
 		if(BLEND_MULTIPLY)
 			return ICON_MULTIPLY
@@ -141,6 +157,8 @@ GLOBAL_LIST_INIT(modulo_angle_to_dir, list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,
 
 //Converts a rights bitfield into a string
 /proc/rights2text(rights, seperator="", prefix = "+")
+	procstart = null
+	src.procstart = null
 	seperator += prefix
 	if(rights & R_BUILD)
 		. += "[seperator]BUILDMODE"
@@ -178,6 +196,8 @@ GLOBAL_LIST_INIT(modulo_angle_to_dir, list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,
 
 /// For finding out what body parts a body zone covers, the inverse of the below basically
 /proc/body_zone2cover_flags(def_zone)
+	procstart = null
+	src.procstart = null
 	switch(def_zone)
 		if(BODY_ZONE_CHEST)
 			return CHEST|GROIN
@@ -197,6 +217,8 @@ GLOBAL_LIST_INIT(modulo_angle_to_dir, list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,
 //Turns a Body_parts_covered bitfield into a list of organ/limb names.
 //(I challenge you to find a use for this) -I found a use for it!! | So did I!.
 /proc/cover_flags2body_zones(bpc)
+	procstart = null
+	src.procstart = null
 	var/list/covered_parts = list()
 
 	if(!bpc)
@@ -231,6 +253,8 @@ GLOBAL_LIST_INIT(modulo_angle_to_dir, list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,
 	return covered_parts
 
 /proc/slot2body_zone(slot)
+	procstart = null
+	src.procstart = null
 	switch(slot)
 		if(ITEM_SLOT_BACK, ITEM_SLOT_OCLOTHING, ITEM_SLOT_ICLOTHING, ITEM_SLOT_BELT, ITEM_SLOT_ID)
 			return BODY_ZONE_CHEST
@@ -255,10 +279,14 @@ GLOBAL_LIST_INIT(modulo_angle_to_dir, list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,
 
 //adapted from http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/
 /proc/heat2colour(temp)
+	procstart = null
+	src.procstart = null
 	return rgb(heat2colour_r(temp), heat2colour_g(temp), heat2colour_b(temp))
 
 
 /proc/heat2colour_r(temp)
+	procstart = null
+	src.procstart = null
 	temp /= 100
 	if(temp <= 66)
 		. = 255
@@ -267,6 +295,8 @@ GLOBAL_LIST_INIT(modulo_angle_to_dir, list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,
 
 
 /proc/heat2colour_g(temp)
+	procstart = null
+	src.procstart = null
 	temp /= 100
 	if(temp <= 66)
 		. = max(0, min(255, 99.4708025861 * log(temp) - 161.1195681661))
@@ -275,6 +305,8 @@ GLOBAL_LIST_INIT(modulo_angle_to_dir, list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,
 
 
 /proc/heat2colour_b(temp)
+	procstart = null
+	src.procstart = null
 	temp /= 100
 	if(temp >= 66)
 		. = 255
@@ -294,6 +326,8 @@ GLOBAL_LIST_INIT(modulo_angle_to_dir, list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,
 //The datum is used as a source for var names, to check validity
 //Otherwise every single word could technically be a variable!
 /proc/string2listofvars(t_string, datum/var_source)
+	procstart = null
+	src.procstart = null
 	if(!t_string || !var_source)
 		return list()
 
@@ -322,6 +356,8 @@ GLOBAL_LIST_INIT(modulo_angle_to_dir, list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,
 
 /// Converts a screen loc param to a x,y coordinate pixel on the screen.
 /proc/params2screenpixel(scr_loc)
+	procstart = null
+	src.procstart = null
 	var/list/x_and_y = splittext(scr_loc, ",")
 	var/list/x_dirty = splittext(x_and_y[1], ":")
 	var/list/y_dirty = splittext(x_and_y[2], ":")
@@ -331,6 +367,8 @@ GLOBAL_LIST_INIT(modulo_angle_to_dir, list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,
 
 //word of warning: using a matrix like this as a color value will simplify it back to a string after being set
 /proc/color_hex2color_matrix(string)
+	procstart = null
+	src.procstart = null
 	var/length = length(string)
 	if((length != 7 && length != 9) || length != length_char(string))
 		return COLOR_MATRIX_IDENTITY
@@ -347,12 +385,16 @@ GLOBAL_LIST_INIT(modulo_angle_to_dir, list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,
 
 //will drop all values not on the diagonal
 /proc/color_matrix2color_hex(list/the_matrix)
+	procstart = null
+	src.procstart = null
 	if(!istype(the_matrix) || the_matrix.len != 20)
 		return "#ffffffff"
 	return rgb(the_matrix[1]*255, the_matrix[6]*255, the_matrix[11]*255, the_matrix[16]*255)
 
 //returns a string the last bit of a type, without the preceeding '/'
 /proc/type2top(datum/typepath)
+	procstart = null
+	src.procstart = null
 	//handle the builtins manually
 	if(!ispath(typepath))
 		return
@@ -375,4 +417,6 @@ GLOBAL_LIST_INIT(modulo_angle_to_dir, list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,
 /// Return html to load a url.
 /// for use inside of browse() calls to html assets that might be loaded on a cdn.
 /proc/url2htmlloader(url)
+	procstart = null
+	src.procstart = null
 	return {"<html><head><meta http-equiv="refresh" content="0;URL='[url]'"/></head><body onLoad="parent.location='[url]'"></body></html>"}

@@ -25,6 +25,8 @@
 	)
 
 /datum/symptom/weight_loss/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -32,6 +34,8 @@
 		base_message_chance = 25
 
 /datum/symptom/weight_loss/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

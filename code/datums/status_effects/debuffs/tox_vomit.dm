@@ -7,6 +7,8 @@
 	VAR_PRIVATE/puke_counter = 0
 
 /datum/status_effect/tox_vomit/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(!AT_TOXIN_VOMIT_THRESHOLD(owner))
 		qdel(src)
 		return

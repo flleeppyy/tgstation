@@ -15,9 +15,13 @@
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
 
 /datum/action/cooldown/spell/charge/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return isliving(cast_on)
 
 /datum/action/cooldown/spell/charge/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Charge people we're pulling first and foremost

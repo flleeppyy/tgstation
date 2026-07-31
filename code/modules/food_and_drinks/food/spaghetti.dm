@@ -12,6 +12,8 @@
 
 // Why are you putting cooked spaghetti in your pockets?
 /obj/item/food/spaghetti/make_microwaveable()
+	procstart = null
+	src.procstart = null
 	var/list/display_message = list(
 		span_notice("Something wet falls out of their pocket and hits the ground. Is that... [name]?"),
 		span_warning("Oh shit! All your pocket [name] fell out!"))
@@ -27,9 +29,13 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/spaghetti/raw/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/spaghetti/boiledspaghetti, rand(15 SECONDS, 20 SECONDS), TRUE, TRUE)
 
 /obj/item/food/spaghetti/raw/make_microwaveable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/microwavable, /obj/item/food/spaghetti/boiledspaghetti)
 
 /obj/item/food/spaghetti/boiledspaghetti
@@ -43,6 +49,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/spaghetti/boiledspaghetti/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ingredients_holder, null, CUSTOM_INGREDIENT_ICON_SCATTER, max_ingredients = 6)
 
@@ -274,5 +282,7 @@
 	custom_materials = list(/datum/material/meat = MEATDISH_MATERIAL_AMOUNT)
 
 /obj/item/food/spaghetti/carbonara/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/love_food_buff, /datum/status_effect/food/speech/italian)

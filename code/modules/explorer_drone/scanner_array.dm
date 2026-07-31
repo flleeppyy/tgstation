@@ -8,6 +8,8 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 
 
 /proc/init_scan_conditions()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/type in subtypesof(/datum/scan_condition))
 		. += new type
@@ -30,6 +32,8 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 	var/scan_timer
 
 /datum/exoscan/New(scan_type,datum/exploration_site/target)
+	procstart = null
+	src.procstart = null
 	src.scan_type = scan_type
 	src.target = target
 	var/scan_time = 0
@@ -47,6 +51,8 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 
 /// Short description for in progress scan
 /datum/exoscan/proc/ui_description()
+	procstart = null
+	src.procstart = null
 	switch(scan_type)
 		if(EXOSCAN_WIDE)
 			return "Wide: Scanning sphere starting 1 AU from the station."
@@ -56,6 +62,8 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 			return "Deep scan of [target.display_name()]"
 
 /datum/exoscan/proc/resolve_scan()
+	procstart = null
+	src.procstart = null
 	switch(scan_type)
 		if(EXOSCAN_WIDE)
 			generate_exploration_sites()
@@ -68,10 +76,14 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 	qdel(src)
 
 /datum/exoscan/proc/stop()
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src,COMSIG_EXOSCAN_INTERRUPTED)
 	qdel(src)
 
 /datum/exoscan/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	deltimer(scan_timer)
 
@@ -86,6 +98,8 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 	var/datum/exploration_site/selected_site
 
 /obj/machinery/computer/exoscanner_control/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -93,6 +107,8 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 		ui.open()
 
 /obj/machinery/computer/exoscanner_control/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["failed"] = failed_popup
 	.["selected_site"] = selected_site && ref(selected_site)
@@ -119,10 +135,14 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 		.["scan_description"] = GLOB.exoscanner_controller.current_scan.ui_description()
 
 /obj/machinery/computer/exoscanner_control/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["all_bands"] = GLOB.exoscanner_bands
 
 /obj/machinery/computer/exoscanner_control/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -152,10 +172,14 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 			return TRUE
 
 /obj/machinery/computer/exoscanner_control/proc/stop_current_scan()
+	procstart = null
+	src.procstart = null
 	if(GLOB.exoscanner_controller.current_scan)
 		GLOB.exoscanner_controller.current_scan.stop()
 
 /obj/machinery/computer/exoscanner_control/proc/start_wide_scan(radius)
+	procstart = null
+	src.procstart = null
 	if(GLOB.exoscanner_controller.current_scan)
 		return
 	if(GLOB.exoscanner_controller.wide_scan_band > MAX_SCAN_DISTANCE)
@@ -163,27 +187,37 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 	create_scan(EXOSCAN_WIDE)
 
 /obj/machinery/computer/exoscanner_control/proc/start_point_scan()
+	procstart = null
+	src.procstart = null
 	if(GLOB.exoscanner_controller.current_scan || !selected_site || selected_site.point_scan_complete)
 		return
 	create_scan(EXOSCAN_POINT,selected_site)
 
 /obj/machinery/computer/exoscanner_control/proc/start_deep_scan()
+	procstart = null
+	src.procstart = null
 	if(GLOB.exoscanner_controller.current_scan || !selected_site || selected_site.deep_scan_complete)
 		return
 	create_scan(EXOSCAN_DEEP,selected_site)
 
 /obj/machinery/computer/exoscanner_control/proc/create_scan(scan_type,target)
+	procstart = null
+	src.procstart = null
 	var/datum/exoscan/scan = GLOB.exoscanner_controller.create_scan(scan_type,target)
 	if(scan)
 		RegisterSignal(scan, COMSIG_EXOSCAN_INTERRUPTED, PROC_REF(scan_failed))
 	playsound(src, 'sound/machines/terminal/terminal_processing.ogg', 20, vary = TRUE)
 
 /obj/machinery/computer/exoscanner_control/proc/scan_failed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	failed_popup = TRUE
 	SStgui.update_uis(src)
 
 /obj/machinery/computer/exoscanner_control/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/experiment_handler, \
 		allowed_experiments = list(/datum/experiment/exploration_scan), \
@@ -201,11 +235,15 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 	var/scan_power = 1
 
 /obj/machinery/exoscanner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignals(GLOB.exoscanner_controller,list(COMSIG_EXOSCAN_STARTED,COMSIG_EXOSCAN_FINISHED), PROC_REF(scan_change))
 	update_readiness()
 
 /obj/machinery/exoscanner/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/power = 1
 
@@ -228,12 +266,18 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 	update_current_power_usage()
 
 /obj/machinery/exoscanner/screwdriver_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/exoscanner/crowbar_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/exoscanner/proc/scan_change()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(GLOB.exoscanner_controller.current_scan)
 		update_use_power(ACTIVE_POWER_USE)
@@ -242,13 +286,19 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 	update_icon_state()
 
 /obj/machinery/exoscanner/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.exoscanner_controller.deactivate_scanner(src)
 
 /obj/machinery/exoscanner/proc/is_ready()
+	procstart = null
+	src.procstart = null
 	return anchored && is_operational && !panel_open
 
 /obj/machinery/exoscanner/proc/update_readiness()
+	procstart = null
+	src.procstart = null
 	if(is_ready())
 		GLOB.exoscanner_controller.activate_scanner(src)
 	else
@@ -256,6 +306,8 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 	update_icon_state()
 
 /obj/machinery/exoscanner/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(panel_open)
 		icon_state = "[base_icon_state]_open"
@@ -268,19 +320,27 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 		icon_state = "[base_icon_state]_off"
 
 /obj/machinery/exoscanner/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool, time = 1 SECONDS)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/exoscanner/set_anchored(anchorvalue)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_readiness()
 
 /obj/machinery/exoscanner/on_set_is_operational(old_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_readiness()
 
 /obj/machinery/exoscanner/on_set_panel_open(old_value)
+	procstart = null
+	src.procstart = null
 	update_readiness()
 
 ///Helper datum to calculate and store scanning power and track in progress scans
@@ -295,6 +355,8 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 	var/list/scan_power_cache = list()
 
 /datum/scanner_controller/proc/create_scan(scan_type,datum/exploration_site/target)
+	procstart = null
+	src.procstart = null
 	if(current_scan)
 		return
 	if(length(GLOB.exoscanner_controller.tracked_dishes) <= 0 || (target && GLOB.exoscanner_controller.get_scan_power(target) <= 0))
@@ -305,23 +367,31 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 	return current_scan
 
 /datum/scanner_controller/proc/cleanup_current_scan()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	current_scan = null
 	SEND_SIGNAL(src,COMSIG_EXOSCAN_FINISHED,current_scan)
 
 /datum/scanner_controller/proc/activate_scanner(obj/machinery/exoscanner/scanner)
+	procstart = null
+	src.procstart = null
 	if(scanner in tracked_dishes)
 		return
 	tracked_dishes += scanner
 	update_scan_power()
 
 /datum/scanner_controller/proc/deactivate_scanner(obj/machinery/exoscanner/scanner)
+	procstart = null
+	src.procstart = null
 	if(!(scanner in tracked_dishes))
 		return
 	tracked_dishes -= scanner
 	update_scan_power()
 
 /datum/scanner_controller/proc/update_scan_power()
+	procstart = null
+	src.procstart = null
 	scan_power_cache = list()
 	if(current_scan) //Check if we need to interrupt current scan.
 		var/current_power = length(tracked_dishes)
@@ -331,11 +401,15 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 			current_scan.stop("Scan swarm power reduced")
 
 /datum/scanner_controller/proc/get_scan_power(datum/exploration_site/target)
+	procstart = null
+	src.procstart = null
 	if(!scan_power_cache[target])
 		scan_power_cache[target] = calculate_scan_power(target.scan_conditions)
 	return scan_power_cache[target]
 
 /datum/scanner_controller/proc/calculate_scan_power(conditions)
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/obj/machinery/exoscanner/dish in tracked_dishes)
 		var/effective_power = dish.scan_power
@@ -352,6 +426,8 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 
 /// Returns power multiplier of the dish depending on condition.
 /datum/scan_condition/proc/check_dish(obj/machinery/exoscanner/dish)
+	procstart = null
+	src.procstart = null
 	return 1
 
 /datum/scan_condition/nebula
@@ -360,6 +436,8 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 	var/distance = 15
 
 /datum/scan_condition/nebula/check_dish(obj/machinery/exoscanner/dish)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/exoscanner/other_dish in GLOB.exoscanner_controller.tracked_dishes)
 		if(dish != other_dish && dish.z == other_dish.z && get_dist(dish,other_dish) < distance)
 			return 0
@@ -371,6 +449,8 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 	var/distance = 2
 
 /datum/scan_condition/pulsar/check_dish(obj/machinery/exoscanner/dish)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/some_machine in range(distance,dish))
 		if(some_machine != dish && some_machine.is_operational)
 			return 0
@@ -381,6 +461,8 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 	description = "An asteroid belt is obscuring the direct line of sight from the station to the site. Ensure the dishes are placed outside of the station z level."
 
 /datum/scan_condition/asteroid_belt/check_dish(obj/machinery/exoscanner/dish)
+	procstart = null
+	src.procstart = null
 	var/turf/dish_turf = get_turf(dish)
 	return is_station_level(dish_turf.z) ? 0 : 1
 
@@ -389,6 +471,8 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 	description = "A background black hole requires you to focus the scan point precisely. Ensure the dishes are isolated from rest of the station with at least 6 walls around them."
 
 /datum/scan_condition/black_hole/check_dish(obj/machinery/exoscanner/dish)
+	procstart = null
+	src.procstart = null
 	var/wall_count = 0
 	for(var/turf/turf_in_dish_range in range(1,get_turf(dish)))
 		if(turf_in_dish_range.density)
@@ -400,6 +484,8 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 	description = "This site is very easy to scan, all dish power is doubled."
 
 /datum/scan_condition/easy/check_dish(obj/machinery/exoscanner/dish)
+	procstart = null
+	src.procstart = null
 	return 2
 
 #undef MAX_SCAN_DISTANCE

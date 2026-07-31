@@ -5,6 +5,8 @@
 /datum/element/ai_retaliate
 
 /datum/element/ai_retaliate/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismob(target))
 		return ELEMENT_INCOMPATIBLE
@@ -15,11 +17,15 @@
 	ADD_TRAIT(target, TRAIT_SUBTREE_REQUIRED_OPERATIONAL_DATUM, type)
 
 /datum/element/ai_retaliate/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_ATOM_WAS_ATTACKED)
 
 /// Add an attacking atom to a blackboard list of things which attacked us.
 /datum/element/ai_retaliate/proc/on_attacked(mob/victim, atom/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (victim == attacker)

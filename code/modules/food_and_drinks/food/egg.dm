@@ -33,9 +33,13 @@ GLOBAL_VAR_INIT(chicks_from_eggs, 0)
 	var/chick_throw_prob = 13
 
 /obj/item/food/egg/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/boiledegg, rand(15 SECONDS, 20 SECONDS), TRUE, TRUE)
 
 /obj/item/food/egg/make_microwaveable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/microwavable, /obj/item/food/boiledegg)
 
 /obj/item/food/egg/organic
@@ -49,15 +53,21 @@ GLOBAL_VAR_INIT(chicks_from_eggs, 0)
 	preserved_food = TRUE
 
 /obj/item/food/egg/rotten/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/boiledegg/rotten, rand(15 SECONDS, 20 SECONDS), TRUE, TRUE)
 
 /obj/item/food/egg/rotten/make_microwaveable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/microwavable, /obj/item/food/boiledegg/rotten)
 
 /obj/item/food/egg/gland
 	desc = "An egg! It looks weird..."
 
 /obj/item/food/egg/gland/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent(get_random_reagent_id(), 15)
 
@@ -65,6 +75,8 @@ GLOBAL_VAR_INIT(chicks_from_eggs, 0)
 	add_atom_colour(color, FIXED_COLOUR_PRIORITY)
 
 /obj/item/food/egg/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if (..()) // was it caught by a mob?
 		return
 
@@ -77,6 +89,8 @@ GLOBAL_VAR_INIT(chicks_from_eggs, 0)
 
 /// Spawn a baby chicken from throwing an egg
 /obj/item/food/egg/proc/spawn_impact_chick(turf/spawn_turf)
+	procstart = null
+	src.procstart = null
 	var/chickens_remaining = MAX_CHICKENS - GLOB.chicks_from_eggs
 	if (chickens_remaining < 1)
 		return
@@ -90,6 +104,8 @@ GLOBAL_VAR_INIT(chicks_from_eggs, 0)
 		GLOB.chicks_from_eggs++
 
 /obj/item/food/egg/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/toy/crayon))
 		var/obj/item/toy/crayon/crayon = tool
 		var/pigment = crayon.crayon_color
@@ -125,6 +141,8 @@ GLOBAL_VAR_INIT(chicks_from_eggs, 0)
 	return NONE
 
 /obj/item/food/egg/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(interacting_with, /obj/machinery/griddle))
 		return NONE
 
@@ -188,6 +206,8 @@ GLOBAL_VAR_INIT(chicks_from_eggs, 0)
 	chick_throw_prob = 100
 
 /obj/item/food/egg/fertile/Initialize(mapload, loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddComponent(/datum/component/fertile_egg,\
@@ -230,6 +250,8 @@ GLOBAL_VAR_INIT(chicks_from_eggs, 0)
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/food/rawegg/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/friedegg, rand(20 SECONDS, 35 SECONDS), TRUE, FALSE)
 
 /obj/item/food/boiledegg
@@ -285,10 +307,14 @@ GLOBAL_VAR_INIT(chicks_from_eggs, 0)
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/omelette/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/love_food_buff, /datum/status_effect/food/speech/french)
 
 /obj/item/food/omelette/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/kitchen/fork))
 		return NONE
 
@@ -370,6 +396,8 @@ GLOBAL_VAR_INIT(chicks_from_eggs, 0)
 	preserved_food = TRUE
 
 /obj/item/food/spore_sack/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(50))
 		icon_state = "[base_icon_state]2"
@@ -377,6 +405,8 @@ GLOBAL_VAR_INIT(chicks_from_eggs, 0)
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_BLOBSPORE, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /obj/item/food/spore_sack/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(interacting_with, /obj/machinery/griddle))
 		return NONE
 
@@ -420,8 +450,12 @@ GLOBAL_VAR_INIT(chicks_from_eggs, 0)
 	tastes = list("sliminess" = 4, "blob" = 2)
 
 /obj/item/food/rawegg/spore/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_BLOBSPORE, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /obj/item/food/rawegg/spore/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/friedegg/spore, rand(15 SECONDS, 25 SECONDS), TRUE, FALSE)

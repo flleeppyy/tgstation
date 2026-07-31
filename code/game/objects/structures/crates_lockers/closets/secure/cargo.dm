@@ -4,6 +4,8 @@
 	icon_state = "qm"
 
 /obj/structure/closet/secure_closet/quartermaster/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/storage/lockbox/medal/cargo(src)
 	new /obj/item/radio/weather_monitor (src)
@@ -18,6 +20,8 @@
 	new /obj/item/storage/bag/garment/quartermaster(src)
 
 /obj/structure/closet/secure_closet/quartermaster/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Traitor steal objective

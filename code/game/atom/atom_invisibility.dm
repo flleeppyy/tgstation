@@ -7,6 +7,8 @@
 	VAR_PRIVATE/current_invisibility_priority = -INFINITY
 
 /atom/proc/RecalculateInvisibility()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(!invisibility_sources)
@@ -39,6 +41,8 @@
  * you should provide an id here and remove it using RemoveInvisibility(id)
  */
 /atom/proc/SetInvisibility(desired_value, id, priority=0)
+	procstart = null
+	src.procstart = null
 	if(!invisibility_sources)
 		invisibility_sources = list()
 
@@ -54,6 +58,8 @@
 
 /// Removes the specified invisibility source from the tracker
 /atom/proc/RemoveInvisibility(id)
+	procstart = null
+	src.procstart = null
 	if(!invisibility_sources?[id])
 		return
 

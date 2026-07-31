@@ -14,6 +14,8 @@
 	var/untamed_reaction
 
 /datum/element/unfriend_attacker/Attach(datum/target, untamed_reaction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -23,11 +25,15 @@
 	RegisterSignal(target, COMSIG_ATOM_WAS_ATTACKED, PROC_REF(on_hurt))
 
 /datum/element/unfriend_attacker/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_ATOM_WAS_ATTACKED)
 
 /// If it's a bad touch make enemies
 /datum/element/unfriend_attacker/proc/on_hurt(mob/living/owner, atom/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (IS_UNCONSCIOUS(owner))

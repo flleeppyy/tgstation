@@ -16,16 +16,22 @@
 	var/block_chance = 75
 
 /datum/martial_art/cqc/activate_style(mob/living/new_holder)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(new_holder, COMSIG_ATOM_ATTACKBY, PROC_REF(on_attackby))
 	RegisterSignal(new_holder, COMSIG_LIVING_CHECK_BLOCK, PROC_REF(check_block))
 
 /datum/martial_art/cqc/deactivate_style(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(remove_from, list(COMSIG_ATOM_ATTACKBY, COMSIG_LIVING_CHECK_BLOCK))
 	return ..()
 
 ///Signal from getting attacked with an item, for a special interaction with touch spells
 /datum/martial_art/cqc/proc/on_attackby(mob/living/cqc_user, obj/item/attack_weapon, mob/attacker, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(attack_weapon, /obj/item/melee/touch_attack))
@@ -44,6 +50,8 @@
 	return COMPONENT_NO_AFTERATTACK
 
 /datum/martial_art/cqc/proc/check_block(mob/living/cqc_user, atom/movable/hitby, damage, attack_text, attack_type, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!can_use(cqc_user) || !cqc_user.throw_mode || INCAPACITATED_IGNORING(cqc_user, INCAPABLE_GRAB))
@@ -79,11 +87,15 @@
 
 
 /datum/martial_art/cqc/reset_streak(mob/living/new_target)
+	procstart = null
+	src.procstart = null
 	if(!IS_WEAKREF_OF(new_target, restraining_mob))
 		restraining_mob = null
 	return ..()
 
 /datum/martial_art/cqc/proc/check_streak(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(findtext(streak, SLAM_COMBO))
 		reset_streak()
 		return Slam(attacker, defender)
@@ -102,6 +114,8 @@
 	return FALSE
 
 /datum/martial_art/cqc/proc/Slam(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(defender.body_position != STANDING_UP)
 		return FALSE
 
@@ -121,6 +135,8 @@
 	return TRUE
 
 /datum/martial_art/cqc/proc/Kick(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(defender))
 		return FALSE
 
@@ -162,6 +178,8 @@
 	return TRUE
 
 /datum/martial_art/cqc/proc/Pressure(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	attacker.do_attack_animation(defender)
 	log_combat(attacker, defender, "pressured (CQC)")
 	defender.visible_message(
@@ -177,6 +195,8 @@
 	return TRUE
 
 /datum/martial_art/cqc/proc/Restrain(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(restraining_mob?.resolve())
 		return FALSE
 	if(IS_UNCONSCIOUS_OR_CRIT(defender))
@@ -198,6 +218,8 @@
 	return TRUE
 
 /datum/martial_art/cqc/proc/Consecutive(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(defender))
 		return FALSE
 
@@ -220,6 +242,8 @@
 	return TRUE
 
 /datum/martial_art/cqc/grab_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(attacker == defender)
 		return MARTIAL_ATTACK_INVALID
 	if(defender.check_block(attacker, 0, attacker.name, UNARMED_ATTACK))
@@ -248,6 +272,8 @@
 	return MARTIAL_ATTACK_SUCCESS
 
 /datum/martial_art/cqc/harm_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(attacker.grab_state == GRAB_KILL \
 		&& attacker.zone_selected == BODY_ZONE_HEAD \
 		&& attacker.pulling == defender \
@@ -315,6 +341,8 @@
 	return MARTIAL_ATTACK_SUCCESS
 
 /datum/martial_art/cqc/disarm_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(defender.check_block(attacker, 0, attacker.name, UNARMED_ATTACK))
 		return MARTIAL_ATTACK_FAIL
 
@@ -378,6 +406,8 @@
 
 
 /datum/martial_art/cqc/get_style_help()
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	. += "<b><i>You try to remember some of the basics of CQC.</i></b>"
@@ -399,6 +429,8 @@
 
 /// Refreshes the valid areas from the cook's mapping config, adding areas in config to the list of possible areas.
 /datum/martial_art/cqc/under_siege/proc/refresh_valid_areas()
+	procstart = null
+	src.procstart = null
 	var/list/additional_cqc_areas = CHECK_MAP_JOB_CHANGE(JOB_COOK, "additional_cqc_areas")
 	if(!additional_cqc_areas)
 		return
@@ -417,6 +449,8 @@
 
 /// Limits where the chef's CQC can be used to only whitelisted areas.
 /datum/martial_art/cqc/under_siege/can_use(mob/living/martial_artist)
+	procstart = null
+	src.procstart = null
 	if(!is_type_in_list(get_area(martial_artist), kitchen_areas))
 		return FALSE
 	return ..()

@@ -19,9 +19,13 @@
 	var/fade_out = 0
 
 /datum/client_colour/New(mob/owner)
+	procstart = null
+	src.procstart = null
 	src.owner = owner
 
 /datum/client_colour/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(owner))
 		owner.client_colours -= src
 		owner.animate_client_colour(fade_out)
@@ -30,6 +34,8 @@
 
 ///Sets a new color, then updates the owner's screen color.
 /datum/client_colour/proc/update_color(new_color, anim_time, easing = 0)
+	procstart = null
+	src.procstart = null
 	color = new_color
 	owner.animate_client_colour(anim_time, easing)
 
@@ -40,6 +46,8 @@
  * force - if TRUE, colors of the same source will be replaced even if it is of the same type
  */
 /mob/proc/add_client_colour(datum/client_colour/new_color, source, force = FALSE)
+	procstart = null
+	src.procstart = null
 	if (QDELING(src))
 		return
 
@@ -65,6 +73,8 @@
 */
 
 /mob/proc/remove_client_colour(source)
+	procstart = null
+	src.procstart = null
 	var/datum/client_colour/existing_color = get_client_colour(source)
 	if (!existing_color)
 		return FALSE
@@ -72,11 +82,15 @@
 	return TRUE
 
 /mob/proc/get_client_colour(source)
+	procstart = null
+	src.procstart = null
 	for(var/datum/client_colour/color as anything in client_colours)
 		if (client_colours[color] == source)
 			return color
 
 /mob/proc/get_client_colour_filters()
+	procstart = null
+	src.procstart = null
 	. = list()
 	// sortTim sorts the passed list instead of making the copy, and so does reverse_range
 	var/list/used_colors = reverse_range(sortTim(client_colours.Copy(), GLOBAL_PROC_REF(cmp_client_colours)))
@@ -126,6 +140,8 @@
 		. += list(list(color_matrix_filter(current_color), color_prio))
 
 /mob/proc/update_client_colour()
+	procstart = null
+	src.procstart = null
 	if (isnull(hud_used))
 		return
 
@@ -146,6 +162,8 @@
 
 /// Works similarly to 'update_client_colour', but animated.
 /mob/proc/animate_client_colour(anim_time = 1 SECONDS, anim_easing = NONE)
+	procstart = null
+	src.procstart = null
 	if (isnull(hud_used))
 		return
 
@@ -206,11 +224,15 @@
 	fade_out = 2 SECONDS
 
 /datum/client_colour/monochrome/New(mob/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (owner)
 		ADD_TRAIT(owner, TRAIT_COLORBLIND, type)
 
 /datum/client_colour/monochrome/Destroy()
+	procstart = null
+	src.procstart = null
 	if (owner)
 		REMOVE_TRAIT(owner, TRAIT_COLORBLIND, type)
 	return ..()
@@ -224,6 +246,8 @@
 	fade_out = 1 SECONDS
 
 /datum/client_colour/bloodlust/New(mob/owner)
+	procstart = null
+	src.procstart = null
 	..()
 	if(owner)
 		addtimer(CALLBACK(src, PROC_REF(update_color), list(/*R*/ 1,0,0, /*G*/ 0.8,0.2,0, /*B*/ 0.8,0,0.2, /*C*/ 0.1,0,0), 10, SINE_EASING|EASE_OUT), 0.1 SECONDS)

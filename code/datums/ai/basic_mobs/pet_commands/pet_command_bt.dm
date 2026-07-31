@@ -5,6 +5,8 @@
 /datum/bt_node/ai_behavior/protect_owner_check
 
 /datum/bt_node/ai_behavior/protect_owner_check/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/victim = controller.blackboard[BB_CURRENT_PET_TARGET]
 	if(QDELETED(victim))
 		controller.clear_blackboard_key(BB_ACTIVE_PET_COMMAND)
@@ -31,10 +33,14 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/fetch_seek/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/item/target = controller.blackboard[target_key]
 	return !QDELETED(target)
 
 /datum/bt_node/ai_behavior/fetch_seek/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/item/fetch_thing = controller.blackboard[target_key]
 	if(QDELETED(fetch_thing))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
@@ -43,6 +49,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/fetch_seek/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(succeeded)
 		return
@@ -57,6 +65,8 @@
 	COOLDOWN_DECLARE(clear_cooldown)
 
 /datum/bt_node/ai_behavior/forget_failed_fetches/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(COOLDOWN_FINISHED(src, clear_cooldown) && LAZYLEN(controller.blackboard[BB_FETCH_IGNORE_LIST]))
 		COOLDOWN_START(src, clear_cooldown, AI_FETCH_IGNORE_DURATION)
 		controller.clear_blackboard_key(BB_FETCH_IGNORE_LIST)
@@ -66,6 +76,8 @@
 /datum/bt_node/ai_behavior/clear_pet_command
 
 /datum/bt_node/ai_behavior/clear_pet_command/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.clear_blackboard_key(BB_ACTIVE_PET_COMMAND)
 	controller.set_behavior_tree_override(SUBPLAN_ID_PET_COMMAND, null)
 	return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_SUCCEEDED

@@ -58,15 +58,21 @@
 	var/contains_sample = FALSE
 
 /obj/item/seeds/replicapod/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(volume, INJECTABLE | DRAWABLE)
 
 /obj/item/seeds/replicapod/create_reagents(max_vol, flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(reagents, COMSIG_REAGENTS_HOLDER_UPDATED, PROC_REF(on_reagent_update))
 
 /// Handles reagents getting added to this seed.
 /obj/item/seeds/replicapod/proc/on_reagent_update(datum/reagents/reagents)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/reagent/blood/blood = reagents.has_reagent(/datum/reagent/blood)
@@ -92,6 +98,8 @@
 
 /// Handles reagents being deleted from these seeds.
 /obj/item/seeds/replicapod/proc/on_reagent_del(changetype)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(reagents.has_reagent(/datum/reagent/blood))
 		return
@@ -107,11 +115,15 @@
 	contains_sample = FALSE
 
 /obj/item/seeds/replicapod/get_unique_analyzer_data()
+	procstart = null
+	src.procstart = null
 	if(contains_sample)
 		return list("Blood DNA" = sampleDNA)
 	return null
 
-/obj/item/seeds/replicapod/harvest(mob/user) //now that one is fun -- Urist
+/obj/item/seeds/replicapod/harvest(mob/user)
+	procstart = null
+	src.procstart = null //now that one is fun -- Urist
 	var/obj/machinery/hydroponics/parent = loc
 	var/make_podman = FALSE
 	var/ckey_holder = null

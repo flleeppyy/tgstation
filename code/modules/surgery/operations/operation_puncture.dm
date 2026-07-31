@@ -12,24 +12,34 @@
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_ORGANS_CUT
 
 /datum/surgery_operation/limb/repair_puncture/get_time_modifiers(obj/item/bodypart/limb, mob/living/surgeon, tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/wound/pierce/bleed/pierce_wound in limb.wounds)
 		if(HAS_TRAIT(pierce_wound, TRAIT_WOUND_SCANNED))
 			. *= 0.5
 
 /datum/surgery_operation/limb/repair_puncture/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(/obj/item/hemostat)
 
 /datum/surgery_operation/limb/repair_puncture/all_required_strings()
+	procstart = null
+	src.procstart = null
 	return list("the limb must have an unoperated puncture wound") + ..()
 
 /datum/surgery_operation/limb/repair_puncture/state_check(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	var/datum/wound/pierce/bleed/pierce_wound = locate() in limb.wounds
 	if(isnull(pierce_wound) || pierce_wound.blood_flow <= 0 || pierce_wound.mend_state)
 		return FALSE
 	return TRUE
 
 /datum/surgery_operation/limb/repair_puncture/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -40,6 +50,8 @@
 	display_pain(limb.owner, "You feel a horrible stabbing pain in your [limb.plaintext_zone]!")
 
 /datum/surgery_operation/limb/repair_puncture/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	var/datum/wound/pierce/bleed/pierce_wound = locate() in limb.wounds
 	pierce_wound?.adjust_blood_flow(-0.25)
 	limb.receive_damage(3, wound_bonus = CANT_WOUND, sharpness = tool.get_sharpness(), damage_source = tool)
@@ -64,6 +76,8 @@
 	)
 
 /datum/surgery_operation/limb/repair_puncture/on_failure(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -89,21 +103,31 @@
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_ORGANS_CUT
 
 /datum/surgery_operation/limb/seal_veins/get_time_modifiers(obj/item/bodypart/limb, mob/living/surgeon, tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/wound/pierce/bleed/pierce_wound in limb.wounds)
 		if(HAS_TRAIT(pierce_wound, TRAIT_WOUND_SCANNED))
 			. *= 0.5
 
 /datum/surgery_operation/limb/seal_veins/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(/obj/item/cautery)
 
 /datum/surgery_operation/limb/seal_veins/get_any_tool()
+	procstart = null
+	src.procstart = null
 	return "Any heat source"
 
 /datum/surgery_operation/limb/seal_veins/all_required_strings()
+	procstart = null
+	src.procstart = null
 	return list("the limb must have an operated puncture wound") + ..()
 
 /datum/surgery_operation/limb/seal_veins/tool_check(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/gun/energy/laser))
 		var/obj/item/gun/energy/laser/lasergun = tool
 		return lasergun.cell?.charge > 0
@@ -111,12 +135,16 @@
 	return tool.get_temperature() >= FIRE_MINIMUM_TEMPERATURE_TO_EXIST
 
 /datum/surgery_operation/limb/seal_veins/state_check(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	var/datum/wound/pierce/bleed/pierce_wound = locate() in limb.wounds
 	if(isnull(pierce_wound) || pierce_wound.blood_flow <= 0 || !pierce_wound.mend_state)
 		return FALSE
 	return TRUE
 
 /datum/surgery_operation/limb/seal_veins/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -127,6 +155,8 @@
 	display_pain(limb.owner, "You feel a burning sensation in your [limb.plaintext_zone]!")
 
 /datum/surgery_operation/limb/seal_veins/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	var/datum/wound/pierce/bleed/pierce_wound = locate() in limb.wounds
 	pierce_wound?.adjust_blood_flow(-0.5)
 

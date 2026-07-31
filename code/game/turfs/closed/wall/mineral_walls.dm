@@ -53,6 +53,8 @@
 	rust_resistance = RUST_RESISTANCE_REINFORCED
 
 /turf/closed/wall/mineral/diamond/hulk_recoil(obj/item/bodypart/arm, mob/living/carbon/human/hulkman, damage = 41)
+	procstart = null
+	src.procstart = null
 	return ..()
 
 /turf/closed/wall/mineral/bananium
@@ -106,10 +108,14 @@
 	var/last_event = 0
 
 /turf/closed/wall/mineral/uranium/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ATOM_PROPAGATE_RAD_PULSE, PROC_REF(radiate))
 
 /turf/closed/wall/mineral/uranium/proc/radiate()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(active)
 		return
@@ -128,18 +134,26 @@
 	active = FALSE
 
 /turf/closed/wall/mineral/uranium/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	radiate()
 	return ..()
 
 /turf/closed/wall/mineral/uranium/attackby(obj/item/W, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	radiate()
 	return ..()
 
 /turf/closed/wall/mineral/uranium/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	radiate()
 	return ..()
 
 /turf/closed/wall/mineral/uranium/hulk_recoil(obj/item/bodypart/arm, mob/living/carbon/human/hulkman, damage = 41)
+	procstart = null
+	src.procstart = null
 	return ..()
 
 /turf/closed/wall/mineral/plasma
@@ -174,6 +188,8 @@
 	rust_resistance = RUST_RESISTANCE_BASIC
 
 /turf/closed/wall/mineral/wood/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!tool.get_sharpness() || !tool.force)
 		return ..()
 
@@ -187,6 +203,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /turf/closed/wall/mineral/hulk_recoil(obj/item/bodypart/arm, mob/living/carbon/human/hulkman, damage = 0)
+	procstart = null
+	src.procstart = null
 	return ..() //No recoil damage, wood is weak
 
 /turf/closed/wall/mineral/wood/nonmetal
@@ -243,6 +261,8 @@
 	rust_resistance = RUST_RESISTANCE_BASIC
 
 /turf/closed/wall/mineral/snow/hulk_recoil(obj/item/bodypart/arm, mob/living/carbon/human/hulkman, damage = 0)
+	procstart = null
+	src.procstart = null
 	return ..() //No recoil damage, snow is weak
 
 /turf/closed/wall/mineral/abductor
@@ -281,6 +301,8 @@
 	rust_resistance = RUST_RESISTANCE_TITANIUM
 
 /turf/closed/wall/mineral/titanium/rust_turf(magic = FALSE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_RUSTY))
 		ChangeTurf(/turf/closed/wall/rust)
 		return TRUE
@@ -297,14 +319,20 @@
 	fixed_underlay = list("space" = TRUE)
 
 /turf/closed/wall/mineral/titanium/interior/copyTurf(turf/copy_to_turf, copy_air = FALSE, flags = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	copy_to_turf.transform = transform
 
 /turf/closed/wall/mineral/titanium/copyTurf(turf/copy_to_turf, copy_air = FALSE, flags = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	copy_to_turf.transform = transform
 
 /turf/closed/wall/mineral/titanium/rust_turf(magic = FALSE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_RUSTY))
 		ChangeTurf(/turf/closed/wall/rust)
 		return TRUE
@@ -381,6 +409,8 @@
 	rust_resistance = RUST_RESISTANCE_TITANIUM
 
 /turf/closed/wall/mineral/plastitanium/rust_turf(magic = FALSE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_RUSTY))
 		ChangeTurf(/turf/closed/wall/rust)
 		return TRUE
@@ -397,6 +427,8 @@
 	fixed_underlay = list("space" = TRUE)
 
 /turf/closed/wall/mineral/plastitanium/rust_turf(magic = FALSE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_RUSTY))
 		ChangeTurf(/turf/closed/wall/rust)
 		return TRUE
@@ -404,13 +436,19 @@
 
 
 /turf/closed/wall/mineral/plastitanium/explosive/ex_act(severity)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bombcore/large/bombcore = new(get_turf(src))
 	bombcore.detonate()
 	return ..()
 
 /turf/closed/wall/mineral/plastitanium/hulk_recoil(obj/item/bodypart/arm, mob/living/carbon/human/hulkman, damage = 41)
+	procstart = null
+	src.procstart = null
 	return ..()
 
 /turf/closed/wall/mineral/plastitanium/copyTurf(turf/copy_to_turf, copy_air = FALSE, flags = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	copy_to_turf.transform = transform

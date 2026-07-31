@@ -6,6 +6,8 @@ ADMIN_VERB_ONLY_CONTEXT_MENU(debug_variables, R_NONE, "View Variables", datum/th
 // This is kept as a separate proc because admins are able to show VV to non-admins
 
 /client/proc/debug_variables(datum/thing)
+	procstart = null
+	src.procstart = null
 	var/static/cookieoffset = rand(1, 9999) //to force cookies to reset after the round.
 
 	if(!usr.client || !usr.client.holder) //This is usr because admins can call the proc on other clients, even if they're not admins, to show them VVs.
@@ -349,6 +351,8 @@ datumrefresh=[refid];[HrefToken()]'>Refresh</a>
 	src << browse(html, "window=variables[refid];[size_string]")
 
 /client/proc/vv_update_display(datum/thing, span, content)
+	procstart = null
+	src.procstart = null
 	src << output("[span]:[content]", "variables[REF(thing)].browser:replace_span")
 
 #undef ICON_STATE_CHECKED

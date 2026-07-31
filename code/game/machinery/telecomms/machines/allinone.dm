@@ -66,11 +66,15 @@
 
 
 /obj/machinery/telecomms/allinone/indestructible/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/tool_blocker, TOOL_SCREWDRIVER)
 	AddElement(/datum/element/tool_blocker, TOOL_CROWBAR)
 
 /obj/machinery/telecomms/allinone/receive_signal(datum/signal/subspace/signal)
+	procstart = null
+	src.procstart = null
 	if(!istype(signal) || signal.transmission_method != TRANSMISSION_SUBSPACE)  // receives on subspace only
 		return
 	if(!on || !is_freq_listening(signal))  // has to be on to receive messages
@@ -94,5 +98,7 @@
 	signal.broadcast()
 
 /obj/machinery/telecomms/allinone/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	attack_hand(user)
 	return ITEM_INTERACT_SUCCESS

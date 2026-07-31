@@ -16,6 +16,8 @@
 	var/list/blood_samples
 
 /datum/heretic_knowledge/curse/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	fingerprints = list()
 	blood_samples = list()
 	for(var/atom/requirement as anything in atoms)
@@ -33,6 +35,8 @@
 	return TRUE
 
 /datum/heretic_knowledge/curse/on_finished_recipe(mob/living/user, list/selected_atoms,  turf/loc)
+	procstart = null
+	src.procstart = null
 	// Potential targets is an assoc list of [names] to [human mob ref].
 	var/list/potential_targets = list()
 
@@ -99,6 +103,8 @@
  * Calls a curse onto [chosen_mob].
  */
 /datum/heretic_knowledge/curse/proc/curse(mob/living/carbon/human/chosen_mob, obj/item/codex_cicatrix/morbus/cursing_book)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(duration > 0)
@@ -113,6 +119,8 @@
  * Removes a curse from [chosen_mob]. Used in timers / callbacks.
  */
 /datum/heretic_knowledge/curse/proc/uncurse(mob/living/carbon/human/chosen_mob)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(QDELETED(chosen_mob))
@@ -129,6 +137,8 @@
  * Return FALSE to cancel the curse
  */
 /datum/heretic_knowledge/curse/proc/ask_for_input(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 //---- Curse of Paralysis
@@ -150,6 +160,8 @@
 
 
 /datum/heretic_knowledge/curse/paralysis/curse(mob/living/carbon/human/chosen_mob)
+	procstart = null
+	src.procstart = null
 	if(chosen_mob.usable_legs <= 0) // What're you gonna do, curse someone who already can't walk?
 		to_chat(chosen_mob, span_notice("You feel a slight pain for a moment, but it passes shortly. Odd."))
 		return
@@ -159,6 +171,8 @@
 	return ..()
 
 /datum/heretic_knowledge/curse/paralysis/uncurse(mob/living/carbon/human/chosen_mob)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(chosen_mob))
 		return
 
@@ -185,11 +199,15 @@
 	research_tree_icon_state = "curse_corrosion"
 
 /datum/heretic_knowledge/curse/corrosion/curse(mob/living/carbon/human/chosen_mob)
+	procstart = null
+	src.procstart = null
 	to_chat(chosen_mob, span_danger("You feel very ill..."))
 	chosen_mob.apply_status_effect(/datum/status_effect/corrosion_curse)
 	return ..()
 
 /datum/heretic_knowledge/curse/corrosion/uncurse(mob/living/carbon/human/chosen_mob)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(chosen_mob))
 		return
 
@@ -208,6 +226,8 @@
 	var/chosen_species
 
 /datum/heretic_knowledge/curse/transmutation/ask_for_input(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/list/chooseable_races = list()
 	for(var/datum/species/species_type as anything in subtypesof(/datum/species))
 		if(initial(species_type.changesource_flags) & RACE_SWAP)
@@ -220,6 +240,8 @@
 	return ..()
 
 /datum/heretic_knowledge/curse/transmutation/curse(mob/living/carbon/human/chosen_mob, obj/item/codex_cicatrix/morbus/cursing_book)
+	procstart = null
+	src.procstart = null
 	if(chosen_mob.dna.species == chosen_species)
 		to_chat(chosen_mob, span_warning("You feel your body morph into... itself?"))
 		return
@@ -229,6 +251,8 @@
 	return ..()
 
 /datum/heretic_knowledge/curse/transmutation/uncurse(mob/living/carbon/human/chosen_mob)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(chosen_mob))
 		return
 
@@ -246,10 +270,14 @@
 	var/old_species
 
 /datum/status_effect/race_swap/on_creation(mob/living/new_owner, datum/species/new_species)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.set_species(new_species)
 
 /datum/status_effect/race_swap/on_apply()
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(owner))
 		return FALSE
 	var/mob/living/carbon/carbon_owner = owner
@@ -258,10 +286,14 @@
 	return ..()
 
 /datum/status_effect/race_swap/be_replaced()
+	procstart = null
+	src.procstart = null
 	owner.set_species(old_species)
 	return ..()
 
 /datum/status_effect/race_swap/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.set_species(old_species)
 
@@ -274,11 +306,15 @@
 	curse_color = COLOR_MAROON
 
 /datum/heretic_knowledge/curse/indulgence/curse(mob/living/carbon/human/chosen_mob)
+	procstart = null
+	src.procstart = null
 	chosen_mob.apply_status_effect(/datum/status_effect/eldritch_painting/desire/permanent)
 	chosen_mob.nutrition = NUTRITION_LEVEL_STARVING
 	return ..()
 
 /datum/heretic_knowledge/curse/indulgence/uncurse(mob/living/carbon/human/chosen_mob)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(chosen_mob))
 		return
 	chosen_mob.remove_status_effect(/datum/status_effect/eldritch_painting/desire/permanent)

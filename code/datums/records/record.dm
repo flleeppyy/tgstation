@@ -124,6 +124,8 @@
 	GLOB.manifest.general += src
 
 /datum/record/crew/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.manifest.general -= src
 	QDEL_LAZYLIST(record_photos)
 	return ..()
@@ -163,21 +165,29 @@
 	GLOB.manifest.locked += src
 
 /datum/record/locked/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.manifest.locked -= src
 	return ..()
 
 /// A helper proc to get the front photo of a character from the record.
 /// Handles calling `get_photo()`, read its documentation for more information.
 /datum/record/crew/proc/get_front_photo()
+	procstart = null
+	src.procstart = null
 	return get_photo("photo_front", SOUTH)
 
 /// A helper proc to get the side photo of a character from the record.
 /// Handles calling `get_photo()`, read its documentation for more information.
 /datum/record/crew/proc/get_side_photo()
+	procstart = null
+	src.procstart = null
 	return get_photo("photo_side", WEST)
 
 /// A helper proc to recreate all photos of a character from the record.
 /datum/record/crew/proc/recreate_manifest_photos(add_height_chart)
+	procstart = null
+	src.procstart = null
 	delete_photos("photo_front")
 	make_photo("photo_front", SOUTH, add_height_chart)
 	delete_photos("photo_side")
@@ -185,6 +195,8 @@
 
 ///Deletes the existing photo for field_name
 /datum/record/crew/proc/delete_photos(field_name)
+	procstart = null
+	src.procstart = null
 	var/obj/item/photo/existing_photo = LAZYACCESS(record_photos, field_name)
 	if(existing_photo)
 		qdel(existing_photo)
@@ -209,6 +221,8 @@
  * returns the generated/cached photo otherwise.
  */
 /datum/record/crew/proc/get_photo(field_name, orientation = SOUTH)
+	procstart = null
+	src.procstart = null
 	if(!field_name)
 		return
 	if(!character_appearance)
@@ -225,6 +239,8 @@
  * then make a picture out of it, then finally create a new photo.
  */
 /datum/record/crew/proc/make_photo(field_name, orientation, add_height_chart)
+	procstart = null
+	src.procstart = null
 	var/icon/picture_image
 	if(!isicon(character_appearance))
 		var/mutable_appearance/appearance = character_appearance
@@ -247,6 +263,8 @@
 
 /// Returns a paper printout of the current record's crime data.
 /datum/record/crew/proc/get_rapsheet(alias, header = "Rapsheet", description = "No further details.")
+	procstart = null
+	src.procstart = null
 	var/print_count = ++GLOB.manifest.print_count
 	var/obj/item/paper/printed_paper = new
 	var/final_paper_text = "<center><b>SR-[print_count]: [header]</b></center><br>"

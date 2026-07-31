@@ -10,6 +10,8 @@
 	var/tattoo_description
 
 /datum/component/tattoo/Initialize(tattoo_description)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isbodypart(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -26,6 +28,8 @@
 		setup_tatted_owner(tatted_limb.owner)
 
 /datum/component/tattoo/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(!parent)
 		return ..()
 	var/obj/item/bodypart/tatted_limb = parent
@@ -35,22 +39,34 @@
 	return ..()
 
 /datum/component/tattoo/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/component/tattoo/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_ATOM_EXAMINE)
 
 /datum/component/tattoo/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_list += span_boldnotice(tattoo_description)
 
 /datum/component/tattoo/proc/setup_tatted_owner(mob/living/carbon/new_owner)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(new_owner, COMSIG_ATOM_EXAMINE, PROC_REF(on_bodypart_owner_examine))
 
 /datum/component/tattoo/proc/clear_tatted_owner(mob/living/carbon/old_owner)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(old_owner, COMSIG_ATOM_EXAMINE)
 
 /datum/component/tattoo/proc/on_bodypart_owner_examine(mob/living/carbon/bodypart_owner, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/bodypart/tatted_limb = parent

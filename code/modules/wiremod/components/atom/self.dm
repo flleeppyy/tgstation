@@ -15,13 +15,19 @@
 	var/datum/port/output/shell_received
 
 /obj/item/circuit_component/self/populate_ports()
+	procstart = null
+	src.procstart = null
 	output = add_output_port("Shell", PORT_TYPE_ATOM)
 	shell_received = add_output_port("Shell Updated", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/self/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	output.set_output(shell)
 	shell_received.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/self/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	output.set_output(null)
 	shell_received.set_output(COMPONENT_SIGNAL)

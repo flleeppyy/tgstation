@@ -29,6 +29,8 @@
 	sound_vary = TRUE
 
 /obj/item/storage/backpack/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/attack_equip)
 
@@ -51,6 +53,8 @@
 	custom_materials = list(/datum/material/gold = SHEET_MATERIAL_AMOUNT * 1.5, /datum/material/bluespace = SHEET_MATERIAL_AMOUNT, /datum/material/diamond = SHEET_MATERIAL_AMOUNT * 0.75, /datum/material/uranium = SMALL_MATERIAL_AMOUNT * 2.5)
 
 /obj/item/bag_of_holding_inert/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/recipes = list(/datum/crafting_recipe/boh)
 	AddElement(/datum/element/slapcrafting, recipes)
@@ -73,6 +77,8 @@
 	acid = 50
 
 /obj/item/storage/backpack/holding/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is jumping into [src]! It looks like [user.p_theyre()] trying to commit suicide."))
 	user.dropItemToGround(src, TRUE)
 	user.Stun(100, ignore_canstun = TRUE)
@@ -91,14 +97,20 @@
 	storage_type = /datum/storage/backpack/santabag
 
 /obj/item/storage/backpack/santabag/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	regenerate_presents()
 
 /obj/item/storage/backpack/santabag/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] places [src] over [user.p_their()] head and pulls it tight! It looks like [user.p_they()] [user.p_are()]n't in the Christmas spirit..."))
 	return OXYLOSS
 
 /obj/item/storage/backpack/santabag/proc/regenerate_presents()
+	procstart = null
+	src.procstart = null
 	addtimer(CALLBACK(src, PROC_REF(regenerate_presents)), 30 SECONDS)
 
 	var/mob/user = get(loc, /mob)
@@ -272,6 +284,8 @@
 	var/list/eatverbs = list("MEAT", "absorb", "gnaw", "consume")
 
 /obj/item/storage/backpack/meat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponentFrom(
 		SOURCE_EDIBLE_INNATE, \
@@ -284,6 +298,8 @@
 	AddComponent(/datum/component/squeak, meat_sounds)
 
 /obj/item/storage/backpack/meat/change_material_strength(datum/material/material, mat_amount, multiplier, remove)
+	procstart = null
+	src.procstart = null
 	// Our base 15 force includes the implied meat force
 	if (!istype(material, /datum/material/meat))
 		return ..()
@@ -305,6 +321,8 @@
 	inhand_icon_state = "satchel"
 
 /obj/item/storage/backpack/satchel/leather/withwallet/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/storage/wallet/random(src)
 
 /obj/item/storage/backpack/satchel/fireproof
@@ -392,21 +410,29 @@
 	storage_type = /datum/storage/backpack/satchel_flat
 
 /obj/item/storage/backpack/satchel/flat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/undertile, TRAIT_T_RAY_VISIBLE, INVISIBILITY_OBSERVER, use_anchor = TRUE)
 	ADD_TRAIT(src, TRAIT_CONTRABAND_BLOCKER, INNATE_TRAIT)
 
 /obj/item/storage/backpack/satchel/flat/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/items in 1 to 4)
 		new /obj/effect/spawner/random/contraband(src)
 
 /obj/item/storage/backpack/satchel/flat/with_tools/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/tile/iron/base(src)
 	new /obj/item/crowbar(src)
 
 	..()
 
 /obj/item/storage/backpack/satchel/flat/empty/PopulateContents()
+	procstart = null
+	src.procstart = null
 	return
 
 

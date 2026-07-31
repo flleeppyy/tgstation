@@ -85,7 +85,9 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 	//creates the timer that determines if another program can be manually loaded
 	COOLDOWN_DECLARE(holodeck_cooldown)
 
-/obj/machinery/computer/holodeck/post_machine_initialize() //from here linked is populated and the program list is generated. its also set to load the offline program
+/obj/machinery/computer/holodeck/post_machine_initialize()
+	procstart = null
+	src.procstart = null //from here linked is populated and the program list is generated. its also set to load the offline program
 	. = ..()
 	linked = GLOB.areas_by_type[mapped_start_area]
 	if(!linked)
@@ -124,6 +126,8 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 
 ///adds all programs that this holodeck has access to, and separates the restricted and unrestricted ones
 /obj/machinery/computer/holodeck/proc/generate_program_list()
+	procstart = null
+	src.procstart = null
 	for(var/typekey in subtypesof(program_type))
 		var/datum/map_template/holodeck/program = typekey
 		var/list/info_this = list("id" = initial(program.template_id), "name" = initial(program.name))
@@ -133,6 +137,8 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 			LAZYADD(program_cache, list(info_this))
 
 /obj/machinery/computer/holodeck/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -140,6 +146,8 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 		ui.open()
 
 /obj/machinery/computer/holodeck/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["default_programs"] = program_cache
@@ -151,6 +159,8 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 	return data
 
 /obj/machinery/computer/holodeck/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -187,6 +197,8 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 
 ///this is what makes the holodeck not spawn anything on broken tiles (space and non engine plating / non holofloors)
 /datum/map_template/holodeck/update_blacklist(turf/placement, list/input_blacklist)
+	procstart = null
+	src.procstart = null
 	for(var/turf/possible_blacklist as anything in get_affected_turfs(placement))
 		if (possible_blacklist.holodeck_compatible)
 			continue
@@ -194,6 +206,8 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 
 ///loads the template whose id string it was given ("offline_program" loads datum/map_template/holodeck/offline)
 /obj/machinery/computer/holodeck/proc/load_program(map_id, force = FALSE, add_delay = TRUE)
+	procstart = null
+	src.procstart = null
 	if (program == map_id)
 		return
 
@@ -238,6 +252,8 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 
 ///To be used on destroy, mainly to prevent sleeping inside well, destroy. Missing a lot of the things contained in load_program
 /obj/machinery/computer/holodeck/proc/reset_to_default()
+	procstart = null
+	src.procstart = null
 	if (program == offline_program)
 		return
 
@@ -250,6 +266,8 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 	INVOKE_ASYNC(template, TYPE_PROC_REF(/datum/map_template, load), bottom_left) //this is what actually loads the holodeck simulation into the map
 
 /obj/machinery/computer/holodeck/proc/clear_projection()
+	procstart = null
+	src.procstart = null
 	//clear the items from the previous program
 	for(var/holo_atom in spawned)
 		derez(holo_atom)
@@ -265,6 +283,8 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 
 ///finalizes objects in the spawned list
 /obj/machinery/computer/holodeck/proc/finish_spawn()
+	procstart = null
+	src.procstart = null
 	for(var/atom/holo_atom as anything in spawned)
 		if(QDELETED(holo_atom))
 			spawned -= holo_atom
@@ -273,6 +293,8 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 	spawning_simulation = FALSE
 
 /obj/machinery/computer/holodeck/proc/finalize_spawned(atom/holo_atom)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(holo_atom, COMSIG_QDELETING, PROC_REF(remove_from_holo_lists))
 	holo_atom.flags_1 |= HOLOGRAM_1
 
@@ -310,6 +332,8 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 				holo_button.setup_device()
 
 /obj/machinery/computer/holodeck/proc/register_contents(obj/structure/closet/storage)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/atom/movable/item as anything in storage.get_all_contents_type(/atom/movable))
@@ -322,6 +346,8 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
  * yet need to be added to the list of spawned objects. (e.g. holographic fishes)
  */
 /obj/machinery/computer/holodeck/proc/add_to_spawned(atom/holo_atom)
+	procstart = null
+	src.procstart = null
 	spawned |= holo_atom
 	if(!(obj_flags & EMAGGED) && isitem(holo_atom))
 		var/obj/item/to_be_nerfed = holo_atom
@@ -330,6 +356,8 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 
 ///this qdels holoitems that should no longer exist for whatever reason
 /obj/machinery/computer/holodeck/proc/derez(atom/movable/holo_atom, silent = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	spawned -= holo_atom
 	if(!holo_atom)
 		return
@@ -356,11 +384,15 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 	qdel(holo_atom)
 
 /obj/machinery/computer/holodeck/proc/remove_from_holo_lists(datum/to_remove, _forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	spawned -= to_remove
 	UnregisterSignal(to_remove, COMSIG_QDELETING)
 
 /obj/machinery/computer/holodeck/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(damaged && SPT_PROB(5, seconds_per_tick))
 		for(var/turf/holo_turf in linked)
 			if(SPT_PROB(2.5, seconds_per_tick))
@@ -393,6 +425,8 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 	update_mode_power_usage(ACTIVE_POWER_USE, initial(active_power_usage) + (spawned.len * 15 + effects.len * 25))
 
 /obj/machinery/computer/holodeck/proc/toggle_power(toggleOn = FALSE)
+	procstart = null
+	src.procstart = null
 	if(active == toggleOn)
 		return
 
@@ -406,17 +440,23 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 		active = FALSE
 
 /obj/machinery/computer/holodeck/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	INVOKE_ASYNC(src, PROC_REF(toggle_power), !machine_stat)
 
 ///shuts down the holodeck and force loads the offline_program
 /obj/machinery/computer/holodeck/proc/emergency_shutdown()
+	procstart = null
+	src.procstart = null
 	last_program = program
 	active = FALSE
 	load_program(offline_program, TRUE)
 
 ///returns TRUE if all floors of the holodeck are present, returns FALSE if any are broken or removed
 /obj/machinery/computer/holodeck/proc/floorcheck()
+	procstart = null
+	src.procstart = null
 	for(var/turf/holo_floor in linked)
 		if (is_type_in_typecache(holo_floor, GLOB.typecache_holodeck_linked_floorcheck_ok))
 			continue
@@ -425,6 +465,8 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 
 ///changes all weapons in the holodeck to do stamina damage if set
 /obj/machinery/computer/holodeck/proc/nerf(nerf_this, is_loading = TRUE)
+	procstart = null
+	src.procstart = null
 	if (!nerf_this && is_loading)
 		return
 	for(var/obj/item/to_be_nerfed in spawned)
@@ -433,6 +475,8 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 		holo_effect.safety(nerf_this)
 
 /obj/machinery/computer/holodeck/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	if(!LAZYLEN(emag_programs))
@@ -451,16 +495,22 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 	return TRUE
 
 /obj/machinery/computer/holodeck/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
 	emergency_shutdown()
 
 /obj/machinery/computer/holodeck/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	emergency_shutdown()
 	return ..()
 
 /obj/machinery/computer/holodeck/Destroy()
+	procstart = null
+	src.procstart = null
 	reset_to_default()
 	if(linked)
 		linked.linked = null
@@ -468,6 +518,8 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 	return ..()
 
 /obj/machinery/computer/holodeck/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	emergency_shutdown()
 	return ..()
 

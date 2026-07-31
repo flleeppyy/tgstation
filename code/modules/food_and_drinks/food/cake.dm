@@ -16,10 +16,14 @@
 	var/yield = 5
 
 /obj/item/food/cake/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/food_storage)
 
 /obj/item/food/cake/make_processable()
+	procstart = null
+	src.procstart = null
 	if (slice_type)
 		AddElement(/datum/element/processable, TOOL_KNIFE, slice_type, yield, 3 SECONDS, table_required = TRUE, screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
@@ -50,6 +54,8 @@
 	VAR_PROTECTED/cake_holder = /obj/item/food/cake/empty
 
 /obj/item/food/cake/plain/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ingredients_holder, cake_holder, CUSTOM_INGREDIENT_ICON_FILL, max_ingredients = 16)
 
@@ -88,6 +94,8 @@
 	foodtypes = GRAIN | DAIRY | SUGAR
 
 /obj/item/food/cakeslice/empty/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ingredients_holder, null, CUSTOM_INGREDIENT_ICON_FILL, max_ingredients = 16)
 
@@ -275,7 +283,9 @@
 	slice_type = /obj/item/food/cakeslice/birthday
 	crafting_complexity = FOOD_COMPLEXITY_3
 
-/obj/item/food/cake/birthday/make_microwaveable() // super sekrit club
+/obj/item/food/cake/birthday/make_microwaveable()
+	procstart = null
+	src.procstart = null // super sekrit club
 	AddElement(/datum/element/microwavable, /obj/item/clothing/head/utility/hardhat/cakehat)
 
 /obj/item/food/cakeslice/birthday
@@ -308,15 +318,21 @@
 	slice_type = /obj/item/food/cakeslice/birthday/energy
 	crafting_complexity = FOOD_COMPLEXITY_4
 
-/obj/item/food/cake/birthday/energy/make_microwaveable() //super sekriter club
+/obj/item/food/cake/birthday/energy/make_microwaveable()
+	procstart = null
+	src.procstart = null //super sekriter club
 	AddElement(/datum/element/microwavable, /obj/item/clothing/head/utility/hardhat/cakehat/energycake)
 
 /obj/item/food/cake/birthday/energy/proc/energy_bite(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<font color='red' size='5'>As you eat the cake, you accidentally hurt yourself on the embedded energy sword!</font>")
 	user.apply_damage(30, BRUTE, BODY_ZONE_HEAD)
 	playsound(user, 'sound/items/weapons/blade1.ogg', 5, TRUE)
 
 /obj/item/food/cake/birthday/energy/attack(mob/living/target_mob, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(user, TRAIT_PACIFISM) && target_mob != user) //Prevents pacifists from attacking others directly
 		return
@@ -339,16 +355,22 @@
 	crafting_complexity = FOOD_COMPLEXITY_4
 
 /obj/item/food/cakeslice/birthday/energy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_FOOD_EATEN, PROC_REF(bite_taken))
 
 /obj/item/food/cakeslice/birthday/energy/attack(mob/living/target_mob, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(user, TRAIT_PACIFISM) && target_mob != user) //Prevents pacifists from attacking others directly
 		balloon_alert(user, "that's dangerous!")
 		return FALSE
 	return ..()
 
 /obj/item/food/cakeslice/birthday/energy/proc/bite_taken(datum/source, mob/living/eater, mob/living/feeder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	to_chat(eater, "<font color='red' size='5'>As you eat the cake slice, you accidentally hurt yourself on the embedded energy dagger!</font>")
 	if(eater != feeder)
@@ -692,6 +714,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_4
 
 /obj/item/food/cakeslice/fruit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state][rand(1,3)]"
 

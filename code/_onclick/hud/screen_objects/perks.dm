@@ -10,6 +10,8 @@
 	var/compact = FALSE
 
 /atom/movable/screen/perk/more/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(usr))
 		return

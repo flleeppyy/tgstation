@@ -25,9 +25,13 @@
 	ai_controller = /datum/ai_controller/basic_controller/dark_wizard
 
 /mob/living/basic/dark_wizard/get_save_vars()
+	procstart = null
+	src.procstart = null
 	return ..() - NAMEOF(src, icon_state) // icon_state is applied via apply_dynamic_human_appearance()
 
 /mob/living/basic/dark_wizard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	apply_dynamic_human_appearance(src, mob_spawn_path = /obj/effect/mob_spawn/corpse/human/wizard/dark, r_hand = /obj/item/staff)
 	add_traits(list(TRAIT_LAVA_IMMUNE, TRAIT_ASHSTORM_IMMUNE, TRAIT_SNOWSTORM_IMMUNE), INNATE_TRAIT)
@@ -54,6 +58,8 @@
 	new /obj/item/clothing/head/wizard/hood(src) // Having this hat in our contents allows us to cast wizard spells
 
 /mob/living/basic/paper_wizard/get_unconscious_appearance()
+	procstart = null
+	src.procstart = null
 	return get_generic_humanoid_static_appearance()
 
 /datum/ai_controller/basic_controller/dark_wizard

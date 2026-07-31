@@ -2,16 +2,22 @@
 	var/datum/reagent/reagent
 
 /datum/blobstrain/reagent/New(mob/eye/blob/new_overmind)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagent = new reagent()
 
 
 /datum/blobstrain/reagent/attack_living(mob/living/L)
+	procstart = null
+	src.procstart = null
 	var/mob_protection = L.getarmor(null, BIO) * 0.01
 	reagent.expose_mob(L, VAPOR, BLOB_REAGENTATK_VOL, TRUE, mob_protection, overmind)
 	send_message(L)
 
 /datum/blobstrain/reagent/blobbernaut_attack(mob/living/blobbernaut, atom/victim)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!isliving(victim))
 		return
@@ -21,6 +27,8 @@
 	reagent.expose_mob(living_victim, VAPOR, BLOBMOB_BLOBBERNAUT_REAGENTATK_VOL+blobbernaut_reagentatk_bonus, FALSE, mob_protection, overmind)//this will do between 10 and 20 damage(reduced by mob protection), depending on chemical, plus 4 from base brute damage.
 
 /datum/blobstrain/reagent/on_sporedeath(mob/living/dead_minion, death_cloud_size)
+	procstart = null
+	src.procstart = null
 	do_chem_smoke(range = death_cloud_size, holder = dead_minion, location = get_turf(dead_minion), reagent_type = reagent.type, reagent_volume = BLOBMOB_CLOUD_REAGENT_VOLUME, smoke_type = /datum/effect_system/fluid_spread/smoke/chem/medium)
 	playsound(dead_minion, 'sound/mobs/non-humanoids/blobmob/blob_spore_burst.ogg', vol = 100, vary = TRUE)
 
@@ -32,6 +40,8 @@
 
 
 /datum/reagent/blob/New()
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(name == "Unknown")
@@ -41,11 +51,15 @@
 
 /// Used by blob reagents to calculate the reaction volume they should use when exposing mobs.
 /datum/reagent/blob/proc/return_mob_expose_reac_volume(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message, touch_protection, mob/eye/blob/overmind)
+	procstart = null
+	src.procstart = null
 	if(exposed_mob.stat == DEAD || HAS_TRAIT(exposed_mob, TRAIT_BLOB_ALLY))
 		return 0 //the dead, and blob mobs, don't cause reactions
 	return round(reac_volume * min(1.5 - touch_protection, 1), 0.1) //full touch protection means 50% volume, any prot below 0.5 means 100% volume.
 
 /// Exists to earmark the new overmind arg used by blob reagents.
 /datum/reagent/blob/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message, touch_protection, mob/eye/blob/overmind)
+	procstart = null
+	src.procstart = null
 	reac_volume = return_mob_expose_reac_volume(exposed_mob, methods, reac_volume, show_message, touch_protection, overmind)
 	return ..()

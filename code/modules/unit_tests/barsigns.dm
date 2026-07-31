@@ -4,6 +4,8 @@
 /datum/unit_test/barsigns_icon
 
 /datum/unit_test/barsigns_icon/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/barsign_type = /obj/machinery/barsign
 	var/icon/barsign_icon = initial(barsign_type.icon)
 	var/list/barsign_icon_states = icon_states(barsign_icon)
@@ -21,6 +23,8 @@
 /datum/unit_test/barsigns_name
 
 /datum/unit_test/barsigns_name/Run()
+	procstart = null
+	src.procstart = null
 	var/list/existing_names = list()
 
 	for(var/sign_type in subtypesof(/datum/barsign) - /datum/barsign/hiddensigns)
@@ -42,6 +46,8 @@
 /datum/unit_test/barsigns_emp
 
 /datum/unit_test/barsigns_emp/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/barsign/testing_sign = allocate(/obj/machinery/barsign)
 	var/datum/barsign/hiddensigns/empbarsign/emp_bar_sign = /datum/barsign/hiddensigns/empbarsign
 

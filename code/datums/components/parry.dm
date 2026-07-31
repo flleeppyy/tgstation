@@ -24,6 +24,8 @@
 	var/datum/callback/parry_callback
 
 /datum/component/parriable_projectile/Initialize(parry_speed_mult = 1.25, parry_damage_mult = 1.15, boost_speed_mult = 1.6, boost_damage_mult = 1.5, parry_trait = TRAIT_MINING_PARRYING, grace_period = 0.25 SECONDS, datum/callback/parry_callback = null)
+	procstart = null
+	src.procstart = null
 	if(!isprojectile(parent))
 		return COMPONENT_INCOMPATIBLE
 	src.parry_speed_mult = parry_speed_mult
@@ -36,20 +38,28 @@
 	fire_time = world.time
 
 /datum/component/parriable_projectile/Destroy(force)
+	procstart = null
+	src.procstart = null
 	for (var/turf/parry_turf as anything in parry_turfs)
 		UnregisterSignal(parry_turf, COMSIG_CLICK)
 	. = ..()
 
 /datum/component/parriable_projectile/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_PROJECTILE_MOVE_PROCESS_STEP, PROC_REF(on_moved))
 	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(before_move))
 	RegisterSignal(parent, COMSIG_PROJECTILE_BEFORE_MOVE, PROC_REF(before_move))
 	RegisterSignal(parent, COMSIG_PROJECTILE_SELF_PREHIT, PROC_REF(before_hit))
 
 /datum/component/parriable_projectile/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_PROJECTILE_MOVE_PROCESS_STEP, COMSIG_MOVABLE_MOVED, COMSIG_PROJECTILE_BEFORE_MOVE, COMSIG_PROJECTILE_SELF_PREHIT))
 
 /datum/component/parriable_projectile/proc/before_move(obj/projectile/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/list/turfs_to_remove = list()
@@ -70,6 +80,8 @@
 		parriers_to_remove -= parrier
 
 /datum/component/parriable_projectile/proc/on_moved(obj/projectile/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!isturf(source.loc) || parry_turfs[source.loc])
 		return
@@ -77,6 +89,8 @@
 	RegisterSignal(source.loc, COMSIG_CLICK, PROC_REF(on_turf_click))
 
 /datum/component/parriable_projectile/proc/on_turf_click(turf/source, atom/location, control, list/params, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!HAS_TRAIT(user, parry_trait))
 		return
@@ -87,6 +101,8 @@
 	parriers[user] = world.time + grace_period
 
 /datum/component/parriable_projectile/proc/before_hit(obj/projectile/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!istype(user) || !parriers[user] || parried)
@@ -96,6 +112,8 @@
 	return attempt_parry(source, user)
 
 /datum/component/parriable_projectile/proc/attempt_parry(obj/projectile/source, mob/user)
+	procstart = null
+	src.procstart = null
 	if (QDELETED(source) || source.deletion_queued)
 		return NONE
 

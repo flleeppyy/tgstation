@@ -8,6 +8,8 @@
 	var/static/list/interesting_typecache
 
 /datum/proximity_monitor/advanced/turret_tracking/New(atom/_host, range, _ignore_if_not_on_turf)
+	procstart = null
+	src.procstart = null
 	if(!istype(_host, /obj/machinery/porta_turret))
 		CRASH("Turret trackers should only be used with /obj/machinery/porta_turret as a host!")
 	. = ..()
@@ -22,25 +24,37 @@
 		))
 
 /datum/proximity_monitor/advanced/turret_tracking/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	LAZYNULL(tracking) // just to be sure
 
 /datum/proximity_monitor/advanced/turret_tracking/setup_field_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/thing in target)
 		start_tracking(thing)
 
 /datum/proximity_monitor/advanced/turret_tracking/cleanup_field_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/thing in target)
 		stop_tracking(thing)
 
 /datum/proximity_monitor/advanced/turret_tracking/field_turf_crossed(atom/movable/movable, turf/old_location, turf/new_location)
+	procstart = null
+	src.procstart = null
 	start_tracking(movable)
 
 /datum/proximity_monitor/advanced/turret_tracking/field_turf_uncrossed(atom/movable/movable, turf/old_location, turf/new_location)
+	procstart = null
+	src.procstart = null
 	if(get_dist(new_location, host) > current_range)
 		stop_tracking(movable)
 
 /datum/proximity_monitor/advanced/turret_tracking/proc/start_tracking(atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || QDELETED(thing))
 		return
 	if(thing.invisibility > SEE_INVISIBLE_LIVING || !is_type_in_typecache(thing, interesting_typecache))
@@ -55,6 +69,8 @@
 	refresh_turret_processing()
 
 /datum/proximity_monitor/advanced/turret_tracking/proc/stop_tracking(atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isnull(thing) || !(thing in tracking))
 		return
@@ -66,6 +82,8 @@
 		refresh_turret_processing()
 
 /datum/proximity_monitor/advanced/turret_tracking/proc/refresh_turret_processing()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/porta_turret/turret = host
 	if(QDELETED(src) || QDELETED(turret))
 		return

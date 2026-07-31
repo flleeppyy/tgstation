@@ -8,6 +8,8 @@
 	mail_goodies = list(/obj/item/poster/random_official)
 
 /datum/quirk/item_quirk/poster_boy/add_unique()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/posterboy = quirk_holder
 	var/obj/item/storage/box/posterbox/newbox = new()
 	newbox.add_quirk_posters(posterboy.mind)
@@ -19,6 +21,8 @@
 
 /// fills box of posters based on job, one neutral poster and 2 department posters
 /obj/item/storage/box/posterbox/proc/add_quirk_posters(datum/mind/posterboy)
+	procstart = null
+	src.procstart = null
 	new /obj/item/poster/quirk/crew/random(src)
 	var/department = posterboy.assigned_role.paycheck_department
 	if(department == ACCOUNT_CIV) //if you are not part of a department you instead get 3 neutral posters

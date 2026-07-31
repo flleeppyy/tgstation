@@ -23,9 +23,13 @@
 	var/datum/reagent/forced_reagent_type
 
 /datum/round_event/wisdomcow/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("A wise cow has been spotted in the area. Be sure to ask for her advice.", "Nanotrasen Cow Ranching Agency")
 
 /datum/round_event/wisdomcow/start()
+	procstart = null
+	src.procstart = null
 	var/turf/targetloc
 	if(spawn_location)
 		targetloc = spawn_location
@@ -39,6 +43,8 @@
 	input_text = "Spawn on current turf?"
 
 /datum/event_admin_setup/set_location/wisdom_cow/apply_to_event(datum/round_event/wisdomcow/event)
+	procstart = null
+	src.procstart = null
 	event.spawn_location = chosen_turf
 
 /datum/event_admin_setup/listed_options/wisdom_cow_wisdom
@@ -46,9 +52,13 @@
 	normal_run_option = "Random Wisdom"
 
 /datum/event_admin_setup/listed_options/wisdom_cow_wisdom/get_list()
+	procstart = null
+	src.procstart = null
 	return subtypesof(/datum/skill)
 
 /datum/event_admin_setup/listed_options/wisdom_cow_wisdom/apply_to_event(datum/round_event/wisdomcow/event)
+	procstart = null
+	src.procstart = null
 	event.selected_wisdom = chosen
 
 /datum/event_admin_setup/input_number/wisdom_cow
@@ -58,6 +68,8 @@
 	min_value = -2500
 
 /datum/event_admin_setup/input_number/wisdom_cow/apply_to_event(datum/round_event/wisdomcow/event)
+	procstart = null
+	src.procstart = null
 	event.selected_experience = chosen_value
 
 /datum/event_admin_setup/listed_options/wisdom_cow_milk
@@ -65,7 +77,11 @@
 	normal_run_option = "Random Reagent"
 
 /datum/event_admin_setup/listed_options/wisdom_cow_milk/get_list()
+	procstart = null
+	src.procstart = null
 	return sort_list(subtypesof(/datum/reagent), /proc/cmp_typepaths_asc)
 
 /datum/event_admin_setup/listed_options/wisdom_cow_milk/apply_to_event(datum/round_event/scrubber_overflow/event)
+	procstart = null
+	src.procstart = null
 	event.forced_reagent_type = chosen

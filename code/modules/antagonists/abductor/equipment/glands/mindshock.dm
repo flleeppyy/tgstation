@@ -9,6 +9,8 @@
 	var/list/mob/living/carbon/human/broadcasted_mobs = list()
 
 /obj/item/organ/heart/gland/mindshock/activate()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_notice("You get a headache."))
 
 	var/turf/owner_turf = get_turf(owner)
@@ -31,6 +33,8 @@
 				target.adjust_hallucinations(150 SECONDS)
 
 /obj/item/organ/heart/gland/mindshock/mind_control(command, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!ownerCheck() || !mind_control_uses || active_mind_control)
 		return FALSE
 	mind_control_uses--
@@ -63,6 +67,8 @@
 	return TRUE
 
 /obj/item/organ/heart/gland/mindshock/clear_mind_control()
+	procstart = null
+	src.procstart = null
 	if(!active_mind_control || !LAZYLEN(broadcasted_mobs))
 		return FALSE
 	for(var/target_mob in broadcasted_mobs)

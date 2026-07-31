@@ -39,6 +39,8 @@ GLOBAL_LIST_INIT(allergy_reagent_blacklist, typecacheof(list(
 	var/allergy_string
 
 /datum/quirk/item_quirk/allergic/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/list/chem_list = valid_subtypesof(/datum/reagent/medicine) - GLOB.allergy_reagent_blacklist
 	var/list/allergy_chem_names = list()
 	for(var/i in 0 to 5)
@@ -52,19 +54,27 @@ GLOBAL_LIST_INIT(allergy_reagent_blacklist, typecacheof(list(
 	RegisterSignal(quirk_holder, COMSIG_MOB_REAGENT_TICK, PROC_REF(block_metab))
 
 /datum/quirk/item_quirk/allergic/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	var/obj/item/clothing/accessory/dogtag/allergy/dogtag = new(get_turf(human_holder), allergy_string)
 
 	give_item_to_holder(dogtag, list(LOCATION_BACKPACK, LOCATION_HANDS), flavour_text = "Make sure medical staff can see this...", notify_player = TRUE)
 
 /datum/quirk/item_quirk/allergic/remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(quirk_holder, COMSIG_MOB_REAGENT_TICK)
 
 /datum/quirk/item_quirk/allergic/post_add()
+	procstart = null
+	src.procstart = null
 	quirk_holder.add_mob_memory(/datum/memory/key/quirk_allergy, allergy_string = allergy_string)
 	to_chat(quirk_holder, span_boldnotice("You are allergic to <i>[allergy_string]</i> - make sure not to consume any of these!"))
 
 /datum/quirk/item_quirk/allergic/proc/block_metab(mob/living/carbon/source, datum/reagent/chem, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!is_type_in_list(chem, allergies))

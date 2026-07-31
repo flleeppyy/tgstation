@@ -51,6 +51,8 @@
 	COOLDOWN_DECLARE(refresh_cooldown)
 
 /obj/machinery/ai_law_rack/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ai_modules = new /list(law_slots)
 	update_appearance()
@@ -60,10 +62,14 @@
 	register_context()
 
 /obj/machinery/ai_law_rack/Destroy()
+	procstart = null
+	src.procstart = null
 	ai_modules = null
 	return ..()
 
 /obj/machinery/ai_law_rack/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(held_item?.tool_behaviour == TOOL_WRENCH && !secured)
 		context[SCREENTIP_CONTEXT_LMB] = anchored ? "Unfasten" : "Fasten"
@@ -98,15 +104,21 @@
 		. = CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/ai_law_rack/base/on_set_is_operational(old_value)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/ai_law_rack/base/parent_rack = get_parent_rack()
 	parent_rack?.update_lawset()
 
 /// To be used in logging to specify the status of the law rack
 /obj/machinery/ai_law_rack/proc/log_status()
+	procstart = null
+	src.procstart = null
 	return ""
 
 /// Returns a list of all modules that will contribute to the combined lawset
 /obj/machinery/ai_law_rack/proc/get_law_affecting_modules()
+	procstart = null
+	src.procstart = null
 	var/list/affecting_modules = list()
 	// Filter nulls and non-law modules
 	for(var/obj/item/ai_module/law/module in ai_modules)
@@ -116,19 +128,27 @@
 
 /// Returns the core module if it exists, otherwise returns null
 /obj/machinery/ai_law_rack/proc/get_core_module()
+	procstart = null
+	src.procstart = null
 	return has_core_slot ? ai_modules[1] : null
 
 /obj/machinery/ai_law_rack/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone in ai_modules)
 		remove_ai_module(gone)
 
 /obj/machinery/ai_law_rack/dump_inventory_contents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/ai_module/installed in ai_modules)
 		installed.forceMove(get_turf(src))
 
 /obj/machinery/ai_law_rack/proc/can_secure_check(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		balloon_alert(user, "fasten it first!")
 		return FALSE
@@ -138,6 +158,8 @@
 	return TRUE
 
 /obj/machinery/ai_law_rack/can_be_unfasten_wrench(mob/living/user, silent)
+	procstart = null
+	src.procstart = null
 	if(secured)
 		if(!silent)
 			balloon_alert(user, "unsecure it first!")
@@ -145,6 +167,8 @@
 	return ..()
 
 /obj/machinery/ai_law_rack/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(DOING_INTERACTION_WITH_TARGET(user, src))
 		return ITEM_INTERACT_BLOCKING
 	switch(default_unfasten_wrench(user, tool, 6 SECONDS))
@@ -159,9 +183,13 @@
 	return NONE
 
 /obj/machinery/ai_law_rack/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return wrench_act(user, tool)
 
 /obj/machinery/ai_law_rack/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(DOING_INTERACTION_WITH_TARGET(user, src))
 		return ITEM_INTERACT_BLOCKING
 	if(!can_secure_check(user))
@@ -174,17 +202,25 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/ai_law_rack/wirecutter_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return wirecutter_act(user, tool)
 
 /obj/machinery/ai_law_rack/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	ui_interact(user)
 	return ITEM_INTERACT_BLOCKING
 
 /obj/machinery/ai_law_rack/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	ui_interact(user)
 	return ITEM_INTERACT_BLOCKING
 
 /obj/machinery/ai_law_rack/multitool_act(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/multitool) || !istype(tool.buffer, /obj/structure/ai_core))
 		ui_interact(user)
 		return ITEM_INTERACT_BLOCKING
@@ -196,6 +232,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/ai_law_rack/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(var_name == NAMEOF(src, law_slots))
 		for(var/i in var_value + 1 to ai_modules.len)
@@ -212,6 +250,8 @@
 #define LAW_EXAMINE_RANGE 3
 
 /obj/machinery/ai_law_rack/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isAI(user))
 		return
@@ -230,6 +270,8 @@
 		. += span_notice("It is [EXAMINE_HINT("anchored")] to the floor[secured ? " and [EXAMINE_HINT("secured with metal cables")]" : ", but not [EXAMINE_HINT("secured by metal cables")]"].")
 
 /obj/machinery/ai_law_rack/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isAI(user))
 		return
@@ -240,6 +282,8 @@
 		. += get_slot_examine(i)
 
 /obj/machinery/ai_law_rack/proc/get_slot_examine(slot)
+	procstart = null
+	src.procstart = null
 	var/obj/item/ai_module/module = ai_modules[slot]
 	var/list/text = list()
 	text += span_info("&bull; [slot == 1 && has_core_slot ? "Core" : "Slot [slot - 1]"]: [MODULE_NAME(ai_modules, module)]")
@@ -260,6 +304,8 @@
 #undef LAW_EXAMINE_RANGE
 
 /obj/machinery/ai_law_rack/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in 1 to min(length(ai_modules), max_slot_overlays))
 		if(isnull(ai_modules[i]))
@@ -270,6 +316,8 @@
 		. += card
 
 /obj/machinery/ai_law_rack/proc/add_ai_module(obj/item/ai_module/module, slot = 1, security = MODULE_UNSECURED)
+	procstart = null
+	src.procstart = null
 	ASSERT(istype(module))
 	ASSERT(isnum(slot))
 	if(slot < 1 || slot > length(ai_modules))
@@ -287,6 +335,8 @@
 	return TRUE
 
 /obj/machinery/ai_law_rack/proc/remove_ai_module(obj/item/ai_module/module)
+	procstart = null
+	src.procstart = null
 	ASSERT(istype(module))
 	var/index = ai_modules.Find(module)
 	if(index == 0 || isnull(ai_modules[index]))
@@ -305,12 +355,16 @@
 	return TRUE
 
 /obj/machinery/ai_law_rack/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/ai_module))
 		ui_interact(user)
 		return ITEM_INTERACT_SUCCESS
 	return NONE
 
 /obj/machinery/ai_law_rack/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(issilicon(user))
 		to_chat(user, span_warning("Your programming forbids you from using this."))
 		return
@@ -323,6 +377,8 @@
 		ui.open()
 
 /obj/machinery/ai_law_rack/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/obj/item/holding = user.get_active_held_item()
@@ -348,6 +404,8 @@
 	return data
 
 /obj/machinery/ai_law_rack/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -465,14 +523,20 @@
 			return TRUE
 
 /obj/machinery/ai_law_rack/proc/format_linkable(atom/linkable)
+	procstart = null
+	src.procstart = null
 	return list("name" = linkable.name, "ref" = REF(linkable))
 
 /// Handles updating the lists of things the rack can link to
 /obj/machinery/ai_law_rack/proc/refresh_linkable_lists()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Finds a core law rack this rack is linked to, if any
 /obj/machinery/ai_law_rack/proc/get_parent_rack()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/ai_law_rack/base/rack as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/ai_law_rack/base))
 		if(src in rack.linked_racks)
 			return rack
@@ -604,16 +668,22 @@
 	VAR_FINAL/list/last_linkable_rack_list
 
 /obj/machinery/ai_law_rack/broadcaster/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/machinery/ai_law_rack/broadcaster/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_operational)
 		. += mutable_appearance(icon, "[base_icon_state]_[get_parent_rack() ? "linked" : "unlinked"]", alpha = src.alpha)
 		. += emissive_appearance(icon, "[base_icon_state]_em", src, alpha = src.alpha)
 
 /obj/machinery/ai_law_rack/broadcaster/refresh_linkable_lists()
+	procstart = null
+	src.procstart = null
 	last_linkable_rack_list = list()
 	for(var/obj/machinery/ai_law_rack/base/possible_parent_rack as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/ai_law_rack/base))
 		if(!possible_parent_rack.is_operational)
@@ -623,6 +693,8 @@
 		last_linkable_rack_list += list(format_linkable(possible_parent_rack))
 
 /obj/machinery/ai_law_rack/broadcaster/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["linkable_racks"] = last_linkable_rack_list || list()
 	data["parent_rack"] = null
@@ -632,6 +704,8 @@
 	return data
 
 /obj/machinery/ai_law_rack/broadcaster/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -670,6 +744,8 @@
 
 /// When given a ref(), finds a core law rack it belongs to
 /obj/machinery/ai_law_rack/broadcaster/proc/find_parent_rack_by_ref(rack_ref)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	for(var/obj/machinery/ai_law_rack/base/rack as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/ai_law_rack/base))
 		if(REF(rack) == rack_ref)
@@ -677,6 +753,8 @@
 	return null
 
 /obj/machinery/ai_law_rack/broadcaster/log_status()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/ai_law_rack/base/parent_rack = get_parent_rack()
 	if(isnull(parent_rack))
 		return "unlinked"
@@ -684,12 +762,16 @@
 
 /// Checks if we can broadcast to another rack
 /obj/machinery/ai_law_rack/broadcaster/proc/can_broadcast_to(obj/machinery/ai_law_rack/base/possible_parent_rack)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	if(!is_valid_z_level(get_turf(src), get_turf(possible_parent_rack)))
 		return FALSE
 	return TRUE
 
 /obj/machinery/ai_law_rack/broadcaster/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELING(src))
 		return
@@ -700,6 +782,8 @@
 	playsound(src, 'sound/machines/terminal/terminal_off.ogg', 50, TRUE)
 
 /obj/machinery/ai_law_rack/broadcaster/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELING(src))
 		return
@@ -730,10 +814,14 @@
 	VAR_FINAL/datum/ai_laws/combined_lawset
 
 /obj/machinery/ai_law_rack/base/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	combined_lawset = new()
 
 /obj/machinery/ai_law_rack/base/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/mob/linked_ref in assoc_to_values(linked_mobs))
 		unlink_silicon(linked_ref)
 	for(var/obj/machinery/ai_law_rack/broadcaster/linked_rack as anything in linked_racks)
@@ -742,6 +830,8 @@
 	return ..()
 
 /obj/machinery/ai_law_rack/base/proc/link_child_law_rack(obj/machinery/ai_law_rack/broadcaster/child)
+	procstart = null
+	src.procstart = null
 	if(child == src || (child in linked_racks))
 		return
 
@@ -758,6 +848,8 @@
 	child.update_static_data_for_all_viewers()
 
 /obj/machinery/ai_law_rack/base/proc/unlink_child_law_rack(obj/machinery/ai_law_rack/broadcaster/child)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/obj/item/ai_module/installed in child.ai_modules)
@@ -775,6 +867,8 @@
 		child.update_static_data_for_all_viewers()
 
 /obj/machinery/ai_law_rack/base/refresh_linkable_lists()
+	procstart = null
+	src.procstart = null
 	last_linkable_silicon_list = list()
 	for(var/mob/living/silicon/linkable as anything in GLOB.silicon_mobs)
 		if(!can_link_to(linkable))
@@ -787,16 +881,22 @@
 			last_linked_rack_module_count += length(linked_rack.get_law_affecting_modules())
 
 /obj/machinery/ai_law_rack/base/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["linkable_silicons"] = last_linkable_silicon_list || list()
 	data["linked_rack_module_count"] = last_linked_rack_module_count
 	return data
 
 /obj/machinery/ai_law_rack/base/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["linked_mobs"] = assoc_to_keys(linked_mobs)
 
 /obj/machinery/ai_law_rack/base/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -836,12 +936,16 @@
 			return TRUE
 
 /obj/machinery/ai_law_rack/base/get_law_affecting_modules()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/machinery/ai_law_rack/broadcaster/linked_rack as anything in linked_racks)
 		if(linked_rack.is_operational)
 			. |= linked_rack.get_law_affecting_modules()
 
 /obj/machinery/ai_law_rack/base/log_status()
+	procstart = null
+	src.procstart = null
 	var/list/mob_names = list()
 	for(var/link_name, link_mob in linked_mobs)
 		mob_names += "[link_name] ([isnull(link_mob) ? "no mob" : key_name(link_mob)])"
@@ -851,6 +955,8 @@
 
 /// When given a ref(), finds a silicon mob it belongs to
 /obj/machinery/ai_law_rack/base/proc/find_silicon_by_ref(silicon_ref)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	for(var/mob/living/silicon/silicon as anything in GLOB.silicon_mobs)
 		if(REF(silicon) == silicon_ref)
@@ -858,6 +964,8 @@
 	return null
 
 /obj/machinery/ai_law_rack/base/proc/can_link_to(mob/living/silicon/new_bot)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(!is_valid_z_level(get_turf(src), get_turf(new_bot)))
@@ -874,6 +982,8 @@
 	return FALSE
 
 /obj/machinery/ai_law_rack/base/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELING(src))
 		return
@@ -887,6 +997,8 @@
 		unlink_silicon(linked)
 
 /obj/machinery/ai_law_rack/base/proc/link_silicon(mob/living/silicon/new_bot, announce = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!can_link_to(new_bot))
 		return
 	if(isnull(new_bot.laws))
@@ -905,6 +1017,8 @@
 	AddComponent(/datum/component/gps, "Active Module Rack")
 
 /obj/machinery/ai_law_rack/base/proc/unlink_silicon(mob/living/silicon/unlinked_bot)
+	procstart = null
+	src.procstart = null
 	if(!QDELING(unlinked_bot) && issilicon(unlinked_bot)) // TBH I don't know why this issilicon is here.
 		unlinked_bot.no_law_rack_link = FALSE
 		unlinked_bot.laws.set_zeroth_law(null, null)
@@ -921,6 +1035,8 @@
 		qdel(GetComponent(/datum/component/gps))
 
 /obj/machinery/ai_law_rack/base/proc/clear_silicon_ref(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(source, COMSIG_QDELETING)
 	UnregisterSignal(source, COMSIG_MOB_FULLY_RENAMED)
@@ -930,6 +1046,8 @@
 			break
 
 /obj/machinery/ai_law_rack/base/proc/silicon_renamed(mob/source, oldname, newname)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/link_name, link_mob in linked_mobs)
 		if(link_mob == source)
@@ -938,6 +1056,8 @@
 			break
 
 /obj/machinery/ai_law_rack/base/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/silicon/bot in assoc_to_values(linked_mobs))
 		if(bot.AmountStun() > 5 SECONDS || is_rack_stun_immune(bot))
 			continue
@@ -947,6 +1067,8 @@
 
 /// Checks if the passed bot is immune to the stun from major lawset changes
 /obj/machinery/ai_law_rack/base/proc/is_rack_stun_immune(mob/living/bot)
+	procstart = null
+	src.procstart = null
 	if(IS_MALF_AI(bot))
 		return TRUE
 	if(!is_valid_z_level(get_turf(bot), get_turf(src)))
@@ -954,6 +1076,8 @@
 	return FALSE
 
 /obj/machinery/ai_law_rack/base/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isAI(user))
 		return
@@ -963,6 +1087,8 @@
 
 /// Refreshes the combined lawset with all the modules currently installed and syncs it to all linked silicons
 /obj/machinery/ai_law_rack/base/proc/update_lawset()
+	procstart = null
+	src.procstart = null
 	if(!is_operational) // updates won't happen while depowered or broken
 		return
 
@@ -979,6 +1105,8 @@
 
 /// Applies the current combined lawset to a silicon, optionally announcing the change to them/their borgs/deadchat
 /obj/machinery/ai_law_rack/base/proc/apply_lawset(mob/living/silicon/linked_ref, announce = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!istype(linked_ref))
 		return
 
@@ -1007,6 +1135,8 @@
 	SEND_SIGNAL(linked_ref, COMSIG_SILICON_MODULE_RACK_LAWSET_UPDATE, src, announce)
 
 /obj/machinery/ai_law_rack/base/get_parent_rack()
+	procstart = null
+	src.procstart = null
 	return src
 
 /obj/machinery/ai_law_rack/base/core
@@ -1024,6 +1154,8 @@
 	VAR_PRIVATE/static/list/core_designations
 
 /obj/machinery/ai_law_rack/base/core/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!length(core_designations))
 		core_designations = GLOB.greek_letters.Copy()
@@ -1041,6 +1173,8 @@
 	name = "\proper [name] '[LOWER_TEXT(designation)]'"
 
 /obj/machinery/ai_law_rack/base/core/proc/load_config_law()
+	procstart = null
+	src.procstart = null
 	var/datum/ai_laws/default_laws = get_round_default_lawset()
 
 	for(var/obj/item/ai_module/law/core/full/core as anything in subtypesof(/obj/item/ai_module/law/core/full))

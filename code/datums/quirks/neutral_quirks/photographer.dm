@@ -10,6 +10,8 @@
 	mail_goodies = list(/obj/item/camera_film)
 
 /datum/quirk/item_quirk/photographer/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	var/obj/item/storage/photo_album/personal/photo_album = new(get_turf(human_holder))
 	photo_album.persistence_id = "personal_[human_holder.last_mind?.key]" // this is a persistent album, the ID is tied to the account's key to avoid tampering

@@ -4,6 +4,8 @@
 /datum/unit_test/language_species_swap_simple
 
 /datum/unit_test/language_species_swap_simple/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 
 	var/datum/language_holder/holder = dummy.get_language_holder()
@@ -36,6 +38,8 @@
 /datum/unit_test/language_species_swap_complex
 
 /datum/unit_test/language_species_swap_complex/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 
 	var/datum/language_holder/holder = dummy.get_language_holder()
@@ -58,6 +62,8 @@
 /datum/unit_test/language_species_change_other_known
 
 /datum/unit_test/language_species_change_other_known/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 	dummy.grant_language(/datum/language/piratespeak, source = LANGUAGE_MIND)
 	dummy.grant_language(/datum/language/draconic, source = LANGUAGE_ATOM)
@@ -81,6 +87,8 @@
 /datum/unit_test/language_mind_transfer
 
 /datum/unit_test/language_mind_transfer/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/basic/pet/dog/corgi/transfer_target = allocate(/mob/living/basic/pet/dog/corgi)
 	dummy.mind_initialize()
@@ -127,6 +135,8 @@
 /datum/unit_test/language_mind_swap
 
 /datum/unit_test/language_mind_swap/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy_A = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/dummy_B = allocate(/mob/living/carbon/human/consistent)
 
@@ -171,6 +181,8 @@
 /datum/unit_test/book_of_babel
 
 /datum/unit_test/book_of_babel/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/book_of_babel/book = allocate(/obj/item/book_of_babel)
 	var/datum/language_holder/holder = dummy.get_language_holder()
@@ -183,6 +195,8 @@
 
 /// Helper proc to print a list of languages in a human readable format
 /proc/print_language_list(list/languages_to_print)
+	procstart = null
+	src.procstart = null
 	var/list/printed_languages = list()
 
 	for(var/datum/language/language as anything in languages_to_print)

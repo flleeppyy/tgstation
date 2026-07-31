@@ -6,6 +6,8 @@
 	var/datum/callback/update_judgement_criteria
 
 /datum/component/security_vision/Initialize(judgement_criteria, datum/callback/update_judgement_criteria)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!ismob(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -13,13 +15,19 @@
 	src.update_judgement_criteria = update_judgement_criteria
 
 /datum/component/security_vision/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_MOB_EXAMINING, PROC_REF(on_examining))
 
 /datum/component/security_vision/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_MOB_EXAMINING)
 
 /// When we examine something, check if we have any extra data to add
 /datum/component/security_vision/proc/on_examining(mob/source, atom/target, list/examine_strings, list/examine_overrides)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!isliving(target))
 		return

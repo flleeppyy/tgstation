@@ -1,4 +1,6 @@
 /atom/proc/investigate_log(message, subject)
+	procstart = null
+	src.procstart = null
 	if(!message)
 		return
 	if(!subject)

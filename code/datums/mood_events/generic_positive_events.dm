@@ -4,6 +4,8 @@
 	timeout = 2 MINUTES
 
 /datum/mood_event/hug/add_effects()
+	procstart = null
+	src.procstart = null
 	if(HAS_PERSONALITY(owner, /datum/personality/aloof))
 		mood_change = -1
 		description = "I would prefer not to be touched."
@@ -19,6 +21,8 @@
 	timeout = 2 MINUTES
 
 /datum/mood_event/bear_hug/add_effects()
+	procstart = null
+	src.procstart = null
 	if(HAS_PERSONALITY(owner, /datum/personality/aloof) \
 		|| HAS_PERSONALITY(owner, /datum/personality/callous) \
 	)
@@ -32,6 +36,8 @@
 	timeout = 4 MINUTES
 
 /datum/mood_event/betterhug/add_effects(mob/friend)
+	procstart = null
+	src.procstart = null
 	if(HAS_PERSONALITY(owner, /datum/personality/aloof))
 		mood_change = 1
 		description = "[friend.name] is nice, but I wish they'd stop touching me."
@@ -49,6 +55,8 @@
 	timeout = 4 MINUTES
 
 /datum/mood_event/besthug/add_effects(mob/friend)
+	procstart = null
+	src.procstart = null
 	if(HAS_PERSONALITY(owner, /datum/personality/aloof))
 		mood_change = 2
 		description = "[friend.name] is great to be around, but I wish they'd stop touching me."
@@ -66,6 +74,8 @@
 	timeout = 2 MINUTES
 
 /datum/mood_event/warmhug/add_effects()
+	procstart = null
+	src.procstart = null
 	if(HAS_PERSONALITY(owner, /datum/personality/aloof))
 		mood_change = 0
 		description = "I would prefer not to be touched, but the warmth is nice...."
@@ -81,6 +91,8 @@
 	timeout = 2 MINUTES
 
 /datum/mood_event/tailpulled/add_effects()
+	procstart = null
+	src.procstart = null
 	if(HAS_PERSONALITY(owner, /datum/personality/aloof) \
 		|| HAS_PERSONALITY(owner, /datum/personality/callous) \
 	)
@@ -94,6 +106,8 @@
 	event_flags = MOOD_EVENT_GAMING
 
 /datum/mood_event/arcade/add_effects()
+	procstart = null
+	src.procstart = null
 	if(HAS_PERSONALITY(owner, /datum/personality/industrious) || HAS_PERSONALITY(owner, /datum/personality/slacking/diligent))
 		mood_change = -1
 		description = "Wow, I beat the game. I could've been doing anything productive instead."
@@ -108,6 +122,8 @@
 	mood_change = 8
 
 /datum/mood_event/maintenance_adaptation/add_effects()
+	procstart = null
+	src.procstart = null
 	description = "[GLOB.deity] has helped me adapt to the maintenance shafts!"
 
 /datum/mood_event/book_nerd
@@ -116,6 +132,8 @@
 	timeout = 5 MINUTES
 
 /datum/mood_event/book_nerd/add_effects()
+	procstart = null
+	src.procstart = null
 	if(HAS_PERSONALITY(owner, /datum/personality/erudite))
 		mood_change = 2
 		description = "I love reading books!"
@@ -128,6 +146,8 @@
 	mood_change = 1
 
 /datum/mood_event/exercise/add_effects(fitness_level)
+	procstart = null
+	src.procstart = null
 	mood_change = fitness_level // the more fit you are, the more you like to work out
 	if(HAS_PERSONALITY(owner, /datum/personality/slacking/lazy))
 		mood_change *= -0.5
@@ -143,6 +163,8 @@
 	var/animal_type
 
 /datum/mood_event/pet_animal/add_effects(mob/animal)
+	procstart = null
+	src.procstart = null
 	animal_type = animal?.type
 
 	if(HAS_PERSONALITY(owner, /datum/personality/animal_disliker))
@@ -172,6 +194,8 @@
 
 // Change the moodlet if we get refreshed (we may have pet another type of animal)
 /datum/mood_event/pet_animal/be_refreshed(datum/mood/home, mob/animal)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(animal_type == animal?.type)
 		return
@@ -191,6 +215,8 @@
 	timeout = 8 MINUTES
 
 /datum/mood_event/saved_life/add_effects()
+	procstart = null
+	src.procstart = null
 	if(HAS_PERSONALITY(owner, /datum/personality/callous))
 		mood_change = 0
 		description = "I don't care much for saving lives."
@@ -308,6 +334,8 @@
 	event_flags = MOOD_EVENT_SPIRITUAL
 
 /datum/mood_event/sacrifice_good/add_effects(...)
+	procstart = null
+	src.procstart = null
 	if(owner.mind?.holy_role && GLOB.deity)
 		description = "[GLOB.deity] is pleased with this offering!"
 
@@ -339,6 +367,8 @@
 	mood_change = 6
 
 /datum/mood_event/hope_lavaland/add_effects(...)
+	procstart = null
+	src.procstart = null
 	if(HAS_PERSONALITY(owner, /datum/personality/pessimistic))
 		mood_change = 0
 		description = "This emblem is a lie. There is no hope for me."
@@ -363,6 +393,8 @@
 	timeout = 45 SECONDS
 
 /datum/mood_event/helped_up/can_effect_mob(datum/mood/home, mob/living/who, ...)
+	procstart = null
+	src.procstart = null
 	if(!HAS_PERSONALITY(owner, /datum/personality/compassionate) \
 		&& !HAS_PERSONALITY(owner, /datum/personality/callous) \
 		&& !HAS_PERSONALITY(owner, /datum/personality/misanthropic))
@@ -371,6 +403,8 @@
 	return ..()
 
 /datum/mood_event/helped_up/add_effects(mob/other_person, helper)
+	procstart = null
+	src.procstart = null
 	if(!other_person)
 		return
 
@@ -415,6 +449,8 @@
 	timeout = 2 MINUTES
 
 /datum/mood_event/kiss/add_effects(mob/beau, direct)
+	procstart = null
+	src.procstart = null
 	if(!beau)
 		return
 	if(direct)
@@ -443,6 +479,8 @@
 	event_flags = MOOD_EVENT_WHIMSY
 
 /datum/mood_event/observed_soda_spill/add_effects(mob/spilled_mob, atom/soda_can)
+	procstart = null
+	src.procstart = null
 	if(!spilled_mob)
 		return
 
@@ -455,6 +493,8 @@
 	event_flags = MOOD_EVENT_GAMING
 
 /datum/mood_event/gaming/add_effects()
+	procstart = null
+	src.procstart = null
 	if(HAS_PERSONALITY(owner, /datum/personality/industrious) || HAS_PERSONALITY(owner, /datum/personality/slacking/diligent))
 		mood_change = -1
 		description = "Is now really the time to be playing games? I should be working."
@@ -470,6 +510,8 @@
 	mood_change = 5
 
 /datum/mood_event/love_reagent/add_effects(duration)
+	procstart = null
+	src.procstart = null
 	if(HAS_PERSONALITY(owner, /datum/personality/pessimistic))
 		mood_change = 0
 		description = "This food is okay, I guess."
@@ -491,6 +533,8 @@
 	event_flags = MOOD_EVENT_GAMING
 
 /datum/mood_event/playing_cards/add_effects(param)
+	procstart = null
+	src.procstart = null
 	var/card_players = 1
 	for(var/mob/living/carbon/player in viewers(COMBAT_MESSAGE_RANGE, owner))
 		var/player_has_cards = player.is_holding(/obj/item/toy/singlecard) || player.is_holding_item_of_type(/obj/item/toy/cards)
@@ -512,6 +556,8 @@
 	timeout = 5 MINUTES
 
 /datum/mood_event/russian_roulette_win/add_effects(loaded_rounds)
+	procstart = null
+	src.procstart = null
 	var/base = HAS_PERSONALITY(owner, /datum/personality/gambler) ? 2 : 1.8
 	mood_change = round(base ** loaded_rounds, 1)
 
@@ -526,6 +572,8 @@
 	timeout = 2 MINUTES
 
 /datum/mood_event/fish_released/add_effects(morbid, obj/item/fish/fish)
+	procstart = null
+	src.procstart = null
 	if(!morbid)
 		description = "Go, [fish.name], swim and be free!"
 		return
@@ -541,6 +589,8 @@
 	event_flags = MOOD_EVENT_WHIMSY
 
 /datum/mood_event/fish_petting/add_effects(obj/item/fish/fish, morbid)
+	procstart = null
+	src.procstart = null
 	if(!morbid)
 		description = "It felt nice to pet \the [fish]."
 	else
@@ -601,6 +651,8 @@
 	event_flags = MOOD_EVENT_GAMING
 
 /datum/mood_event/slots/add_effects()
+	procstart = null
+	src.procstart = null
 	if(HAS_PERSONALITY(owner, /datum/personality/gambler))
 		mood_change *= 2
 	else if(HAS_PERSONALITY(owner, /datum/personality/industrious) || HAS_PERSONALITY(owner, /datum/personality/slacking/diligent))
@@ -615,6 +667,8 @@
 	event_flags = MOOD_EVENT_GAMING
 
 /datum/mood_event/slots/win/be_replaced(datum/mood/home, datum/mood_event/new_event, ...)
+	procstart = null
+	src.procstart = null
 	if(istype(new_event, /datum/mood_event/slots/all_gone))
 		return ALLOW_NEW_MOOD
 	if(new_event.mood_change < mood_change)
@@ -635,6 +689,8 @@
 	timeout = 20 MINUTES
 
 /datum/mood_event/slots/all_gone/be_replaced(datum/mood/home, datum/mood_event/new_event, ...)
+	procstart = null
+	src.procstart = null
 	if(istype(new_event, /datum/mood_event/slots/win/jackpot))
 		return ALLOW_NEW_MOOD
 	description = "I'll never get it back..."

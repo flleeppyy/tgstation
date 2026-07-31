@@ -3,6 +3,8 @@
 	ui_style = 'icons/hud/screen_ghost.dmi'
 
 /datum/hud/ghost/initialize_screen_objects()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_screen_object(/atom/movable/screen/ghost/spawners_menu, HUD_GHOST_SPAWNERS)
 	add_screen_object(/atom/movable/screen/ghost/orbit, HUD_GHOST_ORBIT)
@@ -19,11 +21,15 @@
 		add_screen_object(hudboxes[i], HUD_KEY_GHOST_HUDBOX(i), ui_loc = position_hudbox(i - 1))
 
 /datum/hud/ghost/proc/position_hudbox(i)
+	procstart = null
+	src.procstart = null
 	var/row = floor(i / 3)
 	var/column = i % 3
 	return "SOUTH:[6 + row * 16], CENTER+5:[7 + column * 15]"
 
 /datum/hud/ghost/show_hud(version = 0, mob/viewmob)
+	procstart = null
+	src.procstart = null
 	// don't show this HUD if observing; show the HUD of the observee
 	var/mob/dead/observer/O = mymob
 	if (istype(O) && O.observetarget)
@@ -43,6 +49,8 @@
 
 //We should only see observed mob alerts.
 /datum/hud/ghost/reorganize_alerts(mob/viewmob)
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/O = mymob
 	if (istype(O) && O.observetarget)
 		return

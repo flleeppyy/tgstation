@@ -3,6 +3,8 @@
 	help_text = "Gets the playercount, gamemode, and address of the server"
 
 /datum/tgs_chat_command/tgscheck/Run(datum/tgs_chat_user/sender, params)
+	procstart = null
+	src.procstart = null
 	var/server = CONFIG_GET(string/public_address) || CONFIG_GET(string/server)
 	return new /datum/tgs_message_content("[GLOB.round_id ? "Round #[GLOB.round_id]: " : ""][GLOB.clients.len] players on [SSmapping.current_map.map_name]; Round [SSticker.HasRoundStarted() ? (SSticker.IsRoundInProgress() ? "Active" : "Finishing") : "Starting"] -- [server ? server : "[world.internet_address]:[world.port]"]")
 
@@ -11,6 +13,8 @@
 	help_text = "Gets the version details from the show-server-revision verb, basically"
 
 /datum/tgs_chat_command/gameversion/Run(datum/tgs_chat_user/sender, params)
+	procstart = null
+	src.procstart = null
 	var/list/msg = list("")
 	msg += "BYOND Server Version: [world.byond_version].[world.byond_build] (Compiled with: [DM_VERSION].[DM_BUILD])\n"
 
@@ -38,6 +42,8 @@
 	help_text = "Pings the invoker when the round ends"
 
 /datum/tgs_chat_command/notify/Run(datum/tgs_chat_user/sender, params)
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(str_list/channel_announce_new_game))
 		return new /datum/tgs_message_content("Notifcations are currently disabled")
 

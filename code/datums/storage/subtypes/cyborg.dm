@@ -9,9 +9,13 @@
 	storage_type = /datum/storage_interface/silicon
 
 /datum/storage/cyborg_internal_storage/can_insert(obj/item/to_insert, mob/living/silicon/robot/user, messages = TRUE, force = STORAGE_NOT_LOCKED)
+	procstart = null
+	src.procstart = null
 	return (to_insert in user.model.modules)
 
 /datum/storage/cyborg_internal_storage/attempt_insert(obj/item/to_insert, mob/living/silicon/robot/user, override = FALSE, force = STORAGE_NOT_LOCKED, messages = TRUE)
+	procstart = null
+	src.procstart = null
 	user.deactivate_module(to_insert)
 
 /**
@@ -23,6 +27,8 @@
  * to put items in, you can click on the slot you took it out from, or use the dedicated "store" button.
  */
 /datum/storage/cyborg_internal_storage/orient_storage()
+	procstart = null
+	src.procstart = null
 	var/obj/item/robot_model/model = real_location
 
 	var/adjusted_contents = length(model.modules)

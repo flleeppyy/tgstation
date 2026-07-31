@@ -4,6 +4,8 @@
 	var/nutrition_threshold = NUTRITION_LEVEL_HUNGRY
 
 /datum/bt_node/decorator/pawn_nutrition_below/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/pawn = controller.pawn
 	if(!isliving(pawn))
 		return FALSE

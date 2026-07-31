@@ -81,6 +81,8 @@
 	acid = 100
 
 /obj/structure/transport/linear/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Yes if it's VV'd it won't be accurate but it probably shouldn't ever be
 	if(radial_travel)
@@ -96,33 +98,45 @@
 		return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/transport/linear/LateInitialize()
+	procstart = null
+	src.procstart = null
 	//after everything is initialized the transport controller can order everything
 	transport_controller_datum.order_platforms_by_z_level()
 
 /obj/structure/transport/linear/Destroy()
+	procstart = null
+	src.procstart = null
 	transport_controller_datum = null
 	return ..()
 
 
 ///set the movement registrations to our current turf(s) so contents moving out of our tile(s) are removed from our movement lists
 /obj/structure/transport/linear/proc/set_movement_registrations(list/turfs_to_set)
+	procstart = null
+	src.procstart = null
 	for(var/turf/turf_loc as anything in turfs_to_set || locs)
 		RegisterSignal(turf_loc, COMSIG_ATOM_EXITED, PROC_REF(uncrossed_remove_item_from_transport))
 		RegisterSignals(turf_loc, list(COMSIG_ATOM_ENTERED,COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON), PROC_REF(add_item_on_transport))
 
 ///unset our movement registrations from turfs that no longer contain us (or every loc if turfs_to_unset is unspecified)
 /obj/structure/transport/linear/proc/unset_movement_registrations(list/turfs_to_unset)
+	procstart = null
+	src.procstart = null
 	var/static/list/registrations = list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_EXITED, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON)
 	for(var/turf/turf_loc as anything in turfs_to_unset || locs)
 		UnregisterSignal(turf_loc, registrations)
 
 
 /obj/structure/transport/linear/proc/uncrossed_remove_item_from_transport(datum/source, atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!(gone.loc in locs))
 		remove_item_from_transport(gone)
 
 /obj/structure/transport/linear/proc/remove_item_from_transport(atom/movable/potential_rider)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!(potential_rider in transport_contents))
 		return
@@ -135,6 +149,8 @@
 	UnregisterSignal(potential_rider, list(COMSIG_QDELETING, COMSIG_MOVABLE_UPDATE_GLIDE_SIZE))
 
 /obj/structure/transport/linear/proc/add_item_on_transport(datum/source, atom/movable/new_transport_contents)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/static/list/blacklisted_types = typecacheof(list(/obj/structure/fluff/tram_rail, /obj/effect/decal/cleanable, /obj/structure/transport/linear, /mob/eye, /obj/effect/gravity_fluff_field))
 	if(is_type_in_typecache(new_transport_contents, blacklisted_types) || new_transport_contents.invisibility == INVISIBILITY_ABSTRACT || HAS_TRAIT(new_transport_contents, TRAIT_UNDERFLOOR)) //prevents the tram from stealing things like landmarks
@@ -152,6 +168,8 @@
 
 ///adds everything on our tile that can be added to our transport_contents and initial_contents lists when we're created
 /obj/structure/transport/linear/proc/add_initial_contents()
+	procstart = null
+	src.procstart = null
 	for(var/turf/turf_loc in locs)
 		for(var/atom/movable/movable_contents as anything in turf_loc)
 			if(movable_contents == src)
@@ -167,11 +185,15 @@
 
 ///verify the movables in our list of contents are actually on our loc
 /obj/structure/transport/linear/proc/verify_transport_contents()
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/movable_contents as anything in transport_contents)
 		if(!(movable_contents.loc in locs))
 			remove_item_from_transport(movable_contents)
 
 /obj/structure/transport/linear/proc/check_for_humans()
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/movable_contents as anything in transport_contents)
 		if(ishuman(movable_contents))
 			return TRUE
@@ -181,6 +203,8 @@
 ///signal handler for COMSIG_MOVABLE_UPDATE_GLIDE_SIZE: when a movable in transport_contents changes its glide_size independently.
 ///adds that movable to a lazy list, movables in that list have their glide_size updated when the tram next moves
 /obj/structure/transport/linear/proc/on_changed_glide_size(atom/movable/moving_contents, new_glide_size)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(new_glide_size != glide_size_override)
 		changed_gliders += moving_contents
@@ -189,6 +213,8 @@
 ///make this tram platform multitile, expanding to cover all the tram platforms adjacent to us and deleting them. makes movement more efficient.
 ///the platform becoming multitile should be in the lower left corner since thats assumed to be the loc of multitile objects
 /obj/structure/transport/linear/proc/create_modular_set(min_x, min_y, max_x, max_y, z)
+	procstart = null
+	src.procstart = null
 
 	if(!(min_x && min_y && max_x && max_y && z))
 		for(var/obj/structure/transport/linear/other_transport as anything in transport_controller_datum.transport_modules)
@@ -284,6 +310,8 @@
 ///returns an unordered list of all lift platforms adjacent to us. used so our transport_controller_datum can control all connected platforms.
 ///includes platforms directly above or below us as well. only includes platforms with an identical transport_id to our own.
 /obj/structure/transport/linear/proc/module_adjacency(datum/transport_controller/transport_controller_datum)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/direction in GLOB.cardinals_multiz)
 		var/obj/structure/transport/linear/neighbor = locate() in get_step_multiz(src, direction)
@@ -293,6 +321,8 @@
 
 ///main proc for moving the lift in the direction [travel_direction]. handles horizontal and/or vertical movement for multi platformed lifts and multitile lifts.
 /obj/structure/transport/linear/proc/travel(travel_direction)
+	procstart = null
+	src.procstart = null
 	var/list/things_to_move = transport_contents
 	var/turf/destination
 	if(!isturf(travel_direction))
@@ -477,6 +507,8 @@
 	set_movement_registrations(entering_locs)
 
 /obj/structure/transport/linear/proc/register_collision(points = 1)
+	procstart = null
+	src.procstart = null
 	SSpersistence.tram_hits_this_round += points
 	SSblackbox.record_feedback("amount", "tram_collision", points)
 	var/datum/transport_controller/linear/tram/tram_controller = transport_controller_datum
@@ -490,6 +522,8 @@
 ///and is more sensible. without this, if you and a banana are on the same platform, when that platform moves you will slip
 ///on the banana even if youre not moving relative to it.
 /obj/structure/transport/linear/proc/group_move(list/atom/movable/movers, movement_direction)
+	procstart = null
+	src.procstart = null
 	if(movement_direction == NONE)
 		stack_trace("a transport was told to move to somewhere it already is!")
 		return FALSE
@@ -558,6 +592,8 @@
  * * consider_player_mobs - bool. if true we consider player mobs to be foreign. only works if foreign_non_player_mobs is true as well
  */
 /obj/structure/transport/linear/proc/reset_contents(consider_anything_past = 0, foreign_objects = TRUE, foreign_non_player_mobs = TRUE, consider_player_mobs = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!foreign_objects && !foreign_non_player_mobs && !consider_player_mobs)
 		return FALSE
 
@@ -618,6 +654,8 @@
 
 /// Callback / general proc to check if the lift is usable by the passed mob.
 /obj/structure/transport/linear/proc/can_open_lift_radial(mob/living/user, starting_position)
+	procstart = null
+	src.procstart = null
 	// Gotta be a living mob
 	if(!isliving(user))
 		return FALSE
@@ -638,6 +676,8 @@
 
 /// Opens the radial for the lift, allowing the user to move it around.
 /obj/structure/transport/linear/proc/open_lift_radial(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/starting_position = loc
 	if(!can_open_lift_radial(user, starting_position))
 		return
@@ -714,11 +754,15 @@
  * * boolean, FALSE if the menu should be closed, TRUE if the menu is clear to stay opened.
  */
 /obj/structure/transport/linear/proc/check_menu(mob/user, starting_loc)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated || !user.Adjacent(src) || starting_loc != src.loc)
 		return FALSE
 	return TRUE
 
 /obj/structure/transport/linear/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -729,6 +773,8 @@
 
 //ai probably shouldn't get to use lifts but they sure are great for admins to crush people with
 /obj/structure/transport/linear/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -740,12 +786,16 @@
 	return open_lift_radial(user)
 
 /obj/structure/transport/linear/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!radial_travel)
 		return ..()
 
 	return open_lift_radial(user)
 
 /obj/structure/transport/linear/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!radial_travel)
 		return NONE
 
@@ -753,6 +803,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/transport/linear/attack_robot(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!radial_travel)
 		return ..()
 
@@ -765,6 +817,8 @@
  * * user - The mob that caused the lift to move, for the visible message.
  */
 /obj/structure/transport/linear/proc/show_fluff_message(direction, mob/user)
+	procstart = null
+	src.procstart = null
 	if(direction == UP)
 		user.visible_message(span_notice("[user] moves the lift upwards."), span_notice("You move the lift upwards."))
 
@@ -779,6 +833,8 @@
 	glass = TRUE
 
 /obj/machinery/door/poddoor/lift/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(!isnull(transport_linked_id)) //linter and stuff
 		elevator_mode = TRUE
 	return ..()
@@ -809,6 +865,8 @@
 	radial_travel = TRUE
 
 /obj/structure/transport/linear/debug/open_lift_radial(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/starting_position = loc
 	if (!can_open_lift_radial(user,starting_position))
 		return
@@ -896,11 +954,15 @@
 	icon_state = "subfloor-corner-se"
 
 /obj/structure/transport/linear/tram/add_item_on_transport(datum/source, atom/movable/item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(travelling)
 		on_changed_glide_size(item, item.glide_size)
 
 /obj/structure/transport/linear/tram/proc/set_travelling(travelling)
+	procstart = null
+	src.procstart = null
 	if (src.travelling == travelling)
 		return
 
@@ -915,6 +977,8 @@
 	src.travelling = travelling
 
 /obj/structure/transport/linear/tram/set_currently_z_moving()
+	procstart = null
+	src.procstart = null
 	return FALSE //trams can never z fall and shouldnt waste any processing time trying to do so
 
 /**
@@ -925,12 +989,16 @@
  * Tram finds its location at this point before fully unlocking controls to the user.
  */
 /obj/structure/transport/linear/tram/proc/unlock_controls()
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/transport/linear/tram/tram_part as anything in transport_controller_datum.transport_modules) //only thing everyone needs to know is the new location.
 		tram_part.set_travelling(FALSE)
 		transport_controller_datum.controls_lock(FALSE)
 
 ///debug proc to highlight the locs of the tram platform
 /obj/structure/transport/linear/tram/proc/find_dimensions(iterations = 100)
+	procstart = null
+	src.procstart = null
 	message_admins("num turfs: [length(locs)]")
 
 	var/overlay = /obj/effect/overlay/ai_detect_hud
@@ -943,6 +1011,8 @@
 	addtimer(CALLBACK(src, PROC_REF(clear_turfs), turfs, iterations), 0.1 SECONDS)
 
 /obj/structure/transport/linear/tram/proc/clear_turfs(list/turfs_to_clear, iterations)
+	procstart = null
+	src.procstart = null
 	for(var/turf/our_old_turf as anything in turfs_to_clear)
 		var/obj/effect/overlay/ai_detect_hud/hud = locate() in our_old_turf
 		if(hud)
@@ -963,6 +1033,8 @@
 		addtimer(CALLBACK(src, PROC_REF(clear_turfs), turfs, iterations), 0.1 SECONDS)
 
 /obj/structure/transport/linear/tram/proc/estop_throw(throw_direction)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/passenger in transport_contents)
 		var/mob_throw_chance = transport_controller_datum.throw_chance
 		if(prob(mob_throw_chance || 17.5) || HAS_TRAIT(passenger, TRAIT_CURSED)) // sometimes you go through a window, especially with bad luck

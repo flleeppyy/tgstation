@@ -29,6 +29,8 @@
 
 
 /mob/living/basic/bot/firebot/generate_speak_list()
+	procstart = null
+	src.procstart = null
 	var/static/list/idle_lines = list(
 		FIREBOT_VOICED_NO_FIRES = 'sound/mobs/non-humanoids/firebot/nofires.ogg',
 		FIREBOT_VOICED_ONLY_YOU = 'sound/mobs/non-humanoids/firebot/onlyyou.ogg',
@@ -51,6 +53,8 @@
 	return idle_lines + fire_detected_lines
 
 /mob/living/basic/bot/firebot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_SPACEWALK, INNATE_TRAIT)
 	update_appearance(UPDATE_ICON)
@@ -60,14 +64,20 @@
 	AddElement(/datum/element/atmos_sensitive, mapload)
 
 /mob/living/basic/bot/firebot/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(internal_ext)
 	return ..()
 
 /mob/living/basic/bot/firebot/bot_reset(bypass_ai_reset)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_extinguisher()
 
 /mob/living/basic/bot/firebot/proc/create_extinguisher()
+	procstart = null
+	src.procstart = null
 	internal_ext = new /obj/item/extinguisher(src)
 	internal_ext.safety = FALSE
 	internal_ext.precision = TRUE
@@ -75,17 +85,25 @@
 	internal_ext.refill()
 
 /mob/living/basic/bot/firebot/melee_attack(atom/attacked_atom, list/modifiers, ignore_cooldown = FALSE)
+	procstart = null
+	src.procstart = null
 	use_extinguisher(attacked_atom, modifiers)
 
 /mob/living/basic/bot/firebot/RangedAttack(atom/attacked_atom, list/modifiers)
+	procstart = null
+	src.procstart = null
 	use_extinguisher(attacked_atom, modifiers)
 
 /mob/living/basic/bot/firebot/proc/use_extinguisher(atom/attacked_atom, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!(bot_mode_flags & BOT_MODE_ON))
 		return
 	spray_water(attacked_atom, modifiers)
 
 /mob/living/basic/bot/firebot/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(bot_access_flags & BOT_COVER_EMAGGED))
 		return
@@ -105,6 +123,8 @@
 
 // Variables sent to TGUI
 /mob/living/basic/bot/firebot/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 	if(!(bot_access_flags & BOT_COVER_LOCKED) || HAS_SILICON_ACCESS(user))
 		data["custom_controls"]["extinguish_fires"] = firebot_mode_flags & FIREBOT_EXTINGUISH_FLAMES
@@ -114,6 +134,8 @@
 
 // Actions received from TGUI
 /mob/living/basic/bot/firebot/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/user = ui.user
 	if(. || (bot_access_flags & BOT_COVER_LOCKED && !HAS_SILICON_ACCESS(user)))
@@ -129,15 +151,21 @@
 			update_appearance()
 
 /mob/living/basic/bot/firebot/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return (exposed_temperature > T0C + 200 || exposed_temperature < BODYTEMP_COLD_DAMAGE_LIMIT)
 
 /mob/living/basic/bot/firebot/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, foam_cooldown))
 		return
 	do_foam(3, src, loc, foam_type = /datum/effect_system/fluid_spread/foam/firefighting)
 	COOLDOWN_START(src, foam_cooldown, FOAM_INTERVAL)
 
 /mob/living/basic/bot/firebot/proc/spray_water(atom/attacked_atom, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(firebot_mode_flags & FIREBOT_STATIONARY_MODE)
 		flick("firebots_use", src)
 	else
@@ -145,6 +173,8 @@
 	internal_ext?.interact_with_atom(attacked_atom, src, modifiers)
 
 /mob/living/basic/bot/firebot/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(bot_mode_flags & BOT_MODE_ON))
 		icon_state = "firebot0"
@@ -155,6 +185,8 @@
 	icon_state = "firebot1"
 
 /mob/living/basic/bot/firebot/explode()
+	procstart = null
+	src.procstart = null
 	var/turf/my_turf = drop_location()
 
 	new /obj/item/assembly/prox_sensor(my_turf)

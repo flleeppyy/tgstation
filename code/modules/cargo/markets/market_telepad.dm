@@ -53,6 +53,8 @@
 	var/static/restock_cost = DEFAULT_RESTOCK_COST
 
 /obj/machinery/ltsrbt/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 	SSmarket.telepads += src
@@ -60,6 +62,8 @@
 	update_appearance()
 
 /obj/machinery/ltsrbt/Destroy()
+	procstart = null
+	src.procstart = null
 	SSmarket.telepads -= src
 	// Bye bye orders.
 	if(length(SSmarket.telepads))
@@ -73,6 +77,8 @@
 	return ..()
 
 /obj/machinery/ltsrbt/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(held_item)
 		if(state_open)
 			context[SCREENTIP_CONTEXT_LMB] = "Insert"
@@ -90,6 +96,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/ltsrbt/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(machine_stat & NOPOWER))
 		. += span_info("A small display reads:")
@@ -98,6 +106,8 @@
 		. += span_tinynoticeital("Withholding tax on local items: [EXAMINE_HINT("[MARKET_WITHHOLDING_TAX * 100]%")].")
 
 /obj/machinery/ltsrbt/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & NOPOWER)
 		icon_state = "[base_icon_state]_off"
@@ -105,6 +115,8 @@
 		icon_state = "[base_icon_state][(receiving || length(queue) || occupant) ? "" : "_idle"]"
 
 /obj/machinery/ltsrbt/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!state_open)
 		. += "[base_icon_state]_closed"
@@ -115,6 +127,8 @@
 		. += overlay
 
 /obj/machinery/ltsrbt/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -124,23 +138,33 @@
 		close_machine()
 
 /obj/machinery/ltsrbt/open_machine(drop = TRUE, density_to_set = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(src, 'sound/machines/oven/oven_open.ogg', 75, TRUE)
 
 /obj/machinery/ltsrbt/close_machine(atom/movable/target, density_to_set = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(src, 'sound/machines/oven/oven_close.ogg', 75, TRUE)
 
 /obj/machinery/ltsrbt/set_occupant(obj/item/new_occupant)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(new_occupant)
 		current_name = new_occupant.name
 		current_desc = new_occupant.desc
 
 /obj/machinery/ltsrbt/can_be_occupant(atom/movable/atom)
+	procstart = null
+	src.procstart = null
 	return isitem(atom) && !atom.anchored
 
 /obj/machinery/ltsrbt/Exited(atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	if(gone == occupant)
 		current_price = initial(current_price)
 		current_name = ""
@@ -149,6 +173,8 @@
 	return ..()
 
 /obj/machinery/ltsrbt/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -168,6 +194,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/ltsrbt/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 
@@ -210,12 +238,16 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/ltsrbt/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "LTSRBT", name)
 		ui.open()
 
 /obj/machinery/ltsrbt/ui_state()
+	procstart = null
+	src.procstart = null
 	if(!occupant || !COOLDOWN_FINISHED(src, recharge_cooldown))
 		return GLOB.never_state //close it.
 	else
@@ -225,6 +257,8 @@
 #define LTSRBT_MAX_PRICE CARGO_CRATE_VALUE * 50
 
 /obj/machinery/ltsrbt/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["loaded_icon"] = icon2base64(getFlatIcon(occupant, no_anim=TRUE))
 	data["min_price"] = LTSRBT_MIN_PRICE
@@ -232,6 +266,8 @@
 	return data
 
 /obj/machinery/ltsrbt/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["name"] = current_name
 	data["price"] = current_price
@@ -239,6 +275,8 @@
 	return data
 
 /obj/machinery/ltsrbt/ui_act(action, list/params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -267,6 +305,8 @@
 
 #define LTSRBT_MAX_MARKET_ITEMS 40
 /obj/machinery/ltsrbt/proc/place_on_market(mob/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(occupant))
 		return
 	if(locate(/mob/living) in occupant.get_all_contents())
@@ -319,6 +359,8 @@
 #undef LTSRBT_MAX_MARKET_ITEMS
 
 /obj/machinery/ltsrbt/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	recharge_time = base_recharge_time
 	// On tier 4 recharge_time should be 20 and by default it is 80 as scanning modules should be tier 1.
@@ -334,6 +376,8 @@
 
 /// Adds /datum/market_purchase to queue unless the machine is free, then it sets the purchase to be instantly received
 /obj/machinery/ltsrbt/proc/add_to_queue(datum/market_purchase/purchase)
+	procstart = null
+	src.procstart = null
 	if(!recharge_cooldown && !receiving && !transmitting)
 		receiving = purchase
 		update_appearance(UPDATE_ICON_STATE)
@@ -343,6 +387,8 @@
 	RegisterSignal(purchase, COMSIG_QDELETING, PROC_REF(on_purchase_del))
 
 /obj/machinery/ltsrbt/proc/on_purchase_del(datum/market_purchase/purchase)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	queue -= purchase
 	if(receiving == purchase)
@@ -353,6 +399,8 @@
 	update_appearance(UPDATE_ICON_STATE)
 
 /obj/machinery/ltsrbt/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & NOPOWER)
 		return
 

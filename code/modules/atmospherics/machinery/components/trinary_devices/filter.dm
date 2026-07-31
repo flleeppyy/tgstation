@@ -15,16 +15,22 @@
 	var/list/filter_type = list()
 
 /obj/machinery/atmospherics/components/trinary/filter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/machinery/atmospherics/components/trinary/filter/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	context[SCREENTIP_CONTEXT_CTRL_LMB] = "Turn [on ? "off" : "on"]"
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "Maximize transfer rate"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/atmospherics/components/trinary/filter/click_ctrl(mob/user)
+	procstart = null
+	src.procstart = null
 	if(is_operational)
 		set_on(!on)
 		balloon_alert(user, "turned [on ? "on" : "off"]")
@@ -33,6 +39,8 @@
 	return CLICK_ACTION_BLOCKING
 
 /obj/machinery/atmospherics/components/trinary/filter/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(transfer_rate == MAX_TRANSFER_RATE)
 		return CLICK_ACTION_BLOCKING
 
@@ -42,6 +50,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/atmospherics/components/trinary/filter/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/direction in GLOB.cardinals)
 		if(!(direction & initialize_directions))
@@ -50,10 +60,14 @@
 		. += get_pipe_image(icon, "cap", direction, pipe_color, piping_layer, TRUE)
 
 /obj/machinery/atmospherics/components/trinary/filter/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	var/on_state = on && nodes[1] && nodes[2] && nodes[3] && is_operational
 	icon_state = "filter_[on_state ? "on" : "off"]-[set_overlay_offset(piping_layer)][flipped ? "_f" : ""]"
 
 /obj/machinery/atmospherics/components/trinary/filter/process_atmos()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!on || !(nodes[1] && nodes[2] && nodes[3]) || !is_operational)
 		return
@@ -121,12 +135,16 @@
 	update_parents()
 
 /obj/machinery/atmospherics/components/trinary/filter/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AtmosFilter", name)
 		ui.open()
 
 /obj/machinery/atmospherics/components/trinary/filter/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["on"] = on
 	data["rate"] = round(transfer_rate)
@@ -140,6 +158,8 @@
 	return data
 
 /obj/machinery/atmospherics/components/trinary/filter/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -174,6 +194,8 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/machinery/atmospherics/components/trinary/filter/can_unwrench(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && on && is_operational)
 		balloon_alert(user, "turn off!")

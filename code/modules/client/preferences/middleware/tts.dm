@@ -10,6 +10,8 @@
 	)
 
 /datum/preference_middleware/tts/proc/play_voice(list/params, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, tts_test_cooldown))
 		return TRUE
 	var/speaker = preferences.read_preference(/datum/preference/choiced/voice)
@@ -25,6 +27,8 @@
 	return TRUE
 
 /datum/preference_middleware/tts/proc/play_voice_robot(list/params, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, tts_test_cooldown))
 		return TRUE
 	var/speaker = preferences.read_preference(/datum/preference/choiced/voice)
@@ -40,6 +44,8 @@
 	return TRUE
 
 /datum/preference_middleware/tts/proc/play_blips(list/params, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, tts_test_cooldown))
 		return TRUE
 	var/speaker = preferences.read_preference(/datum/preference/choiced/voice)

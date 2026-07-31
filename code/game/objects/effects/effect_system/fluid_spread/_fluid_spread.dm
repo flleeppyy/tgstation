@@ -14,11 +14,15 @@
 	var/total_size = 0
 
 /datum/fluid_group/New(target_size = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.nodes = list()
 	src.target_size = target_size
 
 /datum/fluid_group/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_LAZYLIST(nodes)
 	return ..()
 
@@ -38,6 +42,8 @@
  * - [FALSE]: Otherwise.
  */
 /datum/fluid_group/proc/add_node(obj/effect/particle_effect/fluid/node)
+	procstart = null
+	src.procstart = null
 	if(!istype(node))
 		CRASH("Attempted to add non-fluid node [isnull(node) ? "NULL" : node] to a fluid group.")
 	if(QDELING(node))
@@ -69,6 +75,8 @@
  * - [TRUE]: If the node to be removed is not in the group by the end of the proc.
  */
 /datum/fluid_group/proc/remove_node(obj/effect/particle_effect/fluid/node)
+	procstart = null
+	src.procstart = null
 	if(node.group != src)
 		return TRUE
 
@@ -90,6 +98,8 @@
 	var/tmp/spread_bucket
 
 /obj/effect/particle_effect/fluid/Initialize(mapload, datum/fluid_group/group, obj/effect/particle_effect/fluid/source)
+	procstart = null
+	src.procstart = null
 	// We don't pass on explosions. Don't wanna set off a chain reaction in our reagents
 	flags_1 |= PREVENT_CONTENTS_EXPLOSION_1
 	. = ..()
@@ -99,6 +109,8 @@
 	source?.transfer_fingerprints_to(src)
 
 /obj/effect/particle_effect/fluid/Destroy()
+	procstart = null
+	src.procstart = null
 	group.remove_node(src)
 	return ..()
 
@@ -108,6 +120,8 @@
  * Exact results vary by subtype implementation.
  */
 /obj/effect/particle_effect/fluid/proc/spread()
+	procstart = null
+	src.procstart = null
 	CRASH("The base fluid spread proc is not implemented and should not be called. You called it.")
 
 
@@ -121,6 +135,8 @@
 	var/effect_type = /obj/effect/particle_effect/fluid
 
 /datum/effect_system/fluid_spread/New(turf/location, range = 1, amount = null, atom/holder = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	attach(holder)
 	if (isnull(amount))
@@ -128,6 +144,8 @@
 	src.amount = amount
 
 /datum/effect_system/fluid_spread/start(log = FALSE)
+	procstart = null
+	src.procstart = null
 	var/location = src.location || get_turf(holder)
 	var/obj/effect/particle_effect/fluid/flood = new effect_type(location, new /datum/fluid_group(amount))
 	if (log) // Smoke is used as an aesthetic effect in a tonne of places and we don't want, say, a broken secway spamming admin chat.
@@ -143,6 +161,8 @@
  * - [location][/atom]: Where the flood originated.
  */
 /datum/effect_system/fluid_spread/proc/help_out_the_admins(obj/effect/particle_effect/fluid/flood, atom/holder, atom/location)
+	procstart = null
+	src.procstart = null
 	var/source_msg
 	var/blame_msg
 	if (holder)

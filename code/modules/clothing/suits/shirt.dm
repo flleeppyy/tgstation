@@ -14,6 +14,8 @@
 	var/wash_count = 0
 
 /obj/item/clothing/suit/costume/wellworn_shirt/machine_wash(obj/machinery/washing_machine/washer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(wash_count <= 5)
 		transform *= TRANSFORM_USING_VARIABLE(0.8, 1)

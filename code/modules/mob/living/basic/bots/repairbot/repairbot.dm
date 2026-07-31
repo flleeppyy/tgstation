@@ -77,6 +77,8 @@
 	var/toolbox = /obj/item/storage/toolbox/mechanical
 
 /mob/living/basic/bot/repairbot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ai_controller.set_blackboard_key(BB_REPAIRBOT_EMAGGED_SPEECH, emagged_voicelines)
 	ai_controller.set_blackboard_key(BB_REPAIRBOT_NORMAL_SPEECH, neutral_voicelines)
@@ -96,10 +98,14 @@
 	START_PROCESSING(SSobj, src)
 
 /mob/living/basic/bot/repairbot/proc/set_color(new_color)
+	procstart = null
+	src.procstart = null
 	toolbox_color = new_color
 	update_appearance()
 
 /mob/living/basic/bot/repairbot/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stack))
 		return ..()
 
@@ -107,6 +113,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /mob/living/basic/bot/repairbot/proc/attempt_merge(obj/item/stack/potential_stack, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/static/list/our_contents = list(/obj/item/stack/sheet/iron, /obj/item/stack/sheet/glass, /obj/item/stack/tile, /obj/item/stack/rods)
 	for(var/obj/item/stack/content as anything in our_contents)
 		if(!istype(potential_stack, content))
@@ -130,6 +138,8 @@
 		return
 
 /mob/living/basic/bot/repairbot/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(arrived, /obj/item/stack/sheet/iron) && isnull(our_iron)) //show iron tiles and glass in our hands
 		our_iron = arrived
@@ -143,6 +153,8 @@
 		our_rods = arrived
 
 /mob/living/basic/bot/repairbot/UnarmedAttack(atom/target, proximity_flag, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!. || !proximity_flag)
@@ -193,6 +205,8 @@
 			return
 
 /mob/living/basic/bot/repairbot/proc/emagged_interactions(atom/target, modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(target, /mob/living/silicon/robot))
 		deconstruction_device?.interact_with_atom_secondary(target, src, modifiers)
 		return
@@ -204,21 +218,29 @@
 	set_combat_mode(old_combat_mode)
 
 /mob/living/basic/bot/repairbot/start_pulling(atom/movable/movable_pulled, state, force, supress_message)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(pulling)
 		setGrabState(GRAB_AGGRESSIVE) //automatically aggro grab everything!
 
 /mob/living/basic/bot/repairbot/proc/attempt_use_stack(obj/item/stack_to_use, atom/target)
+	procstart = null
+	src.procstart = null
 	if(!isdatum(stack_to_use))
 		to_chat(src, span_warning("You do not have anymore [stack_to_use]!"))
 		return
 	stack_to_use.melee_attack_chain(src, target)
 
 /mob/living/basic/bot/repairbot/flash_act(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0, type = /atom/movable/screen/fullscreen/flash, length = 25)
+	procstart = null
+	src.procstart = null
 	if(affect_silicon)
 		return ..()
 
 /mob/living/basic/bot/repairbot/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(our_iron)
 	QDEL_NULL(our_glass)
@@ -230,6 +252,8 @@
 	QDEL_NULL(deconstruction_device)
 
 /mob/living/basic/bot/repairbot/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if(gone == our_crowbar)
 		our_crowbar = null
 	if(gone == our_screwdriver)
@@ -247,22 +271,30 @@
 	update_appearance()
 	return ..()
 
-/mob/living/basic/bot/repairbot/process(seconds_per_tick) //generate 1 iron rod every 2 seconds
+/mob/living/basic/bot/repairbot/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null //generate 1 iron rod every 2 seconds
 	if(isnull(our_rods) || our_rods.amount < our_rods.max_amount)
 		var/obj/item/stack/rods/new_rods = new()
 		new_rods.forceMove(src)
 
 /mob/living/basic/bot/repairbot/turn_on(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	START_PROCESSING(SSobj, src)
 
 /mob/living/basic/bot/repairbot/turn_off()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
 
 /mob/living/basic/bot/repairbot/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/our_box = mutable_appearance(icon, "repairbot_box", BELOW_MOB_LAYER - 0.02)
 	our_box.color = toolbox_color
@@ -279,14 +311,20 @@
 		. += iron
 
 /mob/living/basic/bot/repairbot/generate_speak_list()
+	procstart = null
+	src.procstart = null
 	return neutral_voicelines + emagged_voicelines
 
 /mob/living/basic/bot/repairbot/Bump(atom/movable/bumped_object)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(bumped_object, /obj/machinery/door/firedoor) && bumped_object.density)
 		our_crowbar.melee_attack_chain(src, bumped_object)
 
 /mob/living/basic/bot/repairbot/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 	data["repairbot_materials"] = list()
 	if((bot_access_flags & BOT_COVER_LOCKED) && !issilicon(user) && !isAdminGhostAI(user))
@@ -311,6 +349,8 @@
 	return data
 
 /mob/living/basic/bot/repairbot/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !isliving(ui.user) || (bot_access_flags & BOT_COVER_LOCKED) && !(HAS_SILICON_ACCESS(ui.user)))
 		return
@@ -338,10 +378,14 @@
 
 
 /mob/living/basic/bot/repairbot/emag_effects(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(deconstruction_device))
 		deconstruction_device = new(src)
 
 /mob/living/basic/bot/repairbot/explode()
+	procstart = null
+	src.procstart = null
 	drop_part(toolbox, drop_location())
 	return ..()
 
@@ -355,6 +399,8 @@
 	has_ammobar = FALSE
 
 /mob/living/basic/bot/repairbot/mob_pickup(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/carried_repairbot/carried = new(get_turf(src))
 	carried.set_bot(src)
 	if(carried.icon_state == "toolbox_default")
@@ -373,6 +419,8 @@
 	var/atom/movable/our_bot
 
 /obj/item/carried_repairbot/proc/set_bot(mob/living/basic/bot/repairbot/repairbot)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bot_toolbox = repairbot.toolbox
 	name = repairbot.name
 	icon = bot_toolbox::icon
@@ -384,11 +432,15 @@
 	repairbot.forceMove(src)
 
 /obj/item/carried_repairbot/dropped()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isturf(loc))
 		release_bot()
 
 /obj/item/carried_repairbot/proc/release_bot(bypass_delete = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!isnull(our_bot))
 		our_bot.forceMove(drop_location())
 		our_bot.balloon_alert_to_viewers("plops down")
@@ -396,15 +448,21 @@
 		qdel(src)
 
 /obj/item/carried_repairbot/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	release_bot(bypass_delete = TRUE)
 
 /obj/item/carried_repairbot/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(arrived))
 		our_bot = arrived
 
 /obj/item/carried_repairbot/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if(gone == our_bot)
 		our_bot = null
 	return ..()

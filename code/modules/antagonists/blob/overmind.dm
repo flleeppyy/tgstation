@@ -6,6 +6,8 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 
 /// Clean up blob references after overmind is destroyed - called asynchronously to avoid blocking Destroy()
 /proc/cleanup_overmind_blobs(mob/eye/blob/dead_overmind)
+	procstart = null
+	src.procstart = null
 	// Clear overmind reference from global blobs
 	for(var/obj/structure/blob/blob_structure as anything in GLOB.blobs)
 		if(blob_structure && blob_structure.overmind == dead_overmind)
@@ -65,6 +67,8 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 	var/end_round_on_victory = TRUE
 
 /mob/eye/blob/Initialize(mapload, starting_points = OVERMIND_STARTING_POINTS)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(src, TRAIT_BLOB_ALLY, INNATE_TRAIT)
 	validate_location()
 	blob_points = starting_points
@@ -86,6 +90,8 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 	GLOB.blob_telepathy_mobs |= src
 
 /mob/eye/blob/proc/validate_location()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(is_valid_turf(T))
 		return
@@ -108,6 +114,8 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 	forceMove(T)
 
 /mob/eye/blob/proc/set_strain(datum/blobstrain/new_strain)
+	procstart = null
+	src.procstart = null
 	if (!ispath(new_strain))
 		return FALSE
 
@@ -128,6 +136,8 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 	SEND_SIGNAL(src, COMSIG_BLOB_SELECTED_STRAIN, blobstrain)
 
 /mob/eye/blob/can_z_move(direction, turf/start, turf/destination, z_move_flags = NONE, mob/living/rider)
+	procstart = null
+	src.procstart = null
 	if(placed) // The blob can't expand vertically (yet)
 		return FALSE
 	. = ..()
@@ -140,12 +150,16 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 		return null
 
 /mob/eye/blob/proc/is_valid_turf(turf/tile)
+	procstart = null
+	src.procstart = null
 	var/area/area = get_area(tile)
 	if((area && !(area.area_flags & BLOBS_ALLOWED)) || !tile || !is_station_level(tile.z) || isgroundlessturf(tile))
 		return FALSE
 	return TRUE
 
 /mob/eye/blob/process()
+	procstart = null
+	src.procstart = null
 	if(!blob_core)
 		if(!placed)
 			if(manualplace_min_time && world.time >= manualplace_min_time)
@@ -183,20 +197,28 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 
 /// Create a blob spore and link it to us
 /mob/eye/blob/proc/create_spore(turf/spore_turf, spore_type = /mob/living/basic/blob_minion/spore/minion)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/blob_minion/spore/spore = new spore_type(spore_turf, blob_borne = TRUE)
 	spore.AddComponent(/datum/component/blob_minion, src)
 	return spore
 
 /// Add something to our list of mobs and wait for it to die
 /mob/eye/blob/proc/register_new_minion(mob/living/minion)
+	procstart = null
+	src.procstart = null
 	blob_mobs |= minion
 
 /// Clear biohazard emergency display when blob is defeated
 /mob/eye/blob/proc/clear_biohazard_display()
+	procstart = null
+	src.procstart = null
 	clear_status_display_biohazard()
 
 /// Announce the blob's victory! Tell everyone that they're about to explode and/or turn into biomass soup and give the overmind a victory lap.
 /mob/eye/blob/proc/begin_victory()
+	procstart = null
+	src.procstart = null
 	victory_in_progress = TRUE
 	priority_announce("Biohazard has reached critical mass. Station loss is imminent.", "Biohazard Alert")
 	SSsecurity_level.set_level(SEC_LEVEL_DELTA)
@@ -212,6 +234,8 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 
 /// Actually *do* the blob's victory: give them their greentext and, depending on the end_round_on_victory variable, decide if everyone dies or if it's just a jumpscare.
 /mob/eye/blob/proc/victory()
+	procstart = null
+	src.procstart = null
 	// Set victory flags immediately
 	var/datum/antagonist/blob/B = mind.has_antag_datum(/datum/antagonist/blob)
 	if(B)
@@ -234,6 +258,8 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 
 /// Kill everyone who's still on the station area and not already part of the blob's faction, and cover every station area with blob icons. Everyone's soup now.
 /mob/eye/blob/proc/victory_sequence()
+	procstart = null
+	src.procstart = null
 	sound_to_playing_players('sound/announcer/alarm/nuke_alarm.ogg', 70)
 	sleep(10 SECONDS)
 	for(var/mob/living/live_guy as anything in GLOB.mob_living_list)
@@ -270,6 +296,8 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 		check_area.blend_mode = 0
 
 /mob/eye/blob/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(blobstrain)
 
 	// Clear references immediately without iterating to avoid blocking
@@ -291,6 +319,8 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 	return ..()
 
 /mob/eye/blob/Login()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !client)
 		return FALSE
@@ -302,11 +332,15 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 	add_points(0)
 
 /mob/eye/blob/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(blobstrain)
 		. += "Its strain is <font color=\"[blobstrain.color]\">[blobstrain.name]</font>."
 
 /mob/eye/blob/update_health_hud()
+	procstart = null
+	src.procstart = null
 	if(!blob_core)
 		return FALSE
 	var/current_health = round((blob_core.get_integrity() / blob_core.max_integrity) * 100)
@@ -318,6 +352,8 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 			overmind_hud.maptext = new_maptext
 
 /mob/eye/blob/proc/add_points(points)
+	procstart = null
+	src.procstart = null
 	blob_points = clamp(blob_points + points, 0, max_blob_points)
 	hud_used.screen_objects[HUD_BLOB_POWER_DISPLAY].maptext = MAPTEXT("<div align='center' valign='middle' style='position:relative; top:0px; left:6px'><font color='#e36600'>[round(blob_points)]</font></div>")
 
@@ -350,6 +386,8 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 	blob_talk(message)
 
 /mob/eye/blob/proc/blob_talk(message)
+	procstart = null
+	src.procstart = null
 
 	message = trim(copytext_char(sanitize(message), 1, MAX_MESSAGE_LEN))
 
@@ -364,9 +402,13 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 	relay_to_list_and_observers(rendered, GLOB.blob_telepathy_mobs, src, MESSAGE_TYPE_RADIO)
 
 /mob/eye/blob/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/eye/blob/get_status_tab_items()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(blob_core)
 		. += "Core Health: [blob_core.get_integrity()]"
@@ -380,6 +422,8 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 		. += "Time Before Automatic Placement: [max(round((autoplace_max_time - world.time)*0.1, 0.1), 0)]"
 
 /mob/eye/blob/Move(NewLoc, Dir = 0)
+	procstart = null
+	src.procstart = null
 	if(placed)
 		var/obj/structure/blob/B = locate() in range(OVERMIND_MAX_CAMERA_STRAY, NewLoc)
 		if(B)
@@ -394,6 +438,8 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 		return TRUE
 
 /mob/eye/blob/mind_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/antagonist/blob/blob = mind.has_antag_datum(/datum/antagonist/blob)
 	if(!blob)

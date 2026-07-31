@@ -33,6 +33,8 @@
 	var/fish_velocity = 0
 
 /datum/fish_movement/New(datum/fishing_challenge/master)
+	procstart = null
+	src.procstart = null
 	src.master = master
 
 /**
@@ -42,6 +44,8 @@
  * they still reach 100% prob when the difficulty peakes.
  */
 /datum/fish_movement/proc/adjust_to_difficulty()
+	procstart = null
+	src.procstart = null
 	var/square_angle_rad = TORADIANS(90)
 	var/zero_one_difficulty = master.difficulty/100
 	if(short_jump_chance > 1)
@@ -54,11 +58,15 @@
 		long_jump_chance *= master.difficulty
 
 /datum/fish_movement/proc/reset_difficulty_values()
+	procstart = null
+	src.procstart = null
 	short_jump_chance = initial(short_jump_chance)
 	long_jump_chance = initial(long_jump_chance)
 
 ///The main proc, called by minigame every SSfishing tick while it's in the 'active' phase.
 /datum/fish_movement/proc/move_fish(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	times_fired++
 	/**
 	 * The jump chances are meant to run every odd tick (each every decisecond)
@@ -144,10 +152,14 @@
 
 ///Proc that returns the acceleration of the fish during the minigame.
 /datum/fish_movement/proc/get_acceleration(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	return 0.3 * master.difficulty + 0.5
 
 ///Called at the end of move_fish(), for updating the position of the fish in the fishing minigame.
 /datum/fish_movement/proc/set_fish_position(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	master.fish_position = clamp(master.fish_position + fish_velocity * seconds_per_tick, 0, FISHING_MINIGAME_AREA - master.fish_height)
 
 ///Generic fish movement datum that only performs slow, uninterrupted long jumps
@@ -171,6 +183,8 @@
 	var/accel_time_cap = 30
 
 /datum/fish_movement/accelerando/move_fish(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/seconds_elapsed = (times_fired * seconds_per_tick)
 	if(seconds_elapsed >= accel_time_cap)
 		return ..()
@@ -188,10 +202,14 @@
 	return ..()
 
 /datum/fish_movement/accelerando/get_acceleration(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/acceleration = ..()
 	return acceleration + min(acceleration, acceleration * times_fired * seconds_per_tick / accel_time_cap)
 
 /datum/fish_movement/accelerando/set_fish_position(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	fish_velocity = round(fish_velocity)
 	return ..()
 
@@ -201,6 +219,8 @@
 	var/faux_position = 0
 
 /datum/fish_movement/choppy/set_fish_position(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	faux_position = clamp(faux_position + fish_velocity * seconds_per_tick, 0, FISHING_MINIGAME_AREA - master.fish_height)
 	if(!((times_fired * SSfishing.wait) % (0.5 SECONDS)))
 		master.fish_position = faux_position
@@ -213,18 +233,24 @@
 	var/plunging_speed = -22
 
 /datum/fish_movement/plunger/adjust_to_difficulty()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//Adjust the fleeing velocity, up to five times the initial value.
 	plunging_speed += round(plunging_speed * master.difficulty * 0.03)
 	fish_idle_velocity += plunging_speed //so it can be safely subtracted if the fish starts at the bottom.
 
 /datum/fish_movement/plunger/reset_difficulty_values()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_plunging)
 		fish_idle_velocity -= plunging_speed
 	plunging_speed = initial(plunging_speed)
 
 /datum/fish_movement/plunger/move_fish(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/fish_area = FISHING_MINIGAME_AREA - master.fish_height
 	if(is_plunging)
 		if(target_position > master.fish_position) //nothing should stop us from plunging.

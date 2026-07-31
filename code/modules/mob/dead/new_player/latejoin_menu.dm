@@ -6,6 +6,8 @@ GLOBAL_DATUM_INIT(latejoin_menu, /datum/latejoin_menu, new)
 
 /// Makes a list of jobs and pushes them to a DM list selector. Just in case someone did a special kind of fucky-wucky with TGUI.
 /datum/latejoin_menu/proc/fallback_ui(mob/dead/new_player/user)
+	procstart = null
+	src.procstart = null
 	var/list/jobs = list()
 	for(var/datum/job/job as anything in SSjob.joinable_occupations)
 		jobs += job.title
@@ -18,11 +20,15 @@ GLOBAL_DATUM_INIT(latejoin_menu, /datum/latejoin_menu, new)
 	user.AttemptLateSpawn(input_contents)
 
 /datum/latejoin_menu/ui_close(mob/dead/new_player/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(user))
 		user.jobs_menu_mounted = TRUE // Don't flood a user's chat if they open and close the UI.
 
 /datum/latejoin_menu/ui_interact(mob/dead/new_player/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		// In case they reopen the GUI
@@ -35,10 +41,14 @@ GLOBAL_DATUM_INIT(latejoin_menu, /datum/latejoin_menu, new)
 		ui.open()
 
 /datum/latejoin_menu/proc/scream_at_player(mob/dead/new_player/player)
+	procstart = null
+	src.procstart = null
 	if(!player.jobs_menu_mounted)
 		to_chat(player, span_notice("If the late join menu isn't showing, hold CTRL while clicking the join button!"))
 
 /datum/latejoin_menu/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/dead/new_player/owner = user
 	var/list/departments = list()
 	var/list/data = list(
@@ -95,6 +105,8 @@ GLOBAL_DATUM_INIT(latejoin_menu, /datum/latejoin_menu, new)
 	return data
 
 /datum/latejoin_menu/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/departments = list()
 	var/mob/dead/new_player/owner = user
 
@@ -123,9 +135,13 @@ GLOBAL_DATUM_INIT(latejoin_menu, /datum/latejoin_menu, new)
 	return list("departments_static" = departments)
 
 /datum/latejoin_menu/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.new_player_state
 
 /datum/latejoin_menu/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!ui.user.client || ui.user.client.interviewee || !isnewplayer(ui.user))
@@ -187,6 +203,8 @@ GLOBAL_DATUM_INIT(latejoin_menu, /datum/latejoin_menu, new)
 /// Gives the user a random job that they can join as, and prompts them if they'd actually like to keep it, rerolling if not. Cancellable by the user.
 /// WARNING: BLOCKS THREAD!
 /datum/latejoin_menu/proc/get_random_job(mob/dead/new_player/owner)
+	procstart = null
+	src.procstart = null
 	var/list/dept_data = list()
 
 	for(var/datum/job_department/department as anything in SSjob.joinable_departments)

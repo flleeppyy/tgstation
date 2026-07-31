@@ -56,6 +56,8 @@
 	var/emp_resistance = 1
 
 /obj/item/gun/energy/fire_sounds()
+	procstart = null
+	src.procstart = null
 	// What frequency the energy gun's sound will make
 	var/pitch_to_use = 1
 
@@ -79,6 +81,8 @@
 		playsound(src, playing_sound, fire_sound_volume, vary_fire_sound)
 
 /obj/item/gun/energy/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(. & EMP_PROTECT_CONTENTS))
 		cell.use(round(cell.charge / emp_resistance / severity))
@@ -87,12 +91,16 @@
 		update_appearance()
 
 /obj/item/gun/energy/get_cell(atom/movable/interface, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(interface, /obj/item/inducer))
 		to_chat(user, span_alert("Error: unable to interface with [interface]."))
 		return null
 	return cell
 
 /obj/item/gun/energy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cell_type)
 		cell = new cell_type(src)
@@ -113,6 +121,8 @@
 	AddElement(/datum/element/update_icon_updates_onmob)
 
 /obj/item/gun/energy/add_weapon_description()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/weapon_description, attached_proc = PROC_REF(add_notes_energy))
 
 /**
@@ -123,6 +133,8 @@
  *
  */
 /obj/item/gun/energy/proc/add_notes_energy()
+	procstart = null
+	src.procstart = null
 	var/list/readout = list()
 	// Make sure there is something to actually retrieve
 	if(!ammo_type.len)
@@ -147,6 +159,8 @@
 	return readout.Join("\n") // Sending over the singular string, rather than the whole list
 
 /obj/item/gun/energy/proc/update_ammo_types()
+	procstart = null
+	src.procstart = null
 	var/obj/item/ammo_casing/energy/shot
 	for (var/i in 1 to ammo_type.len)
 		var/shottype = ammo_type[i]
@@ -157,6 +171,8 @@
 	fire_delay = shot.delay
 
 /obj/item/gun/energy/Destroy()
+	procstart = null
+	src.procstart = null
 	if (cell)
 		QDEL_NULL(cell)
 	STOP_PROCESSING(SSobj, src)
@@ -170,12 +186,16 @@
 	return ..()
 
 /obj/item/gun/energy/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == cell)
 		cell = null
 		update_appearance()
 
 /obj/item/gun/energy/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(selfcharge && cell && cell.percent() < 100)
 		charge_timer += seconds_per_tick
 		if(charge_timer < charge_delay)
@@ -187,6 +207,8 @@
 		update_appearance()
 
 /obj/item/gun/energy/attack_self(mob/living/user as mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -195,10 +217,14 @@
 		select_fire(user)
 
 /obj/item/gun/energy/can_shoot()
+	procstart = null
+	src.procstart = null
 	var/obj/item/ammo_casing/energy/shot = ammo_type[select]
 	return !QDELETED(cell) ? (cell.charge >= shot.e_cost) : FALSE
 
 /obj/item/gun/energy/recharge_newshot(no_cyborg_drain)
+	procstart = null
+	src.procstart = null
 	if (!ammo_type || !cell)
 		return
 
@@ -219,6 +245,8 @@
 				return ..()
 
 /obj/item/gun/energy/handle_chamber()
+	procstart = null
+	src.procstart = null
 	if(chambered && !chambered.loaded_projectile) //if loaded_projectile is null, i.e the shot has been fired...
 		var/obj/item/ammo_casing/energy/shot = chambered
 		cell.use(shot.e_cost)//... drain the cell cell
@@ -226,16 +254,22 @@
 	recharge_newshot() //try to charge a new shot
 
 /obj/item/gun/energy/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+	procstart = null
+	src.procstart = null
 	if(!chambered && can_shoot())
 		process_chamber() // If the gun was drained and then recharged, load a new shot.
 	return ..()
 
 /obj/item/gun/energy/process_burst(mob/living/user, atom/target, message = TRUE, params = null, zone_override="", randomized_gun_spread = 0, randomized_bonus_spread = 0, rand_spr = 0, iteration = 0)
+	procstart = null
+	src.procstart = null
 	if(!chambered && can_shoot())
 		process_chamber() // Ditto.
 	return ..()
 
 /obj/item/gun/energy/proc/select_fire(mob/living/user)
+	procstart = null
+	src.procstart = null
 	select++
 	if (select > ammo_type.len)
 		select = 1
@@ -253,6 +287,8 @@
 		playsound(src, fire_mode_switch_sound, 50, TRUE)
 
 /obj/item/gun/energy/update_icon_state()
+	procstart = null
+	src.procstart = null
 	var/skip_inhand = initial(inhand_icon_state) //only build if we aren't using a preset inhand icon
 	var/skip_worn_icon = initial(worn_icon_state) //only build if we aren't using a preset worn icon
 
@@ -274,6 +310,8 @@
 
 
 /obj/item/gun/energy/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!automatic_charge_overlays)
 		return
@@ -306,10 +344,14 @@
 
 ///Used by update_icon_state() and update_overlays()
 /obj/item/gun/energy/proc/get_charge_ratio()
+	procstart = null
+	src.procstart = null
 	return can_shoot() ? CEILING(clamp(cell.charge / cell.maxcharge, 0, 1) * charge_sections, 1) : 0
 	// Sets the ratio to 0 if the gun doesn't have enough charge to fire, or if its power cell is removed.
 
 /obj/item/gun/energy/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(istype(user) && can_shoot() && can_trigger_gun(user) && user.get_bodypart(BODY_ZONE_HEAD))
 		user.visible_message(span_suicide("[user] is putting the barrel of [src] in [user.p_their()] mouth. It looks like [user.p_theyre()] trying to commit suicide!"))
 		sleep(2.5 SECONDS)
@@ -329,6 +371,8 @@
 		return OXYLOSS
 
 /obj/item/gun/energy/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	switch(var_name)
 		if(NAMEOF(src, selfcharge))
 			if(var_value)
@@ -339,6 +383,8 @@
 
 
 /obj/item/gun/energy/ignition_effect(atom/A, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!can_shoot() || !ammo_type[select])
 		shoot_with_empty_chamber()
 		. = ""
@@ -367,6 +413,8 @@
 			. = span_rose("[user] casually lights [A.loc == user ? "[user.p_their()] [A.name]" : A] with [src]. Damn.")
 
 /obj/item/gun/energy/proc/instant_recharge()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!cell)
 		return

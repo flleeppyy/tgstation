@@ -15,10 +15,14 @@
 	bypasses_immunity = TRUE
 
 /datum/disease/decloning/cure(add_resistance = TRUE)
+	procstart = null
+	src.procstart = null
 	affected_mob.remove_status_effect(/datum/status_effect/decloning)
 	return ..()
 
 /datum/disease/decloning/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

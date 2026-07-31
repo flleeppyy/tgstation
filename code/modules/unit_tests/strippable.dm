@@ -1,4 +1,6 @@
 /datum/unit_test/strip_menu_ui_status/Run()
+	procstart = null
+	src.procstart = null
 	// We just need something that doesn't have strippable by default, so we can add it ourselves.
 	var/obj/target = allocate(/obj/item/pen, run_loc_floor_bottom_left)
 	var/datum/element/strippable/strippable = target.AddElement(/datum/element/strippable)

@@ -10,20 +10,28 @@
 	var/access_provider_flags = VEHICLE_CONTROL_DRIVE
 
 /obj/vehicle/sealed/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_SUPERMATTER_CONSUMED, PROC_REF(on_entered_supermatter))
 
 /obj/vehicle/sealed/generate_actions()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	initialize_passenger_action_type(/datum/action/vehicle/sealed/climb_out)
 
 /obj/vehicle/sealed/generate_action_type()
+	procstart = null
+	src.procstart = null
 	var/datum/action/vehicle/sealed/E = ..()
 	. = E
 	if(istype(E))
 		E.vehicle_entered_target = src
 
 /obj/vehicle/sealed/mouse_drop_receive(atom/dropping, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(!istype(dropping) || !istype(user))
 		return ..()
 	if(user == dropping)
@@ -31,12 +39,16 @@
 	return ..()
 
 /obj/vehicle/sealed/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ismob(gone))
 		remove_occupant(gone)
 
 // so that we can check the access of the vehicle's occupants. Ridden vehicles do this in the riding component, but these don't have that
 /obj/vehicle/sealed/Bump(atom/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(A, /obj/machinery/door))
 		var/obj/machinery/door/conditionalwall = A
@@ -46,16 +58,22 @@
 			conditionalwall.bumpopen(occupant)
 
 /obj/vehicle/sealed/after_add_occupant(mob/M)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(M, TRAIT_HANDS_BLOCKED, VEHICLE_TRAIT)
 
 
 /obj/vehicle/sealed/after_remove_occupant(mob/M)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(M, TRAIT_HANDS_BLOCKED, VEHICLE_TRAIT)
 
 
 /obj/vehicle/sealed/proc/mob_try_enter(mob/rider)
+	procstart = null
+	src.procstart = null
 	if(!istype(rider))
 		return FALSE
 	var/enter_delay = get_enter_delay(rider)
@@ -71,13 +89,19 @@
 
 /// returns enter do_after delay for the given mob in ticks
 /obj/vehicle/sealed/proc/get_enter_delay(mob/M)
+	procstart = null
+	src.procstart = null
 	return enter_delay
 
 ///Extra checks to perform during the do_after to enter the vehicle
 /obj/vehicle/sealed/proc/enter_checks(mob/M)
+	procstart = null
+	src.procstart = null
 	return occupant_amount() < max_occupants
 
 /obj/vehicle/sealed/proc/mob_enter(mob/M, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return FALSE
 	if(!silent)
@@ -87,9 +111,13 @@
 	return TRUE
 
 /obj/vehicle/sealed/proc/mob_try_exit(mob/M, mob/user, silent = FALSE, randomstep = FALSE)
+	procstart = null
+	src.procstart = null
 	mob_exit(M, silent, randomstep)
 
 /obj/vehicle/sealed/proc/mob_exit(mob/M, silent = FALSE, randomstep = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return FALSE
 	remove_occupant(M)
@@ -106,9 +134,13 @@
 	return TRUE
 
 /obj/vehicle/sealed/proc/exit_location(M)
+	procstart = null
+	src.procstart = null
 	return drop_location()
 
 /obj/vehicle/sealed/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!key_type || is_key(inserted_key) || !is_key(tool))
 		return NONE
 
@@ -124,6 +156,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/vehicle/sealed/proc/remove_key(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!inserted_key)
 		to_chat(user, span_warning("There is no key in [src]!"))
 		return
@@ -138,10 +172,14 @@
 	inserted_key = null
 
 /obj/vehicle/sealed/Destroy()
+	procstart = null
+	src.procstart = null
 	dump_mobs()
 	return ..()
 
 /obj/vehicle/sealed/proc/dump_mobs(randomstep = TRUE)
+	procstart = null
+	src.procstart = null
 	for(var/i in occupants)
 		mob_exit(i, randomstep = randomstep)
 		if(iscarbon(i))
@@ -149,6 +187,8 @@
 			Carbon.Paralyze(40)
 
 /obj/vehicle/sealed/proc/dump_specific_mobs(flag, randomstep = TRUE)
+	procstart = null
+	src.procstart = null
 	for(var/i in occupants)
 		if(!(occupants[i] & flag))
 			continue
@@ -159,19 +199,27 @@
 
 
 /obj/vehicle/sealed/AllowDrop()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/vehicle/sealed/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(canmove)
 		vehicle_move(direction)
 	return TRUE
 
 /// Sinced sealed vehicles (cars and mechs) don't have riding components, the actual movement is handled here from [/obj/vehicle/sealed/proc/relaymove]
 /obj/vehicle/sealed/proc/vehicle_move(direction)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// When we touch a crystal, kill everything inside us
 /obj/vehicle/sealed/proc/on_entered_supermatter(atom/movable/vehicle, atom/movable/supermatter)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for (var/mob/passenger as anything in occupants)
 		if(!isAI(passenger))

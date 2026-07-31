@@ -3,6 +3,8 @@
 	icon_state = "vent_map_siphon_on-3"
 
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/monitored/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//we dont want people messing with these special vents using the air alarm interface
 	disconnect_from_area()
@@ -85,6 +87,8 @@
 
 // Same as the rest, but bigger volume.
 /obj/machinery/atmospherics/components/unary/vent_pump/high_volume/siphon/monitored/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//we dont want people messing with these special vents using the air alarm interface
 	disconnect_from_area()

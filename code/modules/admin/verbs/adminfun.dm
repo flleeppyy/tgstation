@@ -249,6 +249,8 @@ ADMIN_VERB(mass_modify_traits, R_FUN, "Mass Modify Traits", "Adds or removes a t
 
 /// Returns only traits that apply to mobs
 /proc/get_mob_admin_traits()
+	procstart = null
+	src.procstart = null
 	var/list/out = list()
 	for(var/key in GLOB.admin_visible_traits)
 		if(ispath(key, /mob)) // key is a mob type or subtype
@@ -270,6 +272,8 @@ ADMIN_VERB_AND_CONTEXT_MENU(admin_smite, R_ADMIN|R_FUN, "Smite", "Smite a player
 
 /// "Turns" people into objects. Really, we just add them to the contents of the item.
 /proc/objectify(atom/movable/target, path_or_instance)
+	procstart = null
+	src.procstart = null
 	var/atom/tomb
 	if(ispath(path_or_instance))
 		tomb = new path_or_instance(get_turf(target))
@@ -291,6 +295,8 @@ ADMIN_VERB_AND_CONTEXT_MENU(admin_smite, R_ADMIN|R_FUN, "Smite", "Smite a player
  * * damage- the damage we're assigning to the bullet, since we don't care about the base one
  */
 /proc/firing_squad(mob/living/carbon/target, turf/source_turf, body_zone, wound_bonus, damage)
+	procstart = null
+	src.procstart = null
 	if(!target.get_bodypart(body_zone))
 		return
 	playsound(target, 'sound/items/weapons/gun/revolver/shot.ogg', 100)
@@ -304,6 +310,8 @@ ADMIN_VERB_AND_CONTEXT_MENU(admin_smite, R_ADMIN|R_FUN, "Smite", "Smite a player
 	divine_wrath.fire()
 
 /client/proc/punish_log(whom, punishment)
+	procstart = null
+	src.procstart = null
 	var/msg = "[key_name_admin(src)] punished [key_name_admin(whom)] with [punishment]."
 	message_admins(msg)
 	admin_ticket_log(whom, msg)

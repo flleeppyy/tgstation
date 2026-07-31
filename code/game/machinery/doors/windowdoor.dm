@@ -40,6 +40,8 @@
 	acid = 100
 
 /obj/machinery/door/window/Initialize(mapload, set_dir, unres_sides)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	flags_1 &= ~PREVENT_CLICK_UNDER_1
 	if(set_dir)
@@ -69,12 +71,16 @@
 	AddElement(/datum/element/atmos_sensitive, mapload)
 
 /obj/machinery/door/window/Destroy()
+	procstart = null
+	src.procstart = null
 	set_density(FALSE)
 	electronics = null
 	air_update_turf(TRUE, FALSE)
 	return ..()
 
 /obj/machinery/door/window/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(animation)
 		if(DOOR_OPENING_ANIMATION)
@@ -93,6 +99,8 @@
 	set_light(l_range = 0)
 
 /obj/machinery/door/window/animation_length(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if(DOOR_OPENING_ANIMATION)
 			return 0.9 SECONDS
@@ -100,6 +108,8 @@
 			return 0.9 SECONDS
 
 /obj/machinery/door/window/animation_segment_delay(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if(DOOR_OPENING_PASSABLE)
 			return 0.7 SECONDS
@@ -111,6 +121,8 @@
 			return 0.9 SECONDS
 
 /obj/machinery/door/window/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!hasPower() || !unres_sides)
@@ -141,6 +153,8 @@
 				. += side_overlay
 
 /obj/machinery/door/window/proc/open_and_close()
+	procstart = null
+	src.procstart = null
 	if(!open())
 		return
 	autoclose = TRUE
@@ -152,6 +166,8 @@
 		close()
 
 /obj/machinery/door/window/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(operating || !density)
 		return
 	if(!ismob(AM))
@@ -175,6 +191,8 @@
 	bumpopen(M)
 
 /obj/machinery/door/window/bumpopen(mob/user)
+	procstart = null
+	src.procstart = null
 	if(operating || !density)
 		return
 
@@ -194,6 +212,8 @@
 	return
 
 /obj/machinery/door/window/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -211,6 +231,8 @@
 	return TRUE
 
 /obj/machinery/door/window/can_atmos_pass(turf/T, vertical = FALSE)
+	procstart = null
+	src.procstart = null
 	if(get_dir(loc, T) == dir)
 		return !density
 	else
@@ -218,9 +240,13 @@
 
 //used in the AStar algorithm to determinate if the turf the door is on is passable
 /obj/machinery/door/window/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	procstart = null
+	src.procstart = null
 	return !density || (dir != to_dir) || (check_access_list(pass_info.access) && hasPower() && !pass_info.no_id)
 
 /obj/machinery/door/window/proc/on_exit(datum/source, atom/movable/leaving, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(leaving.movement_type & PHASING)
 		return
@@ -236,6 +262,8 @@
 		return COMPONENT_ATOM_BLOCK_EXIT
 
 /obj/machinery/door/window/open(forced = DEFAULT_DOOR_CHECKS)
+	procstart = null
+	src.procstart = null
 	if(!density)
 		return TRUE
 
@@ -264,6 +292,8 @@
 
 /// Additional checks depending on what we want to happen to this windoor
 /obj/machinery/door/window/try_to_force_door_open(force_type = DEFAULT_DOOR_CHECKS)
+	procstart = null
+	src.procstart = null
 	switch(force_type)
 		if(DEFAULT_DOOR_CHECKS)
 			if(!hasPower() || (obj_flags & EMAGGED))
@@ -285,6 +315,8 @@
 	return ..()
 
 /obj/machinery/door/window/close(forced = DEFAULT_DOOR_CHECKS)
+	procstart = null
+	src.procstart = null
 	if(density)
 		return TRUE
 
@@ -305,6 +337,8 @@
 	return TRUE
 
 /obj/machinery/door/window/try_to_force_door_shut(force_type = DEFAULT_DOOR_CHECKS)
+	procstart = null
+	src.procstart = null
 	switch(force_type)
 		if(DEFAULT_DOOR_CHECKS)
 			if(!hasPower() || (obj_flags & EMAGGED))
@@ -326,6 +360,8 @@
 	return ..()
 
 /obj/machinery/door/window/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			playsound(src, 'sound/effects/glass/glasshit.ogg', 90, TRUE)
@@ -333,6 +369,8 @@
 			playsound(src, 'sound/items/tools/welder.ogg', 100, TRUE)
 
 /obj/machinery/door/window/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	if(disassembled)
 		return
 
@@ -346,13 +384,19 @@
 		drop_debris(new /obj/item/stack/cable_coil(src, cable))
 
 /obj/machinery/door/window/proc/drop_debris(obj/item/debris)
+	procstart = null
+	src.procstart = null
 	debris.forceMove(loc)
 	transfer_fingerprints_to(debris)
 
 /obj/machinery/door/window/narsie_act()
+	procstart = null
+	src.procstart = null
 	add_atom_colour(NARSIE_WINDOW_COLOUR, FIXED_COLOUR_PRIORITY)
 
 /obj/machinery/door/window/rust_heretic_act()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_RUSTY))
 		return FALSE
 
@@ -364,12 +408,18 @@
 	return TRUE
 
 /obj/machinery/door/window/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return (exposed_temperature > T0C + (reinf ? 1600 : 800))
 
 /obj/machinery/door/window/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	take_damage(round(exposed_temperature / 200), BURN, 0, 0)
 
 /obj/machinery/door/window/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(!operating && density && !(obj_flags & EMAGGED))
 		obj_flags |= EMAGGED
 		operating = TRUE
@@ -381,10 +431,14 @@
 
 /// Timer proc, called ~0.6 seconds after [emag_act]. Finishes the emag sequence by breaking the windoor.
 /obj/machinery/door/window/proc/finish_emag_act()
+	procstart = null
+	src.procstart = null
 	operating = FALSE
 	open(BYPASS_DOOR_CHECKS)
 
 /obj/machinery/door/window/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(obj_flags & EMAGGED)
 		. += span_warning("Its access panel is smoking slightly.")
@@ -394,6 +448,8 @@
 
 
 /obj/machinery/door/window/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(density || operating)
 		to_chat(user, span_warning("You need to open the door to access the maintenance panel!"))
@@ -405,6 +461,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/door/window/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!panel_open || density || operating)
 		return ITEM_INTERACT_BLOCKING
@@ -452,20 +510,28 @@
 	qdel(src)
 	return ITEM_INTERACT_SUCCESS
 
-/obj/machinery/door/window/interact(mob/user) //for sillycones
+/obj/machinery/door/window/interact(mob/user)
+	procstart = null
+	src.procstart = null //for sillycones
 	try_to_activate_door(user)
 
 /obj/machinery/door/window/try_to_activate_door(mob/user, access_bypass = FALSE, bumped = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		autoclose = FALSE
 
 /obj/machinery/door/window/unrestricted_side(mob/opener)
+	procstart = null
+	src.procstart = null
 	if(get_turf(opener) == loc)
 		return REVERSE_DIR(dir) & unres_sides
 	return ..()
 
 /obj/machinery/door/window/try_to_crowbar(obj/item/I, mob/user, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/crowbar/power))
 		var/obj/item/crowbar/power/power_tool = I
 		if(power_tool.limit_jaws_access && forced)
@@ -482,12 +548,16 @@
 		to_chat(user, span_warning("The door's motors resist your efforts to force it!"))
 
 /obj/machinery/door/window/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	switch(the_rcd.mode)
 		if(RCD_DECONSTRUCT)
 			return list("delay" = 5 SECONDS, "cost" = 32)
 	return FALSE
 
 /obj/machinery/door/window/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	procstart = null
+	src.procstart = null
 	if(rcd_data[RCD_DESIGN_MODE] == RCD_DECONSTRUCT)
 		qdel(src)
 		return TRUE
@@ -557,6 +627,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/door/window/brigdoor/security/holodec
 /obj/machinery/door/window/instant
 
 /obj/machinery/door/window/instant/open(forced = DEFAULT_DOOR_CHECKS)
+	procstart = null
+	src.procstart = null
 	if(!density || operating || !try_to_force_door_open(forced))
 		return FALSE
 
@@ -572,6 +644,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/door/window/brigdoor/security/holodec
 	return TRUE
 
 /obj/machinery/door/window/instant/close(forced = DEFAULT_DOOR_CHECKS)
+	procstart = null
+	src.procstart = null
 	if(density || operating || !try_to_force_door_shut(forced))
 		return FALSE
 

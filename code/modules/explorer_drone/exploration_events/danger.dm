@@ -12,18 +12,26 @@
 	skippable = FALSE
 
 /datum/exploration_event/simple/danger/get_description(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/desc_parts = list(.)
 	desc_parts += can_escape_danger(drone) ? has_tool_description : no_tool_description
 	return desc_parts.Join("\n")
 
 /datum/exploration_event/simple/danger/get_action_text(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	return can_escape_danger(drone) ? has_tool_action_text : no_tool_action_text
 
 /datum/exploration_event/simple/danger/proc/can_escape_danger(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	return !required_tool || drone.has_tool(required_tool)
 
 /datum/exploration_event/simple/danger/fire(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	if(can_escape_danger(drone))
 		drone.drone_log(avoid_log)
 	else
@@ -120,6 +128,8 @@
 	avoid_log = "Defeated a beast."
 
 /datum/exploration_event/simple/danger/beast/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/beast_name = pick_list(EXODRONE_FILE,"alien_fauna")
 	description = replacetext(description,"BEAST",beast_name)

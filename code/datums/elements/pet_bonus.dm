@@ -14,6 +14,8 @@
 	var/moodlet
 
 /datum/element/pet_bonus/Attach(datum/target, emote_name, moodlet = /datum/mood_event/pet_animal)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -23,10 +25,14 @@
 	RegisterSignal(target, COMSIG_ATOM_ATTACK_HAND, PROC_REF(on_attack_hand))
 
 /datum/element/pet_bonus/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_ATOM_ATTACK_HAND)
 
 /datum/element/pet_bonus/proc/on_attack_hand(mob/living/pet, mob/living/petter, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(IS_UNCONSCIOUS(pet) || petter.combat_mode || LAZYACCESS(modifiers, RIGHT_CLICK))

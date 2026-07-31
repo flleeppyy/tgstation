@@ -13,6 +13,8 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
 /obj/structure/grille/indestructible/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/tool_blocker, TOOL_SCREWDRIVER, TOOL_ACT_PRIMARY)
 	AddElement(/datum/element/tool_blocker, TOOL_WIRECUTTER, TOOL_ACT_PRIMARY)
@@ -25,6 +27,8 @@
 	desc = "A barrier. Provides cover in firefights."
 
 /obj/structure/barricade/security/murderdome/make_debris()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/murderdome/dead_barricade(get_turf(src))
 
 /obj/effect/murderdome/dead_barricade
@@ -35,10 +39,14 @@
 	alpha = 100
 
 /obj/effect/murderdome/dead_barricade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(respawn)), 3 MINUTES)
 
 /obj/effect/murderdome/dead_barricade/proc/respawn()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(src))
 		new /obj/structure/barricade/security/murderdome(get_turf(src))
 		qdel(src)

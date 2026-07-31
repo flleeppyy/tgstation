@@ -13,6 +13,8 @@
 	var/list/sound
 
 /datum/bt_node/ai_behavior/random_speech/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(!prob(speech_chance))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
 
@@ -40,6 +42,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/random_speech/proc/speak(mob/living/pawn, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	pawn.say(pick(speak), forced = "AI Controller")
 	if(length(sound))
 		playsound(pawn, pick(sound), 80, vary = TRUE)
@@ -124,6 +128,8 @@
 	var/list/radio_speech = list("Come...", "Why...?")
 
 /datum/bt_node/ai_behavior/random_speech/legion/speak(mob/living/pawn, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/victim = controller.blackboard[BB_LEGION_CORPSE]
 	if (QDELETED(victim) || prob(30))
 		return ..()
@@ -146,6 +152,8 @@
 /datum/bt_node/ai_behavior/random_speech_blackboard
 
 /datum/bt_node/ai_behavior/random_speech_blackboard/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/list/speech_lines = controller.blackboard[BB_BASIC_MOB_SPEAK_LINES]
 	if(isnull(speech_lines))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED

@@ -8,6 +8,8 @@
 	var/quirk_poster_department = NONE
 
 /obj/item/poster/quirk/Initialize(mapload, obj/structure/sign/poster/new_poster_structure)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	register_context()
@@ -18,6 +20,8 @@
 
 /// You can use any spraypaint can on a quirk poster to turn it into a contraband poster from the traitor objective
 /obj/item/poster/quirk/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!user.is_antag() || !HAS_TRAIT(user, TRAIT_POSTERBOY) || !istype(tool, /obj/item/toy/crayon))
 		return NONE
 	balloon_alert(user, "converting poster...")
@@ -33,6 +37,8 @@
 /// Screentip for the above
 
 /obj/item/poster/quirk/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.is_antag() || !HAS_TRAIT(user, TRAIT_POSTERBOY) || !istype(held_item, /obj/item/toy/crayon))
 		return NONE
 	context[SCREENTIP_CONTEXT_LMB] = "Turn into Demoralizing Poster"
@@ -48,18 +54,26 @@
 	var/datum/proximity_monitor/advanced/quirk_posters/mood_buff
 
 /obj/structure/sign/poster/quirk/on_placed_poster(mob/user)
+	procstart = null
+	src.procstart = null
 	mood_buff = new(_host = src, range = 7, _ignore_if_not_on_turf = TRUE, department = quirk_poster_department)
 	return ..()
 
 /obj/structure/sign/poster/quirk/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(mood_buff)
 	return ..()
 
 /obj/structure/sign/poster/quirk/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(mood_buff)
 	return ..()
 
 /obj/structure/sign/poster/quirk/apply_holiday()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/sign/poster/traitor/holiday_data = /obj/structure/sign/poster/quirk/festive
 	name = initial(holiday_data.name)
 	desc = initial(holiday_data.desc)
@@ -75,21 +89,29 @@
 	var/department
 
 /datum/proximity_monitor/advanced/quirk_posters/New(atom/_host, range, _ignore_if_not_on_turf = TRUE, department)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.department = department
 	RegisterSignal(host, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/proximity_monitor/advanced/quirk_posters/field_turf_crossed(atom/movable/crossed, turf/old_location, turf/new_location)
+	procstart = null
+	src.procstart = null
 	if (!isliving(crossed) || !can_see(crossed, host, current_range))
 		return
 	on_seen(crossed)
 
 /datum/proximity_monitor/advanced/quirk_posters/proc/on_examine(datum/source, mob/examiner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (isliving(examiner))
 		on_seen(examiner)
 
 /datum/proximity_monitor/advanced/quirk_posters/proc/on_seen(mob/living/viewer)
+	procstart = null
+	src.procstart = null
 	if (!viewer.mind || !viewer.mob_mood || (IS_UNCONSCIOUS_OR_CRIT(viewer)) || viewer.is_blind())
 		return
 	if(!viewer.can_read(host, READING_CHECK_LIGHT, TRUE))

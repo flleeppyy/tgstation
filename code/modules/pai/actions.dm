@@ -4,6 +4,8 @@
 	var/mob/living/silicon/pai/pai_owner
 
 /datum/action/innate/pai/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	if(!ispAI(owner))
 		return FALSE
 	pai_owner = owner
@@ -16,6 +18,8 @@
 	overlay_icon_state = "bg_tech_border"
 
 /datum/action/innate/pai/software/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -28,6 +32,8 @@
 	overlay_icon_state = "bg_tech_border"
 
 /datum/action/innate/pai/shell/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -43,6 +49,8 @@
 	overlay_icon_state = "bg_tech_border"
 
 /datum/action/innate/pai/chassis/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -55,6 +63,8 @@
 	overlay_icon_state = "bg_tech_border"
 
 /datum/action/innate/pai/rest/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -68,6 +78,8 @@
 	overlay_icon_state = "bg_tech_border"
 
 /datum/action/innate/pai/light/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -80,6 +92,8 @@
 	overlay_icon_state = "bg_tech_border"
 
 /datum/action/innate/pai/messenger/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

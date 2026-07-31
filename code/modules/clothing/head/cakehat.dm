@@ -29,6 +29,8 @@
 	var/damtype_on = BURN
 
 /obj/item/clothing/head/utility/hardhat/cakehat/process()
+	procstart = null
+	src.procstart = null
 	var/turf/location = loc
 	if(ishuman(location))
 		var/mob/living/carbon/human/wearer = location
@@ -39,6 +41,8 @@
 		location.hotspot_expose(700, 1)
 
 /obj/item/clothing/head/utility/hardhat/cakehat/turn_on(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	force = force_on
 	throwforce = throwforce_on
@@ -47,6 +51,8 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/item/clothing/head/utility/hardhat/cakehat/turn_off(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	force = 0
 	throwforce = 0
@@ -55,6 +61,8 @@
 	STOP_PROCESSING(SSobj, src)
 
 /obj/item/clothing/head/utility/hardhat/cakehat/get_temperature()
+	procstart = null
+	src.procstart = null
 	return on * heat
 
 /obj/item/clothing/head/utility/hardhat/cakehat/energycake
@@ -72,6 +80,8 @@
 	heat = 0
 
 /obj/item/clothing/head/utility/hardhat/cakehat/energycake/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//the compiled icon state is how it appears when it's on.
 	//That's how we want it to show on orbies (little virtual PDA pets).
@@ -79,11 +89,15 @@
 	update_appearance(UPDATE_ICON_STATE)
 
 /obj/item/clothing/head/utility/hardhat/cakehat/energycake/turn_on(mob/living/user)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/items/weapons/saberon.ogg', 5, TRUE)
 	to_chat(user, span_warning("You turn on \the [src]."))
 	return ..()
 
 /obj/item/clothing/head/utility/hardhat/cakehat/energycake/turn_off(mob/living/user)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/items/weapons/saberoff.ogg', 5, TRUE)
 	to_chat(user, span_warning("You turn off \the [src]."))
 	return ..()

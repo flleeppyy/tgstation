@@ -1,4 +1,6 @@
 /datum/reagents/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Reagents", "Reaction search")
@@ -10,13 +12,19 @@
 
 
 /datum/reagents/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	return UI_INTERACTIVE //please advise
 
 /datum/reagents/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.physical_state
 
 ///Generates a (rough) rate vs temperature graph profile
 /datum/reagents/proc/generate_thermodynamic_profile(datum/chemical_reaction/reaction)
+	procstart = null
+	src.procstart = null
 	var/list/coords = list()
 	var/x_temp
 	var/increment
@@ -50,6 +58,8 @@
 	return coords
 
 /datum/reagents/proc/generate_explosive_profile(datum/chemical_reaction/reaction)
+	procstart = null
+	src.procstart = null
 	if(reaction.overheat_temp == NO_OVERHEAT)
 		return null
 	var/list/coords = list()
@@ -66,6 +76,8 @@
 
 ///Returns a string descriptor of a reactions themic_constant
 /datum/reagents/proc/determine_reaction_thermics(datum/chemical_reaction/reaction)
+	procstart = null
+	src.procstart = null
 	var/thermic = reaction.thermic_constant
 	if(reaction.reaction_flags & REACTION_HEAT_ARBITARY)
 		thermic *= 100 //Because arbitary is a lower scale
@@ -98,6 +110,8 @@
 			return "Overwhelmingly exothermic"
 
 /datum/reagents/proc/parse_addictions(datum/reagent/reagent)
+	procstart = null
+	src.procstart = null
 	var/list/addict_text = list()
 	for(var/entry, threshold in reagent.addiction_types)
 		switch(threshold)
@@ -113,6 +127,8 @@
 	return addict_text
 
 /datum/reagents/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["selectedBitflags"] = ui_tags_selected
 
@@ -248,6 +264,8 @@
 	return data
 
 /datum/reagents/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	//Use GLOB list - saves processing
 	data["master_reaction_list"] = GLOB.chemical_reactions_results_lookup_list
@@ -262,6 +280,8 @@
 * If the index is out of range, it is set to 1
 */
 /datum/reagents/proc/get_reaction_from_indexed_possibilities(path, index = null)
+	procstart = null
+	src.procstart = null
 	if(index)
 		ui_reaction_index = index
 	var/list/sub_reactions = GLOB.chemical_reactions_list_product_index[path]
@@ -274,6 +294,8 @@
 	return reaction.type
 
 /datum/reagents/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

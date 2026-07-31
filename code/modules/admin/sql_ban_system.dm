@@ -15,6 +15,8 @@
  * * roles - Accepts either a single role string, or a list of role strings.
  */
 /proc/is_banned_from(player_key, list/roles)
+	procstart = null
+	src.procstart = null
 	if(!player_key)
 		stack_trace("Called is_banned_from without specifying a ckey.")
 		return FALSE
@@ -89,6 +91,8 @@
 //checks DB ban table if a ckey, ip and/or cid is banned from a specific role
 //returns an associative nested list of each matching row's ban id, bantime, ban round id, expiration time, ban duration, applies to admins, reason, key, ip, cid and banning admin's key in that order
 /proc/is_banned_from_with_details(player_ckey, player_ip, player_cid, role)
+	procstart = null
+	src.procstart = null
 	if(!player_ckey && !player_ip && !player_cid)
 		return
 	var/datum/db_query/query_check_ban = SSdbcore.NewQuery({"
@@ -123,6 +127,8 @@
 /// If the cache has not been generated, we start off a query
 /// If we still have a query going for this request, we just sleep until it's received back
 /proc/retrieve_ban_cache(client/player_client)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(player_client))
 		return
 
@@ -149,6 +155,8 @@
 	return player_client?.ban_cache || build_ban_cache(player_client)
 
 /proc/build_ban_cache(client/player_client)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		return
 	if(QDELETED(player_client))
@@ -185,6 +193,8 @@
 
 
 /datum/admins/proc/ban_panel(player_key, player_ip, player_cid, role, duration = 1440, applies_to_admins, reason, edit_id, page, admin_key)
+	procstart = null
+	src.procstart = null
 	if (duration == BAN_PANEL_PERMANENT)
 		duration = null
 
@@ -425,6 +435,8 @@
 
 
 /datum/admins/proc/ban_parse_href(list/href_list)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_BAN))
 		return
 	if(!SSdbcore.Connect())
@@ -547,6 +559,8 @@
 		create_ban(player_key, ip_check, player_ip, cid_check, player_cid, use_last_connection, applies_to_admins, duration, interval, severity, reason, roles_to_ban)
 
 /datum/admins/proc/create_ban(player_key, ip_check, player_ip, cid_check, player_cid, use_last_connection, applies_to_admins, duration, interval, severity, reason, list/roles_to_ban)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_BAN))
 		return
 	if(!SSdbcore.Connect())
@@ -648,6 +662,8 @@
 		linked_ahelp_ticket.Resolve()
 
 /datum/admins/proc/unban_panel(player_key, admin_key, player_ip, player_cid, page = 0)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_BAN))
 		return
 	if(!SSdbcore.Connect())
@@ -796,6 +812,8 @@
 	unban_panel.open()
 
 /datum/admins/proc/unban(ban_id, player_key, player_ip, player_cid, role, page, admin_key)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_BAN))
 		return
 	if(!SSdbcore.Connect())
@@ -836,6 +854,8 @@
 
 /// Sometimes an admin did not intend to unban a player. This proc undoes an unbanning operation by setting the unbanned_ keys in the DB back to null.
 /datum/admins/proc/reban(ban_id, applies_to_admins, player_key, player_ip, player_cid, role, page, admin_key)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_BAN))
 		return
 	if(!SSdbcore.Connect())
@@ -878,6 +898,8 @@
 	unban_panel(player_key, admin_key, player_ip, player_cid, page)
 
 /datum/admins/proc/edit_ban(ban_id, player_key, ip_check, player_ip, cid_check, player_cid, use_last_connection, applies_to_admins, duration, interval, reason, mirror_edit, old_key, old_ip, old_cid, old_applies, admin_key, page, list/changes, is_server_ban)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_BAN))
 		return
 	if(!SSdbcore.Connect())
@@ -991,6 +1013,8 @@
 	unban_panel(player_key, null, null, null, page)
 
 /datum/admins/proc/ban_log(ban_id)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_BAN))
 		return
 	if(!SSdbcore.Connect())
@@ -1010,6 +1034,8 @@
 	qdel(query_get_ban_edits)
 
 /datum/admins/proc/ban_target_string(player_key, player_ip, player_cid)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(player_key)
 		. += player_key
@@ -1035,6 +1061,8 @@
  * * admin_ckey - The ckey of the admin who is trying to place an admin ban.
  */
 /datum/admins/proc/can_place_additional_admin_ban(admin_ckey)
+	procstart = null
+	src.procstart = null
 	var/datum/db_query/query_check_adminban_count = SSdbcore.NewQuery({"
 		SELECT COUNT(DISTINCT bantime)
 		FROM [format_table_name("ban")]
@@ -1077,6 +1105,8 @@
  * * applies_to_admins - TRUE if this ban applies to admins and we may need to kick them, FALSE otherwise.
  */
 /datum/admins/proc/notify_all_banned_players(banned_player_ckey, banned_player_ip, banned_player_cid, banned_player_message, banned_other_message, kick_banned_players, applies_to_admins)
+	procstart = null
+	src.procstart = null
 	var/client/player_client = GLOB.directory[banned_player_ckey]
 
 	var/appeal_url = "No ban appeal url set!"

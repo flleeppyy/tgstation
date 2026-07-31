@@ -29,19 +29,27 @@
 	var/datum/component/ranged_attacks/ranged_attacks
 
 /mob/living/basic/mining/basilisk/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ranged_attacks = AddComponent(/datum/component/ranged_attacks, projectile_type = /obj/projectile/temp/watcher, projectile_sound = 'sound/items/weapons/pierce.ogg')
 	RegisterSignal(src, COMSIG_MOVABLE_MOVED, PROC_REF(check_lava))
 
 /mob/living/basic/mining/basilisk/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(ranged_attacks)
 	return ..()
 
 /mob/living/basic/mining/basilisk/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	heat_up() // Who would do this?
 
 /mob/living/basic/mining/basilisk/bullet_act(obj/projectile/bullet, def_zone, piercing_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. != BULLET_ACT_HIT)
 		return
@@ -59,6 +67,8 @@
 
 /// Are we standing in lava?
 /mob/living/basic/mining/basilisk/proc/check_lava()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/turf/open/lava/entered_lava = loc
 	if (!islava(entered_lava) || entered_lava.immunity_trait != TRAIT_LAVA_IMMUNE)
@@ -67,12 +77,16 @@
 
 /// We got hit by something hot, go into heat mode
 /mob/living/basic/mining/basilisk/proc/heat_up()
+	procstart = null
+	src.procstart = null
 	if (IS_UNCONSCIOUS_OR_CRIT(src) || has_status_effect(/datum/status_effect/basilisk_overheat))
 		return
 	apply_status_effect(/datum/status_effect/basilisk_overheat)
 
 /// Change what kind of beam we fire
 /mob/living/basic/mining/basilisk/proc/set_projectile_type(projectile_type)
+	procstart = null
+	src.procstart = null
 	ranged_attacks.projectile_type = projectile_type
 
 /datum/ai_controller/basic_controller/basilisk

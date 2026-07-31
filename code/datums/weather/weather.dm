@@ -138,6 +138,8 @@
 	var/obj/effect/abstract/weather_reagent_holder
 
 /datum/weather/New(list/z_levels, list/weather_data)
+	procstart = null
+	src.procstart = null
 	..()
 	impacted_z_levels = z_levels.Copy()
 	weather_flags = isnull(weather_data?[WEATHER_FORCED_FLAGS]) ? weather_flags : weather_data?[WEATHER_FORCED_FLAGS]
@@ -173,6 +175,8 @@
 	setup_weather_turfs()
 
 /datum/weather/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(weather_reagent_holder)
 	return ..()
 
@@ -184,6 +188,8 @@
  *
  */
 /datum/weather/proc/telegraph(list/weather_data)
+	procstart = null
+	src.procstart = null
 	if(stage == STARTUP_STAGE)
 		return
 	stage = STARTUP_STAGE
@@ -202,6 +208,8 @@
 
 /// Manually add a sound manager to all mobs
 /datum/weather/proc/manually_setup_sound_manager()
+	procstart = null
+	src.procstart = null
 	var/list/filtered_zs = get_impacted_zs_without_trait()
 	var/list/playlist = get_playlist_ref()
 	// we only need to manually handle sound managers if there are zs without the trait being affected, fortunately
@@ -221,10 +229,14 @@
 
 /// Returns a reference to the "sound playlist" for this weather type
 /datum/weather/proc/get_playlist_ref()
+	procstart = null
+	src.procstart = null
 	return null
 
 /// Returns a list of z-levels impacted that do not have the target trait
 /datum/weather/proc/get_impacted_zs_without_trait()
+	procstart = null
+	src.procstart = null
 	var/list/zs_without_trait = list()
 	for(var/z in impacted_z_levels)
 		if(!SSmapping.level_trait(z, target_trait))
@@ -232,6 +244,8 @@
 	return zs_without_trait
 
 /datum/weather/proc/handle_new_mob_sound_manager(datum/source, mob/the_mob)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(the_mob.client))
@@ -241,6 +255,8 @@
 	manually_setup_sound_manager_on_mob(the_mob)
 
 /datum/weather/proc/handle_mob_log_in(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(stage >= END_STAGE)
@@ -251,6 +267,8 @@
 	manually_setup_sound_manager_on_mob(source)
 
 /datum/weather/proc/manually_setup_sound_manager_on_mob(mob/living/affected, list/playlist = get_playlist_ref(), list/filtered_zs = get_impacted_zs_without_trait())
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/list/sound_change_signals = list(
@@ -268,6 +286,8 @@
 	our_comp.RegisterSignal(SSdcs, COMSIG_WEATHER_END(type), TYPE_PROC_REF(/datum/component/area_sound_manager, handle_removal))
 
 /datum/weather/proc/setup_weather_areas(list/forced_areas)
+	procstart = null
+	src.procstart = null
 	for(var/area/affected_area as anything in (forced_areas || get_areas(area_type)))
 		if(is_type_in_list(affected_area, protected_areas))
 			continue
@@ -296,6 +316,8 @@
 
 /// Selects a turf impacted by weather, if available, otherwise returns null
 /datum/weather/proc/pick_turf()
+	procstart = null
+	src.procstart = null
 	var/z_string = pick_weight_recursive(impacted_z_levels_weighted)
 	var/area/selected_area = pick_weight_recursive(impacted_areas_weighted[z_string])
 	var/z = text2num(z_string)
@@ -308,6 +330,8 @@
 	return
 
 /datum/weather/proc/setup_weather_turfs()
+	procstart = null
+	src.procstart = null
 	if(!(weather_flags & (WEATHER_TURFS|WEATHER_THUNDER)))
 		return
 	if(!total_impacted_turfs)
@@ -328,6 +352,8 @@
  *
  */
 /datum/weather/proc/start()
+	procstart = null
+	src.procstart = null
 	if(stage >= MAIN_STAGE)
 		return FALSE
 	SEND_GLOBAL_SIGNAL(COMSIG_WEATHER_START(type), src)
@@ -348,6 +374,8 @@
  *
  */
 /datum/weather/proc/wind_down()
+	procstart = null
+	src.procstart = null
 	if(stage >= WIND_DOWN_STAGE)
 		return FALSE
 	SEND_GLOBAL_SIGNAL(COMSIG_WEATHER_WINDDOWN(type), src)
@@ -365,6 +393,8 @@
  *
  */
 /datum/weather/proc/end()
+	procstart = null
+	src.procstart = null
 	if(stage == END_STAGE)
 		return FALSE
 	SEND_GLOBAL_SIGNAL(COMSIG_WEATHER_END(type), src)
@@ -382,6 +412,8 @@
 
 // handles sending all alerts
 /datum/weather/proc/send_alert(alert_msg, alert_sfx, alert_sfx_vol = 100)
+	procstart = null
+	src.procstart = null
 	for(var/z_level in impacted_z_levels)
 		for(var/mob/player as anything in SSmobs.clients_by_zlevel[z_level])
 			if(!can_get_alert(player))
@@ -394,6 +426,8 @@
 
 // the checks for if a mob should receive alerts, returns TRUE if can
 /datum/weather/proc/can_get_alert(mob/player)
+	procstart = null
+	src.procstart = null
 	var/turf/mob_turf = get_turf(player)
 	if(isnull(mob_turf))
 		return FALSE
@@ -405,6 +439,8 @@
 
 /// Checks if the player is in or can see an area affected by the weather
 /datum/weather/proc/can_see_weather(mob/player)
+	procstart = null
+	src.procstart = null
 	if(HAS_MIND_TRAIT(player, TRAIT_DETECT_STORM))
 		return TRUE
 
@@ -418,6 +454,8 @@
  * Returns TRUE if the living mob can be affected by the weather
  */
 /datum/weather/proc/can_weather_act_mob(mob/living/mob_to_check)
+	procstart = null
+	src.procstart = null
 	var/turf/mob_turf = get_turf(mob_to_check)
 
 	if(!mob_turf)
@@ -440,12 +478,16 @@
  * Returns TRUE if the atom should protect itself or its contents from weather
  */
 /datum/weather/proc/recursive_weather_protection_check(atom/to_check)
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(to_check, TRAIT_WEATHER_IMMUNE) || (immunity_type && HAS_TRAIT(to_check, immunity_type))
 
 /**
  * Returns TRUE if the turf can be affected by the weather
  */
 /datum/weather/proc/can_weather_act_turf(turf/valid_weather_turf)
+	procstart = null
+	src.procstart = null
 	// applying weather effects to solid walls is a waste since nothing will happen
 	if(isclosedturf(valid_weather_turf))
 		return
@@ -463,6 +505,8 @@
  * Affects the mob with whatever the weather does
  */
 /datum/weather/proc/weather_act_mob(mob/living/living)
+	procstart = null
+	src.procstart = null
 	var/temperature_delta = weather_temperature - living.bodytemperature
 	if(iscarbon(living))
 		var/mob/living/carbon/carbon_living = living
@@ -487,6 +531,8 @@
  * Affects the turf with whatever the weather does
  */
 /datum/weather/proc/weather_act_turf(turf/open/weather_turf)
+	procstart = null
+	src.procstart = null
 	if(!weather_reagent || !weather_reagent_holder)
 		return
 
@@ -514,6 +560,8 @@
  * Affects the turf with thunder
  */
 /datum/weather/proc/thunder_act_turf(turf/open/weather_turf)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/temp_visual/thunderbolt/thunder = new(weather_turf)
 	thunder.flash_lighting_fx(6, 2, duration = thunder.duration)
 
@@ -539,6 +587,8 @@
  * Updates the overlays on impacted areas
  */
 /datum/weather/proc/update_areas()
+	procstart = null
+	src.procstart = null
 	var/list/new_overlay_cache = generate_overlay_cache()
 	for(var/area/impacted as anything in impacted_areas)
 		if(length(overlay_cache))
@@ -559,6 +609,8 @@
 
 /// Returns a list of visual offset -> overlays to use
 /datum/weather/proc/generate_overlay_cache()
+	procstart = null
+	src.procstart = null
 	// We're ending, so no overlays at all
 	if(stage == END_STAGE)
 		return list()

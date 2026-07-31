@@ -1,6 +1,8 @@
 /datum/bt_node/ai_behavior/hunt_target/interact_with_target/slime
 
 /datum/bt_node/ai_behavior/hunt_target/interact_with_target/slime/target_caught(mob/living/basic/slime/hunter, mob/living/hunted)
+	procstart = null
+	src.procstart = null
 	if (!hunter.can_feed_on(hunted)) // Target is no longer edible
 		hunter.UnarmedAttack(hunted, TRUE)
 		return
@@ -16,6 +18,8 @@
 	hunter.start_feeding(hunted)
 
 /datum/bt_node/ai_behavior/hunt_target/interact_with_target/slime/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/basic/slime/slime_pawn = controller.pawn
 	var/atom/target = controller.blackboard[target_key]

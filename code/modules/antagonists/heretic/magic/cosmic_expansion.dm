@@ -28,6 +28,8 @@
 	var/datum/weakref/summoner
 
 /datum/action/cooldown/spell/conjure/cosmic_expansion/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	new expansion_effect(get_turf(cast_on))
 	for(var/mob/living/nearby_mob in range(star_mark_range, cast_on))
 		if(cast_on == nearby_mob || cast_on.buckled == nearby_mob || IS_HERETIC_OR_MONSTER(nearby_mob) || cast_on == summoner?.resolve())
@@ -39,6 +41,8 @@
 	return ..()
 
 /datum/action/cooldown/spell/conjure/cosmic_expansion/proc/get_turfs(turf/target_turf)
+	procstart = null
+	src.procstart = null
 	var/list/target_turfs = list()
 	for (var/direction in GLOB.cardinals)
 		target_turfs += get_ranged_target_turf(target_turf, direction, 2)
@@ -46,6 +50,8 @@
 	return target_turfs
 
 /datum/action/cooldown/spell/conjure/cosmic_expansion/post_summon(obj/effect/forcefield/cosmic_field/summoned_object, atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isstargazer(owner))
 		summoned_object.slows_projectiles()

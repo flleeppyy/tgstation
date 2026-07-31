@@ -5,6 +5,8 @@
 /datum/unit_test/boulder_processing
 
 /datum/unit_test/boulder_processing/Run()
+	procstart = null
+	src.procstart = null
 	var/turf/refinery_loc = get_step(run_loc_floor_bottom_left, EAST)
 	var/turf/smelter_loc = get_step(refinery_loc, EAST)
 	var/turf/opposite_loc = get_step(smelter_loc, EAST)

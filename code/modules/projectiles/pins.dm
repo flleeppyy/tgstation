@@ -23,11 +23,15 @@
 	var/default_pin_auth = TRUE
 
 /obj/item/firing_pin/Destroy()
+	procstart = null
+	src.procstart = null
 	if(gun)
 		gun_remove()
 	return ..()
 
 /obj/item/firing_pin/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isgun(interacting_with))
 		return NONE
 
@@ -54,6 +58,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/firing_pin/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -61,6 +67,8 @@
 	return TRUE
 
 /obj/item/firing_pin/proc/gun_insert(mob/living/user, obj/item/gun/new_gun, starting = FALSE)
+	procstart = null
+	src.procstart = null
 	gun = new_gun
 	forceMove(gun)
 	gun.pin = src
@@ -68,12 +76,16 @@
 	return TRUE
 
 /obj/item/firing_pin/proc/gun_remove(mob/living/user)
+	procstart = null
+	src.procstart = null
 	gun.pin = null
 	SEND_SIGNAL(gun, COMSIG_GUN_PIN_REMOVED, src, user)
 	gun = null
 	return
 
 /obj/item/firing_pin/proc/pin_auth(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/result = SEND_SIGNAL(user, COMSIG_LIVING_FIRING_PIN_CHECK, src)
 	if(result & ALLOW_FIRE)
 		return TRUE
@@ -82,6 +94,8 @@
 	return default_pin_auth
 
 /obj/item/firing_pin/proc/auth_fail(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user)
 		balloon_alert(user, fail_message)
 	if(selfdestruct)
@@ -106,6 +120,8 @@
 	pin_hot_swappable = TRUE
 
 /obj/item/firing_pin/test_range/pin_auth(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if (istype(get_area(user), /area/station/security/range))
@@ -121,6 +137,8 @@
 	var/obj/item/implant/req_implant = null
 
 /obj/item/firing_pin/implant/pin_auth(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user)
 		for(var/obj/item/implant/I in user.implants)
 			if(req_implant && I.type == req_implant)
@@ -152,6 +170,8 @@
 	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/bananium = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 3)
 
 /obj/item/firing_pin/clown/pin_auth(mob/living/user)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/items/bikehorn.ogg', 50, TRUE)
 	return FALSE
 
@@ -161,6 +181,8 @@
 	name = "ultra hilarious firing pin"
 
 /obj/item/firing_pin/clown/ultra/pin_auth(mob/living/user)
+	procstart = null
+	src.procstart = null
 	playsound(src.loc, 'sound/items/bikehorn.ogg', 50, TRUE)
 	if(QDELETED(user))  //how the hell...?
 		stack_trace("/obj/item/firing_pin/clown/ultra/pin_auth called with a [isnull(user) ? "null" : "invalid"] user.")
@@ -177,10 +199,14 @@
 	return FALSE
 
 /obj/item/firing_pin/clown/ultra/gun_insert(mob/living/user, obj/item/gun/new_gun, starting = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	new_gun.clumsy_check = FALSE
 
 /obj/item/firing_pin/clown/ultra/gun_remove(mob/living/user)
+	procstart = null
+	src.procstart = null
 	gun.clumsy_check = initial(gun.clumsy_check)
 	..()
 
@@ -201,6 +227,8 @@
 	var/unique_enzymes = null
 
 /obj/item/firing_pin/dna/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(interacting_with))
 		var/mob/living/carbon/M = interacting_with
 		if(M.dna && M.dna.unique_enzymes)
@@ -211,12 +239,16 @@
 	return ..()
 
 /obj/item/firing_pin/dna/pin_auth(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(user && user.dna && user.dna.unique_enzymes)
 		if(user.dna.unique_enzymes == unique_enzymes)
 			return TRUE
 	return FALSE
 
 /obj/item/firing_pin/dna/auth_fail(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!unique_enzymes)
 		if(user && user.dna && user.dna.unique_enzymes)
 			unique_enzymes = user.dna.unique_enzymes
@@ -247,15 +279,21 @@
 	var/active_prompt_user
 
 /obj/item/firing_pin/paywall/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	multi_payment = !multi_payment
 	to_chat(user, span_notice("You set the pin to [multi_payment ? "process payment for every shot" : "one-time license payment"]."))
 
 /obj/item/firing_pin/paywall/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(pin_owner)
 		. += span_notice("This firing pin is currently authorized to pay into the account of [pin_owner.account_holder].")
 
 /obj/item/firing_pin/paywall/gun_insert(mob/living/user, obj/item/gun/new_gun, starting = FALSE)
+	procstart = null
+	src.procstart = null
 	if(pin_owner || starting)
 		. = ..()
 		gun.desc += span_notice("This [gun.name] has a [multi_payment ? "per-shot" : "license permit"] cost of [payment_amount] [MONEY_NAME_AUTOPURAL(payment_amount)].")
@@ -269,10 +307,14 @@
 	return FALSE
 
 /obj/item/firing_pin/paywall/gun_remove(mob/living/user)
+	procstart = null
+	src.procstart = null
 	gun.desc = gun::desc
 	. = ..()
 
 /obj/item/firing_pin/paywall/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isidcard(tool))
 		return NONE
 	var/obj/item/card/id/id = tool
@@ -297,6 +339,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/firing_pin/paywall/pin_auth(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))//nice try commie
 		return FALSE
 	var/datum/bank_account/credit_card_details = user.get_bank_account()
@@ -351,6 +395,8 @@
 
 // This checks that the user isn't on the station Z-level.
 /obj/item/firing_pin/explorer/pin_auth(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/turf/station_check = get_turf(user)
 	if(!station_check || is_station_level(station_check.z))
 		return FALSE
@@ -365,6 +411,8 @@
 	var/tagcolor = LASERTAG_TEAM_NEUTRAL
 
 /obj/item/firing_pin/tag/auth_fail(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(user, span_warning("You need to be wearing [tagcolor] laser tag armor!"))
 
@@ -384,6 +432,8 @@
 	fail_message = "not a monkey!"
 
 /obj/item/firing_pin/monkey/pin_auth(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!is_simian(user))
 		playsound(src, SFX_SCREECH, 75, TRUE)
 		return FALSE

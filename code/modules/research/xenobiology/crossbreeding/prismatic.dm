@@ -11,6 +11,8 @@ Prismatic extracts:
 	var/paintcolor = COLOR_WHITE
 
 /obj/item/slimecross/prismatic/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isturf(interacting_with) || isspaceturf(interacting_with))
 		return NONE
 	user.do_attack_animation(interacting_with)
@@ -23,6 +25,8 @@ Prismatic extracts:
 	desc = "It's constantly wet with a pungent-smelling, clear chemical."
 
 /obj/item/slimecross/prismatic/grey/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isturf(interacting_with) && interacting_with.color != initial(interacting_with.color))
 		user.do_attack_animation(interacting_with)
 		interacting_with.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
@@ -115,6 +119,8 @@ Prismatic extracts:
 	colour = SLIME_TYPE_RAINBOW
 
 /obj/item/slimecross/prismatic/rainbow/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/newcolor = tgui_color_picker(user, "Choose the slime color:", "Color change", paintcolor)
 	if(user.get_active_held_item() != src || IS_UNCONSCIOUS_OR_CRIT(user) || HAS_TRAIT(user, TRAIT_HANDS_BLOCKED))
 		return

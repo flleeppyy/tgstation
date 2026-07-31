@@ -5,6 +5,8 @@
  * * target_datum - The datum you want to create a tag for
  */
 /datum/admins/proc/add_tagged_datum(datum/target_datum)
+	procstart = null
+	src.procstart = null
 	if(LAZYFIND(tagged_datums, target_datum))
 		to_chat(owner, span_warning("[target_datum] is already tagged!"))
 		return
@@ -18,6 +20,8 @@
 
 /// Get ahead of the curve with deleting
 /datum/admins/proc/handle_tagged_del(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(owner)
@@ -32,6 +36,8 @@
  * * silent - If TRUE, won't print messages to the owner's chat
  */
 /datum/admins/proc/remove_tagged_datum(datum/target_datum, silent=FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(target_datum))
 		return
 

@@ -9,6 +9,8 @@
 	custom_materials = list(/datum/material/glass = SMALL_MATERIAL_AMOUNT * 4, /datum/material/iron = SMALL_MATERIAL_AMOUNT * 2.5)
 
 /obj/item/organ/eyes/robotic/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((. & EMP_PROTECT_SELF) || !owner)
 		return
@@ -29,6 +31,8 @@
 	custom_materials = list(/datum/material/glass = SMALL_MATERIAL_AMOUNT * 4, /datum/material/iron = SMALL_MATERIAL_AMOUNT * 2.5)
 
 /obj/item/organ/eyes/robotic/basic/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -82,10 +86,14 @@
 	penlight_message = "are actually two flashlights taped together. ...why"
 
 /obj/item/organ/eyes/robotic/flashlight/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_ALL)
 
 /obj/item/organ/eyes/robotic/flashlight/on_mob_insert(mob/living/carbon/victim)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!eye)
 		eye = new /obj/item/flashlight/eyelight()
@@ -95,6 +103,8 @@
 	victim.become_blind(FLASHLIGHT_EYES)
 
 /obj/item/organ/eyes/robotic/flashlight/on_mob_remove(mob/living/carbon/victim)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	eye.set_light_on(FALSE)
 	eye.update_brightness(victim)
@@ -115,6 +125,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 0.6, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 4)
 
 /obj/item/organ/eyes/robotic/shield/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_ALL)
 
@@ -148,15 +160,21 @@
 	penlight_message = "shine back with cybernetic LEDs"
 
 /obj/item/organ/eyes/robotic/glow/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	eye = new /obj/item/flashlight/eyelight/glow
 
 /obj/item/organ/eyes/robotic/glow/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	deactivate(close_ui = TRUE)
 	QDEL_NULL(eye)
 
 /obj/item/organ/eyes/robotic/glow/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!eye.light_on || . & EMP_PROTECT_SELF)
 		return
@@ -164,6 +182,8 @@
 
 /// Set the initial color of the eyes on insert to be the mob's previous eye color.
 /obj/item/organ/eyes/robotic/glow/on_mob_insert(mob/living/carbon/eye_recipient, special = FALSE, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	left_eye_color_string = eye_color_left
 	right_eye_color_string = eye_color_right
@@ -172,15 +192,21 @@
 	eye.forceMove(eye_recipient)
 
 /obj/item/organ/eyes/robotic/glow/on_mob_remove(mob/living/carbon/eye_owner)
+	procstart = null
+	src.procstart = null
 	deactivate(eye_owner, close_ui = TRUE)
 	if(!QDELETED(eye))
 		eye.forceMove(src)
 	return ..()
 
 /obj/item/organ/eyes/robotic/glow/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.default_state
 
 /obj/item/organ/eyes/robotic/glow/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(owner))
 		if(owner == user)
 			return min(
@@ -191,6 +217,8 @@
 	return ..()
 
 /obj/item/organ/eyes/robotic/glow/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "HighLuminosityEyesMenu")
@@ -198,6 +226,8 @@
 		ui.open()
 
 /obj/item/organ/eyes/robotic/glow/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["eyeColor"] = list(
@@ -212,6 +242,8 @@
 	return data
 
 /obj/item/organ/eyes/robotic/glow/ui_act(action, list/params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -246,6 +278,8 @@
 			return TRUE
 
 /obj/item/organ/eyes/robotic/glow/ui_action_click(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(istype(action, /datum/action/item_action/organ_action/toggle))
 		toggle_active()
 	else if(istype(action, /datum/action/item_action/organ_action/use))
@@ -257,6 +291,8 @@
  * Turns on the attached flashlight object, updates the mob overlay to be added.
  */
 /obj/item/organ/eyes/robotic/glow/proc/activate()
+	procstart = null
+	src.procstart = null
 	if(eye.light_range)
 		eye.set_light_on(TRUE)
 	else
@@ -272,6 +308,8 @@
  * * close_ui - whether or not to close the ui
  */
 /obj/item/organ/eyes/robotic/glow/proc/deactivate(mob/living/carbon/eye_owner = owner, close_ui = FALSE)
+	procstart = null
+	src.procstart = null
 	if(close_ui)
 		SStgui.close_uis(src)
 	eye.set_light_on(FALSE)
@@ -285,6 +323,8 @@
  * * to_update - whether we are setting the color for the light beam itself, or the individual eyes
  */
 /obj/item/organ/eyes/robotic/glow/proc/randomize_color(to_update = UPDATE_LIGHT)
+	procstart = null
+	src.procstart = null
 	var/new_color = "#"
 	for(var/i in 1 to 3)
 		new_color += num2hex(rand(0, 255), 2)
@@ -299,6 +339,8 @@
  * * new_range - the new range to set
  */
 /obj/item/organ/eyes/robotic/glow/proc/set_beam_range(new_range)
+	procstart = null
+	src.procstart = null
 	var/old_light_range = eye.light_range
 	if(old_light_range == 0 && new_range > 0 && eye.light_on) // turn bring back the light overlay if we were previously at 0 (aka emissive eyes only)
 		eye.light_on = FALSE // this is stupid, but this has to be FALSE for set_light_on() to work.
@@ -315,6 +357,8 @@
  * * sanitize - whether the hex string should be sanitized
  */
 /obj/item/organ/eyes/robotic/glow/proc/set_beam_color(newcolor, to_update = UPDATE_LIGHT, sanitize = FALSE)
+	procstart = null
+	src.procstart = null
 	var/newcolor_string
 	if(sanitize)
 		newcolor_string = sanitize_hexcolor(newcolor)
@@ -335,6 +379,8 @@
  * Toggle the attached flashlight object on or off
  */
 /obj/item/organ/eyes/robotic/glow/proc/toggle_active()
+	procstart = null
+	src.procstart = null
 	if(eye.light_on)
 		deactivate()
 	else
@@ -346,6 +392,8 @@
  * Toggles the eye color mode on or off and then calls an update on the mob's eye color
  */
 /obj/item/organ/eyes/robotic/glow/proc/toggle_eye_color_mode()
+	procstart = null
+	src.procstart = null
 	eye_color_mode = !eye_color_mode
 	update_mob_eye_color()
 
@@ -357,6 +405,8 @@
  * * mob/living/carbon/eye_owner - the mob to update the eye color appearance of
  */
 /obj/item/organ/eyes/robotic/glow/proc/update_mob_eye_color(mob/living/carbon/eye_owner = owner)
+	procstart = null
+	src.procstart = null
 	switch(eye_color_mode)
 		if(MATCH_LIGHT_COLOR)
 			eye_color_left = light_color_string
@@ -479,12 +529,16 @@
 	penlight_message = "glow a foggy red, sizzling under the light!"
 
 /obj/item/organ/eyes/night_vision/maintenance_adapted/penlight_examine(mob/living/viewer, obj/item/examtool)
+	procstart = null
+	src.procstart = null
 	if(!owner.is_blind())
 		to_chat(owner, span_danger("Your eyes sizzle agonizingly as light is shone on them!"))
 		apply_organ_damage(20 * examtool.light_power) //that's 0.5 lightpower for a penlight, so one penlight shining is equivalent to two seconds in a lit area
 	return span_danger("[owner.p_Their()] eyes [penlight_message]")
 
 /obj/item/organ/eyes/night_vision/maintenance_adapted/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(owner.get_eye_protection() <= FLASH_PROTECTION_SENSITIVE && !owner.is_blind() && isturf(owner.loc) && owner.has_light_nearby(light_amount=0.5)) //we allow a little more than usual so we can produce light from the adapted eyes
 		to_chat(owner, span_danger("Your eyes! They burn in the light!"))
 		apply_organ_damage(10) //blind quickly
@@ -567,6 +621,8 @@
 	)
 
 /obj/item/organ/eyes/robotic/tacvisor/generate_body_overlay(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/visor_overlay = mutable_appearance(eye_icon, eye_icon_state, -EYES_LAYER)
 	var/list/eye_overlays = list(visor_overlay)
 	var/mob/living/carbon/human/parent = limb.owner
@@ -588,6 +644,8 @@
 
 // Hides and mutes all people on the screen
 /obj/item/organ/eyes/robotic/tacvisor/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -595,6 +653,8 @@
 	return TRUE
 
 /obj/item/organ/eyes/robotic/tacvisor/on_mob_insert(mob/living/carbon/receiver, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	receiver.add_client_colour(/datum/client_colour/tacvisor, REF(src))
 	receiver.apply_status_effect(/datum/status_effect/grouped/see_no_names, REF(src))
@@ -608,6 +668,8 @@
 		create_illusions(receiver)
 
 /obj/item/organ/eyes/robotic/tacvisor/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(organ_owner, list(COMSIG_MOB_CLIENT_LOGIN, COMSIG_MOVABLE_PRE_HEAR, COMSIG_MOB_EXAMINING))
 	organ_owner.remove_client_colour(REF(src))
@@ -628,6 +690,8 @@
 	direct_view_tracking.Cut()
 
 /obj/item/organ/eyes/robotic/tacvisor/proc/on_hear(datum/source, list/hearing_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (hearing_args[HEARING_SPEAKER] == owner || !isliving(hearing_args[HEARING_SPEAKER]))
@@ -640,6 +704,8 @@
 	message_mods[MODE_SPEAKER_NAME_OVERRIDE] = "Unknown"
 
 /obj/item/organ/eyes/robotic/tacvisor/proc/on_login(mob/living/source, client/user_client)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!length(mob_overlays))
@@ -648,6 +714,8 @@
 		user_client.images |= assoc_to_values(mob_overlays)
 
 /obj/item/organ/eyes/robotic/tacvisor/proc/create_illusions(mob/living/user)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/target as anything in ((obj_flags & EMAGGED) ? GLOB.mob_living_list : GLOB.carbon_list))
 		if (target == user)
 			continue
@@ -658,12 +726,16 @@
 			refresh_overlay(target)
 
 /obj/item/organ/eyes/robotic/tacvisor/proc/on_mob_delete(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	owner.client?.images -= mob_overlays[source]
 	mob_overlays -= source
 	direct_view_tracking -= source
 
 /obj/item/organ/eyes/robotic/tacvisor/proc/refresh_overlay(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (mob_overlays[source])
@@ -680,11 +752,15 @@
 	owner.client?.images |= mob_overlays[source]
 
 /obj/item/organ/eyes/robotic/tacvisor/proc/on_z_change(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/image/overlay = mob_overlays[source]
 	SET_PLANE_EXPLICIT(overlay, ABOVE_GAME_PLANE, source)
 
 /obj/item/organ/eyes/robotic/tacvisor/proc/make_overlay(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if (obj_flags & EMAGGED)
 		var/image/overlay_image = image(mutable_appearance('icons/effects/effects.dmi', "nothing"), target)
 		overlay_image.name = "Unknown"
@@ -714,6 +790,8 @@
 	return overlay_image
 
 /obj/item/organ/eyes/robotic/tacvisor/proc/get_iff_signature(mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = IFF_NEUTRAL
 	if (hostile_faction == IFF_FACTION_EVERYONE)
 		. = IFF_HOSTILE
@@ -764,6 +842,8 @@
 	return .
 
 /obj/item/organ/eyes/robotic/tacvisor/proc/on_examine(mob/source, atom/target, list/examine_strings, list/examine_overrides)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (target == owner || !iscarbon(target) && !(isliving(target) && (obj_flags & EMAGGED)))
@@ -796,9 +876,13 @@
 	examine_overrides[EXAMINE_OVERRIDE_PRIORITY_IFF] = override_strings
 
 /obj/item/organ/eyes/robotic/tacvisor/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.default_state
 
 /obj/item/organ/eyes/robotic/tacvisor/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(owner))
 		if(owner == user && user_controls)
 			return min(
@@ -809,12 +893,16 @@
 	return ..()
 
 /obj/item/organ/eyes/robotic/tacvisor/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "TacVisorEyesMenu")
 		ui.open()
 
 /obj/item/organ/eyes/robotic/tacvisor/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["friendlyFaction"] = friendly_faction
 	data["hostileFaction"] = hostile_faction
@@ -823,6 +911,8 @@
 	return data
 
 /obj/item/organ/eyes/robotic/tacvisor/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["validFriendlyFactions"] = valid_friendly_factions
 	data["validHostileFactions"] = valid_hostile_factions
@@ -831,6 +921,8 @@
 	return data
 
 /obj/item/organ/eyes/robotic/tacvisor/ui_act(action, list/params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -861,18 +953,26 @@
 			owner?.update_body()
 
 /obj/item/organ/eyes/robotic/tacvisor/proc/update_mob_overlays()
+	procstart = null
+	src.procstart = null
 	for (var/mob/living/target as anything in direct_view_tracking)
 		refresh_overlay(target)
 
 /obj/item/organ/eyes/robotic/tacvisor/ui_action_click(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(istype(action, /datum/action/item_action/organ_action/use) && user_controls)
 		ui_interact(user)
 
 /obj/item/organ/eyes/robotic/tacvisor/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	ui_interact(user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/organ/eyes/robotic/tacvisor/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	user_controls = !user_controls
 	balloon_alert(user, "user controls [user_controls ? "enabled" : "disabled"]")
 	if (user_controls)
@@ -883,11 +983,15 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/organ/eyes/robotic/tacvisor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Its settings can be changed with a [EXAMINE_HINT("multitool")].")
 	. += span_notice("User configuration switch is currently in the [user_controls ? "on" : "off"] position, and could be flipped wtih a [EXAMINE_HINT("screwdriver")].")
 
 /obj/item/organ/eyes/robotic/tacvisor/proc/on_entered(mob/living/source)
+	procstart = null
+	src.procstart = null
 	if (source in direct_view_tracking)
 		return
 
@@ -898,6 +1002,8 @@
 	RegisterSignal(source, COMSIG_MOB_UNEQUIPPED_ITEM, PROC_REF(refresh_overlay)) // Can't see the slot of the dropped item so we need to blanket update
 
 /obj/item/organ/eyes/robotic/tacvisor/proc/check_equippped_item(mob/living/source, obj/item/equipped_item, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Anywhere where an ID or a gun would count
@@ -905,6 +1011,8 @@
 		refresh_overlay(source)
 
 /obj/item/organ/eyes/robotic/tacvisor/proc/on_exited(mob/living/source)
+	procstart = null
+	src.procstart = null
 	if (!(source in direct_view_tracking))
 		return
 
@@ -918,21 +1026,31 @@
 	var/obj/item/organ/eyes/robotic/tacvisor/owner
 
 /datum/proximity_monitor/tacvisor/Destroy()
+	procstart = null
+	src.procstart = null
 	owner = null
 	return ..()
 
 /datum/proximity_monitor/tacvisor/on_moved(atom/movable/source, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/proximity_monitor/tacvisor/on_entered(atom/source, atom/movable/arrived, turf/old_loc)
+	procstart = null
+	src.procstart = null
 	if (arrived != host && (iscarbon(arrived) || isliving(arrived) && (owner.obj_flags & EMAGGED)))
 		owner.on_entered(arrived)
 
 /datum/proximity_monitor/tacvisor/on_uncrossed/on_uncrossed(turf/old_location, mob/exited, direction)
+	procstart = null
+	src.procstart = null
 	if (exited != host && (iscarbon(exited) || isliving(exited) && (owner.obj_flags & EMAGGED)) && get_dist(exited, host) > current_range)
 		owner.on_exited(exited)
 
 /datum/proximity_monitor/tacvisor/on_initialized(turf/location, atom/created, init_flags)
+	procstart = null
+	src.procstart = null
 	if (created != host && (iscarbon(created) || isliving(created) && (owner.obj_flags & EMAGGED)))
 		owner.on_entered(created)
 
@@ -940,6 +1058,8 @@
 	priority = CLIENT_COLOR_ORGAN_PRIORITY
 
 /datum/client_colour/tacvisor/New(mob/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	color = color_matrix_filter(list(
 		1, 0, 0,
@@ -955,6 +1075,8 @@
 	user_controls = FALSE
 
 /obj/item/organ/eyes/robotic/tacvisor/deathsquad/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	return UI_CLOSE
 
 #undef VISOR_DISPLAY_CROSS

@@ -18,6 +18,8 @@
 	damage = 0
 
 /obj/projectile/mega_arachnid/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(target) || blocked >= 100)
 		return
@@ -33,6 +35,8 @@
 	armed = TRUE
 
 /obj/item/restraints/legcuffs/beartrap/mega_arachnid/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MEGA_ARACHNID, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
@@ -46,12 +50,16 @@
 	click_to_activate = FALSE
 
 /datum/action/cooldown/mob_cooldown/secrete_acid/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(release_acid))
 	addtimer(CALLBACK(src, PROC_REF(deactivate_ability)), 3 SECONDS)
 	StartCooldown()
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/secrete_acid/proc/release_acid()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/turf/current_turf = owner.loc
@@ -61,6 +69,8 @@
 	new /obj/effect/slippery_acid(current_turf)
 
 /datum/action/cooldown/mob_cooldown/secrete_acid/proc/deactivate_ability()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_MOVABLE_MOVED)
 
 /obj/effect/slippery_acid
@@ -74,6 +84,8 @@
 	var/duration_time = 5 SECONDS
 
 /obj/effect/slippery_acid/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/slippery, 6 SECONDS)
 	QDEL_IN(src, duration_time)

@@ -14,11 +14,15 @@
 	message = "The blob blasts you"
 
 /datum/blobstrain/debris_devourer/attack_living(mob/living/L, list/nearby_blobs)
+	procstart = null
+	src.procstart = null
 	send_message(L)
 	for (var/obj/structure/blob/blob in nearby_blobs)
 		debris_attack(L, blob)
 
 /datum/blobstrain/debris_devourer/on_sporedeath(mob/living/spore, death_cloud_size)
+	procstart = null
+	src.procstart = null
 	var/list/trash_source = overmind ? overmind.blob_core.contents : spore.contents
 
 	var/trashsplosion_count = overmind ? SPORE_TRASH_COUNT : spore.contents.len
@@ -30,11 +34,15 @@
 			trash_shrapnel.throw_at(get_edge_target_turf(spore,pick(GLOB.alldirs)), 6, 5, spore, TRUE, FALSE, null, 3)
 	playsound(spore, 'sound/effects/pop_expl.ogg', vol = 100, vary = TRUE)
 
-/datum/blobstrain/debris_devourer/expand_reaction(obj/structure/blob/B, obj/structure/blob/newB, turf/T, mob/eye/blob/O, coefficient = 1) //when the blob expands, do this
+/datum/blobstrain/debris_devourer/expand_reaction(obj/structure/blob/B, obj/structure/blob/newB, turf/T, mob/eye/blob/O, coefficient = 1)
+	procstart = null
+	src.procstart = null //when the blob expands, do this
 	for (var/obj/item/I in T)
 		I.forceMove(overmind.blob_core)
 
 /datum/blobstrain/debris_devourer/proc/debris_attack(atom/attacking, atom/source)
+	procstart = null
+	src.procstart = null
 	if (!prob(overmind ? 40 * DEBRIS_DENSITY : FREE_MINION_DEBRIS_CHANCE)) // Pretend the items are spread through the blob and its mobs and not in the core.
 		return
 
@@ -52,13 +60,19 @@
 	trash_weapon.throw_at(attacking, 6, 5, overmind ? overmind : source, TRUE, FALSE, null, 3)
 
 /datum/blobstrain/debris_devourer/blobbernaut_attack(mob/living/blobbernaut, atom/victim)
+	procstart = null
+	src.procstart = null
 	..()
 	debris_attack(victim, blobbernaut)
 
-/datum/blobstrain/debris_devourer/damage_reaction(obj/structure/blob/B, damage, damage_type, damage_flag, coefficient = 1) //when the blob takes damage, do this
+/datum/blobstrain/debris_devourer/damage_reaction(obj/structure/blob/B, damage, damage_type, damage_flag, coefficient = 1)
+	procstart = null
+	src.procstart = null //when the blob takes damage, do this
 	return round(max((coefficient*damage)-min(coefficient*DEBRIS_DENSITY, 10), 0)) // reduce damage taken by items per blob, up to 10
 
 /datum/blobstrain/debris_devourer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isobserver(user))
 		. += span_notice("Absorbed debris is currently reducing incoming damage by [round(max(min(DEBRIS_DENSITY, 10),0))]")
@@ -74,6 +88,8 @@
 				. += span_notice("Absorbed debris is currently reducing incoming damage by a medium amount.")
 
 /datum/blobstrain/debris_devourer/on_blobmob_atom_interacted(mob/living/minion, atom/interacted_atom, adjacent, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(interacted_atom) || !adjacent)
 		return

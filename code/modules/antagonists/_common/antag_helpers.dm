@@ -1,6 +1,8 @@
 /// Returns MINDS of the assigned antags of given type/subtypes
 /// Supplying no antag type grants all minds with antag datums
 /proc/get_antag_minds(antag_type, specific = FALSE)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list/datum/mind)
 	. = list()
 	for(var/datum/antagonist/A in GLOB.antagonists)
@@ -12,6 +14,8 @@
 /// From a list of players (minds, mobs or clients), finds the one with the highest playtime (either from a specific role or overall living) and returns it.
 /// If playtime tracking is disabled, just returns the first player in the list.
 /proc/get_most_experienced(list/players, specific_role)
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(flag/use_exp_tracking)) //woops
 		return players[1]
 	var/most_experienced

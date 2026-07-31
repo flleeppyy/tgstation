@@ -18,12 +18,16 @@
 	var/illustration = "writing"
 
 /obj/item/storage/box/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(foldable_result == /obj/item/stack/sheet/cardboard)
 		set_custom_materials(list(/datum/material/cardboard = SHEET_MATERIAL_AMOUNT))
 	update_appearance()
 
 /obj/item/storage/box/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/head/myhead = user.get_bodypart(BODY_ZONE_HEAD)
 	if(myhead)
 		user.visible_message(span_suicide("[user] puts [user.p_their()] head into \the [src] and begins closing it! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -35,11 +39,15 @@
 	return BRUTELOSS
 
 /obj/item/storage/box/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(illustration)
 		. += illustration
 
 /obj/item/storage/box/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(!foldable_result || (flags_1 & HOLOGRAM_1))

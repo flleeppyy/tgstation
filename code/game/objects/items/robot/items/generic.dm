@@ -25,6 +25,8 @@
 	var/cooldown = 4 SECONDS // same as baton
 
 /obj/item/borg/stun/attack(mob/living/attacked_mob, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(cooldown_check > world.time)
 		user.balloon_alert(user, "still recharging!")
 		return
@@ -76,6 +78,8 @@
 	var/boop = FALSE
 
 /obj/item/borg/cyborghug/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(user))
 		var/mob/living/silicon/robot/robot_user = user
 		if(robot_user.emagged && shockallowed == 1)
@@ -98,6 +102,8 @@
 			to_chat(user, "<span class='warningplain'>ERROR: ARM ACTUATORS OVERLOADED.</span>")
 
 /obj/item/borg/cyborghug/attack(mob/living/attacked_mob, mob/living/silicon/robot/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(attacked_mob == user)
 		return
 	if(attacked_mob.health < 0)
@@ -223,10 +229,14 @@
 	var/static/list/charge_items = typecacheof(list(/obj/item/stock_parts/power_store, /obj/item/gun/energy))
 
 /obj/item/borg/charger/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "charger_[mode]"
 	return ..()
 
 /obj/item/borg/charger/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(mode == "draw")
 		mode = "charge"
 	else
@@ -235,6 +245,8 @@
 	update_appearance()
 
 /obj/item/borg/charger/interact_with_atom(atom/target, mob/living/silicon/robot/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!iscyborg(user))
 		return NONE
 
@@ -344,6 +356,8 @@
 	COOLDOWN_DECLARE(alarm_cooldown)
 
 /obj/item/harmalarm/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	obj_flags ^= EMAGGED
 	if(obj_flags & EMAGGED)
 		balloon_alert(user, "safeties shorted")
@@ -352,6 +366,8 @@
 	return TRUE
 
 /obj/item/harmalarm/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/safety = !(obj_flags & EMAGGED)
 	if (!COOLDOWN_FINISHED(src, alarm_cooldown))
 		to_chat(user, "<font color='red'>The device is still recharging!</font>")
@@ -412,10 +428,14 @@
 	var/mutable_appearance/shield_overlay
 
 /obj/item/shield_module/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	shield_overlay = mutable_appearance('icons/mob/effects/durand_shield.dmi', "borg_shield")
 
 /obj/item/shield_module/attack_self(mob/living/silicon/borg)
+	procstart = null
+	src.procstart = null
 	active = !active
 	if(active)
 		playsound(src, 'sound/vehicles/mecha/mech_shield_raise.ogg', 50, FALSE)
@@ -426,11 +446,15 @@
 	borg.update_appearance()
 
 /obj/item/shield_module/cyborg_unequip(mob/living/silicon/robot/borg)
+	procstart = null
+	src.procstart = null
 	active = FALSE
 	playsound(src, 'sound/vehicles/mecha/mech_shield_drop.ogg', 50, FALSE)
 	borg.cut_overlay(shield_overlay)
 
 /obj/item/shield_module/proc/on_shield_overlay_update(atom/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(active)
 		overlays += shield_overlay

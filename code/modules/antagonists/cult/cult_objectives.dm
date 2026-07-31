@@ -6,6 +6,8 @@
 
 /// Unregister signals from the old target so it doesn't cause issues when sacrificed of when a new target is found.
 /datum/objective/sacrifice/proc/clear_sacrifice()
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return
 	UnregisterSignal(target, COMSIG_MIND_TRANSFERRED)
@@ -14,6 +16,8 @@
 	target = null
 
 /datum/objective/sacrifice/find_target(dupe_search_range, list/blacklist)
+	procstart = null
+	src.procstart = null
 	clear_sacrifice()
 	if(!istype(team, /datum/team/cult))
 		return
@@ -47,10 +51,14 @@
 			mind.current.throw_alert("bloodsense", /atom/movable/screen/alert/bloodsense)
 
 /datum/objective/sacrifice/proc/on_target_body_del()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(find_target))
 
 /datum/objective/sacrifice/proc/on_mind_transfer(datum/source, mob/previous_body)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	//If, for some reason, the mind was transferred to a ghost (better safe than sorry), find a new target.
 	if(!isliving(target.current))
@@ -61,12 +69,16 @@
 	RegisterSignal(target.current, COMSIG_MOB_MIND_TRANSFERRED_INTO, PROC_REF(on_possible_mindswap))
 
 /datum/objective/sacrifice/proc/on_possible_mindswap(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(target.current, list(COMSIG_QDELETING, COMSIG_MOB_MIND_TRANSFERRED_INTO))
 	//we check if the mind is bodyless only after mindswap shenanigans to avoid issues.
 	addtimer(CALLBACK(src, PROC_REF(do_we_have_a_body)), 0 SECONDS)
 
 /datum/objective/sacrifice/proc/do_we_have_a_body()
+	procstart = null
+	src.procstart = null
 	if(!target.current) //The player was ghosted and the mind isn't probably going to be transferred to another mob at this point.
 		find_target()
 		return
@@ -74,9 +86,13 @@
 	RegisterSignal(target.current, COMSIG_MOB_MIND_TRANSFERRED_INTO, PROC_REF(on_possible_mindswap))
 
 /datum/objective/sacrifice/check_completion()
+	procstart = null
+	src.procstart = null
 	return sacced || completed
 
 /datum/objective/sacrifice/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	if(target)
 		explanation_text = "Sacrifice [target], the [target.assigned_role.title] via invoking an Offer rune with [target.p_them()] on it and three acolytes around it."
 	else
@@ -88,6 +104,8 @@
 	var/list/summon_spots = list()
 
 /datum/objective/eldergod/New()
+	procstart = null
+	src.procstart = null
 	..()
 	var/sanity = 0
 	while(summon_spots.len < SUMMON_POSSIBILITIES && sanity < 100)
@@ -98,9 +116,13 @@
 	update_explanation_text()
 
 /datum/objective/eldergod/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	explanation_text = "Summon Nar'Sie by invoking the rune 'Summon Nar'Sie'. The summoning can only be accomplished in [english_list(summon_spots)] - where the veil is weak enough for the ritual to begin."
 
 /datum/objective/eldergod/check_completion()
+	procstart = null
+	src.procstart = null
 	if(killed)
 		return CULT_NARSIE_KILLED // You failed so hard that even the code went backwards.
 	return summoned || completed

@@ -47,6 +47,8 @@
 
 
 /datum/component/riding/Initialize(mob/living/riding_mob, force = FALSE, buckle_mob_flags = NONE)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -57,6 +59,8 @@
 		vehicle_move_delay = round(CONFIG_GET(number/movedelay/run_delay) * 0.85, 0.01)
 
 /datum/component/riding/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_ATOM_DIR_CHANGE, PROC_REF(vehicle_turned))
 	RegisterSignal(parent, COMSIG_MOVABLE_UNBUCKLE, PROC_REF(vehicle_mob_unbuckle))
@@ -77,6 +81,8 @@
 
 /// This proc is called when a rider unbuckles, whether they chose to or not. If there's no more riders, this will be the riding component's death knell.
 /datum/component/riding/proc/vehicle_mob_unbuckle(datum/source, mob/living/rider, force = FALSE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	restore_rider_layer_and_offsets(rider)
@@ -90,6 +96,8 @@
 		qdel(src)
 
 /datum/component/riding/proc/handle_unbuckle(mob/living/rider)
+	procstart = null
+	src.procstart = null
 	unequip_buckle_inhands(rider)
 	rider.updating_glide_size = TRUE
 	UnregisterSignal(rider, COMSIG_LIVING_TRY_PULL)
@@ -101,6 +109,8 @@
 
 /// This proc is called when a rider buckles, allowing for offsets to be set properly
 /datum/component/riding/proc/vehicle_mob_buckle(datum/source, mob/living/rider, force = FALSE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/movable/movable_parent = parent
@@ -108,6 +118,8 @@
 	handle_buckle(rider)
 
 /datum/component/riding/proc/handle_buckle(mob/living/rider)
+	procstart = null
+	src.procstart = null
 	if(rider.pulling == parent)
 		rider.stop_pulling()
 	RegisterSignal(rider, COMSIG_LIVING_TRY_PULL, PROC_REF(on_rider_try_pull))
@@ -121,6 +133,8 @@
 
 /// This proc is called when the rider attempts to grab the thing they're riding, preventing them from doing so.
 /datum/component/riding/proc/on_rider_try_pull(mob/living/rider_pulling, atom/movable/target, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(target == parent)
 		var/mob/living/ridden = parent
@@ -129,6 +143,8 @@
 
 /// This is called after the ridden atom is successfully moved and is used to handle icon stuff
 /datum/component/riding/proc/vehicle_moved(datum/source, oldloc, dir, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/movable/movable_parent = parent
@@ -143,6 +159,8 @@
 
 /// Turning is like moving
 /datum/component/riding/proc/vehicle_turned(datum/source, _old_dir, new_dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	vehicle_moved(source, null, new_dir)
@@ -152,6 +170,8 @@
  * If not and if consequences is TRUE, well, there'll be consequences.
  */
 /datum/component/riding/proc/ride_check(mob/living/rider, consequences = TRUE)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 #define GET_X_OFFSET(offsets) (length(offsets) >= 1 ? offsets[1] : 0)
@@ -159,6 +179,8 @@
 #define GET_LAYER(offsets, default) (length(offsets) >= 3 ? offsets[3] : default)
 
 /datum/component/riding/proc/update_parent_layer_and_offsets(dir, animate = FALSE)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/seat = parent
 	if(!seat.has_buckled_mobs())
 		return
@@ -182,6 +204,8 @@
 	seat.layer = layer
 
 /datum/component/riding/proc/update_rider_layer_and_offsets(dir, passindex, mob/living/rider, animate = FALSE)
+	procstart = null
+	src.procstart = null
 	if(rider.dir != dir)
 		rider.setDir(dir)
 
@@ -210,6 +234,8 @@
  * * mob/offsetter: The mob that is being offset
  */
 /datum/component/riding/proc/get_rider_offsets_and_layers(pass_index, mob/offsetter) as /list // list(dir = x, y, layer)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 	return list(
 		TEXT_NORTH = list(0, 0),
@@ -222,6 +248,8 @@
  * Determines where the parent gets offset while riders are riding
  */
 /datum/component/riding/proc/get_parent_offsets_and_layers() as /list // list(dir = x, y, layer)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 	return list(
 		TEXT_NORTH = list(0, 0, OBJ_LAYER),
@@ -236,6 +264,8 @@
  * Still needs to be neatened up and spruced up with proper OOP, as a result of vehicles having their own key handling from other ridable atoms
  */
 /datum/component/riding/proc/keycheck(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!keytype)
 		return TRUE
 
@@ -247,6 +277,8 @@
 
 //BUCKLE HOOKS
 /datum/component/riding/proc/restore_rider_layer_and_offsets(mob/living/buckled_mob)
+	procstart = null
+	src.procstart = null
 	buckled_mob.remove_offsets(RIDING_SOURCE)
 	buckled_mob.layer = initial(buckled_mob.layer)
 	var/atom/source = parent
@@ -254,6 +286,8 @@
 	buckled_mob.client?.view_size.resetToDefault()
 
 /datum/component/riding/proc/restore_parent_layer_and_offsets()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/seat = parent
 	if(isliving(seat))
 		var/mob/living/living_seat = seat
@@ -265,6 +299,8 @@
 
 //MOVEMENT
 /datum/component/riding/proc/turf_check(turf/next, turf/current)
+	procstart = null
+	src.procstart = null
 	if(allowed_turf_typecache && !allowed_turf_typecache[next.type])
 		return allowed_turf_typecache[current.type]
 	else if(forbid_turf_typecache && forbid_turf_typecache[next.type])
@@ -273,12 +309,16 @@
 
 /// Every time the driver tries to move, this is called to see if they can actually drive and move the vehicle (via relaymove)
 /datum/component/riding/proc/driver_move(atom/movable/movable_parent, mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SHOULD_CALL_PARENT(TRUE)
 	movable_parent.set_glide_size(DELAY_TO_GLIDE_SIZE(vehicle_move_delay))
 
 /// So we can check all occupants when we bump a door to see if anyone has access
 /datum/component/riding/proc/vehicle_bump(atom/movable/movable_parent, obj/machinery/door/possible_bumped_door)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(possible_bumped_door) || world.time - vehicle_last_bumped <= 0.3 SECONDS)
 		return
@@ -288,14 +328,20 @@
 		INVOKE_ASYNC(possible_bumped_door, TYPE_PROC_REF(/atom, Bumped), occupant)
 
 /datum/component/riding/proc/Unbuckle(atom/movable/M)
+	procstart = null
+	src.procstart = null
 	addtimer(CALLBACK(parent, TYPE_PROC_REF(/atom/movable/, unbuckle_mob), M), 0, TIMER_UNIQUE)
 
 /datum/component/riding/proc/Process_Spacemove(direction, continuous_move)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = parent
 	return override_allow_spacemove || AM.has_gravity()
 
 /// currently replicated from ridable because we need this behavior here too, see if we can deal with that
 /datum/component/riding/proc/unequip_buckle_inhands(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = parent
 	for(var/obj/item/riding_offhand/O in user.contents)
 		if(O.parent != AM)
@@ -308,11 +354,15 @@
 
 /// Extra checks before buckled.can_z_move can be called in mob/living/can_z_move()
 /datum/component/riding/proc/riding_can_z_move(atom/movable/movable_parent, direction, turf/start, turf/destination, z_move_flags, mob/living/rider)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return COMPONENT_RIDDEN_ALLOW_Z_MOVE
 
 /// Called when our vehicle gains a movement trait, so we can apply it to the riders
 /datum/component/riding/proc/on_movement_type_trait_gain(atom/movable/source, trait)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/movable/movable_parent = parent
 	for (var/mob/rider in movable_parent.buckled_mobs)
@@ -320,6 +370,8 @@
 
 /// Called when our vehicle loses a movement trait, so we can remove it from the riders
 /datum/component/riding/proc/on_movement_type_trait_loss(atom/movable/source, trait)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/movable/movable_parent = parent
 	for (var/mob/rider in movable_parent.buckled_mobs)
@@ -327,6 +379,8 @@
 
 /// Block attempts to unbuckle by direct click in certain conditions
 /datum/component/riding/proc/block_unbuckle(atom/movable/source, mob/living/unbuckler)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!source.has_buckled_mobs() || (unbuckler in source.buckled_mobs))
@@ -342,6 +396,8 @@
 
 /// If our parent is a living mob it can  be disarmed which may trigger a forced unbuckle
 /datum/component/riding/proc/parent_disarmed(mob/living/source, mob/living/disarmer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!source.has_buckled_mobs() || (disarmer in source.buckled_mobs))
 		return
@@ -377,6 +433,8 @@
 
 /// If our rider is disarmed, they may be thrown from the vehicle depending on their and the disarmer's stats
 /datum/component/riding/proc/rider_disarmed(mob/living/rider, mob/living/disarmer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/disarm_chance = get_disarm_chance(parent) + get_disarm_chance(rider)
 	if(!prob(disarm_chance))
@@ -412,6 +470,8 @@
 
 /// Calculates chance to be thrown off the mount based on mob state
 /datum/component/riding/proc/get_disarm_chance(mob/living/disarmed)
+	procstart = null
+	src.procstart = null
 	if(!isliving(disarmed))
 		return 0
 
@@ -431,6 +491,8 @@
 
 /// When we touch a crystal, kill everything inside us
 /datum/component/riding/proc/on_entered_supermatter(atom/movable/ridden, atom/movable/supermatter)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for (var/mob/passenger as anything in ridden.buckled_mobs)
 		passenger.Bump(supermatter)

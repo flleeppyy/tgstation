@@ -21,21 +21,29 @@
 	var/show_puffs_left = TRUE // this is how real inhalers work
 
 /obj/item/inhaler/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (ispath(initial_casister_path, /obj/item/reagent_containers/inhaler_canister))
 		set_canister(new initial_casister_path)
 
 /obj/item/inhaler/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(canister)
 
 	return ..()
 
 /obj/item/inhaler/handle_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	canister?.forceMove(drop_location())
 
 /obj/item/inhaler/proc/update_canister_underlay()
+	procstart = null
+	src.procstart = null
 	if (isnull(canister))
 		underlays -= canister_underlay
 		canister_underlay = null
@@ -45,6 +53,8 @@
 		underlays += canister_underlay
 
 /obj/item/inhaler/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (isnull(canister))
@@ -62,6 +72,8 @@
 	. += "Its rotary display shows its canister can be used [puffs_left] more times."
 
 /obj/item/inhaler/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (gone == canister)
@@ -69,6 +81,8 @@
 
 
 /obj/item/inhaler/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!isliving(interacting_with))
 		return ..() // default behavior
 	var/mob/living/target_mob = interacting_with
@@ -124,11 +138,15 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/inhaler/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	try_remove_canister(user, modifiers)
 
 	return ..()
 
 /obj/item/inhaler/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (istype(tool, /obj/item/reagent_containers/inhaler_canister))
 		return try_insert_canister(tool, user, modifiers)
 
@@ -136,6 +154,8 @@
 
 /// Tries to remove the canister, if any is inserted.
 /obj/item/inhaler/proc/try_remove_canister(mob/living/user, modifiers)
+	procstart = null
+	src.procstart = null
 	if (isnull(canister))
 		balloon_alert(user, "no canister inserted!")
 		return FALSE
@@ -151,6 +171,8 @@
 
 // Tries to insert a canister, if none is already inserted.
 /obj/item/inhaler/proc/try_insert_canister(obj/item/reagent_containers/inhaler_canister/new_canister, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if (!isnull(canister))
 		balloon_alert(user, "remove the existing canister!")
 		return FALSE
@@ -167,6 +189,8 @@
 
 /// Setter proc for [canister]. Moves the existing canister out of the inhaler, while moving a new canister inside and registering it.
 /obj/item/inhaler/proc/set_canister(obj/item/reagent_containers/inhaler_canister/new_canister, mob/living/user, move_canister = TRUE)
+	procstart = null
+	src.procstart = null
 	if (move_canister && !isnull(canister))
 		if (iscarbon(loc))
 			var/mob/living/carbon/carbon_loc = loc
@@ -180,6 +204,8 @@
 
 /// Determines if we can be used. Fails on no canister, empty canister, invalid targets, or non-breathing targets.
 /obj/item/inhaler/proc/can_puff(mob/living/target_mob, mob/living/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if (isnull(canister))
 		if (!silent)
 			balloon_alert(user, "no canister!")
@@ -251,14 +277,20 @@
 
 /// Called when a inhaler we are in is used on someone. Transfers reagents and plays the puff sound.
 /obj/item/reagent_containers/inhaler_canister/proc/puff(mob/living/user, mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	playsound(src, puff_sound, puff_volume, TRUE, -6)
 	reagents.trans_to(target, amount_per_transfer_from_this, transferred_by = user, methods = INHALE)
 
 /// Returns a integer approximating how many puffs we can be used for.
 /obj/item/reagent_containers/inhaler_canister/proc/get_puffs_left()
+	procstart = null
+	src.procstart = null
 	return ROUND_UP(reagents.total_volume / amount_per_transfer_from_this)
 
 /obj/item/reagent_containers/inhaler_canister/handle_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	if (!reagents?.total_volume)
 		visible_message(span_warning("[src] breaks open - but is empty!"))
 		return ..()

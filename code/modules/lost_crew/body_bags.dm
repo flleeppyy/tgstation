@@ -18,12 +18,16 @@
 	var/body_spawned = FALSE
 
 /obj/structure/closet/body_bag/lost_crew/with_body/attempt_fold(mob/living/carbon/human/the_folder)
+	procstart = null
+	src.procstart = null
 	if (!body_spawned)
 		to_chat(the_folder, span_warning("The body inside of [src] prevents you from folding it up!"))
 		return FALSE
 	return ..()
 
 /obj/structure/closet/body_bag/lost_crew/with_body/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/list/recovered_items = list()
@@ -48,6 +52,8 @@
 	process_data(lost_crew_data)
 
 /obj/structure/closet/body_bag/lost_crew/with_body/proc/process_data(list/crew_data)
+	procstart = null
+	src.procstart = null
 	if(!debug)
 		return
 

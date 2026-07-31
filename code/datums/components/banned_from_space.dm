@@ -6,12 +6,16 @@
 	var/max_tile_list_size = 4
 
 /datum/component/banned_from_space/Initialize(...)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
 
 	RegisterSignal(parent, COMSIG_ATOM_ENTERING, PROC_REF(check_if_space))
 
 /datum/component/banned_from_space/proc/check_if_space(atom/source, atom/new_location)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isturf(new_location))
@@ -26,6 +30,8 @@
 			tiles.Cut(1, 2)
 
 /datum/component/banned_from_space/proc/send_back(atom/movable/parent)
+	procstart = null
+	src.procstart = null
 	var/new_turf
 
 	if(tiles.len)

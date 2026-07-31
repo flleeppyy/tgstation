@@ -6,6 +6,8 @@
 GLOBAL_VAR_INIT(fileaccess_timer, 0)
 
 /client/proc/browse_files(root_type=BROWSE_ROOT_ALL_LOGS, max_iterations=10, list/valid_extensions=list("txt","log","htm", "html", "gz", "json"))
+	procstart = null
+	src.procstart = null
 	// wow why was this ever a parameter
 	var/root = "data/logs/"
 	switch(root_type)
@@ -60,6 +62,8 @@ GLOBAL_VAR_INIT(fileaccess_timer, 0)
 
 	PLEASE USE RESPONSIBLY, Some log files can reach sizes of 4MB! */
 /client/proc/file_spam_check()
+	procstart = null
+	src.procstart = null
 	var/time_to_wait = GLOB.fileaccess_timer - world.time
 	if(time_to_wait > 0)
 		to_chat(src, "<font color='red'>Error: file_spam_check(): Spam. Please wait [DisplayTimeText(time_to_wait)].</font>")
@@ -78,6 +82,8 @@ GLOBAL_VAR_INIT(fileaccess_timer, 0)
  * If extensions_filter is a list, any file that matches at least one entry is given back.
  */
 /proc/pathwalk(path, extensions_filter)
+	procstart = null
+	src.procstart = null
 	var/list/jobs = list(path)
 	var/list/filenames = list()
 
@@ -103,12 +109,16 @@ GLOBAL_VAR_INIT(fileaccess_timer, 0)
 	return filenames
 
 /proc/pathflatten(path)
+	procstart = null
+	src.procstart = null
 	return replacetext(path, "/", "_")
 
 /// Save file as an external file then md5 it.
 /// Used because md5ing files stored in the rsc sometimes gives incorrect md5 results.
 /// https://www.byond.com/forum/post/2611357
 /proc/md5asfile(file)
+	procstart = null
+	src.procstart = null
 	var/static/notch = 0
 	// its importaint this code can handle md5filepath sleeping instead of hard blocking, if it's converted to use rust_g.
 	var/filename = "tmp/md5asfile.[world.realtime].[world.timeofday].[world.time].[world.tick_usage].[notch]"
@@ -129,6 +139,8 @@ GLOBAL_VAR_INIT(fileaccess_timer, 0)
  * If you use SANITIZE_FILENAME to sanitize a file path things will break.
  */
 /proc/sanitize_filepath(path)
+	procstart = null
+	src.procstart = null
 	. = ""
 	var/delimiter = "/" //Very much intentionally hardcoded
 	var/list/all_nodes = splittext(path, delimiter)
@@ -147,6 +159,8 @@ GLOBAL_VAR_INIT(fileaccess_timer, 0)
  * * file_types - A list of strings to check against [e.g. list("ogg" = TRUE, "mp3" = TRUE)]
  */
 /proc/is_file_type_in_list(file, file_types = list())
+	procstart = null
+	src.procstart = null
 	var/extstart = findlasttext("[file]", ".")
 	if(!extstart)
 		return FALSE
@@ -164,6 +178,8 @@ GLOBAL_VAR_INIT(fileaccess_timer, 0)
  * * file_type - A string to check against [e.g. "ogg"]
  */
 /proc/is_file_type(file, file_type)
+	procstart = null
+	src.procstart = null
 	var/extstart = findlasttext("[file]", ".")
 	if(!extstart)
 		return FALSE
@@ -172,6 +188,8 @@ GLOBAL_VAR_INIT(fileaccess_timer, 0)
 		return TRUE
 
 /proc/strip_filepath_extension(file, file_types)
+	procstart = null
+	src.procstart = null
 	var/extstart = findlasttext("[file]", ".")
 	if(!extstart)
 		return "[file]"

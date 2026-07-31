@@ -22,15 +22,21 @@
 	var/id_cache_seq = 1
 
 /datum/computer_file/program/science/on_install(datum/computer_file/source, obj/item/modular_computer/computer_installing, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!CONFIG_GET(flag/no_default_techweb_link) && !stored_research)
 		CONNECT_TO_RND_SERVER_ROUNDSTART(stored_research, computer)
 
 /datum/computer_file/program/science/application_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/multitool))
 		return multitool_act(user, tool)
 
 /datum/computer_file/program/science/proc/multitool_act(mob/living/user, obj/item/multitool/used_multitool)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(used_multitool.buffer) || !istype(used_multitool.buffer, /datum/techweb))
 		return ITEM_INTERACT_BLOCKING
 	stored_research = used_multitool.buffer
@@ -38,6 +44,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /datum/computer_file/program/science/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/sheetmaterials),
 		get_asset_datum(/datum/asset/spritesheet_batched/research_designs),
@@ -45,6 +53,8 @@
 
 // heavy data from this proc should be moved to static data when possible
 /datum/computer_file/program/science/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["stored_research"] = !!stored_research
 	if(!stored_research) //lack of a research node is all we care about.
@@ -94,6 +104,8 @@
 	return data
 
 /datum/computer_file/program/science/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Check if the console is locked to block any actions occuring
 	if (locked && action != "toggleLock")
@@ -121,6 +133,8 @@
 			return TRUE
 
 /datum/computer_file/program/science/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list(
 		"static_data" = list(),
 		"point_types_abbreviations" = SSresearch.point_types,
@@ -215,12 +229,16 @@
  * * id - the ID to compress
  */
 /datum/computer_file/program/science/proc/compress_id(id)
+	procstart = null
+	src.procstart = null
 	if (!id_cache[id])
 		id_cache[id] = id_cache_seq
 		id_cache_seq += 1
 	return id_cache[id]
 
 /datum/computer_file/program/science/proc/enqueue_node(id, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!stored_research || !stored_research.available_nodes[id] || stored_research.researched_nodes[id])
 		computer.say("Node enqueue failed: Either no techweb is found, node is already researched or is not available!")
 		return FALSE
@@ -228,6 +246,8 @@
 	return TRUE
 
 /datum/computer_file/program/science/proc/dequeue_node(id, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!stored_research || !stored_research.available_nodes[id] || stored_research.researched_nodes[id])
 		computer.say("Node dequeue failed: Either no techweb is found, node is already researched or is not available!")
 		return FALSE
@@ -235,6 +255,8 @@
 	return TRUE
 
 /datum/computer_file/program/science/proc/research_node(id, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!stored_research || !stored_research.available_nodes[id] || stored_research.researched_nodes[id])
 		computer.say("Node unlock failed: Either no techweb is found, node is already researched or is not available!")
 		return FALSE

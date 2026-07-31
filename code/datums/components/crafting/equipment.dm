@@ -10,6 +10,8 @@
 	category = CAT_EQUIPMENT
 
 /datum/crafting_recipe/strobeshield/New()
+	procstart = null
+	src.procstart = null
 	LAZYADD(blacklist, typecacheof(/obj/item/shield/riot, ignore_root_path = TRUE))
 	return ..()
 
@@ -39,6 +41,8 @@
 	var/static/list/radio_types_blacklist
 
 /datum/crafting_recipe/radio_containing/New()
+	procstart = null
+	src.procstart = null
 	if(isnull(radio_types_blacklist))
 		// because we got shit like /obj/item/radio/off ... WHY!?!
 		radio_types_blacklist = typecacheof(list(/obj/item/radio/headset, /obj/item/radio/intercom))
@@ -169,6 +173,8 @@
 	category = CAT_EQUIPMENT
 
 /datum/crafting_recipe/flashlight_eyes/New()
+	procstart = null
+	src.procstart = null
 	LAZYADD(blacklist, typecacheof(/obj/item/flashlight/flare))
 	return ..()
 
@@ -299,6 +305,8 @@
 	tool_behaviors = list(TOOL_WELDER, TOOL_SCREWDRIVER, TOOL_WIRECUTTER)
 
 /datum/crafting_recipe/morbid_surgical_toolset/New()
+	procstart = null
+	src.procstart = null
 	LAZYADD(blacklist, typecacheof(/obj/item/organ/cyberimp/arm/toolkit/surgery, ignore_root_path = TRUE))
 	return ..()
 

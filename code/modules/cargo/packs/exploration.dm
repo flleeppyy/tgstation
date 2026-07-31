@@ -21,6 +21,8 @@
 	crate_name = "outsourced food crate"
 
 /datum/supply_pack/exploration/catering/fill(obj/structure/closet/crate/crate)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!prob(30))
 		return

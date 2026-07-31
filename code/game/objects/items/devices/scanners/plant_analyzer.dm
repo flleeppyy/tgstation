@@ -26,10 +26,14 @@
 	var/shown_tab = PLANT_ANALYZER_STAT_TAB
 
 /obj/item/plant_analyzer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_item_context()
 
 /obj/item/plant_analyzer/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
@@ -62,6 +66,8 @@
 
 /// When we use the analyzer in hand - try to show the results of the last scan
 /obj/item/plant_analyzer/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(user) || !user.can_read(src) || user.is_blind())
 		return
 	if(last_scan_data)
@@ -69,6 +75,8 @@
 
 /// When we attack something, try to scan something we hit with left click. Left-clicking uses scans for stats
 /obj/item/plant_analyzer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isliving(interacting_with))
 		playsound(src, SFX_INDUSTRIAL_SCAN, 20, TRUE, -2, TRUE, FALSE)
 		var/mob/living/living_target = interacting_with
@@ -82,6 +90,8 @@
 
 /// Same as above, but with right click. Right-clicking scans for chemicals.
 /obj/item/plant_analyzer/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return do_plant_chem_scan(interacting_with, user)
 
 /*
@@ -94,6 +104,8 @@
  * returns TRUE if we can scan the object, and outputs the message to the USER.
  */
 /obj/item/plant_analyzer/proc/do_plant_chem_scan(atom/scan_target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(isliving(scan_target))
 		var/mob/living/living_target = scan_target
 		if(living_target.mob_biotypes & MOB_PLANT)
@@ -111,6 +123,8 @@
  * user - the person doing the scanning
  */
 /obj/item/plant_analyzer/proc/plant_biotype_health_scan(mob/living/scanned_mob, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(
 		span_notice("[user] analyzes [scanned_mob]'s vitals."),
 		span_notice("You analyze [scanned_mob]'s vitals.")
@@ -126,6 +140,8 @@
  * user - the person doing the scanning
  */
 /obj/item/plant_analyzer/proc/plant_biotype_chem_scan(mob/living/scanned_mob, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(
 		span_notice("[user] analyzes [scanned_mob]'s bloodstream."),
 		span_notice("You analyze [scanned_mob]'s bloodstream.")
@@ -134,12 +150,16 @@
 	add_fingerprint(user)
 
 /obj/item/plant_analyzer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PlantAnalyzer", "Plant Analyzer")
 		ui.open()
 
 /obj/item/plant_analyzer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -151,12 +171,16 @@
 			return TRUE
 
 /obj/item/plant_analyzer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["active_tab"] = shown_tab
 	data += last_scan_data
 	return data
 
 /obj/item/plant_analyzer/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["cycle_seconds"] = HYDROTRAY_CYCLE_DELAY / 10
 	data["trait_db"] = list()
@@ -171,6 +195,8 @@
 	return data
 
 /obj/item/plant_analyzer/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/atom/real_last_tray_scanned = last_tray_scanned?.resolve()
 	if(QDELETED(real_last_tray_scanned))
 		return PROCESS_KILL
@@ -180,6 +206,8 @@
 
 /// Called when our analyzer is used on something
 /obj/item/plant_analyzer/proc/analyze(mob/user, atom/target)
+	procstart = null
+	src.procstart = null
 	var/obj/item/graft/graft
 	var/obj/item/seeds/seed
 	var/obj/machinery/hydroponics/tray
@@ -283,6 +311,8 @@
 
 
 /obj/item/plant_analyzer/proc/make_seed_data(obj/item/seeds/seed)
+	procstart = null
+	src.procstart = null
 	var/list/seed_data = list(
 		"name" = seed.plantname,
 		"icon" = seed.growing_icon,

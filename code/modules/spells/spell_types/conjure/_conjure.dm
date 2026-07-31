@@ -19,9 +19,13 @@
 	var/create_summon_timer
 
 /datum/action/cooldown/spell/conjure/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return isturf(cast_on.loc)
 
 /datum/action/cooldown/spell/conjure/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(create_summon_timer && !do_after(owner, create_summon_timer, target = cast_on.loc))
 		owner?.balloon_alert(owner, "need to stay still!")
@@ -66,6 +70,8 @@
 
 /// Called on atoms summoned after they are created, allows extra variable editing and such of created objects
 /datum/action/cooldown/spell/conjure/proc/post_summon(atom/summoned_object, atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return
 
 ///limits the amount of summons
@@ -76,6 +82,8 @@
 	var/number_of_summons = 0
 
 /datum/action/cooldown/spell/conjure/limit_summons/can_cast_spell(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -84,10 +92,14 @@
 	return TRUE
 
 /datum/action/cooldown/spell/conjure/limit_summons/post_summon(atom/summoned_object, atom/cast_on)
+	procstart = null
+	src.procstart = null
 	RegisterSignals(summoned_object, list(COMSIG_QDELETING, COMSIG_LIVING_DEATH), PROC_REF(delete_copy))
 	number_of_summons++
 
 /datum/action/cooldown/spell/conjure/limit_summons/proc/delete_copy(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(source, list(COMSIG_QDELETING, COMSIG_LIVING_DEATH))

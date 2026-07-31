@@ -12,17 +12,25 @@
 
 // Loadouts are applied with job equip code.
 /datum/preference/loadout/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return
 
 // Sanitize on load to ensure no invalid paths from older saves get in
 /datum/preference/loadout/deserialize(input, datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	return sanitize_loadout_list(input, preferences.parent?.mob)
 
 // Default value is null - the loadout list is a lazylist
 /datum/preference/loadout/create_default_value(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	return null
 
 /datum/preference/loadout/is_valid(value)
+	procstart = null
+	src.procstart = null
 	return isnull(value) || islist(value)
 
 /**
@@ -31,7 +39,9 @@
  *
  * Returns a list, or null if empty
  */
-/datum/preference/loadout/proc/sanitize_loadout_list(list/passed_list, mob/optional_loadout_owner) as /list
+/datum/preference/loadout/proc/sanitize_loadout_list(list/passed_list, mob/optional_loadout_owner)
+	procstart = null
+	src.procstart = null
 	var/list/sanitized_list
 	for(var/path in passed_list)
 		// Loading from json has each path in the list as a string that we need to convert back to typepath

@@ -17,6 +17,8 @@
 	var/puzzle_id = null
 
 /obj/item/keycard/get_save_vars()
+	procstart = null
+	src.procstart = null
 	return ..() + NAMEOF(src, puzzle_id)
 
 //Two test keys for use alongside the two test doors.
@@ -57,6 +59,8 @@
 	var/open_message = "The door beeps, and slides opens."
 
 /obj/machinery/door/puzzle/get_save_vars()
+	procstart = null
+	src.procstart = null
 	return ..() + NAMEOF(src, puzzle_id)
 
 //Standard Expressions to make keycard doors basically un-cheeseable
@@ -71,27 +75,37 @@
 	acid = 100
 
 /obj/machinery/door/puzzle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(puzzle_id) && uses_queuelinks)
 		SSqueuelinks.add_to_queue(src, puzzle_id)
 	AddElement(/datum/element/empprotection, EMP_PROTECT_ALL)
 
 /obj/machinery/door/puzzle/MatchedLinks(id, list/partners)
+	procstart = null
+	src.procstart = null
 	for(var/partner in partners)
 		RegisterSignal(partner, COMSIG_PUZZLE_COMPLETED, PROC_REF(try_signal))
 
 /obj/machinery/door/puzzle/proc/try_signal(datum/source, try_id)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	puzzle_id = null //honestly these cant be closed anyway and im not fucking around with door code anymore
 	INVOKE_ASYNC(src, PROC_REF(try_puzzle_open), null)
 
 /obj/machinery/door/puzzle/animation_length(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if(DOOR_OPENING_ANIMATION)
 			return 1.0 SECONDS
 
 /obj/machinery/door/puzzle/animation_segment_delay(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if(DOOR_OPENING_PASSABLE)
 			return 0.8 SECONDS
@@ -99,17 +113,25 @@
 			return 1.0 SECONDS
 
 /obj/machinery/door/puzzle/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	return !density && ..()
 
 /obj/machinery/door/puzzle/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/door/puzzle/try_to_activate_door(mob/user, access_bypass = FALSE, bumped = FALSE)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(operating)
 		return
 
 /obj/machinery/door/puzzle/proc/try_puzzle_open(try_id)
+	procstart = null
+	src.procstart = null
 	if(puzzle_id && puzzle_id != try_id)
 		return FALSE
 	if(!density)
@@ -125,6 +147,8 @@
 	uses_queuelinks = FALSE
 
 /obj/machinery/door/puzzle/keycard/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/keycard))
 		return NONE
 	if(!try_puzzle_open(astype(tool, /obj/item/keycard).puzzle_id))
@@ -179,19 +203,27 @@
 	var/claimed = FALSE
 
 /obj/item/pressure_plate/hologrid/get_save_vars()
+	procstart = null
+	src.procstart = null
 	return ..() + NAMEOF(src, reward)
 
 /obj/item/pressure_plate/hologrid/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(undertile_pressureplate)
 		AddElement(/datum/element/undertile, tile_overlay = tile_overlay, use_anchor = FALSE) //we remove use_anchor here, so it ALWAYS stays anchored
 
 /obj/item/pressure_plate/hologrid/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(claimed)
 		. += span_notice("This one appears to be spent already.")
 
 /obj/item/pressure_plate/hologrid/trigger()
+	procstart = null
+	src.procstart = null
 	if(!claimed)
 		new reward(loc)
 	flick("lasergrid_a",src)
@@ -199,6 +231,8 @@
 	claimed = TRUE
 
 /obj/item/pressure_plate/hologrid/on_entered(datum/source, atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(trigger_item && istype(AM, specific_item) && !claimed)
 		AM.set_anchored(TRUE)
@@ -232,6 +266,8 @@
 	var/queue_size = 2
 
 /obj/structure/light_puzzle/get_save_vars()
+	procstart = null
+	src.procstart = null
 	return ..() + list(NAMEOF(src, queue_size), NAMEOF(src, puzzle_id))
 
 /datum/armor/structure_light_puzzle
@@ -245,6 +281,8 @@
 	acid = 100
 
 /obj/structure/light_puzzle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/blocks_explosives)
 	. = ..()
 	var/generated_board = -1
@@ -258,6 +296,8 @@
 		SSqueuelinks.add_to_queue(src, puzzle_id, queue_size)
 
 /obj/structure/light_puzzle/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in 1 to 9)
 		if(!light_list[i])
@@ -272,6 +312,8 @@
 		. += emissive_image
 
 /obj/structure/light_puzzle/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!modifiers || powered)
 		return ..()
 	var/light_clicked
@@ -286,6 +328,8 @@
 	playsound(src, 'sound/machines/click.ogg', 50, TRUE)
 
 /obj/structure/light_puzzle/proc/switch_light(light)
+	procstart = null
+	src.procstart = null
 	var/list/updating_lights = list()
 	updating_lights += light
 	if(light % 3 != 0)
@@ -327,23 +371,33 @@
 	var/late_initialize_pop = FALSE
 
 /obj/machinery/puzzle/get_save_vars()
+	procstart = null
+	src.procstart = null
 	return ..() + list(NAMEOF(src, queue_size), NAMEOF(src, id))
 
 /obj/machinery/puzzle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(id))
 		SSqueuelinks.add_to_queue(src, id, late_initialize_pop ? 0 : queue_size)
 		return late_initialize_pop ? INITIALIZE_HINT_LATELOAD : .
 
 /obj/machinery/puzzle/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(late_initialize_pop && id && SSqueuelinks.queues[id])
 		SSqueuelinks.pop_link(id)
 
-/obj/machinery/puzzle/proc/on_puzzle_complete() //incase someone wants to make this do something else for some reason
+/obj/machinery/puzzle/proc/on_puzzle_complete()
+	procstart = null
+	src.procstart = null //incase someone wants to make this do something else for some reason
 	SEND_SIGNAL(src, COMSIG_PUZZLE_COMPLETED)
 
 /obj/machinery/puzzle/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][used]"
 	return ..()
 
@@ -355,6 +409,8 @@
 	base_icon_state = "lockdown"
 
 /obj/machinery/puzzle/button/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -375,6 +431,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/puzzle/button, 32)
 	base_icon_state = "keycardpad"
 
 /obj/machinery/puzzle/keycardpad/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(attacking_item, /obj/item/keycard) || used)
 		return
@@ -406,9 +464,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/puzzle/keycardpad, 32)
 	var/input_max_len_is_pass = FALSE
 
 /obj/machinery/puzzle/password/get_save_vars()
+	procstart = null
+	src.procstart = null
 	return ..() + list(NAMEOF(src, password), NAMEOF(src, tgui_text), NAMEOF(src, tgui_title), NAMEOF(src, input_max_len_is_pass))
 
 /obj/machinery/puzzle/password/interact(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(used && single_use)
 		return
 	if(!user.can_perform_action(src, ALLOW_SILICON_REACH) || !user.can_interact_with(src))
@@ -439,9 +501,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/puzzle/password, 32)
 	var/list/digit_to_color = list()
 
 /obj/machinery/puzzle/password/pin/get_save_vars()
+	procstart = null
+	src.procstart = null
 	return ..() + NAMEOF(src, pin_length)
 
 /obj/machinery/puzzle/password/pin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	for(var/iteration in 1 to pin_length)
@@ -483,18 +549,26 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/puzzle/password/pin, 32)
 	var/id
 
 /obj/structure/puzzle_blockade/get_save_vars()
+	procstart = null
+	src.procstart = null
 	return ..() + NAMEOF(src, id)
 
 /obj/structure/puzzle_blockade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(id))
 		SSqueuelinks.add_to_queue(src, id)
 
 /obj/structure/puzzle_blockade/MatchedLinks(id, list/partners)
+	procstart = null
+	src.procstart = null
 	for(var/partner in partners)
 		RegisterSignal(partner, COMSIG_PUZZLE_COMPLETED, PROC_REF(try_signal))
 
 /obj/structure/puzzle_blockade/proc/try_signal(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	playsound(src, SFX_SPARKS, 100, vary = TRUE, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
 	do_sparks(3, cardinal_only = FALSE, source = src)
@@ -511,16 +585,24 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/puzzle/password/pin, 32)
 	density = FALSE
 
 /obj/structure/puzzle_blockade/oneway/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][density ? "" : "-off"]"
 	return ..()
 
 /obj/structure/puzzle_blockade/oneway/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	return ..() && (REVERSE_DIR(border_dir) == dir || get_turf(mover) == get_turf(src))
 
 /obj/structure/puzzle_blockade/oneway/CanAStarPass(border_dir, datum/can_pass_info/pass_info)
+	procstart = null
+	src.procstart = null
 	return REVERSE_DIR(border_dir) == dir
 
 /obj/structure/puzzle_blockade/oneway/try_signal(datum/source)
+	procstart = null
+	src.procstart = null
 	density = FALSE
 	update_appearance(UPDATE_ICON)
 
@@ -537,9 +619,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/puzzle/password/pin, 32)
 	var/id
 
 /obj/effect/puzzle_poddoor_open/get_save_vars()
+	procstart = null
+	src.procstart = null
 	return ..() + list(NAMEOF(src, queue_id), NAMEOF(src, id))
 
 /obj/effect/puzzle_poddoor_open/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(id) || isnull(queue_id))
 		log_mapping("[src] id:[id] has no id or door id and has been deleted")
@@ -548,10 +634,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/puzzle/password/pin, 32)
 	SSqueuelinks.add_to_queue(src, queue_id)
 
 /obj/effect/puzzle_poddoor_open/MatchedLinks(id, list/partners)
+	procstart = null
+	src.procstart = null
 	for(var/partner in partners)
 		RegisterSignal(partner, COMSIG_PUZZLE_COMPLETED, PROC_REF(try_signal))
 
 /obj/effect/puzzle_poddoor_open/proc/try_signal(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/openclose
 	for(var/obj/machinery/door/poddoor/door as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/door/poddoor))
@@ -579,14 +669,20 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/puzzle/password/pin, 32)
 	var/id
 
 /obj/effect/decal/puzzle_dots/get_save_vars()
+	procstart = null
+	src.procstart = null
 	return ..() + NAMEOF(src, id)
 
 /obj/effect/decal/puzzle_dots/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(id)
 		SSqueuelinks.add_to_queue(src, id)
 
 /obj/effect/decal/puzzle_dots/MatchedLinks(id, partners)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/puzzle/password/pin/pad = locate() in partners
 	var/list/pass_digits = splittext(pad.password, "")
 	var/pass_len = length(pass_digits)
@@ -616,15 +712,21 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/puzzle/password/pin, 32)
 	var/puzzle_id
 
 /obj/effect/decal/cleanable/crayon/puzzle/get_save_vars()
+	procstart = null
+	src.procstart = null
 	return ..() + NAMEOF(src, puzzle_id)
 
 /obj/effect/decal/cleanable/crayon/puzzle/Initialize(mapload, main, type, e_name, graf_rot, alt_icon = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "number"
 	if(puzzle_id)
 		SSqueuelinks.add_to_queue(src, puzzle_id)
 
 /obj/effect/decal/cleanable/crayon/puzzle/MatchedLinks(id, partners)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/puzzle/password/pad = locate() in partners
 	var/list/pass_character = splittext(pad.password, "")
 	var/chosen_character = icon_state
@@ -641,6 +743,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/puzzle/password/pin, 32)
 	name = "PIN number"
 
 /obj/effect/decal/cleanable/crayon/puzzle/pin/MatchedLinks(id, partners)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/machinery/puzzle/password/pin/pad = locate() in partners
 	add_atom_colour(pad.digit_to_color[icon_state], FIXED_COLOUR_PRIORITY)
@@ -652,14 +756,20 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/puzzle/password/pin, 32)
 	var/puzzle_id
 
 /obj/item/paper/fluff/scrambled_pass/get_save_vars()
+	procstart = null
+	src.procstart = null
 	return ..() + NAMEOF(src, puzzle_id)
 
 /obj/item/paper/fluff/scrambled_pass/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload && puzzle_id)
 		SSqueuelinks.add_to_queue(src, puzzle_id)
 
 /obj/item/paper/fluff/scrambled_pass/MatchedLinks(id, partners)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/puzzle/password/pad = locate() in partners
 	var/scrambled_text = ""
 	var/list/pass_characters = splittext(pad.password, "")

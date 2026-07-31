@@ -64,6 +64,8 @@
  * Checks if this reaction can occur.
  */
 /datum/chemical_reaction/proc/pre_reaction_other_checks(datum/reagents/holder)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /**
@@ -80,6 +82,8 @@
  * * created_volume - volume created when this is mixed. look at 'var/list/results'.
  */
 /datum/chemical_reaction/proc/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	return
 	//I recommend you set the result amount to the total volume of all components.
 
@@ -99,6 +103,8 @@
  * * returning END_REACTION will end the associated reaction - flagging it for deletion and preventing any reaction in that timestep from happening. Make sure to set the vars in the holder to one that can't start it from starting up again.
  */
 /datum/chemical_reaction/proc/reaction_step(datum/reagents/holder, datum/equilibrium/reaction, delta_t, delta_ph, step_reaction_vol)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -112,6 +118,8 @@
  * * react_volume - volume created across the whole reaction
  */
 /datum/chemical_reaction/proc/reaction_finish(datum/reagents/holder, datum/equilibrium/reaction, react_vol)
+	procstart = null
+	src.procstart = null
 	if(!(reaction_flags & REACTION_CLEAR_INVERSE))
 		return
 
@@ -144,6 +152,8 @@
  * * step_volume_added - how much product (across all products) was added for this single step
  */
 /datum/chemical_reaction/proc/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
+	procstart = null
+	src.procstart = null
 	for(var/datum/reagent/reagent as anything in holder.reagent_list)
 		if(!results[reagent.type])
 			continue
@@ -163,6 +173,8 @@
  * * step_volume_added - how much product (across all products) was added for this single step
  */
 /datum/chemical_reaction/proc/overly_impure(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
+	procstart = null
+	src.procstart = null
 	var/affected_list = results + required_reagents
 	for(var/_reagent in affected_list)
 		var/datum/reagent/reagent = holder.has_reagent(_reagent)
@@ -183,6 +195,8 @@
  * * random - creates random mobs. self explanatory.
  */
 /datum/chemical_reaction/proc/chemical_mob_spawn(datum/reagents/holder, amount_to_spawn, reaction_name, mob_class = HOSTILE_SPAWN, mob_faction = FACTION_CHEMICAL_SUMMON, random = TRUE)
+	procstart = null
+	src.procstart = null
 	if(holder?.my_atom)
 		var/atom/A = holder.my_atom
 		var/turf/T = get_turf(A)
@@ -226,6 +240,8 @@
  * * range - range.
  */
 /proc/goonchem_vortex(turf/T, setting_type, range)
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/X in orange(range, T))
 		if(X.anchored)
 			continue
@@ -267,6 +283,8 @@
  * * flash_factor - multiplier to flash range of the explosion
  */
 /proc/reagent_explode(datum/reagents/holder, volume, modifier = 0, strengthdiv = 10, clear_mob_reagents = FALSE, clear_holder_reagents = TRUE, flash_factor = null, flame_factor = null)
+	procstart = null
+	src.procstart = null
 	if (QDELETED(holder))
 		return
 
@@ -327,6 +345,8 @@
  * * length - how long it lasts in ds
  */
 /datum/chemical_reaction/proc/explode_flash(datum/reagents/holder, datum/equilibrium/equilibrium, range = 2, length = 25)
+	procstart = null
+	src.procstart = null
 	var/turf/location = get_turf(holder.my_atom)
 	for(var/mob/living/living_mob in viewers(range, location))
 		living_mob.flash_act(length = length)
@@ -341,6 +361,8 @@
  * * range - the radius around the holder's atom that is banged
  */
 /datum/chemical_reaction/proc/explode_deafen(datum/reagents/holder, datum/equilibrium/equilibrium, power = 3, stun = 20, range = 2)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	playsound(location, 'sound/effects/bang.ogg', 25, TRUE)
 	for(var/mob/living/living in get_hearers_in_view(range, location))
@@ -348,6 +370,8 @@
 
 //Spews out the inverse of the chems in the beaker of the products/reactants only
 /datum/chemical_reaction/proc/explode_invert_smoke(datum/reagents/holder, datum/equilibrium/equilibrium, force_range = 0, clear_products = TRUE, clear_reactants = TRUE, accept_impure = TRUE)
+	procstart = null
+	src.procstart = null
 	var/datum/reagents/invert_reagents = new (2100, NO_REACT)//I think the biggest size we can get is 2100?
 	var/sum_volume = 0
 	invert_reagents.my_atom = holder.my_atom //Give the gas a fingerprint
@@ -373,6 +397,8 @@
 
 //Spews out the corrisponding reactions reagents  (products/required) of the beaker in a smokecloud. Doesn't spew catalysts
 /datum/chemical_reaction/proc/explode_smoke(datum/reagents/holder, datum/equilibrium/equilibrium, force_range = 0, clear_products = TRUE, clear_reactants = TRUE)
+	procstart = null
+	src.procstart = null
 	var/datum/reagents/reagents = new/datum/reagents(2100, NO_REACT)//Lets be safe first
 	reagents.my_atom = holder.my_atom //fingerprint
 	var/sum_volume = 0
@@ -392,6 +418,8 @@
 
 //Pushes everything out, and damages mobs with 10 brute damage.
 /datum/chemical_reaction/proc/explode_shockwave(datum/reagents/holder, datum/equilibrium/equilibrium, range = 3, damage = 5, sound_and_text = TRUE, implosion = FALSE)
+	procstart = null
+	src.procstart = null
 	var/turf/this_turf = get_turf(holder.my_atom)
 	if(sound_and_text)
 		holder.my_atom.audible_message("The [holder.my_atom] suddenly explodes, sending a shockwave rippling through the air!")
@@ -420,11 +448,15 @@
 
 //Calls the default explosion subsystem handiler to explode with fire (random firespots and noise)
 /datum/chemical_reaction/proc/explode_fire(datum/reagents/holder, datum/equilibrium/equilibrium, range = 3)
+	procstart = null
+	src.procstart = null
 	explosion(holder.my_atom, flame_range = range, explosion_cause = src)
 	holder.my_atom.audible_message("The [holder.my_atom] suddenly errupts in flames!")
 
 //Creates a ring of fire in a set range around the beaker location
 /datum/chemical_reaction/proc/explode_fire_vortex(datum/reagents/holder, datum/equilibrium/equilibrium, x_offset = 1, y_offset = 1, reverse = FALSE, id = "f_vortex", )
+	procstart = null
+	src.procstart = null
 	var/increment = reverse ? -1 : 1
 	if(isnull(equilibrium.data["[id]_tar"]))
 		equilibrium.data = list("[id]_x" = x_offset, "[id]_y" = y_offset, "[id]_tar" = "[id]_y")//tar is the current movement direction the cyclone is moving in
@@ -465,6 +497,8 @@
  * How clf3 works, you know!
  */
 /datum/chemical_reaction/proc/explode_fire_square(datum/reagents/holder, datum/equilibrium/equilibrium, fire_range = 1)
+	procstart = null
+	src.procstart = null
 	var/turf/location = get_turf(holder.my_atom)
 	if(fire_range == 0)
 		new /obj/effect/hotspot(location)
@@ -483,6 +517,8 @@
 * * snowball_chance - the chance to spawn a snowball on a turf
 */
 /datum/chemical_reaction/proc/freeze_radius(datum/reagents/holder, datum/equilibrium/equilibrium, temp, radius = 2, freeze_duration = 50 SECONDS, snowball_chance = 0)
+	procstart = null
+	src.procstart = null
 	for(var/any_turf in circle_range_turfs(center = get_turf(holder.my_atom), radius = radius))
 		if(!isopenturf(any_turf))
 			continue
@@ -495,6 +531,8 @@
 ///Clears the beaker of the reagents only
 ///if volume is not set, it will remove all of the reactant
 /datum/chemical_reaction/proc/clear_reactants(datum/reagents/holder, volume = 1000)
+	procstart = null
+	src.procstart = null
 	if(!holder)
 		return FALSE
 	for(var/reagent in required_reagents)
@@ -502,6 +540,8 @@
 
 ///Clears the beaker of the product only
 /datum/chemical_reaction/proc/clear_products(datum/reagents/holder, volume = 1000)
+	procstart = null
+	src.procstart = null
 	if(!holder)
 		return FALSE
 	for(var/reagent in results)
@@ -510,6 +550,8 @@
 
 ///Clears the beaker of ALL reagents inside
 /datum/chemical_reaction/proc/clear_reagents(datum/reagents/holder, volume = 1000)
+	procstart = null
+	src.procstart = null
 	if(!holder)
 		return FALSE
 	if(!volume)
@@ -527,6 +569,8 @@
 * * ignore_eyes - if glasses block the effect, making this true will affect someone regardless
 */
 /datum/chemical_reaction/proc/explode_attack_chem(datum/reagents/holder, datum/equilibrium/equilibrium, reagent, vol, range = 3, ignore_mask = FALSE, ignore_eyes = FALSE)
+	procstart = null
+	src.procstart = null
 	if(istype(reagent, /datum/reagent))
 		var/datum/reagent/temp_reagent = reagent
 		reagent = temp_reagent.type
@@ -550,6 +594,8 @@
 * * initial_delay - The number of seconds of delay to add on creation
 */
 /datum/chemical_reaction/proc/off_cooldown(datum/reagents/holder, datum/equilibrium/equilibrium, seconds = 1, id = "default", initial_delay = 0)
+	procstart = null
+	src.procstart = null
 	id = "[id]_cooldown"
 	if(isnull(equilibrium.data[id]))
 		equilibrium.data[id] = 0

@@ -8,6 +8,8 @@
 	ability_action = "feast on the memories of"
 
 /datum/mafia_ability/thoughtfeeder/perform_action_target(datum/mafia_controller/game, datum/mafia_role/day_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

@@ -2,6 +2,8 @@
 /datum/element/glass_pacifist
 
 /datum/element/glass_pacifist/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isliving(target))
@@ -10,6 +12,8 @@
 	RegisterSignals(target, list(COMSIG_LIVING_ATTACK_ATOM, COMSIG_LIVING_UNARMED_ATTACK), PROC_REF(check_if_glass))
 
 /datum/element/glass_pacifist/proc/check_if_glass(mob/living/owner, atom/hit)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(hit, /obj/structure/window))

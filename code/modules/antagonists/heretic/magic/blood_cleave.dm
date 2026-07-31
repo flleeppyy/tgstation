@@ -22,9 +22,13 @@
 	var/wound_type = /datum/wound/slash/flesh/critical/cleave
 
 /datum/action/cooldown/spell/pointed/cleave/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return ..() && ishuman(cast_on)
 
 /datum/action/cooldown/spell/pointed/cleave/cast(mob/living/carbon/human/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/mob/living/carbon/human/victim in range(cleave_radius, cast_on))
 		if(victim == owner || IS_HERETIC_OR_MONSTER(victim))

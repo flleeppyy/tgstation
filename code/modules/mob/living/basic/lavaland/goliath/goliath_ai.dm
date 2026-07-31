@@ -16,6 +16,8 @@
 	var/min_target_time = MIN_TIME_TO_TENTACLE
 
 /datum/bt_node/ai_behavior/targeted_mob_ability/goliath_tentacles/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = controller.blackboard[target_key]
 	if(!(isliving(target) || ismecha(target)))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED
@@ -33,6 +35,8 @@
 	var/scan_range = 3
 
 /datum/bt_node/ai_behavior/goliath_find_diggable_turf/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/pawn = controller.pawn
 	var/list/nearby_turfs = RANGE_TURFS(scan_range, pawn)
 	var/turf/open/misc/asteroid/check_turf = pick(nearby_turfs)
@@ -47,6 +51,8 @@
 	var/target_key = BB_GOLIATH_HOLE_TARGET
 
 /datum/bt_node/ai_behavior/goliath_dig/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = controller.blackboard[target_key]
 	var/mob/living/basic/basic_mob = controller.pawn
 	if(isnull(target_turf) || !target_turf.IsReachableBy(basic_mob))
@@ -55,6 +61,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/goliath_dig/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(target_key)
 

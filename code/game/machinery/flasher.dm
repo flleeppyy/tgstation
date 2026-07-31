@@ -25,44 +25,62 @@
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/flasher, 26)
 
 /obj/machinery/flasher/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		bulb = new(src)
 		find_and_mount_on_atom()
 
 /obj/machinery/flasher/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vname == NAMEOF(src, flash_cooldown_duration) && (COOLDOWN_TIMELEFT(src, flash_cooldown) > flash_cooldown_duration))
 		COOLDOWN_START(src, flash_cooldown, flash_cooldown_duration)
 
 /obj/machinery/flasher/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
+	procstart = null
+	src.procstart = null
 	id = "[port.shuttle_id]_[id]"
 
 /obj/machinery/flasher/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	if(istype(arrived, /obj/item/assembly/flash/handheld))
 		bulb = arrived
 	return ..()
 
 /obj/machinery/flasher/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if(gone == bulb)
 		bulb = null
 	return ..()
 
 /obj/machinery/flasher/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(bulb)
 	return ..()
 
 /obj/machinery/flasher/powered()
+	procstart = null
+	src.procstart = null
 	if(!anchored || !bulb)
 		return FALSE
 	return ..()
 
 /obj/machinery/flasher/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state]1[(bulb?.burnt_out || !powered()) ? "-p" : null]"
 	return ..()
 
 //Don't want to render prison breaks impossible
 /obj/machinery/flasher/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 
 	if (!istype(tool, /obj/item/assembly/flash/handheld))
@@ -79,6 +97,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/flasher, 26)
 
 
 /obj/machinery/flasher/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(!bulb)
 		return NONE
@@ -91,6 +111,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/flasher, 26)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/flasher/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(bulb)
 		to_chat(user, span_warning("Remove a flashbulb from [src] first!"))
@@ -104,10 +126,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/flasher, 26)
 
 //Let the AI trigger them directly.
 /obj/machinery/flasher/attack_ai()
+	procstart = null
+	src.procstart = null
 	if (anchored)
 		return flash()
 
 /obj/machinery/flasher/proc/flash()
+	procstart = null
+	src.procstart = null
 	if (!powered() || !bulb)
 		return
 
@@ -140,6 +166,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/flasher, 26)
 	return TRUE
 
 /obj/machinery/flasher/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(machine_stat & (BROKEN|NOPOWER)) && !(. & EMP_PROTECT_SELF))
 		if(bulb && prob(75/severity))
@@ -148,12 +176,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/flasher, 26)
 			power_change()
 
 /obj/machinery/flasher/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && bulb)
 		bulb.burn_out()
 		power_change()
 
 /obj/machinery/flasher/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	if(bulb)
 		bulb.forceMove(loc)
 	if(disassembled)
@@ -177,13 +209,19 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/flasher, 26)
 	var/datum/proximity_monitor/proximity_monitor
 
 /obj/machinery/flasher/portable/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	proximity_monitor = new(src, 0)
 
 /obj/machinery/flasher/portable/find_and_mount_on_atom(mark_for_late_init, late_init)
+	procstart = null
+	src.procstart = null
 	return //its meant to be carried and mobile
 
 /obj/machinery/flasher/portable/HasProximity(atom/movable/proximity_check_mob)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, flash_cooldown))
 		return
 
@@ -195,11 +233,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/flasher, 26)
 		flash()
 
 /obj/machinery/flasher/portable/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vname == NAMEOF(src, flash_range))
 		proximity_monitor?.set_range(flash_range)
 
 /obj/machinery/flasher/portable/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(src, 100)
 	if (!anchored && !isinspace())
 		to_chat(user, span_notice("[src] is now secured."))
@@ -226,10 +268,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/flasher, 26)
 	pixel_shift = 28
 
 /obj/item/wallframe/flasher/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Its channel ID is '[id]'.")
 
 /obj/item/wallframe/flasher/after_attach(obj/attached_to)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/machinery/flasher/flasher_obj = attached_to
 	flasher_obj.id = id

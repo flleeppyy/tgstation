@@ -3,6 +3,8 @@
 	argument_hash_start_idx = 2
 
 /datum/element/can_be_held/Attach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isliving(source))
@@ -13,15 +15,21 @@
 	RegisterSignal(source, COMSIG_STORAGE_DUMP_PRE_TRANSFER, PROC_REF(on_attempt_storage_dump))
 
 /datum/element/can_be_held/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, list(COMSIG_MOUSEDROP_ONTO, COMSIG_MOB_STRIP_MENU_OPEN, COMSIG_STORAGE_DUMP_PRE_TRANSFER))
 	return ..()
 
 /// Used to determine the "intent" of the action that the user mob is trying to employ on the target.
 /datum/element/can_be_held/proc/trying_to_hold_mob(mob/living/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	return isliving(user) && user.grab_state == GRAB_AGGRESSIVE && user.pulling == target
 
 /// Handles the mob being dropped onto the user mob.
 /datum/element/can_be_held/proc/on_mousedrop_onto(datum/source, atom/over, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!trying_to_hold_mob(user, source))
 		return
@@ -31,6 +39,8 @@
 
 /// Blocks strip menu opening if we can reasonably assert that the mob is trying to be picked up
 /datum/element/can_be_held/proc/on_strip_menu_open(datum/source, atom/over, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!trying_to_hold_mob(user, source))
 		return
@@ -39,6 +49,8 @@
 
 /// Blocks storage dumping if we can reasonably assert that the mob is trying to be picked up
 /datum/element/can_be_held/proc/on_attempt_storage_dump(datum/source, atom/over, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!trying_to_hold_mob(user, source))
 		return

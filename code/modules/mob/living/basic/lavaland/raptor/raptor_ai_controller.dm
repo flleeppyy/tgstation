@@ -36,6 +36,8 @@
 	)
 
 /datum/ai_controller/basic_controller/raptor/TryPossessPawn(atom/new_pawn)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & AI_CONTROLLER_INCOMPATIBLE)
 		return
@@ -43,10 +45,14 @@
 	RegisterSignal(new_pawn, COMSIG_AI_BLACKBOARD_KEY_CLEARED(BB_RAPTOR_COWARD), PROC_REF(on_cowardly_clear))
 
 /datum/ai_controller/basic_controller/raptor/proc/on_cowardly_set(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	ADD_TRAIT(pawn, TRAIT_MOB_DIFFICULT_TO_MOUNT, REF(src))
 
 /datum/ai_controller/basic_controller/raptor/proc/on_cowardly_clear(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	REMOVE_TRAIT(pawn, TRAIT_MOB_DIFFICULT_TO_MOUNT, REF(src))
 

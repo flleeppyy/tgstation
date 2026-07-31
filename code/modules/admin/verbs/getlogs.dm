@@ -5,6 +5,8 @@ ADMIN_VERB(get_current_logs, R_ADMIN, "Get Current Logs", "View or retrieve logf
 	user.browseserverlogs(current=TRUE)
 
 /client/proc/browseserverlogs(current=FALSE)
+	procstart = null
+	src.procstart = null
 	var/path = browse_files(current ? BROWSE_ROOT_CURRENT_LOGS : BROWSE_ROOT_ALL_LOGS)
 	if(!path)
 		return

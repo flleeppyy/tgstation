@@ -7,11 +7,15 @@
 	overlay_icon_state = "bg_demon_border"
 
 /datum/action/item_action/berserk_mode/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/head/hooded/berserker/berserk = target
 	berserk.berserk_mode(owner)
 	return TRUE
 
 /datum/action/item_action/berserk_mode/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

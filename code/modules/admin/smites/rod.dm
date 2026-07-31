@@ -4,11 +4,15 @@
 	var/force_looping = FALSE
 
 /datum/smite/rod/configure(client/user)
+	procstart = null
+	src.procstart = null
 	var/loop_input = tgui_alert(usr,"Would you like this rod to force-loop across space z-levels?", "Loopy McLoopface", list("Yes", "No"))
 
 	force_looping = (loop_input == "Yes")
 
 /datum/smite/rod/effect(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/target_turf = get_turf(target)
 	var/startside = pick(GLOB.cardinals)

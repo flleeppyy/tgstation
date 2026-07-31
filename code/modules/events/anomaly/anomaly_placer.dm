@@ -5,6 +5,8 @@
  * Returns an area which is safe to place an anomaly inside.
  */
 /datum/anomaly_placer/proc/findValidArea()
+	procstart = null
+	src.procstart = null
 	if(!allowed_areas)
 		generateAllowedAreas()
 	var/list/possible_areas = typecache_filter_list(GLOB.areas, allowed_areas)
@@ -25,6 +27,8 @@
  * * target_area - Area to return a turf from.
  */
 /datum/anomaly_placer/proc/findValidTurf(area/target_area)
+	procstart = null
+	src.procstart = null
 	var/list/valid_turfs = list()
 	for (var/turf/try_turf as anything in get_area_turfs(target_area))
 		if (!is_valid_destination(try_turf))
@@ -43,6 +47,8 @@
  * * tested - Turf to try landing on.
  */
 /datum/anomaly_placer/proc/is_valid_destination(turf/tested)
+	procstart = null
+	src.procstart = null
 	if (isspaceturf(tested))
 		return FALSE
 	if (tested.is_blocked_turf(exclude_mobs = TRUE))
@@ -57,6 +63,8 @@
  * Populates the allowed areas list.
  */
 /datum/anomaly_placer/proc/generateAllowedAreas()
+	procstart = null
+	src.procstart = null
 	//Places that shouldn't explode
 	var/static/list/safe_area_types = typecacheof(list(
 		/area/station/ai/satellite/chamber,

@@ -20,13 +20,19 @@
 	any_surgery_states_blocked = SURGERY_VESSELS_UNCLAMPED
 
 /datum/surgery_operation/organ/lobotomy/get_any_tool()
+	procstart = null
+	src.procstart = null
 	return "Any sharp edged item"
 
 /datum/surgery_operation/organ/lobotomy/tool_check(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	// Require edged sharpness OR a tool behavior match
 	return ((tool.get_sharpness() & SHARP_EDGED) || implements[tool.tool_behaviour])
 
 /datum/surgery_operation/organ/lobotomy/on_preop(obj/item/organ/brain/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		organ.owner,
@@ -37,6 +43,8 @@
 	display_pain(organ.owner, "Your head pounds with unimaginable pain!")
 
 /datum/surgery_operation/organ/lobotomy/on_success(obj/item/organ/brain/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		organ.owner,
@@ -67,6 +75,8 @@
 			organ.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_MAGIC)
 
 /datum/surgery_operation/organ/lobotomy/on_failure(obj/item/organ/brain/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		organ.owner,

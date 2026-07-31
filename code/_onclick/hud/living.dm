@@ -1,4 +1,6 @@
 /datum/hud/living/initialize_screen_objects()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_screen_object(/atom/movable/screen/pull, HUD_MOB_PULL, HUD_GROUP_STATIC, ui_style, ui_living_pull)
 	add_screen_object(/atom/movable/screen/combattoggle/flashy, HUD_MOB_INTENTS, HUD_GROUP_INFO, ui_style, ui_basic_combat_toggle)

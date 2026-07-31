@@ -30,6 +30,8 @@
 
 /// Returns a key for the spritesheet icon, used to avoid duplicates
 /datum/paintable_decal_category/proc/spritesheet_key(dir, state, color)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	PRIVATE_PROC(TRUE)
 
@@ -37,6 +39,8 @@
 
 /// Returns a list of preview icons for every single variety of every decal in this category for use in a spritesheet
 /datum/paintable_decal_category/proc/generate_all_spritesheet_icons()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	. = list()
@@ -52,6 +56,8 @@
 
 /// Returns a list of preview icon for a specific decal state and direction
 /datum/paintable_decal_category/proc/generate_independent_decal_spritesheet_icons(dir, state)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	PRIVATE_PROC(TRUE)
 
@@ -61,6 +67,8 @@
 
 /// Actually generates the preview icon for a specific decal state, direction, and color
 /datum/paintable_decal_category/proc/generate_colored_decal_spritesheet_icon(state, dir, color)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	var/list/decal_data = get_decal_info(state, color, dir)
@@ -77,7 +85,9 @@
 	return floor
 
 /// Constructs and returns this category's UI data
-/datum/paintable_decal_category/proc/get_ui_data() as /list
+/datum/paintable_decal_category/proc/get_ui_data()  as /list
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(cached_category_data)
@@ -117,6 +127,8 @@
 
 /// Checks if the passed icon state is one of this category's decals
 /datum/paintable_decal_category/proc/is_state_valid(state)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	// Ui data has all icon states so let's just piggyback off of that
 	for(var/list/decal_data as anything in get_ui_data()["decal_list"])
@@ -126,6 +138,8 @@
 
 /// Checks if the passed direction is one of this category's directions
 /datum/paintable_decal_category/proc/is_dir_valid(dir)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	for(var/dirname in dir_list)
 		if(dir_list[dirname] == dir)
@@ -134,6 +148,8 @@
 
 /// Checks if the passed color is one of this category's colors
 /datum/paintable_decal_category/proc/is_color_valid(color)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	for(var/colorname in possible_colors)
 		if(possible_colors[colorname] == color)
@@ -144,6 +160,8 @@
  * Used by the decal painter to modify the state of the decal based on the... state.
  */
 /datum/paintable_decal_category/proc/get_decal_info(state, color, dir)
+	procstart = null
+	src.procstart = null
 	// Special case for 8-dir sprites. Rather than add support for both 4-dir and 8-dir,
 	// 8-dir are affixed with "__8" at the end of the icon state. Then we handle it in this proc.
 	if(copytext(state, -3) == "__8")
@@ -202,6 +220,8 @@
 	)
 
 /datum/paintable_decal_category/warning/generate_colored_decal_spritesheet_icon(state, dir, color)
+	procstart = null
+	src.procstart = null
 	var/list/decal_data = get_decal_info(state, color, dir)
 	var/datum/universal_icon/floor = uni_icon(preview_floor_icon, preview_floor_state)
 	var/datum/universal_icon/decal = uni_icon('icons/turf/decals.dmi', decal_data[DECAL_INFO_ICON_STATE], dir = decal_data[DECAL_INFO_DIR])
@@ -209,6 +229,8 @@
 	return floor
 
 /datum/paintable_decal_category/warning/get_decal_info(state, color, dir)
+	procstart = null
+	src.procstart = null
 	// Special case. Default warning stripes are yellow, so don't append anything if passed yellow
 	if(color == "yellow")
 		color = ""
@@ -269,6 +291,8 @@ GLOBAL_LIST_INIT(paintable_decals, init_subtypes(/datum/paintable_decal_category
 	ignore_dir_errors = TRUE
 
 /datum/asset/spritesheet_batched/decals/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	for(var/datum/paintable_decal_category/category as anything in GLOB.paintable_decals)
 		var/list/generated_icons = category.generate_all_spritesheet_icons()
 		for(var/sprite_key in generated_icons)

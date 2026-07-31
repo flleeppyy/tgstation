@@ -9,6 +9,8 @@
 	var/list/y_offsets = list()
 
 /obj/structure/ore_container/food_trough/Entered(atom/movable/mover)
+	procstart = null
+	src.procstart = null
 	if(!istype(mover, /obj/item/stack/ore))
 		return ..()
 	if(list_of_materials[mover.type])
@@ -17,15 +19,21 @@
 	return ..()
 
 /obj/structure/ore_container/food_trough/Exited(atom/movable/mover)
+	procstart = null
+	src.procstart = null
 	if(!istype(mover, /obj/item/stack/ore) || !isnull(locate(mover.type) in contents))
 		return ..()
 	list_of_materials -= mover.type
 	return ..()
 
 /obj/structure/ore_container/food_trough/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/mineral/wood(drop_location(), 5)
 
 /obj/structure/ore_container/food_trough/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/ore_entry in list_of_materials)
 		var/obj/item/ore_item = ore_entry

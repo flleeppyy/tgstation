@@ -34,6 +34,8 @@
 	test_ignored = TRUE
 
 /datum/supply_pack/costumes_toys/randomised/fill(obj/container)
+	procstart = null
+	src.procstart = null
 	var/list/L = contains.Copy()
 	for(var/i in 1 to num_contained)
 		var/item = pick_n_take(L)
@@ -168,6 +170,8 @@
 	crate_type = /obj/structure/closet/crate/wooden
 
 /datum/supply_pack/costumes_toys/costume/fill(obj/container)
+	procstart = null
+	src.procstart = null
 	..()
 	var/funny_gas_internals
 	funny_gas_internals = pick(subtypesof(/obj/item/tank/internals/emergency_oxygen/engi/clown) - /obj/item/tank/internals/emergency_oxygen/engi/clown)
@@ -185,6 +189,8 @@
 	crate_type = /obj/structure/closet/crate/wooden
 
 /datum/supply_pack/costumes_toys/randomised/toys/fill(obj/container)
+	procstart = null
+	src.procstart = null
 	var/the_toy
 	for(var/i in 1 to num_contained)
 		if(prob(50))
@@ -238,6 +244,8 @@
 	discountable = SUPPLY_PACK_STD_DISCOUNTABLE
 
 /datum/supply_pack/costumes_toys/randomised/tcg/fill(obj/container)
+	procstart = null
+	src.procstart = null
 	var/cardpacktype
 	for(var/i in 1 to 10)
 		cardpacktype = pick(subtypesof(/obj/item/cardpack))
@@ -251,6 +259,8 @@
 	discountable = SUPPLY_PACK_STD_DISCOUNTABLE
 
 /datum/supply_pack/costumes_toys/stickers/fill(obj/structure/closet/crate/crate)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to rand(1, 2))
 		new /obj/item/storage/box/stickers(crate)
 
@@ -292,6 +302,8 @@
 	discountable = SUPPLY_PACK_NOT_DISCOUNTABLE
 
 /datum/supply_pack/costumes_toys/christmas/fill(obj/structure/closet/crate/crate)
+	procstart = null
+	src.procstart = null
 	var/list/mail_recipients = list()
 	for(var/mob/living/carbon/human/human in GLOB.player_list)
 		if(human.stat == DEAD || !human.mind)

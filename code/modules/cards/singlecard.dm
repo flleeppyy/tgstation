@@ -29,6 +29,8 @@
 	var/marked_color
 
 /obj/item/toy/singlecard/Initialize(mapload, cardname, obj/item/toy/cards/deck/parent_deck)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.cardname = cardname || src.cardname
 	if(istype(parent_deck))
@@ -54,6 +56,8 @@
 
 
 /obj/item/toy/singlecard/examine(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(user))
 		return
@@ -72,6 +76,8 @@
 		. += span_notice("The card has a [marked_color] mark on the corner!")
 
 /obj/item/toy/singlecard/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item) || src == held_item)
 		context[SCREENTIP_CONTEXT_ALT_LMB] = "Rotate counter-clockwise" // add a ALT_RMB screentip to rotate clockwise
 		context[SCREENTIP_CONTEXT_RMB] = "Flip card"
@@ -102,6 +108,8 @@
 	return NONE
 
 /obj/item/toy/singlecard/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is slitting [user.p_their()] wrists with \the [src]! It looks like [user.p_they()] [user.p_have()] an unlucky card!"))
 	playsound(src, 'sound/items/weapons/bladeslice.ogg', 50, TRUE)
 	return BRUTELOSS
@@ -113,6 +121,8 @@
  * * is_face_up (optional) - Sets flipped state to CARD_FACEDOWN or CARD_FACEUP if given (otherwise just invert the flipped state)
  */
 /obj/item/toy/singlecard/proc/Flip(is_face_up)
+	procstart = null
+	src.procstart = null
 	if(!isnull(is_face_up))
 		flipped = is_face_up
 	else
@@ -128,6 +138,8 @@
  * * user - We need to check if the user see the marked card
  */
 /obj/item/toy/singlecard/proc/getMarkedColor(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return
 	var/is_marked_with_visible_color = (marked_color && marked_color != "invisible")
@@ -135,6 +147,8 @@
 		return marked_color
 
 /obj/item/toy/singlecard/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!flipped)
 		icon_state = "singlecard_down_[deckstyle]"
 	else if(has_unique_card_icons) // each card in a deck has a different icon
@@ -144,10 +158,14 @@
 	return ..()
 
 /obj/item/toy/singlecard/update_name()
+	procstart = null
+	src.procstart = null
 	name = flipped ? cardname : "card"
 	return ..()
 
 /obj/item/toy/singlecard/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/obj/item/toy/singlecard/card = null
 
 	if(istype(tool, /obj/item/toy/cards/deck))
@@ -216,10 +234,14 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/toy/singlecard/attack_hand_secondary(mob/living/carbon/human/user, modifiers)
+	procstart = null
+	src.procstart = null
 	attack_self(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/toy/singlecard/attack_self(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user) || !user.can_perform_action(src, NEED_DEXTERITY|FORBID_TELEKINESIS_REACH))
 		return
 
@@ -228,6 +250,8 @@
 		user.balloon_alert_to_viewers("flips a card")
 
 /obj/item/toy/singlecard/click_alt(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	transform = turn(transform, 90)
 		// use the simple_rotation component to make this turn with Alt+RMB & Alt+LMB at some point in the future - TimT
 	return CLICK_ACTION_SUCCESS

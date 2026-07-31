@@ -11,6 +11,8 @@
 	VAR_PRIVATE/next_loop_time
 
 /datum/component/area_sound_manager/Initialize(area_loop_pairs, change_on, remove_on, acceptable_zs)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(parent))
 		return
 	area_to_looping_type = area_loop_pairs
@@ -31,10 +33,14 @@
 		RegisterSignal(parent, remove_on, PROC_REF(handle_removal))
 
 /datum/component/area_sound_manager/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(our_loop)
 	. = ..()
 
 /datum/component/area_sound_manager/proc/react_to_move(datum/source, atom/oldloc, dir, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/list/loop_lookup = area_to_looping_type
 	if(loop_lookup[get_area(oldloc)] == loop_lookup[get_area(parent)])
@@ -42,20 +48,28 @@
 	change_the_track(TRUE)
 
 /datum/component/area_sound_manager/proc/react_to_z_move(datum/source, turf/old_turf, turf/new_turf)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!length(accepted_zs) || (new_turf?.z in accepted_zs))
 		return
 	qdel(src)
 
 /datum/component/area_sound_manager/proc/handle_removal(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /datum/component/area_sound_manager/proc/handle_change(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	change_the_track()
 
 /datum/component/area_sound_manager/proc/change_the_track(skip_start = FALSE)
+	procstart = null
+	src.procstart = null
 	var/existing_loop_id = our_loop?.timer_id
 	if(existing_loop_id)
 		// Time left will sometimes return negative values, just ignore them and start a new sound loop now
@@ -78,4 +92,6 @@
 	start_looping_sound()
 
 /datum/component/area_sound_manager/proc/start_looping_sound()
+	procstart = null
+	src.procstart = null
 	our_loop?.start()

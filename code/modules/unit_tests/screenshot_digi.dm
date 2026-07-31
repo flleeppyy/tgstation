@@ -2,6 +2,8 @@
 /datum/unit_test/screenshot_digi
 
 /datum/unit_test/screenshot_digi/Run()
+	procstart = null
+	src.procstart = null
 	var/icon/finished_icon = icon('icons/effects/effects.dmi', "nothing")
 	var/mob/living/carbon/human/consistent/dummy = allocate(__IMPLIED_TYPE__)
 

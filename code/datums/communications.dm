@@ -32,6 +32,8 @@ GLOBAL_DATUM_INIT(communications_controller, /datum/communciations_controller, n
 	var/announced_greenshift = FALSE
 
 /datum/communciations_controller/proc/can_announce(mob/living/user, is_silicon)
+	procstart = null
+	src.procstart = null
 	if(is_silicon && COOLDOWN_FINISHED(src, silicon_message_cooldown))
 		return TRUE
 	else if(!is_silicon && COOLDOWN_FINISHED(src, nonsilicon_message_cooldown))
@@ -40,6 +42,8 @@ GLOBAL_DATUM_INIT(communications_controller, /datum/communciations_controller, n
 		return FALSE
 
 /datum/communciations_controller/proc/make_announcement(mob/living/user, is_silicon, input, syndicate, list/players)
+	procstart = null
+	src.procstart = null
 	if(!can_announce(user, is_silicon))
 		return FALSE
 	if(is_silicon)
@@ -56,6 +60,8 @@ GLOBAL_DATUM_INIT(communications_controller, /datum/communciations_controller, n
 	message_admins("[ADMIN_LOOKUPFLW(user)] has made a priority announcement.")
 
 /datum/communciations_controller/proc/send_message(datum/comm_message/sending,print = TRUE,unique = FALSE, contains_advanced_html = FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/computer/communications/C in GLOB.shuttle_caller_list)
 		if(!(C.machine_stat & (BROKEN|NOPOWER)) && is_station_level(C.z))
 			if(unique)
@@ -72,9 +78,13 @@ GLOBAL_DATUM_INIT(communications_controller, /datum/communciations_controller, n
 
 // Called AFTER everyone is equipped with their job
 /datum/communciations_controller/proc/queue_roundstart_report()
+	procstart = null
+	src.procstart = null
 	addtimer(CALLBACK(src, PROC_REF(send_roundstart_report)), rand(waittime_l, waittime_h))
 
 /datum/communciations_controller/proc/send_roundstart_report(greenshift)
+	procstart = null
+	src.procstart = null
 	if(block_command_report) //If we don't want the report to be printed just yet, we put it off until it's ready
 		addtimer(CALLBACK(src, PROC_REF(send_roundstart_report), greenshift), 10 SECONDS)
 		return
@@ -163,6 +173,8 @@ GLOBAL_DATUM_INIT(communications_controller, /datum/communciations_controller, n
 
 /// Return a random flavor/meme report to use in the command report
 /datum/communciations_controller/proc/get_main_report_content()
+	procstart = null
+	src.procstart = null
 	if(istype(SSstation.announcer, /datum/centcom_announcer/intern))
 		return pick_list_replacements("flavor_reports.json", "intern_reports")
 	return pick_list_replacements("flavor_reports.json", "reports")

@@ -36,6 +36,8 @@
 	alpha = 40
 
 /mob/living/basic/mega_arachnid/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/innate_actions = list(
 		/datum/action/cooldown/mob_cooldown/secrete_acid = BB_ARACHNID_SLIP,
@@ -49,6 +51,8 @@
 	AddComponent(/datum/component/tree_climber, climbing_distance = 15)
 
 /mob/living/basic/mega_arachnid/Login()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !client)
 		return FALSE

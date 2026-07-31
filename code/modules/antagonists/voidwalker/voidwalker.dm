@@ -12,21 +12,29 @@
 	suicide_cry = "FOR THE VOID!!"
 
 /datum/antagonist/voidwalker/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.announce_objectives()
 
 /datum/antagonist/voidwalker/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	forge_objectives()
 
 /datum/antagonist/voidwalker/get_preview_icon()
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/voidwalker/walker_type = /mob/living/basic/voidwalker
 	var/datum/universal_icon/icon = uni_icon(walker_type::icon, walker_type::icon_state)
 	icon.crop(5, 18, 30, 44)
 	return finish_preview_icon(icon)
 
 /datum/antagonist/voidwalker/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/voidwalker_objective/objective = new
 	objective.owner = owner
 	objectives += objective
@@ -34,6 +42,8 @@
 /datum/objective/voidwalker_objective
 
 /datum/objective/voidwalker_objective/New()
+	procstart = null
+	src.procstart = null
 	var/list/explanation_texts = list(
 		"Show them the beauty of the void. Drag them into the cosmic abyss, then impart the truth of the void unto them. Seek to enlighten, not destroy.",
 		"They must see what you have seen. They must walk where you have walked. Bring them to the void and show them the truth. The dead cannot know what you know.",
@@ -46,4 +56,6 @@
 	..()
 
 /datum/objective/voidwalker_objective/check_completion()
+	procstart = null
+	src.procstart = null
 	return owner.current && owner.current.stat != DEAD

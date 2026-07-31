@@ -15,6 +15,8 @@
 	var/sword_active = FALSE
 
 /mob/living/basic/bot/secbot/grievous/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(weapon, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_weapon_transform))
 	var/static/list/abilities = list(
@@ -26,6 +28,8 @@
 
 
 /mob/living/basic/bot/secbot/grievous/check_block(atom/hit_by, damage, attack_text = "the attack", attack_type = MELEE_ATTACK, armour_penetration = 0, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & FAILED_BLOCK)
 		return .
@@ -33,16 +37,22 @@
 	return (sword_active && prob(block_chance) ? SUCCESSFUL_BLOCK : FAILED_BLOCK)
 
 /mob/living/basic/bot/secbot/grievous/proc/on_weapon_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(active)
 		visible_message(span_warning("[src] ignites his energy swords!"))
 	sword_active = active
 	update_icon_state()
 
-/mob/living/basic/bot/secbot/grievous/add_arrest_component() //i dont think we'll be arresting people...
+/mob/living/basic/bot/secbot/grievous/add_arrest_component()
+	procstart = null
+	src.procstart = null //i dont think we'll be arresting people...
 	return
 
 /mob/living/basic/bot/secbot/grievous/proc/block_bullets(datum/source, obj/projectile/hitting_projectile)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(IS_UNCONSCIOUS_OR_CRIT(src))
@@ -56,6 +66,8 @@
 	return COMPONENT_BULLET_BLOCKED
 
 /mob/living/basic/bot/secbot/grievous/on_entered(datum/source, atom/movable/movable_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismob(movable_target) || !ai_controller.blackboard[BB_CURRENT_TARGET] == movable_target)
 		return
@@ -65,15 +77,21 @@
 
 
 /mob/living/basic/bot/secbot/grievous/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	icon_state = "[base_icon_state][ sword_active ? "-c" : ""]"
 
 /mob/living/basic/bot/secbot/grievous/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(weapon)
 	return ..()
 
 /mob/living/basic/bot/secbot/grievous/early_melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -82,6 +100,8 @@
 	return BASIC_MOB_END_ATTACK_CHAIN_COOLDOWN
 
 /mob/living/basic/bot/secbot/grievous/explode()
+	procstart = null
+	src.procstart = null
 	var/atom/drop_location = drop_location()
 	//Parent is dropping the weapon, so let's drop 3 more to make up for it.
 	for(var/i in 0 to 3)

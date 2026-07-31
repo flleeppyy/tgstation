@@ -37,6 +37,8 @@
 	bodyshapes_with_variations = NONE
 
 /obj/item/clothing/under/syndicate/bloodred/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -4) //extra-tactical
 
@@ -74,11 +76,15 @@
 	acid = 40
 
 /obj/item/clothing/under/syndicate/tacticool/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "It has a label that says cleaning this 'genuine' Waffle Corp. product with cleaning solutions other than Grime Liberator telelocational podcrystals will void the warranty."
 	. += "What on earth is a <font color='red'>tele</font>locational pod<font color='red'>crystal</font>?"
 
 /obj/item/clothing/under/syndicate/tacticool/dye_item(dye_color, dye_key_override)
+	procstart = null
+	src.procstart = null
 	if(dye_color == DYE_SYNDICATE)
 		if(dying_key == DYE_REGISTRY_JUMPSKIRT)
 			special_wash(/obj/item/clothing/under/syndicate/skirt)
@@ -89,6 +95,8 @@
 	return ..()
 
 /obj/item/clothing/under/syndicate/tacticool/proc/special_wash(obj/item/clothing/under/syndicate/our_jumpsuit)
+	procstart = null
+	src.procstart = null
 	new our_jumpsuit(loc)
 
 /obj/item/clothing/under/syndicate/tacticool/skirt
@@ -140,6 +148,8 @@
 	bodyshapes_with_variations = NONE
 
 /obj/item/clothing/under/syndicate/floortilecamo/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -5) //tacticool
 
@@ -189,6 +199,8 @@
 	armor_type = /datum/armor/clothing_under/syndicate_scrubs
 
 /obj/item/clothing/under/syndicate/scrubs/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -3) //FISH DOCTOR?!
 

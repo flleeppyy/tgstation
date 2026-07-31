@@ -3,6 +3,8 @@
 	desc = "You can see a moldy piece of sandwich inside the dish. Maybe it helped to preserve the bacteria for that long."
 
 /obj/item/petri_dish/oldstation/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	sample = new
 	sample.GenerateSample(CELL_LINE_TABLE_COW, null, 1, 0)

@@ -36,22 +36,30 @@
 	var/no_den_usage = FALSE
 
 /obj/item/gun/magic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ITEM_MAGICALLY_CHARGED, PROC_REF(on_magic_charge))
 
 /obj/item/gun/magic/apply_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	recharge_rate = modify_fantasy_variable("recharge_rate", recharge_rate, -bonus, minimum = 1)
 	max_charges = modify_fantasy_variable("max_charges", max_charges, bonus)
 	charges = modify_fantasy_variable("charges", charges, bonus)
 
 /obj/item/gun/magic/remove_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	recharge_rate = reset_fantasy_variable("recharge_rate", recharge_rate)
 	max_charges = reset_fantasy_variable("max_charges", max_charges)
 	charges = reset_fantasy_variable("charges", charges)
 	return ..()
 
 /obj/item/gun/magic/fire_sounds()
+	procstart = null
+	src.procstart = null
 	var/pitch_to_use = 1
 
 	if (pitch_with_charges && max_charges > 1)
@@ -71,6 +79,8 @@
  * Adds uses to wands or staffs.
  */
 /obj/item/gun/magic/proc/on_magic_charge(datum/source, datum/action/cooldown/spell/charge/spell, mob/living/caster)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	. = COMPONENT_ITEM_CHARGED
@@ -90,6 +100,8 @@
 	return .
 
 /obj/item/gun/magic/process_fire(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
+	procstart = null
+	src.procstart = null
 	if(no_den_usage)
 		var/area/A = get_area(user)
 		if(istype(A, /area/centcom/wizard_station))
@@ -104,20 +116,28 @@
 	return ..()
 
 /obj/item/gun/magic/can_shoot()
+	procstart = null
+	src.procstart = null
 	return charges
 
 /obj/item/gun/magic/recharge_newshot()
+	procstart = null
+	src.procstart = null
 	if (!charges || !chambered || chambered.loaded_projectile)
 		return
 	chambered.newshot()
 	return ..()
 
 /obj/item/gun/magic/handle_chamber()
+	procstart = null
+	src.procstart = null
 	if(chambered && !chambered.loaded_projectile) //if BB is null, i.e the shot has been fired...
 		charges--//... drain a charge
 		recharge_newshot()
 
 /obj/item/gun/magic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	charges = max_charges
 	if(ammo_type)
@@ -127,11 +147,15 @@
 	RegisterSignal(src, COMSIG_ITEM_RECHARGED, PROC_REF(instant_recharge))
 
 /obj/item/gun/magic/Destroy()
+	procstart = null
+	src.procstart = null
 	if(self_charging)
 		STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/gun/magic/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if (charges >= max_charges)
 		charge_timer = 0
 		return
@@ -145,9 +169,13 @@
 	return 1
 
 /obj/item/gun/magic/shoot_with_empty_chamber(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("\The [src] whizzles quietly."))
 
 /obj/item/gun/magic/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is twisting [src] above [user.p_their()] head, releasing a magical blast! It looks like [user.p_theyre()] trying to commit suicide!"))
 	if (can_user_shoot(user))
 		charges--
@@ -157,20 +185,28 @@
 
 /// Extend to do something funny
 /obj/item/gun/magic/proc/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	playsound(loc, fire_sound, 50, TRUE, -1)
 	return FIRELOSS
 
 /// Returns true if specified mob can fire this weapon
 /obj/item/gun/magic/proc/can_user_shoot(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return can_shoot() && user.can_cast_magic(antimagic_flags)
 
 /obj/item/gun/magic/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(var_name)
 		if(NAMEOF(src, charges))
 			recharge_newshot()
 
 /obj/item/gun/magic/proc/instant_recharge()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	charges = max_charges
 	recharge_newshot()

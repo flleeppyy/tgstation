@@ -29,20 +29,28 @@
 	acid = 20
 
 /obj/machinery/computer/Initialize(mapload, obj/item/circuitboard/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	power_change()
 
 /obj/machinery/computer/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(SStts.tts_enabled)
 		voice = SStts.computer_voice
 
 /obj/machinery/computer/mouse_drop_receive(mob/living/dropping, mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// We add the component only once here & not in Initialize() because there are tons of computers & we don't want to add to their init times
 	LoadComponent(/datum/component/leanable, dropping)
 
-/obj/machinery/computer/CanAllowThrough(atom/movable/mover, border_dir) // allows projectiles to fly over the computer
+/obj/machinery/computer/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null // allows projectiles to fly over the computer
 	. = ..()
 	if(.)
 		return
@@ -60,11 +68,15 @@
 	return FALSE
 
 /obj/machinery/computer/process()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (NOPOWER|BROKEN))
 		return FALSE
 	return TRUE
 
 /obj/machinery/computer/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(icon_keyboard)
 		if(keyboard_change_icon && (machine_stat & NOPOWER))
@@ -85,6 +97,8 @@
 		. += emissive_appearance(icon, icon_screen, src)
 
 /obj/machinery/computer/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & NOPOWER)
 		set_light(0)
@@ -92,6 +106,8 @@
 		set_light(brightness_on)
 
 /obj/machinery/computer/screwdriver_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 	if(circuit)
@@ -101,6 +117,8 @@
 	return TRUE
 
 /obj/machinery/computer/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(machine_stat & BROKEN)
@@ -111,6 +129,8 @@
 			playsound(src.loc, 'sound/items/tools/welder.ogg', 100, TRUE)
 
 /obj/machinery/computer/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!circuit) //no circuit, no breaking
 		return
 	. = ..()
@@ -118,7 +138,9 @@
 		playsound(loc, 'sound/effects/glass/glassbr3.ogg', 100, TRUE)
 		set_light(0)
 
-/obj/machinery/computer/proc/imprint_gps(gps_tag) // Currently used by the upload computers and communications console
+/obj/machinery/computer/proc/imprint_gps(gps_tag)
+	procstart = null
+	src.procstart = null // Currently used by the upload computers and communications console
 	if(!length(gps_tag)) // Don't give a null GPS signal if there is none
 		CRASH("[src] called imprint_gps without setting gps_tag")
 	var/set_tracker = FALSE
@@ -131,6 +153,8 @@
 		balloon_alert_to_viewers("board tracker enabled", vision_distance = 1)
 
 /obj/machinery/computer/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!(. & EMP_PROTECT_SELF))
 		switch(severity)
@@ -142,6 +166,8 @@
 					atom_break(ENERGY)
 
 /obj/machinery/computer/spawn_frame(disassembled)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(circuit)) //no circuit, no computer frame
 		return
 
@@ -164,17 +190,23 @@
 	new_frame.update_appearance(UPDATE_ICON_STATE)
 
 /obj/machinery/computer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	. = ..()
 	update_use_power(ACTIVE_POWER_USE)
 
 /obj/machinery/computer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	. = ..()
 	if(!issilicon(ui.user))
 		playsound(src, SFX_KEYBOARD_CLICKS, 10, TRUE, FALSE)
 
 /obj/machinery/computer/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	. = ..()
 	update_use_power(IDLE_POWER_USE)

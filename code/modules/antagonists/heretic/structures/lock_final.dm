@@ -25,6 +25,8 @@
 	)
 
 /obj/structure/lock_tear/Initialize(mapload, datum/mind/ascendant_mind)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transform *= 3
 	if(isnull(monster_types))
@@ -37,6 +39,8 @@
 
 /// Ask ghosts if they want to make some noise
 /obj/structure/lock_tear/proc/poll_ghosts()
+	procstart = null
+	src.procstart = null
 	var/list/candidates = SSpolling.poll_ghost_candidates("Would you like to be a random [span_notice("eldritch monster")] attacking the crew?", check_jobban = ROLE_SENTIENCE, role = ROLE_SENTIENCE, poll_time = 10 SECONDS, ignore_category = POLL_IGNORE_HERETIC_MONSTER, alert_pic = src, role_name_text = "eldritch monster")
 	while(LAZYLEN(candidates))
 		var/mob/dead/observer/candidate = pick_n_take(candidates)
@@ -45,6 +49,8 @@
 
 /// Destroy the rift if you kill the heretic
 /obj/structure/lock_tear/proc/end_madness(datum/former_master)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/turf/our_turf = get_turf(src)
 	playsound(our_turf, 'sound/effects/magic/castsummon.ogg', vol = 100, vary = TRUE)
@@ -54,12 +60,16 @@
 	qdel(src)
 
 /obj/structure/lock_tear/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || gathering_candidates)
 		return
 	ghost_to_monster(user)
 
 /obj/structure/lock_tear/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isobserver(user) || gathering_candidates)
 		return
@@ -67,6 +77,8 @@
 
 /// Turn a ghost into an 'orrible beast
 /obj/structure/lock_tear/proc/ghost_to_monster(mob/dead/observer/user, should_ask = TRUE)
+	procstart = null
+	src.procstart = null
 	if(should_ask)
 		var/ask = tgui_alert(user, "Become a monster?", "Ascended Rift", list("Yes", "No"))
 		if(ask != "Yes" || QDELETED(src) || QDELETED(user))
@@ -88,9 +100,13 @@
 	woohoo_free_antag.objectives += kill_all_your_friends
 
 /obj/structure/lock_tear/move_crushed(atom/movable/pusher, force = MOVE_FORCE_DEFAULT, direction)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/structure/lock_tear/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(ascendee)
 		ascendee = null
 	return ..()
@@ -106,6 +122,8 @@
 	duration = 1 SECONDS
 
 /obj/effect/temp_visual/destabilising_tear/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transform *= 3
 	animate(src, transform = matrix().Scale(3.2), time = 0.15 SECONDS)

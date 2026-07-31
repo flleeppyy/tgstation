@@ -37,6 +37,8 @@
 	inhand_icon_state = "p_suit"
 
 /obj/item/clothing/under/misc/psyche/get_general_color(icon/base_icon)
+	procstart = null
+	src.procstart = null
 	return "#3f3f3f"
 
 /obj/item/clothing/under/misc/vice_officer
@@ -63,6 +65,8 @@
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 
 /obj/item/clothing/under/misc/adminsuit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -25)
 

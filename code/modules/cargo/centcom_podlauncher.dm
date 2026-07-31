@@ -68,7 +68,9 @@ ADMIN_VERB(centcom_podlauncher, R_ADMIN, "Config/Launch Supplypod", "Configure a
 	var/static/list/pod_style_info
 	var/static/list/pod_style_lookup
 
-/datum/centcom_podlauncher/New(user) //user can either be a client or a mob
+/datum/centcom_podlauncher/New(user)
+	procstart = null
+	src.procstart = null //user can either be a client or a mob
 	if (user) //Prevents runtimes on datums being made without clients
 		setup(user)
 	if (!isnull(pod_style_info))
@@ -79,7 +81,9 @@ ADMIN_VERB(centcom_podlauncher, R_ADMIN, "Config/Launch Supplypod", "Configure a
 		pod_style_info += list(list("id" = style::id, "title" = style::ui_name))
 		pod_style_lookup[style::id] = style
 
-/datum/centcom_podlauncher/proc/setup(user) //H can either be a client or a mob
+/datum/centcom_podlauncher/proc/setup(user)
+	procstart = null
+	src.procstart = null //H can either be a client or a mob
 	if (istype(user,/client))
 		var/client/user_client = user
 		holder = user_client //if its a client, assign it to holder
@@ -99,6 +103,8 @@ ADMIN_VERB(centcom_podlauncher, R_ADMIN, "Config/Launch Supplypod", "Configure a
 	ui_interact(holder.mob)
 
 /datum/centcom_podlauncher/proc/initMap(datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(cam_screen)
 		QDEL_NULL(cam_screen)
 
@@ -117,16 +123,22 @@ ADMIN_VERB(centcom_podlauncher, R_ADMIN, "Config/Launch Supplypod", "Configure a
 	refreshView()
 
 /datum/centcom_podlauncher/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	if (SSticker.current_state >= GAME_STATE_FINISHED)
 		return GLOB.always_state //Allow the UI to be given to players by admins after roundend
 	return ADMIN_STATE(R_ADMIN)
 
 /datum/centcom_podlauncher/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/supplypods),
 	)
 
 /datum/centcom_podlauncher/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		// Open UI
@@ -136,13 +148,17 @@ ADMIN_VERB(centcom_podlauncher, R_ADMIN, "Config/Launch Supplypod", "Configure a
 	return ui
 
 /datum/centcom_podlauncher/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["mapRef"] = map_name
 	data["defaultSoundVolume"] = initial(temp_pod.soundVolume) //default volume for pods
 	data["podStyles"] = pod_style_info
 	return data
 
-/datum/centcom_podlauncher/ui_data(mob/user) //Sends info about the pod to the UI.
+/datum/centcom_podlauncher/ui_data(mob/user)
+	procstart = null
+	src.procstart = null //Sends info about the pod to the UI.
 	var/list/data = list() //*****NOTE*****: Many of these comments are similarly described in supplypod.dm. If you change them here, please consider doing so in the supplypod code as well!
 	bayNumber = bay?.loading_id //Used as quick reference to what bay we're taking items from
 	data["bayNumber"] = bayNumber //Holds the bay as a number. Useful for comparisons in centcom_podlauncher.ract
@@ -189,6 +205,8 @@ ADMIN_VERB(centcom_podlauncher, R_ADMIN, "Config/Launch Supplypod", "Configure a
 	return data
 
 /datum/centcom_podlauncher/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -543,31 +561,43 @@ ADMIN_VERB(centcom_podlauncher, R_ADMIN, "Config/Launch Supplypod", "Configure a
 			. = TRUE
 
 /datum/centcom_podlauncher/ui_close(mob/user) //Uses the destroy() proc. When the user closes the UI, we clean up the temp_pod and supplypod_selector variables.
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(temp_pod)
 	qdel(src)
 
 /datum/centcom_podlauncher/proc/setupViewPod()
+	procstart = null
+	src.procstart = null
 	setupView(RANGE_TURFS(2, temp_pod))
 
 /datum/centcom_podlauncher/proc/setupViewBay()
+	procstart = null
+	src.procstart = null
 	var/list/visible_turfs = list()
 	for(var/turf/bay_turf in bay)
 		visible_turfs += bay_turf
 	setupView(visible_turfs)
 
 /datum/centcom_podlauncher/proc/setupViewDropoff()
+	procstart = null
+	src.procstart = null
 	var/list/coords_list = temp_pod.reverse_dropoff_coords
 	var/turf/drop = locate(coords_list[1], coords_list[2], coords_list[3])
 	setupView(RANGE_TURFS(3, drop))
 
 /datum/centcom_podlauncher/proc/setupView(list/visible_turfs)
+	procstart = null
+	src.procstart = null
 	var/list/bbox = get_bbox_of_atoms(visible_turfs)
 	var/size_x = bbox[3] - bbox[1] + 1
 	var/size_y = bbox[4] - bbox[2] + 1
 
 	cam_screen.show_camera(visible_turfs, size_x, size_y)
 
-/datum/centcom_podlauncher/proc/updateCursor(forceClear = FALSE) //Update the mouse of the user
+/datum/centcom_podlauncher/proc/updateCursor(forceClear = FALSE)
+	procstart = null
+	src.procstart = null //Update the mouse of the user
 	if (!holder) //Can't update the mouse icon if the client doesnt exist!
 		return
 	if (!forceClear && (launcherActivated || picking_dropoff_turf)) //If the launching param is true, we give the user new mouse icons.
@@ -588,7 +618,9 @@ ADMIN_VERB(centcom_podlauncher, R_ADMIN, "Config/Launch Supplypod", "Configure a
 		holder.click_intercept = null
 		holder_mob?.update_mouse_pointer() //set the moues icons to null, then call update_moues_pointer() which resets them to the correct values based on what the mob is doing (in a mech, holding a spell, etc)()
 
-/datum/centcom_podlauncher/proc/InterceptClickOn(user,params,atom/target) //Click Intercept so we know where to send pods where the user clicks
+/datum/centcom_podlauncher/proc/InterceptClickOn(user,params,atom/target)
+	procstart = null
+	src.procstart = null //Click Intercept so we know where to send pods where the user clicks
 	var/list/modifiers = params2list(params)
 
 	var/left_click = LAZYACCESS(modifiers, LEFT_CLICK)
@@ -641,6 +673,8 @@ ADMIN_VERB(centcom_podlauncher, R_ADMIN, "Config/Launch Supplypod", "Configure a
 			to_chat(user, span_notice("You've selected [target_turf] at [COORD(target_turf)] as your dropoff location."))
 
 /datum/centcom_podlauncher/proc/refreshView()
+	procstart = null
+	src.procstart = null
 	switch(tabIndex)
 		if (TAB_POD)
 			setupViewPod()
@@ -649,13 +683,17 @@ ADMIN_VERB(centcom_podlauncher, R_ADMIN, "Config/Launch Supplypod", "Configure a
 		else
 			setupViewDropoff()
 
-/datum/centcom_podlauncher/proc/refreshBay() //Called whenever the bay is switched, as well as wheneber a pod is launched
+/datum/centcom_podlauncher/proc/refreshBay()
+	procstart = null
+	src.procstart = null //Called whenever the bay is switched, as well as wheneber a pod is launched
 	bay = GLOB.supplypod_loading_bays[bayNumber]
 	orderedArea = createOrderedArea(bay) //Create an ordered list full of turfs form the bay
 	preLaunch() //Fill acceptable turfs from orderedArea, then fill launchList from acceptableTurfs (see proc for more info)
 	refreshView()
 
-/datum/centcom_podlauncher/proc/createOrderedArea(area/area_to_order) //This assumes the area passed in is a continuous square
+/datum/centcom_podlauncher/proc/createOrderedArea(area/area_to_order)
+	procstart = null
+	src.procstart = null //This assumes the area passed in is a continuous square
 	if (isnull(area_to_order)) //If theres no supplypod bay mapped into centcom, throw an error
 		to_chat(holder.mob, "No /area/centcom/central_command_areas/supplypod/loading/one (or /two or /three or /four) in the world! You can make one yourself (then refresh) for now, but yell at a mapper to fix this, today!")
 		CRASH("No /area/centcom/central_command_areas/supplypod/loading/one (or /two or /three or /four) has been mapped into the centcom z-level!")
@@ -679,7 +717,9 @@ ADMIN_VERB(centcom_podlauncher, R_ADMIN, "Config/Launch Supplypod", "Configure a
 				orderedArea.Add(locate(horizontal, startY - (vertical - endY), 1)) //After gathering the start/end x and y, go through locating each turf from top left to bottom right, like one would read a book
 	return orderedArea //Return the filled list
 
-/datum/centcom_podlauncher/proc/preLaunch() //Creates a list of acceptable items,
+/datum/centcom_podlauncher/proc/preLaunch()
+	procstart = null
+	src.procstart = null //Creates a list of acceptable items,
 	numTurfs = 0 //Counts the number of turfs that can be launched (remember, supplypods either launch all at once or one turf-worth of items at a time)
 	acceptableTurfs = list()
 	for (var/t in orderedArea) //Go through the orderedArea list
@@ -712,7 +752,9 @@ ADMIN_VERB(centcom_podlauncher, R_ADMIN, "Config/Launch Supplypod", "Configure a
 	updateSelector() //Call updateSelector(), which, if we are launching one at a time (launchChoice == 2), will move to the next turf that will be launched
 	//UpdateSelector() is here (instead if the if(1) switch block) because it also moves the selector to nullspace (to hide it) if needed
 
-/datum/centcom_podlauncher/proc/launch(turf/target_turf) //Game time started
+/datum/centcom_podlauncher/proc/launch(turf/target_turf)
+	procstart = null
+	src.procstart = null //Game time started
 	if (isnull(target_turf))
 		return
 	var/obj/structure/closet/supplypod/centcompod/toLaunch = duplicate_object(temp_pod, GLOB.areas_by_type[/area/centcom/central_command_areas/supplypod/supplypod_temp_holding]) //Duplicate the temp_pod (which we have been varediting or configuring with the UI) and store the result
@@ -764,7 +806,9 @@ ADMIN_VERB(centcom_podlauncher, R_ADMIN, "Config/Launch Supplypod", "Configure a
 		launchCounter++ //We only need to increment launchCounter if we are cloning objects.
 		//If we aren't cloning objects, taking and removing the first item each time from the acceptableTurfs list will inherently iterate through the list in order
 
-/datum/centcom_podlauncher/proc/updateSelector() //Ensures that the selector effect will showcase the next item if needed
+/datum/centcom_podlauncher/proc/updateSelector()
+	procstart = null
+	src.procstart = null //Ensures that the selector effect will showcase the next item if needed
 	if (launchChoice == LAUNCH_ORDERED && length(acceptableTurfs) > 1 && !temp_pod.reversing && !temp_pod.effectMissile) //We only show the selector if we are taking items from the bay
 		var/index = (launchCounter == 1 ? launchCounter : launchCounter + 1) //launchCounter acts as an index to the ordered acceptableTurfs list, so adding one will show the next item in the list. We don't want to do this for the very first item tho
 		if (index > length(acceptableTurfs)) //out of bounds check
@@ -773,7 +817,9 @@ ADMIN_VERB(centcom_podlauncher, R_ADMIN, "Config/Launch Supplypod", "Configure a
 	else
 		selector.moveToNullspace() //Otherwise, we move the selector to nullspace until it is needed again
 
-/datum/centcom_podlauncher/proc/clearBay() //Clear all objs and mobs from the selected bay
+/datum/centcom_podlauncher/proc/clearBay()
+	procstart = null
+	src.procstart = null //Clear all objs and mobs from the selected bay
 	for (var/obj/object in bay.get_all_contents())
 		if (istype(object, /obj/effect/light_emitter/podbay))
 			continue
@@ -785,6 +831,8 @@ ADMIN_VERB(centcom_podlauncher, R_ADMIN, "Config/Launch Supplypod", "Configure a
 		turf_to_clear.ChangeTurf(/turf/open/floor/iron)
 
 /datum/centcom_podlauncher/Destroy() //The Destroy() proc. This is called by ui_close proc, or whenever the user leaves the game
+	procstart = null
+	src.procstart = null
 	updateCursor(TRUE) //Make sure our moues cursor resets to default. False means we are not in launch mode
 	QDEL_NULL(selector) //Delete the selector effect
 	QDEL_NULL(indicator)
@@ -792,6 +840,8 @@ ADMIN_VERB(centcom_podlauncher, R_ADMIN, "Config/Launch Supplypod", "Configure a
 	return ..()
 
 /datum/centcom_podlauncher/proc/supplypod_punish_log(list/whoDyin)
+	procstart = null
+	src.procstart = null
 	var/podString = effectBurst ? "5 pods" : "a pod"
 	var/whomString = ""
 	if (LAZYLEN(whoDyin))
@@ -805,6 +855,8 @@ ADMIN_VERB(centcom_podlauncher, R_ADMIN, "Config/Launch Supplypod", "Configure a
 			admin_ticket_log(M, "[key_name_admin(usr)] [msg]")
 
 /datum/centcom_podlauncher/proc/loadData(list/dataToLoad)
+	procstart = null
+	src.procstart = null
 	bayNumber = dataToLoad["bayNumber"]
 	customDropoff = dataToLoad["customDropoff"]
 	launchClone = dataToLoad["launchClone"] //Do we launch the actual items in the bay or just launch clones of them?
@@ -852,6 +904,8 @@ GLOBAL_DATUM_INIT(podlauncher, /datum/centcom_podlauncher, new)
 
 //Set the dropoff location and indicator to either a specific turf or somewhere in an area
 /datum/centcom_podlauncher/proc/setDropoff(target)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf
 	if (isturf(target))
 		target_turf = target

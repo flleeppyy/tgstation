@@ -15,6 +15,8 @@
 	COOLDOWN_DECLARE(scan_cooldown)
 
 /obj/item/chameleon_scanner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_item_context()
 
@@ -35,6 +37,8 @@
 	return NONE
 
 /obj/item/chameleon_scanner/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!IS_TRAITOR(user))
 		return
@@ -45,14 +49,20 @@
 	. += span_red("<b>Right click</b> will do the same, but instantly equip the outfit you obtain.")
 
 /obj/item/chameleon_scanner/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return scan_target(interacting_with, user) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 
 /obj/item/chameleon_scanner/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(SHOULD_SKIP_INTERACTION(interacting_with, src, user))
 		return NONE
 	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/chameleon_scanner/ranged_interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isliving(interacting_with) && !isturf(interacting_with))
 		return NONE
 	var/list/scanned_outfit = scan_target(interacting_with, user)
@@ -65,6 +75,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/chameleon_scanner/ranged_interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return interact_with_atom_secondary(interacting_with, user, modifiers)
 
 /**
@@ -76,6 +88,8 @@
  * Returns null or a list of paths scanned. Will not return an empty list.
  */
 /obj/item/chameleon_scanner/proc/scan_target(atom/scanned, mob/scanner)
+	procstart = null
+	src.procstart = null
 
 	var/mob/living/carbon/human/mob_copying
 	if(ishuman(scanned))

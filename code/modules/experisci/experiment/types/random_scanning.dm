@@ -9,6 +9,8 @@
 	var/max_requirement_per_type = 100
 
 /datum/experiment/scanning/random/New(datum/techweb/techweb)
+	procstart = null
+	src.procstart = null
 	// Generate random contents
 	if (possible_types.len)
 		var/picked = 0
@@ -21,16 +23,22 @@
 	..()
 
 /datum/experiment/scanning/random/mecha_damage_scan/New(datum/techweb/techweb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	damage_percent = rand(15, 95)
 	//updating the description with the damage_percent var set
 	description = "Your exosuit fabricators allow for rapid production on a small scale, but the structural integrity of created parts is inferior to those made with more traditional means. Damage a few exosuits to around [damage_percent]% integrity and scan them to help us determine how the armor fails under stress."
 
 /datum/experiment/scanning/random/mecha_damage_scan/final_contributing_index_checks(datum/component/experiment_handler/experiment_handler, atom/target, typepath)
+	procstart = null
+	src.procstart = null
 	var/found_percent = round((target.get_integrity() / target.max_integrity) * 100)
 	return ..() && ISINRANGE(found_percent, damage_percent - 5, damage_percent + 5)
 
 /datum/experiment/scanning/random/mecha_equipped_scan/final_contributing_index_checks(datum/component/experiment_handler/experiment_handler, atom/target, typepath)
+	procstart = null
+	src.procstart = null
 	var/obj/vehicle/sealed/mecha/stompy = target
 	if(!istype(stompy))
 		return FALSE //Not a mech

@@ -1,4 +1,6 @@
 /datum/unit_test/siunit/Run()
+	procstart = null
+	src.procstart = null
 	TEST_ASSERT_EQUAL(siunit(0.5345, "A", 0), "535 mA", "")
 	TEST_ASSERT_EQUAL(siunit(0.5344, "A", 0), "534 mA", "")
 	TEST_ASSERT_EQUAL(siunit(-0.5344, "A", 0), "-534 mA", "")

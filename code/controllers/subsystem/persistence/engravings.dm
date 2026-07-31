@@ -1,5 +1,7 @@
 ///Loads all engravings, and places a select amount in maintenance and the prison.
 /datum/controller/subsystem/persistence/proc/load_wall_engravings()
+	procstart = null
+	src.procstart = null
 	var/json_file = file(ENGRAVING_SAVE_FILE)
 	if(!fexists(json_file))
 		return
@@ -46,6 +48,8 @@
 
 ///Saves all new engravings in the world.
 /datum/controller/subsystem/persistence/proc/save_wall_engravings()
+	procstart = null
+	src.procstart = null
 	var/list/saved_data = list()
 
 	saved_data["version"] = ENGRAVING_PERSISTENCE_VERSION
@@ -72,6 +76,8 @@
 
 ///This proc can update entries if the format has changed at some point.
 /datum/controller/subsystem/persistence/proc/update_wall_engravings(json)
+	procstart = null
+	src.procstart = null
 	for(var/engraving_entry in json["entries"])
 		continue //no versioning yet
 

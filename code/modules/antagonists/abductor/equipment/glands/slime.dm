@@ -8,16 +8,22 @@
 	mind_control_duration = 2400
 
 /obj/item/organ/heart/gland/slime/on_mob_insert(mob/living/carbon/gland_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	gland_owner.add_faction(FACTION_SLIME)
 	gland_owner.grant_language(/datum/language/slime, source = LANGUAGE_GLAND)
 
 /obj/item/organ/heart/gland/slime/on_mob_remove(mob/living/carbon/gland_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	gland_owner.remove_faction(FACTION_SLIME)
 	gland_owner.remove_language(/datum/language/slime, source = LANGUAGE_GLAND)
 
 /obj/item/organ/heart/gland/slime/activate()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_warning("You feel nauseated!"))
 	owner.vomit(VOMIT_CATEGORY_DEFAULT, lost_nutrition = 20)
 

@@ -2,6 +2,8 @@
 /datum/unit_test/trauma_granting
 
 /datum/unit_test/trauma_granting/Run()
+	procstart = null
+	src.procstart = null
 
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 	// It's not stricly necessary a mob must have a mind, but some traumas do extra stuff if you have mind.
@@ -22,6 +24,8 @@
 		test_trauma(dummy, trauma)
 
 /datum/unit_test/trauma_granting/proc/test_trauma(mob/living/carbon/human/dummy, trauma)
+	procstart = null
+	src.procstart = null
 	dummy.gain_trauma(trauma)
 	TEST_ASSERT(dummy.has_trauma_type(trauma), "Brain trauma [trauma] failed to grant to dummy")
 	dummy.cure_trauma_type(trauma, TRAUMA_RESILIENCE_ABSOLUTE)

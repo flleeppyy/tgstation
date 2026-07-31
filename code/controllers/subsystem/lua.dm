@@ -21,6 +21,8 @@ SUBSYSTEM_DEF(lua)
 	var/list/needs_gc_cycle = list()
 
 /datum/controller/subsystem/lua/Initialize()
+	procstart = null
+	src.procstart = null
 	DREAMLUAU_SET_EXECUTION_LIMIT_SECS(5)
 	// Set wrappers to ensure that lua scripts are subject to the same safety restrictions as other admin tooling
 	DREAMLUAU_SET_NEW_WRAPPER("/proc/_new")
@@ -33,6 +35,8 @@ SUBSYSTEM_DEF(lua)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/lua/OnConfigLoad()
+	procstart = null
+	src.procstart = null
 	// Read the paths from the config file
 	var/list/lua_path = list()
 	var/list/config_paths = CONFIG_GET(str_list/lua_path)
@@ -41,6 +45,8 @@ SUBSYSTEM_DEF(lua)
 	world.SetConfig("env", "LUAU_PATH", jointext(lua_path, ";"))
 
 /datum/controller/subsystem/lua/proc/queue_resume(datum/lua_state/state, index, arguments)
+	procstart = null
+	src.procstart = null
 	if(!initialized)
 		return
 	if(!istype(state))
@@ -55,6 +61,8 @@ SUBSYSTEM_DEF(lua)
 	resumes += list(list("state" = state, "index" = index, "arguments" = arguments))
 
 /datum/controller/subsystem/lua/proc/kill_task(datum/lua_state/state, is_sleep, index)
+	procstart = null
+	src.procstart = null
 	if(!istype(state))
 		return
 	if(is_sleep)
@@ -78,6 +86,8 @@ SUBSYSTEM_DEF(lua)
 	state.kill_task(is_sleep, index)
 
 /datum/controller/subsystem/lua/fire(resumed)
+	procstart = null
+	src.procstart = null
 	// Each fire of SSlua awakens every sleeping task in the order they slept,
 	// then resumes every yielded task in the order their resumes were queued
 	if(!resumed)
@@ -138,6 +148,8 @@ SUBSYSTEM_DEF(lua)
 		INVOKE_ASYNC(state, TYPE_PROC_REF(/datum/lua_state, update_editors))
 
 /datum/controller/subsystem/lua/proc/log_involved_runtime(exception/runtime, list/desclines, list/lua_stacks)
+	procstart = null
+	src.procstart = null
 	var/list/json_data = list("status" = "runtime", "file" = runtime.file, "line" = runtime.line, "message" = runtime.name, "stack" = list())
 	var/level = 1
 	for(var/line in desclines)

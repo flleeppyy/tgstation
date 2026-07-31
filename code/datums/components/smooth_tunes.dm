@@ -17,6 +17,8 @@
 	var/viable_for_final_effect = FALSE
 
 /datum/component/smooth_tunes/Initialize(linked_songtuner_rite, allow_repeats, particles_path, glow_color)
+	procstart = null
+	src.procstart = null
 	if(!isinstrument(parent) && !isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 	src.linked_songtuner_rite = linked_songtuner_rite
@@ -25,19 +27,27 @@
 	src.glow_color = glow_color
 
 /datum/component/smooth_tunes/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(particle_holder)
 		QDEL_NULL(particle_holder)
 	qdel(linked_songtuner_rite)
 	return ..()
 
 /datum/component/smooth_tunes/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_STARTING_INSTRUMENT, PROC_REF(start_singing))
 
 /datum/component/smooth_tunes/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_ATOM_STARTING_INSTRUMENT)
 
 ///Initiates the effect when the song begins playing.
 /datum/component/smooth_tunes/proc/start_singing(datum/source, datum/song/starting_song)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!starting_song)
 		return
@@ -74,6 +84,8 @@
 ///Prevents changing tempo during a song to sneak in final effects quicker
 
 /datum/component/smooth_tunes/proc/tempo_change(datum/source, datum/song/modified_song)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(modified_song.playing && viable_for_final_effect)
 		to_chat(parent, span_warning("Modifying the song mid-performance has removed your ability to perform the song finishing effect."))
@@ -81,6 +93,8 @@
 
 ///Ends the effect when the song is no longer playing.
 /datum/component/smooth_tunes/proc/stop_singing(datum/source, finished)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	STOP_PROCESSING(SSobj, src)
 	if(viable_for_final_effect)
@@ -103,6 +117,8 @@
 	qdel(src)
 
 /datum/component/smooth_tunes/process(seconds_per_tick = SSOBJ_DT)
+	procstart = null
+	src.procstart = null
 	if(linked_songtuner_rite && linked_song)
 		for(var/mob/living/carbon/human/listener in linked_song.hearing_mobs)
 			if(listener == parent || listener.can_block_magic(MAGIC_RESISTANCE_HOLY, charge_cost = 0))

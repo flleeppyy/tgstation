@@ -19,16 +19,22 @@
 	src.plunder_amount = plunder_amount
 
 /datum/component/plundering_attacks/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_HOSTILE_POST_ATTACKINGTARGET, PROC_REF(attempt_plunder))
 	RegisterSignal(parent, COMSIG_LIVING_DEATH, PROC_REF(drop_plunder))
 
 /datum/component/plundering_attacks/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, list(COMSIG_HOSTILE_POST_ATTACKINGTARGET, COMSIG_LIVING_DEATH))
 	drop_plunder()
 
 /datum/component/plundering_attacks/proc/attempt_plunder(mob/living/attacker, mob/living/carbon/human/target, success)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(target) || !success)
 		return
@@ -47,6 +53,8 @@
 	account_to_rob.bank_card_talk("Transaction confirmed! Transferred [amount_to_steal] [MONEY_NAME] to \<NULL_ACCOUNT\>!")
 
 /datum/component/plundering_attacks/proc/drop_plunder()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(plunder_stored == 0)
 		return

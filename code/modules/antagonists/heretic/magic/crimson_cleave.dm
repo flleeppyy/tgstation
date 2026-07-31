@@ -23,12 +23,18 @@
 	var/wound_type = /datum/wound/slash/flesh/critical/cleave
 
 /datum/action/cooldown/spell/pointed/crimson_cleave/can_cast_spell(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	return ..() && isliving(owner)
 
 /datum/action/cooldown/spell/pointed/crimson_cleave/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return ..() && isliving(cast_on)
 
 /datum/action/cooldown/spell/pointed/crimson_cleave/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(owner))
 		var/mob/living/carbon/carbon_owner = owner

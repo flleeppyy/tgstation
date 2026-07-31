@@ -21,20 +21,28 @@
 	var/loaded_overlay = "autosurgeon_loaded_overlay"
 
 /obj/item/autosurgeon/attack_self_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	return //stops TK fuckery
 
 /obj/item/autosurgeon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(starting_organ)
 		load_organ(new starting_organ(src))
 
 /obj/item/autosurgeon/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stored_organ)
 		. += loaded_overlay
 		. += emissive_appearance(icon, loaded_overlay, src)
 
 /obj/item/autosurgeon/proc/load_organ(obj/item/organ/loaded_organ, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user)
 		if(stored_organ)
 			to_chat(user, span_alert("[src] already has an implant stored."))
@@ -65,6 +73,8 @@
 	update_appearance()
 
 /obj/item/autosurgeon/proc/use_autosurgeon(mob/living/target, mob/living/user, implant_time)
+	procstart = null
+	src.procstart = null
 	if(!stored_organ)
 		to_chat(user, span_alert("[src] currently has no implant stored."))
 		return
@@ -115,20 +125,28 @@
 	if(uses <= 0)
 		desc = "[initial(desc)] Looks like it's been used up."
 
-/obj/item/autosurgeon/attack_self(mob/user)//when the object it used...
+/obj/item/autosurgeon/attack_self(mob/user)
+	procstart = null
+	src.procstart = null//when the object it used...
 	use_autosurgeon(user, user)
 
 /obj/item/autosurgeon/attack(mob/living/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	use_autosurgeon(target, user, 8 SECONDS)
 
 /obj/item/autosurgeon/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isorgan(tool))
 		load_organ(tool, user)
 		return ITEM_INTERACT_SUCCESS
 	return NONE
 
 /obj/item/autosurgeon/screwdriver_act(mob/living/user, obj/item/screwtool)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 	if(!stored_organ)
@@ -159,6 +177,8 @@
 	loaded_overlay = "autosurgeon_syndicate_loaded_overlay"
 
 /obj/item/autosurgeon/syndicate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CONTRABAND, INNATE_TRAIT)
 
@@ -197,6 +217,8 @@
 	starting_organ = /obj/item/organ/tongue
 
 /obj/item/autosurgeon/syndicate/commsagent/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	organ_whitelist += /obj/item/organ/tongue
 

@@ -4,13 +4,19 @@
 	observer_abort = BT_ABORT_LOWER_PRIORITY
 
 /datum/bt_node/decorator/pawn_buckled_to_obj/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	RegisterSignals(pawn, list(COMSIG_MOB_BUCKLED, COMSIG_MOB_UNBUCKLED), PROC_REF(on_signal_changed))
 	return TRUE
 
 /datum/bt_node/decorator/pawn_buckled_to_obj/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(pawn, list(COMSIG_MOB_BUCKLED, COMSIG_MOB_UNBUCKLED))
 
 /datum/bt_node/decorator/pawn_buckled_to_obj/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/pawn = controller.pawn
 	if(!isobj(pawn.buckled))
 		return FALSE

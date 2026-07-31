@@ -14,6 +14,8 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 5, /datum/material/plastic = SMALL_MATERIAL_AMOUNT * 5)
 
 /obj/item/mod/module/bikehorn/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/items/bikehorn.ogg', 100, FALSE)
 	drain_power(use_energy_cost)
 
@@ -42,6 +44,8 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 5, /datum/material/uranium = SMALL_MATERIAL_AMOUNT * 5)
 
 /obj/item/mod/module/microwave_beam/on_select_use(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -76,6 +80,8 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 5, /datum/material/plastic = SMALL_MATERIAL_AMOUNT * 5)
 
 /obj/item/mod/module/waddle/on_part_activation()
+	procstart = null
+	src.procstart = null
 	var/obj/item/shoes = mod.get_part_from_slot(ITEM_SLOT_FEET)
 	if(shoes)
 		shoes.AddComponent(/datum/component/squeak, list('sound/effects/footstep/clownstep1.ogg'=1,'sound/effects/footstep/clownstep2.ogg'=1), 50, falloff_exponent = 20) //die off quick please
@@ -84,6 +90,8 @@
 		mod.wearer.add_mood_event("clownshoes", /datum/mood_event/clownshoes)
 
 /obj/item/mod/module/waddle/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/shoes = mod.get_part_from_slot(ITEM_SLOT_FEET)
 	if(shoes && !deleting)
 		qdel(shoes.GetComponent(/datum/component/squeak))
@@ -101,11 +109,15 @@
 	custom_materials = list(/datum/material/titanium = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/mod/module/mister/cleaner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.flags = AMOUNT_VISIBLE
 	reagents.add_reagent(/datum/reagent/space_cleaner, volume)
 
 /obj/item/mod/module/mister/cleaner/on_active_process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/refill_add = min(volume - reagents.total_volume, 2 * seconds_per_tick)
 	if(refill_add > 0)
 		reagents.add_reagent(/datum/reagent/space_cleaner, refill_add)
@@ -121,6 +133,8 @@
 	cooldown_time = 10 SECONDS
 
 /obj/item/mod/module/selfcleaner/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	activator.wash(CLEAN_WASH)
 	drain_power(use_energy_cost)
 	playsound(activator, 'sound/effects/spray.ogg', 50, FALSE)

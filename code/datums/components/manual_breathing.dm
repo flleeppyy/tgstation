@@ -11,6 +11,8 @@
 	var/datum/emote/next_breath_type = /datum/emote/living/inhale
 
 /datum/component/manual_breathing/Initialize()
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -23,12 +25,16 @@
 		to_chat(C, span_notice("You suddenly realize you're breathing manually."))
 
 /datum/component/manual_breathing/Destroy(force)
+	procstart = null
+	src.procstart = null
 	L = null
 	STOP_PROCESSING(SSdcs, src)
 	to_chat(parent, span_notice("You revert back to automatic breathing."))
 	return ..()
 
 /datum/component/manual_breathing/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_MOB_EMOTE, PROC_REF(check_emote))
 	RegisterSignal(parent, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(check_added_organ))
 	RegisterSignal(parent, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(check_removed_organ))
@@ -36,6 +42,8 @@
 	RegisterSignal(parent, COMSIG_LIVING_DEATH, PROC_REF(pause))
 
 /datum/component/manual_breathing/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_MOB_EMOTE)
 	UnregisterSignal(parent, COMSIG_CARBON_GAIN_ORGAN)
 	UnregisterSignal(parent, COMSIG_CARBON_LOSE_ORGAN)
@@ -43,16 +51,22 @@
 	UnregisterSignal(parent, COMSIG_LIVING_DEATH)
 
 /datum/component/manual_breathing/proc/restart()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	START_PROCESSING(SSdcs, src)
 
 /datum/component/manual_breathing/proc/pause()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	STOP_PROCESSING(SSdcs, src)
 
 /datum/component/manual_breathing/process()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/C = parent
 
 	var/next_text = initial(next_breath_type.key)
@@ -69,6 +83,8 @@
 			warn_grace = TRUE
 
 /datum/component/manual_breathing/proc/check_added_organ(mob/who_cares, obj/item/organ/O)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/organ/lungs/new_lungs = O
@@ -78,6 +94,8 @@
 		START_PROCESSING(SSdcs, src)
 
 /datum/component/manual_breathing/proc/check_removed_organ(mob/who_cares, obj/item/organ/O)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/organ/lungs/old_lungs = O
@@ -87,6 +105,8 @@
 		STOP_PROCESSING(SSdcs, src)
 
 /datum/component/manual_breathing/proc/check_emote(mob/living/carbon/user, datum/emote/emote)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(emote.type == next_breath_type)

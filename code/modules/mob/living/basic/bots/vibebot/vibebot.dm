@@ -21,6 +21,8 @@
 	possessed_message = "You are a vibebot! Maintain the station's vibes to the best of your ability!"
 
 /mob/living/basic/bot/vibebot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/innate_actions = list(
 		/datum/action/cooldown/mob_cooldown/bot/vibe = BB_VIBEBOT_PARTY_ABILITY,

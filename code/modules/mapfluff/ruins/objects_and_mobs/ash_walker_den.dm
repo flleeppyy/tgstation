@@ -20,6 +20,8 @@
 	var/datum/linked_objective
 
 /obj/structure/lavaland/ash_walker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	.=..()
 	ashies = new /datum/team/ashwalkers()
 	var/datum/objective/protect_object/objective = new
@@ -30,21 +32,29 @@
 	START_PROCESSING(SSprocessing, src)
 
 /obj/structure/lavaland/ash_walker/Destroy()
+	procstart = null
+	src.procstart = null
 	ashies = null
 	linked_objective = null
 	STOP_PROCESSING(SSprocessing, src)
 	return ..()
 
 /obj/structure/lavaland/ash_walker/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	var/core_to_drop = pick(subtypesof(/obj/item/assembly/signaler/anomaly))
 	new core_to_drop (get_step(loc, pick(GLOB.alldirs)))
 	new /obj/effect/collapse(loc)
 
 /obj/structure/lavaland/ash_walker/process()
+	procstart = null
+	src.procstart = null
 	consume()
 	spawn_mob()
 
 /obj/structure/lavaland/ash_walker/proc/consume()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/offeredmob in view(src, 1)) //Only for corpse right next to/on same tile
 		if(offeredmob.loc == src)
 			continue //Ashwalker Revive in Progress...
@@ -93,6 +103,8 @@
 			ashies.sacrifices_made++
 
 /obj/structure/lavaland/ash_walker/proc/remake_walker(mob/living/carbon/oldmob)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/newwalker = new /mob/living/carbon/human(get_step(loc, pick(GLOB.alldirs)))
 	newwalker.set_species(/datum/species/lizard/ashwalker)
 	newwalker.real_name = oldmob.real_name
@@ -107,6 +119,8 @@
 	qdel(oldmob)
 
 /obj/structure/lavaland/ash_walker/proc/spawn_mob()
+	procstart = null
+	src.procstart = null
 	if(meat_counter >= ASH_WALKER_SPAWN_THRESHOLD)
 		new /obj/effect/mob_spawn/ghost_role/human/ash_walker(get_step(loc, pick(GLOB.alldirs)), ashies)
 		visible_message(span_danger("One of the eggs swells to an unnatural size and tumbles free. It's ready to hatch!"))
@@ -142,6 +156,8 @@
 	var/obj/effect/light_emitter/tendril/emitted_light
 
 /obj/effect/collapse/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	emitted_light = new(loc)
 	visible_message(span_bolddanger("The tendril writhes in fury as the earth around it begins to crack and break apart! Get back!"))
@@ -150,6 +166,8 @@
 	addtimer(CALLBACK(src, PROC_REF(collapse)), 5 SECONDS)
 
 /obj/effect/collapse/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/examine_messages = ..()
 	if(isliving(user))
 		if(has_collected(user))
@@ -159,6 +177,8 @@
 	return examine_messages
 
 /obj/effect/collapse/attack_hand(mob/living/collector, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(has_collected(collector))
 		to_chat(collector, span_danger("You've already gotten some loot, just get out of there with it!"))
@@ -169,12 +189,16 @@
 	collected += WEAKREF(collector)
 
 /obj/effect/collapse/Destroy()
+	procstart = null
+	src.procstart = null
 	collected.Cut()
 	QDEL_NULL(emitted_light)
 	return ..()
 
 ///Helper proc that resolves weakrefs to determine if collector is in collected list, returning a boolean.
 /obj/effect/collapse/proc/has_collected(mob/collector)
+	procstart = null
+	src.procstart = null
 	for(var/datum/weakref/weakref as anything in collected)
 		var/mob/living/resolved = weakref.resolve()
 		//it could have been collector, it could not have been, we don't care
@@ -185,6 +209,8 @@
 	return FALSE
 
 /obj/effect/collapse/proc/collapse()
+	procstart = null
+	src.procstart = null
 	for(var/mob/viewer in range(7, src))
 		shake_camera(viewer, 15, 1)
 	playsound(get_turf(src),'sound/effects/explosion/explosionfar.ogg', 200, TRUE)

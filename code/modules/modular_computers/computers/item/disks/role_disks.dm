@@ -11,6 +11,8 @@
 	)
 
 /obj/item/disk/computer/command/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/programs in command_programs)
 		var/datum/computer_file/program/program_type = new programs

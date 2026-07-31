@@ -9,15 +9,21 @@
 	var/list/storable = list()
 
 /obj/item/borg/apparatus/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(loc.loc, COMSIG_BORG_SAFE_DECONSTRUCT, PROC_REF(safedecon))
 	return ..()
 
 /obj/item/borg/apparatus/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(stored)
 	return ..()
 
 ///If we're safely deconstructed, we put the item neatly onto the ground, rather than deleting it.
 /obj/item/borg/apparatus/proc/safedecon()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(stored)
@@ -25,6 +31,8 @@
 		stored = null
 
 /obj/item/borg/apparatus/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if(gone == stored) //sanity check
 		UnregisterSignal(stored, COMSIG_ATOM_UPDATED_ICON)
 		stored = null
@@ -40,6 +48,8 @@ GAME_VERB(/obj/item/borg/apparatus, verb_dropHeld, "Drop", null)
 	return
 
 /obj/item/borg/apparatus/get_proxy_attacker_for(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(stored) // Use the stored item if available
 		return stored
 	return ..()
@@ -48,18 +58,24 @@ GAME_VERB(/obj/item/borg/apparatus, verb_dropHeld, "Drop", null)
 * Attack_self will pass for the stored item.
 */
 /obj/item/borg/apparatus/attack_self(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null
 	if(!stored || !issilicon(user))
 		return ..()
 	stored.attack_self(user)
 
 //Alt click drops the stored item.
 /obj/item/borg/apparatus/click_alt(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null
 	if(!stored || !issilicon(user))
 		return CLICK_ACTION_BLOCKING
 	stored.forceMove(user.drop_location())
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/borg/apparatus/pre_attack(atom/atom, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(atom.loc, /mob/living/silicon/robot) || istype(atom.loc, /obj/item/robot_model) || HAS_TRAIT(atom, TRAIT_NODROP))
 		return ..() // Borgs should not be grabbing their own modules
 
@@ -86,11 +102,15 @@ GAME_VERB(/obj/item/borg/apparatus, verb_dropHeld, "Drop", null)
  * which is where this signal that this handler intercepts is sent from.
  */
 /obj/item/borg/apparatus/proc/on_stored_updated_icon(datum/source, updates)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_appearance()
 	return NONE
 
 /obj/item/borg/apparatus/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!stored)
 		return NONE
 	tool.melee_attack_chain(user, stored, modifiers)
@@ -107,19 +127,27 @@ GAME_VERB(/obj/item/borg/apparatus, verb_dropHeld, "Drop", null)
 	)
 
 /obj/item/borg/apparatus/beaker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	add_glass()
 	RegisterSignal(stored, COMSIG_ATOM_UPDATED_ICON, PROC_REF(on_stored_updated_icon))
 	update_appearance()
 	return ..()
 
 /obj/item/borg/apparatus/beaker/proc/add_glass()
+	procstart = null
+	src.procstart = null
 	stored = new /obj/item/reagent_containers/cup/beaker/large(src)
 
 /obj/item/borg/apparatus/beaker/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(stored)
 	return ..()
 
 /obj/item/borg/apparatus/beaker/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stored)
 		var/obj/item/reagent_containers/reagent_container = stored
@@ -133,6 +161,8 @@ GAME_VERB(/obj/item/borg/apparatus, verb_dropHeld, "Drop", null)
 	. += span_notice(" <i>Alt-click</i> will drop the currently stored beaker. ")
 
 /obj/item/borg/apparatus/beaker/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/arm = mutable_appearance(icon = icon, icon_state = "borg_beaker_apparatus_arm")
 	if(stored)
@@ -164,10 +194,14 @@ GAME_VERB(/obj/item/borg/apparatus, verb_dropHeld, "Drop", null)
 	)
 
 /obj/item/borg/apparatus/beaker/service/add_glass()
+	procstart = null
+	src.procstart = null
 	stored = new /obj/item/reagent_containers/cup/glass/drinkingglass(src)
 	handle_reflling(stored, loc.loc, force = TRUE)
 
 /obj/item/borg/apparatus/beaker/service/proc/handle_reflling(obj/item/reagent_containers/cup/glass, mob/living/silicon/robot/bro, force = FALSE)
+	procstart = null
+	src.procstart = null
 	if (isnull(bro))
 		bro = loc
 	if (!iscyborg(bro))
@@ -177,6 +211,8 @@ GAME_VERB(/obj/item/borg/apparatus, verb_dropHeld, "Drop", null)
 		glass.AddComponent(/datum/component/reagent_refiller, power_draw_callback = CALLBACK(bro, TYPE_PROC_REF(/mob/living/silicon/robot, draw_power)))
 
 /obj/item/borg/apparatus/beaker/service/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	if (!istype(arrived, /obj/item/reagent_containers/cup/glass))
 		return
 	handle_reflling(arrived)
@@ -196,6 +232,8 @@ GAME_VERB(/obj/item/borg/apparatus, verb_dropHeld, "Drop", null)
 	)
 
 /obj/item/borg/apparatus/beaker/service2/add_glass()
+	procstart = null
+	src.procstart = null
 	stored = new /obj/item/reagent_containers/cup/glass/drinkingglass(src)
 
 /// allows medical cyborgs to manipulate organs without hands
@@ -211,6 +249,8 @@ GAME_VERB(/obj/item/borg/apparatus, verb_dropHeld, "Drop", null)
 	var/image/stored_underlay
 
 /obj/item/borg/apparatus/organ_storage/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stored_underlay)
 		underlays -= stored_underlay
@@ -226,6 +266,8 @@ GAME_VERB(/obj/item/borg/apparatus, verb_dropHeld, "Drop", null)
 	underlays += stored_underlay
 
 /obj/item/borg/apparatus/organ_storage/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "The organ bag currently contains:"
 	if(stored)
@@ -236,6 +278,8 @@ GAME_VERB(/obj/item/borg/apparatus, verb_dropHeld, "Drop", null)
 	. += span_notice(" <i>Alt-click</i> will drop the currently stored organ. ")
 
 /obj/item/borg/apparatus/organ_storage/click_alt(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null
 	if(!stored)
 		to_chat(user, span_notice("[src] is empty."))
 		return CLICK_ACTION_BLOCKING
@@ -256,10 +300,14 @@ GAME_VERB(/obj/item/borg/apparatus, verb_dropHeld, "Drop", null)
 					/obj/item/stack/conveyor)
 
 /obj/item/borg/apparatus/sheet_manipulator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	update_appearance()
 	return ..()
 
 /obj/item/borg/apparatus/sheet_manipulator/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/arm = mutable_appearance(icon, "borg_stack_apparatus_arm1")
 	if(stored)
@@ -276,6 +324,8 @@ GAME_VERB(/obj/item/borg/apparatus, verb_dropHeld, "Drop", null)
 	. += arm
 
 /obj/item/borg/apparatus/sheet_manipulator/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stored)
 		. += "The apparatus currently has [stored] secured."
@@ -295,10 +345,14 @@ GAME_VERB(/obj/item/borg/apparatus, verb_dropHeld, "Drop", null)
 	)
 
 /obj/item/borg/apparatus/engineering/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	update_appearance()
 	return ..()
 
 /obj/item/borg/apparatus/engineering/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/arm = mutable_appearance(icon, "borg_hardware_apparatus_arm1")
 	if(stored)
@@ -317,12 +371,16 @@ GAME_VERB(/obj/item/borg/apparatus, verb_dropHeld, "Drop", null)
 	. += arm
 
 /obj/item/borg/apparatus/engineering/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stored)
 		. += "The apparatus currently has [stored] secured."
 	. += span_notice(" <i>Alt-click</i> will drop the currently stored item. ")
 
 /obj/item/borg/apparatus/engineering/pre_attack(atom/atom, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(atom, /obj/item/ai_module/law) && !stored) //If an admin wants a borg to upload laws, who am I to stop them? Otherwise, we can hint that it fails
 		to_chat(user, span_warning("This circuit board doesn't seem to have standard robot apparatus pin holes. You're unable to pick it up."))
 		return TRUE
@@ -330,6 +388,8 @@ GAME_VERB(/obj/item/borg/apparatus, verb_dropHeld, "Drop", null)
 
 // stops them from cell interactions with other borgos
 /obj/item/borg/apparatus/engineering/interact_with_atom(atom/movable/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(user) && iscyborg(interacting_with))
 		balloon_alert(user, "your manipulator isn't dexterous enough to interact with this properly.")
 		return ITEM_INTERACT_FAILURE
@@ -350,10 +410,14 @@ GAME_VERB(/obj/item/borg/apparatus, verb_dropHeld, "Drop", null)
 	)
 
 /obj/item/borg/apparatus/service/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	update_appearance()
 	return ..()
 
 /obj/item/borg/apparatus/service/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/arm = mutable_appearance(icon, "borg_hardware_apparatus_arm1")
 	if(stored)
@@ -368,6 +432,8 @@ GAME_VERB(/obj/item/borg/apparatus, verb_dropHeld, "Drop", null)
 	. += arm
 
 /obj/item/borg/apparatus/service/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stored)
 		. += "The apparatus currently has [stored] secured."

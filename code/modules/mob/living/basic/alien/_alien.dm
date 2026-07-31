@@ -57,6 +57,8 @@
 	var/can_lay_eggs = FALSE
 
 /mob/living/basic/alien/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(length(loot))
 		basic_mob_flags |= DEL_ON_DEATH
@@ -65,10 +67,14 @@
 	AddElement(/datum/element/footstep, footstep_type = FOOTSTEP_MOB_CLAW)
 
 /mob/living/basic/alien/get_butt_sprite()
+	procstart = null
+	src.procstart = null
 	return icon('icons/mob/butts.dmi', BUTT_SPRITE_XENOMORPH)
 
 ///Places alien weeds on the turf the mob is currently standing on. Returns TRUE if weeds were placed.
 /mob/living/basic/alien/proc/place_weeds()
+	procstart = null
+	src.procstart = null
 	if(!isturf(loc) || isspaceturf(loc))
 		return FALSE
 	if(locate(/obj/structure/alien/weeds/node) in get_turf(src))
@@ -79,6 +85,8 @@
 
 ///Lays an egg on the turf the mob is currently standing on. Returns TRUE if an egg was laid.
 /mob/living/basic/alien/proc/lay_alien_egg()
+	procstart = null
+	src.procstart = null
 	if(!isturf(loc) || isspaceturf(loc))
 		return FALSE
 	if(locate(/obj/structure/alien/egg) in get_turf(src))
@@ -88,9 +96,13 @@
 	return TRUE
 
 /mob/living/basic/alien/get_bloodtype()
+	procstart = null
+	src.procstart = null
 	return get_blood_type(BLOOD_TYPE_XENO)
 
 /mob/living/basic/alien/get_gibs_type(drop_bitflags = NONE)
+	procstart = null
+	src.procstart = null
 	if(drop_bitflags & DROP_BODYPARTS)
 		return /obj/effect/gibspawner/xeno
 	return /obj/effect/gibspawner/xeno/bodypartless

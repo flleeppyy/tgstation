@@ -25,6 +25,8 @@
 	COOLDOWN_DECLARE(emp_timer)
 
 /datum/action/item_action/chameleon/change/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		stack_trace("Adding chameleon action to non-item ([target])")
@@ -51,16 +53,22 @@
 	RegisterSignal(target, COMSIG_ATOM_EMP_ACT, PROC_REF(on_emp))
 
 /datum/action/item_action/chameleon/change/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSprocessing, src)
 	return ..()
 
 /datum/action/item_action/chameleon/change/proc/on_emp(datum/source, severity, protection)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(protection & EMP_PROTECT_SELF)
 		return
 	emp_randomise()
 
 /datum/action/item_action/chameleon/change/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(owner))
 		return
@@ -73,6 +81,8 @@
 	outfit_action.Grant(owner)
 
 /datum/action/item_action/chameleon/change/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Likewise when the mob loses the cham change action, if they have no others, they need to lose the outfit action
 	if(locate(/datum/action/item_action/chameleon/change) in remove_from.actions)
@@ -83,10 +93,14 @@
 
 /// Basic initialization of the chameleon items we cannot pick from
 /datum/action/item_action/chameleon/change/proc/initialize_blacklist()
+	procstart = null
+	src.procstart = null
 	chameleon_blacklist |= typecacheof(target.type)
 
 /// Basic initialization of the chameleon items we can pick from
 /datum/action/item_action/chameleon/change/proc/initialize_disguises()
+	procstart = null
+	src.procstart = null
 	if(!ispath(chameleon_type, /obj/item))
 		stack_trace("Non-item chameleon type defined on [type] ([chameleon_type])")
 		return
@@ -95,6 +109,8 @@
 
 /// Used for formatting a typepath into something human readable for selection
 /datum/action/item_action/chameleon/change/proc/format_readable_name(datum/format_type)
+	procstart = null
+	src.procstart = null
 	if(ispath(format_type, /obj/item))
 		var/obj/item/format_item = format_type
 		return "[format_item::name] ([replacetext(format_item::post_init_icon_state || format_item::icon_state, "_", " ")])"
@@ -109,6 +125,8 @@
  * * ignore_root: If TRUE, only add children of the type or types passed, not the literal types
  */
 /datum/action/item_action/chameleon/change/proc/add_chameleon_items(type_or_types_to_add, only_root = FALSE, ignore_root = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/new_items = typecacheof(type_or_types_to_add, only_root_path = only_root, ignore_root_path = ignore_root)
 	for(var/obj/item/item_type as anything in new_items - chameleon_typecache)
 		if(is_type_in_typecache(item_type, chameleon_blacklist) || (item_type::item_flags & ABSTRACT) || item_type == item_type::abstract_type || !item_type::icon_state)
@@ -117,6 +135,8 @@
 	chameleon_typecache |= new_items
 
 /datum/action/item_action/chameleon/change/proc/select_look(mob/user)
+	procstart = null
+	src.procstart = null
 	var/picked_name = tgui_input_list(user, "Select [chameleon_name] to change into", "Chameleon Settings", sort_list(chameleon_list, GLOBAL_PROC_REF(cmp_typepaths_asc)))
 	if(isnull(picked_name) || isnull(chameleon_list[picked_name]) || QDELETED(src) || QDELETED(user) || QDELETED(owner) || !IsAvailable(feedback = TRUE))
 		return
@@ -124,10 +144,14 @@
 	update_look(picked_item)
 
 /datum/action/item_action/chameleon/change/proc/random_look()
+	procstart = null
+	src.procstart = null
 	var/picked_name = pick(chameleon_list)
 	update_look(chameleon_list[picked_name])
 
 /datum/action/item_action/chameleon/change/proc/update_look(obj/item/picked_item)
+	procstart = null
+	src.procstart = null
 	var/obj/item/chameleon_item = target
 
 	update_item(picked_item)
@@ -140,6 +164,8 @@
 		wearer.refresh_obscured()
 
 /datum/action/item_action/chameleon/change/proc/update_item(obj/item/picked_item)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE) // Call update_look, not this!
 
 	var/atom/atom_target = target
@@ -192,22 +218,30 @@
 		atom_target.icon = picked_item::icon
 
 /datum/action/item_action/chameleon/change/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	select_look(owner)
 	return TRUE
 
 /datum/action/item_action/chameleon/change/proc/emp_randomise(amount = EMP_RANDOMISE_TIME)
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSprocessing, src)
 	random_look()
 
 	COOLDOWN_START(src, emp_timer, amount)
 
 /datum/action/item_action/chameleon/change/process()
+	procstart = null
+	src.procstart = null
 	if(COOLDOWN_FINISHED(src, emp_timer))
 		STOP_PROCESSING(SSprocessing, src)
 		return
 	random_look()
 
 /datum/action/item_action/chameleon/change/proc/apply_outfit(datum/outfit/applying_from, list/all_items_to_apply)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	var/using_item_type
@@ -233,6 +267,8 @@
 
 /// Used when applying this cham item via a job datum (from an outfit selection)
 /datum/action/item_action/chameleon/change/proc/apply_job_data(datum/job/job_datum)
+	procstart = null
+	src.procstart = null
 	return
 
 #undef EMP_RANDOMISE_TIME

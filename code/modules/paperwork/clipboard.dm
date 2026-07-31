@@ -45,21 +45,31 @@
 	var/obj/item/paper/top_paper
 
 /obj/item/clipboard/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins putting [user.p_their()] head into the clip of \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS //The clipboard's clip is very strong. Industrial duty. Can kill a man easily.
 
 /obj/item/clipboard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	update_appearance()
 	. = ..()
 
 /obj/item/clipboard/setup_reskins()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/reskinable_item, /datum/atom_skin/clipboard)
 
 /obj/item/clipboard/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(pen)
 	return ..()
 
 /obj/item/clipboard/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!integrated_pen && pen)
 		. += span_notice("Right-click to remove [pen].")
@@ -68,6 +78,8 @@
 
 /// Take out the topmost paper
 /obj/item/clipboard/proc/remove_paper(obj/item/paper/paper, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(paper))
 		return
 	paper.forceMove(user.loc)
@@ -75,12 +87,16 @@
 	to_chat(user, span_notice("You remove [paper] from [src]."))
 
 /obj/item/clipboard/proc/remove_pen(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/pen/pen = src.pen
 	pen.forceMove(user.loc)
 	user.put_in_hands(pen)
 	to_chat(user, span_notice("You remove [pen] from [src]."))
 
 /obj/item/clipboard/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (gone == pen)
 		pen = null
@@ -95,6 +111,8 @@
 	update_icon()
 
 /obj/item/clipboard/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/paper_to_add = get_paper_overlay()
 	if(paper_to_add)
@@ -104,6 +122,8 @@
 	. += "clipboard_over"
 
 /obj/item/clipboard/proc/get_paper_overlay()
+	procstart = null
+	src.procstart = null
 	if(isnull(top_paper))
 		return
 
@@ -113,6 +133,8 @@
 	return paper_overlay
 
 /obj/item/clipboard/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(LAZYACCESS(modifiers, RIGHT_CLICK))
 		if(!integrated_pen && pen)
 			remove_pen(user)
@@ -122,6 +144,8 @@
 	. = ..()
 
 /obj/item/clipboard/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/paper))
 		//Add paper into the clipboard
 		if(!user.transferItemToLoc(tool, src))
@@ -152,17 +176,23 @@
 
 
 /obj/item/clipboard/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(usr)
 	ui_interact(user)
 	return
 
 /obj/item/clipboard/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Clipboard")
 		ui.open()
 
 /obj/item/clipboard/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	// prepare data for TGUI
 	var/list/data = list()
 	data["pen"] = "[pen]"
@@ -182,6 +212,8 @@
 	return data
 
 /obj/item/clipboard/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -231,8 +263,12 @@
  * This is a simple proc to handle calling update_icon() upon receiving the top paper's `COMSIG_ATOM_UPDATE_APPEARANCE`.
  */
 /obj/item/clipboard/proc/on_top_paper_change()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_appearance()
 
 /obj/item/clipboard/IsContainedAtomAccessible(atom/contained, atom/movable/user)
+	procstart = null
+	src.procstart = null
 	return ..() || (contained == top_paper)

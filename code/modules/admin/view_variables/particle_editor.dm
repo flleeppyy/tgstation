@@ -3,23 +3,33 @@
 	var/atom/movable/target
 
 /datum/particle_editor/New(atom/target)
+	procstart = null
+	src.procstart = null
 	src.target = target
 
 /datum/particle_editor/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_VAREDIT)
 
 /datum/particle_editor/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ParticleEdit")
 		ui.open()
 
 /datum/particle_editor/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += get_asset_datum(/datum/asset/simple/particle_editor)
 
 ///returns ui_data values for the particle editor
 /particles/proc/return_ui_representation(mob/user)
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	//affect entire set: no generators
 	data["width"] = width //float
@@ -98,6 +108,8 @@
 	return data
 
 /datum/particle_editor/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["target_name"] = target.name
 	if(!target.particles)
@@ -106,6 +118,8 @@
 	return data
 
 /datum/particle_editor/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

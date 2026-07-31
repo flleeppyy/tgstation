@@ -2,6 +2,8 @@
 	button_icon = 'icons/hud/guardian.dmi'
 
 /datum/action/cooldown/guardian/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -15,6 +17,8 @@
 	default_button_position = SCRN_OBJ_INSERT_FIRST
 
 /datum/action/cooldown/guardian/check_type/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(owner, astype(owner, /mob/living/basic/guardian)?.playstyle_string)
 
@@ -25,6 +29,8 @@
 	default_button_position = ui_guardian_communication
 
 /datum/action/cooldown/guardian/communicate/Activate()
+	procstart = null
+	src.procstart = null
 	astype(owner, /mob/living/basic/guardian)?.communicate()
 
 /datum/action/cooldown/guardian/manifest
@@ -34,6 +40,8 @@
 	default_button_position = ui_guardian_manifest
 
 /datum/action/cooldown/guardian/manifest/Activate()
+	procstart = null
+	src.procstart = null
 	astype(owner, /mob/living/basic/guardian)?.manifest()
 
 /datum/action/cooldown/guardian/recall
@@ -43,6 +51,8 @@
 	default_button_position = ui_guardian_recall
 
 /datum/action/cooldown/guardian/recall/Activate()
+	procstart = null
+	src.procstart = null
 	astype(owner, /mob/living/basic/guardian)?.recall()
 
 /datum/action/cooldown/guardian/toggle_light
@@ -51,6 +61,8 @@
 	button_icon_state = "light"
 
 /datum/action/cooldown/guardian/toggle_light/Activate()
+	procstart = null
+	src.procstart = null
 	astype(owner, /mob/living/basic/guardian)?.toggle_light()
 
 /datum/action/cooldown/guardian/toggle_mode
@@ -60,6 +72,8 @@
 	default_button_position = ui_guardian_special
 
 /datum/action/cooldown/guardian/toggle_mode/Activate()
+	procstart = null
+	src.procstart = null
 	astype(owner, /mob/living/basic/guardian)?.toggle_modes()
 
 /datum/action/cooldown/guardian/toggle_mode/assassin
@@ -69,6 +83,8 @@
 	transparent_when_unavailable = TRUE
 
 /datum/action/cooldown/guardian/toggle_mode/assassin/is_action_active(atom/movable/screen/movable/action_button/current_button)
+	procstart = null
+	src.procstart = null
 	return owner.has_status_effect(/datum/status_effect/guardian_stealth)
 
 /datum/action/cooldown/guardian/toggle_mode/gases

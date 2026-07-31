@@ -10,6 +10,8 @@
 	var/datum/station_alert/alert_control
 
 /obj/machinery/computer/station_alert/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(is_station_level(z))
 		var/static/list/alert_areas
 		if(isnull(alert_areas))
@@ -22,20 +24,28 @@
 	return ..()
 
 /obj/machinery/computer/station_alert/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(alert_control)
 	return ..()
 
 /obj/machinery/computer/station_alert/ui_interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	alert_control.ui_interact(user)
 
 /obj/machinery/computer/station_alert/on_set_machine_stat(old_value)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & BROKEN)
 		alert_control.listener.prevent_alarm_changes()
 	else
 		alert_control.listener.allow_alarm_changes()
 
 /obj/machinery/computer/station_alert/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & (NOPOWER|BROKEN))
 		return
@@ -49,5 +59,7 @@
  * * source The datum source of the signal
  */
 /obj/machinery/computer/station_alert/proc/update_alarm_display(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_icon()

@@ -20,6 +20,8 @@ GLOBAL_LIST_EMPTY(total_extraction_beacons)
 	var/max_force_fulton = MOVE_FORCE_STRONG
 
 /obj/item/extraction_pack/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_infoplain("It has [uses_left] use\s remaining.")
 
@@ -33,6 +35,8 @@ GLOBAL_LIST_EMPTY(total_extraction_beacons)
 	. += span_infoplain("It is linked to [beacon.name].")
 
 /obj/item/extraction_pack/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/possible_beacons = list()
 	for(var/datum/weakref/point_ref as anything in GLOB.total_extraction_beacons)
 		var/obj/structure/extraction_point/extraction_point = point_ref.resolve()
@@ -54,6 +58,8 @@ GLOBAL_LIST_EMPTY(total_extraction_beacons)
 	balloon_alert(user, "linked!")
 
 /obj/item/extraction_pack/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(interacting_with))
 		return NONE
 	if(!isturf(interacting_with.loc)) // no extracting stuff inside other stuff
@@ -129,6 +135,8 @@ GLOBAL_LIST_EMPTY(total_extraction_beacons)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/extraction_pack/proc/create_balloon(atom/movable/thing, mob/living/user, obj/effect/extraction_holder/holder_obj, mutable_appearance/balloon2)
+	procstart = null
+	src.procstart = null
 	var/turf/beacon_turf = get_turf(beacon_ref.resolve())
 	var/mutable_appearance/balloon = mutable_appearance('icons/effects/fulton_balloon.dmi', "fulton_balloon", layer = VEHICLE_LAYER, appearance_flags = RESET_COLOR | RESET_ALPHA | RESET_TRANSFORM | KEEP_APART)
 	balloon.pixel_z = 10
@@ -197,6 +205,8 @@ GLOBAL_LIST_EMPTY(total_extraction_beacons)
 	icon_state = "folded_extraction"
 
 /obj/item/fulton_core/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/area/user_area = get_area(user)
 	if(user_area.area_flags & NOTELEPORT)
 		balloon_alert(user, "unable to deploy!")
@@ -220,12 +230,16 @@ GLOBAL_LIST_EMPTY(total_extraction_beacons)
 	var/beacon_network = "station"
 
 /obj/structure/extraction_point/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name += " ([rand(100,999)]) ([get_area_name(src, TRUE)])"
 	GLOB.total_extraction_beacons.Add(WEAKREF(src))
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/extraction_point/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	balloon_alert_to_viewers("undeploying...")
 	if(!do_after(user, 1.5 SECONDS, src))
@@ -235,6 +249,8 @@ GLOBAL_LIST_EMPTY(total_extraction_beacons)
 	qdel(src)
 
 /obj/structure/extraction_point/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance(icon, "[icon_state]_light", src, alpha = src.alpha)
 
@@ -244,6 +260,8 @@ GLOBAL_LIST_EMPTY(total_extraction_beacons)
 	var/atom/movable/stored_obj
 
 /obj/item/extraction_pack/proc/check_for_living_mobs(atom/A)
+	procstart = null
+	src.procstart = null
 	if(isliving(A))
 		var/mob/living/L = A
 		if(L.stat != DEAD)
@@ -256,9 +274,13 @@ GLOBAL_LIST_EMPTY(total_extraction_beacons)
 	return FALSE
 
 /obj/effect/extraction_holder/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/extraction_holder/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/extraction_pack/syndicate

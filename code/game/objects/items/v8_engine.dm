@@ -22,10 +22,14 @@
 	COOLDOWN_DECLARE(engine_sound_cooldown)
 
 /obj/item/v8_engine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/two_handed, require_twohands=TRUE, force_unwielded=5, force_wielded=5)
 
 /obj/item/v8_engine/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!COOLDOWN_FINISHED(src, engine_sound_cooldown))
 		return
@@ -35,10 +39,14 @@
 	COOLDOWN_START(src, engine_sound_cooldown, ENGINE_COOLDOWN)
 
 /obj/item/v8_engine/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	INVOKE_ASYNC(src, PROC_REF(start_learning_recipe), user)
 
 /obj/item/v8_engine/proc/start_learning_recipe(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.mind)
 		return
 	if(user.mind.has_crafting_recipe(/datum/crafting_recipe/house_edge))
@@ -76,11 +84,15 @@
 	COOLDOWN_DECLARE(fire_charge_cooldown)
 
 /obj/item/house_edge/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/two_handed, force_unwielded = 12, force_wielded = 22, attacksound = active_hitsound)
 	RegisterSignals(src, list(COMSIG_ITEM_DROPPED, COMSIG_MOVABLE_PRE_THROW, COMSIG_ITEM_ATTACK_SELF), PROC_REF(reset_charges))
 
 /obj/item/house_edge/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!ismob(target))
 		return
 	var/mob/mob_target = target
@@ -91,6 +103,8 @@
 	update_appearance(UPDATE_ICON_STATE)
 
 /obj/item/house_edge/ranged_interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, fire_charge_cooldown))
 		return ITEM_INTERACT_BLOCKING
 	if(fire_charges <= 0)
@@ -117,6 +131,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/house_edge/update_icon_state()
+	procstart = null
+	src.procstart = null
 	inhand_icon_state = HAS_TRAIT(src, TRAIT_WIELDED) ? "house_edge1" : "house_edge"
 	icon_state = "[base_icon_state][fire_charges ? fire_charges : ""]"
 	return ..()
@@ -126,6 +142,8 @@
  * Updates icon, sets count, and updates icon.
  */
 /obj/item/house_edge/proc/reset_charges(on_slash = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, fire_charge_cooldown) && !on_slash)
 		return
 	if(fire_charges)
@@ -135,6 +153,8 @@
 
 /// Kills any of the relevant particles off the wielder, as added during special attacks.
 /obj/item/house_edge/proc/drop_particles(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.remove_shared_particles(/particles/bonfire)
 
 /**
@@ -143,6 +163,8 @@
  * * upgraded: when juiced up from the second do_after, applies a light explosion radius to the slash.
  */
 /obj/item/house_edge/proc/flaming_slash(atom/interacting_with, mob/living/user, upgraded = FALSE)
+	procstart = null
+	src.procstart = null
 	// Do the cool slash
 	var/obj/projectile/flaming_slash/projectile = new /obj/projectile/flaming_slash(get_turf(src))
 
@@ -181,6 +203,8 @@
 	var/explosion_power = 0
 
 /obj/projectile/flaming_slash/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	explosion(loc,
 		light_impact_range = explosion_power,

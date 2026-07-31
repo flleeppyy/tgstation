@@ -13,16 +13,22 @@
 	var/obj/item/mod/control/controlled_suit
 
 /datum/computer_file/program/maintenance/modsuit_control/Destroy()
+	procstart = null
+	src.procstart = null
 	if(controlled_suit)
 		unsync_modsuit()
 	return ..()
 
 /datum/computer_file/program/maintenance/modsuit_control/application_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/mod/control))
 		sync_modsuit(tool, user)
 		return ITEM_INTERACT_SUCCESS
 
 /datum/computer_file/program/maintenance/modsuit_control/proc/sync_modsuit(obj/item/mod/control/new_modsuit, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(controlled_suit)
 		unsync_modsuit()
 	controlled_suit = new_modsuit
@@ -30,11 +36,15 @@
 	user?.balloon_alert(user, "suit updated")
 
 /datum/computer_file/program/maintenance/modsuit_control/proc/unsync_modsuit(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(controlled_suit, COMSIG_QDELETING)
 	controlled_suit = null
 
 /datum/computer_file/program/maintenance/modsuit_control/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["has_suit"] = !!controlled_suit
 	if(controlled_suit)
@@ -42,9 +52,13 @@
 	return data
 
 /datum/computer_file/program/maintenance/modsuit_control/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return controlled_suit?.ui_static_data()
 
 /datum/computer_file/program/maintenance/modsuit_control/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return controlled_suit?.ui_act(action, params, ui, state)
 
@@ -56,10 +70,14 @@
 	var/datum/port/input/suit_port
 
 /obj/item/circuit_component/mod_program/modsuit_control/populate_ports()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	suit_port = add_input_port("MODsuit Controlled", PORT_TYPE_ATOM)
 
 /obj/item/circuit_component/mod_program/modsuit_control/input_received(datum/port/port)
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/program/maintenance/modsuit_control/control = associated_program
 	var/obj/item/mod/control/mod = suit_port.value
 	if(isnull(mod) && control.controlled_suit)

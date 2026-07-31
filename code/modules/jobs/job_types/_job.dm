@@ -137,6 +137,8 @@
 	var/desensitized_base = 1.0
 
 /datum/job/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/new_spawn_positions = CHECK_MAP_JOB_CHANGE(title, "spawn_positions")
 	if(isnum(new_spawn_positions))
@@ -147,6 +149,8 @@
 
 /// Executes after the mob has been spawned in the map. Client might not be yet in the mob, and is thus a separate variable.
 /datum/job/proc/after_spawn(mob/living/spawned, client/player_client)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(length(mind_traits))
 		spawned.mind.add_traits(mind_traits, JOB_TRAIT)
@@ -184,26 +188,36 @@
 
 /// Return the outfit to use
 /datum/job/proc/get_outfit(consistent)
+	procstart = null
+	src.procstart = null
 	return outfit
 
 /// Announce that this job as joined the round to all crew members.
 /// Note the joining mob has no client at this point.
 /datum/job/proc/announce_job(mob/living/joining_mob)
+	procstart = null
+	src.procstart = null
 	if(head_announce)
 		announce_head(joining_mob, list(head_announce))
 
 
 //Used for a special check of whether to allow a client to latejoin as this job.
 /datum/job/proc/special_check_latejoin(client/latejoin)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 
 /mob/living/proc/on_job_equipping(datum/job/equipping, client/player_client)
+	procstart = null
+	src.procstart = null
 	return
 
 #define VERY_LATE_ARRIVAL_TOAST_PROB 20
 
 /mob/living/carbon/human/on_job_equipping(datum/job/equipping, client/player_client)
+	procstart = null
+	src.procstart = null
 	if(equipping.paycheck_department)
 		var/datum/bank_account/bank_account = new(real_name, equipping, dna.species.payday_modifier)
 		bank_account.payday(STARTING_PAYCHECKS, free = TRUE)
@@ -224,25 +238,35 @@
 #undef VERY_LATE_ARRIVAL_TOAST_PROB
 
 /mob/living/proc/dress_up_as_job(datum/job/equipping, visual_only = FALSE, client/player_client, consistent = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/dress_up_as_job(datum/job/equipping, visual_only = FALSE, client/player_client, consistent = FALSE)
+	procstart = null
+	src.procstart = null
 	dna.species.pre_equip_species_outfit(equipping, src, visual_only)
 	equip_outfit_and_loadout(equipping.get_outfit(consistent), player_client?.prefs, visual_only)
 
-/datum/job/proc/announce_head(mob/living/carbon/human/human, channels) //tells the given channel that the given mob is the new department head. See communications.dm for valid channels.
+/datum/job/proc/announce_head(mob/living/carbon/human/human, channels)
+	procstart = null
+	src.procstart = null //tells the given channel that the given mob is the new department head. See communications.dm for valid channels.
 	if(human)
 		//timer because these should come after the captain announcement
 		SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(aas_config_announce), /datum/aas_config_entry/newhead, list("PERSON" = human.real_name, "RANK" = human.job), null, channels, null, TRUE), 1))
 
 //If the configuration option is set to require players to be logged as old enough to play certain jobs, then this proc checks that they are, otherwise it just returns 1
 /datum/job/proc/player_old_enough(client/player)
+	procstart = null
+	src.procstart = null
 	if(!player || !available_in_days(player))
 		return TRUE //Available in 0 days = available right now = player is old enough to play.
 	return FALSE
 
 
 /datum/job/proc/available_in_days(client/player)
+	procstart = null
+	src.procstart = null
 	if(!player)
 		return 0
 
@@ -271,6 +295,8 @@
 	return max(0, minimal_player_age - player.player_age)
 
 /datum/job/proc/config_check()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /**
@@ -280,6 +306,8 @@
  * If they have 0 spawn and total positions in the config, the job is entirely removed from occupations prefs for the round.
  */
 /datum/job/proc/map_check()
+	procstart = null
+	src.procstart = null
 	var/available_roundstart = TRUE
 	var/available_latejoin = TRUE
 
@@ -297,11 +325,15 @@
 
 /// Gets the message that shows up when spawning as this job
 /datum/job/proc/get_spawn_message()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	return boxed_message(span_infoplain(jointext(get_spawn_message_information(), "\n&bull; ")))
 
 /// Returns a list of strings that correspond to chat messages sent to this mob when they join the round.
 /datum/job/proc/get_spawn_message_information()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	var/list/info = list()
 	info += "<b>You are the [title].</b>\n"
@@ -325,6 +357,8 @@
 
 /// Returns information pertaining to this job's radio.
 /datum/job/proc/get_radio_information()
+	procstart = null
+	src.procstart = null
 	if(job_flags & JOB_CREW_MEMBER)
 		return "<b>Prefix your message with :h to speak on your department's radio. To see other prefixes, look closely at your headset.</b>"
 
@@ -351,6 +385,8 @@
 	var/pda_slot = ITEM_SLOT_BELT
 
 /datum/outfit/job/pre_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(ispath(back, /obj/item/storage/backpack))
 		switch(H.backpack)
 			if(GBACKPACK)
@@ -388,6 +424,8 @@
 		neck = /obj/item/clothing/neck/cloak/skill_reward/playing
 
 /datum/outfit/job/post_equip(mob/living/carbon/human/equipped, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visuals_only)
 		return
 
@@ -436,6 +474,8 @@
 		pda.update_pda_prefs(equipped_client)
 
 /datum/outfit/job/get_chameleon_disguise_info()
+	procstart = null
+	src.procstart = null
 	var/list/types = ..()
 	types -= /obj/item/storage/backpack //otherwise this will override the actual backpacks
 	types += backpack
@@ -444,6 +484,8 @@
 	return types
 
 /datum/outfit/job/get_types_to_preload()
+	procstart = null
+	src.procstart = null
 	var/list/preload = ..()
 	preload += backpack
 	preload += satchel
@@ -455,19 +497,27 @@
 
 /// An overridable getter for more dynamic goodies.
 /datum/job/proc/get_mail_goodies(mob/recipient)
+	procstart = null
+	src.procstart = null
 	return mail_goodies
 
 
 /datum/job/proc/award_service(client/winner, award)
+	procstart = null
+	src.procstart = null
 	return
 
 
 /datum/job/proc/get_captaincy_announcement(mob/living/captain)
+	procstart = null
+	src.procstart = null
 	return "Due to extreme staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"
 
 
 /// Returns an atom where the mob should spawn in.
 /datum/job/proc/get_roundstart_spawn_point()
+	procstart = null
+	src.procstart = null
 	if(random_spawns_possible)
 		if(HAS_TRAIT(SSstation, STATION_TRAIT_LATE_ARRIVALS))
 			return get_latejoin_spawn_point()
@@ -492,6 +542,8 @@
 
 /// Handles finding and picking a valid roundstart effect landmark spawn point, in case no uncommon different spawning events occur.
 /datum/job/proc/get_default_roundstart_spawn_point()
+	procstart = null
+	src.procstart = null
 	for(var/obj/effect/landmark/start/spawn_point as anything in GLOB.start_landmarks_list)
 		if(spawn_point.name != title)
 			continue
@@ -505,6 +557,8 @@
 
 /// Finds a valid latejoin spawn point, checking for events and special conditions.
 /datum/job/proc/get_latejoin_spawn_point()
+	procstart = null
+	src.procstart = null
 	if(length(GLOB.jobspawn_overrides[title])) //We're doing something special today.
 		return pick(GLOB.jobspawn_overrides[title])
 	if(length(SSjob.latejoin_trackers))
@@ -514,6 +568,8 @@
 
 /// Spawns the mob to be played as, taking into account preferences and the desired spawn point.
 /datum/job/proc/get_spawn_mob(client/player_client, atom/spawn_point)
+	procstart = null
+	src.procstart = null
 	var/mob/living/spawn_instance
 	if(ispath(spawn_type, /mob/living/silicon/ai))
 		// This is unfortunately necessary because of snowflake AI init code. To be refactored.
@@ -529,9 +585,13 @@
 
 /// Applies the preference options to the spawning mob, taking the job into account. Assumes the client has the proper mind.
 /mob/living/proc/apply_prefs_job(client/player_client, datum/job/job)
+	procstart = null
+	src.procstart = null
 
 
 /mob/living/carbon/human/apply_prefs_job(client/player_client, datum/job/job)
+	procstart = null
+	src.procstart = null
 	var/fully_randomize = GLOB.current_anonymous_theme || player_client.prefs.should_be_random_hardcore(job, player_client.mob.mind) || is_banned_from(player_client.ckey, "Appearance")
 	if(!player_client)
 		return // Disconnected while checking for the appearance ban.
@@ -594,6 +654,8 @@
 	updateappearance()
 
 /mob/living/silicon/ai/apply_prefs_job(client/player_client, datum/job/job)
+	procstart = null
+	src.procstart = null
 	if(GLOB.current_anonymous_theme)
 		fully_replace_character_name(real_name, GLOB.current_anonymous_theme.anonymous_ai_name(TRUE))
 		return
@@ -603,6 +665,8 @@
 	apply_pref_hologram_display(player_client)
 
 /mob/living/silicon/robot/apply_prefs_job(client/player_client, datum/job/job)
+	procstart = null
+	src.procstart = null
 	if(mmi)
 		var/organic_name
 		if(GLOB.current_anonymous_theme)
@@ -637,6 +701,8 @@
  * This happens after after_spawn()
  */
 /datum/job/proc/after_roundstart_spawn(mob/living/spawning, client/player_client)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 
@@ -646,19 +712,27 @@
  * This happens after after_spawn()
  */
 /datum/job/proc/after_latejoin_spawn(mob/living/spawning)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_JOB_AFTER_LATEJOIN_SPAWN, src, spawning)
 
 /// Called when a mob that has this job is admin respawned
 /datum/job/proc/on_respawn(mob/new_character)
+	procstart = null
+	src.procstart = null
 	SSjob.equip_rank(new_character, new_character.mind.assigned_role, new_character.client)
 
 /// This proc may be called when someone of this job is made into a traitor to create custom objectives related to the job.
 /datum/job/proc/generate_traitor_objective()
+	procstart = null
+	src.procstart = null
 	return null
 
 /// Returns a large (due to cropping) icon of this job's sechud icon state.
-/datum/job/proc/get_lobby_icon() as /icon
+/datum/job/proc/get_lobby_icon()
+	procstart = null
+	src.procstart = null
 	var/datum/outfit/job_outfit = outfit
 	if(!job_outfit || !job_outfit::id_trim)
 		CRASH("[src.type] has no job outfit but isn't overwriting get_lobby_icon().")
@@ -670,6 +744,8 @@
 	return icon('icons/mob/huds/hud.dmi', icon_state)
 
 /datum/job/proc/display_order_with_department()
+	procstart = null
+	src.procstart = null
 	var/datum/job_department/main_department = departments_list?[1]
 	if(!main_department)
 		main_department = /datum/job_department/undefined

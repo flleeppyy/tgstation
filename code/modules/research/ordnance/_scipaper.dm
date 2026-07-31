@@ -23,6 +23,8 @@
 	var/datum/scientific_partner/partner_path
 
 /datum/scientific_paper/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_amount()
 
@@ -37,6 +39,8 @@
  * Returns the expected value of that tier.
  */
 /datum/scientific_paper/proc/calculate_gains(calculated_tier)
+	procstart = null
+	src.procstart = null
 	if(!experiment_path || !tracked_variable)
 		return FALSE
 
@@ -50,6 +54,8 @@
 
 /// Determine which tier can we publish at. Lower limit for an allowed tier is 10% of gain. Empty list if none are allowed.
 /datum/scientific_paper/proc/calculate_tier()
+	procstart = null
+	src.procstart = null
 	var/list/allowed_tiers = list()
 	if(!experiment_path || !tracked_variable)
 		return allowed_tiers
@@ -72,10 +78,14 @@
  * Implement this in the children procs.
  */
 /datum/scientific_paper/proc/set_experiment(ex_path = null, variable = null, data = null)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Sets a tier for us. Nulls the tier when called without args.  Re-counts the amount.
 /datum/scientific_paper/proc/set_tier(assigned_tier = null)
+	procstart = null
+	src.procstart = null
 	tier = null
 	if(assigned_tier && (assigned_tier in calculate_tier()))
 		tier = assigned_tier
@@ -85,6 +95,8 @@
  * Partners exist separately from experiments and wont need to be reset every time something changes.
  */
 /datum/scientific_paper/proc/set_partner(new_partner = null)
+	procstart = null
+	src.procstart = null
 	partner_path = null
 	if(ispath(new_partner, /datum/scientific_partner))
 		var/datum/scientific_partner/partner = locate(new_partner) in SSresearch.scientific_partners
@@ -98,6 +110,8 @@
  * Also doubles as an initialization for the gains list.
  */
 /datum/scientific_paper/proc/set_amount()
+	procstart = null
+	src.procstart = null
 	gains = list(SCIPAPER_COOPERATION_INDEX = 0, SCIPAPER_FUNDING_INDEX = 0)
 	if(!tier || !experiment_path || !tracked_variable)
 		return FALSE
@@ -113,11 +127,15 @@
  * Things to check: tier, gain, and partner here. ex_path and record datums in subtypes.
  */
 /datum/scientific_paper/proc/allowed_to_publish(datum/techweb/techweb_to_check)
+	procstart = null
+	src.procstart = null
 	if(!tier || !gains || !partner_path || (0 in gains))
 		return FALSE
 	return !techweb_to_check.published_papers[experiment_path][tier]
 
 /datum/scientific_paper/proc/publish_paper(datum/techweb/techweb_to_publish)
+	procstart = null
+	src.procstart = null
 	autofill()
 	techweb_to_publish.published_papers[experiment_path][tier] = src
 	techweb_to_publish.scientific_cooperation[partner_path] += gains[SCIPAPER_COOPERATION_INDEX]
@@ -135,6 +153,8 @@
  * If you want to subtype this, do it in a way that doesn't mess with the type change.
  */
 /datum/scientific_paper/proc/clone_into(typepath)
+	procstart = null
+	src.procstart = null
 	var/datum/scientific_paper/new_paper = new typepath
 	new_paper.title = title
 	new_paper.author = author
@@ -149,6 +169,8 @@
 
 /// Returns the formatted, readable gist of our paper in a list.
 /datum/scientific_paper/proc/return_gist()
+	procstart = null
+	src.procstart = null
 	var/list/gist = list()
 	var/list/transcripted_gains = list(SCIPAPER_COOPERATION_INDEX, SCIPAPER_FUNDING_INDEX)
 	for (var/gain_index in transcripted_gains)
@@ -179,6 +201,8 @@
 	return gist
 
 /datum/scientific_paper/proc/autofill()
+	procstart = null
+	src.procstart = null
 	if(!title)
 		title = "On [initial(experiment_path.name)] - [tier]"
 	if(!author)
@@ -196,6 +220,8 @@
 
 /// Check if our explosion has already been published and whether the experiment path is correct or not.
 /datum/scientific_paper/explosive/allowed_to_publish(datum/techweb/techweb_to_check)
+	procstart = null
+	src.procstart = null
 	if(!ispath(experiment_path, /datum/experiment/ordnance/explosive))
 		return FALSE
 	if(!istype(explosion_record))
@@ -209,6 +235,8 @@
 	return ..()
 
 /datum/scientific_paper/explosive/set_experiment(ex_path = null, variable = null, data = null)
+	procstart = null
+	src.procstart = null
 	if(!ispath(ex_path, /datum/experiment/ordnance/explosive) || !variable || !istype(data, /datum/data/tachyon_record))
 		experiment_path = null
 		tracked_variable = null
@@ -222,6 +250,8 @@
 	set_partner()
 
 /datum/scientific_paper/explosive/clone_into(typepath)
+	procstart = null
+	src.procstart = null
 	if(typepath != type)
 		return ..()
 
@@ -238,6 +268,8 @@
  * Also checks the experiment path.
  */
 /datum/scientific_paper/gaseous/allowed_to_publish(datum/techweb/techweb_to_check)
+	procstart = null
+	src.procstart = null
 	if(!ispath(experiment_path, /datum/experiment/ordnance/gaseous))
 		return FALSE
 	if(!istype(compressor_record))
@@ -250,6 +282,8 @@
 	. = ..()
 
 /datum/scientific_paper/gaseous/set_experiment(ex_path = null, variable = null, data = null)
+	procstart = null
+	src.procstart = null
 	var/invalid = FALSE
 
 	invalid = invalid || !ispath(ex_path, /datum/experiment/ordnance/gaseous)
@@ -269,6 +303,8 @@
 	set_partner()
 
 /datum/scientific_paper/gaseous/clone_into(typepath)
+	procstart = null
+	src.procstart = null
 	if(typepath != type)
 		return ..()
 
@@ -290,6 +326,8 @@
 	var/list/boostable_nodes = list()
 
 /datum/scientific_partner/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Convey boosts to their associated nodes so that they can then be passed
 	// to techweb UIs as static data.
@@ -298,6 +336,8 @@
 		node.discount_boosts[TECHWEB_POINT_TYPE_GENERIC] = boostable_nodes[node_id]
 
 /datum/scientific_partner/proc/purchase_boost(datum/techweb/purchasing_techweb, datum/techweb_node/node)
+	procstart = null
+	src.procstart = null
 	var/possible_boost = allowed_to_boost(purchasing_techweb, node.id)
 	if(!possible_boost)
 		return FALSE
@@ -309,6 +349,8 @@
 	return TRUE
 
 /datum/scientific_partner/proc/allowed_to_boost(datum/techweb/purchasing_techweb, node_id)
+	procstart = null
+	src.procstart = null
 	var/datum/techweb_node/boosting_node = SSresearch.techweb_node_by_id(node_id)
 	if(purchasing_techweb.scientific_cooperation[type] < (boostable_nodes[node_id] * SCIENTIFIC_COOPERATION_PURCHASE_MULTIPLIER)) // Too expensive
 		return FALSE

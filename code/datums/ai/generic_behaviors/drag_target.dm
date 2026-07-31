@@ -9,6 +9,8 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/drag_target/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/our_mob = controller.pawn
 	var/atom/movable/target = controller.blackboard[target_key]
 	if(QDELETED(target) || target.anchored || target.pulledby)

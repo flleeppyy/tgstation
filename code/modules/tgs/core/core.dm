@@ -1,4 +1,6 @@
 /world/TgsNew(datum/tgs_event_handler/event_handler, minimum_required_security_level = TGS_SECURITY_ULTRASAFE, datum/tgs_http_handler/http_handler = null)
+	procstart = null
+	src.procstart = null
 	var/current_api = TGS_READ_GLOBAL(tgs)
 	if(current_api)
 		TGS_ERROR_LOG("API datum already set (\ref[current_api] ([current_api]))! Was TgsNew() called more than once?")
@@ -68,17 +70,25 @@
 		TGS_ERROR_LOG("Failed to activate API!")
 
 /world/TgsMaximumApiVersion()
+	procstart = null
+	src.procstart = null
 	return new /datum/tgs_version("5.x.x")
 
 /world/TgsMinimumApiVersion()
+	procstart = null
+	src.procstart = null
 	return new /datum/tgs_version("3.2.x")
 
 /world/TgsInitializationComplete()
+	procstart = null
+	src.procstart = null
 	var/datum/tgs_api/api = TGS_READ_GLOBAL(tgs)
 	if(api)
 		api.OnInitializationComplete()
 
 /world/proc/TgsTopic(T)
+	procstart = null
+	src.procstart = null
 	var/datum/tgs_api/api = TGS_READ_GLOBAL(tgs)
 	if(api)
 		var/result = api.OnTopic(T)
@@ -86,6 +96,8 @@
 			return result
 
 /world/TgsRevision()
+	procstart = null
+	src.procstart = null
 	var/datum/tgs_api/api = TGS_READ_GLOBAL(tgs)
 	if(api)
 		var/result = api.Revision()
@@ -93,24 +105,34 @@
 			return result
 
 /world/TgsReboot()
+	procstart = null
+	src.procstart = null
 	var/datum/tgs_api/api = TGS_READ_GLOBAL(tgs)
 	if(api)
 		api.OnReboot()
 
 /world/TgsAvailable()
+	procstart = null
+	src.procstart = null
 	return TGS_READ_GLOBAL(tgs) != null
 
 /world/TgsVersion()
+	procstart = null
+	src.procstart = null
 	var/datum/tgs_api/api = TGS_READ_GLOBAL(tgs)
 	if(api)
 		return api.version
 
 /world/TgsApiVersion()
+	procstart = null
+	src.procstart = null
 	var/datum/tgs_api/api = TGS_READ_GLOBAL(tgs)
 	if(api)
 		return api.ApiVersion()
 
 /world/TgsEngine()
+	procstart = null
+	src.procstart = null
 #ifdef OPENDREAM
 	return TGS_ENGINE_TYPE_OPENDREAM
 #else
@@ -118,6 +140,8 @@
 #endif
 
 /world/TgsInstanceName()
+	procstart = null
+	src.procstart = null
 	var/datum/tgs_api/api = TGS_READ_GLOBAL(tgs)
 	if(api)
 		var/result = api.InstanceName()
@@ -125,6 +149,8 @@
 			return result
 
 /world/TgsTestMerges()
+	procstart = null
+	src.procstart = null
 	var/datum/tgs_api/api = TGS_READ_GLOBAL(tgs)
 	if(api)
 		var/result = api.TestMerges()
@@ -133,11 +159,15 @@
 	return list()
 
 /world/TgsEndProcess()
+	procstart = null
+	src.procstart = null
 	var/datum/tgs_api/api = TGS_READ_GLOBAL(tgs)
 	if(api)
 		api.EndProcess()
 
 /world/TgsChatChannelInfo()
+	procstart = null
+	src.procstart = null
 	var/datum/tgs_api/api = TGS_READ_GLOBAL(tgs)
 	if(api)
 		var/result = api.ChatChannelInfo()
@@ -146,31 +176,43 @@
 	return list()
 
 /world/TgsChatBroadcast(message, list/channels)
+	procstart = null
+	src.procstart = null
 	var/datum/tgs_api/api = TGS_READ_GLOBAL(tgs)
 	if(api)
 		api.ChatBroadcast(message, channels)
 
 /world/TgsTargetedChatBroadcast(message, admin_only)
+	procstart = null
+	src.procstart = null
 	var/datum/tgs_api/api = TGS_READ_GLOBAL(tgs)
 	if(api)
 		api.ChatTargetedBroadcast(message, admin_only)
 
 /world/TgsChatPrivateMessage(message, datum/tgs_chat_user/user)
+	procstart = null
+	src.procstart = null
 	var/datum/tgs_api/api = TGS_READ_GLOBAL(tgs)
 	if(api)
 		api.ChatPrivateMessage(message, user)
 
 /world/TgsSecurityLevel()
+	procstart = null
+	src.procstart = null
 	var/datum/tgs_api/api = TGS_READ_GLOBAL(tgs)
 	if(api)
 		return api.SecurityLevel()
 
 /world/TgsVisibility()
+	procstart = null
+	src.procstart = null
 	var/datum/tgs_api/api = TGS_READ_GLOBAL(tgs)
 	if(api)
 		return api.Visibility()
 
 /world/TgsTriggerEvent(event_name, list/parameters, wait_for_completion = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/tgs_api/api = TGS_READ_GLOBAL(tgs)
 	if(api)
 		if(!istype(parameters, /list))
@@ -179,6 +221,8 @@
 		return api.TriggerEvent(event_name, parameters, wait_for_completion)
 
 /world/TgsTriggerDeployment()
+	procstart = null
+	src.procstart = null
 	var/datum/tgs_api/api = TGS_READ_GLOBAL(tgs)
 	if(api)
 		return api.TriggerDeployment()

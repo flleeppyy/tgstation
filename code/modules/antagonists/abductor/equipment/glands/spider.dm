@@ -8,6 +8,8 @@
 	mind_control_duration = 2400
 
 /obj/item/organ/heart/gland/spiderman/activate()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_warning("You feel something crawling in your skin."))
 	owner.add_faction(FACTION_SPIDER)
 	var/mob/living/basic/spider/growing/spiderling/spider = new(owner.drop_location())

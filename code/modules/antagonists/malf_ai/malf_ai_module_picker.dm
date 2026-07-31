@@ -5,9 +5,13 @@
 	var/list/possible_modules
 
 /datum/module_picker/New()
+	procstart = null
+	src.procstart = null
 	possible_modules = get_malf_modules()
 
 /proc/get_malf_modules()
+	procstart = null
+	src.procstart = null
 	var/list/modules = list()
 	for(var/path in GLOB.malf_modules)
 		var/datum/ai_module/AM = new path
@@ -17,15 +21,21 @@
 	return modules
 
 /datum/module_picker/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 /datum/module_picker/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "MalfunctionModulePicker", name)
 		ui.open()
 
 /datum/module_picker/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["processingTime"] = processing_time
 	if(isAI(user))
@@ -34,6 +44,8 @@
 	return data
 
 /datum/module_picker/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["categories"] = list()
 	data["modules"] = list()
@@ -61,6 +73,8 @@
 	return data
 
 /datum/module_picker/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -75,6 +89,8 @@
 					return TRUE
 
 /datum/module_picker/proc/purchase_module(mob/living/silicon/ai/AI, datum/ai_module/AM)
+	procstart = null
+	src.procstart = null
 	if(!istype(AM))
 		return
 	if(!AI || AI.stat == DEAD)

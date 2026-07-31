@@ -12,6 +12,8 @@
 	var/mutable_appearance/item_appearance
 
 /datum/component/action_item_overlay/Initialize(atom/movable/item, datum/callback/item_callback)
+	procstart = null
+	src.procstart = null
 	if(!istype(parent, /datum/action))
 		return COMPONENT_INCOMPATIBLE
 
@@ -25,18 +27,24 @@
 	src.item_callback = item_callback
 
 /datum/component/action_item_overlay/Destroy(force)
+	procstart = null
+	src.procstart = null
 	item_ref = null
 	item_callback = null
 	item_appearance = null
 	return ..()
 
 /datum/component/action_item_overlay/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ACTION_OVERLAY_APPLY, PROC_REF(on_overlays_applied))
 
 	var/datum/action/parent_action = parent
 	parent_action.build_all_button_icons(UPDATE_BUTTON_OVERLAY)
 
 /datum/component/action_item_overlay/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_ACTION_OVERLAY_APPLY)
 
 	// If we're being unregistered / deleted but our parent is sticking around,
@@ -47,6 +55,8 @@
 
 /// Signal proc for [COMSIG_ACTION_OVERLAY_APPLY], applies the item appearance if possible.
 /datum/component/action_item_overlay/proc/on_overlays_applied(datum/action/source, atom/movable/screen/movable/action_button/current_button, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// We're in the middle of being removed / deleted, remove our associated overlay

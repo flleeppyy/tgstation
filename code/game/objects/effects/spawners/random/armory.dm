@@ -106,6 +106,8 @@
 	spawn_loot_count = 2
 
 /obj/effect/spawner/random/armory/dragnet/spawn_loot(lootcount_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/dragnet_beacon(get_turf(src)) //And give them a beacon too!
 

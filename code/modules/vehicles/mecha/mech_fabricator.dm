@@ -58,17 +58,23 @@
 	var/drop_direction = SOUTH
 
 /obj/machinery/mecha_part_fabricator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	print_sound = new(src,  FALSE)
 	rmat = new (src, mapload && link_on_init)
 	cached_designs = list()
 	return ..()
 
 /obj/machinery/mecha_part_fabricator/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(rmat)
 	QDEL_NULL(print_sound)
 	return ..()
 
 /obj/machinery/mecha_part_fabricator/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!CONFIG_GET(flag/no_default_techweb_link) && !stored_research)
 		CONNECT_TO_RND_SERVER_ROUNDSTART(stored_research, src)
@@ -76,6 +82,8 @@
 		on_connected_techweb()
 
 /obj/machinery/mecha_part_fabricator/proc/connect_techweb(datum/techweb/new_techweb)
+	procstart = null
+	src.procstart = null
 	if(stored_research)
 		UnregisterSignal(stored_research, list(COMSIG_TECHWEB_ADD_DESIGN, COMSIG_TECHWEB_REMOVE_DESIGN))
 	stored_research = new_techweb
@@ -83,6 +91,8 @@
 		on_connected_techweb()
 
 /obj/machinery/mecha_part_fabricator/proc/on_connected_techweb()
+	procstart = null
+	src.procstart = null
 	RegisterSignals(
 		stored_research,
 		list(COMSIG_TECHWEB_ADD_DESIGN, COMSIG_TECHWEB_REMOVE_DESIGN),
@@ -91,11 +101,15 @@
 	update_menu_tech()
 
 /obj/machinery/mecha_part_fabricator/multitool_act(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(tool.buffer) && istype(tool.buffer, /datum/techweb))
 		connect_techweb(tool.buffer)
 	return TRUE
 
 /obj/machinery/mecha_part_fabricator/proc/on_techweb_update()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// We're probably going to get more than one update (design) at a time, so batch
@@ -103,6 +117,8 @@
 	addtimer(CALLBACK(src, PROC_REF(update_menu_tech)), 2 SECONDS, TIMER_UNIQUE | TIMER_OVERRIDE)
 
 /obj/machinery/mecha_part_fabricator/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/T = 0
 
@@ -134,12 +150,16 @@
 	update_static_data_for_all_viewers()
 
 /obj/machinery/mecha_part_fabricator/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
 		. += span_notice("The status display reads: Storing up to <b>[rmat.local_size]</b> material units.<br>Material consumption at <b>[component_coeff*100]%</b>.<br>Build time reduced by <b>[100-time_coeff*100]%</b>.")
 		. += span_notice("Currently configured to drop printed objects <b>[dir2text(drop_direction)]</b>.")
 
 /obj/machinery/mecha_part_fabricator/mouse_drop_dragged(atom/over, mob/user, src_location, over_location, params)
+	procstart = null
+	src.procstart = null
 	if(!can_interact(user) || (!HAS_SILICON_ACCESS(user) && !isAdminGhostAI(user)) && !Adjacent(user))
 		return
 	if(being_built)
@@ -155,6 +175,8 @@
  * Updates the `final_sets` and `buildable_parts` for the current mecha fabricator.
  */
 /obj/machinery/mecha_part_fabricator/proc/update_menu_tech()
+	procstart = null
+	src.procstart = null
 	var/previous_design_count = cached_designs.len
 
 	cached_designs.Cut()
@@ -178,6 +200,8 @@
  * Adds the overlay to show the fab working and sets active power usage settings.
  */
 /obj/machinery/mecha_part_fabricator/proc/on_start_printing()
+	procstart = null
+	src.procstart = null
 	add_overlay("[base_icon_state]-active")
 	update_use_power(ACTIVE_POWER_USE)
 	print_sound.start()
@@ -188,6 +212,8 @@
  * Removes the overlay to show the fab working and sets idle power usage settings. Additionally resets the description and turns off queue processing.
  */
 /obj/machinery/mecha_part_fabricator/proc/on_finish_printing()
+	procstart = null
+	src.procstart = null
 	cut_overlay("[base_icon_state]-active")
 	update_use_power(IDLE_POWER_USE)
 	desc = initial(desc)
@@ -202,6 +228,8 @@
  * * verbose - Whether the machine should use say() procs. Set to FALSE to disable the machine saying reasons for failure to build.
  */
 /obj/machinery/mecha_part_fabricator/proc/build_next_in_queue(verbose = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!length(queue))
 		return FALSE
 
@@ -224,6 +252,8 @@
  * * user_data - ID_DATA(user), see the proc on SSid_access
  */
 /obj/machinery/mecha_part_fabricator/proc/build_part(datum/design/D, verbose = TRUE, alist/user_data)
+	procstart = null
+	src.procstart = null
 	if(!D || length(D.reagents_list))
 		return FALSE
 
@@ -248,6 +278,8 @@
 	return TRUE
 
 /obj/machinery/mecha_part_fabricator/process()
+	procstart = null
+	src.procstart = null
 	// If there's a stored part to dispense due to an obstruction, try to dispense it.
 	if(stored_part)
 		var/turf/exit = get_step(src, drop_direction)
@@ -283,6 +315,8 @@
  * * dispensed_design - Design datum to attempt to dispense.
  */
 /obj/machinery/mecha_part_fabricator/proc/dispense_built_part(datum/design/dispensed_design)
+	procstart = null
+	src.procstart = null
 	var/obj/item/built_part = dispensed_design.create_result(src)
 	SSblackbox.record_feedback("nested tally", "lathe_printed_items", 1, list("[type]", "[built_part.type]"))
 
@@ -310,6 +344,8 @@
  * user_data - user data in the form rendered by ID_DATA(user), see the proc on SSidaccess
  */
 /obj/machinery/mecha_part_fabricator/proc/add_to_queue(datum/design/D, alist/user_data)
+	procstart = null
+	src.procstart = null
 	if(!istype(queue))
 		queue = list()
 
@@ -326,6 +362,8 @@
  * * index - Index in the build queue of the element to remove.
  */
 /obj/machinery/mecha_part_fabricator/proc/remove_from_queue(index)
+	procstart = null
+	src.procstart = null
 	if(!isnum(index) || !ISINTEGER(index) || !istype(queue) || (index<1 || index>length(queue)))
 		return FALSE
 	queue.Cut(index,++index)
@@ -338,22 +376,30 @@
  * * D - Design datum to calculate the modified build time of.
  * * roundto - Rounding value for round() proc
  */
-/obj/machinery/mecha_part_fabricator/proc/get_construction_time_w_coeff(construction_time, roundto = 1) //aran
+/obj/machinery/mecha_part_fabricator/proc/get_construction_time_w_coeff(construction_time, roundto = 1)
+	procstart = null
+	src.procstart = null //aran
 	return round(construction_time*time_coeff, roundto)
 
 /obj/machinery/mecha_part_fabricator/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/sheetmaterials),
 		get_asset_datum(/datum/asset/spritesheet_batched/research_designs)
 	)
 
 /obj/machinery/mecha_part_fabricator/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ExosuitFabricator")
 		ui.open()
 
 /obj/machinery/mecha_part_fabricator/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = rmat.mat_container.ui_static_data()
 
 	var/list/designs = list()
@@ -383,6 +429,8 @@
 	return data
 
 /obj/machinery/mecha_part_fabricator/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["materials"] = rmat.mat_container.ui_data()
@@ -413,6 +461,8 @@
 	return data
 
 /obj/machinery/mecha_part_fabricator/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(.)
@@ -495,15 +545,21 @@
 	return FALSE
 
 /obj/machinery/mecha_part_fabricator/proc/AfterMaterialInsert(item_inserted, id_inserted, amount_inserted)
+	procstart = null
+	src.procstart = null
 	var/datum/material/M = id_inserted
 	add_overlay("[base_icon_state]-load-[M.name]")
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, cut_overlay), "[base_icon_state]-load-[M.name]"), 1 SECONDS)
 
 /obj/machinery/mecha_part_fabricator/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]-o" : "[base_icon_state]-idle"
 
 /obj/machinery/mecha_part_fabricator/screwdriver_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(being_built)
 		to_chat(user, span_warning("\The [src] is currently processing! Please wait until completion."))
 		return NONE
@@ -511,6 +567,8 @@
 	return default_deconstruction_screwdriver(user, I)
 
 /obj/machinery/mecha_part_fabricator/crowbar_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(being_built)
 		to_chat(user, span_warning("\The [src] is currently processing! Please wait until completion."))
 		return NONE

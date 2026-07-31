@@ -8,11 +8,15 @@ SUBSYSTEM_DEF(init_profiler)
 	ss_flags = SS_NO_FIRE
 
 /datum/controller/subsystem/init_profiler/Initialize()
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/auto_profile))
 		write_init_profile()
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/init_profiler/proc/write_init_profile()
+	procstart = null
+	src.procstart = null
 	var/current_profile_data = world.Profile(PROFILE_REFRESH, format = "json")
 	CHECK_TICK
 

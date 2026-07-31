@@ -11,10 +11,14 @@
 	VAR_FINAL/datum/greyscale_modify_menu/menu
 
 /datum/preference_middleware/loadout/Destroy(force, ...)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(menu)
 	return ..()
 
 /datum/preference_middleware/loadout/proc/action_select_item(list/params, mob/user)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	var/path_to_use = text2path(params["path"])
 	var/datum/loadout_item/interacted_item = GLOB.all_loadout_datums[path_to_use]
@@ -29,17 +33,23 @@
 	return TRUE
 
 /datum/preference_middleware/loadout/proc/action_clear_all(list/params, mob/user)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], null)
 	return TRUE
 
 /datum/preference_middleware/loadout/proc/action_toggle_job_outfit(list/params, mob/user)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	preferences.character_preview_view.show_job_clothes = !preferences.character_preview_view.show_job_clothes
 	preferences.character_preview_view.update_body()
 	return TRUE
 
 /datum/preference_middleware/loadout/proc/action_rotate_model_dir(list/params, mob/user)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	switch(params["dir"])
 		if("left")
@@ -48,6 +58,8 @@
 			preferences.character_preview_view.setDir(turn(preferences.character_preview_view.dir, 90))
 
 /datum/preference_middleware/loadout/proc/action_pass_to_loadout_item(list/params, mob/user)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	var/path_to_use = text2path(params["path"])
 	var/datum/loadout_item/interacted_item = GLOB.all_loadout_datums[path_to_use]
@@ -63,6 +75,8 @@
 
 /// Select [path] item to [category_slot] slot.
 /datum/preference_middleware/loadout/proc/select_item(datum/loadout_item/selected_item)
+	procstart = null
+	src.procstart = null
 	var/list/loadout = preferences.read_preference(/datum/preference/loadout)
 	var/list/datum/loadout_item/loadout_datums = loadout_list_to_datums(loadout)
 	for(var/datum/loadout_item/item as anything in loadout_datums)
@@ -76,32 +90,46 @@
 
 /// Deselect [deselected_item].
 /datum/preference_middleware/loadout/proc/deselect_item(datum/loadout_item/deselected_item)
+	procstart = null
+	src.procstart = null
 	var/list/loadout = preferences.read_preference(/datum/preference/loadout)
 	LAZYREMOVE(loadout, deselected_item.item_path)
 	preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
 
 /datum/preference_middleware/loadout/proc/register_greyscale_menu(datum/greyscale_modify_menu/open_menu)
+	procstart = null
+	src.procstart = null
 	src.menu = open_menu
 	RegisterSignal(menu, COMSIG_QDELETING, PROC_REF(cleanup_greyscale_menu))
 
 /datum/preference_middleware/loadout/proc/cleanup_greyscale_menu()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	menu = null
 
 /datum/preference_middleware/loadout/proc/force_close_greyscale_menu()
+	procstart = null
+	src.procstart = null
 	menu?.ui_close()
 
 /datum/preference_middleware/loadout/get_ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["job_clothes"] = preferences.character_preview_view.show_job_clothes
 	return data
 
 /datum/preference_middleware/loadout/get_ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["loadout_preview_view"] = preferences.character_preview_view.assigned_map
 	return data
 
 /datum/preference_middleware/loadout/get_constant_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/loadout_tabs = list()
 	for(var/datum/loadout_category/category as anything in GLOB.all_loadout_categories)

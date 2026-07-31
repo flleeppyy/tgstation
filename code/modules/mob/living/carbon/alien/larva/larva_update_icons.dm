@@ -1,9 +1,13 @@
 
 /mob/living/carbon/alien/larva/regenerate_icons()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	update_icons()
 
 /mob/living/carbon/alien/larva/update_icons()
+	procstart = null
+	src.procstart = null
 	var/state = 0
 	if(amount_grown > 80)
 		state = 2
@@ -22,12 +26,18 @@
 		icon_state = "larva[state]"
 
 /mob/living/carbon/alien/larva/update_transform() //All this is handled in update_icons()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icons()
 
 /mob/living/carbon/alien/larva/update_worn_handcuffs()
+	procstart = null
+	src.procstart = null
 	update_icons() //larva icon_state changes if cuffed/uncuffed.
 
 
 /mob/living/carbon/alien/larva/lying_angle_on_lying_down(new_lying_angle)
+	procstart = null
+	src.procstart = null
 	return // Larvas don't rotate on lying down, they have their own custom icons.

@@ -49,6 +49,8 @@
 	)
 
 /mob/living/basic/orbie/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/holographic_nature)
 	var/static/list/food_types = list(/obj/item/food/virtual_chocolate)
@@ -62,6 +64,8 @@
 	update_appearance()
 
 /mob/living/basic/orbie/early_melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -73,18 +77,26 @@
 	return BASIC_MOB_END_ATTACK_CHAIN_COOLDOWN
 
 /mob/living/basic/orbie/proc/on_lights(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	update_appearance()
 
 /mob/living/basic/orbie/proc/toggle_happy_state()
+	procstart = null
+	src.procstart = null
 	happy_state = !happy_state
 	update_appearance()
 
 /mob/living/basic/orbie/can_be_pulled(user, force)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/basic/orbie/proc/on_level_up(datum/source, new_level)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(maxHealth >= ORBIE_MAXIMUM_HEALTH)
@@ -96,6 +108,8 @@
 
 
 /mob/living/basic/orbie/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat == DEAD)
 		return
@@ -108,6 +122,8 @@
 		. += eyes_overlay
 
 /mob/living/basic/orbie/gib()
+	procstart = null
+	src.procstart = null
 	death(TRUE)
 
 #undef ORBIE_MAXIMUM_HEALTH

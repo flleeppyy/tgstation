@@ -18,10 +18,14 @@
 	laser = 25
 
 /obj/structure/blob/shield/Initialize(mapload, owner_overmind)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/blocks_explosives)
 	return ..()
 
 /obj/structure/blob/shield/scannerreport()
+	procstart = null
+	src.procstart = null
 	if(atmosblock)
 		return "Will prevent the spread of atmospheric changes."
 	return "N/A"
@@ -30,20 +34,28 @@
 	point_return = 0
 
 /obj/structure/blob/shield/update_name(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[(atom_integrity < (max_integrity * 0.5)) ? "weakened " : null][initial(name)]"
 
 /obj/structure/blob/shield/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = (atom_integrity < (max_integrity * 0.5)) ? "[damaged_desc]" : initial(desc)
 
 /obj/structure/blob/shield/take_damage(damage_amount, damage_type, damage_flag, sound_effect, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && atom_integrity > 0)
 		atmosblock = atom_integrity < (max_integrity * 0.5)
 		air_update_turf(TRUE, atmosblock)
 
 /obj/structure/blob/shield/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)][(atom_integrity < (max_integrity * 0.5)) ? "_damaged" : null]"
 	return ..()
 

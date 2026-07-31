@@ -38,6 +38,8 @@
 	boss_name = "George Melon"
 
 /datum/computer_file/program/arcade/proc/game_check(mob/living/user)
+	procstart = null
+	src.procstart = null
 	sleep(0.5 SECONDS)
 	user?.mind?.adjust_experience(/datum/skill/gaming, 1)
 	if(boss_hp <= 0)
@@ -63,6 +65,8 @@
 		sleep(1 SECONDS)
 
 /datum/computer_file/program/arcade/proc/enemy_check(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/boss_attackamt = 0 //Spam protection from boss attacks as well.
 	var/boss_mpamt = 0
 	var/bossheal = 0
@@ -91,11 +95,15 @@
 	game_check(user)
 
 /datum/computer_file/program/arcade/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/simple/arcade),
 	)
 
 /datum/computer_file/program/arcade/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["Hitpoints"] = boss_hp
 	data["PlayerHitpoints"] = player_hp
@@ -108,6 +116,8 @@
 	return data
 
 /datum/computer_file/program/arcade/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/gamer = ui.user
 	if (!istype(gamer))

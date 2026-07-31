@@ -14,6 +14,8 @@
  * * override If a previous registration exists you must explicitly set this
  */
 /datum/proc/RegisterSignal(datum/target, signal_type, proctype, override = FALSE)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || QDELETED(target))
 		return
 
@@ -54,6 +56,8 @@
 
 /// Registers multiple signals to the same proc.
 /datum/proc/RegisterSignals(datum/target, list/signal_types, proctype, override = FALSE)
+	procstart = null
+	src.procstart = null
 	for (var/signal_type in signal_types)
 		RegisterSignal(target, signal_type, proctype, override)
 
@@ -69,6 +73,8 @@
  * * sig_typeor_types Signal string key or list of signal keys to stop listening to specifically
  */
 /datum/proc/UnregisterSignal(datum/target, sig_type_or_types)
+	procstart = null
+	src.procstart = null
 	var/list/lookup = target._listen_lookup
 	if(!_signal_procs || !_signal_procs[target] || !lookup)
 		return
@@ -111,6 +117,8 @@
  * Use the [SEND_SIGNAL] define instead
  */
 /datum/proc/_SendSignal(sigtype, list/arguments)
+	procstart = null
+	src.procstart = null
 	var/target = _listen_lookup[sigtype]
 	if(!length(target))
 		var/datum/listening_datum = target

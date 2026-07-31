@@ -2,6 +2,8 @@
 /datum/targeting_strategy/dead_mob
 
 /datum/targeting_strategy/dead_mob/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -14,6 +16,8 @@
 /datum/targeting_strategy/dead_mob/not_pulled
 
 /datum/targeting_strategy/dead_mob/not_pulled/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	var/mob/living/candidate = target
 	if(isliving(candidate) && candidate.pulledby)
 		return FALSE

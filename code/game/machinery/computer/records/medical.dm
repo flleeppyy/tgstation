@@ -23,12 +23,16 @@
 	projectiles_pass_chance = 100
 
 /obj/machinery/computer/records/medical/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/photo))
 		return NONE
 	insert_new_record(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/computer/records/medical/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -39,6 +43,8 @@
 		ui.open()
 
 /obj/machinery/computer/records/medical/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 
 	var/list/records = list()
@@ -76,6 +82,8 @@
 	return data
 
 /obj/machinery/computer/records/medical/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["min_age"] = AGE_MIN
 	data["max_age"] = AGE_MAX
@@ -84,6 +92,8 @@
 	return data
 
 /obj/machinery/computer/records/medical/ui_act(action, list/params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -151,6 +161,8 @@
 
 /// Deletes medical information from a record.
 /obj/machinery/computer/records/medical/expunge_record_info(datum/record/crew/target)
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return FALSE
 

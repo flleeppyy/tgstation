@@ -17,6 +17,8 @@
 	var/image/stacks_overlay
 
 /datum/status_effect/void_chill/on_creation(mob/living/new_owner, new_stacks, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(update_stacks_overlay))
 	set_stacks(new_stacks)
@@ -24,6 +26,8 @@
 	owner.update_icon(UPDATE_OVERLAYS)
 
 /datum/status_effect/void_chill/on_apply()
+	procstart = null
+	src.procstart = null
 	if(owner.can_block_magic())
 		return FALSE
 	if(issilicon(owner))
@@ -33,6 +37,8 @@
 	return TRUE
 
 /datum/status_effect/void_chill/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.update_icon(UPDATE_OVERLAYS)
 	owner.remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, COLOR_BLUE_LIGHT)
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/void_chill)
@@ -41,9 +47,13 @@
 	UnregisterSignal(owner, COMSIG_ATOM_UPDATE_OVERLAYS)
 
 /datum/status_effect/void_chill/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	owner.adjust_bodytemperature(-12 * stacks * seconds_between_ticks)
 
 /datum/status_effect/void_chill/refresh(mob/living/new_owner, new_stacks, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(forced)
 		set_stacks(new_stacks)
@@ -53,6 +63,8 @@
 
 ///Updates the overlay that gets applied on our victim
 /datum/status_effect/void_chill/proc/update_stacks_overlay(atom/parent_atom, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	linked_alert?.update_appearance(UPDATE_ICON_STATE|UPDATE_DESC)
@@ -71,10 +83,14 @@
  */
 
 /datum/status_effect/void_chill/proc/set_stacks(new_stacks)
+	procstart = null
+	src.procstart = null
 	stacks = max(0, min(stack_limit, new_stacks))
 	update_movespeed(stacks)
 
 /datum/status_effect/void_chill/proc/adjust_stacks(new_stacks)
+	procstart = null
+	src.procstart = null
 	stacks = max(0, min(stack_limit, stacks + new_stacks))
 	update_movespeed(stacks)
 	if(stacks >= 5)
@@ -82,6 +98,8 @@
 
 ///Updates the movespeed of owner based on the amount of stacks of the debuff
 /datum/status_effect/void_chill/proc/update_movespeed(stacks)
+	procstart = null
+	src.procstart = null
 	owner.add_movespeed_modifier(/datum/movespeed_modifier/void_chill, update = TRUE)
 	owner.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/void_chill, update = TRUE, multiplicative_slowdown = (0.5 * stacks))
 	linked_alert.maptext = MAPTEXT_TINY_UNICODE("<span style='text-align:center'>[stacks]</span>")
@@ -102,6 +120,8 @@
 	overlay_state = "void_chill_minor"
 
 /atom/movable/screen/alert/status_effect/void_chill/update_overlays()
+	procstart = null
+	src.procstart = null
 	if(!istype(attached_effect, /datum/status_effect/void_chill))
 		return ..()
 	var/datum/status_effect/void_chill/chill_effect = attached_effect
@@ -110,6 +130,8 @@
 	return ..()
 
 /atom/movable/screen/alert/status_effect/void_chill/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(attached_effect, /datum/status_effect/void_chill))
 		return

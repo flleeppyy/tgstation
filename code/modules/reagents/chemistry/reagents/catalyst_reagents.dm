@@ -9,6 +9,8 @@
 	var/modifier = 1
 
 /datum/reagent/catalyst_agent/proc/consider_catalyst(datum/equilibrium/equilibrium)
+	procstart = null
+	src.procstart = null
 	for(var/_product in equilibrium.reaction.results)
 		if(ispath(_product, target_reagent_type))
 			return TRUE
@@ -18,6 +20,8 @@
 	name ="Speed Catalyst Agent"
 
 /datum/reagent/catalyst_agent/speed/consider_catalyst(datum/equilibrium/equilibrium)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		equilibrium.speed_mod = creation_purity*modifier //So a purity 1 = the modifier, and a purity 0 = the inverse modifier. For this we don't want a negative speed_mod (I have no idea what happens if we do)
@@ -27,6 +31,8 @@
 	name ="pH Catalyst Agent"
 
 /datum/reagent/catalyst_agent/ph/consider_catalyst(datum/equilibrium/equilibrium)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		equilibrium.h_ion_mod = ((creation_purity-0.5)*2)*modifier //So a purity 1 = the modifier, and a purity 0 = the inverse modifier
@@ -35,6 +41,8 @@
 	name = "Temperature Catalyst Agent"
 
 /datum/reagent/catalyst_agent/temperature/consider_catalyst(datum/equilibrium/equilibrium)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		equilibrium.thermic_mod = ((creation_purity-0.5)*2)*modifier //So a purity 1 = the modifier, and a purity 0 = the inverse modifier 

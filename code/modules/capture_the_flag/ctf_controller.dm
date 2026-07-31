@@ -25,15 +25,21 @@
 	var/instagib_mode = FALSE
 
 /datum/ctf_controller/New(game_id)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.game_id = game_id
 	GLOB.ctf_games[game_id] = src
 
 /datum/ctf_controller/Destroy(force)
+	procstart = null
+	src.procstart = null
 	GLOB.ctf_games[game_id] = null
 	return ..()
 
 /datum/ctf_controller/proc/toggle_ctf()
+	procstart = null
+	src.procstart = null
 	if(!ctf_enabled)
 		start_ctf()
 		return TRUE
@@ -42,6 +48,8 @@
 		return FALSE
 
 /datum/ctf_controller/proc/start_ctf()
+	procstart = null
+	src.procstart = null
 	if(ctf_enabled)
 		return //CTF is already running, don't notify ghosts again
 	ctf_enabled = TRUE
@@ -54,6 +62,8 @@
 		)
 
 /datum/ctf_controller/proc/stop_ctf()
+	procstart = null
+	src.procstart = null
 	ctf_enabled = FALSE
 	clear_control_points()
 	respawn_barricades()
@@ -62,6 +72,8 @@
 
 ///Unloading CTF removes the map entirely and allows for a new map to be loaded in its place.
 /datum/ctf_controller/proc/unload_ctf()
+	procstart = null
+	src.procstart = null
 	if(game_id != CTF_GHOST_CTF_GAME_ID)
 		return //At present we only support unloading standard centcom ctf, if we intend to support ctf unloading elsewhere then this proc will need to be amended.
 	stop_ctf()
@@ -79,12 +91,16 @@
 
 ///Add an additional team to the current CTF game.
 /datum/ctf_controller/proc/add_team(obj/machinery/ctf/spawner/spawner)
+	procstart = null
+	src.procstart = null
 	if(!isnull(teams[spawner.team]))
 		return //CTF currently only supports one spawn point per team, if you want to add a map that uses more you'll need to modify add_team/remove_team and turn the spawner var on the team itself into a list
 	teams[spawner.team] = new /datum/ctf_team(spawner)
 
 ///Called when a spawner is deleted, removes the team from this datum.
 /datum/ctf_controller/proc/remove_team(team_color)
+	procstart = null
+	src.procstart = null
 	if(isnull(teams[team_color]))
 		return //Cannot delete a team that doesn't exist
 	QDEL_NULL(teams[team_color])
@@ -92,18 +108,26 @@
 
 ///Adds a player and a reference to their player component to the corresponding team.
 /datum/ctf_controller/proc/add_player(team_color, ckey, datum/component/ctf_player/new_team_member)
+	procstart = null
+	src.procstart = null
 	teams[team_color].team_members[ckey] = new_team_member
 
 ///Returns a reference to a players component (if it exists) when provided with a player's ckey
 /datum/ctf_controller/proc/get_player_component(team_color, ckey)
+	procstart = null
+	src.procstart = null
 	return teams[team_color].team_members[ckey]
 
 ///Returns a list of all players in the provided team.
 /datum/ctf_controller/proc/get_players(team_color)
+	procstart = null
+	src.procstart = null
 	return teams[team_color].team_members
 
 ///Returns a list of all players in all teams.
 /datum/ctf_controller/proc/get_all_players()
+	procstart = null
+	src.procstart = null
 	var/list/players = list()
 	for(var/team in teams)
 		players += get_players(team)
@@ -111,6 +135,8 @@
 
 ///Identifies if the provided team is a valid team to join for the provided player.
 /datum/ctf_controller/proc/team_valid_to_join(team_color, mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/friendly_team_members = get_players(team_color)
 	for(var/team in teams)
 		if(team == team_color)
@@ -126,6 +152,8 @@
 
 ///Called when a flag is captured by the provided team. Messages players telling them who scored a point and if points are high enough declares victory.
 /datum/ctf_controller/proc/capture_flag(team_color, mob/living/user, team_span, obj/item/ctf_flag/flag)
+	procstart = null
+	src.procstart = null
 	teams[team_color].score_points(flag.flag_value)
 	message_all_teams("<span class='userdanger [team_span]'>[user.real_name] has captured \the [flag], scoring a point for [team_color] team! They now have [get_points(team_color)]/[points_to_win] points!</span>")
 	if(get_points(team_color) >= points_to_win)
@@ -133,6 +161,8 @@
 
 ///Called when points are scored at a control point. Messages players telling them when a team is half way to winning and if points are high enough declares victory.
 /datum/ctf_controller/proc/control_point_scoring(team_color, points)
+	procstart = null
+	src.procstart = null
 	teams[team_color].score_points(points)
 	if(get_points(team_color) == points_to_win/2)
 		message_all_teams("<span class='userdanger [teams[team_color].team_span]'>[team_color] is half way to winning! they only need [points_to_win/2] more points to win!</span>")
@@ -141,10 +171,14 @@
 
 ///Returns the current amount of points the provided team has.
 /datum/ctf_controller/proc/get_points(team_color)
+	procstart = null
+	src.procstart = null
 	return teams[team_color].points
 
 ///Ends the current CTF game and informs all players which team won. Restarts CTF if auto_restart is enabled.
 /datum/ctf_controller/proc/victory(winning_team)
+	procstart = null
+	src.procstart = null
 	ctf_enabled = FALSE
 	clear_control_points()
 	respawn_barricades()
@@ -159,22 +193,30 @@
 
 ///Marks all control points as neutral, called when a CTF match ends.
 /datum/ctf_controller/proc/clear_control_points()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/ctf/control_point/control_point in control_points)
 		control_point.clear_point()
 
 ///Respawns all barricades destroyed during the current CTF game, called when the match ends.
 /datum/ctf_controller/proc/respawn_barricades()
+	procstart = null
+	src.procstart = null
 	for(var/obj/effect/ctf/dead_barricade/barricade in barricades)
 		barricade.respawn()
 	barricades = list()
 
 ///Sends a message to all players in all CTF teams in this game.
 /datum/ctf_controller/proc/message_all_teams(message)
+	procstart = null
+	src.procstart = null
 	for(var/team in teams)
 		teams[team].message_team(message)
 
 ///Enables and disables instagib mode in this game. During instagib mode respawns are faster, players are faster and people die faster (instant).
 /datum/ctf_controller/proc/toggle_instagib_mode()
+	procstart = null
+	src.procstart = null
 	if(!instagib_mode) // Normal > Instagib
 		for(var/team in teams)
 			var/datum/ctf_team/ctf_team = teams[team]
@@ -201,6 +243,8 @@
 	var/team_span = ""
 
 /datum/ctf_team/New(obj/machinery/ctf/spawner/spawner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.spawner = spawner
 	team_color = spawner.team
@@ -208,6 +252,8 @@
 
 ///If the team is destroyed all players in that team need their component removed.
 /datum/ctf_team/Destroy(force)
+	procstart = null
+	src.procstart = null
 	for(var/player in team_members)
 		var/datum/component/ctf_player/ctf_player = team_members[player]
 		ctf_player.end_game()
@@ -215,10 +261,14 @@
 
 ///Increases this teams number of points by the provided amount.
 /datum/ctf_team/proc/score_points(points_scored)
+	procstart = null
+	src.procstart = null
 	points += points_scored
 
 ///Resets this teams score and clears its member list. All members will be dusted and have their player component removed.
 /datum/ctf_team/proc/reset_team()
+	procstart = null
+	src.procstart = null
 	points = 0
 	for(var/player in team_members)
 		var/datum/component/ctf_player/ctf_player = team_members[player]
@@ -227,12 +277,16 @@
 
 ///Sends a message to all players in this team.
 /datum/ctf_team/proc/message_team(message)
+	procstart = null
+	src.procstart = null
 	for(var/player in team_members)
 		var/datum/component/ctf_player/ctf_player = team_members[player]
 		ctf_player.send_message(message)
 
 ///Creates a CTF game with the provided team ID then returns a reference to the new controller. If a controller already exists provides a reference to it.
 /proc/create_ctf_game(game_id)
+	procstart = null
+	src.procstart = null
 	return GLOB.ctf_games[game_id] || new /datum/ctf_controller(game_id)
 
 #undef CTF_DEFAULT_RESPAWN

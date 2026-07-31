@@ -1,4 +1,6 @@
 /client/proc/mark_datum(datum/D)
+	procstart = null
+	src.procstart = null
 	if(!holder)
 		return
 	if(!D.allow_mark_datum())
@@ -14,10 +16,14 @@ ADMIN_VERB_ONLY_CONTEXT_MENU(mark_datum, R_NONE, "Mark Object", datum/target as 
 	user.mark_datum(target)
 
 /datum/admins/proc/handle_marked_del(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(marked_datum, COMSIG_QDELETING)
 	marked_datum = null
 
 /// Will this datum allow itself to be marked by vv?
 /datum/proc/allow_mark_datum()
+	procstart = null
+	src.procstart = null
 	return TRUE

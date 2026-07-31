@@ -7,6 +7,8 @@
 	var/grilled_time = 0
 
 /datum/component/sizzle/Initialize(grilled_time)
+	procstart = null
+	src.procstart = null
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -20,6 +22,8 @@
 	src.grilled_time = grilled_time
 
 /datum/component/sizzle/InheritComponent(datum/component/C, i_am_original, grilled_time)
+	procstart = null
+	src.procstart = null
 	var/atom/food = parent
 	sizzling.alpha += 5
 	food.cut_overlay(sizzling)
@@ -28,4 +32,6 @@
 
 ///Returns how long the food item has been sizzling for
 /datum/component/sizzle/proc/time_elapsed()
+	procstart = null
+	src.procstart = null
 	return src.grilled_time

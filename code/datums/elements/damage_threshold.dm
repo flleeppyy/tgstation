@@ -8,6 +8,8 @@
 	var/force_threshold = -1
 
 /datum/element/damage_threshold/Attach(datum/target, threshold)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -18,6 +20,8 @@
 	force_threshold = threshold
 
 /datum/element/damage_threshold/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_LIVING_CHECK_BLOCK)
 

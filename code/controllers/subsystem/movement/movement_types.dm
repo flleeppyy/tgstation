@@ -29,6 +29,8 @@
 	var/status = NONE
 
 /datum/move_loop/New(datum/movement_packet/owner, datum/controller/subsystem/movement/controller, atom/moving, priority, flags, datum/extra_info)
+	procstart = null
+	src.procstart = null
 	src.owner = owner
 	src.controller = controller
 	src.extra_info = extra_info
@@ -39,6 +41,8 @@
 	src.flags = flags
 
 /datum/move_loop/proc/setup(delay = 1, timeout = INFINITY)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(moving) || !owner)
 		return FALSE
 
@@ -48,6 +52,8 @@
 
 ///check if this exact moveloop datum already exists (in terms of vars) so we can avoid creating a new one to overwrite the old duplicate
 /datum/move_loop/proc/compare_loops(datum/move_loop/loop_type, priority, flags, extra_info, delay = 1, timeout = INFINITY)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(loop_type == type && priority == src.priority && flags == src.flags && delay == src.delay && timeout == lifetime)
 		return TRUE
@@ -55,6 +61,8 @@
 
 ///Called when a loop is starting by a movement subsystem
 /datum/move_loop/proc/loop_started()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_MOVELOOP_START)
 	status |= MOVELOOP_STATUS_RUNNING
@@ -72,16 +80,22 @@
 
 ///Called when a loop is stopped, doesn't stop the loop itself
 /datum/move_loop/proc/loop_stopped()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	status &= ~MOVELOOP_STATUS_RUNNING
 	EVLOG_TEXT(moving, EVLOG_CATEGORY_MOVELOOPS, "Moveloop stopped")
 	SEND_SIGNAL(src, COMSIG_MOVELOOP_STOP)
 
 /datum/move_loop/proc/info_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	extra_info = null
 
 /datum/move_loop/Destroy()
+	procstart = null
+	src.procstart = null
 	if(owner)
 		owner.remove_loop(controller, src)
 	owner = null
@@ -92,11 +106,15 @@
 
 ///Exists as a helper so outside code can modify delay in a sane way
 /datum/move_loop/proc/set_delay(new_delay)
+	procstart = null
+	src.procstart = null
 	delay =  max(new_delay, world.tick_lag)
 
 ///Pauses the move loop for some passed in period
 ///This functionally means shifting its timer up, and clearing it from its current bucket
 /datum/move_loop/proc/pause_for(time)
+	procstart = null
+	src.procstart = null
 	if(!controller || !(status & MOVELOOP_STATUS_RUNNING)) //No controller or not running? go away
 		return
 	//Dequeue us from our current bucket
@@ -107,6 +125,8 @@
 	controller.queue_loop(src)
 
 /datum/move_loop/process()
+	procstart = null
+	src.procstart = null
 	if(isnull(controller))
 		qdel(src)
 		return
@@ -149,11 +169,15 @@
 ///Handles the actual move, overriden by children
 ///Returns FALSE if nothing happen, TRUE otherwise
 /datum/move_loop/proc/move()
+	procstart = null
+	src.procstart = null
 	return MOVELOOP_FAILURE
 
 
 ///Pause our loop untill restarted with resume_loop()
 /datum/move_loop/proc/pause_loop()
+	procstart = null
+	src.procstart = null
 	if(!controller || !(status & MOVELOOP_STATUS_RUNNING) || (status & MOVELOOP_STATUS_PAUSED)) //we dead
 		return
 
@@ -163,6 +187,8 @@
 
 ///Resume our loop after being paused by pause_loop()
 /datum/move_loop/proc/resume_loop()
+	procstart = null
+	src.procstart = null
 	if(!controller || (status & (MOVELOOP_STATUS_RUNNING|MOVELOOP_STATUS_PAUSED)) != (MOVELOOP_STATUS_RUNNING|MOVELOOP_STATUS_PAUSED))
 		return
 
@@ -172,6 +198,8 @@
 
 ///Removes the atom from some movement subsystem. Defaults to SSmovement
 /datum/move_manager/proc/stop_looping(atom/movable/moving, datum/controller/subsystem/movement/subsystem = SSmovement)
+	procstart = null
+	src.procstart = null
 	var/datum/movement_packet/our_info = moving.move_packet
 	if(!our_info)
 		return FALSE
@@ -193,6 +221,8 @@
  *
 **/
 /datum/move_manager/proc/move(moving, direction, delay, timeout, subsystem, priority, flags, datum/extra_info)
+	procstart = null
+	src.procstart = null
 	return add_to_loop(moving, subsystem, /datum/move_loop/move, priority, flags, extra_info, delay, timeout, direction)
 
 ///Replacement for walk()
@@ -200,17 +230,23 @@
 	var/direction
 
 /datum/move_loop/move/setup(delay, timeout, dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	direction = dir
 
 /datum/move_loop/move/compare_loops(datum/move_loop/loop_type, priority, flags, extra_info, delay, timeout, dir)
+	procstart = null
+	src.procstart = null
 	if(..() && direction == dir)
 		return TRUE
 	return FALSE
 
 /datum/move_loop/move/move()
+	procstart = null
+	src.procstart = null
 	var/atom/old_loc = moving.loc
 	moving.Move(get_step(moving, direction), direction, FALSE, !(flags & MOVEMENT_LOOP_NO_DIR_UPDATE))
 	// We cannot rely on the return value of Move(), we care about teleports and it doesn't
@@ -234,11 +270,15 @@
  *
 **/
 /datum/move_manager/proc/force_move_dir(moving, direction, delay, timeout, subsystem, priority, flags, datum/extra_info)
+	procstart = null
+	src.procstart = null
 	return add_to_loop(moving, subsystem, /datum/move_loop/move/force, priority, flags, extra_info, delay, timeout, direction)
 
 /datum/move_loop/move/force
 
 /datum/move_loop/move/force/move()
+	procstart = null
+	src.procstart = null
 	var/atom/old_loc = moving.loc
 	moving.forceMove(get_step(moving, direction))
 	return old_loc != moving?.loc ? MOVELOOP_SUCCESS : MOVELOOP_FAILURE
@@ -249,6 +289,8 @@
 	var/atom/target
 
 /datum/move_loop/has_target/setup(delay, timeout, atom/chasing)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -262,15 +304,21 @@
 		RegisterSignal(target, COMSIG_QDELETING, PROC_REF(handle_no_target)) //Don't do this for turfs, because we don't care
 
 /datum/move_loop/has_target/compare_loops(datum/move_loop/loop_type, priority, flags, extra_info, delay, timeout, atom/chasing)
+	procstart = null
+	src.procstart = null
 	if(..() && chasing == target)
 		return TRUE
 	return FALSE
 
 /datum/move_loop/has_target/Destroy()
+	procstart = null
+	src.procstart = null
 	target = null
 	return ..()
 
 /datum/move_loop/has_target/proc/handle_no_target()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
@@ -291,12 +339,16 @@
  *
 **/
 /datum/move_manager/proc/force_move(moving, chasing, delay, timeout, subsystem, priority, flags, datum/extra_info)
+	procstart = null
+	src.procstart = null
 	return add_to_loop(moving, subsystem, /datum/move_loop/has_target/force_move, priority, flags, extra_info, delay, timeout, chasing)
 
 ///Used for force-move loops
 /datum/move_loop/has_target/force_move
 
 /datum/move_loop/has_target/force_move/move()
+	procstart = null
+	src.procstart = null
 	var/atom/old_loc = moving.loc
 	moving.forceMove(get_step(moving, get_dir(moving, target)))
 	return old_loc != moving?.loc ? MOVELOOP_SUCCESS : MOVELOOP_FAILURE
@@ -387,10 +439,14 @@
 	var/list/datum/callback/on_finish_callbacks = list()
 
 /datum/move_loop/has_target/jps/New(datum/movement_packet/owner, datum/controller/subsystem/movement/controller, atom/moving, priority, flags, datum/extra_info)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	on_finish_callbacks += CALLBACK(src, PROC_REF(on_finish_pathing))
 
 /datum/move_loop/has_target/jps/setup(delay, timeout, atom/chasing, repath_delay, max_path_length, minimum_distance, list/access, simulated_only, turf/avoid, skip_first, diagonal_handling, list/initial_path)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -405,27 +461,37 @@
 	movement_path = initial_path?.Copy()
 
 /datum/move_loop/has_target/jps/compare_loops(datum/move_loop/loop_type, priority, flags, extra_info, delay, timeout, atom/chasing, repath_delay, max_path_length, minimum_distance, list/access, simulated_only, turf/avoid, skip_first, initial_path)
+	procstart = null
+	src.procstart = null
 	if(..() && repath_delay == src.repath_delay && max_path_length == src.max_path_length && minimum_distance == src.minimum_distance && access ~= src.access && simulated_only == src.simulated_only && avoid == src.avoid)
 		return TRUE
 	return FALSE
 
 /datum/move_loop/has_target/jps/loop_started()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!movement_path)
 		INVOKE_ASYNC(src, PROC_REF(recalculate_path))
 
 /datum/move_loop/has_target/jps/loop_stopped()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	movement_path = null
 
 
 /datum/move_loop/has_target/jps/Destroy()
+	procstart = null
+	src.procstart = null
 	avoid = null
 	on_finish_callbacks = null
 	return ..()
 
 ///Tries to calculate a new path for this moveloop.
 /datum/move_loop/has_target/jps/proc/recalculate_path()
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, repath_cooldown))
 		return
 	COOLDOWN_START(src, repath_cooldown, repath_delay)
@@ -435,6 +501,8 @@
 
 ///Called when a path has finished being created
 /datum/move_loop/has_target/jps/proc/on_finish_pathing(list/path)
+	procstart = null
+	src.procstart = null
 	movement_path = path
 	is_pathing = FALSE
 	if(moving)
@@ -442,6 +510,8 @@
 	SEND_SIGNAL(src, COMSIG_MOVELOOP_JPS_FINISHED_PATHING, path)
 
 /datum/move_loop/has_target/jps/move()
+	procstart = null
+	src.procstart = null
 	if(!length(movement_path))
 		if(is_pathing)
 			return MOVELOOP_NOT_READY
@@ -465,6 +535,8 @@
 
 
 /datum/move_loop/has_target/jps/proc/handle_move_attempt_failure()
+	procstart = null
+	src.procstart = null
 	EVLOG_TEXT(moving, EVLOG_CATEGORY_MOVELOOPS, "Path recalculating due to obstruction")
 	INVOKE_ASYNC(src, PROC_REF(recalculate_path))
 	return MOVELOOP_FAILURE
@@ -519,6 +591,8 @@
 		initial_path)
 
 /datum/move_loop/has_target/jps/frustrations/setup(delay, timeout, atom/chasing, maximum_frustrations = 10, frustration_delay = 2 SECONDS)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -526,19 +600,27 @@
 	src.frustration_delay = frustration_delay
 
 /datum/move_loop/has_target/jps/frustrations/recalculate_path()
+	procstart = null
+	src.procstart = null
 	if(initial_path_drawn && current_frustrations < maximum_frustrations)
 		return
 	return ..()
 
 /datum/move_loop/has_target/jps/frustrations/loop_stopped()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 /datum/move_loop/has_target/jps/frustrations/on_finish_pathing(list/path)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(movement_path)
 		initial_path_drawn = TRUE
 
 /datum/move_loop/has_target/jps/frustrations/handle_move_attempt_failure()
+	procstart = null
+	src.procstart = null
 	if(!initial_path_drawn)
 		INVOKE_ASYNC(src, PROC_REF(recalculate_path))
 		return MOVELOOP_FAILURE
@@ -559,21 +641,29 @@
 	var/distance = 0
 
 /datum/move_loop/has_target/dist_bound/setup(delay, timeout, atom/chasing, dist = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	distance = dist
 
 /datum/move_loop/has_target/dist_bound/compare_loops(datum/move_loop/loop_type, priority, flags, extra_info, delay, timeout, atom/chasing, dist = 0)
+	procstart = null
+	src.procstart = null
 	if(..() && distance == dist)
 		return TRUE
 	return FALSE
 
 ///Returns FALSE if the movement should pause, TRUE otherwise
 /datum/move_loop/has_target/dist_bound/proc/check_dist()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /datum/move_loop/has_target/dist_bound/move()
+	procstart = null
+	src.procstart = null
 	if(!check_dist()) //If we're too close don't do the move
 		return MOVELOOP_FAILURE
 	return MOVELOOP_SUCCESS
@@ -596,15 +686,21 @@
  *
 **/
 /datum/move_manager/proc/move_to(moving, chasing, min_dist, delay, timeout, subsystem, priority, flags, datum/extra_info)
+	procstart = null
+	src.procstart = null
 	return add_to_loop(moving, subsystem, /datum/move_loop/has_target/dist_bound/move_to, priority, flags, extra_info, delay, timeout, chasing, min_dist)
 
 ///Wrapper around walk_to()
 /datum/move_loop/has_target/dist_bound/move_to
 
 /datum/move_loop/has_target/dist_bound/move_to/check_dist()
+	procstart = null
+	src.procstart = null
 	return (get_dist(moving, target) > distance) //If you get too close, stop moving closer
 
 /datum/move_loop/has_target/dist_bound/move_to/move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -630,15 +726,21 @@
  *
 **/
 /datum/move_manager/proc/move_away(moving, chasing, max_dist, delay, timeout, subsystem, priority, flags, datum/extra_info)
+	procstart = null
+	src.procstart = null
 	return add_to_loop(moving, subsystem, /datum/move_loop/has_target/dist_bound/move_away, priority, flags, extra_info, delay, timeout, chasing, max_dist)
 
 ///Wrapper around walk_away()
 /datum/move_loop/has_target/dist_bound/move_away
 
 /datum/move_loop/has_target/dist_bound/move_away/check_dist()
+	procstart = null
+	src.procstart = null
 	return (get_dist(moving, target) < distance) //If you get too far out, stop moving away
 
 /datum/move_loop/has_target/dist_bound/move_away/move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -665,6 +767,8 @@
  *
 **/
 /datum/move_manager/proc/move_towards(moving, chasing, delay, home, timeout, subsystem, priority, flags, datum/extra_info)
+	procstart = null
+	src.procstart = null
 	return add_to_loop(moving, subsystem, /datum/move_loop/has_target/move_towards, priority, flags, extra_info, delay, timeout, chasing, home)
 
 /**
@@ -684,6 +788,8 @@
  *
 **/
 /datum/move_manager/proc/home_onto(moving, chasing, delay, timeout, subsystem, priority, flags, datum/extra_info)
+	procstart = null
+	src.procstart = null
 	return move_towards(moving, chasing, delay, TRUE, timeout, subsystem, priority, flags, extra_info)
 
 ///Used as a alternative to walk_towards
@@ -704,6 +810,8 @@
 	var/y_sign = 0
 
 /datum/move_loop/has_target/move_towards/setup(delay, timeout, atom/chasing, home = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -716,11 +824,15 @@
 	update_slope()
 
 /datum/move_loop/has_target/move_towards/compare_loops(datum/move_loop/loop_type, priority, flags, extra_info, delay, timeout, atom/chasing, home = FALSE)
+	procstart = null
+	src.procstart = null
 	if(..() && home == src.home)
 		return TRUE
 	return FALSE
 
 /datum/move_loop/has_target/move_towards/Destroy()
+	procstart = null
+	src.procstart = null
 	if(home)
 		if(ismovable(target))
 			UnregisterSignal(target, COMSIG_MOVABLE_MOVED)
@@ -729,6 +841,8 @@
 	return ..()
 
 /datum/move_loop/has_target/move_towards/move()
+	procstart = null
+	src.procstart = null
 	//Move our tickers forward a step, we're guaranteed at least one step forward because of how the code is written
 	if(x_rate) //Did you know that rounding by 0 throws a divide by 0 error?
 		x_ticker = FLOOR(x_ticker + x_rate, x_rate)
@@ -756,11 +870,15 @@
 	return old_loc != moving?.loc ? MOVELOOP_SUCCESS : MOVELOOP_FAILURE
 
 /datum/move_loop/has_target/move_towards/proc/handle_move(source, atom/OldLoc, Dir, Forced = FALSE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(moving.loc != moving_towards && home) //If we didn't go where we should have, update slope to account for the deviation
 		update_slope()
 
 /datum/move_loop/has_target/move_towards/handle_no_target()
+	procstart = null
+	src.procstart = null
 	if(home)
 		return ..()
 	target = null
@@ -776,6 +894,8 @@
  * And we can have nice lines
 **/
 /datum/move_loop/has_target/move_towards/proc/update_slope()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	//You'll notice this is rise over run, except we flip the formula upside down depending on the larger number
@@ -820,12 +940,16 @@
  *
 **/
 /datum/move_manager/proc/move_towards_legacy(moving, chasing, delay, timeout, subsystem, priority, flags, datum/extra_info)
+	procstart = null
+	src.procstart = null
 	return add_to_loop(moving, subsystem, /datum/move_loop/has_target/move_towards_budget, priority, flags, extra_info, delay, timeout, chasing)
 
 ///The actual implementation of walk_towards()
 /datum/move_loop/has_target/move_towards_budget
 
 /datum/move_loop/has_target/move_towards_budget/move()
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_step_towards(moving, target)
 	var/atom/old_loc = moving.loc
 	moving.Move(target_turf, get_dir(moving, target_turf), FALSE, !(flags & MOVEMENT_LOOP_NO_DIR_UPDATE))
@@ -846,12 +970,16 @@
  * flags - Set of bitflags that effect move loop behavior in some way. Check _DEFINES/movement.dm
  */
 /datum/move_manager/proc/freeze(moving, halted_turf, delay, timeout, subsystem, priority, flags, datum/extra_info)
+	procstart = null
+	src.procstart = null
 	return add_to_loop(moving, subsystem, /datum/move_loop/freeze, priority, flags, extra_info, delay, timeout, halted_turf)
 
 /// As close as you can get to a "do-nothing" move loop, the pure intention of this is to absolutely resist all and any automated movement until the move loop times out.
 /datum/move_loop/freeze
 
 /datum/move_loop/freeze/move()
+	procstart = null
+	src.procstart = null
 	return MOVELOOP_SUCCESS // it's successful because it's not moving. we autoclear outselves when `timeout` is reached
 
 /**
@@ -870,6 +998,8 @@
  *
 **/
 /datum/move_manager/proc/move_rand(moving, directions, delay, timeout, subsystem, priority, flags, datum/extra_info)
+	procstart = null
+	src.procstart = null
 	if(!directions)
 		directions = GLOB.alldirs
 	return add_to_loop(moving, subsystem, /datum/move_loop/move_rand, priority, flags, extra_info, delay, timeout, directions)
@@ -885,17 +1015,23 @@
 	var/list/potential_directions
 
 /datum/move_loop/move_rand/setup(delay, timeout, list/directions)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	potential_directions = directions
 
 /datum/move_loop/move_rand/compare_loops(datum/move_loop/loop_type, priority, flags, extra_info, delay, timeout, list/directions)
+	procstart = null
+	src.procstart = null
 	if(..() && (length(potential_directions | directions) == length(potential_directions))) //i guess this could be useful if actually it really has yet to move
 		return MOVELOOP_SUCCESS
 	return MOVELOOP_FAILURE
 
 /datum/move_loop/move_rand/move()
+	procstart = null
+	src.procstart = null
 	var/list/potential_dirs = potential_directions.Copy()
 	while(potential_dirs.len)
 		var/testdir = pick(potential_dirs)
@@ -922,12 +1058,16 @@
  *
 **/
 /datum/move_manager/proc/move_to_rand(moving, delay, timeout, subsystem, priority, flags, datum/extra_info)
+	procstart = null
+	src.procstart = null
 	return add_to_loop(moving, subsystem, /datum/move_loop/move_to_rand, priority, flags, extra_info, delay, timeout)
 
 ///Wrapper around step_rand
 /datum/move_loop/move_to_rand
 
 /datum/move_loop/move_to_rand/move()
+	procstart = null
+	src.procstart = null
 	var/atom/old_loc = moving.loc
 	var/turf/next = get_step_rand(moving)
 	moving.Move(next, get_dir(moving, next), FALSE, !(flags & MOVEMENT_LOOP_NO_DIR_UPDATE))
@@ -948,6 +1088,8 @@
  *
 **/
 /datum/move_manager/proc/move_disposals(moving, delay, timeout, subsystem, priority, flags, datum/extra_info)
+	procstart = null
+	src.procstart = null
 	return add_to_loop(moving, subsystem, /datum/move_loop/disposal_holder, priority, flags, extra_info, delay, timeout)
 
 /// Disposal holders need to move through a chain of pipes
@@ -957,6 +1099,8 @@
 /datum/move_loop/disposal_holder
 
 /datum/move_loop/disposal_holder/setup(delay = 1, timeout = INFINITY)
+	procstart = null
+	src.procstart = null
 	// This is a horrible pattern.
 	// Move loops should almost never need to be one offs. Please don't do this if you can help it
 	if(!istype(moving, /obj/structure/disposalholder))
@@ -965,6 +1109,8 @@
 	return ..()
 
 /datum/move_loop/disposal_holder/move()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/disposalholder/holder = moving
 	if(!holder.current_pipe)
 		return FALSE
@@ -990,6 +1136,8 @@
 **/
 
 /datum/move_manager/proc/smooth_move(moving, angle, delay, timeout, subsystem, priority, flags, datum/extra_info)
+	procstart = null
+	src.procstart = null
 	return add_to_loop(moving, subsystem, /datum/move_loop/smooth_move, priority, flags, extra_info, delay, timeout, angle)
 
 /datum/move_loop/smooth_move
@@ -1008,6 +1156,8 @@
 	var/saved_delay
 
 /datum/move_loop/smooth_move/setup(delay, timeout, angle)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -1015,16 +1165,22 @@
 	saved_delay = delay
 
 /datum/move_loop/smooth_move/set_delay(new_delay)
+	procstart = null
+	src.procstart = null
 	new_delay = round(new_delay, world.tick_lag)
 	. = ..()
 	saved_delay = delay
 
 /datum/move_loop/smooth_move/compare_loops(datum/move_loop/loop_type, priority, flags, extra_info, delay, timeout, atom/chasing, home = FALSE)
+	procstart = null
+	src.procstart = null
 	if(..() && angle == src.angle)
 		return TRUE
 	return FALSE
 
 /datum/move_loop/smooth_move/move()
+	procstart = null
+	src.procstart = null
 	var/atom/old_loc = moving.loc
 	// Defaulting to 2 because if one rate is 0 the other is guaranteed to be 1, so maxing out at 1 to_move
 	var/x_to_move = x_rate > 0 ? (1 - x_ticker) / x_rate : 2
@@ -1054,6 +1210,8 @@
 	return MOVELOOP_SUCCESS
 
 /datum/move_loop/smooth_move/proc/set_angle(new_angle)
+	procstart = null
+	src.procstart = null
 	angle = new_angle
 	x_rate = sin(angle)
 	y_rate = cos(angle)

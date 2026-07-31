@@ -50,6 +50,8 @@
 	sound = SFX_RORO_WARBLE
 
 /mob/living/basic/roro/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/pet_bonus, "warble")
 	AddElement(/datum/element/ai_retaliate)

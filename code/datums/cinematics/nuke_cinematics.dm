@@ -4,6 +4,8 @@
 	var/after_nuke_summary_state
 
 /datum/cinematic/nuke/play_cinematic()
+	procstart = null
+	src.procstart = null
 	flick("intro_nuke", screen)
 	stoplag(3.5 SECONDS)
 	play_nuke_effect()
@@ -14,6 +16,8 @@
 
 /// Specific effects for each type of cinematics goes here.
 /datum/cinematic/nuke/proc/play_nuke_effect()
+	procstart = null
+	src.procstart = null
 	return
 
 /// The syndicate nuclear bomb was activated, and destroyed the station!
@@ -21,6 +25,8 @@
 	after_nuke_summary_state = "summary_nukewin"
 
 /datum/cinematic/nuke/ops_victory/play_nuke_effect()
+	procstart = null
+	src.procstart = null
 	flick("station_explode_fade_red", screen)
 	play_cinematic_sound(sound('sound/effects/explosion/explosion_distant.ogg'))
 
@@ -29,6 +35,8 @@
 	after_nuke_summary_state = "summary_nukefail"
 
 /datum/cinematic/nuke/ops_miss/play_nuke_effect()
+	procstart = null
+	src.procstart = null
 	flick("station_intact_fade_red", screen)
 	play_cinematic_sound(sound('sound/effects/explosion/explosion_distant.ogg'))
 
@@ -37,6 +45,8 @@
 	after_nuke_summary_state = "summary_selfdes"
 
 /datum/cinematic/nuke/self_destruct/play_nuke_effect()
+	procstart = null
+	src.procstart = null
 	flick("station_explode_fade_red", screen)
 	play_cinematic_sound(sound('sound/effects/explosion/explosion_distant.ogg'))
 
@@ -45,6 +55,8 @@
 	after_nuke_summary_state = "station_intact"
 
 /datum/cinematic/nuke/self_destruct_miss/play_nuke_effect()
+	procstart = null
+	src.procstart = null
 	play_cinematic_sound(sound('sound/effects/explosion/explosion_distant.ogg'))
 	special_callback?.Invoke()
 
@@ -53,6 +65,8 @@
 	after_nuke_summary_state = "summary_totala"
 
 /datum/cinematic/nuke/mutual_destruction/play_nuke_effect()
+	procstart = null
+	src.procstart = null
 	flick("station_explode_fade_red", screen)
 	play_cinematic_sound(sound('sound/effects/explosion/explosion_distant.ogg'))
 
@@ -61,6 +75,8 @@
 	after_nuke_summary_state = "summary_cult"
 
 /datum/cinematic/nuke/cult/play_nuke_effect()
+	procstart = null
+	src.procstart = null
 	flick("station_explode_fade_red", screen)
 	play_cinematic_sound(sound('sound/effects/explosion/explosion_distant.ogg'))
 
@@ -69,6 +85,8 @@
 	cleanup_time = 10 SECONDS
 
 /datum/cinematic/nuke/fake/play_nuke_effect()
+	procstart = null
+	src.procstart = null
 	play_cinematic_sound(sound('sound/items/bikehorn.ogg'))
 	flick("summary_selfdes", screen) //???
 
@@ -77,6 +95,8 @@
 	cleanup_time = 10 SECONDS
 
 /datum/cinematic/nuke/clown/play_nuke_effect()
+	procstart = null
+	src.procstart = null
 	play_cinematic_sound(sound('sound/items/airhorn/airhorn.ogg'))
 	flick("summary_selfdes", screen) //???
 
@@ -85,6 +105,8 @@
 	cleanup_time = 10 SECONDS
 
 /datum/cinematic/nuke/no_core/play_nuke_effect()
+	procstart = null
+	src.procstart = null
 	flick("station_intact", screen)
 	play_cinematic_sound(sound('sound/ambience/misc/signal.ogg'))
 	stoplag(10 SECONDS)
@@ -94,6 +116,8 @@
 	cleanup_time = 0 SECONDS
 
 /datum/cinematic/nuke/far_explosion/play_cinematic()
+	procstart = null
+	src.procstart = null
 	// This one has no intro sequence.
 	// It's actually just a global sound, which makes you wonder why it's a cinematic.
 	play_cinematic_sound(sound('sound/effects/explosion/explosion_distant.ogg'))

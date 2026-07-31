@@ -24,6 +24,8 @@ SUBSYSTEM_DEF(events)
 	var/wizardmode = FALSE
 
 /datum/controller/subsystem/events/Initialize()
+	procstart = null
+	src.procstart = null
 	for(var/type in typesof(/datum/round_event_control))
 		var/datum/round_event_control/event = new type()
 		if(!event.typepath)
@@ -48,6 +50,8 @@ SUBSYSTEM_DEF(events)
 
 ///Takes the events config json and applies any var edits made there to their respective event.
 /datum/controller/subsystem/events/proc/setup_config()
+	procstart = null
+	src.procstart = null
 	var/json_file = file("[global.config.directory]/events.json")
 	if(!fexists(json_file))
 		return
@@ -65,6 +69,8 @@ SUBSYSTEM_DEF(events)
 			event.vars[event_variable] = configuration[variable][event_variable]
 
 /datum/controller/subsystem/events/fire(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!resumed)
 		checkEvent() //only check these if we aren't resuming a paused fire
 		src.currentrun = running.Copy()
@@ -84,6 +90,8 @@ SUBSYSTEM_DEF(events)
 
 //checks if we should select a random event yet, and reschedules if necessary
 /datum/controller/subsystem/events/proc/checkEvent()
+	procstart = null
+	src.procstart = null
 	if(scheduled <= world.time)
 #ifdef MAP_TEST
 		message_admins("Random event skipped (Game is compiled in MAP_TEST mode)")
@@ -94,6 +102,8 @@ SUBSYSTEM_DEF(events)
 
 //decides which world.time we should select another random event at.
 /datum/controller/subsystem/events/proc/reschedule()
+	procstart = null
+	src.procstart = null
 	scheduled = world.time + rand(frequency_lower, max(frequency_lower,frequency_upper))
 
 /**
@@ -103,6 +113,8 @@ SUBSYSTEM_DEF(events)
  * * excluded_event - The event path we will be foregoing, if present.
  */
 /datum/controller/subsystem/events/proc/spawnEvent(datum/round_event_control/excluded_event)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE //for the admin prompt
 	if(!CONFIG_GET(flag/allow_random_events))
 		return
@@ -132,6 +144,8 @@ SUBSYSTEM_DEF(events)
 
 ///Does the last pre-flight checks for the passed event, and runs it if the event is ready.
 /datum/controller/subsystem/events/proc/TriggerEvent(datum/round_event_control/event_to_trigger)
+	procstart = null
+	src.procstart = null
 	. = event_to_trigger.preRunEvent()
 	if(. == EVENT_CANT_RUN)//we couldn't run this event for some reason, set its max_occurrences to 0
 		event_to_trigger.max_occurrences = 0
@@ -140,12 +154,16 @@ SUBSYSTEM_DEF(events)
 
 ///Toggles whether or not wizard events will be in the event pool, and sends a notification to the admins.
 /datum/controller/subsystem/events/proc/toggleWizardmode()
+	procstart = null
+	src.procstart = null
 	wizardmode = !wizardmode
 	message_admins("Summon Events has been [wizardmode ? "enabled, events will occur every [SSevents.frequency_lower / 600] to [SSevents.frequency_upper / 600] minutes" : "disabled"]!")
 	log_game("Summon Events was [wizardmode ? "enabled" : "disabled"]!")
 
 ///Sets the event frequency bounds back to their initial value.
 /datum/controller/subsystem/events/proc/resetFrequency()
+	procstart = null
+	src.procstart = null
 	frequency_lower = CONFIG_GET(number/events_frequency_lower)
 	frequency_upper = CONFIG_GET(number/events_frequency_upper)
 
@@ -172,6 +190,8 @@ GLOBAL_LIST(holidays)
  * Returns a holiday datum, or null if it's not that holiday.
  */
 /proc/check_holidays(holiday_to_find)
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(flag/allow_holidays))
 		return // Holiday stuff was not enabled in the config!
 
@@ -184,6 +204,8 @@ GLOBAL_LIST(holidays)
  * Fills the holidays list if applicable, or leaves it an empty list.
  */
 /proc/fill_holidays()
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(flag/allow_holidays))
 		return FALSE // Holiday stuff was not enabled in the config!
 

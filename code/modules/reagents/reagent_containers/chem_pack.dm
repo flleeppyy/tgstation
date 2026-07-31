@@ -13,6 +13,8 @@
 	custom_materials = list(/datum/material/plastic = SHEET_MATERIAL_AMOUNT)
 
 /obj/item/reagent_containers/chem_pack/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(reagents.flags & SEALED_CONTAINER)
 		balloon_alert(user, "already sealed!")
 		return CLICK_ACTION_BLOCKING
@@ -27,6 +29,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/reagent_containers/chem_pack/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(reagents.flags & SEALED_CONTAINER)
 		. += span_notice("The bag is sealed shut.")

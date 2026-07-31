@@ -15,20 +15,28 @@
 	var/datum/proximity_monitor/proximity_monitor
 
 /obj/item/assembly/prox_sensor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	proximity_monitor = new(src, 0)
 	START_PROCESSING(SSobj, src)
 
 /obj/item/assembly/prox_sensor/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	QDEL_NULL(proximity_monitor)
 	return ..()
 
 /obj/item/assembly/prox_sensor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("The proximity sensor is [timing ? "arming" : (scanning ? "armed" : "disarmed")].")
 
 /obj/item/assembly/prox_sensor/activate()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE //Cooldown check
 	if(!scanning)
@@ -39,6 +47,8 @@
 	return TRUE
 
 /obj/item/assembly/prox_sensor/dropped()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Pick the first valid object in this list:
 	// Wiring datum's owner
@@ -48,6 +58,8 @@
 	proximity_monitor?.set_host(connected?.holder || holder?.master || holder || src, src)
 
 /obj/item/assembly/prox_sensor/on_attach()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Pick the first valid object in this list:
 	// Wiring datum's owner
@@ -57,6 +69,8 @@
 	proximity_monitor.set_host(connected?.holder || holder?.master || holder || src, src)
 
 /obj/item/assembly/prox_sensor/on_detach()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -69,6 +83,8 @@
 		proximity_monitor.set_host(connected?.holder || holder?.master || holder || src, src)
 
 /obj/item/assembly/prox_sensor/toggle_secure()
+	procstart = null
+	src.procstart = null
 	secured = !secured
 	if(!secured)
 		if(scanning)
@@ -83,11 +99,15 @@
 	return secured
 
 /obj/item/assembly/prox_sensor/HasProximity(atom/movable/AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	if (istype(AM, /obj/effect/beam))
 		return
 	sense()
 
 /obj/item/assembly/prox_sensor/proc/sense()
+	procstart = null
+	src.procstart = null
 	if(!scanning || !secured || next_activate > world.time)
 		return FALSE
 	next_activate = world.time + (3 SECONDS) // this must happen before anything else
@@ -99,6 +119,8 @@
 	return TRUE
 
 /obj/item/assembly/prox_sensor/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!timing)
 		return
 	time -= seconds_per_tick
@@ -108,6 +130,8 @@
 		time = initial(time)
 
 /obj/item/assembly/prox_sensor/proc/toggle_scan(scan)
+	procstart = null
+	src.procstart = null
 	if(!secured)
 		return FALSE
 	scanning = scan
@@ -115,16 +139,22 @@
 	update_appearance()
 
 /obj/item/assembly/prox_sensor/proc/sensitivity_change(value)
+	procstart = null
+	src.procstart = null
 	var/sense = min(max(sensitivity + value, 0), 5)
 	sensitivity = sense
 	if(scanning && proximity_monitor.set_range(sense))
 		sense()
 
 /obj/item/assembly/prox_sensor/update_appearance()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	holder?.update_appearance()
 
 /obj/item/assembly/prox_sensor/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	attached_overlays = list()
 	if(timing)
@@ -135,17 +165,23 @@
 		attached_overlays += "prox_scanning"
 
 /obj/item/assembly/prox_sensor/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(is_secured(user))
 		return ..()
 	return UI_CLOSE
 
 /obj/item/assembly/prox_sensor/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ProximitySensor", name)
 		ui.open()
 
 /obj/item/assembly/prox_sensor/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["seconds"] = round(time % 60)
 	data["minutes"] = round((time - data["seconds"]) / 60)
@@ -155,6 +191,8 @@
 	return data
 
 /obj/item/assembly/prox_sensor/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

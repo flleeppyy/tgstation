@@ -12,6 +12,8 @@
 	var/datum/callback/on_defaced
 
 /datum/component/defaceable/Initialize(icon, list/icon_states, drawing_of, datum/callback/on_defaced)
+	procstart = null
+	src.procstart = null
 	if (!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -21,22 +23,30 @@
 	src.on_defaced = on_defaced
 
 /datum/component/defaceable/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(on_drawn))
 	RegisterSignal(parent, COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM, PROC_REF(on_hovered))
 	var/atom/atom_parent = parent
 	atom_parent.flags_1 |= HAS_CONTEXTUAL_SCREENTIPS_1
 
 /datum/component/defaceable/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ATOM_ITEM_INTERACTION, COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM, COMSIG_ATOM_EXAMINE, COMSIG_COMPONENT_CLEAN_ACT, COMSIG_ATOM_UPDATE_OVERLAYS))
 	var/atom/atom_parent = parent
 	atom_parent.update_appearance(UPDATE_OVERLAYS)
 
 /datum/component/defaceable/Destroy(force = FALSE)
+	procstart = null
+	src.procstart = null
 	on_defaced = null
 	return ..()
 
 /// Inform people that they can mess us up
 /datum/component/defaceable/proc/on_hovered(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if (HAS_TRAIT(source, TRAIT_DEFACED))
 		if (is_type_in_list(held_item, list(/obj/item/reagent_containers/spray, /obj/item/soap, /obj/item/rag)))
 			context[SCREENTIP_CONTEXT_LMB] = "Clean"
@@ -47,6 +57,8 @@
 
 /// See if someone can draw on us
 /datum/component/defaceable/proc/on_drawn(atom/source, mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (user.combat_mode)
 		return
@@ -79,6 +91,8 @@
 
 /// Render our beautiful drawing
 /datum/component/defaceable/proc/on_update_overlays(atom/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for (var/state in icon_states)
 		var/mutable_appearance/appearance = mutable_appearance(icon, state)
@@ -88,6 +102,8 @@
 
 /// Wash it off
 /datum/component/defaceable/proc/on_cleaned(atom/source, clean_types)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!(clean_types & (CLEAN_WASH|CLEAN_SCRUB)))
 		return
@@ -99,5 +115,7 @@
 
 /// See it there
 /datum/component/defaceable/proc/on_examined(atom/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_list += span_notice("Someone has crudely drawn [drawing_of] on [source.p_them()].")

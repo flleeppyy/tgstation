@@ -61,6 +61,8 @@
 		/obj/item/stack/ore/gold = 1,
 	)
 /obj/effect/spawner/random/trash/deluxe_garbage/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(mapload)
 		var/turf/location = get_turf(loc)
 		if(location.initial_gas_mix != OPENTURF_DEFAULT_ATMOS && location.initial_gas_mix != OPENTURF_DIRTY_ATMOS)
@@ -223,6 +225,8 @@
 	)
 
 /obj/effect/spawner/random/trash/grime/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(mapload)
 		var/turf/location = get_turf(loc)
 		if(location.initial_gas_mix != OPENTURF_DEFAULT_ATMOS && location.initial_gas_mix != OPENTURF_DIRTY_ATMOS)
@@ -246,6 +250,8 @@
 	)
 
 /obj/effect/spawner/random/trash/moisture/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(mapload)
 		var/turf/location = get_turf(loc)
 		if(location.initial_gas_mix != OPENTURF_DEFAULT_ATMOS && location.initial_gas_mix != OPENTURF_DIRTY_ATMOS)
@@ -287,6 +293,8 @@
 	var/random_icon = TRUE
 
 /obj/effect/spawner/random/trash/graffiti/make_item(spawn_loc, type_path_to_make)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/decal/cleanable/crayon/graffiti_decal = ..()
 	if(istype(graffiti_decal))
 		color = random_color && "#[random_short_color()]" || color
@@ -394,6 +402,8 @@
 	)
 
 /obj/effect/spawner/random/trash/crushed_can/make_item(spawn_loc, type_path_to_make)
+	procstart = null
+	src.procstart = null
 	var/obj/item/trash/can/crushed_can = .. ()
 	if(istype(crushed_can))
 		crushed_can.icon_state = pick(soda_icons)

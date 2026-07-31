@@ -9,6 +9,8 @@
 	var/expiry_time = 10 SECONDS
 
 /obj/structure/thing_boss_spike/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/our_turf = get_turf(src)
 #ifndef UNIT_TESTS //just in case
@@ -33,17 +35,23 @@
 	QDEL_IN(src, expiry_time)
 
 /obj/structure/thing_boss_spike/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	if(damage_amount)
 		playsound(src, 'sound/effects/blob/blobattack.ogg', 50, TRUE)
 	else
 		playsound(src, 'sound/items/weapons/tap.ogg', 50, TRUE)
 
 /obj/structure/thing_boss_spike/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(mover, /mob/living/basic/boss/thing))
 		return FALSE
 
 /obj/structure/thing_boss_spike/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	procstart = null
+	src.procstart = null
 	if(!istype(pass_info.requester_ref?.resolve(), /mob/living/basic/boss/thing))
 		return FALSE
 	return ..()
@@ -54,11 +62,15 @@
 	duration = 1 SECONDS
 
 /obj/effect/temp_visual/telegraphing/exclamation/Initialize(mapload, duration)
+	procstart = null
+	src.procstart = null
 	if(!isnull(duration))
 		src.duration = duration
 	return ..()
 
 /obj/effect/temp_visual/telegraphing/exclamation/following/Initialize(mapload, duration, obj/following)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(following))
 		return INITIALIZE_HINT_QDEL
@@ -67,6 +79,8 @@
 
 ///called when the thing we're following moves
 /obj/effect/temp_visual/telegraphing/exclamation/following/proc/follow(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	forceMove(get_turf(source))
 
@@ -74,6 +88,8 @@
 	alpha = 0
 
 /obj/effect/temp_visual/telegraphing/exclamation/animated/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transform = matrix()*2
 	animate(src, alpha = 255, transform = matrix(), time = duration/3)
@@ -98,11 +114,15 @@
 	pixel_z = 270
 
 /obj/effect/temp_visual/incoming_thing_acid/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, pixel_z = 0, time = duration)
 	addtimer(CALLBACK(src, PROC_REF(make_acid)), 0.85 SECONDS)
 
 /obj/effect/temp_visual/incoming_thing_acid/proc/make_acid()
+	procstart = null
+	src.procstart = null
 	for(var/turf/open/open in RANGE_TURFS(1, loc))
 		new /obj/effect/thing_acid(open)
 
@@ -117,6 +137,8 @@
 	var/duration_time = 5 SECONDS
 
 /obj/effect/thing_acid/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
@@ -125,6 +147,8 @@
 	QDEL_IN(src, duration_time)
 
 /obj/effect/thing_acid/proc/on_entered(datum/source, mob/living/victim)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(victim) || ismegafauna(victim))
 		return

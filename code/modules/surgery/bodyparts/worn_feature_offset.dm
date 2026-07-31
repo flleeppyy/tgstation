@@ -31,13 +31,17 @@
 	RegisterSignal(attached_part, COMSIG_BODYPART_CHANGED_OWNER, PROC_REF(changed_owner))
 
 /datum/worn_feature_offset/Destroy(force)
+	procstart = null
+	src.procstart = null
 	attached_part.feature_offsets -= feature_key
 	attached_part = null
 	changed_owner(null, null)
 	return ..()
 
 /// Returns the current offset which should be used for this feature
-/datum/worn_feature_offset/proc/get_offset() as /list
+/datum/worn_feature_offset/proc/get_offset()
+	procstart = null
+	src.procstart = null
 	var/current_dir = owner ? owner.dir : SOUTH
 	if(ISDIAGONALDIR(current_dir))
 		current_dir = current_dir & (EAST|WEST)
@@ -48,12 +52,16 @@
 
 /// Applies the current offset to a provided overlay image
 /datum/worn_feature_offset/proc/apply_offset(image/overlay)
+	procstart = null
+	src.procstart = null
 	var/list/offset = get_offset()
 	overlay.pixel_w += offset["x"]
 	overlay.pixel_z += offset["y"]
 
 /// When the owner of the bodypart changes, update our signal registrations
 /datum/worn_feature_offset/proc/changed_owner(obj/item/bodypart/part, mob/living/new_owner, mob/living/old_owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isnull(old_owner))
 		old_owner = owner
@@ -66,11 +74,15 @@
 
 /// If the owner is deleted, stop updating
 /datum/worn_feature_offset/proc/on_owner_deleted(mob/living/host)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	owner = null
 
 /// When we change direction, re-apply the offset
 /datum/worn_feature_offset/proc/on_dir_change(mob/living/carbon/owner, olddir, newdir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(olddir != newdir)
 		owner.update_features(feature_key)

@@ -16,6 +16,8 @@
 	var/next_expand = 0
 
 /datum/hallucination/fake_flood/start()
+	procstart = null
+	src.procstart = null
 	// This hallucination is purely visual, so we don't need to bother for clientless mobs
 	if(!hallucinator.client)
 		return FALSE
@@ -41,6 +43,8 @@
 	return TRUE
 
 /datum/hallucination/fake_flood/process()
+	procstart = null
+	src.procstart = null
 	if(next_expand > world.time)
 		return
 
@@ -59,6 +63,8 @@
 	next_expand = world.time + FAKE_FLOOD_EXPAND_TIME
 
 /datum/hallucination/fake_flood/proc/expand_flood()
+	procstart = null
+	src.procstart = null
 	for(var/image/flood_image in flood_images)
 		flood_image.alpha = min(flood_image.alpha + 50, 255)
 
@@ -72,6 +78,8 @@
 	hallucinator.client?.images |= flood_images
 
 /datum/hallucination/fake_flood/proc/create_new_plasma_image(turf/to_flood)
+	procstart = null
+	src.procstart = null
 	flood_turfs += to_flood
 
 	var/obj/effect/plasma_image_holder/image_holder = new(to_flood)
@@ -83,6 +91,8 @@
 	flood_images += plasma_image
 
 /datum/hallucination/fake_flood/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 
 	hallucinator.client?.images -= flood_images

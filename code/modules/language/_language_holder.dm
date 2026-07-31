@@ -62,6 +62,8 @@ Key procs
 
 /// Initializes, and copies in the languages from the current atom if available.
 /datum/language_holder/New(atom/new_owner)
+	procstart = null
+	src.procstart = null
 	if(new_owner)
 		if(QDELETED(new_owner))
 			CRASH("Language holder added to a qdeleting thing, what the fuck [text_ref(new_owner)]")
@@ -78,6 +80,8 @@ Key procs
 		gain_partial_understanding_from_language(language)
 
 /datum/language_holder/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(language_menu)
 	owner = null
 	return ..()
@@ -85,6 +89,8 @@ Key procs
 /// Helper to get all the partial understanding from the passed language
 /// Does effectively nothing if given a language already understood
 /datum/language_holder/proc/gain_partial_understanding_from_language(language)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/datum/language/prototype = GLOB.language_datum_instances[language]
@@ -93,6 +99,8 @@ Key procs
 
 /// Helper to remove all the partial understanding from the passed language
 /datum/language_holder/proc/lose_partial_understanding_from_language(language)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/datum/language/prototype = GLOB.language_datum_instances[language]
@@ -101,6 +109,8 @@ Key procs
 
 /// Calculates the "best mutual language list"
 /datum/language_holder/proc/calculate_best_mutual_language()
+	procstart = null
+	src.procstart = null
 	best_mutual_languages = list()
 	for(var/language in mutual_understanding)
 		for(var/source in mutual_understanding[language])
@@ -112,6 +122,8 @@ Key procs
 
 /// Grants the supplied language.
 /datum/language_holder/proc/grant_language(language, language_flags = ALL, source = LANGUAGE_MIND)
+	procstart = null
+	src.procstart = null
 	if(language_flags & UNDERSTOOD_LANGUAGE)
 		LAZYORASSOCLIST(understood_languages, language, source)
 		gain_partial_understanding_from_language(language)
@@ -124,6 +136,8 @@ Key procs
 
 /// Grants every language to understood and spoken, and gives omnitongue.
 /datum/language_holder/proc/grant_all_languages(language_flags = ALL, grant_omnitongue = TRUE, source = LANGUAGE_MIND)
+	procstart = null
+	src.procstart = null
 	for(var/language in GLOB.all_languages)
 		grant_language(language, language_flags, source)
 	if(grant_omnitongue) // Overrides tongue limitations.
@@ -133,6 +147,8 @@ Key procs
 /// Grants partial understanding of the passed language.
 /// Giving 100 understanding is basically equivalent to knowning the language, just with butchered punctuation.
 /datum/language_holder/proc/grant_partial_language(language, amount = 50, source = LANGUAGE_MIND)
+	procstart = null
+	src.procstart = null
 	LAZYINITLIST(mutual_understanding)
 	LAZYSET(mutual_understanding[language], source, amount)
 	calculate_best_mutual_language()
@@ -140,6 +156,8 @@ Key procs
 
 /// Removes a single language or source, removing all sources returns the pre-removal state of the language.
 /datum/language_holder/proc/remove_language(language, language_flags = ALL, source = LANGUAGE_ALL)
+	procstart = null
+	src.procstart = null
 	if(language_flags & UNDERSTOOD_LANGUAGE)
 		if(source == LANGUAGE_ALL)
 			LAZYREMOVE(understood_languages, language)
@@ -160,6 +178,8 @@ Key procs
 
 /// Removes every language and optionally sets omnitongue false. If a non default source is supplied, only removes that source.
 /datum/language_holder/proc/remove_all_languages(source = LANGUAGE_ALL, remove_omnitongue = FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/language in GLOB.all_languages)
 		remove_language(language, ALL, source)
 	if(remove_omnitongue)
@@ -168,6 +188,8 @@ Key procs
 
 /// Removes partial understanding of the passed language.
 /datum/language_holder/proc/remove_partial_language(language, source = LANGUAGE_MIND)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(source == LANGUAGE_ALL)
 		for(var/other_source in mutual_understanding[language])
@@ -186,12 +208,16 @@ Key procs
 
 /// Removes all partial understandings of all languages.
 /datum/language_holder/proc/remove_all_partial_languages(source = LANGUAGE_MIND)
+	procstart = null
+	src.procstart = null
 	for(var/language in mutual_understanding)
 		remove_partial_language(language, source)
 	return TRUE
 
 /// Adds a single language or list of languages to the blocked language list.
 /datum/language_holder/proc/add_blocked_language(languages, language_flags = ALL, source = LANGUAGE_MIND)
+	procstart = null
+	src.procstart = null
 	if(!islist(languages))
 		languages = list(languages)
 
@@ -205,6 +231,8 @@ Key procs
 
 /// Removes a single language or list of languages from the blocked language list.
 /datum/language_holder/proc/remove_blocked_language(languages, language_flags = ALL, source = LANGUAGE_MIND)
+	procstart = null
+	src.procstart = null
 	if(!islist(languages))
 		languages = list(languages)
 
@@ -224,6 +252,8 @@ Key procs
 
 /// Checks if you have the language passed.
 /datum/language_holder/proc/has_language(language, flag_to_check = UNDERSTOOD_LANGUAGE)
+	procstart = null
+	src.procstart = null
 	var/list/langs_to_check = list()
 	if(flag_to_check & SPOKEN_LANGUAGE && !LAZYACCESS(blocked_speaking, language))
 		langs_to_check |= spoken_languages
@@ -234,15 +264,21 @@ Key procs
 
 /// Checks if you have partial understanding of the language passed.
 /datum/language_holder/proc/has_partial_language(language)
+	procstart = null
+	src.procstart = null
 	return LAZYACCESS(best_mutual_languages, language)
 
 /// Checks if you can speak the language. Tongue limitations should be supplied as an argument.
 /datum/language_holder/proc/can_speak_language(language)
+	procstart = null
+	src.procstart = null
 	var/can_speak_language_path = omnitongue || owner.could_speak_language(language)
 	return (can_speak_language_path && has_language(language, SPOKEN_LANGUAGE))
 
 /// Returns selected language if it can be spoken, or decides, sets and returns a new selected language if possible.
 /datum/language_holder/proc/get_selected_language()
+	procstart = null
+	src.procstart = null
 	if(selected_language && can_speak_language(selected_language))
 		return selected_language
 	selected_language = null
@@ -258,14 +294,20 @@ Key procs
 
 /// Gets a random understood language, useful for hallucinations and such.
 /datum/language_holder/proc/get_random_understood_language()
+	procstart = null
+	src.procstart = null
 	return pick(understood_languages)
 
 /// Gets a random spoken language, useful for forced speech and such.
 /datum/language_holder/proc/get_random_spoken_language()
+	procstart = null
+	src.procstart = null
 	return pick(spoken_languages)
 
 /// Gets a random spoken language, trying to get a non-common language.
 /datum/language_holder/proc/get_random_spoken_uncommon_language()
+	procstart = null
+	src.procstart = null
 	var/list/languages_minus_common = assoc_to_keys(spoken_languages) - /datum/language/common
 
 	// They have a language other than common
@@ -278,10 +320,14 @@ Key procs
 
 /// Returns a list of languages we understand
 /datum/language_holder/proc/get_understood_languages()
+	procstart = null
+	src.procstart = null
 	return assoc_to_keys(understood_languages) - assoc_to_keys(blocked_understanding)
 
 /// Opens a language menu reading from the language holder.
 /datum/language_holder/proc/open_language_menu(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!language_menu)
 		language_menu = new (src)
 	language_menu.ui_interact(user)
@@ -289,6 +335,8 @@ Key procs
 /// Copies all languages from the supplied atom/language holder. Source should be overridden when you
 /// do not want the language overwritten by later atom updates or want to avoid blocked languages.
 /datum/language_holder/proc/copy_languages(datum/language_holder/from_holder, source_override)
+	procstart = null
+	src.procstart = null
 	if(source_override) //No blocked languages here, for now only used by ling absorb.
 		for(var/language in from_holder.understood_languages)
 			grant_language(language, UNDERSTOOD_LANGUAGE, source_override)
@@ -307,6 +355,8 @@ Key procs
 
 /// Transfers all mind languages to the supplied language holder.
 /datum/language_holder/proc/transfer_mind_languages(datum/language_holder/to_holder)
+	procstart = null
+	src.procstart = null
 	for(var/language in understood_languages)
 		if(LANGUAGE_MIND in understood_languages[language])
 			remove_language(language, UNDERSTOOD_LANGUAGE, LANGUAGE_MIND)
@@ -341,6 +391,8 @@ GLOBAL_LIST_INIT(prototype_language_holders, init_language_holder_prototypes())
 
 /// Inits the global list of language holder prototypes.
 /proc/init_language_holder_prototypes()
+	procstart = null
+	src.procstart = null
 	var/list/prototypes = list()
 	for(var/holdertype in typesof(/datum/language_holder))
 		prototypes[holdertype] = new holdertype()
@@ -497,6 +549,8 @@ GLOBAL_LIST_INIT(prototype_language_holders, init_language_holder_prototypes())
 /datum/language_holder/synthetic/silicon
 
 /datum/language_holder/synthetic/silicon/New(atom/new_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/lang in GLOB.uncommon_roundstart_languages)
 		grant_partial_language(lang, 66, LANGUAGE_ATOM)
@@ -696,5 +750,7 @@ GLOBAL_LIST_INIT(prototype_language_holders, init_language_holder_prototypes())
 /datum/language_holder/universal
 
 /datum/language_holder/universal/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	grant_all_languages(source = LANGUAGE_MIND)

@@ -38,6 +38,8 @@ Assistant
 	config_tag = "ASSISTANT"
 
 /datum/job/assistant/get_outfit(consistent)
+	procstart = null
+	src.procstart = null
 	if(consistent)
 		return /datum/outfit/job/assistant/preview
 	if(!HAS_TRAIT(SSstation, STATION_TRAIT_ASSISTANT_GIMMICKS))
@@ -57,11 +59,15 @@ Assistant
 	belt = /obj/item/modular_computer/pda/assistant
 
 /datum/outfit/job/assistant/pre_equip(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	..()
 	give_holiday_hat(target)
 	give_jumpsuit(target)
 
 /datum/outfit/job/assistant/proc/give_holiday_hat(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	for(var/holidayname in GLOB.holidays)
 		var/datum/holiday/holiday_today = GLOB.holidays[holidayname]
 		var/obj/item/special_hat = holiday_today.holiday_hat
@@ -69,6 +75,8 @@ Assistant
 			head = special_hat
 
 /datum/outfit/job/assistant/proc/give_jumpsuit(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	var/static/jumpsuit_number = 0
 	jumpsuit_number += 1
 
@@ -89,12 +97,18 @@ Assistant
 	name = "Assistant - Consistent"
 
 /datum/outfit/job/assistant/consistent/give_holiday_hat(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/outfit/job/assistant/consistent/give_jumpsuit(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	uniform = /obj/item/clothing/under/color/grey
 
 /datum/outfit/job/assistant/consistent/post_equip(mob/living/carbon/human/H, visuals_only)
+	procstart = null
+	src.procstart = null
 	..()
 
 	// This outfit is used by the assets SS, which is ran before the atoms SS
@@ -106,6 +120,8 @@ Assistant
 	name = "Assistant - Preview"
 
 /datum/outfit/job/assistant/preview/give_jumpsuit(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	if (target.jumpsuit_style == PREF_SUIT)
 		uniform = /obj/item/clothing/under/color/grey
 	else

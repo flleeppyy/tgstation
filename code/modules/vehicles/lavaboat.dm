@@ -11,10 +11,14 @@
 	key_type = /obj/item/oar
 
 /obj/vehicle/ridden/lavaboat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/lavaboat)
 
 /obj/vehicle/ridden/lavaboat/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!key_type || is_key(inserted_key) || !is_key(tool))
 		return NONE
 	if(!user.transferItemToLoc(tool, src))
@@ -27,6 +31,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/vehicle/ridden/lavaboat/examine_key_message()
+	procstart = null
+	src.procstart = null
 	if(!key_type)
 		return
 	if(!inserted_key)
@@ -84,15 +90,21 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/ship_in_a_bottle/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You're not sure how they get the ships in these things, but you're pretty sure you know how to get it out."))
 	create_boat(get_turf(src))
 
 /obj/item/ship_in_a_bottle/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.) // Shatter when not caught
 		create_boat(get_turf(src))
 
 /obj/item/ship_in_a_bottle/proc/create_boat(drop_loc)
+	procstart = null
+	src.procstart = null
 	playsound(drop_loc, 'sound/effects/glass/glassbr1.ogg', 100, TRUE)
 	new /obj/vehicle/ridden/lavaboat/dragon(drop_loc)
 	qdel(src)
@@ -105,14 +117,20 @@
 	key_type = null
 
 /obj/vehicle/ridden/lavaboat/dragon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/lavaboat/dragonboat)
 
 /obj/vehicle/ridden/lavaboat/dragon/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You can reform [src] into its bottled shape by rubbing the dragon's nose with [EXAMINE_HINT("Alt-Click")].")
 
 /obj/vehicle/ridden/lavaboat/dragon/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	balloon_alert(user, "bottling the boat...")
 	if (!do_after(user, 2 SECONDS, src))
 		return CLICK_ACTION_BLOCKING

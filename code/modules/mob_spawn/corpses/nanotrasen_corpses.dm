@@ -55,6 +55,8 @@
 	mob_name = "Nameless Intern"
 
 /obj/effect/mob_spawn/corpse/human/intern/special(mob/living/carbon/human/spawned_human, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spawned_human.gender = MALE //we're making it canon babies
 	spawned_human.update_body()

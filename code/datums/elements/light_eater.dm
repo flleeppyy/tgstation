@@ -10,6 +10,8 @@
 	))
 
 /datum/element/light_eater/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	if(isatom(target))
 		if(ismovable(target))
 			if(ismachinery(target) || isstructure(target))
@@ -32,6 +34,8 @@
 	return ..()
 
 /datum/element/light_eater/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, list(
 		COMSIG_MOVABLE_IMPACT,
 		COMSIG_ITEM_INTERACTING_WITH_ATOM,
@@ -49,6 +53,8 @@
  * - [eater][/datum]: The light eater being used in this case.
  */
 /datum/element/light_eater/proc/eat_lights(atom/food, datum/eater)
+	procstart = null
+	src.procstart = null
 	var/list/buffet = table_buffet(food)
 	if(!LAZYLEN(buffet))
 		return 0
@@ -74,6 +80,8 @@
  * - [devourer][/datum]: The light eater this element is attached to. Since the element is compatible with reagents this needs to be a datum.
  */
 /datum/element/light_eater/proc/table_buffet(atom/commisary, datum/devourer)
+	procstart = null
+	src.procstart = null
 	. = list()
 	SEND_SIGNAL(commisary, COMSIG_LIGHT_EATER_QUEUE, ., devourer)
 	for(var/datum/light_source/morsel as anything in commisary.light_sources)
@@ -87,6 +95,8 @@
  * - [eater][/datum]: The light eater eating the morsel. This is the datum that the element is attached to that started this chain.
  */
 /datum/element/light_eater/proc/devour(atom/morsel, datum/eater)
+	procstart = null
+	src.procstart = null
 	if(is_type_in_typecache(morsel, blacklisted_areas))
 		return FALSE
 	if(istransparentturf(morsel))
@@ -113,6 +123,8 @@
  * - [thrownthing][/datum/thrownthing]: A datum containing the information for the throw
  */
 /datum/element/light_eater/proc/on_throw_impact(atom/movable/source, atom/hit_atom, datum/thrownthing/thrownthing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	eat_lights(hit_atom, source)
 	return NONE
@@ -126,6 +138,8 @@
  * - [target][/atom]: The atom being struck by the user with the source
  */
 /datum/element/light_eater/proc/on_interacting_with(obj/item/source, mob/living/user, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(eat_lights(target, source))
 		if (ismob(target))
@@ -159,6 +173,8 @@
  * - attack_type: The type of attack that was blocked
  */
 /datum/element/light_eater/proc/on_hit_reaction(obj/item/source, mob/living/carbon/human/owner, atom/movable/hitby, attack_text, final_block_chance, damage, attack_type, damage_type)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(prob(final_block_chance))
 		eat_lights(hitby, source)
@@ -174,6 +190,8 @@
  * - angle: The angle the target was struck at
  */
 /datum/element/light_eater/proc/on_projectile_hit(datum/source, atom/movable/firer, atom/target, angle)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	eat_lights(target, source)
 	return NONE
@@ -189,6 +207,8 @@
  * - hit_limb: The limb that was hit, if the target was a carbon
  */
 /datum/element/light_eater/proc/on_projectile_self_hit(obj/projectile/source, atom/movable/firer, atom/target, angle, hit_limb)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	eat_lights(target, source)
 	return NONE
@@ -202,6 +222,8 @@
  * - reac_volume: The volume of the reagents the target was exposed to
  */
 /datum/element/light_eater/proc/on_expose_atom(datum/reagent/source, atom/target, reac_volume, methods)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	eat_lights(target, source)
 	return NONE

@@ -14,15 +14,21 @@
 	var/awarder
 
 /obj/item/clothing/accessory/medal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/pinnable_accessory, on_pre_pin = CALLBACK(src, PROC_REF(provide_reason)))
 
 /// Input a reason for the medal for the round end screen
 /obj/item/clothing/accessory/medal/proc/provide_reason(mob/living/carbon/human/distinguished, mob/user)
+	procstart = null
+	src.procstart = null
 	commendation_message = tgui_input_text(user, "Reason for this commendation? It will be recorded by Nanotrasen.", "Commendation", max_length = 140)
 	return !!commendation_message
 
 /obj/item/clothing/accessory/medal/try_attach(obj/item/clothing/under/attach_to, mob/living/attacher)
+	procstart = null
+	src.procstart = null
 	var/mob/living/distinguished = attach_to.loc
 	if(isnull(attacher) || !istype(distinguished) || distinguished == attacher || awarded_to)
 		// You can't be awarded by nothing, you can't award yourself, and you can't be awarded someone else's medal
@@ -41,6 +47,8 @@
 	return ..()
 
 /obj/item/clothing/accessory/medal/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(commendation_message && awarded_to && awarder)
 		desc += span_info("<br>The inscription reads: [commendation_message] - Awarded to [awarded_to] by [awarder]")
@@ -120,13 +128,19 @@
 	custom_materials = list(/datum/material/plasma = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/clothing/accessory/medal/plasma/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/atmos_sensitive, mapload)
 
 /obj/item/clothing/accessory/medal/plasma/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return exposed_temperature > 300
 
 /obj/item/clothing/accessory/medal/plasma/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	atmos_spawn_air("[GAS_PLASMA]=20;[TURF_TEMPERATURE(exposed_temperature)]")
 	visible_message(span_danger("\The [src] bursts into flame!"), span_userdanger("Your [src] bursts into flame!"))
 	qdel(src)
@@ -144,6 +158,8 @@
 	var/insignia_desc = null
 
 /obj/item/clothing/accessory/medal/silver/emergency_services/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istext(insignia_desc))
 		desc += " [insignia_desc]"

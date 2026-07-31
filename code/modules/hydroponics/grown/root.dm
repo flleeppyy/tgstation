@@ -13,6 +13,8 @@
 	var/potency_minimum = 50
 
 /obj/item/food/grown/carrotlike/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!tool.get_sharpness())
 		return NONE
 
@@ -63,6 +65,8 @@
 	blade_string = "sword"
 
 /obj/item/food/grown/carrotlike/carrot/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/carrotjuice
 
 // Parsnip
@@ -90,6 +94,8 @@
 	blade_string = "sabre"
 
 /obj/item/food/grown/carrotlike/parsnip/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/parsnipjuice
 
 // Cahn'root
@@ -124,6 +130,8 @@
 	potency_minimum = 25
 
 /obj/item/food/grown/carrotlike/cahnroot/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return null
 
 // White-Beet

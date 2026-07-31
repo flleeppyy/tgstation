@@ -5,6 +5,8 @@
 /datum/element/ai_target_damagesource
 
 /datum/element/ai_target_damagesource/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismob(target))
 		return ELEMENT_INCOMPATIBLE
@@ -13,11 +15,15 @@
 	RegisterSignal(target, COMSIG_ATOM_WAS_ATTACKED, PROC_REF(on_attacked))
 
 /datum/element/ai_target_damagesource/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_ATOM_WAS_ATTACKED)
 
 /// Add the most recent target that attacked us to our current target blackboard.
 /datum/element/ai_target_damagesource/proc/on_attacked(mob/victim, atom/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!victim.ai_controller)

@@ -5,6 +5,8 @@
 	var/song_instrument_key
 
 /datum/bt_node/ai_behavior/play_instrument/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/item/instrument/song_instrument = controller.blackboard[song_instrument_key]
 	var/datum/song/song = song_instrument.song
 	song.volume = volume

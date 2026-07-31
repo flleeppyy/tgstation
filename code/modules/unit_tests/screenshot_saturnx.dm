@@ -2,6 +2,8 @@
 /datum/unit_test/screenshot_saturnx
 
 /datum/unit_test/screenshot_saturnx/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human = allocate(/mob/living/carbon/human/dummy/consistent) //we don't use a dummy as they have no organs
 	human.equipOutfit(/datum/outfit/job/assistant/consistent, visuals_only = TRUE)
 

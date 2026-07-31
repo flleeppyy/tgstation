@@ -18,6 +18,8 @@
 	var/list/already_allowed_guns = list()
 
 /obj/item/mod/module/magnetic_harness/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!guns_typecache)
 		guns_typecache = typecacheof(list(
@@ -30,6 +32,8 @@
 		))
 
 /obj/item/mod/module/magnetic_harness/on_install()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/clothing/suit = mod.get_part_from_slot(ITEM_SLOT_OCLOTHING)
 	if(!istype(suit))
@@ -38,6 +42,8 @@
 	suit.allowed |= guns_typecache
 
 /obj/item/mod/module/magnetic_harness/on_uninstall(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(deleting)
 		return
@@ -47,12 +53,18 @@
 	suit.allowed -= (guns_typecache - already_allowed_guns)
 
 /obj/item/mod/module/magnetic_harness/on_part_activation()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(mod.wearer, COMSIG_MOB_UNEQUIPPED_ITEM, PROC_REF(check_dropped_item))
 
 /obj/item/mod/module/magnetic_harness/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(mod.wearer, COMSIG_MOB_UNEQUIPPED_ITEM)
 
 /obj/item/mod/module/magnetic_harness/proc/check_dropped_item(datum/source, obj/item/dropped_item, force, new_location)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!is_type_in_typecache(dropped_item, guns_typecache))
@@ -62,6 +74,8 @@
 	addtimer(CALLBACK(src, PROC_REF(pick_up_item), dropped_item), magnet_delay)
 
 /obj/item/mod/module/magnetic_harness/proc/pick_up_item(obj/item/item)
+	procstart = null
+	src.procstart = null
 	if(!isturf(item.loc) || !item.Adjacent(mod.wearer))
 		return
 	if(!mod.wearer.equip_to_slot_if_possible(item, ITEM_SLOT_SUITSTORE, qdel_on_fail = FALSE, disable_warning = TRUE))
@@ -85,16 +99,24 @@
 	required_slots = list(ITEM_SLOT_OCLOTHING)
 
 /obj/item/mod/module/pepper_shoulders/on_part_activation()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(mod.wearer, COMSIG_LIVING_CHECK_BLOCK, PROC_REF(on_check_block))
 
 /obj/item/mod/module/pepper_shoulders/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(mod.wearer, COMSIG_LIVING_CHECK_BLOCK)
 
 /obj/item/mod/module/pepper_shoulders/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/spray.ogg', 30, TRUE, -6)
 	do_chem_smoke(1, src, get_turf(src), /datum/reagent/consumable/condensedcapsaicin, 10, log = TRUE, smoke_type = /datum/effect_system/fluid_spread/smoke/chem/quick)
 
 /obj/item/mod/module/pepper_shoulders/proc/on_check_block()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!COOLDOWN_FINISHED(src, cooldown_timer))
@@ -122,6 +144,8 @@
 	var/obj/item/gun/holstered
 
 /obj/item/mod/module/holster/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	if(!holstered)
 		var/obj/item/gun/holding = mod.wearer.get_active_held_item()
 		if(!holding)
@@ -141,16 +165,22 @@
 		balloon_alert(mod.wearer, "holster full!")
 
 /obj/item/mod/module/holster/on_uninstall(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(holstered)
 		holstered.forceMove(mod.drop_location())
 
 /obj/item/mod/module/holster/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if(gone == holstered)
 		holstered = null
 	return ..()
 
 /obj/item/mod/module/holster/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(holstered)
 	return ..()
 
@@ -168,19 +198,27 @@
 	var/list/voicespan = list(SPAN_COMMAND)
 
 /obj/item/mod/module/megaphone/on_activation(mob/activator)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(mod.wearer, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 	RegisterSignal(mod.wearer, COMSIG_LIVING_TREAT_MESSAGE, PROC_REF(add_tts_filter))
 
 /obj/item/mod/module/megaphone/on_deactivation(mob/activator, display_message = TRUE, deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(mod.wearer, list(COMSIG_LIVING_TREAT_MESSAGE, COMSIG_MOB_SAY))
 
 /obj/item/mod/module/megaphone/proc/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	speech_args[SPEECH_SPANS] |= voicespan
 	drain_power(use_energy_cost)
 
 /obj/item/mod/module/megaphone/proc/add_tts_filter(mob/living/carbon/user, list/message_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	///A sharper and louder sound with a bit of echo
 	message_args[TREAT_TTS_FILTER_ARG] += "acrusher=samples=2:level_out=6,aecho=delays=90:decays=0.3,aemphasis=type=cd,acontrast=30,crystalizer=i=5"
@@ -211,15 +249,21 @@
 	var/obj/structure/closet/body_bag/linked_bodybag
 
 /obj/item/mod/module/criminalcapture/on_process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	idle_power_cost = linked_bodybag ? (DEFAULT_CHARGE_DRAIN * 3) : 0
 	return ..()
 
 /obj/item/mod/module/criminalcapture/on_deactivation(mob/activator, display_message = TRUE, deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!linked_bodybag)
 		return
 	packup()
 
 /obj/item/mod/module/criminalcapture/on_select_use(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -249,6 +293,8 @@
 	RegisterSignal(mod.wearer, COMSIG_MOVABLE_MOVED, PROC_REF(check_range))
 
 /obj/item/mod/module/criminalcapture/proc/packup()
+	procstart = null
+	src.procstart = null
 	if(!linked_bodybag)
 		return
 	playsound(linked_bodybag, 'sound/items/weapons/egloves.ogg', 80, TRUE)
@@ -258,6 +304,8 @@
 	linked_bodybag = null
 
 /obj/item/mod/module/criminalcapture/proc/check_range()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(get_dist(mod.wearer, linked_bodybag) <= 9)
@@ -265,6 +313,8 @@
 	packup()
 
 /obj/item/mod/module/criminalcapture/proc/delete_bag(obj/structure/closet/body_bag/bag)
+	procstart = null
+	src.procstart = null
 	if(mod?.wearer)
 		UnregisterSignal(mod.wearer, COMSIG_MOVABLE_MOVED, PROC_REF(check_range))
 		balloon_alert(mod.wearer, "bag dissipated")
@@ -282,6 +332,8 @@
 	dispense_type = /obj/item/grenade/mirage
 
 /obj/item/mod/module/dispenser/mirage/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	var/obj/item/grenade/mirage/grenade = ..()
 	grenade.arm_grenade(mod.wearer)
 
@@ -295,10 +347,14 @@
 	var/mob/living/thrower
 
 /obj/item/grenade/mirage/arm_grenade(mob/user, delayoverride, msg, volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	thrower = user
 
 /obj/item/grenade/mirage/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	do_sparks(rand(3, 6), FALSE, src)
 	if(thrower)
@@ -334,15 +390,21 @@
 	var/datum/proximity_monitor/advanced/bubble/projectile_dampener/dampening_field
 
 /obj/item/mod/module/projectile_dampener/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	projectile_effect = image('icons/effects/fields.dmi', "projectile_dampen_effect")
 
 /obj/item/mod/module/projectile_dampener/on_activation(mob/activator)
+	procstart = null
+	src.procstart = null
 	if(istype(dampening_field))
 		QDEL_NULL(dampening_field)
 	dampening_field = new(mod.wearer, field_radius, TRUE, src)
 
 /obj/item/mod/module/projectile_dampener/on_deactivation(mob/activator, display_message, deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(dampening_field)
 
 ///Active Sonar - Displays a hud circle on the turf of any living creatures in the given radius
@@ -376,18 +438,26 @@
 	COOLDOWN_DECLARE(scan_cooldown)
 
 /obj/item/mod/module/active_sonar/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in 1 to radar_slices)
 		sorted_creatures += list(list())
 
 /obj/item/mod/module/active_sonar/on_part_activation()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(mod.wearer, COMSIG_MOVABLE_MOVED, PROC_REF(sort_all_creatures))
 
 /obj/item/mod/module/active_sonar/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(mod.wearer, COMSIG_MOVABLE_MOVED)
 
 /// Detects all living creatures within world.view, and returns the amount.
 /obj/item/mod/module/active_sonar/proc/detect_living_creatures()
+	procstart = null
+	src.procstart = null
 	var/creatures_detected = 0
 	for(var/mob/living/creature in range(world.view, mod.wearer))
 		if(creature == mod.wearer || creature.stat == DEAD)
@@ -402,6 +472,8 @@
 
 /// Swaps around where a creature is, when they move or when they're first detected
 /obj/item/mod/module/active_sonar/proc/sort_creature_angle(mob/living/creature, atom/old_loc, movement_dir, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/oldgroup = keyed_creatures[creature]
 	var/newgroup = round(get_angle(mod.wearer, creature) / (360 / radar_slices)) + 1
@@ -422,12 +494,16 @@
 
 /// Swaps all creatures when mod.wearer moves
 /obj/item/mod/module/active_sonar/proc/sort_all_creatures(mob/living/wearer, atom/old_loc, movement_dir, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/mob/living/creature as anything in keyed_creatures)
 		sort_creature_angle(creature) // Kinda spaghetti but it honestly seems like the shortest path to the same result
 
 /obj/item/mod/module/active_sonar/on_process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -444,6 +520,8 @@
 	COOLDOWN_START(src, scan_cooldown, scan_cooldown_time)
 
 /obj/item/mod/module/active_sonar/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	balloon_alert(activator, "readying sonar...")
 	playsound(mod.wearer, 'sound/vehicles/mecha/skyfall_power_up.ogg', vol = 20, vary = TRUE, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
 	if(!do_after(mod.wearer, 1.1 SECONDS, target = mod))
@@ -484,15 +562,21 @@
 	)
 
 /obj/item/mod/module/shooting_assistant/get_configuration()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["shooting_mode"] = add_ui_configuration("Mode", "list", selected_mode, assoc_to_keys(available_modes))
 
 /obj/item/mod/module/shooting_assistant/configure_edit(key, value)
+	procstart = null
+	src.procstart = null
 	switch(key)
 		if("shooting_mode")
 			set_shooting_mode(value)
 
 /obj/item/mod/module/shooting_assistant/proc/set_shooting_mode(new_mode)
+	procstart = null
+	src.procstart = null
 	if(new_mode == selected_mode || !mod.active)
 		return
 	if(new_mode != SHOOTING_ASSISTANT_OFF && !mod.get_charge())
@@ -512,6 +596,8 @@
 		apply_mode_effects()
 
 /obj/item/mod/module/shooting_assistant/proc/apply_mode_effects()
+	procstart = null
+	src.procstart = null
 	switch(selected_mode)
 		if(SHOOTING_ASSISTANT_OFF)
 			idle_power_cost = 0
@@ -527,6 +613,8 @@
 			mod.wearer.add_movespeed_modifier(/datum/movespeed_modifier/shooting_assistant)
 
 /obj/item/mod/module/shooting_assistant/proc/remove_mode_effects()
+	procstart = null
+	src.procstart = null
 	switch(selected_mode)
 		if(STORMTROOPER_MODE)
 			UnregisterSignal(mod.wearer, COMSIG_MOB_FIRED_GUN)
@@ -537,27 +625,39 @@
 			mod.wearer.remove_movespeed_modifier(/datum/movespeed_modifier/shooting_assistant)
 
 /obj/item/mod/module/shooting_assistant/drain_power(amount)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		set_shooting_mode(SHOOTING_ASSISTANT_OFF)
 
 /obj/item/mod/module/shooting_assistant/on_part_activation()
+	procstart = null
+	src.procstart = null
 	apply_mode_effects()
 
 /obj/item/mod/module/shooting_assistant/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	remove_mode_effects()
 
 /obj/item/mod/module/shooting_assistant/proc/stormtrooper_fired_gun(mob/user, obj/item/gun/gun_fired, target, params, zone_override, list/bonus_spread_values)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	bonus_spread_values[MIN_BONUS_SPREAD_INDEX] += 15
 	bonus_spread_values[MAX_BONUS_SPREAD_INDEX] += 25
 
 /obj/item/mod/module/shooting_assistant/proc/sharpshooter_fired_gun(mob/user, obj/item/gun/gun_fired, target, params, zone_override, list/bonus_spread_values)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	bonus_spread_values[MIN_BONUS_SPREAD_INDEX] -= 20
 	bonus_spread_values[MAX_BONUS_SPREAD_INDEX] -= 10
 
 /obj/item/mod/module/shooting_assistant/proc/apply_ricochet(mob/user, obj/projectile/projectile, datum/fired_from, atom/clicked_atom)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	projectile.ricochets_max += 1
 	projectile.min_ricochets += 1
@@ -577,9 +677,13 @@
 	required_slots = list(ITEM_SLOT_OCLOTHING)
 
 /obj/item/mod/module/shove_blocker/on_part_activation()
+	procstart = null
+	src.procstart = null
 	mod.wearer.add_traits(list(TRAIT_BRAWLING_KNOCKDOWN_BLOCKED, TRAIT_NO_STAGGER, TRAIT_NO_THROW_HITPUSH), REF(src))
 
 /obj/item/mod/module/shove_blocker/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	mod.wearer.remove_traits(list(TRAIT_BRAWLING_KNOCKDOWN_BLOCKED, TRAIT_NO_STAGGER, TRAIT_NO_THROW_HITPUSH), REF(src))
 
 /obj/item/mod/module/shove_blocker/locked
@@ -596,9 +700,13 @@
 	required_slots = list(ITEM_SLOT_GLOVES)
 
 /obj/item/mod/module/quick_cuff/on_part_activation()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(mod.wearer, TRAIT_FAST_CUFFING, REF(src))
 
 /obj/item/mod/module/quick_cuff/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(mod.wearer, TRAIT_FAST_CUFFING, REF(src))

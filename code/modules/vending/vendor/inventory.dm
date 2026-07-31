@@ -12,6 +12,8 @@
  * * premium - Whether the ending products shall have premium or default prices
  */
 /obj/machinery/vending/proc/build_inventory(list/productlist, list/recordlist, list/categories, start_empty = FALSE, premium = FALSE)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/inflation_value = HAS_TRAIT(SSeconomy, TRAIT_MARKET_CRASHING) ? SSeconomy.inflation_value() : 1
@@ -59,12 +61,16 @@
  * start_empty - bool to pass into build_inventory that determines whether a product entry starts with available stock or not
 */
 /obj/machinery/vending/proc/build_inventories(start_empty = FALSE)
+	procstart = null
+	src.procstart = null
 	build_inventory(products, product_records, product_categories, start_empty)
 	build_inventory(contraband, hidden_records, list(list("name" = "Contraband", "icon" = "mask", "products" = contraband)), start_empty, premium = TRUE)
 	build_inventory(premium, coin_records, list(list("name" = "Premium", "icon" = "coins", "products" = premium)), start_empty, premium = TRUE)
 
 //Better would be to make constructable child
 /obj/machinery/vending/RefreshParts()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 
 	//compress all product categories into an linear list
@@ -92,6 +98,8 @@
  * * canister - the vending canister we are refilling from
  */
 /obj/machinery/vending/proc/restock(obj/item/vending_refill/canister)
+	procstart = null
+	src.procstart = null
 	. = 0
 
 	//to initialize product category & cargo ordered canisters for the 1st time
@@ -128,6 +136,8 @@
 
 //===========================VENDING OUT ITEMS================================
 /obj/machinery/vending/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/data/vending_product/record in product_records + coin_records + hidden_records)
 		if(gone in record.returned_products)
@@ -141,6 +151,8 @@
  * greyscale_colors - greyscale config for the item we're about to vend, if any
  */
 /obj/machinery/vending/proc/vend(list/params, mob/user, list/greyscale_colors)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	. = TRUE
@@ -224,6 +236,8 @@
  * * dispense_returned - are we vending out an returned item
 */
 /obj/machinery/vending/proc/dispense(datum/data/vending_product/item_record, atom/spawn_location, silent = FALSE, dispense_returned = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(!silent)
@@ -254,6 +268,8 @@
  * * dispense_returned - is this item an returned product
 */
 /obj/machinery/vending/proc/on_dispense(obj/item/vended_item, dispense_returned = FALSE)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	return
@@ -268,6 +284,8 @@
  * discountless - whether or not to apply discounts
  */
 /obj/machinery/vending/proc/proceed_payment(obj/item/card/id/paying_id_card, mob/living/mob_paying, datum/data/vending_product/product_to_vend, price_to_use, discountless)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	//returned items are free

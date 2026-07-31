@@ -17,6 +17,8 @@
 
 /// Accepts three args. The direction to drift in, if the drift is instant or not, and if it's not instant, the delay on the start
 /datum/drift_handler/New(atom/movable/parent, inertia_angle, instant = FALSE, start_delay = 0, drift_force = 1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.parent = parent
 	parent.drift_handler = src
@@ -59,6 +61,8 @@
 		SSnewtonian_movement.fire_moveloop(drifting_loop)
 
 /datum/drift_handler/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(drifting_loop))
 		qdel(drifting_loop)
 	drifting_loop = null
@@ -67,6 +71,8 @@
 	return ..()
 
 /datum/drift_handler/proc/apply_initial_visuals(visual_delay)
+	procstart = null
+	src.procstart = null
 	// If something "somewhere" doesn't want us to apply our glidesize delays, don't
 	if(SEND_SIGNAL(parent, COMSIG_MOVABLE_DRIFT_VISUAL_ATTEMPT) & DRIFT_VISUAL_FAILED)
 		return
@@ -98,6 +104,8 @@
  * Return TRUE if the loop is still valid and should be kept
  */
 /datum/drift_handler/proc/newtonian_impulse(inertia_angle, start_delay, additional_force, controlled_cap = INERTIA_FORCE_CAP, force_loop = TRUE)
+	procstart = null
+	src.procstart = null
 	// We've been told to move in the middle of deletion process, tell parent to create a new handler instead
 	if(!drifting_loop)
 		qdel(src)
@@ -120,6 +128,8 @@
 	return TRUE
 
 /datum/drift_handler/proc/drifting_start()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(handle_move))
 	// We will use glide size to intuit how long to delay our loop's next move for
@@ -129,18 +139,24 @@
 	RegisterSignal(parent, COMSIG_ATOM_NO_LONGER_PULLING, PROC_REF(stopped_pulling))
 
 /datum/drift_handler/proc/drifting_stop()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	parent.inertia_moving = FALSE
 	ignore_next_glide = FALSE
 	UnregisterSignal(parent, list(COMSIG_MOVABLE_MOVED, COMSIG_MOVABLE_UPDATE_GLIDE_SIZE, COMSIG_ATOM_NO_LONGER_PULLING))
 
 /datum/drift_handler/proc/before_move(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	parent.inertia_moving = TRUE
 	old_dir = parent.dir
 	delayed = FALSE
 
 /datum/drift_handler/proc/after_move(datum/source, result, visual_delay)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(result == MOVELOOP_FAILURE)
 		qdel(src)
@@ -155,10 +171,14 @@
 	ignore_next_glide = TRUE
 
 /datum/drift_handler/proc/loop_death(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	drifting_loop = null
 
 /datum/drift_handler/proc/handle_move(datum/source, old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// This can happen, because signals once sent cannot be stopped
 	if(QDELETED(src))
@@ -176,6 +196,8 @@
 /// and use it to manually delay our loop for that period
 /// to allow the other movement to complete
 /datum/drift_handler/proc/handle_glidesize_update(datum/source, glide_size)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// If we aren't drifting, or this is us, fuck off
 	if(!drifting_loop || parent.inertia_moving)
@@ -191,12 +213,16 @@
 
 /// If we're pulling something and stop, we want it to continue at our rate and such
 /datum/drift_handler/proc/stopped_pulling(datum/source, atom/movable/was_pulling)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// This does mean it falls very slightly behind, but otherwise they'll potentially run into us
 	var/next_move_in = drifting_loop.timer - world.time + world.tick_lag
 	was_pulling.newtonian_move(angle2dir(drifting_loop.angle), start_delay = next_move_in, drift_force = drift_force, controlled_cap = drift_force)
 
 /datum/drift_handler/proc/glide_to_halt(glide_for)
+	procstart = null
+	src.procstart = null
 	if(!ismob(parent))
 		qdel(src)
 		return
@@ -214,6 +240,8 @@
 	RegisterSignal(parent, COMSIG_MOB_CLIENT_PRE_MOVE, PROC_REF(allow_final_movement))
 
 /datum/drift_handler/proc/allow_final_movement(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Some things want to allow movement out of spacedrift, we should let them
 	if(SEND_SIGNAL(parent, COMSIG_MOVABLE_DRIFT_BLOCK_INPUT) & DRIFT_ALLOW_INPUT)
@@ -223,4 +251,6 @@
 	return COMSIG_MOB_CLIENT_BLOCK_PRE_MOVE
 
 /datum/drift_handler/proc/get_loop_delay(atom/movable/movable)
+	procstart = null
+	src.procstart = null
 	return (DEFAULT_INERTIA_SPEED / ((1 - INERTIA_SPEED_COEF) + drift_force * INERTIA_SPEED_COEF)) * min(movable.inertia_move_multiplier_passive, movable.inertia_move_multiplier_active)

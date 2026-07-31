@@ -7,5 +7,7 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/clothing/mask/gondola/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/speechmod, replacements = strings("spurdo_replacement.json", "spurdo"), slots = ITEM_SLOT_MASK)

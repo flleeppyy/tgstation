@@ -8,6 +8,8 @@
 	var/dash_range = 4
 
 /datum/action/cooldown/mob_cooldown/dash/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	disable_cooldown_actions()
 	dash_to(target_atom)
 	StartCooldown()
@@ -15,6 +17,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/dash/proc/dash_to(atom/dash_target)
+	procstart = null
+	src.procstart = null
 	var/list/accessable_turfs = list()
 	var/self_dist_to_target = 0
 	var/turf/own_turf = get_turf(owner)

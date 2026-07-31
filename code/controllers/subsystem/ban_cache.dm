@@ -9,11 +9,15 @@ SUBSYSTEM_DEF(ban_cache)
 	var/query_started = FALSE
 
 /datum/controller/subsystem/ban_cache/Initialize()
+	procstart = null
+	src.procstart = null
 	generate_queries()
 	return SS_INIT_SUCCESS
 
 /// Generates ban caches for any logged in clients. This ensures the amount of in-series ban checking we have to do that actually involves sleeps is VERY low
 /datum/controller/subsystem/ban_cache/proc/generate_queries()
+	procstart = null
+	src.procstart = null
 	query_started = TRUE
 	if(!SSdbcore.Connect())
 		return

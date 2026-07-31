@@ -2,6 +2,8 @@
 #define AUXLUA (world.system_type == MS_WINDOWS ? "auxlua.dll" : __detect_auxtools("auxlua"))
 
 /proc/__detect_auxtools(library)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		return
 	if (fexists("./lib[library].so"))

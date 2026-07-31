@@ -10,10 +10,14 @@
 	var/mob/living/resident_cat
 
 /obj/structure/cat_house/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ATOM_ATTACK_BASIC_MOB, PROC_REF(enter_home))
 
 /obj/structure/cat_house/proc/enter_home(datum/source, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(resident_cat) && istype(attacker, /mob/living/basic/pet/cat))
@@ -23,6 +27,8 @@
 		attacker.forceMove(drop_location())
 
 /obj/structure/cat_house/Entered(atom/movable/mover)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(mover, /mob/living/basic/pet/cat))
 		return
@@ -30,6 +36,8 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/cat_house/Exited(atom/movable/mover)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mover != resident_cat)
 		return
@@ -37,6 +45,8 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/cat_house/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(resident_cat))
 		return

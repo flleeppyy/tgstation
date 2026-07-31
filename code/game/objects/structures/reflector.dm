@@ -19,6 +19,8 @@
 	var/rotation_angle = -1
 
 /obj/structure/reflector/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "reflector_base"
 	allowed_projectile_typecache = typecacheof(allowed_projectile_typecache)
@@ -40,6 +42,8 @@
 	AddComponent(/datum/component/usb_port, typecacheof(list(/obj/item/circuit_component/reflector), only_root_path = TRUE))
 
 /obj/structure/reflector/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(finished)
 		. += "It is set to [rotation_angle] degrees, and the rotation is [can_rotate ? "unlocked" : "locked"]."
@@ -51,6 +55,8 @@
 				. += span_notice("Use <b>screwdriver</b> to unlock the rotation.")
 
 /obj/structure/reflector/proc/set_angle(new_angle)
+	procstart = null
+	src.procstart = null
 	if(can_rotate)
 		rotation_angle = new_angle
 		if(deflector_overlay)
@@ -60,9 +66,13 @@
 
 
 /obj/structure/reflector/setDir(new_dir)
+	procstart = null
+	src.procstart = null
 	return ..(NORTH)
 
 /obj/structure/reflector/bullet_act(obj/projectile/proj)
+	procstart = null
+	src.procstart = null
 	var/pdir = proj.dir
 	var/pangle = proj.angle
 	var/ploc = get_turf(proj)
@@ -73,23 +83,31 @@
 	return BULLET_ACT_FORCE_PIERCE
 
 /obj/structure/reflector/proc/auto_reflect(obj/projectile/proj, pdir, turf/ploc, pangle)
+	procstart = null
+	src.procstart = null
 	proj.ignore_source_check = TRUE
 	proj.range = proj.maximum_range
 	proj.maximum_range = max(proj.maximum_range--, 0)
 	return BULLET_ACT_FORCE_PIERCE
 
 /obj/structure/reflector/tool_act(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(admin && tool.tool_behaviour)
 		return ITEM_INTERACT_BLOCKING
 	return ..()
 
 /obj/structure/reflector/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	can_rotate = !can_rotate
 	to_chat(user, span_notice("You [can_rotate ? "unlock" : "lock"] [src]'s rotation."))
 	tool.play_tool_sound(src)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/reflector/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(anchored)
 		to_chat(user, span_warning("Unweld [src] from the floor first!"))
 		return ITEM_INTERACT_SUCCESS
@@ -104,6 +122,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/reflector/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!tool.tool_start_check(user, amount=1))
 		return ITEM_INTERACT_BLOCKING
 	if(atom_integrity < max_integrity)
@@ -132,6 +152,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/reflector/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(admin)
 		return ITEM_INTERACT_BLOCKING
 	//Finishing the frame
@@ -169,6 +191,8 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/structure/reflector/proc/rotate(mob/user)
+	procstart = null
+	src.procstart = null
 	if (!can_rotate || admin)
 		to_chat(user, span_warning("The rotation is locked!"))
 		return FALSE
@@ -199,6 +223,8 @@
 	anchored = TRUE
 
 /obj/structure/reflector/single/auto_reflect(obj/projectile/proj, pdir, turf/ploc, pangle)
+	procstart = null
+	src.procstart = null
 	var/incidence = GET_ANGLE_OF_INCIDENCE(rotation_angle, (proj.angle + 180))
 	if(abs(incidence) > 90 && abs(incidence) < 270)
 		return FALSE
@@ -226,6 +252,8 @@
 	anchored = TRUE
 
 /obj/structure/reflector/double/auto_reflect(obj/projectile/proj, pdir, turf/ploc, pangle)
+	procstart = null
+	src.procstart = null
 	var/incidence = GET_ANGLE_OF_INCIDENCE(rotation_angle, (proj.angle + 180))
 	var/new_angle = SIMPLIFY_DEGREES(rotation_angle + incidence)
 	proj.forceMove(loc)
@@ -252,15 +280,21 @@
 	anchored = TRUE
 
 /obj/structure/reflector/box/auto_reflect(obj/projectile/proj)
+	procstart = null
+	src.procstart = null
 	proj.set_angle_centered(loc, rotation_angle)
 	return ..()
 
 /obj/structure/reflector/ex_act()
+	procstart = null
+	src.procstart = null
 	if(admin)
 		return FALSE
 	return ..()
 
 /obj/structure/reflector/singularity_act()
+	procstart = null
+	src.procstart = null
 	if(admin)
 		return
 	else
@@ -279,23 +313,33 @@
 	var/obj/structure/reflector/attached_reflector
 
 /obj/item/circuit_component/reflector/populate_ports()
+	procstart = null
+	src.procstart = null
 	angle = add_input_port("Angle", PORT_TYPE_NUMBER)
 
 /obj/item/circuit_component/reflector/register_usb_parent(atom/movable/parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(parent, /obj/structure/reflector))
 		attached_reflector = parent
 
 /obj/item/circuit_component/reflector/unregister_usb_parent(atom/movable/parent)
+	procstart = null
+	src.procstart = null
 	attached_reflector = null
 	return ..()
 
 /obj/item/circuit_component/reflector/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	attached_reflector?.set_angle(angle.value)
 
 // tgui menu
 
 /obj/structure/reflector/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(!finished)
 		user.balloon_alert(user, "nothing to rotate!")
 		return
@@ -309,13 +353,19 @@
 		ui.open()
 
 /obj/structure/reflector/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	ui_interact(user)
 	return
 
 /obj/structure/reflector/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.physical_state //Prevents borgs from adjusting this at range
 
 /obj/structure/reflector/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["rotation_angle"] = rotation_angle
 	data["reflector_name"] = name
@@ -323,6 +373,8 @@
 	return data
 
 /obj/structure/reflector/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -345,6 +397,8 @@
 /obj/structure/reflector/wrenched
 
 /obj/structure/reflector/wrenched/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	set_anchored(TRUE)

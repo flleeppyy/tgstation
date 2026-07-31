@@ -10,6 +10,8 @@
 	var/is_waddling = FALSE
 
 /obj/effect/overlay/vis_effect/snail/proc/handle_animation()
+	procstart = null
+	src.procstart = null
 	if(is_waddling)
 		return
 	is_waddling = TRUE

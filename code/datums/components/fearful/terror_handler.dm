@@ -15,19 +15,27 @@
 	var/bespoke = FALSE
 
 /datum/terror_handler/New(mob/living/new_owner, datum/component/fearful/new_component)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner = new_owner
 	component = new_component
 
 /datum/terror_handler/Destroy(force)
+	procstart = null
+	src.procstart = null
 	owner = null
 	component = null
 	return ..()
 
 /// Single tick of terror handler, returns adjustment to terror buildup
 /datum/terror_handler/proc/tick(seconds_per_tick, terror_buildup)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /// Additional effects when we're hugged by a mob, returns fear adjustment per hug. Should only be positive.
 /datum/terror_handler/proc/on_hug(mob/living/hugger)
+	procstart = null
+	src.procstart = null
 	return 0

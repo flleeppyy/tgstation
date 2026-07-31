@@ -79,12 +79,16 @@
 	skillchips = list(/obj/item/skillchip/job/detectives_taste)
 
 /datum/outfit/job/detective/pre_equip(mob/living/carbon/human/human, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (human.age < AGE_MINOR)
 		mask = /obj/item/cigarette/candy
 		head = /obj/item/clothing/head/fedora/det_hat/minor
 
 /datum/outfit/job/detective/post_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/cigarette/cig = H.wear_mask
 	if(istype(cig)) //Some species specfic changes can mess this up (plasmamen)

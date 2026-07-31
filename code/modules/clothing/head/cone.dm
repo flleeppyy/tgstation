@@ -19,10 +19,14 @@
 	custom_materials = list(/datum/material/plastic = SHEET_MATERIAL_AMOUNT * 2)
 
 /obj/item/clothing/head/cone/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/floor_placeable)
 
 /obj/item/clothing/head/cone/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "[icon_state]-emissive", src, alpha = src.alpha, effect_type = EMISSIVE_SPECULAR)

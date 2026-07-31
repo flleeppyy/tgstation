@@ -6,6 +6,8 @@
 /datum/element/tenacious
 
 /datum/element/tenacious/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!ishuman(target))
@@ -16,6 +18,8 @@
 	ADD_TRAIT(target, TRAIT_TENACIOUS, ELEMENT_TRAIT(type))
 
 /datum/element/tenacious/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, COMSIG_MOB_STATCHANGE)
 	REMOVE_TRAIT(target, TRAIT_TENACIOUS, ELEMENT_TRAIT(type))
 	var/mob/living/carbon/human/valid_target = target
@@ -25,6 +29,8 @@
 
 ///signal called by the stat of the target changing
 /datum/element/tenacious/proc/on_stat_change(mob/living/carbon/human/target, new_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(new_stat == SOFT_CRIT)

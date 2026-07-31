@@ -58,6 +58,8 @@
 /// Gets the perceived "danger" of radiation pulse, given the threshold to the target.
 /// Returns a RADIATION_DANGER_* define, see [code/__DEFINES/radiation.dm]
 /proc/get_perceived_radiation_danger(datum/radiation_pulse_information/pulse_information, insulation_to_target)
+	procstart = null
+	src.procstart = null
 	if (insulation_to_target > pulse_information.threshold)
 		// We could get irradiated! The only thing stopping us now is chance, so scale based on that.
 		if (pulse_information.chance >= EXTREME_RADIATION_CHANCE)
@@ -74,6 +76,8 @@
 /// A common proc used to send COMSIG_ATOM_PROPAGATE_RAD_PULSE to adjacent atoms
 /// Only used for uranium (false/tram)walls to spread their radiation pulses
 /atom/proc/propagate_radiation_pulse()
+	procstart = null
+	src.procstart = null
 	for(var/atom/atom in orange(1,src))
 		SEND_SIGNAL(atom, COMSIG_ATOM_PROPAGATE_RAD_PULSE, src)
 

@@ -165,6 +165,8 @@
  * * http_handler - Optional user defined [/datum/tgs_http_handler].
  */
 /world/proc/TgsNew(datum/tgs_event_handler/event_handler, minimum_required_security_level = TGS_SECURITY_ULTRASAFE, datum/tgs_http_handler/http_handler)
+	procstart = null
+	src.procstart = null
 	CAN_BE_REDEFINED(TRUE)
 	return
 
@@ -176,6 +178,8 @@
  * This function should not be called before ..() in [/world/proc/New].
  */
 /world/proc/TgsInitializationComplete()
+	procstart = null
+	src.procstart = null
 	CAN_BE_REDEFINED(TRUE)
 	return
 
@@ -184,6 +188,8 @@
 
 /// Consumers MUST call this as late as possible in [world/proc/Reboot] (BEFORE ..()).
 /world/proc/TgsReboot()
+	procstart = null
+	src.procstart = null
 	CAN_BE_REDEFINED(TRUE)
 	return
 
@@ -222,6 +228,8 @@
  * Returns [TRUE]/[FALSE] based on if the [/datum/tgs_version] contains wildcards.
  */
 /datum/tgs_version/proc/Wildcard()
+	procstart = null
+	src.procstart = null
 	CAN_BE_REDEFINED(TRUE)
 	return
 
@@ -231,6 +239,8 @@
  * other_version - The [/datum/tgs_version] to compare against.
  */
 /datum/tgs_version/proc/Equals(datum/tgs_version/other_version)
+	procstart = null
+	src.procstart = null
 	CAN_BE_REDEFINED(TRUE)
 	return
 
@@ -290,6 +300,8 @@
  * event_code - One of the TGS_EVENT_ defines. Extra parameters will be documented in each.
  */
 /datum/tgs_event_handler/proc/HandleEvent(event_code, ...)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	return
 
@@ -305,6 +317,8 @@
  * url - The full URL to execute the GET request for including query parameters.
  */
 /datum/tgs_http_handler/proc/PerformGet(url)
+	procstart = null
+	src.procstart = null
 	CRASH("[type]/PerformGet not implemented!")
 
 /// Result of a [/datum/tgs_http_handler] call. MUST NOT be overridden.
@@ -321,6 +335,8 @@
  * * success - Boolean request success flag. Set for any 2XX response code. Must be provided in New().
  */
 /datum/tgs_http_result/New(response_text, success)
+	procstart = null
+	src.procstart = null
 	if(response_text && !istext(response_text))
 		CRASH("response_text was not text!")
 
@@ -346,6 +362,8 @@
  * * params - The trimmed string following the command `/datum/tgs_chat_command/var/name].
  */
 /datum/tgs_chat_command/proc/Run(datum/tgs_chat_user/sender, params)
+	procstart = null
+	src.procstart = null
 	CRASH("[type] has no implementation for Run()")
 
 /// User definable chat message. MUST NOT be overridden.
@@ -362,6 +380,8 @@
  * * text - The string content of the message.
  */
 /datum/tgs_message_content/New(text)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!istext(text))
 		TGS_ERROR_LOG("[/datum/tgs_message_content] created with no text!")
@@ -406,6 +426,8 @@
 
 /// Create a [/datum/tgs_chat_embed].
 /datum/tgs_chat_embed/media/New(url)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!istext(url))
 		CRASH("[/datum/tgs_chat_embed/media] created with no url!")
@@ -421,6 +443,8 @@
 
 /// Create a [/datum/tgs_chat_embed/footer].
 /datum/tgs_chat_embed/footer/New(text)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!istext(text))
 		CRASH("[/datum/tgs_chat_embed/footer] created with no text!")
@@ -439,6 +463,8 @@
 
 /// Create a [/datum/tgs_chat_embed/footer].
 /datum/tgs_chat_embed/provider/author/New(name)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!istext(name))
 		CRASH("[/datum/tgs_chat_embed/provider/author] created with no name!")
@@ -455,6 +481,8 @@
 
 /// Create a [/datum/tgs_chat_embed/field].
 /datum/tgs_chat_embed/field/New(name, value)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!istext(name))
 		CRASH("[/datum/tgs_chat_embed/field] created with no name!")
@@ -469,11 +497,15 @@
 
 /// Returns the maximum supported [/datum/tgs_version] of the DMAPI.
 /world/proc/TgsMaximumApiVersion()
+	procstart = null
+	src.procstart = null
 	CAN_BE_REDEFINED(TRUE)
 	return
 
 /// Returns the minimum supported [/datum/tgs_version] of the DMAPI.
 /world/proc/TgsMinimumApiVersion()
+	procstart = null
+	src.procstart = null
 	CAN_BE_REDEFINED(TRUE)
 	return
 
@@ -481,6 +513,8 @@
  * Returns [TRUE] if DreamDaemon was launched under TGS, the API matches, and was properly initialized. [FALSE] will be returned otherwise.
  */
 /world/proc/TgsAvailable()
+	procstart = null
+	src.procstart = null
 	CAN_BE_REDEFINED(TRUE)
 	return
 
@@ -493,6 +527,8 @@
  * If TGS has not requested a [TGS_REBOOT_MODE_SHUTDOWN] DreamDaemon will be launched again.
  */
 /world/proc/TgsEndProcess()
+	procstart = null
+	src.procstart = null
 	CAN_BE_REDEFINED(TRUE)
 	return
 
@@ -504,6 +540,8 @@
  * admin_only: If [TRUE], message will be sent to admin connected chats. Vice-versa applies.
  */
 /world/proc/TgsTargetedChatBroadcast(datum/tgs_message_content/message, admin_only = FALSE)
+	procstart = null
+	src.procstart = null
 	CAN_BE_REDEFINED(TRUE)
 	return
 
@@ -515,6 +553,8 @@
  * user: The [/datum/tgs_chat_user] to PM.
  */
 /world/proc/TgsChatPrivateMessage(datum/tgs_message_content/message, datum/tgs_chat_user/user)
+	procstart = null
+	src.procstart = null
 	CAN_BE_REDEFINED(TRUE)
 	return
 
@@ -526,51 +566,71 @@
  * channels - Optional list of [/datum/tgs_chat_channel]s to restrict the message to.
  */
 /world/proc/TgsChatBroadcast(datum/tgs_message_content/message, list/channels = null)
+	procstart = null
+	src.procstart = null
 	CAN_BE_REDEFINED(TRUE)
 	return
 
 /// Returns the current [/datum/tgs_version] of TGS if it is running the server, null otherwise. This function may sleep if the call to [/world/proc/TgsNew] is sleeping!
 /world/proc/TgsVersion()
+	procstart = null
+	src.procstart = null
 	CAN_BE_REDEFINED(TRUE)
 	return
 
 /// Returns the running engine type
 /world/proc/TgsEngine()
+	procstart = null
+	src.procstart = null
 	CAN_BE_REDEFINED(TRUE)
 	return
 
 /// Returns the current [/datum/tgs_version] of the DMAPI being used if it was activated, null otherwise. This function may sleep if the call to [/world/proc/TgsNew] is sleeping!
 /world/proc/TgsApiVersion()
+	procstart = null
+	src.procstart = null
 	CAN_BE_REDEFINED(TRUE)
 	return
 
 /// Returns the name of the TGS instance running the game if TGS is present, null otherwise. This function may sleep if the call to [/world/proc/TgsNew] is sleeping!
 /world/proc/TgsInstanceName()
+	procstart = null
+	src.procstart = null
 	CAN_BE_REDEFINED(TRUE)
 	return
 
 /// Return the current [/datum/tgs_revision_information] of the running server if TGS is present, null otherwise. This function may sleep if the call to [/world/proc/TgsNew] is sleeping!
 /world/proc/TgsRevision()
+	procstart = null
+	src.procstart = null
 	CAN_BE_REDEFINED(TRUE)
 	return
 
 /// Returns the current BYOND security level as a TGS_SECURITY_ define if TGS is present, null otherwise. This function may sleep if the call to [/world/proc/TgsNew] is sleeping!
 /world/proc/TgsSecurityLevel()
+	procstart = null
+	src.procstart = null
 	CAN_BE_REDEFINED(TRUE)
 	return
 
 /// Returns the current BYOND visibility level as a TGS_VISIBILITY_ define if TGS is present, null otherwise. Requires TGS to be using interop API version 5 or higher otherwise the string "___unimplemented" wil be returned. This function may sleep if the call to [/world/proc/TgsNew] is sleeping!
 /world/proc/TgsVisibility()
+	procstart = null
+	src.procstart = null
 	CAN_BE_REDEFINED(TRUE)
 	return
 
 /// Returns a list of active [/datum/tgs_revision_information/test_merge]s if TGS is present, null otherwise. This function may sleep if the call to [/world/proc/TgsNew] is sleeping!
 /world/proc/TgsTestMerges()
+	procstart = null
+	src.procstart = null
 	CAN_BE_REDEFINED(TRUE)
 	return
 
 /// Returns a list of connected [/datum/tgs_chat_channel]s if TGS is present, null otherwise. This function may sleep if the call to [/world/proc/TgsNew] is sleeping!
 /world/proc/TgsChatChannelInfo()
+	procstart = null
+	src.procstart = null
 	CAN_BE_REDEFINED(TRUE)
 	return
 
@@ -582,12 +642,16 @@
  * wait_for_completion - If set, this function will not return until the event has run to completion.
  */
 /world/proc/TgsTriggerEvent(event_name, list/parameters, wait_for_completion = FALSE)
+	procstart = null
+	src.procstart = null
 	CAN_BE_REDEFINED(TRUE)
 	return
 	
 
 /// Trigger a TGS deployment for the current instance. The current state of the repository will not be changed.
 /world/proc/TgsTriggerDeployment()
+	procstart = null
+	src.procstart = null
 	CAN_BE_REDEFINED(TRUE)
 	return
 

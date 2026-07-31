@@ -13,14 +13,20 @@
 	var/swooping = FALSE
 
 /datum/action/cooldown/mob_cooldown/lava_swoop/Grant(mob/M)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	M.add_traits(list(TRAIT_LAVA_IMMUNE, TRAIT_NOFIRE), ACTION_TRAIT)
 
 /datum/action/cooldown/mob_cooldown/lava_swoop/Remove(mob/M)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	M.remove_traits(list(TRAIT_LAVA_IMMUNE, TRAIT_NOFIRE), ACTION_TRAIT)
 
 /datum/action/cooldown/mob_cooldown/lava_swoop/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	disable_cooldown_actions()
 	attack_sequence(target_atom)
 	StartCooldown()
@@ -28,6 +34,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/lava_swoop/proc/attack_sequence(atom/target)
+	procstart = null
+	src.procstart = null
 	if(enraged)
 		swoop_attack(target, TRUE)
 		return
@@ -35,6 +43,8 @@
 	swoop_attack(target)
 
 /datum/action/cooldown/mob_cooldown/lava_swoop/proc/swoop_attack(atom/target, lava_arena = FALSE)
+	procstart = null
+	src.procstart = null
 	if(swooping || !target)
 		return
 	// stop swooped target movement
@@ -118,6 +128,8 @@
 		SEND_SIGNAL(owner, COMSIG_LAVA_ARENA_FAILED)
 
 /datum/action/cooldown/mob_cooldown/lava_swoop/proc/lava_pools(atom/target, amount = 30, delay = 0.8)
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return
 	target.visible_message(span_boldwarning("Lava starts to pool up around you!"))
@@ -133,6 +145,8 @@
 		SLEEP_CHECK_DEATH(delay, owner)
 
 /datum/action/cooldown/mob_cooldown/lava_swoop/proc/lava_arena(atom/target)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(target)
 	if(QDELETED(target) || !isliving(target) || target_turf.z != owner.z)
 		return
@@ -209,10 +223,14 @@
 	randomdir = FALSE
 
 /obj/effect/temp_visual/dragon_flight/Initialize(mapload, negative)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	INVOKE_ASYNC(src, PROC_REF(flight), negative)
 
 /obj/effect/temp_visual/dragon_flight/proc/flight(negative)
+	procstart = null
+	src.procstart = null
 	if(negative)
 		animate(src, pixel_x = -SWOOP_HEIGHT*0.1, pixel_z = SWOOP_HEIGHT*0.15, time = 3, easing = BOUNCE_EASING)
 	else
@@ -230,6 +248,8 @@
 	duration = 10
 
 /obj/effect/temp_visual/dragon_flight/end/flight(negative)
+	procstart = null
+	src.procstart = null
 	if(negative)
 		pixel_x = -SWOOP_HEIGHT
 		animate(src, pixel_x = -16, pixel_z = 0, time = 5)

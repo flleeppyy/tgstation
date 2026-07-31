@@ -2,12 +2,16 @@
 /datum/unit_test/autowiki
 
 /datum/unit_test/autowiki/Run()
+	procstart = null
+	src.procstart = null
 	TEST_ASSERT(istext(generate_autowiki_output()), "generate_autowiki_output() did not finish successfully!")
 
 /// Test that `include_template` produces reasonable results
 /datum/unit_test/autowiki_include_template
 
 /datum/unit_test/autowiki_include_template/Run()
+	procstart = null
+	src.procstart = null
 	var/datum/autowiki/autowiki_api = new
 
 	TEST_ASSERT_EQUAL( \

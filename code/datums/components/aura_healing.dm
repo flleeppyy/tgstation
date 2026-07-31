@@ -90,6 +90,8 @@
 	src.self_heal = self_heal
 
 /datum/component/aura_healing/Destroy(force)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSaura, src)
 	var/alert_category = "aura_healing_[REF(src)]"
 
@@ -100,6 +102,8 @@
 	return ..()
 
 /datum/component/aura_healing/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/should_show_effect = COOLDOWN_FINISHED(src, last_heal_effect_time)
 	if (should_show_effect)
 		COOLDOWN_START(src, last_heal_effect_time, HEAL_EFFECT_COOLDOWN)
@@ -166,6 +170,8 @@
 	click_master = FALSE
 
 /atom/movable/screen/alert/aura_healing/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = "You are being healed by [master_ref?.resolve()]."
 

@@ -49,6 +49,8 @@ SUBSYSTEM_DEF(fluids)
 	var/list/currently_processing
 
 /datum/controller/subsystem/fluids/Initialize()
+	procstart = null
+	src.procstart = null
 	initialize_waits()
 	initialize_spread_carousel()
 	initialize_effect_carousel()
@@ -60,6 +62,8 @@ SUBSYSTEM_DEF(fluids)
  * Ensures that the subsystem's fire wait evenly splits the spread and effect waits.
  */
 /datum/controller/subsystem/fluids/proc/initialize_waits()
+	procstart = null
+	src.procstart = null
 	if (spread_wait <= 0)
 		WARNING("[src] has the invalid spread wait [spread_wait].")
 		spread_wait = 1 SECONDS
@@ -84,6 +88,8 @@ SUBSYSTEM_DEF(fluids)
  * Builds the carousel buckets used to queue spreads.
  */
 /datum/controller/subsystem/fluids/proc/initialize_spread_carousel()
+	procstart = null
+	src.procstart = null
 	// Make absolutely certain that the spread wait is in sync with the target spread tick rate.
 	num_spread_buckets = round(spread_wait / wait)
 	spread_wait = wait * num_spread_buckets
@@ -102,6 +108,8 @@ SUBSYSTEM_DEF(fluids)
  * Builds the carousel buckets used to bubble processing.
  */
 /datum/controller/subsystem/fluids/proc/initialize_effect_carousel()
+	procstart = null
+	src.procstart = null
 	// Make absolutely certain that the effect wait is in sync with the target effect tick rate.
 	num_effect_buckets = round(effect_wait / wait)
 	effect_wait = wait * num_effect_buckets
@@ -115,6 +123,8 @@ SUBSYSTEM_DEF(fluids)
 
 
 /datum/controller/subsystem/fluids/fire(resumed)
+	procstart = null
+	src.procstart = null
 	var/seconds_per_tick
 	var/cached_bucket_index
 	var/list/obj/effect/particle_effect/fluid/currentrun
@@ -169,6 +179,8 @@ SUBSYSTEM_DEF(fluids)
  * - [node][/obj/effect/particle_effect/fluid]: The node to queue to spread.
  */
 /datum/controller/subsystem/fluids/proc/queue_spread(obj/effect/particle_effect/fluid/node)
+	procstart = null
+	src.procstart = null
 	if (node.spread_bucket)
 		return
 
@@ -182,6 +194,8 @@ SUBSYSTEM_DEF(fluids)
  * - [node][/obj/effect/particle_effect/fluid]: The node to cancel the spread of.
  */
 /datum/controller/subsystem/fluids/proc/cancel_spread(obj/effect/particle_effect/fluid/node)
+	procstart = null
+	src.procstart = null
 	if(!node.spread_bucket)
 		return
 
@@ -201,6 +215,8 @@ SUBSYSTEM_DEF(fluids)
  * - [node][/obj/effect/particle_effect/fluid]: The node to start processing.
  */
 /datum/controller/subsystem/fluids/proc/start_processing(obj/effect/particle_effect/fluid/node)
+	procstart = null
+	src.procstart = null
 	if (node.datum_flags & DF_ISPROCESSING || node.effect_bucket)
 		return
 
@@ -217,6 +233,8 @@ SUBSYSTEM_DEF(fluids)
  * - [node][/obj/effect/particle_effect/fluid]: The node to stop processing.
  */
 /datum/controller/subsystem/fluids/proc/stop_processing(obj/effect/particle_effect/fluid/node)
+	procstart = null
+	src.procstart = null
 	if(!(node.datum_flags & DF_ISPROCESSING))
 		return
 

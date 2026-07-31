@@ -1,4 +1,6 @@
 /datum/unit_test/amputation/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/patient = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/user = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/circular_saw/saw = allocate(/obj/item/circular_saw)
@@ -13,6 +15,8 @@
 	TEST_ASSERT_EQUAL(patient.get_missing_limbs()[1], BODY_ZONE_R_ARM, "Patient is missing a limb that isn't the one we operated on")
 
 /datum/unit_test/brain_surgery/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/patient = allocate(/mob/living/carbon/human/consistent)
 	patient.gain_trauma_type(BRAIN_TRAUMA_MILD, TRAUMA_RESILIENCE_SURGERY)
 	patient.set_organ_loss(ORGAN_SLOT_BRAIN, 20)
@@ -29,6 +33,8 @@
 	TEST_ASSERT(patient.get_organ_loss(ORGAN_SLOT_BRAIN) < 20, "Patient did not heal their brain damage after brain surgery")
 
 /datum/unit_test/head_transplant/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/user = allocate(/mob/living/carbon/human/consistent)
 
 	var/mob/living/carbon/human/alice = allocate(/mob/living/carbon/human/consistent)
@@ -69,6 +75,8 @@
 	TEST_ASSERT_EQUAL(alice.facial_hair_color, COLOR_LIGHT_BROWN, "Bob's head was transplanted onto Alice's body, but their facial hair color is not COLOR_LIGHT_BROWN")
 
 /datum/unit_test/multiple_surgeries/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/user = allocate(/mob/living/carbon/human/consistent/slow)
 	ADD_TRAIT(user, TRAIT_HIPPOCRATIC_OATH, TRAIT_SOURCE_UNIT_TESTS)
 
@@ -104,6 +112,8 @@
 /datum/unit_test/start_tend_wounds
 
 /datum/unit_test/start_tend_wounds/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/patient = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/user = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/hemostat/hemostat = allocate(/obj/item/hemostat)
@@ -124,6 +134,8 @@
 	TEST_ASSERT(surgery.check_availability(patient, patient, user, hemostat, BODY_ZONE_CHEST), "Tend wounds surgery was not available on a damaged, operated patient")
 
 /datum/unit_test/tend_wounds/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/patient = allocate(/mob/living/carbon/human/consistent)
 	patient.take_overall_damage(100, 100)
 
@@ -152,6 +164,8 @@
 /datum/unit_test/prosthetic_item
 
 /datum/unit_test/prosthetic_item/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/patient = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/claymore/sword = allocate(/obj/item/claymore)
 
@@ -163,6 +177,8 @@
 /datum/unit_test/prosthetic_item/nullrod
 
 /datum/unit_test/prosthetic_item/nullrod/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/picker = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/nullrod/chainsaw/nullrod = allocate(/obj/item/nullrod/chainsaw)
 
@@ -174,6 +190,8 @@
 /datum/unit_test/verify_surgery_setup
 
 /datum/unit_test/verify_surgery_setup/Run()
+	procstart = null
+	src.procstart = null
 	for(var/datum/surgery_operation/operation as anything in GLOB.operations.get_instances_from(subtypesof(/datum/surgery_operation), filter_replaced = FALSE))
 		if (isnull(operation.name))
 			TEST_FAIL("Surgery operation [operation.type] has no name set")
@@ -184,6 +202,8 @@
 /datum/unit_test/verify_surgery_replacements
 
 /datum/unit_test/verify_surgery_replacements/Run()
+	procstart = null
+	src.procstart = null
 	for(var/datum/surgery_operation/operation as anything in GLOB.operations.get_instances_from(subtypesof(/datum/surgery_operation), filter_replaced = TRUE))
 		if(!operation.replaced_by || operation.replaced_by.type == operation.type)
 			continue
@@ -194,6 +214,8 @@
 /datum/unit_test/incision_check
 
 /datum/unit_test/incision_check/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/patient = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/surgeon = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/scalpel/scalpel = allocate(/obj/item/scalpel)
@@ -236,6 +258,8 @@
 /datum/unit_test/location_accessibility
 
 /datum/unit_test/location_accessibility/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/test_mob = allocate(/mob/living/carbon/human/consistent)
 
 	test_mob.equipOutfit(/datum/outfit/job/assistant/consistent)
@@ -253,6 +277,8 @@
 /datum/unit_test/state_surgeries
 
 /datum/unit_test/state_surgeries/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/patient = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/surgeon = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/scalpel/scalpel = allocate(/obj/item/scalpel)
@@ -305,6 +331,8 @@
 /datum/unit_test/wound_state
 
 /datum/unit_test/wound_state/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/patient = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/bodypart/chest/chest = patient.get_bodypart(BODY_ZONE_CHEST)
 
@@ -322,6 +350,8 @@
 /datum/unit_test/wound_state_with_surgery
 
 /datum/unit_test/wound_state_with_surgery/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/patient = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/bodypart/chest/chest = patient.get_bodypart(BODY_ZONE_CHEST)
 
@@ -353,6 +383,8 @@
 /datum/unit_test/surgery_implement
 
 /datum/unit_test/surgery_implement/Run()
+	procstart = null
+	src.procstart = null
 	var/datum/surgery_operation/limb/incise_skin/surgery = GLOB.operations.operations_by_typepath[__IMPLIED_TYPE__]
 
 	// Tests scalpel which matches via tool behavior type

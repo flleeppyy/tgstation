@@ -9,10 +9,14 @@
 	payday_modifier = 1.1
 
 /datum/species/human/prepare_human_for_preview(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	human.set_haircolor("#bb9966", update = FALSE) // brown
 	human.set_hairstyle("Business Hair", update = TRUE)
 
 /datum/species/human/get_scream_sound(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	if(human.physique == MALE)
 		if(prob(1))
 			return 'sound/mobs/humanoids/human/scream/wilhelm_scream.ogg'
@@ -34,6 +38,8 @@
 	)
 
 /datum/species/human/get_cough_sound(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	if(human.physique == FEMALE)
 		return pick(
 			'sound/mobs/humanoids/human/cough/female_cough1.ogg',
@@ -53,6 +59,8 @@
 	)
 
 /datum/species/human/get_cry_sound(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	if(human.physique == FEMALE)
 		return pick(
 			'sound/mobs/humanoids/human/cry/female_cry1.ogg',
@@ -66,11 +74,15 @@
 
 
 /datum/species/human/get_sneeze_sound(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	if(human.physique == FEMALE)
 		return 'sound/mobs/humanoids/human/sneeze/female_sneeze1.ogg'
 	return 'sound/mobs/humanoids/human/sneeze/male_sneeze1.ogg'
 
 /datum/species/human/get_laugh_sound(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	if(human.physique == FEMALE)
 		return 'sound/mobs/humanoids/human/laugh/womanlaugh.ogg'
 	return pick(
@@ -79,28 +91,40 @@
 	)
 
 /datum/species/human/get_sigh_sound(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	if(human.physique == FEMALE)
 		return SFX_FEMALE_SIGH
 	return SFX_MALE_SIGH
 
 /datum/species/human/get_sniff_sound(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	if(human.physique == FEMALE)
 		return 'sound/mobs/humanoids/human/sniff/female_sniff.ogg'
 	return 'sound/mobs/humanoids/human/sniff/male_sniff.ogg'
 
 /datum/species/human/get_snore_sound(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	if(human.physique == FEMALE)
 		return SFX_SNORE_FEMALE
 	return SFX_SNORE_MALE
 
 /datum/species/human/get_hiss_sound(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	return 'sound/mobs/humanoids/human/hiss/human_hiss.ogg'
 
 /datum/species/human/get_species_description()
+	procstart = null
+	src.procstart = null
 	return "Humans are the dominant species in the known galaxy. \
 		Their kind extend from old Earth to the edges of known space."
 
 /datum/species/human/get_species_lore()
+	procstart = null
+	src.procstart = null
 	return list(
 		"These primate-descended creatures, originating from the mostly harmless Earth, \
 		have long-since outgrown their home and semi-benign designation. \
@@ -121,6 +145,8 @@
 	)
 
 /datum/species/human/create_pref_unique_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 
 	if(CONFIG_GET(number/default_laws) == 0 || CONFIG_GET(flag/silicon_asimov_superiority_override)) // Default lawset is set to Asimov

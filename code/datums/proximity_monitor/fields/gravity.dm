@@ -5,11 +5,15 @@
 	var/list/modified_turfs = list()
 
 /datum/proximity_monitor/advanced/gravity/New(atom/_host, range, _ignore_if_not_on_turf = TRUE, gravity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	gravity_value = gravity
 	recalculate_field(full_recalc = TRUE)
 
 /datum/proximity_monitor/advanced/gravity/setup_field_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(modified_turfs[target]))
 		return
@@ -19,6 +23,8 @@
 	modified_turfs[target] = gravity_value
 
 /datum/proximity_monitor/advanced/gravity/cleanup_field_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(modified_turfs[target]))
 		return
@@ -33,26 +39,36 @@
 	var/list/recently_warned
 
 /datum/proximity_monitor/advanced/gravity/warns_on_entrance/setup_field_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/mob/living/guy in target)
 		warn_mob(guy, target)
 
 /datum/proximity_monitor/advanced/gravity/warns_on_entrance/cleanup_field_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/mob/living/guy in target)
 		warn_mob(guy, target)
 
 /datum/proximity_monitor/advanced/gravity/warns_on_entrance/field_edge_crossed(atom/movable/movable, turf/old_location, turf/new_location)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(movable))
 		warn_mob(movable, new_location)
 
 /datum/proximity_monitor/advanced/gravity/warns_on_entrance/field_edge_uncrossed(atom/movable/movable, turf/old_location, turf/new_location)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(movable))
 		warn_mob(movable, old_location)
 
 /datum/proximity_monitor/advanced/gravity/warns_on_entrance/proc/warn_mob(mob/living/to_warn, turf/location)
+	procstart = null
+	src.procstart = null
 	var/mob_ref_key = REF(to_warn)
 	if(mob_ref_key in recently_warned)
 		return
@@ -62,6 +78,8 @@
 	addtimer(CALLBACK(src, PROC_REF(clear_recent_warning), mob_ref_key), 3 SECONDS)
 
 /datum/proximity_monitor/advanced/gravity/warns_on_entrance/proc/clear_recent_warning(mob_ref_key)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(recently_warned, mob_ref_key)
 
 /obj/effect/gravity_fluff_field
@@ -80,6 +98,8 @@
 	var/particles/particle_type
 
 /obj/effect/gravity_fluff_field/Initialize(mapload, strength)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(strength))
 		return INITIALIZE_HINT_QDEL
@@ -100,11 +120,15 @@
 	RegisterSignal(src, COMSIG_ATOM_SMOOTHED_ICON, PROC_REF(smoothed))
 
 /obj/effect/gravity_fluff_field/Destroy(force)
+	procstart = null
+	src.procstart = null
 	remove_shared_particles(particle_type)
 	emissive = null
 	return ..()
 
 /obj/effect/gravity_fluff_field/proc/smoothed(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	cut_overlay(emissive)
 	// because it uses a different name
@@ -115,11 +139,15 @@
 /datum/proximity_monitor/advanced/gravity/subtle_effect
 
 /datum/proximity_monitor/advanced/gravity/subtle_effect/setup_field_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isopenturf(target))
 		return
 	new /obj/effect/gravity_fluff_field(target, gravity_value)
 
 /datum/proximity_monitor/advanced/gravity/subtle_effect/cleanup_field_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(locate(/obj/effect/gravity_fluff_field) in target)

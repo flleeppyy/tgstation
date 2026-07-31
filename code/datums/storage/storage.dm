@@ -156,6 +156,8 @@
 	src.remove_rustle_sound = remove_rustle_sound
 
 /datum/storage/Destroy()
+	procstart = null
+	src.procstart = null
 
 	for(var/mob/person as anything in is_using)
 		hide_contents(person)
@@ -169,12 +171,16 @@
 	return ..()
 
 /datum/storage/proc/on_deconstruct()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	remove_all(update_storage = FALSE)
 
 /// Ran on items instantiated inside the storage, basically a chopped down version of handle_enter
 /datum/storage/proc/item_init(datum/source, obj/item/inited)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(inited))
@@ -185,6 +191,8 @@
 
 /// Automatically ran on all object insertions: flag marking and view refreshing.
 /datum/storage/proc/handle_enter(datum/source, obj/item/arrived)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(arrived))
@@ -200,6 +208,8 @@
 
 /// Automatically ran on all object removals: flag marking and view refreshing.
 /datum/storage/proc/handle_exit(datum/source, obj/item/gone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(gone))
@@ -230,6 +240,8 @@
 
 /// Set the passed atom as the parent
 /datum/storage/proc/set_parent(atom/new_parent)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	ASSERT(isnull(parent))
@@ -264,6 +276,8 @@
  * * should_drop - if TRUE, all the items in the old real location will be dropped.
  */
 /datum/storage/proc/set_real_location(atom/new_real_location, should_drop = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!isnull(real_location))
 		UnregisterSignal(real_location, list(
 			COMSIG_ATOM_ENTERED,
@@ -287,11 +301,15 @@
 
 /// Signal handler for when the real location is deleted.
 /datum/storage/proc/real_location_deleted(datum/deleting_real_location)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	set_real_location(null)
 
 /datum/storage/proc/topic_handle(datum/source, user, href_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(can_hold_description))
@@ -301,6 +319,8 @@
 		to_chat(user, span_notice("[source] can hold: [can_hold_description]"))
 
 /datum/storage/proc/handle_examination(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(can_hold_description))
@@ -309,6 +329,8 @@
 	examine_list += span_notice("You can examine this further to check what kind of extra items it can hold.")
 
 /datum/storage/proc/handle_extra_examination(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(can_hold_description))
@@ -334,6 +356,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  * * list/exception_hold_list - The list of items that can exceed `max_specific_storage`. It can only fit `exception_count` of such items
  */
 /datum/storage/proc/set_holdable(list/can_hold_list, list/cant_hold_list, list/exception_hold_list)
+	procstart = null
+	src.procstart = null
 	can_hold = null
 	if (!isnull(can_hold_list))
 		if(!islist(can_hold_list))
@@ -373,6 +397,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 /// Updates the action button for toggling collectmode.
 /datum/storage/proc/update_actions(atom/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!allow_quick_gather)
@@ -397,6 +423,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  * * force - bypass locked storage up to a certain level. See [code/__DEFINES/storage.dm]
  */
 /datum/storage/proc/can_insert(obj/item/to_insert, mob/user, messages = TRUE, force = STORAGE_NOT_LOCKED)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(to_insert) || !istype(to_insert))
 		return FALSE
 
@@ -469,6 +497,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 /// Returns a count of how many items held due to exception_hold we have
 /datum/storage/proc/get_exception_count()
+	procstart = null
+	src.procstart = null
 	var/count = 0
 	for(var/obj/item/thing in real_location)
 		if(thing.w_class > max_specific_storage && is_type_in_typecache(thing, exception_hold))
@@ -477,6 +507,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 /// Returns a sum of all of our content's weight classes
 /datum/storage/proc/get_total_weight()
+	procstart = null
+	src.procstart = null
 	var/total_weight = 0
 	for(var/obj/item/thing in real_location)
 		total_weight += thing.w_class
@@ -493,6 +525,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  * * messages - if TRUE, we will create balloon alerts for the user.
  */
 /datum/storage/proc/attempt_insert(obj/item/to_insert, mob/user, override = FALSE, force = STORAGE_NOT_LOCKED, messages = TRUE)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 
 	if(!can_insert(to_insert, user, messages = messages, force = force))
@@ -517,6 +551,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 /// Since items inside storages ignore transparency for QOL reasons, we're tracking when things are dropped onto them instead of our UI elements
 /datum/storage/proc/mousedrop_receive(atom/dropped_onto, atom/movable/target, mob/user, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (src != user.active_storage)
@@ -552,6 +588,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  * * list/success - list with a single element to use as a tracker for the amount of things we picked up
  */
 /datum/storage/proc/handle_mass_pickup(mob/user, pick_up_type, atom/thing_loc, list/rejections, datum/progressbar/progress, list/success)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	block_insert_remove_updates = TRUE
 	for(var/obj/item/thing in thing_loc)
@@ -584,6 +622,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  * * override - skip feedback, only do animation check
  */
 /datum/storage/proc/item_insertion_feedback(mob/user, obj/item/thing, override = FALSE)
+	procstart = null
+	src.procstart = null
 	if(animated)
 		animate_parent()
 
@@ -615,6 +655,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  * * visual_updates - if TRUE we update storage views & animate parent appearance
  */
 /datum/storage/proc/attempt_remove(obj/item/thing, atom/remove_to_loc, silent = FALSE, visual_updates = TRUE)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 
 	if(istype(thing) && ismob(parent.loc))
@@ -647,6 +689,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  * * update_storage - should we update the parent to show visual effects
  */
 /datum/storage/proc/remove_all(atom/drop_loc = parent.drop_location(), update_storage = TRUE)
+	procstart = null
+	src.procstart = null
 	block_insert_remove_updates = TRUE
 	for(var/obj/item/thing in real_location)
 		if(!attempt_remove(thing, drop_loc, silent = TRUE, visual_updates = FALSE))
@@ -672,6 +716,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  * * silent - if TRUE, we won't play any exit sounds
  */
 /datum/storage/proc/remove_single(mob/removing, obj/item/thing, atom/remove_to_loc, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	return attempt_remove(thing, remove_to_loc, silent)
 
 /**
@@ -686,6 +732,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  * * list/inserted - (optional) allows consumers to pass a list to be filled with all removed items.
  */
 /datum/storage/proc/remove_type(type, atom/destination, amount = INFINITY, check_adjacent = FALSE, force = FALSE, mob/user, list/inserted)
+	procstart = null
+	src.procstart = null
 	if(!force && check_adjacent)
 		if(isnull(user) || !destination.IsReachableBy(user) || !parent.IsReachableBy(user))
 			return FALSE
@@ -706,6 +754,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 /// Signal handler for remove_all()
 /datum/storage/proc/mass_empty(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!allow_quick_empty)
@@ -720,6 +770,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  * * recursive - whether or not we're checking inside of inner items
  */
 /datum/storage/proc/return_inv(recursive = TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/ret = list()
 
 	for(var/atom/found_thing as anything in real_location)
@@ -731,6 +783,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 /// Signal handler for emp_act to emp all contents
 /datum/storage/proc/on_emp_act(datum/source, severity, protection)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(protection & EMP_PROTECT_CONTENTS)
@@ -741,6 +795,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 /// Signal handler for preattack from an object.
 /datum/storage/proc/on_preattack(datum/source, obj/item/thing, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(thing) || thing == parent.loc || !allow_quick_gather || thing.atom_storage)
@@ -763,6 +819,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  * @param mob/user the user who is picking up the items
  */
 /datum/storage/proc/collect_on_turf(obj/item/thing, mob/user)
+	procstart = null
+	src.procstart = null
 	var/atom/holder = thing.loc
 	var/list/pick_up = holder.contents.Copy()
 
@@ -780,6 +838,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	INVOKE_ASYNC(src, PROC_REF(collect_on_turf_loop), thing.loc, user, progress, rejections, collection_mode == COLLECT_SAME ? thing.type : null, success)
 
 /datum/storage/proc/collect_on_turf_loop(atom/holder, mob/user, datum/progressbar/progress, list/rejections, pick_up_type, list/success)
+	procstart = null
+	src.procstart = null
 	if (do_after(user, 1 SECONDS, parent, NONE, FALSE, CALLBACK(src, PROC_REF(handle_mass_pickup), user, pick_up_type, holder, rejections, progress, success)))
 		INVOKE_ASYNC(src, PROC_REF(collect_on_turf_loop), holder, user, progress, rejections, pick_up_type, success)
 		return
@@ -794,6 +854,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 /// Signal handler for whenever we drag the storage somewhere.
 /datum/storage/proc/on_mousedrop_onto(datum/source, atom/over_object, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(SEND_SIGNAL(parent, COMSIG_STORAGE_DUMP_PRE_TRANSFER, src, over_object, user) & CANCEL_STORAGE_DUMP)
@@ -850,6 +912,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  * @param mob/user the user who is dumping the contents
  */
 /datum/storage/proc/dump_content_at(atom/dest_object, dump_loc, mob/user)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		user.balloon_alert(user, "closed!")
 		return
@@ -881,6 +945,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 /// Signal handler for whenever something gets mouse-dropped onto us.
 /datum/storage/proc/on_mousedropped_onto(datum/source, obj/item/dropping, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(dropping))
@@ -899,11 +965,15 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 /// Called directly from the attack chain if [insert_on_attack] is TRUE.
 /// Handles inserting an item into the storage when clicked.
 /datum/storage/proc/item_interact_insert(mob/living/user, obj/item/thing)
+	procstart = null
+	src.procstart = null
 	attempt_insert(thing, user)
 	return ITEM_INTERACT_SUCCESS
 
 /// Signal handler for whenever we're attacked by a mob.
 /datum/storage/proc/on_attack(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!attack_hand_interact)
@@ -922,6 +992,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 /// Generates the numbers on an item in storage to show stacking.
 /datum/storage/proc/process_numerical_display()
+	procstart = null
+	src.procstart = null
 	var/list/toreturn = list()
 
 	for(var/obj/item/thing in real_location)
@@ -941,6 +1013,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 /// Signal handler to open up the storage when we receive a signal.
 /datum/storage/proc/open_storage_on_signal(datum/source, mob/to_show)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(open_storage), to_show)
@@ -950,6 +1024,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 /// Alt click on the storage item. Default: Open the storage.
 /datum/storage/proc/on_click_alt(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!click_alt_open)
@@ -959,6 +1035,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 /// Opens the storage to the mob, showing them the contents to their UI.
 /datum/storage/proc/open_storage(mob/living/to_show)
+	procstart = null
+	src.procstart = null
 	if(isobserver(to_show))
 		show_contents(to_show)
 		return FALSE
@@ -1005,6 +1083,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 /// Async version of putting something into a mobs hand.
 /datum/storage/proc/put_in_hands_async(mob/to_show, obj/item/toremove)
+	procstart = null
+	src.procstart = null
 	if(!to_show.put_in_hands(toremove))
 		if(!silent)
 			toremove.balloon_alert(to_show, "fumbled!")
@@ -1012,6 +1092,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 /// Signal handler for whenever a mob walks away with us, close if they can't reach us.
 /datum/storage/proc/close_distance(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/mob/user in can_see_contents())
@@ -1020,26 +1102,36 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 /// Relay for parent.IsReachableBy
 /datum/storage/proc/can_be_reached_by(mob/user)
+	procstart = null
+	src.procstart = null
 	return parent.IsReachableBy(user)
 
 /// Close the storage UI for everyone viewing us.
 /datum/storage/proc/close_all()
+	procstart = null
+	src.procstart = null
 	for(var/mob/user as anything in is_using)
 		hide_contents(user)
 
 /// Closes the storage UIs of this and everything inside the parent for everyone viewing them.
 /datum/storage/proc/close_all_recursive()
+	procstart = null
+	src.procstart = null
 	close_all()
 	for(var/atom/movable/movable as anything in parent.get_all_contents())
 		movable.atom_storage?.close_all()
 
 /// Refresh the views of everyone currently viewing the storage.
 /datum/storage/proc/refresh_views()
+	procstart = null
+	src.procstart = null
 	for (var/mob/user in can_see_contents())
 		show_contents(user)
 
 /// Checks who is currently capable of viewing our storage (and is.)
 /datum/storage/proc/can_see_contents()
+	procstart = null
+	src.procstart = null
 	var/list/seeing = list()
 	for (var/mob/user in is_using)
 		if(user.active_storage == src && user.client)
@@ -1059,6 +1151,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  * * TRUE otherwise
  */
 /datum/storage/proc/show_contents(mob/to_show)
+	procstart = null
+	src.procstart = null
 	if(!to_show.client)
 		return FALSE
 
@@ -1106,6 +1200,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  * * mob/to_hide - the mob to hide the storage from
  */
 /datum/storage/proc/hide_contents(mob/to_hide)
+	procstart = null
+	src.procstart = null
 	if(to_hide.active_storage == src)
 		to_hide.active_storage = null
 
@@ -1132,6 +1228,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 
 /datum/storage/proc/action_trigger(datum/source, datum/action/triggered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	toggle_collection_mode(triggered.owner)
@@ -1139,12 +1237,16 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	return COMPONENT_ACTION_BLOCK_TRIGGER
 
 /datum/storage/proc/action_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	modeswitch_action = null
 
 /// Updates views of all objects in storage and stretches UI to appropriate size
 /datum/storage/proc/orient_storage()
+	procstart = null
+	src.procstart = null
 	var/adjusted_contents = length(real_location.contents)
 	var/list/datum/numbered_display/numbered_contents
 	if(numerical_stacking)
@@ -1178,6 +1280,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  * @param mob/to_show the mob toggling us
  */
 /datum/storage/proc/toggle_collection_mode(mob/user)
+	procstart = null
+	src.procstart = null
 	collection_mode = (collection_mode + 1) % 3
 	switch(collection_mode)
 		if(COLLECT_SAME)
@@ -1189,12 +1293,16 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 /// Gives a spiffy animation to our parent to represent opening and closing.
 /datum/storage/proc/animate_parent()
+	procstart = null
+	src.procstart = null
 	var/matrix/old_matrix = parent.transform
 	animate(parent, time = 1.5, loop = 0, transform = parent.transform.Scale(1.07, 0.9))
 	animate(time = 2, transform = old_matrix)
 
 /// Signal proc for [COMSIG_ATOM_CONTENTS_WEIGHT_CLASS_CHANGED] to drop items out of our storage if they're suddenly too heavy.
 /datum/storage/proc/contents_changed_w_class(datum/source, obj/item/changed, old_w_class, new_w_class)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// If old weight already overloaded the storage, don't drop the item out just in case we're inside of a premade box
@@ -1208,6 +1316,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 ///Assign a new value to the locked variable. If it's higher than NOT_LOCKED, close the UIs and update the appearance of the parent.
 /datum/storage/proc/set_locked(new_locked)
+	procstart = null
+	src.procstart = null
 	if(locked == new_locked)
 		return
 	locked = new_locked

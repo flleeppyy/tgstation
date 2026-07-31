@@ -21,17 +21,23 @@
 	var/activation_timer
 
 /obj/item/earthcracker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!weakpoint_type)
 		CRASH("An earthcracker spawned without a designated weakpoint!")
 	register_context()
 
 /obj/item/earthcracker/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(status == EARTHCRACKER_READY)
 		handle_arming(user)
 
 /obj/item/earthcracker/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!anchored)
 		return NONE
@@ -55,6 +61,8 @@
 			return FALSE
 
 /obj/item/earthcracker/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(status)
 		if(EARTHCRACKER_READY)
@@ -65,6 +73,8 @@
 			icon_state = "[base_icon_state]-spent"
 
 /obj/item/earthcracker/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(anchored && status == EARTHCRACKER_SPENT)
 		balloon_alert(user, "it falls apart")
 		animate(src, 0.6 SECONDS, alpha = 0, easing = CIRCULAR_EASING|EASE_IN)
@@ -83,6 +93,8 @@
 		return NONE
 
 /obj/item/earthcracker/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	switch(status)
 		if(EARTHCRACKER_ACTIVE)
 			context[SCREENTIP_CONTEXT_LMB] = "Activate device"
@@ -92,6 +104,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/earthcracker/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(status == EARTHCRACKER_SPENT)
 		. += span_warning("This device is toast. You could disassemble the remains using a [EXAMINE_HINT("Wrench")].")
@@ -99,6 +113,8 @@
 		. += span_info("This device can be unanchored using a [EXAMINE_HINT("Wrench")].")
 
 /obj/item/earthcracker/proc/handle_arming(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/arm_location = get_turf(user)
 	if(!arm_location)
 		return FALSE
@@ -124,6 +140,8 @@
 
 /// The fun part. We spawn a huge weakpoint here.
 /obj/item/earthcracker/proc/strike_the_earth()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	playsound(src, 'sound/items/weapons/earthcracker_bang.mp3', 75, FALSE, 3)
@@ -133,6 +151,8 @@
 
 /// Cleanup after an earthcracker is activated either for sabotage or mining.
 /obj/item/earthcracker/proc/handle_after_activation(turf/cracked_hull)
+	procstart = null
+	src.procstart = null
 	do_sparks(2, FALSE, src)
 	cracked_hull?.levelupdate()
 
@@ -143,10 +163,14 @@
 
 /// Called after the earthcracker activates.
 /obj/item/earthcracker/proc/post_break()
+	procstart = null
+	src.procstart = null
 	deconstruct(TRUE)
 
 /// When this item is used on a mining Z, we perform an action that breaks all rocks in a radius around us, the same as starting an ore vent wave.
 /obj/item/earthcracker/proc/mining_act(mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 5)
 		for(var/turf/rock in oview(i)) // This collects a list of rings of turfs (in a growing radius of i) that we'll applying logic to "drill" below.
 

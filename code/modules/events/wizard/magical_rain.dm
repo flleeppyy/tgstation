@@ -13,6 +13,8 @@
 	var/started = FALSE
 
 /datum/round_event/wizard/magical_rain/start()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/wizard in GLOB.alive_mob_list)
 		// give it to all wizards even if there are multiple
 		if(IS_WIZARD(wizard) && !HAS_TRAIT_FROM(wizard, TRAIT_RAINSTORM_IMMUNE, MAGIC_TRAIT))
@@ -24,6 +26,8 @@
 		SSweather.run_weather(/datum/weather/particle/rain_storm/wizard)
 
 /datum/round_event/wizard/magical_rain/end()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/wizard in GLOB.alive_mob_list)
 		if(IS_WIZARD(wizard) && HAS_TRAIT_FROM(wizard, TRAIT_RAINSTORM_IMMUNE, MAGIC_TRAIT))
 			REMOVE_TRAIT(wizard, TRAIT_RAINSTORM_IMMUNE, MAGIC_TRAIT)

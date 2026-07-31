@@ -7,11 +7,15 @@
 	var/static/list/connections = list(COMSIG_TURF_ADDED_TO_SHUTTLE = PROC_REF(on_loc_added_to_shuttle))
 
 /obj/machinery/computer/shuttle/custom_shuttle/on_construction(mob/user)
+	procstart = null
+	src.procstart = null
 	circuit.configure_machine(src)
 	if(!shuttleId)
 		AddElement(/datum/element/connect_loc, connections)
 
 /obj/machinery/computer/shuttle/custom_shuttle/proc/on_loc_added_to_shuttle(turf/source, obj/docking_port/mobile/custom/port)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(port))
 		say("Cannot link to this kind of shuttle!")
@@ -20,6 +24,8 @@
 			RemoveElement(/datum/element/connect_loc, connections)
 
 /obj/machinery/computer/shuttle/custom_shuttle/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
+	procstart = null
+	src.procstart = null
 	var/obj/docking_port/mobile/custom/custom_port = port
 	if(istype(custom_port))
 		if(custom_port.control_console?.resolve())
@@ -33,6 +39,8 @@
 	name = "[port.name] console"
 
 /obj/machinery/computer/shuttle/custom_shuttle/proc/linkShuttle(new_id)
+	procstart = null
+	src.procstart = null
 	if(shuttleId=="")
 		shuttleId = new_id
 		possible_destinations = "whiteship_home;shuttle[new_id]_custom;"
@@ -49,11 +57,15 @@
 	var/static/list/connections = list(COMSIG_TURF_ADDED_TO_SHUTTLE = PROC_REF(on_loc_added_to_shuttle))
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/custom/on_construction(mob/user)
+	procstart = null
+	src.procstart = null
 	circuit.configure_machine(src)
 	if(!shuttleId)
 		AddElement(/datum/element/connect_loc, connections)
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/custom/proc/on_loc_added_to_shuttle(turf/source, obj/docking_port/mobile/custom/port)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(port))
 		say("Cannot link to this kind of shuttle!")
@@ -62,14 +74,20 @@
 			RemoveElement(/datum/element/connect_loc, connections)
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/custom/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.jam_on_wardec += src
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/custom/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.jam_on_wardec -= src
 	return ..()
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/custom/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
+	procstart = null
+	src.procstart = null
 	if(shuttleId) //We normally should only be connecting unlinked consoles to shuttles, but just in case...
 		var/obj/docking_port/mobile/old_shuttle = SSshuttle.getShuttle(shuttleId)
 		if(old_shuttle)
@@ -89,6 +107,8 @@
 	recalculate_eye_view(port)
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/custom/proc/on_shuttle_expanded(obj/docking_port/mobile/source, list/turfs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	recalculate_eye_view(source)
 	var/list/bounds = shuttle_port.return_coords(eyeobj.x - x_offset, eyeobj.y - y_offset, eyeobj.dir)
@@ -136,6 +156,8 @@
 				break
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/custom/proc/recalculate_eye_view(obj/docking_port/mobile/shuttle)
+	procstart = null
+	src.procstart = null
 	var/bigger_shuttle_dimension = max(shuttle.width, shuttle.height)
 	var/list/viewsize = getviewsize(world.view)
 	var/smaller_view_dimension = min(viewsize[1], viewsize[2])
@@ -144,6 +166,8 @@
 		view_range = new_view_range
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/custom/placeLandingSpot()
+	procstart = null
+	src.procstart = null
 	if(!shuttleId)
 		return	//Only way this would happen is if someone else delinks the console while in use somehow
 	var/obj/docking_port/mobile/M = SSshuttle.getShuttle(shuttleId)
@@ -153,6 +177,8 @@
 	..()
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/custom/checkLandingTurf(turf/T, list/overlappers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. != SHUTTLE_DOCKER_LANDING_CLEAR)
 		return
@@ -164,12 +190,16 @@
 		return SHUTTLE_DOCKER_BLOCKED
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/custom/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!shuttleId)
 		to_chat(user, "<span class='warning'>You must link the console to a shuttle first.</span>")
 		return
 	return ..()
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/custom/proc/linkShuttle(new_id)
+	procstart = null
+	src.procstart = null
 	if(shuttleId=="")
 		shuttleId = new_id
 		return TRUE

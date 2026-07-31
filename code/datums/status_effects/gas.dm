@@ -12,11 +12,15 @@
 	icon_state = "frozen"
 
 /datum/status_effect/freon/on_creation(mob/living/new_owner, set_duration)
+	procstart = null
+	src.procstart = null
 	if(isnum(set_duration))
 		duration = set_duration
 	return ..()
 
 /datum/status_effect/freon/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -28,20 +32,28 @@
 	owner.add_overlay(cube)
 
 /datum/status_effect/freon/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(can_melt && owner.bodytemperature >= owner.get_body_temp_normal())
 		qdel(src)
 
 /datum/status_effect/freon/proc/owner_resist()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(do_resist))
 
 /datum/status_effect/freon/proc/do_resist()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_notice("You start breaking out of the ice cube..."))
 	if(do_after(owner, 4 SECONDS, target = owner))
 		to_chat(owner, span_notice("You break out of the ice cube!"))
 		qdel(src)
 
 /datum/status_effect/freon/on_remove()
+	procstart = null
+	src.procstart = null
 	if(!IS_UNCONSCIOUS_OR_CRIT(owner))
 		to_chat(owner, span_notice("The cube melts!"))
 	owner.cut_overlay(cube)
@@ -67,6 +79,8 @@
 	alert_type = /atom/movable/screen/alert/status_effect/hypernob_protection
 
 /datum/status_effect/hypernob_protection/on_creation(mob/living/new_owner, duration = 10 SECONDS)
+	procstart = null
+	src.procstart = null
 	src.duration = duration
 	return ..()
 
@@ -76,6 +90,8 @@
 	icon_state = "hypernob_protection"
 
 /datum/status_effect/hypernob_protection/on_apply()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(owner))
 		CRASH("[type] status effect added to non-human owner: [owner ? owner.type : "null owner"]")
 	var/mob/living/carbon/human/human_owner = owner
@@ -84,6 +100,8 @@
 	return TRUE
 
 /datum/status_effect/hypernob_protection/on_remove()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(owner))
 		stack_trace("[type] status effect being removed from non-human owner: [owner ? owner.type : "null owner"]")
 	var/mob/living/carbon/human/human_owner = owner

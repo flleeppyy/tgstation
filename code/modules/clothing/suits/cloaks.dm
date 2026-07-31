@@ -12,10 +12,14 @@
 	flags_inv = HIDESUITSTORAGE
 
 /obj/item/clothing/neck/cloak/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/surgery_aid, "cloak")
 
 /obj/item/clothing/neck/cloak/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is strangling [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return OXYLOSS
 
@@ -60,6 +64,8 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE
 
 /obj/item/clothing/neck/cloak/skill_reward/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(element_type, associated_skill_path)
 

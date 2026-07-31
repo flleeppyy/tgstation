@@ -9,6 +9,8 @@
 	var/enforce_specific_pod = FALSE
 
 /obj/docking_port/stationary/escape_pod/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (enforce_specific_pod)
 		return
@@ -47,10 +49,14 @@
 	var/obj/docking_port/mobile/owner
 
 /obj/docking_port/stationary/transit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSshuttle.transit_docking_ports += src
 
 /obj/docking_port/stationary/transit/Destroy(force=FALSE)
+	procstart = null
+	src.procstart = null
 	if(force)
 		if(get_docked())
 			log_world("A transit dock was destroyed while something was docked to it.")
@@ -69,6 +75,8 @@
 	var/list/shuttlekeys
 
 /obj/docking_port/stationary/picked/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!LAZYLEN(shuttlekeys))
 		WARNING("Random docking port [shuttle_id] loaded with no shuttle keys")

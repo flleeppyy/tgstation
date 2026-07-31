@@ -21,6 +21,8 @@
 	var/building = FALSE
 
 /datum/pipeline/New()
+	procstart = null
+	src.procstart = null
 	other_airs = list()
 	members = list()
 	other_atmos_machines = list()
@@ -29,6 +31,8 @@
 	SSair.networks += src
 
 /datum/pipeline/Destroy()
+	procstart = null
+	src.procstart = null
 	SSair.networks -= src
 	if(building)
 		SSair.remove_from_expansion(src)
@@ -44,6 +48,8 @@
 	return ..()
 
 /datum/pipeline/process()
+	procstart = null
+	src.procstart = null
 	if(!update || building)
 		return
 	reconcile_air()
@@ -52,6 +58,8 @@
 	CalculateGasmixColor(air)
 
 /datum/pipeline/proc/set_air(datum/gas_mixture/new_air)
+	procstart = null
+	src.procstart = null
 	if(new_air == air)
 		return
 	air = new_air
@@ -59,6 +67,8 @@
 
 ///Preps a pipeline for rebuilding, insterts it into the rebuild queue
 /datum/pipeline/proc/build_pipeline(obj/machinery/atmospherics/base)
+	procstart = null
+	src.procstart = null
 	building = TRUE
 	var/volume = 0
 	if(istype(base, /obj/machinery/atmospherics/pipe))
@@ -79,6 +89,8 @@
 
 ///Has the same effect as build_pipeline(), but this doesn't queue its work, so overrun abounds. It's useful for the pregame
 /datum/pipeline/proc/build_pipeline_blocking(obj/machinery/atmospherics/base)
+	procstart = null
+	src.procstart = null
 	var/volume = 0
 	if(istype(base, /obj/machinery/atmospherics/pipe))
 		var/obj/machinery/atmospherics/pipe/considered_pipe = base
@@ -139,6 +151,8 @@
 	 */
 
 /datum/pipeline/proc/add_machinery_member(obj/machinery/atmospherics/components/considered_component)
+	procstart = null
+	src.procstart = null
 	other_atmos_machines |= considered_component
 	if(considered_component.custom_reconcilation)
 		require_custom_reconcilation |= considered_component
@@ -149,6 +163,8 @@
 	other_airs |= returned_airs
 
 /datum/pipeline/proc/add_member(obj/machinery/atmospherics/reference_device, obj/machinery/atmospherics/device_to_add)
+	procstart = null
+	src.procstart = null
 	if(!istype(reference_device, /obj/machinery/atmospherics/pipe))
 		reference_device.set_pipenet(src, device_to_add)
 		add_machinery_member(reference_device)
@@ -168,6 +184,8 @@
 			air.volume += reference_pipe.volume
 
 /datum/pipeline/proc/merge(datum/pipeline/parent_pipeline)
+	procstart = null
+	src.procstart = null
 	if(parent_pipeline == src)
 		return
 	air.volume += parent_pipeline.air.volume
@@ -188,12 +206,18 @@
 	qdel(parent_pipeline)
 
 /obj/machinery/atmospherics/proc/add_member(obj/machinery/atmospherics/considered_device)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/atmospherics/pipe/add_member(obj/machinery/atmospherics/considered_device)
+	procstart = null
+	src.procstart = null
 	parent.add_member(considered_device, src)
 
 /obj/machinery/atmospherics/components/add_member(obj/machinery/atmospherics/considered_device)
+	procstart = null
+	src.procstart = null
 	var/datum/pipeline/device_pipeline = return_pipenet(considered_device)
 	if(!device_pipeline)
 		CRASH("null.add_member() called by [type] on [COORD(src)]")
@@ -201,6 +225,8 @@
 
 
 /datum/pipeline/proc/temporarily_store_air()
+	procstart = null
+	src.procstart = null
 	//Update individual gas_mixtures by volume ratio
 
 	for(var/obj/machinery/atmospherics/pipe/member in members)
@@ -211,6 +237,8 @@
 		member.air_temporary.temperature = air.temperature
 
 /datum/pipeline/proc/temperature_interact(turf/target, share_volume, thermal_conductivity)
+	procstart = null
+	src.procstart = null
 	var/total_heat_capacity = air.heat_capacity()
 	var/partial_heat_capacity = total_heat_capacity * (share_volume / air.volume)
 
@@ -231,12 +259,16 @@
 	update = TRUE
 
 /datum/pipeline/proc/return_air()
+	procstart = null
+	src.procstart = null
 	. = other_airs + air
 	if(list_clear_nulls(.))
 		stack_trace("[src] has one or more null gas mixtures, which may cause bugs. Null mixtures will not be considered in reconcile_air().")
 
 /// Called when the pipenet needs to update and mix together all the air mixes
 /datum/pipeline/proc/reconcile_air()
+	procstart = null
+	src.procstart = null
 	var/list/datum/gas_mixture/gas_mixture_list = list()
 	var/list/datum/pipeline/pipeline_list = list()
 	pipeline_list += src
@@ -305,6 +337,8 @@
  * The color is automatically kept up to date and expected to be used as a vis_contents object.
  */
 /datum/pipeline/proc/GetGasVisual(icon/icon_file)
+	procstart = null
+	src.procstart = null
 	if(gas_visuals[icon_file])
 		return gas_visuals[icon_file]
 
@@ -317,12 +351,16 @@
 
 /// Called when the gasmix color has changed and the gas visuals need to be updated.
 /datum/pipeline/proc/UpdateGasVisuals()
+	procstart = null
+	src.procstart = null
 	for(var/icon/source as anything in gas_visuals)
 		var/obj/effect/abstract/gas_visual/overlay = gas_visuals[source]
 		overlay.ChangeColor(gasmix_color)
 
 /// After updating, this proc handles looking at the new gas mixture and blends the colors together according to percentage of the gas mix.
 /datum/pipeline/proc/CalculateGasmixColor(datum/gas_mixture/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/current_weight = 0
@@ -356,6 +394,8 @@
 	color = COLOR_BLACK
 
 /obj/effect/abstract/gas_visual/proc/ChangeColor(new_color)
+	procstart = null
+	src.procstart = null
 	if(!new_color)
 		new_color = COLOR_BLACK
 	animate(src, color = new_color, time = 0.5 SECONDS)

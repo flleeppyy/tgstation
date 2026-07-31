@@ -32,6 +32,8 @@
 	var/datum/port/output/input_failed
 
 /obj/item/circuit_component/input_request/populate_options()
+	procstart = null
+	src.procstart = null
 	var/static/list/component_options = list(
 		COMP_INPUT_STRING,
 		COMP_INPUT_NUMBER,
@@ -41,6 +43,8 @@
 	input_options = add_option_port("Option", component_options)
 
 /obj/item/circuit_component/input_request/populate_ports()
+	procstart = null
+	src.procstart = null
 	entity = add_input_port("Entity", PORT_TYPE_ATOM)
 	input_response = add_output_port("Response", PORT_TYPE_ANY)
 	input_triggered = add_output_port("Input Sent", PORT_TYPE_SIGNAL)
@@ -49,6 +53,8 @@
 	update_options()
 
 /obj/item/circuit_component/input_request/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	var/mob/player = entity.value
 	if(!istype(player))
 		return
@@ -56,6 +62,8 @@
 	INVOKE_ASYNC(src, PROC_REF(request_input_from_player), player)
 
 /obj/item/circuit_component/input_request/proc/request_input_from_player(mob/player)
+	procstart = null
+	src.procstart = null
 	var/new_option = input_options.value
 	switch(new_option)
 		if(COMP_INPUT_STRING)
@@ -79,10 +87,14 @@
 	input_triggered.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/input_request/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(port == input_options)
 		update_options(port)
 
 /obj/item/circuit_component/input_request/proc/update_options(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	var/new_option = input_options.value
 	if(parameter)
 		remove_input_port(parameter)

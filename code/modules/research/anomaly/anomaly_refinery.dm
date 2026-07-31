@@ -39,16 +39,22 @@
 	var/reaction_increment = 0
 
 /obj/machinery/research/anomaly_refinery/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ATOM_INTERNAL_EXPLOSION, PROC_REF(check_test))
 
 /obj/machinery/research/anomaly_refinery/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (obj_flags & EMAGGED)
 		. += span_notice("A small panel on [p_their()] side is dislaying a notice. Something about firmware?")
 
 
 /obj/machinery/research/anomaly_refinery/assume_air(datum/gas_mixture/giver)
+	procstart = null
+	src.procstart = null
 	return null // Required to make the TTV not vent directly into the air.
 
 /**
@@ -60,6 +66,8 @@
  * * anomaly_type - anomaly type define
  */
 /obj/machinery/research/anomaly_refinery/proc/get_required_radius(anomaly_type)
+	procstart = null
+	src.procstart = null
 	if(!SSresearch.is_core_available(anomaly_type))
 		return //return null
 
@@ -74,6 +82,8 @@
 	return radius
 
 /obj/machinery/research/anomaly_refinery/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(active)
 		to_chat(user, span_warning("You can't insert [tool] into [src] while [p_theyre()] currently active."))
 		return ITEM_INTERACT_BLOCKING
@@ -118,21 +128,31 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/research/anomaly_refinery/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]-off" : base_icon_state
 
 /obj/machinery/research/anomaly_refinery/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/research/anomaly_refinery/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/research/anomaly_refinery/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/research/anomaly_refinery/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (obj_flags & EMAGGED)
 		balloon_alert(user, "already hacked!")
@@ -147,6 +167,8 @@
  * Starts a compression test.
  */
 /obj/machinery/research/anomaly_refinery/proc/start_test()
+	procstart = null
+	src.procstart = null
 	if (active)
 		say("ERROR: Already running a compression test.")
 		return
@@ -178,6 +200,8 @@
  * Triggered by attempting to operate an emagged anomaly refinery.
  */
 /obj/machinery/research/anomaly_refinery/proc/error_test()
+	procstart = null
+	src.procstart = null
 	message_admins("[src] was emagged and ejected a TTV.")
 	investigate_log("was emagged and ejected a TTV.", INVESTIGATE_RESEARCH)
 	obj_flags &= ~EMAGGED
@@ -194,6 +218,8 @@
  * - message: A message for the compressor to say when the test ends.
  */
 /obj/machinery/research/anomaly_refinery/proc/end_test(message)
+	procstart = null
+	src.procstart = null
 	active = FALSE
 	tank_to_target = null
 	test_status = null
@@ -211,6 +237,8 @@
  * Checks whether an internal explosion was sufficient to compress the core.
  */
 /obj/machinery/research/anomaly_refinery/proc/check_test(atom/source, list/arguments)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!inserted_core)
 		test_status = "ERROR: No core present during detonation."
@@ -244,6 +272,8 @@
  * Handles timing out the test after a while.
  */
 /obj/machinery/research/anomaly_refinery/proc/timeout_test()
+	procstart = null
+	src.procstart = null
 	timeout_timer = null
 	if(!test_status)
 		test_status = "Transfer valve resulted in negligible explosive power. Items ejected."
@@ -251,6 +281,8 @@
 
 /// This is not the real valve opening process. This is the simulated one used for displaying reactions.
 /obj/machinery/research/anomaly_refinery/proc/simulate_valve()
+	procstart = null
+	src.procstart = null
 	if(!inserted_bomb?.tank_one || !inserted_bomb?.tank_two)
 		eject_bomb()
 		return FALSE
@@ -270,6 +302,8 @@
 
 /// We dont allow incomplete valves to go in but do code in checks for incomplete valves. Just in case.
 /obj/machinery/research/anomaly_refinery/proc/eject_bomb(mob/user, force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!inserted_bomb || (active && !force))
 		return
 	if(user)
@@ -281,6 +315,8 @@
 	reaction_increment = 0
 
 /obj/machinery/research/anomaly_refinery/proc/eject_core(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!inserted_core || active)
 		return
 	if(user)
@@ -291,6 +327,8 @@
 
 /// We rely on exited to clear references.
 /obj/machinery/research/anomaly_refinery/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if(gone == inserted_bomb)
 		inserted_bomb = null
 		tank_to_target = null
@@ -299,23 +337,31 @@
 	. = ..()
 
 /obj/machinery/research/anomaly_refinery/proc/swap_target()
+	procstart = null
+	src.procstart = null
 	if(!inserted_bomb?.tank_one || !inserted_bomb?.tank_two)
 		eject_bomb()
 		return FALSE
 	tank_to_target = (tank_to_target == inserted_bomb.tank_one) ? inserted_bomb.tank_two : inserted_bomb.tank_one
 
 /obj/machinery/research/anomaly_refinery/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	eject_bomb()
 	eject_core()
 	return ..()
 
 /obj/machinery/research/anomaly_refinery/Destroy()
+	procstart = null
+	src.procstart = null
 	inserted_bomb = null
 	inserted_core = null
 	combined_gasmix = null
 	return ..()
 
 /obj/machinery/research/anomaly_refinery/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -323,6 +369,8 @@
 		ui.open()
 
 /obj/machinery/research/anomaly_refinery/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -339,6 +387,8 @@
 			swap_target()
 
 /obj/machinery/research/anomaly_refinery/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/parsed_gasmixes = list()
 	var/obj/item/tank/other_tank

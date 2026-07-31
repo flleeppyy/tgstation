@@ -45,6 +45,8 @@
 	var/random_identity = TRUE
 
 /mob/living/basic/ghost/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/death_drops, /obj/item/ectoplasm)
 	AddElement(/datum/element/simple_flying)
@@ -63,6 +65,8 @@
  */
 
 /mob/living/basic/ghost/proc/give_identity()
+	procstart = null
+	src.procstart = null
 	if(random_identity)
 		ghost_hairstyle = random_hairstyle() //This only gives us the hairstyle name, not the icon_state (which we need).
 		ghost_hair_color = random_hair_color()

@@ -13,6 +13,8 @@
 	var/list/action_delegations = list()
 
 /datum/preference_middleware/New(datum/preferences)
+	procstart = null
+	src.procstart = null
 	src.preferences = preferences
 
 	if (isnull(key))
@@ -20,37 +22,55 @@
 		key = copytext("[type]", length("[parent_type]") + 2)
 
 /datum/preference_middleware/Destroy()
+	procstart = null
+	src.procstart = null
 	preferences = null
 	return ..()
 
 /// Append all of these into ui_data
 /datum/preference_middleware/proc/get_ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list()
 
 /// Append all of these into ui_static_data
 /datum/preference_middleware/proc/get_ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list()
 
 /// Append all of these into ui_assets
 /datum/preference_middleware/proc/get_ui_assets()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /// Append all of these into /datum/asset/json/preferences.
 /datum/preference_middleware/proc/get_constant_data()
+	procstart = null
+	src.procstart = null
 	return null
 
 /// Merge this into the result of compile_character_preferences.
 /datum/preference_middleware/proc/get_character_preferences(mob/user)
+	procstart = null
+	src.procstart = null
 	return null
 
 /// Called every set_preference, returns TRUE if this handled it.
 /datum/preference_middleware/proc/pre_set_preference(mob/user, preference, value)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// Called when a character is changed.
 /datum/preference_middleware/proc/on_new_character(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called after every update_preference
 /datum/preference_middleware/proc/post_set_preference(mob/user, preference, value)
+	procstart = null
+	src.procstart = null
 	return

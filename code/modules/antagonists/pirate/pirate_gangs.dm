@@ -4,6 +4,8 @@ GLOBAL_LIST_INIT(heavy_pirate_gangs, init_pirate_gangs(is_heavy = TRUE))
 
 ///initializes the pirate gangs glob list, adding all subtypes that can roll today.
 /proc/init_pirate_gangs(is_heavy)
+	procstart = null
+	src.procstart = null
 	var/list/pirate_gangs = list()
 
 	for(var/type in subtypesof(/datum/pirate_gang))
@@ -53,16 +55,22 @@ GLOBAL_LIST_INIT(heavy_pirate_gangs, init_pirate_gangs(is_heavy = TRUE))
 	var/announcement_color = "red"
 
 /datum/pirate_gang/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ship_name = pick(strings(PIRATE_NAMES_FILE, ship_name_pool))
 
 ///whether this pirate gang can roll today. this is called when the global list initializes, so
 ///returning FALSE means it cannot show up at all for the entire round.
 /datum/pirate_gang/proc/can_roll()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 ///returns a new comm_message datum from this pirate gang
 /datum/pirate_gang/proc/generate_message(payoff)
+	procstart = null
+	src.procstart = null
 	var/built_threat_content = replacetext(threat_content, "%SHIPNAME", ship_name)
 	built_threat_content = replacetext(built_threat_content, "%PAYOFF", payoff)
 	return new /datum/comm_message(threat_title, built_threat_content, possible_answers)

@@ -15,18 +15,26 @@
 	var/atom/movable/loaded_shell
 
 /obj/item/circuit_component/save_shell/populate_ports()
+	procstart = null
+	src.procstart = null
 	on_loaded = add_output_port("On Loaded", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/save_shell/add_to(obj/item/integrated_circuit/added_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(added_to, COMSIG_CIRCUIT_POST_LOAD, PROC_REF(on_post_load))
 	RegisterSignal(added_to, COMSIG_CIRCUIT_PRE_SAVE_TO_JSON, PROC_REF(on_pre_save_to_json))
 
 /obj/item/circuit_component/save_shell/removed_from(obj/item/integrated_circuit/removed_from)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(removed_from, list(COMSIG_CIRCUIT_POST_LOAD, COMSIG_CIRCUIT_PRE_SAVE_TO_JSON))
 	return ..()
 
 /obj/item/circuit_component/save_shell/proc/on_post_load(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/datum/component/shell/shell_component = loaded_shell.GetComponent(/datum/component/shell)
 	if(!istype(shell_component))
@@ -37,16 +45,22 @@
 	on_loaded.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/save_shell/proc/on_pre_save_to_json(datum/source, list/general_data)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// We're custom saving the shell, disable any USB cable connections and default shell components.
 	general_data["external_objects"] = list()
 
 /obj/item/circuit_component/save_shell/save_data_to_list(list/component_data)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/movable/shell = parent.shell
 	component_data["shell_type"] = shell.type
 
 /obj/item/circuit_component/save_shell/load_data_from_list(list/component_data)
+	procstart = null
+	src.procstart = null
 	if(parent.shell)
 		return
 

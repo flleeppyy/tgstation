@@ -2,6 +2,8 @@
 /datum/unit_test/plane_dupe_detector
 
 /datum/unit_test/plane_dupe_detector/Run()
+	procstart = null
+	src.procstart = null
 	var/list/plane_integer_list = list()
 	for(var/atom/movable/screen/plane_master/plane_path as anything in subtypesof(/atom/movable/screen/plane_master))
 		if(!initial(plane_path.plane))

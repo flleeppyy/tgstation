@@ -14,6 +14,8 @@
 	slot_flags = ITEM_SLOT_HEAD
 
 /obj/item/mob_holder/Initialize(mapload, mob/living/held_mob, worn_state, head_icon, lh_icon, rh_icon, worn_slot_flags = NONE)
+	procstart = null
+	src.procstart = null
 	if(head_icon)
 		worn_icon = head_icon
 	if(worn_state)
@@ -29,12 +31,16 @@
 	return ..()
 
 /obj/item/mob_holder/Destroy()
+	procstart = null
+	src.procstart = null
 	if(held_mob?.loc == src)
 		release()
 	held_mob = null
 	return ..()
 
 /obj/item/mob_holder/proc/insert_mob(mob/living/new_prisoner)
+	procstart = null
+	src.procstart = null
 	if(!istype(new_prisoner))
 		return FALSE
 	new_prisoner.setDir(SOUTH)
@@ -47,6 +53,8 @@
 	return TRUE
 
 /obj/item/mob_holder/proc/on_mob_deleted()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	held_mob = null
 	if (isliving(loc))
@@ -55,9 +63,13 @@
 	qdel(src)
 
 /obj/item/mob_holder/proc/update_visuals(mob/living/held_guy)
+	procstart = null
+	src.procstart = null
 	appearance = held_guy.appearance
 
 /obj/item/mob_holder/on_thrown(mob/living/carbon/user, atom/target)
+	procstart = null
+	src.procstart = null
 	if((item_flags & ABSTRACT) || HAS_TRAIT(src, TRAIT_NODROP))
 		return
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
@@ -70,11 +82,15 @@
 	return throw_mob
 
 /obj/item/mob_holder/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(held_mob && isturf(loc))
 		release()
 
 /obj/item/mob_holder/proc/release(display_messages = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!held_mob)
 		if(!QDELETED(src))
 			qdel(src)
@@ -95,17 +111,25 @@
 	return TRUE
 
 /obj/item/mob_holder/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	release()
 
 /obj/item/mob_holder/container_resist_act()
+	procstart = null
+	src.procstart = null
 	release()
 
 /obj/item/mob_holder/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(held_mob == gone)
 		release()
 
 /obj/item/mob_holder/on_found(mob/finder)
+	procstart = null
+	src.procstart = null
 	if(held_mob?.will_escape_storage())
 		to_chat(finder, span_warning("\A [held_mob.name] pops out! "))
 		finder.visible_message(span_warning("\A [held_mob.name] pops out of the container [finder] is opening!"), ignored_mobs = finder)
@@ -113,12 +137,16 @@
 		return
 
 /obj/item/mob_holder/drone/Initialize(mapload, mob/living/M, worn_state, head_icon, lh_icon, rh_icon, worn_slot_flags = NONE)
+	procstart = null
+	src.procstart = null
 	//If we're not being put onto a drone, end it all
 	if(!isdrone(M))
 		return INITIALIZE_HINT_QDEL
 	return ..()
 
 /obj/item/mob_holder/drone/insert_mob(mob/living/new_prisoner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isdrone(new_prisoner))
 		qdel(src)
@@ -127,6 +155,8 @@
 	desc = "This drone is scared and has curled up into a ball!"
 
 /obj/item/mob_holder/drone/update_visuals(mob/living/contained)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/drone/drone = contained
 	if(!drone)
 		return ..()
@@ -136,26 +166,36 @@
 /obj/item/mob_holder/destructible
 
 /obj/item/mob_holder/destructible/Destroy()
+	procstart = null
+	src.procstart = null
 	if(held_mob)
 		release(display_messages = TRUE, delete_mob = TRUE)
 	return ..()
 
 /obj/item/mob_holder/destructible/release(display_messages = TRUE, delete_mob = FALSE)
+	procstart = null
+	src.procstart = null
 	if(delete_mob && held_mob)
 		QDEL_NULL(held_mob)
 	return ..()
 
 /obj/item/mob_holder/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !held_mob) //overriden or mob missing
 		return
 	user.UnarmedAttack(held_mob, proximity_flag = TRUE, modifiers = modifiers)
 
 /obj/item/mob_holder/base_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !held_mob) // Another interaction was performed
 		return
 	tool.melee_attack_chain(user, held_mob, modifiers) //Interact with the mob with our tool
 
 /obj/item/mob_holder/IsContainedAtomAccessible(atom/contained, atom/movable/user)
+	procstart = null
+	src.procstart = null
 	return TRUE

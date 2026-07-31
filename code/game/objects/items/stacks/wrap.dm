@@ -23,10 +23,14 @@
 	hitsound = 'sound/effects/bonk.ogg'
 
 /obj/item/stack/wrapping_paper/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CUSTOM_TAP_SOUND, INNATE_TRAIT)
 
 /obj/item/stack/wrapping_paper/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.visible_message(
 		span_warning("[user] baps [target_mob] on the head with [src]!"),
@@ -35,6 +39,8 @@
 	target_mob.add_mood_event("roll", /datum/mood_event/bapped)
 
 /obj/item/stack/wrapping_paper/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!greyscale_colors)
 		//Generate random valid colors for paper and ribbon
@@ -53,6 +59,8 @@
 		set_greyscale(colors = list(generated_base_color, generated_ribbon_color))
 
 /obj/item/stack/wrapping_paper/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	var/new_base = tgui_color_picker(user, "", "Select a base color", color)
 	var/new_ribbon = tgui_color_picker(user, "", "Select a ribbon color", color)
 	if(!new_base || !new_ribbon)
@@ -69,6 +77,8 @@
 	greyscale_colors = "#00FF00#FF0000"
 
 /obj/item/stack/wrapping_paper/use(used, transfer, check = TRUE)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	. = ..()
 	if(QDELETED(src) && !transfer)
@@ -97,9 +107,13 @@
 	mats_per_unit = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 0.1, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 0.1)
 
 /obj/item/stack/package_wrap/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/cellulose = 5)
 
 /obj/item/stack/package_wrap/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins wrapping [user.p_them()]self in \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	if(use(3))
 		var/obj/item/delivery/big/parcel = new(get_turf(user.loc))
@@ -112,19 +126,29 @@
 		balloon_alert(user, "not enough paper!")
 		return SHAME
 
-/obj/item/proc/can_be_package_wrapped() //can the item be wrapped with package wrapper into a delivery package
+/obj/item/proc/can_be_package_wrapped()
+	procstart = null
+	src.procstart = null //can the item be wrapped with package wrapper into a delivery package
 	return TRUE
 
 /obj/item/storage/can_be_package_wrapped()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/item/storage/box/can_be_package_wrapped()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/item/delivery/can_be_package_wrapped()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/item/stack/package_wrap/interact_with_atom(obj/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isobj(interacting_with))
 		return NONE
 	if(interacting_with.anchored)
@@ -209,6 +233,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/stack/package_wrap/use(used, transfer = FALSE, check = TRUE)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	. = ..()
 	if(QDELETED(src) && !transfer)
@@ -236,10 +262,14 @@
 	hitsound = 'sound/effects/bonk.ogg'
 
 /obj/item/c_tube/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CUSTOM_TAP_SOUND, INNATE_TRAIT)
 
 /obj/item/c_tube/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.visible_message(
 		span_warning("[user] baps [target_mob] on the head with [src]!"),

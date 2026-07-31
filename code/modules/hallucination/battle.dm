@@ -5,6 +5,8 @@
 	hallucination_tier = HALLUCINATION_TIER_COMMON
 
 /datum/hallucination/battle/start()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(hallucinator, TRAIT_DEAF))
 		return FALSE
 
@@ -30,6 +32,8 @@
 	var/chance_to_fall = 80
 
 /datum/hallucination/battle/gun/start()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -38,6 +42,8 @@
 
 /// The main loop for gun based hallucinations.
 /datum/hallucination/battle/gun/proc/fire_loop(turf/source, shots_left = 3, hits = 0)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || QDELETED(hallucinator) || !source)
 		return
 
@@ -91,6 +97,8 @@
 /datum/hallucination/battle/stun_prod
 
 /datum/hallucination/battle/stun_prod/start()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -103,6 +111,8 @@
 
 /// Plays a fake cable-cuff sound and deletes the hallucination.
 /datum/hallucination/battle/stun_prod/proc/fake_cuff(turf/source)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || QDELETED(hallucinator) || !source)
 		return
 
@@ -113,6 +123,8 @@
 /datum/hallucination/battle/harm_baton
 
 /datum/hallucination/battle/harm_baton/start()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -126,6 +138,8 @@
 
 /// The main sound loop for harmbatonning.
 /datum/hallucination/battle/harm_baton/proc/harmbaton_loop(turf/source, hits_remaing = 5)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || QDELETED(hallucinator) || !source)
 		return
 
@@ -141,6 +155,8 @@
 /datum/hallucination/battle/e_sword
 
 /datum/hallucination/battle/e_sword/start()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -152,6 +168,8 @@
 
 /// The main sound loop of someone being esworded.
 /datum/hallucination/battle/e_sword/proc/stab_loop(turf/source, stabs_remaining = 4)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || QDELETED(hallucinator) || !source)
 		return
 
@@ -172,6 +190,8 @@
 /datum/hallucination/battle/bomb
 
 /datum/hallucination/battle/bomb/start()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -180,6 +200,8 @@
 
 /// The loop of the (fake) bomb ticking down.
 /datum/hallucination/battle/bomb/proc/fake_tick(turf/source, ticks_remaining = 3)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || QDELETED(hallucinator) || !source)
 		return
 

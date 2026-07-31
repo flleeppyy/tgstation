@@ -22,14 +22,20 @@
 	var/single_use_cost = 5
 
 /obj/item/bee_smoker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	beesmoke_loop = new(src)
 
 /obj/item/bee_smoker/Destroy(force)
+	procstart = null
+	src.procstart = null
 	remove_shared_particles(/particles/smoke/bee_smoke)
 	return ..()
 
 /obj/item/bee_smoker/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -41,6 +47,8 @@
 	return TRUE
 
 /obj/item/bee_smoker/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(interacting_with, /obj/structure/beebox) && !isturf(interacting_with) && !istype(interacting_with, /mob/living/basic/bee))
 		return NONE
 
@@ -76,6 +84,8 @@
 	return .
 
 /obj/item/bee_smoker/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/food/grown/cannabis))
 		return NONE
 
@@ -94,11 +104,15 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/bee_smoker/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	current_herb_fuel--
 	if(current_herb_fuel <= 0)
 		alter_state()
 
 /obj/item/bee_smoker/proc/alter_state()
+	procstart = null
+	src.procstart = null
 	activated = !activated
 	playsound(src, 'sound/items/tools/welderdeactivate.ogg', 50, TRUE)
 

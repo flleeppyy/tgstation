@@ -7,11 +7,15 @@
 	hardcore_random_bonus = TRUE
 
 /datum/antagonist/greentext/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/succeed_objective = new /datum/objective("Succeed")
 	succeed_objective.completed = TRUE //YES!
 	succeed_objective.owner = owner
 	objectives += succeed_objective
 
 /datum/antagonist/greentext/on_gain()
+	procstart = null
+	src.procstart = null
 	forge_objectives()
 	. = ..()

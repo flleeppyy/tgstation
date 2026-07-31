@@ -12,10 +12,14 @@
 
 ///Adds the swabbing component to the biopsy tool
 /obj/item/biopsy_tool/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/swabbing, can_swap_objects, FALSE, TRUE, CALLBACK(src, PROC_REF(update_swab_icon)), max_items = 1)
 
 /obj/item/biopsy_tool/proc/update_swab_icon(list/swabbed_items)
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(swabbed_items))
 		icon_state = base_icon_state + "_full"
 	else

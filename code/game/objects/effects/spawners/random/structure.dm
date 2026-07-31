@@ -106,6 +106,8 @@
 	)
 
 /obj/effect/spawner/random/structure/closet_empty/make_item(spawn_loc, type_path_to_make)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/closet/peek_a_boo = ..()
 	if(istype(peek_a_boo) && prob(50))
 		peek_a_boo.open(special_effects = FALSE) //the crate appears immediatly out of thin air so no need to animate anything
@@ -134,6 +136,8 @@
 	icon_state = "crate"
 
 /obj/effect/spawner/random/structure/closet_empty/crate/with_loot/make_item(spawn_loc, type_path_to_make)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/closet/closet_to_fill = ..()
 	closet_to_fill.RegisterSignal(closet_to_fill, COMSIG_CLOSET_CONTENTS_INITIALIZED, TYPE_PROC_REF(/obj/structure/closet/, populate_with_random_maint_loot))
 

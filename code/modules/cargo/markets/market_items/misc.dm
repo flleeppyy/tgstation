@@ -98,6 +98,8 @@
 	availability_prob = 40
 
 /datum/market_item/misc/holywater/spawn_item(loc, datum/market_purchase/purchase)
+	procstart = null
+	src.procstart = null
 	if (prob(6.66))
 		item = /obj/item/reagent_containers/cup/beaker/unholywater
 	else
@@ -184,6 +186,8 @@
 	availability_prob = 90
 
 /datum/market_item/misc/girlypop/spawn_item(loc, datum/market_purchase/purchase)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/structure/closet/crate/glitter/C = new(loc)
 	for (var/type in list(
@@ -218,6 +222,8 @@
 	availability_prob = 15
 
 /datum/market_item/misc/self_surgery_skillchip/buy(obj/item/market_uplink/uplink, mob/buyer, shipping_method, legal_status)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		availability_prob *= 0.5

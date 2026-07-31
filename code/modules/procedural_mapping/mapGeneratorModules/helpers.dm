@@ -7,6 +7,8 @@
 	spawnableTurfs = list()
 
 /datum/map_generator_module/bottom_layer/repressurize/generate()
+	procstart = null
+	src.procstart = null
 	if(!mother)
 		return
 	var/list/map = mother.map
@@ -24,6 +26,8 @@
 	var/list/ignore_typecache
 
 /datum/map_generator_module/bottom_layer/massdelete/generate()
+	procstart = null
+	src.procstart = null
 	if(!mother)
 		return
 	for(var/V in mother.map)
@@ -31,6 +35,8 @@
 		T.empty(deleteturfs? null : T.type, null, ignore_typecache, CHANGETURF_FORCEOP)
 
 /datum/map_generator_module/bottom_layer/massdelete/no_delete_mobs/New()
+	procstart = null
+	src.procstart = null
 	..()
 	ignore_typecache = GLOB.typecache_mob
 
@@ -41,6 +47,8 @@
 	deleteturfs = FALSE
 
 /datum/map_generator_module/bottom_layer/massdelete/regeneration_delete/New()
+	procstart = null
+	src.procstart = null
 	..()
 	ignore_typecache = GLOB.typecache_mob
 
@@ -49,6 +57,8 @@
 	clusterCheckFlags = CLUSTER_CHECK_NONE
 
 /datum/map_generator_module/border/generate()
+	procstart = null
+	src.procstart = null
 	if(!mother)
 		return
 	var/list/map = mother.map
@@ -57,6 +67,8 @@
 			place(T)
 
 /datum/map_generator_module/border/proc/is_border(turf/T)
+	procstart = null
+	src.procstart = null
 	for(var/direction in list(SOUTH,EAST,WEST,NORTH))
 		if (get_step(T,direction) in mother.map)
 			continue

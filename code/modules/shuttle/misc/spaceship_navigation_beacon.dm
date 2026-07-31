@@ -16,6 +16,8 @@
 	var/obj/item/radio/radio
 
 /obj/machinery/spaceship_navigation_beacon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSshuttle.beacon_list |= src
 
@@ -39,19 +41,27 @@
 	COOLDOWN_START(src, next_automatic_message_time, automatic_message_cooldown)
 
 /obj/machinery/spaceship_navigation_beacon/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	locked = TRUE
 	update_appearance(UPDATE_ICON_STATE)
 
 /obj/machinery/spaceship_navigation_beacon/Destroy()
+	procstart = null
+	src.procstart = null
 	SSshuttle.beacon_list -= src
 	return ..()
 
 /obj/machinery/spaceship_navigation_beacon/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][locked ? "_locked" : "_active"]"
 	return ..()
 
 /obj/machinery/spaceship_navigation_beacon/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	..()
 
 	var/chosen_tag = tgui_input_text(user, "Enter the custom name for this beacon", "Beacon Reclassification", max_length = MAX_NAME_LEN)
@@ -66,6 +76,8 @@
 	return TRUE
 
 /obj/machinery/spaceship_navigation_beacon/multitool_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	..()
 
 	locked = !locked
@@ -76,6 +88,8 @@
 	return TRUE
 
 /obj/machinery/spaceship_navigation_beacon/examine()
+	procstart = null
+	src.procstart = null
 	.=..()
 	. += span_notice("'[FREQ_RADIO_NAV_BEACON / 10] kHz' is printed on the side.")
 	if(locked)
@@ -84,6 +98,8 @@
 		. += span_notice("The blinking green light on the front indicates that this beacon is operating normally.")
 
 /obj/machinery/spaceship_navigation_beacon/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(COOLDOWN_FINISHED(src, next_automatic_message_time) && radio)
 		var/automatic_nav_message = "[src], Sector [z], [locked ? "Beacon Locked" : "Beacon Operational"], Grid Coordinates, [x] East, [y] North."
 
@@ -101,10 +117,14 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/folded_navigation_gigabeacon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/deployable, 3 SECONDS, /obj/machinery/spaceship_navigation_beacon)
 
 /obj/item/folded_navigation_gigabeacon/examine()
+	procstart = null
+	src.procstart = null
 	.=..()
 	. += span_notice("The backside has instructions in various galactic languages detailing how this can be deployed <b>in hand</b> without any special tools.")
 	. += span_notice("'[FREQ_RADIO_NAV_BEACON / 10] kHz' is printed on the side.")

@@ -1,5 +1,7 @@
 
 /obj/hitby(atom/movable/hit_by, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	..()
 	var/damage_taken = hit_by.throwforce
 	if(isitem(hit_by))
@@ -8,6 +10,8 @@
 	take_damage(damage_taken, BRUTE, MELEE, 1, get_dir(src, hit_by))
 
 /obj/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(resistance_flags & (INDESTRUCTIBLE|BOMB_PROOF))
 		return FALSE
 
@@ -28,6 +32,8 @@
 	return TRUE
 
 /obj/bullet_act(obj/projectile/hitting_projectile, def_zone, piercing_hit = FALSE, blocked = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. != BULLET_ACT_HIT)
 		return .
@@ -51,6 +57,8 @@
 	return damage_sustained > 0 ? BULLET_ACT_HIT : BULLET_ACT_BLOCK
 
 /obj/attack_hulk(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(density)
 		playsound(src, 'sound/effects/meteorimpact.ogg', 100, TRUE)
@@ -61,15 +69,21 @@
 	return TRUE
 
 /obj/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if (!..() || HAS_TRAIT(src, TRAIT_UNDERFLOOR))
 		return
 	take_damage(400, BRUTE, MELEE, 0, get_dir(src, B))
 
 /obj/attack_alien(mob/living/carbon/alien/adult/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(attack_generic(user, 60, BRUTE, MELEE, 0))
 		playsound(src.loc, 'sound/items/weapons/slash.ogg', 100, TRUE)
 
 /obj/attack_animal(mob/living/simple_animal/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!user.melee_damage_upper && !user.obj_damage)
 		user.emote("custom", message = "[user.friendly_verb_continuous] [src].")
@@ -87,17 +101,25 @@
 			log_combat(user, src, "attacked")
 
 /obj/force_pushed(atom/movable/pusher, force = MOVE_FORCE_DEFAULT, direction)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/move_crushed(atom/movable/pusher, force = MOVE_FORCE_DEFAULT, direction)
+	procstart = null
+	src.procstart = null
 	collision_damage(pusher, force, direction)
 	return TRUE
 
 /obj/proc/collision_damage(atom/movable/pusher, force = MOVE_FORCE_DEFAULT, direction)
+	procstart = null
+	src.procstart = null
 	var/amt = max(0, ((force - (move_resist * MOVE_FORCE_CRUSH_RATIO)) / (move_resist * MOVE_FORCE_CRUSH_RATIO)) * 10)
 	take_damage(amt, BRUTE, attack_dir = REVERSE_DIR(direction))
 
 /obj/singularity_act()
+	procstart = null
+	src.procstart = null
 	SSexplosions.high_mov_atom += src
 	if(src && !QDELETED(src))
 		qdel(src)
@@ -108,6 +130,8 @@
 
 ///the obj's reaction when touched by acid
 /obj/acid_act(acidpwr, acid_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((resistance_flags & UNACIDABLE) || (acid_volume <= 0) || (acidpwr <= 0))
 		return FALSE
@@ -117,12 +141,16 @@
 
 ///called when the obj is destroyed by acid.
 /obj/proc/acid_melt()
+	procstart = null
+	src.procstart = null
 	deconstruct(FALSE)
 
 //// FIRE
 
 ///Called when the obj is exposed to fire.
 /obj/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_UNDERFLOOR))
 		return
 	var/potential_damage = 0.02 * exposed_temperature
@@ -138,14 +166,20 @@
 
 /// Returns a custom fire overlay, if any
 /obj/proc/custom_fire_overlay()
+	procstart = null
+	src.procstart = null
 	return custom_fire_overlay
 
 /// Should be called when the atom is destroyed by fire, comparable to acid_melt() proc
 /obj/proc/burn()
+	procstart = null
+	src.procstart = null
 	deconstruct(FALSE)
 
 ///Called when the obj is hit by a tesla bolt.
 /obj/zap_act(power, zap_flags)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return 0
 	ADD_TRAIT(src, TRAIT_BEING_SHOCKED, WAS_SHOCKED)
@@ -155,6 +189,8 @@
 //The surgeon general warns that being buckled to certain objects receiving powerful shocks is greatly hazardous to your health
 ///Only tesla coils, vehicles, and grounding rods currently call this because mobs are already targeted over all other objects, but this might be useful for more things later.
 /obj/proc/zap_buckle_check(strength)
+	procstart = null
+	src.procstart = null
 	if(has_buckled_mobs())
 		for(var/m in buckled_mobs)
 			var/mob/living/buckled_mob = m
@@ -167,6 +203,8 @@
  * * disassembled - TRUE means we cleanly took this atom apart using tools. FALSE means this was destroyed in a violent way
  */
 /obj/proc/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	return
@@ -181,6 +219,8 @@
  * * disassembled - TRUE means we cleanly took this atom apart using tools. FALSE means this was destroyed in a violent way
  */
 /obj/proc/handle_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 
 	if(!(obj_flags & NO_DEBRIS_AFTER_DECONSTRUCTION))
@@ -193,6 +233,8 @@
  * * disassembled - TRUE means we cleanly took this atom apart using tools. FALSE means this was destroyed in a violent way
  */
 /obj/proc/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	//allow objects to deconstruct themselves
@@ -206,6 +248,8 @@
 
 ///what happens when the obj's integrity reaches zero.
 /obj/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(damage_flag == ACID)
 		acid_melt()
@@ -216,4 +260,6 @@
 
 ///returns how much the object blocks an explosion. Used by subtypes.
 /obj/proc/GetExplosionBlock()
+	procstart = null
+	src.procstart = null
 	CRASH("Unimplemented GetExplosionBlock()")

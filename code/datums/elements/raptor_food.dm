@@ -20,6 +20,8 @@
 	var/list/color_chances = null
 
 /datum/element/raptor_food/Attach(obj/item/target, attack_modifier, health_modifier, speed_modifier, ability_modifier, growth_modifier, list/personality_traits, list/color_chances)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -34,10 +36,14 @@
 	RegisterSignal(target, COMSIG_ATOM_EXAMINE_MORE, PROC_REF(on_examine_more))
 
 /datum/element/raptor_food/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, list(COMSIG_ITEM_EATEN_BY_BASIC_MOB, COMSIG_ATOM_EXAMINE_MORE))
 	return ..()
 
 /datum/element/raptor_food/proc/on_examine_more(obj/item/source, mob/examiner, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!istype(examiner.buckled, /mob/living/basic/raptor))
@@ -63,6 +69,8 @@
 		examine_list += span_notice("You reckon this would have make your raptor's offspring grow faster if you fed it to them...")
 
 /datum/element/raptor_food/proc/on_eaten(obj/item/source, mob/living/eater, mob/living/feeder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!istype(eater, /mob/living/basic/raptor))

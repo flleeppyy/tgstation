@@ -46,6 +46,8 @@
 	))
 
 /obj/machinery/iv_drip/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(use_internal_storage)
 		create_reagents(internal_volume_maximum, TRANSPARENT)
@@ -56,17 +58,23 @@
 	AddElement(/datum/element/noisy_movement)
 
 /obj/machinery/iv_drip/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(attachment)
 	QDEL_NULL(reagent_container)
 	return ..()
 
 /obj/machinery/iv_drip/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "IVDrip", name)
 		ui.open()
 
 /obj/machinery/iv_drip/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item))
 		if(attachment)
 			context[SCREENTIP_CONTEXT_RMB] = "Take needle out"
@@ -87,12 +95,16 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/iv_drip/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["transferStep"] = IV_TRANSFER_RATE_STEP
 	.["maxTransferRate"] = MAX_IV_TRANSFER_RATE
 	.["minTransferRate"] = MIN_IV_TRANSFER_RATE
 
 /obj/machinery/iv_drip/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	.["hasInternalStorage"] = use_internal_storage
@@ -114,6 +126,8 @@
 		.["containerReagentColor"] = mix_color_from_reagents(drip_reagents.reagent_list)
 
 /obj/machinery/iv_drip/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -134,10 +148,14 @@
 
 /// Sets the transfer rate to the provided value
 /obj/machinery/iv_drip/proc/set_transfer_rate(new_rate)
+	procstart = null
+	src.procstart = null
 	transfer_rate = round(clamp(new_rate, MIN_IV_TRANSFER_RATE, MAX_IV_TRANSFER_RATE), IV_TRANSFER_RATE_STEP)
 	update_appearance(UPDATE_ICON)
 
 /obj/machinery/iv_drip/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(transfer_rate > 0 && attachment)
 		icon_state = "[base_icon_state]_[mode ? "injecting" : "donating"]"
 	else
@@ -145,6 +163,8 @@
 	return ..()
 
 /obj/machinery/iv_drip/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!reagent_container)
@@ -170,6 +190,8 @@
 		. += filling
 
 /obj/machinery/iv_drip/mouse_drop_dragged(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		to_chat(user, span_warning("You can't do that!"))
 		return
@@ -187,6 +209,8 @@
 	attach_iv(target, user)
 
 /obj/machinery/iv_drip/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(use_internal_storage)
 		return NONE
 	if(!is_type_in_typecache(tool, drip_containers) && !IS_EDIBLE(tool))
@@ -205,6 +229,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/iv_drip/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(transfer_rate > MIN_IV_TRANSFER_RATE)
 		balloon_alert(user, "flow minimized")
 		set_transfer_rate(MIN_IV_TRANSFER_RATE)
@@ -215,9 +241,13 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/iv_drip/on_deconstruction(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/iron(loc)
 
 /obj/machinery/iv_drip/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!attachment)
 		return PROCESS_KILL
 
@@ -268,6 +298,8 @@
 		update_appearance(UPDATE_ICON)
 
 /obj/machinery/iv_drip/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN || !ishuman(user))
 		return
@@ -275,6 +307,8 @@
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/iv_drip/proc/quick_toggle(mob/user)
+	procstart = null
+	src.procstart = null
 	if(attachment)
 		visible_message(span_notice("[attachment.attached_to] is detached from [src]."))
 		detach_iv()
@@ -286,6 +320,8 @@
 
 ///called when an IV is attached
 /obj/machinery/iv_drip/proc/attach_iv(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(isliving(target))
 		user.visible_message(span_warning("[usr] begins attaching [src] to [target]..."), span_warning("You begin attaching [src] to [target]."))
 		if(!do_after(usr, 1 SECONDS, target))
@@ -310,6 +346,8 @@
 
 ///Called when an iv is detached. doesnt include chat stuff because there's multiple options and its better handled by the caller
 /obj/machinery/iv_drip/proc/detach_iv()
+	procstart = null
+	src.procstart = null
 	if(attachment)
 		visible_message(span_notice("[attachment.attached_to] is detached from [src]."))
 		if(isliving(attachment.attached_to))
@@ -321,6 +359,8 @@
 
 /// Get the reagents used by IV drip
 /obj/machinery/iv_drip/proc/get_reagents()
+	procstart = null
+	src.procstart = null
 	return use_internal_storage ? reagents : reagent_container?.reagents
 
 GAME_VERB_SRC(/obj/machinery/iv_drip, eject_beaker, view(1), "Remove IV Container", null)
@@ -359,6 +399,8 @@ GAME_VERB_SRC(/obj/machinery/iv_drip, toggle_mode, view(1), "Toggle Mode", null)
 	to_chat(usr, span_notice("The IV drip is now [mode ? "injecting" : "taking blood"]."))
 
 /obj/machinery/iv_drip/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(get_dist(user, src) > 2)
 		return
@@ -407,6 +449,8 @@ GAME_VERB_SRC(/obj/machinery/iv_drip, toggle_mode, view(1), "Toggle Mode", null)
 	)
 
 /datum/iv_drip_attachment/Destroy(force)
+	procstart = null
+	src.procstart = null
 	tug_to_me.remove_tug_target(iv_drip)
 	tug_to_me = null
 
@@ -442,6 +486,8 @@ GAME_VERB_SRC(/obj/machinery/iv_drip, toggle_mode, view(1), "Toggle Mode", null)
 	internal_volume_maximum = 5000
 
 /obj/machinery/iv_drip/saline/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/update_icon_blocker)
 	. = ..()
 

@@ -2,6 +2,8 @@
 /datum/unit_test/screenshot_airlocks
 
 /datum/unit_test/screenshot_airlocks/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/door/airlock/instant/door = allocate(__IMPLIED_TYPE__)
 	var/obj/machinery/door/airlock/instant/glass/glass_door = allocate(__IMPLIED_TYPE__)
 

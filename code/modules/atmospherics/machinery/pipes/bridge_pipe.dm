@@ -17,6 +17,8 @@
 	has_gas_visuals = FALSE
 
 /obj/machinery/atmospherics/pipe/bridge_pipe/set_init_directions()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH, SOUTH)
 			initialize_directions = SOUTH|NORTH
@@ -24,10 +26,14 @@
 			initialize_directions = EAST|WEST
 
 /obj/machinery/atmospherics/pipe/bridge_pipe/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/center = mutable_appearance('icons/obj/pipes_n_cables/bridge_pipe.dmi', "bridge_center")
 	PIPING_LAYER_DOUBLE_SHIFT(center, piping_layer)
 	. += center
 
 /obj/machinery/atmospherics/pipe/bridge_pipe/update_layer()
+	procstart = null
+	src.procstart = null
 	layer = (HAS_TRAIT(src, TRAIT_UNDERFLOOR) ? BELOW_CATWALK_LAYER + 1 : initial(layer))

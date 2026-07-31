@@ -28,6 +28,8 @@
 	var/damagetype_healed
 
 /obj/item/storage/medkit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/cuffable_item)
 
@@ -36,10 +38,14 @@
 	desc = "A first aid kit with the ability to heal common types of injuries."
 
 /obj/item/storage/medkit/regular/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins giving [user.p_them()]self aids with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 
 /obj/item/storage/medkit/regular/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(empty)
 		return
 	var/list/items_inside = list(
@@ -58,6 +64,8 @@
 	desc = "A very simple first aid kit meant to secure and stabilize serious wounds for later treatment."
 
 /obj/item/storage/medkit/emergency/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(empty)
 		return
 	var/list/items_inside = list(
@@ -78,6 +86,8 @@
 	storage_type = /datum/storage/medkit/surgery
 
 /obj/item/storage/medkit/surgery/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(empty)
 		return
 	var/list/items_inside = list(
@@ -102,6 +112,8 @@
 	storage_type = /datum/storage/medkit/surgery
 
 /obj/item/storage/medkit/surgery_syndie/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(empty)
 		return
 	var/list/items_inside = list(
@@ -121,6 +133,8 @@
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/surgery_syndie/get_medbot_skin()
+	procstart = null
+	src.procstart = null
 	return "bezerk"
 
 /obj/item/storage/medkit/ancient
@@ -128,6 +142,8 @@
 	desc = "A first aid kit with the ability to heal common types of injuries."
 
 /obj/item/storage/medkit/ancient/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(empty)
 		return
 	var/list/items_inside = list(
@@ -148,13 +164,19 @@
 	damagetype_healed = BURN
 
 /obj/item/storage/medkit/fire/get_medbot_skin()
+	procstart = null
+	src.procstart = null
 	return "burn"
 
 /obj/item/storage/medkit/fire/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins rubbing \the [src] against [user.p_them()]self! It looks like [user.p_theyre()] trying to start a fire!"))
 	return FIRELOSS
 
 /obj/item/storage/medkit/fire/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(empty)
 		return
 	var/list/items_inside = list(
@@ -172,14 +194,20 @@
 	damagetype_healed = TOX
 
 /obj/item/storage/medkit/toxin/get_medbot_skin()
+	procstart = null
+	src.procstart = null
 	return "tox"
 
 /obj/item/storage/medkit/toxin/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins licking the lead paint off \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return TOXLOSS
 
 
 /obj/item/storage/medkit/toxin/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(empty)
 		return
 	var/list/items_inside = list(
@@ -199,13 +227,19 @@
 	damagetype_healed = OXY
 
 /obj/item/storage/medkit/o2/get_medbot_skin()
+	procstart = null
+	src.procstart = null
 	return "oxy"
 
 /obj/item/storage/medkit/o2/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins hitting [user.p_their()] neck with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return OXYLOSS
 
 /obj/item/storage/medkit/o2/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(empty)
 		return
 	var/list/items_inside = list(
@@ -223,13 +257,19 @@
 	damagetype_healed = BRUTE
 
 /obj/item/storage/medkit/brute/get_medbot_skin()
+	procstart = null
+	src.procstart = null
 	return "brute"
 
 /obj/item/storage/medkit/brute/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins beating [user.p_them()]self over the head with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 
 /obj/item/storage/medkit/brute/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(empty)
 		return
 	var/list/items_inside = list(
@@ -250,9 +290,13 @@
 	damagetype_healed = HEAL_ALL_DAMAGE
 
 /obj/item/storage/medkit/advanced/get_medbot_skin()
+	procstart = null
+	src.procstart = null
 	return "adv"
 
 /obj/item/storage/medkit/advanced/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(empty)
 		return
 	var/list/items_inside = list(
@@ -269,9 +313,13 @@
 	damagetype_healed = HEAL_ALL_DAMAGE
 
 /obj/item/storage/medkit/tactical_lite/get_medbot_skin()
+	procstart = null
+	src.procstart = null
 	return "bezerk"
 
 /obj/item/storage/medkit/tactical_lite/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(empty)
 		return
 	var/list/items_inside = list(
@@ -292,9 +340,13 @@
 	storage_type = /datum/storage/medkit/tactical
 
 /obj/item/storage/medkit/tactical/get_medbot_skin()
+	procstart = null
+	src.procstart = null
 	return "bezerk"
 
 /obj/item/storage/medkit/tactical/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(empty)
 		return
 	var/list/items_inside = list(
@@ -322,9 +374,13 @@
 	storage_type = /datum/storage/medkit/tactical/premium
 
 /obj/item/storage/medkit/tactical/premium/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/lead = 10)
 
 /obj/item/storage/medkit/tactical/premium/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(empty)
 		return
 	var/list/items_inside = list(
@@ -356,6 +412,8 @@
 	storage_type = /datum/storage/medkit/coroner
 
 /obj/item/storage/medkit/coroner/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(empty)
 		return
 	var/list/items_inside = list(
@@ -369,6 +427,8 @@
 
 //medibot assembly
 /obj/item/storage/medkit/tool_act(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/bodypart/arm/left/robot) && !istype(tool, /obj/item/bodypart/arm/right/robot))
 		return ..()
 	//Making a medibot!
@@ -390,6 +450,8 @@
 
 /// Gets what skin (icon_state) this medkit uses for a medbot
 /obj/item/storage/medkit/proc/get_medbot_skin()
+	procstart = null
+	src.procstart = null
 	return "generic"
 
 /// A box which takes in coolant and uses it to preserve organs and body parts
@@ -409,6 +471,8 @@
 	var/cooling = FALSE
 
 /obj/item/storage/organbox/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	create_reagents(100, TRANSPARENT)
@@ -416,6 +480,8 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/item/storage/organbox/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	///if there is enough coolant var
 	var/using_coolant = coolant_to_spend()
 	if (isnull(using_coolant))
@@ -440,6 +506,8 @@
 
 /// Returns which coolant we are about to use, or null if there isn't any
 /obj/item/storage/organbox/proc/coolant_to_spend()
+	procstart = null
+	src.procstart = null
 	if (reagents.get_reagent_amount(/datum/reagent/cryostylane))
 		return /datum/reagent/cryostylane
 	if (reagents.get_reagent_amount(/datum/reagent/consumable/ice))
@@ -447,10 +515,14 @@
 	return null
 
 /obj/item/storage/organbox/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][cooling ? "-working" : null]"
 	return ..()
 
 /obj/item/storage/organbox/tool_act(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(is_reagent_container(tool) && tool.is_open_container())
 		var/obj/item/reagent_containers/RC = tool
 		var/units = RC.reagents.trans_to(src, RC.amount_per_transfer_from_this, transferred_by = user)
@@ -467,6 +539,8 @@
 	return ..()
 
 /obj/item/storage/organbox/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(user, TRAIT_RESISTCOLD)) //if they're immune to cold, just do the box suicide
 		var/obj/item/bodypart/head/myhead = user.get_bodypart(BODY_ZONE_HEAD)
 		if(myhead)
@@ -486,6 +560,8 @@
 /obj/item/storage/organbox/preloaded
 
 /obj/item/storage/organbox/preloaded/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent(/datum/reagent/cryostylane, reagents.maximum_volume)
 
@@ -503,10 +579,14 @@
 	custom_materials = list(/datum/material/wood = SHEET_MATERIAL_AMOUNT)
 
 /obj/item/storage/test_tube_rack/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][contents.len > 0 ? contents.len : null]"
 	return ..()
 
 /obj/item/storage/test_tube_rack/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to atom_storage.max_slots)
 		new /obj/item/reagent_containers/cup/tube(src)
 	update_appearance(UPDATE_ICON_STATE)

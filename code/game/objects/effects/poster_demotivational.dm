@@ -13,21 +13,29 @@
 	var/datum/proximity_monitor/advanced/demoraliser/demoraliser
 
 /obj/structure/sign/poster/traitor/apply_holiday()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/sign/poster/traitor/holi_data = /obj/structure/sign/poster/traitor/festive
 	name = initial(holi_data.name)
 	desc = initial(holi_data.desc)
 	icon_state = initial(holi_data.icon_state)
 
 /obj/structure/sign/poster/traitor/on_placed_poster(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/demoralise_moods/poster/mood_category = new()
 	demoraliser = new(src, 7, TRUE, mood_category)
 	return ..()
 
 /obj/structure/sign/poster/traitor/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(demoraliser)
 	return ..()
 
 /obj/structure/sign/poster/traitor/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(demoraliser)
 	return ..()
 

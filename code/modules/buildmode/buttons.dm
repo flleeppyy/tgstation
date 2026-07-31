@@ -6,10 +6,14 @@
 	plane = ABOVE_HUD_PLANE
 
 /atom/movable/screen/buildmode/New(bld)
+	procstart = null
+	src.procstart = null
 	bd = bld
 	return ..()
 
 /atom/movable/screen/buildmode/Destroy()
+	procstart = null
+	src.procstart = null
 	bd = null
 	return ..()
 
@@ -19,6 +23,8 @@
 	screen_loc = "NORTH,WEST"
 
 /atom/movable/screen/buildmode/mode/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 	if(LAZYACCESS(modifiers, LEFT_CLICK))
 		bd.toggle_modeswitch()
@@ -29,6 +35,8 @@
 	return 1
 
 /atom/movable/screen/buildmode/mode/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = bd.mode.get_button_iconstate()
 	return ..()
 
@@ -38,6 +46,8 @@
 	name = "Buildmode Help"
 
 /atom/movable/screen/buildmode/help/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	bd.mode.show_help(usr.client)
 	return 1
 
@@ -47,10 +57,14 @@
 	name = "Change Dir"
 
 /atom/movable/screen/buildmode/bdir/update_icon_state()
+	procstart = null
+	src.procstart = null
 	dir = bd.build_dir
 	return ..()
 
 /atom/movable/screen/buildmode/bdir/Click()
+	procstart = null
+	src.procstart = null
 	bd.toggle_dirswitch()
 	update_appearance()
 	return 1
@@ -60,12 +74,16 @@
 	var/datum/buildmode_mode/modetype
 
 /atom/movable/screen/buildmode/modeswitch/New(bld, mt)
+	procstart = null
+	src.procstart = null
 	modetype = mt
 	icon_state = "buildmode_[initial(modetype.key)]"
 	name = initial(modetype.key)
 	return ..(bld)
 
 /atom/movable/screen/buildmode/modeswitch/Click()
+	procstart = null
+	src.procstart = null
 	bd.change_mode(modetype)
 	return 1
 
@@ -74,11 +92,15 @@
 	icon_state = "build"
 
 /atom/movable/screen/buildmode/dirswitch/New(bld, dir)
+	procstart = null
+	src.procstart = null
 	src.dir = dir
 	name = dir2text(dir)
 	return ..(bld)
 
 /atom/movable/screen/buildmode/dirswitch/Click()
+	procstart = null
+	src.procstart = null
 	bd.change_dir(dir)
 	return 1
 
@@ -88,6 +110,8 @@
 	name = "Quit Buildmode"
 
 /atom/movable/screen/buildmode/quit/Click()
+	procstart = null
+	src.procstart = null
 	bd.quit()
 	return 1
 

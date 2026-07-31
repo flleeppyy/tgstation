@@ -21,14 +21,20 @@
 		You still roll for midround antagonists."
 
 /datum/quirk/death_dnr_poll/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(quirk_holder, COMSIG_LIVING_DNR, PROC_REF(mob_died))
 
 /datum/quirk/death_dnr_poll/remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(quirk_holder, COMSIG_LIVING_DNR)
 
 /datum/quirk/death_dnr_poll/proc/mob_died(mob/living/source, mob/dead/observer/dnring)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/whomst = source.real_name
@@ -50,6 +56,8 @@
 	source.log_message("was made ghostrole pollable by [name] quirk.", LOG_GAME, color = COLOR_PURPLE)
 
 /datum/quirk/death_dnr_poll/proc/on_successful_revive()
+	procstart = null
+	src.procstart = null
 	quirk_holder.log_message("has had their body taken over by a ghost due to the [name] quirk.", LOG_GAME, color = COLOR_PURPLE)
 	var/welcome_msg = boxed_message(span_notice("<b>[quirk_holder.real_name]</b> has <i>[name]</i> - you are [quirk_holder.p_their()] new owner.<br>\
 		If you choose to <b>\"Do Not Resuscitate\"</b> upon death, another ghost will take over the body once again."))

@@ -103,6 +103,8 @@
 
 ///Returns the total volume of reagents without the catalysts
 /datum/reagents/plumbing/reaction_chamber/proc/get_catalyst_excluded_volume()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	. = 0

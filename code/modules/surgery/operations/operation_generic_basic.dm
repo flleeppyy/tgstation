@@ -22,18 +22,28 @@
 	target_zone = null
 
 /datum/surgery_operation/basic/incise_skin/get_any_tool()
+	procstart = null
+	src.procstart = null
 	return "Any sharp edged item"
 
 /datum/surgery_operation/basic/incise_skin/all_blocked_strings()
+	procstart = null
+	src.procstart = null
 	return ..() + list("The patient must not have complex anatomy")
 
 /datum/surgery_operation/basic/incise_skin/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/hud/surgery_radial.dmi', "make_incision")
 
 /datum/surgery_operation/basic/incise_skin/state_check(mob/living/patient)
+	procstart = null
+	src.procstart = null
 	return !patient.has_limbs // Only for limbless mobs
 
 /datum/surgery_operation/basic/incise_skin/tool_check(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	// Require edged sharpness OR a tool behavior match
 	if((tool.get_sharpness() & SHARP_EDGED) || implements[tool.tool_behaviour])
 		return TRUE
@@ -43,6 +53,8 @@
 	return FALSE
 
 /datum/surgery_operation/basic/incise_skin/on_preop(mob/living/patient, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		patient,
@@ -53,6 +65,8 @@
 	display_pain(patient, "You feel a sharp stabbing sensation!")
 
 /datum/surgery_operation/basic/incise_skin/on_success(mob/living/patient, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	patient.apply_status_effect(/datum/status_effect/basic_surgery_state, SURGERY_SKIN_OPEN)
 
@@ -85,22 +99,34 @@
 	target_zone = null
 
 /datum/surgery_operation/basic/saw_bone/get_any_tool()
+	procstart = null
+	src.procstart = null
 	return "Any sharp edged item with decent force"
 
 /datum/surgery_operation/basic/saw_bone/all_blocked_strings()
+	procstart = null
+	src.procstart = null
 	return ..() + list("The patient must not have complex anatomy")
 
 /datum/surgery_operation/basic/saw_bone/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/hud/surgery_radial.dmi', "mend_incision")
 
 /datum/surgery_operation/basic/saw_bone/state_check(mob/living/patient)
+	procstart = null
+	src.procstart = null
 	return !patient.has_limbs // Only for limbless mobs
 
 /datum/surgery_operation/basic/saw_bone/tool_check(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	// Require edged sharpness and sufficient force OR a tool behavior match
 	return (((tool.get_sharpness() & SHARP_EDGED) && tool.force >= 10) || implements[tool.tool_behaviour])
 
 /datum/surgery_operation/basic/saw_bone/on_preop(mob/living/patient, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		patient,
@@ -111,6 +137,8 @@
 	display_pain(patient, "You feel a horrid ache spread through your insides!")
 
 /datum/surgery_operation/basic/saw_bone/on_success(mob/living/patient, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	patient.apply_status_effect(/datum/status_effect/basic_surgery_state, SURGERY_BONE_SAWED)
 	patient.apply_damage(patient.maxHealth * 0.5, sharpness = tool.get_sharpness(), wound_bonus = CANT_WOUND, attacking_item = tool)
@@ -148,18 +176,28 @@
 	target_zone = null
 
 /datum/surgery_operation/basic/close_skin/get_any_tool()
+	procstart = null
+	src.procstart = null
 	return "Any heat source"
 
 /datum/surgery_operation/basic/close_skin/all_blocked_strings()
+	procstart = null
+	src.procstart = null
 	return ..() + list("The patient must not have complex anatomy")
 
 /datum/surgery_operation/basic/close_skin/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(/obj/item/cautery)
 
 /datum/surgery_operation/basic/close_skin/state_check(mob/living/patient)
+	procstart = null
+	src.procstart = null
 	return !patient.has_limbs // Only for limbless mobs
 
 /datum/surgery_operation/basic/close_skin/tool_check(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/stack/medical/suture))
 		return TRUE
 
@@ -170,6 +208,8 @@
 	return tool.get_temperature() >= FIRE_MINIMUM_TEMPERATURE_TO_EXIST
 
 /datum/surgery_operation/basic/close_skin/on_preop(mob/living/patient, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		patient,
@@ -180,6 +220,8 @@
 	display_pain(patient, "You are being [istype(tool, /obj/item/stack/medical/suture) ? "pinched" : "burned"]!")
 
 /datum/surgery_operation/basic/close_skin/on_success(mob/living/patient, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Just nuke the status effect, wipe the slate clean
 	patient.remove_status_effect(/datum/status_effect/basic_surgery_state)

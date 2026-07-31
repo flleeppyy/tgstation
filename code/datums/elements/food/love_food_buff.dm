@@ -6,6 +6,8 @@
 	var/love_buff_type
 
 /datum/element/love_food_buff/Attach(datum/target, love_buff_type)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(target, /obj/item/food))
 		return ELEMENT_INCOMPATIBLE
@@ -18,6 +20,8 @@
 	RegisterSignal(food, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/element/love_food_buff/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	var/obj/item/food/food = source
 	if(istype(food) && !isnull(food.reagents))
 		UnregisterSignal(food.reagents, COMSIG_REAGENTS_HOLDER_UPDATED)
@@ -25,6 +29,8 @@
 	return ..()
 
 /datum/element/love_food_buff/proc/on_reagents_changed(datum/reagents/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/food/food = source.my_atom
@@ -34,6 +40,8 @@
 	food.crafted_food_buff = source.has_reagent(/datum/reagent/love) ? love_buff_type : initial(food.crafted_food_buff)
 
 /datum/element/love_food_buff/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += span_notice("Delivering a chef's kiss to [source] will alter [source.p_their()] effects.")

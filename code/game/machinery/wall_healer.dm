@@ -64,6 +64,8 @@
 	bio = 100
 
 /obj/machinery/wall_healer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		num_bandages = 0
@@ -79,11 +81,15 @@
 	find_and_mount_on_atom()
 
 /obj/machinery/wall_healer/Destroy()
+	procstart = null
+	src.procstart = null
 	clear_using_mob()
 	QDEL_LAZYLIST(stocked_bandages)
 	return ..()
 
 /obj/machinery/wall_healer/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item))
 		context[SCREENTIP_CONTEXT_LMB] = "Heal self"
 		context[SCREENTIP_CONTEXT_RMB] = "Get gauze"
@@ -101,6 +107,8 @@
 
 // Someone please add generic support for constructing wall mounted objects thanks
 /obj/machinery/wall_healer/on_construction(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.dir & NORTH)
 		pixel_y += WALL_HEALER_OFFSET
 	else if(user.dir & SOUTH)
@@ -117,6 +125,8 @@
 		deconstruct(TRUE)
 
 /obj/machinery/wall_healer/proc/refill_healing_pool(percent = 100)
+	procstart = null
+	src.procstart = null
 	var/amount_refilled = 0
 
 	var/pre_brute_healing = brute_healing
@@ -141,11 +151,15 @@
 	return amount_refilled
 
 /obj/machinery/wall_healer/proc/init_payment()
+	procstart = null
+	src.procstart = null
 	// Cost depends on service (so just use 0 here)
 	AddComponent(/datum/component/payment, 0, SSeconomy.get_dep_account(ACCOUNT_MED), PAYMENT_FRIENDLY)
 	desc += " Charges by the second, though all costs are waived on red alert."
 
 /obj/machinery/wall_healer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/total_bandages = num_bandages + LAZYLEN(stocked_bandages)
 	. += span_notice("It has [total_bandages] bandage\s stocked.\
@@ -154,6 +168,8 @@
 		. += span_notice("[current_user] currently [current_hand ? "has [current_user.p_their()] [current_hand.plaintext_zone] in" : "is using"] it.")
 
 /obj/machinery/wall_healer/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(panel_open)
@@ -188,6 +204,8 @@
 	. += mutable_appearance(icon, "bar_shadow", alpha = src.alpha, appearance_flags = RESET_COLOR)
 
 /obj/machinery/wall_healer/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 
@@ -199,27 +217,39 @@
 	return TRUE
 
 /obj/machinery/wall_healer/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return screwdriver_act_secondary(user, tool)
 
 /obj/machinery/wall_healer/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/wall_healer/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return crowbar_act_secondary(user, tool)
 
 /obj/machinery/wall_healer/crowbar_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /// We want user to be right up to the wall mount to use it
 /// However people may often map the machine over a table
 /// In those contexts, they should be allowed to reach over the table
 /obj/machinery/wall_healer/proc/loc_check(mob/checking)
+	procstart = null
+	src.procstart = null
 	var/turf/turf_loc = get_turf(src)
 	if(turf_loc.is_blocked_turf())
 		return checking.Adjacent(turf_loc)
 	return checking.loc == turf_loc
 
 /obj/machinery/wall_healer/mouse_drop_receive(atom/dropped, mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -237,6 +267,8 @@
 	return TRUE
 
 /obj/machinery/wall_healer/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -251,6 +283,8 @@
 	return TRUE
 
 /obj/machinery/wall_healer/proc/user_put_in_own_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user == current_user)
 		clear_using_mob()
 		if(user.get_active_hand() == current_hand)
@@ -300,6 +334,8 @@
 	set_using_mob(user)
 
 /obj/machinery/wall_healer/proc/other_put_users_hand_in(mob/living/user, mob/living/who_put_user_in)
+	procstart = null
+	src.procstart = null
 	if(who_put_user_in == user)
 		return user_put_in_own_hand(user)
 
@@ -363,6 +399,8 @@
 	set_using_mob(user)
 
 /obj/machinery/wall_healer/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. != SECONDARY_ATTACK_CALL_NORMAL || !isliving(user))
 		return .
@@ -397,6 +435,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/wall_healer/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	var/atom/drop_loc = drop_location()
 	for(var/obj/item/stack/medical/wrap/gauze/bandage as anything in stocked_bandages)
 		bandage.forceMove(drop_loc)
@@ -404,6 +444,8 @@
 		new /obj/item/stack/medical/wrap/gauze(drop_loc, num_bandages)
 
 /obj/machinery/wall_healer/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stack/medical/wrap/gauze))
 		return NONE
 	if(!user.temporarilyRemoveItemFromInventory(tool))
@@ -426,6 +468,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/wall_healer/proc/set_using_mob(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(last_user_ref != REF(user))
 		COOLDOWN_RESET(src, injection_cooldown)
 
@@ -443,6 +487,8 @@
 	injection_bar = new(user, injection_cd_length, src, COOLDOWN_TIMELEFT(src, injection_cooldown))
 
 /obj/machinery/wall_healer/proc/clear_using_mob(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(current_hand)
 		UnregisterSignal(current_hand, COMSIG_BODYPART_REMOVED)
@@ -457,6 +503,8 @@
 	QDEL_NULL(injection_bar)
 
 /obj/machinery/wall_healer/proc/user_moved(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(current_user.loc == loc)
 		return
@@ -471,16 +519,22 @@
 	clear_using_mob()
 
 /obj/machinery/wall_healer/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(current_user && current_user.loc != loc)
 		clear_using_mob()
 
 /obj/machinery/wall_healer/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	LAZYREMOVE(stocked_bandages, gone)
 
 /// Checks if the machine is free for the given mob
 /obj/machinery/wall_healer/proc/is_free(mob/living/for_who)
+	procstart = null
+	src.procstart = null
 	if(SSsecurity_level.get_current_level_as_number() >= SEC_LEVEL_RED)
 		return TRUE // always free on red alert
 	if(!istype(for_who))
@@ -491,11 +545,15 @@
 	return FALSE
 
 /obj/machinery/wall_healer/attempt_charge(atom/sender, atom/target, extra_fees)
+	procstart = null
+	src.procstart = null
 	if(is_free(target))
 		return NONE
 	return ..()
 
 /obj/machinery/wall_healer/process()
+	procstart = null
+	src.procstart = null
 	if(!is_operational)
 		// puts off recharging until operational again
 		COOLDOWN_START(src, recharge_cooldown, recharge_cd_length * 0.5)
@@ -588,14 +646,20 @@
 /datum/progressbar/wall_healer
 
 /datum/progressbar/wall_healer/New(mob/User, goal_number, atom/target, starting_amount)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSfastprocess, src)
 
 /datum/progressbar/wall_healer/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	return ..()
 
 /datum/progressbar/wall_healer/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/wall_healer/healer = bar_loc
 	if(!istype(healer))
 		stack_trace("[type] instantiated on a non-wall-healer target [bar_loc || "null"] ([bar_loc?.type || "null"])")
@@ -612,6 +676,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/wall_healer, WALL_HEALER_OFFSET)
 	injection_cd_length = 2 SECONDS
 
 /obj/machinery/wall_healer/free/init_payment()
+	procstart = null
+	src.procstart = null
 	return
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/wall_healer/free, WALL_HEALER_OFFSET)

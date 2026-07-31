@@ -8,13 +8,19 @@
 	mail_goodies = list(/obj/item/clothing/gloves/radio)
 
 /datum/quirk/item_quirk/signer/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	quirk_holder.AddComponent(/datum/component/sign_language)
 
 /datum/quirk/item_quirk/signer/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/gloves/gloves_type = /obj/item/clothing/gloves/radio
 	if(isplasmaman(quirk_holder))
 		gloves_type = /obj/item/clothing/gloves/color/plasmaman/radio
 	give_item_to_holder(gloves_type, list(LOCATION_GLOVES, LOCATION_HANDS))
 
 /datum/quirk/item_quirk/signer/remove()
+	procstart = null
+	src.procstart = null
 	qdel(quirk_holder.GetComponent(/datum/component/sign_language))

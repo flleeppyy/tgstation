@@ -119,6 +119,8 @@
 	test_ignored = TRUE
 
 /datum/supply_pack/medical/supplies/fill(obj/container)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 10)
 		var/item = pick(contains)
 		new item(container)

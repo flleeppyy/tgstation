@@ -6,6 +6,8 @@
 	var/target_type
 
 /datum/bt_node/decorator/target_is_type/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[key]
 	if(QDELETED(target) || isnull(target_type))
 		return FALSE

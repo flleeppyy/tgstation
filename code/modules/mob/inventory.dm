@@ -3,18 +3,24 @@
 
 ///Returns the thing we're currently holding
 /mob/proc/get_active_held_item()
+	procstart = null
+	src.procstart = null
 	return get_item_for_held_index(active_hand_index)
 
 
 //Finds the opposite limb for the active one (eg: upper left arm will find the item in upper right arm)
 //So we're treating each "pair" of limbs as a team, so "both" refers to them
 /mob/proc/get_inactive_held_item()
+	procstart = null
+	src.procstart = null
 	return get_item_for_held_index(get_inactive_hand_index())
 
 
 //Finds the opposite index for the active one (eg: upper left arm will find the item in upper right arm)
 //So we're treating each "pair" of limbs as a team, so "both" refers to them
 /mob/proc/get_inactive_hand_index()
+	procstart = null
+	src.procstart = null
 	var/other_hand = 0
 	if(IS_RIGHT_INDEX(active_hand_index))
 		other_hand = active_hand_index-1 //finding the matching "left" limb
@@ -26,6 +32,8 @@
 
 
 /mob/proc/get_item_for_held_index(i)
+	procstart = null
+	src.procstart = null
 	if(i > 0 && i <= held_items.len)
 		return held_items[i]
 	return null
@@ -33,17 +41,23 @@
 
 //Odd = left. Even = right
 /mob/proc/held_index_to_dir(i)
+	procstart = null
+	src.procstart = null
 	if(IS_RIGHT_INDEX(i))
 		return "r"
 	return "l"
 
 //Check we have an organ for this hand slot (Dismemberment), Only relevant for humans
 /mob/proc/has_hand_for_held_index(i)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 
 //Check we have an organ for our active hand slot (Dismemberment),Only relevant for humans
 /mob/proc/has_active_hand()
+	procstart = null
+	src.procstart = null
 	return has_hand_for_held_index(active_hand_index)
 
 
@@ -51,6 +65,8 @@
 //Lefts: 1, 3, 5, 7...
 //Rights:2, 4, 6, 8...
 /mob/proc/get_empty_held_index_for_side(side = LEFT_HANDS, all = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/empty_indexes = all ? list() : null
 	for(var/i in (side == LEFT_HANDS) ? 1 : 2 to held_items.len step 2)
 		if(!held_items[i])
@@ -62,6 +78,8 @@
 
 //Same as the above, but returns the first or ALL held *ITEMS* for the side
 /mob/proc/get_held_items_for_side(side = LEFT_HANDS, all = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/holding_items = all ? list() : null
 	for(var/i in (side == LEFT_HANDS) ? 1 : 2 to held_items.len step 2)
 		var/obj/item/I = held_items[i]
@@ -73,6 +91,8 @@
 
 
 /mob/proc/get_empty_held_indexes()
+	procstart = null
+	src.procstart = null
 	var/list/L
 	for(var/i in 1 to held_items.len)
 		if(!held_items[i])
@@ -80,10 +100,14 @@
 	return L
 
 /mob/proc/get_held_index_of_item(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return held_items.Find(I)
 
 /// Returns what body zone is holding the passed item
 /mob/proc/get_hand_zone_of_item(obj/item/I)
+	procstart = null
+	src.procstart = null
 	var/hand_index = get_held_index_of_item(I)
 	if(!hand_index)
 		return null
@@ -93,6 +117,8 @@
 
 ///Find number of held items, multihand compatible
 /mob/proc/get_num_held_items()
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/i in 1 to held_items.len)
 		if(!held_items[i])
@@ -107,11 +133,15 @@
 //Sad that this will cause some overhead, but the alias seems necessary
 //*I* may be happy with a million and one references to "indexes" but others won't be
 /mob/proc/is_holding(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return get_held_index_of_item(I)
 
 
 //Checks if we're holding an item of type: typepath
 /mob/proc/is_holding_item_of_type(typepath)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/I in held_items)
 		if(istype(I, typepath))
 			return I
@@ -120,6 +150,8 @@
 // List version of above proc
 // Returns ret_item, which is either the successfully located item or null
 /mob/proc/is_holding_item_of_types(list/typepaths)
+	procstart = null
+	src.procstart = null
 	for(var/typepath in typepaths)
 		var/ret_item = is_holding_item_of_type(typepath)
 		return ret_item
@@ -127,6 +159,8 @@
 //Checks if we're holding a tool that has given quality
 //Returns the tool that has the best version of this quality
 /mob/proc/is_holding_tool_quality(quality)
+	procstart = null
+	src.procstart = null
 	var/obj/item/best_item
 	var/best_quality = INFINITY
 
@@ -142,6 +176,8 @@
 //Can be overridden to pass off the fluff to something else (eg: science allowing people to add extra robotic limbs, and having this proc react to that
 // with say "they are holding [I] in their Nanotrasen Brand Utility Arm - Right Edition" or w/e
 /mob/proc/get_held_index_name(i)
+	procstart = null
+	src.procstart = null
 	var/list/hand = list()
 	if(i > 2)
 		hand += "upper "
@@ -162,9 +198,13 @@
 //Returns if a certain item can be equipped to a certain slot.
 // Currently invalid for two-handed items - call obj/item/mob_can_equip() instead.
 /mob/proc/can_equip(obj/item/I, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE, ignore_equipped = FALSE, indirect_action = FALSE)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/proc/can_put_in_hand(I, hand_index)
+	procstart = null
+	src.procstart = null
 	if(hand_index > held_items.len)
 		return FALSE
 	if(!put_in_hand_check(I))
@@ -174,6 +214,8 @@
 	return !held_items[hand_index]
 
 /mob/proc/put_in_hand(obj/item/I, hand_index, forced = FALSE, ignore_anim = TRUE, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(hand_index == null || !held_items.len || (!forced && !can_put_in_hand(I, hand_index)))
 		return FALSE
 
@@ -199,16 +241,24 @@
 
 //Puts the item into the first available left hand if possible and calls all necessary triggers/updates. returns 1 on success.
 /mob/proc/put_in_l_hand(obj/item/I, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	return put_in_hand(I, get_empty_held_index_for_side(LEFT_HANDS), visuals_only = visuals_only)
 
 //Puts the item into the first available right hand if possible and calls all necessary triggers/updates. returns 1 on success.
 /mob/proc/put_in_r_hand(obj/item/I, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	return put_in_hand(I, get_empty_held_index_for_side(RIGHT_HANDS), visuals_only = visuals_only)
 
 /mob/proc/put_in_hand_check(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return FALSE //nonliving mobs don't have hands
 
 /mob/living/put_in_hand_check(obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(istype(I) && ((mobility_flags & MOBILITY_PICKUP) || (I.item_flags & ABSTRACT)) \
 		&& !(SEND_SIGNAL(src, COMSIG_LIVING_TRY_PUT_IN_HAND, I) & COMPONENT_LIVING_CANT_PUT_IN_HAND))
 		return TRUE
@@ -216,11 +266,15 @@
 
 //Puts the item into our active hand if possible. returns TRUE on success.
 /mob/proc/put_in_active_hand(obj/item/I, forced = FALSE, ignore_animation = TRUE, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	return put_in_hand(I, active_hand_index, forced, ignore_animation, visuals_only)
 
 
 //Puts the item into our inactive hand if possible, returns TRUE on success
 /mob/proc/put_in_inactive_hand(obj/item/I, forced = FALSE, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	return put_in_hand(I, get_inactive_hand_index(), forced, visuals_only = visuals_only)
 
 
@@ -228,6 +282,8 @@
 //If both fail it drops it on the floor (or nearby tables if germ sensitive) and returns FALSE.
 //This is probably the main one you need to know :)
 /mob/proc/put_in_hands(obj/item/I, del_on_fail = FALSE, merge_stacks = TRUE, forced = FALSE, ignore_animation = TRUE, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(I))
 		return FALSE
 
@@ -307,6 +363,8 @@
 
 /// Returns true if a mob is holding something
 /mob/proc/is_holding_items()
+	procstart = null
+	src.procstart = null
 	return !!locate(/obj/item) in held_items
 
 /**
@@ -314,6 +372,8 @@
  * If none were dropped, returns an empty list.
  */
 /mob/proc/drop_all_held_items()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/obj/item/I in held_items)
 		. |= dropItemToGround(I)
@@ -321,6 +381,8 @@
 //Here lie drop_from_inventory and before_item_take, already forgotten and not missed.
 
 /mob/proc/canUnEquip(obj/item/I, force)
+	procstart = null
+	src.procstart = null
 	if(!I)
 		return TRUE
 	if(HAS_TRAIT(I, TRAIT_NODROP) && !force)
@@ -328,6 +390,8 @@
 	return TRUE
 
 /mob/proc/putItemFromInventoryInHandIfPossible(obj/item/I, hand_index, force_removal = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!can_put_in_hand(I, hand_index))
 		return FALSE
 	if(!temporarilyRemoveItemFromInventory(I, force_removal))
@@ -347,6 +411,8 @@
  * If the item can be dropped, it will be forceMove()'d to the ground and the turf's Entered() will be called.
 */
 /mob/proc/dropItemToGround(obj/item/to_drop, force = FALSE, silent = FALSE, invdrop = TRUE)
+	procstart = null
+	src.procstart = null
 	if(isnull(to_drop))
 		return
 
@@ -382,6 +448,8 @@
 
 //for when the item will be immediately placed in a loc other than the ground
 /mob/proc/transferItemToLoc(obj/item/I, newloc = null, force = FALSE, silent = TRUE, animated = null)
+	procstart = null
+	src.procstart = null
 	. = doUnEquip(I, force, newloc, FALSE, silent = silent)
 	if(!.)
 		return
@@ -398,6 +466,8 @@
 //item MUST BE FORCEMOVE'D OR QDEL'D
 
 /mob/proc/temporarilyRemoveItemFromInventory(obj/item/item_dropping, force = FALSE, idrop = TRUE, atom/newloc = src)
+	procstart = null
+	src.procstart = null
 	return doUnEquip(item_dropping, force, newloc, TRUE, idrop, silent = TRUE)
 
 /**
@@ -415,6 +485,8 @@
  * silent - Arg passed to dropped() and signals, muting things like drop sound.
  */
 /mob/proc/doUnEquip(obj/item/item_dropping, force, atom/newloc, no_move, invdrop = TRUE, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	if(!item_dropping) //If there's nothing to drop, the drop is automatically successful. If(unEquip) should generally be used to check for TRAIT_NODROP.
 		return TRUE
@@ -461,6 +533,8 @@
  */
 
 /mob/proc/get_equipped_items(include_flags = NONE)
+	procstart = null
+	src.procstart = null
 	var/list/items = list()
 	for(var/obj/item/item_contents in contents)
 		if(item_contents.item_flags & IN_INVENTORY)
@@ -476,6 +550,8 @@
 
 ///Get all items in our possession that should affect our movespeed
 /mob/proc/get_equipped_speed_mod_items()
+	procstart = null
+	src.procstart = null
 	. = get_equipped_items(INCLUDE_ABSTRACT|INCLUDE_PROSTHETICS)
 	for(var/obj/item/thing in held_items)
 		if(thing.item_flags & SLOWS_WHILE_IN_HAND)
@@ -484,6 +560,8 @@
  * Returns the items that were successfully unequipped.
  */
 /mob/living/proc/unequip_everything()
+	procstart = null
+	src.procstart = null
 	var/list/items = list()
 	items |= get_equipped_items(INCLUDE_POCKETS)
 	// In case something isn't actually unequipped somehow
@@ -514,6 +592,8 @@
  * set indirect_action to allow insertions into "soft" locked objects, things that are easily opened by the owning mob
  */
 /mob/proc/equip_to_slot_if_possible(obj/item/W, slot, qdel_on_fail = FALSE, disable_warning = FALSE, redraw_mob = TRUE, bypass_equip_delay_self = FALSE, initial = FALSE, indirect_action = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(W) || QDELETED(W)) //This qdeleted is to prevent stupid behavior with things that qdel during init, like say stacks
 		return FALSE
 	if(!W.mob_can_equip(src, slot, disable_warning, bypass_equip_delay_self, indirect_action = indirect_action))
@@ -534,10 +614,14 @@
  *In most cases you will want to use equip_to_slot_if_possible()
  */
 /mob/proc/equip_to_slot(obj/item/equipping, slot, initial = FALSE, redraw_mob = FALSE, indirect_action = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 /// This proc is called after an item has been successfully handled and equipped to a slot.
 /mob/proc/has_equipped(obj/item/item, slot, initial = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	item.item_flags |= IN_INVENTORY
 	. = item.on_equipped(src, slot, initial)
@@ -546,6 +630,8 @@
 
 /// This proc is called after an item has been removed from a mob but before it has been officially deslotted.
 /mob/proc/has_unequipped(obj/item/item, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	item.dropped(src, silent)
 	update_equipment_speed_mods()
@@ -562,6 +648,8 @@
  * set indirect_action to allow insertions into "soft" locked objects, things that are easily opened by the owning mob
  */
 /mob/proc/equip_to_slot_or_del(obj/item/W, slot, initial = FALSE, indirect_action = FALSE)
+	procstart = null
+	src.procstart = null
 	return equip_to_slot_if_possible(W, slot, TRUE, TRUE, FALSE, TRUE, initial, indirect_action)
 
 /**
@@ -572,6 +660,8 @@
  * returns 0 if it cannot, 1 if successful
  */
 /mob/proc/equip_to_appropriate_slot(obj/item/W, qdel_on_fail = FALSE, indirect_action = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(W))
 		return FALSE
 	var/slot_priority = W.slot_equipment_priority
@@ -598,6 +688,8 @@
 
 /// Tries to equip an item, store it in open storage, or in next best storage
 /obj/item/proc/equip_to_best_slot(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.equip_to_appropriate_slot(src))
 		user.update_held_items()
 		return TRUE
@@ -637,6 +729,8 @@
 /// indirect_action - ignore "soft-locked" storages that can be easily opened
 /// del_on_fail - delete the item upon failure
 /mob/proc/equip_to_storage(obj/item/item, slot, indirect_action = FALSE, del_on_fail = FALSE, initial = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/worn_item = get_item_by_slot(slot)
 	if (worn_item?.atom_storage?.attempt_insert(item, src, override = TRUE, force = indirect_action ? STORAGE_SOFT_LOCKED : STORAGE_NOT_LOCKED, messages = FALSE))
 		return TRUE
@@ -651,6 +745,8 @@ GAME_VERB_HIDDEN(/mob, quick_equip, "quick-equip")
 
 ///proc extender of [/mob/verb/quick_equip] used to make the verb queuable if the server is overloaded
 /mob/proc/execute_quick_equip()
+	procstart = null
+	src.procstart = null
 	var/obj/item/I = get_active_held_item()
 	if(!I)
 		to_chat(src, span_warning("You are not holding anything to equip!"))
@@ -660,6 +756,8 @@ GAME_VERB_HIDDEN(/mob, quick_equip, "quick-equip")
 
 //used in code for items usable by both carbon and drones, this gives the proper back slot for each mob.(defibrillator, backpack watertank, ...)
 /mob/proc/getBackSlot()
+	procstart = null
+	src.procstart = null
 	return ITEM_SLOT_BACK
 
 //Inventory.dm is -kind of- an ok place for this I guess
@@ -669,6 +767,8 @@ GAME_VERB_HIDDEN(/mob, quick_equip, "quick-equip")
 //This is a very rare proc to call (besides admin fuckery) so
 //any cost it has isn't a worry
 /mob/proc/change_number_of_hands(amt)
+	procstart = null
+	src.procstart = null
 	if(amt < held_items.len)
 		for(var/i in held_items.len to amt step -1)
 			dropItemToGround(held_items[i])
@@ -684,6 +784,8 @@ GAME_VERB_HIDDEN(/mob, quick_equip, "quick-equip")
 
 //GetAllContents that is reasonable and not stupid
 /mob/living/proc/get_all_gear(equipment_flags = INCLUDE_ACCESSORIES|INCLUDE_PROSTHETICS, recursive = TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/processing_list = get_equipped_items(INCLUDE_POCKETS|INCLUDE_HELD|equipment_flags)
 	list_clear_nulls(processing_list) // handles empty hands
 	var/i = 0
@@ -695,6 +797,8 @@ GAME_VERB_HIDDEN(/mob, quick_equip, "quick-equip")
 
 /// Returns a list of things that the provided mob has, including any storage-capable implants.
 /mob/living/proc/gather_belongings(equipment_flags = INCLUDE_ACCESSORIES|INCLUDE_PROSTHETICS, recursive = TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/belongings = get_all_gear(equipment_flags, recursive)
 	for (var/obj/item/implant/storage/internal_bag in implants)
 		belongings += internal_bag.contents
@@ -702,6 +806,8 @@ GAME_VERB_HIDDEN(/mob, quick_equip, "quick-equip")
 
 /// Safely drop everything, without deconstructing the mob
 /mob/living/proc/drop_everything(del_on_drop, force, del_if_nodrop)
+	procstart = null
+	src.procstart = null
 	. = list() //list of items that were successfully dropped
 
 	var/list/all_gear = get_all_gear(INCLUDE_ACCESSORIES, recursive = FALSE)
@@ -725,6 +831,8 @@ GAME_VERB_HIDDEN(/mob, quick_equip, "quick-equip")
  * Returns an assoc list of item - its cell
  */
 /mob/living/proc/get_all_cells(max_percent = 1.0)
+	procstart = null
+	src.procstart = null
 	var/list/cell_items = list()
 	for(var/obj/item/stored in get_all_gear())
 		var/obj/item/stock_parts/power_store/stored_cell = stored.get_cell()

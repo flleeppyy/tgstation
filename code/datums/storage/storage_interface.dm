@@ -14,6 +14,8 @@
 	var/datum/storage/parent_storage
 
 /datum/storage_interface/New(ui_style, datum/storage/parent_storage, mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	src.parent_storage = parent_storage
 	var/datum/hud/owner_hud = user.hud_used
@@ -30,9 +32,13 @@
 
 /// Returns all UI elements under this theme
 /datum/storage_interface/proc/list_ui_elements(initializing = FALSE)
+	procstart = null
+	src.procstart = null
 	return list(cells, corner_top_left, corner_top_right, corner_bottom_left, corner_bottom_right, rowjoin_left, rowjoin_right, closer)
 
 /datum/storage_interface/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(closer)
 	QDEL_NULL(cells)
 	QDEL_NULL(corner_top_left)
@@ -130,6 +136,8 @@
 	var/obj/item/robot_model/robot_model
 
 /datum/storage_interface/silicon/New(ui_style, datum/storage/parent_storage, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	robot_model = parent_storage.real_location
 

@@ -2,6 +2,8 @@
 /datum/element/cuffable_item
 
 /datum/element/cuffable_item/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isitem(target))
@@ -16,6 +18,8 @@
 
 ///Tell the player about the interaction if they examine the item twice.
 /datum/element/cuffable_item/proc/on_examine_more(obj/item/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(length(user.held_items) < 0 || iscyborg(user) || source.anchored)
@@ -24,6 +28,8 @@
 
 ///Give context to players holding a pair of handcuffs when hovering the item
 /datum/element/cuffable_item/proc/on_requesting_context_from_item(datum/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!istype(held_item, /obj/item/restraints/handcuffs))
@@ -34,6 +40,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /datum/element/cuffable_item/proc/item_interaction(obj/item/source, mob/living/user, obj/item/tool, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(tool, /obj/item/restraints/handcuffs) || iscyborg(user) || source.anchored || !source.IsReachableBy(user))
@@ -44,6 +52,8 @@
 
 ///The proc responsible for adding the status effect to the player and all...
 /datum/element/cuffable_item/proc/apply_cuffs(obj/item/source, mob/living/user, obj/item/restraints/handcuffs/cuffs)
+	procstart = null
+	src.procstart = null
 	if(cuffs.used || DOING_INTERACTION_WITH_TARGET(user, source))
 		return
 

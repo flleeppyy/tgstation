@@ -93,6 +93,8 @@
 	start_open = FALSE
 
 /obj/item/modular_computer/laptop/gamer/install_default_programs()
+	procstart = null
+	src.procstart = null
 	// Only install starting programs, we don't want the software downloading program from default programs
 	for(var/programs in starting_programs)
 		var/datum/computer_file/program/program_type = new programs

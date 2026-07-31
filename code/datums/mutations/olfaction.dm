@@ -10,6 +10,8 @@
 	synchronizer_coeff = 1
 
 /datum/mutation/olfaction/setup()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/action/cooldown/spell/olfaction/to_modify = .
 	if(!istype(to_modify)) // null or invalid
@@ -32,6 +34,8 @@
 	var/sensitivity = 1
 
 /datum/action/cooldown/spell/olfaction/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	if(!isliving(cast_on))
 		return FALSE
 
@@ -47,6 +51,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/olfaction/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Can we sniff? is there miasma in the air?
 	var/datum/gas_mixture/air = cast_on.loc.return_air()
@@ -65,6 +71,8 @@
 
 /// Attempt to pick up a new target based on the fingerprints on [sniffed].
 /datum/action/cooldown/spell/olfaction/proc/pick_up_target(mob/living/caster, atom/sniffed)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/old_target = tracking_ref?.resolve()
 	var/list/possibles = list()
 	var/list/prints = GET_ATOM_FINGERPRINTS(sniffed)
@@ -104,6 +112,8 @@
 
 /// Attempt to follow our current tracking target.
 /datum/action/cooldown/spell/olfaction/proc/follow_target(mob/living/caster)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/current_target = tracking_ref?.resolve()
 	// Either our weakref failed to resolve (our target's gone),
 	// or we never had a target in the first place
@@ -117,6 +127,8 @@
 
 /// Actually go through and give the user a hint of the direction our target is.
 /datum/action/cooldown/spell/olfaction/proc/on_the_trail(mob/living/caster)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/current_target = tracking_ref?.resolve()
 	//Using get_turf to deal with those pesky closets that put your x y z to 0
 	var/turf/current_target_turf = get_turf(current_target)

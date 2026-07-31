@@ -18,6 +18,8 @@
 	var/min_pop_limit
 
 /datum/component/keep_me_secure/Initialize(secured_callback, unsecured_callback, min_pop_limit)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -26,11 +28,15 @@
 	src.min_pop_limit = min_pop_limit
 
 /datum/component/keep_me_secure/Destroy(force)
+	procstart = null
+	src.procstart = null
 	secured_callback = null
 	unsecured_callback = null
 	return ..()
 
 /datum/component/keep_me_secure/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	last_move = world.time
 	if (secured_callback || unsecured_callback)
 		START_PROCESSING(SSobj, src)
@@ -39,11 +45,15 @@
 
 
 /datum/component/keep_me_secure/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	UnregisterSignal(parent, COMSIG_ATOM_EXAMINE)
 
 /// Returns whether the game is supposed to consider the parent "secure".
 /datum/component/keep_me_secure/proc/is_secured()
+	procstart = null
+	src.procstart = null
 	if(living_player_count() < src.min_pop_limit)
 		return TRUE
 
@@ -58,6 +68,8 @@
 	return TRUE
 
 /datum/component/keep_me_secure/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(is_secured())
 		last_secured_location = get_turf(parent)
 		last_move = world.time
@@ -69,6 +81,8 @@
 
 /// signal sent when parent is examined
 /datum/component/keep_me_secure/proc/on_examine(mob/living/source, mob/examiner, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += span_boldnotice("[parent] should be secured at all times.")
@@ -80,6 +94,8 @@
 
 /// signal sent when parent is examined more
 /datum/component/keep_me_secure/proc/on_examine_more(mob/living/source, mob/examiner, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += span_notice("For [parent] to be secure, it needs to be:")

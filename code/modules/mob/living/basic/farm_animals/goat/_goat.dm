@@ -46,6 +46,8 @@
 	)
 
 /mob/living/basic/goat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_udder()
 	AddElement(/datum/element/cliff_walking) //we walk the cliff
@@ -62,6 +64,8 @@
 /// Called when we attack something in order to piece together the intent of the AI/user and provide desired behavior. The element might be okay here but I'd rather the fluff.
 /// Goats are really good at beating up plants by taking bites out of them, but we use the default attack for everything else
 /mob/living/basic/goat/proc/on_pre_attack(datum/source, atom/target)
+	procstart = null
+	src.procstart = null
 	if(is_type_in_list(target, edibles))
 		eat_plant(list(target))
 		return COMPONENT_HOSTILE_NO_ATTACK
@@ -91,6 +95,8 @@
 
 /// If we are being attacked by someone, give a nice fluff message. But only once in a while.
 /mob/living/basic/goat/proc/on_attacked(datum/source, atom/attacker, attack_flags)
+	procstart = null
+	src.procstart = null
 	if (!COOLDOWN_FINISHED(src, gleam_cooldown))
 		return
 	visible_message(
@@ -100,6 +106,8 @@
 
 /// Handles automagically eating a plant when we move into a turf that has one.
 /mob/living/basic/goat/proc/on_move(datum/source, atom/entering_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isturf(entering_loc) || stat == DEAD)
 		return
@@ -113,12 +121,16 @@
 
 /// When invoked, adds an udder when applicable. Male goats do not have udders.
 /mob/living/basic/goat/proc/add_udder()
+	procstart = null
+	src.procstart = null
 	if(gender == MALE)
 		return
 	AddComponent(/datum/component/udder)
 
 /// Proc that handles dealing with the various types of plants we might eat. Assumes that a valid list of type(s) will be passed in.
 /mob/living/basic/goat/proc/eat_plant(list/plants)
+	procstart = null
+	src.procstart = null
 	var/eaten = FALSE
 
 	for(var/atom/target as anything in plants)

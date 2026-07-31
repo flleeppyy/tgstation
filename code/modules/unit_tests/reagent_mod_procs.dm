@@ -1,4 +1,6 @@
 /datum/unit_test/reagent_mob_procs/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/food/hotdog/debug/fooditem = allocate(/obj/item/food/hotdog/debug)
 

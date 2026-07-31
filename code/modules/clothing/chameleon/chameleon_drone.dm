@@ -4,6 +4,8 @@
 	button_icon_state = "random"
 
 /datum/action/item_action/chameleon/drone/randomise/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	for(var/datum/action/item_action/chameleon/change/to_randomize in owner.actions)
 		to_randomize.random_look()
 	return TRUE
@@ -16,6 +18,8 @@
 	button_icon_state = "drone_camogear_helm"
 
 /datum/action/item_action/chameleon/drone/togglehatmask/New(Target)
+	procstart = null
+	src.procstart = null
 	if (istype(Target, /obj/item/clothing/head/chameleon/drone))
 		button_icon_state = "drone_camogear_helm"
 	if (istype(Target, /obj/item/clothing/mask/chameleon/drone))
@@ -23,9 +27,13 @@
 	return ..()
 
 /datum/action/item_action/chameleon/drone/togglehatmask/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	return ..() && isdrone(owner)
 
 /datum/action/item_action/chameleon/drone/togglehatmask/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/drone/droney = owner
 
 	// The drone unEquip() proc sets head to null after dropping

@@ -40,6 +40,8 @@ GLOBAL_LIST_INIT(glass_recipes, list ( \
 	acid = 100
 
 /obj/item/stack/sheet/glass/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins to slice [user.p_their()] neck with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 
@@ -47,10 +49,14 @@ GLOBAL_LIST_INIT(glass_recipes, list ( \
 	amount = 50
 
 /obj/item/stack/sheet/glass/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.glass_recipes
 
 /obj/item/stack/sheet/glass/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(istype(tool, /obj/item/lightreplacer))
 		var/obj/item/lightreplacer/lightreplacer = tool
@@ -120,10 +126,14 @@ GLOBAL_LIST_INIT(pglass_recipes, list ( \
 	acid = 100
 
 /obj/item/stack/sheet/plasmaglass/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.pglass_recipes
 
 /obj/item/stack/sheet/plasmaglass/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(!istype(tool, /obj/item/stack/rods))
 		return ..()
@@ -175,6 +185,8 @@ GLOBAL_LIST_INIT(reinforced_glass_recipes, list ( \
 	drop_sound = 'sound/items/handling/materials/glass_drop.ogg'
 
 /obj/item/stack/sheet/rglass/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/silicon = 10, /datum/reagent/iron = 10)
 
 /obj/item/stack/sheet/rglass/fifty
@@ -185,10 +197,14 @@ GLOBAL_LIST_INIT(reinforced_glass_recipes, list ( \
 	acid = 100
 
 /obj/item/stack/sheet/rglass/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	. = ..()
 
 /obj/item/stack/sheet/rglass/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.reinforced_glass_recipes
 
@@ -218,6 +234,8 @@ GLOBAL_LIST_INIT(prglass_recipes, list ( \
 	drop_sound = 'sound/items/handling/materials/glass_drop.ogg'
 
 /obj/item/stack/sheet/plasmarglass/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/silicon = 10, /datum/reagent/toxin/plasma = 10, /datum/reagent/iron = 10)
 
 /datum/armor/sheet_plasmarglass
@@ -229,6 +247,8 @@ GLOBAL_LIST_INIT(prglass_recipes, list ( \
 	amount = 50
 
 /obj/item/stack/sheet/plasmarglass/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.prglass_recipes
 
@@ -261,6 +281,8 @@ GLOBAL_LIST_INIT(titaniumglass_recipes, list(
 	acid = 100
 
 /obj/item/stack/sheet/titaniumglass/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.titaniumglass_recipes
 
@@ -294,6 +316,8 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	acid = 100
 
 /obj/item/stack/sheet/plastitaniumglass/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.plastitaniumglass_recipes
 
@@ -334,10 +358,14 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	acid = 100
 
 /obj/item/shard/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is slitting [user.p_their()] [pick("wrists", "throat")] with the shard of glass! It looks like [user.p_theyre()] trying to commit suicide."))
 	return BRUTELOSS
 
 /obj/item/shard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/caltrop, min_damage = force)
 	AddComponent(/datum/component/butchering, \
@@ -367,6 +395,8 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/item/shard/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/turf/T = get_turf(src)
@@ -374,6 +404,8 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 		SSblackbox.record_feedback("tally", "station_mess_destroyed", 1, name)
 
 /obj/item/shard/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user) || !user.is_holding(src))
 		return
 
@@ -385,6 +417,8 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	jab.apply_damage(force * 0.5, BRUTE, user.get_active_hand(), attacking_item = src)
 
 /obj/item/shard/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/lightreplacer))
 		var/obj/item/lightreplacer/lightreplacer = tool
 		lightreplacer.attempt_insert_shard(user, src)
@@ -407,6 +441,8 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/shard/welder_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(I.use_tool(src, user, 0, volume=50))
 		var/obj/item/stack/sheet/new_glass = new weld_material
 		to_chat(user, span_notice("You melt [src] down into [new_glass.name]."))
@@ -415,6 +451,8 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 		return ITEM_INTERACT_SUCCESS
 
 /obj/item/shard/proc/on_entered(datum/source, atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isliving(AM))
 		var/mob/living/L = AM

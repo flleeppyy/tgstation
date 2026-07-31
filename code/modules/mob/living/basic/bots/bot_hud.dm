@@ -1,7 +1,11 @@
 /mob/living/basic/bot/proc/diag_hud_set_bothealth()
+	procstart = null
+	src.procstart = null
 	set_hud_image_state(DIAG_HUD, "huddiag[RoundDiagBar(health/maxHealth)]")
 
 /mob/living/basic/bot/proc/diag_hud_set_botstat() //On (With wireless on or off), Off, EMP'ed
+	procstart = null
+	src.procstart = null
 	if(bot_mode_flags & BOT_MODE_ON)
 		set_hud_image_state(DIAG_STAT_HUD, "hudstat")
 		return
@@ -12,7 +16,9 @@
 
 	set_hud_image_state(DIAG_STAT_HUD, "huddead2")
 
-/mob/living/basic/bot/proc/diag_hud_set_botmode() //Shows a bot's current operation
+/mob/living/basic/bot/proc/diag_hud_set_botmode()
+	procstart = null
+	src.procstart = null //Shows a bot's current operation
 	if(client) //If the bot is player controlled, it will not be following mode logic!
 		set_hud_image_state(DIAG_BOT_HUD, "hudsentient")
 		return
@@ -33,6 +39,8 @@
 
 ///proc that handles drawing and transforming the bot's path onto diagnostic huds
 /mob/living/basic/bot/proc/generate_bot_path(datum/move_loop/has_target/jps/source, list/path)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(src, COMSIG_MOVELOOP_JPS_FINISHED_PATHING)
@@ -89,12 +97,16 @@
 
 ///proc that handles moving along the bot's drawn path
 /mob/living/basic/bot/proc/handle_loop_movement(atom/movable/source, atom/oldloc, dir, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	handle_hud_path()
 	on_bot_movement(source, oldloc, dir, forced)
 
 /mob/living/basic/bot/proc/handle_hud_path()
+	procstart = null
+	src.procstart = null
 	if(client || !length(current_pathed_turfs) || isnull(ai_controller))
 		return
 
@@ -106,6 +118,8 @@
 
 ///proc that handles deleting the bot's drawn path when needed
 /mob/living/basic/bot/proc/clear_path_hud(remove_hud = TRUE)
+	procstart = null
+	src.procstart = null
 	for(var/turf/index as anything in current_pathed_turfs)
 		var/image/our_image = current_pathed_turfs[index]
 		animate(our_image, alpha = 0, time = 0.3 SECONDS)

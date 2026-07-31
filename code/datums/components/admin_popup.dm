@@ -8,6 +8,8 @@
 	var/atom/movable/screen/admin_popup/admin_popup
 
 /datum/component/admin_popup/Initialize(datum/admin_help/ticket)
+	procstart = null
+	src.procstart = null
 	if (!istype(parent, /client))
 		return COMPONENT_INCOMPATIBLE
 
@@ -27,6 +29,8 @@
 	)
 
 /datum/component/admin_popup/Destroy(force)
+	procstart = null
+	src.procstart = null
 	var/client/parent_client = parent
 
 	parent_client?.screen -= admin_popup
@@ -44,6 +48,8 @@
 	return ..()
 
 /datum/component/admin_popup/proc/create_notice()
+	procstart = null
+	src.procstart = null
 	if(admin_popup)
 		qdel(admin_popup)
 	admin_popup = new
@@ -53,6 +59,8 @@
 	parent_client.screen += admin_popup
 
 /datum/component/admin_popup/proc/delete_self()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
@@ -84,19 +92,27 @@
 	var/last_update_time = 0
 
 /atom/movable/screen/admin_popup/Initialize(mapload, datum/hud/hud_owner, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	START_PROCESSING(SSobj, src)
 	update_text()
 
 /atom/movable/screen/admin_popup/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /atom/movable/screen/admin_popup/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	update_text()
 
 /atom/movable/screen/admin_popup/proc/update_text()
+	procstart = null
+	src.procstart = null
 	// Even if processing time changes, we want this to remain slow.
 	// We want to pester them into reading their ticket, not give them a seizure!
 	if (world.time - last_update_time < 2 SECONDS)
@@ -114,6 +130,8 @@
 /// Tries to give the target an admin popup.
 /// If it fails, will send the error to the passed admin.
 /proc/give_admin_popup(client/target, client/admin, message)
+	procstart = null
+	src.procstart = null
 	log_admin("[key_name(admin)] sent an admin popup to [key_name(target)].")
 
 	var/datum/admin_help/current_ticket = target.current_ticket

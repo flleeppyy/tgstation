@@ -15,16 +15,22 @@
 	var/uses_left = 20
 
 /obj/item/bait_can/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/fresh_bait = retrieve_bait(user)
 	if(fresh_bait)
 		user.put_in_hands(fresh_bait)
 
 /obj/item/bait_can/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info("It[uses_left ? " has got [uses_left] [bait_type::name] left" : "'s empty"].")
 
 /obj/item/bait_can/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = base_icon_state
 	if(uses_left <= initial(uses_left))
@@ -34,6 +40,8 @@
 			icon_state = "[icon_state]_open"
 
 /obj/item/bait_can/proc/retrieve_bait(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!uses_left)
 		user.balloon_alert(user, "empty")
 		return
@@ -74,30 +82,42 @@
 	var/spin_frequency = list(2 SECONDS, 3 SECONDS)
 
 /obj/item/fishing_lure/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_FISHING_BAIT, TRAIT_BAIT_ALLOW_FISHING_DUD, TRAIT_OMNI_BAIT, TRAIT_BAIT_UNCONSUMABLE), INNATE_TRAIT)
 	RegisterSignal(src, COMSIG_ITEM_FISHING_ROD_SLOTTED, PROC_REF(on_fishing_rod_slotted))
 	RegisterSignal(src, COMSIG_ITEM_FISHING_ROD_UNSLOTTED, PROC_REF(on_fishing_rod_unslotted))
 
 /obj/item/fishing_lure/proc/on_fishing_rod_slotted(datum/source, obj/item/fishing_rod/rod, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	rod.spin_frequency = spin_frequency
 
 /obj/item/fishing_lure/proc/on_fishing_rod_unslotted(datum/source, obj/item/fishing_rod/rod, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	rod.spin_frequency = null
 
 ///Called for every fish subtype by the fishing subsystem when initializing, to populate the list of fish that can be catched with this lure.
 /obj/item/fishing_lure/proc/is_catchable_fish(obj/item/fish/fish, list/fish_properties)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/item/fishing_lure/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info("It has to be spun with a frequency of [spin_frequency[1] * 0.1] to [spin_frequency[2] * 0.1] seconds while fishing.")
 	if(HAS_MIND_TRAIT(user, TRAIT_EXAMINE_FISHING_SPOT))
 		. += span_tinynotice("Thanks to your experience, you can examine it again to get a list of fish you can catch with it.")
 
 /obj/item/fishing_lure/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_MIND_TRAIT(user, TRAIT_EXAMINE_FISHING_SPOT))
 		return
@@ -114,6 +134,8 @@
 
 ///Check if the fish is in the list of catchable fish for this fishing lure. Return value is a multiplier.
 /obj/item/fishing_lure/check_bait(obj/item/fish/fish)
+	procstart = null
+	src.procstart = null
 	var/multiplier = 0
 	var/is_instance = istype(fish)
 	var/list/fish_properties = SSfishing.fish_properties[is_instance ? fish.type : fish]
@@ -132,6 +154,8 @@
 	icon_state = "minnow"
 
 /obj/item/fishing_lure/minnow/is_catchable_fish(obj/item/fish/fish, list/fish_properties)
+	procstart = null
+	src.procstart = null
 	var/intermediate_size = FISH_SIZE_SMALL_MAX + (FISH_SIZE_NORMAL_MAX - FISH_SIZE_SMALL_MAX)
 	if(!ISINRANGE(fish.size, FISH_SIZE_TINY_MAX * 0.5, intermediate_size))
 		return FALSE
@@ -145,6 +169,8 @@
 	icon_state = "plug"
 
 /obj/item/fishing_lure/plug/is_catchable_fish(obj/item/fish/fish, list/fish_properties)
+	procstart = null
+	src.procstart = null
 	if(fish.size <= FISH_SIZE_SMALL_MAX)
 		return FALSE
 	if(length(list(/datum/fish_trait/vegan, /datum/fish_trait/picky_eater, /datum/fish_trait/nocturnal, /datum/fish_trait/heavy) & fish.fish_traits))
@@ -158,6 +184,8 @@
 	spin_frequency = list(1.5 SECONDS, 2.8 SECONDS)
 
 /obj/item/fishing_lure/dropping/is_catchable_fish(obj/item/fish/fish, list/fish_properties)
+	procstart = null
+	src.procstart = null
 	var/list/sources = list(/datum/fish_source/toilet, /datum/fish_source/moisture_trap)
 	for(var/datum/fish_source/source as anything in sources)
 		var/datum/fish_source/instance = GLOB.preset_fish_sources[/datum/fish_source/toilet]
@@ -178,6 +206,8 @@
 	spin_frequency = list(1.25 SECONDS, 2.25 SECONDS)
 
 /obj/item/fishing_lure/spoon/is_catchable_fish(obj/item/fish/fish, list/fish_properties)
+	procstart = null
+	src.procstart = null
 	if(!ISINRANGE(fish.size, FISH_SIZE_TINY_MAX + 1, FISH_SIZE_NORMAL_MAX))
 		return FALSE
 	if(length(list(/datum/fish_trait/vegan, /datum/fish_trait/picky_eater, /datum/fish_trait/nocturnal, /datum/fish_trait/heavy) & fish.fish_traits))
@@ -196,6 +226,8 @@
 	spin_frequency = list(1.1 SECONDS, 2 SECONDS)
 
 /obj/item/fishing_lure/artificial_fly/is_catchable_fish(obj/item/fish/fish, list/fish_properties)
+	procstart = null
+	src.procstart = null
 	if(/datum/fish_trait/picky_eater in fish.fish_traits)
 		return TRUE
 	return FALSE
@@ -207,22 +239,32 @@
 	spin_frequency = list(3 SECONDS, 3.8 SECONDS)
 
 /obj/item/fishing_lure/led/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/item/fishing_lure/led/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance(icon, "led_emissive", src)
 
 /obj/item/fishing_lure/led/on_fishing_rod_slotted(obj/item/fishing_rod/rod, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(rod, TRAIT_ROD_IGNORE_ENVIRONMENT, type)
 
 /obj/item/fishing_lure/led/on_fishing_rod_unslotted(obj/item/fishing_rod/rod, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(rod, TRAIT_ROD_IGNORE_ENVIRONMENT, type)
 
 /obj/item/fishing_lure/led/is_catchable_fish(obj/item/fish/fish, list/fish_properties)
+	procstart = null
+	src.procstart = null
 	if(length(list(/datum/fish_trait/nocturnal, /datum/fish_trait/heavy) & fish.fish_traits))
 		return TRUE
 	return FALSE
@@ -234,14 +276,20 @@
 	spin_frequency = list(1.5 SECONDS, 2.7 SECONDS)
 
 /obj/item/fishing_lure/lucky_coin/on_fishing_rod_slotted(obj/item/fishing_rod/rod, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(rod, TRAIT_ROD_ATTRACT_SHINY_LOVERS, REF(src))
 
 /obj/item/fishing_lure/lucky_coin/on_fishing_rod_unslotted(obj/item/fishing_rod/rod, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(rod, TRAIT_ROD_ATTRACT_SHINY_LOVERS, REF(src))
 
 /obj/item/fishing_lure/lucky_coin/is_catchable_fish(obj/item/fish/fish, list/fish_properties)
+	procstart = null
+	src.procstart = null
 	if(/datum/fish_trait/shiny_lover in fish.fish_traits)
 		return TRUE
 	return FALSE
@@ -253,6 +301,8 @@
 	spin_frequency = list(3 SECONDS, 5 SECONDS)
 
 /obj/item/fishing_lure/algae/is_catchable_fish(obj/item/fish/fish, list/fish_properties)
+	procstart = null
+	src.procstart = null
 	if(/datum/fish_trait/vegan in fish.fish_traits)
 		return TRUE
 	return FALSE
@@ -264,6 +314,8 @@
 	spin_frequency = list(1 SECONDS, 2.7 SECONDS)
 
 /obj/item/fishing_lure/grub/is_catchable_fish(obj/item/fish/fish, list/fish_properties)
+	procstart = null
+	src.procstart = null
 	if(fish.size >= FISH_SIZE_SMALL_MAX)
 		return FALSE
 	if(length(list(/datum/fish_trait/vegan, /datum/fish_trait/picky_eater) & fish.fish_traits))
@@ -277,6 +329,8 @@
 	spin_frequency = list(0.8 SECONDS, 1.7 SECONDS)
 
 /obj/item/fishing_lure/buzzbait/is_catchable_fish(obj/item/fish/fish, list/fish_properties)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(fish, TRAIT_FISH_ELECTROGENESIS))
 		return TRUE
 	return FALSE
@@ -288,6 +342,8 @@
 	spin_frequency = list(2 SECONDS, 4 SECONDS)
 
 /obj/item/fishing_lure/spinnerbait/is_catchable_fish(obj/item/fish/fish, list/fish_properties)
+	procstart = null
+	src.procstart = null
 	if(!(/datum/fish_trait/predator in fish.fish_traits))
 		return FALSE
 	var/init_fluid_type = fish.required_fluid_type
@@ -304,6 +360,8 @@
 	spin_frequency = list(2 SECONDS, 4 SECONDS)
 
 /obj/item/fishing_lure/daisy_chain/is_catchable_fish(obj/item/fish/fish, list/fish_properties)
+	procstart = null
+	src.procstart = null
 	if(!(/datum/fish_trait/predator in fish.fish_traits))
 		return FALSE
 	var/init_fluid_type = fish.required_fluid_type

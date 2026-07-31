@@ -19,12 +19,16 @@
 	var/list/initial_cards = list()
 
 /obj/item/toy/cards/Destroy()
+	procstart = null
+	src.procstart = null
 	if (!isnull(card_atoms))
 		QDEL_LIST(card_atoms)
 	return ..()
 
 /// This is how we play 52 card pickup
 /obj/item/toy/cards/throw_impact(mob/living/target, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !istype(target)) // was it caught or is the target not a living mob
 		return .
@@ -72,6 +76,8 @@
  * * card_item - Either a singlecard or cardhand that gets inserted into the src
  */
 /obj/item/toy/cards/proc/insert(obj/item/toy/card_item)
+	procstart = null
+	src.procstart = null
 	fetch_card_atoms()
 	// Can't add any cards, don't do anything
 	if (count_cards() >= card_limit)
@@ -122,6 +128,8 @@
  * * obj/item/toy/singlecard/card (optional) - The card drawn from the hand
 **/
 /obj/item/toy/cards/proc/draw(mob/living/user, obj/item/toy/singlecard/card)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user) || !user.can_perform_action(src, NEED_DEXTERITY | FORBID_TELEKINESIS_REACH))
 		return
 
@@ -140,12 +148,16 @@
 
 /// Picks what card the user draws from the deck
 /obj/item/toy/cards/proc/pick_card(mob/living/user, list/obj/item/toy/singlecard/cards)
+	procstart = null
+	src.procstart = null
 	// By default just pick the top card
 	return cards[1]
 
 /// Returns the cards in this deck.
 /// Lazily generates the cards if they haven't already been made.
 /obj/item/toy/cards/proc/fetch_card_atoms()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list/obj/item/toy/singlecard)
 
 	if (!isnull(card_atoms))
@@ -170,6 +182,8 @@
 /// Returns the number of cards in the deck.
 /// Avoids creating any cards if it is unnecessary.
 /obj/item/toy/cards/proc/count_cards()
+	procstart = null
+	src.procstart = null
 	return isnull(card_atoms) ? initial_cards.len : LAZYLEN(card_atoms)
 
 /// A basic interface for creating a card for a deck that isn't just a name.
@@ -181,23 +195,33 @@
 	var/path = /obj/item/toy/singlecard
 
 /datum/deck_card/New(name)
+	procstart = null
+	src.procstart = null
 	if (!isnull(name))
 		src.name = name
 
 /// Creates a card for the given deck
 /datum/deck_card/proc/create_card(obj/item/toy/cards/deck)
+	procstart = null
+	src.procstart = null
 	var/card = new path(deck, name, deck)
 	update_card(card)
 	return card
 
 /datum/deck_card/proc/update_card(obj/item/toy/singlecard/card)
+	procstart = null
+	src.procstart = null
 	CRASH("[type] does not implement update_card. If you just want a name, use a string instead.")
 
 /// A /datum/deck_card that just creates a card of the given type
 /datum/deck_card/of_type
 
 /datum/deck_card/of_type/New(path)
+	procstart = null
+	src.procstart = null
 	src.path = path
 
 /datum/deck_card/of_type/create_card(obj/item/toy/cards/deck)
+	procstart = null
+	src.procstart = null
 	return new path(deck)

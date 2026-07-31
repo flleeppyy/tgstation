@@ -16,6 +16,8 @@
 	var/spawn_under_hallucinator = FALSE
 
 /datum/hallucination/body/start()
+	procstart = null
+	src.procstart = null
 	// This hallucination is purely visual, so we don't need to bother for clientless mobs
 	if(!hallucinator.client || IS_UNCONSCIOUS(hallucinator))
 		return FALSE
@@ -42,16 +44,22 @@
 	return queue_cleanup()
 
 /datum/hallucination/body/proc/queue_cleanup()
+	procstart = null
+	src.procstart = null
 	QDEL_IN(src, rand(3 SECONDS, 5 SECONDS)) //Only seen for a brief moment.
 	return TRUE
 
 /datum/hallucination/body/Destroy()
+	procstart = null
+	src.procstart = null
 	hallucinator.client?.images -= shown_body
 	shown_body = null
 	return ..()
 
 /// Makes the image of the body to show at the location passed.
 /datum/hallucination/body/proc/make_body_image(turf/location)
+	procstart = null
+	src.procstart = null
 	var/image/created_image = image(body_image_file, location, body_image_state, body_layer)
 	SET_PLANE_EXPLICIT(created_image, GAME_PLANE, location)
 	if(body_floats)
@@ -67,6 +75,8 @@
 	random_hallucination_weight = 4
 
 /datum/hallucination/body/husk/sideways/make_body_image(turf/location)
+	procstart = null
+	src.procstart = null
 	var/image/body = ..()
 	var/matrix/turn_matrix = matrix()
 	turn_matrix.Turn(90)
@@ -92,6 +102,8 @@
 	var/del_timerid
 
 /datum/hallucination/body/staticguy/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(hallucinator))
 		UnregisterSignal(hallucinator, COMSIG_MOVABLE_MOVED)
 	if(del_timerid)
@@ -100,12 +112,16 @@
 	return ..()
 
 /datum/hallucination/body/staticguy/queue_cleanup()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(hallucinator, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
 	del_timerid = QDEL_IN_STOPPABLE(src, rand(2 MINUTES, 3 MINUTES))
 	return TRUE
 
 /// Signal proc for [COMSIG_MOVABLE_MOVED] - if we move out of view of the hallucination, it disappears, how spooky
 /datum/hallucination/body/staticguy/proc/on_move(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Entering its turf will cause it to fade out then delete
@@ -172,6 +188,8 @@
 	hallucination_tier = HALLUCINATION_TIER_VERYSPECIAL
 
 /datum/hallucination/body/weird/freezer/make_body_image(turf/location)
+	procstart = null
+	src.procstart = null
 	var/image/body = ..()
 	body.pixel_w = pick(rand(-208,-48), rand(48, 208))
 	body.pixel_z = pick(rand(-208,-48), rand(48, 208))
@@ -180,6 +198,8 @@
 	return body
 
 /datum/hallucination/body/weird/freezer/queue_cleanup()
+	procstart = null
+	src.procstart = null
 	QDEL_IN(src, 12 SECONDS) //The freezer stays on screen while you're frozen
 	addtimer(CALLBACK(src, PROC_REF(freeze_player)), 1 SECONDS) // You barely have a moment to react before you're frozen
 	addtimer(CALLBACK(src, PROC_REF(freeze_intimidate)), 11.8 SECONDS)
@@ -187,11 +207,15 @@
 	return TRUE
 
 /datum/hallucination/body/weird/freezer/proc/freeze_player()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	hallucinator.cause_hallucination(/datum/hallucination/ice, "freezer hallucination", duration = 11 SECONDS, play_freeze_sound = FALSE)
 
 /datum/hallucination/body/weird/freezer/proc/freeze_intimidate()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	// Spook 'em before we delete

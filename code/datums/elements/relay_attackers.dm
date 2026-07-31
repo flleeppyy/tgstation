@@ -6,6 +6,8 @@
 /datum/element/relay_attackers
 
 /datum/element/relay_attackers/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!HAS_TRAIT(target, TRAIT_RELAYING_ATTACKER)) // Little bit gross but we want to just apply this shit from a bunch of places
 		// Boy this sure is a lot of ways to tell us that someone tried to attack us
@@ -19,6 +21,8 @@
 	ADD_TRAIT(target, TRAIT_RELAYING_ATTACKER, REF(src))
 
 /datum/element/relay_attackers/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, list(
 		COMSIG_ATOM_AFTER_ATTACKEDBY,
@@ -35,11 +39,15 @@
 	REMOVE_TRAIT(source, TRAIT_RELAYING_ATTACKER, REF(src))
 
 /datum/element/relay_attackers/proc/after_attackby(atom/target, obj/item/weapon, mob/attacker, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(weapon.force)
 		relay_attacker(target, attacker, weapon.damtype == STAMINA ? ATTACKER_STAMINA_ATTACK : ATTACKER_DAMAGING_ATTACK, get_dir(target, attacker))
 
 /datum/element/relay_attackers/proc/on_attack_generic(atom/target, mob/living/attacker, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Check for a shove.
@@ -53,12 +61,16 @@
 		return
 
 /datum/element/relay_attackers/proc/on_attack_npc(atom/target, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(attacker.melee_damage_upper > 0)
 		relay_attacker(target, attacker, ATTACKER_DAMAGING_ATTACK, get_dir(target, attacker))
 
 /// Even if another component blocked this hit, someone still shot at us
 /datum/element/relay_attackers/proc/on_bullet_act(atom/target, obj/projectile/hit_projectile)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!hit_projectile.is_hostile_projectile())
 		return
@@ -68,6 +80,8 @@
 
 /// Even if another component blocked this hit, someone still threw something
 /datum/element/relay_attackers/proc/on_hitby(atom/target, atom/movable/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isitem(hit_atom))
 		return
@@ -80,13 +94,19 @@
 	relay_attacker(target, thrown_by, ATTACK_RANGED | hit_item.damtype == STAMINA ? ATTACKER_STAMINA_ATTACK : ATTACKER_DAMAGING_ATTACK, get_dir(target, hit_atom))
 
 /datum/element/relay_attackers/proc/on_attack_hulk(atom/target, mob/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	relay_attacker(target, attacker, ATTACKER_DAMAGING_ATTACK, get_dir(target, attacker))
 
 /datum/element/relay_attackers/proc/on_attack_mech(atom/target, obj/vehicle/sealed/mecha/mecha_attacker, mob/living/pilot, mecha_attack_cooldown)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	relay_attacker(target, mecha_attacker, ATTACKER_DAMAGING_ATTACK, get_dir(target, mecha_attacker))
 
 /// Send out a signal identifying whoever just attacked us (usually a mob but sometimes a mech or turret)
 /datum/element/relay_attackers/proc/relay_attacker(atom/victim, atom/attacker, attack_flags, direction)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(victim, COMSIG_ATOM_WAS_ATTACKED, attacker, attack_flags, direction)

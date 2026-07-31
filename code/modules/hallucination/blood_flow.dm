@@ -7,6 +7,8 @@
 	var/obj/item/bodypart/bleeding_bodypart
 
 /datum/hallucination/blood_flow/start()
+	procstart = null
+	src.procstart = null
 	if(!hallucinator.client || !iscarbon(hallucinator))
 		return FALSE
 
@@ -50,21 +52,29 @@
 	return TRUE
 
 /datum/hallucination/blood_flow/Destroy()
+	procstart = null
+	src.procstart = null
 	hallucinator.client?.images -= bleeding
 	return ..()
 
 /datum/hallucination/blood_flow/proc/by_god()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || QDELETED(hallucinator) || QDELETED(bleeding_bodypart))
 		return
 
 	to_chat(hallucinator, span_warning("The blood doesn't stop flowing, yet [bleeding_bodypart.plaintext_zone] doesn't seem to hurt..."))
 
 /datum/hallucination/blood_flow/proc/on_update_blood_status(datum/source, had_blood, has_blood, old_blood_volume, new_blood_volume)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!has_blood)
 		stop_bleeding()
 
 /datum/hallucination/blood_flow/proc/stop_bleeding()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(bleeding_bodypart, list(COMSIG_QDELETING, COMSIG_BODYPART_REMOVED))
 	UnregisterSignal(hallucinator, COMSIG_LIVING_UPDATE_BLOOD_STATUS)
@@ -74,6 +84,8 @@
 		qdel(src)
 
 /datum/hallucination/blood_flow/proc/stamina_loop()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	while(!QDELETED(src) && !QDELETED(hallucinator))
 		hallucinator.adjust_stamina_loss(5)

@@ -86,6 +86,8 @@
 
 // create a new lighting fixture
 /obj/machinery/light/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Detect and scream about double stacked lights
@@ -119,13 +121,19 @@
 		find_and_mount_on_atom(mark_for_late_init = TRUE)
 
 /obj/machinery/light/get_turfs_to_mount_on()
+	procstart = null
+	src.procstart = null
 	return list(get_step(src, dir))
 
 /obj/machinery/light/find_and_mount_on_atom(mark_for_late_init, late_init)
+	procstart = null
+	src.procstart = null
 	if(break_if_moved)
 		return ..()
 
 /obj/machinery/light/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 #ifndef MAP_TEST
 	if(allow_break_on_init)
@@ -140,6 +148,8 @@
 	update(trigger = FALSE)
 
 /obj/machinery/light/Destroy()
+	procstart = null
+	src.procstart = null
 	var/area/local_area = get_room_area()
 	if(local_area)
 		on = FALSE
@@ -147,16 +157,22 @@
 	return ..()
 
 /obj/machinery/light/Move()
+	procstart = null
+	src.procstart = null
 	if(status != LIGHT_BROKEN && break_if_moved)
 		break_light_tube(TRUE)
 	return ..()
 
 /obj/machinery/light/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == cell)
 		cell = null
 
 /obj/machinery/light/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light(l_dir = REVERSE_DIR(dir))
 
@@ -164,6 +180,8 @@
 // By shifting the light position we use forward a bit, towards something that isn't off by 0.5 from being in angle
 // Because angle calculation is kinda harsh it's hard to find a happy point between fulldark and fullbright for the corners behind the light. this is good enough tho
 /obj/machinery/light/get_light_offset()
+	procstart = null
+	src.procstart = null
 	var/list/hand_back = ..()
 	var/list/dir_offset = dir2offset(REVERSE_DIR(dir))
 	hand_back[1] += dir_offset[1] * 0.5
@@ -171,6 +189,8 @@
 	return hand_back
 
 /obj/machinery/light/update_icon_state()
+	procstart = null
+	src.procstart = null
 	switch(status) // set icon_states
 		if(LIGHT_OK)
 			var/area/local_area = get_room_area()
@@ -187,6 +207,8 @@
 	return ..()
 
 /obj/machinery/light/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!on || status != LIGHT_OK)
 		return
@@ -209,6 +231,8 @@
 // Area sensitivity is traditionally tied directly to power use, as an optimization
 // But since we want it for fire reacting, we disregard that
 /obj/machinery/light/setup_area_power_relationship()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -216,20 +240,28 @@
 	RegisterSignal(our_area, COMSIG_AREA_FIRE_CHANGED, PROC_REF(handle_fire))
 
 /obj/machinery/light/on_enter_area(datum/source, area/area_to_register)
+	procstart = null
+	src.procstart = null
 	..()
 	RegisterSignal(area_to_register, COMSIG_AREA_FIRE_CHANGED, PROC_REF(handle_fire))
 	handle_fire(area_to_register, area_to_register.fire)
 
 /obj/machinery/light/on_exit_area(datum/source, area/area_to_unregister)
+	procstart = null
+	src.procstart = null
 	..()
 	UnregisterSignal(area_to_unregister, COMSIG_AREA_FIRE_CHANGED)
 
 /obj/machinery/light/proc/handle_fire(area/source, new_fire)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update()
 
 // update the icon_state and luminosity of the light depending on its state
 /obj/machinery/light/proc/update(trigger = TRUE)
+	procstart = null
+	src.procstart = null
 	switch(status)
 		if(LIGHT_BROKEN,LIGHT_BURNED,LIGHT_EMPTY)
 			on = FALSE
@@ -295,6 +327,8 @@
 	broken_sparks(start_only=TRUE)
 
 /obj/machinery/light/update_current_power_usage()
+	procstart = null
+	src.procstart = null
 	if(!on && static_power_used > 0) //Light is off but still powered
 		removeStaticPower(static_power_used, AREA_USAGE_STATIC_LIGHT)
 		static_power_used = 0
@@ -311,10 +345,14 @@
 			addStaticPower(static_power_used, AREA_USAGE_STATIC_LIGHT)
 
 /obj/machinery/light/update_atom_colour()
+	procstart = null
+	src.procstart = null
 	..()
 	update()
 
 /obj/machinery/light/proc/broken_sparks(start_only=FALSE)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(src) && status == LIGHT_BROKEN && has_power() && MC_RUNNING())
 		if(!start_only)
 			do_sparks(3, TRUE, src)
@@ -322,11 +360,15 @@
 		addtimer(CALLBACK(src, PROC_REF(broken_sparks)), delay, TIMER_UNIQUE | TIMER_NO_HASH_WAIT)
 
 /obj/machinery/light/proc/is_full_charge()
+	procstart = null
+	src.procstart = null
 	if(cell)
 		return cell.charge == cell.maxcharge
 	return TRUE
 
 /obj/machinery/light/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(has_power())
 		// If the cell is done mooching station power, and reagents don't need processing, stop processing
 		if(is_full_charge() && !reagents)
@@ -341,6 +383,8 @@
 		return PROCESS_KILL
 
 /obj/machinery/light/proc/burn_out()
+	procstart = null
+	src.procstart = null
 	if(status == LIGHT_OK)
 		status = LIGHT_BURNED
 		icon_state = "[base_state]-burned"
@@ -350,6 +394,8 @@
 // attempt to set the light's on/off status
 // will not switch on if broken/burned/empty
 /obj/machinery/light/proc/set_on(turn_on)
+	procstart = null
+	src.procstart = null
 	var/was_on = on
 	on = (turn_on && status == LIGHT_OK)
 	if(on == was_on)
@@ -358,6 +404,8 @@
 	update()
 
 /obj/machinery/light/get_cell()
+	procstart = null
+	src.procstart = null
 	if (has_mock_cell)
 		cell = new /obj/item/stock_parts/power_store/cell/emergency_light(src)
 		has_mock_cell = FALSE
@@ -366,6 +414,8 @@
 
 // examine verb
 /obj/machinery/light/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(status)
 		if(LIGHT_OK)
@@ -383,6 +433,8 @@
 
 // insert light (if right type), otherwise try to break the light
 /obj/machinery/light/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// attempt to insert light
 	if(istype(tool, /obj/item/light))
 		if(status == LIGHT_OK)
@@ -430,6 +482,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/light/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(status != LIGHT_EMPTY || user.combat_mode)
 		return NONE
 	tool.play_tool_sound(src, 75)
@@ -440,6 +494,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/light/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 
 	var/obj/structure/light_construct/frame = null
 	switch(fitting)
@@ -468,6 +524,8 @@
 		frame.cell = real_cell
 
 /obj/machinery/light/attacked_by(obj/item/attacking_object, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. <= 0)
 		return
@@ -480,12 +538,16 @@
 	electrocute_mob(user, get_area(src), src, 0.3, TRUE)
 
 /obj/machinery/light/take_damage(damage_amount, damage_type = BRUTE, damage_flag = "", sound_effect = TRUE, attack_dir, armour_penetration = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && !QDELETED(src))
 		if(prob(damage_amount * 5))
 			break_light_tube()
 
 /obj/machinery/light/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			switch(status)
@@ -501,18 +563,24 @@
 // returns if the light has power /but/ is manually turned off
 // if a light is turned off, it won't activate emergency power
 /obj/machinery/light/proc/turned_off()
+	procstart = null
+	src.procstart = null
 	var/area/local_area = get_room_area()
 	return (local_area && !local_area.lightswitch && local_area.power_light) || flickering
 
 // returns whether this light has power
 // true if area has power and lightswitch is on
 /obj/machinery/light/proc/has_power()
+	procstart = null
+	src.procstart = null
 	var/area/local_area = get_room_area()
 	return local_area && local_area.lightswitch && local_area.power_light
 
 // returns whether this light has emergency power
 // can also return if it has access to a certain amount of that power
 /obj/machinery/light/proc/has_emergency_power(power_usage_amount)
+	procstart = null
+	src.procstart = null
 	if(no_low_power || (!cell && !has_mock_cell))
 		return FALSE
 	if (has_mock_cell)
@@ -523,6 +591,8 @@
 
 // attempts to use power from the installed emergency cell, returns true if it does and false if it doesn't
 /obj/machinery/light/proc/use_emergency_power(power_usage_amount = LIGHT_EMERGENCY_POWER_USE)
+	procstart = null
+	src.procstart = null
 	if(!has_emergency_power(power_usage_amount))
 		return FALSE
 	var/obj/item/stock_parts/power_store/real_cell = get_cell()
@@ -539,6 +609,8 @@
 	return TRUE
 
 /obj/machinery/light/proc/flicker(amount = 1)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(flickering || !on || status != LIGHT_OK)
 		return
@@ -572,6 +644,8 @@
 // ai attack - make lights flicker, because why not
 
 /obj/machinery/light/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	no_low_power = !no_low_power
 	to_chat(user, span_notice("Emergency lights for this fixture have been [no_low_power ? "disabled" : "enabled"]."))
 	update(FALSE)
@@ -581,6 +655,8 @@
 // if hands aren't protected and the light is on, burn the player
 
 /obj/machinery/light/attack_hand_secondary(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -645,14 +721,20 @@
 	drop_light_tube(user)
 
 /obj/machinery/light/proc/set_major_emergency_light()
+	procstart = null
+	src.procstart = null
 	major_emergency = TRUE
 	update()
 
 /obj/machinery/light/proc/unset_major_emergency_light()
+	procstart = null
+	src.procstart = null
 	major_emergency = FALSE
 	update()
 
 /obj/machinery/light/proc/drop_light_tube(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/light/light_object = new light_type()
 	if(reagents)
 		reagents.trans_to(light_object.reagents, LIGHT_REAGENT_CAPACITY)
@@ -676,6 +758,8 @@
 	return light_object
 
 /obj/machinery/light/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(status == LIGHT_EMPTY)
 		to_chat(user, span_warning("There is no [fitting] in this light!"))
 		return
@@ -687,6 +771,8 @@
 
 // break the light and make sparks if was on, state is mutated BEFORE firing side-effects to prevent re-entrancy loops from synchronous signals.
 /obj/machinery/light/proc/break_light_tube(skip_sound_and_sparks = FALSE)
+	procstart = null
+	src.procstart = null
 	if(status == LIGHT_EMPTY || status == LIGHT_BROKEN)
 		return
 
@@ -702,6 +788,8 @@
 	update()
 
 /obj/machinery/light/proc/fix()
+	procstart = null
+	src.procstart = null
 	if(status == LIGHT_OK)
 		return
 	status = LIGHT_OK
@@ -710,6 +798,8 @@
 	update()
 
 /obj/machinery/light/zap_act(power, zap_flags)
+	procstart = null
+	src.procstart = null
 	var/explosive = zap_flags & ZAP_MACHINE_EXPLOSIVE
 	zap_flags &= ~(ZAP_MACHINE_EXPLOSIVE | ZAP_OBJ_DAMAGE)
 	. = ..()
@@ -719,6 +809,8 @@
 
 // called when area power state changes
 /obj/machinery/light/power_change()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	var/area/local_area = get_room_area()
 	set_on(local_area.lightswitch && local_area.power_light)
@@ -726,23 +818,33 @@
 // called when heated
 
 /obj/machinery/light/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return exposed_temperature > 673
 
 /obj/machinery/light/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	if(prob(max(0, exposed_temperature - 673)))   //0% at <400C, 100% at >500C
 		break_light_tube()
 
 /obj/machinery/light/proc/on_light_eater(obj/machinery/light/source, datum/light_eater)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	break_light_tube()
 	return COMPONENT_BLOCK_LIGHT_EATER
 
 /obj/machinery/light/on_saboteur(datum/source, disrupt_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	break_light_tube()
 	return TRUE
 
 /obj/machinery/light/proc/grey_tide(datum/source, list/grey_tide_areas)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/area_type in grey_tide_areas)
@@ -751,6 +853,8 @@
 		INVOKE_ASYNC(src, PROC_REF(flicker))
 
 /obj/machinery/light/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!QDELING(src))
 		update(FALSE)
@@ -771,12 +875,18 @@
 	fire_brightness = 4.5
 
 /obj/machinery/light/floor/get_turfs_to_mount_on()
+	procstart = null
+	src.procstart = null
 	return list(get_turf(src))
 
 /obj/machinery/light/floor/is_mountable_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	return !isgroundlessturf(target)
 
 /obj/machinery/light/floor/get_mountable_objects()
+	procstart = null
+	src.procstart = null
 	var/static/list/attachables = list(
 		/obj/structure/thermoplastic,
 		/obj/structure/lattice/catwalk,
@@ -785,6 +895,8 @@
 	return attachables
 
 /obj/machinery/light/floor/get_light_offset()
+	procstart = null
+	src.procstart = null
 	return list(0, 0)
 
 /obj/machinery/light/floor/broken

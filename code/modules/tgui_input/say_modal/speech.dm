@@ -8,6 +8,8 @@
  *  string - the altered entry
  */
 /datum/tgui_say/proc/alter_entry(payload)
+	procstart = null
+	src.procstart = null
 	var/entry = payload["entry"]
 	var/list/phrases = alter_phrases || hurt_phrases
 
@@ -33,6 +35,8 @@
  *  boolean - on success or failure
  */
 /datum/tgui_say/proc/delegate_speech(entry, channel)
+	procstart = null
+	src.procstart = null
 	switch(channel)
 		if(SAY_CHANNEL)
 			client.mob.say_verb(entry)
@@ -63,6 +67,8 @@
  * 	immediate - If [TRUE], the say must be invoked inline due to side effects that may cause the mob to be unable to speak
  */
 /datum/tgui_say/proc/force_say(list/alter_phrases = null, immediate = FALSE)
+	procstart = null
+	src.procstart = null
 	src.alter_phrases = alter_phrases
 	if(immediate)
 		if(!saved_text)
@@ -81,6 +87,8 @@
  * Exports whatever text is currently in the input box to this datum
  */
 /datum/tgui_say/proc/save_text()
+	procstart = null
+	src.procstart = null
 	saved_text = null
 	window.send_message("save")
 
@@ -92,6 +100,8 @@
  * * major - If [TRUE], a "major action" triggered the force say, which may have additional side effects
  */
 /mob/living/carbon/human/proc/force_say(list/alter_phrases = null, immediate = FALSE, major = TRUE)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(src) || !client?.tgui_say?.window_open)
 		return FALSE
 	client.tgui_say.force_say(alter_phrases, immediate)
@@ -107,6 +117,8 @@
  * Note: Sleeps, due to waiting for say to respond.
  */
 /mob/proc/get_typing_text()
+	procstart = null
+	src.procstart = null
 	if(!client?.tgui_say?.window_open)
 		return
 	client.tgui_say.save_text()
@@ -124,6 +136,8 @@
  *  boolean - success or failure
  */
 /datum/tgui_say/proc/handle_entry(type, payload)
+	procstart = null
+	src.procstart = null
 	if(!payload?["channel"] || isnull(payload["entry"]))
 		CRASH("[usr] entered in a null payload to the chat window.")
 	if(length(payload["entry"]) > max_length)

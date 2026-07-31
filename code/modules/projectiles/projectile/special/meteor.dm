@@ -12,16 +12,22 @@
 	obj_flags = NONE
 
 /obj/projectile/meteor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/meteor_combat, CALLBACK(src, PROC_REF(deflect)))
 
 /obj/projectile/meteor/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == BULLET_ACT_HIT && isliving(target))
 		explosion(target, devastation_range = -1, light_impact_range = 2, flame_range = 0, flash_range = 1, adminlog = FALSE)
 		playsound(target.loc, 'sound/effects/meteorimpact.ogg', 40, TRUE)
 
 /obj/projectile/meteor/Bump(atom/hit_target)
+	procstart = null
+	src.procstart = null
 	if(hit_target == firer)
 		forceMove(hit_target.loc)
 		return
@@ -37,5 +43,7 @@
 
 ///Called by component/meteor_combat to direct us away from whatever has punched us.
 /obj/projectile/meteor/proc/deflect(mob/user)
+	procstart = null
+	src.procstart = null
 	firer = user
 	set_angle(get_angle(user, src) + rand(-45, 45))

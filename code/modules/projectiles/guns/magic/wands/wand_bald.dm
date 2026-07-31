@@ -10,6 +10,8 @@
 	max_charges = 12
 
 /obj/item/gun/magic/wand/bald/zap_self(mob/living/user, suicide)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!suicide)
 		visible_message(span_notice("[user] gives [user.p_themselves()] a quick shave."))
@@ -19,6 +21,8 @@
 	qdel(trimmer)
 
 /obj/item/gun/magic/wand/bald/do_suicide(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/head/dome = user.get_bodypart(BODY_ZONE_HEAD)
 	if (!dome || ((dome.head_flags & HEAD_HAIR) && user.hairstyle != "Bald"))
 		. = ..()
@@ -31,6 +35,8 @@
 	visible_message(span_suicide("As the light fades, it becomes clear that [user] has shaved off [user.p_their()] entire head."))
 
 /obj/item/gun/magic/wand/bald/process_fire(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
+	procstart = null
+	src.procstart = null
 	zone_override = BODY_ZONE_HEAD // Head only
 	return ..()
 
@@ -48,6 +54,8 @@
 
 // Currently we have no facility for shaving nonhuman mobs
 /obj/projectile/magic/bald/on_hit(mob/living/carbon/human/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	if (!isliving(target))
 		return ..()
 
@@ -110,6 +118,8 @@
 	duration = 1.6 SECONDS
 
 /datum/status_effect/bald_flare/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.visible_message(span_warning("[owner]'s bald head releases a bright flash of light!"))
 	for(var/mob/living/viewers in (viewers(3, owner) - owner))
@@ -132,6 +142,8 @@
 	animate(ray_filter, offset = 1.5, time = duration, flags = ANIMATION_PARALLEL)
 
 /datum/status_effect/bald_flare/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_filter(BALD_RAYS_FILTER)
 
 #undef BALD_RAYS_FILTER

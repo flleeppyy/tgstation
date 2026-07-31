@@ -14,12 +14,18 @@
 	var/required_zone = BODY_ZONE_CHEST
 
 /datum/surgery_operation/limb/bioware/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/hud/implants.dmi', "lighting_bolt")
 
 /datum/surgery_operation/limb/bioware/all_required_strings()
+	procstart = null
+	src.procstart = null
 	return list("operate on [parse_zone(required_zone)] (target [parse_zone(required_zone)])") + ..()
 
 /datum/surgery_operation/limb/bioware/all_blocked_strings()
+	procstart = null
+	src.procstart = null
 	var/list/incompatible_surgeries = list()
 	for(var/datum/surgery_operation/limb/bioware/other_bioware as anything in subtypesof(/datum/surgery_operation/limb/bioware))
 		if(other_bioware::status_effect_gained::id != status_effect_gained::id)
@@ -31,6 +37,8 @@
 	return ..() + list("the patient must not have undergone [english_list(incompatible_surgeries, and_text = " OR ")] prior")
 
 /datum/surgery_operation/limb/bioware/state_check(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	if(limb.body_zone != required_zone)
 		return FALSE
 	if(limb.owner.has_status_effect(status_effect_gained))
@@ -38,6 +46,8 @@
 	return TRUE
 
 /datum/surgery_operation/limb/bioware/on_success(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	limb.owner.apply_status_effect(status_effect_gained)
 	if(limb.owner.ckey)
 		SSblackbox.record_feedback("tally", "bioware", 1, status_effect_gained)
@@ -49,6 +59,8 @@
 	status_effect_gained = /datum/status_effect/bioware/heart/threaded_veins
 
 /datum/surgery_operation/limb/bioware/vein_threading/on_preop(obj/item/bodypart/limb, mob/living/surgeon, tool)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -59,6 +71,8 @@
 	display_pain(limb.owner, "Your entire body burns in agony!")
 
 /datum/surgery_operation/limb/bioware/vein_threading/on_success(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	display_results(
 		surgeon,
@@ -82,6 +96,8 @@
 	status_effect_gained = /datum/status_effect/bioware/heart/muscled_veins
 
 /datum/surgery_operation/limb/bioware/muscled_veins/on_preop(obj/item/bodypart/limb, mob/living/surgeon, tool)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -92,6 +108,8 @@
 	display_pain(limb.owner, "Your entire body burns in agony!")
 
 /datum/surgery_operation/limb/bioware/muscled_veins/on_success(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	display_results(
 		surgeon,
@@ -116,6 +134,8 @@
 	status_effect_gained = /datum/status_effect/bioware/nerves/spliced
 
 /datum/surgery_operation/limb/bioware/nerve_splicing/on_preop(obj/item/bodypart/limb, mob/living/surgeon, tool)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -126,6 +146,8 @@
 	display_pain(limb.owner, "Your entire body goes numb!")
 
 /datum/surgery_operation/limb/bioware/nerve_splicing/on_success(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	display_results(
 		surgeon,
@@ -150,6 +172,8 @@
 	status_effect_gained = /datum/status_effect/bioware/nerves/grounded
 
 /datum/surgery_operation/limb/bioware/nerve_grounding/on_preop(obj/item/bodypart/limb, mob/living/surgeon, tool)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -160,6 +184,8 @@
 	display_pain(limb.owner, "Your entire body goes numb!")
 
 /datum/surgery_operation/limb/bioware/nerve_grounding/on_success(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	display_results(
 		surgeon,
@@ -183,6 +209,8 @@
 	status_effect_gained = /datum/status_effect/bioware/ligaments/hooked
 
 /datum/surgery_operation/limb/bioware/ligament_hook/on_preop(obj/item/bodypart/limb, mob/living/surgeon, tool)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -193,6 +221,8 @@
 	display_pain(limb.owner, "Your limbs burn with severe pain!")
 
 /datum/surgery_operation/limb/bioware/ligament_hook/on_success(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	display_results(
 		surgeon,
@@ -217,6 +247,8 @@
 	status_effect_gained = /datum/status_effect/bioware/ligaments/reinforced
 
 /datum/surgery_operation/limb/bioware/ligament_reinforcement/on_preop(obj/item/bodypart/limb, mob/living/surgeon, tool)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -227,6 +259,8 @@
 	display_pain(limb.owner, "Your limbs burn with severe pain!")
 
 /datum/surgery_operation/limb/bioware/ligament_reinforcement/on_success(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	display_results(
 		surgeon,
@@ -252,6 +286,8 @@
 	required_zone = BODY_ZONE_HEAD
 
 /datum/surgery_operation/limb/bioware/cortex_folding/state_check(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -261,12 +297,16 @@
 	return !HAS_TRAIT_FROM(brain, TRAIT_SPECIAL_TRAUMA_BOOST, BIOWARE_TRAIT)
 
 /datum/surgery_operation/limb/bioware/cortex_folding/on_success(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/organ/brain/brain = locate() in limb
 	if(!isnull(brain))
 		ADD_TRAIT(brain, TRAIT_SPECIAL_TRAUMA_BOOST, BIOWARE_TRAIT)
 
 /datum/surgery_operation/limb/bioware/cortex_folding/on_preop(obj/item/bodypart/limb, mob/living/surgeon, tool)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -277,6 +317,8 @@
 	display_pain(limb.owner, "Your head throbs with gruesome pain, it's nearly too much to handle!")
 
 /datum/surgery_operation/limb/bioware/cortex_folding/on_success(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	display_results(
 		surgeon,
@@ -288,6 +330,8 @@
 	display_pain(limb.owner, "Your brain feels stronger... and more flexible!")
 
 /datum/surgery_operation/limb/bioware/cortex_folding/on_failure(obj/item/bodypart/limb, mob/living/surgeon, tool)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/brain = locate() in limb
 	if(isnull(brain))
 		return ..()
@@ -316,6 +360,8 @@
 	required_zone = BODY_ZONE_HEAD
 
 /datum/surgery_operation/limb/bioware/cortex_imprint/on_preop(obj/item/bodypart/limb, mob/living/surgeon, tool)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -326,6 +372,8 @@
 	display_pain(limb.owner, "Your head throbs with gruesome pain, it's nearly too much to handle!")
 
 /datum/surgery_operation/limb/bioware/cortex_imprint/on_success(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	display_results(
 		surgeon,
@@ -337,6 +385,8 @@
 	display_pain(limb.owner, "Your brain feels stronger... and more resilient!")
 
 /datum/surgery_operation/limb/bioware/cortex_imprint/on_failure(obj/item/bodypart/limb, mob/living/surgeon, tool)
+	procstart = null
+	src.procstart = null
 	if(!limb.owner.get_organ_slot(ORGAN_SLOT_BRAIN))
 		return ..()
 	display_results(

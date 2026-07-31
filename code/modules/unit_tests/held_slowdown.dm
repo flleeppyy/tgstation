@@ -2,6 +2,8 @@
 /datum/unit_test/held_slowdown
 
 /datum/unit_test/held_slowdown/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/dummy = EASY_ALLOCATE()
 	var/obj/item/restraints/legcuffs/bola/bola = EASY_ALLOCATE()
 	dummy.put_in_hands(bola)

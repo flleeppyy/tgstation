@@ -7,10 +7,14 @@ GLOBAL_LIST_EMPTY(ctf_voting_controllers)
 	var/game_id
 
 /datum/ctf_voting_controller/New(game_id)
+	procstart = null
+	src.procstart = null
 	src.game_id = game_id
 
 /// Casts a vote in favor of CTF for user.
 /datum/ctf_voting_controller/proc/vote(mob/user)
+	procstart = null
+	src.procstart = null
 	if (user.ckey in volunteers)
 		return
 
@@ -27,6 +31,8 @@ GLOBAL_LIST_EMPTY(ctf_voting_controllers)
 
 /// Removes an existing vote for user.
 /datum/ctf_voting_controller/proc/unvote(mob/user)
+	procstart = null
+	src.procstart = null
 	if (!(user.ckey in volunteers))
 		return
 
@@ -35,6 +41,8 @@ GLOBAL_LIST_EMPTY(ctf_voting_controllers)
 
 /// Returns the existing [/datum/ctf_voting_controller] for the given ID, or makes one
 /proc/get_ctf_voting_controller(game_id)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/ctf_voting_controller)
 
 	var/datum/ctf_voting_controller/controller = GLOB.ctf_voting_controllers[game_id]

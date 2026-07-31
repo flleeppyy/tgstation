@@ -16,5 +16,7 @@
 	)
 
 /obj/item/book/granter/crafting_recipe/regal_condor/recoil(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("The book turns to dust in your hands."))
 	qdel(src)

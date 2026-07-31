@@ -14,6 +14,8 @@
 	lose_text = span_warning("The divine presence leaves your head, no longer interested.")
 
 /datum/brain_trauma/special/godwoken/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	..()
 	if(SPT_PROB(2, seconds_per_tick))
 		if(prob(33) && (owner.IsStun() || owner.IsParalyzed() || owner.IsUnconscious()))
@@ -26,14 +28,20 @@
 			speak("neutral", prob(25))
 
 /datum/brain_trauma/special/godwoken/on_gain()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(owner, TRAIT_HOLY, TRAUMA_TRAIT)
 	. = ..()
 
 /datum/brain_trauma/special/godwoken/on_lose()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_HOLY, TRAUMA_TRAIT)
 	..()
 
 /datum/brain_trauma/special/godwoken/proc/speak(type, include_owner = FALSE)
+	procstart = null
+	src.procstart = null
 	var/message
 	switch(type)
 		if("unstun")
@@ -62,6 +70,8 @@
 	COOLDOWN_DECLARE(portal_cooldown)
 
 /datum/brain_trauma/special/bluespace_prophet/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, portal_cooldown))
 		return
 
@@ -107,20 +117,28 @@
 	var/obj/effect/client_image_holder/bluespace_stream/linked_to
 
 /obj/effect/client_image_holder/bluespace_stream/Initialize(mapload, list/mobs_which_see_us)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_IN(src, 30 SECONDS)
 
 /obj/effect/client_image_holder/bluespace_stream/generate_image()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	apply_wibbly_filters(.)
 
 /obj/effect/client_image_holder/bluespace_stream/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(linked_to))
 		qdel(linked_to)
 	linked_to = null
 	return ..()
 
 /obj/effect/client_image_holder/bluespace_stream/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -153,6 +171,8 @@
 
 
 /obj/effect/client_image_holder/bluespace_stream/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("\The [src] actively rejects your mind, and the bluespace energies surrounding it disrupt your telekinesis!"))
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
@@ -171,6 +191,8 @@
 	COOLDOWN_DECLARE(snapback_cooldown)
 
 /datum/brain_trauma/special/quantum_alignment/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(linked)
 		if(QDELETED(linked_target))
 			linked_target = null
@@ -183,6 +205,8 @@
 		try_entangle()
 
 /datum/brain_trauma/special/quantum_alignment/proc/try_entangle()
+	procstart = null
+	src.procstart = null
 	//Check for pulled mobs
 	if(ismob(owner.pulling))
 		entangle(owner.pulling)
@@ -213,12 +237,16 @@
 	entangle(get_turf(owner))
 
 /datum/brain_trauma/special/quantum_alignment/proc/entangle(atom/target)
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_notice("You start feeling a strong sense of connection to [target]."))
 	linked_target = target
 	linked = TRUE
 	COOLDOWN_START(src, snapback_cooldown, rand(45 SECONDS, 10 MINUTES))
 
 /datum/brain_trauma/special/quantum_alignment/proc/start_snapback()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(linked_target))
 		linked_target = null
 		linked = FALSE
@@ -229,6 +257,8 @@
 	addtimer(CALLBACK(src, PROC_REF(snapback)), 10 SECONDS)
 
 /datum/brain_trauma/special/quantum_alignment/proc/snapback()
+	procstart = null
+	src.procstart = null
 	returning = FALSE
 	if(QDELETED(linked_target))
 		to_chat(owner, span_notice("The connection fades abruptly, and the pull with it."))
@@ -253,12 +283,16 @@
 	var/datum/martial_art/psychotic_brawling/psychotic_brawling
 
 /datum/brain_trauma/special/psychotic_brawling/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	psychotic_brawling = new(src)
 	psychotic_brawling.locked_to_use = TRUE
 	psychotic_brawling.teach(owner)
 
 /datum/brain_trauma/special/psychotic_brawling/on_lose()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(psychotic_brawling)
 
@@ -276,10 +310,14 @@
 	lose_text = span_warning("You realize you can feel pain again.")
 
 /datum/brain_trauma/special/tenacity/on_gain()
+	procstart = null
+	src.procstart = null
 	owner.add_traits(list(TRAIT_NOSOFTCRIT, TRAIT_NOHARDCRIT, TRAIT_ANALGESIA), TRAUMA_TRAIT)
 	. = ..()
 
 /datum/brain_trauma/special/tenacity/on_lose()
+	procstart = null
+	src.procstart = null
 	owner.remove_traits(list(TRAIT_NOSOFTCRIT, TRAIT_NOHARDCRIT, TRAIT_ANALGESIA), TRAUMA_TRAIT)
 	..()
 
@@ -294,21 +332,29 @@
 	var/active = FALSE
 
 /datum/brain_trauma/special/death_whispers/on_life()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!active && prob(2))
 		whispering()
 
 /datum/brain_trauma/special/death_whispers/on_lose()
+	procstart = null
+	src.procstart = null
 	if(active)
 		cease_whispering()
 	..()
 
 /datum/brain_trauma/special/death_whispers/proc/whispering()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(owner, TRAIT_SIXTHSENSE, TRAUMA_TRAIT)
 	active = TRUE
 	addtimer(CALLBACK(src, PROC_REF(cease_whispering)), rand(5 SECONDS, 30 SECONDS))
 
 /datum/brain_trauma/special/death_whispers/proc/cease_whispering()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_SIXTHSENSE, TRAUMA_TRAIT)
 	active = FALSE
 
@@ -325,17 +371,23 @@
 	COOLDOWN_DECLARE(crisis_cooldown)
 
 /datum/brain_trauma/special/existential_crisis/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!veil && COOLDOWN_FINISHED(src, crisis_cooldown) && SPT_PROB(1.5, seconds_per_tick))
 		if(isturf(owner.loc))
 			fade_out()
 
 /datum/brain_trauma/special/existential_crisis/on_lose()
+	procstart = null
+	src.procstart = null
 	if(veil)
 		fade_in()
 	..()
 
 /datum/brain_trauma/special/existential_crisis/proc/fade_out()
+	procstart = null
+	src.procstart = null
 	if(veil)
 		return
 	var/duration = rand(5 SECONDS, 45 SECONDS)
@@ -353,6 +405,8 @@
 	addtimer(CALLBACK(src, PROC_REF(fade_in)), duration)
 
 /datum/brain_trauma/special/existential_crisis/proc/fade_in()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(veil)
 	to_chat(owner, span_notice("You fade back into reality."))
 	COOLDOWN_START(src, crisis_cooldown, 1 MINUTES)
@@ -374,23 +428,33 @@
 	var/obj/effect/client_image_holder/securitron/beepsky
 
 /datum/brain_trauma/special/beepsky/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(beepsky)
 	return ..()
 
 /datum/brain_trauma/special/beepsky/on_gain()
+	procstart = null
+	src.procstart = null
 	create_securitron()
 	return ..()
 
 /datum/brain_trauma/special/beepsky/proc/create_securitron()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(beepsky)
 	var/turf/where = locate(owner.x + pick(-12, 12), owner.y + pick(-12, 12), owner.z)
 	beepsky = new(where, owner)
 
 /datum/brain_trauma/special/beepsky/on_lose()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(beepsky)
 	return ..()
 
 /datum/brain_trauma/special/beepsky/on_life()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(beepsky) || !beepsky.loc || beepsky.z != owner.z)
 		if(prob(30))
 			create_securitron()
@@ -421,15 +485,21 @@
 	image_state = "secbot-c"
 
 /obj/effect/client_image_holder/securitron/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = pick("Officer Beepsky", "Officer Johnson", "Officer Pingsky")
 	START_PROCESSING(SSfastprocess, src)
 
 /obj/effect/client_image_holder/securitron/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess,src)
 	return ..()
 
 /obj/effect/client_image_holder/securitron/process()
+	procstart = null
+	src.procstart = null
 	if(prob(40))
 		return
 
@@ -471,6 +541,8 @@
 	)
 
 /datum/brain_trauma/special/ptsd/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(owner))
 		return
 
@@ -481,6 +553,8 @@
 	COOLDOWN_START(src, ptsd_hallucinations, rand(10 SECONDS, 10 MINUTES))
 
 /datum/brain_trauma/special/ptsd/on_gain()
+	procstart = null
+	src.procstart = null
 	owner.add_mood_event("combat_ptsd", /datum/mood_event/desentized)
 	owner.mob_mood?.mood_modifier -= 1 //Basically nothing can change your mood
 	owner.mob_mood?.set_sanity(SANITY_DISTURBED, override = TRUE) //Makes sanity on a unstable level unless cured
@@ -488,6 +562,8 @@
 	. = ..()
 
 /datum/brain_trauma/special/ptsd/on_lose()
+	procstart = null
+	src.procstart = null
 	owner.clear_mood_event("combat_ptsd")
 	owner.mob_mood?.mood_modifier += 1
 	owner.mob_mood?.set_sanity(SANITY_GREAT, override = TRUE)
@@ -508,6 +584,8 @@
 	var/old_ai_controller_type
 
 /datum/brain_trauma/special/primal_instincts/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(owner.ai_controller))
 		old_ai_controller_type = owner.ai_controller.type
@@ -519,6 +597,8 @@
 	owner.ai_controller.force_ai_off()
 
 /datum/brain_trauma/special/primal_instincts/on_lose(silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELING(owner))
 		return
@@ -529,6 +609,8 @@
 	owner.remove_language(/datum/language/monkey, UNDERSTOOD_LANGUAGE, TRAUMA_TRAIT)
 
 /datum/brain_trauma/special/primal_instincts/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(isnull(owner.ai_controller))
 		qdel(src)
 		return
@@ -546,6 +628,8 @@
 	addtimer(CALLBACK(src, PROC_REF(primal_instincts_off)), rand(20 SECONDS, 40 SECONDS), TIMER_UNIQUE|TIMER_NO_HASH_WAIT|TIMER_OVERRIDE|TIMER_DELETE_ME)
 
 /datum/brain_trauma/special/primal_instincts/proc/primal_instincts_off()
+	procstart = null
+	src.procstart = null
 	owner.ai_controller.force_ai_off()
 	owner.remove_language(/datum/language/monkey, UNDERSTOOD_LANGUAGE, TRAUMA_TRAIT)
 	to_chat(owner, span_green("The urge subsides."))
@@ -584,6 +668,8 @@
 	)
 
 /datum/brain_trauma/special/axedoration/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(owner))
 		return
 
@@ -628,6 +714,8 @@
 	owner.add_mood_event("fireaxe", /datum/mood_event/axe_missing)
 
 /datum/brain_trauma/special/axedoration/on_gain()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(owner, COMSIG_MOB_EQUIPPED_ITEM, PROC_REF(on_equip))
 	RegisterSignal(owner, COMSIG_MOB_UNEQUIPPED_ITEM, PROC_REF(on_unequip))
 	RegisterSignal(owner, COMSIG_MOB_EXAMINING, PROC_REF(on_examine))
@@ -646,6 +734,8 @@
 
 
 /datum/brain_trauma/special/axedoration/on_lose()
+	procstart = null
+	src.procstart = null
 	owner.clear_mood_event("fireaxe")
 	UnregisterSignal(owner, list(COMSIG_MOB_EQUIPPED_ITEM, COMSIG_MOB_UNEQUIPPED_ITEM, COMSIG_MOB_EXAMINING))
 	if(GLOB.bridge_axe)
@@ -653,6 +743,8 @@
 	return ..()
 
 /datum/brain_trauma/special/axedoration/proc/axe_gone(source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	to_chat(owner, span_danger("You feel a great disturbance in the force."))
 	owner.add_mood_event("fireaxe", /datum/mood_event/axe_gone)
@@ -660,6 +752,8 @@
 	owner.set_stutter_if_lower(15 SECONDS)
 
 /datum/brain_trauma/special/axedoration/proc/on_equip(source, obj/item/picked_up, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(picked_up, /obj/item/fireaxe))
 		return
@@ -674,6 +768,8 @@
 	addtimer(CALLBACK(src, PROC_REF(throw_faker), picked_up), 2 SECONDS)
 
 /datum/brain_trauma/special/axedoration/proc/throw_faker(obj/item/faker)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(faker, TRAIT_NODROP, type)
 	var/held_index = owner.get_held_index_of_item(faker)
 	if(!held_index)
@@ -684,6 +780,8 @@
 	owner.throw_item(target_turf)
 
 /datum/brain_trauma/special/axedoration/proc/on_unequip(datum/source, obj/item/dropped_item, force, new_location)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(dropped_item != GLOB.bridge_axe)
 		return
@@ -702,6 +800,8 @@
 	owner.add_mood_event("fireaxe", /datum/mood_event/axe_neutral)
 
 /datum/brain_trauma/special/axedoration/proc/on_examine(mob/source, atom/target, list/examine_strings, list/examine_overrides)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(target, /obj/item/fireaxe))
 		return
@@ -711,15 +811,21 @@
 		examine_strings += span_warning("It's a simulacra, a fake axe made to fool the masses.")
 
 /datum/brain_trauma/special/axedoration/proc/on_axe_attack(obj/item/axe, atom/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(user != owner)
 		return
 	talk_tuah(pick(hurt_lines))
 
 /datum/brain_trauma/special/axedoration/proc/talk_tuah(sent_message = "Hello World.")
+	procstart = null
+	src.procstart = null
 	owner.Hear(GLOB.bridge_axe, owner.get_selected_language(), sent_message)
 
 /datum/brain_trauma/special/axedoration/proc/get_axe_location()
+	procstart = null
+	src.procstart = null
 	if(!GLOB.bridge_axe)
 		return
 	var/atom/axe_loc = GLOB.bridge_axe.loc

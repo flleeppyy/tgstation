@@ -94,6 +94,8 @@
 	desc = "You're the only one worthy of this kilt."
 
 /obj/item/clothing/under/costume/kilt/highlander/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, HIGHLANDER_TRAIT)
 
@@ -318,6 +320,8 @@
 	can_adjust = FALSE
 
 /obj/item/clothing/under/costume/mech_suit/setup_reskins()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/reskinable_item, /datum/atom_skin/mech_suit)
 
 /obj/item/clothing/under/costume/russian_officer
@@ -486,6 +490,8 @@
 	clothing_flags = parent_type::clothing_flags | CARP_STYLE_FACTOR
 
 /obj/item/clothing/under/costume/gi/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/gags_recolorable)
 	update_icon(UPDATE_OVERLAYS)

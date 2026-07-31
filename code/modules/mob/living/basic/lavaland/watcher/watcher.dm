@@ -42,6 +42,8 @@
 	)
 
 /mob/living/basic/mining/watcher/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_flying)
 	AddElement(/datum/element/content_barfer)
@@ -66,6 +68,8 @@
 	AddComponent(/datum/component/revenge_ability, gaze, targeting = GET_TARGETING_STRATEGY(ai_controller.blackboard[BB_TARGETING_STRATEGY]))
 
 /mob/living/basic/mining/watcher/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (stat == DEAD)
 		return
@@ -74,6 +78,8 @@
 
 /// I love eating diamonds yum
 /mob/living/basic/mining/watcher/proc/consume(atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	visible_message(span_warning("[thing] seems to vanish into [src]'s body!"))
 	thing.forceMove(src)
 

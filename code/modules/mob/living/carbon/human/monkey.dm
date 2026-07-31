@@ -4,12 +4,16 @@
 	ai_controller = /datum/ai_controller/monkey
 
 /mob/living/carbon/human/species/monkey/Initialize(mapload, datum/species/species, cubespawned = FALSE)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(src, TRAIT_BORN_MONKEY, INNATE_TRAIT)
 	if (cubespawned)
 		SSmobs.cubemonkeys += src
 	return ..()
 
 /mob/living/carbon/human/species/monkey/Destroy()
+	procstart = null
+	src.procstart = null
 	SSmobs.cubemonkeys -= src
 	return ..()
 
@@ -17,12 +21,16 @@
 	ai_controller = /datum/ai_controller/monkey/angry
 
 /mob/living/carbon/human/species/monkey/angry/Initialize(mapload, datum/species/species, cubespawned = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(10))
 		INVOKE_ASYNC(src, PROC_REF(give_ape_escape_helmet))
 
 /// Gives our funny monkey an Ape Escape hat reference
 /mob/living/carbon/human/species/monkey/angry/proc/give_ape_escape_helmet()
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/head/helmet/toggleable/justice/escape/helmet = new(src)
 	equip_to_slot_or_del(helmet, ITEM_SLOT_HEAD)
 	helmet.attack_self(src) // todo encapsulate toggle
@@ -44,6 +52,8 @@ GLOBAL_DATUM(the_one_and_only_punpun, /mob/living)
 	var/memory_saved = FALSE
 
 /mob/living/carbon/human/species/monkey/punpun/Initialize(mapload, datum/species/species)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	REGISTER_REQUIRED_MAP_ITEM(1, 1) // pun pun is required on maps.
@@ -70,12 +80,16 @@ GLOBAL_DATUM(the_one_and_only_punpun, /mob/living)
 	give_special_equipment()
 
 /mob/living/carbon/human/species/monkey/punpun/Destroy()
+	procstart = null
+	src.procstart = null
 	if(GLOB.the_one_and_only_punpun == src)
 		GLOB.the_one_and_only_punpun = null
 
 	return ..()
 
 /mob/living/carbon/human/species/monkey/punpun/Life(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	if(!IS_UNCONSCIOUS_OR_CRIT(src) && SSticker.current_state == GAME_STATE_FINISHED && !memory_saved)
 		Write_Memory(FALSE, FALSE)
 		memory_saved = TRUE
@@ -83,12 +97,16 @@ GLOBAL_DATUM(the_one_and_only_punpun, /mob/living)
 	return ..()
 
 /mob/living/carbon/human/species/monkey/punpun/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(!memory_saved)
 		Write_Memory(TRUE, gibbed)
 
 	return ..()
 
 /mob/living/carbon/human/species/monkey/punpun/proc/Read_Memory()
+	procstart = null
+	src.procstart = null
 	if(fexists("data/npc_saves/Punpun.sav")) //legacy compatability to convert old format to new
 		var/savefile/S = new /savefile("data/npc_saves/Punpun.sav")
 		S["ancestor_name"] >> ancestor_name
@@ -107,6 +125,8 @@ GLOBAL_DATUM(the_one_and_only_punpun, /mob/living)
 		relic_mask = json["relic_hat"]
 
 /mob/living/carbon/human/species/monkey/punpun/Write_Memory(dead, gibbed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -128,6 +148,8 @@ GLOBAL_DATUM(the_one_and_only_punpun, /mob/living)
 
 /// Gives pun pun a special name based on various factors such as their past
 /mob/living/carbon/human/species/monkey/punpun/proc/give_special_name()
+	procstart = null
+	src.procstart = null
 	var/name_to_use = initial(name)
 
 #ifndef UNIT_TESTS
@@ -147,11 +169,15 @@ GLOBAL_DATUM(the_one_and_only_punpun, /mob/living)
 
 /// Gives pun pun scars based on how many times he's died in the past
 /mob/living/carbon/human/species/monkey/punpun/proc/give_scars()
+	procstart = null
+	src.procstart = null
 	if(ancestor_chain > 1)
 		generate_fake_scars(rand(ancestor_chain, ancestor_chain * 4))
 
 /// Gives pun pun special equipment from their past
 /mob/living/carbon/human/species/monkey/punpun/proc/give_special_equipment()
+	procstart = null
+	src.procstart = null
 	if(relic_hat)
 		equip_to_slot_or_del(new relic_hat, ITEM_SLOT_HEAD)
 	if(relic_mask)

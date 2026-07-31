@@ -2,6 +2,8 @@
 /datum/unit_test/crayon_naming
 
 /datum/unit_test/crayon_naming/Run()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/toy/crayon/crayon_path as anything in typesof(/obj/item/toy/crayon))
 		if(is_path_in_list(crayon_path, list(/obj/item/toy/crayon/spraycan, /obj/item/toy/crayon)))
 			continue

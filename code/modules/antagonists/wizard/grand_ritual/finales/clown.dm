@@ -7,6 +7,8 @@
 	glow_colour = "#ffff0048"
 
 /datum/grand_finale/clown/trigger(mob/living/carbon/human/invoker)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/human/victim as anything in GLOB.human_list)
 		victim.Unconscious(3 SECONDS)
 		if (victim == invoker)
@@ -47,10 +49,14 @@
 	mood_change = 4
 
 /datum/mood_event/clown_world/add_effects(param)
+	procstart = null
+	src.procstart = null
 	description = "I LOVE working at Clown Research Station [station_name()]!!"
 
 /// Dress the passed mob as a magical clown, self-explanatory
 /datum/grand_finale/clown/proc/dress_as_magic_clown(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/particle_effect/fluid/smoke/poof = new(get_turf(victim))
 	poof.lifetime = 2 SECONDS
 

@@ -13,6 +13,8 @@
 	light_on = FALSE
 
 /obj/structure/bot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/shell, \
@@ -31,16 +33,24 @@
 	var/datum/port/output/entity
 
 /obj/item/circuit_component/bot/populate_ports()
+	procstart = null
+	src.procstart = null
 	entity = add_output_port("User", PORT_TYPE_USER)
 	signal = add_output_port("Signal", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/bot/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(shell, COMSIG_ATOM_ATTACK_HAND, PROC_REF(on_attack_hand))
 
 /obj/item/circuit_component/bot/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(shell, COMSIG_ATOM_ATTACK_HAND)
 
 /obj/item/circuit_component/bot/proc/on_attack_hand(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	source.balloon_alert(user, "pushed button")
 	playsound(source, SFX_TERMINAL_TYPE, 25, FALSE)

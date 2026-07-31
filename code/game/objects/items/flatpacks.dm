@@ -15,6 +15,8 @@
 	var/obj/item/circuitboard/machine/board
 
 /obj/item/flatpack/Initialize(mapload, obj/item/circuitboard/machine/new_board)
+	procstart = null
+	src.procstart = null
 	if(isnull(board) && isnull(new_board))
 		return INITIALIZE_HINT_QDEL //how
 
@@ -34,10 +36,14 @@
 	name = "flatpack ([initial(build.name)])"
 
 /obj/item/flatpack/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(board)
 	. = ..()
 
 /obj/item/flatpack/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!in_range(user, src) && !isobserver(user))
 		return
@@ -52,6 +58,8 @@
 			. += span_warning("No space for deployment")
 
 /obj/item/flatpack/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = NONE
 
 	if(isnull(board))
@@ -106,6 +114,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 8, /datum/material/alloy/plasteel = SHEET_MATERIAL_AMOUNT)
 
 /obj/structure/flatpack_cart/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	register_context()
@@ -113,10 +123,14 @@
 	AddElement(/datum/element/noisy_movement, volume = 45) // i hate noise
 
 /obj/structure/flatpack_cart/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/content as anything in contents)
 		content.forceMove(drop_location())
 
 /obj/structure/flatpack_cart/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(isnull(held_item))
 		return
@@ -126,6 +140,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/flatpack_cart/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!in_range(user, src) && !isobserver(user))
 		return
@@ -135,6 +151,8 @@
 		. += flatpack.name
 
 /obj/structure/flatpack_cart/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/offset = 0
@@ -145,6 +163,8 @@
 		. += flatpack_overlay
 
 /obj/structure/flatpack_cart/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -152,6 +172,8 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/flatpack_cart/item_interaction(mob/living/user, obj/item/attacking_item, params)
+	procstart = null
+	src.procstart = null
 	if(!istype(attacking_item, /obj/item/flatpack) || user.combat_mode || attacking_item.flags_1 & HOLOGRAM_1 || attacking_item.item_flags & ABSTRACT)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 

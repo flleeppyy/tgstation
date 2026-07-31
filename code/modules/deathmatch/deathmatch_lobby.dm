@@ -25,6 +25,8 @@
 	var/start_time = 8 SECONDS
 
 /datum/deathmatch_lobby/New(mob/player)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!player)
 		stack_trace("Attempted to create a deathmatch lobby without a host.")
@@ -41,6 +43,8 @@
 	addtimer(CALLBACK(src, PROC_REF(lobby_afk_probably)), 5 MINUTES) // being generous here
 
 /datum/deathmatch_lobby/Destroy(force, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for (var/key in players+observers)
 		var/datum/tgui/ui = SStgui.get_open_ui(get_mob_by_ckey(key), src)
@@ -57,6 +61,8 @@
 	modifiers = null
 
 /datum/deathmatch_lobby/proc/start_game()
+	procstart = null
+	src.procstart = null
 	if (playing)
 		return
 	if(map.template_in_use)
@@ -75,6 +81,8 @@
 		return FALSE
 
 /datum/deathmatch_lobby/proc/find_spawns_and_start_delay(datum/lazy_template/source, list/atoms)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/thing in atoms)
 		if(istype(thing, /obj/effect/landmark/deathmatch_player_spawn))
@@ -85,6 +93,8 @@
 	addtimer(CALLBACK(src, PROC_REF(start_game_after_delay)), start_time)
 
 /datum/deathmatch_lobby/proc/start_game_after_delay()
+	procstart = null
+	src.procstart = null
 	if (!length(player_spawns) || length(player_spawns) < length(players))
 		stack_trace("Failed to get spawns when loading deathmatch map [map.name] for lobby [host].")
 		clear_reservation()
@@ -125,6 +135,8 @@
 	return TRUE
 
 /datum/deathmatch_lobby/proc/spawn_observer_as_player(ckey, loc)
+	procstart = null
+	src.procstart = null
 	var/list/players_info = players[ckey]
 	var/mob/dead/observer/observer = players_info["mob"]
 	if (isnull(observer) || !observer.client)
@@ -157,25 +169,35 @@
 	register_player_signals(new_player)
 
 /datum/deathmatch_lobby/proc/register_player_signals(new_player)
+	procstart = null
+	src.procstart = null
 	RegisterSignals(new_player, list(COMSIG_LIVING_DEATH, COMSIG_QDELETING, COMSIG_MOB_GHOSTIZED), PROC_REF(player_died))
 	RegisterSignal(new_player, COMSIG_LIVING_ON_WABBAJACKED, PROC_REF(player_wabbajacked))
 
 /datum/deathmatch_lobby/proc/unregister_player_signals(new_player)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(new_player, list(COMSIG_LIVING_DEATH, COMSIG_QDELETING, COMSIG_MOB_GHOSTIZED, COMSIG_LIVING_ON_WABBAJACKED))
 
 /datum/deathmatch_lobby/proc/game_took_too_long()
+	procstart = null
+	src.procstart = null
 	if (!location || QDELING(src))
 		return
 	announce(span_reallybig("The players have took too long! Game ending!"))
 	end_game()
 
 /datum/deathmatch_lobby/proc/lobby_afk_probably()
+	procstart = null
+	src.procstart = null
 	if (QDELING(src) || playing)
 		return
 	announce(span_warning("Lobby ([host]) was closed due to not starting after 5 minutes, being potentially AFK. Please be faster next time."))
 	GLOB.deathmatch_game.remove_lobby(host)
 
 /datum/deathmatch_lobby/proc/end_game()
+	procstart = null
+	src.procstart = null
 	if (!location)
 		CRASH("Reservation of deathmatch game [host] deleted during game.")
 	var/mob/winner
@@ -201,12 +223,16 @@
 	log_game("Deathmatch game [host] ended.")
 
 /datum/deathmatch_lobby/proc/player_wabbajacked(mob/living/player, mob/living/new_mob)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	unregister_player_signals(player)
 	players[player.ckey]["mob"] = new_mob
 	register_player_signals(new_mob)
 
 /datum/deathmatch_lobby/proc/player_died(mob/living/player, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isnull(player) || QDELING(src) || HAS_TRAIT_FROM(player, TRAIT_NO_TRANSFORM, MAGIC_TRAIT)) //this trait check fixes polymorphing
 		return
@@ -238,16 +264,22 @@
 		end_game()
 
 /datum/deathmatch_lobby/proc/add_observer(mob/mob, host = FALSE)
+	procstart = null
+	src.procstart = null
 	if (players[mob.ckey])
 		CRASH("Tried to add [mob.ckey] as an observer while being a player.")
 	observers[mob.ckey] = list("mob" = mob, "host" = host)
 
 /datum/deathmatch_lobby/proc/add_player(mob/mob, loadout, host = FALSE)
+	procstart = null
+	src.procstart = null
 	if (observers[mob.ckey])
 		CRASH("Tried to add [mob.ckey] as a player while being an observer.")
 	players[mob.ckey] = list("mob" = mob, "host" = host, "ready" = FALSE, "loadout" = loadout)
 
 /datum/deathmatch_lobby/proc/remove_ckey_from_play(ckey)
+	procstart = null
+	src.procstart = null
 	var/is_likely_player = (ckey in players)
 	var/list/main_list = is_likely_player ? players : observers
 	var/list/info = main_list[ckey]
@@ -256,6 +288,8 @@
 	main_list -= ckey
 
 /datum/deathmatch_lobby/proc/announce(message)
+	procstart = null
+	src.procstart = null
 	for (var/key in players+observers)
 		var/mob/player = get_mob_by_ckey(key)
 		if (!player.client)
@@ -264,6 +298,8 @@
 		to_chat(player.client, message)
 
 /datum/deathmatch_lobby/proc/leave(ckey)
+	procstart = null
+	src.procstart = null
 	if (host == ckey)
 		var/total_count = players.len + observers.len
 		if (total_count <= 1) // <= just in case.
@@ -289,6 +325,8 @@
 	remove_ckey_from_play(ckey)
 
 /datum/deathmatch_lobby/proc/join(mob/player)
+	procstart = null
+	src.procstart = null
 	if (playing || !player)
 		return
 	if(!(player.ckey in (players+observers)))
@@ -299,6 +337,8 @@
 	ui_interact(player)
 
 /datum/deathmatch_lobby/proc/spectate(mob/player)
+	procstart = null
+	src.procstart = null
 	if (!playing || !location || !player)
 		return
 	if (!observers[player.ckey])
@@ -306,6 +346,8 @@
 	player.forceMove(pick(location.reserved_turfs))
 
 /datum/deathmatch_lobby/proc/change_map(new_map)
+	procstart = null
+	src.procstart = null
 	if (!new_map || !GLOB.deathmatch_game.maps[new_map])
 		return
 	map = GLOB.deathmatch_game.maps[new_map]
@@ -327,6 +369,8 @@
 		GLOB.deathmatch_game.modifiers[deathmatch_mod].on_map_changed(src)
 
 /datum/deathmatch_lobby/proc/clear_reservation()
+	procstart = null
+	src.procstart = null
 	if(isnull(location) || isnull(map))
 		return
 	for(var/turf/victimized_turf as anything in location.reserved_turfs) //remove this once clearing turf reservations is actually reliable
@@ -334,7 +378,9 @@
 	map.reservations -= location
 	qdel(location)
 
-/datum/deathmatch_lobby/Topic(href, href_list) //This handles the chat Join button href, supposedly
+/datum/deathmatch_lobby/Topic(href, href_list)
+	procstart = null
+	src.procstart = null //This handles the chat Join button href, supposedly
 	var/mob/dead/observer/ghost = usr
 	if (!istype(ghost))
 		return
@@ -342,26 +388,36 @@
 		join(ghost)
 
 /datum/deathmatch_lobby/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.observer_state
 
 /// fills the lobby with fake players for the sake of UI debug, can only be called via VV
 /datum/deathmatch_lobby/proc/fakefill(count)
+	procstart = null
+	src.procstart = null
 	for(var/i = 1 to count)
 		players["[rand(1,999)]"] = list("mob" = usr, "host" = FALSE, "ready" = FALSE, "loadout" = pick(loadouts))
 
 /datum/deathmatch_lobby/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, null)
 	if(!ui)
 		ui = new(user, src, "DeathmatchLobby")
 		ui.open()
 
 /datum/deathmatch_lobby/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["maps"] = list()
 	for (var/map_key in GLOB.deathmatch_game.maps)
 		.["maps"] += map_key
 
 /datum/deathmatch_lobby/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/is_player = !isnull(players[user.ckey])
@@ -406,6 +462,8 @@
 	return data
 
 /datum/deathmatch_lobby/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !isobserver(usr))
 		return
@@ -533,21 +591,29 @@
 
 /// Selects the passed modifier.
 /datum/deathmatch_lobby/proc/select_modifier(datum/deathmatch_modifier/modifier)
+	procstart = null
+	src.procstart = null
 	modifier.on_select(src)
 	modifiers += modifier.type
 
 /// Deselects the passed modifier.
 /datum/deathmatch_lobby/proc/unselect_modifier(datum/deathmatch_modifier/modifier)
+	procstart = null
+	src.procstart = null
 	modifier.unselect(src)
 	modifiers -= modifier.type
 
 /datum/deathmatch_lobby/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user.ckey == host)
 		mod_menu_open = FALSE
 
 /// Helper proc to get modifier data
 /datum/deathmatch_lobby/proc/get_modifier_list(is_host, mod_menu_open)
+	procstart = null
+	src.procstart = null
 	var/list/modifier_list = list()
 
 	if(!mod_menu_open)
@@ -569,6 +635,8 @@
 
 /// Helper proc for getting observer data
 /datum/deathmatch_lobby/proc/get_observer_list()
+	procstart = null
+	src.procstart = null
 	var/list/observer_list = list()
 
 	for (var/observer_key in observers)
@@ -589,6 +657,8 @@
 
 /// Helper proc for getting player data
 /datum/deathmatch_lobby/proc/get_player_list()
+	procstart = null
+	src.procstart = null
 	var/list/player_list = list()
 
 	for (var/player_key in players)

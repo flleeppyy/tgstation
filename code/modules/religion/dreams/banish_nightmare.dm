@@ -6,6 +6,8 @@
 	ritual_length = 20 SECONDS
 
 /datum/religion_rites/banish_nightmare/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ritual_invocations = list(
 		"We have bested a terrible Nightmare, a plague upon our station!..",
@@ -15,6 +17,8 @@
 	)
 
 /datum/religion_rites/banish_nightmare/perform_rite(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	var/has_nightmare = FALSE
 	for(var/mob/living/carbon/human/nightmare in get_turf(religious_tool))
 		if(isnightmare(nightmare))
@@ -33,6 +37,8 @@
 	return ..()
 
 /datum/religion_rites/banish_nightmare/post_invoke_effects(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/favor = 0
 	var/give_heart = FALSE
@@ -81,6 +87,8 @@
 	var/charges = 3
 
 /obj/item/organ/heart/evolved/sacred/dreamer/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	healing_probability = 5
 	if(HAS_TRAIT(owner, TRAIT_DREAMING))
 		healing_probability += 7.5
@@ -89,12 +97,18 @@
 	return ..()
 
 /obj/item/organ/heart/evolved/sacred/dreamer/on_blocked()
+	procstart = null
+	src.procstart = null
 	charges -= 1
 	addtimer(CALLBACK(src, PROC_REF(recharge)), 1 MINUTES)
 	playsound(owner, 'sound/effects/health/slowbeat.ogg', 80)
 
 /obj/item/organ/heart/evolved/sacred/dreamer/check_block()
+	procstart = null
+	src.procstart = null
 	return charges > 0
 
 /obj/item/organ/heart/evolved/sacred/dreamer/proc/recharge()
+	procstart = null
+	src.procstart = null
 	charges += 1

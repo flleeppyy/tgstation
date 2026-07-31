@@ -1,16 +1,22 @@
 
 ///returns a boolean whether a machine occupant can be infused
 /atom/movable/proc/can_infuse(mob/feedback_target)
+	procstart = null
+	src.procstart = null
 	if(feedback_target)
 		balloon_alert(feedback_target, "no dna!")
 	return FALSE
 
 /mob/living/can_infuse(mob/feedback_target)
+	procstart = null
+	src.procstart = null
 	if(feedback_target)
 		balloon_alert(feedback_target, "dna too simple!")
 	return FALSE
 
 /mob/living/carbon/human/can_infuse(mob/feedback_target)
+	procstart = null
+	src.procstart = null
 	// Checked by can_mutate but explicit feedback for this issue is good
 	if(HAS_TRAIT(src, TRAIT_BADDNA))
 		if(feedback_target)
@@ -24,6 +30,8 @@
 
 ///returns /datum/infuser_entry that matches an item being used for infusion, returns a fly mutation on failure
 /atom/movable/proc/get_infusion_entry() as /datum/infuser_entry
+	procstart = null
+	src.procstart = null
 	var/datum/infuser_entry/found
 	for(var/datum/infuser_entry/entry as anything in assoc_to_values(GLOB.infuser_entries))
 		if(entry.tier == DNA_MUTANT_UNOBTAINABLE)
@@ -41,6 +49,8 @@
 // TODO: In the future, this should have more logic:
 // - Replace non-mutant organs before mutant ones.
 /mob/living/carbon/human/proc/infuse_organ(datum/infuser_entry/entry, atom/movable/infused_from)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/new_organ = pick_infusion_organ(entry, infused_from)
 	if(!new_organ)
 		return FALSE
@@ -57,6 +67,8 @@
 /// 2. Target's pre-existing organ must be organic / not robotic.
 /// 3. Target must not have the same/identical organ.
 /mob/living/carbon/human/proc/pick_infusion_organ(datum/infuser_entry/entry, atom/movable/infused_from)
+	procstart = null
+	src.procstart = null
 	if(!entry)
 		return FALSE
 	var/list/obj/item/organ/potential_new_organs = entry.get_output_organs(src, infused_from)

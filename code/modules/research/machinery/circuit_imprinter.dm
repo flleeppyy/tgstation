@@ -8,6 +8,8 @@
 	allowed_buildtypes = IMPRINTER
 
 /obj/machinery/rnd/production/circuit_imprinter/compute_efficiency()
+	procstart = null
+	src.procstart = null
 	var/rating = 0
 	for(var/datum/stock_part/servo/servo in component_parts)
 		rating += servo.tier
@@ -15,6 +17,8 @@
 	return 0.5 ** max(rating - 1, 0) // One sheet, half sheet, quarter sheet, eighth sheet.
 
 /obj/machinery/rnd/production/circuit_imprinter/flick_animation(datum/material/mat)
+	procstart = null
+	src.procstart = null
 	return //we presently have no animation
 
 /obj/machinery/rnd/production/circuit_imprinter/offstation

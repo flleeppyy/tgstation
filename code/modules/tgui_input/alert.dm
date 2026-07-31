@@ -11,6 +11,8 @@
  * * autofocus - The bool that controls if this alert should grab window focus.
  */
 /proc/tgui_alert(mob/user, message = "", title, list/buttons = list("Ok"), timeout = 0, autofocus = TRUE, ui_state = GLOB.always_state)
+	procstart = null
+	src.procstart = null
 	if (!user)
 		user = usr
 	if (!istype(user))
@@ -67,6 +69,8 @@
 	var/datum/ui_state/state
 
 /datum/tgui_alert/New(mob/user, message, title, list/buttons, timeout, autofocus, ui_state)
+	procstart = null
+	src.procstart = null
 	src.autofocus = autofocus
 	src.buttons = buttons.Copy()
 	src.message = message
@@ -78,6 +82,8 @@
 		QDEL_IN(src, timeout)
 
 /datum/tgui_alert/Destroy(force)
+	procstart = null
+	src.procstart = null
 	SStgui.close_uis(src)
 	state = null
 	buttons?.Cut()
@@ -88,23 +94,33 @@
  * the window was closed by the user.
  */
 /datum/tgui_alert/proc/wait()
+	procstart = null
+	src.procstart = null
 	while (!choice && !closed && !QDELETED(src))
 		stoplag(1)
 
 /datum/tgui_alert/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AlertModal")
 		ui.open()
 
 /datum/tgui_alert/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	closed = TRUE
 
 /datum/tgui_alert/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return state
 
 /datum/tgui_alert/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["autofocus"] = autofocus
 	data["buttons"] = buttons
@@ -115,12 +131,16 @@
 	return data
 
 /datum/tgui_alert/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	if(timeout)
 		data["timeout"] = CLAMP01((timeout - (world.time - start_time) - 1 SECONDS) / (timeout - 1 SECONDS))
 	return data
 
 /datum/tgui_alert/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -138,4 +158,6 @@
 			return TRUE
 
 /datum/tgui_alert/proc/set_choice(choice)
+	procstart = null
+	src.procstart = null
 	src.choice = choice

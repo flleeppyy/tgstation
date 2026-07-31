@@ -1,4 +1,6 @@
 /proc/brainwash(mob/living/brainwash_victim, directives)
+	procstart = null
+	src.procstart = null
 	if(!brainwash_victim.mind)
 		return
 	if(!islist(directives))
@@ -41,12 +43,16 @@
 	suicide_cry = "FOR... SOMEONE!!"
 
 /datum/antagonist/brainwashed/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/data = list()
 	data["objectives"] = get_objectives()
 	return data
 
 /datum/antagonist/brainwashed/farewell()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_warning("Your mind suddenly clears..."))
 	to_chat(owner, "<big>[span_warning("<b>You feel the weight of the Directives disappear! You no longer have to obey them.</b>")]</big>")
 	if(owner.current)
@@ -56,6 +62,8 @@
 	return ..()
 
 /datum/antagonist/brainwashed/admin_add(datum/mind/new_owner,mob/admin)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/C = new_owner.current
 	if(!istype(C))
 		return

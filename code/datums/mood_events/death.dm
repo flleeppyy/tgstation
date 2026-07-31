@@ -16,6 +16,8 @@
 	timeout = 5 MINUTES
 
 /datum/mood_event/conditional/see_death/can_effect_mob(datum/mood/home, mob/living/who, mob/dead_mob, dusted, gibbed)
+	procstart = null
+	src.procstart = null
 	if(isnull(dead_mob))
 		stack_trace("Death mood event being applied with null dead_mob")
 		return FALSE
@@ -23,9 +25,13 @@
 	return ..()
 
 /datum/mood_event/conditional/see_death/condition_fulfilled(mob/living/who, mob/dead_mob, dusted, gibbed)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/mood_event/conditional/see_death/add_effects(mob/dead_mob, dusted, gibbed)
+	procstart = null
+	src.procstart = null
 	update_effect(dead_mob, dusted, gibbed)
 
 	if(HAS_TRAIT(dead_mob, TRAIT_SPAWNED_MOB))
@@ -55,18 +61,26 @@
 
 /// Blank proc which allows conditional effects to modify mood, timeout, or description before the main effect is applied
 /datum/mood_event/conditional/see_death/proc/update_effect(mob/dead_mob, dusted, gibbed)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Checks if the dead mob is a pet
 /datum/mood_event/conditional/see_death/proc/is_pet(mob/dead_mob)
+	procstart = null
+	src.procstart = null
 	return istype(dead_mob, /mob/living/basic/pet) || ismonkey(dead_mob)
 
 /datum/mood_event/conditional/see_death/be_refreshed(datum/mood/home, mob/dead_mob, dusted, gibbed)
+	procstart = null
+	src.procstart = null
 	if(can_stack_effect(dead_mob))
 		mood_change *= 1.5
 	return ..()
 
 /datum/mood_event/conditional/see_death/be_replaced(datum/mood/home, datum/mood_event/new_event, mob/dead_mob, dusted, gibbed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// when blocking a new mood event (because it's lower priority), refresh ourselves instead
 	if(. == BLOCK_NEW_MOOD)
@@ -74,6 +88,8 @@
 
 /// Checks if our mood can get worse by seeing another death (or better if we're weird like that)
 /datum/mood_event/conditional/see_death/proc/can_stack_effect(mob/dead_mob)
+	procstart = null
+	src.procstart = null
 	// if we're desensitized, don't stack unless it's a buff
 	if(IS_DESENSITIZED(owner) && mood_change < 0)
 		return FALSE
@@ -84,6 +100,8 @@
 
 /// Changes "I saw Joe x" to "I saw the engineer x"
 /datum/mood_event/conditional/see_death/proc/get_descriptor(mob/dead_mob)
+	procstart = null
+	src.procstart = null
 	if(is_pet(dead_mob))
 		return "[dead_mob]"
 	if(dead_mob.name != "Unknown" && dead_mob.mind?.assigned_role?.job_flags & JOB_CREW_MEMBER)
@@ -96,9 +114,13 @@
 	mood_change = 0
 
 /datum/mood_event/conditional/see_death/naive/condition_fulfilled(mob/living/who, mob/dead_mob, dusted, gibbed)
+	procstart = null
+	src.procstart = null
 	return HAS_MIND_TRAIT(who, TRAIT_NAIVE) && !dusted && !gibbed
 
 /datum/mood_event/conditional/see_death/naive/update_effect(mob/dead_mob, dusted, gibbed)
+	procstart = null
+	src.procstart = null
 	description = "Have a good nap, [get_descriptor(dead_mob)]."
 
 /// Cultists are super brainwashed so they get buffs instead
@@ -108,6 +130,8 @@
 	mood_change = parent_type::mood_change * -0.5
 
 /datum/mood_event/conditional/see_death/cult/condition_fulfilled(mob/living/who, mob/dead_mob, dusted, gibbed)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(who, TRAIT_CULT_HALO))
 		return FALSE
 	if(HAS_TRAIT(dead_mob, TRAIT_CULT_HALO))
@@ -120,9 +144,13 @@
 	mood_change = parent_type::mood_change * -0.5
 
 /datum/mood_event/conditional/see_death/revolutionary/condition_fulfilled(mob/living/who, mob/dead_mob, dusted, gibbed)
+	procstart = null
+	src.procstart = null
 	return IS_REVOLUTIONARY(who) && (dead_mob.mind?.assigned_role.job_flags & JOB_HEAD_OF_STAFF)
 
 /datum/mood_event/conditional/see_death/revolutionary/update_effect(mob/dead_mob, dusted, gibbed)
+	procstart = null
+	src.procstart = null
 	var/datum/job/possible_head_job = dead_mob.mind?.assigned_role
 	description = "[possible_head_job.title ? "The [LOWER_TEXT(possible_head_job.title)]" : "Another head of staff"] is dead! Long live the revolution!"
 
@@ -133,6 +161,8 @@
 	mood_change = parent_type::mood_change * -0.5
 
 /datum/mood_event/conditional/see_death/gamer/condition_fulfilled(mob/living/who, mob/dead_mob, dusted, gibbed)
+	procstart = null
+	src.procstart = null
 	return istype(who.mind?.assigned_role, /datum/job/bitrunning_glitch) || istype(who.mind?.assigned_role, /datum/job/bit_avatar)
 
 /// People who just don't gaf
@@ -142,6 +172,8 @@
 	timeout = parent_type::timeout * 0.5
 
 /datum/mood_event/conditional/see_death/dontcare/condition_fulfilled(mob/living/who, mob/dead_mob, dusted, gibbed)
+	procstart = null
+	src.procstart = null
 	if(HAS_PERSONALITY(who, /datum/personality/callous))
 		return TRUE
 	if(HAS_PERSONALITY(who, /datum/personality/animal_disliker) && is_pet(dead_mob))
@@ -149,6 +181,8 @@
 	return FALSE
 
 /datum/mood_event/conditional/see_death/dontcare/update_effect(mob/dead_mob, dusted, gibbed)
+	procstart = null
+	src.procstart = null
 	if(gibbed)
 		description = "Oh, %DEAD_MOB% exploded. Now I have to get the mop."
 	else if(dusted)
@@ -162,9 +196,13 @@
 	mood_change = 0
 
 /datum/mood_event/conditional/see_death/ashwalker/condition_fulfilled(mob/living/who, mob/dead_mob, dusted, gibbed)
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(who, TRAIT_NECROPOLIS_WORSHIP) && !HAS_TRAIT(dead_mob, TRAIT_NECROPOLIS_WORSHIP)
 
 /datum/mood_event/conditional/see_death/ashwalker/update_effect(mob/dead_mob, dusted, gibbed)
+	procstart = null
+	src.procstart = null
 	if(gibbed)
 		description = "%DEAD_MOB% hasss been torn asssunder, glory to the Necropolisss!"
 		mood_change = /datum/mood_event/conditional/see_death::mood_change * -0.5
@@ -178,9 +216,13 @@
 	priority = PET_PRIORITY
 
 /datum/mood_event/conditional/see_death/pet/condition_fulfilled(mob/living/who, mob/dead_mob, dusted, gibbed)
+	procstart = null
+	src.procstart = null
 	return is_pet(dead_mob)
 
 /datum/mood_event/conditional/see_death/pet/update_effect(mob/dead_mob, dusted, gibbed)
+	procstart = null
+	src.procstart = null
 	if(gibbed)
 		description = "%DEAD_MOB% just exploded!!"
 	else if(dusted)
@@ -202,9 +244,13 @@
 
 /// Check if the passed mob is any kind of xenomorph (covering for both carbon and basic types)
 /datum/mood_event/conditional/see_death/xeno/proc/is_any_xenomorph(mob/target)
+	procstart = null
+	src.procstart = null
 	return isalien(target) || isalienadult(target) // latter proc should have coverage for basic mbos
 
 /datum/mood_event/conditional/see_death/xeno/condition_fulfilled(mob/living/who, mob/dead_mob, dusted, gibbed)
+	procstart = null
+	src.procstart = null
 	if(is_any_xenomorph(who))
 		return FALSE
 
@@ -215,6 +261,8 @@
 
 // Give buffs based on the type of xenomorph dying
 /datum/mood_event/conditional/see_death/xeno/update_effect(mob/dead_mob, dusted, gibbed)
+	procstart = null
+	src.procstart = null
 	// following values are in absolute value form, we make it have a positive effect later
 	var/change_modifier = 0
 	var/timeout_modifier = 0
@@ -252,6 +300,8 @@
 
 /// Separate proc that handles cases where the viewer is carrying a xenomorph embryo
 /datum/mood_event/conditional/see_death/xeno/proc/handle_embryo_carrier(mob/dead_mob)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(owner, TRAIT_XENO_HOST))
 		return
 
@@ -272,6 +322,8 @@
 
 /// Handles cleanup once the embryo carrier dies
 /datum/mood_event/conditional/see_death/xeno/proc/on_embryo_removal(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
@@ -281,9 +333,13 @@
 	timeout = parent_type::timeout * 0.5
 
 /datum/mood_event/conditional/see_death/desensitized/condition_fulfilled(mob/living/who, mob/dead_mob, dusted, gibbed)
+	procstart = null
+	src.procstart = null
 	return IS_DESENSITIZED(who)
 
 /datum/mood_event/conditional/see_death/desensitized/update_effect(mob/dead_mob, dusted, gibbed)
+	procstart = null
+	src.procstart = null
 	if(gibbed)
 		description = "I saw %DEAD_MOB% explode."
 	else if(dusted)

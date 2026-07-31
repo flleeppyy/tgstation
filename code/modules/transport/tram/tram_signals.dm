@@ -102,28 +102,40 @@
 	pixel_y = 20
 
 /obj/machinery/transport/crossing_signal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SStransport, COMSIG_TRANSPORT_UPDATED, PROC_REF(wake_up))
 	SStransport.crossing_signals += src
 	register_context()
 
 /obj/machinery/transport/crossing_signal/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	link_tram()
 	link_sensor()
 	find_uplink()
 
 /obj/machinery/transport/crossing_signal/Destroy()
+	procstart = null
+	src.procstart = null
 	SStransport.crossing_signals -= src
 	. = ..()
 
 /obj/machinery/transport/crossing_signal/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/transport/crossing_signal/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/transport/crossing_signal/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(panel_open)
 		if(held_item?.tool_behaviour == TOOL_WRENCH)
@@ -136,6 +148,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/transport/crossing_signal/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("The maintenance panel is [panel_open ? "open" : "closed"].")
 	if(panel_open)
@@ -157,6 +171,8 @@
 			. += span_notice("The tram configuration display shows NORTH/SOUTH.")
 
 /obj/machinery/transport/crossing_signal/emag_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	balloon_alert(user, "disabled motion sensors")
@@ -165,6 +181,8 @@
 	return TRUE
 
 /obj/machinery/transport/crossing_signal/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/tool = user.get_active_held_item()
 	if(!panel_open || tool?.tool_behaviour != TOOL_WRENCH)
 		return CLICK_ACTION_BLOCKING
@@ -176,6 +194,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/transport/crossing_signal/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		return NONE
 	switch(sign_dir)
@@ -190,16 +210,22 @@
 
 
 /obj/machinery/transport/crossing_signal/proc/link_sensor()
+	procstart = null
+	src.procstart = null
 	sensor_ref = WEAKREF(find_closest_valid_sensor())
 	update_appearance()
 
 /obj/machinery/transport/crossing_signal/proc/unlink_sensor()
+	procstart = null
+	src.procstart = null
 	sensor_ref = null
 	if(operating_status < TRANSPORT_REMOTE_WARNING)
 		operating_status = TRANSPORT_REMOTE_WARNING
 	update_appearance()
 
 /obj/machinery/transport/crossing_signal/proc/wake_sensor()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/transport/guideway_sensor/linked_sensor = sensor_ref?.resolve()
 	if(isnull(linked_sensor))
 		operating_status = TRANSPORT_REMOTE_WARNING
@@ -211,6 +237,8 @@
 		operating_status = TRANSPORT_REMOTE_WARNING
 
 /obj/machinery/transport/crossing_signal/proc/clear_uplink()
+	procstart = null
+	src.procstart = null
 	inbound = null
 	outbound = null
 	update_appearance()
@@ -219,6 +247,8 @@
  * Only process if the tram is actually moving
  */
 /obj/machinery/transport/crossing_signal/proc/wake_up(datum/source, transport_controller, controller_active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(machine_stat & BROKEN || machine_stat & NOPOWER)
@@ -247,6 +277,8 @@
 	update_operating()
 
 /obj/machinery/transport/crossing_signal/on_set_machine_stat()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & BROKEN || machine_stat & NOPOWER)
 		operating_status = TRANSPORT_LOCAL_FAULT
@@ -254,6 +286,8 @@
 		operating_status = TRANSPORT_SYSTEM_NORMAL
 
 /obj/machinery/transport/crossing_signal/on_set_is_operational()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!is_operational)
 		operating_status = TRANSPORT_LOCAL_FAULT
@@ -262,6 +296,8 @@
 	update_operating()
 
 /obj/machinery/transport/crossing_signal/proc/comms_change(source, controller, new_status)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/transport_controller/linear/tram/updated_controller = controller
@@ -281,6 +317,8 @@
  * Returns whether we are still processing.
  */
 /obj/machinery/transport/crossing_signal/proc/update_operating()
+	procstart = null
+	src.procstart = null
 	update_appearance()
 	// Immediately process for snappy feedback
 	var/should_process = process() != PROCESS_KILL
@@ -292,6 +330,8 @@
 	end_processing()
 
 /obj/machinery/transport/crossing_signal/process()
+	procstart = null
+	src.procstart = null
 	// idle aspect is green or blue depending on the signal status
 	// degraded signal operating conditions of any type show blue
 	var/idle_aspect = operating_status == TRANSPORT_SYSTEM_NORMAL ? XING_STATE_GREEN : XING_STATE_MALF
@@ -363,6 +403,8 @@
  * force_update - force appearance to update even if state didn't change.
  */
 /obj/machinery/transport/crossing_signal/proc/set_signal_state(new_state, force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(new_state == signal_state && !force)
 		return
 
@@ -371,6 +413,8 @@
 	update_appearance()
 
 /obj/machinery/transport/crossing_signal/update_icon_state()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(SOUTH, EAST)
 			pixel_y = 20
@@ -388,6 +432,8 @@
 	return ..()
 
 /obj/machinery/static_signal/update_icon_state()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(SOUTH, EAST)
 			pixel_y = 20
@@ -405,6 +451,8 @@
 	return ..()
 
 /obj/machinery/transport/crossing_signal/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(machine_stat & NOPOWER)
@@ -425,6 +473,8 @@
 	set_light(l_on = TRUE, l_color = new_color)
 
 /obj/machinery/transport/crossing_signal/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(machine_stat & NOPOWER)
@@ -442,6 +492,8 @@
 	. += emissive_appearance(icon, status_overlay, offset_spokesman = src, alpha = src.alpha)
 
 /obj/machinery/static_signal/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(!is_operational)
@@ -451,6 +503,8 @@
 	set_light(l_on = TRUE)
 
 /obj/machinery/static_signal/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!is_operational)
@@ -476,15 +530,21 @@
 	var/operating_status = TRANSPORT_SYSTEM_NORMAL
 
 /obj/machinery/transport/guideway_sensor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SStransport.sensors += src
 
 /obj/machinery/transport/guideway_sensor/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pair_sensor()
 	RegisterSignal(SStransport, COMSIG_TRANSPORT_UPDATED, PROC_REF(wake_up))
 
 /obj/machinery/transport/guideway_sensor/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(panel_open)
 		if(held_item?.tool_behaviour == TOOL_WRENCH)
@@ -496,6 +556,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/transport/guideway_sensor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("The maintenance panel is [panel_open ? "open" : "closed"].")
 	if(panel_open)
@@ -512,12 +574,18 @@
 			. += span_notice("The status display reads: Repair required.")
 
 /obj/machinery/transport/guideway_sensor/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/transport/guideway_sensor/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/transport/guideway_sensor/proc/pair_sensor()
+	procstart = null
+	src.procstart = null
 	set_machine_stat(machine_stat | MAINT)
 	if(paired_sensor)
 		var/obj/machinery/transport/guideway_sensor/divorcee = paired_sensor?.resolve()
@@ -553,6 +621,8 @@
 	playsound(src, 'sound/machines/synth/synth_yes.ogg', 75, vary = FALSE, use_reverb = TRUE)
 
 /obj/machinery/transport/guideway_sensor/Destroy()
+	procstart = null
+	src.procstart = null
 	SStransport.sensors -= src
 	if(paired_sensor)
 		var/obj/machinery/transport/guideway_sensor/divorcee = paired_sensor?.resolve()
@@ -564,6 +634,8 @@
 	. = ..()
 
 /obj/machinery/transport/guideway_sensor/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(default_change_direction_wrench(user, tool))
@@ -571,6 +643,8 @@
 		return TRUE
 
 /obj/machinery/transport/guideway_sensor/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(machine_stat & BROKEN || machine_stat & NOPOWER || malfunctioning)
@@ -603,6 +677,8 @@
 		. += emissive_appearance(icon, "sensor-[TRANSPORT_REMOTE_FAULT]", src, alpha = src.alpha)
 
 /obj/machinery/transport/guideway_sensor/proc/trigger_sensor()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/transport/guideway_sensor/buddy = paired_sensor?.resolve()
 	if(!buddy)
 		return FALSE
@@ -613,6 +689,8 @@
 	return TRUE
 
 /obj/machinery/transport/guideway_sensor/proc/wake_up()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(machine_stat & BROKEN)
@@ -631,6 +709,8 @@
 	update_appearance()
 
 /obj/machinery/transport/guideway_sensor/on_set_is_operational()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/obj/machinery/transport/guideway_sensor/buddy = paired_sensor?.resolve()
@@ -640,6 +720,8 @@
 	update_appearance()
 
 /obj/machinery/transport/crossing_signal/proc/find_closest_valid_sensor()
+	procstart = null
+	src.procstart = null
 	if(!istype(src) || !src.z)
 		return FALSE
 
@@ -663,6 +745,8 @@
 	return FALSE
 
 /obj/machinery/transport/crossing_signal/proc/find_uplink()
+	procstart = null
+	src.procstart = null
 	if(!istype(src) || !src.z)
 		return FALSE
 

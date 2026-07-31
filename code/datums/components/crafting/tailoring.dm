@@ -616,6 +616,8 @@
 	category = CAT_CLOTHING
 
 /datum/crafting_recipe/balloon_helmet/check_requirements(mob/user, list/collected_requirements)
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(user, TRAIT_BALLOON_SUTRA)
 
 /datum/crafting_recipe/balloon_tophat
@@ -627,6 +629,8 @@
 	category = CAT_CLOTHING
 
 /datum/crafting_recipe/balloon_tophat/check_requirements(mob/user, list/collected_requirements)
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(user, TRAIT_BALLOON_SUTRA)
 
 /datum/crafting_recipe/balloon_vest
@@ -638,6 +642,8 @@
 	category = CAT_CLOTHING
 
 /datum/crafting_recipe/balloon_vest/check_requirements(mob/user, list/collected_requirements)
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(user, TRAIT_BALLOON_SUTRA)
 
 /datum/crafting_recipe/press_armor

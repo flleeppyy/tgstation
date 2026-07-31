@@ -142,6 +142,8 @@
 	var/allow_piercing = TRUE
 
 /obj/item/reagent_containers/borghypo/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	stored_reagents = new(new_flags = NO_REACT)
 	stored_reagents.maximum_volume = length(default_reagent_types) * (max_volume_per_reagent + 1)
@@ -150,11 +152,15 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/item/reagent_containers/borghypo/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /// Every [recharge_time] seconds, recharge some reagents for the cyborg
 /obj/item/reagent_containers/borghypo/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	charge_timer += seconds_per_tick
 	if(charge_timer >= recharge_time)
 		regenerate_reagents(default_reagent_types)
@@ -165,10 +171,14 @@
 
 /// Use this to add more chemicals for the borghypo to produce.
 /obj/item/reagent_containers/borghypo/proc/add_new_reagent(datum/reagent/reagent)
+	procstart = null
+	src.procstart = null
 	stored_reagents.add_reagent(reagent, (max_volume_per_reagent + 1), reagtemp = dispensed_temperature, no_react = TRUE)
 
 /// Regenerate our supply of all reagents (if they're not full already)
 /obj/item/reagent_containers/borghypo/proc/regenerate_reagents(list/reagents_to_regen)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(src.loc))
 		var/mob/living/silicon/robot/cyborg = src.loc
 		if(cyborg?.cell)
@@ -179,6 +189,8 @@
 					stored_reagents.add_reagent(reagent_to_regen, 5, reagtemp = dispensed_temperature, no_react = TRUE)
 
 /obj/item/reagent_containers/borghypo/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(interacting_with))
 		return NONE
 
@@ -208,12 +220,16 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/borghypo/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "BorgHypo", name)
 		ui.open()
 
 /obj/item/reagent_containers/borghypo/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/available_reagents = list()
 	for(var/datum/reagent/reagent in stored_reagents.reagent_list)
 		available_reagents.Add(list(list(
@@ -230,9 +246,13 @@
 	return data
 
 /obj/item/reagent_containers/borghypo/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	ui_interact(user)
 
 /obj/item/reagent_containers/borghypo/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -250,11 +270,15 @@
 			break
 
 /obj/item/reagent_containers/borghypo/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "Currently loaded: [selected_reagent ? "[selected_reagent]. [selected_reagent.description]" : "nothing."]"
 	. += span_notice("<i>Alt+Click</i> to change transfer amount. Currently set to [amount_per_transfer_from_this]u.")
 
 /obj/item/reagent_containers/borghypo/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	change_transfer_amount(user)
 	return CLICK_ACTION_SUCCESS
 
@@ -265,6 +289,8 @@
 
 /// Upgrade our hypospray to hold even more new reagents!
 /obj/item/reagent_containers/borghypo/medical/proc/upgrade_hypo()
+	procstart = null
+	src.procstart = null
 	upgraded = TRUE
 	// Expand the holder's capacity to allow for our new suite of reagents
 	stored_reagents.maximum_volume += (length(expanded_reagent_types) * (max_volume_per_reagent + 1))
@@ -274,6 +300,8 @@
 
 /// Remove the reagents we got from the expansion, back to our base reagents
 /obj/item/reagent_containers/borghypo/medical/proc/remove_hypo_upgrade()
+	procstart = null
+	src.procstart = null
 	upgraded = FALSE
 	for(var/reagent in expanded_reagent_types)
 		var/datum/reagent/reagent_to_remove = reagent
@@ -339,12 +367,16 @@
 	var/reagent_search_container = REAGENT_CONTAINER_BEVAPPARATUS
 
 /obj/item/reagent_containers/borghypo/borgshaker/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "BorgShaker", name)
 		ui.open()
 
 /obj/item/reagent_containers/borghypo/borgshaker/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -366,6 +398,8 @@
 	return TRUE
 
 /obj/item/reagent_containers/borghypo/borgshaker/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/drink_reagents = list()
 	var/list/alcohol_reagents = list()
 	for(var/datum/reagent/reagent in stored_reagents.reagent_list)
@@ -401,6 +435,8 @@
 	return data
 
 /obj/item/reagent_containers/borghypo/borgshaker/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!interacting_with.is_refillable())
 		return NONE
 	if(!selected_reagent)
@@ -438,12 +474,16 @@
 	allow_piercing = FALSE // Can't be used on carbons, so this prevents applying the piercing hypo upgrade to no effect.
 
 /obj/item/reagent_containers/borghypo/condiment_synthesizer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "BorgHypo", name)
 		ui.open()
 
 /obj/item/reagent_containers/borghypo/condiment_synthesizer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/condiments = list()
 	for(var/datum/reagent/reagent in stored_reagents.reagent_list)
 		condiments.Add(list(list(
@@ -461,6 +501,8 @@
 	return data
 
 /obj/item/reagent_containers/borghypo/condiment_synthesizer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!interacting_with.is_refillable())
 		return NONE
 	if(!selected_reagent)

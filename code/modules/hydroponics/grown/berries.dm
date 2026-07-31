@@ -29,6 +29,8 @@
 	distill_reagent = /datum/reagent/consumable/ethanol/gin
 
 /obj/item/food/grown/berries/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/berryjuice
 
 // Poison Berries
@@ -55,6 +57,8 @@
 	wine_power = 35
 
 /obj/item/food/grown/berries/poison/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/poisonberryjuice
 
 // Death Berries
@@ -85,6 +89,8 @@
 	wine_power = 50
 
 /obj/item/food/grown/berries/death/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/poisonberryjuice
 
 // Glow Berries
@@ -146,9 +152,13 @@
 	distill_reagent = /datum/reagent/consumable/ethanol/wine
 
 /obj/item/food/grown/grapes/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/grapejuice
 
 /obj/item/food/grown/grapes/make_dryable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/dryable, /obj/item/food/no_raisin/healthy)
 
 // Green Grapes
@@ -199,6 +209,8 @@
 	distill_reagent = /datum/reagent/toxin/itching_powder
 
 /obj/item/food/grown/toechtauese/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/toechtauese_juice
 
 /obj/item/seeds/lanternfruit

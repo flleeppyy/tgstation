@@ -2,6 +2,8 @@
 /datum/unit_test/modsuit_checks
 
 /datum/unit_test/modsuit_checks/Run()
+	procstart = null
+	src.procstart = null
 	var/list/paths = typesof(/obj/item/mod/control/pre_equipped)
 
 	for(var/modpath in paths)
@@ -23,6 +25,8 @@
 /datum/unit_test/mod_storage
 
 /datum/unit_test/mod_storage/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/dummy = allocate(__IMPLIED_TYPE__)
 	dummy.equipOutfit(/datum/outfit/admin)
 	TEST_ASSERT(istype(dummy.back, /obj/item/mod/control/pre_equipped), "Admin outfit did not equip a MODsuit.")

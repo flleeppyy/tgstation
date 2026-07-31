@@ -23,6 +23,8 @@
 	icon_state = "taqiyahwhite"
 
 /obj/item/clothing/head/chaplain/taqiyah/white/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	create_storage(storage_type = /datum/storage/pockets/small)
@@ -33,6 +35,8 @@
 	icon_state = "taqiyahred"
 
 /obj/item/clothing/head/chaplain/taqiyah/red/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	create_storage(storage_type = /datum/storage/pockets/small)

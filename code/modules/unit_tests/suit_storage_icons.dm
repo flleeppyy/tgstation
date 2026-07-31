@@ -2,6 +2,8 @@
 /datum/unit_test/suit_storage_icons
 
 /datum/unit_test/suit_storage_icons/Run()
+	procstart = null
+	src.procstart = null
 	var/list/wearable_item_paths = list()
 
 	for(var/obj/item/item_path as anything in subtypesof(/obj/item))

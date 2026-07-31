@@ -46,16 +46,22 @@
 		INVOKE_ASYNC(src, PROC_REF(request_ghost_control), poll_question, role_name || "[parent]", poll_length, poll_ignore_key, poll_announce_chosen, poll_chat_border_icon)
 
 /datum/component/ghost_direct_control/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_ATOM_ATTACK_GHOST, PROC_REF(on_ghost_clicked))
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examined))
 	RegisterSignal(parent, COMSIG_MOB_LOGIN, PROC_REF(on_login))
 
 /datum/component/ghost_direct_control/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ATOM_ATTACK_GHOST, COMSIG_ATOM_EXAMINE, COMSIG_MOB_LOGIN))
 	return ..()
 
 /datum/component/ghost_direct_control/Destroy(force)
+	procstart = null
+	src.procstart = null
 	extra_control_checks = null
 	after_assumed_control = null
 
@@ -65,6 +71,8 @@
 
 /// Inform ghosts that they can possess this
 /datum/component/ghost_direct_control/proc/on_examined(datum/source, mob/user, list/examine_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!isobserver(user))
 		return
@@ -75,6 +83,8 @@
 
 /// Send out a request for a brain
 /datum/component/ghost_direct_control/proc/request_ghost_control(poll_question, role_name, poll_length, poll_ignore_key, poll_announce_chosen, poll_chat_border_icon)
+	procstart = null
+	src.procstart = null
 	if(!(GLOB.ghost_role_flags & GHOSTROLE_SPAWNER))
 		return
 	awaiting_ghosts = TRUE
@@ -96,6 +106,8 @@
 
 /// A ghost clicked on us, they want to get in this body
 /datum/component/ghost_direct_control/proc/on_ghost_clicked(mob/our_mob, mob/dead/observer/hopeful_ghost)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (our_mob.key)
 		qdel(src)
@@ -116,6 +128,8 @@
 
 /// We got far enough to establish that this mob is a valid target, let's try to posssess it
 /datum/component/ghost_direct_control/proc/attempt_possession(mob/our_mob, mob/dead/observer/hopeful_ghost)
+	procstart = null
+	src.procstart = null
 	var/ghost_asked = tgui_alert(usr, "Become [our_mob]?", "Are you sure?", list("Yes", "No"))
 	if (ghost_asked != "Yes" || QDELETED(our_mob))
 		return
@@ -123,6 +137,8 @@
 
 /// Grant possession of our mob, component is now no longer required
 /datum/component/ghost_direct_control/proc/assume_direct_control(mob/harbinger)
+	procstart = null
+	src.procstart = null
 	if (QDELETED(src))
 		to_chat(harbinger, span_warning("Offer to possess creature has expired!"))
 		return
@@ -152,6 +168,8 @@
 
 /// When someone assumes control, get rid of our component
 /datum/component/ghost_direct_control/proc/on_login(mob/harbinger)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// This proc is called the very moment .key is set, so we need to force mind to initialize here if we want the invoke to affect the mind of the mob
 	if(isnull(harbinger.mind))

@@ -8,6 +8,8 @@
 
 
 /datum/outfit/job/assistant/gimmick/give_jumpsuit(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	return //dont do colorized and stuff, it messes with our uniforms
 
 /datum/outfit/job/assistant/gimmick/bee
@@ -48,6 +50,8 @@
 	outfit_weight = 2
 
 /datum/outfit/job/assistant/gimmick/cyborg/post_equip(mob/living/carbon/human/equipped, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/organ/tongue/robot/robotongue = new ()
 	robotongue.Insert(equipped, movement_flags = DELETE_IF_REPLACED)
@@ -104,6 +108,8 @@
 	outfit_weight = 5
 
 /datum/outfit/job/assistant/gimmick/mopper/post_equip(mob/living/carbon/human/equipped, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	for(var/turf/turf in range(1, equipped))

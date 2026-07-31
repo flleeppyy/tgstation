@@ -17,6 +17,8 @@
 	customization_options = list(/datum/preference/choiced/prosthetic_organ)
 
 /datum/quirk/prosthetic_organ/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	var/static/list/organ_slots = list(
 		ORGAN_SLOT_HEART,
@@ -65,10 +67,14 @@
 	STOP_PROCESSING(SSobj, old_organ)
 
 /datum/quirk/prosthetic_organ/post_add()
+	procstart = null
+	src.procstart = null
 	to_chat(quirk_holder, span_bolddanger("Your [slot_string] has been replaced with a surplus organ. It is weak and highly unstable. \
 	Additionally, any EMP will make it stop working entirely."))
 
 /datum/quirk/prosthetic_organ/remove()
+	procstart = null
+	src.procstart = null
 	if(old_organ)
 		old_organ.Insert(quirk_holder, special = TRUE)
 	old_organ = null

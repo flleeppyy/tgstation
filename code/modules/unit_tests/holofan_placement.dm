@@ -2,6 +2,8 @@
 /datum/unit_test/place_holosign
 
 /datum/unit_test/place_holosign/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/jannie = EASY_ALLOCATE()
 	var/obj/item/holosign_creator/janibarrier/jannie_holosign_creator = EASY_ALLOCATE()
 

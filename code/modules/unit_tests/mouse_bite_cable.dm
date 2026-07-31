@@ -3,6 +3,8 @@
 	normal_floor_required = TRUE
 
 /datum/unit_test/mouse_bite_cable/Run()
+	procstart = null
+	src.procstart = null
 	// use dummy subtype that will bypass the probability check to bite on a cable
 	var/mob/living/basic/mouse/biter = allocate(/mob/living/basic/mouse/cable_lover)
 	var/obj/structure/cable/wire = allocate(/obj/structure/cable)

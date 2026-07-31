@@ -37,6 +37,8 @@
 GENERAL_PROTECT_DATUM(/datum/log_entry)
 
 /datum/log_entry/New(timestamp, category, message, flags, list/data, list/semver_store)
+	procstart = null
+	src.procstart = null
 	..()
 
 	src.id = next_id++
@@ -48,6 +50,8 @@ GENERAL_PROTECT_DATUM(/datum/log_entry)
 	with_semver_store(semver_store)
 
 /datum/log_entry/proc/with_data(list/data)
+	procstart = null
+	src.procstart = null
 	if(!isnull(data))
 		if(!islist(data))
 			src.data = list("data" = data)
@@ -57,6 +61,8 @@ GENERAL_PROTECT_DATUM(/datum/log_entry)
 	return src
 
 /datum/log_entry/proc/with_semver_store(list/semver_store)
+	procstart = null
+	src.procstart = null
 	if(isnull(semver_store))
 		return
 	if(!islist(semver_store))
@@ -67,6 +73,8 @@ GENERAL_PROTECT_DATUM(/datum/log_entry)
 
 /// Converts the log entry to a human-readable string.
 /datum/log_entry/proc/to_readable_text(format = TRUE)
+	procstart = null
+	src.procstart = null
 	var/output = ""
 	if(format)
 		output += "\[[timestamp]\] [uppertext(category)]: [message]"
@@ -81,6 +89,8 @@ GENERAL_PROTECT_DATUM(/datum/log_entry)
 
 /// Converts the log entry to a JSON string.
 /datum/log_entry/proc/to_json_text()
+	procstart = null
+	src.procstart = null
 	// I do not trust byond's json encoder, and need to ensure the order doesn't change.
 	var/list/json_entries = list()
 	MANUAL_JSON_ENTRY(json_entries, LOG_ENTRY_KEY_TIMESTAMP, timestamp)
@@ -112,11 +122,15 @@ GENERAL_PROTECT_DATUM(/datum/log_entry)
 
 /// Writes the log entry to a file.
 /datum/log_entry/proc/write_entry_to_file(file)
+	procstart = null
+	src.procstart = null
 	CHECK_AND_TRY_FILE_ERROR_RECOVERY(file)
 	WRITE_LOG_NO_FORMAT(file, "[to_json_text()]\n")
 
 /// Writes the log entry to a file as a human-readable string.
 /datum/log_entry/proc/write_readable_entry_to_file(file, format_internally = TRUE)
+	procstart = null
+	src.procstart = null
 	CHECK_AND_TRY_FILE_ERROR_RECOVERY(file)
 	// If it's being formatted internally we need to manually add a newline
 	if(format_internally)

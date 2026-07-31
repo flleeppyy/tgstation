@@ -57,6 +57,8 @@
 	#endif
 
 /turf/open/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(!blocks_air)
 		air = create_gas_mixture()
 		if(planetary_atmos)
@@ -67,6 +69,8 @@
 	return ..()
 
 /turf/open/Destroy()
+	procstart = null
+	src.procstart = null
 	if(active_hotspot)
 		QDEL_NULL(active_hotspot)
 	// Adds the adjacent turfs to the current atmos processing
@@ -79,6 +83,8 @@
 ///Copies all gas info from the turf into a new gas_mixture, along with our temperature
 ///Returns the created gas_mixture
 /turf/proc/create_gas_mixture()
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/mix = SSair.parse_gas_string(initial_gas_mix, /datum/gas_mixture/turf)
 
 	//acounts for changes in temperature
@@ -88,7 +94,9 @@
 
 	return mix
 
-/turf/open/assume_air(datum/gas_mixture/giver) //use this for machines to adjust air
+/turf/open/assume_air(datum/gas_mixture/giver)
+	procstart = null
+	src.procstart = null //use this for machines to adjust air
 	if(!giver)
 		return FALSE
 	air.merge(giver)
@@ -97,6 +105,8 @@
 	return TRUE
 
 /turf/open/remove_air(amount)
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/ours = return_air()
 	var/datum/gas_mixture/removed = ours.remove(amount)
 	update_visuals()
@@ -104,29 +114,43 @@
 	return removed
 
 /turf/open/proc/copy_air_with_tile(turf/open/target_turf)
+	procstart = null
+	src.procstart = null
 	if(istype(target_turf))
 		air.copy_from(target_turf.air)
 
 /turf/open/proc/copy_air(datum/gas_mixture/copy)
+	procstart = null
+	src.procstart = null
 	if(copy)
 		air.copy_from(copy)
 
 /turf/return_air()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/gas_mixture)
 	var/datum/gas_mixture/copied_mixture = create_gas_mixture()
 	return copied_mixture
 
 /turf/open/return_air()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/gas_mixture)
 	return air
 
 /turf/open/return_analyzable_air()
+	procstart = null
+	src.procstart = null
 	return return_air()
 
 /turf/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return (exposed_temperature >= heat_capacity || to_be_destroyed)
 
 /turf/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	if(exposed_temperature >= heat_capacity)
 		to_be_destroyed = TRUE
 	if(to_be_destroyed && exposed_temperature >= max_fire_temperature_sustained)
@@ -135,6 +159,8 @@
 		burn_turf()
 
 /turf/proc/burn_turf()
+	procstart = null
+	src.procstart = null
 	burn_tile()
 	var/chance_of_deletion
 	if (heat_capacity) //beware of division by zero
@@ -148,22 +174,32 @@
 		to_be_destroyed = FALSE
 
 /turf/temperature_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	atmos_expose(air, exposed_temperature)
 
 /turf/open/temperature_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_TURF_EXPOSE, air, exposed_temperature)
 	check_atmos_process(src, air, exposed_temperature) //Manually do this to avoid needing to use elements, don't want 200 second atom init times
 
 /turf/proc/archive()
+	procstart = null
+	src.procstart = null
 	temperature_archived = temperature
 
 /turf/open/archive()
+	procstart = null
+	src.procstart = null
 	LINDA_CYCLE_ARCHIVE(src)
 
 /////////////////////////GAS OVERLAYS//////////////////////////////
 
 
 /turf/open/proc/update_visuals()
+	procstart = null
+	src.procstart = null
 	var/list/atmos_overlay_types = src.atmos_overlay_types // Cache for free performance
 
 	if(!air) // 2019-05-14: was not able to get this path to fire in testing. Consider removing/looking at callers -Naksu
@@ -191,6 +227,8 @@
 	src.atmos_overlay_types = new_overlay_types
 
 /proc/typecache_of_gases_with_no_overlays()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for (var/gastype in subtypesof(/datum/gas))
 		var/datum/gas/gasvar = gastype
@@ -248,9 +286,13 @@
 #endif
 
 /turf/proc/process_cell(fire_count)
+	procstart = null
+	src.procstart = null
 	SSair.remove_from_active(src)
 
 /turf/open/process_cell(fire_count)
+	procstart = null
+	src.procstart = null
 	if(archived_cycle < fire_count) //archive self if not already done
 		LINDA_CYCLE_ARCHIVE(src)
 
@@ -375,12 +417,16 @@
 //////////////////////////SPACEWIND/////////////////////////////
 
 /turf/open/proc/consider_pressure_difference(turf/target_turf, difference)
+	procstart = null
+	src.procstart = null
 	SSair.high_pressure_delta |= src
 	if(difference > pressure_difference)
 		pressure_direction = get_dir(src, target_turf)
 		pressure_difference = difference
 
 /turf/open/proc/high_pressure_movements()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/moving_atom
 	for(var/thing in src)
 		moving_atom = thing
@@ -396,6 +442,8 @@
 	var/last_high_pressure_movement_air_cycle = 0
 
 /atom/movable/proc/experience_pressure_difference(pressure_difference, direction, pressure_resistance_prob_delta = 0)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(SEND_SIGNAL(src, COMSIG_ATOM_PRE_PRESSURE_PUSH) & COMSIG_ATOM_BLOCKS_PRESSURE)
 		return
@@ -429,9 +477,13 @@
 	var/turf_reactions = NONE
 
 /datum/excited_group/New()
+	procstart = null
+	src.procstart = null
 	SSair.excited_groups += src
 
 /datum/excited_group/proc/add_turf(turf/open/target_turf)
+	procstart = null
+	src.procstart = null
 	turf_list += target_turf
 	target_turf.excited_group = src
 	dismantle_cooldown = 0
@@ -439,6 +491,8 @@
 		display_turf(target_turf)
 
 /datum/excited_group/proc/merge_groups(datum/excited_group/target_group)
+	procstart = null
+	src.procstart = null
 	if(turf_list.len > target_group.turf_list.len)
 		SSair.excited_groups -= target_group
 		for(var/turf/open/group_member as anything in target_group.turf_list)
@@ -463,10 +517,14 @@
 		target_group.dismantle_cooldown = 0
 
 /datum/excited_group/proc/reset_cooldowns()
+	procstart = null
+	src.procstart = null
 	breakdown_cooldown = 0
 	dismantle_cooldown = 0
 
 /datum/excited_group/proc/self_breakdown(roundstart = FALSE, poke_turfs = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/shared_mix = new
 
 	//make local for sanic speed
@@ -522,6 +580,8 @@
 
 ///Dismantles the excited group, puts allll the turfs to sleep
 /datum/excited_group/proc/dismantle()
+	procstart = null
+	src.procstart = null
 	for(var/turf/open/current_turf as anything in turf_list)
 		current_turf.excited = FALSE
 		current_turf.significant_share_ticker = 0
@@ -533,6 +593,8 @@
 
 //Breaks down the excited group, this doesn't sleep the turfs mind, just removes them from the group
 /datum/excited_group/proc/garbage_collect()
+	procstart = null
+	src.procstart = null
 	if(display_id) //If we ever did make those changes
 		hide_turfs()
 	for(var/turf/open/current_turf as anything in turf_list)
@@ -543,6 +605,8 @@
 		SSair.currentrun -= src
 
 /datum/excited_group/proc/display_turfs()
+	procstart = null
+	src.procstart = null
 	if(display_id == 0) //Hasn't been shown before
 		wrapping_id = wrapping_id % GLOB.colored_turfs.len
 		wrapping_id++ //We do this after because lists index at 1
@@ -553,6 +617,8 @@
 		display.vis_contents += GLOB.colored_turfs[display_id][offset]
 
 /datum/excited_group/proc/hide_turfs()
+	procstart = null
+	src.procstart = null
 	for(var/thing in turf_list)
 		var/turf/display = thing
 		var/offset = GET_Z_PLANE_OFFSET(display.z) + 1
@@ -560,6 +626,8 @@
 	display_id = 0
 
 /datum/excited_group/proc/display_turf(turf/thing)
+	procstart = null
+	src.procstart = null
 	if(display_id == 0) //Hasn't been shown before
 		wrapping_id = wrapping_id % GLOB.colored_turfs.len
 		wrapping_id++ //We do this after because lists index at 1
@@ -583,12 +651,16 @@ Then we space some of our heat, and think about if we should stop conducting.
 **/
 
 /turf/proc/conductivity_directions()
+	procstart = null
+	src.procstart = null
 	if(archived_cycle < SSair.times_fired)
 		archive()
 	return ALL_CARDINALS
 
 ///Returns a set of directions that we should be conducting in, NOTE, atmos_supeconductivity is ACTUALLY inversed, don't worrry about it
 /turf/open/conductivity_directions()
+	procstart = null
+	src.procstart = null
 	if(blocks_air)
 		return ..()
 	for(var/direction in GLOB.cardinals)
@@ -598,6 +670,8 @@ Then we space some of our heat, and think about if we should stop conducting.
 
 ///These two procs are a bit of a web, I belive in you
 /turf/proc/neighbor_conduct_with_src(turf/open/other)
+	procstart = null
+	src.procstart = null
 	if(!other.blocks_air) //Solid but neighbor is open
 		other.temperature_share_open_to_solid(src)
 	else //Both tiles are solid
@@ -605,6 +679,8 @@ Then we space some of our heat, and think about if we should stop conducting.
 	temperature_expose(null, temperature)
 
 /turf/open/neighbor_conduct_with_src(turf/other)
+	procstart = null
+	src.procstart = null
 	if(blocks_air)
 		return ..()
 
@@ -616,6 +692,8 @@ Then we space some of our heat, and think about if we should stop conducting.
 	SSair.add_to_active(src)
 
 /turf/proc/super_conduct()
+	procstart = null
+	src.procstart = null
 	var/conductivity_directions = conductivity_directions()
 
 	if(conductivity_directions)
@@ -640,18 +718,24 @@ Then we space some of our heat, and think about if we should stop conducting.
 	finish_superconduction()
 
 /turf/proc/finish_superconduction(temp = temperature)
+	procstart = null
+	src.procstart = null
 	//Make sure still hot enough to continue conducting heat
 	if(temp < MINIMUM_TEMPERATURE_FOR_SUPERCONDUCTION)
 		SSair.active_super_conductivity -= src
 		return FALSE
 
 /turf/open/finish_superconduction()
+	procstart = null
+	src.procstart = null
 	//Conduct with air on my tile if I have it
 	if(..((blocks_air ? temperature : air.temperature)) != FALSE && !blocks_air)
 		temperature = air.temperature_share(null, thermal_conductivity, temperature, heat_capacity)
 
 ///Should we attempt to superconduct?
 /turf/proc/consider_superconductivity(starting)
+	procstart = null
+	src.procstart = null
 	if(!thermal_conductivity)
 		return FALSE
 
@@ -659,6 +743,8 @@ Then we space some of our heat, and think about if we should stop conducting.
 	return TRUE
 
 /turf/open/consider_superconductivity(starting)
+	procstart = null
+	src.procstart = null
 	if(air.temperature < (starting?MINIMUM_TEMPERATURE_START_SUPERCONDUCTION:MINIMUM_TEMPERATURE_FOR_SUPERCONDUCTION))
 		return FALSE
 	if(air.heat_capacity() < M_CELL_WITH_RATIO) // Was: MOLES_CELLSTANDARD*0.1*0.05 Since there are no variables here we can make this a constant.
@@ -666,12 +752,16 @@ Then we space some of our heat, and think about if we should stop conducting.
 	return ..()
 
 /turf/closed/consider_superconductivity(starting)
+	procstart = null
+	src.procstart = null
 	if(temperature < (starting?MINIMUM_TEMPERATURE_START_SUPERCONDUCTION:MINIMUM_TEMPERATURE_FOR_SUPERCONDUCTION))
 		return FALSE
 	return ..()
 
 /// Radiate excess tile heat to space.
 /turf/proc/radiate_to_spess()
+	procstart = null
+	src.procstart = null
 	if(temperature <= T0C) // Considering 0 degC as the break even point for radiation in and out.
 		return
 	// Because we keep losing energy, makes more sense for us to be the T2 here.
@@ -684,9 +774,13 @@ Then we space some of our heat, and think about if we should stop conducting.
 	temperature -= heat / heat_capacity
 
 /turf/open/proc/temperature_share_open_to_solid(turf/sharer)
+	procstart = null
+	src.procstart = null
 	sharer.temperature = air.temperature_share(null, sharer.thermal_conductivity, sharer.temperature, sharer.heat_capacity)
 
-/turf/proc/share_temperature_mutual_solid(turf/sharer, conduction_coefficient) //This is all just heat sharing, don't get freaked out
+/turf/proc/share_temperature_mutual_solid(turf/sharer, conduction_coefficient)
+	procstart = null
+	src.procstart = null //This is all just heat sharing, don't get freaked out
 	var/delta_temperature = sharer.temperature_archived - temperature_archived
 	if(abs(delta_temperature) <= MINIMUM_TEMPERATURE_DELTA_TO_CONSIDER || !heat_capacity || !sharer.heat_capacity)
 		return

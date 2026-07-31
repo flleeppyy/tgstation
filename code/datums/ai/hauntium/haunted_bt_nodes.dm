@@ -2,13 +2,19 @@
 /datum/bt_node/decaorator/item_being_held
 
 /datum/bt_node/decorator/item_being_held/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	return ismob(controller.pawn.loc)
 
 /datum/bt_node/decorator/item_being_held/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	RegisterSignals(pawn, list(COMSIG_ITEM_ENTERED_HANDS, COMSIG_ITEM_DROPPED), PROC_REF(on_signal_changed))
 	return TRUE
 
 /datum/bt_node/decorator/item_being_held/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(pawn, list(COMSIG_ITEM_ENTERED_HANDS, COMSIG_ITEM_DROPPED))
 
 /**
@@ -18,6 +24,8 @@
 /datum/bt_node/ai_behavior/item_escape_grasp
 
 /datum/bt_node/ai_behavior/item_escape_grasp/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(!SPT_PROB(HAUNTED_ITEM_ESCAPE_GRASP_CHANCE, seconds_per_tick))
 		return AI_BEHAVIOR_INSTANT
 	var/obj/item/item_pawn = controller.pawn
@@ -34,6 +42,8 @@
 	var/haunt_list_key
 
 /datum/bt_node/ai_behavior/pick_haunt_target/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(!prob(HAUNTED_ITEM_ATTACK_HAUNT_CHANCE))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED
 	var/obj/item/item_pawn = controller.pawn
@@ -56,10 +66,14 @@
 	var/active_haunt_list_key
 
 /datum/bt_node/ai_behavior/throw_attack/haunted/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	active_haunt_list_key = haunt_list_key
 	return ..()
 
 /datum/bt_node/ai_behavior/throw_attack/haunted/on_throws_exhausted(datum/ai_controller/controller, atom/throw_target, target_key, throw_count_key)
+	procstart = null
+	src.procstart = null
 	controller.add_blackboard_key_assoc(active_haunt_list_key, throw_target, -1)
 	return ..()
 
@@ -71,6 +85,8 @@
 	time_between_perform = 1 SECONDS
 
 /datum/bt_node/ai_behavior/idle_ghost_item/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/item_pawn = controller.pawn
 	if(ismob(item_pawn.loc)) //Being held. dont teleport

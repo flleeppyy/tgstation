@@ -23,6 +23,8 @@
 	starting_programs = list(/datum/computer_file/program/arcade/eazy)
 
 /obj/item/disk/computer/maintenance/theme/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	starting_programs = list(pick(subtypesof(/datum/computer_file/program/maintenance/theme)))
 	return ..()
 

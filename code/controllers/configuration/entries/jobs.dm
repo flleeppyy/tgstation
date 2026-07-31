@@ -2,6 +2,8 @@
 
 /// Returns an associated list of all of the job config types that we have in the codebase.
 /datum/controller/subsystem/job/proc/generate_config_singletons()
+	procstart = null
+	src.procstart = null
 	var/returnable_list = list()
 	for(var/datum/job_config_type/config_datum as anything in subtypesof(/datum/job_config_type))
 		returnable_list[initial(config_datum.name)] = new config_datum
@@ -10,6 +12,8 @@
 
 /// Sets all of the job datum configurable values to what they've been set to in the config file, jobconfig.toml.
 /datum/controller/subsystem/job/proc/load_jobs_from_config(silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!length(job_config_datum_singletons))
 		stack_trace("SSjob tried to load jobs from config, but the config singletons were not initialized! Likely tried to load jobs before SSjob was initialized.")
 		return
@@ -36,6 +40,8 @@
 
 /// Operates the legacy jobs.txt parser to load jobs from the old config system.
 /datum/controller/subsystem/job/proc/legacy_load()
+	procstart = null
+	src.procstart = null
 	var/jobsfile = file("[global.config.directory]/jobs.txt")
 	if(!fexists(jobsfile)) // sanity with a trace
 		stack_trace("Despite SSconfig setting SSjob.legacy_mode to TRUE, jobs.txt was not found in the config directory! Something has gone terribly wrong!")
@@ -50,6 +56,8 @@
 /// Will generate a new jobconfig.toml file if one does not exist, or if one does exist, will migrate the old jobs.txt file into the new TOML format for download
 /// Returns TRUE if a file is successfully generated, FALSE otherwise.
 /datum/controller/subsystem/job/proc/generate_config(mob/user)
+	procstart = null
+	src.procstart = null
 	var/toml_path = "[global.config.directory]/jobconfig.toml"
 	var/jobstext = "[global.config.directory]/jobs.txt"
 	config_documentation = initial(config_documentation) // Reset to default juuuuust in case.
@@ -80,6 +88,8 @@
 /// Loads the job config from the TXT and creates a new TOML file from it.
 /// Returns TRUE if a file is successfully generated, FALSE otherwise.
 /datum/controller/subsystem/job/proc/import_config_from_txt(mob/user)
+	procstart = null
+	src.procstart = null
 	var/unrolled_jobs_txt = file2text(file("[global.config.directory]/jobs.txt")) // walter i'm dying (get the file from the string, then parse it into a larger text string)
 	var/list/file_data = list()
 	config_documentation += "\n\n## This TOML was migrated from jobs.txt. All variables are COMMENTED and will not load by default! Please verify to ensure that they are correct, and uncomment the key as you want, comparing it to the old config.\n\n" // small warning
@@ -109,6 +119,8 @@
 /// If we add a new job or more fields to config a job with, quickly spin up a brand new config that inherits all of your old settings, but adds the new job with codebase defaults.
 /// Returns TRUE if a file is successfully generated, FALSE otherwise.
 /datum/controller/subsystem/job/proc/regenerate_job_config(mob/user)
+	procstart = null
+	src.procstart = null
 	var/toml_path = "[global.config.directory]/jobconfig.toml"
 	var/list/file_data = list()
 
@@ -157,6 +169,8 @@
 
 /// This will just return a list for a completely new job that doesn't need to be migrated from an old config (completely new). Just done here to reduce copypasta
 /datum/controller/subsystem/job/proc/generate_blank_job_config(datum/job/new_occupation)
+	procstart = null
+	src.procstart = null
 	var/returnable_list = list()
 	for(var/config_datum_key in job_config_datum_singletons)
 		var/datum/job_config_type/config_datum = job_config_datum_singletons[config_datum_key]
@@ -176,6 +190,8 @@
 
 /// Like `generate_blank_job_config`, but we opt-out of adding the legacy variables in case we handle it elsewhere.
 /datum/controller/subsystem/job/proc/generate_job_config_excluding_legacy(datum/job/new_occupation)
+	procstart = null
+	src.procstart = null
 	var/list/returnable_list = list()
 	// make a quick list to ensure we don't double-dip total_positions and spawn_positions, but still get future config types in
 	var/list/datums_to_read = job_config_datum_singletons - list(JOB_CONFIG_TOTAL_POSITIONS, JOB_CONFIG_SPAWN_POSITIONS)
@@ -194,6 +210,8 @@
 
 /// Proc that we call to generate a new jobconfig.toml file and send it to the requesting client. Returns TRUE if a file is successfully generated.
 /datum/controller/subsystem/job/proc/export_toml(mob/user, data)
+	procstart = null
+	src.procstart = null
 	var/file_location = "data/jobconfig.toml" // store it in the data folder server-side so we can FTP it to the client.
 	var/payload = "[config_documentation]\n[rustg_toml_encode(data)]"
 	rustg_file_write(payload, file_location)

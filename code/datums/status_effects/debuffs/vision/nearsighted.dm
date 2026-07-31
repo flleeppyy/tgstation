@@ -29,9 +29,13 @@
 	var/correctable_severity = 0
 
 /datum/status_effect/grouped/nearsighted/source_added(source, severity = 2, correctable = TRUE)
+	procstart = null
+	src.procstart = null
 	set_severity(source, severity, correctable)
 
 /datum/status_effect/grouped/nearsighted/source_removed(source, removing)
+	procstart = null
+	src.procstart = null
 	if(correctable_sources[source])
 		correctable_sources -= source
 		recalculate_severity(correctable=TRUE)
@@ -42,22 +46,30 @@
 		update_nearsighted_overlay()
 
 /datum/status_effect/grouped/nearsighted/on_apply()
+	procstart = null
+	src.procstart = null
 	RegisterSignals(owner, update_signals, PROC_REF(update_nearsightedness))
 	update_nearsighted_overlay()
 	return ..()
 
 /datum/status_effect/grouped/nearsighted/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, update_signals)
 	owner.clear_fullscreen(id)
 	return ..()
 
 /// Signal proc for when we gain or lose [TRAIT_NEARSIGHTED_CORRECTED] - (temporarily) disable the overlay if we're correcting it
 /datum/status_effect/grouped/nearsighted/proc/update_nearsightedness(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_nearsighted_overlay()
 
 /// Checks if we should be nearsighted currently, or if we should clear the overlay
 /datum/status_effect/grouped/nearsighted/proc/should_be_nearsighted()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(owner, TRAIT_SIGHT_BYPASS))
 		return NEARSIGHTED_DISABLED
 	if(HAS_TRAIT(owner, TRAIT_NEARSIGHTED_CORRECTED))
@@ -66,6 +78,8 @@
 
 /// Updates our nearsightd overlay, either removing it if we have the trait or adding it if we don't
 /datum/status_effect/grouped/nearsighted/proc/update_nearsighted_overlay()
+	procstart = null
+	src.procstart = null
 	var/severity = get_severity()
 	if(severity <= 0) // We aren't nearsighted
 		owner.clear_fullscreen(id)
@@ -74,6 +88,8 @@
 
 /// Gets the severity value that would be used when calculating impairment.
 /datum/status_effect/grouped/nearsighted/proc/get_severity()
+	procstart = null
+	src.procstart = null
 	var/are_we_nearsighted = should_be_nearsighted()
 
 	if(!are_we_nearsighted)
@@ -89,6 +105,8 @@
 
 /// Sets the severity of a source. Recalculates the severity variables if there is a change
 /datum/status_effect/grouped/nearsighted/proc/set_severity(source, new_severity, correctable = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!source)
 		return
 	if(!isnum(new_severity))
@@ -112,6 +130,8 @@
 		update_nearsighted_overlay()
 
 /datum/status_effect/grouped/nearsighted/proc/recalculate_severity(correctable)
+	procstart = null
+	src.procstart = null
 	if(isnull(correctable))
 		CRASH("was not provided with an argument (this needs to be explicit)")
 

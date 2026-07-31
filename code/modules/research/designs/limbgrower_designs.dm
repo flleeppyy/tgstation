@@ -230,6 +230,8 @@
 	var/list/limb_designs = list()
 
 /obj/item/disk/design_disk/limbs/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/design in limb_designs)
 		var/datum/design/new_design = design

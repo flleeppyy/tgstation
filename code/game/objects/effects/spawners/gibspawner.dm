@@ -9,6 +9,8 @@
 	var/blood_dna_info // Cached blood_dna_info in case we do not have a source mob
 
 /obj/effect/gibspawner/Initialize(mapload, mob/living/source_mob, list/datum/disease/diseases, blood_dna_info)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(sound_to_play && isnum(sound_vol))
@@ -49,6 +51,8 @@
 	sound_vol = 40
 
 /obj/effect/gibspawner/generic/Initialize(mapload, mob/living/source_mob, list/datum/disease/diseases, blood_dna_info)
+	procstart = null
+	src.procstart = null
 	if(!gibdirections.len)
 		gibdirections = list(list(WEST, NORTHWEST, SOUTHWEST, NORTH), list(EAST, NORTHEAST, SOUTHEAST, SOUTH), list())
 	return ..()
@@ -62,6 +66,8 @@
 	sound_vol = 50
 
 /obj/effect/gibspawner/human/Initialize(mapload, mob/living/source_mob, list/datum/disease/diseases, blood_dna_info)
+	procstart = null
+	src.procstart = null
 	if(!gibdirections.len)
 		gibdirections = list(
 			list(NORTH, NORTHEAST, NORTHWEST),
@@ -82,6 +88,8 @@
 	gibtypes = list(/obj/effect/decal/cleanable/blood/gibs = 1, /obj/effect/decal/cleanable/blood/gibs/core = 1, /obj/effect/decal/cleanable/blood/gibs = 1, /obj/effect/decal/cleanable/blood/gibs/core = 1, /obj/effect/decal/cleanable/blood/gibs = 1, /obj/effect/decal/cleanable/blood/gibs/torso = 1)
 
 /obj/effect/gibspawner/human/bodypartless/Initialize(mapload, mob/living/source_mob, list/datum/disease/diseases, blood_dna_info)
+	procstart = null
+	src.procstart = null
 	if(!gibdirections.len)
 		gibdirections = list(list(NORTH, NORTHEAST, NORTHWEST), list(SOUTH, SOUTHEAST, SOUTHWEST), list(WEST, NORTHWEST, SOUTHWEST), list(EAST, NORTHEAST, SOUTHEAST), GLOB.alldirs, list())
 	return ..()
@@ -91,6 +99,8 @@
 	gib_mob_type = /mob/living/carbon/alien
 
 /obj/effect/gibspawner/xeno/Initialize(mapload, mob/living/source_mob, list/datum/disease/diseases, blood_dna_info)
+	procstart = null
+	src.procstart = null
 	if(!gibdirections.len)
 		gibdirections = list(list(NORTH, NORTHEAST, NORTHWEST), list(SOUTH, SOUTHEAST, SOUTHWEST), list(WEST, NORTHWEST, SOUTHWEST), list(EAST, NORTHEAST, SOUTHEAST), GLOB.alldirs, GLOB.alldirs, list())
 	return ..()
@@ -99,6 +109,8 @@
 	gibtypes = list(/obj/effect/decal/cleanable/blood/gibs/xeno = 1, /obj/effect/decal/cleanable/blood/gibs/xeno/core = 1, /obj/effect/decal/cleanable/blood/gibs/xeno = 1, /obj/effect/decal/cleanable/blood/gibs/xeno/core = 1, /obj/effect/decal/cleanable/blood/gibs/xeno = 1, /obj/effect/decal/cleanable/blood/gibs/xeno/torso = 1)
 
 /obj/effect/gibspawner/xeno/bodypartless/Initialize(mapload, mob/living/source_mob, list/datum/disease/diseases, blood_dna_info)
+	procstart = null
+	src.procstart = null
 	if(!gibdirections.len)
 		gibdirections = list(list(NORTH, NORTHEAST, NORTHWEST), list(SOUTH, SOUTHEAST, SOUTHWEST), list(WEST, NORTHWEST, SOUTHWEST), list(EAST, NORTHEAST, SOUTHEAST), GLOB.alldirs, list())
 	return ..()
@@ -108,6 +120,8 @@
 	gib_mob_type = /mob/living/carbon/alien/larva
 
 /obj/effect/gibspawner/larva/Initialize(mapload, mob/living/source_mob, list/datum/disease/diseases, blood_dna_info)
+	procstart = null
+	src.procstart = null
 	if(!gibdirections.len)
 		gibdirections = list(list(NORTH, NORTHEAST, NORTHWEST), list(SOUTH, SOUTHEAST, SOUTHWEST), list(), GLOB.alldirs)
 	return ..()
@@ -116,6 +130,8 @@
 	gibtypes = list(/obj/effect/decal/cleanable/blood/gibs/xeno/larva = 1, /obj/effect/decal/cleanable/blood/gibs/xeno/larva = 1, /obj/effect/decal/cleanable/blood/gibs/xeno/larva = 1)
 
 /obj/effect/gibspawner/larva/bodypartless/Initialize(mapload, mob/living/source_mob, list/datum/disease/diseases, blood_dna_info)
+	procstart = null
+	src.procstart = null
 	if(!gibdirections.len)
 		gibdirections = list(list(NORTH, NORTHEAST, NORTHWEST), list(SOUTH, SOUTHEAST, SOUTHWEST), list())
 	return ..()
@@ -125,6 +141,8 @@
 	gib_mob_type = /mob/living/silicon
 
 /obj/effect/gibspawner/robot/Initialize(mapload, mob/living/source_mob, list/datum/disease/diseases, blood_dna_info)
+	procstart = null
+	src.procstart = null
 	if(!gibdirections.len)
 		gibdirections = list(list(NORTH, NORTHEAST, NORTHWEST), list(SOUTH, SOUTHEAST, SOUTHWEST), list(WEST, NORTHWEST, SOUTHWEST), list(EAST, NORTHEAST, SOUTHEAST), GLOB.alldirs, GLOB.alldirs)
 	gibtypes[/obj/effect/decal/cleanable/blood/gibs/robot_debris/limb] = pick(0, 1, 2)

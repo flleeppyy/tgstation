@@ -12,6 +12,8 @@
 	power_coeff = 1
 
 /datum/mutation/shock/setup()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/action/cooldown/spell/touch/shock/to_modify =.
 
@@ -42,6 +44,8 @@
 	drop_message = span_notice("You let the electricity from your hand dissipate.")
 
 /datum/action/cooldown/spell/touch/shock/cast_on_hand_hit(obj/item/melee/touch_attack/hand, atom/victim, mob/living/carbon/caster)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(victim))
 		var/mob/living/carbon/carbon_victim = victim
 		if(carbon_victim.electrocute_act(5, caster, 1, SHOCK_NOGLOVES | SHOCK_NOSTUN))//doesn't stun. never let this stun
@@ -97,6 +101,8 @@
 	synchronizer_coeff = 1
 
 /datum/mutation/lay_on_hands/setup()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/action/cooldown/spell/touch/lay_on_hands/to_modify =.
 
@@ -136,6 +142,8 @@
 	var/synchronizer_coefficient = 1
 
 /datum/action/cooldown/spell/touch/lay_on_hands/create_hand(mob/living/carbon/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -147,6 +155,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/touch/lay_on_hands/cast_on_hand_hit(obj/item/melee/touch_attack/hand, atom/victim, mob/living/carbon/mendicant)
+	procstart = null
+	src.procstart = null
 
 	var/mob/living/hurtguy = victim
 
@@ -216,6 +226,8 @@
 	return success
 
 /datum/action/cooldown/spell/touch/lay_on_hands/proc/do_simple_heal(mob/living/carbon/mendicant, mob/living/hurtguy, heal_multiplier, pain_multiplier)
+	procstart = null
+	src.procstart = null
 	// Did the transfer work?
 	. = FALSE
 
@@ -252,6 +264,8 @@
 		hurtguy.balloon_alert(mendicant, "unhurt!")
 
 /datum/action/cooldown/spell/touch/lay_on_hands/proc/do_complicated_heal(mob/living/carbon/mendicant, mob/living/carbon/hurtguy, heal_multiplier, pain_multiplier)
+	procstart = null
+	src.procstart = null
 
 	// Did the transfer work?
 	. = FALSE
@@ -359,6 +373,8 @@
 
 
 /datum/action/cooldown/spell/touch/lay_on_hands/proc/determine_if_this_hurts_instead(mob/living/carbon/mendicant, mob/living/hurtguy)
+	procstart = null
+	src.procstart = null
 
 	var/hurtguy_smiteable = SEND_SIGNAL(hurtguy, COMSIG_ON_LAY_ON_HANDS, mendicant)
 
@@ -378,6 +394,8 @@
 ///If our target was undead or evil, we blast them with a firey beam rather than healing them. For, you know, 'holy' reasons. When did genes become so morally uptight?
 
 /datum/action/cooldown/spell/touch/lay_on_hands/proc/by_gods_light_i_smite_you(mob/living/carbon/smiter, mob/living/motherfucker_to_hurt, smite_multiplier)
+	procstart = null
+	src.procstart = null
 	var/our_smite_multiplier = smite_multiplier
 	var/evil_smite = HAS_TRAIT(smiter, TRAIT_EVIL) ? TRUE : FALSE
 	var/divine_champion = smiter.mind?.holy_role >= HOLY_ROLE_PRIEST ? TRUE : FALSE

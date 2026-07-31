@@ -133,6 +133,8 @@
 	energy = 100
 
 /obj/item/modular_computer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 	if(!physical)
@@ -157,36 +159,50 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/item/modular_computer/LateInitialize()
+	procstart = null
+	src.procstart = null
 	if(SStts.tts_enabled)
 		voice = SStts.computer_voice
 
 ///Initialize the shell for this item, or the physical machinery it belongs to.
 /obj/item/modular_computer/proc/add_shell_component(capacity = SHELL_CAPACITY_MEDIUM, shell_flags = NONE)
+	procstart = null
+	src.procstart = null
 	shell = physical.AddComponent(/datum/component/shell, list(new /obj/item/circuit_component/modpc), capacity, shell_flags)
 	RegisterSignal(shell, COMSIG_SHELL_CIRCUIT_ATTACHED, PROC_REF(on_circuit_attached))
 	RegisterSignal(shell, COMSIG_SHELL_CIRCUIT_REMOVED, PROC_REF(on_circuit_removed))
 
 /obj/item/modular_computer/proc/on_circuit_attached(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	RegisterSignal(shell.attached_circuit, COMSIG_CIRCUIT_PRE_POWER_USAGE, PROC_REF(use_energy_for_circuits))
 
 ///Try to draw power from our internal cell first, before switching to that of the circuit.
 /obj/item/modular_computer/proc/use_energy_for_circuits(datum/source, energy_usage_per_input)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(use_energy(energy_usage_per_input, check_programs = FALSE))
 		return COMPONENT_OVERRIDE_POWER_USAGE
 
 /obj/item/modular_computer/proc/on_circuit_removed(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(shell.attached_circuit, COMSIG_CIRCUIT_PRE_POWER_USAGE)
 
 /obj/item/modular_computer/proc/install_default_programs()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	for(var/programs in default_programs + starting_programs)
 		var/datum/computer_file/program_type = new programs
 		store_file(program_type)
 
 /obj/item/modular_computer/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	close_all_programs()
 	//Some components will actually try and interact with this, so let's do it later
@@ -207,6 +223,8 @@
 	return ..()
 
 /obj/item/modular_computer/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(active_program?.tap(interacting_with, user, modifiers))
 		user.do_attack_animation(interacting_with) //Emulate this animation since we kill the attack in three lines
 		playsound(loc, 'sound/items/weapons/tap.ogg', get_clamped_volume(), TRUE, -1) //Likewise for the tap sound
@@ -217,6 +235,8 @@
 // shameless copy of newscaster photo saving
 
 /obj/item/modular_computer/proc/save_photo(icon/photo)
+	procstart = null
+	src.procstart = null
 	var/photo_file = copytext_char(md5("\icon[photo]"), 1, 6)
 	if(!fexists("[GLOB.log_directory]/photos/[photo_file].png"))
 		//Clean up repeated frames
@@ -231,12 +251,18 @@
  * Timers runtime if you try to make them call playsound. Yep.
  */
 /obj/item/modular_computer/proc/play_ping()
+	procstart = null
+	src.procstart = null
 	playsound(loc, 'sound/machines/ping.ogg', get_clamped_volume(), FALSE, -1)
 
 /obj/item/modular_computer/get_cell()
+	procstart = null
+	src.procstart = null
 	return internal_cell
 
 /obj/item/modular_computer/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(issilicon(user))
 		return NONE
 
@@ -250,6 +276,8 @@
 	return CLICK_ACTION_BLOCKING
 
 /obj/item/modular_computer/click_alt_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	if(issilicon(user))
 		return NONE
 
@@ -260,22 +288,30 @@
 
 // Gets IDs/access levels from card slot. Would be useful when/if PDAs would become modular PCs. //guess what
 /obj/item/modular_computer/GetAccess()
+	procstart = null
+	src.procstart = null
 	if(stored_id)
 		return stored_id.GetAccess()
 	return ..()
 
 /obj/item/modular_computer/GetID()
+	procstart = null
+	src.procstart = null
 	if(stored_id)
 		return stored_id
 	return ..()
 
 /obj/item/modular_computer/get_id_examine_strings(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stored_id)
 		. += "[src] is displaying [stored_id]:"
 		. += stored_id.get_id_examine_strings(user)
 
 /obj/item/modular_computer/proc/print_text(text_to_print, paper_title = "")
+	procstart = null
+	src.procstart = null
 	if(!stored_paper)
 		return FALSE
 
@@ -295,6 +331,8 @@
  * user - The person inserting the ID
  */
 /obj/item/modular_computer/insert_id(obj/item/card/inserting_id, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isnull(user) && !user.transferItemToLoc(inserting_id, src))
 		return FALSE
 
@@ -330,6 +368,8 @@
  * * user - The mob trying to insert the ID, if there is one.
  */
 /obj/item/modular_computer/proc/insert_secondary_id(obj/item/card/id/secondary_id, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isnull(alt_stored_id))
 		remove_secondary_id(user, silent = TRUE)
 
@@ -352,6 +392,8 @@
  * * silent - Boolean, determines whether fluff text would be printed
  */
 /obj/item/modular_computer/proc/remove_secondary_id(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!alt_stored_id)
 		return FALSE
 
@@ -377,6 +419,8 @@
  * * silent - Boolean, determines whether fluff text would be printed
  */
 /obj/item/modular_computer/remove_id(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/lost_id = stored_id
 	if(!stored_id)
 		return ..()
@@ -405,9 +449,13 @@
 	return TRUE
 
 /obj/item/modular_computer/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_self(user)
 
 /obj/item/modular_computer/attack_ghost(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -419,6 +467,8 @@
 			turn_on(user)
 
 /obj/item/modular_computer/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. & EMP_PROTECT_CONTENTS)
 		return
@@ -428,6 +478,8 @@
 		handle_power(1 SECONDS)
 
 /obj/item/modular_computer/emag_act(mob/user, obj/item/card/emag/emag_card, forced)
+	procstart = null
+	src.procstart = null
 	if(!enabled && !forced)
 		balloon_alert(user, "turn it on first!")
 		return FALSE
@@ -449,6 +501,8 @@
 	return TRUE
 
 /obj/item/modular_computer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/healthpercent = round((atom_integrity/max_integrity) * 100, 1)
 	switch(healthpercent)
@@ -479,6 +533,8 @@
 		. += span_info("Right-click it with a screwdriver to eject the [internal_cell].")
 
 /obj/item/modular_computer/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "Storage capacity: [used_capacity]/[max_capacity]GQ"
 
@@ -490,6 +546,8 @@
 		. += span_notice("Paper level: [stored_paper] / [max_paper].")
 
 /obj/item/modular_computer/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isidcard(held_item))
@@ -521,12 +579,16 @@
 	return . || NONE
 
 /obj/item/modular_computer/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!icon_state_powered || !icon_state_unpowered) //no valid icon, don't update.
 		return ..()
 	icon_state = enabled ? icon_state_powered : icon_state_unpowered
 	return ..()
 
 /obj/item/modular_computer/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(enabled)
 		. += active_program ? mutable_appearance(overlays_icon, active_program.program_open_overlay) : mutable_appearance(overlays_icon, icon_state_menu)
@@ -535,6 +597,8 @@
 		. += mutable_appearance(overlays_icon, "broken")
 
 /obj/item/modular_computer/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if(internal_cell == gone)
 		internal_cell = null
 		if(enabled && !use_energy())
@@ -555,6 +619,8 @@
 	return ..()
 
 /obj/item/modular_computer/click_ctrl_shift(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!inserted_disk)
 		return
 	user.put_in_hands(inserted_disk)
@@ -562,6 +628,8 @@
 	playsound(src, 'sound/machines/card_slide.ogg', 50)
 
 /obj/item/modular_computer/proc/turn_on(mob/user, open_ui = TRUE)
+	procstart = null
+	src.procstart = null
 	var/issynth = FALSE // Robots and AIs get different activation messages.
 	if(user)
 		issynth = HAS_SILICON_ACCESS(user)
@@ -598,6 +666,8 @@
 
 // Process currently calls handle_power(), may be expanded in future if more things are added.
 /obj/item/modular_computer/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!enabled) // The computer is turned off
 		return
 
@@ -633,12 +703,16 @@
  * The message that the program wishes to display.
  */
 /obj/item/modular_computer/proc/alert_call(datum/computer_file/program/call_source, alerttext, sound = 'sound/machines/beep/twobeep_high.ogg')
+	procstart = null
+	src.procstart = null
 	if(!call_source || !call_source.alert_able || call_source.alert_silenced || !alerttext) //Yeah, we're checking alert_able. No, you don't get to make alerts that the user can't silence.
 		return FALSE
 	playsound(src, sound, 50, TRUE)
 	physical.loc.visible_message(span_notice("[icon2html(physical, viewers(physical.loc))] \The [src] displays a [call_source.filedesc] notification: [alerttext]"))
 
-/obj/item/modular_computer/proc/ring(ringtone, list/balloon_alertees) // bring bring
+/obj/item/modular_computer/proc/ring(ringtone, list/balloon_alertees)
+	procstart = null
+	src.procstart = null // bring bring
 	if(!use_energy(check_programs = FALSE))
 		return
 	if(HAS_TRAIT(SSstation, STATION_TRAIT_PDA_GLITCHED))
@@ -654,10 +728,14 @@
 		alertee.balloon_alert(alertee, ringtone)
 
 /obj/item/modular_computer/proc/send_sound()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/machines/terminal/terminal_success.ogg', 15, TRUE)
 
 // Function used by NanoUI's to obtain data for header. All relevant entries begin with "PC_"
 /obj/item/modular_computer/proc/get_header_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["PC_device_theme"] = device_theme
@@ -708,6 +786,8 @@
 	return data
 
 /obj/item/modular_computer/proc/open_program(mob/user, datum/computer_file/program/program, open_ui = TRUE)
+	procstart = null
+	src.procstart = null
 	if(program.computer != src)
 		CRASH("tried to open program that does not belong to this computer")
 
@@ -759,6 +839,8 @@
 
 // Returns 0 for No Signal, 1 for Low Signal and 2 for Good Signal. 3 is for wired connection (always-on)
 /obj/item/modular_computer/proc/get_ntnet_status()
+	procstart = null
+	src.procstart = null
 	// computers are connected through ethernet
 	if(hardware_flag & PROGRAM_CONSOLE)
 		return NTNET_ETHERNET_SIGNAL
@@ -781,17 +863,23 @@
 	return NTNET_NO_SIGNAL
 
 /obj/item/modular_computer/proc/add_log(text)
+	procstart = null
+	src.procstart = null
 	if(!get_ntnet_status())
 		return FALSE
 
 	return SSmodular_computers.add_log("[src]: [text]")
 
 /obj/item/modular_computer/proc/close_all_programs()
+	procstart = null
+	src.procstart = null
 	active_program?.kill_program()
 	for(var/datum/computer_file/program/idle as anything in idle_threads)
 		idle.kill_program()
 
 /obj/item/modular_computer/proc/shutdown_computer(loud = TRUE)
+	procstart = null
+	src.procstart = null
 	close_all_programs()
 	if(looping_sound)
 		soundloop.stop()
@@ -805,6 +893,8 @@
 ///Imprints name and job into the modular computer, and calls back to necessary functions.
 ///Acts as a replacement to directly setting the imprints fields. All fields are optional, the proc will try to fill in missing gaps.
 /obj/item/modular_computer/proc/imprint_id(name = null, job_name = null)
+	procstart = null
+	src.procstart = null
 	saved_identification = name || stored_id?.registered_name || saved_identification
 	saved_job = job_name || stored_id?.assignment || saved_job
 	SEND_SIGNAL(src, COMSIG_MODULAR_PDA_IMPRINT_UPDATED, saved_identification, saved_job)
@@ -812,12 +902,16 @@
 
 ///Resets the imprinted name and job back to null.
 /obj/item/modular_computer/proc/reset_imprint()
+	procstart = null
+	src.procstart = null
 	saved_identification = null
 	saved_job = null
 	SEND_SIGNAL(src, COMSIG_MODULAR_PDA_IMPRINT_RESET)
 	UpdateDisplay()
 
 /obj/item/modular_computer/ui_action_click(mob/user, actiontype)
+	procstart = null
+	src.procstart = null
 	if(!issilicon(user))
 		playsound(src, SFX_KEYBOARD_CLICKS, 10, TRUE, FALSE)
 	if(istype(actiontype, /datum/action/item_action/toggle_computer_light))
@@ -833,6 +927,8 @@
  * It is separated from ui_act() to be overwritten as needed.
 */
 /obj/item/modular_computer/proc/toggle_flashlight(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!has_light || !internal_cell?.charge)
 		return FALSE
 	if(!COOLDOWN_FINISHED(src, disabled_time))
@@ -846,6 +942,8 @@
 
 //Disables the computer's flashlight/LED light, if it has one, for a given disrupt_duration.
 /obj/item/modular_computer/on_saboteur(datum/source, disrupt_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!has_light)
 		return
@@ -864,6 +962,8 @@
  ** color is the string that holds the color value that we should use. Proc auto-fails if this is null.
 */
 /obj/item/modular_computer/proc/set_flashlight_color(color)
+	procstart = null
+	src.procstart = null
 	if(!has_light || !color)
 		return FALSE
 	comp_light_color = color
@@ -871,12 +971,16 @@
 	return TRUE
 
 /obj/item/modular_computer/proc/UpdateDisplay()
+	procstart = null
+	src.procstart = null
 	if(!saved_identification && !saved_job)
 		name = initial(name)
 		return
 	name = "[saved_identification] ([saved_job])"
 
 /obj/item/modular_computer/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(internal_cell)
 		user.balloon_alert(user, "cell removed")
@@ -887,6 +991,8 @@
 		user.balloon_alert(user, "no cell!")
 
 /obj/item/modular_computer/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tool.play_tool_sound(src, user, 20, volume=20)
 	if(!do_after(user, 2 SECONDS, target = physical))
@@ -896,6 +1002,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/modular_computer/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(atom_integrity == max_integrity)
 		to_chat(user, span_warning("\The [src] does not require repairs."))
@@ -913,12 +1021,16 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/modular_computer/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isidcard(tool) && HAS_TRAIT(src, TRAIT_MODPC_TWO_ID_SLOTS))
 		return insert_secondary_id(tool, user) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 
 	return item_interaction(user, tool, modifiers)
 
 /obj/item/modular_computer/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isidcard(tool))
 		return insert_id(tool, user) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 
@@ -952,6 +1064,8 @@
 	return NONE
 
 /obj/item/modular_computer/proc/money_act(mob/user, obj/item/money)
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/id/inserted_id = stored_id?.GetID()
 	if(!inserted_id)
 		balloon_alert(user, "no ID!")
@@ -959,6 +1073,8 @@
 	return inserted_id.insert_money(money, user) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 
 /obj/item/modular_computer/proc/pai_act(mob/user, obj/item/pai_card/card)
+	procstart = null
+	src.procstart = null
 	if(inserted_pai)
 		return ITEM_INTERACT_BLOCKING
 	if(!user.transferItemToLoc(card, src))
@@ -971,6 +1087,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/modular_computer/proc/cell_act(mob/user, obj/item/stock_parts/power_store/cell/new_cell)
+	procstart = null
+	src.procstart = null
 	if(ismachinery(physical))
 		return ITEM_INTERACT_BLOCKING
 	if(internal_cell)
@@ -983,6 +1101,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/modular_computer/proc/photo_act(mob/user, obj/item/photo/scanned_photo)
+	procstart = null
+	src.procstart = null
 	var/datum/picture/source_picture = scanned_photo.picture
 	var/datum/computer_file/image/image_file = new /datum/computer_file/image(source_picture.picture_image, display_name = source_picture.picture_name, source_photo_or_painting = source_picture)
 	if(!store_file(image_file, user))
@@ -992,6 +1112,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/modular_computer/proc/paper_act(mob/user, obj/item/paper/new_paper)
+	procstart = null
+	src.procstart = null
 	if(stored_paper >= max_paper)
 		balloon_alert(user, "no more room!")
 		return ITEM_INTERACT_BLOCKING
@@ -1004,6 +1126,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/modular_computer/proc/paper_bin_act(mob/user, obj/item/paper_bin/bin)
+	procstart = null
+	src.procstart = null
 	if(bin.total_paper <= 0)
 		balloon_alert(user, "empty bin!")
 		return ITEM_INTERACT_BLOCKING
@@ -1021,6 +1145,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/modular_computer/proc/computer_disk_act(mob/user, obj/item/disk/computer/disk)
+	procstart = null
+	src.procstart = null
 	if(!user.transferItemToLoc(disk, src))
 		return ITEM_INTERACT_BLOCKING
 	if(inserted_disk)
@@ -1033,6 +1159,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/modular_computer/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/atom/droploc = drop_location()
 	remove_pai()
 	eject_aicard()
@@ -1047,6 +1175,8 @@
 
 // Ejects the inserted intellicard, if one exists. Used when the computer is deconstructed.
 /obj/item/modular_computer/proc/eject_aicard()
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/program/ai_restorer/program = locate() in stored_files
 	if (program)
 		return program.try_eject(forced = TRUE)
@@ -1054,19 +1184,27 @@
 
 // Used by processor to relay qdel() to machinery type.
 /obj/item/modular_computer/proc/relay_qdel()
+	procstart = null
+	src.procstart = null
 	return
 
 // Perform adjacency checks on our physical counterpart, if any.
 /obj/item/modular_computer/Adjacent(atom/neighbor)
+	procstart = null
+	src.procstart = null
 	if(physical && physical != src)
 		return physical.Adjacent(neighbor)
 	return ..()
 
 ///Returns a string of what to send at the end of messenger's messages.
 /obj/item/modular_computer/proc/get_messenger_ending()
+	procstart = null
+	src.procstart = null
 	return "Sent from my PDA"
 
 /obj/item/modular_computer/proc/remove_pai(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!inserted_pai)
 		return FALSE
 	if(inserted_pai.pai)
@@ -1082,6 +1220,8 @@
 
 /// Get all stored files, including external disk files optionaly
 /obj/item/modular_computer/proc/get_files(include_disk_files = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!include_disk_files || !inserted_disk)
 		return stored_files
 	return stored_files + inserted_disk.stored_files
@@ -1091,6 +1231,8 @@
 #define ALERT_RELEVANCY_WARN 1 /// * 1: Danger is around, but the user is not directly needed to handle it.
 #define ALERT_RELEVANCY_PERTINENT 2/// * 2: Danger is around and the user is responsible for handling it.
 /obj/item/modular_computer/proc/get_security_level_relevancy()
+	procstart = null
+	src.procstart = null
 	switch(SSsecurity_level.get_current_level_as_number())
 		if(SEC_LEVEL_DELTA)
 			return ALERT_RELEVANCY_PERTINENT
@@ -1118,5 +1260,7 @@
 	max_capacity = INFINITY
 
 /obj/item/modular_computer/debug/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	starting_programs += subtypesof(/datum/computer_file/program)
 	return ..()

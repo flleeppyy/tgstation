@@ -18,6 +18,8 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 2, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 0.5)
 
 /obj/item/blood_scanner/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!usable_check(person_scanning = user, scanee = interacting_with))
 		return NONE
 	var/mob/living/carbon/poked_guy = interacting_with
@@ -37,6 +39,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/blood_scanner/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!usable_check(person_scanning = user, scanee = interacting_with))
 		return NONE
 	var/mob/living/carbon/poked_guy = interacting_with
@@ -55,6 +59,8 @@
 
 
 /obj/item/blood_scanner/proc/scan_blood(mob/living/scanner, mob/living/carbon/scanned_person)
+	procstart = null
+	src.procstart = null
 	var/render_list = list()
 	var/oxy_loss = scanned_person.get_oxy_loss()
 	var/tox_loss = scanned_person.get_tox_loss()
@@ -79,11 +85,15 @@
 	to_chat(scanner, boxed_message(jointext(render_list, "")), type = MESSAGE_TYPE_INFO)
 
 /obj/item/blood_scanner/proc/regret(mob/living/stabber, mob/living/stabbed, obj/item/bodypart/to_stab)
+	procstart = null
+	src.procstart = null
 	to_stab?.force_wound_upwards(/datum/wound/pierce/bleed/moderate/needle_fail, wound_source = "idiot moved with a needle in them")
 	stabber.visible_message(span_warning("[src]'s needle is ripped out, tearing a hole in [stabbed]'s [to_stab]!"), span_warning("Damnit! The needle is torn out, making a tiny hole in [stabbed.p_their()] [to_stab]."), ignored_mobs = stabbed)
 	to_chat(stabbed, span_userdanger("<b>OWWW!</b> The needle of [src] is ripped out, tearing a small hole in your [to_stab]!"))
 
 /obj/item/blood_scanner/proc/usable_check(mob/living/person_scanning, atom/scanee)
+	procstart = null
+	src.procstart = null
 	if(!isliving(scanee))
 		return FALSE
 	if(!istype(scanee, /mob/living/carbon))

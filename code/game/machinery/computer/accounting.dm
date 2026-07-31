@@ -12,6 +12,8 @@
 	light_color = LIGHT_COLOR_GREEN
 
 /obj/machinery/computer/accounting/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
@@ -19,6 +21,8 @@
 		ui.open()
 
 /obj/machinery/computer/accounting/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/data = list()
 	var/list/player_accounts = list()
@@ -42,6 +46,8 @@
 	return data
 
 /obj/machinery/computer/accounting/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/static/ian_format = pick("png", "jpg", "jpeg", "webp", "bmp")
 	data["pic_file_format"] = ian_format
@@ -52,6 +58,8 @@
 	return data
 
 /obj/machinery/computer/accounting/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

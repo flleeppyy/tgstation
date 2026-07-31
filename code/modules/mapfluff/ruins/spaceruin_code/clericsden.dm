@@ -5,6 +5,8 @@
 	name = "Enshrined Disc of Smiting"
 
 /obj/item/disk/design_disk/cleric_mace/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	blueprints += new /datum/design/cleric_mace
 

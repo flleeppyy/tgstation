@@ -22,20 +22,28 @@
 	acid = 95
 
 /obj/item/clothing/under/plasmaman/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("There [extinguishes_left == 1 ? "is" : "are"] [extinguishes_left] extinguisher charges left in this suit.")
 
 /obj/item/clothing/under/plasmaman/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (slot & ITEM_SLOT_ICLOTHING)
 		RegisterSignals(user, list(COMSIG_MOB_EQUIPPED_ITEM, COMSIG_LIVING_IGNITED, SIGNAL_ADDTRAIT(TRAIT_HEAD_ATMOS_SEALED)), PROC_REF(check_fire_state))
 		check_fire_state()
 
 /obj/item/clothing/under/plasmaman/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, list(COMSIG_MOB_EQUIPPED_ITEM, COMSIG_LIVING_IGNITED, SIGNAL_ADDTRAIT(TRAIT_HEAD_ATMOS_SEALED)))
 
 /obj/item/clothing/under/plasmaman/proc/check_fire_state(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!ishuman(loc))
@@ -59,6 +67,8 @@
 	new /obj/effect/particle_effect/water(get_turf(owner))
 
 /obj/item/clothing/under/plasmaman/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!istype(tool, /obj/item/extinguisher_refill))
 		return ..()
 
@@ -146,6 +156,8 @@
 	inhand_icon_state = null
 
 /obj/item/clothing/under/plasmaman/clown/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CLOWN, CELL_VIRUS_TABLE_GENERIC, rand(2,3), 0)
 
@@ -159,6 +171,8 @@
 	random_sensor = FALSE
 
 /obj/item/clothing/under/plasmaman/clown/check_fire_state(datum/source, datum/status_effect/fire_handler/status_effect)
+	procstart = null
+	src.procstart = null
 	if (!ishuman(loc))
 		return
 

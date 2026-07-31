@@ -27,6 +27,8 @@
 	smashes_walls = TRUE
 
 /mob/living/basic/construct/juggernaut/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/damage_threshold, 10)
 
@@ -37,6 +39,8 @@
 	melee_attack_cooldown = 2 SECONDS
 
 /mob/living/basic/construct/juggernaut/projectile_hit(obj/projectile/hitting_projectile, def_zone, piercing_hit, blocked)
+	procstart = null
+	src.procstart = null
 	if(!istype(hitting_projectile, /obj/projectile/energy) && !istype(hitting_projectile, /obj/projectile/beam))
 		return ..()
 	if(!prob(40 - round(hitting_projectile.damage / 3))) // reflect chance
@@ -57,6 +61,8 @@
 	theme = THEME_HOLY
 
 /mob/living/basic/construct/juggernaut/angelic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_ANGELIC, INNATE_TRAIT)
 

@@ -114,6 +114,8 @@
 	#endif
 
 /datum/parsed_map/proc/copy()
+	procstart = null
+	src.procstart = null
 	// Avoids duped work just in case
 	build_cache()
 	var/datum/parsed_map/newfriend = new()
@@ -176,6 +178,8 @@
 
 /// Parse a map, possibly cropping it.
 /datum/parsed_map/New(tfile, x_lower = -INFINITY, x_upper = INFINITY, y_lower = -INFINITY, y_upper=INFINITY, z_lower = -INFINITY, z_upper=INFINITY, measureOnly=FALSE)
+	procstart = null
+	src.procstart = null
 	// This proc sleeps for like 6 seconds. why?
 	// Is it file accesses? if so, can those be done ahead of time, async to save on time here? I wonder.
 	// Love ya :)
@@ -295,6 +299,8 @@
 
 /// Iterates over all grid sets and returns ones with z values within the given bounds. Inclusive
 /datum/parsed_map/proc/filter_grid_sets_based_on_z_bounds(lower_z, upper_z)
+	procstart = null
+	src.procstart = null
 	var/list/filtered_sets = list()
 	for(var/datum/grid_set/grid_set as anything in gridSets)
 		if(grid_set.zcrd < lower_z)
@@ -306,6 +312,8 @@
 
 /// Load the parsed map into the world. You probably want [/proc/load_map]. Keep the signature the same.
 /datum/parsed_map/proc/load(x_offset = 0, y_offset = 0, z_offset = 0, crop_map = FALSE, no_changeturf = FALSE, x_lower = -INFINITY, x_upper = INFINITY, y_lower = -INFINITY, y_upper = INFINITY, z_lower = -INFINITY, z_upper = INFINITY, place_on_top = FALSE, new_z = FALSE)
+	procstart = null
+	src.procstart = null
 	//How I wish for RAII
 	Master.StartLoadingMap()
 	. = _load_impl(x_offset, y_offset, z_offset, crop_map, no_changeturf, x_lower, x_upper, y_lower, y_upper, z_lower, z_upper, place_on_top, new_z)
@@ -324,6 +332,8 @@
 
 // Do not call except via load() above.
 /datum/parsed_map/proc/_load_impl(x_offset, y_offset, z_offset, crop_map, no_changeturf, x_lower, x_upper, y_lower, y_upper, z_lower, z_upper, place_on_top, new_z)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	// Tell ss atoms that we're doing maploading
 	// We'll have to account for this in the following tick_checks so it doesn't overflow
@@ -372,6 +382,8 @@
 // In the dmm format, each gridset contains 255 lines, each line representing one row of tiles, containing 255 * line length characters, with one gridset per z
 // You can think of dmm as storing maps in rows, whereas tgm stores them in columns
 /datum/parsed_map/proc/_tgm_load(x_offset, y_offset, z_offset, crop_map, no_changeturf, x_lower, x_upper, y_lower, y_upper, z_lower, z_upper, place_on_top, new_z)
+	procstart = null
+	src.procstart = null
 	// setup
 	var/list/modelCache = build_cache(no_changeturf)
 	var/space_key = modelCache[SPACE_KEY]
@@ -524,6 +536,8 @@
 /// Doesn't take advantage of any tgm optimizations, which makes it slower but also more general
 /// Use this if for some reason your map format is messy
 /datum/parsed_map/proc/_dmm_load(x_offset, y_offset, z_offset, crop_map, no_changeturf, x_lower, x_upper, y_lower, y_upper, z_lower, z_upper, place_on_top, new_z)
+	procstart = null
+	src.procstart = null
 	// setup
 	var/list/modelCache = build_cache(no_changeturf)
 	var/space_key = modelCache[SPACE_KEY]
@@ -680,11 +694,15 @@
 GLOBAL_LIST_EMPTY(map_model_default)
 
 /datum/parsed_map/proc/build_cache(no_changeturf, bad_paths)
+	procstart = null
+	src.procstart = null
 	if(map_format == MAP_TGM)
 		return tgm_build_cache(no_changeturf, bad_paths)
 	return dmm_build_cache(no_changeturf, bad_paths)
 
 /datum/parsed_map/proc/tgm_build_cache(no_changeturf, bad_paths=null)
+	procstart = null
+	src.procstart = null
 	if(modelCache && !bad_paths)
 		return modelCache
 	. = modelCache = list()
@@ -811,6 +829,8 @@ GLOBAL_LIST_EMPTY(map_model_default)
 /// Slower then the proc above, tho it could still be optimized slightly. it's just not a priority
 /// Since we don't run DMM maps, ever.
 /datum/parsed_map/proc/dmm_build_cache(no_changeturf, bad_paths=null)
+	procstart = null
+	src.procstart = null
 	if(modelCache && !bad_paths)
 		return modelCache
 	. = modelCache = list()
@@ -890,6 +910,8 @@ GLOBAL_LIST_EMPTY(map_model_default)
 	return .
 
 /datum/parsed_map/proc/build_coordinate(list/model, turf/crds, no_changeturf as num, placeOnTop as num, new_z)
+	procstart = null
+	src.procstart = null
 	// If we don't have a turf, nothing we will do next will actually acomplish anything, so just go back
 	// Note, this would actually drop area vvs in the tile, but like, why tho
 	if(!crds)
@@ -982,12 +1004,16 @@ GLOBAL_LIST_EMPTY(map_model_default)
 ////////////////
 
 /datum/parsed_map/proc/create_atom(path, crds)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	. = new path (crds)
 
 //find the position of the next delimiter,skipping whatever is comprised between opening_escape and closing_escape
 //returns 0 if reached the last delimiter
 /datum/parsed_map/proc/find_next_delimiter_position(text as text,initial_position as num, delimiter=",",opening_escape="\"",closing_escape="\"")
+	procstart = null
+	src.procstart = null
 	var/position = initial_position
 	var/next_delimiter = findtext(text,delimiter,position,0)
 	var/next_opening = findtext(text,opening_escape,position,0)
@@ -1002,6 +1028,8 @@ GLOBAL_LIST_EMPTY(map_model_default)
 //build a list from variables in text form (e.g {var1="derp"; var2; var3=7} => list(var1="derp", var2, var3=7))
 //return the filled list
 /datum/parsed_map/proc/readlist(text as text, delimiter=",")
+	procstart = null
+	src.procstart = null
 	. = list()
 	if (!text)
 		return
@@ -1061,6 +1089,8 @@ GLOBAL_LIST_EMPTY(map_model_default)
 			.[left_constant] = parse_constant(trim_right)
 
 /datum/parsed_map/proc/parse_constant(text)
+	procstart = null
+	src.procstart = null
 	// empty text
 	if(!text)
 		return ""
@@ -1102,6 +1132,8 @@ GLOBAL_LIST_EMPTY(map_model_default)
 	return text
 
 /datum/parsed_map/Destroy()
+	procstart = null
+	src.procstart = null
 	..()
 	SSatoms.map_loader_stop(REF(src)) // Just in case, I don't want to double up here
 	if(turf_blacklist)

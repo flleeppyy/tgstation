@@ -15,6 +15,8 @@
 	var/datum/station_alert/alert_control
 
 /datum/computer_file/program/alarm_monitor/on_install(datum/computer_file/source, obj/item/modular_computer/computer_installing, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//We want to send an alarm if we're in one of the mining home areas
 	//Or if we're on station. Otherwise, die.
@@ -23,15 +25,21 @@
 	RegisterSignals(alert_control.listener, list(COMSIG_ALARM_LISTENER_TRIGGERED, COMSIG_ALARM_LISTENER_CLEARED), PROC_REF(update_alarm_display))
 
 /datum/computer_file/program/alarm_monitor/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(alert_control)
 	return ..()
 
 /datum/computer_file/program/alarm_monitor/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data += alert_control.ui_data(user)
 	return data
 
 /datum/computer_file/program/alarm_monitor/proc/update_alarm_display()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// has_alert is true if there are any active alarms in our listener.
 	has_alert = (length(alert_control.listener.alarms) > 0)

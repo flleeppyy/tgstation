@@ -1,5 +1,7 @@
 /// Creates a digital effect around the target
 /atom/proc/create_digital_aura()
+	procstart = null
+	src.procstart = null
 	var/list/overlays = get_digital_overlays()
 	if(!length(overlays))
 		return
@@ -11,6 +13,8 @@
 
 /// Removes the digital effect around the target
 /atom/proc/remove_digital_aura()
+	procstart = null
+	src.procstart = null
 	var/list/overlays = get_digital_overlays()
 	if(!length(overlays))
 		return
@@ -22,6 +26,8 @@
 
 /// Returns a list of overlays to be used for the digital effect
 /atom/proc/get_digital_overlays()
+	procstart = null
+	src.procstart = null
 	var/base_icon
 	var/dimensions = get_icon_dimensions(icon)
 	if(!length(dimensions))

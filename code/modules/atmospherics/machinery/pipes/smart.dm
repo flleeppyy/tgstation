@@ -16,6 +16,8 @@ GLOBAL_LIST_INIT(atmos_components, typecacheof(list(/obj/machinery/atmospherics)
 	var/connections = NONE
 
 /obj/machinery/atmospherics/pipe/smart/update_pipe_icon()
+	procstart = null
+	src.procstart = null
 	icon = 'icons/obj/pipes_n_cables/!pipes_bitmask.dmi'
 
 	//find all directions this pipe is connected with other nodes
@@ -66,6 +68,8 @@ GLOBAL_LIST_INIT(atmos_components, typecacheof(list(/obj/machinery/atmospherics)
 	icon_state = "[bitfield]_[piping_layer]"
 
 /obj/machinery/atmospherics/pipe/smart/set_init_directions(init_dir)
+	procstart = null
+	src.procstart = null
 	if(init_dir)
 		var/new_volume = 0
 		initialize_directions = init_dir

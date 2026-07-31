@@ -11,6 +11,8 @@
 	var/antimagic_charge_cost = 1
 
 /obj/projectile/magic/prehit_pierce(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isliving(target))
@@ -33,6 +35,8 @@
 	icon_state = "pulse1_bl"
 
 /obj/projectile/magic/death/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isliving(target))
@@ -60,6 +64,8 @@
 	icon_state = "ion"
 
 /obj/projectile/magic/resurrection/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isliving(target))
@@ -89,6 +95,8 @@
 	var/outer_tele_radius = 6
 
 /obj/projectile/magic/teleport/on_hit(mob/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/teleammount = 0
 	var/teleloc = target
@@ -109,6 +117,8 @@
 	icon_state = "bluespace"
 
 /obj/projectile/magic/safety/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isturf(target))
 		return BULLET_ACT_HIT
@@ -129,6 +139,8 @@
 	var/list/door_types = list(/obj/structure/mineral_door/wood, /obj/structure/mineral_door/iron, /obj/structure/mineral_door/silver, /obj/structure/mineral_door/gold, /obj/structure/mineral_door/uranium, /obj/structure/mineral_door/sandstone, /obj/structure/mineral_door/transparent/plasma, /obj/structure/mineral_door/transparent/diamond)
 
 /obj/projectile/magic/door/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(target, /obj/machinery/door))
 		OpenDoor(target)
@@ -138,12 +150,16 @@
 			CreateDoor(T)
 
 /obj/projectile/magic/door/proc/CreateDoor(turf/T)
+	procstart = null
+	src.procstart = null
 	var/door_type = pick(door_types)
 	var/obj/structure/mineral_door/D = new door_type(T)
 	T.ChangeTurf(/turf/open/floor/plating, flags = CHANGETURF_INHERIT_AIR)
 	D.Open()
 
 /obj/projectile/magic/door/proc/OpenDoor(obj/machinery/door/D)
+	procstart = null
+	src.procstart = null
 	if(istype(D, /obj/machinery/door/airlock))
 		var/obj/machinery/door/airlock/A = D
 		A.unlock()
@@ -160,6 +176,8 @@
 	var/set_wabbajack_changeflags
 
 /obj/projectile/magic/change/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isliving(target))
@@ -179,12 +197,16 @@
 	damage_type = BURN
 
 /obj/projectile/magic/animate/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!is_type_in_typecache(target, GLOB.animatable_blacklist))
 		target.animate_atom_living(firer)
 
 ///proc to animate the target into a living creature, should return the mob if possible
 /atom/proc/animate_atom_living(mob/living/owner)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Slices you
@@ -213,11 +235,15 @@
 	var/datum/weakref/locker_ref
 
 /obj/projectile/magic/locker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/structure/closet/decay/locker_temp_instance = new(src)
 	locker_ref = WEAKREF(locker_temp_instance)
 
 /obj/projectile/magic/locker/prehit_pierce(atom/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == PROJECTILE_DELETE_WITHOUT_HITTING)
 		var/obj/structure/closet/decay/locker_temp_instance = locker_ref.resolve()
@@ -233,6 +259,8 @@
 		return PROJECTILE_PIERCE_PHASE
 
 /obj/projectile/magic/locker/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	if(created)
 		return ..()
 	if(LAZYLEN(contents))
@@ -247,6 +275,8 @@
 	return ..()
 
 /obj/projectile/magic/locker/Destroy()
+	procstart = null
+	src.procstart = null
 	locker_suck = FALSE
 	if (last_tick_turf)
 		UnregisterSignal(last_tick_turf, COMSIG_ATOM_ENTERED)
@@ -264,20 +294,28 @@
 	var/auto_destroy = TRUE
 
 /obj/structure/closet/decay/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(auto_destroy)
 		addtimer(CALLBACK(src, PROC_REF(bust_open)), 5 MINUTES)
 
 /obj/structure/closet/decay/after_open(mob/living/user, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	unmagify()
 
 /obj/structure/closet/decay/after_weld(weld_state)
+	procstart = null
+	src.procstart = null
 	if(weld_state)
 		unmagify()
 
 ///Give it the lesser magic icon and tell it to delete itself
 /obj/structure/closet/decay/proc/unmagify()
+	procstart = null
+	src.procstart = null
 	icon_state = weakened_icon
 	update_appearance()
 
@@ -285,10 +323,14 @@
 
 ///Fade away into nothing
 /obj/structure/closet/decay/proc/decay()
+	procstart = null
+	src.procstart = null
 	animate(src, alpha = 0, time = 3 SECONDS)
 	addtimer(CALLBACK(src, PROC_REF(decay_finished)), 3 SECONDS)
 
 /obj/structure/closet/decay/proc/decay_finished()
+	procstart = null
+	src.procstart = null
 	dump_contents()
 	qdel(src)
 
@@ -298,6 +340,8 @@
 	icon_state = "flight"
 
 /obj/projectile/magic/flying/on_hit(mob/living/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(target))
 		var/atom/throw_target = get_edge_target_turf(target, angle2dir(angle))
@@ -309,6 +353,8 @@
 	icon_state = "bounty"
 
 /obj/projectile/magic/bounty/on_hit(mob/living/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(target))
 		target.apply_status_effect(/datum/status_effect/bounty, firer)
@@ -319,6 +365,8 @@
 	icon_state = "antimagic"
 
 /obj/projectile/magic/antimagic/on_hit(mob/living/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(target))
 		target.apply_status_effect(/datum/status_effect/song/antimagic)
@@ -329,6 +377,8 @@
 	icon_state = "fetch"
 
 /obj/projectile/magic/fetch/on_hit(mob/living/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(target))
 		var/atom/throw_target = get_edge_target_turf(target, get_dir(target, firer))
@@ -340,6 +390,8 @@
 	icon_state = "babel"
 
 /obj/projectile/magic/babel/on_hit(mob/living/carbon/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(target))
 		if(curse_of_babel(target))
@@ -351,6 +403,8 @@
 	icon_state = "necropotence"
 
 /obj/projectile/magic/necropotence/on_hit(mob/living/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target))
 		return
@@ -369,6 +423,8 @@
 	icon_state = "wipe"
 
 /obj/projectile/magic/wipe/on_hit(mob/living/carbon/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(target))
 		if(istype(get_area(target), /area/deathmatch))
@@ -384,6 +440,8 @@
 		return BULLET_ACT_HIT
 
 /obj/projectile/magic/wipe/proc/possession_test(mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	var/datum/brain_trauma/special/imaginary_friend/trapped_owner/trauma = target.gain_trauma(/datum/brain_trauma/special/imaginary_friend/trapped_owner)
 	var/whomst = span_danger(target.real_name)
 	if(!is_unassigned_job(target.mind?.assigned_role))
@@ -423,6 +481,8 @@
 	COOLDOWN_DECLARE(trail_cooldown)
 
 /obj/projectile/magic/aoe/reduce_range()
+	procstart = null
+	src.procstart = null
 	if(trigger_range >= 1)
 		for(var/mob/living/nearby_guy in range(trigger_range, get_turf(src)))
 			if(nearby_guy.stat == DEAD)
@@ -435,11 +495,15 @@
 	return ..()
 
 /obj/projectile/magic/aoe/prehit_pierce(atom/target)
+	procstart = null
+	src.procstart = null
 	if(can_only_hit_target && target != original)
 		return PROJECTILE_PIERCE_PHASE
 	return ..()
 
 /obj/projectile/magic/aoe/move_animate(animate_x, animate_y, animate_time = world.tick_lag, deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!trail || !movement_vector || deleting || !COOLDOWN_FINISHED(src, trail_cooldown))
 		return
 
@@ -471,15 +535,21 @@
 	var/datum/beam/chain
 
 /obj/projectile/magic/aoe/lightning/fire(setAngle)
+	procstart = null
+	src.procstart = null
 	if(firer)
 		chain = firer.Beam(src, icon_state = "lightning[rand(1, 12)]")
 	return ..()
 
 /obj/projectile/magic/aoe/lightning/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tesla_zap(source = src, zap_range = zap_range, power = zap_power, cutoff = 1e3, zap_flags = zap_flags)
 
 /obj/projectile/magic/aoe/lightning/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(chain)
 	return ..()
 
@@ -505,6 +575,8 @@
 	var/exp_flash = 3
 
 /obj/projectile/magic/fireball/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(target))
 		var/mob/living/mob_target = target
@@ -559,6 +631,8 @@
 	speed = 0.15
 
 /obj/projectile/magic/aoe/juggernaut/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/target_turf = get_turf(src)
 	playsound(target_turf, 'sound/items/weapons/resonator_blast.ogg', 100, FALSE)
@@ -607,17 +681,23 @@
 	var/shrink_time = -1
 
 /obj/projectile/magic/shrink/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isopenturf(target) || isindestructiblewall(target))//shrunk floors wouldnt do anything except look weird, i-walls shouldn't be bypassable
 		return
 	target.AddComponent(/datum/component/shrink, shrink_time)
 
 /obj/projectile/magic/shrink/is_hostile_projectile()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/projectile/magic/shrink/wand
 	shrink_time = 90 SECONDS
 
 /obj/projectile/magic/shrink/wand/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	shrink_time = rand(60 SECONDS, 90 SECONDS)
 	return ..()

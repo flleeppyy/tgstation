@@ -41,6 +41,8 @@
 	acid = 0
 
 /obj/structure/platform/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	register_context()
@@ -53,6 +55,8 @@
 	AddElement(/datum/element/table_smash)
 
 /obj/structure/platform/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isnull(held_item))
@@ -68,12 +72,16 @@
 	return . || NONE
 
 /obj/structure/platform/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You start disassembling [src]..."))
 	if(tool.use_tool(src, user, 2 SECONDS, volume=50))
 		deconstruct(TRUE)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/platform/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You start deconstructing [src]..."))
 	if(tool.use_tool(src, user, 4 SECONDS, volume=50))
 		playsound(loc, 'sound/items/deconstruct.ogg', 50, TRUE)
@@ -81,15 +89,21 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/platform/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (frame_icon)
 		. += mutable_appearance(frame_icon, "[base_icon_state]-[smoothing_junction]", appearance_flags = KEEP_APART)
 
 /obj/structure/platform/set_smoothed_icon_state(new_junction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/platform/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = drop_location()
 	if(sheet_type)
 		new sheet_type(target_turf, sheet_amount)

@@ -67,6 +67,8 @@
 	var/static/list/configuration_errors
 
 /datum/controller/configuration/proc/admin_reload()
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall() || !PreConfigReload())
 		return
 
@@ -76,6 +78,8 @@
 	Load(world.params[OVERRIDE_CONFIG_DIRECTORY_PARAMETER])
 
 /datum/controller/configuration/proc/PreConfigReload()
+	procstart = null
+	src.procstart = null
 	if(reload_in_progress)
 		to_chat(usr, span_warning("Another user is already reloading the config!"))
 		return FALSE
@@ -86,6 +90,8 @@
 	return TRUE
 
 /datum/controller/configuration/proc/Load(_directory)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall()) //If admin proccall is detected down the line it will horribly break everything.
 		return
 	if(_directory)
@@ -125,6 +131,8 @@
 	process_config_errors()
 
 /datum/controller/configuration/proc/full_wipe()
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		return
 	entries_by_type.Cut()
@@ -136,22 +144,30 @@
 	configuration_errors?.Cut()
 
 /datum/controller/configuration/Destroy()
+	procstart = null
+	src.procstart = null
 	full_wipe()
 	config = null
 
 	return ..()
 
 /datum/controller/configuration/proc/log_config_error(error_message)
+	procstart = null
+	src.procstart = null
 	configuration_errors += error_message
 	log_config(error_message)
 
 /datum/controller/configuration/proc/process_config_errors()
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(flag/config_errors_runtime))
 		return
 	for(var/error_message in configuration_errors)
 		stack_trace(error_message)
 
 /datum/controller/configuration/proc/InitEntries()
+	procstart = null
+	src.procstart = null
 	var/list/_entries = list()
 	entries = _entries
 	var/list/_entries_by_type = list()
@@ -170,10 +186,14 @@
 		_entries_by_type[I] = E
 
 /datum/controller/configuration/proc/RemoveEntry(datum/config_entry/CE)
+	procstart = null
+	src.procstart = null
 	entries -= CE.name
 	entries_by_type -= CE.type
 
 /datum/controller/configuration/proc/LoadEntries(filename, list/stack = list())
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		return
 
@@ -288,17 +308,25 @@
 	++.
 
 /datum/controller/configuration/can_vv_get(var_name)
+	procstart = null
+	src.procstart = null
 	return (var_name != NAMEOF(src, entries_by_type) || !hiding_entries_by_type) && ..()
 
 /datum/controller/configuration/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	var/list/banned_edits = list(NAMEOF(src, entries_by_type), NAMEOF(src, entries), NAMEOF(src, directory))
 	return !(var_name in banned_edits) && ..()
 
 /datum/controller/configuration/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg = "Edit"
 	return msg
 
 /datum/controller/configuration/proc/Get(entry_type)
+	procstart = null
+	src.procstart = null
 	var/datum/config_entry/E = entry_type
 	var/entry_is_abstract = initial(E.abstract_type) == entry_type
 	if(entry_is_abstract)
@@ -312,6 +340,8 @@
 	return E.config_entry_value
 
 /datum/controller/configuration/proc/Set(entry_type, new_val)
+	procstart = null
+	src.procstart = null
 	var/datum/config_entry/E = entry_type
 	var/entry_is_abstract = initial(E.abstract_type) == entry_type
 	if(entry_is_abstract)
@@ -325,6 +355,8 @@
 	return E.ValidateAndSet("[new_val]")
 
 /datum/controller/configuration/proc/LoadMOTD()
+	procstart = null
+	src.procstart = null
 	var/list/motd_contents = list()
 
 	var/list/motd_list = CONFIG_GET(str_list/motd)
@@ -364,6 +396,8 @@ Example config:
 
 */
 /datum/controller/configuration/proc/LoadPolicy()
+	procstart = null
+	src.procstart = null
 	policy = list()
 	var/json_path = CONFIG_GET(string/policy_json_path)
 	var/rawpolicy = file2text("[directory]/[json_path]")
@@ -376,6 +410,8 @@ Example config:
 			policy = parsed
 
 /datum/controller/configuration/proc/loadmaplist(filename)
+	procstart = null
+	src.procstart = null
 	log_config("Loading config file [filename]...")
 	filename = "[directory]/[filename]"
 	var/list/Lines = world.file2list(filename)
@@ -441,6 +477,8 @@ Example config:
 				log_config("Unknown command in map vote config: '[command]'")
 
 /datum/controller/configuration/proc/LoadChatFilter()
+	procstart = null
+	src.procstart = null
 	if(!fexists("[directory]/word_filter.toml"))
 		load_legacy_chat_filter()
 		return
@@ -464,6 +502,8 @@ Example config:
 	update_chat_filter_regexes()
 
 /datum/controller/configuration/proc/load_legacy_chat_filter()
+	procstart = null
+	src.procstart = null
 	if (!fexists("[directory]/in_character_filter.txt"))
 		return
 
@@ -488,6 +528,8 @@ Example config:
 
 /// Will update the internal regexes of the chat filter based on the filter reasons
 /datum/controller/configuration/proc/update_chat_filter_regexes()
+	procstart = null
+	src.procstart = null
 	ic_filter_regex = compile_filter_regex(ic_filter_reasons + ic_outside_pda_filter_reasons + shared_filter_reasons)
 	ic_outside_pda_filter_regex = compile_filter_regex(ic_filter_reasons + shared_filter_reasons)
 	ooc_filter_regex = compile_filter_regex(shared_filter_reasons)
@@ -496,6 +538,8 @@ Example config:
 	soft_ooc_filter_regex = compile_filter_regex(soft_shared_filter_reasons)
 
 /datum/controller/configuration/proc/try_extract_from_word_filter(list/word_filter, key)
+	procstart = null
+	src.procstart = null
 	var/list/banned_words = word_filter[key]
 
 	if (isnull(banned_words))
@@ -513,6 +557,8 @@ Example config:
 	return formatted_banned_words
 
 /datum/controller/configuration/proc/compile_filter_regex(list/banned_words)
+	procstart = null
+	src.procstart = null
 	if (isnull(banned_words) || banned_words.len == 0)
 		return null
 
@@ -537,6 +583,8 @@ Example config:
 
 /// Check to ensure that the jobconfig is valid/in-date.
 /datum/controller/configuration/proc/validate_job_config()
+	procstart = null
+	src.procstart = null
 	var/config_toml = "[directory]/jobconfig.toml"
 	var/config_txt = "[directory]/jobs.txt"
 	var/message = "Notify Server Operators: "
@@ -562,4 +610,6 @@ Example config:
 
 //Message admins when you can.
 /datum/controller/configuration/proc/DelayedMessageAdmins(text)
+	procstart = null
+	src.procstart = null
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(message_admins), text), 0)

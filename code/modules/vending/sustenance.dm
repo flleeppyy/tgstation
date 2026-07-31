@@ -27,6 +27,8 @@
 	payment_department = NO_FREEBIES
 
 /obj/machinery/vending/sustenance/interact(mob/living/living_user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(living_user))
 		return
 	if(!istype(living_user.get_idcard(TRUE), /obj/item/card/id/advanced/prisoner))
@@ -54,6 +56,8 @@
 	allow_custom = FALSE
 
 /obj/machinery/vending/sustenance/labor_camp/proceed_payment(obj/item/card/id/advanced/prisoner/paying_scum_id, mob/living/mob_paying, datum/data/vending_product/product_to_vend, price_to_use)
+	procstart = null
+	src.procstart = null
 	if(!istype(paying_scum_id))
 		speak("I don't take bribes! Pay with labor points!")
 		return FALSE
@@ -68,6 +72,8 @@
 	return TRUE
 
 /obj/machinery/vending/sustenance/labor_camp/fetch_balance_to_use(obj/item/card/id/passed_id)
+	procstart = null
+	src.procstart = null
 	if(!istype(passed_id, /obj/item/card/id/advanced/prisoner))
 		return null //no points balance - no balance at all
 	var/obj/item/card/id/advanced/prisoner/paying_scum_id = passed_id

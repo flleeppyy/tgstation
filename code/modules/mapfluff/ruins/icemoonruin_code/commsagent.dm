@@ -43,6 +43,8 @@
 	)
 
 /obj/item/tape/frozen/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	unspool() // the tape spawns damaged
 

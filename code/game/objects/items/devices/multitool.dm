@@ -40,15 +40,21 @@
 	COOLDOWN_DECLARE(next_apc_scan)
 
 /obj/item/multitool/Destroy()
+	procstart = null
+	src.procstart = null
 	if(buffer)
 		remove_buffer(buffer)
 	return ..()
 
 /obj/item/multitool/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Its buffer [buffer ? "contains [buffer]." : "is empty."]")
 
 /obj/item/multitool/attack_self(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(. || !apc_scanner)
@@ -57,6 +63,8 @@
 	scan_apc(user)
 
 /obj/item/multitool/attack_self_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(. || !apc_scanner)
@@ -65,6 +73,8 @@
 	scan_apc(user)
 
 /obj/item/multitool/proc/scan_apc(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, next_apc_scan))
 		return
 
@@ -113,12 +123,16 @@
 	screen_loc = around_player
 
 /atom/movable/screen/multitool_arrow/Destroy()
+	procstart = null
+	src.procstart = null
 	var/datum/hud/our_hud = hud
 	. = ..()
 	if (!QDELETED(our_hud))
 		INVOKE_ASYNC(our_hud, TYPE_PROC_REF(/datum/hud, show_hud), our_hud.hud_version)
 
 /obj/item/multitool/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] puts the [src] to [user.p_their()] chest. It looks like [user.p_theyre()] trying to pulse [user.p_their()] heart off!"))
 	return OXYLOSS//there's a reason it wasn't recommended by doctors
 
@@ -129,6 +143,8 @@
  * * buffer - the new object to assign to the multitool's buffer
  */
 /obj/item/multitool/proc/set_buffer(datum/buffer)
+	procstart = null
+	src.procstart = null
 	if(src.buffer)
 		UnregisterSignal(src.buffer, COMSIG_QDELETING)
 		remove_buffer(src.buffer)
@@ -143,6 +159,8 @@
  * handle the deletion of the object the buffer references
  */
 /obj/item/multitool/proc/remove_buffer(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SEND_SIGNAL(src, COMSIG_MULTITOOL_REMOVE_BUFFER, source)
 	buffer = null
@@ -173,6 +191,8 @@
 	COOLDOWN_DECLARE(static_scan_cd)
 
 /obj/item/multitool/ai_detect/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!hud_on)
 		return
@@ -186,45 +206,61 @@
 			. += span_danger("An AI is (probably) looking at you. You should probably hide this.")
 
 /obj/item/multitool/ai_detect/Destroy()
+	procstart = null
+	src.procstart = null
 	if(hud_on && ismob(loc))
 		remove_hud(loc)
 	cleanup_static()
 	return ..()
 
 /obj/item/multitool/ai_detect/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
 	toggle_hud(user)
 
 /obj/item/multitool/ai_detect/attack_self_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
 	scan_unseen(user)
 
 /obj/item/multitool/ai_detect/equipped(mob/living/carbon/human/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(hud_on)
 		show_hud(user)
 
 /obj/item/multitool/ai_detect/dropped(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(hud_on)
 		remove_hud(user)
 	cleanup_static()
 
 /obj/item/multitool/ai_detect/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[initial(icon_state)][detect_state]"
 
 /obj/item/multitool/ai_detect/process()
+	procstart = null
+	src.procstart = null
 	var/old_detect_state = detect_state
 	multitool_detect()
 	if(detect_state != old_detect_state)
 		update_appearance()
 
 /obj/item/multitool/ai_detect/proc/toggle_hud(mob/user)
+	procstart = null
+	src.procstart = null
 	hud_on = !hud_on
 	if(user)
 		to_chat(user, span_notice("You toggle the ai detection feature on [src] [hud_on ? "on" : "off"]."))
@@ -238,14 +274,20 @@
 		remove_hud(user)
 
 /obj/item/multitool/ai_detect/proc/show_hud(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/hud = GLOB.huds[DATA_HUD_AI_DETECT]
 	hud.show_to(user)
 
 /obj/item/multitool/ai_detect/proc/remove_hud(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/hud = GLOB.huds[DATA_HUD_AI_DETECT]
 	hud.hide_from(user)
 
 /obj/item/multitool/ai_detect/proc/multitool_detect()
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	detect_state = PROXIMITY_NONE
 
@@ -269,6 +311,8 @@
 			detect_state = PROXIMITY_NEAR
 
 /obj/item/multitool/ai_detect/proc/scan_unseen(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(user?.client)) // the monkey incident of 2564
 		return
 	if(!COOLDOWN_FINISHED(src, static_scan_cd))
@@ -297,6 +341,8 @@
 
 // copied from camera chunks but we are doing a really big edge case here though
 /obj/item/multitool/ai_detect/proc/surrounding_chunks(turf/epicenter)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/static_range = /mob/eye/camera/ai::static_visibility_range
 	var/x1 = max(1, epicenter.x - static_range)
@@ -313,6 +359,8 @@
 			. |= chunk
 
 /obj/item/multitool/ai_detect/proc/cleanup_static()
+	procstart = null
+	src.procstart = null
 	if(isnull(hud_obj)) //we never did anything
 		return
 	var/client/viewer = static_viewer?.resolve()

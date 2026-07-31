@@ -8,6 +8,8 @@
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/eyechart, 32)
 
 /obj/structure/sign/eyechart/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isobserver(user))
 		return

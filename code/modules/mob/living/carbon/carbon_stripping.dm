@@ -7,10 +7,14 @@
 	item_slot = ITEM_SLOT_BACK
 
 /datum/strippable_item/mob_item_slot/back/get_alternate_actions(atom/source, mob/user, obj/item/item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += get_strippable_alternate_action_internals(item, source)
 
 /datum/strippable_item/mob_item_slot/back/perform_alternate_action(atom/source, mob/user, action_key, obj/item/item)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(action_key in get_strippable_alternate_action_internals(item, source))
@@ -29,6 +33,8 @@
 	item_slot = ITEM_SLOT_HANDCUFFED
 
 /datum/strippable_item/mob_item_slot/handcuffs/should_show(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	if (!iscarbon(source))
 		return FALSE
 
@@ -37,6 +43,8 @@
 
 // You shouldn't be able to equip things to handcuff slots.
 /datum/strippable_item/mob_item_slot/handcuffs/try_equip(atom/source, obj/item/equipping, mob/user)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /datum/strippable_item/mob_item_slot/legcuffs
@@ -44,6 +52,8 @@
 	item_slot = ITEM_SLOT_LEGCUFFED
 
 /datum/strippable_item/mob_item_slot/legcuffs/should_show(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	if (!iscarbon(source))
 		return FALSE
 
@@ -52,6 +62,8 @@
 
 // You shouldn't be able to equip things to legcuff slots.
 /datum/strippable_item/mob_item_slot/legcuffs/try_equip(atom/source, obj/item/equipping, mob/user)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// A strippable item for a hand
@@ -63,6 +75,8 @@
 	var/hand_index
 
 /datum/strippable_item/hand/get_item(atom/source)
+	procstart = null
+	src.procstart = null
 	if (!ismob(source))
 		return null
 
@@ -70,6 +84,8 @@
 	return mob_source.get_item_for_held_index(hand_index)
 
 /datum/strippable_item/hand/try_equip(atom/source, obj/item/equipping, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -86,6 +102,8 @@
 	return TRUE
 
 /datum/strippable_item/hand/start_equip(atom/source, obj/item/equipping, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -107,10 +125,14 @@
 	return TRUE
 
 /datum/strippable_item/hand/finish_equip(atom/source, obj/item/equipping, mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/mob_source = source
 	mob_source.put_in_hand(equipping, hand_index)
 
 /datum/strippable_item/hand/start_unequip(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -118,6 +140,8 @@
 	return start_unequip_mob(get_item(source), source, user)
 
 /datum/strippable_item/hand/finish_unequip(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/item = get_item(source)
 	if (isnull(item))
 		return FALSE

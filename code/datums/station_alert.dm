@@ -11,9 +11,13 @@
 	var/camera_view
 
 /datum/station_alert/ui_host(mob/user)
+	procstart = null
+	src.procstart = null
 	return holder
 
 /datum/station_alert/New(holder, list/alarm_types, list/listener_z_level, list/listener_areas, title = "Station Alerts", camera_view = FALSE)
+	procstart = null
+	src.procstart = null
 	src.holder = holder
 	src.alarm_types = alarm_types
 	src.title = title
@@ -21,16 +25,22 @@
 	listener = new(alarm_types, listener_z_level, listener_areas)
 
 /datum/station_alert/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(listener)
 	return ..()
 
 /datum/station_alert/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "StationAlertConsole", title)
 		ui.open()
 
 /datum/station_alert/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["cameraView"] = camera_view
 	data["alarms"] = list()
@@ -62,6 +72,8 @@
 	return data
 
 /datum/station_alert/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

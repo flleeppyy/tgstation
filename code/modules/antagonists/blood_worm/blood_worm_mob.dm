@@ -97,6 +97,8 @@
 	COOLDOWN_DECLARE(host_bleed_alert_cooldown)
 
 /mob/living/basic/blood_worm/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Innate and shared actions
@@ -146,6 +148,8 @@
 	update_name()
 
 /mob/living/basic/blood_worm/Destroy()
+	procstart = null
+	src.procstart = null
 	unregister_host()
 
 	spit_action = null
@@ -163,6 +167,8 @@
 	return ..()
 
 /mob/living/basic/blood_worm/Login()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!. || !client)
 		return FALSE
@@ -170,17 +176,23 @@
 		ADD_TRAIT(host, TRAIT_MIND_TEMPORARILY_GONE, BLOOD_WORM_HOST_TRAIT)
 
 /mob/living/basic/blood_worm/Logout()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (host)
 		REMOVE_TRAIT(host, TRAIT_MIND_TEMPORARILY_GONE, BLOOD_WORM_HOST_TRAIT)
 
 /mob/living/basic/blood_worm/process(seconds_per_tick, times_fired)
+	procstart = null
+	src.procstart = null
 	if (!host)
 		return
 
 	sync_health()
 
 /mob/living/basic/blood_worm/Life(seconds_per_tick, times_fired)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (!host)
@@ -190,26 +202,36 @@
 		bodytemperature = T20C
 
 /mob/living/basic/blood_worm/handle_environment(datum/gas_mixture/environment, seconds_per_tick, times_fired)
+	procstart = null
+	src.procstart = null
 	if (host)
 		bodytemperature = T20C
 	else
 		return ..()
 
 /mob/living/basic/blood_worm/update_name(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[initial(name)] ([id_number])"
 	real_name = name
 
 /mob/living/basic/blood_worm/adjust_health(amount, updating_health, forced)
+	procstart = null
+	src.procstart = null
 	return host ? 0 : ..() // Prevents damage from adjust_x_loss while in a host, because that damage would be nullified by the next [proc/sync_health] call. Adjust host blood volume instead.
 
 /mob/living/basic/blood_worm/set_stat(new_stat)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (host && IS_UNCONSCIOUS_OR_CRIT(src))
 		leave_host()
 
 /mob/living/basic/blood_worm/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (host && loc != host)
@@ -217,21 +239,31 @@
 
 /// Gets the current health of the worm, regardless of if its in a host or not.
 /mob/living/basic/blood_worm/proc/get_worm_health()
+	procstart = null
+	src.procstart = null
 	return host ? min(host.get_blood_volume() * BLOOD_WORM_BLOOD_TO_HEALTH, maxHealth) : health
 
 /// Adjusts the current health of the worm, regardless of if its in a host or not.
 /mob/living/basic/blood_worm/proc/adjust_worm_health(amount)
+	procstart = null
+	src.procstart = null
 	return host ? host.adjust_blood_volume(amount * BLOOD_WORM_HEALTH_TO_BLOOD) * BLOOD_WORM_BLOOD_TO_HEALTH : adjust_brute_loss(-amount)
 
 /mob/living/basic/blood_worm/proc/grant_actions(mob/target, list/actions)
+	procstart = null
+	src.procstart = null
 	for (var/datum/action/action as anything in actions)
 		action.Grant(target)
 
 /mob/living/basic/blood_worm/proc/remove_actions(mob/target, list/actions)
+	procstart = null
+	src.procstart = null
 	for (var/datum/action/action as anything in actions)
 		action.Remove(target)
 
 /mob/living/basic/blood_worm/proc/sync_health(already_ejecting = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!host)
 		return
 
@@ -258,6 +290,8 @@
 
 /// Gets BLOOD_WORM_EJECT_THRESHOLD as an actionable blood volume threshold.
 /mob/living/basic/blood_worm/proc/get_eject_volume_threshold()
+	procstart = null
+	src.procstart = null
 	return maxHealth * BLOOD_WORM_HEALTH_TO_BLOOD * BLOOD_WORM_EJECT_THRESHOLD
 
 /obj/effect/temp_visual/blood_worm_invade_host
@@ -266,6 +300,8 @@
 	duration = 2 SECONDS
 
 /obj/effect/temp_visual/blood_worm_invade_host/Initialize(mapload, effect_name)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "invade-[effect_name]"
 
@@ -308,6 +344,8 @@
 	regen_rate = 0.3 // 266 seconds to recover from 0 to 80, or almost 4 and a half minutes.
 
 /mob/living/basic/blood_worm/hatchling/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
@@ -355,6 +393,8 @@
 	regen_rate = 0.4 // 300 seconds to recover from 0 to 120, or exactly 5 minutes.
 
 /mob/living/basic/blood_worm/juvenile/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddComponent(/datum/component/slide_under_doors, slide_in_delay = 5 SECONDS)
@@ -407,6 +447,8 @@
 	regen_rate = 0.5 // 360 seconds to recover from 0 to 180, or exactly 6 minutes.
 
 /mob/living/basic/blood_worm/adult/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddElement(/datum/element/pressure_sensitive, min_pressure = 20, max_pressure = 0, low_pressure_damage = 2, high_pressure_damage = 0)

@@ -4,6 +4,8 @@
 /datum/element/mirage_border
 
 /datum/element/mirage_border/Attach(datum/target, turf/target_turf, direction, range = (maxviewdist() - 1) / 2)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isturf(target))
 		return ELEMENT_INCOMPATIBLE
@@ -30,6 +32,8 @@
 		holder.pixel_x -= ICON_SIZE_X * range
 
 /datum/element/mirage_border/Detach(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/movable/mirage_holder/held = locate() in target.contents
 	if(held)
@@ -43,4 +47,6 @@ INITIALIZE_IMMEDIATE(/atom/movable/mirage_holder)
 
 /// If we, hypothetically, spawned on a turf that calls init (so non-space tiles), we would be transported to the other Z, which would be very bad
 /atom/movable/mirage_holder/forceMove(atom/destination)
+	procstart = null
+	src.procstart = null
 	return FALSE

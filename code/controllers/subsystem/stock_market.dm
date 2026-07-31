@@ -18,6 +18,8 @@ SUBSYSTEM_DEF(stock_market)
 	var/news_string = ""
 
 /datum/controller/subsystem/stock_market/Initialize()
+	procstart = null
+	src.procstart = null
 	for(var/datum/material/possible_market as anything in subtypesof(/datum/material)) // I need to make this work like this, but lets hardcode it for now
 		if(possible_market.tradable)
 			materials_prices[possible_market] = possible_market.value_per_unit * SHEET_MATERIAL_AMOUNT
@@ -27,6 +29,8 @@ SUBSYSTEM_DEF(stock_market)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/stock_market/fire(resumed)
+	procstart = null
+	src.procstart = null
 	for(var/datum/material/market as anything in materials_prices)
 		handle_trends_and_price(market)
 	for(var/datum/stock_market_event/event as anything in active_events)
@@ -34,6 +38,8 @@ SUBSYSTEM_DEF(stock_market)
 
 ///Adjust the price of a material(either through buying or selling) ensuring it stays within limits
 /datum/controller/subsystem/stock_market/proc/adjust_material_price(datum/material/mat, delta)
+	procstart = null
+	src.procstart = null
 	mat = SSmaterials.get_material(mat)
 
 	//adjust the price
@@ -51,6 +57,8 @@ SUBSYSTEM_DEF(stock_market)
 
 ///Adjust the amount of material(either through buying or selling) ensuring it stays within limits
 /datum/controller/subsystem/stock_market/proc/adjust_material_quantity(datum/material/mat, delta)
+	procstart = null
+	src.procstart = null
 	mat = SSmaterials.get_material(mat)
 
 	//adjust the quantity
@@ -67,6 +75,8 @@ SUBSYSTEM_DEF(stock_market)
  * Handles shifts in the cost of materials, and in what direction the material is most likely to move.
  */
 /datum/controller/subsystem/stock_market/proc/handle_trends_and_price(datum/material/mat)
+	procstart = null
+	src.procstart = null
 	if(prob(MARKET_EVENT_PROBABILITY))
 		handle_market_event(mat)
 	var/trend = materials_trends[mat]
@@ -128,6 +138,8 @@ SUBSYSTEM_DEF(stock_market)
  * Events are also broadcast to the newscaster as a fun little fluff piece. Good way to tell some lore as well, or just make a joke.
  */
 /datum/controller/subsystem/stock_market/proc/handle_market_event(datum/material/mat)
+	procstart = null
+	src.procstart = null
 	var/datum/stock_market_event/event = pick(subtypesof(/datum/stock_market_event))
 	event = new event
 	if(event.start_event(mat))

@@ -28,6 +28,8 @@
 	)
 
 /datum/symptom/choking/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -37,6 +39,8 @@
 		suppress_warning = TRUE
 
 /datum/symptom/choking/Activate(datum/disease/advance/advanced_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -60,10 +64,14 @@
 			infected_mob.emote("gasp")
 
 /datum/symptom/choking/proc/Choke_stage_3_4(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	M.adjust_oxy_loss(rand(6,13))
 	return 1
 
 /datum/symptom/choking/proc/Choke(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	M.adjust_oxy_loss(rand(10,18))
 	return 1
 
@@ -107,6 +115,8 @@ Bonus
 
 
 /datum/symptom/asphyxiation/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -116,6 +126,8 @@ Bonus
 		power = 2
 
 /datum/symptom/asphyxiation/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -135,11 +147,15 @@ Bonus
 	return
 
 /datum/symptom/asphyxiation/proc/Asphyxiate_stage_3_4(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/get_damage = rand(10,15) * power
 	M.adjust_oxy_loss(get_damage)
 	return 1
 
 /datum/symptom/asphyxiation/proc/Asphyxiate(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/get_damage = rand(15,21) * power
 	M.adjust_oxy_loss(get_damage)
 	if(paralysis)
@@ -147,6 +163,8 @@ Bonus
 	return 1
 
 /datum/symptom/asphyxiation/proc/Asphyxiate_death(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/get_damage = rand(25,35) * power
 	M.adjust_oxy_loss(get_damage)
 	M.adjust_organ_loss(ORGAN_SLOT_BRAIN, get_damage/2)

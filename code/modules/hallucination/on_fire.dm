@@ -31,6 +31,8 @@
 	var/fake_firestacks = 0
 
 /datum/hallucination/fire/proc/make_overlay()
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/real_overlay = hallucinator.get_fire_overlay(fake_firestacks)
 	if(!real_overlay)
 		return null
@@ -42,6 +44,8 @@
 	return new_overlay
 
 /datum/hallucination/fire/start()
+	procstart = null
+	src.procstart = null
 	fake_firestacks = rand(5, 15)
 	fire_overlay = make_overlay()
 	if(!fire_overlay)
@@ -56,6 +60,8 @@
 	return TRUE
 
 /datum/hallucination/fire/Destroy()
+	procstart = null
+	src.procstart = null
 	hallucinator.clear_alert(ALERT_FIRE, clear_override = TRUE)
 	hallucinator.clear_alert(ALERT_TEMPERATURE, clear_override = TRUE)
 	if(fire_overlay)
@@ -66,12 +72,16 @@
 	return ..()
 
 /datum/hallucination/fire/proc/start_expanding()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 
 	START_PROCESSING(SSfastprocess, src)
 
 /datum/hallucination/fire/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 
@@ -114,6 +124,8 @@
 		clear_fire()
 
 /datum/hallucination/fire/proc/update_temp()
+	procstart = null
+	src.procstart = null
 	if(stage <= 0)
 		hallucinator.clear_alert(ALERT_TEMPERATURE, clear_override = TRUE)
 		if(!active)
@@ -123,6 +135,8 @@
 		hallucinator.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, stage, override = TRUE)
 
 /datum/hallucination/fire/proc/clear_fire()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return
 
@@ -142,4 +156,6 @@
 	var/datum/weakref/hallucination_weakref
 
 /atom/movable/screen/alert/fire/fake/handle_stop_drop_roll(mob/living/roller)
+	procstart = null
+	src.procstart = null
 	return !!roller.apply_status_effect(/datum/status_effect/stop_drop_roll/hallucinating, hallucination_weakref)

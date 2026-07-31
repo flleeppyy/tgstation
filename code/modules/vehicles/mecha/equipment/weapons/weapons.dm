@@ -23,6 +23,8 @@
 	var/kickback = TRUE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/special_attaching_interaction(attach_right = FALSE, obj/vehicle/sealed/mecha/mech, mob/user, checkonly = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/mecha_parts/mecha_equipment/concealed_weapon_bay/bay
 	if(attach_right)
 		bay = mech.equip_by_category[MECHA_R_ARM]
@@ -42,6 +44,8 @@
 	return TRUE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/detach(atom/moveto)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/mecha_parts/mecha_equipment/concealed_weapon_bay/bay in contents)
 		bay.forceMove(get_turf(chassis))
 	name = initial(name)
@@ -50,6 +54,8 @@
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/weapon/action(mob/source, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!action_checks(target))
 		return FALSE
 
@@ -197,6 +203,8 @@
 	projectile = /obj/projectile/energy/inferno
 
 /obj/item/mecha_parts/mecha_equipment/weapon/energy/thermal/cryo/try_attach_part(mob/user, obj/vehicle/sealed/mecha/themech, attach_right)
+	procstart = null
+	src.procstart = null
 	var/has_molten = FALSE
 	for (var/obj/item/mecha_parts/mecha_equipment/weapon/energy/thermal/thegun in themech.flat_equipment)
 		if (istype(thegun, /obj/item/mecha_parts/mecha_equipment/weapon/energy/thermal/cryo))
@@ -212,6 +220,8 @@
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/weapon/energy/thermal/inferno/try_attach_part(mob/user, obj/vehicle/sealed/mecha/themech, attach_right)
+	procstart = null
+	src.procstart = null
 	var/has_cryo = FALSE
 	for (var/obj/item/mecha_parts/mecha_equipment/weapon/energy/thermal/thegun in themech.flat_equipment)
 		if (istype(thegun, /obj/item/mecha_parts/mecha_equipment/weapon/energy/thermal/inferno))
@@ -227,6 +237,8 @@
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/weapon/energy/thermal/detach(atom/moveto)
+	procstart = null
+	src.procstart = null
 	for (var/obj/item/mecha_parts/mecha_equipment/weapon/energy/thermal/thermal_gun in chassis.flat_equipment)
 		thermal_gun.equip_cooldown = 20
 	. = ..()
@@ -268,6 +280,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 10, /datum/material/bananium = SHEET_MATERIAL_AMOUNT * 5)
 
 /obj/item/mecha_parts/mecha_equipment/weapon/honker/action(mob/source, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!action_checks(target))
 		return
 	playsound(chassis, 'sound/items/airhorn/airhorn.ogg', 100, TRUE)
@@ -308,6 +322,8 @@
 	var/ammo_type
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/get_snowflake_data()
+	procstart = null
+	src.procstart = null
 	return list(
 		"snowflake_id" = MECHA_SNOWFLAKE_ID_WEAPON_BALLISTIC,
 		"projectiles" = projectiles,
@@ -319,6 +335,8 @@
 	)
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/action_checks(target)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	if(projectiles <= 0)
@@ -326,11 +344,15 @@
 	return TRUE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/handle_ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(action == "reload")
 		rearm()
 		return TRUE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/rearm()
+	procstart = null
+	src.procstart = null
 	if(projectiles < initial(projectiles))
 		var/projectiles_to_add = initial(projectiles) - projectiles
 		if(!projectiles_cache)
@@ -345,10 +367,14 @@
 		return TRUE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/needs_rearm()
+	procstart = null
+	src.procstart = null
 	return projectiles <= 0
 
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/action(mob/source, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -449,6 +475,8 @@
 	var/diags_first = FALSE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/action(mob/source, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!action_checks(target))
 		return
 	TIMER_COOLDOWN_START(chassis, COOLDOWN_MECHA_EQUIPMENT(type), get_equip_cooldown(target))
@@ -467,6 +495,8 @@
 
 //used for projectile initilisation (priming flashbang) and additional logging
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/proc/proj_init(obj/O, mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -486,6 +516,8 @@
 	var/det_time = 2 SECONDS
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/flashbang/proj_init(obj/item/grenade/flashbang/F, mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	message_admins("[ADMIN_LOOKUPFLW(user)] fired a [F] in [ADMIN_VERBOSEJMP(T)]")
 	user.log_message("fired a [F] in [AREACOORD(T)].", LOG_GAME)
@@ -535,6 +567,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 10, /datum/material/bananium = SHEET_MATERIAL_AMOUNT * 2.5)
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/mousetrap_mortar/proj_init(obj/item/assembly/mousetrap/armed/M)
+	procstart = null
+	src.procstart = null
 	M.secured = TRUE
 
 //Classic extending punching glove, but weaponised!
@@ -560,11 +594,15 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 10, /datum/material/bananium = SHEET_MATERIAL_AMOUNT * 3.75)
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/punching_glove/get_snowflake_data()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["mode"] = harmful ? "LETHAL FISTING" : "Cuddles"
 	.["mode_label"] = "Honk Severity"
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/punching_glove/handle_ui_act(action, list/params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(action == "change_mode")
 		harmful = !harmful
@@ -575,11 +613,15 @@
 		return TRUE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/punching_glove/action(mob/source, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		to_chat(usr, "[icon2html(src, usr)]<font color='red' size='5'>HONK</font>")
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/punching_glove/proj_init(obj/item/punching_glove/PG)
+	procstart = null
+	src.procstart = null
 	if(!istype(PG))
 		return
 
@@ -598,6 +640,8 @@
 	icon_state = "punching_glove"
 
 /obj/item/punching_glove/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		if(ismovable(hit_atom))
 			var/atom/movable/AM = hit_atom
@@ -652,14 +696,20 @@
 
 
 /obj/item/mecha_parts/mecha_equipment/weapon/paddy_claw/attach(obj/vehicle/sealed/mecha/new_mecha)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	secmech = chassis
 
 /obj/item/mecha_parts/mecha_equipment/weapon/paddy_claw/detach(atom/moveto)
+	procstart = null
+	src.procstart = null
 	secmech = null
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/weapon/paddy_claw/action(mob/source, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!secmech.cargo_hold) //We did try
 		CRASH("Mech [chassis] has a claw device, but no internal storage. This should be impossible.")
 	if(!action_checks(target))
@@ -695,12 +745,16 @@
 		return
 
 /obj/item/mecha_parts/mecha_equipment/weapon/paddy_claw/get_snowflake_data()
+	procstart = null
+	src.procstart = null
 	return list(
 		"snowflake_id" = MECHA_SNOWFLAKE_ID_CLAW,
 		"autocuff" = autocuff,
 	)
 
 /obj/item/mecha_parts/mecha_equipment/weapon/paddy_claw/handle_ui_act(action, list/params)
+	procstart = null
+	src.procstart = null
 	switch(action)
 		if("togglecuff")
 			autocuff = !autocuff

@@ -23,10 +23,14 @@
 	acid = 30
 
 /obj/machinery/ai_slipper/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It has <b>[uses]</b> uses of foam remaining.")
 
 /obj/machinery/ai_slipper/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & BROKEN)
 		return ..()
 	if((machine_stat & NOPOWER) || !COOLDOWN_FINISHED(src, foam_cooldown) || !uses)
@@ -36,6 +40,8 @@
 	return ..()
 
 /obj/machinery/ai_slipper/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!allowed(user))
 		to_chat(user, span_danger("Access denied."))
 		return

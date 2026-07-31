@@ -11,7 +11,9 @@
 		/obj/structure/closet/crate/cardboard,
 		)
 
-/datum/export/crate/total_printout(datum/export_report/ex, notes = TRUE) // That's why a goddamn metal crate costs that much.
+/datum/export/crate/total_printout(datum/export_report/ex, notes = TRUE)
+	procstart = null
+	src.procstart = null // That's why a goddamn metal crate costs that much.
 	. = ..()
 	if(. && notes)
 		. += " Thanks for participating in Nanotrasen Crates Recycling Program."
@@ -49,6 +51,8 @@
 	var/contents_cost = CARGO_CRATE_VALUE * 0.8
 
 /datum/export/reagent_dispenser/get_base_cost(obj/structure/reagent_dispensers/dispenser)
+	procstart = null
+	src.procstart = null
 	return ..() + round(contents_cost * (dispenser.reagents.total_volume / dispenser.reagents.maximum_volume))
 
 /datum/export/reagent_dispenser/water
@@ -123,6 +127,8 @@
 	export_types = list(/obj/machinery/portable_atmospherics/canister)
 
 /datum/export/gas_canister/get_base_cost(obj/machinery/portable_atmospherics/canister/canister)
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/canister_mix = canister.return_air()
 	if(!canister_mix.total_moles())
 		return 0
@@ -157,6 +163,8 @@
 	return worth
 
 /datum/export/gas_canister/proc/get_gas_value(datum/gas/gasType, moles)
+	procstart = null
+	src.procstart = null
 	return ROUND_UP(initial(gasType.base_value) * moles)
 
 #undef MAX_GAS_CREDITS

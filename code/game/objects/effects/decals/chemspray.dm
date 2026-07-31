@@ -17,18 +17,26 @@
 	var/logging_string
 
 /obj/effect/decal/chempuff/Destroy(force)
+	procstart = null
+	src.procstart = null
 	user = null
 	sprayer = null
 	return ..()
 
 /obj/effect/decal/chempuff/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/decal/chempuff/proc/end_life(delay = 0.5 SECONDS)
+	procstart = null
+	src.procstart = null
 	QDEL_IN(src, delay) //Gotta let it stop drifting
 	animate(src, alpha = 0, time = delay)
 
 /obj/effect/decal/chempuff/proc/loop_ended(datum/move_loop/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(QDELETED(src))
@@ -36,6 +44,8 @@
 	end_life(source.delay)
 
 /obj/effect/decal/chempuff/proc/check_move(datum/move_loop/source, result)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(QDELETED(src)) //Reasons PLEASE WORK I SWEAR TO GOD
@@ -56,6 +66,8 @@
  * contexts an atom may or may not end up being exposed depending on how far we've travelled.
  */
 /obj/effect/decal/chempuff/proc/spray_down_turf(turf/spraying, travelled_max_distance = FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/turf_atom in spraying)
 		if(turf_atom == src || turf_atom.invisibility) //we ignore the puff itself and stuff below the floor
 			continue
@@ -90,6 +102,8 @@
 
 /// Actually handles exposing the passed atom to the reagents and logging
 /obj/effect/decal/chempuff/proc/spray_down_atom(atom/spraying)
+	procstart = null
+	src.procstart = null
 	if(isnull(logging_string))
 		logging_string = reagents.get_reagent_log_string()
 

@@ -33,6 +33,8 @@
 	)
 
 /datum/round_event/brand_intelligence/setup()
+	procstart = null
+	src.procstart = null
 	//select our origin machine (which will also be the type of vending machine affected.)
 	for(var/obj/machinery/vending/vendor as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/vending))
 		if(!vendor.onstation)
@@ -49,6 +51,8 @@
 	origin_machine = pick_n_take(vending_machines)
 
 /datum/round_event/brand_intelligence/announce(fake)
+	procstart = null
+	src.procstart = null
 	var/machine_name = initial(origin_machine.name)
 	if(fake)
 		var/obj/machinery/vending/prototype = pick(subtypesof(/obj/machinery/vending))
@@ -56,11 +60,15 @@
 	priority_announce("Rampant brand intelligence has been detected aboard [station_name()]. Please inspect any [machine_name] brand vendors for aggressive marketing tactics, and reboot them if necessary.", "Machine Learning Alert")
 
 /datum/round_event/brand_intelligence/start()
+	procstart = null
+	src.procstart = null
 	origin_machine.shut_up = FALSE
 	origin_machine.shoot_inventory = TRUE
 	announce_to_ghosts(origin_machine)
 
 /datum/round_event/brand_intelligence/tick()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(origin_machine) || origin_machine.shut_up || origin_machine.wires.is_all_cut()) //if the original vending machine is missing or has its voice switch flipped
 		for(var/obj/machinery/vending/saved as anything in infected_machines)
 			saved.shoot_inventory = FALSE
@@ -89,11 +97,15 @@
 			origin_machine.speak(pick(rampant_speeches))
 
 /datum/round_event/brand_intelligence/kill()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/machinery/vending/leftover as anything in vending_machines + infected_machines)
 		clear_from_lists(leftover)
 
 /datum/round_event/brand_intelligence/proc/clear_from_lists(obj/machinery/vending/vending_machine)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	vending_machines -= vending_machine
 	infected_machines -= vending_machine
@@ -103,6 +115,8 @@
 	UnregisterSignal(vending_machine, COMSIG_VENDING_UI_INTERACT)
 
 /datum/round_event/brand_intelligence/proc/deny_vending_interact(obj/machinery/vending/vending_machine, mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// don't block usage if the ui is already open
@@ -133,7 +147,11 @@
 	normal_run_option = "Random Vendor"
 
 /datum/event_admin_setup/listed_options/brand_intelligence/get_list()
+	procstart = null
+	src.procstart = null
 	return subtypesof(/obj/machinery/vending)
 
 /datum/event_admin_setup/listed_options/brand_intelligence/apply_to_event(datum/round_event/brand_intelligence/event)
+	procstart = null
+	src.procstart = null
 	event.chosen_vendor_type = chosen

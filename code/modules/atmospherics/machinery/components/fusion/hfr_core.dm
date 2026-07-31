@@ -160,6 +160,8 @@
 	var/warning_damage_flags = NONE
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	internal_fusion = new
 	internal_fusion.volume = 5000
@@ -177,6 +179,8 @@
 	AddElement(/datum/element/give_turf_traits, turf_traits)
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/Destroy()
+	procstart = null
+	src.procstart = null
 	unregister_signals(TRUE)
 	if(internal_fusion)
 		internal_fusion = null
@@ -198,6 +202,8 @@
 	return..()
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	var/turf/local_turf = get_turf(loc)
 	var/datum/gas_mixture/to_release = moderator_internal || internal_fusion
 	if(to_release == moderator_internal)
@@ -207,6 +213,8 @@
 	return ..()
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/crowbar_deconstruction_act(mob/living/user, obj/item/tool, internal_pressure = 0)
+	procstart = null
+	src.procstart = null
 	internal_pressure = max(internal_fusion.return_pressure(), moderator_internal.return_pressure())
 	if(internal_pressure)
 		say("WARNING - Core can contain hazardous gases, deconstruct with caution!")

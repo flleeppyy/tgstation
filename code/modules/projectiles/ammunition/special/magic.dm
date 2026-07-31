@@ -10,6 +10,8 @@
 	projectile_type = /obj/projectile/magic/change
 
 /obj/item/ammo_casing/magic/change/ready_proj(atom/target, mob/living/user, quiet, zone_override = "", atom/fired_from)
+	procstart = null
+	src.procstart = null
 	if (!loaded_projectile)
 		return
 

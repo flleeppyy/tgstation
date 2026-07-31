@@ -31,6 +31,8 @@
 	acid = 30
 
 /obj/structure/disposalpipe/Initialize(mapload, obj/structure/disposalconstruct/make_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!QDELETED(make_from))
@@ -57,6 +59,8 @@
 		turf_loc.add_blueprints_preround(src)
 
 /obj/structure/disposalpipe/Destroy()
+	procstart = null
+	src.procstart = null
 	spawn_pipe = FALSE
 	QDEL_NULL(stored)
 	return ..()
@@ -69,6 +73,8 @@
  * the pipe is deconstructed or someone struggles out.
  */
 /obj/structure/disposalpipe/proc/spew_forth()
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/disposalholder/holdplease in src)
 		if(!istype(holdplease))
 			continue
@@ -77,6 +83,8 @@
 	stored = null // It gets dumped out in expel()
 
 /obj/structure/disposalpipe/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone != stored || QDELETED(src))
 		return
@@ -88,14 +96,20 @@
 // returns the direction of the next pipe object, given the entrance dir
 // by default, returns the bitmask of remaining directions
 /obj/structure/disposalpipe/proc/nextdir(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	return dpdir & (~REVERSE_DIR(H.dir))
 
 // transfer the holder through this pipe segment
 // overridden for special behaviour
 /obj/structure/disposalpipe/proc/transfer(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	return transfer_to_dir(H, nextdir(H))
 
 /obj/structure/disposalpipe/proc/transfer_to_dir(obj/structure/disposalholder/H, nextdir)
+	procstart = null
+	src.procstart = null
 	H.setDir(nextdir)
 	var/turf/T = H.nextloc()
 	var/obj/structure/disposalpipe/P = H.findpipe(T)
@@ -115,6 +129,8 @@
 // expel the held objects into a turf
 // called when there is a break in the pipe
 /obj/structure/disposalpipe/proc/expel(obj/structure/disposalholder/H, turf/T, direction)
+	procstart = null
+	src.procstart = null
 	if(!T)
 		T = get_turf(src)
 	var/turf/target
@@ -145,12 +161,16 @@
 
 // pipe affected by explosion
 /obj/structure/disposalpipe/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/disposalholder/H = locate() in src
 	H?.contents_explosion(severity, target)
 
 
 //welding tool: unfasten and convert to obj/disposalconstruct
 /obj/structure/disposalpipe/welder_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!can_be_deconstructed(user))
 		return TRUE
@@ -166,10 +186,14 @@
 
 //checks if something is blocking the deconstruction (e.g. trunk with a bin still linked to it)
 /obj/structure/disposalpipe/proc/can_be_deconstructed()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 // called when pipe is cut with welder
 /obj/structure/disposalpipe/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(disassembled)
 		if(spawn_pipe)
 			var/obj/structure/disposalconstruct/construct = stored
@@ -189,6 +213,8 @@
 	spew_forth()
 
 /obj/structure/disposalpipe/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_size >= STAGE_FIVE)
 		deconstruct()
@@ -210,6 +236,8 @@
 // if coming in from secondary dirs, then next is primary dir
 // if coming in from primary dir, then next is equal chance of other dirs
 /obj/structure/disposalpipe/junction/nextdir(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	var/flipdir = REVERSE_DIR(H.dir)
 	if(flipdir != dir) // came from secondary dir, so exit through primary
 		return dir
@@ -246,15 +274,21 @@
 	var/obj/linked // the linked obj/machinery/disposal or obj/disposaloutlet
 
 /obj/structure/disposalpipe/trunk/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	getlinked()
 
 /obj/structure/disposalpipe/trunk/Destroy()
+	procstart = null
+	src.procstart = null
 	null_linked_ref_to_us()
 	linked = null
 	return ..()
 
 /obj/structure/disposalpipe/trunk/proc/null_linked_ref_to_us()
+	procstart = null
+	src.procstart = null
 	if(linked)
 		if(istype(linked, /obj/structure/disposaloutlet))
 			var/obj/structure/disposaloutlet/D = linked
@@ -264,10 +298,14 @@
 			D.trunk = null
 
 /obj/structure/disposalpipe/trunk/proc/set_linked(obj/to_link)
+	procstart = null
+	src.procstart = null
 	null_linked_ref_to_us()
 	linked = to_link
 
 /obj/structure/disposalpipe/trunk/proc/getlinked()
+	procstart = null
+	src.procstart = null
 	null_linked_ref_to_us()
 	linked = null
 	var/turf/T = get_turf(src)
@@ -280,6 +318,8 @@
 
 
 /obj/structure/disposalpipe/trunk/can_be_deconstructed(mob/user)
+	procstart = null
+	src.procstart = null
 	if(linked)
 		to_chat(user, span_warning("You need to deconstruct disposal machinery above this pipe!"))
 		return FALSE
@@ -289,6 +329,8 @@
 // if not entering from disposal bin,
 // transfer to linked object (outlet or bin)
 /obj/structure/disposalpipe/trunk/transfer(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	if(H.dir == DOWN) // we just entered from a disposer
 		return ..() // so do base transfer proc
 	// otherwise, go to the linked object
@@ -304,6 +346,8 @@
 	return null
 
 /obj/structure/disposalpipe/trunk/nextdir(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	if(H.dir == DOWN)
 		return dir
 	else
@@ -327,6 +371,8 @@
 	var/direction_angle = -90
 
 /obj/structure/disposalpipe/rotator/nextdir(obj/structure/disposalholder/holder)
+	procstart = null
+	src.procstart = null
 	return turn(holder.dir, direction_angle)
 
 /obj/structure/disposalpipe/rotator/flip

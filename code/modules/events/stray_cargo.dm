@@ -13,6 +13,8 @@
 	input_text = "Aim pod at turf we're on?"
 
 /datum/event_admin_setup/set_location/stray_cargo/apply_to_event(datum/round_event/stray_cargo/event)
+	procstart = null
+	src.procstart = null
 	event.admin_override_turf = chosen_turf
 
 /datum/event_admin_setup/listed_options/stray_cargo
@@ -20,9 +22,13 @@
 	normal_run_option = "Random Crate"
 
 /datum/event_admin_setup/listed_options/stray_cargo/get_list()
+	procstart = null
+	src.procstart = null
 	return sort_list(subtypesof(/datum/supply_pack), /proc/cmp_typepaths_asc)
 
 /datum/event_admin_setup/listed_options/stray_cargo/apply_to_event(datum/round_event/stray_cargo/event)
+	procstart = null
+	src.procstart = null
 	event.admin_override_contents = chosen
 	var/log_message = "[key_name_admin(usr)] has aimed a stray cargo pod at [event.admin_override_turf ? AREACOORD(event.admin_override_turf) : "a random location"]. The pod contents are [chosen ? chosen : "random"]."
 	message_admins(log_message)
@@ -40,6 +46,8 @@
 	var/admin_override_contents
 
 /datum/round_event/stray_cargo/announce(fake)
+	procstart = null
+	src.procstart = null
 	if(fake)
 		impact_area = find_event_area()
 	priority_announce("Stray cargo pod detected on long-range scanners. Expected location of impact: [impact_area.name].", "Collision Alert")
@@ -49,6 +57,8 @@
 * Also randomizes the start timer
 */
 /datum/round_event/stray_cargo/setup()
+	procstart = null
+	src.procstart = null
 	start_when = rand(20, 40)
 	if(admin_override_turf)
 		impact_area = get_area(admin_override_turf)
@@ -69,6 +79,8 @@
 
 ///Spawns a random supply pack, puts it in a pod, and spawns it on a random tile of the selected area
 /datum/round_event/stray_cargo/start()
+	procstart = null
+	src.procstart = null
 	var/list/turf/valid_turfs = get_area_turfs(impact_area)
 	//Only target non-dense turfs to prevent wall-embedded pods
 	for(var/i in valid_turfs)
@@ -113,11 +125,15 @@
 
 ///Handles the creation of the pod, in case it needs to be modified beforehand
 /datum/round_event/stray_cargo/proc/make_pod()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/closet/supplypod/S = new
 	return S
 
 ///Picks an area that wouldn't risk critical damage if hit by a pod explosion
 /datum/round_event/stray_cargo/proc/find_event_area()
+	procstart = null
+	src.procstart = null
 	var/static/list/allowed_areas
 	if(!allowed_areas)
 		///Places that shouldn't explode
@@ -152,6 +168,8 @@
 	var/pack_type_override
 
 /datum/event_admin_setup/syndicate_cargo_pod/prompt_admins()
+	procstart = null
+	src.procstart = null
 	var/admin_selected_pack = tgui_alert(usr,"Customize Pod contents?", "Pod Contents", list("Yes", "No", "Cancel"))
 	switch(admin_selected_pack)
 		if("Yes")
@@ -163,6 +181,8 @@
 
 ///This proc prompts admins to set a TC value and uplink type for the crate, those values are then passed to a new syndicate pack's setup_contents() to generate the contents before spawning it.
 /datum/event_admin_setup/syndicate_cargo_pod/proc/override_contents()
+	procstart = null
+	src.procstart = null
 	var/datum/supply_pack/misc/syndicate/custom_value/syndicate_pack = new
 	var/pack_telecrystals = tgui_input_number(usr, "Please input crate's value in telecrystals.", "Set Telecrystals.", 30)
 	if(isnull(pack_telecrystals))
@@ -184,6 +204,8 @@
 	pack_type_override = syndicate_pack
 
 /datum/event_admin_setup/syndicate_cargo_pod/apply_to_event(datum/round_event/stray_cargo/syndicate/event)
+	procstart = null
+	src.procstart = null
 	event.admin_override_contents = pack_type_override
 	var/log_message = "[key_name_admin(usr)] has aimed a stray syndicate cargo pod at [event.admin_override_turf ? AREACOORD(event.admin_override_turf) : "a random location"]. The pod contents are [pack_type_override ? pack_type_override : "random"]."
 	message_admins(log_message)
@@ -194,6 +216,8 @@
 
 ///Apply the syndicate pod skin
 /datum/round_event/stray_cargo/syndicate/make_pod()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/closet/supplypod/S = new
 	S.set_style(/datum/pod_style/syndicate)
 	return S

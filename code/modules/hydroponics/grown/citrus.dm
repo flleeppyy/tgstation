@@ -31,6 +31,8 @@
 	icon_state = "lime"
 
 /obj/item/food/grown/citrus/lime/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/limejuice
 
 // Orange
@@ -61,6 +63,8 @@
 	distill_reagent = /datum/reagent/consumable/ethanol/triple_sec
 
 /obj/item/food/grown/citrus/orange/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/orangejuice
 
 // Lemon
@@ -88,6 +92,8 @@
 	icon_state = "lemon"
 
 /obj/item/food/grown/citrus/lemon/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/lemonjuice
 
 // Combustible lemon
@@ -147,12 +153,18 @@
 	tastes = list("polygons" = 1, "bluespace" = 1, "the true nature of reality" = 1)
 
 /obj/item/food/grown/citrus/orange_3d/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/orangejuice
 
 /obj/item/food/grown/citrus/orange_3d/pickup(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = alt_icon
 
 /obj/item/food/grown/citrus/orange_3d/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = initial(icon_state)

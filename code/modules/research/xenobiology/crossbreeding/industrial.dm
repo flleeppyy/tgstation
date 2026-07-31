@@ -13,22 +13,32 @@ Industrial extracts:
 	var/itemamount = 1 //How many items to spawn
 
 /obj/item/slimecross/industrial/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "It currently has [plasmaabsorbed] units of plasma floating inside the outer shell, out of [plasmarequired] units."
 
 /obj/item/slimecross/industrial/proc/do_after_spawn(obj/item/spawned)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/slimecross/industrial/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(100, INJECTABLE | DRAWABLE)
 	START_PROCESSING(SSobj,src)
 
 /obj/item/slimecross/industrial/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj,src)
 	return ..()
 
 /obj/item/slimecross/industrial/process()
+	procstart = null
+	src.procstart = null
 	var/IsWorking = FALSE
 	if(reagents.has_reagent(/datum/reagent/toxin/plasma,amount = 2) && plasmarequired > 1) //Can absorb as much as 2
 		IsWorking = TRUE
@@ -88,6 +98,8 @@ Industrial extracts:
 	itempath = /obj/item/stock_parts/power_store/cell/high
 
 /obj/item/slimecross/industrial/yellow/do_after_spawn(obj/item/spawned)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stock_parts/power_store/cell/high/C = spawned
 	if(istype(C))
 		C.charge = rand(0,C.maxcharge/2)
@@ -105,6 +117,8 @@ Industrial extracts:
 	itempath = /obj/item/slimepotion/fireproof
 
 /obj/item/slimecross/industrial/darkblue/do_after_spawn(obj/item/spawned)
+	procstart = null
+	src.procstart = null
 	var/obj/item/slimepotion/fireproof/potion = spawned
 	if(istype(potion))
 		potion.uses = 1
@@ -116,10 +130,14 @@ Industrial extracts:
 	//Item picked below.
 
 /obj/item/slimecross/industrial/silver/process()
+	procstart = null
+	src.procstart = null
 	itempath = pick(list(get_random_food(), get_random_drink()))
 	..()
 
 /obj/item/slimecross/industrial/silver/do_after_spawn(obj/item/spawned)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(spawned, TRAIT_FOOD_SILVER, INNATE_TRAIT)
 
 /obj/item/slimecross/industrial/bluespace
@@ -170,6 +188,8 @@ Industrial extracts:
 	plasmarequired = 10
 
 /obj/item/slimecross/industrial/gold/process()
+	procstart = null
+	src.procstart = null
 	itempath = get_random_coin()
 	..()
 
@@ -204,5 +224,7 @@ Industrial extracts:
 	//Item picked below.
 
 /obj/item/slimecross/industrial/rainbow/process()
+	procstart = null
+	src.procstart = null
 	itempath = pick(subtypesof(/obj/item/slime_extract))
 	..()

@@ -17,6 +17,8 @@
 	var/flubs = 2
 
 /datum/sparring_match/New(weapons_condition, arena_condition, stakes_condition, mob/living/carbon/human/chaplain, mob/living/carbon/human/opponent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.weapons_condition = weapons_condition
 	src.arena_condition = arena_condition
@@ -31,6 +33,8 @@
 	opponent.add_filter("sparring_outline", 9, list("type" = "outline", "color" = "#004ee0"))
 
 /datum/sparring_match/proc/hook_signals(mob/living/carbon/human/sparring)
+	procstart = null
+	src.procstart = null
 	//weapon conditions
 	if(weapons_condition < CONDITION_ANY_WEAPON)
 		RegisterSignal(sparring, COMSIG_MOB_FIRED_GUN, PROC_REF(gun_violation))
@@ -55,6 +59,8 @@
 	RegisterSignal(sparring, COMSIG_QDELETING, PROC_REF(deletion_flub))
 
 /datum/sparring_match/proc/unhook_signals(mob/living/carbon/human/sparring)
+	procstart = null
+	src.procstart = null
 	if(!sparring)
 		return
 	UnregisterSignal(sparring, list(
@@ -75,6 +81,8 @@
 
 ///someone is changing health state, end the fight in crit
 /datum/sparring_match/proc/check_for_victory(datum/participant, new_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	//death needs to be a flub, conscious means they haven't won
@@ -87,12 +95,16 @@
 
 // SIGNALS THAT ARE FOR BEING ATTACKED FIRST (GUILTY)
 /datum/sparring_match/proc/outsider_interference(datum/source, obj/item/I, mob/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(attacker == chaplain || attacker == opponent)
 		return
 	INVOKE_ASYNC(src, PROC_REF(flub), attacker)
 
 /datum/sparring_match/proc/hulk_interference(datum/source, mob/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if((attacker == chaplain || attacker == opponent))
 		// fist fighting a hulk is so dumb. i can't fathom why you would do this.
@@ -100,6 +112,8 @@
 	INVOKE_ASYNC(src, PROC_REF(flub), attacker)
 
 /datum/sparring_match/proc/hand_interference(datum/source, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(attacker == chaplain || attacker == opponent)
 		//you can pretty much always use fists as a participant
@@ -108,6 +122,8 @@
 	INVOKE_ASYNC(src, PROC_REF(flub), attacker)
 
 /datum/sparring_match/proc/paw_interference(datum/source, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(attacker == chaplain || attacker == opponent)
@@ -117,6 +133,8 @@
 	INVOKE_ASYNC(src, PROC_REF(flub), attacker)
 
 /datum/sparring_match/proc/thrown_interference(datum/source, atom/movable/thrown_movable, skipcatch = FALSE, hitpush = TRUE, blocked = FALSE, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isitem(thrown_movable))
@@ -128,6 +146,8 @@
 		INVOKE_ASYNC(src, PROC_REF(flub), thrown_by)
 
 /datum/sparring_match/proc/projectile_interference(datum/participant, obj/projectile/proj)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(proj.firer == chaplain || proj.firer == opponent)
 		//oh, well that's allowed. or maybe it isn't. doesn't matter because firing the gun will trigger a violation, so no additional violation needed
@@ -139,28 +159,38 @@
 
 ///someone randomly fucking died
 /datum/sparring_match/proc/death_flub(datum/deceased)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	flubbed_match()
 
 ///someone randomly fucking deleted
 /datum/sparring_match/proc/deletion_flub(datum/qdeleting)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	flubbed_match()
 
 ///someone used a gun
 /datum/sparring_match/proc/gun_violation(mob/offender, obj/item/gun/gun_fired, target, params, zone_override, list/bonus_spread_values)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	violation(offender, "using guns")
 
 ///someone used a grenade
 /datum/sparring_match/proc/grenade_violation(datum/offender)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	violation(offender, "using grenades")
 
 ///someone used melee weapons
 /datum/sparring_match/proc/melee_violation(datum/offender, obj/item/thing, mob/user, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(weapons_condition != CONDITION_CEREMONIAL_ONLY)
@@ -170,6 +200,8 @@
 	violation(offender, "using non ceremonial weapons")
 
 /datum/sparring_match/proc/teleport_violation(datum/offender)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(offender == chaplain)
 		end_match(opponent, chaplain, violation_victory = TRUE)
@@ -178,6 +210,8 @@
 
 ///someone tried to leave
 /datum/sparring_match/proc/arena_violation(atom/movable/mover, atom/oldloc, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/area/inhabited_area = get_area(mover)
@@ -189,6 +223,8 @@
 	mover.throw_at(throw_target, 6, 4)
 
 /datum/sparring_match/proc/violation(mob/living/carbon/human/offender, reason)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	to_chat(offender, span_userdanger("Violation! No [reason]!"))
@@ -202,6 +238,8 @@
 			end_match(chaplain, opponent, violation_victory = TRUE)
 
 /datum/sparring_match/proc/flub(mob/living/interfering)
+	procstart = null
+	src.procstart = null
 	if(interfering)
 		var/list/possible_punishments = list(PUNISHMENT_OMEN, PUNISHMENT_LIGHTNING)
 		if(ishuman(interfering))
@@ -226,6 +264,8 @@
 
 ///this match was interfered on, nobody wins or loses anything, just end
 /datum/sparring_match/proc/flubbed_match()
+	procstart = null
+	src.procstart = null
 	cleanup_sparring_match()
 
 	if(chaplain) //flubing means we don't know who is still standing
@@ -236,6 +276,8 @@
 
 ///helper to remove all the effects after a match ends
 /datum/sparring_match/proc/cleanup_sparring_match()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(chaplain, TRAIT_SPARRING, TRAIT_GENERIC)
 	REMOVE_TRAIT(opponent, TRAIT_SPARRING, TRAIT_GENERIC)
 	unhook_signals(chaplain)
@@ -244,6 +286,8 @@
 	opponent.remove_filter("sparring_outline")
 
 /datum/sparring_match/proc/end_match(mob/living/carbon/human/winner, mob/living/carbon/human/loser, violation_victory = FALSE)
+	procstart = null
+	src.procstart = null
 	cleanup_sparring_match()
 	to_chat(chaplain, span_bolddanger("[violation_victory ? "[loser] DISQUALIFIED!" : ""]  [winner] HAS WON!"))
 	to_chat(opponent, span_bolddanger("[violation_victory ? "[loser] DISQUALIFIED!" : ""]  [winner] HAS WON!"))
@@ -258,6 +302,8 @@
 
 ///most of the effects are handled on `lose()` instead.
 /datum/sparring_match/proc/win(mob/living/carbon/human/winner, mob/living/carbon/human/loser, violation_victory)
+	procstart = null
+	src.procstart = null
 	switch(stakes_condition)
 		if(STAKES_HOLY_MATCH)
 			if(winner == chaplain)
@@ -274,6 +320,8 @@
 			to_chat(winner, span_nicegreen("You've won [loser]'s SOUL!"))
 
 /datum/sparring_match/proc/lose(mob/living/carbon/human/loser, mob/living/carbon/human/winner)
+	procstart = null
+	src.procstart = null
 	if(!loser) //shit happened?
 		return
 	switch(stakes_condition)

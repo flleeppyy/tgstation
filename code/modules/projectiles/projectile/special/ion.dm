@@ -8,6 +8,8 @@
 	var/emp_radius = 1
 
 /obj/projectile/ion/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	..()
 	empulse(target, emp_radius, emp_radius, emp_source = src)
 	return BULLET_ACT_HIT

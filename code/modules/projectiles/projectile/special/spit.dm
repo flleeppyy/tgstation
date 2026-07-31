@@ -8,6 +8,8 @@
 	armour_penetration = 50
 
 /obj/projectile/neurotoxin/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	if(isalien(target))
 		damage = 0
 	return ..()
@@ -28,6 +30,8 @@
 	hitsound_wall = SFX_DESECRATION
 
 /obj/projectile/ink_spit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(firer))
 		var/mob/living/living = firer
@@ -45,6 +49,8 @@
 	)
 
 /obj/projectile/ink_spit/proc/blind_em(mob/living/victim, can_splat_on)
+	procstart = null
+	src.procstart = null
 	if(!can_splat_on)
 		return
 	var/powered_up = FALSE

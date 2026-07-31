@@ -20,15 +20,21 @@
 	var/max_range = 5
 
 /obj/item/circuit_component/matscanner/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("Maximum Range: [max_range] tiles", "orange", "info")
 
 /obj/item/circuit_component/matscanner/populate_ports()
+	procstart = null
+	src.procstart = null
 	input_port = add_input_port("Entity", PORT_TYPE_ATOM)
 	break_down_alloys = add_input_port("Break Down Alloys", PORT_TYPE_NUMBER)
 	result = add_output_port("Materials", PORT_TYPE_ASSOC_LIST(PORT_TYPE_STRING, PORT_TYPE_NUMBER))
 
 /obj/item/circuit_component/matscanner/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	var/atom/entity = input_port.value
 	var/turf/location = get_location()
 	if(!istype(entity) || !IN_GIVEN_RANGE(location, entity, max_range))

@@ -13,6 +13,8 @@
  * movement_flags - Flags for how we behave in movement. See DEFINES/organ_movement for flags
  */
 /obj/item/organ/proc/Insert(mob/living/carbon/receiver, special = FALSE, movement_flags)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(!mob_insert(receiver, special, movement_flags))
@@ -38,6 +40,8 @@
  * * special - "quick swapping" an organ out - when TRUE, the mob will be unaffected by not having that organ for the moment
  */
 /obj/item/organ/proc/Remove(mob/living/carbon/organ_owner, special = FALSE, movement_flags)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	mob_remove(organ_owner, special, movement_flags)
@@ -54,6 +58,8 @@
  * movement_flags - Flags for how we behave in movement. See DEFINES/organ_movement for flags
  */
 /obj/item/organ/proc/mob_insert(mob/living/carbon/receiver, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(!iscarbon(receiver))
@@ -93,6 +99,8 @@
 /// Adds Traits, Actions, and Status Effects on the mob in which the organ is impanted.
 /// Override this proc to create unique side-effects for inserting your organ. Must be called by overrides.
 /obj/item/organ/proc/on_mob_insert(mob/living/carbon/organ_owner, special = FALSE, movement_flags)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	for(var/trait in organ_traits)
@@ -118,6 +126,8 @@
 /// Insert an organ into a limb, assume the limb as always detached and include no owner operations here (except the get_bodypart helper here I guess)
 /// Give EITHER a limb OR a limb owner
 /obj/item/organ/proc/bodypart_insert(obj/item/bodypart/bodypart, mob/living/carbon/limb_owner, movement_flags)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(limb_owner)
@@ -143,6 +153,8 @@
 
 /// Add any limb specific effects you might want here
 /obj/item/organ/proc/on_bodypart_insert(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	item_flags |= ABSTRACT
@@ -166,6 +178,8 @@
  * * special - "quick swapping" an organ out - when TRUE, the mob will be unaffected by not having that organ for the moment
  */
 /obj/item/organ/proc/mob_remove(mob/living/carbon/organ_owner, special = FALSE, movement_flags)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(organ_owner)
@@ -181,6 +195,8 @@
 /// Removes Traits, Actions, and Status Effects on the mob in which the organ was impanted.
 /// Override this proc to create unique side-effects for removing your organ. Must be called by overrides.
 /obj/item/organ/proc/on_mob_remove(mob/living/carbon/organ_owner, special = FALSE, movement_flags)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(!iscarbon(organ_owner))
@@ -232,6 +248,8 @@
 /// Called to remove an organ from a limb. Do not put any mob operations here (except the bodypart_getter at the start)
 /// Give EITHER a limb OR a limb_owner
 /obj/item/organ/proc/bodypart_remove(obj/item/bodypart/limb, mob/living/carbon/limb_owner, movement_flags)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(!isnull(limb_owner))
@@ -250,6 +268,8 @@
 
 /// Called on limb removal to remove limb specific limb effects or statuses
 /obj/item/organ/proc/on_bodypart_remove(obj/item/bodypart/limb, movement_flags)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(!IS_ROBOTIC_ORGAN(src) && !(item_flags & NO_BLOOD_ON_ITEM) && !QDELING(src))
@@ -281,10 +301,14 @@
 
 ///Here we define how draw_color from the bodypart overlay sets the greyscale colors of organs that use GAGS
 /obj/item/organ/proc/get_greyscale_color_from_draw_color()
+	procstart = null
+	src.procstart = null
 	color = bodypart_overlay.draw_color //Defaults to the legacy behaviour of applying the color to the item.
 
 /// In space station videogame, nothing is sacred. If somehow an organ is removed unexpectedly, handle it properly
 /obj/item/organ/proc/forced_removal(datum/source, atom/old_loc, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(owner)
@@ -304,6 +328,8 @@
  * Proc that gets called when the organ is surgically removed by someone, can be used for special effects
  */
 /obj/item/organ/proc/on_surgical_removal(mob/living/user, obj/item/bodypart/limb, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_ORGAN_SURGICALLY_REMOVED, user, limb.owner, limb.body_zone, tool)
 	RemoveElement(/datum/element/decal/blood, _color = get_organ_blood_color(limb) || BLOOD_COLOR_RED)
@@ -312,22 +338,30 @@
  * Proc that gets called when the organ is surgically inserted by someone. Seem familiar?
  */
 /obj/item/organ/proc/on_surgical_insertion(mob/living/user, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_ORGAN_SURGICALLY_INSERTED, user, limb.owner, limb.body_zone)
 
 /// Proc that gets called when someone starts surgically inserting the organ
 /obj/item/organ/proc/pre_surgical_insertion(mob/living/user, mob/living/carbon/new_owner, target_zone)
+	procstart = null
+	src.procstart = null
 	if (valid_zones)
 		swap_zone(target_zone)
 
 /// Readjusts the organ to fit into a different body zone/slot
 /obj/item/organ/proc/swap_zone(target_zone)
+	procstart = null
+	src.procstart = null
 	if (!valid_zones[target_zone])
 		CRASH("[src]'s ([type]) swap_zone was called with invalid zone [target_zone]")
 	zone = target_zone
 	slot = valid_zones[zone]
 
 /obj/item/organ/proc/get_organ_blood_color(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	var/blood_color = owner?.get_bloodtype()?.get_color()
 	if (!limb)
 		return blood_color

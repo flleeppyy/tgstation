@@ -32,6 +32,8 @@
 	COOLDOWN_DECLARE(attack_cooldown)
 
 /obj/item/soulscythe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	soul = new(src)
 	RegisterSignal(soul, COMSIG_LIVING_RESIST, PROC_REF(on_resist))
@@ -42,31 +44,43 @@
 	AddComponent(/datum/component/walking_aid)
 
 /obj/item/soulscythe/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += soul.ckey ? span_nicegreen("There is a soul inhabiting it.") : span_danger("It's dormant.")
 
 /obj/item/soulscythe/attack(mob/living/attacked, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(attacked.stat != DEAD)
 		give_blood(10)
 
 /obj/item/soulscythe/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(soul.ckey && !soul.faction_check_atom(user))
 		to_chat(user, span_warning("You can't pick up [src]!"))
 		return
 	return ..()
 
 /obj/item/soulscythe/pickup(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(soul.ckey)
 		animate(src) //stop spinnage
 
 /obj/item/soulscythe/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(soul.ckey)
 		reset_spin() //resume spinnage
 
 /obj/item/soulscythe/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	if(using || soul.ckey || IS_UNCONSCIOUS_OR_CRIT(soul))
 		return
 	if(!(GLOB.ghost_role_flags & GHOSTROLE_STATION_SENTIENCE))
@@ -88,6 +102,8 @@
 
 /// Ghost poll has concluded and a candidate has been chosen.
 /obj/item/soulscythe/proc/on_poll_concluded(mob/living/master, mob/dead/observer/ghost)
+	procstart = null
+	src.procstart = null
 	if(isnull(ghost))
 		balloon_alert(master, "the scythe is dormant!")
 		REMOVE_TRAIT(src, TRAIT_NODROP, type)
@@ -108,6 +124,8 @@
 	using = FALSE
 
 /obj/item/soulscythe/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, move_cooldown) || charging)
 		return
 	if(!isturf(loc))
@@ -122,6 +140,8 @@
 	COOLDOWN_START(src, move_cooldown, (direction in GLOB.cardinals) ? 0.1 SECONDS : 0.2 SECONDS)
 
 /obj/item/soulscythe/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!charging)
 		return
@@ -137,9 +157,13 @@
 			give_blood(15)
 
 /obj/item/soulscythe/AllowClick()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/item/soulscythe/proc/use_blood(amount = 0, message = TRUE)
+	procstart = null
+	src.procstart = null
 	if(amount > soul.get_blood_volume())
 		if(message)
 			to_chat(soul, span_warning("Not enough blood!"))
@@ -148,9 +172,13 @@
 	return TRUE
 
 /obj/item/soulscythe/proc/give_blood(amount)
+	procstart = null
+	src.procstart = null
 	soul.adjust_blood_volume(amount, maximum = MAX_BLOOD_LEVEL)
 
 /obj/item/soulscythe/proc/on_resist(mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isturf(loc))
@@ -158,6 +186,8 @@
 	INVOKE_ASYNC(src, PROC_REF(break_out))
 
 /obj/item/soulscythe/proc/break_out()
+	procstart = null
+	src.procstart = null
 	if(!use_blood(10))
 		return
 	balloon_alert(soul, "you resist...")
@@ -171,11 +201,15 @@
 	forceMove(drop_location())
 
 /obj/item/soulscythe/proc/on_integrity_change(datum/source, old_value, new_value)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	soul.set_health(new_value)
 
 /obj/item/soulscythe/proc/on_attack(mob/living/source, atom/attacked_atom, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!COOLDOWN_FINISHED(src, attack_cooldown) || !isturf(loc))
@@ -186,6 +220,8 @@
 		INVOKE_ASYNC(src, PROC_REF(slash_target), attacked_atom)
 
 /obj/item/soulscythe/proc/on_secondary_attack(mob/living/source, atom/attacked_atom, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!COOLDOWN_FINISHED(src, attack_cooldown) || !isturf(loc))
@@ -193,6 +229,8 @@
 	INVOKE_ASYNC(src, PROC_REF(charge_target), attacked_atom)
 
 /obj/item/soulscythe/proc/shoot_target(atom/attacked_atom)
+	procstart = null
+	src.procstart = null
 	if(!use_blood(15))
 		return
 	COOLDOWN_START(src, attack_cooldown, 3 SECONDS)
@@ -204,6 +242,8 @@
 	playsound(src, 'sound/effects/magic/fireball.ogg', 50, TRUE)
 
 /obj/item/soulscythe/proc/slash_target(atom/attacked_atom)
+	procstart = null
+	src.procstart = null
 	if(isliving(attacked_atom) && use_blood(10))
 		var/mob/living/attacked_mob = attacked_atom
 		if(attacked_mob.stat != DEAD)
@@ -224,6 +264,8 @@
 	do_attack_animation(attacked_atom, ATTACK_EFFECT_SLASH)
 
 /obj/item/soulscythe/proc/charge_target(atom/attacked_atom)
+	procstart = null
+	src.procstart = null
 	if(charging || !use_blood(30))
 		return
 	COOLDOWN_START(src, attack_cooldown, 5 SECONDS)
@@ -242,10 +284,14 @@
 	throw_at(attacked_atom, 10, 3, soul, FALSE)
 
 /obj/item/soulscythe/proc/reset_spin()
+	procstart = null
+	src.procstart = null
 	animate(src)
 	SpinAnimation(15)
 
 /obj/item/soulscythe/Destroy(force)
+	procstart = null
+	src.procstart = null
 	soul.ghostize()
 	QDEL_NULL(soul)
 	return ..()
@@ -262,10 +308,14 @@
 	spawn_blacklisted = TRUE
 
 /mob/living/basic/soulscythe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_ASHSTORM_IMMUNE, TRAIT_SNOWSTORM_IMMUNE, TRAIT_LAVA_IMMUNE), INNATE_TRAIT)
 
 /mob/living/basic/soulscythe/Life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!IS_UNCONSCIOUS_OR_CRIT(src))
 		adjust_blood_volume(round(1 * seconds_per_tick), maximum = MAX_BLOOD_LEVEL)
 
@@ -280,6 +330,8 @@
 	light_color = LIGHT_COLOR_BLOOD_MAGIC
 
 /obj/projectile/soulscythe/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	if (isliving(target))
 		var/mob/living/as_living = target
 		if (ismining(as_living))

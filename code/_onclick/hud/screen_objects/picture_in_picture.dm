@@ -17,6 +17,8 @@
 	var/mutable_appearance/standard_background
 
 /atom/movable/screen/movable/pic_in_pic/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	make_backgrounds()
 	RegisterSignal(SSmapping, COMSIG_PLANE_OFFSET_INCREASE, PROC_REF(multiz_offset_increase))
@@ -25,10 +27,14 @@
 	popup_screen.generate_view("camera-[REF(src)]_map")
 
 /atom/movable/screen/movable/pic_in_pic/proc/multiz_offset_increase(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SET_PLANE_W_SCALAR(src, initial(plane), SSmapping.max_plane_offset)
 
 /atom/movable/screen/movable/pic_in_pic/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/C in shown_to)
 		unshow_to(C)
 	QDEL_NULL(button_x)
@@ -39,6 +45,8 @@
 	return ..()
 
 /atom/movable/screen/movable/pic_in_pic/component_click(atom/movable/screen/component_button/component, params)
+	procstart = null
+	src.procstart = null
 	if(component == button_x)
 		usr.client?.close_popup("camera-[REF(src)]")
 		qdel(src)
@@ -50,6 +58,8 @@
 		pop_to_screen()
 
 /atom/movable/screen/movable/pic_in_pic/proc/make_backgrounds()
+	procstart = null
+	src.procstart = null
 	standard_background = new /mutable_appearance()
 	standard_background.icon = 'icons/hud/pic_in_pic.dmi'
 	standard_background.icon_state = "background"
@@ -57,6 +67,8 @@
 	standard_background.appearance_flags = PIXEL_SCALE
 
 /atom/movable/screen/movable/pic_in_pic/proc/add_buttons()
+	procstart = null
+	src.procstart = null
 	var/static/mutable_appearance/move_tab
 	if(!move_tab)
 		move_tab = new /mutable_appearance()
@@ -123,6 +135,8 @@
 	vis_contents += button_pop
 
 /atom/movable/screen/movable/pic_in_pic/proc/add_background()
+	procstart = null
+	src.procstart = null
 	if((width > 0) && (height > 0))
 		var/matrix/M = matrix()
 		M.Scale(width + 0.5, height + 0.5)
@@ -133,6 +147,8 @@
 // maximum number of dimensions is 10
 
 /atom/movable/screen/movable/pic_in_pic/proc/set_view_size(width, height, do_refresh = TRUE)
+	procstart = null
+	src.procstart = null
 	width = clamp(width, 0, 10)
 	height = clamp(height, 0, 10)
 	src.width = width
@@ -147,11 +163,15 @@
 		refresh_view()
 
 /atom/movable/screen/movable/pic_in_pic/proc/set_view_center(atom/target, do_refresh = TRUE)
+	procstart = null
+	src.procstart = null
 	center = target
 	if(do_refresh)
 		refresh_view()
 
 /atom/movable/screen/movable/pic_in_pic/proc/refresh_view()
+	procstart = null
+	src.procstart = null
 	vis_contents -= viewing_turfs
 	if(!width || !height)
 		return
@@ -162,6 +182,8 @@
 		popup_screen.vis_contents += viewing_turfs
 
 /atom/movable/screen/movable/pic_in_pic/proc/get_visible_turfs()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(center)
 	if(!T)
 		return list()
@@ -170,16 +192,22 @@
 	return block(lowerleft, upperright)
 
 /atom/movable/screen/movable/pic_in_pic/proc/show_to(client/C)
+	procstart = null
+	src.procstart = null
 	if(C)
 		shown_to[C] = 1
 		C.screen += src
 
 /atom/movable/screen/movable/pic_in_pic/proc/unshow_to(client/C)
+	procstart = null
+	src.procstart = null
 	if(C)
 		shown_to -= C
 		C.screen -= src
 
 /atom/movable/screen/movable/pic_in_pic/proc/pop_to_screen()
+	procstart = null
+	src.procstart = null
 	if(usr.client.screen_maps["camera-[REF(src)]_map"])
 		return
 	usr.client.setup_popup("camera-[REF(src)]", width, height, 2, "1984")
@@ -187,6 +215,8 @@
 	RegisterSignal(usr.client, COMSIG_POPUP_CLEARED, PROC_REF(on_popup_clear))
 
 /atom/movable/screen/movable/pic_in_pic/proc/on_popup_clear(client/source, window)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (window == "camera-[REF(src)]")
 		UnregisterSignal(usr.client, COMSIG_POPUP_CLEARED)

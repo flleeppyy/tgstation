@@ -29,6 +29,8 @@
 	ammo_band_color = null
 
 /obj/item/ammo_box/magazine/m38/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state][ammo_count() ? "-ammo" : ""]"
 

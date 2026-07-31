@@ -15,6 +15,8 @@
 	anomaly_path = /obj/effect/anomaly/bioscrambler
 
 /datum/round_event/anomaly/anomaly_bioscrambler/announce(fake)
+	procstart = null
+	src.procstart = null
 	if(isnull(impact_area))
 		impact_area = placer.findValidArea()
 	priority_announce("Biologic limb swapping agent detected on [ANOMALY_ANNOUNCE_MEDIUM_TEXT] [impact_area.name]. Wear biosuits or other protective gear to counter the effects.", "Anomaly Alert")

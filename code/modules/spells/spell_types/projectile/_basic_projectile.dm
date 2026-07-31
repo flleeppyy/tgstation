@@ -13,6 +13,8 @@
 	var/obj/projectile/projectile_type = /obj/projectile/magic/aoe/magic_missile
 
 /datum/action/cooldown/spell/basic_projectile/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/target_turf = get_turf(cast_on)
 	for(var/i in 1 to projectile_range - 1)
@@ -24,6 +26,8 @@
 	fire_projectile(target_turf, cast_on)
 
 /datum/action/cooldown/spell/basic_projectile/proc/fire_projectile(atom/target, atom/caster)
+	procstart = null
+	src.procstart = null
 	var/obj/projectile/to_fire = new projectile_type()
 	to_fire.aim_projectile(target, caster)
 	SEND_SIGNAL(caster, COMSIG_MOB_SPELL_PROJECTILE, src, target, to_fire)

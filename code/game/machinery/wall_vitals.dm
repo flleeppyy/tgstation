@@ -94,32 +94,44 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 	acid = 80
 
 /obj/machinery/vitals_reader/Initialize(mapload, obj/item/circuitboard/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/usb_port, typecacheof(list(/obj/item/circuit_component/vitals_monitor), only_root_path = TRUE))
 	register_context()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/vitals_reader/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	find_machine(prioritize_by_id = TRUE) // mappers can set an id tag to connect it to specific machines
 	if(is_operational)
 		set_light_on(TRUE)
 
 /obj/machinery/vitals_reader/Destroy(force)
+	procstart = null
+	src.procstart = null
 	set_connection(null)
 	set_patient(null) // unset connection also unsets patient, but just in case
 	return ..()
 
 /obj/machinery/vitals_reader/proc/comsig_unset_connected(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_connection(null)
 
 /obj/machinery/vitals_reader/proc/connected_occupant_changed(datum/source, mob/living/new_patient)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	set_patient(new_patient)
 
 /obj/machinery/vitals_reader/proc/connected_moved(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(get_dist(src, connected) > connection_range)
 		set_connection(null)
@@ -127,6 +139,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 /// Sets the machine as connected to this vitals reader
 /// If there is already a connection, it will be unset first.
 /obj/machinery/vitals_reader/proc/set_connection(obj/new_connected)
+	procstart = null
+	src.procstart = null
 	if(connected == new_connected)
 		return
 	if(!isnull(connected))
@@ -153,6 +167,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 		set_patient(connected_table.patient)
 
 /obj/machinery/vitals_reader/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	balloon_alert(user, "detaching...")
 	if(tool.use_tool(src, user, 6 SECONDS, volume = 50))
 		playsound(src, 'sound/items/deconstruct.ogg', 50, TRUE)
@@ -160,6 +176,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/vitals_reader/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!is_operational)
 		return NONE
 
@@ -181,6 +199,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 /// Find and connects to a nearby machine
 /// If prioritize_by_id is TRUE, will first try to find a machine with the same id_tag as this vitals reader
 /obj/machinery/vitals_reader/proc/find_machine(prioritize_by_id = FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/obj/nearby_thing in view(connection_range, src))
 		if(prioritize_by_id && nearby_thing.id_tag != src.id_tag)
 			continue
@@ -195,6 +215,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 	return null
 
 /obj/machinery/vitals_reader/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	var/atom/drop_loc = drop_location()
 	if(disassembled)
 		new frame(drop_loc)
@@ -205,6 +227,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 	qdel(src)
 
 /obj/machinery/vitals_reader/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!is_operational)
 		return
@@ -230,6 +254,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 		. += chemscan(user, patient, tochat = FALSE)
 
 /obj/machinery/vitals_reader/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(held_item?.tool_behaviour == TOOL_WRENCH)
 		context[SCREENTIP_CONTEXT_LMB] = "Detach"
 		. = CONTEXTUAL_SCREENTIP_SET
@@ -250,6 +276,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
  * * hp_color - color being used for general, overrall health
  */
 /obj/machinery/vitals_reader/proc/get_simple_mob_overlays(hp_color)
+	procstart = null
+	src.procstart = null
 	return list(
 		construct_overlay("mob", hp_color),
 		construct_overlay("blood", COLOR_GRAY),
@@ -263,6 +291,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
  * * hp_color - color being used for general, overrall health
  */
 /obj/machinery/vitals_reader/proc/get_humanoid_overlays(hp_color)
+	procstart = null
+	src.procstart = null
 	var/list/returned_overlays = list()
 
 	for(var/body_zone in GLOB.all_body_zones)
@@ -308,6 +338,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
  * * hp_color - color being used for general, overrall health
  */
 /obj/machinery/vitals_reader/proc/get_ekg_and_resp(hp_color)
+	procstart = null
+	src.procstart = null
 	var/ekg_icon_state = "ekg"
 	var/resp_icon_state = "resp"
 	if(IS_DEAD_OR_FAKING(patient))
@@ -326,6 +358,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 	)
 
 /obj/machinery/vitals_reader/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!is_operational)
 		return
@@ -345,6 +379,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 
 /// Converts a percentage to a color
 /obj/machinery/vitals_reader/proc/percent_to_color(percent)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (EMPED|EMAGGED))
 		percent = rand(1, 100) * 0.01
 
@@ -365,6 +401,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 
 /// Converts a percentage to a bar icon state
 /obj/machinery/vitals_reader/proc/percent_to_bar(percent)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (EMPED|EMAGGED))
 		percent = rand(1, 100) * 0.01
 
@@ -401,6 +439,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
  * * y_offset - offset to apply to the y position of the overlay, defaults to 0
  */
 /obj/machinery/vitals_reader/proc/construct_overlay(state_to_use, color_to_use, y_offset = 0)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/overlay = mutable_appearance(icon, state_to_use, alpha = src.alpha)
 	overlay.appearance_flags |= RESET_COLOR
 	overlay.color = color_to_use
@@ -411,10 +451,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 #undef LOWER_BAR_OFFSET
 
 /obj/machinery/vitals_reader/on_set_is_operational(old_value)
+	procstart = null
+	src.procstart = null
 	update_appearance()
 	set_light_on(is_operational)
 
 /obj/machinery/vitals_reader/process()
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, beep_cd) || !is_operational)
 		return
 	if(isnull(patient))
@@ -449,6 +493,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 				last_reported_stat = STABLE
 
 /obj/machinery/vitals_reader/proc/beep_message(message)
+	procstart = null
+	src.procstart = null
 	for(var/mob/viewer as anything in viewers(src))
 		if(isnull(viewer.client) || HAS_TRAIT(viewer, TRAIT_DEAF))
 			continue
@@ -463,6 +509,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 /// Sets the passed mob as the active patient
 /// If there is already a patient, it will be unset first.
 /obj/machinery/vitals_reader/proc/set_patient(mob/living/new_patient)
+	procstart = null
+	src.procstart = null
 	if(patient == new_patient)
 		return
 	SEND_SIGNAL(src, COMSIG_VITALS_SET_PATIENT, patient, new_patient)
@@ -499,15 +547,21 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 	last_reported_stat = null
 
 /obj/machinery/vitals_reader/proc/comsig_unset_patient(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_patient(null)
 
 /// Signal proc to update the display when a signal is received.
 /obj/machinery/vitals_reader/proc/update_overlay_on_signal(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_appearance()
 
 /obj/machinery/vitals_reader/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -517,9 +571,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 	addtimer(CALLBACK(src, PROC_REF(fix_emp)), (severity == EMP_HEAVY ? 150 SECONDS : 75 SECONDS), TIMER_DELETE_ME)
 
 /obj/machinery/vitals_reader/proc/fix_emp()
+	procstart = null
+	src.procstart = null
 	set_machine_stat(machine_stat & ~EMPED)
 
 /obj/machinery/vitals_reader/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(machine_stat & BROKEN)
@@ -568,10 +626,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 
 
 /obj/item/circuit_component/vitals_monitor/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSclock_component, src)
 	return ..()
 
 /obj/item/circuit_component/vitals_monitor/populate_ports()
+	procstart = null
+	src.procstart = null
 	status_updated = add_output_port("Status Updated", PORT_TYPE_SIGNAL)
 	patient_changed = add_output_port("Patient Changed", PORT_TYPE_SIGNAL)
 
@@ -587,6 +649,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 	patient_blood_level = add_output_port("Blood Level", PORT_TYPE_NUMBER)
 
 /obj/item/circuit_component/vitals_monitor/register_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	linked_monitor = shell
 	RegisterSignal(shell, COMSIG_VITALS_SET_PATIENT, PROC_REF(handle_patient_change))
@@ -596,17 +660,23 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 		START_PROCESSING(SSclock_component, src)
 
 /obj/item/circuit_component/vitals_monitor/unregister_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	linked_monitor = null
 	UnregisterSignal(shell, COMSIG_VITALS_SET_PATIENT)
 	STOP_PROCESSING(SSclock_component, src)
 
 /obj/item/circuit_component/vitals_monitor/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("Initial Delay: [DisplayTimeText(1 SECONDS)]", "orange", "clock")
 	. += create_ui_notice("Update Interval: [DisplayTimeText(read_cooldown_period)]", "orange", "clock")
 
 /obj/item/circuit_component/vitals_monitor/proc/handle_patient_change(datum/source, mob/living/old_patient, mob/living/new_patient)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isnull(new_patient))
 		STOP_PROCESSING(SSclock_component, src)
@@ -623,6 +693,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 	round(monitor.patient.##value_to_get * ((monitor.machine_stat & (EMPED|EMAGGED)) ? rand(0, 100) * 0.01 : 1), DAMAGE_PRECISION)
 
 /obj/item/circuit_component/vitals_monitor/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(isnull(linked_monitor?.patient))
 		return PROCESS_KILL
 	if(!COOLDOWN_FINISHED(src, read_cooldown))
@@ -630,11 +702,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 	update_output_stats()
 
 /obj/item/circuit_component/vitals_monitor/proc/delayed_reading()
+	procstart = null
+	src.procstart = null
 	if(isnull(linked_monitor?.patient))
 		return
 	update_output_stats()
 
 /obj/item/circuit_component/vitals_monitor/proc/update_output_stats()
+	procstart = null
+	src.procstart = null
 	COOLDOWN_START(src, read_cooldown, read_cooldown_period)
 	status_updated.set_output(COMPONENT_SIGNAL)
 

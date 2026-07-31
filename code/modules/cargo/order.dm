@@ -19,6 +19,8 @@
 	can_become_message_in_bottle = FALSE //A lot of these are spawned each round, they'd only dilute the pool and make it boring.
 
 /obj/item/paper/fluff/jobs/cargo/manifest/Initialize(mapload, id, cost, manifest_can_fail = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	order_id = id
 	order_cost = cost
@@ -36,9 +38,13 @@
 		investigate_log("Supply order #[order_id] generated with incorrect contents shipped.", INVESTIGATE_CARGO)
 
 /obj/item/paper/fluff/jobs/cargo/manifest/proc/is_approved()
+	procstart = null
+	src.procstart = null
 	return LAZYLEN(stamp_cache) && !is_denied()
 
 /obj/item/paper/fluff/jobs/cargo/manifest/proc/is_denied()
+	procstart = null
+	src.procstart = null
 	return LAZYLEN(stamp_cache) && ("stamp-deny" in stamp_cache)
 
 /datum/supply_order
@@ -90,11 +96,15 @@
 	src.can_be_cancelled = can_be_cancelled
 
 /datum/supply_order/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(applied_coupon)
 	return ..()
 
 //returns the total cost of this order. Its not the total price paid by cargo but the total value of this order
 /datum/supply_order/proc/get_final_cost()
+	procstart = null
+	src.procstart = null
 	var/cost = pack.get_cost()
 	if(applied_coupon) //apply discount price
 		cost *= (1 - applied_coupon.discount_pct_off)
@@ -103,6 +113,8 @@
 	return round(cost)
 
 /datum/supply_order/proc/generateRequisition(turf/T)
+	procstart = null
+	src.procstart = null
 	var/obj/item/paper/requisition/requisition_paper = new(T)
 
 	requisition_paper.name = "requisition form - #[id] ([pack.name])"
@@ -122,7 +134,9 @@
 	requisition_paper.update_appearance()
 	return requisition_paper
 
-/datum/supply_order/proc/generateManifest(obj/container, owner, packname, cost) //generates-the-manifests.
+/datum/supply_order/proc/generateManifest(obj/container, owner, packname, cost)
+	procstart = null
+	src.procstart = null //generates-the-manifests.
 	var/obj/item/paper/fluff/jobs/cargo/manifest/manifest_paper = new(null, id, cost, manifest_can_fail)
 
 	var/station_name = (manifest_paper.errors & MANIFEST_ERROR_NAME) ? new_station_name() : station_name()
@@ -183,6 +197,8 @@
 	return manifest_paper
 
 /datum/supply_order/proc/generate(atom/A)
+	procstart = null
+	src.procstart = null
 	var/account_holder
 	if(paying_account)
 		account_holder = paying_account.account_holder
@@ -198,12 +214,16 @@
 	return crate
 
 /datum/supply_order/proc/generateCombo(miscbox, misc_own, misc_contents, misc_cost)
+	procstart = null
+	src.procstart = null
 	for (var/I in misc_contents)
 		new I(miscbox)
 	generateManifest(miscbox, misc_own, "", misc_cost)
 	return
 
 /datum/supply_order/proc/append_order(list/new_contents, cost_increase)
+	procstart = null
+	src.procstart = null
 	for(var/i in new_contents)
 		if(pack.contains[i])
 			pack.contains[i] += new_contents[i]
@@ -214,15 +234,21 @@
 
 /// Custom type of order who's supply pack can be safely deleted
 /datum/supply_order/disposable/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(pack)
 	return ..()
 
 /// Custom material order to append cargo crate value to the final order cost
 /datum/supply_order/disposable/materials/get_final_cost()
+	procstart = null
+	src.procstart = null
 	return (..() + CARGO_CRATE_VALUE)
 
 /// Custom material order to append cargo crate value to the final manifest cost
 /datum/supply_order/disposable/materials/generateManifest(obj/container, owner, packname, cost)
+	procstart = null
+	src.procstart = null
 	cost += CARGO_CRATE_VALUE
 	return ..()
 

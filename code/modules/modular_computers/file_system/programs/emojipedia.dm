@@ -12,6 +12,8 @@
 	var/static/list/emoji_list = icon_states(icon(EMOJI_SET))
 
 /datum/computer_file/program/emojipedia/ui_static_data(mob_user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	for(var/emoji in emoji_list)
 		data["emoji_list"] += list(list(
@@ -21,6 +23,8 @@
 	return data
 
 /datum/computer_file/program/emojipedia/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/emojipedia),
 	)

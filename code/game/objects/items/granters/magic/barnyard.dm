@@ -22,6 +22,8 @@
 	)
 
 /obj/item/book/granter/action/spell/barnyard/recoil(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(user))
 		to_chat(user, "<font size='15' color='red'><b>HORSIE HAS RISEN</b></font>")
 		var/obj/item/clothing/magic_mask = new /obj/item/clothing/mask/animal/horsehead/cursed(user.drop_location())

@@ -20,6 +20,8 @@
 
 
 /datum/disease/parrot_possession/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!. || isnull(parrot_controller))
@@ -32,6 +34,8 @@
 
 
 /datum/disease/parrot_possession/cure(add_resistance = FALSE)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/inside_parrot = locate(/mob/living/basic/parrot/poly/ghost) in affected_mob
 	if(inside_parrot)
 		UnregisterSignal(inside_parrot, list(COMSIG_PREQDELETED, COMSIG_MOVABLE_MOVED))
@@ -44,10 +48,14 @@
 	return ..()
 
 /datum/disease/parrot_possession/proc/set_parrot(mob/living/parrot)
+	procstart = null
+	src.procstart = null
 	parrot_controller = parrot.ai_controller
 	RegisterSignals(parrot, list(COMSIG_PREQDELETED, COMSIG_MOVABLE_MOVED), PROC_REF(on_parrot_exit))
 
 /datum/disease/parrot_possession/proc/on_parrot_exit(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(source, list(COMSIG_PREQDELETED, COMSIG_MOVABLE_MOVED))
 	cure()

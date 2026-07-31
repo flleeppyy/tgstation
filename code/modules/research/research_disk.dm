@@ -7,6 +7,8 @@
 	var/datum/techweb/stored_research
 
 /obj/item/disk/tech_disk/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!stored_research)
 		stored_research = new /datum/techweb/disk
@@ -19,5 +21,7 @@
 	custom_materials = null
 
 /obj/item/disk/tech_disk/debug/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	stored_research = locate(/datum/techweb/admin) in SSresearch.techwebs
 	return ..()

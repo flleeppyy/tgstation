@@ -82,6 +82,8 @@
 	item_flags = parent_type::item_flags | ABSTRACT
 
 /obj/item/raw_anomaly_core/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/path = pick(subtypesof(/obj/item/raw_anomaly_core))
 	new path(loc)
@@ -96,6 +98,8 @@
  * * count_towards_limit - should we increment the amount of created cores on SSresearch
  */
 /obj/item/raw_anomaly_core/proc/create_core(newloc, del_self = FALSE, count_towards_limit = FALSE)
+	procstart = null
+	src.procstart = null
 	. = new anomaly_type(newloc)
 	if(count_towards_limit)
 		SSresearch.increment_existing_anomaly_cores(anomaly_type)

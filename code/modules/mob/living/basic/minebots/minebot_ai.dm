@@ -31,6 +31,8 @@
 /datum/bt_node/ai_behavior/find_mineral_wall/minebot
 
 /datum/bt_node/ai_behavior/find_mineral_wall/minebot/check_if_mineable(datum/ai_controller/controller, turf/target_wall)
+	procstart = null
+	src.procstart = null
 	var/list/forbidden = controller.blackboard[BB_BLACKLIST_MINERAL_TURFS]
 	var/turf/previous_unreachable = controller.blackboard[BB_PREVIOUS_UNREACHABLE_WALL]
 	if(is_type_in_list(target_wall, forbidden) || target_wall == previous_unreachable)
@@ -44,6 +46,8 @@
 	var/target_key = BB_TARGET_MINERAL_TURF
 
 /datum/bt_node/ai_behavior/minebot_mine_turf/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/living_pawn = controller.pawn
 	var/turf/target = controller.blackboard[target_key]
 	if(QDELETED(target))
@@ -56,6 +60,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/minebot_mine_turf/proc/check_obstacles_in_path(datum/ai_controller/controller, turf/target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/source = controller.pawn
 	var/list/turfs_in_path = get_line(source, target) - target
 	for(var/turf/turf in turfs_in_path)
@@ -65,6 +71,8 @@
 	return FALSE
 
 /datum/bt_node/ai_behavior/minebot_mine_turf/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(target_key)
 
@@ -74,6 +82,8 @@
 	var/target_key = BB_NEARBY_DEAD_MINER
 
 /datum/bt_node/ai_behavior/send_sos_message/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/target = controller.blackboard[target_key]
 	var/mob/living/living_pawn = controller.pawn
 	if(QDELETED(target) || is_station_level(target.z))
@@ -87,6 +97,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/send_sos_message/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(target_key)
 
@@ -97,6 +109,8 @@
 	var/repair_threshold = 0.75
 
 /datum/bt_node/ai_behavior/repair_drone/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = controller.blackboard[target_key]
 	if(QDELETED(target))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
@@ -116,6 +130,8 @@
 	var/target_key = BB_ORE_TARGET
 
 /datum/bt_node/ai_behavior/collect_ore/minebot/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/ore/target = controller.blackboard[target_key]
 	if(QDELETED(target))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
@@ -126,6 +142,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/collect_ore/minebot/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(target_key)
 
@@ -133,6 +151,8 @@
 /datum/bt_node/ai_behavior/befriend_target/check_ally
 
 /datum/bt_node/ai_behavior/befriend_target/check_ally/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	var/mob/living/living_target = controller.blackboard[target_key]
 	if(QDELETED(living_target) || living_pawn.has_ally(living_target))
@@ -147,6 +167,8 @@
 /datum/targeting_strategy/rock_stoner
 
 /datum/targeting_strategy/rock_stoner/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -158,6 +180,8 @@
 /datum/targeting_strategy/unconscious_human
 
 /datum/targeting_strategy/unconscious_human/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -170,6 +194,8 @@
 /datum/pet_command/free/minebot
 
 /datum/pet_command/free/minebot/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.set_blackboard_key(BB_AUTOMATED_MINING, FALSE)
 	return ..()
 
@@ -181,12 +207,18 @@
 	callout_type = /datum/callout_option/mine
 
 /datum/pet_command/automate_mining/valid_callout_target(mob/living/speaker, datum/callout_option/callout, atom/target)
+	procstart = null
+	src.procstart = null
 	return ismineralturf(target)
 
 /datum/pet_command/automate_mining/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return "signals [living_pet] to start mining!"
 
 /datum/pet_command/automate_mining/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.set_blackboard_key(BB_AUTOMATED_MINING, TRUE)
 	controller.clear_blackboard_key(BB_ACTIVE_PET_COMMAND)
 
@@ -198,6 +230,8 @@
 	var/ability_key
 
 /datum/pet_command/minebot_ability/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/datum/action/cooldown/ability = controller.blackboard[ability_key]
 	if(!ability?.IsAvailable())
 		return
@@ -212,6 +246,8 @@
 	ability_key = BB_MINEBOT_LIGHT_ABILITY
 
 /datum/pet_command/minebot_ability/light/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return "signals [living_pet] to toggle its lights!"
 
 /datum/pet_command/minebot_ability/dump
@@ -222,9 +258,13 @@
 	ability_key = BB_MINEBOT_DUMP_ABILITY
 
 /datum/pet_command/minebot_ability/dump/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return "signals [living_pet] to dump its ore!"
 
 /datum/pet_command/minebot_ability/dump/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.set_blackboard_key(BB_AUTOMATED_MINING, FALSE) //else bro will just pick it up
 	return ..()
 
@@ -232,6 +272,8 @@
 	attack_subtree = /datum/bt_node/subtree/pet_command/attack/minebot
 
 /datum/pet_command/attack/minebot/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.set_blackboard_key(BB_AUTOMATED_MINING, FALSE)
 	var/mob/living/living_pawn = controller.pawn
 	if(!living_pawn.combat_mode)
@@ -241,12 +283,16 @@
 /datum/pet_command/idle/minebot
 
 /datum/pet_command/idle/minebot/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.set_blackboard_key(BB_AUTOMATED_MINING, FALSE)
 	return ..()
 
 /datum/pet_command/protect_owner/minebot
 
 /datum/pet_command/protect_owner/minebot/set_command_target(mob/living/parent, atom/target)
+	procstart = null
+	src.procstart = null
 	if(!parent.ai_controller.blackboard[BB_MINEBOT_AUTO_DEFEND])
 		return FALSE
 	if(!parent.ai_controller.blackboard_key_exists(BB_CURRENT_TARGET) && !QDELETED(target)) //we are already dealing with something,
@@ -254,6 +300,8 @@
 	return TRUE
 
 /datum/pet_command/protect_owner/minebot/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(controller.blackboard[BB_MINEBOT_AUTO_DEFEND])
 		var/mob/living/living_pawn = controller.pawn
 		living_pawn.set_combat_mode(TRUE)

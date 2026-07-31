@@ -4,6 +4,8 @@
 	randomize = TRUE
 
 /datum/wires/experimentor/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(
 		SCANTYPE_POKE,
 		SCANTYPE_IRRADIATE,
@@ -17,6 +19,8 @@
 	return ..()
 
 /datum/wires/experimentor/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/obj/machinery/rnd/experimentor/R = holder
@@ -24,6 +28,8 @@
 		return TRUE
 
 /datum/wires/experimentor/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/rnd/experimentor/experimentor = holder
 	if(!experimentor.loaded_item)
 		return

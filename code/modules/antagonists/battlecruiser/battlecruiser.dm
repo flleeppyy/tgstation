@@ -7,6 +7,8 @@
 	var/obj/machinery/nuclearbomb/nuke
 
 /datum/team/battlecruiser/proc/update_objectives()
+	procstart = null
+	src.procstart = null
 	if(core_objective)
 		var/datum/objective/objective = new core_objective()
 		objective.team = src
@@ -25,9 +27,13 @@
 	var/datum/team/battlecruiser/battlecruiser_team
 
 /datum/antagonist/battlecruiser/get_team()
+	procstart = null
+	src.procstart = null
 	return battlecruiser_team
 
 /datum/antagonist/battlecruiser/greet()
+	procstart = null
+	src.procstart = null
 	play_stinger()
 	to_chat(owner, span_big("You are a [name]!"))
 	owner.announce_objectives()
@@ -42,6 +48,8 @@
 	pref_flag = ROLE_BATTLECRUISER_CAPTAIN
 
 /datum/antagonist/battlecruiser/create_team(datum/team/battlecruiser/team)
+	procstart = null
+	src.procstart = null
 	if(!team)
 		return
 	if(!istype(team))
@@ -49,9 +57,13 @@
 	battlecruiser_team = team
 
 /datum/antagonist/battlecruiser/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	add_team_hud(mob_override || owner.current, /datum/antagonist/battlecruiser)
 
 /datum/antagonist/battlecruiser/on_gain()
+	procstart = null
+	src.procstart = null
 	if(!battlecruiser_team)
 		return ..()
 

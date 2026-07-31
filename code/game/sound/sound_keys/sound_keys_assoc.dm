@@ -2,6 +2,8 @@
 /datum/sound_effect/assoc
 
 /datum/sound_effect/assoc/return_sfx()
+	procstart = null
+	src.procstart = null
 	return pick_weight(file_paths)
 
 /datum/sound_effect/assoc/plate_armor_rustle

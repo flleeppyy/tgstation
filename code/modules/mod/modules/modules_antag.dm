@@ -33,10 +33,14 @@
 	var/block_overwhelming_attacks = FALSE
 
 /obj/item/mod/module/energy_shield/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	charges = max_charges
 
 /obj/item/mod/module/energy_shield/on_part_activation()
+	procstart = null
+	src.procstart = null
 	mod.AddComponent(\
 		/datum/component/shielded, \
 		max_charges = max_charges, \
@@ -51,6 +55,8 @@
 	RegisterSignal(mod.wearer, COMSIG_LIVING_CHECK_BLOCK, PROC_REF(shield_reaction))
 
 /obj/item/mod/module/energy_shield/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/component/shielded/shield = mod.GetComponent(/datum/component/shielded)
 	charges = shield.current_charges
 	qdel(shield)
@@ -102,9 +108,13 @@
 	required_slots = list(ITEM_SLOT_BACK)
 
 /obj/item/mod/module/anti_magic/on_part_activation()
+	procstart = null
+	src.procstart = null
 	mod.wearer.add_traits(list(TRAIT_ANTIMAGIC, TRAIT_HOLY), REF(src))
 
 /obj/item/mod/module/anti_magic/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	mod.wearer.remove_traits(list(TRAIT_ANTIMAGIC, TRAIT_HOLY), REF(src))
 
 /obj/item/mod/module/anti_magic/wizard
@@ -117,9 +127,13 @@
 	required_slots = list()
 
 /obj/item/mod/module/anti_magic/wizard/on_part_activation()
+	procstart = null
+	src.procstart = null
 	mod.wearer.add_traits(list(TRAIT_ANTIMAGIC, TRAIT_ANTIMAGIC_NO_SELFBLOCK), REF(src))
 
 /obj/item/mod/module/anti_magic/wizard/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	mod.wearer.remove_traits(list(TRAIT_ANTIMAGIC, TRAIT_ANTIMAGIC_NO_SELFBLOCK), REF(src))
 
 ///Insignia - Gives you a skin specific stripe.
@@ -136,6 +150,8 @@
 	mask_worn_overlay = TRUE
 
 /obj/item/mod/module/insignia/generate_worn_overlay(obj/item/source, mutable_appearance/standing)
+	procstart = null
+	src.procstart = null
 	overlay_state_inactive = "[initial(overlay_state_inactive)]-[mod.skin]"
 	. = ..()
 	for(var/mutable_appearance/appearance as anything in .)
@@ -180,9 +196,13 @@
 	required_slots = list(ITEM_SLOT_FEET)
 
 /obj/item/mod/module/noslip/on_part_activation()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(mod.wearer, TRAIT_NO_SLIP_WATER, REF(src))
 
 /obj/item/mod/module/noslip/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(mod.wearer, TRAIT_NO_SLIP_WATER, REF(src))
 
 //Bite of 87 Springlock - Equips faster, disguised as DNA lock.
@@ -195,6 +215,8 @@
 	step_change = 0.1
 
 /obj/item/mod/module/springlock/bite_of_87/on_part_activation()
+	procstart = null
+	src.procstart = null
 	..()
 	if(check_holidays(APRIL_FOOLS) || prob(1))
 		mod.set_mod_color("#b17f00")
@@ -216,6 +238,8 @@
 	required_slots = list(ITEM_SLOT_OCLOTHING|ITEM_SLOT_ICLOTHING)
 
 /obj/item/mod/module/flamethrower/on_select_use(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -245,6 +269,8 @@
 	var/knockdown_time = 2 SECONDS
 
 /obj/item/mod/module/power_kick/on_select_use(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -266,12 +292,16 @@
 	mod.wearer.throw_at(target, range = 7, speed = 2, thrower = mod.wearer, spin = FALSE, gentle = TRUE, callback = CALLBACK(src, PROC_REF(on_throw_end), mod.wearer, -angle))
 
 /obj/item/mod/module/power_kick/proc/on_throw_end(mob/user, angle)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return
 	user.transform = user.transform.Turn(angle)
 	animate(user, 0.2 SECONDS, pixel_z = -16, flags = ANIMATION_RELATIVE, easing = SINE_EASING|EASE_IN)
 
 /obj/item/mod/module/power_kick/proc/on_throw_impact(mob/living/source, atom/target, datum/thrownthing/thrownthing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(source, COMSIG_MOVABLE_IMPACT)
@@ -303,6 +333,8 @@
 	var/obj/item/current_disguise
 
 /obj/item/mod/module/chameleon/on_install()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/all_disguises = sort_list(subtypesof(get_path_by_slot(mod.slot_flags)), GLOBAL_PROC_REF(cmp_typepaths_asc))
 	for(var/clothing_path in all_disguises)
@@ -313,18 +345,24 @@
 		possible_disguises[chameleon_item_name] = clothing_path
 
 /obj/item/mod/module/chameleon/on_uninstall(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(current_disguise)
 		return_look()
 	possible_disguises = null
 
 /obj/item/mod/module/chameleon/used(mob/activator)
+	procstart = null
+	src.procstart = null
 	if(mod.active || mod.activating)
 		balloon_alert(activator, "unit active!")
 		return FALSE
 	return ..()
 
 /obj/item/mod/module/chameleon/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	if(current_disguise)
 		return_look()
 		return
@@ -335,6 +373,8 @@
 	update_look()
 
 /obj/item/mod/module/chameleon/proc/update_look()
+	procstart = null
+	src.procstart = null
 	mod.name = initial(current_disguise.name)
 	mod.desc = initial(current_disguise.desc)
 	mod.icon_state = initial(current_disguise.icon_state)
@@ -349,6 +389,8 @@
 	RegisterSignal(mod, COMSIG_MOD_ACTIVATE, PROC_REF(return_look))
 
 /obj/item/mod/module/chameleon/proc/return_look()
+	procstart = null
+	src.procstart = null
 	mod.name = "[mod.theme.name] [initial(mod.name)]"
 	mod.desc = "[initial(mod.desc)] [mod.theme.desc]"
 	mod.icon_state = "[mod.skin]-[initial(mod.icon_state)]"
@@ -377,11 +419,15 @@
 	var/old_size
 
 /obj/item/mod/module/plate_compression/on_install()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	old_size = mod.w_class
 	mod.update_weight_class(new_size)
 
 /obj/item/mod/module/plate_compression/on_uninstall(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	mod.update_weight_class(old_size)
 	old_size = null
@@ -405,10 +451,14 @@
 	var/datum/proximity_monitor/advanced/demoraliser/demoralizer
 
 /obj/item/mod/module/demoralizer/on_part_activation()
+	procstart = null
+	src.procstart = null
 	var/datum/demoralise_moods/module/mood_category = new()
 	demoralizer = new(mod.wearer, 7, TRUE, mood_category)
 
 /obj/item/mod/module/demoralizer/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(demoralizer)
 
 /obj/item/mod/module/infiltrator
@@ -426,14 +476,20 @@
 	var/list/traits_to_add = list(TRAIT_SILENT_FOOTSTEPS, TRAIT_UNKNOWN_APPEARANCE, TRAIT_UNKNOWN_VOICE, TRAIT_HEAD_INJURY_BLOCKED)
 
 /obj/item/mod/module/infiltrator/on_install()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(mod, TRAIT_EXAMINE_SKIP, REF(src))
 
 /obj/item/mod/module/infiltrator/on_uninstall(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(mod, TRAIT_EXAMINE_SKIP, REF(src))
 
 /obj/item/mod/module/infiltrator/on_part_activation()
+	procstart = null
+	src.procstart = null
 	mod.wearer.add_traits(traits_to_add, REF(src))
 	RegisterSignal(mod.wearer, COMSIG_TRY_MODIFY_SPEECH, PROC_REF(on_speech_modification))
 	var/obj/item/organ/tongue/user_tongue = mod.wearer.get_organ_slot(ORGAN_SLOT_TONGUE)
@@ -443,6 +499,8 @@
 		head_cover.flash_protect = FLASH_PROTECTION_WELDER_HYPER_SENSITIVE
 
 /obj/item/mod/module/infiltrator/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	mod.wearer.remove_traits(traits_to_add, REF(src))
 	UnregisterSignal(mod.wearer, COMSIG_TRY_MODIFY_SPEECH)
 	var/obj/item/organ/tongue/user_tongue = mod.wearer.get_organ_slot(ORGAN_SLOT_TONGUE)
@@ -454,6 +512,8 @@
 		head_cover.flash_protect = initial(head_cover.flash_protect)
 
 /obj/item/mod/module/infiltrator/proc/on_speech_modification(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!mod.active)
 		return
@@ -491,6 +551,8 @@
 	var/stealth_active = FALSE
 
 /obj/item/mod/module/stealth/wraith/on_select_use(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || target == mod.wearer)
 		return
@@ -511,21 +573,31 @@
 			mod.add_charge(DEFAULT_CHARGE_DRAIN * 250)
 
 /obj/item/mod/module/stealth/wraith/on_activation(mob/activator)
+	procstart = null
+	src.procstart = null
 	return // Don't activate stealth when the module is activated because the stealth portion of the module is fully passive
 
 /obj/item/mod/module/stealth/wraith/on_deactivation(mob/activator, display_message = TRUE, deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(mod.wearer, list(COMSIG_LIVING_MOB_BUMP, COMSIG_ATOM_BUMPED, COMSIG_MOB_FIRED_GUN))
 
 /obj/item/mod/module/stealth/wraith/on_part_activation()
+	procstart = null
+	src.procstart = null
 	start_stealth()
 
 /obj/item/mod/module/stealth/wraith/on_part_deactivation(deleting)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(mod.wearer, list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_MOB_ITEM_ATTACK, COMSIG_ATOM_ATTACKBY, COMSIG_ATOM_ATTACK_HAND, COMSIG_ATOM_BULLET_ACT, COMSIG_ATOM_HITBY, COMSIG_ATOM_HULK_ATTACK, COMSIG_ATOM_ATTACK_PAW, COMSIG_CARBON_CUFF_ATTEMPTED, COMSIG_LIVING_MOB_BUMP, COMSIG_ATOM_BUMPED, COMSIG_MOB_FIRED_GUN))
 	animate(mod.wearer, alpha = 255, time = 1.5 SECONDS)
 	stealth_active = FALSE
 
 /obj/item/mod/module/stealth/wraith/proc/start_stealth()
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, recloak_timer)) // Prevents being able to bypass the cooldown by disabling and re-enabling the module
 		addtimer(CALLBACK(src, PROC_REF(start_stealth)), COOLDOWN_TIMELEFT(src, recloak_timer))
 		return
@@ -538,6 +610,8 @@
 	stealth_active = TRUE
 
 /obj/item/mod/module/stealth/wraith/unstealth(datum/source)
+	procstart = null
+	src.procstart = null
 	if(!stealth_active)
 		return
 	to_chat(mod.wearer, span_warning("[src] gets discharged from contact!"))
@@ -552,6 +626,8 @@
 	stealth_active = FALSE
 
 /obj/item/mod/module/stealth/wraith/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info( \
 		"The Wraith Module does not simply bend light around the user to obscure their visual pattern, \

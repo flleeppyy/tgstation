@@ -3,6 +3,8 @@
 /datum/targeting_strategy/drillable_ice
 
 /datum/targeting_strategy/drillable_ice/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

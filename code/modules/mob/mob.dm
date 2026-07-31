@@ -24,6 +24,8 @@
  * Parent call
  */
 /mob/Destroy()
+	procstart = null
+	src.procstart = null
 	if(client)
 		stack_trace("Mob with client has been deleted.")
 	else if(ckey && !IS_FAKE_KEY(ckey)) // FUCK YOU AGHOST CODE FUCK YOU
@@ -57,6 +59,8 @@
 	return ..()
 
 /mob/New()
+	procstart = null
+	src.procstart = null
 	// This needs to happen IMMEDIATELY. I'm sorry :(
 	GenerateTag()
 	return ..()
@@ -79,6 +83,8 @@
  * * Intialize the movespeed of the mob
  */
 /mob/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_MOB_CREATED, src)
 	add_to_mob_list()
 	if(stat == DEAD)
@@ -106,11 +112,15 @@
  * This is simply "mob_"+ a global incrementing counter that goes up for every mob
  */
 /mob/GenerateTag()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tag = "mob_[next_mob_id++]"
 
 /// Assigns a (c)key to this mob.
 /mob/proc/PossessByPlayer(ckey)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if(isnull(ckey))
 		return
@@ -121,6 +131,8 @@
 	src.ckey = ckey(ckey)
 
 /mob/serialize_list(list/options, list/semvers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	.["tag"] = tag
@@ -140,6 +152,8 @@
  * This is because some atom_hud subtypes arent supposed to work via global categories, updating normally would affect all of these which we dont want.
  */
 /atom/proc/set_hud_image_active(hud_category, update_huds = TRUE, datum/atom_hud/exclusive_hud)
+	procstart = null
+	src.procstart = null
 	if(!istext(hud_category) || !hud_list?[hud_category] || active_hud_list?[hud_category])
 		return FALSE
 
@@ -158,6 +172,8 @@
 
 ///sets every hud image in the given category inactive so no one can see it
 /atom/proc/set_hud_image_inactive(hud_category, update_huds = TRUE, datum/atom_hud/exclusive_hud)
+	procstart = null
+	src.procstart = null
 	if(!istext(hud_category))
 		return FALSE
 
@@ -181,6 +197,8 @@
  * Goes through hud_possible list and adds the images to the hud_list variable (if not already cached)
  */
 /atom/proc/prepare_huds()
+	procstart = null
+	src.procstart = null
 	if(hud_list) // I choose to be lenient about people calling this proc more then once
 		return
 	hud_list = list()
@@ -219,12 +237,16 @@ GAME_VERB_PROC(/mob, Cell, "Cell", "Admin")
  * Return the desc of this mob for a photo
  */
 /mob/proc/get_photo_description(obj/item/camera/camera)
+	procstart = null
+	src.procstart = null
 	return "a ... thing?"
 
 /**
  * Show a message to this mob (visual or audible)
  */
 /mob/proc/show_message(msg, type, alt_msg, alt_type, avoid_highlighting = FALSE)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return FALSE
 
@@ -278,6 +300,8 @@ GAME_VERB_PROC(/mob, Cell, "Cell", "Admin")
  * * visible_message_flags (optional) is the type of message being sent.
  */
 /atom/proc/visible_message(message, self_message, blind_message, vision_distance = DEFAULT_MESSAGE_RANGE, list/ignored_mobs, visible_message_flags = NONE)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(!T)
 		return
@@ -323,6 +347,8 @@ GAME_VERB_PROC(/mob, Cell, "Cell", "Admin")
 
 ///Adds the functionality to self_message.
 /mob/visible_message(message, self_message, blind_message, vision_distance = DEFAULT_MESSAGE_RANGE, list/ignored_mobs, visible_message_flags = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!self_message)
 		return
@@ -356,6 +382,8 @@ GAME_VERB_PROC(/mob, Cell, "Cell", "Admin")
  * * audible_message_flags (optional) is the type of message being sent.
  */
 /atom/proc/audible_message(message, deaf_message, hearing_distance = DEFAULT_MESSAGE_RANGE, self_message, audible_message_flags = NONE)
+	procstart = null
+	src.procstart = null
 	var/list/hearers = mob_only_listeners(get_hearers_in_view(hearing_distance, src))
 	var/raw_msg = message
 	if(audible_message_flags & WITH_EMPHASIS_MESSAGE)
@@ -383,6 +411,8 @@ GAME_VERB_PROC(/mob, Cell, "Cell", "Admin")
  * * hearing_distance (optional) is the range, how many tiles away the message can be heard.
  */
 /mob/audible_message(message, deaf_message, hearing_distance = DEFAULT_MESSAGE_RANGE, self_message, audible_message_flags = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!self_message)
 		return
@@ -407,19 +437,29 @@ GAME_VERB_PROC(/mob, Cell, "Cell", "Admin")
 /// For example, AIs hearing around their holopads, and dullahans hearing around their heads.
 /// Normal say messages are handled by Hear(), this is for other visible/audible messages
 /atom/movable/proc/get_listening_mob()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/overlay/holo_pad_hologram/get_listening_mob()
+	procstart = null
+	src.procstart = null
 	return Impersonation
 
 /obj/item/dullahan_relay/get_listening_mob()
+	procstart = null
+	src.procstart = null
 	return owner
 
 /mob/get_listening_mob()
+	procstart = null
+	src.procstart = null
 	return src
 
 ///Returns the client runechat visible messages preference according to the message type.
 /atom/proc/runechat_prefs_check(mob/target, visible_message_flags = NONE)
+	procstart = null
+	src.procstart = null
 	if(!target.client?.prefs.read_preference(/datum/preference/toggle/enable_runechat))
 		return FALSE
 	if (!target.client?.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs))
@@ -429,6 +469,8 @@ GAME_VERB_PROC(/mob, Cell, "Cell", "Admin")
 	return TRUE
 
 /mob/runechat_prefs_check(mob/target, visible_message_flags = NONE)
+	procstart = null
+	src.procstart = null
 	if(!target.client?.prefs.read_preference(/datum/preference/toggle/enable_runechat))
 		return FALSE
 	if(visible_message_flags & EMOTE_MESSAGE && !target.client.prefs.read_preference(/datum/preference/toggle/see_rc_emotes))
@@ -436,6 +478,8 @@ GAME_VERB_PROC(/mob, Cell, "Cell", "Admin")
 	return TRUE
 
 /mob/dead/observer/runechat_prefs_check(mob/target, visible_message_flags = NONE)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	if(!target.client?.prefs.read_preference(/datum/preference/toggle/enable_runechat_ghosts))
@@ -443,10 +487,14 @@ GAME_VERB_PROC(/mob, Cell, "Cell", "Admin")
 	return TRUE
 
 ///Get the item on the mob in the storage slot identified by the id passed in
-/mob/proc/get_item_by_slot(slot_id) as /obj/item
+/mob/proc/get_item_by_slot(slot_id)
+	procstart = null
+	src.procstart = null
 	return null
 
 /mob/proc/get_items_by_slots(slot_ids)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for (var/slot_id in bitfield_to_list(slot_ids))
 		. += get_item_by_slot(slot_id)
@@ -455,6 +503,8 @@ GAME_VERB_PROC(/mob, Cell, "Cell", "Admin")
 /// Returns null if the item isn't in any slots on our mob.
 /// Does not check if the passed item is null, which may result in unexpected outcoms.
 /mob/proc/get_slot_by_item(obj/item/looking_for)
+	procstart = null
+	src.procstart = null
 	if(looking_for in held_items)
 		return ITEM_SLOT_HANDS
 
@@ -463,6 +513,8 @@ GAME_VERB_PROC(/mob, Cell, "Cell", "Admin")
 /// Called whenever anything that modifes incapacitated is ran, updates it and sends a signal if it changes
 /// Returns TRUE if anything changed, FALSE otherwise
 /mob/proc/update_incapacitated()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/old_incap = incapacitated
 	incapacitated = build_incapacitated()
@@ -474,6 +526,8 @@ GAME_VERB_PROC(/mob, Cell, "Cell", "Admin")
 
 /// Returns an updated incapacitated bitflag. If a flag is set it means we're incapacitated in that case
 /mob/proc/build_incapacitated()
+	procstart = null
+	src.procstart = null
 	return NONE
 
 /**
@@ -483,6 +537,8 @@ GAME_VERB_PROC(/mob, Cell, "Cell", "Admin")
  * on the item in the slot if the users active hand is empty
  */
 /mob/proc/attack_ui(slot, params)
+	procstart = null
+	src.procstart = null
 	var/obj/item/W = get_active_held_item()
 
 	if(istype(W))
@@ -505,6 +561,8 @@ GAME_VERB_PROC(/mob, Cell, "Cell", "Admin")
  * reset_perspective(thing) set the eye to the thing (if it's equal to current default reset to mob perspective)
  */
 /mob/proc/reset_perspective(atom/new_eye)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(!client)
 		return
@@ -553,6 +611,8 @@ GAME_VERB(/mob, examinate, "Examine", null, atom/examinify as mob|obj|turf) //It
 	DEFAULT_QUEUE_OR_CALL_VERB(VERB_CALLBACK(src, PROC_REF(run_examinate), examinify))
 
 /mob/proc/run_examinate(atom/examinify, force_examinate_more = FALSE)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(examinify)) // since this can run async we might have had the atom get qdeleted already
 		return
 
@@ -607,10 +667,14 @@ GAME_VERB(/mob, examinate, "Examine", null, atom/examinify as mob|obj|turf) //It
 
 /// Handles adding examine messages for the target that are specific to this mob, e.g. a blood worm examining how much blood a living target has.
 /mob/proc/examining(atom/target, list/result)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 	return
 
 /mob/Topic(href, list/href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -621,10 +685,14 @@ GAME_VERB(/mob, examinate, "Examine", null, atom/examinify as mob|obj|turf) //It
 			run_examinate(examined_atom, force_examinate_more = TRUE)
 
 /mob/proc/blind_examine_check(atom/examined_thing)
+	procstart = null
+	src.procstart = null
 	return TRUE //The non-living will always succeed at this check.
 
 
 /mob/living/blind_examine_check(atom/examined_thing)
+	procstart = null
+	src.procstart = null
 	//need to be next to something and awake
 	if(!Adjacent(examined_thing) || incapacitated)
 		to_chat(src, span_warning("Something is there, but you can't see it!"))
@@ -680,6 +748,8 @@ GAME_VERB(/mob, examinate, "Examine", null, atom/examinify as mob|obj|turf) //It
 
 
 /mob/proc/clear_from_recent_examines(ref_to_clear)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!client)
 		return
@@ -693,9 +763,13 @@ GAME_VERB(/mob, examinate, "Examine", null, atom/examinify as mob|obj|turf) //It
  * The nice part about relying on examining is that we don't bother checking visibility, because we already know they were both visible to each other within the last second, and the one who triggers it is currently seeing them
  */
 /mob/proc/handle_eye_contact(mob/living/examined_mob)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/handle_eye_contact(mob/living/examined_mob)
+	procstart = null
+	src.procstart = null
 	if(!istype(examined_mob) || src == examined_mob || IS_UNCONSCIOUS(examined_mob) || !client || is_blind())
 		return
 
@@ -725,9 +799,13 @@ GAME_VERB(/mob, examinate, "Examine", null, atom/examinify as mob|obj|turf) //It
 
 /// Checks if we can make eye contact or someone can make eye contact with us
 /mob/living/proc/can_eye_contact()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /mob/living/carbon/can_eye_contact()
+	procstart = null
+	src.procstart = null
 	return !(obscured_slots & HIDEFACE)
 
 /**
@@ -738,16 +816,22 @@ GAME_VERB(/mob, examinate, "Examine", null, atom/examinify as mob|obj|turf) //It
  * parent and actually use it.
  */
 /mob/proc/limb_attack_self()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Can this mob resist (default FALSE)
 /mob/proc/can_resist()
+	procstart = null
+	src.procstart = null
 	return FALSE //overridden in living.dm
 
 #define SPIN_PROC_TRAIT "trait_from_spin()"
 
 ///Spin this mob around it's central axis
 /mob/proc/spin(spintime, speed)
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	var/D = dir
 	if((spintime < 1) || (speed < 1) || !spintime || !speed)
@@ -773,10 +857,14 @@ GAME_VERB(/mob, examinate, "Examine", null, atom/examinify as mob|obj|turf) //It
 
 ///Update the pulling hud icon
 /mob/proc/update_pull_hud_icon()
+	procstart = null
+	src.procstart = null
 	hud_used?.screen_objects[HUD_MOB_PULL]?.update_appearance()
 
 ///Update the resting hud icon
 /mob/proc/update_rest_hud_icon()
+	procstart = null
+	src.procstart = null
 	if(!hud_used)
 		return FALSE
 	hud_used.screen_objects[HUD_MOB_REST]?.update_appearance()
@@ -788,10 +876,14 @@ GAME_VERB(/mob, examinate, "Examine", null, atom/examinify as mob|obj|turf) //It
  * Calls attack self on the item and updates the inventory hud for hands
  */
 /mob/proc/mode()
+	procstart = null
+	src.procstart = null
 	DEFAULT_QUEUE_OR_CALL_VERB(VERB_CALLBACK(src, PROC_REF(execute_mode)))
 
 ///proc version to finish /mob/verb/mode() execution. used in case the proc needs to be queued for the tick after its first called
 /mob/proc/execute_mode()
+	procstart = null
+	src.procstart = null
 	if(ismecha(loc))
 		return
 
@@ -860,6 +952,8 @@ GAME_VERB(/mob, abandon_mob, "Respawn", "OOC")
 
 /// Checks if the mob can respawn yet according to the respawn delay
 /mob/proc/check_respawn_delay(override_delay = 0)
+	procstart = null
+	src.procstart = null
 	if(!override_delay && !CONFIG_GET(number/respawn_delay))
 		return TRUE
 
@@ -898,12 +992,16 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 
 /// Adds this list to the output to the stat browser
 /mob/proc/get_status_tab_items()
+	procstart = null
+	src.procstart = null
 	. = list("") //we want to offset unique stuff from standard stuff
 	SEND_SIGNAL(src, COMSIG_MOB_GET_STATUS_TAB_ITEMS, .)
 	return .
 
 
 /mob/proc/swap_hand(held_index, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE) // Override perform_hand_swap instead
 
 	var/obj/item/held_item = get_active_held_item()
@@ -920,6 +1018,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 
 /// Performs the actual ritual of swapping hands, such as setting the held index variables
 /mob/proc/perform_hand_swap(held_index)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	if (!HAS_TRAIT(src, TRAIT_CAN_HOLD_ITEMS))
 		return FALSE
@@ -937,6 +1037,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 	return TRUE
 
 /mob/proc/activate_hand(selected_hand)
+	procstart = null
+	src.procstart = null
 	if (!HAS_TRAIT(src, TRAIT_CAN_HOLD_ITEMS))
 		return
 
@@ -955,21 +1057,29 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 	// _queue_verb requires a client, so when we don't have it (AI controlled mob) we don't use it
 	client ? mode() : execute_mode()
 
-/mob/proc/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null) //For sec bot threat assessment
+/mob/proc/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null)
+	procstart = null
+	src.procstart = null //For sec bot threat assessment
 	return 0
 
 ///Get the ghost of this mob (from the mind)
 /mob/proc/get_ghost(even_if_they_cant_reenter, ghosts_with_clients)
+	procstart = null
+	src.procstart = null
 	if(mind)
 		return mind.get_ghost(even_if_they_cant_reenter, ghosts_with_clients)
 
 ///Force get the ghost from the mind
 /mob/proc/grab_ghost(force)
+	procstart = null
+	src.procstart = null
 	if(mind)
 		return mind.grab_ghost(force = force)
 
 ///Notify a ghost that its body is being revived
 /mob/proc/notify_revival(message = "Someone is trying to revive you. Re-enter your corpse if you want to be revived!", sound = 'sound/effects/genetics.ogg', atom/source = null, flashwindow = TRUE)
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/ghost = get_ghost()
 	if(ghost)
 		ghost.send_revival_notification(message, sound, source, flashwindow)
@@ -982,6 +1092,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
  * * magic_flags (optional) A bitfield with the type of magic being cast (see flags at: /datum/component/anti_magic)
 **/
 /mob/proc/can_cast_magic(magic_flags = MAGIC_RESISTANCE)
+	procstart = null
+	src.procstart = null
 	if(magic_flags == NONE) // magic with the NONE flag can always be cast
 		return TRUE
 
@@ -996,6 +1108,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
  * * charge_cost (optional) The cost of charge to block a spell that will be subtracted from the protection used
 **/
 /mob/proc/can_block_magic(casted_magic_flags = MAGIC_RESISTANCE, charge_cost = 1)
+	procstart = null
+	src.procstart = null
 	if(casted_magic_flags == NONE) // magic with the NONE flag is immune to blocking
 		return FALSE
 
@@ -1017,9 +1131,13 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 
 /// Called whenever a magic effect with a charge cost is blocked and we haven't recently blocked magic.
 /mob/proc/on_block_magic_effects(magic_flags, list/antimagic_sources)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/on_block_magic_effects(magic_flags, list/antimagic_sources)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(src, TRAIT_RECENTLY_BLOCKED_MAGIC, MAGIC_TRAIT)
 	addtimer(TRAIT_CALLBACK_REMOVE(src, TRAIT_RECENTLY_BLOCKED_MAGIC, MAGIC_TRAIT), 6 SECONDS)
 
@@ -1064,12 +1182,16 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
  * You can buckle on mobs if you're next to them since most are dense
  */
 /mob/buckle_mob(mob/living/M, force = FALSE, check_loc = TRUE, buckle_mob_flags= NONE)
+	procstart = null
+	src.procstart = null
 	if(M.buckled)
 		return FALSE
 	return ..(M, force, check_loc, buckle_mob_flags)
 
 ///Can the mob interact() with an atom?
 /mob/proc/can_interact_with(atom/A, treat_mob_as_adjacent)
+	procstart = null
+	src.procstart = null
 	if(isAdminGhostAI(src))
 		return TRUE
 	//Return early. we do not need to check that we are on adjacent turfs (i.e we are inside a closet)
@@ -1120,10 +1242,14 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
  * Alt click uses this, as otherwise you can detect what is interactable from a distance via the error message
 **/
 /mob/proc/can_perform_action(atom/target, action_bitflags)
+	procstart = null
+	src.procstart = null
 	return
 
 ///Can this mob use storage
 /mob/proc/canUseStorage()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /**
@@ -1134,6 +1260,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
  * Calling this proc without an oldname will only update the mob and skip updating the pda, id and records ~Carn
  */
 /mob/proc/fully_replace_character_name(oldname, newname, log_new_name = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!newname)
 		return FALSE
 	if(oldname == newname)
@@ -1185,10 +1313,14 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 
 ///Updates GLOB.manifest records with new name , see mob/living/carbon/human
 /mob/proc/replace_records_name(oldname,newname)
+	procstart = null
+	src.procstart = null
 	return
 
 ///update the ID name of this mob
 /mob/proc/replace_identification_name(oldname,newname)
+	procstart = null
+	src.procstart = null
 	var/list/searching = get_all_contents()
 	var/search_id = 1
 	var/search_pda = 1
@@ -1216,18 +1348,26 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 				search_pda = 0
 
 /mob/proc/update_stat()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return
 
 /mob/proc/update_health_hud()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Changes the stamina HUD based on new information
 /mob/proc/update_stamina_hud()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Update the lighting plane and sight of this mob (sends COMSIG_MOB_UPDATE_SIGHT)
 /mob/proc/update_sight()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_MOB_UPDATE_SIGHT)
@@ -1235,6 +1375,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 
 ///Set the lighting plane hud filters to the mobs lighting_cutoff var
 /mob/proc/sync_lighting_plane_cutoff()
+	procstart = null
+	src.procstart = null
 	if(!hud_used)
 		return
 	for(var/atom/movable/screen/plane_master/rendering_plate/lighting/light as anything in hud_used.get_true_plane_masters(RENDER_PLANE_LIGHTING))
@@ -1242,6 +1384,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 
 ///Update the mouse pointer of the attached client in this mob
 /mob/proc/update_mouse_pointer()
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return
 	if(client.mouse_pointer_icon != initial(client.mouse_pointer_icon))//only send changes to the client if theyre needed
@@ -1262,6 +1406,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
  * this does NOT check if the mob is missing it's eyeballs.
 **/
 /mob/proc/has_nightvision()
+	procstart = null
+	src.procstart = null
 	// Somewhat conservative, basically is your lighting plane bright enough that you the user can see stuff
 	var/light_offset = lighting_cutoff
 	if(length(lighting_color_cutoffs) == 3)
@@ -1270,6 +1416,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 
 /// This mob is abile to read books
 /mob/proc/is_literate()
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(src, TRAIT_LITERATE) && !HAS_TRAIT(src, TRAIT_ILLITERATE)
 
 /**
@@ -1279,6 +1427,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
  * Unless silent_if_not_writing_tool is TRUE. In that case it'll be silent if it isn't a writing implement/tool/instrument w/e.
  */
 /mob/proc/can_write(obj/item/writing_instrument, silent_if_not_writing_tool = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!writing_instrument)
 		return FALSE
 
@@ -1313,6 +1463,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
  *  light_amount (optional) - A decimal amount between 1.0 through 0.0 (default is 0.2)
 **/
 /mob/proc/has_light_nearby(light_amount = LIGHTING_TILE_IS_DARK)
+	procstart = null
+	src.procstart = null
 	var/turf/mob_location = get_turf(src)
 	var/area/mob_area = get_area(src)
 
@@ -1327,6 +1479,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 
 /// Can this mob read
 /mob/proc/can_read(atom/viewed_atom, reading_check_flags = (READING_CHECK_LITERACY|READING_CHECK_LIGHT), silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if((reading_check_flags & READING_CHECK_LITERACY) && !is_literate())
 		if(!silent)
 			to_chat(src, span_warning("You try to read [viewed_atom], but can't comprehend any of it."))
@@ -1343,6 +1497,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
  * Get the mob VV dropdown extras
  */
 /mob/vv_get_dropdown()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	VV_DROPDOWN_OPTION("", "--- /mob ---")
 	VV_DROPDOWN_OPTION(VV_HK_GIB, "Gib")
@@ -1366,6 +1522,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 	VV_DROPDOWN_OPTION(VV_HK_GIVE_ACCESS, "Give Access")
 
 /mob/vv_do_topic(list/href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)
@@ -1436,23 +1594,31 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
  * extra var handling for the logging var
  */
 /mob/vv_get_var(var_name)
+	procstart = null
+	src.procstart = null
 	switch(var_name)
 		if(NAMEOF(src, logging))
 			return debug_variable(var_name, logging, 0, src, FALSE)
 	. = ..()
 
 /mob/vv_auto_rename(new_name)
+	procstart = null
+	src.procstart = null
 	//Do not do parent's actions, as we *usually* do this differently.
 	fully_replace_character_name(real_name, new_name)
 
 ///Adjust the nutrition of a mob
-/mob/proc/adjust_nutrition(change, forced = FALSE) //Honestly FUCK the oldcoders for putting nutrition on /mob someone else can move it up because holy hell I'd have to fix SO many typechecks
+/mob/proc/adjust_nutrition(change, forced = FALSE)
+	procstart = null
+	src.procstart = null //Honestly FUCK the oldcoders for putting nutrition on /mob someone else can move it up because holy hell I'd have to fix SO many typechecks
 	if(HAS_TRAIT(src, TRAIT_NOHUNGER) && !forced)
 		return
 
 	nutrition = max(0, nutrition + change)
 
 /mob/living/adjust_nutrition(change, forced)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Queue update if change is small enough (6 is 1% of nutrition softcap)
 	if(abs(change) >= 6)
@@ -1461,13 +1627,17 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 		living_flags |= QUEUE_NUTRITION_UPDATE
 
 ///Force set the mob nutrition
-/mob/proc/set_nutrition(set_to, forced = FALSE) //Seriously fuck you oldcoders.
+/mob/proc/set_nutrition(set_to, forced = FALSE)
+	procstart = null
+	src.procstart = null //Seriously fuck you oldcoders.
 	if(HAS_TRAIT(src, TRAIT_NOHUNGER) && !forced)
 		return
 
 	nutrition = max(0, set_to)
 
 /mob/living/set_nutrition(set_to, forced)
+	procstart = null
+	src.procstart = null
 	var/old_nutrition = nutrition
 	. = ..()
 	// Queue update if change is small enough (6 is 1% of nutrition softcap)
@@ -1478,6 +1648,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 
 /// Updates nutrition related effects
 /mob/living/proc/update_nutrition()
+	procstart = null
+	src.procstart = null
 	mob_mood?.update_nutrition_moodlets()
 	var/atom/movable/screen/hunger/hunger_bar = hud_used?.screen_objects[HUD_MOB_HUNGER]
 	if (hunger_bar)
@@ -1486,6 +1658,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 
 /// Apply a proper movespeed modifier based on items we have equipped
 /mob/proc/update_equipment_speed_mods()
+	procstart = null
+	src.procstart = null
 	var/speedies = 0
 	var/immutable_speedies = 0
 	for(var/obj/item/thing in get_equipped_speed_mod_items())
@@ -1515,6 +1689,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 		remove_movespeed_modifier(/datum/movespeed_modifier/equipment_speedmod)
 
 /mob/proc/set_stat(new_stat)
+	procstart = null
+	src.procstart = null
 	if(new_stat == stat)
 		return
 	. = stat
@@ -1522,6 +1698,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 	SEND_SIGNAL(src, COMSIG_MOB_STATCHANGE, new_stat, .)
 
 /mob/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	switch(var_name)
 		if(NAMEOF(src, focus))
 			set_focus(var_value)
@@ -1551,6 +1729,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 /// Cleanup proc that's called when a mob loses a client, either through client destroy or logout
 /// Logout happens post client del, so we can't just copypaste this there. This keeps things clean and consistent
 /mob/proc/become_uncliented()
+	procstart = null
+	src.procstart = null
 	if(!canon_client)
 		return
 
@@ -1566,6 +1746,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 
 ///Shows a tgui window with memories
 /mob/proc/open_memory_panel()
+	procstart = null
+	src.procstart = null
 	if(!mind)
 		var/fail_message = "You have no mind!"
 		if(isobserver(src))
@@ -1581,6 +1763,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 	var/client/holder //client of whoever is using this datum
 
 /datum/memory_panel/New(user, mind_reference)//user can either be a client or a mob due to byondcode(tm)
+	procstart = null
+	src.procstart = null
 	if (istype(user, /client))
 		var/client/user_client = user
 		holder = user_client //if its a client, assign it to holder
@@ -1590,22 +1774,32 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 	src.mind_reference = mind_reference
 
 /datum/memory_panel/Destroy(force)
+	procstart = null
+	src.procstart = null
 	mind_reference.memory_panel = null
 	. = ..()
 
 /datum/memory_panel/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 /datum/memory_panel/ui_close()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /datum/memory_panel/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "MemoryPanel")
 		ui.open()
 
 /datum/memory_panel/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/memories = list()
 
@@ -1617,10 +1811,14 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 	return data
 
 /mob/key_down(key, client/client, full_key)
+	procstart = null
+	src.procstart = null
 	..()
 	SEND_SIGNAL(src, COMSIG_MOB_KEYDOWN, key, client, full_key)
 
 /mob/proc/setup_hud_traits()
+	procstart = null
+	src.procstart = null
 	for(var/hud_trait in GLOB.trait_to_hud)
 		RegisterSignal(src, SIGNAL_ADDTRAIT(hud_trait), PROC_REF(hud_trait_enabled))
 		RegisterSignal(src, SIGNAL_REMOVETRAIT(hud_trait), PROC_REF(hud_trait_disabled))
@@ -1629,6 +1827,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 		RegisterSignal(src, SIGNAL_REMOVETRAIT(hud_trait), PROC_REF(hud_trait_blocker_lost))
 
 /mob/proc/hud_trait_enabled(datum/source, new_trait)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/blocker, blocked_traits in GLOB.trait_blockers_to_hud)
@@ -1639,6 +1839,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 	datahud.show_to(src)
 
 /mob/proc/hud_trait_disabled(datum/source, lost_trait)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/blocker, blocked_traits in GLOB.trait_blockers_to_hud)
@@ -1649,6 +1851,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 	datahud.hide_from(src)
 
 /mob/proc/hud_trait_blocker_gained(datum/source, new_trait)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/trait in GLOB.trait_blockers_to_hud[new_trait])
@@ -1658,6 +1862,8 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 		datahud.hide_from(src)
 
 /mob/proc/hud_trait_blocker_lost(datum/source, new_trait)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/trait in GLOB.trait_blockers_to_hud[new_trait])
@@ -1669,5 +1875,7 @@ GAME_VERB_HIDDEN(/mob, DisDblClick, ".dblclick", argu = null as anything, sec = 
 /**
  * Returns the access list for this mob, most mobs don't have any access.
  */
-/mob/proc/get_access() as /list
+/mob/proc/get_access()
+	procstart = null
+	src.procstart = null
 	return list()

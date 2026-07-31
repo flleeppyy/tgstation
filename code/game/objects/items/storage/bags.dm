@@ -39,12 +39,16 @@
 	var/insertable = TRUE
 
 /obj/item/storage/bag/trash/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	RegisterSignal(atom_storage, COMSIG_STORAGE_DUMP_POST_TRANSFER, PROC_REF(post_insertion))
 
 /// If you dump a trash bag into something, anything that doesn't get inserted will spill out onto your feet
 /obj/item/storage/bag/trash/proc/post_insertion(datum/storage/source, atom/dest_object, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// If there's no item in there, don't do anything
 	if(!(locate(/obj/item) in src))
@@ -59,11 +63,15 @@
 	source.remove_all(dump_onto)
 
 /obj/item/storage/bag/trash/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] puts [src] over [user.p_their()] head and starts chomping at the insides! Disgusting!"))
 	playsound(loc, 'sound/items/eatfood.ogg', 50, TRUE, -1)
 	return TOXLOSS
 
 /obj/item/storage/bag/trash/update_icon_state()
+	procstart = null
+	src.procstart = null
 	switch(contents.len)
 		if(20 to INFINITY)
 			icon_state = "[initial(icon_state)]3"
@@ -76,6 +84,8 @@
 	return ..()
 
 /obj/item/storage/bag/trash/filled/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in 1 to rand(1, 7))
 		new /obj/effect/spawner/random/trash/garbage(src)
@@ -113,10 +123,14 @@
 	COOLDOWN_DECLARE(ore_bag_balloon_cooldown)
 
 /obj/item/storage/bag/ore/Destroy(force)
+	procstart = null
+	src.procstart = null
 	listening_to = null
 	return ..()
 
 /obj/item/storage/bag/ore/equipped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (listening_to)
 		return
@@ -127,6 +141,8 @@
 	listening_to = user
 
 /obj/item/storage/bag/ore/dropped()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!listening_to)
 		return
@@ -137,11 +153,15 @@
 
 // Ensure we don't suck up ores that we've just dropped off
 /obj/item/storage/bag/ore/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	dropping_ores = TRUE
 	. = ..()
 	dropping_ores = FALSE
 
 /obj/item/storage/bag/ore/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/boulder))
 		to_chat(user, span_warning("You can't fit [tool] into [src]. \
 			Perhaps you should break it down first, or find an ore box."))
@@ -149,6 +169,8 @@
 	return NONE
 
 /obj/item/storage/bag/ore/proc/on_user_moved(mob/living/user, atom/old_loc, dir, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(old_loc)
@@ -163,6 +185,8 @@
 	INVOKE_ASYNC(src, PROC_REF(handle_move), user)
 
 /obj/item/storage/bag/ore/proc/handle_move(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(user))
 		return
 	var/turf/tile = get_turf(user)
@@ -203,6 +227,8 @@
 	)
 
 /obj/item/storage/bag/ore/proc/pickup_ore(obj/item/ore, mob/user, obj/structure/ore_box/box)
+	procstart = null
+	src.procstart = null
 	if (!box && istype(user.pulling, /obj/structure/ore_box))
 		box = user.pulling
 
@@ -228,11 +254,15 @@
 	return FALSE
 
 /obj/item/storage/bag/ore/proc/on_obj_entered(atom/new_loc, atom/movable/arrived, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(is_type_in_list(arrived, atom_storage.can_hold) && !dropping_ores && old_loc != loc)
 		INVOKE_ASYNC(src, PROC_REF(pickup_ore), arrived, listening_to)
 
 /obj/item/storage/bag/ore/proc/on_atom_initialized_on(atom/loc, atom/new_atom)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(is_type_in_list(new_atom, atom_storage.can_hold))
 		INVOKE_ASYNC(src, PROC_REF(pickup_ore), new_atom, listening_to)
@@ -262,6 +292,8 @@
 	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 4)
 
 /obj/item/storage/bag/plants/portaseeder/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
@@ -276,10 +308,14 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/storage/bag/plants/portaseeder/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Ctrl-click to activate seed extraction.")
 
 /obj/item/storage/bag/plants/portaseeder/item_ctrl_click(mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/plant in contents)
 		seedify(plant, 1)
 	return CLICK_ACTION_SUCCESS
@@ -310,6 +346,8 @@
 // Copy-pasted from the former /obj/item/storage/box/material, w/ small additions like rods, cardboard, plastic.
 // "Only 20 uranium 'cause of radiation"
 /obj/item/storage/bag/sheetsnatcher/debug/PopulateContents()
+	procstart = null
+	src.procstart = null
 	// amount should be null if it should spawn with the type's default amount
 	var/list/items_inside = list(
 		/obj/item/stack/sheet/iron/fifty = null,
@@ -369,6 +407,8 @@
 	drop_sound = SFX_TRAY_DROP
 
 /obj/item/storage/bag/tray/attack(mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Drop all the things. All of them.
 	var/list/obj/item/oldContents = contents.Copy()
@@ -388,12 +428,16 @@
 	update_appearance()
 
 /obj/item/storage/bag/tray/proc/do_scatter(obj/item/tray_item)
+	procstart = null
+	src.procstart = null
 	var/delay = rand(2,4)
 	var/datum/move_loop/loop = GLOB.move_manager.move_rand(tray_item, list(NORTH,SOUTH,EAST,WEST), delay, timeout = rand(1, 2) * delay, flags = MOVEMENT_LOOP_START_FAST)
 	//This does mean scattering is tied to the tray. Not sure how better to handle it
 	RegisterSignal(loop, COMSIG_MOVELOOP_POSTPROCESS, PROC_REF(change_speed))
 
 /obj/item/storage/bag/tray/proc/change_speed(datum/move_loop/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/new_delay = rand(2, 4)
 	var/count = source.lifetime / source.delay
@@ -401,6 +445,8 @@
 	source.delay = new_delay
 
 /obj/item/storage/bag/tray/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/I in contents)
 		var/mutable_appearance/I_copy = new(I)
@@ -409,14 +455,20 @@
 		. += I_copy
 
 /obj/item/storage/bag/tray/cyborg_unequip(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	atom_storage.remove_all(drop_location())
 
 /obj/item/storage/bag/tray/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/item/storage/bag/tray/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
@@ -448,11 +500,15 @@
 	storage_type = /datum/storage/bag/money
 
 /obj/item/storage/bag/money/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(20))
 		icon_state = "moneybagalt"
 
 /obj/item/storage/bag/money/vault/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/coin/silver(src)
 	new /obj/item/coin/silver(src)
 	new /obj/item/coin/silver(src)
@@ -463,6 +519,8 @@
 
 ///Used in the dutchmen pirate shuttle.
 /obj/item/storage/bag/money/dutchmen/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/iteration in 1 to 9)
 		new /obj/item/coin/silver/doubloon(src)
 	for(var/iteration in 1 to 9)
@@ -507,6 +565,8 @@
 	storage_type = /datum/storage/bag/harpoon_quiver
 
 /obj/item/storage/bag/harpoon_quiver/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 40)
 		new /obj/item/ammo_casing/harpoon(src)
 
@@ -525,14 +585,20 @@
 
 
 /obj/item/storage/bag/rebar_quiver/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/item/storage/bag/rebar_quiver/ui_action_click(mob/user, actiontype)
+	procstart = null
+	src.procstart = null
 	if(istype(actiontype, /datum/action/item_action/reload_rebar))
 		reload_held_rebar(user)
 
 /obj/item/storage/bag/rebar_quiver/proc/reload_held_rebar(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!contents.len)
 		user.balloon_alert(user, "no bolts left!")
 		return
@@ -563,10 +629,14 @@
 	storage_type = /datum/storage/bag/rebar_quiver/syndicate
 
 /obj/item/storage/bag/rebar_quiver/syndicate/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/to_fill in 1 to 20)
 		new /obj/item/ammo_casing/rebar/syndie(src)
 
 /obj/item/storage/bag/rebar_quiver/syndicate/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(contents.len)
 		if(0)
@@ -595,6 +665,8 @@
 	custom_materials = list(/datum/material/wood = SHEET_MATERIAL_AMOUNT)
 
 /obj/item/storage/bag/quiver/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in 1 to 10)
 		new arrow_path(src)
@@ -608,6 +680,8 @@
 	arrow_path = /obj/item/ammo_casing/arrow/holy
 
 /obj/item/storage/bag/quiver/holy/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in 1 to 10)
 		new arrow_path(src)
@@ -618,6 +692,8 @@
 	storage_type = /datum/storage/bag/quiver/endless
 
 /obj/item/storage/bag/quiver/endless/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new arrow_path(src)
 

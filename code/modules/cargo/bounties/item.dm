@@ -9,16 +9,24 @@
 	var/include_subtypes = TRUE
 
 /datum/bounty/item/New()
+	procstart = null
+	src.procstart = null
 	..()
 	wanted_types = string_assoc_list(zebra_typecacheof(wanted_types, only_root_path = !include_subtypes))
 
 /datum/bounty/item/print_required()
+	procstart = null
+	src.procstart = null
 	return "[shipped_count]/[required_count]"
 
 /datum/bounty/item/can_claim()
+	procstart = null
+	src.procstart = null
 	return shipped_count >= required_count
 
 /datum/bounty/item/applies_to(obj/shipped)
+	procstart = null
+	src.procstart = null
 	if(!is_type_in_typecache(shipped, wanted_types))
 		return FALSE
 	if(shipped.flags_1 & HOLOGRAM_1)
@@ -26,6 +34,8 @@
 	return shipped_count < required_count
 
 /datum/bounty/item/ship(obj/shipped)
+	procstart = null
+	src.procstart = null
 	if(!applies_to(shipped))
 		return FALSE
 	if(istype(shipped,/obj/item/stack))
@@ -36,9 +46,13 @@
 	return TRUE
 
 /datum/bounty/item/get_total()
+	procstart = null
+	src.procstart = null
 	return shipped_count
 
 /datum/bounty/item/get_max()
+	procstart = null
+	src.procstart = null
 	return required_count
 
 
@@ -52,6 +66,8 @@
 	icon_state = "paperslip_words"
 
 /obj/item/bounty_voucher/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(user))
 		return
@@ -73,6 +89,8 @@
 	color = "#ff8800"
 
 /obj/item/bounty_voucher/stationwide/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(user))
 		return

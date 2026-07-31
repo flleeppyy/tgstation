@@ -15,15 +15,21 @@
 	var/datum/port/output/signal
 
 /obj/item/circuit_component/clock/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("Clock Interval: [DisplayTimeText(COMP_CLOCK_DELAY)]", "orange", "clock")
 
 /obj/item/circuit_component/clock/populate_ports()
+	procstart = null
+	src.procstart = null
 	on = add_input_port("On", PORT_TYPE_BOOLEAN)
 
 	signal = add_output_port("Signal", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/clock/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 
 	if(on.value)
 		start_process()
@@ -31,10 +37,14 @@
 		stop_process()
 
 /obj/item/circuit_component/clock/Destroy()
+	procstart = null
+	src.procstart = null
 	stop_process()
 	return ..()
 
 /obj/item/circuit_component/clock/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	signal.set_output(COMPONENT_SIGNAL)
 
 /**
@@ -43,6 +53,8 @@
  * Starts ticking to send signals between periods of time
  */
 /obj/item/circuit_component/clock/proc/start_process()
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSclock_component, src)
 
 /**
@@ -51,4 +63,6 @@
  * Signals stop getting sent.
  */
 /obj/item/circuit_component/clock/proc/stop_process()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSclock_component, src)

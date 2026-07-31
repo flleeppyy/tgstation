@@ -4,6 +4,8 @@
 
 // Loads historical tram data
 /datum/controller/subsystem/persistence/proc/load_tram_history(specific_transport_id)
+	procstart = null
+	src.procstart = null
 	var/list/raw_saved_trams = list()
 	var/json_file = file("data/tram_data/[specific_transport_id].json")
 	if(!fexists(json_file))
@@ -22,6 +24,8 @@
 
 // Saves historical tram data
 /datum/controller/subsystem/persistence/proc/save_tram_history(specific_transport_id)
+	procstart = null
+	src.procstart = null
 	var/list/packaged_tram_data = list()
 	for(var/datum/transport_controller/linear/tram/transport as anything in SStransport.transports_by_type[TRANSPORT_TYPE_TRAM])
 		if(transport.specific_transport_id == specific_transport_id)
@@ -40,6 +44,8 @@
 	WRITE_FILE(json_file, json_encode(file_data))
 
 /datum/controller/subsystem/persistence/proc/package_tram_data(datum/transport_controller/linear/tram/tram_controller)
+	procstart = null
+	src.procstart = null
 	var/list/packaged_data = list()
 	var/list/tram_list = tram_controller.tram_history
 	if(!isnull(tram_list))
@@ -53,11 +59,15 @@
 	return packaged_data
 
 /datum/controller/subsystem/persistence/proc/load_tram_counter()
+	procstart = null
+	src.procstart = null
 	if(!fexists(TRAM_COUNT_FILEPATH))
 		return
 	tram_hits_last_round = text2num(file2text(TRAM_COUNT_FILEPATH))
 
 /datum/controller/subsystem/persistence/proc/save_tram_counter()
+	procstart = null
+	src.procstart = null
 	rustg_file_write("[tram_hits_this_round]", TRAM_COUNT_FILEPATH)
 
 #undef TRAM_COUNT_FILEPATH

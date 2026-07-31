@@ -8,6 +8,8 @@
 	max_wizard_trigger_potency = 7
 
 /datum/round_event/wizard/blobies/start()
+	procstart = null
+	src.procstart = null
 
 	for(var/mob/living/carbon/human/H in GLOB.dead_mob_list)
 		new /mob/living/basic/blob_minion/spore/minion(H.loc) // Creates zombies which ghosts can control

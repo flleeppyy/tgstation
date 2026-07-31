@@ -3,6 +3,8 @@
 /datum/unit_test/verify_emoji_names
 
 /datum/unit_test/verify_emoji_names/Run()
+	procstart = null
+	src.procstart = null
 	var/static/list/emoji_list = icon_states(icon(EMOJI_SET))
 	for(var/checkable in emoji_list)
 		if(isnum(text2num(checkable)))

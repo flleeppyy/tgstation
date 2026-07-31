@@ -28,28 +28,40 @@ GLOBAL_VAR_INIT(experimental_cloner_fuckup_chance, 50)
 	var/running_timer
 
 /obj/machinery/experimental_cloner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	sound_loop = new(src, FALSE)
 
 /obj/machinery/experimental_cloner/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (machine_stat & NOPOWER && running)
 		fail_growing()
 
 /obj/machinery/experimental_cloner/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (running)
 		. += span_notice("You can see a shape forming in the murky liquid.")
 
 /obj/machinery/experimental_cloner/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state]_[running]"
 
 /obj/machinery/experimental_cloner/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	if (running)
 		new /obj/effect/gibspawner/human(drop_location())
 
 /obj/machinery/experimental_cloner/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if (user.combat_mode)
 		return NONE
 
@@ -63,12 +75,16 @@ GLOBAL_VAR_INIT(experimental_cloner_fuckup_chance, 50)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/experimental_cloner/multitool_act(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	tool.set_buffer(src)
 	balloon_alert(user, "frequency stored")
 	return ITEM_INTERACT_SUCCESS
 
 /// Start growing a guy
 /obj/machinery/experimental_cloner/proc/start_cloning(datum/experimental_cloning_record/to_create)
+	procstart = null
+	src.procstart = null
 	if (!to_create || running)
 		return
 	running = TRUE
@@ -80,6 +96,8 @@ GLOBAL_VAR_INIT(experimental_cloner_fuckup_chance, 50)
 
 /// This one didn't make it
 /obj/machinery/experimental_cloner/proc/fail_growing()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/gibspawner/human(drop_location())
 	playsound(src, 'sound/machines/toilet_flush.ogg', vol = 40, vary = TRUE)
 	deltimer(running_timer)
@@ -87,6 +105,8 @@ GLOBAL_VAR_INIT(experimental_cloner_fuckup_chance, 50)
 
 /// Stuff to do when we stop processing
 /obj/machinery/experimental_cloner/proc/on_finished()
+	procstart = null
+	src.procstart = null
 	loaded_record = null
 	running = FALSE
 	update_use_power(NO_POWER_USE)
@@ -95,6 +115,8 @@ GLOBAL_VAR_INIT(experimental_cloner_fuckup_chance, 50)
 
 /// Produce a man and poll for ghosts
 /obj/machinery/experimental_cloner/proc/finish_cloning()
+	procstart = null
+	src.procstart = null
 	var/datum/experimental_cloner_fuckup/mistake = get_cloning_mistake()
 
 	var/mob/living/result = create_result_mob()
@@ -142,6 +164,8 @@ GLOBAL_VAR_INIT(experimental_cloner_fuckup_chance, 50)
 
 /// Return either nothing or something weird to happen to our clone
 /obj/machinery/experimental_cloner/proc/get_cloning_mistake()
+	procstart = null
+	src.procstart = null
 	if (!prob(GLOB.experimental_cloner_fuckup_chance))
 		return
 
@@ -158,6 +182,8 @@ GLOBAL_VAR_INIT(experimental_cloner_fuckup_chance, 50)
 
 /// Return a mob for our tube to produce
 /obj/machinery/experimental_cloner/proc/create_result_mob()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/new_clone = new(src)
 	loaded_record.apply_profile(new_clone)
 
@@ -170,6 +196,8 @@ GLOBAL_VAR_INIT(experimental_cloner_fuckup_chance, 50)
 
 /// Somehow our clone exited the cloner or was deleted before we were ready or we just didn't find any ghosts
 /obj/machinery/experimental_cloner/proc/on_clone_failed(mob/living/clone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(clone, list(COMSIG_MOVABLE_MOVED, COMSIG_QDELETING, COMSIG_LIVING_DEATH))
 	if (!QDELETED(clone))

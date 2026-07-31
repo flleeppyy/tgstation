@@ -16,37 +16,51 @@ GLOBAL_PROTECT(AdminProcCallHandler)
 
 /// Adds a caller.
 /mob/proccall_handler/proc/add_caller(caller_name)
+	procstart = null
+	src.procstart = null
 	callers += caller_name
 	name = "[initial(name)] ([callers.Join(") (")])"
 
 /// Removes a caller.
 /mob/proccall_handler/proc/remove_caller(caller_name)
+	procstart = null
+	src.procstart = null
 	callers -= caller_name
 	name = "[initial(name)] ([callers.Join(") (")])"
 
 /mob/proccall_handler/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(GLOB.AdminProcCallHandler && GLOB.AdminProcCallHandler != src)
 		return INITIALIZE_HINT_QDEL
 	GLOB.AdminProcCallHandler = src
 
 /mob/proccall_handler/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	if(GLOB.AdminProcCallHandler != src)
 		return ..()
 	return FALSE
 
 /mob/proccall_handler/vv_do_topic(list/href_list)
+	procstart = null
+	src.procstart = null
 	if(GLOB.AdminProcCallHandler != src)
 		return ..()
 	return FALSE
 
 /mob/proccall_handler/CanProcCall(procname)
+	procstart = null
+	src.procstart = null
 	if(GLOB.AdminProcCallHandler != src)
 		return ..()
 	return FALSE
 
 // Shit will break if this is allowed to be deleted
 /mob/proccall_handler/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(GLOB.AdminProcCallHandler != src)
 		return ..()
 	if(!force)
@@ -64,6 +78,8 @@ GLOBAL_PROTECT(AdminProcCallHandler)
  * * arguments - any arguments
  */
 /proc/HandleUserlessProcCall(user, datum/target, procname, list/arguments)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		return
 	var/mob/proccall_handler/handler = GLOB.AdminProcCallHandler
@@ -82,6 +98,8 @@ GLOBAL_PROTECT(AdminProcCallHandler)
  * * query_text - the query text
  */
 /proc/HandleUserlessSDQL(user, query_text)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		return
 	var/mob/proccall_handler/handler = GLOB.AdminProcCallHandler
@@ -96,6 +114,8 @@ ADMIN_VERB(advanced_proc_call, R_DEBUG, "Advanced ProcCall", "Call a proc on any
 	user.callproc_blocking()
 
 /client/proc/callproc_blocking(list/get_retval)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_DEBUG))
 		return
 
@@ -180,6 +200,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 
 /// Wrapper for proccalls where the datum is flagged as vareditted
 /proc/WrapAdminProcCall(datum/target, procname, list/arguments)
+	procstart = null
+	src.procstart = null
 	if(target && procname == "Del")
 		to_chat(usr, "Calling Del() is not allowed", confidential = TRUE)
 		return
@@ -216,6 +238,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 
 //adv proc call this, ya nerds
 /world/proc/WrapAdminProcCall(datum/target, procname, list/arguments)
+	procstart = null
+	src.procstart = null
 	if(target == GLOBAL_PROC)
 		return call("/proc/[procname]")(arglist(arguments))
 	else if(target != world)
@@ -224,6 +248,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 		log_admin("[key_name(usr)] attempted to call world/proc/[procname] with arguments: [english_list(arguments)]")
 
 /proc/IsAdminAdvancedProcCall()
+	procstart = null
+	src.procstart = null
 #ifdef TESTING
 	return FALSE
 #else
@@ -256,6 +282,8 @@ ADMIN_VERB_ONLY_CONTEXT_MENU(call_proc_datum, R_DEBUG, "Atom ProcCall", datum/th
 		to_chat(user, ., confidential = TRUE)
 
 /client/proc/get_callproc_args()
+	procstart = null
+	src.procstart = null
 	var/argnum = input("Number of arguments","Number:",0) as num|null
 	if(isnull(argnum))
 		return
@@ -275,6 +303,8 @@ ADMIN_VERB_ONLY_CONTEXT_MENU(call_proc_datum, R_DEBUG, "Atom ProcCall", datum/th
 		. += named_args
 
 /client/proc/get_callproc_returnval(returnval,procname)
+	procstart = null
+	src.procstart = null
 	. = ""
 	if(islist(returnval))
 		var/list/returnedlist = returnval

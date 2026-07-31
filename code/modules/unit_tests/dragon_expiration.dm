@@ -2,6 +2,8 @@
 /datum/unit_test/contents_barfer
 
 /datum/unit_test/contents_barfer/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/space_dragon/dragon_time = allocate(/mob/living/basic/space_dragon)
 	var/mob/living/carbon/human/to_be_consumed = allocate(/mob/living/carbon/human/consistent)
 	to_be_consumed.adjust_fire_stacks(5)
@@ -16,6 +18,8 @@
 /datum/unit_test/space_dragon_expiration
 
 /datum/unit_test/space_dragon_expiration/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/space_dragon/dragon_time = allocate(/mob/living/basic/space_dragon)
 	var/mob/living/carbon/human/to_be_consumed = allocate(/mob/living/carbon/human/consistent)
 

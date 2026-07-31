@@ -56,12 +56,18 @@
 	START_PROCESSING(SSfastprocess, src)
 
 /datum/component/damage_chain/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_LIVING_DEATH, PROC_REF(end_beam)) // We actually don't really use many signals it's all processing
 
 /datum/component/damage_chain/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_LIVING_DEATH)
 
 /datum/component/damage_chain/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if (!QDELETED(chain))
 		UnregisterSignal(chain, COMSIG_QDELETING)
 		QDEL_NULL(chain)
@@ -71,10 +77,14 @@
 
 /// Destroy ourself
 /datum/component/damage_chain/proc/end_beam()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /datum/component/damage_chain/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/successful_hit = FALSE
 	var/list/target_turfs = list()
 	for(var/obj/effect/ebeam/chainpart in chain.elements)
@@ -108,5 +118,7 @@
 
 /// Make it so that the next time we hit something we'll invoke the feedback callback
 /datum/component/damage_chain/proc/reset_feedback()
+	procstart = null
+	src.procstart = null
 	successful_attacks = 0
 	deltimer(reset_feedback_timer)

@@ -5,12 +5,16 @@
 	instability = POSITIVE_INSTABILITY_MINI
 
 /datum/mutation/biotechcompat/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	owner.adjust_skillchip_complexity_modifier(1)
 
 /datum/mutation/biotechcompat/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	owner.adjust_skillchip_complexity_modifier(-1)
 	return ..()
 
@@ -23,12 +27,16 @@
 	text_lose_indication = span_danger("Your mind feels a little bit foggy.")
 
 /datum/mutation/clever/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	owner.add_traits(list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE), GENETIC_MUTATION)
 
 /datum/mutation/clever/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	owner.remove_traits(list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE), GENETIC_MUTATION)

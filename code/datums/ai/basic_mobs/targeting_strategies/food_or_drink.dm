@@ -2,6 +2,8 @@
 /datum/targeting_strategy/pickup_item/food_or_drink
 
 /datum/targeting_strategy/pickup_item/food_or_drink/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -9,6 +11,8 @@
 	return _is_food(target) || (find_drinks && _is_drink(target))
 
 /datum/targeting_strategy/pickup_item/food_or_drink/proc/_is_food(obj/item/thing)
+	procstart = null
+	src.procstart = null
 	if(IS_EDIBLE(thing))
 		return TRUE
 	if(istype(thing, /obj/item/reagent_containers/cup/bowl))
@@ -16,6 +20,8 @@
 	return FALSE
 
 /datum/targeting_strategy/pickup_item/food_or_drink/proc/_is_drink(obj/item/thing)
+	procstart = null
+	src.procstart = null
 	if(istype(thing, /obj/item/reagent_containers/cup/glass))
 		return thing.reagents.total_volume > 0
 	return FALSE
@@ -24,6 +30,8 @@
 /datum/targeting_strategy/pickup_item/food_or_drink/include_drinks
 
 /datum/targeting_strategy/pickup_item/food_or_drink/include_drinks/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

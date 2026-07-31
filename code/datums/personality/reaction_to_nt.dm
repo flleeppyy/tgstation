@@ -5,6 +5,8 @@
 	var/mood_event_type
 
 /datum/personality/nt/proc/can_see_nt_propaganda(mob/living/subject)
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/sign/nearby in view(subject, 5))
 		if(istype(nearby, /obj/structure/sign/nanotrasen))
 			return TRUE
@@ -14,12 +16,16 @@
 	return FALSE
 
 /datum/personality/nt/on_tick(mob/living/subject, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(can_see_nt_propaganda(subject))
 		subject.add_mood_event("nt_personality", mood_event_type)
 	else
 		subject.clear_mood_event("nt_personality")
 
 /datum/personality/nt/remove_from_mob(mob/living/who)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	who.clear_mood_event("nt_personality")
 

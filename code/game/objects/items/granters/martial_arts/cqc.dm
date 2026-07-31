@@ -16,11 +16,15 @@
 	)
 
 /obj/item/book/granter/martial/cqc/on_reading_finished(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(uses <= 0)
 		to_chat(user, span_warning("[src] beeps ominously..."))
 
 /obj/item/book/granter/martial/cqc/recoil(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("[src] explodes!"))
 	playsound(src,'sound/effects/explosion/explosion1.ogg',40,TRUE)
 	user.flash_act(1, 1)

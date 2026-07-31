@@ -5,16 +5,22 @@
 	var/datum/team/nation/target_team
 
 /datum/objective/destroy_nation/New(text, target_department)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	target_team = target_department
 	update_explanation_text()
 
 /datum/objective/destroy_nation/Destroy()
+	procstart = null
+	src.procstart = null
 	target_team = null
 	. = ..()
 
 
 /datum/objective/destroy_nation/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(target_team)
 		explanation_text = "Make sure no member of [target_team] ([target_team.department.department_name]) nation escapes alive!"
@@ -22,6 +28,8 @@
 		explanation_text = "Free Objective"
 
 /datum/objective/destroy_nation/check_completion()
+	procstart = null
+	src.procstart = null
 	if(!target_team)
 		return TRUE
 
@@ -36,6 +44,8 @@
 /datum/objective/separatist_fluff
 
 /datum/objective/separatist_fluff/New(text, nation_name)
+	procstart = null
+	src.procstart = null
 	explanation_text = pick(list(
 		"The rest of the station must be taxed for their use of [nation_name]'s services.",
 		"Make statues everywhere of your glorious leader of [nation_name]. If you have nobody, crown one amongst yourselves!",
@@ -50,6 +60,8 @@
 	..()
 
 /datum/objective/separatist_fluff/check_completion()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/objective/united_nations
@@ -57,6 +69,8 @@
 	team_explanation_text = "Maintain the peace on the station. Ensure every nation has a delegate alive by the end of the round."
 
 /datum/objective/united_nations/check_completion()
+	procstart = null
+	src.procstart = null
 	var/list/all_separatists = list()
 	var/list/alive_separatists = list()
 

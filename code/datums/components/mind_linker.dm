@@ -65,6 +65,8 @@
 	master_speech.Grant(owner)
 
 /datum/component/mind_linker/Destroy(force)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/remaining_mob as anything in linked_mobs)
 		unlink_mob(remaining_mob)
 	linked_mobs.Cut()
@@ -73,10 +75,14 @@
 	return ..()
 
 /datum/component/mind_linker/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	if(signals_which_destroy_us)
 		RegisterSignals(parent, signals_which_destroy_us, PROC_REF(destroy_link))
 
 /datum/component/mind_linker/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	if(signals_which_destroy_us)
 		UnregisterSignal(parent, signals_which_destroy_us)
 
@@ -86,6 +92,8 @@
  * Returns TRUE if successful, FALSE otherwise
  */
 /datum/component/mind_linker/proc/link_mob(mob/living/to_link)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(to_link) || to_link.stat == DEAD)
 		return FALSE
 	if(linked_mobs[to_link])
@@ -104,6 +112,8 @@
 	return TRUE
 
 /datum/component/mind_linker/proc/sig_unlink_mob(mob/living/to_unlink)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	unlink_mob(to_unlink)
@@ -115,6 +125,8 @@
  * Also invokes post_unlink_callback, if supplied.
  */
 /datum/component/mind_linker/proc/unlink_mob(mob/living/to_unlink)
+	procstart = null
+	src.procstart = null
 	if(!linked_mobs[to_unlink])
 		return FALSE
 
@@ -132,6 +144,8 @@
  *  Destroys our component and unlinks everyone.
  */
 /datum/component/mind_linker/proc/destroy_link(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isliving(source))
@@ -186,10 +200,14 @@
 	to_chat(owner, span_boldnotice("You establish a [network_name], allowing you to link minds to communicate telepathically."))
 
 /datum/component/mind_linker/active_linking/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(linker_action)
 	return ..()
 
 /datum/component/mind_linker/active_linking/link_mob(mob/living/to_link)
+	procstart = null
+	src.procstart = null
 	if(HAS_MIND_TRAIT(to_link, TRAIT_UNCONVERTABLE)) // Protected mind, so they can't be added to the mindlink
 		return FALSE
 	if(to_link.can_block_magic(MAGIC_RESISTANCE_MIND, charge_cost = 0))
@@ -207,6 +225,8 @@
 		to_chat(other_link, span_notice("You feel a new presence within [owner.real_name]'s [network_name]."))
 
 /datum/component/mind_linker/active_linking/unlink_mob(mob/living/to_unlink)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -228,6 +248,8 @@
 	overlay_icon_state = "bg_alien_border"
 
 /datum/action/innate/linked_speech/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(Target, /datum/component/mind_linker))
 		stack_trace("[name] ([type]) was instantiated on a non-mind_linker target, this doesn't work.")
@@ -242,9 +264,13 @@
 	background_icon_state = linker.speech_action_background_icon_state
 
 /datum/action/innate/linked_speech/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	return ..() && (owner.stat != DEAD)
 
 /datum/action/innate/linked_speech/Activate()
+	procstart = null
+	src.procstart = null
 	var/datum/component/mind_linker/linker = target
 	var/mob/living/linker_parent = linker.parent
 

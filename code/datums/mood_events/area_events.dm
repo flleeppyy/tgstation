@@ -13,5 +13,7 @@
 	mood_change = 0
 
 /datum/mood_event/area/add_effects(_mood_change, _description)
+	procstart = null
+	src.procstart = null
 	mood_change = _mood_change
 	description = _description

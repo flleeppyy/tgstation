@@ -25,6 +25,8 @@
 	)
 
 /datum/bounty/item/special/syndicate_documents/applies_to(obj/O)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	if(istype(O, /obj/item/documents/photocopy))

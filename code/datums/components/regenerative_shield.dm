@@ -12,6 +12,8 @@
 	var/regeneration_time
 
 /datum/component/regenerative_shield/Initialize(number_of_hits = 15, damage_threshold = 50, regeneration_time = 2 MINUTES, list/shield_overlays)
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 	src.number_of_hits = number_of_hits
@@ -28,11 +30,15 @@
 		src.shield_overlays += new_effect
 
 /datum/component/regenerative_shield/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(parent, TRAIT_REGEN_SHIELD, REF(src))
 	RegisterSignal(parent, COMSIG_LIVING_CHECK_BLOCK, PROC_REF(block_attack))
 
 /datum/component/regenerative_shield/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/living_parent = parent
 	for(var/obj/effect/overlay as anything in shield_overlays)
 		living_parent.vis_contents -= overlay
@@ -67,6 +73,8 @@
 	return SUCCESSFUL_BLOCK
 
 /datum/component/regenerative_shield/proc/disable_shield()
+	procstart = null
+	src.procstart = null
 	addtimer(CALLBACK(src, PROC_REF(enable_shield)), regeneration_time)
 	for(var/obj/effect/my_effect as anything in shield_overlays)
 		animate(my_effect, alpha = 0, time = 3 SECONDS)
@@ -74,6 +82,8 @@
 	playsound(parent, 'sound/vehicles/mecha/mech_shield_drop.ogg', 20)
 
 /datum/component/regenerative_shield/proc/enable_shield()
+	procstart = null
+	src.procstart = null
 	number_of_hits = initial(number_of_hits)
 	for(var/obj/effect/my_effect as anything in shield_overlays)
 		animate(my_effect, alpha = 255, time = 3 SECONDS)
@@ -81,6 +91,8 @@
 	playsound(parent, 'sound/vehicles/mecha/mech_shield_raise.ogg', 20)
 
 /datum/component/regenerative_shield/proc/apply_filter_effects(obj/effect/new_effect)
+	procstart = null
+	src.procstart = null
 	if(isnull(new_effect))
 		return
 	new_effect.add_filter(SHIELD_FILTER, 1, list("type" = "outline", "color" = "#b6e6f3", "alpha" = 0, "size" = 1))

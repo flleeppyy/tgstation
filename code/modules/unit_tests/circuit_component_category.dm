@@ -2,6 +2,8 @@
 /datum/unit_test/circuit_component_category
 
 /datum/unit_test/circuit_component_category/Run()
+	procstart = null
+	src.procstart = null
 	for(var/datum/design/design in subtypesof(/datum/design/component))
 		var/obj/item/circuit_component/path = initial(design.build_path)
 		if(!path)

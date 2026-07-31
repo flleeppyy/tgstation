@@ -12,6 +12,8 @@
 	var/list/shenanigans = list()
 
 /obj/structure/speaking_tile/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/json_file = file("data/npc_saves/Poly.json")
 	if(!fexists(json_file))
@@ -20,6 +22,8 @@
 	shenanigans = json["phrases"]
 
 /obj/structure/speaking_tile/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user) || speaking)
 		return
 	speaking = TRUE
@@ -89,26 +93,40 @@
 	times_spoken_to++
 
 /obj/structure/speaking_tile/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	interact(user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/speaking_tile/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return interact(user)
 
 /obj/structure/speaking_tile/attack_hulk(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/speaking_tile/attack_larva(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return interact(user)
 
 /obj/structure/speaking_tile/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return interact(user)
 
 
 /obj/structure/speaking_tile/attack_animal(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return interact(user)
 
 /obj/structure/speaking_tile/proc/SpeakPeace(list/statements)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to statements.len)
 		say(span_deadsay("[statements[i]]"), sanitize=FALSE)
 		if(i != statements.len)
@@ -123,6 +141,8 @@
 	custom_materials = list(/datum/material/glass = SMALL_MATERIAL_AMOUNT*5)
 
 /obj/item/rupee/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/newcolor = pick(10;COLOR_GREEN, 5;COLOR_BLUE, 3;COLOR_RED, 1;COLOR_PURPLE)
 	add_atom_colour(newcolor, FIXED_COLOUR_PRIORITY)
@@ -132,18 +152,24 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/item/rupee/proc/on_entered(datum/source, atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!ismob(AM))
 		return
 	INVOKE_ASYNC(src, PROC_REF(put_in_crossers_hands), AM)
 
 /obj/item/rupee/proc/put_in_crossers_hands(mob/crosser)
+	procstart = null
+	src.procstart = null
 	if(crosser.put_in_hands(src))
 		if(src != crosser.get_active_held_item())
 			crosser.swap_hand()
 		equip_to_best_slot(crosser)
 
 /obj/item/rupee/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(loc), 'sound/misc/server-ready.ogg', 50, TRUE, -1)
 	..()
 

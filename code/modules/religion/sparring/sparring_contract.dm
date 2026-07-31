@@ -17,22 +17,30 @@
 	var/list/datum/weakref/signed_by = list(null, null)
 
 /obj/item/sparring_contract/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[GLOB.deity]'s sparring contract"
 
 /obj/item/sparring_contract/Destroy()
+	procstart = null
+	src.procstart = null
 	signed_by.Cut()
 	var/datum/religion_sect/spar/sect = GLOB.religious_sect
 	sect?.existing_contract = null
 	return ..()
 
 /obj/item/sparring_contract/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SparringContract", name)
 		ui.open()
 
 /obj/item/sparring_contract/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/area/arena = GLOB.areas_by_type[arena_condition]
 	data["set_weapon"] = weapons_condition
@@ -44,6 +52,8 @@
 	return data
 
 /obj/item/sparring_contract/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/area/arena = GLOB.areas_by_type[arena_condition]
 	var/mob/living/carbon/human/left_partner
@@ -59,6 +69,8 @@
 	return data
 
 /obj/item/sparring_contract/proc/get_possible_areas()
+	procstart = null
+	src.procstart = null
 	var/list/area_names = list()
 	var/datum/religion_sect/spar/sect = GLOB.religious_sect
 	for(var/key in sect.arenas)
@@ -66,6 +78,8 @@
 	return area_names
 
 /obj/item/sparring_contract/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

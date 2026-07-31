@@ -36,15 +36,21 @@
 	var/emp_damage_modifier = 1
 
 /obj/item/stock_parts/power_store/get_cell()
+	procstart = null
+	src.procstart = null
 	return src
 
 /obj/item/stock_parts/power_store/get_save_vars()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += NAMEOF(src, charge)
 	. += NAMEOF(src, corrupted)
 	return .
 
 /obj/item/stock_parts/power_store/Initialize(mapload, override_maxcharge)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(5, INJECTABLE | DRAINABLE)
 	if (override_maxcharge)
@@ -64,6 +70,8 @@
 
 
 /obj/item/stock_parts/power_store/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isturf(old_loc))
 		update_appearance()
@@ -75,6 +83,8 @@
  * If we, or the item we're located in, is subject to the charge spell, gain some charge back
  */
 /obj/item/stock_parts/power_store/proc/on_magic_charge(datum/source, datum/action/cooldown/spell/charge/spell, mob/living/caster)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// This shouldn't be running if we're not being held by a mob,
@@ -106,6 +116,8 @@
 	return .
 
 /obj/item/stock_parts/power_store/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(grown_battery)
 		. += mutable_appearance('icons/obj/machines/cell_charger.dmi', "grown_wires")
@@ -114,6 +126,8 @@
 	. += mutable_appearance('icons/obj/machines/cell_charger.dmi', "[cell_size_prefix]-[charge_light_type]-o[(percent() >= 99.5) ? 2 : 1]")
 
 /obj/item/stock_parts/power_store/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	if(vname == NAMEOF(src, charge))
 		charge = clamp(vval, 0, maxcharge)
 		return TRUE
@@ -129,25 +143,33 @@
 /**
  * Returns the percentage of the cell's charge.
  */
-/obj/item/stock_parts/power_store/proc/percent() // return % charge of cell
+/obj/item/stock_parts/power_store/proc/percent()
+	procstart = null
+	src.procstart = null // return % charge of cell
 	return 100 * charge / maxcharge
 
 /**
  * Returns the maximum charge of the cell.
  */
 /obj/item/stock_parts/power_store/proc/max_charge()
+	procstart = null
+	src.procstart = null
 	return maxcharge
 
 /**
  * Returns the current charge of the cell.
  */
 /obj/item/stock_parts/power_store/proc/charge()
+	procstart = null
+	src.procstart = null
 	return charge
 
 /**
  * Returns the amount of charge used on the cell.
  */
 /obj/item/stock_parts/power_store/proc/used_charge()
+	procstart = null
+	src.procstart = null
 	return maxcharge - charge
 
 /// Use power from the cell.
@@ -156,6 +178,8 @@
 /// - force: If true, uses the remaining power from the cell if there isn't enough power to supply the demand.
 /// Returns: The power used from the cell in joules.
 /obj/item/stock_parts/power_store/use(used, force = FALSE)
+	procstart = null
+	src.procstart = null
 	var/power_used = min(used, charge)
 	if(power_used > 0 && try_explode())
 		return 0 // The cell decided to explode so we won't be able to use it.
@@ -171,6 +195,8 @@
 /// - amount: The amount of energy to give to the cell in joules.
 /// Returns: The power given to the cell in joules.
 /obj/item/stock_parts/power_store/proc/give(amount)
+	procstart = null
+	src.procstart = null
 	var/power_used = min(maxcharge-charge,amount)
 	charge += power_used
 	if (amount)
@@ -184,6 +210,8 @@
  * Returns: The energy that was given to the cell (can be negative).
  */
 /obj/item/stock_parts/power_store/proc/change(amount)
+	procstart = null
+	src.procstart = null
 	var/energy_used = clamp(amount, -charge, maxcharge - charge)
 	charge += energy_used
 	if(energy_used)
@@ -191,6 +219,8 @@
 	return energy_used
 
 /obj/item/stock_parts/power_store/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(corrupted)
 		. += span_danger("This [name] seems to be faulty!")
@@ -198,6 +228,8 @@
 		. += "The charge meter reads [CEILING(percent(), 0.1)]%." //so it doesn't say 0% charge when the overlay indicates it still has charge
 
 /obj/item/stock_parts/power_store/proc/try_explode(max_charge = FALSE)
+	procstart = null
+	src.procstart = null
 	var/check_charge = charge
 	if (max_charge)
 		check_charge = maxcharge
@@ -228,18 +260,24 @@
 	return TRUE
 
 /obj/item/stock_parts/power_store/proc/corrupt(force)
+	procstart = null
+	src.procstart = null
 	charge /= 2
 	maxcharge = max(maxcharge/2, chargerate)
 	if (force || prob(10))
 		corrupted = TRUE
 
 /obj/item/stock_parts/power_store/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
 	use((STANDARD_CELL_CHARGE /severity) * emp_damage_modifier , force = TRUE)
 
 /obj/item/stock_parts/power_store/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(src))
 		return FALSE
@@ -255,6 +293,8 @@
 	return TRUE
 
 /obj/item/stock_parts/power_store/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is licking the electrodes of [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	do_sparks(2, TRUE, user)
 	var/eating_success = do_after(user, 5 SECONDS, src)
@@ -276,6 +316,8 @@
 	return MANUAL_SUICIDE
 
 /obj/item/stock_parts/power_store/proc/gib_user(mob/living/user, discharged_energy)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(user))
 		return
 	if(discharged_energy < STANDARD_BATTERY_CHARGE)
@@ -286,6 +328,8 @@
 	tesla_zap(source = src, zap_range = 10, power = discharged_energy)
 
 /obj/item/stock_parts/power_store/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -304,6 +348,8 @@
 
 /// Handles letting an ethereal drain our charge into their stomach
 /obj/item/stock_parts/power_store/proc/ethereal_drain(mob/living/carbon/human/user, obj/item/organ/stomach/ethereal/used_stomach)
+	procstart = null
+	src.procstart = null
 	if(charge() <= 0)
 		balloon_alert(user, "out of charge!")
 		return
@@ -333,12 +379,18 @@
 			return
 
 /obj/item/stock_parts/power_store/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	SSexplosions.high_mov_atom += src
 
 /obj/item/stock_parts/power_store/proc/get_electrocute_damage()
+	procstart = null
+	src.procstart = null
 	return ELECTROCUTE_DAMAGE(charge / max(0.001 * STANDARD_CELL_CHARGE, 1)) // Wouldn't want it to consider more energy than whatever is actually in the cell if for some strange reason someone set the STANDARD_CELL_CHARGE to below 1kJ.
 
 /obj/item/stock_parts/power_store/get_part_rating()
+	procstart = null
+	src.procstart = null
 	return maxcharge * 10 + charge
 
 #undef ETHEREAL_CELL_DRAIN_TIME

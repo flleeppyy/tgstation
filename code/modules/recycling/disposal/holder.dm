@@ -23,10 +23,14 @@
 	var/hasmob = FALSE
 
 /obj/structure/disposalholder/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_WEATHER_IMMUNE, REF(src))
 
 /obj/structure/disposalholder/Destroy()
+	procstart = null
+	src.procstart = null
 	active = FALSE
 	last_pipe = null
 	current_pipe = null
@@ -34,6 +38,8 @@
 
 /// Initializes a holder from the contents of a disposal unit
 /obj/structure/disposalholder/proc/init(obj/machinery/disposal/D)
+	procstart = null
+	src.procstart = null
 	gas = D.air_contents// transfer gas resv. into holder object
 
 	//Check for any living mobs trigger hasmob.
@@ -67,6 +73,8 @@
 
 /// Starts the movement process, argument is the disposal unit the holder started in
 /obj/structure/disposalholder/proc/start(obj/machinery/disposal/D)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(D.trunk))
 		D.expel(src) // no trunk connected, so expel immediately
 		return
@@ -77,6 +85,8 @@
 
 /// Starts the movement process, persists while the holder is moving through pipes
 /obj/structure/disposalholder/proc/start_moving()
+	procstart = null
+	src.procstart = null
 	var/delay = world.tick_lag
 	var/datum/move_loop/our_loop = GLOB.move_manager.move_disposals(src, delay = delay, timeout = delay * count)
 	if(our_loop)
@@ -87,11 +97,15 @@
 
 /// Handles the preprocess check signal, sets the current pipe as the last pipe
 /obj/structure/disposalholder/proc/pre_move(datum/move_loop/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	last_pipe = loc
 
 /// Handles the postprocess check signal, tries to leave the pipe
 /obj/structure/disposalholder/proc/try_expel(datum/move_loop/source, result, visual_delay)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(current_pipe || !active)
 		return
@@ -99,6 +113,8 @@
 
 /// Handles what happens to the contents when the qdel signal triggers
 /obj/structure/disposalholder/proc/movement_stop(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	current_pipe = null
 	last_pipe = null
@@ -113,6 +129,8 @@
  * check and then calls part 2.
  */
 /obj/structure/disposalholder/proc/struggle_prep(mob/living/escapee)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(escapee.loc != src)
 		UnregisterSignal(escapee, COMSIG_LIVING_RESIST)
@@ -126,6 +144,8 @@
  * because the do_after is a sleep.
  */
 /obj/structure/disposalholder/proc/struggle_free(mob/living/escapee)
+	procstart = null
+	src.procstart = null
 	if(!istype(loc, /obj/structure/disposalpipe))
 		return //Somehow we're not in a pipe, shits probably fucked
 	var/obj/structure/disposalpipe/transport_cylinder = loc
@@ -146,6 +166,8 @@
 
 //failsafe in the case the holder is somehow forcemoved somewhere that's not a disposal pipe. Otherwise the above loop breaks.
 /obj/structure/disposalholder/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/pipes_typecache = typecacheof(/obj/structure/disposalpipe)
 	//Moved to nullspace gang
@@ -161,10 +183,14 @@
 
 /// Finds the turf which should contain the next pipe
 /obj/structure/disposalholder/proc/nextloc()
+	procstart = null
+	src.procstart = null
 	return get_step(src, dir)
 
 /// Finds a matching pipe on a turf
 /obj/structure/disposalholder/proc/findpipe(turf/T)
+	procstart = null
+	src.procstart = null
 	if(!T)
 		return null
 
@@ -179,6 +205,8 @@
 
 /// Merge two holder objects, used when a holder meets a stuck holder
 /obj/structure/disposalholder/proc/merge(obj/structure/disposalholder/other)
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/movable as anything in other)
 		movable.forceMove(src) // move everything in other holder to this one
 		if(ismob(movable))
@@ -195,6 +223,8 @@
 
 // called when player tries to move while in a pipe
 /obj/structure/disposalholder/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated)
 		return
 	for(var/mob/M in range(5, get_turf(src)))
@@ -203,10 +233,16 @@
 
 /// Called to vent all gas in holder to a location
 /obj/structure/disposalholder/proc/vent_gas(turf/T)
+	procstart = null
+	src.procstart = null
 	T.assume_air(gas)
 
 /obj/structure/disposalholder/AllowDrop()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/structure/disposalholder/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	return FALSE

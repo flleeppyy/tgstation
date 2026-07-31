@@ -9,6 +9,8 @@
 	var/challengeitem = /obj/item/nuclear_challenge
 
 /datum/antagonist/nukeop/leader/memorize_code()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/paper/nuke_code_paper = new(get_turf(owner.current))
 	nuke_code_paper.add_raw_text("The nuclear authorization code is: <b>[nuke_team.memorized_code]</b>")
@@ -17,6 +19,8 @@
 	owner.current.put_in_hands(nuke_code_paper)
 
 /datum/antagonist/nukeop/leader/give_alias()
+	procstart = null
+	src.procstart = null
 	title ||= pick("Czar", "Boss", "Commander", "Chief", "Kingpin", "Director", "Overlord")
 	. = ..()
 	if(ishuman(owner.current))
@@ -25,6 +29,8 @@
 		owner.current.fully_replace_character_name(owner.current.real_name, "[nuke_team.syndicate_name] [title]")
 
 /datum/antagonist/nukeop/leader/greet()
+	procstart = null
+	src.procstart = null
 	play_stinger()
 	to_chat(owner, "<span class='warningplain'><B>You are the Syndicate [title] for this mission. You are responsible for guiding your team.</B></span>")
 	to_chat(owner, "<span class='warningplain'><B>If you feel you are not up to this task, trade your headset with another operative.</B></span>")
@@ -33,6 +39,8 @@
 	owner.announce_objectives()
 
 /datum/antagonist/nukeop/leader/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!CONFIG_GET(flag/disable_warops))
 		var/mob/living/carbon/human/leader = owner.current
@@ -42,11 +50,15 @@
 	addtimer(CALLBACK(src, PROC_REF(nuketeam_name_assign)), 0.1 SECONDS)
 
 /datum/antagonist/nukeop/leader/proc/nuketeam_name_assign()
+	procstart = null
+	src.procstart = null
 	if(!nuke_team)
 		return
 	nuke_team.rename_team(ask_name())
 
 /datum/antagonist/nukeop/leader/proc/ask_name()
+	procstart = null
+	src.procstart = null
 	var/randomname = pick(GLOB.last_names)
 	var/newname = tgui_input_text(
 		owner.current,
@@ -65,6 +77,8 @@
 	return capitalize(newname)
 
 /datum/antagonist/nukeop/leader/create_team(datum/team/nuclear/new_team)
+	procstart = null
+	src.procstart = null
 	if(spawn_ship)
 		spawn_infiltrator()
 	if(new_team)

@@ -17,6 +17,8 @@
 	var/role_job = /datum/job/abductor_agent
 
 /datum/antagonist/abductor/get_preview_icon()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy/consistent/scientist = new
 	var/mob/living/carbon/human/dummy/consistent/agent = new
 
@@ -60,6 +62,8 @@
 	role_job = /datum/job/abductor_solo
 
 /datum/antagonist/abductor/create_team(datum/team/abductor_team/new_team)
+	procstart = null
+	src.procstart = null
 	if(!new_team)
 		return
 	if(!istype(new_team))
@@ -67,9 +71,13 @@
 	team = new_team
 
 /datum/antagonist/abductor/get_team()
+	procstart = null
+	src.procstart = null
 	return team
 
 /datum/antagonist/abductor/on_gain()
+	procstart = null
+	src.procstart = null
 	owner.set_assigned_role(SSjob.get_job_type(role_job))
 	objectives += team.objectives
 	finalize_abductor()
@@ -78,16 +86,22 @@
 	return ..()
 
 /datum/antagonist/abductor/on_removal()
+	procstart = null
+	src.procstart = null
 	owner.remove_traits(list(TRAIT_ABDUCTOR_TRAINING, TRAIT_ABDUCTOR_HUD, TRAIT_UNCONVERTABLE), ABDUCTOR_ANTAGONIST)
 	return ..()
 
 /datum/antagonist/abductor/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(owner.current, span_notice("With the help of your teammate, kidnap and experiment on station crew members!"))
 	to_chat(owner.current, span_notice("[greet_text]"))
 	owner.announce_objectives()
 
 /datum/antagonist/abductor/proc/finalize_abductor()
+	procstart = null
+	src.procstart = null
 	//Equip
 	var/mob/living/carbon/human/new_abductor = owner.current
 	new_abductor.set_species(/datum/species/abductor)
@@ -114,22 +128,32 @@
 			break
 
 /datum/antagonist/abductor/scientist/on_gain()
+	procstart = null
+	src.procstart = null
 	owner.add_traits(list(TRAIT_ABDUCTOR_SCIENTIST_TRAINING), ABDUCTOR_ANTAGONIST)
 	return ..()
 
 /datum/antagonist/abductor/scientist/on_removal()
+	procstart = null
+	src.procstart = null
 	owner.remove_traits(list(TRAIT_ABDUCTOR_SCIENTIST_TRAINING), ABDUCTOR_ANTAGONIST)
 	return ..()
 
 /datum/antagonist/abductor/scientist/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/glorp = mob_override || owner.current
 	RegisterSignal(glorp, COMSIG_LIVING_OPERATING_ON, PROC_REF(add_surgery))
 
 /datum/antagonist/abductor/scientist/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/glorp = mob_override || owner.current
 	UnregisterSignal(glorp, COMSIG_LIVING_OPERATING_ON)
 
 /datum/antagonist/abductor/scientist/proc/add_surgery(datum/source, atom/movable/operating_on, list/possible_operations)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/static/list/ayy_operations
@@ -156,6 +180,8 @@
 	possible_operations |= ayy_operations
 
 /datum/antagonist/abductor/admin_add(datum/mind/new_owner,mob/admin)
+	procstart = null
+	src.procstart = null
 	var/list/current_teams = list()
 	for(var/datum/team/abductor_team/T in GLOB.antagonist_teams)
 		current_teams[T.name] = T
@@ -179,10 +205,14 @@
 	message_admins("[key_name_admin(usr)] made [key_name_admin(new_owner)] [name] on [choice] !")
 
 /datum/antagonist/abductor/get_admin_commands()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["Equip"] = CALLBACK(src, PROC_REF(admin_equip))
 
 /datum/antagonist/abductor/proc/admin_equip(mob/admin)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(owner.current))
 		to_chat(admin, span_warning("This only works on humans!"))
 		return
@@ -204,6 +234,8 @@
 	var/team_skincolor = null
 
 /datum/team/abductor_team/New()
+	procstart = null
+	src.procstart = null
 	..()
 	team_number = team_count++
 	name = "Mothership [pick(GLOB.greek_letters)]" //TODO Ensure unique and actual alieny names
@@ -213,6 +245,8 @@
 		team_skincolor = COLOR_EMERALD
 
 /datum/team/abductor_team/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/result = list()
 
 	var/won = TRUE
@@ -245,9 +279,13 @@
 	target_amount = 6
 
 /datum/objective/experiment/New()
+	procstart = null
+	src.procstart = null
 	explanation_text = "Experiment on [target_amount] humans."
 
 /datum/objective/experiment/check_completion()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/abductor/experiment/E as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/abductor/experiment))
 		if(!istype(team, /datum/team/abductor_team))
 			return FALSE

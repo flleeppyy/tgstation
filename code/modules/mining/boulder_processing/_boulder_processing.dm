@@ -31,6 +31,8 @@
 	COOLDOWN_DECLARE(accept_cooldown)
 
 /obj/machinery/bouldertech/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	silo_materials = new (
@@ -42,6 +44,8 @@
 	register_context()
 
 /obj/machinery/bouldertech/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
@@ -49,15 +53,21 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/machinery/bouldertech/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(silo_materials)
 	return ..()
 
 /obj/machinery/bouldertech/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	if(length(contents))
 		for(var/obj/item/boulder/boulder in contents)
 			remove_boulder(boulder)
 
 /obj/machinery/bouldertech/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = CONTEXTUAL_SCREENTIP_SET
 
 	if(isnull(held_item))
@@ -76,6 +86,8 @@
 		context[SCREENTIP_CONTEXT_LMB] = "Deconstruct"
 
 /obj/machinery/bouldertech/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	. += span_suppradio("The machine reads that it has [EXAMINE_HINT("[points_held] mining points")] stored. Swipe an ID to claim them.")
@@ -101,6 +113,8 @@
 		. += span_notice("The whole machine can be [EXAMINE_HINT("pried")] apart.")
 
 /obj/machinery/bouldertech/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/list/datum/reagents/booster_list = get_booster_reagents()
@@ -111,6 +125,8 @@
 		. += span_notice("<br>Upon being boosted successfully, \the [src] will produce [EXAMINE_HINT("[waste_chemical.name]")].")
 
 /obj/machinery/bouldertech/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/suffix = ""
 	if(!anchored || panel_open || !is_operational || (machine_stat & (BROKEN | NOPOWER)))
@@ -118,6 +134,8 @@
 	icon_state ="[base_icon_state][suffix]"
 
 /obj/machinery/bouldertech/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	if(!anchored || !(dir == border_dir || dir == REVERSE_DIR(border_dir)))
 		return FALSE
 	if(istype(mover, /obj/item/stack/sheet))
@@ -135,6 +153,8 @@
  * * obj/item/boulder/new_boulder - the boulder we are checking
  */
 /obj/machinery/bouldertech/proc/can_process_boulder(obj/item/boulder/new_boulder)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	SHOULD_BE_PURE(TRUE)
 
@@ -167,6 +187,8 @@
  * * obj/item/boulder/new_boulder - the boulder to accept
  */
 /obj/machinery/bouldertech/proc/accept_boulder(obj/item/boulder/new_boulder)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	if(!can_process_boulder(new_boulder))
 		return FALSE
@@ -184,6 +206,8 @@
  * * [rockman][mob/living/carbon/human] - the golem we are trying to main
  */
 /obj/machinery/bouldertech/proc/can_process_golem(mob/living/carbon/human/rockman)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	SHOULD_BE_PURE(TRUE)
 
@@ -208,6 +232,8 @@
  * * [rockman][mob/living/carbon/human] - the golem we are trying to main
  */
 /obj/machinery/bouldertech/proc/accept_golem(mob/living/carbon/human/rockman)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(!can_process_golem(rockman))
@@ -224,6 +250,8 @@
 
 /// What effects actually happens to a golem when it is "processed"
 /obj/machinery/bouldertech/proc/maim_golem(mob/living/carbon/human/rockman)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	Shake(duration = 1 SECONDS)
@@ -232,6 +260,8 @@
 	rockman.gib(DROP_ALL_REMAINS)
 
 /obj/machinery/bouldertech/proc/on_entered(datum/source, atom/movable/atom_movable)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(atom_movable, /obj/item/boulder))
@@ -247,12 +277,16 @@
  * Applied more on the chemistry integration but can be used for other things if desired.
  */
 /obj/machinery/bouldertech/proc/check_for_boosts()
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	refining_efficiency = initial(refining_efficiency) //Reset refining efficiency to 100%.
 
 ///Returns a map of reagent -> boost amount to increase this machines efficiency
 /obj/machinery/bouldertech/proc/get_booster_reagents()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list/datum/reagents)
 
 	return list()
@@ -264,11 +298,15 @@
  * * datum/material/mat - the material to process
  */
 /obj/machinery/bouldertech/proc/can_process_material(datum/material/mat)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	return FALSE
 
 /obj/machinery/bouldertech/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(panel_open || user.combat_mode)
 		return NONE
 
@@ -303,6 +341,8 @@
 	return NONE
 
 /obj/machinery/bouldertech/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_BLOCKING
 	if(default_unfasten_wrench(user, tool, time = 1.5 SECONDS) == SUCCESSFUL_UNFASTEN)
 		if(anchored)
@@ -313,12 +353,18 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/bouldertech/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/bouldertech/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/bouldertech/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN || panel_open)
 		return
@@ -348,6 +394,8 @@
  * * obj/item/boulder/chosen_boulder - The boulder to being breaking down into minerals.
  */
 /obj/machinery/bouldertech/proc/breakdown_boulder(obj/item/boulder/chosen_boulder)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(QDELETED(chosen_boulder))
@@ -391,6 +439,8 @@
 	remove_boulder(chosen_boulder)
 
 /obj/machinery/bouldertech/process()
+	procstart = null
+	src.procstart = null
 	if(!anchored || panel_open || !is_operational || (machine_stat & (BROKEN | NOPOWER)))
 		return
 
@@ -422,6 +472,8 @@
  * * obj/item/boulder/specific_boulder - the boulder to remove
  */
 /obj/machinery/bouldertech/proc/remove_boulder(obj/item/boulder/specific_boulder)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(QDELETED(specific_boulder))

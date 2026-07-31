@@ -18,6 +18,8 @@
 	chargerate = STANDARD_BATTERY_RATE
 
 /obj/item/stock_parts/power_store/battery/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/lithium = 60, /datum/reagent/iron = 10, /datum/reagent/silicon = 10)
 
 /obj/item/stock_parts/power_store/battery/empty
@@ -94,4 +96,6 @@
 	ratingdesc = FALSE
 
 /obj/item/stock_parts/power_store/battery/infinite/use(used, force = FALSE)
+	procstart = null
+	src.procstart = null
 	return used

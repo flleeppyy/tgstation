@@ -1,4 +1,6 @@
 /proc/make_link_visual_generic(datum/mod_link/mod_link, proc_path)
+	procstart = null
+	src.procstart = null
 	var/mob/living/user = mod_link.get_user_callback.Invoke()
 	var/obj/effect/overlay/link_visual = new()
 	link_visual.name = "holocall ([mod_link.id])"
@@ -14,6 +16,8 @@
 	return link_visual
 
 /proc/get_link_visual_generic(datum/mod_link/mod_link, atom/movable/visuals, proc_path)
+	procstart = null
+	src.procstart = null
 	var/mob/living/user = mod_link.get_user_callback.Invoke()
 	playsound(mod_link.holder, 'sound/machines/terminal/terminal_processing.ogg', 50, vary = TRUE)
 	visuals.add_overlay(mutable_appearance('icons/effects/effects.dmi', "static_base", ABOVE_NORMAL_TURF_LAYER))
@@ -29,6 +33,8 @@
 	mod_link.holder.RegisterSignal(mod_link.holder.loc, COMSIG_ATOM_DIR_CHANGE, proc_path)
 
 /proc/delete_link_visual_generic(datum/mod_link/mod_link, mob/living/old_user)
+	procstart = null
+	src.procstart = null
 	playsound(mod_link.get_other().holder, 'sound/machines/terminal/terminal_processing.ogg', 50, vary = TRUE, frequency = -1)
 	LAZYREMOVE(mod_link.holder.update_on_z, mod_link.visual)
 	mod_link.holder.lose_hearing_sensitivity(REF(mod_link))
@@ -36,6 +42,8 @@
 	QDEL_NULL(mod_link.visual)
 
 /proc/on_user_set_dir_generic(datum/mod_link/mod_link, newdir)
+	procstart = null
+	src.procstart = null
 	var/atom/other_visual = mod_link.get_other().visual
 	if(!newdir) //can sometimes be null or 0
 		return
@@ -64,6 +72,8 @@
 	other_visual.transform = new_transform
 
 /obj/item/mod/control/Initialize(mapload, datum/mod_theme/new_theme, new_skin, obj/item/mod/core/new_core)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	mod_link = new(
 		src,
@@ -76,6 +86,8 @@
 	)
 
 /obj/item/mod/control/multitool_act_secondary(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	. = NONE
 
 	var/tool_frequency = null
@@ -106,28 +118,42 @@
 				. = ITEM_INTERACT_SUCCESS
 
 /obj/item/mod/control/proc/can_call()
+	procstart = null
+	src.procstart = null
 	return get_charge() && wearer && wearer.stat != DEAD
 
 /obj/item/mod/control/proc/make_link_visual()
+	procstart = null
+	src.procstart = null
 	return make_link_visual_generic(mod_link, PROC_REF(on_overlay_change))
 
 /obj/item/mod/control/proc/get_link_visual(atom/movable/visuals)
+	procstart = null
+	src.procstart = null
 	return get_link_visual_generic(mod_link, visuals, PROC_REF(on_wearer_set_dir))
 
 /obj/item/mod/control/proc/delete_link_visual(mob/living/old_user)
+	procstart = null
+	src.procstart = null
 	return delete_link_visual_generic(mod_link, old_user)
 
 /obj/item/mod/control/Hear(atom/movable/speaker, message_language, raw_message, radio_freq, radio_freq_name, radio_freq_color, list/spans, list/message_mods, message_range)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(speaker != wearer && speaker != ai_assistant)
 		return
 	mod_link.visual.say(raw_message, spans = spans, sanitize = FALSE, language = message_language, message_range = 2, message_mods = message_mods)
 
 /obj/item/mod/control/proc/on_overlay_change(atom/source, cache_index, overlay)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	addtimer(CALLBACK(src, PROC_REF(update_link_visual)), 1 TICKS, TIMER_UNIQUE)
 
 /obj/item/mod/control/proc/update_link_visual()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(mod_link.link_call))
 		return
 	mod_link.visual.cut_overlay(mod_link.visual_overlays)
@@ -135,6 +161,8 @@
 	mod_link.visual.add_overlay(mod_link.visual_overlays)
 
 /obj/item/mod/control/proc/on_wearer_set_dir(atom/source, dir, newdir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	on_user_set_dir_generic(mod_link, newdir || SOUTH)
 
@@ -154,6 +182,8 @@
 	var/label
 
 /obj/item/clothing/neck/link_scryer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	mod_link = new(
 		src,
@@ -167,12 +197,16 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/item/clothing/neck/link_scryer/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(cell)
 	QDEL_NULL(mod_link)
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/clothing/neck/link_scryer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cell)
 		. += span_notice("The battery charge reads [cell.percent()]%. <b>Right-click</b> with an empty hand to remove it.")
@@ -182,15 +216,21 @@
 	. += span_notice("Use in hand to set name.")
 
 /obj/item/clothing/neck/link_scryer/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot != ITEM_SLOT_NECK)
 		mod_link?.end_call()
 
 /obj/item/clothing/neck/link_scryer/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	mod_link?.end_call()
 
 /obj/item/clothing/neck/link_scryer/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	var/new_label = reject_bad_text(tgui_input_text(user, "Change the visible name", "Set Name", label, MAX_NAME_LEN))
 	if(!user.is_holding(src))
 		return
@@ -202,11 +242,15 @@
 	update_name()
 
 /obj/item/clothing/neck/link_scryer/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!mod_link.link_call)
 		return
 	cell.use(0.02 * STANDARD_CELL_RATE * seconds_per_tick, force = TRUE)
 
 /obj/item/clothing/neck/link_scryer/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(cell || !istype(tool, /obj/item/stock_parts/power_store/cell))
 		return ..()
 
@@ -218,15 +262,21 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/clothing/neck/link_scryer/update_name(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[initial(name)][label ? " - [label]" : ""]"
 
 /obj/item/clothing/neck/link_scryer/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == cell)
 		cell = null
 
 /obj/item/clothing/neck/link_scryer/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!cell)
 		return SECONDARY_ATTACK_CONTINUE_CHAIN
 	balloon_alert(user, "cell removed")
@@ -234,6 +284,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/clothing/neck/link_scryer/multitool_act_secondary(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	. = NONE
 
 	var/tool_frequency = null
@@ -264,11 +316,15 @@
 				. = ITEM_INTERACT_SUCCESS
 
 /obj/item/clothing/neck/link_scryer/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!QDELETED(mod_link.link_call))
 		. += mutable_appearance('icons/mob/clothing/neck.dmi', "modlink_active")
 
 /obj/item/clothing/neck/link_scryer/ui_action_click(mob/user)
+	procstart = null
+	src.procstart = null
 	if(mod_link.link_call)
 		mod_link.end_call()
 	else if(QDELETED(cell))
@@ -279,37 +335,53 @@
 		call_link(user, mod_link)
 
 /obj/item/clothing/neck/link_scryer/proc/get_user()
+	procstart = null
+	src.procstart = null
 	var/mob/living/user = loc
 	return istype(user) && user.get_item_by_slot(ITEM_SLOT_NECK) == src ? user : null
 
 /obj/item/clothing/neck/link_scryer/proc/can_call()
+	procstart = null
+	src.procstart = null
 	var/mob/living/user = loc
 	return istype(user) && cell?.charge && user.stat != DEAD
 
 /obj/item/clothing/neck/link_scryer/proc/make_link_visual()
+	procstart = null
+	src.procstart = null
 	var/mob/living/user = mod_link.get_user_callback.Invoke()
 	user.update_worn_neck()
 	return make_link_visual_generic(mod_link, PROC_REF(on_overlay_change))
 
 /obj/item/clothing/neck/link_scryer/proc/get_link_visual(atom/movable/visuals)
+	procstart = null
+	src.procstart = null
 	return get_link_visual_generic(mod_link, visuals, PROC_REF(on_user_set_dir))
 
 /obj/item/clothing/neck/link_scryer/proc/delete_link_visual(mob/living/old_user)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(old_user))
 		old_user.update_worn_neck()
 	return delete_link_visual_generic(mod_link, old_user)
 
 /obj/item/clothing/neck/link_scryer/Hear(atom/movable/speaker, message_language, raw_message, radio_freq, radio_freq_name, radio_freq_color, list/spans, list/message_mods, message_range)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(speaker != loc)
 		return
 	mod_link.visual.say(raw_message, spans = spans, sanitize = FALSE, language = message_language, message_range = 3, message_mods = message_mods)
 
 /obj/item/clothing/neck/link_scryer/proc/on_overlay_change(atom/source, cache_index, overlay)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	addtimer(CALLBACK(src, PROC_REF(update_link_visual)), 1 TICKS, TIMER_UNIQUE)
 
 /obj/item/clothing/neck/link_scryer/proc/update_link_visual()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(mod_link.link_call))
 		return
 	var/mob/living/user = loc
@@ -318,6 +390,8 @@
 	mod_link.visual.add_overlay(mod_link.visual_overlays)
 
 /obj/item/clothing/neck/link_scryer/proc/on_user_set_dir(atom/source, dir, newdir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	on_user_set_dir_generic(mod_link, newdir || SOUTH)
 
@@ -325,6 +399,8 @@
 	starting_frequency = MODLINK_FREQ_NANOTRASEN
 
 /obj/item/clothing/neck/link_scryer/loaded/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cell = new /obj/item/stock_parts/power_store/cell/high(src)
 
@@ -391,6 +467,8 @@
 	RegisterSignal(holder, COMSIG_QDELETING, PROC_REF(on_holder_delete))
 
 /datum/mod_link/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.mod_link_ids -= id
 	if(link_call)
 		end_call()
@@ -401,12 +479,16 @@
 	return ..()
 
 /datum/mod_link/proc/get_other()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/mod_link)
 	if(!link_call)
 		return
 	return link_call.link_caller == src ? link_call.link_receiver : link_call.link_caller
 
 /datum/mod_link/proc/call_link(datum/mod_link/called, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!frequency)
 		return
 	if(!istype(called))
@@ -436,9 +518,13 @@
 	alert.user_ref = WEAKREF(user)
 
 /datum/mod_link/proc/end_call()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(link_call)
 
 /datum/mod_link/proc/entered_call(datum/mod_link/other_link)
+	procstart = null
+	src.procstart = null
 	var/mob/living/user = get_user_callback.Invoke()
 	user_in_call_ref = WEAKREF(user)
 	ADD_TRAIT(user, TRAIT_IN_CALL, REF(src))
@@ -447,6 +533,8 @@
 	get_visual_callback.Invoke(other_visual)
 
 /datum/mod_link/proc/exiting_call()
+	procstart = null
+	src.procstart = null
 	var/mob/living/old_user = user_in_call_ref?.resolve()
 	user_in_call_ref = null
 	if(old_user)
@@ -455,6 +543,8 @@
 	delete_visual_callback.Invoke(old_user)
 
 /datum/mod_link/proc/on_holder_delete(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
@@ -466,6 +556,8 @@
 	var/datum/mod_link/link_receiver
 
 /datum/mod_link_call/New(datum/mod_link/link_caller, datum/mod_link/link_receiver)
+	procstart = null
+	src.procstart = null
 	src.link_caller = link_caller
 	src.link_receiver = link_receiver
 	link_caller.link_call = src
@@ -475,6 +567,8 @@
 	START_PROCESSING(SSprocessing, src)
 
 /datum/mod_link_call/Destroy()
+	procstart = null
+	src.procstart = null
 	link_caller.exiting_call()
 	link_receiver.exiting_call()
 	link_caller.link_call = null
@@ -483,14 +577,20 @@
 	return ..()
 
 /datum/mod_link_call/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(can_continue_call())
 		return
 	qdel(src)
 
 /datum/mod_link_call/proc/can_continue_call()
+	procstart = null
+	src.procstart = null
 	return link_caller.frequency == link_receiver.frequency && link_caller.can_call_callback.Invoke() && link_receiver.can_call_callback.Invoke()
 
 /proc/call_link(mob/user, datum/mod_link/calling_link)
+	procstart = null
+	src.procstart = null
 	if(!calling_link.frequency)
 		return
 	var/list/callers = list()
@@ -526,6 +626,8 @@
 	var/datum/weakref/user_ref
 
 /atom/movable/screen/alert/modlink_call/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(usr != owner)
 		return
@@ -545,6 +647,8 @@
 	owner.clear_alert("[REF(link_caller)]_modlink")
 
 /atom/movable/screen/alert/modlink_call/Destroy()
+	procstart = null
+	src.procstart = null
 	var/mob/living/user = user_ref?.resolve()
 	var/datum/mod_link/link_caller = link_caller_ref?.resolve()
 	if(!user || !link_caller)

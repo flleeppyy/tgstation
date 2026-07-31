@@ -10,14 +10,20 @@
 	reagent = /datum/reagent/blob/energized_jelly
 
 /datum/blobstrain/reagent/energized_jelly/damage_reaction(obj/structure/blob/B, damage, damage_type, damage_flag)
+	procstart = null
+	src.procstart = null
 	if((damage_flag == MELEE || damage_flag == BULLET || damage_flag == LASER) && B.get_integrity() - damage <= 0 && prob(10))
 		do_sparks(rand(2, 4), FALSE, B)
 	return ..()
 
 /datum/blobstrain/reagent/energized_jelly/tesla_reaction(obj/structure/blob/B, power)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /datum/blobstrain/reagent/energized_jelly/emp_reaction(obj/structure/blob/B, severity)
+	procstart = null
+	src.procstart = null
 	var/damage = rand(30, 50) - severity * rand(10, 15)
 	B.take_damage(damage, BURN, ENERGY)
 
@@ -27,6 +33,8 @@
 	color = "#EFD65A"
 
 /datum/reagent/blob/energized_jelly/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message, touch_protection, mob/eye/blob/overmind)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reac_volume = return_mob_expose_reac_volume(exposed_mob, methods, reac_volume, show_message, touch_protection, overmind)
 	exposed_mob.losebreath += round(0.2*reac_volume)

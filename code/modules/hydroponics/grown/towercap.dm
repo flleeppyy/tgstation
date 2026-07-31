@@ -58,6 +58,8 @@
 	))
 
 /obj/item/grown/log/Initialize(mapload, obj/item/seeds/new_seed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 	if(seed)
@@ -85,6 +87,8 @@
 	return NONE
 
 /obj/item/grown/log/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(tool.get_sharpness())
 		user.balloon_alert(user, "made [plank_count] [plank_name]")
 		new plank_type(user.loc, plank_count)
@@ -108,6 +112,8 @@
 	return NONE
 
 /obj/item/grown/log/proc/CheckAccepted(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return is_type_in_typecache(I, accepted)
 
 /obj/item/grown/log/tree
@@ -125,6 +131,8 @@
 	plank_name = "rods"
 
 /obj/item/grown/log/steel/CheckAccepted(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/structure/punji_sticks
@@ -142,14 +150,20 @@
 	var/mutable_appearance/stab_overlay
 
 /obj/structure/punji_sticks/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/caltrop, min_damage = 20, max_damage = 30, flags = CALTROP_BYPASS_SHOES)
 	build_stab_overlay()
 
 /obj/structure/punji_sticks/proc/build_stab_overlay()
+	procstart = null
+	src.procstart = null
 	stab_overlay = mutable_appearance(icon, "[icon_state]_stab", layer = ABOVE_MOB_LAYER)
 
 /obj/structure/punji_sticks/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(same_z_layer)
 		return
@@ -157,19 +171,27 @@
 	update_appearance()
 
 /obj/structure/punji_sticks/post_buckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	update_appearance()
 	return ..()
 
 /obj/structure/punji_sticks/post_unbuckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	update_appearance()
 	return ..()
 
 /obj/structure/punji_sticks/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(length(buckled_mobs))
 		. += stab_overlay
 
 /obj/structure/punji_sticks/intercept_zImpact(list/falling_movables, levels)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/mob/living/fallen_mob in falling_movables)
 		if(LAZYLEN(buckled_mobs))
@@ -184,6 +206,8 @@
 	. |= FALL_INTERCEPTED | FALL_NO_MESSAGE
 
 /obj/structure/punji_sticks/unbuckle_mob(mob/living/buckled_mob, force, can_fall)
+	procstart = null
+	src.procstart = null
 	if(force)
 		return ..()
 	to_chat(buckled_mob, span_warning("You begin climbing out of [src]."))

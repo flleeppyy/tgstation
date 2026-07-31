@@ -2,6 +2,8 @@
 /datum/unit_test/load_syringe
 
 /datum/unit_test/load_syringe/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/chemist = EASY_ALLOCATE()
 	var/obj/item/gun/syringe/syringe_gun = EASY_ALLOCATE()
 	var/obj/item/reagent_containers/syringe/syringe = EASY_ALLOCATE()

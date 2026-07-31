@@ -16,6 +16,8 @@
 	)
 
 /datum/autowiki/stock_parts/generate()
+	procstart = null
+	src.procstart = null
 	var/output = ""
 
 	for(var/part_type in valid_subtypesof(/obj/item/stock_parts))
@@ -46,6 +48,8 @@
 	return output
 
 /datum/autowiki/stock_parts/proc/find_design(obj/item/stock_parts/stock_part)
+	procstart = null
+	src.procstart = null
 	for(var/design_type in subtypesof(/datum/design))
 		var/datum/design/recipe = new design_type()
 
@@ -53,6 +57,8 @@
 			return recipe
 
 /datum/autowiki/stock_parts/proc/find_research(datum/design/recipe)
+	procstart = null
+	src.procstart = null
 	for(var/node_type in subtypesof(/datum/techweb_node))
 		var/datum/techweb_node/node = new node_type()
 
@@ -60,12 +66,16 @@
 			return node
 
 /datum/autowiki/stock_parts/proc/create_icon(obj/item/stock_parts/stock_part)
+	procstart = null
+	src.procstart = null
 	var/filename = SANITIZE_FILENAME(escape_value(stock_part.icon_state))
 	upload_icon(icon(stock_part.icon, stock_part.icon_state, SOUTH, 1, FALSE), filename)
 
 	return "Autowiki-[filename].png"
 
 /datum/autowiki/stock_parts/proc/generate_source_list(datum/design/recipe)
+	procstart = null
+	src.procstart = null
 	var/list/source_list = list()
 
 	if(recipe.build_type & PROTOLATHE)
@@ -80,6 +90,8 @@
 	return source_list.Join(", ")
 
 /datum/autowiki/stock_parts/proc/generate_material_list(datum/design/recipe)
+	procstart = null
+	src.procstart = null
 	var/list/materials = list()
 
 	for(var/ingredient_type, amount in recipe.materials)

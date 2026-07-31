@@ -24,6 +24,8 @@
 	var/icon_preempty
 
 /obj/item/reagent_containers/condiment/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(reagents.reagent_list.len)
 		if(icon_preempty)
@@ -37,10 +39,14 @@
 	return ..()
 
 /obj/item/reagent_containers/condiment/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is trying to eat the entire [src]! It looks like [user.p_they()] forgot how food works!"))
 	return OXYLOSS
 
 /obj/item/reagent_containers/condiment/proc/try_eat(atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!canconsume(target, user))
 		return ITEM_INTERACT_BLOCKING
 
@@ -69,6 +75,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/condiment/interact_with_atom(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!is_open_container())
 		return NONE
 
@@ -86,6 +94,8 @@
 
 
 /obj/item/reagent_containers/condiment/interact_with_atom_secondary(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -105,6 +115,8 @@
 	fill_icon_thresholds = null
 
 /obj/item/reagent_containers/condiment/enzyme/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/chemical_reaction/recipe = GLOB.chemical_reactions_list[/datum/chemical_reaction/food/cheesewheel]
 	var/milk_required = recipe.required_reagents[/datum/reagent/consumable/milk]
@@ -123,6 +135,8 @@
 	fill_icon_thresholds = null
 
 /obj/item/reagent_containers/condiment/sugar/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/chemical_reaction/standard_recipe = GLOB.chemical_reactions_list[/datum/chemical_reaction/food/cakebatter]
 	var/datum/chemical_reaction/alt_recipe = GLOB.chemical_reactions_list[/datum/chemical_reaction/food/cakebatter/vegan]
@@ -146,6 +160,8 @@
 	fill_icon_thresholds = null
 
 /obj/item/reagent_containers/condiment/saltshaker/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins to swap forms with the salt shaker! It looks like [user.p_theyre()] trying to commit suicide!"))
 	var/newname = "[name]"
 	name = "[user.name]"
@@ -155,6 +171,8 @@
 	return TOXLOSS
 
 /obj/item/reagent_containers/condiment/saltshaker/interact_with_atom(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -191,6 +209,8 @@
 	fill_icon_thresholds = null
 
 /obj/item/reagent_containers/condiment/milk/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/chemical_reaction/recipe = GLOB.chemical_reactions_list[/datum/chemical_reaction/food/cheesewheel]
 	var/milk_required = recipe.required_reagents[/datum/reagent/consumable/milk]
@@ -209,6 +229,8 @@
 	fill_icon_thresholds = null
 
 /obj/item/reagent_containers/condiment/flour/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/chemical_reaction/recipe_dough = GLOB.chemical_reactions_list[/datum/chemical_reaction/food/dough]
 	var/datum/chemical_reaction/recipe_cakebatter = GLOB.chemical_reactions_list[/datum/chemical_reaction/food/cakebatter]
@@ -460,17 +482,25 @@
 	var/originalname = "condiment"
 
 /obj/item/reagent_containers/condiment/pack/create_reagents(max_vol, flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(reagents, COMSIG_REAGENTS_HOLDER_UPDATED, PROC_REF(on_reagent_update), TRUE)
 
 /obj/item/reagent_containers/condiment/pack/update_icon()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	return
 
 /obj/item/reagent_containers/condiment/pack/try_eat(atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	return NONE
 
 /obj/item/reagent_containers/condiment/pack/interact_with_atom(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	//You can tear the bag open above food to put the condiments on it, obviously.
 	if(IS_EDIBLE(target))
 		if(!reagents.total_volume)
@@ -489,6 +519,8 @@
 
 /// Handles reagents getting added to the condiment pack.
 /obj/item/reagent_containers/condiment/pack/proc/on_reagent_update(datum/reagents/reagents)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!reagents.total_volume)

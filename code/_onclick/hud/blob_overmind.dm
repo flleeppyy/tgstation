@@ -1,4 +1,6 @@
 /datum/hud/blob_overmind/initialize_screen_objects()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_screen_object(/atom/movable/screen/healths/blob, HUD_MOB_HEALTH, HUD_GROUP_INFO)
 	add_screen_object(/atom/movable/screen/blob/blob_power, HUD_BLOB_POWER_DISPLAY, HUD_GROUP_INFO)

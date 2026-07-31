@@ -51,6 +51,8 @@
 		the handshake process between microbombs, however, takes a bit, and only gets longer as more microbombs are detected."
 
 /obj/item/implant/explosive/proc/on_death(datum/source, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// There may be other signals that want to handle mob's death
@@ -60,6 +62,8 @@
 	INVOKE_ASYNC(src, PROC_REF(activate), "death")
 
 /obj/item/implant/explosive/activate(cause)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!cause || !imp_in || active)
 		return FALSE
@@ -85,6 +89,8 @@
 	timed_explosion()
 
 /obj/item/implant/explosive/implant(mob/living/target, mob/user, silent = FALSE, force = FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/target_implant in target.implants)
 		if(istype(target_implant, /obj/item/implant/explosive)) //we don't use our own type here, because macrobombs inherit this proc and need to be able to upgrade microbombs
 			var/obj/item/implant/explosive/other_implant = target_implant
@@ -102,6 +108,8 @@
 		RegisterSignal(target, COMSIG_LIVING_DEATH, PROC_REF(on_death))
 
 /obj/item/implant/explosive/removed(mob/target, silent = FALSE, special = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		UnregisterSignal(target, COMSIG_LIVING_DEATH)
@@ -112,6 +120,8 @@
  * stat_implant = the implant which has its stats added to kept_implant, before being deleted.
  */
 /obj/item/implant/explosive/proc/merge_implants(obj/item/implant/explosive/kept_implant, obj/item/implant/explosive/stat_implant)
+	procstart = null
+	src.procstart = null
 	kept_implant.explosion_devastate += stat_implant.explosion_devastate
 	kept_implant.explosion_heavy += stat_implant.explosion_heavy
 	kept_implant.explosion_light += stat_implant.explosion_light
@@ -123,6 +133,8 @@
  * Make the implantee beep a few times, keel over and explode. Usually to a devastating effect.
  */
 /obj/item/implant/explosive/proc/timed_explosion()
+	procstart = null
+	src.procstart = null
 	if (isnull(imp_in))
 		visible_message(span_warning("[src] starts beeping ominously!"))
 	else
@@ -163,6 +175,8 @@
 
 ///When called, just explodes
 /obj/item/implant/explosive/proc/explode(atom/override_explode_target = null)
+	procstart = null
+	src.procstart = null
 	explosion_devastate = floor(explosion_devastate)
 	explosion_heavy = floor(explosion_heavy)
 	explosion_light = floor(explosion_light)
@@ -211,18 +225,24 @@
 		The tactical deniability implant introduces a ten-second delay by itself in order to allow operators one last hurrah before death."
 
 /obj/item/implant/explosive/deniability/implant(mob/living/target, mob/user, silent = FALSE, force = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		RegisterSignal(target, COMSIG_LIVING_HEALTH_UPDATE, PROC_REF(check_health))
 		target.add_traits(list(TRAIT_NOSOFTCRIT, TRAIT_NOHARDCRIT), IMPLANT_TRAIT)
 
 /obj/item/implant/explosive/deniability/removed(mob/target, silent = FALSE, special = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		UnregisterSignal(target, COMSIG_LIVING_HEALTH_UPDATE)
 		target.remove_traits(list(TRAIT_NOSOFTCRIT, TRAIT_NOHARDCRIT), IMPLANT_TRAIT)
 
 /obj/item/implant/explosive/deniability/proc/check_health(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source.health < source.crit_threshold)

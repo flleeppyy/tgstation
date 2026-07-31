@@ -26,6 +26,8 @@
 	var/brute_mod = 1.1
 
 /datum/brain_trauma/voided/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(prob(coloring_chance))
@@ -62,6 +64,8 @@
 	owner.update_body()
 
 /datum/brain_trauma/voided/on_lose()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	owner.remove_traits(traits_to_apply, REF(src))
@@ -80,6 +84,8 @@
 	owner.update_body()
 
 /datum/brain_trauma/voided/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(prob(vomit_frequency))
@@ -87,6 +93,8 @@
 
 /// Apply the space texture
 /datum/brain_trauma/voided/proc/texture_limb(atom/source, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Not updating because on_gain/on_lose() call it down the line, and calls coming from comsigs update the owner's body themselves
@@ -97,6 +105,8 @@
 		head.head_flags &= ~HEAD_EYESPRITES
 
 /datum/brain_trauma/voided/proc/untexture_limb(atom/source, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 
@@ -108,6 +118,8 @@
 		head.head_flags = initial(head.head_flags)
 
 /datum/brain_trauma/voided/on_death()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(is_on_a_planet(owner))
@@ -121,11 +133,15 @@
 	vomit_frequency = 0
 
 /datum/brain_trauma/voided/stable/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	owner.AddComponent(/datum/component/glass_passer, 2 SECONDS, 2 SECONDS)
 
 /datum/brain_trauma/voided/stable/on_lose()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	qdel(owner.GetComponent(/datum/component/glass_passer))

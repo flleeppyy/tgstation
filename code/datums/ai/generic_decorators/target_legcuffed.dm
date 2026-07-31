@@ -4,6 +4,8 @@
 	var/key = BB_CURRENT_TARGET
 
 /datum/bt_node/decorator/target_legcuffed/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/target = controller.blackboard[key]
 	if(!iscarbon(target))
 		return FALSE

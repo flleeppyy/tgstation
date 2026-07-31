@@ -154,6 +154,8 @@
 	acid = 50
 
 /obj/machinery/power/apc/get_save_vars()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!auto_name)
 		. -= NAMEOF(src, name)
@@ -174,6 +176,8 @@
 	return .
 
 /obj/machinery/power/apc/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	//APCs get added to their own processing tasks for the machines subsystem.
@@ -243,6 +247,8 @@
 	AddElement(/datum/element/contextual_screentip_mob_typechecks, hovering_mob_typechecks)
 
 /obj/machinery/power/apc/Destroy()
+	procstart = null
+	src.procstart = null
 	if(malfai)
 		malfai.hacked_apcs -= src
 		malfai = null
@@ -257,6 +263,8 @@
 	return ..()
 
 /obj/machinery/power/apc/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	switch(newdir)
@@ -281,20 +289,28 @@
 	)
 
 /obj/machinery/power/apc/on_saboteur(datum/source, disrupt_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// failure timer is in seconds, not deciseconds, so we need to convert
 	energy_fail(disrupt_duration * 0.1)
 	return TRUE
 
 /obj/machinery/power/apc/on_set_is_operational(old_value)
+	procstart = null
+	src.procstart = null
 	update_area_power_usage(!old_value)
 
 /obj/machinery/power/apc/update_name(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(auto_name)
 		name = "\improper [get_area_name(area, TRUE)] APC"
 
 /obj/machinery/power/apc/proc/assign_to_area(area/target_area = get_area(src))
+	procstart = null
+	src.procstart = null
 	if(area == target_area)
 		return
 
@@ -307,6 +323,8 @@
 	update_appearance(UPDATE_NAME)
 
 /obj/machinery/power/apc/proc/update_area_power_usage(state)
+	procstart = null
+	src.procstart = null
 	//apc is non functional so force disable
 	if(state && (has_electronics != APC_ELECTRONICS_SECURED || (machine_stat & (BROKEN | MAINT)) || QDELETED(cell)))
 		state = FALSE
@@ -322,6 +340,8 @@
 	area.power_change()
 
 /obj/machinery/power/apc/proc/disconnect_from_area()
+	procstart = null
+	src.procstart = null
 	if(isnull(area))
 		return
 
@@ -330,6 +350,8 @@
 	area = null
 
 /obj/machinery/power/apc/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == cell)
 		cell = null
@@ -339,6 +361,8 @@
 			SStgui.update_uis(src)
 
 /obj/machinery/power/apc/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & BROKEN)
 		if(opened != APC_COVER_REMOVED)
@@ -362,6 +386,8 @@
 			. += "The cover is closed."
 
 /obj/machinery/power/apc/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		operating = FALSE
@@ -376,12 +402,16 @@
 		update_appearance()
 
 /obj/machinery/power/apc/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Apc", name)
 		ui.open()
 
 /obj/machinery/power/apc/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list(
 		"locked" = locked,
 		"failTime" = failure_timer,
@@ -436,6 +466,8 @@
 	return data
 
 /obj/machinery/power/apc/proc/connect_remote_access(mob/remote_user)
+	procstart = null
+	src.procstart = null
 	if(opened)
 		return
 	remote_control_user = remote_user
@@ -455,6 +487,8 @@
  * mute - whether the APC should announce the disconnection locally
  */
 /obj/machinery/power/apc/proc/disconnect_remote_access(mute = FALSE)
+	procstart = null
+	src.procstart = null
 	// nothing to disconnect from
 	if(isnull(remote_control_user))
 		return
@@ -468,11 +502,15 @@
 	remote_control_user = null
 
 /obj/machinery/power/apc/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!QDELETED(remote_control_user) && user == remote_control_user)
 		. = UI_INTERACTIVE
 
 /obj/machinery/power/apc/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/user = ui.user
 
@@ -544,12 +582,16 @@
 	return TRUE
 
 /obj/machinery/power/apc/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user == remote_control_user)
 		disconnect_remote_access()
 
 /// Returns a list of lights powered/controlled by src
 /obj/machinery/power/apc/proc/get_lights()
+	procstart = null
+	src.procstart = null
 	var/list/lights = list()
 	for(var/list/zlevel_turfs as anything in area.get_zlevel_turf_lists())
 		for(var/turf/area_turf as anything in zlevel_turfs)
@@ -562,6 +604,8 @@
  * This adds up the total static power usage for the apc's area, then draw that power usage from the grid or APC cell.
  */
 /obj/machinery/power/apc/proc/early_process()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(cell) && cell.charge < cell.maxcharge)
 		last_charging = charging
 		charging = APC_NOT_CHARGING
@@ -582,6 +626,8 @@
 			cell.use(total_static_energy_usage - grid_used, force = TRUE)
 
 /obj/machinery/power/apc/proc/late_process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(icon_update_needed)
 		update_appearance()
 	if(machine_stat & (BROKEN|MAINT))
@@ -687,6 +733,8 @@
 
 // charge until the battery is full or to the treshold of the provided channel
 /obj/machinery/power/apc/proc/charge_channel(channel = null, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!cell || shorted || !operating || !chargemode || !surplus() || !cell.used_charge())
 		return
 
@@ -719,6 +767,8 @@
 		charging = APC_CHARGING
 
 /obj/machinery/power/apc/proc/reset(wire)
+	procstart = null
+	src.procstart = null
 	switch(wire)
 		if(WIRE_IDSCAN)
 			locked = TRUE
@@ -736,27 +786,39 @@
 
 // overload all the lights in this APC area
 /obj/machinery/power/apc/proc/overload_lighting()
+	procstart = null
+	src.procstart = null
 	if(!operating || shorted)
 		return
 	if(cell && cell.use(0.02 * STANDARD_BATTERY_CHARGE))
 		INVOKE_ASYNC(src, PROC_REF(break_lights))
 
 /obj/machinery/power/apc/proc/break_lights()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/light/breaked_light as anything in get_lights())
 		breaked_light.on = TRUE
 		breaked_light.break_light_tube()
 		CHECK_TICK
 
 /obj/machinery/power/apc/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return (exposed_temperature > 2000)
 
 /obj/machinery/power/apc/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	take_damage(min(exposed_temperature/100, 10), BURN)
 
 /obj/machinery/power/apc/proc/report()
+	procstart = null
+	src.procstart = null
 	return "[area.name] : [equipment]/[lighting]/[environ] ([lastused_total]) : [cell? cell.percent() : "N/C"] ([charging])"
 
 /obj/machinery/power/apc/proc/grey_tide(datum/source, list/grey_tide_areas)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!is_station_level(z))
@@ -771,36 +833,52 @@
 
 ///Used for cell_5k apc helper, which installs 5k cell into apc.
 /obj/machinery/power/apc/proc/install_cell_5k()
+	procstart = null
+	src.procstart = null
 	cell_type = /obj/item/stock_parts/power_store/battery/upgraded
 	cell = new cell_type(src)
 
 /// Used for cell_10k apc helper, which installs 10k cell into apc.
 /obj/machinery/power/apc/proc/install_cell_10k()
+	procstart = null
+	src.procstart = null
 	cell_type = /obj/item/stock_parts/power_store/battery/high
 	cell = new cell_type(src)
 
 /// Used for unlocked apc helper, which unlocks the apc.
 /obj/machinery/power/apc/proc/unlock()
+	procstart = null
+	src.procstart = null
 	locked = FALSE
 
 /// Used for syndicate_access apc helper, which sets apc's required access to syndicate_access.
 /obj/machinery/power/apc/proc/give_syndicate_access()
+	procstart = null
+	src.procstart = null
 	req_access = list(ACCESS_SYNDICATE)
 
 ///Used for away_general_access apc helper, which set apc's required access to away_general_access.
 /obj/machinery/power/apc/proc/give_away_general_access()
+	procstart = null
+	src.procstart = null
 	req_access = list(ACCESS_AWAY_GENERAL)
 
 /// Used for no_charge apc helper, which sets apc charge to 0%.
 /obj/machinery/power/apc/proc/set_no_charge()
+	procstart = null
+	src.procstart = null
 	cell.charge = 0
 
 /// Used for full_charge apc helper, which sets apc charge to 100%.
 /obj/machinery/power/apc/proc/set_full_charge()
+	procstart = null
+	src.procstart = null
 	cell.charge = cell.maxcharge
 
 /// Returns the cell's current charge.
 /obj/machinery/power/apc/proc/charge()
+	procstart = null
+	src.procstart = null
 	return cell.charge
 
 /*Power module, used for APC construction*/
@@ -812,6 +890,8 @@
 
 /// Returns the amount of time it will take the APC at its current trickle charge rate to reach a charge level. If the APC is functionally not charging, returns null.
 /obj/machinery/power/apc/proc/time_to_charge(joules)
+	procstart = null
+	src.procstart = null
 	var/required_joules = joules - charge()
 	var/trickle_charge_power = energy_to_power(area.energy_usage[AREA_USAGE_APC_CHARGE])
 	if(trickle_charge_power >= 1 KILO WATTS) // require at least a bit of charging

@@ -7,19 +7,27 @@
 	should_update_preview = FALSE
 
 /datum/preference/choiced/ai_hologram_display/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return assoc_to_keys(GLOB.ai_hologram_icons) + "Random"
 
 /datum/preference/choiced/ai_hologram_display/icon_for(value)
+	procstart = null
+	src.procstart = null
 	if (value == "Random")
 		return uni_icon('icons/mob/silicon/ai.dmi', "questionmark")
 	else
 		return uni_icon(GLOB.ai_hologram_icons[value], GLOB.ai_hologram_icon_state[value])
 
 /datum/preference/choiced/ai_hologram_display/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if (!..(preferences))
 		return FALSE
 
 	return istype(preferences.get_highest_priority_job(), /datum/job/ai)
 
 /datum/preference/choiced/ai_hologram_display/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return

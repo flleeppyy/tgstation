@@ -22,6 +22,8 @@
 	var/maximum_amount = 10
 
 /datum/component/circuit_component_add_port/Initialize(list/port_list, add_action, remove_action, port_type, is_output = FALSE, prefix = "Port", order = 1, minimum_amount = 1, maximum_amount = 10)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(parent, /obj/item/circuit_component))
 		return COMPONENT_INCOMPATIBLE
@@ -40,11 +42,15 @@
 			port_list += add_port()
 
 /datum/component/circuit_component_add_port/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_CIRCUIT_COMPONENT_PERFORM_ACTION, PROC_REF(on_action))
 	RegisterSignal(parent, COMSIG_CIRCUIT_COMPONENT_SAVE_DATA, PROC_REF(on_data_saved))
 	RegisterSignal(parent, COMSIG_CIRCUIT_COMPONENT_LOAD_DATA, PROC_REF(on_data_loaded))
 
 /datum/component/circuit_component_add_port/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_CIRCUIT_COMPONENT_PERFORM_ACTION,
 		COMSIG_CIRCUIT_COMPONENT_SAVE_DATA,
@@ -52,6 +58,8 @@
 	))
 
 /datum/component/circuit_component_add_port/proc/on_action(obj/item/circuit_component/component, mob/user, action)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(length(port_list))
 		/// Take the port type of the first stored list element, useful if the types of the ports change
@@ -70,6 +78,8 @@
 			component.remove_input_port(pop(port_list))
 
 /datum/component/circuit_component_add_port/proc/add_port()
+	procstart = null
+	src.procstart = null
 	var/obj/item/circuit_component/component = parent
 	var/list/arguments = list("[prefix] [length(port_list) + 1]", port_type, order = src.order + (length(port_list) + 1) * 0.001)
 	if(is_output)
@@ -78,10 +88,14 @@
 		return component.add_input_port(arglist(arguments))
 
 /datum/component/circuit_component_add_port/proc/on_data_saved(datum/source, list/data)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	data["port_count"] = length(port_list)
 
 /datum/component/circuit_component_add_port/proc/on_data_loaded(datum/source, list/data)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/count = data["port_count"]
 

@@ -6,6 +6,8 @@
 	cooldown_time = 3 SECONDS
 
 /datum/action/cooldown/mob_cooldown/meteors/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	disable_cooldown_actions()
 	create_meteors(target_atom)
 	StartCooldown()
@@ -13,6 +15,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/meteors/proc/create_meteors(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return
 	target.visible_message(span_boldwarning("Fire rains from the sky!"))

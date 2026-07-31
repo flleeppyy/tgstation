@@ -7,6 +7,8 @@
 	var/greet = ""
 
 /obj/item/book/granter/martial/can_learn(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!martial)
 		CRASH("Someone attempted to learn [type], which did not have a martial arts set.")
 	if(!isliving(user))
@@ -17,10 +19,14 @@
 	return TRUE
 
 /obj/item/book/granter/martial/on_reading_start(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You start reading about [martial_name]..."))
 	return TRUE
 
 /obj/item/book/granter/martial/on_reading_finished(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.mind)
 		if(!user.mind.AddComponent(/datum/component/mindbound_martial_arts, martial))
 			to_chat(user, span_warning("You attempt to learn [martial_name] from [src], but it doesn't stick."))

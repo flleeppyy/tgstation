@@ -18,10 +18,14 @@
 	var/next_custom_outfit = 1
 
 /datum/action/chameleon_outfit/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	outfit_options = get_initial_outfits()
 
 /datum/action/chameleon_outfit/proc/get_initial_outfits()
+	procstart = null
+	src.procstart = null
 	var/static/list/standard_outfit_options
 	if(!standard_outfit_options)
 		standard_outfit_options = list()
@@ -32,6 +36,8 @@
 	return standard_outfit_options
 
 /datum/action/chameleon_outfit/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || applying)
 		return
@@ -48,6 +54,8 @@
 	return .
 
 /datum/action/chameleon_outfit/proc/save_current_outfit(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/saved_paths = list()
 	for(var/datum/action/item_action/chameleon/change/change_action in owner.actions)
 		if(change_action.active_type)
@@ -56,6 +64,8 @@
 	save_outfit(user, saved_paths)
 
 /datum/action/chameleon_outfit/proc/save_outfit(mob/user, list/saved_paths)
+	procstart = null
+	src.procstart = null
 	if(!length(saved_paths))
 		owner.balloon_alert(user, "no outfit saved!")
 		return
@@ -73,6 +83,8 @@
 	next_custom_outfit += 1
 
 /datum/action/chameleon_outfit/proc/select_outfit(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/all_options = list()
 	if(LAZYLEN(custom_outfits))
 		all_options += "--- Custom outfits ---"
@@ -105,6 +117,8 @@
  * * outfit_types - optinal, list of typepaths to apply. If null, defaults to all items in the passed outfit. This list is mutated!
  */
 /datum/action/chameleon_outfit/proc/apply_outfit(datum/outfit/outfit, list/outfit_types)
+	procstart = null
+	src.procstart = null
 	if(isnull(outfit_types))
 		outfit_types = outfit.get_chameleon_disguise_info()
 

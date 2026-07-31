@@ -20,16 +20,22 @@
 	var/fire_sound = 'sound/items/weapons/gun/general/cannon.ogg'
 
 /obj/structure/cannon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(charge_size)
 	AddElement(/datum/element/simple_rotation)
 
 /obj/structure/cannon/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("[src] accepts gunpowder or welding fuel.")
 	. += span_warning("Using welding fuel will weaken the force of the projectile fired.")
 
 /obj/structure/cannon/proc/fire()
+	procstart = null
+	src.procstart = null
 	for(var/mob/shaken_mob in urange(10, src))
 		if(!IS_UNCONSCIOUS_OR_CRIT(shaken_mob))
 			shake_camera(shaken_mob, 3, 1)
@@ -48,6 +54,8 @@
 	charge_ignited = FALSE
 
 /obj/structure/cannon/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!anchorable_cannon)
 		return FALSE
@@ -55,6 +63,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/cannon/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(charge_ignited)
 		balloon_alert(user, "it's gonna fire!")
 		return ITEM_INTERACT_BLOCKING
@@ -129,6 +139,8 @@
 	var/fires_before_deconstruction = 5
 
 /obj/structure/cannon/trash/fire()
+	procstart = null
+	src.procstart = null
 	var/explode_chance = 10
 	var/used_alt_fuel = reagents.has_reagent(/datum/reagent/fuel, charge_size)
 	if(used_alt_fuel)
@@ -146,6 +158,8 @@
 		qdel(src)
 
 /obj/structure/cannon/trash/Destroy()
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/iron/five(src.loc)
 	new /obj/item/stack/rods(src.loc)
 	. = ..()
@@ -157,6 +171,8 @@
 	anchored = FALSE
 
 /obj/structure/cannon/mystery_box/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "falconet_patina"
 	reagents.add_reagent(/datum/reagent/gunpowder, charge_size)

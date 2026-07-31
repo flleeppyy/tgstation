@@ -15,6 +15,8 @@
  * Overridden by the various subtypes of plant genes to format their respective names.
  */
 /datum/plant_gene/proc/get_name()
+	procstart = null
+	src.procstart = null
 	return name
 
 /*
@@ -25,11 +27,15 @@
  * Returns TRUE if the seed can take the gene, and FALSE otherwise.
  */
 /datum/plant_gene/proc/can_add(obj/item/seeds/our_seed)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	return TRUE
 
 /// Copies over vars and information about our current gene to a new gene and returns the new instance of gene.
 /datum/plant_gene/proc/Copy()
+	procstart = null
+	src.procstart = null
 	var/datum/plant_gene/new_gene = new type
 	new_gene.mutability_flags = mutability_flags
 	return new_gene
@@ -40,6 +46,8 @@
  * new_seed - the seed being created
  */
 /datum/plant_gene/proc/on_new_seed(obj/item/seeds/new_seed)
+	procstart = null
+	src.procstart = null
 	return // Not implemented
 
 /*
@@ -49,6 +57,8 @@
  * old_seed - our seed, before being removed
  */
 /datum/plant_gene/proc/on_removed(obj/item/seeds/old_seed)
+	procstart = null
+	src.procstart = null
 	return // Not implemented
 
 /// Reagent genes store a reagent ID and reagent ratio.
@@ -61,6 +71,8 @@
 	var/rate = 0.04
 
 /datum/plant_gene/reagent/get_name()
+	procstart = null
+	src.procstart = null
 	var/formatted_name
 	if(!(mutability_flags & PLANT_GENE_REMOVABLE))
 		formatted_name += "Fragile "
@@ -74,6 +86,8 @@
  * new_reagent_id - typepath of the reagent we're setting this gene to
  */
 /datum/plant_gene/reagent/proc/set_reagent(new_reagent_id)
+	procstart = null
+	src.procstart = null
 	reagent_id = new_reagent_id
 
 	var/datum/reagent/found_reagent = GLOB.chemical_reagents_list[new_reagent_id]
@@ -81,12 +95,16 @@
 		name = found_reagent.name
 
 /datum/plant_gene/reagent/New(new_reagent_id, new_reagent_rate = 0.04)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(new_reagent_id)
 		set_reagent(new_reagent_id)
 		rate = new_reagent_rate
 
 /datum/plant_gene/reagent/Copy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/plant_gene/reagent/new_reagent_gene = .
 	new_reagent_gene.name = name
@@ -95,6 +113,8 @@
 	return
 
 /datum/plant_gene/reagent/can_add(obj/item/seeds/our_seed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -109,6 +129,8 @@
  * Called when plants are crossbreeding, this looks for two matching reagent_ids, where the rates are greater, in order to upgrade.
  */
 /datum/plant_gene/reagent/proc/try_upgrade_gene(obj/item/seeds/seed)
+	procstart = null
+	src.procstart = null
 	for(var/datum/plant_gene/reagent/reagent in seed.genes)
 		if(reagent.reagent_id != reagent_id || reagent.rate <= rate)
 			continue
@@ -128,12 +150,16 @@
 	var/list/obj/item/seeds/seed_blacklist
 
 /datum/plant_gene/trait/Copy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/plant_gene/trait/new_trait_gene = .
 	new_trait_gene.rate = rate
 	return
 
-/datum/plant_gene/trait/get_name() // Used for manipulator display and gene disk name.
+/datum/plant_gene/trait/get_name()
+	procstart = null
+	src.procstart = null // Used for manipulator display and gene disk name.
 	var/formatted_name
 	if(!(mutability_flags & PLANT_GENE_REMOVABLE))
 		if(!(mutability_flags & PLANT_GENE_GRAFTABLE))
@@ -149,6 +175,8 @@
  * source_seed - the seed genes we're adding the trait too
  */
 /datum/plant_gene/trait/can_add(obj/item/seeds/source_seed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -171,6 +199,8 @@
  * newloc - the loc of the plant
  */
 /datum/plant_gene/trait/proc/on_new_plant(obj/item/our_plant, newloc)
+	procstart = null
+	src.procstart = null
 	// Plants should always have seeds, but if a plant gene is somehow being instantiated on a plant with no seed, stop initializing genes
 	// (Plants hold their genes on their seeds, so we can't really add them to something that doesn't exist)
 	if(isnull(our_plant.get_plant_seed()))
@@ -189,6 +219,8 @@
  * * seed - the seed being placed in the tray
  */
 /datum/plant_gene/trait/proc/on_plant_in_tray(obj/machinery/hydroponics/tray, obj/item/seeds/seed)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -199,10 +231,14 @@
  * * seed - the seed being removed from the tray
  */
 /datum/plant_gene/trait/proc/on_unplanted_from_tray(obj/machinery/hydroponics/tray, obj/item/seeds/seed)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Add on any unique examine text to the plant's examine text.
 /datum/plant_gene/trait/proc/examine(obj/item/our_plant, mob/examiner, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += span_info("[description]")
@@ -217,6 +253,8 @@
 
 // Register a signal that our plant can be squashed on add.
 /datum/plant_gene/trait/squash/on_new_plant(obj/item/food/grown/our_plant, newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -233,6 +271,8 @@
  * target - the atom being hit by this squashed plant.
  */
 /datum/plant_gene/trait/squash/proc/squash_plant(obj/item/food/grown/our_plant, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/turf/our_turf = get_turf(target)
@@ -260,6 +300,8 @@
 	qdel(our_plant)
 
 /datum/plant_gene/trait/squash/proc/squash_plant_if_not_caught(datum/source, atom/hit_atom, datum/thrownthing/throwing_datum, caught)
+	procstart = null
+	src.procstart = null
 	if(!caught)
 		squash_plant(source, hit_atom)
 
@@ -275,6 +317,8 @@
 	mutability_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
 
 /datum/plant_gene/trait/slip/on_new_plant(obj/item/our_plant, newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -293,6 +337,8 @@
 
 /// On slip, sends a signal that our plant was slipped on out.
 /datum/plant_gene/trait/slip/proc/handle_slip(obj/item/food/grown/our_plant, mob/slipped_target)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(our_plant, COMSIG_PLANT_ON_SLIP, slipped_target)
 
 /// Prevents instability from being changed BY cross-pollination.
@@ -317,6 +363,8 @@
 	mutability_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
 
 /datum/plant_gene/trait/cell_charge/on_new_plant(obj/item/our_plant, newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -337,6 +385,8 @@
  * target - the atom being zapped by our plant
  */
 /datum/plant_gene/trait/cell_charge/proc/zap_target(obj/item/our_plant, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!iscarbon(target))
@@ -357,6 +407,8 @@
  * feeder - the mob that feed the eater the plant
  */
 /datum/plant_gene/trait/cell_charge/proc/recharge_cells(obj/item/our_plant, mob/living/eater, mob/feeder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	to_chat(eater, span_notice("You feel energized as you bite into [our_plant]."))
@@ -390,12 +442,18 @@
 	var/glow_color = COLOR_BIOLUMINESCENCE_STANDARD
 
 /datum/plant_gene/trait/glow/proc/glow_range(obj/item/seeds/seed)
+	procstart = null
+	src.procstart = null
 	return 1.4 + seed.potency * rate
 
 /datum/plant_gene/trait/glow/proc/glow_power(obj/item/seeds/seed)
+	procstart = null
+	src.procstart = null
 	return max(seed.potency * (rate + 0.01), 0.1)
 
 /datum/plant_gene/trait/glow/on_new_plant(obj/item/our_plant, newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -415,6 +473,8 @@
 	description = "It absorbs light around it."
 
 /datum/plant_gene/trait/glow/shadow/glow_power(obj/item/seeds/seed)
+	procstart = null
+	src.procstart = null
 	return -max(seed.potency*(rate*0.2), 0.2)
 
 /// Colored versions of bioluminescence.
@@ -466,6 +526,8 @@
 	mutability_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
 
 /datum/plant_gene/trait/teleport/on_new_plant(obj/item/our_plant, newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -484,6 +546,8 @@
  * target - the atom targeted by the squash
  */
 /datum/plant_gene/trait/teleport/proc/squash_teleport(obj/item/our_plant, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(target))
@@ -503,6 +567,8 @@
  * target - the carbon targeted that was slipped and was teleported
  */
 /datum/plant_gene/trait/teleport/proc/slip_teleport(obj/item/our_plant, mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	our_plant.investigate_log("slip-teleported [key_name(target)] at [AREACOORD(target)]. Last touched by: [our_plant.fingerprintslast].", INVESTIGATE_BOTANY)
@@ -532,6 +598,8 @@
 	mutability_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
 
 /datum/plant_gene/trait/maxchem/on_new_plant(obj/item/our_plant, newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -570,6 +638,8 @@
 	var/cables_needed_per_battery = 5
 
 /datum/plant_gene/trait/battery/on_new_plant(obj/item/our_plant, newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -607,6 +677,8 @@
  * user - the person hitting the plant with an item
  */
 /datum/plant_gene/trait/battery/proc/make_battery(obj/item/our_plant, obj/item/hit_item, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(hit_item, /obj/item/stack/cable_coil))
@@ -647,6 +719,8 @@
 	trait_flags = TRAIT_SHOW_EXAMINE
 
 /datum/plant_gene/trait/stinging/on_new_plant(obj/item/our_plant, newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -661,6 +735,8 @@
  * target - the atom being hit on thrown or slipping on our plant
  */
 /datum/plant_gene/trait/stinging/proc/prickles_inject(obj/item/our_plant, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(target) || !our_plant.reagents?.total_volume)
@@ -683,6 +759,8 @@
 	mutability_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
 
 /datum/plant_gene/trait/smoke/on_new_plant(obj/item/our_plant, newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -696,6 +774,8 @@
  * target - the atom the plant was squashed on
  */
 /datum/plant_gene/trait/smoke/proc/make_smoke(obj/item/our_plant, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	our_plant.investigate_log("made smoke at [AREACOORD(target)]. Last touched by: [our_plant.fingerprintslast].", INVESTIGATE_BOTANY)
@@ -713,14 +793,20 @@
 	mutability_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
 
 /datum/plant_gene/trait/fire_resistance/on_new_seed(obj/item/seeds/new_seed)
+	procstart = null
+	src.procstart = null
 	if(!(new_seed.resistance_flags & FIRE_PROOF))
 		new_seed.resistance_flags |= FIRE_PROOF
 
 /datum/plant_gene/trait/fire_resistance/on_removed(obj/item/seeds/old_seed)
+	procstart = null
+	src.procstart = null
 	if(old_seed.resistance_flags & FIRE_PROOF)
 		old_seed.resistance_flags &= ~FIRE_PROOF
 
 /datum/plant_gene/trait/fire_resistance/on_new_plant(obj/item/our_plant, newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -736,9 +822,13 @@
 	mutability_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
 
 /datum/plant_gene/trait/invasive/on_new_seed(obj/item/seeds/new_seed)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(new_seed, COMSIG_SEED_ON_GROW, PROC_REF(try_spread))
 
 /datum/plant_gene/trait/invasive/on_removed(obj/item/seeds/old_seed)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(old_seed, COMSIG_SEED_ON_GROW)
 
 /*
@@ -748,6 +838,8 @@
  * our_tray - the hydroponics tray we're currently in
  */
 /datum/plant_gene/trait/invasive/proc/try_spread(obj/item/seeds/our_seed, obj/machinery/hydroponics/our_tray)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(prob(100 - (5 * (11 - our_seed.production))))
@@ -768,6 +860,8 @@
  * origin_tray - the tray we're currently in
  */
 /datum/plant_gene/trait/invasive/proc/spread_seed(obj/machinery/hydroponics/target_tray, obj/machinery/hydroponics/origin_tray)
+	procstart = null
+	src.procstart = null
 	if(target_tray.myseed) // Check if there's another seed in the next tray.
 		if(target_tray.myseed.type == origin_tray.myseed.type && target_tray.plant_status != HYDROTRAY_PLANT_DEAD)
 			return FALSE // It should not destroy its own kind.
@@ -828,6 +922,8 @@
 	var/list/sounds = list('sound/items/sitcom_laugh/sitcomLaugh1.ogg', 'sound/items/sitcom_laugh/sitcomLaugh2.ogg', 'sound/items/sitcom_laugh/sitcomLaugh3.ogg')
 
 /datum/plant_gene/trait/plant_laughter/on_new_plant(obj/item/our_plant, newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -845,6 +941,8 @@
  * target - the atom that slipped on the plant
  */
 /datum/plant_gene/trait/plant_laughter/proc/laughter(obj/item/our_plant, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	our_plant.audible_message(span_notice("[our_plant] lets out burst of laughter."))
@@ -865,6 +963,8 @@
 	var/mutable_appearance/googly
 
 /datum/plant_gene/trait/eyes/on_new_plant(obj/item/our_plant, newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -882,6 +982,8 @@
 	trait_flags = TRAIT_SHOW_EXAMINE
 
 /datum/plant_gene/trait/sticky/on_new_plant(obj/item/our_plant, newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -955,6 +1057,8 @@
 	mutability_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
 
 /datum/plant_gene/trait/preserved/on_new_plant(obj/item/our_plant, newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

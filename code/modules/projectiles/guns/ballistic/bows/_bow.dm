@@ -28,15 +28,21 @@
 	var/drawn = FALSE
 
 /obj/item/gun/ballistic/bow/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state][drawn ? "_drawn" : ""]"
 
 /obj/item/gun/ballistic/bow/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(chambered)
 		. += "[chambered.base_icon_state][drawn ? "_drawn" : ""]"
 
 /obj/item/gun/ballistic/bow/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(chambered))
 		return CLICK_ACTION_BLOCKING
 
@@ -46,11 +52,15 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/gun/ballistic/bow/proc/drop_arrow()
+	procstart = null
+	src.procstart = null
 	chambered.forceMove(drop_location())
 	chambered = magazine.get_round()
 	update_appearance()
 
 /obj/item/gun/ballistic/bow/chamber_round(spin_cylinder, replace_new_round)
+	procstart = null
+	src.procstart = null
 	if(chambered || !magazine)
 		return
 	chambered = magazine.get_round()
@@ -58,10 +68,14 @@
 	update_appearance()
 
 /obj/item/gun/ballistic/bow/clear_chambered(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	drawn = FALSE
 
 /obj/item/gun/ballistic/bow/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!chambered)
 		balloon_alert(user, "no arrow nocked!")
 		return
@@ -71,6 +85,8 @@
 	update_appearance()
 
 /obj/item/gun/ballistic/bow/try_fire_gun(atom/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(!chambered)
 		return FALSE
 	if(!drawn)
@@ -80,11 +96,15 @@
 	return ..() //fires, removing the arrow
 
 /obj/item/gun/ballistic/bow/postfire_empty_checks(last_shot_succeeded)
+	procstart = null
+	src.procstart = null
 	if(!chambered && !get_ammo())
 		drawn = FALSE
 		update_appearance()
 
 /obj/item/gun/ballistic/bow/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot != ITEM_SLOT_HANDS && chambered)
 		balloon_alert(user, "the arrow falls out!")
@@ -94,10 +114,14 @@
 
 
 /obj/item/gun/ballistic/bow/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(drop_arrow_if_not_held)), 0.1 SECONDS)
 
 /obj/item/gun/ballistic/bow/proc/drop_arrow_if_not_held()
+	procstart = null
+	src.procstart = null
 	if(ismob(loc) || !chambered)
 		return
 	if(drawn)
@@ -105,6 +129,8 @@
 	drop_arrow()
 
 /obj/item/gun/ballistic/bow/shoot_with_empty_chamber(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return //no clicking sounds please
 
 /obj/item/ammo_box/magazine/internal/bow

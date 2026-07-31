@@ -7,6 +7,8 @@
  * This proc checks the surrounding of the core to ensure that the machine has been build correctly, returns false if there is a missing piece/wrong placed one
  */
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/check_part_connectivity()
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	if(!anchored || panel_open)
 		return FALSE
@@ -84,6 +86,8 @@
  * * -user: the player doing the action
  */
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/activate(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(active)
 		to_chat(user, span_notice("You already activated the machine."))
 		return
@@ -116,6 +120,8 @@
  * * only_signals: default FALSE, if true the proc will not call the deactivate() proc
  */
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/unregister_signals(only_signals = FALSE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(linked_interface)
 		UnregisterSignal(linked_interface, COMSIG_QDELETING)
@@ -135,6 +141,8 @@
  * Deactivate the various machines by setting the active var to false, updates the machines icon and set the linked machine vars to null
  */
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/deactivate()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return
 	active = FALSE
@@ -163,6 +171,8 @@
 	QDEL_NULL(soundloop)
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/assert_gases()
+	procstart = null
+	src.procstart = null
 	//Assert the gases that will be used/created during the process
 
 	internal_fusion.assert_gas(/datum/gas/antinoblium)
@@ -178,12 +188,16 @@
  * Updates all related pipenets from all connected components
  */
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/update_pipenets()
+	procstart = null
+	src.procstart = null
 	update_parents()
 	linked_input.update_parents()
 	linked_output.update_parents()
 	linked_moderator.update_parents()
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/update_temperature_status(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	fusion_temperature_archived = fusion_temperature
 	fusion_temperature = internal_fusion.temperature
 	moderator_temperature_archived = moderator_temperature
@@ -215,6 +229,8 @@
  * Infrequently plays accent sounds, and adjusts main loop parameters
  */
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/play_ambience(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	// We play delam/neutral sounds at a rate determined by power and critical_threshold_proximity
 	if(last_accent_sound < world.time && SPT_PROB(10, seconds_per_tick))
 		var/aggression = min(((critical_threshold_proximity / 800) * ((power_level) / 5)), 1.0) * 100
@@ -235,6 +251,8 @@
  * Getter for fusion fuel moles
  */
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/check_fuel()
+	procstart = null
+	src.procstart = null
 	if(!selected_fuel)
 		return FALSE
 	if(!internal_fusion.total_moles())
@@ -250,6 +268,8 @@
  * Check the power use of the machine, return TRUE if there is enough power in the powernet
  */
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/check_power_use()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (NOPOWER|BROKEN))
 		return FALSE
 	if(use_power == ACTIVE_POWER_USE)
@@ -259,6 +279,8 @@
 
 ///Checks if the gases in the input are the ones needed by the recipe
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/check_gas_requirements()
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/contents = linked_input.airs[1]
 	for(var/gas_type in selected_fuel.requirements)
 		if(!contents.moles[gas_type])
@@ -267,6 +289,8 @@
 
 ///Removes the gases from the internal gasmix when the recipe is changed
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/dump_gases()
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/remove = internal_fusion.remove(internal_fusion.total_moles())
 	linked_output.airs[1].merge(remove)
 	internal_fusion.garbage_collect()
@@ -277,6 +301,8 @@
  * Check the integrity level and returns the status of the machine
  */
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/get_status()
+	procstart = null
+	src.procstart = null
 	var/integrity = get_integrity_percent()
 	if(integrity < HYPERTORUS_MELTING_PERCENT)
 		return HYPERTORUS_MELTING
@@ -299,6 +325,8 @@
  * Play a sound from the machine, the type depends on the status of the hfr
  */
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/alarm()
+	procstart = null
+	src.procstart = null
 	switch(get_status())
 		if(HYPERTORUS_MELTING)
 			playsound(src, 'sound/announcer/alarm/bloblarm.ogg', 100, FALSE, 40, 30, falloff_distance = 10)
@@ -313,6 +341,8 @@
  * Getter for the machine integrity
  */
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/get_integrity_percent()
+	procstart = null
+	src.procstart = null
 	var/integrity = critical_threshold_proximity / melting_point
 	integrity = round(100 - integrity * 100, 0.01)
 	integrity = integrity < 0 ? 0 : integrity
@@ -322,6 +352,8 @@
  * Get how charged the area's APC is
  */
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/get_area_cell_percent()
+	procstart = null
+	src.procstart = null
 	// Make sure to get APC levels from the same area the core draws from
 	// Just in case people build an HFR across boundaries
 	var/area/area = get_area(src)
@@ -341,6 +373,8 @@
  * Broadcast messages into engi and common radio
  */
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/check_alert()
+	procstart = null
+	src.procstart = null
 	if(critical_threshold_proximity < warning_point)
 		return
 	if((REALTIMEOFDAY - lastwarning) / 10 >= WARNING_TIME_DELAY)
@@ -367,6 +401,8 @@
 		countdown()
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. & EMP_PROTECT_SELF)
 		return
@@ -378,6 +414,8 @@
  * Called to explain in radio what the issues are with the HFR
  */
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/send_radio_explanation()
+	procstart = null
+	src.procstart = null
 
 	if(warning_damage_flags & HYPERTORUS_FLAG_EMPED)
 		var/list/characters = list()
@@ -404,6 +442,8 @@
  * Called when the damage has reached critical levels, start the countdown before the destruction, calls meltdown()
  */
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/countdown()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	if(final_countdown) // We're already doing it go away
@@ -449,6 +489,8 @@
  * Create the explosion + the gas emission before deleting the machine core.
  */
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/meltdown()
+	procstart = null
+	src.procstart = null
 	var/flash_explosion = 0
 	var/light_impact_explosion = 0
 	var/heavy_impact_explosion = 0
@@ -573,6 +615,8 @@
  * Checks for any hypertorus part that is cracked and returns it if found, otherwise returns null.
  */
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/check_cracked_parts()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/atmospherics/components/unary/hypertorus/part in machine_parts)
 		if(part.cracked)
 			return part
@@ -581,7 +625,9 @@
  * Causes a random hypertorus part in machine_parts to become cracked and update their appearance.
  * Returns the hypertorus part.
  */
-/obj/machinery/atmospherics/components/unary/hypertorus/core/proc/create_crack() as /obj/machinery/atmospherics/components/unary/hypertorus
+/obj/machinery/atmospherics/components/unary/hypertorus/core/proc/create_crack()  as /obj/machinery/atmospherics/components/unary/hypertorus
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/atmospherics/components/unary/hypertorus/part = pick(machine_parts)
 	part.cracked = TRUE
 	part.update_appearance(UPDATE_ICON)
@@ -591,6 +637,8 @@
  * Takes a ratio portion of target_mix and moves it to the origin's location's air.
  */
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/spill_gases(obj/origin, datum/gas_mixture/target_mix, ratio)
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/remove_mixture = target_mix.remove_ratio(ratio)
 	var/turf/origin_turf = origin.loc
 	if(!origin_turf)
@@ -601,6 +649,8 @@
  * Processes leaking from moderator hypercriticality.
  */
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/process_moderator_overflow(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/atmospherics/components/unary/hypertorus/cracked_part = check_cracked_parts()
 	// Processing of a preexisting crack if any.
 	if (cracked_part)

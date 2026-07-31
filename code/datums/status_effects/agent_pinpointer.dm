@@ -25,6 +25,8 @@
 	var/atom/movable/scan_target
 
 /datum/status_effect/agent_pinpointer/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		qdel(src)
 		return
@@ -33,6 +35,8 @@
 
 ///Show the distance and direction of a scanned target
 /datum/status_effect/agent_pinpointer/proc/point_to_target()
+	procstart = null
+	src.procstart = null
 	if(!scan_target)
 		linked_alert.icon_state = "pinonnull"
 		return
@@ -61,6 +65,8 @@
 
 ///Attempting to locate a nearby target to scan and point towards.
 /datum/status_effect/agent_pinpointer/proc/scan_for_target()
+	procstart = null
+	src.procstart = null
 	scan_target = null
 	if(!owner && !owner.mind)
 		return

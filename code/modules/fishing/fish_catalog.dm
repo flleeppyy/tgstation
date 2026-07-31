@@ -7,16 +7,22 @@
 	starting_content = "Lot of fish stuff" //book wrappers could use cleaning so this is not necessary
 
 /obj/item/book/manual/fish_catalog/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -7, ITEM_SLOT_HANDS)
 
 /obj/item/book/manual/fish_catalog/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "FishCatalog", name)
 		ui.open()
 
 /obj/item/book/manual/fish_catalog/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/fish_info
 	if(!fish_info)
@@ -49,6 +55,8 @@
 	.["sponsored_by"] = AQUARIUM_COMPANY
 
 /obj/item/book/manual/fish_catalog/proc/bait_description(bait)
+	procstart = null
+	src.procstart = null
 	if(ispath(bait))
 		var/obj/bait_item = bait
 		return initial(bait_item.name)
@@ -68,6 +76,8 @@
 		return "something special"
 
 /obj/item/book/manual/fish_catalog/proc/build_fishing_tips(fish_type)
+	procstart = null
+	src.procstart = null
 	var/obj/item/fish/fishy = fish_type
 	. = list()
 	//// Where can it be found - iterate fish sources, how should this handle key
@@ -110,6 +120,8 @@
 	return .
 
 /obj/item/book/manual/fish_catalog/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/fish)
 	)

@@ -17,23 +17,33 @@
 	var/burst_count = 5
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/New(Target, original)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(target, COMSIG_LIVING_HEALTH_UPDATE, PROC_REF(update_status_on_signal))
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, COMSIG_LIVING_HEALTH_UPDATE)
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/set_click_ability(mob/on_who)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/right_click_message = ishuman(owner) ? ", right-click to melt restraints" : (burst_projectile_type ? ", right-click for a burst" : "")
 	to_chat(owner, span_notice("You fill your [ishuman(owner) ? "mouth" : "maw"] with blood. <b>Left-click to spit corrosive blood[right_click_message]!</b>"))
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/unset_click_ability(mob/on_who, refund_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(owner, span_notice("You empty your [ishuman(owner) ? "mouth" : "maw"] of blood."))
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	if (!ishuman(owner) && !istype(owner, /mob/living/basic/blood_worm))
 		return FALSE
 
@@ -51,6 +61,8 @@
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/InterceptClickOn(mob/living/clicker, params, atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		unset_click_ability(owner, refund_cooldown = FALSE)
@@ -79,9 +91,13 @@
 	return TRUE // Intercepts the attack chain.
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	return TRUE // Has to return true, as otherwise the parent proc of InterceptClickOn will return false, canceling the firing of the projectile.
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/proc/fire_normal(mob/living/clicker, modifiers, atom/target)
+	procstart = null
+	src.procstart = null
 	if (target == owner)
 		return
 
@@ -98,6 +114,8 @@
 	owner.changeNext_move(CLICK_CD_RANGE)
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/proc/fire_burst(mob/living/clicker, modifiers, atom/target)
+	procstart = null
+	src.procstart = null
 	if (target == owner)
 		return
 
@@ -121,6 +139,8 @@
 	StartCooldown(10 SECONDS)
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/proc/spit(target, modifiers, projectile_type, count = 1, spread = 0)
+	procstart = null
+	src.procstart = null
 	for (var/i in 1 to count)
 		var/obj/projectile/blood_worm_spit/spit = new projectile_type(owner.loc)
 
@@ -136,6 +156,8 @@
 	worm.adjust_worm_health(-health_cost * count)
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/proc/melt_restraints()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/host = owner
 
 	var/melted_something = FALSE
@@ -167,6 +189,8 @@
 		host.balloon_alert(host, "not restrained!")
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/proc/melt_restraints_in_slot(mob/living/carbon/human/host, slot)
+	procstart = null
+	src.procstart = null
 	var/obj/restraints = host.get_item_by_slot(slot)
 
 	if (!istype(restraints))
@@ -187,11 +211,15 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/proc/finish_melting_restraints(obj/restraints)
+	procstart = null
+	src.procstart = null
 	restraints.visible_message(span_danger("\The [restraints] melt[restraints.p_s()] into a pile of goopy blood!"))
 	new /obj/effect/decal/cleanable/blood/old(get_turf(restraints))
 	qdel(restraints)
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/proc/melt_closet(mob/living/carbon/human/host, obj/structure/closet/closet)
+	procstart = null
+	src.procstart = null
 	if (closet.resistance_flags & (INDESTRUCTIBLE | UNACIDABLE | ACID_PROOF))
 		host.balloon_alert(host, "\the [closet] [closet.p_are()] too tough!")
 		return FALSE
@@ -210,6 +238,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/proc/finish_melting_closet(obj/structure/closet/closet)
+	procstart = null
+	src.procstart = null
 	closet.visible_message(span_danger("\The [closet]'s hinges melt into a pile of goopy blood!"))
 	new /obj/effect/decal/cleanable/blood/old(get_turf(closet))
 
@@ -219,6 +249,8 @@
 	closet.open()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/proc/melt_cocoon(mob/living/carbon/human/host, obj/structure/spider/cocoon/cocoon)
+	procstart = null
+	src.procstart = null
 	if (cocoon.resistance_flags & (INDESTRUCTIBLE | UNACIDABLE | ACID_PROOF))
 		host.balloon_alert(host, "\the [cocoon] [cocoon.p_are()] too tough!")
 		return FALSE
@@ -237,6 +269,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/proc/finish_melting_cocoon(obj/structure/spider/cocoon/cocoon)
+	procstart = null
+	src.procstart = null
 	cocoon.visible_message(span_danger("\The [cocoon] melt[cocoon.p_s()] into a pile of goopy blood!"))
 	new /obj/effect/decal/cleanable/blood/old(get_turf(cocoon))
 	qdel(cocoon)

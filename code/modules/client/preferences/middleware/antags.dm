@@ -12,6 +12,8 @@ GLOBAL_LIST_INIT(non_ruleset_antagonists, list(
 	)
 
 /datum/preference_middleware/antags/get_ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	if (preferences.current_window != PREFERENCE_TAB_CHARACTER_PREFERENCES)
 		return list()
 
@@ -35,11 +37,15 @@ GLOBAL_LIST_INIT(non_ruleset_antagonists, list(
 	return data
 
 /datum/preference_middleware/antags/get_ui_assets()
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/antagonists),
 	)
 
 /datum/preference_middleware/antags/proc/set_antags(list/params, mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 
 	var/sent_antags = params["antags"]
@@ -65,6 +71,8 @@ GLOBAL_LIST_INIT(non_ruleset_antagonists, list(
 	return FALSE
 
 /datum/preference_middleware/antags/proc/get_antag_bans()
+	procstart = null
+	src.procstart = null
 	var/list/antag_bans = list()
 
 	var/is_banned_from_all = is_banned_from(preferences.parent.ckey, ROLE_SYNDICATE)
@@ -75,6 +83,8 @@ GLOBAL_LIST_INIT(non_ruleset_antagonists, list(
 	return antag_bans
 
 /datum/preference_middleware/antags/proc/get_antag_days_left()
+	procstart = null
+	src.procstart = null
 	if (!CONFIG_GET(flag/use_age_restriction_for_jobs))
 		return
 
@@ -87,6 +97,8 @@ GLOBAL_LIST_INIT(non_ruleset_antagonists, list(
 	return antag_days_left
 
 /datum/preference_middleware/antags/proc/get_serialized_antags()
+	procstart = null
+	src.procstart = null
 	var/list/serialized_antags
 
 	if (isnull(serialized_antags))
@@ -102,7 +114,9 @@ GLOBAL_LIST_INIT(non_ruleset_antagonists, list(
  *
  * So this includes stuff like traitor, wizard, fugitive, but does not include wizard apprentice or hypnotized
  */
-/proc/get_all_antag_flags() as /list
+/proc/get_all_antag_flags()
+	procstart = null
+	src.procstart = null
 	var/static/list/antag_flags
 	if(antag_flags)
 		return antag_flags
@@ -124,6 +138,8 @@ GLOBAL_LIST_INIT(non_ruleset_antagonists, list(
  * Returns the number of days more the client's account must be to play the passed in antag
  */
 /client/proc/get_days_to_play_antag(checked_antag_flag)
+	procstart = null
+	src.procstart = null
 	var/static/list/antag_time_limits
 	if(!antag_time_limits)
 		antag_time_limits = list()
@@ -144,6 +160,8 @@ GLOBAL_LIST_INIT(non_ruleset_antagonists, list(
 	var/list/antag_icons = list()
 
 /datum/asset/spritesheet_batched/antagonists/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	var/list/antagonists = GLOB.non_ruleset_antagonists.Copy()
 
 	for (var/datum/dynamic_ruleset/ruleset as anything in subtypesof(/datum/dynamic_ruleset))
@@ -191,5 +209,7 @@ GLOBAL_LIST_INIT(non_ruleset_antagonists, list(
 
 /// Serializes an antag name to be used for preferences UI
 /proc/serialize_antag_name(antag_name)
+	procstart = null
+	src.procstart = null
 	// These are sent through CSS, so they need to be safe to use as class names.
 	return LOWER_TEXT(sanitize_css_class_name(antag_name))

@@ -3,6 +3,8 @@
 	weight = WEIGHT_MOB
 
 /datum/keybinding/living/can_use(client/user)
+	procstart = null
+	src.procstart = null
 	return isliving(user.mob)
 
 /datum/keybinding/living/resist
@@ -13,6 +15,8 @@
 	keybind_signal = COMSIG_KB_LIVING_RESIST_DOWN
 
 /datum/keybinding/living/resist/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -23,6 +27,8 @@
 	return TRUE
 
 /datum/keybinding/living/resist/up(client/user, turf/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -38,6 +44,8 @@
 	keybind_signal = COMSIG_KB_LIVING_LOOKUP_DOWN
 
 /datum/keybinding/living/look_up/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -46,6 +54,8 @@
 	return TRUE
 
 /datum/keybinding/living/look_up/up(client/user, turf/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/L = user.mob
 	L.end_look()
@@ -59,6 +69,8 @@
 	keybind_signal = COMSIG_KB_LIVING_LOOKDOWN_DOWN
 
 /datum/keybinding/living/look_down/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -67,6 +79,8 @@
 	return TRUE
 
 /datum/keybinding/living/look_down/up(client/user, turf/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/L = user.mob
 	L.end_look()
@@ -80,6 +94,8 @@
 	keybind_signal = COMSIG_KB_LIVING_REST_DOWN
 
 /datum/keybinding/living/rest/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -96,6 +112,8 @@
 
 
 /datum/keybinding/living/toggle_combat_mode/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -110,6 +128,8 @@
 	keybind_signal = COMSIG_KB_LIVING_ENABLE_COMBAT_DOWN
 
 /datum/keybinding/living/enable_combat_mode/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -124,6 +144,8 @@
 	keybind_signal = COMSIG_KB_LIVING_DISABLE_COMBAT_DOWN
 
 /datum/keybinding/living/disable_combat_mode/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -138,6 +160,8 @@
 	keybind_signal = COMSIG_KB_LIVING_TOGGLEMOVEINTENT_DOWN
 
 /datum/keybinding/living/toggle_move_intent/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -146,6 +170,8 @@
 	return TRUE
 
 /datum/keybinding/living/toggle_move_intent/up(client/user, turf/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/M = user.mob
 	M.toggle_move_intent()
@@ -159,6 +185,8 @@
 	keybind_signal = COMSIG_KB_LIVING_TOGGLEMOVEINTENTALT_DOWN
 
 /datum/keybinding/living/toggle_move_intent_alternative/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -174,6 +202,8 @@
 	keybind_signal = COMSIG_KB_LIVING_TOGGLETHROWMODE_DOWN
 
 /datum/keybinding/living/toggle_throw_mode/down(client/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -189,6 +219,8 @@
 	keybind_signal = COMSIG_KB_LIVING_HOLDTHROWMODE_DOWN
 
 /datum/keybinding/living/hold_throw_mode/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -196,6 +228,8 @@
 	living_user.throw_mode_on(THROW_MODE_HOLD)
 
 /datum/keybinding/living/hold_throw_mode/up(client/user, turf/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -210,6 +244,8 @@
 	keybind_signal = COMSIG_KB_LIVING_GIVEITEM_DOWN
 
 /datum/keybinding/living/give/can_use(client/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -225,6 +261,8 @@
 	return TRUE
 
 /datum/keybinding/living/give/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -251,6 +289,8 @@
 	keybind_signal = COMSIG_KB_LIVING_STOP_INTERACTIONS_DOWN
 
 /datum/keybinding/living/cancel_interactions/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

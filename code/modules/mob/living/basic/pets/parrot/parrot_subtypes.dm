@@ -4,6 +4,8 @@
 /mob/living/basic/parrot/headsetted
 
 /mob/living/basic/parrot/headsetted/setup_headset()
+	procstart = null
+	src.procstart = null
 	var/headset = pick(
 		/obj/item/radio/headset/headset_cargo,
 		/obj/item/radio/headset/headset_eng,

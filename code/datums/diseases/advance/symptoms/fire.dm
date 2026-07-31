@@ -29,6 +29,8 @@
 	)
 
 /datum/symptom/fire/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -42,6 +44,8 @@
 		infective = TRUE
 
 /datum/symptom/fire/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -68,6 +72,8 @@
 				A.airborne_spread(advanced_stage ? 4 : 2)
 
 /datum/symptom/fire/proc/warn_mob(mob/living/living_mob)
+	procstart = null
+	src.procstart = null
 	if(prob(33.33))
 		living_mob.show_message(span_hear("You hear a crackling noise."), type = MSG_AUDIBLE)
 	else
@@ -112,6 +118,8 @@ Bonus
 	)
 
 /datum/symptom/alkali/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -124,6 +132,8 @@ Bonus
 		chems = TRUE
 
 /datum/symptom/alkali/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -150,6 +160,8 @@ Bonus
 			M.emote("scream")
 
 /datum/symptom/alkali/proc/Alkali_fire_stage_4(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/get_stacks = 6 * power
 	M.adjust_fire_stacks(get_stacks)
 	M.take_overall_damage(burn = get_stacks / 2, required_bodytype = BODYTYPE_ORGANIC)
@@ -158,6 +170,8 @@ Bonus
 	return 1
 
 /datum/symptom/alkali/proc/Alkali_fire_stage_5(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/get_stacks = 8 * power
 	M.adjust_fire_stacks(get_stacks)
 	M.take_overall_damage(burn = get_stacks, required_bodytype = BODYTYPE_ORGANIC)

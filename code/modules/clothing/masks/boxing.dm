@@ -10,6 +10,8 @@
 	actions_types = list(/datum/action/item_action/adjust)
 
 /obj/item/clothing/mask/balaclava/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	adjust_visor(user)
 
 /obj/item/clothing/mask/floortilebalaclava
@@ -25,10 +27,14 @@
 	actions_types = list(/datum/action/item_action/adjust)
 
 /obj/item/clothing/mask/floortilebalaclava/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -5) //tacticool
 
 /obj/item/clothing/mask/floortilebalaclava/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	adjust_visor(user)
 
 /obj/item/clothing/mask/luchador
@@ -40,6 +46,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/clothing/mask/luchador/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/speechmod, replacements = strings("luchador_replacement.json", "luchador"), end_string = " OLE!", end_string_chance = 25, uppercase = TRUE, slots = ITEM_SLOT_MASK)
 

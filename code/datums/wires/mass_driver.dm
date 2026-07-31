@@ -3,10 +3,14 @@
 	proper_name = "Mass Driver"
 
 /datum/wires/mass_driver/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(WIRE_LAUNCH, WIRE_SAFETIES)
 	..()
 
 /datum/wires/mass_driver/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/mass_driver/the_mass_driver = holder
 	switch(wire)
 		if(WIRE_LAUNCH)
@@ -17,6 +21,8 @@
 			holder.visible_message(span_notice("You hear a worrying whirring noise emitting from the mass driver."))
 
 /datum/wires/mass_driver/on_cut(wire, mend, source)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/mass_driver/the_mass_driver = holder
 	switch(wire)
 		if(WIRE_SAFETIES)

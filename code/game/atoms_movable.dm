@@ -144,12 +144,16 @@
 /mutable_appearance/emissive_blocker
 
 /mutable_appearance/emissive_blocker/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Need to do this here because it's overridden by the parent call
 	// This is a microop which is the sole reason why this child exists, because its static this is a really cheap way to set color without setting or checking it every time we create an atom
 	color = EM_BLOCK_COLOR
 
 /atom/movable/Initialize(mapload, ...)
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(faction))
 		faction = string_list(faction)
 
@@ -216,6 +220,8 @@
 			AddComponent(/datum/component/overlay_lighting, is_directional = TRUE, is_beam = TRUE)
 
 /atom/movable/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(language_holder)
 	QDEL_NULL(em_block)
 	QDEL_NULL(drift_handler)
@@ -278,6 +284,8 @@
 		vis_contents.Cut()
 
 /atom/movable/proc/update_emissive_block()
+	procstart = null
+	src.procstart = null
 	// This one is incredible.
 	// `if (x) else { /* code */ }` is surprisingly fast, and it's faster than a switch, which is seemingly not a jump table.
 	// From what I can tell, a switch case checks every single branch individually, although sane, is slow in a hot proc like this.
@@ -301,6 +309,8 @@
 /// This provides proper lighting support alongside just looking nice
 /// Accepts the appearance to make "spaceish", and the turf we're doing this for
 /proc/generate_space_underlay(mutable_appearance/underlay_appearance, turf/generate_for)
+	procstart = null
+	src.procstart = null
 	underlay_appearance.icon = 'icons/turf/space.dmi'
 	underlay_appearance.icon_state = "space"
 	SET_PLANE(underlay_appearance, PLANE_SPACE, generate_for)
@@ -349,6 +359,8 @@
 	underlay_appearance.overlays += turf_mask
 
 /atom/movable/update_overlays()
+	procstart = null
+	src.procstart = null
 	var/list/overlays = ..()
 	var/emissive_block = update_emissive_block()
 	if(emissive_block)
@@ -357,6 +369,8 @@
 	return overlays
 
 /atom/movable/proc/onZImpact(turf/impacted_turf, levels, impact_flags = NONE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(!(impact_flags & ZIMPACT_NO_MESSAGE))
 		visible_message(
@@ -376,6 +390,8 @@
  * z_move_flags: bitflags used for checks in zMove and can_z_move
 */
 /atom/movable/proc/try_step_multiz(direction, z_move_flags = ZMOVE_FLIGHT_FLAGS)
+	procstart = null
+	src.procstart = null
 	if(direction == UP || direction == DOWN)
 		return zMove(direction, null, z_move_flags)
 	return step(src, direction)
@@ -395,6 +411,8 @@
  * * z_move_flags: bitflags used for various checks in both this proc and can_z_move(). See __DEFINES/movement.dm.
  */
 /atom/movable/proc/zMove(dir, turf/target, z_move_flags = ZMOVE_FLIGHT_FLAGS)
+	procstart = null
+	src.procstart = null
 	if(!target)
 		target = can_z_move(dir, get_turf(src), null, z_move_flags)
 		if(!target)
@@ -418,6 +436,8 @@
 
 /// Returns a list of movables that should also be affected when src moves through zlevels, and src.
 /atom/movable/proc/get_z_move_affected(z_move_flags)
+	procstart = null
+	src.procstart = null
 	. = list(src)
 	if(buckled_mobs)
 		. |= buckled_mobs
@@ -445,6 +465,8 @@
  * * rider: A living mob in control of the movable. Only non-null when a mob is riding a vehicle through z-levels.
  */
 /atom/movable/proc/can_z_move(direction, turf/start, turf/destination, z_move_flags = ZMOVE_FLIGHT_FLAGS, mob/living/rider)
+	procstart = null
+	src.procstart = null
 	if(!start)
 		start = get_turf(src)
 		if(!start)
@@ -479,6 +501,8 @@
 	return destination //used by some child types checks and zMove()
 
 /atom/movable/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	var/static/list/banned_edits = list(NAMEOF_STATIC(src, step_x) = TRUE, NAMEOF_STATIC(src, step_y) = TRUE, NAMEOF_STATIC(src, step_size) = TRUE, NAMEOF_STATIC(src, bounds) = TRUE)
 	var/static/list/careful_edits = list(NAMEOF_STATIC(src, bound_x) = TRUE, NAMEOF_STATIC(src, bound_y) = TRUE, NAMEOF_STATIC(src, bound_width) = TRUE, NAMEOF_STATIC(src, bound_height) = TRUE)
 	var/static/list/not_falsey_edits = list(NAMEOF_STATIC(src, bound_width) = TRUE, NAMEOF_STATIC(src, bound_height) = TRUE)
@@ -531,6 +555,8 @@
 
 
 /atom/movable/proc/start_pulling(atom/movable/pulled_atom, state, force = move_force, supress_message = FALSE)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(pulled_atom))
 		return FALSE
 	if(!(pulled_atom.can_be_pulled(src, force)))
@@ -569,6 +595,8 @@
 	return TRUE
 
 /atom/movable/proc/stop_pulling()
+	procstart = null
+	src.procstart = null
 	if(!pulling)
 		return
 	var/atom/movable/old_pulling = set_pulling(null)
@@ -578,6 +606,8 @@
 #define PULLED_WHILE_CRIT_TRAIT "pulled_while_softcrit"
 
 /atom/movable/proc/pulled_mob_stat_change(mob/living/pulled_mob, new_stat, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(new_stat >= SOFT_CRIT)
@@ -586,6 +616,8 @@
 		REMOVE_TRAIT(pulled_mob, TRAIT_IMMOBILIZED, PULLED_WHILE_CRIT_TRAIT)
 
 /atom/movable/proc/set_pulling(new_pulling)
+	procstart = null
+	src.procstart = null
 	if(new_pulling == pulling)
 		return FALSE //null signals there was a change, be sure to return FALSE if none happened here.
 
@@ -616,6 +648,8 @@
 
 ///Reports the event of the change in value of the pulledby variable.
 /atom/movable/proc/set_pulledby(new_pulledby)
+	procstart = null
+	src.procstart = null
 	if(new_pulledby == pulledby)
 		return FALSE //null signals there was a change, be sure to return FALSE if none happened here.
 	. = pulledby
@@ -624,6 +658,8 @@
 #undef PULLED_WHILE_CRIT_TRAIT
 
 /atom/movable/proc/Move_Pulled(atom/moving_atom)
+	procstart = null
+	src.procstart = null
 	if(!pulling)
 		return FALSE
 	if(pulling.anchored || pulling.move_resist > move_force || !pulling.Adjacent(src, src, pulling))
@@ -643,6 +679,8 @@
 	return TRUE
 
 /mob/living/Move_Pulled(atom/moving_atom)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !isliving(moving_atom))
 		return
@@ -654,6 +692,8 @@
  * If z_allowed is TRUE, the z level of the pulling will be ignored.This is to allow things to be dragged up and down stairs.
  */
 /atom/movable/proc/check_pulling(only_pulling = FALSE, z_allowed = FALSE)
+	procstart = null
+	src.procstart = null
 	if(pulling)
 		if(get_dist(src, pulling) > 1 || (z != pulling.z && !z_allowed))
 			stop_pulling()
@@ -668,6 +708,8 @@
 		pulledby.stop_pulling()
 
 /atom/movable/proc/set_glide_size(target = 8)
+	procstart = null
+	src.procstart = null
 	if (HAS_TRAIT(src, TRAIT_NO_GLIDE))
 		return
 	SEND_SIGNAL(src, COMSIG_MOVABLE_UPDATE_GLIDE_SIZE, target)
@@ -682,6 +724,8 @@
  * most of the time you want forceMove()
  */
 /atom/movable/proc/abstract_move(atom/new_loc)
+	procstart = null
+	src.procstart = null
 	RESOLVE_ACTIVE_MOVEMENT // This should NEVER happen, but, just in case...
 	var/atom/old_loc = loc
 	var/direction = get_dir(old_loc, new_loc)
@@ -693,6 +737,8 @@
 // To be removed on step_ conversion
 // All this work to prevent a second bump
 /atom/movable/Move(atom/newloc, direction, glide_size_override = 0, update_dir = TRUE)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(!newloc || newloc == loc)
 		return
@@ -769,6 +815,8 @@
 ////////////////////////////////////////
 
 /atom/movable/Move(atom/newloc, direct, glide_size_override = 0, update_dir = TRUE)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/pullee = pulling
 	var/turf/current_turf = loc
 	if(!moving_from_pull)
@@ -890,6 +938,8 @@
 
 /// Called when src is being moved to a target turf because another movable (puller) is moving around.
 /atom/movable/proc/move_from_pull(atom/movable/puller, turf/target_turf, glide_size_override)
+	procstart = null
+	src.procstart = null
 	moving_from_pull = puller
 	Move(target_turf, get_dir(src, target_turf), glide_size_override)
 	moving_from_pull = null
@@ -904,6 +954,8 @@
  * * momentum_change represents whether this movement is due to a "new" force if TRUE or an already "existing" force if FALSE
  **/
 /atom/movable/proc/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if (!moving_diagonally && !inertia_moving && momentum_change && movement_dir)
@@ -947,6 +999,8 @@
 // Make sure you know what you're doing if you call this
 // You probably want CanPass()
 /atom/movable/Cross(atom/movable/crossed_atom)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_MOVABLE_CROSS, crossed_atom) & COMPONENT_BLOCK_CROSS)
 		return FALSE
 	if(SEND_SIGNAL(crossed_atom, COMSIG_MOVABLE_CROSS_OVER, src) & COMPONENT_BLOCK_CROSS)
@@ -955,6 +1009,8 @@
 
 ///default byond proc that is deprecated for us in lieu of signals. do not call
 /atom/movable/Crossed(atom/movable/crossed_atom, oldloc)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	CRASH("atom/movable/Crossed() was called!")
 
@@ -979,6 +1035,8 @@
  * [`COMSIG_ATOM_EXIT`].
  */
 /atom/movable/Uncross()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	CRASH("Uncross() should not be being called, please read the doc-comment for it for why.")
 
@@ -989,10 +1047,14 @@
  * use connect_loc to register to COMSIG_ATOM_EXITED instead
  */
 /atom/movable/Uncrossed(atom/movable/uncrossed_atom)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	CRASH("/atom/movable/Uncrossed() was called")
 
 /atom/movable/Bump(atom/bumped_atom)
+	procstart = null
+	src.procstart = null
 	if(!bumped_atom)
 		CRASH("Bump was called with no argument.")
 	if(SEND_SIGNAL(src, COMSIG_MOVABLE_BUMP, bumped_atom) & COMPONENT_INTERCEPT_BUMPED)
@@ -1006,6 +1068,8 @@
 	bumped_atom.Bumped(src)
 
 /atom/movable/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!LAZYLEN(gone.important_recursive_contents))
@@ -1027,6 +1091,8 @@
 			UNSETEMPTY(location.important_recursive_contents)
 
 /atom/movable/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!LAZYLEN(arrived.important_recursive_contents))
@@ -1045,6 +1111,8 @@
 
 ///allows this movable to hear and adds itself to the important_recursive_contents list of itself and every movable loc its in
 /atom/movable/proc/become_hearing_sensitive(trait_source = TRAIT_GENERIC)
+	procstart = null
+	src.procstart = null
 	var/already_hearing_sensitive = HAS_TRAIT(src, TRAIT_HEARING_SENSITIVE)
 	ADD_TRAIT(src, TRAIT_HEARING_SENSITIVE, trait_source)
 	if(already_hearing_sensitive) // If we were already hearing sensitive, we don't wanna be in important_recursive_contents twice, else we'll have potential issues like one radio sending the same message multiple times
@@ -1067,6 +1135,8 @@
  * * trait_source - trait source define or ALL, if ALL, force removes hearing sensitivity. if a trait source define, removes hearing sensitivity only if the trait is removed
  */
 /atom/movable/proc/lose_hearing_sensitivity(trait_source = TRAIT_GENERIC)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_HEARING_SENSITIVE))
 		return
 	REMOVE_TRAIT(src, TRAIT_HEARING_SENSITIVE, trait_source)
@@ -1087,6 +1157,8 @@
 
 ///allows this movable to know when it has "entered" another area no matter how many movable atoms its stuffed into, uses important_recursive_contents
 /atom/movable/proc/become_area_sensitive(trait_source = TRAIT_GENERIC)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_AREA_SENSITIVE))
 		for(var/atom/movable/location as anything in get_nested_locs(src) + src)
 			LAZYADDASSOCLIST(location.important_recursive_contents, RECURSIVE_CONTENTS_AREA_SENSITIVE, src)
@@ -1094,6 +1166,8 @@
 
 ///removes the area sensitive channel from the important_recursive_contents list of this and all nested locs containing us if there are no more source of the trait left
 /atom/movable/proc/lose_area_sensitivity(trait_source = TRAIT_GENERIC)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_AREA_SENSITIVE))
 		return
 	REMOVE_TRAIT(src, TRAIT_AREA_SENSITIVE, trait_source)
@@ -1106,6 +1180,8 @@
 ///propogates ourselves through our nested contents, similar to other important_recursive_contents procs
 ///main difference is that client contents need to possibly duplicate recursive contents for the clients mob AND its eye
 /mob/proc/enable_client_mobs_in_contents()
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/movable_loc as anything in get_nested_locs(src) + src)
 		LAZYINITLIST(movable_loc.important_recursive_contents)
 		var/list/recursive_contents = movable_loc.important_recursive_contents // blue hedgehog velocity
@@ -1120,6 +1196,8 @@
 
 ///Clears the clients channel of this mob
 /mob/proc/clear_important_client_contents()
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	SSspatial_grid.remove_grid_membership(src, our_turf, SPATIAL_GRID_CONTENTS_TYPE_CLIENTS)
 
@@ -1135,6 +1213,8 @@
 
 ///called when this movable becomes the parent of a storage component that is currently being viewed by a player. uses important_recursive_contents
 /atom/movable/proc/become_active_storage(datum/storage/source)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_ACTIVE_STORAGE))
 		for(var/atom/movable/location as anything in get_nested_locs(src) + src)
 			LAZYADDASSOCLIST(location.important_recursive_contents, RECURSIVE_CONTENTS_ACTIVE_STORAGE, src)
@@ -1142,6 +1222,8 @@
 
 ///called when this movable's storage component is no longer viewed by any players, unsets important_recursive_contents
 /atom/movable/proc/lose_active_storage(datum/storage/source)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_ACTIVE_STORAGE))
 		return
 	REMOVE_TRAIT(src, TRAIT_ACTIVE_STORAGE, REF(source))
@@ -1153,6 +1235,8 @@
 
 ///Sets the anchored var and returns if it was successfully changed or not.
 /atom/movable/proc/set_anchored(anchorvalue)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(anchored == anchorvalue)
 		return
@@ -1164,6 +1248,8 @@
 
 /// Sets the currently_z_moving variable to a new value. Used to allow some zMovement sources to have precedence over others.
 /atom/movable/proc/set_currently_z_moving(new_z_moving_value, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(forced)
 		currently_z_moving = new_z_moving_value
 		return TRUE
@@ -1172,6 +1258,8 @@
 	return currently_z_moving > old_z_moving_value
 
 /atom/movable/proc/forceMove(atom/destination)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(destination)
 		. = doMove(destination)
@@ -1179,9 +1267,13 @@
 		CRASH("No valid destination passed into forceMove")
 
 /atom/movable/proc/moveToNullspace()
+	procstart = null
+	src.procstart = null
 	return doMove(null)
 
 /atom/movable/proc/doMove(atom/destination)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	RESOLVE_ACTIVE_MOVEMENT
 
@@ -1268,6 +1360,8 @@
  * * notify_contents - Whether or not to notify the movable's contents that their z-level has changed. NOTE, IF YOU SET THIS, YOU NEED TO MANUALLY SET PLANE OF THE CONTENTS LATER
  */
 /atom/movable/proc/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents = TRUE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_MOVABLE_Z_CHANGED, old_turf, new_turf, same_z_layer)
 
@@ -1309,6 +1403,8 @@
  * * continuous_move - If this check is coming from something in the context of already drifting
  */
 /atom/movable/proc/Process_Spacemove(movement_dir = 0, continuous_move = FALSE)
+	procstart = null
+	src.procstart = null
 	if(has_gravity())
 		return TRUE
 
@@ -1330,6 +1426,8 @@
 	return FALSE
 
 /atom/movable/proc/handle_spacemove_grabbing()
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/structure/lattice) in range(1, get_turf(src))) //Not realistic but makes pushing things in space easier
 		return TRUE
 
@@ -1337,6 +1435,8 @@
 /// Accepts the direction to move, if the push should be instant, and an optional parameter to fine tune the start delay
 /// Drift force determines how much acceleration should be applied. Controlled cap, if set, will ensure that if the object was moving slower than the cap before, it cannot accelerate past the cap from this move.
 /atom/movable/proc/newtonian_move(inertia_angle, instant = FALSE, start_delay = 0, drift_force = 1 NEWTONS, controlled_cap = null, force_loop = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!isturf(loc) || Process_Spacemove(angle2dir(inertia_angle), continuous_move = TRUE))
 		return FALSE
 
@@ -1348,6 +1448,8 @@
 	return !QDELETED(drift_handler)
 
 /atom/movable/set_explosion_block(explosion_block)
+	procstart = null
+	src.procstart = null
 	var/old_block = src.explosion_block
 	explosive_resistance -= old_block
 	src.explosion_block = explosion_block
@@ -1358,6 +1460,8 @@
  * This proc is called when a thrown object makes contact with it's target. It then follows up by calling hitby below.
  */
 /atom/movable/proc/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	var/hitpush = TRUE
 	var/impact_flags = pre_impact(hit_atom, throwingdatum)
@@ -1371,6 +1475,8 @@
 
 ///Called before we attempt to call hitby and send the COMSIG_MOVABLE_IMPACT signal
 /atom/movable/proc/pre_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	var/impact_flags = SEND_SIGNAL(src, COMSIG_MOVABLE_PRE_IMPACT, hit_atom, throwingdatum)
 	var/target_flags = SEND_SIGNAL(hit_atom, COMSIG_ATOM_PREHITBY, src, throwingdatum)
 	if(target_flags & COMSIG_HIT_PREVENTED)
@@ -1378,6 +1484,8 @@
 	return impact_flags
 
 /atom/movable/hitby(atom/movable/hitting_atom, skipcatch, hitpush = TRUE, blocked, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NO_THROW_HITPUSH))
 		hitpush = FALSE
 	if(!anchored && hitpush && (!throwingdatum || (throwingdatum.force >= (move_resist * MOVE_FORCE_PUSH_RATIO))))
@@ -1386,12 +1494,16 @@
 
 // Calls throw_at after checking that the move strength is greater than the thrown atom's move resist. Identical args.
 /atom/movable/proc/safe_throw_at(atom/target, range, speed, atom/thrower, spin = TRUE, diagonals_first = FALSE, datum/callback/callback, force = MOVE_FORCE_STRONG, gentle = FALSE)
+	procstart = null
+	src.procstart = null
 	if((force < (move_resist * MOVE_FORCE_THROW_RATIO)) || (move_resist == INFINITY))
 		return
 	return throw_at(target, range, speed, thrower, spin, diagonals_first, callback, force, gentle)
 
 ///If this returns FALSE then callback will not be called.
 /atom/movable/proc/throw_at(atom/target, range, speed, atom/thrower, spin = TRUE, diagonals_first = FALSE, datum/callback/callback, force = MOVE_FORCE_STRONG, gentle = FALSE, quickstart = TRUE, throw_datum_typepath = /datum/thrownthing)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 
 	if(QDELETED(src))
@@ -1480,6 +1592,8 @@
 		thrown_thing.tick()
 
 /atom/movable/proc/handle_buckled_mob_movement(newloc, direct, glide_size_override)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/buckled_mob as anything in buckled_mobs)
 		if(!buckled_mob.Move(newloc, direct, glide_size_override)) //If a mob buckled to us can't make the same move as us
 			Move(buckled_mob.loc, direct) //Move back to its location
@@ -1488,28 +1602,40 @@
 	return TRUE
 
 /atom/movable/proc/force_pushed(atom/movable/pusher, force = MOVE_FORCE_DEFAULT, direction)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /atom/movable/proc/force_push(atom/movable/pushed_atom, force = move_force, direction, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = pushed_atom.force_pushed(src, force, direction)
 	if(!silent && .)
 		visible_message(span_warning("[src] forcefully pushes against [pushed_atom]!"), span_warning("You forcefully push against [pushed_atom]!"))
 
 /atom/movable/proc/move_crush(atom/movable/crushed_atom, force = move_force, direction, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = crushed_atom.move_crushed(src, force, direction)
 	if(!silent && .)
 		visible_message(span_danger("[src] crushes past [crushed_atom]!"), span_danger("You crush [crushed_atom]!"))
 
 /atom/movable/proc/move_crushed(atom/movable/pusher, force = MOVE_FORCE_DEFAULT, direction)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /atom/movable/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mover in buckled_mobs)
 		return TRUE
 
 /// Returns true or false to allow src to move through the blocker, mover has final say
 /atom/movable/proc/CanPassThrough(atom/blocker, movement_dir, blocker_opinion)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SHOULD_BE_PURE(TRUE)
 
@@ -1524,13 +1650,19 @@
 
 /// called when this atom is removed from a storage item, which is passed on as S. The loc variable is already set to the new destination before this is called.
 /atom/movable/proc/on_exit_storage(datum/storage/master_storage)
+	procstart = null
+	src.procstart = null
 	return
 
 /// called when this atom is added into a storage item, which is passed on as S. The loc variable is already set to the storage item.
 /atom/movable/proc/on_enter_storage(datum/storage/master_storage)
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/movable/proc/get_spacemove_backup()
+	procstart = null
+	src.procstart = null
 	var/atom/secondary_backup
 	for(var/checked_range in orange(1, get_turf(src)))
 		if(isarea(checked_range))
@@ -1554,10 +1686,14 @@
 
 ///called when a mob resists while inside a container that is itself inside something.
 /atom/movable/proc/relay_container_resist_act(mob/living/user, obj/container)
+	procstart = null
+	src.procstart = null
 	return
 
 
 /atom/movable/proc/do_attack_animation(atom/attacked_atom, visual_effect_icon, obj/item/used_item, no_effect, fov_effect = TRUE, item_animation_override = null)
+	procstart = null
+	src.procstart = null
 	if(!no_effect && (visual_effect_icon || used_item))
 		do_item_attack_animation(attacked_atom, visual_effect_icon, used_item, animation_type = item_animation_override)
 
@@ -1595,6 +1731,8 @@
 
 /// Gets or creates the relevant language holder. For mindless atoms, gets the local one. For atom with mind, gets the mind one.
 /atom/movable/proc/get_language_holder()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/language_holder)
 	if(QDELING(src))
 		CRASH("get_language_holder() called on a QDELing atom, \
@@ -1606,80 +1744,118 @@
 
 /// Grants the supplied language and sets omnitongue true.
 /atom/movable/proc/grant_language(language, language_flags = ALL, source = LANGUAGE_ATOM)
+	procstart = null
+	src.procstart = null
 	return get_language_holder().grant_language(language, language_flags, source)
 
 /// Grants every language.
 /atom/movable/proc/grant_all_languages(language_flags = ALL, grant_omnitongue = TRUE, source = LANGUAGE_MIND)
+	procstart = null
+	src.procstart = null
 	return get_language_holder().grant_all_languages(language_flags, grant_omnitongue, source)
 
 /// Grants partial understanding of a language.
 /atom/movable/proc/grant_partial_language(language, amount = 50, source = LANGUAGE_ATOM)
+	procstart = null
+	src.procstart = null
 	return get_language_holder().grant_partial_language(language, amount, source)
 
 /// Removes a single language.
 /atom/movable/proc/remove_language(language, language_flags = ALL, source = LANGUAGE_ALL)
+	procstart = null
+	src.procstart = null
 	return get_language_holder().remove_language(language, language_flags, source)
 
 /// Removes every language and sets omnitongue false.
 /atom/movable/proc/remove_all_languages(source = LANGUAGE_ALL, remove_omnitongue = FALSE)
+	procstart = null
+	src.procstart = null
 	return get_language_holder().remove_all_languages(source, remove_omnitongue)
 
 /// Removes partial understanding of a language.
 /atom/movable/proc/remove_partial_language(language, source = LANGUAGE_ALL)
+	procstart = null
+	src.procstart = null
 	return get_language_holder().remove_partial_language(language, source)
 
 /// Removes all partial languages.
 /atom/movable/proc/remove_all_partial_languages(source = LANGUAGE_ALL)
+	procstart = null
+	src.procstart = null
 	return get_language_holder().remove_all_partial_languages(source)
 
 /// Adds a language to the blocked language list. Use this over remove_language in cases where you will give languages back later.
 /atom/movable/proc/add_blocked_language(language, language_flags = ALL, source = LANGUAGE_ATOM)
+	procstart = null
+	src.procstart = null
 	return get_language_holder().add_blocked_language(language, language_flags, source)
 
 /// Removes a language from the blocked language list.
 /atom/movable/proc/remove_blocked_language(language, language_flags = ALL, source = LANGUAGE_ATOM)
+	procstart = null
+	src.procstart = null
 	return get_language_holder().remove_blocked_language(language, language_flags, source)
 
 /// Checks if atom has the language. If spoken is true, only checks if atom can speak the language.
 /atom/movable/proc/has_language(language, flags_to_check)
+	procstart = null
+	src.procstart = null
 	return get_language_holder().has_language(language, flags_to_check)
 
 /// Checks if atom has the language. If spoken is true, only checks if atom can speak the language.
 /atom/movable/proc/has_partial_language(language)
+	procstart = null
+	src.procstart = null
 	return get_language_holder().has_partial_language(language)
 
 /// Checks if atom can speak the language.
 /atom/movable/proc/can_speak_language(language)
+	procstart = null
+	src.procstart = null
 	return get_language_holder().can_speak_language(language)
 
 /// Returns the result of tongue specific limitations on spoken languages.
 /atom/movable/proc/could_speak_language(datum/language/language_path)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Returns selected language, if it can be spoken, or finds, sets and returns a new selected language if possible.
 /atom/movable/proc/get_selected_language()
+	procstart = null
+	src.procstart = null
 	return get_language_holder().get_selected_language()
 
 /// Gets a random understood language, useful for hallucinations and such.
 /atom/movable/proc/get_random_understood_language()
+	procstart = null
+	src.procstart = null
 	return get_language_holder().get_random_understood_language()
 
 /// Gets a lazylist of all mutually understood languages.
 /atom/movable/proc/get_partially_understood_languages() as /list
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 	return get_language_holder().best_mutual_languages
 
 /// Gets a random spoken language, useful for forced speech and such.
 /atom/movable/proc/get_random_spoken_language()
+	procstart = null
+	src.procstart = null
 	return get_language_holder().get_random_spoken_language()
 
 /// Gets a list of all understood languages, excluding any blocked languages
 /atom/movable/proc/get_understood_languages() as /list
+	procstart = null
+	src.procstart = null
 	return get_language_holder().get_understood_languages() || list()
 
 /// Copies all languages into the supplied atom/language holder. Source should be overridden when you
 /// do not want the language overwritten by later atom updates or want to avoid blocked languages.
 /atom/movable/proc/copy_languages(datum/language_holder/from_holder, source_override)
+	procstart = null
+	src.procstart = null
 	if(ismovable(from_holder))
 		var/atom/movable/thing = from_holder
 		from_holder = thing.get_language_holder()
@@ -1689,6 +1865,8 @@
 /// Sets the passed path as the active language
 /// Returns the currently selected language if successful, if the language was not valid, returns null
 /atom/movable/proc/set_active_language(language_path)
+	procstart = null
+	src.procstart = null
 	var/datum/language_holder/our_holder = get_language_holder()
 	our_holder.selected_language = language_path
 
@@ -1701,6 +1879,8 @@
  * - They are on the escape shuttle
  */
 /atom/movable/proc/randomize_language_if_on_station()
+	procstart = null
+	src.procstart = null
 	var/turf/atom_turf = get_turf(src)
 	var/area/atom_area = get_area(src)
 
@@ -1716,6 +1896,8 @@
 
 /// Teaches a random non-common language and sets it as the active language
 /atom/movable/proc/grant_random_uncommon_language(source)
+	procstart = null
+	src.procstart = null
 	if (!length(GLOB.uncommon_roundstart_languages))
 		return FALSE
 	var/picked = pick(GLOB.uncommon_roundstart_languages)
@@ -1733,9 +1915,13 @@
  * * mob/user - the mob that is holding the interface
  */
 /atom/movable/proc/get_cell(atom/movable/interface, mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/movable/proc/can_be_pulled(user, force)
+	procstart = null
+	src.procstart = null
 	if(src == user || !isturf(loc))
 		return FALSE
 	if(SEND_SIGNAL(src, COMSIG_ATOM_CAN_BE_PULLED, user) & COMSIG_ATOM_CANT_PULL)
@@ -1752,6 +1938,8 @@
  * This exists to act as a hook for behaviour
  */
 /atom/movable/proc/setGrabState(newstate)
+	procstart = null
+	src.procstart = null
 	if(newstate == grab_state)
 		return
 	SEND_SIGNAL(src, COMSIG_MOVABLE_SET_GRAB_STATE, newstate)
@@ -1780,9 +1968,13 @@
  * * cooldown - The cooldown between command inputs passed to the deadchat_control component. See [/datum/component/deadchat_control] for more info.
  */
 /atom/movable/proc/deadchat_plays(mode = ANARCHY_MODE, cooldown = 12 SECONDS)
+	procstart = null
+	src.procstart = null
 	return AddComponent(/datum/component/deadchat_control/cardinal_movement, mode, list(), cooldown)
 
 /atom/movable/vv_get_dropdown()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	VV_DROPDOWN_OPTION("", "--- /movable ---")
 	VV_DROPDOWN_OPTION(VV_HK_OBSERVE_FOLLOW, "Observe Follow")
@@ -1796,6 +1988,8 @@
 		VV_DROPDOWN_OPTION(VV_HK_SET_TTS_VOICE, "Modify TTS Voice")
 
 /atom/movable/vv_do_topic(list/href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)
@@ -1864,10 +2058,14 @@
 * Called from [/atom/movable/proc/keyLoop], this exists to be overwritten by living mobs with a check to see if we're actually alive enough to change directions
 */
 /atom/movable/proc/keybind_face_direction(direction)
+	procstart = null
+	src.procstart = null
 	setDir(direction)
 
 ///This handles special behavior that happens when the movable is used in crafting (slapcrafting and UI, not sheets or lathes or processing with a tool)
 /atom/movable/proc/used_in_craft(atom/result, datum/crafting_recipe/current_recipe)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_ATOM_USED_IN_CRAFT, result)
 
@@ -1877,6 +2075,8 @@
  * If exact match is passed through we only return true if both faction lists match equally
  */
 /proc/faction_check(list/faction_A, list/faction_B, list/allies_A, list/allies_B, exact_match)
+	procstart = null
+	src.procstart = null
 	if(!exact_match)
 		return LAZYLEN(faction_A & faction_B) || LAZYLEN(allies_A & allies_B)
 	else
@@ -1890,6 +2090,8 @@
  * If exact match is set, then all our factions must match exactly
  */
 /atom/movable/proc/faction_check_atom(atom/movable/target, exact_match)
+	procstart = null
+	src.procstart = null
 	if(exact_match)
 		var/list/allies_src = LAZYCOPY(allies)
 		var/list/allies_target = LAZYCOPY(target.allies)
@@ -1905,6 +2107,8 @@
  * Sets atom's allies list to be the provided list of faction strings. Returns TRUE if successful.
  */
 /atom/movable/proc/set_allies(ally_list)
+	procstart = null
+	src.procstart = null
 	if (!islist(ally_list) && !isnull(ally_list))
 		stack_trace("Tried to call set_allies on [src] with a non-list arg. Use add_ally([ally_list]) instead.")
 		return FALSE
@@ -1922,6 +2126,8 @@
  * Returns TRUE if something was actually added, false otherwise
  */
 /atom/movable/proc/add_ally(ally_or_allies)
+	procstart = null
+	src.procstart = null
 	var/old_length = LAZYLEN(allies)
 	if(!isatom(ally_or_allies))
 		LAZYOR(allies, ally_or_allies)
@@ -1935,6 +2141,8 @@
  * Returns TRUE if something was actually added, false otherwise
  */
 /atom/movable/proc/remove_ally(atom/target)
+	procstart = null
+	src.procstart = null
 	var/old_length = LAZYLEN(allies)
 	if (!old_length)
 		return FALSE
@@ -1951,6 +2159,8 @@
  * If match_all is set, we have to match everything in the provided list arg.
  */
 /atom/movable/proc/has_ally(ally_or_allies, match_all)
+	procstart = null
+	src.procstart = null
 	if (!LAZYLEN(allies))
 		return FALSE
 
@@ -1969,12 +2179,16 @@
  * Returns the faction list of this atom/movable
  */
 /atom/movable/proc/get_faction()
+	procstart = null
+	src.procstart = null
 	return faction
 
 /**
  * Sets atom's faction list to be the provided list of faction strings. Returns TRUE if successful.
  */
 /atom/movable/proc/set_faction(factions)
+	procstart = null
+	src.procstart = null
 	if (factions == faction) // Same list in memory - early return
 		return TRUE
 	if (!islist(factions) && !isnull(factions))
@@ -1992,6 +2206,8 @@
  * Adds a single faction string or list of faction strings to the atom's faction list. Returns TRUE if something was added.
  */
 /atom/movable/proc/add_faction(faction_or_factions)
+	procstart = null
+	src.procstart = null
 	var/list/faction_copy = LAZYLISTDUPLICATE(faction) // Copy so we are not mutating the cached list
 	LAZYOR(faction_copy, faction_or_factions)
 
@@ -2006,6 +2222,8 @@
  * Removes a single faction string or list of faction strings from the atom's faction list. Returns TRUE if something was removed.
  */
 /atom/movable/proc/remove_faction(faction_or_factions)
+	procstart = null
+	src.procstart = null
 	var/old_length = LAZYLEN(faction)
 	if (!old_length)
 		return FALSE
@@ -2031,6 +2249,8 @@
  * If match_all is set, we have to match everything in the provided list arg.
  */
 /atom/movable/proc/has_faction(faction_or_factions, match_all)
+	procstart = null
+	src.procstart = null
 	if (!LAZYLEN(faction))
 		return FALSE
 
@@ -2049,6 +2269,8 @@
  * If match_all is set, we have to match everything in the provided list arg.
  */
 /atom/movable/proc/has_faction_or_allies(faction_or_factions, allies_list, match_all)
+	procstart = null
+	src.procstart = null
 	if (!LAZYLEN(faction_or_factions))
 		return FALSE
 
@@ -2066,6 +2288,8 @@
  * Opens the modify faction ui.
  */
 /atom/movable/proc/edit_faction(mob/user)
+	procstart = null
+	src.procstart = null
 	var/prompt = tgui_alert(usr, "Would you like to Add or Remove faction?", "Add/Remove?", list("Add", "Remove"))
 	if (isnull(prompt))
 		return FALSE
@@ -2095,6 +2319,8 @@
  * Outputs the factions list as text
  */
 /atom/movable/proc/faction_to_text()
+	procstart = null
+	src.procstart = null
 	var/list/factions_printout = list()
 	for(var/faction_string in get_faction())
 		factions_printout += "\n[faction_string]"

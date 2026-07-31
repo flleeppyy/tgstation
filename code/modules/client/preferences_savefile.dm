@@ -35,6 +35,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	initial() values if necessary.
 */
 /datum/preferences/proc/check_savedata_version(list/save_data)
+	procstart = null
+	src.procstart = null
 	if(!save_data)
 		return SAVE_DATA_EMPTY
 	var/save_version = save_data["version"]
@@ -53,6 +55,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 //if your savefile is 3 months out of date, then 'tough shit'.
 
 /datum/preferences/proc/update_preferences(current_version, datum/json_savefile/S)
+	procstart = null
+	src.procstart = null
 	if(current_version < 34)
 		write_preference(/datum/preference/toggle/auto_fit_viewport, TRUE)
 
@@ -108,6 +112,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		update_tts_blip_prefs()
 
 /datum/preferences/proc/update_character(current_version, list/save_data)
+	procstart = null
+	src.procstart = null
 	if (current_version < 41)
 		migrate_character_to_tgui_prefs_menu()
 
@@ -170,6 +176,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 /// checks through keybindings for outdated unbound keys and updates them
 /datum/preferences/proc/check_keybindings()
+	procstart = null
+	src.procstart = null
 	if(!parent)
 		return
 	var/list/binds_by_key = get_key_bindings_by_key(key_bindings)
@@ -204,6 +212,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		addtimer(CALLBACK(src, PROC_REF(announce_conflict), notadded), 5 SECONDS)
 
 /datum/preferences/proc/announce_conflict(list/notadded)
+	procstart = null
+	src.procstart = null
 	to_chat(parent, "<span class='warningplain'><b><u>Keybinding Conflict</u></b></span>\n\
 					<span class='warningplain'><b>There are new <a href='byond://?src=[REF(src)];open_keybindings=1'>keybindings</a> that default to keys you've already bound. The new ones will be unbound.</b></span>")
 	for(var/item in notadded)
@@ -211,16 +221,22 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		to_chat(parent, span_danger("[conflicted.category]: [conflicted.full_name] needs updating"))
 
 /datum/preferences/proc/load_path(ckey, filename="preferences.json")
+	procstart = null
+	src.procstart = null
 	if(!ckey || !load_and_save)
 		return
 	path = "data/player_saves/[ckey[1]]/[ckey]/[filename]"
 
 /datum/preferences/proc/load_savefile()
+	procstart = null
+	src.procstart = null
 	if(load_and_save && !path)
 		CRASH("Attempted to load savefile without first loading a path!")
 	savefile = new /datum/json_savefile(load_and_save ? path : null)
 
 /datum/preferences/proc/load_preferences()
+	procstart = null
+	src.procstart = null
 	if(!savefile)
 		stack_trace("Attempted to load the preferences of [parent] without a savefile; did you forget to call load_savefile?")
 		load_savefile()
@@ -306,6 +322,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	return TRUE
 
 /datum/preferences/proc/save_preferences()
+	procstart = null
+	src.procstart = null
 	if(!savefile)
 		CRASH("Attempted to save the preferences of [parent] without a savefile. This should have been handled by load_preferences()")
 	if(path == DEV_PREFS_PATH)
@@ -341,6 +359,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	return TRUE
 
 /datum/preferences/proc/load_character(slot = default_slot)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 	slot = sanitize_integer(slot, 1, max_save_slots, initial(default_slot))
 	var/original_default_slot = default_slot
@@ -402,6 +422,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	return TRUE
 
 /datum/preferences/proc/save_character()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 	if(!path)
 		return FALSE
@@ -442,6 +464,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	return TRUE
 
 /datum/preferences/proc/switch_to_slot(new_slot)
+	procstart = null
+	src.procstart = null
 	if(new_slot == default_slot) // sanity check, nothing to do here.
 		return
 	// SAFETY: `load_character` performs sanitization on the slot number
@@ -458,6 +482,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	character_preview_view.update_body()
 
 /datum/preferences/proc/remove_current_slot()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/closest_slot
@@ -483,6 +509,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	switch_to_slot(closest_slot)
 
 /datum/preferences/proc/sanitize_be_special(list/input_be_special)
+	procstart = null
+	src.procstart = null
 	var/list/output = list()
 
 	for (var/role in input_be_special)
@@ -492,6 +520,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	return output.len == input_be_special.len ? input_be_special : output
 
 /proc/sanitize_keybindings(value)
+	procstart = null
+	src.procstart = null
 	var/list/base_bindings = sanitize_islist(value,list())
 	for(var/keybind_name in base_bindings)
 		if (!(keybind_name in GLOB.keybindings_by_name))

@@ -42,6 +42,8 @@
  * Called on qdel(), so we don't want a cool explosion to happen
  */
 /obj/structure/training_machine/Destroy()
+	procstart = null
+	src.procstart = null
 	remove_attached_item()
 	return ..()
 
@@ -49,14 +51,20 @@
  * Called on a normal destruction, so we have a cool explosion and toss whatever's attached
  */
 /obj/structure/training_machine/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	remove_attached_item(throwing = TRUE)
 	explosion(src, light_impact_range = 1, flash_range = 2)
 	return ..()
 
 /obj/structure/training_machine/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.physical_state
 
 /obj/structure/training_machine/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "TrainingMachine", name)
@@ -68,6 +76,8 @@
  * Include's the machine's movement range, speed, and whether or not it's active
  */
 /obj/structure/training_machine/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["range"] = range
 	data["movespeed"] = move_speed
@@ -80,6 +90,8 @@
  * Will not respond if moving and emagged, so once you set it to go it can't be stopped!
  */
 /obj/structure/training_machine/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -100,6 +112,8 @@
 			. = TRUE
 
 /obj/structure/training_machine/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	ui_interact(user)
 
 /**
@@ -109,6 +123,8 @@
  * machine will gain an auto-attached syndicate toolbox, so in that case we shouldn't be able to swap it out
  */
 /obj/structure/training_machine/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (user.combat_mode)
 		return NONE
 
@@ -133,6 +149,8 @@
  * * target - The object to attach
  */
 /obj/structure/training_machine/proc/attach_item(obj/target)
+	procstart = null
+	src.procstart = null
 	remove_attached_item()
 	attached_item = target
 	attached_item.forceMove(src)
@@ -147,6 +165,8 @@
  * Cleans up behavior for when the attached item is deleted or removed.
  */
 /obj/structure/training_machine/proc/on_attached_delete()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(attached_item, COMSIG_QDELETING)
 	vis_contents -= attached_item
@@ -164,6 +184,8 @@
  * * throwing - If we should make the item fly off the machine
  */
 /obj/structure/training_machine/proc/remove_attached_item(mob/user, throwing = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!attached_item)
 		return
 	if (istype(attached_item, /obj/item/storage/toolbox/syndicate))
@@ -180,6 +202,8 @@
 	on_attached_delete()
 
 /obj/structure/training_machine/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(has_buckled_mobs())
 		user_unbuckle_mob(buckled_mobs[1], user)
 		return CLICK_ACTION_SUCCESS
@@ -197,6 +221,8 @@
  * Toggle the machine's movement
  */
 /obj/structure/training_machine/proc/toggle()
+	procstart = null
+	src.procstart = null
 	if (moving)
 		stop_moving()
 	else
@@ -210,6 +236,8 @@
  * * Message - the message the machine says when stopping
  */
 /obj/structure/training_machine/proc/stop_moving(message = "Ending training simulation.")
+	procstart = null
+	src.procstart = null
 	moving = FALSE
 	starting_turf = null
 	say(message)
@@ -222,6 +250,8 @@
  * Says a message, plays a sound, then starts processing
  */
 /obj/structure/training_machine/proc/start_moving()
+	procstart = null
+	src.procstart = null
 	moving = TRUE
 	starting_turf = get_turf(src)
 	say("Beginning training simulation.")
@@ -236,6 +266,8 @@
  * If it can't find a place to go, it will stop moving.
  */
 /obj/structure/training_machine/process()
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, move_cooldown))
 		return
 	var/turf/current_turf = get_turf(src)
@@ -258,6 +290,8 @@
  * Find a suitable turf to move towards
  */
 /obj/structure/training_machine/proc/find_target_position()
+	procstart = null
+	src.procstart = null
 	var/list/turfs = list()
 	for(var/turf/potential_turf in view(range, starting_turf))
 		if (potential_turf.is_blocked_turf() || potential_turf == target_position)
@@ -275,6 +309,8 @@
  * A cooldown macro (attack_cooldown) ensures it doesn't attack too quickly
  */
 /obj/structure/training_machine/proc/try_attack()
+	procstart = null
+	src.procstart = null
 	if (!attached_item || istype(attached_item, /obj/item/target))
 		return
 	if (!COOLDOWN_FINISHED(src, attack_cooldown))
@@ -296,21 +332,29 @@
  * Make sure the machine can't be walked through if something is attached
  */
 /obj/structure/training_machine/proc/handle_density()
+	procstart = null
+	src.procstart = null
 	if(length(buckled_mobs) || attached_item)
 		set_density(TRUE)
 	else
 		set_density(FALSE)
 
 /obj/structure/training_machine/buckle_mob(mob/living/M, force = FALSE, check_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (istype(attached_item, /obj/item/target))
 		return FALSE
 
 /obj/structure/training_machine/post_buckle_mob()
+	procstart = null
+	src.procstart = null
 	handle_density()
 	return ..()
 
 /obj/structure/training_machine/post_unbuckle_mob()
+	procstart = null
+	src.procstart = null
 	handle_density()
 	return ..()
 
@@ -318,6 +362,8 @@
  * Emagging causes a deadly, unremovable syndicate toolbox to be attached to the machine
  */
 /obj/structure/training_machine/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (obj_flags & EMAGGED)
 		return
@@ -330,6 +376,8 @@
 	return TRUE
 
 /obj/structure/training_machine/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/has_buckled_mob = has_buckled_mobs()
 	if(has_buckled_mob)
@@ -365,6 +413,8 @@
 	var/lap_hits = 0
 
 /obj/item/training_toolbox/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -385,6 +435,8 @@
  * * target - the atom we're hitting
  */
 /obj/item/training_toolbox/proc/check_hit(atom/target)
+	procstart = null
+	src.procstart = null
 	var/target_is_machine = istype(target, /obj/structure/training_machine)
 	if (!ismob(target) && !istype(target, /obj/item/target) && !target_is_machine)
 		return FALSE
@@ -400,16 +452,22 @@
 	return TRUE
 
 /obj/item/training_toolbox/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		check_hit(hit_atom)
 
 /obj/item/training_toolbox/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You push the 'Lap' button on the toolbox's display."))
 	lap_hits = initial(lap_hits)
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/training_toolbox/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!in_range(src, user) && !isobserver(user))
 		. += span_notice("You can see a display on the back. You'll need to get closer to read it, though.")

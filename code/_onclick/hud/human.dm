@@ -2,6 +2,8 @@
 	default_inventory_slots = /datum/inventory_slot/human
 
 /datum/hud/human/initialize_screen_objects()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/movable/screen/using
 	// Static elements
@@ -35,6 +37,8 @@
 	add_screen_object(/atom/movable/screen/hunger, HUD_MOB_HUNGER, HUD_GROUP_INFO)
 
 /datum/hud/human/update_locked_slots()
+	procstart = null
+	src.procstart = null
 	if(!mymob)
 		return
 	var/blocked_slots = NONE

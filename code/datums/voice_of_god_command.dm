@@ -9,6 +9,8 @@ GLOBAL_DATUM(all_voice_of_god_triggers, /regex)
 GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 
 /proc/init_voice_of_god_commands()
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/all_triggers
 	var/separator
@@ -27,6 +29,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
  * and the return value of this proc the cooldown variable of the command dictates. (only relevant for things with cooldowns i guess)
  */
 /proc/voice_of_god(message, mob/living/user, list/span_list, base_multiplier = 1, include_speaker = FALSE, forced = null, ignore_spam = FALSE)
+	procstart = null
+	src.procstart = null
 	var/log_message = uppertext(message)
 	var/is_cultie = IS_CULTIST(user)
 	if(LAZYLEN(span_list) && is_cultie)
@@ -105,6 +109,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	var/cooldown = COOLDOWN_MEME
 
 /datum/voice_of_god_command/New()
+	procstart = null
+	src.procstart = null
 	if(is_regex)
 		trigger = regex(trigger)
 
@@ -117,6 +123,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
  * * power_multiplier: multiplies the power of the command, most times.
  */
 /datum/voice_of_god_command/proc/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	return
 
 /// This command knocks the listeners down.
@@ -125,6 +133,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	cooldown = COOLDOWN_STUN
 
 /datum/voice_of_god_command/knockdown/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/target as anything in listeners)
 		target.Knockdown(4 SECONDS * power_multiplier)
 
@@ -134,6 +144,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	cooldown = COOLDOWN_STUN
 
 /datum/voice_of_god_command/immobilize/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/target as anything in listeners)
 		target.Immobilize(4 SECONDS * power_multiplier)
 
@@ -143,6 +155,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	cooldown = COOLDOWN_STUN
 
 /datum/voice_of_god_command/vomit/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/target in listeners)
 		target.vomit(vomit_flags = (MOB_VOMIT_MESSAGE | MOB_VOMIT_HARM), lost_nutrition = (power_multiplier * 10), distance = power_multiplier)
 
@@ -152,6 +166,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	cooldown = COOLDOWN_STUN
 
 /datum/voice_of_god_command/silence/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	power_multiplier *= user.mind?.assigned_role?.voice_of_god_silence_power || 1
 	for(var/mob/living/carbon/target in listeners)
 		target.adjust_silence(20 SECONDS * power_multiplier)
@@ -161,6 +177,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	trigger = "see\\s*the\\s*truth|hallucinate"
 
 /datum/voice_of_god_command/hallucinate/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/target in listeners)
 		target.cause_hallucination( \
 			get_random_valid_hallucination_subtype(/datum/hallucination/delusion/preset), \
@@ -177,6 +195,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	cooldown = COOLDOWN_DAMAGE
 
 /datum/voice_of_god_command/wake_up/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/target as anything in listeners)
 		target.SetSleeping(0)
 
@@ -186,6 +206,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	cooldown = COOLDOWN_DAMAGE
 
 /datum/voice_of_god_command/heal/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/target as anything in listeners)
 		target.heal_overall_damage(10 * power_multiplier, 10 * power_multiplier)
 
@@ -195,6 +217,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	cooldown = COOLDOWN_DAMAGE
 
 /datum/voice_of_god_command/brute/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/target as anything in listeners)
 		target.apply_damage(15 * power_multiplier, def_zone = BODY_ZONE_CHEST, wound_bonus = CANT_WOUND)
 
@@ -204,6 +228,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	cooldown = COOLDOWN_DAMAGE
 
 /datum/voice_of_god_command/bleed/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/human/target in listeners)
 		var/obj/item/bodypart/chosen_part = pick(target.get_bodyparts())
 		var/add_stacks = HAS_TRAIT(target, TRAIT_BLOOD_FOUNTAIN) ? 7 : 5
@@ -215,6 +241,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	cooldown = COOLDOWN_DAMAGE
 
 /datum/voice_of_god_command/burn/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/target as anything in listeners)
 		target.adjust_fire_stacks(1 * power_multiplier)
 		target.ignite_mob()
@@ -225,6 +253,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	cooldown = COOLDOWN_DAMAGE
 
 /datum/voice_of_god_command/hot/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/target as anything in listeners)
 		target.adjust_bodytemperature(50 * power_multiplier)
 
@@ -234,6 +264,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	cooldown = COOLDOWN_DAMAGE
 
 /datum/voice_of_god_command/cold/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/target as anything in listeners)
 		target.adjust_bodytemperature(-50 * power_multiplier)
 
@@ -243,6 +275,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	cooldown = COOLDOWN_DAMAGE
 
 /datum/voice_of_god_command/repulse/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/target as anything in listeners)
 		var/throwtarget = get_edge_target_turf(user, get_dir(user, get_step_away(target, user)))
 		target.throw_at(throwtarget, 3 * power_multiplier, 1 * power_multiplier)
@@ -253,6 +287,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	cooldown = COOLDOWN_DAMAGE
 
 /datum/voice_of_god_command/attract/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/target as anything in listeners)
 		target.throw_at(get_step_towards(user, target), 3 * power_multiplier, 1 * power_multiplier)
 
@@ -262,6 +298,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	trigger = "who\\s*are\\s*you|say\\s*your\\s*name|state\\s*your\\s*name|identify"
 
 /datum/voice_of_god_command/who_are_you/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	var/iteration = 1
 	for(var/mob/living/target as anything in listeners)
 		addtimer(CALLBACK(src, PROC_REF(state_name), target), 0.5 SECONDS * iteration)
@@ -269,6 +307,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 
 ///just states the target's name, but also includes the renaming funny.
 /datum/voice_of_god_command/who_are_you/proc/state_name(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target))
 		return
 	var/gold_core_spawnable = NO_SPAWN
@@ -295,6 +335,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	trigger = "say\\s*my\\s*name|who\\s*am\\s*i"
 
 /datum/voice_of_god_command/say_my_name/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	var/iteration = 1
 	var/regex/smartass_regex = regex(@"^say my name[.!]*$")
 	for(var/mob/living/target as anything in listeners)
@@ -310,6 +352,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	trigger = "knock\\s*knock"
 
 /datum/voice_of_god_command/knock_knock/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	var/iteration = 1
 	for(var/mob/living/target as anything in listeners)
 		addtimer(CALLBACK(target, TYPE_PROC_REF(/atom/movable, say), "Who's there?"), 0.5 SECONDS * iteration)
@@ -320,6 +364,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	trigger = "state\\s*(your)?\\s*laws"
 
 /datum/voice_of_god_command/state_laws/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	var/iteration = 0
 	for(var/mob/living/silicon/target in listeners)
 		addtimer(CALLBACK(target, TYPE_PROC_REF(/mob/living/silicon, statelaws), TRUE), (3 SECONDS * iteration) + 0.5 SECONDS)
@@ -334,6 +380,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	var/static/right_words = regex("right|east|starboard")
 
 /datum/voice_of_god_command/move/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	var/iteration = 1
 	var/direction
 	if(findtext(message, up_words))
@@ -353,6 +401,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	trigger = "slow\\s*down"
 
 /datum/voice_of_god_command/walk/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/target as anything in listeners)
 		if(target.move_intent != MOVE_INTENT_WALK)
 			target.toggle_move_intent()
@@ -363,6 +413,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	is_regex = FALSE
 
 /datum/voice_of_god_command/walk/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/target as anything in listeners)
 		if(target.move_intent != MOVE_INTENT_RUN)
 			target.toggle_move_intent()
@@ -372,6 +424,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	trigger = "throw|catch"
 
 /datum/voice_of_god_command/throw_catch/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/target in listeners)
 		target.throw_mode_on(THROW_MODE_TOGGLE)
 
@@ -380,6 +434,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	trigger = "speak|say\\s*something"
 
 /datum/voice_of_god_command/speak/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	var/iteration = 1
 	for(var/mob/living/target in listeners)
 		addtimer(CALLBACK(target, TYPE_PROC_REF(/atom/movable, say), pick_list_replacements(BRAIN_DAMAGE_FILE, "brain_damage")), 0.5 SECONDS * iteration)
@@ -391,6 +447,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	cooldown = COOLDOWN_DAMAGE
 
 /datum/voice_of_god_command/getup/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/target as anything in listeners)
 		target.set_resting(FALSE)
 		target.SetAllImmobility(0)
@@ -401,6 +459,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	is_regex = FALSE
 
 /datum/voice_of_god_command/sit/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/target as anything in listeners)
 		var/obj/structure/chair/chair = locate(/obj/structure/chair) in get_turf(target)
 		chair?.buckle_mob(target)
@@ -411,6 +471,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	is_regex = FALSE
 
 /datum/voice_of_god_command/stand/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/target as anything in listeners)
 		target.buckled?.unbuckle_mob(target)
 
@@ -420,6 +482,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	is_regex = FALSE
 
 /datum/voice_of_god_command/jump/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	var/iteration = 1
 	for(var/mob/living/target as anything in listeners)
 		if(prob(25))
@@ -433,6 +497,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	trigger = "ho+nk"
 
 /datum/voice_of_god_command/honk/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(playsound), get_turf(user), 'sound/items/bikehorn.ogg', 300, 1), 2.5 SECONDS)
 	if(is_clown_job(user.mind?.assigned_role))
 		. = COOLDOWN_STUN //it slips.
@@ -444,6 +510,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	trigger = "like\\s*a\\s*record\\s*baby|right\\s*round"
 
 /datum/voice_of_god_command/multispin/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/target as anything in listeners)
 		target.SpinAnimation(speed = 10, loops = 5)
 
@@ -453,6 +521,8 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	var/emote_name = "dance"
 
 /datum/voice_of_god_command/emote/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
+	procstart = null
+	src.procstart = null
 	var/iteration = 1
 	for(var/mob/living/target as anything in listeners)
 		addtimer(CALLBACK(target, TYPE_PROC_REF(/mob/living/, emote), emote_name), 0.5 SECONDS * iteration)

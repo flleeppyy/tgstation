@@ -9,6 +9,8 @@
 	req_human = TRUE
 
 /datum/action/changeling/chameleon_skin/sting_action(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/cling = user //SHOULD always be human, because req_human = TRUE
 	if(!istype(cling)) // req_human could be done in can_sting stuff.
 		return
@@ -20,6 +22,8 @@
 	return TRUE
 
 /datum/action/changeling/chameleon_skin/Remove(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.has_dna())
 		var/mob/living/carbon/cling = user
 		cling.dna.remove_mutation(/datum/mutation/chameleon/changeling, MUTATION_SOURCE_CHANGELING)

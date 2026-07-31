@@ -10,6 +10,8 @@
 	var/pet_cult_icon_state
 
 /datum/element/cultist_pet/Attach(datum/target, pet_cult_icon = 'icons/mob/simple/pets.dmi', pet_cult_icon_state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isliving(target))
@@ -24,6 +26,8 @@
 	RegisterSignal(target, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(on_overlays_updated))
 
 /datum/element/cultist_pet/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, list(
 		COMSIG_MOB_LOGIN,
@@ -33,6 +37,8 @@
 	))
 
 /datum/element/cultist_pet/proc/on_overlays_updated(mob/living/basic/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(source.mind) && source.has_faction(FACTION_CULT)) //cult indicator we show for non sentient pets
@@ -40,6 +46,8 @@
 		overlays += cult_indicator
 
 /datum/element/cultist_pet/proc/on_icon_state_updated(mob/living/basic/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(pet_cult_icon_state && source.has_faction(FACTION_CULT))
@@ -48,6 +56,8 @@
 
 ///turn into terrifying beasts
 /datum/element/cultist_pet/proc/become_cultist(mob/living/basic/source, list/invokers, datum/team)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source.stat == DEAD)
@@ -104,6 +114,8 @@
 
 
 /datum/element/cultist_pet/proc/activate_rune(datum/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(target, /obj/effect/rune/raise_dead)) //we can only revive people...
@@ -113,6 +125,8 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/element/cultist_pet/proc/on_login(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!source.has_faction(FACTION_CULT))

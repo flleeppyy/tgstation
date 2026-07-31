@@ -8,6 +8,8 @@ GLOBAL_LIST_INIT(heretic_start_knowledge, initialize_starting_knowledge())
  * that have route set to PATH_START.
  */
 /proc/initialize_starting_knowledge()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/datum/heretic_knowledge/knowledge as anything in subtypesof(/datum/heretic_knowledge))
 		if(initial(knowledge.is_starting_knowledge) == TRUE)
@@ -31,18 +33,24 @@ GLOBAL_LIST_INIT(heretic_start_knowledge, initialize_starting_knowledge())
 // Heretics can enhance their fishing rods to fish better - fishing content.
 // Lasts until successfully fishing something up.
 /datum/heretic_knowledge/spell/basic/on_gain(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(user, COMSIG_TOUCH_HANDLESS_CAST, PROC_REF(on_grasp_cast))
 	RegisterSignal(our_heretic, COMSIG_HERETIC_INFLUENCE_DRAINED, PROC_REF(on_influence_tap))
 	RegisterSignal(our_heretic, COMSIG_HERETIC_SACRIFICE, PROC_REF(on_sacrifice))
 
 /datum/heretic_knowledge/spell/basic/on_lose(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, COMSIG_TOUCH_HANDLESS_CAST)
 	UnregisterSignal(our_heretic, COMSIG_HERETIC_INFLUENCE_DRAINED)
 	UnregisterSignal(our_heretic, COMSIG_HERETIC_SACRIFICE)
 
 /datum/heretic_knowledge/spell/basic/proc/on_grasp_cast(mob/living/carbon/cast_on, datum/action/cooldown/spell/touch/touch_spell)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Not a grasp, we dont want this to activate with say star or mending touch.
@@ -64,16 +72,22 @@ GLOBAL_LIST_INIT(heretic_start_knowledge, initialize_starting_knowledge())
 	return COMPONENT_CAST_HANDLESS
 
 /datum/heretic_knowledge/spell/basic/proc/unfuse(obj/item/fishing_rod/item, reward, mob/user)
+	procstart = null
+	src.procstart = null
 	if(reward == FISHING_INFLUENCE || prob(35))
 		item.remove_filter("mansus_infusion")
 		REMOVE_TRAIT(item, TRAIT_ROD_MANSUS_INFUSED, REF(item))
 		item.difficulty_modifier += 20
 
 /datum/heretic_knowledge/spell/basic/proc/on_influence_tap(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	add_charges(max_charges)
 
 /datum/heretic_knowledge/spell/basic/proc/on_sacrifice(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	add_charges(max_charges)
 
@@ -101,6 +115,8 @@ GLOBAL_LIST_INIT(heretic_start_knowledge, initialize_starting_knowledge())
 	notice = "If your heart is Cybernetic, you will be unable to reawaken it."
 
 /datum/heretic_knowledge/living_heart/on_research(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/obj/item/organ/where_to_put_our_heart = user.get_organ_slot(our_heretic.living_heart_organ_slot)
@@ -139,17 +155,23 @@ GLOBAL_LIST_INIT(heretic_start_knowledge, initialize_starting_knowledge())
 		to_chat(user, span_boldnotice("You don't have a heart, or any chest organs for that matter. You didn't get a Living Heart because of it."))
 
 /datum/heretic_knowledge/living_heart/on_lose(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/our_living_heart = user.get_organ_slot(our_heretic.living_heart_organ_slot)
 	if(our_living_heart)
 		qdel(our_living_heart.GetComponent(/datum/component/living_heart))
 
 // Don't bother letting them invoke this ritual if they have a Living Heart already in their chest
 /datum/heretic_knowledge/living_heart/can_be_invoked(datum/antagonist/heretic/invoker)
+	procstart = null
+	src.procstart = null
 	if(invoker.has_living_heart() == HERETIC_HAS_LIVING_HEART)
 		return FALSE
 	return TRUE
 
 /datum/heretic_knowledge/living_heart/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/heretic/our_heretic = GET_HERETIC(user)
 	var/obj/item/organ/our_living_heart = user.get_organ_slot(our_heretic.living_heart_organ_slot)
 	// No heart, nothing to give living heart to
@@ -173,6 +195,8 @@ GLOBAL_LIST_INIT(heretic_start_knowledge, initialize_starting_knowledge())
 	return FALSE
 
 /datum/heretic_knowledge/living_heart/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/heretic/our_heretic = GET_HERETIC(user)
 	var/obj/item/organ/our_new_heart = user.get_organ_slot(our_heretic.living_heart_organ_slot)
 	// Don't delete our shiny new heart
@@ -185,6 +209,8 @@ GLOBAL_LIST_INIT(heretic_start_knowledge, initialize_starting_knowledge())
 
 /// Checks if the passed heart is a valid heart to become a living heart
 /datum/heretic_knowledge/living_heart/proc/is_valid_heart(obj/item/organ/new_heart)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(new_heart))
 		return FALSE
 	if(new_heart.organ_flags & (ORGAN_UNUSABLE|ORGAN_ROBOTIC|ORGAN_FAILING))
@@ -205,9 +231,13 @@ GLOBAL_LIST_INIT(heretic_start_knowledge, initialize_starting_knowledge())
 	var/reward = 5
 
 /datum/heretic_knowledge/feast_of_owls/can_be_invoked(datum/antagonist/heretic/invoker)
+	procstart = null
+	src.procstart = null
 	return !invoker.feast_of_owls
 
 /datum/heretic_knowledge/feast_of_owls/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	var/alert = tgui_alert(user,"Do you really want to forsake your ascension? This action cannot be reverted.", "Feast of Owls", list("Yes I'm sure", "No"), 30 SECONDS)
 	if(alert != "Yes I'm sure" || QDELETED(user) || QDELETED(src) || get_dist(user, loc) > 2)
 		return FALSE

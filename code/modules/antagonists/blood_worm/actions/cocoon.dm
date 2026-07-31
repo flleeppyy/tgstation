@@ -16,6 +16,8 @@
 	var/cocoon_time = 30 SECONDS
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/Grant(mob/granted_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!owner)
 		return
@@ -24,12 +26,16 @@
 	RegisterSignal(owner, COMSIG_BLOOD_WORM_CONSUMED_BLOOD, PROC_REF(update_status_on_signal))
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/Remove(mob/removed_from)
+	procstart = null
+	src.procstart = null
 	if (!QDELETED(cocoon))
 		cancel()
 	UnregisterSignal(owner, COMSIG_BLOOD_WORM_CONSUMED_BLOOD)
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	if (!istype(owner, /mob/living/basic/blood_worm))
 		return FALSE
 	if (!ispath(cocoon_type, /obj/structure/blood_worm_cocoon))
@@ -51,6 +57,8 @@
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	owner.visible_message(
 		message = span_danger("\The [owner] start[owner.p_s()] growing a cocoon!"),
 		self_message = span_notice("You start growing a cocoon."),
@@ -83,10 +91,14 @@
 
 /// Override this if you want special timer behaviors like polling ghosts for hatchling candidates.
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/proc/handle_timer()
+	procstart = null
+	src.procstart = null
 	timer_id = addtimer(CALLBACK(src, PROC_REF(finalize)), cocoon_time, TIMER_UNIQUE | TIMER_STOPPABLE | TIMER_DELETE_ME)
 
 /// Called upon successfully finishing the incubation process.
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/proc/finalize()
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/blood_worm/new_worm = new new_worm_type(get_turf(cocoon))
 
 	transfer(owner, new_worm)
@@ -121,6 +133,8 @@
 
 /// Transfers the owning blood worm from one worm mob to another.
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/proc/transfer(mob/living/basic/blood_worm/old_worm, mob/living/basic/blood_worm/new_worm)
+	procstart = null
+	src.procstart = null
 	old_worm.mind?.transfer_to(new_worm)
 
 	new_worm.id_number = old_worm.id_number
@@ -146,6 +160,8 @@
 
 /// Cancels the incubation process, destroying the cocoon early.
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/proc/cancel()
+	procstart = null
+	src.procstart = null
 	cocoon.visible_message(
 		message = span_danger("\The [cocoon] fall[cocoon.p_s()] apart, expelling \the [owner] within."),
 		blind_message = span_danger("You hear a splat!"),
@@ -164,6 +180,8 @@
 
 /// Unregisters the cocoon. Used by both [proc/cancel] and [proc/finalize].
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/proc/shared_unregister_cocoon()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_MOVABLE_MOVED)
 	UnregisterSignal(cocoon, COMSIG_QDELETING)
 
@@ -182,21 +200,29 @@
 		timer_id = null
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/proc/on_worm_stat_changed(datum/source, new_stat, old_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (cocoon && old_stat != DEAD && new_stat == DEAD) // Alive -> Dead
 		cancel()
 	update_status_on_signal(source, new_stat, old_stat)
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/proc/on_worm_moved(datum/source, atom/old_loc, dir, forced, list/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	cancel()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/proc/on_cocoon_qdel(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	cancel()
 
 /// Checks if the blood worm has consumed enough blood to use this action.
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/proc/check_consumed_blood(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/blood_worm/worm = owner
 	var/total_consumed_blood = worm.get_consumed_blood()
 
@@ -226,6 +252,8 @@
 	total_blood_required = 500
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/hatchling/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	if (tgui_alert(owner, "Are you sure? After [cocoon_time / 10] seconds, you will become a juvenile, gaining stat increases and the ability to spit corrosive blood, but losing the ability to ventcrawl.", "Mature", list("Yes", "No"), 30 SECONDS) != "Yes")
 		return
 	if (!IsAvailable(feedback = TRUE))
@@ -234,6 +262,8 @@
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/hatchling/transfer(mob/living/basic/blood_worm/old_worm, mob/living/basic/blood_worm/new_worm)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	log_blood_worm("[key_name(new_worm)] finished maturing into a juvenile blood worm")
@@ -248,6 +278,8 @@
 	damage_deflection = 10
 
 /obj/structure/blood_worm_cocoon/hatchling/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	return ..() + span_warning("It can be broken to prevent the blood worm from maturing.")
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/juvenile
@@ -262,6 +294,8 @@
 	total_blood_required = 1500
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/juvenile/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	if (tgui_alert(owner, "Are you sure? After [cocoon_time / 10] seconds, you will become an adult, gaining stat increases and the ability to spit bursts of corrosive blood by right-clicking with Spit Blood while outside of a host.", "Mature", list("Yes", "No"), 30 SECONDS) != "Yes")
 		return
 	if (!IsAvailable(feedback = TRUE))
@@ -270,6 +304,8 @@
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/juvenile/transfer(mob/living/basic/blood_worm/old_worm, mob/living/basic/blood_worm/new_worm)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	log_blood_worm("[key_name(new_worm)] finished maturing into an adult blood worm")
@@ -284,6 +320,8 @@
 	damage_deflection = 15
 
 /obj/structure/blood_worm_cocoon/juvenile/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	return ..() + span_warning("It can be broken to prevent the blood worm from maturing, but it looks rather tough.")
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/adult
@@ -302,6 +340,8 @@
 	var/list/candidates = null
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/adult/Grant(mob/granted_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!owner)
 		return
@@ -309,11 +349,15 @@
 	RegisterSignal(SSdcs, COMSIG_GLOB_MOB_LOGGED_IN, PROC_REF(update_status_on_signal))
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/adult/Remove(mob/removed_from)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(SSdcs, COMSIG_GLOB_MOB_LOGGED_IN, PROC_REF(update_status_on_signal))
 
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/adult/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	if (tgui_alert(owner, "Are you sure? After [cocoon_time / 10] seconds, you will create [num_hatchlings + 1] new hatchlings, including yourself.", "Reproduce", list("Yes", "No"), 30 SECONDS) != "Yes")
 		return
 	if (!IsAvailable(feedback = TRUE))
@@ -322,6 +366,8 @@
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/adult/handle_timer()
+	procstart = null
+	src.procstart = null
 	cocoon.balloon_alert(owner, "polling ghosts")
 
 	candidates = SSpolling.poll_ghost_candidates(
@@ -356,6 +402,8 @@
 	finalize() // The poll is the timer.
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/adult/finalize()
+	procstart = null
+	src.procstart = null
 	for (var/mob/candidate as anything in candidates)
 		if (isnull(candidate) || isnull(candidate.key) || isnull(candidate.client))
 			continue
@@ -370,6 +418,8 @@
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/adult/transfer(mob/living/basic/blood_worm/old_worm, mob/living/basic/blood_worm/new_worm)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	new_worm.reset_consumed_blood()
@@ -379,16 +429,22 @@
 	log_blood_worm("[key_name(new_worm)] finished reproducing, resetting their growth back into a hatchling blood worm")
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/adult/cancel()
+	procstart = null
+	src.procstart = null
 	send_apology_to_candidates()
 
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/adult/shared_unregister_cocoon()
+	procstart = null
+	src.procstart = null
 	candidates = null
 
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/adult/proc/send_apology_to_candidates()
+	procstart = null
+	src.procstart = null
 	for (var/mob/candidate as anything in candidates)
 		if (isnull(candidate) || isnull(candidate.key) || isnull(candidate.client))
 			continue
@@ -406,6 +462,8 @@
 	damage_deflection = 20
 
 /obj/structure/blood_worm_cocoon/adult/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	return ..() + span_warning("It can be broken to prevent the blood worm from reproducing, but it looks extremely tough.")
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/hatchling/polymorph

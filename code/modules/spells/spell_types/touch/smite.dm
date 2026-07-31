@@ -16,6 +16,8 @@
 
 /// Smite is pretty extravagant, so whenever we get casted, we blind everyone nearby.
 /datum/action/cooldown/spell/touch/smite/proc/blind_everyone_nearby(mob/living/victim, atom/center)
+	procstart = null
+	src.procstart = null
 	do_sparks(sparks_amt, FALSE, get_turf(victim))
 	for(var/mob/living/nearby_spectator in view(center, 7))
 		if(nearby_spectator == center)
@@ -23,6 +25,8 @@
 		nearby_spectator.flash_act(affect_silicon = FALSE)
 
 /datum/action/cooldown/spell/touch/smite/on_antimagic_triggered(obj/item/melee/touch_attack/hand, mob/living/victim, mob/living/carbon/caster)
+	procstart = null
+	src.procstart = null
 	// Off goes the arm we were casting with!
 	var/obj/item/bodypart/to_dismember = caster.get_holding_bodypart_of_item(hand)
 	var/did_dismember = to_dismember?.dismember()
@@ -35,6 +39,8 @@
 	blind_everyone_nearby(caster, caster)
 
 /datum/action/cooldown/spell/touch/smite/cast_on_hand_hit(obj/item/melee/touch_attack/hand, mob/living/victim, mob/living/carbon/caster)
+	procstart = null
+	src.procstart = null
 	blind_everyone_nearby(victim, caster)
 
 	if(ishuman(victim))
@@ -59,6 +65,8 @@
 	inhand_icon_state = "disintegrate"
 
 /obj/item/melee/touch_attack/smite/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 
 	user.visible_message(span_suicide("[user] spreads [user.p_their()] arms apart, lightning arcing between them! It looks like [user.p_theyre()] going out with a bang!"))
 	user.say("SHIA KAZING!!", forced = "smite suicide")

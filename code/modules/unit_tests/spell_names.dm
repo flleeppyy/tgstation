@@ -14,6 +14,8 @@
 /datum/unit_test/spell_names
 
 /datum/unit_test/spell_names/Run()
+	procstart = null
+	src.procstart = null
 
 	var/list/types_to_test = typesof(/datum/action/cooldown/spell)
 

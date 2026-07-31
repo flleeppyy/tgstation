@@ -1,5 +1,7 @@
 
 /mob/living/basic/slime/Life(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.) //dead or deleted
 		return
@@ -10,6 +12,8 @@
 	handle_slime_stasis()
 
 /mob/living/basic/slime/handle_environment(datum/gas_mixture/environment, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	..()
 	if(bodytemperature <= (T0C - 40)) // stun temperature
 		apply_status_effect(/datum/status_effect/freon, SLIME_COLD)
@@ -18,6 +22,8 @@
 
 ///Handles if a slime's environment would cause it to enter stasis. Ignores TRAIT_STASIS
 /mob/living/basic/slime/proc/handle_slime_stasis()
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/environment = loc.return_air()
 
 	var/bz_percentage = environment.moles[/datum/gas/bz] / environment.total_moles()
@@ -34,6 +40,8 @@
 
 ///Handles the consumption of nutrition, and growth
 /mob/living/basic/slime/proc/handle_nutrition(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	if(hunger_disabled) //God as my witness, I will never go hungry again
 		set_nutrition(100)
 		return

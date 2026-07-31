@@ -7,15 +7,23 @@
 	alert_type = /atom/movable/screen/alert/status_effect/hooked
 
 /datum/status_effect/grouped/hooked/proc/try_unhook()
+	procstart = null
+	src.procstart = null
 	return do_after(owner, 2 SECONDS, timed_action_flags = IGNORE_USER_LOC_CHANGE, extra_checks = CALLBACK(src, PROC_REF(still_exists)), interaction_key = DOAFTER_SOURCE_REMOVING_HOOK)
 
 /datum/status_effect/grouped/hooked/proc/still_exists()
+	procstart = null
+	src.procstart = null
 	return !QDELETED(src)
 
 /datum/status_effect/grouped/hooked/source_added(datum/beam/held/source)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(source, COMSIG_QDELETING, PROC_REF(on_fishing_line_deleted))
 
 /datum/status_effect/grouped/hooked/proc/on_fishing_line_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	owner.remove_status_effect(type, source)
 
@@ -27,6 +35,8 @@
 	clickable_glow = TRUE
 
 /atom/movable/screen/alert/status_effect/hooked/Click()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -46,14 +56,20 @@
 	alert_type = /atom/movable/screen/alert/status_effect/hooked/jaws
 
 /datum/status_effect/grouped/hooked/jaws/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.add_movespeed_modifier(/datum/movespeed_modifier/hook_jawed)
 
 /datum/status_effect/grouped/hooked/jaws/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/hook_jawed)
 
 /datum/status_effect/grouped/hooked/jaws/try_unhook()
+	procstart = null
+	src.procstart = null
 	return do_after(owner, 10 SECONDS, extra_checks = CALLBACK(src, PROC_REF(still_exists)), interaction_key = DOAFTER_SOURCE_REMOVING_HOOK)
 
 /atom/movable/screen/alert/status_effect/hooked/jaws

@@ -13,6 +13,8 @@
 	wing_types = list(/obj/item/organ/wings/functional/dragon)
 
 /obj/item/bodypart/chest/lizard/get_butt_sprite()
+	procstart = null
+	src.procstart = null
 	return icon('icons/mob/butts.dmi', BUTT_SPRITE_LIZARD)
 
 /obj/item/bodypart/arm/left/lizard
@@ -60,6 +62,8 @@
 	footstep_type = FOOTSTEP_MOB_CLAW
 
 /obj/item/bodypart/leg/left/digitigrade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/digitigrade_limb, SPECIES_LIZARD, initial(limb_id))
 
@@ -72,5 +76,7 @@
 	footstep_type = FOOTSTEP_MOB_CLAW
 
 /obj/item/bodypart/leg/right/digitigrade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/digitigrade_limb, SPECIES_LIZARD, initial(limb_id))

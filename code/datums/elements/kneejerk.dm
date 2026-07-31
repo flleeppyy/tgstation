@@ -2,6 +2,8 @@
 /datum/element/kneejerk
 
 /datum/element/kneejerk/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (!isitem(target))
@@ -10,11 +12,15 @@
 	RegisterSignal(target, COMSIG_ITEM_ATTACK, PROC_REF(on_item_attack))
 
 /datum/element/kneejerk/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	UnregisterSignal(source, COMSIG_ITEM_ATTACK)
 
 /datum/element/kneejerk/proc/on_item_attack(datum/source, mob/living/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if((user.zone_selected == BODY_ZONE_L_LEG || user.zone_selected == BODY_ZONE_R_LEG) && LAZYACCESS(modifiers, RIGHT_CLICK) && target.buckled)
@@ -23,6 +29,8 @@
 		return COMPONENT_SKIP_ATTACK
 
 /datum/element/kneejerk/proc/tap_knee(obj/item/item, mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/selected_zone = user.zone_selected
 	var/obj/item/bodypart/leg/right = target.get_bodypart(BODY_ZONE_R_LEG)
 	var/obj/item/bodypart/leg/left = target.get_bodypart(BODY_ZONE_L_LEG)

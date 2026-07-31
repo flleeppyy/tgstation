@@ -1,4 +1,6 @@
 /proc/getviewsize(view = world.view)
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 
 	if(isnum(view))
@@ -13,6 +15,8 @@
 
 // Cached for speed as its used in mirages and such
 /proc/maxviewdist(view = LARGEST_VIEWPORT_SIZE)
+	procstart = null
+	src.procstart = null
 	var/static/per_view = list()
 	if (!per_view[view])
 		per_view[view] = max(getviewsize(view))
@@ -20,6 +24,8 @@
 
 /// Takes a string or num view, and converts it to pixel width/height in a list(pixel_width, pixel_height)
 /proc/view_to_pixels(view)
+	procstart = null
+	src.procstart = null
 	if(!view)
 		return list(0, 0)
 	var/list/view_info = getviewsize(view)

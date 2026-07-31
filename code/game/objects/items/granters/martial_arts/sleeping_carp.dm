@@ -21,10 +21,14 @@
 	)
 
 /obj/item/book/granter/martial/carp/on_reading_finished(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/item/book/granter/martial/carp/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(uses <= 0)
 		name = "empty scroll"

@@ -5,6 +5,8 @@
 	var/obj/machinery/atmospherics/components/unary/gas_connector
 
 /datum/gas_machine_connector/New(location, obj/machinery/connecting_machine = null, direction = SOUTH, gas_volume)
+	procstart = null
+	src.procstart = null
 	connected_machine = connecting_machine
 	if(!connected_machine)
 		qdel(src)
@@ -22,11 +24,15 @@
 	RegisterSignal(gas_connector, COMSIG_QDELETING, PROC_REF(connector_deleted))
 
 /datum/gas_machine_connector/Destroy()
+	procstart = null
+	src.procstart = null
 	connected_machine = null
 	QDEL_NULL(gas_connector)
 	return ..()
 
 /datum/gas_machine_connector/proc/connector_deleted()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	gas_connector = null
 	if(!QDELETED(connected_machine))
@@ -36,6 +42,8 @@
  * Register various signals that are required for the proper work of the connector
  */
 /datum/gas_machine_connector/proc/register_with_machine()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(connected_machine, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(pre_move_connected_machine))
 	RegisterSignal(connected_machine, COMSIG_MOVABLE_MOVED, PROC_REF(moved_connected_machine))
 	RegisterSignal(connected_machine, COMSIG_MACHINERY_DEFAULT_ROTATE_WRENCH, PROC_REF(wrenched_connected_machine))
@@ -46,6 +54,8 @@
  * Unregister the signals previously registered
  */
 /datum/gas_machine_connector/proc/unregister_from_machine()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(connected_machine, list(
 		COMSIG_MOVABLE_MOVED,
 		COMSIG_MOVABLE_PRE_MOVE,
@@ -58,6 +68,8 @@
  * Called when the machine has been moved, reconnect to the pipe network
  */
 /datum/gas_machine_connector/proc/moved_connected_machine(obj/machinery/source, atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(forced) // Called from parent doing abstract_move()
 		gas_connector.abstract_move(get_turf(connected_machine))
@@ -70,6 +82,8 @@
  * Called before the machine moves, disconnect from the pipe network
  */
 /datum/gas_machine_connector/proc/pre_move_connected_machine()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	disconnect_connector()
 
@@ -77,6 +91,8 @@
  * Called when the machine has been rotated, resets the connection to the pipe network with the new direction
  */
 /datum/gas_machine_connector/proc/wrenched_connected_machine()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	disconnect_connector()
 	reconnect_connector()
@@ -85,6 +101,8 @@
  * Called when the machine has been deconstructed
  */
 /datum/gas_machine_connector/proc/deconstruct_connected_machine()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	relocate_airs()
@@ -93,6 +111,8 @@
  * Called when the machine has been destroyed
  */
 /datum/gas_machine_connector/proc/destroy_connected_machine()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	disconnect_connector()
@@ -104,6 +124,8 @@
  * Handles the disconnection from the pipe network
  */
 /datum/gas_machine_connector/proc/disconnect_connector()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/atmospherics/node = gas_connector.nodes[1]
 	if(node)
 		if(gas_connector in node.nodes) //Only if it's actually connected. On-pipe version would is one-sided.
@@ -116,6 +138,8 @@
  * Handles the reconnection to the pipe network
  */
 /datum/gas_machine_connector/proc/reconnect_connector()
+	procstart = null
+	src.procstart = null
 	gas_connector.dir = connected_machine.dir
 	gas_connector.set_init_directions()
 	var/obj/machinery/atmospherics/node = gas_connector.nodes[1]
@@ -131,6 +155,8 @@
  * Handles air relocation to the pipe network/environment
  */
 /datum/gas_machine_connector/proc/relocate_airs(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/local_turf = get_turf(connected_machine)
 	var/datum/gas_mixture/inside_air = gas_connector.airs[1]
 	if(inside_air.total_moles() > 0)

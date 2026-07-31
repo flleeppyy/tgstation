@@ -7,6 +7,8 @@
 /datum/bt_node/ai_behavior/find_hive
 
 /datum/bt_node/ai_behavior/find_hive/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bee/bee_pawn = controller.pawn
 	var/obj/structure/beebox/current_home = controller.blackboard[BB_CURRENT_HOME]
 
@@ -34,6 +36,8 @@
 	time_between_perform = 10 SECONDS
 
 /datum/bt_node/ai_behavior/inhabit_hive/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bee/bee_pawn = controller.pawn
 	var/obj/structure/beebox/home = controller.blackboard[BB_CURRENT_HOME]
 	if(QDELETED(home))
@@ -46,6 +50,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/inhabit_hive/finish_action(datum/ai_controller/controller, succeeded, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!succeeded)
 		controller.clear_blackboard_key(BB_CURRENT_HOME)
@@ -57,6 +63,8 @@
 	var/exit_chance = 35
 
 /datum/bt_node/ai_behavior/enter_exit_hive/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/beebox/home = controller.blackboard[BB_CURRENT_HOME]
 	if(QDELETED(home))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
@@ -81,6 +89,8 @@
 	time_between_perform = 5 SECONDS
 
 /datum/bt_node/ai_behavior/pollinate_hydro/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/hydroponics/tray = controller.blackboard[BB_TARGET_HYDRO]
 	var/mob/living/basic/bee/bee_pawn = controller.pawn
 	if(QDELETED(tray) || !bee_pawn.Adjacent(tray))
@@ -89,6 +99,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/pollinate_hydro/finish_action(datum/ai_controller/controller, succeeded, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(BB_TARGET_HYDRO)
 
@@ -99,6 +111,8 @@
 	var/swirl_chance = 60
 
 /datum/bt_node/ai_behavior/swirl_around_target/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[BB_SWARM_TARGET]
 	var/mob/living/bee_pawn = controller.pawn
 	if(QDELETED(target))

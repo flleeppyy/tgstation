@@ -193,6 +193,8 @@
 	crafting_flags = parent_type::crafting_flags | CRAFT_COLLECT_REQUIREMENTS
 
 /datum/crafting_recipe/toiletbong/check_requirements(mob/user, list/collected_requirements)
+	procstart = null
+	src.procstart = null
 	var/obj/item/flamethrower/flamethrower = collected_requirements[/obj/item/flamethrower][1]
 	if(!flamethrower.ptank)
 		return FALSE

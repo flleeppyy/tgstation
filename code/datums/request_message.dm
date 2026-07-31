@@ -20,6 +20,8 @@
 	var/appended_list = list()
 
 /datum/request_message/New(data)
+	procstart = null
+	src.procstart = null
 	sender_department =  data["sender_department"]
 	received_time = round_timestamp()
 	content = data["message"]
@@ -34,6 +36,8 @@
 
 /// Retrieves the alert spoken/blared by the requests console that receives this message
 /datum/request_message/proc/get_alert()
+	procstart = null
+	src.procstart = null
 	var/authenticated = ""
 	if(message_verified_by)
 		authenticated = ", Verified by [message_verified_by] (Authenticated)"
@@ -44,6 +48,8 @@
 
 /// Converts the message into a format for the tgui ui_data json
 /datum/request_message/proc/message_ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/ui_data = list()
 	ui_data["sender_department"] = sender_department
 	ui_data["received_time"] = received_time

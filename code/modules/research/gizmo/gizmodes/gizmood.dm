@@ -17,10 +17,14 @@
 	var/range = 14
 
 /datum/gizpulse/mood_pulser/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	mood_pulse(holder)
 
 /// Send a mood pulse to a range
 /datum/gizpulse/mood_pulser/proc/mood_pulse(atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/circle_wave(get_turf(holder), ring_color)
 	for(var/mob/living/carbon/human/human in urange(range, holder))
 		human.add_mood_event("gizmo_mood_pulse", mood)
@@ -36,6 +40,8 @@
 	ring_color = COLOR_RED
 
 /datum/gizpulse/radiation_pulse/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/circle_wave(get_turf(holder), COLOR_GREEN)
 
 	radiation_pulse(holder, max_range = 5, threshold = RAD_LIGHT_INSULATION, chance = 30)

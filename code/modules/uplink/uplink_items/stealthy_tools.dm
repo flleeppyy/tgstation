@@ -66,6 +66,8 @@
 	surplus = 30
 
 /datum/uplink_item/stealthy_tools/emplight/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(HAS_TRAIT(SSstation, STATION_TRAIT_CYBERNETIC_REVOLUTION))
 		cost *= 3
@@ -123,6 +125,8 @@
 	purchasable_from = ~(UPLINK_NUKE_OPS | UPLINK_CLOWN_OPS) //Can still be purchased by loneops to give them an edge.
 
 /datum/uplink_item/stealthy_tools/telecomm_blackout/spawn_item(spawn_path, mob/user, datum/uplink_handler/uplink_handler, atom/movable/source)
+	procstart = null
+	src.procstart = null
 	force_event(/datum/round_event_control/communications_blackout, "a syndicate virus")
 	return source //For log icon
 
@@ -138,5 +142,7 @@
 	purchasable_from = ~(UPLINK_NUKE_OPS | UPLINK_CLOWN_OPS) //Can still be purchased by loneops to give them an edge.
 
 /datum/uplink_item/stealthy_tools/blackout/spawn_item(spawn_path, mob/user, datum/uplink_handler/uplink_handler, atom/movable/source)
+	procstart = null
+	src.procstart = null
 	force_event(/datum/round_event_control/grid_check, "a syndicate virus")
 	return source //For log icon

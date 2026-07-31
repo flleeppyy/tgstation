@@ -8,26 +8,38 @@
 INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 
 /mob/living/carbon/human/dummy/Initialize(mapload, datum/species/species)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_GODMODE, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_PREVENT_BLINKING, INNATE_TRAIT)
 
 /mob/living/carbon/human/dummy/Destroy()
+	procstart = null
+	src.procstart = null
 	in_use = FALSE
 	return ..()
 
 /mob/living/carbon/human/dummy/Life(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/dummy/attach_rot(mapload)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/dummy/set_species(datum/species/mrace, icon_update = TRUE, pref_load = FALSE, replace_missing = TRUE)
+	procstart = null
+	src.procstart = null
 	harvest_organs()
 	return ..()
 
 ///Let's extract our dummies organs and limbs for storage, to reduce the cache missed that spamming a dummy cause
 /mob/living/carbon/human/dummy/proc/harvest_organs()
+	procstart = null
+	src.procstart = null
 	for(var/slot in list(ORGAN_SLOT_BRAIN, ORGAN_SLOT_HEART, ORGAN_SLOT_LUNGS, ORGAN_SLOT_APPENDIX, \
 		ORGAN_SLOT_EYES, ORGAN_SLOT_EARS, ORGAN_SLOT_TONGUE, ORGAN_SLOT_LIVER, ORGAN_SLOT_STOMACH))
 		var/obj/item/organ/current_organ = get_organ_slot(slot) //Time to cache it lads
@@ -45,6 +57,8 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 //Instead of just deleting our equipment, we save what we can and reinsert it into SSwardrobe's store
 //Hopefully this makes preference reloading not the worst thing ever
 /mob/living/carbon/human/dummy/delete_equipment()
+	procstart = null
+	src.procstart = null
 	var/list/items_to_check = get_equipped_items(INCLUDE_POCKETS|INCLUDE_HELD|INCLUDE_PROSTHETICS|INCLUDE_ABSTRACT)
 	var/list/to_nuke = list() //List of items queued for deletion, can't qdel them before iterating their contents in case they hold something
 	///Travel to the bottom of the contents chain, expanding it out
@@ -72,6 +86,8 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 		qdel(delete)
 
 /mob/living/carbon/human/dummy/has_equipped(obj/item/item, slot, initial = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE) // assuming direct control
 	item.item_flags |= IN_INVENTORY
 	if(!item.visual_equipped(src, slot, initial))
@@ -85,31 +101,43 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	return TRUE
 
 /mob/living/carbon/human/dummy/proc/wipe_state()
+	procstart = null
+	src.procstart = null
 	delete_equipment()
 	update_lips(null, null, null, update = FALSE)
 	cut_overlays(TRUE)
 	clear_filters()
 
 /mob/living/carbon/human/dummy/setup_human_dna()
+	procstart = null
+	src.procstart = null
 	randomize_human_normie(src, randomize_mutations = FALSE)
 
 /mob/living/carbon/human/dummy/log_mob_tag(text)
+	procstart = null
+	src.procstart = null
 	return
 
 // To speed up the preference menu, we apply one height filter to the entire mob,
 // rather than independently applying offsets and filters to each individual overlay
 // This looks good enough to pass the sniff test and saves a lot of time
 /mob/living/carbon/human/dummy/apply_height(image/appearance, body_area)
+	procstart = null
+	src.procstart = null
 	if(appearance == src)
 		return ..()
 
 /// Takes in an accessory list and returns the first entry from that list, ensuring that we dont return SPRITE_ACCESSORY_NONE in the process.
 /proc/get_consistent_feature_entry(list/accessory_feature_list)
+	procstart = null
+	src.procstart = null
 	var/consistent_entry = (accessory_feature_list- SPRITE_ACCESSORY_NONE)[1]
 	ASSERT(!isnull(consistent_entry))
 	return consistent_entry
 
 /proc/create_consistent_human_dna(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	target.dna.features[FEATURE_MUTANT_COLOR] = COLOR_VIBRANT_LIME
 	target.dna.features[FEATURE_ETHEREAL_COLOR] = COLOR_WHITE
 	for(var/feature_key in SSaccessories.feature_list)
@@ -130,6 +158,8 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 /mob/living/carbon/human/dummy/consistent
 
 /mob/living/carbon/human/dummy/consistent/setup_human_dna()
+	procstart = null
+	src.procstart = null
 	create_consistent_human_dna(src)
 
 /// Provides a dummy for unit_tests that functions like a normal human, but with a standardized appearance
@@ -137,10 +167,14 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 /mob/living/carbon/human/consistent
 
 /mob/living/carbon/human/consistent/setup_human_dna()
+	procstart = null
+	src.procstart = null
 	create_consistent_human_dna(src)
 	fully_replace_character_name(real_name, "John Doe")
 
 /mob/living/carbon/human/consistent/domutcheck()
+	procstart = null
+	src.procstart = null
 	return // We skipped adding any mutations so this runtimes
 
 /mob/living/carbon/human/consistent/slow
@@ -148,13 +182,19 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 #ifdef UNIT_TESTS
 //unit test dummies should be very fast with actions
 /mob/living/carbon/human/dummy/consistent/initialize_actionspeed()
+	procstart = null
+	src.procstart = null
 	add_or_update_variable_actionspeed_modifier(/datum/actionspeed_modifier/base, multiplicative_slowdown = -1)
 
 /mob/living/carbon/human/consistent/initialize_actionspeed()
+	procstart = null
+	src.procstart = null
 	add_or_update_variable_actionspeed_modifier(/datum/actionspeed_modifier/base, multiplicative_slowdown = -1)
 
 //this one gives us a small window of time for checks on asynced actions.
 /mob/living/carbon/human/consistent/slow/initialize_actionspeed()
+	procstart = null
+	src.procstart = null
 	add_or_update_variable_actionspeed_modifier(/datum/actionspeed_modifier/base, multiplicative_slowdown = 0.1)
 #endif
 
@@ -163,6 +203,8 @@ GLOBAL_LIST_EMPTY(human_dummy_list)
 GLOBAL_LIST_EMPTY(dummy_mob_list)
 
 /proc/generate_or_wait_for_human_dummy(slotkey)
+	procstart = null
+	src.procstart = null
 	if(!slotkey)
 		return new /mob/living/carbon/human/dummy
 	var/mob/living/carbon/human/dummy/D = GLOB.human_dummy_list[slotkey]
@@ -179,6 +221,8 @@ GLOBAL_LIST_EMPTY(dummy_mob_list)
 	return D
 
 /proc/generate_dummy_lookalike(slotkey, mob/target)
+	procstart = null
+	src.procstart = null
 	if(!istype(target))
 		return generate_or_wait_for_human_dummy(slotkey)
 
@@ -201,6 +245,8 @@ GLOBAL_LIST_EMPTY(dummy_mob_list)
 	return copycat
 
 /proc/unset_busy_human_dummy(slotkey)
+	procstart = null
+	src.procstart = null
 	if(!slotkey)
 		return
 	var/mob/living/carbon/human/dummy/D = GLOB.human_dummy_list[slotkey]
@@ -209,6 +255,8 @@ GLOBAL_LIST_EMPTY(dummy_mob_list)
 		D.in_use = FALSE
 
 /proc/clear_human_dummy(slotkey)
+	procstart = null
+	src.procstart = null
 	if(!slotkey)
 		return
 

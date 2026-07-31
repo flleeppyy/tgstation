@@ -15,16 +15,22 @@
 	var/on = FALSE
 
 /obj/machinery/plumbing/disposer/Initialize(mapload, layer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/plumbing/simple_demand/disposer, layer)
 	RegisterSignal(reagents, COMSIG_REAGENTS_HOLDER_UPDATED, PROC_REF(update))
 
 /obj/machinery/plumbing/disposer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It is disposing [disposal_rate]u reagents per second.")
 	. += span_notice("Use hand to change disposal rate.")
 
 /obj/machinery/plumbing/disposer/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item))
 		context[SCREENTIP_CONTEXT_LMB] = "Set transfer rate"
 		return CONTEXTUAL_SCREENTIP_SET
@@ -32,41 +38,57 @@
 	return ..()
 
 /obj/machinery/plumbing/disposer/proc/update()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	update_appearance(UPDATE_ICON_STATE)
 
 /obj/machinery/plumbing/disposer/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][is_operational && anchored && on && reagents.total_volume ? "_working" : ""]"
 	return ..()
 
 /obj/machinery/plumbing/disposer/on_set_is_operational(old_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_ICON_STATE)
 
 /obj/machinery/plumbing/disposer/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == ITEM_INTERACT_SUCCESS)
 		update_appearance(UPDATE_ICON_STATE)
 
 /obj/machinery/plumbing/disposer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ChemDisposer", name)
 		ui.open()
 
 /obj/machinery/plumbing/disposer/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		max_volume = MAX_DISPOSAL_RATE
 	)
 
 /obj/machinery/plumbing/disposer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		enabled = on,
 		disposal_rate = disposal_rate
 	)
 
 /obj/machinery/plumbing/disposer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -86,6 +108,8 @@
 			return TRUE
 
 /obj/machinery/plumbing/disposer/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!is_operational || !reagents.total_volume || !on)
 		return
 	reagents.remove_all(disposal_rate * seconds_per_tick)

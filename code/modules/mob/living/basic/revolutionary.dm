@@ -73,6 +73,8 @@
 
 
 /mob/living/basic/revolutionary/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	shuffle_inplace(phrases)
 	var/static/list/display_emote = list(
@@ -108,6 +110,8 @@
 	desc += span_notice("#[pick(causes)].")
 
 /mob/living/basic/revolutionary/get_unconscious_appearance()
+	procstart = null
+	src.procstart = null
 	return get_generic_humanoid_static_appearance()
 
 /obj/effect/mob_spawn/corpse/human/revolutionary

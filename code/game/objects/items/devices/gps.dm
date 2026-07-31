@@ -21,11 +21,15 @@
 	var/overlay_icon = "working"
 
 /obj/item/gps/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_gps_component()
 
 /// Adds the GPS component to this item.
 /obj/item/gps/proc/add_gps_component()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/gps/item, gpstag, tracking_on, overlay_state = overlay_icon, debug = debug_mode)
 
 /obj/item/gps/spaceruin
@@ -61,6 +65,8 @@
 	gpstag = "PAI0"
 
 /obj/item/gps/pai/add_gps_component()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/gps/item, gpstag, state = GLOB.inventory_state)
 
 /obj/item/gps/visible_debug

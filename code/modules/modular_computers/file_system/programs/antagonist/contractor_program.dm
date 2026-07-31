@@ -21,15 +21,21 @@
 	var/first_load = TRUE
 
 /datum/computer_file/program/contract_uplink/clone()
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/program/contract_uplink/temp = ..()
 	temp.traitor_data = traitor_data
 	return temp
 
 /datum/computer_file/program/contract_uplink/Destroy(force)
+	procstart = null
+	src.procstart = null
 	traitor_data = null
 	return ..()
 
 /datum/computer_file/program/contract_uplink/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -109,6 +115,8 @@
 			return TRUE
 
 /datum/computer_file/program/contract_uplink/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["first_load"] = first_load

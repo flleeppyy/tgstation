@@ -25,6 +25,8 @@
 	circuit = /obj/item/circuitboard/computer/comm_server
 
 /obj/machinery/computer/telecomms/server/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list(
 		"screen" = screen,
 		"network" = network,
@@ -97,6 +99,8 @@
 
 
 /obj/machinery/computer/telecomms/server/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -159,6 +163,8 @@
 	return FALSE
 
 /obj/machinery/computer/telecomms/server/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)

@@ -44,6 +44,8 @@
 	VAR_FINAL/greyscale_colors
 
 /datum/atom_skin/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(greyscale_item_path))
 		return
@@ -58,6 +60,8 @@
 
 /// Returns the correct preview icon state for this atom skin, whether it be a map_preview or a normal icon. This is assumed from our var population above.
 /datum/atom_skin/proc/get_preview_icon_state()
+	procstart = null
+	src.procstart = null
 	if(isnull(greyscale_item_path)) // Not a GAGs icon
 		return new_icon_state
 	if(isnull(new_icon_state)) // The base GAGS item icon
@@ -72,6 +76,8 @@
  * * apply_to: The atom to apply the skin to
  */
 /datum/atom_skin/proc/apply(atom/apply_to, mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(!HAS_TRAIT(apply_to, TRAIT_WAS_RENAMED))
 		APPLY_VAR_OR_RESET_INITIAL(apply_to, name, new_name, reset_missing)
@@ -101,6 +107,8 @@
  * * clear_from: The atom to clear the skin from
  */
 /datum/atom_skin/proc/clear_skin(atom/clear_from)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	RESET_INITIAL_IF_SET(clear_from, name, new_name)
 	RESET_INITIAL_IF_SET(clear_from, desc, new_desc)
@@ -121,6 +129,8 @@
 
 /// Gets a preview image for this skin based on the given atom's icon and icon_state
 /datum/atom_skin/proc/get_preview_icon(atom/for_atom)
+	procstart = null
+	src.procstart = null
 	return image(
 		icon = new_icon || for_atom.icon,
 		icon_state = new_icon_state || for_atom.icon_state,
@@ -143,6 +153,8 @@
 	VAR_PRIVATE/current_skin
 
 /datum/component/reskinable_item/Initialize(base_reskin_type, infinite = FALSE, initial_skin, list/blacklisted_subtypes)
+	procstart = null
+	src.procstart = null
 	if(!isatom(parent) || isarea(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -171,16 +183,22 @@
 	atom_parent.flags_1 |= HAS_CONTEXTUAL_SCREENTIPS_1
 
 /datum/component/reskinable_item/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_CLICK_ALT, PROC_REF(on_click_alt_reskin))
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE_TAGS, PROC_REF(add_tags))
 	RegisterSignal(parent, COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM, PROC_REF(add_context))
 
 /datum/component/reskinable_item/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_CLICK_ALT)
 	UnregisterSignal(parent, COMSIG_ATOM_EXAMINE_TAGS)
 	UnregisterSignal(parent, COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM)
 
 /datum/component/reskinable_item/CheckDupeComponent(datum/component/comp, base_reskin_type, infinite = FALSE, initial_skin, list/blacklisted_subtypes)
+	procstart = null
+	src.procstart = null
 	// Always absorb added components
 	src.base_reskin_type = base_reskin_type
 	src.infinite_reskin = infinite
@@ -196,6 +214,8 @@
 	return TRUE
 
 /datum/component/reskinable_item/proc/get_skins_by_name()
+	procstart = null
+	src.procstart = null
 	var/list/reskin_options = list()
 	for(var/datum/atom_skin/reskin_option as anything in valid_subtypesof(base_reskin_type) - blacklisted_subtypes)
 		reskin_options[reskin_option::preview_name] = reskin_option
@@ -203,6 +223,8 @@
 	return reskin_options
 
 /datum/component/reskinable_item/proc/set_skin_by_name(input_name, mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/reskin_options = get_skins_by_name()
 	var/list/atom_skins = get_atom_skins()
 	if(current_skin)
@@ -225,18 +247,24 @@
 	SEND_SIGNAL(parent, COMSIG_OBJ_RESKIN, input_name)
 
 /datum/component/reskinable_item/proc/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "Reskin"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /datum/component/reskinable_item/proc/add_tags(atom/source, mob/user, list/tags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	tags["reskinnable"] = "This item is able to be reskinned! Alt-Click to do so!"
 
 /// Called when alt clicked and the item has unique reskin options
 /datum/component/reskinable_item/proc/on_click_alt_reskin(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!user.can_perform_action(parent, NEED_DEXTERITY))
@@ -252,6 +280,8 @@
  * * user The mob choosing a reskin option
  */
 /datum/component/reskinable_item/proc/reskin_obj(mob/user)
+	procstart = null
+	src.procstart = null
 	var/atom/atom_parent = parent
 
 	var/list/items = list()
@@ -279,6 +309,8 @@
  * * user The mob interacting with the menu
  */
 /datum/component/reskinable_item/proc/check_reskin_menu(mob/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(parent))
 		return FALSE
 	if(user.incapacitated)

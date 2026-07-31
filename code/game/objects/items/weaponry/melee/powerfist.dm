@@ -38,6 +38,8 @@
 	acid = 40
 
 /obj/item/melee/powerfist/proc/pressure_setting_to_text(fist_pressure_setting)
+	procstart = null
+	src.procstart = null
 	switch(fist_pressure_setting)
 		if(LOW_PRESSURE)
 			return "low"
@@ -49,6 +51,8 @@
 			CRASH("Invalid pressure setting: [fist_pressure_setting]!")
 
 /obj/item/melee/powerfist/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!in_range(user, src))
 		. += span_notice("You'll need to get closer to see any more.")
@@ -60,12 +64,16 @@
 	. += span_notice("Use a <b>wrench</b> to change the valve strength. Current strength is at <b>[pressure_setting_to_text(fist_pressure_setting)]</b> level.")
 
 /obj/item/melee/powerfist/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	fist_pressure_setting = fist_pressure_setting >= HIGH_PRESSURE ? LOW_PRESSURE : fist_pressure_setting + 1
 	tool.play_tool_sound(src)
 	balloon_alert(user, "piston strength set to [pressure_setting_to_text(fist_pressure_setting)]")
 	return TRUE
 
 /obj/item/melee/powerfist/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!tank)
 		balloon_alert(user, "no tank present")
 		return
@@ -73,6 +81,8 @@
 	return TRUE
 
 /obj/item/melee/powerfist/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/tank/internals))
 		return NONE
 
@@ -88,6 +98,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/melee/powerfist/proc/update_tank(obj/item/tank/internals/the_tank, removing = TANK_INSERTING, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(removing)
 		if(!tank)
 			to_chat(user, span_notice("\The [src] currently has no tank attached to it."))
@@ -107,6 +119,8 @@
 	tank = the_tank
 
 /obj/item/melee/powerfist/attack(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!tank)
 		to_chat(user, span_warning("\The [src] can't operate without a source of gas!"))
 		return

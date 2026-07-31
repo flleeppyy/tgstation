@@ -4,12 +4,18 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 
 /datum/preference/choiced/spacer_height/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return assoc_to_keys(GLOB.spacer_height_choices)
 
 /datum/preference/choiced/spacer_height/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	return ..() && (/datum/quirk/spacer_born::name in preferences.all_quirks)
 
 /datum/preference/choiced/spacer_height/create_default_value()
+	procstart = null
+	src.procstart = null
 	return init_possible_values()[1]
 
 /datum/quirk_constant_data/spacer_height
@@ -17,4 +23,6 @@
 	customization_options = list(/datum/preference/choiced/spacer_height)
 
 /datum/preference/choiced/spacer_height/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return

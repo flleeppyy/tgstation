@@ -12,10 +12,14 @@
 	var/fishing_modifier = -4
 
 /obj/item/storage/toolbox/fishing/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, fishing_modifier, ITEM_SLOT_HANDS)
 
 /obj/item/storage/toolbox/fishing/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/bait_can/worm(src)
 	new /obj/item/fishing_rod/unslotted(src)
 	new /obj/item/fishing_hook(src)
@@ -31,6 +35,8 @@
 	storage_type = /datum/storage/toolbox/fishing/small
 
 /obj/item/storage/toolbox/fishing/small/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/fishing_rod/unslotted(src)
 	new /obj/item/fishing_hook(src)
 	new /obj/item/fishing_line(src)
@@ -44,6 +50,8 @@
 	fishing_modifier = -10
 
 /obj/item/storage/toolbox/fishing/master/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/fishing_rod/telescopic/master(src)
 	new /obj/item/storage/box/fishing_hooks/master(src)
 	new /obj/item/storage/box/fishing_lines/master(src)

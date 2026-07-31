@@ -2,11 +2,15 @@
 	var/mob/living/silicon/ai/owner
 
 /datum/robot_control/New(mob/living/silicon/ai/new_owner)
+	procstart = null
+	src.procstart = null
 	if(!istype(new_owner))
 		qdel(src)
 	owner = new_owner
 
 /datum/robot_control/proc/is_interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user != owner || owner.incapacitated)
 		return FALSE
 	if(owner.control_disabled)
@@ -15,20 +19,28 @@
 	return TRUE
 
 /datum/robot_control/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(is_interactable(user))
 		return ..()
 	return UI_CLOSE
 
 /datum/robot_control/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 /datum/robot_control/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "RemoteRobotControl")
 		ui.open()
 
 /datum/robot_control/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!owner || user != owner)
 		return
 	var/list/data = list()
@@ -55,6 +67,8 @@
 	return data
 
 /datum/robot_control/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !isliving(ui.user))
 		return

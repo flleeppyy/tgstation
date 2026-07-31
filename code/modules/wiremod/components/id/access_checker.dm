@@ -17,31 +17,45 @@
 	)
 
 /obj/item/circuit_component/compare/access/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("When \"Check Any\" is true, returns true if \"Access To Check\" contains ANY value in \"Required Access\".", "orange", "info")
 	. += create_ui_notice("When \"Check Any\" is false, returns true only if \"Access To Check\" contains ALL values in \"Required Access\".", "orange", "info")
 
 /obj/item/circuit_component/compare/access/populate_custom_ports()
+	procstart = null
+	src.procstart = null
 	subject_accesses = add_input_port("Access To Check", PORT_TYPE_LIST(PORT_TYPE_STRING))
 	required_accesses = add_input_port("Required Access", PORT_TYPE_LIST(PORT_TYPE_STRING))
 	check_any = add_input_port("Check Any", PORT_TYPE_BOOLEAN)
 
 /obj/item/circuit_component/compare/access/save_data_to_list(list/component_data)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	component_data["input_ports_stored_data"] = list(required_accesses.name = list("stored_data" = required_accesses.value))
 
 /obj/item/circuit_component/compare/access/add_to(obj/item/integrated_circuit/added_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(added_to, COMSIG_CIRCUIT_POST_LOAD, PROC_REF(on_post_load))
 
 /obj/item/circuit_component/compare/access/removed_from(obj/item/integrated_circuit/removed_from)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(removed_from, COMSIG_CIRCUIT_POST_LOAD)
 	return ..()
 
 /obj/item/circuit_component/compare/access/proc/on_post_load(datum/source)
+	procstart = null
+	src.procstart = null
 	regenerate_access()
 
 /obj/item/circuit_component/compare/access/proc/regenerate_access()
+	procstart = null
+	src.procstart = null
 	var/check_any_value = check_any.value
 	var/list/required_accesses_list = required_accesses.value
 	if(!islist(required_accesses_list))
@@ -54,21 +68,29 @@
 		req_access = required_accesses_list.Copy()
 
 /obj/item/circuit_component/compare/access/do_comparisons()
+	procstart = null
+	src.procstart = null
 	return check_access_list(subject_accesses.value)
 
 /obj/item/circuit_component/compare/access/ui_perform_action(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(required_accesses.connected_ports))
 		balloon_alert(user, "disconnect port before manually configuring!")
 		return
 	interact(user)
 
 /obj/item/circuit_component/compare/access/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "CircuitAccessChecker", display_name)
 		ui.open()
 
 /obj/item/circuit_component/compare/access/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/list/regions = list()
@@ -82,12 +104,16 @@
 	return data
 
 /obj/item/circuit_component/compare/access/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["accesses"] = required_accesses.value || list()
 	data["oneAccess"] = check_any.value
 	return data
 
 /obj/item/circuit_component/compare/access/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

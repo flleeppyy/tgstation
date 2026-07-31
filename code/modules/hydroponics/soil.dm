@@ -18,19 +18,27 @@
 	var/sack_type = /obj/item/soil_sack
 
 /obj/machinery/hydroponics/soil/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/tool_blocker, TOOL_SCREWDRIVER)
 	AddElement(/datum/element/tool_blocker, TOOL_CROWBAR)
 
 /obj/machinery/hydroponics/soil/update_icon(updates=ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(self_sustaining)
 		add_atom_colour(rgb(255, 175, 0), FIXED_COLOUR_PRIORITY)
 
 /obj/machinery/hydroponics/soil/update_status_light_overlays()
+	procstart = null
+	src.procstart = null
 	return // Has no lights
 
 /obj/machinery/hydroponics/soil/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(tool.tool_behaviour != TOOL_SHOVEL) //Spades can still uproot plants on left click
 		return ..()
 
@@ -43,13 +51,19 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/hydroponics/soil/click_ctrl(mob/user)
+	procstart = null
+	src.procstart = null
 	return CLICK_ACTION_BLOCKING //Soil has no electricity.
 
 /obj/machinery/hydroponics/soil/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/ore/glass(drop_location(), 3)
 
 ///called when a soil is plopped down on the ground.
 /obj/machinery/hydroponics/soil/proc/on_place()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/armor/obj_soil
@@ -100,6 +114,8 @@
 	sack_type = /obj/item/soil_sack/worm
 
 /obj/machinery/hydroponics/soil/worm/on_place()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	flick("soil_worm_wiggle", src)
 
@@ -140,6 +156,8 @@
 	var/placement_sound = 'sound/effects/soil_plop.ogg'
 
 /obj/item/soil_sack/Initialize(mapload, obj/machinery/hydroponics/soil/outside_soil)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/two_handed, force_multiplier = 2, wield_callback = CALLBACK(src, PROC_REF(on_wield)), unwield_callback = CALLBACK(src, PROC_REF(on_unwield)))
 
@@ -153,12 +171,16 @@
 		animate(time = 250 MILLISECONDS, pixel_x = rand(-6, 6), pixel_y = rand(-4, 4), flags = ANIMATION_PARALLEL)
 
 /obj/item/soil_sack/Exited(atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == stored_soil)
 		stored_soil = null
 		qdel(src)
 
 /obj/item/soil_sack/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isopenturf(interacting_with) || isgroundlessturf(interacting_with))
 		return ..()
 
@@ -174,6 +196,8 @@
 
 //Proc responsible for placing the soil inside track onto the turf or inside a hydroponic tray
 /obj/item/soil_sack/proc/transfer_soil(atom/target, inside_tray = FALSE)
+	procstart = null
+	src.procstart = null
 	if(ispath(stored_soil))
 		stored_soil = new stored_soil(src)
 		if(inside_tray)
@@ -191,12 +215,16 @@
 	return soil_ref
 
 /obj/item/soil_sack/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(attack_type == OVERWHELMING_ATTACK)
 		return FALSE
 	return ..()
 
 ///Remove slowdown and add block chance when wielded.
 /obj/item/soil_sack/proc/on_wield()
+	procstart = null
+	src.procstart = null
 	slowdown = 0
 	if(ismob(loc))
 		var/mob/wearer = loc
@@ -206,6 +234,8 @@
 
 ///Reapply slowdown and remove block chance when unwielded.
 /obj/item/soil_sack/proc/on_unwield()
+	procstart = null
+	src.procstart = null
 	slowdown = initial(slowdown)
 	if(ismob(loc))
 		var/mob/wearer = loc

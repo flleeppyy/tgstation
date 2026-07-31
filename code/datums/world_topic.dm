@@ -1,6 +1,8 @@
 // SETUP
 
 /proc/TopicHandlers()
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/list/all_handlers = subtypesof(/datum/world_topic)
 	for(var/I in all_handlers)
@@ -27,6 +29,8 @@
 	var/require_comms_key = TRUE
 
 /datum/world_topic/proc/TryRun(list/input)
+	procstart = null
+	src.procstart = null
 	key_valid = (CONFIG_GET(string/comms_key) == input["key"]) && CONFIG_GET(string/comms_key) && input["key"]
 	input -= "key"
 	if(require_comms_key && !key_valid)
@@ -41,6 +45,8 @@
 		. = list2params(.)
 
 /datum/world_topic/proc/Run(list/input)
+	procstart = null
+	src.procstart = null
 	CRASH("Run() not implemented for [type]!")
 
 /** TOPICS
@@ -57,6 +63,8 @@
 	require_comms_key = FALSE
 
 /datum/world_topic/ping/Run(list/input)
+	procstart = null
+	src.procstart = null
 	. = 0
 	for (var/client/C in GLOB.clients)
 		++.
@@ -67,6 +75,8 @@
 	require_comms_key = FALSE
 
 /datum/world_topic/playing/Run(list/input)
+	procstart = null
+	src.procstart = null
 	return GLOB.player_list.len
 
 // If you modify the protocol for this, update tools/Tgstation.PRAnnouncer
@@ -75,6 +85,8 @@
 	var/static/list/PRcounts = list() //PR id -> number of times announced this round
 
 /datum/world_topic/pr_announce/Run(list/input)
+	procstart = null
+	src.procstart = null
 	var/list/payload = json_decode(input["payload"])
 	var/id = "[payload["pull_request"]["id"]]"
 	if(!PRcounts[id])
@@ -92,6 +104,8 @@
 	keyword = "Ahelp"
 
 /datum/world_topic/ahelp_relay/Run(list/input)
+	procstart = null
+	src.procstart = null
 	relay_msg_admins(span_adminnotice("<b><font color=red>HELP: </font> [input["source"]] [input["message_sender"]]: [input["message"]]</b>"))
 
 /datum/world_topic/comms_console
@@ -100,6 +114,8 @@
 	var/list/timers
 
 /datum/world_topic/comms_console/Run(list/input)
+	procstart = null
+	src.procstart = null
 	// Reject comms messages from other servers that are not on our configured network,
 	// if this has been configured. (See CROSS_COMMS_NETWORK in comms.txt)
 	var/configured_network = CONFIG_GET(string/cross_comms_network)
@@ -130,6 +146,8 @@
 	message_admins(span_adminnotice(message))
 
 /datum/world_topic/comms_console/Topic(href, list/href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -154,6 +172,8 @@
 		return TRUE
 
 /datum/world_topic/comms_console/proc/receive_cross_comms_message(list/data)
+	procstart = null
+	src.procstart = null
 	var/list/input = data["input"]
 	var/timer_id = data["timer_id"]
 
@@ -168,18 +188,24 @@
 	keyword = "News_Report"
 
 /datum/world_topic/news_report/Run(list/input)
+	procstart = null
+	src.procstart = null
 	minor_announce(input["message"], "Breaking Update From [input["message_sender"]]")
 
 /datum/world_topic/adminmsg
 	keyword = "adminmsg"
 
 /datum/world_topic/adminmsg/Run(list/input)
+	procstart = null
+	src.procstart = null
 	return TgsPm(input[keyword], input["msg"], input["sender"])
 
 /datum/world_topic/namecheck
 	keyword = "namecheck"
 
 /datum/world_topic/namecheck/Run(list/input)
+	procstart = null
+	src.procstart = null
 	log_admin("world/Topic Name Check: [input["sender"]] on [input["namecheck"]]")
 	message_admins("Name checking [input["namecheck"]] from [input["sender"]] (World topic)")
 
@@ -189,6 +215,8 @@
 	keyword = "adminwho"
 
 /datum/world_topic/adminwho/Run(list/input)
+	procstart = null
+	src.procstart = null
 	return tgsadminwho()
 
 /datum/world_topic/status
@@ -196,6 +224,8 @@
 	require_comms_key = FALSE
 
 /datum/world_topic/status/Run(list/input)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["version"] = GLOB.game_version
 	.["respawn"] = config ? !!CONFIG_GET(flag/allow_respawn) : FALSE // show respawn as true regardless of "respawn as char" or "free respawn"
@@ -254,6 +284,8 @@
 	var/list/timers
 
 /datum/world_topic/create_news_channel/Run(list/input)
+	procstart = null
+	src.procstart = null
 	var/message_delay = text2num(input["delay"])
 	var/timer_id = addtimer(CALLBACK(src, PROC_REF(create_channel), input), message_delay)
 	input["timer_id"] = timer_id
@@ -266,6 +298,8 @@
 	message_admins(span_adminnotice(message))
 
 /datum/world_topic/create_news_channel/Topic(href, list/href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -291,6 +325,8 @@
 	return TRUE
 
 /datum/world_topic/create_news_channel/proc/create_channel(list/input)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(timers, input["timer_id"])
 	message_admins("[input["author_ckey"]] has crated a cross-sector newscaster channel titled \"[input["message"]]\"")
 	GLOB.news_network.create_feed_channel(input["message"], input["author"], input["desc"], locked = TRUE, receiving_cross_sector = TRUE)
@@ -299,6 +335,8 @@
 	keyword = "create_news_article"
 
 /datum/world_topic/create_news_article/Run(list/input)
+	procstart = null
+	src.procstart = null
 	var/msg = input["msg"]
 	var/author = input["author"]
 	var/author_key = input["author_ckey"]

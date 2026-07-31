@@ -38,6 +38,8 @@
 	)
 
 /datum/round_event_control/supermatter_surge/can_spawn_event(players_amt, allow_magic = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!SSjob.has_minimum_jobs(crew_threshold = 3, jobs = JOB_GROUP_ENGINEERS, head_jobs = list(JOB_CHIEF_ENGINEER)))
@@ -59,13 +61,19 @@
 	max_value = SURGE_SEVERITY_MAX
 
 /datum/event_admin_setup/input_number/surge_spiciness/prompt_admins()
+	procstart = null
+	src.procstart = null
 	default_value = rand(SURGE_SEVERITY_MIN, SURGE_SEVERITY_MAX)
 	return ..()
 
 /datum/event_admin_setup/input_number/surge_spiciness/apply_to_event(datum/round_event/supermatter_surge/event)
+	procstart = null
+	src.procstart = null
 	event.surge_class = chosen_value
 
 /datum/round_event/supermatter_surge/setup()
+	procstart = null
+	src.procstart = null
 	engine = GLOB.main_supermatter_engine
 	if(isnull(engine))
 		stack_trace("SM surge event failed to find a supermatter engine!")
@@ -91,16 +99,22 @@
 	end_when = rand(SURGE_DURATION_MIN, SURGE_DURATION_MAX)
 
 /datum/round_event/supermatter_surge/announce(fake)
+	procstart = null
+	src.procstart = null
 	var/class_to_announce = fake ? pick(1, 2, 3, 4) : surge_class
 	priority_announce("The Crystal Integrity Monitoring System has detected unusual atmospheric properties in the supermatter chamber, energy output from the supermatter crystal has increased significantly. Engineering intervention is required to stabilize the engine.", "Class [class_to_announce] Supermatter Surge Alert", 'sound/machines/engine_alert/engine_alert3.ogg')
 
 /datum/round_event/supermatter_surge/start()
+	procstart = null
+	src.procstart = null
 	engine.bullet_energy = surge_class + SURGE_BULLET_ENERGY_ADDITION
 	sm_gas.powerloss_inhibition = (surge_class * SURGE_POWERLOSS_INHIBITION_MODIFIER) + SURGE_BASE_POWERLOSS_INHIBITION
 	sm_gas.heat_power_generation = (surge_class * SURGE_POWER_GENERATION_MODIFIER) - 1
 	sm_gas.heat_modifier = (surge_class * SURGE_HEAT_MODIFIER) - 1
 
 /datum/round_event/supermatter_surge/end()
+	procstart = null
+	src.procstart = null
 	engine.bullet_energy = initial(engine.bullet_energy)
 	sm_gas.powerloss_inhibition = initial(sm_gas.powerloss_inhibition)
 	sm_gas.heat_power_generation = initial(sm_gas.heat_power_generation)
@@ -126,6 +140,8 @@
 	fakeable = FALSE
 
 /datum/round_event/supermatter_surge/poly/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("The Crystal Integrity Monitoring System has detected unusual parrot type resonance in the supermatter chamber, energy output from the supermatter crystal has increased significantly. Engineering intervention is required to stabilize the engine.", "Class P Supermatter Surge Alert", 'sound/machines/engine_alert/engine_alert3.ogg')
 
 #undef SURGE_DURATION_MIN

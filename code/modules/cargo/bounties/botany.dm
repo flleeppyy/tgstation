@@ -5,6 +5,8 @@
 	var/foodtype = "meal" //same here
 
 /datum/bounty/item/botany/New()
+	procstart = null
+	src.procstart = null
 	..()
 	description = "Central Command's head chef is looking to prepare a fine [foodtype] with [name]. [bonus_desc]"
 	reward += multiplier * (CARGO_CRATE_VALUE * 2)
@@ -217,6 +219,8 @@
 	wanted_types = list(/obj/structure/bonfire = TRUE)
 
 /datum/bounty/item/botany/bonfire/applies_to(obj/O)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/obj/structure/bonfire/B = O

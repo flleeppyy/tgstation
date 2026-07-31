@@ -38,9 +38,13 @@
 	var/limit = 300
 
 /obj/item/circuit_component/filter_list/populate_options()
+	procstart = null
+	src.procstart = null
 	list_options = add_option_port("List Type", GLOB.wiremod_basic_types)
 
 /obj/item/circuit_component/filter_list/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(port == list_options)
 		var/new_datatype = list_options.value
 		list_to_filter.set_datatype(PORT_TYPE_LIST(new_datatype))
@@ -48,6 +52,8 @@
 		element.set_datatype(new_datatype)
 
 /obj/item/circuit_component/filter_list/populate_ports()
+	procstart = null
+	src.procstart = null
 	list_to_filter = add_input_port("List Input", PORT_TYPE_LIST(PORT_TYPE_ANY))
 	accept_entry = add_input_port("Accept Entry", PORT_TYPE_SIGNAL, trigger = PROC_REF(accept_entry_port))
 
@@ -59,11 +65,15 @@
 	on_failed = add_output_port("On Failed", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/filter_list/proc/accept_entry_port(datum/port/input/port, list/return_values)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(return_values)
 		return_values["accept_entry"] = TRUE
 
 /obj/item/circuit_component/filter_list/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	var/index = 1
 	var/list/filtered_list = list()
 	for(var/element_in_list in list_to_filter.value)

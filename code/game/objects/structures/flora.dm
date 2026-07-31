@@ -50,6 +50,8 @@
 	var/flora_flags = NONE
 
 /obj/structure/flora/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 
@@ -95,6 +97,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/flora/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -114,12 +118,16 @@
 		after_harvest(user)
 
 /obj/structure/flora/run_atom_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
+	procstart = null
+	src.procstart = null
 	if(damage_flag == MELEE)
 		if(damage_type == BURN)
 			damage_amount *= 4
 	return ..()
 
 /obj/structure/flora/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	var/use_default_sound = TRUE //Because I don't wanna do unnecessary bitflag checks in a single if statement, while also allowing for multiple sounds to be played
 	if(flora_flags & FLORA_HERBAL)
 		playsound(src, SFX_CRUNCHY_BUSH_WHACK, 50, vary = FALSE)
@@ -139,6 +147,8 @@
  * Returns: An assoc list of obj typepaths and their weights e.g. list(/obj/item/food/grass = 1), or null
  */
 /obj/structure/flora/proc/get_potential_products()
+	procstart = null
+	src.procstart = null
 	return null
 
 /**
@@ -146,6 +156,8 @@
  * Returns: A list where each value is (harvested_item_typepath = amount_of_products)
  */
 /obj/structure/flora/proc/get_products_list()
+	procstart = null
+	src.procstart = null
 	var/list/potential_product_list = get_potential_products()
 	if(isnull(potential_product_list))
 		return
@@ -165,6 +177,8 @@
  * Returns: TRUE if they can harvest, FALSE if not. Null if it's not harvestable at all.
  */
 /obj/structure/flora/proc/can_harvest(mob/user, obj/item/harvesting_item)
+	procstart = null
+	src.procstart = null
 
 	if(flags_1 & HOLOGRAM_1)
 		return FALSE
@@ -194,6 +208,8 @@
  * Returns: FALSE if nothing was made, otherwise a list of created products
  */
 /obj/structure/flora/proc/harvest(user, product_amount_multiplier = 1)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(harvested)
 		return FALSE
@@ -252,10 +268,14 @@
 		addtimer(CALLBACK(src, PROC_REF(regrow)), rand(regrowth_time_low, regrowth_time_high))
 
 /obj/structure/flora/proc/after_harvest(user)
+	procstart = null
+	src.procstart = null
 	if(delete_on_harvest)
 		qdel(src)
 
 /obj/structure/flora/proc/regrow()
+	procstart = null
+	src.procstart = null
 	name = initial(name)
 	desc = initial(desc)
 	harvested = FALSE
@@ -264,6 +284,8 @@
  * Called after the user uproots the flora with a shovel.
  */
 /obj/structure/flora/proc/uproot(mob/living/user)
+	procstart = null
+	src.procstart = null
 	anchored = FALSE
 	uprooted = TRUE
 	var/matrix/M = matrix(transform)
@@ -274,12 +296,16 @@
  * Called after the user plants the flora back into the ground after uprooted
  */
 /obj/structure/flora/proc/replant(mob/living/user)
+	procstart = null
+	src.procstart = null
 	anchored = initial(anchored)
 	uprooted = FALSE
 	var/matrix/M = matrix(transform)
 	transform = M.Turn(-previous_rotation)
 
 /obj/structure/flora/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(harvested)
 		return ..()
 
@@ -313,18 +339,26 @@
 	flora_flags = FLORA_HERBAL | FLORA_WOODEN
 
 /obj/structure/flora/tree/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(get_seethrough_map())
 		AddComponent(/datum/component/seethrough, get_seethrough_map())
 
 /obj/structure/flora/tree/get_potential_products()
+	procstart = null
+	src.procstart = null
 	return list(/obj/item/grown/log/tree = 1)
 
 ///Return a see_through_map, examples in seethrough.dm
 /obj/structure/flora/tree/proc/get_seethrough_map()
+	procstart = null
+	src.procstart = null
 	return SEE_THROUGH_MAP_DEFAULT
 
 /obj/structure/flora/tree/harvest(mob/living/user, product_amount_multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/my_turf = get_turf(src)
 	if(has_gravity(my_turf)) // If a tree falls in the forest, it makes a sound unless it doesn't have gravity.
@@ -333,6 +367,8 @@
 	new_stump.name = "[name] stump"
 
 /obj/structure/flora/tree/uproot(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(has_gravity(get_turf(src)))
 		playsound(get_turf(src), 'sound/effects/meteorimpact.ogg', 100 , FALSE, extrarange = TREE_FALL_EXTRARANGE)
@@ -346,15 +382,21 @@
 	delete_on_harvest = TRUE
 
 /obj/structure/flora/tree/stump/harvest(mob/living/user, product_amount_multiplier)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You manage to remove [src]."))
 	qdel(src)
 
 /obj/structure/flora/tree/stump/uproot(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, span_notice("You manage to remove [src]."))
 	qdel(src)
 
 /obj/structure/flora/tree/stump/get_seethrough_map()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/structure/flora/tree/dead
@@ -381,6 +423,8 @@
 	icon_state = "tree_6"
 
 /obj/structure/flora/tree/dead/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "tree_[rand(1, 6)]"
 	update_appearance()
@@ -393,6 +437,8 @@
 	pixel_y = -20
 
 /obj/structure/flora/tree/jungle/get_seethrough_map()
+	procstart = null
+	src.procstart = null
 	return SEE_THROUGH_MAP_THREE_X_THREE
 
 /obj/structure/flora/tree/jungle/style_2
@@ -411,6 +457,8 @@
 	icon_state = "tree6"
 
 /obj/structure/flora/tree/jungle/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "tree[rand(1, 6)]"
 	update_appearance()
@@ -422,6 +470,8 @@
 	icon_state = "tree1"
 
 /obj/structure/flora/tree/jungle/small/get_seethrough_map()
+	procstart = null
+	src.procstart = null
 	return SEE_THROUGH_MAP_THREE_X_TWO
 
 /obj/structure/flora/tree/jungle/small/style_2
@@ -440,6 +490,8 @@
 	icon_state = "tree6"
 
 /obj/structure/flora/tree/jungle/small/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "tree[rand(1, 6)]"
 	update_appearance()
@@ -455,6 +507,8 @@
 	icon_state = "pine_1"
 
 /obj/structure/flora/tree/pine/get_seethrough_map()
+	procstart = null
+	src.procstart = null
 	return SEE_THROUGH_MAP_DEFAULT_TWO_TALL
 
 /obj/structure/flora/tree/pine/style_2
@@ -464,6 +518,8 @@
 	icon_state = "pine_3"
 
 /obj/structure/flora/tree/pine/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "pine_[rand(1,3)]"
 	update_appearance()
@@ -486,11 +542,15 @@
 	var/static/list/took_presents //shared between all xmas trees
 
 /obj/structure/flora/tree/pine/xmas/presents/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!took_presents)
 		took_presents = list()
 
 /obj/structure/flora/tree/pine/xmas/presents/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -545,6 +605,8 @@
 	icon_state = "palm2"
 
 /obj/structure/flora/tree/palm/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "palm[rand(1,2)]"
 	update_appearance()
@@ -569,6 +631,8 @@
 	flora_flags = FLORA_HERBAL
 
 /obj/structure/flora/grass/get_potential_products()
+	procstart = null
+	src.procstart = null
 	return list(/obj/item/food/grown/grass = 10, /obj/item/seeds/grass = 1)
 
 /obj/structure/flora/grass/brown
@@ -581,6 +645,8 @@
 	icon_state = "snowgrass2bb"
 
 /obj/structure/flora/grass/brown/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "snowgrass[rand(1, 3)]bb"
 	update_appearance()
@@ -595,6 +661,8 @@
 	icon_state = "snowgrass3gb"
 
 /obj/structure/flora/grass/green/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "snowgrass[rand(1, 3)]gb"
 	update_appearance()
@@ -609,6 +677,8 @@
 	icon_state = "snowgrassall3"
 
 /obj/structure/flora/grass/both/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "snowgrassall[rand(1, 3)]"
 	update_appearance()
@@ -632,6 +702,8 @@
 	icon_state = "grassa5"
 
 /obj/structure/flora/grass/jungle/a/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "grassa[rand(1, 5)]"
 	update_appearance()
@@ -652,6 +724,8 @@
 	icon_state = "grassb5"
 
 /obj/structure/flora/grass/jungle/b/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "grassb[rand(1, 5)]"
 	update_appearance()
@@ -677,6 +751,8 @@
 	icon_state = "firstbush_4"
 
 /obj/structure/flora/bush/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "firstbush_[rand(1, 4)]"
 	update_appearance()
@@ -694,6 +770,8 @@
 	icon_state = "reedbush_4"
 
 /obj/structure/flora/bush/reed/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "reedbush_[rand(1, 4)]"
 	update_appearance()
@@ -708,6 +786,8 @@
 	icon_state = "leafybush_3"
 
 /obj/structure/flora/bush/leavy/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "leafybush_[rand(1, 3)]"
 	update_appearance()
@@ -725,6 +805,8 @@
 	icon_state = "palebush_4"
 
 /obj/structure/flora/bush/pale/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "palebush_[rand(1, 4)]"
 	update_appearance()
@@ -739,6 +821,8 @@
 	icon_state = "stalkybush_3"
 
 /obj/structure/flora/bush/stalky/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "stalkybush_[rand(1, 3)]"
 	update_appearance()
@@ -756,6 +840,8 @@
 	icon_state = "grassybush_4"
 
 /obj/structure/flora/bush/grassy/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "grassybush_[rand(1, 4)]"
 	update_appearance()
@@ -770,6 +856,8 @@
 	icon_state = "sparsegrass_3"
 
 /obj/structure/flora/bush/sparsegrass/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "sparsegrass_[rand(1, 3)]"
 	update_appearance()
@@ -784,6 +872,8 @@
 	icon_state = "fullgrass_3"
 
 /obj/structure/flora/bush/fullgrass/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "fullgrass_[rand(1, 3)]"
 	update_appearance()
@@ -798,6 +888,8 @@
 	icon_state = "fernybush_3"
 
 /obj/structure/flora/bush/ferny/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "fernybush_[rand(1, 3)]"
 	update_appearance()
@@ -812,6 +904,8 @@
 	icon_state = "sunnybush_3"
 
 /obj/structure/flora/bush/sunny/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "sunnybush_[rand(1, 3)]"
 	update_appearance()
@@ -829,6 +923,8 @@
 	icon_state = "genericbush_4"
 
 /obj/structure/flora/bush/generic/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "genericbush_[rand(1, 4)]"
 	update_appearance()
@@ -846,6 +942,8 @@
 	icon_state = "pointybush_4"
 
 /obj/structure/flora/bush/pointy/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "pointybush_[rand(1, 4)]"
 	update_appearance()
@@ -863,6 +961,8 @@
 	icon_state = "lavendergrass_4"
 
 /obj/structure/flora/bush/lavendergrass/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "lavendergrass_[rand(1, 4)]"
 	update_appearance()
@@ -877,6 +977,8 @@
 	icon_state = "ywflowers_3"
 
 /obj/structure/flora/bush/flowers_yw/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "ywflowers_[rand(1, 3)]"
 	update_appearance()
@@ -891,6 +993,8 @@
 	icon_state = "brflowers_3"
 
 /obj/structure/flora/bush/flowers_br/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "brflowers_[rand(1, 3)]"
 	update_appearance()
@@ -905,6 +1009,8 @@
 	icon_state = "ppflowers_3"
 
 /obj/structure/flora/bush/flowers_pp/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "ppflowers_[rand(1, 3)]"
 	update_appearance()
@@ -929,6 +1035,8 @@
 	icon_state = "snowbush6"
 
 /obj/structure/flora/bush/snow/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "snowbush[rand(1, 6)]"
 	update_appearance()
@@ -946,6 +1054,8 @@
 	icon_state = "busha3"
 
 /obj/structure/flora/bush/jungle/a/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "busha[rand(1, 3)]"
 	update_appearance()
@@ -960,6 +1070,8 @@
 	icon_state = "bushb3"
 
 /obj/structure/flora/bush/jungle/b/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "bushb[rand(1, 3)]"
 	update_appearance()
@@ -974,6 +1086,8 @@
 	icon_state = "bushc3"
 
 /obj/structure/flora/bush/jungle/c/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "bushc[rand(1, 3)]"
 	update_appearance()
@@ -993,6 +1107,8 @@
 	icon_state = "bush3"
 
 /obj/structure/flora/bush/large/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "bush[rand(1, 3)]"
 	update_appearance()
@@ -1007,6 +1123,8 @@
 	light_range = 2
 
 /obj/structure/flora/lunar_plant/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "lunar_plant[rand(1,3)]"
 
@@ -1040,6 +1158,8 @@
 	delete_on_harvest = TRUE
 
 /obj/structure/flora/rock/get_potential_products()
+	procstart = null
+	src.procstart = null
 	return list(/obj/item/stack/ore/glass/basalt = 1)
 
 /obj/structure/flora/rock/style_2
@@ -1052,6 +1172,8 @@
 	icon_state = "basalt4"
 
 /obj/structure/flora/rock/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "basalt[rand(1, 4)]"
 	update_appearance()
@@ -1072,6 +1194,8 @@
 	icon_state = "lavarocks3"
 
 /obj/structure/flora/rock/pile/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "lavarocks[pick(3;1,3;2,1;3)]"
 	update_appearance()
@@ -1080,6 +1204,8 @@
 	icon_state = "lavarocks_siderite1"
 
 /obj/structure/flora/rock/pile/siderite/get_potential_products()
+	procstart = null
+	src.procstart = null
 	return list(/obj/item/stack/ore/glass/siderite = 1)
 
 /obj/structure/flora/rock/pile/siderite/style_2
@@ -1089,6 +1215,8 @@
 	icon_state = "lavarocks_siderite3"
 
 /obj/structure/flora/rock/pile/siderite/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "lavarocks_siderite[pick(3;1,3;2,1;3)]"
 	update_appearance()
@@ -1103,6 +1231,8 @@
 	icon_state = "lavarocks_shale3"
 
 /obj/structure/flora/rock/pile/shale/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "lavarocks_shale[pick(3;1,3;2,1;3)]"
 	update_appearance()
@@ -1116,12 +1246,16 @@
 	harvest_message_med = "You finish mining the growth."
 
 /obj/structure/flora/rock/siderite_growth/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state][pick(3;1,3;2,1;3)]"
 	update_appearance()
 	AddComponent(/datum/component/seethrough, SEE_THROUGH_MAP_DEFAULT)
 
 /obj/structure/flora/rock/siderite_growth/get_potential_products()
+	procstart = null
+	src.procstart = null
 	return list(/obj/item/stack/ore/glass/siderite = 1)
 
 /obj/structure/flora/rock/volcano
@@ -1135,15 +1269,21 @@
 	light_color = LIGHT_COLOR_LAVA
 
 /obj/structure/flora/rock/volcano/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state]_[rand(1, 4)]"
 	update_appearance()
 
 /obj/structure/flora/rock/volcano/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance(icon, "[icon_state]_e", src, alpha = 200)
 
 /obj/structure/flora/rock/volcano/after_harvest(user)
+	procstart = null
+	src.procstart = null
 	var/turf/open/our_turf = loc
 	if (istype(our_turf))
 		our_turf.ChangeTurf(/turf/open/lava/smooth, flags = CHANGETURF_INHERIT_AIR)
@@ -1166,6 +1306,8 @@
 	icon_state = "rock5"
 
 /obj/structure/flora/rock/pile/jungle/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "rock[rand(1, 5)]"
 	update_appearance()
@@ -1186,6 +1328,8 @@
 	icon_state = "rocks3"
 
 /obj/structure/flora/rock/pile/jungle/large/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "rocks[rand(1, 3)]"
 	update_appearance()
@@ -1203,6 +1347,8 @@
 	icon_state = "basalt3"
 
 /obj/structure/flora/rock/icy/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "basalt[rand(1, 3)]"
 	update_appearance()
@@ -1219,6 +1365,8 @@
 	icon_state = "lavarocks3"
 
 /obj/structure/flora/rock/pile/icy/style_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "lavarocks[rand(1, 3)]"
 	update_appearance()

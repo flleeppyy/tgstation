@@ -133,10 +133,14 @@
 // Called AFTER Recover if that is called
 // Prefer to use Initialize if possible
 /datum/controller/subsystem/proc/PreInit()
+	procstart = null
+	src.procstart = null
 	return
 
 ///This is used so the mc knows when the subsystem sleeps. do not override.
 /datum/controller/subsystem/proc/ignite(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	set waitfor = FALSE
 	. = SS_IDLE
@@ -161,10 +165,14 @@
 ///fire() seems more suitable. This is the procedure that gets called every 'wait' deciseconds.
 ///Sleeping in here prevents future fires until returned.
 /datum/controller/subsystem/proc/fire(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	ss_flags |= SS_NO_FIRE
 	CRASH("Subsystem [src]([type]) does not fire() but did not set the SS_NO_FIRE flag. Please add the SS_NO_FIRE flag to any subsystem that doesn't fire so it doesn't get added to the processing list and waste cpu.")
 
 /datum/controller/subsystem/Destroy()
+	procstart = null
+	src.procstart = null
 	dequeue()
 	can_fire = 0
 	ss_flags |= SS_NO_FIRE
@@ -177,6 +185,8 @@
  *  reset_time (bool) - Ignore things that would normally alter the next fire, like tick_overrun, and last_fire. (also resets postpone)
  */
 /datum/controller/subsystem/proc/update_nextfire(reset_time = FALSE)
+	procstart = null
+	src.procstart = null
 	var/queue_node_flags = ss_flags
 
 	if (reset_time)
@@ -201,6 +211,8 @@
 /// (we loop thru a linked list until we get to the end or find the right point)
 /// (this lets us sort our run order correctly without having to re-sort the entire already sorted list)
 /datum/controller/subsystem/proc/enqueue()
+	procstart = null
+	src.procstart = null
 	var/SS_priority = priority
 	var/SS_flags = ss_flags
 	var/datum/controller/subsystem/queue_node
@@ -259,6 +271,8 @@
 
 
 /datum/controller/subsystem/proc/dequeue()
+	procstart = null
+	src.procstart = null
 	if (queue_next)
 		queue_next.queue_prev = queue_prev
 	if (queue_prev)
@@ -273,6 +287,8 @@
 
 
 /datum/controller/subsystem/proc/pause()
+	procstart = null
+	src.procstart = null
 	. = 1
 	switch(state)
 		if(SS_RUNNING)
@@ -282,14 +298,20 @@
 
 /// Called after the config has been loaded or reloaded.
 /datum/controller/subsystem/proc/OnConfigLoad()
+	procstart = null
+	src.procstart = null
 
 /**
  * Used to initialize the subsystem. This is expected to be overridden by subtypes.
  */
 /datum/controller/subsystem/Initialize()
+	procstart = null
+	src.procstart = null
 	return SS_INIT_NONE
 
 /datum/controller/subsystem/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	if(can_fire && !(SS_NO_FIRE & ss_flags) && init_stage <= Master.init_stage_completed)
 		msg = "[round(cost,1)]ms|[round(tick_usage,1)]%([round(tick_overrun,1)]%)|[round(ticks,0.1)] [msg]"
 	else
@@ -297,6 +319,8 @@
 	return msg
 
 /datum/controller/subsystem/proc/state_letter()
+	procstart = null
+	src.procstart = null
 	switch (state)
 		if (SS_RUNNING)
 			. = "R"
@@ -311,11 +335,15 @@
 
 /// Causes the next "cycle" fires to be missed. Effect is accumulative but can reset by calling update_nextfire(reset_time = TRUE)
 /datum/controller/subsystem/proc/postpone(cycles = 1)
+	procstart = null
+	src.procstart = null
 	if (can_fire && cycles >= 1)
 		postponed_fires += cycles
 
 /// Prunes out of date entries in our rolling usage list
 /datum/controller/subsystem/proc/prune_rolling_usage()
+	procstart = null
+	src.procstart = null
 	var/list/rolling_usage = src.rolling_usage
 	var/cut_to = 0
 	while(cut_to + 2 <= length(rolling_usage) && rolling_usage[cut_to + 1] < DS2TICKS(world.time - Master.rolling_usage_length))
@@ -326,8 +354,12 @@
 //usually called via datum/controller/subsystem/New() when replacing a subsystem (i.e. due to a recurring crash)
 //should attempt to salvage what it can from the old instance of subsystem
 /datum/controller/subsystem/Recover()
+	procstart = null
+	src.procstart = null
 
 /datum/controller/subsystem/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	switch (var_name)
 		if (NAMEOF(src, can_fire))
 			//this is so the subsystem doesn't rapid fire to make up missed ticks causing more lag

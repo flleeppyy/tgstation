@@ -31,6 +31,8 @@
 	dupe_mode = COMPONENT_DUPE_UNIQUE_PASSARGS
 
 /datum/component/caltrop/Initialize(min_damage = 0, max_damage = 0, probability = 100, paralyze_duration = 2 SECONDS, flags = NONE, soundfile = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -49,6 +51,8 @@
 
 // Inherit the new values passed to the component
 /datum/component/caltrop/InheritComponent(datum/component/caltrop/new_comp, original, min_damage, max_damage, probability, flags, soundfile)
+	procstart = null
+	src.procstart = null
 	if(!original)
 		return
 	if(min_damage)
@@ -63,6 +67,8 @@
 		src.soundfile = soundfile
 
 /datum/component/caltrop/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!prob(probability))
@@ -126,5 +132,7 @@
 	playsound(digitigrade_fan, soundfile, 15, TRUE, -3)
 
 /datum/component/caltrop/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	if(ismovable(parent))
 		qdel(GetComponent(/datum/component/connect_loc_behalf))

@@ -11,14 +11,20 @@
 	storage_type = /datum/storage/sixcan
 
 /obj/item/storage/cans/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins popping open a final cold one with the boys! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 
 /obj/item/storage/cans/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)][contents.len]"
 	return ..()
 
 /obj/item/storage/cans/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
@@ -27,6 +33,8 @@
 	desc = "Holds six soda cans. Remember to recycle when you're done!"
 
 /obj/item/storage/cans/sixsoda/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		new /obj/item/reagent_containers/cup/soda_cans/cola(src)
 
@@ -35,6 +43,8 @@
 	desc = "Holds six beers. Remember to recycle when you're done!"
 
 /obj/item/storage/cans/sixbeer/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		new /obj/item/reagent_containers/cup/soda_cans/beer(src)
 
@@ -52,6 +62,8 @@
 	)
 
 /obj/item/storage/cans/sixgamerdrink/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		var/obj/item/chosen_gamer_drink = pick_weight(gamer_drink_options)
 		new chosen_gamer_drink(src)
@@ -69,6 +81,8 @@
 	)
 
 /obj/item/storage/cans/sixenergydrink/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		var/obj/item/chosen_energy_drink = pick_weight(energy_drink_options)
 		new chosen_energy_drink(src)

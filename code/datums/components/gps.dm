@@ -8,6 +8,8 @@ GLOBAL_LIST_EMPTY(GPS_list)
 	var/list/turf/tagged
 
 /datum/component/gps/Initialize(_gpstag = "COM0", _tracking = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 	gpstag = _gpstag
@@ -15,21 +17,29 @@ GLOBAL_LIST_EMPTY(GPS_list)
 	GLOB.GPS_list += src
 
 /datum/component/gps/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.GPS_list -= src
 	return ..()
 
 /datum/component/gps/kheiral_cuffs
 
 /datum/component/gps/kheiral_cuffs/Initialize(_gpstag = "COM0")
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(deactivate_kheiral_cuffs))
 	RegisterSignal(parent, COMSIG_MOVABLE_Z_CHANGED, PROC_REF(deactivate_if_station))
 
 /datum/component/gps/kheiral_cuffs/proc/deactivate_kheiral_cuffs(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /datum/component/gps/kheiral_cuffs/proc/deactivate_if_station(atom/movable/moved_atom, turf/old_turf, turf/new_turf)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isturf(new_turf))
 		return
@@ -47,6 +57,8 @@ GLOBAL_LIST_EMPTY(GPS_list)
 	var/debug_mode = FALSE
 
 /datum/component/gps/item/Initialize(_gpstag = "COM0", _tracking = TRUE, emp_proof = FALSE, state = null, overlay_state = "working", debug = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == COMPONENT_INCOMPATIBLE || !isitem(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -72,12 +84,16 @@ GLOBAL_LIST_EMPTY(GPS_list)
 	RegisterSignal(parent, COMSIG_CLICK_ALT, PROC_REF(on_click_alt))
 
 /datum/component/gps/item/Destroy()
+	procstart = null
+	src.procstart = null
 	if(tagged)
 		clear()
 	return ..()
 
 ///Called on COMSIG_ITEM_ATTACK_SELF
 /datum/component/gps/item/proc/interact(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(user)
@@ -85,6 +101,8 @@ GLOBAL_LIST_EMPTY(GPS_list)
 
 ///Called on COMSIG_MOVABLE_MOVED
 /datum/component/gps/item/proc/tag_the_floor(atom/movable/mover, turf/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!debug_mode)
@@ -98,6 +116,8 @@ GLOBAL_LIST_EMPTY(GPS_list)
 
 ///Called on COMSIG_MOVABLE_MOVED
 /datum/component/gps/item/proc/clear()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	while(tagged.len)
@@ -108,12 +128,16 @@ GLOBAL_LIST_EMPTY(GPS_list)
 
 ///Called on COMSIG_ATOM_EXAMINE
 /datum/component/gps/item/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += span_notice("Alt-click to switch it [tracking ? "off":"on"].")
 
 ///Called on COMSIG_ATOM_EMP_ACT
 /datum/component/gps/item/proc/on_emp_act(datum/source, severity, protection)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(protection & EMP_PROTECT_SELF)
 		return
@@ -126,6 +150,8 @@ GLOBAL_LIST_EMPTY(GPS_list)
 
 ///Restarts the GPS after getting turned off by an EMP.
 /datum/component/gps/item/proc/reboot()
+	procstart = null
+	src.procstart = null
 	emped = FALSE
 	var/atom/A = parent
 	A.cut_overlay("emp")
@@ -133,6 +159,8 @@ GLOBAL_LIST_EMPTY(GPS_list)
 
 ///Calls toggletracking
 /datum/component/gps/item/proc/on_click_alt(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	toggletracking(user)
@@ -140,6 +168,8 @@ GLOBAL_LIST_EMPTY(GPS_list)
 
 ///Toggles the tracking for the gps
 /datum/component/gps/item/proc/toggletracking(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.can_perform_action(parent, ALLOW_RESTING | ALLOW_PAI))
 		return //user not valid to use gps
 	if(emped)
@@ -163,6 +193,8 @@ GLOBAL_LIST_EMPTY(GPS_list)
 			clear()
 
 /datum/component/gps/item/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(emped)
 		to_chat(user, span_hear("[parent] fizzles weakly."))
 		return
@@ -173,9 +205,13 @@ GLOBAL_LIST_EMPTY(GPS_list)
 	ui.set_autoupdate(updating)
 
 /datum/component/gps/item/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return state
 
 /datum/component/gps/item/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["power"] = tracking
 	data["tag"] = gpstag
@@ -213,6 +249,8 @@ GLOBAL_LIST_EMPTY(GPS_list)
 	return data
 
 /datum/component/gps/item/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

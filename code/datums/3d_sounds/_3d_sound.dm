@@ -25,6 +25,8 @@
 	var/pressure_affected = TRUE
 
 /datum/threed_sound/New(atom/new_parent, sound/new_sound, list/current_listeners, can_add_new_listeners = FALSE, volume = 50, sound_range = SOUND_RANGE, sound_length = 5 SECONDS, channel, preference_volume, preference_signal, falloff_exponent = SOUND_FALLOFF_EXPONENT, falloff_distance = SOUND_DEFAULT_FALLOFF_DISTANCE, pressure_affected = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(new_parent) && !isturf(new_parent))
 		stack_trace("[type] created on non-turf or non-movable: [new_parent ? "[new_parent] ([new_parent.type])" : "null"])")
 		qdel(src)
@@ -61,6 +63,8 @@
 	deletion_timer = addtimer(CALLBACK(src, PROC_REF(selfdelete)), sound_length, TIMER_STOPPABLE | TIMER_DELETE_ME)
 
 /datum/threed_sound/Destroy()
+	procstart = null
+	src.procstart = null
 	unlisten_all()
 	deltimer(deletion_timer)
 	parent = null
@@ -68,6 +72,8 @@
 	return ..()
 
 /datum/threed_sound/proc/parent_delete(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	selfdelete()
 
@@ -76,6 +82,8 @@
  * Then updates any mobs listening to it.
  */
 /datum/threed_sound/proc/set_sound_range(new_range)
+	procstart = null
+	src.procstart = null
 	if(sound_range == new_range)
 		return
 	sound_range = new_range
@@ -89,25 +97,35 @@
  * Then updates any mobs listening to it.
  */
 /datum/threed_sound/proc/set_new_environment(new_env)
+	procstart = null
+	src.procstart = null
 	if(!our_sound || our_sound.environment == new_env)
 		return
 	our_sound.environment = new_env
 	update_all()
 
 /datum/threed_sound/proc/unlisten_all()
+	procstart = null
+	src.procstart = null
 	for(var/mob/listening as anything in listeners)
 		deregister_listener(listening)
 	our_sound = null
 
 /datum/threed_sound/proc/update_all()
+	procstart = null
+	src.procstart = null
 	for(var/mob/listening as anything in listeners)
 		update_listener(listening)
 
 /datum/threed_sound/proc/start_music()
+	procstart = null
+	src.procstart = null
 	for(var/mob/nearby in hearers(sound_range, parent))
 		register_listener(nearby)
 
 /datum/threed_sound/proc/get_active_listeners()
+	procstart = null
+	src.procstart = null
 	var/list/all_listeners = list()
 	for(var/mob/listener as anything in listeners)
 		if(listeners[listener] & SOUND_MUTE)
@@ -116,6 +134,8 @@
 	return all_listeners
 
 /datum/threed_sound/proc/register_listener(mob/new_listener)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	if(!(new_listener in listeners))
@@ -143,19 +163,27 @@
 	listeners[new_listener] |= SOUND_UPDATE
 
 /datum/threed_sound/proc/listener_deleted(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	deregister_listener(source)
 
 /datum/threed_sound/proc/listener_moved(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_listener(source)
 
 /datum/threed_sound/proc/listener_login(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	deregister_listener(source)
 	register_listener(source)
 
 /datum/threed_sound/proc/listener_deaf(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT(source, TRAIT_DEAF))
@@ -166,6 +194,8 @@
 
 
 /datum/threed_sound/proc/unmute_listener(mob/listener, reason)
+	procstart = null
+	src.procstart = null
 	reason = ~reason
 
 	if((reason & MUTE_DEAF) && HAS_TRAIT(listener, TRAIT_DEAF))
@@ -191,6 +221,8 @@
 	return TRUE
 
 /datum/threed_sound/proc/deregister_listener(mob/no_longer_listening)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	listeners -= no_longer_listening
@@ -214,6 +246,8 @@
 		))
 
 /datum/threed_sound/proc/update_listener(mob/listener)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	our_sound.status = listeners[listener] || NONE
 	var/turf/sound_turf = get_turf(parent)
@@ -274,10 +308,14 @@
 	our_sound.volume = original_volume
 
 /datum/threed_sound/proc/on_moved(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_all()
 
 /datum/threed_sound/proc/on_enter_area(datum/source, area/area_to_register)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_new_environment(area_to_register.sound_environment || SOUND_ENVIRONMENT_NONE)
 

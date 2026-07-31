@@ -93,23 +93,33 @@
 
 
 /datum/lazy_template/virtual_domain/proc/can_view_name(scanner_tier, server_points)
+	procstart = null
+	src.procstart = null
 	return difficulty < scanner_tier && cost <= server_points + 5
 
 /datum/lazy_template/virtual_domain/proc/can_view_reward(scanner_tier, server_points)
+	procstart = null
+	src.procstart = null
 	return difficulty < (scanner_tier + 1) && cost <= server_points + 3
 
 /datum/lazy_template/virtual_domain/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(ghost_spawners)
 	QDEL_NULL(ghost_mobs)
 	. = ..()
 
 /// Sends a point to any loot signals on the map
 /datum/lazy_template/virtual_domain/proc/add_points(points_to_add = 1)
+	procstart = null
+	src.procstart = null
 	main_crate_points += points_to_add
 	if(main_crate_points >= main_crate_point_goal)
 		reveal()
 
 /datum/lazy_template/virtual_domain/proc/reveal()
+	procstart = null
+	src.procstart = null
 	if(!main_crate_loc)
 		return
 	var/turf/spawn_loc = get_turf(main_crate_loc)
@@ -121,6 +131,8 @@
 
 /// Loads the ghost candidates.
 /datum/lazy_template/virtual_domain/proc/load_advanced_npcs(list/mob/lucky_ghosts)
+	procstart = null
+	src.procstart = null
 	for(var/mob/lucky_ghost as anything in lucky_ghosts)
 		var/obj/effect/mob_spawn/ghost_role/ghost_spawner = pick(ghost_spawners)
 		LAZYREMOVE(ghost_spawners, ghost_spawner)
@@ -133,4 +145,6 @@
 
 /// Overridable proc to be called after the map is loaded.
 /datum/lazy_template/virtual_domain/proc/setup_domain(list/created_atoms)
+	procstart = null
+	src.procstart = null
 	return

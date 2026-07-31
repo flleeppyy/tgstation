@@ -17,15 +17,21 @@ GLOBAL_PROTECT(admin_states)
 	VAR_FINAL/required_perms = R_ADMIN
 
 /datum/ui_state/admin_state/New(required_perms = R_ADMIN)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.required_perms = required_perms
 
 /datum/ui_state/admin_state/can_use_topic(src_object, mob/user)
+	procstart = null
+	src.procstart = null
 	if(check_rights_for(user.client, required_perms))
 		return UI_INTERACTIVE
 	return UI_CLOSE
 
 /datum/ui_state/admin_state/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	if(var_name == NAMEOF(src, required_perms))
 		return FALSE
 	return ..()

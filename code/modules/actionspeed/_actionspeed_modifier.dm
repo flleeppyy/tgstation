@@ -38,6 +38,8 @@ can next move
 	var/conflicts_with
 
 /datum/actionspeed_modifier/New(init_id)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(init_id)
@@ -50,6 +52,8 @@ GLOBAL_LIST_EMPTY(actionspeed_modification_cache)
 
 /// Grabs a STATIC MODIFIER datum from cache. YOU MUST NEVER EDIT THESE DATUMS, OR IT WILL AFFECT ANYTHING ELSE USING IT TOO!
 /proc/get_cached_actionspeed_modifier(modtype)
+	procstart = null
+	src.procstart = null
 	if(!ispath(modtype, /datum/actionspeed_modifier))
 		CRASH("[modtype] is not a actionspeed modification typepath.")
 	var/datum/actionspeed_modifier/actionspeed_mod = modtype
@@ -62,6 +66,8 @@ GLOBAL_LIST_EMPTY(actionspeed_modification_cache)
 
 ///Add a action speed modifier to a mob. If a variable subtype is passed in as the first argument, it will make a new datum. If ID conflicts, it will overwrite the old ID.
 /mob/proc/add_actionspeed_modifier(datum/actionspeed_modifier/type_or_datum, update = TRUE)
+	procstart = null
+	src.procstart = null
 	if(ispath(type_or_datum))
 		if(!initial(type_or_datum.variable))
 			type_or_datum = get_cached_actionspeed_modifier(type_or_datum)
@@ -81,6 +87,8 @@ GLOBAL_LIST_EMPTY(actionspeed_modification_cache)
 
 /// Remove a action speed modifier from a mob, whether static or variable.
 /mob/proc/remove_actionspeed_modifier(datum/actionspeed_modifier/type_id_datum, update = TRUE)
+	procstart = null
+	src.procstart = null
 	var/key
 	if(ispath(type_id_datum))
 		key = initial(type_id_datum.id) || "[type_id_datum]" //id if set, path set to string if not.
@@ -104,6 +112,8 @@ GLOBAL_LIST_EMPTY(actionspeed_modification_cache)
 	5. Update if necessary
 */
 /mob/proc/add_or_update_variable_actionspeed_modifier(datum/actionspeed_modifier/type_id_datum, update = TRUE, multiplicative_slowdown)
+	procstart = null
+	src.procstart = null
 	var/modified = FALSE
 	var/inject = FALSE
 	var/datum/actionspeed_modifier/final
@@ -137,6 +147,8 @@ GLOBAL_LIST_EMPTY(actionspeed_modification_cache)
 
 ///Is there a actionspeed modifier for this mob
 /mob/proc/has_actionspeed_modifier(datum/actionspeed_modifier/datum_type_id)
+	procstart = null
+	src.procstart = null
 	var/key
 	if(ispath(datum_type_id))
 		key = initial(datum_type_id.id) || "[datum_type_id]"
@@ -148,6 +160,8 @@ GLOBAL_LIST_EMPTY(actionspeed_modification_cache)
 
 /// Go through the list of actionspeed modifiers and calculate a final actionspeed. ANY ADD/REMOVE DONE IN UPDATE_actionspeed MUST HAVE THE UPDATE ARGUMENT SET AS FALSE!
 /mob/proc/update_actionspeed()
+	procstart = null
+	src.procstart = null
 	. = 0
 	var/list/conflict_tracker = list()
 	for(var/key in get_actionspeed_modifiers())
@@ -166,14 +180,20 @@ GLOBAL_LIST_EMPTY(actionspeed_modification_cache)
 
 ///Adds a default action speed
 /mob/proc/initialize_actionspeed()
+	procstart = null
+	src.procstart = null
 	add_or_update_variable_actionspeed_modifier(/datum/actionspeed_modifier/base, multiplicative_slowdown = 1)
 
 /// Get the action speed modifiers list of the mob
 /mob/proc/get_actionspeed_modifiers()
+	procstart = null
+	src.procstart = null
 	. = LAZYCOPY(actionspeed_modification)
 	for(var/id in actionspeed_mod_immunities)
 		. -= id
 
 /// Checks if a action speed modifier is valid and not missing any data
-/proc/actionspeed_data_null_check(datum/actionspeed_modifier/M) //Determines if a data list is not meaningful and should be discarded.
+/proc/actionspeed_data_null_check(datum/actionspeed_modifier/M)
+	procstart = null
+	src.procstart = null //Determines if a data list is not meaningful and should be discarded.
 	. = !(M.multiplicative_slowdown)

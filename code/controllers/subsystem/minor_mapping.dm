@@ -17,6 +17,8 @@ SUBSYSTEM_DEF(minor_mapping)
 	)
 
 /datum/controller/subsystem/minor_mapping/Initialize()
+	procstart = null
+	src.procstart = null
 // This whole subsystem just introduces a lot of odd confounding variables into unit test situations,
 // so let's just not bother with doing an initialize here.
 #if defined(MAP_TEST) || defined(UNIT_TESTS)
@@ -35,6 +37,8 @@ SUBSYSTEM_DEF(minor_mapping)
 
 /// Spawns some critters on exposed wires, usually but not always mice
 /datum/controller/subsystem/minor_mapping/proc/trigger_migration(to_spawn=10)
+	procstart = null
+	src.procstart = null
 	var/list/exposed_wires = find_exposed_wires()
 	var/turf/open/proposed_turf
 	while((to_spawn > 0) && exposed_wires.len)
@@ -54,6 +58,8 @@ SUBSYSTEM_DEF(minor_mapping)
 
 /// Returns true if a mouse won't die if spawned on this turf
 /datum/controller/subsystem/minor_mapping/proc/valid_mouse_turf(turf/open/proposed_turf)
+	procstart = null
+	src.procstart = null
 	if(!istype(proposed_turf))
 		return FALSE
 	var/datum/gas_mixture/turf/turf_gasmix = proposed_turf.air
@@ -61,6 +67,8 @@ SUBSYSTEM_DEF(minor_mapping)
 	return turf_gasmix.has_gas(/datum/gas/oxygen, 5) && turf_temperature < NPC_DEFAULT_MAX_TEMP && turf_temperature > NPC_DEFAULT_MIN_TEMP
 
 /datum/controller/subsystem/minor_mapping/proc/place_satchels(satchel_amount)
+	procstart = null
+	src.procstart = null
 	var/list/turfs = find_satchel_suitable_turfs()
 	///List of areas where satchels should not be placed.
 	var/list/blacklisted_area_types = list(
@@ -79,6 +87,8 @@ SUBSYSTEM_DEF(minor_mapping)
 		satchel_amount--
 
 /proc/find_exposed_wires()
+	procstart = null
+	src.procstart = null
 	var/list/exposed_wires = list()
 
 	var/list/all_turfs
@@ -95,6 +105,8 @@ SUBSYSTEM_DEF(minor_mapping)
 	return shuffle(exposed_wires)
 
 /proc/find_satchel_suitable_turfs()
+	procstart = null
+	src.procstart = null
 	var/list/suitable = list()
 
 	for(var/z in SSmapping.levels_by_trait(ZTRAIT_STATION))
@@ -106,6 +118,8 @@ SUBSYSTEM_DEF(minor_mapping)
 
 /// This behaves nearly the same as spawning underfloot satchels, but instead spawns weakpoints.
 /datum/controller/subsystem/minor_mapping/proc/place_weakpoints(weakpoint_amount)
+	procstart = null
+	src.procstart = null
 	if(weakpoint_amount == 0)
 		return
 	var/list/turfs = find_satchel_suitable_turfs()
@@ -123,6 +137,8 @@ SUBSYSTEM_DEF(minor_mapping)
  * Areas for minor_mapping procs to avoid. Mutate or adjust based on use case.
  */
 /datum/controller/subsystem/minor_mapping/proc/get_blacklist_areas()
+	procstart = null
+	src.procstart = null
 	var/list/blacklist_areas = list(
 		/area/station/holodeck,
 		/area/space/nearstation,

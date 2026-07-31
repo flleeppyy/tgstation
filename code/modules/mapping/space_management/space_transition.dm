@@ -1,4 +1,6 @@
 /datum/space_level/proc/set_linkage(new_linkage)
+	procstart = null
+	src.procstart = null
 	linkage = new_linkage
 	if(linkage == SELFLOOPING)
 		neigbours = list(TEXT_NORTH,TEXT_SOUTH,TEXT_EAST,TEXT_WEST)
@@ -6,6 +8,8 @@
 			neigbours[A] = src
 
 /datum/space_level/proc/set_neigbours(list/L)
+	procstart = null
+	src.procstart = null
 	for(var/datum/space_transition_point/P in L)
 		if(P.x == xi)
 			if(P.y == yi+1)
@@ -30,6 +34,8 @@
 	var/datum/space_level/spl
 
 /datum/space_transition_point/New(nx, ny, list/grid)
+	procstart = null
+	src.procstart = null
 	if(!grid)
 		qdel(src)
 		return
@@ -46,6 +52,8 @@
 	grid[position] = src
 
 /datum/space_transition_point/proc/set_neigbours(list/grid, size)
+	procstart = null
+	src.procstart = null
 	neigbours.Cut()
 
 	if(x+1 <= size)
@@ -57,7 +65,9 @@
 	if(y-1 >= 1)
 		neigbours |= grid[CHORDS_TO_1D(x, y - 1, size)]
 
-/datum/controller/subsystem/mapping/proc/setup_map_transitions() //listamania
+/datum/controller/subsystem/mapping/proc/setup_map_transitions()
+	procstart = null
+	src.procstart = null //listamania
 	var/list/transition_levels = list()
 	var/list/cached_z_list = z_list
 	var/linkage
@@ -149,6 +159,8 @@
 /// Construct linkages randomly to get maze-like space transitions
 /// We do this by constructing a very large grid, and placing the levels randomly inside, and then filling out the empty spaces
 /datum/controller/subsystem/mapping/proc/set_cross_linkages(list/transition_levels)
+	procstart = null
+	src.procstart = null
 	var/grid_diameter = (length(transition_levels) * 2) + 1
 	var/list/grid = new /list(grid_diameter ** 2)
 
@@ -183,6 +195,8 @@
 
 /// Connect the z-levels in a non-randomized grid
 /datum/controller/subsystem/mapping/proc/set_grid_linkages(list/transition_levels)
+	procstart = null
+	src.procstart = null
 	var/grid_diameter = ceil(sqrt(length(transition_levels)))
 	var/list/grid = new /list(grid_diameter ** 2)
 

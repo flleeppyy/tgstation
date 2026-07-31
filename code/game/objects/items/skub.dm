@@ -8,10 +8,14 @@
 	attack_verb_simple = list("skub")
 
 /obj/item/skub/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/container_item/tank_holder, "holder_skub", FALSE)
 
 /obj/item/skub/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] has declared themself as anti-skub! The skub tears them apart!"))
 	user.gib(DROP_ALL_REMAINS)
 	playsound(src, 'sound/items/eatfood.ogg', 50, TRUE, -1)

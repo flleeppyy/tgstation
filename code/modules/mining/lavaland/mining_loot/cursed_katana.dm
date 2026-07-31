@@ -16,6 +16,8 @@
 	retract_sound = 'sound/items/sheath.ogg'
 
 /obj/item/organ/cyberimp/arm/toolkit/shard/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(user, span_userdanger("The mass goes up your arm and goes inside it!"))
 	playsound(user, 'sound/effects/magic/demon_consume.ogg', 50, TRUE)
@@ -25,6 +27,8 @@
 	Insert(user)
 
 /obj/item/organ/cyberimp/arm/toolkit/shard/screwdriver_act(mob/living/user, obj/item/screwtool)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/organ/cyberimp/arm/toolkit/shard/katana
@@ -33,6 +37,8 @@
 	items_to_create = list(/obj/item/cursed_katana)
 
 /obj/item/organ/cyberimp/arm/toolkit/shard/katana/Retract()
+	procstart = null
+	src.procstart = null
 	var/obj/item/cursed_katana/katana = active_item
 	if(!katana || katana.shattered)
 		return FALSE
@@ -77,6 +83,8 @@
 	var/list/alt_simple = list("stab", "pierce", "impale")
 
 /obj/item/cursed_katana/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	alt_continuous = string_list(alt_continuous)
 	alt_simple = string_list(alt_simple)
@@ -91,15 +99,21 @@
 	)
 
 /obj/item/cursed_katana/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += drew_blood ? span_nicegreen("It's sated... for now.") : span_danger("It will not be sated until it tastes blood.")
 
 /obj/item/cursed_katana/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isturf(loc))
 		qdel(src)
 
 /obj/item/cursed_katana/attack(mob/living/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(target.stat != DEAD && target != user)
 		drew_blood = TRUE
 		if(ismining(target))
@@ -107,14 +121,20 @@
 	return ..()
 
 /obj/item/cursed_katana/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(attack_type == PROJECTILE_ATTACK || attack_type == LEAP_ATTACK || attack_type == OVERWHELMING_ATTACK)
 		final_block_chance = 0 //Don't bring a sword to a gunfight, and also you aren't going to really block someone full body tackling you with a sword. Or a road roller, if one happened to hit you.
 	return ..()
 
 /obj/item/cursed_katana/proc/can_combo_attack(mob/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	return target.stat != DEAD && target != user
 
 /obj/item/cursed_katana/proc/strike(mob/living/target, mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_warning("[user] strikes [target] with [src]'s hilt!"),
 		span_notice("You hilt strike [target]!"))
 	to_chat(target, span_userdanger("You've been struck by [user]!"))
@@ -127,6 +147,8 @@
 	user.do_attack_animation(target, ATTACK_EFFECT_PUNCH)
 
 /obj/item/cursed_katana/proc/strike_throw_impact(mob/living/source, atom/hit_atom, datum/thrownthing/thrownthing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(source, COMSIG_MOVABLE_IMPACT)
@@ -141,6 +163,8 @@
 	return NONE
 
 /obj/item/cursed_katana/proc/slice(mob/living/target, mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_warning("[user] does a wide slice!"),
 		span_notice("You do a wide slice!"))
 	playsound(src, 'sound/items/weapons/bladeslice.ogg', 50, TRUE)
@@ -158,6 +182,8 @@
 	target.apply_damage(damage = 5, sharpness = SHARP_EDGED, wound_bonus = 10)
 
 /obj/item/cursed_katana/proc/cloak(mob/living/target, mob/user)
+	procstart = null
+	src.procstart = null
 	user.alpha = 150
 	user.SetInvisibility(INVISIBILITY_OBSERVER, id=type) // so hostile mobs cant see us or target us
 	user.add_sight(SEE_SELF) // so we can see us
@@ -172,6 +198,8 @@
 	addtimer(CALLBACK(src, PROC_REF(uncloak), user), 5 SECONDS, TIMER_UNIQUE)
 
 /obj/item/cursed_katana/proc/uncloak(mob/user)
+	procstart = null
+	src.procstart = null
 	user.alpha = 255
 	user.RemoveInvisibility(type)
 	user.clear_sight(SEE_SELF)
@@ -181,6 +209,8 @@
 	new /obj/effect/temp_visual/mook_dust(get_turf(src))
 
 /obj/item/cursed_katana/proc/cut(mob/living/target, mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_warning("[user] cuts [target]'s tendons!"),
 		span_notice("You tendon cut [target]!"))
 	to_chat(target, span_userdanger("Your tendons have been cut by [user]!"))
@@ -195,6 +225,8 @@
 		status.add_stacks(6)
 
 /obj/item/cursed_katana/proc/dash(mob/living/target, mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_warning("[user] dashes through [target]!"),
 		span_notice("You dash through [target]!"))
 	to_chat(target, span_userdanger("[user] dashes through you!"))
@@ -213,6 +245,8 @@
 	do_teleport(user, dash_target, channel = TELEPORT_CHANNEL_MAGIC)
 
 /obj/item/cursed_katana/proc/shatter(mob/living/target, mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_warning("[user] shatters [src] over [target]!"),
 		span_notice("You shatter [src] over [target]!"))
 	to_chat(target, span_userdanger("[user] shatters [src] over you!"))
@@ -225,6 +259,8 @@
 	addtimer(CALLBACK(src, PROC_REF(coagulate), user), 45 SECONDS)
 
 /obj/item/cursed_katana/proc/coagulate(mob/user)
+	procstart = null
+	src.procstart = null
 	balloon_alert(user, "katana coagulated")
 	shattered = FALSE
 	playsound(src, 'sound/effects/magic/demon_consume.ogg', 50, TRUE)

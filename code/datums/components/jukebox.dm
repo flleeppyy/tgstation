@@ -41,6 +41,8 @@
 	var/sound_loops = FALSE
 
 /datum/jukebox/New(atom/new_parent)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(new_parent) && !isturf(new_parent))
 		stack_trace("[type] created on non-turf or non-movable: [new_parent ? "[new_parent] ([new_parent.type])" : "null"])")
 		qdel(src)
@@ -67,6 +69,8 @@
 	RegisterSignal(parent, COMSIG_QDELETING, PROC_REF(parent_delete))
 
 /datum/jukebox/Destroy()
+	procstart = null
+	src.procstart = null
 	unlisten_all()
 	parent = null
 	selection = null
@@ -76,6 +80,8 @@
 
 /// When our parent is deleted, we should go too.
 /datum/jukebox/proc/parent_delete(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
@@ -88,10 +94,14 @@
  * * An assoc list of track names to /datum/track. Track names must be unique.
  */
 /datum/jukebox/proc/init_songs()
+	procstart = null
+	src.procstart = null
 	return load_songs_from_config()
 
 /// Loads the config sounds once, and returns a copy of them.
 /datum/jukebox/proc/load_songs_from_config(force = FALSE)
+	procstart = null
+	src.procstart = null
 	var/static/list/config_songs
 	if(isnull(config_songs) || force)
 		config_songs = list()
@@ -131,6 +141,8 @@
  * * A list of UI data
  */
 /datum/jukebox/proc/get_ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/songs_data = list()
 	for(var/song_name in songs)
@@ -153,6 +165,8 @@
  * Then updates any mobs listening to it.
  */
 /datum/jukebox/proc/set_sound_range(new_range)
+	procstart = null
+	src.procstart = null
 	if(sound_range == new_range)
 		return
 	sound_range = new_range
@@ -166,6 +180,8 @@
  * Then updates any mobs listening to it.
  */
 /datum/jukebox/proc/set_new_volume(new_vol)
+	procstart = null
+	src.procstart = null
 	new_vol = clamp(new_vol, 0, initial(volume))
 	if(volume == new_vol)
 		return
@@ -177,6 +193,8 @@
 
 /// Sets volume to the maximum possible value, the initial volume value.
 /datum/jukebox/proc/set_volume_to_max()
+	procstart = null
+	src.procstart = null
 	set_new_volume(initial(volume))
 
 /**
@@ -184,6 +202,8 @@
  * Then updates any mobs listening to it.
  */
 /datum/jukebox/proc/set_new_environment(new_env)
+	procstart = null
+	src.procstart = null
 	if(!active_song_sound || active_song_sound.environment == new_env)
 		return
 	active_song_sound.environment = new_env
@@ -191,22 +211,30 @@
 
 /// Helper to stop the music for all mobs listening to the music.
 /datum/jukebox/proc/unlisten_all()
+	procstart = null
+	src.procstart = null
 	for(var/mob/listening as anything in listeners)
 		deregister_listener(listening)
 	active_song_sound = null
 
 /// Helper to update all mobs currently listening to the music.
 /datum/jukebox/proc/update_all()
+	procstart = null
+	src.procstart = null
 	for(var/mob/listening as anything in listeners)
 		update_listener(listening)
 
 /// Helper to kickstart the music for all mobs in hearing range of the jukebox.
 /datum/jukebox/proc/start_music()
+	procstart = null
+	src.procstart = null
 	for(var/mob/nearby in hearers(sound_range, parent))
 		register_listener(nearby)
 
 /// Helper to get all mobs currently, ACTIVELY listening to the jukebox.
 /datum/jukebox/proc/get_active_listeners()
+	procstart = null
+	src.procstart = null
 	var/list/all_listeners = list()
 	for(var/mob/listener as anything in listeners)
 		if(listeners[listener] & SOUND_MUTE)
@@ -216,6 +244,8 @@
 
 /// Registers the passed mob as a new listener to the jukebox.
 /datum/jukebox/proc/register_listener(mob/new_listener)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	listeners[new_listener] = NONE
@@ -252,22 +282,30 @@
 
 /// Deregisters mobs on deletion.
 /datum/jukebox/proc/listener_deleted(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	deregister_listener(source)
 
 /// Updates the sound's position on mob movement.
 /datum/jukebox/proc/listener_moved(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_listener(source)
 
 /// Allows mobs who are clientless when the music starts to hear it when they log in.
 /datum/jukebox/proc/listener_login(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	deregister_listener(source)
 	register_listener(source)
 
 /// Updates the sound's mute status when the mob's deafness updates.
 /datum/jukebox/proc/listener_deaf(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT(source, TRAIT_DEAF))
@@ -284,6 +322,8 @@
  * * reason - The reason to unmute them for. Can be a combination of MUTE_DEAF, MUTE_PREF, MUTE_RANGE.
  */
 /datum/jukebox/proc/unmute_listener(mob/listener, reason)
+	procstart = null
+	src.procstart = null
 	// We need to check everything BUT the reason we're unmuting for
 	// Because if we're muted for a different reason we don't wanna touch it
 	reason = ~reason
@@ -311,6 +351,8 @@
 
 /// Deregisters the passed mob as a listener to the jukebox, stopping the music.
 /datum/jukebox/proc/deregister_listener(mob/no_longer_listening)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	listeners -= no_longer_listening
@@ -326,6 +368,8 @@
 
 /// Updates the passed mob's sound in according to their position and status.
 /datum/jukebox/proc/update_listener(mob/listener)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	active_song_sound.status = listeners[listener] || NONE
@@ -364,16 +408,22 @@
 
 /// When the jukebox moves, we need to update all listeners.
 /datum/jukebox/proc/on_moved(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_all()
 
 /// When the jukebox enters a new area entirely, we need to update the environment to the new area's.
 /datum/jukebox/proc/on_enter_area(datum/source, area/area_to_register)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_new_environment(area_to_register.sound_environment || SOUND_ENVIRONMENT_NONE)
 
 /// Check for new mobs entering the jukebox's range.
 /datum/jukebox/proc/check_new_listener(datum/source, atom/movable/entered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(active_song_sound))
@@ -393,6 +443,8 @@
 	requires_range_check = FALSE
 
 /datum/jukebox/single_mob/start_music(mob/solo_listener)
+	procstart = null
+	src.procstart = null
 	register_listener(solo_listener)
 
 #undef MUTE_DEAF

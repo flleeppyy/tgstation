@@ -11,6 +11,8 @@
 	keybind_signal = COMSIG_KB_CLIENT_GETHELP_DOWN
 
 /datum/keybinding/client/admin_help/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -27,6 +29,8 @@
 	can_edit = FALSE
 
 /datum/keybinding/client/screenshot/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -44,6 +48,8 @@
 	can_edit = FALSE
 
 /datum/keybinding/client/screenshot_loc/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -59,6 +65,8 @@
 	keybind_signal = COMSIG_KB_CLIENT_FULLSCREEN_DOWN
 
 /datum/keybinding/client/toggle_fullscreen/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -73,6 +81,8 @@
 	keybind_signal = COMSIG_KB_CLIENT_MINIMALHUD_DOWN
 
 /datum/keybinding/client/minimal_hud/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -93,6 +103,8 @@
 	keybind_signal = COMSIG_KB_CLIENT_CLOSEUI_DOWN
 
 /datum/keybinding/client/close_every_ui/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

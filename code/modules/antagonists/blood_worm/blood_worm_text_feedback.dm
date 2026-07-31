@@ -2,13 +2,19 @@
 // These procs are usually pretty big and there are quite a few of them.
 
 /mob/living/basic/blood_worm/examining(atom/target, list/result)
+	procstart = null
+	src.procstart = null
 	add_special_examining_messages(target, result)
 
 /mob/living/basic/blood_worm/proc/on_host_examining(datum/source, atom/target, list/examine_strings, list/examine_overrides)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	add_special_examining_messages(target, examine_strings)
 
 /mob/living/basic/blood_worm/proc/add_special_examining_messages(atom/target, list/result)
+	procstart = null
+	src.procstart = null
 	if (!isliving(target) || target == host)
 		return
 
@@ -64,14 +70,20 @@
 	result += span_notice("[target.p_They()] [target.p_have()] [rounded_volume] unit[rounded_volume == 1 ? "" : "s"] of blood[growth_string]. [target.p_Their()] blood is <b>[synth_string]</b> synthetic.")
 
 /mob/living/basic/blood_worm/get_status_tab_items()
+	procstart = null
+	src.procstart = null
 	return ..() + get_special_status_tab_items()
 
 /mob/living/basic/blood_worm/proc/on_host_get_status_tab_items(datum/source, list/items)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	items += "Worm Health: [round((health / maxHealth) * 100)]%"
 	items += get_special_status_tab_items()
 
 /mob/living/basic/blood_worm/proc/get_special_status_tab_items()
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	var/normal = consumed_normal_blood
@@ -89,9 +101,13 @@
 
 /// Sends text to the blood worm, whether they are possessing a host or not.
 /mob/living/basic/blood_worm/proc/to_chat_self(text)
+	procstart = null
+	src.procstart = null
 	to_chat(is_possessing_host ? host : src, text)
 
 /// Sends a balloon alert to the blood worm, whether they are possessing a host or not.
 /mob/living/basic/blood_worm/proc/balloon_alert_self(text)
+	procstart = null
+	src.procstart = null
 	var/mob/living/self = is_possessing_host ? host : src
 	self.balloon_alert(self, text)

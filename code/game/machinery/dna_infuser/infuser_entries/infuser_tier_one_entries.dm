@@ -137,6 +137,8 @@
 	status_effect_type = /datum/status_effect/organ_set_bonus/fish
 
 /datum/infuser_entry/fish/get_output_organs(mob/living/carbon/human/target, obj/item/fish/infused_from)
+	procstart = null
+	src.procstart = null
 	if(!istype(infused_from))
 		return ..()
 
@@ -244,6 +246,8 @@
 	status_effect_type = /datum/status_effect/organ_set_bonus/stoat
 
 /datum/infuser_entry/stoat/get_output_organs(mob/living/carbon/human/target, atom/movable/infused_from)
+	procstart = null
+	src.procstart = null
 	// eyes and ears are low priority, infuse them last
 	var/datum/status_effect/organ_set_bonus/stoat/organ_tracker = target.has_status_effect(__IMPLIED_TYPE__)
 	if(organ_tracker?.organs < 3)

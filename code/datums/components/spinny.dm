@@ -11,6 +11,8 @@
 	var/turn_degrees = 90
 
 /datum/component/spinny/Initialize(steps = 12, reverse = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -19,10 +21,14 @@
 	START_PROCESSING(SSfastprocess, src)
 
 /datum/component/spinny/Destroy(force)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	return ..()
 
 /datum/component/spinny/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	steps_left--
 	var/atom/spinny_boy = parent
 	if(!istype(spinny_boy) || steps_left <= 0)

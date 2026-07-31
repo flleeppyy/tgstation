@@ -23,11 +23,15 @@
 	COOLDOWN_DECLARE(hallucination_cooldown)
 
 /datum/status_effect/hallucination/on_creation(mob/living/new_owner, new_duration)
+	procstart = null
+	src.procstart = null
 	if(isnum(new_duration))
 		src.duration = new_duration
 	return ..()
 
 /datum/status_effect/hallucination/on_apply()
+	procstart = null
+	src.procstart = null
 	if(owner.mob_biotypes & barred_biotypes)
 		return FALSE
 	if(HAS_TRAIT(owner, TRAIT_HALLUCINATION_IMMUNE))
@@ -42,10 +46,14 @@
 	return TRUE
 
 /datum/status_effect/hallucination/proc/delete_self()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /datum/status_effect/hallucination/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, list(
 		COMSIG_LIVING_HEALTHSCAN,
 		COMSIG_CARBON_CHECKING_BODYPART,
@@ -55,6 +63,8 @@
 
 /// Signal proc for [COMSIG_LIVING_HEALTHSCAN]. Show we're hallucinating to (advanced) scanners.
 /datum/status_effect/hallucination/proc/on_health_scan(datum/source, list/render_list, scanpower, mob/user, mode, tochat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(scanpower <= SCANPOWER_BASIC)
@@ -66,6 +76,8 @@
 /// Signal proc for [COMSIG_CARBON_CHECKING_BODYPART],
 /// checking bodyparts while hallucinating can cause them to appear more damaged than they are
 /datum/status_effect/hallucination/proc/on_check_bodypart(mob/living/carbon/source, obj/item/bodypart/examined, list/check_list, list/limb_damage)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(prob(30))
@@ -76,6 +88,8 @@
 /// Signal proc for [COMSIG_CARBON_BUMPED_AIRLOCK_OPEN], bumping an airlock can cause a fake zap.
 /// This only happens on airlock bump, future TODO - make this chance roll for attack_hand opening airlocks too
 /datum/status_effect/hallucination/proc/on_bump_airlock(mob/living/carbon/source, obj/machinery/door/airlock/bumped)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// 1% chance to fake a shock.
@@ -86,6 +100,8 @@
 	return STOP_BUMP
 
 /datum/status_effect/hallucination/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(owner.stat == DEAD)
 		return
 	if(!COOLDOWN_FINISHED(src, hallucination_cooldown))
@@ -126,9 +142,13 @@
 	variable_tier = FALSE
 
 /datum/status_effect/hallucination/sanity/on_health_scan(datum/source, list/render_list, advanced, mob/user, mode, tochat)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/status_effect/hallucination/sanity/on_apply()
+	procstart = null
+	src.procstart = null
 	if(!owner.mob_mood)
 		return FALSE
 
@@ -136,9 +156,13 @@
 	return ..()
 
 /datum/status_effect/hallucination/sanity/refresh(...)
+	procstart = null
+	src.procstart = null
 	update_intervals()
 
 /datum/status_effect/hallucination/sanity/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	// Using psicodine / happiness / whatever to become fearless will stop sanity based hallucinations
 	if(HAS_TRAIT(owner, TRAIT_FEARLESS))
 		return
@@ -147,6 +171,8 @@
 
 /// Updates our upper and lower intervals based on our owner's current sanity level.
 /datum/status_effect/hallucination/sanity/proc/update_intervals()
+	procstart = null
+	src.procstart = null
 	switch(owner.mob_mood.sanity_level)
 		if(SANITY_LEVEL_CRAZY)
 			upper_tick_interval = 8 MINUTES
@@ -167,9 +193,13 @@
 	variable_tier = FALSE
 
 /datum/status_effect/hallucination/perceptomatrix/refresh(effect, new_duration)
+	procstart = null
+	src.procstart = null
 	src.duration += new_duration
 
 /datum/status_effect/hallucination/perceptomatrix/on_creation(mob/living/new_owner, new_duration)
+	procstart = null
+	src.procstart = null
 	if(isnum(new_duration))
 		src.lower_tick_interval = new_duration * 0.2
 		src.upper_tick_interval = new_duration

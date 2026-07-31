@@ -25,6 +25,8 @@
 
 
 /obj/machinery/power/tracker/Initialize(mapload, obj/item/solar_assembly/S)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	tracker_dish_edge = add_panel_overlay("tracker_edge", TRACKER_EDGE_Z_OFFSET)
@@ -35,10 +37,14 @@
 	RegisterSignal(SSsun, COMSIG_SUN_MOVED, PROC_REF(sun_update))
 
 /obj/machinery/power/tracker/Destroy()
+	procstart = null
+	src.procstart = null
 	unset_control() //remove from control computer
 	return ..()
 
 /obj/machinery/power/tracker/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(same_z_layer)
 		return
@@ -52,6 +58,8 @@
 	layer = FLY_LAYER
 
 /obj/machinery/power/tracker/proc/add_panel_overlay(icon_state, z_offset)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/overlay/tracker/overlay = new(src)
 	overlay.icon_state = icon_state
 	SET_PLANE_EXPLICIT(overlay, ABOVE_GAME_PLANE, src)
@@ -60,12 +68,16 @@
 	return overlay
 
 /obj/machinery/power/tracker/proc/set_control(obj/machinery/power/solar_control/SC)
+	procstart = null
+	src.procstart = null
 	unset_control()
 	control = SC
 	SC.connected_tracker = src
 
 //set the control of the tracker to null and removes it from the previous control computer if needed
 /obj/machinery/power/tracker/proc/unset_control()
+	procstart = null
+	src.procstart = null
 	if(control)
 		if(control.track == SOLAR_TRACK_AUTO)
 			control.track = SOLAR_TRACK_OFF
@@ -78,6 +90,8 @@
  * * angle - the angle the panel is facing
  */
 /obj/machinery/power/tracker/proc/get_tracker_transform(angle)
+	procstart = null
+	src.procstart = null
 	// 2.5D solar tracker works by using a magic combination of transforms
 	var/matrix/turner = matrix()
 	// Rotate towards sun
@@ -88,6 +102,8 @@
 	return turner
 
 /obj/machinery/power/tracker/proc/visually_turn_part(part, angle)
+	procstart = null
+	src.procstart = null
 	var/mid_azimuth = (azimuth_current + angle) / 2
 
 	// actually flip to other direction?
@@ -106,6 +122,8 @@
 
 ///Tell the controller to turn the solar panels
 /obj/machinery/power/tracker/proc/sun_update(datum/source, azimuth)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	visually_turn_part(tracker_dish, azimuth)
@@ -116,6 +134,8 @@
 		control.set_panels(azimuth)
 
 /obj/machinery/power/tracker/proc/Make(obj/item/solar_assembly/S)
+	procstart = null
+	src.procstart = null
 	if(!S)
 		S = new /obj/item/solar_assembly(src)
 		S.glass_type = /obj/item/stack/sheet/glass
@@ -125,6 +145,8 @@
 	S.forceMove(src)
 
 /obj/machinery/power/tracker/crowbar_act(mob/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(I.use_tool(src, user, 0))
 		playsound(src.loc, 'sound/items/deconstruct.ogg', 50, TRUE)
 		user.visible_message(span_notice("[user] takes the glass off [src]."), span_notice("You take the glass off [src]."))
@@ -132,12 +154,16 @@
 	return TRUE
 
 /obj/machinery/power/tracker/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		playsound(loc, 'sound/effects/glass/glassbr3.ogg', 100, TRUE)
 		unset_control()
 
 /obj/machinery/power/tracker/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	var/datum/material/material_type = /datum/material/glass
 	if(disassembled)
 		var/obj/item/solar_assembly/assembly = locate() in src

@@ -8,6 +8,8 @@
 	var/amount_needed_to_revive
 
 /datum/unit_test/strange_reagent/Run()
+	procstart = null
+	src.procstart = null
 	strange_reagent = new
 
 	var/list/types_to_check = typecacheof(list(
@@ -53,6 +55,8 @@
 	allocate_new_target(null)
 
 /datum/unit_test/strange_reagent/proc/allocate_new_target(type)
+	procstart = null
+	src.procstart = null
 	// cache the last one created so that we don't create N instances of the exact same mob
 	var/static/mob/living/pre_allocated
 	if(!type)
@@ -69,10 +73,14 @@
 	return pre_allocated
 
 /datum/unit_test/strange_reagent/proc/update_amounts(mob/living/target)
+	procstart = null
+	src.procstart = null
 	amount_needed_to_full_heal = strange_reagent.calculate_amount_needed_to_full_heal(target)
 	amount_needed_to_revive = strange_reagent.calculate_amount_needed_to_revive(target)
 
 /datum/unit_test/strange_reagent/proc/damage_target_to_percentage(mob/living/target, percent)
+	procstart = null
+	src.procstart = null
 	var/damage = target_max_health * percent * 0.5
 	target.set_brute_loss(damage, updating_health=FALSE) // no point running health update logic here
 	target.set_fire_loss(damage, updating_health=TRUE) // since we do it here
@@ -82,9 +90,13 @@
 	return TRUE
 
 /datum/unit_test/strange_reagent/proc/get_target_organic_health_manual(mob/living/target)
+	procstart = null
+	src.procstart = null
 	return target.getMaxHealth() - (target.get_brute_loss() + target.get_fire_loss())
 
 /datum/unit_test/strange_reagent/proc/test_damage_but_no_death(target_type)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = allocate_new_target(target_type)
 	if(!damage_target_to_percentage(target, 0.8))
 		return
@@ -94,6 +106,8 @@
 	TEST_ASSERT_EQUAL(health, get_target_organic_health_manual(target), "Strange Reagent healed a target type [target.type] that was not dead.")
 
 /datum/unit_test/strange_reagent/proc/test_death_no_damage(target_type)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = allocate_new_target(target_type)
 	target.death()
 	if(QDELETED(target))
@@ -103,6 +117,8 @@
 	TEST_ASSERT_NOTEQUAL(target.stat, DEAD, "Strange Reagent did not revive a dead target type [target.type].")
 
 /datum/unit_test/strange_reagent/proc/test_death_with_damage(target_type)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = allocate_new_target(target_type)
 	if(!damage_target_to_percentage(target, 0.8))
 		return
@@ -115,6 +131,8 @@
 	TEST_ASSERT_NOTEQUAL(target.stat, DEAD, "Strange Reagent did not revive a dead target type [target.type].")
 
 /datum/unit_test/strange_reagent/proc/test_death_with_damage_but_not_enough_reagent(target_type)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = allocate_new_target(target_type)
 	if(!damage_target_to_percentage(target, 1.2))
 		return
@@ -124,6 +142,8 @@
 	TEST_ASSERT_EQUAL(target.stat, DEAD, "Strange Reagent revived a dead target type [target.type] without enough reagent.")
 
 /datum/unit_test/strange_reagent/proc/test_death_with_full_heal(target_type)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = allocate_new_target(target_type)
 	if(!damage_target_to_percentage(target, 0.8))
 		return
@@ -136,6 +156,8 @@
 	TEST_ASSERT_EQUAL(target_max_health, get_target_organic_health_manual(target), "Strange Reagent did not fully heal a dead target type [target.type] with the expected amount.")
 
 /datum/unit_test/strange_reagent/proc/test_death_from_damage(target_type)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = allocate_new_target(target_type)
 	if(!damage_target_to_percentage(target, strange_reagent.max_revive_damage_ratio * 0.9)) // 10% under the damage cap
 		return
@@ -147,6 +169,8 @@
 	TEST_ASSERT_NOTEQUAL(target.stat, DEAD, "Strange Reagent did not revive a target type [target.type] who died from damage.")
 
 /datum/unit_test/strange_reagent/proc/test_death_from_too_much_damage(target_type)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = allocate_new_target(target_type)
 	if(!damage_target_to_percentage(target, strange_reagent.max_revive_damage_ratio * 1.1)) // 10% over the damage cap
 		return

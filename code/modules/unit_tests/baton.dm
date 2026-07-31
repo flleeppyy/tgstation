@@ -13,6 +13,8 @@
 	var/use_baton = TRUE
 
 /datum/unit_test/baton/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/secoff = EASY_ALLOCATE()
 	var/mob/living/carbon/human/consistent/tider = EASY_ALLOCATE()
 	ADD_TRAIT(secoff, TRAIT_PERFECT_ATTACKER, TRAIT_SOURCE_UNIT_TESTS)
@@ -27,6 +29,8 @@
 
 /// Performs two attacks, tests the resulting damage on the defender
 /datum/unit_test/baton/proc/test_attack(mob/living/attacker, mob/living/defender, obj/item/melee/baton/baton)
+	procstart = null
+	src.procstart = null
 	// Perform an attack, while off baton cooldown
 	click_wrapper(attacker, defender, click_modifiers)
 	TEST_ASSERT_EQUAL(defender.get_stamina_loss(), asserted_stamina_damage(), \
@@ -43,14 +47,20 @@
 
 /// How much stamina damage is expected from this test case
 /datum/unit_test/baton/proc/asserted_stamina_damage()
+	procstart = null
+	src.procstart = null
 	return baton_type::stamina_damage
 
 /// How much brute damage is expected from this test case
 /datum/unit_test/baton/proc/asserted_brute_damage()
+	procstart = null
+	src.procstart = null
 	return baton_type::force
 
 /// Description of the current test case
 /datum/unit_test/baton/proc/get_descriptor()
+	procstart = null
+	src.procstart = null
 	return "[click_descriptor] \
 		/ [combat_mode ? "in combat mode" : "not in combat mode"] \
 		/ [use_baton ? "active baton" : "inactive baton"]"
@@ -76,6 +86,8 @@
 	use_baton = TRUE
 
 /datum/unit_test/baton/left_click/sec/on_with_combat/asserted_brute_damage()
+	procstart = null
+	src.procstart = null
 	return 0
 
 // - Active + no combat mode = stuns, no damage
@@ -84,6 +96,8 @@
 	use_baton = TRUE
 
 /datum/unit_test/baton/left_click/sec/on_no_combat/asserted_brute_damage()
+	procstart = null
+	src.procstart = null
 	return 0
 
 // - Inactive + combat mode = no stun, deals damage
@@ -92,6 +106,8 @@
 	use_baton = FALSE
 
 /datum/unit_test/baton/left_click/sec/off_with_combat/asserted_stamina_damage()
+	procstart = null
+	src.procstart = null
 	return 0
 
 // - Inactive + no combat mode = no sun, no damage
@@ -100,9 +116,13 @@
 	use_baton = FALSE
 
 /datum/unit_test/baton/left_click/sec/off_no_combat/asserted_stamina_damage()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /datum/unit_test/baton/left_click/sec/off_no_combat/asserted_brute_damage()
+	procstart = null
+	src.procstart = null
 	return 0
 
 // Right click sec baton
@@ -124,6 +144,8 @@
 	use_baton = FALSE
 
 /datum/unit_test/baton/right_click/sec/attack_when_off/asserted_stamina_damage()
+	procstart = null
+	src.procstart = null
 	return 0
 
 // - Inactive + no combat mode = no stun, deals damage
@@ -131,6 +153,8 @@
 	combat_mode = FALSE
 
 /datum/unit_test/baton/right_click/sec/attack_when_off/no_combat/asserted_stamina_damage()
+	procstart = null
+	src.procstart = null
 	return 0
 
 // Left click stunprod
@@ -144,6 +168,8 @@
 	use_baton = TRUE
 
 /datum/unit_test/baton/left_click/prod/on_with_combat/asserted_brute_damage()
+	procstart = null
+	src.procstart = null
 	return 0
 
 // - Active + no combat mode = stuns, no damage
@@ -152,6 +178,8 @@
 	use_baton = TRUE
 
 /datum/unit_test/baton/left_click/prod/on_no_combat/asserted_brute_damage()
+	procstart = null
+	src.procstart = null
 	return 0
 
 // - Inactive + combat mode = no stun, damages
@@ -160,6 +188,8 @@
 	use_baton = FALSE
 
 /datum/unit_test/baton/left_click/prod/off_with_combat/asserted_stamina_damage()
+	procstart = null
+	src.procstart = null
 	return 0
 
 // - Inactive + no combat mode = no stun, no damage
@@ -168,9 +198,13 @@
 	use_baton = FALSE
 
 /datum/unit_test/baton/left_click/prod/off_no_combat/asserted_stamina_damage()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /datum/unit_test/baton/left_click/prod/off_no_combat/asserted_brute_damage()
+	procstart = null
+	src.procstart = null
 	return 0
 
 // Right click stunprod
@@ -194,6 +228,8 @@
 	use_baton = FALSE
 
 /datum/unit_test/baton/right_click/prod/attack_when_off/asserted_stamina_damage()
+	procstart = null
+	src.procstart = null
 	return 0
 
 // - Inactive + no combat mode = no stun, deals damage
@@ -202,6 +238,8 @@
 	use_baton = FALSE
 
 /datum/unit_test/baton/right_click/prod/attack_when_off/no_combat/asserted_stamina_damage()
+	procstart = null
+	src.procstart = null
 	return 0
 
 // Left click det baton
@@ -212,6 +250,8 @@
 	combat_mode = FALSE
 
 /datum/unit_test/baton/left_click/det/asserted_brute_damage()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /datum/unit_test/baton/left_click/det/combat_mode
@@ -224,6 +264,8 @@
 	use_baton = FALSE
 
 /datum/unit_test/baton/right_click/det/asserted_stamina_damage()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /datum/unit_test/baton/right_click/det/combat_mode

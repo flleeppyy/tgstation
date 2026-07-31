@@ -8,6 +8,8 @@
 	shoes = /obj/item/clothing/shoes/sneakers/black
 
 /datum/outfit/vr/pre_equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	H.dna.species.pre_equip_species_outfit(null, H)
 
 /datum/outfit/vr/syndicate
@@ -25,6 +27,8 @@
 	r_pocket = /obj/item/pen/edagger
 
 /datum/outfit/vr/syndicate/post_equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/uplink/U = new /obj/item/uplink/nuclear_restricted(H, H.key, 80)
 	H.equip_to_storage(U, ITEM_SLOT_BACK, indirect_action = TRUE, del_on_fail = TRUE)

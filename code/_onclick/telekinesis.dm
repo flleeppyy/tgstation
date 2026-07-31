@@ -15,6 +15,8 @@
  * * Returns `COMPONENT_CANCEL_ATTACK_CHAIN` when it performs any action, to further acts on the attack chain.
  */
 /atom/proc/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(user) || !tkMaxRangeCheck(user, src))
 		return
 	new /obj/effect/temp_visual/telekinesis(get_turf(src))
@@ -24,6 +26,8 @@
 
 
 /obj/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(user))
 		return
 	if(anchored)
@@ -32,6 +36,8 @@
 
 
 /obj/item/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(user))
 		return
 	return attack_tk_grab(user)
@@ -44,6 +50,8 @@
  * * Returns `COMPONENT_CANCEL_ATTACK_CHAIN` when it performs any action, to further acts on the attack chain.
  */
 /obj/proc/attack_tk_grab(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/tk_grab/O = new(src)
 	O.tk_user = user
 	if(!O.focus_object(src))
@@ -54,6 +62,8 @@
 
 
 /mob/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -66,18 +76,26 @@
  * * Returns `COMPONENT_CANCEL_ATTACK_CHAIN` when it performs any action, to further acts on the attack chain.
  */
 /atom/proc/attack_self_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 
 /obj/item/attack_self_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(attack_self(user))
 		return ITEM_INTERACT_BLOCKING
 
 /atom/proc/attack_self_secondary_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 
 /obj/item/attack_self_secondary_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(attack_self_secondary(user))
 		return ITEM_INTERACT_BLOCKING
 
@@ -105,10 +123,14 @@
 	var/mob/living/carbon/tk_user
 
 /obj/item/tk_grab/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSfastprocess, src)
 
 /obj/item/tk_grab/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	if(!QDELETED(focus))
 		REMOVE_TRAIT(focus, TRAIT_TELEKINESIS_CONTROLLED, REF(tk_user))
@@ -117,10 +139,14 @@
 	return ..()
 
 /obj/item/tk_grab/process()
+	procstart = null
+	src.procstart = null
 	if(check_if_focusable(focus)) //if somebody grabs your thing, no waiting for them to put it down and hitting them again.
 		update_appearance()
 
 /obj/item/tk_grab/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	if(focus && user && loc != user && loc != user.loc) // drop_item() gets called when you tk-attack a table/closet with an item
 		if(focus.Adjacent(loc))
 			focus.forceMove(loc)
@@ -128,12 +154,16 @@
 
 //stops TK grabs being equipped anywhere but into hands
 /obj/item/tk_grab/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot & ITEM_SLOT_HANDS)
 		return
 	qdel(src)
 
 /obj/item/tk_grab/examine(user)
+	procstart = null
+	src.procstart = null
 	if (focus)
 		return focus.examine(user)
 	else
@@ -141,6 +171,8 @@
 
 
 /obj/item/tk_grab/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!focus)
 		return
 	if(QDELING(focus))
@@ -151,9 +183,13 @@
 	update_appearance()
 
 /obj/item/tk_grab/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/tk_grab/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!focus)
 		focus_object(interacting_with)
 		return ITEM_INTERACT_BLOCKING
@@ -186,6 +222,8 @@
 	return .
 
 /obj/item/tk_grab/on_thrown(mob/living/carbon/user, atom/target)
+	procstart = null
+	src.procstart = null
 	if(!target || !user)
 		return
 
@@ -212,6 +250,8 @@
 
 
 /proc/tkMaxRangeCheck(mob/user, atom/target)
+	procstart = null
+	src.procstart = null
 	var/d = get_dist(user, target)
 	if(d > TK_MAXRANGE)
 		user.balloon_alert(user, "can't TK, too far!")
@@ -219,9 +259,13 @@
 	return TRUE
 
 /obj/item/tk_grab/attack(mob/living/M, mob/living/user, def_zone)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/tk_grab/proc/focus_object(obj/target)
+	procstart = null
+	src.procstart = null
 	if(!check_if_focusable(target))
 		return
 	focus = target
@@ -231,6 +275,8 @@
 	return TRUE
 
 /obj/item/tk_grab/proc/check_if_focusable(obj/target)
+	procstart = null
+	src.procstart = null
 	if(!tk_user || !istype(tk_user) || QDELETED(target) || !istype(target) || !tk_user.dna.check_mutation(/datum/mutation/telekinesis))
 		qdel(src)
 		return
@@ -240,11 +286,15 @@
 	return TRUE
 
 /obj/item/tk_grab/proc/apply_focus_overlay()
+	procstart = null
+	src.procstart = null
 	if(!focus)
 		return
 	new /obj/effect/temp_visual/telekinesis(get_turf(focus))
 
 /obj/item/tk_grab/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!focus)
 		return
@@ -255,6 +305,8 @@
 	. += focus_overlay
 
 /obj/item/tk_grab/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is using [user.p_their()] telekinesis to choke [user.p_them()]self! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return OXYLOSS
 

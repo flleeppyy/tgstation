@@ -15,6 +15,8 @@
 	var/default_look = /obj/item/gun/energy/laser
 
 /obj/item/gun/energy/laser/chameleon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_CONTENTS|EMP_NO_EXAMINE)
 	// Init order shenanigans dictate we have to do this last so we can't just use `active_type`
@@ -26,6 +28,8 @@
  * Arguments: []
  */
 /obj/item/gun/energy/laser/chameleon/proc/reset_chameleon_vars()
+	procstart = null
+	src.procstart = null
 	chameleon_projectile_vars = list()
 
 	if(chambered)
@@ -45,6 +49,8 @@
  * Arguments: [obj/item/gun/gun_to_set (the gun we're trying to mimic)]
  */
 /obj/item/gun/energy/laser/chameleon/proc/set_chameleon_gun(obj/item/gun/gun_to_set)
+	procstart = null
+	src.procstart = null
 	if(!istype(gun_to_set))
 		stack_trace("[gun_to_set] is not a valid gun.")
 		return FALSE
@@ -89,6 +95,8 @@
  * Arguments: [obj/item/ammo_casing/cartridge (the ammo_casing we're trying to copy)]
  */
 /obj/item/gun/energy/laser/chameleon/proc/set_chameleon_ammo(obj/item/ammo_casing/cartridge)
+	procstart = null
+	src.procstart = null
 	if(!istype(cartridge))
 		stack_trace("[cartridge] is not a valid ammo casing.")
 		return FALSE
@@ -101,6 +109,8 @@
  * Arguments: [obj/projectile/template_projectile (the projectile we're trying to copy)]
  */
 /obj/item/gun/energy/laser/chameleon/proc/set_chameleon_projectile(obj/projectile/template_projectile)
+	procstart = null
+	src.procstart = null
 	if(!istype(template_projectile))
 		stack_trace("[template_projectile] is not a valid projectile.")
 		return FALSE
@@ -150,6 +160,8 @@
  * Arguments: [guntype (the gun we're copying, pathtyped to obj/item/gun)]
  */
 /obj/item/gun/energy/laser/chameleon/proc/set_chameleon_disguise(guntype)
+	procstart = null
+	src.procstart = null
 	reset_chameleon_vars()
 	var/obj/item/gun/new_gun = new guntype(src)
 	set_chameleon_gun(new_gun)
@@ -160,5 +172,7 @@
 	default_look = /obj/item/gun/ballistic/automatic/mini_uzi
 
 /obj/item/gun/energy/laser/chameleon/ballistic_only/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_chameleon_disguise(default_look)

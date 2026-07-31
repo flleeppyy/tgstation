@@ -12,6 +12,8 @@
 	var/core_remove_callback
 
 /datum/component/anomaly_locked_module/Initialize(list/anomaly_types, prebuilt = FALSE, removable = TRUE, pre_insert_callback, insert_callback, remove_callback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(parent, /obj/item/mod/module))
 		return COMPONENT_INCOMPATIBLE
@@ -26,10 +28,14 @@
 	core = new core_type(parent)
 
 /datum/component/anomaly_locked_module/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(core)
 	return ..()
 
 /datum/component/anomaly_locked_module/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_MODULE_TRIGGERED, PROC_REF(on_module_triggered))
 	RegisterSignal(parent, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(on_item_interact))
 	RegisterSignal(parent, COMSIG_ATOM_TOOL_ACT(TOOL_SCREWDRIVER), PROC_REF(on_screwdriver_act))
@@ -37,6 +43,8 @@
 	RegisterSignal(parent, COMSIG_ATOM_UPDATE_ICON_STATE, PROC_REF(on_update_icon_state))
 
 /datum/component/anomaly_locked_module/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_MODULE_TRIGGERED,
 		COMSIG_ATOM_ITEM_INTERACTION,
@@ -46,12 +54,16 @@
 		))
 
 /datum/component/anomaly_locked_module/proc/on_module_triggered(obj/item/mod/module/source, mob/living/wearer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!core)
 		source.balloon_alert(wearer, "no core!")
 		return MOD_ABORT_USE
 
 /datum/component/anomaly_locked_module/proc/on_item_interact(obj/item/mod/module/source, mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!is_type_in_typecache(tool, accepted_anomalies))
 		return 0
@@ -70,6 +82,8 @@
 	return insert_core(source, user, tool, modifiers)
 
 /datum/component/anomaly_locked_module/proc/insert_core(obj/item/mod/module/source, mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!user.transferItemToLoc(tool, source))
 		return ITEM_INTERACT_FAILURE
 	core = tool
@@ -85,6 +99,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /datum/component/anomaly_locked_module/proc/on_screwdriver_act(obj/item/mod/module/source, mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!core)
 		source.balloon_alert(user, "no core!")
@@ -95,6 +111,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /datum/component/anomaly_locked_module/proc/try_remove_core(obj/item/mod/module/source, mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!do_after(user, 3 SECONDS, source))
 		source.balloon_alert(user, "interrupted!")
 		return
@@ -112,6 +130,8 @@
 			call(source, core_remove_callback)(core, user)
 
 /datum/component/anomaly_locked_module/proc/on_examine(obj/item/mod/module/source, mob/viewer, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!length(accepted_anomalies))
 		return
@@ -126,5 +146,7 @@
 		examine_list += span_notice("Due to some design quirk, once a core is inserted, it won't be removable.")
 
 /datum/component/anomaly_locked_module/proc/on_update_icon_state(obj/item/mod/module/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	source.icon_state = source::icon_state + (core ? "-core" : "")

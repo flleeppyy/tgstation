@@ -6,11 +6,15 @@
 	distinct_reagent_cap = 3
 
 /datum/component/plumbing/pill_press/Initialize(ducting_layer)
+	procstart = null
+	src.procstart = null
 	if(!istype(parent, /obj/machinery/plumbing/pill_press))
 		return COMPONENT_INCOMPATIBLE
 	return ..()
 
 /datum/component/plumbing/pill_press/send_request(dir)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/plumbing/pill_press/target = parent
 
 	//required volume of reagents to package the product has been sent

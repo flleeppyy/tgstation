@@ -53,6 +53,8 @@
 	)
 
 /mob/living/basic/mining/wolf/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	ADD_TRAIT(src, TRAIT_WOUND_LICKER, INNATE_TRAIT)
@@ -63,10 +65,14 @@
 		make_tameable()
 
 /mob/living/basic/mining/wolf/proc/make_tameable()
+	procstart = null
+	src.procstart = null
 	var/static/list/food_types = list(/obj/item/food/meat/slab)
 	AddComponent(/datum/component/tameable, food_types = food_types, tame_chance = 15, bonus_tame_chance = 5)
 
 /mob/living/basic/mining/wolf/tamed(mob/living/tamer, atom/food)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/temp_visual/heart(src.loc)
 	// ride wolf, life good
@@ -80,6 +86,8 @@
 //port the faction fix from goliath basicmob to make the wildlife hostile when tamed (and also help defuckulate reinforcements ai)
 //this should also produce interesting behavior where tamed wolves defend other tamed wolves.
 /mob/living/basic/mining/wolf/befriend(mob/living/new_friend)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.))
 		return

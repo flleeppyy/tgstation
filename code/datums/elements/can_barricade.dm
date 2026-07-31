@@ -5,6 +5,8 @@
 	argument_hash_start_idx = 2
 
 /datum/element/can_barricade/Attach(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isatom(target))
@@ -16,6 +18,8 @@
 	RegisterSignal(target, COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM, PROC_REF(on_requesting_context_from_item))
 
 /datum/element/can_barricade/Detach(atom/target)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, list(COMSIG_ATOM_ATTACKBY, COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM))
 	// We don't remove HAS_CONTEXTUAL_SCREENTIPS_1, since there could be other stuff still hooked to it,
 	// and being set without signals is not dangerous, just less performant.
@@ -24,6 +28,8 @@
 	return ..()
 
 /datum/element/can_barricade/proc/on_start_barricade(atom/source, obj/item/stack/sheet/mineral/wood/plank, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(user.combat_mode || !istype(plank) || !istype(user))
@@ -40,6 +46,8 @@
 
 /// when our element gets attacked by wooden planks it creates a barricade
 /datum/element/can_barricade/proc/barricade(atom/source, obj/item/stack/sheet/mineral/wood/plank, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(!do_after(user, 5 SECONDS, target = source) || !plank.use(2) || (locate(/obj/structure/barricade/wooden/crude) in source.loc))
 		return
 
@@ -48,6 +56,8 @@
 	barricade.add_fingerprint(user)
 
 /datum/element/can_barricade/proc/on_requesting_context_from_item(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(held_item, /obj/item/stack/sheet/mineral/wood) && source.Adjacent(user))

@@ -22,10 +22,14 @@
 	var/folder_path = /obj/item/folder
 
 /obj/item/storage/briefcase/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/cuffable_item)
 
 /obj/item/storage/briefcase/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/pen(src)
 	var/obj/item/folder/folder = new folder_path(src)
 	for(var/i in 1 to 6)
@@ -35,10 +39,14 @@
 	folder_path = /obj/item/folder/blue
 
 /obj/item/storage/briefcase/lawyer/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/stamp/law(src)
 	..()
 
 /obj/item/storage/briefcase/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/list/papers_found = list()
 	var/turf/item_loc = get_turf(src)
 
@@ -64,6 +72,8 @@
 
 // Empty subtype
 /obj/item/storage/briefcase/empty/PopulateContents()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/storage/briefcase/sniper
@@ -71,6 +81,8 @@
 	force = 10
 
 /obj/item/storage/briefcase/sniper/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..() // in case you need any paperwork done after your rampage
 	new /obj/item/gun/ballistic/rifle/sniper_rifle/syndicate(src)
 	new /obj/item/clothing/neck/tie/red/hitman(src)
@@ -92,11 +104,15 @@
 	var/stored_lock_code
 
 /obj/item/storage/briefcase/secure/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/lockable_storage, stored_lock_code)
 	RegisterSignal(src, COMSIG_LOCKABLE_STORAGE_SET_CODE, PROC_REF(update_lock_code))
 
 /obj/item/storage/briefcase/secure/proc/update_lock_code(obj/item/storage/briefcase/secure/briefacase, new_code)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	stored_lock_code = new_code
@@ -110,6 +126,8 @@
 	inhand_icon_state = "sec-case"
 
 /obj/item/storage/briefcase/secure/digital_storage/PopulateContents()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Syndie variant of Secure Briefcase. Contains space cash, slightly more robust.
@@ -117,12 +135,16 @@
 	force = 15
 
 /obj/item/storage/briefcase/secure/syndie/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/iterator in 1 to 5)
 		new /obj/item/stack/spacecash/c1000(src)
 
 /// A briefcase that contains various sought-after spoils
 /obj/item/storage/briefcase/secure/riches/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/suit/armor/vest(src)
 	new /obj/item/gun/ballistic/automatic/pistol(src)
 	new /obj/item/suppressor(src)
@@ -132,6 +154,8 @@
 	new /obj/item/soap/nanotrasen(src)
 
 /obj/item/storage/briefcase/hitchiker/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/food/sandwich/peanut_butter_jelly(src)
 	new /obj/item/food/sandwich/peanut_butter_jelly(src)
 	new /obj/item/reagent_containers/cup/glass/waterbottle/large(src)
@@ -145,20 +169,28 @@
 	var/obj/machinery/launchpad/briefcase/pad
 
 /obj/item/storage/briefcase/launchpad/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	pad = new(null, src) //spawns pad in nullspace to hide it from briefcase contents
 	. = ..()
 
 /obj/item/storage/briefcase/launchpad/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(pad))
 		qdel(pad)
 	pad = null
 	return ..()
 
 /obj/item/storage/briefcase/launchpad/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/pen(src)
 	new /obj/item/launchpad_remote(src, pad)
 
 /obj/item/storage/briefcase/launchpad/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isturf(user.loc)) //no setting up in a locker
 		return
 	add_fingerprint(user)
@@ -171,6 +203,8 @@
 		atom_storage.close_all()
 
 /obj/item/storage/briefcase/launchpad/tool_act(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/launchpad_remote))
 		return ..()
 	var/obj/item/launchpad_remote/remote = tool
@@ -184,11 +218,15 @@
 	storage_type = /datum/storage/briefcase/gun
 
 /obj/item/storage/briefcase/gun/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/gun/weapon in src)
 		return weapon.try_fire_gun(interacting_with, user, list2params(modifiers))
 	return NONE
 
 /obj/item/storage/briefcase/gun/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user.is_holding(src))
 		. += span_notice("Upon closer inspection, you notice a hole in the side of the briefcase.")
@@ -196,5 +234,7 @@
 /obj/item/storage/briefcase/gun/preloaded
 
 /obj/item/storage/briefcase/gun/preloaded/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/gun/ballistic/automatic/pistol(src)
 	return ..()

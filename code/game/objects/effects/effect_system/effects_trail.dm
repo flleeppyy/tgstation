@@ -27,22 +27,30 @@
 	var/nograv_required = FALSE
 
 /datum/effect_system/trail_follow/New(turf/location)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	attach(location)
 	oldposition = location
 
 /datum/effect_system/trail_follow/Destroy()
+	procstart = null
+	src.procstart = null
 	oldposition = null
 	stop()
 	return ..()
 
 /datum/effect_system/trail_follow/proc/stop()
+	procstart = null
+	src.procstart = null
 	oldposition = null
 	STOP_PROCESSING(SSfastprocess, src)
 	active = FALSE
 	return TRUE
 
 /datum/effect_system/trail_follow/start()
+	procstart = null
+	src.procstart = null
 	oldposition = get_turf(holder)
 	if(!check_conditions())
 		return FALSE
@@ -52,9 +60,13 @@
 	return TRUE
 
 /datum/effect_system/trail_follow/process()
+	procstart = null
+	src.procstart = null
 	generate_effect()
 
 /datum/effect_system/trail_follow/proc/generate_effect()
+	procstart = null
+	src.procstart = null
 	if(!check_conditions())
 		return stop()
 
@@ -76,11 +88,15 @@
 		QDEL_IN(particle, qdel_in_time)
 
 /datum/effect_system/trail_follow/proc/check_conditions()
+	procstart = null
+	src.procstart = null
 	if(!get_turf(holder))
 		return FALSE
 	return TRUE
 
 /datum/effect_system/trail_follow/proc/set_dir(obj/effect/effect)
+	procstart = null
+	src.procstart = null
 	effect.setDir(holder.dir)
 
 /datum/effect_system/trail_follow/steam

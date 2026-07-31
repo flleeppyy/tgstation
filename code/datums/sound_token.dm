@@ -40,6 +40,8 @@
 	var/repeating = FALSE
 
 /datum/sound_token/New(atom/_source, _sound, _range = 10, _volume = 50, _falloff_exponent = SOUND_FALLOFF_EXPONENT, _falloff_distance = SOUND_DEFAULT_FALLOFF_DISTANCE, _allowed_listeners, _sound_duration_override, _delete_on_end, _repeating)
+	procstart = null
+	src.procstart = null
 	source = _source
 	RegisterSignal(source, COMSIG_QDELETING, PROC_REF(source_deleted))
 	RegisterSignal(source, COMSIG_MOVABLE_MOVED, PROC_REF(source_moved))
@@ -70,6 +72,8 @@
 
 
 /datum/sound_token/Destroy(force, ...)
+	procstart = null
+	src.procstart = null
 	for(var/listener in listeners)
 		remove_listener(listener)
 	listeners = null
@@ -78,6 +82,8 @@
 
 ///Lets us update the sound to a new one.
 /datum/sound_token/proc/update_sound(_sound, start_playing = FALSE, _repeating = null)
+	procstart = null
+	src.procstart = null
 	if(!isnull(_repeating))
 		repeating = _repeating
 	sound = sound(_sound)
@@ -95,6 +101,8 @@
 
 /// Updates the data of a listener, or adds them if they are not present.
 /datum/sound_token/proc/add_or_update_listener(mob/listener_mob)
+	procstart = null
+	src.procstart = null
 	if(isnull(listeners[listener_mob]))
 		if(!add_listener(listener_mob))
 			return FALSE
@@ -103,6 +111,8 @@
 
 /// Adds a listener to the sound. returns TRUE if we already were added, or for some reason couldnt be added.
 /datum/sound_token/proc/add_listener(mob/listener_mob)
+	procstart = null
+	src.procstart = null
 	if(!isnull(listeners[listener_mob]))
 		return TRUE
 
@@ -122,6 +132,8 @@
 
 /// Remove a listener from the sound.
 /datum/sound_token/proc/remove_listener(mob/listener_mob)
+	procstart = null
+	src.procstart = null
 
 	listeners -= listener_mob
 	LAZYREMOVE(listener_mob.sound_tokens, src)
@@ -130,6 +142,8 @@
 	SEND_SOUND(listener_mob, null_sound)
 
 /datum/sound_token/proc/update_listener(mob/listener_mob, update_sound = TRUE)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	if(isnull(listeners[listener_mob]))
@@ -161,6 +175,8 @@
 	send_listener_sound(listener_mob, update_sound)
 
 /datum/sound_token/proc/send_listener_sound(mob/listener_mob, update_sound)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	sound.status = sound_status|listeners[listener_mob]
@@ -179,23 +195,31 @@
 	sound.offset = null
 
 /datum/sound_token/proc/update_all_listeners()
+	procstart = null
+	src.procstart = null
 	for(var/mob/listener_mob in listeners)
 		if(listener_mob.client)
 			SSsound_tokens.clients_needing_update[listener_mob.client] = TRUE
 
 /datum/sound_token/proc/force_update_all_listeners(update_sound = TRUE)
+	procstart = null
+	src.procstart = null
 	for(var/mob/listener_mob in listeners)
 		if(listener_mob.client)
 			update_listener(listener_mob, update_sound)
 
 /// Setter for volume
 /datum/sound_token/proc/set_volume(new_volume, update_listeners = TRUE)
+	procstart = null
+	src.procstart = null
 	volume = new_volume
 	if(update_listeners)
 		update_all_listeners()
 
 /// Set the status of a listener. Does not update the sound.
 /datum/sound_token/proc/set_listener_status(mob/listener_mob, new_status)
+	procstart = null
+	src.procstart = null
 	if(isnull(listeners[listener_mob]))
 		return
 
@@ -203,15 +227,21 @@
 
 /// Respond to TRAIT_DEAF addition/removal
 /datum/sound_token/proc/listener_deafness_update(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_listener(source)
 
 /datum/sound_token/proc/listener_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	remove_listener(source)
 
 /// Respond to any mob in the world being logged into. Only adds if the mob is within range.
 /datum/sound_token/proc/player_login(datum/source, mob/player)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/turf/player_turf = get_turf(player)
 	var/turf/source_turf = get_turf(src.source)
@@ -225,26 +255,36 @@
 
 /// Respond to any cliented mob becoming uncliented
 /datum/sound_token/proc/player_logout(datum/source, mob/player)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	remove_listener(player)
 
 /// If the sound source moves, update tracked cells then refresh all listener positions.
 /datum/sound_token/proc/source_moved()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_tracked_cells()
 	update_all_listeners()
 
 /datum/sound_token/proc/source_deleted()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(src)
 
 ///Update env when source is entering new area
 /datum/sound_token/proc/on_enter_area(datum/source, area/area_to_register)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_new_environment(area_to_register.sound_environment || SOUND_ENVIRONMENT_NONE)
 
 /datum/sound_token/proc/set_new_environment(new_env)
+	procstart = null
+	src.procstart = null
 	if(sound.environment == new_env)
 		return
 	sound.environment = new_env
@@ -252,6 +292,8 @@
 
 ///Calculates the offset to give the sound for people who start hearing it mid-play
 /datum/sound_token/proc/calculate_offset()
+	procstart = null
+	src.procstart = null
 	var/elapsed = REALTIMEOFDAY - start_time
 	var/freq_factor = (sound.frequency || 100) / 100
 	var/pitch_factor = (sound.pitch || 100) / 100
@@ -262,6 +304,8 @@
 
 ///Update tracked cells; happens on movement. We need to check if anyone is now out of cell range and kick them out.
 /datum/sound_token/proc/update_tracked_cells()
+	procstart = null
+	src.procstart = null
 	if(!get_turf(source))
 		return
 
@@ -291,6 +335,8 @@
 
 /// Signal handler for SPATIAL_GRID_CELL_ENTERED on tracked cells. Adds newly arriving mobs as listeners.
 /datum/sound_token/proc/on_cell_client_entered(datum/source, list/entering_mobs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/mob/listener_mob as anything in entering_mobs)
@@ -300,6 +346,8 @@
 
 /// Signal handler for SPATIAL_GRID_CELL_EXITED on tracked cells. Removes mobs who have left all member cells.
 /datum/sound_token/proc/on_cell_client_exited(datum/source, list/exiting_mobs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/mob/listener_mob as anything in exiting_mobs)
 		var/still_in_range = FALSE
@@ -311,4 +359,6 @@
 
 ///The sound should have ended on all clients. Time to destroy the sound token.
 /datum/sound_token/proc/on_sound_ended()
+	procstart = null
+	src.procstart = null
 	qdel(src)

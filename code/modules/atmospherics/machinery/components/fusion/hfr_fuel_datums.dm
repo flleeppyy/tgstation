@@ -5,6 +5,8 @@ GLOBAL_LIST_INIT(hfr_fuels_list, hfr_fuels_create_list())
  * Global proc to build the gas recipe global list
  */
 /proc/hfr_fuels_create_list()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/fuel_mix_path in subtypesof(/datum/hfr_fuel))
 		var/datum/hfr_fuel/fuel_mix = new fuel_mix_path()
@@ -38,6 +40,8 @@ GLOBAL_LIST_INIT(hfr_fuels_list, hfr_fuels_create_list())
 	var/meltdown_flags = HYPERTORUS_FLAG_BASE_EXPLOSION
 
 /datum/hfr_fuel/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	temperature_change_multiplier = min(temperature_change_multiplier, 1)
 

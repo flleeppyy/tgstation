@@ -9,6 +9,8 @@
 	custom_materials = list(/datum/material/diamond = SHEET_MATERIAL_AMOUNT * 5, /datum/material/bluespace = SHEET_MATERIAL_AMOUNT, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/ai_module/law/core/freeformcore/configure(mob/user)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	var/targName = tgui_input_text(user, "Enter a new core law for the AI.", "Freeform Law Entry", laws[1], max_length = CONFIG_GET(number/max_law_len), multiline = TRUE)
 	if(!targName || !user.is_holding(src))
@@ -25,6 +27,8 @@
 	laws[1] = targName
 
 /obj/item/ai_module/law/core/freeformcore/can_install_to_rack(mob/living/user, obj/machinery/ai_law_rack/rack)
+	procstart = null
+	src.procstart = null
 	if(!laws[1])
 		to_chat(user, span_warning("No law entered on module, please enter one."))
 		return FALSE
@@ -36,6 +40,8 @@
 	custom_materials = list(/datum/material/gold = SHEET_MATERIAL_AMOUNT * 5, /datum/material/bluespace = SHEET_MATERIAL_AMOUNT, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/ai_module/law/supplied/freeform/configure(mob/user)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	var/targName = tgui_input_text(user, "Enter a new law for the AI.", "Freeform Law Entry", laws[1], max_length = CONFIG_GET(number/max_law_len), multiline = TRUE)
 	if(!targName || !user.is_holding(src))
@@ -52,6 +58,8 @@
 	laws[1] = targName
 
 /obj/item/ai_module/law/supplied/freeform/can_install_to_rack(mob/living/user, obj/machinery/ai_law_rack/rack)
+	procstart = null
+	src.procstart = null
 	if(!laws[1])
 		to_chat(user, span_warning("No law entered on module, please enter one."))
 		return FALSE

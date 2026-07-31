@@ -29,6 +29,8 @@
 		Prospective users are reminded that the S-EPG does not protect the host from their own electromagnetic pulses."
 
 /obj/item/implant/emp/activate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	uses--
 	empulse(imp_in, 3, 5, emp_source = src)
@@ -54,6 +56,8 @@
 		thermal imaging, nor does it actually stop blind fire into the smoke, nor does it stop movement."
 
 /obj/item/implant/smoke/activate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	uses--
 	do_smoke(6, imp_in, imp_in.loc, smoke_type = /datum/effect_system/fluid_spread/smoke/bad)
@@ -80,11 +84,15 @@
 		equipment loss or lack the ability to use standalone radio equipment easily."
 
 /obj/item/implant/radio/activate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// needs to be GLOB.deep_inventory_state otherwise it won't open
 	radio.ui_interact(usr, state = GLOB.deep_inventory_state)
 
 /obj/item/implant/radio/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	radio = new(src)
@@ -98,6 +106,8 @@
 	radio.recalculateChannels()
 
 /obj/item/implant/radio/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(radio)
 	return ..()
 

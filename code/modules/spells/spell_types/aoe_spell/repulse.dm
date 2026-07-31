@@ -7,15 +7,21 @@
 	var/repulse_force = MOVE_FORCE_EXTREMELY_STRONG
 
 /datum/action/cooldown/spell/aoe/repulse/get_caster_from_target(atom/target)
+	procstart = null
+	src.procstart = null
 	if(istype(target.loc, /obj/structure/closet))
 		return target
 
 	return ..()
 
 /datum/action/cooldown/spell/aoe/repulse/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return ..() || istype(cast_on.loc, /obj/structure/closet)
 
 /datum/action/cooldown/spell/aoe/repulse/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	if(istype(cast_on.loc, /obj/structure/closet))
 		var/obj/structure/closet/open_closet = cast_on.loc
 		open_closet.open(force = TRUE)
@@ -24,6 +30,8 @@
 	return ..()
 
 /datum/action/cooldown/spell/aoe/repulse/get_things_to_cast_on(atom/center)
+	procstart = null
+	src.procstart = null
 	var/list/things = list()
 	for(var/atom/movable/nearby_movable in view(aoe_radius, center))
 		if(nearby_movable == owner || nearby_movable == center)
@@ -36,6 +44,8 @@
 	return things
 
 /datum/action/cooldown/spell/aoe/repulse/cast_on_thing_in_aoe(atom/movable/victim, atom/caster)
+	procstart = null
+	src.procstart = null
 	if(ismob(victim))
 		var/mob/victim_mob = victim
 		if(victim_mob.can_block_magic(antimagic_flags))
@@ -103,6 +113,8 @@
 	sparkle_path = /obj/effect/temp_visual/dir_setting/tailsweep
 
 /datum/action/cooldown/spell/aoe/repulse/xeno/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(cast_on))
 		var/mob/living/carbon/carbon_caster = cast_on
 		playsound(get_turf(carbon_caster), 'sound/mobs/non-humanoids/hiss/hiss5.ogg', 80, TRUE, TRUE)
@@ -114,6 +126,8 @@
 
 /// Returns true if you're strong enough
 /datum/action/cooldown/spell/aoe/repulse/xeno/proc/is_strongman(mob/living/owner)
+	procstart = null
+	src.procstart = null
 	if (HAS_TRAIT(owner, TRAIT_STRENGTH))
 		return TRUE
 	var/strength_level = owner.mind?.get_skill_level(/datum/skill/athletics)
@@ -121,6 +135,8 @@
 
 /// You're not strong enough :(
 /datum/action/cooldown/spell/aoe/repulse/xeno/proc/after_spin()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(owner) || is_strongman(owner))
 		return
 	var/mob/living/living_owner = owner

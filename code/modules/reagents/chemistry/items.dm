@@ -22,6 +22,8 @@
 
 //A little janky with pockets
 /obj/item/ph_booklet/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.get_held_index_of_item(src))//Does this check pockets too..?
 		if(number_of_pages == 50)
 			icon_state = "pHbooklet_open"
@@ -45,6 +47,8 @@
 	return ..()
 
 /obj/item/ph_booklet/mouse_drop_dragged(atom/over, mob/user, src_location, over_location, params)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		return
 	if(!number_of_pages)
@@ -79,6 +83,8 @@
 	var/used = FALSE
 
 /obj/item/ph_paper/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!is_reagent_container(interacting_with))
 		return
 	var/obj/item/reagent_containers/cont = interacting_with
@@ -107,6 +113,8 @@
 	var/scanmode = DETAILED_CHEM_OUTPUT
 
 /obj/item/ph_meter/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(scanmode == SHORTENED_CHEM_OUTPUT)
 		to_chat(user, span_notice("You switch the chemical analyzer to provide a detailed description of each reagent."))
 		scanmode = DETAILED_CHEM_OUTPUT
@@ -115,6 +123,8 @@
 		scanmode = SHORTENED_CHEM_OUTPUT
 
 /obj/item/ph_meter/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!is_reagent_container(interacting_with))
 		return NONE
 	var/obj/item/reagent_containers/cont = interacting_with
@@ -166,15 +176,21 @@
 	var/reagent_type = /datum/reagent/consumable/ethanol
 
 /obj/item/burner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(max_volume, TRANSPARENT)//We have our own refillable - since we want to heat and pour
 	if(reagent_type)
 		reagents.add_reagent(reagent_type, 15)
 
 /obj/item/burner/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/ethanol = 5, /datum/reagent/silicon = 10)
 
 /obj/item/burner/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!is_reagent_container(tool))
 		if(tool.heat >= 1000)
 			set_lit(TRUE)
@@ -205,6 +221,8 @@
 	return NONE
 
 /obj/item/burner/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!lit)
 		return NONE
 
@@ -225,10 +243,14 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/burner/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[initial(icon_state)][lit ? "-on" : ""]"
 
 /obj/item/burner/proc/set_lit(new_lit)
+	procstart = null
+	src.procstart = null
 	if(lit == new_lit)
 		return
 	lit = new_lit
@@ -249,10 +271,14 @@
 	update_icon()
 
 /obj/item/burner/extinguish()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_lit(FALSE)
 
 /obj/item/burner/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -261,6 +287,8 @@
 		user.visible_message(span_notice("[user] snuffs out [src]'s flame."))
 
 /obj/item/burner/attack(mob/living/carbon/M, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(lit && M.ignite_mob())
 		message_admins("[ADMIN_LOOKUPFLW(user)] set [key_name_admin(M)] on fire with [src] at [AREACOORD(user)]")
 		user.log_message("set [key_name(M)] on fire with [src]", LOG_GAME)
@@ -268,6 +296,8 @@
 	return ..()
 
 /obj/item/burner/process()
+	procstart = null
+	src.procstart = null
 	var/current_heat = 0
 	var/number_of_burning_reagents = 0
 	for(var/datum/reagent/reagent as anything in reagents.reagent_list)
@@ -287,18 +317,24 @@
 	heat = current_heat
 
 /obj/item/burner/get_temperature()
+	procstart = null
+	src.procstart = null
 	return lit * heat
 
 /obj/item/burner/oil
 	reagent_type = /datum/reagent/fuel/oil
 
 /obj/item/burner/oil/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/fuel/oil = 5, /datum/reagent/silicon = 10)
 
 /obj/item/burner/fuel
 	reagent_type = /datum/reagent/fuel
 
 /obj/item/burner/fuel/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/fuel = 5, /datum/reagent/silicon = 10)
 
 /obj/item/thermometer
@@ -313,13 +349,19 @@
 	var/datum/reagents/attached_to_reagents
 
 /obj/item/thermometer/Destroy()
+	procstart = null
+	src.procstart = null
 	attached_to_reagents = null
 	return ..()
 
 /obj/item/thermometer/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/mercury = 5)
 
 /obj/item/thermometer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isnull(interacting_with.reagents))
 		return NONE
 	if(!user.transferItemToLoc(src, interacting_with))
@@ -330,24 +372,34 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/thermometer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Thermometer", name)
 		ui.open()
 
 /obj/item/thermometer/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	INVOKE_ASYNC(src, PROC_REF(remove_thermometer), user)
 
 /obj/item/thermometer/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(!in_range(src, user))
 		return UI_CLOSE
 	return UI_INTERACTIVE
 
 /obj/item/thermometer/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.physical_state
 
 /obj/item/thermometer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!attached_to_reagents)
 		ui_close(user)
 		return
@@ -357,10 +409,14 @@
 	return data
 
 /obj/item/thermometer/proc/remove_thermometer(mob/target)
+	procstart = null
+	src.procstart = null
 	try_put_in_hand(src, target)
 	attached_to_reagents = null
 
 /obj/item/thermometer/proc/try_put_in_hand(obj/object, mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You remove the [src] from [attached_to_reagents.my_atom]."))
 	if(!issilicon(user) && in_range(loc, user))
 		user.put_in_hands(object)

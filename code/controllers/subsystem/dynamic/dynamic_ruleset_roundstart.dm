@@ -6,6 +6,8 @@
 	var/solo = FALSE
 
 /datum/dynamic_ruleset/roundstart/is_valid_candidate(mob/candidate, client/candidate_client)
+	procstart = null
+	src.procstart = null
 	if(isnull(candidate.mind))
 		return FALSE
 	// Checks that any other roundstart ruleset hasn't already picked this guy
@@ -16,6 +18,8 @@
 
 /// Helpful proc - to use if your ruleset forces a job - which ensures a candidate can play the passed job typepath
 /datum/dynamic_ruleset/roundstart/proc/ruleset_forced_job_check(mob/candidate, client/candidate_client, datum/job/job_typepath)
+	procstart = null
+	src.procstart = null
 	// Malf AI can only go to people who want to be AI
 	if(!candidate_client.prefs.job_preferences[job_typepath::title])
 		return FALSE
@@ -41,6 +45,8 @@
 	max_antag_cap = list("denominator" = 24)
 
 /datum/dynamic_ruleset/roundstart/traitor/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	candidate.add_antag_datum(/datum/antagonist/traitor)
 
 /datum/dynamic_ruleset/roundstart/malf_ai
@@ -60,18 +66,28 @@
 	repeatable = FALSE
 
 /datum/dynamic_ruleset/roundstart/malf_ai/get_always_blacklisted_roles()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /datum/dynamic_ruleset/roundstart/malf_ai/is_valid_candidate(mob/candidate, client/candidate_client)
+	procstart = null
+	src.procstart = null
 	return ..() && ruleset_forced_job_check(candidate, candidate_client, /datum/job/ai)
 
 /datum/dynamic_ruleset/roundstart/malf_ai/prepare_for_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	LAZYSET(SSjob.forced_occupations, candidate, /datum/job/ai)
 
 /datum/dynamic_ruleset/roundstart/malf_ai/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	candidate.add_antag_datum(/datum/antagonist/malf_ai)
 
 /datum/dynamic_ruleset/roundstart/malf_ai/can_be_selected()
+	procstart = null
+	src.procstart = null
 	return ..() && !HAS_TRAIT(SSstation, STATION_TRAIT_HUMAN_AI)
 
 /datum/dynamic_ruleset/roundstart/blood_brother
@@ -84,6 +100,8 @@
 	min_pop = 10
 
 /datum/dynamic_ruleset/roundstart/blood_brother/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	candidate.add_antag_datum(/datum/antagonist/brother)
 
 /datum/dynamic_ruleset/roundstart/changeling
@@ -96,6 +114,8 @@
 	max_antag_cap = list("denominator" = 29)
 
 /datum/dynamic_ruleset/roundstart/changeling/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	candidate.add_antag_datum(/datum/antagonist/changeling)
 
 // Quick thing about this event, it turns out roundstart blood worms, despite being granted a host, are worse at antaggery in practice.
@@ -112,6 +132,8 @@
 	repeatable = FALSE // Yeah no.
 
 /datum/dynamic_ruleset/roundstart/blood_worm/is_valid_candidate(mob/living/candidate, client/candidate_client)
+	procstart = null
+	src.procstart = null
 	if (!..())
 		return FALSE
 
@@ -121,6 +143,8 @@
 	return !(TRAIT_NOBLOOD in species.inherent_traits)
 
 /datum/dynamic_ruleset/roundstart/blood_worm/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	if (!CAN_HAVE_BLOOD(candidate.current))
 		CRASH("A roundstart blood worm tried to spawn into a candidate mob with no blood. This shouldn't happen, because we already checked for TRAIT_NOBLOOD in species traits.")
 
@@ -142,6 +166,8 @@
 	min_pop = 30 // Ensures good spread of sacrifice targets
 
 /datum/dynamic_ruleset/roundstart/heretic/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	candidate.add_antag_datum(/datum/antagonist/heretic)
 
 /datum/dynamic_ruleset/roundstart/wizard
@@ -162,12 +188,18 @@
 	repeatable = FALSE
 
 /datum/dynamic_ruleset/roundstart/wizard/prepare_for_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	LAZYSET(SSjob.forced_occupations, candidate, /datum/job/space_wizard)
 
 /datum/dynamic_ruleset/roundstart/wizard/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	candidate.add_antag_datum(/datum/antagonist/wizard) // moves to lair for us
 
 /datum/dynamic_ruleset/roundstart/wizard/round_result()
+	procstart = null
+	src.procstart = null
 	for(var/datum/mind/wiz as anything in selected_minds)
 		if(considered_alive(wiz) && !considered_exiled(wiz))
 			return FALSE
@@ -197,21 +229,29 @@
 	var/ratio_to_be_considered_escaped = 0.5
 
 /datum/dynamic_ruleset/roundstart/blood_cult/get_always_blacklisted_roles()
+	procstart = null
+	src.procstart = null
 	return ..() | JOB_CHAPLAIN
 
 /datum/dynamic_ruleset/roundstart/blood_cult/create_execute_args()
+	procstart = null
+	src.procstart = null
 	return list(
 		new /datum/team/cult(),
 		get_most_experienced(selected_minds, pref_flag),
 	)
 
 /datum/dynamic_ruleset/roundstart/blood_cult/execute()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// future todo, find a cleaner way to get this from execute args
 	var/datum/team/cult/main_cult = locate() in GLOB.antagonist_teams
 	main_cult.setup_objectives()
 
 /datum/dynamic_ruleset/roundstart/blood_cult/assign_role(datum/mind/candidate, datum/team/cult/cult, datum/mind/most_experienced)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/cult/cultist = new()
 	cultist.give_equipment = TRUE
 	candidate.add_antag_datum(cultist, cult)
@@ -219,6 +259,8 @@
 		cultist.make_cult_leader()
 
 /datum/dynamic_ruleset/roundstart/blood_cult/round_result()
+	procstart = null
+	src.procstart = null
 	var/datum/team/cult/main_cult = locate() in GLOB.antagonist_teams
 	if(main_cult.check_cult_victory())
 		SSticker.mode_result = "win - cult win"
@@ -254,11 +296,15 @@
 	repeatable = FALSE
 
 /datum/dynamic_ruleset/roundstart/nukies/prepare_for_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	// they all get the normal operative job, even the leader. (leader's job is updated when they get the antag datum)
 	// all this ultimately matters for is 1. ensuring they *don't* get a normal job and 2. spawning them in the elevator
 	LAZYSET(SSjob.forced_occupations, candidate, /datum/job/nuclear_operative)
 
 /datum/dynamic_ruleset/roundstart/nukies/execute()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(load_nukie_base)), 3 SECONDS)
 
@@ -266,12 +312,16 @@
 #define ELEVATOR_HEIGHT 5
 
 /datum/dynamic_ruleset/roundstart/nukies/proc/load_nukie_base()
+	procstart = null
+	src.procstart = null
 	SSmapping.lazy_load_template(LAZY_TEMPLATE_KEY_NUKIEBASE)
 	addtimer(CALLBACK(src, PROC_REF(teleport_elevator_contents)), 2 SECONDS)
 	addtimer(CALLBACK(src, PROC_REF(open_nukie_elevator)), 3 SECONDS)
 	addtimer(CALLBACK(src, PROC_REF(call_infiltrator)), 5 SECONDS)
 
 /datum/dynamic_ruleset/roundstart/nukies/proc/teleport_elevator_contents()
+	procstart = null
+	src.procstart = null
 	var/obj/effect/landmark/nukeop_elevator/interior/interior = locate() in GLOB.landmarks_list
 	var/obj/effect/landmark/nukeop_elevator/exterior/exterior = locate() in GLOB.landmarks_list
 	if(isnull(interior) || isnull(exterior))
@@ -308,11 +358,15 @@
 			thing.forceMove(destination_turf)
 
 /datum/dynamic_ruleset/roundstart/nukies/proc/open_nukie_elevator()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/door/poddoor/shutter in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/door/poddoor))
 		if(shutter.id_tag == "nukiespawnlift")
 			shutter.open()
 
 /datum/dynamic_ruleset/roundstart/nukies/proc/call_infiltrator()
+	procstart = null
+	src.procstart = null
 	for(var/datum/mind/leader_mind as anything in selected_minds)
 		var/datum/antagonist/nukeop/leader/nuke_leader = leader_mind.has_antag_datum(/datum/antagonist/nukeop/leader)
 		nuke_leader?.spawn_infiltrator()
@@ -321,12 +375,16 @@
 #undef ELEVATOR_HEIGHT
 
 /datum/dynamic_ruleset/roundstart/nukies/create_execute_args()
+	procstart = null
+	src.procstart = null
 	return list(
 		new /datum/team/nuclear(),
 		get_most_experienced(selected_minds, pref_flag),
 	)
 
 /datum/dynamic_ruleset/roundstart/nukies/assign_role(datum/mind/candidate, datum/team/nuke_team, datum/mind/most_experienced)
+	procstart = null
+	src.procstart = null
 	if(most_experienced == candidate)
 		var/datum/antagonist/nukeop/leader/nuke_leader = new()
 		nuke_leader.send_to_spawnpoint = FALSE // because they get spawned in the elevator
@@ -338,6 +396,8 @@
 		candidate.add_antag_datum(nukie, nuke_team)
 
 /datum/dynamic_ruleset/roundstart/nukies/round_result()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/nukeop/nukie = selected_minds[1].has_antag_datum(/datum/antagonist/nukeop)
 	var/datum/team/nuclear/nuke_team = nukie.get_team()
 	var/result = nuke_team.get_result()
@@ -381,9 +441,13 @@
 	weight = 0
 
 /datum/dynamic_ruleset/roundstart/nukies/clown/prepare_for_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	LAZYSET(SSjob.forced_occupations, candidate, /datum/job/nuclear_operative/clown_operative)
 
 /datum/dynamic_ruleset/roundstart/nukies/clown/assign_role(datum/mind/candidate, datum/team/nuke_team, datum/mind/most_experienced)
+	procstart = null
+	src.procstart = null
 	if(most_experienced == candidate)
 		candidate.add_antag_datum(/datum/antagonist/nukeop/leader/clownop)
 	else
@@ -409,17 +473,23 @@
 	var/heads_necessary = 2
 
 /datum/dynamic_ruleset/roundstart/revolution/get_always_blacklisted_roles()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/job/job as anything in SSjob.all_occupations)
 		if(job.job_flags & JOB_HEAD_OF_STAFF)
 			. |= job.title
 
 /datum/dynamic_ruleset/roundstart/revolution/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	LAZYADD(candidate.special_roles, "Dormant Head Revolutionary")
 	addtimer(CALLBACK(src, PROC_REF(reveal_head), candidate), 7 MINUTES, TIMER_DELETE_ME)
 
 /// Reveals the headrev after a set amount of time
 /datum/dynamic_ruleset/roundstart/revolution/proc/reveal_head(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(candidate.special_roles, "Dormant Head Revolutionary")
 
 	var/head_check = 0
@@ -447,6 +517,8 @@
 	GLOB.revolution_handler.start_revolution()
 
 /datum/dynamic_ruleset/roundstart/revolution/proc/find_another_headrev()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/human/upstanding_citizen in GLOB.player_list)
 		if(!can_be_headrev(upstanding_citizen.mind, TRUE))
 			continue
@@ -458,6 +530,8 @@
 	addtimer(CALLBACK(src, PROC_REF(revs_execution_failed)), 1 MINUTES, TIMER_UNIQUE|TIMER_DELETE_ME)
 
 /datum/dynamic_ruleset/roundstart/revolution/proc/revs_execution_failed()
+	procstart = null
+	src.procstart = null
 	if(GLOB.revolution_handler)
 		return
 	// Execution is effectively cancelled by this point, but it's not like we can go back and refund it
@@ -481,6 +555,8 @@
 	min_antag_cap = list("denominator" = 20, "offset" = 1)
 
 /datum/dynamic_ruleset/roundstart/spies/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	candidate.add_antag_datum(/datum/antagonist/spy)
 
 /datum/dynamic_ruleset/roundstart/extended
@@ -492,6 +568,8 @@
 	solo = TRUE
 
 /datum/dynamic_ruleset/roundstart/extended/execute()
+	procstart = null
+	src.procstart = null
 	// No midrounds no latejoins
 	for(var/category in SSdynamic.rulesets_to_spawn)
 		SSdynamic.rulesets_to_spawn[category] = 0
@@ -504,6 +582,8 @@
 	repeatable = FALSE
 
 /datum/dynamic_ruleset/roundstart/meteor/execute()
+	procstart = null
+	src.procstart = null
 	GLOB.meteor_mode ||= new()
 	GLOB.meteor_mode.start_meteor()
 
@@ -516,6 +596,8 @@
 	solo = TRUE
 
 /datum/dynamic_ruleset/roundstart/nations/execute()
+	procstart = null
+	src.procstart = null
 	// No midrounds no latejoins
 	for(var/category in SSdynamic.rulesets_to_spawn)
 		SSdynamic.rulesets_to_spawn[category] = 0

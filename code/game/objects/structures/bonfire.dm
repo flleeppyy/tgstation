@@ -28,6 +28,8 @@
 	var/datum/looping_sound/burning/burning_loop
 
 /obj/structure/bonfire/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
@@ -36,11 +38,15 @@
 	burning_loop = new(src)
 
 /obj/structure/bonfire/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	QDEL_NULL(burning_loop)
 	. = ..()
 
 /obj/structure/bonfire/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/stack/rods) && !can_buckle && !grill)
 		var/obj/item/stack/rods/rods = tool
 		var/choice = tgui_alert(user, "What would you like to construct?", "Bonfire", list("Stake","Grill"))
@@ -87,6 +93,8 @@
 	return NONE
 
 /obj/structure/bonfire/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -104,6 +112,8 @@
 		return
 
 /obj/structure/bonfire/proc/check_oxygen()
+	procstart = null
+	src.procstart = null
 	if(isopenturf(loc))
 		var/turf/open/bonfire_turf = loc
 		if(bonfire_turf.air?.moles[/datum/gas/oxygen] >= 5)
@@ -111,6 +121,8 @@
 	return FALSE
 
 /obj/structure/bonfire/proc/start_burning()
+	procstart = null
+	src.procstart = null
 	if(burning || !check_oxygen())
 		return
 
@@ -123,9 +135,13 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/bonfire/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	start_burning()
 
 /obj/structure/bonfire/proc/on_entered(datum/source, atom/movable/entered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(burning)
 		if(!grill)
@@ -144,6 +160,8 @@
 		visible_message(span_notice("[entered]'s fire spreads to [src], setting it ablaze!"))
 
 /obj/structure/bonfire/proc/bonfire_burn(seconds_per_tick = 2)
+	procstart = null
+	src.procstart = null
 	var/turf/current_location = get_turf(src)
 	if(!grill)
 		current_location.hotspot_expose(1000, 250 * seconds_per_tick, 1)
@@ -163,12 +181,16 @@
 			burned_movable.fire_act(1000, 250 * seconds_per_tick)
 
 /obj/structure/bonfire/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!check_oxygen())
 		extinguish()
 		return
 	bonfire_burn(seconds_per_tick)
 
 /obj/structure/bonfire/extinguish()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!burning)
 		return
@@ -181,10 +203,14 @@
 	STOP_PROCESSING(SSobj, src)
 
 /obj/structure/bonfire/buckle_mob(mob/living/buckled_mob, force = FALSE, check_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	if(..())
 		buckled_mob.pixel_y += 13
 
 /obj/structure/bonfire/unbuckle_mob(mob/living/buckled_mob, force = FALSE, can_fall = TRUE)
+	procstart = null
+	src.procstart = null
 	if(..())
 		buckled_mob.pixel_y -= 13
 
@@ -192,18 +218,26 @@
 	density = TRUE
 
 /obj/structure/bonfire/dense/prelit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/bonfire/dense/prelit/LateInitialize()
+	procstart = null
+	src.procstart = null
 	start_burning()
 
 /obj/structure/bonfire/prelit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return INITIALIZE_HINT_LATELOAD
 
 // Late init so that we can wait for air to exist in lazyloaded templates
 /obj/structure/bonfire/prelit/LateInitialize()
+	procstart = null
+	src.procstart = null
 	start_burning()
 
 #undef BONFIRE_FIRE_STACK_STRENGTH

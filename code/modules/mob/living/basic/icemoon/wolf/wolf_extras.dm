@@ -10,6 +10,8 @@
 /datum/component/riding/creature/wolf
 
 /datum/component/riding/creature/wolf/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(1, 9, OBJ_LAYER),
 		TEXT_SOUTH = list(1, 9, ABOVE_MOB_LAYER),

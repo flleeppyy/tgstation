@@ -5,12 +5,16 @@
  * Returns the thing in our active hand (whatever is in our active module-slot, in this case)
  */
 /mob/living/silicon/robot/get_active_held_item()
+	procstart = null
+	src.procstart = null
 	return module_active
 
 /**
  * Parent proc - triggers when an item/module is unequipped from a cyborg.
  */
 /obj/item/proc/cyborg_unequip(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -20,6 +24,8 @@
  * * item_module - the item being equipped to a slot.
  */
 /mob/living/silicon/robot/proc/activate_module(obj/item/item_module)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(item_module))
 		CRASH("activate_module called with improper item_module")
 
@@ -44,6 +50,8 @@
 	return put_in_hand(item_module, first_free_slot)
 
 /mob/living/silicon/robot/put_in_hand(obj/item/item_module, hand_index, forced = FALSE, ignore_anim = TRUE, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -52,9 +60,13 @@
 
 ///Helper for cyborgs unequipping things.
 /mob/living/silicon/robot/proc/deactivate_module(obj/item/item_module)
+	procstart = null
+	src.procstart = null
 	return transferItemToLoc(item_module, newloc = model)
 
 /mob/living/silicon/robot/doUnEquip(obj/item/item_dropping, force, atom/newloc, no_move, invdrop, silent)
+	procstart = null
+	src.procstart = null
 	//borgs can drop items that aren't part of the module (used for apparatus modules, the stored item isn't a module).
 	if(isnull(model) || !(item_dropping in model.modules))
 		return ..()
@@ -74,6 +86,8 @@
 	playsound_local(src, SFX_RUSTLE, 40, TRUE)
 
 /mob/living/silicon/robot/put_in_hand_check(obj/item/item_equipping)
+	procstart = null
+	src.procstart = null
 	return (item_equipping in model.modules)
 
 /**
@@ -83,6 +97,8 @@
  * * module_num - the slot number being repaired.
  */
 /mob/living/silicon/robot/proc/break_cyborg_slot(module_num)
+	procstart = null
+	src.procstart = null
 	if(is_invalid_module_number(module_num, TRUE))
 		return FALSE
 
@@ -135,6 +151,8 @@
  * Breaks all of a cyborg's slots.
  */
 /mob/living/silicon/robot/proc/break_all_cyborg_slots()
+	procstart = null
+	src.procstart = null
 	for(var/cyborg_slot in 1 to 3)
 		break_cyborg_slot(cyborg_slot)
 
@@ -145,6 +163,8 @@
  * * module_num - the module number being repaired.
  */
 /mob/living/silicon/robot/proc/repair_cyborg_slot(module_num)
+	procstart = null
+	src.procstart = null
 	if(is_invalid_module_number(module_num, TRUE))
 		return FALSE
 
@@ -180,6 +200,8 @@
  * Repairs all slots. Unbroken slots are unaffected.
  */
 /mob/living/silicon/robot/proc/repair_all_cyborg_slots()
+	procstart = null
+	src.procstart = null
 	for(var/cyborg_slot in 1 to 3)
 		repair_cyborg_slot(cyborg_slot)
 
@@ -187,11 +209,15 @@
  * Unequips the active held item, if there is one.
  */
 /mob/living/silicon/robot/proc/uneq_active()
+	procstart = null
+	src.procstart = null
 	if(module_active)
 		deactivate_module(module_active)
 
 // Technically none of the items are dropped, only unequipped
 /mob/living/silicon/robot/drop_all_held_items()
+	procstart = null
+	src.procstart = null
 	for(var/cyborg_slot in 1 to length(held_items))
 		if(!held_items[cyborg_slot])
 			continue
@@ -205,6 +231,8 @@
  * * item_module - the item being checked
  */
 /mob/living/silicon/robot/proc/activated(obj/item/item_module)
+	procstart = null
+	src.procstart = null
 	if(item_module in held_items)
 		return TRUE
 	if(item_module.loc in held_items) //Apparatus check
@@ -221,6 +249,8 @@
  * * check_all_slots - TRUE = the proc checks all slots | FALSE = the proc only checks un-disabled slots
  */
 /mob/living/silicon/robot/proc/is_invalid_module_number(module_num, check_all_slots = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!module_num)
 		return TRUE
 
@@ -240,6 +270,8 @@
  * Returns the slot number of the selected module, or zero if no modules are selected.
  */
 /mob/living/silicon/robot/proc/get_selected_module()
+	procstart = null
+	src.procstart = null
 	if(module_active)
 		return held_items.Find(module_active)
 	return FALSE
@@ -250,6 +282,8 @@
  * * module_num - the slot number being selected
  */
 /mob/living/silicon/robot/proc/select_module(module_num)
+	procstart = null
+	src.procstart = null
 	if(is_invalid_module_number(module_num) || !held_items[module_num]) //If the slot number is invalid, or there's nothing there, we have nothing to equip
 		return FALSE
 
@@ -265,6 +299,8 @@
  * * module_num - the slot number being de-selected
  */
 /mob/living/silicon/robot/proc/deselect_module(module_num)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/screen/robot/module_slot/module = hud_used?.screen_objects[HUD_KEY_HAND_SLOT(module_num)]
 	if(module)
 		module.icon_state = module.base_icon_state
@@ -277,6 +313,8 @@
  * * module_num - the slot number being toggled
  */
 /mob/living/silicon/robot/proc/toggle_module(module_num)
+	procstart = null
+	src.procstart = null
 	if(is_invalid_module_number(module_num))
 		return FALSE
 
@@ -293,6 +331,8 @@
  * Cycles through the list of enabled modules, deselecting the current one and selecting the next one.
  */
 /mob/living/silicon/robot/proc/cycle_modules()
+	procstart = null
+	src.procstart = null
 	var/slot_start = get_selected_module()
 	var/slot_num
 	if(slot_start)
@@ -310,10 +350,14 @@
 			slot_num = 1 //Wrap around.
 
 /mob/living/silicon/robot/perform_hand_swap()
+	procstart = null
+	src.procstart = null
 	cycle_modules()
 	return TRUE
 
 /mob/living/silicon/robot/can_hold_items(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return (I && (I in model.modules)) //Only if it's part of our model.
 
 /**
@@ -326,6 +370,8 @@
  * * item_module - the item being added to the screen.
  */
 /mob/living/silicon/robot/proc/observer_screen_update(obj/item/item_module)
+	procstart = null
+	src.procstart = null
 	if(!observers?.len)
 		return
 	for(var/mob/dead/observe as anything in observers)

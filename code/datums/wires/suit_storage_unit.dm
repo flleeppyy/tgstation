@@ -3,6 +3,8 @@
 	proper_name = "Suit Storage Unit"
 
 /datum/wires/suit_storage_unit/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(
 		WIRE_HACK, WIRE_SAFETY,
 		WIRE_ZAP
@@ -11,6 +13,8 @@
 	..()
 
 /datum/wires/suit_storage_unit/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/obj/machinery/suit_storage_unit/SSU = holder
@@ -18,6 +22,8 @@
 		return TRUE
 
 /datum/wires/suit_storage_unit/get_status()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/suit_storage_unit/SSU = holder
 	var/list/status = list()
 	status += "The UV bulb is [SSU.uv_super ? "glowing" : "dim"]."
@@ -25,6 +31,8 @@
 	return status
 
 /datum/wires/suit_storage_unit/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/suit_storage_unit/SSU = holder
 	switch(wire)
 		if(WIRE_HACK)
@@ -35,6 +43,8 @@
 			SSU.shock(usr, 100)
 
 /datum/wires/suit_storage_unit/on_cut(wire, mend, source)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/suit_storage_unit/SSU = holder
 	switch(wire)
 		if(WIRE_HACK)

@@ -10,24 +10,32 @@
 	var/flip_side = FALSE
 
 /obj/machinery/power/manufacturing/unloader/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += generate_io_overlays(dir, COLOR_ORANGE) // OUT - stuff in it
 	. += generate_io_overlays(REVERSE_DIR(dir), COLOR_MODERATE_BLUE) // IN - crate
 	. += generate_io_overlays(turn(dir, flip_side ? 90 : -90), COLOR_ORANGE) // OUT -- empty crate
 
-/obj/machinery/power/manufacturing/unloader/request_resource() //returns held crate if someone wants to do that for some reason
+/obj/machinery/power/manufacturing/unloader/request_resource()
+	procstart = null
+	src.procstart = null //returns held crate if someone wants to do that for some reason
 	var/list/real_contents = contents - circuit
 	if(!length(real_contents))
 		return
 	return (real_contents)[1]
 
 /obj/machinery/power/manufacturing/unloader/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	balloon_alert(user, "flipped")
 	flip_side = !flip_side
 	update_appearance()
 
 /obj/machinery/power/manufacturing/unloader/receive_resource(obj/receiving, atom/from, receive_dir)
+	procstart = null
+	src.procstart = null
 	if(surplus() < power_to_unload_crate || receive_dir != REVERSE_DIR(dir))
 		return MANUFACTURING_FAIL
 	var/list/real_contents = contents - circuit
@@ -46,6 +54,8 @@
 	return MANUFACTURING_SUCCESS
 
 /obj/machinery/power/manufacturing/unloader/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/list/real_contents = contents - circuit
 	if(!length(real_contents))
 		return PROCESS_KILL
@@ -59,6 +69,8 @@
 		return unload_orebox(closet)
 
 /obj/machinery/power/manufacturing/unloader/proc/unload_crate(obj/structure/closet/closet)
+	procstart = null
+	src.procstart = null
 	if (!closet.contents_initialized)
 		closet.contents_initialized = TRUE
 		closet.PopulateContents()
@@ -72,6 +84,8 @@
 		return PROCESS_KILL
 
 /obj/machinery/power/manufacturing/unloader/proc/unload_orebox(obj/structure/ore_box/box)
+	procstart = null
+	src.procstart = null
 	for(var/atom/thing as anything in box.contents)
 		send_resource(thing, dir)
 	if(!length(box.contents) && send_resource(box, turn(dir, flip_side ? 90 : -90)))

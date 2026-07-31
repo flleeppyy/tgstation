@@ -5,10 +5,14 @@
 
 /// Helper function for RETA-specific logging
 /proc/log_reta(text)
+	procstart = null
+	src.procstart = null
 	WRITE_LOG(GLOB.reta_log, "[server_timestamp()] RETA: [text]")
 	log_game("RETA: [text]")
 
 /proc/initialize_reta_system()
+	procstart = null
+	src.procstart = null
 	// Define which access flags are granted for each department
 	GLOB.reta_dept_grants = list(
 		"Medical" = list(ACCESS_MEDICAL, ACCESS_SURGERY),
@@ -23,6 +27,8 @@
 
 /// Checks if an origin department is on cooldown for calling a target department
 /proc/reta_on_cooldown(origin, target)
+	procstart = null
+	src.procstart = null
 	var/list/by_target = GLOB.reta_cooldown[origin]
 	if(!by_target)
 		return FALSE
@@ -31,12 +37,16 @@
 
 /// Sets a cooldown for an origin department calling a target department
 /proc/reta_set_cooldown(origin, target, cd_ds)
+	procstart = null
+	src.procstart = null
 	if(!GLOB.reta_cooldown[origin])
 		GLOB.reta_cooldown[origin] = list()
 	GLOB.reta_cooldown[origin][target] = world.time + cd_ds
 
 /// Tracks recent emergency calls for multiple department analysis
 /proc/reta_track_call(origin, target)
+	procstart = null
+	src.procstart = null
 	var/list/call_info = list(
 		"time" = world.time,
 		"origin" = origin
@@ -67,6 +77,8 @@
 
 /// Finds eligible responders and grants them temporary access
 /proc/reta_find_and_grant_access(target_dept, origin_dept, duration_ds)
+	procstart = null
+	src.procstart = null
 	. = 0
 
 	var/list/job_trims = GLOB.reta_job_trims[target_dept]
@@ -121,6 +133,8 @@
 
 /// Populates the job trims list for RETA system
 /proc/populate_reta_job_trims()
+	procstart = null
+	src.procstart = null
 	GLOB.reta_job_trims = list(
 		"Medical" = list(),
 		"Security" = list(),
@@ -165,11 +179,15 @@
 
 /// Pushes UI updates to all consoles in the same origin department
 /proc/reta_push_ui_updates(origin, target)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/requests_console/console in GLOB.reta_consoles_by_origin[origin])
 		console.ui_update()
 
 /// Gets the department string for a user based on their job
 /proc/reta_get_user_department(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user?.mind?.assigned_role)
 		return null
 
@@ -193,6 +211,8 @@
 
 /// Gets the standardized department string from a console department name
 /proc/reta_get_user_department_by_name(dept_name)
+	procstart = null
+	src.procstart = null
 	if(!dept_name)
 		return null
 
@@ -260,6 +280,8 @@
 
 /// Cleans up an expired RETA grant from the active grants registry
 /proc/cleanup_expired_reta_grant(target_dept, origin_dept)
+	procstart = null
+	src.procstart = null
 	if(!GLOB.reta_active_grants[target_dept])
 		return
 	GLOB.reta_active_grants[target_dept] -= origin_dept
@@ -272,12 +294,16 @@
 
 /// Updates RETA lighting for all doors in the game
 /proc/update_all_doors_reta_lights()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/door/airlock/door as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/door/airlock))
 		door.update_appearance(UPDATE_OVERLAYS)
 
 /// Applies any currently active RETA grants to a newly created/spawned ID card
 /// This should be called when ID cards are created, spawned, or have their trim changed
 /proc/apply_active_reta_grants_to_card(obj/item/card/id/id_card)
+	procstart = null
+	src.procstart = null
 	if(!id_card || !id_card.trim)
 		return
 
@@ -313,6 +339,8 @@
 
 /// Initialize RETA config values
 /proc/reta_init_config()
+	procstart = null
+	src.procstart = null
 	log_world("RETA: System initialized with duration=[CONFIG_GET(number/reta_duration_ds)]ds, cooldown=[CONFIG_GET(number/reta_dept_cooldown_ds)]ds, enabled=[CONFIG_GET(flag/reta_enabled)]")
 
 #undef RETA_DEFAULT_DURATION_DS

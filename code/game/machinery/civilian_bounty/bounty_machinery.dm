@@ -12,6 +12,8 @@
 	var/cooldown_reduction = 0
 
 /obj/machinery/piratepad/civilian/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/T = -2
 	for(var/datum/stock_part/micro_laser/micro_laser in component_parts)
@@ -23,6 +25,8 @@
 	cooldown_reduction = T * (30 SECONDS)
 
 /obj/machinery/piratepad/civilian/proc/get_cooldown_reduction()
+	procstart = null
+	src.procstart = null
 	return cooldown_reduction
 
 ///Computer for assigning new civilian bounties, and sending bounties for collection.
@@ -43,6 +47,8 @@
 	COOLDOWN_DECLARE(sheet_printer_cooldown)
 
 /obj/machinery/computer/piratepad_control/civilian/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isidcard(tool))
 		return NONE
 	if(!id_insert(user, tool, inserted_scan_id))
@@ -51,12 +57,16 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/computer/piratepad_control/multitool_act(mob/living/user, obj/item/multitool/I)
+	procstart = null
+	src.procstart = null
 	if(istype(I) && istype(I.buffer,/obj/machinery/piratepad/civilian))
 		to_chat(user, span_notice("You link [src] with [I.buffer] in [I] buffer."))
 		pad_ref = WEAKREF(I.buffer)
 		return TRUE
 
 /obj/machinery/computer/piratepad_control/civilian/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cargo_hold_id)
 		for(var/obj/machinery/piratepad/civilian/C as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/piratepad/civilian))
@@ -68,6 +78,8 @@
 		pad_ref = WEAKREF(pad)
 
 /obj/machinery/computer/piratepad_control/civilian/recalc()
+	procstart = null
+	src.procstart = null
 	if(sending)
 		return FALSE
 	if(!inserted_scan_id)
@@ -101,6 +113,8 @@
  * This fully rewrites base behavior in order to only check for bounty objects, and no other types of objects like pirate-pads do.
  */
 /obj/machinery/computer/piratepad_control/civilian/send(check_global = FALSE, mob/user)
+	procstart = null
+	src.procstart = null
 	status_report = ""
 	playsound(loc, 'sound/machines/wewewew.ogg', 70, TRUE)
 	if(!sending)
@@ -183,6 +197,8 @@
 
 ///Here is where cargo bounties are added to the player's bank accounts, then adjusted and scaled into a civilian bounty.
 /obj/machinery/computer/piratepad_control/civilian/proc/add_bounties(mob/user, cooldown_reduction = 0)
+	procstart = null
+	src.procstart = null
 	var/datum/bank_account/id_account = inserted_scan_id?.registered_account
 	if(!id_account)
 		return FALSE
@@ -207,6 +223,8 @@
  * @param choice The index of the bounty in the list of bounties that the player can choose from.
  */
 /obj/machinery/computer/piratepad_control/civilian/proc/pick_bounty(datum/bounty/choice)
+	procstart = null
+	src.procstart = null
 	var/datum/bank_account/id_account = inserted_scan_id?.registered_account
 	if(!id_account?.bounties?[choice])
 		playsound(loc, 'sound/machines/synth/synth_no.ogg', 40 , TRUE)
@@ -217,10 +235,14 @@
 	return id_account.civilian_bounty
 
 /obj/machinery/computer/piratepad_control/civilian/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	id_eject(user, inserted_scan_id)
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/computer/piratepad_control/civilian/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["points"] = points
 	data["pad"] = pad_ref?.resolve() ? TRUE : FALSE
@@ -271,6 +293,8 @@
 	return data
 
 /obj/machinery/computer/piratepad_control/civilian/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/machinery/piratepad/civilian/pad = pad_ref?.resolve()
 	if(!pad)
@@ -300,6 +324,8 @@
 
 /// Self explanitory, holds the ID card in the console for bounty payout and manipulation.
 /obj/machinery/computer/piratepad_control/civilian/proc/id_insert(mob/user, obj/item/inserting_item, obj/item/target)
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/id/card_to_insert = inserting_item
 	var/holder_item = FALSE
 
@@ -324,6 +350,8 @@
 
 ///Removes A stored ID card.
 /obj/machinery/computer/piratepad_control/civilian/proc/id_eject(mob/user, obj/item/target)
+	procstart = null
+	src.procstart = null
 	if(!target)
 		to_chat(user, span_warning("That slot is empty!"))
 		return FALSE
@@ -344,6 +372,8 @@
  * @param running_jobs A list we generate when making multiple bounties at once, this stores the job define to prevent double dipping on the same job type.
  */
 /obj/machinery/computer/piratepad_control/civilian/proc/update_global_bounty_list(update_up_to = CIV_BOUNTY_BASELINE, enable_high_priority = FALSE, list/running_jobs)
+	procstart = null
+	src.procstart = null
 	//First, clear out completed bounties.
 	for(var/datum/bounty/complete_or_unique in GLOB.shared_crew_bounties)
 		if(complete_or_unique.claimed)
@@ -373,6 +403,8 @@
 
 /// Performs several global bounty updates in a row on a callback loop, adding one each time.
 /obj/machinery/computer/piratepad_control/civilian/proc/looped_global_update(current_count, update_to, inherited_list, first_time = FALSE)
+	procstart = null
+	src.procstart = null
 	var/jobs_picked = update_global_bounty_list(current_count, enable_high_priority = TRUE, running_jobs = inherited_list)
 
 	if(current_count == update_to)
@@ -385,6 +417,8 @@
 
 /// Spawns the roundstart "special" bounties.
 /obj/machinery/computer/piratepad_control/civilian/proc/setup_special_procs()
+	procstart = null
+	src.procstart = null
 	for(var/selected_special in subtypesof(/datum/bounty/item/special))
 		GLOB.shared_crew_bounties += new selected_special
 
@@ -392,6 +426,8 @@
  * Handles cooldowns and creation of a new cargo bounty sheet.
  */
 /obj/machinery/computer/piratepad_control/civilian/proc/print_sheet(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, sheet_printer_cooldown))
 		balloon_alert(user, "printer spooling!")
 		return FALSE
@@ -427,10 +463,14 @@
 	var/uses = 2
 
 /obj/item/civ_bounty_beacon/attack_self()
+	procstart = null
+	src.procstart = null
 	loc.visible_message(span_warning("\The [src] begins to beep loudly!"))
 	addtimer(CALLBACK(src, PROC_REF(launch_payload)), 1 SECONDS)
 
 /obj/item/civ_bounty_beacon/proc/launch_payload()
+	procstart = null
+	src.procstart = null
 	playsound(src, SFX_SPARKS, 80, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	switch(uses)
 		if(2)

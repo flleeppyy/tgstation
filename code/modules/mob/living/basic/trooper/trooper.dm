@@ -30,6 +30,8 @@
 	var/l_hand
 
 /mob/living/basic/trooper/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	apply_dynamic_human_appearance(src, mob_spawn_path = mob_spawner, r_hand = r_hand, l_hand = l_hand)
 	if(LAZYLEN(loot) || corpse)
@@ -39,4 +41,6 @@
 	AddElement(/datum/element/footstep, footstep_type = FOOTSTEP_MOB_SHOE)
 
 /mob/living/basic/trooper/get_unconscious_appearance()
+	procstart = null
+	src.procstart = null
 	return get_generic_humanoid_static_appearance()

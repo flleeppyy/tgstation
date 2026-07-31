@@ -8,6 +8,8 @@
 	hardcore_value = 2
 
 /datum/quirk/indebted/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	if(!human_holder.account_id)
 		return
@@ -19,6 +21,8 @@
 
 ///Once the debt is extinguished, award an achievement and a pin for actually taking care of it.
 /datum/quirk/indebted/proc/on_debt_paid(datum/bank_account/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(source.account_debt)
 		return
@@ -35,6 +39,8 @@
 	))
 
 /datum/quirk/indebted/proc/award_on_login(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	quirk_holder.client.give_award(/datum/award/achievement/misc/debt_extinguished, quirk_holder)
 	UnregisterSignal(source, COMSIG_MOB_LOGIN)

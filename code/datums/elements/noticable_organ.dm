@@ -13,6 +13,8 @@
 	var/body_zone
 
 /datum/element/noticable_organ/Attach(obj/item/organ/target, infused_desc, body_zone)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isorgan(target))
@@ -27,6 +29,8 @@
 		enable_description(target, target.owner)
 
 /datum/element/noticable_organ/Detach(obj/item/organ/target)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, list(COMSIG_ORGAN_IMPLANTED, COMSIG_ORGAN_REMOVED))
 	if(target.owner)
 		UnregisterSignal(target.owner, COMSIG_ATOM_EXAMINE)
@@ -34,19 +38,27 @@
 
 /// Proc that returns true or false if the organ should show its examine check.
 /datum/element/noticable_organ/proc/should_show_text(mob/living/carbon/examined)
+	procstart = null
+	src.procstart = null
 	return examined.is_location_accessible(body_zone)
 
 /datum/element/noticable_organ/proc/enable_description(obj/item/organ/target, mob/living/carbon/receiver)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	RegisterSignal(receiver, COMSIG_ATOM_EXAMINE, PROC_REF(on_receiver_examine))
 
 /datum/element/noticable_organ/proc/on_removed(obj/item/organ/target, mob/living/carbon/loser)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(loser, COMSIG_ATOM_EXAMINE)
 
 /datum/element/noticable_organ/proc/on_receiver_examine(mob/living/carbon/examined, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!should_show_text(examined))
@@ -64,6 +76,8 @@
 
 
 /datum/element/noticable_organ/ai_control/should_show_text(mob/living/carbon/examined)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -73,4 +87,6 @@
 	return FALSE
 
 /datum/element/noticable_organ/ai_control/on_removed(obj/item/organ/target, mob/living/carbon/loser)
+	procstart = null
+	src.procstart = null
 	Detach(target)

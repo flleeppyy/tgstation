@@ -15,20 +15,28 @@
 	assembly_flags = ASSEMBLY_NO_DUPLICATES
 
 /obj/item/assembly/igniter/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is trying to ignite [user.p_them()]self with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	user.ignite_mob()
 	return FIRELOSS
 
 /obj/item/assembly/igniter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	sparks = new(src, 2, FALSE)
 	sparks.attach(src)
 
 /obj/item/assembly/igniter/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(sparks)
 	return ..()
 
 /obj/item/assembly/igniter/activate()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE//Cooldown check
 	var/turf/location = get_turf(loc)
@@ -42,12 +50,16 @@
 	return TRUE
 
 /obj/item/assembly/igniter/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	// Don't trigger when interacting with assemblies
 	if (!holder)
 		activate()
 	add_fingerprint(user)
 
 /obj/item/assembly/igniter/ignition_effect(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	. = span_notice("[user] fiddles with [src], and manages to light [A].")
 	activate()
 	add_fingerprint(user)
@@ -61,6 +73,8 @@
 	heat = MIN_FREEZE_TEMP
 
 /obj/item/assembly/igniter/condenser/activate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return //Cooldown check

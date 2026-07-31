@@ -2,6 +2,8 @@
 /datum/unit_test/quirk_icons
 
 /datum/unit_test/quirk_icons/Run()
+	procstart = null
+	src.procstart = null
 	var/list/used_icons = list()
 
 	for (var/datum/quirk/quirk_type as anything in valid_subtypesof(/datum/quirk))
@@ -21,6 +23,8 @@
 /datum/unit_test/quirk_initial_medical_records
 
 /datum/unit_test/quirk_initial_medical_records/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/patient = allocate(/mob/living/carbon/human/consistent)
 
 	for(var/datum/quirk/quirk_type as anything in valid_subtypesof(/datum/quirk))
@@ -47,6 +51,8 @@
 	)
 
 /datum/unit_test/blood_deficiency_mail/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 	dummy.add_quirk(/datum/quirk/blooddeficiency)
 	var/datum/quirk/blooddeficiency/quirk = dummy.get_quirk(/datum/quirk/blooddeficiency)
@@ -78,6 +84,8 @@
 /datum/unit_test/quirk_validity
 
 /datum/unit_test/quirk_validity/Run()
+	procstart = null
+	src.procstart = null
 	// Required for language quirks to function properly
 	// Assigning this manually as config is empty
 	GLOB.uncommon_roundstart_languages = list(/datum/language/uncommon)

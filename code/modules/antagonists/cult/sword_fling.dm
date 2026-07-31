@@ -19,22 +19,32 @@
 	var/obj/item/melee/cultblade/haunted/flinged_sword
 
 /datum/action/cooldown/spell/pointed/sword_fling/New(Target, to_fling)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	flinged_sword = to_fling
 
 /datum/action/cooldown/spell/pointed/sword_fling/Destroy()
+	procstart = null
+	src.procstart = null
 	flinged_sword = null
 	. = ..()
 
 /datum/action/cooldown/spell/pointed/sword_fling/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	if(flinged_sword.bound)
 		return FALSE
 	return ..()
 
 /datum/action/cooldown/spell/pointed/sword_fling/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return isatom(cast_on)
 
 /datum/action/cooldown/spell/pointed/sword_fling/cast(turf/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/sword_loc = flinged_sword.loc
 	if(ismob(sword_loc))

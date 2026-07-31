@@ -11,6 +11,8 @@
 	var/labeled = FALSE
 
 /obj/item/reagent_containers/blood/Initialize(mapload, vol)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!blood_type)
 		return
@@ -18,10 +20,14 @@
 	reagents.add_reagent(bloodtype.reagent_type, volume, list("blood_type" = bloodtype, "blood_DNA" = bloodtype.dna_string, BLOOD_DATA_SYNTH_CONTENT = 1), creation_callback = CALLBACK(src, PROC_REF(on_blood_created)))
 
 /obj/item/reagent_containers/blood/proc/on_blood_created(datum/reagent/new_blood)
+	procstart = null
+	src.procstart = null
 	new_blood.AddElement(/datum/element/blood_reagent, null, get_blood_type(blood_type))
 	update_appearance()
 
 /obj/item/reagent_containers/blood/update_name(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!labeled)
 		name = "blood pack[blood_type ? " - [blood_type]" : ""]"
@@ -30,6 +36,8 @@
 	icon_state = "random_bloodpack"
 
 /obj/item/reagent_containers/blood/random/Initialize(mapload, vol)
+	procstart = null
+	src.procstart = null
 	icon_state = "bloodpack"
 	blood_type = pick(BLOOD_TYPE_A_PLUS, BLOOD_TYPE_A_MINUS, BLOOD_TYPE_B_PLUS, BLOOD_TYPE_B_MINUS, BLOOD_TYPE_O_PLUS, BLOOD_TYPE_O_MINUS, BLOOD_TYPE_LIZARD)
 	return ..()
@@ -62,6 +70,8 @@
 	blood_type = BLOOD_TYPE_SNAIL
 
 /obj/item/reagent_containers/blood/snail/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It's a bit slimy... The label indicates that this is meant for snails.")
 
@@ -69,6 +79,8 @@
 	blood_type = BLOOD_TYPE_H2O
 
 /obj/item/reagent_containers/blood/podperson/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("This appears to be some very overpriced water.")
 
@@ -77,6 +89,8 @@
 	blood_type = BLOOD_TYPE_TOX
 
 /obj/item/reagent_containers/blood/toxin/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("There is a toxin warning on the label. This is for slimepeople.")
 
@@ -84,6 +98,8 @@
 	blood_type = BLOOD_TYPE_UNIVERSAL
 
 /obj/item/reagent_containers/blood/nameformat(input, user)
+	procstart = null
+	src.procstart = null
 	playsound(src, SFX_WRITING_PEN, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, SOUND_FALLOFF_EXPONENT + 3, ignore_walls = FALSE)
 	labeled = TRUE
 	return "blood pack[input? " - [input]" : null]"

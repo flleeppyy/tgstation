@@ -13,6 +13,8 @@
 	var/datum/mind/master
 
 /datum/antagonist/heretic_monster/on_removal()
+	procstart = null
+	src.procstart = null
 	if(!silent)
 		if(master?.current)
 			to_chat(master.current, span_warning("The essence of [owner], your servant, fades from your mind."))
@@ -24,11 +26,15 @@
 	return ..()
 
 /datum/antagonist/heretic_monster/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/target = mob_override || owner.current
 	ADD_TRAIT(target, TRAIT_HERETIC_SUMMON, REF(src))
 
 /datum/antagonist/heretic_monster/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = mob_override || owner.current
 	REMOVE_TRAIT(target, TRAIT_HERETIC_SUMMON, REF(src))
 	return ..()
@@ -37,6 +43,8 @@
  * Set our [master] var to a new mind.
  */
 /datum/antagonist/heretic_monster/proc/set_owner(datum/mind/master)
+	procstart = null
+	src.procstart = null
 	src.master = master
 	owner.enslave_mind_to_creator(master.current)
 

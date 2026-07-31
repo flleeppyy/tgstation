@@ -8,12 +8,16 @@
 	var/list/datum/component/plumbing/demanders
 
 /datum/ductnet/New(obj/machinery/duct/parent)
+	procstart = null
+	src.procstart = null
 	ducts = parent ? list(parent) : list()
 	suppliers = list()
 	demanders = list()
 	return ..()
 
 /datum/ductnet/Destroy(force)
+	procstart = null
+	src.procstart = null
 	ducts.Cut()
 	for(var/datum/component/plumbing/plumbing as anything in suppliers + demanders)
 		remove_plumber(plumbing)
@@ -23,6 +27,8 @@
 
 ///add a plumbing object to either demanders or suppliers
 /datum/ductnet/proc/add_plumber(datum/component/plumbing/plumbing, dir)
+	procstart = null
+	src.procstart = null
 	var/dirtext = num2text(dir)
 	if(plumbing.ducts[dirtext] == src)
 		return FALSE
@@ -35,6 +41,8 @@
 
 ///remove a plumber. we don't delete ourselves because ductnets don't persist through plumbing objects.
 /datum/ductnet/proc/remove_plumber(datum/component/plumbing/plumbing)
+	procstart = null
+	src.procstart = null
 	for(var/dir in plumbing.ducts)
 		if(plumbing.ducts[dir] == src)
 			plumbing.ducts -= dir

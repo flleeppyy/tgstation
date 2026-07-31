@@ -18,9 +18,13 @@
 	spell_requirements = NONE
 
 /datum/action/cooldown/spell/self_amputation/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return iscarbon(cast_on)
 
 /datum/action/cooldown/spell/self_amputation/cast(mob/living/carbon/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(cast_on, TRAIT_NODISMEMBER))
 		to_chat(cast_on, span_notice("You concentrate really hard, but nothing happens."))

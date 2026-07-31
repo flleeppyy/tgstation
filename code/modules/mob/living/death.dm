@@ -9,6 +9,8 @@
  * * DROP_ALL_REMAINS - Gibbed mob will drop everything
 **/
 /mob/living/proc/gib(drop_bitflags=NONE)
+	procstart = null
+	src.procstart = null
 	var/prev_lying = lying_angle
 	spawn_gibs(drop_bitflags)
 
@@ -37,12 +39,16 @@
 
 // Plays an animation that makes mobs appear to inflate before finally gibbing
 /mob/living/proc/inflate_gib(drop_bitflags=DROP_BRAIN|DROP_ORGANS|DROP_ITEMS, gib_time = 2.5 SECONDS, anim_time = 4 SECONDS)
+	procstart = null
+	src.procstart = null
 	addtimer(CALLBACK(src, PROC_REF(gib), drop_bitflags), gib_time)
 	var/matrix/M = matrix()
 	M.Scale(1.8, 1.2)
 	animate(src, time = anim_time, transform = M, easing = SINE_EASING)
 
 /mob/living/proc/gib_animation()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -52,6 +58,8 @@
  * * DROP_BODYPARTS - Gibs will spawn with bodypart limbs present
 **/
 /mob/living/proc/spawn_gibs(drop_bitflags = NONE)
+	procstart = null
+	src.procstart = null
 	if(flags_1 & HOLOGRAM_1)
 		return
 
@@ -61,6 +69,8 @@
 
 /// Get type of gibs this mob should spawn based on our flags
 /mob/living/proc/get_gibs_type(drop_bitflags = NONE)
+	procstart = null
+	src.procstart = null
 	if (mob_biotypes & MOB_ROBOTIC)
 		return /obj/effect/gibspawner/robot
 	return /obj/effect/gibspawner/generic
@@ -75,6 +85,8 @@
  * * DROP_ALL_REMAINS - Mob will drop everything
 **/
 /mob/living/proc/spill_organs(drop_bitflags=NONE)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -84,6 +96,8 @@
  * * DROP_BRAIN - Detaches the head from the mob and launches it away from the body
 **/
 /mob/living/proc/spread_bodyparts(drop_bitflags = NONE, gibbed = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Length of the animation in dust_animation.dmi
@@ -99,12 +113,16 @@
  * * force - Should this mob be FORCABLY dusted?
 */
 /atom/movable/proc/dust(just_ash, drop_items, give_moodlet, force)
+	procstart = null
+	src.procstart = null
 	dust_animation()
 	// since this is sometimes called in the middle of movement, allow half a second for movement to finish, ghosting to happen and animation to play.
 	// Looks much nicer and doesn't cause multiple runtimes.
 	QDEL_IN(src, DUST_ANIMATION_TIME)
 
 /mob/living/dust(just_ash, drop_items, give_moodlet = TRUE, force)
+	procstart = null
+	src.procstart = null
 	..()
 	if(body_position == STANDING_UP)
 		// keep us upright so the animation fits.
@@ -128,6 +146,8 @@
 /// Animates turning into dust.
 /// Does not delete src afterwards, BUT it will become invisible (and grey), so ensure you handle that yourself
 /atom/movable/proc/dust_animation(atom/anim_loc = src.loc)
+	procstart = null
+	src.procstart = null
 	if(isnull(anim_loc)) // the effect breaks if we have a null loc
 		return
 	var/obj/effect/temp_visual/dust_animation_filter/dustfx = new(anim_loc, REF(src))
@@ -144,6 +164,8 @@
 	randomdir = FALSE
 
 /obj/effect/temp_visual/dust_animation_filter/Initialize(mapload, anim_id = "random_default_anti_collision_text")
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// we manually animate this, rather than just using an animated icon state or flick, to work around byond animated state memes
 	// (normally, all animated icon states are synced to the same time, which would bad here)
@@ -163,6 +185,8 @@
  * just_ash: If TRUE, just ash will spawn where the mob was, as opposed to remains
  */
 /mob/living/proc/spawn_dust(just_ash = FALSE)
+	procstart = null
+	src.procstart = null
 	var/ash_type = /obj/effect/decal/cleanable/ash
 	if(mob_size >= MOB_SIZE_LARGE)
 		ash_type = /obj/effect/decal/cleanable/ash/large
@@ -183,6 +207,8 @@
  * * gibbed - Was the mob gibbed?
  */
 /mob/living/proc/send_death_moodlets(dusted = FALSE, gibbed = FALSE)
+	procstart = null
+	src.procstart = null
 	if(flags_1 & HOLOGRAM_1)
 		return
 
@@ -196,18 +222,26 @@
 		mind?.experienced_death()
 
 /mob/living/silicon/send_death_moodlets(dusted = FALSE, gibbed = FALSE)
+	procstart = null
+	src.procstart = null
 	return // You are a machine (Future todo, roboticists feel sad though)
 
 /mob/living/basic/send_death_moodlets(dusted = FALSE, gibbed = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!(basic_mob_flags & SENDS_DEATH_MOODLETS))
 		return
 	. = ..()
 	add_memory_in_range(src, 7, /datum/memory/pet_died, deuteragonist = src)
 
 /mob/living/simple_animal/send_death_moodlets(dusted = FALSE, gibbed = FALSE)
+	procstart = null
+	src.procstart = null
 	return // I don't care about you anymore
 
 /mob/living/carbon/human/send_death_moodlets(dusted = FALSE, gibbed = FALSE)
+	procstart = null
+	src.procstart = null
 	// Deaths of people undergoing surgery don't count
 	// otherwise surgeons would be depressed and that would be too realistic
 	if(HAS_TRAIT(src, TRAIT_READY_TO_OPERATE))
@@ -222,6 +256,8 @@
  * * gibbed - Was the mob gibbed?
 */
 /mob/living/proc/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		return FALSE
 

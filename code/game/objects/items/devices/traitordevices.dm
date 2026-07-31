@@ -34,6 +34,8 @@ effective or pretty fucking useless.
 
 
 /obj/item/batterer/attack_self(mob/living/carbon/user, flag = 0, emp = 0)
+	procstart = null
+	src.procstart = null
 	if(!user) return
 
 	if(times_used >= max_uses)
@@ -77,6 +79,8 @@ effective or pretty fucking useless.
 	var/wavelength = 10 // time it takes for the radiation to kick in, in seconds
 
 /obj/item/healthanalyzer/rad_laser/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!stealth || !irradiate)
 		. = ..()
 
@@ -103,6 +107,8 @@ effective or pretty fucking useless.
 	return . | ITEM_INTERACT_BLOCKING
 
 /obj/item/healthanalyzer/rad_laser/proc/radiation_aftereffect(mob/living/M, passed_intensity)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(M) || !ishuman(M) || HAS_TRAIT(M, TRAIT_RADIMMUNE))
 		return
 
@@ -110,24 +116,36 @@ effective or pretty fucking useless.
 		M.apply_effect(round(passed_intensity/0.075), EFFECT_UNCONSCIOUS) //to save you some math, this is a round(intensity * (4/3)) second long knockout
 
 /obj/item/healthanalyzer/rad_laser/proc/get_cooldown()
+	procstart = null
+	src.procstart = null
 	return round(max(10, (stealth*30 + intensity*5 - wavelength/4)))
 
 /obj/item/healthanalyzer/rad_laser/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	interact(user)
 
 /obj/item/healthanalyzer/rad_laser/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	ui_interact(user)
 
 /obj/item/healthanalyzer/rad_laser/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.hands_state
 
 /obj/item/healthanalyzer/rad_laser/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "RadioactiveMicrolaser")
 		ui.open()
 
 /obj/item/healthanalyzer/rad_laser/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["irradiate"] = irradiate
 	data["stealth"] = stealth
@@ -139,6 +157,8 @@ effective or pretty fucking useless.
 	return data
 
 /obj/item/healthanalyzer/rad_laser/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -221,20 +241,28 @@ effective or pretty fucking useless.
 	var/recharge_while_active = TRUE
 
 /datum/action/item_action/stealth_mode/is_action_active(atom/movable/screen/movable/action_button/current_button)
+	procstart = null
+	src.procstart = null
 	return stealth_engaged
 
 /datum/action/item_action/stealth_mode/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 	build_all_button_icons(UPDATE_BUTTON_STATUS)
 
 /datum/action/item_action/stealth_mode/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	if(!isnull(owner) && stealth_engaged)
 		stealth_off()
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /datum/action/item_action/stealth_mode/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	if(stealth_engaged)
 		stealth_off()
 	else
@@ -242,6 +270,8 @@ effective or pretty fucking useless.
 	return TRUE
 
 /datum/action/item_action/stealth_mode/proc/stealth_on()
+	procstart = null
+	src.procstart = null
 	animate(owner, alpha = get_alpha(), time = 0.5 SECONDS)
 	apply_wibbly_filters(owner)
 	stealth_engaged = TRUE
@@ -249,6 +279,8 @@ effective or pretty fucking useless.
 	owner.balloon_alert(owner, "stealth mode engaged")
 
 /datum/action/item_action/stealth_mode/proc/stealth_off()
+	procstart = null
+	src.procstart = null
 	owner.alpha = initial(owner.alpha)
 	remove_wibbly_filters(owner)
 	stealth_engaged = FALSE
@@ -256,9 +288,13 @@ effective or pretty fucking useless.
 	owner.balloon_alert(owner, "stealth mode disengaged")
 
 /datum/action/item_action/stealth_mode/proc/get_alpha()
+	procstart = null
+	src.procstart = null
 	return clamp(255 - (255 * charge / max_charge), min_alpha, 255)
 
 /datum/action/item_action/stealth_mode/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!stealth_engaged)
 		// Recharge over time
 		charge = min(max_charge, charge + (max_charge * 0.04) * seconds_per_tick)
@@ -284,6 +320,8 @@ effective or pretty fucking useless.
 	animate(owner, alpha = get_alpha(), time = 1 SECONDS, flags = ANIMATION_PARALLEL)
 
 /datum/action/item_action/stealth_mode/update_button_status(atom/movable/screen/movable/action_button/current_button, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	current_button.maptext_x = 9
 	current_button.maptext = MAPTEXT_TINY_UNICODE("[round(charge / max_charge * 100, 0.01)]%")
@@ -316,6 +354,8 @@ effective or pretty fucking useless.
 
 /// Checks if a given atom is in range of a radio jammer, returns TRUE if it is.
 /proc/is_within_radio_jammer_range(atom/source)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/jammer/jammer as anything in GLOB.active_jammers)
 		if(IN_GIVEN_RANGE(source, jammer, jammer.range))
 			return TRUE
@@ -339,15 +379,21 @@ effective or pretty fucking useless.
 	COOLDOWN_DECLARE(jam_cooldown)
 
 /obj/item/jammer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/item/jammer/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	context[SCREENTIP_CONTEXT_LMB] = "Release disruptor wave"
 	context[SCREENTIP_CONTEXT_RMB] = "Toggle"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/jammer/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!COOLDOWN_FINISHED(src, jam_cooldown))
 		user.balloon_alert(user, "on cooldown!")
@@ -360,6 +406,8 @@ effective or pretty fucking useless.
 	COOLDOWN_START(src, jam_cooldown, jam_cooldown_duration)
 
 /obj/item/jammer/attack_self_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -374,6 +422,8 @@ effective or pretty fucking useless.
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/jammer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
@@ -390,12 +440,16 @@ effective or pretty fucking useless.
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/jammer/proc/disable_radios_on(atom/target, ignore_syndie = FALSE)
+	procstart = null
+	src.procstart = null
 	for (var/obj/item/radio/radio in target.get_all_contents() + target)
 		if(ignore_syndie && (radio.special_channels & RADIO_SPECIAL_SYNDIE))
 			continue
 		radio.set_broadcasting(FALSE, actual_setting = FALSE)
 
 /obj/item/jammer/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.active_jammers -= src
 	return ..()
 
@@ -407,6 +461,8 @@ effective or pretty fucking useless.
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 0.8, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 0.55)
 
 /obj/item/jammer/makeshift/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CONTRABAND, INNATE_TRAIT)
 
@@ -424,16 +480,22 @@ effective or pretty fucking useless.
 	var/obj/item/toolbox
 
 /obj/machinery/porta_turret/syndicate/toolbox/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	underlays += image(icon = icon, icon_state = "[base_icon_state]_frame")
 
 /obj/machinery/porta_turret/syndicate/toolbox/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(faction_check_atom(user))
 		. += span_notice("You can repair it by <b>left-clicking</b> with a combat wrench.")
 		. += span_notice("You can fold it by <b>right-clicking</b> with a combat wrench.")
 
 /obj/machinery/porta_turret/syndicate/toolbox/target(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return
 
@@ -443,6 +505,8 @@ effective or pretty fucking useless.
 	return TRUE
 
 /obj/machinery/porta_turret/syndicate/toolbox/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/wrench/combat))
 		return ..()
 
@@ -477,6 +541,8 @@ effective or pretty fucking useless.
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/porta_turret/syndicate/toolbox/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	if(disassembled)
 		var/atom/movable/old_toolbox = toolbox
 		toolbox = null
@@ -488,16 +554,22 @@ effective or pretty fucking useless.
 	return ..()
 
 /obj/machinery/porta_turret/syndicate/toolbox/Destroy()
+	procstart = null
+	src.procstart = null
 	toolbox = null
 	return ..()
 
 /obj/machinery/porta_turret/syndicate/toolbox/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == toolbox)
 		toolbox = null
 		qdel(src)
 
 /obj/machinery/porta_turret/syndicate/toolbox/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(faction_check_atom(user))
 		return ..()
 
@@ -512,6 +584,8 @@ effective or pretty fucking useless.
 	degrees = 90
 
 /obj/item/pen/penbang/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/det_time = 1 SECONDS + (4 SECONDS * (degrees / 90))
 	if(user)
@@ -520,6 +594,8 @@ effective or pretty fucking useless.
 	addtimer(CALLBACK(src, PROC_REF(detonate), user), det_time)
 
 /obj/item/pen/penbang/proc/detonate(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/grenade/flashbang/bang = new(get_turf(src))
 	bang.detonate()
 	qdel(src)
@@ -530,26 +606,36 @@ effective or pretty fucking useless.
 	var/obj/item/assembly/flash/handheld/internal_flash
 
 /obj/item/camera/flash/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	internal_flash = new(src)
 
 /obj/item/camera/flash/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(internal_flash)
 	return ..()
 
 /obj/item/camera/flash/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// i guess this is a normal camera now. shouldn't happen, though
 	if(gone == internal_flash)
 		internal_flash = null
 
 /obj/item/camera/flash/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isliving(interacting_with))
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 
 	return ..()
 
 /obj/item/camera/flash/attack(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	return internal_flash?.attack(M, user)
 
 /// Jackboots with a dagger embedded into them - changes your kicks to be stab attacks, potetnially causing bleeding
@@ -558,6 +644,8 @@ effective or pretty fucking useless.
 	var/list/modified_bodyparts = list()
 
 /obj/item/clothing/shoes/jackboots/dagger/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!(slot & ITEM_SLOT_FEET) || !istype(user))
@@ -571,16 +659,22 @@ effective or pretty fucking useless.
 	RegisterSignal(user, COMSIG_CARBON_POST_ATTACH_LIMB, PROC_REF(modify_legs))
 
 /obj/item/clothing/shoes/jackboots/dagger/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, COMSIG_CARBON_POST_ATTACH_LIMB)
 	for(var/obj/item/bodypart/bodypart in modified_bodyparts)
 		clear_modification(bodypart)
 
 /obj/item/clothing/shoes/jackboots/dagger/handle_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/switchblade/extended(drop_location())
 
 /obj/item/clothing/shoes/jackboots/dagger/proc/clear_modification(obj/item/bodypart/bodypart, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(bodypart, list(COMSIG_BODYPART_REMOVED, COMSIG_QDELETING))
@@ -589,6 +683,8 @@ effective or pretty fucking useless.
 	modified_bodyparts -= bodypart
 
 /obj/item/clothing/shoes/jackboots/dagger/proc/modify_legs(datum/source, obj/item/bodypart/bodypart, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(bodypart in modified_bodyparts)
@@ -601,6 +697,8 @@ effective or pretty fucking useless.
 	RegisterSignal(bodypart, list(COMSIG_BODYPART_REMOVED, COMSIG_QDELETING), PROC_REF(clear_modification))
 
 /obj/item/clothing/shoes/jackboots/dagger/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user.is_holding(src))
 		. += span_notice("Upon closer inspection, you notice a dagger embedded into the sole.")

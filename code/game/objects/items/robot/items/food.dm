@@ -23,27 +23,37 @@
 	var/hitspeed = 2
 
 /obj/item/borg/lollipop/equipped()
+	procstart = null
+	src.procstart = null
 	check_amount()
 	return ..()
 
 /obj/item/borg/lollipop/dropped()
+	procstart = null
+	src.procstart = null
 	check_amount()
 	return ..()
 
 ///Queues another lollipop to be fabricated if there is enough room for one
 /obj/item/borg/lollipop/proc/check_amount()
+	procstart = null
+	src.procstart = null
 	if(!charging && candy < candymax)
 		addtimer(CALLBACK(src, PROC_REF(charge_lollipops)), charge_delay)
 		charging = TRUE
 
 ///Increases the amount of lollipops
 /obj/item/borg/lollipop/proc/charge_lollipops()
+	procstart = null
+	src.procstart = null
 	candy++
 	charging = FALSE
 	check_amount()
 
 ///Dispenses a lollipop
 /obj/item/borg/lollipop/proc/dispense(atom/atom_dispensed_to, mob/user)
+	procstart = null
+	src.procstart = null
 	if(candy <= 0)
 		to_chat(user, span_warning("No treats left in storage!"))
 		return FALSE
@@ -81,6 +91,8 @@
 
 /// Shoot a lollipop
 /obj/item/borg/lollipop/proc/shootL(atom/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(candy <= 0)
 		to_chat(user, span_warning("Not enough lollipops left!"))
 		return FALSE
@@ -100,6 +112,8 @@
 
 /// Shoot a gumball
 /obj/item/borg/lollipop/proc/shootG(atom/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(candy <= 0)
 		to_chat(user, span_warning("Not enough gumballs left!"))
 		return FALSE
@@ -118,6 +132,8 @@
 	check_amount()
 
 /obj/item/borg/lollipop/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	check_amount()
 	if(iscyborg(user))
 		var/mob/living/silicon/robot/robot_user = user
@@ -137,6 +153,8 @@
 	return NONE
 
 /obj/item/borg/lollipop/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	check_amount()
 	if(iscyborg(user))
 		var/mob/living/silicon/robot/robot_user = user
@@ -152,10 +170,14 @@
 	return NONE
 
 /obj/item/borg/lollipop/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	switch_mode(user)
 	return ..()
 
 /obj/item/borg/lollipop/proc/switch_mode(mob/living/user)
+	procstart = null
+	src.procstart = null
 	switch(mode)
 		if(DISPENSE_LOLLIPOP_MODE)
 			mode = THROW_LOLLIPOP_MODE
@@ -179,6 +201,8 @@
 	mode = DISPENSE_ICECREAM_MODE
 
 /obj/item/borg/lollipop/ice_cream/switch_mode(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/ammo_casing/gumball
@@ -188,6 +212,8 @@
 	click_cooldown_override = 2
 
 /obj/item/ammo_casing/gumball/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/caseless)
 
@@ -203,6 +229,8 @@
 	embed_type = null
 
 /obj/projectile/bullet/gumball/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/projectile_drop, /obj/item/food/gumball)
 	RegisterSignal(src, COMSIG_PROJECTILE_ON_SPAWN_DROP, PROC_REF(handle_drop))
@@ -211,6 +239,8 @@
 	damage = 10
 
 /obj/projectile/bullet/gumball/proc/handle_drop(datum/source, obj/item/food/gumball/gumball)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	gumball.color = color
 
@@ -221,6 +251,8 @@
 	click_cooldown_override = 2
 
 /obj/item/ammo_casing/lollipop/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/caseless)
 
@@ -252,6 +284,8 @@
 	rip_time = 1 SECONDS
 
 /obj/projectile/bullet/lollipop/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/head = mutable_appearance('icons/obj/weapons/guns/projectiles.dmi', "lollipop_2")
 	head.color = head_color = rgb(rand(0, 255), rand(0, 255), rand(0, 255))
@@ -261,6 +295,8 @@
 	RegisterSignals(src, list(COMSIG_PROJECTILE_ON_SPAWN_DROP, COMSIG_PROJECTILE_ON_SPAWN_EMBEDDED), PROC_REF(handle_drop))
 
 /obj/projectile/bullet/lollipop/proc/handle_drop(datum/source, obj/item/food/lollipop/lollipop)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	lollipop.change_head_color(head_color)
 
@@ -278,15 +314,21 @@
 	var/datum/component/personal_crafting/cooking
 
 /obj/item/borg/cookbook/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cooking = AddComponent(/datum/component/personal_crafting)
 	cooking.forced_mode = TRUE
 	cooking.mode = TRUE
 
 /obj/item/borg/cookbook/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cooking.ui_interact(user)
 
 /obj/item/borg/cookbook/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	SStgui.close_uis(cooking)
 	return ..()

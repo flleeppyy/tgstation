@@ -16,6 +16,8 @@
 	var/mood_event_type = /datum/mood_event/phobia
 
 /datum/brain_trauma/mild/phobia/New(new_phobia_type)
+	procstart = null
+	src.procstart = null
 	if(new_phobia_type)
 		phobia_type = new_phobia_type
 
@@ -28,6 +30,8 @@
 	return ..()
 
 /datum/brain_trauma/mild/phobia/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/component/fearful/fear = owner.AddComponentFrom(REF(src), /datum/component/fearful, list(/datum/terror_handler/startle))
 	var/datum/terror_handler/phobia_source/phobia = fear.add_handler(terror_handler, REF(src))
@@ -39,6 +43,8 @@
 	phobia.mood_event_type = mood_event_type
 
 /datum/brain_trauma/mild/phobia/on_lose(silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.RemoveComponentSource(REF(src), /datum/component/fearful)
 

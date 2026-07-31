@@ -22,6 +22,8 @@
 	var/list/food_types
 
 /datum/element/basic_eating/Attach(datum/target, heal_amt = 0, damage_amount = 0, damage_type = null, drinking = FALSE, add_to_contents = FALSE, consume_healing = TRUE, food_types = list())
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isliving(target))
@@ -40,6 +42,8 @@
 	RegisterSignal(target, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(on_unarm_attack))
 
 /datum/element/basic_eating/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(target, TRAIT_MOB_EATER, REF(src))
 
 	UnregisterSignal(target, list(
@@ -49,6 +53,8 @@
 	return ..()
 
 /datum/element/basic_eating/proc/try_feed(atom/source, mob/living/user, atom/possible_food)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(user.combat_mode || !is_type_in_list(possible_food, food_types))
 		return NONE
@@ -58,6 +64,8 @@
 	return try_eating(source, possible_food, user) ? ITEM_INTERACT_SUCCESS : NONE
 
 /datum/element/basic_eating/proc/on_unarm_attack(mob/living/eater, atom/target, proximity, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!proximity)
 		return NONE
@@ -67,6 +75,8 @@
 	return NONE
 
 /datum/element/basic_eating/proc/try_eating(mob/living/eater, atom/target, mob/living/feeder)
+	procstart = null
+	src.procstart = null
 	if(!is_type_in_list(target, food_types))
 		return FALSE
 	var/list/effect_mult = list()
@@ -118,6 +128,8 @@
 	return TRUE
 
 /datum/element/basic_eating/proc/finish_eating(mob/living/eater, atom/target, mob/living/feeder, to_heal)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(drinking)
 		playsound(eater.loc,'sound/items/drink.ogg', rand(10,50), TRUE)

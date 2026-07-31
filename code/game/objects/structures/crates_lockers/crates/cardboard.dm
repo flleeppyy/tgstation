@@ -28,6 +28,8 @@
 	base_icon_state = "cardboard_tiziran"
 
 /obj/structure/closet/crate/cardboard/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(opened)
 		icon_state = "[base_icon_state]"

@@ -1,4 +1,6 @@
 /mob/living/silicon/ai/Life(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	if (stat == DEAD)
 		return
 	//Being dead doesn't mean your temperature never changes
@@ -38,6 +40,8 @@
 		ai_lose_power()
 
 /mob/living/silicon/ai/proc/lacks_power()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	var/area/A = get_area(src)
 	switch(power_requirement)
@@ -47,6 +51,8 @@
 			return !T || !A || ((!A.power_equip || isspaceturf(T)) && !is_type_in_list(loc, list(/obj/item, /obj/vehicle/sealed/mecha)))
 
 /mob/living/silicon/ai/updatehealth()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_GODMODE))
 		return
 
@@ -63,6 +69,8 @@
 	SEND_SIGNAL(src, COMSIG_LIVING_HEALTH_UPDATE)
 
 /mob/living/silicon/ai/update_stat()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_GODMODE))
 		return
 	if(stat != DEAD && health <= HEALTH_THRESHOLD_DEAD)
@@ -70,6 +78,8 @@
 	diag_hud_set_status()
 
 /mob/living/silicon/ai/update_sight()
+	procstart = null
+	src.procstart = null
 	set_invis_see(initial(see_invisible))
 	set_sight(initial(sight))
 	if(aiRestorePowerRoutine)
@@ -79,6 +89,8 @@
 
 
 /mob/living/silicon/ai/proc/start_RestorePowerRoutine()
+	procstart = null
+	src.procstart = null
 	to_chat(src, span_notice("Backup battery online. Scanners, camera, and radio interface offline. Beginning fault-detection."))
 	end_multicam()
 	sleep(5 SECONDS)
@@ -139,6 +151,8 @@
 		theAPC = null
 
 /mob/living/silicon/ai/proc/ai_restore_power()
+	procstart = null
+	src.procstart = null
 	if(aiRestorePowerRoutine)
 		if(aiRestorePowerRoutine == POWER_RESTORATION_APC_FOUND)
 			to_chat(src, span_notice("Alert cancelled. Power has been restored."))
@@ -152,6 +166,8 @@
 		update_sight()
 
 /mob/living/silicon/ai/proc/ai_lose_power()
+	procstart = null
+	src.procstart = null
 	disconnect_shell()
 	setAiRestorePowerRoutine(POWER_RESTORATION_START)
 	adjust_temp_blindness(2 SECONDS)

@@ -7,10 +7,14 @@ GLOBAL_LIST_EMPTY(voidwalker_void)
 	icon_state = "x"
 
 /obj/effect/landmark/voidwalker_void/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.voidwalker_void += src
 
 /obj/effect/landmark/voidwalker_void/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.voidwalker_void -= src
 	return ..()
 
@@ -48,6 +52,8 @@ GLOBAL_LIST_EMPTY(voidwalker_void)
 	var/wisp_driver_traits = list(TRAIT_STASIS, TRAIT_NOSOFTCRIT, TRAIT_NOHARDCRIT, TRAIT_HANDS_BLOCKED)
 
 /obj/effect/wisp_mobile/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isliving(arrived))
@@ -61,6 +67,8 @@ GLOBAL_LIST_EMPTY(voidwalker_void)
 	addtimer(CALLBACK(driver, TYPE_PROC_REF(/atom/movable, forceMove), get_safe_random_station_turf_equal_weight()), 60 SECONDS)
 
 /obj/effect/wisp_mobile/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(can_move >= world.time)
 		return
 	can_move = world.time + move_delay
@@ -70,6 +78,8 @@ GLOBAL_LIST_EMPTY(voidwalker_void)
 		try_step_multiz(direction)
 
 /obj/effect/wisp_mobile/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	maybe_loop_us(movement_dir)
@@ -90,6 +100,8 @@ GLOBAL_LIST_EMPTY(voidwalker_void)
 		playsound(src, 'sound/misc/server-ready.ogg', 50, TRUE, -1)
 
 /obj/effect/wisp_mobile/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	gone.remove_traits(wisp_driver_traits, REF(src))
@@ -98,6 +110,8 @@ GLOBAL_LIST_EMPTY(voidwalker_void)
 
 /// Loop us around, maybe, if we're going to bump into a wall
 /obj/effect/wisp_mobile/proc/maybe_loop_us(movement_dir)
+	procstart = null
+	src.procstart = null
 	var/turf/check_turf = get_step(get_turf(src), movement_dir)
 	if(!check_turf?.density) //we're not facing a wall, so dont do anything
 		return

@@ -33,6 +33,8 @@ GLOBAL_LIST_INIT(petsplosion_candidates, typecacheof(list(
 	var/mobs_to_dupe = 0
 
 /datum/round_event_control/wizard/petsplosion/preRunEvent()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/basic/dupe_animal in GLOB.alive_mob_list)
 		count_mob(dupe_animal)
 	for(var/mob/living/simple_animal/dupe_animal in GLOB.alive_mob_list)
@@ -44,6 +46,8 @@ GLOBAL_LIST_INIT(petsplosion_candidates, typecacheof(list(
 
 /// Counts whether we found some kind of valid living mob
 /datum/round_event_control/wizard/petsplosion/proc/count_mob(mob/living/dupe_animal)
+	procstart = null
+	src.procstart = null
 	if(is_type_in_typecache(dupe_animal, GLOB.petsplosion_candidates) && is_station_level(dupe_animal.z))
 		mobs_to_dupe++
 
@@ -53,6 +57,8 @@ GLOBAL_LIST_INIT(petsplosion_candidates, typecacheof(list(
 	var/mobs_duped = 0
 
 /datum/round_event/wizard/petsplosion/tick()
+	procstart = null
+	src.procstart = null
 	if(activeFor < 30 * countdown) // 0 seconds : 2 animals | 30 seconds : 4 animals | 1 minute : 8 animals
 		return
 	countdown += 1
@@ -65,6 +71,8 @@ GLOBAL_LIST_INIT(petsplosion_candidates, typecacheof(list(
 
 /// Makes a duplicate of a valid mob and increments our "too many mobs" counter
 /datum/round_event/wizard/petsplosion/proc/duplicate_mob(mob/living/dupe_animal)
+	procstart = null
+	src.procstart = null
 	if(!is_type_in_typecache(dupe_animal, GLOB.petsplosion_candidates) || !is_station_level(dupe_animal.z))
 		return
 	new dupe_animal.type(dupe_animal.loc)

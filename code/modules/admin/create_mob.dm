@@ -2,6 +2,8 @@
  * Fully randomizes everything about a human, including DNA and name.
  */
 /proc/randomize_human(mob/living/carbon/human/human, randomize_mutations = FALSE)
+	procstart = null
+	src.procstart = null
 	human.gender = human.dna.species.sexes ? pick(MALE, FEMALE, PLURAL, NEUTER) : PLURAL
 	human.physique = human.gender
 	human.real_name = human.generate_random_mob_name()
@@ -25,6 +27,8 @@
  * (IE, no wacky hair styles / colors)
  */
 /proc/randomize_human_normie(mob/living/carbon/human/human, randomize_mutations = FALSE, update_body = TRUE)
+	procstart = null
+	src.procstart = null
 	// Sorry enbys but statistically you are not average enough
 	human.gender = human.dna.species.sexes ? pick(MALE, FEMALE) : PLURAL
 	human.physique = human.gender

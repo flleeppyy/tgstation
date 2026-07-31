@@ -31,15 +31,21 @@
 	weather_flags = (WEATHER_MOBS | WEATHER_BAROMETER | WEATHER_TEMPERATURE_BYPASS_CLOTHING | WEATHER_STRICT_ALERT)
 
 /datum/weather/snow_storm/get_playlist_ref()
+	procstart = null
+	src.procstart = null
 	return GLOB.snowstorm_sounds
 
 /datum/weather/snow_storm/start()
+	procstart = null
+	src.procstart = null
 	GLOB.snowstorm_sounds.Cut() // it's passed by ref
 	for(var/area/impacted_area as anything in impacted_areas)
 		GLOB.snowstorm_sounds[impacted_area] = /datum/looping_sound/snowstorm
 	return ..()
 
 /datum/weather/snow_storm/end()
+	procstart = null
+	src.procstart = null
 	GLOB.snowstorm_sounds.Cut()
 	return ..()
 

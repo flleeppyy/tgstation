@@ -6,14 +6,20 @@
 	var/auto_close_time = 15 SECONDS // Set to 0 to disable auto-closing.
 
 /obj/structure/closet/infinite/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/closet/infinite/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
 /obj/structure/closet/infinite/process()
+	procstart = null
+	src.procstart = null
 	if(!replicating_type)
 		if(!length(contents))
 			return
@@ -24,10 +30,14 @@
 		new replicating_type(src)
 
 /obj/structure/closet/infinite/after_close(mob/living/user, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(auto_close_time)
 		addtimer(CALLBACK(src, PROC_REF(close_on_my_own)), auto_close_time, TIMER_OVERRIDE | TIMER_UNIQUE)
 
 /obj/structure/closet/infinite/proc/close_on_my_own()
+	procstart = null
+	src.procstart = null
 	if(close())
 		visible_message(span_notice("\The [src] closes on its own."))

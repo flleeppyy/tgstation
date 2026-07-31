@@ -21,6 +21,8 @@ SUBSYSTEM_DEF(radioactive_nebula)
 	))
 
 /datum/controller/subsystem/radioactive_nebula/Initialize()
+	procstart = null
+	src.procstart = null
 	radioactive_nebula = locate() in SSstation.station_traits
 	if (!radioactive_nebula)
 		can_fire = FALSE
@@ -35,6 +37,8 @@ SUBSYSTEM_DEF(radioactive_nebula)
 
 /// Makes something appear irradiated for the purposes of the Radioactive Nebula
 /datum/controller/subsystem/radioactive_nebula/proc/fake_irradiate(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	if (HAS_TRAIT(target, TRAIT_RADIOACTIVE_NEBULA_FAKE_IRRADIATED))
 		return
 
@@ -59,10 +63,14 @@ SUBSYSTEM_DEF(radioactive_nebula)
 		target.add_filter(GLOW_NEBULA, 2, list("type" = "drop_shadow", "color" = radioactive_nebula.nebula_radglow, "size" = 2))
 
 /datum/controller/subsystem/radioactive_nebula/fire()
+	procstart = null
+	src.procstart = null
 	irradiate_everything()
 
 /// Loop through radioactive space (with lag checks) and make it all radioactive!
 /datum/controller/subsystem/radioactive_nebula/proc/irradiate_everything()
+	procstart = null
+	src.procstart = null
 	for (var/area/area as anything in get_areas(radioactive_nebula.radioactive_areas))
 		for (var/list/zlevel_turfs as anything in area.get_zlevel_turf_lists())
 			for (var/turf/area_turf as anything in zlevel_turfs)
@@ -73,6 +81,8 @@ SUBSYSTEM_DEF(radioactive_nebula)
 
 /// Remove the fake radiation. The compontent we add to mobs handles its own removal
 /datum/controller/subsystem/radioactive_nebula/proc/fake_unirradiate(atom/movable/leaver)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(leaver, TRAIT_RADIOACTIVE_NEBULA_FAKE_IRRADIATED, REF(src))
 	leaver.remove_filter(GLOW_NEBULA)
 

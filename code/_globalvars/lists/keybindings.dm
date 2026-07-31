@@ -1,5 +1,7 @@
 /// Creates and sorts all the keybinding datums
 /proc/init_keybindings()
+	procstart = null
+	src.procstart = null
 	for(var/KB in subtypesof(/datum/keybinding))
 		var/datum/keybinding/keybinding = KB
 		if(!initial(keybinding.keybind_signal) || !initial(keybinding.name))
@@ -9,6 +11,8 @@
 
 /// Adds an instanced keybinding to the global tracker
 /proc/add_keybinding(datum/keybinding/instance)
+	procstart = null
+	src.procstart = null
 	GLOB.keybindings_by_name[instance.name] = instance
 
 	// Hotkey
@@ -20,6 +24,8 @@
 				LAZYADD(GLOB.default_hotkeys[instance.name], list(bound_key))
 
 /proc/init_emote_keybinds()
+	procstart = null
+	src.procstart = null
 	for(var/i in valid_subtypesof(/datum/emote))
 		var/datum/emote/faketype = i
 		if(!initial(faketype.key))

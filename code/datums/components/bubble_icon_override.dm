@@ -12,12 +12,16 @@
 	var/priority
 
 /datum/component/bubble_icon_override/Initialize(bubble_icon, priority)
+	procstart = null
+	src.procstart = null
 	if(!isclothing(parent) && !isorgan(parent))
 		return COMPONENT_INCOMPATIBLE
 	src.bubble_icon = bubble_icon
 	src.priority = priority
 
 /datum/component/bubble_icon_override/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	if(isclothing(parent))
 		RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equipped))
 		RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(on_dropped))
@@ -29,10 +33,14 @@
 		register_owner(target)
 
 /datum/component/bubble_icon_override/proc/register_owner(mob/living/owner)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(owner, COMSIG_GET_BUBBLE_ICON, PROC_REF(return_bubble_icon))
 	get_bubble_icon(owner)
 
 /datum/component/bubble_icon_override/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ITEM_EQUIPPED,
 		COMSIG_ITEM_DROPPED,
@@ -44,11 +52,15 @@
 		unregister_owner(target)
 
 /datum/component/bubble_icon_override/proc/unregister_owner(mob/living/owner)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, list(COMSIG_GET_BUBBLE_ICON))
 	get_bubble_icon(owner)
 
 ///Returns the potential wearer/owner of the object when the component is un/registered to/from it
 /datum/component/bubble_icon_override/proc/get_bubble_icon_target()
+	procstart = null
+	src.procstart = null
 	if(isclothing(parent))
 		var/obj/item/clothing/clothing = parent
 		if(istype(clothing, /obj/item/clothing/accessory))
@@ -63,19 +75,27 @@
 		return organ.owner
 
 /datum/component/bubble_icon_override/proc/on_equipped(obj/item/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(slot & source.slot_flags)
 		register_owner(equipper)
 
 /datum/component/bubble_icon_override/proc/on_dropped(obj/item/source, mob/dropper)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	unregister_owner(dropper)
 
 /datum/component/bubble_icon_override/proc/on_organ_implanted(obj/item/organ/source, mob/owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	register_owner(owner)
 
 /datum/component/bubble_icon_override/proc/on_organ_removed(obj/item/organ/source, mob/owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	unregister_owner(owner)
 
@@ -84,6 +104,8 @@
  * currently registered with the target.
  */
 /datum/component/bubble_icon_override/proc/get_bubble_icon(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(parent))
 		return
 	var/list/holder = list(null)
@@ -92,6 +114,8 @@
 	target.bubble_icon = bubble_icon || initial(target.bubble_icon)
 
 /datum/component/bubble_icon_override/proc/return_bubble_icon(datum/source, list/holder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/enemy_priority = holder[holder[1]]
 	if(enemy_priority < priority)

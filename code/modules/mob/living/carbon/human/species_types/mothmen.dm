@@ -30,14 +30,20 @@
 	)
 
 /datum/species/moth/randomize_features()
+	procstart = null
+	src.procstart = null
 	var/list/features = ..()
 	features[FEATURE_MOTH_MARKINGS] = pick(SSaccessories.feature_list[FEATURE_MOTH_MARKINGS])
 	return features
 
 /datum/species/moth/get_scream_sound(mob/living/carbon/human/moth)
+	procstart = null
+	src.procstart = null
 	return 'sound/mobs/humanoids/moth/scream_moth.ogg'
 
 /datum/species/moth/get_cough_sound(mob/living/carbon/human/moth)
+	procstart = null
+	src.procstart = null
 	if(moth.physique == FEMALE)
 		return pick(
 			'sound/mobs/humanoids/human/cough/female_cough1.ogg',
@@ -58,6 +64,8 @@
 
 
 /datum/species/moth/get_cry_sound(mob/living/carbon/human/moth)
+	procstart = null
+	src.procstart = null
 	if(moth.physique == FEMALE)
 		return pick(
 			'sound/mobs/humanoids/human/cry/female_cry1.ogg',
@@ -71,33 +79,47 @@
 
 
 /datum/species/moth/get_sneeze_sound(mob/living/carbon/human/moth)
+	procstart = null
+	src.procstart = null
 	if(moth.physique == FEMALE)
 		return 'sound/mobs/humanoids/human/sneeze/female_sneeze1.ogg'
 	return 'sound/mobs/humanoids/human/sneeze/male_sneeze1.ogg'
 
 
 /datum/species/moth/get_laugh_sound(mob/living/carbon/human/moth)
+	procstart = null
+	src.procstart = null
 	return 'sound/mobs/humanoids/moth/moth_laugh1.ogg'
 
 /datum/species/moth/get_sigh_sound(mob/living/carbon/human/moth)
+	procstart = null
+	src.procstart = null
 	if(moth.physique == FEMALE)
 		return SFX_FEMALE_SIGH
 	return SFX_MALE_SIGH
 
 /datum/species/moth/get_sniff_sound(mob/living/carbon/human/moth)
+	procstart = null
+	src.procstart = null
 	if(moth.physique == FEMALE)
 		return 'sound/mobs/humanoids/human/sniff/female_sniff.ogg'
 	return 'sound/mobs/humanoids/human/sniff/male_sniff.ogg'
 
 /datum/species/moth/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "Moths have large and fluffy wings, which help them navigate the station if gravity is offline by pushing the air around them. \
 		Due to that, it isn't of much use out in space. Their eyes are very sensitive."
 
 /datum/species/moth/get_species_description()
+	procstart = null
+	src.procstart = null
 	return "Hailing from a planet that was lost long ago, the moths travel \
 		the galaxy as a nomadic people aboard a colossal fleet of ships, seeking a new homeland."
 
 /datum/species/moth/get_species_lore()
+	procstart = null
+	src.procstart = null
 	return list(
 		"Their homeworld lost to the ages, the moths live aboard the Grand Nomad Fleet. \
 		Made up of what could be found, bartered, repaired, or stolen the armada is a colossal patchwork \
@@ -114,6 +136,8 @@
 	)
 
 /datum/species/moth/create_pref_unique_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 
 	to_add += list(

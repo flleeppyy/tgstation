@@ -36,6 +36,8 @@
 	var/can_breed = TRUE
 
 /mob/living/basic/stoat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 	AddElement(/datum/element/tiny_mob_hunter)
@@ -61,6 +63,8 @@
 	ai_controller.set_blackboard_key(BB_BASIC_MOB_SPEAK_LINES, display_emote)
 
 /mob/living/basic/stoat/proc/add_breeding_component()
+	procstart = null
+	src.procstart = null
 	var/static/list/partner_paths = typecacheof(list(/mob/living/basic/stoat))
 	var/static/list/baby_paths = list(
 		/mob/living/basic/stoat/kit = 100 // Placeholder until we get proper baby stoats
@@ -85,6 +89,8 @@
 	can_breed = FALSE
 
 /mob/living/basic/stoat/kit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(\
 		/datum/component/growth_and_differentiation,\

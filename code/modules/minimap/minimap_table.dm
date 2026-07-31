@@ -49,6 +49,8 @@
 	)
 
 /obj/machinery/minimap_table/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	proximity = new(src, interactivity_range)
 
@@ -58,6 +60,8 @@
 		middleman.being_overriding_light()
 
 /obj/machinery/minimap_table/Destroy(force)
+	procstart = null
+	src.procstart = null
 	for(var/mob/viewer as anything in viewers)
 		remove_table_huds(viewer.hud_used)
 	viewers = null
@@ -67,15 +71,21 @@
 	return ..()
 
 /obj/machinery/minimap_table/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	INVOKE_ASYNC(src, PROC_REF(set_minimap))
 
 /obj/machinery/minimap_table/RangedAttackOn(mob/attacker, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(get_dist(src, attacker) > interactivity_range)
 		return
 	interact(attacker)
 
 /obj/machinery/minimap_table/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!is_operational || isnull(minimap) || isnull(user.hud_used))
 		return FALSE
@@ -93,6 +103,8 @@
 	return TRUE
 
 /obj/machinery/minimap_table/proc/play_animation(icon_state = "startup", duration = animation_duration)
+	procstart = null
+	src.procstart = null
 	var/image/img = image(hologram_icon_file, src, icon_state, ABOVE_MOB_LAYER, dir, animation_x, animation_y)
 	var/image/emissive_img = image(hologram_icon_file, src, icon_state, ABOVE_MOB_LAYER, dir, animation_x, animation_y)
 	emissive_img.plane = EMISSIVE_PLANE
@@ -102,6 +114,8 @@
 	flick_overlay_global(emissive_img, GLOB.clients, duration)
 
 /obj/machinery/minimap_table/proc/activate(mob/activator)
+	procstart = null
+	src.procstart = null
 	if(active || !is_operational)
 		return
 	startup = FALSE
@@ -112,6 +126,8 @@
 	light_pulsate()
 
 /obj/machinery/minimap_table/proc/deactivate()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return
 	active = FALSE
@@ -121,6 +137,8 @@
 	play_animation("closing")
 
 /obj/machinery/minimap_table/proc/light_pulsate()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/effect/abstract/main_light = middleman.primary_intercept
 	var/matrix/center = matrix()
@@ -145,20 +163,28 @@
 	animate(transform = smallTransform, time = 3 SECONDS)
 
 /obj/machinery/minimap_table/proc/deactive_without_viewers()
+	procstart = null
+	src.procstart = null
 	if(!length(viewers))
 		deactivate()
 
 /obj/machinery/minimap_table/proc/show_minimap(mob/user)
+	procstart = null
+	src.procstart = null
 	add_table_huds(user.hud_used)
 	viewers |= user
 
 /obj/machinery/minimap_table/proc/hide_minimap(mob/user)
+	procstart = null
+	src.procstart = null
 	remove_table_huds(user.hud_used)
 	viewers -= user
 	if(!length(viewers))
 		addtimer(CALLBACK(src, PROC_REF(deactive_without_viewers)), 10 SECONDS, TIMER_OVERRIDE | TIMER_UNIQUE)
 
 /obj/machinery/minimap_table/proc/add_table_huds(datum/hud/hud)
+	procstart = null
+	src.procstart = null
 	var/target_z = resolve_target_z()
 	var/allow_draw = can_user_draw(hud?.mymob)
 	for(var/element in table_huds)
@@ -167,13 +193,19 @@
 		hud.add_screen_object(instanced, element, HUD_GROUP_STATIC, update_screen = TRUE)
 
 /obj/machinery/minimap_table/proc/can_user_draw(mob/user)
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(user, TRAIT_MINIMAP_TABLE_DRAW)
 
 /obj/machinery/minimap_table/proc/remove_table_huds(datum/hud/hud)
+	procstart = null
+	src.procstart = null
 	for(var/element in table_huds)
 		hud.remove_screen_object(element)
 
 /obj/machinery/minimap_table/proc/resolve_target_z()
+	procstart = null
+	src.procstart = null
 	if(isnull(target_z_trait))
 		return null
 	var/list/trait_levels = SSmapping.levels_by_trait(target_z_trait)
@@ -186,10 +218,14 @@
 	return null
 
 /obj/machinery/minimap_table/proc/set_minimap()
+	procstart = null
+	src.procstart = null
 	var/target_z = resolve_target_z()
 	minimap = get_minimap_for_z(target_z)
 
 /obj/machinery/minimap_table/on_set_is_operational()
+	procstart = null
+	src.procstart = null
 	update_appearance()
 	set_light_on(is_operational)
 
@@ -197,6 +233,8 @@
 		deactivate()
 
 /obj/machinery/minimap_table/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!is_operational)
 		return
@@ -215,6 +253,8 @@
 		. += emissive
 
 /obj/machinery/minimap_table/OnProximityExit(atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	if(!active || !ismob(gone))
 		return
 	var/mob/mob_gone = gone

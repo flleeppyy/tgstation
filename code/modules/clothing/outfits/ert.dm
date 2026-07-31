@@ -2,6 +2,8 @@
 	name = "CentCom Base"
 
 /datum/outfit/centcom/post_equip(mob/living/carbon/human/centcom_member, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visuals_only)
 		return
 	var/obj/item/implant/mindshield/mindshield = new /obj/item/implant/mindshield(centcom_member)//hmm lets have centcom officials become revs
@@ -18,6 +20,8 @@
 	var/additional_radio
 
 /datum/outfit/centcom/ert/post_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visuals_only)
 		return
 
@@ -172,6 +176,8 @@
 	l_hand = /obj/item/clipboard
 
 /datum/outfit/centcom/centcom_official/post_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visuals_only)
 		return
 
@@ -287,6 +293,8 @@
 	additional_radio = /obj/item/encryptionkey/heads/hop
 
 /datum/outfit/centcom/ert/clown/post_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	if(visuals_only)
 		return
@@ -311,6 +319,8 @@
 	l_hand = /obj/item/gun/ballistic/rifle/boltaction
 
 /datum/outfit/centcom/centcom_intern/post_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visuals_only)
 		return
 
@@ -457,6 +467,8 @@
 	)
 
 /datum/outfit/centcom/death_commando/post_equip(mob/living/carbon/human/squaddie, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/eyes/robotic/tacvisor/deathsquad/visor = new()
 	visor.Insert(squaddie, movement_flags = DELETE_IF_REPLACED)
 
@@ -479,6 +491,8 @@
 	ears = /obj/item/radio/headset/headset_cent/alt/leader
 
 /datum/outfit/centcom/death_commando/officer/post_equip(mob/living/carbon/human/squaddie, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/mod/control/mod = squaddie.back
 	if(!istype(mod))

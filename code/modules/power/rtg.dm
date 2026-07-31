@@ -24,15 +24,21 @@
 	VAR_PRIVATE/base_power_gen
 
 /obj/machinery/power/rtg/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	base_power_gen = power_gen
 	. = ..()
 	connect_to_network()
 	RefreshParts()
 
 /obj/machinery/power/rtg/process()
+	procstart = null
+	src.procstart = null
 	add_avail(power_to_energy(power_gen))
 
 /obj/machinery/power/rtg/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/new_power_gen = get_base_power_gen()
 	if(affected_by_parts)
@@ -45,24 +51,36 @@
 	power_gen = new_power_gen
 
 /obj/machinery/power/rtg/proc/get_base_power_gen()
+	procstart = null
+	src.procstart = null
 	return base_power_gen
 
 /obj/machinery/power/rtg/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
 		. += span_notice("The status display reads: Power generation at <b>[display_power(power_gen, convert = FALSE)]</b>.")
 
 /obj/machinery/power/rtg/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]-open" : base_icon_state
 
 /obj/machinery/power/rtg/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/power/rtg/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/power/rtg/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vname == NAMEOF(src, power_gen) || vname == NAMEOF(src, base_power_gen) || vname == NAMEOF(src, affected_by_parts))
 		RefreshParts()
@@ -89,6 +107,8 @@
 	VAR_PRIVATE/going_kaboom = FALSE
 
 /obj/machinery/power/rtg/abductor/proc/overload()
+	procstart = null
+	src.procstart = null
 	if(going_kaboom)
 		return
 	going_kaboom = TRUE
@@ -101,15 +121,21 @@
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(explosion), src, 2, 3, 4, null, 8), 10 SECONDS) // Not a normal explosion.
 
 /obj/machinery/power/rtg/abductor/bullet_act(obj/projectile/proj)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!going_kaboom && istype(proj) && proj.damage > 0 && ((proj.damage_type == BURN) || (proj.damage_type == BRUTE)))
 		log_bomber(proj.firer, "triggered a", src, "explosion via projectile")
 		overload()
 
 /obj/machinery/power/rtg/abductor/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	overload()
 
 /obj/machinery/power/rtg/abductor/ex_act()
+	procstart = null
+	src.procstart = null
 	if(going_kaboom)
 		qdel(src)
 	else
@@ -118,9 +144,13 @@
 	return TRUE
 
 /obj/machinery/power/rtg/abductor/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	overload()
 
 /obj/machinery/power/rtg/abductor/zap_act(power, zap_flags)
+	procstart = null
+	src.procstart = null
 	. = ..() //extend the zap
 	if(zap_flags & ZAP_MACHINE_EXPLOSIVE)
 		overload()
@@ -141,10 +171,14 @@
 	resistance_flags = LAVA_PROOF
 
 /obj/machinery/power/rtg/lavaland/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RefreshParts()
 
 /obj/machinery/power/rtg/lavaland/get_base_power_gen()
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	if(islava(our_turf) && is_mining_level(our_turf.z))
 		return base_power_gen
@@ -158,11 +192,15 @@
 	anchored = TRUE
 
 /obj/machinery/power/rtg/old_station/default_deconstruction_screwdriver(mob/user, obj/item/screwdriver)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_SUCCESS)
 		to_chat(user, span_warning("You feel [src] crumbling under your hands!"))
 
 /obj/machinery/power/rtg/old_station/default_deconstruction_crowbar(mob/living/user, obj/item/crowbar, ignore_panel, custom_deconstruct)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("As you pry, [src] starts to fall apart!"))
 	if(!crowbar.use_tool(src, user, 3 SECONDS, volume = 50))
 		return ITEM_INTERACT_BLOCKING

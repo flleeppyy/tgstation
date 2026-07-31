@@ -10,18 +10,26 @@
 	category = "List"
 
 /obj/item/circuit_component/list_pick/assoc/populate_options()
+	procstart = null
+	src.procstart = null
 	list_options = add_option_port("List Type", GLOB.wiremod_basic_types)
 
 /obj/item/circuit_component/list_pick/assoc/make_list_port()
+	procstart = null
+	src.procstart = null
 	input_list = add_input_port("List", PORT_TYPE_ASSOC_LIST(PORT_TYPE_STRING, PORT_TYPE_ANY))
 
 /obj/item/circuit_component/list_pick/assoc/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(port == list_options)
 		var/new_type = list_options.value
 		input_list.set_datatype(PORT_TYPE_ASSOC_LIST(PORT_TYPE_STRING, new_type))
 		output.set_datatype(new_type)
 
 /obj/item/circuit_component/list_pick/assoc/choose_item(choice, list/choice_list)
+	procstart = null
+	src.procstart = null
 	if(choice_list[choice])
 		output.set_output(choice_list[choice])
 		success.set_output(COMPONENT_SIGNAL)

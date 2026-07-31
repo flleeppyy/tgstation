@@ -48,6 +48,8 @@
 	var/no_law_rack_link = FALSE
 
 /mob/living/silicon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	voice = SStts.random_tts_voice()
 	GLOB.silicon_mobs += src
@@ -82,6 +84,8 @@
 	law_ui = new(src)
 
 /mob/living/silicon/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(radio)
 	QDEL_NULL(aicamera)
 	QDEL_NULL(builtInCamera)
@@ -93,6 +97,8 @@
 
 ///Sets cyborg gender from preferences. Expects a client.
 /mob/living/silicon/proc/set_gender(client/player_client)
+	procstart = null
+	src.procstart = null
 	var/silicon_pronouns = player_client.prefs.read_preference(/datum/preference/choiced/silicon_gender)
 	if(silicon_pronouns == /datum/preference/choiced/silicon_gender::use_character_gender)
 		gender = player_client.prefs.read_preference(/datum/preference/choiced/gender)
@@ -102,6 +108,8 @@
 		gender = silicon_gender
 
 /mob/living/silicon/proc/on_silicon_shocked(datum/source, shock_damage, shock_source, siemens_coeff, flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/mob/living/living_mob in buckled_mobs)
 		unbuckle_mob(living_mob)
@@ -110,6 +118,8 @@
 	return COMPONENT_LIVING_BLOCK_SHOCK //So borgs don't die trying to fix wiring
 
 /mob/living/silicon/proc/create_modularInterface()
+	procstart = null
+	src.procstart = null
 	if(!modularInterface)
 		modularInterface = new /obj/item/modular_computer/pda/silicon(src)
 	var/job_name = ""
@@ -123,21 +133,31 @@
 	modularInterface.imprint_id(real_name || name, job_name)
 
 /mob/living/silicon/robot/create_modularInterface()
+	procstart = null
+	src.procstart = null
 	if(!modularInterface)
 		modularInterface = new /obj/item/modular_computer/pda/silicon/cyborg(src)
 		modularInterface.imprint_id(job_name = "Cyborg")
 	return ..()
 
 /mob/living/silicon/med_hud_set_health()
+	procstart = null
+	src.procstart = null
 	return //we use a different hud
 
 /mob/living/silicon/med_hud_set_status()
+	procstart = null
+	src.procstart = null
 	return //we use a different hud
 
 /mob/living/silicon/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/silicon/proc/queueAlarm(message, type, incoming = FALSE)
+	procstart = null
+	src.procstart = null
 	var/in_cooldown = (length(alarms_to_show) || length(alarms_to_clear))
 	if(incoming)
 		alarms_to_show += message
@@ -152,6 +172,8 @@
 	addtimer(CALLBACK(src, PROC_REF(show_alarms)), 3 SECONDS)
 
 /mob/living/silicon/proc/show_alarms()
+	procstart = null
+	src.procstart = null
 	if(length(alarms_to_show) < 5)
 		for(var/msg in alarms_to_show)
 			to_chat(src, msg)
@@ -186,14 +208,20 @@
 		alarm_types_clear[key] = 0
 
 /mob/living/silicon/can_inject(mob/user, target_zone, injection_flags)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/silicon/try_inject(mob/user, target_zone, injection_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. && (injection_flags & INJECT_TRY_SHOW_ERROR_MESSAGE))
 		to_chat(user, span_alert("[p_Their()] outer shell is too tough."))
 
 /proc/islinked(mob/living/silicon/robot/bot, mob/living/silicon/ai/ai)
+	procstart = null
+	src.procstart = null
 	if(!istype(bot) || !istype(ai))
 		return FALSE
 	if(bot.connected_ai == ai)
@@ -201,6 +229,8 @@
 	return FALSE
 
 /mob/living/silicon/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if (href_list["laws"])
 		statelaws()
 
@@ -228,17 +258,25 @@
 	return
 
 /mob/living/silicon/proc/statelaws(force = FALSE)
+	procstart = null
+	src.procstart = null
 	law_ui.state_laws(force)
 
 /mob/living/silicon/proc/checklaws()
+	procstart = null
+	src.procstart = null
 	law_ui.ui_interact(src)
 
 /mob/living/silicon/proc/ai_roster()
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return
 	GLOB.manifest.ui_interact(src)
 
 /mob/living/silicon/proc/set_autosay() //For allowing the AI and borgs to set the radio behavior of auto announcements (state laws, arrivals).
+	procstart = null
+	src.procstart = null
 	if(!radio)
 		to_chat(src, span_alert("Radio not detected."))
 		return
@@ -260,24 +298,34 @@
 
 	to_chat(src, span_notice("Automatic announcements [chosen_channel == "None" ? "will not use the radio." : "set to [chosen_channel]."]"))
 
-/mob/living/silicon/put_in_hand_check() // This check is for borgs being able to receive items, not put them in others' hands.
+/mob/living/silicon/put_in_hand_check()
+	procstart = null
+	src.procstart = null // This check is for borgs being able to receive items, not put them in others' hands.
 	return FALSE
 
-/mob/living/silicon/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null) //Secbots won't hunt silicon units
+/mob/living/silicon/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null)
+	procstart = null
+	src.procstart = null //Secbots won't hunt silicon units
 	return -10
 
 /// Innate, toggleable silicon HUDs
 #define SILICON_HUD_TRAIT "silicon_hud"
 
 /mob/living/silicon/proc/remove_sensors()
+	procstart = null
+	src.procstart = null
 	remove_traits(silicon_huds, SILICON_HUD_TRAIT)
 
 /mob/living/silicon/proc/add_sensors()
+	procstart = null
+	src.procstart = null
 	add_traits(silicon_huds, SILICON_HUD_TRAIT)
 
 #undef SILICON_HUD_TRAIT
 
 /mob/living/silicon/proc/toggle_sensors()
+	procstart = null
+	src.procstart = null
 	if(incapacitated)
 		return
 	sensors_on = !sensors_on
@@ -289,32 +337,50 @@
 	to_chat(src, span_notice("Sensor overlay activated."))
 
 /mob/living/silicon/proc/GetPhoto(mob/user)
+	procstart = null
+	src.procstart = null
 	if (aicamera)
 		return aicamera.selectpicture(user)
 
 /mob/living/silicon/get_inactive_held_item()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/silicon/handle_high_gravity(gravity, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/silicon/rust_heretic_act()
+	procstart = null
+	src.procstart = null
 	adjust_brute_loss(500)
 	return TRUE
 
 /mob/living/silicon/on_floored_start()
+	procstart = null
+	src.procstart = null
 	return // Silicons are always standing by default.
 
 /mob/living/silicon/on_floored_end()
+	procstart = null
+	src.procstart = null
 	return // Silicons are always standing by default.
 
 /mob/living/silicon/on_lying_down()
+	procstart = null
+	src.procstart = null
 	return // Silicons are always standing by default.
 
 /mob/living/silicon/on_standing_up()
+	procstart = null
+	src.procstart = null
 	return // Silicons are always standing by default.
 
 /mob/living/silicon/get_butt_sprite()
+	procstart = null
+	src.procstart = null
 	return icon('icons/mob/butts.dmi', BUTT_SPRITE_QR_CODE)
 
 /**
@@ -330,6 +396,8 @@
  * arg1: a string containing the message to log.
  */
 /mob/living/silicon/proc/logevent(string = "")
+	procstart = null
+	src.procstart = null
 	if(!string)
 		return
 	if(stat == DEAD) //Dead silicons log no longer
@@ -348,6 +416,8 @@
 
 /// Same as the normal character name replacement, but updates the contents of the modular interface.
 /mob/living/silicon/fully_replace_character_name(oldname, newname, log_new_name = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -357,6 +427,8 @@
 	modularInterface.imprint_id(name = newname)
 
 /mob/living/silicon/can_track(mob/living/user)
+	procstart = null
+	src.procstart = null
 	//if their camera is online, it's safe to assume they are in cameranets
 	//since it takes a while for camera vis to update, this lets us bypass that so AIs can always see their borgs,
 	//without making cameras constantly update every time a borg moves.
@@ -366,6 +438,8 @@
 
 ///Places laws on the status panel for silicons
 /mob/living/silicon/get_status_tab_items()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/law_list = list("Obey these laws:")
 	law_list += laws.get_law_list(include_zeroth = TRUE, render_html = FALSE)
@@ -373,4 +447,6 @@
 		. += borg_laws
 
 /mob/living/silicon/get_access()
+	procstart = null
+	src.procstart = null
 	return REGION_ACCESS_ALL_STATION

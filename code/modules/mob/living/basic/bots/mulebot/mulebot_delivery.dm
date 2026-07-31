@@ -1,9 +1,13 @@
 /mob/living/basic/bot/mulebot/execute_resist()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(load)
 		unload()
 
 /mob/living/basic/bot/mulebot/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == load)
 		unload()
@@ -14,6 +18,8 @@
 		set_cell_hud()
 
 /mob/living/basic/bot/mulebot/Entered(obj/item/stock_parts/power_store/cell/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(arrived) && isnull(cell))
 		assign_cell(arrived)
@@ -21,6 +27,8 @@
 // mousedrop a crate to load the bot
 // can load anything if hacked
 /mob/living/basic/bot/mulebot/mouse_drop_receive(atom/movable/atom_to_load, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		return
 
@@ -30,20 +38,28 @@
 	load(atom_to_load)
 
 /mob/living/basic/bot/mulebot/post_unbuckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	load = null
 	return ..()
 
 /mob/living/basic/bot/mulebot/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated)
 		return
 	if(load == user)
 		unload()
 
-/mob/living/basic/bot/mulebot/remove_air(amount) //To prevent riders suffocating
+/mob/living/basic/bot/mulebot/remove_air(amount)
+	procstart = null
+	src.procstart = null //To prevent riders suffocating
 	return loc ? loc.remove_air(amount) : null
 
 /// Called to load an atom on the mulebot, which is usually a crate, unless if hacked
 /mob/living/basic/bot/mulebot/proc/load(atom/movable/atom_to_load)
+	procstart = null
+	src.procstart = null
 	if(load || atom_to_load.anchored)
 		return
 
@@ -77,10 +93,14 @@
 
 ///resolves the name to display for the loaded mob. primarily needed for the paranormal subtype since we don't want to show the name of ghosts riding it.
 /mob/living/basic/bot/mulebot/proc/get_load_name()
+	procstart = null
+	src.procstart = null
 	return load ? load.name : null
 
 ///Loads a mob onto the mulebot
 /mob/living/basic/bot/mulebot/proc/load_mob(mob/living/mob_to_load)
+	procstart = null
+	src.procstart = null
 	can_buckle = TRUE
 	if(buckle_mob(mob_to_load))
 		passenger = mob_to_load
@@ -92,6 +112,8 @@
 // argument is optional direction to unload
 // if zero or null, unload at bot's location
 /mob/living/basic/bot/mulebot/proc/unload(dirn)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(load))
 		if(load) //if our thing was qdel'd, there's likely a leftover reference. just clear it and remove the overlay. we'll let the bot keep moving around to prevent it abruptly stopping somewhere.
 			load = null

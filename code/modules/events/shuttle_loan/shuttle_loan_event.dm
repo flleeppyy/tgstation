@@ -12,6 +12,8 @@
 	var/list/unavailable_situations = list(/datum/shuttle_loan_situation/mail_strike)
 
 /datum/round_event_control/shuttle_loan/can_spawn_event(players_amt, allow_magic = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/round_event/running_event in SSevents.running)
 		if(istype(running_event, /datum/round_event/shuttle_loan)) //Make sure two of these don't happen at once.
@@ -28,6 +30,8 @@
 	var/delay_time = 5 MINUTES
 
 /datum/round_event/shuttle_loan/setup()
+	procstart = null
+	src.procstart = null
 	var/datum/round_event_control/shuttle_loan/loan_control = control
 	//by this point if situation is admin picked, it is a type, not an instance.
 	if(!situation)
@@ -42,6 +46,8 @@
 	situation = new situation()
 
 /datum/round_event/shuttle_loan/announce(fake)
+	procstart = null
+	src.procstart = null
 	if(fake)
 		var/datum/shuttle_loan_situation/fake_situation = pick(subtypesof(/datum/shuttle_loan_situation))
 		situation = new fake_situation
@@ -53,6 +59,8 @@
 
 ///Triggered when accepting the shuttle loan. Gives payment and delays shuttle. Ensures the event won't be deleted from event controller until after the cargo arrives at the station.
 /datum/round_event/shuttle_loan/proc/loan_shuttle()
+	procstart = null
+	src.procstart = null
 	priority_announce(situation.thanks_msg, "Cargo shuttle commandeered by [command_name()].")
 
 	dispatched = TRUE
@@ -68,6 +76,8 @@
 	log_game("Shuttle loan event firing with type '[situation.logging_desc]'.")
 
 /datum/round_event/shuttle_loan/tick()
+	procstart = null
+	src.procstart = null
 	if(dispatched)
 		if(SSshuttle.supply.mode != SHUTTLE_IDLE)
 			end_when = activeFor
@@ -75,6 +85,8 @@
 			end_when = activeFor + 1
 
 /datum/round_event/shuttle_loan/end()
+	procstart = null
+	src.procstart = null
 	if(!SSshuttle.shuttle_loan)
 		return
 	if(!SSshuttle.shuttle_loan.dispatched) //Haven't dispatched in time? Too bad. Clean it up and move on without spawning anything.
@@ -113,9 +125,13 @@
 	input_text = "Select a loan offer?"
 
 /datum/event_admin_setup/listed_options/shuttle_loan/get_list()
+	procstart = null
+	src.procstart = null
 	var/datum/round_event_control/shuttle_loan/loan_event = event_control
 	var/list/valid_situations = subtypesof(/datum/shuttle_loan_situation) - loan_event.unavailable_situations
 	return valid_situations
 
 /datum/event_admin_setup/listed_options/shuttle_loan/apply_to_event(datum/round_event/shuttle_loan/event)
+	procstart = null
+	src.procstart = null
 	event.situation = chosen

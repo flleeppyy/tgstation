@@ -6,13 +6,19 @@
 	var/health_blackboard_key
 
 /datum/bt_node/decorator/pawn_health_below/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(pawn, COMSIG_LIVING_HEALTH_UPDATE, PROC_REF(on_signal_changed))
 	return TRUE
 
 /datum/bt_node/decorator/pawn_health_below/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(pawn, COMSIG_LIVING_HEALTH_UPDATE)
 
 /datum/bt_node/decorator/pawn_health_below/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	if(!isliving(living_pawn))
 		return FALSE

@@ -12,6 +12,8 @@
 	var/timerid
 
 /obj/effect/temp_visual/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(randomdir)
 		setDir(pick(GLOB.cardinals))
@@ -19,19 +21,27 @@
 	timerid = QDEL_IN_STOPPABLE(src, duration)
 
 /obj/effect/temp_visual/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	deltimer(timerid)
 
 /obj/effect/temp_visual/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/temp_visual/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/temp_visual/dir_setting
 	randomdir = FALSE
 
 /obj/effect/temp_visual/dir_setting/Initialize(mapload, set_dir)
+	procstart = null
+	src.procstart = null
 	if(set_dir)
 		setDir(set_dir)
 	. = ..()

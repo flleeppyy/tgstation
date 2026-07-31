@@ -24,6 +24,8 @@
 	var/obj/item/clothing/head/hooded/hood
 
 /obj/item/clothing/neck/cloak/wolf_coat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/toggle_attached_clothing,\
 		deployable_type = /obj/item/clothing/head/hooded/wolf_coat_hoodie,\
@@ -33,17 +35,23 @@
 	)
 
 /obj/item/clothing/neck/cloak/wolf_coat/Destroy()
+	procstart = null
+	src.procstart = null
 	hood = null
 	return ..()
 
 /// Called when the hood is instantiated
 /obj/item/clothing/neck/cloak/wolf_coat/proc/on_hood_created(obj/item/clothing/head/hooded/hood)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	src.hood = hood
 	RegisterSignal(hood, COMSIG_QDELETING, PROC_REF(on_hood_deleted))
 
 /// Called when hood is deleted
 /obj/item/clothing/neck/cloak/wolf_coat/proc/on_hood_deleted()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SHOULD_CALL_PARENT(TRUE)
 	hood = null

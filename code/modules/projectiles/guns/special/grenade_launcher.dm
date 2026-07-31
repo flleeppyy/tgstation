@@ -14,18 +14,26 @@
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT)
 
 /obj/item/gun/grenadelauncher/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "[grenades.len] / [max_grenades] grenades loaded."
 
 /obj/item/gun/grenadelauncher/apply_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	max_grenades = modify_fantasy_variable("max_syringes", max_grenades, bonus, minimum = 1)
 
 /obj/item/gun/grenadelauncher/remove_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	max_grenades = reset_fantasy_variable("max_syringes", max_grenades)
 	return ..()
 
 /obj/item/gun/grenadelauncher/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isgrenade(tool))
 		return NONE
 	if(istype(tool, /obj/item/grenade/c4))
@@ -40,9 +48,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/gun/grenadelauncher/can_shoot()
+	procstart = null
+	src.procstart = null
 	return grenades.len
 
 /obj/item/gun/grenadelauncher/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_danger("[user] fired a grenade!"), \
 						span_danger("You fire the grenade launcher!"))
 	var/obj/item/grenade/F = grenades[1] //Now with less copypasta!

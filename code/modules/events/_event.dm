@@ -39,6 +39,8 @@
 	var/map_flags = NONE
 
 /datum/round_event_control/New()
+	procstart = null
+	src.procstart = null
 	if(!length(admin_setup))
 		return
 	var/list/admin_setup_types = admin_setup.Copy()
@@ -52,6 +54,8 @@
 
 /// Returns true if event can run in current map
 /datum/round_event_control/proc/valid_for_map()
+	procstart = null
+	src.procstart = null
 	if (!map_flags)
 		return TRUE
 	if (SSmapping.is_planetary())
@@ -65,6 +69,8 @@
 // Checks if the event can be spawned. Used by event controller and "false alarm" event.
 // Admin-created events override this.
 /datum/round_event_control/proc/can_spawn_event(players_amt, allow_magic = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(occurrences >= max_occurrences)
 		return FALSE
@@ -84,6 +90,8 @@
 	return TRUE
 
 /datum/round_event_control/proc/preRunEvent()
+	procstart = null
+	src.procstart = null
 	if(!ispath(typepath, /datum/round_event))
 		return EVENT_CANT_RUN
 
@@ -107,6 +115,8 @@
 	return EVENT_READY
 
 /datum/round_event_control/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(href_list["cancel"])
 		if(!triggering)
@@ -133,6 +143,8 @@ Runs the event
 * - announce_chance_override: if the value is not null, overrides the announcement chance when an admin calls an event
 */
 /datum/round_event_control/proc/run_event(random = FALSE, announce_chance_override = null, admin_forced = FALSE, event_cause)
+	procstart = null
+	src.procstart = null
 	/*
 	* We clear our signals first so we don't cancel a wanted event by accident,
 	* the majority of time the admin will probably want to cancel a single midround spawned random events
@@ -172,6 +184,8 @@ Runs the event
 
 //Returns the component for the listener
 /datum/round_event_control/proc/stop_random_event()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return CANCEL_RANDOM_EVENT
 
@@ -208,17 +222,23 @@ Runs the event
 //It will only have been overridden by the time we get to announce() start() tick() or end() (anything but setup basically).
 //This is really only for setting defaults which can be overridden later when New() finishes.
 /datum/round_event/proc/setup()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	return
 
 ///Announces the event name to deadchat, override this if what an event should show to deadchat is different to its event name.
 /datum/round_event/proc/announce_deadchat(random, cause)
+	procstart = null
+	src.procstart = null
 	deadchat_broadcast(" has just been[random ? " randomly" : ""] triggered[cause ? " by [cause]" : ""]!", "<b>[control.name]</b>", message_type=DEADCHAT_ANNOUNCEMENT) //STOP ASSUMING IT'S BADMINS!
 
 //Called when the tick is equal to the start_when variable.
 //Allows you to start before announcing or vice versa.
 //Only called once.
 /datum/round_event/proc/start()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	return
 
@@ -226,6 +246,8 @@ Runs the event
 //Provides ghosts a follow link to an atom if possible
 //Only called once.
 /datum/round_event/proc/announce_to_ghosts(atom/atom_of_interest)
+	procstart = null
+	src.procstart = null
 	if(control.alert_observers)
 		if (atom_of_interest)
 			notify_ghosts(
@@ -238,6 +260,8 @@ Runs the event
 //Allows you to announce before starting or vice versa.
 //Only called once.
 /datum/round_event/proc/announce(fake)
+	procstart = null
+	src.procstart = null
 	return
 
 //Called on or after the tick counter is equal to start_when.
@@ -245,6 +269,8 @@ Runs the event
 //time stamped events.
 //Called more than once.
 /datum/round_event/proc/tick()
+	procstart = null
+	src.procstart = null
 	return
 
 //Called on or after the tick is equal or more than end_when
@@ -254,6 +280,8 @@ Runs the event
 //For example: if(activeFor == myOwnVariable + 30) doStuff()
 //Only called once.
 /datum/round_event/proc/end()
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -261,6 +289,8 @@ Runs the event
 //Do not override this proc, instead use the appropriate procs.
 //This proc will handle the calls to the appropriate procs.
 /datum/round_event/process()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if(!processing)
 		return
@@ -302,11 +332,15 @@ Runs the event
 //which should be the only place it's referenced.
 //Called when start(), announce() and end() has all been called.
 /datum/round_event/proc/kill()
+	procstart = null
+	src.procstart = null
 	SSevents.running -= src
 
 
 //Sets up the event then adds the event to the the list of running events
 /datum/round_event/New(my_processing = TRUE, datum/round_event_control/event_controller)
+	procstart = null
+	src.procstart = null
 	control = event_controller
 	processing = my_processing
 	SSevents.running += src

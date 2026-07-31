@@ -16,21 +16,29 @@
 	var/max_growth_rate = 1.2
 
 /obj/item/food/egg/raptor_egg/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/floor_placeable)
 	START_PROCESSING(SSobj, src)
 
 /obj/item/food/egg/raptor_egg/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	QDEL_NULL(inherited_stats)
 	return ..()
 
 /obj/item/food/egg/raptor_egg/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (growth_progress >= RAPTOR_EGG_GROWTH_PROGRESS)
 		. += span_boldnotice("Its noticeably shaking, ready to hatch!")
 
 /obj/item/food/egg/raptor_egg/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if (!isturf(loc) || length(GLOB.raptor_population) >= MAX_RAPTOR_POP)
 		return
 

@@ -2,6 +2,8 @@
 /datum/unit_test/atmospheric_gas_transfer
 
 /datum/unit_test/atmospheric_gas_transfer/Run()
+	procstart = null
+	src.procstart = null
 	for (var/hot_test in list(1e4, 1e6, 1e8, 1e10, 1e12))
 		nob_to_trit(hot_test, hot_test, 50, T20C, max(2500, hot_test/100))
 	for (var/cold_test in list(1, 1e-2, MOLAR_ACCURACY))
@@ -19,6 +21,8 @@
  * * additional_pressure: Optional proc, if unfilled transfer will be 10% of pressure.
  */
 /datum/unit_test/atmospheric_gas_transfer/proc/nob_to_trit(nob_moles, nob_temp, trit_moles, trit_temp, additional_pressure)
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/first_mix = allocate(/datum/gas_mixture)
 	var/datum/gas_mixture/second_mix = allocate(/datum/gas_mixture)
 

@@ -7,6 +7,8 @@
 	screen_loc = ui_alien_storage_r
 
 /atom/movable/screen/alien/leap/Click()
+	procstart = null
+	src.procstart = null
 	if(!isalienhunter(usr))
 		return
 	var/mob/living/carbon/alien/adult/hunter/AH = usr

@@ -6,6 +6,8 @@
 	dupe_mode = COMPONENT_DUPE_HIGHLANDER
 
 /datum/component/shrink/Initialize(shrink_time)
+	procstart = null
+	src.procstart = null
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 	var/atom/parent_atom = parent
@@ -42,10 +44,14 @@
 		QDEL_IN(src, shrink_time)
 
 /datum/component/shrink/proc/handle_shrunk_speech(mob/living/little_guy, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	speech_args[SPEECH_SPANS] |= SPAN_SMALL_VOICE
 
 /datum/component/shrink/Destroy()
+	procstart = null
+	src.procstart = null
 	if(newsquash)
 		qdel(newsquash)
 	var/atom/parent_atom = parent

@@ -29,24 +29,36 @@
 	acid = 50
 
 /obj/structure/light_construct/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload && !find_and_mount_on_atom(mark_for_late_init = TRUE))
 		return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/light_construct/LateInitialize()
+	procstart = null
+	src.procstart = null
 	find_and_mount_on_atom(late_init = TRUE)
 
 /obj/structure/light_construct/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(cell)
 	return ..()
 
 /obj/structure/light_construct/get_turfs_to_mount_on()
+	procstart = null
+	src.procstart = null
 	return list(get_step(src, dir))
 
 /obj/structure/light_construct/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/structure/light_construct/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(stage)
 		if(LIGHT_CONSTRUCT_EMPTY)
@@ -64,6 +76,8 @@
 		. += span_danger("This casing doesn't support power cells for backup power.")
 
 /obj/structure/light_construct/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!cell)
 		return
 	user.visible_message(span_notice("[user] removes [cell] from [src]!"), span_notice("You remove [cell]."))
@@ -72,6 +86,8 @@
 	add_fingerprint(user)
 
 /obj/structure/light_construct/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!cell)
 		return
 	to_chat(user, span_notice("You telekinetically remove [cell]."))
@@ -81,6 +97,8 @@
 	return cell_reference.attack_tk(user)
 
 /obj/structure/light_construct/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(istype(tool, /obj/item/stock_parts/power_store/cell))
 		if(!cell_connectors)
@@ -121,6 +139,8 @@
 	return NONE
 
 /obj/structure/light_construct/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	switch(stage)
 		if(LIGHT_CONSTRUCT_EMPTY)
 			if(cell)
@@ -141,6 +161,8 @@
 	return NONE
 
 /obj/structure/light_construct/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(stage != LIGHT_CONSTRUCT_WIRED)
 		return NONE
 	user.visible_message(span_notice("[user.name] closes [src]'s casing."), \
@@ -165,6 +187,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/light_construct/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(stage != LIGHT_CONSTRUCT_WIRED)
 		return NONE
 	stage = LIGHT_CONSTRUCT_EMPTY
@@ -177,10 +201,14 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/light_construct/blob_act(obj/structure/blob/attacking_blob)
+	procstart = null
+	src.procstart = null
 	if(attacking_blob && attacking_blob.loc == loc)
 		deconstruct(FALSE)
 
 /obj/structure/light_construct/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/iron(loc, sheets_refunded)
 	if(stage == LIGHT_CONSTRUCT_WIRED)
 		new /obj/item/stack/cable_coil(drop_location(), 1, "red")
@@ -198,7 +226,11 @@
 	sheets_refunded = 1
 
 /obj/structure/light_construct/floor/get_turfs_to_mount_on()
+	procstart = null
+	src.procstart = null
 	return list(get_turf(src))
 
 /obj/structure/light_construct/floor/is_mountable_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	return !isgroundlessturf(target)

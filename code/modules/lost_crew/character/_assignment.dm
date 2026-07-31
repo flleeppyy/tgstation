@@ -12,6 +12,8 @@
 	var/datum/job/job_datum
 
 /datum/corpse_assignment/proc/apply_assignment(mob/living/carbon/human/working_dead, list/protected_job_gear, list/recovered_job_gear, list/datum/callback/on_revive_and_player_occupancy)
+	procstart = null
+	src.procstart = null
 	if(!protected_job_gear && !recovered_job_gear && !trim)
 		return
 
@@ -32,6 +34,8 @@
 		protected_job_gear += card
 
 /datum/corpse_assignment/proc/assign_job(mob/living/carbon/human/working_undead)
+	procstart = null
+	src.procstart = null
 	working_undead.mind.set_assigned_role_with_greeting(new job_datum (), working_undead.client)
 
 /datum/corpse_assignment/engineer
@@ -79,6 +83,8 @@
 	job_datum = /datum/job/recovered_crew/security
 
 /datum/corpse_assignment/security/apply_assignment(mob/living/carbon/human/working_dead, list/job_gear)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/obj/item/implant/mindshield/shield = new()

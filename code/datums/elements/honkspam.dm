@@ -2,16 +2,22 @@
 /datum/element/honkspam
 
 /datum/element/honkspam/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
 	RegisterSignal(target, COMSIG_ITEM_ATTACK_SELF, PROC_REF(interact))
 
 /datum/element/honkspam/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, COMSIG_ITEM_ATTACK_SELF)
 	return ..()
 
 /datum/element/honkspam/proc/interact(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(HAS_TRAIT(source, TRAIT_HONKSPAMMING))
 		return

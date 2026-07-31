@@ -1,4 +1,6 @@
 /mob/living/carbon/human/getarmor(def_zone, type)
+	procstart = null
+	src.procstart = null
 	var/armorval = 0
 	var/organnum = 0
 
@@ -19,6 +21,8 @@
 	return (armorval/max(organnum, 1))
 
 /mob/living/carbon/human/proc/check_armor(obj/item/bodypart/def_zone, damage_type)
+	procstart = null
+	src.procstart = null
 	if(!damage_type)
 		return 0
 	var/protection = 100
@@ -31,6 +35,8 @@
 
 ///Get all the clothing on a specific body part
 /mob/living/carbon/human/proc/get_clothing_on_part(obj/item/bodypart/def_zone)
+	procstart = null
+	src.procstart = null
 	var/list/covering_part = list()
 	for(var/obj/item/clothing/equipped in get_equipped_items(INCLUDE_ABSTRACT))
 		if(equipped.body_parts_covered & def_zone.body_part)
@@ -38,6 +44,8 @@
 	return covering_part
 
 /mob/living/carbon/human/projectile_hit(obj/projectile/hitting_projectile, def_zone, piercing_hit, blocked)
+	procstart = null
+	src.procstart = null
 	if(hitting_projectile.firer == src && hitting_projectile.original == src) //can't block or reflect when shooting yourself
 		return ..()
 
@@ -60,12 +68,16 @@
 	return BULLET_ACT_FORCE_PIERCE // complete projectile permutation
 
 /mob/living/carbon/human/bullet_act(obj/projectile/bullet, def_zone, piercing_hit, blocked)
+	procstart = null
+	src.procstart = null
 	if(check_block(bullet, bullet.damage, "\the [bullet]", PROJECTILE_ATTACK, bullet.armour_penetration, bullet.damage_type))
 		return ..(bullet, def_zone, piercing_hit, 100)
 	return ..()
 
 ///Reflection checks for anything in your l_hand, r_hand, or wear_suit based on the reflection chance of the object
 /mob/living/carbon/human/proc/check_reflect(def_zone)
+	procstart = null
+	src.procstart = null
 	if(wear_suit)
 		if(wear_suit.IsReflect(def_zone))
 			return TRUE
@@ -78,6 +90,8 @@
 	return FALSE
 
 /mob/living/carbon/human/check_block(atom/hit_by, damage, attack_text = "the attack", attack_type = MELEE_ATTACK, armour_penetration = 0, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SUCCESSFUL_BLOCK)
 		return SUCCESSFUL_BLOCK
@@ -99,11 +113,15 @@
 	return FAILED_BLOCK
 
 /mob/living/carbon/human/grippedby(mob/living/carbon/user, instant = FALSE)
+	procstart = null
+	src.procstart = null
 	if(w_uniform)
 		w_uniform.add_fingerprint(user)
 	..()
 
 /mob/living/carbon/human/attack_hulk(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -118,6 +136,8 @@
 	apply_damage(15, BRUTE, wound_bonus=10)
 
 /mob/living/carbon/human/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -126,10 +146,14 @@
 		dna.species.spec_attack_hand(H, src, null, modifiers)
 
 /mob/living/carbon/human/proc/disarm_precollide(datum/source, mob/living/shover, mob/living/target, obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return COMSIG_LIVING_ACT_SOLID
 
 /mob/living/carbon/human/proc/disarm_collision(datum/source, mob/living/shover, mob/living/target, shove_flags, obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(src == target || LAZYFIND(target.buckled_mobs, src) || !iscarbon(target))
 		return
@@ -144,6 +168,8 @@
 	return COMSIG_LIVING_SHOVE_HANDLED
 
 /mob/living/carbon/human/attack_paw(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/dam_zone = pick(BODY_ZONE_CHEST, BODY_ZONE_PRECISE_L_HAND, BODY_ZONE_PRECISE_R_HAND, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 	var/obj/item/bodypart/affecting = get_bodypart(get_random_valid_zone(dam_zone))
 
@@ -189,6 +215,8 @@
 		return TRUE
 
 /mob/living/carbon/human/attack_alien(mob/living/carbon/alien/adult/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -241,6 +269,8 @@
 		return TRUE
 
 /mob/living/carbon/human/attack_larva(mob/living/carbon/alien/larva/worm, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return //successful larva bite.
@@ -256,6 +286,8 @@
 		apply_damage(damage, BRUTE, affecting, armor_block)
 
 /mob/living/carbon/human/ex_act(severity, target, origin)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_BOMBIMMUNE))
 		return FALSE
 
@@ -341,6 +373,8 @@
 
 
 /mob/living/carbon/human/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		return
 	show_message(span_userdanger("The blob attacks you!"))
@@ -351,6 +385,8 @@
 
 ///Calculates the siemens coeff based on clothing and species, can also restart hearts.
 /mob/living/carbon/human/electrocute_act(shock_damage, source, siemens_coeff = 1, flags = NONE, jitter_time = 20 SECONDS, stutter_time = 4 SECONDS, stun_duration = 4 SECONDS)
+	procstart = null
+	src.procstart = null
 	//Calculates the siemens coeff based on clothing. Completely ignores the arguments
 	if(flags & SHOCK_TESLA) //I hate this entire block. This gets the siemens_coeff for tesla shocks
 		if(gloves && gloves.siemens_coefficient <= 0)
@@ -386,6 +422,8 @@
 		electrocution_animation(4 SECONDS)
 
 /mob/living/carbon/human/acid_act(acidpwr, acid_volume, bodyzone_hit) //todo: update this to utilize obscured_slots //and make sure it's check_obscured_slots(TRUE) to stop aciding through visors etc
+	procstart = null
+	src.procstart = null
 	var/list/damaged = list()
 	var/list/inventory_items_to_kill = list()
 	var/acidity = acidpwr * min(acid_volume*0.005, 0.1)
@@ -526,6 +564,8 @@
 
 ///Overrides the point value that the mob is worth
 /mob/living/carbon/human/singularity_act()
+	procstart = null
+	src.procstart = null
 	. = 20
 	switch(mind?.assigned_role.type)
 		if(/datum/job/chief_engineer, /datum/job/station_engineer)
@@ -535,6 +575,8 @@
 	..() //Called afterwards because getting the mind after getting gibbed is sketchy
 
 /mob/living/carbon/human/help_shake_act(mob/living/carbon/helper, force_friendly)
+	procstart = null
+	src.procstart = null
 	if(!istype(helper))
 		return
 
@@ -546,6 +588,8 @@
 	return ..()
 
 /mob/living/carbon/human/check_self_for_injuries()
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS(src))
 		return
 	var/list/combined_msg = list()
@@ -595,6 +639,8 @@
 	to_chat(src, boxed_message(combined_msg.Join("<br>")))
 
 /mob/living/carbon/human/damage_clothes(damage_amount, damage_type = BRUTE, damage_flag = 0, def_zone)
+	procstart = null
+	src.procstart = null
 	if(damage_type != BRUTE && damage_type != BURN)
 		return
 	damage_amount *= 0.5 //0.5 multiplier for balance reason, we don't want clothes to be too easily destroyed
@@ -664,6 +710,8 @@
  */
 
 /mob/living/carbon/human/proc/burn_clothing(seconds_per_tick, stacks)
+	procstart = null
+	src.procstart = null
 	var/list/burning_items = list()
 	//HEAD//
 
@@ -714,6 +762,8 @@
 		burning.fire_act((stacks * 25 * seconds_per_tick)) //damage taken is reduced to 2% of this value by fire_act()
 
 /mob/living/carbon/human/on_fire_stack(seconds_per_tick, datum/status_effect/fire_handler/fire_stacks/fire_handler)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_HUMAN_BURNING)
 	burn_clothing(seconds_per_tick, fire_handler.stacks)
 	var/no_protection = FALSE
@@ -722,6 +772,8 @@
 	fire_handler.harm_human(seconds_per_tick, no_protection)
 
 /mob/living/carbon/human/expose_reagents(list/reagents, datum/reagents/source, methods, volume_modifier, show_message)
+	procstart = null
+	src.procstart = null
 	if(external || internal)
 		methods &= ~INHALE
 		if(methods == NONE)
@@ -730,6 +782,8 @@
 
 
 /mob/living/carbon/human/is_mouth_covered(check_flags = ALL)
+	procstart = null
+	src.procstart = null
 	if((check_flags & ITEM_SLOT_HEAD) && head && (head.flags_cover & HEADCOVERSMOUTH))
 		return head
 	if((check_flags & ITEM_SLOT_MASK) && wear_mask && (wear_mask.flags_cover & MASKCOVERSMOUTH))
@@ -737,6 +791,8 @@
 	return null
 
 /mob/living/carbon/human/is_eyes_covered(check_flags = ALL)
+	procstart = null
+	src.procstart = null
 	if((check_flags & ITEM_SLOT_HEAD) && head && (head.flags_cover & HEADCOVERSEYES))
 		return head
 	if((check_flags & ITEM_SLOT_MASK) && wear_mask && (wear_mask.flags_cover & MASKCOVERSEYES))
@@ -746,6 +802,8 @@
 	return null
 
 /mob/living/carbon/human/is_pepper_proof(check_flags = ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -755,6 +813,8 @@
 		return wear_mask
 
 /mob/living/carbon/human/get_eye_protection()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for (var/obj/item/clothing/clothing in get_equipped_items())
 		. += clothing.flash_protect

@@ -6,6 +6,8 @@
 	shrapnel_type = null
 
 /obj/projectile/bullet/gyro/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	..()
 	explosion(target, devastation_range = -1, light_impact_range = 2, explosion_cause = src)
 	return BULLET_ACT_HIT
@@ -26,6 +28,8 @@
 	var/random_crits_enabled = TRUE // Worst thing Valve ever added
 
 /obj/projectile/bullet/rocket/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	var/random_crit_gib = FALSE
 	if(isliving(target) && prob(1) && random_crits_enabled)
 		var/mob/living/gibbed_dude = target
@@ -46,6 +50,8 @@
 /** This proc allows us to customize the conditions necesary for the rocket to detonate, allowing for different explosions for living targets, turf targets,
 among other potential differences. This granularity is helpful for things like the special rockets mechs use. */
 /obj/projectile/bullet/rocket/proc/do_boom(atom/target, random_crit_gib = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!isliving(target)) //if the target isn't alive, so is a wall or something
 		explosion(target, heavy_impact_range = 1, light_impact_range = 2, flame_range = 3, flash_range = 4, explosion_cause = src)
 	else
@@ -66,6 +72,8 @@ among other potential differences. This granularity is helpful for things like t
 	anti_armour_damage = 200
 
 /obj/projectile/bullet/rocket/heap/do_boom(atom/target, blocked=0)
+	procstart = null
+	src.procstart = null
 	explosion(target, devastation_range = -1, heavy_impact_range = 1, light_impact_range = 3, flame_range = 4, flash_range = 1, adminlog = FALSE)
 
 /// PM9 weak rocket - just kind of a failure
@@ -76,6 +84,8 @@ among other potential differences. This granularity is helpful for things like t
 	damage = 30
 
 /obj/projectile/bullet/rocket/weak/do_boom(atom/target, blocked=0)
+	procstart = null
+	src.procstart = null
 	if(!isliving(target)) //if the target isn't alive, so is a wall or something
 		explosion(target, heavy_impact_range = 1, light_impact_range = 2, flame_range = 3, flash_range = 4, explosion_cause = src)
 	else
@@ -108,6 +118,8 @@ among other potential differences. This granularity is helpful for things like t
 	random_crits_enabled = FALSE //yeah, no
 
 /obj/projectile/bullet/rocket/pep/do_boom(atom/target, blocked=0)
+	procstart = null
+	src.procstart = null
 	if(issilicon(target)) //if the target is a borg, just give them one of these to make it loud, most of the damage is in the projectile itself
 		explosion(target, light_impact_range = 1, flash_range = 2, explosion_cause = src)
 		return
@@ -133,6 +145,8 @@ among other potential differences. This granularity is helpful for things like t
 	name = "faulty rocket"
 
 /obj/projectile/bullet/rocket/reverse/fire(angle, atom/direct_target)
+	procstart = null
+	src.procstart = null
 	..()
 	if(firer) //troll
 		firer.visible_message(span_danger("[src] blows up as soon as [firer] fires it!"))

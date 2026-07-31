@@ -18,6 +18,8 @@ SUBSYSTEM_DEF(weather)
 	var/list/particle_planemasters = list()
 
 /datum/controller/subsystem/weather/fire(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	// process active weather
 	for(var/datum/weather/weather_event as anything in processing)
 		if(!length(weather_event.subsystem_tasks))
@@ -82,6 +84,8 @@ SUBSYSTEM_DEF(weather)
 		next_hit_by_zlevel["[z]"] = addtimer(CALLBACK(src, PROC_REF(make_eligible), z, possible_weather), randTime + initial(weather_event.weather_duration_upper), TIMER_UNIQUE|TIMER_STOPPABLE)
 
 /datum/controller/subsystem/weather/Initialize()
+	procstart = null
+	src.procstart = null
 	for(var/datum/weather/weather as anything in valid_subtypesof(/datum/weather))
 		var/probability = initial(weather.probability)
 		var/target_trait = initial(weather.target_trait)
@@ -94,6 +98,8 @@ SUBSYSTEM_DEF(weather)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/weather/proc/add_weather_objects(list/new_holders, z_level)
+	procstart = null
+	src.procstart = null
 	for (var/offset in 1 to length(new_holders))
 		var/list/holder_list = new_holders[offset]
 		if (isnull(particle_holders[offset]))
@@ -118,6 +124,8 @@ SUBSYSTEM_DEF(weather)
 				plane_master.vis_contents |= holder
 
 /datum/controller/subsystem/weather/proc/remove_weather_objects(list/old_holders)
+	procstart = null
+	src.procstart = null
 	for (var/offset in 1 to length(old_holders))
 		var/list/holder_list = old_holders[offset]
 		particle_holders[offset] -= holder_list
@@ -126,6 +134,8 @@ SUBSYSTEM_DEF(weather)
 			plane_master.vis_contents -= holder_list
 
 /datum/controller/subsystem/weather/proc/update_z_level(datum/space_level/level)
+	procstart = null
+	src.procstart = null
 	var/z = level.z_value
 	for(var/datum/weather/weather as anything in valid_subtypesof(/datum/weather))
 		var/probability = initial(weather.probability)
@@ -135,6 +145,8 @@ SUBSYSTEM_DEF(weather)
 			eligible_zlevels["[z]"][weather] = probability
 
 /datum/controller/subsystem/weather/proc/run_weather(datum/weather/weather_datum_type, z_levels, list/weather_data)
+	procstart = null
+	src.procstart = null
 	if (istext(weather_datum_type))
 		for (var/datum/weather/weather as anything in valid_subtypesof(/datum/weather))
 			if (initial(weather.name) == weather_datum_type)
@@ -155,10 +167,14 @@ SUBSYSTEM_DEF(weather)
 	return weather
 
 /datum/controller/subsystem/weather/proc/make_eligible(z, possible_weather)
+	procstart = null
+	src.procstart = null
 	eligible_zlevels[z] = possible_weather
 	next_hit_by_zlevel["[z]"] = null
 
 /datum/controller/subsystem/weather/proc/get_weather(z, area/active_area)
+	procstart = null
+	src.procstart = null
 	var/datum/weather/A
 	for(var/V in processing)
 		var/datum/weather/W = V
@@ -169,4 +185,6 @@ SUBSYSTEM_DEF(weather)
 
 ///Returns an active storm by its type
 /datum/controller/subsystem/weather/proc/get_weather_by_type(type)
+	procstart = null
+	src.procstart = null
 	return locate(type) in processing

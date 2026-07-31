@@ -18,6 +18,8 @@
 	var/prefix
 
 /datum/deathrattle_group/New(name)
+	procstart = null
+	src.procstart = null
 	if(name)
 		src.name = name
 	else
@@ -46,6 +48,8 @@
  * code.
  */
 /datum/deathrattle_group/proc/register(obj/item/implant/deathrattle/implant)
+	procstart = null
+	src.procstart = null
 	if(implant in implants)
 		return
 	RegisterSignal(implant, COMSIG_IMPLANT_IMPLANTED, PROC_REF(on_implant_implantation))
@@ -59,21 +63,29 @@
 		on_implant_implantation(implant.imp_in)
 
 /datum/deathrattle_group/proc/on_implant_implantation(obj/item/implant/implant, mob/living/target, mob/user, silent = FALSE, force = FALSE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	RegisterSignal(target, COMSIG_MOB_STATCHANGE, PROC_REF(on_user_statchange))
 
 /datum/deathrattle_group/proc/on_implant_removal(obj/item/implant/implant, mob/living/source, silent = FALSE, special = 0)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(source, COMSIG_MOB_STATCHANGE)
 
 /datum/deathrattle_group/proc/on_implant_destruction(obj/item/implant/implant)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	implants -= implant
 
 /datum/deathrattle_group/proc/on_user_statchange(mob/living/owner, new_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(new_stat != DEAD)
@@ -132,6 +144,8 @@
 	var/datum/deathrattle_group/current_group
 
 /obj/item/implant/deathrattle/can_be_implanted_in(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(!current_group)
 		balloon_alert(target, "deathrattle needs configuration!")
 		return FALSE

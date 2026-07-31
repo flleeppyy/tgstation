@@ -14,6 +14,8 @@
  * * liverless - Stops reagents that aren't set as [/datum/reagent/var/self_consuming] from metabolizing
  */
 /datum/reagents/proc/metabolize(mob/living/carbon/owner, seconds_per_tick, can_overdose = FALSE, liverless = FALSE, dead = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	if(owner)
 		expose_temperature(owner.bodytemperature, 0.25)
@@ -93,6 +95,8 @@
  * * list/reagents_metabolized - a list to hold the reagent metabolized with the metabolization ratio
  */
 /datum/reagents/proc/metabolize_reagent(mob/living/carbon/owner, datum/reagent/reagent, seconds_per_tick, can_overdose = FALSE, liverless = FALSE, dead = FALSE, list/reagents_metabolized)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(reagent.holder))
 		return FALSE
 
@@ -147,6 +151,8 @@
  * * keep_liverless - if true will work without a liver
  */
 /datum/reagents/proc/end_metabolization(mob/living/carbon/C, keep_liverless = TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	for(var/datum/reagent/reagent as anything in cached_reagents)
 		if(QDELETED(reagent.holder))
@@ -170,6 +176,8 @@
  * returns the volume of the original, pure, reagent to add / keep
  */
 /datum/reagents/proc/process_mob_reagent_purity(datum/reagent/reagent, added_volume, added_purity, list/reagent_datum)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	//no splitting when purity is perfect
@@ -197,6 +205,8 @@
  * * seconds_per_tick - passed from process
  */
 /datum/reagents/proc/handle_stasis_chems(mob/living/carbon/owner, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/need_mob_update = FALSE
 	for(var/datum/reagent/reagent as anything in reagent_list)
 		if(!(reagent.chemical_flags & REAGENT_IGNORE_STASIS))

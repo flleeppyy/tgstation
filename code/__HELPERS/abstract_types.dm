@@ -1,5 +1,7 @@
 /// Returns a list of all abstract typepaths for all datums
 /proc/get_abstract_types()
+	procstart = null
+	src.procstart = null
 	var/static/list/abstracts
 	if(abstracts)
 		return abstracts
@@ -19,14 +21,20 @@
 
 /// Like subtypesof, but automatically excludes abstract typepaths
 /proc/valid_subtypesof(datum/sometype)
+	procstart = null
+	src.procstart = null
 	return subtypesof(sometype) - get_abstract_types()
 
 /// Like typesof, but automatically excludes abstract typepaths
 /proc/valid_typesof(datum/sometype)
+	procstart = null
+	src.procstart = null
 	return typesof(sometype) - get_abstract_types()
 
 /// Returns a list of concrete types under abstract sub-branches of `root`
 /proc/get_abstract_branch_descendants(datum/root)
+	procstart = null
+	src.procstart = null
 	var/list/abstracts = get_abstract_types()
 	var/list/to_remove = list()
 	var/list/seen_abstract_parents = list()
@@ -47,6 +55,8 @@
 
 /// Like valid_subtypesof(), but excludes concrete descendants of abstract sub-branches
 /proc/valid_direct_subtypesof(datum/root)
+	procstart = null
+	src.procstart = null
 	var/list/result = subtypesof(root)
 
 	// Remove all abstract types
@@ -59,6 +69,8 @@
 
 /// Like valid_typesof(), but excludes concrete descendants of abstract sub-branches
 /proc/valid_direct_typesof(datum/root)
+	procstart = null
+	src.procstart = null
 	var/list/result = typesof(root)
 
 	// Remove all abstract types

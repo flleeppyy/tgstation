@@ -28,6 +28,8 @@
 	show_bolt_icon = FALSE
 
 /obj/item/gun/ballistic/automatic/proto/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/automatic_fire, 0.2 SECONDS)
 
@@ -49,9 +51,13 @@
 	empty_indicator = TRUE
 
 /obj/item/gun/ballistic/automatic/c20r/add_bayonet_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bayonet_attachable, offset_x = 26, offset_y = 12)
 
 /obj/item/gun/ballistic/automatic/c20r/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!chambered && empty_indicator) //this is duplicated due to a layering issue with the select fire icon.
 		. += "[icon_state]_empty"
@@ -60,6 +66,8 @@
 	pin = /obj/item/firing_pin
 
 /obj/item/gun/ballistic/automatic/c20r/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
@@ -83,10 +91,14 @@
 	empty_indicator = TRUE
 
 /obj/item/gun/ballistic/automatic/wt550/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/automatic_fire, 0.3 SECONDS)
 
 /obj/item/gun/ballistic/automatic/wt550/add_bayonet_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bayonet_attachable, offset_x = 25, offset_y = 12)
 
 /obj/item/gun/ballistic/automatic/smartgun
@@ -114,6 +126,8 @@
 	)
 
 /obj/item/gun/ballistic/automatic/smartgun/fire_sounds()
+	procstart = null
+	src.procstart = null
 	var/picked_fire_sound = pick(firing_sound_list)
 	playsound(src, picked_fire_sound, fire_sound_volume, vary_fire_sound)
 
@@ -160,11 +174,15 @@
 	var/obj/item/gun/ballistic/revolver/grenadelauncher/underbarrel/underbarrel
 
 /obj/item/gun/ballistic/automatic/m90/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	underbarrel = new(src)
 	update_appearance()
 
 /obj/item/gun/ballistic/automatic/m90/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(underbarrel)
 	return ..()
 
@@ -172,16 +190,22 @@
 	pin = /obj/item/firing_pin
 
 /obj/item/gun/ballistic/automatic/m90/unrestricted/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	underbarrel = new /obj/item/gun/ballistic/revolver/grenadelauncher/unrestricted(src)
 	update_appearance()
 
 /obj/item/gun/ballistic/automatic/m90/try_fire_gun(atom/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(LAZYACCESS(params2list(params), RIGHT_CLICK))
 		return underbarrel.try_fire_gun(target, user, params)
 	return ..()
 
 /obj/item/gun/ballistic/automatic/m90/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isammocasing(tool))
 		if(istype(tool, underbarrel.magazine.ammo_type))
 			underbarrel.item_interaction(user, tool, modifiers)
@@ -208,6 +232,8 @@
 	var/rof = 0.1 SECONDS
 
 /obj/item/gun/ballistic/automatic/tommygun/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/automatic_fire, rof)
 
@@ -266,11 +292,15 @@
 	pin = /obj/item/firing_pin
 
 /obj/item/gun/ballistic/automatic/l6_saw/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 	AddComponent(/datum/component/automatic_fire, 0.2 SECONDS)
 
 /obj/item/gun/ballistic/automatic/l6_saw/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "<b>alt + click</b> to [cover_open ? "close" : "open"] the dust cover."
 	if(cover_open && magazine)
@@ -278,6 +308,8 @@
 
 
 /obj/item/gun/ballistic/automatic/l6_saw/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	cover_open = !cover_open
 	balloon_alert(user, "cover [cover_open ? "opened" : "closed"]")
 	playsound(src, 'sound/items/weapons/gun/l6/l6_door.ogg', 60, TRUE)
@@ -285,15 +317,21 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/gun/ballistic/automatic/l6_saw/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	inhand_icon_state = "[base_icon_state][cover_open ? "open" : "closed"][magazine ? "mag":"nomag"]"
 
 /obj/item/gun/ballistic/automatic/l6_saw/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "l6_door_[cover_open ? "open" : "closed"]"
 
 
 /obj/item/gun/ballistic/automatic/l6_saw/try_fire_gun(atom/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(cover_open)
 		balloon_alert(user, "close the cover!")
 		return FALSE
@@ -305,6 +343,8 @@
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/gun/ballistic/automatic/l6_saw/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (loc != user)
 		..()
 		return
@@ -314,6 +354,8 @@
 	..()
 
 /obj/item/gun/ballistic/automatic/l6_saw/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!cover_open && istype(tool, accepted_magazine_type))
 		balloon_alert(user, "open the cover!")
 		return ITEM_INTERACT_BLOCKING
@@ -389,6 +431,8 @@
 	SET_BASE_PIXEL(-8, 0)
 
 /obj/item/gun/ballistic/automatic/battle_rifle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/scope, range_modifier = 2)
 	AddElement(/datum/element/examine_lore, \
@@ -409,6 +453,8 @@
 	register_context()
 
 /obj/item/gun/ballistic/automatic/battle_rifle/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(held_item?.tool_behaviour == TOOL_MULTITOOL && shots_before_degradation < max_shots_before_degradation)
@@ -416,6 +462,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/gun/ballistic/automatic/battle_rifle/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(shots_before_degradation)
 		. += span_notice("[src] can fire [shots_before_degradation] more times before risking system degradation.")
@@ -426,6 +474,8 @@
 
 
 /obj/item/gun/ballistic/automatic/battle_rifle/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!shots_before_degradation)
 		inhand_icon_state = "[base_icon_state]-empty"
@@ -433,6 +483,8 @@
 		inhand_icon_state = "[base_icon_state]"
 
 /obj/item/gun/ballistic/automatic/battle_rifle/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(degradation_stage)
 		. += "[base_icon_state]_empty"
@@ -441,6 +493,8 @@
 		. += "[icon_state]_stage_[ratio_for_overlay]"
 
 /obj/item/gun/ballistic/automatic/battle_rifle/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!(. & EMP_PROTECT_SELF) && prob(50 / severity))
 		shots_before_degradation = 0
@@ -448,6 +502,8 @@
 		attempt_degradation(TRUE)
 
 /obj/item/gun/ballistic/automatic/battle_rifle/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(obj_flags & EMAGGED)
 		return FALSE
@@ -457,6 +513,8 @@
 	return TRUE
 
 /obj/item/gun/ballistic/automatic/battle_rifle/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!tool.use_tool(src, user, 20 SECONDS, volume = 50))
 		balloon_alert(user, "interrupted!")
 		return ITEM_INTERACT_BLOCKING
@@ -471,6 +529,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/gun/ballistic/automatic/battle_rifle/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+	procstart = null
+	src.procstart = null
 	if(chambered.loaded_projectile && prob(75) && (emp_malfunction || degradation_stage == degradation_stage_max))
 		balloon_alert_to_hearers("*click*")
 		playsound(src, dry_fire_sound, dry_fire_sound_volume, TRUE)
@@ -491,6 +551,8 @@
 
 /// Proc to handle weapon degradation. Called when attempting to fire or immediately after an EMP takes place.
 /obj/item/gun/ballistic/automatic/battle_rifle/proc/attempt_degradation(force_increment = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!prob(degradation_probability) && !force_increment || degradation_stage == degradation_stage_max)
 		return //Only update if we actually increment our degradation stage
 
@@ -502,6 +564,8 @@
 
 /// Called by /obj/machinery/recharger while inserted: attempts to recalibrate our gun but reducing degradation.
 /obj/item/gun/ballistic/automatic/battle_rifle/proc/attempt_recalibration(restoring_shots_before_degradation = FALSE, recharge_rate = 1)
+	procstart = null
+	src.procstart = null
 	emp_malfunction = FALSE
 
 	if(restoring_shots_before_degradation)
@@ -520,16 +584,22 @@
 
 /// Proc to handle the countdown for our detonation
 /obj/item/gun/ballistic/automatic/battle_rifle/proc/perform_extreme_malfunction(mob/living/user)
+	procstart = null
+	src.procstart = null
 	balloon_alert(user, "gun is exploding, throw it!")
 	explosion_timer = addtimer(CALLBACK(src, PROC_REF(fucking_explodes_you)), 5 SECONDS, (TIMER_UNIQUE|TIMER_OVERRIDE))
 	playsound(src, 'sound/items/weapons/gun/general/empty_alarm.ogg', 50, FALSE)
 
 /// proc to handle our detonation
 /obj/item/gun/ballistic/automatic/battle_rifle/proc/fucking_explodes_you()
+	procstart = null
+	src.procstart = null
 	explosion(src, devastation_range = 1, heavy_impact_range = 3, light_impact_range = 6, explosion_cause = src)
 
 //component for seclight attachment
 /obj/item/gun/ballistic/automatic/battle_rifle/add_seclight_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/seclite_attachable, \
 		light_overlay_icon = 'icons/obj/weapons/guns/flashlights.dmi', \
 		light_overlay = "flight", \

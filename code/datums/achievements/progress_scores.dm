@@ -6,13 +6,19 @@
 	var/list/early_entries_to_validate = list()
 
 /datum/award/score/progress/fish/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSfishing, COMSIG_SUBSYSTEM_POST_INITIALIZE, PROC_REF(validate_early_joiners))
 
 /datum/award/score/progress/fish/get_table()
+	procstart = null
+	src.procstart = null
 	return "fish_progress"
 
 /datum/award/score/progress/fish/proc/validate_early_joiners(datum/source)
+	procstart = null
+	src.procstart = null
 	for(var/client/client as anything in GLOB.clients)
 		var/datum/achievement_data/holder = client.persistent_client.achievements
 		if(!holder?.initialized)
@@ -32,6 +38,8 @@
 			entries -= fish_id
 
 /datum/award/score/progress/fish/validate_entries(list/entries, list/validated_entries)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!SSfishing.initialized)
 		return
@@ -41,6 +49,8 @@
 			. = FALSE
 
 /datum/award/score/progress/fish/get_progress(datum/achievement_data/holder)
+	procstart = null
+	src.procstart = null
 	var/list/data = list(
 		"name" = "Fishdex",
 		"percent" = 0,
@@ -71,6 +81,8 @@
 	return data
 
 /datum/award/score/progress/fish/get_progress_string(progress_string)
+	procstart = null
+	src.procstart = null
 	return span_greenannounce("This is the first time you've caught a <B>[progress_string]</B>!")
 
 /datum/award/score/progress/pda_themes
@@ -82,6 +94,8 @@
 	var/list/unlockable_themes
 
 /datum/award/score/progress/pda_themes/New()
+	procstart = null
+	src.procstart = null
 	unlockable_themes = valid_subtypesof(/datum/computer_file/program/maintenance/theme)
 
 	cheevo_icons = list()
@@ -90,12 +104,18 @@
 	cheevo_icons["unknown"] = icon2base64(icon(PDA_THEMES_PROGRESS_SET, "unknown"))
 
 /datum/award/score/progress/pda_themes/get_table()
+	procstart = null
+	src.procstart = null
 	return "pda_themes_progress"
 
 /datum/award/score/progress/pda_themes/get_progress_string(progress_string)
+	procstart = null
+	src.procstart = null
 	return span_greenannounce(span_tooltip("You can now select it on future rounds without having to install it again", "New PDA theme unlocked : <B>[progress_string]!</B>"))
 
 /datum/award/score/progress/pda_themes/get_progress(datum/achievement_data/holder)
+	procstart = null
+	src.procstart = null
 	var/list/data = list(
 		"name" = "PDA Themes",
 		"entries" = list(),
@@ -120,6 +140,8 @@
 	return data
 
 /datum/award/score/progress/pda_themes/validate_entries(list/entries, list/validated_entries)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/valid_themes
 	if(!valid_themes)

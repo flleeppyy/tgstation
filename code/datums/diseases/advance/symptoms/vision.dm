@@ -29,6 +29,8 @@
 	var/remove_eyes = FALSE
 
 /datum/symptom/visionloss/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -38,6 +40,8 @@
 		remove_eyes = TRUE
 
 /datum/symptom/visionloss/Activate(datum/disease/advance/source_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

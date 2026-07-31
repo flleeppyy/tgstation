@@ -14,6 +14,8 @@
 	var/datum/weakref/added_trama_ref
 
 /datum/quirk/insanity/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(quirk_holder))
 		return
 	var/mob/living/carbon/carbon_quirk_holder = quirk_holder
@@ -34,11 +36,15 @@
 	added_trama_ref = WEAKREF(added_trauma)
 
 /datum/quirk/insanity/post_add()
+	procstart = null
+	src.procstart = null
 	var/rds_policy = get_policy("[type]") || "Please note that your [LOWER_TEXT(name)] does NOT give you any additional right to attack people or cause chaos."
 	// I don't /think/ we'll need this, but for newbies who think "roleplay as insane" = "license to kill", it's probably a good thing to have.
 	to_chat(quirk_holder, span_big(span_info(rds_policy)))
 
 /datum/quirk/insanity/remove()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(added_trama_ref)
 
 /datum/quirk_constant_data/rds_limit

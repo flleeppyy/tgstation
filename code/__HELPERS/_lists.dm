@@ -237,6 +237,8 @@
 
 ///Returns a list in plain english as a string
 /proc/english_list(list/input, nothing_text = "nothing", and_text = " and ", comma_text = ", ", final_comma_text = "" )
+	procstart = null
+	src.procstart = null
 	var/total = length(input)
 	switch(total)
 		if (0)
@@ -259,6 +261,8 @@
 
 ///Returns a list of atom types in plain english as a string of each type name
 /proc/type_english_list(list/input, nothing_text = "nothing", and_text = " and ", comma_text = ", ", final_comma_text = "" )
+	procstart = null
+	src.procstart = null
 	var/list/english_input = list()
 	for(var/atom/type as anything in input)
 		english_input += "[initial(type.name)]"
@@ -278,6 +282,8 @@
  * - zebra: Whether to use the value of the matching type in the list instead of just returning true when a match is found.
  */
 /proc/is_type_in_list(datum/type_to_check, list/list_to_check, zebra = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(list_to_check) || !type_to_check)
 		return FALSE
 	for(var/type in list_to_check)
@@ -299,6 +305,8 @@
  * - zebra: Whether to use the value of the mathing path in the list instead of just returning true when a match is found.
  */
 /proc/is_path_in_list(path_to_check, list/list_to_check, zebra = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(list_to_check) || !path_to_check)
 		return FALSE
 	for(var/path in list_to_check)
@@ -311,6 +319,8 @@
 
 ///returns a new list with only atoms that are in the typecache list
 /proc/typecache_filter_list(list/atoms, list/typecache)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 	. = list()
 	for(var/atom/atom_checked as anything in atoms)
@@ -319,6 +329,8 @@
 
 ///return a new list with atoms that are not in the typecache list
 /proc/typecache_filter_list_reverse(list/atoms, list/typecache)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 	. = list()
 	for(var/atom/atom_checked as anything in atoms)
@@ -327,6 +339,8 @@
 
 ///similar to typecache_filter_list and typecache_filter_list_reverse but it supports an inclusion list and and exclusion list
 /proc/typecache_filter_multi_list_exclusion(list/atoms, list/typecache_include, list/typecache_exclude)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/atom/atom_checked as anything in atoms)
 		if(typecache_include[atom_checked.type] && !typecache_exclude[atom_checked.type])
@@ -341,6 +355,8 @@
  * - ignore_root_path: Whether to ignore the root path when caching subtypes.
  */
 /proc/typecacheof(path, only_root_path = FALSE, ignore_root_path = FALSE)
+	procstart = null
+	src.procstart = null
 	if(isnull(path))
 		return
 
@@ -387,6 +403,8 @@
  * - clear_nulls: Whether to remove keys with null assoc values from the typecache after generating it.
  */
 /proc/zebra_typecacheof(path, single_value = TRUE, only_root_path = FALSE, ignore_root_path = FALSE, clear_nulls = FALSE)
+	procstart = null
+	src.procstart = null
 	if(isnull(path))
 		return
 
@@ -433,6 +451,8 @@
  * Returns TRUE if the list had nulls, FALSE otherwise
 **/
 /proc/list_clear_nulls(list/list_to_clear)
+	procstart = null
+	src.procstart = null
 	return (list_to_clear.RemoveAll(null) > 0)
 
 
@@ -441,6 +461,8 @@
  * Returns TRUE if the list had empty refs, FALSE otherwise
 **/
 /proc/list_clear_empty_weakrefs(list/list_to_clear)
+	procstart = null
+	src.procstart = null
 	var/start_len = list_to_clear.len
 	for(var/datum/weakref/entry in list_to_clear)
 		if(!entry.resolve())
@@ -453,6 +475,8 @@
  * If either of arguments is not a list, returns null
  */
 /proc/difflist(list/first, list/second, skiprep=0)
+	procstart = null
+	src.procstart = null
 	if(!islist(first) || !islist(second))
 		return
 	var/list/result = new
@@ -470,6 +494,8 @@
  * If either of arguments is not a list, returns null
  */
 /proc/unique_merge_list(list/first, list/second, skiprep=0)
+	procstart = null
+	src.procstart = null
 	if(!islist(first) || !islist(second))
 		return
 	var/list/result = new
@@ -490,6 +516,8 @@
  * You should only pass integers in.
  */
 /proc/pick_weight(list/list_to_pick)
+	procstart = null
+	src.procstart = null
 	if(length(list_to_pick) == 0)
 		return null
 
@@ -524,6 +552,8 @@
  * Weights should be integers. Entries without weights are assigned weight 1 (so unweighted lists can be used as well)
  */
 /proc/pick_weight_recursive(list/list_to_pick)
+	procstart = null
+	src.procstart = null
 	var/result = pick_weight(fill_with_ones(list_to_pick))
 	while(islist(result))
 		result = pick_weight(fill_with_ones(result))
@@ -538,6 +568,8 @@
  * Tt would then have a 55.55...% to be picked, rinse and repeat
 */
 /proc/pick_weight_take(list/list_to_pick)
+	procstart = null
+	src.procstart = null
 	. = pick_weight(list_to_pick)
 	list_to_pick[.]--
 
@@ -546,6 +578,8 @@
 * e.g. pick_n(list_of_stuff, 10) would return a list of 10 items from the list, chosen randomly.
 */
 /proc/pick_n(list/list_to_pick, n)
+	procstart = null
+	src.procstart = null
 	var/list_to_pick_length
 	if(islist(list_to_pick))
 		list_to_pick_length = length(list_to_pick)
@@ -568,6 +602,8 @@
  * Useful for weighted random choices (loot tables, syllables in languages, etc.)
  */
 /proc/fill_with_ones(list/list_to_pad)
+	procstart = null
+	src.procstart = null
 	if (!islist(list_to_pad))
 		return list_to_pad
 
@@ -584,6 +620,8 @@
 /// Takes a weighted list (see above) and expands it into raw entries
 /// This eats more memory, but saves time when actually picking from it
 /proc/expand_weights(list/list_to_pick)
+	procstart = null
+	src.procstart = null
 	var/list/values = list()
 	for(var/item in list_to_pick)
 		var/value = list_to_pick[item]
@@ -606,6 +644,8 @@
 /// Note: this implementation is expensive as heck for large numbers, I only use it because most of my usecase
 /// Is < 10 ints
 /proc/greatest_common_factor(list/values)
+	procstart = null
+	src.procstart = null
 	var/smallest = min(arglist(values))
 	for(var/i in smallest to 1 step -1)
 		var/safe = TRUE
@@ -618,6 +658,8 @@
 
 /// Pick a random element from the list and remove it from the list.
 /proc/pick_n_take(list/list_to_pick)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(list_to_pick[_].type)
 	if(list_to_pick.len)
 		var/picked = rand(1,list_to_pick.len)
@@ -626,22 +668,30 @@
 
 ///Returns the top(last) element from the list and removes it from the list (typical stack function)
 /proc/pop(list/L)
+	procstart = null
+	src.procstart = null
 	if(L.len)
 		. = L[L.len]
 		L.len--
 
 /// Returns the top (last) element from the list, does not remove it from the list. Stack functionality.
 /proc/peek(list/target_list)
+	procstart = null
+	src.procstart = null
 	var/list_length = length(target_list)
 	if(list_length != 0)
 		return target_list[list_length]
 
 /proc/popleft(list/L)
+	procstart = null
+	src.procstart = null
 	if(L.len)
 		. = L[1]
 		L.Cut(1,2)
 
 /proc/sorted_insert(list/L, thing, comparator)
+	procstart = null
+	src.procstart = null
 	var/pos = L.len
 	while(pos > 0 && call(comparator)(thing, L[pos]) > 0)
 		pos--
@@ -649,6 +699,8 @@
 
 /// Returns the next item in a list
 /proc/next_list_item(item, list/inserted_list)
+	procstart = null
+	src.procstart = null
 	var/i
 	i = inserted_list.Find(item)
 	if(i == inserted_list.len)
@@ -659,6 +711,8 @@
 
 /// Returns the previous item in a list
 /proc/previous_list_item(item, list/inserted_list)
+	procstart = null
+	src.procstart = null
 	var/i
 	i = inserted_list.Find(item)
 	if(i == 1)
@@ -669,6 +723,8 @@
 
 ///Randomize: Return the list in a random order
 /proc/shuffle(list/inserted_list)
+	procstart = null
+	src.procstart = null
 	if(!inserted_list)
 		return
 	inserted_list = inserted_list.Copy()
@@ -680,6 +736,8 @@
 
 ///same as shuffle, but acts on list in place, and returns same list
 /proc/shuffle_inplace(list/inserted_list)
+	procstart = null
+	src.procstart = null
 	if(!inserted_list)
 		return
 
@@ -690,12 +748,16 @@
 
 ///Return a list with no duplicate entries
 /proc/unique_list(list/inserted_list)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/i in inserted_list)
 		. |= LIST_VALUE_WRAP_LISTS(i)
 
 ///same as unique_list, but returns nothing and acts on list in place (also handles associated values properly)
 /proc/unique_list_in_place(list/inserted_list)
+	procstart = null
+	src.procstart = null
 	var/temp = inserted_list.Copy()
 	inserted_list.len = 0
 	for(var/key in temp)
@@ -706,22 +768,32 @@
 
 ///for sorting clients or mobs by ckey
 /proc/sort_key(list/ckey_list, order = 1)
+	procstart = null
+	src.procstart = null
 	return sortTim(ckey_list, order >= 0 ? GLOBAL_PROC_REF(cmp_ckey_asc) : GLOBAL_PROC_REF(cmp_ckey_dsc))
 
 ///Specifically for record datums in a list.
 /proc/sort_record(list/record_list, order = 1)
+	procstart = null
+	src.procstart = null
 	return sortTim(record_list, order >= 0 ? GLOBAL_PROC_REF(cmp_records_asc) : GLOBAL_PROC_REF(cmp_records_dsc))
 
 ///sort any value in a list
 /proc/sort_list(list/list_to_sort, cmp=/proc/cmp_text_asc)
+	procstart = null
+	src.procstart = null
 	return sortTim(list_to_sort.Copy(), cmp)
 
 ///uses sort_list() but uses the var's name specifically. This should probably be using mergeAtom() instead
 /proc/sort_names(list/list_to_sort, order=1)
+	procstart = null
+	src.procstart = null
 	return sortTim(list_to_sort.Copy(), order >= 0 ? GLOBAL_PROC_REF(cmp_name_asc) : GLOBAL_PROC_REF(cmp_name_dsc))
 
 ///Converts a bitfield to a list of numbers (or words if a wordlist is provided)
 /proc/bitfield_to_list(bitfield = 0, list/wordlist)
+	procstart = null
+	src.procstart = null
 	var/list/return_list = list()
 	if(islist(wordlist))
 		var/max = min(wordlist.len, 24)
@@ -743,6 +815,8 @@
 
 ///return the amount of items of the same type inside a list
 /proc/count_by_type(list/inserted_list, type)
+	procstart = null
+	src.procstart = null
 	var/i = 0
 	for(var/item_type in inserted_list)
 		if(istype(item_type, type))
@@ -759,6 +833,8 @@
  * If no record is found, returns null
  */
 /proc/find_record(value, locked_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(locked_only)
 		for(var/datum/record/locked/target in GLOB.manifest.locked)
 			if(target.name != value)
@@ -782,6 +858,8 @@
  * This will preserve associations ~Carnie
 **/
 /proc/move_element(list/inserted_list, from_index, to_index)
+	procstart = null
+	src.procstart = null
 	if(from_index == to_index || from_index + 1 == to_index) //no need to move
 		return
 	if(from_index > to_index)
@@ -798,6 +876,8 @@
  * This will preserve associations ~Carnie
 **/
 /proc/move_range(list/inserted_list, from_index, to_index, len = 1)
+	procstart = null
+	src.procstart = null
 	var/distance = abs(to_index - from_index)
 	if(len >= distance) //there are more elements to be moved than the distance to be moved. Therefore the same result can be achieved (with fewer operations) by moving elements between where we are and where we are going. The result being, our range we are moving is shifted left or right by dist elements
 		if(from_index <= to_index)
@@ -821,6 +901,8 @@
 ///Move any elements being overwritten by the move to the now-empty elements, preserving order
 ///Note: if the two ranges overlap, only the destination order will be preserved fully, since some elements will be within both ranges ~Carnie
 /proc/swap_range(list/inserted_list, from_index, to_index, len=1)
+	procstart = null
+	src.procstart = null
 	var/distance = abs(to_index - from_index)
 	if(len > distance) //there is an overlap, therefore swapping each element will require more swaps than inserting new elements
 		if(from_index < to_index)
@@ -843,6 +925,8 @@
 
 ///replaces reverseList ~Carnie
 /proc/reverse_range(list/inserted_list, start = 1, end = 0)
+	procstart = null
+	src.procstart = null
 	if(inserted_list.len)
 		start = start % inserted_list.len
 		end = end % (inserted_list.len + 1)
@@ -862,6 +946,8 @@
 ///this is typecaste as list/L, but you could actually feed it an atom instead.
 ///completely safe to use
 /proc/get_element_by_var(list/inserted_list, varname, value)
+	procstart = null
+	src.procstart = null
 	varname = "[varname]"
 	for(var/datum/checked_datum in inserted_list)
 		if(!checked_datum.vars.Find(varname))
@@ -873,6 +959,8 @@
 ///Copies a list, and all lists inside it recusively
 ///Does not copy any other reference type
 /proc/deep_copy_list(list/inserted_list)
+	procstart = null
+	src.procstart = null
 	if(!islist(inserted_list))
 		return inserted_list
 	. = inserted_list.Copy()
@@ -892,6 +980,8 @@
 
 /// A version of deep_copy_list that actually supports associative list nesting: list(list(list("a" = "b"))) will actually copy correctly.
 /proc/deep_copy_list_alt(list/inserted_list)
+	procstart = null
+	src.procstart = null
 	if(!islist(inserted_list))
 		return inserted_list
 	var/copied_list = inserted_list.Copy()
@@ -908,6 +998,8 @@
 ///takes an input_key, as text, and the list of keys already used, outputting a replacement key in the format of "[input_key] ([number_of_duplicates])" if it finds a duplicate
 ///use this for lists of things that might have the same name, like mobs or objects, that you plan on giving to a player as input
 /proc/avoid_assoc_duplicate_keys(input_key, list/used_key_list)
+	procstart = null
+	src.procstart = null
 	if(!input_key || !istype(used_key_list))
 		return
 	if(used_key_list[input_key])
@@ -919,6 +1011,8 @@
 
 ///Make a normal list an associative one
 /proc/make_associative(list/flat_list)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/thing in flat_list)
 		.[thing] = TRUE
@@ -932,17 +1026,23 @@
 */
 
 /proc/counterlist_scale(list/L, scalar)
+	procstart = null
+	src.procstart = null
 	var/list/out = list()
 	for(var/key in L)
 		out[key] = L[key] * scalar
 	. = out
 
 /proc/counterlist_sum(list/L)
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/key in L)
 		. += L[key]
 
 /proc/counterlist_normalise(list/L)
+	procstart = null
+	src.procstart = null
 	var/avg = counterlist_sum(L)
 	if(avg != 0)
 		. = counterlist_scale(L, 1 / avg)
@@ -950,6 +1050,8 @@
 		. = L
 
 /proc/counterlist_combine(list/L1, list/L2)
+	procstart = null
+	src.procstart = null
 	for(var/key in L2)
 		var/other_value = L2[key]
 		if(key in L1)
@@ -959,6 +1061,8 @@
 
 /// Turns an associative list into a flat list of keys
 /proc/assoc_to_keys(list/input)
+	procstart = null
+	src.procstart = null
 	var/list/keys = list()
 	for(var/key in input)
 		UNTYPED_LIST_ADD(keys, key)
@@ -966,6 +1070,8 @@
 
 /// Turns an associative list into a flat list of keys, but for sprite accessories, respecting the locked variable
 /proc/assoc_to_keys_features(list/input)
+	procstart = null
+	src.procstart = null
 	var/list/keys = list()
 	for(var/key in input)
 		var/datum/sprite_accessory/value = input[key]
@@ -976,6 +1082,8 @@
 
 /// Turns an associative list into a flat list of values
 /proc/assoc_to_values(list/key_list)
+	procstart = null
+	src.procstart = null
 	if(!islist(key_list))
 		return null
 	. = list()
@@ -984,6 +1092,8 @@
 
 ///compare two lists, returns TRUE if they are the same
 /proc/compare_list(list/l,list/d)
+	procstart = null
+	src.procstart = null
 	if(!islist(l) || !islist(d))
 		return FALSE
 
@@ -1008,6 +1118,8 @@
 
 ///Returns a list with items filtered from a list that can call callback
 /proc/special_list_filter(list/list_to_filter, datum/callback/condition)
+	procstart = null
+	src.procstart = null
 	if(!islist(list_to_filter) || !length(list_to_filter) || !istype(condition))
 		return list()
 	. = list()
@@ -1017,6 +1129,8 @@
 
 ///Returns a list with all weakrefs resolved
 /proc/recursive_list_resolve(list/list_to_resolve)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/element in list_to_resolve)
 		if(istext(element))
@@ -1029,6 +1143,8 @@
 
 ///Helper for recursive_list_resolve()
 /proc/recursive_list_resolve_element(element)
+	procstart = null
+	src.procstart = null
 	if(islist(element))
 		var/list/inner_list = element
 		return recursive_list_resolve(inner_list)
@@ -1044,6 +1160,8 @@
  * and can handle self-referential lists and potential duplicate output keys.
  */
 /proc/prepare_lua_editor_list(list/target_list, list/visited)
+	procstart = null
+	src.procstart = null
 	if(!visited)
 		visited = list()
 	var/list/ret = list()
@@ -1101,6 +1219,8 @@
  * produce duplicate keys that are clobbered by the standard JavaScript JSON.parse function
  */
 /proc/kvpify_list(list/target_list, depth = INFINITY, list/visited)
+	procstart = null
+	src.procstart = null
 	if(!visited)
 		visited = list()
 	var/list/ret = list()
@@ -1131,6 +1251,8 @@
 
 /// Compares 2 lists, returns TRUE if they are the same
 /proc/deep_compare_list(list/list_1, list/list_2)
+	procstart = null
+	src.procstart = null
 	if(list_1 == list_2)
 		return TRUE
 
@@ -1160,6 +1282,8 @@
 
 /// Returns a copy of the list where any element that is a datum is converted into a weakref
 /proc/weakrefify_list(list/target_list, list/visited)
+	procstart = null
+	src.procstart = null
 	if(!visited)
 		visited = list()
 	var/list/ret = list()
@@ -1194,6 +1318,8 @@
 
 /// Runtimes if the passed in list is not sorted
 /proc/assert_sorted(list/list, name, cmp = GLOBAL_PROC_REF(cmp_numeric_asc))
+	procstart = null
+	src.procstart = null
 	var/last_value = list[1]
 
 	for (var/index in 2 to list.len)
@@ -1208,6 +1334,8 @@
  * Converts a list of coordinates, or an assosciative list if passed, into a turf by calling locate(x, y, z) based on the values in the list
  */
 /proc/coords2turf(list/coords)
+	procstart = null
+	src.procstart = null
 	if("x" in coords)
 		return locate(coords["x"], coords["y"], coords["z"])
 	return locate(coords[1], coords[2], coords[3])
@@ -1217,6 +1345,8 @@
  * but are required by the lua editor tgui.
  */
 /proc/add_lua_editor_variants(list/values, list/variants, list/visited, path = "")
+	procstart = null
+	src.procstart = null
 	if(!islist(visited))
 		visited = list()
 		visited[values] = "\[\]"
@@ -1267,6 +1397,8 @@
 			CHECK_TICK
 
 /proc/add_lua_return_value_variants(list/values, list/variants)
+	procstart = null
+	src.procstart = null
 	if(!islist(values) || !islist(variants))
 		return
 	if(values.len != variants.len)
@@ -1279,6 +1411,8 @@
 			variants[i] = list("ref", ref(value))
 
 /proc/deep_copy_without_cycles(list/values, list/visited)
+	procstart = null
+	src.procstart = null
 	if(!islist(visited))
 		visited = list()
 	if(!islist(values))
@@ -1322,6 +1456,8 @@
  * Given a list and a list of its variant hints, removes any list key/values that are represent lua values that could not be directly converted to DM.
  */
 /proc/remove_non_dm_variants(list/return_values, list/variants, list/visited)
+	procstart = null
+	src.procstart = null
 	if(!islist(visited))
 		visited = list()
 	if(!islist(return_values) || !islist(variants) || visited[return_values])
@@ -1346,6 +1482,8 @@
 			remove_non_dm_variants(return_values[key], pair["value"], visited)
 
 /proc/compare_lua_logs(list/log_1, list/log_2)
+	procstart = null
+	src.procstart = null
 	if(log_1 == log_2)
 		return TRUE
 	for(var/field in list("status", "name", "message", "chunk"))
@@ -1376,6 +1514,8 @@
  * Really any combination of lists & vars, as long as the passed lists aren't empty
  */
 /proc/pick_recursive(...)
+	procstart = null
+	src.procstart = null
 	var/result = pick(args)
 	while(islist(result))
 		result = pick(result)
@@ -1385,6 +1525,8 @@
  * Not exact and may have rounding errors, will round to nearest 1/1000.
  * */
 /proc/blend_weighted_lists(list/listA, list/listB, blend)
+	procstart = null
+	src.procstart = null
 	var/list/joined_list = listA | listB
 
 	listA = counterlist_normalise(listA)

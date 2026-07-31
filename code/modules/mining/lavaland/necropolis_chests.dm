@@ -19,6 +19,8 @@
 	var/loot_to_spawn = /obj/effect/spawner/random/mining_loot
 
 /obj/structure/closet/crate/necropolis/tendril/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/skeleton_key) || spawned_loot)
 		return ..()
 	new loot_to_spawn(src)
@@ -29,6 +31,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/closet/crate/necropolis/tendril/before_open(mob/living/user, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -49,6 +53,8 @@
 	name = "dragon chest"
 
 /obj/structure/closet/crate/necropolis/dragon/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/loot = rand(1,4)
 	switch(loot)
 		if(1)
@@ -64,6 +70,8 @@
 	name = "firey dragon chest"
 
 /obj/structure/closet/crate/necropolis/dragon/crusher/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/crusher_trophy/tail_spike(src)
 
@@ -77,6 +85,8 @@
 	lid_z = 2
 
 /obj/structure/closet/crate/necropolis/bubblegum/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/suit/hooded/hostile_environment(src)
 	var/loot = rand(1,2)
 	switch(loot)
@@ -89,6 +99,8 @@
 	name = "bloody bubblegum chest"
 
 /obj/structure/closet/crate/necropolis/bubblegum/crusher/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/crusher_trophy/demon_claws(src)
 
@@ -96,11 +108,15 @@
 	name = "colossus chest"
 
 /obj/structure/closet/crate/necropolis/colossus/projectile_hit(obj/projectile/hitting_projectile, def_zone, piercing_hit, blocked)
+	procstart = null
+	src.procstart = null
 	if(istype(hitting_projectile, /obj/projectile/colossus))
 		return BULLET_ACT_FORCE_PIERCE
 	return ..()
 
 /obj/structure/closet/crate/necropolis/colossus/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/choices = subtypesof(/obj/machinery/anomalous_crystal)
 	var/random_crystal = pick(choices)
 	new random_crystal(src)
@@ -111,6 +127,8 @@
 	name = "angelic colossus chest"
 
 /obj/structure/closet/crate/necropolis/colossus/crusher/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/crusher_trophy/blaster_tubes(src)
 
@@ -120,6 +138,8 @@
 	name = "puzzling chest"
 
 /obj/structure/closet/crate/necropolis/puzzle/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/loot = rand(1,3)
 	switch(loot)
 		if(1)

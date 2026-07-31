@@ -1,8 +1,12 @@
 GLOBAL_LIST_EMPTY(dead_players_during_shift)
 /mob/living/carbon/human/gib_animation()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/gib_animation(loc, dna.species.gib_anim)
 
 /mob/living/carbon/human/spawn_dust(just_ash)
+	procstart = null
+	src.procstart = null
 	if(just_ash)
 		return ..()
 
@@ -15,6 +19,8 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 	bones.pixel_w = rand(-1, 1)
 
 /mob/living/carbon/human/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		return
 	stop_sound_channel(CHANNEL_HEARTBEAT)
@@ -44,6 +50,8 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 		to_chat(src, span_warning("Ghost movement is currently disabled by admins. To leave your body use the Ghost verb."))
 
 /mob/living/carbon/human/proc/reagents_readout()
+	procstart = null
+	src.procstart = null
 	var/readout = "[get_bloodtype()?.get_blood_name() || "Blood"]stream:"
 	for(var/datum/reagent/reagent in reagents?.reagent_list)
 		readout += "<br>[round(reagent.volume, 0.001)] units of [reagent.name]"
@@ -57,6 +65,8 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 	return readout
 
 /mob/living/carbon/human/proc/makeSkeleton()
+	procstart = null
+	src.procstart = null
 	set_species(/datum/species/skeleton)
 	var/obj/item/bodypart/head = get_bodypart(BODY_ZONE_HEAD)
 	if(head)
@@ -64,6 +74,8 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 	return TRUE
 
 /mob/living/carbon/proc/Drain()
+	procstart = null
+	src.procstart = null
 	become_husk(CHANGELING_DRAIN)
 	ADD_TRAIT(src, TRAIT_BADDNA, CHANGELING_DRAIN)
 	set_blood_volume(0)

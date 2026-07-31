@@ -5,6 +5,8 @@
 	button_icon_state = "vortex_recall"
 
 /datum/action/item_action/vortex_recall/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(target, /obj/item/hierophant_club))
 		return
 	var/obj/item/hierophant_club/teleport_stick = target

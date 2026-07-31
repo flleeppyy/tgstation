@@ -27,6 +27,8 @@
 	ai_controller = /datum/ai_controller/basic_controller/spiderling
 
 /mob/living/basic/spider/growing/spiderling/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// random placement since we're pretty small and to make the swarming component actually look like it's doing something when we have a buncha these fuckers
 	pixel_x = rand(6,-6)
@@ -48,6 +50,8 @@
 	ai_controller.set_blackboard_key(BB_UPPER_VENT_TIME_LIMIT, rand(12, 14) SECONDS)
 
 /mob/living/basic/spider/growing/spiderling/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(isturf(get_turf(loc)) && (basic_mob_flags & DEL_ON_DEATH || gibbed))
 		var/obj/item/food/spiderling/dead_spider = new(loc) // mmm yummy
 		dead_spider.name = name
@@ -55,7 +59,9 @@
 
 	return ..()
 
-/mob/living/basic/spider/growing/spiderling/start_pulling(atom/movable/pulled_atom, state, force = move_force, supress_message = FALSE) // we're TOO FUCKING SMALL
+/mob/living/basic/spider/growing/spiderling/start_pulling(atom/movable/pulled_atom, state, force = move_force, supress_message = FALSE)
+	procstart = null
+	src.procstart = null // we're TOO FUCKING SMALL
 	return
 
 /// Opportunistically hops in and out of vents, if it can find one. We aren't interested in attacking due to how weak we are, we gotta be quick and hidey.

@@ -119,6 +119,8 @@
 	var/datum/weakref/tipper
 
 /mob/living/basic/bot/medbot/proc/set_speech_keys()
+	procstart = null
+	src.procstart = null
 	if(isnull(ai_controller))
 		return
 	ai_controller.set_blackboard_key(BB_NEAR_DEATH_SPEECH, near_death_announcements)
@@ -129,6 +131,8 @@
 	ai_controller.set_blackboard_key(BB_WORRIED_ANNOUNCEMENTS, worried_announcements)
 
 /mob/living/basic/bot/medbot/Initialize(mapload, new_skin)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_speech_keys()
 
@@ -170,6 +174,8 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /mob/living/basic/bot/medbot/LateInitialize()
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(flag/no_default_techweb_link) && !linked_techweb)
 		CONNECT_TO_RND_SERVER_ROUNDSTART(linked_techweb, src)
 
@@ -181,6 +187,8 @@
 			heal_multiplier += design.additive_multiplier
 
 /mob/living/basic/bot/medbot/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/storage/medkit/medkit = locate() in contents
 	medkit_type = medkit
@@ -190,12 +198,16 @@
 	update_appearance()
 
 /mob/living/basic/bot/medbot/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/mode_suffix = mode == BOT_HEALING ? "active" : "idle"
 	icon_state = "[base_icon_state]_[skin]_[mode_suffix]"
 
 /mob/living/basic/bot/medbot/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!(medical_mode_flags & MEDBOT_STATIONARY_MODE))
@@ -217,25 +229,35 @@
 
 /// Set our drawn-on ink colour
 /mob/living/basic/bot/medbot/proc/on_defaced(ink_colour)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	painted_face_colour = ink_colour
 
 //this is sin
 /mob/living/basic/bot/medbot/generate_speak_list()
+	procstart = null
+	src.procstart = null
 	var/static/list/finalized_speak_list = (idle_lines + wait_announcements + afterheal_announcements + near_death_announcements + emagged_announcements + tipped_announcements + untipped_announcements + worried_announcements + misc_announcements)
 	return finalized_speak_list
 
 
 /mob/living/basic/bot/medbot/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /mob/living/basic/bot/medbot/multitool_act(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(tool.buffer) && istype(tool.buffer, /datum/techweb))
 		linked_techweb = tool.buffer
 	return ITEM_INTERACT_SUCCESS
 
 // Variables sent to TGUI
 /mob/living/basic/bot/medbot/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 	if(!(bot_access_flags & BOT_COVER_LOCKED) || HAS_SILICON_ACCESS(user))
 		data["custom_controls"]["heal_threshold"] = heal_threshold
@@ -246,6 +268,8 @@
 
 // Actions received from TGUI
 /mob/living/basic/bot/medbot/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/user = ui.user
 	if(. || !isliving(ui.user) || (bot_access_flags & BOT_COVER_LOCKED) && !HAS_SILICON_ACCESS(user))
@@ -268,6 +292,8 @@
 	update_appearance()
 
 /mob/living/basic/bot/medbot/emag_effects(mob/user)
+	procstart = null
+	src.procstart = null
 	medical_mode_flags &= ~MEDBOT_DECLARE_CRIT
 	balloon_alert(user, "reagent synthesis circuits shorted")
 	audible_message(span_danger("[src] buzzes oddly!"))
@@ -276,6 +302,8 @@
 	return TRUE
 
 /mob/living/basic/bot/medbot/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(medical_mode_flags & MEDBOT_TIPPED_MODE))
 		return
@@ -293,6 +321,8 @@
  * user - the mob who is tipping us over
  */
 /mob/living/basic/bot/medbot/proc/pre_tip_over(mob/user)
+	procstart = null
+	src.procstart = null
 	speak(pick(worried_announcements))
 
 /*
@@ -301,6 +331,8 @@
  * user - the mob who tipped us over
  */
 /mob/living/basic/bot/medbot/proc/after_tip_over(mob/user)
+	procstart = null
+	src.procstart = null
 	medical_mode_flags |= MEDBOT_TIPPED_MODE
 	tipper = WEAKREF(user)
 	playsound(src, 'sound/machines/warning-buzzer.ogg', 50)
@@ -308,6 +340,8 @@
 		speak("PSYCH ALERT: Crewmember [user.name] recorded displaying antisocial tendencies torturing bots in [get_area(src)]. Please schedule psych evaluation.", radio_channel)
 
 /mob/living/basic/bot/medbot/explode()
+	procstart = null
+	src.procstart = null
 	var/atom/our_loc = drop_location()
 	drop_part(medkit_type, our_loc)
 	drop_part(health_analyzer, our_loc)
@@ -319,6 +353,8 @@
  * user - the mob who righted us. Can be null.
  */
 /mob/living/basic/bot/medbot/proc/after_righted(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/tipper_mob = isnull(user) ? null : tipper?.resolve()
 	tipper = null
 	medical_mode_flags &= ~MEDBOT_TIPPED_MODE
@@ -330,6 +366,8 @@
 	speak(pick(untipped_announcements))
 
 /mob/living/basic/bot/medbot/proc/pre_attack(mob/living/puncher, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
@@ -340,6 +378,8 @@
 	return COMPONENT_HOSTILE_NO_ATTACK
 
 /mob/living/basic/bot/medbot/proc/medicate_patient(mob/living/carbon/human/patient)
+	procstart = null
+	src.procstart = null
 	if(DOING_INTERACTION(src, TEND_DAMAGE_INTERACTION))
 		return
 
@@ -383,6 +423,8 @@
 		melee_attack(patient)
 
 /mob/living/basic/bot/medbot/proc/on_techweb_research(datum/source, datum/design/medibot_upgrade/design)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(design))
@@ -392,6 +434,8 @@
 	INVOKE_ASYNC(src, PROC_REF(speak), "New knowledge found! Surgical efficacy improved to [round(heal_multiplier * 100)]%!")
 
 /mob/living/basic/bot/medbot/proc/on_techweb_unresearch(datum/source, datum/design/medibot_upgrade/design)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(design))
@@ -467,6 +511,8 @@
 	additional_access = /datum/id_trim/syndicom/crew
 
 /mob/living/basic/bot/medbot/nukie/Initialize(mapload, new_skin)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/action/minimap/nuclear/tacmap_action = new
 	tacmap_action.Grant(src)
@@ -478,16 +524,22 @@
 	internal_radio.freqlock = RADIO_FREQENCY_LOCKED
 
 /mob/living/basic/bot/medbot/nukie/proc/nuke_disarm()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(speak), pick(untipped_announcements))
 
 /mob/living/basic/bot/medbot/nukie/proc/nuke_arm()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(speak), pick(worried_announcements))
 
 /mob/living/basic/bot/medbot/nukie/proc/nuke_detonate()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(speak), pick(emagged_announcements))

@@ -13,6 +13,8 @@
 	max_ammo = 20
 
 /obj/item/ammo_box/magazine/toy/smg/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state]-[LAZYLEN(stored_ammo) ? "full" : "empty"]"
 
@@ -37,10 +39,14 @@
 	max_ammo = 20
 
 /obj/item/ammo_box/magazine/toy/smgm45/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state]-base"
 
 /obj/item/ammo_box/magazine/toy/smgm45/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!LAZYLEN(stored_ammo))
 		return
@@ -65,6 +71,8 @@
 	max_ammo = 50
 
 /obj/item/ammo_box/magazine/toy/m762/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state]-[round(ammo_count(), 10)]"
 

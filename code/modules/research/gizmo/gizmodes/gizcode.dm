@@ -57,6 +57,8 @@
 // We retry generation if the code happened to be invalid
 // Returns TRUE if generation was successful and FALSE otherwise
 /datum/gizmodes/code_crack/proc/generate_code()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	solution.Cut()
 	solution.len = code_length
@@ -69,11 +71,15 @@
 
 // Proc that checks if code is valid or not (matches the restrictions)
 /datum/gizmodes/code_crack/proc/validate_code(list/code)
+	procstart = null
+	src.procstart = null
 	// Restrictions are defined by the subtype
 	return TRUE
 
 // Proc that checks if user input matches the solution
 /datum/gizmodes/code_crack/proc/check_code()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to code_length)
 		if(code_input[i] != solution[i])
 			return FALSE
@@ -81,6 +87,8 @@
 
 // Proc to dispense the reward from the loot table
 /datum/gizmodes/code_crack/proc/dispense_reward(atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	var/loot = pick_weight_recursive(loot_table)
 	new loot(get_turf(holder))
@@ -89,12 +97,16 @@
 // Proc that punishes the user when they go over the attempt limit
 // Technically, user can try to crack the code as many times as they want, as long as they can endure the punishment
 /datum/gizmodes/code_crack/proc/punishment(atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	// Punishment has to be defined by the subtype
 	return
 
 // Proc that produces feedback when the user inputs an incorrect code
 // By default, all of these gizmos tell the user how many attempts are left
 /datum/gizmodes/code_crack/proc/feedback(atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	// This is kind of ass, but there's probably no way around it
 	var/static/list/digit_to_name = list("one", "two", "three", "four", "five", "six", "seven", "eight", "nine")
@@ -105,6 +117,8 @@
 
 // Proc that resets user input
 /datum/gizmodes/code_crack/proc/reset_input()
+	procstart = null
+	src.procstart = null
 	code_input.Cut()
 	code_input.len = code_length // stretch it
 	for(var/i in 1 to code_length)
@@ -115,6 +129,8 @@
 
 // Gizpulse to activate the puzzle
 /datum/gizpulse/activate_puzzle/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	var/datum/gizmodes/code_crack/puzzle_holder = astype(master)
 	if(!puzzle_holder)
 		return
@@ -137,6 +153,8 @@
 // 0000 -> 0000
 // ^		^
 /datum/gizpulse/cycle_position/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	var/datum/gizmodes/code_crack/puzzle_holder = astype(master)
 	if(!puzzle_holder)
 		return
@@ -158,6 +176,8 @@
 //	0000 -> 0100
 //   ^		 ^
 /datum/gizpulse/cycle_digit/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	var/datum/gizmodes/code_crack/puzzle_holder = astype(master)
 	if(!puzzle_holder)
 		return
@@ -180,6 +200,8 @@
 
 // Gizpulse that actually cracks the code
 /datum/gizpulse/try_crack/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	var/datum/gizmodes/code_crack/puzzle_holder = astype(master)
 	if(!puzzle_holder)
 		return
@@ -234,6 +256,8 @@
 	var/dispensed_hardmode = FALSE
 
 /datum/gizmodes/code_crack/tutorial/dispense_reward(atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	if(!dispensed_hardmode)
 		dispensed_hardmode = TRUE
 		// Hard-mode
@@ -241,6 +265,8 @@
 	..()
 
 /datum/gizmodes/code_crack/tutorial/feedback(atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to code_length)
 		if(code_input[i] < solution[i])
 			playsound(holder, "sound/machines/defib/defib_saftyOff.ogg", 100)
@@ -255,6 +281,8 @@
 	..()
 
 /datum/gizmodes/code_crack/tutorial/punishment(atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	// Evil rat
 	new /mob/living/basic/mouse/rat(get_turf(holder))
 
@@ -273,6 +301,8 @@
 
 // All digits must be unique
 /datum/gizmodes/code_crack/moo/validate_code(code)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to code_length)
 		for(var/j in 1 to i-1)
 			if(code[i] == code[j])
@@ -280,10 +310,14 @@
 	return TRUE
 
 /datum/gizmodes/code_crack/moo/generate_code()
+	procstart = null
+	src.procstart = null
 	code_length = rand(min_code_length, max_code_length)
 	return ..()
 
 /datum/gizmodes/code_crack/moo/feedback(atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	var/bulls = 0
 	var/cows = 0
 	for(var/i in 1 to code_length)
@@ -307,6 +341,8 @@
 	..()
 
 /datum/gizmodes/code_crack/moo/punishment(atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	var/obj/item/grenade/syndieminibomb/punishment = new(get_turf(holder))
 	punishment.arm_grenade(null, 5 SECONDS)
 	qdel(holder)

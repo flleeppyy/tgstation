@@ -35,6 +35,8 @@
 		addtimer(CALLBACK(src, PROC_REF(bomb_expired)), expire_time, TIMER_DELETE_ME)
 
 /datum/component/direct_explosive_trap/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	if (!(COMSIG_ATOM_EXAMINE in triggering_signals)) // Maybe you're being extra mean with this one
 		RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examined))
 	RegisterSignals(parent, triggering_signals, PROC_REF(explode))
@@ -43,11 +45,15 @@
 	log_bomber(saboteur, "has set a direct_explosive_trap with severity [explosive_force] on", parent, "to detonate on the signals [english_list(triggering_signals)]", message_admins = (!isnull(saboteur)))
 
 /datum/component/direct_explosive_trap/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ATOM_EXAMINE) + triggering_signals)
 	if (!isnull(saboteur))
 		UnregisterSignal(saboteur, COMSIG_QDELETING)
 
 /datum/component/direct_explosive_trap/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if (isnull(saboteur))
 		return ..()
 	UnregisterSignal(saboteur, COMSIG_QDELETING)
@@ -56,17 +62,23 @@
 
 /// Called if we sit too long without going off
 /datum/component/direct_explosive_trap/proc/bomb_expired()
+	procstart = null
+	src.procstart = null
 	if (!isnull(saboteur))
 		to_chat(saboteur, span_bolddanger("Failure! Your trap didn't catch anyone this time..."))
 	qdel(src)
 
 /// Let people know something is up
 /datum/component/direct_explosive_trap/proc/on_examined(datum/source, mob/user, text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	text += span_holoparasite("It glows with a strange <font color=\"[glow_colour]\">light</font>...")
 
 /// Blow up
 /datum/component/direct_explosive_trap/proc/explode(atom/source, mob/living/victim)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!isliving(victim))
 		return
@@ -85,5 +97,7 @@
 
 /// Don't hang a reference to the person who placed the bomb
 /datum/component/direct_explosive_trap/proc/on_bomber_deleted()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	saboteur = null

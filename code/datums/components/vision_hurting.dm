@@ -6,6 +6,8 @@
 	var/silent
 
 /datum/component/vision_hurting/Initialize(damage_per_second=1, message="Your eyes burn as you look at", silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -16,6 +18,8 @@
 	START_PROCESSING(SSdcs, src)
 
 /datum/component/vision_hurting/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/viewer in viewers(parent))
 		if(viewer.is_blind() || viewer.get_eye_protection() >= damage_per_second)
 			continue

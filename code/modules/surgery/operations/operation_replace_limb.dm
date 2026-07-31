@@ -12,12 +12,18 @@
 	VAR_PRIVATE/list/cached_augment_options
 
 /datum/surgery_operation/limb/replace_limb/get_recommended_tool()
+	procstart = null
+	src.procstart = null
 	return "cybernetic limb"
 
 /datum/surgery_operation/limb/replace_limb/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(/obj/item/bodypart/chest/robot)
 
 /datum/surgery_operation/limb/replace_limb/get_radial_options(obj/item/bodypart/limb, obj/item/tool, operating_zone)
+	procstart = null
+	src.procstart = null
 	var/datum/radial_menu_choice/option = LAZYACCESS(cached_augment_options, tool.type)
 	if(!option)
 		option = new()
@@ -29,6 +35,8 @@
 	return option
 
 /datum/surgery_operation/limb/replace_limb/snowflake_check_availability(obj/item/bodypart/limb, mob/living/surgeon, obj/item/bodypart/tool, operated_zone)
+	procstart = null
+	src.procstart = null
 	if(!surgeon.canUnEquip(tool))
 		return FALSE
 	if(limb.body_zone != tool.body_zone)
@@ -38,9 +46,13 @@
 	return TRUE
 
 /datum/surgery_operation/limb/replace_limb/state_check(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	return !HAS_TRAIT(limb.owner, TRAIT_NO_AUGMENTS) && !(limb.bodypart_flags & BODYPART_UNREMOVABLE)
 
 /datum/surgery_operation/limb/replace_limb/tool_check(obj/item/bodypart/tool)
+	procstart = null
+	src.procstart = null
 	if(tool.item_flags & (ABSTRACT|DROPDEL|HAND_ITEM))
 		return FALSE
 	if(!isbodypart(tool))
@@ -51,6 +63,8 @@
 	return TRUE
 
 /datum/surgery_operation/limb/replace_limb/pre_preop(atom/movable/operating_on, mob/living/surgeon, obj/item/bodypart/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	if(!length(tool.contents))
 		return TRUE
 	// Prevents quickly filling someone with high-tier organs by augmenting them with a pre-stuffed limb
@@ -58,6 +72,8 @@
 	return FALSE
 
 /datum/surgery_operation/limb/replace_limb/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/bodypart/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	// purposefully doesn't use plaintext zone for more context on what is being replaced with what
 	display_results(
 		surgeon,
@@ -69,6 +85,8 @@
 	display_pain(limb.owner, "You feel a horrible pain in your [limb.plaintext_zone]!")
 
 /datum/surgery_operation/limb/replace_limb/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/bodypart/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	if(!surgeon.temporarilyRemoveItemFromInventory(tool))
 		return // should never happen
 

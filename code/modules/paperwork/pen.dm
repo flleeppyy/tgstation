@@ -41,6 +41,8 @@
 	embed_chance = 50
 
 /obj/item/pen/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/dart_insert, \
 		dart_insert_icon, \
@@ -58,10 +60,14 @@
 	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
 /obj/item/pen/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/iron = 2, /datum/reagent/iodine = 1)
 
 /// Proc that child classes can override to have custom transforms, like edaggers or pendrivers
 /obj/item/pen/proc/create_transform_component()
+	procstart = null
+	src.procstart = null
 	AddComponent( \
 		/datum/component/transforming, \
 		sharpness_on = NONE, \
@@ -75,6 +81,8 @@
  * Clicks the pen to make an annoying sound. Clickity clickery click!
  */
 /obj/item/pen/proc/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(user)
@@ -86,9 +94,13 @@
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
 /obj/item/pen/proc/on_inserted_into_dart(datum/source, obj/projectile/dart, mob/user, embedded = FALSE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 /obj/item/pen/proc/get_dart_var_modifiers(obj/projectile/projectile)
+	procstart = null
+	src.procstart = null
 	return list(
 		"damage" = max(5, throwforce),
 		"speed" = max(0, throw_speed - 3),
@@ -100,9 +112,13 @@
 	)
 
 /obj/item/pen/proc/on_removed_from_dart(datum/source, obj/projectile/dart, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 /obj/item/pen/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is scribbling numbers all over [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit sudoku..."))
 	return BRUTELOSS
 
@@ -130,6 +146,8 @@
 	can_click = FALSE
 
 /obj/item/pen/fourcolor/attack_self(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/chosen_color = "black"
 	switch(colour)
@@ -172,6 +190,8 @@
 	can_click = FALSE
 
 /obj/item/pen/charcoal/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/ash = 5, /datum/reagent/cellulose = 10)
 
 /datum/crafting_recipe/charcoal_stylus
@@ -186,11 +206,15 @@
 	abstract_type = /datum/atom_skin/cap_pen
 
 /datum/atom_skin/cap_pen/apply(atom/apply_to, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	apply_to.desc = "It's an expensive [preview_name] fountain pen. The nib is quite sharp."
 	apply_to.update_desc()
 
 /datum/atom_skin/cap_pen/clear_skin(atom/clear_from, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	clear_from.desc = initial(clear_from.desc)
 
@@ -239,6 +263,8 @@
 	embed_chance = 50
 
 /obj/item/pen/fountain/captain/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/butchering, \
@@ -249,9 +275,13 @@
 	RegisterSignal(src, COMSIG_DART_INSERT_PARENT_RESKINNED, PROC_REF(reskin_dart_insert))
 
 /obj/item/pen/fountain/captain/setup_reskins()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/reskinable_item, /datum/atom_skin/cap_pen)
 
 /obj/item/pen/fountain/captain/proc/reskin_dart_insert(datum/component/dart_insert/insert_comp, skin)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(insert_comp)) //You really shouldn't be sending this signal from anything other than a dart_insert component
 		return
@@ -259,6 +289,8 @@
 	insert_comp.projectile_overlay_icon_state = "[overlay_reskin[skin]]_proj"
 
 /obj/item/pen/item_ctrl_click(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(loc != user)
 		to_chat(user, span_warning("You must be holding the pen to continue!"))
 		return CLICK_ACTION_BLOCKING
@@ -271,6 +303,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/pen/attack(mob/living/M, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(force) // If the pen has a force value, call the normal attack procs. Used for e-daggers and captain's pen mostly.
 		return ..()
 	if(!M.try_inject(user, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE))
@@ -281,6 +315,8 @@
 	return TRUE
 
 /obj/item/pen/get_writing_implement_details()
+	procstart = null
+	src.procstart = null
 	if (HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		return null
 	return list(
@@ -295,6 +331,8 @@
  */
 
 /obj/item/pen/sleepy/attack(mob/living/M, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -306,6 +344,8 @@
 
 
 /obj/item/pen/sleepy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(45, OPENCONTAINER)
 	reagents.add_reagent(/datum/reagent/toxin/chloralhydrate, 20)
@@ -313,16 +353,22 @@
 	reagents.add_reagent(/datum/reagent/toxin/staminatoxin, 10)
 
 /obj/item/pen/sleepy/on_inserted_into_dart(datum/source, obj/item/ammo_casing/dart, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/projectile/proj = dart.loaded_projectile
 	RegisterSignal(proj, COMSIG_PROJECTILE_SELF_ON_HIT, PROC_REF(on_dart_hit))
 
 /obj/item/pen/sleepy/on_removed_from_dart(datum/source, obj/item/ammo_casing/dart, obj/projectile/proj, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(proj))
 		UnregisterSignal(proj, COMSIG_PROJECTILE_SELF_ON_HIT)
 
 /obj/item/pen/sleepy/proc/on_dart_hit(datum/source, atom/movable/firer, atom/target, angle, hit_limb, blocked)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/carbon/carbon_target = target
 	if(!istype(carbon_target) || blocked == 100)
@@ -355,6 +401,8 @@
 	var/list/alt_simple = list("stab", "pierce", "shank")
 
 /obj/item/pen/edagger/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	alt_continuous = string_list(alt_continuous)
 	alt_simple = string_list(alt_simple)
@@ -366,6 +414,8 @@
 	RegisterSignal(src, COMSIG_DETECTIVE_SCANNED, PROC_REF(on_scan))
 
 /obj/item/pen/edagger/create_transform_component()
+	procstart = null
+	src.procstart = null
 	AddComponent( \
 		/datum/component/transforming, \
 		force_on = 18, \
@@ -377,6 +427,8 @@
 	)
 
 /obj/item/pen/edagger/on_inserted_into_dart(datum/source, obj/item/ammo_casing/dart, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/component/transforming/transform_comp = GetComponent(/datum/component/transforming)
 	if(HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
@@ -386,6 +438,8 @@
 	RegisterSignal(dart.loaded_projectile, COMSIG_PROJECTILE_ON_SPAWN_EMBEDDED, PROC_REF(on_containing_dart_embedded))
 
 /obj/item/pen/edagger/on_removed_from_dart(datum/source, obj/item/ammo_casing/dart, obj/projectile/projectile, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(dart))
 		UnregisterSignal(dart, list(COMSIG_ITEM_UNEMBEDDED, COMSIG_ITEM_FAILED_EMBED))
@@ -393,6 +447,8 @@
 		UnregisterSignal(projectile, list(COMSIG_PROJECTILE_FIRE, COMSIG_PROJECTILE_ON_SPAWN_DROP, COMSIG_PROJECTILE_ON_SPAWN_EMBEDDED))
 
 /obj/item/pen/edagger/get_dart_var_modifiers()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/component/transforming/transform_comp = GetComponent(/datum/component/transforming)
 	.["damage"] = max(5, transform_comp.throwforce_on)
@@ -401,6 +457,8 @@
 	data.embed_chance = 100
 
 /obj/item/pen/edagger/proc/on_containing_dart_fired(obj/projectile/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	playsound(source, 'sound/items/weapons/saberon.ogg', 5, TRUE)
 	var/datum/component/transforming/transform_comp = GetComponent(/datum/component/transforming)
@@ -408,20 +466,28 @@
 	source.set_light(light_range, light_power, light_color, l_on = TRUE)
 
 /obj/item/pen/edagger/proc/on_containing_dart_drop(datum/source, obj/item/ammo_casing/new_casing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	playsound(new_casing, 'sound/items/weapons/saberoff.ogg', 5, TRUE)
 
 /obj/item/pen/edagger/proc/on_containing_dart_embedded(datum/source, obj/item/ammo_casing/new_casing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	RegisterSignal(new_casing, COMSIG_ITEM_UNEMBEDDED, PROC_REF(on_embedded_removed))
 	RegisterSignal(new_casing, COMSIG_ITEM_FAILED_EMBED, PROC_REF(on_containing_dart_failed_embed))
 
 /obj/item/pen/edagger/proc/on_containing_dart_failed_embed(obj/item/ammo_casing/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	playsound(source, 'sound/items/weapons/saberoff.ogg', 5, TRUE)
 	UnregisterSignal(source, list(COMSIG_ITEM_UNEMBEDDED, COMSIG_ITEM_FAILED_EMBED))
 
 /obj/item/pen/edagger/proc/on_embedded_removed(obj/item/ammo_casing/source, mob/living/carbon/victim)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	playsound(source, 'sound/items/weapons/saberoff.ogg', 5, TRUE)
 	UnregisterSignal(source, list(COMSIG_ITEM_UNEMBEDDED, COMSIG_ITEM_FAILED_EMBED))
@@ -433,6 +499,8 @@
 	)
 
 /obj/item/pen/edagger/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		user.visible_message(span_suicide("[user] forcefully rams the pen into their mouth!"))
 	else
@@ -447,6 +515,8 @@
  * as they're supposed to look like a normal pen.
  */
 /obj/item/pen/edagger/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	if(active)
 		name = hidden_name
 		desc = hidden_desc
@@ -474,6 +544,8 @@
 	embed_chance = 100
 
 /obj/item/pen/edagger/proc/on_scan(datum/source, mob/user, datum/detective_scanner_log/entry)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	entry.add_data_entry(DETSCAN_CATEGORY_ILLEGAL, "Hard-light generator detected.")
@@ -498,18 +570,26 @@
 	can_click = FALSE
 
 /obj/item/pen/survival/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/iron = 2, /datum/reagent/iodine = 1)
 
 /obj/item/pen/survival/on_inserted_into_dart(datum/source, obj/item/ammo_casing/dart, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(dart.loaded_projectile, COMSIG_PROJECTILE_SELF_ON_HIT, PROC_REF(on_dart_hit))
 
 /obj/item/pen/survival/on_removed_from_dart(datum/source, obj/item/ammo_casing/dart, obj/projectile/proj, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(proj))
 		UnregisterSignal(proj, COMSIG_PROJECTILE_SELF_ON_HIT)
 
 /obj/item/pen/survival/proc/on_dart_hit(obj/projectile/source, atom/movable/firer, atom/target)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(target)
 	if(!target_turf)
 		target_turf = get_turf(src)
@@ -533,13 +613,19 @@
 	dart_insert_projectile_icon_state = "overlay_pendriver"
 
 /obj/item/pen/screwdriver/get_all_tool_behaviours()
+	procstart = null
+	src.procstart = null
 	return list(TOOL_SCREWDRIVER)
 
 /obj/item/pen/screwdriver/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 
 /obj/item/pen/screwdriver/create_transform_component()
+	procstart = null
+	src.procstart = null
 	AddComponent( \
 		/datum/component/transforming, \
 		throwforce_on = 5, \
@@ -549,6 +635,8 @@
 	)
 
 /obj/item/pen/screwdriver/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	if(user)
 		balloon_alert(user, active ? "extended" : "retracted")
 	playsound(src, 'sound/items/weapons/batonextend.ogg', 50, TRUE)
@@ -564,6 +652,8 @@
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
 /obj/item/pen/screwdriver/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[initial(icon_state)][HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE) ? "_out" : null]"
 	inhand_icon_state = initial(inhand_icon_state) //since transforming component switches the icon.
@@ -577,11 +667,15 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT)
 
 /obj/item/pen/red/security/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("To initiate the surrender prompt, simply click on an individual within your proximity.")
 
 //Code from the medical penlight
 /obj/item/pen/red/security/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, holosign_cooldown))
 		balloon_alert(user, "not ready!")
 		return ITEM_INTERACT_BLOCKING
@@ -605,6 +699,8 @@
 	duration = 60
 
 /obj/effect/temp_visual/security_holosign/Initialize(mapload, creator)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(loc, 'sound/machines/chime.ogg', 50, FALSE) //make some noise!
 	if(creator)

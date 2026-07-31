@@ -25,6 +25,8 @@ GLOBAL_LIST_EMPTY(test_run_times)
 GLOBAL_VAR_INIT(focused_tests, focused_tests())
 
 /proc/focused_tests()
+	procstart = null
+	src.procstart = null
 	var/list/focused_tests = list()
 	for (var/datum/unit_test/unit_test as anything in subtypesof(/datum/unit_test))
 		if (unit_test::test_flags & UNIT_TEST_FOCUS)
@@ -63,9 +65,13 @@ GLOBAL_VAR_INIT(focused_tests, focused_tests())
 	var/normal_floor_required = FALSE
 
 /proc/cmp_unit_test_priority(datum/unit_test/a, datum/unit_test/b)
+	procstart = null
+	src.procstart = null
 	return initial(a.priority) - initial(b.priority)
 
 /datum/unit_test/New()
+	procstart = null
+	src.procstart = null
 	if (isnull(reservation))
 		var/datum/map_template/unit_tests/template = new
 		reservation = template.load_new_z()
@@ -90,6 +96,8 @@ GLOBAL_VAR_INIT(focused_tests, focused_tests())
 			turf.ChangeTurf(/turf/open/floor)
 
 /datum/unit_test/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(allocated)
 	// clear the test area
 	for (var/turf/turf in Z_TURFS(run_loc_floor_bottom_left.z))
@@ -103,9 +111,13 @@ GLOBAL_VAR_INIT(focused_tests, focused_tests())
 	return ..()
 
 /datum/unit_test/proc/Run()
+	procstart = null
+	src.procstart = null
 	TEST_FAIL("[type]/Run() called parent or not implemented")
 
 /datum/unit_test/proc/Fail(reason = "No reason", file = "OUTDATED_TEST", line = 1)
+	procstart = null
+	src.procstart = null
 	succeeded = FALSE
 
 	if(!istext(reason))
@@ -116,6 +128,8 @@ GLOBAL_VAR_INIT(focused_tests, focused_tests())
 /// Allocates an instance of the provided type, and places it somewhere in an available loc
 /// Instances allocated through this proc will be destroyed when the test is over
 /datum/unit_test/proc/allocate(type, ...)
+	procstart = null
+	src.procstart = null
 	if(priority > TEST_CREATE_AND_DESTROY) //I'm not using TEST_ASSERT here since these are just numbers that tell nothing useful about the problem.
 		TEST_FAIL("allocate() was called for a unit test after 'create_and_destroy' has finished. The unit test room is no longer a reliable testing ground for atoms.")
 		return null //you deserve runtime errors for it
@@ -136,6 +150,8 @@ GLOBAL_VAR_INIT(focused_tests, focused_tests())
 
 /// Resets the air of our testing room to its default
 /datum/unit_test/proc/restore_atmos()
+	procstart = null
+	src.procstart = null
 	var/area/working_area = run_loc_floor_bottom_left.loc
 	var/list/turf/to_restore = working_area.get_turfs_from_all_zlevels()
 	for(var/turf/open/restore in to_restore)
@@ -145,6 +161,8 @@ GLOBAL_VAR_INIT(focused_tests, focused_tests())
 		restore.air_update_turf(update = FALSE, remove = FALSE)
 
 /datum/unit_test/proc/test_screenshot(name, icon/icon)
+	procstart = null
+	src.procstart = null
 	if (!istype(icon))
 		TEST_FAIL("[icon] is not an icon.")
 		return
@@ -173,6 +191,8 @@ GLOBAL_VAR_INIT(focused_tests, focused_tests())
 
 /// Helper for screenshot tests to take an image of an atom from all directions and insert it into one icon
 /datum/unit_test/proc/get_flat_icon_for_all_directions(atom/thing, no_anim = TRUE)
+	procstart = null
+	src.procstart = null
 	var/icon/output = icon('icons/effects/effects.dmi', "nothing")
 
 	for (var/direction in GLOB.cardinals)
@@ -183,6 +203,8 @@ GLOBAL_VAR_INIT(focused_tests, focused_tests())
 
 /// Logs a test message. Will use GitHub action syntax found at https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions
 /datum/unit_test/proc/log_for_test(text, priority, file, line)
+	procstart = null
+	src.procstart = null
 	var/map_name = SSmapping.current_map.map_name
 
 	// Need to escape the text to properly support newlines.
@@ -199,11 +221,15 @@ GLOBAL_VAR_INIT(focused_tests, focused_tests())
  * * passed_params: A list of parameters to pass to the click
  */
 /datum/unit_test/proc/click_wrapper(mob/living/clicker, atom/clicked_on, list/passed_params = list(LEFT_CLICK = 1, BUTTON = LEFT_CLICK))
+	procstart = null
+	src.procstart = null
 	clicker.next_click = -1
 	clicker.next_move = -1
 	clicker.ClickOn(clicked_on, list2params(passed_params))
 
 /proc/RunUnitTest(datum/unit_test/test_path, list/test_results)
+	procstart = null
+	src.procstart = null
 	if(ispath(test_path, /datum/unit_test/focus_only))
 		return
 
@@ -269,6 +295,8 @@ GLOBAL_VAR_INIT(focused_tests, focused_tests())
 /// Builds (and returns) a list of atoms that we shouldn't initialize in generic testing, like Create and Destroy.
 /// It is appreciated to add the reason why the atom shouldn't be initialized if you add it to this list.
 /datum/unit_test/proc/build_list_of_uncreatables()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 	// The following are just generic, singular types
 	var/list/returnable_list = list(
@@ -376,6 +404,8 @@ GLOBAL_VAR_INIT(focused_tests, focused_tests())
 	return returnable_list
 
 /proc/RunUnitTests()
+	procstart = null
+	src.procstart = null
 	CHECK_TICK
 
 	// Find our primary unit test map & find out if we are the secondary

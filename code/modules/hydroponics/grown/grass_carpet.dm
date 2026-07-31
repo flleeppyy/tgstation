@@ -31,6 +31,8 @@
 	wine_power = 15
 
 /obj/item/food/grown/grass/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You prepare the astroturf."))
 	var/grassAmt = 1 + round(seed.potency * tile_coefficient) // The grass we're holding
 	for(var/obj/item/food/grown/grass/G in user.loc) // The grass on the floor
@@ -42,6 +44,8 @@
 	qdel(src)
 
 /obj/item/food/grown/grass/make_dryable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/dryable, /obj/item/stack/tile/hay)
 
 //Fairygrass

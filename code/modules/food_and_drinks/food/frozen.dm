@@ -47,6 +47,8 @@
 	crafted_food_buff = /datum/status_effect/food/chilling
 
 /obj/item/food/spacefreezy/make_edible()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ice_cream_holder)
 
@@ -67,6 +69,8 @@
 	crafted_food_buff = /datum/status_effect/food/chilling
 
 /obj/item/food/sundae/make_edible()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ice_cream_holder, y_offset = -2, sweetener = /datum/reagent/consumable/caramel)
 
@@ -87,6 +91,8 @@
 	crafted_food_buff = /datum/status_effect/food/chilling
 
 /obj/item/food/honkdae/make_edible()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ice_cream_holder, y_offset = -2) //The sugar will react with the banana forming laughter. Honk!
 
@@ -111,6 +117,8 @@
 	crafted_food_buff = /datum/status_effect/food/chilling
 
 /obj/item/food/snowcones/on_craft_completion(list/components, datum/crafting_recipe/food/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// replaces the ice from the input with water
 	reagents.remove_reagent(/datum/reagent/consumable/ice, 15)
@@ -352,15 +360,21 @@
 
 
 /obj/item/food/popsicle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	bite_consumption = reagents.total_volume / bite_states
 	update_icon() // make sure the popsicle overlay is primed so it's not just a stick until you start eating it
 
 /obj/item/food/popsicle/make_edible()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponentFrom(SOURCE_EDIBLE_INNATE, /datum/component/edible, after_eat = CALLBACK(src, PROC_REF(after_bite)))
 
 /obj/item/food/popsicle/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!bitecount)
 		. += initial(overlay_state)
@@ -368,6 +382,8 @@
 	. += "[initial(overlay_state)]_[min(bitecount, 3)]"
 
 /obj/item/food/popsicle/proc/after_bite(mob/living/eater, mob/living/feeder, bitecount)
+	procstart = null
+	src.procstart = null
 	src.bitecount = bitecount
 	update_appearance()
 

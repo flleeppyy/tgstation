@@ -10,6 +10,8 @@
  */
 
 /proc/find_maintenance_spawn(atmos_sensitive = FALSE, require_darkness = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/possible_spawns = list()
 	for(var/spawn_location in GLOB.generic_maintenance_landmarks)
 		var/turf/spawn_turf = get_turf(spawn_location)
@@ -35,6 +37,8 @@
  */
 
 /proc/find_space_spawn()
+	procstart = null
+	src.procstart = null
 	var/list/possible_spawns = list()
 	for(var/obj/effect/landmark/carpspawn/spawn_location in GLOB.landmarks_list)
 		if(!isturf(spawn_location.loc))
@@ -49,6 +53,8 @@
 
 /// Finds us all suitable vent spawn locations on the station.
 /proc/find_vent_spawns()
+	procstart = null
+	src.procstart = null
 	var/list/vents = list()
 	var/list/vent_pumps = SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/atmospherics/components/unary/vent_pump)
 	for(var/obj/machinery/atmospherics/components/unary/vent_pump/temp_vent as anything in vent_pumps)
@@ -67,18 +73,24 @@
 	return vents
 
 /proc/force_event(event_typepath, cause)
+	procstart = null
+	src.procstart = null
 	var/datum/round_event_control/our_event = locate(event_typepath) in SSevents.control
 	if(!our_event)
 		CRASH("Attempted to force event [event_typepath], but the event path could not be found!")
 	our_event.run_event(event_cause = cause)
 
 /proc/force_event_async(event_typepath, cause)
+	procstart = null
+	src.procstart = null
 	var/datum/round_event_control/our_event = locate(event_typepath) in SSevents.control
 	if(!our_event)
 		CRASH("Attempted to force event [event_typepath], but the event path could not be found!")
 	INVOKE_ASYNC(our_event, TYPE_PROC_REF(/datum/round_event_control, run_event), event_cause = cause)
 
 /proc/force_event_after(event_typepath, cause, duration)
+	procstart = null
+	src.procstart = null
 	var/datum/round_event_control/our_event = locate(event_typepath) in SSevents.control
 	if(!our_event)
 		CRASH("Attempted to force event [event_typepath], but the event path could not be found!")
@@ -86,6 +98,8 @@
 
 //Request a color in line with the current holiday or station traits of the station (or not if RANDOM/RAINBOW patterns are used.
 /proc/request_decoration_colors(atom/thing_to_color, pattern, skip_station_trait = FALSE)
+	procstart = null
+	src.procstart = null
 	switch(pattern)
 		if(PATTERN_RANDOM)
 			return "#[random_short_color()]"
@@ -106,6 +120,8 @@
 
 /// Proc to return colors for recoloring atoms based on a pattern and the position of the atom. Primarily used by holidays
 /proc/get_decoration_color_from_pattern(atom/thing_to_color, pattern = PATTERN_DEFAULT, list/colors)
+	procstart = null
+	src.procstart = null
 	if(!length(colors))
 		return
 	switch(pattern)

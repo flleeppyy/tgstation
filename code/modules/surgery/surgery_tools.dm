@@ -18,6 +18,8 @@
 	var/surgical_tray_overlay = "retractor_normal"
 
 /obj/item/retractor/get_surgery_tool_overlay(tray_extended)
+	procstart = null
+	src.procstart = null
 	return surgical_tray_overlay
 
 /obj/item/retractor/augment
@@ -51,6 +53,8 @@
 	var/surgical_tray_overlay = "hemostat_normal"
 
 /obj/item/hemostat/get_surgery_tool_overlay(tray_extended)
+	procstart = null
+	src.procstart = null
 	return surgical_tray_overlay
 
 /obj/item/hemostat/augment
@@ -85,9 +89,13 @@
 	var/surgical_tray_overlay = "cautery_normal"
 
 /obj/item/cautery/get_surgery_tool_overlay(tray_extended)
+	procstart = null
+	src.procstart = null
 	return surgical_tray_overlay
 
 /obj/item/cautery/ignition_effect(atom/ignitable_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	return span_rose("[user] touches the end of [src] to \the [ignitable_atom], igniting it with a puff of smoke.")
 
 /obj/item/cautery/augment
@@ -118,9 +126,13 @@
 	light_color = COLOR_SOFT_RED
 
 /obj/item/cautery/advanced/get_all_tool_behaviours()
+	procstart = null
+	src.procstart = null
 	return list(TOOL_CAUTERY, TOOL_DRILL)
 
 /obj/item/cautery/advanced/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/transforming, \
@@ -138,6 +150,8 @@
  * Toggles between drill and cautery and gives feedback to the user.
  */
 /obj/item/cautery/advanced/proc/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(active)
@@ -152,6 +166,8 @@
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
 /obj/item/cautery/advanced/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It's set to [tool_behaviour == TOOL_CAUTERY ? "mending" : "drilling"] mode.")
 
@@ -182,13 +198,19 @@
 	var/surgical_tray_overlay = "drill_normal"
 
 /obj/item/surgicaldrill/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/eyestab)
 
 /obj/item/surgicaldrill/get_surgery_tool_overlay(tray_extended)
+	procstart = null
+	src.procstart = null
 	return surgical_tray_overlay
 
 /obj/item/surgicaldrill/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] rams [src] into [user.p_their()] chest! It looks like [user.p_theyre()] trying to commit suicide!"))
 	addtimer(CALLBACK(user, TYPE_PROC_REF(/mob/living/carbon, gib), DROP_ALL_REMAINS), 2.5 SECONDS)
 	user.SpinAnimation(3, 10)
@@ -238,6 +260,8 @@
 	var/list/alt_simple = list("stab", "pierce", "impale")
 
 /obj/item/scalpel/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/butchering, \
 	speed = 8 SECONDS * toolspeed, \
@@ -250,9 +274,13 @@
 	AddComponent(/datum/component/alternative_sharpness, SHARP_POINTY, alt_continuous, alt_simple)
 
 /obj/item/scalpel/get_surgery_tool_overlay(tray_extended)
+	procstart = null
+	src.procstart = null
 	return surgical_tray_overlay
 
 /obj/item/scalpel/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is slitting [user.p_their()] [pick("wrists", "throat", "stomach")] with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 
@@ -295,6 +323,8 @@
 	var/surgical_tray_overlay = "saw_normal"
 
 /obj/item/circular_saw/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/butchering, \
 	speed = 4 SECONDS * toolspeed, \
@@ -311,6 +341,8 @@
 	)
 
 /obj/item/circular_saw/get_surgery_tool_overlay(tray_extended)
+	procstart = null
+	src.procstart = null
 	return surgical_tray_overlay
 
 /obj/item/circular_saw/cyborg
@@ -342,6 +374,8 @@
 	custom_materials = list(/datum/material/plastic = SHEET_MATERIAL_AMOUNT)
 
 /obj/item/surgical_drapes/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/surgery_aid, name)
 
@@ -361,10 +395,14 @@
 	var/downloaded = TRUE
 
 /obj/item/surgical_processor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/surgery_aid, /obj/item/surgical_drapes::name) // i guess it's a drape dispenser
 
 /obj/item/surgical_processor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Equip the processor in one of your active modules to access downloaded advanced surgeries.")
 	. += span_boldnotice("Advanced surgeries available:")
@@ -375,6 +413,8 @@
 	. += span_notice("[english_list(surgeries_names)]")
 
 /obj/item/surgical_processor/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(slot & ITEM_SLOT_HANDS))
 		UnregisterSignal(user, COMSIG_LIVING_OPERATING_ON)
@@ -382,10 +422,14 @@
 	RegisterSignal(user, COMSIG_LIVING_OPERATING_ON, PROC_REF(check_surgery), override = TRUE)
 
 /obj/item/surgical_processor/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, COMSIG_LIVING_OPERATING_ON)
 
 /obj/item/surgical_processor/interact_with_atom(atom/design_holder, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(design_holder, /obj/item/disk/surgery) && !istype(design_holder, /obj/machinery/computer/operating))
 		return NONE
 	balloon_alert(user, "copying designs...")
@@ -404,11 +448,15 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/surgical_processor/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(downloaded)
 		. += mutable_appearance(src.icon, "+downloaded")
 
 /obj/item/surgical_processor/proc/check_surgery(datum/source, atom/movable/operating_on, list/operations)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	operations |= loaded_surgeries
@@ -434,9 +482,13 @@
 	item_flags = parent_type::item_flags | NO_BLOOD_ON_ITEM
 
 /obj/item/scalpel/advanced/get_all_tool_behaviours()
+	procstart = null
+	src.procstart = null
 	return list(TOOL_SAW, TOOL_SCALPEL)
 
 /obj/item/scalpel/advanced/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/transforming, \
@@ -456,6 +508,8 @@
  * Toggles between saw and scalpel and updates the light / gives feedback to the user.
  */
 /obj/item/scalpel/advanced/proc/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(active)
@@ -470,6 +524,8 @@
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
 /obj/item/scalpel/advanced/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It's set to [tool_behaviour == TOOL_SCALPEL ? "scalpel" : "saw"] mode.")
 
@@ -488,9 +544,13 @@
 	toolspeed = 0.7
 
 /obj/item/retractor/advanced/get_all_tool_behaviours()
+	procstart = null
+	src.procstart = null
 	return list(TOOL_HEMOSTAT, TOOL_RETRACTOR)
 
 /obj/item/retractor/advanced/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/transforming, \
@@ -508,6 +568,8 @@
  * Toggles between retractor and hemostat and gives feedback to the user.
  */
 /obj/item/retractor/advanced/proc/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	tool_behaviour = (active ? TOOL_HEMOSTAT : TOOL_RETRACTOR)
@@ -516,6 +578,8 @@
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
 /obj/item/retractor/advanced/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It resembles a [tool_behaviour == TOOL_RETRACTOR ? "retractor" : "hemostat"].")
 
@@ -540,6 +604,8 @@
 	custom_premium_price = PAYCHECK_CREW * 14
 
 /obj/item/shears/attack(mob/living/amputee, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(amputee) || user.combat_mode)
 		return ..()
 
@@ -596,6 +662,8 @@
 		user.add_mood_event("morbid_dismemberment", /datum/mood_event/morbid_dismemberment)
 
 /obj/item/shears/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is pinching [user.p_them()]self with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	var/timer = 1 SECONDS
 	for(var/obj/item/bodypart/thing in user.get_bodyparts())
@@ -626,6 +694,8 @@
 	var/surgical_tray_overlay = "bonesetter"
 
 /obj/item/bonesetter/get_surgery_tool_overlay(tray_extended)
+	procstart = null
+	src.procstart = null
 	return surgical_tray_overlay + (tray_extended ? "" : "_out")
 
 /obj/item/bonesetter/cyborg
@@ -655,15 +725,21 @@
 	var/surgical_tray_overlay = "filter"
 
 /obj/item/blood_filter/get_surgery_tool_overlay(tray_extended)
+	procstart = null
+	src.procstart = null
 	return surgical_tray_overlay
 
 /obj/item/blood_filter/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "BloodFilter", name)
 		ui.open()
 
 /obj/item/blood_filter/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	.["whitelist"] = list()
@@ -671,6 +747,8 @@
 		.["whitelist"] += whitelist[key]
 
 /obj/item/blood_filter/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -735,6 +813,8 @@
 	item_flags = SURGICAL_TOOL | CRUEL_IMPLEMENT
 
 /obj/item/scalpel/cruel/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/bane, affected_biotypes = MOB_UNDEAD, damage_multiplier = 2) //Just in case one of the tennants get uppity
 

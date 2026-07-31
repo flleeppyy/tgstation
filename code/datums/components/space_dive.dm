@@ -14,6 +14,8 @@
 	var/diveable_decal = /obj/effect/decal/cleanable/vomit/nebula
 
 /datum/component/space_dive/Initialize(jaunt_type)
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -23,6 +25,8 @@
 	RegisterSignal(parent, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(on_unarmed_attack))
 
 /datum/component/space_dive/proc/bump(mob/living/parent, atom/bumped)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(get_turf(parent), diveable_turf))
@@ -39,12 +43,16 @@
 	INVOKE_ASYNC(src, PROC_REF(attempt_dive), parent, bumped)
 
 /datum/component/space_dive/proc/attempt_dive(mob/living/parent, atom/bumped)
+	procstart = null
+	src.procstart = null
 	if(!do_after(parent, dive_time, bumped))
 		return
 
 	dive(bumped)
 
 /datum/component/space_dive/proc/dive(atom/bumped)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/dummy/phased_mob/jaunt = new jaunt_type(get_turf(bumped), parent)
 
 	var/mob/living/diver = parent
@@ -58,6 +66,8 @@
 	SEND_SIGNAL(parent, COMSIG_MOB_ENTER_JAUNT, src, jaunt)
 
 /datum/component/space_dive/proc/move_check(obj/effect/dummy/phased_mob/jaunt, mob/living/parent, turf/new_turf)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(new_turf, diveable_turf) && !(locate(diveable_decal) in new_turf))
@@ -68,6 +78,8 @@
 
 /// try and surface by doing a do_after
 /datum/component/space_dive/proc/attempt_surface(mob/living/parent, turf/new_turf)
+	procstart = null
+	src.procstart = null
 	if(do_after(parent, surface_time, new_turf, extra_checks = CALLBACK(src, PROC_REF(check_if_moved), parent, get_turf(parent))))
 		var/decal = locate(diveable_decal) in new_turf
 
@@ -79,9 +91,13 @@
 
 // we check if we moved for the do_after, since relayed movements arent caught that well by the do_after
 /datum/component/space_dive/proc/check_if_moved(mob/living/parent, turf/do_after_turf)
+	procstart = null
+	src.procstart = null
 	return get_turf(parent) == do_after_turf
 
 /datum/component/space_dive/proc/surface(atom/holder, mob/living/parent, turf/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/effect/dummy/phased_mob/jaunt = parent.loc
@@ -97,6 +113,8 @@
 	SEND_SIGNAL(parent, COMSIG_MOB_AFTER_EXIT_JAUNT, src)
 
 /datum/component/space_dive/proc/on_unarmed_attack(mob/living/source, atom/target, proximity, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(target, diveable_decal))
@@ -104,6 +122,8 @@
 		return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/component/space_dive/proc/try_enter(mob/living/source, atom/movable/decal)
+	procstart = null
+	src.procstart = null
 	if(!do_after(source, 1 SECONDS, decal))
 		return
 

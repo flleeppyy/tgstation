@@ -21,11 +21,15 @@
 	var/max_volume = 200
 
 /obj/machinery/plumbing/acclimator/Initialize(mapload, layer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/plumbing/acclimator, layer)
 	RegisterSignal(reagents, COMSIG_REAGENTS_HOLDER_UPDATED, PROC_REF(clear))
 
 /obj/machinery/plumbing/acclimator/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	icon_state = base_icon_state
@@ -43,18 +47,24 @@
 			icon_state += "_empty"
 
 /obj/machinery/plumbing/acclimator/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == ITEM_INTERACT_SUCCESS)
 		acclimate_state = AC_FILLING
 		update_appearance(UPDATE_ICON_STATE)
 
 /obj/machinery/plumbing/acclimator/plunger_act(obj/item/plunger/attacking_plunger, mob/living/user, reinforced)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		acclimate_state = AC_FILLING
 		update_appearance(UPDATE_ICON_STATE)
 
 /obj/machinery/plumbing/acclimator/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!is_operational || !reagents.total_volume || acclimate_state == AC_FILLING || acclimate_state == AC_EMPTYING)
 		return
 
@@ -78,6 +88,8 @@
 		update_appearance(UPDATE_ICON_STATE)
 
 /obj/machinery/plumbing/acclimator/proc/clear()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(acclimate_state == AC_EMPTYING && !reagents.total_volume)
@@ -86,12 +98,16 @@
 		update_appearance(UPDATE_ICON_STATE)
 
 /obj/machinery/plumbing/acclimator/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ChemAcclimator", name)
 		ui.open()
 
 /obj/machinery/plumbing/acclimator/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		chem_temp = round(reagents.chem_temp, TEMP_ROUNDING),
 		target_temperature = target_temperature,
@@ -100,6 +116,8 @@
 	)
 
 /obj/machinery/plumbing/acclimator/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

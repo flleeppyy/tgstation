@@ -15,11 +15,15 @@
 	)
 
 /datum/proximity_monitor/New(atom/_host, range, _ignore_if_not_on_turf = TRUE)
+	procstart = null
+	src.procstart = null
 	ignore_if_not_on_turf = _ignore_if_not_on_turf
 	current_range = range
 	set_host(_host)
 
 /datum/proximity_monitor/proc/set_host(atom/new_host, atom/new_receiver)
+	procstart = null
+	src.procstart = null
 	if(new_host == host)
 		return
 	if(host) //No need to delete the connect range and containers comps. They'll be updated with the new tracked host.
@@ -41,15 +45,21 @@
 	set_range(current_range, TRUE)
 
 /datum/proximity_monitor/proc/on_host_or_receiver_del(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /datum/proximity_monitor/Destroy()
+	procstart = null
+	src.procstart = null
 	host = null
 	hasprox_receiver = null
 	return ..()
 
 /datum/proximity_monitor/proc/set_range(range, force_rebuild = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!force_rebuild && range == current_range)
 		return FALSE
 	. = TRUE
@@ -59,32 +69,44 @@
 	AddComponent(/datum/component/connect_range, host, loc_connections, range, !ignore_if_not_on_turf)
 
 /datum/proximity_monitor/proc/on_moved(atom/movable/source, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(source == host)
 		hasprox_receiver?.HasProximity(host)
 
 /datum/proximity_monitor/proc/on_z_change()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return
 
 /datum/proximity_monitor/proc/set_ignore_if_not_on_turf(does_ignore = TRUE)
+	procstart = null
+	src.procstart = null
 	if(ignore_if_not_on_turf == does_ignore)
 		return
 	ignore_if_not_on_turf = does_ignore
 	//Update the ignore_if_not_on_turf
 	AddComponent(/datum/component/connect_range, host, loc_connections, current_range, ignore_if_not_on_turf)
 
-/datum/proximity_monitor/proc/on_uncrossed(atom/source, atom/movable/gone, direction) //Used by the advanced subtype for effect fields.
+/datum/proximity_monitor/proc/on_uncrossed(atom/source, atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null //Used by the advanced subtype for effect fields.
 	SIGNAL_HANDLER
 	if(source != host)
 		hasprox_receiver?.OnProximityExit(gone)
 
 /datum/proximity_monitor/proc/on_entered(atom/source, atom/movable/arrived, turf/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(source != host)
 		hasprox_receiver?.HasProximity(arrived)
 
 /datum/proximity_monitor/proc/on_initialized(turf/location, atom/created, init_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(location != host)
 		hasprox_receiver?.HasProximity(created)

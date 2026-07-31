@@ -37,6 +37,8 @@
 		The ethics behind having this implant are questionable. The efficacy of the implant itself is not."
 
 /obj/item/implant/exile/noteleport/implant(mob/living/target, mob/user, silent = FALSE, force = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !isliving(target))
 		return FALSE
@@ -45,6 +47,8 @@
 	return TRUE
 
 /obj/item/implant/exile/noteleport/removed(mob/target, silent = FALSE, special = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !isliving(target))
 		return FALSE

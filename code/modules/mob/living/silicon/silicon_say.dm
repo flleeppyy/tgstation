@@ -1,4 +1,6 @@
 /mob/living/proc/robot_talk(message, list/spans = list(), list/message_mods = list())
+	procstart = null
+	src.procstart = null
 	log_sayverb_talk(message, message_mods, tag="binary")
 
 	var/designation = "Default Cyborg"
@@ -79,12 +81,16 @@
 			)
 
 /mob/living/silicon/binarycheck()
+	procstart = null
+	src.procstart = null
 	var/area/our_area = get_area(src)
 	if(our_area.area_flags & BINARY_JAMMING)
 		return FALSE
 	return TRUE
 
 /mob/living/silicon/radio(message, list/message_mods = list(), list/spans, language)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		do_tts_message(message, language, message_mods, list(), list())

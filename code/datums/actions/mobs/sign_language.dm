@@ -17,9 +17,13 @@
 	owner_has_control = FALSE
 
 /datum/action/innate/sign_language/is_action_active(atom/movable/screen/movable/action_button/current_button)
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(owner, TRAIT_SIGN_LANG)
 
 /datum/action/innate/sign_language/Grant(mob/living/carbon/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!owner)
 		return
@@ -36,6 +40,8 @@
 		show_action()
 
 /datum/action/innate/sign_language/Remove(mob/living/carbon/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(grant_to, list(
 		SIGNAL_ADDTRAIT(TRAIT_SIGN_LANG),
@@ -46,12 +52,16 @@
 	REMOVE_TRAIT(grant_to, TRAIT_SIGN_LANG, ACTION_TRAIT)
 
 /datum/action/innate/sign_language/Activate()
+	procstart = null
+	src.procstart = null
 	active = TRUE
 	ADD_TRAIT(owner, TRAIT_SIGN_LANG, ACTION_TRAIT)
 	to_chat(owner, span_green("You are now communicating with sign language."))
 	build_all_button_icons(UPDATE_BUTTON_BACKGROUND)
 
 /datum/action/innate/sign_language/Deactivate()
+	procstart = null
+	src.procstart = null
 	active = FALSE
 	REMOVE_TRAIT(owner, TRAIT_SIGN_LANG, ACTION_TRAIT)
 	to_chat(owner, span_green("You have stopped using sign language."))
@@ -59,6 +69,8 @@
 
 /// Shows the linked action to the owner Carbon.
 /datum/action/innate/sign_language/proc/show_action()
+	procstart = null
+	src.procstart = null
 	owner_has_control = TRUE
 	RegisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_SIGN_LANG), PROC_REF(update_status_on_signal))
 	RegisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_SIGN_LANG), PROC_REF(update_status_on_signal))
@@ -66,6 +78,8 @@
 
 /// Hides the linked action from the owner Carbon.
 /datum/action/innate/sign_language/proc/hide_action()
+	procstart = null
+	src.procstart = null
 	owner_has_control = FALSE
 	UnregisterSignal(owner, list(
 		SIGNAL_ADDTRAIT(TRAIT_SIGN_LANG),
@@ -76,6 +90,8 @@
 /// Signal handler for SIGNAL_ADDTRAIT(TRAIT_MUTE)
 /// Hides the action if the signing Carbon gains TRAIT_MUTE.
 /datum/action/innate/sign_language/proc/on_muted()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	hide_action()
@@ -86,6 +102,8 @@
 /// Signal handler for SIGNAL_REMOVETRAIT(TRAIT_MUTE)
 /// Re-shows the action if the signing Carbon loses TRAIT_MUTE.
 /datum/action/innate/sign_language/proc/on_unmuted()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	show_action()

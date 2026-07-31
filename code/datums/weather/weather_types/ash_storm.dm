@@ -51,6 +51,8 @@
 	var/gravity_power = -12
 
 /particles/weather/ash_storm/animate_severity(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (length(gravity) > 1)
 		gravity[2] = gravity_power * severity
@@ -77,9 +79,13 @@
 	gravity_power = -2
 
 /datum/weather/particle/ash_storm/get_playlist_ref()
+	procstart = null
+	src.procstart = null
 	return GLOB.ash_storm_sounds
 
 /datum/weather/particle/ash_storm/telegraph()
+	procstart = null
+	src.procstart = null
 	for(var/area/impacted_area as anything in impacted_areas)
 		if(impacted_area.outdoors)
 			weak_sounds[impacted_area] = /datum/looping_sound/weak_outside_ashstorm
@@ -94,16 +100,22 @@
 	return ..()
 
 /datum/weather/particle/ash_storm/start()
+	procstart = null
+	src.procstart = null
 	GLOB.ash_storm_sounds -= weak_sounds
 	GLOB.ash_storm_sounds += strong_sounds
 	return ..()
 
 /datum/weather/particle/ash_storm/wind_down()
+	procstart = null
+	src.procstart = null
 	GLOB.ash_storm_sounds -= strong_sounds
 	GLOB.ash_storm_sounds += weak_sounds
 	return ..()
 
 /datum/weather/particle/ash_storm/recursive_weather_protection_check(atom/to_check)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !ishuman(to_check))
 		return
@@ -112,10 +124,14 @@
 		return TRUE
 
 /datum/weather/particle/ash_storm/weather_act_mob(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	victim.adjust_fire_loss(4, required_bodytype = BODYTYPE_ORGANIC)
 	return ..()
 
 /datum/weather/particle/ash_storm/end()
+	procstart = null
+	src.procstart = null
 	GLOB.ash_storm_sounds -= weak_sounds
 	GLOB.ash_storm_sounds -= strong_sounds
 	for(var/turf/open/misc/asteroid/basalt/basalt as anything in GLOB.dug_up_basalt)

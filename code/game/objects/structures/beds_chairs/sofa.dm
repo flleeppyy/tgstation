@@ -23,17 +23,23 @@ path/corner/color_name {\
 	has_armrest = TRUE
 
 /obj/structure/chair/sofa/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/soft_landing)
 
 /obj/structure/chair/sofa/electrify_self(obj/item/assembly/shock_kit/input_shock_kit, mob/user, list/overlays_from_child_procs)
+	procstart = null
+	src.procstart = null
 	if(!overlays_from_child_procs)
 		var/mutable_appearance/echair_overlay = mutable_appearance('icons/obj/chairs.dmi', "echair_over", OBJ_LAYER, src, appearance_flags = KEEP_APART)
 		echair_overlay.pixel_x = -1
 		overlays_from_child_procs = list(echair_overlay)
 	. = ..()
 
-/obj/structure/chair/sofa/corner/handle_layer() //only the armrest/back of this chair should cover the mob.
+/obj/structure/chair/sofa/corner/handle_layer()
+	procstart = null
+	src.procstart = null //only the armrest/back of this chair should cover the mob.
 	return
 
 /obj/structure/chair/sofa/middle
@@ -53,21 +59,29 @@ COLORED_SOFA(/obj/structure/chair/sofa, maroon, SOFA_MAROON)
 
 // Make crafted brown sofas use the "retro sofa" display name without changing map-spawned ones.
 /obj/structure/chair/sofa/middle/brown/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		name = "retro sofa"
 
 /obj/structure/chair/sofa/left/brown/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		name = "retro sofa"
 
 /obj/structure/chair/sofa/right/brown/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		name = "retro sofa"
 
 /obj/structure/chair/sofa/corner/brown/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		name = "retro sofa"
@@ -87,7 +101,9 @@ COLORED_SOFA(/obj/structure/chair/sofa, maroon, SOFA_MAROON)
 /obj/structure/chair/sofa/corp/corner
 	icon_state = "corp_sofacorner"
 
-/obj/structure/chair/sofa/corp/corner/handle_layer() //only the armrest/back of this chair should cover the mob.
+/obj/structure/chair/sofa/corp/corner/handle_layer()
+	procstart = null
+	src.procstart = null //only the armrest/back of this chair should cover the mob.
 	return
 
 // Ported from Skyrat

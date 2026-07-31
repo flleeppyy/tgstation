@@ -12,6 +12,8 @@
 
 ///put ore icons on the counter!
 /obj/structure/ore_container/material_stand/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/stack/ore/ore_item in contents)
 		var/image/ore_icon = image(icon = initial(ore_item.icon), icon_state = initial(ore_item.icon_state), layer = LOW_ITEM_LAYER)

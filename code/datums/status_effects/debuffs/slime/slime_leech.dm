@@ -10,10 +10,14 @@
 	var/mob/living/basic/slime/our_slime
 
 /datum/status_effect/slime_leech/on_creation(mob/living/new_owner, mob/living/basic/slime/our_slime)
+	procstart = null
+	src.procstart = null
 	src.our_slime = our_slime
 	return ..()
 
 /datum/status_effect/slime_leech/on_apply()
+	procstart = null
+	src.procstart = null
 	if(isnull(our_slime))
 		return FALSE
 
@@ -25,6 +29,8 @@
 
 ///If the buckling ends
 /datum/status_effect/slime_leech/proc/on_buckle_end()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/bio_protection = 100 - owner.getarmor(null, BIO)
@@ -38,9 +44,13 @@
 	qdel(src)
 
 /datum/status_effect/slime_leech/on_remove()
+	procstart = null
+	src.procstart = null
 	our_slime = null
 
 /datum/status_effect/slime_leech/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(our_slime))
 		qdel(src)
 		return

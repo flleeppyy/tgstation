@@ -32,6 +32,8 @@
 	var/obj/item/paper/pinned
 
 /obj/structure/closet/body_bag/Destroy()
+	procstart = null
+	src.procstart = null
 	// If we have a stored bag, and it's in nullspace (not in someone's hand), delete it.
 	if (foldedbag_instance && !foldedbag_instance.loc)
 		QDEL_NULL(foldedbag_instance)
@@ -39,19 +41,27 @@
 	return ..()
 
 /obj/structure/closet/body_bag/nameformat(input, user)
+	procstart = null
+	src.procstart = null
 	playsound(src, SFX_WRITING_PEN, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, SOUND_FALLOFF_EXPONENT + 3, ignore_walls = FALSE)
 	tag_name = input
 	update_icon()
 	return tag_name ? "[initial(name)] - [tag_name]" : initial(name)
 
 /obj/structure/closet/body_bag/rename_reset()
+	procstart = null
+	src.procstart = null
 	tag_name = null
 	update_icon()
 
 /obj/structure/closet/body_bag/IsContainedAtomAccessible(atom/contained, atom/movable/user)
+	procstart = null
+	src.procstart = null
 	return ..() || (contained == pinned)
 
 /obj/structure/closet/body_bag/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(tag_name)
 		. += "bodybag_label"
@@ -61,10 +71,14 @@
 		. += paper_image
 
 /obj/structure/closet/body_bag/after_close(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_density(FALSE)
 
 /obj/structure/closet/body_bag/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
@@ -81,6 +95,8 @@
  * * the_folder - aka user
  */
 /obj/structure/closet/body_bag/proc/attempt_fold(mob/living/carbon/human/the_folder)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(!istype(the_folder))
 		return
@@ -101,17 +117,23 @@
  * * the_folder - aka user
  */
 /obj/structure/closet/body_bag/proc/perform_fold(mob/living/carbon/human/the_folder)
+	procstart = null
+	src.procstart = null
 	visible_message(span_notice("[the_folder] folds up [src]."))
 	the_folder.put_in_hands(undeploy_bodybag(the_folder.loc))
 
 /// Makes the bag into an item, returns that item
 /obj/structure/closet/body_bag/proc/undeploy_bodybag(atom/fold_loc)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodybag/folding_bodybag = foldedbag_instance || new foldedbag_path()
 	if(fold_loc)
 		folding_bodybag.forceMove(fold_loc)
 	return folding_bodybag
 
 /obj/structure/closet/body_bag/container_resist_act(mob/living/user, loc_required = TRUE)
+	procstart = null
+	src.procstart = null
 	// ideally we support this natively but i guess that's for a later time
 	if(!istype(loc, /obj/machinery/disposal))
 		return ..()
@@ -129,6 +151,8 @@
 	max_mob_size = MOB_SIZE_LARGE
 
 /obj/structure/closet/body_bag/bluespace/attempt_fold(mob/living/carbon/human/the_folder)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	//copypaste zone, we do not want the content check so we don't want inheritance
 	if(!istype(the_folder))
@@ -151,6 +175,8 @@
 	return TRUE
 
 /obj/structure/closet/body_bag/bluespace/perform_fold(mob/living/carbon/human/the_folder)
+	procstart = null
+	src.procstart = null
 	visible_message(span_notice("[the_folder] folds up [src]."))
 	var/obj/item/bodybag/folding_bodybag = undeploy_bodybag(the_folder.loc)
 	var/max_weight_of_contents = initial(folding_bodybag.w_class)
@@ -173,6 +199,8 @@
 	the_folder.put_in_hands(folding_bodybag)
 
 /obj/structure/closet/body_bag/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(held_item))
 		context[SCREENTIP_CONTEXT_RMB] = "Fold up"
@@ -188,10 +216,14 @@
 		. = CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/closet/body_bag/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(arrived, TRAIT_FLOORED, REF(src))
 
 /obj/structure/closet/body_bag/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(gone, TRAIT_FLOORED, REF(src))
 	if(gone == pinned)
@@ -199,6 +231,8 @@
 		update_appearance()
 
 /obj/structure/closet/body_bag/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(tag_name)
 		. += span_info("The tag reads: [tag_name]")
@@ -211,6 +245,8 @@
 		. += span_notice("The walls of the bag are thin enough to scan through via a <b>health analyzer</b>.")
 
 /obj/structure/closet/body_bag/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(tag_name && tool.tool_behaviour == TOOL_WIRECUTTER || tool.get_sharpness())
 		to_chat(user, span_notice("You cut the tag off [src]."))
 		playsound(src, SFX_WRITING_PEN, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, SOUND_FALLOFF_EXPONENT + 3, ignore_walls = FALSE)
@@ -232,6 +268,8 @@
 	return ..()
 
 /obj/structure/closet/body_bag/before_open(mob/living/user, force)
+	procstart = null
+	src.procstart = null
 	if(pinned)
 		if(force || !user || user.loc == src)
 			pinned.forceMove(drop_location())
@@ -243,6 +281,8 @@
 	return TRUE
 
 /obj/structure/closet/body_bag/handle_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	pinned?.forceMove(drop_location())
 	return ..()
 
@@ -263,33 +303,47 @@
 	var/datum/gas_mixture/air_contents = null
 
 /obj/structure/closet/body_bag/environmental/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(weather_protection, INNATE_TRAIT)
 	refresh_air()
 
 /obj/structure/closet/body_bag/environmental/Destroy()
+	procstart = null
+	src.procstart = null
 	if(air_contents)
 		QDEL_NULL(air_contents)
 	return ..()
 
 /obj/structure/closet/body_bag/environmental/return_air()
+	procstart = null
+	src.procstart = null
 	refresh_air()
 	return air_contents
 
 /obj/structure/closet/body_bag/environmental/remove_air(amount)
+	procstart = null
+	src.procstart = null
 	refresh_air()
 	return air_contents.remove(amount)
 
 /obj/structure/closet/body_bag/environmental/return_analyzable_air()
+	procstart = null
+	src.procstart = null
 	refresh_air()
 	return air_contents
 
 /obj/structure/closet/body_bag/environmental/togglelock(mob/living/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/mob/living/target in contents)
 		to_chat(target, span_warning("You hear a faint hiss, and a white mist fills your vision..."))
 
 /obj/structure/closet/body_bag/environmental/proc/refresh_air()
+	procstart = null
+	src.procstart = null
 	air_contents = null
 	air_contents = new(50) //liters
 	air_contents.temperature = T20C
@@ -325,12 +379,16 @@
 	var/cinch_sound = 'sound/items/equip/toolbelt_equip.ogg'
 
 /obj/structure/closet/body_bag/environmental/prisoner/attempt_fold(mob/living/carbon/human/the_folder)
+	procstart = null
+	src.procstart = null
 	if(cinched)
 		to_chat(the_folder, span_warning("You wrestle with [src], but it won't fold while its straps are fastened."))
 		return FALSE
 	return ..()
 
 /obj/structure/closet/body_bag/environmental/prisoner/before_open(mob/living/user, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -343,6 +401,8 @@
 	return TRUE
 
 /obj/structure/closet/body_bag/environmental/prisoner/update_icon()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cinched)
 		icon_state = initial(icon_state) + "_cinched"
@@ -350,6 +410,8 @@
 		icon_state = initial(icon_state)
 
 /obj/structure/closet/body_bag/environmental/prisoner/container_resist_act(mob/living/user, loc_required = TRUE)
+	procstart = null
+	src.procstart = null
 	// copy-pasted with changes because flavor text as well as some other misc stuff
 	if(opened || ismovable(loc) || !cinched)
 		return ..()
@@ -374,17 +436,23 @@
 
 
 /obj/structure/closet/body_bag/environmental/prisoner/bust_open()
+	procstart = null
+	src.procstart = null
 	cinched = FALSE
 	// We don't break the bag, because the buckles were backed out as opposed to fully broken.
 	open()
 
 /obj/structure/closet/body_bag/environmental/prisoner/attack_hand_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	if(!user.can_perform_action(src) || !isturf(loc))
 		return
 	togglelock(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/structure/closet/body_bag/environmental/prisoner/togglelock(mob/living/user, silent)
+	procstart = null
+	src.procstart = null
 	if(opened)
 		to_chat(user, span_warning("You can't close the buckles while [src] is unzipped!"))
 		return
@@ -421,6 +489,8 @@
 	cinch_time = 20 SECONDS
 
 /obj/structure/closet/body_bag/environmental/prisoner/pressurized/syndicate/refresh_air()
+	procstart = null
+	src.procstart = null
 	air_contents = null
 	air_contents = new(50) //liters
 	air_contents.temperature = T20C
@@ -439,6 +509,8 @@
 	can_scan_through = TRUE
 
 /obj/structure/closet/body_bag/environmental/hardlight/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	if(damage_type in list(BRUTE, BURN))
 		playsound(src, 'sound/items/weapons/egloves.ogg', 80, TRUE)
 
@@ -452,6 +524,8 @@
 	can_scan_through = TRUE
 
 /obj/structure/closet/body_bag/environmental/prisoner/hardlight/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	if(damage_type in list(BRUTE, BURN))
 		playsound(src, 'sound/items/weapons/egloves.ogg', 80, TRUE)
 
@@ -481,10 +555,14 @@
 	COOLDOWN_DECLARE(last_filter_update)
 
 /obj/structure/closet/body_bag/environmental/stasis/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_filter("stasis_color", 1, color_matrix_filter(base_color_filter))
 
 /obj/structure/closet/body_bag/environmental/stasis/on_update_integrity(old_value, new_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!COOLDOWN_FINISHED(src, last_filter_update))
 		return
@@ -503,6 +581,8 @@
 	COOLDOWN_START(src, last_filter_update, 1 SECONDS)
 
 /obj/structure/closet/body_bag/environmental/stasis/refresh_air()
+	procstart = null
+	src.procstart = null
 	var/mol_count = 50
 	var/inner_temp = T0C - 60
 	air_contents = null
@@ -513,6 +593,8 @@
 	air_contents.set_gas(/datum/gas/nitrogen, ((ONE_ATMOSPHERE * mol_count) / (R_IDEAL_GAS_EQUATION * inner_temp) * N2STANDARD))
 
 /obj/structure/closet/body_bag/environmental/stasis/examine_status(mob/user)
+	procstart = null
+	src.procstart = null
 	switch(100 * get_integrity_percentage())
 		if(50 to 75)
 			return span_warning("It looks worn.")
@@ -522,6 +604,8 @@
 			return span_boldwarning("It's falling apart!")
 
 /obj/structure/closet/body_bag/environmental/stasis/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isorgan(arrived))
 		var/obj/item/organ/organ_arrived = arrived
@@ -539,6 +623,8 @@
 		START_PROCESSING(SSobj, src)
 
 /obj/structure/closet/body_bag/environmental/stasis/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isorgan(gone))
 		var/obj/item/organ/organ_gone = gone
@@ -557,6 +643,8 @@
 			remove_stasis(gone)
 
 /obj/structure/closet/body_bag/environmental/stasis/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 
 	var/mob/living/freezing = locate() in src
 	if(isnull(freezing))
@@ -577,30 +665,40 @@
 	take_damage(max_integrity * 0.004 * seconds_per_tick, sound_effect = FALSE)
 
 /obj/structure/closet/body_bag/environmental/stasis/after_open(mob/living/user, force = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(COOLDOWN_FINISHED(src, freeze_sound_cd) && (locate(/mob/living) in loc))
 		playsound(src, 'sound/effects/spray.ogg', 25, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE, frequency = 0.4)
 	COOLDOWN_START(src, freeze_sound_cd, 2 SECONDS)
 
 /obj/structure/closet/body_bag/environmental/stasis/proc/apply_stasis(mob/living/target)
+	procstart = null
+	src.procstart = null
 	target.apply_status_effect(/datum/status_effect/grouped/stasis, REF(src))
 	if(!INCAPACITATED_IGNORING(target, INCAPABLE_STASIS))
 		to_chat(target, span_notice("You feel a cold, numbing sensation..."))
 	RegisterSignal(target, COMSIG_LIVING_EARLY_UNARMED_ATTACK, PROC_REF(skip_to_attack_hand))
 
 /obj/structure/closet/body_bag/environmental/stasis/after_close(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(COOLDOWN_FINISHED(src, freeze_sound_cd) && (locate(/mob/living) in src))
 		playsound(src, 'sound/effects/spray.ogg', 25, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE, frequency = 0.5)
 	COOLDOWN_START(src, freeze_sound_cd, 2 SECONDS)
 
 /obj/structure/closet/body_bag/environmental/stasis/proc/remove_stasis(mob/living/target)
+	procstart = null
+	src.procstart = null
 	target.remove_status_effect(/datum/status_effect/grouped/stasis, REF(src))
 	if(!INCAPACITATED_IGNORING(target, INCAPABLE_STASIS))
 		to_chat(target, span_notice("You can feel your fingers and toes again."))
 	UnregisterSignal(target, COMSIG_LIVING_EARLY_UNARMED_ATTACK)
 
 /obj/structure/closet/body_bag/environmental/stasis/undeploy_bodybag(atom/fold_loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/bodybag/folded = .
 	folded.update_integrity(get_integrity())
@@ -608,6 +706,8 @@
 /// Being in the bag applies hands_blocked which means you can't click the bag to open it
 /// Soooo we have to manually hook hearly unarmed attack (pre-hands-blocked check) to allow opening the bag via click
 /obj/structure/closet/body_bag/environmental/stasis/proc/skip_to_attack_hand(mob/living/source, atom/attack_target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(attack_target == src)
 		INVOKE_ASYNC(src, TYPE_PROC_REF(/atom, container_resist_act), source)
@@ -615,6 +715,8 @@
 	return NONE
 
 /obj/structure/closet/body_bag/environmental/stasis/container_resist_act(mob/living/user, loc_required = TRUE)
+	procstart = null
+	src.procstart = null
 	if(opened || ismovable(loc))
 		return ..()
 	if(!HAS_TRAIT(user, TRAIT_STASIS))
@@ -639,11 +741,15 @@
 		user.show_message("You fail to break out of [src]!", MSG_VISUAL)
 
 /obj/structure/closet/body_bag/environmental/stasis/proc/breakout_checks(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(user) || IS_UNCONSCIOUS_OR_CRIT(user) || user.loc != src || opened)
 		return FALSE
 	return TRUE
 
 /obj/structure/closet/body_bag/environmental/stasis/handle_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(obj_flags & NO_DEBRIS_AFTER_DECONSTRUCTION))
 		new /obj/effect/decal/cleanable/shreds(loc, name)
 		new /obj/item/stack/sheet/cloth(loc, 4)
@@ -654,5 +760,7 @@
 	return ..()
 
 /obj/structure/closet/body_bag/environmental/stasis/get_remote_view_fullscreens(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.stat == DEAD || !(user.sight & (SEEOBJS|SEEMOBS)))
 		user.overlay_fullscreen("remote_view", /atom/movable/screen/fullscreen/impaired, 2)

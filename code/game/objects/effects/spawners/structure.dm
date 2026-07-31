@@ -9,6 +9,8 @@ again.
 	var/list/spawn_list
 
 /obj/effect/spawner/structure/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/spawn_type in spawn_list)
 		new spawn_type(loc)
@@ -24,6 +26,8 @@ again.
 	density = TRUE
 
 /obj/effect/spawner/structure/window/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/turf/current_turf = loc
@@ -38,6 +42,8 @@ again.
 	icon_state = "hwindow_spawner_end"
 
 /obj/effect/spawner/structure/window/hollow/end/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/spawner/directional/north, /obj/structure/window/spawner/directional/east, /obj/structure/window/spawner/directional/west)
@@ -53,6 +59,8 @@ again.
 	icon_state = "hwindow_spawner_middle"
 
 /obj/effect/spawner/structure/window/hollow/middle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH,SOUTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window, /obj/structure/window/spawner/directional/north)
@@ -64,6 +72,8 @@ again.
 	icon_state = "hwindow_spawner_directional"
 
 /obj/effect/spawner/structure/window/hollow/directional/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/spawner/directional/north)
@@ -99,6 +109,8 @@ again.
 	icon_state = "hrwindow_spawner_end"
 
 /obj/effect/spawner/structure/window/hollow/reinforced/end/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/reinforced/spawner/directional/north, /obj/structure/window/reinforced/spawner/directional/east, /obj/structure/window/reinforced/spawner/directional/west)
@@ -114,6 +126,8 @@ again.
 	icon_state = "hrwindow_spawner_middle"
 
 /obj/effect/spawner/structure/window/hollow/reinforced/middle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH,SOUTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/reinforced, /obj/structure/window/reinforced/spawner/directional/north)
@@ -125,6 +139,8 @@ again.
 	icon_state = "hrwindow_spawner_directional"
 
 /obj/effect/spawner/structure/window/hollow/reinforced/directional/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/reinforced/spawner/directional/north)
@@ -203,6 +219,8 @@ again.
 	icon_state = "podwindow_spawner_end"
 
 /obj/effect/spawner/structure/window/hollow/survival_pod/end/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/reinforced/survival_pod/spawner/directional/north, /obj/structure/window/reinforced/survival_pod/spawner/directional/east, /obj/structure/window/reinforced/survival_pod/spawner/directional/west)
@@ -218,6 +236,8 @@ again.
 	icon_state = "podwindow_spawner_middle"
 
 /obj/effect/spawner/structure/window/hollow/survival_pod/middle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH,SOUTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/reinforced/survival_pod, /obj/structure/window/reinforced/survival_pod/spawner/directional/north)
@@ -229,6 +249,8 @@ again.
 	icon_state = "podwindow_spawner_directional"
 
 /obj/effect/spawner/structure/window/hollow/survival_pod/directional/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/reinforced/survival_pod/spawner/directional/north)
@@ -265,6 +287,8 @@ again.
 	icon_state = "phwindow_spawner_end"
 
 /obj/effect/spawner/structure/window/hollow/plasma/end/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/plasma/spawner/directional/north, /obj/structure/window/plasma/spawner/directional/east, /obj/structure/window/plasma/spawner/directional/west)
@@ -280,6 +304,8 @@ again.
 	icon_state = "phwindow_spawner_middle"
 
 /obj/effect/spawner/structure/window/hollow/plasma/middle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH,SOUTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/plasma, /obj/structure/window/plasma/spawner/directional/north)
@@ -291,6 +317,8 @@ again.
 	icon_state = "phwindow_spawner_directional"
 
 /obj/effect/spawner/structure/window/hollow/plasma/directional/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/plasma/spawner/directional/north)
@@ -326,6 +354,8 @@ again.
 	icon_state = "phrwindow_spawner_end"
 
 /obj/effect/spawner/structure/window/hollow/reinforced/plasma/end/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/reinforced/plasma/spawner/directional/north, /obj/structure/window/reinforced/plasma/spawner/directional/east, /obj/structure/window/reinforced/plasma/spawner/directional/west)
@@ -341,6 +371,8 @@ again.
 	icon_state = "phrwindow_spawner_middle"
 
 /obj/effect/spawner/structure/window/hollow/reinforced/plasma/middle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH,SOUTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/reinforced/plasma, /obj/structure/window/reinforced/plasma/spawner/directional/north)
@@ -352,6 +384,8 @@ again.
 	icon_state = "phrwindow_spawner_directional"
 
 /obj/effect/spawner/structure/window/hollow/reinforced/plasma/directional/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/reinforced/plasma/spawner/directional/north)
@@ -391,6 +425,8 @@ again.
 	var/table_to_spawn = /obj/structure/table
 
 /obj/effect/spawner/structure/flipped_table/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/structure/table/table_to_flip = new table_to_spawn(loc)
 	table_to_flip.dir = dir
@@ -398,6 +434,8 @@ again.
 
 /// The flip_table() proc HAS to be run after smooth_icon() is completed or else we will get runtimes.
 /obj/effect/spawner/structure/flipped_table/proc/on_icon_smoothed(obj/structure/table/table_to_flip)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	table_to_flip.flip_table(table_to_flip.dir)
 	UnregisterSignal(table_to_flip, COMSIG_ATOM_SMOOTHED_ICON)

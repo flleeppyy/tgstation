@@ -4,6 +4,8 @@
 	randomize = TRUE
 
 /datum/wires/robot/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(
 		WIRE_AI, WIRE_CAMERA,
 		WIRE_LAWSYNC, WIRE_LOCKDOWN,
@@ -13,6 +15,8 @@
 	..()
 
 /datum/wires/robot/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/mob/living/silicon/robot/R = holder
@@ -20,6 +24,8 @@
 		return TRUE
 
 /datum/wires/robot/get_status()
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/R = holder
 	var/list/status = list()
 	status += "The law sync module is [R.lawupdate ? "on" : "off"]."
@@ -30,6 +36,8 @@
 	return status
 
 /datum/wires/robot/on_pulse(wire, user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/R = holder
 	switch(wire)
 		if(WIRE_AI) // Pulse to pick a new AI.
@@ -70,6 +78,8 @@
 				R.visible_message(span_notice("[R]'s model servos twitch."), span_notice("Your model display flickers."))
 
 /datum/wires/robot/on_cut(wire, mend, source)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/R = holder
 	switch(wire)
 		if(WIRE_AI) // Cut the AI wire to reset AI control.
@@ -107,12 +117,16 @@
 				log_silicon("[key_name(usr)] reset [key_name(R)]'s module via wire")
 
 /datum/wires/robot/can_reveal_wires(mob/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(user, TRAIT_KNOW_ROBO_WIRES))
 		return TRUE
 
 	return ..()
 
 /datum/wires/robot/always_reveal_wire(color)
+	procstart = null
+	src.procstart = null
 	// Always reveal the reset model wire.
 	if(color == get_color_of_wire(WIRE_RESET_MODEL))
 		return TRUE

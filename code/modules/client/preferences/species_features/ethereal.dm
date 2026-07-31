@@ -6,13 +6,19 @@
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/ethereal_color/has_relevant_feature(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	// Skips checks for relevant_organ, relevant trait etc. because ethereal color is tied directly to species (atm)
 	return current_species_has_savekey(preferences)
 
 /datum/preference/choiced/ethereal_color/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return assoc_to_keys(GLOB.color_list_ethereal)
 
 /datum/preference/choiced/ethereal_color/icon_for(value)
+	procstart = null
+	src.procstart = null
 	var/static/datum/universal_icon/ethereal_base
 	if (isnull(ethereal_base))
 		ethereal_base = uni_icon('icons/mob/human/species/ethereal/bodyparts.dmi', "ethereal_head")
@@ -33,4 +39,6 @@
 	return icon
 
 /datum/preference/choiced/ethereal_color/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	target.dna.features[FEATURE_ETHEREAL_COLOR] = GLOB.color_list_ethereal[value]

@@ -32,6 +32,8 @@
 	var/conserve_food = FALSE
 
 /mob/living/basic/goose/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/ai_retaliate)
 	AddElement(/datum/element/content_barfer)
@@ -41,6 +43,8 @@
 	RegisterSignal(src, COMSIG_MOB_ATE, PROC_REF(on_gobbled))
 
 /mob/living/basic/goose/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if (!gibbed && length(contents))
 		var/turf/drop_turf = drop_location()
 		if (istype(drop_turf))
@@ -50,6 +54,8 @@
 
 /// Called when we try to eat something
 /mob/living/basic/goose/proc/on_tried_gobbling(datum/source, obj/item/potential_food)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (ai_controller?.blackboard[BB_GOOSE_PANICKED])
 		return COMSIG_MOB_CANCEL_EAT
@@ -59,6 +65,8 @@
 
 /// Called when we've eaten something
 /mob/living/basic/goose/proc/on_gobbled(atom/source, obj/item/food, mob/feeder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!food.has_material_type(/datum/material/plastic))
 		return NONE
@@ -71,6 +79,8 @@
 
 /// Start choking on something we just ate
 /mob/living/basic/goose/proc/choke(obj/item/not_food_after_all)
+	procstart = null
+	src.procstart = null
 	apply_status_effect(/datum/status_effect/goose_choking)
 
 /// A less grumpy but much grosser variant of the goose, who will decorate the halls in their own special way
@@ -89,6 +99,8 @@
 	var/datum/action/cooldown/mob_cooldown/goose_vomit/vomit_action
 
 /mob/living/basic/goose/vomit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	vomit_action = new(src)
@@ -102,20 +114,28 @@
 	deadchat_plays()
 
 /mob/living/basic/goose/vomit/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(vomit_action)
 
 /mob/living/basic/goose/vomit/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/vomit_chance = ai_controller?.blackboard[BB_GOOSE_VOMIT_CHANCE] || 0
 	if (prob(vomit_chance))
 		vomit()
 
 /mob/living/basic/goose/vomit/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Somehow, it still looks hungry.")
 
 /mob/living/basic/goose/vomit/on_gobbled(atom/source, obj/item/food, mob/feeder)
+	procstart = null
+	src.procstart = null
 	if (length(contents) > GOOSE_SATIATED)
 		if (COOLDOWN_FINISHED(src, eat_fail_feedback_cooldown))
 			if (feeder)
@@ -136,6 +156,8 @@
 		ai_controller?.add_blackboard_key(BB_GOOSE_VOMIT_CHANCE, 1)
 
 /mob/living/basic/goose/vomit/choke(obj/item/not_food_after_all)
+	procstart = null
+	src.procstart = null
 	if (prob(75))
 		return ..()
 	visible_message(span_warning("[src] is gagging on \the [not_food_after_all]!"))
@@ -144,18 +166,26 @@
 
 /// Start making a mess
 /mob/living/basic/goose/vomit/proc/vomit()
+	procstart = null
+	src.procstart = null
 	vomit_action?.Trigger(target = src)
 
 /mob/living/basic/goose/vomit/proc/on_started_vomiting(mob/living/owner, datum/action/cooldown/activated)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (activated != vomit_action)
 		return
 	remove_status_effect(/datum/status_effect/goose_choking) // We're going to cough it out
 
 /mob/living/basic/goose/vomit/proc/stop_deadchat_plays()
+	procstart = null
+	src.procstart = null
 	ai_controller?.clear_blackboard_key(BB_DISABLE_IDLE)
 
 /mob/living/basic/goose/vomit/deadchat_plays(mode = ANARCHY_MODE, cooldown = 12 SECONDS)
+	procstart = null
+	src.procstart = null
 	var/list/goose_inputs = list(
 		"vomit" = CALLBACK(src, PROC_REF(vomit)),
 		"honk" = CALLBACK(src, TYPE_PROC_REF(/atom/movable, say), "HONK!!!"),

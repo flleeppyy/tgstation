@@ -17,6 +17,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 	name = "Bluespace Artillery"
 
 /datum/station_goal/bluespace_cannon/get_report()
+	procstart = null
+	src.procstart = null
 	return list(
 		"Our military presence is inadequate in your sector.",
 		"We need you to construct BSA-[rand(1,99)] Artillery position aboard your station.",
@@ -26,11 +28,15 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 	).Join("\n")
 
 /datum/station_goal/bluespace_cannon/on_report()
+	procstart = null
+	src.procstart = null
 	//Unlock BSA parts
 	var/datum/supply_pack/engineering/bsa/P = SSshuttle.supply_packs[/datum/supply_pack/engineering/bsa]
 	P.order_flags |= ORDER_SPECIAL_ENABLED
 
 /datum/station_goal/bluespace_cannon/check_completion()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 	var/obj/machinery/bsa/full/B = locate()
@@ -44,6 +50,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 	anchored = TRUE
 
 /obj/machinery/bsa/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool, time = 1 SECONDS)
 	return ITEM_INTERACT_SUCCESS
@@ -54,10 +62,14 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 	icon_state = "power_box"
 
 /obj/machinery/bsa/back/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_rotation)
 
 /obj/machinery/bsa/back/multitool_act(mob/living/user, obj/item/multitool/M)
+	procstart = null
+	src.procstart = null
 	M.set_buffer(src)
 	balloon_alert(user, "saved to multitool buffer")
 	return ITEM_INTERACT_SUCCESS
@@ -68,10 +80,14 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 	icon_state = "emitter_center"
 
 /obj/machinery/bsa/front/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_rotation)
 
 /obj/machinery/bsa/front/multitool_act(mob/living/user, obj/item/multitool/M)
+	procstart = null
+	src.procstart = null
 	M.set_buffer(src)
 	balloon_alert(user, "saved to multitool buffer")
 	return ITEM_INTERACT_SUCCESS
@@ -84,10 +100,14 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 	var/datum/weakref/front_ref
 
 /obj/machinery/bsa/middle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_rotation)
 
 /obj/machinery/bsa/middle/multitool_act(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	. = NONE
 
 	if(istype(tool.buffer, /obj/machinery/bsa/back))
@@ -102,6 +122,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/bsa/middle/proc/check_completion()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/bsa/front/front = front_ref?.resolve()
 	var/obj/machinery/bsa/back/back = back_ref?.resolve()
 	if(!front || !back)
@@ -117,6 +139,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
  * Proc to check if the BSA has the required 11 x 1 block space to deploy.
  */
 /obj/machinery/bsa/middle/proc/has_space()
+	procstart = null
+	src.procstart = null
 	var/x_offset = get_directional_offset()
 	if(!x_offset)
 		return FALSE
@@ -136,6 +160,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
  * Returns the x offset (in tiles) associated with the BSA's direction
  */
 /obj/machinery/bsa/middle/proc/get_directional_offset()
+	procstart = null
+	src.procstart = null
 	var/cannon_dir = get_cannon_direction()
 	switch(cannon_dir)
 		if(EAST)
@@ -144,6 +170,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 			return BSA_X_OFFSET_WEST
 
 /obj/machinery/bsa/middle/proc/get_cannon_direction()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/bsa/front/front = front_ref?.resolve()
 	var/obj/machinery/bsa/back/back = back_ref?.resolve()
 	if(!front || !back)
@@ -169,9 +197,13 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 	appearance_flags = LONG_GLIDE //Removes default TILE_BOUND
 
 /obj/machinery/bsa/full/wrench_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/bsa/full/proc/get_front_turf()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(WEST)
 			return locate(x - 7,y,z)
@@ -180,6 +212,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 	return get_turf(src)
 
 /obj/machinery/bsa/full/proc/get_back_turf()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(WEST)
 			return locate(x + 5,y,z)
@@ -188,6 +222,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 	return get_turf(src)
 
 /obj/machinery/bsa/full/proc/get_target_turf()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(WEST)
 			return locate(1,y,z)
@@ -196,6 +232,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 	return get_turf(src)
 
 /obj/machinery/bsa/full/Initialize(mapload, cannon_direction = WEST)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(cannon_direction)
 		if(WEST)
@@ -209,6 +247,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 	get_layer()
 
 /obj/machinery/bsa/full/proc/get_layer()
+	procstart = null
+	src.procstart = null
 	top_layer = mutable_appearance(icon, layer = ABOVE_MOB_LAYER)
 	switch(dir)
 		if(WEST)
@@ -218,6 +258,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 	add_overlay(top_layer)
 
 /obj/machinery/bsa/full/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	if(same_z_layer)
 		return ..()
 	cut_overlay(top_layer)
@@ -225,6 +267,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 	return ..()
 
 /obj/machinery/bsa/full/proc/fire(mob/user, turf/bullseye)
+	procstart = null
+	src.procstart = null
 	var/turf/point = get_front_turf()
 	var/turf/target = get_target_turf()
 	var/atom/blocker
@@ -269,6 +313,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 	var/obj/machinery/parent
 
 /obj/structure/filler/ex_act()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/computer/bsa_control
@@ -296,23 +342,33 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 	var/visualization_effects
 
 /obj/machinery/computer/bsa_control/Initialize(mapload, obj/item/circuitboard/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	visualization_effects = list()
 
 /obj/machinery/computer/bsa_control/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(visualizing_position)
 		stop_visualizing()
 
 /obj/machinery/computer/bsa_control/on_set_machine_stat(old_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat && visualizing_position)
 		stop_visualizing()
 
 /obj/machinery/computer/bsa_control/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.physical_state
 
 /obj/machinery/computer/bsa_control/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -320,6 +376,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 		ui.open()
 
 /obj/machinery/computer/bsa_control/ui_data()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/bsa/full/cannon = cannon_ref?.resolve()
 	var/list/data = list()
 	data["connected"] = cannon
@@ -331,6 +389,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 	return data
 
 /obj/machinery/computer/bsa_control/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -359,6 +419,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 	update_appearance()
 
 /obj/machinery/computer/bsa_control/proc/calibrate(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!GLOB.bsa_unlock)
 		return
 	var/list/gps_locators = list()
@@ -378,6 +440,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 	log_game("[key_name(user)] has aimed the bluespace artillery strike at [target].")
 
 /obj/machinery/computer/bsa_control/proc/get_target_name()
+	procstart = null
+	src.procstart = null
 	if(istype(target, /area))
 		return get_area_name(target, TRUE)
 	else if(istype(target, /datum/component/gps))
@@ -385,6 +449,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 		return G.gpstag
 
 /obj/machinery/computer/bsa_control/proc/get_impact_turf()
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return get_turf(src)
 	else if(istype(target, /area))
@@ -394,6 +460,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 		return get_turf(G.parent)
 
 /obj/machinery/computer/bsa_control/proc/fire(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/bsa/full/cannon = cannon_ref?.resolve()
 	if(!cannon)
 		notice = "No Cannon Exists!"
@@ -408,6 +476,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 /// Sets `notice` and returns null if the BSA isn't complete.
 /// Returns the BSA's centerpiece if everything's alright.
 /obj/machinery/computer/bsa_control/proc/check_completion()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/bsa/middle/centerpiece = locate() in range(7)
 	if(!centerpiece)
 		notice = "No BSA parts detected nearby."
@@ -419,6 +489,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 
 /// Prior to BSA deployment, indicates the space which the BSA will occupy using effects.
 /obj/machinery/computer/bsa_control/proc/start_visualizing()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/bsa/full/prebuilt = locate() in range(7) //In case of adminspawn
 	if(prebuilt)
 		cannon_ref = WEAKREF(prebuilt)
@@ -440,6 +512,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 
 /// Clear all effects indicating where the BSA will deploy.
 /obj/machinery/computer/bsa_control/proc/stop_visualizing()
+	procstart = null
+	src.procstart = null
 	visualizing_position = FALSE
 	visualization_front = null
 	visualization_center = null
@@ -447,6 +521,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 		qdel(deployment_visualizer)
 
 /obj/machinery/computer/bsa_control/proc/deploy(force=FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/bsa/middle/centerpiece = check_completion()
 	if(!centerpiece)
 		return null
@@ -468,6 +544,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 	return cannon
 
 /obj/machinery/computer/bsa_control/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED

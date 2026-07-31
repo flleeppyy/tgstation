@@ -3,6 +3,8 @@
 /datum/element/corrupted_organ
 
 /datum/element/corrupted_organ/Attach(obj/item/organ/target, add_color = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!istype(target) || (target.organ_flags & ORGAN_EXTERNAL))
 		return ELEMENT_INCOMPATIBLE
@@ -24,11 +26,15 @@
 	animate(offset = 0, time = 2 MINUTES) // I sure hope duration of animate doesnt have any performance effect
 
 /datum/element/corrupted_organ/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, list(COMSIG_ORGAN_SURGICALLY_REMOVED))
 	return ..()
 
 /// When we're taken out of someone, do something spooky
 /datum/element/corrupted_organ/proc/on_removed(atom/organ, mob/living/remover, mob/living/carbon/loser)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (loser?.has_reagent(/datum/reagent/water/holywater) || loser?.can_block_magic(MAGIC_RESISTANCE|MAGIC_RESISTANCE_HOLY) || prob(20))
 		return
@@ -58,6 +64,8 @@
 	duration = 0.3 SECONDS
 
 /obj/effect/temp_visual/curse_blast/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, transform = matrix() * 0.2, time = 0, flags = ANIMATION_PARALLEL)
 	animate(transform = matrix() * 2, time = duration, easing = QUAD_EASING|EASE_IN)

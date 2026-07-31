@@ -28,6 +28,8 @@
 /obj/item/storage/box/syndicate
 
 /obj/item/storage/box/syndicate/bundle_a/PopulateContents()
+	procstart = null
+	src.procstart = null
 	switch (pick_weight(list(
 		KIT_RECON = 2,
 		KIT_BLOODY_SPAI = 3,
@@ -183,6 +185,8 @@
 			new /obj/item/storage/box/syndie_kit/poster_box(src)
 
 /obj/item/storage/box/syndicate/bundle_b/PopulateContents()
+	procstart = null
+	src.procstart = null
 	switch (pick_weight(list(
 		KIT_JAMES_BOND = 2,
 		KIT_NINJA = 1,
@@ -315,6 +319,8 @@
 /obj/item/storage/toolbox/emergency/old/ancientbundle/ //So the subtype works
 
 /obj/item/storage/toolbox/emergency/old/ancientbundle/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/card/emag(src) // 4 tc
 	new /obj/item/card/emag/doorjack(src) //emag used to do both. 3 tc
 	new /obj/item/pen/sleepy(src) // 4 tc
@@ -327,6 +333,8 @@
 /obj/item/storage/belt/military/assault/fisher
 
 /obj/item/storage/belt/military/assault/fisher/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/gun/ballistic/automatic/pistol/clandestine/fisher(src) // 11 TC: 7 (pistol) + 3 (suppressor) + lightbreaker (1 TC, black market meme/util item)
 	new /obj/item/ammo_box/magazine/m10mm(src) // 1 TC
 	new /obj/item/ammo_box/magazine/m10mm(src)
@@ -344,6 +352,8 @@
 	desc = "A scoped weapon with low armor penetration, but devastating against flesh. Features instruction manual for making specialty ammo."
 
 /obj/item/storage/box/syndie_kit/rebarxbowsyndie/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/book/granter/crafting_recipe/dusting/rebarxbowsyndie_ammo(src)
 	new /obj/item/gun/ballistic/rifle/rebarxbow/syndie(src)
 	new /obj/item/storage/bag/rebar_quiver/syndicate(src)
@@ -361,6 +371,8 @@
 	name = "forensics spoofing kit"
 
 /obj/item/storage/box/syndie_kit/forensics_spoofer/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/forensics_spoofer(src)
 	new /obj/item/paper/syndicate_forensics_spoofer(src)
 
@@ -369,6 +381,8 @@
 	desc = "A box full of a number of rather masterfully engineered paper planes and a manual on \"The Art of Origami\"."
 
 /obj/item/storage/box/syndie_kit/origami_bundle/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/book/granter/action/origami(src)
 	for(var/i in 1 to 5)
 		new /obj/item/paper(src)
@@ -377,36 +391,48 @@
 	name = "freedom implant box"
 
 /obj/item/storage/box/syndie_kit/imp_freedom/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/implanter/freedom(src)
 
 /obj/item/storage/box/syndie_kit/imp_microbomb
 	name = "microbomb implant box"
 
 /obj/item/storage/box/syndie_kit/imp_microbomb/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/implanter/explosive(src)
 
 /obj/item/storage/box/syndie_kit/imp_macrobomb
 	name = "macrobomb implant box"
 
 /obj/item/storage/box/syndie_kit/imp_macrobomb/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/implanter/explosive_macro(src)
 
 /obj/item/storage/box/syndie_kit/imp_deniability
 	name = "tactical deniability implant box"
 
 /obj/item/storage/box/syndie_kit/imp_deniability/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/implanter/tactical_deniability(src)
 
 /obj/item/storage/box/syndie_kit/imp_uplink
 	name = "uplink implant box"
 
 /obj/item/storage/box/syndie_kit/imp_uplink/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/implanter/uplink(src)
 
 /obj/item/storage/box/syndie_kit/bioterror
 	name = "bioterror syringe box"
 
 /obj/item/storage/box/syndie_kit/bioterror/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/syringe/bioterror(src)
 
@@ -414,6 +440,8 @@
 	name = "ultra hilarious firing pin box"
 
 /obj/item/storage/box/syndie_kit/clownpins/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/firing_pin/clown/ultra(src)
 
@@ -421,18 +449,24 @@
 	name = "storage implant box"
 
 /obj/item/storage/box/syndie_kit/imp_storage/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/implanter/storage(src)
 
 /obj/item/storage/box/syndie_kit/imp_stealth
 	name = "stealth implant box"
 
 /obj/item/storage/box/syndie_kit/imp_stealth/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/implanter/stealth(src)
 
 /obj/item/storage/box/syndie_kit/imp_radio
 	name = "syndicate radio implant box"
 
 /obj/item/storage/box/syndie_kit/imp_radio/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/implanter/radio/syndicate(src)
 
 /obj/item/storage/box/syndie_kit/space
@@ -440,6 +474,8 @@
 	storage_type = /datum/storage/box/syndicate_space
 
 /obj/item/storage/box/syndie_kit/space/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/suit/space/syndicate/spess_suit = pick(GLOB.syndicate_space_suits_to_helmets)
 	new spess_suit(src) // Above allows me to get the helmet from a variable on the object
 	var/obj/item/clothing/head/helmet/space/syndicate/spess_helmet = GLOB.syndicate_space_suits_to_helmets[spess_suit]
@@ -449,6 +485,8 @@
 	name = "EMP kit"
 
 /obj/item/storage/box/syndie_kit/emp/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 5)
 		new /obj/item/grenade/empgrenade(src)
 	new /obj/item/implanter/emp(src)
@@ -457,6 +495,8 @@
 	name = "smoke kit"
 
 /obj/item/storage/box/syndie_kit/smoke/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 5)
 		new /obj/item/grenade/smokebomb(src)
 	new /obj/item/implanter/smoke(src)
@@ -467,6 +507,8 @@
 	desc = "A GLA Postal Service branded box. It's emblazoned with the motto: *Nothing stops the mail*."
 
 /obj/item/storage/box/syndie_kit/mail_counterfeit/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		new /obj/item/storage/mail_counterfeit_device(src)
 
@@ -475,6 +517,8 @@
 	storage_type = /datum/storage/box/syndicate_chemical
 
 /obj/item/storage/box/syndie_kit/chemical/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/reagent_containers/cup/bottle/polonium(src)
 	new /obj/item/reagent_containers/cup/bottle/venom(src)
 	new /obj/item/reagent_containers/cup/bottle/fentanyl(src)
@@ -492,6 +536,8 @@
 	new /obj/item/reagent_containers/syringe(src)
 
 /obj/item/storage/box/syndie_kit/carnivorous_blood/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/reagent_containers/cup/bottle/carnivorous_blood(src)
 	new /obj/item/reagent_containers/syringe(src)
 	new /obj/item/food/meat/slab/human(src)
@@ -501,6 +547,8 @@
 	desc = "A box containing the equipment and instructions for extracting the plutonium cores of most Nanotrasen nuclear explosives."
 
 /obj/item/storage/box/syndie_kit/nuke/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/screwdriver/nuke(src)
 	new /obj/item/nuke_core_container(src)
 	new /obj/item/paper/guides/antag/nuke_instructions(src)
@@ -510,6 +558,8 @@
 	desc = "A box containing the equipment and instructions for extracting a sliver of supermatter."
 
 /obj/item/storage/box/syndie_kit/supermatter/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/scalpel/supermatter(src)
 	new /obj/item/hemostat/supermatter(src)
 	new /obj/item/nuke_core_container/supermatter(src)
@@ -519,6 +569,8 @@
 	name = "virus grenade kit"
 
 /obj/item/storage/box/syndie_kit/tuberculosisgrenade/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/grenade/chem_grenade/tuberculosis(src)
 	for(var/i in 1 to 5)
 		new /obj/item/reagent_containers/hypospray/medipen/tuberculosiscure(src)
@@ -529,6 +581,8 @@
 	name = "chameleon kit"
 
 /obj/item/storage/box/syndie_kit/chameleon/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/chameleon(src)
 	new /obj/item/clothing/suit/chameleon(src)
 	new /obj/item/clothing/gloves/chameleon(src)
@@ -551,6 +605,8 @@
 //5*(2*4) = 5*8 = 45, 45 damage if you hit one person with all 5 stars.
 //Not counting the damage it will do while embedded (2*4 = 8, at 15% chance)
 /obj/item/storage/box/syndie_kit/throwing_weapons/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 5)
 		new /obj/item/throwing_star(src)
 	for(var/i in 1 to 2)
@@ -559,43 +615,61 @@
 	new /obj/item/restraints/legcuffs/bola/tactical(src)
 
 /obj/item/storage/box/syndie_kit/cutouts/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new/obj/item/cardboard_cutout/adaptive(src)
 	new/obj/item/toy/crayon/rainbow(src)
 
 /obj/item/storage/box/syndie_kit/romerol/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/reagent_containers/cup/bottle/romerol(src)
 	new /obj/item/reagent_containers/syringe(src)
 	new /obj/item/reagent_containers/dropper(src)
 
 /obj/item/storage/box/syndie_kit/ez_clean/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new/obj/item/grenade/chem_grenade/ez_clean(src)
 
 /obj/item/storage/box/syndie_kit/mulligan/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/reagent_containers/syringe/mulligan(src)
 	new /obj/item/fake_identity_kit(src)
 
 /obj/item/storage/box/hug/reverse_revolver/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/gun/ballistic/revolver/reverse(src)
 
 /obj/item/storage/box/syndie_kit/mimery/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/book/granter/action/spell/mime/mimery_blockade(src)
 	new /obj/item/book/granter/action/spell/mime/mimery_guns(src)
 
 /obj/item/storage/box/syndie_kit/moltobeso/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/reagent_containers/cup/bottle/moltobeso(src)
 	new /obj/item/reagent_containers/syringe(src)
 	new /obj/item/reagent_containers/dropper(src)
 
 /obj/item/storage/box/syndie_kit/combat_baking/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/food/baguette/combat(src)
 	for(var/i in 1 to 2)
 		new /obj/item/food/croissant/throwing(src)
 	new /obj/item/book/granter/crafting_recipe/combat_baking(src)
 
 /obj/item/storage/box/syndie_kit/centcom_costume/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/rank/centcom/officer(src)
 	new /obj/item/clothing/shoes/sneakers/black(src)
 	new /obj/item/clothing/gloves/color/black(src)
@@ -606,6 +680,8 @@
 	new /obj/item/clipboard(src)
 
 /obj/item/storage/box/syndie_kit/chameleon/broken/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/chameleon/broken(src)
 	new /obj/item/clothing/suit/chameleon/broken(src)
 	new /obj/item/clothing/gloves/chameleon/broken(src)
@@ -626,28 +702,40 @@
 	desc = "A sleek, sturdy box with a buzzing noise coming from the inside. Uh oh."
 
 /obj/item/storage/box/syndie_kit/bee_grenades/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/grenade/spawnergrenade/buzzkill(src)
 
 /obj/item/storage/box/syndie_kit/manhack_grenades/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/grenade/spawnergrenade/manhacks(src)
 
 /obj/item/storage/box/syndie_kit/feral_cat_grenades/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 5)
 		new /obj/item/grenade/spawnergrenade/cat(src)
 
 /obj/item/storage/box/syndie_kit/frag_grenades/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/grenade/frag(src)
 
 /obj/item/storage/box/syndie_kit/sleepytime/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/syndicate/bloodred/sleepytime(src)
 	new /obj/item/reagent_containers/cup/glass/mug/coco(src)
 	new /obj/item/toy/plush/carpplushie(src)
 	new /obj/item/bedsheet/syndie(src)
 
 /obj/item/storage/box/syndie_kit/demoman/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/gun/grenadelauncher(src)
 	new /obj/item/storage/belt/grenade/full(src)
 	if(prob(1))
@@ -658,6 +746,8 @@
 	desc = "Contains all the necessary gear for success for any nuclear operative unsure of what is needed for success in the field. Everything here WILL help you."
 
 /obj/item/storage/box/syndie_kit/core_gear/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/implanter/freedom (src)
 	new /obj/item/card/emag/doorjack (src)
 	new /obj/item/reagent_containers/hypospray/medipen/stimulants (src)
@@ -671,6 +761,8 @@
 	desc = "A shoddy box full of surplus .50 BMG magazines. Not as strong, but good enough to keep lead in the air."
 
 /obj/item/storage/box/syndie_kit/sniper_surplus/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/ammo_box/magazine/sniper_rounds/surplus(src)
 
@@ -682,6 +774,8 @@
 		believe in Donk? Time to put that to the test."
 
 /obj/item/storage/box/syndie_kit/shotgun_surplus/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/ammo_box/magazine/m12g/donk(src)
 
@@ -689,6 +783,8 @@
 /obj/item/storage/backpack/duffelbag/syndie/sabotage
 
 /obj/item/storage/backpack/duffelbag/syndie/sabotage/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/grenade/c4(src)
 	new /obj/item/grenade/c4(src)
 	new /obj/item/grenade/c4(src)
@@ -701,6 +797,8 @@
 	desc = "Contains everything an agent would need to remotely detonate their bombs."
 
 /obj/item/storage/box/syndie_kit/signaler/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		new /obj/item/assembly/signaler(src)
 
@@ -709,6 +807,8 @@
 	desc = "Contains eight linked deathrattle implants."
 
 /obj/item/storage/box/syndie_kit/imp_deathrattle/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/implanter(src)
 
 	var/datum/deathrattle_group/standard/group = new
@@ -723,6 +823,8 @@
 	desc += " The implants are registered to the \"[group.name]\" group."
 
 /obj/item/storage/box/stickers/syndie_kit/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/types = subtypesof(/obj/item/sticker/syndicate)
 
 	for(var/i in 1 to atom_storage.max_slots)
@@ -734,6 +836,8 @@
 	desc = "Contains a weapons grade pinata and 2 belts for carrying its contents."
 
 /obj/item/storage/box/syndie_kit/pinata/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/pinata/syndie(src)
 	new /obj/item/storage/belt/grenade(src)
 	new /obj/item/storage/belt/military/snack(src)
@@ -743,6 +847,8 @@
 	desc = "Contains all you need for introducing your newest comrade to the Syndicate and all its worker's benefits."
 
 /obj/item/storage/box/syndie_kit/induction_kit/PopulateContents()
+	procstart = null
+	src.procstart = null
 	// Basic weaponry, so they have something to use.
 	new /obj/item/gun/ballistic/automatic/pistol/clandestine(src) // 6 TC, but free for nukies
 	new /obj/item/ammo_box/magazine/m10mm/hp(src) // 3 TC, a reward for the teamwork involved
@@ -781,6 +887,8 @@
 	implant_color = "r"
 
 /obj/item/implant/nuclear_operative/implant(mob/living/target, mob/user, silent = FALSE, force = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !ishuman(target) || !(target.mind))
 		return FALSE
@@ -814,6 +922,8 @@
 	return TRUE
 
 /obj/item/implant/nuclear_operative/removed(mob/target, silent = FALSE, special = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !isliving(target))
 		return FALSE
@@ -832,6 +942,8 @@
 	var/poster_count = 3
 
 /obj/item/storage/box/syndie_kit/poster_box/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to poster_count)
 		new /obj/item/poster/traitor(src)
 
@@ -840,6 +952,8 @@
 	desc = "Contains everything you'll need to be the rootin' tootin' cowboy you always wanted. Either play the Lone Ranger or go in with your posse of outlaws."
 
 /obj/item/storage/box/syndie_kit/cowboy/PopulateContents()
+	procstart = null
+	src.procstart = null
 	generate_items_inside(list(
 		/obj/item/clothing/shoes/cowboy/black/syndicate= 1,
 		/obj/item/clothing/head/cowboy/black/syndicate = 1,
@@ -857,6 +971,8 @@
 	illustration = "writing_syndie"
 
 /obj/item/storage/box/syndicate/contract_kit/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/modular_computer/pda/syndicate_contract_uplink(src)
 	new /obj/item/storage/box/syndicate/contractor_loadout(src)
 	new /obj/item/melee/baton/telescopic/contractor_baton(src)
@@ -870,6 +986,8 @@
 	illustration = "writing_syndie"
 
 /obj/item/storage/box/syndicate/contractor_loadout/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/mod/control/pre_equipped/infiltrator(src)
 	new /obj/item/clothing/head/helmet/space/syndicate/contract(src)
 	new /obj/item/clothing/suit/space/syndicate/contract(src)
@@ -889,11 +1007,15 @@
 	illustration = "writing_syndie"
 
 /obj/item/storage/box/syndicate/horse_box/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/food/monkeycube/dangerous_horse(src)
 	new /obj/item/slimepotion/sentience/nuclear/dangerous_horse(src)
 	new /obj/item/food/grown/apple(src)
 
 /obj/item/storage/box/syndicate/sleeping_carp/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/book/granter/martial/carp(src)
 	new /obj/item/clothing/head/costume/snakeeater(src)
 	new /obj/item/clothing/under/costume/gi(src)

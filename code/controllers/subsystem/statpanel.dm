@@ -18,6 +18,8 @@ SUBSYSTEM_DEF(statpanels)
 	var/num_fires = 0
 
 /datum/controller/subsystem/statpanels/fire(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!resumed)
 		num_fires++
 		var/datum/map_config/cached = SSmap_vote.next_map_config
@@ -94,6 +96,8 @@ SUBSYSTEM_DEF(statpanels)
  * with the second/third entry matching #3 (text & url), allowing you to have 2 clickable links on one line.
  */
 /datum/controller/subsystem/statpanels/proc/set_status_tab(client/target)
+	procstart = null
+	src.procstart = null
 	if(!global_data)//statbrowser hasnt fired yet and we were called from immediate_send_stat_data()
 		return
 	target.stat_panel.send_message("update_stat", list(
@@ -102,6 +106,8 @@ SUBSYSTEM_DEF(statpanels)
 	))
 
 /datum/controller/subsystem/statpanels/proc/set_MC_tab(client/target)
+	procstart = null
+	src.procstart = null
 	var/turf/eye_turf = get_turf(target.eye)
 	var/coord_entry = COORD(eye_turf)
 	if(!mc_data)
@@ -109,6 +115,8 @@ SUBSYSTEM_DEF(statpanels)
 	target.stat_panel.send_message("update_mc", list("mc_data" = mc_data, "coord_entry" = coord_entry))
 
 /datum/controller/subsystem/statpanels/proc/set_tickets_tab(client/target)
+	procstart = null
+	src.procstart = null
 	var/list/ahelp_tickets = GLOB.ahelp_tickets.stat_entry()
 	target.stat_panel.send_message("update_tickets", ahelp_tickets)
 	var/datum/interview_manager/m = GLOB.interviews
@@ -141,6 +149,8 @@ SUBSYSTEM_DEF(statpanels)
 	target.stat_panel.send_message("update_interviews", data)
 
 /datum/controller/subsystem/statpanels/proc/set_SDQL2_tab(client/target)
+	procstart = null
+	src.procstart = null
 	var/list/sdql2A = list()
 	sdql2A[++sdql2A.len] = list("", "Access Global SDQL2 List", REF(GLOB.sdql2_vv_statobj))
 	var/list/sdql2B = list()
@@ -151,6 +161,8 @@ SUBSYSTEM_DEF(statpanels)
 	target.stat_panel.send_message("update_sdql2", sdql2A)
 
 /datum/controller/subsystem/statpanels/proc/generate_mc_data()
+	procstart = null
+	src.procstart = null
 	mc_data = list(
 		list("", "CPU:", world.cpu),
 		list("", "Instances:", "[num2text(world.contents.len, 10)]"),
@@ -185,6 +197,8 @@ SUBSYSTEM_DEF(statpanels)
 
 ///immediately update the active statpanel tab of the target client
 /datum/controller/subsystem/statpanels/proc/immediate_send_stat_data(client/target)
+	procstart = null
+	src.procstart = null
 	if(!target.stat_panel.is_ready())
 		return FALSE
 

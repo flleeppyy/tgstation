@@ -29,6 +29,8 @@
 	priority = TEST_AFTER_CREATE_AND_DESTROY
 
 /datum/unit_test/dcs_check_list_arguments/Run()
+	procstart = null
+	src.procstart = null
 	var/we_failed = FALSE
 	for(var/element_type in SSdcs.arguments_that_are_lists_by_element)
 		// Keeps track of the lists that shouldn't be compared with again.

@@ -36,30 +36,42 @@
 	src.splat_color = splat_color
 
 /datum/component/splat/Destroy()
+	procstart = null
+	src.procstart = null
 	hit_callback = null
 	return ..()
 
 /datum/component/splat/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	if(isprojectile(parent))
 		RegisterSignal(parent, COMSIG_PROJECTILE_SELF_ON_HIT, PROC_REF(projectile_splat))
 	else
 		RegisterSignal(parent, COMSIG_MOVABLE_IMPACT, PROC_REF(throw_splat))
 
 /datum/component/splat/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_MOVABLE_IMPACT, COMSIG_PROJECTILE_SELF_ON_HIT))
 
 /datum/component/splat/proc/projectile_splat(obj/projectile/source, atom/firer, atom/target, angle, hit_limb_zone, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(blocked != 100 && !pierce_hit)
 		splat(source, target)
 
 /datum/component/splat/proc/throw_splat(atom/movable/source, atom/hit_atom, datum/thrownthing/throwing_datum, caught)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(caught) //someone caught us!
 		return
 	splat(source, hit_atom)
 
 /datum/component/splat/proc/splat(atom/movable/source, atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	var/turf/hit_turf = get_turf(hit_atom)
 	new smudge_type(hit_turf)
 	var/can_splat_on = TRUE

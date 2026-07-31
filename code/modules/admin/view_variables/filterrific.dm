@@ -2,23 +2,33 @@
 	var/atom/target
 
 /datum/filter_editor/New(atom/target)
+	procstart = null
+	src.procstart = null
 	src.target = target
 
 /datum/filter_editor/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_VAREDIT)
 
 /datum/filter_editor/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Filterrific")
 		ui.open()
 
 /datum/filter_editor/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["filter_info"] = GLOB.master_filter_info
 	return data
 
 /datum/filter_editor/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["target_name"] = target.name
 	var/list/target_filter_data = list()
@@ -32,6 +42,8 @@
 	return data
 
 /datum/filter_editor/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

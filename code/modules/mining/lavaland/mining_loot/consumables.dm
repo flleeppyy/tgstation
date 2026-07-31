@@ -7,6 +7,8 @@
 	var/modkit_design = /datum/design/unique_modkit
 
 /obj/item/disk/design_disk/modkit_disc/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	blueprints += new modkit_design
 
@@ -38,6 +40,8 @@
 	var/obj/effect/wisp/wisp
 
 /obj/item/wisp_lantern/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!wisp)
@@ -61,10 +65,14 @@
 	SSblackbox.record_feedback("tally", "wisp_lantern", 1, "Returned")
 
 /obj/item/wisp_lantern/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	wisp = new(src)
 
 /obj/item/wisp_lantern/Destroy()
+	procstart = null
+	src.procstart = null
 	if(wisp)
 		if(wisp.loc == src)
 			qdel(wisp)
@@ -87,6 +95,8 @@
 	var/static/list/color_cutoffs = list(10, 25, 25)
 
 /obj/effect/wisp/orbit(atom/thing, radius, clockwise, rotation_speed, rotation_segments, pre_rotation, lockinorbit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismob(thing))
 		return
@@ -96,6 +106,8 @@
 	ADD_TRAIT(being, TRAIT_THERMAL_VISION, REF(src))
 
 /obj/effect/wisp/stop_orbit(datum/component/orbiter/orbits, refreshing = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ismob(orbit_target) || refreshing)
 		return ..()
 	var/mob/being = orbit_target
@@ -105,6 +117,8 @@
 	return ..()
 
 /obj/effect/wisp/proc/update_user_sight(mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isnull(color_cutoffs))
 		user.lighting_color_cutoffs = blend_cutoff_colors(user.lighting_color_cutoffs, color_cutoffs)
@@ -118,6 +132,8 @@
 	icon_state = "ladder00"
 
 /obj/item/jacobs_ladder/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/our_loc = get_turf(src)
 	var/ladder_x = our_loc.x
 	var/ladder_y = our_loc.y
@@ -145,6 +161,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/book_of_babel/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.is_blind())
 		to_chat(user, span_warning("You are blind and can't read anything!"))
 		return FALSE
@@ -170,6 +188,8 @@
 	fill_icon_thresholds = list(0, 1)
 
 /obj/item/reagent_containers/cup/bottle/potion/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(reagents?.total_volume)
 		. += "potionflask_cap"
@@ -185,6 +205,8 @@
 	color = "#976230"
 
 /datum/reagent/flightpotion/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(exposed_mob) || exposed_mob.stat == DEAD)
 		return
@@ -211,6 +233,8 @@
 	exposed_human.emote("scream")
 
 /datum/reagent/flightpotion/proc/get_wing_choice(mob/living/carbon/human/needs_wings, obj/item/bodypart/chest/chest)
+	procstart = null
+	src.procstart = null
 	var/list/wing_types = chest.wing_types.Copy()
 	if (wing_types.len == 1 || !needs_wings.client)
 		return wing_types[1]

@@ -6,19 +6,29 @@
 	randomize_by_default = FALSE
 
 /datum/preference/choiced/species/deserialize(input, datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	return GLOB.species_list[sanitize_inlist(input, get_choices_serialized(), SPECIES_HUMAN)]
 
 /datum/preference/choiced/species/serialize(input)
+	procstart = null
+	src.procstart = null
 	var/datum/species/species = input
 	return initial(species.id)
 
 /datum/preference/choiced/species/create_default_value()
+	procstart = null
+	src.procstart = null
 	return /datum/species/human
 
 /datum/preference/choiced/species/create_random_value(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	return pick(get_choices())
 
 /datum/preference/choiced/species/init_possible_values()
+	procstart = null
+	src.procstart = null
 	var/list/values = list()
 
 	for (var/species_id in get_selectable_species())
@@ -27,9 +37,13 @@
 	return values
 
 /datum/preference/choiced/species/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	target.set_species(value, icon_update = FALSE, pref_load = TRUE)
 
 /datum/preference/choiced/species/compile_constant_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	for (var/species_id in get_selectable_species())

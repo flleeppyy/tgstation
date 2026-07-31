@@ -27,6 +27,8 @@
 	foodtypes = VEGETABLES
 
 /obj/item/food/grown/onion/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/onion_slice, 2, 15, screentip_verb = "Cut")
 
 /obj/item/seeds/onion/red
@@ -47,9 +49,13 @@
 	wine_power = 60
 
 /obj/item/food/grown/onion/red/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/onion_slice/red, 2, 15, screentip_verb = "Cut")
 
 /obj/item/food/grown/onion/UsedforProcessing(mob/living/user, obj/item/I, list/chosen_option, list/created_atoms)
+	procstart = null
+	src.procstart = null
 	var/splat_location = get_turf(src) //we need to set up the smoke beforehand
 	do_chem_smoke(0, src, splat_location, carry = reagents, silent = FALSE)
 	return ..()
@@ -63,9 +69,13 @@
 	foodtypes = VEGETABLES
 
 /obj/item/food/onion_slice/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/onionrings, rand(15 SECONDS, 20 SECONDS), TRUE, TRUE)
 
 /obj/item/food/onion_slice/make_microwaveable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/microwavable, /obj/item/food/onionrings)
 
 /obj/item/food/onion_slice/red

@@ -26,6 +26,8 @@
 	var/range_flame = 0
 
 /datum/gizpulse/explode/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	explosion(holder, range_heavy, range_medium, range_light, range_flame)
 
 /datum/gizpulse/explode/fire
@@ -52,6 +54,8 @@
 	ai_controller = /datum/ai_controller/basic_controller/giant_spider
 
 /mob/living/basic/spider/robot/death(gibbed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	explosion(src, 0, 0, 2)
@@ -59,6 +63,8 @@
 		qdel(src)
 
 /mob/living/basic/spider/robot/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	death() //very sensitive spider robot antennae makes it die fast to emp
@@ -74,10 +80,14 @@
 	var/throwing_path
 
 /datum/gizpulse/thrower/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	throwing_path = pick_weight(throwables)
 
 /datum/gizpulse/thrower/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	var/obj/item/item = new throwing_path (get_turf(holder))
 
 	var/list/targets = list()
@@ -91,9 +101,13 @@
 
 /// Do some extra modifications if need be
 /datum/gizpulse/thrower/proc/modify(obj/item/item)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/gizpulse/ominous/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	holder.audible_message(span_hear("You hear an ominous hum."))
 
 /datum/gizpulse/thrower/grenade
@@ -109,10 +123,14 @@
 	)
 
 /datum/gizpulse/thrower/grenade/modify(obj/item/item)
+	procstart = null
+	src.procstart = null
 	var/obj/item/grenade/regret = item
 	regret.arm_grenade()
 
 /datum/gizpulse/bone_breaker/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	var/list/victims = list()
 	for(var/mob/living/loser in orange(1, holder))
 		victims += loser

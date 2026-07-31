@@ -61,6 +61,8 @@ GLOBAL_LIST_INIT(shower_mode_descriptions, list(
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
 
 /obj/machinery/shower/Initialize(mapload, ndir = 0, has_water_reclaimer = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(ndir)
@@ -95,6 +97,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/machinery/shower/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It looks like the thermostat has an adjustment screw.")
 	if(has_water_reclaimer)
@@ -103,11 +107,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
 	. += span_notice("[reagents.total_volume]/[reagents.maximum_volume] liquids remaining.")
 
 /obj/machinery/shower/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(soundloop)
 	QDEL_NULL(reagents)
 	return ..()
 
 /obj/machinery/shower/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -122,6 +130,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
 	return TRUE
 
 /obj/machinery/shower/analyzer_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	tool.play_tool_sound(src)
@@ -129,6 +139,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
 	return TRUE
 
 /obj/machinery/shower/plunger_act(obj/item/plunger/attacking_plunger, mob/living/user, reinforced)
+	procstart = null
+	src.procstart = null
 	user.balloon_alert_to_viewers("furiously plunging...", "plunging shower...")
 	if(!do_after(user, 3 SECONDS, target = src))
 		return TRUE
@@ -139,6 +151,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
 	return TRUE
 
 /obj/machinery/shower/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stock_parts/water_recycler))
 		return NONE
 
@@ -153,6 +167,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/shower/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -164,6 +180,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
 	return TRUE
 
 /obj/machinery/shower/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -178,6 +196,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
 	return TRUE
 
 /obj/machinery/shower/screwdriver_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, span_notice("You begin to adjust the temperature valve with \the [I]..."))
 	if(I.use_tool(src, user, 50))
@@ -195,12 +215,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
 	return TRUE
 
 /obj/machinery/shower/wrench_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	I.play_tool_sound(src)
 	deconstruct()
 	return TRUE
 
 /obj/machinery/shower/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!actually_on)
 		return
@@ -218,12 +242,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
 	. += water_falling
 
 /obj/machinery/shower/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	if(same_z_layer)
 		return ..()
 	update_appearance()
 	return ..()
 
 /obj/machinery/shower/proc/handle_mist()
+	procstart = null
+	src.procstart = null
 	// If there is no mist, and the shower was turned on (on a non-freezing temp): make mist in 5 seconds
 	// If there was already mist, and the shower was turned off (or made cold): remove the existing mist in 25 sec
 	var/obj/effect/mist/mist = locate() in loc
@@ -234,23 +262,31 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
 		addtimer(CALLBACK(src, PROC_REF(clear_mist)), 25 SECONDS)
 
 /obj/machinery/shower/proc/make_mist()
+	procstart = null
+	src.procstart = null
 	var/obj/effect/mist/mist = locate() in loc
 	if(!mist && actually_on && current_temperature != SHOWER_FREEZING)
 		var/obj/effect/mist/new_mist = new /obj/effect/mist(loc)
 		new_mist.color = mix_color_from_reagents(reagents.reagent_list)
 
 /obj/machinery/shower/proc/clear_mist()
+	procstart = null
+	src.procstart = null
 	var/obj/effect/mist/mist = locate() in loc
 	if(mist && !(actually_on && current_temperature != SHOWER_FREEZING))
 		qdel(mist)
 
 /obj/machinery/shower/proc/on_entered(datum/source, atom/movable/enterer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(actually_on && reagents.total_volume)
 		expose_to_reagents(enterer)
 
 /obj/machinery/shower/proc/on_exited(datum/source, atom/movable/exiter)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!iscarbon(exiter))
@@ -263,6 +299,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
 	take_his_status_effect.remove_status_effect(/datum/status_effect/washing_regen)
 
 /obj/machinery/shower/proc/expose_to_reagents(atom/target)
+	procstart = null
+	src.procstart = null
 	var/purity_volume = reagents.total_volume*0.70 	// need 70% of total reagents
 	var/datum/reagent/blood/bloody_shower = reagents.has_reagent(/datum/reagent/blood, amount=purity_volume)
 	var/datum/reagent/water/clean_shower = reagents.has_reagent(/datum/reagent/water, amount=purity_volume)
@@ -288,6 +326,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
  * * new_on_state - new state
  */
 /obj/machinery/shower/proc/update_actually_on(new_on_state)
+	procstart = null
+	src.procstart = null
 	if(new_on_state == actually_on)
 		return FALSE
 
@@ -313,6 +353,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
 	return TRUE
 
 /obj/machinery/shower/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	// the TIMED mode cutoff feature. User has to manually reactivate.
 	if(intended_on && mode == SHOWER_MODE_TIMED && COOLDOWN_FINISHED(src, timed_cooldown))
 		// the TIMED mode cutoff feature. User has to manually reactivate.
@@ -364,11 +406,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
 	reagents.remove_all(SHOWER_SPRAY_VOLUME)
 
 /obj/machinery/shower/on_deconstruction(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/iron(drop_location(), 2)
 	if(has_water_reclaimer)
 		new /obj/item/stock_parts/water_recycler(drop_location())
 
 /obj/machinery/shower/proc/check_heat(mob/living/living)
+	procstart = null
+	src.procstart = null
 
 	if(current_temperature == SHOWER_FREEZING)
 		living.adjust_bodytemperature(-80, 80)
@@ -388,10 +434,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2)
 
 /obj/structure/showerframe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_rotation)
 
 /obj/structure/showerframe/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stock_parts/water_recycler))
 		return NONE
 
@@ -402,6 +452,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/showerframe/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	tool.play_tool_sound(src)

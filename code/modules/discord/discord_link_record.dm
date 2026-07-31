@@ -18,6 +18,8 @@
  * * timestamp as a string
  */
 /datum/discord_link_record/New(ckey, discord_id, one_time_token, timestamp)
+	procstart = null
+	src.procstart = null
 	src.ckey = ckey
 	src.discord_id = discord_id
 	src.one_time_token = one_time_token

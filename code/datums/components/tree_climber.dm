@@ -8,6 +8,8 @@
 	var/obj/current_tree
 
 /datum/component/tree_climber/Initialize(climbing_distance = 20)
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 	src.climbing_distance = climbing_distance
@@ -15,18 +17,26 @@
 	ADD_TRAIT(parent, TRAIT_SUBTREE_REQUIRED_OPERATIONAL_DATUM, type)
 
 /datum/component/tree_climber/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(climb_tree))
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/component/tree_climber/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_HOSTILE_PRE_ATTACKINGTARGET, COMSIG_ATOM_EXAMINE))
 
 /datum/component/tree_climber/Destroy()
+	procstart = null
+	src.procstart = null
 	if(current_tree)
 		handle_climb_tree(parent, current_tree) //remove mob from tree and handle deletion of signals
 	return ..()
 
 /datum/component/tree_climber/proc/climb_tree(mob/living/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(target, /obj/structure/flora/tree))
@@ -52,11 +62,15 @@
 	return COMPONENT_HOSTILE_NO_ATTACK
 
 /datum/component/tree_climber/proc/on_examine(datum/source, mob/user, list/examine_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(current_tree)
 		examine_text += "It is clinging to [current_tree]!"
 
 /datum/component/tree_climber/proc/can_climb_tree(obj/structure/flora/tree/target)
+	procstart = null
+	src.procstart = null
 	if(current_tree)
 		return TRUE
 	var/turf/tree_turf = get_turf(target)
@@ -65,6 +79,8 @@
 	return TRUE
 
 /datum/component/tree_climber/proc/handle_climb_tree(mob/living/climber, obj/structure/target_tree)
+	procstart = null
+	src.procstart = null
 	var/offset = current_tree ? -(climbing_distance) : climbing_distance
 	animate(climber, pixel_y = climber.pixel_y + offset, time = 2)
 	climber.Stun(2 SECONDS, ignore_canstun = TRUE)
@@ -77,15 +93,21 @@
 	register_tree_signals()
 
 /datum/component/tree_climber/proc/remove_from_tree()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	handle_climb_tree(parent, current_tree)
 
 /datum/component/tree_climber/proc/register_tree_signals()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(remove_from_tree))
 	RegisterSignal(current_tree, COMSIG_PREQDELETED, PROC_REF(remove_from_tree))
 
 /datum/component/tree_climber/proc/remove_tree_signals()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_MOVABLE_PRE_MOVE)
 	UnregisterSignal(current_tree, COMSIG_PREQDELETED)
 

@@ -10,10 +10,14 @@
 	var/jump_stun = 2.4 SECONDS
 
 /datum/action/cooldown/mob_cooldown/resurface/Grant(mob/granted_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner?.AddElement(/datum/element/relay_attackers)
 
 /datum/action/cooldown/mob_cooldown/resurface/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	StartCooldownSelf(INFINITY)
 	StartCooldownOthers(INFINITY)
 	burrow(owner, target_atom)
@@ -24,6 +28,8 @@
 #define BILEWORM_JUMP_FRAMES 14
 
 /datum/action/cooldown/mob_cooldown/resurface/proc/burrow(mob/living/burrower, atom/target, force = FALSE)
+	procstart = null
+	src.procstart = null
 	var/turf/unburrow_turf = get_unburrow_turf(burrower, target)
 	if (!unburrow_turf) // means all the turfs nearby are station turfs or something, not lavaland
 		to_chat(burrower, span_warning("Couldn't burrow anywhere near the target!"))
@@ -81,19 +87,27 @@
 #undef BILEWORM_JUMP_FRAMES
 
 /datum/action/cooldown/mob_cooldown/resurface/proc/burrow_again(mob/living/burrower, atom/target)
+	procstart = null
+	src.procstart = null
 	if (!QDELETED(burrower) && !IS_UNCONSCIOUS_OR_CRIT(burrower))
 		// Burrow immediatelly after being stunned out of the first jump to avoid chainstuns
 		burrow(burrower, target, force = TRUE)
 
 /datum/action/cooldown/mob_cooldown/resurface/proc/on_attacked(datum/source, atom/attacker, attack_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!(attack_flags & (ATTACKER_STAMINA_ATTACK | ATTACKER_SHOVING)) && jump_stun)
 		jump_damaged = TRUE
 
 /datum/action/cooldown/mob_cooldown/resurface/proc/damage_check()
+	procstart = null
+	src.procstart = null
 	return !jump_damaged
 
 /datum/action/cooldown/mob_cooldown/resurface/proc/get_unburrow_turf(mob/living/burrower, atom/target)
+	procstart = null
+	src.procstart = null
 	var/list/potential_turfs = shuffle(oview(5, target)) // get in view, shuffle
 	for(var/turf/open/misc/chosen_one in potential_turfs) // first turf that counts as ground
 		return chosen_one
@@ -113,6 +127,8 @@
 	var/obj/effect/bileworm_acid/acid_type = /obj/effect/bileworm_acid
 
 /datum/action/cooldown/mob_cooldown/bileworm_spew/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	StartCooldownSelf(INFINITY)
 	attack_sequence(owner, target_atom)
 	StartCooldownSelf()
@@ -120,6 +136,8 @@
 	StartCooldownOthers(2 SECONDS) // Enough time for a mark + detonation combo, or 3 shots with a PKA
 
 /datum/action/cooldown/mob_cooldown/bileworm_spew/proc/attack_sequence(mob/living/firer, atom/target)
+	procstart = null
+	src.procstart = null
 	new acid_type(firer, target)
 	playsound(firer, projectile_sound, 70)
 	var/list/all_dirs = GLOB.alldirs.Copy()
@@ -165,20 +183,28 @@
 	var/obj/effect/bileworm_target/target_sign = null
 
 /obj/effect/bileworm_acid/Initialize(mapload, atom/new_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_OVERLAYS)
 	if (new_target)
 		fire_at(get_turf(new_target))
 
 /obj/effect/bileworm_acid/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(target_sign)
 	return ..()
 
 /obj/effect/bileworm_acid/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance(icon, icon_state, src, alpha = 20, effect_type = EMISSIVE_BLOOM)
 
 /obj/effect/bileworm_acid/proc/fire_at(turf/target)
+	procstart = null
+	src.procstart = null
 	if (!istype(target))
 		target = get_turf(target)
 	var/turf/start = get_turf(src)
@@ -200,6 +226,8 @@
 	addtimer(CALLBACK(src, PROC_REF(impact), target), travel_time)
 
 /obj/effect/bileworm_acid/proc/impact(turf/target)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/abstract/particle_holder/impact_particles = new(target, /particles/bile)
 	QDEL_IN(impact_particles, /particles/bile::lifespan)
 
@@ -239,10 +267,14 @@
 	plane = GAME_PLANE
 
 /obj/effect/bileworm_target/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/effect/bileworm_target/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance(icon, icon_state, src, alpha = 90, effect_type = EMISSIVE_BLOOM)
 
@@ -268,6 +300,8 @@
 	shared_cooldown = MOB_SHARED_COOLDOWN_2
 
 /datum/action/cooldown/mob_cooldown/devour/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	if(target_atom == owner)
 		to_chat(owner, span_warning("You can't eat yourself!"))
 		return
@@ -281,6 +315,8 @@
 	burrow_and_devour(owner, living_target)
 
 /datum/action/cooldown/mob_cooldown/devour/proc/burrow_and_devour(mob/living/devourer, mob/living/target)
+	procstart = null
+	src.procstart = null
 	var/turf/devour_turf = get_turf(target)
 	if(!istype(devour_turf, /turf/open/misc)) // means all the turfs nearby are station turfs or something, not lavaland
 		to_chat(devourer, span_warning("Your target is on something you can't burrow through!"))

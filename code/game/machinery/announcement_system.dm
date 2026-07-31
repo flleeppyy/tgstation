@@ -29,6 +29,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	var/errorlight = "Error_Red"
 
 /obj/machinery/announcement_system/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	config_entries = init_subtypes(/datum/aas_config_entry, list())
 	. = ..()
 	radio = new radio_type(src)
@@ -36,13 +38,19 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	update_appearance()
 
 /obj/machinery/announcement_system/randomize_language_if_on_station()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/announcement_system/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state]_[is_operational && !(machine_stat & EMPED) ? "On" : "Off"][panel_open ? "_Open" : null]"
 	return ..()
 
 /obj/machinery/announcement_system/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/aas_config_entry/entry = locate(/datum/aas_config_entry/arrival) in config_entries
 	if(entry && entry.enabled)
@@ -56,18 +64,26 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 		. += errorlight
 
 /obj/machinery/announcement_system/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(radio)
 	QDEL_LAZYLIST(config_entries)
 	GLOB.announcement_systems -= src //"OH GOD WHY ARE THERE 100,000 LISTED ANNOUNCEMENT SYSTEMS?!!"
 	return ..()
 
 /obj/machinery/announcement_system/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/announcement_system/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/announcement_system/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!panel_open || !(machine_stat & EMPED))
 		return ITEM_INTERACT_BLOCKING
 	to_chat(user, span_notice("You reset [src]'s firmware."))
@@ -77,6 +93,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 
 /// Does funny breakage stuff
 /obj/machinery/announcement_system/proc/act_up()
+	procstart = null
+	src.procstart = null
 	if (machine_stat & EMPED)
 		return
 	set_machine_stat(machine_stat | EMPED)
@@ -85,11 +103,15 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 		config.act_up()
 
 /obj/machinery/announcement_system/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(machine_stat & (NOPOWER|EMPED|BROKEN)) && !(. & EMP_PROTECT_SELF))
 		act_up()
 
 /obj/machinery/announcement_system/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -98,12 +120,16 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	return TRUE
 
 /obj/machinery/announcement_system/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AutomatedAnnouncement")
 		ui.open()
 
 /obj/machinery/announcement_system/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/configs = list()
 	for(var/datum/aas_config_entry/config in config_entries)
 		configs += list(list(
@@ -118,6 +144,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	return list("config_entries" = configs)
 
 /obj/machinery/announcement_system/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["max_announcement_len"] = MAX_AAS_LENGTH
@@ -125,6 +153,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	return data
 
 /obj/machinery/announcement_system/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -156,6 +186,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 				usr.log_message("updated [params["lineKey"]] line in the [config.name] to: [new_message]", LOG_GAME)
 
 /obj/machinery/announcement_system/can_interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -168,6 +200,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 
 /// If AAS can't broadcast message, it shouldn't be picked by randomizer.
 /obj/machinery/announcement_system/proc/has_supported_channels(list/channels)
+	procstart = null
+	src.procstart = null
 	if (!LAZYLEN(channels) || (RADIO_CHANNEL_COMMON in channels))
 		// Okay, I am not proud of this, but I don't want CentCom or Syndie AASs to broadcast on Common.
 		// Because our overrides can just change radio withour creating new subtype we prefer to check both.
@@ -179,6 +213,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 
 /// Can AAS receive request for broadcast from you? Null source means yes.
 /obj/machinery/announcement_system/proc/can_be_reached_from(atom/source)
+	procstart = null
+	src.procstart = null
 	if(!source || !istype(source))
 		return TRUE
 	var/turf/source_turf = get_turf(source)
@@ -190,6 +226,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 
 /// Compiles the announcement message with the provided variables. Announcement line is optional.
 /obj/machinery/announcement_system/proc/compile_config_message(aas_config_entry_type, list/variables_map, announcement_line, fail_if_disabled=FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/aas_config_entry/config = locate(aas_config_entry_type) in config_entries
 	if (!config || (fail_if_disabled && !config.enabled))
 		return
@@ -197,6 +235,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 
 /// Sends a message to the appropriate channels.
 /obj/machinery/announcement_system/proc/broadcast(message, list/channels, command_span = FALSE)
+	procstart = null
+	src.procstart = null
 	use_energy(active_power_usage)
 	if(!LAZYLEN(channels))
 		radio.talk_into(src, message, null, command_span ? list(speech_span, SPAN_COMMAND) : null)
@@ -211,12 +251,16 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 
 /// Announces configs entry message with the provided variables. Channels, announcement_line and command_span are optional.
 /obj/machinery/announcement_system/proc/announce(aas_config_entry_type, list/variables_map, list/channels, announcement_line, command_span)
+	procstart = null
+	src.procstart = null
 	var/msg = compile_config_message(aas_config_entry_type, variables_map, announcement_line, TRUE)
 	if (msg)
 		broadcast(msg, channels, command_span)
 
 /// Returns a random announcement system that is operational, has the specified config entry, signal can reach source and radio supports any channel in list. All args are optional.
 /proc/get_announcement_system(aas_config_entry_type, source, list/channels)
+	procstart = null
+	src.procstart = null
 	if (!GLOB.announcement_systems.len)
 		return null
 	var/list/intact_aass = list()
@@ -231,6 +275,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 
 /// Announces the provided message with the provided variables and config entry type. Only aas_config_entry_type and variables_map are mandatory. Other args are optional.
 /proc/aas_config_announce(aas_config_entry_type, list/variables_map, source, list/channels, announcement_line, command_span)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/announcement_system/announcer = get_announcement_system(aas_config_entry_type, source, channels)
 	if (!announcer)
 		return
@@ -251,6 +297,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 
 /// Compiles the announcement message with the provided variables. Announcement line is optional, may be both index or line key.
 /datum/aas_config_entry/proc/compile_announce(list/variables_map, announcement_line)
+	procstart = null
+	src.procstart = null
 	var/announcement_message = LAZYACCESS(announcement_lines_map, announcement_line)
 	// If index was provided LAZYACCESS will return us a key, not value
 	if (isnum(announcement_line))
@@ -265,6 +313,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 
 /// Called when the announcement system is emagged or EMPed.
 /datum/aas_config_entry/proc/act_up()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	// Please do not mess with entries, that players can't fix.
@@ -286,6 +336,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	)
 
 /datum/aas_config_entry/arrival/act_up()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -304,6 +356,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	)
 
 /datum/aas_config_entry/newhead/act_up()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -321,6 +375,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	)
 
 /datum/aas_config_entry/researched_node/act_up()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return

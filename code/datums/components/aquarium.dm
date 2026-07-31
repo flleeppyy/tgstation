@@ -95,6 +95,8 @@
 	set_aquarium_mode(init_mode)
 
 /datum/component/aquarium/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	if(default_beauty)
 		update_aquarium_beauty(0)
 
@@ -145,6 +147,8 @@
 	movable.add_traits(list(TRAIT_IS_AQUARIUM, TRAIT_STOP_FISH_FLOPPING), AQUARIUM_TRAIT)
 
 /datum/component/aquarium/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/movable = parent
 	UnregisterSignal(movable, list(
 		COMSIG_ATOM_ENTERED,
@@ -174,6 +178,8 @@
 	REMOVE_KEEP_TOGETHER(movable, AQUARIUM_TRAIT)
 
 /datum/component/aquarium/PreTransfer(atom/movable/new_parent)
+	procstart = null
+	src.procstart = null
 	if(!istype(new_parent))
 		return
 	if(HAS_TRAIT(parent, TRAIT_AQUARIUM_PANEL_OPEN))
@@ -193,10 +199,14 @@
 		movable.reagents.trans_to(new_parent, movable.reagents.total_volume)
 
 /datum/component/aquarium/PostTransfer(datum/new_parent)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(new_parent))
 		return COMPONENT_INCOMPATIBLE
 
 /datum/component/aquarium/InheritComponent(datum/component/aquarium/new_comp, i_am_original)
+	procstart = null
+	src.procstart = null
 	fluid_temp = clamp(new_comp.fluid_temp, min_fluid_temp, max_fluid_temp)
 	set_fluid_type(new_comp.fluid_type)
 	feeding_interval = new_comp.feeding_interval
@@ -205,6 +215,8 @@
 	movable.update_appearance()
 
 /datum/component/aquarium/proc/on_click_alt(atom/movable/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!user.can_perform_action(source))
 		return
@@ -223,6 +235,8 @@
 
 ///This proc handles feeding the aquarium and inserting aquarium content.
 /datum/component/aquarium/proc/on_item_interaction(atom/movable/source, mob/living/user, obj/item/item, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(item, /obj/item/reagent_containers/cup/fish_feed))
@@ -257,12 +271,16 @@
 
 ///Called when the feed storage is no longer empty.
 /datum/component/aquarium/proc/start_autofeed(datum/reagents/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(source, COMSIG_REAGENTS_HOLDER_UPDATED)
 	START_PROCESSING(SSobj, src)
 
 ///Feed the fish at defined intervals until the feed storage is empty.
 /datum/component/aquarium/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	//safe mode, no need to feed the fishes
 	if(HAS_TRAIT_FROM(parent, TRAIT_STOP_FISH_REPRODUCTION_AND_GROWTH, AQUARIUM_TRAIT))
 		last_feeding += seconds_per_tick SECONDS
@@ -278,12 +296,16 @@
 	feed_fishes(movable)
 
 /datum/component/aquarium/proc/feed_fishes(atom/movable/movable, list/fishes = get_fishes())
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/fish/fish as anything in fishes)
 		fish.feed(movable.reagents)
 	if(current_mode == AQUARIUM_MODE_AUTO && is_fish_population_safe())
 		REMOVE_TRAIT(parent, TRAIT_STOP_FISH_REPRODUCTION_AND_GROWTH, AQUARIUM_TRAIT)
 
 /datum/component/aquarium/proc/on_plunger_act(atom/movable/source, obj/item/plunger/plunger, mob/living/user, reinforced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!HAS_TRAIT(source, TRAIT_AQUARIUM_PANEL_OPEN))
 		source.balloon_alert(user, "open panel first!")
@@ -292,6 +314,8 @@
 	return COMPONENT_NO_AFTERATTACK
 
 /datum/component/aquarium/proc/do_plunging(atom/movable/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.balloon_alert_to_viewers("plunging...")
 	if(do_after(user, 3 SECONDS, target = source))
 		user.balloon_alert_to_viewers("finished plunging")
@@ -299,6 +323,8 @@
 		source.reagents.clear_reagents()
 
 /datum/component/aquarium/proc/on_examine(atom/movable/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_list += span_notice("Its temperature and fluid are currently set to [EXAMINE_HINT("[fluid_temp] K")] and [EXAMINE_HINT(fluid_type)].")
 	var/panel_open = HAS_TRAIT(source, TRAIT_AQUARIUM_PANEL_OPEN)
@@ -308,6 +334,8 @@
 
 ///Check if an item can be inserted into the aquarium
 /datum/component/aquarium/proc/can_insert(atom/movable/source, obj/item/item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/return_value = SEND_SIGNAL(src, COMSIG_AQUARIUM_CAN_INSERT, item, user)
 	if(return_value & COMSIG_CANNOT_INSERT_IN_AQUARIUM)
 		return FALSE
@@ -325,6 +353,8 @@
 
 ///Handles aquarium content insertion
 /datum/component/aquarium/proc/on_entered(atom/movable/source, atom/movable/entered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	get_content_beauty(entered)
 	if(!isfish(entered))
@@ -343,6 +373,8 @@
 
 ///update the beauty_by_content of a 'beauty_by_content' key and then recalculate the beauty.
 /datum/component/aquarium/proc/get_content_beauty(atom/movable/content)
+	procstart = null
+	src.procstart = null
 	var/list/beauty_holder = list()
 	SEND_SIGNAL(content, COMSIG_MOVABLE_GET_AQUARIUM_BEAUTY, beauty_holder)
 	var/beauty = beauty_holder[1]
@@ -356,6 +388,8 @@
 
 ///Handles aquarium content removal.
 /datum/component/aquarium/proc/on_exited(atom/movable/source, atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/beauty = beauty_by_content?[gone]
 	if(beauty)
@@ -378,6 +412,8 @@
 
 ///Return a list of fish which our fishie can reproduce with (including itself if self-reproducing)
 /datum/component/aquarium/proc/get_candidates(atom/movable/source, obj/item/fish/fish, list/candidates)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/list/types_to_mate_with = tracked_fish_by_type
 	if(!HAS_TRAIT(fish, TRAIT_FISH_CROSSBREEDER))
@@ -394,6 +430,8 @@
 
 ///Check if an offspring of two fish (or one if self-reproducing) can evolve.
 /datum/component/aquarium/proc/check_evolution(atom/movable/source, obj/item/fish/fish, obj/item/fish/mate, datum/fish_evolution/evolution)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	//chances are halved if it isn't asexual reproduction and one parent doesn't have the evolution.
 	var/real_probability = (isnull(mate) || (evolution.type in mate.evolution_types)) ? evolution.probability : evolution.probability * 0.5
@@ -410,6 +448,8 @@
  * access this comp in multiple places just to confirm that.
  */
 /datum/component/aquarium/proc/check_fluid_and_temperature(obj/item/fish/fish)
+	procstart = null
+	src.procstart = null
 	if((fluid_type in GLOB.fish_compatible_fluid_types[fish.required_fluid_type]) || (fluid_type == AQUARIUM_FLUID_AIR && HAS_TRAIT(fish, TRAIT_FISH_AMPHIBIOUS)))
 		fish.fish_flags |= FISH_FLAG_SAFE_FLUID
 	else
@@ -421,11 +461,15 @@
 
 ///Fish beauty changes when they're dead, so we need to update the beauty of the aquarium too.
 /datum/component/aquarium/proc/on_fish_status_changed(obj/item/fish/fish)
+	procstart = null
+	src.procstart = null
 	get_content_beauty(fish)
 	if(current_mode == AQUARIUM_MODE_AUTO)
 		get_optimal_aquarium_settings()
 
 /datum/component/aquarium/proc/update_aquarium_beauty(old_beauty)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(parent))
 		return
 	old_beauty = clamp(old_beauty, MIN_AQUARIUM_BEAUTY, MAX_AQUARIUM_BEAUTY)
@@ -442,12 +486,16 @@
 
 ///Remove a visual overlay from an aquarium_content comp
 /datum/component/aquarium/proc/remove_visual(atom/movable/source, obj/effect/aquarium/visual)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	source.vis_contents -= visual
 	used_layers -= visual.layer
 
 ///set values for a visual overlay for an aquarium_content comp
 /datum/component/aquarium/proc/set_visual(atom/movable/source, obj/effect/aquarium/visual)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	used_layers -= visual.layer
 	visual.layer = request_layer(visual.layer_mode)
@@ -458,6 +506,8 @@
 	visual.fluid_type = fluid_type
 
 /datum/component/aquarium/proc/request_layer(layer_type)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/movable = parent
 	switch(layer_type)
 		if(AQUARIUM_LAYER_MODE_BEHIND_GLASS)
@@ -474,12 +524,16 @@
 			return movable.layer + chosen_layer
 
 /datum/component/aquarium/proc/get_fishes()
+	procstart = null
+	src.procstart = null
 	var/list/fishes = list()
 	for(var/key in tracked_fish_by_type)
 		fishes += tracked_fish_by_type[key]
 	return fishes
 
 /datum/component/aquarium/proc/is_fish_population_safe()
+	procstart = null
+	src.procstart = null
 	var/list/fishes = get_fishes()
 	var/alive = 0
 	var/not_safe = 0
@@ -500,6 +554,8 @@
  * or not. All fish are equal before the impartial eye of AQUARIUM_MODE_AUTO.
  */
 /datum/component/aquarium/proc/get_optimal_aquarium_settings()
+	procstart = null
+	src.procstart = null
 	if(!length(tracked_fish_by_type))
 		REMOVE_TRAIT(parent, TRAIT_STOP_FISH_REPRODUCTION_AND_GROWTH, AQUARIUM_TRAIT)
 		return
@@ -573,6 +629,8 @@
 		REMOVE_TRAIT(parent, TRAIT_STOP_FISH_REPRODUCTION_AND_GROWTH, AQUARIUM_TRAIT)
 
 /datum/component/aquarium/proc/interact(atom/movable/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(HAS_TRAIT(source, TRAIT_AQUARIUM_PANEL_OPEN))
 		INVOKE_ASYNC(src, PROC_REF(ui_interact), user)
@@ -580,17 +638,23 @@
 	INVOKE_ASYNC(src, PROC_REF(admire), source, user)
 
 /datum/component/aquarium/proc/secondary_interact(atom/movable/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(HAS_TRAIT(source, TRAIT_AQUARIUM_PANEL_OPEN))
 		return
 	INVOKE_ASYNC(src, PROC_REF(admire), source, user)
 
 /datum/component/aquarium/proc/on_secondary_attack_hand(obj/item/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(admire), source, user)
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/component/aquarium/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		var/atom/movable/movable = parent
@@ -598,6 +662,8 @@
 		ui.open()
 
 /datum/component/aquarium/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/movable/aquarium = parent
 	.["fluidType"] = fluid_type
@@ -628,6 +694,8 @@
 		))
 
 /datum/component/aquarium/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//I guess these should depend on the fluid so lava critters can get high or stuff below water freezing point but let's keep it simple for now.
 	.["minTemperature"] = min_fluid_temp
@@ -640,6 +708,8 @@
 	.["aquariumModes"] = modes_no_assoc
 
 /datum/component/aquarium/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -679,6 +749,8 @@
 			fish.AddComponent(/datum/component/rename, new_name, fish.desc)
 
 /datum/component/aquarium/proc/set_aquarium_mode(new_mode)
+	procstart = null
+	src.procstart = null
 	if(new_mode == current_mode)
 		return
 	REMOVE_TRAIT(parent, TRAIT_STOP_FISH_REPRODUCTION_AND_GROWTH, AQUARIUM_TRAIT)
@@ -690,6 +762,8 @@
 			get_optimal_aquarium_settings()
 
 /datum/component/aquarium/proc/set_fluid_type(new_fluid_type)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/movable = parent
 	fluid_type = new_fluid_type
 	SEND_SIGNAL(movable, COMSIG_AQUARIUM_FLUID_CHANGED, fluid_type)
@@ -697,6 +771,8 @@
 		check_fluid_and_temperature(fish)
 
 /datum/component/aquarium/proc/admire(atom/movable/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		return
 	source.balloon_alert(user, "admiring aquarium...")
@@ -720,6 +796,8 @@
 		user.add_mood_event("aquarium", morb ? /datum/mood_event/morbid_aquarium_good : /datum/mood_event/aquarium_negative)
 
 /datum/component/aquarium/proc/on_requesting_context_from_item(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/open_panel = HAS_TRAIT(source, TRAIT_AQUARIUM_PANEL_OPEN)
 	var/is_held_item = (held_item == source)

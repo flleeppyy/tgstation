@@ -1,15 +1,21 @@
 // For any /obj/vehicle's that can be ridden
 
 /datum/component/riding/vehicle/Initialize(mob/living/riding_mob, force = FALSE, ride_check_flags = (RIDER_NEEDS_LEGS | RIDER_NEEDS_ARMS))
+	procstart = null
+	src.procstart = null
 	if(!isvehicle(parent))
 		return COMPONENT_INCOMPATIBLE
 	return ..()
 
 /datum/component/riding/vehicle/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_RIDDEN_DRIVER_MOVE, PROC_REF(driver_move))
 
 /datum/component/riding/vehicle/riding_can_z_move(atom/movable/movable_parent, direction, turf/start, turf/destination, z_move_flags, mob/living/rider)
+	procstart = null
+	src.procstart = null
 	if(!(z_move_flags & ZMOVE_CAN_FLY_CHECKS))
 		return COMPONENT_RIDDEN_ALLOW_Z_MOVE
 
@@ -33,6 +39,8 @@
 	return COMPONENT_RIDDEN_ALLOW_Z_MOVE
 
 /datum/component/riding/vehicle/driver_move(atom/movable/movable_parent, mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, vehicle_move_cooldown))
 		return COMPONENT_DRIVER_BLOCK_MOVE
 	var/obj/vehicle/vehicle_parent = parent
@@ -84,6 +92,8 @@
 
 /// This handles the actual movement for vehicles once [/datum/component/riding/vehicle/proc/driver_move] has given us the green light
 /datum/component/riding/vehicle/proc/handle_ride(mob/user, direction)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/movable_parent = parent
 
 	var/turf/next = get_step(movable_parent, direction)
@@ -113,6 +123,8 @@
 	vehicle_move_delay = 1.5
 
 /datum/component/riding/vehicle/atv/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 4),
 		TEXT_SOUTH = list(0, 4),
@@ -121,6 +133,8 @@
 	)
 
 /datum/component/riding/vehicle/atv/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 0, OBJ_LAYER),
 		TEXT_SOUTH = list(0, 0, ABOVE_MOB_LAYER),
@@ -133,6 +147,8 @@
 	vehicle_move_delay = 0
 
 /datum/component/riding/vehicle/bicycle/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 4),
 		TEXT_SOUTH = list(0, 4),
@@ -147,10 +163,14 @@
 	var/allowed_turfs = list(/turf/open/lava, /turf/open/water)
 
 /datum/component/riding/vehicle/lavaboat/Initialize(mob/living/riding_mob, force, ride_check_flags, potion_boost)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed_turf_typecache = typecacheof(allowed_turfs)
 
 /datum/component/riding/vehicle/lavaboat/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 0, ABOVE_MOB_LAYER),
 		TEXT_SOUTH = list(0, 0, ABOVE_MOB_LAYER),
@@ -163,6 +183,8 @@
 	keytype = null
 
 /datum/component/riding/vehicle/lavaboat/dragonboat/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(1, 2),
 		TEXT_SOUTH = list(1, 2),
@@ -174,6 +196,8 @@
 	keytype = /obj/item/key/janitor
 
 /datum/component/riding/vehicle/janicart/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list( 0, 4),
 		TEXT_SOUTH = list( 0, 7),
@@ -185,6 +209,8 @@
 	ride_check_flags = RIDER_NEEDS_LEGS | RIDER_NEEDS_ARMS | UNBUCKLE_DISABLED_RIDER
 
 /datum/component/riding/vehicle/scooter/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(offsetter))
 		return list(
 			TEXT_NORTH = list(0, 2),
@@ -206,6 +232,8 @@
 	var/can_slow_down = TRUE
 
 /datum/component/riding/vehicle/scooter/skateboard/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 5),
 		TEXT_SOUTH = list(0, 5),
@@ -214,6 +242,8 @@
 	)
 
 /datum/component/riding/vehicle/scooter/skateboard/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 0, ABOVE_MOB_LAYER),
 		TEXT_SOUTH = list(0, 0, ABOVE_MOB_LAYER),
@@ -222,6 +252,8 @@
 	)
 
 /datum/component/riding/vehicle/scooter/skateboard/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(can_slow_down)
 		RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
@@ -230,10 +262,14 @@
 		board.can_slow_down = can_slow_down
 
 /datum/component/riding/vehicle/scooter/skateboard/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_list += span_notice("Going slow and nice at [EXAMINE_HINT("walk")] speed will prevent crashing into things.")
 
 /datum/component/riding/vehicle/scooter/skateboard/vehicle_mob_buckle(datum/source, mob/living/rider, force = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!can_slow_down)
 		return
@@ -242,6 +278,8 @@
 		vehicle_move_delay += 0.6
 
 /datum/component/riding/vehicle/scooter/skateboard/handle_unbuckle(mob/living/rider)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!can_slow_down)
 		return
@@ -250,6 +288,8 @@
 		vehicle_move_delay -= 0.6
 
 /datum/component/riding/vehicle/scooter/skateboard/proc/toggle_move_delay(mob/living/rider)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(rider.move_intent == MOVE_INTENT_WALK)
 		vehicle_move_delay += 0.6
@@ -265,6 +305,8 @@
 	override_allow_spacemove = TRUE
 
 /datum/component/riding/vehicle/scooter/skateboard/hover/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_ATOM_HAS_GRAVITY, PROC_REF(check_grav))
 	RegisterSignal(parent, COMSIG_MOVABLE_SPACEMOVE, PROC_REF(check_drifting))
@@ -272,22 +314,30 @@
 
 ///Makes sure that the vehicle is grav-less if capable of zero-g movement. Forced gravity will honestly screw this.
 /datum/component/riding/vehicle/scooter/skateboard/hover/proc/check_grav(datum/source, turf/gravity_turf, list/gravs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(override_allow_spacemove)
 		gravs += 0
 
 ///Makes sure the vehicle isn't drifting while it can be maneuvered.
 /datum/component/riding/vehicle/scooter/skateboard/hover/proc/check_drifting(datum/source, movement_dir, continuous_move)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(override_allow_spacemove)
 		return COMSIG_MOVABLE_STOP_SPACEMOVE
 
 /datum/component/riding/vehicle/scooter/skateboard/hover/vehicle_moved(atom/movable/source, oldloc, dir, forced)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	hover_check(TRUE)
 
 ///Makes sure that the hoverboard can move in zero-g in (open) space but only there's a ground turf on the z-level below.
 /datum/component/riding/vehicle/scooter/skateboard/hover/proc/hover_check(is_moving = FALSE)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/movable = parent
 	if(!is_space_or_openspace(movable.loc))
 		on_hover_enabled()
@@ -306,6 +356,8 @@
 
 ///Part of the hover_check proc that returns false if it's a space turf without lattice or such.
 /datum/component/riding/vehicle/scooter/skateboard/hover/proc/check_space_turf(turf/turf)
+	procstart = null
+	src.procstart = null
 	if(!isspaceturf(turf))
 		return TRUE
 	for(var/obj/object in turf.contents)
@@ -315,10 +367,14 @@
 
 ///Called by hover_check() when the hoverboard is on a valid turf.
 /datum/component/riding/vehicle/scooter/skateboard/hover/proc/on_hover_enabled()
+	procstart = null
+	src.procstart = null
 	override_allow_spacemove = TRUE
 
 ///Called by hover_check() when the hoverboard is on space or open space turf without a support underneath it.
 /datum/component/riding/vehicle/scooter/skateboard/hover/proc/on_hover_fail(turf/open/our_turf, turf/turf_below, is_moving)
+	procstart = null
+	src.procstart = null
 	override_allow_spacemove = FALSE
 	if(turf_below)
 		our_turf.zFall(parent, falling_from_move = is_moving)
@@ -327,12 +383,16 @@
 	var/is_slown_down = FALSE
 
 /datum/component/riding/vehicle/scooter/skateboard/hover/holy/on_hover_enabled()
+	procstart = null
+	src.procstart = null
 	if(!is_slown_down)
 		return
 	is_slown_down = FALSE
 	vehicle_move_delay -= 1
 
 /datum/component/riding/vehicle/scooter/skateboard/hover/holy/on_hover_fail(turf/open/our_turf, turf/turf_below, is_moving)
+	procstart = null
+	src.procstart = null
 	if(is_slown_down)
 		return
 	is_slown_down = TRUE
@@ -349,6 +409,8 @@
 	vehicle_move_delay = 1
 
 /datum/component/riding/vehicle/scooter/skateboard/wheelys/skishoes/Initialize(mob/living/riding_mob, force, ride_check_flags, potion_boost)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed_turf_typecache = typecacheof(list(/turf/open/misc/asteroid/snow, /turf/open/misc/snow, /turf/open/floor/holofloor/snow, /turf/open/misc/ice, /turf/open/floor/fake_snow))
 
@@ -358,6 +420,8 @@
 	ride_check_flags = RIDER_NEEDS_LEGS | RIDER_NEEDS_ARMS | UNBUCKLE_DISABLED_RIDER
 
 /datum/component/riding/vehicle/secway/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 4),
 		TEXT_SOUTH = list(0, 4),
@@ -366,6 +430,8 @@
 	)
 
 /datum/component/riding/vehicle/secway/driver_move(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	var/obj/vehicle/ridden/secway/the_secway = parent
 
 	if(keycheck(user) && the_secway.eddie_murphy)
@@ -382,6 +448,8 @@
 	ride_check_flags = RIDER_NEEDS_LEGS | RIDER_NEEDS_ARMS | UNBUCKLE_DISABLED_RIDER
 
 /datum/component/riding/vehicle/speedbike/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list( 0, -8),
 		TEXT_SOUTH = list( 0,  4),
@@ -390,6 +458,8 @@
 	)
 
 /datum/component/riding/vehicle/speedbike/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(-16, -16),
 		TEXT_SOUTH = list(-16, -16),
@@ -401,6 +471,8 @@
 	vehicle_move_delay = 0
 
 /datum/component/riding/vehicle/speedwagon/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	switch(pass_index)
 		if(1)
 			return list(
@@ -432,6 +504,8 @@
 			)
 
 /datum/component/riding/vehicle/speedwagon/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return list(
 		TEXT_NORTH = list(-48, -48, BELOW_MOB_LAYER),
@@ -445,6 +519,8 @@
 	ride_check_flags = RIDER_NEEDS_ARMS
 
 /datum/component/riding/vehicle/wheelchair/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 0),
 		TEXT_SOUTH = list(0, 0),
@@ -457,12 +533,16 @@
 	var/delay_multiplier = 6.7
 
 /datum/component/riding/vehicle/wheelchair/hand/driver_move(obj/vehicle/vehicle_parent, mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	vehicle_move_delay = round(CONFIG_GET(number/movedelay/run_delay) * delay_multiplier) / clamp(user.usable_hands, 1, 2)
 	return ..()
 
 /datum/component/riding/vehicle/wheelchair/motorized
 
 /datum/component/riding/vehicle/wheelchair/motorized/driver_move(obj/vehicle/vehicle_parent, mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	var/obj/vehicle/ridden/wheelchair/motorized/our_chair = parent
 	var/speed = our_chair.speed
 	var/delay_multiplier = our_chair.delay_multiplier
@@ -470,6 +550,8 @@
 	return ..()
 
 /datum/component/riding/vehicle/wheelchair/motorized/handle_ride(mob/user, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/vehicle/ridden/wheelchair/motorized/our_chair = parent
 	if(istype(our_chair) && our_chair.power_cell)
@@ -481,11 +563,15 @@
 	keytype = /obj/item/key/golfcart
 
 /datum/component/riding/vehicle/golfcart/restore_parent_layer_and_offsets()
+	procstart = null
+	src.procstart = null
 	// just don't restore anything.
 	// restoring layers fucks stuff to do with the rear part
 	return
 
 /datum/component/riding/vehicle/golfcart/driver_move(atom/movable/movable_parent, mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if (!istype(parent, /obj/vehicle/ridden/golfcart))
 		return ..()
 	var/obj/vehicle/ridden/golfcart/cart = parent
@@ -502,6 +588,8 @@
 	return ..()
 
 /datum/component/riding/vehicle/golfcart/handle_ride(mob/user, direction)
+	procstart = null
+	src.procstart = null
 	if (!istype(parent, /obj/vehicle/ridden/golfcart))
 		return ..()
 	var/obj/vehicle/ridden/golfcart/cart = parent
@@ -511,12 +599,16 @@
 	return ..()
 
 /datum/component/riding/vehicle/golfcart/update_parent_layer_and_offsets(dir, animate)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (istype(parent, /obj))
 		var/obj/objectified = parent
 		objectified.update_appearance(UPDATE_ICON)
 
 /datum/component/riding/vehicle/golfcart/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, -16),
 		TEXT_SOUTH = list(0, 10),
@@ -525,6 +617,8 @@
 	)
 
 /datum/component/riding/vehicle/golfcart/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 0, ABOVE_MOB_LAYER),
 		TEXT_SOUTH = list(0, 0, ABOVE_MOB_LAYER),

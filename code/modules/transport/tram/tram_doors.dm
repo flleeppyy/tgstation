@@ -24,11 +24,15 @@
 	COOLDOWN_DECLARE(release_cooldown)
 
 /obj/machinery/door/airlock/tram/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!id_tag)
 		id_tag = assign_random_name()
 
 /obj/machinery/door/airlock/tram/open(forced = DEFAULT_DOOR_CHECKS)
+	procstart = null
+	src.procstart = null
 	if(welded || locked || seal)
 		return FALSE
 
@@ -60,6 +64,8 @@
 	return TRUE
 
 /obj/machinery/door/airlock/tram/close(forced = DEFAULT_DOOR_CHECKS, force_crush = FALSE)
+	procstart = null
+	src.procstart = null
 	retry_counter++
 	if(retry_counter >= 3 || force_crush || forced == BYPASS_DOOR_CHECKS)
 		try_to_close(forced = BYPASS_DOOR_CHECKS)
@@ -78,6 +84,8 @@
  * * rapid - boolean: if TRUE will skip safety checks and crush whatever is in the way
  */
 /obj/machinery/door/airlock/tram/proc/try_to_close(forced = DEFAULT_DOOR_CHECKS)
+	procstart = null
+	src.procstart = null
 	if(operating || welded || locked || seal)
 		return FALSE
 	if(density)
@@ -118,6 +126,8 @@
 	return TRUE
 
 /obj/machinery/door/airlock/tram/animation_length(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if(DOOR_OPENING_ANIMATION)
 			return 1.8 SECONDS
@@ -125,6 +135,8 @@
 			return 2.5 SECONDS
 
 /obj/machinery/door/airlock/tram/animation_segment_delay(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if(AIRLOCK_OPENING_TRANSPARENT)
 			return 0.9 SECONDS
@@ -149,6 +161,8 @@
  * While funny to watch, not ideal for the player.
  */
 /obj/machinery/door/airlock/tram/crush()
+	procstart = null
+	src.procstart = null
 	for(var/turf/checked_turf in locs)
 		for(var/mob/living/future_pancake in checked_turf)
 			future_pancake.visible_message(span_warning("[src] beeps angrily and closes on [future_pancake]!"), span_userdanger("[src] beeps angrily and closes on you!"))
@@ -172,6 +186,8 @@
  * take a chunk of skin, people have places to be!
  */
 /obj/machinery/door/airlock/tram/proc/verify_status()
+	procstart = null
+	src.procstart = null
 	if(airlock_state == AIRLOCK_CLOSED)
 		return
 
@@ -187,22 +203,30 @@
  * Set the weakref for the tram we're attached to
  */
 /obj/machinery/door/airlock/tram/proc/find_tram()
+	procstart = null
+	src.procstart = null
 	for(var/datum/transport_controller/linear/tram/tram as anything in SStransport.transports_by_type[TRANSPORT_TYPE_TRAM])
 		if(tram.specific_transport_id == transport_linked_id)
 			transport_ref = WEAKREF(tram)
 
 /obj/machinery/door/airlock/tram/Initialize(mapload, set_dir, unres_sides)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RemoveElement(/datum/element/atmos_sensitive, mapload)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/door/airlock/tram/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	INVOKE_ASYNC(src, PROC_REF(open))
 	SStransport.doors += src
 	find_tram()
 
 /obj/machinery/door/airlock/tram/Destroy()
+	procstart = null
+	src.procstart = null
 	SStransport.doors -= src
 	return ..()
 
@@ -210,6 +234,8 @@
  * Tram doors can be opened with hands when unpowered
  */
 /obj/machinery/door/airlock/tram/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It has an emergency mechanism to open using [EXAMINE_HINT("just your hands")] in the event of an emergency.")
 
@@ -217,6 +243,8 @@
  * Tram doors can be opened with hands when unpowered
  */
 /obj/machinery/door/airlock/tram/try_safety_unlock(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, release_cooldown))
 		return
 
@@ -231,6 +259,8 @@
  * If you pry (bump) the doors open midtravel, open quickly so you can jump out and make a daring escape.
  */
 /obj/machinery/door/airlock/tram/bumpopen(mob/user, forced = BYPASS_DOOR_CHECKS)
+	procstart = null
+	src.procstart = null
 	if(operating || !density)
 		return
 
@@ -254,6 +284,8 @@
 		open(forced = BYPASS_DOOR_CHECKS)
 
 /obj/machinery/door/airlock/tram/animation_effects(animation, force_type = DEFAULT_DOOR_CHECKS)
+	procstart = null
+	src.procstart = null
 	if(force_type == BYPASS_DOOR_CHECKS)
 		return
 

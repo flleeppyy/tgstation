@@ -8,6 +8,8 @@
 	description = "A colourful display can be seen through select windows. And the kitchen."
 
 /datum/round_event_control/aurora_caelus/can_spawn_event(players, allow_magic = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!SSmapping.empty_space)
 		return FALSE
 	return ..()
@@ -18,6 +20,8 @@
 	end_when = 80
 
 /datum/round_event/aurora_caelus/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("[station_name()]: A harmless cloud of ions is approaching your station, and will exhaust their energy battering the hull. Nanotrasen has approved a short break for all employees to relax and observe this very rare event. During this time, starlight will be bright but gentle, shifting between quiet green and blue colors. Any staff who would like to view these lights for themselves may proceed to the area nearest to them with viewing ports to open space. We hope you enjoy the lights.",
 	sound = 'sound/announcer/notice/notice2.ogg',
 	sender_override = "Nanotrasen Meteorology Division")
@@ -32,6 +36,8 @@
 	fade_kitchen(fade_in = TRUE)
 
 /datum/round_event/aurora_caelus/start()
+	procstart = null
+	src.procstart = null
 	if(!prob(1) && !check_holidays(APRIL_FOOLS))
 		return
 
@@ -54,6 +60,8 @@
 					seymour.emote("scream")
 
 /datum/round_event/aurora_caelus/tick()
+	procstart = null
+	src.procstart = null
 	if(activeFor % 8 != 0)
 		return
 	var/aurora_color = hsl_gradient((activeFor - start_when) / (end_when - start_when), 0, "#A2FF80", 1, "#A2FFEE")
@@ -64,6 +72,8 @@
 			kitchen_floor.set_light(l_color = aurora_color)
 
 /datum/round_event/aurora_caelus/end()
+	procstart = null
+	src.procstart = null
 	fade_space()
 	fade_kitchen()
 	priority_announce("The aurora caelus event is now ending. Starlight conditions will slowly return to normal. When this has concluded, please return to your workplace and continue work as normal. Have a pleasant shift, [station_name()], and thank you for watching with us.",
@@ -71,6 +81,8 @@
 	sender_override = "Nanotrasen Meteorology Division")
 
 /datum/round_event/aurora_caelus/proc/fade_space(fade_in = FALSE)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	// iterate all glass tiles
 	var/start_color = hsl_gradient(1, 0, "#A2FF80", 1, "#A2FFEE")
@@ -96,6 +108,8 @@
 	set_starlight(end_color, end_range, end_power)
 
 /datum/round_event/aurora_caelus/proc/fade_kitchen(fade_in = FALSE)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	var/start_color = hsl_gradient(1, 0, "#A2FF80", 1, "#A2FFEE")
 	var/start_range = 1

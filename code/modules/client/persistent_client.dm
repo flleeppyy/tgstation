@@ -40,17 +40,23 @@ GLOBAL_LIST_EMPTY_TYPED(persistent_clients, /datum/persistent_client)
 	var/time_of_death = 0
 
 /datum/persistent_client/New(ckey)
+	procstart = null
+	src.procstart = null
 	achievements = new(ckey)
 	GLOB.persistent_clients_by_ckey[ckey] = src
 	GLOB.persistent_clients += src
 
 /datum/persistent_client/Destroy(force)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	. = QDEL_HINT_LETMELIVE
 	CRASH("Who the FUCK tried to delete a persistent client? Get your head checked you leadskull.")
 
 /// Setter for the client var, updates any vars we have that might be dependent on client state
 /datum/persistent_client/proc/set_client(client/new_client)
+	procstart = null
+	src.procstart = null
 	if(client == new_client)
 		return
 	
@@ -64,6 +70,8 @@ GLOBAL_LIST_EMPTY_TYPED(persistent_clients, /datum/persistent_client)
 
 /// Setter for the mob var, handles both references.
 /datum/persistent_client/proc/set_mob(mob/new_mob)
+	procstart = null
+	src.procstart = null
 	if(mob == new_mob)
 		return
 
@@ -75,6 +83,8 @@ GLOBAL_LIST_EMPTY_TYPED(persistent_clients, /datum/persistent_client)
 
 /// Writes all of the `played_names` into an HTML-escaped string.
 /datum/persistent_client/proc/get_played_names()
+	procstart = null
+	src.procstart = null
 	var/list/previous_names = list()
 	for(var/previous_name in played_names)
 		previous_names += html_encode("[previous_name] ([played_names[previous_name]])")
@@ -82,6 +92,8 @@ GLOBAL_LIST_EMPTY_TYPED(persistent_clients, /datum/persistent_client)
 
 /// Returns the full version string (i.e 515.1642) of the BYOND version and build.
 /datum/persistent_client/proc/full_byond_version()
+	procstart = null
+	src.procstart = null
 	if(!byond_version)
 		return "Unknown"
 	return "[byond_version].[byond_build || "xxx"]"
@@ -89,6 +101,8 @@ GLOBAL_LIST_EMPTY_TYPED(persistent_clients, /datum/persistent_client)
 /// Adds the new names to the player's played_names list on their /datum/persistent_client for use of admins.
 /// `ckey` should be their ckey, and `data` should be an associative list with the keys being the names they played under and the values being the unique mob ID tied to that name.
 /proc/log_played_names(ckey, data)
+	procstart = null
+	src.procstart = null
 	if(!ckey)
 		return
 

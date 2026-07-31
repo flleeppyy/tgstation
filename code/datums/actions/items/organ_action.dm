@@ -3,6 +3,8 @@
 	check_flags = AB_CHECK_CONSCIOUS
 
 /datum/action/item_action/organ_action/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/attached_organ = target
 	if(!attached_organ.owner)
 		return FALSE
@@ -12,6 +14,8 @@
 	name = "Toggle Organ"
 
 /datum/action/item_action/organ_action/toggle/New(Target)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/organ/organ_target = target
 	name = "Toggle [organ_target.name]"
@@ -20,6 +24,8 @@
 	name = "Use Organ"
 
 /datum/action/item_action/organ_action/use/New(Target)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/organ/organ_target = target
 	name = "Use [organ_target.name]"
@@ -31,10 +37,14 @@
 	var/list/ability_name = list("Go Feral", "Bite the Hand that Feeds", "Unleash Id", "Activate Catbrain", "Gremlin Mode", "Nom Mode", "Dehumanize Yourself", "Misbehave")
 
 /datum/action/item_action/organ_action/go_feral/New(Target)
+	procstart = null
+	src.procstart = null
 	..()
 	name = pick(ability_name)
 
 /datum/action/item_action/organ_action/go_feral/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/tongue/cat/cat_tongue = target
 	cat_tongue.toggle_feral()
 	if(!cat_tongue.feral_mode)

@@ -3,11 +3,15 @@
 	shuttle_id = "steel_rain"
 
 /obj/docking_port/mobile/assault_pod/request(obj/docking_port/stationary/S)
+	procstart = null
+	src.procstart = null
 	if(!(z in SSmapping.levels_by_trait(ZTRAIT_STATION))) //No launching pods that have already launched
 		return ..()
 
 
 /obj/docking_port/mobile/assault_pod/initiate_docking(obj/docking_port/stationary/S1, force=FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(S1, /obj/docking_port/stationary/transit))
 		playsound(get_turf(src.loc), 'sound/effects/explosion/explosion1.ogg',50,TRUE)
@@ -32,6 +36,8 @@
 
 
 /obj/item/assault_pod/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/target_area = tgui_input_list(user, "Area to land", "Landing Zone", GLOB.teleportlocs)
 	if(isnull(target_area))
 		return
@@ -77,6 +83,8 @@
 	lzname = "pirate"
 
 /obj/item/assault_pod/medieval/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/counter = length(SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/computer/shuttle/pirate))
 	if(counter != 1)

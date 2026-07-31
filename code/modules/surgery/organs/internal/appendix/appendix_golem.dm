@@ -9,15 +9,21 @@
 	var/datum/action/cooldown/internal_smelting/smelter
 
 /obj/item/organ/appendix/golem/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	smelter = new(src)
 
 /obj/item/organ/appendix/golem/on_mob_insert(mob/living/carbon/organ_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(check_for_lava))
 
 /// Give the action while in lava
 /obj/item/organ/appendix/golem/proc/check_for_lava(mob/living/owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!islava(owner.loc))
 		smelter.Remove(owner)
@@ -26,11 +32,15 @@
 		smelter.Grant(owner)
 
 /obj/item/organ/appendix/golem/on_mob_remove(mob/living/carbon/organ_owner)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(organ_owner, COMSIG_MOVABLE_MOVED)
 	smelter?.Remove(organ_owner) // Might have been deleted by Destroy already
 	return ..()
 
 /obj/item/organ/appendix/golem/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(smelter)
 	return ..()
 
@@ -49,6 +59,8 @@
 	var/minimum_smelt_speed = 1 SECONDS
 
 /datum/action/cooldown/internal_smelting/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -59,12 +71,16 @@
 	return TRUE
 
 /datum/action/cooldown/internal_smelting/Activate(mob/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	smelt_speed = initial(smelt_speed)
 	smelt_held(target)
 
 /// Smelt an item held in one hand and put the result in the other
 /datum/action/cooldown/internal_smelting/proc/smelt_held(mob/target)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/ore/held_ore = locate(/obj/item/stack/ore) in target.held_items
 	if (!held_ore?.refined_type)
 		target.balloon_alert(target, "nothing to smelt!")

@@ -65,6 +65,8 @@
 	var/datum/action/cooldown/mob_cooldown/create_legion_turrets/create_legion_turrets
 
 /mob/living/simple_animal/hostile/megafauna/legion/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_FLOATING_ANIM, INNATE_TRAIT)
 	create_legion_skull = new(src)
@@ -77,6 +79,8 @@
 	create_legion_turrets.Grant(src)
 
 /mob/living/simple_animal/hostile/megafauna/legion/Destroy()
+	procstart = null
+	src.procstart = null
 	create_legion_skull = null
 	chase_target = null
 	create_legion_turrets = null
@@ -107,15 +111,21 @@
 	size = LEGION_SMALL
 
 /mob/living/simple_animal/hostile/megafauna/legion/small/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_OVERLAYS)
 
 /mob/living/simple_animal/hostile/megafauna/legion/small/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (stat != DEAD) // Shouldn't really happen but just in case
 		. += emissive_appearance(icon, "[icon_state]_e", src, effect_type = EMISSIVE_NO_BLOOM)
 
 /mob/living/simple_animal/hostile/megafauna/legion/OpenFire(the_target)
+	procstart = null
+	src.procstart = null
 	if(client)
 		return
 
@@ -129,6 +139,8 @@
 
 ///Deals some extra damage on throw impact.
 /mob/living/simple_animal/hostile/megafauna/legion/throw_impact(mob/living/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(hit_atom))
 		playsound(src, attack_sound, 100, TRUE)
@@ -136,12 +148,16 @@
 		hit_atom.safe_throw_at(get_step(src, get_dir(src, hit_atom)), 2) //Some knockback. Prevent the legion from melee directly after the throw.
 
 /mob/living/simple_animal/hostile/megafauna/legion/GiveTarget(new_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(target)
 		wander = TRUE
 
 ///This makes sure that the legion door opens on taking damage, so you can't cheese this boss.
 /mob/living/simple_animal/hostile/megafauna/legion/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(GLOB.necropolis_gate && true_spawn)
 		GLOB.necropolis_gate.toggle_the_gate(null, TRUE) //very clever.
 	return ..()
@@ -149,6 +165,8 @@
 
 ///In addition to parent functionality, this will also turn the target into a small legion if they are unconscious.
 /mob/living/simple_animal/hostile/megafauna/legion/AttackingTarget(atom/attacked_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !ishuman(target))
 		return
@@ -159,6 +177,8 @@
 
 ///Special snowflake death() here. Can only die if size is 1 or lower and HP is 0 or below.
 /mob/living/simple_animal/hostile/megafauna/legion/death()
+	procstart = null
+	src.procstart = null
 	//Make sure we didn't get cheesed
 	if(health > 0)
 		return
@@ -182,6 +202,8 @@
 
 ///Splits legion into smaller skulls.
 /mob/living/simple_animal/hostile/megafauna/legion/proc/Split()
+	procstart = null
+	src.procstart = null
 	size--
 	switch(size)
 		if (LEGION_SMALL)

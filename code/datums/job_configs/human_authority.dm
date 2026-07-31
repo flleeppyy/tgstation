@@ -4,6 +4,8 @@
 	datum_var_name = "human_authority"
 
 /datum/job_config_type/human_authority/validate_value(value)
+	procstart = null
+	src.procstart = null
 	if(value == JOB_AUTHORITY_HUMANS_ONLY)
 		return TRUE
 
@@ -13,5 +15,7 @@
 	return FALSE
 
 /datum/job_config_type/human_authority/validate_entry(datum/job/occupation)
+	procstart = null
+	src.procstart = null
 	return occupation.job_flags & JOB_HEAD_OF_STAFF
 

@@ -5,6 +5,8 @@
 	var/emissive_alpha = null
 
 /datum/element/decal/blood/Attach(datum/target, _icon, _icon_state, _dir, _plane, _layer, _alpha, _color, _smoothing, _cleanable = CLEAN_TYPE_BLOOD, _description, mutable_appearance/_pic, _uses_filter, _emissive)
+	procstart = null
+	src.procstart = null
 	if (!isitem(target))
 		return ELEMENT_INCOMPATIBLE
 
@@ -20,6 +22,8 @@
 	RegisterSignal(as_item, COMSIG_ATOM_COLOR_UPDATED, PROC_REF(on_color_update), TRUE)
 
 /datum/element/decal/blood/Detach(atom/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, list(COMSIG_ATOM_GET_EXAMINE_NAME, COMSIG_ATOM_COLOR_UPDATED))
 	if (isitem(source))
 		var/obj/item/source_item = source
@@ -27,6 +31,8 @@
 	return ..()
 
 /datum/element/decal/blood/generate_appearance(_icon, _icon_state, _dir, _plane, _layer, _color = BLOOD_COLOR_RED, _alpha, _smoothing, source)
+	procstart = null
+	src.procstart = null
 	var/obj/item/as_item = source
 	ADD_KEEP_TOGETHER(as_item, type)
 	var/scale_factor_x = as_item.get_cached_width() / ICON_SIZE_X
@@ -52,6 +58,8 @@
 	return TRUE
 
 /datum/element/decal/blood/proc/get_examine_name(atom/source, mob/user, list/override)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/list/blood_stains = GET_ATOM_BLOOD_DECALS(source)
@@ -65,6 +73,8 @@
 	override[EXAMINE_POSITION_BEFORE] = "[blood_descriptor]-stained"
 
 /datum/element/decal/blood/proc/on_color_update(obj/item/source, color_updated)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!color_updated || uses_filter == !isnull(source.cached_color_filter))

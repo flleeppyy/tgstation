@@ -44,9 +44,13 @@
 	)
 
 /obj/item/fish/sand_crab/get_fish_taste()
+	procstart = null
+	src.procstart = null
 	return list("raw crab" = 2)
 
 /obj/item/fish/sand_crab/get_fish_taste_cooked()
+	procstart = null
+	src.procstart = null
 	return list("cooked crab" = 2)
 
 /obj/item/fish/bumpy
@@ -93,25 +97,37 @@
 	beauty = FISH_BEAUTY_GREAT
 
 /obj/item/fish/starfish/Initialize(mapload, apply_qualities = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/item/fish/starfish/fish_grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/bluespace = 10)
 
 /obj/item/fish/starfish/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += add_emissive()
 
 /obj/item/fish/starfish/proc/add_emissive()
+	procstart = null
+	src.procstart = null
 	if(status == FISH_ALIVE)
 		return emissive_appearance(icon, "starfish_emissive", src, effect_type = EMISSIVE_NO_BLOOM)
 
 ///It spins, and dimly glows in the dark.
 /obj/item/fish/starfish/flop_animation()
+	procstart = null
+	src.procstart = null
 	DO_FLOATING_ANIM(src)
 
 /obj/item/fish/starfish/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] swallows [src], and looks upwards..."))
 	if (prob(20))
 		user.say("I must go. My people need me.", forced = "starfish suicide")
@@ -119,6 +135,8 @@
 	return MANUAL_SUICIDE
 
 /obj/item/fish/starfish/proc/ascension(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] abandons [user.p_their()] corporeal form!"))
 	user.drop_everything()
 	user.add_filter("space", 1, layering_filter(icon = icon('icons/mob/human/textures.dmi', "spacey"), blend_mode = BLEND_INSET_OVERLAY))
@@ -164,6 +182,8 @@
 	beauty = FISH_BEAUTY_GREAT
 
 /obj/item/fish/baby_carp/Initialize(mapload, apply_qualities = TRUE)
+	procstart = null
+	src.procstart = null
 	color = pick_weight(GLOB.carp_colors)
 	. = ..()
 	RegisterSignal(src, COMSIG_FISH_BEFORE_GROWING, PROC_REF(growth_checks))
@@ -171,6 +191,8 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/item/fish/baby_carp/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] swallows [src] whole!"))
 	src.forceMove(user)
 	if(status == FISH_DEAD)
@@ -188,6 +210,8 @@
 	return MANUAL_SUICIDE
 
 /obj/item/fish/baby_carp/proc/gestation(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(user) || QDELETED(src))
 		return
 	// carp grow big and strong inside the nutritious innards of the human
@@ -202,6 +226,8 @@
 	qdel(src)
 
 /obj/item/fish/baby_carp/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/eyes = mutable_appearance(icon, "baby_carp_eyes")
 	if(status == FISH_DEAD)
@@ -212,6 +238,8 @@
 
 ///Determines the speed at which the carp grows based on how big it's
 /obj/item/fish/baby_carp/update_size_and_weight(new_size = average_size, new_weight = average_weight, update_materials = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/growth_rate = 4.5 MINUTES
 	growth_rate *= clamp(size/average_size, 0.5, 2)
@@ -220,6 +248,8 @@
 	AddComponent(/datum/component/fish_growth, /mob/living/basic/carp/advanced, growth_rate)
 
 /obj/item/fish/baby_carp/proc/growth_checks(datum/source, seconds_per_tick, growth, result_path)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/hunger = CLAMP01((world.time - last_feeding) / feeding_frequency)
 	if(get_health_percentage() <= 0.6 || hunger >= 0.6) //if too hurt or hungry, don't grow.
@@ -234,6 +264,8 @@
 		return COMPONENT_DONT_GROW
 
 /obj/item/fish/baby_carp/proc/on_growth(datum/source, mob/living/basic/carp/result)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	//yes, this means that if we use a spraycan on the fish, the resulting space carp will be of spraycan color
 	result.set_greyscale(colors = list(color))
@@ -241,9 +273,13 @@
 #define PERSISTENCE_FISH_CARP_COLOR "carp_color"
 
 /obj/item/fish/baby_carp/persistence_save(list/data)
+	procstart = null
+	src.procstart = null
 	data[PERSISTENCE_FISH_CARP_COLOR] = color
 
 /obj/item/fish/baby_carp/persistence_load(list/data)
+	procstart = null
+	src.procstart = null
 	add_atom_colour(data[PERSISTENCE_FISH_CARP_COLOR], FIXED_COLOUR_PRIORITY)
 
 #undef PERSISTENCE_FISH_CARP_COLOR

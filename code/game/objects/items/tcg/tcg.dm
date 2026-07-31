@@ -19,6 +19,8 @@
 	var/icon/cached_flat_icon
 
 /obj/item/tcgcard/Initialize(mapload, datum_series, datum_id)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/item_scaling, 0.3, 1)
 	//If they are passed as null let's replace them with the vars on the card. this also means we can allow for map loaded ccards
@@ -45,6 +47,8 @@
  * This proc gets the card's associated card datum to play with
  */
 /obj/item/tcgcard/proc/extract_datum()
+	procstart = null
+	src.procstart = null
 	var/list/cached_cards = SStrading_card_game.cached_cards[series]
 	if(!cached_cards)
 		return null
@@ -53,6 +57,8 @@
 	return cached_cards["ALL"][id]
 
 /obj/item/tcgcard/get_name_chaser(mob/user, list/name_chaser = list())
+	procstart = null
+	src.procstart = null
 	if(flipped)
 		return ..()
 	var/datum/card/data_holder = extract_datum()
@@ -68,6 +74,8 @@
 	return name_chaser
 
 /obj/item/tcgcard/proc/get_cached_flat_icon()
+	procstart = null
+	src.procstart = null
 	if(!cached_flat_icon)
 		cached_flat_icon = getFlatIcon(src)
 	return cached_flat_icon
@@ -75,6 +83,8 @@
 GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 
 /obj/item/tcgcard/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isturf(loc))
 		return ..()
 	var/list/choices = GLOB.tcgcard_radial_choices
@@ -98,10 +108,14 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 			return
 
 /obj/item/tcgcard/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	flip_card(user)
 
 /obj/item/tcgcard/update_name(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!flipped)
 		var/datum/card/template = extract_datum()
@@ -110,6 +124,8 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 		name = "Trading Card"
 
 /obj/item/tcgcard/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!flipped)
 		var/datum/card/template = extract_datum()
@@ -118,6 +134,8 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 		desc = "It's the back of a trading card... no peeking!"
 
 /obj/item/tcgcard/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(flipped)
 		icon_state = "cardback"
 		return ..()
@@ -129,6 +147,8 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 	return ..()
 
 /obj/item/tcgcard/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/tcgcard))
 		var/obj/item/tcgcard/second_card = tool
 		var/obj/item/tcgcard_deck/new_deck = new /obj/item/tcgcard_deck(drop_location())
@@ -153,6 +173,8 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 	return NONE
 
 /obj/item/tcgcard/proc/check_menu(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated || !user.Adjacent(src))
@@ -160,6 +182,8 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 	return TRUE
 
 /obj/item/tcgcard/proc/tap_card(mob/user)
+	procstart = null
+	src.procstart = null
 	var/matrix/ntransform = matrix(transform)
 	if(tapped)
 		ntransform.TurnTo(TAPPED_ANGLE , UNTAPPED_ANGLE)
@@ -169,6 +193,8 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 	animate(src, transform = ntransform, time = 2, easing = SINE_EASING)
 
 /obj/item/tcgcard/proc/flip_card(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You turn the card over."))
 	if(!flipped)
 		name = "Trading Card"
@@ -199,11 +225,15 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 	var/static/radial_pickup = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_pickup")
 
 /obj/item/tcgcard_deck/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_storage(storage_type = /datum/storage/tcg)
 	RegisterSignal(atom_storage, COMSIG_STORAGE_REMOVED_ITEM, PROC_REF(on_item_removed))
 
 /obj/item/tcgcard_deck/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!flipped)
 		icon_state = "[base_icon_state]_up"
 		return ..()
@@ -220,10 +250,14 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 	return ..()
 
 /obj/item/tcgcard_deck/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("\The [src] has [contents.len] cards inside.")
 
 /obj/item/tcgcard_deck/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/list/choices = list(
 		"Draw" = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_draw"),
 		"Shuffle" = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_shuffle"),
@@ -246,12 +280,16 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 			return
 
 /obj/item/tcgcard_deck/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/card in 1 to contents.len)
 		var/obj/item/tcgcard/stored_card = contents[card]
 		stored_card.forceMove(drop_location())
 	. = ..()
 
 /obj/item/tcgcard_deck/proc/check_menu(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated || !user.Adjacent(src))
@@ -259,6 +297,8 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 	return TRUE
 
 /obj/item/tcgcard_deck/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/tcgcard))
 		return NONE
 	if(contents.len >= 30)
@@ -270,6 +310,8 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/tcgcard_deck/attack_self(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	shuffle_deck(user)
 	return ..()
 
@@ -277,6 +319,8 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
  * The user draws a single card. The deck is then handled based on how many cards are left.
  */
 /obj/item/tcgcard_deck/proc/draw_card(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!contents.len)
 		CRASH("A TCG deck was created with no cards inside of it.")
 	var/obj/item/tcgcard/drawn_card = contents[contents.len]
@@ -297,6 +341,8 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
  * *Visible: Will anyone need to hear the visable message about the shuffling?
  */
 /obj/item/tcgcard_deck/proc/shuffle_deck(mob/user, visable = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!contents)
 		return
 	contents = shuffle(contents)
@@ -311,6 +357,8 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
  * The user flips the deck, turning it into a face up/down pile, and reverses the order of the cards from top to bottom.
  */
 /obj/item/tcgcard_deck/proc/flip_deck()
+	procstart = null
+	src.procstart = null
 	flipped = !flipped
 	var/list/temp_deck = contents.Copy()
 	contents = reverse_range(temp_deck)
@@ -324,6 +372,8 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
  * Signal handler for COMSIG_STORAGE_REMOVED_ITEM. Qdels src if contents are empty, flips the removed card if needed.
  */
 /obj/item/tcgcard_deck/proc/on_item_removed(datum/storage/storage_datum, obj/item/thing, atom/remove_to_loc, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!istype(thing, /obj/item/tcgcard))
@@ -387,12 +437,16 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 		"legendary" = 5)
 
 /obj/item/cardpack/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/item_scaling, 0.4, 1)
 	rarity_table = SStrading_card_game.get_rarity_table(type, rarity_table)
 	guar_rarity = SStrading_card_game.get_guarenteed_rarity_table(type, guar_rarity)
 
 /obj/item/cardpack/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/cards
 	if(drop_all_cards)
@@ -436,6 +490,8 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 
 ///Returns a list of cards ids of card_cnt weighted by rarity from the pack's tables that have matching series, with gnt_cnt of the guaranteed table.
 /obj/item/cardpack/proc/buildCardListWithRarity(card_cnt, rarity_cnt)
+	procstart = null
+	src.procstart = null
 	var/list/toReturn = list()
 	//You can always get at least one of some rarity
 	toReturn += returnCardsByRarity(rarity_cnt, guar_rarity)
@@ -444,6 +500,8 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 
 ///Returns a list of card datums of the length cardCount that match a random rarity weighted by rarity_table[]
 /obj/item/cardpack/proc/returnCardsByRarity(cardCount, list/rarity_table)
+	procstart = null
+	src.procstart = null
 	var/list/toReturn = list()
 	for(var/card in 1 to cardCount)
 		var/rarity = 0
@@ -502,17 +560,23 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 	var/summon_icon_state = "template"
 
 /datum/card/New(list/data = list(), list/templates = list())
+	procstart = null
+	src.procstart = null
 	applyTemplates(data, templates)
 	apply(data)
 	applyKeywords(data | templates)
 
 ///For each var that the card datum and the json entry share, we set the datum var to the json entry
 /datum/card/proc/apply(list/data)
+	procstart = null
+	src.procstart = null
 	for(var/name in (data & vars))
 		vars[name] = data[name]
 
 ///Applies a json file to a card datum
 /datum/card/proc/applyTemplates(list/data, list/templates = list())
+	procstart = null
+	src.procstart = null
 	apply(templates["default"])
 	apply(templates[data["template"]])
 
@@ -520,6 +584,8 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 ///Adds on hovor logic to them, using the passed in list
 ///We use the changed_vars list just to make the var searching faster
 /datum/card/proc/applyKeywords(list/changed_vars)
+	procstart = null
+	src.procstart = null
 	for(var/name in (changed_vars & vars))
 		var/value = vars[name]
 		if(!istext(value))

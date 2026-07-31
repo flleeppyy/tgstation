@@ -8,6 +8,8 @@
 	name = "Bluespace Artillery Device"
 
 /datum/smite/bsa/effect(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	explosion(target.loc, explosion_cause = src)

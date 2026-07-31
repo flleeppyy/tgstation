@@ -11,12 +11,16 @@
 	var/list/thrown_items = list()
 
 /obj/projectile/gravityrepulse/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/ammo_casing/energy/gravity/repulse/C = loc
 	if(istype(C)) //Hard-coded maximum power so servers can't be crashed by trying to throw the entire Z level's items
 		power = min(C.gun?.power, 15)
 
 /obj/projectile/gravityrepulse/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	T = get_turf(src)
 	for(var/atom/movable/A in range(T, power))
@@ -45,12 +49,16 @@
 	var/list/thrown_items = list()
 
 /obj/projectile/gravityattract/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/ammo_casing/energy/gravity/attract/C = loc
 	if(istype(C)) //Hard-coded maximum power so servers can't be crashed by trying to throw the entire Z level's items
 		power = min(C.gun?.power, 15)
 
 /obj/projectile/gravityattract/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	T = get_turf(src)
 	for(var/atom/movable/A in range(T, power))
@@ -78,12 +86,16 @@
 	var/list/thrown_items = list()
 
 /obj/projectile/gravitychaos/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/ammo_casing/energy/gravity/chaos/C = loc
 	if(istype(C)) //Hard-coded maximum power so servers can't be crashed by trying to throw the entire Z level's items
 		power = min(C.gun?.power, 15)
 
 /obj/projectile/gravitychaos/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	T = get_turf(src)
 	for(var/atom/movable/A in range(T, power))

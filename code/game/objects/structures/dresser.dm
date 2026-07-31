@@ -9,6 +9,8 @@
 	custom_materials = list(/datum/material/wood = SHEET_MATERIAL_AMOUNT * 10)
 
 /obj/structure/dresser/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You begin to [anchored ? "unwrench" : "wrench"] [src]."))
 	if(!tool.use_tool(src, user, 20, volume=50))
 		return ITEM_INTERACT_BLOCKING
@@ -18,9 +20,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/dresser/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/mineral/wood(drop_location(), 10)
 
 /obj/structure/dresser/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

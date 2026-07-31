@@ -18,6 +18,8 @@
 
 
 /datum/disease/dnaspread/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -72,6 +74,8 @@
 
 
 /datum/disease/dnaspread/Destroy()
+	procstart = null
+	src.procstart = null
 	if (original_dna && transformed && affected_mob)
 		original_dna.copy_dna(affected_mob.dna, COPY_DNA_SE|COPY_DNA_SPECIES)
 		affected_mob.real_name = affected_mob.dna.real_name

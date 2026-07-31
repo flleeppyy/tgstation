@@ -10,6 +10,8 @@
 	obj_flags = parent_type::obj_flags | UNIQUE_RENAME
 
 /obj/machinery/atmospherics/components/binary/set_init_directions()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH, SOUTH)
 			initialize_directions = NORTH|SOUTH
@@ -17,6 +19,8 @@
 			initialize_directions = EAST|WEST
 
 /obj/machinery/atmospherics/components/binary/get_node_connects()
+	procstart = null
+	src.procstart = null
 	return list(REVERSE_DIR(dir), dir)
 
 /**
@@ -25,6 +29,8 @@
  * * -pipe_layer: is the pipe layer the component should be set to
  */
 /obj/machinery/atmospherics/components/binary/proc/set_overlay_offset(pipe_layer)
+	procstart = null
+	src.procstart = null
 	switch(pipe_layer)
 		if(1, 3, 5)
 			return 1

@@ -27,6 +27,8 @@
  * client can be deleted mid-execution of this proc, chiefly on parent calls, with lag
  */
 /mob/Login()
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return FALSE
 
@@ -155,7 +157,9 @@
  *
  * Called from [login](mob.html#proc/Login)
  */
-/mob/proc/auto_deadmin_on_login() //return true if they're not an admin at the end.
+/mob/proc/auto_deadmin_on_login()
+	procstart = null
+	src.procstart = null //return true if they're not an admin at the end.
 	if(!client?.holder)
 		return TRUE
 	if(CONFIG_GET(flag/auto_deadmin_always) || (client.prefs?.toggles & DEADMIN_ALWAYS))

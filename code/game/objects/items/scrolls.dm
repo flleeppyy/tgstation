@@ -15,6 +15,8 @@
 	var/uses = 4
 
 /obj/item/teleportation_scroll/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// In the future, this can be generalized into just "magic scrolls that give you a specific spell".
 	var/datum/action/cooldown/spell/teleport/area_teleport/wizard/scroll/teleport = locate() in actions
@@ -27,6 +29,8 @@
 
 /// Deplete charges if spell is cast successfully
 /obj/item/teleportation_scroll/proc/on_spell_cast(datum/action/cooldown/spell/cast_spell, mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	uses--
 	if(uses > 0)
@@ -39,11 +43,15 @@
 	uses = 1
 
 /obj/item/teleportation_scroll/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(uses > 0)
 		. += "It has [uses] use\s remaining."
 
 /obj/item/teleportation_scroll/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

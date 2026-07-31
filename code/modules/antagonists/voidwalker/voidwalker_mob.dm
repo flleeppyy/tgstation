@@ -85,6 +85,8 @@
 	var/can_do_abductions = TRUE
 
 /mob/living/basic/voidwalker/Initialize(mapload, mob/tamer)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(src, TRAIT_FREE_HYPERSPACE_MOVEMENT, INNATE_TRAIT) //Need to set before init cause if we init in hyperspace we get dragged before the trait can be added
 	. = ..()
 
@@ -125,6 +127,8 @@
 
 /// Stuff you might want different on subtypes
 /mob/living/basic/voidwalker/proc/unique_setup()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/space_camo, space_alpha, non_space_alpha, 255, 5 SECONDS, image(icon, icon_state + "_stealthed", ABOVE_LIGHTING_PLANE))
 	AddComponent(/datum/component/space_dive, /obj/effect/dummy/phased_mob/space_dive/voidwalker)
 
@@ -134,6 +138,8 @@
 	fully_replace_character_name(null, pick(GLOB.voidwalker_names))
 
 /mob/living/basic/voidwalker/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(unsettle)
 	QDEL_NULL(telepathy)
 	QDEL_NULL(charge)
@@ -142,6 +148,8 @@
 
 /// Called on COMSIG_LIVING_UNARMED_ATTACK
 /mob/living/basic/voidwalker/early_melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(. || !can_do_abductions)
@@ -178,14 +186,20 @@
 
 /// Called by the regenerator component so we only regen in space
 /mob/living/basic/voidwalker/proc/can_regen()
+	procstart = null
+	src.procstart = null
 	if(istype(get_turf(src), home_turf))
 		return TRUE
 	return FALSE
 
 /mob/living/basic/voidwalker/can_speak(allow_mimes)
+	procstart = null
+	src.procstart = null
 	return can_speak && ..()
 
 /mob/living/basic/voidwalker/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isturf(loc) || !speed_modifier)
@@ -202,6 +216,8 @@
 		remove_movespeed_modifier(speed_modifier)
 
 /mob/living/basic/voidwalker/death()
+	procstart = null
+	src.procstart = null
 	var/turf/spawn_loc = get_turf(src)
 	new /obj/effect/spawner/random/glass_shards(spawn_loc)
 	new /obj/item/clothing/head/helmet/skull/cosmic(spawn_loc)
@@ -215,6 +231,8 @@
 
 /// Start the kidnap interactions, including surprises for those who are already voided
 /mob/living/basic/voidwalker/proc/try_kidnap(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	if(victim.has_trauma_type(/datum/brain_trauma/voided))
 		victim.balloon_alert(src, "already voided!")
 		new /obj/effect/temp_visual/circle_wave/unsettle(get_turf(victim))
@@ -238,6 +256,8 @@
 
 /// Start kidnapping the victim
 /mob/living/basic/voidwalker/proc/kidnap(mob/living/parent, mob/living/victim)
+	procstart = null
+	src.procstart = null
 	victim.Paralyze(kidnap_time) //so they don't get up if we already got em
 
 	var/static/list/wave_filter = list(type = "wave", x = 2, size = 4)
@@ -255,6 +275,8 @@
 
 /// Woosh! You got takened
 /mob/living/basic/voidwalker/proc/take_them(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	if(ishuman(victim))
 		var/mob/living/carbon/human/hewmon = victim
 		hewmon.gain_trauma(/datum/brain_trauma/voided)
@@ -277,10 +299,14 @@
 
 /// Check if theyre still incapacitated for the kidnap do_after
 /mob/living/basic/voidwalker/proc/check_incapacitated(mob/living/carbon/human/kidnappee)
+	procstart = null
+	src.procstart = null
 	return kidnappee.incapacitated
 
 /// Modding the voidwalker is funny, so setting the home_turf sets everything right for easy of modding
 /mob/living/basic/voidwalker/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// This is all very snowflakey code but like, it's supposed to be. It's just for helping admins mod it
 	if(vname == NAMEOF(src, home_turf))
@@ -304,6 +330,8 @@
 
 /// Attempt to convert a wall into passable voidwalker windows
 /mob/living/basic/voidwalker/proc/try_convert_wall(turf/closed/wall/our_wall)
+	procstart = null
+	src.procstart = null
 	if(!conversions_remaining)
 		balloon_alert(src, "need more kidnaps!")
 		return COMPONENT_CANCEL_ATTACK_CHAIN
@@ -347,6 +375,8 @@
 
 /// Check if the wall is valid for conversion
 /mob/living/basic/voidwalker/proc/check_wall_validity(turf/closed/wall/wall_to_check, silent = TRUE)
+	procstart = null
+	src.procstart = null
 	if(wall_to_check.hardness < WALL_CONVERT_STRENGTH)
 		if(!silent)
 			balloon_alert(src, "too strong!")

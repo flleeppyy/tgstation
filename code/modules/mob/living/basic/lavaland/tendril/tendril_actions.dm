@@ -13,6 +13,8 @@
 	projectile_type = /obj/projectile/tentacle_lash
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/tendril_lash/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	disable_cooldown_actions()
 
 	for (var/swipe_dir in GLOB.cardinals)
@@ -80,6 +82,8 @@
 	reel_in = FALSE
 
 /obj/projectile/tentacle_lash/fire(fire_angle, atom/direct_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!firer)
 		return
@@ -88,6 +92,8 @@
 		RegisterSignal(tentacle_beam, COMSIG_BEAM_ENTERED, PROC_REF(on_beam_entered))
 
 /obj/projectile/tentacle_lash/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(tentacle_beam)
 	if (QDELETED(firer) || !isturf(loc))
 		return ..()
@@ -108,6 +114,8 @@
 
 // Don't range out, stop and persist until we're done
 /obj/projectile/tentacle_lash/on_range()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSprojectiles, src)
 	// Reset to tile center
 	pixel_x = 0
@@ -115,18 +123,24 @@
 	QDEL_IN(src, duration)
 
 /obj/projectile/tentacle_lash/prehit_pierce(atom/target)
+	procstart = null
+	src.procstart = null
 	// Ye 'ole colossus cheese
 	if (astype(target, /mob/living)?.stat == DEAD)
 		return PROJECTILE_PIERCE_PHASE
 	return ..()
 
 /obj/projectile/tentacle_lash/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!reel_in || !isliving(target) || blocked >= 100 || pierce_hit || . != BULLET_ACT_HIT)
 		return
 	snatch_target(target)
 
 /obj/projectile/tentacle_lash/proc/on_beam_entered(datum/beam/source, obj/effect/ebeam/hit, atom/movable/entered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!reel_in || entered == firer || !isliving(entered))
@@ -137,6 +151,8 @@
 		INVOKE_ASYNC(src, PROC_REF(snatch_target), entered)
 
 /obj/projectile/tentacle_lash/proc/snatch_target(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	if (HAS_TRAIT(victim, TRAIT_TENTACLE_IMMUNE) || SEND_SIGNAL(victim, COMSIG_TENDRIL_TENTACLED_GRABBED) & COMPONENT_TENDRIL_CANCEL_TENTACLE_GRAB)
 		return
 
@@ -170,17 +186,23 @@
 	var/wide_chaser_threshold = 0.6
 
 /datum/action/cooldown/mob_cooldown/tendril_chaser/Grant(mob/granted_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(granted_to, COMSIG_MOB_ABILITY_STARTED, PROC_REF(on_ability_started))
 	RegisterSignal(granted_to, COMSIG_MOB_ABILITY_FINISHED, PROC_REF(on_ability_finished))
 
 // Clean up after ourselves
 /datum/action/cooldown/mob_cooldown/tendril_chaser/Remove(mob/removed_from)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(removed_from, list(COMSIG_MOB_ABILITY_STARTED, COMSIG_MOB_ABILITY_FINISHED))
 	QDEL_LIST(active_chasers)
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/tendril_chaser/proc/on_ability_started(mob/living/owner, datum/action/cooldown/activated)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Delete all of our chasers when our owner triggers cross spikes as to not cause guaranteed damage
@@ -188,12 +210,16 @@
 		QDEL_LIST(active_chasers)
 
 /datum/action/cooldown/mob_cooldown/tendril_chaser/proc/on_ability_finished(mob/living/owner, datum/action/cooldown/activated)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (istype(activated, /datum/action/cooldown/mob_cooldown/tendril_cross_spikes))
 		ResetCooldown()
 
 /datum/action/cooldown/mob_cooldown/tendril_chaser/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	disable_cooldown_actions()
 	var/primary_type = /obj/effect/temp_visual/effect_trail/tendril_chaser
 	if (isliving(owner))
@@ -211,6 +237,8 @@
 
 /// Remove a spike trail from our list of active trails
 /datum/action/cooldown/mob_cooldown/tendril_chaser/proc/on_chaser_destroyed(atom/chaser)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	LAZYREMOVE(active_chasers, WEAKREF(chaser))
 
@@ -225,9 +253,13 @@
 	area_spawn = TRUE
 
 /obj/effect/temp_visual/effect_trail/tendril_chaser/add_spawner()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/temp_visual/effect_trail/tendril_chaser/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!area_spawn)
 		var/turf/spawn_turf = get_turf(src)
@@ -258,15 +290,21 @@
 	var/hit_entry = 0.35 SECONDS
 
 /obj/effect/temp_visual/emerging_ground_spike/tendril/impale()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	hit_loser |= .
 	RegisterSignal(loc, COMSIG_ATOM_ENTERED, PROC_REF(on_entered))
 	addtimer(CALLBACK(src, PROC_REF(stop_impaling)), hit_entry)
 
 /obj/effect/temp_visual/emerging_ground_spike/tendril/proc/stop_impaling()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(loc, COMSIG_ATOM_ENTERED)
 
 /obj/effect/temp_visual/emerging_ground_spike/tendril/proc/on_entered(atom/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!isliving(arrived))
@@ -289,19 +327,27 @@
 	var/obj/effect/temp_visual/effect_trail/tendril_chaser/spawner
 
 /obj/effect/temp_visual/emerging_ground_spike/tendril/chaser/Initialize(mapload, spawner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.spawner = spawner
 	RegisterSignal(spawner, COMSIG_QDELETING, PROC_REF(on_spawner_destroy))
 
 /obj/effect/temp_visual/emerging_ground_spike/tendril/chaser/proc/on_spawner_destroy(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	spawner = null
 
 /obj/effect/temp_visual/emerging_ground_spike/tendril/chaser/Destroy()
+	procstart = null
+	src.procstart = null
 	spawner = null
 	return ..()
 
 /obj/effect/temp_visual/emerging_ground_spike/tendril/chaser/harm_mob(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	// Don't multihit mobs by spikes from the same chaser
 	if (!spawner)
 		return FALSE
@@ -326,6 +372,8 @@
 	var/health_threshold = 0.3
 
 /datum/action/cooldown/mob_cooldown/tendril_cross_spikes/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	disable_cooldown_actions()
 	spawn_spikes()
 	SLEEP_CHECK_DEATH(0.4 SECONDS, owner)
@@ -335,6 +383,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/tendril_cross_spikes/proc/spawn_spikes(inverse = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/turf/spike_turfs = list()
 	var/turf/owner_turf = get_turf(owner)
 
@@ -396,6 +446,8 @@
 	projectile_type = /obj/projectile/tentacle_lash/stab
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/tendril_melee/Activate(atom/target_atom, warning = TRUE)
+	procstart = null
+	src.procstart = null
 	if (warning)
 		for (var/stab_dir in GLOB.alldirs)
 			var/turf/open/stab_turf = get_step(owner, stab_dir)

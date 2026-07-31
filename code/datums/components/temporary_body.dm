@@ -16,6 +16,8 @@
 	var/return_on_revive = FALSE
 
 /datum/component/temporary_body/Initialize(datum/mind/old_mind, return_on_death = FALSE, return_on_revive = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ismob(parent))
 		return COMPONENT_INCOMPATIBLE
 	if(isnull(old_mind))
@@ -28,6 +30,8 @@
 	src.return_on_revive = return_on_revive
 
 /datum/component/temporary_body/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_QDELETING, PROC_REF(return_mind))
 	if(return_on_death)
 		RegisterSignal(parent, COMSIG_LIVING_DEATH, PROC_REF(return_mind))
@@ -38,12 +42,16 @@
 		register_body_signals()
 
 /datum/component/temporary_body/proc/register_body_signals()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(old_body, TRAIT_MIND_TEMPORARILY_GONE, REF(src))
 	RegisterSignal(old_body, COMSIG_QDELETING, PROC_REF(on_body_destroy))
 	if(return_on_revive)
 		RegisterSignal(old_body, COMSIG_LIVING_REVIVE, PROC_REF(return_mind))
 
 /datum/component/temporary_body/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_QDELETING)
 	UnregisterSignal(parent, COMSIG_LIVING_DEATH)
 	UnregisterSignal(old_mind, COMSIG_MIND_TRANSFERRED)
@@ -51,17 +59,23 @@
 		unregister_body_signals()
 
 /datum/component/temporary_body/proc/unregister_body_signals()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(old_body, TRAIT_MIND_TEMPORARILY_GONE, REF(src))
 	UnregisterSignal(old_body, COMSIG_QDELETING)
 	UnregisterSignal(old_body, COMSIG_LIVING_REVIVE)
 
 /datum/component/temporary_body/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	old_mind = null
 	old_body = null
 
 /// Swap the target of old_body if old_mind is transferred somewhere while we're away
 /datum/component/temporary_body/proc/on_mind_transfer(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isnull(old_body))
@@ -76,6 +90,8 @@
  * Otherwise we'll let them hang out as a ghost still.
  */
 /datum/component/temporary_body/proc/return_mind(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/new_body = parent
@@ -97,5 +113,7 @@
 
 /// Body reference handling
 /datum/component/temporary_body/proc/on_body_destroy(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	old_body = null

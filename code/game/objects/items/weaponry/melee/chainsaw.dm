@@ -32,6 +32,8 @@
 	var/behead_time = 15 SECONDS
 
 /obj/item/chainsaw/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	chainsaw_loop = new(src)
 	AddComponent( \
@@ -57,6 +59,8 @@
 	RegisterSignal(src, COMSIG_ITEM_DROPPED_FROM_PROSTHETIC, PROC_REF(enable_twohanded_comp))
 
 /obj/item/chainsaw/proc/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	to_chat(user, span_notice("As you pull the starting cord dangling from [src], [active ? "it begins to whirr" : "the chain stops moving"]."))
@@ -73,19 +77,27 @@
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
 /obj/item/chainsaw/proc/disable_twohanded_comp()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(GetComponent(/datum/component/two_handed))
 
 /obj/item/chainsaw/proc/enable_twohanded_comp()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	AddComponent(/datum/component/two_handed, require_twohands = TRUE)
 
 /obj/item/chainsaw/get_demolition_modifier(obj/target)
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE) ? demolition_mod : 0.8
 
 /obj/item/chainsaw/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		user.visible_message(span_suicide("[user] smashes [src] into [user.p_their()] neck, destroying [user.p_their()] esophagus! It looks like [user.p_theyre()] trying to commit suicide!"))
 		playsound(src, 'sound/items/weapons/genhit1.ogg', 100, TRUE)
@@ -111,6 +123,8 @@
 	return BRUTELOSS
 
 /obj/item/chainsaw/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		return ..()
 
@@ -138,6 +152,8 @@
 	return TRUE
 
 /obj/item/chainsaw/proc/has_same_head(mob/living/target_mob, obj/item/bodypart/head)
+	procstart = null
+	src.procstart = null
 	return target_mob.get_bodypart(BODY_ZONE_HEAD) == head
 
 /**
@@ -155,6 +171,8 @@
 	behead_time = 2 SECONDS
 
 /obj/item/chainsaw/doomslayer/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(attack_type == PROJECTILE_ATTACK)
 		owner.visible_message(span_danger("Ranged attacks just make [owner] angrier!"))
 		playsound(src, SFX_BULLET_MISS, 75, TRUE)

@@ -23,9 +23,13 @@
 	var/original_force = 0
 
 /datum/action/cooldown/spell/sanguine_strike/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return isliving(cast_on)
 
 /datum/action/cooldown/spell/sanguine_strike/can_cast_spell(feedback)
+	procstart = null
+	src.procstart = null
 	var/obj/item/to_enchant = owner.get_active_held_item() || owner.get_inactive_held_item()
 	if(!to_enchant)
 		if(feedback)
@@ -38,6 +42,8 @@
 	return ..()
 
 /datum/action/cooldown/spell/sanguine_strike/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Then charge their main hand item, then charge their offhand item
 	var/obj/item/to_enchant = cast_on.get_active_held_item() || cast_on.get_inactive_held_item()
@@ -50,6 +56,8 @@
 	StartCooldown(INFINITY)
 
 /datum/action/cooldown/spell/sanguine_strike/proc/apply_enchantment(obj/item/enchanted)
+	procstart = null
+	src.procstart = null
 	original_force = enchanted.force
 	enchanted.add_filter("sanguine_strike", 2, list("type" = "outline", "color" = "#c41515", "size" = 2))
 	enchanted.force = min(enchanted.force * 2, enchanted.force + 20)
@@ -59,6 +67,8 @@
 
 /// signal called from attacking with the enchanted item
 /datum/action/cooldown/spell/sanguine_strike/proc/on_enchanted_afterattack(obj/item/enchanted, atom/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	end_enchantment(enchanted)
 	if(!isliving(target))
@@ -80,12 +90,16 @@
 
 /// signal called from dropping the enchanted item
 /datum/action/cooldown/spell/sanguine_strike/proc/on_dropped(obj/item/enchanted, mob/dropper)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	to_chat(dropper, span_notice("[enchanted] seems to lose its red glow."))
 	end_enchantment(enchanted)
 
 /// ends the enchantment, starting the cooldown (which was frozen until you attacked)
 /datum/action/cooldown/spell/sanguine_strike/proc/end_enchantment(obj/item/enchanted)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(enchanted, list(COMSIG_ITEM_AFTERATTACK, COMSIG_ITEM_DROPPED))
 	StartCooldown()
 	enchanted.remove_filter("sanguine_strike")

@@ -2,6 +2,8 @@
 	name = "circuit_components"
 
 /datum/asset/json/circuit_components/generate()
+	procstart = null
+	src.procstart = null
 	var/list/circuit_data = list()
 
 	for (var/component_type in subtypesof(/obj/item/circuit_component))

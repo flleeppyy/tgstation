@@ -6,11 +6,15 @@
 	var/mob/living/carbon/human/feeder
 
 /datum/status_effect/slime_food/on_creation(mob/living/new_owner, mob/living/carbon/human/feeder, befriend_chance = 100)
+	procstart = null
+	src.procstart = null
 	src.befriend_chance = befriend_chance
 	src.feeder = feeder
 	return ..()
 
 /datum/status_effect/slime_food/on_apply()
+	procstart = null
+	src.procstart = null
 	if(isnull(feeder))
 		return FALSE
 
@@ -24,10 +28,14 @@
 	return ..()
 
 /datum/status_effect/slime_food/on_remove()
+	procstart = null
+	src.procstart = null
 	feeder = null
 
 ///Handles the source of the pheromones getting deleted, or the owner getting washed
 /datum/status_effect/slime_food/proc/on_feeder_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	. = NONE
@@ -36,6 +44,8 @@
 
 ///Gaze upon the target
 /datum/status_effect/slime_food/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(HAS_TRAIT(user, TRAIT_ANOSMIA))
 		return
@@ -48,6 +58,8 @@
 
 ///Handles a slime completely draining someone
 /datum/status_effect/slime_food/proc/on_drained(datum/source, mob/living/basic/slime/draining_slime)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isnull(draining_slime) || !isslime(draining_slime))
 		qdel(src)

@@ -4,6 +4,8 @@
 	var/target_stat = HARD_CRIT
 
 /datum/bt_node/decorator/check_rider_stat/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	if(!length(living_pawn.buckled_mobs))
 		return FALSE

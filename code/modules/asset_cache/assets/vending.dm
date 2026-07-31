@@ -2,6 +2,8 @@
 	name = "vending"
 
 /datum/asset/spritesheet_batched/vending/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	// initialising the list of items we need
 	var/target_items = list()
 	for(var/obj/machinery/vending/vendor as anything in subtypesof(/obj/machinery/vending))

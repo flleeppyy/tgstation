@@ -12,6 +12,8 @@
 	var/pull_force
 
 /datum/element/change_force_on_death/Attach(datum/target, move_force, move_resist, pull_force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isliving(target))
@@ -28,10 +30,14 @@
 		src.pull_force = pull_force
 
 /datum/element/change_force_on_death/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, list(COMSIG_LIVING_DEATH, COMSIG_LIVING_REVIVE))
 
 /datum/element/change_force_on_death/proc/on_death(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isnull(move_force))
@@ -42,6 +48,8 @@
 		source.set_pull_force(pull_force)
 
 /datum/element/change_force_on_death/proc/on_revive(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	source.move_force = initial(source.move_force)

@@ -4,6 +4,8 @@
 	var/default_language_file = 'icons/ui/chat/language.dmi'
 
 /datum/asset/spritesheet_batched/chat/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	insert_all_icons("emoji", EMOJI_SET)
 	// pre-loading all lanugage icons also helps to avoid meta
 	insert_all_icons("language", default_language_file)

@@ -8,6 +8,8 @@
 	var/used_up = FALSE
 
 /obj/item/virgin_mary/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/burn_on_item_ignition, bypass_clumsy = TRUE)
 	RegisterSignal(src, COMSIG_ATOM_IGNITED_BY_ITEM, PROC_REF(induct_new_initiate))
@@ -15,11 +17,15 @@
 #define NICKNAME_CAP (MAX_NAME_LEN/2)
 
 /obj/item/virgin_mary/proc/induct_new_initiate(datum/source, mob/living/user, obj/item/burning_tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(induct_new_initiate_async), user, burning_tool)
 
 /obj/item/virgin_mary/proc/induct_new_initiate_async(mob/living/user, obj/item/burning_tool)
+	procstart = null
+	src.procstart = null
 	if(isnull(user.mind))
 		return
 	if(HAS_TRAIT(user, TRAIT_MAFIAINITIATE)) //Only one nickname fuckhead
@@ -49,6 +55,8 @@
 #undef NICKNAME_CAP
 
 /obj/item/virgin_mary/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] starts saying their Hail Mary's at a terrifying pace! It looks like [user.p_theyre()] trying to enter the afterlife!"))
 	user.say("Hail Mary, full of grace, the Lord is with thee. Blessed are thou amongst women, and blessed is the fruit of thy womb, Jesus. Holy Mary, mother of God, pray for us sinners, now and at the hour of our death. Amen. ", forced = /obj/item/virgin_mary)
 	addtimer(CALLBACK(src, PROC_REF(manual_suicide), user), 7.5 SECONDS)
@@ -56,5 +64,7 @@
 	return MANUAL_SUICIDE
 
 /obj/item/virgin_mary/proc/manual_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.adjust_oxy_loss(200)
 	user.death(FALSE)

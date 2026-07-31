@@ -25,6 +25,8 @@
 	var/allow_observer_click = FALSE
 
 /atom/movable/screen/movable/action_button/Destroy()
+	procstart = null
+	src.procstart = null
 	if(our_hud)
 		var/mob/viewer = our_hud.mymob
 		our_hud.hide_action(src)
@@ -39,6 +41,8 @@
 
 
 /atom/movable/screen/movable/action_button/proc/can_use(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isobserver(user))
 		var/mob/dead/observer/dead_mob = user
 		if(allow_observer_click)
@@ -54,6 +58,8 @@
 	return TRUE
 
 /atom/movable/screen/movable/action_button/Click(location,control,params)
+	procstart = null
+	src.procstart = null
 	if(!can_use(usr))
 		return FALSE
 
@@ -77,6 +83,8 @@
 // Entered and Exited won't fire while you're dragging something, because you're still "holding" it
 // Very much byond logic, but I want nice behavior, so we fake it with drag
 /atom/movable/screen/movable/action_button/MouseDrag(atom/over_object, src_location, over_location, src_control, over_control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!can_use(usr))
 		return
@@ -97,15 +105,21 @@
 	over_object?.MouseEntered(over_location, over_control, params)
 
 /atom/movable/screen/movable/action_button/MouseEntered(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!QDELETED(src))
 		openToolTip(usr, src, params, title = name, content = desc, theme = actiontooltipstyle)
 
 /atom/movable/screen/movable/action_button/MouseExited(location, control, params)
+	procstart = null
+	src.procstart = null
 	closeToolTip(usr)
 	return ..()
 
 /atom/movable/screen/movable/action_button/mouse_drop_dragged(atom/over_object, mob/user, src_location, over_location, params)
+	procstart = null
+	src.procstart = null
 	last_hovored_ref = null
 	if(!can_use(usr))
 		return
@@ -142,6 +156,8 @@
 	our_hud.hide_landings()
 
 /atom/movable/screen/movable/action_button/proc/save_position()
+	procstart = null
+	src.procstart = null
 	var/mob/user = our_hud.mymob
 	if(!user?.client)
 		return
@@ -157,6 +173,8 @@
 	user.client.prefs.action_buttons_screen_locs["[name]_[id]"] = position_info
 
 /atom/movable/screen/movable/action_button/proc/load_position()
+	procstart = null
+	src.procstart = null
 	var/mob/user = our_hud.mymob
 	if(!user)
 		return
@@ -164,12 +182,16 @@
 	user.hud_used.position_action(src, position_info)
 
 /atom/movable/screen/movable/action_button/proc/dump_save()
+	procstart = null
+	src.procstart = null
 	var/mob/user = our_hud.mymob
 	if(!user?.client)
 		return
 	user.client.prefs.action_buttons_screen_locs -= "[name]_[id]"
 
 /atom/movable/screen/movable/action_button/proc/update_keybind_maptext(key)
+	procstart = null
+	src.procstart = null
 	cut_overlay(keybind_maptext)
 	if(!key)
 		return
@@ -185,6 +207,8 @@
  * It returns a list, which is pretty much just a struct of info
  */
 /datum/hud/proc/get_action_buttons_icons()
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["bg_icon"] = ui_style
 	.["bg_state"] = "template"
@@ -198,6 +222,8 @@
  * * force - Force buttons update even if the given button icon state has not changed
  */
 /mob/proc/update_mob_action_buttons(update_flags = ALL, force = FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/datum/action/current_action as anything in actions)
 		current_action.build_all_button_icons(update_flags, force)
 
@@ -210,6 +236,8 @@
  * * update_flags - reload_screen - bool, if TRUE, this proc will add the button to the screen of the passed mob as well
  */
 /mob/proc/update_action_buttons(reload_screen = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!hud_used || !client)
 		return
 
@@ -233,6 +261,8 @@
  * Used for observers viewing another mob's screen
  */
 /mob/proc/show_other_mob_action_buttons(mob/take_from)
+	procstart = null
+	src.procstart = null
 	if(!hud_used || !client)
 		return
 
@@ -249,6 +279,8 @@
  * Used for observers viewing another mob's screen
  */
 /mob/proc/hide_other_mob_action_buttons(mob/take_from)
+	procstart = null
+	src.procstart = null
 	for(var/datum/action/action as anything in take_from.actions)
 		action.HideFrom(src)
 	UnregisterSignal(take_from, list(COMSIG_MOB_GRANTED_ACTION, COMSIG_MOB_REMOVED_ACTION))
@@ -256,6 +288,8 @@
 /// Signal proc for [COMSIG_MOB_GRANTED_ACTION] - If we're viewing another mob's action buttons,
 /// we need to update with any newly added buttons granted to the mob.
 /mob/proc/on_observing_action_granted(mob/living/source, datum/action/action)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!action.show_to_observers || !action.owner_has_control)
@@ -265,6 +299,8 @@
 /// Signal proc for [COMSIG_MOB_REMOVED_ACTION] - If we're viewing another mob's action buttons,
 /// we need to update with any removed buttons from the mob.
 /mob/proc/on_observing_action_removed(mob/living/source, datum/action/action)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	action.HideFrom(src)
@@ -281,6 +317,8 @@
 	var/color_timer_id
 
 /atom/movable/screen/button_palette/Destroy()
+	procstart = null
+	src.procstart = null
 	if (our_hud)
 		our_hud.mymob?.canon_client?.screen -= src
 		our_hud.screen_objects -= hud_key
@@ -289,16 +327,22 @@
 	return ..()
 
 /atom/movable/screen/button_palette/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 	set_hud(hud_owner)
 
 /atom/movable/screen/button_palette/proc/set_hud(datum/hud/our_hud)
+	procstart = null
+	src.procstart = null
 	src.our_hud = our_hud
 	refresh_owner()
 	disable_landing() // If our hud already has elements, don't force hide us
 
 /atom/movable/screen/button_palette/update_name(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(expanded)
 		name = "Hide Buttons"
@@ -306,6 +350,8 @@
 		name = "Show Buttons"
 
 /atom/movable/screen/button_palette/proc/refresh_owner()
+	procstart = null
+	src.procstart = null
 	var/mob/viewer = our_hud.mymob
 	if(viewer.client)
 		viewer.client.screen |= src
@@ -319,59 +365,83 @@
 	icon_state = "[ui_name]_palette"
 
 /atom/movable/screen/button_palette/proc/activate_landing()
+	procstart = null
+	src.procstart = null
 	// Reveal ourselves to the user
 	invisibility = INVISIBILITY_NONE
 
 /atom/movable/screen/button_palette/proc/disable_landing()
+	procstart = null
+	src.procstart = null
 	// If we have no elements in the palette, hide your ugly self please
 	if (!length(our_hud.palette_actions?.actions) && !length(our_hud.floating_actions))
 		invisibility = INVISIBILITY_ABSTRACT
 
 /atom/movable/screen/button_palette/proc/update_state()
+	procstart = null
+	src.procstart = null
 	if (length(our_hud.floating_actions))
 		activate_landing()
 	else
 		disable_landing()
 
 /atom/movable/screen/button_palette/MouseEntered(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(src))
 		return
 	show_tooltip(params)
 
 /atom/movable/screen/button_palette/MouseExited()
+	procstart = null
+	src.procstart = null
 	closeToolTip(usr)
 	return ..()
 
 /atom/movable/screen/button_palette/proc/show_tooltip(params)
+	procstart = null
+	src.procstart = null
 	openToolTip(usr, src, params, title = name, content = desc)
 
 GLOBAL_LIST_INIT(palette_added_matrix, list(0.4,0.5,0.2,0, 0,1.4,0,0, 0,0.4,0.6,0, 0,0,0,1, 0,0,0,0))
 GLOBAL_LIST_INIT(palette_removed_matrix, list(1.4,0,0,0, 0.7,0.4,0,0, 0.4,0,0.6,0, 0,0,0,1, 0,0,0,0))
 
 /atom/movable/screen/button_palette/proc/play_item_added()
+	procstart = null
+	src.procstart = null
 	color_for_now(GLOB.palette_added_matrix)
 
 /atom/movable/screen/button_palette/proc/play_item_removed()
+	procstart = null
+	src.procstart = null
 	color_for_now(GLOB.palette_removed_matrix)
 
 /atom/movable/screen/button_palette/proc/color_for_now(list/color)
+	procstart = null
+	src.procstart = null
 	if(color_timer_id)
 		return
 	add_atom_colour(color, TEMPORARY_COLOUR_PRIORITY) //We unfortunately cannot animate matrix colors. Curse you lummy it would be ~~non~~trivial to interpolate between the two valuessssssssss
 	color_timer_id = addtimer(CALLBACK(src, PROC_REF(remove_color), color), 2 SECONDS)
 
 /atom/movable/screen/button_palette/proc/remove_color(list/to_remove)
+	procstart = null
+	src.procstart = null
 	color_timer_id = null
 	remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, to_remove)
 
 /atom/movable/screen/button_palette/proc/can_use(mob/user)
+	procstart = null
+	src.procstart = null
 	if (isobserver(user))
 		var/mob/dead/observer/O = user
 		return !O.observetarget
 	return TRUE
 
 /atom/movable/screen/button_palette/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(!can_use(usr))
 		return
 
@@ -388,6 +458,8 @@ GLOBAL_LIST_INIT(palette_removed_matrix, list(1.4,0,0,0, 0.7,0.4,0,0, 0.4,0,0.6,
 	set_expanded(!expanded)
 
 /atom/movable/screen/button_palette/proc/clicked_while_open(datum/source, atom/target, atom/location, control, params, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(target, /atom/movable/screen/movable/action_button) || istype(target, /atom/movable/screen/palette_scroll) || target == src) // If you're clicking on an action button, or us, you can live
 		return
 	set_expanded(FALSE)
@@ -395,6 +467,8 @@ GLOBAL_LIST_INIT(palette_removed_matrix, list(1.4,0,0,0, 0.7,0.4,0,0, 0.4,0,0.6,
 		UnregisterSignal(source, COMSIG_CLIENT_CLICK)
 
 /atom/movable/screen/button_palette/proc/set_expanded(new_expanded)
+	procstart = null
+	src.procstart = null
 	var/datum/action_group/our_group = our_hud.palette_actions
 	if(!length(our_group.actions)) //Looks dumb, trust me lad
 		new_expanded = FALSE
@@ -425,10 +499,14 @@ GLOBAL_LIST_INIT(palette_removed_matrix, list(1.4,0,0,0, 0.7,0.4,0,0, 0.4,0,0.6,
 	var/datum/hud/our_hud
 
 /atom/movable/screen/palette_scroll/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_hud(hud_owner)
 
 /atom/movable/screen/palette_scroll/Destroy()
+	procstart = null
+	src.procstart = null
 	if (our_hud)
 		our_hud.mymob?.canon_client?.screen -= src
 		our_hud.screen_objects -= hud_key
@@ -437,16 +515,22 @@ GLOBAL_LIST_INIT(palette_removed_matrix, list(1.4,0,0,0, 0.7,0.4,0,0, 0.4,0,0.6,
 	return ..()
 
 /atom/movable/screen/palette_scroll/proc/can_use(mob/user)
+	procstart = null
+	src.procstart = null
 	if (isobserver(user))
 		var/mob/dead/observer/O = user
 		return !O.observetarget
 	return TRUE
 
 /atom/movable/screen/palette_scroll/proc/set_hud(datum/hud/our_hud)
+	procstart = null
+	src.procstart = null
 	src.our_hud = our_hud
 	refresh_owner()
 
 /atom/movable/screen/palette_scroll/proc/refresh_owner()
+	procstart = null
+	src.procstart = null
 	var/mob/viewer = our_hud.mymob
 	if(viewer.client)
 		viewer.client.screen |= src
@@ -455,17 +539,23 @@ GLOBAL_LIST_INIT(palette_removed_matrix, list(1.4,0,0,0, 0.7,0.4,0,0, 0.4,0,0.6,
 	icon = settings["bg_icon"]
 
 /atom/movable/screen/palette_scroll/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(!can_use(usr))
 		return
 	our_hud.palette_actions.scroll(scroll_direction)
 
 /atom/movable/screen/palette_scroll/MouseEntered(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(src))
 		return
 	openToolTip(usr, src, params, title = name, content = desc)
 
 /atom/movable/screen/palette_scroll/MouseExited()
+	procstart = null
+	src.procstart = null
 	closeToolTip(usr)
 	return ..()
 
@@ -492,6 +582,8 @@ GLOBAL_LIST_INIT(palette_removed_matrix, list(1.4,0,0,0, 0.7,0.4,0,0, 0.4,0,0.6,
 	var/datum/action_group/owner
 
 /atom/movable/screen/action_landing/Destroy()
+	procstart = null
+	src.procstart = null
 	if(owner)
 		owner.landing = null
 		owner?.owner?.mymob?.canon_client?.screen -= src
@@ -500,10 +592,14 @@ GLOBAL_LIST_INIT(palette_removed_matrix, list(1.4,0,0,0, 0.7,0.4,0,0, 0.4,0,0.6,
 	return ..()
 
 /atom/movable/screen/action_landing/proc/set_owner(datum/action_group/owner)
+	procstart = null
+	src.procstart = null
 	src.owner = owner
 	refresh_owner()
 
 /atom/movable/screen/action_landing/proc/refresh_owner()
+	procstart = null
+	src.procstart = null
 	var/datum/hud/our_hud = owner.owner
 	var/mob/viewer = our_hud.mymob
 	if(viewer.client)
@@ -514,5 +610,7 @@ GLOBAL_LIST_INIT(palette_removed_matrix, list(1.4,0,0,0, 0.7,0.4,0,0, 0.4,0,0.6,
 
 /// Reacts to having a button dropped on it
 /atom/movable/screen/action_landing/proc/hit_by(atom/movable/screen/movable/action_button/button)
+	procstart = null
+	src.procstart = null
 	var/datum/hud/our_hud = owner.owner
 	our_hud.position_action(button, owner.location)

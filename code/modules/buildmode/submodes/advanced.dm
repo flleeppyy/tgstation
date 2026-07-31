@@ -3,6 +3,8 @@
 	var/atom/objholder = null
 
 /datum/buildmode_mode/advanced/show_help(client/builder)
+	procstart = null
+	src.procstart = null
 	to_chat(builder, span_purple(boxed_message(
 		"[span_bold("Set object type")] -> Right Mouse Button on buildmode button\n\
 		[span_bold("Copy object type")] -> Left Mouse Button + Alt on turf/obj\n\
@@ -13,6 +15,8 @@
 	)
 
 /datum/buildmode_mode/advanced/change_settings(client/c)
+	procstart = null
+	src.procstart = null
 	var/target_path = input(c, "Enter typepath:", "Typepath", "/obj/structure/closet")
 	objholder = text2path(target_path)
 	if(!ispath(objholder))
@@ -27,6 +31,8 @@
 	BM.preview_selected_item(objholder)
 
 /datum/buildmode_mode/advanced/handle_click(client/c, params, obj/object)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 	var/left_click = LAZYACCESS(modifiers, LEFT_CLICK)
 	var/right_click = LAZYACCESS(modifiers, RIGHT_CLICK)

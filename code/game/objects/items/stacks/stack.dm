@@ -66,6 +66,8 @@
 	var/walltype
 
 /obj/item/stack/Initialize(mapload, new_amount = amount, merge = TRUE, list/mat_override = null, mat_amt = 1)
+	procstart = null
+	src.procstart = null
 	amount = new_amount
 	if(amount <= 0)
 		stack_trace("invalid amount [amount]!")
@@ -102,17 +104,25 @@
 		AddComponent(/datum/component/golem_food, golem_food_key = merge_type)
 
 /obj/item/stack/LateInitialize()
+	procstart = null
+	src.procstart = null
 	merge_with_loc()
 
 /obj/item/stack/Destroy()
+	procstart = null
+	src.procstart = null
 	mats_per_unit = null
 	return ..()
 
 /obj/item/stack/update_name(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	maptext = (ismob(loc) || loc?.atom_storage) ? MAPTEXT("<font color='white'>[get_amount()]</font>") : ""
 
 /obj/item/stack/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((!throwing || throwing.target_turf == loc) && old_loc != loc && (flags_1 & INITIALIZED_1))
 		merge_with_loc(merge_into_ourselves = !isnull(pulledby))
@@ -121,10 +131,14 @@
 
 ///Called to lazily update the materials of the item whenever the used or if more is added
 /obj/item/stack/proc/update_custom_materials()
+	procstart = null
+	src.procstart = null
 	if(length(mats_per_unit))
 		set_custom_materials(mats_per_unit, amount)
 
 /obj/item/stack/proc/find_other_stack(list/already_found, merge_into_ourselves = FALSE)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || isnull(loc))
 		return
 	for(var/obj/item/stack/item_stack in loc)
@@ -141,6 +155,8 @@
 
 /// Tries to merge the stack with everything on the same tile.
 /obj/item/stack/proc/merge_with_loc(merge_into_ourselves = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/already_found = list() // change to alist whenever dreamchecker and such finally supports that
 	var/obj/item/stack/other_stack = find_other_stack(already_found, merge_into_ourselves)
 	var/sanity = max_amount // just in case
@@ -155,11 +171,15 @@
 	return TRUE
 
 /obj/item/stack/apply_material_effects(list/materials)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(amount)
 		mats_per_unit = SSmaterials.get_material_set_cache(materials, 1/amount)
 
 /obj/item/stack/blend_requirements(atom/movable/grinder, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!is_cyborg)
 		return TRUE
 	if (user)
@@ -167,6 +187,8 @@
 	return FALSE
 
 /obj/item/stack/grind_atom(datum/reagents/target_holder, mob/user)
+	procstart = null
+	src.procstart = null
 	var/current_amount = get_amount()
 	if(current_amount <= 0 || QDELETED(src)) //just to get rid of this 0 amount/deleted stack we return success
 		return TRUE
@@ -201,15 +223,21 @@
 	return available_amount == current_amount
 
 /obj/item/stack/proc/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 	SHOULD_CALL_PARENT(TRUE)
 
 	return list() //empty list
 
 /obj/item/stack/proc/update_weight()
+	procstart = null
+	src.procstart = null
 	update_weight_class(get_weight_from_size(amount))
 
 /obj/item/stack/proc/get_weight_from_size(stack_amount)
+	procstart = null
+	src.procstart = null
 	if(stack_amount <= (max_amount * (1/3)))
 		return clamp(full_w_class - 2, WEIGHT_CLASS_TINY, full_w_class)
 	if(stack_amount <= (max_amount * (2/3)))
@@ -217,6 +245,8 @@
 	return full_w_class
 
 /obj/item/stack/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(novariants)
 		return ..()
 	if(amount <= (max_amount * (1/3)))
@@ -229,6 +259,8 @@
 	return ..()
 
 /obj/item/stack/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_cyborg)
 		return
@@ -244,6 +276,8 @@
 	. += span_notice("<b>Right-click</b> with an empty hand to take a custom amount.")
 
 /obj/item/stack/proc/get_amount()
+	procstart = null
+	src.procstart = null
 	if(is_cyborg)
 		. = round(source?.energy / cost)
 	else
@@ -251,6 +285,8 @@
 
 /// Gets the table type we make, accounting for potential exceptions.
 /obj/item/stack/proc/get_table_type()
+	procstart = null
+	src.procstart = null
 	if(ispath(table_type, /obj/structure/table/greyscale) && isnull(material_type))
 		return // This table type breaks without a material type.
 	return table_type
@@ -262,6 +298,8 @@
  * * recipe_to_iterate - The list of recipes we are using to build recipes
  */
 /obj/item/stack/proc/recursively_build_recipes(list/recipe_to_iterate)
+	procstart = null
+	src.procstart = null
 	var/list/L = list()
 	for(var/recipe in recipe_to_iterate)
 		if(istype(recipe, /datum/stack_recipe_list))
@@ -279,6 +317,8 @@
  * * R - The stack recipe we are using to get a list of properties
  */
 /obj/item/stack/proc/build_recipe(datum/stack_recipe/R)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/obj/result = R.result_type
 
@@ -303,6 +343,8 @@
  * * recipe_list - The list of recipes we are using to check the given recipe
  */
 /obj/item/stack/proc/is_valid_recipe(datum/stack_recipe/R, list/recipe_list)
+	procstart = null
+	src.procstart = null
 	for(var/S in recipe_list)
 		if(S == R)
 			return TRUE
@@ -313,31 +355,43 @@
 	return FALSE
 
 /obj/item/stack/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(use_radial)
 		show_construction_radial(user)
 	else
 		ui_interact(user)
 
 /obj/item/stack/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.hands_state
 
 /obj/item/stack/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "StackCrafting", name)
 		ui.open()
 
 /obj/item/stack/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["amount"] = get_amount()
 	return data
 
 /obj/item/stack/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["recipes"] = recursively_build_recipes(recipes)
 	return data
 
 /obj/item/stack/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -354,6 +408,8 @@
 
 /// Shows a radial consisting of every radial recipe we have in our list.
 /obj/item/stack/proc/show_construction_radial(mob/builder)
+	procstart = null
+	src.procstart = null
 	var/list/options = list()
 	var/list/titles_to_recipes = list()
 
@@ -402,6 +458,8 @@
 
 /// Used as a callback for radial building.
 /obj/item/stack/proc/radial_check(mob/builder)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(builder) || QDELETED(src))
 		return FALSE
 	if(builder.incapacitated)
@@ -414,6 +472,8 @@
 
 /// Makes the item with the given recipe.
 /obj/item/stack/proc/make_item(mob/builder, datum/stack_recipe/recipe, multiplier = 1)
+	procstart = null
+	src.procstart = null
 	if(get_amount() < 1 && !is_cyborg) //sanity check as this shouldn't happen
 		qdel(src)
 		return
@@ -510,6 +570,8 @@
 	return TRUE
 
 /obj/item/stack/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	if(vname == NAMEOF(src, amount))
 		add(clamp(vval, 1-amount, max_amount - amount)) //there must always be one.
 		return TRUE
@@ -521,6 +583,8 @@
 
 /// Checks if we can build here, validly.
 /obj/item/stack/proc/building_checks(mob/builder, datum/stack_recipe/recipe, multiplier)
+	procstart = null
+	src.procstart = null
 	if (get_amount() < recipe.req_amount * multiplier)
 		builder.balloon_alert(builder, "not enough material!")
 		return FALSE
@@ -577,7 +641,9 @@
 
 	return TRUE
 
-/obj/item/stack/use(used, transfer = FALSE, check = TRUE) // return 0 = borked; return 1 = had enough
+/obj/item/stack/use(used, transfer = FALSE, check = TRUE)
+	procstart = null
+	src.procstart = null // return 0 = borked; return 1 = had enough
 	if(check && is_zero_amount(delete_if_zero = TRUE))
 		return FALSE
 	if(is_cyborg)
@@ -595,6 +661,8 @@
 	return TRUE
 
 /obj/item/stack/tool_use_check(mob/living/user, amount, heat_required)
+	procstart = null
+	src.procstart = null
 	if(get_amount() < amount)
 		// general balloon alert that says they don't have enough
 		user.balloon_alert(user, "not enough material!")
@@ -618,6 +686,8 @@
  * is_cyborg set to true.
  */
 /obj/item/stack/proc/is_zero_amount(delete_if_zero = TRUE)
+	procstart = null
+	src.procstart = null
 	if(is_cyborg)
 		return source.energy < cost
 	if(amount < 1)
@@ -632,6 +702,8 @@
  * - _amount: The number of units to add to this stack.
  */
 /obj/item/stack/proc/add(_amount)
+	procstart = null
+	src.procstart = null
 	if(is_cyborg)
 		source.add_charge(_amount * cost)
 	else
@@ -647,6 +719,8 @@
  * - [inhand][boolean]: Whether or not the stack to check should act like it's in a mob's hand.
  */
 /obj/item/stack/proc/can_merge(obj/item/stack/check, inhand = FALSE)
+	procstart = null
+	src.procstart = null
 	// We don't only use istype here, since that will match subtypes, and stack things that shouldn't stack
 	if(!istype(check, merge_type) || check.merge_type != merge_type)
 		return FALSE
@@ -672,6 +746,8 @@
  * As a result, this proc can leave behind a 0 amount stack.
  */
 /obj/item/stack/proc/merge_without_del(obj/item/stack/target_stack, limit)
+	procstart = null
+	src.procstart = null
 	// Cover edge cases where multiple stacks are being merged together and haven't been deleted properly.
 	// Also cover edge case where a stack is being merged into itself, which is supposedly possible.
 	if(QDELETED(target_stack))
@@ -731,16 +807,22 @@
  * This proc deletes src if the remaining amount after the transfer is 0.
  */
 /obj/item/stack/proc/merge(obj/item/stack/target_stack, limit)
+	procstart = null
+	src.procstart = null
 	. = merge_without_del(target_stack, limit)
 	is_zero_amount(delete_if_zero = TRUE)
 
 /obj/item/stack/hitby(atom/movable/hitting, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(can_merge(hitting, inhand = TRUE))
 		merge(hitting)
 	. = ..()
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/stack/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.get_inactive_held_item() == src)
 		if(is_zero_amount(delete_if_zero = TRUE))
 			return
@@ -749,6 +831,8 @@
 		. = ..()
 
 /obj/item/stack/attack_hand_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -771,6 +855,8 @@
  * - amount: The number of units to split from this stack.
  */
 /obj/item/stack/proc/split_stack(amount)
+	procstart = null
+	src.procstart = null
 	if(!use(amount, TRUE, FALSE))
 		return null
 	var/obj/item/stack/new_stack = new type(null, amount, FALSE, mats_per_unit)
@@ -787,6 +873,8 @@
  * * amount - Number of units to split from this stack
  */
 /obj/item/stack/proc/split_n_take(mob/user, amount)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return null
 	add_fingerprint(user)
@@ -798,6 +886,8 @@
 	return new_stack
 
 /obj/item/stack/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!can_merge(tool, inhand = TRUE))
 		return NONE
 	var/obj/item/stack/overtaking_stack = tool
@@ -807,6 +897,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/stack/proc/copy_evidences(obj/item/stack/from)
+	procstart = null
+	src.procstart = null
 	add_blood_DNA(GET_ATOM_BLOOD_DNA(from))
 	add_fingerprint_list(GET_ATOM_FINGERPRINTS(from))
 	add_hiddenprint_list(GET_ATOM_HIDDENPRINTS(from))

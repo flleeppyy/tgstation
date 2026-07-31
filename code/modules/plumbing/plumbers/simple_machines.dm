@@ -7,6 +7,8 @@
 	reagent_flags = /obj/machinery/plumbing::reagent_flags | REFILLABLE
 
 /obj/machinery/plumbing/input/Initialize(mapload, layer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/plumbing/simple_supply, layer)
 
@@ -20,6 +22,8 @@
 	reagents = /datum/reagents
 
 /obj/machinery/plumbing/output/Initialize(mapload, layer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/plumbing/simple_demand, layer, distinct_reagent_cap = 5)
 
@@ -37,6 +41,8 @@
 	buffer = 400
 
 /obj/machinery/plumbing/tank/Initialize(mapload, layer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/plumbing/tank, layer)
 
@@ -48,6 +54,8 @@
 	density = FALSE
 
 /obj/machinery/plumbing/layer_manifold/Initialize(mapload, layer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddComponent(/datum/component/plumbing/manifold, FIRST_DUCT_LAYER)

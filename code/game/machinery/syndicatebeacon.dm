@@ -20,6 +20,8 @@
 
 
 /obj/machinery/power/singularity_beacon/proc/Activate(mob/user = null)
+	procstart = null
+	src.procstart = null
 	if(surplus() < 1500)
 		if(user)
 			to_chat(user, span_notice("The connected wire doesn't have enough current."))
@@ -31,6 +33,8 @@
 
 
 /obj/machinery/power/singularity_beacon/proc/Deactivate(mob/user = null)
+	procstart = null
+	src.procstart = null
 	for(var/datum/component/singularity/singulo as anything in GLOB.singularities)
 		if(singulo.target == src)
 			singulo.target = null
@@ -40,9 +44,13 @@
 		to_chat(user, span_notice("You deactivate the beacon."))
 
 /obj/machinery/power/singularity_beacon/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/power/singularity_beacon/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -52,6 +60,8 @@
 		to_chat(user, span_warning("You need to screw \the [src] to the floor first!"))
 
 /obj/machinery/power/singularity_beacon/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	if(active)
 		to_chat(user, span_warning("You need to deactivate \the [src] first!"))
@@ -73,18 +83,24 @@
 		return
 
 /obj/machinery/power/singularity_beacon/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	user.visible_message( \
 			"[user] messes with \the [src] for a bit.", \
 			span_notice("You can't fit the screwdriver into \the [src]'s bolts! Try using a wrench."))
 	return TRUE
 
 /obj/machinery/power/singularity_beacon/Destroy()
+	procstart = null
+	src.procstart = null
 	if(active)
 		Deactivate()
 	return ..()
 
 //stealth direct power usage
 /obj/machinery/power/singularity_beacon/process()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return
 
@@ -113,10 +129,14 @@
 	var/datum/shuttle_event/simple_spawner/black_hole/no_escape/no_escape_event
 
 /obj/machinery/power/singularity_beacon/syndicate/no_escape/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cell = new cell(src)
 
 /obj/machinery/power/singularity_beacon/syndicate/no_escape/Destroy()
+	procstart = null
+	src.procstart = null
 	if(active)
 		Deactivate()
 	QDEL_NULL(cell)
@@ -125,18 +145,26 @@
 	return ..()
 
 /obj/machinery/power/singularity_beacon/syndicate/no_escape/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "\The [src] is [active ? "on" : "off"]."
 	if(cell)
 		. += "The charge meter reads [cell ? round(cell.percent(), 1) : 0]%."
 
 /obj/machinery/power/singularity_beacon/syndicate/no_escape/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/machinery/power/singularity_beacon/syndicate/no_escape/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return active ? Deactivate(user) : Activate(user)
 
 /obj/machinery/power/singularity_beacon/syndicate/no_escape/Activate(mob/user = null)
+	procstart = null
+	src.procstart = null
 	if(!cell.charge())
 		say("Insufficient charge detected")
 		return
@@ -148,6 +176,8 @@
 		to_chat(user, span_notice("You activate the beacon."))
 
 /obj/machinery/power/singularity_beacon/syndicate/no_escape/Deactivate(mob/user = null)
+	procstart = null
+	src.procstart = null
 	icon_state = "[icontype]0"
 	active = FALSE
 	end_processing()
@@ -155,6 +185,8 @@
 		to_chat(user, span_notice("You deactivate the beacon."))
 
 /obj/machinery/power/singularity_beacon/syndicate/no_escape/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 
 	tool.play_tool_sound(src, 50)
@@ -168,15 +200,21 @@
 		return
 
 /obj/machinery/power/singularity_beacon/syndicate/no_escape/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/power/singularity_beacon/syndicate/no_escape/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & (NOPOWER|BROKEN) || . & EMP_PROTECT_CONTENTS)
 		return
 	cell?.emp_act(severity)
 
 /obj/machinery/power/singularity_beacon/syndicate/no_escape/process()
+	procstart = null
+	src.procstart = null
 	if(cell.charge())
 		cell.use(energy_used, force = TRUE)
 
@@ -208,6 +246,8 @@
 
 
 /obj/item/sbeacondrop/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user)
 		to_chat(user, span_notice("Locked In."))
 		new droptype( user.loc )

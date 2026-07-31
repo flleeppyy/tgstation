@@ -44,6 +44,8 @@
 	pixel_shift = 32
 
 /obj/machinery/transport/destination_sign/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SStransport, COMSIG_TRANSPORT_UPDATED, PROC_REF(update_sign))
 	SStransport.displays += src
@@ -53,18 +55,26 @@
 	set_light(l_dir = REVERSE_DIR(dir))
 
 /obj/machinery/transport/destination_sign/Destroy()
+	procstart = null
+	src.procstart = null
 	SStransport.displays -= src
 	. = ..()
 
 /obj/machinery/transport/destination_sign/indicator/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light(l_dir = REVERSE_DIR(dir))
 
 /obj/machinery/transport/destination_sign/indicator/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	link_tram()
 
 /obj/machinery/transport/destination_sign/indicator/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(held_item?.tool_behaviour == TOOL_WRENCH)
 		context[SCREENTIP_CONTEXT_RMB] = "unanchor"
@@ -75,12 +85,16 @@
 
 
 /obj/machinery/transport/destination_sign/indicator/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(panel_open)
 		. += span_notice("It is secured to the tram wall with [EXAMINE_HINT("bolts.")]")
 
 /obj/machinery/transport/destination_sign/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	var/atom/drop = drop_location()
 	if(disassembled)
 		new /obj/item/wallframe/indicator_display(drop)
@@ -91,6 +105,8 @@
 		new /obj/item/shard(drop)
 
 /obj/machinery/transport/destination_sign/indicator/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	balloon_alert(user, "[anchored ? "un" : ""]securing...")
 	tool.play_tool_sound(src)
@@ -101,6 +117,8 @@
 		return TRUE
 
 /obj/machinery/transport/destination_sign/proc/update_sign(datum/source, datum/transport_controller/linear/tram/controller, controller_active, controller_status, travel_direction, obj/effect/landmark/transport/nav_beacon/tram/platform/destination_platform)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(machine_stat & (NOPOWER|BROKEN))
@@ -138,6 +156,8 @@
 	update_appearance()
 
 /obj/machinery/transport/destination_sign/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(sign_face))
 		icon_state = "[base_icon_state]_blank"
@@ -146,6 +166,8 @@
 		icon_state = sign_face
 
 /obj/machinery/transport/destination_sign/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isnull(sign_face))
@@ -156,6 +178,8 @@
 	. += emissive_appearance(icon, "[sign_face]_e", src, alpha = src.alpha)
 
 /obj/machinery/transport/destination_sign/indicator/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	var/datum/transport_controller/linear/tram/tram = transport_ref?.resolve()
 	if(!tram)

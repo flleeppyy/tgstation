@@ -19,6 +19,8 @@
  * * target - [/datum/computer_file/program/proc/tap] proc target, can be anything
  */
 /datum/computer_file/program/faxbond/proc/connect_fax(obj/machinery/fax/target)
+	procstart = null
+	src.procstart = null
 	if(!istype(target))
 		return FALSE
 
@@ -43,6 +45,8 @@
  * * fax_id - fax id to disconnect from our PDA
  */
 /datum/computer_file/program/faxbond/proc/disconnect_fax(fax_id)
+	procstart = null
+	src.procstart = null
 	if(!connected_faxes[fax_id])
 		return
 
@@ -55,14 +59,20 @@
 	connected_faxes -= fax_id
 
 /datum/computer_file/program/faxbond/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/fax in connected_faxes)
 		disconnect_fax(fax)
 
 /datum/computer_file/program/faxbond/tap(atom/tapped_atom, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return connect_fax(tapped_atom)
 
 /datum/computer_file/program/faxbond/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["faxes_info"] = list()
@@ -78,6 +88,8 @@
 	return data
 
 /datum/computer_file/program/faxbond/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

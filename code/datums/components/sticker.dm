@@ -21,6 +21,8 @@
 	var/examine_text
 
 /datum/component/sticker/Initialize(atom/stickering_atom, dir = NORTH, px = 0, py = 0, datum/callback/stick_callback, datum/callback/peel_callback, examine_text)
+	procstart = null
+	src.procstart = null
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -32,6 +34,8 @@
 	register_turf_signals(dir)
 
 /datum/component/sticker/Destroy(force)
+	procstart = null
+	src.procstart = null
 	var/atom/parent_atom = parent
 	parent_atom.cut_overlay(sticker_overlay)
 
@@ -46,15 +50,21 @@
 	return ..()
 
 /datum/component/sticker/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_LIVING_IGNITED, PROC_REF(on_ignite))
 	RegisterSignal(parent, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(on_clean))
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/component/sticker/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_LIVING_IGNITED, COMSIG_COMPONENT_CLEAN_ACT, COMSIG_ATOM_EXAMINE))
 
 /// Subscribes to `COMSIG_TURF_EXPOSE` if parent atom is a turf. If turf is closed - subscribes to signal
 /datum/component/sticker/proc/register_turf_signals(dir)
+	procstart = null
+	src.procstart = null
 	if(!isturf(parent))
 		return
 
@@ -63,12 +73,16 @@
 
 /// Unsubscribes from `COMSIG_TURF_EXPOSE` if `listening_turf` is not `null`.
 /datum/component/sticker/proc/unregister_turf_signals()
+	procstart = null
+	src.procstart = null
 	if(isnull(listening_turf))
 		return
 
 	UnregisterSignal(listening_turf, COMSIG_TURF_EXPOSE)
 
 /datum/component/sticker/proc/sticker_gone(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(our_sticker, list(COMSIG_QDELETING, COMSIG_MOVABLE_MOVED))
@@ -77,6 +91,8 @@
 
 /// Handles overlay creation from supplied atom, adds created icon to the parent object, moves source atom to the nullspace.
 /datum/component/sticker/proc/stick(atom/movable/stickering_atom, px, py)
+	procstart = null
+	src.procstart = null
 	our_sticker = stickering_atom
 	our_sticker.moveToNullspace()
 	RegisterSignals(our_sticker, list(COMSIG_QDELETING, COMSIG_MOVABLE_MOVED), PROC_REF(sticker_gone))
@@ -94,6 +110,8 @@
 
 /// Moves stickered atom from the nullspace, deletes component.
 /datum/component/sticker/proc/peel()
+	procstart = null
+	src.procstart = null
 	var/atom/parent_atom = parent
 	var/turf/drop_location = listening_turf || parent_atom.drop_location()
 
@@ -105,11 +123,15 @@
 	qdel(src)
 
 /datum/component/sticker/proc/on_ignite(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(our_sticker) // which qdels us
 
 /datum/component/sticker/proc/on_clean(datum/source, clean_types)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	. = NONE
@@ -119,12 +141,16 @@
 	return COMPONENT_CLEANED|COMPONENT_CLEANED_GAIN_XP
 
 /datum/component/sticker/proc/on_turf_expose(datum/source, datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(exposed_temperature >= FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
 		qdel(our_sticker) // which qdels us
 
 /datum/component/sticker/proc/on_examine(atom/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isnull(examine_text))

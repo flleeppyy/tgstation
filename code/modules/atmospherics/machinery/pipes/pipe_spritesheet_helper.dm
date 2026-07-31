@@ -25,6 +25,8 @@ ADMIN_VERB(generate_pipe_spritesheet, R_DEBUG, "Generate Pipe Spritesheet", "Gen
 	var/icon/generated_icons
 
 /datum/pipe_icon_generator/proc/Start(icon_state_suffix="")
+	procstart = null
+	src.procstart = null
 	var/list/outputs = list()
 	for(var/layer in 1 to 5)
 		// Since dirs are bitflags, if we want to iterate over every possible direction
@@ -44,6 +46,8 @@ ADMIN_VERB(generate_pipe_spritesheet, R_DEBUG, "Generate Pipe Spritesheet", "Gen
 		generated_icons.Insert(generated_icon, pending_icon_state)
 
 /datum/pipe_icon_generator/proc/GeneratePipeDir(icon_state_suffix, layer, combined_dirs)
+	procstart = null
+	src.procstart = null
 	var/list/output
 
 	switch(combined_dirs)
@@ -67,6 +71,8 @@ ADMIN_VERB(generate_pipe_spritesheet, R_DEBUG, "Generate Pipe Spritesheet", "Gen
 
 /// Generates all variants of damaged pipe from a given icon and the dirs that can be broken
 /datum/pipe_icon_generator/proc/GenerateDamaged(icon/working, layer, dirs, x_offset=1, y_offset=1)
+	procstart = null
+	src.procstart = null
 	var/outputs = list()
 	var/completed = list()
 	for(var/combined_dirs in 1 to 15)
@@ -90,6 +96,8 @@ ADMIN_VERB(generate_pipe_spritesheet, R_DEBUG, "Generate Pipe Spritesheet", "Gen
 	return outputs
 
 /datum/pipe_icon_generator/proc/generate_capped(icon/working, layer, dirs, x_offset=1, y_offset=1)
+	procstart = null
+	src.procstart = null
 	var/list/outputs = list()
 	var/list/completed = list()
 	for(var/combined_dirs in 1 to 15)
@@ -119,6 +127,8 @@ ADMIN_VERB(generate_pipe_spritesheet, R_DEBUG, "Generate Pipe Spritesheet", "Gen
 	return outputs
 
 /datum/pipe_icon_generator/proc/GeneratePipeStraight(icon_state_suffix, layer, combined_dirs)
+	procstart = null
+	src.procstart = null
 	var/list/output = list()
 	var/north_or_east = combined_dirs & (NORTH | EAST)
 	var/icon/working = icon(template_pieces, "straight[icon_state_suffix]", north_or_east)
@@ -137,6 +147,8 @@ ADMIN_VERB(generate_pipe_spritesheet, R_DEBUG, "Generate Pipe Spritesheet", "Gen
 	return output
 
 /datum/pipe_icon_generator/proc/GeneratePipeElbow(icon_state_suffix, layer, combined_dirs)
+	procstart = null
+	src.procstart = null
 	var/list/output = list()
 	var/icon/working
 	switch(combined_dirs)
@@ -156,6 +168,8 @@ ADMIN_VERB(generate_pipe_spritesheet, R_DEBUG, "Generate Pipe Spritesheet", "Gen
 	return output
 
 /datum/pipe_icon_generator/proc/GeneratePipeTJunction(icon_state_suffix, layer, combined_dirs)
+	procstart = null
+	src.procstart = null
 	var/list/output = list()
 	var/icon/working
 	switch(combined_dirs)
@@ -175,6 +189,8 @@ ADMIN_VERB(generate_pipe_spritesheet, R_DEBUG, "Generate Pipe Spritesheet", "Gen
 	return output
 
 /datum/pipe_icon_generator/proc/GeneratePipeCross(icon_state_suffix, layer, combined_dirs)
+	procstart = null
+	src.procstart = null
 	var/list/output = list()
 	var/icon/working = icon(template_pieces, "cross[icon_state_suffix]")
 

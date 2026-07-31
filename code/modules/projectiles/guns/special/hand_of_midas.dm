@@ -26,6 +26,8 @@
 	var/gold_suck_range = 2
 
 /obj/item/gun/magic/midas_hand/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/gold_time_converted = gold_time_convert()
 	. += span_notice("Your next shot will inflict [gold_time_converted] second[gold_time_converted == 1 ? "" : "s"] of Midas Blight.")
@@ -33,21 +35,29 @@
 	. += span_notice("[src] can be reloaded using gold coins in a pinch.")
 
 /obj/item/gun/magic/midas_hand/shoot_with_empty_chamber(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	balloon_alert(user, "not enough gold")
 
 // Siphon gold from a victim, recharging our gun & removing their Midas Blight debuff in the process.
 /obj/item/gun/magic/midas_hand/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isliving(interacting_with))
 		return ITEM_INTERACT_BLOCKING
 	return suck_gold(interacting_with, user)
 
 /obj/item/gun/magic/midas_hand/ranged_interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isliving(interacting_with) || !IN_GIVEN_RANGE(user, interacting_with, gold_suck_range))
 		return ITEM_INTERACT_BLOCKING
 	return suck_gold(interacting_with, user)
 
 /obj/item/gun/magic/midas_hand/proc/suck_gold(mob/living/victim, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(victim == user)
 		balloon_alert(user, "can't siphon from self!")
 		return ITEM_INTERACT_BLOCKING
@@ -76,6 +86,8 @@
 
 // If we botch a shot, we have to start over again by inserting gold coins into the gun. Can only be done if it has no charges or gold.
 /obj/item/gun/magic/midas_hand/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/coin/gold))
 		return NONE
 	if(charges || gold_timer)
@@ -87,6 +99,8 @@
 
 /// Handles recharging & inserting gold amount
 /obj/item/gun/magic/midas_hand/proc/handle_gold_charges(user, gold_amount)
+	procstart = null
+	src.procstart = null
 	gold_timer += gold_amount
 	var/gold_time_converted = gold_time_convert()
 	balloon_alert(user, "[gold_time_converted] second[gold_time_converted == 1 ? "" : "s"]")
@@ -95,13 +109,19 @@
 
 /// Converts our gold_timer to time in seconds, for various ballons/examines
 /obj/item/gun/magic/midas_hand/proc/gold_time_convert()
+	procstart = null
+	src.procstart = null
 	return min(30 SECONDS, round(gold_timer, 0.2)) / 10
 
 /// Checks our range to the person we're sucking gold out of. Double the initial range, so you need to get in close to start.
 /obj/item/gun/magic/midas_hand/proc/check_gold_range(mob/living/user, mob/living/victim)
+	procstart = null
+	src.procstart = null
 	return IN_GIVEN_RANGE(user, victim, gold_suck_range*2)
 
 /obj/item/gun/magic/midas_hand/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return
 
@@ -136,6 +156,8 @@
 	var/gold_charge = 0
 
 /obj/projectile/magic/midas_round/fire(setAngle)
+	procstart = null
+	src.procstart = null
 	/// Transfer the gold energy to our bullet
 	var/obj/item/gun/magic/midas_hand/my_gun = fired_from
 	gold_charge = my_gun.gold_timer
@@ -144,6 +166,8 @@
 
 // Gives human targets Midas Blight.
 /obj/projectile/magic/midas_round/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(target))
 		return

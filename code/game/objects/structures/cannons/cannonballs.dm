@@ -16,6 +16,8 @@
 	var/obj/projectile/projectile_type = /obj/projectile/bullet/cannonball
 
 /obj/item/stack/cannonball/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = (amount == 1) ? "[base_icon_state]" : "[base_icon_state]_[min(amount, 14)]"
 

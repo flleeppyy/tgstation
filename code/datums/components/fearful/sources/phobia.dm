@@ -19,18 +19,26 @@
 	COOLDOWN_DECLARE(scare_cooldown)
 
 /datum/terror_handler/phobia_source/New(mob/living/new_owner, datum/component/fearful/new_component)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(new_owner, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 	RegisterSignal(new_owner, COMSIG_MOVABLE_HEAR, PROC_REF(handle_hearing))
 
 /datum/terror_handler/phobia_source/Destroy(force)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, list(COMSIG_MOB_SAY, COMSIG_MOVABLE_HEAR))
 	return ..()
 
 /datum/terror_handler/phobia_source/proc/can_trigger()
+	procstart = null
+	src.procstart = null
 	return !HAS_TRAIT(owner, TRAIT_FEARLESS) && !HAS_TRAIT(owner, TRAIT_MIND_TEMPORARILY_GONE) && !IS_UNCONSCIOUS(owner)
 
 /datum/terror_handler/phobia_source/tick(seconds_per_tick, terror_buildup)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!can_trigger())
 		return
@@ -60,6 +68,8 @@
 
 /// Returns true if this item should be scary to us
 /datum/terror_handler/phobia_source/proc/is_scary_item(obj/checked)
+	procstart = null
+	src.procstart = null
 	if (QDELETED(checked) || !is_type_in_typecache(checked, trigger_objs) || checked.invisibility > owner.see_invisible)
 		return FALSE
 
@@ -70,6 +80,8 @@
 	return !HAS_TRAIT(checked_item, TRAIT_EXAMINE_SKIP)
 
 /datum/terror_handler/phobia_source/proc/is_scary_mob(mob/living/checked)
+	procstart = null
+	src.procstart = null
 	if (checked.invisibility > owner.see_invisible || checked.alpha == 0)
 		return FALSE
 
@@ -95,6 +107,8 @@
 	return FALSE
 
 /datum/terror_handler/phobia_source/proc/handle_hearing(datum/source, list/hearing_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!can_trigger() || !COOLDOWN_FINISHED(src, scare_cooldown))
@@ -110,6 +124,8 @@
 		hearing_args[HEARING_RAW_MESSAGE] = trigger_regex.Replace(hearing_args[HEARING_RAW_MESSAGE], "[span_phobia("$2")]$3")
 
 /datum/terror_handler/phobia_source/proc/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!can_trigger())
@@ -131,6 +147,8 @@
 	to_chat(owner, span_warning("You struggle to say the word \"[span_phobia("[trigger_regex.group[2]]")]\"!"))
 
 /datum/terror_handler/phobia_source/proc/freak_out(reason)
+	procstart = null
+	src.procstart = null
 	COOLDOWN_START(src, scare_cooldown, 12 SECONDS)
 	var/message = pick("spooks you to the bone", "shakes you up", "terrifies you", "sends you into a panic", "sends chills down your spine")
 	if(istext(reason))
@@ -152,6 +170,8 @@
 	return PHOBIA_FREAKOUT_TERROR_BUILDUP
 
 /datum/terror_handler/phobia_source/on_hug(mob/living/hugger)
+	procstart = null
+	src.procstart = null
 	if (is_scary_mob(hugger))
 		return HUG_TERROR_AMOUNT
 	return 0
@@ -160,11 +180,15 @@
 /datum/terror_handler/phobia_source/blood
 
 /datum/terror_handler/phobia_source/blood/is_scary_item(obj/checked)
+	procstart = null
+	src.procstart = null
 	if (GET_ATOM_BLOOD_DNA_LENGTH(checked))
 		return TRUE
 	return ..()
 
 /datum/terror_handler/phobia_source/blood/is_scary_mob(mob/living/checked)
+	procstart = null
+	src.procstart = null
 	if (GET_ATOM_BLOOD_DNA_LENGTH(checked))
 		return TRUE
 	return ..()

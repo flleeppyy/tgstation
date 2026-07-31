@@ -9,25 +9,35 @@
 	var/lives_left
 
 /datum/component/multiple_lives/Initialize(lives_left)
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 
 	src.lives_left = lives_left
 
 /datum/component/multiple_lives/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_LIVING_DEATH, PROC_REF(respawn))
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 	RegisterSignal(parent, COMSIG_LIVING_WRITE_MEMORY, PROC_REF(on_write_memory))
 
 /datum/component/multiple_lives/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_LIVING_DEATH, COMSIG_ATOM_EXAMINE, COMSIG_LIVING_WRITE_MEMORY))
 
 /// Stops a dying station pet from overriding persistence data before we respawn it and thus causing issues.
 /datum/component/multiple_lives/proc/on_write_memory(mob/living/source, dead, gibbed)
+	procstart = null
+	src.procstart = null
 	if(dead && !HAS_TRAIT(source, TRAIT_SUICIDED))
 		return COMPONENT_DONT_WRITE_MEMORY
 
 /datum/component/multiple_lives/proc/respawn(mob/living/source, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(HAS_TRAIT(source, TRAIT_SUICIDED)) //Freed from this mortail coil.
 		qdel(src)
@@ -44,13 +54,19 @@
 	SEND_SIGNAL(source, COMSIG_ON_MULTIPLE_LIVES_RESPAWN, respawned_mob, gibbed, lives_left)
 
 /datum/component/multiple_lives/proc/on_examine(mob/living/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isobserver(user) || source == user)
 		examine_list += "[source.p_They()] [source.p_have()] [lives_left] extra lives left."
 
 /datum/component/multiple_lives/InheritComponent(datum/component/multiple_lives/new_comp , lives_left)
+	procstart = null
+	src.procstart = null
 	src.lives_left += new_comp ? new_comp.lives_left : lives_left
 
 /datum/component/multiple_lives/PostTransfer(datum/new_parent)
+	procstart = null
+	src.procstart = null
 	if(!isliving(new_parent))
 		return COMPONENT_INCOMPATIBLE

@@ -82,6 +82,8 @@ GLOBAL_LIST_EMPTY(raptor_population)
 	var/could_be_held = FALSE
 
 /mob/living/basic/raptor/Initialize(mapload, datum/raptor_color/color_type, datum/raptor_inheritance/passed_stats)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	inherited_stats = passed_stats || new(src)
 	// First thing as to go before tameable in change_growth_stage()
@@ -128,23 +130,33 @@ GLOBAL_LIST_EMPTY(raptor_population)
 	add_happiness_component()
 
 /mob/living/basic/raptor/Destroy()
+	procstart = null
+	src.procstart = null
 	raptor_color = null
 	GLOB.raptor_population -= REF(src)
 	return ..()
 
 /mob/living/basic/raptor/death(gibbed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.raptor_population -= REF(src)
 
 /mob/living/basic/raptor/buckle_mob(mob/living/target, force = FALSE, check_loc = TRUE, buckle_mob_flags= NONE)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(target))
 		return
 	return ..()
 
 /mob/living/basic/raptor/get_hud_x_offset()
+	procstart = null
+	src.procstart = null
 	return -4
 
 /mob/living/basic/raptor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (stat == DEAD)
 		return
@@ -162,6 +174,8 @@ GLOBAL_LIST_EMPTY(raptor_population)
 			. += span_notice("[p_They()] [p_have()] a few minor bruises and scratches.")
 
 /mob/living/basic/raptor/Life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (growth_stage != RAPTOR_BABY || HAS_TRAIT(src, TRAIT_STASIS) || stat == DEAD)
 		return
@@ -173,6 +187,8 @@ GLOBAL_LIST_EMPTY(raptor_population)
 		growth_progress = 0
 
 /mob/living/basic/raptor/early_melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -186,6 +202,8 @@ GLOBAL_LIST_EMPTY(raptor_population)
 	return BASIC_MOB_END_ATTACK_CHAIN_COOLDOWN
 
 /mob/living/basic/raptor/melee_attack(mob/living/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	if (!combat_mode && istype(target, /mob/living/basic/raptor))
 		var/mob/living/basic/raptor/possible_baby = target
 		if (possible_baby.growth_stage == RAPTOR_BABY)
@@ -193,6 +211,8 @@ GLOBAL_LIST_EMPTY(raptor_population)
 	return ..()
 
 /mob/living/basic/raptor/proc/add_breeding_component()
+	procstart = null
+	src.procstart = null
 	var/static/list/partner_types = typecacheof(list(/mob/living/basic/raptor))
 	var/static/list/baby_types = list(/obj/item/food/egg/raptor_egg = 1)
 	AddComponent(\
@@ -204,6 +224,8 @@ GLOBAL_LIST_EMPTY(raptor_population)
 	)
 
 /mob/living/basic/raptor/proc/add_happiness_component()
+	procstart = null
+	src.procstart = null
 	var/static/list/percentage_callbacks = list(0, 15, 25, 35, 50, 75, 90, 100)
 	// Higher happiness cap so it decays slower, about 15 minutes from full to zero
 	AddComponent(\
@@ -217,12 +239,16 @@ GLOBAL_LIST_EMPTY(raptor_population)
 	)
 
 /mob/living/basic/raptor/proc/happiness_change(percent_value)
+	procstart = null
+	src.procstart = null
 	var/attack_boost = round((percent_value - happiness_percentage) * RAPTOR_HAPPINESS_DAMAGE_BOOST, 1)
 	melee_damage_lower += attack_boost
 	melee_damage_upper += attack_boost
 	happiness_percentage = percent_value
 
 /mob/living/basic/raptor/projectile_hit(obj/projectile/hitting_projectile, def_zone, piercing_hit, blocked)
+	procstart = null
+	src.procstart = null
 	// Most colors will redirect shots to their rider as to increase their own survivability, and only tank melee attacks
 	if (raptor_color.redirect_shots && length(buckled_mobs))
 		return buckled_mobs[1].projectile_hit(hitting_projectile, def_zone, piercing_hit, blocked)
@@ -230,6 +256,8 @@ GLOBAL_LIST_EMPTY(raptor_population)
 
 /// Pass our genetic data to the egg
 /mob/living/basic/raptor/proc/egg_inherit(obj/item/food/egg/raptor_egg/baby_egg, mob/living/basic/raptor/partner)
+	procstart = null
+	src.procstart = null
 	var/datum/raptor_inheritance/child_genes = new()
 	child_genes.set_parents(src, partner)
 	baby_egg.inherited_stats = child_genes
@@ -254,6 +282,8 @@ GLOBAL_LIST_EMPTY(raptor_population)
 				color_chances -= color_type
 
 /mob/living/basic/raptor/proc/get_child_color(mob/living/basic/raptor/partner)
+	procstart = null
+	src.procstart = null
 	if (raptor_color == partner.raptor_color)
 		return raptor_color.type
 
@@ -287,6 +317,8 @@ GLOBAL_LIST_EMPTY(raptor_population)
 
 /// Updates the presence of the can_be_held element based on what we want from the raptor
 /mob/living/basic/raptor/proc/update_holdability(bool)
+	procstart = null
+	src.procstart = null
 	if(bool && !could_be_held)
 		AddElement(/datum/element/can_be_held)
 		could_be_held = TRUE
@@ -296,6 +328,8 @@ GLOBAL_LIST_EMPTY(raptor_population)
 		could_be_held = FALSE
 
 /mob/living/basic/raptor/proc/on_picked_up(mob/living/basic/raptor/source, mob/living/user, obj/item/mob_holder/holder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Our inventory code sucks so we have to do this
 	holder.icon = 'icons/mob/simple/lavaland/raptor_baby.dmi'
@@ -307,6 +341,8 @@ GLOBAL_LIST_EMPTY(raptor_population)
 	holder.base_pixel_z = 0
 
 /mob/living/basic/raptor/proc/on_pre_eat(datum/source, obj/item/potential_food, list/effect_mult)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (isorgan(potential_food))
@@ -318,6 +354,8 @@ GLOBAL_LIST_EMPTY(raptor_population)
 		effect_mult += happiness_percentage * RAPTOR_GROWTH_HAPPINESS_MULTIPLIER
 
 /mob/living/basic/raptor/proc/on_eat(datum/source, atom/food, mob/living/feeder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!istype(food, /obj/item/food))
@@ -344,6 +382,8 @@ GLOBAL_LIST_EMPTY(raptor_population)
 /// Sorry for the monolith, but splitting it up results in even worse looking code with a ton of duplicate calls and assignments
 /// And making a *second* datum is just insanity
 /mob/living/basic/raptor/proc/change_growth_stage(new_stage, prev_stage = growth_stage)
+	procstart = null
+	src.procstart = null
 	if (new_stage == prev_stage)
 		return FALSE
 
@@ -448,6 +488,8 @@ GLOBAL_LIST_EMPTY(raptor_population)
 	return TRUE
 
 /mob/living/basic/raptor/proc/update_blackboard()
+	procstart = null
+	src.procstart = null
 	var/static/list/display_emote = list(
 		BB_EMOTE_SAY = list("Chirp chirp chirp!", "Kweh!", "Bwark!"),
 		BB_EMOTE_SEE = list("shakes its feathers!", "stretches!", "flaps its wings!", "pecks at the ground!"),

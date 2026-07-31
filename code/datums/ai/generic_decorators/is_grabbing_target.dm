@@ -4,6 +4,8 @@
 	var/key
 
 /datum/bt_node/decorator/is_grabbing_target/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/target = controller.blackboard[key]
 	var/mob/living/our_mob = controller.pawn
 	if(QDELETED(target) || our_mob.pulling != target)
@@ -12,9 +14,13 @@
 	return TRUE
 
 /datum/bt_node/decorator/is_grabbing_target/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	RegisterSignals(pawn, list(COMSIG_LIVING_START_PULL, COMSIG_ATOM_NO_LONGER_PULLING, COMSIG_AI_BLACKBOARD_KEY_SET(key), COMSIG_AI_BLACKBOARD_KEY_CLEARED(key)), PROC_REF(on_signal_changed))
 	return TRUE
 
 /datum/bt_node/decorator/is_grabbing_target/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(pawn, list(COMSIG_LIVING_START_PULL, COMSIG_ATOM_NO_LONGER_PULLING, COMSIG_AI_BLACKBOARD_KEY_SET(key), COMSIG_AI_BLACKBOARD_KEY_CLEARED(key)))
 

@@ -14,21 +14,31 @@
 	var/list/obj/item/assembly/assemblies
 
 /obj/item/assembly_holder/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_rotation)
 
 /obj/item/assembly_holder/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LAZYLIST(assemblies)
 	return ..()
 
 /obj/item/assembly_holder/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	LAZYREMOVE(assemblies, gone)
 
 /obj/item/assembly_holder/IsAssemblyHolder()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/item/assembly_holder/proc/assemble(obj/item/assembly/A, obj/item/assembly/A2, mob/user)
+	procstart = null
+	src.procstart = null
 	attach(A,user)
 	attach(A2,user)
 	name = "[A.name]-[A2.name] assembly"
@@ -40,6 +50,8 @@
  *
  */
 /obj/item/assembly_holder/proc/on_attach()
+	procstart = null
+	src.procstart = null
 	var/obj/item/newloc = loc
 	if(!newloc.IsSpecialAssembly() && !newloc.IsAssemblyHolder())
 		return
@@ -47,6 +59,8 @@
 		assembly.on_attach()
 
 /obj/item/assembly_holder/proc/try_add_assembly(obj/item/assembly/attached_assembly, mob/user)
+	procstart = null
+	src.procstart = null
 	if(attached_assembly.secured)
 		balloon_alert(user, "not attachable!")
 		return FALSE
@@ -73,6 +87,8 @@
  * * user - user we pass into attach()
  */
 /obj/item/assembly_holder/proc/add_assembly(obj/item/assembly/attached_assembly, mob/user)
+	procstart = null
+	src.procstart = null
 	attach(attached_assembly, user)
 	name = ""
 	for(var/obj/item/assembly/assembly as anything in assemblies)
@@ -82,6 +98,8 @@
 	update_appearance()
 
 /obj/item/assembly_holder/proc/attach(obj/item/assembly/A, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!A.remove_item_from_storage(src, user))
 		if(user)
 			user.transferItemToLoc(A, src)
@@ -94,10 +112,14 @@
 	A.on_attach()
 
 /obj/item/assembly_holder/update_appearance(updates=ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	master?.update_appearance(updates)
 
 /obj/item/assembly_holder/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in 1 to LAZYLEN(assemblies))
 		if(IS_LEFT_INDEX(i))
@@ -114,20 +136,28 @@
 			. += right
 
 /obj/item/assembly_holder/on_found(mob/finder)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/assembly/assembly as anything in assemblies)
 		assembly.on_found(finder)
 
 /obj/item/assembly_holder/setDir()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/assembly/assembly as anything in assemblies)
 		assembly.holder_movement()
 
 /obj/item/assembly_holder/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/assembly/assembly as anything in assemblies)
 		assembly.dropped(user)
 
-/obj/item/assembly_holder/attack_hand(mob/living/user, list/modifiers)//Perhapse this should be a holder_pickup proc instead, can add if needbe I guess
+/obj/item/assembly_holder/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null//Perhapse this should be a holder_pickup proc instead, can add if needbe I guess
 	. = ..()
 	if(.)
 		return
@@ -135,6 +165,8 @@
 		assembly.attack_hand(user, modifiers) // Note override in assembly.dm to prevent side effects here
 
 /obj/item/assembly_holder/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isassembly(tool))
 		return NONE
 
@@ -143,6 +175,8 @@
 
 
 /obj/item/assembly_holder/screwdriver_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	loc.balloon_alert(user, "disassembled")
 
 	deconstruct(TRUE)
@@ -150,11 +184,15 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/assembly_holder/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/assembly/assembly as anything in assemblies)
 		assembly.on_detach()
 		LAZYREMOVE(assemblies, assembly)
 
 /obj/item/assembly_holder/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	src.add_fingerprint(user)
 	if(LAZYLEN(assemblies) == 1)
 		balloon_alert(user, "part missing!")
@@ -172,6 +210,8 @@
  * * /obj/device - the device we sent the pulse from which called this proc
  */
 /obj/item/assembly_holder/proc/process_activation(obj/device)
+	procstart = null
+	src.procstart = null
 	if(!device)
 		return FALSE
 	if(LAZYLEN(assemblies) >= 2)

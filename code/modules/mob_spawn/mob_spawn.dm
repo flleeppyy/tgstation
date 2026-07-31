@@ -35,11 +35,15 @@
 	var/datum/weakref/spawned_mob_ref
 
 /obj/effect/mob_spawn/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(faction)
 		faction = string_list(faction)
 
 /obj/effect/mob_spawn/Destroy()
+	procstart = null
+	src.procstart = null
 	spawned_mob_ref = null
 	if(istype(outfit))
 		QDEL_NULL(outfit)
@@ -58,6 +62,8 @@
  * - null if the spawn failed (and something went wrong)
  */
 /obj/effect/mob_spawn/proc/create(mob/mob_possessor, newname, apply_prefs)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 
 	var/mob/living/spawned_mob
@@ -73,6 +79,8 @@
 
 /// Returns the species typepath a human spawned by this spawner should be initialized with.
 /obj/effect/mob_spawn/proc/get_mob_species(mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	return mob_species
 
 /**
@@ -83,6 +91,8 @@
  * * apply_prefs - Whether we should apply the possessor's preferences to the mob, if applicable
  */
 /obj/effect/mob_spawn/proc/special(mob/living/spawned_mob, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(faction)
 		spawned_mob.set_faction(faction)
@@ -107,6 +117,8 @@
 	spawned_human.update_body(is_creating = TRUE)
 
 /obj/effect/mob_spawn/proc/name_mob(mob/living/spawned_mob, forced_name)
+	procstart = null
+	src.procstart = null
 	var/chosen_name
 	//passed arguments on mob spawns are number one priority
 	if(forced_name)
@@ -121,6 +133,8 @@
 	spawned_mob.fully_replace_character_name(null, chosen_name)
 
 /obj/effect/mob_spawn/proc/equip(mob/living/spawned_mob)
+	procstart = null
+	src.procstart = null
 	if(outfit)
 		var/mob/living/carbon/human/spawned_human = spawned_mob
 		if(outfit_override)
@@ -168,11 +182,15 @@
 
 
 /obj/effect/mob_spawn/ghost_role/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSpoints_of_interest.make_point_of_interest(src)
 	LAZYADD(GLOB.mob_spawners[format_text(name)], src)
 
 /obj/effect/mob_spawn/ghost_role/Destroy()
+	procstart = null
+	src.procstart = null
 	var/list/spawners = GLOB.mob_spawners[format_text(name)]
 	LAZYREMOVE(spawners, src)
 	if(!LAZYLEN(spawners))
@@ -181,6 +199,8 @@
 
 //ATTACK GHOST IGNORING PARENT RETURN VALUE
 /obj/effect/mob_spawn/ghost_role/attack_ghost(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	if(!SSticker.HasRoundStarted() || isnull(loc) || QDELETED(src))
 		return
 
@@ -224,10 +244,14 @@
 /// You can put sleeps or inputs in here, sanity checking is done for you after this proc returns.
 /// Returning FALSE will cancel the spawn process.
 /obj/effect/mob_spawn/ghost_role/proc/pre_ghost_take(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Checks if a ghost can take this ghost role.
 /obj/effect/mob_spawn/ghost_role/proc/can_ghost_take(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	if(is_banned_from(user.ckey, role_ban))
 		to_chat(user, span_warning("You are banned from this role!"))
 		return FALSE
@@ -254,6 +278,8 @@
  * Set to FALSE if you want to handle uses manually elsewhere.
  */
 /obj/effect/mob_spawn/ghost_role/proc/create_from_ghost(mob/dead/observer/user, apply_prefs, subtract_uses = TRUE)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	SHOULD_NOT_SLEEP(TRUE)
 	ASSERT(istype(user))
@@ -274,17 +300,23 @@
 	return created
 
 /obj/effect/mob_spawn/ghost_role/create(mob/mob_possessor, newname, apply_prefs)
+	procstart = null
+	src.procstart = null
 	if(!mob_possessor.key) // This is in the scenario that the server is somehow lagging, or someone fucked up their code, and we try to spawn the same person in twice. We'll simply not spawn anything and CRASH(), so that we report what happened.
 		CRASH("Attempted to create an instance of [type] with a mob that had no ckey attached to it, which isn't supported by ghost role spawners!")
 
 	return ..()
 
 /obj/effect/mob_spawn/ghost_role/get_mob_species(mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	if(mob_possessor?.client && apply_prefs && (allow_custom_character & GHOSTROLE_TAKE_PREFS_SPECIES))
 		return mob_possessor.client.prefs.read_preference(/datum/preference/choiced/species)
 	return ..()
 
 /obj/effect/mob_spawn/ghost_role/special(mob/living/spawned_mob, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mob_possessor)
 		if(mob_possessor.client && apply_prefs && allow_custom_character && ishuman(spawned_mob))
@@ -312,11 +344,15 @@
 
 /// Checks if the spawner has zero uses left, if so, delete yourself... NOW!
 /obj/effect/mob_spawn/ghost_role/proc/check_uses()
+	procstart = null
+	src.procstart = null
 	if(!uses && deletes_on_zero_uses_left)
 		qdel(src)
 
 ///override this to add special spawn conditions to a ghost role
 /obj/effect/mob_spawn/ghost_role/proc/allow_spawn(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 ///these mob spawn subtypes trigger immediately (New or Initialize) and are not player controlled... since they're dead, you know?
@@ -340,6 +376,8 @@
 	var/naive_corpse_description = ""
 
 /obj/effect/mob_spawn/corpse/Initialize(mapload, no_spawn)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(no_spawn)
 		return
@@ -351,6 +389,8 @@
 				INVOKE_ASYNC(src, PROC_REF(create))
 
 /obj/effect/mob_spawn/corpse/special(mob/living/spawned_mob, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spawned_mob.death(TRUE)
 	spawned_mob.adjust_oxy_loss(oxy_damage)
@@ -360,6 +400,8 @@
 		spawned_mob.AddComponent(/datum/component/temporary_description, corpse_description, naive_corpse_description)
 
 /obj/effect/mob_spawn/corpse/create(mob/mob_possessor, newname, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(src)
 
@@ -380,6 +422,8 @@
 	var/husk = FALSE
 
 /obj/effect/mob_spawn/corpse/human/special(mob/living/carbon/human/spawned_human, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(husk)
 		spawned_human.Drain()
@@ -388,6 +432,8 @@
 	spawned_human.job = name
 
 /obj/effect/mob_spawn/corpse/human/equip(mob/living/carbon/human/spawned_human)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(conceal_presence)
 		// We don't want corpse PDAs to show up in the messenger list.
@@ -412,6 +458,8 @@
 	var/bloodroach_chance = 1 // 1% chance to spawn a bloodroach
 
 /obj/effect/mob_spawn/cockroach/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(prob(bloodroach_chance))
 		mob_type = /mob/living/basic/cockroach/bloodroach
 	. = ..()

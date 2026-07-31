@@ -8,6 +8,8 @@
 	VAR_PRIVATE/max_allowed = 2
 
 /datum/loadout_category/pocket/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	category_info = "([max_allowed] allowed)"
 
@@ -31,6 +33,8 @@
 	abstract_type = /datum/loadout_item/pocket_items
 
 /datum/loadout_item/pocket_items/on_equip_item(obj/item/equipped_item, list/item_details, mob/living/carbon/human/equipper, datum/outfit/job/outfit, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	// Backpack items aren't created if it's a visual equipping, so don't do any on equip stuff. It doesn't exist.
 	if(visuals_only)
 		return NONE
@@ -171,10 +175,14 @@
 	item_path = /obj/item/lipstick
 
 /datum/loadout_item/pocket_items/lipstick/get_item_information()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.[FA_ICON_PALETTE] = "Recolorable"
 
 /datum/loadout_item/pocket_items/lipstick/on_equip_item(obj/item/equipped_item, list/item_details, mob/living/carbon/human/equipper, datum/outfit/job/outfit, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(equipped_item))
 		return
@@ -187,6 +195,8 @@
 
 /// Converts style (readable) to style (internal)
 /datum/loadout_item/pocket_items/lipstick/proc/style_to_style(style)
+	procstart = null
+	src.procstart = null
 	switch(style)
 		if(UPPER_LIP)
 			return "lipstick_upper"
@@ -195,6 +205,8 @@
 	return "lipstick"
 
 /datum/loadout_item/pocket_items/lipstick/get_ui_buttons()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UNTYPED_LIST_ADD(., list(
 		"label" = "Style",
@@ -212,6 +224,8 @@
 	return .
 
 /datum/loadout_item/pocket_items/lipstick/handle_loadout_action(datum/preference_middleware/loadout/manager, mob/user, action, params)
+	procstart = null
+	src.procstart = null
 	switch(action)
 		if("select_lipstick_style")
 			var/list/their_loadout = manager.preferences.read_preference(/datum/preference/loadout)
@@ -277,20 +291,28 @@
 	item_path = /obj/item/storage/wallet
 
 /datum/loadout_item/pocket_items/wallet/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/loadout_item/pocket_items/wallet/on_equip_item(obj/item/equipped_item, list/item_details, mob/living/carbon/human/equipper, datum/outfit/job/outfit, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	// Do this at the very end of the setup process so we can insert quirk items and such
 	if(!visuals_only && !isdummy(equipper))
 		RegisterSignal(equipper, COMSIG_HUMAN_CHARACTER_SETUP_FINISHED, PROC_REF(apply_after_setup), override = TRUE)
 	return NONE
 
 /datum/loadout_item/pocket_items/wallet/proc/apply_after_setup(mob/living/carbon/human/source, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	equip_wallet(source)
 	UnregisterSignal(source, COMSIG_HUMAN_CHARACTER_SETUP_FINISHED)
 
 /datum/loadout_item/pocket_items/wallet/proc/equip_wallet(mob/living/carbon/human/equipper)
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/id/advanced/id_card = equipper.get_item_by_slot(ITEM_SLOT_ID)
 	if(istype(id_card, /obj/item/storage/wallet)) // Wallets station trait guard
 		return
@@ -319,12 +341,16 @@
 	item_path = /obj/item/clothing/accessory/dogtag/borg_ready
 
 /datum/loadout_item/pocket_items/borg_me_dogtag/on_equip_item(obj/item/equipped_item, list/item_details, mob/living/carbon/human/equipper, datum/outfit/job/outfit, visuals_only)
+	procstart = null
+	src.procstart = null
 	// We're hooking this datum to add an extra bit of flavor to the dogtag - a pregenerated medical record
 	if(!visuals_only && !isdummy(equipper))
 		RegisterSignal(equipper, COMSIG_HUMAN_CHARACTER_SETUP_FINISHED, PROC_REF(apply_after_setup), override = TRUE)
 	return NONE
 
 /datum/loadout_item/pocket_items/borg_me_dogtag/proc/apply_after_setup(mob/living/carbon/human/source, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(source, COMSIG_HUMAN_CHARACTER_SETUP_FINISHED)

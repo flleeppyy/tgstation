@@ -25,10 +25,14 @@
 	var/folder_type_name = "folder"
 
 /obj/item/folder/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins filing an imaginary death warrant! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return OXYLOSS
 
 /obj/item/folder/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	update_icon()
 	. = ..()
 	AddElement(/datum/element/burn_on_item_ignition)
@@ -36,6 +40,8 @@
 	register_context()
 
 /obj/item/folder/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/obj/important_thing in contents)
 		if(!(important_thing.resistance_flags & INDESTRUCTIBLE))
 			continue
@@ -43,11 +49,15 @@
 	return ..()
 
 /obj/item/folder/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(length(contents) && !contents_hidden)
 		. += span_notice("<b>Right-click</b> to remove [contents[1]].")
 
 /obj/item/folder/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(is_type_in_typecache(target, folder_insertables))
 		// As this is shown on the paper, we clarify we are picking it up.
 		context[SCREENTIP_CONTEXT_LMB] = "Insert into [folder_type_name]"
@@ -55,6 +65,8 @@
 	return NONE
 
 /obj/item/folder/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item))
 		return NONE
 	if(is_type_in_typecache(held_item, folder_insertables))
@@ -69,6 +81,8 @@
 	return NONE
 
 /obj/item/folder/proc/remove_item(obj/item/Item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(Item))
 		Item.forceMove(user.loc)
 		user.put_in_hands(Item)
@@ -76,12 +90,16 @@
 		update_icon()
 
 /obj/item/folder/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(length(contents) && LAZYACCESS(modifiers, RIGHT_CLICK))
 		remove_item(contents[1], user)
 		return TRUE
 	. = ..()
 
 /obj/item/folder/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(contents.len)
 		var/to_add = get_paper_overlay()
@@ -89,11 +107,15 @@
 			. += to_add
 
 /obj/item/folder/proc/get_paper_overlay()
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/paper_overlay = mutable_appearance(icon, paper_overlay_state, offset_spokesman = src, appearance_flags = KEEP_APART)
 	paper_overlay = contents[1].color_atom_overlay(paper_overlay)
 	return paper_overlay
 
 /obj/item/folder/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(is_type_in_typecache(tool, folder_insertables))
 		return insertables_act(user, tool)
 	if(tool.tool_behaviour == TOOL_KNIFE || tool.tool_behaviour == TOOL_WIRECUTTER)
@@ -101,17 +123,23 @@
 	return NONE
 
 /obj/item/folder/proc/insertables_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!user.transferItemToLoc(tool, src, silent = FALSE))
 		return ITEM_INTERACT_BLOCKING
 	update_appearance()
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/folder/nameformat(input, user)
+	procstart = null
+	src.procstart = null
 	playsound(src, SFX_WRITING_PEN, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, SOUND_FALLOFF_EXPONENT + 3, ignore_walls = FALSE)
 	return"folder[(input ? " - '[input]'" : null)]"
 
 
 /obj/item/folder/proc/sharp_thing_act(mob/user, obj/item/sharp_tool)
+	procstart = null
+	src.procstart = null
 	if(contents.len)
 		balloon_alert(user, "empty [src] first!")
 		return ITEM_INTERACT_BLOCKING
@@ -122,10 +150,14 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/folder/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(is_type_in_typecache(interacting_with, folder_insertables))
 		return interact_with_insertables(interacting_with, user)
 
 /obj/item/folder/proc/interact_with_insertables(obj/item/interacting_with, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(interacting_with.loc == user)
 		if(!user.transferItemToLoc(interacting_with, src, silent = TRUE))
 			return ITEM_INTERACT_BLOCKING
@@ -138,17 +170,23 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/folder/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(usr)
 	ui_interact(user)
 	return
 
 /obj/item/folder/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Folder")
 		ui.open()
 
 /obj/item/folder/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	if(istype(src, /obj/item/folder/syndicate))
 		data["theme"] = "syndicate"
@@ -164,6 +202,8 @@
 	return data
 
 /obj/item/folder/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -185,4 +225,6 @@
 				. = TRUE
 
 /obj/item/folder/IsContainedAtomAccessible(atom/contained, atom/movable/user)
+	procstart = null
+	src.procstart = null
 	return TRUE

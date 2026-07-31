@@ -13,6 +13,8 @@
 	self_delay = 1.5 SECONDS
 
 /obj/item/reagent_containers/applicator/patch/canconsume(mob/eater, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(eater))
 		return FALSE
 
@@ -30,6 +32,8 @@
 	return TRUE
 
 /obj/item/reagent_containers/applicator/patch/on_consumption(mob/living/carbon/consumer, mob/giver, list/modifiers)
+	procstart = null
+	src.procstart = null
 	consumer.log_message("Had \a [src] patch applied by [giver], containing the following reagents: [english_list(reagents.reagent_list)].", LOG_GAME)
 	var/clicked_x = LAZYACCESS(modifiers, ICON_X)
 	var/clicked_y = LAZYACCESS(modifiers, ICON_Y)
@@ -73,12 +77,16 @@
 	var/mutable_appearance/patch_overlay
 
 /datum/embedding/med_patch/set_owner(mob/living/carbon/victim, obj/item/bodypart/target_limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	overlay_setup()
 	RegisterSignal(owner, COMSIG_LIVING_IGNITED, PROC_REF(on_ignited))
 	RegisterSignal(owner, COMSIG_ATOM_DIR_CHANGE, PROC_REF(on_dir_change))
 
 /datum/embedding/med_patch/stop_embedding()
+	procstart = null
+	src.procstart = null
 	if (owner)
 		UnregisterSignal(owner, list(COMSIG_LIVING_IGNITED, COMSIG_ATOM_DIR_CHANGE))
 		if (patch_overlay)
@@ -87,6 +95,8 @@
 	return ..()
 
 /datum/embedding/med_patch/can_embed(atom/movable/source, mob/living/carbon/victim, hit_zone, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -96,6 +106,8 @@
 	return TRUE
 
 /datum/embedding/med_patch/proc/on_ignited(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!(parent.resistance_flags & FLAMMABLE))
 		return
@@ -108,6 +120,8 @@
 
 /// Create a patch overlay and add it to the mob
 /datum/embedding/med_patch/proc/overlay_setup()
+	procstart = null
+	src.procstart = null
 	applied_dir = owner.dir
 	patch_overlay = mutable_appearance(parent.icon, parent.icon_state, FLOAT_LAYER, parent, appearance_flags = KEEP_APART|RESET_COLOR)
 	patch_overlay.color = parent.color
@@ -120,6 +134,8 @@
 
 /// Changes visual position of the patch based on owner's rotation
 /datum/embedding/med_patch/proc/on_dir_change(datum/source, old_dir, new_dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	owner.cut_overlay(patch_overlay)
@@ -155,6 +171,8 @@
 	return
 
 /datum/embedding/med_patch/process_effect(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if (HAS_TRAIT(owner, TRAIT_STASIS))
 		return
 
@@ -200,6 +218,8 @@
 	embed_type = /datum/embedding/med_patch/instant //synthflesh effects occur on the initial apply only, so we need to apply it all at once
 
 /obj/item/reagent_containers/applicator/patch/canconsume(mob/eater, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(eater))
 		return

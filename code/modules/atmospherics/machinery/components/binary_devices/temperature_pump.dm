@@ -13,17 +13,23 @@
 	var/max_heat_transfer_rate = 100
 
 /obj/machinery/atmospherics/components/binary/temperature_pump/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/usb_port, typecacheof(list(/obj/item/circuit_component/atmos_temperature_pump), only_root_path = TRUE))
 	register_context()
 
 /obj/machinery/atmospherics/components/binary/temperature_pump/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	context[SCREENTIP_CONTEXT_CTRL_LMB] = "Turn [on ? "off" : "on"]"
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "Maximize transfer rate"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/atmospherics/components/binary/temperature_pump/click_ctrl(mob/user)
+	procstart = null
+	src.procstart = null
 	if(is_operational)
 		set_on(!on)
 		balloon_alert(user, "turned [on ? "on" : "off"]")
@@ -32,6 +38,8 @@
 	return CLICK_ACTION_BLOCKING
 
 /obj/machinery/atmospherics/components/binary/temperature_pump/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(heat_transfer_rate == max_heat_transfer_rate)
 		return CLICK_ACTION_BLOCKING
 
@@ -42,9 +50,13 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/atmospherics/components/binary/temperature_pump/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	icon_state = "tpump_[on && is_operational ? "on" : "off"]-[set_overlay_offset(piping_layer)]"
 
 /obj/machinery/atmospherics/components/binary/temperature_pump/process_atmos()
+	procstart = null
+	src.procstart = null
 	if(!on || !is_operational)
 		return
 
@@ -76,12 +88,16 @@
 		use_energy(power_usage)
 
 /obj/machinery/atmospherics/components/binary/temperature_pump/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AtmosTempPump", name)
 		ui.open()
 
 /obj/machinery/atmospherics/components/binary/temperature_pump/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["on"] = on
 	data["rate"] = round(heat_transfer_rate)
@@ -89,6 +105,8 @@
 	return data
 
 /obj/machinery/atmospherics/components/binary/temperature_pump/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

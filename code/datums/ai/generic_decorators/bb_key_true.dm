@@ -3,5 +3,7 @@
 	var/key
 
 /datum/bt_node/decorator/bb_key_true/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/result = controller.blackboard[key]
 	return !!result

@@ -7,6 +7,8 @@
 	var/item_types_key
 
 /datum/bt_node/decorator/target_holding_lit_item/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/target = controller.blackboard[key]
 	if(!iscarbon(target))
 		return FALSE

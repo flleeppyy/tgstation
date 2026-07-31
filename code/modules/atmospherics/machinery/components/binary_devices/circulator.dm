@@ -19,6 +19,8 @@
 	var/obj/machinery/power/thermoelectric_generator/generator
 
 /obj/machinery/atmospherics/components/binary/circulator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_rotation)
 
@@ -27,11 +29,15 @@
 	mode = CIRCULATOR_COLD
 
 /obj/machinery/atmospherics/components/binary/circulator/Destroy()
+	procstart = null
+	src.procstart = null
 	if(generator)
 		disconnectFromGenerator()
 	return ..()
 
 /obj/machinery/atmospherics/components/binary/circulator/proc/return_transfer_air()
+	procstart = null
+	src.procstart = null
 
 	var/datum/gas_mixture/air1 = airs[1]
 	var/datum/gas_mixture/air2 = airs[2]
@@ -57,9 +63,13 @@
 	return removed
 
 /obj/machinery/atmospherics/components/binary/circulator/process_atmos()
+	procstart = null
+	src.procstart = null
 	update_appearance(UPDATE_ICON)
 
 /obj/machinery/atmospherics/components/binary/circulator/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cut_overlays()
 	if(anchored)
@@ -80,6 +90,8 @@
 		add_overlay("fan_[mode]")
 
 /obj/machinery/atmospherics/components/binary/circulator/wrench_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		balloon_alert(user, "open the panel!")
 		return
@@ -120,6 +132,8 @@
 	return TRUE
 
 /obj/machinery/atmospherics/components/binary/circulator/set_init_directions()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH, SOUTH)
 			initialize_directions = EAST|WEST
@@ -127,16 +141,22 @@
 			initialize_directions = NORTH|SOUTH
 
 /obj/machinery/atmospherics/components/binary/circulator/get_node_connects()
+	procstart = null
+	src.procstart = null
 	if(flipped)
 		return list(turn(dir, 270), turn(dir, 90))
 	return list(turn(dir, 90), turn(dir, 270))
 
 /obj/machinery/atmospherics/components/binary/circulator/can_be_node(obj/machinery/atmospherics/target)
+	procstart = null
+	src.procstart = null
 	if(anchored)
 		return ..(target)
 	return FALSE
 
 /obj/machinery/atmospherics/components/binary/circulator/multitool_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(generator)
 		disconnectFromGenerator()
 	mode = !mode
@@ -144,6 +164,8 @@
 	return TRUE
 
 /obj/machinery/atmospherics/components/binary/circulator/screwdriver_act(mob/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		balloon_alert(user, "anchor it down!")
 		return
@@ -153,15 +175,21 @@
 	return TRUE
 
 /obj/machinery/atmospherics/components/binary/circulator/crowbar_act(mob/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(default_deconstruction_crowbar(user, I))
 		return TRUE
 	return ..()
 
 /obj/machinery/atmospherics/components/binary/circulator/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	if(generator)
 		disconnectFromGenerator()
 
 /obj/machinery/atmospherics/components/binary/circulator/proc/disconnectFromGenerator()
+	procstart = null
+	src.procstart = null
 	if(mode)
 		generator.cold_circ = null
 	else
@@ -170,6 +198,8 @@
 	generator = null
 
 /obj/machinery/atmospherics/components/binary/circulator/set_piping_layer(new_layer)
+	procstart = null
+	src.procstart = null
 	..()
 	pixel_x = 0
 	pixel_y = 0

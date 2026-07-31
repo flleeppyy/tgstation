@@ -4,6 +4,8 @@
 	can_hold_description = "Fish and aquarium equipment"
 
 /datum/storage/fish_case/can_insert(obj/item/to_insert, mob/user, messages, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -21,6 +23,8 @@
  * Because of that, we also check if conditions to keep it inside another storage or pockets are still met.
  */
 /datum/storage/fish_case/adjust_size/handle_enter(datum/source, obj/item/arrived)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(parent) || !istype(arrived))
 		return
@@ -30,6 +34,8 @@
 	item_parent.update_weight_class(arrived.w_class)
 
 /datum/storage/fish_case/adjust_size/handle_exit(datum/source, obj/item/gone)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(parent) || !istype(gone))
 		return

@@ -36,6 +36,8 @@
 	))
 
 /obj/item/storage/toolbox/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(has_latches)
 		if(prob(10))
@@ -49,6 +51,8 @@
 	AddElement(/datum/element/cuffable_item)
 
 /obj/item/storage/toolbox/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (user.combat_mode || !user.has_hand_for_held_index(user.get_inactive_hand_index()))
 		return NONE
 
@@ -96,6 +100,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/storage/toolbox/proc/use_tool_on(atom/interacting_with, mob/living/user, list/modifiers, obj/item/picked_tool)
+	procstart = null
+	src.procstart = null
 	current_interactions += 1
 	picked_tool.melee_attack_chain(user, interacting_with, modifiers)
 	current_interactions -= 1
@@ -115,16 +121,22 @@
 	atom_storage.attempt_insert(picked_tool, user)
 
 /obj/item/storage/toolbox/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(has_latches)
 		. += latches
 
 /obj/item/storage/toolbox/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] robusts [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 
 //repairbot assembly
 /obj/item/storage/toolbox/tool_act(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/assembly/prox_sensor))
 		return ..()
 	var/static/list/allowed_toolbox = list(

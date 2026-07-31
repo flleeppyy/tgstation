@@ -31,6 +31,8 @@
 	var/list/tile_rotate_dirs_number
 
 /obj/item/stack/tile/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(-3, 3)
 	pixel_y = rand(-3, 3) //randomize a little
@@ -46,6 +48,8 @@
 
 
 /obj/item/stack/tile/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(tile_reskin_types || tile_rotate_dirs)
 		. += span_notice("Use while in your hand to change what type of [src] you want.")
@@ -74,6 +78,8 @@
  * * user - The mob doing the placing.
  */
 /obj/item/stack/tile/proc/place_tile(turf/open/floor/plating/target_plating, mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/placed_turf_path = turf_type
 	if(!ispath(placed_turf_path))
 		return
@@ -88,6 +94,8 @@
 	return target_plating
 
 /obj/item/stack/tile/handle_openspace_click(turf/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	target.base_item_interaction(user, src, list2params(modifiers))
 
 //Grass
@@ -416,6 +424,8 @@
 	var/emissive_alpha = 150
 
 /obj/item/stack/tile/carpet/neon/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/neon_overlay = mutable_appearance(neon_icon || icon, neon_icon_state || icon_state, alpha = alpha)
 	neon_overlay.color = neon_color
@@ -423,6 +433,8 @@
 	. += emissive_appearance(neon_icon || icon, neon_icon_state || icon_state, src, alpha = emissive_alpha)
 
 /obj/item/stack/tile/carpet/neon/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isinhands || !neon_inhand_icon_state)
 		return
@@ -1132,6 +1144,8 @@
 	merge_type = /obj/item/stack/tile/material
 
 /obj/item/stack/tile/material/place_tile(turf/open/target_plating, mob/user)
+	procstart = null
+	src.procstart = null
 	// Save refernce to the materials for the case when we place last tile in the stack
 	var/list/saved_mats_per_unit = mats_per_unit
 	. = ..()
@@ -1207,10 +1221,14 @@
 	merge_type = /obj/item/stack/tile/emissive_test
 
 /obj/item/stack/tile/emissive_test/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance(icon, icon_state, src, alpha = alpha)
 
 /obj/item/stack/tile/emissive_test/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance(standing.icon, standing.icon_state, src, alpha = standing.alpha)
 

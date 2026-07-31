@@ -2,6 +2,8 @@
 	name = "resonance cascade"
 
 /datum/sm_delam/cascade/can_select(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	if(!sm.is_main_engine)
 		return FALSE
 	var/total_moles = sm.absorbed_gasmix.total_moles()
@@ -14,6 +16,8 @@
 	return TRUE
 
 /datum/sm_delam/cascade/delam_progress(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 
@@ -37,6 +41,8 @@
 	return TRUE
 
 /datum/sm_delam/cascade/on_select(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	sm.warp = new(sm)
 	sm.vis_contents += sm.warp
@@ -44,12 +50,16 @@
 	animate(time = 9, transform = matrix())
 
 /datum/sm_delam/cascade/on_deselect(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	message_admins("[ADMIN_VERBOSEJMP(sm)] will no longer cascade.")
 	sm.vis_contents -= sm.warp
 	QDEL_NULL(sm.warp)
 
 /datum/sm_delam/cascade/delaminate(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	log_delamination(sm)
 	effect_explosion(sm)
 	effect_emergency_state()
@@ -67,12 +77,18 @@
 	return ..()
 
 /datum/sm_delam/cascade/examine(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	return list(span_bolddanger("The crystal is vibrating at immense speeds, warping space around it!"))
 
 /datum/sm_delam/cascade/overlays(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	return list()
 
 /datum/sm_delam/cascade/count_down_messages(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	var/list/messages = list()
 	messages += "CRYSTAL DELAMINATION IMMINENT. The supermatter has reached critical integrity failure. Harmonic frequency limits exceeded. Causality destabilization field could not be engaged."
 	messages += "Crystalline hyperstructure returning to safe operating parameters. Harmonic frequency restored within emergency bounds. Anti-resonance filter initiated."
@@ -80,6 +96,8 @@
 	return messages
 
 /datum/sm_delam/cascade/proc/announce_cascade(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(sm))
 		return FALSE
 	if(!can_select(sm))
@@ -95,5 +113,7 @@
 
 /// Signal calls cant sleep, we gotta do this.
 /datum/sm_delam/cascade/proc/end_round_holder()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(effect_evac_rift_end))

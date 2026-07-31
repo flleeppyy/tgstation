@@ -21,6 +21,8 @@
 	var/pairing_code = ""
 
 /datum/duel/New(new_gun_A, new_gun_B)
+	procstart = null
+	src.procstart = null
 	pairing_code = assign_random_name()
 
 	gun_A = new_gun_A
@@ -31,6 +33,8 @@
 	. = ..()
 
 /datum/duel/proc/try_begin()
+	procstart = null
+	src.procstart = null
 	//Check if both guns are held and if so begin.
 	var/mob/living/A = get_duelist(gun_A)
 	var/mob/living/B = get_duelist(gun_B)
@@ -40,6 +44,8 @@
 	begin()
 
 /datum/duel/proc/begin()
+	procstart = null
+	src.procstart = null
 	state = DUEL_PREPARATION
 	confirmations.Cut()
 	fired.Cut()
@@ -50,12 +56,16 @@
 	START_PROCESSING(SSobj,src)
 
 /datum/duel/proc/get_duelist(obj/gun)
+	procstart = null
+	src.procstart = null
 	var/mob/living/G = gun.loc
 	if(!istype(G) || !G.is_holding(gun))
 		return null
 	return G
 
 /datum/duel/proc/message_duelists(message)
+	procstart = null
+	src.procstart = null
 	var/mob/living/LA = get_duelist(gun_A)
 	if(LA)
 		to_chat(LA,message)
@@ -64,14 +74,20 @@
 		to_chat(LB,message)
 
 /datum/duel/proc/other_gun(obj/item/gun/energy/dueling/G)
+	procstart = null
+	src.procstart = null
 	return G == gun_A ? gun_B : gun_A
 
 /datum/duel/proc/end()
+	procstart = null
+	src.procstart = null
 	message_duelists(span_notice("Duel finished. Re-engaging safety."))
 	STOP_PROCESSING(SSobj,src)
 	state = DUEL_IDLE
 
 /datum/duel/process()
+	procstart = null
+	src.procstart = null
 	switch(state)
 		if(DUEL_PREPARATION)
 			if(check_positioning())
@@ -94,20 +110,28 @@
 
 
 /datum/duel/proc/back_to_prep()
+	procstart = null
+	src.procstart = null
 	message_duelists(span_notice("Positions invalid. Please move to valid positions exactly [required_distance] steps away from each other to continue."))
 	state = DUEL_PREPARATION
 	confirmations.Cut()
 	countdown_step = countdown_length
 
 /datum/duel/proc/confirm_positioning()
+	procstart = null
+	src.procstart = null
 	message_duelists(span_notice("Position confirmed. Confirm readiness by pulling the trigger once."))
 	state = DUEL_READY
 
 /datum/duel/proc/confirm_ready()
+	procstart = null
+	src.procstart = null
 	message_duelists(span_notice("Readiness confirmed. Starting countdown. Commence firing at zero mark."))
 	state = DUEL_COUNTDOWN
 
 /datum/duel/proc/countdown_step()
+	procstart = null
+	src.procstart = null
 	countdown_step--
 	if(countdown_step == 0)
 		state = DUEL_FIRING
@@ -116,6 +140,8 @@
 		message_duelists(span_userdanger("[countdown_step]!"))
 
 /datum/duel/proc/check_fired()
+	procstart = null
+	src.procstart = null
 	if(fired.len == 2)
 		return TRUE
 	//Let's say if gun was dropped/stowed the user is finished
@@ -126,6 +152,8 @@
 	return FALSE
 
 /datum/duel/proc/check_positioning()
+	procstart = null
+	src.procstart = null
 	var/mob/living/A = get_duelist(gun_A)
 	var/mob/living/B = get_duelist(gun_B)
 	if(!A || !B)
@@ -141,6 +169,8 @@
 
 ///For each linked gun that still exists, clear its reference to us, then delete.
 /datum/duel/proc/clear_duel()
+	procstart = null
+	src.procstart = null
 	gun_A?.duel = null
 	gun_B?.duel = null
 	qdel(src)
@@ -161,11 +191,15 @@
 	var/mutable_appearance/setting_overlay
 
 /obj/item/gun/energy/dueling/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	setting_overlay = mutable_appearance(icon,setting_iconstate())
 	add_overlay(setting_overlay)
 
 /obj/item/gun/energy/dueling/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/gun/energy/dueling))
 		return NONE
 	var/obj/item/gun/energy/dueling/other_gun = tool
@@ -176,6 +210,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/gun/energy/dueling/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(check_valid_duel(user, FALSE))
 		. += "The pairing code is: [duel.pairing_code]"
@@ -183,6 +219,8 @@
 		. += "[src] is currently unpaired."
 
 /obj/item/gun/energy/dueling/proc/setting_iconstate()
+	procstart = null
+	src.procstart = null
 	switch(setting)
 		if(DUEL_SETTING_A)
 			return "duel_red"
@@ -193,6 +231,8 @@
 	return "duel_red"
 
 /obj/item/gun/energy/dueling/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!check_valid_duel(user, TRUE))
 		return
@@ -203,6 +243,8 @@
 		toggle_setting(user)
 
 /obj/item/gun/energy/dueling/proc/toggle_setting(mob/living/user)
+	procstart = null
+	src.procstart = null
 	switch(setting)
 		if(DUEL_SETTING_A)
 			setting = DUEL_SETTING_B
@@ -214,16 +256,22 @@
 	update_appearance()
 
 /obj/item/gun/energy/dueling/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(setting_overlay)
 		setting_overlay.icon_state = setting_iconstate()
 		. += setting_overlay
 
 /obj/item/gun/energy/dueling/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	duel?.clear_duel()
 
 /obj/item/gun/energy/dueling/can_trigger_gun(mob/living/user, akimbo_usage)
+	procstart = null
+	src.procstart = null
 	if(akimbo_usage)
 		return FALSE //not honorable.
 	. = ..()
@@ -240,6 +288,8 @@
 			return FALSE
 
 /obj/item/gun/energy/dueling/proc/is_duelist(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(!istype(L))
 		return FALSE
 	if(!L.is_holding(duel.other_gun(src)))
@@ -247,6 +297,8 @@
 	return TRUE
 
 /obj/item/gun/energy/dueling/process_fire(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
+	procstart = null
+	src.procstart = null
 	if(!check_valid_duel(user, TRUE))
 		return
 	if(duel.state == DUEL_READY)
@@ -261,11 +313,15 @@
 		. = ..()
 
 /obj/item/gun/energy/dueling/before_firing(target,user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/ammo_casing/energy/duel/D = chambered
 	D.setting = setting
 
 ///Return a boolean of whether or not the pistol has a valid duel datum, if false optionally warn the user
 /obj/item/gun/energy/dueling/proc/check_valid_duel(mob/living/user, do_warn)
+	procstart = null
+	src.procstart = null
 	if(!duel)
 		if(do_warn)
 			to_chat(user,span_warning("[src] is currently unpaired."))
@@ -279,6 +335,8 @@
 	var/setting
 
 /obj/effect/temp_visual/dueling_chaff/update_icon()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(setting)
 		if(DUEL_SETTING_A)
@@ -296,6 +354,8 @@
 	var/setting
 
 /obj/item/ammo_casing/energy/duel/ready_proj(atom/target, mob/living/user, quiet, zone_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/projectile/energy/duel/dueling_projectile = loaded_projectile
 	dueling_projectile.setting = setting
@@ -304,6 +364,8 @@
 		dueling_projectile.set_homing_target(target)
 
 /obj/item/ammo_casing/energy/duel/fire_casing(atom/target, mob/living/user, params, distro, quiet, zone_override, spread, atom/fired_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/effect/temp_visual/dueling_chaff/chaff = new(get_turf(user))
 	chaff.setting = setting
@@ -318,6 +380,8 @@
 	var/setting
 
 /obj/projectile/energy/duel/update_icon()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(setting)
 		if(DUEL_SETTING_A)
@@ -328,6 +392,8 @@
 			color = "blue"
 
 /obj/projectile/energy/duel/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/T = get_turf(target)
 	var/obj/effect/temp_visual/dueling_chaff/C = locate() in T

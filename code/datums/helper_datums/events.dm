@@ -7,14 +7,20 @@
 	var/list/events
 
 /datum/events/New()
+	procstart = null
+	src.procstart = null
 	..()
 	events = new
 
 /datum/events/Destroy()
+	procstart = null
+	src.procstart = null
 	events = null
 	return ..()
 
 /datum/events/proc/addEventType(event_type as text)
+	procstart = null
+	src.procstart = null
 	if(!(event_type in events) || !islist(events[event_type]))
 		events[event_type] = list()
 		return TRUE
@@ -23,6 +29,8 @@
 /// Arguments: event_type as text, proc_holder as datum, proc_name as text
 /// Returns: New event, null on error.
 /datum/events/proc/addEvent(event_type as text, datum/callback/cb)
+	procstart = null
+	src.procstart = null
 	if(!event_type || !cb)
 		return
 	addEventType(event_type)
@@ -33,6 +41,8 @@
 /// Arguments: event_type as text, any number of additional arguments to pass to event handler
 /// Returns: null
 /datum/events/proc/fireEvent(eventName, ...)
+	procstart = null
+	src.procstart = null
 	var/list/event = LAZYACCESS(events,eventName)
 	if(istype(event))
 		for(var/E in event)
@@ -42,6 +52,8 @@
 /// Arguments: event_type as text, E as /datum/event
 /// Returns: TRUE if event cleared, FALSE on error
 /datum/events/proc/clearEvent(event_type as text, datum/callback/cb)
+	procstart = null
+	src.procstart = null
 	if(!event_type || !cb)
 		return FALSE
 	var/list/event = LAZYACCESS(events,event_type)

@@ -8,6 +8,8 @@
 	circuit = /obj/item/circuitboard/computer/mecha_control
 
 /obj/machinery/computer/mecha/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -15,6 +17,8 @@
 		ui.open()
 
 /obj/machinery/computer/mecha/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/list/trackerlist = list()
@@ -47,6 +51,8 @@
 	return data
 
 /obj/machinery/computer/mecha/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -94,6 +100,8 @@
  * Returns a html formatted string describing attached mech status
  */
 /obj/item/mecha_parts/mecha_tracking/proc/get_mecha_info()
+	procstart = null
+	src.procstart = null
 	if(!chassis)
 		return FALSE
 
@@ -114,6 +122,8 @@
 	return jointext(output, "\n")
 
 /obj/item/mecha_parts/mecha_tracking/Destroy()
+	procstart = null
+	src.procstart = null
 	if(chassis)
 		if(src in chassis.trackers)
 			chassis.trackers -= src
@@ -121,6 +131,8 @@
 	return ..()
 
 /obj/item/mecha_parts/mecha_tracking/try_attach_part(mob/user, obj/vehicle/sealed/mecha/mecha_to_attach, attach_right = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!(mecha_to_attach.mecha_flags & flag_to_check))
 		to_chat(user, span_notice("[src] is incompatible with [mecha_to_attach]."))
 		return
@@ -140,6 +152,8 @@
  * Attempts to EMP mech that the tracker is attached to, if there is one and tracker is not on cooldown
  */
 /obj/item/mecha_parts/mecha_tracking/proc/remote_emp_triggered()
+	procstart = null
+	src.procstart = null
 	if(recharging)
 		return
 	if(!chassis)
@@ -152,6 +166,8 @@
  * Resets recharge variable, allowing tracker to be EMP pulsed again
  */
 /obj/item/mecha_parts/mecha_tracking/proc/recharge()
+	procstart = null
+	src.procstart = null
 	recharging = FALSE
 
 /obj/item/mecha_parts/mecha_tracking/ai_control

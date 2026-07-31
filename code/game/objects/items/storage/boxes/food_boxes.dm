@@ -10,6 +10,8 @@
 	storage_type = /datum/storage/box/donk_pockets
 
 /obj/item/storage/box/donkpockets/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		new donktype(src)
 
@@ -66,6 +68,8 @@
 	var/design_choice = "None"
 
 /obj/item/storage/box/papersack/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	papersack_designs = sort_list(list(
 		"None" = image(icon = src.icon, icon_state = "paperbag_None"),
@@ -77,15 +81,21 @@
 	update_appearance()
 
 /obj/item/storage/box/papersack/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vname == NAMEOF(src, design_choice))
 		update_appearance()
 
 /obj/item/storage/box/papersack/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "paperbag_[design_choice][(contents.len == 0) ? null : "_closed"]"
 	return ..()
 
 /obj/item/storage/box/papersack/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	switch(design_choice)
 		if("None")
 			desc = "A sack neatly crafted out of paper."
@@ -100,6 +110,8 @@
 	return ..()
 
 /obj/item/storage/box/papersack/tool_act(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(IS_WRITING_UTENSIL(tool))
 		var/choice = show_radial_menu(user, src , papersack_designs, custom_check = CALLBACK(src, PROC_REF(check_menu), user, tool), radius = 36, require_near = TRUE)
 		if(!choice || choice == design_choice)
@@ -129,6 +141,8 @@
  * * P The pen used to interact with a menu
  */
 /obj/item/storage/box/papersack/proc/check_menu(mob/user, obj/item/pen/P)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated)
@@ -145,6 +159,8 @@
 	desc = "It's slightly moist and smells like a slaughterhouse."
 
 /obj/item/storage/box/papersack/meat/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/food/meat/slab(src)
 
@@ -152,6 +168,8 @@
 	desc = "It's a bit dusty, and smells like a barnyard."
 
 /obj/item/storage/box/papersack/wheat/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/food/grown/wheat(src)
 
@@ -161,6 +179,8 @@
 	var/theme_name
 
 /obj/item/storage/box/ingredients/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(theme_name)
 		name = "[name] ([theme_name])"
@@ -171,6 +191,8 @@
 	theme_name = "wildcard"
 
 /obj/item/storage/box/ingredients/wildcard/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		var/random_food = pick(
 			/obj/item/food/chocolatebar,
@@ -195,6 +217,8 @@
 	theme_name = "fiesta"
 
 /obj/item/storage/box/ingredients/fiesta/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/food/tortilla(src)
 	for(var/i in 1 to 2)
 		new /obj/item/food/grown/chili(src)
@@ -205,6 +229,8 @@
 	theme_name = "italian"
 
 /obj/item/storage/box/ingredients/italian/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/food/grown/tomato(src)
 		new /obj/item/food/meatball(src)
@@ -214,6 +240,8 @@
 	theme_name = "vegetarian"
 
 /obj/item/storage/box/ingredients/vegetarian/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 2)
 		new /obj/item/food/grown/carrotlike/carrot(src)
 	new /obj/item/food/grown/apple(src)
@@ -226,6 +254,8 @@
 	theme_name = "american"
 
 /obj/item/storage/box/ingredients/american/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 2)
 		new /obj/item/food/grown/corn(src)
 		new /obj/item/food/grown/potato(src)
@@ -236,6 +266,8 @@
 	theme_name = "fruity"
 
 /obj/item/storage/box/ingredients/fruity/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 2)
 		new /obj/item/food/grown/apple(src)
 		new /obj/item/food/grown/citrus/orange(src)
@@ -247,6 +279,8 @@
 	theme_name = "sweets"
 
 /obj/item/storage/box/ingredients/sweets/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 2)
 		new /obj/item/food/grown/cherries(src)
 		new /obj/item/food/grown/banana(src)
@@ -258,6 +292,8 @@
 	theme_name = "delights"
 
 /obj/item/storage/box/ingredients/delights/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 2)
 		new /obj/item/food/grown/bluecherries(src)
 		new /obj/item/food/grown/potato/sweet(src)
@@ -269,6 +305,8 @@
 	theme_name = "grains"
 
 /obj/item/storage/box/ingredients/grains/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/food/grown/oat(src)
 	new /obj/item/food/grown/cocoapod(src)
@@ -280,6 +318,8 @@
 	theme_name = "carnivore"
 
 /obj/item/storage/box/ingredients/carnivore/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/food/meat/slab/bear(src)
 	new /obj/item/food/meat/slab/corgi(src)
 	new /obj/item/food/meat/slab/penguin(src)
@@ -292,6 +332,8 @@
 	theme_name = "exotic"
 
 /obj/item/storage/box/ingredients/exotic/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 2)
 		new /obj/item/food/fishmeat/carp(src)
 		new /obj/item/food/grown/cabbage(src)
@@ -302,6 +344,8 @@
 	theme_name = "seafood"
 
 /obj/item/storage/box/ingredients/seafood/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 2)
 		new /obj/item/food/fishmeat/armorfish(src)
 		new /obj/item/food/fishmeat/carp(src)
@@ -312,6 +356,8 @@
 	theme_name = "salads"
 
 /obj/item/storage/box/ingredients/salads/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/food/grown/cabbage(src)
 	new /obj/item/food/grown/carrotlike/carrot(src)
 	new /obj/item/food/grown/olive(src)
@@ -325,6 +371,8 @@
 	desc = "This box should not exist, contact the proper authorities."
 
 /obj/item/storage/box/ingredients/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/chosen_box = pick(subtypesof(/obj/item/storage/box/ingredients) - /obj/item/storage/box/ingredients/random)
 	new chosen_box(loc)
@@ -345,6 +393,8 @@
 	var/spawning_gum_type = /obj/item/food/bubblegum
 
 /obj/item/storage/box/gum/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 4)
 		new /obj/item/storage/bubblegum_wrapper(src, spawning_gum_type)
 
@@ -356,6 +406,8 @@
 	custom_premium_price = PAYCHECK_CREW * 1.5
 
 /obj/item/storage/box/gum/wake_up/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("<i>You read some of the health and safety information...</i>")
 	. += "\t[span_info("For the relief of tiredness and drowsiness while working.")]"
@@ -369,6 +421,8 @@
 	return .
 
 /obj/item/storage/box/gum/wake_up/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 4)
 		new/obj/item/food/bubblegum/wake_up(src)
 
@@ -385,6 +439,8 @@
 	var/gum_to_spawn = /obj/item/food/bubblegum
 
 /obj/item/storage/bubblegum_wrapper/Initialize(mapload, spawning_gum_type)
+	procstart = null
+	src.procstart = null
 	if(!isnull(spawning_gum_type))
 		gum_to_spawn = spawning_gum_type
 	. = ..()
@@ -394,12 +450,18 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/item/storage/bubblegum_wrapper/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/aluminium = 1)
 
 /obj/item/storage/bubblegum_wrapper/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new gum_to_spawn(src)
 
 /obj/item/storage/bubblegum_wrapper/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/food/bubblegum/gum_inside = locate() in contents
 	if(isnull(gum_inside))
@@ -410,6 +472,8 @@
 
 //These procs are copied over from cigarette packets
 /obj/item/storage/bubblegum_wrapper/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(interacting_with, /obj/item/food/bubblegum))
 		atom_storage.item_interact_insert(user, interacting_with)
@@ -420,11 +484,15 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/storage/bubblegum_wrapper/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	quick_remove_item(/obj/item/food/bubblegum, user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/storage/bubblegum_wrapper/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	quick_remove_item(/obj/item/food/bubblegum, user)
 	return CLICK_ACTION_SUCCESS
 
@@ -444,6 +512,8 @@
 	spawning_gum_type = /obj/item/food/bubblegum/happiness
 
 /obj/item/storage/box/gum/happiness/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (prob(25))
 		desc += " You can faintly make out the word 'Hemopagopril' was once scribbled on it."
@@ -461,6 +531,8 @@
 	illustration = null
 
 /obj/item/storage/box/mothic_rations/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		var/random_food = pick_weight(list(
 			/obj/item/food/sustenance_bar = 10,
@@ -479,6 +551,8 @@
 	illustration = null
 
 /obj/item/storage/box/tiziran_goods/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 12)
 		var/random_food = pick_weight(list(
 			/obj/item/food/bread/root = 2,
@@ -501,6 +575,8 @@
 	illustration = null
 
 /obj/item/storage/box/tiziran_cans/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 8)
 		var/random_food = pick_weight(list(
 			/obj/item/food/canned/jellyfish = 5,
@@ -516,6 +592,8 @@
 	illustration = null
 
 /obj/item/storage/box/tiziran_meats/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 10)
 		var/random_food = pick_weight(list(
 			/obj/item/food/fishmeat/armorfish = 5,
@@ -532,6 +610,8 @@
 	illustration = null
 
 /obj/item/storage/box/mothic_goods/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 12)
 		var/random_food = pick_weight(list(
 			/obj/item/food/cheese/cheese_curds = 5,
@@ -553,6 +633,8 @@
 	illustration = null
 
 /obj/item/storage/box/mothic_cans_sauces/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 8)
 		var/random_food = pick_weight(list(
 			/obj/item/food/bechamel_sauce = 5,
@@ -569,6 +651,8 @@
 	illustration = "condiment"
 
 /obj/item/storage/box/condimentbottles/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		new /obj/item/reagent_containers/condiment(src)
 
@@ -583,6 +667,8 @@
 	var/beantype = /obj/item/food/grown/coffee
 
 /obj/item/storage/box/coffeepack/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 5)
 		var/obj/item/food/grown/coffee/bean = new beantype(src)
 		ADD_TRAIT(bean, TRAIT_DRIED, ELEMENT_TRAIT(type))
@@ -603,5 +689,7 @@
 	w_class = WEIGHT_CLASS_SMALL //it's meant to come in packs of five and the box can only hold two items, beef flavour or dry ramen
 
 /obj/item/storage/box/ramen_beef/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/reagent_containers/condiment/pack/beef_flavour(src)
 	new /obj/item/food/spaghetti/ramen_dry(src)

@@ -5,10 +5,14 @@
 
 /// Does this property apply to our material?
 /datum/material_property/derived/proc/is_present(datum/material/material)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Calculate and fetch the value of the property on this material
 /datum/material_property/derived/proc/get_value(datum/material/material)
+	procstart = null
+	src.procstart = null
 	return 0
 
 #define INTEGRITY_MIN 0.1
@@ -20,6 +24,8 @@
 	id = MATERIAL_INTEGRITY
 
 /datum/material_property/derived/integrity/get_value(datum/material/material)
+	procstart = null
+	src.procstart = null
 	// Integrity is a combination of density, hardness and flexibility
 	var/density = material.get_property(MATERIAL_DENSITY)
 	var/hardness = material.get_property(MATERIAL_HARDNESS)
@@ -39,9 +45,13 @@
 	id = MATERIAL_BEAUTY
 
 /datum/material_property/derived/beauty/is_present(datum/material/material)
+	procstart = null
+	src.procstart = null
 	return abs(material.get_property(MATERIAL_REFLECTIVITY)) > MATERIAL_PROPERTY_MAX / 2
 
 /datum/material_property/derived/beauty/get_value(datum/material/material)
+	procstart = null
+	src.procstart = null
 	// Requires the material to be especially shiny or dull
 	var/reflectivity = material.get_property(MATERIAL_REFLECTIVITY)
 	return MATERIAL_PROPERTY_DIVERGENCE(reflectivity, 3, 6) * 0.05
@@ -51,6 +61,8 @@
 	id = MATERIAL_INSULATION
 
 /datum/material_property/derived/insulation/get_value(datum/material/material)
+	procstart = null
+	src.procstart = null
 	// [0 ~ 1] is fully insulating, (1 ~ 6] maps to (0 ~ 1] and [6 ~ 10] maps to [1 ~ 2]
 	// 1.18 and 0.15 here are to allow 6 to map to 1 and 10 to map to 2 and are pulled out of my ass (system in the desmos below)
 	// See https://www.desmos.com/calculator/rdbv1x8oty

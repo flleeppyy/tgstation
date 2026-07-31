@@ -29,6 +29,8 @@
 	custom_materials = list(/datum/material/meat = MEATDISH_MATERIAL_AMOUNT)
 
 /obj/item/food/burger/plain/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!prob(1))
 		return
@@ -56,6 +58,8 @@
 	custom_materials = list(/datum/material/meat = MEATDISH_MATERIAL_AMOUNT)
 
 /obj/item/food/burger/human/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/material/meat/mob_meat/mob_meat_material in custom_materials)
 		if(mob_meat_material.subjectname)
@@ -234,14 +238,20 @@
 	preserved_food = TRUE // It's made of ghosts
 
 /obj/item/food/burger/ghost/Initialize(mapload, starting_reagent_purity, no_base_reagents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 	AddComponent(/datum/component/ghost_edible, bite_consumption = bite_consumption)
 
 /obj/item/food/burger/ghost/make_germ_sensitive()
+	procstart = null
+	src.procstart = null
 	return // This burger moves itself so it shouldn't pick up germs from walking onto the floor
 
 /obj/item/food/burger/ghost/process()
+	procstart = null
+	src.procstart = null
 	if(!isturf(loc)) //no floating out of bags
 		return
 	var/paranormal_activity = rand(100)
@@ -267,6 +277,8 @@
 			playsound(loc, 'sound/effects/splat.ogg', 200, TRUE)
 
 /obj/item/food/burger/ghost/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
@@ -472,6 +484,8 @@
 	custom_materials = list(/datum/material/meat = MEATSLAB_MATERIAL_AMOUNT * 2)
 
 /obj/item/food/burger/superbite/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] starts to eat [src] in one bite, it looks like [user.p_theyre()] trying to commit suicide!"))
 	var/datum/component/edible/component = GetComponent(/datum/component/edible)
 	component?.TakeBite(user, user)
@@ -666,6 +680,8 @@
 	custom_materials = list(/datum/material/meat = MEATDISH_MATERIAL_AMOUNT)
 
 /obj/item/food/burger/cheese/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(33))
 		icon_state = "cheeseburgeralt"
@@ -692,10 +708,14 @@
 	)
 
 /obj/item/food/burger/crazy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
-/obj/item/food/burger/crazy/process(seconds_per_tick) // DIT EES HORRIBLE
+/obj/item/food/burger/crazy/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null // DIT EES HORRIBLE
 	if(SPT_PROB(2.5, seconds_per_tick))
 		do_smoke(0, src, loc, smoke_type = /datum/effect_system/fluid_spread/smoke/bad/green)
 

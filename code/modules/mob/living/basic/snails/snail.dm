@@ -31,6 +31,8 @@
 	var/should_be_holdable = TRUE
 
 /mob/living/basic/snail/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/loc_connections = list(COMSIG_ATOM_ENTERED = PROC_REF(on_entered))
 	AddElement(/datum/element/connect_loc, loc_connections)
@@ -58,16 +60,22 @@
 		AddElement(/datum/element/can_be_held)
 
 /mob/living/basic/snail/proc/on_entered(datum/source, obj/effect/decal/cleanable/food/salt/potential_salt)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(istype(potential_salt))
 		on_salt_exposure() //immediately perish
 
 /mob/living/basic/snail/proc/on_reagents_update(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(reagents.has_reagent(/datum/reagent/consumable/salt))
 		on_salt_exposure()
 
 /mob/living/basic/snail/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isturf(loc))
 		return
@@ -75,6 +83,8 @@
 		on_salt_exposure()
 
 /mob/living/basic/snail/proc/on_salt_exposure()
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		return
 	visible_message(
@@ -84,6 +94,8 @@
 	apply_damage(500) //ouch
 
 /mob/living/basic/snail/mob_pickup(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/mob_holder/snail/holder = new(get_turf(src), src, held_state, head_icon, held_lh, held_rh, worn_slot_flags)
 	SEND_SIGNAL(src, COMSIG_LIVING_SCOOPED_UP, user, holder)
 	var/display_message = "[user] [HAS_TRAIT(src, TRAIT_MOVE_FLOATING) ? "scoops up [src]" : "peels [src] off the ground"]!"
@@ -91,6 +103,8 @@
 	user.put_in_hands(holder)
 
 /mob/living/basic/snail/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(stat != DEAD)
 		icon_state = HAS_TRAIT(src, TRAIT_SHELL_RETREATED) ? "snail_shell" : "[base_icon_state]"
 	return ..()
@@ -118,6 +132,8 @@
 /obj/item/mob_holder/snail
 
 /obj/item/mob_holder/snail/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(interacting_with, /obj/machinery/hydroponics))
 		return NONE
 

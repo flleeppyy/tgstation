@@ -98,6 +98,8 @@
 	acid = 70
 
 /obj/item/stack/tile/iron/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/tool_behaviors = list(
 		TOOL_WELDER = list(
@@ -108,6 +110,8 @@
 	AddElement(/datum/element/contextual_screentip_tools, tool_behaviors)
 
 /obj/item/stack/tile/iron/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(get_amount() < 4)
 		balloon_alert(user, "not enough tiles!")
 		return
@@ -124,6 +128,8 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/item/stack/tile/iron/welder_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(get_amount() < 2)
 		balloon_alert(user, "not enough tiles!")
 		return

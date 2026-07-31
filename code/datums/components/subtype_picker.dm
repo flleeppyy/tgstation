@@ -15,6 +15,8 @@
 	var/datum/callback/on_picked_callback
 
 /datum/component/subtype_picker/Initialize(subtype2descriptions, on_picked_callback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -23,20 +25,28 @@
 	build_radial_list()
 
 /datum/component/subtype_picker/Destroy(force)
+	procstart = null
+	src.procstart = null
 	on_picked_callback = null
 	subtype2descriptions = null
 	return ..()
 
 /datum/component/subtype_picker/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, PROC_REF(on_attack_self))
 
 /datum/component/subtype_picker/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, COMSIG_ITEM_ATTACK_SELF)
 
 ///signal called by the stat of the target changing
 /datum/component/subtype_picker/proc/on_attack_self(datum/target, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(pick_subtype), target, user)
 
@@ -44,6 +54,8 @@
  * pick_subtype: turns the list of types to their description into all the data radial menus need
  */
 /datum/component/subtype_picker/proc/build_radial_list()
+	procstart = null
+	src.procstart = null
 	built_radial_list = list()
 	name2subtype = list()
 	for(var/obj/item/subtype as anything in subtype2descriptions)
@@ -64,6 +76,8 @@
  * * picker: user who interacted with the item
  */
 /datum/component/subtype_picker/proc/pick_subtype(datum/target, mob/picker)
+	procstart = null
+	src.procstart = null
 
 	var/name_of_type = show_radial_menu(picker, target, built_radial_list, custom_check = CALLBACK(src, PROC_REF(check_menu), target, picker), radius = 42, require_near = TRUE)
 	if(!name_of_type || !check_menu(target, picker))
@@ -85,6 +99,8 @@
  * * user: the mob interacting with the menu
  */
 /datum/component/subtype_picker/proc/check_menu(datum/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(QDELETED(target))

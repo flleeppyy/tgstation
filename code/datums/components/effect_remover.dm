@@ -42,10 +42,14 @@
 	src.time_to_remove = time_to_remove
 
 /datum/component/effect_remover/Destroy(force)
+	procstart = null
+	src.procstart = null
 	on_clear_callback = null
 	return ..()
 
 /datum/component/effect_remover/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ITEM_INTERACTING_WITH_ATOM, PROC_REF(try_remove_effect))
 
 	if(tip_text)
@@ -54,6 +58,8 @@
 		RegisterSignal(parent, COMSIG_ITEM_REQUESTING_CONTEXT_FOR_TARGET, PROC_REF(add_item_context))
 
 /datum/component/effect_remover/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ITEM_INTERACTING_WITH_ATOM, COMSIG_ITEM_REQUESTING_CONTEXT_FOR_TARGET))
 
 /*
@@ -61,6 +67,8 @@
  */
 
 /datum/component/effect_remover/proc/try_remove_effect(datum/source, mob/living/user, atom/target, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(user))
@@ -78,6 +86,8 @@
  * Actually removes the effect, invoking our on_clear_callback before it's deleted.
  */
 /datum/component/effect_remover/proc/do_remove_effect(obj/effect/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(time_to_remove && !do_after(user, time_to_remove, target))
 		return
 
@@ -99,6 +109,8 @@
  * Adds some context for the target, if we have one set and it's a valid target.
  */
 /datum/component/effect_remover/proc/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(effects_we_clear[target.type])

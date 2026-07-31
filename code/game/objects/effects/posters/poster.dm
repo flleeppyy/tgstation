@@ -22,6 +22,8 @@
 	var/obj/structure/sign/poster/poster_structure
 
 /obj/item/poster/Initialize(mapload, obj/structure/sign/poster/new_poster_structure)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/static/list/hovering_item_typechecks = list(
@@ -49,14 +51,20 @@
 		CRASH("Rolled poster [type] has an invalid or null poster_type [poster_type]")
 
 /obj/item/poster/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(poster_structure)
 	return ..()
 
 /obj/item/poster/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You can booby-trap the poster by using a glass shard on it before you put it up.")
 
 /obj/item/poster/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/shard))
 		return NONE
 
@@ -71,6 +79,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/poster/interact_with_atom(turf/closed/wall_structure, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isclosedturf(wall_structure))
 		return NONE
 
@@ -159,6 +169,8 @@
 	var/poster_item_type = /obj/item/poster
 
 /obj/structure/sign/poster/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cutdown_type = type
 	if(random_basetype)
@@ -172,6 +184,8 @@
 
 /// Adds contextual screentips
 /obj/structure/sign/poster/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if (!held_item)
 		if (ruined)
 			return .
@@ -187,6 +201,8 @@
 	return .
 
 /obj/structure/sign/poster/proc/randomise(base_type)
+	procstart = null
+	src.procstart = null
 	var/list/poster_types = subtypesof(base_type)
 	if(length(blacklisted_types))
 		for(var/iterated_type in blacklisted_types)
@@ -214,6 +230,8 @@
 
 /// allows for posters to become festive posters during holidays
 /obj/structure/sign/poster/proc/apply_holiday()
+	procstart = null
+	src.procstart = null
 	if(!length(GLOB.holidays))
 		return
 	var/active_holiday = pick(GLOB.holidays)
@@ -226,6 +244,8 @@
 	icon_state = holi_data.poster_icon
 
 /obj/structure/sign/poster/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(src, 100)
 	if(ruined)
 		to_chat(user, span_notice("You remove the remnants of the poster."))
@@ -236,6 +256,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/sign/poster/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !check_tearability())
 		return
@@ -243,6 +265,8 @@
 
 /// Check to see if this poster is tearable and gives the user feedback if it is not.
 /obj/structure/sign/poster/proc/check_tearability(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ruined)
 		balloon_alert(user, "already ruined!")
 		return FALSE
@@ -250,6 +274,8 @@
 
 // HO-HO-HOHOHO HU HU-HU HU-HU
 /obj/structure/sign/poster/proc/spring_trap(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/shard/payload = locate() in contents
 	if (!payload)
 		return
@@ -260,11 +286,15 @@
 		payload.forceMove(user.drop_location())
 
 /obj/structure/sign/poster/proc/can_embed_trap(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if (!istype(user) || HAS_TRAIT(user, TRAIT_PIERCEIMMUNE))
 		return FALSE
 	return !user.gloves || !(user.gloves.body_parts_covered & HANDS) || HAS_TRAIT(user, TRAIT_FINGERPRINT_PASSTHROUGH) || HAS_TRAIT(user.gloves, TRAIT_FINGERPRINT_PASSTHROUGH)
 
 /obj/structure/sign/poster/proc/roll_and_drop(atom/location, mob/user)
+	procstart = null
+	src.procstart = null
 	pixel_x = 0
 	pixel_y = 0
 	var/obj/item/poster/rolled_poster = return_to_poster_item(location, src)
@@ -275,17 +305,25 @@
 
 /// Re-creates the poster item from the poster structure
 /obj/structure/sign/poster/proc/return_to_poster_item(atom/location)
+	procstart = null
+	src.procstart = null
 	. = new poster_item_type(location, new cutdown_type)
 	qdel(src)
 	return .
 
-/obj/structure/sign/poster/proc/snowflake_closed_turf_check(atom/hopefully_still_a_closed_turf) //since turfs never get deleted but instead change type, make sure we're still being placed on a wall.
+/obj/structure/sign/poster/proc/snowflake_closed_turf_check(atom/hopefully_still_a_closed_turf)
+	procstart = null
+	src.procstart = null //since turfs never get deleted but instead change type, make sure we're still being placed on a wall.
 	return isclosedturf(hopefully_still_a_closed_turf)
 
 /obj/structure/sign/poster/proc/on_placed_poster(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You place the poster!"))
 
 /obj/structure/sign/poster/proc/tear_poster(mob/user)
+	procstart = null
+	src.procstart = null
 	visible_message(span_notice("[user] rips [src] in a single, decisive motion!") )
 	playsound(src.loc, 'sound/items/poster/poster_ripped.ogg', 100, TRUE)
 	spring_trap(user)

@@ -1,4 +1,6 @@
 /datum/tgs_api/v5/proc/ListCustomCommands()
+	procstart = null
+	src.procstart = null
 	var/results = list()
 	custom_commands = list()
 	for(var/I in typesof(/datum/tgs_chat_command) - /datum/tgs_chat_command)
@@ -21,6 +23,8 @@
 	return results
 
 /datum/tgs_api/v5/proc/HandleCustomCommand(list/command_json)
+	procstart = null
+	src.procstart = null
 	var/command = command_json[DMAPI5_CHAT_COMMAND_NAME]
 	var/user = command_json[DMAPI5_CHAT_COMMAND_USER]
 	var/params = command_json[DMAPI5_CHAT_COMMAND_PARAMS]
@@ -44,6 +48,8 @@
 
 // Common proc b/c it's used by the V3/V4 APIs
 /datum/tgs_api/proc/UpgradeDeprecatedCommandResponse(datum/tgs_message_content/response, command)
+	procstart = null
+	src.procstart = null
 	// Backwards compatibility, used to return a string
 	if(istext(response))
 		warned_deprecated_command_runs = warned_deprecated_command_runs || list()

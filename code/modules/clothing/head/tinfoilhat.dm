@@ -17,6 +17,8 @@
 	energy = -15
 
 /obj/item/clothing/head/costume/foilhat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(warped)
 		warp_up()
@@ -33,6 +35,8 @@
 
 
 /obj/item/clothing/head/costume/foilhat/equipped(mob/living/carbon/human/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(slot & ITEM_SLOT_HEAD) || warped)
 		return
@@ -46,6 +50,8 @@
 	to_chat(user, span_warning("As you don the foiled hat, an entire world of conspiracy theories and seemingly insane ideas suddenly rush into your mind. What you once thought unbelievable suddenly seems.. undeniable. Everything is connected and nothing happens just by accident. You know too much and now they're out to get you. "))
 
 /obj/item/clothing/head/costume/foilhat/mouse_drop_dragged(atom/over_object, mob/user)
+	procstart = null
+	src.procstart = null
 	//God Im sorry
 	if(!warped && user.get_item_by_slot(ITEM_SLOT_HEAD) == src)
 		to_chat(user, span_userdanger("Why would you want to take this off? Do you want them to get into your mind?!"))
@@ -53,6 +59,8 @@
 	return ..()
 
 /obj/item/clothing/head/costume/foilhat/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(paranoia)
 		QDEL_NULL(paranoia)
@@ -60,9 +68,13 @@
 
 /// When the foilhat is drained an anti-magic charge.
 /obj/item/clothing/head/costume/foilhat/proc/drain_antimagic(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("[src] crumples slightly. Something is trying to get inside your mind!"))
 
 /obj/item/clothing/head/costume/foilhat/proc/warp_up()
+	procstart = null
+	src.procstart = null
 	name = "scorched tinfoil hat"
 	desc = "A badly warped up hat. Quite unlikely this will still work against any of the fictional or real dangers it used to."
 	warped = TRUE
@@ -78,12 +90,16 @@
 		to_chat(target, span_warning("Your zealous conspirationism rapidly dissipates as the donned hat warps up into a ruined mess. All those theories starting to sound like nothing but a ridicolous fanfare."))
 
 /obj/item/clothing/head/costume/foilhat/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!warped && user.get_item_by_slot(ITEM_SLOT_HEAD) == src)
 		to_chat(user, span_userdanger("Why would you want to take this off? Do you want them to get into your mind?!"))
 		return
 	return ..()
 
 /obj/item/clothing/head/costume/foilhat/microwave_act(obj/machinery/microwave/microwave_source, mob/microwaver, randomize_pixel_offset)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(warped)
 		return
@@ -92,11 +108,15 @@
 	return . | COMPONENT_MICROWAVE_SUCCESS
 
 /obj/item/clothing/head/costume/foilhat/proc/call_suicide(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(suicide_act), source) //SIGNAL_HANDLER doesn't like things waiting; INVOKE_ASYNC bypasses that
 	return OXYLOSS
 
 /obj/item/clothing/head/costume/foilhat/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] gets a crazed look in [user.p_their()] eyes! [capitalize(user.p_they())] [user.p_have()] witnessed the truth, and try to commit suicide!"))
 	var/static/list/conspiracy_line = list(
 		";THEY'RE HIDING CAMERAS IN THE CEILINGS! THEY WITNESS EVERYTHING WE DO!!",

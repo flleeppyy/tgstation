@@ -97,6 +97,8 @@
 		start()
 
 /datum/looping_sound/Destroy()
+	procstart = null
+	src.procstart = null
 	stop(TRUE)
 	return ..()
 
@@ -107,6 +109,8 @@
  * * on_behalf_of - The new object to set as a parent.
  */
 /datum/looping_sound/proc/start(on_behalf_of)
+	procstart = null
+	src.procstart = null
 	if(on_behalf_of)
 		set_parent(on_behalf_of)
 	if(timer_id || loop_started)
@@ -125,6 +129,8 @@
  * * null_parent - Whether or not we should set the parent to null (useful when destroying the `looping_sound` itself). Defaults to FALSE.
  */
 /datum/looping_sound/proc/stop(null_parent = FALSE)
+	procstart = null
+	src.procstart = null
 	stop_current()
 	if(null_parent)
 		set_parent(null)
@@ -144,6 +150,8 @@
 
 /// The proc that handles starting the actual core sound loop.
 /datum/looping_sound/proc/start_sound_loop()
+	procstart = null
+	src.procstart = null
 	loop_started = TRUE
 	if(can_native_repeat())
 		native_repeat_active = TRUE
@@ -161,6 +169,8 @@
  * * start_time - The time at which the `mid_sounds` started being played (so we know when to stop looping).
  */
 /datum/looping_sound/proc/sound_loop(start_time)
+	procstart = null
+	src.procstart = null
 	if(max_loops && world.time >= start_time + mid_length * max_loops)
 		stop()
 		return
@@ -174,6 +184,8 @@
  * Applies a new mid length to the sound
  */
 /datum/looping_sound/proc/set_mid_length(new_mid)
+	procstart = null
+	src.procstart = null
 	mid_length = new_mid
 	if(native_repeat_active) // Native repeat is driven by the sound file's own length, not mid_length
 		return
@@ -191,6 +203,8 @@
  * * delete_when_finished - Whether a freshly created sound token should self-delete once the sound ends (token path only).
  */
 /datum/looping_sound/proc/play(soundfile, volume_override, repeat_sound = FALSE, delete_when_finished = FALSE)
+	procstart = null
+	src.procstart = null
 
 	if(use_sound_tokens)
 		if(sound_token_instance)
@@ -221,6 +235,8 @@
 
 /// Returns the sound we should now be playing.
 /datum/looping_sound/proc/get_sound(_mid_sounds)
+	procstart = null
+	src.procstart = null
 	var/list/play_from = _mid_sounds || mid_sounds
 	if(!each_once)
 		. = play_from
@@ -264,6 +280,8 @@
 
 /// Returns the lone soundfile mid_sounds resolves to, or null if it can pick between more than one file.
 /datum/looping_sound/proc/resolve_single_sound()
+	procstart = null
+	src.procstart = null
 	if(isfile(mid_sounds) || istext(mid_sounds))
 		return mid_sounds
 	if(islist(mid_sounds) && length(mid_sounds) == 1)
@@ -274,6 +292,8 @@
 
 /// Whether this loop qualifies for native sound.repeat instead of re-firing on a timer every mid_length.
 /datum/looping_sound/proc/can_native_repeat()
+	procstart = null
+	src.procstart = null
 	if(!use_sound_tokens || never_native_repeat)
 		return FALSE
 	if(chance || mid_length_vary || each_once || in_order)
@@ -282,6 +302,8 @@
 
 /// A proc that's there to handle delaying the main sounds if there's a start_sound, and simply starting the sound loop in general.
 /datum/looping_sound/proc/on_start()
+	procstart = null
+	src.procstart = null
 	var/start_wait = 0
 	if(start_sound && !skip_starting_sounds)
 		play(start_sound, start_volume)
@@ -293,6 +315,8 @@
 
 /// Stops sound playing on current channel, if specified
 /datum/looping_sound/proc/stop_current()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(sound_token_instance)
 	if(!sound_channel || !ismob(parent))
 		return
@@ -301,11 +325,15 @@
 
 /// Simple proc that's executed when the looping sound is stopped, so that the `end_sound` can be played, if there's one.
 /datum/looping_sound/proc/on_stop()
+	procstart = null
+	src.procstart = null
 	if(end_sound && loop_started)
 		play(end_sound, end_volume, delete_when_finished = TRUE)
 
 /// A simple proc to change who our parent is set to, also handling registering and unregistering the QDELETING signals on the parent.
 /datum/looping_sound/proc/set_parent(new_parent)
+	procstart = null
+	src.procstart = null
 	if(parent)
 		UnregisterSignal(parent, COMSIG_QDELETING)
 	parent = new_parent
@@ -314,9 +342,13 @@
 
 /// A simple proc that lets us know whether the sounds are currently active or not.
 /datum/looping_sound/proc/is_active()
+	procstart = null
+	src.procstart = null
 	return loop_started || !!timer_id
 
 /// A simple proc to handle the deletion of the parent, so that it does not force it to hard-delete.
 /datum/looping_sound/proc/handle_parent_del(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_parent(null)

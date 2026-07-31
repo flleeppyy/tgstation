@@ -1,5 +1,7 @@
 ///Calculate the angle between two movables and the west|east coordinate
 /proc/get_angle(atom/movable/start, atom/movable/end)
+	procstart = null
+	src.procstart = null
 	if(!start || !end)
 		return 0
 	var/dy =(ICON_SIZE_Y * end.y + end.pixel_y) - (ICON_SIZE_Y * start.y + start.pixel_y)
@@ -8,6 +10,8 @@
 
 /// Calculate the angle produced by a pair of x and y deltas
 /proc/delta_to_angle(x, y)
+	procstart = null
+	src.procstart = null
 	if(!y)
 		return (x >= 0) ? 90 : 270
 	. = arctan(x/y)
@@ -18,6 +22,8 @@
 
 /// Angle between two arbitrary points and horizontal line same as [/proc/get_angle]
 /proc/get_angle_raw(start_x, start_y, start_pixel_x, start_pixel_y, end_x, end_y, end_pixel_x, end_pixel_y)
+	procstart = null
+	src.procstart = null
 	var/dy = (ICON_SIZE_Y * end_y + end_pixel_y) - (ICON_SIZE_Y * start_y + start_pixel_y)
 	var/dx = (ICON_SIZE_X * end_x + end_pixel_x) - (ICON_SIZE_X * start_x + start_pixel_x)
 	if(!dy)
@@ -30,6 +36,8 @@
 
 ///for getting the angle when animating something's pixel_x and pixel_y
 /proc/get_pixel_angle(y, x)
+	procstart = null
+	src.procstart = null
 	if(!y)
 		return (x >= 0) ? 90 : 270
 	. = arctan(x/y)
@@ -44,6 +52,8 @@
  * Uses the ultra-fast [Bresenham Line-Drawing Algorithm](https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm).
  */
 /proc/get_line(atom/starting_atom, atom/ending_atom)
+	procstart = null
+	src.procstart = null
 	var/current_x_step = starting_atom.x//start at x and y, then add 1 or -1 to these to get every turf from starting_atom to ending_atom
 	var/current_y_step = starting_atom.y
 	var/starting_z = starting_atom.z
@@ -91,6 +101,8 @@
  * Uses [Jesko`s method to the midpoint circle Algorithm](https://en.wikipedia.org/wiki/Midpoint_circle_algorithm).
  */
 /proc/get_perimeter(atom/center, radius)
+	procstart = null
+	src.procstart = null
 	if(radius < 1)
 		return
 	var/rounded_radius = round(radius)
@@ -131,6 +143,8 @@
  * Returns: [SI_COEFFICIENT = si unit coefficient, SI_UNIT = prefixed si unit.]
  */
 /proc/siunit_isolated(value, unit, maxdecimals=1)
+	procstart = null
+	src.procstart = null
 	var/static/list/prefixes = list("q","r","y","z","a","f","p","n","μ","m","","k","M","G","T","P","E","Z","Y","R","Q")
 
 	// We don't have prefixes beyond this point
@@ -163,6 +177,8 @@
  * Returns: The string containing the formatted power.
  */
 /proc/display_power(power, convert = TRUE, datum/controller/subsystem/scheduler = SSmachines)
+	procstart = null
+	src.procstart = null
 	power = convert ? energy_to_power(power, scheduler) : power
 	return siunit(power, "W", 3)
 
@@ -173,6 +189,8 @@
  * * units - the value t convert
  */
 /proc/display_energy(units)
+	procstart = null
+	src.procstart = null
 	return siunit(units, "J", 3)
 
 /**
@@ -183,6 +201,8 @@
  * * datum/controller/subsystem/scheduler - the subsystem whos wait time is used in the conversion
  */
 /proc/energy_to_power(joules, datum/controller/subsystem/scheduler = SSmachines)
+	procstart = null
+	src.procstart = null
 	return joules * (1 SECONDS) / scheduler.wait
 
 /**
@@ -193,20 +213,28 @@
  * * datum/controller/subsystem/scheduler - the subsystem whos wait time is used in the conversion
  */
 /proc/power_to_energy(watts, datum/controller/subsystem/scheduler = SSmachines)
+	procstart = null
+	src.procstart = null
 	return watts * scheduler.wait / (1 SECONDS)
 
 ///chances are 1:value. anyprob(1) will always return true
 /proc/anyprob(value)
+	procstart = null
+	src.procstart = null
 	return (rand(1,value) == value)
 
 ///counts the number of bits in Byond's 16-bit width field, in constant time and memory!
 /proc/bit_count(bit_field)
+	procstart = null
+	src.procstart = null
 	var/temp = bit_field - ((bit_field >> 1) & 46811) - ((bit_field >> 2) & 37449) //0133333 and 0111111 respectively
 	temp = ((temp + (temp >> 3)) & 29127) % 63 //070707
 	return temp
 
 /// Returns the name of the mathematical tuple of same length as the number arg (rounded down).
 /proc/make_tuple(number)
+	procstart = null
+	src.procstart = null
 	var/static/list/units_prefix = list("", "un", "duo", "tre", "quattuor", "quin", "sex", "septen", "octo", "novem")
 	var/static/list/tens_prefix = list("", "decem", "vigin", "trigin", "quadragin", "quinquagin", "sexagin", "septuagin", "octogin", "nongen")
 	var/static/list/one_to_nine = list("monuple", "double", "triple", "quadruple", "quintuple", "sextuple", "septuple", "octuple", "nonuple")
@@ -228,6 +256,8 @@
 /// Takes a value, and a threshold it has to at least match
 /// returns the correctly signed value max'd to the threshold
 /proc/at_least(new_value, threshold)
+	procstart = null
+	src.procstart = null
 	var/sign = sign(new_value)
 	// SIGN will return 0 if the value is 0, so we just go to the positive threshold
 	if(!sign)
@@ -240,10 +270,14 @@
 /// Takes two values x and y, and returns 1/((1/x) + y)
 /// Useful for providing an additive modifier to a value that is used as a divisor
 /proc/reciprocal_add(x, y)
+	procstart = null
+	src.procstart = null
 	return 1/((1/x)+y)
 
 /// Returns a text string containing N prefixed with a series of zeros with length equal to max_zeros minus log(10, N), rounded down.
 /proc/prefix_zeros_to_number(number, max_zeros)
+	procstart = null
+	src.procstart = null
 	var/zeros = ""
 	var/how_many_zeros = max_zeros - round(log(10, number))
 	for(var/zero in 1 to how_many_zeros)

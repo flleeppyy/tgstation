@@ -8,6 +8,8 @@
 	var/list/added_reagents
 
 /datum/element/microwavable/Attach(obj/item/target, microwave_type, list/reagents, bad_recipe = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(target))
 		return ELEMENT_INCOMPATIBLE
@@ -33,6 +35,8 @@
 	qdel(result)
 
 /datum/element/microwavable/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, list(COMSIG_ITEM_MICROWAVE_ACT, COMSIG_ATOM_EXAMINE))
 	return ..()
 
@@ -41,6 +45,8 @@
  * Handles the actual microwaving part.
  */
 /datum/element/microwavable/proc/on_microwaved(atom/source, obj/machinery/microwave/used_microwave, mob/microwaver, randomize_pixel_offset)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/result
@@ -94,6 +100,8 @@
  * Lets examiners know we can be microwaved if we're not the default mess type
  */
 /datum/element/microwavable/proc/on_examine(atom/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(initial(result_typepath.gender) == PLURAL)

@@ -11,6 +11,8 @@
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/red_laser
 
 /obj/projectile/energy/inferno/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(target))
 		return
@@ -39,6 +41,8 @@
 	exposed_wound_bonus = 10
 
 /obj/projectile/energy/cryo/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(target))
 		return

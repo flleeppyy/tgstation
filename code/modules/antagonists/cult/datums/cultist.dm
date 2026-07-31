@@ -18,15 +18,21 @@
 	var/static/list/cult_recipes
 
 /datum/antagonist/cult/can_be_owned(datum/mind/new_owner)
+	procstart = null
+	src.procstart = null
 	if(!is_convertable_to_cult(new_owner.current, cult_team))
 		return FALSE
 	return ..()
 
 /datum/antagonist/cult/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.announce_objectives()
 
 /datum/antagonist/cult/on_gain()
+	procstart = null
+	src.procstart = null
 	objectives |= cult_team.objectives
 	. = ..()
 	var/mob/living/current = owner.current
@@ -51,6 +57,8 @@
 		owner.teach_crafting_recipe(recipe_type)
 
 /datum/antagonist/cult/on_removal()
+	procstart = null
+	src.procstart = null
 	for(var/recipe_type in cult_recipes)
 		owner.forget_crafting_recipe(recipe_type)
 
@@ -68,6 +76,8 @@
 	return ..()
 
 /datum/antagonist/cult/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/current = owner.current || mob_override
 	handle_clown_mutation(current, mob_override ? null : "Your training has allowed you to overcome your clownish nature, allowing you to wield weapons without harming yourself.")
@@ -87,6 +97,8 @@
 	add_team_hud(current)
 
 /datum/antagonist/cult/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/current = owner.current || mob_override
 	handle_clown_mutation(current, removing = FALSE)
@@ -104,21 +116,29 @@
 	REMOVE_TRAIT(current, TRAIT_HEALS_FROM_CULT_PYLONS, CULT_TRAIT)
 
 /datum/antagonist/cult/on_mindshield(mob/implanter)
+	procstart = null
+	src.procstart = null
 	if(!silent)
 		to_chat(owner.current, span_warning("You feel something interfering with your mental conditioning, but you resist it!"))
 	return
 
 /datum/antagonist/cult/admin_add(datum/mind/new_owner,mob/admin)
+	procstart = null
+	src.procstart = null
 	give_equipment = FALSE
 	new_owner.add_antag_datum(src)
 	message_admins("[key_name_admin(admin)] has cult-ed [key_name_admin(new_owner)].")
 	log_admin("[key_name(admin)] has cult-ed [key_name(new_owner)].")
 
 /datum/antagonist/cult/admin_remove(mob/user)
+	procstart = null
+	src.procstart = null
 	silent = TRUE
 	return ..()
 
 /datum/antagonist/cult/get_admin_commands()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["Dagger"] = CALLBACK(src, PROC_REF(admin_give_dagger))
 	.["Dagger and Metal"] = CALLBACK(src, PROC_REF(admin_give_metal))
@@ -130,9 +150,13 @@
 		.["Make Cult Leader"] = CALLBACK(src, PROC_REF(make_cult_leader))
 
 /datum/antagonist/cult/get_team()
+	procstart = null
+	src.procstart = null
 	return cult_team
 
 /datum/antagonist/cult/create_team(datum/team/cult/new_team)
+	procstart = null
+	src.procstart = null
 	if(!new_team)
 		//todo remove this and allow admin buttons to create more than one cult
 		for(var/datum/antagonist/cult/H in GLOB.antagonists)
@@ -150,6 +174,8 @@
 
 ///Equips the cultist with a dagger and runed metal.
 /datum/antagonist/cult/proc/equip_cultist(metal = TRUE)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/H = owner.current
 	if(!istype(H))
 		return
@@ -160,6 +186,8 @@
 
 ///Attempts to make a new item and put it in a potential inventory slot in the provided mob.
 /datum/antagonist/cult/proc/cult_give_item(obj/item/item_path, mob/living/carbon/human/mob)
+	procstart = null
+	src.procstart = null
 	var/obj/item = new item_path(mob)
 	ADD_TRAIT(item, TRAIT_CONTRABAND, INNATE_TRAIT)
 	var/where = mob.equip_conspicuous_item(item)
@@ -173,14 +201,20 @@
 	return TRUE
 
 /datum/antagonist/cult/proc/admin_give_dagger(mob/admin)
+	procstart = null
+	src.procstart = null
 	if(!equip_cultist(metal = FALSE))
 		to_chat(admin, span_danger("Spawning dagger failed!"))
 
 /datum/antagonist/cult/proc/admin_give_metal(mob/admin)
+	procstart = null
+	src.procstart = null
 	if (!equip_cultist(metal = TRUE))
 		to_chat(admin, span_danger("Spawning runed metal failed!"))
 
 /datum/antagonist/cult/proc/admin_take_all(mob/admin)
+	procstart = null
+	src.procstart = null
 	var/mob/living/current = owner.current
 	for(var/o in current.get_all_contents())
 		if(istype(o, /obj/item/melee/cultblade/dagger) || istype(o, /obj/item/stack/sheet/runed_metal))
@@ -188,10 +222,14 @@
 
 ///Returns whether or not this datum is its team's leader.
 /datum/antagonist/cult/proc/is_cult_leader()
+	procstart = null
+	src.procstart = null
 	return (cult_team.cult_leader_datum == src)
 
 ///Turns this antag datum into its team's leader, assigning them their unique abilities, hud, and deathrattle.
 /datum/antagonist/cult/proc/make_cult_leader()
+	procstart = null
+	src.procstart = null
 	if(cult_team.cult_leader_datum)
 		return FALSE
 
@@ -227,6 +265,8 @@
 
 ///Admin-only helper to demote someone from Cult leader, taking away their HUD, abilities, and deathrattle
 /datum/antagonist/cult/proc/demote_from_leader()
+	procstart = null
+	src.procstart = null
 	if(!cult_team.cult_leader_datum)
 		return FALSE
 	cult_team.cult_leader_datum = null
@@ -253,6 +293,8 @@
 
 ///If dead (and Narsie isn't summoned), will alert all Cultists of their death, sending their location out.
 /datum/antagonist/cult/proc/deathrattle(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(owner.current?.stat != DEAD)
@@ -268,6 +310,8 @@
 		to_chat(cult_mind, span_cult_large("The Cult's Master, [owner.current.name], has fallen in \the [current_area]!"))
 
 /datum/antagonist/cult/get_preview_icon()
+	procstart = null
+	src.procstart = null
 	var/datum/universal_icon/icon = render_preview_outfit(preview_outfit)
 
 	// The longsword is 64x64, but getFlatIcon crunches to 32x32.
@@ -288,4 +332,6 @@
 
 ///Used to check if the owner is counted as a secondary invoker for runes.
 /datum/antagonist/cult/proc/check_invoke_validity()
+	procstart = null
+	src.procstart = null
 	return TRUE

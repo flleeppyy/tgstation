@@ -105,6 +105,8 @@
 	var/unsuitable_heat_damage = 1
 
 /mob/living/basic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(gender == PLURAL)
@@ -132,6 +134,8 @@
 	apply_temperature_requirements(mapload)
 
 /mob/living/basic/proc/on_ssair_init(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(SSair, COMSIG_SUBSYSTEM_POST_INITIALIZE)
 	apply_atmos_requirements(TRUE)
@@ -139,6 +143,8 @@
 
 /// Ensures this mob can take atmospheric damage if it's supposed to
 /mob/living/basic/proc/apply_atmos_requirements(mapload)
+	procstart = null
+	src.procstart = null
 	if(unsuitable_atmos_damage == 0 || isnull(habitable_atmos))
 		return
 	//String assoc list returns a cached list, so this is like a static list to pass into the element below.
@@ -147,12 +153,16 @@
 
 /// Ensures this mob can take temperature damage if it's supposed to
 /mob/living/basic/proc/apply_temperature_requirements(mapload)
+	procstart = null
+	src.procstart = null
 	if((unsuitable_cold_damage == 0 && unsuitable_heat_damage == 0) || (minimum_survivable_temperature <= 0 && maximum_survivable_temperature >= INFINITY))
 		return
 	AddElement(/datum/element/body_temp_sensitive, minimum_survivable_temperature, maximum_survivable_temperature, unsuitable_cold_damage, unsuitable_heat_damage, mapload)
 
 /// Ensures that this mob can be slowed from taking stamina damage
 /mob/living/basic/proc/make_stamina_slowable()
+	procstart = null
+	src.procstart = null
 	if (max_stamina == BASIC_MOB_STAMINA_MATCH_HEALTH)
 		max_stamina = maxHealth
 	if (damage_coeff[STAMINA] <= 0 || max_stamina <= 0 || max_stamina_slowdown <= 0)
@@ -160,19 +170,27 @@
 	AddElement(/datum/element/basic_stamina_slowdown, minium_stamina_threshold = max_stamina / 3, maximum_stamina = max_stamina, maximum_slowdown = max_stamina_slowdown)
 
 /mob/living/basic/proc/apply_target_randomisation()
+	procstart = null
+	src.procstart = null
 	if (basic_mob_flags & PRECISE_ATTACK_ZONES)
 		return
 	AddElement(/datum/element/attack_zone_randomiser)
 
 /mob/living/basic/Life(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(staminaloss > 0)
 		adjust_stamina_loss(-stamina_recovery * seconds_per_tick, forced = TRUE)
 
 /mob/living/basic/get_default_say_verb()
+	procstart = null
+	src.procstart = null
 	return length(speak_emote) ? pick(speak_emote) : ..()
 
 /mob/living/basic/death(gibbed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(basic_mob_flags & DEL_ON_DEATH)
 		ghostize(can_reenter_corpse = FALSE)
@@ -182,6 +200,8 @@
 		look_dead()
 
 /mob/living/basic/gib()
+	procstart = null
+	src.procstart = null
 	if(butcher_results || guaranteed_butcher_results)
 		var/list/butcher_loot = list()
 		if(butcher_results)
@@ -199,6 +219,8 @@
  * This is called by the mob pretending to be dead too so don't put loot drops in here or something
  */
 /mob/living/basic/proc/look_dead()
+	procstart = null
+	src.procstart = null
 	icon_state = icon_dead
 	if(basic_mob_flags & FLIP_ON_DEATH)
 		transform = transform.Turn(180)
@@ -207,6 +229,8 @@
 	SEND_SIGNAL(src, COMSIG_BASICMOB_LOOK_DEAD)
 
 /mob/living/basic/revive(full_heal_flags = NONE, excess_healing = 0, force_grab_ghost = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -214,6 +238,8 @@
 
 /// Apply the appearance and properties this mob has when it is alive
 /mob/living/basic/proc/look_alive()
+	procstart = null
+	src.procstart = null
 	icon_state = icon_living
 	if(basic_mob_flags & FLIP_ON_DEATH)
 		transform = transform.Turn(180)
@@ -222,16 +248,22 @@
 	SEND_SIGNAL(src, COMSIG_BASICMOB_LOOK_ALIVE)
 
 /mob/living/basic/update_sight()
+	procstart = null
+	src.procstart = null
 	lighting_color_cutoffs = list(lighting_cutoff_red, lighting_cutoff_green, lighting_cutoff_blue)
 	return ..()
 
 /mob/living/basic/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat != DEAD)
 		return
 	. += span_deadsay("Upon closer examination, [p_they()] appear[p_s()] to be [HAS_MIND_TRAIT(user, TRAIT_NAIVE) ? "asleep" : "dead"].")
 
 /mob/living/basic/proc/melee_attack(atom/target, list/modifiers, ignore_cooldown = FALSE)
+	procstart = null
+	src.procstart = null
 	var/early_melee_result = early_melee_attack(target, modifiers, ignore_cooldown)
 	if(early_melee_result) //Truthy value means we want to end the chain
 		if(!ignore_cooldown && early_melee_result == BASIC_MOB_END_ATTACK_CHAIN_COOLDOWN)
@@ -244,15 +276,21 @@
 	return result
 
 /mob/living/basic/proc/early_melee_attack(atom/target, list/modifiers, ignore_cooldown = FALSE)
+	procstart = null
+	src.procstart = null
 	face_atom(target)
 	if(SEND_SIGNAL(src, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, target, Adjacent(target), modifiers) & COMPONENT_HOSTILE_NO_ATTACK)
 		return BASIC_MOB_END_ATTACK_CHAIN //but more importantly return before attack_animal called
 	return BASIC_MOB_CONTINUE_ATTACK_CHAIN
 
 /mob/living/basic/resolve_unarmed_attack(atom/attack_target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	melee_attack(attack_target, modifiers)
 
 /mob/living/basic/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	switch(vname)
 		if(NAMEOF(src, habitable_atmos), NAMEOF(src, unsuitable_atmos_damage))
 			RemoveElement(/datum/element/atmos_requirements, habitable_atmos, unsuitable_atmos_damage)
@@ -273,16 +311,22 @@
 			set_varspeed(vval)
 
 /mob/living/basic/proc/set_varspeed(var_value)
+	procstart = null
+	src.procstart = null
 	speed = var_value
 	update_basic_mob_varspeed()
 
 /mob/living/basic/proc/update_basic_mob_varspeed()
+	procstart = null
+	src.procstart = null
 	if(speed == 0)
 		remove_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed)
 	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed, multiplicative_slowdown = speed)
 	SEND_SIGNAL(src, POST_BASIC_MOB_UPDATE_VARSPEED)
 
 /mob/living/basic/update_movespeed()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (cached_multiplicative_slowdown > END_GLIDE_SPEED)
 		ADD_TRAIT(src, TRAIT_NO_GLIDE, SPEED_TRAIT)
@@ -290,31 +334,47 @@
 		REMOVE_TRAIT(src, TRAIT_NO_GLIDE, SPEED_TRAIT)
 
 /mob/living/basic/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated)
 		return
 	return relaydrive(user, direction)
 
 /mob/living/basic/compare_sentience_type(compare_type)
+	procstart = null
+	src.procstart = null
 	return sentience_type == compare_type
 
 /mob/living/basic/on_fire_stack(seconds_per_tick, datum/status_effect/fire_handler/fire_stacks/fire_handler)
+	procstart = null
+	src.procstart = null
 	adjust_bodytemperature((maximum_survivable_temperature + (fire_handler.stacks * 12)) * 0.5 * seconds_per_tick)
 
 /mob/living/basic/get_fire_overlay(stacks, on_fire)
+	procstart = null
+	src.procstart = null
 	return make_generic_fire_overlay()
 
 /mob/living/basic/put_in_hands(obj/item/I, del_on_fail = FALSE, merge_stacks = TRUE, ignore_animation = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		update_held_items()
 
 /mob/living/basic/get_body_temp_heat_damage_limit()
+	procstart = null
+	src.procstart = null
 	return maximum_survivable_temperature
 
 /mob/living/basic/get_body_temp_cold_damage_limit()
+	procstart = null
+	src.procstart = null
 	return minimum_survivable_temperature
 
 /mob/living/basic/proc/hop_on_nearby_turf()
+	procstart = null
+	src.procstart = null
 	var/dir = pick(GLOB.cardinals)
 	Move(get_step(src, dir), dir)
 	animate(src, pixel_y = 18, time = 0.4 SECONDS, flags = ANIMATION_RELATIVE, easing = CUBIC_EASING|EASE_OUT)
@@ -322,6 +382,8 @@
 
 ///ovverride to add mob specific cytology mutation effects, returns TRUE if we added a mob specific mutation
 /mob/living/basic/proc/mutate()
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_BASICMOB_MUTATED) & MUTATED_NO_FURTHER_MUTATIONS)
 		//Tells the vat our mob has been mutated by another source and we don't want to add potentially incompatible mutations such as shiny mutation.
 		return TRUE

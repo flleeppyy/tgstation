@@ -32,6 +32,8 @@ Buildable meters
 	var/p_init_dir = SOUTH
 
 /obj/item/pipe/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(current_recipe, /datum/crafting_recipe/spec_pipe))
 		return
@@ -140,6 +142,8 @@ Buildable meters
 /obj/item/pipe/quaternary/pipe/crafted
 
 /obj/item/pipe/quaternary/pipe/crafted/Initialize(mapload, _pipe_type, _dir, obj/machinery/atmospherics/make_from, device_color, device_init_dir = SOUTH)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pipe_type = /obj/machinery/atmospherics/pipe/smart
 	pipe_color = ATMOS_COLOR_OMNI
@@ -153,6 +157,8 @@ Buildable meters
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2)
 
 /obj/item/pipe/Initialize(mapload, _pipe_type, _dir, obj/machinery/atmospherics/make_from, device_color, device_init_dir = SOUTH)
+	procstart = null
+	src.procstart = null
 	if(make_from)
 		make_from_existing(make_from)
 	else
@@ -181,6 +187,8 @@ Buildable meters
 	return ..()
 
 /obj/item/pipe/proc/make_from_existing(obj/machinery/atmospherics/make_from)
+	procstart = null
+	src.procstart = null
 	p_init_dir = make_from.get_init_directions()
 	setDir(make_from.dir)
 	pipename = make_from.name
@@ -190,16 +198,22 @@ Buildable meters
 	pipe_color = make_from.pipe_color
 
 /obj/item/pipe/trinary/flippable/make_from_existing(obj/machinery/atmospherics/components/trinary/make_from)
+	procstart = null
+	src.procstart = null
 	..()
 	if(make_from.flipped)
 		do_a_flip()
 
 /obj/item/pipe/dropped()
+	procstart = null
+	src.procstart = null
 	if(loc)
 		set_piping_layer(piping_layer)
 	return ..()
 
 /obj/item/pipe/proc/set_piping_layer(new_layer = PIPING_LAYER_DEFAULT)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/atmospherics/fakeA = pipe_type
 
 	if(initial(fakeA.pipe_flags) & PIPING_ALL_LAYER)
@@ -210,6 +224,8 @@ Buildable meters
 	layer = initial(layer) + ((piping_layer - PIPING_LAYER_DEFAULT) * PIPING_LAYER_LCHANGE)
 
 /obj/item/pipe/proc/update()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/atmospherics/fakeA = pipe_type
 	name = "[initial(fakeA.name)] fitting"
 	desc = initial(fakeA.desc)
@@ -225,22 +241,32 @@ GAME_VERB_SRC(/obj/item/pipe, flip, view(1), "Invert Pipe", null)
 	do_a_flip()
 
 /obj/item/pipe/proc/do_a_flip()
+	procstart = null
+	src.procstart = null
 	setDir(REVERSE_DIR(dir))
 
 /obj/item/pipe/trinary/flippable/do_a_flip()
+	procstart = null
+	src.procstart = null
 	setDir(turn(dir, flipped ? 45 : -45))
 	flipped = !flipped
 
 /obj/item/pipe/Move()
+	procstart = null
+	src.procstart = null
 	var/old_dir = dir
 	..()
 	setDir(old_dir) //pipes changing direction when moved is just annoying and buggy
 
 // Convert dir of fitting into dir of built component
 /obj/item/pipe/proc/fixed_dir()
+	procstart = null
+	src.procstart = null
 	return dir
 
 /obj/item/pipe/binary/fixed_dir()
+	procstart = null
+	src.procstart = null
 	. = dir
 	if(dir == SOUTH)
 		. = NORTH
@@ -248,15 +274,21 @@ GAME_VERB_SRC(/obj/item/pipe, flip, view(1), "Invert Pipe", null)
 		. = EAST
 
 /obj/item/pipe/trinary/flippable/fixed_dir()
+	procstart = null
+	src.procstart = null
 	. = dir
 	if(ISDIAGONALDIR(dir))
 		. = turn(dir, 45)
 
 /obj/item/pipe/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	setDir(turn(dir,-90))
 
 ///Check if the pipe on the turf and our to be placed binary pipe are perpendicular to each other
 /obj/item/pipe/proc/check_ninety_degree_dir(obj/machinery/atmospherics/machine)
+	procstart = null
+	src.procstart = null
 	if(ISDIAGONALDIR(machine.dir))
 		return FALSE
 	if(EWCOMPONENT(machine.dir) && EWCOMPONENT(dir))
@@ -266,6 +298,8 @@ GAME_VERB_SRC(/obj/item/pipe, flip, view(1), "Invert Pipe", null)
 	return TRUE
 
 /obj/item/pipe/wrench_act(mob/living/user, obj/item/wrench/wrench)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isturf(loc))
 		return TRUE
@@ -312,6 +346,8 @@ GAME_VERB_SRC(/obj/item/pipe, flip, view(1), "Invert Pipe", null)
 	qdel(src)
 
 /obj/item/pipe/welder_act(mob/living/user, obj/item/welder)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(pipe_type, /obj/machinery/atmospherics/components))
 		return TRUE
@@ -337,6 +373,8 @@ GAME_VERB_SRC(/obj/item/pipe, flip, view(1), "Invert Pipe", null)
  *  - A smart pipe, existing or new, will not automatically reconfigure itself to permit directions it was not previously permitting.
  */
 /obj/item/pipe/proc/try_smart_reconfiguration(obj/machinery/atmospherics/machine, our_init_dirs, mob/living/user)
+	procstart = null
+	src.procstart = null
 	// If we're a smart pipe, we might be able to solve this by placing down a more constrained version of ourselves.
 	var/obj/machinery/atmospherics/pipe/smart/other_smart_pipe = machine
 	if(ispath(pipe_type, /obj/machinery/atmospherics/pipe/smart/))
@@ -406,6 +444,8 @@ GAME_VERB_SRC(/obj/item/pipe, flip, view(1), "Invert Pipe", null)
 	return FALSE
 
 /obj/item/pipe/proc/build_pipe(obj/machinery/atmospherics/A)
+	procstart = null
+	src.procstart = null
 	if(pipename)
 		A.name = pipename
 	if(A.on)
@@ -415,10 +455,14 @@ GAME_VERB_SRC(/obj/item/pipe, flip, view(1), "Invert Pipe", null)
 		A.on = FALSE
 
 /obj/item/pipe/trinary/flippable/build_pipe(obj/machinery/atmospherics/components/trinary/T)
+	procstart = null
+	src.procstart = null
 	..()
 	T.flipped = flipped
 
 /obj/item/pipe/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] shoves [src] in [user.p_their()] mouth and turns it on! It looks like [user.p_theyre()] trying to commit suicide!"))
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user
@@ -431,11 +475,15 @@ GAME_VERB_SRC(/obj/item/pipe, flip, view(1), "Invert Pipe", null)
 	return(OXYLOSS|BRUTELOSS)
 
 /obj/item/pipe/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("The pipe layer is set to [piping_layer].")
 	. += span_notice("You can change the pipe layer by Right-Clicking the device.")
 
 /obj/item/pipe/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -446,10 +494,14 @@ GAME_VERB_SRC(/obj/item/pipe, flip, view(1), "Invert Pipe", null)
 
 
 /obj/item/pipe/trinary/flippable/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You can flip the device by Right-Clicking it.")
 
 /obj/item/pipe/trinary/flippable/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -467,6 +519,8 @@ GAME_VERB_SRC(/obj/item/pipe, flip, view(1), "Invert Pipe", null)
 	var/piping_layer = PIPING_LAYER_DEFAULT
 
 /obj/item/pipe_meter/wrench_act(mob/living/user, obj/item/wrench/W)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/machinery/atmospherics/pipe/pipe
 	for(var/obj/machinery/atmospherics/pipe/P in loc)
@@ -482,6 +536,8 @@ GAME_VERB_SRC(/obj/item/pipe, flip, view(1), "Invert Pipe", null)
 	qdel(src)
 
 /obj/item/pipe_meter/screwdriver_act(mob/living/user, obj/item/S)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -496,10 +552,14 @@ GAME_VERB_SRC(/obj/item/pipe, flip, view(1), "Invert Pipe", null)
 	qdel(src)
 
 /obj/item/pipe_meter/dropped()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(loc)
 		setAttachLayer(piping_layer)
 
 /obj/item/pipe_meter/proc/setAttachLayer(new_layer = PIPING_LAYER_DEFAULT)
+	procstart = null
+	src.procstart = null
 	piping_layer = new_layer
 	PIPING_LAYER_DOUBLE_SHIFT(src, piping_layer)

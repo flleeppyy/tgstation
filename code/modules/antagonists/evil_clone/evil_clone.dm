@@ -10,12 +10,16 @@
 	antag_flags = ANTAG_SKIP_GLOBAL_LIST
 
 /datum/antagonist/evil_clone/on_gain()
+	procstart = null
+	src.procstart = null
 	if (owner.current)
 		name = "[owner.current.real_name] Prime"
 	forge_objectives()
 	return ..()
 
 /datum/antagonist/evil_clone/greet()
+	procstart = null
+	src.procstart = null
 	if(silent)
 		return
 	play_stinger()
@@ -27,6 +31,8 @@
 	owner.announce_objectives()
 
 /datum/antagonist/evil_clone/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/accept_no_substitutes/objective = new
 	objective.owner = owner
 	objective.set_target_name(owner.current?.real_name)
@@ -42,10 +48,14 @@
 
 /// Set the name to check for
 /datum/objective/accept_no_substitutes/proc/set_target_name(new_name)
+	procstart = null
+	src.procstart = null
 	target_name = new_name
 	explanation_text = "Ensure that nobody with the name [target_name] remains alive."
 
 /datum/objective/accept_no_substitutes/check_completion()
+	procstart = null
+	src.procstart = null
 	if (!target_name)
 		return FALSE // Well we forgot to check for a name
 
@@ -62,6 +72,8 @@
 	return TRUE
 
 /datum/objective/accept_no_substitutes/admin_edit(mob/admin)
+	procstart = null
+	src.procstart = null
 	admin_simple_target_pick(admin)
 	if (target.current)
 		set_target_name(target.current.real_name)

@@ -49,6 +49,8 @@
 	var/immunity_proof = FALSE
 
 /datum/symptom/New()
+	procstart = null
+	src.procstart = null
 	var/list/S = SSdisease.list_symptoms
 	for(var/i = 1; i <= S.len; i++)
 		if(type == S[i])
@@ -58,6 +60,8 @@
 
 ///Called when processing of the advance disease that holds this symptom infects a host and upon each Refresh() of that advance disease.
 /datum/symptom/proc/Start(datum/disease/advance/advanced_disease)
+	procstart = null
+	src.procstart = null
 	if(neutered)
 		return FALSE
 	if(name in advanced_disease.affected_mob.symptom_resistances)
@@ -66,11 +70,15 @@
 
 ///Called when the advance disease is going to be deleted or when the advance disease stops processing.
 /datum/symptom/proc/End(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(neutered)
 		return FALSE
 	return TRUE
 
 /datum/symptom/proc/Activate(datum/disease/advance/advanced_disease)
+	procstart = null
+	src.procstart = null
 	if(neutered)
 		return FALSE
 	if(required_organ)
@@ -88,11 +96,15 @@
 		return TRUE
 
 /datum/symptom/proc/on_stage_change(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(neutered)
 		return FALSE
 	return TRUE
 
 /datum/symptom/proc/Copy()
+	procstart = null
+	src.procstart = null
 	var/datum/symptom/new_symp = new type
 	new_symp.name = name
 	new_symp.id = id
@@ -100,14 +112,20 @@
 	return new_symp
 
 /datum/symptom/proc/generate_threshold_desc()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Overload when a symptom needs to be active before processing, like changing biotypes.
 /datum/symptom/proc/OnAdd(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	return
 
 ///Overload for running after processing.
 /datum/symptom/proc/OnRemove(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -117,6 +135,8 @@
  * @returns {list} symptom - The desired symptoms as a list.
  */
 /datum/symptom/proc/get_symptom_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["name"] = name
 	data["desc"] = desc
@@ -137,4 +157,6 @@
 
 /// Check if we can generate randomly
 /datum/symptom/proc/can_generate_randomly()
+	procstart = null
+	src.procstart = null
 	return naturally_occuring

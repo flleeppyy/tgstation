@@ -1,4 +1,6 @@
 /mob/living/carbon/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		return
 
@@ -16,6 +18,8 @@
 		BT.on_death()
 
 /mob/living/carbon/gib(drop_bitflags=NONE)
+	procstart = null
+	src.procstart = null
 	if(drop_bitflags & DROP_ITEMS)
 		for(var/obj/item/W in src)
 			if(dropItemToGround(W))
@@ -28,6 +32,8 @@
 	return ..()
 
 /mob/living/carbon/get_gibs_type(drop_bitflags = NONE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/chest = get_bodypart(BODY_ZONE_CHEST) || get_bodypart()
 	if (!istype(chest)) // what
 		return ..()
@@ -50,6 +56,8 @@
 	return /obj/effect/gibspawner/human/bodypartless
 
 /mob/living/carbon/spill_organs(drop_bitflags=NONE)
+	procstart = null
+	src.procstart = null
 	var/atom/Tsec = drop_location()
 
 	for(var/obj/item/organ/organ as anything in organs)
@@ -74,6 +82,8 @@
 		qdel(organ)
 
 /mob/living/carbon/spread_bodyparts(drop_bitflags = NONE, gibbed = FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/bodypart/part as anything in get_bodyparts())
 		if(part.body_zone == BODY_ZONE_CHEST)
 			continue // never drop this
@@ -95,13 +105,17 @@
 			if(leftover.loc != part)
 				leftover.bodypart_insert(part)
 
-/mob/living/carbon/set_suicide(suicide_state) //you thought that box trick was pretty clever, didn't you? well now hardmode is on, boyo.
+/mob/living/carbon/set_suicide(suicide_state)
+	procstart = null
+	src.procstart = null //you thought that box trick was pretty clever, didn't you? well now hardmode is on, boyo.
 	. = ..()
 	var/obj/item/organ/brain/userbrain = get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(userbrain)
 		userbrain.suicided = suicide_state
 
 /mob/living/carbon/can_suicide()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	if(!(mobility_flags & MOBILITY_USE)) //just while I finish up the new 'fun' suiciding verb. This is to prevent metagaming via suicide

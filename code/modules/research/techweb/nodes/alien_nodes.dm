@@ -38,6 +38,8 @@
 ABDUCTOR_SUBTYPE_UNLOCKS(/datum/techweb_node/alientech)
 
 /datum/techweb_node/alientech/on_station_research()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSshuttle.shuttle_purchase_requirements_met[SHUTTLE_UNLOCK_ALIENTECH] = TRUE
 

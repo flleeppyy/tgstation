@@ -15,6 +15,8 @@
 	var/cached_announcement_chance
 
 /datum/round_event/ghost_role/start()
+	procstart = null
+	src.procstart = null
 	try_spawning()
 
 /**
@@ -25,6 +27,8 @@
  */
 
 /datum/round_event/ghost_role/proc/try_spawning()
+	procstart = null
+	src.procstart = null
 	// The event does not run until the spawning has been attempted
 	// to prevent us from getting gc'd halfway through
 	processing = FALSE
@@ -80,6 +84,8 @@
  */
 
 /datum/round_event/ghost_role/proc/spawn_role()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 #undef MAX_SPAWN_ATTEMPT

@@ -15,6 +15,8 @@
 
 /// Override to return a different icon state given a bodytype or physique
 /datum/sprite_accessory/clothing/proc/get_icon_state(physique, bodyshape)
+	procstart = null
+	src.procstart = null
 	return icon_state
 
 /**
@@ -25,6 +27,8 @@
  * * bodyshape - bodyshape of the wearer (humanoid, digitigrade, etc)
  */
 /datum/sprite_accessory/clothing/proc/make_appearance(color = COLOR_WHITE, physique = MALE, bodyshape = BODYSHAPE_HUMANOID)
+	procstart = null
+	src.procstart = null
 	var/static/list/cached_icons = list()
 	var/use_female = physique == FEMALE && female_sprite_flags
 	var/use_digi = digi_icon_state && (bodyshape & BODYSHAPE_DIGITIGRADE)
@@ -76,6 +80,8 @@
 	gender = NEUTER
 
 /datum/sprite_accessory/clothing/underwear/nude/make_appearance(mob/living/carbon/human/for_who)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/sprite_accessory/clothing/underwear/male_briefs
@@ -270,6 +276,8 @@
 	gender = NEUTER
 
 /datum/sprite_accessory/clothing/undershirt/nude/make_appearance(mob/living/carbon/human/for_who)
+	procstart = null
+	src.procstart = null
 	return
 
 // please make sure they're sorted alphabetically and categorized
@@ -558,6 +566,8 @@
 	icon_state = null
 
 /datum/sprite_accessory/clothing/socks/nude/make_appearance(mob/living/carbon/human/for_who)
+	procstart = null
+	src.procstart = null
 	return
 
 // please make sure they're sorted alphabetically and categorized

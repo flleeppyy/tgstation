@@ -31,19 +31,27 @@
 	connect_to_new_turf()
 
 /datum/component/redirect_attack_hand_from_turf/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved))
 
 /datum/component/redirect_attack_hand_from_turf/Destroy(force)
+	procstart = null
+	src.procstart = null
 	interact_check = null
 	disconnect_from_old_turf()
 	return ..()
 
 /datum/component/redirect_attack_hand_from_turf/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, COMSIG_MOVABLE_MOVED)
 
 /datum/component/redirect_attack_hand_from_turf/proc/find_turf()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/atom/movable/movable_parent = parent
@@ -54,6 +62,8 @@
 	return adjust_for_pixel_shift ? get_turf_pixel(movable_parent) : movable_parent.loc
 
 /datum/component/redirect_attack_hand_from_turf/proc/on_moved(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	PRIVATE_PROC(TRUE)
 
@@ -61,10 +71,14 @@
 	connect_to_new_turf()
 
 /datum/component/redirect_attack_hand_from_turf/proc/check_blacklisted_turf(turf/next_turf)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	return locate(/obj/structure/falsewall) in next_turf
 
 /datum/component/redirect_attack_hand_from_turf/proc/connect_to_new_turf()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/turf/next_turf = find_turf()
@@ -89,6 +103,8 @@
 		RegisterSignal(current_turf, COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM, PROC_REF(on_requesting_context_from_item))
 
 /datum/component/redirect_attack_hand_from_turf/proc/disconnect_from_old_turf()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if (isnull(current_turf))
@@ -103,6 +119,8 @@
 	))
 
 /datum/component/redirect_attack_hand_from_turf/proc/on_attack_hand(turf/source, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	PRIVATE_PROC(TRUE)
 

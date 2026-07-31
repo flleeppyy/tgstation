@@ -11,15 +11,21 @@
 	var/init_value = null
 
 /datum/spawn_menu/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		ui = new(user, src, "SpawnSearch")
 		ui.open()
 
 /datum/spawn_menu/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_SPAWN)
 
 /datum/spawn_menu/ui_act(action, params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if (..() || !check_rights_for(ui.user.client, R_SPAWN))
 		return FALSE
 
@@ -62,6 +68,8 @@
 			return TRUE
 
 /datum/spawn_menu/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["initValue"] = init_value
 	data["searchNames"] = name_search
@@ -71,6 +79,8 @@
 	return data
 
 /datum/spawn_menu/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/json/spawn_menu),
 	)
@@ -79,6 +89,8 @@
 	name = "spawn_menu_atom_data"
 
 /datum/asset/json/spawn_menu/generate()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/static/list/types_list
 	if (isnull(types_list))

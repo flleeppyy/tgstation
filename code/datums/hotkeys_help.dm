@@ -2,15 +2,21 @@
 	var/static/list/hotkeys = list()
 
 /datum/hotkeys_help/ui_state()
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 /datum/hotkeys_help/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		ui = new(user, src, "HotkeysHelp")
 		ui.open()
 
 /datum/hotkeys_help/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/user = ui.user
 	if(action == "open_keybindings")
@@ -21,6 +27,8 @@
 
 // Not static data since user could rebind keys.
 /datum/hotkeys_help/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	// List every keybind to chat.
 	var/list/keys_list = list()
 

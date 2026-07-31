@@ -7,10 +7,14 @@
 	var/fried = FALSE
 
 /obj/vehicle/ridden/bicycle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/bicycle)
 
 /obj/vehicle/ridden/bicycle/zap_act(power, zap_flags) // :::^^^)))
+	procstart = null
+	src.procstart = null
 	//This didn't work for 3 years because none ever tested it I hate life
 	name = "fried bicycle"
 	desc = "Well spent."
@@ -22,6 +26,8 @@
 		unbuckle_mob(m,1)
 
 /obj/vehicle/ridden/bicycle/welder_act(mob/living/user, obj/item/W)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return
 	. = TRUE
@@ -52,6 +58,8 @@
 
 ///can we still fix the bike lol
 /obj/vehicle/ridden/bicycle/proc/can_still_fix()
+	procstart = null
+	src.procstart = null
 	return !fried
 
 

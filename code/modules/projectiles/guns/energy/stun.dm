@@ -21,10 +21,14 @@
 	use_cyborg_cell = TRUE
 
 /obj/item/gun/energy/e_gun/advtaser/cyborg/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_ALL)
 
 /obj/item/gun/energy/e_gun/advtaser/cyborg/add_seclight_point()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/energy/disabler
@@ -36,6 +40,8 @@
 	ammo_x_offset = 2
 
 /obj/item/gun/energy/disabler/add_seclight_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/seclite_attachable, \
 		light_overlay_icon = 'icons/obj/weapons/guns/flashlights.dmi', \
 		light_overlay = "flight", \
@@ -50,10 +56,14 @@
 	shaded_charge = 1
 
 /obj/item/gun/energy/disabler/smg/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/automatic_fire, 0.15 SECONDS, allow_akimbo = FALSE)
 
 /obj/item/gun/energy/disabler/add_seclight_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(\
 		/datum/component/seclite_attachable, \
 		light_overlay_icon = 'icons/obj/weapons/guns/flashlights.dmi', \
@@ -69,5 +79,7 @@
 	use_cyborg_cell = TRUE
 
 /obj/item/gun/energy/disabler/cyborg/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_ALL)

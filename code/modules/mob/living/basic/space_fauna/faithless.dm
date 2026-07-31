@@ -36,6 +36,8 @@
 	var/paralyze_duration = 2 SECONDS
 
 /mob/living/basic/faithless/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_SPACEWALK, INNATE_TRAIT)
 	AddElement(/datum/element/door_pryer)
@@ -44,6 +46,8 @@
 	ai_controller.set_blackboard_key(BB_HUNT_TARGET_LIST, typecacheof(list(/obj/machinery/light)))
 
 /mob/living/basic/faithless/melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!. || !isliving(target))
 		return

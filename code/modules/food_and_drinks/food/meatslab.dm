@@ -8,6 +8,8 @@
 	var/blood_decal_type = /obj/effect/decal/cleanable/blood
 
 /obj/item/food/meat/Initialize(mapload, blood_dna_list = list("meaty DNA" = get_blood_type(BLOOD_TYPE_MEAT)))
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!blood_decal_type || !length(custom_materials))
@@ -45,12 +47,18 @@
 
 
 /obj/item/food/meat/slab/make_dryable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/dryable,  /obj/item/food/sosjerky/healthy)
 
 /obj/item/food/meat/slab/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/steak/plain, rand(30 SECONDS, 90 SECONDS), TRUE, TRUE) //Add medium rare later maybe?
 
 /obj/item/food/meat/slab/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE,  /obj/item/food/meat/rawcutlet/plain, MEATSLAB_PROCESSED_AMOUNT, 3 SECONDS, table_required = TRUE, screentip_verb = "Cut", sound_to_play = SFX_KNIFE_SLICE)
 
 ///////////////////////////////////// HUMAN MEATS //////////////////////////////////////////////////////
@@ -62,9 +70,13 @@
 	venue_value = FOOD_MEAT_HUMAN
 
 /obj/item/food/meat/slab/human/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/steak/plain/human, rand(30 SECONDS, 90 SECONDS), TRUE, TRUE) //Add medium rare later maybe?
 
 /obj/item/food/meat/slab/human/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE,  /obj/item/food/meat/rawcutlet/plain/human, 3, 3 SECONDS, table_required = TRUE, screentip_verb = "Cut", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/meat/slab/human/mutant
@@ -108,6 +120,8 @@
 	starting_reagent_purity = 0.4 // Take a look at their diet
 
 /obj/item/food/meat/slab/human/mutant/lizard/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/steak/plain/human/lizard, rand(30 SECONDS, 90 SECONDS), TRUE, TRUE)
 
 /obj/item/food/meat/slab/human/mutant/plant
@@ -155,9 +169,13 @@
 	blood_decal_type = null
 
 /obj/item/food/meat/slab/human/mutant/skeleton/make_processable()
+	procstart = null
+	src.procstart = null
 	return //skeletons don't have cutlets
 
 /obj/item/food/meat/slab/human/mutant/skeleton/make_grillable()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/food/meat/slab/human/mutant/zombie
@@ -187,6 +205,8 @@
 	starting_reagent_purity = 0.3
 
 /obj/item/food/meat/slab/synthmeat/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/steak/plain/synth, rand(30 SECONDS, 90 SECONDS), TRUE, TRUE)
 
 /obj/item/food/meat/slab/meatproduct
@@ -198,6 +218,8 @@
 	starting_reagent_purity = 0.3
 
 /obj/item/food/meat/slab/meatproduct/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/steak/meatproduct, rand(30 SECONDS, 90 SECONDS), TRUE, TRUE)
 
 /obj/item/food/meat/slab/monkey
@@ -212,6 +234,8 @@
 	blood_decal_type = /obj/effect/decal/cleanable/insectguts
 
 /obj/item/food/meat/slab/bugmeat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/raptor_food, health_modifier = 2, color_chances = string_list(list(/datum/raptor_color/green = 2)))
 
@@ -221,6 +245,8 @@
 	foodtypes = RAW | MEAT | GORE
 
 /obj/item/food/meat/slab/mouse/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MOUSE, CELL_VIRUS_TABLE_GENERIC_MOB)
 
@@ -231,6 +257,8 @@
 	foodtypes = RAW | MEAT | GORE
 
 /obj/item/food/meat/slab/corgi/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CORGI, CELL_VIRUS_TABLE_GENERIC_MOB)
 
@@ -240,6 +268,8 @@
 	foodtypes = RAW | MEAT | GROSS
 
 /obj/item/food/meat/slab/mothroach/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_VIRUS_TABLE_GENERIC_MOB)
 
@@ -249,6 +279,8 @@
 	foodtypes = RAW | MEAT | GORE
 
 /obj/item/food/meat/slab/pug/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_PUG, CELL_VIRUS_TABLE_GENERIC_MOB)
 
@@ -263,9 +295,13 @@
 	blood_decal_type = /obj/effect/decal/cleanable/food/tomato_smudge
 
 /obj/item/food/meat/slab/killertomato/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/steak/killertomato, rand(70 SECONDS, 85 SECONDS), TRUE, TRUE)
 
 /obj/item/food/meat/slab/killertomato/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/meat/rawcutlet/killertomato, 3, 3 SECONDS, table_required = TRUE, screentip_verb = "Cut", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/meat/slab/bear
@@ -282,12 +318,18 @@
 	foodtypes = RAW | MEAT
 
 /obj/item/food/meat/slab/bear/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/meat/rawcutlet/bear, 3, 3 SECONDS, table_required = TRUE, screentip_verb = "Cut", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/meat/slab/bear/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/steak/bear, rand(40 SECONDS, 70 SECONDS), TRUE, TRUE)
 
 /obj/item/food/meat/slab/bear/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_BEAR, CELL_VIRUS_TABLE_GENERIC_MOB)
 
@@ -305,9 +347,13 @@
 	blood_decal_type = /obj/effect/decal/cleanable/blood/xeno
 
 /obj/item/food/meat/slab/xeno/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/meat/rawcutlet/xeno, 3, 3 SECONDS, table_required = TRUE, screentip_verb = "Cut", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/meat/slab/xeno/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/steak/xeno, rand(40 SECONDS, 70 SECONDS), TRUE, TRUE)
 
 /obj/item/food/meat/slab/spider
@@ -324,9 +370,13 @@
 	blood_decal_type = /obj/effect/decal/cleanable/insectguts
 
 /obj/item/food/meat/slab/spider/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/meat/rawcutlet/spider, 3, 3 SECONDS, table_required = TRUE, screentip_verb = "Cut", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/meat/slab/spider/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/steak/spider, rand(40 SECONDS, 70 SECONDS), TRUE, TRUE)
 
 /obj/item/food/meat/slab/goliath
@@ -343,10 +393,14 @@
 	foodtypes_removed_when_cooked = RAW | TOXIC
 
 /obj/item/food/meat/slab/goliath/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/raptor_food, attack_modifier = 0.5, speed_modifier = -0.05, color_chances = string_list(list(/datum/raptor_color/red = 5)))
 
 /obj/item/food/meat/slab/goliath/burn()
+	procstart = null
+	src.procstart = null
 	visible_message(span_notice("[src] finishes cooking!"))
 	new /obj/item/food/meat/steak/goliath(loc)
 	qdel(src)
@@ -384,6 +438,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/meat/rawbacon/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/bacon, rand(25 SECONDS, 45 SECONDS), TRUE, TRUE)
 
 /obj/item/food/meat/bacon
@@ -413,9 +469,13 @@
 	foodtypes = RAW | MEAT | GORE
 
 /obj/item/food/meat/slab/gondola/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/meat/rawcutlet/gondola, 3, 3 SECONDS, table_required = TRUE, screentip_verb = "Cut", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/meat/slab/gondola/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/steak/gondola, rand(30 SECONDS, 90 SECONDS), TRUE, TRUE) //Add medium rare later maybe?
 
 /obj/item/food/meat/slab/penguin
@@ -429,10 +489,14 @@
 	tastes = list("beef" = 1, "cod fish" = 1)
 
 /obj/item/food/meat/slab/penguin/make_processable()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/meat/rawcutlet/penguin, 3, 3 SECONDS, table_required = TRUE, screentip_verb = "Cut", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/meat/slab/penguin/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/steak/penguin, rand(30 SECONDS, 90 SECONDS), TRUE, TRUE) //Add medium rare later maybe?
 
 /obj/item/food/meat/slab/rawcrab
@@ -448,6 +512,8 @@
 	foodtypes = RAW | MEAT
 
 /obj/item/food/meat/slab/rawcrab/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/crab, rand(30 SECONDS, 90 SECONDS), TRUE, TRUE) //Add medium rare later maybe?
 
 /obj/item/food/meat/crab
@@ -473,12 +539,18 @@
 	starting_reagent_purity = 1
 
 /obj/item/food/meat/slab/chicken/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/meat/rawcutlet/chicken, 3, 3 SECONDS, table_required = TRUE, screentip_verb = "Cut", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/meat/slab/chicken/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/steak/chicken, rand(30 SECONDS, 90 SECONDS), TRUE, TRUE) //Add medium rare later maybe? (no this is chicken)
 
 /obj/item/food/meat/slab/chicken/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CHICKEN, CELL_VIRUS_TABLE_GENERIC_MOB)
 
@@ -497,6 +569,8 @@
 	starting_reagent_purity = 1
 
 /obj/item/food/meat/slab/pig/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/steak/plain/pig, rand(30 SECONDS, 90 SECONDS), TRUE, TRUE)
 
 /obj/item/food/meat/slab/grassfed
@@ -524,6 +598,8 @@
 	starting_reagent_purity = 1
 
 /obj/item/food/meat/slab/blood_worm/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/steak/blood_worm, rand(30 SECONDS, 90 SECONDS), TRUE, TRUE) //Add medium rare later maybe?
 
 ////////////////////////////////////// MEAT STEAKS ///////////////////////////////////////////////////////////
@@ -542,10 +618,14 @@
 	blood_decal_type = null
 
 /obj/item/food/meat/steak/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ITEM_MICROWAVE_COOKED_RESULT, PROC_REF(on_microwave_cooked))
 
 /obj/item/food/meat/steak/proc/on_microwave_cooked(datum/source, atom/source_item, cooking_efficiency = 1)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	name = "[source_item.name] steak"
@@ -558,6 +638,8 @@
 
 ///Make sure the steak has the correct name
 /obj/item/food/meat/steak/plain/human/on_microwave_cooked(datum/source, atom/source_item, cooking_efficiency = 1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(source_item, /obj/item/food/meat))
 		return
@@ -598,6 +680,8 @@
 	tastes = list("meat" = 1, "rock" = 1)
 
 /obj/item/food/meat/steak/goliath/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/raptor_food, attack_modifier = 1, speed_modifier = -0.075, color_chances = string_list(list(/datum/raptor_color/red = 7)))
 
@@ -661,13 +745,19 @@
 	var/meat_type = "meat"
 
 /obj/item/food/meat/rawcutlet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/food_storage)
 
 /obj/item/food/meat/rawcutlet/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/cutlet/plain, rand(35 SECONDS, 50 SECONDS), TRUE, TRUE)
 
 /obj/item/food/meat/rawcutlet/OnCreatedFromProcessing(mob/living/user, obj/item/work_tool, list/chosen_option, atom/original_atom)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(original_atom, /obj/item/food/meat/slab))
 		return
@@ -686,9 +776,13 @@
 	foodtypes = MEAT | RAW | GORE
 
 /obj/item/food/meat/rawcutlet/plain/human/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/cutlet/plain/human, rand(35 SECONDS, 50 SECONDS), TRUE, TRUE)
 
 /obj/item/food/meat/rawcutlet/plain/human/OnCreatedFromProcessing(mob/living/user, obj/item/item, list/chosen_option, atom/original_atom)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(original_atom, /obj/item/food/meat))
 		return
@@ -707,6 +801,8 @@
 	blood_decal_type = /obj/effect/decal/cleanable/food/tomato_smudge
 
 /obj/item/food/meat/rawcutlet/killertomato/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/cutlet/killertomato, rand(35 SECONDS, 50 SECONDS), TRUE, TRUE)
 
 /obj/item/food/meat/rawcutlet/bear
@@ -714,10 +810,14 @@
 	tastes = list("meat" = 1, "salmon" = 1)
 
 /obj/item/food/meat/rawcutlet/bear/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_BEAR, CELL_VIRUS_TABLE_GENERIC_MOB)
 
 /obj/item/food/meat/rawcutlet/bear/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/cutlet/bear, rand(35 SECONDS, 50 SECONDS), TRUE, TRUE)
 
 /obj/item/food/meat/rawcutlet/xeno
@@ -726,6 +826,8 @@
 	blood_decal_type = /obj/effect/decal/cleanable/blood/xeno
 
 /obj/item/food/meat/rawcutlet/xeno/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/cutlet/xeno, rand(35 SECONDS, 50 SECONDS), TRUE, TRUE)
 
 /obj/item/food/meat/rawcutlet/spider
@@ -735,6 +837,8 @@
 	foodtypes = parent_type::foodtypes | TOXIC
 
 /obj/item/food/meat/rawcutlet/spider/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/cutlet/spider, rand(35 SECONDS, 50 SECONDS), TRUE, TRUE)
 
 /obj/item/food/meat/rawcutlet/gondola
@@ -742,6 +846,8 @@
 	tastes = list("meat" = 1, "tranquility" = 1)
 
 /obj/item/food/meat/rawcutlet/gondola/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/cutlet/gondola, rand(35 SECONDS, 50 SECONDS), TRUE, TRUE)
 
 /obj/item/food/meat/rawcutlet/penguin
@@ -749,6 +855,8 @@
 	tastes = list("beef" = 1, "cod fish" = 1)
 
 /obj/item/food/meat/rawcutlet/penguin/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/cutlet/penguin, rand(35 SECONDS, 50 SECONDS), TRUE, TRUE)
 
 /obj/item/food/meat/rawcutlet/chicken
@@ -756,9 +864,13 @@
 	tastes = list("chicken" = 1)
 
 /obj/item/food/meat/rawcutlet/chicken/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/meat/cutlet/chicken, rand(35 SECONDS, 50 SECONDS), TRUE, TRUE)
 
 /obj/item/food/meat/rawcutlet/chicken/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CHICKEN, CELL_VIRUS_TABLE_GENERIC_MOB)
 
@@ -777,15 +889,21 @@
 	blood_decal_type = null
 
 /obj/item/food/meat/cutlet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ITEM_MICROWAVE_COOKED_RESULT, PROC_REF(on_microwave_cooked))
 
 /obj/item/food/meat/cutlet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/food_storage)
 
 ///This proc handles setting up the correct meat name for the cutlet, this should definitely be changed with the food rework.
 /obj/item/food/meat/cutlet/proc/on_microwave_cooked(datum/source, atom/source_item, cooking_efficiency)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(source_item, /obj/item/food/meat/rawcutlet))
@@ -801,6 +919,8 @@
 	foodtypes = MEAT | GORE
 
 /obj/item/food/meat/cutlet/plain/human/on_microwave_cooked(datum/source, atom/source_item, cooking_efficiency)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(source_item, /obj/item/food/meat))
 		return

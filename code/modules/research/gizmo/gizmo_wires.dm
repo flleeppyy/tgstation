@@ -21,10 +21,14 @@
 	var/datum/gizmo_puzzle/puzzle
 
 /datum/wires/gizmo/New(atom/holder, datum/gizmo_puzzle/puzzle)
+	procstart = null
+	src.procstart = null
 	wires = cryptic_wires
 	src.puzzle = puzzle
 
 	..()
 
 /datum/wires/gizmo/on_pulse(wire, mob/living/user)
+	procstart = null
+	src.procstart = null
 	puzzle.on_pulse(cryptic_wires.Find(wire), user, holder)

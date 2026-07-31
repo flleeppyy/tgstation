@@ -4,6 +4,8 @@
 	icon_state = "egg_growing"
 
 /obj/effect/spawner/xeno_egg_delivery/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/spawn_turf = get_turf(src)
 	new /obj/structure/alien/egg/delivery(spawn_turf)
@@ -28,6 +30,8 @@
 	max_integrity = 300
 
 /obj/structure/alien/egg/delivery/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	GLOB.communications_controller.xenomorph_egg_delivered = TRUE

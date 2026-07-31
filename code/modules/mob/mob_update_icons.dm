@@ -2,11 +2,15 @@
 //Having them here also makes for a nice reference list of the various overlay-updating procs available
 
 ///Redraws the entire mob. For carbons, this is rather expensive, please use the individual update_X procs.
-/mob/proc/regenerate_icons() //TODO: phase this out completely if possible
+/mob/proc/regenerate_icons()
+	procstart = null
+	src.procstart = null //TODO: phase this out completely if possible
 	return
 
 ///Updates every item slot passed into it.
 /mob/proc/update_clothing(slot_flags)
+	procstart = null
+	src.procstart = null
 	if(slot_flags & ITEM_SLOT_BACK)
 		update_worn_back()
 	if(slot_flags & ITEM_SLOT_MASK)
@@ -44,82 +48,122 @@
 
 /// Recalculates the mob's obscured and covered slots based on currently equipped items
 /mob/proc/refresh_obscured()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return
 
 /mob/proc/update_icons()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Updates the handcuff overlay & HUD element.
 /mob/proc/update_worn_handcuffs()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Updates the legcuff overlay & HUD element.
 /mob/proc/update_worn_legcuffs()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Updates the back overlay & HUD element.
 /mob/proc/update_worn_back()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Updates the held items overlay(s) & HUD element.
 /mob/proc/update_held_items()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_MOB_UPDATE_HELD_ITEMS)
 	hud_used?.update_inventory_slot(ITEM_SLOT_HANDS)
 
 ///Updates the mask overlay & HUD element.
 /mob/proc/update_worn_mask()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Updates the neck overlay & HUD element.
 /mob/proc/update_worn_neck()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Updates the oversuit overlay & HUD element.
 /mob/proc/update_worn_oversuit()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Updates the undersuit/uniform overlay & HUD element.
 /mob/proc/update_worn_undersuit()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Updates the belt overlay & HUD element.
 /mob/proc/update_worn_belt()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Updates the on-head overlay & HUD element.
 /mob/proc/update_worn_head()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Updates every part of a carbon's body. Including parts, mutant parts, lips, underwear, and socks.
 /mob/proc/update_body()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Updates the glasses overlay & HUD element.
 /mob/proc/update_worn_glasses()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Updates the id overlay & HUD element.
 /mob/proc/update_worn_id()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Updates the shoes overlay & HUD element.
 /mob/proc/update_worn_shoes()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Updates the glasses overlay & HUD element.
 /mob/proc/update_worn_gloves()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Updates the suit storage overlay & HUD element.
 /mob/proc/update_suit_storage()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Updates the pocket overlay & HUD element.
 /mob/proc/update_pockets()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Updates the headset overlay & HUD element.
 /mob/proc/update_worn_ears()
+	procstart = null
+	src.procstart = null
 	return

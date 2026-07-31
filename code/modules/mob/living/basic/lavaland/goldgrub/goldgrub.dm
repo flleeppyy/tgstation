@@ -42,6 +42,8 @@
 	var/has_emissive = TRUE
 
 /mob/living/basic/mining/goldgrub/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(mapload)
@@ -88,9 +90,13 @@
 		update_appearance(UPDATE_OVERLAYS)
 
 /mob/living/basic/mining/goldgrub/get_hud_x_offset()
+	procstart = null
+	src.procstart = null
 	return -4
 
 /mob/living/basic/mining/goldgrub/proc/block_bullets(datum/source, obj/projectile/hitting_projectile)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(IS_UNCONSCIOUS_OR_CRIT(src))
@@ -104,6 +110,8 @@
 	return COMPONENT_BULLET_BLOCKED
 
 /mob/living/basic/mining/goldgrub/proc/barf_contents(gibbed)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/splat.ogg', 50, TRUE)
 	for(var/obj/item/stack/ore/ore in src)
 		ore.forceMove(loc)
@@ -112,6 +120,8 @@
 		visible_message(span_danger("[src] spits out its consumed ores!"))
 
 /mob/living/basic/mining/goldgrub/proc/generate_loot()
+	procstart = null
+	src.procstart = null
 	var/loot_amount = rand(1,3)
 	var/list/weight_lootdrops = list(
 		/obj/item/stack/ore/silver = 4,
@@ -124,19 +134,27 @@
 		new picked_loot(src)
 
 /mob/living/basic/mining/goldgrub/death(gibbed)
+	procstart = null
+	src.procstart = null
 	barf_contents(gibbed)
 	return ..()
 
 /mob/living/basic/mining/goldgrub/proc/make_tameable(list/food_types)
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/tameable, food_types = food_types, tame_chance = 25, bonus_tame_chance = 5)
 
 /mob/living/basic/mining/goldgrub/tamed(mob/living/tamer, atom/food)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/temp_visual/heart(src.loc)
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/goldgrub)
 	AddComponent(/datum/component/obeys_commands, pet_commands)
 
 /mob/living/basic/mining/goldgrub/proc/make_egg_layer()
+	procstart = null
+	src.procstart = null
 	AddComponent(\
 		/datum/component/egg_layer,\
 		/obj/item/food/egg/green/grub_egg,\
@@ -148,6 +166,8 @@
 	)
 
 /mob/living/basic/mining/goldgrub/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(arrived, /obj/item/stack/ore))
 		return
@@ -158,11 +178,15 @@
 	new /obj/item/food/egg/green/grub_egg(get_turf(src))
 
 /mob/living/basic/mining/goldgrub/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(has_emissive)
 		. += emissive_appearance(icon, "[icon_state]_e", src)
 
 /mob/living/basic/mining/goldgrub/death(gibbed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!QDELETED(src) && has_emissive)
 		update_appearance(UPDATE_OVERLAYS)
@@ -185,6 +209,8 @@
 	has_emissive = FALSE
 
 /mob/living/basic/mining/goldgrub/baby/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(\
 		/datum/component/growth_and_differentiation,\
@@ -198,6 +224,8 @@
 	)
 
 /mob/living/basic/mining/goldgrub/baby/proc/ready_to_grow()
+	procstart = null
+	src.procstart = null
 	return (!IS_UNCONSCIOUS_OR_CRIT(src) && !is_jaunting(src))
 
 /obj/item/food/egg/green/grub_egg
@@ -206,6 +234,8 @@
 
 
 /obj/item/food/egg/green/grub_egg/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(\
 		/datum/component/fertile_egg,\

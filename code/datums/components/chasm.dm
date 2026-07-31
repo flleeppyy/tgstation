@@ -37,6 +37,8 @@
 	))
 
 /datum/component/chasm/Initialize(turf/target, mapload)
+	procstart = null
+	src.procstart = null
 	if(!isturf(parent))
 		return COMPONENT_INCOMPATIBLE
 	RegisterSignal(parent, SIGNAL_ADDTRAIT(TRAIT_CHASM_STOPPED), PROC_REF(on_chasm_stopped))
@@ -54,31 +56,45 @@
 	parent.AddComponent(/datum/component/fishing_spot, GLOB.preset_fish_sources[/datum/fish_source/chasm])
 
 /datum/component/chasm/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(parent, TRAIT_AI_AVOID_TURF, REF(src))
 	storage = null
 
 /datum/component/chasm/proc/entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	drop_stuff()
 
 /datum/component/chasm/proc/exited(datum/source, atom/movable/exited)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(exited, list(COMSIG_MOVETYPE_FLAG_DISABLED, COMSIG_LIVING_SET_BUCKLED, COMSIG_MOVABLE_THROW_LANDED))
 
 /datum/component/chasm/proc/initialized_on(datum/source, atom/movable/movable, mapload)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	drop_stuff(movable)
 
 /datum/component/chasm/proc/block_teleport()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/component/chasm/proc/on_chasm_stopped(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(source, list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_EXITED, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON))
 	for(var/atom/movable/movable as anything in source)
 		UnregisterSignal(movable, list(COMSIG_MOVETYPE_FLAG_DISABLED, COMSIG_LIVING_SET_BUCKLED, COMSIG_MOVABLE_THROW_LANDED))
 
 /datum/component/chasm/proc/on_chasm_no_longer_stopped(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	RegisterSignal(parent, COMSIG_ATOM_ENTERED, PROC_REF(entered))
 	RegisterSignal(parent, COMSIG_ATOM_EXITED, PROC_REF(exited))
@@ -91,6 +107,8 @@
 #define CHASM_REGISTER_SIGNALS 2
 
 /datum/component/chasm/proc/drop_stuff(atom/movable/dropped_thing)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(parent, TRAIT_CHASM_STOPPED))
 		return
 	var/atom/atom_parent = parent
@@ -104,6 +122,8 @@
 				RegisterSignals(thing, list(COMSIG_MOVETYPE_FLAG_DISABLED, COMSIG_LIVING_SET_BUCKLED, COMSIG_MOVABLE_THROW_LANDED), PROC_REF(drop_stuff), TRUE)
 
 /datum/component/chasm/proc/droppable(atom/movable/dropped_thing)
+	procstart = null
+	src.procstart = null
 	var/datum/weakref/falling_ref = WEAKREF(dropped_thing)
 	// avoid an infinite loop, but allow falling a large distance
 	var/falling_atom = LAZYACCESS(falling_atoms, falling_ref)
@@ -131,6 +151,8 @@
 #undef CHASM_REGISTER_SIGNALS
 
 /datum/component/chasm/proc/drop(atom/movable/dropped_thing)
+	procstart = null
+	src.procstart = null
 	var/datum/weakref/falling_ref = WEAKREF(dropped_thing)
 	//Make sure the item is still there after our sleep
 	if(!dropped_thing || !falling_ref?.resolve())
@@ -249,6 +271,8 @@
  * * gone - Item which has just left the chasm contents.
  */
 /datum/component/chasm/proc/left_chasm(atom/source, atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(gone, COMSIG_LIVING_REVIVE)
 
@@ -265,10 +289,14 @@ GLOBAL_LIST_EMPTY(chasm_fallen_mobs)
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /obj/effect/abstract/chasm_storage/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_SECLUDED_LOCATION, INNATE_TRAIT)
 
 /obj/effect/abstract/chasm_storage/Entered(atom/movable/arrived)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(arrived))
 		//Mobs that have fallen in reserved area should be deleted to avoid fishing stuff from the deathmatch or VR.
@@ -279,12 +307,16 @@ GLOBAL_LIST_EMPTY(chasm_fallen_mobs)
 		LAZYADD(GLOB.chasm_fallen_mobs[get_chasm_category(loc)], arrived)
 
 /obj/effect/abstract/chasm_storage/Exited(atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(gone))
 		UnregisterSignal(gone, COMSIG_LIVING_REVIVE)
 		LAZYREMOVE(GLOB.chasm_fallen_mobs[get_chasm_category(loc)], gone)
 
 /obj/effect/abstract/chasm_storage/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/old_cat = get_chasm_category(old_turf)
 	var/new_cat = get_chasm_category(new_turf)
@@ -299,6 +331,8 @@ GLOBAL_LIST_EMPTY(chasm_fallen_mobs)
  * This stops rescuing people from places that are waaaaaaaay too far-fetched.
  */
 /proc/get_chasm_category(turf/turf)
+	procstart = null
+	src.procstart = null
 	var/z_level = turf?.z
 	var/area/area = get_area(turf)
 	if(istype(area, /area/shuttle)) //shuttle move between z-levels, so they're a special case.
@@ -325,6 +359,8 @@ GLOBAL_LIST_EMPTY(chasm_fallen_mobs)
  * escapee - Lucky guy who just came back to life at the bottom of a hole.
  */
 /obj/effect/abstract/chasm_storage/proc/on_revive(mob/living/escapee)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/turf/turf = get_turf(src)
 	if(turf.GetComponent(/datum/component/chasm))

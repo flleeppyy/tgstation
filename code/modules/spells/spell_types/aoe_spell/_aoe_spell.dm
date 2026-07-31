@@ -13,11 +13,15 @@
 	var/aoe_radius = 7
 
 /datum/action/cooldown/spell/aoe/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return isturf(cast_on.loc)
 
 // At this point, cast_on == owner. Either works.
 // Don't extend this for your spell! Look at cast_on_thing_in_aoe.
 /datum/action/cooldown/spell/aoe/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Get every atom around us to our aoe cast on
 	var/list/atom/things_to_cast_on = get_things_to_cast_on(cast_on)
@@ -48,6 +52,8 @@
  * Returns a list of atoms.
  */
 /datum/action/cooldown/spell/aoe/proc/get_things_to_cast_on(atom/center)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 
 	var/list/things = list()
@@ -69,5 +75,7 @@
  * * caster - the mob who cast the aoe
  */
 /datum/action/cooldown/spell/aoe/proc/cast_on_thing_in_aoe(atom/victim, atom/caster)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("[type] did not implement cast_on_thing_in_aoe and either has no effects or implemented the spell incorrectly.")

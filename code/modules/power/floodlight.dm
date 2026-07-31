@@ -15,6 +15,8 @@
 	var/state = FLOODLIGHT_NEEDS_WIRES
 
 /obj/structure/floodlight_frame/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
@@ -53,6 +55,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/floodlight_frame/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(state == FLOODLIGHT_NEEDS_WIRES)
 		. += span_notice("It can be wired with [EXAMINE_HINT("5 cable pieces")].")
@@ -65,6 +69,8 @@
 		. += span_notice("The cable could be [EXAMINE_HINT("unscrewed")] from the frame.")
 
 /obj/structure/floodlight_frame/screwdriver_act(mob/living/user, obj/item/O)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(state == FLOODLIGHT_NEEDS_SECURING)
 		icon_state = "floodlight_c3"
@@ -77,6 +83,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/structure/floodlight_frame/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(state != FLOODLIGHT_NEEDS_WIRES)
 		return ITEM_INTERACT_BLOCKING
 
@@ -89,6 +97,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/floodlight_frame/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(state != FLOODLIGHT_NEEDS_SECURING)
 		return ITEM_INTERACT_BLOCKING
 
@@ -99,6 +109,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/floodlight_frame/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/stack/cable_coil) && state == FLOODLIGHT_NEEDS_WIRES)
 		var/obj/item/stack/coil = tool
 		if(!coil.use(5))
@@ -154,6 +166,8 @@
 	var/setting = FLOODLIGHT_OFF
 
 /obj/machinery/power/floodlight/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_OBJ_PAINTED, TYPE_PROC_REF(/obj/machinery/power/floodlight, on_color_change))  //update light color when color changes
 	register_context()
@@ -162,6 +176,8 @@
 		connect_to_network()
 
 /obj/machinery/power/floodlight/proc/on_color_change(obj/machinery/power/flood_light, mob/user, obj/item/toy/crayon/spraycan/spraycan, is_dark_color)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!spraycan.actually_paints)
 		return
@@ -170,11 +186,15 @@
 		update_light_state()
 
 /obj/machinery/power/floodlight/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(src, COMSIG_OBJ_PAINTED)
 	. = ..()
 
 /// change light color during operation
 /obj/machinery/power/floodlight/proc/update_light_state()
+	procstart = null
+	src.procstart = null
 	var/light_color =  NONSENSICAL_VALUE
 	if(!isnull(color))
 		light_color = color
@@ -207,6 +227,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/power/floodlight/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!anchored)
 		. += span_notice("It needs to be wrenched on top of a wire.")
@@ -219,6 +241,8 @@
 		. += span_notice("Its maintenance hatch can be [EXAMINE_HINT("screwed")] open.")
 
 /obj/machinery/power/floodlight/process()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	var/obj/structure/cable/C = locate() in T
 	if(!C && powernet)
@@ -232,6 +256,8 @@
 		add_load(idle_power_usage)
 
 /obj/machinery/power/floodlight/proc/change_setting(newval, mob/user)
+	procstart = null
+	src.procstart = null
 	if((newval < FLOODLIGHT_OFF) || (newval > light_setting_list.len))
 		return
 
@@ -258,12 +284,16 @@
 		to_chat(user, span_notice("You set [src] to [setting_text]."))
 
 /obj/machinery/power/floodlight/cable_layer_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(anchored)
 		balloon_alert(user, "unanchor first!")
 		return ITEM_INTERACT_BLOCKING
 	return ..()
 
 /obj/machinery/power/floodlight/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	default_unfasten_wrench(user, tool)
 	change_setting(FLOODLIGHT_OFF)
 	if(anchored)
@@ -273,6 +303,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/floodlight/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		panel_open = FALSE
 		balloon_alert(user, "closed panel")
@@ -283,6 +315,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/floodlight/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -303,17 +337,25 @@
 	change_setting(current, user)
 
 /obj/machinery/power/floodlight/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/power/floodlight/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/power/floodlight/on_saboteur(datum/source, disrupt_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	atom_break(ENERGY) // technically,
 	return TRUE
 
 /obj/machinery/power/floodlight/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -327,6 +369,8 @@
 	qdel(src)
 
 /obj/machinery/power/floodlight/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/glass/glasshit.ogg', 75, TRUE)
 
 #undef FLOODLIGHT_OFF

@@ -23,6 +23,8 @@
 	flags_inv = HIDEHAIR|HIDEEARS|HIDEFACIALHAIR|HIDEFACE|HIDEMASK|HIDESNOUT
 
 /obj/item/clothing/head/hooded/flashsuit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/wearable_client_colour, /datum/client_colour/flash_hood, ITEM_SLOT_HEAD, HELMET_TRAIT, forced = TRUE)
 
@@ -48,6 +50,8 @@
 	species_exception = null
 
 /obj/item/clothing/suit/costume/pirate/armored/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += GLOB.security_vest_allowed
 
@@ -83,6 +87,8 @@
 	armor_type = /datum/armor/costume_justice
 
 /obj/item/clothing/suit/costume/justice/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed = GLOB.security_vest_allowed
 
@@ -133,6 +139,8 @@
 	flags_inv = HIDESHOES|HIDEJUMPSUIT|HIDEBELT
 
 /obj/item/clothing/suit/costume/imperium_monk/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed = GLOB.chaplain_suit_allowed
 
@@ -163,6 +171,8 @@
 	body_parts_covered = ARMS|CHEST
 
 /obj/item/clothing/suit/toggle/owlwings/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed = GLOB.security_vest_allowed
 
@@ -184,11 +194,15 @@
 	var/in_use = FALSE
 
 /obj/item/clothing/suit/costume/cardborg/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(slot & ITEM_SLOT_OCLOTHING)
 		disguise(user)
 
 /obj/item/clothing/suit/costume/cardborg/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if (!in_use)
 		return
@@ -199,6 +213,8 @@
 		UnregisterSignal(human_user.head, COMSIG_ITEM_DROPPED)
 
 /obj/item/clothing/suit/costume/cardborg/proc/disguise(mob/living/carbon/human/human_user, obj/item/clothing/head/costume/cardborg/borghead)
+	procstart = null
+	src.procstart = null
 	if(!istype(human_user))
 		return
 	if(!borghead)
@@ -213,6 +229,8 @@
 	add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/silicons, "standard_borg_disguise", override_image) //you look like a robot to robots! (including yourself because you're totally a robot)
 
 /obj/item/clothing/suit/costume/cardborg/proc/helmet_drop(datum/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(source, COMSIG_ITEM_DROPPED)
 	user.remove_alt_appearance("standard_borg_disguise")
@@ -253,6 +271,8 @@
 	inhand_icon_state = null
 
 /obj/item/clothing/suit/costume/poncho/ponchoshame/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, SHAMEBRERO_TRAIT)
 
@@ -279,6 +299,8 @@
 	hoodtype = /obj/item/clothing/head/hooded/carp_hood
 
 /obj/item/clothing/suit/hooded/carp_costume/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -4)
 
@@ -295,15 +317,21 @@
 	clothing_flags = CARP_STYLE_FACTOR
 
 /obj/item/clothing/head/hooded/carp_hood/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -5)
 
 /obj/item/clothing/head/hooded/carp_hood/equipped(mob/living/carbon/human/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if (slot & ITEM_SLOT_HEAD)
 		user.add_faction("carp")
 
 /obj/item/clothing/head/hooded/carp_hood/dropped(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if (user.head == src)
 		user.remove_faction("carp")
@@ -353,6 +381,8 @@
 	acid = 75
 
 /obj/item/clothing/head/hooded/carp_hood/spaceproof/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, LOCKED_HELMET_TRAIT)
 
@@ -415,6 +445,8 @@
 	hoodtype = /obj/item/clothing/head/hooded/shark_hood
 
 /obj/item/clothing/suit/hooded/shark_costume/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -4)
 
@@ -429,6 +461,8 @@
 	flags_inv = HIDEHAIR|HIDEEARS
 
 /obj/item/clothing/head/hooded/shark_hood/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -5)
 
@@ -444,6 +478,8 @@
 	hoodtype = /obj/item/clothing/head/hooded/shork_hood
 
 /obj/item/clothing/suit/hooded/shork_costume/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, 4)
 
@@ -458,6 +494,8 @@
 	flags_inv = HIDEHAIR|HIDEEARS
 
 /obj/item/clothing/head/hooded/shork_hood/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, 5)
 
@@ -629,6 +667,8 @@
 	species_exception = list(/datum/species/golem)
 
 /obj/item/clothing/suit/costume/hawaiian/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -5)
 	allowed += GLOB.personal_carry_allowed
@@ -651,6 +691,8 @@
 	icon_state = "joker_coat"
 
 /obj/item/clothing/suit/costume/joker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += GLOB.personal_carry_allowed
 
@@ -712,12 +754,16 @@
 	var/full_suit = FALSE
 
 /obj/item/clothing/suit/costume/bear_suit/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(slot & ITEM_SLOT_OCLOTHING)
 		var/mob/living/carbon/human/human_user = user
 		make_friendly(user, human_user.head)
 
 /obj/item/clothing/suit/costume/bear_suit/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if (!full_suit)
 		return
@@ -727,6 +773,8 @@
 	user.remove_faction(FACTION_BEAR)
 
 /obj/item/clothing/suit/costume/bear_suit/proc/make_friendly(mob/living/carbon/human/human_user, obj/item/clothing/head/costume/bearpelt/bear_head)
+	procstart = null
+	src.procstart = null
 	if(!istype(human_user))
 		return
 	if(!bear_head || !istype(bear_head))
@@ -736,6 +784,8 @@
 	human_user.add_faction(FACTION_BEAR)
 
 /obj/item/clothing/suit/costume/bear_suit/proc/helmet_drop(datum/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(source, COMSIG_ITEM_DROPPED)
 	full_suit = FALSE

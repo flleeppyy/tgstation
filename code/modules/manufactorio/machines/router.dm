@@ -10,10 +10,14 @@
 	var/list/directions
 
 /obj/machinery/power/manufacturing/router/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	directions = GLOB.cardinals.Copy()
 
 /obj/machinery/power/manufacturing/router/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/to_toggle = get_dir(src, user)
 	if(!(to_toggle in GLOB.cardinals))
@@ -28,6 +32,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/manufacturing/router/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/direction in GLOB.cardinals)
 		var/variant
@@ -39,6 +45,8 @@
 		. += new_overlay
 
 /obj/machinery/power/manufacturing/router/receive_resource(obj/receiving, atom/from, receive_dir)
+	procstart = null
+	src.procstart = null
 	if(istype(from, /obj/machinery/power/manufacturing/router))
 		return MANUFACTURING_FAIL
 	var/list/filtered = directions - receive_dir - disabled_dirs
@@ -55,6 +63,8 @@
 	return MANUFACTURING_FAIL
 
 /obj/machinery/power/manufacturing/router/proc/handle_stack(obj/item/stack/stack, direction)
+	procstart = null
+	src.procstart = null
 	if(stack.amount <= 1) // last implementation was just not good so lets cheap out
 		return stack
 	return stack.split_stack(1)

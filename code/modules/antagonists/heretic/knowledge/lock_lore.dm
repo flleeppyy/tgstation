@@ -65,6 +65,8 @@
 	eldritch_passive = /datum/status_effect/heretic_passive/lock
 
 /datum/heretic_knowledge/limited_amount/starting/base_lock/on_gain(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK_SECONDARY, PROC_REF(on_secondary_mansus_grasp))
 	var/datum/action/cooldown/spell/touch/mansus_grasp/grasp_spell = locate() in user.actions
@@ -72,10 +74,14 @@
 	grasp_spell?.sound = null
 
 /datum/heretic_knowledge/limited_amount/starting/base_lock/on_lose(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK_SECONDARY)
 
 /datum/heretic_knowledge/limited_amount/starting/base_lock/on_mansus_grasp(mob/living/source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/obj/item/clothing/under/suit = target.get_item_by_slot(ITEM_SLOT_ICLOTHING)
@@ -86,6 +92,8 @@
 		suit.update_appearance()
 
 /datum/heretic_knowledge/limited_amount/starting/base_lock/proc/on_secondary_mansus_grasp(mob/living/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(ismecha(target))
@@ -141,6 +149,8 @@
 	research_tree_icon_state = "card_gold"
 
 /datum/heretic_knowledge/key_ring/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/id = locate(/obj/item/card/id/advanced) in selected_atoms
 	if(isnull(id))
 		return FALSE
@@ -208,6 +218,8 @@
 	var/chance = 35
 
 /datum/heretic_knowledge/blade_upgrade/flesh/lock/do_melee_effects(mob/living/source, mob/living/target, obj/item/melee/sickly_blade/blade)
+	procstart = null
+	src.procstart = null
 	if(prob(chance))
 		return ..()
 
@@ -244,6 +256,8 @@
 	announcement_sound = 'sound/music/antag/heretic/ascend_knock.ogg'
 
 /datum/heretic_knowledge/ultimate/lock_final/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -263,6 +277,8 @@
 	return TRUE
 
 /datum/heretic_knowledge/ultimate/lock_final/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// buffs
 	var/datum/action/cooldown/spell/shapeshift/eldritch/ascension/transform_spell = new(user.mind)

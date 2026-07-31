@@ -27,6 +27,8 @@
 	ai_controller = /datum/ai_controller/basic_controller/butterfly
 
 /mob/living/basic/butterfly/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_flying)
 
@@ -36,6 +38,8 @@
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_BUTTERFLY, CELL_VIRUS_TABLE_GENERIC_MOB, cell_line_amount = 1, virus_chance = 5)
 
 /mob/living/basic/butterfly/bee_friendly()
+	procstart = null
+	src.procstart = null
 	return TRUE //treaty signed at the Beeneeva convention
 
 /datum/ai_controller/basic_controller/butterfly
@@ -57,14 +61,20 @@
 	var/despawn_timer = 0
 
 /mob/living/basic/butterfly/lavaland/temporary/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSprocessing, src)
 
 /mob/living/basic/butterfly/lavaland/temporary/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSprocessing, src)
 	return ..()
 
 /mob/living/basic/butterfly/lavaland/temporary/process()
+	procstart = null
+	src.procstart = null
 	if(should_despawn())
 		if(will_be_destroyed)
 			return
@@ -79,6 +89,8 @@
 
 /// Checks whether the butterfly should be despawned after the next check, based on distance from source
 /mob/living/basic/butterfly/lavaland/temporary/proc/should_despawn()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(source))
 		return TRUE
 	if(get_dist(source, src) > max_distance)
@@ -88,9 +100,13 @@
 /// Fade the butterfly out before deleting it.
 /// Looks much better than it just blipping out of existence
 /mob/living/basic/butterfly/lavaland/temporary/proc/fadeout()
+	procstart = null
+	src.procstart = null
 	animate(src, alpha = 0, 1 SECONDS)
 	QDEL_IN(src, 1 SECONDS)
 
 /mob/living/basic/butterfly/lavaland/temporary/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Something about it seems unreal...")

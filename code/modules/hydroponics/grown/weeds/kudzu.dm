@@ -20,16 +20,22 @@
 	graft_gene = /datum/plant_gene/trait/plant_type/weed_hardy
 
 /obj/item/seeds/kudzu/Copy()
+	procstart = null
+	src.procstart = null
 	var/obj/item/seeds/kudzu/S = ..()
 	S.mutations = mutations.Copy()
 	return S
 
 /obj/item/seeds/kudzu/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] swallows the pack of kudzu seeds! It looks like [user.p_theyre()] trying to commit suicide!"))
 	plant(user)
 	return BRUTELOSS
 
 /obj/item/seeds/kudzu/proc/plant(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isspaceturf(user.loc))
 		return
 	if(!isturf(user.loc))
@@ -45,12 +51,16 @@
 	qdel(src)
 
 /obj/item/seeds/kudzu/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_danger("[user] begins throwing seeds on the ground..."))
 	if(do_after(user, 5 SECONDS, target = user.drop_location()))
 		plant(user)
 		to_chat(user, span_notice("You plant the kudzu. You monster."))
 
 /obj/item/seeds/kudzu/get_unique_analyzer_data()
+	procstart = null
+	src.procstart = null
 	var/list/all_mutations = list()
 	for(var/datum/spacevine_mutation/vine_trait in mutations)
 		all_mutations[vine_trait.name] = vine_trait.description
@@ -58,6 +68,8 @@
 	return list("Kudzu Traits" = all_mutations)
 
 /obj/item/seeds/kudzu/on_chem_reaction(datum/reagents/reagents)
+	procstart = null
+	src.procstart = null
 	var/list/temp_mut_list = list()
 
 	if(reagents.has_reagent(/datum/reagent/space_cleaner/sterilizine, 5))

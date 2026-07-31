@@ -4,6 +4,8 @@
 /// A list in the format (x_offset, y_offset)
 /// We require context to get info out of screen locs that contain relative info, so NORTH, SOUTH, etc
 /proc/screen_loc_to_offset(screen_loc, view)
+	procstart = null
+	src.procstart = null
 	if(!screen_loc)
 		return list(64, 64)
 	var/list/view_size = view_to_pixels(view)
@@ -49,6 +51,8 @@
 /// And converts it to a screen loc string
 /// Accepts an optional view string/size to force the screen_loc around, so it can't go out of scope
 /proc/offset_to_screen_loc(x_offset, y_offset, view = null)
+	procstart = null
+	src.procstart = null
 	if(view)
 		var/list/view_bounds = view_to_pixels(view)
 		x_offset = clamp(x_offset, ICON_SIZE_X, view_bounds[1])
@@ -79,6 +83,8 @@
  * Returns a screen loc representing the valid location
 **/
 /proc/get_valid_screen_location(target_loc, target_offset, view)
+	procstart = null
+	src.procstart = null
 	var/list/offsets = screen_loc_to_offset(target_loc)
 	var/base_x = offsets[1]
 	var/base_y = offsets[2]
@@ -99,11 +105,15 @@
 
 /// Takes a screen_loc string and cut out any directions like NORTH or SOUTH
 /proc/cut_relative_direction(fragment)
+	procstart = null
+	src.procstart = null
 	var/static/regex/regex = regex(@"([A-Z])\w+", "g")
 	return regex.Replace(fragment, "")
 
 /// Returns a screen_loc format for a tiling screen objects from start and end positions. Start should be bottom left corner, and end top right corner.
 /proc/spanning_screen_loc(start_px, start_py, end_px, end_py)
+	procstart = null
+	src.procstart = null
 	var/starting_tile_x = round(start_px / ICON_SIZE_X)
 	start_px -= starting_tile_x * ICON_SIZE_X
 	var/starting_tile_y = round(start_py/ ICON_SIZE_Y)

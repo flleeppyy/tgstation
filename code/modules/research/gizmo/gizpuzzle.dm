@@ -29,6 +29,8 @@
 	var/feedback_cooldown_time = 0.2 SECONDS
 
 /datum/gizmo_puzzle/New(datum/callback/pulsed)
+	procstart = null
+	src.procstart = null
 	if(pulsed)
 		pulsed_callback = pulsed
 	else
@@ -37,6 +39,8 @@
 
 /// Make up a sequence
 /datum/gizmo_puzzle/proc/generate_code_sequences(list/solution_callbacks)
+	procstart = null
+	src.procstart = null
 	src.solution_callbacks = solution_callbacks
 	code_sequences = list()
 
@@ -47,6 +51,8 @@
 
 /// Whenever a puzzle attempt is made
 /datum/gizmo_puzzle/proc/on_pulse(pulse_number, mob/living/user, atom/movable/holder, no_feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	current_sequence += cryptic_pulse[pulse_number]
 	. = GIZMO_PUZZLE_CORRECT
 
@@ -74,6 +80,8 @@
 
 /// Just some feedback so people can start forcing sequences. No feedback if it's done automatically
 /datum/gizmo_puzzle/proc/default_on_pulsed(atom/movable/holder, mob/living/user, solved_type, no_feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, feedback_cooldown) || !isliving(user) || no_feedback)
 		return
 

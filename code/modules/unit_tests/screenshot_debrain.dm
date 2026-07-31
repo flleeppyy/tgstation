@@ -3,6 +3,8 @@
 	var/last_frame = 1
 
 /datum/unit_test/screenshot_debrain/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human = allocate(/mob/living/carbon/human/dummy/consistent)
 	var/obj/item/organ/brain/their_brain = human.get_organ_by_type(__IMPLIED_TYPE__)
 	var/obj/item/organ/eyes/their_eyes = human.get_organ_by_type(__IMPLIED_TYPE__)

@@ -19,6 +19,8 @@
 	var/volume_rate = 50
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(isnull(id_tag))
 		id_tag = assign_random_name()
 	. = ..()
@@ -34,16 +36,22 @@
 	register_context()
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	context[SCREENTIP_CONTEXT_CTRL_LMB] = "Turn [on ? "off" : "on"]"
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "Maximize transfer rate"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You can link it with an air sensor using a multitool.")
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/multitool_act(mob/living/user, obj/item/multitool/multi_tool)
+	procstart = null
+	src.procstart = null
 	if(istype(multi_tool.buffer, /obj/machinery/air_sensor))
 		var/obj/machinery/air_sensor/sensor = multi_tool.buffer
 		multi_tool.set_buffer(src)
@@ -55,6 +63,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/click_ctrl(mob/user)
+	procstart = null
+	src.procstart = null
 	if(is_operational)
 		set_on(!on)
 		balloon_alert(user, "turned [on ? "on" : "off"]")
@@ -63,6 +73,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(volume_rate == MAX_TRANSFER_RATE)
 		return CLICK_ACTION_BLOCKING
 
@@ -73,6 +85,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(underfloor_state)
 		// everything is already shifted so don't shift the cap
@@ -88,6 +102,8 @@
 		icon_state = "inje_on"
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/process_atmos()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!on || !is_operational)
 		return
@@ -111,12 +127,16 @@
 		update_parents()
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AtmosPump", name)
 		ui.open()
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["on"] = on
 	data["rate"] = round(volume_rate)
@@ -124,6 +144,8 @@
 	return data
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -147,6 +169,8 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/can_unwrench(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && on && is_operational)
 		to_chat(user, span_warning("You cannot unwrench [src], turn it off first!"))

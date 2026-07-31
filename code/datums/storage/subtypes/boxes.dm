@@ -13,10 +13,14 @@
 
 ///Donk Pocket box
 /datum/storage/box/donk_pockets/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/food/donkpocket)
 
 /datum/storage/box/donk_bullets/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/food/donkpocket,
@@ -28,6 +32,8 @@
 	max_slots = 5
 
 /datum/storage/box/coffee/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/food/grown/coffee)
 
@@ -36,6 +42,8 @@
 	max_slots = 6
 
 /datum/storage/box/bandages/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/stack/medical/bandage,
@@ -48,6 +56,8 @@
 	max_slots = 7
 
 /datum/storage/box/monkey_cube/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(
 		can_hold_list = /obj/item/food/monkeycube,
@@ -59,6 +69,8 @@
 	max_slots = 3
 
 /datum/storage/box/gorilla_cube_box/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/food/monkeycube/gorilla)
 
@@ -74,6 +86,8 @@
 	max_slots = 8
 
 /datum/storage/box/snappops/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/toy/snappop)
 
@@ -82,6 +96,8 @@
 	max_slots = 10
 
 /datum/storage/box/match/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/match)
 
@@ -92,6 +108,8 @@
 	allow_quick_gather = FALSE //temp workaround to re-enable filling the light replacer with the box
 
 /datum/storage/box/lights/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/light/tube,
@@ -105,6 +123,8 @@
 	allow_quick_gather = FALSE
 
 /datum/storage/box/balloon/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/toy/balloon/long)
 
@@ -114,6 +134,8 @@
 	max_specific_storage = WEIGHT_CLASS_TINY
 
 /datum/storage/box/stickers/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/sticker)
 
@@ -122,6 +144,8 @@
 	max_specific_storage = WEIGHT_CLASS_NORMAL
 
 /datum/storage/box/syndicate_space/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/clothing/suit/space/syndicate,
@@ -139,6 +163,8 @@
 	max_total_storage = 18 // 5*2 + 2*1 + 3*2
 
 /datum/storage/box/syndicate_throwing/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/restraints/legcuffs/bola/tactical,
@@ -151,6 +177,8 @@
 	max_slots = 3
 
 /datum/storage/box/skub/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(exception_hold_list = list(
 		/obj/item/skub,
@@ -159,6 +187,8 @@
 
 ///Stickers anti skub box
 /datum/storage/box/anti_skub/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(exception_hold_list = /obj/item/clothing/suit/costume/wellworn_shirt/skub)
 
@@ -172,11 +202,15 @@
 	allow_big_nesting = TRUE
 
 /datum/storage/box/gum/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/storage/bubblegum_wrapper)
 
 ///Fishing lures box
 /datum/storage/box/fishing_lures/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	//adds an extra slot, so we can put back the lures even if we didn't take out the instructions.
 	var/static/slots = length(typesof(/obj/item/fishing_lure)) + 1
 	max_slots = slots
@@ -188,6 +222,8 @@
 	max_slots = 2
 
 /datum/storage/box/ramen_beef/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/reagent_containers/condiment/pack/beef_flavour,

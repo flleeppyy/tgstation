@@ -22,6 +22,8 @@
 	icon_state = "shrub"
 
 /obj/item/grown/shrub/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/player_turf = get_turf(user)
 	if(player_turf?.is_blocked_turf(TRUE))
 		return FALSE
@@ -47,6 +49,8 @@
 	max_integrity = 80
 
 /obj/structure/hedge/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!opacity || !HAS_TRAIT(user, TRAIT_BONSAI) || !tool.get_sharpness())
 		return NONE
 	balloon_alert(user, "trimming...")
@@ -78,6 +82,8 @@
 	genes = list(/datum/plant_gene/trait/complex_harvest)
 
 /obj/item/seeds/organ_tree/harvest(mob/user)
+	procstart = null
+	src.procstart = null
 	var/yield_amount = getYield()
 	var/obj/machinery/hydroponics/parent = loc
 	if(yield_amount <= 0)

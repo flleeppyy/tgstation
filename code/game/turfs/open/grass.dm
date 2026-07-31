@@ -26,18 +26,24 @@
 	var/base_burnt_icon_state = "grass_damaged"
 
 /turf/open/misc/grass/broken_states()
+	procstart = null
+	src.procstart = null
 	if (!smoothing_junction || !smooth_broken)
 		return list("[base_broken_icon_state]-255")
 
 	return list("[base_broken_icon_state]-[smoothing_junction]")
 
 /turf/open/misc/grass/burnt_states()
+	procstart = null
+	src.procstart = null
 	if (!smoothing_junction || !smooth_burnt)
 		return list("[base_burnt_icon_state]-255")
 
 	return list("[base_burnt_icon_state]-[smoothing_junction]")
 
 /turf/open/misc/grass/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(smoothing_flags)
 		var/matrix/translation = new
@@ -50,6 +56,8 @@
 
 
 /turf/open/misc/grass/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return

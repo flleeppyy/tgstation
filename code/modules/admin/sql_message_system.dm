@@ -1,4 +1,6 @@
 /proc/create_message(type, target_key, admin_ckey, text, timestamp, server, secret, logged = 1, browse, expiry, note_severity)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		to_chat(usr, span_danger("Failed to establish database connection."), confidential = TRUE)
 		return
@@ -109,6 +111,8 @@
 			browse_messages(target_ckey = target_ckey, agegate = TRUE)
 
 /proc/delete_message(message_id, logged = 1, browse)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		to_chat(usr, span_danger("Failed to establish database connection."), confidential = TRUE)
 		return
@@ -152,6 +156,8 @@
 			browse_messages(target_ckey = ckey(target_key), agegate = TRUE)
 
 /proc/edit_message(message_id, browse)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		to_chat(usr, span_danger("Failed to establish database connection."), confidential = TRUE)
 		return
@@ -202,6 +208,8 @@
 	qdel(query_find_edit_message)
 
 /proc/edit_message_expiry(message_id, browse)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		to_chat(usr, span_danger("Failed to establish database connection."), confidential = TRUE)
 		return
@@ -273,6 +281,8 @@
 	qdel(query_find_edit_expiry_message)
 
 /proc/edit_message_severity(message_id)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		to_chat(usr, span_danger("Failed to establish database connection."), confidential = TRUE)
 		return
@@ -324,6 +334,8 @@
 	qdel(query_find_edit_note_severity)
 
 /proc/toggle_message_secrecy(message_id)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		to_chat(usr, span_danger("Failed to establish database connection."), confidential = TRUE)
 		return
@@ -368,6 +380,8 @@
 	qdel(query_find_message_secret)
 
 /proc/browse_messages(type, target_ckey, index, linkless = FALSE, filter, agegate = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		to_chat(usr, span_danger("Failed to establish database connection."), confidential = TRUE)
 		return
@@ -643,6 +657,8 @@
 	var/editor_key
 
 /proc/get_message_output(type, target_ckey, show_secret = TRUE, after_timestamp)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		to_chat(usr, span_danger("Failed to establish database connection."), confidential = TRUE)
 		return
@@ -687,6 +703,8 @@
 	return messages
 
 /proc/display_admin_messages(client/display_to)
+	procstart = null
+	src.procstart = null
 	var/list/text = list()
 	for(var/datum/admin_message/message in get_message_output("message", display_to.ckey))
 		text += "<font color='[COLOR_RED]' size='3'><b>Admin message left by [span_prefix("[message.admin_key]")] on [message.timestamp]</b></font>"
@@ -695,6 +713,8 @@
 		to_chat(display_to, text.Join())
 
 /proc/display_unread_notes(client/display_to, show_after)
+	procstart = null
+	src.procstart = null
 	var/list/text = list()
 	for(var/datum/admin_message/message in get_message_output("note", display_to.ckey, FALSE, show_after))
 		text += "<font color='[COLOR_RED]' size='3'><b>Note left by [span_prefix("[message.admin_key]")] on [message.timestamp]</b></font>"
@@ -703,6 +723,8 @@
 		to_chat(display_to, text.Join())
 
 /proc/display_admin_memos(client/display_to)
+	procstart = null
+	src.procstart = null
 	var/list/text = list()
 	for(var/datum/admin_message/message in get_message_output("memo", display_to.ckey))
 		text += "[span_memo("Memo by <span class='prefix'>[message.admin_key]")] on [message.timestamp]"
@@ -713,6 +735,8 @@
 		to_chat(display_to, text.Join())
 
 /proc/scream_about_watchlists(client/read_from)
+	procstart = null
+	src.procstart = null
 	for(var/datum/admin_message/message in get_message_output("watchlist entry", read_from.ckey))
 		message_admins("<font color='[COLOR_RED]'><B>Notice: </B></font><font color='[COLOR_ADMIN_PINK]'>[key_name_admin(read_from.ckey)] has been on the watchlist since [message.timestamp] and has just connected - Reason: [message.text]</font>")
 		send2tgs_adminless_only("Watchlist", "[key_name(read_from.ckey)] is on the watchlist and has just connected - Reason: [message.text]")
@@ -720,6 +744,8 @@
 #define NOTESFILE "data/player_notes.sav"
 //if the AUTOCONVERT_NOTES is turned on, anytime a player connects this will be run to try and add all their notes to the databas
 /proc/convert_notes_sql(ckey)
+	procstart = null
+	src.procstart = null
 	if(!fexists(NOTESFILE))
 		return
 

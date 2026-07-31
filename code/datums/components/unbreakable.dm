@@ -2,21 +2,31 @@
 	COOLDOWN_DECLARE(surge_cooldown)
 
 /datum/component/unbreakable/Initialize()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(parent))
 		return COMPONENT_INCOMPATIBLE
 	ADD_TRAIT(parent, TRAIT_UNBREAKABLE, INNATE_TRAIT)
 
 /datum/component/unbreakable/Destroy(force)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(parent, TRAIT_UNBREAKABLE, INNATE_TRAIT)
 	return ..()
 
 /datum/component/unbreakable/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_MOB_STATCHANGE, PROC_REF(surge))
 
 /datum/component/unbreakable/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_MOB_STATCHANGE)
 
 /datum/component/unbreakable/proc/surge(mob/living/carbon/human/surged, new_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(new_stat < SOFT_CRIT || new_stat >= DEAD)
 		return

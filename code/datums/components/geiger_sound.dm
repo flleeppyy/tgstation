@@ -5,10 +5,14 @@
 	var/last_parent = null
 
 /datum/component/geiger_sound/Initialize(...)
+	procstart = null
+	src.procstart = null
 	if (!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 
 /datum/component/geiger_sound/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(sound)
 
 	if (!isnull(last_parent))
@@ -19,6 +23,8 @@
 	return ..()
 
 /datum/component/geiger_sound/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	sound = new(parent)
 
 	RegisterSignal(parent, COMSIG_IN_RANGE_OF_IRRADIATION, PROC_REF(on_pre_potential_irradiation))
@@ -31,6 +37,8 @@
 		register_to_loc(atom_parent.loc)
 
 /datum/component/geiger_sound/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_MOVABLE_MOVED,
 		COMSIG_IN_RANGE_OF_IRRADIATION,
@@ -39,6 +47,8 @@
 	REMOVE_TRAIT(parent, TRAIT_BYPASS_EARLY_IRRADIATED_CHECK, REF(src))
 
 /datum/component/geiger_sound/proc/on_pre_potential_irradiation(datum/source, datum/radiation_pulse_information/pulse_information, insulation_to_target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	sound.last_insulation_to_target = insulation_to_target
@@ -48,10 +58,14 @@
 	addtimer(CALLBACK(sound, TYPE_PROC_REF(/datum/looping_sound,stop)), TIME_WITHOUT_RADIATION_BEFORE_RESET, TIMER_UNIQUE | TIMER_OVERRIDE)
 
 /datum/component/geiger_sound/proc/on_moved(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	register_to_loc(source.loc)
 
 /datum/component/geiger_sound/proc/register_to_loc(new_loc)
+	procstart = null
+	src.procstart = null
 	if (last_parent == new_loc)
 		return
 
@@ -77,16 +91,22 @@
 	var/last_insulation_to_target
 
 /datum/looping_sound/geiger/Destroy()
+	procstart = null
+	src.procstart = null
 	last_radiation_pulse = null
 	return ..()
 
 /datum/looping_sound/geiger/get_sound()
+	procstart = null
+	src.procstart = null
 	if (isnull(last_radiation_pulse))
 		return null
 
 	return ..(mid_sounds[get_perceived_radiation_danger(last_radiation_pulse, last_insulation_to_target)])
 
 /datum/looping_sound/geiger/stop(null_parent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	last_radiation_pulse = null

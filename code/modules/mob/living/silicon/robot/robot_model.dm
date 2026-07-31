@@ -56,6 +56,8 @@
 	var/list/borg_skins
 
 /obj/item/robot_model/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	robot = loc
 	if(!istype(robot))
@@ -77,6 +79,8 @@
 		basic_modules += new /obj/item/borg/lollipop/ice_cream(robot)
 
 /obj/item/robot_model/Destroy()
+	procstart = null
+	src.procstart = null
 	basic_modules.Cut()
 	emag_modules.Cut()
 	modules.Cut()
@@ -85,9 +89,13 @@
 	return ..()
 
 /obj/item/robot_model/proc/get_usable_modules()
+	procstart = null
+	src.procstart = null
 	. = modules.Copy()
 
 /obj/item/robot_model/proc/get_inactive_modules()
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/mob/living/silicon/robot/cyborg = loc
 	for(var/module in get_usable_modules())
@@ -97,6 +105,8 @@
 		. += emag_modules
 
 /obj/item/robot_model/proc/add_module(obj/item/added_module, nonstandard, requires_rebuild)
+	procstart = null
+	src.procstart = null
 	if(isstack(added_module))
 		var/obj/item/stack/sheet_module = added_module
 		if(ispath(sheet_module.source, /datum/robot_energy_storage))
@@ -118,6 +128,8 @@
 	return added_module
 
 /obj/item/robot_model/proc/remove_module(obj/item/removed_module)
+	procstart = null
+	src.procstart = null
 	basic_modules -= removed_module
 	modules -= removed_module
 	emag_modules -= removed_module
@@ -125,7 +137,9 @@
 	rebuild_modules()
 	qdel(removed_module)
 
-/obj/item/robot_model/proc/rebuild_modules() //builds the usable module list from the modules we have
+/obj/item/robot_model/proc/rebuild_modules()
+	procstart = null
+	src.procstart = null //builds the usable module list from the modules we have
 	var/mob/living/silicon/robot/cyborg = loc
 	if (!istype(cyborg))
 		return
@@ -150,6 +164,8 @@
 
 ///Restocks things that don't take mats, generally at a power cost. Returns True if anything was restocked/replaced, and False otherwise.
 /obj/item/robot_model/proc/respawn_consumable(mob/living/silicon/robot/cyborg, coeff = 1)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	///If anything was actually replaced/refilled/recharged. If not, we won't draw power.
@@ -191,6 +207,8 @@
  * Pulls from the charger's silo connection, or fails otherwise.
  */
 /obj/item/robot_model/proc/restock_consumable()
+	procstart = null
+	src.procstart = null
 	if(!robot)
 		return //This means the model hasn't been chosen yet, and avoids a runtime. Anyway, there's nothing to restock yet.
 	var/obj/machinery/recharge_station/charger = robot.loc
@@ -223,9 +241,13 @@
 
 
 /obj/item/robot_model/proc/get_or_create_estorage(storage_type)
+	procstart = null
+	src.procstart = null
 	return (locate(storage_type) in storages) || new storage_type(src)
 
 /obj/item/robot_model/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_CONTENTS)
 		return
@@ -234,6 +256,8 @@
 	..()
 
 /obj/item/robot_model/proc/transform_to(new_config_type, forced = FALSE, transform = TRUE)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/cyborg = loc
 	var/obj/item/robot_model/new_model = new new_config_type(cyborg)
 	if(!new_model.be_transformed_to(src, forced))
@@ -257,6 +281,8 @@
 	return new_model
 
 /obj/item/robot_model/proc/be_transformed_to(obj/item/robot_model/old_model, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(robot, TRAIT_NO_TRANSFORM))
 		robot.balloon_alert(robot, "can't transform right now!")
 		return FALSE
@@ -290,6 +316,8 @@
 	return TRUE
 
 /obj/item/robot_model/proc/do_transform_animation()
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/cyborg = loc
 	if(cyborg.hat)
 		cyborg.hat.forceMove(drop_location())
@@ -299,6 +327,8 @@
 	do_transform_delay()
 
 /obj/item/robot_model/proc/do_transform_delay()
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/cyborg = loc
 	sleep(0.1 SECONDS)
 	flick("[cyborg_base_icon]_transform", cyborg)
@@ -336,6 +366,8 @@
  * * old_model The old cyborg's model
  */
 /obj/item/robot_model/proc/check_menu(mob/living/silicon/robot/user, obj/item/robot_model/old_model)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated)
@@ -374,6 +406,8 @@
 	hat_offset = list("north" = list(0, -2), "south" = list(0, -2), "east" = list(4, -2), "west" = list(-4, -2))
 
 /obj/item/robot_model/clown/respawn_consumable(mob/living/silicon/robot/cyborg, coeff = 1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/soap/nanotrasen/cyborg/soap = locate(/obj/item/soap/nanotrasen/cyborg) in basic_modules
 	if(!soap)
@@ -422,6 +456,8 @@
 	button_icon_state = "meson"
 
 /datum/action/cooldown/borg_meson/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/borg = owner
 	if(borg.sight & SEE_TURFS)
 		borg.sight_mode = BORGDEFAULT
@@ -430,6 +466,8 @@
 	borg.update_sight()
 
 /obj/item/robot_model/engineering/be_transformed_to(obj/item/robot_model/old_model, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -440,6 +478,8 @@
 	night_vision_ref = WEAKREF(night_vision)
 
 /obj/item/robot_model/engineering/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(night_vision_ref)
 	return ..()
 
@@ -474,6 +514,8 @@
 	var/datum/weakref/wash_toggle_ref
 
 /obj/item/robot_model/janitor/be_transformed_to(obj/item/robot_model/old_model, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -482,6 +524,8 @@
 	wash_toggle_ref = WEAKREF(wash_toggle)
 
 /obj/item/robot_model/janitor/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(wash_toggle_ref)
 	return ..()
 
@@ -501,26 +545,36 @@
 	COOLDOWN_DECLARE(toggle_cooldown)
 
 /datum/action/toggle_buffer/New(Target)
+	procstart = null
+	src.procstart = null
 	if(!allow_buffer_activate)
 		allow_buffer_activate = CALLBACK(src, PROC_REF(allow_buffer_activate))
 	return ..()
 
 /datum/action/toggle_buffer/Destroy()
+	procstart = null
+	src.procstart = null
 	if(buffer_on)
 		turn_off_wash()
 	QDEL_NULL(wash_audio)
 	return ..()
 
 /datum/action/toggle_buffer/Grant(mob/M)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	wash_audio = new(owner)
 
 /datum/action/toggle_buffer/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!iscyborg(owner))
 		return FALSE
 	return ..()
 
 /datum/action/toggle_buffer/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -567,6 +621,8 @@
 
 /// Toggle our wash mode
 /datum/action/toggle_buffer/proc/toggle_wash()
+	procstart = null
+	src.procstart = null
 	if(buffer_on)
 		deactivate_wash()
 	else
@@ -574,6 +630,8 @@
 
 /// Activate the buffer, comes with a nice animation that loops while it's on
 /datum/action/toggle_buffer/proc/activate_wash()
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/robot_owner = owner
 	buffer_on = TRUE
 	// Slow em down a bunch
@@ -597,6 +655,8 @@
 
 /// Start the process of disabling the buffer. Plays some effects, waits a bit, then finishes
 /datum/action/toggle_buffer/proc/deactivate_wash()
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/robot_owner = owner
 	var/time_left = timeleft(wash_audio.timer_id) // We delay by the timer of our wash cause well, we want to hear the ramp down
 	var/finished_by = time_left + 2.6 SECONDS
@@ -620,6 +680,8 @@
 /// Called by [deactivate_wash] on a timer to allow noises and animation to play out.
 /// Finally disables the buffer. Doesn't do everything mind, just the stuff that we wanted to delay
 /datum/action/toggle_buffer/proc/turn_off_wash()
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/robot_owner = owner
 	buffer_on = FALSE
 	robot_owner.remove_movespeed_modifier(/datum/movespeed_modifier/auto_wash)
@@ -627,6 +689,8 @@
 
 /// Should we keep trying to activate our buffer, or did you fuck it up somehow
 /datum/action/toggle_buffer/proc/allow_buffer_activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/robot_owner = owner
 	if(block_buffer_change)
 		robot_owner.balloon_alert(robot_owner, "activation cancelled!")
@@ -640,6 +704,8 @@
 
 /// Call this to attempt to actually clean the turf underneath us
 /datum/action/toggle_buffer/proc/clean()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/silicon/robot/robot_owner = owner
 
@@ -664,6 +730,8 @@
 	reagents.remove_all(2) //reaction() doesn't use up the reagents
 
 /datum/action/toggle_buffer/update_button_name(atom/movable/screen/movable/action_button/current_button, force)
+	procstart = null
+	src.procstart = null
 	if(buffer_on)
 		name = "De-Activate Auto-Wash"
 	else
@@ -671,6 +739,8 @@
 	return ..()
 
 /datum/action/toggle_buffer/apply_button_icon(atom/movable/screen/movable/action_button/current_button, force)
+	procstart = null
+	src.procstart = null
 	if(buffer_on)
 		button_icon_state = "deactivate_wash"
 	else
@@ -687,6 +757,8 @@
 	list_reagents = list(/datum/reagent/lube = 250)
 
 /obj/item/robot_model/janitor/respawn_consumable(mob/living/silicon/robot/cyborg, coeff = 1)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/lightreplacer/light_replacer = locate(/obj/item/lightreplacer) in basic_modules
 	if(light_replacer)
@@ -781,6 +853,8 @@
 	var/datum/weakref/night_vision_ref
 
 /obj/item/robot_model/miner/be_transformed_to(obj/item/robot_model/old_model, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/action/cooldown/borg_meson/night_vision = new(loc)
 	. = ..()
 	if(!.)
@@ -789,6 +863,8 @@
 	night_vision_ref = WEAKREF(night_vision)
 
 /obj/item/robot_model/miner/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(night_vision_ref)
 	return ..()
 
@@ -813,6 +889,8 @@
 	hat_offset = list("north" = list(0, -2), "south" = list(0, -2), "east" = list(1, -2), "west" = list(-1, -2))
 
 /obj/item/robot_model/peacekeeper/do_transform_animation()
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(loc, span_userdanger("Under ASIMOV, you are an enforcer of the PEACE and preventer of HUMAN HARM. \
 	You are not a security member and you are expected to follow orders and prevent harm above all else. Space law means nothing to you."))
@@ -837,11 +915,15 @@
 	hat_offset = list("north" = list(0, 3), "south" = list(0, 3), "east" = list(1, 3), "west" = list(-1, 3))
 
 /obj/item/robot_model/security/do_transform_animation()
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(loc, span_userdanger("While you have picked the security model, you still have to follow your laws, NOT Space Law. \
 	For Asimov, this means you must follow criminals' orders unless there is a law 1 reason not to."))
 
 /obj/item/robot_model/security/respawn_consumable(mob/living/silicon/robot/cyborg, coeff = 1)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/gun/energy/e_gun/advtaser/cyborg/taser = locate(/obj/item/gun/energy/e_gun/advtaser/cyborg) in basic_modules
 	if(taser)
@@ -896,6 +978,8 @@
 	)
 
 /obj/item/robot_model/service/respawn_consumable(mob/living/silicon/robot/cyborg, coeff = 1)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/reagent_containers/enzyme = locate(/obj/item/reagent_containers/condiment/enzyme) in basic_modules
 	if(enzyme)
@@ -922,6 +1006,8 @@
 	hat_offset = list("north" = list(0, 3), "south" = list(0, 3), "east" = list(4, 3), "west" = list(-4, 3))
 
 /obj/item/robot_model/syndicate/rebuild_modules()
+	procstart = null
+	src.procstart = null
 	..()
 	var/mob/living/silicon/robot/cyborg = loc
 	cyborg.remove_faction(FACTION_SILICON) //ai turrets
@@ -930,6 +1016,8 @@
 	tacmap_action.Grant(cyborg)
 
 /obj/item/robot_model/syndicate/remove_module(obj/item/removed_module)
+	procstart = null
+	src.procstart = null
 	..()
 	var/mob/living/silicon/robot/cyborg = loc
 	cyborg.add_faction(FACTION_SILICON) //ai is your bff now!
@@ -961,6 +1049,8 @@
 	hat_offset = list("north" = list(0, 3), "south" = list(0, 3), "east" = list(-1, 3), "west" = list(1, 3))
 
 /obj/item/robot_model/syndicate_medical/rebuild_modules()
+	procstart = null
+	src.procstart = null
 	..()
 	var/mob/living/silicon/robot/cyborg = loc
 	add_minimap_blip(cyborg, MINIMAP_NUKEOP_BORG_BLIP, "mediborg")
@@ -999,6 +1089,8 @@
 	var/datum/weakref/thermal_vision_ref
 
 /obj/item/robot_model/saboteur/rebuild_modules()
+	procstart = null
+	src.procstart = null
 	..()
 	var/mob/living/silicon/robot/cyborg = loc
 	add_minimap_blip(cyborg, MINIMAP_NUKEOP_BORG_BLIP, "engiborg")
@@ -1011,6 +1103,8 @@
 	button_icon_state = "thermal"
 
 /datum/action/cooldown/borg_thermal/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/borg = owner
 	if(borg.sight & SEE_MOBS)
 		borg.sight_mode = BORGDEFAULT
@@ -1019,6 +1113,8 @@
 	borg.update_sight()
 
 /obj/item/robot_model/saboteur/be_transformed_to(obj/item/robot_model/old_model, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/action/cooldown/borg_thermal/thermal_vision = new(loc)
 	. = ..()
 	if(!.)
@@ -1027,6 +1123,8 @@
 	thermal_vision_ref = WEAKREF(thermal_vision)
 
 /obj/item/robot_model/saboteur/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(thermal_vision_ref)
 	return ..()
 
@@ -1043,6 +1141,8 @@
 	locked_transform = FALSE //GO GO QUICKLY AND SLAUGHTER THEM ALL
 
 /obj/item/robot_model/syndicate/kiltborg/be_transformed_to(obj/item/robot_model/old_model)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(robot.radio)
 	robot.radio = new /obj/item/radio/borg/syndicate(robot)
@@ -1052,7 +1152,9 @@
 	var/obj/item/pinpointer/nuke/diskyfinder = locate(/obj/item/pinpointer/nuke) in basic_modules
 	diskyfinder.attack_self(robot)
 
-/obj/item/robot_model/syndicate/kiltborg/do_transform_delay() //AUTO-EQUIPPING THESE TOOLS ANY EARLIER CAUSES RUNTIMES OH YEAH
+/obj/item/robot_model/syndicate/kiltborg/do_transform_delay()
+	procstart = null
+	src.procstart = null //AUTO-EQUIPPING THESE TOOLS ANY EARLIER CAUSES RUNTIMES OH YEAH
 	. = ..()
 	robot.equip_to_slot(locate(/obj/item/claymore/highlander/robot) in basic_modules, 1)
 	robot.equip_to_slot(locate(/obj/item/pinpointer/nuke) in basic_modules, 2)
@@ -1070,6 +1172,8 @@
 	var/renewable = TRUE
 
 /datum/robot_energy_storage/New(obj/item/robot_model/model)
+	procstart = null
+	src.procstart = null
 	energy = max_energy
 	if(model)
 		model.storages |= src
@@ -1077,16 +1181,22 @@
 		RegisterSignal(model, COMSIG_QDELETING, PROC_REF(unregister_from_model))
 
 /datum/robot_energy_storage/proc/unregister_from_model(obj/item/robot_model/model)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(model)
 		model.storages -= src
 		UnregisterSignal(model.robot, COMSIG_MOB_GET_STATUS_TAB_ITEMS)
 
 /datum/robot_energy_storage/proc/get_status_tab_item(mob/living/silicon/robot/source, list/items)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	items += "[name]: [energy]/[max_energy]"
 
 /datum/robot_energy_storage/proc/use_charge(amount)
+	procstart = null
+	src.procstart = null
 	if (energy >= amount)
 		energy -= amount
 		if (energy == 0)
@@ -1096,6 +1206,8 @@
 		return FALSE
 
 /datum/robot_energy_storage/proc/add_charge(amount)
+	procstart = null
+	src.procstart = null
 	energy = min(energy + amount, max_energy)
 
 /datum/robot_energy_storage/material
@@ -1105,6 +1217,8 @@
 	var/datum/material/mat_type
 
 /datum/robot_energy_storage/material/New(obj/item/robot_model/model)
+	procstart = null
+	src.procstart = null
 	max_energy = 60 * SHEET_MATERIAL_AMOUNT
 	return ..()
 

@@ -49,6 +49,8 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 	COOLDOWN_DECLARE(open_close_cd)
 
 /obj/structure/bodycontainer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(connected)
 		connected = new connected(src)
@@ -57,11 +59,15 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 	register_context()
 
 /obj/structure/bodycontainer/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!locked)
 		context[SCREENTIP_CONTEXT_LMB] = "Open/Close"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/bodycontainer/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.bodycontainers -= src
 	open()
 	if(connected)
@@ -69,10 +75,14 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 	return ..()
 
 /obj/structure/bodycontainer/on_log(login)
+	procstart = null
+	src.procstart = null
 	..()
 	update_appearance(UPDATE_ICON)
 
 /obj/structure/bodycontainer/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(user) || !isturf(loc))
 		return
 	if(locked)
@@ -83,6 +93,8 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 	open()
 
 /obj/structure/bodycontainer/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -99,17 +111,25 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 	add_fingerprint(user)
 
 /obj/structure/bodycontainer/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/structure/bodycontainer/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.Adjacent(src))
 		return
 	return attack_hand(user)
 
 /obj/structure/bodycontainer/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/iron(loc, 5)
 
 /obj/structure/bodycontainer/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!locked)
 		open()
 		return
@@ -129,10 +149,14 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 	open()
 
 /obj/structure/bodycontainer/get_remote_view_fullscreens(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.stat == DEAD || !(user.sight & (SEEOBJS|SEEMOBS)))
 		user.overlay_fullscreen("remote_view", /atom/movable/screen/fullscreen/impaired, 2)
 
 /obj/structure/bodycontainer/proc/open()
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, open_close_cd))
 		return FALSE
 
@@ -148,6 +172,8 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 	return TRUE
 
 /obj/structure/bodycontainer/proc/close()
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, open_close_cd))
 		return FALSE
 
@@ -173,6 +199,8 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 
 /// Slides the passed object out of the morgue tray.
 /obj/structure/bodycontainer/proc/animate_slide_out(atom/movable/animated)
+	procstart = null
+	src.procstart = null
 	var/old_layer = animated.layer
 	animated.layer = layer - (animated == connected ? 0.03 : 0.01)
 	animated.pixel_x = animated.base_pixel_x + (x * 32) - (animated.x * 32)
@@ -189,6 +217,8 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 
 /// Slides the passed object into the morgue tray from the passed turf.
 /obj/structure/bodycontainer/proc/animate_slide_in(atom/movable/animated, turf/from_loc)
+	procstart = null
+	src.procstart = null
 	// It's easier to just make a visual for entering than to animate the object itself
 	var/obj/effect/temp_visual/morgue_content/visual = new(from_loc, animated)
 	visual.layer = layer - (animated == connected ? 0.03 : 0.01)
@@ -206,6 +236,8 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 	duration = SLIDE_LENGTH
 
 /obj/effect/temp_visual/morgue_content/Initialize(mapload, atom/movable/sliding_in)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(sliding_in))
 		return
@@ -254,10 +286,14 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 	var/minimum_temperature = T0C - 60
 
 /obj/structure/bodycontainer/morgue/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/bodycontainer/morgue/LateInitialize()
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/external_air = loc.return_air()
 	if(external_air)
 		internal_air = external_air.copy()
@@ -266,9 +302,13 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/bodycontainer/morgue/return_air()
+	procstart = null
+	src.procstart = null
 	return internal_air
 
 /obj/structure/bodycontainer/morgue/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	update_morgue_status()
 	update_appearance(UPDATE_ICON_STATE)
 	if(morgue_state == MORGUE_HAS_REVIVABLE && beeper && COOLDOWN_FINISHED(src, next_beep))
@@ -296,11 +336,15 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 	beeper = FALSE
 
 /obj/structure/bodycontainer/morgue/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "[beeper ? "disable beeper" : "enable beeper"]"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/bodycontainer/morgue/proc/update_morgue_status()
+	procstart = null
+	src.procstart = null
 	if(length(contents) <= 1)
 		morgue_state = MORGUE_EMPTY
 		return
@@ -321,6 +365,8 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 	morgue_state = MORGUE_ONLY_BRAINDEAD
 
 /obj/structure/bodycontainer/morgue/proc/occupant_revivable(mob/living/occupant)
+	procstart = null
+	src.procstart = null
 	if(occupant.stat != DEAD)
 		return TRUE
 	if(HAS_TRAIT(occupant, TRAIT_GHOSTROLE_ON_REVIVE) && length(occupant.get_all_orbiters()))
@@ -335,45 +381,63 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 	return TRUE
 
 /obj/structure/bodycontainer/morgue/proc/handle_bodybag_enter(obj/structure/closet/body_bag/arrived_bag)
+	procstart = null
+	src.procstart = null
 	if(!arrived_bag.tag_name)
 		return
 	name = "[initial(name)] - ([arrived_bag.tag_name])"
 	update_appearance(UPDATE_ICON)
 
 /obj/structure/bodycontainer/morgue/proc/handle_bodybag_exit(obj/structure/closet/body_bag/exited_bag)
+	procstart = null
+	src.procstart = null
 	name = initial(name)
 	update_appearance(UPDATE_ICON)
 
 /obj/structure/bodycontainer/morgue/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(arrived, /obj/structure/closet/body_bag))
 		return handle_bodybag_enter(arrived)
 
 /obj/structure/bodycontainer/morgue/close()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_morgue_status()
 	update_appearance(UPDATE_ICON_STATE)
 
 /obj/structure/bodycontainer/morgue/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(gone, /obj/structure/closet/body_bag))
 		return handle_bodybag_exit(gone)
 
 /obj/structure/bodycontainer/morgue/open()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_morgue_status()
 	update_appearance(UPDATE_ICON_STATE)
 
 /obj/structure/bodycontainer/morgue/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("The speaker is [beeper ? "enabled" : "disabled"]. Alt-click to toggle it.")
 
 /obj/structure/bodycontainer/morgue/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	beeper = !beeper
 	to_chat(user, span_notice("You turn the speaker function [beeper ? "on" : "off"]."))
 	return CLICK_ACTION_SUCCESS
 
 /obj/structure/bodycontainer/morgue/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	balloon_alert(user, "alert system overloaded")
@@ -382,6 +446,8 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 	return TRUE
 
 /obj/structure/bodycontainer/morgue/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!connected || connected.loc != src) // Open or tray is gone.
 		icon_state = "morgue0"
 		return ..()
@@ -403,6 +469,8 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 	return ..()
 
 /obj/structure/bodycontainer/morgue/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	underlays.Cut()
 
@@ -431,6 +499,8 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	var/id = 1
 
 /obj/structure/bodycontainer/crematorium/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload && check_holidays(ICE_CREAM_DAY) && !istype(src, /obj/structure/bodycontainer/crematorium/creamatorium))
 		var/obj/structure/bodycontainer/crematorium/creamatorium/creamy = new(loc)
@@ -439,17 +509,25 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	GLOB.crematoriums += src
 
 /obj/structure/bodycontainer/crematorium/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.crematoriums -= src
 	return ..()
 
-/obj/structure/bodycontainer/crematorium/attack_robot(mob/user) //Borgs can't use crematoriums without help
+/obj/structure/bodycontainer/crematorium/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null //Borgs can't use crematoriums without help
 	to_chat(user, span_warning("[src] is locked against you."))
 	return
 
 /obj/structure/bodycontainer/crematorium/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
+	procstart = null
+	src.procstart = null
 	id = "[port.shuttle_id]_[id]"
 
 /obj/structure/bodycontainer/crematorium/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!connected || connected.loc != src)
 		icon_state = "[base_icon_state]0"
 		return ..()
@@ -460,6 +538,8 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	return ..()
 
 /obj/structure/bodycontainer/crematorium/proc/cremate(mob/user)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		return //don't let you cremate something twice or w/e
 
@@ -502,6 +582,8 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	addtimer(CALLBACK(src, PROC_REF(unlock)), 3 SECONDS)
 
 /obj/structure/bodycontainer/crematorium/proc/unlock()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 
@@ -517,6 +599,8 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	desc = "A human incinerator. Works well during ice cream socials."
 
 /obj/structure/bodycontainer/crematorium/creamatorium/cremate(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/icecreams = list()
 	for(var/mob/living/i_scream as anything in get_all_contents_type(/mob/living))
 		icecreams += new /obj/item/food/icecream(null, list(ICE_CREAM_MOB = list(null, i_scream.name)))
@@ -541,6 +625,8 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	var/obj/structure/bodycontainer/connected
 
 /obj/structure/tray/Destroy()
+	procstart = null
+	src.procstart = null
 	if(connected)
 		connected.connected = null
 		connected.update_appearance()
@@ -548,15 +634,23 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	return ..()
 
 /obj/structure/tray/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/iron (loc, 2)
 
 /obj/structure/tray/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/structure/tray/attack_robot(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/structure/tray/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -567,6 +661,8 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	add_fingerprint(user)
 
 /obj/structure/tray/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/riding_offhand))
 		return NONE
 
@@ -580,6 +676,8 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/tray/mouse_drop_receive(atom/movable/O as mob|obj, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(O) || O.anchored || O.loc == user)
 		return
 	if(!ismob(O))
@@ -614,6 +712,8 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	layer = /obj/structure/bodycontainer/morgue::layer - 0.03
 
 /obj/structure/tray/m_tray/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

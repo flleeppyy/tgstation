@@ -43,10 +43,14 @@
 	wound = 10
 
 /obj/item/clothing/head/utility/hardhat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 
 /obj/item/clothing/head/utility/hardhat/proc/toggle_helmet_light(mob/living/user)
+	procstart = null
+	src.procstart = null
 	on = !on
 	if(on)
 		turn_on(user)
@@ -55,22 +59,32 @@
 	update_appearance()
 
 /obj/item/clothing/head/utility/hardhat/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = inhand_icon_state = "hardhat[on]_[hat_type]"
 	return ..()
 
 /obj/item/clothing/head/utility/hardhat/proc/turn_on(mob/user)
+	procstart = null
+	src.procstart = null
 	set_light_on(TRUE)
 
 /obj/item/clothing/head/utility/hardhat/proc/turn_off(mob/user)
+	procstart = null
+	src.procstart = null
 	set_light_on(FALSE)
 
 /obj/item/clothing/head/utility/hardhat/on_saboteur(datum/source, disrupt_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(on)
 		toggle_helmet_light()
 		return TRUE
 
 /obj/item/clothing/head/utility/hardhat/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	toggle_helmet_light(user)
 
 /obj/item/clothing/head/utility/hardhat/orange
@@ -137,21 +151,29 @@
 	var/visor_state = "weldvisor"
 
 /obj/item/clothing/head/utility/hardhat/welding/attack_self_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	adjust_visor(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/clothing/head/utility/hardhat/welding/ui_action_click(mob/user, actiontype)
+	procstart = null
+	src.procstart = null
 	if(istype(actiontype, /datum/action/item_action/toggle_welding_screen))
 		adjust_visor(user)
 		return
 	return ..()
 
 /obj/item/clothing/head/utility/hardhat/welding/adjust_visor(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		playsound(src, up ? SFX_VISOR_UP : SFX_VISOR_DOWN, 50, TRUE)
 
 /obj/item/clothing/head/utility/hardhat/welding/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isinhands)
 		return
@@ -160,6 +182,8 @@
 		. += mutable_appearance('icons/mob/clothing/head/utility.dmi', visor_state)
 
 /obj/item/clothing/head/utility/hardhat/welding/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!up)
 		. += visor_state
@@ -168,6 +192,8 @@
 	up = TRUE // for calls to worn_overlays before init (prefs)
 
 /obj/item/clothing/head/utility/hardhat/welding/up/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	up = FALSE
 	visor_toggling()
@@ -193,6 +219,8 @@
 	up = TRUE // for calls to worn_overlays before init (prefs)
 
 /obj/item/clothing/head/utility/hardhat/welding/white/up/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	up = FALSE
 	visor_toggling()
@@ -224,6 +252,8 @@
 	visor_state = "weldvisor_atmos"
 
 /obj/item/clothing/head/utility/hardhat/welding/atmos/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "[icon_state]-emissive", src, alpha = src.alpha, effect_type = EMISSIVE_SPECULAR)
@@ -252,10 +282,14 @@
 	equip_sound = null
 
 /obj/item/clothing/head/utility/hardhat/pumpkinhead/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, 3)
 
 /obj/item/clothing/head/utility/hardhat/pumpkinhead/set_light_on(new_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.))
 		return
@@ -266,20 +300,28 @@
 	update_icon(UPDATE_OVERLAYS)
 
 /obj/item/clothing/head/utility/hardhat/pumpkinhead/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(light_on)
 		. += emissive_appearance(icon, "carved_pumpkin-emissive", src, alpha = src.alpha)
 
 /obj/item/clothing/head/utility/hardhat/pumpkinhead/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(light_on && !isinhands)
 		. += emissive_appearance(icon_file, "carved_pumpkin-emissive", src, alpha = src.alpha)
 
 /obj/item/clothing/head/utility/hardhat/pumpkinhead/turn_on(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	dog_fashion = /datum/dog_fashion/head/pumpkin/lit
 
 /obj/item/clothing/head/utility/hardhat/pumpkinhead/turn_off(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	dog_fashion = /datum/dog_fashion/head/pumpkin/unlit
 
@@ -293,10 +335,14 @@
 	dog_fashion = /datum/dog_fashion/head/blumpkin/unlit
 
 /obj/item/clothing/head/utility/hardhat/pumpkinhead/blumpkin/turn_on(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	dog_fashion = /datum/dog_fashion/head/blumpkin/lit
 
 /obj/item/clothing/head/utility/hardhat/pumpkinhead/blumpkin/turn_off(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	dog_fashion = /datum/dog_fashion/head/blumpkin/unlit
 

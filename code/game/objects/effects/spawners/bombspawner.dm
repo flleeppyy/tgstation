@@ -19,6 +19,8 @@
  * * assembly - An assembly typepath to add to the ttv.
  */
 /obj/effect/spawner/newbomb/Initialize(mapload, assembly = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/transfer_valve/ttv = new(loc)
 	ttv.tank_one = new /obj/item/tank/internals/plasma (ttv)
@@ -35,11 +37,15 @@
 	ttv.update_appearance()
 
 /obj/effect/spawner/newbomb/proc/calculate_pressure(datum/gas_mixture/gasmix, pressure)
+	procstart = null
+	src.procstart = null
 	return pressure * gasmix.volume/(R_IDEAL_GAS_EQUATION*gasmix.temperature)
 
 /obj/effect/spawner/newbomb/plasma
 
 /obj/effect/spawner/newbomb/plasma/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!first_gasmix || !second_gasmix)
 		return
@@ -53,6 +59,8 @@
 /obj/effect/spawner/newbomb/tritium
 
 /obj/effect/spawner/newbomb/tritium/Initialize(mapload, obj/item/assembly)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!first_gasmix || !second_gasmix)
 		return
@@ -68,6 +76,8 @@
 /obj/effect/spawner/newbomb/isolated_tritium
 
 /obj/effect/spawner/newbomb/isolated_tritium/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!first_gasmix || !second_gasmix)
 		return
@@ -83,6 +93,8 @@
 /obj/effect/spawner/newbomb/noblium
 
 /obj/effect/spawner/newbomb/noblium/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!first_gasmix || !second_gasmix)
 		return
@@ -96,6 +108,8 @@
 /obj/effect/spawner/newbomb/pressure
 
 /obj/effect/spawner/newbomb/pressure/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!first_gasmix || !second_gasmix)
 		return

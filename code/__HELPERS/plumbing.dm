@@ -6,6 +6,8 @@
  * * ducting_layer - the ducting layer to check for. pass -ve value when you are checking for overlapping machines
 */
 /proc/ducting_layer_check(atom/destination, ducting_layer)
+	procstart = null
+	src.procstart = null
 	. = null
 
 	var/is_machine = FALSE

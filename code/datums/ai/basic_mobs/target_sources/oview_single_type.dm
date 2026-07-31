@@ -4,6 +4,8 @@
  */
 #define OVIEW_TARGET_SOURCE(subtype, path) \
 /datum/target_source/oview_single_type/##subtype/collect_candidates(mob/living/pawn, datum/ai_controller/controller, range) { \
+	procstart = null; \
+	src.procstart = null; \
 	var/list/candidates = list(); \
 	for(var/##path/candidate in oview(range, pawn)) { \
 		candidates += candidate; \

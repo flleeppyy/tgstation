@@ -19,6 +19,8 @@
 	customization_options = list(/datum/preference/color/paint_color)
 
 /datum/quirk/item_quirk/tagger/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/obj/item/toy/crayon/spraycan/can = new
 	can.set_painting_tool_color(client_source?.prefs.read_preference(/datum/preference/color/paint_color))
 	give_item_to_holder(can, list(LOCATION_BACKPACK, LOCATION_HANDS))

@@ -33,6 +33,8 @@
 	var/datum/component/boomerang/boomerang_component
 
 /obj/item/melee/cultblade/dagger/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_MOVABLE_IMPACT_ZONE, PROC_REF(on_impact_zone))
 	var/image/silicon_image = image(icon = 'icons/effects/blood.dmi' , icon_state = null, loc = src)
@@ -48,10 +50,14 @@ Striking a noncultist, however, will tear their flesh."}
 	AddComponent(/datum/component/cult_ritual_item, span_cult(examine_text))
 
 /obj/item/melee/cultblade/dagger/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(boomerang_component)
 	return ..()
 
 /obj/item/melee/cultblade/dagger/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	var/block_message = "[owner] parries [attack_text] with [src]"
 	if(owner.get_active_held_item() != src)
 		block_message = "[owner] parries [attack_text] with [src] in their offhand"
@@ -64,6 +70,8 @@ Striking a noncultist, however, will tear their flesh."}
 		return FALSE
 
 /obj/item/melee/cultblade/dagger/on_thrown(mob/living/carbon/user, atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -77,6 +85,8 @@ Striking a noncultist, however, will tear their flesh."}
 
 ///Called when the dagger is impacting someone, we cancel if the person hit isn't the person who threw us, if we're boomeranging.
 /obj/item/melee/cultblade/dagger/proc/on_impact_zone(atom/source, mob/living/hitby, zone, blocked, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/thrower = throwingdatum?.get_thrower()
@@ -114,6 +124,8 @@ Striking a noncultist, however, will tear their flesh."}
 	var/list/alt_simple = list("stab", "pierce", "impale")
 
 /obj/item/melee/cultblade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/butchering, \
 		speed = 4 SECONDS, \
@@ -125,6 +137,8 @@ Striking a noncultist, however, will tear their flesh."}
 	ADD_TRAIT(src, TRAIT_CONTRABAND, INNATE_TRAIT)
 
 /obj/item/melee/cultblade/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(attack_type == OVERWHELMING_ATTACK)
 		return FALSE
 
@@ -136,6 +150,8 @@ Striking a noncultist, however, will tear their flesh."}
 		return FALSE
 
 /obj/item/melee/cultblade/attack(mob/living/target, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!IS_CULTIST(user) && !free_use)
 		user.Paralyze(100)
 		user.dropItemToGround(src, TRUE)
@@ -237,6 +253,8 @@ Striking a noncultist, however, will tear their flesh."}
 	actions_types = list(/datum/action/item_action/haunted_blade)
 
 /obj/item/melee/cultblade/haunted/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/examine_text = ""
@@ -253,6 +271,8 @@ Striking a noncultist, however, will tear their flesh."}
 	button_icon_state = "spirit_sealed"
 
 /datum/action/item_action/haunted_blade/apply_button_icon(atom/movable/screen/movable/action_button/button, force)
+	procstart = null
+	src.procstart = null
 	var/obj/item/melee/cultblade/haunted/blade = target
 	if(istype(blade))
 		button_icon_state = "spirit_[blade.bound ? "sealed" : "unsealed"]"
@@ -261,6 +281,8 @@ Striking a noncultist, however, will tear their flesh."}
 	return ..()
 
 /obj/item/melee/cultblade/haunted/ui_action_click(mob/living/user, actiontype)
+	procstart = null
+	src.procstart = null
 	if(DOING_INTERACTION_WITH_TARGET(user, src))
 		return // gtfo
 	if(bound)
@@ -279,6 +301,8 @@ Striking a noncultist, however, will tear their flesh."}
 	return
 
 /obj/item/melee/cultblade/haunted/proc/on_priest_handle(mob/living/user, actiontype)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_cult_bold("You begin chanting the holy hymns of [GLOB.deity]..."),\
 		span_cult_bold("[user] begins chanting while holding [src] aloft..."))
 	if(!do_after(user, 6 SECONDS, src))
@@ -288,6 +312,8 @@ Striking a noncultist, however, will tear their flesh."}
 	return TRUE
 
 /obj/item/melee/cultblade/haunted/proc/on_cultist_handle(mob/living/user, actiontype)
+	procstart = null
+	src.procstart = null
 	var/binding_implements = list(/obj/item/melee/cultblade/dagger, /obj/item/melee/sickly_blade/cursed)
 	if(!user.is_holding_item_of_types(binding_implements))
 		to_chat(user, span_notice("You need to hold a ritual dagger to bind [src]!"))
@@ -302,6 +328,8 @@ Striking a noncultist, however, will tear their flesh."}
 	return TRUE
 
 /obj/item/melee/cultblade/haunted/proc/on_heresy_handle(mob/living/user, actiontype)
+	procstart = null
+	src.procstart = null
 	// todo make the former a subtype of latter
 	var/binding_implements = list(/obj/item/clothing/neck/eldritch_amulet, /obj/item/clothing/neck/heretic_focus)
 	if(!user.is_holding_item_of_types(binding_implements))
@@ -315,6 +343,8 @@ Striking a noncultist, however, will tear their flesh."}
 	return TRUE
 
 /obj/item/melee/cultblade/haunted/proc/on_wizard_handle(mob/living/user, actiontype)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_cult_bold("You begin quickly and nimbly casting the sealing runes."), span_cult_bold("[user] begins tracing anti-light runes on [src]..."))
 	if(!do_after(user, 3 SECONDS, src))
 		to_chat(user, span_notice("You were interrupted!"))
@@ -322,6 +352,8 @@ Striking a noncultist, however, will tear their flesh."}
 	return TRUE
 
 /obj/item/melee/cultblade/haunted/proc/on_normie_handle(mob/living/user, actiontype)
+	procstart = null
+	src.procstart = null
 	// todo make the former a subtype of latter
 	var/binding_implements = list(/obj/item/book/bible)
 	if(!user.is_holding_item_of_types(binding_implements))
@@ -337,6 +369,8 @@ Striking a noncultist, however, will tear their flesh."}
 	rebind_blade(user)
 
 /obj/item/melee/cultblade/haunted/proc/unbind_blade(mob/user)
+	procstart = null
+	src.procstart = null
 	var/holup = tgui_alert(user, "Are you sure you wish to unseal the spirit within?", "Sealed Evil In A Jar", list("I need the power!", "Maybe not..."))
 	if(holup != "I need the power!")
 		return
@@ -360,6 +394,8 @@ Striking a noncultist, however, will tear their flesh."}
 	binding_filters_update()
 
 /obj/item/melee/cultblade/haunted/proc/rebind_blade(mob/user)
+	procstart = null
+	src.procstart = null
 	visible_message(span_danger("[user] has bound [src]!"))
 	bound = TRUE
 	force -= 5
@@ -376,6 +412,8 @@ Striking a noncultist, however, will tear their flesh."}
 	binding_filters_update()
 
 /obj/item/melee/cultblade/haunted/Initialize(mapload, mob/soul_to_bind, mob/awakener, do_bind = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_CASTABLE_LOC, TRAIT_SPELLS_TRANSFER_TO_LOC), INNATE_TRAIT)
 	if(do_bind && !mapload)
@@ -384,6 +422,8 @@ Striking a noncultist, however, will tear their flesh."}
 	addtimer(CALLBACK(src, PROC_REF(start_glow_loop)), rand(0.1 SECONDS, 1.9 SECONDS))
 
 /obj/item/melee/cultblade/haunted/proc/bind_soul(mob/soul_to_bind, mob/awakener)
+	procstart = null
+	src.procstart = null
 
 	var/datum/mind/trapped_mind = soul_to_bind?.mind
 
@@ -449,6 +489,8 @@ Striking a noncultist, however, will tear their flesh."}
 	binding_filters_update()
 
 /obj/item/melee/cultblade/haunted/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((!(slot & ITEM_SLOT_HANDS)) || bound)
 		return
@@ -457,12 +499,16 @@ Striking a noncultist, however, will tear their flesh."}
 	binding_filters_update()
 
 /obj/item/melee/cultblade/haunted/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/action/cooldown/spell/wielder_spell in path_wielder_actions)
 		wielder_spell.Remove(user)
 	binding_filters_update()
 
 /obj/item/melee/cultblade/haunted/proc/binding_filters_update(mob/user)
+	procstart = null
+	src.procstart = null
 
 	var/h_color = heretic_path ? GLOB.heretic_path_to_color[heretic_path] : "#FF00FF"
 
@@ -487,6 +533,8 @@ Striking a noncultist, however, will tear their flesh."}
 	animate(offset = 0, time = 2 MINUTES) // I sure hope duration of animate doesnt have any performance effect
 
 /obj/item/melee/cultblade/haunted/proc/start_glow_loop()
+	procstart = null
+	src.procstart = null
 	var/filter = get_filter("bind_glow")
 	if (!filter)
 		return
@@ -507,10 +555,14 @@ Striking a noncultist, however, will tear their flesh."}
 	block_sound = 'sound/items/weapons/parry.ogg'
 
 /obj/item/melee/cultblade/ghost/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CULT_TRAIT)
 
 /obj/item/melee/cultblade/pickup(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!IS_CULTIST(user) && !free_use)
 		to_chat(user, span_cult_large("\"I wouldn't advise that.\""))
@@ -527,6 +579,8 @@ Striking a noncultist, however, will tear their flesh."}
 	phaseout = /obj/effect/temp_visual/dir_setting/cult/phase/out
 
 /datum/action/innate/dash/cult/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	if(IS_CULTIST(owner) && current_charges)
 		return TRUE
 	else
@@ -542,6 +596,8 @@ Striking a noncultist, however, will tear their flesh."}
 
 #define CULT_BOLA_PICKUP_STUN (6 SECONDS)
 /obj/item/restraints/legcuffs/bola/cult/attack_hand(mob/living/carbon/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(IS_CULTIST(user) || !iscarbon(user))
@@ -559,6 +615,8 @@ Striking a noncultist, however, will tear their flesh."}
 
 
 /obj/item/restraints/legcuffs/bola/cult/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	var/mob/hit_mob = hit_atom
 	if (istype(hit_mob) && IS_CULTIST(hit_mob))
 		return
@@ -575,6 +633,8 @@ Striking a noncultist, however, will tear their flesh."}
 	prefix = "darkened"
 
 /obj/item/sharpener/cult/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "cult_sharpener[(uses == 0) ? "_used" : ""]"
 	return ..()
 
@@ -590,6 +650,8 @@ Striking a noncultist, however, will tear their flesh."}
 	can_lid = FALSE
 
 /obj/item/reagent_containers/cup/beaker/unholywater/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CONTRABAND, INNATE_TRAIT)
 
@@ -609,6 +671,8 @@ Striking a noncultist, however, will tear their flesh."}
 	var/static/list/remaining_curses
 
 /obj/item/shuttle_curse/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!IS_CULTIST(user))
 		user.dropItemToGround(src, TRUE)
 		user.Paralyze(100)
@@ -680,6 +744,8 @@ Striking a noncultist, however, will tear their flesh."}
 	light_color = COLOR_CULT_RED
 
 /obj/item/proteon_orb/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!IS_CULTIST(user) && isliving(user))
 		var/mob/living/living_user = user
@@ -689,6 +755,8 @@ Striking a noncultist, however, will tear their flesh."}
 		. += span_cult("It can be used to create a gateway to Nar'Sie's domain, which will summon weak, sentient constructs over time.")
 
 /obj/item/proteon_orb/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 
 	var/list/turfs_to_scan = detect_room(get_turf(user), max_size = GATEWAY_TURF_SCAN_RANGE)
 
@@ -715,6 +783,8 @@ Striking a noncultist, however, will tear their flesh."}
  * If activated by a non-cultist, they get an unusual game over.
 */
 /turf/open/proc/quake_gateway(mob/living/user)
+	procstart = null
+	src.procstart = null
 	Shake(2, 2, 5 SECONDS)
 	narsie_act(TRUE, TRUE, 100)
 	var/fucked = FALSE
@@ -750,6 +820,8 @@ Striking a noncultist, however, will tear their flesh."}
 	var/uses = 4
 
 /obj/item/cult_shift/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(uses)
 		. += span_cult("It has [uses] use\s remaining.")
@@ -758,6 +830,8 @@ Striking a noncultist, however, will tear their flesh."}
 
 ///Handles teleporting the atom we're pulling along with us when using the shifter
 /obj/item/cult_shift/proc/handle_teleport_grab(turf/target_turf, mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/pulling_user = user
 	if(pulling_user.pulling)
 		var/atom/movable/pulled = pulling_user.pulling
@@ -765,6 +839,8 @@ Striking a noncultist, however, will tear their flesh."}
 		. = pulled
 
 /obj/item/cult_shift/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!uses || !iscarbon(user))
 		to_chat(user, span_warning("\The [src] is dull and unmoving in your hands."))
 		return
@@ -825,6 +901,8 @@ Striking a noncultist, however, will tear their flesh."}
 	var/datum/action/innate/cult/halberd/halberd_act
 
 /obj/item/melee/cultblade/halberd/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/butchering, \
 		speed = 10 SECONDS, \
@@ -836,16 +914,22 @@ Striking a noncultist, however, will tear their flesh."}
 	)
 
 /obj/item/melee/cultblade/halberd/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = HAS_TRAIT(src, TRAIT_WIELDED) ? "[base_icon_state]1" : "[base_icon_state]0"
 	inhand_icon_state = HAS_TRAIT(src, TRAIT_WIELDED) ? "[base_icon_state]1" : "[base_icon_state]0"
 	return ..()
 
 /obj/item/melee/cultblade/halberd/Destroy()
+	procstart = null
+	src.procstart = null
 	if(halberd_act)
 		QDEL_NULL(halberd_act)
 	return ..()
 
 /obj/item/melee/cultblade/halberd/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(hit_atom)
 	if(isliving(hit_atom))
 		var/mob/living/target = hit_atom
@@ -864,6 +948,8 @@ Striking a noncultist, however, will tear their flesh."}
 		..()
 
 /obj/item/melee/cultblade/halberd/proc/break_halberd(turf/T)
+	procstart = null
+	src.procstart = null
 	if(src)
 		if(!T)
 			T = get_turf(src)
@@ -875,6 +961,8 @@ Striking a noncultist, however, will tear their flesh."}
 	qdel(src)
 
 /obj/item/melee/cultblade/halberd/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(attack_type == OVERWHELMING_ATTACK)
 		return FALSE
 	if(HAS_TRAIT(src, TRAIT_WIELDED))
@@ -898,10 +986,14 @@ Striking a noncultist, however, will tear their flesh."}
 	var/cooldown = 0
 
 /datum/action/innate/cult/halberd/Grant(mob/user, obj/blood_halberd)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	halberd = blood_halberd
 
 /datum/action/innate/cult/halberd/Activate()
+	procstart = null
+	src.procstart = null
 	if(owner == halberd.loc || cooldown > world.time)
 		return
 	var/halberd_location = get_turf(halberd)
@@ -936,12 +1028,16 @@ Striking a noncultist, however, will tear their flesh."}
 	impact_effect_type = /obj/effect/temp_visual/dir_setting/bloodsplatter
 
 /obj/projectile/magic/arcane_barrage/blood/Bump(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/our_turf = get_turf(target)
 	playsound(our_turf , 'sound/effects/splat.ogg', 50, TRUE)
 	new /obj/effect/temp_visual/cult/sparks(our_turf)
 
 /obj/projectile/magic/arcane_barrage/blood/prehit_pierce(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismob(target))
 		return PROJECTILE_PIERCE_NONE
@@ -977,13 +1073,19 @@ Striking a noncultist, however, will tear their flesh."}
 	var/angle
 
 /obj/item/blood_beam/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CULT_TRAIT)
 
 /obj/item/blood_beam/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/blood_beam/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(firing || charging)
 		return ITEM_INTERACT_BLOCKING
 	if(!ishuman(user))
@@ -1009,6 +1111,8 @@ Striking a noncultist, however, will tear their flesh."}
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/blood_beam/proc/charge(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/O
 	playsound(src, 'sound/effects/magic/lightning_chargeup.ogg', 100, TRUE)
 	for(var/i in 1 to 12)
@@ -1025,6 +1129,8 @@ Striking a noncultist, however, will tear their flesh."}
 		qdel(O)
 
 /obj/item/blood_beam/proc/pewpew(mob/user, proximity_flag)
+	procstart = null
+	src.procstart = null
 	var/turf/targets_from = get_turf(src)
 	var/spread = 40
 	var/second = FALSE
@@ -1095,6 +1201,8 @@ Striking a noncultist, however, will tear their flesh."}
 	var/illusions = 2
 
 /obj/item/shield/mirror/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(!IS_CULTIST(owner))
 		if(prob(50))
 			var/mob/living/basic/illusion/bizarro = new(owner.loc)
@@ -1135,17 +1243,23 @@ Striking a noncultist, however, will tear their flesh."}
 
 
 /obj/item/shield/mirror/proc/readd()
+	procstart = null
+	src.procstart = null
 	illusions++
 	if(illusions == initial(illusions) && isliving(loc))
 		var/mob/living/holder = loc
 		to_chat(holder, span_cult_italic("The shield's illusions are back at full strength!"))
 
 /obj/item/shield/mirror/IsReflect()
+	procstart = null
+	src.procstart = null
 	if(prob(block_chance))
 		return TRUE
 	return FALSE
 
 /obj/item/shield/mirror/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(isliving(hit_atom))
 		var/mob/living/target = hit_atom
 

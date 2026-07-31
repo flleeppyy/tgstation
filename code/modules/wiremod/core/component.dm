@@ -71,17 +71,25 @@
 
 /// Called when the option ports should be set up
 /obj/item/circuit_component/proc/populate_options()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called when the rest of the ports should be set up
 /obj/item/circuit_component/proc/populate_ports()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Extension of add_input_port. Simplifies the code to make an option port to reduce boilerplate
 /obj/item/circuit_component/proc/add_option_port(name, list/list_to_use, order = 0, trigger = PROC_REF(input_received))
+	procstart = null
+	src.procstart = null
 	return add_input_port(name, PORT_TYPE_OPTION, order = order, trigger = trigger, port_type = /datum/port/input/option, extra_args = list("possible_options" = list_to_use))
 
 /obj/item/circuit_component/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(name == COMPONENT_DEFAULT_NAME)
 		name = "[LOWER_TEXT(display_name)] [COMPONENT_DEFAULT_NAME]"
@@ -94,6 +102,8 @@
 	update_ui_alerts()
 
 /obj/item/circuit_component/Destroy()
+	procstart = null
+	src.procstart = null
 	if(parent)
 		// Prevents a Destroy() recursion
 		var/obj/item/integrated_circuit/old_parent = parent
@@ -108,17 +118,23 @@
 	return ..()
 
 /obj/item/circuit_component/drop_location()
+	procstart = null
+	src.procstart = null
 	if(parent?.shell)
 		return parent.shell.drop_location()
 	return ..()
 
 /obj/item/circuit_component/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(circuit_flags & CIRCUIT_FLAG_REFUSE_MODULE)
 		. += span_notice("It's incompatible with module components.")
 
 /// updates the ui alerts in the given component. new_flag adds flags, remove_flag removes them
 /obj/item/circuit_component/proc/update_ui_alerts(new_flag, remove_flag)
+	procstart = null
+	src.procstart = null
 	if(new_flag)
 		circuit_flags |= new_flag
 	if(remove_flag)
@@ -140,6 +156,8 @@
  * * shell - Shell being registered
  */
 /obj/item/circuit_component/proc/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -150,6 +168,8 @@
  * * shell - Shell being unregistered
  */
 /obj/item/circuit_component/proc/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -158,6 +178,8 @@
  * Disconnects both the input and output ports of the component
  */
 /obj/item/circuit_component/proc/disconnect()
+	procstart = null
+	src.procstart = null
 	for(var/datum/port/output/port_to_disconnect as anything in output_ports)
 		port_to_disconnect.disconnect_all()
 
@@ -173,6 +195,8 @@
  * * trigger - Whether this input port triggers an update on the component when updated.
  */
 /obj/item/circuit_component/proc/add_input_port(name, type, order = 1, trigger = PROC_REF(input_received), default = null, port_type = /datum/port/input, extra_args = null)
+	procstart = null
+	src.procstart = null
 	var/list/arguments = list(src)
 	arguments += args
 	if(extra_args)
@@ -191,6 +215,8 @@
  * * input_port - The input port to remove.
  */
 /obj/item/circuit_component/proc/remove_input_port(datum/port/input/input_port)
+	procstart = null
+	src.procstart = null
 	input_ports -= input_port
 	qdel(input_port)
 	if(parent)
@@ -205,6 +231,8 @@
  * * type - The datatype it handles.
  */
 /obj/item/circuit_component/proc/add_output_port(name, type, order = 1)
+	procstart = null
+	src.procstart = null
 	var/list/arguments = list(src)
 	arguments += args
 	var/datum/port/output/output_port = new(arglist(arguments))
@@ -221,6 +249,8 @@
  * * output_port - The output port to remove.
  */
 /obj/item/circuit_component/proc/remove_output_port(datum/port/output/output_port)
+	procstart = null
+	src.procstart = null
 	output_ports -= output_port
 	qdel(output_port)
 	if(parent)
@@ -237,6 +267,8 @@
  * * return_values - Only defined if the component is receiving an input due to instant execution. Contains the values to be returned once execution has stopped.
  */
 /obj/item/circuit_component/proc/trigger_component(datum/port/input/port, list/return_values)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 	pre_input_received(port)
 	if(!should_receive_input(port))
@@ -259,6 +291,8 @@
 	return TRUE
 
 /obj/item/circuit_component/proc/set_circuit_size(new_size)
+	procstart = null
+	src.procstart = null
 	if(parent)
 		parent.current_size -= circuit_size
 
@@ -278,6 +312,8 @@
  * * port - Can be null. The port that sent the input
  */
 /obj/item/circuit_component/proc/should_receive_input(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 	if(!parent?.on)
 		return FALSE
@@ -300,9 +336,13 @@
 
 /// Called when trying to get the physical location of this object
 /obj/item/circuit_component/proc/get_location()
+	procstart = null
+	src.procstart = null
 	return get_turf(src) || get_turf(parent?.shell)
 
 /obj/item/circuit_component/balloon_alert(mob/viewer, text)
+	procstart = null
+	src.procstart = null
 	if(parent)
 		return parent.balloon_alert(viewer, text)
 	return ..()
@@ -310,6 +350,8 @@
 
 /// Called before input_received and should_receive_input. Used to perform behaviour that shouldn't care whether the input should be received or not.
 /obj/item/circuit_component/proc/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 	return
 
@@ -322,17 +364,23 @@
  * * return_values - Only defined if the component is receiving an input due to instant execution. Contains the values to be returned once execution has stopped.
  */
 /obj/item/circuit_component/proc/input_received(datum/port/input/port, list/return_values)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 	return
 
 /// Called when this component is about to be added to an integrated_circuit.
 /obj/item/circuit_component/proc/add_to(obj/item/integrated_circuit/added_to)
+	procstart = null
+	src.procstart = null
 	if(circuit_flags & CIRCUIT_FLAG_ADMIN)
 		ADD_TRAIT(added_to, TRAIT_CIRCUIT_UNDUPABLE, REF(src))
 	return TRUE
 
 /// Called when this component is removed from an integrated_circuit.
 /obj/item/circuit_component/proc/removed_from(obj/item/integrated_circuit/removed_from)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(removed_from, TRAIT_CIRCUIT_UNDUPABLE, REF(src))
 	return
 
@@ -347,6 +395,8 @@
  * )
  */
 /obj/item/circuit_component/proc/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	if(circuit_flags & CIRCUIT_FLAG_INSTANT)
@@ -372,6 +422,8 @@
  * * action - A string for which action is being performed. No parameters passed because it's only a button press.
  */
 /obj/item/circuit_component/proc/ui_perform_action(mob/user, action)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -380,6 +432,8 @@
  * Returns a list that can then be added to the return list in get_ui_notices()
  */
 /obj/item/circuit_component/proc/create_ui_notice(content, color, icon)
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	return list(list(
@@ -389,6 +443,8 @@
 	))
 
 /obj/item/circuit_component/ui_host(mob/user)
+	procstart = null
+	src.procstart = null
 	if(parent)
 		return parent.ui_host()
 	return ..()
@@ -400,6 +456,8 @@
  * Used by components to list their available columns. Recommended to use at the end of get_ui_notices()
  */
 /obj/item/circuit_component/proc/create_table_notices(list/entries, column_name = "Column", column_name_plural = "Columns")
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	. = list()
@@ -416,6 +474,8 @@
  * * shell - The object that USB cables can connect to
  */
 /obj/item/circuit_component/proc/register_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -425,6 +485,8 @@
  * * shell - The object that USB cables can connect to
  */
 /obj/item/circuit_component/proc/unregister_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -436,4 +498,6 @@
  * * signal_type - The signal type used for sending this global signal (optional, default is COMSIG_GLOB_CIRCUIT_NTNET_DATA_SENT)
  */
 /obj/item/circuit_component/proc/send_ntnet_data(datum/port/input/port, key, signal_type = COMSIG_GLOB_CIRCUIT_NTNET_DATA_SENT)
+	procstart = null
+	src.procstart = null
 	SEND_GLOBAL_SIGNAL(signal_type, list("data" = port.value, "enc_key" = key, "port" = WEAKREF(port)))

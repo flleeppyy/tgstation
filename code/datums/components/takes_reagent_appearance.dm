@@ -44,14 +44,20 @@
 	src.base_container_type = base_container_type || parent.type
 
 /datum/component/takes_reagent_appearance/Destroy(force)
+	procstart = null
+	src.procstart = null
 	on_icon_changed = null
 	on_icon_reset = null
 	return ..()
 
 /datum/component/takes_reagent_appearance/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_UPDATE_APPEARANCE, PROC_REF(on_update_appearance))
 
 /datum/component/takes_reagent_appearance/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_ATOM_UPDATE_APPEARANCE)
 	if(QDELING(parent))
 		return
@@ -68,6 +74,8 @@
 /// We hook into the update appearance proc to perform our own update based on our glass style
 /// Preventing any further updates down the line on successes
 /datum/component/takes_reagent_appearance/proc/on_update_appearance(datum/source, updates)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	. = NONE
@@ -89,6 +97,8 @@
  * * Returns [NONE] if the name was reset to initial state
  */
 /datum/component/takes_reagent_appearance/proc/update_name(datum/glass_style/style)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(parent, TRAIT_WAS_RENAMED))
 		return NONE
 
@@ -111,6 +121,8 @@
  * * Returns [NONE] if the description was reset to initial state
  */
 /datum/component/takes_reagent_appearance/proc/update_desc(datum/glass_style/style)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(parent, TRAIT_WAS_RENAMED))
 		return NONE
 
@@ -132,6 +144,8 @@
  * * Returns [NONE] if the icon or icon state was reset to base state
  */
 /datum/component/takes_reagent_appearance/proc/update_icon(datum/glass_style/style)
+	procstart = null
+	src.procstart = null
 	var/obj/item/item_parent = parent
 	if(isnull(style))
 		// no style (reset)
@@ -155,6 +169,8 @@
  * * Otherwise returns a glass style datum
  */
 /datum/component/takes_reagent_appearance/proc/get_main_reagent_style()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/glass_style)
 
 	var/obj/item/item_parent = parent

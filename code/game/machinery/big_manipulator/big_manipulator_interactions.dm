@@ -1,5 +1,7 @@
 /// We have no tasks to execute for some reason. Waits for a turf signal to retry.
 /obj/machinery/big_manipulator/proc/nothing_ever_happens()
+	procstart = null
+	src.procstart = null
 	if(stopping)
 		complete_stopping_task()
 		return FALSE
@@ -12,11 +14,15 @@
 
 /// A signal ran or some settings changed; checking if we can run the tasks now.
 /obj/machinery/big_manipulator/proc/something_happened()
+	procstart = null
+	src.procstart = null
 	next_cycle_scheduled = FALSE
 	step_tasks()
 
 /// Runs the next task. Or doesn't.
 /obj/machinery/big_manipulator/proc/step_tasks()
+	procstart = null
+	src.procstart = null
 	if(!on || stopping)
 		return
 	next_cycle_scheduled = FALSE
@@ -36,6 +42,8 @@
 
 /// Attempts to launch the work cycle. Should only be ran on pressing the "Run" button.
 /obj/machinery/big_manipulator/proc/try_kickstart(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!on || !anchored || stopping || current_task != null)
 		return FALSE
 
@@ -49,6 +57,8 @@
 
 /// Safely schedules the next step to prevent overlapping.
 /obj/machinery/big_manipulator/proc/schedule_next_cycle(time_seconds = BASE_INTERACTION_TIME)
+	procstart = null
+	src.procstart = null
 	if(next_cycle_scheduled || stopping)
 		return
 
@@ -57,6 +67,8 @@
 
 /// Rotates the manipulator arm to face the target task's turf.
 /obj/machinery/big_manipulator/proc/rotate_to_point(datum/manipulator_task/cargo/target_task, callback_object, callback)
+	procstart = null
+	src.procstart = null
 	if(stopping)
 		return
 
@@ -81,6 +93,8 @@
 
 /// Does a 45 degree step, animating the claw
 /obj/machinery/big_manipulator/proc/do_step_rotation(datum/manipulator_task/cargo/target_task, callback_object, callback, current_angle, target_angle, rotation_step)
+	procstart = null
+	src.procstart = null
 	if(stopping)
 		return
 
@@ -100,6 +114,8 @@
 	addtimer(CALLBACK(src, PROC_REF(do_step_rotation), target_task, callback_object, callback, next_angle, target_angle, rotation_step), BASE_INTERACTION_TIME / speed_multiplier)
 
 /obj/machinery/big_manipulator/proc/try_drop_thing(datum/manipulator_task/cargo/dropoff_base/drop/destination_task)
+	procstart = null
+	src.procstart = null
 	var/drop_endpoint = destination_task.find_type_priority()
 	var/obj/actual_held_object = held_object?.resolve()
 
@@ -117,6 +133,8 @@
 	return TRUE
 
 /obj/machinery/big_manipulator/proc/try_use_thing(datum/manipulator_task/cargo/interact/destination_task, work_done_at_point = FALSE)
+	procstart = null
+	src.procstart = null
 	if(stopping)
 		return
 
@@ -176,6 +194,8 @@
 	check_for_cycle_end_drop(destination_task, TRUE, TRUE)
 
 /obj/machinery/big_manipulator/proc/check_for_cycle_end_drop(datum/manipulator_task/cargo/interact/destination_task, item_used_this_iteration, work_done_at_point = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/obj_resolve = held_object?.resolve()
 	var/turf/drop_turf = destination_task.interaction_turf
 
@@ -200,6 +220,8 @@
 	drop_held_after_use(destination_task)
 
 /obj/machinery/big_manipulator/proc/drop_held_after_use(datum/manipulator_task/cargo/interact/destination_task)
+	procstart = null
+	src.procstart = null
 	var/obj/obj_resolve = held_object?.resolve()
 	var/turf/drop_turf = destination_task.interaction_turf
 
@@ -225,6 +247,8 @@
 			addtimer(CALLBACK(src, PROC_REF(try_use_thing), destination_task, TRUE), BASE_INTERACTION_TIME * 2)
 
 /obj/machinery/big_manipulator/proc/throw_thing(datum/manipulator_task/cargo/dropoff_base/throw/throw_task)
+	procstart = null
+	src.procstart = null
 	var/drop_turf = throw_task.interaction_turf
 	var/atom/movable/held_atom = held_object?.resolve()
 
@@ -241,6 +265,8 @@
 	finish_manipulation()
 
 /obj/machinery/big_manipulator/proc/use_thing_with_empty_hand(datum/manipulator_task/cargo/interact/destination_task)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/species/monkey/monkey_resolve = monkey_worker?.resolve()
 	if(isnull(monkey_resolve))
 		finish_manipulation()
@@ -268,6 +294,8 @@
 	check_end_of_use_for_use_with_empty_hand(destination_task, TRUE)
 
 /obj/machinery/big_manipulator/proc/check_end_of_use_for_use_with_empty_hand(datum/manipulator_task/cargo/interact/destination_task, item_was_used = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!on || destination_task.worker_interaction != WORKER_EMPTY_USE)
 		finish_manipulation()
 		return
@@ -280,6 +308,8 @@
 
 /// Completes the current manipulation action and schedules the next step.
 /obj/machinery/big_manipulator/proc/finish_manipulation()
+	procstart = null
+	src.procstart = null
 	if(held_object)
 		var/obj/resolved = held_object.resolve()
 		if(resolved && resolved.loc == src)
@@ -298,6 +328,8 @@
 
 /// Completes the stopping task and transitions to idle
 /obj/machinery/big_manipulator/proc/complete_stopping_task()
+	procstart = null
+	src.procstart = null
 	on = FALSE
 	stopping = FALSE
 	next_cycle_scheduled = FALSE
@@ -308,6 +340,8 @@
 
 /// Registers enter/exit signals on all unique cargo task turfs.
 /obj/machinery/big_manipulator/proc/register_task_turf_signals()
+	procstart = null
+	src.procstart = null
 	unregister_task_turf_signals()
 	for(var/datum/manipulator_task/cargo/task in tasks)
 		if(!task.interaction_turf || (task.interaction_turf in signal_turfs))
@@ -317,12 +351,16 @@
 
 /// Unregisters all previously registered turf signals.
 /obj/machinery/big_manipulator/proc/unregister_task_turf_signals()
+	procstart = null
+	src.procstart = null
 	for(var/turf/t in signal_turfs)
 		UnregisterSignal(t, list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_EXITED))
 	signal_turfs = list()
 
 /// Fires when something enters or leaves a watched task turf.
 /obj/machinery/big_manipulator/proc/on_task_turf_changed(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!on || stopping || !waiting_for_signal)
 		return
@@ -330,6 +368,8 @@
 
 /// Drop the held atom.
 /obj/machinery/big_manipulator/proc/drop_held_atom()
+	procstart = null
+	src.procstart = null
 	if(isnull(held_object))
 		return
 	var/obj/obj_resolve = held_object?.resolve()

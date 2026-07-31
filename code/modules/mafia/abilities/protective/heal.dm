@@ -14,6 +14,8 @@
 	var/saving_message = "someone nursed you back to health"
 
 /datum/mafia_ability/heal/set_target(datum/mafia_role/new_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -22,6 +24,8 @@
 		return FALSE
 
 /datum/mafia_ability/heal/perform_action_target(datum/mafia_controller/game, datum/mafia_role/day_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -32,11 +36,15 @@
 	return TRUE
 
 /datum/mafia_ability/heal/clean_action_refs(datum/mafia_controller/game)
+	procstart = null
+	src.procstart = null
 	if(target_role)
 		UnregisterSignal(target_role, COMSIG_MAFIA_ON_KILL)
 	return ..()
 
 /datum/mafia_ability/heal/proc/prevent_kill(datum/source, datum/mafia_controller/game, datum/mafia_role/attacker, lynch)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(host_role == target_role)
 		host_role.send_message_to_player(span_warning("You were attacked last night!"))
@@ -55,6 +63,8 @@
 	saving_message = "security fought off the attacker"
 
 /datum/mafia_ability/heal/defend/prevent_kill(datum/source, datum/mafia_controller/game, datum/mafia_role/attacker, lynch)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(host_role == target_role)
 		return FALSE

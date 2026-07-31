@@ -24,6 +24,8 @@
  * * data2 - the data2 value, as defined by status displays
  */
 /datum/computer_file/program/status/proc/post_status(command, data1, data2)
+	procstart = null
+	src.procstart = null
 	var/datum/radio_frequency/frequency = SSradio.return_frequency(FREQ_STATUS_DISPLAYS)
 	if(!frequency)
 		return
@@ -45,6 +47,8 @@
  * * lower - Bottom text
  */
 /datum/computer_file/program/status/proc/post_message(upper, lower, log_usr = key_name(usr))
+	procstart = null
+	src.procstart = null
 	post_status("message", upper, lower)
 	log_game("[log_usr] has changed the station status display message to \"[upper] [lower]\" [loc_name(usr)]")
 
@@ -54,6 +58,8 @@
  * * picture - The picture name
  */
 /datum/computer_file/program/status/proc/post_picture(picture, log_usr = key_name(usr))
+	procstart = null
+	src.procstart = null
 	if (!(picture in GLOB.status_display_approved_pictures))
 		return
 	if(picture in GLOB.status_display_state_pictures)
@@ -67,6 +73,8 @@
 	log_game("[log_usr] has changed the station status display message to \"[picture]\" [loc_name(usr)]")
 
 /datum/computer_file/program/status/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(action)
 		if("setStatusMessage")
@@ -78,11 +86,15 @@
 			post_picture(params["picture"])
 
 /datum/computer_file/program/status/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["maxStatusLineLength"] = MAX_STATUS_LINE_LENGTH
 	return data
 
 /datum/computer_file/program/status/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["upperText"] = upper_text
@@ -103,17 +115,25 @@
 	var/datum/port/input/status_display_pics
 
 /obj/item/circuit_component/mod_program/status/populate_ports()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	upper_text = add_input_port("Upper text", PORT_TYPE_STRING)
 	bottom_text = add_input_port("Bottom text", PORT_TYPE_STRING)
 
 /obj/item/circuit_component/mod_program/status/populate_options()
+	procstart = null
+	src.procstart = null
 	status_display_pics = add_option_port("Set Status Display Picture", GLOB.status_display_approved_pictures, trigger = PROC_REF(set_picture))
 
 /obj/item/circuit_component/mod_program/status/proc/set_picture(datum/port/port)
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/program/status/status = associated_program
 	INVOKE_ASYNC(status, TYPE_PROC_REF(/datum/computer_file/program/status, post_picture), status_display_pics.value, parent.get_creator())
 
 /obj/item/circuit_component/mod_program/status/input_received(datum/port/port)
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/program/status/status = associated_program
 	INVOKE_ASYNC(status, TYPE_PROC_REF(/datum/computer_file/program/status, post_message), upper_text.value, bottom_text.value, parent.get_creator())

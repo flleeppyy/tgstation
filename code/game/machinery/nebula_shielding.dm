@@ -16,12 +16,16 @@
 	var/power_use_per_block = BASE_MACHINE_ACTIVE_CONSUMPTION * 2
 
 /obj/machinery/nebula_shielding/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	add_to_nebula_shielding(src, nebula_type, PROC_REF(get_nebula_shielding))
 
 ///Nebula is asking us how strong we are. Return our shield strength is all is well
 /obj/machinery/nebula_shielding/proc/get_nebula_shielding()
+	procstart = null
+	src.procstart = null
 	if(panel_open || (machine_stat & BROKEN))
 		return
 	if(!powered())
@@ -37,9 +41,13 @@
 
 ///Generate a resource for defending against the nebula
 /obj/machinery/nebula_shielding/proc/generate_reward()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/nebula_shielding/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if((machine_stat & BROKEN))
@@ -61,24 +69,34 @@
 	var/detonate_in = 10 MINUTES
 
 /obj/machinery/nebula_shielding/emergency/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	addtimer(CALLBACK(src, PROC_REF(self_destruct)), detonate_in)
 
 ///We don't live for very long, so self-destruct
 /obj/machinery/nebula_shielding/emergency/proc/self_destruct()
+	procstart = null
+	src.procstart = null
 	explosion(src, light_impact_range = 5, flame_range = 3, explosion_cause = src)
 	qdel(src)
 
 /obj/machinery/nebula_shielding/emergency/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	. += span_notice("[p_They()] will block the nebula for [round(detonate_in / (1 MINUTES))] minute\s with a shield strength of [shielding_strength].")
 
 /obj/machinery/nebula_shielding/emergency/get_nebula_shielding()
+	procstart = null
+	src.procstart = null
 	return shielding_strength //no strings attached, we will always produce shielding
 
 /obj/machinery/nebula_shielding/emergency/generate_reward()
+	procstart = null
+	src.procstart = null
 	return //no reward for you
 
 ///We shield against the radioactive nebula and passively generate tritium
@@ -97,19 +115,27 @@
 	integrity_failure = 0.4
 
 /obj/machinery/nebula_shielding/radiation/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	. += span_notice("Passively generates tritium. Provides [shielding_strength] levels of nebula shielding when active.")
 
 /obj/machinery/nebula_shielding/radiation/generate_reward()
+	procstart = null
+	src.procstart = null
 	var/turf/open/turf = get_turf(src)
 	if(isopenturf(turf))
 		turf.atmos_spawn_air("[GAS_TRITIUM]=1;[TURF_TEMPERATURE(T20C)]")
 
 /obj/machinery/nebula_shielding/radiation/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/nebula_shielding/radiation/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 ///Emergency shielding so people aren't permanently in a radstorm if shit goes very wrong in engineering
@@ -124,10 +150,14 @@
 	nebula_type = /datum/station_trait/nebula/hostile/radiation
 
 /obj/machinery/nebula_shielding/emergency/radiation/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_blocker)
 
 /obj/machinery/nebula_shielding/emergency/radiation/self_destruct()
+	procstart = null
+	src.procstart = null
 	var/turf/open/turf = get_turf(src)
 	if(isopenturf(turf))
 		turf.atmos_spawn_air("[GAS_TRITIUM]=50;[TURF_TEMPERATURE(T20C)]") //causes a small tritium fire when combined with the explosion

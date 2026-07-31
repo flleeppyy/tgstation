@@ -34,6 +34,8 @@
 	return COMPONENT_INCOMPATIBLE
 
 /datum/component/pinata/proc/damage_inflicted(obj/target, damage, damage_type, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(damage < minimum_damage || damage_type == STAMINA || damage_type == OXY)
 		return
@@ -46,6 +48,8 @@
 		new dropped_item(pick(turf_options))
 
 /datum/component/pinata/proc/pinata_broken()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/i in 1 to death_drop)
 		var/dropped_item = pick(candy)
@@ -53,6 +57,8 @@
 	qdel(src)
 
 /datum/component/pinata/Destroy(force)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_MOB_APPLY_DAMAGE,
 		COMSIG_LIVING_DEATH,

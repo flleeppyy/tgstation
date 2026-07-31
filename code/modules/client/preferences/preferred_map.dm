@@ -5,6 +5,8 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/choiced/preferred_map/init_possible_values()
+	procstart = null
+	src.procstart = null
 	var/list/maps = list()
 	maps += ""
 
@@ -18,9 +20,13 @@
 	return maps
 
 /datum/preference/choiced/preferred_map/create_default_value()
+	procstart = null
+	src.procstart = null
 	return ""
 
 /datum/preference/choiced/preferred_map/compile_constant_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 
 	var/display_names = list()
@@ -46,6 +52,8 @@
 	return data
 
 /datum/preference/choiced/preferred_map/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if (!..(preferences))
 		return FALSE
 

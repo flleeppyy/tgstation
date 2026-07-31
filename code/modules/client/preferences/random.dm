@@ -5,9 +5,13 @@
 	can_randomize = FALSE
 
 /datum/preference/choiced/random_body/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/preference/choiced/random_body/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list(
 		RANDOM_ANTAG_ONLY,
 		RANDOM_DISABLED,
@@ -15,6 +19,8 @@
 	)
 
 /datum/preference/choiced/random_body/create_default_value()
+	procstart = null
+	src.procstart = null
 	return RANDOM_DISABLED
 
 /datum/preference/toggle/random_hardcore
@@ -25,9 +31,13 @@
 	default_value = FALSE
 
 /datum/preference/toggle/random_hardcore/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/preference/toggle/random_hardcore/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if (!..(preferences))
 		return FALSE
 
@@ -40,9 +50,13 @@
 	can_randomize = FALSE
 
 /datum/preference/choiced/random_name/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/preference/choiced/random_name/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list(
 		RANDOM_ANTAG_ONLY,
 		RANDOM_DISABLED,
@@ -50,4 +64,6 @@
 	)
 
 /datum/preference/choiced/random_name/create_default_value()
+	procstart = null
+	src.procstart = null
 	return RANDOM_DISABLED

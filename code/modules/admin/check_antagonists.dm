@@ -2,6 +2,8 @@
 
 //Name shown on antag list
 /datum/antagonist/proc/antag_listing_name()
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return "Unassigned"
 	if(owner.current)
@@ -12,6 +14,8 @@
 //Whatever interesting things happened to the antag admins should know about
 //Include additional information about antag in this part
 /datum/antagonist/proc/antag_listing_status()
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return "(Unassigned)"
 	if(!owner.current)
@@ -25,6 +29,8 @@
 //Builds the common FLW PM TP commands part
 //Probably not going to be overwritten by anything but you never know
 /datum/antagonist/proc/antag_listing_commands()
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return
 	var/list/parts = list()
@@ -39,6 +45,8 @@
 //Builds table row for the antag
 // Jim (Status) FLW PM TP
 /datum/antagonist/proc/antag_listing_entry()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 	if(show_name_in_check_antagonists)
 		parts += "[antag_listing_name()]([name])"
@@ -49,6 +57,8 @@
 	return "<tr><td>[parts.Join("</td><td>")]</td></tr>"
 
 /datum/admins/proc/build_antag_listing()
+	procstart = null
+	src.procstart = null
 	var/list/sections = list()
 	var/list/priority_sections = list()
 
@@ -91,6 +101,8 @@
 	return all_sections.Join("<br>")
 
 /datum/admins/proc/check_antagonists()
+	procstart = null
+	src.procstart = null
 	if(!SSticker.HasRoundStarted())
 		tgui_alert(usr, "The game hasn't started yet!")
 		return

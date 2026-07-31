@@ -7,6 +7,8 @@
 GLOBAL_LIST_INIT(achievements_unlocked, list())
 
 /datum/controller/subsystem/ticker/proc/gather_roundend_feedback()
+	procstart = null
+	src.procstart = null
 	gather_antag_data()
 	record_nuke_disk_location()
 	var/json_file = file("[GLOB.log_directory]/round_end_data.json")
@@ -106,6 +108,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 	.["station_integrity"] = station_integrity
 
 /datum/controller/subsystem/ticker/proc/gather_antag_data()
+	procstart = null
+	src.procstart = null
 	var/team_gid = 1
 	var/list/team_ids = list()
 
@@ -135,6 +139,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 		SSblackbox.record_feedback("associative", "antagonists", 1, antag_info)
 
 /datum/controller/subsystem/ticker/proc/record_nuke_disk_location()
+	procstart = null
+	src.procstart = null
 	var/disk_count = 1
 	for(var/obj/item/disk/nuclear/nuke_disk as anything in SSpoints_of_interest.real_nuclear_disks)
 		var/list/data = list()
@@ -155,6 +161,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 		disk_count++
 
 /datum/controller/subsystem/ticker/proc/gather_newscaster()
+	procstart = null
+	src.procstart = null
 	var/json_file = file("[GLOB.log_directory]/newscaster.json")
 	var/list/file_data = list()
 	var/pos = 1
@@ -183,6 +191,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 
 ///Handles random hardcore point rewarding if it applies.
 /datum/controller/subsystem/ticker/proc/HandleRandomHardcoreScore(client/player_client)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(player_client?.mob))
 		return FALSE
 	var/mob/living/carbon/human/human_mob = player_client.mob
@@ -212,6 +222,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 		log_admin("[player_client] gained [round(human_mob.hardcore_survival_score)] hardcore random points.")
 
 /datum/controller/subsystem/ticker/proc/declare_completion(was_forced = END_ROUND_AS_NORMAL)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	for(var/datum/callback/roundend_callbacks as anything in round_end_events)
@@ -299,9 +311,13 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 	standard_reboot()
 
 /datum/controller/subsystem/ticker/proc/TriggerRoundEndTgsEvent()
+	procstart = null
+	src.procstart = null
 	world.TgsTriggerEvent("tg-Roundend", wait_for_completion = TRUE)
 
 /datum/controller/subsystem/ticker/proc/standard_reboot()
+	procstart = null
+	src.procstart = null
 	if(ready_for_reboot)
 		if(GLOB.station_was_nuked)
 			Reboot("Station destroyed by Nuclear Device.", "nuke")
@@ -312,6 +328,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 
 //Common part of the report
 /datum/controller/subsystem/ticker/proc/build_roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 
 	//AI laws
@@ -339,6 +357,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 	return parts.Join()
 
 /datum/controller/subsystem/ticker/proc/survivor_report(popcount)
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 	var/station_evacuated = EMERGENCY_ESCAPED_OR_ENDGAMED
 
@@ -371,6 +391,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 	return parts.Join("<br>")
 
 /client/proc/roundend_report_file()
+	procstart = null
+	src.procstart = null
 	return "data/roundend_reports/[ckey].html"
 
 /**
@@ -383,6 +405,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
  * the file will be overwritten at the end of each shift.
  */
 /datum/controller/subsystem/ticker/proc/log_roundend_report()
+	procstart = null
+	src.procstart = null
 	var/roundend_file = file("[GLOB.log_directory]/round_end_data.html")
 	var/list/parts = list()
 	parts += "<div class='panel stationborder'>"
@@ -399,6 +423,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 	WRITE_FILE(roundend_file, content)
 
 /datum/controller/subsystem/ticker/proc/show_roundend_report(client/C, report_type = null)
+	procstart = null
+	src.procstart = null
 	var/datum/browser/roundend_report = new(C, "roundend")
 	roundend_report.width = 800
 	roundend_report.height = 600
@@ -421,6 +447,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 	roundend_report.open(FALSE)
 
 /datum/controller/subsystem/ticker/proc/personal_report(client/C, popcount)
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 	var/mob/M = C.mob
 	if(M.mind && !isnewplayer(M))
@@ -448,6 +476,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 	return parts.Join()
 
 /datum/controller/subsystem/ticker/proc/display_report(popcount)
+	procstart = null
+	src.procstart = null
 	GLOB.common_report = build_roundend_report()
 	GLOB.survivor_report = survivor_report(popcount)
 	log_roundend_report()
@@ -457,6 +487,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 		CHECK_TICK
 
 /datum/controller/subsystem/ticker/proc/law_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 	var/borg_spacer = FALSE //inserts an extra linebreak to separate AIs from independent borgs, and then multiple independent borgs.
 	//Silicon laws report
@@ -495,6 +527,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 		return ""
 
 /datum/controller/subsystem/ticker/proc/goal_report()
+	procstart = null
+	src.procstart = null
 	var/list/goals = SSstation.get_station_goals()
 	if(!length(goals))
 		return null
@@ -506,6 +540,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 
 ///Generate a report for how much money is on station, as well as the richest crewmember on the station.
 /datum/controller/subsystem/ticker/proc/market_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 
 	///total service income
@@ -570,6 +606,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
  * * award: Achievement to give service department
  */
 /datum/controller/subsystem/ticker/proc/award_service(award)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/human/human as anything in GLOB.human_list)
 		if(!human.client || !human.mind)
 			continue
@@ -580,6 +618,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 
 
 /datum/controller/subsystem/ticker/proc/medal_report()
+	procstart = null
+	src.procstart = null
 	if(GLOB.commendations.len)
 		var/list/parts = list()
 		parts += span_header("Medal Commendations:")
@@ -590,6 +630,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 
 ///Generate a report for all players who made it out alive with a hardcore random character and prints their final score
 /datum/controller/subsystem/ticker/proc/hardcore_random_report()
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/list/hardcores = list()
 	for(var/i in GLOB.player_list)
@@ -610,6 +652,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 	. += "</ul></div>"
 
 /datum/controller/subsystem/ticker/proc/antag_report()
+	procstart = null
+	src.procstart = null
 	var/list/result = list()
 	var/list/all_teams = list()
 	var/list/all_antagonists = list()
@@ -664,10 +708,14 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 	return result.Join()
 
 /proc/cmp_antag_category(datum/antagonist/A,datum/antagonist/B)
+	procstart = null
+	src.procstart = null
 	return sorttext(B.roundend_category,A.roundend_category)
 
 
 /datum/controller/subsystem/ticker/proc/give_show_report_button(client/C)
+	procstart = null
+	src.procstart = null
 	var/datum/action/report/R = new
 	C.persistent_client.player_actions += R
 	R.Grant(C.mob)
@@ -679,6 +727,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 	show_to_observers = FALSE
 
 /datum/action/report/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -686,9 +736,13 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 		SSticker.show_roundend_report(owner.client)
 
 /datum/action/report/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/action/report/Topic(href,href_list)
+	procstart = null
+	src.procstart = null
 	if(usr != owner)
 		return
 	if(href_list["report"])
@@ -697,6 +751,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 
 
 /proc/printplayer(datum/mind/ply, fleecheck)
+	procstart = null
+	src.procstart = null
 	var/jobtext = ""
 	if(!is_unassigned_job(ply.assigned_role))
 		jobtext = " the <b>[ply.assigned_role.title]</b>"
@@ -717,6 +773,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 	return text
 
 /proc/printplayerlist(list/players,fleecheck)
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 
 	parts += "<ul class='playerlist'>"
@@ -727,6 +785,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 
 
 /proc/printobjectives(list/objectives)
+	procstart = null
+	src.procstart = null
 	if(!objectives || !objectives.len)
 		return
 	var/list/objective_parts = list()
@@ -738,6 +798,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 
 
 /datum/controller/subsystem/ticker/proc/cheevo_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 	if(length(GLOB.achievements_unlocked))
 		parts += "<span class='header'>Achievement Get!</span><BR>"

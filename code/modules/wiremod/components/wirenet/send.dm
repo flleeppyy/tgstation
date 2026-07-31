@@ -26,6 +26,8 @@
 	var/datum/port/input/enc_key
 
 /obj/item/circuit_component/wirenet_send/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(\
 		/datum/component/circuit_component_wirenet_connection,\
@@ -35,34 +37,52 @@
 	)
 
 /obj/item/circuit_component/wirenet_send/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	connected_powernet = null
 
 /obj/item/circuit_component/wirenet_send/proc/on_powernet_connection(datum/powernet/new_powernet)
+	procstart = null
+	src.procstart = null
 	connected_powernet = new_powernet
 
 /obj/item/circuit_component/wirenet_send/proc/on_powernet_disconnection(datum/powernet/old_powernet)
+	procstart = null
+	src.procstart = null
 	connected_powernet = null
 
 /obj/item/circuit_component/wirenet_send/proc/on_set_cable_layer(new_layer)
+	procstart = null
+	src.procstart = null
 	cable_layer = new_layer
 
 /obj/item/circuit_component/wirenet_send/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("Set the cable layer to connect to with the \"1\", \"2\", and \"3\" buttons.", "green", "info")
 	. += create_ui_notice("Currently connected to: [GLOB.cable_layer_to_name["[cable_layer]"]]", "green", "info")
 
 /obj/item/circuit_component/wirenet_send/populate_options()
+	procstart = null
+	src.procstart = null
 	list_options = add_option_port("List Type", GLOB.wiremod_basic_types)
 
 /obj/item/circuit_component/wirenet_send/populate_ports()
+	procstart = null
+	src.procstart = null
 	data_package = add_input_port("Data Package", PORT_TYPE_LIST(PORT_TYPE_ANY))
 	enc_key = add_input_port("Encryption Key", PORT_TYPE_STRING)
 
 /obj/item/circuit_component/wirenet_send/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(port == list_options)
 		var/new_datatype = list_options.value
 		data_package.set_datatype(PORT_TYPE_LIST(new_datatype))
 
 /obj/item/circuit_component/wirenet_send/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	connected_powernet?.data_transmission(data_package.value, enc_key.value, WEAKREF(data_package))

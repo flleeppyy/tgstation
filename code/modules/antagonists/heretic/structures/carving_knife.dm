@@ -30,6 +30,8 @@
 	var/list/alt_simple = list("stab", "pierce", "impale")
 
 /obj/item/melee/rune_carver/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	alt_continuous = string_list(alt_continuous)
 	alt_simple = string_list(alt_simple)
@@ -45,6 +47,8 @@
 	rip_time = 1.5 SECONDS
 
 /obj/item/melee/rune_carver/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!IS_HERETIC_OR_MONSTER(user) && !isobserver(user))
 		return
@@ -56,6 +60,8 @@
 		. += potion_string
 
 /obj/item/melee/rune_carver/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!IS_HERETIC_OR_MONSTER(user))
 		return NONE
 	if(!isopenturf(interacting_with) || is_type_in_typecache(interacting_with, blacklisted_turfs))
@@ -68,6 +74,8 @@
  * Begin trying to carve a rune. Go through a few checks, then call do_carve_rune if successful.
  */
 /obj/item/melee/rune_carver/proc/try_carve_rune(turf/open/target_turf, mob/user)
+	procstart = null
+	src.procstart = null
 	if(drawing)
 		target_turf.balloon_alert(user, "already carving!")
 		return
@@ -92,6 +100,8 @@
  * The actual proc that handles selecting the rune to draw and creating it.
  */
 /obj/item/melee/rune_carver/proc/do_carve_rune(turf/open/target_turf, mob/user)
+	procstart = null
+	src.procstart = null
 	// Assoc list of [name] to [image] for the radial (to show tooltips)
 	var/static/list/choices = list()
 	// Assoc list of [name] to [path] for after the radial
@@ -135,18 +145,24 @@
 	button_icon = 'icons/mob/actions/actions_ecult.dmi'
 
 /datum/action/item_action/rune_shatter/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(Target, /obj/item/melee/rune_carver))
 		qdel(src)
 		return
 
 /datum/action/item_action/rune_shatter/Grant(mob/granted)
+	procstart = null
+	src.procstart = null
 	if(!IS_HERETIC_OR_MONSTER(granted))
 		return
 
 	return ..()
 
 /datum/action/item_action/rune_shatter/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -157,6 +173,8 @@
 		return FALSE
 
 /datum/action/item_action/rune_shatter/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	owner.playsound_local(get_turf(owner), 'sound/effects/magic/blind.ogg', 50, TRUE)
 	var/obj/item/melee/rune_carver/target_sword = target
 	QDEL_LIST(target_sword.current_runes)
@@ -175,11 +193,15 @@
 	var/datum/weakref/owner
 
 /obj/structure/trap/eldritch/Initialize(mapload, new_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(new_owner)
 		owner = WEAKREF(new_owner)
 
 /obj/structure/trap/eldritch/on_entered(datum/source, atom/movable/entering_atom)
+	procstart = null
+	src.procstart = null
 	if(!isliving(entering_atom))
 		return
 	var/mob/living/living_mob = entering_atom
@@ -190,6 +212,8 @@
 	return ..()
 
 /obj/structure/trap/eldritch/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/melee/rune_carver) || HAS_TRAIT(tool, TRAIT_NULLROD_ITEM))
 		loc.balloon_alert(user, "carving dispelled")
 		playsound(src, 'sound/items/sheath.ogg', 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, ignore_walls = FALSE)
@@ -207,6 +231,8 @@
 	carver_tip = "A nearly invisible rune that, when stepped on, alerts the carver who triggered it and where."
 
 /obj/structure/trap/eldritch/alert/trap_effect(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	var/mob/living/real_owner = owner?.resolve()
 	if(real_owner)
 		to_chat(real_owner, span_userdanger("[victim.real_name] has stepped foot on the alert rune in [get_area(src)]!"))
@@ -220,6 +246,8 @@
 	carver_tip = "When stepped on, causes heavy damage leg damage and stuns the victim for 5 seconds. Has 1 charge."
 
 /obj/structure/trap/eldritch/tentacle/trap_effect(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(victim))
 		return
 	var/mob/living/carbon/carbon_victim = victim
@@ -236,6 +264,8 @@
 	carver_tip = "When stepped on, causes heavy stamina damage, blindness, and a variety of ailments to the victim. Has 2 charges."
 
 /obj/structure/trap/eldritch/mad/trap_effect(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(victim))
 		return
 	var/mob/living/carbon/carbon_victim = victim

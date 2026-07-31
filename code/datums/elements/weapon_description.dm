@@ -12,6 +12,8 @@
 	var/attached_proc
 
 /datum/element/weapon_description/Attach(datum/target, attached_proc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target)) // Do not attach this to anything that isn't an item
 		return ELEMENT_INCOMPATIBLE
@@ -22,6 +24,8 @@
 		src.attached_proc = attached_proc
 
 /datum/element/weapon_description/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, list(COMSIG_ATOM_EXAMINE, COMSIG_TOPIC))
 
@@ -36,6 +40,8 @@
  *  * examine_texts - The output text list of the original examine function
  */
 /datum/element/weapon_description/proc/warning_label(obj/item/item, mob/user, list/examine_texts)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(item.force >= 5 || item.throwforce >= 5 || item.override_notes || item.offensive_notes || attached_proc) /// Only show this tag for items that could feasibly be weapons, shields, or those that have special notes
@@ -54,6 +60,8 @@
  */
 
 /datum/element/weapon_description/proc/topic_handler(atom/source, user, href_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(href_list["examine"])
@@ -69,6 +77,8 @@
  *  * source - The object whose stats are being examined
  */
 /datum/element/weapon_description/proc/build_label_text(obj/item/source)
+	procstart = null
+	src.procstart = null
 	var/list/readout = list() // Readout is used to store the text block output to the user so it all can be sent in one message
 
 	// Doesn't show the base notes for items that have the override notes variable set to true
@@ -111,6 +121,8 @@
  *  * tag_val: The value of the item to be added to the tag
  */
 /datum/element/weapon_description/proc/weapon_tag_convert(tag_val)
+	procstart = null
+	src.procstart = null
 	switch(tag_val)
 		if(0)
 			return "NO"

@@ -1,5 +1,7 @@
 /// Updates features and clothing attached to a specific limb with limb-specific offsets
 /mob/living/carbon/proc/update_features(feature_key)
+	procstart = null
+	src.procstart = null
 	switch(feature_key)
 		if(OFFSET_UNIFORM)
 			update_worn_undersuit()
@@ -37,11 +39,15 @@
 	var/list/overlays_standing[TOTAL_LAYERS]
 
 /mob/living/carbon/proc/apply_overlay(cache_index)
+	procstart = null
+	src.procstart = null
 	if((. = overlays_standing[cache_index]))
 		add_overlay(.)
 	SEND_SIGNAL(src, COMSIG_CARBON_APPLY_OVERLAY, cache_index, .)
 
 /mob/living/carbon/proc/remove_overlay(cache_index)
+	procstart = null
+	src.procstart = null
 	var/I = overlays_standing[cache_index]
 	if(I)
 		cut_overlay(I)
@@ -49,15 +55,21 @@
 	SEND_SIGNAL(src, COMSIG_CARBON_REMOVE_OVERLAY, cache_index, I)
 
 /mob/living/carbon/update_body(is_creating = FALSE)
+	procstart = null
+	src.procstart = null
 	update_body_parts(is_creating)
 
 /mob/living/carbon/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(same_z_layer)
 		return
 	update_z_overlays(GET_TURF_PLANE_OFFSET(new_turf), TRUE)
 
 /mob/living/carbon/proc/refresh_loop(iter_cnt, rebuild = FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to iter_cnt)
 		update_z_overlays(1, rebuild)
 		sleep(0.3 SECONDS)
@@ -71,6 +83,8 @@
 /// 	to properly track parents to update
 /// 2 - a list of all parents that will require updating
 /proc/build_planeed_apperance_queue(list/mutable_appearance/appearances)
+	procstart = null
+	src.procstart = null
 	var/list/queue
 	if(islist(appearances))
 		queue = appearances.Copy()
@@ -159,6 +173,8 @@
 // Rebuilding is a hack. We should really store a list of indexes into our existing overlay list or SOMETHING
 // IDK. will work for now though, which is a lot better then not working at all
 /mob/living/carbon/proc/update_z_overlays(new_offset, rebuild = FALSE)
+	procstart = null
+	src.procstart = null
 	// Null entries will be filtered here
 	for(var/i in 1 to length(overlays_standing))
 		var/list/cache_grouping = overlays_standing[i]
@@ -170,6 +186,8 @@
 		overlays_standing[i] = update_appearance_planes(cache_grouping, new_offset)
 
 /atom/proc/update_appearance_planes(list/mutable_appearance/appearances, new_offset)
+	procstart = null
+	src.procstart = null
 	var/list/build_list = build_planeed_apperance_queue(appearances)
 
 	if(!length(build_list))
@@ -230,6 +248,8 @@
 #undef NEXT_PARENT_COMMAND
 
 /mob/living/carbon/regenerate_icons()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
 	icon_render_keys = list() //Clear this bad larry out
@@ -240,6 +260,8 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /mob/living/carbon/update_held_items()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	remove_overlay(HANDS_LAYER)
 	if (handcuffed)
@@ -251,6 +273,8 @@
 
 /// Generate held item overlays
 /mob/living/carbon/proc/get_held_overlays()
+	procstart = null
+	src.procstart = null
 	var/list/hands = list()
 	for(var/obj/item/I in held_items)
 		var/icon_file = I.lefthand_file
@@ -261,9 +285,13 @@
 	return hands
 
 /mob/living/carbon/proc/get_fire_icon_state(stacks, on_fire)
+	procstart = null
+	src.procstart = null
 	return "[dna?.species.fire_overlay || "human"]_[stacks > MOB_BIG_FIRE_STACK_THRESHOLD ? "big_fire" : "small_fire"]"
 
 /mob/living/carbon/get_fire_overlay(stacks, on_fire)
+	procstart = null
+	src.procstart = null
 	var/fire_icon = get_fire_icon_state(stacks, on_fire)
 	var/list/overrides = list()
 	SEND_SIGNAL(src, COMSIG_CARBON_GET_FIRE_OVERLAY, stacks, on_fire, fire_icon, overrides)
@@ -282,6 +310,8 @@
 	return GLOB.fire_appearances[fire_icon]
 
 /mob/living/carbon/update_damage_overlays()
+	procstart = null
+	src.procstart = null
 	remove_overlay(DAMAGE_LAYER)
 
 	var/mutable_appearance/damage_overlay
@@ -308,6 +338,8 @@
 
 /// Handles bleeding overlays
 /mob/living/carbon/proc/update_wound_overlays()
+	procstart = null
+	src.procstart = null
 	remove_overlay(WOUND_LAYER)
 
 	var/datum/blood_type/blood_type = get_bloodtype()
@@ -330,6 +362,8 @@
 	apply_overlay(WOUND_LAYER)
 
 /mob/living/carbon/update_worn_legcuffs()
+	procstart = null
+	src.procstart = null
 	remove_overlay(LEGCUFF_LAYER)
 	clear_alert("legcuffed")
 	if(!legcuffed)
@@ -341,6 +375,8 @@
 	throw_alert("legcuffed", /atom/movable/screen/alert/restrained/legcuffed, new_master = src.legcuffed)
 
 /mob/living/carbon/update_worn_handcuffs()
+	procstart = null
+	src.procstart = null
 	remove_overlay(HANDCUFF_LAYER)
 	hud_used?.update_inventory_slot(ITEM_SLOT_HANDS)
 	if(handcuffed)
@@ -358,6 +394,8 @@
 /// eg: ammo counters, primed grenade flashing, etc.
 /// "icon_file" is used automatically for inhands etc. to make sure it gets the right inhand file
 /obj/item/proc/worn_overlays(mutable_appearance/standing, isinhands = FALSE, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	RETURN_TYPE(/list)
 
@@ -368,6 +406,8 @@
 
 /// worn_overlays to use when you'd want to use KEEP_APART. Don't use KEEP_APART neither there nor here, as it would break floating overlays
 /obj/item/proc/separate_worn_overlays(mutable_appearance/standing, mutable_appearance/draw_target, isinhands = FALSE, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	RETURN_TYPE(/list)
 	. = list()
@@ -376,6 +416,8 @@
 ///Checks to see if any bodyparts need to be redrawn, then does so. update_limb_data = TRUE redraws the limbs to conform to the owner.
 ///Returns an integer representing the number of limbs that were updated.
 /mob/living/carbon/proc/update_body_parts(update_limb_data)
+	procstart = null
+	src.procstart = null
 	update_damage_overlays()
 	update_wound_overlays()
 	var/limb_count_update = 0
@@ -424,6 +466,8 @@
 		update_hair()
 
 /mob/living/carbon/proc/update_face_offset()
+	procstart = null
+	src.procstart = null
 	return
 
 /////////////////////////
@@ -432,6 +476,8 @@
 
 /// Returns a string representing the bodyparts icon cache key
 /obj/item/bodypart/proc/get_cache_key()
+	procstart = null
+	src.procstart = null
 	if(is_husked)
 		return jointext(generate_husk_key(), "-")
 	return jointext(generate_icon_key(), "-")
@@ -447,6 +493,8 @@
  * See RemieRichards on irc.rizon.net #coderbus (RIP remie :sob:)
 **/
 /obj/item/bodypart/proc/generate_icon_key()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 	. = list()
 	if(is_dimorphic)
@@ -472,6 +520,8 @@
 	return .
 
 /obj/item/bodypart/head/generate_icon_key()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(lip_style)
 		. += lip_color
@@ -479,6 +529,8 @@
 
 ///Generates a cache key specifically for husks
 /obj/item/bodypart/proc/generate_husk_key()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 	. = list()
 	if(is_dimorphic)
@@ -512,6 +564,8 @@ GLOBAL_LIST_EMPTY(masked_leg_icons_cache)
  * Returns the list of masked images, or `null` if the limb_overlay didn't exist
  */
 /obj/item/bodypart/leg/proc/generate_masked_leg(image/limb_overlay)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 	if(!limb_overlay)
 		return
@@ -548,6 +602,8 @@ GLOBAL_LIST_EMPTY(masked_leg_icons_cache)
 	return .
 
 /proc/get_default_icon_by_slot(slot_flag)
+	procstart = null
+	src.procstart = null
 	switch(slot_flag)
 		if(ITEM_SLOT_HEAD)
 			return 'icons/mob/clothing/head/default.dmi'
@@ -575,6 +631,8 @@ GLOBAL_LIST_EMPTY(masked_leg_icons_cache)
 			return DEFAULT_SHOES_FILE
 
 /proc/get_default_layer_by_slot(slot_flag)
+	procstart = null
+	src.procstart = null
 	switch(text2num(slot_flag))
 		if(ITEM_SLOT_HEAD)
 			return HEAD_LAYER

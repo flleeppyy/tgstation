@@ -84,15 +84,21 @@
 	VAR_FINAL/log_data
 
 /datum/dynamic_ruleset/New(list/dynamic_config)
+	procstart = null
+	src.procstart = null
 	for(var/new_var in dynamic_config?[config_tag])
 		set_config_value(new_var, dynamic_config[config_tag][new_var])
 
 /datum/dynamic_ruleset/Destroy()
+	procstart = null
+	src.procstart = null
 	selected_minds = null
 	return ..()
 
 /// Used for parsing config entries to validate them
 /datum/dynamic_ruleset/proc/set_config_value(new_var, new_val)
+	procstart = null
+	src.procstart = null
 	if(!(new_var in vars))
 		log_dynamic("Erroneous config edit rejected: [new_var]")
 		return FALSE
@@ -118,12 +124,16 @@
 	return TRUE
 
 /datum/dynamic_ruleset/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	if(var_name == NAMEOF(src, config_tag))
 		return FALSE
 	return ..()
 
 /// Used to create tier alists for weights and min_pop values
 /datum/dynamic_ruleset/proc/load_tier_list(list/incoming_list)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/alist/tier_list = alist()
@@ -146,11 +156,15 @@
  * Any additional checks to see if this ruleset can be selected
  */
 /datum/dynamic_ruleset/proc/can_be_selected()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Gets the list value for the given tier, otherwise use next highest tier,
 /// or failing that, next lowest
 /datum/dynamic_ruleset/proc/get_tier_specific_value(alist/values, tier)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	if(isnum(values[tier]))
 		return values[tier]
@@ -174,6 +188,8 @@
  * * tier - The dynamic tier to calculate the weight for
  */
 /datum/dynamic_ruleset/proc/get_weight(population_size = 0, tier = DYNAMIC_TIER_LOW)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(type in SSdynamic.admin_disabled_rulesets)
@@ -200,6 +216,8 @@
 
 /// Returns what the antag cap with the given population is.
 /datum/dynamic_ruleset/proc/get_antag_cap(population_size, antag_cap)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if (isnum(antag_cap))
 		return antag_cap
@@ -215,6 +233,8 @@
  * Returns TRUE if execution is ready, FALSE if it should be canceled
  */
 /datum/dynamic_ruleset/proc/prepare_execution(population_size = 0, list/mob/antag_candidates = list())
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	// !! THIS SLEEPS !!
@@ -244,14 +264,20 @@
 
 /// Gets the mind of a candidate, can be overridden to return a different mind if necessary
 /datum/dynamic_ruleset/proc/get_candidate_mind(mob/dead/candidate)
+	procstart = null
+	src.procstart = null
 	return candidate.mind
 
 /// Returns a list of roles that cannot be selected for this ruleset
 /datum/dynamic_ruleset/proc/get_blacklisted_roles()
+	procstart = null
+	src.procstart = null
 	return get_config_blacklisted_roles() | get_always_blacklisted_roles()
 
 /// Returns all the jobs the config says this ruleset cannot select
 /datum/dynamic_ruleset/proc/get_config_blacklisted_roles()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	var/list/blacklist = blacklisted_roles.Copy()
 	for(var/datum/job/job as anything in SSjob.all_occupations)
@@ -265,6 +291,8 @@
 
 /// Returns a list of roles that are always blacklisted from this ruleset, for mechanical reasons (an AI can't be a changeling)
 /datum/dynamic_ruleset/proc/get_always_blacklisted_roles()
+	procstart = null
+	src.procstart = null
 	return list(
 		JOB_AI,
 		JOB_CYBORG,
@@ -273,6 +301,8 @@
 /// Takes in a list of players and returns a list of players who are valid candidates for this ruleset
 /// Don't touch this proc if you need to trim candidates further - override is_valid_candidate() instead
 /datum/dynamic_ruleset/proc/trim_candidates(list/mob/antag_candidates)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	var/list/valid_candidates = list()
@@ -293,6 +323,8 @@
 
 /// Returns a list of players picked for this ruleset
 /datum/dynamic_ruleset/proc/select_candidates(list/mob/antag_candidates, num_candidates = 0)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	PRIVATE_PROC(TRUE)
 
@@ -309,6 +341,8 @@
 
 /// Handles loading map templates that this ruleset requires
 /datum/dynamic_ruleset/proc/load_templates()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	PRIVATE_PROC(TRUE)
 
@@ -319,6 +353,8 @@
  * Any additional checks to see if this player is a valid candidate for this ruleset
  */
 /datum/dynamic_ruleset/proc/is_valid_candidate(mob/candidate, client/candidate_client)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	return TRUE
 
@@ -329,6 +365,8 @@
  * Override this proc to do things like set forced jobs, DON'T assign roles or give out equipments here!
  */
 /datum/dynamic_ruleset/proc/prepare_for_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	return
 
@@ -339,12 +377,16 @@
  * Prefer to override assign_role() instead of this proc
  */
 /datum/dynamic_ruleset/proc/execute()
+	procstart = null
+	src.procstart = null
 	var/list/execute_args = create_execute_args()
 	for(var/datum/mind/mind as anything in selected_minds)
 		assign_role(arglist(list(mind) + execute_args))
 
 /// Allows you to supply extra arguments to assign_role() if needed
 /datum/dynamic_ruleset/proc/create_execute_args()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /**
@@ -354,6 +396,8 @@
  * Override this proc to give out antag datums or special items or whatever
  */
 /datum/dynamic_ruleset/proc/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	stack_trace("Ruleset [src] does not implement assign_role()")
 	return
@@ -364,6 +408,8 @@
  * Return TRUE if any result was set
  */
 /datum/dynamic_ruleset/proc/round_result()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /**
@@ -373,4 +419,6 @@
  * Also only called by midrounds currently.
  */
 /datum/dynamic_ruleset/proc/configure_ruleset(mob/admin)
+	procstart = null
+	src.procstart = null
 	stack_trace("Ruleset [type] sets flag RULESET_ADMIN_CONFIGURABLE but does not implement configure_ruleset!")

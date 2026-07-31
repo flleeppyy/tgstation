@@ -20,6 +20,8 @@
 	var/aim_assist = TRUE
 
 /datum/action/cooldown/spell/pointed/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!active_msg)
 		active_msg = "You prepare to use [src] on a target..."
@@ -27,6 +29,8 @@
 		deactive_msg = "You dispel [src]."
 
 /datum/action/cooldown/spell/pointed/set_click_ability(mob/on_who)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -35,6 +39,8 @@
 
 // Note: Destroy() calls Remove(), Remove() calls unset_click_ability() if our spell is active.
 /datum/action/cooldown/spell/pointed/unset_click_ability(mob/on_who, refund_cooldown = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -42,12 +48,16 @@
 	on_deactivation(on_who, refund_cooldown = refund_cooldown)
 
 /datum/action/cooldown/spell/pointed/before_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & SPELL_CANCEL_CAST)
 		on_deactivation(owner, refund_cooldown = FALSE)
 
 /// Called when the spell is activated / the click ability is set to our spell
 /datum/action/cooldown/spell/pointed/proc/on_activation(mob/on_who)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	to_chat(on_who, span_notice("[active_msg] <B>Left-click to cast the spell on a target!</B>"))
@@ -56,6 +66,8 @@
 
 /// Called when the spell is deactivated / the click ability is unset from our spell
 /datum/action/cooldown/spell/pointed/proc/on_deactivation(mob/on_who, refund_cooldown = TRUE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(refund_cooldown)
@@ -65,12 +77,16 @@
 	return TRUE
 
 /datum/action/cooldown/spell/pointed/InterceptClickOn(mob/living/clicker, params, atom/target)
+	procstart = null
+	src.procstart = null
 	var/atom/aim_assist_target
 	if(aim_assist)
 		aim_assist_target = aim_assist(clicker, target)
 	return ..(clicker, params, aim_assist_target || target)
 
 /datum/action/cooldown/spell/pointed/proc/aim_assist(mob/living/clicker, atom/target)
+	procstart = null
+	src.procstart = null
 	if(!isturf(target))
 		return
 
@@ -78,6 +94,8 @@
 	return locate(/mob/living/carbon/human) in target || locate(/mob/living) in target
 
 /datum/action/cooldown/spell/pointed/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	if(cast_on == owner)
 		to_chat(owner, span_warning("You cannot cast [src] on yourself!"))
 		return FALSE
@@ -85,6 +103,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/pointed/before_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & SPELL_CANCEL_CAST)
 		return
@@ -111,14 +131,20 @@
 	var/projectiles_per_fire = 1
 
 /datum/action/cooldown/spell/pointed/projectile/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(projectile_amount > 1)
 		unset_after_click = FALSE
 
 /datum/action/cooldown/spell/pointed/projectile/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/action/cooldown/spell/pointed/projectile/on_activation(mob/on_who)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -126,6 +152,8 @@
 	current_amount = projectile_amount
 
 /datum/action/cooldown/spell/pointed/projectile/on_deactivation(mob/on_who, refund_cooldown = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(projectile_amount > 1 && current_amount)
 		StartCooldown(cooldown_time * ((projectile_amount - current_amount) / projectile_amount))
@@ -133,6 +161,8 @@
 
 // cast_on is a turf, or atom target, that we clicked on to fire at.
 /datum/action/cooldown/spell/pointed/projectile/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/caster = get_caster_from_target(owner)
 	if(!isturf(caster.loc))
@@ -150,6 +180,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/pointed/projectile/after_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(current_amount > 0)
 		// We still have projectiles to cast!
@@ -157,6 +189,8 @@
 		reset_spell_cooldown()
 
 /datum/action/cooldown/spell/pointed/projectile/proc/fire_projectile(atom/target)
+	procstart = null
+	src.procstart = null
 	current_amount--
 	for(var/i in 1 to projectiles_per_fire)
 		var/obj/projectile/to_fire = new projectile_type()
@@ -166,6 +200,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/pointed/projectile/proc/ready_projectile(obj/projectile/to_fire, atom/target, mob/user, iteration)
+	procstart = null
+	src.procstart = null
 	to_fire.firer = owner
 	to_fire.fired_from = src
 	to_fire.aim_projectile(target, owner)
@@ -178,6 +214,8 @@
 /// Signal proc for whenever the projectile we fire hits someone.
 /// Pretty much relays to the spell when the projectile actually hits something.
 /datum/action/cooldown/spell/pointed/projectile/proc/on_cast_hit(datum/source, mob/firer, atom/target, angle, hit_limb)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	SEND_SIGNAL(src, COMSIG_SPELL_PROJECTILE_HIT, source, firer, target, angle, hit_limb)

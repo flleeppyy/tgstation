@@ -23,6 +23,8 @@
 
 /// Record data from a human subject
 /datum/experimental_cloning_record/proc/create_profile(mob/living/carbon/human/subject)
+	procstart = null
+	src.procstart = null
 	name = subject.real_name
 	dna = new subject.dna.type()
 	subject.dna.copy_dna(dna)
@@ -44,6 +46,8 @@
 
 /// Duplicates our data
 /datum/experimental_cloning_record/proc/create_copy()
+	procstart = null
+	src.procstart = null
 	var/datum/experimental_cloning_record/new_record = new()
 	new_record.name = name
 	new_record.dna = new dna.type()
@@ -59,6 +63,8 @@
 
 /// Apply record data to a clone
 /datum/experimental_cloning_record/proc/apply_profile(mob/living/carbon/human/subject)
+	procstart = null
+	src.procstart = null
 	subject.name = name
 	subject.real_name = name
 	subject.age = age

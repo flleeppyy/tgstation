@@ -9,6 +9,8 @@
 	storage_type = /datum/storage/toolbox/syndicate
 
 /obj/item/storage/toolbox/syndicate/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/screwdriver/nuke(src)
 	new /obj/item/wrench(src)
 	new /obj/item/weldingtool/largetank(src)
@@ -31,6 +33,8 @@
 	var/ammo_to_spawn
 
 /obj/item/storage/toolbox/ammobox/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(!isnull(ammo_to_spawn))
 		for(var/i in 1 to 6)
 			new ammo_to_spawn(src)
@@ -69,6 +73,8 @@
 	var/extra_to_spawn = /obj/item/ammo_box/magazine/m9mm
 
 /obj/item/storage/toolbox/guncase/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(weapon_to_spawn)
 		new weapon_to_spawn (src)
 	if(extra_to_spawn)
@@ -88,26 +94,36 @@
 	var/currently_exploding = FALSE
 
 /obj/item/storage/toolbox/guncase/traitor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/item/storage/toolbox/guncase/traitor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Activate the Evidence Disposal Explosive using Alt-Right-Click.")
 
 /obj/item/storage/toolbox/guncase/traitor/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	context[SCREENTIP_CONTEXT_ALT_RMB] = "Activate Evidence Disposal Explosive"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/storage/toolbox/guncase/traitor/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new weapon_to_spawn (src)
 	for(var/i in 1 to 2)
 		new extra_to_spawn (src)
 	new ammo_box_to_spawn(src)
 
 /obj/item/storage/toolbox/guncase/traitor/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(currently_exploding)
 		icon_state = "[base_icon_state]_exploding"
@@ -115,6 +131,8 @@
 		icon_state = "[base_icon_state]"
 
 /obj/item/storage/toolbox/guncase/traitor/click_alt_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(currently_exploding)
 		user.balloon_alert(user, "already exploding!")
@@ -134,6 +152,8 @@
 
 /// proc to handle our detonation
 /obj/item/storage/toolbox/guncase/traitor/proc/think_fast_chucklenuts()
+	procstart = null
+	src.procstart = null
 	explosion(src, devastation_range = 0, heavy_impact_range = 0, light_impact_range = 2, explosion_cause = src)
 	qdel(src)
 
@@ -179,6 +199,8 @@
 	extra_to_spawn = /obj/item/ammo_box/magazine/m223
 
 /obj/item/storage/toolbox/guncase/m90gl/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new weapon_to_spawn (src)
 	for(var/i in 1 to 2)
 		new extra_to_spawn (src)
@@ -190,6 +212,8 @@
 	extra_to_spawn = /obj/item/ammo_box/rocket
 
 /obj/item/storage/toolbox/guncase/rocketlauncher/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new weapon_to_spawn (src)
 	new extra_to_spawn (src)
 
@@ -204,6 +228,8 @@
 	extra_to_spawn = /obj/item/shield/energy
 
 /obj/item/storage/toolbox/guncase/sword_and_board/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new weapon_to_spawn (src)
 	new extra_to_spawn (src)
 	new /obj/item/clothing/head/costume/knight (src)
@@ -214,6 +240,8 @@
 	extra_to_spawn = /obj/item/storage/box/syndie_kit/imp_stealth
 
 /obj/item/storage/toolbox/guncase/cqc/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new weapon_to_spawn (src)
 	new extra_to_spawn (src)
 	new /obj/item/clothing/head/costume/snakeeater (src)
@@ -226,6 +254,8 @@
 	storage_type = /datum/storage/toolbox/guncase/doublesword
 
 /obj/item/storage/toolbox/guncase/doublesword/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new weapon_to_spawn (src)
 	new extra_to_spawn (src)
 	new /obj/item/mod/module/noslip (src)
@@ -238,6 +268,8 @@
 	extra_to_spawn = /obj/item/storage/belt/bandolier/china_lake_extra
 
 /obj/item/storage/toolbox/guncase/china_lake/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new weapon_to_spawn (src)
 	new extra_to_spawn (src)
 	new /obj/item/clothing/under/rank/prisoner/nosensor (src)
@@ -257,20 +289,28 @@
 	storage_type = /datum/storage/toolbox/guncase/monkey
 
 /obj/item/storage/toolbox/guncase/monkeycase/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	if(!monkey_check(user))
 		return
 	return ..()
 
 /obj/item/storage/toolbox/guncase/monkeycase/attack_self_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	attack_self(user, modifiers)
 	return
 
 /obj/item/storage/toolbox/guncase/monkeycase/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!monkey_check(user))
 		return
 	return ..()
 
 /obj/item/storage/toolbox/guncase/monkeycase/proc/monkey_check(mob/user)
+	procstart = null
+	src.procstart = null
 	if(atom_storage.locked == STORAGE_NOT_LOCKED)
 		return TRUE
 
@@ -284,6 +324,8 @@
 	return FALSE
 
 /obj/item/storage/toolbox/guncase/monkeycase/PopulateContents()
+	procstart = null
+	src.procstart = null
 	switch(rand(1, 3))
 		if(1)
 			// Uzi with a boxcutter.
@@ -314,6 +356,8 @@
 	desc = "You feel a strange urge to hit this with a wrench."
 
 /obj/item/storage/toolbox/emergency/turret/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/screwdriver(src)
 	new /obj/item/wrench/combat(src)
 	new /obj/item/weldingtool(src)
@@ -322,6 +366,8 @@
 	new /obj/item/wirecutters(src)
 
 /obj/item/storage/toolbox/emergency/turret/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/wrench/combat))
 		return NONE
 	if(!user.combat_mode)
@@ -348,8 +394,12 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/storage/toolbox/emergency/turret/proc/set_toolbox_faction(obj/machinery/porta_turret/turret, mob/user)
+	procstart = null
+	src.procstart = null
 	turret.set_allies(list("[REF(user)]"))
 	turret.set_faction(null)
 
 /obj/item/storage/toolbox/emergency/turret/nukie/set_toolbox_faction(obj/machinery/porta_turret/turret, mob/user)
+	procstart = null
+	src.procstart = null
 	turret.set_faction(list(ROLE_SYNDICATE))

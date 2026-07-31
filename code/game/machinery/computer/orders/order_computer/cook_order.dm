@@ -13,6 +13,8 @@
 	cargo_cost_multiplier =  0.65
 
 /obj/machinery/computer/order_console/cook/order_groceries(mob/living/purchaser, obj/item/card/id/card, list/groceries)
+	procstart = null
+	src.procstart = null
 	say("Thank you for your purchase! It will arrive on the next cargo shuttle!")
 	aas_config_announce(/datum/aas_config_entry/order_console, list(), src, list(radio_channel), capitalize(blackbox_key))
 	for(var/datum/orderable_item/ordered_item in groceries)

@@ -2,6 +2,8 @@
 /datum/unit_test/door_access_check
 
 /datum/unit_test/door_access_check/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/subject = allocate(/mob/living/carbon/human/consistent, run_loc_floor_bottom_left)
 	var/obj/machinery/door/airlock/instant/door = allocate(/obj/machinery/door/airlock/instant, run_loc_floor_bottom_left, EAST) //special subtype that just flips the density var on open() and close(), akin to a real airlock.
 	door.interaction_flags_machine |= INTERACT_MACHINE_OFFLINE
@@ -66,6 +68,8 @@
 /datum/unit_test/door_access_ai
 
 /datum/unit_test/door_access_ai/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/fake_ghost = allocate(__IMPLIED_TYPE__) // ai must be passed a mob in /new, cringe
 	var/mob/living/silicon/ai/subject = allocate(__IMPLIED_TYPE__, run_loc_floor_top_right, fake_ghost)
 	var/obj/machinery/door/airlock/instant/door = allocate(__IMPLIED_TYPE__)
@@ -78,6 +82,8 @@
 /datum/unit_test/windoor_access_ai
 
 /datum/unit_test/windoor_access_ai/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/fake_ghost = allocate(__IMPLIED_TYPE__) // ai must be passed a mob in /new, cringe
 	var/mob/living/silicon/ai/subject = allocate(__IMPLIED_TYPE__, run_loc_floor_top_right, fake_ghost)
 	var/obj/machinery/door/window/instant/door = allocate(__IMPLIED_TYPE__)
@@ -90,6 +96,8 @@
 /datum/unit_test/door_access_telekinesis
 
 /datum/unit_test/door_access_telekinesis/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/subject = allocate(__IMPLIED_TYPE__, run_loc_floor_top_right)
 	var/obj/machinery/door/airlock/instant/door = allocate(__IMPLIED_TYPE__, run_loc_floor_bottom_left)
 	door.interaction_flags_machine |= INTERACT_MACHINE_OFFLINE
@@ -118,6 +126,8 @@
 /datum/unit_test/door_access_mecha
 
 /datum/unit_test/door_access_mecha/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/vehicle/sealed/mecha/ripley/subject_mech = allocate(__IMPLIED_TYPE__)
 	var/mob/living/carbon/human/consistent/subject_pilot = allocate(__IMPLIED_TYPE__, run_loc_floor_top_right)
 	var/obj/machinery/door/airlock/instant/door = allocate(__IMPLIED_TYPE__)
@@ -149,6 +159,8 @@
 /datum/unit_test/door_access_handcuffs
 
 /datum/unit_test/door_access_handcuffs/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/subject = allocate(__IMPLIED_TYPE__, run_loc_floor_bottom_left)
 	var/obj/machinery/door/airlock/instant/door = allocate(__IMPLIED_TYPE__)
 	door.interaction_flags_machine |= INTERACT_MACHINE_OFFLINE
@@ -178,6 +190,8 @@
 /datum/unit_test/door_require_id_wire_cut
 
 /datum/unit_test/door_require_id_wire_cut/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/door/airlock/instant/door = EASY_ALLOCATE()
 	door.interaction_flags_machine |= INTERACT_MACHINE_OFFLINE
 	door.req_access = list(ACCESS_ENGINEERING)
@@ -208,6 +222,8 @@
 /datum/unit_test/door_require_id_wire_cut/item_only
 
 /datum/unit_test/door_require_id_wire_cut/item_only/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/door/airlock/instant/door = EASY_ALLOCATE()
 	door.interaction_flags_machine |= INTERACT_MACHINE_OFFLINE
 	door.req_access = list(ACCESS_ENGINEERING)

@@ -20,6 +20,8 @@
 	VAR_FINAL/mode = FALSE
 
 /obj/item/hand_labeler/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is pointing [src] at [user.p_them()]self. [user.p_Theyre()] going to label [user.p_them()]self as a suicide!"))
 	labels_left = max(labels_left - 1, 0)
 
@@ -48,6 +50,8 @@
 	return OXYLOSS
 
 /obj/item/hand_labeler/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -58,6 +62,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/hand_labeler/proc/apply_label(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!labels_left)
 		balloon_alert(user, "no labels left!")
 		return FALSE
@@ -85,6 +91,8 @@
 	return TRUE
 
 /obj/item/hand_labeler/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -108,6 +116,8 @@
 	return TRUE
 
 /obj/item/hand_labeler/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/hand_labeler_refill))
 		return NONE
 
@@ -117,6 +127,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/hand_labeler/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(labels_left > 0)
 		. += span_notice("It looks like it could label [labels_left] more thing\s.")
@@ -127,6 +139,8 @@
 	name = "cyborg-hand labeler"
 
 /obj/item/hand_labeler/borg/apply_label(atom/interacting_with, mob/living/silicon/robot/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 
@@ -186,21 +200,29 @@
 	VAR_FINAL/atom/sticking_to
 
 /obj/item/label/Initialize(mapload, new_label_name)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(new_label_name)
 		update_label_name(new_label_name)
 
 /obj/item/label/Destroy()
+	procstart = null
+	src.procstart = null
 	clear_stick_to()
 	return ..()
 
 /obj/item/label/update_name(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(label_name)
 		name = "label ([label_name])"
 
 /// Sets the lable_name var and performs any necessary updates to the label's appearance
 /obj/item/label/proc/update_label_name(new_label_name)
+	procstart = null
+	src.procstart = null
 	if(label_name == new_label_name)
 		return
 
@@ -212,6 +234,8 @@
 	update_appearance(UPDATE_NAME)
 
 /obj/item/label/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	if(var_name == NAMEOF(src, label_name))
 		update_label_name(var_value)
 		datum_flags |= DF_VAR_EDITED
@@ -220,6 +244,8 @@
 	return ..()
 
 /obj/item/label/proc/stick_to_atom(atom/applying_to, stick_px = ICON_SIZE_X / 2, stick_py = ICON_SIZE_Y / 2)
+	procstart = null
+	src.procstart = null
 	applying_to.AddComponent( \
 		/datum/component/sticker, \
 		stickering_atom = src, \
@@ -232,6 +258,8 @@
 
 /// Callback invoked when the label is attached to something
 /obj/item/label/proc/on_stick(atom/applying_to)
+	procstart = null
+	src.procstart = null
 	sticking_to = applying_to
 	RegisterSignal(sticking_to, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(interacted_with))
 	RegisterSignal(sticking_to, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
@@ -241,10 +269,14 @@
 
 /// Callback invoked when the label is removed from something
 /obj/item/label/proc/on_peel(atom/peeled_from)
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /// General purpose / signal proc used to clear references and clean up when removed
 /obj/item/label/proc/clear_stick_to(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(sticking_to))
@@ -272,6 +304,8 @@
  * * user: The mob who is wielding the attacking object.
 */
 /obj/item/label/proc/interacted_with(atom/source, mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// If the attacking object is not a hand labeler or its mode is 1 (has a label ready to apply), return.
@@ -310,23 +344,31 @@
  * * examine_list: The current list of text getting passed from the parent's normal examine() proc.
 */
 /obj/item/label/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += span_notice("It has a label with some words written on it. Use a hand labeler to remove it.")
 
 /// Applies a label to the name of what we're stuck to in the format of: "parent_name (label)"
 /obj/item/label/proc/apply_label()
+	procstart = null
+	src.procstart = null
 	sticking_to.name += " ([label_name])"
 	ADD_TRAIT(sticking_to, TRAIT_HAS_LABEL, REF(src))
 
 /// Removes the label from the name of what we're stuck to
 /obj/item/label/proc/remove_label()
+	procstart = null
+	src.procstart = null
 	sticking_to.name = replacetext(sticking_to.name, "([label_name])", "") // Remove the label text from the parent's name, wherever it's located.
 	sticking_to.name = trim(sticking_to.name) // Shave off any white space from the beginning or end of the parent's name.
 	REMOVE_TRAIT(sticking_to, TRAIT_HAS_LABEL, REF(src))
 
 /// Used to re-apply the label when the thing we're stuck to is renamed.
 /obj/item/label/proc/reapply(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	remove_label()

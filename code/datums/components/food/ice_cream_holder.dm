@@ -77,6 +77,8 @@
 			flavour?.add_flavour(arglist(flavour_args))
 
 /datum/component/ice_cream_holder/proc/on_update_name(atom/source, updates)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(HAS_TRAIT(source, TRAIT_WAS_RENAMED))
 		return
@@ -92,6 +94,8 @@
 			source.name = "[english_list(unique_list)] [name_to_use]"
 
 /datum/component/ice_cream_holder/proc/on_update_desc(atom/source, updates)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(HAS_TRAIT(source, TRAIT_WAS_RENAMED))
 		return
@@ -109,11 +113,15 @@
 		source.desc = "A delicious [initial(source.name)] filled with scoops of [english_list(scoops)] ice cream. That's as many as [scoops_len] scoops!"
 
 /datum/component/ice_cream_holder/proc/on_examine(atom/source, mob/mob, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(length(scoops) < max_scoops)
 		examine_list += span_tinynoticeital("you could use a ice cream vat to fill it with yummy ice cream...")
 
 /datum/component/ice_cream_holder/proc/on_examine_more(atom/source, mob/mob, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/scoops_len = length(scoops)
 	if(!scoops_len)
@@ -129,6 +137,8 @@
 		examine_list += "[source.p_Theyre()] filled with scoops of [english_list(scoops)] ice cream. That's as many as [scoops_len] scoops!"
 
 /datum/component/ice_cream_holder/proc/on_update_overlays(atom/source, list/new_overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!scoops)
 		return
@@ -144,6 +154,8 @@
 
 /// Attack the ice cream vat to get some ice cream. This will change as new ways of getting ice cream are added.
 /datum/component/ice_cream_holder/proc/on_item_attack_obj(obj/item/source, obj/target, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(target, /obj/machinery/icecream_vat))
 		return COMPONENT_CANCEL_ATTACK_CHAIN
@@ -155,6 +167,8 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/component/ice_cream_holder/proc/check_food_order(obj/item/source, datum/custom_order/our_order)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(our_order, /datum/custom_order/icecream))
 		return FALSE
@@ -171,6 +185,8 @@
 		return COMPONENT_CORRECT_ORDER
 
 /datum/component/ice_cream_holder/proc/sell_ice_cream(obj/item/source, mob/living/basic/robot_customer/sold_to)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	//the price of ice cream scales with the number of scoops. Yummy.
@@ -188,6 +204,8 @@
 GLOBAL_LIST_INIT_TYPED(ice_cream_flavours, /datum/ice_cream_flavour, init_ice_cream_flavours())
 
 /proc/init_ice_cream_flavours()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/datum/ice_cream_flavour/flavour as anything in subtypesof(/datum/ice_cream_flavour))
 		flavour = new flavour
@@ -226,11 +244,15 @@ GLOBAL_LIST_INIT_TYPED(ice_cream_flavours, /datum/ice_cream_flavour, init_ice_cr
 	var/takes_custom_ingredients = FALSE
 
 /datum/ice_cream_flavour/New()
+	procstart = null
+	src.procstart = null
 	if(ingredients)
 		ingredients_text = "Requires: [reagent_paths_list_to_text(ingredients, ingredients_text)]"
 
 /// Adds a new flavour to the ice cream cone.
 /datum/ice_cream_flavour/proc/add_flavour(datum/component/ice_cream_holder/target, datum/reagents/custom_ingredients)
+	procstart = null
+	src.procstart = null
 	var/atom/owner = target.parent
 	LAZYADD(target.scoops, name)
 	if(!takes_custom_ingredients && color)
@@ -350,6 +372,8 @@ GLOBAL_LIST_INIT_TYPED(ice_cream_flavours, /datum/ice_cream_flavour, init_ice_cr
 	ingredients_text = "optional flavorings"
 
 /datum/ice_cream_flavour/custom/add_flavour(datum/component/ice_cream_holder/target, datum/reagents/custom_ingredients)
+	procstart = null
+	src.procstart = null
 	if(!custom_ingredients || custom_ingredients.total_volume < 4) //consumable reagents have stronger taste so higher volume are required to allow non-food flavourings to break through better.
 		return GLOB.ice_cream_flavours[ICE_CREAM_BLAND].add_flavour(target) //Bland, sugary ice and milk.
 	var/image/flavoring = image('icons/obj/service/kitchen.dmi', "icecream_custom")

@@ -24,6 +24,8 @@
 	var/datum/callback/modifier_getter
 
 /datum/component/dart_insert/Initialize(_casing_overlay_icon, _casing_overlay_icon_state, _projectile_overlay_icon, _projectile_overlay_icon_state, datum/callback/_modifier_getter)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 	casing_overlay_icon = _casing_overlay_icon
@@ -33,11 +35,15 @@
 	modifier_getter = _modifier_getter
 
 /datum/component/dart_insert/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_ITEM_PRE_ATTACK, PROC_REF(on_preattack))
 	RegisterSignal(parent, COMSIG_OBJ_RESKIN, PROC_REF(on_reskin))
 
 /datum/component/dart_insert/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/parent_item = parent
 	var/parent_loc = parent_item.loc
@@ -47,6 +53,8 @@
 	UnregisterSignal(parent, COMSIG_ITEM_PRE_ATTACK)
 
 /datum/component/dart_insert/proc/on_preattack(datum/source, atom/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/item/ammo_casing/foam_dart/dart = target
 	if(!istype(dart))
@@ -61,10 +69,14 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/component/dart_insert/proc/on_reskin(datum/source, skin)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SEND_SIGNAL(parent, COMSIG_DART_INSERT_PARENT_RESKINNED, skin)
 
 /datum/component/dart_insert/proc/add_to_dart(obj/item/ammo_casing/dart, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/projectile/dart_projectile = dart.loaded_projectile
 	var/obj/item/parent_item = parent
 	if(user)
@@ -89,6 +101,8 @@
 	holder_projectile = dart_projectile
 
 /datum/component/dart_insert/proc/remove_from_dart(obj/item/ammo_casing/dart, obj/projectile/projectile, mob/user)
+	procstart = null
+	src.procstart = null
 	holder_casing = null
 	holder_projectile = null
 	if(istype(dart))
@@ -108,31 +122,45 @@
 		to_chat(user, span_notice("You remove [parent] from [dart]."))
 
 /datum/component/dart_insert/proc/on_dart_attack_self(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	remove_from_dart(holder_casing, holder_projectile, user)
 
 /datum/component/dart_insert/proc/on_dart_examine_more(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	var/obj/item/parent_item = parent
 	examine_list += span_notice("You can see a [parent_item.name] inserted into it.")
 
 /datum/component/dart_insert/proc/on_leave_dart()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	remove_from_dart(holder_casing, holder_projectile)
 
 /datum/component/dart_insert/proc/on_spawn_drop(datum/source, obj/item/ammo_casing/new_casing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(parent, list(COMSIG_QDELETING, COMSIG_MOVABLE_MOVED))
 	add_to_dart(new_casing)
 
 /datum/component/dart_insert/proc/on_casing_update_overlays(datum/source, list/new_overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	new_overlays += mutable_appearance(casing_overlay_icon, casing_overlay_icon_state)
 
 /datum/component/dart_insert/proc/on_projectile_update_overlays(datum/source, list/new_overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	new_overlays += mutable_appearance(projectile_overlay_icon, projectile_overlay_icon_state)
 
 /datum/component/dart_insert/proc/apply_var_modifiers(obj/projectile/projectile)
+	procstart = null
+	src.procstart = null
 	if (!modifier_getter)
 		return
 	var_modifiers = modifier_getter.Invoke(projectile)
@@ -146,6 +174,8 @@
 		projectile.set_embed(var_modifiers["embedding"])
 
 /datum/component/dart_insert/proc/remove_var_modifiers(obj/projectile/projectile)
+	procstart = null
+	src.procstart = null
 	projectile.damage -= var_modifiers["damage"]
 	projectile.speed -= var_modifiers["speed"]
 	projectile.armour_penetration -= var_modifiers["armour_penetration"]

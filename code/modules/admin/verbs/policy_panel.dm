@@ -11,18 +11,26 @@ ADMIN_VERB(policy_panel, R_ADMIN, "Policy Panel", "View all policy the server ha
 /datum/policy_panel
 
 /datum/policy_panel/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Policypanel")
 		ui.open()
 
 /datum/policy_panel/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_ADMIN)
 
 /datum/policy_panel/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /datum/policy_panel/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["policy"] = global.config.policy
 	return data

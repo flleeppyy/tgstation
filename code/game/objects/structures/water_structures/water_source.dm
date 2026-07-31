@@ -11,11 +11,15 @@
 	var/datum/reagent/dispensedreagent = /datum/reagent/water
 
 /obj/structure/water_source/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(INFINITY, NO_REACT)
 	reagents.add_reagent(dispensedreagent, INFINITY)
 
 /obj/structure/water_source/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -58,6 +62,8 @@
 	)
 
 /obj/structure/water_source/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(busy)
 		to_chat(user, span_warning("Someone's already washing here!"))
 		return ITEM_INTERACT_BLOCKING
@@ -120,26 +126,36 @@
 	resistance_flags = UNACIDABLE
 
 /obj/structure/water_source/puddle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/structure/water_source/puddle/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(held_item))
 		context[SCREENTIP_CONTEXT_RMB] = "Scoop Tadpoles"
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/structure/water_source/puddle/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state]-splash"
 	. = ..()
 	icon_state = base_icon_state
 
 /obj/structure/water_source/puddle/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state]-splash"
 	. = ..()
 	icon_state = base_icon_state
 
 /obj/structure/water_source/puddle/attack_hand_secondary(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return

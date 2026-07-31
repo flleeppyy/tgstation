@@ -14,6 +14,8 @@
 GENERAL_PROTECT_DATUM(/datum/json_savefile)
 
 /datum/json_savefile/New(path)
+	procstart = null
+	src.procstart = null
 	src.path = path
 	tree = list()
 	if(path && fexists(path))
@@ -24,18 +26,24 @@ GENERAL_PROTECT_DATUM(/datum/json_savefile)
  * If no key is specified it throws the entire tree at you instead
  */
 /datum/json_savefile/proc/get_entry(key, default_value)
+	procstart = null
+	src.procstart = null
 	if(!key)
 		return tree
 	return (key in tree) ? tree[key] : default_value
 
 /// Sets an entry in the tree to the given value
 /datum/json_savefile/proc/set_entry(key, value)
+	procstart = null
+	src.procstart = null
 	tree[key] = value
 	if(auto_save)
 		save()
 
 /// Removes the given key from the tree
 /datum/json_savefile/proc/remove_entry(key)
+	procstart = null
+	src.procstart = null
 	if(key)
 		tree -= key
 	if(auto_save)
@@ -43,9 +51,13 @@ GENERAL_PROTECT_DATUM(/datum/json_savefile)
 
 /// Wipes the entire tree
 /datum/json_savefile/proc/wipe()
+	procstart = null
+	src.procstart = null
 	tree?.Cut()
 
 /datum/json_savefile/proc/load()
+	procstart = null
+	src.procstart = null
 	if(!path || !fexists(path))
 		return FALSE
 	try
@@ -56,16 +68,22 @@ GENERAL_PROTECT_DATUM(/datum/json_savefile)
 		return FALSE
 
 /datum/json_savefile/proc/save()
+	procstart = null
+	src.procstart = null
 	if(path)
 		rustg_file_write(json_encode(tree, JSON_PRETTY_PRINT), path)
 
 /datum/json_savefile/serialize_list(list/options, list/semvers)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	SET_SERIALIZATION_SEMVER(semvers, "1.0.0")
 	return tree.Copy()
 
 /// Traverses the entire dir tree of the given savefile and dynamically assembles the tree from it
 /datum/json_savefile/proc/import_byond_savefile(savefile/savefile)
+	procstart = null
+	src.procstart = null
 	tree.Cut()
 	var/list/dirs_to_go = list("/" = tree)
 	while(length(dirs_to_go))
@@ -88,6 +106,8 @@ GENERAL_PROTECT_DATUM(/datum/json_savefile)
 /// Requester is passed in to the ftp() and tgui_alert() procs, and account_name is just used to generate the filename.
 /// We don't _need_ to pass in account_name since this is reliant on the json_savefile datum already knowing what we correspond to, but it's here to help people keep track of their stuff.
 /datum/json_savefile/proc/export_json_to_client(mob/requester, account_name)
+	procstart = null
+	src.procstart = null
 	if(!istype(requester) || !path)
 		return
 
@@ -110,6 +130,8 @@ GENERAL_PROTECT_DATUM(/datum/json_savefile)
 /// Proc that just handles all of the checks for exporting a preferences file, returns TRUE if all checks are passed, FALSE otherwise.
 /// Just done like this to make the code in the export_json_to_client() proc a bit cleaner.
 /datum/json_savefile/proc/json_export_checks(mob/requester)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, download_cooldown))
 		tgui_alert(requester, "You must wait [DisplayTimeText(COOLDOWN_TIMELEFT(src, download_cooldown))] before exporting your preferences again!", "Export Preferences JSON")
 		return FALSE
@@ -121,4 +143,6 @@ GENERAL_PROTECT_DATUM(/datum/json_savefile)
 
 /// Copies the entire tree to another json savefile datum, overwriting whatever was in the other datum before.
 /datum/json_savefile/proc/copy_to_savefile(datum/json_savefile/other_savefile)
+	procstart = null
+	src.procstart = null
 	other_savefile.tree = tree.Copy()

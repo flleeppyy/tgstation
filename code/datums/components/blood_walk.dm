@@ -45,9 +45,13 @@
 	blood_remaining = max_blood
 
 /datum/component/blood_walk/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(spread_blood))
 
 /datum/component/blood_walk/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_MOVABLE_MOVED)
 
 /datum/component/blood_walk/InheritComponent(
@@ -74,6 +78,8 @@
 
 ///Spawns blood (if possible) under the source, and plays a sound effect (if any)
 /datum/component/blood_walk/proc/spread_blood(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/turf/current_turf = source.loc

@@ -3,6 +3,8 @@
 	normal_floor_required = TRUE
 
 /datum/unit_test/spraypainting/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/artist = EASY_ALLOCATE()
 	var/obj/item/toy/crayon/spraycan/can = EASY_ALLOCATE()
 	var/turf/spray_turf = get_turf(artist)

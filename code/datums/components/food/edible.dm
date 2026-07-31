@@ -78,6 +78,8 @@ Behavior that's still missing from this component that original food items had t
 	src.handmade_complexity = handmade_complexity
 
 /datum/component/edible/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(examine))
 	RegisterSignal(parent, COMSIG_ATOM_ATTACK_ANIMAL, PROC_REF(UseByAnimal))
 	RegisterSignal(parent, COMSIG_ATOM_ON_CRAFT, PROC_REF(OnCraft))
@@ -104,6 +106,8 @@ Behavior that's still missing from this component that original food items had t
 		ADD_TRAIT(parent, TRAIT_VALID_DNA_INFUSION, REF(src))
 
 /datum/component/edible/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ATOM_ATTACK_ANIMAL,
 		COMSIG_ATOM_ATTACK_HAND,
@@ -123,6 +127,8 @@ Behavior that's still missing from this component that original food items had t
 		REMOVE_TRAIT(parent, TRAIT_VALID_DNA_INFUSION, REF(src))
 
 /datum/component/edible/allow_source_update(source)
+	procstart = null
+	src.procstart = null
 	return source == SOURCE_EDIBLE_INNATE
 
 /datum/component/edible/on_source_add(
@@ -194,6 +200,8 @@ Behavior that's still missing from this component that original food items had t
 		src.check_liked = check_liked
 
 /datum/component/edible/on_source_remove(source)
+	procstart = null
+	src.procstart = null
 	//rebuild the foodtypes and food_flags bitfields without the removed source
 	LAZYREMOVE(foodtypes_by_source, source)
 	LAZYREMOVE(food_flags_by_source, source)
@@ -203,6 +211,8 @@ Behavior that's still missing from this component that original food items had t
 	return ..()
 
 /datum/component/edible/proc/recalculate_food_flags()
+	procstart = null
+	src.procstart = null
 	foodtypes = NONE
 	food_flags = NONE
 	for(var/source_key in foodtypes_by_source)
@@ -214,6 +224,8 @@ Behavior that's still missing from this component that original food items had t
 		REMOVE_TRAIT(parent, TRAIT_VALID_DNA_INFUSION, REF(src))
 
 /datum/component/edible/Destroy(force)
+	procstart = null
+	src.procstart = null
 	after_eat = null
 	on_consume = null
 	check_liked = null
@@ -221,6 +233,8 @@ Behavior that's still missing from this component that original food items had t
 
 /// Sets up the initial reagents of the food.
 /datum/component/edible/proc/setup_initial_reagents(list/reagents, reagent_purity, list/tastes, volume)
+	procstart = null
+	src.procstart = null
 	var/atom/owner = parent
 	if(!owner.reagents)
 		owner.create_reagents(volume || DEFAULT_EDIBLE_VOLUME, INJECTABLE)
@@ -237,6 +251,8 @@ Behavior that's still missing from this component that original food items had t
 		owner.reagents.add_reagent(rid, amount, added_purity = reagent_purity)
 
 /datum/component/edible/proc/examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/owner = parent
@@ -304,11 +320,15 @@ Behavior that's still missing from this component that original food items had t
 		living_user.taste_container(owner.reagents)
 
 /datum/component/edible/proc/UseFromHand(obj/item/source, mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return TryToEat(M, user)
 
 /datum/component/edible/proc/TryToEatIt(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!in_range(source, user))
@@ -317,6 +337,8 @@ Behavior that's still missing from this component that original food items had t
 
 ///Called when food is created through processing (Usually this means it was sliced). We use this to pass the OG items reagents.
 /datum/component/edible/proc/created_by_processing(datum/source, atom/original_atom, list/chosen_processing_option)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!original_atom.reagents)
@@ -341,6 +363,8 @@ Behavior that's still missing from this component that original food items had t
 
 ///Called when food is crafted through a crafting recipe datum.
 /datum/component/edible/proc/OnCraft(datum/source, list/components, datum/crafting_recipe/food/recipe)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/this_food = parent
@@ -356,6 +380,8 @@ Behavior that's still missing from this component that original food items had t
 
 ///Makes sure the thing hasn't been destroyed or fully eaten to prevent eating phantom edibles
 /datum/component/edible/proc/IsFoodGone(atom/owner, mob/living/feeder)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(owner) || !(IS_EDIBLE(owner)))
 		return TRUE
 	if(owner.reagents.total_volume)
@@ -371,6 +397,8 @@ Behavior that's still missing from this component that original food items had t
 
 ///All the checks for the act of eating itself and
 /datum/component/edible/proc/TryToEat(mob/living/eater, mob/living/feeder)
+	procstart = null
+	src.procstart = null
 
 	set waitfor = FALSE
 
@@ -485,6 +513,8 @@ Behavior that's still missing from this component that original food items had t
 
 ///This function lets the eater take a bite and transfers the reagents to the eater.
 /datum/component/edible/proc/TakeBite(mob/living/eater, mob/living/feeder)
+	procstart = null
+	src.procstart = null
 
 	var/atom/owner = parent
 
@@ -535,6 +565,8 @@ Behavior that's still missing from this component that original food items had t
 
 ///Perform operations based on materials and/or if the parent object is a stack.
 /datum/component/edible/proc/check_materials(mob/living/carbon/eater, fraction)
+	procstart = null
+	src.procstart = null
 	var/atom/owner = parent
 	var/is_stack = isstack(owner)
 
@@ -558,6 +590,8 @@ Behavior that's still missing from this component that original food items had t
 
 ///Checks whether or not the eater can actually consume the food
 /datum/component/edible/proc/CanConsume(mob/living/carbon/eater, mob/living/feeder)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(eater))
 		return FALSE
 	if(eater.is_mouth_covered())
@@ -583,6 +617,8 @@ Behavior that's still missing from this component that original food items had t
 
 ///Applies food buffs according to the crafting complexity
 /datum/component/edible/proc/apply_buff(mob/eater)
+	procstart = null
+	src.procstart = null
 	var/buff
 	var/recipe_complexity = get_recipe_complexity()
 	if(recipe_complexity <= 0)
@@ -601,6 +637,8 @@ Behavior that's still missing from this component that original food items had t
 
 ///Check foodtypes to see if we should send a moodlet
 /datum/component/edible/proc/checkLiked(fraction, mob/eater)
+	procstart = null
+	src.procstart = null
 	if(last_check_time + 50 > world.time)
 		return FALSE
 	if(!ishuman(eater))
@@ -645,6 +683,8 @@ Behavior that's still missing from this component that original food items had t
 
 /// Get the complexity of the crafted food. Some ingredients may influence this value.
 /datum/component/edible/proc/get_recipe_complexity()
+	procstart = null
+	src.procstart = null
 	var/complexity = FOOD_COMPLEXITY_0
 	if(HAS_TRAIT(parent, TRAIT_HANDMADE))
 		complexity += handmade_complexity
@@ -654,6 +694,8 @@ Behavior that's still missing from this component that original food items had t
 
 /// Get food quality adjusted according to eater's preferences
 /datum/component/edible/proc/get_perceived_food_quality(mob/living/eater)
+	procstart = null
+	src.procstart = null
 	var/food_quality = get_recipe_complexity()
 	var/list/extra_quality = list()
 	SEND_SIGNAL(eater, COMSIG_LIVING_GET_PERCEIVED_FOOD_QUALITY, src, extra_quality)
@@ -691,6 +733,8 @@ Behavior that's still missing from this component that original food items had t
 
 /// Get the number of matching food types in provided bitfields
 /datum/component/edible/proc/count_matching_foodtypes(bitfield_one, bitfield_two)
+	procstart = null
+	src.procstart = null
 	var/count = 0
 	var/matching_bits = bitfield_one & bitfield_two
 	while (matching_bits > 0)
@@ -701,6 +745,8 @@ Behavior that's still missing from this component that original food items had t
 
 ///Delete the item when it is fully eaten
 /datum/component/edible/proc/On_Consume(mob/living/eater, mob/living/feeder)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(parent, COMSIG_FOOD_CONSUMED, eater, feeder)
 	SEND_SIGNAL(eater, COMSIG_LIVING_FINISH_EAT, parent, feeder)
 
@@ -717,6 +763,8 @@ Behavior that's still missing from this component that original food items had t
 
 ///Ability to feed food to puppers
 /datum/component/edible/proc/UseByAnimal(datum/source, mob/living/basic/pet/dog/doggy)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isdog(doggy) || (food_flags & FOOD_NO_BITECOUNT)) //this entirely relies on bitecounts alas
@@ -742,6 +790,8 @@ Behavior that's still missing from this component that original food items had t
 
 ///Ability to feed food to puppers
 /datum/component/edible/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(QDELETED(parent))
 		return
@@ -749,18 +799,24 @@ Behavior that's still missing from this component that original food items had t
 
 ///Response to being used to customize something
 /datum/component/edible/proc/used_to_customize(datum/source, atom/customized)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	SEND_SIGNAL(customized, COMSIG_FOOD_INGREDIENT_ADDED, src)
 
 ///Response to an edible ingredient being added to parent.
 /datum/component/edible/proc/edible_ingredient_added(datum/source, datum/component/edible/ingredient)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	InheritComponent(ingredient, TRUE)
 
 /// Response to oozes trying to eat something edible
 /datum/component/edible/proc/on_ooze_eat(datum/source, mob/eater, edible_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/food = parent
@@ -781,12 +837,16 @@ Behavior that's still missing from this component that original food items had t
 
 ///Calls on_edible_applied() for the main material composing the atom parent
 /datum/component/edible/proc/on_material_effects(atom/source, list/materials, datum/material/main_material)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if((source.material_flags & REQUIRED_MAT_FLAGS) == REQUIRED_MAT_FLAGS)
 		main_material.on_edible_applied(source, src)
 
 ///Calls on_edible_removed() for the main material no longer composing the atom parent
 /datum/component/edible/proc/on_remove_material_effects(atom/source, list/materials, datum/material/main_material)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if((source.material_flags & REQUIRED_MAT_FLAGS) == REQUIRED_MAT_FLAGS)
 		main_material.on_edible_removed(source, src)

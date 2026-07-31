@@ -2,6 +2,8 @@
 /datum/unit_test/bot_access
 
 /datum/unit_test/bot_access/Run()
+	procstart = null
+	src.procstart = null
 	var/list/access_bypassing_bots = list()
 	var/obj/machinery/door/airlock/instant/impassable_door = allocate(/obj/machinery/door/airlock/instant, get_step(run_loc_floor_bottom_left, EAST))
 

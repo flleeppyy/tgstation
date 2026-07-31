@@ -15,5 +15,7 @@
 	fakeable = FALSE
 
 /datum/round_event/space_dust/start()
+	procstart = null
+	src.procstart = null
 	spawn_meteors(1, GLOB.meteors_dust)
 

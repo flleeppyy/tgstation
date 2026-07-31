@@ -50,6 +50,8 @@ ADMIN_VERB(cmd_admin_pm_panel, R_NONE, "Admin PM", "Show a list of clients to PM
 
 /// Replys to some existing ahelp, reply to whom, which can be a client or ckey
 /client/proc/cmd_ahelp_reply(whom)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		return FALSE
 
@@ -144,6 +146,8 @@ ADMIN_VERB(cmd_admin_pm_panel, R_NONE, "Admin PM", "Show a list of clients to PM
 //Fetching a message if needed.
 //whom here is a client, a ckey, or [EXTERNAL_PM_USER] if this is from tgs. message is the default message to send
 /client/proc/cmd_admin_pm(whom, message)
+	procstart = null
+	src.procstart = null
 	if(prefs.muted & MUTE_ADMINHELP)
 		to_chat(src,
 			type = MESSAGE_TYPE_ADMINPM,
@@ -184,6 +188,8 @@ ADMIN_VERB(cmd_admin_pm_panel, R_NONE, "Admin PM", "Show a list of clients to PM
 /// Returns the message to send or null if no message is found
 /// Sleeps
 /client/proc/request_adminpm_message(ambiguious_recipient, existing_message = null)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		return null
 
@@ -288,6 +294,8 @@ ADMIN_VERB(cmd_admin_pm_panel, R_NONE, "Admin PM", "Show a list of clients to PM
 /// send_message is the raw message to send, it will be filtered and treated to ensure we do not break any text handling
 /// Returns FALSE if the send failed, TRUE otherwise
 /client/proc/sends_adminpm_message(ambiguious_recipient, send_message)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		return FALSE
 
@@ -498,6 +506,8 @@ ADMIN_VERB(cmd_admin_pm_panel, R_NONE, "Admin PM", "Show a list of clients to PM
 /// or a /client, in which case we send in the standard form
 /// log_message is the raw message to send, it will be filtered and treated to ensure we do not break any text handling
 /client/proc/notify_adminpm_message(ambiguious_recipient, log_message)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		return
 
@@ -566,6 +576,8 @@ ADMIN_VERB(cmd_admin_pm_panel, R_NONE, "Admin PM", "Show a list of clients to PM
 /// Accepts a message and an ambiguious recipient (some sort of client representative, or [EXTERNAL_PM_USER])
 /// Returns the filtered message if it passes all checks, or null if the send fails
 /client/proc/adminpm_filter_text(ambiguious_recipient, message)
+	procstart = null
+	src.procstart = null
 	if(prefs.muted & MUTE_ADMINHELP)
 		to_chat(src,
 			type = MESSAGE_TYPE_ADMINPM,
@@ -586,6 +598,8 @@ ADMIN_VERB(cmd_admin_pm_panel, R_NONE, "Admin PM", "Show a list of clients to PM
 
 #define TGS_AHELP_USAGE "Usage: ticket <close|resolve|icissue|reject|reopen \[ticket #\]|list>"
 /proc/TgsPm(target, message, sender)
+	procstart = null
+	src.procstart = null
 	var/requested_ckey = ckey(target)
 	var/ambiguious_target = disambiguate_client(requested_ckey)
 
@@ -716,6 +730,8 @@ ADMIN_VERB(cmd_admin_pm_panel, R_NONE, "Admin PM", "Show a list of clients to PM
 
 /// Gets TGS's stealth key, generates one if none is found
 /proc/GetTgsStealthKey()
+	procstart = null
+	src.procstart = null
 	var/static/tgsStealthKey
 	if(tgsStealthKey)
 		return tgsStealthKey
@@ -728,6 +744,8 @@ ADMIN_VERB(cmd_admin_pm_panel, R_NONE, "Admin PM", "Show a list of clients to PM
 /// Returns [EXTERNAL_PM_USER] if an IRC marker is detected
 /// Otherwise returns null
 /proc/disambiguate_client(whom)
+	procstart = null
+	src.procstart = null
 	if(istype(whom, /client))
 		return whom
 
@@ -744,6 +762,8 @@ ADMIN_VERB(cmd_admin_pm_panel, R_NONE, "Admin PM", "Show a list of clients to PM
 	return GLOB.directory[searching_ckey]
 
 /client/proc/receive_ahelp(reply_to, message, span_class = "adminsay")
+	procstart = null
+	src.procstart = null
 	to_chat(
 		src,
 		type = MESSAGE_TYPE_ADMINPM,

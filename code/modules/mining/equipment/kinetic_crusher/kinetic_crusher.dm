@@ -67,6 +67,8 @@
 	var/last_projectile_pb = FALSE
 
 /obj/item/kinetic_crusher/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/butchering, \
@@ -86,6 +88,8 @@
  * If a supplied skin is blacklisted, it will be un-blacklisted.
  */
 /obj/item/kinetic_crusher/proc/update_reskin(datum/atom_skin/crusher_skin/default_skin_typepath)
+	procstart = null
+	src.procstart = null
 	AddComponent( \
 		/datum/component/reskinable_item, \
 		/datum/atom_skin/crusher_skin, \
@@ -95,6 +99,8 @@
 	)
 
 /obj/item/kinetic_crusher/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!held_item)
 		context[SCREENTIP_CONTEXT_RMB] = "Detach trophy"
@@ -105,14 +111,20 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/kinetic_crusher/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(trophies)
 	return ..()
 
 /obj/item/kinetic_crusher/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	trophies -= gone
 
 /obj/item/kinetic_crusher/examine(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Mark a large creature with a destabilizing force with right-click, then hit them in melee to do <b>[force_wielded + detonation_damage]</b> damage.")
 	. += span_notice("Does <b>[force_wielded + detonation_damage + backstab_bonus]</b> damage if the target is backstabbed, instead of <b>[force_wielded + detonation_damage]</b>.")
@@ -120,12 +132,16 @@
 		. += span_notice("It has \a [crusher_trophy] attached, which causes [crusher_trophy.effect_desc()].")
 
 /obj/item/kinetic_crusher/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/crusher_trophy))
 		astype(tool, /obj/item/crusher_trophy).add_to(src, user)
 		return ITEM_INTERACT_SUCCESS
 	return NONE
 
 /obj/item/kinetic_crusher/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!LAZYLEN(trophies))
 		user.balloon_alert(user, "no trophies!")
@@ -138,6 +154,8 @@
 
 // adapted from kinetic accelerator attack_hand_secodary
 /obj/item/kinetic_crusher/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
@@ -170,6 +188,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/kinetic_crusher/proc/check_menu(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated)
@@ -177,6 +197,8 @@
 	return TRUE
 
 /obj/item/kinetic_crusher/pre_attack(atom/A, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -186,10 +208,14 @@
 	return .
 
 /obj/item/kinetic_crusher/attack(mob/living/target, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	target.apply_status_effect(/datum/status_effect/crusher_damage)
 	return ..()
 
 /obj/item/kinetic_crusher/afterattack(mob/living/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isliving(target))
 		return
 	// Melee effect
@@ -202,6 +228,8 @@
 		mark.detonate(src, user)
 
 /obj/item/kinetic_crusher/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(interacting_with, /obj/item/crusher_trophy))
 		return NONE
 	var/obj/item/crusher_trophy/new_trophy = interacting_with
@@ -210,6 +238,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/kinetic_crusher/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_WIELDED))
 		balloon_alert(user, "wield it first!")
 		return ITEM_INTERACT_BLOCKING
@@ -221,9 +251,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/kinetic_crusher/ranged_interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return interact_with_atom_secondary(interacting_with, user, modifiers)
 
 /obj/item/kinetic_crusher/proc/fire_kinetic_blast(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!charged)
 		return
 	var/turf/proj_turf = user.loc
@@ -248,6 +282,8 @@
 
 /// Handles the timer for reloading the projectile
 /obj/item/kinetic_crusher/proc/attempt_recharge_projectile(set_recharge_time)
+	procstart = null
+	src.procstart = null
 	if(!set_recharge_time)
 		set_recharge_time = charge_time
 	deltimer(charge_timer)
@@ -255,6 +291,8 @@
 
 /// Recharges the projectile
 /obj/item/kinetic_crusher/proc/recharge_projectile()
+	procstart = null
+	src.procstart = null
 	if(!charged)
 		charged = TRUE
 		update_appearance()
@@ -262,24 +300,34 @@
 
 /// Updates the two handed component with new damage values
 /obj/item/kinetic_crusher/proc/update_wielding()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/two_handed, force_unwielded = 0, force_wielded = force_wielded)
 
 /obj/item/kinetic_crusher/ui_action_click(mob/user, actiontype)
+	procstart = null
+	src.procstart = null
 	set_light_on(!light_on)
 	playsound(user, toggle_light_sound, 100, TRUE)
 	update_appearance()
 
 /obj/item/kinetic_crusher/on_saboteur(datum/source, disrupt_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light_on(FALSE)
 	playsound(src, toggle_light_sound, 100, TRUE)
 	return TRUE
 
 /obj/item/kinetic_crusher/update_icon_state()
+	procstart = null
+	src.procstart = null
 	inhand_icon_state = "[base_icon_state][HAS_TRAIT(src, TRAIT_WIELDED)]" // this is not icon_state and not supported by 2hcomponent
 	return ..()
 
 /obj/item/kinetic_crusher/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!charged)
 		. += "[icon_state]_uncharged"
@@ -306,17 +354,25 @@
 	var/detonation_damage = 50
 
 /obj/projectile/destabilizer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/parriable_projectile, parry_callback = CALLBACK(src, PROC_REF(on_parry)))
 
 /obj/projectile/destabilizer/Destroy()
+	procstart = null
+	src.procstart = null
 	fired_from = null
 	return ..()
 
 /obj/projectile/destabilizer/is_hostile_projectile()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/projectile/destabilizer/proc/on_parry(mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	boosted = TRUE
 	// Get a bit of a damage/range boost after being parried
@@ -324,6 +380,8 @@
 	range = 9
 
 /obj/projectile/destabilizer/prehit_pierce(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!isliving(target) || !firer || !ignore_allies)
 		return ..()
 	var/mob/living/victim = target
@@ -332,6 +390,8 @@
 	return ..()
 
 /obj/projectile/destabilizer/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	var/obj/item/kinetic_crusher/used_crusher
 	if(istype(fired_from, /obj/item/kinetic_crusher))
 		used_crusher = fired_from

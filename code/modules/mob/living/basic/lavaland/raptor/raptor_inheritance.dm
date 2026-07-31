@@ -21,6 +21,8 @@
 // Owner being set will randomize the stats as it means we're spawned not via an egg
 // otherwise wait for set_parents call to inherit genetics
 /datum/raptor_inheritance/New(mob/living/basic/raptor/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!owner)
 		return
@@ -32,6 +34,8 @@
 		personality_traits += pick_n_take(traits_to_pick)
 
 /datum/raptor_inheritance/proc/set_parents(mob/living/basic/raptor/mother, mob/living/basic/raptor/father)
+	procstart = null
+	src.procstart = null
 	var/datum/raptor_inheritance/mom_stats = mother.inherited_stats
 	var/datum/raptor_inheritance/dad_stats = father.inherited_stats
 

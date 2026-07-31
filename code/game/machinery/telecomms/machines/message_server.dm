@@ -17,10 +17,14 @@
 	acid = 70
 
 /obj/machinery/blackbox_recorder/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	stored = new /obj/item/blackbox(src)
 
 /obj/machinery/blackbox_recorder/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stored)
 		stored.forceMove(drop_location())
@@ -35,6 +39,8 @@
 		return
 
 /obj/machinery/blackbox_recorder/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/blackbox))
 		return NONE
 	if(stored)
@@ -51,12 +57,16 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/blackbox_recorder/Destroy()
+	procstart = null
+	src.procstart = null
 	if(stored)
 		stored.forceMove(loc)
 		new /obj/effect/decal/cleanable/blood/oil(loc)
 	return ..()
 
 /obj/machinery/blackbox_recorder/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "blackbox[stored ? null : "_b"]"
 	return ..()
 
@@ -104,6 +114,8 @@
 #define MESSAGE_SERVER_FUNCTIONING_MESSAGE "This is an automated message. The messaging system is functioning correctly."
 
 /obj/machinery/telecomms/message_server/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (calibrating)
 		calibrating += world.time
@@ -113,17 +125,23 @@
 		pda_msgs += new /datum/data_tablet_msg("System Administrator", "system", MESSAGE_SERVER_FUNCTIONING_MESSAGE)
 
 /obj/machinery/telecomms/message_server/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/computer/message_monitor/monitor in listening_computers)
 		monitor.set_linked_server(null)
 	listening_computers = null
 	return ..()
 
 /obj/machinery/telecomms/message_server/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(calibrating)
 		. += span_warning("It's still calibrating.")
 
 /obj/machinery/telecomms/message_server/process()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(calibrating && calibrating <= world.time)
 		calibrating = 0
@@ -132,6 +150,8 @@
 #undef MESSAGE_SERVER_FUNCTIONING_MESSAGE
 
 /obj/machinery/telecomms/message_server/receive_information(datum/signal/subspace/messaging/signal, obj/machinery/telecomms/machine_from)
+	procstart = null
+	src.procstart = null
 	// can't log non-message signals
 	if(!istype(signal) || !signal.data["message"] || !on || calibrating)
 		return
@@ -152,6 +172,8 @@
 		relay_information(signal, /obj/machinery/telecomms/broadcaster)
 
 /obj/machinery/telecomms/message_server/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(calibrating)
@@ -167,6 +189,8 @@
 GLOBAL_VAR(preset_station_message_server_key)
 
 /obj/machinery/telecomms/message_server/preset/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Just in case there are multiple preset messageservers somehow once the CE arrives,
 	// we want those on the station to share the same preset default decrypt key shown in his memories.
@@ -187,6 +211,8 @@ GLOBAL_VAR(preset_station_message_server_key)
 	server_type = /obj/machinery/telecomms/message_server
 
 /datum/signal/subspace/messaging/New(init_source, init_data)
+	procstart = null
+	src.procstart = null
 	source = init_source
 	data = init_data
 	var/turf/origin_turf = get_turf(source)
@@ -195,6 +221,8 @@ GLOBAL_VAR(preset_station_message_server_key)
 		data["reject"] = TRUE
 
 /datum/signal/subspace/messaging/copy()
+	procstart = null
+	src.procstart = null
 	var/datum/signal/subspace/messaging/copy = new type(source, data.Copy())
 	copy.original = src
 	copy.levels = levels
@@ -203,6 +231,8 @@ GLOBAL_VAR(preset_station_message_server_key)
 // Tablet message signal datum
 /// Returns a string representing the target of this message, formatted properly.
 /datum/signal/subspace/messaging/tablet_message/proc/format_target()
+	procstart = null
+	src.procstart = null
 	if (data["everyone"])
 		return "Everyone"
 
@@ -212,25 +242,35 @@ GLOBAL_VAR(preset_station_message_server_key)
 
 /// Returns a string representing the sender of this message, formatted properly.
 /datum/signal/subspace/messaging/tablet_message/proc/format_sender()
+	procstart = null
+	src.procstart = null
 	var/display_name = get_messenger_name(locate(data["ref"]))
 	return display_name ? display_name : STRINGIFY_PDA_TARGET(data["fakename"], data["fakejob"])
 
 /// Returns the formatted message contained in this message. Use this to apply
 /// any processing to it if it needs to be formatted in a specific way.
 /datum/signal/subspace/messaging/tablet_message/proc/format_message()
+	procstart = null
+	src.procstart = null
 	return data["message"]
 
 /// Returns the formatted photo path contained in this message, if there's one.
 /datum/signal/subspace/messaging/tablet_message/proc/format_photo_path()
+	procstart = null
+	src.procstart = null
 	return data["photo"]
 
 /datum/signal/subspace/messaging/tablet_message/broadcast()
+	procstart = null
+	src.procstart = null
 	for (var/datum/computer_file/program/messenger/app in data["targets"])
 		if(!QDELETED(app))
 			app.receive_message(src)
 
 // Request Console signal datum
 /datum/signal/subspace/messaging/rc/broadcast()
+	procstart = null
+	src.procstart = null
 	var/recipient_department = ckey(data["recipient_department"])
 	for (var/obj/machinery/requests_console/console in GLOB.req_console_all)
 		if(ckey(console.department) == recipient_department || (data["ore_update"] && console.receive_ore_updates))
@@ -251,6 +291,8 @@ GLOBAL_VAR(preset_station_message_server_key)
 
 
 /datum/data_tablet_msg/New(param_rec, param_sender, param_message, param_photo)
+	procstart = null
+	src.procstart = null
 	if(param_rec)
 		recipient = param_rec
 	if(param_sender)
@@ -282,6 +324,8 @@ GLOBAL_VAR(preset_station_message_server_key)
 	var/priority = REQUEST_PRIORITY_NORMAL
 
 /datum/data_rc_msg/New(param_rec, param_sender, param_message, param_stamp, param_id_auth, param_priority)
+	procstart = null
+	src.procstart = null
 	if(param_rec)
 		receiving_department = param_rec
 	if(param_sender)

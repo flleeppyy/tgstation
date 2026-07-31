@@ -15,6 +15,8 @@
 
 /// Scan the nearest mob/object
 /datum/gizpulse/scan/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	if(!istype(master, /datum/gizmodes/copier))
 		return
 
@@ -34,6 +36,8 @@
 	var/list/copies
 
 /datum/gizpulse/copy/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	if(!istype(master, /datum/gizmodes/copier))
 		return
 
@@ -63,12 +67,16 @@
 
 /// Remove a copy from a list if they're deleted
 /datum/gizpulse/copy/proc/remove_from_list(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	copies.Remove(source)
 
 /// Wipe all current copies
 /datum/gizpulse/erase/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	if(!istype(master, /datum/gizmodes/copier))
 		return
 
@@ -80,6 +88,8 @@
 	copier.copies.Cut()
 
 /obj/item/gizmo_copy/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	do_sparks(2, FALSE, "gizmo copy")

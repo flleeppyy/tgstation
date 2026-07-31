@@ -26,11 +26,15 @@
 	COOLDOWN_DECLARE(spin_cooldown)
 
 /obj/structure/cursed_slot_machine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 	set_light(brightness_on)
 
 /obj/structure/cursed_slot_machine/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return
 
@@ -48,6 +52,8 @@
 	addtimer(CALLBACK(src, PROC_REF(determine_victor), user), 5 SECONDS)
 
 /obj/structure/cursed_slot_machine/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/overlay_state = icon_screen
 	. += mutable_appearance(icon, overlay_state)
@@ -55,6 +61,8 @@
 
 /// Validates that the user can use the cursed slot machine. User is the person using the slot machine. Returns TRUE if we can, FALSE otherwise.
 /obj/structure/cursed_slot_machine/proc/check_and_set_usage(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(in_use)
 		balloon_alert_to_viewers("already spinning!")
 		return FALSE
@@ -73,6 +81,8 @@
 	return TRUE
 
 /obj/structure/cursed_slot_machine/proc/determine_victor(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	icon_screen = initial(icon_screen)
 	update_appearance()
 
@@ -106,16 +116,22 @@
 	density = TRUE
 
 /obj/structure/cursed_money/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(collapse)), 1 MINUTES)
 
 /obj/structure/cursed_money/proc/collapse()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	visible_message(span_warning("[src] falls in on itself, with the canvas rotting away and contents vanishing."))
 	qdel(src)
 
 /obj/structure/cursed_money/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

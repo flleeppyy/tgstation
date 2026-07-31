@@ -7,6 +7,8 @@
 	var/has_soul = FALSE
 
 /obj/item/storage/toolbox/mechanical/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/screwdriver(src)
 	new /obj/item/wrench(src)
 	new /obj/item/weldingtool(src)
@@ -28,6 +30,8 @@
 	storage_type = /datum/storage/toolbox/heirloom
 
 /obj/item/storage/toolbox/mechanical/old/heirloom/PopulateContents()
+	procstart = null
+	src.procstart = null
 	return
 
 // version of below that isn't a traitor item
@@ -46,6 +50,8 @@
 	throwforce = 22
 
 /obj/item/storage/toolbox/mechanical/old/clean/proc/calc_damage()
+	procstart = null
+	src.procstart = null
 	var/power = 0
 	for (var/obj/item/stack/telecrystal/stored_crystals in get_all_contents())
 		power += stored_crystals.amount
@@ -53,14 +59,20 @@
 	throwforce = initial(throwforce) + power
 
 /obj/item/storage/toolbox/mechanical/old/clean/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	calc_damage()
 	return ..()
 
 /obj/item/storage/toolbox/mechanical/old/clean/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	calc_damage()
 	return ..()
 
 /obj/item/storage/toolbox/mechanical/old/clean/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/screwdriver(src)
 	new /obj/item/wrench(src)
 	new /obj/item/weldingtool(src)

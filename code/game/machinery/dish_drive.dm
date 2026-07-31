@@ -41,6 +41,8 @@
 	COOLDOWN_DECLARE(time_since_dishes)
 
 /obj/machinery/dish_drive/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user.Adjacent(src))
 		. += span_notice("Alt-click it to beam its contents to any nearby disposal bins.")
@@ -64,6 +66,8 @@
 	. += span_info("It contains [english_list(dish_list)].\n[peek(dish_drive_contents)] is at the top of the pile.")
 
 /obj/machinery/dish_drive/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!LAZYLEN(dish_drive_contents))
 		balloon_alert(user, "drive empty")
@@ -76,17 +80,25 @@
 	flick("synthesizer_beam", src)
 
 /obj/machinery/dish_drive/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/dish_drive/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/dish_drive/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/dish_drive/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(is_type_in_list(tool, collectable_items) && !user.combat_mode)
 		if(!user.transferItemToLoc(tool, src))
 			return ITEM_INTERACT_BLOCKING
@@ -99,10 +111,14 @@
 	return NONE
 
 /obj/machinery/dish_drive/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]-o" : base_icon_state
 
 /obj/machinery/dish_drive/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	suck_distance = 0
 	for(var/datum/stock_part/servo/servo in component_parts)
@@ -123,6 +139,8 @@
 		transmit_enabled = board.transmit
 
 /obj/machinery/dish_drive/process()
+	procstart = null
+	src.procstart = null
 	if(COOLDOWN_FINISHED(src, time_since_dishes) && transmit_enabled)
 		do_the_dishes()
 	if(!suction_enabled)
@@ -139,16 +157,22 @@
 				step_towards(dish, src)
 
 /obj/machinery/dish_drive/attack_ai(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(machine_stat)
 		return
 	balloon_alert(user, "disposal signal sent")
 	do_the_dishes(TRUE)
 
 /obj/machinery/dish_drive/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	do_the_dishes(TRUE)
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/dish_drive/proc/do_the_dishes(manual)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(dish_drive_contents))
 		if(manual)
 			visible_message(span_notice("[src] is empty!"))

@@ -59,6 +59,8 @@
 	acid = 80
 
 /obj/vehicle/sealed/mecha/vim/mob_try_enter(mob/entering)
+	procstart = null
+	src.procstart = null
 	if(issilicon(entering))
 		entering.balloon_alert(entering, "can't fit inside!")
 		return FALSE
@@ -72,15 +74,21 @@
 	moved_inside(entering)
 
 /obj/vehicle/sealed/mecha/vim/generate_actions()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	initialize_controller_action_type(/datum/action/vehicle/sealed/noise/chime, VEHICLE_CONTROL_DRIVE)
 	initialize_controller_action_type(/datum/action/vehicle/sealed/noise/buzz, VEHICLE_CONTROL_DRIVE)
 
 /obj/vehicle/sealed/mecha/vim/toggle_lights(forced_state = null, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/vehicle/sealed/mecha/vim/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mecha_flags & LIGHTS_ON)
 		. += mutable_appearance(icon, "vim_headlights")

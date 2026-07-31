@@ -32,6 +32,8 @@ ADMIN_VERB(makepAI, R_FUN, "Make pAI", "Specify a location to spawn a pAI device
  * @param {boolean} delete_old - If TRUE, deletes the old pAI.
  */
 /mob/proc/make_pai(delete_old)
+	procstart = null
+	src.procstart = null
 	var/obj/item/pai_card/card = new(src)
 	var/mob/living/silicon/pai/pai = new(card)
 	pai.PossessByPlayer(key)

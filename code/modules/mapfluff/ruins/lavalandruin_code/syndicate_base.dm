@@ -7,6 +7,8 @@
 	desc = "Unearthing this was probably a mistake."
 
 /obj/structure/closet/crate/secure/freezer/commsagent/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..() //Contains a variety of less exotic tongues (And tongue accessories) for the comms agent to mess with.
 	new /obj/item/organ/tongue(src)
 	new /obj/item/organ/tongue/lizard(src)
@@ -29,6 +31,8 @@
 	include_in_cims = FALSE
 
 /obj/machinery/power/supermatter_crystal/shard/syndicate/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/scalpel/supermatter)) //You can already yoink the docs as a free objective win, another would be just gross
 		to_chat(user, span_danger("This shard's already in Syndicate custody, taking it again could cause more harm than good."))
 		return ITEM_INTERACT_BLOCKING

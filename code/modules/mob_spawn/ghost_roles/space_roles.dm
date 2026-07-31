@@ -17,6 +17,8 @@
 	allow_custom_character = GHOSTROLE_TAKE_PREFS_APPEARANCE
 
 /obj/effect/mob_spawn/ghost_role/human/oldstation/create(mob/mob_possessor, newname, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -29,6 +31,8 @@
 	)
 
 /obj/effect/mob_spawn/ghost_role/human/oldstation/Destroy()
+	procstart = null
+	src.procstart = null
 	new /obj/structure/showcase/machinery/oldpod/used(drop_location())
 	return ..()
 
@@ -89,6 +93,8 @@
 	important_text = "DO NOT abandon the base."
 
 /obj/effect/mob_spawn/ghost_role/human/lavaland_syndicate/comms/space/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(85)) //only has a 15% chance of existing, otherwise it'll just be a NPC syndie.
 		new /mob/living/basic/trooper/syndicate/ranged(get_turf(src))
@@ -113,6 +119,8 @@
 	var/antag_datum_to_give = /datum/antagonist/battlecruiser
 
 /obj/effect/mob_spawn/ghost_role/human/syndicate/battlecruiser/allow_spawn(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!(user.ckey in antag_team.players_spawned))
 		return TRUE
 	if(!silent)
@@ -120,6 +128,8 @@
 	return FALSE
 
 /obj/effect/mob_spawn/ghost_role/human/syndicate/battlecruiser/special(mob/living/spawned_mob, mob/possesser)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!spawned_mob.mind)
 		spawned_mob.mind_initialize()

@@ -41,6 +41,8 @@
 
 //This is fine right now, if we're adding organ specific damage this needs to be updated
 /mob/living/carbon/alien/larva/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	var/static/list/innate_actions = list(
 		/datum/action/cooldown/alien/hide,
 		/datum/action/cooldown/alien/larva_evolve,
@@ -52,22 +54,30 @@
 //This needs to be fixed
 // This comment is 12 years old I hope it's fixed by now
 /mob/living/carbon/alien/larva/get_status_tab_items()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "Progress: [amount_grown]/[max_grown]"
 
 /mob/living/carbon/alien/larva/Login()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !client)
 		return FALSE
 	to_chat(src, "<b>You are an alien larva. Hide from danger until you can evolve.<br>Use say :a to communicate with the hivemind.</b>")
 
 /mob/living/carbon/alien/larva/adjustPlasma(amount)
+	procstart = null
+	src.procstart = null
 	if(stat != DEAD && amount > 0)
 		amount_grown = min(amount_grown + 1, max_grown)
 	..(amount)
 
 //can't equip anything
 /mob/living/carbon/alien/larva/attack_ui(slot_id, params)
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -75,14 +85,22 @@
 // now constructs damage icon for each organ from mask * damage field
 
 /mob/living/carbon/alien/larva/toggle_throw_mode()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/alien/larva/start_pulling(atom/movable/AM, state, force = move_force, supress_message = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/alien/larva/canBeHandcuffed()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Don't scramble a larva's body parts, it doesn't have any
 /mob/living/carbon/alien/larva/bioscramble(scramble_source)
+	procstart = null
+	src.procstart = null
 	return TRUE

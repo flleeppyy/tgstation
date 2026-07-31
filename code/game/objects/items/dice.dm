@@ -12,6 +12,8 @@
 	storage_type = /datum/storage/dice
 
 /obj/item/storage/dice/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/dice/d4(src)
 	new /obj/item/dice/d6(src)
 	new /obj/item/dice/d8(src)
@@ -31,10 +33,14 @@
 	new picked(src)
 
 /obj/item/storage/dice/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is gambling with death! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return OXYLOSS
 
 /obj/item/storage/dice/hazard/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/dice/d6(src)
 	new /obj/item/dice/d6(src)
 	new /obj/item/dice/d6(src)
@@ -60,21 +66,29 @@
 	var/rigged_value
 
 /obj/item/dice/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!result)
 		result = roll(sides)
 	update_appearance()
 
 /obj/item/dice/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	diceroll(user, in_hand = TRUE)
 
 /obj/item/dice/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	var/mob/thrown_by = throwingdatum?.get_thrower()
 	if(istype(thrown_by))
 		diceroll(thrown_by)
 	return ..()
 
 /obj/item/dice/proc/diceroll(mob/user, in_hand=FALSE)
+	procstart = null
+	src.procstart = null
 	result = roll(sides)
 	if(rigged != DICE_NOT_RIGGED && result != rigged_value)
 		if(rigged == DICE_BASICALLY_RIGGED && prob(clamp(1/(sides - 1) * 100, 25, 80)))
@@ -112,10 +126,14 @@
 
 
 /obj/item/dice/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "[icon_state]-[result]"
 
 /obj/item/dice/microwave_act(obj/machinery/microwave/microwave_source, mob/microwaver, randomize_pixel_offset)
+	procstart = null
+	src.procstart = null
 	if(microwave_riggable)
 		rigged = DICE_BASICALLY_RIGGED
 		rigged_value = result
@@ -124,9 +142,13 @@
 
 /// A proc to modify the displayed result. (Does not affect what the icon_state is passed.)
 /obj/item/dice/proc/manipulate_result(original)
+	procstart = null
+	src.procstart = null
 	return original
 
 /obj/item/dice/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is gambling with death! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return OXYLOSS
 
@@ -149,6 +171,8 @@
 	sides = 4
 
 /obj/item/dice/d4/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// 1d4 damage
 	AddComponent(/datum/component/caltrop, min_damage = 1, max_damage = 4)
@@ -168,6 +192,8 @@
 	icon_state = "spaced6"
 
 /obj/item/dice/d6/space/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(10))
 		name = "spess cube"
@@ -216,6 +242,8 @@
 	sides = 10
 
 /obj/item/dice/d00/manipulate_result(original)
+	procstart = null
+	src.procstart = null
 	return (original - 1)*10  // 10, 20, 30, etc
 
 /obj/item/dice/d12
@@ -238,6 +266,8 @@
 	sides = 100
 
 /obj/item/dice/d100/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/update_icon_blocker)
 	return ..()
 
@@ -249,6 +279,8 @@
 	special_faces = list("It is certain","It is decidedly so","Without a doubt","Yes, definitely","You may rely on it","As I see it, yes","Most likely","Outlook good","Yes","Signs point to yes","Reply hazy try again","Ask again later","Better not tell you now","Cannot predict now","Concentrate and ask again","Don't count on it","My reply is no","My sources say no","Outlook not so good","Very doubtful")
 
 /obj/item/dice/eightbd20/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/update_icon_blocker)
 	return ..()
 
@@ -260,6 +292,8 @@
 	special_faces = list("Cube-Side: 1-1","Cube-Side: 1-2","Cube-Side: 1-3","Cube-Side: 1-4","Cube-Side: 1-5","Cube-Side: 1-6","Cube-Side: 2-1","Cube-Side: 2-2","Cube-Side: 2-3","Cube-Side: 2-4","Cube-Side: 2-5","Cube-Side: 2-6","Cube-Side: 3-1","Cube-Side: 3-2","Cube-Side: 3-3","Cube-Side: 3-4","Cube-Side: 3-5","Cube-Side: 3-6","Cube-Side: 4-1","Cube-Side: 4-2","Cube-Side: 4-3","Cube-Side: 4-4","Cube-Side: 4-5","Cube-Side: 4-6","Cube-Side: 5-1","Cube-Side: 5-2","Cube-Side: 5-3","Cube-Side: 5-4","Cube-Side: 5-5","Cube-Side: 5-6","Cube-Side: 6-1","Cube-Side: 6-2","Cube-Side: 6-3","Cube-Side: 6-4","Cube-Side: 6-5","Cube-Side: 6-6","Cube-Side: 7-1","Cube-Side: 7-2","Cube-Side: 7-3","Cube-Side: 7-4","Cube-Side: 7-5","Cube-Side: 7-6","Cube-Side: 8-1","Cube-Side: 8-2","Cube-Side: 8-3","Cube-Side: 8-4","Cube-Side: 8-5","Cube-Side: 8-6")
 
 /obj/item/dice/fourdd6/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/update_icon_blocker)
 	return ..()
 
@@ -304,6 +338,8 @@
 	reusable = FALSE
 
 /obj/item/dice/d20/fate/diceroll(mob/user, in_hand=FALSE)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, roll_cd))
 		to_chat(user, span_warning("Hold on, [src] isn't caught up with your last roll!"))
 		return
@@ -326,6 +362,8 @@
 	COOLDOWN_START(src, roll_cd, 2.5 SECONDS)
 
 /obj/item/dice/d20/fate/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(user) || !user.mind || IS_WIZARD(user))
 		to_chat(user, span_warning("You feel the magic of the dice is restricted to ordinary humans! You should leave it alone."))
@@ -333,6 +371,8 @@
 
 
 /obj/item/dice/d20/fate/proc/effect(mob/living/carbon/human/user,roll)
+	procstart = null
+	src.procstart = null
 	var/turf/selected_turf = get_turf(src)
 	switch(roll)
 		if(1)

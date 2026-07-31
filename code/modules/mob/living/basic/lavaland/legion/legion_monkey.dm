@@ -18,14 +18,20 @@
 	ai_controller = /datum/ai_controller/basic_controller/legion_monkey
 
 /mob/living/basic/mining/legion/monkey/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 	AddComponent(/datum/component/regenerator, outline_colour = COLOR_SOFT_RED)
 
 /mob/living/basic/mining/legion/monkey/assign_abilities()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/basic/mining/legion/monkey/get_loot_list()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Icebox variant
@@ -37,6 +43,8 @@
 	has_emissive = FALSE
 
 /mob/living/basic/mining/legion/monkey/snow/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/appearance_on_aggro, aggro_state = "snow_monkey_alive") // Surprise! I was real!
 

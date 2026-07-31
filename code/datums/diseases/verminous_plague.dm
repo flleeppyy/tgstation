@@ -44,12 +44,16 @@ GLOBAL_LIST_INIT(cursed_vermin_by_stage, list(
 	var/spawn_chance = 5
 
 /datum/disease/verminous_plague/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (SPT_PROB(spawn_chance, seconds_per_tick))
 		spawn_mob()
 
 /// Creates a pest
 /datum/disease/verminous_plague/proc/spawn_mob()
+	procstart = null
+	src.procstart = null
 	var/creating_type = pick_weight(GLOB.cursed_vermin_by_stage["[stage]"])
 	var/mob/living/created = new creating_type(affected_mob.drop_location())
 	if (QDELETED(created))
@@ -70,6 +74,8 @@ GLOBAL_LIST_INIT(cursed_vermin_by_stage, list(
 	created.ai_controller.insert_blackboard_key_lazylist(BB_BASIC_MOB_RETALIATE_LIST, affected_mob)
 
 /datum/disease/verminous_plague/update_stage(new_stage)
+	procstart = null
+	src.procstart = null
 	var/was_stage = stage
 	. = ..()
 	if (new_stage > was_stage)

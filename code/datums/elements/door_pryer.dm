@@ -11,6 +11,8 @@
 	var/interaction_key
 
 /datum/element/door_pryer/Attach(datum/target, pry_time = 10 SECONDS, interaction_key = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -19,11 +21,15 @@
 	RegisterSignal(target, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(on_attack))
 
 /datum/element/door_pryer/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_LIVING_UNARMED_ATTACK)
 
 /// If we're targeting an airlock, open it
 /datum/element/door_pryer/proc/on_attack(mob/living/basic/attacker, atom/target, proximity_flag)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!proximity_flag || !istype(target, /obj/machinery/door/airlock))
 		return NONE
@@ -48,6 +54,8 @@
 
 /// Try opening the door, and if we can't then try forcing it
 /datum/element/door_pryer/proc/open_door(mob/living/basic/attacker, obj/machinery/door/airlock/airlock_target)
+	procstart = null
+	src.procstart = null
 	if (!airlock_target.hasPower())
 		attacker.visible_message(span_warning("[attacker] forces the [airlock_target] to open."))
 		attacker.log_message("Pried open [src], located at [loc_name(src)].", LOG_GAME)

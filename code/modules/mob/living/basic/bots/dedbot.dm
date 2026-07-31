@@ -41,6 +41,8 @@
 	var/datum/action/cooldown/mob_cooldown/bot/exenterate
 
 /mob/living/basic/bot/dedbot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/death_drops, /obj/effect/gibspawner/robot)
 	var/static/list/innate_actions = list(
@@ -88,6 +90,8 @@
 	)
 
 /datum/action/cooldown/mob_cooldown/exenterate/Activate(atom/caster)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, cooldown_time))
 		return FALSE
 	caster.Shake(1.4, 0.8, 0.3 SECONDS)
@@ -97,6 +101,8 @@
 	StartCooldown(cooldown_time)
 
 /datum/action/cooldown/mob_cooldown/exenterate/proc/slash_em(atom/caster)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/victim in range(ability_range, caster))
 		if(victim.has_faction(immune_factions) && victim.IsReachableBy(owner))
 			continue

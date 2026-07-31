@@ -13,6 +13,8 @@
 	spawn_random_offset = TRUE
 
 /obj/effect/spawner/random/mining_loot/shoe_factory/make_item(spawn_loc, type_path_to_make)
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/shoes/shoe = ..()
 	if(istype(shoe))
 		// shoes will spawn anywhere from -0.5 speed modifer (fast) to +0.5 speed (slow)

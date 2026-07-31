@@ -23,19 +23,29 @@
 	VAR_PRIVATE/list/cached_prosthetic_options
 
 /datum/surgery_operation/limb/prosthetic_replacement/get_recommended_tool()
+	procstart = null
+	src.procstart = null
 	return "any limb / any item"
 
 /datum/surgery_operation/limb/prosthetic_replacement/get_any_tool()
+	procstart = null
+	src.procstart = null
 	return "Any suitable arm replacement"
 
 /datum/surgery_operation/limb/prosthetic_replacement/all_required_strings()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "the limb must be missing / a stump"
 
 /datum/surgery_operation/limb/prosthetic_replacement/any_required_strings()
+	procstart = null
+	src.procstart = null
 	return list("arms may receive any suitable item in lieu of a replacement limb") + ..()
 
 /datum/surgery_operation/limb/prosthetic_replacement/get_radial_options(obj/item/bodypart/chest/chest, obj/item/tool, operating_zone)
+	procstart = null
+	src.procstart = null
 	var/datum/radial_menu_choice/option = LAZYACCESS(cached_prosthetic_options, tool.type)
 	if(!option)
 		option = new()
@@ -47,9 +57,13 @@
 	return option
 
 /datum/surgery_operation/limb/prosthetic_replacement/state_check(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	return IS_STUMP(limb)
 
 /datum/surgery_operation/limb/prosthetic_replacement/snowflake_check_availability(obj/item/bodypart/chest, mob/living/surgeon, obj/item/tool, operated_zone)
+	procstart = null
+	src.procstart = null
 	if(!surgeon.canUnEquip(tool))
 		return FALSE
 	var/real_operated_zone = deprecise_zone(operated_zone)
@@ -66,6 +80,8 @@
 	return TRUE
 
 /datum/surgery_operation/limb/prosthetic_replacement/tool_check(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(tool.item_flags & (ABSTRACT|DROPDEL|HAND_ITEM))
 		return FALSE
 	if(isbodypart(tool))
@@ -79,11 +95,15 @@
 	return TRUE
 
 /datum/surgery_operation/limb/prosthetic_replacement/pre_preop(atom/movable/operating_on, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// always operate on absolute body zones
 	operation_args[OPERATION_TARGET_ZONE] = deprecise_zone(operation_args[OPERATION_TARGET_ZONE])
 
 /datum/surgery_operation/limb/prosthetic_replacement/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -103,6 +123,8 @@
 			operation_args[OPERATION_REJECTION_DAMAGE] = 30
 
 /datum/surgery_operation/limb/prosthetic_replacement/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	if(!surgeon.temporarilyRemoveItemFromInventory(tool))
 		return // should never happen
 	if(operation_args[OPERATION_REJECTION_DAMAGE] > 0)
@@ -113,6 +135,8 @@
 	handle_arbitrary_prosthetic(limb.owner, surgeon, tool, operation_args[OPERATION_TARGET_ZONE])
 
 /datum/surgery_operation/limb/prosthetic_replacement/proc/handle_bodypart(mob/living/carbon/patient, mob/living/surgeon, obj/item/bodypart/bodypart_to_attach)
+	procstart = null
+	src.procstart = null
 	bodypart_to_attach.try_attach_limb(patient)
 	if(bodypart_to_attach.check_for_frankenstein(patient))
 		bodypart_to_attach.bodypart_flags |= BODYPART_IMPLANTED
@@ -125,6 +149,8 @@
 	display_pain(patient, "You feel synthetic sensation wash from your [bodypart_to_attach.plaintext_zone], which you can feel again!", TRUE)
 
 /datum/surgery_operation/limb/prosthetic_replacement/proc/handle_arbitrary_prosthetic(mob/living/carbon/patient, mob/living/surgeon, obj/item/thing_to_attach, target_zone)
+	procstart = null
+	src.procstart = null
 	SSblackbox.record_feedback("tally", "arbitrary_prosthetic", 1, initial(thing_to_attach.name))
 	var/obj/item/bodypart/new_limb = patient.make_item_prosthetic(thing_to_attach, target_zone, 80)
 	new_limb.add_surgical_state(SURGERY_PROSTHETIC_UNSECURED)
@@ -151,9 +177,13 @@
 	all_surgery_states_required = SURGERY_PROSTHETIC_UNSECURED
 
 /datum/surgery_operation/limb/secure_arbitrary_prosthetic/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(/obj/item/stack/medical/suture)
 
 /datum/surgery_operation/limb/secure_arbitrary_prosthetic/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/stack/medical/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -164,6 +194,8 @@
 	display_pain(limb.owner, "[surgeon] begins to [tool.singular_name] [limb] to your body!", IS_ROBOTIC_LIMB(limb))
 
 /datum/surgery_operation/limb/secure_arbitrary_prosthetic/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/stack/medical/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,

@@ -5,6 +5,8 @@
 /datum/unit_test/maptest_load_map_security
 
 /datum/unit_test/maptest_load_map_security/Run()
+	procstart = null
+	src.procstart = null
 
 	// Copy our valid map into a bad directory
 	// We can technically load from /unitTestTempDir by passing it in our map name
@@ -35,6 +37,8 @@
 
 
 /datum/unit_test/maptest_load_map_security/Destroy()
+	procstart = null
+	src.procstart = null
 	// Clean up our temp directory
 	fdel("data/load_map_security_temp/")
 	return ..()

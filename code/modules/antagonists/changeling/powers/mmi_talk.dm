@@ -28,6 +28,8 @@
 	VAR_FINAL/datum/movement_detector/update_view_tracker
 
 /datum/action/changeling/mmi_talk/Destroy()
+	procstart = null
+	src.procstart = null
 	brain_ref = null
 	QDEL_NULL(mmi_view)
 	QDEL_NULL(mmi_view_background)
@@ -35,10 +37,14 @@
 	return ..()
 
 /datum/action/changeling/mmi_talk/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SStgui.close_uis(src)
 
 /datum/action/changeling/mmi_talk/can_sting(mob/living/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -52,24 +58,34 @@
 	return TRUE
 
 /datum/action/changeling/mmi_talk/sting_action(mob/living/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	..()
 	ui_interact(user)
 	return TRUE
 
 /datum/action/changeling/mmi_talk/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 /datum/action/changeling/mmi_talk/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(user != owner)
 		return UI_CLOSE
 	return ..()
 
 /datum/action/changeling/mmi_talk/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["mmi_view"] = mmi_view_key
 	return data
 
 /datum/action/changeling/mmi_talk/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(isnull(mmi_view_key))
 		// it's worth noting a ling could have multiple of these actions.
 		mmi_view_key = "ling_mmi_[REF(src)]_view"
@@ -101,11 +117,15 @@
 		mmi_view.display_to(user, ui.window)
 
 /datum/action/changeling/mmi_talk/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/mmi/mmi = brain_ref.loc
 	UnregisterSignal(mmi, COMSIG_MOVABLE_HEAR)
 	mmi.lose_hearing_sensitivity(REF(src))
 
 /datum/action/changeling/mmi_talk/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -123,6 +143,8 @@
 
 /// Used in callbacks to update the map view when the MMI moves.
 /datum/action/changeling/mmi_talk/proc/update_mmi_view()
+	procstart = null
+	src.procstart = null
 	mmi_view.vis_contents.Cut()
 	for(var/turf/visible_turf in view(2, get_turf(brain_ref)))
 		mmi_view.vis_contents += visible_turf
@@ -130,6 +152,8 @@
 /// Signal proc for [COMSIG_MOVABLE_HEAR] to relay stuff the MMI hears to the ling.
 /// Not super good, but it works.
 /datum/action/changeling/mmi_talk/proc/relay_hearing(obj/item/mmi/source, list/hear_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// We can likely already hear them, so do not bother

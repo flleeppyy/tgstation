@@ -44,26 +44,36 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/xenobio_guide, 32)
 	is_editable = FALSE
 
 /obj/structure/sign/tram_plate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/sign/tram_plate/LateInitialize()
+	procstart = null
+	src.procstart = null
 	link_tram()
 	set_tram_serial()
 
 /obj/structure/sign/tram_plate/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(held_item))
 		context[SCREENTIP_CONTEXT_LMB] = "View details"
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/sign/tram_plate/proc/link_tram()
+	procstart = null
+	src.procstart = null
 	for(var/datum/transport_controller/linear/tram/tram as anything in SStransport.transports_by_type[TRANSPORT_TYPE_TRAM])
 		if(tram.specific_transport_id == specific_transport_id)
 			transport_ref = WEAKREF(tram)
 			break
 
 /obj/structure/sign/tram_plate/proc/set_tram_serial()
+	procstart = null
+	src.procstart = null
 	var/datum/transport_controller/linear/tram/tram = transport_ref?.resolve()
 	if(isnull(tram) || isnull(tram.tram_registration))
 		return
@@ -77,6 +87,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/xenobio_guide, 32)
 	By entering the tram, guideway, or crossings you agree Nanotrasen is not liable for any injuries, damages, or losses that may occur. If you do not agree to these terms, please do not use the tram.<br>"
 
 /obj/structure/sign/tram_plate/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "TramPlaque")
@@ -84,6 +96,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/xenobio_guide, 32)
 		ui.open()
 
 /obj/structure/sign/tram_plate/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/transport_controller/linear/tram/tram = transport_ref?.resolve()
 	var/list/data = list()
 	var/list/current_tram = list()

@@ -50,6 +50,8 @@
 	var/shade_color = "pink"
 
 /obj/item/organ/brain/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Brain size logic
 	transform = transform.Scale(brain_size)
@@ -57,6 +59,8 @@
 	organ_traits |= variant_traits_added
 
 /obj/item/organ/brain/on_mob_insert(mob/living/carbon/brain_owner, special = FALSE, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	name = initial(name)
@@ -112,6 +116,8 @@
 		brain_owner.update_body_parts()
 
 /obj/item/organ/brain/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Delete skillchips first as parent proc sets owner to null, and skillchips need to know the brain's owner.
 	if(!QDELETED(organ_owner) && length(skillchips))
@@ -134,10 +140,14 @@
 		organ_owner.med_hud_set_status()
 
 /obj/item/organ/brain/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)][smooth_brain ? "-smooth" : ""]"
 	return ..()
 
 /obj/item/organ/brain/proc/transfer_identity(mob/living/L)
+	procstart = null
+	src.procstart = null
 	name = "[L.name]'s [initial(name)]"
 	if(brainmob)
 		if(!decoy_override)
@@ -170,6 +180,8 @@
 		to_chat(brainmob, span_notice("You feel slightly disoriented. That's normal when you're just a brain."))
 
 /obj/item/organ/brain/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/borg/apparatus/organ_storage))
 		return NONE//Borg organ bags shouldn't be killing brains
 
@@ -202,6 +214,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/organ/brain/attackby(obj/item/item, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE)
 
 	if(brainmob) //if we aren't trying to heal the brain, pass the attack onto the brainmob.
@@ -215,6 +229,8 @@
 		to_chat(user, span_danger("You hit [src] with [item]!"))
 
 /obj/item/organ/brain/proc/check_for_repair(obj/item/item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(damage && item.is_drainable() && item.reagents.has_reagent(/datum/reagent/medicine/mannitol) && (organ_flags & ORGAN_ORGANIC)) //attempt to heal the brain
 		if(brainmob?.health <= HEALTH_THRESHOLD_DEAD) //if the brain is fucked anyway, do nothing
 			to_chat(user, span_warning("[src] is far too damaged, there's nothing else we can do for it!"))
@@ -234,6 +250,8 @@
 	return FALSE
 
 /obj/item/organ/brain/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(length(skillchips))
 		. += span_info("It has a skillchip embedded in it.")
@@ -247,6 +265,8 @@
 
 /// Needed so subtypes can override examine text while still calling parent
 /obj/item/organ/brain/proc/brain_damage_examine()
+	procstart = null
+	src.procstart = null
 	if(suicided)
 		return span_info("It's started turning slightly grey. They must not have been able to handle the stress of it all.")
 	if(brainmob && (decoy_override || brainmob.client || brainmob.get_ghost()))
@@ -260,6 +280,8 @@
 		return span_info("This one is completely devoid of life.")
 
 /obj/item/organ/brain/get_status_appendix(scanpower, add_tooltips)
+	procstart = null
+	src.procstart = null
 	var/list/trauma_text
 	for(var/datum/brain_trauma/trauma as anything in traumas)
 		var/trauma_desc = ""
@@ -282,6 +304,8 @@
 		return "Mental trauma: [english_list(trauma_text, and_text = ", and ")]."
 
 /obj/item/organ/brain/feel_for_damage(self_aware)
+	procstart = null
+	src.procstart = null
 	if(damage < low_threshold)
 		return ""
 	if(self_aware)
@@ -293,6 +317,8 @@
 	return span_warning("It aches incessantly.")
 
 /obj/item/organ/brain/attack(mob/living/carbon/C, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(C))
 		return ..()
 
@@ -329,7 +355,9 @@
 	else
 		..()
 
-/obj/item/organ/brain/Destroy() //copypasted from MMIs.
+/obj/item/organ/brain/Destroy()
+	procstart = null
+	src.procstart = null //copypasted from MMIs.
 	QDEL_NULL(brainmob)
 	QDEL_LIST(traumas)
 
@@ -338,6 +366,8 @@
 	return ..()
 
 /obj/item/organ/brain/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(HAS_TRAIT(src, TRAIT_BRAIN_DAMAGE_NODEATH))
@@ -348,6 +378,8 @@
 		owner.death()
 
 /obj/item/organ/brain/on_bodypart_insert(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ishuman(limb.owner))
 		limb.owner.update_hair()
@@ -355,6 +387,8 @@
 		limb.update_icon_dropped()
 
 /obj/item/organ/brain/on_bodypart_remove(obj/item/bodypart/limb, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ishuman(limb.owner))
 		limb.owner.update_hair()
@@ -364,6 +398,8 @@
 	update_brain_color(animate = FALSE)
 
 /obj/item/organ/brain/apply_organ_damage(damage_amount, maximum = maxHealth, required_organ_flag = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/delta_dam = . //for the sake of clarity
 	if(isnull(bodypart_owner)) // no need to color it if it's in someone's noggin
@@ -373,6 +409,8 @@
 
 /// Rolls a random chance to gain a brain trauma based on damage taken and current damage level
 /obj/item/organ/brain/proc/roll_for_brain_trauma(delta_dam)
+	procstart = null
+	src.procstart = null
 	if(prob(delta_dam * (1 + max(0, (damage - BRAIN_DAMAGE_MILD)/100)))) //Base chance is the hit damage; for every point of damage past the threshold the chance is increased by 1% //learn how to do your bloody math properly goddamnit
 		gain_trauma_type(BRAIN_TRAUMA_MILD, natural_gain = TRUE)
 
@@ -389,6 +427,8 @@
 
 /// Updates the brain's color based on damage level - the more damaged, the darker and grayer it gets
 /obj/item/organ/brain/proc/update_brain_color(animate = TRUE)
+	procstart = null
+	src.procstart = null
 	if(damage <= 0)
 		if(get_filter(BRAIN_DAMAGE_FILTER))
 			if(animate)
@@ -411,6 +451,8 @@
 #undef BRAIN_DAMAGE_FILTER
 
 /obj/item/organ/brain/check_damage_thresholds()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!owner)
 		return
@@ -443,6 +485,8 @@
 		return brain_message
 
 /obj/item/organ/brain/before_organ_replacement(obj/item/organ/replacement)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/organ/brain/replacement_brain = replacement
 	if(!istype(replacement_brain))
@@ -482,6 +526,8 @@
 		replacement_brain.add_trauma_to_traumas(trauma)
 
 /obj/item/organ/brain/machine_wash(obj/machinery/washing_machine/brainwasher)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (can_smoothen_out && !smooth_brain)
 		smooth_brain = TRUE
@@ -542,17 +588,23 @@
 // This fixes an edge case from species/regenerate_organs that would transfer the brain trauma before organ/on_mob_remove can remove it
 // Prevents wizards from using the magic mirror to gain bluespace_prophet trauma and then switching to another race
 /obj/item/organ/brain/lustrous/before_organ_replacement(obj/item/organ/replacement)
+	procstart = null
+	src.procstart = null
 	if(owner)
 		owner.cure_trauma_type(/datum/brain_trauma/special/bluespace_prophet, TRAUMA_RESILIENCE_ABSOLUTE)
 		owner.RemoveElement(/datum/element/tenacious)
 	. = ..()
 
 /obj/item/organ/brain/lustrous/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	organ_owner.cure_trauma_type(/datum/brain_trauma/special/bluespace_prophet, TRAUMA_RESILIENCE_ABSOLUTE)
 	organ_owner.RemoveElement(/datum/element/tenacious)
 
 /obj/item/organ/brain/lustrous/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	organ_owner.gain_trauma(/datum/brain_trauma/special/bluespace_prophet, TRAUMA_RESILIENCE_ABSOLUTE)
 	organ_owner.AddElement(/datum/element/tenacious)
@@ -562,6 +614,8 @@
 
 // Sometimes, felinids go a bit haywire and bite people. Based entirely on mania and hunger.
 /obj/item/organ/brain/felinid/get_attacking_limb(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	var/starving_cat_bonus = owner.nutrition <= NUTRITION_LEVEL_HUNGRY ? 1 : 10
 	var/crazy_feral_cat = clamp((starving_cat_bonus * owner.mob_mood?.sanity_level), 0, 100)
 	if(prob(crazy_feral_cat) || HAS_TRAIT(owner, TRAIT_FERAL_BITER))
@@ -592,12 +646,16 @@
 ////////////////////////////////////TRAUMAS////////////////////////////////////////
 
 /obj/item/organ/brain/proc/has_trauma_type(brain_trauma_type = /datum/brain_trauma, resilience = TRAUMA_RESILIENCE_ABSOLUTE)
+	procstart = null
+	src.procstart = null
 	for(var/X in traumas)
 		var/datum/brain_trauma/BT = X
 		if(istype(BT, brain_trauma_type) && (BT.resilience <= resilience))
 			return BT
 
 /obj/item/organ/brain/proc/get_traumas_type(brain_trauma_type = /datum/brain_trauma, resilience = TRAUMA_RESILIENCE_ABSOLUTE)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/X in traumas)
 		var/datum/brain_trauma/BT = X
@@ -605,6 +663,8 @@
 			. += BT
 
 /obj/item/organ/brain/proc/can_gain_trauma(datum/brain_trauma/trauma, resilience, natural_gain = FALSE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_BRAIN_TRAUMA_IMMUNITY))
 		return FALSE
 
@@ -644,18 +704,24 @@
 
 //Proc to use when directly adding a trauma to the brain, so extra args can be given
 /obj/item/organ/brain/proc/gain_trauma(datum/brain_trauma/trauma, resilience, ...)
+	procstart = null
+	src.procstart = null
 	var/list/arguments = list()
 	if(args.len > 2)
 		arguments = args.Copy(3)
 	. = brain_gain_trauma(trauma, resilience, arguments)
 
 /obj/item/organ/brain/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(var_name == NAMEOF(src, smooth_brain))
 		update_appearance()
 
 //Direct trauma gaining proc. Necessary to assign a trauma to its brain. Avoid using directly.
 /obj/item/organ/brain/proc/brain_gain_trauma(datum/brain_trauma/trauma, resilience, list/arguments)
+	procstart = null
+	src.procstart = null
 	if(!can_gain_trauma(trauma, resilience))
 		return null
 
@@ -690,17 +756,23 @@
 /// Adds the passed trauma instance to our list of traumas and links it to our brain.
 /// DOES NOT handle setting up the trauma, that's done by [proc/brain_gain_trauma]!
 /obj/item/organ/brain/proc/add_trauma_to_traumas(datum/brain_trauma/trauma)
+	procstart = null
+	src.procstart = null
 	trauma.brain = src
 	traumas += trauma
 
 /// Removes the passed trauma instance to our list of traumas and links it to our brain
 /// DOES NOT handle removing the trauma's effects, that's done by [/datum/brain_trauma/Destroy()]!
 /obj/item/organ/brain/proc/remove_trauma_from_traumas(datum/brain_trauma/trauma)
+	procstart = null
+	src.procstart = null
 	trauma.brain = null
 	traumas -= trauma
 
 //Add a random trauma of a certain subtype
 /obj/item/organ/brain/proc/gain_trauma_type(brain_trauma_type = /datum/brain_trauma, resilience, natural_gain = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/datum/brain_trauma/possible_traumas = list()
 	for(var/T in subtypesof(brain_trauma_type))
 		var/datum/brain_trauma/BT = T
@@ -715,11 +787,15 @@
 
 //Cure a random trauma of a certain resilience level
 /obj/item/organ/brain/proc/cure_trauma_type(brain_trauma_type = /datum/brain_trauma, resilience = TRAUMA_RESILIENCE_BASIC)
+	procstart = null
+	src.procstart = null
 	var/list/traumas = get_traumas_type(brain_trauma_type, resilience)
 	if(LAZYLEN(traumas))
 		qdel(pick(traumas))
 
 /obj/item/organ/brain/proc/cure_all_traumas(resilience = TRAUMA_RESILIENCE_BASIC)
+	procstart = null
+	src.procstart = null
 	var/amount_cured = 0
 	var/list/traumas = get_traumas_type(resilience = resilience)
 	for(var/X in traumas)
@@ -729,6 +805,8 @@
 
 /// This proc lets the mob's brain decide what bodypart to attack with in an unarmed strike.
 /obj/item/organ/brain/proc/get_attacking_limb(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/arm/active_hand = owner.get_active_hand()
 	if(HAS_TRAIT(owner, TRAIT_FERAL_BITER)) //Feral biters will always prefer biting.
 		var/obj/item/bodypart/head/found_head = owner.get_bodypart(BODY_ZONE_HEAD)
@@ -742,6 +820,8 @@
 
 /// Brains REALLY like ghosting people. we need special tricks to avoid that, namely removing the old brain with no_id_transfer
 /obj/item/organ/brain/replace_into(mob/living/carbon/new_owner)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/old_brain = new_owner.get_organ_slot(ORGAN_SLOT_BRAIN)
 	old_brain.Remove(new_owner, special = TRUE, movement_flags = NO_ID_TRANSFER)
 	qdel(old_brain)

@@ -20,6 +20,8 @@
 	var/next_damage_warning = 0
 
 /datum/brain_trauma/magic/lumiphobia/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	..()
 	var/turf/T = owner.loc
 	if(!istype(T))
@@ -43,6 +45,8 @@
 	lose_text = span_notice("You feel the hateful presence fade away.")
 
 /datum/brain_trauma/magic/poltergeist/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!SPT_PROB(2, seconds_per_tick))
 		return
@@ -68,10 +72,14 @@
 	lose_text = span_notice("You realize that magic might be real.")
 
 /datum/brain_trauma/magic/antimagic/on_gain()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(owner, TRAIT_ANTIMAGIC, TRAUMA_TRAIT)
 	. = ..()
 
 /datum/brain_trauma/magic/antimagic/on_lose()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_ANTIMAGIC, TRAUMA_TRAIT)
 	..()
 
@@ -92,22 +100,32 @@
 	var/close_stalker = FALSE
 
 /datum/brain_trauma/magic/stalker/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(stalker)
 	return ..()
 
 /datum/brain_trauma/magic/stalker/on_gain()
+	procstart = null
+	src.procstart = null
 	create_stalker()
 	return ..()
 
 /datum/brain_trauma/magic/stalker/proc/create_stalker()
+	procstart = null
+	src.procstart = null
 	var/turf/stalker_source = locate(owner.x + pick(-12, 12), owner.y + pick(-12, 12), owner.z) //random corner
 	stalker = new stalker_type(stalker_source, owner)
 
 /datum/brain_trauma/magic/stalker/on_lose()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(stalker)
 	return ..()
 
 /datum/brain_trauma/magic/stalker/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	// Dead and unconscious people are not interesting to the psychic stalker.
 	if(IS_UNCONSCIOUS_OR_CRIT(owner))
 		return

@@ -1,4 +1,6 @@
 /obj/item/ammo_casing/proc/fire_casing(atom/target, mob/living/user, params, distro, quiet, zone_override, spread, atom/fired_from)
+	procstart = null
+	src.procstart = null
 	distro += variance
 	var/targloc = get_turf(target)
 	ready_proj(target, user, quiet, zone_override, fired_from)
@@ -36,9 +38,13 @@
 	return TRUE
 
 /obj/item/ammo_casing/proc/tk_firing(mob/living/user, atom/fired_from)
+	procstart = null
+	src.procstart = null
 	return fired_from != user && !user.contains(fired_from)
 
 /obj/item/ammo_casing/proc/ready_proj(atom/target, mob/living/user, quiet, zone_override = "", atom/fired_from)
+	procstart = null
+	src.procstart = null
 	if (!loaded_projectile)
 		return
 	loaded_projectile.original = target
@@ -77,6 +83,8 @@
 	SEND_SIGNAL(src, COMSIG_CASING_READY_PROJECTILE, target, user, quiet, zone_override, fired_from)
 
 /obj/item/ammo_casing/proc/throw_proj(atom/target, turf/targloc, mob/living/user, params, spread, atom/fired_from)
+	procstart = null
+	src.procstart = null
 	var/turf/curloc = get_turf(fired_from)
 	if (!istype(targloc) || !istype(curloc) || !loaded_projectile)
 		return null
@@ -97,6 +105,8 @@
 	return loaded_projectile_cache
 
 /obj/item/ammo_casing/proc/spread(turf/target, turf/current, distro)
+	procstart = null
+	src.procstart = null
 	var/dx = abs(target.x - current.x)
 	var/dy = abs(target.y - current.y)
 	return locate(target.x + round(gaussian(0, distro) * (dy+2)/8, 1), target.y + round(gaussian(0, distro) * (dx+2)/8, 1), target.z)

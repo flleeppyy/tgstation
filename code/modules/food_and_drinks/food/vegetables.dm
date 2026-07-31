@@ -53,6 +53,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/tatortot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/dunkable, 10)
 
@@ -115,6 +117,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/fries/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/dunkable, 10)
 
@@ -134,6 +138,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/cheesyfries/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/dunkable, 10)
 
@@ -150,6 +156,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/carrotfries/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/dunkable, 10)
 
@@ -166,6 +174,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/poutine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/dunkable, 10)
 

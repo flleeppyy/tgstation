@@ -64,6 +64,8 @@ GLOBAL_VAR_INIT(web_sound_cooldown, 0)
 
 ///Takes an input from either proc/play_web_sound or the request manager and runs it through yt-dlp and prompts the user before playing it to the server.
 /proc/web_sound(mob/user, input, credit)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_SOUND))
 		return
 	var/ytdl = CONFIG_GET(string/invoke_youtubedl)

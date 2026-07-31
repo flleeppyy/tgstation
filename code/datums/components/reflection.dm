@@ -42,6 +42,8 @@
  * * check_reflect_signals: Optional: Additional signals to provide to check_reflect_signals (to check for when to update a single reflection).
  */
 /datum/component/reflection/Initialize(set_reflected_dir, list/reflection_filter, matrix/reflection_matrix, datum/callback/can_reflect, alpha = 150, list/update_signals, list/check_reflect_signals)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -85,6 +87,8 @@
 	RegisterSignals(parent, (update_signals || list()) + default_update_signals, PROC_REF(get_reflection_targets))
 
 /datum/component/reflection/Destroy(force)
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/tracked in reflected_movables)
 		nuke_reflection(tracked)
 	QDEL_NULL(reflection_holder)
@@ -93,11 +97,15 @@
 
 ///Called when the parent changes its direction.
 /datum/component/reflection/proc/on_dir_change(atom/movable/source, old_dir, new_dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_reflection(REVERSE_DIR(new_dir))
 
 ///Turns the allowed reflected direction alongside the parent's dir. then calls get_reflection_targets.
 /datum/component/reflection/proc/set_reflection(new_dir = SOUTH)
+	procstart = null
+	src.procstart = null
 	if(reflected_dir == new_dir)
 		return
 
@@ -106,6 +114,8 @@
 
 ///Unsets the old reflected movables and sets it with new ones.
 /datum/component/reflection/proc/get_reflection_targets(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// clean slate
 	for(var/atom/movable/tracked in reflected_movables)
@@ -116,6 +126,8 @@
 
 ///Checks if the target movable can be reflected or not.
 /datum/component/reflection/proc/check_can_reflect(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	if(target == parent || !(target in view(1, parent)))
 		return FALSE
 	if(target.invisibility >= INVISIBILITY_MAXIMUM)
@@ -129,10 +141,14 @@
 
 ///Called when a movable enters a turf within the connected range
 /datum/component/reflection/proc/on_movable_entered_or_initialized(atom/movable/source, atom/movable/arrived)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	track_reflection(arrived)
 
 /datum/component/reflection/proc/track_reflection(atom/movable/target, check_view = TRUE)
+	procstart = null
+	src.procstart = null
 	// this stuff really shouldn't be tracked
 	if(QDELETED(target) || target == parent || target.loc == parent)
 		return
@@ -147,6 +163,8 @@
 	update_reflection(target)
 
 /datum/component/reflection/proc/nuke_reflection(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/movable/reflection = LAZYACCESS(reflected_movables, target)
@@ -158,6 +176,8 @@
 
 ///Called when a movable exits a turf within the connected range
 /datum/component/reflection/proc/on_movable_exited(atom/movable/source, atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!LAZYFIND(reflected_movables, gone)) // not lazyaccess - value may be null
@@ -168,6 +188,8 @@
 
 /// Handles updating the appearance of the reflection to match the target movable.
 /datum/component/reflection/proc/copy_appearance_to_reflection(obj/effect/abstract/reflection, atom/movable/target)
+	procstart = null
+	src.procstart = null
 	reflection.appearance = copy_appearance_filter_overlays(target.appearance)
 	reflection.vis_flags = VIS_INHERIT_ID
 	reflection.transform = reflection_matrix || matrix()
@@ -208,6 +230,8 @@
 
 ///Called when the target movable changes its appearance or dir.
 /datum/component/reflection/proc/update_reflection(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/effect/abstract/reflection = LAZYACCESS(reflected_movables, source)

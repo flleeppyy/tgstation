@@ -1,6 +1,8 @@
 /datum/element/waddling
 
 /datum/element/waddling/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(target))
 		return ELEMENT_INCOMPATIBLE
@@ -9,10 +11,14 @@
 	RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(Waddle))
 
 /datum/element/waddling/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_MOVABLE_MOVED)
 
 /datum/element/waddling/proc/Waddle(atom/movable/moved, atom/oldloc, direction, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(forced || CHECK_MOVE_LOOP_FLAGS(moved, MOVEMENT_LOOP_OUTSIDE_CONTROL))
 		return
@@ -23,6 +29,8 @@
 	waddling_animation(moved)
 
 /datum/element/waddling/proc/waddling_animation(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	var/prev_pixel_z = target.pixel_z
 	animate(target, pixel_z = target.pixel_z + 4, time = 0)
 	var/prev_transform = target.transform

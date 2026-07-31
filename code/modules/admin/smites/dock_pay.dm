@@ -3,6 +3,8 @@
 	name = "Dock Pay"
 
 /datum/smite/dock_pay/effect(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!iscarbon(target))
 		to_chat(user, span_warning("This must be used on a carbon mob."), confidential = TRUE)

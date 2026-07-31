@@ -29,33 +29,45 @@
 	var/obj/item/ticket_machine_ticket/current_ticket
 
 /obj/machinery/ticket_machine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 	if(mapload)
 		find_and_mount_on_atom()
 
 /obj/machinery/ticket_machine/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/ticket_machine_ticket/ticket in tickets)
 		ticket.source = null
 	tickets.Cut()
 	return ..()
 
 /obj/machinery/ticket_machine/on_deconstruction(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/wallframe/ticket_machine(loc)
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 
 /obj/machinery/ticket_machine/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("The ticket machine shows that ticket #[current_number] is currently being served.")
 	. += span_notice("You can take a ticket out with <b>Left-Click</b> to be number [ticket_number + 1] in queue.")
 
 /obj/machinery/ticket_machine/multitool_act(mob/living/user, obj/item/multitool/M)
+	procstart = null
+	src.procstart = null
 	M.set_buffer(src)
 	balloon_alert(user, "saved to multitool buffer")
 	return ITEM_INTERACT_SUCCESS
 
-/obj/machinery/ticket_machine/emag_act(mob/user, obj/item/card/emag/emag_card) //Emag the ticket machine to dispense burning tickets, as well as randomize its number to destroy the HoP's mind.
+/obj/machinery/ticket_machine/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null //Emag the ticket machine to dispense burning tickets, as well as randomize its number to destroy the HoP's mind.
 	if(obj_flags & EMAGGED)
 		return FALSE
 	balloon_alert(user, "bureaucratic nightmare engaged")
@@ -82,6 +94,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 ///Increments the counter by one, if there is a ticket after the current one we are serving.
 ///If we have a current ticket, remove it from the top of our tickets list and replace it with the next one if applicable
 /obj/machinery/ticket_machine/proc/increment()
+	procstart = null
+	src.procstart = null
 	if(!(obj_flags & EMAGGED) && current_ticket)
 		current_ticket.audible_message(span_notice("\the [current_ticket] disperses!"), hearing_distance = SAMETILE_MESSAGE_RANGE)
 		tickets.Cut(1,2)
@@ -103,12 +117,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 	id = "ticket_machine_default"
 
 /obj/machinery/button/ticket_machine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(device)
 		var/obj/item/assembly/control/ticket_machine/ours = device
 		ours.id = id
 
 /obj/machinery/button/ticket_machine/multitool_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(I.tool_behaviour == TOOL_MULTITOOL)
 		var/obj/item/multitool/M = I
@@ -127,14 +145,20 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 	var/datum/weakref/ticket_machine_ref
 
 /obj/item/assembly/control/ticket_machine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/item/assembly/control/ticket_machine/LateInitialize()
+	procstart = null
+	src.procstart = null
 	find_machine()
 
 /// Locate the ticket machine to which we're linked by our ID
 /obj/item/assembly/control/ticket_machine/proc/find_machine()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/ticket_machine/ticketsplease as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/ticket_machine))
 		if(ticketsplease.id == id)
 			ticket_machine_ref = WEAKREF(ticketsplease)
@@ -144,6 +168,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 		return FALSE
 
 /obj/item/assembly/control/ticket_machine/activate(mob/activator)
+	procstart = null
+	src.procstart = null
 	if(cooldown)
 		return
 	if(!ticket_machine_ref)
@@ -158,10 +184,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 	addtimer(VARSET_CALLBACK(src, cooldown, FALSE), 1 SECONDS)
 
 /obj/machinery/ticket_machine/update_icon()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	handle_maptext()
 
 /obj/machinery/ticket_machine/update_icon_state()
+	procstart = null
+	src.procstart = null
 	switch(ticket_number) //Gives you an idea of how many tickets are left
 		if(0 to 99)
 			icon_state = "[base_icon_state]"
@@ -170,6 +200,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 	return ..()
 
 /obj/machinery/ticket_machine/proc/handle_maptext()
+	procstart = null
+	src.procstart = null
 	switch(current_number) //This is here to handle maptext offsets so that the numbers align.
 		if(0 to 9)
 			maptext_x = 9
@@ -180,6 +212,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 	maptext = MAPTEXT(current_number) //Finally, apply the maptext
 
 /obj/machinery/ticket_machine/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/hand_labeler_refill))
 		return NONE
 
@@ -205,9 +239,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/ticket_machine/proc/reset_cooldown()
+	procstart = null
+	src.procstart = null
 	ready = TRUE
 
 /obj/machinery/ticket_machine/attack_hand(mob/living/carbon/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ready)
 		to_chat(user,span_warning("You press the button, but nothing happens..."))
@@ -253,6 +291,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 	var/obj/machinery/ticket_machine/source
 
 /obj/item/ticket_machine_ticket/Initialize(mapload, num)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	number = num
 	if(!isnull(num))
@@ -262,6 +302,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 	AddElement(/datum/element/burn_on_item_ignition)
 
 /obj/item/ticket_machine_ticket/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(number))
 		. += span_notice("The ticket reads shimmering text that tells you that you are number [number] in queue.")
@@ -269,10 +311,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 			. += span_notice("Below that, you can see that you are [number - source.current_number] spot\s away from being served.")
 
 /obj/item/ticket_machine_ticket/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	maptext = saved_maptext //For some reason, storage code removes all maptext off objs, this stops its number from being wiped off when taken out of storage.
 
 /obj/item/ticket_machine_ticket/Destroy()
+	procstart = null
+	src.procstart = null
 	if(source)
 		source.ticket_holders -= owner_ref
 		source.tickets -= src

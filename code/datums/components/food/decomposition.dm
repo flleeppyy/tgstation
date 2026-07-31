@@ -29,6 +29,8 @@
 	var/stink_particles
 
 /datum/component/decomposition/Initialize(mapload, decomp_req_handle, decomp_flags = NONE, decomp_result, ant_attracting = FALSE, custom_time = 0, stink_particles = /particles/stink)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(parent) || !HAS_TRAIT(parent, TRAIT_GERM_SENSITIVE))
 		return COMPONENT_INCOMPATIBLE
 
@@ -50,6 +52,8 @@
 	src.stink_particles = stink_particles
 
 /datum/component/decomposition/Destroy()
+	procstart = null
+	src.procstart = null
 	remove_timer()
 	if (stink_particles)
 		var/atom/movable/movable_parent = parent
@@ -57,11 +61,15 @@
 	return ..()
 
 /datum/component/decomposition/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_GERM_EXPOSED, PROC_REF(start_timer))
 	RegisterSignal(parent, COMSIG_ATOM_GERM_UNEXPOSED, PROC_REF(remove_timer))
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(examine))
 
 /datum/component/decomposition/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ATOM_GERM_EXPOSED,
 		COMSIG_ATOM_GERM_UNEXPOSED,
@@ -69,6 +77,8 @@
 	))
 
 /datum/component/decomposition/proc/start_timer()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!handled) // If maploaded, has someone touched this previously?
@@ -87,11 +97,15 @@
 
 /// Returns the time remaining in decomp, either from our potential timer or our own value, whichever is more useful
 /datum/component/decomposition/proc/get_time()
+	procstart = null
+	src.procstart = null
 	if(!decomp_timerid)
 		return time_remaining
 	return timeleft(decomp_timerid)
 
 /datum/component/decomposition/proc/remove_timer()
+	procstart = null
+	src.procstart = null
 	if(!decomp_timerid)
 		return
 	time_remaining = timeleft(decomp_timerid)
@@ -103,6 +117,8 @@
 	stink_timerid = null
 
 /datum/component/decomposition/proc/stink_up()
+	procstart = null
+	src.procstart = null
 	stink_timerid = null
 	// Shouldn't happen, but to be sure
 	if(!stink_particles)
@@ -112,6 +128,8 @@
 	movable_parent.add_shared_particles(stink_particles, "[stink_particles]_[isitem(parent)]", isitem(parent) ? NONE : PARTICLE_ATTACH_MOB)
 
 /datum/component/decomposition/proc/decompose()
+	procstart = null
+	src.procstart = null
 	decomp_timerid = null
 	var/obj/decomp = parent //Lets us spawn things at decomp
 	if(produce_ants)
@@ -128,6 +146,8 @@
 	return
 
 /datum/component/decomposition/proc/examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/time_d = get_time()
 	switch(time_d / original_time)

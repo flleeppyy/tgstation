@@ -5,6 +5,8 @@
 	var/obj/effect/abstract/floating_eyes/eyes
 
 /datum/hallucination/eyes_in_dark/Destroy()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(eyes))
 		eyes = null
 	else
@@ -12,6 +14,8 @@
 	return ..()
 
 /datum/hallucination/eyes_in_dark/start()
+	procstart = null
+	src.procstart = null
 	if(!hallucinator.client || IS_UNCONSCIOUS(hallucinator))
 		return FALSE
 
@@ -38,10 +42,14 @@
 	return TRUE
 
 /datum/hallucination/eyes_in_dark/proc/end_hallucination_gracefully()
+	procstart = null
+	src.procstart = null
 	animate(eyes, alpha = 0, time = 1 SECONDS)
 	QDEL_IN(src, 1.2 SECONDS)
 
 /datum/hallucination/eyes_in_dark/proc/end_hallucination()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!QDELETED(src))
 		qdel(src)
@@ -52,6 +60,8 @@
 	var/datum/weakref/seer_ref
 
 /obj/effect/abstract/floating_eyes/Initialize(mapload, mob/seer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(seer))
 		return INITIALIZE_HINT_QDEL
@@ -64,10 +74,14 @@
 	update_appearance()
 
 /obj/effect/abstract/floating_eyes/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	return ..()
 
 /obj/effect/abstract/floating_eyes/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/r_eye = mutable_appearance(icon = 'icons/mob/human/human_eyes.dmi', icon_state = "eyes_glow_r")
 	r_eye.color = COLOR_DARK_RED
@@ -80,12 +94,16 @@
 	. += emissive_appearance('icons/mob/human/human_eyes.dmi', "eyes_glow_r", src)
 
 /obj/effect/abstract/floating_eyes/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/turf/below_us = get_turf(src)
 	var/mob/seer = seer_ref?.resolve()
 	if(below_us.get_lumcount() > LIGHTING_TILE_IS_DARK || seer?.lighting_cutoff >= 2.5 || get_dist(seer, src) <= 1)
 		graceful_delete()
 
 /obj/effect/abstract/floating_eyes/proc/graceful_delete()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	animate(src, alpha = 0, time = 0.5 SECONDS)
 	QDEL_IN(src, 0.75 SECONDS)

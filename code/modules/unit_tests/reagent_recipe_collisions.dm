@@ -1,6 +1,8 @@
 /datum/unit_test/reagent_recipe_collisions
 
 /datum/unit_test/reagent_recipe_collisions/Run()
+	procstart = null
+	src.procstart = null
 	build_chemical_reactions_lists()
 
 	// Exclude soup from this test, they all have the same "reagents" just about

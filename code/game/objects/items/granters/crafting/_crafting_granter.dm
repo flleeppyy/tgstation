@@ -3,6 +3,8 @@
 	var/list/crafting_recipe_types = list()
 
 /obj/item/book/granter/crafting_recipe/on_reading_finished(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!user.mind)
 		return
@@ -15,5 +17,7 @@
 	icon_state = "book1"
 
 /obj/item/book/granter/crafting_recipe/dusting/recoil(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("The book turns to dust in your hands."))
 	qdel(src)

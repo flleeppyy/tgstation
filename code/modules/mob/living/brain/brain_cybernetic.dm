@@ -7,6 +7,8 @@
 	shade_color = null
 
 /obj/item/organ/brain/cybernetic/brain_damage_examine()
+	procstart = null
+	src.procstart = null
 	if(suicided)
 		return span_info("Its circuitry is smoking slightly. They must not have been able to handle the stress of it all.")
 	if(brainmob && (decoy_override || brainmob.client || brainmob.get_ghost()))
@@ -20,6 +22,8 @@
 		return span_info("This one is completely devoid of life.")
 
 /obj/item/organ/brain/cybernetic/check_for_repair(obj/item/item, mob/user)
+	procstart = null
+	src.procstart = null
 	if (item.tool_behaviour == TOOL_MULTITOOL) //attempt to repair the brain
 		if (brainmob?.health <= HEALTH_THRESHOLD_DEAD) //if the brain is fucked anyway, do nothing
 			to_chat(user, span_warning("[src] is far too damaged, there's nothing else we can do for it!"))
@@ -50,6 +54,8 @@
 	return FALSE
 
 /obj/item/organ/brain/cybernetic/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return

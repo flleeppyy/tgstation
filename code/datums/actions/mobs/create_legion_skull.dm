@@ -6,6 +6,8 @@
 	cooldown_time = 2 SECONDS
 
 /datum/action/cooldown/mob_cooldown/create_legion_skull/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	disable_cooldown_actions()
 	create(target_atom)
 	StartCooldown()
@@ -14,6 +16,8 @@
 
 /// Creates a new skull assigned to the owner of this action
 /datum/action/cooldown/mob_cooldown/create_legion_skull/proc/create(atom/target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/mining/legion_brood/minion = new(owner.loc)
 	minion.assign_creator(owner)
 	minion.ai_controller.blackboard[BB_CURRENT_TARGET] = target

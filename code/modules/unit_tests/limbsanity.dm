@@ -1,6 +1,8 @@
 /datum/unit_test/limbsanity
 
 /datum/unit_test/limbsanity/Run()
+	procstart = null
+	src.procstart = null
 	for(var/path in valid_subtypesof(/obj/item/bodypart)) /// removes the abstract items.
 		var/obj/item/bodypart/part = path
 		if(part::bodypart_flags & BODYPART_STUMP)

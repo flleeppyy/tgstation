@@ -7,6 +7,8 @@
 	restockable = FALSE
 
 /datum/market_item/stolen_good/New(atom/movable/thing, thing_price)
+	procstart = null
+	src.procstart = null
 	..()
 	set_item(thing)
 	name = "Stolen [thing.name]"

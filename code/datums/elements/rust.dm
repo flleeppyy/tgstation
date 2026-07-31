@@ -9,6 +9,8 @@
 	var/image/rust_overlay
 
 /datum/element/rust/Attach(atom/target, rust_icon = 'icons/effects/rust_overlay.dmi', rust_icon_state = "rust_default")
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
@@ -24,6 +26,8 @@
 	target.update_appearance()
 
 /datum/element/rust/Detach(atom/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_ATOM_UPDATE_OVERLAYS)
 	UnregisterSignal(source, COMSIG_ATOM_EXAMINE)
@@ -34,11 +38,15 @@
 	source.update_appearance()
 
 /datum/element/rust/proc/handle_examine(datum/source, mob/user, list/examine_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_text += span_notice("[source] is very rusty, you could probably <i>burn</i> or <i>scrape</i> it off, hell maybe even pour some <i>space cola</i> on it to remove the rust.")
 
 /datum/element/rust/proc/apply_rust_overlay(atom/parent_atom, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(rust_overlay)
@@ -46,6 +54,8 @@
 
 /// Because do_after sleeps we register the signal here and defer via an async call
 /datum/element/rust/proc/secondary_tool_act(atom/source, mob/user, obj/item/item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(handle_tool_use), source, user, item)
@@ -53,6 +63,8 @@
 
 /// We call this from secondary_tool_act because we sleep with do_after
 /datum/element/rust/proc/handle_tool_use(atom/source, mob/user, obj/item/item)
+	procstart = null
+	src.procstart = null
 	switch(item.tool_behaviour)
 		if(TOOL_WELDER)
 			if(!item.tool_start_check(user, amount=1))
@@ -79,6 +91,8 @@
 
 ///Immediately removes rust if exposed to space cola.
 /datum/element/rust/proc/on_reagent_expose(atom/source, datum/reagent/reagent_splashed, reac_volume, methods)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(reagent_splashed, /datum/reagent/consumable/space_cola))
 		return
@@ -88,6 +102,8 @@
 
 /// Prevents placing floor tiles on rusted turf
 /datum/element/rust/proc/on_interaction(datum/source, mob/user, obj/item/tool, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(istype(tool, /obj/item/stack/tile) || istype(tool, /obj/item/stack/rods))
 		user.balloon_alert(user, "floor too rusted!")
@@ -97,6 +113,8 @@
 /datum/element/rust/heretic
 
 /datum/element/rust/heretic/Attach(atom/target, rust_icon, rust_icon_state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == ELEMENT_INCOMPATIBLE)
 		return .
@@ -104,6 +122,8 @@
 	RegisterSignal(target, COMSIG_ATOM_EXITED, PROC_REF(on_exited))
 
 /datum/element/rust/heretic/Detach(atom/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_ATOM_ENTERED)
 	UnregisterSignal(source, COMSIG_ATOM_EXITED)
@@ -113,6 +133,8 @@
 		victim.remove_status_effect(/datum/status_effect/rust_corruption)
 
 /datum/element/rust/heretic/proc/on_entered(turf/source, atom/movable/entered, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (HAS_TRAIT(entered, TRAIT_RUSTIMMUNE) || HAS_TRAIT(entered, TRAIT_MAGICALLY_PHASED) || entered.movement_type & (MOVETYPES_NOT_TOUCHING_GROUND | VENTCRAWLING))
@@ -132,6 +154,8 @@
 	victim.apply_status_effect(/datum/status_effect/rust_corruption)
 
 /datum/element/rust/heretic/proc/on_exited(turf/source, atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isliving(gone))
 		return

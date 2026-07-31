@@ -21,6 +21,8 @@ ADMIN_VERB(ghost_pool_protection, R_ADMIN, "Ghost Pool Protection", "Choose whic
 	*/
 
 /datum/ghost_pool_menu/New(user)//user can either be a client or a mob due to byondcode(tm)
+	procstart = null
+	src.procstart = null
 	if (istype(user, /client))
 		var/client/user_client = user
 		holder = user_client //if its a client, assign it to holder
@@ -30,18 +32,26 @@ ADMIN_VERB(ghost_pool_protection, R_ADMIN, "Ghost Pool Protection", "Choose whic
 	new_role_flags = GLOB.ghost_role_flags
 
 /datum/ghost_pool_menu/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_ADMIN)
 
 /datum/ghost_pool_menu/ui_close()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /datum/ghost_pool_menu/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "GhostPoolProtection")
 		ui.open()
 
 /datum/ghost_pool_menu/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["events_or_midrounds"] = (new_role_flags & GHOSTROLE_MIDROUND_EVENT)
 	data["spawners"] = (new_role_flags & GHOSTROLE_SPAWNER)
@@ -51,6 +61,8 @@ ADMIN_VERB(ghost_pool_protection, R_ADMIN, "Ghost Pool Protection", "Choose whic
 	return data
 
 /datum/ghost_pool_menu/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

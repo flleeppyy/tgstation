@@ -30,9 +30,13 @@ PROCESSING_SUBSYSTEM_DEF(dcs)
 	var/list/sorted_arguments_that_are_lists = list()
 
 /datum/controller/subsystem/processing/dcs/Recover()
+	procstart = null
+	src.procstart = null
 	_listen_lookup = SSdcs._listen_lookup
 
 /datum/controller/subsystem/processing/dcs/proc/GetElement(list/arguments, init_element = TRUE)
+	procstart = null
+	src.procstart = null
 	var/datum/element/eletype = arguments[1]
 	var/element_id = eletype
 
@@ -54,6 +58,8 @@ PROCESSING_SUBSYSTEM_DEF(dcs)
 	* We assume that no one will pass in a named argument with a value of null
 	**/
 /datum/controller/subsystem/processing/dcs/proc/GetIdFromArguments(list/arguments)
+	procstart = null
+	src.procstart = null
 	var/datum/element/eletype = arguments[1]
 	var/list/fullid = list(eletype)
 	var/list/named_arguments
@@ -94,6 +100,8 @@ PROCESSING_SUBSYSTEM_DEF(dcs)
  * with sublists that will be later compared with each other by the dcs_check_list_arguments unit test.
  */
 /datum/controller/subsystem/processing/dcs/proc/add_to_arguments_that_are_lists(list/argument, datum/element/element_type)
+	procstart = null
+	src.procstart = null
 	if(initial(element_type.element_flags) & ELEMENT_NO_LIST_UNIT_TEST)
 		return
 	var/list/element_type_superlist = arguments_that_are_lists_by_element[element_type]

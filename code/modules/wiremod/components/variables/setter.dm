@@ -18,17 +18,25 @@
 	circuit_flags = CIRCUIT_FLAG_INPUT_SIGNAL|CIRCUIT_FLAG_OUTPUT_SIGNAL
 
 /obj/item/circuit_component/variable/setter/get_variable_list(obj/item/integrated_circuit/integrated_circuit)
+	procstart = null
+	src.procstart = null
 	return integrated_circuit.modifiable_circuit_variables
 
 /obj/item/circuit_component/variable/setter/populate_ports()
+	procstart = null
+	src.procstart = null
 	input_port = add_input_port("Input", PORT_TYPE_ANY)
 
 /obj/item/circuit_component/variable/setter/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(port == variable_name)
 		input_port.set_datatype(current_variable.datatype)
 
 /obj/item/circuit_component/variable/setter/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!current_variable)
 		return
 	current_variable.set_value(input_port.value)

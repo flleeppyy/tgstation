@@ -78,6 +78,8 @@
 	test_ignored = TRUE
 
 /datum/supply_pack/materials/gas_canisters/generate_supply_packs()
+	procstart = null
+	src.procstart = null
 	var/list/canister_packs = list()
 
 	var/obj/machinery/portable_atmospherics/canister/fakeCanister = /obj/machinery/portable_atmospherics/canister

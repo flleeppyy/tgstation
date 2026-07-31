@@ -63,6 +63,8 @@ SUBSYSTEM_DEF(air)
 
 
 /datum/controller/subsystem/air/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg += "\n  Cost:{"
 	msg += "AT:[round(cost_turfs,1)]|"
 	msg += "HS:[round(cost_hotspots,1)]|"
@@ -92,6 +94,8 @@ SUBSYSTEM_DEF(air)
 
 
 /datum/controller/subsystem/air/Initialize()
+	procstart = null
+	src.procstart = null
 	map_loading = FALSE
 	gas_reactions = init_gas_reactions()
 	hotspot_reactions = init_hotspot_reactions()
@@ -106,6 +110,8 @@ SUBSYSTEM_DEF(air)
 
 
 /datum/controller/subsystem/air/fire(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	var/timer = TICK_USAGE_REAL
 
 	//Rebuilds can happen at any time, so this needs to be done outside of the normal system
@@ -231,6 +237,8 @@ SUBSYSTEM_DEF(air)
 	SStgui.update_uis(SSair) //Lightning fast debugging motherfucker
 
 /datum/controller/subsystem/air/Recover()
+	procstart = null
+	src.procstart = null
 	excited_groups = SSair.excited_groups
 	active_turfs = SSair.active_turfs
 	hotspots = SSair.hotspots
@@ -250,6 +258,8 @@ SUBSYSTEM_DEF(air)
 	queued_for_activation = SSair.queued_for_activation
 
 /datum/controller/subsystem/air/proc/process_adjacent_rebuild(init = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/queue = adjacent_rebuild
 
 	while (length(queue))
@@ -270,6 +280,8 @@ SUBSYSTEM_DEF(air)
 				break
 
 /datum/controller/subsystem/air/proc/process_pipenets(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!resumed)
 		src.currentrun = networks.Copy()
 	//cache for sanic speed (lists are references anyways)
@@ -285,23 +297,31 @@ SUBSYSTEM_DEF(air)
 			return
 
 /datum/controller/subsystem/air/proc/add_to_rebuild_queue(obj/machinery/atmospherics/atmos_machine)
+	procstart = null
+	src.procstart = null
 	if(istype(atmos_machine, /obj/machinery/atmospherics) && !atmos_machine.rebuilding)
 		rebuild_queue += atmos_machine
 		atmos_machine.rebuilding = TRUE
 
 /datum/controller/subsystem/air/proc/add_to_expansion(datum/pipeline/line, starting_point)
+	procstart = null
+	src.procstart = null
 	var/list/new_packet = new(SSAIR_REBUILD_QUEUE)
 	new_packet[SSAIR_REBUILD_PIPELINE] = line
 	new_packet[SSAIR_REBUILD_QUEUE] = list(starting_point)
 	expansion_queue += list(new_packet)
 
 /datum/controller/subsystem/air/proc/remove_from_expansion(datum/pipeline/line)
+	procstart = null
+	src.procstart = null
 	for(var/list/packet in expansion_queue)
 		if(packet[SSAIR_REBUILD_PIPELINE] == line)
 			expansion_queue -= packet
 			return
 
 /datum/controller/subsystem/air/proc/process_atoms(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!resumed)
 		src.currentrun = atom_process.Copy()
 	//cache for sanic speed (lists are references anyways)
@@ -316,6 +336,8 @@ SUBSYSTEM_DEF(air)
 			return
 
 /datum/controller/subsystem/air/proc/process_atmos_machinery(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!resumed)
 		src.currentrun = atmos_machinery.Copy()
 	//cache for sanic speed (lists are references anyways)
@@ -332,6 +354,8 @@ SUBSYSTEM_DEF(air)
 
 
 /datum/controller/subsystem/air/proc/process_super_conductivity(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!resumed)
 		src.currentrun = active_super_conductivity.Copy()
 	//cache for sanic speed (lists are references anyways)
@@ -344,6 +368,8 @@ SUBSYSTEM_DEF(air)
 			return
 
 /datum/controller/subsystem/air/proc/process_hotspots(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!resumed)
 		src.currentrun = hotspots.Copy()
 	//cache for sanic speed (lists are references anyways)
@@ -359,6 +385,8 @@ SUBSYSTEM_DEF(air)
 			return
 
 /datum/controller/subsystem/air/proc/process_high_pressure_delta(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	while (high_pressure_delta.len)
 		var/turf/open/T = high_pressure_delta[high_pressure_delta.len]
 		high_pressure_delta.len--
@@ -368,6 +396,8 @@ SUBSYSTEM_DEF(air)
 			return
 
 /datum/controller/subsystem/air/proc/process_active_turfs(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	//cache for sanic speed
 	var/fire_count = times_fired
 	if (!resumed)
@@ -383,6 +413,8 @@ SUBSYSTEM_DEF(air)
 			return
 
 /datum/controller/subsystem/air/proc/process_excited_groups(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!resumed)
 		src.currentrun = excited_groups.Copy()
 	//cache for sanic speed (lists are references anyways)
@@ -403,6 +435,8 @@ SUBSYSTEM_DEF(air)
 			return
 
 /datum/controller/subsystem/air/proc/process_rebuilds()
+	procstart = null
+	src.procstart = null
 	//Yes this does mean rebuilding pipenets can freeze up the subsystem forever, but if we're in that situation something else is very wrong
 	var/list/currentrun = rebuild_queue
 	while(currentrun.len || length(expansion_queue))
@@ -432,6 +466,8 @@ SUBSYSTEM_DEF(air)
 
 ///Rebuilds a pipeline by expanding outwards, while yielding when sane
 /datum/controller/subsystem/air/proc/expand_pipeline(datum/pipeline/net, list/border)
+	procstart = null
+	src.procstart = null
 	while(border.len)
 		var/obj/machinery/atmospherics/borderline = border[border.len]
 		border.len--
@@ -470,6 +506,8 @@ SUBSYSTEM_DEF(air)
 
 ///Removes a turf from processing, and causes its excited group to clean up so things properly adapt to the change
 /datum/controller/subsystem/air/proc/remove_from_active(turf/open/T)
+	procstart = null
+	src.procstart = null
 	active_turfs -= T
 	if(currentpart == SSAIR_ACTIVETURFS)
 		currentrun -= T
@@ -485,6 +523,8 @@ SUBSYSTEM_DEF(air)
 
 ///Puts an active turf to sleep so it doesn't process. Do this without cleaning up its excited group.
 /datum/controller/subsystem/air/proc/sleep_active_turf(turf/open/T)
+	procstart = null
+	src.procstart = null
 	active_turfs -= T
 	if(currentpart == SSAIR_ACTIVETURFS)
 		currentrun -= T
@@ -496,6 +536,8 @@ SUBSYSTEM_DEF(air)
 
 ///Adds a turf to active processing, handles duplicates. Call this with blockchanges == TRUE if you want to nuke the assoc excited group
 /datum/controller/subsystem/air/proc/add_to_active(turf/open/activate, blockchanges = FALSE)
+	procstart = null
+	src.procstart = null
 	if(istype(activate) && activate.air)
 		activate.significant_share_ticker = 0
 		if(blockchanges && activate.excited_group) //This is used almost exclusivly for shuttles, so the excited group doesn't stay behind
@@ -517,16 +559,22 @@ SUBSYSTEM_DEF(air)
 		activate.requires_activation = TRUE
 
 /datum/controller/subsystem/air/StartLoadingMap()
+	procstart = null
+	src.procstart = null
 	LAZYINITLIST(queued_for_activation)
 	map_loading = TRUE
 
 /datum/controller/subsystem/air/StopLoadingMap()
+	procstart = null
+	src.procstart = null
 	map_loading = FALSE
 	for(var/T in queued_for_activation)
 		add_to_active(T, TRUE)
 	queued_for_activation.Cut()
 
 /datum/controller/subsystem/air/proc/setup_allturfs()
+	procstart = null
+	src.procstart = null
 	var/list/active_turfs = src.active_turfs
 	times_fired++
 
@@ -614,6 +662,8 @@ SUBSYSTEM_DEF(air)
 
 /// Logs all active turfs at roundstart to the mapping log so it can be readily accessed.
 /datum/controller/subsystem/air/proc/log_active_turfs()
+	procstart = null
+	src.procstart = null
 // sadly this has to be here because we can't realistically expect that all active turfs will be resolved in every possible situation when running through CI.
 // In an ideal world, we would have absolutely zero active turfs 99.99% of the time, but that's not the case. `log_mapping()` during world initialize triggers a CI fail.
 #ifdef UNIT_TESTS
@@ -678,6 +728,8 @@ SUBSYSTEM_DEF(air)
 #endif
 
 /turf/open/proc/resolve_active_graph()
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/datum/excited_group/EG = excited_group
 	if (blocks_air || !air)
@@ -702,9 +754,13 @@ SUBSYSTEM_DEF(air)
 			. += ET
 
 /turf/open/space/resolve_active_graph()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /datum/controller/subsystem/air/proc/setup_atmos_machinery()
+	procstart = null
+	src.procstart = null
 	for (var/obj/machinery/atmospherics/AM in atmos_machinery)
 		AM.atmos_init()
 		CHECK_TICK
@@ -713,6 +769,8 @@ SUBSYSTEM_DEF(air)
 // all atmos machinery has to initialize before the first
 // pipenet can be built.
 /datum/controller/subsystem/air/proc/setup_pipenets()
+	procstart = null
+	src.procstart = null
 	for (var/obj/machinery/atmospherics/AM in atmos_machinery)
 		var/list/targets = AM.get_rebuild_targets()
 		for(var/datum/pipeline/build_off as anything in targets)
@@ -722,6 +780,8 @@ SUBSYSTEM_DEF(air)
 GLOBAL_LIST_EMPTY(colored_turfs)
 GLOBAL_LIST_EMPTY(colored_images)
 /datum/controller/subsystem/air/proc/setup_turf_visuals()
+	procstart = null
+	src.procstart = null
 	for(var/sharp_color in GLOB.contrast_colors)
 		var/list/add_to = list()
 		GLOB.colored_turfs += list(add_to)
@@ -735,6 +795,8 @@ GLOBAL_LIST_EMPTY(colored_images)
 			GLOB.colored_images += shiny
 
 /datum/controller/subsystem/air/proc/setup_template_machinery(list/atmos_machines)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/atmospherics/AM
 	for(var/A in 1 to atmos_machines.len)
 		AM = atmos_machines[A]
@@ -750,6 +812,8 @@ GLOBAL_LIST_EMPTY(colored_images)
 
 
 /datum/controller/subsystem/air/proc/get_init_dirs(type, dir, init_dir)
+	procstart = null
+	src.procstart = null
 
 	if(!pipe_init_dirs_cache[type])
 		pipe_init_dirs_cache[type] = list()
@@ -765,6 +829,8 @@ GLOBAL_LIST_EMPTY(colored_images)
 	return pipe_init_dirs_cache[type]["[init_dir]"]["[dir]"]
 
 /datum/controller/subsystem/air/proc/generate_atmos()
+	procstart = null
+	src.procstart = null
 	atmos_gen = list()
 	for(var/T in subtypesof(/datum/atmosphere))
 		var/datum/atmosphere/atmostype = T
@@ -772,6 +838,8 @@ GLOBAL_LIST_EMPTY(colored_images)
 
 /// Takes a gas string, returns the matching mutable gas_mixture
 /datum/controller/subsystem/air/proc/parse_gas_string(gas_string, gastype = /datum/gas_mixture)
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/cached = strings_to_mix["[gas_string]-[gastype]"]
 
 	if(cached)
@@ -803,6 +871,8 @@ GLOBAL_LIST_EMPTY(colored_images)
 	return canonical_mix.copy()
 
 /datum/controller/subsystem/air/proc/preprocess_gas_string(gas_string)
+	procstart = null
+	src.procstart = null
 	if(!atmos_gen)
 		generate_atmos()
 	if(!atmos_gen[gas_string])
@@ -817,6 +887,8 @@ GLOBAL_LIST_EMPTY(colored_images)
  * * machine - The machine to start processing. Can be any /obj/machinery.
  */
 /datum/controller/subsystem/air/proc/start_processing_machine(obj/machinery/machine)
+	procstart = null
+	src.procstart = null
 	if(machine.atmos_processing)
 		return
 	if(QDELETED(machine))
@@ -832,6 +904,8 @@ GLOBAL_LIST_EMPTY(colored_images)
  * * machine - The machine to stop processing.
  */
 /datum/controller/subsystem/air/proc/stop_processing_machine(obj/machinery/machine)
+	procstart = null
+	src.procstart = null
 	if(!machine.atmos_processing)
 		return
 	machine.atmos_processing = FALSE
@@ -844,9 +918,13 @@ GLOBAL_LIST_EMPTY(colored_images)
 		currentrun -= machine
 
 /datum/controller/subsystem/air/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_DEBUG)
 
 /datum/controller/subsystem/air/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AtmosControlPanel")
@@ -854,6 +932,8 @@ GLOBAL_LIST_EMPTY(colored_images)
 		ui.open()
 
 /datum/controller/subsystem/air/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["excited_groups"] = list()
 	for(var/datum/excited_group/group in excited_groups)
@@ -891,6 +971,8 @@ GLOBAL_LIST_EMPTY(colored_images)
 	return data
 
 /datum/controller/subsystem/air/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !check_rights_for(usr.client, R_DEBUG))
 		return

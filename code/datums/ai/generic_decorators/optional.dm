@@ -2,6 +2,8 @@
 /datum/bt_node/decorator/optional
 
 /datum/bt_node/decorator/optional/tick(datum/ai_controller/controller, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == BT_FAILURE)
 		return BT_SUCCESS

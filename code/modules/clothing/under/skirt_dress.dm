@@ -8,6 +8,8 @@
 	worn_icon = 'icons/mob/clothing/under/dress.dmi'
 
 /obj/item/clothing/under/dress/striped/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/gags_recolorable)
 	update_icon(UPDATE_OVERLAYS)
@@ -48,6 +50,8 @@
 	flags_inv = HIDESHOES
 
 /obj/item/clothing/under/dress/wedding_dress/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, 4) //You aren't going to fish with this are you?
 
@@ -65,6 +69,8 @@
 	greyscale_colors = "#e11f1f"
 
 /obj/item/clothing/under/dress/eveninggown/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, 4) //You aren't going to fish with this are you?
 

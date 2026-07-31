@@ -2,6 +2,8 @@
 /datum/unit_test/abductor_baton_spell
 
 /datum/unit_test/abductor_baton_spell/Run()
+	procstart = null
+	src.procstart = null
 	// Test abductor agents get a linked "summon item" spell that marks their baton.
 	var/mob/living/carbon/human/ayy = allocate(/mob/living/carbon/human/consistent)
 	ayy.equipOutfit(/datum/outfit/abductor/agent)

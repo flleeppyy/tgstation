@@ -4,6 +4,8 @@ GLOBAL_LIST(heretic_path_knowledges)
 GLOBAL_LIST_INIT(heretic_path_datums, init_heretic_path_datums())
 
 /proc/init_heretic_path_datums()
+	procstart = null
+	src.procstart = null
 	var/list/paths = list()
 	for(var/datum/heretic_knowledge_tree_column/column_path as anything in valid_subtypesof(/datum/heretic_knowledge_tree_column))
 		var/datum/heretic_knowledge_tree_column/heretic_route = new column_path()
@@ -67,6 +69,8 @@ GLOBAL_LIST_INIT(heretic_path_datums, init_heretic_path_datums())
 
 
 /datum/heretic_knowledge_tree_column/proc/get_ui_data(datum/antagonist/heretic/our_heretic, category)
+	procstart = null
+	src.procstart = null
 	var/list/power_info = our_heretic.heretic_shops[category]
 	var/list/data = list(
 		"route" = route,
@@ -104,6 +108,8 @@ GLOBAL_LIST_INIT(heretic_path_datums, init_heretic_path_datums())
  * Importantly, this adds HKT_NEXT's for the starting knowledges so the heretic's next researches are considered valid
 **/
 /proc/generate_heretic_starting_knowledge(list/starting_knowledges = list())
+	procstart = null
+	src.procstart = null
 	for(var/knowledge in GLOB.heretic_start_knowledge)
 		starting_knowledges[knowledge] = make_knowledge_entry(knowledge, null, HERETIC_KNOWLEDGE_START)
 
@@ -136,6 +142,8 @@ GLOBAL_LIST_INIT(heretic_path_datums, init_heretic_path_datums())
 
 //TODO: use this to generate the globallist
 /datum/antagonist/heretic/proc/generate_heretic_research_tree()
+	procstart = null
+	src.procstart = null
 	if(!heretic_path)
 		stack_trace("somehow called generate_heretic_research_tree with a falsey heretic_path")
 		return
@@ -148,6 +156,8 @@ GLOBAL_LIST_INIT(heretic_path_datums, init_heretic_path_datums())
 	heretic_shops[HERETIC_KNOWLEDGE_TREE] = deep_copy_list_alt(selected_route)
 
 /proc/generate_global_heretic_tree()
+	procstart = null
+	src.procstart = null
 	var/heretic_research_tree = list()
 	for(var/path in GLOB.heretic_path_datums)
 		var/datum/heretic_knowledge_tree_column/heretic_route = GLOB.heretic_path_datums[path]
@@ -157,6 +167,8 @@ GLOBAL_LIST_INIT(heretic_path_datums, init_heretic_path_datums())
 	return heretic_research_tree
 
 /proc/make_knowledge_entry(datum/heretic_knowledge/knowledge, datum/heretic_knowledge_tree_column/path, category = HERETIC_KNOWLEDGE_TREE, depth = 1, cost = -1)
+	procstart = null
+	src.procstart = null
 	return list(
 		HKT_NEXT = list(),
 		HKT_BAN = list(),
@@ -171,11 +183,15 @@ GLOBAL_LIST_INIT(heretic_path_datums, init_heretic_path_datums())
 
 /// ID's are not unique, the same knowledge with the same type in the same shop will always have the same ID.
 /proc/make_knowledge_id(datum/heretic_knowledge/knowledge, shop_category = HERETIC_KNOWLEDGE_TREE)
+	procstart = null
+	src.procstart = null
 	var/type_string = replacetext("[knowledge::type]", "/", "", 1, 2)
 	var/our_type = replacetext(type_string, "/", "_")
 	return "[shop_category]/[our_type]"
 
 /proc/generate_heretic_path(datum/heretic_knowledge_tree_column/heretic_path)
+	procstart = null
+	src.procstart = null
 	var/list/heretic_research_tree = list()
 	//Initialize the data structure
 	var/list/tree_paths = list()
@@ -227,6 +243,8 @@ GLOBAL_LIST_INIT(heretic_path_datums, init_heretic_path_datums())
  * Modifies shop_list and final_draft that are provided in the arguments.
  */
 /proc/determine_drafted_knowledge(route, list/tree = list(), list/shop = list(), list/final_draft = list())
+	procstart = null
+	src.procstart = null
 	if(!route)
 		stack_trace("somehow called determine_drafted_knowledge with a falsey current_path")
 		return

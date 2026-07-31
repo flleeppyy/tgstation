@@ -19,6 +19,8 @@
 	circuit = /obj/item/circuitboard/machine/telecomms/hub
 
 /obj/machinery/telecomms/hub/receive_information(datum/signal/signal, obj/machinery/telecomms/machine_from)
+	procstart = null
+	src.procstart = null
 	if(!is_freq_listening(signal))
 		return
 
@@ -34,6 +36,8 @@
 	use_energy(idle_power_usage)
 
 /obj/machinery/telecomms/hub/update_power()
+	procstart = null
+	src.procstart = null
 	var/old_on = on
 	if(toggled)
 		if(machine_stat & (BROKEN|NOPOWER|EMPED))
@@ -48,10 +52,14 @@
 		update_appearance()
 
 /obj/machinery/telecomms/hub/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	soundloop = new(src, on)
 
 /obj/machinery/telecomms/hub/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(soundloop)
 	return ..()
 

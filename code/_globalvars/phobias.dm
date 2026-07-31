@@ -586,6 +586,8 @@ GLOBAL_LIST_INIT(phobia_species, list(
 /// Capture group 2 = the scary word
 /// Capture group 3 = an optional suffix on the scary word
 /proc/construct_phobia_regex(list/name)
+	procstart = null
+	src.procstart = null
 	var/list/words = strings(PHOBIA_FILE, name)
 	if(!length(words))
 		CRASH("phobia [name] has no entries")

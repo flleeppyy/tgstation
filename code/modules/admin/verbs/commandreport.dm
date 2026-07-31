@@ -46,24 +46,34 @@ ADMIN_VERB(create_command_report, R_ADMIN, "Create Command Report", "Create a co
 	var/list/preset_names = list(CENTCOM_PRESET, SYNDICATE_PRESET, WIZARD_PRESET, CUSTOM_PRESET)
 
 /datum/command_report_menu/New(mob/user)
+	procstart = null
+	src.procstart = null
 	ui_user = user
 	if(command_name() != CENTCOM_PRESET)
 		command_name = command_name()
 		preset_names.Insert(1, command_name())
 
 /datum/command_report_menu/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_ADMIN)
 
 /datum/command_report_menu/ui_close()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /datum/command_report_menu/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "CommandReport")
 		ui.open()
 
 /datum/command_report_menu/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["command_name"] = command_name
 	data["custom_name"] = custom_name
@@ -77,6 +87,8 @@ ADMIN_VERB(create_command_report, R_ADMIN, "Create Command Report", "Create a co
 	return data
 
 /datum/command_report_menu/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["command_name_presets"] = preset_names
 	data["announcer_sounds"] = list(DEFAULT_ANNOUNCEMENT_SOUND) + GLOB.announcer_keys + CUSTOM_SOUND_PRESET
@@ -85,6 +97,8 @@ ADMIN_VERB(create_command_report, R_ADMIN, "Create Command Report", "Create a co
 	return data
 
 /datum/command_report_menu/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -141,6 +155,8 @@ ADMIN_VERB(create_command_report, R_ADMIN, "Create Command Report", "Create a co
  * Uses the variables set by the user on our datum as the arguments for the report.
  */
 /datum/command_report_menu/proc/send_announcement()
+	procstart = null
+	src.procstart = null
 	/// Our current command name to swap back to after sending the report.
 	var/original_command_name = command_name()
 	change_command_name(command_name)

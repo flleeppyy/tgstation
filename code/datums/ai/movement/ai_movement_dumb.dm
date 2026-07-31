@@ -4,6 +4,8 @@
 
 ///Put your movement behavior in here!
 /datum/ai_movement/dumb/start_moving_towards(datum/ai_controller/controller, atom/current_movement_target, min_distance, delay_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return FALSE
@@ -15,12 +17,16 @@
 
 
 /datum/ai_movement/dumb/update_movement_target(datum/ai_controller/controller, atom/new_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/move_loop/has_target/loop = GLOB.move_manager.processing_on(controller.pawn, SSai_movement)
 	if(loop)
 		loop.target = new_target
 
 /datum/ai_movement/dumb/allowed_to_move(datum/move_loop/has_target/source)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_step_towards(source.moving, source.target)
 	if(!target_turf?.can_cross_safely(source.moving))
 		return FALSE

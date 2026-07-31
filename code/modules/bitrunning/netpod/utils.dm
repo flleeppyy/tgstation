@@ -1,5 +1,7 @@
 /// Puts the occupant in netpod stasis, basically short-circuiting environmental conditions
 /obj/machinery/netpod/proc/add_healing(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(target != occupant)
 		return
 
@@ -11,6 +13,8 @@
 
 /// Disconnects the occupant after a certain time so they aren't just hibernating in netpod stasis. A balance change
 /obj/machinery/netpod/proc/auto_disconnect()
+	procstart = null
+	src.procstart = null
 	if(isnull(occupant) || state_open || connected)
 		return
 
@@ -22,6 +26,8 @@
 
 /// Handles occupant post-disconnection effects like damage, sounds, etc
 /obj/machinery/netpod/proc/disconnect_occupant(cause_damage = FALSE)
+	procstart = null
+	src.procstart = null
 	connected = FALSE
 
 	var/mob/living/mob_occupant = occupant
@@ -61,6 +67,8 @@
  * Connects the mind to the avatar if everything is ok
  */
 /obj/machinery/netpod/proc/enter_matrix()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/neo = occupant
 	if(!ishuman(neo) || neo.stat == DEAD || isnull(neo.mind))
 		balloon_alert(neo, "invalid occupant.")
@@ -119,6 +127,8 @@
 
 /// Finds a server and sets the server_ref
 /obj/machinery/netpod/proc/find_server()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/quantum_server/server = server_ref?.resolve()
 	if(server)
 		return server
@@ -137,6 +147,8 @@
 
 /// Severs the connection with the current avatar
 /obj/machinery/netpod/proc/sever_connection()
+	procstart = null
+	src.procstart = null
 	if(isnull(occupant) || !connected)
 		return
 
@@ -145,6 +157,8 @@
 
 /// Checks for cases to eject/fail connecting an avatar
 /obj/machinery/netpod/proc/validate_entry(mob/living/neo, mob/living/avatar)
+	procstart = null
+	src.procstart = null
 	// Very invalid
 	if(QDELETED(neo) || QDELETED(avatar) || QDELETED(src) || !is_operational)
 		return FALSE

@@ -6,15 +6,21 @@
 	suicide_cry = "FOR LONELINESS!!"
 
 /datum/antagonist/heartbreaker/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/martyr/normiesgetout = new
 	normiesgetout.owner = owner
 	objectives += normiesgetout
 
 /datum/antagonist/heartbreaker/on_gain()
+	procstart = null
+	src.procstart = null
 	forge_objectives()
 	. = ..()
 
 /datum/antagonist/heartbreaker/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(owner, span_boldwarning("You didn't get a date! They're all having fun without you! You'll show them though..."))
 	owner.announce_objectives()

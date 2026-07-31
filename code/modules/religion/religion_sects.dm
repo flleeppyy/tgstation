@@ -46,6 +46,8 @@
 	var/candle_overlay = TRUE
 
 /datum/religion_sect/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(desired_items)
 		desired_items_typecache = typecacheof(desired_items)
@@ -55,11 +57,15 @@
 
 /// Activates once selected
 /datum/religion_sect/proc/on_select()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SSblackbox.record_feedback("text", "sect_chosen", 1, name)
 
 /// Activates once selected and on newjoins, oriented around people who become holy.
 /datum/religion_sect/proc/on_conversion(mob/living/chap)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	to_chat(chap, span_boldnotice("\"[quote]\""))
 	to_chat(chap, span_notice("[desc]"))
@@ -67,6 +73,8 @@
 
 /// Activates if religious sect is reset by admins, should clean up anything you added on conversion.
 /datum/religion_sect/proc/on_deconversion(mob/living/chap)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	to_chat(chap, span_boldnotice("You have lost the approval of \the [name]."))
 	if(chap.mind.holy_role == HOLY_ROLE_HIGHPRIEST)
@@ -75,6 +83,8 @@
 
 /// Returns TRUE if the item can be sacrificed. Can be modified to fit item being tested as well as person offering. Returning TRUE will stop the attackby sequence and proceed to on_sacrifice.
 /datum/religion_sect/proc/can_sacrifice(obj/item/sacrifice, mob/living/chap)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	if(chap.mind.holy_role == HOLY_ROLE_DEACON)
 		to_chat(chap, span_warning("You are merely a deacon of [GLOB.deity], and therefore cannot perform rites."))
@@ -84,14 +94,20 @@
 
 /// Activates when the sect sacrifices an item. This proc has NO bearing on the attackby sequence of other objects when used in conjunction with the religious_tool component.
 /datum/religion_sect/proc/on_sacrifice(obj/item/sacrifice, mob/living/chap)
+	procstart = null
+	src.procstart = null
 	return adjust_favor(default_item_favor, chap)
 
 /// Returns a description for religious tools
 /datum/religion_sect/proc/tool_examine(mob/living/holy_creature)
+	procstart = null
+	src.procstart = null
 	return "You are currently at [round(favor)] favor with [GLOB.deity]."
 
 /// Adjust Favor by a certain amount. Can provide optional features based on a user. Returns actual amount added/removed
 /datum/religion_sect/proc/adjust_favor(amount = 0, mob/living/chap)
+	procstart = null
+	src.procstart = null
 	. = amount
 	if(favor + amount < 0)
 		. = favor //if favor = 5 and we want to subtract 10, we'll only be able to subtract 5
@@ -101,14 +117,20 @@
 
 /// Sets favor to a specific amount. Can provide optional features based on a user.
 /datum/religion_sect/proc/set_favor(amount = 0, mob/living/chap)
+	procstart = null
+	src.procstart = null
 	favor = clamp(0,max_favor,amount)
 	return favor
 
 /// Activates when an individual uses a rite. Can provide different/additional benefits depending on the user.
 /datum/religion_sect/proc/on_riteuse(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 
 /// Replaces the bible's bless mechanic. Return TRUE if you want to not do the brain hit.
 /datum/religion_sect/proc/sect_bless(mob/living/target, mob/living/chap)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(target))
 		return BLESSING_FAILED
 
@@ -121,6 +143,8 @@
 	return standard_bless_healing(blessed, chap)
 
 /datum/religion_sect/proc/standard_bless_healing(mob/living/carbon/human/blessed, mob/living/chap)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(blessed))
 		blessed.adjust_brute_loss(-10)
 		blessed.adjust_fire_loss(-10)
@@ -144,6 +168,8 @@
 
 /// What happens if we bless a corpse? By default just do the default smack behavior
 /datum/religion_sect/proc/sect_dead_bless(mob/living/target, mob/living/chap)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /**** Nanotrasen Approved God ****/
@@ -169,6 +195,8 @@
 	max_favor = 2500
 
 /datum/religion_sect/mechanical/sect_bless(mob/living/target, mob/living/chap)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(target))
 		var/mob/living/silicon/robot/R = target
 		var/charge_amount = 0.05 * STANDARD_CELL_CHARGE
@@ -217,6 +245,8 @@
 	return BLESSING_SUCCESS
 
 /datum/religion_sect/mechanical/on_sacrifice(obj/item/stock_parts/power_store/cell/power_cell, mob/living/chap)
+	procstart = null
+	src.procstart = null
 	if(!istype(power_cell))
 		return
 
@@ -243,6 +273,8 @@
 	altar_icon_state = "convertaltar-red"
 
 /datum/religion_sect/pyre/on_select()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/sect_nullrod_bonus, list(
 		/obj/item/gun/ballistic/bow/divine = list(
@@ -251,6 +283,8 @@
 	))
 
 /datum/religion_sect/pyre/on_sacrifice(obj/item/flashlight/flare/candle/offering, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(offering))
 		return
 	if(!offering.light_on)
@@ -273,10 +307,14 @@
 	rites_list = list(/datum/religion_rites/greed/vendatray, /datum/religion_rites/greed/custom_vending)
 	altar_icon_state = "convertaltar-yellow"
 
-/datum/religion_sect/greed/tool_examine(mob/living/holy_creature) //display money policy
+/datum/religion_sect/greed/tool_examine(mob/living/holy_creature)
+	procstart = null
+	src.procstart = null //display money policy
 	return "In the eyes of [GLOB.deity], your wealth is your favor."
 
 /datum/religion_sect/greed/sect_bless(mob/living/blessed_living, mob/living/chap)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(blessed_living))
 		return BLESSING_FAILED
 
@@ -326,6 +364,8 @@
 	rites_list = list(/datum/religion_rites/nullrod_transformation)
 
 /datum/religion_sect/burden/on_conversion(mob/living/carbon/human/new_convert)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!ishuman(new_convert))
 		to_chat(new_convert, span_warning("[GLOB.deity] needs higher level creatures to fully comprehend the suffering. You are not burdened."))
@@ -333,11 +373,15 @@
 	new_convert.gain_trauma(/datum/brain_trauma/special/burdened, TRAUMA_RESILIENCE_ABSOLUTE)
 
 /datum/religion_sect/burden/on_deconversion(mob/living/carbon/human/new_convert)
+	procstart = null
+	src.procstart = null
 	if (ishuman(new_convert))
 		new_convert.cure_trauma_type(/datum/brain_trauma/special/burdened, TRAUMA_RESILIENCE_ABSOLUTE)
 	return ..()
 
-/datum/religion_sect/burden/tool_examine(mob/living/carbon/human/burdened) //display burden level
+/datum/religion_sect/burden/tool_examine(mob/living/carbon/human/burdened)
+	procstart = null
+	src.procstart = null //display burden level
 	if(ishuman(burdened))
 		var/datum/brain_trauma/special/burdened/burden = burdened.has_trauma_type(/datum/brain_trauma/special/burdened)
 		if(burden)
@@ -345,6 +389,8 @@
 	return "You are not burdened."
 
 /datum/religion_sect/burden/sect_bless(mob/living/carbon/target, mob/living/carbon/chaplain)
+	procstart = null
+	src.procstart = null
 	if(!istype(target) || !istype(chaplain))
 		return BLESSING_FAILED
 
@@ -414,6 +460,8 @@
 	return BLESSING_SUCCESS
 
 /datum/religion_sect/burden/sect_dead_bless(mob/living/target, mob/living/chaplain)
+	procstart = null
+	src.procstart = null
 	return sect_bless(target, chaplain)
 
 /datum/religion_sect/honorbound
@@ -427,6 +475,8 @@
 	rites_list = list(/datum/religion_rites/deaconize/crusader, /datum/religion_rites/forgive, /datum/religion_rites/summon_rules)
 
 /datum/religion_sect/honorbound/on_conversion(mob/living/carbon/new_convert)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!ishuman(new_convert))
 		to_chat(new_convert, span_warning("[GLOB.deity] has no respect for lower creatures, and refuses to make you honorbound."))
@@ -434,6 +484,8 @@
 	new_convert.gain_trauma(/datum/brain_trauma/special/honorbound, TRAUMA_RESILIENCE_MAGIC)
 
 /datum/religion_sect/honorbound/on_deconversion(mob/living/carbon/human/new_convert)
+	procstart = null
+	src.procstart = null
 	if (ishuman(new_convert))
 		new_convert.cure_trauma_type(/datum/brain_trauma/special/honorbound, TRAUMA_RESILIENCE_MAGIC)
 	return ..()
@@ -451,6 +503,8 @@
 	desired_items = list(/obj/item/reagent_containers = "holding organic slurry")
 
 /datum/religion_sect/maintenance/sect_bless(mob/living/blessed_living, mob/living/chap)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(blessed_living))
 		return BLESSING_FAILED
 
@@ -467,6 +521,8 @@
 	return BLESSING_SUCCESS //trust me, you'll be feeling the pain from the maint drugs all well enough
 
 /datum/religion_sect/maintenance/on_sacrifice(obj/item/reagent_containers/offering, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(offering))
 		return
 	var/datum/reagent/yuck/wanted_yuck = offering.reagents.has_reagent(/datum/reagent/yuck, MINIMUM_YUCK_REQUIRED)
@@ -509,6 +565,8 @@
 	var/list/past_opponents = list()
 
 /datum/religion_sect/spar/tool_examine(mob/living/holy_creature)
+	procstart = null
+	src.procstart = null
 	return "You have [round(favor)] sparring matches won in [GLOB.deity]'s name to redeem. You have lost [matches_lost] holy matches. You will be excommunicated after losing three matches."
 
 /datum/religion_sect/music
@@ -530,6 +588,8 @@
 	)
 
 /datum/religion_sect/music/on_conversion(mob/living/chap)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/choice_beacon/music(get_turf(chap))
 
@@ -567,6 +627,8 @@
 	COOLDOWN_DECLARE(vague_portent_cooldown)
 
 /datum/religion_sect/dreams/on_conversion(mob/living/chap)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(chap, COMSIG_PRE_DREAMING, PROC_REF(pre_dream))
 	RegisterSignal(chap, COMSIG_START_DREAMING, PROC_REF(on_dream))
@@ -574,12 +636,16 @@
 		chap.apply_status_effect(/datum/status_effect/dream_protection)
 
 /datum/religion_sect/dreams/on_deconversion(mob/living/chap)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(chap, COMSIG_PRE_DREAMING)
 	UnregisterSignal(chap, COMSIG_START_DREAMING)
 	chap.remove_status_effect(/datum/status_effect/dream_protection)
 
 /datum/religion_sect/dreams/proc/pre_dream(mob/living/chap, list/dream_pool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// prioritize specific portents if they're in the pool
@@ -593,6 +659,8 @@
 	dream_pool[new /datum/dream/random/vague_portent()] = /datum/dream/random::weight * 0.1
 
 /datum/religion_sect/dreams/proc/on_dream(mob/living/chap, datum/dream/dream_instance)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// no reward for the dream your god is specifically giving you
@@ -612,6 +680,8 @@
 // blessing someone asleep causes them to dream, and blessing a dreamer rewards favor.
 // it also heals regardless of if the target is mechanical or organic. do robots dream of electric sheep?
 /datum/religion_sect/dreams/sect_bless(mob/living/target, mob/living/chap)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(target, TRAIT_DREAMING))
 		var/result = standard_bless_healing(target, chap)
 		var/tarref = REF(target)
@@ -643,6 +713,8 @@
 	return BLESSING_IGNORED
 
 /datum/religion_sect/dreams/sect_dead_bless(mob/living/target, mob/living/chap)
+	procstart = null
+	src.procstart = null
 	var/tarref = REF(target)
 	if(LAZYFIND(recent_bless_refs, tarref))
 		return BLESSING_IGNORED
@@ -656,9 +728,13 @@
 	return BLESSING_SUCCESS
 
 /datum/religion_sect/dreams/proc/clear_bless_ref(tarref)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(recent_bless_refs, tarref)
 
 /datum/religion_sect/dreams/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(var_name == NAMEOF(src, dream_protection))
 		for(var/mob/living/chap as anything in GLOB.mob_living_list)

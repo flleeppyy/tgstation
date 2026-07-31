@@ -8,6 +8,8 @@
  * @returns {boolean} - TRUE if the door jack state was switched, FALSE otherwise.
  */
 /mob/living/silicon/pai/proc/door_jack(mode)
+	procstart = null
+	src.procstart = null
 	if(isnull(mode))
 		return FALSE
 	switch(mode)
@@ -33,6 +35,8 @@
  * @returns {boolean} - TRUE if the cable was dropped, FALSE otherwise.
  */
 /mob/living/silicon/pai/proc/extend_cable()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(hacking_cable) //clear any old cables
 	hacking_cable = new
 	RegisterSignal(hacking_cable, COMSIG_QDELETING, PROC_REF(on_hacking_cable_del))
@@ -50,16 +54,22 @@
 
 /** Tracks the associated pai */
 /mob/living/silicon/pai/proc/track_pai()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(src, COMSIG_MOVABLE_MOVED, PROC_REF(handle_move))
 	RegisterSignal(card, COMSIG_MOVABLE_MOVED, PROC_REF(handle_move))
 
 /** Untracks the associated pai */
 /mob/living/silicon/pai/proc/untrack_pai()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(src, COMSIG_MOVABLE_MOVED)
 	UnregisterSignal(card, COMSIG_MOVABLE_MOVED)
 
 /** Tracks the associated hacking_cable */
 /mob/living/silicon/pai/proc/track_thing(atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(thing, COMSIG_MOVABLE_MOVED, PROC_REF(handle_move))
 	var/list/locations = get_nested_locs(thing, include_turf = FALSE)
 	for(var/atom/movable/location in locations)
@@ -67,6 +77,8 @@
 
 /** Untracks the associated hacking */
 /mob/living/silicon/pai/proc/untrack_thing(atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(thing, COMSIG_MOVABLE_MOVED)
 	var/list/locations = get_nested_locs(thing, include_turf = FALSE)
 	for(var/atom/movable/location in locations)
@@ -77,6 +89,8 @@
  * Deletes the extended cable if the source pAI is not nearby.
  */
 /mob/living/silicon/pai/proc/handle_move(atom/movable/source, atom/movable/old_loc)
+	procstart = null
+	src.procstart = null
 	if(ismovable(old_loc))
 		untrack_thing(old_loc)
 	if(hacking_cable && (!IN_GIVEN_RANGE(src, hacking_cable, CABLE_LENGTH)))
@@ -89,6 +103,8 @@
  * Handles deleting the hacking cable and notifying the user.
  */
 /mob/living/silicon/pai/proc/retract_cable()
+	procstart = null
+	src.procstart = null
 	balloon_alert(src, "cable retracted")
 	QDEL_NULL(hacking_cable)
 	return TRUE
@@ -102,6 +118,8 @@
  * @returns {boolean} - TRUE if the door was jacked, FALSE otherwise.
  */
 /mob/living/silicon/pai/proc/hack_door()
+	procstart = null
+	src.procstart = null
 	if(!hacking_cable)
 		return FALSE
 	if(!hacking_cable.hacking_machine)

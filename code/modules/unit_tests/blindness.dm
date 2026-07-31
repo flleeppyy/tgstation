@@ -9,6 +9,8 @@
 /datum/unit_test/blindness
 
 /datum/unit_test/blindness/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/clothing/glasses/blindfold/blindfold = new(dummy.loc)
 	TEST_ASSERT(!dummy.is_blind(), "Dummy was blind on initialize, and shouldn't be.")
@@ -50,6 +52,8 @@
 	check_if_not_blind(dummy, status_message = "after being ahealed while temporarily blinded")
 
 /datum/unit_test/blindness/proc/check_if_blind(mob/living/carbon/human/dummy, status_message = "despite being made blind")
+	procstart = null
+	src.procstart = null
 	// Check for the status effect, duh
 	TEST_ASSERT(dummy.is_blind(), "Dummy, [status_message], did not have the blind status effect.")
 	// Being more technical, we need to check for client color and screen overlays
@@ -57,6 +61,8 @@
 	TEST_ASSERT(HAS_SCREEN_OVERLAY(dummy, /atom/movable/screen/fullscreen/blind), "Dummy, [status_message], did not have a blind screen overlay in their list of screens.")
 
 /datum/unit_test/blindness/proc/check_if_not_blind(mob/living/carbon/human/dummy, status_message = "after being cured of blindness")
+	procstart = null
+	src.procstart = null
 	// Check for no status effect
 	TEST_ASSERT(!dummy.is_blind(), "Dummy, [status_message], still had the blindness status effect.")
 	// Check that the client color and screen overlay are gone
@@ -69,6 +75,8 @@
 /datum/unit_test/nearsighted_quirk
 
 /datum/unit_test/nearsighted_quirk/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/clothing/glasses/regular/glasses = allocate(/obj/item/clothing/glasses/regular)
 	dummy.mock_client = new()
@@ -106,6 +114,8 @@
 /datum/unit_test/eye_damage
 
 /datum/unit_test/eye_damage/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/organ/eyes/eyes = dummy.get_organ_slot(ORGAN_SLOT_EYES)
 	dummy.mock_client = new()
@@ -155,6 +165,8 @@
  * * Removal (absolute/correctable)
  */
 /datum/unit_test/nearsighted_effect/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 	var/datum/status_effect/grouped/nearsighted/myopia
 	dummy.mock_client = new()
@@ -197,6 +209,8 @@
 	TEST_ASSERT(!dummy.is_nearsighted(), "Dummy was still nearsighted after all sources were removed.")
 
 /datum/unit_test/nearsighted_effect/proc/validate_source_contents(checking, status, list/current_sources, list/expected_sources)
+	procstart = null
+	src.procstart = null
 	TEST_ASSERT_EQUAL(length(current_sources), length(expected_sources), "[checking] had a different amount of contents than expected [status].")
 	//We'll copy the list to make sure we got all the sources
 	var/list/hopefully_empty_result = expected_sources.Copy()
@@ -208,6 +222,8 @@
 	TEST_ASSERT(!length(hopefully_empty_result), "[checking] has all the sources we wanted [status], but there were unexpected extra sources.")
 
 /datum/unit_test/nearsighted_effect/proc/validate_correctable_severity(mob/living/carbon/human/dummy, status, expected_final_severity, list/expected_sources)
+	procstart = null
+	src.procstart = null
 	//! This proc expects the dummy to be nearsighted
 	var/datum/status_effect/grouped/nearsighted/myopia = dummy.is_nearsighted()
 	TEST_ASSERT_NOTNULL(myopia, "Dummy was not nearsighted when given correctable nearsightedness [status].")
@@ -216,6 +232,8 @@
 	TEST_ASSERT_EQUAL(myopia.correctable_severity, expected_final_severity, "The determined correctable severity [status] was wrong.")
 
 /datum/unit_test/nearsighted_effect/proc/validate_absolute_severity(mob/living/carbon/human/dummy, status, expected_final_severity, list/expected_sources)
+	procstart = null
+	src.procstart = null
 	//! This proc expects the dummy to be nearsighted
 	var/datum/status_effect/grouped/nearsighted/myopia = dummy.is_nearsighted()
 	TEST_ASSERT_NOTNULL(myopia, "Dummy was not nearsighted when given absolute nearsightedness [status].")
@@ -225,6 +243,8 @@
 
 /// Makes sure that having vision corrected affects the dummy and preserves vision
 /datum/unit_test/nearsighted_effect/proc/validate_glasses_behaviour(mob/living/carbon/human/dummy, status, expected_severity_with, expected_severity_without)
+	procstart = null
+	src.procstart = null
 	//! This proc expects the dummy to be nearsighted
 	var/obj/item/clothing/glasses/regular/prescriptions = allocate(/obj/item/clothing/glasses/regular)
 	dummy.equip_to_slot_if_possible(prescriptions, ITEM_SLOT_EYES)

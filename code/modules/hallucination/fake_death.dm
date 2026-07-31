@@ -6,6 +6,8 @@
 	var/floor_them = TRUE
 
 /datum/hallucination/death/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(hallucinator))
 		// Really make sure these go away, would be bad if they stuck around
 		hallucinator.remove_status_effect(/datum/status_effect/grouped/screwy_hud/fake_dead, REF(src))
@@ -15,6 +17,8 @@
 	return ..()
 
 /datum/hallucination/death/start()
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS(hallucinator)) // on your way there already
 		return FALSE
 
@@ -80,6 +84,8 @@
 	return TRUE
 
 /datum/hallucination/death/proc/wake_up()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(hallucinator))
 		hallucinator.remove_status_effect(/datum/status_effect/grouped/screwy_hud/fake_dead, REF(src))
 		if(floor_them)
@@ -98,6 +104,8 @@
 	var/list/image/created_images
 
 /datum/hallucination/death/dust/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(hallucinator) && LAZYLEN(created_images))
 		hallucinator.client?.images -= created_images
 		LAZYNULL(created_images)
@@ -105,6 +113,8 @@
 	return ..()
 
 /datum/hallucination/death/dust/start()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -136,6 +146,8 @@
 	randomdir = FALSE
 
 /obj/effect/temp_visual/dust_hallucination/Initialize(mapload, mob/hallucinator)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(hallucinator))
 		return INITIALIZE_HINT_QDEL

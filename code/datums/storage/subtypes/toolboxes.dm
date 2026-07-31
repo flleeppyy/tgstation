@@ -24,6 +24,8 @@
 
 ///Monkey Guncase toolbox
 /datum/storage/toolbox/guncase/monkey/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_locked(STORAGE_SOFT_LOCKED)
 
@@ -34,6 +36,8 @@
 
 ///Fishing toolbox
 /datum/storage/toolbox/fishing/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(exception_hold_list = /obj/item/fishing_rod)
 

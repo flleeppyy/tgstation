@@ -74,14 +74,20 @@
 	acid = 100
 
 /obj/vehicle/sealed/mecha/gygax/dark/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_minimap_blip(src, MINIMAP_SYNDICATE_MECH_BLIP, "syndiemech")
 
 /obj/vehicle/sealed/mecha/gygax/dark/loaded/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	max_ammo()
 
 /obj/vehicle/sealed/mecha/gygax/dark/loaded/populate_parts()
+	procstart = null
+	src.procstart = null
 	cell = new /obj/item/stock_parts/power_store/cell/bluespace(src)
 	scanmod = new /obj/item/stock_parts/scanning_module/triphasic(src)
 	capacitor = new /obj/item/stock_parts/capacitor/quadratic(src)

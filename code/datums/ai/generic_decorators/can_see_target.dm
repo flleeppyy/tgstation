@@ -9,6 +9,8 @@
 	var/range = 7
 
 /datum/bt_node/decorator/can_see_target/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[key]
 	if(QDELETED(target) || !can_see(controller.pawn, target, range))
 		EVLOG_TEXT(controller, EVLOG_CATEGORY_AI_DECISIONMAKING, "[controller.pawn] can_see_target([key]): target lost")

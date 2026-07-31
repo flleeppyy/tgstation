@@ -18,6 +18,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 3.5, /datum/material/glass = SHEET_MATERIAL_AMOUNT)
 
 /obj/item/controller/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/shell, list(
 		new /obj/item/circuit_component/controller()
@@ -36,17 +38,23 @@
 	var/datum/port/output/entity
 
 /obj/item/circuit_component/controller/populate_ports()
+	procstart = null
+	src.procstart = null
 	entity = add_output_port("User", PORT_TYPE_USER)
 	signal = add_output_port("Signal", PORT_TYPE_SIGNAL)
 	alt = add_output_port("Alternate Signal", PORT_TYPE_SIGNAL)
 	right = add_output_port("Extra Signal", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/controller/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(shell, COMSIG_ITEM_ATTACK_SELF, PROC_REF(send_trigger))
 	RegisterSignal(shell, COMSIG_CLICK_ALT, PROC_REF(send_alternate_signal))
 	RegisterSignal(shell, COMSIG_ITEM_ATTACK_SELF_SECONDARY, PROC_REF(send_right_signal))
 
 /obj/item/circuit_component/controller/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(shell, list(
 		COMSIG_ITEM_ATTACK_SELF,
 		COMSIG_ITEM_ATTACK_SELF_SECONDARY,
@@ -54,6 +62,8 @@
 	))
 
 /obj/item/circuit_component/controller/proc/handle_trigger(atom/source, user, port_name, datum/port/output/port_signal)
+	procstart = null
+	src.procstart = null
 	source.balloon_alert(user, "clicked [port_name] button")
 	playsound(source, SFX_KEYBOARD_CLICKS, 25, FALSE)
 	entity.set_output(user)
@@ -63,6 +73,8 @@
  * Called when the shell item is used in hand
  */
 /obj/item/circuit_component/controller/proc/send_trigger(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!user.Adjacent(source))
 		return
@@ -72,6 +84,8 @@
  * Called when the shell item is alt-clicked
  */
 /obj/item/circuit_component/controller/proc/send_alternate_signal(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	handle_trigger(source, user, "alternate", alt)
@@ -82,6 +96,8 @@
  * Called when the shell item is right-clicked in active hand
  */
 /obj/item/circuit_component/controller/proc/send_right_signal(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!user.can_perform_action(source))

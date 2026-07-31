@@ -1262,6 +1262,8 @@
 	var/datum/surgery_operation/surgery
 
 /datum/design/surgery/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(name))
 		name = surgery::rnd_name || capitalize(surgery::name)

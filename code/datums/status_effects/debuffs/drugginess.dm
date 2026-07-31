@@ -5,10 +5,14 @@
 	remove_on_fullheal = TRUE
 
 /datum/status_effect/drugginess/on_creation(mob/living/new_owner, duration = 10 SECONDS)
+	procstart = null
+	src.procstart = null
 	src.duration = duration
 	return ..()
 
 /datum/status_effect/drugginess/on_apply()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(owner, COMSIG_LIVING_DEATH, PROC_REF(remove_drugginess))
 
 	owner.add_mood_event(id, /datum/mood_event/high)
@@ -18,6 +22,8 @@
 	return TRUE
 
 /datum/status_effect/drugginess/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_LIVING_DEATH)
 
 	owner.clear_mood_event(id)
@@ -28,6 +34,8 @@
 
 /// Removes all of our drugginess (self delete) on signal
 /datum/status_effect/drugginess/proc/remove_drugginess(datum/source, admin_revive)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(src)

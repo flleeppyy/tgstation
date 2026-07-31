@@ -16,6 +16,8 @@
 	var/require_resting
 
 /datum/element/lube_walking/Attach(atom/movable/target, wet_flags = TURF_WET_LUBE, min_time_wet_for = 2 SECONDS, require_resting = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(target))
 		return ELEMENT_INCOMPATIBLE
@@ -35,6 +37,8 @@
 		RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(lubricate))
 
 /datum/element/lube_walking/Detach(mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, list(COMSIG_LIVING_RESTING, COMSIG_MOVABLE_MOVED))
 	if(istype(target))
@@ -42,6 +46,8 @@
 
 ///Called when a living mob changes their resting state with require_resting on, giving them their movement speed and ability.
 /datum/element/lube_walking/proc/on_resting_changed(mob/snail, new_resting, silent, instant)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(new_resting && lubricate(snail))
@@ -52,6 +58,8 @@
 		UnregisterSignal(snail, COMSIG_MOVABLE_MOVED)
 
 /datum/element/lube_walking/proc/lubricate(atom/movable/snail)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/turf/open/turf_standing_on = get_turf(snail)

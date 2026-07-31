@@ -12,6 +12,8 @@
 	var/datum/component/tackler/tackle_comp
 
 /datum/martial_art/spiders_bite/activate_style(mob/living/new_holder)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(new_holder, COMSIG_HUMAN_PUNCHED, PROC_REF(kick_disarm))
 	tackle_comp = new_holder.AddComponent(/datum/component/tackler, \
@@ -25,11 +27,15 @@
 	)
 
 /datum/martial_art/spiders_bite/deactivate_style(mob/living/old_holder)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(old_holder, COMSIG_HUMAN_PUNCHED)
 	QDEL_NULL(tackle_comp)
 
 /datum/martial_art/spiders_bite/proc/kick_disarm(mob/living/source, mob/living/target, damage, attack_type, obj/item/bodypart/affecting, final_armor_block, kicking, limb_sharpness)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!kicking)
@@ -55,12 +61,16 @@
 	)
 
 /datum/martial_art/spiders_bite/get_prefered_attacking_limb(mob/living/martial_artist, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(!target.has_status_effect(/datum/status_effect/staggered))
 		return null
 
 	return IS_LEFT_INDEX(martial_artist.active_hand_index) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG
 
 /datum/martial_art/spiders_bite/get_style_help()
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	. += span_info("<b><i>You retreat inward and recall the Spider Clan's techniques...</i></b>\n\

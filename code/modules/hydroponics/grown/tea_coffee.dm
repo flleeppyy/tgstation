@@ -25,6 +25,8 @@
 	can_distill = FALSE
 
 /obj/item/food/grown/tea/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/toxin/teapowder = 0)
 
 // Tea Astra
@@ -45,6 +47,8 @@
 	bite_consumption_mod = 2
 
 /obj/item/food/grown/tea/astra/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/toxin/teapowder = 0, /datum/reagent/medicine/salglu_solution = 0)
 
 // Coffee
@@ -76,6 +80,8 @@
 	distill_reagent = /datum/reagent/consumable/ethanol/kahlua
 
 /obj/item/food/grown/coffee/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/toxin/coffeepowder = 0)
 
 // Coffee Robusta
@@ -97,4 +103,6 @@
 	icon_state = "coffee_robusta"
 
 /obj/item/food/grown/coffee/robusta/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/toxin/coffeepowder = 0, /datum/reagent/medicine/morphine = 0)

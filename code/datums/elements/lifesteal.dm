@@ -11,17 +11,23 @@
 	var/static/list/damage_heal_order = list(BRUTE, BURN, OXY)
 
 /datum/element/lifesteal/Attach(datum/target, flat_heal = 10)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.flat_heal = flat_heal
 	target.AddElementTrait(TRAIT_ON_HIT_EFFECT, REF(src), /datum/element/on_hit_effect)
 	RegisterSignal(target, COMSIG_ON_HIT_EFFECT, PROC_REF(do_lifesteal))
 
 /datum/element/lifesteal/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, COMSIG_ON_HIT_EFFECT)
 	REMOVE_TRAIT(source, TRAIT_ON_HIT_EFFECT, REF(src))
 	return ..()
 
 /datum/element/lifesteal/proc/do_lifesteal(datum/source, atom/heal_target, atom/damage_target, hit_zone, throw_hit)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isliving(heal_target) && isliving(damage_target))
 		var/mob/living/healing = heal_target

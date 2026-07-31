@@ -8,6 +8,8 @@
 	var/datum/callback/post_retaliate_callback
 
 /datum/component/ai_retaliate_advanced/Initialize(datum/callback/post_retaliate_callback)
+	procstart = null
+	src.procstart = null
 	if(!ismob(parent))
 		return ELEMENT_INCOMPATIBLE
 
@@ -17,17 +19,25 @@
 	ADD_TRAIT(parent, TRAIT_SUBTREE_REQUIRED_OPERATIONAL_DATUM, type)
 
 /datum/component/ai_retaliate_advanced/Destroy(force)
+	procstart = null
+	src.procstart = null
 	post_retaliate_callback = null
 	return ..()
 
 /datum/component/ai_retaliate_advanced/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_WAS_ATTACKED, PROC_REF(on_attacked))
 
 /datum/component/ai_retaliate_advanced/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_ATOM_WAS_ATTACKED)
 
 /// Add an attacking atom to a blackboard list of things which attacked us
 /datum/component/ai_retaliate_advanced/proc/on_attacked(mob/victim, atom/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!victim.ai_controller)

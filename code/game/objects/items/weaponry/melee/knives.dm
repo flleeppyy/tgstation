@@ -43,6 +43,8 @@
 	acid = 50
 
 /obj/item/knife/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/eyestab)
 	set_butchering()
@@ -52,6 +54,8 @@
 
 ///Adds the butchering component, used to override stats for special cases
 /obj/item/knife/proc/set_butchering()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/butchering, \
 	speed = 9 SECONDS - force * 2, \
 	effectiveness = 100, \
@@ -61,9 +65,13 @@
 
 ///Adds alt sharpness component, used for overrides
 /obj/item/knife/proc/make_stabby()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/alternative_sharpness, SHARP_POINTY, alt_continuous, alt_simple)
 
 /obj/item/knife/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(pick(span_suicide("[user] is slitting [user.p_their()] wrists with \the [src]! It looks like [user.p_theyre()] trying to commit suicide."), \
 		span_suicide("[user] is slitting [user.p_their()] throat with \the [src]! It looks like [user.p_theyre()] trying to commit suicide."), \
 		span_suicide("[user] is slitting [user.p_their()] stomach open with \the [src]! It looks like [user.p_theyre()] trying to commit seppuku.")))
@@ -99,6 +107,8 @@
 	var/bleed_stacks_per_hit = 3
 
 /obj/item/knife/bloodletter/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isliving(target))
 		return
 	var/mob/living/M = target
@@ -127,6 +137,8 @@
 	wound_bonus = 15
 
 /obj/item/knife/butcher/make_stabby()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/knife/hunting
@@ -139,6 +151,8 @@
 	wound_bonus = 10
 
 /obj/item/knife/hunting/set_butchering()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/butchering, \
 	speed = 9 SECONDS - force * 2, \
 	effectiveness = 100, \
@@ -146,6 +160,8 @@
 	)
 
 /obj/item/knife/hunting/make_stabby()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/knife/combat
@@ -169,13 +185,19 @@
 	ignore_throwspeed_threshold = TRUE
 
 /obj/item/knife/combat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/knockoff, 90, list(BODY_ZONE_PRECISE_MOUTH), slot_flags) //90% to knock off when wearing a mask
 
 /obj/item/knife/combat/make_stabby()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/alternative_sharpness, SHARP_POINTY, alt_continuous, alt_simple, -5)
 
 /obj/item/knife/combat/dropped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user.get_item_by_slot(ITEM_SLOT_MASK) == src && !user.has_status_effect(/datum/status_effect/choke) && prob(20))
 		user.apply_damage(5, BRUTE, BODY_ZONE_HEAD)
@@ -183,6 +205,8 @@
 		user.visible_message(span_danger("[user] accidentally cuts [user.p_them()]self while pulling [src] out of [user.p_them()] teeth! What a doofus!"), span_userdanger("You accidentally cut your mouth with [src]!"))
 
 /obj/item/knife/combat/equipped(mob/living/user, slot, initial = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(user, TRAIT_CLUMSY) && prob(20))
 		if(user.get_item_by_slot(ITEM_SLOT_MASK) == src)
@@ -254,6 +278,8 @@
 	custom_materials = list(/datum/material/glass = SHEET_MATERIAL_AMOUNT)
 
 /obj/item/knife/shiv/make_stabby()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/alternative_sharpness, SHARP_POINTY, alt_continuous, alt_simple, -3)
 
 /obj/item/knife/shiv/plasma
@@ -327,6 +353,8 @@
 	custom_materials = null
 
 /obj/item/knife/shiv/carrot/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] forcefully drives \the [src] into [user.p_their()] eye! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 
@@ -372,9 +400,13 @@
 	var/list/alt_simple = list("stab", "pierce", "shank")
 
 /obj/item/switchblade/get_all_tool_behaviours()
+	procstart = null
+	src.procstart = null
 	return list(TOOL_KNIFE)
 
 /obj/item/switchblade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 	AddComponent(/datum/component/butchering, \
@@ -402,11 +434,15 @@
 	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
 /obj/item/switchblade/proc/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	tool_behaviour = (active ? TOOL_KNIFE : NONE)
 
 /obj/item/switchblade/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is slitting [user.p_their()] own throat with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 
@@ -438,9 +474,13 @@
 	var/start_extended = FALSE
 
 /obj/item/boxcutter/get_all_tool_behaviours()
+	procstart = null
+	src.procstart = null
 	return list(TOOL_KNIFE)
 
 /obj/item/boxcutter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 	AddComponent(/datum/component/butchering, \
@@ -464,6 +504,8 @@
 	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
 /obj/item/boxcutter/proc/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	playsound(src, 'sound/items/boxcutter_activate.ogg', 50)

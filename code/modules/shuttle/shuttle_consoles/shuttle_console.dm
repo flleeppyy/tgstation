@@ -37,11 +37,15 @@
 	COOLDOWN_DECLARE(request_cooldown)
 
 /obj/machinery/computer/shuttle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/nav_computer_icon, 'icons/effects/nav_computer_indicators.dmi', "computer", FALSE)
 	connect_to_shuttle(mapload, SSshuttle.get_containing_shuttle(src))
 
 /obj/machinery/computer/shuttle/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_station_level(user.z) && user.mind && IS_HEAD_REVOLUTIONARY(user) && !(user.mind in dumb_rev_heads)) //Rev heads will get a one-time warning that they shouldn't leave
 		to_chat(user, span_warning("You get a feeling that leaving the station might be a REALLY dumb idea..."))
@@ -71,6 +75,8 @@
 		ui.open()
 
 /obj/machinery/computer/shuttle/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/obj/docking_port/mobile/mobile_docking_port = SSshuttle.getShuttle(shuttleId)
 	data["docked_location"] = mobile_docking_port ? mobile_docking_port.get_status_text_tgui() : "Unknown"
@@ -116,6 +122,8 @@
  * * user - The mob trying to initiate the launch
  */
 /obj/machinery/computer/shuttle/proc/launch_check(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!allowed(user)) //Normally this is already checked via interaction code but some cases may skip that so check it explicitly here (illiterates launching randomly)
 		return FALSE
 	return TRUE
@@ -125,6 +133,8 @@
  * taking into account its list of allowed destinations, their current state, and the shuttle's current location
 **/
 /obj/machinery/computer/shuttle/proc/get_valid_destinations()
+	procstart = null
+	src.procstart = null
 	var/list/destination_list = params2list(possible_destinations)
 	var/obj/docking_port/mobile/mobile_docking_port = SSshuttle.getShuttle(shuttleId)
 	var/obj/docking_port/stationary/current_destination = mobile_docking_port.destination
@@ -151,6 +161,8 @@
  * * user - The mob that used the console
  */
 /obj/machinery/computer/shuttle/proc/send_shuttle(dest_id, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!launch_check(user))
 		return SHUTTLE_CONSOLE_ACCESSDENIED
 	var/obj/docking_port/mobile/shuttle_port = SSshuttle.getShuttle(shuttleId)
@@ -184,6 +196,8 @@
 			return SHUTTLE_CONSOLE_ERROR
 
 /obj/machinery/computer/shuttle/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -229,6 +243,8 @@
 			return TRUE
 
 /obj/machinery/computer/shuttle/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	req_access = list()
@@ -237,6 +253,8 @@
 	return TRUE
 
 /obj/machinery/computer/shuttle/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
+	procstart = null
+	src.procstart = null
 	if(!mapload)
 		return
 	if(!port)

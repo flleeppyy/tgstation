@@ -6,6 +6,8 @@
 	icon_state = "bear_armor_upgrade"
 
 /obj/item/bear_armor/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(interacting_with, /mob/living/basic/bear))
 		return NONE
 	var/mob/living/basic/bear/bear = interacting_with

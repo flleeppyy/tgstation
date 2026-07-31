@@ -35,12 +35,16 @@
 	max_charges = 20
 
 /obj/item/gun/magic/wand/hallucination/zap_self(mob/living/user, suicide = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/hallucination/picked_hallucination = pick(WIZARD_WAND_HALLUCINATIONS)
 	user.cause_hallucination(picked_hallucination, "wand")
 	charges--
 
 /obj/item/gun/magic/wand/hallucination/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	charges--
 	playsound(user, fire_sound, 50, TRUE)
 	var/mob/living/basic/illusion/mirage/mirage = new(get_turf(src))
@@ -67,6 +71,8 @@
 	icon_state = "ice_1"
 
 /obj/projectile/magic/hallucination/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/carbon/victim = target
 	if (!istype(victim))

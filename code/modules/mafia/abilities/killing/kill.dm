@@ -13,6 +13,8 @@
 	var/honorable = FALSE
 
 /datum/mafia_ability/attack_player/perform_action_target(datum/mafia_controller/game, datum/mafia_role/day_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -27,6 +29,8 @@
 	return TRUE
 
 /datum/mafia_ability/attack_player/proc/internal_affairs(datum/mafia_controller/game)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	host_role.send_message_to_player(span_userdanger("You have been killed by Nanotrasen Internal Affairs!"))
 	host_role.reveal_role(game, verbose = TRUE)

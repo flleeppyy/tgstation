@@ -161,6 +161,8 @@
  * * clears the light object
  */
 /atom/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(alternate_appearances)
 		for(var/current_alternate_appearance in alternate_appearances)
 			var/datum/atom_hud/alternate_appearance/selected_alternate_appearance = alternate_appearances[current_alternate_appearance]
@@ -207,6 +209,8 @@
 	return ..()
 
 /atom/proc/handle_ricochet(obj/projectile/ricocheting_projectile)
+	procstart = null
+	src.procstart = null
 	var/turf/p_turf = get_turf(ricocheting_projectile)
 	var/face_direction = get_dir(src, p_turf) || get_dir(src, ricocheting_projectile)
 	var/face_angle = dir2angle(face_direction)
@@ -223,6 +227,8 @@
 
 /// Whether the mover object can avoid being blocked by this atom, while arriving from (or leaving through) the border_dir.
 /atom/proc/CanPass(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SHOULD_BE_PURE(TRUE)
 	if(SEND_SIGNAL(src, COMSIG_ATOM_TRIED_PASS, mover, border_dir) & COMSIG_COMPONENT_PERMIT_PASSAGE)
@@ -241,6 +247,8 @@
  * 	border_dir: Typically the direction that mover has in relation to src.
  */
 /atom/proc/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	//SHOULD_BE_PURE(TRUE)
 	if(mover.pass_flags & pass_flags_self)
@@ -261,6 +269,8 @@
  * Returns TRUE if this atom is on centcom or an escape shuttle, or FALSE if not
  */
 /atom/proc/onCentCom()
+	procstart = null
+	src.procstart = null
 	var/turf/current_turf = get_turf(src)
 	if(!current_turf)
 		return FALSE
@@ -291,6 +301,8 @@
  * Returns TRUE if this atom is on the syndicate recon base, any of its shuttles, or an escape shuttle, or FALSE if not
  */
 /atom/proc/onSyndieBase()
+	procstart = null
+	src.procstart = null
 	var/turf/current_turf = get_turf(src)
 	if(!current_turf)
 		return FALSE
@@ -319,6 +331,8 @@
  * Returns TRUE if this atom is on a shuttle which is escaping or has escaped, or FALSE otherwise
  */
 /atom/proc/on_escaped_shuttle(check_for_launch_status = ENDGAME_LAUNCHED)
+	procstart = null
+	src.procstart = null
 	var/turf/current_turf = get_turf(src)
 	if(!current_turf)
 		return FALSE
@@ -340,6 +354,8 @@
  * Also used in gamemode code for win conditions
  */
 /atom/proc/onAwayMission()
+	procstart = null
+	src.procstart = null
 	var/turf/current_turf = get_turf(src)
 	if(!current_turf)
 		return FALSE
@@ -358,6 +374,8 @@
  * The proc can be overriden by subtypes, as long as it always call parent.
  */
 /atom/proc/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(isliving(crafter))
@@ -390,14 +408,20 @@
 
 ///Take air from the passed in gas mixture datum
 /atom/proc/assume_air(datum/gas_mixture/giver)
+	procstart = null
+	src.procstart = null
 	return null
 
 ///Remove air from this atom
 /atom/proc/remove_air(amount)
+	procstart = null
+	src.procstart = null
 	return null
 
 ///Return the current air environment in this atom
 /atom/proc/return_air()
+	procstart = null
+	src.procstart = null
 	if(loc)
 		return loc.return_air()
 	else
@@ -405,34 +429,50 @@
 
 ///Return the air if we can analyze it
 /atom/proc/return_analyzable_air()
+	procstart = null
+	src.procstart = null
 	return null
 
 /atom/proc/Bumped(atom/movable/bumped_atom)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	SEND_SIGNAL(src, COMSIG_ATOM_BUMPED, bumped_atom)
 
 /// Convenience proc to see if a container is open for chemistry handling
 /atom/proc/is_open_container()
+	procstart = null
+	src.procstart = null
 	return is_refillable() && is_drainable()
 
 /// Is this atom injectable into other atoms
 /atom/proc/is_injectable()
+	procstart = null
+	src.procstart = null
 	return reagents && (reagents.flags & (INJECTABLE | REFILLABLE))
 
 /// Can we draw from this atom with an injectable atom
 /atom/proc/is_drawable()
+	procstart = null
+	src.procstart = null
 	return reagents && (reagents.flags & (DRAWABLE | DRAINABLE))
 
 /// Can this atoms reagents be refilled
 /atom/proc/is_refillable()
+	procstart = null
+	src.procstart = null
 	return reagents && (reagents.flags & REFILLABLE)
 
 /// Is this atom drainable of reagents
 /atom/proc/is_drainable()
+	procstart = null
+	src.procstart = null
 	return reagents && (reagents.flags & DRAINABLE)
 
 /// Can we dunk stuff into this container?
 /atom/proc/is_dunkable()
+	procstart = null
+	src.procstart = null
 	return reagents && (reagents.flags & DUNKABLE)
 
 /** Handles exposing this atom to a list of reagents.
@@ -447,6 +487,8 @@
  * - show_message: Whether to display anything to mobs when they are exposed.
  */
 /atom/proc/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, show_message=TRUE)
+	procstart = null
+	src.procstart = null
 	. = SEND_SIGNAL(src, COMSIG_ATOM_EXPOSE_REAGENTS, reagents, source, methods, show_message)
 	if(. & COMPONENT_NO_EXPOSE_REAGENTS)
 		return
@@ -456,22 +498,32 @@
 
 /// Are you allowed to drop stuff inside this atom
 /atom/proc/AllowDrop()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 ///Is this atom within 1 tile of another atom
 /atom/proc/HasProximity(atom/movable/proximity_check_mob as mob|obj)
+	procstart = null
+	src.procstart = null
 	return
 
 /// has a previously nearby atom moved away
 /atom/proc/OnProximityExit(atom/movable/proximity_check_mob as mob|obj)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Sets the wire datum of an atom
 /atom/proc/set_wires(datum/wires/new_wires)
+	procstart = null
+	src.procstart = null
 	wires = new_wires
 
 ///Return true if we're inside the passed in atom
-/atom/proc/in_contents_of(container)//can take class or object instance as argument
+/atom/proc/in_contents_of(container)
+	procstart = null
+	src.procstart = null//can take class or object instance as argument
 	if(ispath(container))
 		if(istype(src.loc, container))
 			return TRUE
@@ -489,6 +541,8 @@
  * * mob/target - The mob to update the icons of. Optional argument, use if the atom's loc is not the mob you want to update.
  */
 /atom/proc/update_inhand_icon(mob/target = loc)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(!istype(target))
 		return
@@ -504,6 +558,8 @@
  * as the [buckle_message_cooldown][/atom/var/buckle_message_cooldown] has expired (50 ticks)
  */
 /atom/proc/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_ATOM_RELAYMOVE, user, direction) & COMSIG_BLOCK_RELAYMOVE)
 		return
 	if(buckle_message_cooldown <= world.time)
@@ -519,10 +575,14 @@
  * the movement, or FALSE if the signal gets a reply that specifically blocks the movement
  */
 /atom/proc/relaydrive(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	return !(SEND_SIGNAL(src, COMSIG_RIDDEN_DRIVER_MOVE, user, direction) & COMPONENT_DRIVER_BLOCK_MOVE)
 
 ///returns the mob's dna info as a list, to be inserted in an object's blood_DNA list
 /mob/living/proc/get_blood_dna_list()
+	procstart = null
+	src.procstart = null
 	var/datum/blood_type/blood_type = get_bloodtype()
 	if (!blood_type)
 		return
@@ -531,6 +591,8 @@
 
 ///Get the mobs dna list
 /mob/living/carbon/get_blood_dna_list()
+	procstart = null
+	src.procstart = null
 	var/datum/blood_type/blood_type = get_bloodtype()
 	if (!blood_type)
 		return
@@ -540,10 +602,14 @@
 	return list(blood_type.dna_string = blood_type)
 
 /mob/living/silicon/get_blood_dna_list()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Is this atom in space
 /atom/proc/isinspace()
+	procstart = null
+	src.procstart = null
 	if(isspaceturf(get_turf(src)))
 		return TRUE
 	else
@@ -555,6 +621,8 @@
  * Return a loc to place objects, or null to stop dumping.
  */
 /atom/proc/get_dumping_location()
+	procstart = null
+	src.procstart = null
 	return null
 
 /**
@@ -563,6 +631,8 @@
  * (e.g. an unfocused camera giving you an impaired vision when looking through it)
  */
 /atom/proc/get_remote_view_fullscreens(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -571,6 +641,8 @@
  * (e.g. A mob with nightvision loses its nightvision while looking through a normal camera)
  */
 /atom/proc/update_remote_sight(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -580,6 +652,8 @@
  * Not recommended to use, listen for the [COMSIG_ATOM_DIR_CHANGE] signal instead (sent by this proc)
  */
 /atom/proc/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if (SEND_SIGNAL(src, COMSIG_ATOM_PRE_DIR_CHANGE, dir, newdir) & COMPONENT_ATOM_BLOCK_DIR_CHANGE)
 		newdir = dir
@@ -601,6 +675,8 @@
  * Returns: A bitflag if it successfully cleaned something: e.g. COMPONENT_CLEANED, or NONE if not. COMPONENT_CLEANED_GAIN_XP being flipped on signals whether the cleaning should yield cleaning xp.
  */
 /atom/proc/wash(clean_types)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	. = SEND_SIGNAL(src, COMSIG_COMPONENT_CLEAN_ACT, clean_types)
 	if(.)
@@ -614,6 +690,8 @@
 
 ///Where atoms should drop if taken from this atom
 /atom/proc/drop_location()
+	procstart = null
+	src.procstart = null
 	var/atom/location = loc
 	if(!location)
 		return null
@@ -625,6 +703,8 @@
  * Default behaviour is to send the [COMSIG_ATOM_ENTERED]
  */
 /atom/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_ATOM_ENTERED, arrived, old_loc, old_locs)
 	SEND_SIGNAL(arrived, COMSIG_ATOM_ENTERING, src, old_loc, old_locs)
 
@@ -634,6 +714,8 @@
  * Default behaviour is to send the [COMSIG_ATOM_EXIT]
  */
 /atom/Exit(atom/movable/leaving, direction)
+	procstart = null
+	src.procstart = null
 	// Don't call `..()` here, otherwise `Uncross()` gets called.
 	// See the doc comment on `Uncross()` to learn why this is bad.
 
@@ -648,14 +730,20 @@
  * Default behaviour is to send the [COMSIG_ATOM_EXITED]
  */
 /atom/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_ATOM_EXITED, gone, direction)
 	SEND_SIGNAL(gone, COMSIG_ATOM_EXITING, src, direction)
 
 ///Return atom temperature
 /atom/proc/return_temperature()
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/proc/process_recipes(mob/living/user, obj/item/processed_object, list/processing_recipes)
+	procstart = null
+	src.procstart = null
 	//Only one recipe? use the first
 	if(processing_recipes.len == 1)
 		StartProcessingAtom(user, processed_object, processing_recipes[1])
@@ -665,6 +753,8 @@
 
 ///Creates the radial and processes the selected option
 /atom/proc/ShowProcessingGui(mob/living/user, obj/item/processed_object, list/possible_options)
+	procstart = null
+	src.procstart = null
 	var/list/choices_to_options = list() //Dict of object name | dict of object processing settings
 	var/list/choices = list()
 
@@ -682,6 +772,8 @@
 
 
 /atom/proc/StartProcessingAtom(mob/living/user, obj/item/process_item, list/chosen_option)
+	procstart = null
+	src.procstart = null
 	var/processing_time = chosen_option[TOOL_PROCESSING_TIME]
 	var/sound_to_play = chosen_option[TOOL_PROCESSING_SOUND]
 	to_chat(user, span_notice("You start working on [src]."))
@@ -708,10 +800,14 @@
 	UsedforProcessing(user, process_item, chosen_option, created_atoms)
 
 /atom/proc/UsedforProcessing(mob/living/user, obj/item/used_item, list/chosen_option, list/created_atoms)
+	procstart = null
+	src.procstart = null
 	qdel(src)
 	return
 
 /atom/proc/OnCreatedFromProcessing(mob/living/user, obj/item/work_tool, list/chosen_option, atom/original_atom)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(HAS_TRAIT(original_atom, TRAIT_FOOD_SILVER))
@@ -723,14 +819,20 @@
 
 ///Connect this atom to a shuttle
 /atom/proc/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/proc/intercept_zImpact(list/falling_movables, levels = 1)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	. |= SEND_SIGNAL(src, COMSIG_ATOM_INTERCEPT_Z_FALL, falling_movables, levels)
 
 ///Setter for the `density` variable to append behavior related to its changing.
 /atom/proc/set_density(new_value)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(density == new_value)
 		return
@@ -740,6 +842,8 @@
 
 ///Setter for the `base_pixel_x` variable to append behavior related to its changing.
 /atom/proc/set_base_pixel_x(new_value)
+	procstart = null
+	src.procstart = null
 	if(base_pixel_x == new_value)
 		return
 	. = base_pixel_x
@@ -749,6 +853,8 @@
 
 ///Setter for the `base_pixel_y` variable to append behavior related to its changing.
 /atom/proc/set_base_pixel_y(new_value)
+	procstart = null
+	src.procstart = null
 	if(base_pixel_y == new_value)
 		return
 	. = base_pixel_y
@@ -758,6 +864,8 @@
 
 // Not a valid operation, turfs and movables handle block differently
 /atom/proc/set_explosion_block(explosion_block)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -783,6 +891,8 @@
  * * otherwise no gravity
  */
 /atom/proc/has_gravity(turf/gravity_turf)
+	procstart = null
+	src.procstart = null
 	if(!isturf(gravity_turf))
 		gravity_turf = get_turf(src)
 
@@ -812,6 +922,8 @@
  * Override this if you want an atom to be usable as a supplypod.
  */
 /atom/proc/set_opened()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -820,10 +932,14 @@
  * Override this if you want an atom to be usable as a supplypod.
  */
 /atom/proc/set_closed()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Called after the atom is 'tamed' for type-specific operations, Usually called by the tameable component but also other things.
 /atom/proc/tamed(mob/living/tamer, obj/item/food)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	ADD_TRAIT(src, TRAIT_TAMED, INNATE_TRAIT)
 	return
@@ -834,10 +950,14 @@
  * Use this if an atom needs to attempt to charge another atom.
  */
 /atom/proc/attempt_charge(atom/sender, atom/target, extra_fees = 0)
+	procstart = null
+	src.procstart = null
 	return SEND_SIGNAL(sender, COMSIG_OBJ_ATTEMPT_CHARGE, target, extra_fees)
 
 ///Passes Stat Browser Panel clicks to the game and calls client click on an atom
 /atom/Topic(href, list/href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!usr?.client)
 		return
@@ -867,12 +987,16 @@
 		return TRUE
 
 /atom/MouseEntered(location, control, params)
+	procstart = null
+	src.procstart = null
 	SSmouse_entered.hovers[usr.client] = src
 
 /// Fired whenever this atom is the most recent to be hovered over in the tick.
 /// Preferred over MouseEntered if you do not need information such as the position of the mouse.
 /// Especially because this is deferred over a tick, do not trust that `client` is not null.
 /atom/proc/on_mouse_enter(client/client)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 
 	var/mob/user = client?.mob
@@ -984,6 +1108,8 @@
 	active_hud.screentip_text.maptext_y = 10 - (extra_lines > 0 ? 11 + 9 * (extra_lines - 1): 0)
 
 /atom/proc/set_hover_maptext(client/client, datum/hud/active_hud, new_maptext)
+	procstart = null
+	src.procstart = null
 	var/map_height
 	WXH_TO_HEIGHT(client.MeasureText(new_maptext, null, active_hud.screentip_text.maptext_width), map_height)
 	active_hud.screentip_text.maptext = new_maptext
@@ -1005,10 +1131,14 @@
  * If this is NOT you, ensure you edit your can_astar_pass variable. Check __DEFINES/path.dm
  **/
 /atom/proc/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	procstart = null
+	src.procstart = null
 	if(pass_info.pass_flags & pass_flags_self)
 		return TRUE
 	. = !density
 
 /// Logic for adding reskin components goes here. Override for atom-specific reskin setups.
 /atom/proc/setup_reskins()
+	procstart = null
+	src.procstart = null
 	return

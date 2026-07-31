@@ -63,14 +63,20 @@ GLOBAL_LIST_INIT(valid_blobstrains, subtypesof(/datum/blobstrain) - list(/datum/
 	var/blobbernaut_reagentatk_bonus = 0
 
 /datum/blobstrain/New(mob/eye/blob/new_overmind)
+	procstart = null
+	src.procstart = null
 	if(new_overmind)
 		overmind = new_overmind
 
 /datum/blobstrain/Destroy()
+	procstart = null
+	src.procstart = null
 	overmind = null
 	return ..()
 
 /datum/blobstrain/proc/on_gain()
+	procstart = null
+	src.procstart = null
 	overmind.color = complementary_color
 
 	if(overmind.blob_core)
@@ -102,6 +108,8 @@ GLOBAL_LIST_INIT(valid_blobstrains, subtypesof(/datum/blobstrain) - list(/datum/
 		to_chat(blob_mob, "The <b><font color=\"[color]\">[name]</b></font> strain [shortdesc ? "[shortdesc]" : "[description]"]")
 
 /datum/blobstrain/proc/on_lose()
+	procstart = null
+	src.procstart = null
 	if(overmind.blob_core)
 		overmind.blob_core.claim_range -= core_range_bonus
 		overmind.blob_core.expand_range -= core_range_bonus
@@ -126,9 +134,13 @@ GLOBAL_LIST_INIT(valid_blobstrains, subtypesof(/datum/blobstrain) - list(/datum/
 
 
 /datum/blobstrain/proc/on_sporedeath(mob/living/dead_minion, death_cloud_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/blobstrain/proc/send_message(mob/living/M)
+	procstart = null
+	src.procstart = null
 	var/totalmessage = message
 	if(message_living && !issilicon(M))
 		totalmessage += message_living
@@ -136,39 +148,61 @@ GLOBAL_LIST_INIT(valid_blobstrains, subtypesof(/datum/blobstrain) - list(/datum/
 	to_chat(M, span_userdanger("[totalmessage]"))
 
 /datum/blobstrain/proc/core_process()
+	procstart = null
+	src.procstart = null
 	if(resource_delay <= world.time)
 		resource_delay = world.time + 10 // 1 second
 		overmind.add_points(point_rate+point_rate_bonus)
 	overmind.blob_core.repair_damage(base_core_regen + core_regen_bonus)
 
-/datum/blobstrain/proc/attack_living(mob/living/L, list/nearby_blobs) // When the blob attacks people
+/datum/blobstrain/proc/attack_living(mob/living/L, list/nearby_blobs)
+	procstart = null
+	src.procstart = null // When the blob attacks people
 	send_message(L)
 
 /// When this blob's blobbernaut attacks any atom
 /datum/blobstrain/proc/blobbernaut_attack(mob/living/blobbernaut, atom/victim)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return
 
-/datum/blobstrain/proc/damage_reaction(obj/structure/blob/B, damage, damage_type, damage_flag, coefficient = 1) //when the blob takes damage, do this
+/datum/blobstrain/proc/damage_reaction(obj/structure/blob/B, damage, damage_type, damage_flag, coefficient = 1)
+	procstart = null
+	src.procstart = null //when the blob takes damage, do this
 	return coefficient*damage
 
-/datum/blobstrain/proc/death_reaction(obj/structure/blob/B, damage_flag, coefficient = 1) //when a blob dies, do this
+/datum/blobstrain/proc/death_reaction(obj/structure/blob/B, damage_flag, coefficient = 1)
+	procstart = null
+	src.procstart = null //when a blob dies, do this
 	return
 
-/datum/blobstrain/proc/expand_reaction(obj/structure/blob/B, obj/structure/blob/newB, turf/T, mob/eye/blob/O, coefficient = 1) //when the blob expands, do this
+/datum/blobstrain/proc/expand_reaction(obj/structure/blob/B, obj/structure/blob/newB, turf/T, mob/eye/blob/O, coefficient = 1)
+	procstart = null
+	src.procstart = null //when the blob expands, do this
 	return
 
-/datum/blobstrain/proc/tesla_reaction(obj/structure/blob/B, power, coefficient = 1) //when the blob is hit by a tesla bolt, do this
+/datum/blobstrain/proc/tesla_reaction(obj/structure/blob/B, power, coefficient = 1)
+	procstart = null
+	src.procstart = null //when the blob is hit by a tesla bolt, do this
 	return TRUE //return 0 to ignore damage
 
-/datum/blobstrain/proc/extinguish_reaction(obj/structure/blob/B, coefficient = 1) //when the blob is hit with water, do this
+/datum/blobstrain/proc/extinguish_reaction(obj/structure/blob/B, coefficient = 1)
+	procstart = null
+	src.procstart = null //when the blob is hit with water, do this
 	return
 
-/datum/blobstrain/proc/emp_reaction(obj/structure/blob/B, severity, coefficient = 1) //when the blob is hit with an emp, do this
+/datum/blobstrain/proc/emp_reaction(obj/structure/blob/B, severity, coefficient = 1)
+	procstart = null
+	src.procstart = null //when the blob is hit with an emp, do this
 	return
 
 /datum/blobstrain/proc/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	return list("<b>Progress to Critical Mass:</b> [span_notice("[overmind.blobs_legit.len]/[overmind.blobwincount].")]")
 
 /datum/blobstrain/proc/on_blobmob_atom_interacted(mob/living/minion, atom/interacted_atom, adjacent, modifiers)
+	procstart = null
+	src.procstart = null
 	return

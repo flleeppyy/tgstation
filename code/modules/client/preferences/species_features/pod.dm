@@ -7,6 +7,8 @@
 	relevant_organ = /obj/item/organ/pod_hair
 
 /datum/preference/choiced/species_feature/pod_hair/icon_for(value)
+	procstart = null
+	src.procstart = null
 	var/datum/sprite_accessory/pod_hair = get_accessory_for_value(value)
 
 	var/datum/universal_icon/icon_with_hair = uni_icon('icons/mob/human/bodyparts_greyscale.dmi', "pod_head_m")

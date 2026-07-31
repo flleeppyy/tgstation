@@ -43,12 +43,16 @@
 	backpack_contents = list(/obj/item/access_key)
 
 /datum/outfit/job/janitor/pre_equip(mob/living/carbon/human/human_equipper, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(check_holidays(GARBAGEDAY))
 		backpack_contents += list(/obj/item/gun/ballistic/revolver)
 		r_pocket = /obj/item/ammo_box/speedloader/c357
 
 /datum/outfit/job/janitor/get_types_to_preload()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(check_holidays(GARBAGEDAY))
 		. += /obj/item/gun/ballistic/revolver

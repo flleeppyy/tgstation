@@ -22,6 +22,8 @@
 	var/current_temperature = 0
 
 /datum/component/grillable/Initialize(cook_result, required_cook_time, positive_result, use_large_steam_sprite, list/added_reagents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(parent)) //Only items support grilling at the moment
 		return COMPONENT_INCOMPATIBLE
@@ -45,6 +47,8 @@
 	qdel(result)
 
 /datum/component/grillable/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ITEM_GRILL_PLACED, PROC_REF(on_grill_placed))
 	RegisterSignal(parent, COMSIG_ITEM_GRILL_TURNED_ON, PROC_REF(on_grill_turned_on))
 	RegisterSignal(parent, COMSIG_ITEM_GRILL_TURNED_OFF, PROC_REF(on_grill_turned_off))
@@ -54,6 +58,8 @@
 	on_location_changed(parent)
 
 /datum/component/grillable/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	if (listening_turf)
 		UnregisterSignal(listening_turf, COMSIG_TURF_EXPOSE)
 
@@ -68,6 +74,8 @@
 
 // Inherit the new values passed to the component
 /datum/component/grillable/InheritComponent(datum/component/grillable/new_comp, original, cook_result, required_cook_time, positive_result, use_large_steam_sprite)
+	procstart = null
+	src.procstart = null
 	if(!original)
 		return
 	if(cook_result)
@@ -82,12 +90,16 @@
 		src.use_large_steam_sprite = use_large_steam_sprite
 
 /datum/component/grillable/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	STOP_PROCESSING(SSmachines, src)
 	listening_turf = null
 
 /// Signal proc for [COMSIG_MOVABLE_MOVED], our location has changed and we should register for temperature information
 /datum/component/grillable/proc/on_location_changed(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (is_grilling)
@@ -109,6 +121,8 @@
 
 /// Signal proc for [COMSIG_ITEM_GRILL_PLACED], item is placed on the grill.
 /datum/component/grillable/proc/on_grill_placed(datum/source, mob/griller)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(griller && griller.mind)
@@ -116,6 +130,8 @@
 
 /// Signal proc for [COMSIG_ITEM_GRILL_TURNED_ON], starts the grilling process.
 /datum/component/grillable/proc/on_grill_turned_on(datum/source)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(add_grilled_item_overlay))
 
 	is_grilling = TRUE
@@ -124,6 +140,8 @@
 
 /// Signal proc for [COMSIG_ITEM_GRILL_TURNED_OFF], stops the grilling process.
 /datum/component/grillable/proc/on_grill_turned_off(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_ATOM_UPDATE_OVERLAYS)
 
 	is_grilling = FALSE
@@ -132,6 +150,8 @@
 
 ///Ran every time an item is grilled by something
 /datum/component/grillable/proc/on_grill(datum/source, atom/used_grill, seconds_per_tick = 1)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	. = COMPONENT_HANDLED_GRILLING
@@ -142,6 +162,8 @@
 
 ///Ran when an object finished grilling
 /datum/component/grillable/proc/finish_grilling(atom/grill_source)
+	procstart = null
+	src.procstart = null
 	var/atom/original_object = parent
 	var/atom/grilled_result
 
@@ -177,6 +199,8 @@
 
 ///Ran when an object almost finishes grilling
 /datum/component/grillable/proc/on_examine(atom/A, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!current_cook_time) //Not grilled yet
@@ -196,12 +220,16 @@
 		examine_list += span_danger("[parent] should probably not be put on the grill.")
 
 /datum/component/grillable/proc/add_grilled_item_overlay(datum/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	overlays += mutable_appearance('icons/effects/steam.dmi', "[use_large_steam_sprite ? "steam_triple" : "steam_single"]", ABOVE_OBJ_LAYER)
 
 /// Signal proc for [COMSIG_TURF_EXPOSE], atmosphere might be hot enough for grilling.
 /datum/component/grillable/proc/on_turf_atmos_changed(turf/open/source, datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!is_grilling)
@@ -219,6 +247,8 @@
 
 // Grill while exposed to hot air
 /datum/component/grillable/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/atom/atom_parent = parent
 
 	// Grill faster as we approach 200 degrees celsius

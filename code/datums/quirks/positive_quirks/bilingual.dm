@@ -17,6 +17,8 @@
 	)
 
 /datum/quirk/bilingual/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/wanted_language = client_source?.prefs.read_preference(/datum/preference/choiced/language)
 	var/datum/language/language_type
 	if(wanted_language == "Random")
@@ -40,6 +42,8 @@
 		quirk_holder.grant_partial_language(language_type, text2num(language_skill), source = LANGUAGE_QUIRK)
 
 /datum/quirk/bilingual/remove()
+	procstart = null
+	src.procstart = null
 	if(QDELING(quirk_holder))
 		return
 	quirk_holder.remove_all_languages(source = LANGUAGE_QUIRK)

@@ -35,6 +35,8 @@
 	var/max_vein_size = 2
 
 /obj/item/stack/ore/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/difference = min(ORESTACK_OVERLAYS_MAX, amount) - (LAZYLEN(stack_overlays)+1)
 	if(!difference)
@@ -62,9 +64,13 @@
  * It can also be overriden for more specific behavior (for example, sand is smelted into glass beforehand because of different mats).
  */
 /obj/item/stack/ore/proc/on_orm_collection()
+	procstart = null
+	src.procstart = null
 	return isnull(refined_type) ? null : src
 
 /obj/item/stack/ore/welder_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!refined_type)
 		return TRUE
@@ -78,6 +84,8 @@
 	return TRUE
 
 /obj/item/stack/ore/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(refined_type))
 		return
@@ -140,20 +148,28 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 ))
 
 /obj/item/stack/ore/glass/Initialize(mapload, new_amount, merge, list/mat_override, mat_amt)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/storm_hating)
 
-/obj/item/stack/ore/glass/on_orm_collection() //we need to smelt the glass beforehand because the silo and orm don't accept sand mats
+/obj/item/stack/ore/glass/on_orm_collection()
+	procstart = null
+	src.procstart = null //we need to smelt the glass beforehand because the silo and orm don't accept sand mats
 	//If we spawn the sheet of glass on the turf the ORM is "listening" to, it'll get redeemed before we can use it as return value and weird stuff my happen.
 	var/obj/item/stack/sheet/glass = new refined_type(null, amount)
 	qdel(src)
 	return glass
 
 /obj/item/stack/ore/glass/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.sand_recipes
 
 /obj/item/stack/ore/glass/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(..() || !ishuman(hit_atom))
 		return
 	var/mob/living/carbon/human/C = hit_atom
@@ -167,12 +183,16 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	qdel(src)
 
 /obj/item/stack/ore/glass/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(severity)
 		qdel(src)
 		return TRUE
 	return FALSE
 
 /obj/item/stack/ore/glass/interact_with_atom(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -235,6 +255,8 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	max_vein_size = 4
 
 /obj/item/stack/ore/plasma/welder_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("You can't hit a high enough temperature to smelt [src] properly!"))
 	return TRUE
 
@@ -286,6 +308,8 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	max_vein_size = 2
 
 /obj/item/stack/ore/diamond/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/raptor_food, speed_modifier = 0.05, health_modifier = -1, color_chances = string_list(list(/datum/raptor_color/yellow = 3)))
 
@@ -353,11 +377,15 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	var/mutable_appearance/rig_overlay
 
 /obj/item/gibtonite/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/two_handed, require_twohands=TRUE)
 	AddComponent(/datum/component/golem_food, consume_on_eat = FALSE, golem_food_key = /obj/item/gibtonite)
 
 /obj/item/gibtonite/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(rig)
 		. += span_warning("There is some kind of device <b>rigged</b> to it!")
@@ -365,11 +393,15 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 		. += span_notice("You could <b>rig</b> something to it.")
 
 /obj/item/gibtonite/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(rig)
 	rig_overlay = null
 	return ..()
 
 /obj/item/gibtonite/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == rig)
 		rig = null
@@ -378,9 +410,13 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 		UnregisterSignal(src, COMSIG_IGNITER_ACTIVATE)
 
 /obj/item/gibtonite/IsSpecialAssembly()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/item/gibtonite/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/assembly_holder) && !rig)
 		var/obj/item/assembly_holder/holder = tool
 		if(!(locate(/obj/item/assembly/igniter) in holder.assemblies))
@@ -413,6 +449,8 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	return NONE
 
 /obj/item/gibtonite/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!rig)
 		return NONE
 
@@ -426,11 +464,15 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/gibtonite/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	defuse(user)
 	return ITEM_INTERACT_SUCCESS
 
 /// Stop the reaction and reduce ore explosive power
 /obj/item/gibtonite/proc/defuse(mob/defuser)
+	procstart = null
+	src.procstart = null
 	if (!primed)
 		return
 	primed = FALSE
@@ -441,20 +483,28 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	quality = GIBTONITE_QUALITY_LOW
 
 /obj/item/gibtonite/attack_self(user)
+	procstart = null
+	src.procstart = null
 	if(wires)
 		wires.interact(user)
 	else
 		return ..()
 
 /obj/item/gibtonite/bullet_act(obj/projectile/proj)
+	procstart = null
+	src.procstart = null
 	GibtoniteReaction(proj.firer, "A projectile has primed for detonation a")
 	return ..()
 
 /obj/item/gibtonite/ex_act()
+	procstart = null
+	src.procstart = null
 	GibtoniteReaction(null, "An explosion has primed for detonation a")
 	return TRUE
 
 /obj/item/gibtonite/proc/GibtoniteReaction(mob/user, triggered_by)
+	procstart = null
+	src.procstart = null
 	if(primed)
 		return
 	primed = TRUE
@@ -477,6 +527,8 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	det_timer = addtimer(CALLBACK(src, PROC_REF(detonate), notify_admins), det_time, TIMER_STOPPABLE)
 
 /obj/item/gibtonite/proc/detonate(notify_admins)
+	procstart = null
+	src.procstart = null
 	if(primed)
 		switch(quality)
 			if(GIBTONITE_QUALITY_HIGH)
@@ -488,6 +540,8 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 		qdel(src)
 
 /obj/item/gibtonite/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (throwingdatum.dist_travelled < 2 || !isliving(hit_atom))
 		return
@@ -496,15 +550,21 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	hit_mob.Knockdown(8 SECONDS)
 
 /obj/item/gibtonite/proc/igniter_prime()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	GibtoniteReaction(null, "An attached rig has primed a")
 
 /obj/item/stack/ore/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = base_pixel_x + rand(0, 16) - 8
 	pixel_y = base_pixel_y + rand(0, 8) - 8
 
 /obj/item/stack/ore/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(severity >= EXPLODE_DEVASTATE)
 		qdel(src)
 		return TRUE
@@ -539,6 +599,8 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	var/has_action = FALSE
 
 /obj/item/coin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	coinflip = pick(sideslist)
 	icon_state = "coin_[coinflip]"
@@ -547,6 +609,8 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	add_traits(list(TRAIT_FISHING_BAIT, TRAIT_BAIT_ALLOW_FISHING_DUD), INNATE_TRAIT)
 
 /obj/item/coin/finalize_material_effects(list/materials)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(override_material_worth)
 		return
@@ -555,9 +619,13 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 		value += material.value_per_unit * materials[material][MATERIAL_LIST_OPTIMAL_AMOUNT]
 
 /obj/item/coin/get_item_credit_value()
+	procstart = null
+	src.procstart = null
 	return value
 
 /obj/item/coin/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] contemplates suicide with \the [src]!"))
 	if (!attack_self(user))
 		user.visible_message(span_suicide("[user] couldn't flip \the [src]!"))
@@ -566,6 +634,8 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	return MANUAL_SUICIDE_NONLETHAL
 
 /obj/item/coin/proc/manual_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/index = sideslist.Find(coinflip)
 	if (index == 2)//tails
 		user.visible_message(span_suicide("\the [src] lands on [coinflip]! [user] promptly falls over, dead!"))
@@ -577,10 +647,14 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 		user.visible_message(span_suicide("\the [src] lands on [coinflip]! [user] keeps on living!")) //Don't put it in your pocket. It's your lucky quarter.
 
 /obj/item/coin/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info("It's worth [value] [MONEY_NAME_AUTOPURAL(value)].")
 
 /obj/item/coin/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stack/cable_coil))
 		return NONE
 
@@ -599,6 +673,8 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/coin/wirecutter_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!string_attached)
 		return TRUE
@@ -610,6 +686,8 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	return TRUE
 
 /obj/item/coin/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(cooldown < world.time)
 		if(string_attached) //does the coin have a wire attached
 			to_chat(user, span_warning("The coin won't flip very well with something attached!") )
@@ -633,9 +711,13 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	return TRUE//did the coin flip? useful for suicide_act
 
 /obj/item/coin/proc/heads_action(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/coin/proc/tails_action(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/coin/gold
@@ -657,6 +739,8 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	custom_materials = list(/datum/material/titanium = COIN_MATERIAL_AMOUNT)
 
 /obj/item/coin/titanium/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/flash_powder = 8)
 
 /obj/item/coin/bananium
@@ -669,6 +753,8 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	custom_materials = list(/datum/material/mythril = COIN_MATERIAL_AMOUNT)
 
 /obj/item/coin/mythril/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/medicine/omnizine/godblood = 8)
 
 /obj/item/coin/plastic
@@ -678,6 +764,8 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	custom_materials = list(/datum/material/runite = COIN_MATERIAL_AMOUNT)
 
 /obj/item/coin/runite/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/iron = 4, /datum/reagent/consumable/ethanol/ritual_wine = 4)
 
 /obj/item/coin/twoheaded
@@ -695,6 +783,8 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	override_material_worth = TRUE
 
 /obj/item/coin/antagtoken/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/ants = 4, /datum/reagent/consumable/eggyolk = 4)
 
 /obj/item/coin/iron
@@ -705,9 +795,13 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	desc = "If you got this somehow, be aware that it will dust you. Almost certainly."
 
 /obj/item/coin/gold/debug/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/gold/cursed = 8)
 
 /obj/item/coin/gold/debug/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(cooldown < world.time)
 		if(string_attached) //does the coin have a wire attached
 			to_chat(user, span_warning("The coin won't flip very well with something attached!") )
@@ -751,9 +845,13 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	var/airlock_range = 5
 
 /obj/item/coin/eldritch/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/carbon = 5, /datum/reagent/toxin/plasma = 5, /datum/reagent/eldritch = 4)
 
 /obj/item/coin/eldritch/heads_action(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_user = user
 	if(!IS_HERETIC(user))
 		living_user.adjust_brute_loss(5)
@@ -765,6 +863,8 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 		target_airlock.close(force_crush = TRUE)
 
 /obj/item/coin/eldritch/tails_action(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_user = user
 	if(!IS_HERETIC(user))
 		living_user.adjust_fire_loss(5)

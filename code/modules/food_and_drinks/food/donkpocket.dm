@@ -26,9 +26,13 @@
 	var/omnizine_to_add = 6
 
 /obj/item/food/donkpocket/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, warm_type, rand(baking_time_short, baking_time_long), positive_result, TRUE, list(/datum/reagent/medicine/omnizine = omnizine_to_add))
 
 /obj/item/food/donkpocket/make_microwaveable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/microwavable, warm_type, string_assoc_list(list(/datum/reagent/medicine/omnizine = omnizine_to_add)), bad_recipe = !positive_result)
 
 /obj/item/food/donkpocket/warm
@@ -211,9 +215,13 @@
 	custom_materials = null
 
 /obj/item/food/donkpocket/honk/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, warm_type, rand(baking_time_short, baking_time_long), positive_result, TRUE, honk_added_reagents)
 
 /obj/item/food/donkpocket/honk/make_microwaveable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/microwavable, warm_type, honk_added_reagents, positive_result)
 
 /obj/item/food/donkpocket/warm/honk
@@ -278,9 +286,13 @@
 	)
 
 /obj/item/food/donkpocket/gondola/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, warm_type, rand(baking_time_short, baking_time_long), positive_result, TRUE, gondola_added_reagents)
 
 /obj/item/food/donkpocket/gondola/make_microwaveable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/microwavable, warm_type, gondola_added_reagents, positive_result)
 
 /obj/item/food/donkpocket/warm/gondola
@@ -318,9 +330,13 @@
 	custom_materials = list(/datum/material/meat = MEATDISH_MATERIAL_AMOUNT * 2)
 
 /obj/item/food/donkpocket/deluxe/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, warm_type, rand(baking_time_short, baking_time_long), positive_result, TRUE, deluxe_added_reagents)
 
 /obj/item/food/donkpocket/deluxe/make_microwaveable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/microwavable, warm_type, deluxe_added_reagents, positive_result)
 
 /obj/item/food/donkpocket/warm/deluxe

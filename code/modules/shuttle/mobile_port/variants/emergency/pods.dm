@@ -6,6 +6,8 @@
 	launch_status = UNLAUNCHED
 
 /obj/docking_port/mobile/pod/request(obj/docking_port/stationary/S)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/computer/shuttle/connected_computer = get_control_console()
 	if(!istype(connected_computer, /obj/machinery/computer/shuttle/pod))
 		return FALSE
@@ -17,6 +19,8 @@
 		return ..()
 
 /obj/docking_port/mobile/pod/cancel()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/computer/shuttle/pod
@@ -32,10 +36,14 @@
 	icon_screen = "pod_on"
 
 /obj/machinery/computer/shuttle/pod/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSsecurity_level, COMSIG_SECURITY_LEVEL_CHANGED, PROC_REF(check_lock))
 
 /obj/machinery/computer/shuttle/pod/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -46,6 +54,8 @@
 	return TRUE
 
 /obj/machinery/computer/shuttle/pod/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(port)
 		//Checks if the computer has already added the shuttle destination with the initial id
@@ -71,6 +81,8 @@
  * * new_level The new security level that is in effect
  */
 /obj/machinery/computer/shuttle/pod/proc/check_lock(datum/source, new_level)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(obj_flags & EMAGGED)
@@ -88,6 +100,8 @@
 	var/edge_distance = 16
 
 /obj/docking_port/stationary/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		return
@@ -137,16 +151,22 @@
 	storage_type = /datum/storage/pod
 
 /obj/item/storage/pod/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "wall_safe[atom_storage?.locked ? "_locked" : ""]"
 
 /obj/item/storage/pod/create_storage(max_slots, max_specific_storage, max_total_storage, list/canhold, list/canthold, storage_type)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_ICON_STATE)
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/item/storage/pod, 32)
 
 /obj/item/storage/pod/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/head/helmet/space/orange(src)
 	new /obj/item/clothing/head/helmet/space/orange(src)
 	new /obj/item/clothing/suit/space/orange(src)

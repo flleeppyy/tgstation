@@ -44,6 +44,8 @@
 	var/break_sound = 'sound/items/tools/welder.ogg'
 
 /turf/closed/wall/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!can_engrave)
 		ADD_TRAIT(src, TRAIT_NOT_ENGRAVABLE, INNATE_TRAIT)
@@ -61,6 +63,8 @@
 	register_context()
 
 /turf/closed/wall/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(!isnull(held_item))
 		if((initial(smoothing_flags) & SMOOTH_DIAGONAL_CORNERS) && held_item.tool_behaviour == TOOL_WRENCH)
@@ -71,31 +75,45 @@
 			return CONTEXTUAL_SCREENTIP_SET
 
 /turf/closed/wall/mouse_drop_receive(atom/dropping, mob/user, params)
+	procstart = null
+	src.procstart = null
 	//Adds the component only once. We do it here & not in Initialize() because there are tons of walls & we don't want to add to their init times
 	LoadComponent(/datum/component/leanable, dropping)
 
 /turf/closed/wall/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	dismantle_wall(TRUE, FALSE)
 
 /turf/closed/wall/Destroy()
+	procstart = null
+	src.procstart = null
 	if(is_station_level(z))
 		GLOB.station_turfs -= src
 	return ..()
 
 /turf/closed/wall/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(initial(smoothing_flags) & SMOOTH_DIAGONAL_CORNERS)
 		. += span_notice("You could adjust its corners with a <b>wrench</b>.")
 	. += deconstruction_hints(user)
 
 /turf/closed/wall/proc/deconstruction_hints(mob/user)
+	procstart = null
+	src.procstart = null
 	return span_notice("The outer plating is <b>welded</b> firmly in place.")
 
 /turf/closed/wall/attack_tk()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/closed/wall/proc/dismantle_wall(devastated = FALSE, explode = FALSE)
+	procstart = null
+	src.procstart = null
 	if(devastated)
 		devastate_wall()
 	else
@@ -111,16 +129,22 @@
 	QUEUE_SMOOTH_NEIGHBORS(src)
 
 /turf/closed/wall/proc/break_wall()
+	procstart = null
+	src.procstart = null
 	new sheet_type(src, sheet_amount)
 	if(girder_type)
 		return new girder_type(src)
 
 /turf/closed/wall/proc/devastate_wall()
+	procstart = null
+	src.procstart = null
 	new sheet_type(src, sheet_amount)
 	if(girder_type)
 		new /obj/item/stack/sheet/iron(src)
 
 /turf/closed/wall/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(target == src)
 		dismantle_wall(1,1)
 		return TRUE
@@ -144,16 +168,22 @@
 
 
 /turf/closed/wall/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if(prob(50))
 		dismantle_wall()
 	else
 		add_dent(WALL_DENT_HIT)
 
 /turf/closed/wall/attack_paw(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE)
 	return attack_hand(user, modifiers)
 
 /turf/closed/wall/attack_hulk(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/bodypart/arm = user.hand_bodyparts[user.active_hand_index]
 	if(!arm)
@@ -185,12 +215,16 @@
  **arg2 is the hulk
  */
 /turf/closed/wall/proc/hulk_recoil(obj/item/bodypart/arm, mob/living/carbon/human/hulkman, damage = 20)
+	procstart = null
+	src.procstart = null
 	var/datum/mutation/hulk/smasher = locate(/datum/mutation/hulk) in hulkman.dna.mutations
 	if(!smasher || !damage || smasher.no_recoil) //sanity check but also snow and wood walls deal no recoil damage, so no arm breaky. Also, if our type of hulk doesn't cause recoil damage, return.
 		return
 	hulkman.apply_damage(damage, BRUTE, arm, wound_bonus = 0) //enough damage to regularly result in at least a breakage.
 
 /turf/closed/wall/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -200,6 +234,8 @@
 	add_fingerprint(user)
 
 /turf/closed/wall/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!ISADVANCEDTOOLUSER(user))
 		to_chat(user, span_warning("You don't have the dexterity to do this!"))
 		return ITEM_INTERACT_BLOCKING
@@ -213,6 +249,8 @@
 	return NONE
 
 /turf/closed/wall/proc/try_clean(obj/item/W, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if((user.combat_mode) || !LAZYLEN(dent_decals))
 		return FALSE
 
@@ -231,6 +269,8 @@
 	return FALSE
 
 /turf/closed/wall/proc/try_decon(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(I.tool_behaviour == TOOL_WELDER)
 		if(!I.tool_start_check(user, amount=round(slicing_duration / 50), heat_required = HIGH_TEMPERATURE_REQUIRED))
 			return FALSE
@@ -246,6 +286,8 @@
 
 ///Helper for building wall_support on top of desired wall
 /turf/closed/wall/proc/try_build_support(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isstack(I) || !istype(I, /obj/structure/wall_support::rods_type))
 		return FALSE
 	var/obj/item/stack/rods = I
@@ -263,10 +305,14 @@
 	return FALSE
 
 /turf/closed/wall/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	wall_singularity_pull(current_size)
 
 /turf/closed/wall/proc/wall_singularity_pull(current_size)
+	procstart = null
+	src.procstart = null
 	if(current_size >= STAGE_FIVE)
 		if(prob(50))
 			dismantle_wall()
@@ -276,17 +322,25 @@
 			dismantle_wall()
 
 /turf/closed/wall/narsie_act(force, ignore_mobs, probability = 20)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		ChangeTurf(/turf/closed/wall/mineral/cult)
 
 /turf/closed/wall/get_dumping_location()
+	procstart = null
+	src.procstart = null
 	return null
 
 /turf/closed/wall/acid_melt()
+	procstart = null
+	src.procstart = null
 	dismantle_wall(1)
 
 /turf/closed/wall/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	switch(the_rcd.mode)
 		if(RCD_DECONSTRUCT)
 			return list("delay" = 4 SECONDS, "cost" = 26)
@@ -295,6 +349,8 @@
 	return FALSE
 
 /turf/closed/wall/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	procstart = null
+	src.procstart = null
 	switch(rcd_data[RCD_DESIGN_MODE])
 		if(RCD_WALLFRAME)
 			var/obj/item/wallframe/wallmount = rcd_data[RCD_DESIGN_PATH]
@@ -307,6 +363,8 @@
 	return FALSE
 
 /turf/closed/wall/proc/add_dent(denttype, x=rand(-8, 8), y=rand(-8, 8))
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(dent_decals) >= MAX_DENT_DECALS)
 		return
 
@@ -329,6 +387,8 @@
 	add_overlay(dent_decals)
 
 /turf/closed/wall/rust_turf(magic = FALSE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_RUSTY))
 		ScrapeAway()
 		return TRUE
@@ -339,14 +399,20 @@
 	girder_type = /obj/structure/foamedmetal
 
 /turf/closed/wall/Bumped(atom/movable/bumped_atom)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SEND_SIGNAL(bumped_atom, COMSIG_LIVING_WALL_BUMP, src)
 
 /turf/closed/wall/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SEND_SIGNAL(gone, COMSIG_LIVING_WALL_EXITED, src)
 
 /turf/closed/wall/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode || !(initial(smoothing_flags) & SMOOTH_DIAGONAL_CORNERS))
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 	if(smoothing_flags & SMOOTH_DIAGONAL_CORNERS)

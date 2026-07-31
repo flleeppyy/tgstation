@@ -8,6 +8,8 @@
 	var/employee_name = ""
 
 /obj/item/paper/employment_contract/Initialize(mapload, new_employee_name)
+	procstart = null
+	src.procstart = null
 	if(!new_employee_name)
 		return INITIALIZE_HINT_QDEL
 	AddElement(/datum/element/update_icon_blocker)

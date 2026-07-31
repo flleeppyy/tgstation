@@ -11,6 +11,8 @@
  * * default - The default (or current) key, shown as a placeholder.
  */
 /proc/tgui_input_keycombo(mob/user = usr, message, title = "Key Input", default = 0, timeout = 0, ui_state = GLOB.always_state)
+	procstart = null
+	src.procstart = null
 	if (!istype(user))
 		if (istype(user, /client))
 			var/client/client = user
@@ -57,6 +59,8 @@
 	var/datum/ui_state/state
 
 /datum/tgui_input_keycombo/New(mob/user, message, title, default, timeout, ui_state)
+	procstart = null
+	src.procstart = null
 	src.default = default
 	src.message = message
 	src.title = title
@@ -67,6 +71,8 @@
 		QDEL_IN(src, timeout)
 
 /datum/tgui_input_keycombo/Destroy(force)
+	procstart = null
+	src.procstart = null
 	SStgui.close_uis(src)
 	state = null
 	return ..()
@@ -76,23 +82,33 @@
  * the window was closed by the user.
  */
 /datum/tgui_input_keycombo/proc/wait()
+	procstart = null
+	src.procstart = null
 	while (!entry && !closed && !QDELETED(src))
 		stoplag(1)
 
 /datum/tgui_input_keycombo/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "KeyComboModal")
 		ui.open()
 
 /datum/tgui_input_keycombo/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	closed = TRUE
 
 /datum/tgui_input_keycombo/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return state
 
 /datum/tgui_input_keycombo/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["init_value"] = default // Default is a reserved keyword
 	data["large_buttons"] = user.client.prefs.read_preference(/datum/preference/toggle/tgui_input_large)
@@ -102,12 +118,16 @@
 	return data
 
 /datum/tgui_input_keycombo/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	if(timeout)
 		data["timeout"] = CLAMP01((timeout - (world.time - start_time) - 1 SECONDS) / (timeout - 1 SECONDS))
 	return data
 
 /datum/tgui_input_keycombo/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -123,4 +143,6 @@
 			return TRUE
 
 /datum/tgui_input_keycombo/proc/set_entry(entry)
+	procstart = null
+	src.procstart = null
 	src.entry = entry

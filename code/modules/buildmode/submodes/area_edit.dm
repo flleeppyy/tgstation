@@ -5,10 +5,14 @@
 	var/image/areaimage
 
 /datum/buildmode_mode/area_edit/New()
+	procstart = null
+	src.procstart = null
 	areaimage = image('icons/area/areas_misc.dmi', null, "yellow")
 	..()
 
 /datum/buildmode_mode/area_edit/show_help(client/builder)
+	procstart = null
+	src.procstart = null
 	to_chat(builder, span_purple(boxed_message(
 		"[span_bold("Select corner")] -> Left Mouse Button on obj/turf/mob\n\
 		[span_bold("Paint area")] -> Left Mouse Button + Alt on turf/obj/mob\n\
@@ -17,19 +21,27 @@
 	)
 
 /datum/buildmode_mode/area_edit/enter_mode(datum/buildmode/BM)
+	procstart = null
+	src.procstart = null
 	BM.holder.images += areaimage
 
 /datum/buildmode_mode/area_edit/exit_mode(datum/buildmode/BM)
+	procstart = null
+	src.procstart = null
 	areaimage.loc = null // de-color the area
 	BM.holder.images -= areaimage
 	return ..()
 
 /datum/buildmode_mode/area_edit/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(areaimage)
 	storedarea = null
 	return ..()
 
 /datum/buildmode_mode/area_edit/change_settings(client/c)
+	procstart = null
+	src.procstart = null
 	var/target_path = input(c, "Enter typepath:", "Typepath", "/area")
 	var/areatype = text2path(target_path)
 	if(ispath(areatype,/area))
@@ -45,6 +57,8 @@
 		areaimage.loc = storedarea // color our area
 
 /datum/buildmode_mode/area_edit/handle_click(client/c, params, object)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 
 	if(LAZYACCESS(modifiers, LEFT_CLICK))
@@ -64,6 +78,8 @@
 		areaimage.loc = storedarea // color our area
 
 /datum/buildmode_mode/area_edit/handle_selected_area(client/c, params)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 
 	if(LAZYACCESS(modifiers, LEFT_CLICK))

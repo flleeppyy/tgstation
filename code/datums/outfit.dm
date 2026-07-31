@@ -141,6 +141,8 @@
  * If visuals_only is true, you can omit any work that doesn't visually appear on the character sprite
  */
 /datum/outfit/proc/pre_equip(mob/living/carbon/human/user, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	//to be overridden for customization depending on client prefs,species etc
 	return
 
@@ -156,6 +158,8 @@
  * If visuals_only is true, you can omit any work that doesn't visually appear on the character sprite
  */
 /datum/outfit/proc/post_equip(mob/living/carbon/human/user, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	//to be overridden for toggling internals, id binding, access etc
 	return
 
@@ -176,6 +180,8 @@
  * If visuals_only is true, you can omit any work that doesn't visually appear on the character sprite
  */
 /datum/outfit/proc/equip(mob/living/carbon/human/user, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	pre_equip(user, visuals_only)
 
 	//Start with uniform,suit,backpack for additional slots
@@ -311,6 +317,8 @@
  *
  */
 /datum/outfit/proc/apply_fingerprints(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return
 	if(user.back)
@@ -353,6 +361,8 @@
 
 /// Return a list of all the types that are required to disguise as this outfit type
 /datum/outfit/proc/get_chameleon_disguise_info()
+	procstart = null
+	src.procstart = null
 	var/list/types = list(uniform, suit, back, belt, gloves, shoes, head, mask, neck, ears, glasses, id, l_pocket, r_pocket, suit_store, r_hand, l_hand)
 	types += chameleon_extras
 	types += skillchips
@@ -362,6 +372,8 @@
 /// Return a list of types to pregenerate for later equipping
 /// This should not be things that do unique stuff in Initialize() based off their location, since we'll be storing them for a while
 /datum/outfit/proc/get_types_to_preload()
+	procstart = null
+	src.procstart = null
 	var/list/preload = list()
 	preload += id
 	preload += uniform
@@ -405,6 +417,8 @@
 
 /// Return a json list of this outfit
 /datum/outfit/proc/get_json_data()
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["outfit_type"] = type
 	.["name"] = name
@@ -435,6 +449,8 @@
 
 /// Copy most vars from another outfit to this one
 /datum/outfit/proc/copy_from(datum/outfit/target)
+	procstart = null
+	src.procstart = null
 	name = target.name
 	uniform = target.uniform
 	suit = target.suit
@@ -463,6 +479,8 @@
 
 /// Prompt the passed in mob client to download this outfit as a json blob
 /datum/outfit/proc/save_to_file(mob/admin)
+	procstart = null
+	src.procstart = null
 	var/stored_data = get_json_data()
 	var/json = json_encode(stored_data)
 	//Kinda annoying but as far as i can tell you need to make actual file.
@@ -473,6 +491,8 @@
 
 /// Create an outfit datum from a list of json data
 /datum/outfit/proc/load_from(list/outfit_data)
+	procstart = null
+	src.procstart = null
 	//This could probably use more strict validation
 	name = outfit_data["name"]
 	uniform = text2path(outfit_data["uniform"])
@@ -517,11 +537,15 @@
 	return TRUE
 
 /datum/outfit/vv_get_dropdown()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	VV_DROPDOWN_OPTION("", "--- /outfit ---")
 	VV_DROPDOWN_OPTION(VV_HK_TO_OUTFIT_EDITOR, "Outfit Editor")
 
 /datum/outfit/vv_do_topic(list/href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)

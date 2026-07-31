@@ -2,6 +2,8 @@
 /datum/unit_test/dropper_use
 
 /datum/unit_test/dropper_use/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/chemist = EASY_ALLOCATE()
 	var/obj/item/reagent_containers/dropper/dropper = EASY_ALLOCATE()
 	var/obj/item/reagent_containers/cup/beaker/large/beaker = EASY_ALLOCATE()

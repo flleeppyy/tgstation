@@ -28,6 +28,8 @@
 	var/datum/callback/post_set_cable_layer_callback
 
 /datum/component/circuit_component_wirenet_connection/Initialize(layer_1_action = CABLE_LAYER_1_NAME, layer_2_action = CABLE_LAYER_2_NAME, layer_3_action = CABLE_LAYER_3_NAME, datum/callback/connection_callback, datum/callback/disconnection_callback, datum/callback/post_set_cable_layer_callback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(parent, /obj/item/circuit_component))
 		return COMPONENT_INCOMPATIBLE
@@ -39,21 +41,29 @@
 	src.post_set_cable_layer_callback = post_set_cable_layer_callback
 
 /datum/component/circuit_component_wirenet_connection/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	connection_callback = null
 	disconnection_callback = null
 	post_set_cable_layer_callback = null
 
 /datum/component/circuit_component_wirenet_connection/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_CIRCUIT_COMPONENT_PERFORM_ACTION, PROC_REF(on_action))
 	RegisterSignal(parent, COMSIG_CIRCUIT_COMPONENT_ADDED, PROC_REF(on_parent_added_to_circuit))
 	RegisterSignal(parent, COMSIG_CIRCUIT_COMPONENT_REMOVED, PROC_REF(on_parent_removed_from_circuit))
 
 /datum/component/circuit_component_wirenet_connection/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	unset_shell()
 	UnregisterSignal(parent, list(COMSIG_CIRCUIT_COMPONENT_PERFORM_ACTION, COMSIG_CIRCUIT_COMPONENT_ADDED, COMSIG_CIRCUIT_COMPONENT_REMOVED))
 
 /datum/component/circuit_component_wirenet_connection/proc/on_parent_added_to_circuit(_source, obj/item/integrated_circuit/circuit)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	RegisterSignal(circuit, COMSIG_CIRCUIT_SET_SHELL, PROC_REF(on_circuit_set_shell))
 	RegisterSignal(circuit, COMSIG_CIRCUIT_SHELL_REMOVED, PROC_REF(unset_shell))
@@ -61,15 +71,21 @@
 		set_shell(circuit.shell)
 
 /datum/component/circuit_component_wirenet_connection/proc/on_parent_removed_from_circuit(_source, obj/item/integrated_circuit/circuit)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	unset_shell()
 	UnregisterSignal(circuit, list(COMSIG_CIRCUIT_SET_SHELL, COMSIG_CIRCUIT_SHELL_REMOVED))
 
 /datum/component/circuit_component_wirenet_connection/proc/on_circuit_set_shell(_source, atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_shell(shell)
 
 /datum/component/circuit_component_wirenet_connection/proc/set_shell(atom/movable/new_shell)
+	procstart = null
+	src.procstart = null
 	tracked_shell = new_shell
 	if(isassembly(new_shell))
 		RegisterSignals(new_shell, list(COMSIG_ASSEMBLY_ATTACHED, COMSIG_ASSEMBLY_ADDED_TO_BUTTON), PROC_REF(on_assembly_shell_attached))
@@ -78,6 +94,8 @@
 		set_tracked_movable(new_shell)
 
 /datum/component/circuit_component_wirenet_connection/proc/unset_shell()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	unset_tracked_movable()
 	if(!tracked_shell)
@@ -87,15 +105,21 @@
 	tracked_shell = null
 
 /datum/component/circuit_component_wirenet_connection/proc/on_assembly_shell_attached(_source, atom/holder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(ismovable(holder))
 		set_tracked_movable(holder)
 
 /datum/component/circuit_component_wirenet_connection/proc/on_assembly_shell_detached()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	unset_tracked_movable()
 
 /datum/component/circuit_component_wirenet_connection/proc/set_tracked_movable(atom/movable/new_tracked_movable)
+	procstart = null
+	src.procstart = null
 	if(tracked_movable == new_tracked_movable) //Should only happen when an assembly holder the assembly was attached to calls on_attach when it itself is attached to something
 		return
 	tracked_movable = new_tracked_movable
@@ -105,6 +129,8 @@
 		try_set_tracked_node()
 
 /datum/component/circuit_component_wirenet_connection/proc/unset_tracked_movable()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	unset_tracked_node()
 	if(!tracked_movable)
@@ -113,6 +139,8 @@
 	tracked_movable = null
 
 /datum/component/circuit_component_wirenet_connection/proc/on_tracked_movable_set_anchored(atom/movable/source, now_anchored)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(now_anchored)
 		try_set_tracked_node()
@@ -120,6 +148,8 @@
 		unset_tracked_node()
 
 /datum/component/circuit_component_wirenet_connection/proc/try_set_tracked_node()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(tracked_node)
 		unset_tracked_node()
@@ -131,6 +161,8 @@
 	set_tracked_node(node)
 
 /datum/component/circuit_component_wirenet_connection/proc/on_atom_initialized_on_turf(_source, obj/structure/cable/initialized)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(initialized))
 		return
@@ -139,6 +171,8 @@
 	set_tracked_node(initialized)
 
 /datum/component/circuit_component_wirenet_connection/proc/set_tracked_node(obj/structure/cable/node)
+	procstart = null
+	src.procstart = null
 	tracked_node = node
 	RemoveElement(/datum/element/connect_loc, turf_connections)
 	RegisterSignal(tracked_movable, COMSIG_MOVABLE_MOVED, PROC_REF(unset_tracked_node)) //Because of wack cases of something pushing an anchored object
@@ -149,6 +183,8 @@
 		set_tracked_powernet(node.powernet)
 
 /datum/component/circuit_component_wirenet_connection/proc/unset_tracked_node()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	unset_tracked_powernet()
 	if(!tracked_node)
@@ -158,11 +194,15 @@
 	tracked_node = null
 
 /datum/component/circuit_component_wirenet_connection/proc/set_tracked_powernet(datum/powernet/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	tracked_powernet = source
 	connection_callback?.Invoke(source)
 
 /datum/component/circuit_component_wirenet_connection/proc/unset_tracked_powernet()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!tracked_powernet)
 		return
@@ -170,6 +210,8 @@
 	tracked_powernet = null
 
 /datum/component/circuit_component_wirenet_connection/proc/on_action(obj/item/circuit_component/component, mob/user, action)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	switch(action)
 		if(CABLE_LAYER_1_NAME)
@@ -180,6 +222,8 @@
 			set_cable_layer(CABLE_LAYER_3)
 
 /datum/component/circuit_component_wirenet_connection/proc/set_cable_layer(new_layer)
+	procstart = null
+	src.procstart = null
 	if(cable_layer == new_layer)
 		return
 	cable_layer = new_layer

@@ -5,6 +5,8 @@ GAME_VERB_PROC_DESC(/mob/living/silicon/ai, show_laws_verb, "Show Laws", "Check 
 	src.show_laws()
 
 /mob/living/silicon/ai/try_sync_laws()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/silicon/robot/borgo in connected_robots)
 		if(borgo.try_sync_laws())
 			to_chat(borgo, span_bold("Your AI has reminded you of your laws:"))

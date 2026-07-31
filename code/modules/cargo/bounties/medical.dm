@@ -114,6 +114,8 @@
 	wanted_types = list(/obj/item/paper/medical_report = TRUE)
 
 /datum/bounty/item/medical/scanning/applies_to(obj/shipped)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(shipped, /obj/item/paper/medical_report))
 		return FALSE

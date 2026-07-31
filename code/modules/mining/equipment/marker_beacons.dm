@@ -34,18 +34,26 @@ GLOBAL_LIST_INIT(marker_beacon_colors, sort_list(list(
 	amount = 30
 
 /obj/item/stack/marker_beacon/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/item/stack/marker_beacon/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Use in-hand to place a [singular_name].\nAlt-click to select a color. Current color is [picked_color].")
 
 /obj/item/stack/marker_beacon/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)][LOWER_TEXT(picked_color)]"
 	return ..()
 
 /obj/item/stack/marker_beacon/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isturf(user.loc))
 		to_chat(user, span_warning("You need more space to place a [singular_name] here."))
 		return
@@ -59,6 +67,8 @@ GLOBAL_LIST_INIT(marker_beacon_colors, sort_list(list(
 		transfer_fingerprints_to(M)
 
 /obj/item/stack/marker_beacon/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/input_color = tgui_input_list(user, "Choose a color", "Beacon Color", GLOB.marker_beacon_colors)
 	if(isnull(input_color) || !user.can_perform_action(src))
 		return CLICK_ACTION_BLOCKING
@@ -90,21 +100,29 @@ GLOBAL_LIST_INIT(marker_beacon_colors, sort_list(list(
 	fire = 25
 
 /obj/structure/marker_beacon/Initialize(mapload, set_color)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(set_color)
 		picked_color = set_color
 	update_appearance()
 
 /obj/structure/marker_beacon/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/marker_beacon/beacon = new(loc)
 	beacon.picked_color = picked_color
 	beacon.update_appearance()
 
 /obj/structure/marker_beacon/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Alt-click to select a color. Current color is [picked_color].")
 
 /obj/structure/marker_beacon/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	while(!picked_color || !GLOB.marker_beacon_colors[picked_color])
 		picked_color = pick(GLOB.marker_beacon_colors)
 
@@ -112,10 +130,14 @@ GLOBAL_LIST_INIT(marker_beacon_colors, sort_list(list(
 	set_light(light_range, light_power, GLOB.marker_beacon_colors[picked_color])
 
 /obj/structure/marker_beacon/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[icon_prefix][LOWER_TEXT(picked_color)]-on"
 	return ..()
 
 /obj/structure/marker_beacon/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -130,9 +152,13 @@ GLOBAL_LIST_INIT(marker_beacon_colors, sort_list(list(
 			qdel(src) //otherwise delete us
 
 /obj/structure/marker_beacon/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/marker_beacon/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/stack/marker_beacon))
 		var/obj/item/stack/marker_beacon/collection = tool
 		to_chat(user, span_notice("You start picking [src] up..."))
@@ -155,6 +181,8 @@ GLOBAL_LIST_INIT(marker_beacon_colors, sort_list(list(
 	return NONE
 
 /obj/structure/marker_beacon/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/input_color = tgui_input_list(user, "Choose a color", "Beacon Color", GLOB.marker_beacon_colors)
 	if(isnull(input_color) || !user.can_perform_action(src))
 		return CLICK_ACTION_BLOCKING

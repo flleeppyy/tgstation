@@ -6,6 +6,8 @@
 	var/moving = FALSE //Used to prevent infinite recursion if your reset turf places you somewhere on enter or something
 
 /datum/component/areabound/Initialize()
+	procstart = null
+	src.procstart = null
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
 	bound_area = get_area(parent)
@@ -13,6 +15,8 @@
 	move_tracker = new(parent,CALLBACK(src, PROC_REF(check_bounds)))
 
 /datum/component/areabound/proc/check_bounds()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = parent
 	var/area/current = get_area(AM)
 	if(current != bound_area)
@@ -27,5 +31,7 @@
 		moving = FALSE
 
 /datum/component/areabound/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(move_tracker)
 	. = ..()

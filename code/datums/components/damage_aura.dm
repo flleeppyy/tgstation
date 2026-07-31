@@ -85,17 +85,23 @@
 	src.current_owner = WEAKREF(current_owner)
 
 /datum/component/damage_aura/Destroy(force)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSaura, src)
 	return ..()
 
 /// The requirements for the mob to be effected by the damage aura.
 /datum/component/damage_aura/proc/check_requirements(mob/living/target_mob)
+	procstart = null
+	src.procstart = null
 	if(target_mob.stat == DEAD || target_mob.has_faction(immune_factions))
 		return TRUE
 	return FALSE
 
 /// What effect the damage aura has if it has an owner.
 /datum/component/damage_aura/proc/owner_effect(mob/living/owner_mob, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/need_mob_update = FALSE
 	need_mob_update += owner_mob.adjust_stamina_loss(-20 * seconds_per_tick, updating_stamina = FALSE)
 	need_mob_update += owner_mob.adjust_brute_loss(-1 * seconds_per_tick, updating_health = FALSE)
@@ -109,6 +115,8 @@
 		owner_mob.updatehealth()
 
 /datum/component/damage_aura/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/should_show_effect = COOLDOWN_FINISHED(src, last_damage_effect_time)
 	if (should_show_effect)
 		COOLDOWN_START(src, last_damage_effect_time, DAMAGE_EFFECT_COOLDOWN)

@@ -39,9 +39,13 @@
 	associated_safe_turfs = list(/turf/open/water/beach)
 
 /datum/fish_source/portal/beach/on_fishing_spot_init(datum/component/fishing_spot/spot)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(spot.parent, TRAIT_MESSAGE_IN_A_BOTTLE_LOCATION, INNATE_TRAIT)
 
 /datum/fish_source/portal/beach/on_fishing_spot_del(datum/component/fishing_spot/spot)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(spot.parent, TRAIT_MESSAGE_IN_A_BOTTLE_LOCATION, INNATE_TRAIT)
 
 /datum/fish_source/portal/chasm
@@ -88,9 +92,13 @@
 	associated_safe_turfs = list(/turf/open/water/beach)
 
 /datum/fish_source/portal/ocean/on_fishing_spot_init(datum/component/fishing_spot/spot)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(spot.parent, TRAIT_MESSAGE_IN_A_BOTTLE_LOCATION, INNATE_TRAIT)
 
 /datum/fish_source/portal/ocean/on_fishing_spot_del(datum/component/fishing_spot/spot)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(spot.parent, TRAIT_MESSAGE_IN_A_BOTTLE_LOCATION, INNATE_TRAIT)
 
 /datum/fish_source/portal/hyperspace
@@ -154,6 +162,8 @@
 
 ///Generate the fish table if we don't have one already.
 /datum/fish_source/portal/random/on_fishing_spot_init(datum/component/fishing_spot/spot)
+	procstart = null
+	src.procstart = null
 	if(all_portal_fish_sources_at_once)
 		fish_table = all_portal_fish_sources_at_once
 		return
@@ -176,11 +186,15 @@
 
 ///Difficulty has to be calculated before the rest, because of how it influences jump chances
 /datum/fish_source/portal/random/calculate_difficulty(datum/fishing_challenge/challenge, result, obj/item/fishing_rod/rod, mob/fisherman)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += rand(-10, 15)
 
 ///In the spirit of randomness, we skew a few values here and there
 /datum/fish_source/portal/random/pre_challenge_started(obj/item/fishing_rod/rod, mob/user, datum/fishing_challenge/challenge)
+	procstart = null
+	src.procstart = null
 	challenge.bait_bounce_mult = max(challenge.bait_bounce_mult + rand(-3, 3) * 0.1, 0.1)
 	challenge.completion_loss = max(challenge.completion_loss + rand(-2, 2), 0)
 	challenge.completion_gain = max(challenge.completion_gain + rand(-1, 1), 2)
@@ -193,12 +207,16 @@
 	RegisterSignal(challenge, COMSIG_FISHING_CHALLENGE_MOVER_INITIALIZED, PROC_REF(randomize_mover_velocity))
 
 /datum/fish_source/portal/random/proc/randomize_mover_velocity(datum/source, datum/fish_movement/mover)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	mover.short_jump_velocity_limit += rand(-100, 100)
 	mover.long_jump_velocity_limit += rand(-100, 100)
 
 ///Cherry on top, fish caught from the randomizer portal also have (almost completely) random traits
 /datum/fish_source/portal/random/spawn_reward(reward_path, atom/spawn_location, atom/fishing_spot, obj/item/fishing_rod/used_rod)
+	procstart = null
+	src.procstart = null
 	if(!ispath(reward_path, /obj/item/fish))
 		return ..()
 

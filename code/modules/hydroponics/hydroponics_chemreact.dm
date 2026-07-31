@@ -3,6 +3,8 @@
  * stat changes as opposed to 271 lines of individual statline effects. Shoutout to the original comments on chems, I just cleaned a few up.
  */
 /obj/machinery/hydroponics/proc/apply_chemicals(mob/user)
+	procstart = null
+	src.procstart = null
 	///Contains the reagents within the tray.
 	if(myseed)
 		myseed.on_chem_reaction(reagents) //In case seeds have some special interactions with special chems, currently only used by vines
@@ -12,6 +14,8 @@
 		chem.on_hydroponics_apply(src, user)
 
 /obj/machinery/hydroponics/expose_reagents(list/reagents, datum/reagents/source, methods = TOUCH, volume_modifier = 1, show_message = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & COMPONENT_NO_EXPOSE_REAGENTS)
 		return
@@ -28,6 +32,8 @@
 
 /// Called when a radioactive reagent is applied to the tray
 /obj/machinery/hydroponics/proc/radioactive_exposure(modifier = 1)
+	procstart = null
+	src.procstart = null
 	if(isnull(myseed))
 		return
 

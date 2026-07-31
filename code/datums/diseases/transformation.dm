@@ -22,6 +22,8 @@
 	var/transformed_antag_datum //Do we add a specific antag datum once the transformation is complete?
 
 /datum/disease/transformation/Copy()
+	procstart = null
+	src.procstart = null
 	var/datum/disease/transformation/D = ..()
 	D.stage1 = stage1.Copy()
 	D.stage2 = stage2.Copy()
@@ -33,6 +35,8 @@
 
 
 /datum/disease/transformation/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -55,6 +59,8 @@
 
 
 /datum/disease/transformation/proc/do_disease_transformation(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(affected_mob) && affected_mob.stat != DEAD)
 		if(length(stage5))
 			to_chat(affected_mob, pick(stage5))
@@ -82,7 +88,9 @@
 		new_mob.real_name = new_mob.name
 		qdel(affected_mob)
 
-/datum/disease/transformation/proc/replace_banned_player(mob/living/new_mob) // This can run well after the mob has been transferred, so need a handle on the new mob to kill it if needed.
+/datum/disease/transformation/proc/replace_banned_player(mob/living/new_mob)
+	procstart = null
+	src.procstart = null // This can run well after the mob has been transferred, so need a handle on the new mob to kill it if needed.
 	set waitfor = FALSE
 
 	var/mob/chosen_one = SSpolling.poll_ghosts_for_target("Do you want to play as [span_notice(affected_mob.real_name)]?", check_jobban = bantype, role = bantype, poll_time = 5 SECONDS, checked_target = affected_mob, alert_pic = affected_mob, role_name_text = "transformation victim")
@@ -128,9 +136,13 @@
 	stage5 = list(span_warning("You feel like monkeying around."))
 
 /datum/disease/transformation/jungle_flu/do_disease_transformation(mob/living/carbon/affected_mob)
+	procstart = null
+	src.procstart = null
 	affected_mob.monkeyize()
 
 /datum/disease/transformation/jungle_flu/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -170,6 +182,8 @@
 	bantype = JOB_CYBORG
 
 /datum/disease/transformation/robot/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -214,6 +228,8 @@
 
 
 /datum/disease/transformation/xeno/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -246,6 +262,8 @@
 
 
 /datum/disease/transformation/slime/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -263,6 +281,8 @@
 					human.set_species(/datum/species/jelly/slime)
 
 /datum/disease/transformation/slime/do_disease_transformation(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	if(affected_mob.client && ishuman(affected_mob)) // if they are a human who's not a monkey and are sentient, then let them have the old fun
 		var/mob/living/carbon/human/human = affected_mob
 		if(!ismonkey(human))
@@ -286,6 +306,8 @@
 
 
 /datum/disease/transformation/corgi/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -339,6 +361,8 @@
 
 
 /datum/disease/transformation/gondola/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

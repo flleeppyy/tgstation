@@ -10,6 +10,8 @@ SUBSYSTEM_DEF(pai)
 	var/submit_spam = FALSE
 
 /datum/controller/subsystem/pai/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -18,14 +20,20 @@ SUBSYSTEM_DEF(pai)
 		ui.set_autoupdate(FALSE)
 
 /datum/controller/subsystem/pai/Recover()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	candidates = SSpai.candidates
 	pai_card_list = SSpai.pai_card_list
 
 /datum/controller/subsystem/pai/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.observer_state
 
 /datum/controller/subsystem/pai/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/data = list()
 	var/datum/pai_candidate/candidate = candidates[user.ckey]
@@ -37,6 +45,8 @@ SUBSYSTEM_DEF(pai)
 	return data
 
 /datum/controller/subsystem/pai/ui_act(action, list/params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -86,6 +96,8 @@ SUBSYSTEM_DEF(pai)
  * @params {mob} user The ghost doing the pressing.
  */
 /datum/controller/subsystem/pai/proc/recruit_window(mob/user)
+	procstart = null
+	src.procstart = null
 	/// Searches for a previous candidate upon opening the menu
 	var/datum/pai_candidate/candidate = candidates[user.ckey]
 	if(isnull(candidate))
@@ -98,6 +110,8 @@ SUBSYSTEM_DEF(pai)
  * Pings all pAI cards on the station that new candidates are available.
  */
 /datum/controller/subsystem/pai/proc/submit_alert(mob/user)
+	procstart = null
+	src.procstart = null
 	if(submit_spam)
 		to_chat(user, span_warning("Your candidacy has been submitted, but pAI cards have been alerted too recently."))
 		return FALSE

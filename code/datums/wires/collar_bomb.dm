@@ -5,11 +5,15 @@
 	wires = list(WIRE_ACTIVATE)
 
 /datum/wires/collar_bomb/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user.get_item_by_slot(ITEM_SLOT_NECK) == holder)
 		return FALSE
 
 /datum/wires/collar_bomb/on_pulse(wire, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/neck/collar_bomb/collar = holder
 	if(collar.active)
 		return ..()
@@ -30,4 +34,6 @@
 
 ///I'd rather not get people killed by EMP here.
 /datum/wires/collar_bomb/emp_pulse()
+	procstart = null
+	src.procstart = null
 	return

@@ -33,6 +33,8 @@
 	)
 
 /datum/component/listen_and_repeat/Initialize(list/desired_phrases, blackboard_key)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -52,11 +54,15 @@
 	ADD_TRAIT(parent, TRAIT_SUBTREE_REQUIRED_OPERATIONAL_DATUM, type)
 
 /datum/component/listen_and_repeat/Destroy(force)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(parent, TRAIT_SUBTREE_REQUIRED_OPERATIONAL_DATUM, type)
 	return ..()
 
 /// Called when we hear something.
 /datum/component/listen_and_repeat/proc/on_hear(datum/source, list/passed_arguments)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/message = passed_arguments[HEARING_RAW_MESSAGE]
@@ -89,6 +95,8 @@
 
 /// Called to set a new value for the blackboard key.
 /datum/component/listen_and_repeat/proc/set_new_blackboard_phrase(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/movable/atom_source = source
 	var/datum/ai_controller/controller = atom_source.ai_controller
@@ -110,6 +118,8 @@
 
 /// Exports all the speech buffer data to a dedicated blackboard key on the source.
 /datum/component/listen_and_repeat/proc/on_write_memory(datum/source, dead, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/movable/atom_source = source
 	var/datum/ai_controller/controller = atom_source.ai_controller

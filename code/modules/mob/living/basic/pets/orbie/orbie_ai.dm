@@ -12,12 +12,16 @@
 	ai_movement = /datum/ai_movement/basic_avoidance
 
 /datum/ai_controller/basic_controller/orbie/TryPossessPawn(atom/new_pawn)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & AI_CONTROLLER_INCOMPATIBLE)
 		return
 	RegisterSignal(new_pawn, COMSIG_AI_BLACKBOARD_KEY_SET(BB_LAST_RECEIVED_MESSAGE), PROC_REF(on_set_message))
 
 /datum/ai_controller/basic_controller/orbie/proc/on_set_message(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	addtimer(CALLBACK(src, PROC_REF(clear_blackboard_key), BB_LAST_RECEIVED_MESSAGE), MESSAGE_EXPIRY_TIME)
@@ -29,6 +33,8 @@
 	targeting_strategy = /datum/targeting_strategy/playmate
 
 /datum/bt_node/ai_behavior/acquire_target/update_interaction_target/find_playmate/on_target_found(datum/ai_controller/controller, atom/target, datum/targeting_strategy/strategy)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/orbie/playmate = target
 	playmate.ai_controller.set_blackboard_key(BB_NEARBY_PLAYMATE, controller.pawn)
 
@@ -36,6 +42,8 @@
 /datum/targeting_strategy/playmate
 
 /datum/targeting_strategy/playmate/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	if(!istype(target, /mob/living/basic/orbie))
 		return FALSE
 	var/mob/living/basic/orbie/orbie_target = target
@@ -52,6 +60,8 @@
 	var/target_key = "BB_NEARBY_PLAYMATE"
 
 /datum/bt_node/ai_behavior/interact_with_playmate/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/living_pawn = controller.pawn
 	var/atom/target = controller.blackboard[target_key]
 
@@ -64,6 +74,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/interact_with_playmate/finish_action(datum/ai_controller/controller, success)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(target_key)
 	controller.set_blackboard_key(BB_NEXT_PLAYDATE, world.time + PET_PLAYTIME_COOLDOWN)
@@ -73,6 +85,8 @@
 	var/target_key = "BB_LAST_RECEIVED_MESSAGE"
 
 /datum/bt_node/ai_behavior/relay_pda_message/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(controller.blackboard[BB_VIRTUAL_PET_LEVEL] < 2)
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
 
@@ -86,16 +100,22 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/relay_pda_message/finish_action(datum/ai_controller/controller, success)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(target_key)
 
 /datum/pet_command/follow/orbie
 
 /datum/pet_command/follow/orbie/New(mob/living/parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_VIRTUAL_PET_SUMMONED, PROC_REF(on_summon))
 
 /datum/pet_command/follow/orbie/proc/on_summon(datum/source, mob/living/friend)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_command_active(source, friend)
 
@@ -109,12 +129,16 @@
 	ability_key = BB_LIGHTS_ABILITY
 
 /datum/pet_command/untargeted_ability/pet_lights/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(controller.blackboard[BB_VIRTUAL_PET_LEVEL] < 2)
 		controller.clear_blackboard_key(BB_ACTIVE_PET_COMMAND)
 		return TRUE
 	return ..()
 
 /datum/pet_command/use_ability/pet_lights/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return "signals [living_pet] to toggle its lights!"
 
 /datum/pet_command/use_ability/take_photo
@@ -128,10 +152,14 @@
 	targeting_strategy_key = BB_TARGETING_STRATEGY
 
 /datum/pet_command/use_ability/take_photo/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return isnull(target) ? null : "signals [living_pet] to take a photo of [target]!"
 
 
 /datum/pet_command/use_ability/take_photo/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(controller.blackboard[BB_VIRTUAL_PET_LEVEL] < 3)
 		controller.clear_blackboard_key(BB_ACTIVE_PET_COMMAND)
 		return TRUE
@@ -142,6 +170,8 @@
 	command_desc = "A trick sequence programmable through your PDA!"
 
 /datum/pet_command/perform_trick_sequence/find_command_in_text(spoken_text, check_verbosity = FALSE)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = weak_parent.resolve()
 	if(isnull(living_pawn?.ai_controller))
 		return FALSE
@@ -151,9 +181,13 @@
 	return findtext(spoken_text, text_command)
 
 /datum/pet_command/perform_trick_sequence/light/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return "signals [living_pet] to dance!"
 
 /datum/pet_command/perform_trick_sequence/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	var/list/trick_sequence = controller.blackboard[BB_TRICK_SEQUENCE]
 	for(var/index in 1 to length(trick_sequence))

@@ -9,10 +9,14 @@
 	remove_on_fullheal = TRUE
 
 /datum/status_effect/staggered/on_creation(mob/living/new_owner, duration = 10 SECONDS)
+	procstart = null
+	src.procstart = null
 	src.duration = duration
 	return ..()
 
 /datum/status_effect/staggered/on_apply()
+	procstart = null
+	src.procstart = null
 	//you can't stagger the dead.
 	if(owner.stat == DEAD || HAS_TRAIT(owner, TRAIT_NO_STAGGER))
 		return FALSE
@@ -22,16 +26,22 @@
 	return TRUE
 
 /datum/status_effect/staggered/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_LIVING_DEATH)
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/staggered)
 
 /// Signal proc that self deletes our staggered effect
 /datum/status_effect/staggered/proc/clear_staggered(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(src)
 
 /datum/status_effect/staggered/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	//you can't stagger the dead - in case somehow you die mid-stagger
 	if(owner.stat == DEAD || HAS_TRAIT(owner, TRAIT_NO_STAGGER))
 		qdel(src)
@@ -43,6 +53,8 @@
 /// Helper proc that causes the mob to do a stagger animation.
 /// Doesn't change significantly, just meant to represent swaying back and forth
 /mob/living/proc/do_stagger_animation()
+	procstart = null
+	src.procstart = null
 	animate(src, pixel_w = 3, time = 0.2 SECONDS, flags = ANIMATION_RELATIVE|ANIMATION_PARALLEL)
 	animate(pixel_w = -6, time = 0.4 SECONDS, flags = ANIMATION_RELATIVE)
 	animate(pixel_w = 3, time = 0.2 SECONDS, flags = ANIMATION_RELATIVE)
@@ -58,10 +70,14 @@
 	var/mutable_appearance/dazed_overlay
 
 /datum/status_effect/dazed/on_creation(mob/living/new_owner, duration = 3 SECONDS)
+	procstart = null
+	src.procstart = null
 	src.duration = duration
 	return ..()
 
 /datum/status_effect/dazed/on_apply()
+	procstart = null
+	src.procstart = null
 	//Let's just clear this if they're dead or we can't stun them on a shove
 	if(owner.stat == DEAD || HAS_TRAIT(owner, TRAIT_NO_SIDE_KICK) || HAS_TRAIT(owner, TRAIT_IMMOBILIZED))
 		return FALSE
@@ -78,6 +94,8 @@
 	return TRUE
 
 /datum/status_effect/dazed/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, list(
 		COMSIG_LIVING_DEATH,
 		COMSIG_LIVING_SET_BODY_POSITION,
@@ -92,6 +110,8 @@
 /// If our owner is either stunned, paralzyed or immobilized, we remove the status effect.
 /// This is both an anti-chainstun measure and a sanity check.
 /datum/status_effect/dazed/proc/clear_daze(mob/living/source, amount = 0, ignore_canstun = FALSE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(amount > 0)
@@ -100,6 +120,8 @@
 		qdel(src)
 
 /datum/status_effect/dazed/proc/clear_daze_on_stand(mob/living/source, new_position)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(new_position == STANDING_UP)
@@ -107,6 +129,8 @@
 		qdel(src)
 
 /datum/status_effect/dazed/proc/clear_daze_on_death(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	clear_dazed_overlay()
@@ -114,6 +138,8 @@
 
 /// Clears our overlay where needed.
 /datum/status_effect/dazed/proc/clear_dazed_overlay()
+	procstart = null
+	src.procstart = null
 	owner.cut_overlay(dazed_overlay)
 	dazed_overlay = null
 
@@ -128,6 +154,8 @@
 	remove_on_fullheal = TRUE
 
 /datum/status_effect/no_side_kick/on_apply()
+	procstart = null
+	src.procstart = null
 	// Once again, clear if dead
 	if(owner.stat == DEAD)
 		return FALSE
@@ -136,10 +164,14 @@
 	return TRUE
 
 /datum/status_effect/no_side_kick/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, list(COMSIG_LIVING_DEATH))
 	REMOVE_TRAIT(owner, TRAIT_NO_SIDE_KICK, TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/no_side_kick/proc/clear_on_death(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(src)

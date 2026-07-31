@@ -9,12 +9,16 @@
 	mail_goodies = list(/obj/item/food/pizzaslice/pineapple)
 
 /datum/quirk/pineapple_liker/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/tongue/tongue = quirk_holder.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!tongue)
 		return
 	tongue.liked_foodtypes |= PINEAPPLE
 
 /datum/quirk/pineapple_liker/remove()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/tongue/tongue = quirk_holder.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!tongue)
 		return

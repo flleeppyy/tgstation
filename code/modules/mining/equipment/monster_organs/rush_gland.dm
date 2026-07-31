@@ -17,23 +17,33 @@
 	actions_types = list(/datum/action/cooldown/monster_core_action/adrenal_boost)
 
 /obj/item/organ/monster_core/rush_gland/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (owner.health <= HEALTH_DANGER_ZONE)
 		trigger_organ_action()
 
 /obj/item/organ/monster_core/rush_gland/on_mob_insert(mob/living/carbon/organ_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(organ_owner, COMSIG_GOLIATH_TENTACLED_GRABBED, PROC_REF(trigger_organ_action_on_sig))
 	RegisterSignal(organ_owner, COMSIG_TENDRIL_TENTACLED_GRABBED, PROC_REF(trigger_organ_action_on_sig))
 
 /obj/item/organ/monster_core/rush_gland/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(organ_owner, COMSIG_GOLIATH_TENTACLED_GRABBED)
 
 /obj/item/organ/monster_core/rush_gland/on_triggered_internal()
+	procstart = null
+	src.procstart = null
 	owner.apply_status_effect(/datum/status_effect/lobster_rush/extended)
 
 /obj/item/organ/monster_core/rush_gland/proc/trigger_organ_action_on_sig(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(trigger_organ_action))
@@ -58,6 +68,8 @@
 	overlay_state = "lobster"
 
 /datum/status_effect/lobster_rush/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
 	RegisterSignal(owner, COMSIG_MOVABLE_BUMP, PROC_REF(on_bump))
@@ -67,6 +79,8 @@
 	to_chat(owner, span_notice("You feel your blood pumping!"))
 
 /datum/status_effect/lobster_rush/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(owner, list(COMSIG_MOVABLE_MOVED, COMSIG_MOVABLE_BUMP))
 	REMOVE_TRAIT(owner, TRAIT_TENTACLE_IMMUNE, TRAIT_STATUS_EFFECT(id))
@@ -76,6 +90,8 @@
 
 /// Spawn an afterimage every other step, because every step was too many
 /datum/status_effect/lobster_rush/proc/on_move(datum/source, atom/old_loc, dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!isturf(old_loc) || !isturf(owner.loc))
 		return
@@ -84,6 +100,8 @@
 	spawned_last_move = !spawned_last_move
 
 /datum/status_effect/lobster_rush/proc/on_bump(mob/living/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!target.density)
 		return
@@ -96,6 +114,8 @@
 	qdel(src)
 
 /datum/status_effect/lobster_rush/proc/smack_into(mob/living/target)
+	procstart = null
+	src.procstart = null
 	target.Knockdown(2 SECONDS)
 	target.apply_damage(30, STAMINA)
 	target.apply_damage(10, BRUTE, spread_damage = TRUE)
@@ -105,10 +125,14 @@
 	duration = 60 SECONDS
 
 /datum/status_effect/lobster_rush/extended/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(owner, TRAIT_IGNORESLOWDOWN, TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/lobster_rush/extended/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(owner, TRAIT_IGNORESLOWDOWN, TRAIT_STATUS_EFFECT(id))
 

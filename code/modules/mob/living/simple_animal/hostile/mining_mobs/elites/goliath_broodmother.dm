@@ -54,6 +54,8 @@
 	var/list/mob/living/simple_animal/hostile/asteroid/elite/broodmother_child/children_list = list()
 
 /mob/living/simple_animal/hostile/asteroid/elite/broodmother/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_TENTACLE_IMMUNE, INNATE_TRAIT)
 
@@ -82,6 +84,8 @@
 	chosen_attack_num = CALL_CHILDREN
 
 /mob/living/simple_animal/hostile/asteroid/elite/broodmother/OpenFire()
+	procstart = null
+	src.procstart = null
 	if(client)
 		switch(chosen_attack)
 			if(TENTACLE_PATCH)
@@ -105,6 +109,8 @@
 			call_children()
 
 /mob/living/simple_animal/hostile/asteroid/elite/broodmother/Life(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.) //Checks if they are dead as a rock.
 		return
@@ -120,6 +126,8 @@
 		new /obj/effect/goliath_tentacle/broodmother(innsmouth, src)
 
 /mob/living/simple_animal/hostile/asteroid/elite/broodmother/proc/tentacle_patch(target)
+	procstart = null
+	src.procstart = null
 	ranged_cooldown = world.time + 15
 	var/tturf = get_turf(target)
 	if(!isturf(tturf))
@@ -128,6 +136,8 @@
 	new /obj/effect/goliath_tentacle/broodmother/patch(tturf, src)
 
 /mob/living/simple_animal/hostile/asteroid/elite/broodmother/proc/spawn_children(target)
+	procstart = null
+	src.procstart = null
 	ranged_cooldown = world.time + 40
 	visible_message(span_boldwarning("The ground churns behind [src]!"))
 	for(var/i in 1 to 2)
@@ -140,10 +150,14 @@
 		register_child(new_child)
 
 /mob/living/simple_animal/hostile/asteroid/elite/broodmother/proc/register_child(atom/child)
+	procstart = null
+	src.procstart = null
 	children_list += child
 	RegisterSignals(child, list(COMSIG_QDELETING, COMSIG_LIVING_DEATH), PROC_REF(remove_child))
 
 /mob/living/simple_animal/hostile/asteroid/elite/broodmother/proc/remove_child(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	children_list -= source
@@ -155,6 +169,8 @@
 
 
 /mob/living/simple_animal/hostile/asteroid/elite/broodmother/proc/rage()
+	procstart = null
+	src.procstart = null
 	ranged_cooldown = world.time + 100
 	playsound(src,'sound/misc/insane_low_laugh.ogg', 200, 1)
 	visible_message(span_warning("[src] starts picking up speed!"))
@@ -164,11 +180,15 @@
 	addtimer(CALLBACK(src, PROC_REF(reset_rage)), 6.5 SECONDS)
 
 /mob/living/simple_animal/hostile/asteroid/elite/broodmother/proc/reset_rage()
+	procstart = null
+	src.procstart = null
 	color = COLOR_WHITE
 	set_varspeed(2)
 	move_to_delay = 5
 
 /mob/living/simple_animal/hostile/asteroid/elite/broodmother/proc/call_children()
+	procstart = null
+	src.procstart = null
 	ranged_cooldown = world.time + 60
 	visible_message(span_warning("The ground shakes near [src]!"))
 	var/list/directions = GLOB.cardinals.Copy() + GLOB.diagonals.Copy()
@@ -207,10 +227,14 @@
 	status_flags = CANPUSH
 
 /mob/living/simple_animal/hostile/asteroid/elite/broodmother_child/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_TENTACLE_IMMUNE, INNATE_TRAIT)
 
 /mob/living/simple_animal/hostile/asteroid/elite/broodmother_child/OpenFire(target)
+	procstart = null
+	src.procstart = null
 	ranged_cooldown = world.time + 40
 	var/tturf = get_turf(target)
 	if(!isturf(tturf))
@@ -220,6 +244,8 @@
 		new /obj/effect/goliath_tentacle/broodmother(tturf, src)
 
 /mob/living/simple_animal/hostile/asteroid/elite/broodmother_child/death()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	visible_message(span_warning("[src] explodes!"))
 	explosion(src, flame_range = 3, adminlog = FALSE)
@@ -231,10 +257,14 @@
 	max_damage = 35
 
 /obj/effect/goliath_tentacle/broodmother/patch/Initialize(mapload, mob/living/goliath)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	INVOKE_ASYNC(src, PROC_REF(createpatch))
 
 /obj/effect/goliath_tentacle/broodmother/patch/proc/createpatch()
+	procstart = null
+	src.procstart = null
 	var/tentacle_locs = spiral_range_turfs(1, get_turf(src))
 	for(var/T in tentacle_locs)
 		new /obj/effect/goliath_tentacle/broodmother(T, owner)

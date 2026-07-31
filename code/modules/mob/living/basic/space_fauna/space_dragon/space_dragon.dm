@@ -74,6 +74,8 @@
 	var/fish_left = 15000 // 30 fish with a weight of 500.
 
 /mob/living/basic/space_dragon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_SPACEWALK, TRAIT_FREE_HYPERSPACE_MOVEMENT, TRAIT_NO_FLOATING_ANIM, TRAIT_HEALS_FROM_CARP_RIFTS), INNATE_TRAIT)
 	AddElement(/datum/element/simple_flying)
@@ -93,11 +95,15 @@
 	buffet.Grant(src)
 
 /mob/living/basic/space_dragon/Destroy()
+	procstart = null
+	src.procstart = null
 	fire_breath = null
 	buffet = null
 	return ..()
 
 /mob/living/basic/space_dragon/Login()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(chosen_colour))
 		return
@@ -108,11 +114,15 @@
 	select_colour()
 
 /mob/living/basic/space_dragon/mind_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(shark_form && mind.get_skill_level(/datum/skill/fishing) < SKILL_LEVEL_APPRENTICE)
 		mind.set_level(/datum/skill/fishing, SKILL_LEVEL_APPRENTICE, TRUE)
 
 /mob/living/basic/space_dragon/proc/sharkify()
+	procstart = null
+	src.procstart = null
 	if(shark_form)
 		return
 	pixel_z -= 3
@@ -130,6 +140,8 @@
 
 /// Allows the space dragon to pick a funny name
 /mob/living/basic/space_dragon/proc/rename_dragon()
+	procstart = null
+	src.procstart = null
 	var/chosen_name = sanitize_name(reject_bad_text(tgui_input_text(src, "What would you like your name to be?", "Choose Your Name", real_name, MAX_NAME_LEN)))
 	if(!chosen_name) // Null or empty or rejected
 		to_chat(src, span_warning("Not a valid name, please try again."))
@@ -140,6 +152,8 @@
 
 /// Select scale colour with the colour picker
 /mob/living/basic/space_dragon/proc/select_colour()
+	procstart = null
+	src.procstart = null
 	chosen_colour = tgui_color_picker(src, "What colour would you like to be?" ,"Colour Selection", COLOR_WHITE)
 	if(!chosen_colour) // Redo proc until we get a color
 		to_chat(src, span_warning("Not a valid colour, please try again."))
@@ -154,6 +168,8 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /mob/living/basic/space_dragon/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (stat == DEAD)
 		return
@@ -166,6 +182,8 @@
 	icon_state = "[icon_living]_gust"
 
 /mob/living/basic/space_dragon/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/overlay_state = "overlay_base"
 	if (stat == DEAD)
@@ -179,6 +197,8 @@
 	. += overlay
 
 /mob/living/basic/space_dragon/melee_attack(obj/vehicle/sealed/mecha/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!. || !ismecha(target))
 		return
@@ -186,6 +206,8 @@
 
 /// Before we attack something, check if we want to do something else instead
 /mob/living/basic/space_dragon/proc/pre_attack(mob/living/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (target == src)
 		return COMPONENT_HOSTILE_NO_ATTACK // Easy to misclick yourself, let's not
@@ -204,6 +226,8 @@
 
 /// Try putting something inside us
 /mob/living/basic/space_dragon/proc/try_eat(atom/movable/food)
+	procstart = null
+	src.procstart = null
 	balloon_alert(src, "swallowing...")
 	if (do_after(src, 3 SECONDS, target = food))
 		if(isliving(food))
@@ -213,6 +237,8 @@
 
 /// Succeed in putting something inside us
 /mob/living/basic/space_dragon/proc/eat(mob/living/food)
+	procstart = null
+	src.procstart = null
 	var/health_recovered = food.maxHealth * 0.25
 	if(shark_form)
 		if(istype(food, /mob/living/basic/carp))
@@ -229,6 +255,8 @@
 	return TRUE
 
 /mob/living/basic/space_dragon/proc/eat_fish(obj/item/fish/fish)
+	procstart = null
+	src.procstart = null
 	//a standard fish weights about 500 units on average, rarely exceeds 2000 units, the amount healed is less than a one fiftyth of our total on average.
 	var/health_recovered = fish.weight * 0.014
 	if(shark_form)
@@ -248,11 +276,15 @@
 	qdel(fish)
 
 /mob/living/basic/space_dragon/proc/begin_sharkify()
+	procstart = null
+	src.procstart = null
 	do_jitter_animation(300)
 	addtimer(CALLBACK(src, PROC_REF(sharkify)), 1.2 SECONDS)
 	visible_message(span_warning("[src] begins mutating!"))
 
 /mob/living/basic/space_dragon/proc/barf_contents()
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		return
 	new /obj/effect/decal/cleanable/vomit(loc)
@@ -266,17 +298,23 @@
 			step(eaten, pick(GLOB.alldirs))
 
 /mob/living/basic/space_dragon/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isliving(arrived))
 		RegisterSignal(arrived, COMSIG_MOB_STATCHANGE, PROC_REF(eaten_stat_changed))
 
 /mob/living/basic/space_dragon/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isliving(gone))
 		UnregisterSignal(gone, COMSIG_MOB_STATCHANGE)
 
 /// Release consumed mobs if they transition from dead to alive
 /mob/living/basic/space_dragon/proc/eaten_stat_changed(mob/living/eaten)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (eaten.stat == DEAD)
 		return
@@ -287,18 +325,26 @@
 	eaten.Paralyze(5 SECONDS)
 
 /mob/living/basic/space_dragon/RangedAttack(atom/target, modifiers)
+	procstart = null
+	src.procstart = null
 	fire_breath.Trigger(target = target)
 
 /mob/living/basic/space_dragon/ranged_secondary_attack(atom/target, modifiers)
+	procstart = null
+	src.procstart = null
 	buffet.Trigger()
 
 /// When our stat changes, make sure we are using the correct overlay
 /mob/living/basic/space_dragon/proc/on_stat_changed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_appearance(UPDATE_OVERLAYS)
 
 /// We take devastating bomb damage as a random percentage of our maximum health instead of being gibbed
 /mob/living/basic/space_dragon/proc/on_exploded(mob/living/source, severity, target, origin)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (severity != EXPLODE_DEVASTATE)
 		return
@@ -310,6 +356,8 @@
 /mob/living/basic/space_dragon/spawn_with_antag
 
 /mob/living/basic/space_dragon/spawn_with_antag/mind_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	mind.add_antag_datum(/datum/antagonist/space_dragon)
 

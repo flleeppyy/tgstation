@@ -68,6 +68,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 	name = "Auto-naming Fax Machine"
 
 /obj/machinery/fax/auto_name/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	var/area/current_area = get_area(src)
 	name = "[current_area.name]'s Fax Machine"
 	fax_name = "[current_area.name]"
@@ -77,6 +79,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 	abstract_type = /obj/machinery/fax/heads
 
 /obj/machinery/fax/heads/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REGISTER_REQUIRED_MAP_ITEM(1, 1)
 
@@ -112,6 +116,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 	name = "Syndicate Fax Machine"
 
 /obj/machinery/fax/admin/syndicate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	fax_name = "[special_networks["syndicate"]["fax_name"]]"
 	fax_id = special_networks["syndicate"]["fax_id"]
 	syndicate_network = TRUE
@@ -121,6 +127,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 	name = "CentCom Fax Machine"
 
 /obj/machinery/fax/admin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if (!fax_name)
 		fax_name = "[GLOB.nt_fax_department]"
 	if(!fax_id)
@@ -130,6 +138,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 	return ..()
 
 /obj/machinery/fax/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!fax_id)
 		fax_id = assign_random_name()
@@ -140,10 +150,14 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 	special_networks["nanotrasen"]["fax_name"] = GLOB.nt_fax_department
 
 /obj/machinery/fax/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(loaded_item_ref)
 	return ..()
 
 /obj/machinery/fax/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (panel_open)
 		. += "fax_panel"
@@ -152,22 +166,30 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 		. += mutable_appearance(icon, find_overlay_state(loaded, "contain"))
 
 /obj/machinery/fax/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(jammed)
 		. += span_notice("Its output port is jammed and needs cleaning.")
 
 
 /obj/machinery/fax/on_set_is_operational(old_value)
+	procstart = null
+	src.procstart = null
 	if (old_value == FALSE)
 		START_PROCESSING(SSmachines, src)
 		return
 	STOP_PROCESSING(SSmachines, src)
 
 /obj/machinery/fax/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(seconds_electrified > MACHINE_NOT_ELECTRIFIED)
 		seconds_electrified -= seconds_per_tick
 
 /obj/machinery/fax/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(seconds_electrified && !(machine_stat & NOPOWER))
 		if(shock(user, 100))
 			return
@@ -178,6 +200,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
  * Emag does not bring you into the syndicate network, but makes it visible to you.
  */
 /obj/machinery/fax/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if (!panel_open && !allow_exotic_faxes)
 		balloon_alert(user, "open panel first!")
 		return FALSE
@@ -190,6 +214,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 	return FALSE
 
 /obj/machinery/fax/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
@@ -198,12 +224,16 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
  * Open and close the wire panel.
  */
 /obj/machinery/fax/screwdriver_act(mob/living/user, obj/item/screwdriver)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, screwdriver)
 
 /**
  * Using the multi-tool with the panel closed causes the fax network name to be renamed.
  */
 /obj/machinery/fax/multitool_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if (panel_open)
 		return
 	var/new_fax_name = tgui_input_text(user, "Enter a new name for the fax machine.", "New Fax Name", max_length = 128)
@@ -220,6 +250,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/fax/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 	if(jammed && clear_jam(tool, user))
@@ -242,6 +274,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
  * Returns true if successful.
  */
 /obj/machinery/fax/proc/clear_jam(obj/item/item, mob/user)
+	procstart = null
+	src.procstart = null
 	if (istype(item, /obj/item/reagent_containers/spray))
 		var/obj/item/reagent_containers/spray/clean_spray = item
 		if(!clean_spray.reagents.has_reagent(/datum/reagent/space_cleaner, clean_spray.amount_per_transfer_from_this))
@@ -267,6 +301,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
  * Returns true if an item can be loaded into the fax machine.
  */
 /obj/machinery/fax/proc/can_load_item(obj/item/item)
+	procstart = null
+	src.procstart = null
 	if(!is_allowed_type(item))
 		return FALSE
 	if (!istype(item, /obj/item/stack))
@@ -279,6 +315,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
  * This list expands if you snip a particular wire.
  */
 /obj/machinery/fax/proc/is_allowed_type(obj/item/item)
+	procstart = null
+	src.procstart = null
 	var/list/checked_list = allow_exotic_faxes ? (allowed_types | exotic_types) : allowed_types
 	for(var/atom/movable/thing in item.get_all_contents())
 		if(!is_type_in_list(thing, checked_list))
@@ -286,12 +324,16 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 	return TRUE
 
 /obj/machinery/fax/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Fax")
 		ui.open()
 
 /obj/machinery/fax/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	//Record a list of all existing faxes.
 	for(var/obj/machinery/fax/FAX as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/fax))
@@ -323,6 +365,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 	return data
 
 /obj/machinery/fax/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -396,6 +440,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
  * * name - The friendly name of the fax machine, but these can be spoofed so the ID is also required
  */
 /obj/machinery/fax/proc/log_fax(obj/item/sent, destination_id, name)
+	procstart = null
+	src.procstart = null
 	if (istype(sent, /obj/item/paper))
 		var/obj/item/paper/sent_paper = sent
 		log_paper("[usr] has sent a fax with the message \"[sent_paper.get_raw_text()]\" to [name]/[destination_id].")
@@ -413,6 +459,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
  * * id - The network ID of the fax machine you want to send the item to.
  */
 /obj/machinery/fax/proc/send(obj/item/loaded, id)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/fax/FAX as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/fax))
 		if (FAX.fax_id != id)
 			continue
@@ -437,6 +485,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
  * * sender_name - The sender's name, which will be displayed in the message and recorded in the history of operations.
  */
 /obj/machinery/fax/proc/receive(obj/item/loaded, sender_name)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/machines/printer.ogg', 50, FALSE)
 	INVOKE_ASYNC(src, PROC_REF(animate_object_travel), loaded, "fax_receive", find_overlay_state(loaded, "receive"))
 	say("Received correspondence from [sender_name].")
@@ -452,6 +502,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
  * * sender_name - Name of fax sender, used in the PDA message.
 */
 /obj/machinery/fax/proc/alert_listeners(sender_name)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	var/list/targets = list()
@@ -482,6 +534,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
  * * overlay_state - An icon state to apply as an overlay to the fax machine.
  */
 /obj/machinery/fax/proc/animate_object_travel(obj/item/item, animation_state, overlay_state)
+	procstart = null
+	src.procstart = null
 	icon_state = animation_state
 	var/mutable_appearance/overlay = mutable_appearance(icon, overlay_state)
 	overlays += overlay
@@ -493,6 +547,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
  * * remove_overlay - Overlay to remove.
  */
 /obj/machinery/fax/proc/travel_animation_complete(mutable_appearance/remove_overlay)
+	procstart = null
+	src.procstart = null
 	icon_state = "fax"
 	overlays -= remove_overlay
 
@@ -503,6 +559,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
  * * state_prefix - Icon state action prefix to mutate.
  */
 /obj/machinery/fax/proc/find_overlay_state(obj/item/item, state_prefix)
+	procstart = null
+	src.procstart = null
 	if (istype(item, /obj/item/paper))
 		return "[state_prefix]_paper"
 	if (istype(item, /obj/item/photo))
@@ -529,6 +587,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
  * * vend - Item to vend from the fax machine.
  */
 /obj/machinery/fax/proc/vend_item(obj/item/vend)
+	procstart = null
+	src.procstart = null
 	vend.forceMove(drop_location())
 	if (hurl_contents)
 		vend.throw_at(get_edge_target_turf(drop_location(), pick(GLOB.alldirs)), rand(1, 4), EMBED_THROWSPEED_THRESHOLD)
@@ -546,6 +606,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
  * * history_fax_name - The name of the fax machine that performed the operation.
  */
 /obj/machinery/fax/proc/history_add(history_type = "Send", history_fax_name)
+	procstart = null
+	src.procstart = null
 	var/list/history_data = list()
 	history_data["history_type"] = history_type
 	history_data["history_fax_name"] = history_fax_name
@@ -554,6 +616,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 
 /// Clears the history of fax operations.
 /obj/machinery/fax/proc/history_clear()
+	procstart = null
+	src.procstart = null
 	fax_history = null
 
 /**
@@ -564,12 +628,16 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
  * * new_fax_name - The text of the name to be checked for a match.
  */
 /obj/machinery/fax/proc/fax_name_exist(new_fax_name)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/fax/FAX as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/fax))
 		if (FAX.fax_name == new_fax_name)
 			return TRUE
 	return FALSE
 
 /obj/machinery/fax/shock(mob/living/shocking, chance = 100, shock_source, siemens_coeff = 1)
+	procstart = null
+	src.procstart = null
 	if( machine_stat & (BROKEN|NOPOWER))
 		return FALSE
 	if(isnull(siemens_coeff))
@@ -578,6 +646,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 
 
 /obj/machinery/fax/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!held_item)
 		if (!panel_open)
@@ -630,6 +700,8 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 /// Sends a fax to a fax machine in an area! fax_area is a type, where all subtypes are also queried. If multiple machines, one is randomly picked
 /// If force is TRUE, we send a droppod with a fax machine and fax the message to that fax machine
 /proc/send_fax_to_area(obj/item/fax_item, area_type, sender, force = FALSE, force_pod_type)
+	procstart = null
+	src.procstart = null
 	var/list/fax_machines = SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/fax)
 	var/list/valid_fax_machines = list()
 

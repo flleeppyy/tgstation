@@ -24,10 +24,14 @@
 	var/ring_sound = 'sound/machines/microwave/microwave-end.ogg'
 
 /obj/structure/desk_bell/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/structure/desk_bell/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(held_item?.tool_behaviour == TOOL_WRENCH)
@@ -45,6 +49,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/desk_bell/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!COOLDOWN_FINISHED(src, ring_cooldown) && ring_cooldown_length)
 		return TRUE
@@ -55,19 +61,27 @@
 	return TRUE
 
 /obj/structure/desk_bell/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/structure/desk_bell/attackby(obj/item/weapon, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	times_rang += weapon.force
 	ring_bell(user)
 
 /obj/structure/desk_bell/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ring_bell()
 
 // Fix the clapper
 /obj/structure/desk_bell/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(broken_ringer)
 		balloon_alert(user, "repairing...")
 		tool.play_tool_sound(src)
@@ -82,6 +96,8 @@
 
 // Deconstruct
 /obj/structure/desk_bell/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	balloon_alert(user, "taking apart...")
 	tool.play_tool_sound(src)
 	if(tool.use_tool(src, user, 5 SECONDS))
@@ -96,6 +112,8 @@
 
 /// Check if the clapper breaks, and if it does, break it
 /obj/structure/desk_bell/proc/check_clapper(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(((times_rang >= 10000) || prob(times_rang/100)) && ring_cooldown_length)
 		if (user)
 			to_chat(user, span_notice("You hear [src]'s clapper fall off of its hinge. Nice job, you broke it."))
@@ -105,6 +123,8 @@
 
 /// Ring the bell
 /obj/structure/desk_bell/proc/ring_bell(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(broken_ringer)
 		return FALSE
 	check_clapper(user)
@@ -115,6 +135,8 @@
 	return TRUE
 
 /obj/structure/desk_bell/mouse_drop_dragged(atom/over_object, mob/user)
+	procstart = null
+	src.procstart = null
 	if(over_object != user)
 		return FALSE
 	var/obj/item/inhand_desk_bell/held_bell = new (user, src)
@@ -138,6 +160,8 @@
 	var/obj/structure/desk_bell/bell
 
 /obj/item/inhand_desk_bell/Initialize(mapload, obj/structure/desk_bell/bell)
+	procstart = null
+	src.procstart = null
 	if (mapload)
 		stack_trace("You shouldn't map in this item, use /obj/structure/desk_bell")
 	if (!bell)
@@ -151,12 +175,16 @@
 
 /// If we don't have a bell we're nothing
 /obj/item/inhand_desk_bell/proc/on_bell_gone()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(bell, list(COMSIG_QDELETING, COMSIG_MOVABLE_MOVED))
 	bell = null
 	qdel(src)
 
 /obj/item/inhand_desk_bell/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(istype(target, /obj/vehicle/ridden/wheelchair))
 		var/obj/vehicle/ridden/wheelchair/chair = target
@@ -165,31 +193,43 @@
 			return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/inhand_desk_bell/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	return bell.examine(user)
 
 /obj/item/inhand_desk_bell/on_thrown(mob/living/carbon/user, atom/target)
+	procstart = null
+	src.procstart = null
 	var/obj/throwing_bell = bell // We are about to null this variable but also want to return it
 	bell.forceMove(user.drop_location())
 	return throwing_bell
 
 /obj/item/inhand_desk_bell/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isturf(loc))
 		bell.forceMove(loc)
 
 /obj/item/inhand_desk_bell/attack(mob/living/target_mob, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
 	bell.ring_bell(user)
 
 /obj/item/inhand_desk_bell/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
 	bell.ring_bell(user)
 
 /obj/item/inhand_desk_bell/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!istype(interacting_with, /obj/vehicle/ridden/wheelchair))
 		return NONE

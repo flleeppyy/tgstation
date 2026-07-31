@@ -17,6 +17,8 @@
 	acid = 20
 
 /obj/structure/trader_sign/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_overlay("sign")
 	makeHologram()

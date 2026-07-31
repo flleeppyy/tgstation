@@ -16,6 +16,8 @@
 	var/key_info = "Figure it out yourself how"
 
 /datum/element/wearable_client_colour/Attach(obj/item/target, colour_type, equip_slots, colour_source, custom_colour, forced = FALSE, comsig_toggle = COMSIG_CLICK_ALT)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -52,6 +54,8 @@
 			try_client_colour(wearer)
 
 /datum/element/wearable_client_colour/Detach(obj/item/source)
+	procstart = null
+	src.procstart = null
 	var/list/fairly_long_list = list(
 		COMSIG_ITEM_EQUIPPED,
 		COMSIG_ITEM_DROPPED,
@@ -69,15 +73,21 @@
 	return ..()
 
 /datum/element/wearable_client_colour/proc/on_equipped(obj/item/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(slot & equip_slots)
 		try_client_colour(equipper)
 
 /datum/element/wearable_client_colour/proc/on_dropped(obj/item/source, mob/dropper)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	remove_client_colour(dropper)
 
 /datum/element/wearable_client_colour/proc/try_client_colour(mob/equipper)
+	procstart = null
+	src.procstart = null
 	if(!forced)
 		RegisterSignal(equipper, SIGNAL_ADDTRAIT(TRAIT_SEE_WORN_COLOURS), PROC_REF(on_trait_added))
 		RegisterSignal(equipper, SIGNAL_REMOVETRAIT(TRAIT_SEE_WORN_COLOURS), PROC_REF(on_trait_removed))
@@ -86,10 +96,14 @@
 	apply_client_colour(equipper)
 
 /datum/element/wearable_client_colour/proc/on_trait_added(mob/source, trait)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	apply_client_colour(source)
 
 /datum/element/wearable_client_colour/proc/apply_client_colour(mob/equipper)
+	procstart = null
+	src.procstart = null
 	var/datum/client_colour/colour_to_add = colour_type
 	if(custom_colour)
 		colour_to_add = new colour_to_add
@@ -97,10 +111,14 @@
 	equipper.add_client_colour(colour_to_add, colour_source)
 
 /datum/element/wearable_client_colour/proc/on_trait_removed(mob/source, trait)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	source.remove_client_colour(colour_source)
 
 /datum/element/wearable_client_colour/proc/remove_client_colour(mob/dropper)
+	procstart = null
+	src.procstart = null
 	if(!forced)
 		UnregisterSignal(dropper, list(SIGNAL_ADDTRAIT(TRAIT_SEE_WORN_COLOURS), SIGNAL_REMOVETRAIT(TRAIT_SEE_WORN_COLOURS)))
 		if(!HAS_TRAIT(dropper, TRAIT_SEE_WORN_COLOURS))
@@ -108,6 +126,8 @@
 	dropper.remove_client_colour(colour_source)
 
 /datum/element/wearable_client_colour/proc/toggle_see_worn_colors(obj/item/source, mob/clicker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(source.loc != clicker || HAS_TRAIT(clicker, TRAIT_INCAPACITATED))
 		return
@@ -120,5 +140,7 @@
 	return CLICK_ACTION_SUCCESS
 
 /datum/element/wearable_client_colour/proc/on_examine(obj/item/source, mob/user, list/examine_texts)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_texts += span_info("While holding or wearing it, [key_info] to toggle on/off the screen color from glasses and such.")

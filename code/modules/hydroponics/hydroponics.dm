@@ -70,6 +70,8 @@
 	var/obj/machinery/hydroponics/soil/current_soil
 
 /obj/machinery/hydroponics/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	//ALRIGHT YOU DEGENERATES. YOU HAD REAGENT HOLDERS FOR AT LEAST 4 YEARS AND NONE OF YOU MADE HYDROPONICS TRAYS HOLD NUTRIENT CHEMS INSTEAD OF USING "Points".
 	//SO HERE LIES THE "nutrilevel" VAR. IT'S DEAD AND I PUT IT OUT OF ITS MISERY. USE "reagents" INSTEAD. ~ArcaneMusic, accept no substitutes.
 	create_reagents(maxnutri, INJECTABLE)
@@ -179,6 +181,8 @@
 	circuit = /obj/item/circuitboard/machine/hydroponics/fullupgrade
 
 /obj/machinery/hydroponics/constructable/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_rotation)
 	AddComponent(/datum/component/plumbing/hydroponics)
@@ -186,6 +190,8 @@
 	AddComponent(/datum/component/fishing_spot, /datum/fish_source/hydro_tray)
 
 /obj/machinery/hydroponics/constructable/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/tmp_capacity = 0
 	for (var/datum/stock_part/matter_bin/matter_bin in component_parts)
@@ -217,6 +223,8 @@
 	update_current_power_usage()
 
 /obj/machinery/hydroponics/constructable/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Use <b>Ctrl-Click</b> to activate autogrow. <b>RMB</b> to empty the tray's nutrients.")
 	if(in_range(user, src) || isobserver(user))
@@ -235,6 +243,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/hydroponics/Destroy()
+	procstart = null
+	src.procstart = null
 	if(myseed)
 		QDEL_NULL(myseed)
 	remove_shared_particles(/particles/pollen)
@@ -242,6 +252,8 @@
 	return ..()
 
 /obj/machinery/hydroponics/Exited(atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!QDELETED(src) && gone == myseed)
 		set_seed(null, FALSE)
@@ -261,12 +273,18 @@
 		QDEL_NULL(our_snail)
 
 /obj/machinery/hydroponics/constructable/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/hydroponics/constructable/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
-/obj/machinery/hydroponics/bullet_act(obj/projectile/proj) //Works with the Somatoray to modify plant variables.
+/obj/machinery/hydroponics/bullet_act(obj/projectile/proj)
+	procstart = null
+	src.procstart = null //Works with the Somatoray to modify plant variables.
 	if(!myseed)
 		return ..()
 	if(istype(proj, /obj/projectile/energy/flora/mut))
@@ -283,11 +301,15 @@
 	return ..()
 
 /obj/machinery/hydroponics/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((machine_stat & NOPOWER) && self_sustaining)
 		set_self_sustaining(FALSE)
 
 /obj/machinery/hydroponics/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/needs_update = FALSE // Checks if the icon needs updating so we don't redraw empty trays every time
 
 	if(!isnull(our_snail))
@@ -459,6 +481,8 @@
 	return
 
 /obj/machinery/hydroponics/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(self_sustaining)
 		set_light(3)
@@ -470,6 +494,8 @@
 	set_light(0)
 
 /obj/machinery/hydroponics/update_name(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(GetComponent(/datum/component/rename))
 		return
@@ -478,6 +504,8 @@
 		name += " ([myseed.plantname])"
 
 /obj/machinery/hydroponics/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(GetComponent(/datum/component/rename))
 		return
@@ -486,6 +514,8 @@
 		desc += " Filled with [current_soil.name]."
 
 /obj/machinery/hydroponics/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(myseed)
 		. += myseed.get_tray_overlay(age, plant_status, plant_offset_y)
@@ -500,6 +530,8 @@
 		. += emissive_appearance(icon, self_sustaining_overlay_icon_state, src, OBJ_LAYER + 0.002)
 
 /obj/machinery/hydroponics/proc/update_status_light_overlays()
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/indicatorsuffix = alt_tray ? "-alt" : ""
 	if(waterlevel <= 10)
@@ -520,6 +552,8 @@
 
 ///Sets a new value for the myseed variable, which is the seed of the plant that's growing inside the tray.
 /obj/machinery/hydroponics/proc/set_seed(obj/item/seeds/new_seed, delete_old_seed = TRUE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/seeds/old_seed = myseed
 	myseed = new_seed
 	for(var/datum/plant_gene/trait/gene in old_seed?.genes)
@@ -544,6 +578,8 @@
  * new_value - true / false value that self_sustaining is being set to
  */
 /obj/machinery/hydroponics/proc/set_self_sustaining(new_value)
+	procstart = null
+	src.procstart = null
 	if(self_sustaining == new_value)
 		return
 
@@ -555,6 +591,8 @@
 	SEND_SIGNAL(src, COMSIG_HYDROTRAY_SET_SELFSUSTAINING, new_value)
 
 /obj/machinery/hydroponics/proc/set_weedlevel(new_weedlevel, update_icon = TRUE)
+	procstart = null
+	src.procstart = null
 	if(weedlevel == new_weedlevel)
 		return
 	SEND_SIGNAL(src, COMSIG_HYDROTRAY_SET_WEEDLEVEL, new_weedlevel)
@@ -563,6 +601,8 @@
 		update_appearance()
 
 /obj/machinery/hydroponics/proc/set_pestlevel(new_pestlevel, update_icon = TRUE)
+	procstart = null
+	src.procstart = null
 	if(pestlevel == new_pestlevel)
 		return
 	SEND_SIGNAL(src, COMSIG_HYDROTRAY_SET_PESTLEVEL, new_pestlevel)
@@ -571,6 +611,8 @@
 		update_appearance()
 
 /obj/machinery/hydroponics/proc/set_waterlevel(new_waterlevel, update_icon = TRUE)
+	procstart = null
+	src.procstart = null
 	if(waterlevel == new_waterlevel)
 		return
 	SEND_SIGNAL(src, COMSIG_HYDROTRAY_SET_WATERLEVEL, new_waterlevel)
@@ -583,6 +625,8 @@
 		adjust_toxic(-round(difference/4))//Toxicity dilutation code. The more water you put in, the lesser the toxin concentration.
 
 /obj/machinery/hydroponics/proc/set_plant_health(new_plant_health, update_icon = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(plant_health == new_plant_health || ((!myseed || plant_status == HYDROTRAY_PLANT_DEAD) && !forced))
 		return
 	SEND_SIGNAL(src, COMSIG_HYDROTRAY_SET_PLANT_HEALTH, new_plant_health)
@@ -591,6 +635,8 @@
 		update_appearance()
 
 /obj/machinery/hydroponics/proc/set_toxic(new_toxic, update_icon = TRUE)
+	procstart = null
+	src.procstart = null
 	if(toxic == new_toxic)
 		return
 	SEND_SIGNAL(src, COMSIG_HYDROTRAY_SET_TOXIC, new_toxic)
@@ -599,6 +645,8 @@
 		update_appearance()
 
 /obj/machinery/hydroponics/proc/set_plant_status(new_plant_status)
+	procstart = null
+	src.procstart = null
 	if(plant_status == new_plant_status)
 		return
 	SEND_SIGNAL(src, COMSIG_HYDROTRAY_SET_PLANT_STATUS, new_plant_status)
@@ -613,6 +661,8 @@
  * * adjustamt - determines how much water the tray will be adjusted upwards or downwards.
  */
 /obj/machinery/hydroponics/proc/adjust_waterlevel(amt)
+	procstart = null
+	src.procstart = null
 	var/initial_waterlevel = waterlevel
 	set_waterlevel(clamp(waterlevel+amt, 0, maxwater), FALSE)
 	return waterlevel-initial_waterlevel
@@ -623,6 +673,8 @@
  * * adjustamt - Determines how much the plant_health will be adjusted upwards or downwards.
  */
 /obj/machinery/hydroponics/proc/adjust_plant_health(amt)
+	procstart = null
+	src.procstart = null
 	set_plant_health(clamp(plant_health + amt, 0, myseed?.endurance), FALSE)
 
 /**
@@ -631,6 +683,8 @@
  * * adjustamt - Determines how much the toxic will be adjusted upwards or downwards.
  */
 /obj/machinery/hydroponics/proc/adjust_toxic(amt)
+	procstart = null
+	src.procstart = null
 	set_toxic(clamp(toxic + amt, 0, MAX_TRAY_TOXINS), FALSE)
 
 /**
@@ -639,15 +693,21 @@
  * * adjustamt - Determines how much the pest level will be adjusted upwards or downwards.
  */
 /obj/machinery/hydroponics/proc/adjust_pestlevel(amt)
+	procstart = null
+	src.procstart = null
 	set_pestlevel(clamp(pestlevel + amt, 0, MAX_TRAY_PESTS), FALSE)
 
 /obj/machinery/hydroponics/proc/remove_snail(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/movable/mob_holder = source.loc
 	mob_holder.forceMove(drop_location())
 
 /obj/machinery/hydroponics/proc/handle_snail()
+	procstart = null
+	src.procstart = null
 	if(prob(15))
 		our_snail.handle_animation() //our snail waddles throughout the tray
 	if(prob(5))
@@ -659,6 +719,8 @@
  * * adjustamt - Determines how much the weed level will be adjusted upwards or downwards.
  */
 /obj/machinery/hydroponics/proc/adjust_weedlevel(amt)
+	procstart = null
+	src.procstart = null
 	var/weed_mod = 1
 	//If we are not a soil type tray and out plant is semiaquatic, increase weed.
 	if(!(tray_flags & SOIL) && myseed?.get_gene(/datum/plant_gene/trait/semiaquatic))
@@ -666,6 +728,8 @@
 	set_weedlevel(clamp(weedlevel + amt * weed_mod, 0, MAX_TRAY_WEEDS), FALSE)
 
 /obj/machinery/hydroponics/examine(user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(myseed)
 		. += span_info("It has [span_name("[myseed.plantname]")] planted.")
@@ -693,6 +757,8 @@
  * Plants a new weed in an empty tray, then resets the tray.
  */
 /obj/machinery/hydroponics/proc/weedinvasion()
+	procstart = null
+	src.procstart = null
 	var/oldPlantName
 	if(myseed) // In case there's nothing in the tray beforehand
 		oldPlantName = myseed.plantname
@@ -724,7 +790,9 @@
 	visible_message(span_warning("The [oldPlantName] is overtaken by some [myseed.plantname]!"))
 
 /// Mutates the stats of the current seed
-/obj/machinery/hydroponics/proc/mutate(lifemut = 2, endmut = 5, productmut = 1, yieldmut = 2, potmut = 25, wrmut = 2, wcmut = 5, traitmut = 0, stabmut = 3) // Mutates the current seed
+/obj/machinery/hydroponics/proc/mutate(lifemut = 2, endmut = 5, productmut = 1, yieldmut = 2, potmut = 25, wrmut = 2, wcmut = 5, traitmut = 0, stabmut = 3)
+	procstart = null
+	src.procstart = null // Mutates the current seed
 	myseed?.mutate(
 		lifemut = lifemut,
 		endmut = endmut,
@@ -739,6 +807,8 @@
 
 /// Mutate but with higher default values
 /obj/machinery/hydroponics/proc/hardmutate(lifemut = 4, endmut = 10, productmut = 2, yieldmut = 4, potmut = 50, wrmut = 4, wcmut = 10, traitmut = 0, stabmut = 4)
+	procstart = null
+	src.procstart = null
 	myseed?.mutate(
 		lifemut = lifemut,
 		endmut = endmut,
@@ -753,6 +823,8 @@
 
 /// Mutate but only introduce a random trait
 /obj/machinery/hydroponics/proc/traitmutate(traitmut = 1)
+	procstart = null
+	src.procstart = null
 	myseed?.mutate(
 		lifemut = 0,
 		endmut = 0,
@@ -767,6 +839,8 @@
 
 /// Mutate the species of the plant into one of its mutations
 /obj/machinery/hydroponics/proc/mutatespecie()
+	procstart = null
+	src.procstart = null
 	if(!myseed || plant_status == HYDROTRAY_PLANT_DEAD || !LAZYLEN(myseed.mutatelist))
 		return
 
@@ -784,6 +858,8 @@
 
 /// Transform the plant into a completely random species
 /obj/machinery/hydroponics/proc/polymorph()
+	procstart = null
+	src.procstart = null
 	if(!myseed || plant_status == HYDROTRAY_PLANT_DEAD)
 		return
 
@@ -801,6 +877,8 @@
 
 /// Mutates the weeds in the tray into a random weed plant (which can overtake existing plants)
 /obj/machinery/hydroponics/proc/mutateweed()
+	procstart = null
+	src.procstart = null
 	if(weedlevel <= 5)
 		visible_message(span_warning("The few weeds in [src] seem to react, but only for a moment..."))
 		return
@@ -820,6 +898,8 @@
  * Called after plant mutation, update the appearance of the tray content and send a visible_message()
  */
 /obj/machinery/hydroponics/proc/after_mutation(message)
+	procstart = null
+	src.procstart = null
 	visible_message(message)
 	update_appearance()
 
@@ -828,6 +908,8 @@
  * Cleans up various stats for the plant upon death, including pests, harvestability, and plant health.
  */
 /obj/machinery/hydroponics/proc/plantdies(update_icon = TRUE)
+	procstart = null
+	src.procstart = null
 	set_plant_health(0, update_icon = FALSE, forced = TRUE)
 	set_plant_status(HYDROTRAY_PLANT_DEAD)
 	set_pestlevel(0, update_icon = FALSE) // Pests die
@@ -844,6 +926,8 @@
  * * Range - The Oview range of trays to which to look for plants to donate reagents.
  */
 /obj/machinery/hydroponics/proc/pollinate(range = 1)
+	procstart = null
+	src.procstart = null
 	being_pollinated = FALSE
 	for(var/obj/machinery/hydroponics/T in oview(src, range))
 		//Here is where we check for window blocking.
@@ -866,6 +950,8 @@
  * Checks if the bee can pollinate the plant
  */
 /obj/machinery/hydroponics/proc/can_bee_pollinate()
+	procstart = null
+	src.procstart = null
 	if(isnull(myseed))
 		return FALSE
 	if(plant_status == HYDROTRAY_PLANT_DEAD || recent_bee_visit)
@@ -878,6 +964,8 @@
  * * User - Person who last added chemicals to the tray for logging purposes.
  */
 /obj/machinery/hydroponics/proc/mutatepest()
+	procstart = null
+	src.procstart = null
 	if(pestlevel <= 5)
 		visible_message(span_warning("The pests seem to behave oddly in [src], but quickly settle down..."))
 		return
@@ -891,11 +979,15 @@
 	spawn_atom_to_turf(/mob/living/basic/spider/growing/spiderling/hunter, src, 3, FALSE)
 
 /obj/machinery/hydroponics/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/hydroponics/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(IS_EDIBLE(tool) || is_reagent_container(tool))  // Syringe stuff (and other reagent containers now too)
 		var/obj/item/reagent_containers/reagent_source = tool
 
@@ -1156,18 +1248,24 @@
 	return NONE
 
 /obj/machinery/hydroponics/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (istype(tool, /obj/item/reagent_containers/syringe))
 		to_chat(user, span_warning("You can't get any extract out of this plant."))
 		return ITEM_INTERACT_BLOCKING
 	return NONE
 
 /obj/machinery/hydroponics/can_be_unfasten_wrench(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	if (!unwrenchable)  // case also covered by NODECONSTRUCT checks in default_unfasten_wrench
 		return CANT_UNFASTEN
 
 	return ..()
 
 /obj/machinery/hydroponics/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -1184,6 +1282,8 @@
 			user.examinate(src)
 
 /obj/machinery/hydroponics/click_ctrl(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		return NONE
 
@@ -1199,6 +1299,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/hydroponics/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -1212,6 +1314,8 @@
 
 
 /obj/machinery/hydroponics/proc/empty_tray(mob/user)
+	procstart = null
+	src.procstart = null
 	reagents.clear_reagents()
 	for(var/obj/item/mob_holder/snail/possible_snail in contents)
 		possible_snail.forceMove(drop_location())
@@ -1225,6 +1329,8 @@
  * * User - The mob who clears the tray.
  */
 /obj/machinery/hydroponics/proc/update_tray(mob/user, product_count)
+	procstart = null
+	src.procstart = null
 	lastproduce = age
 	if(istype(myseed, /obj/item/seeds/replicapod))
 		to_chat(user, span_notice("You harvest from the [myseed.plantname]."))
@@ -1245,7 +1351,9 @@
  * Spawn Plant.
  * Upon using strange reagent on a tray, it will spawn a killer tomato or killer tree at random.
  */
-/obj/machinery/hydroponics/proc/spawnplant() // why would you put strange reagent in a hydro tray you monster I bet you also feed them blood
+/obj/machinery/hydroponics/proc/spawnplant()
+	procstart = null
+	src.procstart = null // why would you put strange reagent in a hydro tray you monster I bet you also feed them blood
 	var/list/livingplants = list(/mob/living/basic/tree, /mob/living/basic/killer_tomato)
 	var/chosen = pick(livingplants)
 	var/mob/living/C = new chosen(get_turf(src))
@@ -1253,6 +1361,8 @@
 
 /// Plants the seed / graft into the tray and resets growth related stats such as maturity on the tray.
 /obj/machinery/hydroponics/proc/propagate_plant(obj/item/seeds/young_plant, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(young_plant))
 		return
 	if(myseed)
@@ -1273,6 +1383,8 @@
 
 /// Clears the plant from the tray, killing it in the process, optionally clearing weeds as well.
 /obj/machinery/hydroponics/proc/remove_plant(clear_weeds = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!myseed)
 		return
 	plantdies(FALSE)
@@ -1318,6 +1430,8 @@
 	var/datum/port/output/reagents_level
 
 /obj/item/circuit_component/hydroponics/populate_ports()
+	procstart = null
+	src.procstart = null
 	selfsustaining_setting = add_input_port("Auto-Grow Setting", PORT_TYPE_BOOLEAN)
 
 	plant_status = add_output_port("Plant Status", PORT_TYPE_NUMBER)
@@ -1334,6 +1448,8 @@
 	reagents_level = add_output_port("Reagents Level", PORT_TYPE_NUMBER)
 
 /obj/machinery/hydroponics/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(arrived, /obj/item/mob_holder/snail))
 		return
@@ -1345,6 +1461,8 @@
 
 
 /obj/item/circuit_component/hydroponics/register_usb_parent(atom/movable/parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(parent, /obj/machinery/hydroponics))
 		attached_tray = parent
@@ -1361,6 +1479,8 @@
 		RegisterSignal(attached_tray.reagents, COMSIG_REAGENTS_HOLDER_UPDATED, PROC_REF(update_reagents_level))
 
 /obj/item/circuit_component/hydroponics/unregister_usb_parent(atom/movable/parent)
+	procstart = null
+	src.procstart = null
 	attached_tray = null
 	UnregisterSignal(parent, list(COMSIG_HYDROTRAY_SET_SEED, COMSIG_HYDROTRAY_SET_SELFSUSTAINING,
 		COMSIG_HYDROTRAY_SET_WEEDLEVEL, COMSIG_HYDROTRAY_SET_PESTLEVEL, COMSIG_HYDROTRAY_SET_WATERLEVEL,
@@ -1371,54 +1491,80 @@
 	return ..()
 
 /obj/item/circuit_component/hydroponics/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("Plant Status Index: \"[HYDROTRAY_NO_PLANT]\", \"[HYDROTRAY_PLANT_GROWING]\", \"[HYDROTRAY_PLANT_DEAD]\", \"[HYDROTRAY_PLANT_HARVESTABLE]\"", "orange", "info")
 
 /obj/item/circuit_component/hydroponics/proc/on_set_seed(datum/source, obj/item/seeds/new_seed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	seeds_planted.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/hydroponics/proc/on_set_selfsustaining(datum/source, new_value)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	is_self_sustaining.set_output(new_value)
 
 /obj/item/circuit_component/hydroponics/proc/on_set_weedlevel(datum/source, new_value)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	weeds_level.set_output(new_value)
 
 /obj/item/circuit_component/hydroponics/proc/on_set_pestlevel(datum/source, new_value)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	pests_level.set_output(new_value)
 
 /obj/item/circuit_component/hydroponics/proc/on_set_waterlevel(datum/source, new_value)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	water_level.set_output(new_value)
 
 /obj/item/circuit_component/hydroponics/proc/on_set_plant_health(datum/source, new_value)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	plant_health.set_output(new_value)
 
 /obj/item/circuit_component/hydroponics/proc/on_set_toxic_level(datum/source, new_value)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	toxic_level.set_output(new_value)
 
 /obj/item/circuit_component/hydroponics/proc/on_set_plant_status(datum/source, new_value)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	plant_status.set_output(new_value)
 
 /obj/item/circuit_component/hydroponics/proc/on_harvest(datum/source, product_amount)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	last_harvest.set_output(product_amount)
 	plant_harvested.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/hydroponics/proc/on_plant_death(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	plant_died.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/hydroponics/proc/update_reagents_level(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	reagents_level.set_output(attached_tray.reagents.total_volume)
 
 /obj/item/circuit_component/hydroponics/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(attached_tray.anchored && attached_tray.powered())
 		attached_tray.set_self_sustaining(!!selfsustaining_setting.value)

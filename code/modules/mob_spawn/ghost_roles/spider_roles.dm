@@ -7,21 +7,29 @@
 	var/obj/effect/mob_spawn/ghost_role/spider/spawner
 
 /obj/structure/spider/eggcluster/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	pixel_x = base_pixel_x + rand(3,-3)
 	pixel_y = base_pixel_y + rand(3,-3)
 	return ..()
 
 /obj/structure/spider/eggcluster/Destroy()
+	procstart = null
+	src.procstart = null
 	if(spawner)
 		QDEL_NULL(spawner)
 	return ..()
 
 /obj/structure/spider/eggcluster/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	if(spawner)
 		spawner.attack_ghost(user)
 	return ..()
 
 /obj/structure/spider/eggcluster/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(istype(user, /mob/living/basic/spider/giant/midwife))
@@ -93,6 +101,8 @@
 	var/flash_window = FALSE
 
 /obj/effect/mob_spawn/ghost_role/spider/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 	potentialspawns = string_list(potentialspawns)
@@ -101,10 +111,14 @@
 	forceMove(egg)
 
 /obj/effect/mob_spawn/ghost_role/spider/Destroy()
+	procstart = null
+	src.procstart = null
 	egg = null
 	return ..()
 
 /obj/effect/mob_spawn/ghost_role/spider/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	amount_grown += rand(5, 15) * seconds_per_tick
 	if(amount_grown >= 100 && !ready)
 		ready = TRUE
@@ -122,6 +136,8 @@
 		STOP_PROCESSING(SSobj, src)
 
 /obj/effect/mob_spawn/ghost_role/spider/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -132,6 +148,8 @@
 			attack_ghost(ghost)
 
 /obj/effect/mob_spawn/ghost_role/spider/allow_spawn(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -142,6 +160,8 @@
 	return TRUE
 
 /obj/effect/mob_spawn/ghost_role/spider/special(mob/living/basic/spider/spawned_mob, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isspider(spawned_mob))
 		spawned_mob.directive = directive
@@ -199,6 +219,8 @@
 	flash_window = TRUE
 
 /obj/effect/mob_spawn/ghost_role/spider/pre_ghost_take(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	var/chosen_spider = length(potentialspawns) > 1 ? get_radial_choice(user) : potentialspawns[1]
 	if(isnull(chosen_spider))
 		return FALSE
@@ -207,6 +229,8 @@
 
 /// Pick a spider type from a radial menu
 /obj/effect/mob_spawn/ghost_role/spider/proc/get_radial_choice(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/spider_list = list()
 	var/list/display_spiders = list()
 	for(var/choice in potentialspawns)

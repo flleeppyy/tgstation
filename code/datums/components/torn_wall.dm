@@ -14,12 +14,16 @@
 	var/current_stage = TORN_WALL_INITIAL
 
 /datum/component/torn_wall/Initialize(current_stage)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isclosedturf(parent) || isindestructiblewall(parent))
 		return COMPONENT_INCOMPATIBLE
 	src.current_stage = current_stage || src.current_stage
 
 /datum/component/torn_wall/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examined))
 	RegisterSignal(parent, COMSIG_ATOM_TOOL_ACT(TOOL_WELDER), PROC_REF(on_welded))
 	RegisterSignal(parent, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(on_update_overlays))
@@ -27,6 +31,8 @@
 	apply_visuals()
 
 /datum/component/torn_wall/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	var/atom/atom_parent = parent
 	UnregisterSignal(parent, list(
 		COMSIG_ATOM_EXAMINE,
@@ -37,10 +43,14 @@
 	atom_parent.update_appearance(UPDATE_ICON)
 
 /datum/component/torn_wall/InheritComponent(datum/component/C, i_am_original)
+	procstart = null
+	src.procstart = null
 	increase_stage()
 
 /// Play a fun animation and make our wall look damaged
 /datum/component/torn_wall/proc/apply_visuals()
+	procstart = null
+	src.procstart = null
 	var/atom/atom_parent = parent
 	playsound(atom_parent, 'sound/effects/bang.ogg', 50, vary = TRUE)
 	atom_parent.update_appearance(UPDATE_ICON)
@@ -48,6 +58,8 @@
 
 /// Make the effect more dramatic
 /datum/component/torn_wall/proc/increase_stage()
+	procstart = null
+	src.procstart = null
 	current_stage++
 	if (current_stage != TORN_WALL_RUINED)
 		apply_visuals()
@@ -64,12 +76,16 @@
 
 /// Fix it up on weld
 /datum/component/torn_wall/proc/on_welded(atom/source, mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(try_repair), source, user, tool)
 	return ITEM_INTERACT_BLOCKING
 
 /// Fix us up
 /datum/component/torn_wall/proc/try_repair(atom/source, mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	source.balloon_alert(user, "repairing...")
 	if(!tool.use_tool(source, user, 5 SECONDS, amount = 2, volume = 50))
 		source.balloon_alert(user, "interrupted!")
@@ -83,6 +99,8 @@
 
 /// Give them a hint
 /datum/component/torn_wall/proc/on_examined(atom/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/intensity = (current_stage == TORN_WALL_INITIAL) ? "slightly" : "badly"
 	examine_list += span_notice("It looks [intensity] damaged.")
@@ -90,6 +108,8 @@
 
 /// Show a little crack on here
 /datum/component/torn_wall/proc/on_update_overlays(turf/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mutable_appearance/crack = mutable_appearance('icons/turf/overlays.dmi', "explodable", source.layer + 0.1)
 	if (current_stage == TORN_WALL_INITIAL)
@@ -98,6 +118,8 @@
 
 /// If the wall becomes any other turf, delete us. Transforming into a different works fine as a fix.
 /datum/component/torn_wall/proc/on_turf_changed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 

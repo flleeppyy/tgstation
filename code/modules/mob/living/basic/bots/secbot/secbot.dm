@@ -55,6 +55,8 @@
 	var/cuff_type = /obj/item/restraints/handcuffs/cable/zipties/used
 
 /mob/living/basic/bot/secbot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	weapon = new baton_type(src)
 	update_appearance(UPDATE_ICON)
@@ -70,19 +72,27 @@
 	add_arrest_component()
 
 /mob/living/basic/bot/secbot/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(weapon)
 	return ..()
 
 /mob/living/basic/bot/secbot/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(mode == BOT_HUNT)
 		icon_state = "[base_icon_state]-c"
 	return ..()
 
 /mob/living/basic/bot/secbot/turn_off()
+	procstart = null
+	src.procstart = null
 	..()
 	update_bot_mode(new_mode = BOT_IDLE)
 
 /mob/living/basic/bot/secbot/on_saboteur(datum/source, disrupt_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(security_mode_flags & SECBOT_SABOTEUR_AFFECTED))
 		security_mode_flags |= SECBOT_SABOTEUR_AFFECTED
@@ -90,9 +100,13 @@
 		return TRUE
 
 /mob/living/basic/bot/secbot/proc/remove_saboteur_effect()
+	procstart = null
+	src.procstart = null
 	security_mode_flags &= ~SECBOT_SABOTEUR_AFFECTED
 
-/mob/living/basic/bot/secbot/electrocute_act(shock_damage, source, siemens_coeff = 1, flags = NONE)//shocks only make him angry
+/mob/living/basic/bot/secbot/electrocute_act(shock_damage, source, siemens_coeff = 1, flags = NONE)
+	procstart = null
+	src.procstart = null//shocks only make him angry
 	if(speed >= initial(speed) + 3)
 		return
 	speed += 3
@@ -101,6 +115,8 @@
 	visible_message(span_warning("[src] shakes and speeds up!"))
 
 /mob/living/basic/bot/secbot/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == weapon)
 		weapon = null
@@ -108,6 +124,8 @@
 
 // Variables sent to TGUI
 /mob/living/basic/bot/secbot/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 	if(!(bot_access_flags & BOT_COVER_LOCKED) || HAS_SILICON_ACCESS(user))
 		data["custom_controls"]["check_id"] = security_mode_flags & SECBOT_CHECK_IDS
@@ -119,6 +137,8 @@
 
 // Actions received from TGUI
 /mob/living/basic/bot/secbot/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/user = ui.user
 	if(. || (bot_access_flags & BOT_COVER_LOCKED && !HAS_SILICON_ACCESS(user)))
@@ -143,6 +163,8 @@
 
 
 /mob/living/basic/bot/secbot/attack_hand(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 
 	// Turns an oversight into a feature. Beepsky will now announce when pacifists taunt him over sec comms.
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
@@ -156,9 +178,13 @@
 	return ..()
 
 /mob/living/basic/bot/secbot/proc/retrieve_emag_message()
+	procstart = null
+	src.procstart = null
 	audible_message(span_danger("[src] buzzes oddly!"))
 
 /mob/living/basic/bot/secbot/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(bot_access_flags & BOT_COVER_EMAGGED))
 		return
@@ -171,9 +197,13 @@
 	return TRUE
 
 /mob/living/basic/bot/secbot/proc/post_arrest(mob/living/carbon/current_target)
+	procstart = null
+	src.procstart = null
 	playsound(src, SFX_LAW, 50, FALSE)
 
 /mob/living/basic/bot/secbot/proc/post_stun(mob/living/carbon/current_target, harm = FALSE)
+	procstart = null
+	src.procstart = null
 	flick("[base_icon_state]-c", src)
 	var/threat = 5 || ai_controller.blackboard[BB_CURRENT_CRIMINAL_ASSESSMENT]
 	if(security_mode_flags & SECBOT_DECLARE_ARRESTS)
@@ -183,12 +213,16 @@
 	update_bot_mode(new_mode = BOT_PREP_ARREST)
 
 /mob/living/basic/bot/secbot/explode()
+	procstart = null
+	src.procstart = null
 	var/atom/drop_location = drop_location()
 	retrieve_secbot_drops(drop_location)
 	new /obj/effect/decal/cleanable/blood/oil(loc)
 	return ..()
 
 /mob/living/basic/bot/secbot/proc/retrieve_secbot_drops(atom/drop_location)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bot_assembly/secbot/secbot_assembly = new(drop_location)
 	secbot_assembly.build_step = ASSEMBLY_FIRST_STEP
 	secbot_assembly.add_overlay("hs_hole")
@@ -197,6 +231,8 @@
 	drop_part(weapon, drop_location)
 
 /mob/living/basic/bot/secbot/proc/on_entered(datum/source, atom/movable/to_be_tripped)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/possible_target = ai_controller.blackboard[BB_CURRENT_TARGET]
 	if(!has_gravity() || !ismob(to_be_tripped) || !possible_target)
@@ -207,6 +243,8 @@
 
 /// Returns true if the current target is unable to pay to be detained/arrested
 /mob/living/basic/bot/secbot/proc/payment_check(mob/living/carbon/human/human_target)
+	procstart = null
+	src.procstart = null
 	var/fair_market_price = (security_mode_flags & SECBOT_HANDCUFF_TARGET) ? price_arrest : price_detain
 	if(fair_market_price <= 0)
 		return FALSE
@@ -229,6 +267,8 @@
 	return FALSE
 
 /mob/living/basic/bot/secbot/generate_speak_list()
+	procstart = null
+	src.procstart = null
 	var/static/list/secbot_lines = list(
 		BEEPSKY_VOICED_CRIMINAL_DETECTED = 'sound/mobs/non-humanoids/beepsky/criminal.ogg',
 		BEEPSKY_VOICED_FREEZE = 'sound/mobs/non-humanoids/beepsky/freeze.ogg',
@@ -241,6 +281,8 @@
 
 
 /mob/living/basic/bot/secbot/proc/judgement_criteria()
+	procstart = null
+	src.procstart = null
 	var/final = FALSE
 	if(bot_access_flags & BOT_COVER_EMAGGED)
 		final |= JUDGE_EMAGGED
@@ -255,6 +297,8 @@
 	return final
 
 /mob/living/basic/bot/secbot/proc/add_arrest_component()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/stun_n_cuff,\
 		stun_sound = stun_sound,\
 		post_stun_callback = CALLBACK(src, PROC_REF(post_stun)),\

@@ -47,6 +47,8 @@
 	multiple_sprites = AMMO_BOX_PER_BULLET
 
 /obj/item/ammo_box/rocket/can_load(mob/user)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/item/ammo_box/n762

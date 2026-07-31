@@ -8,19 +8,27 @@
 	var/last_bumpmine_tick = -1
 
 /datum/component/proficient_miner/Initialize(mining_speed = 0, pass_driver = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
 	src.mining_speed = mining_speed
 	src.pass_driver = pass_driver
 
 /datum/component/proficient_miner/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_MOVABLE_BUMP, PROC_REF(on_bump))
 	RegisterSignal(parent, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(on_unarmed_attack))
 
 /datum/component/proficient_miner/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_MOVABLE_BUMP, COMSIG_LIVING_UNARMED_ATTACK))
 
 /datum/component/proficient_miner/proc/on_unarmed_attack(mob/living/source, atom/target, proximity, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!proximity)
@@ -28,6 +36,8 @@
 	try_mine(source, target)
 
 /datum/component/proficient_miner/proc/on_bump(atom/movable/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(last_bumpmine_tick == world.time)
@@ -35,6 +45,8 @@
 	try_mine(source, target)
 
 /datum/component/proficient_miner/proc/try_mine(atom/movable/source, atom/target)
+	procstart = null
+	src.procstart = null
 	if(!ismineralturf(target))
 		return
 
@@ -63,6 +75,8 @@
 	mineral_wall.gets_drilled(source)
 
 /datum/component/proficient_miner/proc/slow_mine(mob/living/user, turf/closed/mineral/mineral_wall)
+	procstart = null
+	src.procstart = null
 	if(TIMER_COOLDOWN_RUNNING(mineral_wall, REF(user))) //prevents mining turfs in progress
 		return
 

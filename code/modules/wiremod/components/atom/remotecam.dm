@@ -54,6 +54,8 @@
 	var/current_camera_network = ""
 
 /obj/item/circuit_component/remotecam/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(camera_range_settable)
 		. += create_ui_notice("Energy Usage For Near (0) Range: [display_energy(REMOTECAM_ENERGY_USAGE_NEAR)] Per [DisplayTimeText(COMP_CLOCK_DELAY)]", "orange", "clock")
@@ -62,6 +64,8 @@
 		. += create_ui_notice("Energy Usage While Active: [display_energy(current_camera_range > 0 ? REMOTECAM_ENERGY_USAGE_FAR : REMOTECAM_ENERGY_USAGE_NEAR)] Per [DisplayTimeText(COMP_CLOCK_DELAY)]", "orange", "clock")
 
 /obj/item/circuit_component/remotecam/populate_ports()
+	procstart = null
+	src.procstart = null
 	start = add_input_port("Start", PORT_TYPE_SIGNAL)
 	stop = add_input_port("Stop", PORT_TYPE_SIGNAL)
 	if(camera_range_settable)
@@ -73,21 +77,29 @@
 	c_tag_random = rand(1, 999)
 
 /obj/item/circuit_component/remotecam/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	shell_parent = shell
 	stop_process()
 
 /obj/item/circuit_component/remotecam/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	stop_process()
 	remove_camera()
 	shell_parent = null
 
 /obj/item/circuit_component/remotecam/Destroy()
+	procstart = null
+	src.procstart = null
 	stop_process()
 	remove_camera()
 	shell_parent = null
 	return ..()
 
 /obj/item/circuit_component/remotecam/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!shell_parent || !shell_camera)
 		return
 	update_camera_name_network()
@@ -104,6 +116,8 @@
  * Initializes the camera
  */
 /obj/item/circuit_component/remotecam/proc/init_camera()
+	procstart = null
+	src.procstart = null
 	shell_camera.desc = "This camera belongs in a circuit. If you see this, tell a coder!"
 	shell_camera.AddElement(/datum/element/empprotection, EMP_PROTECT_ALL)
 	shell_camera.use_power = NO_POWER_USE
@@ -131,6 +145,8 @@
  * Remove the camera
  */
 /obj/item/circuit_component/remotecam/proc/remove_camera()
+	procstart = null
+	src.procstart = null
 	if(!shell_camera)
 		return
 	if(!camera_signal_move_override)
@@ -146,6 +162,8 @@
  * Close the camera state (only if it's already active)
  */
 /obj/item/circuit_component/remotecam/proc/close_camera()
+	procstart = null
+	src.procstart = null
 	if(shell_camera?.camera_enabled)
 		shell_camera.toggle_cam(null, 0)
 
@@ -153,12 +171,16 @@
  * Set the camera range
  */
 /obj/item/circuit_component/remotecam/proc/update_camera_range()
+	procstart = null
+	src.procstart = null
 	shell_camera.setViewRange(current_camera_range > 0 ? REMOTECAM_RANGE_FAR : REMOTECAM_RANGE_NEAR)
 
 /**
  * Updates the camera name and network
  */
 /obj/item/circuit_component/remotecam/proc/update_camera_name_network()
+	procstart = null
+	src.procstart = null
 	if(!parent || !parent.display_name || parent.display_name == "")
 		shell_camera.c_tag = "[camera_prefix]: unspecified #[c_tag_random]"
 		current_camera_name = ""
@@ -187,6 +209,8 @@
  * Update the chunk for the camera (if enabled)
  */
 /obj/item/circuit_component/remotecam/proc/update_camera_location(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(current_camera_state && current_cameranet_state)
 		if(!shell_camera?.can_use())
@@ -197,6 +221,8 @@
  * Add camera from global cameranet
  */
 /obj/item/circuit_component/remotecam/proc/cameranet_add()
+	procstart = null
+	src.procstart = null
 	if(current_cameranet_state)
 		return
 	SScameras.cameras += shell_camera
@@ -207,6 +233,8 @@
  * Remove camera from global cameranet
  */
 /obj/item/circuit_component/remotecam/proc/cameranet_remove()
+	procstart = null
+	src.procstart = null
 	if(!current_cameranet_state)
 		return
 	SScameras.remove_camera_from_chunk(shell_camera)
@@ -217,6 +245,8 @@
  * Set the camera as emp'd
  */
 /obj/item/circuit_component/remotecam/proc/set_camera_emp(datum/source, severity, protection)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(current_camera_emp)
 		return
@@ -234,6 +264,8 @@
  * Restore emp'd camera
  */
 /obj/item/circuit_component/remotecam/proc/remove_camera_emp()
+	procstart = null
+	src.procstart = null
 	current_camera_emp = FALSE
 
 /**
@@ -242,6 +274,8 @@
  * Starts draining cell per second while camera is active
  */
 /obj/item/circuit_component/remotecam/proc/start_process()
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSclock_component, src)
 
 /**
@@ -250,6 +284,8 @@
  * Stops draining cell per second
  */
 /obj/item/circuit_component/remotecam/proc/stop_process()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSclock_component, src)
 
 /**
@@ -258,6 +294,8 @@
  * This is the generic abstract proc - subtypes with specialized logic should use their own copy of process()
  */
 /obj/item/circuit_component/remotecam/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!shell_parent || !shell_camera)
 		return PROCESS_KILL
 	//Camera is currently emp'd
@@ -315,6 +353,8 @@
 	current_camera_range = 0
 
 /obj/item/circuit_component/remotecam/bci/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(shell_parent, /obj/item/organ/cyberimp/bci))
 		return
@@ -330,6 +370,8 @@
 		RegisterSignal(bciuser, COMSIG_MOVABLE_MOVED, PROC_REF(update_camera_location))
 
 /obj/item/circuit_component/remotecam/bci/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	if(shell_camera)
 		if(bciuser)
 			UnregisterSignal(bciuser, COMSIG_MOVABLE_MOVED, PROC_REF(update_camera_location))
@@ -338,6 +380,8 @@
 	return ..()
 
 /obj/item/circuit_component/remotecam/bci/Destroy()
+	procstart = null
+	src.procstart = null
 	if(shell_camera)
 		if(bciuser)
 			UnregisterSignal(bciuser, COMSIG_MOVABLE_MOVED, PROC_REF(update_camera_location))
@@ -346,6 +390,8 @@
 	return ..()
 
 /obj/item/circuit_component/remotecam/bci/proc/on_organ_implanted(datum/source, mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(bciuser)
 		return
@@ -353,6 +399,8 @@
 	RegisterSignal(bciuser, COMSIG_MOVABLE_MOVED, PROC_REF(update_camera_location))
 
 /obj/item/circuit_component/remotecam/bci/proc/on_organ_removed(datum/source, mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!bciuser)
 		return
@@ -360,6 +408,8 @@
 	bciuser = null
 
 /obj/item/circuit_component/remotecam/drone/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(shell_parent, /mob/living/circuit_drone))
 		return
@@ -368,6 +418,8 @@
 	init_camera()
 
 /obj/item/circuit_component/remotecam/airlock/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(shell_parent, /obj/machinery/door/airlock))
 		return
@@ -376,6 +428,8 @@
 	init_camera()
 
 /obj/item/circuit_component/remotecam/polaroid/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(shell_parent, /obj/item/camera))
 		return
@@ -384,6 +438,8 @@
 	init_camera()
 
 /obj/item/circuit_component/remotecam/bci/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!shell_parent || !shell_camera)
 		return PROCESS_KILL
 	//Camera is currently emp'd
@@ -414,6 +470,8 @@
 		shell_camera.toggle_cam(null, 0)
 
 /obj/item/circuit_component/remotecam/polaroid/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!shell_parent || !shell_camera)
 		return PROCESS_KILL
 	//Camera is currently emp'd

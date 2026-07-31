@@ -8,6 +8,8 @@ SUBSYSTEM_DEF(sound_tokens)
 	var/list/currentrun = list()
 
 /datum/controller/subsystem/sound_tokens/fire(resumed)
+	procstart = null
+	src.procstart = null
 	if(!resumed)
 		currentrun = clients_needing_update
 		clients_needing_update = list()

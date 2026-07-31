@@ -29,6 +29,8 @@
 	var/lid_close_sound = 'sound/effects/footstep/woodclaw2.ogg'
 
 /obj/structure/fermenting_barrel/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(600, DRAINABLE)
 	soundloop = new(src, fermenting)
@@ -43,10 +45,14 @@
 	), PROC_REF(update_overlay_on_sig))
 
 /obj/structure/fermenting_barrel/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(soundloop)
 	return ..()
 
 /obj/structure/fermenting_barrel/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(open)
 		var/fruit_count = contents.len
@@ -58,6 +64,8 @@
 		. += span_notice("It is currently closed, letting it ferment fruits or draw reagents from its tap.")
 
 /obj/structure/fermenting_barrel/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(open)
 		if(istype(tool, /obj/item/food/grown) && insert_fruit(user, tool))
 			balloon_alert(user, "added fruit")
@@ -79,6 +87,8 @@
 	return NONE
 
 /obj/structure/fermenting_barrel/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!can_open)
 		return
 	if(open)
@@ -96,6 +106,8 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/structure/fermenting_barrel/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return .
@@ -112,23 +124,33 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/structure/fermenting_barrel/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(default_unfasten_wrench(user, tool) == SUCCESSFUL_UNFASTEN)
 		return ITEM_INTERACT_SUCCESS
 
 /obj/structure/fermenting_barrel/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = open ? "barrel_open" : "barrel"
 	return ..()
 
 /obj/structure/fermenting_barrel/proc/update_overlay_on_sig()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_appearance(UPDATE_ICON)
 
 /obj/structure/fermenting_barrel/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(src, TRAIT_WAS_RENAMED) || HAS_TRAIT(src, TRAIT_HAS_LABEL))
 		. += mutable_appearance(icon, "[base_icon_state]_overlay_label")
 
 /obj/structure/fermenting_barrel/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item))
 		context[SCREENTIP_CONTEXT_LMB] = open ? "Close" : "Open"
 
@@ -146,12 +168,16 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/fermenting_barrel/dump_contents()
+	procstart = null
+	src.procstart = null
 	var/atom/drop_point = drop_location()
 	for(var/obj/item/food/grown/fruit as anything in contents)
 		fruit.forceMove(drop_point)
 
 /// Adds the fruit to the barrel to queue the fermentation
 /obj/structure/fermenting_barrel/proc/insert_fruit(mob/user, obj/item/food/grown/fruit, obj/item/storage/bag/plants/bag = null)
+	procstart = null
+	src.procstart = null
 	if(reagents.total_volume + potential_volume > reagents.maximum_volume)
 		balloon_alert(user, "it's full!")
 		return FALSE
@@ -169,6 +195,8 @@
 
 /// Starts the fermentation process
 /obj/structure/fermenting_barrel/proc/start_fermentation()
+	procstart = null
+	src.procstart = null
 	if(fermenting)
 		return
 	if(open)
@@ -183,6 +211,8 @@
 
 /// Ferments the next found fruit into wine
 /obj/structure/fermenting_barrel/proc/process_fermentation()
+	procstart = null
+	src.procstart = null
 	if(!fermenting)
 		return
 	if(open)
@@ -199,11 +229,15 @@
 
 /// Stops the fermentation process
 /obj/structure/fermenting_barrel/proc/stop_fermentation()
+	procstart = null
+	src.procstart = null
 	fermenting = FALSE
 	soundloop.stop()
 	STOP_PROCESSING(SSobj, src)
 
 /obj/structure/fermenting_barrel/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	process_fermentation()
 
 /// Lil gunpowder barrel fer pirates since it's a nice reagent holder
@@ -213,6 +247,8 @@
 	can_open = FALSE
 
 /obj/structure/fermenting_barrel/gunpowder/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent(/datum/reagent/gunpowder, 500)
 
@@ -223,5 +259,7 @@
 	can_open = FALSE
 
 /obj/structure/fermenting_barrel/thermite/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent(/datum/reagent/thermite, 500)

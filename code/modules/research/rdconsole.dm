@@ -44,6 +44,8 @@ Nothing else in the console has ID requirements.
 	circuit = /obj/item/circuitboard/computer/rdconsole/unlocked
 
 /proc/CallMaterialName(ID)
+	procstart = null
+	src.procstart = null
 	if (istype(ID, /datum/material))
 		var/datum/material/material = ID
 		return material.name
@@ -53,6 +55,8 @@ Nothing else in the console has ID requirements.
 	return ID
 
 /obj/machinery/computer/rdconsole/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!CONFIG_GET(flag/no_default_techweb_link) && !stored_research)
 		CONNECT_TO_RND_SERVER_ROUNDSTART(stored_research, src)
@@ -60,6 +64,8 @@ Nothing else in the console has ID requirements.
 		stored_research.consoles_accessing += src
 
 /obj/machinery/computer/rdconsole/Destroy()
+	procstart = null
+	src.procstart = null
 	if(stored_research)
 		stored_research.consoles_accessing -= src
 		stored_research = null
@@ -72,6 +78,8 @@ Nothing else in the console has ID requirements.
 	return ..()
 
 /obj/machinery/computer/rdconsole/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/disk))
 		return NONE
 
@@ -105,12 +113,16 @@ Nothing else in the console has ID requirements.
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/computer/rdconsole/multitool_act(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!QDELETED(tool.buffer) && istype(tool.buffer, /datum/techweb))
 		stored_research = tool.buffer
 	return TRUE
 
 /obj/machinery/computer/rdconsole/proc/enqueue_node(id, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!stored_research || !stored_research.available_nodes[id] || stored_research.researched_nodes[id])
 		say("Node enqueue failed: Either no techweb is found, node is already researched or is not available!")
 		return FALSE
@@ -118,6 +130,8 @@ Nothing else in the console has ID requirements.
 	return TRUE
 
 /obj/machinery/computer/rdconsole/proc/dequeue_node(id, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!stored_research || !stored_research.available_nodes[id] || stored_research.researched_nodes[id])
 		say("Node dequeue failed: Either no techweb is found, node is already researched or is not available!")
 		return FALSE
@@ -125,6 +139,8 @@ Nothing else in the console has ID requirements.
 	return TRUE
 
 /obj/machinery/computer/rdconsole/proc/research_node(id, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!stored_research || !stored_research.available_nodes[id] || stored_research.researched_nodes[id])
 		say("Node unlock failed: Either no techweb is found, node is already researched or is not available!")
 		return FALSE
@@ -169,6 +185,8 @@ Nothing else in the console has ID requirements.
 	return FALSE
 
 /obj/machinery/computer/rdconsole/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (obj_flags & EMAGGED)
 		return
@@ -182,6 +200,8 @@ Nothing else in the console has ID requirements.
 	return TRUE
 
 /obj/machinery/computer/rdconsole/ui_interact(mob/user, datum/tgui/ui = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
@@ -189,6 +209,8 @@ Nothing else in the console has ID requirements.
 		ui.open()
 
 /obj/machinery/computer/rdconsole/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/sheetmaterials),
 		get_asset_datum(/datum/asset/spritesheet_batched/research_designs),
@@ -196,6 +218,8 @@ Nothing else in the console has ID requirements.
 
 // heavy data from this proc should be moved to static data when possible
 /obj/machinery/computer/rdconsole/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/obj/item/circuitboard/computer/rdconsole/board = circuit
@@ -265,12 +289,16 @@ Nothing else in the console has ID requirements.
  * * id - the ID to compress
  */
 /obj/machinery/computer/rdconsole/proc/compress_id(id)
+	procstart = null
+	src.procstart = null
 	if (!id_cache[id])
 		id_cache[id] = id_cache_seq
 		id_cache_seq += 1
 	return id_cache[id]
 
 /obj/machinery/computer/rdconsole/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list(
 		"static_data" = list(),
 		"point_types_abbreviations" = SSresearch.point_types,
@@ -358,6 +386,8 @@ Nothing else in the console has ID requirements.
 	)
 
 /obj/machinery/computer/rdconsole/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -435,6 +465,8 @@ Nothing else in the console has ID requirements.
 			return TRUE
 
 /obj/machinery/computer/rdconsole/proc/eject_disk(type)
+	procstart = null
+	src.procstart = null
 	if(type == RND_DESIGN_DISK && d_disk)
 		d_disk.forceMove(get_turf(src))
 		d_disk = null

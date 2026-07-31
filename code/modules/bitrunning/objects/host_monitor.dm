@@ -18,6 +18,8 @@
 	worn_icon_state = "electronic"
 
 /obj/item/bitrunning_host_monitor/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/datum/component/avatar_connection/connection = user.GetComponent(/datum/component/avatar_connection)

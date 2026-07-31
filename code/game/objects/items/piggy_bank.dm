@@ -26,6 +26,8 @@
 	var/initial_value = 0
 
 /obj/item/piggy_bank/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(!greyscale_colors)
 		greyscale_colors = pick(COLOR_PINK,
 			COLOR_LIGHT_ORANGE,
@@ -60,6 +62,8 @@
 		maximum_value = calculate_dosh_amount() + maximum_savings_per_shift
 
 /obj/item/piggy_bank/proc/save_cash()
+	procstart = null
+	src.procstart = null
 	sanitize_piggy_bank_contents_len()
 	SSpersistence.save_piggy_bank(src)
 
@@ -67,6 +71,8 @@
 
 ///This prevents the piggy bank from becoming laggy as hell if broken with hundred upon hundreds of chips inside it.
 /obj/item/piggy_bank/proc/sanitize_piggy_bank_contents_len()
+	procstart = null
+	src.procstart = null
 	var/contents_len = length(contents)
 	if(contents_len <= MAXIMUM_PIGGY_BANK_CONTENTS_LENGTH)
 		return
@@ -85,12 +91,16 @@
 #undef MAXIMUM_PIGGY_BANK_CONTENTS_LENGTH
 
 /obj/item/piggy_bank/Destroy()
+	procstart = null
+	src.procstart = null
 	if(persistence_cb)
 		LAZYREMOVE(SSticker.round_end_events, persistence_cb) //cleanup the callback.
 		persistence_cb = null
 	return ..()
 
 /obj/item/piggy_bank/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/thing as anything in contents)
 		thing.forceMove(loc)
 	//Smashing the piggy after the round is over doesn't count.
@@ -99,6 +109,8 @@
 	return ..()
 
 /obj/item/piggy_bank/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(DOING_INTERACTION_WITH_TARGET(user, src))
 		return
@@ -125,6 +137,8 @@
 			balloon_alert(user, "brimming with cash")
 
 /obj/item/piggy_bank/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/creds_value = tool.get_item_credit_value()
 	if(isnull(creds_value))
 		return NONE
@@ -149,6 +163,8 @@
 
 ///Returns the total amount of credits that its contents amount to.
 /obj/item/piggy_bank/proc/calculate_dosh_amount()
+	procstart = null
+	src.procstart = null
 	var/total_value = 0
 	for(var/obj/item/item in contents)
 		total_value += item.get_item_credit_value()
@@ -166,6 +182,8 @@
 	initial_value = PAYCHECK_COMMAND * 4
 
 /obj/item/piggy_bank/museum/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/areabound) //do not steal.
 
@@ -182,6 +200,8 @@
 	maximum_savings_per_shift = PAYCHECK_COMMAND * 16 //and 2 if you actively use it.
 
 /obj/item/piggy_bank/vault/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//one piggy bank should exist, preferibly inside the vault's safe.
 	REGISTER_REQUIRED_MAP_ITEM(1, 1)

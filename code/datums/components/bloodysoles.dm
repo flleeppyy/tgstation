@@ -18,6 +18,8 @@
 	var/share_mod = 1
 
 /datum/component/bloodysoles/Initialize()
+	procstart = null
+	src.procstart = null
 	if(!isclothing(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -26,6 +28,8 @@
 	RegisterSignal(parent, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(on_clean))
 
 /datum/component/bloodysoles/Destroy()
+	procstart = null
+	src.procstart = null
 	wielder = null
 	return ..()
 
@@ -33,6 +37,8 @@
  * Unregisters from the wielder if necessary
  */
 /datum/component/bloodysoles/proc/unregister()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(wielder))
 		UnregisterSignal(wielder, COMSIG_MOVABLE_MOVED)
 		UnregisterSignal(wielder, COMSIG_STEP_ON_BLOOD)
@@ -43,6 +49,8 @@
  * Returns true if the parent item is obscured by something else that the wielder is wearing
  */
 /datum/component/bloodysoles/proc/is_obscured()
+	procstart = null
+	src.procstart = null
 	return (hidden_slots_to_inventory_slots(wielder.covered_slots) & equipped_slot) || is_under_feet_covered()
 
 /**
@@ -53,6 +61,8 @@
  * is wearing shoes.
  */
 /datum/component/bloodysoles/proc/is_under_feet_covered()
+	procstart = null
+	src.procstart = null
 	if(!(equipped_slot & ITEM_SLOT_ICLOTHING))
 		return FALSE
 
@@ -62,11 +72,15 @@
  * Run to update the icon of the parent
  */
 /datum/component/bloodysoles/proc/update_icon()
+	procstart = null
+	src.procstart = null
 	var/obj/item/parent_item = parent
 	parent_item.update_slot_icon()
 
 /// Called whenever the value of bloody_soles changes to update our icon and behavior
 /datum/component/bloodysoles/proc/change_blood_amount(some_amount)
+	procstart = null
+	src.procstart = null
 	total_bloodiness = clamp(round(total_bloodiness + some_amount, 0.1), 0, max_bloodiness)
 	update_icon()
 
@@ -82,6 +96,8 @@
  * Run to equally share the blood between us and a decal
  */
 /datum/component/bloodysoles/proc/share_blood(obj/effect/decal/cleanable/blood/pool)
+	procstart = null
+	src.procstart = null
 	// Share the blood between our boots and the blood pool
 	var/new_total_bloodiness = min(max_bloodiness, share_mod * (pool.bloodiness + total_bloodiness) / 2)
 	if(new_total_bloodiness == total_bloodiness || new_total_bloodiness == 0)
@@ -108,6 +124,8 @@
  * Adds blood to an existing (or new) footprint
  */
 /datum/component/bloodysoles/proc/add_blood_to_footprint(obj/effect/decal/cleanable/blood/footprints/footprint, bloodiness_to_add, exiting = FALSE, no_dna = FALSE)
+	procstart = null
+	src.procstart = null
 	add_parent_to_footprint(footprint)
 	footprint.adjust_bloodiness(bloodiness_to_add)
 	if (!no_dna)
@@ -123,6 +141,8 @@
 
 /// Fetches this component's blood DNA
 /datum/component/bloodysoles/proc/get_blood_dna()
+	procstart = null
+	src.procstart = null
 	var/atom/atom_parent = parent
 	return GET_ATOM_BLOOD_DNA(atom_parent)
 
@@ -130,6 +150,8 @@
  * Adds the parent type to the footprint's shoe_types var
  */
 /datum/component/bloodysoles/proc/add_parent_to_footprint(obj/effect/decal/cleanable/blood/footprints/footprint)
+	procstart = null
+	src.procstart = null
 	LAZYOR(footprint.shoe_types, parent.type)
 
 /**
@@ -138,6 +160,8 @@
  * Used to register our wielder
  */
 /datum/component/bloodysoles/proc/on_equip(datum/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!iscarbon(equipper))
@@ -159,6 +183,8 @@
  * Used to deregister our wielder
  */
 /datum/component/bloodysoles/proc/on_drop(datum/source, mob/dropper)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	unregister()
 
@@ -168,6 +194,8 @@
  * Used to make bloody footprints on the ground
  */
 /datum/component/bloodysoles/proc/on_moved(datum/source, atom/old_loc, Dir, Forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(total_bloodiness <= 0)
@@ -233,6 +261,8 @@
  * Used to make the parent item bloody
  */
 /datum/component/bloodysoles/proc/on_step_blood(datum/source, obj/effect/decal/cleanable/pool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(QDELETED(wielder) || is_obscured() || (wielder.movement_type & MOVETYPES_NOT_TOUCHING_GROUND))
@@ -253,6 +283,8 @@
  * Called when the parent item is being washed
  */
 /datum/component/bloodysoles/proc/on_clean(datum/source, clean_types)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(clean_types & CLEAN_TYPE_BLOOD))
@@ -277,6 +309,8 @@
 	var/list/blood_DNA = null
 
 /datum/component/bloodysoles/feet/Initialize(list/new_blood)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -294,6 +328,8 @@
 		update_icon()
 
 /datum/component/bloodysoles/feet/InheritComponent(datum/component/bloodysoles/feet/soles, original, list/new_blood)
+	procstart = null
+	src.procstart = null
 	if (!length(new_blood))
 		return
 
@@ -301,6 +337,8 @@
 	update_icon()
 
 /datum/component/bloodysoles/feet/share_blood(obj/effect/decal/cleanable/pool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -308,6 +346,8 @@
 	update_icon()
 
 /datum/component/bloodysoles/feet/update_icon()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(wielder) || HAS_TRAIT(wielder, TRAIT_NO_BLOOD_OVERLAY))
 		return
 
@@ -321,6 +361,8 @@
 	wielder.apply_overlay(SHOES_LAYER)
 
 /datum/component/bloodysoles/feet/add_parent_to_footprint(obj/effect/decal/cleanable/blood/footprints/footprint)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(wielder))
 		LAZYSET(footprint.species_types, "unknown", TRUE)
 		return
@@ -331,22 +373,32 @@
 			LAZYSET(footprint.species_types, affecting.limb_id, TRUE)
 
 /datum/component/bloodysoles/feet/is_under_feet_covered()
+	procstart = null
+	src.procstart = null
 	return !isnull(wielder.get_item_by_slot(ITEM_SLOT_FEET))
 
 /datum/component/bloodysoles/feet/on_moved(datum/source, OldLoc, Dir, Forced)
+	procstart = null
+	src.procstart = null
 	if(wielder.num_legs >= 2)
 		return ..()
 
 /datum/component/bloodysoles/feet/on_step_blood(datum/source, obj/effect/decal/cleanable/pool)
+	procstart = null
+	src.procstart = null
 	if(wielder.num_legs >= 2)
 		return ..()
 
 /datum/component/bloodysoles/feet/proc/shoecover(datum/source, obj/item/item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if ((item.body_parts_covered & FEET) || (item.flags_inv & HIDESHOES))
 		update_icon()
 
 /datum/component/bloodysoles/feet/get_blood_dna()
+	procstart = null
+	src.procstart = null
 	return blood_DNA
 
 /**
@@ -357,20 +409,30 @@
 	share_mod = 0.75
 
 /datum/component/bloodysoles/bot/Initialize()
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 	wielder = parent
 	RegisterSignal(wielder, COMSIG_STEP_ON_BLOOD, PROC_REF(on_step_blood))
 
 /datum/component/bloodysoles/bot/is_obscured()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /datum/component/bloodysoles/bot/is_under_feet_covered()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /datum/component/bloodysoles/bot/add_parent_to_footprint(obj/effect/decal/cleanable/blood/footprints/footprint)
+	procstart = null
+	src.procstart = null
 	LAZYSET(footprint.species_types, "bot", TRUE)
 
 /datum/component/bloodysoles/bot/update_icon()
+	procstart = null
+	src.procstart = null
 	// Future idea: Bot blood overlays
 	return

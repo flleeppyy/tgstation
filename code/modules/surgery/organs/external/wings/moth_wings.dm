@@ -18,6 +18,8 @@
 	var/drift_force = MOTH_WING_FORCE
 
 /obj/item/organ/wings/moth/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/jetpack, \
@@ -31,21 +33,31 @@
 	)
 
 /obj/item/organ/wings/moth/on_mob_insert(mob/living/carbon/receiver)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(receiver, COMSIG_HUMAN_BURNING, PROC_REF(try_burn_wings))
 	RegisterSignal(receiver, COMSIG_LIVING_POST_FULLY_HEAL, PROC_REF(heal_wings))
 
 /obj/item/organ/wings/moth/on_mob_remove(mob/living/carbon/organ_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(organ_owner, list(COMSIG_HUMAN_BURNING, COMSIG_LIVING_POST_FULLY_HEAL))
 
 /obj/item/organ/wings/moth/make_flap_sound(mob/living/carbon/wing_owner)
+	procstart = null
+	src.procstart = null
 	playsound(wing_owner, 'sound/mobs/humanoids/moth/moth_flutter.ogg', 50, TRUE)
 
 /obj/item/organ/wings/moth/can_soften_fall()
+	procstart = null
+	src.procstart = null
 	return !burnt
 
 /obj/item/organ/wings/moth/proc/allow_flight()
+	procstart = null
+	src.procstart = null
 	if(!owner || !owner.client)
 		return FALSE
 	if(owner.has_gravity())
@@ -59,6 +71,8 @@
 
 ///check if our wings can burn off ;_;
 /obj/item/organ/wings/moth/proc/try_burn_wings(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!burnt && human.bodytemperature >= 800 && human.fire_stacks > 0) //do not go into the extremely hot light. you will not survive
@@ -70,12 +84,16 @@
 
 ///burn the wings off
 /obj/item/organ/wings/moth/proc/burn_wings()
+	procstart = null
+	src.procstart = null
 	var/datum/bodypart_overlay/mutant/wings/moth/wings = bodypart_overlay
 	wings.burnt = TRUE
 	burnt = TRUE
 
 ///heal our wings back up!!
 /obj/item/organ/wings/moth/proc/heal_wings(datum/source, heal_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!burnt)
@@ -87,6 +105,8 @@
 		burnt = FALSE
 
 /obj/item/organ/wings/moth/feel_for_damage(self_aware)
+	procstart = null
+	src.procstart = null
 	if(burnt)
 		return "Your wings are all burnt up!"
 	return ..()
@@ -105,10 +125,14 @@
 	var/burnt
 
 /datum/bodypart_overlay/mutant/wings/moth/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	burn_datum = fetch_sprite_datum(burn_datum)
 
 /datum/bodypart_overlay/mutant/wings/moth/get_base_icon_state()
+	procstart = null
+	src.procstart = null
 	return burnt ? burn_datum.icon_state : sprite_datum.icon_state
 
 #undef MOTH_WING_FORCE

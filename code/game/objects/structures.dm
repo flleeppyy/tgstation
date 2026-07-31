@@ -19,21 +19,29 @@
 	acid = 50
 
 /obj/structure/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(smoothing_flags & USES_SMOOTHING)
 		QUEUE_SMOOTH(src)
 		QUEUE_SMOOTH_NEIGHBORS(src)
 
 /obj/structure/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(smoothing_flags & USES_SMOOTHING)
 		QUEUE_SMOOTH_NEIGHBORS(src)
 	return ..()
 
 /obj/structure/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(usr)
 	return ..()
 
 /obj/structure/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(resistance_flags & INDESTRUCTIBLE))
 		if(resistance_flags & ON_FIRE)
@@ -44,7 +52,9 @@
 		if(examine_status)
 			. += examine_status
 
-/obj/structure/proc/examine_status(mob/user) //An overridable proc, mostly for falsewalls.
+/obj/structure/proc/examine_status(mob/user)
+	procstart = null
+	src.procstart = null //An overridable proc, mostly for falsewalls.
 	var/healthpercent = (atom_integrity/max_integrity) * 100
 	switch(healthpercent)
 		if(50 to 99)
@@ -56,29 +66,41 @@
 				return  span_warning("It's falling apart!")
 
 /obj/structure/examine_descriptor(mob/user)
+	procstart = null
+	src.procstart = null
 	return "structure"
 
 /obj/structure/rust_heretic_act()
+	procstart = null
+	src.procstart = null
 	take_damage(500, BRUTE, "melee", 1)
 	return TRUE
 
 /obj/structure/zap_act(power, zap_flags)
+	procstart = null
+	src.procstart = null
 	if(zap_flags & ZAP_OBJ_DAMAGE)
 		take_damage(power * 2.5e-4, BURN, "energy")
 	power -= power * 5e-4 //walls take a lot out of ya
 	. = ..()
 
 /obj/structure/animate_atom_living(mob/living/owner)
+	procstart = null
+	src.procstart = null
 	return new /mob/living/basic/mimic/copy(drop_location(), src, owner)
 
 /// For when a mob comes flying through the window, smash it and damage the mob
 /obj/structure/proc/smash_and_injure(mob/living/flying_mob, atom/oldloc, direction)
+	procstart = null
+	src.procstart = null
 	flying_mob.balloon_alert_to_viewers("smashed through!")
 	flying_mob.apply_damage(damage = rand(5, 15), damagetype = BRUTE, wound_bonus = 15, exposed_wound_bonus = 25, sharpness = SHARP_EDGED, attack_direction = get_dir(src, oldloc))
 	new /obj/effect/decal/cleanable/glass(get_step(flying_mob, flying_mob.dir))
 	deconstruct(disassembled = FALSE)
 
 /obj/structure/used_in_craft(atom/result, datum/crafting_recipe/current_recipe)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// If we consumed in crafting, we should dump contents out before qdeling them.
 	if(!is_type_in_list(src, current_recipe.parts))

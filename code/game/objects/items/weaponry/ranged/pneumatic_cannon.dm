@@ -67,26 +67,38 @@
 	acid = 50
 
 /obj/item/pneumatic_cannon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(selfcharge)
 		init_charge()
 
-/obj/item/pneumatic_cannon/proc/init_charge() //wrapper so it can be vv'd easier
+/obj/item/pneumatic_cannon/proc/init_charge()
+	procstart = null
+	src.procstart = null //wrapper so it can be vv'd easier
 	START_PROCESSING(SSobj, src)
 
 /obj/item/pneumatic_cannon/process()
+	procstart = null
+	src.procstart = null
 	charge_tick++
 	if(charge_tick >= charge_ticks && charge_type)
 		fill_with_type(charge_type, charge_amount)
 
 /obj/item/pneumatic_cannon/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/pneumatic_cannon/CanItemAutoclick()
+	procstart = null
+	src.procstart = null
 	return automatic
 
 /obj/item/pneumatic_cannon/proc/pressure_setting_to_text(pressure_setting)
+	procstart = null
+	src.procstart = null
 	switch(pressure_setting)
 		if(LOW_PRESSURE)
 			return "low"
@@ -98,6 +110,8 @@
 			CRASH("Invalid pressure setting: [pressure_setting]!")
 
 /obj/item/pneumatic_cannon/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/out = list()
 	if(!in_range(user, src))
@@ -119,12 +133,16 @@
 	. += out.Join("\n")
 
 /obj/item/pneumatic_cannon/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(tank)
 		tool.play_tool_sound(src)
 		updateTank(tank, 1, user)
 	return TRUE
 
 /obj/item/pneumatic_cannon/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(needs_air == FALSE)
 		return
 	playsound(src, 'sound/items/tools/ratchet.ogg', 50, TRUE)
@@ -133,6 +151,8 @@
 	return TRUE
 
 /obj/item/pneumatic_cannon/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 	if(!isitem(tool))
@@ -164,6 +184,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/pneumatic_cannon/proc/can_load_item(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(I)) //Players can't load non items, this allows for admin varedit inserts.
 		return TRUE
 	if(allowed_typecache && !is_type_in_typecache(I, allowed_typecache))
@@ -181,6 +203,8 @@
 	return TRUE
 
 /obj/item/pneumatic_cannon/proc/load_item(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!can_load_item(I, user))
 		return FALSE
 	if(user) //Only use transfer proc if there's a user, otherwise just set loc.
@@ -197,6 +221,8 @@
 	return TRUE
 
 /obj/item/pneumatic_cannon/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 	if(!pre_fire(user, interacting_with))
@@ -205,11 +231,15 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/pneumatic_cannon/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	Fire(user, interacting_with)
 	return ITEM_INTERACT_SUCCESS
 
 /** Checks */
 /obj/item/pneumatic_cannon/proc/pre_fire(mob/living/user, atom/target)
+	procstart = null
+	src.procstart = null
 	if(user.Adjacent(target))
 		if(target in user.contents)
 			return FALSE
@@ -218,6 +248,8 @@
 	return TRUE
 
 /obj/item/pneumatic_cannon/proc/Fire(mob/living/user, atom/target)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) && !target)
 		return
 	var/discharge = 0
@@ -258,6 +290,8 @@
 		C.Paralyze(60)
 
 /obj/item/pneumatic_cannon/proc/fire_items(turf/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(fire_mode == PCANNON_FIREALL)
 		for(var/obj/item/ITD in loadedItems) //Item To Discharge
 			if(!throw_item(target, ITD, user))
@@ -275,6 +309,8 @@
 				break
 
 /obj/item/pneumatic_cannon/proc/throw_item(turf/target, atom/movable/AM, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(AM))
 		return FALSE
 	loadedItems -= AM
@@ -288,6 +324,8 @@
 	return TRUE
 
 /obj/item/pneumatic_cannon/proc/get_target(turf/target, turf/starting)
+	procstart = null
+	src.procstart = null
 	if(range_multiplier == 1)
 		return target
 	var/x_o = (target.x - starting.x)
@@ -298,6 +336,8 @@
 	return newtarget
 
 /obj/item/pneumatic_cannon/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(loadedItems.Remove(gone))
 		var/obj/item/item = gone
@@ -317,6 +357,8 @@
 	gasPerThrow = 5
 
 /obj/item/pneumatic_cannon/proc/updateTank(obj/item/tank/internals/thetank, removing = 0, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(removing)
 		if(!tank)
 			return
@@ -335,12 +377,16 @@
 	update_appearance()
 
 /obj/item/pneumatic_cannon/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!tank)
 		return
 	. += tank.icon_state
 
 /obj/item/pneumatic_cannon/proc/fill_with_type(type, amount)
+	procstart = null
+	src.procstart = null
 	if(!ispath(type, /obj) && !ispath(type, /mob))
 		return FALSE
 	var/loaded = 0
@@ -366,6 +412,8 @@
 	var/static/list/pie_typecache = typecacheof(/obj/item/food/pie)
 
 /obj/item/pneumatic_cannon/pie/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed_typecache = pie_typecache
 

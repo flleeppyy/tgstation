@@ -19,6 +19,8 @@
 	COOLDOWN_DECLARE(deny_cooldown)
 
 /datum/element/deliver_first/Attach(datum/target, goal_area_type, payment)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(target, /obj/structure/closet))
 		return ELEMENT_INCOMPATIBLE
@@ -33,6 +35,8 @@
 	area_check(target)
 
 /datum/element/deliver_first/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(target, TRAIT_BANNED_FROM_CARGO_SHUTTLE, REF(src))
 	UnregisterSignal(target, list(
@@ -45,12 +49,16 @@
 
 ///signal sent from examining target
 /datum/element/deliver_first/proc/on_examine(obj/structure/closet/target, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_list += span_warning("An electronic delivery lock prevents this from opening until it reaches its destination, [GLOB.areas_by_type[goal_area_type]].")
 	examine_list += span_warning("This crate cannot be sold until it is opened.")
 
 ///registers the signal that blocks target from opening when outside of the valid area, returns if it is now unlocked
 /datum/element/deliver_first/proc/area_check(obj/structure/closet/target)
+	procstart = null
+	src.procstart = null
 	var/area/target_area = get_area(target)
 	if(target_area.type == goal_area_type)
 		UnregisterSignal(target, COMSIG_CLOSET_PRE_OPEN)
@@ -60,16 +68,22 @@
 		return FALSE
 
 /datum/element/deliver_first/proc/on_moved(obj/structure/closet/target, atom/oldloc, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	area_check(target)
 
 /datum/element/deliver_first/proc/on_emag(obj/structure/closet/target, mob/emagger)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	emagger.balloon_alert(emagger, "delivery lock bypassed")
 	remove_lock(target)
 
 ///signal called before opening target, blocks opening
 /datum/element/deliver_first/proc/on_pre_open(obj/structure/closet/target, mob/living/user, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(force)
 		return
@@ -86,6 +100,8 @@
 
 ///signal called by successfully opening target
 /datum/element/deliver_first/proc/on_post_open(obj/structure/closet/target, mob/living/user, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(area_check(target))
 		//noice, delivered!
@@ -96,6 +112,8 @@
 
 ///called to remove the element in a flavorful way, either from delivery or from emagging/breaking open the crate
 /datum/element/deliver_first/proc/remove_lock(obj/structure/closet/target)
+	procstart = null
+	src.procstart = null
 	target.visible_message(span_notice("[target]'s delivery lock self destructs, spewing sparks from the mechanism!"))
 	var/datum/effect_system/basic/spark_spread/spark_system = new(target.loc, 4, 0)
 	spark_system.start()

@@ -16,6 +16,8 @@
 	var/obj/effect/landmark/transport/nav_beacon/tram/platform/connected_platform
 
 /obj/machinery/transport/power_rectifier/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SStransport, COMSIG_TRANSPORT_UPDATED, PROC_REF(power_tram))
 	find_platform()
@@ -25,6 +27,8 @@
  * its control area and set its idle position.
  */
 /obj/machinery/transport/power_rectifier/proc/find_platform()
+	procstart = null
+	src.procstart = null
 	var/area/my_area = get_area(src)
 	for(var/obj/effect/landmark/transport/nav_beacon/tram/platform/candidate_platform in SStransport.nav_beacons[configured_transport_id])
 		if(get_area(candidate_platform) == my_area)
@@ -34,6 +38,8 @@
 			return
 
 /obj/machinery/transport/power_rectifier/proc/power_tram(datum/source, datum/transport_controller/linear/tram/controller, controller_active, controller_status, travel_direction, obj/effect/landmark/transport/nav_beacon/tram/platform/destination_platform)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(controller_active && destination_platform == connected_platform)
@@ -47,6 +53,8 @@
  * Update the lights based on the rectifier status.
  */
 /obj/machinery/transport/power_rectifier/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(machine_stat & NOPOWER)
@@ -65,5 +73,7 @@
  * Clear reference to the connected landmark if it gets destroyed.
  */
 /obj/machinery/transport/power_rectifier/proc/on_landmark_qdel()
+	procstart = null
+	src.procstart = null
 	log_transport("[id_tag]: Power rectifier received QDEL from landmark [connected_platform.name]")
 	connected_platform = null

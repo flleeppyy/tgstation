@@ -19,6 +19,8 @@
  * the unique identifier
  **/
 /datum/circuit_composite_template/proc/generate_name(list/composite_datatypes)
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 	return "[datatype]<[composite_datatypes.Join(", ")]>"
 
@@ -29,6 +31,8 @@
  * * composite_datatypes - The list of composite datatypes to use to generate this type.
  **/
 /datum/circuit_composite_template/proc/generate_composite_type(list/composite_datatypes)
+	procstart = null
+	src.procstart = null
 	var/new_datatype = generate_name(composite_datatypes)
 
 	if(!GLOB.circuit_datatypes)
@@ -59,6 +63,8 @@
  * Used for when composite datatypes are used in globally defined lists, before GLOB.circuit_datatypes is available.
  **/
 /datum/circuit_composite_template/proc/Initialize()
+	procstart = null
+	src.procstart = null
 	if(types_to_generate)
 		for(var/list/data as anything in types_to_generate)
 			generate_composite_type(data)
@@ -78,6 +84,8 @@
 	var/list/composite_datatypes_style
 
 /datum/circuit_datatype/composite_instance/New(datatype, base_datatype, list/composite_datatypes)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!datatype || !composite_datatypes)
 		return
@@ -92,6 +100,8 @@
 		composite_datatypes_style += GLOB.circuit_datatypes[datatype_to_check].color
 
 /datum/circuit_datatype/composite_instance/can_receive_from_datatype(datatype_to_check)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -106,15 +116,21 @@
 	return TRUE
 
 /datum/circuit_datatype/composite_instance/datatype_ui_data(datum/port/port)
+	procstart = null
+	src.procstart = null
 	var/list/ui_data = list()
 
 	ui_data["composite_types"] = composite_datatypes_style
 	return ui_data
 
 /datum/circuit_datatype/composite_instance/get_datatypes()
+	procstart = null
+	src.procstart = null
 	return composite_datatypes
 
 /datum/circuit_datatype/composite_instance/get_datatype(index)
+	procstart = null
+	src.procstart = null
 	if(index > length(composite_datatypes) || index < 0)
 		return
 	return composite_datatypes[index]

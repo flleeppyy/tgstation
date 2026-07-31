@@ -2,6 +2,8 @@
 	name = "achievements"
 
 /datum/asset/spritesheet_batched/achievements/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	for(var/icon_state_name in icon_states(ACHIEVEMENTS_SET))
 		insert_icon("achievement-[icon_state_name]", uni_icon(ACHIEVEMENTS_SET, icon_state_name))
 	// catch achievements which are pulling icons from another file

@@ -1,4 +1,6 @@
 /mob/living/proc/alien_talk(message, list/spans = list(), list/message_mods = list(), shown_name = real_name, big_voice = FALSE)
+	procstart = null
+	src.procstart = null
 	log_sayverb_talk(message, message_mods, tag = "alien hivemind")
 	message = trim(message)
 	if(!message)
@@ -17,9 +19,13 @@
 			to_chat(player, "[link] [rendered]", type = MESSAGE_TYPE_RADIO)
 
 /mob/living/carbon/alien/adult/royal/queen/alien_talk(message, list/spans = list(), list/message_mods = list(), shown_name = name, big_voice = TRUE)
+	procstart = null
+	src.procstart = null
 	..(message, spans, message_mods, shown_name, TRUE)
 
 /mob/living/carbon/hivecheck()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/alien/hivenode/N = get_organ_by_type(/obj/item/organ/alien/hivenode)
 	if(N && !N.recent_queen_death) //Mob has alien hive node and is not under the dead queen special effect.
 		return TRUE

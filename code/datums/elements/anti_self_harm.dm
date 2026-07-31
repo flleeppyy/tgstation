@@ -6,16 +6,22 @@
 /datum/element/anti_self_harm
 
 /datum/element/anti_self_harm/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isbasicmob(target))
 		return ELEMENT_INCOMPATIBLE
 	RegisterSignal(target, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(on_hostile_pre_attackingtarget))
 
 /datum/element/anti_self_harm/Detach(datum/target, ...)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, COMSIG_HOSTILE_PRE_ATTACKINGTARGET)
 	return ..()
 
 /datum/element/anti_self_harm/proc/on_hostile_pre_attackingtarget(mob/living/basic/parent_mob, atom/target, is_adjacent, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (parent_mob != target)
 		return

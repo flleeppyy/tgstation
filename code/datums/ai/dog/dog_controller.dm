@@ -26,6 +26,8 @@
 	)
 
 /datum/ai_controller/basic_controller/dog/corgi/get_access()
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/pet/dog/corgi/corgi_pawn = pawn
 	if(!istype(corgi_pawn))
 		return

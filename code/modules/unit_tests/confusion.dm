@@ -1,5 +1,7 @@
 // Checks that the confusion symptom correctly gives, and removes, confusion
 /datum/unit_test/confusion_symptom/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 	var/datum/disease/advance/confusion/disease = allocate(/datum/disease/advance/confusion)
 	var/datum/symptom/confusion/confusion = disease.symptoms[1]
@@ -12,5 +14,7 @@
 	TEST_ASSERT(!dummy.has_status_effect(/datum/status_effect/confusion), "Human is still confused after curing confusion.")
 
 /datum/disease/advance/confusion/New()
+	procstart = null
+	src.procstart = null
 	symptoms += new /datum/symptom/confusion
 	Refresh()

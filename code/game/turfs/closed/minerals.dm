@@ -51,11 +51,15 @@
 	var/wall_icon_state = "rock"
 
 /turf/closed/mineral/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_large_wall_overlay('icons/turf/mining.dmi', wall_icon_state)
 
 // Inlined version of the bump click element. way faster this way, the element's nice but it's too much overhead
 /turf/closed/mineral/Bumped(atom/movable/bumped_atom)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(bumped_atom))
 		return
@@ -72,6 +76,8 @@
 		item_interaction(bumping, held_item)
 
 /turf/closed/mineral/proc/spread_vein(ore_type)
+	procstart = null
+	src.procstart = null
 	if(!ispath(ore_type, /obj/item/stack/ore))
 		change_ore(ore_type)
 		return
@@ -176,6 +182,8 @@
 						rock.change_ore(ore_path)
 
 /turf/closed/mineral/proc/change_ore(ore_type, random = TRUE)
+	procstart = null
+	src.procstart = null
 	if (ispath(ore_type, /obj/item/boulder))
 		scan_state = "rock_boulder" // Yes even the lowly boulder has a scan state
 		spawned_boulder = /obj/item/boulder/gulag
@@ -192,6 +200,8 @@
 	mineral_type = ore_type // Everything else assumes that this is typed correctly so don't set it to non-ores thanks.
 
 /turf/closed/mineral/proc/flash_scan()
+	procstart = null
+	src.procstart = null
 	var/obj/effect/temp_visual/mining_overlay/scan_overlay = locate(/obj/effect/temp_visual/mining_overlay) in src
 	if(scan_overlay)
 		deltimer(scan_overlay.timerid)
@@ -205,17 +215,23 @@
 	scan_overlay.add_overlay(scan_state_overlay)
 
 /turf/closed/mineral/set_smoothed_icon_state(new_junction)
+	procstart = null
+	src.procstart = null
 	var/old_junction = smoothing_junction
 	. = ..()
 	if(new_junction != ALL_SMOOTHING_JUNCTIONS || (!isnull(old_junction) && old_junction != new_junction))
 		update_appearance(UPDATE_OVERLAYS)
 
 /turf/closed/mineral/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(smoothing_junction != ALL_SMOOTHING_JUNCTIONS)
 		. += fast_emissive_blocker(src)
 
 /turf/closed/mineral/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	if(turf_type)
 		underlay_appearance.icon = initial(turf_type.icon)
 		underlay_appearance.icon_state = initial(turf_type.icon_state)
@@ -223,6 +239,8 @@
 	return ..()
 
 /turf/closed/mineral/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(tool.tool_behaviour != TOOL_MINING)
 		return ..()
 
@@ -230,6 +248,8 @@
 
 ///Mining manually with a hand tool or something masquerading as one
 /turf/closed/mineral/proc/manual_mine(mob/living/user, obj/item/tool, exp_multiplier = 1)
+	procstart = null
+	src.procstart = null
 	if (!ISADVANCEDTOOLUSER(user))
 		to_chat(user, span_warning("You don't have the dexterity to do this!"))
 		return ITEM_INTERACT_BLOCKING
@@ -253,6 +273,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /turf/closed/mineral/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mining_arms = HAS_TRAIT(user, TRAIT_FIST_MINING)
 	if(!weak_turf && !mining_arms)
 		return ..()
@@ -272,10 +294,14 @@
 		gets_drilled(user)
 
 /turf/closed/mineral/attack_robot(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null
 	if(user.Adjacent(src))
 		attack_hand(user)
 
 /turf/closed/mineral/proc/gets_drilled(mob/user, exp_multiplier = 0)
+	procstart = null
+	src.procstart = null
 	if(istype(user))
 		SEND_SIGNAL(user, COMSIG_MOB_MINED, src, exp_multiplier)
 	if(mineral_type && (mineral_amt > 0))
@@ -307,6 +333,8 @@
 /// When the turf gets drilled from an AOE explosion
 /// Has a chance of not being drilled based on own hardness
 /turf/closed/mineral/proc/drill_aoe(mob/user, exp_multiplier = 0)
+	procstart = null
+	src.procstart = null
 	var/speed_change = /turf/closed/mineral::tool_mine_speed / tool_mine_speed
 	// Probability scaling isn't linear to still mine somewhat reliably in dense rocks
 	// Rocks with ores always get broken by AOE
@@ -314,12 +342,16 @@
 		return gets_drilled(user, exp_multiplier)
 
 /turf/closed/mineral/attack_alien(mob/living/carbon/alien/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	balloon_alert(user, "digging...")
 	playsound(src, 'sound/effects/break_stone.ogg', 50, TRUE)
 	if(do_after(user, tool_mine_speed, target = src))
 		gets_drilled(user)
 
 /turf/closed/mineral/attack_hulk(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	..()
 	if(do_after(H, tool_mine_speed * 1.25, target = src))
 		playsound(src, 'sound/effects/meteorimpact.ogg', 100, TRUE)
@@ -328,9 +360,13 @@
 	return TRUE
 
 /turf/closed/mineral/acid_melt()
+	procstart = null
+	src.procstart = null
 	ScrapeAway()
 
 /turf/closed/mineral/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(target == src)
 		gets_drilled()
@@ -350,10 +386,14 @@
 	return TRUE
 
 /turf/closed/mineral/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if(prob(50 * /turf/closed/mineral::tool_mine_speed / tool_mine_speed))
 		gets_drilled()
 
 /proc/calculate_rock_edges()
+	procstart = null
+	src.procstart = null
 	var/cardinals = GLOB.cardinals.Copy() // i'm sorry
 	for(var/mining_z in SSmapping.levels_by_trait(ZTRAIT_MINING))
 		var/list/adjacent_minerals = list()
@@ -402,6 +442,8 @@
 /// Returns a list of the chances for minerals to spawn.
 /// Will only run once, and will then be cached.
 /turf/closed/mineral/random/proc/mineral_chances()
+	procstart = null
+	src.procstart = null
 	return list(
 		/obj/item/stack/ore/bananium = check_holidays(APRIL_FOOLS) ? 3 : 0,
 		/obj/item/stack/ore/bluespace_crystal = 1,
@@ -416,6 +458,8 @@
 	)
 
 /turf/closed/mineral/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (exposure_based)
 		SSore_generation.ore_turfs += src
@@ -430,6 +474,8 @@
 		spawn_ore(pick(spawn_chance_list))
 
 /turf/closed/mineral/random/proc/randomize_ore()
+	procstart = null
+	src.procstart = null
 #ifdef TESTING
 	if (open_turf_distance == -1)
 		color = COLOR_BLUE
@@ -487,6 +533,8 @@
 		spawn_ore(pick(spawn_chance_list))
 
 /turf/closed/mineral/random/proc/spawn_ore(ore_path)
+	procstart = null
+	src.procstart = null
 	if (!SSore_generation.ores_generated[ore_path])
 		SSore_generation.ores_generated[ore_path] = 0
 	SSore_generation.ores_generated[ore_path] += 1
@@ -525,6 +573,8 @@
 	exposure_based = FALSE
 
 /turf/closed/mineral/random/high_chance/mineral_chances()
+	procstart = null
+	src.procstart = null
 	return list(
 		/obj/item/stack/ore/bluespace_crystal = 20,
 		/obj/item/stack/ore/diamond = 30,
@@ -544,6 +594,8 @@
 	exposure_based = FALSE
 
 /turf/closed/mineral/random/high_chance/volcanic/mineral_chances()
+	procstart = null
+	src.procstart = null
 	return list(
 		/obj/item/stack/ore/bluespace_crystal = 1,
 		/obj/item/stack/ore/diamond = 30,
@@ -559,6 +611,8 @@
 	mineral_chance = 2
 
 /turf/closed/mineral/random/low_chance/mineral_chances()
+	procstart = null
+	src.procstart = null
 	return list(
 		/obj/item/stack/ore/bluespace_crystal = 1,
 		/obj/item/stack/ore/diamond = 1,
@@ -577,6 +631,8 @@
 	mineral_chance = 1
 
 /turf/closed/mineral/random/stationside/mineral_chances()
+	procstart = null
+	src.procstart = null
 	return list(
 		/obj/item/stack/ore/diamond = 1,
 		/obj/item/stack/ore/gold = 3,
@@ -597,6 +653,8 @@
 	mineral_chance = 7 // N% functionally, 7.17% default, accounts for ~65% turfs
 
 /turf/closed/mineral/random/volcanic/mineral_chances()
+	procstart = null
+	src.procstart = null
 	return list(
 		/obj/item/stack/ore/bluespace_crystal = 1,
 		/obj/item/stack/ore/diamond = 2,
@@ -625,6 +683,8 @@
 	baseturfs = /turf/open/misc/asteroid/basalt/smooth/siderite/lava_land_surface
 
 /turf/closed/mineral/random/volcanic/red_rock/mineral_chances()
+	procstart = null
+	src.procstart = null
 	return list(
 		// Cannot spawn these two
 		// /obj/item/stack/ore/bluespace_crystal = 0,
@@ -654,6 +714,8 @@
 	baseturfs = /turf/open/misc/asteroid/basalt/smooth/shale/lava_land_surface
 
 /turf/closed/mineral/random/volcanic/shale/mineral_chances()
+	procstart = null
+	src.procstart = null
 	return list(
 		/obj/item/stack/ore/bluespace_crystal = 1.5,
 		/obj/item/stack/ore/diamond = 3,
@@ -682,6 +744,8 @@
 	wall_icon_state = "mountainrock"
 
 /turf/closed/mineral/random/snow/change_ore(ore_type, random = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mineral_type)
 		icon = 'icons/turf/walls/icerock_wall.dmi'
@@ -689,6 +753,8 @@
 		base_icon_state = "icerock_wall"
 
 /turf/closed/mineral/random/snow/mineral_chances()
+	procstart = null
+	src.procstart = null
 	return list(
 		/obj/item/stack/ore/bluespace_crystal = 1,
 		/obj/item/stack/ore/diamond = 2,
@@ -712,6 +778,8 @@
 	mineral_chance = 11
 
 /turf/closed/mineral/random/snow/underground/mineral_chances()
+	procstart = null
+	src.procstart = null
 	return list(
 		/obj/item/stack/ore/bananium = 1,
 		/obj/item/stack/ore/bluespace_crystal = 2,
@@ -729,6 +797,8 @@
 	exposure_based = FALSE
 
 /turf/closed/mineral/random/snow/high_chance/mineral_chances()
+	procstart = null
+	src.procstart = null
 	return list(
 		/obj/item/stack/ore/bluespace_crystal = 20,
 		/obj/item/stack/ore/diamond = 30,
@@ -743,6 +813,8 @@
 	icon_state = "rock_labor"
 
 /turf/closed/mineral/random/labormineral/mineral_chances()
+	procstart = null
+	src.procstart = null
 	return list(
 		/obj/item/boulder/gulag = 30,
 		/obj/item/stack/ore/gold = 10,
@@ -774,6 +846,8 @@
 	defer_change = TRUE
 
 /turf/closed/mineral/random/labormineral/ice/mineral_chances()
+	procstart = null
+	src.procstart = null
 	return list(
 		/obj/item/boulder/gulag = 30,
 		/obj/item/stack/ore/gold = 10,
@@ -784,6 +858,8 @@
 	)
 
 /turf/closed/mineral/random/labormineral/ice/change_ore(ore_type, random = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mineral_type)
 		icon = 'icons/turf/walls/icerock_wall.dmi'
@@ -952,6 +1028,8 @@
 	var/default_area = /area/lavaland/surface/outdoors/unexplored/danger
 
 /turf/closed/mineral/volcanic/lava_land_surface/biome_replace/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Just spawn a normal lavaland rock if we fail to get a mapgen, such as being spawned over lava
 	var/supposed_type = /turf/closed/mineral/volcanic/lava_land_surface
@@ -1080,10 +1158,14 @@
 	var/mutable_appearance/activated_overlay
 
 /turf/closed/mineral/gibtonite/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	det_time = rand(8,10) //So you don't know exactly when the hot potato will explode
 	. = ..()
 
 /turf/closed/mineral/gibtonite/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/previous_stage = stage
 	if(istype(tool, /obj/item/goliath_infuser_hammer) && stage == GIBTONITE_ACTIVE)
 		user.visible_message(span_notice("[user] digs [tool] to [src]..."), span_notice("Your tendril hammer instictively digs and wraps around [src] to stop it..."))
@@ -1098,6 +1180,8 @@
 		user.visible_message(span_danger("[user] hit gibtonite with [tool.name], launching [user.p_them()] back!"), span_danger("You've struck gibtonite! Your [tool.name] launched you back!"))
 
 /turf/closed/mineral/gibtonite/proc/explosive_reaction(mob/user = null)
+	procstart = null
+	src.procstart = null
 	if(stage != GIBTONITE_UNSTRUCK)
 		return
 
@@ -1120,6 +1204,8 @@
 	countdown(notify_admins)
 
 /turf/closed/mineral/gibtonite/proc/countdown(notify_admins = FALSE)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	while(istype(src, /turf/closed/mineral/gibtonite) && stage == GIBTONITE_ACTIVE && det_time > 0 && mineral_amt >= 1)
 		var/mutable_appearance/boom_overlay = mutable_appearance('icons/turf/smoothrocks_overlays.dmi', "rock_Gibtonite_active", ON_EDGED_TURF_LAYER + 0.1)
@@ -1136,6 +1222,8 @@
 			explosion(bombturf, devastation_range = 1, heavy_impact_range = 3, light_impact_range = 5, flame_range = 0, flash_range = 0, adminlog = notify_admins, explosion_cause = src)
 
 /turf/closed/mineral/gibtonite/proc/defuse(mob/living/defuser)
+	procstart = null
+	src.procstart = null
 	if(stage != GIBTONITE_ACTIVE)
 		return
 	cut_overlay(activated_overlay)
@@ -1150,6 +1238,8 @@
 		SEND_SIGNAL(defuser, COMSIG_LIVING_DEFUSED_GIBTONITE, det_time)
 
 /turf/closed/mineral/gibtonite/gets_drilled(mob/user, exp_multiplier = 0, triggered_by_explosion = FALSE)
+	procstart = null
+	src.procstart = null
 	if(istype(user))
 		SEND_SIGNAL(user, COMSIG_MOB_MINED, src, exp_multiplier)
 
@@ -1242,6 +1332,8 @@
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
 
 /turf/closed/mineral/strong/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		to_chat(usr, span_warning("Only a more advanced species could break a rock such as this one!"))
 		return ITEM_INTERACT_BLOCKING
@@ -1253,6 +1345,8 @@
 	return ..()
 
 /turf/closed/mineral/strong/gets_drilled(mob/user, exp_multiplier = 0)
+	procstart = null
+	src.procstart = null
 	if(istype(user))
 		SEND_SIGNAL(user, COMSIG_MOB_MINED, src, exp_multiplier)
 
@@ -1274,15 +1368,21 @@
 	H.mind?.adjust_experience(/datum/skill/mining, 100) //yay!
 
 /turf/closed/mineral/strong/proc/drop_ores()
+	procstart = null
+	src.procstart = null
 	if(prob(10))
 		new /obj/item/stack/sheet/mineral/mythril(src, 5)
 	else
 		new /obj/item/stack/sheet/mineral/adamantine(src, 5)
 
 /turf/closed/mineral/strong/acid_melt()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/closed/mineral/strong/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 #undef MINING_MESSAGE_COOLDOWN

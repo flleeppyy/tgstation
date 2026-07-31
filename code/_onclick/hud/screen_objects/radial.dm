@@ -8,6 +8,8 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	var/datum/radial_menu/parent
 
 /atom/movable/screen/radial/proc/set_parent(new_value)
+	procstart = null
+	src.procstart = null
 	if(parent)
 		UnregisterSignal(parent, COMSIG_QDELETING)
 	parent = new_value
@@ -15,6 +17,8 @@ GLOBAL_LIST_EMPTY(radial_menus)
 		RegisterSignal(parent, COMSIG_QDELETING, PROC_REF(handle_parent_del))
 
 /atom/movable/screen/radial/proc/handle_parent_del()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_parent(null)
 
@@ -26,11 +30,15 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	var/tooltip_theme
 
 /atom/movable/screen/radial/slice/set_parent(new_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(parent)
 		icon_state = parent.radial_slice_icon
 
 /atom/movable/screen/radial/slice/MouseEntered(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(next_page || !parent)
 		icon_state = "radial_slice_focus"
@@ -42,6 +50,8 @@ GLOBAL_LIST_EMPTY(radial_menus)
 		Click(location, control, params)
 
 /atom/movable/screen/radial/slice/MouseExited(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(next_page || !parent)
 		icon_state = "radial_slice"
@@ -51,6 +61,8 @@ GLOBAL_LIST_EMPTY(radial_menus)
 		closeToolTip(usr)
 
 /atom/movable/screen/radial/slice/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(usr.client == parent.current_user)
 		if(next_page)
 			parent.next_page()
@@ -62,14 +74,20 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	icon_state = "radial_center"
 
 /atom/movable/screen/radial/center/MouseEntered(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "radial_center_focus"
 
 /atom/movable/screen/radial/center/MouseExited(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "radial_center"
 
 /atom/movable/screen/radial/center/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(usr.client == parent.current_user)
 		parent.finished = TRUE
 
@@ -118,6 +136,8 @@ GLOBAL_LIST_EMPTY(radial_menus)
 
 //If we swap to vis_contens inventory these will need a redo
 /datum/radial_menu/proc/check_screen_border(mob/user)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = anchor
 	if(!istype(AM))
 		return
@@ -151,6 +171,8 @@ GLOBAL_LIST_EMPTY(radial_menus)
 //Sets defaults
 //These assume 45 deg min_angle
 /datum/radial_menu/proc/restrict_to_dir(dir)
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			starting_angle = 270
@@ -166,6 +188,8 @@ GLOBAL_LIST_EMPTY(radial_menus)
 			ending_angle = 45
 
 /datum/radial_menu/proc/setup_menu(use_tooltips, set_page = 1, click_on_hover = FALSE)
+	procstart = null
+	src.procstart = null
 	if(ending_angle > starting_angle)
 		zone = ending_angle - starting_angle
 	else
@@ -207,6 +231,8 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	update_screen_objects(button_animation_flags, click_on_hover)
 
 /datum/radial_menu/proc/update_screen_objects(anim_flag = NONE, click_on_hover = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/page_choices = page_data[current_page]
 	var/angle_per_element = round(zone / page_choices.len)
 	for(var/i in 1 to elements.len)
@@ -226,6 +252,8 @@ GLOBAL_LIST_EMPTY(radial_menus)
 				element.click_on_hover = TRUE
 
 /datum/radial_menu/proc/HideElement(atom/movable/screen/radial/slice/E)
+	procstart = null
+	src.procstart = null
 	E.cut_overlays()
 	E.vis_contents.Cut()
 	E.alpha = 0
@@ -236,6 +264,8 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	E.next_page = FALSE
 
 /datum/radial_menu/proc/SetElement(atom/movable/screen/radial/slice/E, choice_id, angle, anim_flag, anim_order)
+	procstart = null
+	src.procstart = null
 	//Position
 	var/py = round(cos(angle) * radius) + py_shift
 	var/px = round(sin(angle) * radius)
@@ -291,12 +321,16 @@ GLOBAL_LIST_EMPTY(radial_menus)
 			E.vis_contents += info_button
 
 /datum/radial_menu/New(display_close_button)
+	procstart = null
+	src.procstart = null
 	if(!display_close_button)
 		return
 	close_button = new
 	close_button.set_parent(src)
 
 /datum/radial_menu/proc/Reset()
+	procstart = null
+	src.procstart = null
 	choices.Cut()
 	choices_icons.Cut()
 	choices_values.Cut()
@@ -304,12 +338,18 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	current_page = 1
 
 /datum/radial_menu/proc/element_chosen(choice_id,mob/user)
+	procstart = null
+	src.procstart = null
 	selected_choice = choices_values[choice_id]
 
 /datum/radial_menu/proc/get_next_id()
+	procstart = null
+	src.procstart = null
 	return "c_[choices.len]"
 
 /datum/radial_menu/proc/set_choices(list/new_choices, use_tooltips, click_on_hover = FALSE, set_page = 1)
+	procstart = null
+	src.procstart = null
 	if(choices.len)
 		Reset()
 	for(var/E in new_choices)
@@ -326,6 +366,8 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	setup_menu(use_tooltips, set_page, click_on_hover)
 
 /datum/radial_menu/proc/extract_image(to_extract_from)
+	procstart = null
+	src.procstart = null
 	if (istype(to_extract_from, /datum/radial_menu_choice))
 		var/datum/radial_menu_choice/choice = to_extract_from
 		to_extract_from = choice.image
@@ -339,11 +381,15 @@ GLOBAL_LIST_EMPTY(radial_menus)
 
 
 /datum/radial_menu/proc/next_page()
+	procstart = null
+	src.procstart = null
 	if(pages > 1)
 		current_page = WRAP(current_page + 1,1,pages+1)
 		update_screen_objects()
 
 /datum/radial_menu/proc/show_to(mob/M, offset_x = 0, offset_y = 0)
+	procstart = null
+	src.procstart = null
 	if(current_user)
 		hide()
 	if(!M.client || !anchor)
@@ -362,10 +408,14 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	current_user.images += menu_holder
 
 /datum/radial_menu/proc/hide()
+	procstart = null
+	src.procstart = null
 	if(current_user)
 		current_user.images -= menu_holder
 
 /datum/radial_menu/proc/wait(atom/user, atom/anchor, require_near = FALSE)
+	procstart = null
+	src.procstart = null
 	while (current_user && !finished && !selected_choice)
 		if(require_near && !in_range(anchor, user))
 			return
@@ -377,6 +427,8 @@ GLOBAL_LIST_EMPTY(radial_menus)
 		stoplag(1)
 
 /datum/radial_menu/proc/remove_menu()
+	procstart = null
+	src.procstart = null
 	if(!(button_animation_flags & BUTTON_FADE_OUT))
 		qdel(src)
 		return
@@ -385,6 +437,8 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	QDEL_IN(src, 0.5 SECONDS)
 
 /datum/radial_menu/Destroy()
+	procstart = null
+	src.procstart = null
 	Reset()
 	hide()
 	custom_check_callback = null
@@ -396,6 +450,8 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	and list values are movables/icons/images used for element icons
 */
 /proc/show_radial_menu(mob/user, atom/anchor, list/choices, uniqueid, radius, datum/callback/custom_check, require_near = FALSE, tooltips = FALSE, no_repeat_close = FALSE, radial_slice_icon = "radial_slice", autopick_single_option = TRUE, button_animation_flags = BUTTON_SLIDE_IN, click_on_hover = FALSE, user_space = FALSE, check_delay = DEFAULT_CHECK_DELAY, display_close_button = TRUE, radial_menu_offset = list(0, 0))
+	procstart = null
+	src.procstart = null
 	if(!user || !anchor || !length(choices))
 		return
 
@@ -459,6 +515,8 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	var/tooltip_theme
 
 /datum/radial_menu_choice/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(image)
 

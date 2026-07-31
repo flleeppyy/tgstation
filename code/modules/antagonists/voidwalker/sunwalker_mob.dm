@@ -36,6 +36,8 @@
 	var/water_damage_cutoff = 10
 
 /mob/living/basic/voidwalker/sunwalker/unique_setup()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/igniter)
 	AddComponent(/datum/component/vision_hurting, damage_per_second = 0.1, message = null, silent = TRUE)
 	AddComponent(/datum/component/space_dive, /obj/effect/dummy/phased_mob/space_dive/sunwalker)
@@ -47,6 +49,8 @@
 	animate(get_filter("sunwalker_rays"), offset = 1, time = 3 SECONDS, loop = -1, flags = ANIMATION_PARALLEL)
 
 /mob/living/basic/voidwalker/sunwalker/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!iscarbon(user))
@@ -59,11 +63,15 @@
 		burning_orbs?.apply_organ_damage(5)
 
 /mob/living/basic/voidwalker/sunwalker/UnarmedAttack(atom/target, proximity_flag, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	do_sparks(rand(1, 4), source = target)
 
 /mob/living/basic/voidwalker/sunwalker/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isopenturf(loc))
 		var/turf/location = loc
@@ -73,6 +81,8 @@
 			new /obj/effect/hotspot(location)
 
 /mob/living/basic/voidwalker/sunwalker/reagent_expose(datum/reagent/chem, methods, reac_volume, show_message, touch_protection)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(istype(chem, /datum/reagent/water) && health > water_damage_cutoff)

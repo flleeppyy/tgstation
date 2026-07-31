@@ -7,6 +7,8 @@
 /datum/unit_test/preference_species
 
 /datum/unit_test/preference_species/Run()
+	procstart = null
+	src.procstart = null
 
 	// Go though all selectable species to see if they have their page setup correctly.
 	for(var/species_id in get_selectable_species())

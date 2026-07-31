@@ -19,6 +19,8 @@
 	var/visible = FALSE
 
 /datum/status_effect/heart_attack/on_apply()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_owner = owner
 	if(!istype(human_owner) || !human_owner.can_heartattack())
 		return FALSE
@@ -29,9 +31,13 @@
 	return TRUE
 
 /datum/status_effect/heart_attack/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, list(COMSIG_CARBON_LOSE_ORGAN, COMSIG_LIVING_MINOR_SHOCK, COMSIG_HEARTATTACK_DEFIB, COMSIG_LIVING_ELECTROCUTE_ACT))
 
 /datum/status_effect/heart_attack/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_owner = owner
 	if(!istype(human_owner) || !human_owner.can_heartattack())
 		qdel(src) //No heart? No effects.
@@ -122,6 +128,8 @@
 	time_until_stoppage--
 
 /datum/status_effect/heart_attack/get_examine_text()
+	procstart = null
+	src.procstart = null
 	if(!time_until_stoppage <= ATTACK_STAGE_THREE)
 		return
 	var/mob/living/carbon/human/human_owner = owner
@@ -129,18 +137,24 @@
 	return span_warning("[owner.p_they()] look[owner.p_s()] to be doubling over" +"[cannot_grasp ? " in pain!" : ", clutching [owner.p_their()] chest in pain!"]")
 
 /datum/status_effect/heart_attack/on_remove()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_DISEASELIKE_SEVERITY_HIGH, type)
 	owner.med_hud_set_status()
 	return ..()
 
 ///End the heart attack due to heart removal.
 /datum/status_effect/heart_attack/proc/on_organ_removed(datum/source, obj/item/organ)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(istype(organ, /obj/item/organ/heart))
 		qdel(src)
 
 ///Slightly reduces your timer. Can cure you if you really really want.
 /datum/status_effect/heart_attack/proc/minor_shock(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	time_until_stoppage += 18 //Good for keeping yourself up. Won't be easy to get over the cure threshold by yourself. You're going to need security beating the crap out of you with stunbatons, but it'll work.
 	if(prob(50)) //Also good for crafty solos who want to stunbaton themselves back to health. Timing will be key.
@@ -148,12 +162,16 @@
 
 ///Makes major progress towards curing the attack.
 /datum/status_effect/heart_attack/proc/defib_shock(obj/item/shockpaddles/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	time_until_stoppage += 50 //Three shocks should save pretty much anyone.
 	owner.visible_message(span_nicegreen("[owner] seems to be relieved of their pain as they're shocked by the [source]!"), span_nicegreen("The [source] shocks your heart awake, and you feel the pain in your chest ease up!"))
 
 ///Slightly reduces your timer, just like the minor shock signal. Slightly more relief because these use cases are generally more dangerous.
 /datum/status_effect/heart_attack/proc/electrocuted(datum/source, shock_damage)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	time_until_stoppage += (20 + shock_damage * 1.15)
 	if(prob(50))
@@ -173,15 +191,21 @@
 	)
 
 /datum/status_effect/heart_desperation/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.add_traits(subject_traits, type)
 	owner.Knockdown(2 SECONDS, 2 SECONDS)
 	return TRUE
 
 /datum/status_effect/heart_desperation/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	owner.Knockdown(2 SECONDS, 2 SECONDS)
 	owner.set_silence_if_lower(2 SECONDS)
 
 /datum/status_effect/heart_desperation/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_traits(subject_traits, type)
 
 #undef ATTACK_STAGE_TWO

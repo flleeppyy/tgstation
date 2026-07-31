@@ -9,6 +9,8 @@
 	var/gas_type
 
 /datum/bounty/item/atmospherics/applies_to(obj/applied_obj)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/obj/item/tank/applied_tank = applied_obj
@@ -18,6 +20,8 @@
 	return our_mix.moles[gas_type] >= moles_required
 
 /datum/bounty/item/atmospherics/contribution_amount(obj/shipped)
+	procstart = null
+	src.procstart = null
 	var/obj/item/tank/shipped_tank = shipped
 	var/datum/gas_mixture/our_mix = shipped_tank.return_air()
 	return our_mix.moles[gas_type]

@@ -49,6 +49,8 @@
 	var/eat_while_disguised = FALSE
 
 /mob/living/basic/morph/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 	RegisterSignal(src, COMSIG_CLICK_SHIFT, PROC_REF(trigger_ability))
@@ -62,6 +64,8 @@
 	disguise_ability.Grant(src)
 
 /mob/living/basic/morph/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_DISGUISED))
 		return ..()
 
@@ -73,6 +77,8 @@
 		. += span_warning("It doesn't look quite right...")
 
 /mob/living/basic/morph/med_hud_set_health()
+	procstart = null
+	src.procstart = null
 	if(isliving(form_typepath))
 		return ..()
 
@@ -80,6 +86,8 @@
 	set_hud_image_state(HEALTH_HUD, null)
 
 /mob/living/basic/morph/med_hud_set_status()
+	procstart = null
+	src.procstart = null
 	if(isliving(form_typepath))
 		return ..()
 
@@ -87,6 +95,8 @@
 	set_hud_image_state(STATUS_HUD, null)
 
 /mob/living/basic/morph/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_DISGUISED))
 		visible_message(
 			span_warning("[src] twists and dissolves into a pile of green flesh!"),
@@ -96,12 +106,16 @@
 	return ..()
 
 /mob/living/basic/morph/can_track(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_DISGUISED))
 		return FALSE
 	return ..()
 
 /// Do some more logic for the morph when we disguise through the action.
 /mob/living/basic/morph/proc/on_disguise(mob/living/basic/user, atom/movable/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// We are now weaker
 	melee_damage_lower = melee_damage_disguised
@@ -121,6 +135,8 @@
 
 /// Do some more logic for the morph when we undisguise through the action.
 /mob/living/basic/morph/proc/on_undisguise()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	visible_message(
 		span_warning("[src] suddenly collapses in on itself, dissolving into a pile of green flesh!"),
@@ -140,6 +156,8 @@
 
 /// Alias for the disguise ability to be used as a keybind.
 /mob/living/basic/morph/proc/trigger_ability(mob/living/basic/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// linters hate this if it's not async for some reason even though nothing blocks
@@ -148,6 +166,8 @@
 
 /// Handles the logic for attacking anything.
 /mob/living/basic/morph/early_melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -178,6 +198,8 @@
 /// Optional: `delay` is the applicable time-based delay to pass into `do_after()` before the logic is ran.
 /// Optional: `update_health` is an integer that will be added (or maybe subtracted if you're cruel) to our health after we eat something. Passed into `adjust_health()` so make sure what you pass in is accurate.
 /mob/living/basic/morph/proc/eat(atom/movable/eatable, delay = 0 SECONDS, update_health = 0)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(eatable) || eatable.loc == src)
 		return FALSE
 

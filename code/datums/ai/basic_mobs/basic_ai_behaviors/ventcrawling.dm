@@ -12,6 +12,8 @@
 	var/failed_ventcrawl = FALSE
 
 /datum/bt_node/ai_behavior/enter_vent/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/cached_pawn = controller.pawn
 
 	// We kicked off the crawl on a previous tick; report its result once it resolves. Flags reset in finish_action.
@@ -49,12 +51,16 @@
 
 /// Runs the sleeping ventcrawl off the tick. Flags failure if we didn't end up in the vent, so perform() never has to sleep.
 /datum/bt_node/ai_behavior/enter_vent/proc/perform_ventcrawl_action(datum/ai_controller/controller, obj/machinery/atmospherics/components/unary/vent_pump/entry_vent)
+	procstart = null
+	src.procstart = null
 	var/mob/living/cached_pawn = controller.pawn
 	cached_pawn.handle_ventcrawl(entry_vent)
 	if(!HAS_TRAIT(cached_pawn, TRAIT_MOVE_VENTCRAWLING)) //something failed and we ARE NOT IN THE VENT even though the earlier check said we were good to go! odd.
 		failed_ventcrawl = TRUE
 
 /datum/bt_node/ai_behavior/enter_vent/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	is_starting_crawl = FALSE
 	failed_ventcrawl = FALSE
@@ -63,10 +69,14 @@
 
 /// Returns TRUE if the vent exists and isn't welded shut.
 /datum/bt_node/ai_behavior/enter_vent/proc/is_vent_valid(obj/machinery/atmospherics/components/unary/vent_pump/vent)
+	procstart = null
+	src.procstart = null
 	return !QDELETED(vent) && !vent.welded
 
 /// Picks a random valid vent on the same pipeline as the entry vent. Falls back to the entry vent itself; returns null if nothing is usable.
 /datum/bt_node/ai_behavior/enter_vent/proc/calculate_exit_vent(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/atmospherics/components/unary/vent_pump/entry_vent = controller.blackboard[entry_vent_key]
 	if(QDELETED(entry_vent))
 		return null
@@ -96,6 +106,8 @@
 	var/failed_ventcrawl = FALSE
 
 /datum/bt_node/ai_behavior/exit_vent/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/lower = controller.blackboard[BB_LOWER_VENT_TIME_LIMIT]
 	var/upper = controller.blackboard[BB_UPPER_VENT_TIME_LIMIT]
@@ -104,6 +116,8 @@
 	return TRUE
 
 /datum/bt_node/ai_behavior/exit_vent/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/cached_pawn = controller.pawn
 
 	// We kicked off the crawl-out on a previous tick; report its result once it resolves. Flags reset in finish_action.
@@ -144,6 +158,8 @@
 
 /// Runs the sleeping ventcrawl off the tick. Flags failure if we're somehow still in the vent, so perform() never has to sleep.
 /datum/bt_node/ai_behavior/exit_vent/proc/perform_ventcrawl_action(datum/ai_controller/controller, obj/machinery/atmospherics/components/unary/vent_pump/exit_vent)
+	procstart = null
+	src.procstart = null
 	var/mob/living/cached_pawn = controller.pawn
 	cached_pawn.handle_ventcrawl(exit_vent)
 	if(HAS_TRAIT(cached_pawn, TRAIT_MOVE_VENTCRAWLING))
@@ -151,6 +167,8 @@
 		failed_ventcrawl = TRUE
 
 /datum/bt_node/ai_behavior/exit_vent/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	is_exiting_crawl = FALSE
 	failed_ventcrawl = FALSE
@@ -160,16 +178,22 @@
 
 /// Kills the pawn if it has no client, then returns INSTANT FAILED.
 /datum/bt_node/ai_behavior/exit_vent/proc/suicide_pill(mob/living/pawn)
+	procstart = null
+	src.procstart = null
 	if(istype(pawn) && isnull(pawn.client))
 		pawn.death(TRUE)
 	return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED
 
 /// Returns TRUE if the vent exists and isn't welded shut.
 /datum/bt_node/ai_behavior/exit_vent/proc/is_vent_valid(obj/machinery/atmospherics/components/unary/vent_pump/vent)
+	procstart = null
+	src.procstart = null
 	return !QDELETED(vent) && !vent.welded
 
 /// Picks a random valid vent on the same pipeline as BB_ENTRY_VENT_TARGET. Returns null if nothing is usable.
 /datum/bt_node/ai_behavior/exit_vent/proc/calculate_exit_vent(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/atmospherics/components/unary/vent_pump/entry_vent = controller.blackboard[BB_ENTRY_VENT_TARGET]
 	if(QDELETED(entry_vent))
 		return null

@@ -27,10 +27,14 @@
 	mouse_control_probability = 100
 
 /obj/item/clothing/head/utility/chefhat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_storage(storage_type = /datum/storage/pockets/chefhat)
 
 /obj/item/clothing/head/utility/chefhat/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/basic/new_boss = get_mouse(arrived)
 	if(!new_boss)
@@ -40,6 +44,8 @@
 	RegisterSignal(new_boss, COMSIG_MOB_CLIENT_PRE_LIVING_MOVE, PROC_REF(on_mouse_moving))
 
 /obj/item/clothing/head/utility/chefhat/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/basic/old_boss = get_mouse(gone)
 	if(!old_boss)
@@ -48,6 +54,8 @@
 
 /// Returns a mob stored inside a mob container, if there is one
 /obj/item/clothing/head/utility/chefhat/proc/get_mouse(atom/possible_mouse)
+	procstart = null
+	src.procstart = null
 	if (!ispickedupmob(possible_mouse))
 		return
 	var/obj/item/mob_holder/mousey_holder = possible_mouse
@@ -55,6 +63,8 @@
 
 /// Relays emotes emoted by your boss to the hat wearer for full immersion
 /obj/item/clothing/head/utility/chefhat/proc/on_mouse_emote(mob/living/source, key, emote_message, type_override, intentional, datum/emote/emote)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/carbon/wearer = loc
 	if(!wearer || INCAPACITATED_IGNORING(wearer, INCAPABLE_RESTRAINTS))
@@ -66,6 +76,8 @@
 
 /// Relays movement made by the mouse in your hat to the wearer of the hat
 /obj/item/clothing/head/utility/chefhat/proc/on_mouse_moving(mob/living/source, atom/moved_to)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!prob(mouse_control_probability) || !COOLDOWN_FINISHED(src, move_cooldown))
 		return COMPONENT_MOVABLE_BLOCK_PRE_MOVE // Didn't roll well enough or on cooldown
@@ -88,6 +100,8 @@
 	return COMPONENT_MOVABLE_BLOCK_PRE_MOVE
 
 /obj/item/clothing/head/utility/chefhat/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is donning [src]! It looks like [user.p_theyre()] trying to become a chef."))
 	user.say("Bork Bork Bork!", forced = "chef hat suicide")
 	sleep(2 SECONDS)
@@ -203,6 +217,8 @@
 	wound = 5
 
 /obj/item/clothing/head/fedora/det_hat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	create_storage(storage_type = /datum/storage/pockets/small/fedora/detective)
@@ -213,11 +229,15 @@
 
 
 /obj/item/clothing/head/fedora/det_hat/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Alt-click to take a candy corn.")
 
 
 /obj/item/clothing/head/fedora/det_hat/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "Candy Time"
@@ -227,6 +247,8 @@
 
 /// Now to solve where all these keep coming from
 /obj/item/clothing/head/fedora/det_hat/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, candy_cooldown))
 		to_chat(user, span_warning("A candy corn was just taken! You should wait a couple minutes, lest you burn through the stash."))
 		return CLICK_ACTION_BLOCKING
@@ -270,11 +292,15 @@
 	var/max_weight = WEIGHT_CLASS_NORMAL
 
 /obj/item/clothing/head/fedora/inspector_hat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	become_hearing_sensitive(ROUNDSTART_TRAIT)
 	QDEL_NULL(atom_storage)
 
 /obj/item/clothing/head/fedora/inspector_hat/proc/set_prefix(desired_prefix)
+	procstart = null
+	src.procstart = null
 
 	prefix = desired_prefix
 
@@ -289,6 +315,8 @@
 	return TRUE
 
 /obj/item/clothing/head/fedora/inspector_hat/proc/set_phrase(desired_phrase,obj/item/associated_item)
+	procstart = null
+	src.procstart = null
 
 	var/regex/phrase_regex = regex("[prefix]\[\\s\\W\]+[desired_phrase]","i")
 
@@ -298,6 +326,8 @@
 	return TRUE
 
 /obj/item/clothing/head/fedora/inspector_hat/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You can put items inside, and get them out by saying a phrase, or using it in-hand!")
 	. += span_notice("The prefix is <b>[prefix]</b>, and you can change it with alt-click!\n")
@@ -307,6 +337,8 @@
 		. += span_notice("[icon2html(found_item, user)] You can remove [found_item] by saying <b>\"[prefix] [found_phrase]\"</b>!")
 
 /obj/item/clothing/head/fedora/inspector_hat/Hear(atom/movable/speaker, message_language, raw_message, radio_freq, radio_freq_name, radio_freq_color, list/spans, list/message_mods = list(), message_range)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/carbon/wearer = loc
 	if(!istype(wearer) || speaker != wearer) //if we are worn
@@ -328,6 +360,8 @@
 	return .
 
 /obj/item/clothing/head/fedora/inspector_hat/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ITEM_INTERACT_ANY_BLOCKER & .)
 		return .
@@ -354,6 +388,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/clothing/head/fedora/inspector_hat/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!length(items_by_regex))
 		return CLICK_ACTION_BLOCKING
@@ -366,6 +402,8 @@
 	user.put_in_inactive_hand(found_item)
 
 /obj/item/clothing/head/fedora/inspector_hat/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	var/new_prefix = tgui_input_text(user, "What should be the new prefix?", "Activation prefix", prefix, max_length = 24)
 	if(!new_prefix || !user.can_perform_action(src, FORBID_TELEKINESIS_REACH))
 		return CLICK_ACTION_BLOCKING
@@ -373,6 +411,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/clothing/head/fedora/inspector_hat/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/found_regex in items_by_regex)
 		var/obj/item/found_item = items_by_regex[found_regex]
@@ -383,6 +423,8 @@
 		break
 
 /obj/item/clothing/head/fedora/inspector_hat/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 
 	var/atom/atom_location = drop_location()
 	for(var/found_regex in items_by_regex)
@@ -394,6 +436,8 @@
 	return ..()
 
 /obj/item/clothing/head/fedora/inspector_hat/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST_ASSOC(items_by_regex) //Anything that failed to drop gets deleted.
 	return ..()
 
@@ -425,6 +469,8 @@
 	icon_state = "hoscap"
 
 /obj/item/clothing/head/hats/hos/cap/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Give it a little publicity
 	var/static/list/slapcraft_recipe_list = list(\
@@ -518,6 +564,8 @@
 	var/mode = DRILL_DEFAULT
 
 /obj/item/clothing/head/hats/warden/drill/screwdriver_act(mob/living/carbon/human/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 	switch(mode)
@@ -535,6 +583,8 @@
 	return TRUE
 
 /obj/item/clothing/head/hats/warden/drill/wirecutter_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	..()
 	if(mode != DRILL_CANADIAN)
 		to_chat(user, span_danger("You broke the voice circuit!"))
@@ -542,6 +592,8 @@
 	return TRUE
 
 /obj/item/clothing/head/hats/warden/drill/equipped(mob/M, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (slot & ITEM_SLOT_HEAD)
 		RegisterSignal(M, COMSIG_MOB_SAY, PROC_REF(handle_speech))
@@ -549,10 +601,14 @@
 		UnregisterSignal(M, COMSIG_MOB_SAY)
 
 /obj/item/clothing/head/hats/warden/drill/dropped(mob/M)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(M, COMSIG_MOB_SAY)
 
 /obj/item/clothing/head/hats/warden/drill/proc/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/message = speech_args[SPEECH_MESSAGE]
 	if(message[1] != "*")
@@ -660,10 +716,14 @@
 	equip_sound = null
 
 /obj/item/clothing/head/utility/surgerycap/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -3) //FISH DOCTOR?!
 
 /obj/item/clothing/head/utility/surgerycap/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -675,6 +735,8 @@
 	return TRUE
 
 /obj/item/clothing/head/utility/surgerycap/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Use in hand to [flags_inv & HIDEHAIR ? "loosen" : "tighten"] the strings.")
 
@@ -709,14 +771,20 @@
 	equip_sound = null
 
 /obj/item/clothing/head/utility/head_mirror/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -3) //FISH DOCTOR?!
 
 /obj/item/clothing/head/utility/head_mirror/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("In a properly lit room, you can use this to examine people's eyes, ears, and mouth <i>closer</i>.")
 
 /obj/item/clothing/head/utility/head_mirror/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot & slot_flags)
 		RegisterSignal(user, COMSIG_MOB_EXAMINING_MORE, PROC_REF(examining))
@@ -724,10 +792,14 @@
 		UnregisterSignal(user, COMSIG_MOB_EXAMINING_MORE)
 
 /obj/item/clothing/head/utility/head_mirror/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, COMSIG_MOB_EXAMINING_MORE)
 
 /obj/item/clothing/head/utility/head_mirror/proc/examining(mob/living/examiner, atom/examining, list/examine_list, list/examine_overrides)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!ishuman(examining) || examining == examiner || examiner.is_blind() || !examiner.Adjacent(examining))
 		return
@@ -829,6 +901,8 @@
 	dog_fashion = null //THIS IS FOR SLAUGHTER, NOT PUPPIES
 
 /obj/item/clothing/head/beret/highlander/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, HIGHLANDER_TRAIT)
 

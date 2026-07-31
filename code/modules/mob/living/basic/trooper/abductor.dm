@@ -31,6 +31,8 @@
 	var/ranged_cooldown = 5 SECONDS
 
 /mob/living/basic/trooper/abductor/ranged/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(\
 		/datum/component/ranged_attacks,\

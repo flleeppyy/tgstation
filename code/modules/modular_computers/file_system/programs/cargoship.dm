@@ -17,6 +17,8 @@
 	var/cut_min = 0.01
 
 /datum/computer_file/program/shipping/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["has_id_slot"] = !!computer.stored_id
@@ -27,6 +29,8 @@
 	return data
 
 /datum/computer_file/program/shipping/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!computer.stored_id) //We need an ID to successfully run
 		return FALSE

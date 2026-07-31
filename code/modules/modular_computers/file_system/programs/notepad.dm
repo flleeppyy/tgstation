@@ -24,11 +24,15 @@
 		Bow - Either sides of Fore"
 
 /datum/computer_file/program/notepad/proc/get_target_disk(opened_on_disk)
+	procstart = null
+	src.procstart = null
 	if(opened_on_disk && computer?.inserted_disk)
 		return computer.inserted_disk
 	return null
 
 /datum/computer_file/program/notepad/proc/find_text_file(uid, opened_on_disk, name)
+	procstart = null
+	src.procstart = null
 	var/obj/item/disk/computer/target_disk = get_target_disk(opened_on_disk)
 	var/datum/computer_file/data/text/file
 	if(uid)
@@ -38,12 +42,16 @@
 	return file
 
 /datum/computer_file/program/notepad/proc/load_text_file(datum/computer_file/data/text/file)
+	procstart = null
+	src.procstart = null
 	written_note = file.stored_text
 	opened_file_uid = file.uid
 	opened_file_on_disk = !!file.disk_host
 	opened_file_name = file.filename
 
 /datum/computer_file/program/notepad/proc/save_text_file(mob/user, name, extension, note, uid, opened_on_disk)
+	procstart = null
+	src.procstart = null
 	var/obj/item/disk/computer/target_disk = get_target_disk(opened_on_disk)
 	var/datum/computer_file/data/text/file = find_text_file(uid, opened_on_disk, name)
 	if(file)
@@ -65,11 +73,15 @@
 	load_text_file(new_file)
 
 /datum/computer_file/program/notepad/proc/create_text_file(extension)
+	procstart = null
+	src.procstart = null
 	if(extension == "LOG")
 		return new /datum/computer_file/data/text/logfile()
 	return new /datum/computer_file/data/text()
 
 /datum/computer_file/program/notepad/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/user = ui.user
 	switch(action)
@@ -100,6 +112,8 @@
 			return TRUE
 
 /datum/computer_file/program/notepad/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["note"] = written_note
@@ -129,26 +143,36 @@
 	var/datum/port/output/updated
 
 /obj/item/circuit_component/mod_program/notepad/populate_ports()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_text = add_input_port("Set Notes", PORT_TYPE_STRING)
 	updated_text = add_output_port("Notes", PORT_TYPE_STRING)
 	updated = add_output_port("Updated", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/mod_program/notepad/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(associated_program, COMSIG_UI_ACT, PROC_REF(on_note_updated))
 
 /obj/item/circuit_component/mod_program/notepad/unregister_shell()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(associated_program, COMSIG_UI_ACT)
 	return ..()
 
 /obj/item/circuit_component/mod_program/notepad/proc/on_note_updated(datum/source, mob/user, action, list/params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(action == "UpdateNote")
 		updated_text.set_output(params["newnote"])
 		updated.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/mod_program/notepad/input_received(datum/port/port)
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/program/notepad/pad = associated_program
 	pad.written_note = set_text.value
 	SStgui.update_uis(pad.computer)

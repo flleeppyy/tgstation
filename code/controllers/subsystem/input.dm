@@ -22,6 +22,8 @@ VERB_MANAGER_SUBSYSTEM_DEF(input)
 	var/average_click_delay = 0
 
 /datum/controller/subsystem/verb_manager/input/Initialize()
+	procstart = null
+	src.procstart = null
 	setup_default_macro_sets()
 
 	initialized = TRUE
@@ -32,6 +34,8 @@ VERB_MANAGER_SUBSYSTEM_DEF(input)
 
 // This is for when macro sets are eventually datumized
 /datum/controller/subsystem/verb_manager/input/proc/setup_default_macro_sets()
+	procstart = null
+	src.procstart = null
 	macro_set = list(
 		"Any" = "\"KeyDown \[\[*\]\] \[\[map.mouse-pos\]\] \[\[map.size\]\]\"",
 		"Any+UP" = "\"KeyUp \[\[*\]\] \[\[map.mouse-pos\]\] \[\[map.size\]\]\"",
@@ -42,12 +46,16 @@ VERB_MANAGER_SUBSYSTEM_DEF(input)
 
 // Badmins just wanna have fun ♪
 /datum/controller/subsystem/verb_manager/input/proc/refresh_client_macro_sets()
+	procstart = null
+	src.procstart = null
 	var/list/clients = GLOB.clients
 	for(var/i in 1 to clients.len)
 		var/client/user = clients[i]
 		user.set_macros()
 
 /datum/controller/subsystem/verb_manager/input/can_queue_verb(datum/callback/verb_callback/incoming_callback, control)
+	procstart = null
+	src.procstart = null
 	//make sure the incoming verb is actually something we specifically want to handle
 	if(control != SKIN_MAPWINDOW_MAP)
 		return FALSE
@@ -61,10 +69,14 @@ VERB_MANAGER_SUBSYSTEM_DEF(input)
 
 ///stupid workaround for byond not recognizing the /atom/Click typepath for the queued click callbacks
 /atom/proc/_Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(usr)
 		Click(location, control, params)
 
 /datum/controller/subsystem/verb_manager/input/fire()
+	procstart = null
+	src.procstart = null
 	..()
 
 	var/moves_this_run = 0
@@ -74,6 +86,8 @@ VERB_MANAGER_SUBSYSTEM_DEF(input)
 	movements_per_second = MC_AVG_SECONDS(movements_per_second, moves_this_run, wait TICKS)
 
 /datum/controller/subsystem/verb_manager/input/run_verb_queue()
+	procstart = null
+	src.procstart = null
 	var/deferred_clicks_this_run = 0 //acts like current_clicks but doesn't count clicks that don't get processed by SSinput
 
 	for(var/datum/callback/verb_callback/queued_click as anything in verb_queue)
@@ -94,5 +108,7 @@ VERB_MANAGER_SUBSYSTEM_DEF(input)
 	current_clicks = 0
 
 /datum/controller/subsystem/verb_manager/input/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg = "\n  M/S:[round(movements_per_second,0.01)] | C/S:[round(clicks_per_second,0.01)] ([round(delayed_clicks_per_second,0.01)] | CD: [round(average_click_delay / (1 SECONDS),0.01)])"
 	return ..()

@@ -9,6 +9,8 @@
 	max_wizard_trigger_potency = 7
 
 /datum/round_event/wizard/rpgloot/start()
+	procstart = null
+	src.procstart = null
 	GLOB.rpgloot_controller = new /datum/rpgloot_controller
 
 /obj/item/upgradescroll
@@ -24,17 +26,23 @@
 	var/uses = 1
 
 /obj/item/upgradescroll/apply_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(bonus >= 15)
 		can_backfire = FALSE
 	upgrade_amount = modify_fantasy_variable("upgrade_amount", upgrade_amount, round(bonus / 4), minimum = 1)
 
 /obj/item/upgradescroll/remove_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	upgrade_amount = reset_fantasy_variable("upgrade_amount", upgrade_amount)
 	can_backfire = TRUE
 	return ..()
 
 /obj/item/upgradescroll/pre_attack(obj/item/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !istype(target))
 		return
@@ -70,6 +78,8 @@ GLOBAL_DATUM(rpgloot_controller, /datum/rpgloot_controller)
 /datum/rpgloot_controller
 
 /datum/rpgloot_controller/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//second operation takes MUCH longer, so lets set up signals first.
 	RegisterSignal(SSdcs, COMSIG_GLOB_ATOM_AFTER_POST_INIT, PROC_REF(on_new_item_in_existence))
@@ -77,6 +87,8 @@ GLOBAL_DATUM(rpgloot_controller, /datum/rpgloot_controller)
 
 ///signal sent by a new item being created.
 /datum/rpgloot_controller/proc/on_new_item_in_existence(datum/source, obj/item/created_item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(created_item))
 		return
@@ -91,6 +103,8 @@ GLOBAL_DATUM(rpgloot_controller, /datum/rpgloot_controller)
  * If the item it is giving fantasy to is a storage item, there's a chance it'll drop in an item fortification scroll. neat!
  */
 /datum/rpgloot_controller/proc/handle_current_items()
+	procstart = null
+	src.procstart = null
 	var/upgrade_scroll_chance = 0
 	for(var/obj/item/fantasy_item in world)
 		CHECK_TICK

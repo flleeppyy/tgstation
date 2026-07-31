@@ -9,14 +9,20 @@
 	var/tts_filter = ""
 
 /datum/status_effect/speech/on_creation(mob/living/new_owner, duration = 10 SECONDS)
+	procstart = null
+	src.procstart = null
 	src.duration = duration
 	return ..()
 
 /datum/status_effect/speech/on_apply()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(owner, COMSIG_LIVING_TREAT_MESSAGE, PROC_REF(handle_message))
 	return TRUE
 
 /datum/status_effect/speech/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_LIVING_TREAT_MESSAGE)
 
 /**
@@ -26,6 +32,8 @@
  * and calls apply_speech() on each.
  */
 /datum/status_effect/speech/proc/handle_message(datum/source, list/message_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/phrase = html_decode(message_args[TREAT_MESSAGE_ARG])
@@ -56,6 +64,8 @@
  * Return the newly modified word
  */
 /datum/status_effect/speech/proc/apply_speech(original_word, index)
+	procstart = null
+	src.procstart = null
 	stack_trace("[type] didn't implement apply_speech.")
 	return original_word
 
@@ -79,10 +89,14 @@
 	VAR_FINAL/static/regex/stutter_regex
 
 /datum/status_effect/speech/stutter/on_creation(mob/living/new_owner, ...)
+	procstart = null
+	src.procstart = null
 	stutter_regex ||= regex(@@^([\s"'()[\]{}.!?,:;_`~-]*\b)([^aeoiuh\d]h|qu|[^\d])(.*)@, "i")
 	return ..()
 
 /datum/status_effect/speech/stutter/apply_speech(original_word, index)
+	procstart = null
+	src.procstart = null
 	if(!prob(stutter_prob))
 		return original_word
 
@@ -92,6 +106,8 @@
 	return original_word // i give up
 
 /datum/status_effect/speech/stutter/proc/stutter_char(some_char)
+	procstart = null
+	src.procstart = null
 	if(prob(four_char_chance))
 		return "[some_char]-[some_char]-[some_char]-[some_char]"
 	if(prob(three_char_chance))
@@ -110,6 +126,8 @@
 	remove_on_fullheal = FALSE
 
 /datum/status_effect/speech/stutter/anxiety/handle_message(datum/source, list/message_args)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(owner, TRAIT_FEARLESS) || HAS_TRAIT(owner, TRAIT_SIGN_LANG))
 		stutter_prob = 0
 	else
@@ -128,6 +146,8 @@
 	COOLDOWN_DECLARE(stutter_cooldown)
 
 /datum/status_effect/speech/stutter/obsession/handle_message(datum/source, list/message_args)
+	procstart = null
+	src.procstart = null
 	if(should_stutter())
 		var/datum/brain_trauma/special/obsessed/obsession_trauma = get_obsession()
 		stutter_prob = initial(stutter_prob)
@@ -139,6 +159,8 @@
 	return ..()
 
 /datum/status_effect/speech/stutter/obsession/apply_speech(original_word, index)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == original_word || !should_stutter())
 		return
@@ -147,6 +169,8 @@
 	COOLDOWN_START(src, stutter_cooldown, rand(4, 8) SECONDS)
 
 /datum/status_effect/speech/stutter/obsession/proc/get_obsession()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(owner))
 		return null
 
@@ -154,6 +178,8 @@
 	return human_owner.has_trauma_type(/datum/brain_trauma/special/obsessed)
 
 /datum/status_effect/speech/stutter/obsession/proc/should_stutter()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(owner, TRAIT_FEARLESS))
 		return FALSE
 	if(!COOLDOWN_FINISHED(src, stutter_cooldown))
@@ -171,6 +197,8 @@
 	var/message_stutter_prob = 15
 
 /datum/status_effect/speech/stutter/derpspeech/handle_message(datum/source, list/message_args)
+	procstart = null
+	src.procstart = null
 
 	var/message = html_decode(message_args[TREAT_MESSAGE_ARG])
 
@@ -231,6 +259,8 @@
 	VAR_PRIVATE/replacement_dupe_check = FALSE
 
 /datum/status_effect/speech/slurring/on_creation(mob/living/new_owner, duration = 10 SECONDS)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -247,6 +277,8 @@
 	no_slur ||= regex(@@[ "'()[\]{}.!?,:;_`~-]@)
 
 /datum/status_effect/speech/slurring/apply_speech(original_word, index)
+	procstart = null
+	src.procstart = null
 	var/original_char = ""
 	var/modified_word = ""
 	for(var/i = 1, i <= length(original_word), i += length(original_char))
@@ -255,6 +287,8 @@
 	return modified_word
 
 /datum/status_effect/speech/slurring/proc/slur_character(original_char, index)
+	procstart = null
+	src.procstart = null
 	var/modified_char = original_char
 	var/allow_slurring = index != 1 && !no_slur.Find(modified_char)
 	var/lower_char = LOWER_TEXT(modified_char)
@@ -316,6 +350,8 @@
 	text_modification_file = "slurring_drunk_text.json"
 
 /datum/status_effect/speech/slurring/drunk/handle_message(datum/source, list/message_args)
+	procstart = null
+	src.procstart = null
 	var/current_drunkness = owner.get_drunk_amount()
 	// These numbers are arbitarily picked
 	// Common replacements start at about 20, and maxes out at about 85

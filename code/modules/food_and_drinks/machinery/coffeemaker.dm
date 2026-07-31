@@ -43,22 +43,30 @@
 	var/cup_type = /obj/item/reagent_containers/cup/glass/coffee_cup
 
 /obj/machinery/coffeemaker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		coffeepot = new /obj/item/reagent_containers/cup/coffeepot(src)
 		cartridge = new /obj/item/coffee_cartridge(src)
 
 /obj/machinery/coffeemaker/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	coffeepot?.forceMove(drop_location())
 	cartridge?.forceMove(drop_location())
 
 /obj/machinery/coffeemaker/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(coffeepot)
 	QDEL_NULL(cartridge)
 	remove_shared_particles(/particles/smoke)
 	return ..()
 
 /obj/machinery/coffeemaker/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == coffeepot)
 		coffeepot = null
@@ -68,12 +76,16 @@
 		update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/coffeemaker/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	speed = 0
 	for(var/datum/stock_part/micro_laser/laser in component_parts)
 		speed += laser.tier
 
 /obj/machinery/coffeemaker/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!in_range(user, src) && !issilicon(user) && !isobserver(user))
 		. += span_warning("You're too far away to examine [src]'s contents and display!")
@@ -128,6 +140,8 @@
 		. += span_notice("There is no creamer left.")
 
 /obj/machinery/coffeemaker/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -139,16 +153,24 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/coffeemaker/attack_robot_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand_secondary(user, modifiers)
 
 /obj/machinery/coffeemaker/attack_ai_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand_secondary(user, modifiers)
 
 /obj/machinery/coffeemaker/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += overlay_checks()
 
 /obj/machinery/coffeemaker/proc/overlay_checks()
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(coffeepot)
 		if(istype(coffeepot, /obj/item/reagent_containers/cup/coffeepot/bluespace))
@@ -160,6 +182,8 @@
 	return .
 
 /obj/machinery/coffeemaker/proc/replace_pot(mob/living/user, obj/item/reagent_containers/cup/coffeepot/new_coffeepot)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return FALSE
 
@@ -182,6 +206,8 @@
 	return TRUE
 
 /obj/machinery/coffeemaker/proc/replace_cartridge(mob/living/user, obj/item/coffee_cartridge/new_cartridge)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return FALSE
 	if(cartridge)
@@ -192,17 +218,25 @@
 	return TRUE
 
 /obj/machinery/coffeemaker/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/coffeemaker/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return isnull(coffeepot) ? default_deconstruction_screwdriver(user, tool) : NONE
 
 /obj/machinery/coffeemaker/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/coffeemaker/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(panel_open) //Can't insert objects when its screwed open
 		return NONE
 
@@ -283,6 +317,8 @@
 	return NONE // Allow normal attack processing if no special interaction occurred
 
 /obj/machinery/coffeemaker/proc/try_brew()
+	procstart = null
+	src.procstart = null
 	if(!cartridge)
 		balloon_alert(usr, "no coffee cartidge inserted!")
 		return FALSE
@@ -300,7 +336,9 @@
 		return FALSE
 	return TRUE
 
-/obj/machinery/coffeemaker/ui_interact(mob/user) // The microwave Menu //I am reasonably certain that this is not a microwave //I am positively certain that this is not a microwave
+/obj/machinery/coffeemaker/ui_interact(mob/user)
+	procstart = null
+	src.procstart = null // The microwave Menu //I am reasonably certain that this is not a microwave //I am positively certain that this is not a microwave
 	. = ..()
 
 	if(brewing || !user.can_perform_action(src, SILENT_ADJACENCY))
@@ -365,14 +403,20 @@
 			take_creamer(user)
 
 /obj/machinery/coffeemaker/proc/eject_pot(mob/user)
+	procstart = null
+	src.procstart = null
 	if(coffeepot)
 		replace_pot(user)
 
 /obj/machinery/coffeemaker/proc/eject_cartridge(mob/user)
+	procstart = null
+	src.procstart = null
 	if(cartridge)
 		replace_cartridge(user)
 
 /obj/machinery/coffeemaker/proc/take_cup(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!coffee_cups) //shouldn't happen, but we all know how stuff manages to break
 		balloon_alert(user, "no cups left!")
 		return
@@ -382,6 +426,8 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/coffeemaker/proc/take_sugar(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!sugar_packs)
 		balloon_alert(user, "no sugar left!")
 		return
@@ -391,6 +437,8 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/coffeemaker/proc/take_sweetener(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!sweetener_packs)
 		balloon_alert(user, "no sweetener left!")
 		return
@@ -400,6 +448,8 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/coffeemaker/proc/take_creamer(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!creamer_packs)
 		balloon_alert(user, "no creamer left!")
 		return
@@ -410,6 +460,8 @@
 
 ///Updates the smoke state to something else, setting particles if relevant
 /obj/machinery/coffeemaker/proc/toggle_steam()
+	procstart = null
+	src.procstart = null
 	if(!brewing)
 		remove_shared_particles("smoke_coffeemaker")
 		return
@@ -418,6 +470,8 @@
 	smoke_particles.particles.position = list(-6, 0, 0)
 
 /obj/machinery/coffeemaker/proc/operate_for(time, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	brewing = TRUE
 	if(!silent)
 		playsound(src, 'sound/machines/coffeemaker_brew.ogg', 20, vary = TRUE)
@@ -426,10 +480,14 @@
 	addtimer(CALLBACK(src, PROC_REF(stop_operating)), time / speed)
 
 /obj/machinery/coffeemaker/proc/stop_operating()
+	procstart = null
+	src.procstart = null
 	brewing = FALSE
 	toggle_steam()
 
 /obj/machinery/coffeemaker/proc/brew()
+	procstart = null
+	src.procstart = null
 	power_change()
 	if(!try_brew())
 		return
@@ -449,6 +507,8 @@
 	var/list/drink_type = list(/datum/reagent/consumable/coffee = 120)
 
 /obj/item/coffee_cartridge/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(charges)
 		. += span_warning("The cartridge has [charges] portions of grounds remaining.")
@@ -462,6 +522,8 @@
 
 //Here's the joke before I get 50 issue reports: they're all the same, and that's intentional
 /obj/item/coffee_cartridge/fancy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/coffee_type = pick("blend", "blue_mountain", "kilimanjaro", "mocha")
 	switch(coffee_type)
@@ -532,26 +594,36 @@
 	var/list/coffee = list()
 
 /obj/machinery/coffeemaker/impressa/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		coffeepot = new /obj/item/reagent_containers/cup/coffeepot(src)
 		cartridge = null
 
 /obj/machinery/coffeemaker/impressa/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(coffeepot)
 	QDEL_LIST(coffee)
 	return ..()
 
 /obj/machinery/coffeemaker/impressa/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(coffee)
 		. += span_notice("The internal grinder contains [length(coffee)] scoop\s of coffee beans")
 
 /obj/machinery/coffeemaker/impressa/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += overlay_checks()
 
 /obj/machinery/coffeemaker/impressa/overlay_checks()
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(coffeepot)
 		if(istype(coffeepot, /obj/item/reagent_containers/cup/coffeepot/bluespace))
@@ -580,12 +652,16 @@
 	return .
 
 /obj/machinery/coffeemaker/impressa/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone in coffee)
 		coffee -= gone
 		update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/coffeemaker/impressa/try_brew()
+	procstart = null
+	src.procstart = null
 	if(coffee_amount <= 0)
 		balloon_alert_to_viewers("no coffee beans added!")
 		return FALSE
@@ -601,6 +677,8 @@
 	return TRUE
 
 /obj/machinery/coffeemaker/impressa/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		return NONE
 
@@ -652,6 +730,8 @@
 	return ..()
 
 /obj/machinery/coffeemaker/impressa/take_cup(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!coffee_cups) //shouldn't happen, but we all know how stuff manages to break
 		balloon_alert(user, "no cups left!")
 		return
@@ -662,6 +742,8 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/coffeemaker/impressa/toggle_steam()
+	procstart = null
+	src.procstart = null
 	if(!brewing)
 		remove_shared_particles("smoke_impressa")
 		return
@@ -670,6 +752,8 @@
 	smoke_particles.particles.position = list(-2, 1, 0)
 
 /obj/machinery/coffeemaker/impressa/brew()
+	procstart = null
+	src.procstart = null
 	power_change()
 	if(!try_brew())
 		return

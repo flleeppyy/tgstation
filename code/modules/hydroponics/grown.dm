@@ -45,9 +45,13 @@
 	var/offset_at_init = TRUE
 
 /obj/item/food/grown/New(loc, obj/item/seeds/new_seed)
+	procstart = null
+	src.procstart = null
 	return ..()
 
 /obj/item/food/grown/Initialize(mapload, obj/item/seeds/new_seed)
+	procstart = null
+	src.procstart = null
 	if(!tastes)
 		tastes = list("[name]" = 1) //This happens first else the component already inits
 
@@ -83,14 +87,20 @@
 	ADD_TRAIT(src, TRAIT_VALID_DNA_INFUSION, INNATE_TRAIT)
 
 /obj/item/food/grown/Destroy()
+	procstart = null
+	src.procstart = null
 	if(isatom(seed))
 		QDEL_NULL(seed)
 	return ..()
 
 /obj/item/food/grown/make_dryable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/dryable, type)
 
 /obj/item/food/grown/make_leave_trash()
+	procstart = null
+	src.procstart = null
 	if(trash_type)
 		AddElement(/datum/element/food_trash, trash_type, FOOD_TRASH_OPENABLE, TYPE_PROC_REF(/obj/item/food/grown/, generate_trash))
 	return
@@ -98,6 +108,8 @@
 /// Generates a piece of trash based on our plant item. Used by [/datum/element/food_trash].
 /// location - Optional. If passed, generates the item at the passed location instead of at src's drop location.
 /obj/item/food/grown/proc/generate_trash(atom/location)
+	procstart = null
+	src.procstart = null
 	// If this is some type of grown thing, we pass a seed arg into its Inititalize()
 	if(ispath(trash_type, /obj/item/grown) || ispath(trash_type, /obj/item/food/grown))
 		return new trash_type(location || drop_location(), seed)
@@ -105,6 +117,8 @@
 	return new trash_type(location || drop_location())
 
 /obj/item/food/grown/blend_requirements(atom/movable/grinder, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!dry_grind || HAS_TRAIT(src, TRAIT_DRIED))
 		return TRUE
 	if (user)
@@ -113,6 +127,8 @@
 
 /// Turns the nutriments and vitamins into the distill reagent or fruit wine
 /obj/item/food/grown/proc/ferment()
+	procstart = null
+	src.procstart = null
 	var/reagent_purity = seed.get_reagent_purity()
 	var/purity_above_base = clamp((reagent_purity - 0.5) * 2, 0, 1)
 	var/quality_min = DRINK_NICE
@@ -141,6 +157,8 @@
 		reagents.del_reagent(reagent.type)
 
 /obj/item/food/grown/grind_atom(datum/reagents/target_holder, mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/grind_reagents = grind_results()
 	for(var/datum/reagent/result as anything in grind_reagents)
 		grind_reagents[result] = round(seed.potency)
@@ -157,6 +175,8 @@
 	return reagents?.trans_to(target_holder, reagents.total_volume, transferred_by = user)
 
 /obj/item/food/grown/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	//if we attack with paper and the grown is a mushroom, create a spore print.
 	if(istype(tool, /obj/item/paper) && seed?.get_gene(/datum/plant_gene/trait/plant_type/fungal_metabolism))
 		qdel(tool)

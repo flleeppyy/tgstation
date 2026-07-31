@@ -13,6 +13,8 @@
  * Returns nothing.
  */
 /proc/create_separatist_nation(datum/job_department/department, announcement = FALSE, dangerous = FALSE, message_admins = TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/jobs_to_revolt = list()
 	var/list/citizens = list()
 

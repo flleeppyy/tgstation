@@ -15,6 +15,8 @@
  * * diagonal_handling: defines how we handle diagonal moves. see __DEFINES/path.dm
  */
 /proc/get_path_to(atom/movable/requester, atom/end, max_distance = 30, mintargetdist, access=list(), simulated_only = TRUE, turf/exclude, skip_first=TRUE, diagonal_handling=DIAGONAL_REMOVE_CLUNKY)
+	procstart = null
+	src.procstart = null
 	var/list/hand_around = list()
 	// We're guaranteed that list will be the first list in pathfinding_finished's argset because of how callback handles the arguments list
 	var/datum/callback/await = list(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(pathfinding_finished), hand_around))
@@ -48,6 +50,8 @@
  * * skip_first: Whether or not to delete the first item in the path. This would be done because the first item is the starting tile, which can break movement for some creatures.
  */
 /proc/get_swarm_path_to(atom/movable/requester, atom/end, max_distance = 30, mintargetdist, age = MAP_REUSE_INSTANT, access = list(), simulated_only = TRUE, turf/exclude, skip_first=TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/hand_around = list()
 	// We're guaranteed that list will be the first list in pathfinding_finished's argset because of how callback handles the arguments list
 	var/datum/callback/await = list(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(pathfinding_finished), hand_around))
@@ -61,6 +65,8 @@
 	return return_val
 
 /proc/get_sssp(atom/movable/requester, max_distance = 30, access = list(), simulated_only = TRUE, turf/exclude)
+	procstart = null
+	src.procstart = null
 	var/list/hand_around = list()
 	// We're guaranteed that list will be the first list in pathfinding_finished's argset because of how callback handles the arguments list
 	var/datum/callback/await = list(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(pathfinding_finished), hand_around))
@@ -76,6 +82,8 @@
 /// Uses funny pass by reference bullshit to take the output created by pathfinding, and insert it into a return list
 /// We'll be able to use this return list to tell a sleeping proc to continue execution
 /proc/pathfinding_finished(list/return_list, hand_back)
+	procstart = null
+	src.procstart = null
 	// We use += here to behave nicely with lists
 	return_list += LIST_VALUE_WRAP_LISTS(hand_back)
 
@@ -98,6 +106,8 @@
 	var/datum/can_pass_info/pass_info
 
 /datum/pathfind/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSpathfinder.active_pathing -= src
 	SSpathfinder.currentrun -= src
@@ -109,6 +119,8 @@
  *  returns FALSE if it fails to setup properly, TRUE otherwise
  */
 /datum/pathfind/proc/start()
+	procstart = null
+	src.procstart = null
 	if(!start)
 		stack_trace("Invalid pathfinding start")
 		return FALSE
@@ -119,12 +131,16 @@
  * returns TRUE if everything is stable, FALSE if the pathfinding logic has failed, and we need to abort
  */
 /datum/pathfind/proc/search_step()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /**
  * early_exit() is called when something goes wrong in processing, and we need to halt the pathfinding NOW
  */
 /datum/pathfind/proc/early_exit()
+	procstart = null
+	src.procstart = null
 	hand_back(null)
 	qdel(src)
 
@@ -132,6 +148,8 @@
  * Cleanup pass for the pathfinder. This tidies up the path, and fufills the pathfind's obligations
  */
 /datum/pathfind/proc/finished()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /**
@@ -139,6 +157,8 @@
  * Will fail if it's already been called
  */
 /datum/pathfind/proc/hand_back(value)
+	procstart = null
+	src.procstart = null
 	for(var/datum/callback/finished as anything in on_finish)
 		finished.Invoke(value)
 	on_finish = null
@@ -152,6 +172,8 @@
  * avoid - A turf to be avoided
  */
 /proc/remove_clunky_diagonals(list/path, datum/can_pass_info/pass_info, simulated_only, turf/avoid)
+	procstart = null
+	src.procstart = null
 	if(length(path) < 2)
 		return path
 	var/list/modified_path = list()
@@ -180,6 +202,8 @@
  * avoid - A turf to be avoided
  */
 /proc/remove_diagonals(list/path, datum/can_pass_info/pass_info, simulated_only, turf/avoid)
+	procstart = null
+	src.procstart = null
 	if(length(path) < 2)
 		return path
 	var/list/modified_path = list()
@@ -213,6 +237,8 @@
  * * pass_info - Holds all the info about what this path attempt can go through
 */
 /turf/proc/LinkBlockedWithAccess(turf/destination_turf, datum/can_pass_info/pass_info)
+	procstart = null
+	src.procstart = null
 	if(destination_turf.x != x && destination_turf.y != y) //diagonal
 		var/in_dir = get_dir(destination_turf,src) // eg. northwest (1+8) = 9 (00001001)
 		var/first_step_direction_a = in_dir & 3 // eg. north   (1+8)&3 (0000 0011) = 1 (0000 0001)
@@ -317,6 +343,8 @@
 	var/datum/weakref/requester_ref = null
 
 /datum/can_pass_info/New(atom/movable/construct_from, list/access, no_id = FALSE, call_depth = 0)
+	procstart = null
+	src.procstart = null
 	// No infiniloops
 	if(call_depth > 10)
 		return
@@ -357,6 +385,8 @@
 GLOBAL_LIST_INIT(can_pass_info_vars, GLOBAL_PROC_REF(can_pass_check_vars))
 
 /proc/can_pass_check_vars()
+	procstart = null
+	src.procstart = null
 	var/datum/can_pass_info/lamb = new()
 	var/datum/isaac = new()
 	var/list/altar = assoc_to_keys(lamb.vars - isaac.vars)
@@ -369,6 +399,8 @@ GLOBAL_LIST_INIT(can_pass_info_vars, GLOBAL_PROC_REF(can_pass_check_vars))
 	return altar
 
 /datum/can_pass_info/proc/compare_against(datum/can_pass_info/check_against)
+	procstart = null
+	src.procstart = null
 	for(var/comparable_var in GLOB.can_pass_info_vars)
 		if(!(vars[comparable_var] ~= check_against.vars[comparable_var]))
 			return FALSE

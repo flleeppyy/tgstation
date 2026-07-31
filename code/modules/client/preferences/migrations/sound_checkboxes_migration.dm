@@ -9,6 +9,8 @@
  */
 
 /datum/preferences/proc/migrate_boolean_sound_prefs_to_default_volume()
+	procstart = null
+	src.procstart = null
 	var/ambience_pref = savefile.get_entry("sound_ambience_volume")
 	var/ship_ambience_pref = savefile.get_entry("sound_ship_ambience_volume")
 	var/lobby_music_pref = savefile.get_entry("sound_lobby_volume")
@@ -21,6 +23,8 @@
 
 
 /datum/preferences/proc/migrate_boolean_sound_prefs_to_default_volume_v2()
+	procstart = null
+	src.procstart = null
 	var/list/entries = list(
 		/datum/preference/numeric/volume/sound_ai_vox = savefile.get_entry("sound_ai_vox"),
 		/datum/preference/numeric/volume/sound_midi = savefile.get_entry("sound_midi"),

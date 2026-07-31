@@ -179,6 +179,8 @@
 	mod_type = /obj/item/mod/control/pre_equipped/loader
 
 /obj/machinery/suit_storage_unit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	set_access()
@@ -198,6 +200,8 @@
 	register_context()
 
 /obj/machinery/suit_storage_unit/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(suit)
 	QDEL_NULL(helmet)
 	QDEL_NULL(mask)
@@ -207,6 +211,8 @@
 	return ..()
 
 /obj/machinery/suit_storage_unit/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isnull(held_item))
@@ -229,6 +235,8 @@
 
 
 /obj/machinery/suit_storage_unit/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//if things aren't powered, these show anyways
 	if(panel_open)
@@ -263,6 +271,8 @@
 			. += "[base_icon_state]_ready"
 
 /obj/machinery/suit_storage_unit/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(card_reader_installed)
 		. += span_notice("Swipe your ID to change access levels.")
@@ -272,6 +282,8 @@
 
 /// copy over access of electronics
 /obj/machinery/suit_storage_unit/proc/set_access(list/accesses)
+	procstart = null
+	src.procstart = null
 	var/obj/item/electronics/airlock/electronics = locate() in component_parts
 	if(QDELETED(electronics))
 		return
@@ -286,6 +298,8 @@
 		req_one_access = null
 
 /obj/machinery/suit_storage_unit/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	for(var/datum/stock_part/capacitor/capacitor in component_parts)
@@ -294,6 +308,8 @@
 	set_access()
 
 /obj/machinery/suit_storage_unit/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!is_operational && state_open)
 		open_machine()
@@ -301,6 +317,8 @@
 	update_appearance()
 
 /obj/machinery/suit_storage_unit/dump_inventory_contents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	helmet = null
 	suit = null
@@ -310,10 +328,14 @@
 	set_occupant(null)
 
 /obj/machinery/suit_storage_unit/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	if(card_reader_installed)
 		new /obj/item/stock_parts/card_reader(loc)
 
 /obj/machinery/suit_storage_unit/proc/access_check(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!isnull(id_card))
 		var/obj/item/card/id/id = id_card?.resolve()
 		if(!id) // reset to defaults
@@ -335,6 +357,8 @@
 	return TRUE
 
 /obj/machinery/suit_storage_unit/interact(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/static/list/items
 
 	if (!items)
@@ -430,6 +454,8 @@
 	interact(user)
 
 /obj/machinery/suit_storage_unit/proc/check_interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	if (!state_open && !can_interact(user))
 		return FALSE
 
@@ -442,12 +468,16 @@
 	return TRUE
 
 /obj/machinery/suit_storage_unit/proc/create_silhouette_of(atom/item)
+	procstart = null
+	src.procstart = null
 	var/image/image = image(initial(item.icon), initial(item.icon_state))
 	image.alpha = 128
 	image.color = COLOR_RED
 	return image
 
 /obj/machinery/suit_storage_unit/mouse_drop_receive(atom/A, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(!isliving(A))
 		return
 	var/mob/living/target = A
@@ -485,6 +515,8 @@
  * All atoms still inside at the end of all cycles are ejected from the unit.
 */
 /obj/machinery/suit_storage_unit/proc/cook()
+	procstart = null
+	src.procstart = null
 	var/mob/living/mob_occupant = occupant
 	if(uv_cycles)
 		uv_cycles--
@@ -549,6 +581,8 @@
 			dump_inventory_contents()
 
 /obj/machinery/suit_storage_unit/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/list/cells_to_charge = list()
 	for(var/obj/item/charging in list(mod, suit, helmet, mask, storage))
 		var/obj/item/stock_parts/power_store/cell_charging = charging.get_cell()
@@ -566,6 +600,8 @@
 		charge_cell(charge_per_item, cell, grid_only = TRUE)
 
 /obj/machinery/suit_storage_unit/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		if(message_cooldown <= world.time)
 			message_cooldown = world.time + 50
@@ -575,6 +611,8 @@
 	dump_inventory_contents()
 
 /obj/machinery/suit_storage_unit/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!locked)
 		open_machine()
 		dump_inventory_contents()
@@ -602,12 +640,16 @@
 		dump_inventory_contents()
 
 /obj/machinery/suit_storage_unit/proc/resist_open(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!state_open && occupant && (user in src) && !IS_UNCONSCIOUS_OR_CRIT(user)) // Check they're still here.
 		visible_message(span_notice("You see [user] burst out of [src]!"), \
 			span_notice("You escape the cramped confines of [src]!"))
 		open_machine()
 
 /obj/machinery/suit_storage_unit/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!card_reader_installed || state_open)
 		return ITEM_INTERACT_BLOCKING
 
@@ -620,6 +662,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/suit_storage_unit/proc/can_install_card_reader(mob/user)
+	procstart = null
+	src.procstart = null
 	if(card_reader_installed || !panel_open || state_open || !is_operational)
 		return FALSE
 
@@ -630,6 +674,8 @@
 	return TRUE
 
 /obj/machinery/suit_storage_unit/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user.combat_mode)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
@@ -706,6 +752,8 @@
 	causes the SSU to break due to state_open being set to TRUE at the end, and the panel becoming inaccessible.
 */
 /obj/machinery/suit_storage_unit/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(state_open)
 		return NONE
 	if(uv || locked)
@@ -715,12 +763,18 @@
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/suit_storage_unit/can_crowbar_pry_open()
+	procstart = null
+	src.procstart = null
 	return ..() && !locked
 
 /obj/machinery/suit_storage_unit/can_crowbar_deconstruct()
+	procstart = null
+	src.procstart = null
 	return ..() && !locked
 
 /obj/machinery/suit_storage_unit/rename_checks(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	if(locked)
 		balloon_alert(user, "unlock first!")
@@ -731,12 +785,16 @@
 
 /// If the SSU needs to have any communications wires cut.
 /obj/machinery/suit_storage_unit/proc/disable_modlink()
+	procstart = null
+	src.procstart = null
 	if(isnull(mod))
 		return
 
 	mod.disable_modlink()
 
 /obj/machinery/suit_storage_unit/proc/try_insert_item(mob/living/user, obj/item/to_insert)
+	procstart = null
+	src.procstart = null
 	if(istype(to_insert, /obj/item/clothing/suit))
 		if(suit)
 			to_chat(user, span_warning("The unit already contains a suit!"))

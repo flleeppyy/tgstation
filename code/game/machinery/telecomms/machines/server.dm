@@ -25,6 +25,8 @@
 	var/total_traffic = 0
 
 /obj/machinery/telecomms/server/receive_information(datum/signal/subspace/vocal/signal, obj/machinery/telecomms/machine_from)
+	procstart = null
+	src.procstart = null
 	// can't log non-vocal signals
 	if(!istype(signal) || !signal.data["message"] || !is_freq_listening(signal))
 		return
@@ -87,6 +89,8 @@
 	network = "tcommsat"
 
 /obj/machinery/telecomms/server/presets/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = id
 
@@ -97,6 +101,8 @@
 	autolinkers = list("science")
 
 /obj/machinery/telecomms/server/presets/science/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	frequency_infos["[FREQ_SCIENCE]"] = list(
 		"name" = RADIO_CHANNEL_SCIENCE,
@@ -109,6 +115,8 @@
 	autolinkers = list("medical")
 
 /obj/machinery/telecomms/server/presets/medical/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	frequency_infos["[FREQ_MEDICAL]"] = list(
 		"name" = RADIO_CHANNEL_MEDICAL,
@@ -121,6 +129,8 @@
 	autolinkers = list("supply")
 
 /obj/machinery/telecomms/server/presets/supply/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	frequency_infos["[FREQ_SUPPLY]"] = list(
 		"name" = RADIO_CHANNEL_SUPPLY,
@@ -133,6 +143,8 @@
 	autolinkers = list("service", "entertainment")
 
 /obj/machinery/telecomms/server/presets/service/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	frequency_infos["[FREQ_SERVICE]"] = list(
 		"name" = RADIO_CHANNEL_SERVICE,
@@ -149,6 +161,8 @@
 	autolinkers = list("common")
 
 /obj/machinery/telecomms/server/presets/common/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	frequency_infos["[FREQ_COMMON]"] = list(
 		"name" = RADIO_CHANNEL_COMMON,
@@ -160,6 +174,8 @@
 	)
 
 /obj/machinery/telecomms/server/presets/common/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Common and other radio frequencies for people to freely use
 	for(var/i = MIN_FREQ, i <= MAX_FREQ, i += 2)
@@ -171,6 +187,8 @@
 	autolinkers = list("command")
 
 /obj/machinery/telecomms/server/presets/command/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	frequency_infos["[FREQ_COMMAND]"] = list(
 		"name" = RADIO_CHANNEL_COMMAND,
@@ -183,6 +201,8 @@
 	autolinkers = list("engineering")
 
 /obj/machinery/telecomms/server/presets/engineering/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	frequency_infos["[FREQ_ENGINEERING]"] = list(
 		"name" = RADIO_CHANNEL_ENGINEERING,
@@ -195,6 +215,8 @@
 	autolinkers = list("security")
 
 /obj/machinery/telecomms/server/presets/security/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	frequency_infos["[FREQ_SECURITY]"] = list(
 		"name" = RADIO_CHANNEL_SECURITY,
@@ -202,5 +224,7 @@
 	)
 
 /obj/machinery/telecomms/server/presets/common/birdstation/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	freq_listening = list()

@@ -45,6 +45,8 @@
 	var/is_unique = FALSE
 
 /datum/customer_data/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name_prefixes = world.file2list(prefix_file)
 	if(check_holidays(ICE_CREAM_DAY)) ///customers are more likely to order ice cream on this holiday
@@ -54,12 +56,18 @@
 
 /// Can this customer be chosen for this venue?
 /datum/customer_data/proc/can_use(datum/venue/venue, obj/machinery/restaurant_portal/portal)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/customer_data/proc/get_overlays(mob/living/basic/robot_customer/customer)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/customer_data/proc/get_underlays(mob/living/basic/robot_customer/customer)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/customer_data/american
@@ -192,6 +200,8 @@
 	)
 
 /datum/customer_data/french/get_overlays(mob/living/basic/robot_customer/customer)
+	procstart = null
+	src.procstart = null
 	if(customer.ai_controller.blackboard[BB_CUSTOMER_LEAVING])
 		return mutable_appearance(customer.icon, "french_flag", appearance_flags = RESET_COLOR|KEEP_APART)
 
@@ -237,6 +247,8 @@
 	)
 
 /datum/customer_data/japanese/get_overlays(mob/living/basic/robot_customer/customer)
+	procstart = null
+	src.procstart = null
 	//leaving and eaten
 	if(type == /datum/customer_data/japanese && customer.ai_controller.blackboard[BB_CUSTOMER_LEAVING] && customer.ai_controller.blackboard[BB_CUSTOMER_EATING])
 		return mutable_appearance('icons/effects/effects.dmi', "love_hearts", appearance_flags = RESET_COLOR|KEEP_APART)
@@ -306,6 +318,8 @@
 // If it takes any more effort, it loses a bit of the comedy.
 // Therefore, only show up if it's reasonable for that gag to happen.
 /datum/customer_data/moth/can_use(datum/venue/venue, obj/machinery/restaurant_portal/portal)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/buffet = portal.turned_on_portal?.resolve()
 	if (!istype(buffet))
 		return FALSE
@@ -314,6 +328,8 @@
 	return TRUE
 
 /datum/customer_data/moth/proc/get_wings(mob/living/basic/robot_customer/customer)
+	procstart = null
+	src.procstart = null
 	var/customer_ref = WEAKREF(customer)
 	if (!LAZYACCESS(wings_chosen, customer_ref))
 		var/picked_wings = pick(SSaccessories.feature_list[FEATURE_MOTH_WINGS])
@@ -321,6 +337,8 @@
 	return wings_chosen[customer_ref]
 
 /datum/customer_data/moth/get_underlays(mob/living/basic/robot_customer/customer)
+	procstart = null
+	src.procstart = null
 	var/list/underlays = list()
 
 	var/datum/sprite_accessory/moth_wings/wings = get_wings(customer)
@@ -328,6 +346,8 @@
 	return underlays
 
 /datum/customer_data/moth/get_overlays(mob/living/basic/robot_customer/customer)
+	procstart = null
+	src.procstart = null
 	var/list/overlays = list()
 
 	var/datum/sprite_accessory/moth_wings/wings = get_wings(customer)

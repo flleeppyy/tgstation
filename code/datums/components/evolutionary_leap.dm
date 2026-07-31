@@ -12,6 +12,8 @@
 	var/evolve_path
 
 /datum/component/evolutionary_leap/Initialize(evolve_mark, evolve_path)
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -31,25 +33,35 @@
 	setup_timer()
 
 /datum/component/evolutionary_leap/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	deltimer(timer_id)
 
 /datum/component/evolutionary_leap/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(SSticker, COMSIG_TICKER_ROUND_STARTING)
 
 /// Proc ran when round starts.
 /datum/component/evolutionary_leap/proc/comp_on_round_start()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(SSticker, COMSIG_TICKER_ROUND_STARTING)
 	setup_timer()
 
 /datum/component/evolutionary_leap/proc/setup_timer()
+	procstart = null
+	src.procstart = null
 	//in cases where this is calculating roundstart, world.time - SSticker.round_start_time should equal 0
 	var/sum = (world.time - SSticker.round_start_time)
 	var/mark = evolve_mark - sum
 	timer_id = addtimer(CALLBACK(src, PROC_REF(leap), FALSE), mark, TIMER_STOPPABLE)
 
 /datum/component/evolutionary_leap/proc/leap()
+	procstart = null
+	src.procstart = null
 	var/mob/living/old_mob = parent
 	if (old_mob.stat == DEAD)
 		return

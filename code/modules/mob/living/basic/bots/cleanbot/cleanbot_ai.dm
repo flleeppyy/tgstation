@@ -34,6 +34,8 @@
 /datum/target_source/cleanbot_cleanables
 
 /datum/target_source/cleanbot_cleanables/collect_candidates(mob/living/pawn, datum/ai_controller/basic_controller/bot/cleanbot/controller, range)
+	procstart = null
+	src.procstart = null
 	var/list/final_hunt_list = list()
 	final_hunt_list += controller.blackboard[BB_CLEANABLE_DECALS]
 	var/mob/living/basic/bot/cleanbot/bot_pawn = pawn
@@ -51,6 +53,8 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/execute_clean/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/living_pawn = controller.pawn
 	var/atom/target = controller.blackboard[target_key]
 	if(QDELETED(target))
@@ -63,6 +67,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/execute_clean/finish_action(datum/ai_controller/basic_controller/bot/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.set_blackboard_key(BB_POST_CLEAN_COOLDOWN, POST_CLEAN_COOLDOWN + world.time)
 	var/atom/target = controller.blackboard[target_key]
@@ -85,6 +91,8 @@
 
 /// Valid if the target is a conscious human janitor-whisperer the cleanbot hasn't already befriended.
 /datum/targeting_strategy/capable_human/cleanbot_whisperer/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -106,6 +114,8 @@
 	speech_commands = list("clean", "mop")
 
 /datum/pet_command/clean/set_command_target(mob/living/parent, atom/target)
+	procstart = null
+	src.procstart = null
 	if(isnull(target) || !istype(target, /obj/effect/decal/cleanable))
 		return FALSE
 	if(isnull(parent.ai_controller))
@@ -115,6 +125,8 @@
 	return ..()
 
 /datum/pet_command/clean/execute_action(datum/ai_controller/basic_controller/bot/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[BB_CURRENT_PET_TARGET]
 	if(QDELETED(target))
 		controller.clear_blackboard_key(BB_ACTIVE_PET_COMMAND)

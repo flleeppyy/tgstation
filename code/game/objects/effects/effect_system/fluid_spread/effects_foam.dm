@@ -38,6 +38,8 @@
 
 
 /obj/effect/particle_effect/fluid/foam/Initialize(mapload, fluid_group, source, lifetime, slippery)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.lifetime = lifetime ? lifetime : src.lifetime
 	src.original_lifetime = src.lifetime
@@ -52,6 +54,8 @@
 	SSfoam.start_processing(src)
 
 /obj/effect/particle_effect/fluid/foam/Destroy()
+	procstart = null
+	src.procstart = null
 	SSfoam.stop_processing(src)
 	if (spread_bucket)
 		SSfoam.cancel_spread(src)
@@ -61,6 +65,8 @@
  * Makes the foam dissipate and create whatever remnants it must.
  */
 /obj/effect/particle_effect/fluid/foam/proc/kill_foam()
+	procstart = null
+	src.procstart = null
 	SSfoam.stop_processing(src)
 	if (spread_bucket)
 		SSfoam.cancel_spread(src)
@@ -74,6 +80,8 @@
  * Returns the thing the foam leaves behind for further modification by subtypes.
  */
 /obj/effect/particle_effect/fluid/foam/proc/make_result()
+	procstart = null
+	src.procstart = null
 	if(isnull(result_type))
 		return null
 
@@ -83,6 +91,8 @@
 	return result
 
 /obj/effect/particle_effect/fluid/foam/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/ds_seconds_per_tick = seconds_per_tick SECONDS
 	lifetime -= ds_seconds_per_tick
 	if(lifetime <= 0)
@@ -131,6 +141,8 @@
  * - [FALSE]: Otherwise.
  */
 /obj/effect/particle_effect/fluid/foam/proc/foam_mob(mob/living/foaming, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(lifetime <= 0)
 		return FALSE
 	if(!istype(foaming))
@@ -143,9 +155,13 @@
 	return TRUE
 
 /obj/effect/particle_effect/fluid/foam/proc/try_slip(mob/living/slipper, mob/living/slippee)
+	procstart = null
+	src.procstart = null
 	return !HAS_TRAIT(slippee, TRAIT_MOB_ELEVATED)
 
 /obj/effect/particle_effect/fluid/foam/spread(seconds_per_tick = 0.2 SECONDS)
+	procstart = null
+	src.procstart = null
 	if(group.total_size > group.target_size)
 		return
 	var/turf/location = get_turf(src)
@@ -177,15 +193,21 @@
 		SSfoam.queue_spread(spread_foam)
 
 /obj/effect/particle_effect/fluid/foam/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return exposed_temperature > 475
 
 /obj/effect/particle_effect/fluid/foam/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	if(prob(max(0, exposed_temperature - 475)))   //foam dissolves when heated
 		kill_foam()
 
 /// Proc to quickly spawn foam
 /// reagent_type can accept a list of reagents, optionally as a key-value pair with values overriding reagent_volume if not null
 /proc/do_foam(range = 1, atom/holder = null, turf/location = null, datum/reagent/reagent_type = null, reagent_volume = 10, datum/reagents/carry = null, amount = null, log = FALSE, datum/effect_system/fluid_spread/foam/foam_type = /datum/effect_system/fluid_spread/foam, result_type = null, stop_reactions = FALSE, reagent_scale = FOAM_REAGENT_SCALE)
+	procstart = null
+	src.procstart = null
 	if (carry || isnull(reagent_type))
 		var/datum/effect_system/fluid_spread/foam/foam = new foam_type(location, range, amount, holder || location, carry, result_type, stop_reactions, reagent_scale)
 		foam.start(log = log)
@@ -225,6 +247,8 @@
 	var/atom/movable/result_type = null
 
 /datum/effect_system/fluid_spread/foam/New(turf/location, range = 1, amount = null, atom/holder = null, datum/reagents/carry = null, result_type = null, stop_reactions = FALSE, reagent_scale = FOAM_REAGENT_SCALE,)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	chemholder = new(1000, NO_REACT)
 	carry?.trans_to(chemholder, carry.total_volume, no_react = stop_reactions, copy_only = TRUE)
@@ -233,10 +257,14 @@
 	src.reagent_scale = reagent_scale
 
 /datum/effect_system/fluid_spread/foam/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(chemholder)
 	return ..()
 
 /datum/effect_system/fluid_spread/foam/start(log = FALSE, lifetime, slippery)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/particle_effect/fluid/foam/foam = new effect_type(location, new /datum/fluid_group(amount), null, lifetime, slippery)
 	var/foamcolor = mix_color_from_reagents(chemholder.reagent_list)
 	if(reagent_scale > 1) // Make room in case we were created by a particularly stuffed payload.
@@ -280,10 +308,14 @@
 	var/absorbed_plasma = 0
 
 /obj/effect/particle_effect/fluid/foam/firefighting/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RemoveElement(/datum/element/atmos_sensitive)
 
 /obj/effect/particle_effect/fluid/foam/firefighting/process()
+	procstart = null
+	src.procstart = null
 	..()
 
 	var/turf/open/location = loc
@@ -306,6 +338,8 @@
 	location.air_update_turf(FALSE, FALSE)
 
 /obj/effect/particle_effect/fluid/foam/firefighting/make_result()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/deposit = ..()
 	if(istype(deposit) && deposit.reagents && absorbed_plasma > 0)
 		deposit.reagents.add_reagent(/datum/reagent/stable_plasma, absorbed_plasma)
@@ -313,6 +347,8 @@
 	return deposit
 
 /obj/effect/particle_effect/fluid/foam/firefighting/foam_mob(mob/living/foaming, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!istype(foaming))
 		return
 	foaming.adjust_wet_stacks(2)
@@ -353,26 +389,38 @@
 	var/next_beep = 0
 
 /obj/structure/foamedmetal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	air_update_turf(TRUE, TRUE)
 	AddElement(/datum/element/uses_girder_wall_recipes)
 
 /obj/structure/foamedmetal/Destroy()
+	procstart = null
+	src.procstart = null
 	air_update_turf(TRUE, FALSE)
 	. = ..()
 
 /obj/structure/foamedmetal/Move()
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 	. = ..()
 	move_update_air(T)
 
 /obj/structure/foamedmetal/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/structure/foamedmetal/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	playsound(src.loc, 'sound/items/weapons/tap.ogg', 100, TRUE)
 
 /obj/structure/foamedmetal/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -403,7 +451,9 @@
 /datum/effect_system/fluid_spread/foam/metal/smart
 	effect_type = /obj/effect/particle_effect/fluid/foam/metal/smart
 
-/obj/effect/particle_effect/fluid/foam/metal/smart/make_result() //Smart foam adheres to area borders for walls
+/obj/effect/particle_effect/fluid/foam/metal/smart/make_result()
+	procstart = null
+	src.procstart = null //Smart foam adheres to area borders for walls
 	var/turf/open/location = loc
 	if(isspaceturf(location) || isopenspaceturf(location))
 		location.place_on_top(/turf/open/floor/plating/foam)
@@ -439,6 +489,8 @@
 	))
 
 /obj/structure/foamedmetal/resin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/open/location = loc
 	if(!istype(location))
@@ -476,13 +528,19 @@
 /obj/effect/particle_effect/fluid/foam/metal/resin/halon
 
 /obj/effect/particle_effect/fluid/foam/metal/resin/halon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RemoveElement(/datum/element/atmos_sensitive) // Doesn't dissolve in heat.
 
 /obj/effect/particle_effect/fluid/foam/metal/resin/halon/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return FALSE // Doesn't dissolve in heat.
 
 /obj/effect/particle_effect/fluid/foam/metal/resin/halon/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return // Doesn't dissolve in heat.
 
 /datum/effect_system/fluid_spread/foam/dirty
@@ -498,6 +556,8 @@
 	var/foam_size = 4
 
 /obj/effect/spawner/foam_starter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/effect_system/fluid_spread/foam/foam = new foam_type(loc, foam_size, holder = src)
 	foam.start()

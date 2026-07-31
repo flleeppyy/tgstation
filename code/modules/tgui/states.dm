@@ -17,6 +17,8 @@
  * return UI_state The state of the UI.
  */
 /datum/proc/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	var/src_object = ui_host(user)
 	. = UI_CLOSE
 	if(!state)
@@ -49,6 +51,8 @@
  * return UI_state The state of the UI.
  */
 /datum/ui_state/proc/can_use_topic(src_object, mob/user)
+	procstart = null
+	src.procstart = null
 	// Don't allow interaction by default.
 	return UI_CLOSE
 
@@ -60,6 +64,8 @@
  * return UI_state The state of the UI.
  */
 /mob/proc/shared_ui_interaction(src_object)
+	procstart = null
+	src.procstart = null
 	// Close UIs if mindless.
 	if(!client && !HAS_TRAIT(src, TRAIT_PRESERVE_UI_WITHOUT_CLIENT))
 		return UI_CLOSE
@@ -72,11 +78,15 @@
 	return UI_INTERACTIVE
 
 /mob/living/shared_ui_interaction(atom/src_object)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(mobility_flags & MOBILITY_UI) && !(src_object.interaction_flags_atom & INTERACT_ATOM_IGNORE_MOBILITY) && . == UI_INTERACTIVE)
 		return UI_UPDATE
 
 /mob/living/silicon/ai/shared_ui_interaction(src_object)
+	procstart = null
+	src.procstart = null
 	// Disable UIs if the AI is unpowered.
 	if(apc_override == src_object) //allows AI to (eventually) use the interface for their own APC even when out of power
 		return UI_INTERACTIVE
@@ -85,6 +95,8 @@
 	return ..()
 
 /mob/living/silicon/robot/shared_ui_interaction(src_object)
+	procstart = null
+	src.procstart = null
 	// Disable UIs if the object isn't installed in the borg AND the borg is either locked, has a dead cell, or no cell.
 	var/atom/device = src_object
 	if((istype(device) && device.loc != src) && (!cell || cell.charge <= 0 || lockcharge))
@@ -101,6 +113,8 @@
  * return UI_state The state of the UI.
  */
 /mob/living/proc/shared_living_ui_distance(atom/movable/src_object, viewcheck = TRUE, allow_tk = TRUE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/item_in_hand = get_active_held_item()
 	if(istype(item_in_hand, /obj/item/machine_remote)) //snowflake, this lets you interact with all.
 		var/obj/item/machine_remote/remote = item_in_hand
@@ -121,6 +135,8 @@
 	return UI_INTERACTIVE
 
 /mob/living/carbon/human/shared_living_ui_distance(atom/movable/src_object, viewcheck = TRUE, allow_tk = TRUE)
+	procstart = null
+	src.procstart = null
 	if(allow_tk && dna.check_mutation(/datum/mutation/telekinesis) && tkMaxRangeCheck(src, src_object))
 		return UI_INTERACTIVE
 	return ..()

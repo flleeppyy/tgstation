@@ -3,10 +3,14 @@
 	default_location = "icons/obj/"
 
 /datum/unit_test/missing_icons/icon_state/compile_icon_state_locations()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	generate_possible_icon_states_list("icons/effects/")
 
 /datum/unit_test/missing_icons/icon_state/Run()
+	procstart = null
+	src.procstart = null
 	compile_icon_state_locations()
 
 	//Add EVEN MORE paths if needed here!

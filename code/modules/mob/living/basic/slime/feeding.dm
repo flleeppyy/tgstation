@@ -3,6 +3,8 @@
 
 ///Can the slime leech life energy from the target?
 /mob/living/basic/slime/proc/can_feed_on(mob/living/meal, silent = FALSE, check_adjacent = FALSE, check_friendship = FALSE)
+	procstart = null
+	src.procstart = null
 
 	if(!isliving(meal)) //sanity check
 		return FALSE
@@ -70,6 +72,8 @@
 
 ///The slime will start feeding on the target
 /mob/living/basic/slime/proc/start_feeding(mob/living/target_mob)
+	procstart = null
+	src.procstart = null
 	target_mob.unbuckle_all_mobs(force = TRUE) //Slimes rip other mobs (eg: shoulder parrots) off (Slimes Vs Slimes is already handled in can_feed_on())
 	if(target_mob.buckle_mob(src, force = TRUE))
 		add_offsets(FEEDING_OFFSET, y_add = target_mob.mob_size <= MOB_SIZE_SMALL ? 0 : 3)
@@ -87,6 +91,8 @@
 
 ///The slime will stop feeding
 /mob/living/basic/slime/proc/stop_feeding(silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!buckled)
 		return
 

@@ -7,6 +7,8 @@
 	initialize_dirs = DISP_DIR_RIGHT | DISP_DIR_FLIP
 
 /obj/structure/disposalpipe/sorting/nextdir(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	var/sortdir = dpdir & ~(dir | REVERSE_DIR(dir))
 	if(H.dir != sortdir) // probably came from the negdir
 		if(check_sorting(H)) // if destination matches filtered type...
@@ -17,6 +19,8 @@
 
 /// Sorting check, to be overridden in subtypes
 /obj/structure/disposalpipe/sorting/proc/check_sorting(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 // Mail sorting junction, uses package tags to sort objects.
@@ -34,6 +38,8 @@
 	initialize_dirs = DISP_DIR_LEFT | DISP_DIR_FLIP
 
 /obj/structure/disposalpipe/sorting/mail/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Generate a list of soring tags.
 	if(sortType)
@@ -47,6 +53,8 @@
 					sortTypes |= n
 
 /obj/structure/disposalpipe/sorting/mail/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(sortTypes.len)
 		. += "It is tagged with the following tags:"
@@ -56,6 +64,8 @@
 		. += "It has no sorting tags set."
 
 /obj/structure/disposalpipe/sorting/mail/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/dest_tagger))
 		return NONE
 	var/relevant_tag = astype(tool, /obj/item/dest_tagger).currTag
@@ -72,6 +82,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/disposalpipe/sorting/mail/check_sorting(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	return (H.destinationTag in sortTypes)
 
 
@@ -84,6 +96,8 @@
 	initialize_dirs = DISP_DIR_RIGHT | DISP_DIR_FLIP
 
 /obj/structure/disposalpipe/sorting/wrap/check_sorting(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	return H.tomail
 
 /obj/structure/disposalpipe/sorting/wrap/flip

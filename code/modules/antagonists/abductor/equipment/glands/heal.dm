@@ -11,6 +11,8 @@
 	mind_control_duration = 3000
 
 /obj/item/organ/heart/gland/heal/activate()
+	procstart = null
+	src.procstart = null
 	if(!(owner.mob_biotypes & MOB_ORGANIC))
 		return
 
@@ -79,18 +81,24 @@
 		return
 
 /obj/item/organ/heart/gland/heal/proc/reject_implant(obj/item/implant/implant)
+	procstart = null
+	src.procstart = null
 	owner.visible_message(span_warning("[owner] vomits up a tiny mangled implant!"), span_userdanger("You suddenly vomit up a tiny mangled implant!"))
 	owner.vomit(REJECTION_VOMIT_FLAGS, lost_nutrition = 0)
 	implant.removed(owner)
 	qdel(implant)
 
 /obj/item/organ/heart/gland/heal/proc/reject_cyberimp(obj/item/organ/cyberimp/implant)
+	procstart = null
+	src.procstart = null
 	owner.visible_message(span_warning("[owner] vomits up his [implant.name]!"), span_userdanger("You suddenly vomit up your [implant.name]!"))
 	owner.vomit(REJECTION_VOMIT_FLAGS, lost_nutrition = 0)
 	implant.Remove(owner)
 	implant.forceMove(owner.drop_location())
 
 /obj/item/organ/heart/gland/heal/proc/replace_appendix(obj/item/organ/appendix/appendix)
+	procstart = null
+	src.procstart = null
 	if(appendix)
 		owner.vomit(REJECTION_VOMIT_FLAGS, lost_nutrition = 0)
 		appendix.Remove(owner)
@@ -106,6 +114,8 @@
 	new_appendix.Insert(owner)
 
 /obj/item/organ/heart/gland/heal/proc/replace_liver(obj/item/organ/liver/liver)
+	procstart = null
+	src.procstart = null
 	if(liver)
 		owner.visible_message(span_warning("[owner] vomits up his [liver.name]!"), span_userdanger("You suddenly vomit up your [liver.name]!"))
 		owner.vomit(REJECTION_VOMIT_FLAGS, lost_nutrition = 0)
@@ -121,6 +131,8 @@
 	new_liver.Insert(owner)
 
 /obj/item/organ/heart/gland/heal/proc/replace_lungs(obj/item/organ/lungs/lungs)
+	procstart = null
+	src.procstart = null
 	if(lungs)
 		owner.visible_message(span_warning("[owner] vomits up his [lungs.name]!"), span_userdanger("You suddenly vomit up your [lungs.name]!"))
 		owner.vomit(REJECTION_VOMIT_FLAGS, lost_nutrition = 0)
@@ -136,6 +148,8 @@
 	new_lungs.Insert(owner)
 
 /obj/item/organ/heart/gland/heal/proc/replace_stomach(obj/item/organ/stomach/stomach)
+	procstart = null
+	src.procstart = null
 	if(stomach)
 		owner.visible_message(span_warning("[owner] vomits up his [stomach.name]!"), span_userdanger("You suddenly vomit up your [stomach.name]!"))
 		owner.vomit(REJECTION_VOMIT_FLAGS, lost_nutrition = 0)
@@ -151,6 +165,8 @@
 	new_stomach.Insert(owner)
 
 /obj/item/organ/heart/gland/heal/proc/replace_eyes(obj/item/organ/eyes/eyes)
+	procstart = null
+	src.procstart = null
 	if(eyes)
 		owner.visible_message(span_warning("[owner]'s [eyes.name] fall out of their sockets!"), span_userdanger("Your [eyes.name] fall out of their sockets!"))
 		playsound(owner, 'sound/effects/splat.ogg', 50, TRUE)
@@ -162,6 +178,8 @@
 	addtimer(CALLBACK(src, PROC_REF(finish_replace_eyes)), rand(10 SECONDS, 20 SECONDS))
 
 /obj/item/organ/heart/gland/heal/proc/finish_replace_eyes()
+	procstart = null
+	src.procstart = null
 	var/eye_type = /obj/item/organ/eyes
 	if(owner.dna.species && owner.dna.species.mutanteyes)
 		eye_type = owner.dna.species.mutanteyes
@@ -170,6 +188,8 @@
 	owner.visible_message(span_warning("A pair of new eyes suddenly inflates into [owner]'s eye sockets!"), span_userdanger("A pair of new eyes suddenly inflates into your eye sockets!"))
 
 /obj/item/organ/heart/gland/heal/proc/replace_limb(body_zone, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	if(limb)
 		owner.visible_message(span_warning("[owner]'s [limb.plaintext_zone] suddenly detaches from [owner.p_their()] body!"), span_userdanger("Your [limb.plaintext_zone] suddenly detaches from your body!"))
 		playsound(owner, SFX_DESECRATION, 50, TRUE, -1)
@@ -180,6 +200,8 @@
 	addtimer(CALLBACK(src, PROC_REF(finish_replace_limb), body_zone), rand(15 SECONDS, 30 SECONDS))
 
 /obj/item/organ/heart/gland/heal/proc/finish_replace_limb(body_zone)
+	procstart = null
+	src.procstart = null
 	owner.visible_message(span_warning("With a loud snap, [owner]'s [parse_zone(body_zone)] rapidly grows back from [owner.p_their()] body!"),
 	span_userdanger("With a loud snap, your [parse_zone(body_zone)] rapidly grows back from your body!"),
 	span_warning("Your hear a loud snap."))
@@ -187,10 +209,14 @@
 	owner.regenerate_limb(body_zone)
 
 /obj/item/organ/heart/gland/heal/proc/replace_blood()
+	procstart = null
+	src.procstart = null
 	owner.visible_message(span_warning("[owner] starts vomiting huge amounts of blood!"), span_userdanger("You suddenly start vomiting huge amounts of blood!"))
 	keep_replacing_blood()
 
 /obj/item/organ/heart/gland/heal/proc/keep_replacing_blood()
+	procstart = null
+	src.procstart = null
 	var/keep_going = FALSE
 	owner.vomit(vomit_flags = (MOB_VOMIT_BLOOD | MOB_VOMIT_FORCE), lost_nutrition = 0, distance = 3)
 	owner.Stun(15)
@@ -210,6 +236,8 @@
 		addtimer(CALLBACK(src, PROC_REF(keep_replacing_blood)), 3 SECONDS)
 
 /obj/item/organ/heart/gland/heal/proc/replace_chest(obj/item/bodypart/chest/chest)
+	procstart = null
+	src.procstart = null
 	if(!IS_ORGANIC_LIMB(chest))
 		owner.visible_message(span_warning("[owner]'s [chest.name] rapidly expels its mechanical components, replacing them with flesh!"), span_userdanger("Your [chest.name] rapidly expels its mechanical components, replacing them with flesh!"))
 		playsound(owner, 'sound/effects/magic/clockwork/anima_fragment_attack.ogg', 50, TRUE)

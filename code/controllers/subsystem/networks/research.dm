@@ -75,6 +75,8 @@ SUBSYSTEM_DEF(research)
 	var/list/datum/scientific_partner/scientific_partners = list()
 
 /datum/controller/subsystem/research/Initialize()
+	procstart = null
+	src.procstart = null
 	initialize_all_techweb_designs()
 	initialize_all_techweb_nodes()
 	populate_ordnance_experiments()
@@ -87,6 +89,8 @@ SUBSYSTEM_DEF(research)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/research/fire()
+	procstart = null
+	src.procstart = null
 	for(var/datum/techweb/techweb_list as anything in techwebs)
 		if(!techweb_list.should_generate_points)
 			continue
@@ -114,6 +118,8 @@ SUBSYSTEM_DEF(research)
 					techweb_list.research_node(node)
 
 /datum/controller/subsystem/research/proc/autosort_categories()
+	procstart = null
+	src.procstart = null
 	for(var/i in techweb_nodes)
 		var/datum/techweb_node/I = techweb_nodes[i]
 		if(techweb_categories[I.category])
@@ -122,12 +128,18 @@ SUBSYSTEM_DEF(research)
 			techweb_categories[I.category] = list(I.id = TRUE)
 
 /datum/controller/subsystem/research/proc/techweb_node_by_id(id)
+	procstart = null
+	src.procstart = null
 	return techweb_nodes[id] || error_node
 
 /datum/controller/subsystem/research/proc/techweb_design_by_id(id)
+	procstart = null
+	src.procstart = null
 	return techweb_designs[id] || error_design
 
 /datum/controller/subsystem/research/proc/on_design_deletion(datum/design/D)
+	procstart = null
+	src.procstart = null
 	for(var/i in techweb_nodes)
 		var/datum/techweb_node/TN = techwebs[i]
 		TN.on_design_deletion(TN)
@@ -136,6 +148,8 @@ SUBSYSTEM_DEF(research)
 		T.recalculate_nodes(TRUE)
 
 /datum/controller/subsystem/research/proc/on_node_deletion(datum/techweb_node/TN)
+	procstart = null
+	src.procstart = null
 	for(var/i in techweb_nodes)
 		var/datum/techweb_node/TN2 = techwebs[i]
 		TN2.on_node_deletion(TN)
@@ -144,6 +158,8 @@ SUBSYSTEM_DEF(research)
 		T.recalculate_nodes(TRUE)
 
 /datum/controller/subsystem/research/proc/initialize_all_techweb_nodes(clearall = FALSE)
+	procstart = null
+	src.procstart = null
 	if(islist(techweb_nodes) && clearall)
 		QDEL_LIST(techweb_nodes)
 	if(islist(techweb_nodes_starting && clearall))
@@ -173,6 +189,8 @@ SUBSYSTEM_DEF(research)
 		CRASH("Invalid techweb nodes detected")
 
 /datum/controller/subsystem/research/proc/initialize_all_techweb_designs(clearall = FALSE)
+	procstart = null
+	src.procstart = null
 	if(islist(techweb_designs) && clearall)
 		item_to_design = list()
 		QDEL_LIST(techweb_designs)
@@ -201,6 +219,8 @@ SUBSYSTEM_DEF(research)
 
 
 /datum/controller/subsystem/research/proc/verify_techweb_nodes()
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	for(var/n in techweb_nodes)
 		var/datum/techweb_node/N = techweb_nodes[n]
@@ -245,6 +265,8 @@ SUBSYSTEM_DEF(research)
 		CHECK_TICK
 
 /datum/controller/subsystem/research/proc/verify_techweb_designs()
+	procstart = null
+	src.procstart = null
 	for(var/d in techweb_designs)
 		var/datum/design/D = techweb_designs[d]
 		if(!istype(D))
@@ -253,18 +275,24 @@ SUBSYSTEM_DEF(research)
 		CHECK_TICK
 
 /datum/controller/subsystem/research/proc/research_node_id_error(id)
+	procstart = null
+	src.procstart = null
 	if(invalid_node_ids[id])
 		invalid_node_ids[id]++
 	else
 		invalid_node_ids[id] = 1
 
 /datum/controller/subsystem/research/proc/design_id_error(id)
+	procstart = null
+	src.procstart = null
 	if(invalid_design_ids[id])
 		invalid_design_ids[id]++
 	else
 		invalid_design_ids[id] = 1
 
 /datum/controller/subsystem/research/proc/calculate_techweb_nodes()
+	procstart = null
+	src.procstart = null
 	for(var/design_id in techweb_designs)
 		var/datum/design/D = techweb_designs[design_id]
 		D.unlocked_by.Cut()
@@ -283,6 +311,8 @@ SUBSYSTEM_DEF(research)
 	generate_techweb_unlock_linking()
 
 /datum/controller/subsystem/research/proc/generate_techweb_unlock_linking()
+	procstart = null
+	src.procstart = null
 	for(var/node_id in techweb_nodes) //Clear all unlock links to avoid duplication.
 		var/datum/techweb_node/node = techweb_nodes[node_id]
 		node.unlock_ids = list()
@@ -293,6 +323,8 @@ SUBSYSTEM_DEF(research)
 			prereq_node.unlock_ids[node.id] = node
 
 /datum/controller/subsystem/research/proc/calculate_techweb_item_unlocking_requirements()
+	procstart = null
+	src.procstart = null
 	for(var/node_id in techweb_nodes)
 		var/datum/techweb_node/node = techweb_nodes[node_id]
 		for(var/path in node.required_items_to_unlock)
@@ -305,6 +337,8 @@ SUBSYSTEM_DEF(research)
 		CHECK_TICK
 
 /datum/controller/subsystem/research/proc/populate_ordnance_experiments()
+	procstart = null
+	src.procstart = null
 	for (var/datum/experiment/ordnance/experiment_path as anything in subtypesof(/datum/experiment/ordnance))
 		if (initial(experiment_path.experiment_proper))
 			ordnance_experiments += new experiment_path()
@@ -321,6 +355,8 @@ SUBSYSTEM_DEF(research)
  * Returns the full list of all techweb servers.
  */
 /datum/controller/subsystem/research/proc/get_available_servers(turf/location)
+	procstart = null
+	src.procstart = null
 	var/list/local_servers = list()
 	if(!location)
 		return local_servers
@@ -337,6 +373,8 @@ SUBSYSTEM_DEF(research)
  * - checking_web - The techweb we're checking the servers of.
  */
 /datum/controller/subsystem/research/proc/find_valid_servers(turf/location, datum/techweb/checking_web)
+	procstart = null
+	src.procstart = null
 	var/list/valid_servers = list()
 	for(var/obj/machinery/rnd/server/server as anything in checking_web.techweb_servers)
 		if(!is_valid_z_level(get_turf(server), location))
@@ -346,6 +384,8 @@ SUBSYSTEM_DEF(research)
 
 /// Returns true if you can make an anomaly core of the provided type
 /datum/controller/subsystem/research/proc/is_core_available(core_type)
+	procstart = null
+	src.procstart = null
 	if (!ispath(core_type, /obj/item/assembly/signaler/anomaly))
 		return FALSE // The fuck are you checking this random object for?
 	var/already_made = created_anomaly_types[core_type] || 0
@@ -354,5 +394,7 @@ SUBSYSTEM_DEF(research)
 
 /// Increase our tracked number of cores of this type
 /datum/controller/subsystem/research/proc/increment_existing_anomaly_cores(core_type)
+	procstart = null
+	src.procstart = null
 	var/existing = created_anomaly_types[core_type] || 0
 	created_anomaly_types[core_type] = existing + 1

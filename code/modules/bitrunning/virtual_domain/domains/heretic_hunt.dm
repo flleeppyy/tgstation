@@ -11,6 +11,8 @@
 	reward_points = BITRUNNER_REWARD_LOW
 
 /datum/lazy_template/virtual_domain/heretic_hunt/setup_domain(list/created_atoms)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/basic/fake_crewman/target in created_atoms)
 		RegisterSignal(target, COMSIG_LIVING_DROPPED_LOOT, PROC_REF(on_body_spawned))
 
@@ -22,6 +24,8 @@
 	rune.set_greyscale(pick(assoc_to_values(GLOB.heretic_path_to_color)))
 
 /datum/lazy_template/virtual_domain/heretic_hunt/proc/on_body_spawned(mob/living/source, list/loot, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(gibbed)
@@ -34,6 +38,8 @@
 			qdel(pda)
 
 /datum/lazy_template/virtual_domain/heretic_hunt/proc/check_loc(mob/living/carbon/human/source, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/effect/heretic_rune/big/rune = locate() in source.loc
@@ -73,6 +79,8 @@
 	mask = /obj/item/clothing/mask/madness_mask
 
 /datum/outfit/virtual_domain_heretic/pre_equip(mob/living/carbon/human/user, visuals_only)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(user, TRAIT_ACT_AS_HERETIC, INNATE_TRAIT)
 	ADD_TRAIT(user, TRAIT_NO_TELEPORT, INNATE_TRAIT)
 	user.AddElement(/datum/element/rust_healing)
@@ -125,6 +133,8 @@
 	var/obj/item/weapon = /obj/item/storage/toolbox
 
 /mob/living/basic/fake_crewman/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/ai_retaliate)
 	AddElement(/datum/element/death_drops, string_list(list(weapon, death_spawner)))
@@ -191,6 +201,8 @@
 	weapon = /obj/item/gun/energy/plasmacutter/adv
 
 /mob/living/basic/fake_crewman/boss/ce/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ranged_attacks, /obj/item/ammo_casing/energy/plasma/adv, projectile_sound = 'sound/items/weapons/plasma_cutter.ogg', cooldown_time = 1.6 SECONDS)
 
@@ -202,5 +214,7 @@
 	damage_coeff = list(BRUTE = 0.6, BURN = 0.6, TOX = 1, STAMINA = 1, OXY = 1)
 
 /mob/living/basic/fake_crewman/boss/hos/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ranged_attacks, /obj/item/ammo_casing/energy/laser, projectile_sound = 'sound/items/weapons/laser.ogg', cooldown_time = 1.2 SECONDS)

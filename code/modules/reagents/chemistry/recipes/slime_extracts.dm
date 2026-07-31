@@ -5,6 +5,8 @@
 	var/deletes_extract = TRUE
 
 /datum/chemical_reaction/slime/pre_reaction_other_checks(datum/reagents/holder)
+	procstart = null
+	src.procstart = null
 	var/obj/item/slime_extract/extract = holder.my_atom
 	if(!istype(extract))
 		return FALSE
@@ -12,14 +14,20 @@
 	return extract.extract_uses > 0
 
 /datum/chemical_reaction/slime/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	use_slime_core(holder)
 
 /datum/chemical_reaction/slime/proc/use_slime_core(datum/reagents/holder)
+	procstart = null
+	src.procstart = null
 	SSblackbox.record_feedback("tally", "slime_cores_used", 1, "type")
 	if(deletes_extract)
 		delete_extract(holder)
 
 /datum/chemical_reaction/slime/proc/delete_extract(datum/reagents/holder)
+	procstart = null
+	src.procstart = null
 	var/obj/item/slime_extract/extract = holder.my_atom
 	if(!isnull(extract) && extract.extract_uses <= 0 && !length(results)) //if the slime doesn't output chemicals
 		qdel(extract)
@@ -30,6 +38,8 @@
 	required_container = /obj/item/slime_extract/grey
 
 /datum/chemical_reaction/slime/slimespawn/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/slime/spawning_slime = new(get_turf(holder.my_atom), /datum/slime_type/grey)
 	spawning_slime.visible_message(span_danger("Infused with plasma, the core begins to quiver and grow, and a new baby slime emerges from it!"))
 	..()
@@ -44,6 +54,8 @@
 	required_container = /obj/item/slime_extract/grey
 
 /datum/chemical_reaction/slime/slimemonkey/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/food/monkeycube(get_turf(holder.my_atom))
 	..()
@@ -85,6 +97,8 @@
 	required_container = /obj/item/slime_extract/metal
 
 /datum/chemical_reaction/slime/slimemetal/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	var/turf/location = get_turf(holder.my_atom)
 	new /obj/item/stack/sheet/plasteel(location, 5)
 	new /obj/item/stack/sheet/iron(location, 15)
@@ -95,6 +109,8 @@
 	required_container = /obj/item/slime_extract/metal
 
 /datum/chemical_reaction/slime/slimeglass/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	var/turf/location = get_turf(holder.my_atom)
 	new /obj/item/stack/sheet/rglass(location, 5)
 	new /obj/item/stack/sheet/glass(location, 15)
@@ -108,6 +124,8 @@
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_SLIME | REACTION_TAG_DANGEROUS
 
 /datum/chemical_reaction/slime/slimemobspawn/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(holder.my_atom)
 	summon_mobs(holder, T)
 	var/obj/item/slime_extract/M = holder.my_atom
@@ -116,6 +134,8 @@
 	M.qdel_timer = addtimer(CALLBACK(src, PROC_REF(delete_extract), holder), 55, TIMER_STOPPABLE)
 
 /datum/chemical_reaction/slime/slimemobspawn/proc/summon_mobs(datum/reagents/holder, turf/T)
+	procstart = null
+	src.procstart = null
 	T.visible_message(span_danger("The slime extract begins to vibrate violently!"))
 	addtimer(CALLBACK(src, PROC_REF(chemical_mob_spawn), holder, 4, "Gold Slime", HOSTILE_SPAWN), 5 SECONDS)
 
@@ -123,6 +143,8 @@
 	required_reagents = list(/datum/reagent/blood = 1)
 
 /datum/chemical_reaction/slime/slimemobspawn/lesser/summon_mobs(datum/reagents/holder, turf/T)
+	procstart = null
+	src.procstart = null
 	T.visible_message(span_danger("The slime extract begins to vibrate violently!"))
 	addtimer(CALLBACK(src, PROC_REF(chemical_mob_spawn), holder, 3, "Lesser Gold Slime", HOSTILE_SPAWN, FACTION_NEUTRAL), 5 SECONDS)
 
@@ -130,6 +152,8 @@
 	required_reagents = list(/datum/reagent/water = 1)
 
 /datum/chemical_reaction/slime/slimemobspawn/friendly/summon_mobs(datum/reagents/holder, turf/T)
+	procstart = null
+	src.procstart = null
 	T.visible_message(span_danger("The slime extract begins to vibrate adorably!"))
 	addtimer(CALLBACK(src, PROC_REF(chemical_mob_spawn), holder, 1, "Friendly Gold Slime", FRIENDLY_SPAWN, FACTION_NEUTRAL), 5 SECONDS)
 
@@ -138,6 +162,8 @@
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_SLIME | REACTION_TAG_DANGEROUS
 
 /datum/chemical_reaction/slime/slimemobspawn/spider/summon_mobs(datum/reagents/holder, turf/T)
+	procstart = null
+	src.procstart = null
 	T.visible_message(span_danger("The slime extract begins to vibrate crikey-ingly!"))
 	addtimer(CALLBACK(src, PROC_REF(chemical_mob_spawn), holder, 3, "Traitor Spider Slime", /mob/living/basic/spider/giant/midwife, FACTION_NEUTRAL, FALSE), 5 SECONDS)
 
@@ -148,6 +174,8 @@
 	required_container = /obj/item/slime_extract/silver
 
 /datum/chemical_reaction/slime/slimebork/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	//BORK BORK BORK
 	var/turf/T = get_turf(holder.my_atom)
 
@@ -170,12 +198,16 @@
 	..()
 
 /datum/chemical_reaction/slime/slimebork/proc/getbork()
+	procstart = null
+	src.procstart = null
 	return get_random_food()
 
 /datum/chemical_reaction/slime/slimebork/drinks
 	required_reagents = list(/datum/reagent/water = 1)
 
 /datum/chemical_reaction/slime/slimebork/drinks/getbork()
+	procstart = null
+	src.procstart = null
 	return get_random_drink()
 
 //Blue
@@ -189,6 +221,8 @@
 	required_container = /obj/item/slime_extract/blue
 
 /datum/chemical_reaction/slime/slimestabilizer/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/item/slimepotion/slime/stabilizer(get_turf(holder.my_atom))
 	..()
 
@@ -197,6 +231,8 @@
 	required_container = /obj/item/slime_extract/blue
 
 /datum/chemical_reaction/slime/slimefoam/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	holder.create_foam(/datum/effect_system/fluid_spread/foam, 80, span_danger("[src] spews out foam!"), log = TRUE)
 
 //Dark Blue
@@ -206,6 +242,8 @@
 	deletes_extract = FALSE
 
 /datum/chemical_reaction/slime/slimefreeze/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(holder.my_atom)
 	T.visible_message(span_danger("The slime extract starts to feel extremely cold!"))
 	addtimer(CALLBACK(src, PROC_REF(freeze), holder), 5 SECONDS)
@@ -215,6 +253,8 @@
 	M.qdel_timer = addtimer(CALLBACK(src, PROC_REF(delete_extract), holder), 55, TIMER_STOPPABLE)
 
 /datum/chemical_reaction/slime/slimefreeze/proc/freeze(datum/reagents/holder)
+	procstart = null
+	src.procstart = null
 	if(holder?.my_atom)
 		var/turf/open/T = get_turf(holder.my_atom)
 		if(istype(T))
@@ -226,6 +266,8 @@
 	required_container = /obj/item/slime_extract/darkblue
 
 /datum/chemical_reaction/slime/slimefireproof/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/item/slimepotion/fireproof(get_turf(holder.my_atom))
 	..()
 
@@ -241,6 +283,8 @@
 	deletes_extract = FALSE
 
 /datum/chemical_reaction/slime/slimefire/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(holder.my_atom)
 	T.visible_message(span_danger("The slime extract begins to vibrate adorably!"))
 	addtimer(CALLBACK(src, PROC_REF(slime_burn), holder), 5 SECONDS)
@@ -250,6 +294,8 @@
 	M.qdel_timer = addtimer(CALLBACK(src, PROC_REF(delete_extract), holder), 55, TIMER_STOPPABLE)
 
 /datum/chemical_reaction/slime/slimefire/proc/slime_burn(datum/reagents/holder)
+	procstart = null
+	src.procstart = null
 	if(holder?.my_atom)
 		var/turf/open/T = get_turf(holder.my_atom)
 		if(istype(T))
@@ -268,6 +314,8 @@
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_SLIME | REACTION_TAG_DANGEROUS
 
 /datum/chemical_reaction/slime/slimeoverload/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	var/turf/turf = get_turf(holder.my_atom)
 	var/lastkey = holder.my_atom.fingerprintslast
 	empulse(get_turf(holder.my_atom), 3, 5, emp_source = src)
@@ -281,6 +329,8 @@
 	required_container = /obj/item/slime_extract/yellow
 
 /datum/chemical_reaction/slime/slimecell/on_reaction(datum/reagents/holder, created_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stock_parts/power_store/cell/emproof/slime(get_turf(holder.my_atom))
 	..()
 
@@ -289,6 +339,8 @@
 	required_container = /obj/item/slime_extract/yellow
 
 /datum/chemical_reaction/slime/slimeglow/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(holder.my_atom)
 	T.visible_message(span_danger("The slime begins to emit a soft light. Squeezing it will cause it to grow brightly."))
 	new /obj/item/flashlight/slime(T)
@@ -300,6 +352,8 @@
 	required_container = /obj/item/slime_extract/purple
 
 /datum/chemical_reaction/slime/slimepsteroid/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/item/slimepotion/slime/steroid(get_turf(holder.my_atom))
 	..()
 
@@ -314,6 +368,8 @@
 	required_container = /obj/item/slime_extract/darkpurple
 
 /datum/chemical_reaction/slime/slimeplasma/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/mineral/plasma(get_turf(holder.my_atom), 3)
 	..()
 
@@ -323,6 +379,8 @@
 	required_container = /obj/item/slime_extract/red
 
 /datum/chemical_reaction/slime/slimemutator/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/item/slimepotion/slime/mutator(get_turf(holder.my_atom))
 	..()
 
@@ -332,6 +390,8 @@
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_SLIME | REACTION_TAG_DANGEROUS
 
 /datum/chemical_reaction/slime/slimebloodlust/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/basic/slime/slime in viewers(get_turf(holder.my_atom), null))
 		if(slime.hunger_disabled) //Undoes docility, but doesn't make rabid.
 			slime.visible_message(span_danger("[slime] forgets its training, becoming wild once again!"))
@@ -347,6 +407,8 @@
 	required_container = /obj/item/slime_extract/red
 
 /datum/chemical_reaction/slime/slimespeed/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/item/slimepotion/speed(get_turf(holder.my_atom))
 	..()
 
@@ -356,6 +418,8 @@
 	required_container = /obj/item/slime_extract/pink
 
 /datum/chemical_reaction/slime/docility/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/item/slimepotion/slime/docility(get_turf(holder.my_atom))
 	..()
 
@@ -364,6 +428,8 @@
 	required_container = /obj/item/slime_extract/pink
 
 /datum/chemical_reaction/slime/gender/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/item/slimepotion/genderchange(get_turf(holder.my_atom))
 	..()
 
@@ -381,6 +447,8 @@
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_SLIME | REACTION_TAG_DANGEROUS
 
 /datum/chemical_reaction/slime/slimeexplosion/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(holder.my_atom)
 	var/lastkey = holder.my_atom.fingerprintslast
 	var/touch_msg = "N/A"
@@ -398,6 +466,8 @@
 	M.qdel_timer = addtimer(CALLBACK(src, PROC_REF(delete_extract), holder), 55, TIMER_STOPPABLE)
 
 /datum/chemical_reaction/slime/slimeexplosion/proc/boom(datum/reagents/holder)
+	procstart = null
+	src.procstart = null
 	if(holder?.my_atom)
 		explosion(holder.my_atom, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 4, explosion_cause = src)
 
@@ -413,6 +483,8 @@
 	required_reagents = list(/datum/reagent/toxin/plasma = 1)
 
 /datum/chemical_reaction/slime/slimepotion2/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/item/slimepotion/sentience(get_turf(holder.my_atom))
 	..()
 
@@ -421,6 +493,8 @@
 	required_reagents = list(/datum/reagent/water = 1)
 
 /datum/chemical_reaction/slime/renaming/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/item/slimepotion/renaming(holder.my_atom.drop_location())
 	..()
 
@@ -431,6 +505,8 @@
 	required_container = /obj/item/slime_extract/adamantine
 
 /datum/chemical_reaction/slime/adamantine/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/mineral/adamantine(get_turf(holder.my_atom))
 	..()
 
@@ -440,6 +516,8 @@
 	required_container = /obj/item/slime_extract/bluespace
 
 /datum/chemical_reaction/slime/slimefloor2/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/tile/bluespace(get_turf(holder.my_atom), 25)
 	..()
 
@@ -449,6 +527,8 @@
 	required_container = /obj/item/slime_extract/bluespace
 
 /datum/chemical_reaction/slime/slimecrystal/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/ore/bluespace_crystal/BC = new (get_turf(holder.my_atom))
 	BC.visible_message(span_notice("\The [BC] appears out of thin air!"))
 	..()
@@ -458,6 +538,8 @@
 	required_container = /obj/item/slime_extract/bluespace
 
 /datum/chemical_reaction/slime/slimeradio/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/item/slimepotion/slimeradio(get_turf(holder.my_atom))
 	..()
 
@@ -467,6 +549,8 @@
 	required_container = /obj/item/slime_extract/cerulean
 
 /datum/chemical_reaction/slime/slimepsteroid2/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/item/slimepotion/enhancer(get_turf(holder.my_atom))
 	..()
 
@@ -475,6 +559,8 @@
 	required_container = /obj/item/slime_extract/cerulean
 
 /datum/chemical_reaction/slime/slime_territory/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/item/blueprints/slime(get_turf(holder.my_atom))
 	..()
 
@@ -484,9 +570,13 @@
 	required_container = /obj/item/slime_extract/sepia
 
 /datum/chemical_reaction/slime/slimestop/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	addtimer(CALLBACK(src, PROC_REF(slime_stop), holder), 5 SECONDS)
 
 /datum/chemical_reaction/slime/slimestop/proc/slime_stop(datum/reagents/holder)
+	procstart = null
+	src.procstart = null
 	var/obj/item/slime_extract/sepia/extract = holder.my_atom
 	var/turf/T = get_turf(holder.my_atom)
 	new /obj/effect/timestop(T, null, null, null)
@@ -502,6 +592,8 @@
 	required_container = /obj/item/slime_extract/sepia
 
 /datum/chemical_reaction/slime/slimecamera/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/item/camera(get_turf(holder.my_atom))
 	new /obj/item/camera_film(get_turf(holder.my_atom))
 	..()
@@ -511,6 +603,8 @@
 	required_container = /obj/item/slime_extract/sepia
 
 /datum/chemical_reaction/slime/slimefloor/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/tile/sepia(get_turf(holder.my_atom), 25)
 	..()
 
@@ -520,6 +614,8 @@
 	required_container = /obj/item/slime_extract/pyrite
 
 /datum/chemical_reaction/slime/slimepaint/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	var/chosen = pick(subtypesof(/obj/item/paint))
 	new chosen(get_turf(holder.my_atom))
 	..()
@@ -529,6 +625,8 @@
 	required_container = /obj/item/slime_extract/pyrite
 
 /datum/chemical_reaction/slime/slimecrayon/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	var/chosen = pick(difflist(subtypesof(/obj/item/toy/crayon),typesof(/obj/item/toy/crayon/spraycan)))
 	new chosen(get_turf(holder.my_atom))
 	..()
@@ -539,6 +637,8 @@
 	required_container = /obj/item/slime_extract/rainbow
 
 /datum/chemical_reaction/slime/slime_rng/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	if(created_volume >= 5)
 		var/obj/item/grenade/clusterbuster/slime/S = new (get_turf(holder.my_atom))
 		S.visible_message(span_danger("Infused with plasma, the core begins to expand uncontrollably!"))
@@ -555,6 +655,8 @@
 	required_container = /obj/item/slime_extract/rainbow
 
 /datum/chemical_reaction/slime/slimebomb/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(holder.my_atom)
 	var/obj/item/grenade/clusterbuster/slime/volatile/S = new (T)
 	S.visible_message(span_danger("Infused with slime jelly, the core begins to expand uncontrollably!"))
@@ -576,6 +678,8 @@
 	required_container = /obj/item/slime_extract/rainbow
 
 /datum/chemical_reaction/slime/slime_transfer/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/item/slimepotion/transference(get_turf(holder.my_atom))
 	..()
 
@@ -584,5 +688,7 @@
 	required_container = /obj/item/slime_extract/rainbow
 
 /datum/chemical_reaction/slime/flight_potion/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/item/reagent_containers/cup/bottle/potion/flight(get_turf(holder.my_atom))
 	..()

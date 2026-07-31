@@ -29,6 +29,8 @@
 	var/sniffable = FALSE
 
 /obj/item/stack/sheet/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(-4, 4)
 	pixel_y = rand(-4, 4)
@@ -36,11 +38,15 @@
 		GLOB.sniffable_sheets |= src
 
 /obj/item/stack/sheet/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(sniffable)
 		GLOB.sniffable_sheets -= src
 	return ..()
 
 /obj/item/stack/sheet/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (manufactured && gulag_value)
 		. += span_notice("It has been embossed with a manufacturer's mark of guaranteed quality.")
@@ -64,15 +70,21 @@
 		. += span_info("[capitalize(material.name)] is [english_list(material_string)].")
 
 /obj/item/stack/sheet/add(_amount)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(sniffable && amount >= 10 && is_station_level(z))
 		GLOB.sniffable_sheets |= src
 
 /obj/item/stack/sheet/merge(obj/item/stack/sheet/target_stack, limit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	manufactured = manufactured && target_stack.manufactured
 
 /obj/item/stack/sheet/copy_evidences(obj/item/stack/sheet/from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	manufactured = from.manufactured
 
@@ -89,6 +101,8 @@
  * * modifiers: The modifiers passed in from attackby
  */
 /obj/item/stack/sheet/proc/on_attack_floor(turf/open/floor/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/list/shards = list()
 	for(var/datum/material/mat in custom_materials)
 		if(mat.shard_type)

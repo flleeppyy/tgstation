@@ -16,6 +16,8 @@
 
 ///This proc loads the achievement data from the hub.
 /datum/award/proc/load(datum/achievement_data/holder)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		return default_value()
 	if(!holder.owner_ckey || !database_id || !name)
@@ -26,16 +28,24 @@
 
 //Proc that returns a value upon db connection failure, in case we need different instances too.
 /datum/award/proc/default_value()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /datum/award/proc/unlock(mob/user, datum/achievement_data/holder, value = 1)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/award/proc/on_achievement_data_init(datum/achievement_data/holder, database_value)
+	procstart = null
+	src.procstart = null
 	holder.original_cached_data[type] = holder.data[type] = parse_value(database_value)
 
 ///This saves the changed data to the hub.
 /datum/award/proc/get_changed_rows(datum/achievement_data/holder)
+	procstart = null
+	src.procstart = null
 	if(!database_id || !holder.owner_ckey || !name)
 		return
 	return list(
@@ -45,6 +55,8 @@
 	)
 
 /datum/award/proc/get_metadata_row()
+	procstart = null
+	src.procstart = null
 	return list(
 		"achievement_key" = database_id,
 		"achievement_version" = achievement_version,
@@ -55,6 +67,8 @@
 
 ///Get raw numerical achievement value from the database
 /datum/award/proc/get_raw_value(key)
+	procstart = null
+	src.procstart = null
 	var/datum/db_query/Q = SSdbcore.NewQuery(
 		"SELECT value FROM [format_table_name("achievements")] WHERE ckey = :ckey AND achievement_key = :achievement_key",
 		list("ckey" = key, "achievement_key" = database_id)
@@ -70,10 +84,14 @@
 
 //Should return sanitized value for achievement cache
 /datum/award/proc/parse_value(raw_value)
+	procstart = null
+	src.procstart = null
 	return default_value()
 
 ///returns additional ui data for the Check Achievements menu
 /datum/award/proc/get_ui_data(list/award_data, datum/achievement_data/holder)
+	procstart = null
+	src.procstart = null
 	return list(
 		"score" = FALSE,
 		"achieve_info" = null,
@@ -88,6 +106,8 @@
 	var/times_achieved = 0
 
 /datum/award/achievement/unlock(mob/user, datum/achievement_data/holder, value = 1)
+	procstart = null
+	src.procstart = null
 	if(holder.data[type]) //You already unlocked it so don't bother running the unlock proc
 		return
 	holder.data[type] = TRUE
@@ -115,10 +135,14 @@
 	GLOB.achievements_unlocked += new_report
 
 /datum/award/achievement/get_metadata_row()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["achievement_type"] = "achievement"
 
 /datum/award/achievement/get_ui_data(list/award_data, datum/achievement_data/holder)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["achieve_info"] = "Unlocked by [times_achieved] players so far"
 	if(!SSachievements.most_unlocked_achievement)
@@ -131,6 +155,8 @@
 	.["achieve_tooltip"] = "[(times_achieved && !percent) ? "Less than 0.01" : percent]% compared to the achievement unlocked by the most players: \"[SSachievements.most_unlocked_achievement.name])\""
 
 /datum/award/achievement/parse_value(raw_value)
+	procstart = null
+	src.procstart = null
 	return raw_value > 0
 
 ///Scores are for leaderboarded things, such as killcount of a specific boss
@@ -142,25 +168,37 @@
 	var/list/high_scores = list()
 
 /datum/award/score/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(track_high_scores)
 		LoadHighScores()
 
 /datum/award/score/default_value()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /datum/award/score/get_metadata_row()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["achievement_type"] = "score"
 
 /datum/award/score/unlock(mob/user, datum/achievement_data/holder, value = 1)
+	procstart = null
+	src.procstart = null
 	holder.data[type] += value
 
 /datum/award/score/get_ui_data(list/award_data, datum/achievement_data/holder)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["score"] = TRUE
 
 /datum/award/score/proc/LoadHighScores()
+	procstart = null
+	src.procstart = null
 	var/datum/db_query/Q = SSdbcore.NewQuery(
 		"SELECT ckey,value FROM [format_table_name("achievements")] WHERE achievement_key = :achievement_key ORDER BY value DESC LIMIT 50",
 		list("achievement_key" = database_id)
@@ -176,6 +214,8 @@
 		qdel(Q)
 
 /datum/award/score/parse_value(raw_value)
+	procstart = null
+	src.procstart = null
 	return isnum(raw_value) ? raw_value : 0
 
 ///Defining this here 'cause it's the first score a player should see in the Scores category.
@@ -186,6 +226,8 @@
 	database_id = ACHIEVEMENTS_SCORE
 
 /datum/award/score/achievements_score/get_ui_data(list/award_data, datum/achievement_data/holder)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/db_query/get_unlocked_count = SSdbcore.NewQuery(
 		"SELECT COUNT(m.achievement_key) FROM [format_table_name("achievements")] AS a JOIN [format_table_name("achievement_metadata")] m ON a.achievement_key = m.achievement_key AND m.achievement_type = 'Achievement' WHERE a.ckey = :ckey",
@@ -201,6 +243,8 @@
 	return .
 
 /datum/award/score/achievements_score/LoadHighScores()
+	procstart = null
+	src.procstart = null
 	var/datum/db_query/get_unlocked_highscore = SSdbcore.NewQuery(
 		"SELECT ckey, COUNT(ckey) AS c FROM [format_table_name("achievements")] AS a JOIN [format_table_name("achievement_metadata")] m ON a.achievement_key = m.achievement_key AND m.achievement_type = 'Achievement' GROUP BY ckey ORDER BY c DESC LIMIT 50",
 	)
@@ -215,6 +259,8 @@
 		qdel(get_unlocked_highscore)
 
 /datum/award/score/achievements_score/on_achievement_data_init(datum/achievement_data/holder, database_value)
+	procstart = null
+	src.procstart = null
 	var/datum/db_query/get_unlocked_load = SSdbcore.NewQuery(
 		"SELECT COUNT(m.achievement_key) FROM [format_table_name("achievements")] AS a JOIN [format_table_name("achievement_metadata")] m ON a.achievement_key = m.achievement_key AND m.achievement_type = 'Achievement' WHERE a.ckey = :ckey",
 		list("ckey" = holder.owner_ckey)
@@ -240,6 +286,8 @@
 	VAR_FINAL/list/changed_entries = list()
 
 /datum/award/score/progress/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!get_table())
 		CRASH("get_table() wasn't set for [type]!")
@@ -251,15 +299,21 @@
  * Remember to set this
  */
 /datum/award/score/progress/proc/get_table()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/award/score/progress/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	//These variable is associated for sql queries. We can't allow it to be edited.
 	if(var_name == NAMEOF(src, changed_entries))
 		return FALSE
 	return ..()
 
 /datum/award/score/progress/unlock(mob/user, datum/achievement_data/holder, value, progress_string)
+	procstart = null
+	src.procstart = null
 	var/list/entries = holder.data[type]
 	if(!value)
 		CRASH("empty value used as argument to progress this score award.")
@@ -286,17 +340,25 @@
 
 ///Compose the string to send to the user's chat when the progress is made. This one here is generic, but you should override it really.
 /datum/award/score/progress/proc/get_progress_string(progress_string)
+	procstart = null
+	src.procstart = null
 	return span_greenannounce("New progress made for [name]: <B>[progress_string]!</B>")
 
 /datum/award/score/progress/load(datum/achievement_data/holder)
+	procstart = null
+	src.procstart = null
 	var/list/results = ..()
 	return validate_loaded_data(holder, results)
 
 /datum/award/score/progress/on_achievement_data_init(datum/achievement_data/holder, database_value)
+	procstart = null
+	src.procstart = null
 	var/list/results = parse_value(get_raw_value(holder.owner_ckey))
 	validate_loaded_data(holder, results)
 
 /datum/award/score/progress/proc/validate_loaded_data(datum/achievement_data/holder, list/results)
+	procstart = null
+	src.procstart = null
 	holder.original_cached_data[type] = holder.data[type] = results
 	if(!length(results))
 		return results
@@ -308,6 +370,8 @@
 
 ///Along with the changed rows for the main table, this also populates changed_entries with the entries list
 /datum/award/score/progress/get_changed_rows(datum/achievement_data/holder)
+	procstart = null
+	src.procstart = null
 	if(!database_id || !holder || !name || !get_table())
 		return
 	var/list/entries = holder.data[type]
@@ -320,11 +384,15 @@
 	)
 
 /datum/award/score/progress/get_ui_data(list/award_data, datum/achievement_data/holder)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	award_data["value"] = length(holder.data[type])
 
 ///We don't care much about the default value, which is only used for high scores. Instead, we get the entries string from the db.
 /datum/award/score/progress/get_raw_value(key)
+	procstart = null
+	src.procstart = null
 	var/list/entries = list()
 	var/datum/db_query/get_entries_load = SSdbcore.NewQuery(
 		"SELECT progress_entry FROM [format_table_name(get_table())] WHERE ckey = :ckey",
@@ -339,10 +407,14 @@
 	return entries
 
 /datum/award/score/progress/parse_value(raw_value)
+	procstart = null
+	src.procstart = null
 	return islist(raw_value) ? raw_value : list()
 
 //Proc that returns a value upon db connection failure, in case we need to new instances too
 /datum/award/score/progress/default_value()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /**
@@ -353,14 +425,20 @@
  * ensuring that the original data and the new data aren't the same, allowing the new data will be saved.
  */
 /datum/award/score/progress/proc/validate_entries(list/entries, list/validated_entries)
+	procstart = null
+	src.procstart = null
 	return length(validated_entries) == length(entries)
 
 ////Returns a list of data that we can use to make an index of contents that progress this award/score.
 /datum/award/score/progress/proc/get_progress(datum/achievement_data/holder)
+	procstart = null
+	src.procstart = null
 	CRASH("get_progress() undefined for [type]")
 
 ///Called once the achievements are saved in the DB, since we also have to insert the entries in the associated table.
 /datum/award/score/progress/proc/insert_entries(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!length(changed_entries))
 		return

@@ -37,6 +37,8 @@
 	var/punctured = FALSE
 
 /obj/item/newspaper/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 	AddComponent(\
@@ -58,6 +60,8 @@
 		saved_wanted_icon = GLOB.news_network.wanted_issue.img
 
 /obj/item/newspaper/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(held_item)
 		if(IS_WRITING_UTENSIL(held_item))
 			context[SCREENTIP_CONTEXT_LMB] = "Scribble"
@@ -67,10 +71,14 @@
 			return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/newspaper/proc/close_paper_ui()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SStgui.close_uis(src)
 
 /obj/item/newspaper/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide(\
 		"[user] is focusing intently on [src]! It looks like [user.p_theyre()] trying to commit sudoku... \
 		until [user.p_their()] eyes light up with realization!"\
@@ -83,6 +91,8 @@
 	return TOXLOSS
 
 /obj/item/newspaper/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (tool.tool_behaviour == TOOL_SCREWDRIVER || tool.tool_behaviour == TOOL_WIRECUTTER || tool.sharpness)
 		if (punctured)
 			balloon_alert(user, "already has holes!")
@@ -131,6 +141,8 @@
 
 ///Checks the creation time of the newspaper and compares it to list to see if the list is meant to be censored at the time of printing.
 /obj/item/newspaper/proc/censored_check(list/times_censored)
+	procstart = null
+	src.procstart = null
 	if(!times_censored.len)
 		return FALSE
 	for(var/i = times_censored.len; i > 0; i--)
@@ -146,6 +158,8 @@
 
 /// Called when you start reading the paper with both hands
 /obj/item/newspaper/proc/on_wielded(obj/item/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(user, TRAIT_FACE_COVERED, REF(src))
 	RegisterSignal(user, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(holder_updated_overlays))
 	RegisterSignal(user, COMSIG_HUMAN_GET_VISIBLE_NAME, PROC_REF(holder_checked_name))
@@ -158,6 +172,8 @@
 
 /// Called when you stop doing that
 /obj/item/newspaper/proc/on_unwielded(obj/item/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(user, TRAIT_FACE_COVERED, REF(src))
 	UnregisterSignal(user, list(COMSIG_ATOM_UPDATE_OVERLAYS, COMSIG_HUMAN_GET_VISIBLE_NAME))
 	user.update_appearance(UPDATE_OVERLAYS)
@@ -169,11 +185,15 @@
 
 /// Called when we're being read and overlays are updated, we should show a big newspaper over the reader
 /obj/item/newspaper/proc/holder_updated_overlays(atom/reader, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	overlays += mutable_appearance(icon, "newspaper_held_over[punctured ? "_holed" : ""]", ABOVE_MOB_LAYER)
 	overlays += mutable_appearance(icon, "newspaper_held_under[punctured ? "_holed" : ""]", BELOW_MOB_LAYER)
 
 /obj/item/newspaper/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (punctured)
 		. += span_notice("It has a pair of small peek holes punctured near the top.")
@@ -182,6 +202,8 @@
 
 /// Called when someone tries to figure out what our identity is, but they can't see it because of the newspaper
 /obj/item/newspaper/proc/holder_checked_name(mob/living/carbon/human/source, list/identity)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/newspaper_obscurity_priority = 100 // how powerful obscuring your appearance with a newspaper is
@@ -196,6 +218,8 @@
 	identity[VISIBLE_NAME_ID] = ""
 
 /obj/item/newspaper/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(resistance_flags & ON_FIRE)
 		return
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -205,6 +229,8 @@
 	ui.open()
 
 /obj/item/newspaper/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -227,6 +253,8 @@
 	return TRUE
 
 /obj/item/newspaper/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["channels"] = list()
 	for(var/datum/feed_channel/news_channels as anything in news_content)
@@ -237,6 +265,8 @@
 	return data
 
 /obj/item/newspaper/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["current_page"] = current_page
 	data["scribble_message"] = (scribble_page == current_page) ? scribble_text : null

@@ -40,11 +40,15 @@
 		linked_action_ref = WEAKREF(added_action)
 
 /datum/component/cult_ritual_item/Destroy(force)
+	procstart = null
+	src.procstart = null
 	cleanup_shields()
 	QDEL_NULL(linked_action_ref)
 	return ..()
 
 /datum/component/cult_ritual_item/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, PROC_REF(try_scribe_rune))
 	RegisterSignal(parent, COMSIG_ITEM_ATTACK, PROC_REF(try_purge_holywater))
 	RegisterSignal(parent, COMSIG_ITEM_ATTACK_ATOM, PROC_REF(try_hit_object))
@@ -54,6 +58,8 @@
 		RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/component/cult_ritual_item/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ITEM_ATTACK_SELF,
 		COMSIG_ITEM_ATTACK,
@@ -68,6 +74,8 @@
  * Usually, this will include various instructions on how to use the thing.
  */
 /datum/component/cult_ritual_item/proc/on_examine(datum/source, mob/examiner, list/examine_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!IS_CULTIST(examiner))
@@ -80,6 +88,8 @@
  * Allows the user to begin scribing runes.
  */
 /datum/component/cult_ritual_item/proc/try_scribe_rune(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(user))
@@ -102,6 +112,8 @@
  * to purge them of all holy water in their system, transforming it into unholy water.
  */
 /datum/component/cult_ritual_item/proc/try_purge_holywater(datum/source, mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!IS_CULTIST(user) || !IS_CULTIST(target))
@@ -119,6 +131,8 @@
  * Allows the ritual items to unanchor cult buildings or destroy rune girders.
  */
 /datum/component/cult_ritual_item/proc/try_hit_object(datum/source, obj/structure/target, mob/cultist)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(cultist) || !IS_CULTIST(cultist))
@@ -138,6 +152,8 @@
  * Allows the ritual items to remove runes.
  */
 /datum/component/cult_ritual_item/proc/try_clear_rune(datum/source, obj/effect/target, mob/living/cultist, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(cultist) || !IS_CULTIST(cultist))
@@ -155,6 +171,8 @@
  * cultist - the target doing the hitting, can be the same as target
  */
 /datum/component/cult_ritual_item/proc/do_purge_holywater(mob/living/target, mob/living/cultist)
+	procstart = null
+	src.procstart = null
 	// Allows cultists to be rescued from the clutches of ordained religion
 	to_chat(cultist, span_cult("You remove the taint from [target] using [parent]."))
 	var/holy_to_unholy = target.reagents.get_reagent_amount(/datum/reagent/water/holywater)
@@ -176,6 +194,8 @@
  * cultist - the mob doing the destroying
  */
 /datum/component/cult_ritual_item/proc/do_destroy_girder(obj/structure/girder/cult/cult_girder, mob/living/cultist)
+	procstart = null
+	src.procstart = null
 	playsound(cult_girder, 'sound/items/weapons/resonator_blast.ogg', 40, TRUE, ignore_walls = FALSE)
 	cultist.visible_message(
 		span_warning("[cultist] strikes [cult_girder] with [parent]!"),
@@ -191,6 +211,8 @@
  * cultist - the mob doing the unanchoring.
  */
 /datum/component/cult_ritual_item/proc/do_unanchor_structure(obj/structure/cult_structure, mob/living/cultist)
+	procstart = null
+	src.procstart = null
 	playsound(cult_structure, 'sound/items/deconstruct.ogg', 30, TRUE, ignore_walls = FALSE)
 	cult_structure.set_anchored(!cult_structure.anchored)
 	to_chat(cultist, span_notice("You [cult_structure.anchored ? "":"un"]secure \the [cult_structure] [cult_structure.anchored ? "to":"from"] the floor."))
@@ -202,6 +224,8 @@
  * cultist - the mob deleting the rune
  */
 /datum/component/cult_ritual_item/proc/do_scrape_rune(obj/effect/rune/rune, mob/living/cultist)
+	procstart = null
+	src.procstart = null
 	if(rune.log_when_erased)
 		var/confirm = tgui_alert(cultist, "Erasing this [rune.cultist_name] rune may work against your goals.", "Begin to erase the [rune.cultist_name] rune?", list("Proceed", "Abort"))
 		if(confirm != "Proceed")
@@ -232,6 +256,8 @@
  * cultist - the mob scribing the rune
  */
 /datum/component/cult_ritual_item/proc/start_scribe_rune(obj/item/tool, mob/living/cultist)
+	procstart = null
+	src.procstart = null
 	drawing_a_rune = TRUE
 	do_scribe_rune(tool, cultist)
 	drawing_a_rune = FALSE
@@ -244,6 +270,8 @@
  * cultist - the mob scribing the rune
  */
 /datum/component/cult_ritual_item/proc/do_scribe_rune(obj/item/tool, mob/living/cultist)
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(cultist)
 	var/obj/effect/rune/rune_to_scribe
 	var/entered_rune_name
@@ -355,6 +383,8 @@
  * cult_team - the team of the mob placing the rune
  */
 /datum/component/cult_ritual_item/proc/scribe_narsie_rune(mob/living/cultist, datum/team/cult/cult_team)
+	procstart = null
+	src.procstart = null
 	var/datum/objective/eldergod/summon_objective = locate() in cult_team.objectives
 	var/datum/objective/sacrifice/sac_objective = locate() in cult_team.objectives
 	if(!check_if_in_ritual_site(cultist, cult_team))
@@ -400,6 +430,8 @@
  * cultist - the mob deleting the rune
  */
 /datum/component/cult_ritual_item/proc/can_scrape_rune(obj/effect/rune/rune, mob/living/cultist)
+	procstart = null
+	src.procstart = null
 	if(!IS_CULTIST(cultist))
 		return FALSE
 
@@ -425,6 +457,8 @@
  * cultist - the mob making the rune
  */
 /datum/component/cult_ritual_item/proc/can_scribe_rune(obj/item/tool, mob/living/cultist)
+	procstart = null
+	src.procstart = null
 	if(!IS_CULTIST(cultist))
 		to_chat(cultist, span_warning("[tool] is covered in unintelligible shapes and markings."))
 		return FALSE
@@ -448,6 +482,8 @@
  * cultist - the mob placing the rune
  */
 /datum/component/cult_ritual_item/proc/check_rune_turf(turf/target, mob/living/cultist)
+	procstart = null
+	src.procstart = null
 	if(isspaceturf(target))
 		to_chat(cultist, span_warning("You cannot scribe runes in space!"))
 		return FALSE
@@ -471,6 +507,8 @@
  * fail_if_last_site - whether the check fails if it's the last site in the summoning list.
  */
 /datum/component/cult_ritual_item/proc/check_if_in_ritual_site(mob/living/cultist, datum/team/cult/cult_team, fail_if_last_site = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/objective/eldergod/summon_objective = locate() in cult_team.objectives
 	var/area/our_area = get_area(cultist)
 	if(!summon_objective)
@@ -491,6 +529,8 @@
  * Removes all shields from the shields list.
  */
 /datum/component/cult_ritual_item/proc/cleanup_shields()
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/emergency_shield/cult/narsie/shield as anything in shields)
 		LAZYREMOVE(shields, shield)
 		if(!QDELETED(shield))

@@ -14,6 +14,8 @@
 	var/has_emotes = FALSE
 
 /mob/eye/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_GODMODE, INNATE_TRAIT)
 	SSpoints_of_interest.make_point_of_interest(src)
@@ -21,28 +23,42 @@
 		ADD_TRAIT(src, TRAIT_BLOCK_SHUTTLE_MOVEMENT, INNATE_TRAIT)
 
 /mob/eye/experience_pressure_difference()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/eye/canUseStorage()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/eye/up()
+	procstart = null
+	src.procstart = null
 	if(zMove(UP, z_move_flags = ZMOVE_FEEDBACK))
 		to_chat(src, span_notice("You move upwards."))
 
 /mob/eye/down()
+	procstart = null
+	src.procstart = null
 	if(zMove(DOWN, z_move_flags = ZMOVE_FEEDBACK))
 		to_chat(src, span_notice("You move down."))
 
 /mob/eye/can_z_move(direction, turf/start, turf/destination, z_move_flags = NONE, mob/living/rider)
+	procstart = null
+	src.procstart = null
 	z_move_flags |= ZMOVE_IGNORE_OBSTACLES  //cameras do not respect these FLOORS you speak so much of
 	return ..()
 
 /mob/eye/emote(act, type_override = EMOTE_VISIBLE, message = null, intentional = FALSE, force_silence = FALSE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(has_emotes)
 		return ..()
 	return FALSE
 
 /mob/eye/update_sight()
+	procstart = null
+	src.procstart = null
 	lighting_color_cutoffs = list(lighting_cutoff_red, lighting_cutoff_green, lighting_cutoff_blue)
 	return ..()

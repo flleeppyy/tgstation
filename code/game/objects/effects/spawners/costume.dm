@@ -7,6 +7,8 @@
 	var/list/items
 
 /obj/effect/spawner/costume/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(items?.len)
 		for(var/path in items)

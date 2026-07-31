@@ -12,6 +12,8 @@
 	var/min_blood = BLOOD_VOLUME_SAFE + 1 // just barely survivable without treatment
 
 /datum/quirk/blooddeficiency/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(quirk_holder, COMSIG_HUMAN_ON_HANDLE_BLOOD, PROC_REF(lose_blood))
 
 	var/mob/living/carbon/human/human_holder = quirk_holder
@@ -21,9 +23,13 @@
 	RegisterSignal(quirk_holder, COMSIG_CARBON_CHANGED_BLOOD_TYPE, PROC_REF(update_mail))
 
 /datum/quirk/blooddeficiency/remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(quirk_holder, list(COMSIG_HUMAN_ON_HANDLE_BLOOD, COMSIG_CARBON_CHANGED_BLOOD_TYPE))
 
 /datum/quirk/blooddeficiency/is_species_appropriate(datum/species/mob_species)
+	procstart = null
+	src.procstart = null
 	var/datum/species_traits = GLOB.species_prototypes[mob_species].inherent_traits
 	if(TRAIT_NOBLOOD in species_traits)
 		return FALSE
@@ -32,6 +38,8 @@
 	return ..()
 
 /datum/quirk/blooddeficiency/proc/lose_blood(datum/source, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/carbon/human/human_holder = quirk_holder
@@ -43,6 +51,8 @@
 
 /// Try to update the mail goodies to match the quirk holder's blood type. If we fail for whatever reason then it will just default to the initial O- blood pack that we start with.
 /datum/quirk/blooddeficiency/proc/update_mail(mob/living/carbon/human/human_quirk_holder, datum/blood_type/new_blood_type, update_cached_blood_dna_info)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(TRAIT_NOBLOOD in human_quirk_holder.dna.species.inherent_traits)

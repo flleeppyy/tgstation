@@ -55,6 +55,8 @@
 	return ..()
 
 /datum/hallucination/delusion/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(hallucinator) && LAZYLEN(delusions))
 		hallucinator.client?.images -= assoc_to_values(delusions)
 		LAZYNULL(delusions)
@@ -62,6 +64,8 @@
 	return ..()
 
 /datum/hallucination/delusion/start()
+	procstart = null
+	src.procstart = null
 	if(!hallucinator.client || IS_UNCONSCIOUS(hallucinator))
 		return FALSE
 
@@ -110,6 +114,8 @@
 	return TRUE
 
 /datum/hallucination/delusion/proc/make_delusion_image(mob/over_who)
+	procstart = null
+	src.procstart = null
 	var/image/funny_image
 	if(delusion_appearance)
 		funny_image = image(delusion_appearance, over_who)
@@ -125,17 +131,23 @@
 	return funny_image
 
 /datum/hallucination/delusion/proc/on_mob_delete(mob/living/carbon/human/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	hallucinator.client.images -= delusions[source]
 	LAZYREMOVE(delusions, source)
 
 /datum/hallucination/delusion/proc/on_z_change(mob/living/carbon/human/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/image/funny_image = delusions[source]
 	SET_PLANE_EXPLICIT(funny_image, ABOVE_GAME_PLANE, source)
 
 /datum/hallucination/delusion/proc/on_mob_light_add(mob/living/carbon/human/source, image/visible_mask, image/cone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/image/funny_image = delusions[source]
 	funny_image.underlays |= visible_mask
@@ -143,6 +155,8 @@
 		funny_image.underlays |= cone
 
 /datum/hallucination/delusion/proc/on_mob_light_remove(mob/living/carbon/human/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/image/funny_image = delusions[source]
 	for(var/image/underlay as anything in funny_image.underlays)
@@ -150,6 +164,8 @@
 			funny_image.underlays -= underlay
 
 /datum/hallucination/delusion/proc/examine_name_override(datum/source, mob/living/examined, visible_name, list/name_override)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!ishuman(examined) || !LAZYACCESS(delusions, examined))
@@ -159,6 +175,8 @@
 	return COMPONENT_EXAMINE_NAME_OVERRIDEN
 
 /datum/hallucination/delusion/proc/screentip_name_override(datum/source, list/returned_name, obj/item/held_item, atom/hovered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!ishuman(hovered) || !LAZYACCESS(delusions, hovered))
@@ -212,6 +230,8 @@
 	delusion_name = "monkey"
 
 /datum/hallucination/delusion/preset/monkey/start()
+	procstart = null
+	src.procstart = null
 	delusion_name += " ([rand(1, 999)])"
 	return ..()
 
@@ -247,6 +267,8 @@
 	play_wabbajack = TRUE
 
 /datum/hallucination/delusion/preset/cyborg/make_delusion_image(mob/over_who)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	hallucinator.playsound_local(get_turf(over_who), 'sound/mobs/non-humanoids/cyborg/liveagain.ogg', 75, TRUE)
 
@@ -257,6 +279,8 @@
 	affects_others = TRUE
 
 /datum/hallucination/delusion/preset/ghost/make_delusion_image(mob/over_who)
+	procstart = null
+	src.procstart = null
 	var/image/funny_image = ..()
 	funny_image.name = over_who.name
 	DO_FLOATING_ANIM(funny_image)
@@ -271,6 +295,8 @@
 	hallucination_tier = HALLUCINATION_TIER_RARE
 
 /datum/hallucination/delusion/preset/syndies/make_delusion_image(mob/over_who)
+	procstart = null
+	src.procstart = null
 	delusion_appearance = get_dynamic_human_appearance(
 		mob_spawn_path = pick(
 			/obj/effect/mob_spawn/corpse/human/syndicatesoldier,
@@ -296,6 +322,8 @@
 	affects_us = FALSE
 
 /datum/hallucination/delusion/preset/seccies/make_delusion_image(mob/over_who)
+	procstart = null
+	src.procstart = null
 	delusion_appearance = get_dynamic_human_appearance(
 		outfit_path = /datum/outfit/job/security,
 		bloody_slots = prob(5) ? ALL : NONE,
@@ -332,6 +360,8 @@
 	duration = 11 SECONDS
 
 /datum/hallucination/delusion/preset/heretic/make_delusion_image(mob/over_who)
+	procstart = null
+	src.procstart = null
 	// This code is dummy hot for DUMB reasons so let's not make a mob constantly yeah?
 	var/static/mutable_appearance/heretic_appearance
 	if(isnull(heretic_appearance))

@@ -50,6 +50,8 @@
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 
 /mob/living/basic/rabbit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/ai_retaliate)
 	AddElement(/datum/element/pet_bonus, "hop")
@@ -87,6 +89,8 @@
 	var/max_eggs_held = 8
 
 /mob/living/basic/rabbit/easter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//passed to the egg_layer component as how many eggs it gets when it eats something.
 	var/eggs_added_from_eating = rand(1, 4)

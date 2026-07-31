@@ -14,15 +14,21 @@
 	var/consume_count = 0
 
 /datum/antagonist/slaughter/on_gain()
+	procstart = null
+	src.procstart = null
 	forge_objectives()
 	. = ..()
 
 /datum/antagonist/slaughter/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.announce_objectives()
 	to_chat(owner, span_warning("You have a powerful alt-attack that slams people backwards that you can activate by right-clicking your target!"))
 
 /datum/antagonist/slaughter/forge_objectives()
+	procstart = null
+	src.procstart = null
 	if(summoner)
 		var/datum/objective/assassinate/new_objective = new /datum/objective/assassinate
 		new_objective.owner = owner
@@ -36,6 +42,8 @@
 	objectives += new_objective2
 
 /datum/antagonist/slaughter/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["fluff"] = fluff
 	data["objectives"] = get_objectives()
@@ -43,6 +51,8 @@
 	return data
 
 /datum/antagonist/slaughter/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/report = list()
 
 	if(!owner)

@@ -46,6 +46,8 @@ GAME_VERB_PROC(/client, anon_names, "Setup Anonymous Names", "Admin.Events")
 	var/extras_enabled
 
 /datum/anonymous_theme/New(extras_enabled = FALSE, alert_players = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.extras_enabled = extras_enabled
 	if(extras_enabled)
@@ -55,6 +57,8 @@ GAME_VERB_PROC(/client, anon_names, "Setup Anonymous Names", "Admin.Events")
 	anonymous_all_players()
 
 /datum/anonymous_theme/Destroy(force)
+	procstart = null
+	src.procstart = null
 	restore_all_players()
 	. = ..()
 
@@ -62,12 +66,16 @@ GAME_VERB_PROC(/client, anon_names, "Setup Anonymous Names", "Admin.Events")
  * theme_extras: optional effects enabled here from a proc that will trigger once on creation of anon mode.
  */
 /datum/anonymous_theme/proc/theme_extras()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
  * player_extras: optional effects enabled here from a proc that will trigger for every player renamed.
  */
 /datum/anonymous_theme/proc/player_extras(mob/living/player)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -76,6 +84,8 @@ GAME_VERB_PROC(/client, anon_names, "Setup Anonymous Names", "Admin.Events")
  * it's in a proc so it can be a non-constant expression.
  */
 /datum/anonymous_theme/proc/announce_to_all_players()
+	procstart = null
+	src.procstart = null
 	priority_announce("A recent bureaucratic error in the Organic Resources Department has resulted in a necessary full recall of all identities and names until further notice.", "Identity Loss", SSstation.announcer.get_rand_alert_sound())
 
 /**
@@ -84,6 +94,8 @@ GAME_VERB_PROC(/client, anon_names, "Setup Anonymous Names", "Admin.Events")
  * called when the anonymous theme is created regardless of extra theming
  */
 /datum/anonymous_theme/proc/anonymous_all_players()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/player in GLOB.player_list)
 		if(!player.mind || (!ishuman(player) && !issilicon(player)) || player.mind.assigned_role.faction != FACTION_STATION)
 			continue
@@ -104,6 +116,8 @@ GAME_VERB_PROC(/client, anon_names, "Setup Anonymous Names", "Admin.Events")
  * called when the anonymous theme is removed regardless of extra theming
  */
 /datum/anonymous_theme/proc/restore_all_players()
+	procstart = null
+	src.procstart = null
 	priority_announce("Names and Identities have been restored.", "Identity Restoration", SSstation.announcer.get_rand_alert_sound())
 	for(var/mob/living/player in GLOB.player_list)
 		if(!player.mind || (!ishuman(player) && !issilicon(player)) || player.mind.assigned_role.faction != FACTION_STATION)
@@ -127,6 +141,8 @@ GAME_VERB_PROC(/client, anon_names, "Setup Anonymous Names", "Admin.Events")
  * * target - mob for preferences and gender
  */
 /datum/anonymous_theme/proc/anonymous_name(mob/target)
+	procstart = null
+	src.procstart = null
 	var/datum/client_interface/client = GET_CLIENT(target)
 	var/species_type = client.prefs.read_preference(/datum/preference/choiced/species)
 	return generate_random_name_species_based(target.gender, TRUE, species_type)
@@ -143,15 +159,21 @@ GAME_VERB_PROC(/client, anon_names, "Setup Anonymous Names", "Admin.Events")
  * * is_ai - boolean to decide whether the name has "Core" (AI) or JOB_ASSISTANT (Cyborg)
  */
 /datum/anonymous_theme/proc/anonymous_ai_name(is_ai = FALSE)
+	procstart = null
+	src.procstart = null
 	return pick(GLOB.ai_names)
 
 /datum/anonymous_theme/employees
 	name = "Employees"
 
 /datum/anonymous_theme/employees/announce_to_all_players()
+	procstart = null
+	src.procstart = null
 	priority_announce("As punishment for this station's poor productivity when compared to neighbor stations, names and identities will be restricted until further notice.", "Finance Report", SSstation.announcer.get_rand_alert_sound())
 
 /datum/anonymous_theme/employees/anonymous_name(mob/target)
+	procstart = null
+	src.procstart = null
 	var/is_head_of_staff = target.mind.assigned_role.job_flags & JOB_HEAD_OF_STAFF
 	var/name = "[is_head_of_staff ? "Manager" : "Employee"] "
 	for(var/i in 1 to 6)
@@ -162,6 +184,8 @@ GAME_VERB_PROC(/client, anon_names, "Setup Anonymous Names", "Admin.Events")
 	return name
 
 /datum/anonymous_theme/employees/anonymous_ai_name(is_ai = FALSE)
+	procstart = null
+	src.procstart = null
 	var/verbs = capitalize(pick(GLOB.ing_verbs))
 	var/phonetic = pick(GLOB.phonetic_alphabet)
 	return "Employee [is_ai ? "Core" : JOB_ASSISTANT] [verbs] [phonetic]"
@@ -171,6 +195,8 @@ GAME_VERB_PROC(/client, anon_names, "Setup Anonymous Names", "Admin.Events")
 	extras_prompt = "Give everyone random robes too?"
 
 /datum/anonymous_theme/wizards/player_extras(mob/living/player)
+	procstart = null
+	src.procstart = null
 	var/random_path = pick(
 		/obj/item/storage/box/wizard_kit,
 		/obj/item/storage/box/wizard_kit/red,
@@ -182,26 +208,38 @@ GAME_VERB_PROC(/client, anon_names, "Setup Anonymous Names", "Admin.Events")
 	player.put_in_hands(new random_path())
 
 /datum/anonymous_theme/wizards/announce_to_all_players()
+	procstart = null
+	src.procstart = null
 	priority_announce("Your station has been caught by a Wizard Federation Memetic Hazard. You are not y0urself, and yo% a2E 34!NOT4--- Welcome to the Academy, apprentices!", "Memetic Hazard", SSstation.announcer.get_rand_alert_sound())
 
 /datum/anonymous_theme/wizards/anonymous_name(mob/target)
+	procstart = null
+	src.procstart = null
 	var/wizard_name_first = pick(GLOB.wizard_first)
 	var/wizard_name_second = pick(GLOB.wizard_second)
 	return "[wizard_name_first] [wizard_name_second]"
 
 /datum/anonymous_theme/wizards/anonymous_ai_name(is_ai = FALSE)
+	procstart = null
+	src.procstart = null
 	return "Crystallized Knowledge [is_ai ? "Nexus" : "Sliver"] +[rand(1,99)]" //Could two people roll the same number? Yeah, probably. Do I CARE? Nawww
 
 /datum/anonymous_theme/spider_clan
 	name = "Spider Clan"
 
 /datum/anonymous_theme/spider_clan/anonymous_name(mob/target)
+	procstart = null
+	src.procstart = null
 	return "[pick(GLOB.ninja_titles)] [pick(GLOB.ninja_names)]"
 
 /datum/anonymous_theme/spider_clan/announce_to_all_players()
+	procstart = null
+	src.procstart = null
 	priority_announce("Your station has been sold out to the Spider Clan. Your new designations will be applied now.", "New Management", SSstation.announcer.get_rand_alert_sound())
 
 /datum/anonymous_theme/spider_clan/anonymous_ai_name(is_ai = FALSE)
+	procstart = null
+	src.procstart = null
 	var/posibrain_name = pick(GLOB.posibrain_names)
 	if(is_ai)
 		return "Shaolin Templemaster [posibrain_name]"
@@ -215,13 +253,21 @@ GAME_VERB_PROC(/client, anon_names, "Setup Anonymous Names", "Admin.Events")
 	extras_prompt = "Also set station name to be a random human name?"
 
 /datum/anonymous_theme/station/theme_extras()
+	procstart = null
+	src.procstart = null
 	set_station_name("[pick(GLOB.first_names)] [pick(GLOB.last_names)]")
 
 /datum/anonymous_theme/station/announce_to_all_players()
+	procstart = null
+	src.procstart = null
 	priority_announce("Confirmed level 9 reality error event near [station_name()]. All personnel must try their best to carry on, as to not trigger more reality events by accident.", "Central Command Higher Dimensional Affairs", 'sound/announcer/notice/notice1.ogg')
 
 /datum/anonymous_theme/station/anonymous_name(mob/target)
+	procstart = null
+	src.procstart = null
 	return new_station_name()
 
 /datum/anonymous_theme/station/anonymous_ai_name(is_ai = FALSE)
+	procstart = null
+	src.procstart = null
 	return new_station_name()

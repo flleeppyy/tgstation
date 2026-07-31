@@ -14,14 +14,20 @@ GENERAL_PROTECT_DATUM(/datum/admin_verb)
 	VAR_PROTECTED/verb_path //! The path to the verb proc.
 
 /datum/admin_verb/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(!force)
 		return QDEL_HINT_LETMELIVE
 	return ..()
 
 /// Assigns the verb to the admin.
 /datum/admin_verb/proc/assign_to_client(client/admin)
+	procstart = null
+	src.procstart = null
 	add_verb(admin, verb_path)
 
 /// Unassigns the verb from the admin.
 /datum/admin_verb/proc/unassign_from_client(client/admin)
+	procstart = null
+	src.procstart = null
 	remove_verb(admin, verb_path)

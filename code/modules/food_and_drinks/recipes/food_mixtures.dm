@@ -23,6 +23,8 @@
 	var/meal_category = MEAL_MAIN_COURSE
 
 /datum/crafting_recipe/food/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//rarely, but a few cooking recipes (cake cat & co) don't result food items.
 	if(!PERFORM_ALL_TESTS(focus_only/check_foodtypes) || non_craftable || !ispath(result, /obj/item/food))
@@ -50,6 +52,8 @@
 		stack_trace("the foodtypes of [result_path] are [text_flags] when spawned but [text_craft_flags] when crafted.")
 
 /datum/crafting_recipe/food/crafting_ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/foodtypes = get_food_types()
@@ -62,12 +66,16 @@
 	return data
 
 /datum/crafting_recipe/food/proc/get_food_types()
+	procstart = null
+	src.procstart = null
 	if(ispath(result, /obj/item/food))
 		var/obj/item/food/food_result = result
 		return (initial(food_result.foodtypes) | added_foodtypes) & ~removed_foodtypes
 	return NONE
 
 /datum/crafting_recipe/food/proc/get_complexity()
+	procstart = null
+	src.procstart = null
 	if(ispath(result, /obj/item/food))
 		var/obj/item/food/food_result = result
 		return initial(food_result.crafting_complexity)
@@ -89,10 +97,14 @@
 	var/resulting_reagent_purity
 
 /datum/chemical_reaction/food/pre_reaction_other_checks(datum/reagents/holder)
+	procstart = null
+	src.procstart = null
 	resulting_reagent_purity = holder.get_average_purity()
 	return TRUE
 
 /datum/chemical_reaction/food/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	if(resulting_food_path)
 		var/atom/location = holder.my_atom.drop_location()
 		for(var/i in 1 to created_volume)
@@ -119,6 +131,8 @@
 	required_reagents = list(/datum/reagent/consumable/cream = 5, /datum/reagent/consumable/coco = 5, /datum/reagent/consumable/eggyolk = 2)
 
 /datum/chemical_reaction/food/chocolatepudding/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ISINRANGE(world.timeofday, 3 HOURS + 45 MINUTES, 4 HOURS + 15 MINUTES))
 		return
@@ -205,6 +219,8 @@
 	reaction_flags = REACTION_INSTANT
 
 /datum/chemical_reaction/food/imitationcarpmeat/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	new /obj/item/food/fishmeat/carp/imitation(location)
 	if(holder?.my_atom)
@@ -242,6 +258,8 @@
 	reaction_flags = REACTION_INSTANT
 
 /datum/chemical_reaction/food/uncooked_rice/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	for(var/i in 1 to created_volume)
 		new /obj/item/food/uncooked_rice(location)

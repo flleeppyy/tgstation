@@ -9,6 +9,8 @@
 	use_flags = CAN_USE_ON_SELF
 
 /datum/mafia_ability/attack_visitors/set_target(datum/mafia_role/new_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -19,6 +21,8 @@
 	return TRUE
 
 /datum/mafia_ability/attack_visitors/proc/self_defense(datum/source, datum/mafia_controller/game, datum/mafia_role/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(attacker == host_role)
 		return
@@ -28,6 +32,8 @@
 	return MAFIA_VISIT_INTERRUPTED
 
 /datum/mafia_ability/attack_visitors/clean_action_refs(datum/mafia_controller/game)
+	procstart = null
+	src.procstart = null
 	if(using_ability)
 		host_role.role_unique_actions -= src
 		qdel(src)

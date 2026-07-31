@@ -37,6 +37,8 @@
 	job_flags = STATION_JOB_FLAGS | STATION_TRAIT_JOB_FLAGS | JOB_ANTAG_PROTECTED
 
 /datum/job/veteran_advisor/get_default_roundstart_spawn_point()
+	procstart = null
+	src.procstart = null
 	for(var/obj/effect/landmark/start/spawn_point as anything in GLOB.start_landmarks_list)
 		if(spawn_point.name != "Security Officer")
 			continue
@@ -51,6 +53,8 @@
 		log_mapping("Job [title] ([type]) couldn't find a round start spawn point.")
 
 /datum/job/veteran_advisor/after_spawn(mob/living/spawned, client/player_client)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/carbon/veteran = spawned
 	spawned.add_quirk(/datum/quirk/paraplegic) //Even in 2300s veterans are getting it bad

@@ -13,6 +13,8 @@
 	multiz_dir = MULTIZ_PIPE_DOWN
 
 /obj/structure/disposalpipe/trunk/multiz/transfer(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	if(H.dir == DOWN) //Since we're a trunk, you can still place a chute / bin over us. If theyve entered from there, treat this as a normal trunk
 		return ..()
 

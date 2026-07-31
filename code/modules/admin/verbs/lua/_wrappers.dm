@@ -1,5 +1,7 @@
 #ifndef DISABLE_DREAMLUAU
 /proc/wrap_lua_get_var(datum/thing, var_name)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 	if(thing == world)
 		return world.vars[var_name]
@@ -9,10 +11,14 @@
 		return thing.vars[var_name]
 
 /proc/wrap_lua_set_var(datum/thing_to_set, var_name, value)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 	thing_to_set.vv_edit_var(var_name, value)
 
 /proc/wrap_lua_datum_proc_call(datum/thing_to_call, proc_name, list/arguments)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 	if(!usr)
 		usr = GLOB.lua_usr
@@ -24,6 +30,8 @@
 	return ret
 
 /proc/wrap_lua_global_proc_call(proc_name, list/arguments)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 	if(!usr)
 		usr = GLOB.lua_usr
@@ -35,6 +43,8 @@
 	return ret
 
 /proc/wrap_lua_print(state_id, list/arguments)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 	var/datum/lua_state/target_state
 	for(var/datum/lua_state/state as anything in SSlua.states)

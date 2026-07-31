@@ -15,6 +15,8 @@
 	var/static/regex/standard_station_regex
 
 /obj/item/station_charter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!standard_station_regex)
 		var/prefixes = jointext(GLOB.station_prefixes, "|")
@@ -25,6 +27,8 @@
 		standard_station_regex = new(regexstr)
 
 /obj/item/station_charter/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(used)
 		to_chat(user, span_warning("The [name_type] has already been named!"))
 		return
@@ -66,6 +70,8 @@
 			SEND_SOUND(admin_client, sound('sound/effects/gong.ogg'))
 
 /obj/item/station_charter/proc/reject_proposed(user)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return
 	if(!response_timer_id)
@@ -82,6 +88,8 @@
 	response_timer_id = null
 
 /obj/item/station_charter/proc/rename_station(designation, uname, ureal_name, ukey)
+	procstart = null
+	src.procstart = null
 	set_station_name(designation)
 	minor_announce("[ureal_name] has designated your station as [html_decode(station_name())]", "Captain's Charter") //decode station_name to avoid minor_announce double encode
 	log_game("[ukey] has renamed the station as [station_name()].")
@@ -111,6 +119,8 @@
 	force = 15
 
 /obj/item/station_charter/banner/rename_station(designation, uname, ureal_name, ukey)
+	procstart = null
+	src.procstart = null
 	set_station_name(designation)
 	minor_announce("[ureal_name] has designated the [name_type] as [html_decode(station_name())]", "Captain's Banner") //decode station_name to avoid minor_announce double encode
 	log_game("[ukey] has renamed the [name_type] as [station_name()].")

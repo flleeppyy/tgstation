@@ -13,19 +13,27 @@
 	spell_max_level = 1
 
 /datum/action/cooldown/spell/vow_of_silence/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(grant_to, TRAIT_MIMING, "[type]")
 
 /datum/action/cooldown/spell/vow_of_silence/Remove(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(remove_from, TRAIT_MIMING, "[type]")
 
 /datum/action/cooldown/spell/vow_of_silence/before_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	if(tgui_alert(usr, "Are you sure? There's no going back.", "Break Vow", list("I'm Sure", "Abort")) != "I'm Sure")
 		return SPELL_CANCEL_CAST
 	return ..()
 
 /datum/action/cooldown/spell/vow_of_silence/cast(mob/living/carbon/human/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(cast_on, span_notice("You break your vow of silence."))
 	cast_on.log_message("broke [cast_on.p_their()] vow of silence.", LOG_GAME)

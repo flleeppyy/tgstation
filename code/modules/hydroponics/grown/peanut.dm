@@ -24,4 +24,6 @@
 	tastes = list("peanuts" = 1)
 
 /obj/item/food/grown/peanut/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/peanut_butter = 0)

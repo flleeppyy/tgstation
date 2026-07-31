@@ -3,6 +3,8 @@
 	var/probability = 10
 
 /datum/bt_node/ai_behavior/play_dead/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/pawn = controller.pawn
 	if(!istype(pawn) || pawn.stat)
 		return FALSE
@@ -11,11 +13,15 @@
 	pawn.look_dead()
 
 /datum/bt_node/ai_behavior/play_dead/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(SPT_PROB(probability, seconds_per_tick))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 	return AI_BEHAVIOR_DELAY
 
 /datum/bt_node/ai_behavior/play_dead/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/basic/pawn = controller.pawn
 	if(QDELETED(pawn) || pawn.stat)

@@ -3,6 +3,8 @@
 	weight = WEIGHT_AI
 
 /datum/keybinding/artificial_intelligence/can_use(client/user)
+	procstart = null
+	src.procstart = null
 	return isAI(user.mob)
 
 /datum/keybinding/artificial_intelligence/reconnect
@@ -13,6 +15,8 @@
 	keybind_signal = COMSIG_KB_SILICON_RECONNECT_DOWN
 
 /datum/keybinding/artificial_intelligence/reconnect/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

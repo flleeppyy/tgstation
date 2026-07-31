@@ -16,6 +16,8 @@
 
 // Prevents effects from getting registered for SSnewtonian_movement
 /obj/effect/particle_effect/newtonian_move(inertia_angle, instant = FALSE, start_delay = 0, drift_force = 0, controlled_cap = null)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/effect_system
@@ -27,22 +29,30 @@
 	var/atom/holder = null
 
 /datum/effect_system/New(turf/location)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.location = get_turf(location)
 
 /datum/effect_system/Destroy()
+	procstart = null
+	src.procstart = null
 	holder = null
 	location = null
 	return ..()
 
 /// Instruct the effect system to start following an atom. Can be chained into .start()
 /datum/effect_system/proc/attach(atom/new_holder)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/effect_system)
 	holder = new_holder
 	return src
 
 /// Start the effect system
 /datum/effect_system/proc/start()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Basic effect system which spawns a certain number of moving effects
@@ -69,6 +79,8 @@
 	var/list/pickable_dirs = list()
 
 /datum/effect_system/basic/New(turf/location, amount = null, cardinals_only = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isnull(amount))
 		src.amount = amount
@@ -76,6 +88,8 @@
 		src.cardinals_only = cardinals_only
 
 /datum/effect_system/basic/start()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	for(var/i in 1 to amount)
@@ -85,10 +99,14 @@
 
 /// Returns how many steps to attempt to move a generated effect
 /datum/effect_system/basic/proc/get_step_count()
+	procstart = null
+	src.procstart = null
 	return rand(1, 3)
 
 /// Generates a effect for our system to control, returns the generated effect
 /datum/effect_system/basic/proc/generate_effect()
+	procstart = null
+	src.procstart = null
 	if(holder)
 		location = get_turf(holder)
 	var/obj/effect/effect = new effect_type(location)
@@ -110,17 +128,23 @@
 	return effect
 
 /datum/effect_system/basic/proc/post_move(datum/move_loop/source, result, visual_delay)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(result == MOVELOOP_FAILURE)
 		move_failed(source, source.moving)
 
 /// Allows us to hook into being unable to automatically move
 /datum/effect_system/basic/proc/move_failed(datum/move_loop/loop, obj/effect/failed)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(failed) || !delete_on_stop)
 		return
 	qdel(failed)
 
 /datum/effect_system/basic/proc/loop_end(datum/move_loop/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	total_effects--
 	if(delete_on_stop && !QDELETED(source.moving))

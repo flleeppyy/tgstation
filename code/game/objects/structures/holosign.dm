@@ -20,6 +20,8 @@
 	acid = 20
 
 /obj/structure/holosign/Initialize(mapload, source_projector)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/holographic_nature)
 	create_vis_overlay()
@@ -28,33 +30,45 @@
 		LAZYADD(projector.signs, src)
 
 /obj/structure/holosign/Destroy()
+	procstart = null
+	src.procstart = null
 	if(projector)
 		LAZYREMOVE(projector.signs, src)
 		projector = null
 	return ..()
 
 /obj/structure/holosign/update_atom_colour()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_vis_overlay()
 
 /obj/structure/holosign/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
 	attack_holosign(user, modifiers)
 
 /obj/structure/holosign/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. && isprojectile(mover)) // Its short enough to be shot over
 		return TRUE
 
 /obj/structure/holosign/proc/attack_holosign(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	user.do_attack_animation(src, ATTACK_EFFECT_PUNCH)
 	user.changeNext_move(CLICK_CD_MELEE)
 	take_damage(5 , BRUTE, MELEE, 1)
 	log_combat(user, src, "swatted")
 
 /obj/structure/holosign/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			playsound(loc, 'sound/items/weapons/egloves.ogg', 80, TRUE)
@@ -62,6 +76,8 @@
 			playsound(loc, 'sound/items/weapons/egloves.ogg', 80, TRUE)
 
 /obj/structure/holosign/proc/create_vis_overlay()
+	procstart = null
+	src.procstart = null
 	if(!use_vis_overlay)
 		return
 
@@ -97,6 +113,8 @@
 	var/pass_icon_state = "holosign_pass"
 
 /obj/structure/holosign/barrier/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -112,6 +130,8 @@
 			return TRUE
 
 /obj/structure/holosign/barrier/ranged_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(tool != projector)
 		return
@@ -119,12 +139,16 @@
 		open(user)
 
 /obj/structure/holosign/barrier/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(tool != projector)
 		return
 	qdel(src)
 
 /obj/structure/holosign/barrier/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!opened)
 		icon_state = base_icon_state
 	else
@@ -134,6 +158,8 @@
 	. = ..()
 
 /obj/structure/holosign/barrier/proc/open(user)
+	procstart = null
+	src.procstart = null
 	if(!openable)
 		balloon_alert(user, "unable!")
 		return
@@ -163,6 +189,8 @@
 	openable = FALSE
 
 /obj/structure/holosign/barrier/wetsign/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(mover))
 		var/mob/living/carbon/C = mover
@@ -193,6 +221,8 @@
 	resistance_flags = FIRE_PROOF | FREEZE_PROOF
 
 /obj/structure/holosign/barrier/atmos/proc/clearview_transparency()
+	procstart = null
+	src.procstart = null
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	alpha = 25
 	SSvis_overlays.remove_vis_overlay(src, managed_vis_overlays)
@@ -200,6 +230,8 @@
 	SSvis_overlays.add_vis_overlay(src, icon, icon_state, ABOVE_MOB_LAYER, MUTATE_PLANE(GAME_PLANE, our_turf), dir)
 
 /obj/structure/holosign/barrier/atmos/proc/reset_transparency()
+	procstart = null
+	src.procstart = null
 	mouse_opacity = initial(mouse_opacity)
 	alpha = initial(alpha)
 	SSvis_overlays.remove_vis_overlay(src, managed_vis_overlays)
@@ -219,14 +251,20 @@
 	openable = FALSE
 
 /obj/structure/holosign/barrier/atmos/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	air_update_turf(TRUE, TRUE)
 	AddElement(/datum/element/give_turf_traits, string_list(list(TRAIT_FIREDOOR_STOP)))
 
-/obj/structure/holosign/barrier/atmos/block_superconductivity() //Didn't used to do this, but it's "normal", and will help ease heat flow transitions with the players.
+/obj/structure/holosign/barrier/atmos/block_superconductivity()
+	procstart = null
+	src.procstart = null //Didn't used to do this, but it's "normal", and will help ease heat flow transitions with the players.
 	return TRUE
 
 /obj/structure/holosign/barrier/atmos/Destroy()
+	procstart = null
+	src.procstart = null
 	air_update_turf(TRUE, FALSE)
 	return ..()
 
@@ -254,6 +292,8 @@
 	COOLDOWN_DECLARE(virus_detected)
 
 /obj/structure/holosign/barrier/medical/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(mover, /obj/vehicle/ridden))
 		for(var/M in mover.buckled_mobs)
@@ -265,6 +305,8 @@
 	return TRUE
 
 /obj/structure/holosign/barrier/medical/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = base_icon_state
 	update_icon_state()
@@ -280,6 +322,8 @@
 	update_icon_state()
 
 /obj/structure/holosign/barrier/medical/proc/CheckHuman(mob/living/carbon/human/sickboi)
+	procstart = null
+	src.procstart = null
 	var/threat = sickboi.check_virus()
 	if(get_disease_severity_value(threat) > get_disease_severity_value(DISEASE_SEVERITY_MINOR))
 		return FALSE
@@ -293,9 +337,13 @@
 	var/shockcd = 0
 
 /obj/structure/holosign/barrier/cyborg/hacked/proc/cooldown()
+	procstart = null
+	src.procstart = null
 	shockcd = FALSE
 
 /obj/structure/holosign/barrier/cyborg/hacked/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -307,6 +355,8 @@
 			addtimer(CALLBACK(src, PROC_REF(cooldown)), 0.5 SECONDS)
 
 /obj/structure/holosign/barrier/cyborg/hacked/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(shockcd)
 		return
 

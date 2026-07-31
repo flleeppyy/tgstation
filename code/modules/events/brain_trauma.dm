@@ -12,6 +12,8 @@
 	fakeable = FALSE
 
 /datum/round_event/brain_trauma/start()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/human/H in shuffle(GLOB.alive_mob_list))
 		if(!H.client)
 			continue
@@ -26,6 +28,8 @@
 		break
 
 /datum/round_event/brain_trauma/proc/traumatize(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	var/resistance = pick(
 		50;TRAUMA_RESILIENCE_BASIC,
 		30;TRAUMA_RESILIENCE_SURGERY,

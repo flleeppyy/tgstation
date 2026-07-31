@@ -15,6 +15,8 @@
 	icon = 'icons/obj/weapons/restraints.dmi'
 
 /obj/item/restraints/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is strangling [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return OXYLOSS
 
@@ -66,10 +68,14 @@
 	var/used = FALSE
 
 /obj/item/restraints/handcuffs/apply_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	handcuff_time = modify_fantasy_variable("handcuff_time", handcuff_time, -bonus * 2, minimum = 0.3 SECONDS)
 
 /obj/item/restraints/handcuffs/remove_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	handcuff_time = reset_fantasy_variable("handcuff_time", handcuff_time)
 	return ..()
 
@@ -78,6 +84,8 @@
 	acid = 50
 
 /obj/item/restraints/handcuffs/attack(mob/living/target_mob, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(target_mob) || used)
 		return
 
@@ -85,6 +93,8 @@
 
 /// Handles all of the checks and application in a typical situation where someone attacks a carbon victim with the handcuff item.
 /obj/item/restraints/handcuffs/proc/attempt_to_cuff(mob/living/carbon/victim, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(victim, COMSIG_CARBON_CUFF_ATTEMPTED, user) & COMSIG_CARBON_CUFF_PREVENT)
 		victim.balloon_alert(user, "can't be handcuffed!")
 		return
@@ -130,9 +140,13 @@
 
 ///Return the amount of time the user would spend cuffing someone or something
 /obj/item/restraints/handcuffs/proc/get_handcuff_time(mob/user)
+	procstart = null
+	src.procstart = null
 	return handcuff_time * (HAS_TRAIT(user, TRAIT_FAST_CUFFING) ? 0.75 : 1)
 
 /obj/item/restraints/handcuffs/proc/handcuffs_clumsiness_check(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user) || !HAS_TRAIT(user, TRAIT_CLUMSY) || prob(50)) //Clumsy people have a 50% chance to handcuff themselves instead of their target.
 		return FALSE
 	to_chat(user, span_warning("Uh... how do those things work?!"))
@@ -147,6 +161,8 @@
  * * dispense - True if the cuffing should create a new item instead of using putting src on the mob, false otherwise. False by default.
 */
 /obj/item/restraints/handcuffs/proc/apply_cuffs(mob/living/carbon/target, mob/user, dispense = FALSE)
+	procstart = null
+	src.procstart = null
 	if(target.handcuffed)
 		return
 
@@ -163,11 +179,15 @@
 		qdel(src)
 
 /obj/item/restraints/handcuffs/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot == ITEM_SLOT_HANDCUFFED)
 		RegisterSignal(src, COMSIG_ITEM_DROPPED, PROC_REF(on_uncuffed)) //Make sure zipties are no longer usable the next time someone removes them
 
 /obj/item/restraints/handcuffs/proc/on_uncuffed(datum/source, mob/living/wearer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SHOULD_CALL_PARENT(TRUE)
 	UnregisterSignal(src, COMSIG_ITEM_DROPPED)
@@ -216,6 +236,8 @@
 	restraint_strength = HANDCUFFS_TYPE_WEAK
 
 /obj/item/restraints/handcuffs/cable/Initialize(mapload, new_color)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/static/list/hovering_item_typechecks = list(
@@ -238,11 +260,15 @@
 	)
 
 /obj/item/restraints/handcuffs/cable/proc/set_cable_color(new_color)
+	procstart = null
+	src.procstart = null
 	color = GLOB.cable_colors[new_color]
 	cable_color = new_color
 	update_appearance(UPDATE_ICON)
 
 /obj/item/restraints/handcuffs/cable/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	if(vname == NAMEOF(src, cable_color))
 		set_cable_color(vval)
 		datum_flags |= DF_VAR_EDITED
@@ -250,6 +276,8 @@
 	return ..()
 
 /obj/item/restraints/handcuffs/cable/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cable_color)
 		var/new_inhand_icon = "coil_[cable_color]"
@@ -356,6 +384,8 @@
 	custom_materials = list(/datum/material/plastic = SMALL_MATERIAL_AMOUNT * 2.5)
 
 /obj/item/restraints/handcuffs/cable/zipties/on_uncuffed(datum/source, mob/living/wearer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = "A pair of broken zipties."
 	icon_state = "cuff_used"
@@ -396,6 +426,8 @@
 	flags_1 = NONE
 
 /obj/item/restraints/handcuffs/cult/on_uncuffed(datum/source, mob/living/wearer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	wearer.visible_message(span_danger("[wearer]'s shackles shatter in a discharge of dark magic!"), span_userdanger("Your [src] shatters in a discharge of dark magic!"))
 	qdel(src)
@@ -444,6 +476,8 @@
 	armed = TRUE
 
 /obj/item/restraints/legcuffs/beartrap/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 	var/static/list/loc_connections = list(
@@ -452,15 +486,21 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/item/restraints/legcuffs/beartrap/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)][armed]"
 	return ..()
 
 /obj/item/restraints/legcuffs/beartrap/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is sticking [user.p_their()] head in \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(loc, 'sound/items/weapons/bladeslice.ogg', 50, TRUE, -1)
 	return BRUTELOSS
 
 /obj/item/restraints/legcuffs/beartrap/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(user) || IS_UNCONSCIOUS_OR_CRIT(user) || HAS_TRAIT(user, TRAIT_HANDS_BLOCKED))
 		return
@@ -480,6 +520,8 @@
 
 
 /obj/item/restraints/legcuffs/beartrap/attempt_pickup(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!armed)
 		return ..()
 
@@ -498,11 +540,15 @@
  * Arguments:
  */
 /obj/item/restraints/legcuffs/beartrap/proc/close_trap()
+	procstart = null
+	src.procstart = null
 	armed = FALSE
 	update_appearance()
 	playsound(src, 'sound/effects/snap.ogg', 50, TRUE)
 
 /obj/item/restraints/legcuffs/beartrap/proc/trap_stepped_on(datum/source, atom/movable/entering, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	spring_trap(entering)
@@ -516,6 +562,8 @@
  * If ignore_movetypes is FALSE, does not trigger on floating / flying / etc. mobs.
  */
 /obj/item/restraints/legcuffs/beartrap/proc/spring_trap(atom/movable/target, ignore_movetypes = FALSE, hit_prone = FALSE, def_zone = BODY_ZONE_CHEST)
+	procstart = null
+	src.procstart = null
 	if(!armed || !isliving(target))
 		return
 
@@ -568,6 +616,8 @@
 	custom_materials = null // cannot be recycled anyway
 
 /obj/item/restraints/legcuffs/beartrap/energy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(dissipate)), 10 SECONDS)
 
@@ -578,11 +628,15 @@
  * Arguments:
  */
 /obj/item/restraints/legcuffs/beartrap/energy/proc/dissipate()
+	procstart = null
+	src.procstart = null
 	if(!ismob(loc))
 		do_sparks(1, TRUE, src)
 		qdel(src)
 
 /obj/item/restraints/legcuffs/beartrap/energy/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isturf(loc))
 		spring_trap(user)
 
@@ -609,17 +663,23 @@
 	var/datum/weakref/ensnare_mob_ref
 
 /obj/item/restraints/legcuffs/bola/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback, gentle = FALSE, quickstart = TRUE, throw_type_path = /datum/thrownthing)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	playsound(src.loc,'sound/items/weapons/bolathrow.ogg', 75, TRUE)
 
 /obj/item/restraints/legcuffs/bola/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(..() || !iscarbon(hit_atom))//if it gets caught or the target can't be cuffed,
 		return//abort
 	//The mob has been hit, save the reference for ensnaring
 	ensnare_mob_ref = WEAKREF(hit_atom)
 
 /obj/item/restraints/legcuffs/bola/after_throw(datum/callback/callback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isnull(ensnare_mob_ref))
 		return
@@ -635,6 +695,8 @@
  * * snared_mob - the carbon that we will try to ensnare
  */
 /obj/item/restraints/legcuffs/bola/proc/ensnare(mob/living/carbon/snared_mob)
+	procstart = null
+	src.procstart = null
 	if(snared_mob.legcuffed || snared_mob.num_legs < 2)
 		return
 	visible_message(span_danger("\The [src] ensnares [snared_mob]!"), span_userdanger("\The [src] ensnares you!"))
@@ -674,10 +736,14 @@
 	custom_materials = list(/datum/material/silver = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/plasma = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/titanium = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/restraints/legcuffs/bola/energy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_UNCATCHABLE, TRAIT_GENERIC) // People said energy bolas being uncatchable is a feature.
 
 /obj/item/restraints/legcuffs/bola/energy/ensnare(atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	var/obj/item/restraints/legcuffs/beartrap/energy/cyborg/B = new (get_turf(hit_atom))
 	B.spring_trap(hit_atom, ignore_movetypes = TRUE, hit_prone = TRUE)
 	if(B.loc != hit_atom)
@@ -700,12 +766,16 @@
 	var/datum/status_effect/gonbola_pacify/effectReference
 
 /obj/item/restraints/legcuffs/bola/gonbola/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(hit_atom))
 		var/mob/living/carbon/C = hit_atom
 		effectReference = C.apply_status_effect(/datum/status_effect/gonbola_pacify)
 
 /obj/item/restraints/legcuffs/bola/gonbola/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(effectReference)
 		QDEL_NULL(effectReference)

@@ -31,10 +31,14 @@
 	)
 
 /obj/item/gun/energy/event_horizon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/scope, range_modifier = 4)
 
 /obj/item/gun/energy/event_horizon/process_fire(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
+	procstart = null
+	src.procstart = null
 
 	if(!HAS_TRAIT(user, TRAIT_USER_SCOPED))
 		balloon_alert(user, "must be scoped!")
@@ -62,6 +66,8 @@
 	tracer_type = /obj/effect/projectile/tracer/tracer/beam_rifle
 
 /obj/projectile/beam/event_horizon/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Where we droppin' boys?

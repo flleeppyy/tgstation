@@ -3,6 +3,8 @@ GLOBAL_LIST_INIT(infuser_entries, prepare_infuser_entries())
 
 /// Global proc that sets up each [/datum/infuser_entry] sub-type as singleton instances in a list, and returns it.
 /proc/prepare_infuser_entries()
+	procstart = null
+	src.procstart = null
 	var/list/entries = list()
 	for(var/datum/infuser_entry/entry_type as anything in subtypesof(/datum/infuser_entry))
 		var/datum/infuser_entry/entry = new entry_type()
@@ -51,4 +53,6 @@ GLOBAL_LIST_INIT(infuser_entries, prepare_infuser_entries())
 
 ///Returns a list of organs that can be infused into the target human. Useful for custom behavior for certain entries
 /datum/infuser_entry/proc/get_output_organs(mob/living/carbon/human/target, atom/movable/infused_from)
+	procstart = null
+	src.procstart = null
 	return output_organs.Copy()

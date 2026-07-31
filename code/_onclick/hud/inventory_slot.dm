@@ -1,6 +1,8 @@
 GLOBAL_LIST_INIT(inventory_slot_datums, initialize_inventory_slots())
 
 /proc/initialize_inventory_slots()
+	procstart = null
+	src.procstart = null
 	var/list/slot_types = list()
 	for (var/slot_type in valid_subtypesof(/datum/inventory_slot))
 		slot_types[slot_type] = new slot_type()
@@ -27,6 +29,8 @@ GLOBAL_LIST_INIT(inventory_slot_datums, initialize_inventory_slots())
 	var/screen_type = /atom/movable/screen/inventory
 
 /datum/inventory_slot/proc/create_element(datum/hud/hud)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/screen/inventory/inv_box = hud.add_screen_object(screen_type, HUD_KEY_ITEM_SLOT(slot_id), screen_group, inherit_style ? hud.ui_style : null, screen_loc)
 	inv_box.name = name
 	inv_box.icon_state = icon_state
@@ -36,14 +40,20 @@ GLOBAL_LIST_INIT(inventory_slot_datums, initialize_inventory_slots())
 
 /// Returns the item held in this slot by hud's mymob
 /datum/inventory_slot/proc/get_slot_item(mob/owner)
+	procstart = null
+	src.procstart = null
 	return owner.get_item_by_slot(slot_id)
 
 /// Returns a screen object for this slot for a particular hud datum
 /datum/inventory_slot/proc/get_screen_slot(datum/hud/hud)
+	procstart = null
+	src.procstart = null
 	return hud.screen_objects[HUD_KEY_ITEM_SLOT(slot_id)]
 
 /// Update inventory slot visuals
 /datum/inventory_slot/proc/update_inventory_slot(datum/hud/hud, mob/owner)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/screen/inventory/slot = get_screen_slot(hud)
 	if (!slot)
 		return
@@ -53,6 +63,8 @@ GLOBAL_LIST_INIT(inventory_slot_datums, initialize_inventory_slots())
 
 /// Updates the slot icon and its contents
 /datum/inventory_slot/proc/update_slot_icon_contents(atom/movable/screen/inventory/slot, obj/item/slot_item)
+	procstart = null
+	src.procstart = null
 	slot.update_appearance(UPDATE_ICON)
 	if (!slot_item)
 		slot.vis_contents.Cut()
@@ -71,15 +83,23 @@ GLOBAL_LIST_INIT(inventory_slot_datums, initialize_inventory_slots())
 	slot_id = ITEM_SLOT_HANDS
 
 /datum/inventory_slot/hands/create_element(datum/hud/hud)
+	procstart = null
+	src.procstart = null
 	CRASH("[hud] attempted to call create_element on a behavior-only hands inventory slot datum!")
 
 /datum/inventory_slot/hands/get_slot_item(mob/owner, hand_index = 1)
+	procstart = null
+	src.procstart = null
 	return owner.held_items[hand_index]
 
 /datum/inventory_slot/hands/get_screen_slot(datum/hud/hud, hand_index = 1)
+	procstart = null
+	src.procstart = null
 	return hud.screen_objects[HUD_KEY_HAND_SLOT(hand_index)]
 
 /datum/inventory_slot/hands/update_inventory_slot(datum/hud/hud, mob/owner, hand_index = null)
+	procstart = null
+	src.procstart = null
 	// If no index was passed, update all hand slots
 	if (isnull(hand_index))
 		for (var/i in 1 to length(owner.held_items))

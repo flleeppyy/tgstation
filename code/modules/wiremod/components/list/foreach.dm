@@ -31,15 +31,21 @@
 
 
 /obj/item/circuit_component/foreach/populate_options()
+	procstart = null
+	src.procstart = null
 	list_options = add_option_port("List Type", GLOB.wiremod_basic_types)
 
 /obj/item/circuit_component/foreach/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(port == list_options)
 		var/new_datatype = list_options.value
 		list_to_iterate.set_datatype(PORT_TYPE_LIST(new_datatype))
 		element.set_datatype(new_datatype)
 
 /obj/item/circuit_component/foreach/populate_ports()
+	procstart = null
+	src.procstart = null
 	list_to_iterate = add_input_port("List Input", PORT_TYPE_LIST(PORT_TYPE_ANY))
 	next_index = add_input_port("Next Index", PORT_TYPE_SIGNAL, trigger = PROC_REF(trigger_next_index))
 	reset_index = add_input_port("Reset And Trigger", PORT_TYPE_SIGNAL, trigger = PROC_REF(restart))
@@ -50,11 +56,15 @@
 	on_finished = add_output_port("On Finished", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/foreach/proc/restart(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	current_actual_index = 1
 	trigger_next_index(port)
 
 /obj/item/circuit_component/foreach/proc/trigger_next_index(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 
 	var/list/to_check = list_to_iterate.value

@@ -12,6 +12,8 @@
 	plane = ABOVE_GAME_PLANE
 
 /obj/structure/shipping_container/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddComponent(/datum/component/seethrough, SEE_THROUGH_MAP_SHIPPING_CONTAINER)

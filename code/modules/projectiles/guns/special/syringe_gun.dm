@@ -31,38 +31,54 @@
 	var/low_power = FALSE
 
 /obj/item/gun/syringe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	chambered = new /obj/item/ammo_casing/syringegun(src)
 	recharge_newshot()
 
 /obj/item/gun/syringe/apply_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	max_syringes = modify_fantasy_variable("max_syringes", max_syringes, bonus, minimum = 1)
 
 /obj/item/gun/syringe/remove_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	max_syringes = reset_fantasy_variable("max_syringes", max_syringes)
 	return ..()
 
 /obj/item/gun/syringe/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone in syringes)
 		syringes -= gone
 
 /obj/item/gun/syringe/recharge_newshot()
+	procstart = null
+	src.procstart = null
 	if(!syringes.len)
 		return
 	chambered.newshot()
 	return ..()
 
 /obj/item/gun/syringe/can_shoot()
+	procstart = null
+	src.procstart = null
 	return syringes.len
 
 /obj/item/gun/syringe/handle_chamber()
+	procstart = null
+	src.procstart = null
 	if(chambered && !chambered.loaded_projectile) //we just fired
 		recharge_newshot()
 	update_appearance()
 
 /obj/item/gun/syringe/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Can hold [max_syringes] syringe\s. Has [syringes.len] syringe\s remaining.")
 	if (low_power)
@@ -72,6 +88,8 @@
 	. += span_notice("Right-click [src] in-hand to switch it to [low_power ? "full" : "low"] power.")
 
 /obj/item/gun/syringe/attack_self(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!syringes.len)
 		balloon_alert(user, "it's empty!")
 		return FALSE
@@ -88,6 +106,8 @@
 	return TRUE
 
 /obj/item/gun/syringe/attack_self_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -103,12 +123,16 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/gun/syringe/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/reagent_containers/syringe))
 		return NONE
 
 	return attempt_insert_syringe(user, tool)
 
 /obj/item/gun/syringe/proc/attempt_insert_syringe(mob/living/user, obj/item/reagent_containers/syringe/syringe)
+	procstart = null
+	src.procstart = null
 	if(istype(syringe, /obj/item/reagent_containers/syringe/bluespace))
 		balloon_alert(user, "[syringe.name] is too big!")
 		return ITEM_INTERACT_BLOCKING
@@ -128,6 +152,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/gun/syringe/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!has_syringe_overlay)
 		return
@@ -188,10 +214,14 @@
 	force = 4
 
 /obj/item/gun/syringe/dna/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	chambered = new /obj/item/ammo_casing/dnainjector(src)
 
 /obj/item/gun/syringe/dna/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/dnainjector))
 		var/obj/item/dnainjector/D = tool
 		if(D.used)
@@ -233,6 +263,8 @@
 	about_to_shoot_inside_mail_text = "The air in the envelope is rushing out!"
 
 /obj/item/gun/syringe/blowgun/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

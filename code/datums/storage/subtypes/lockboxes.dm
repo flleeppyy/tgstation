@@ -4,6 +4,8 @@
 	max_slots = 4
 
 /datum/storage/lockbox/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_locked(STORAGE_FULLY_LOCKED)
 
@@ -14,6 +16,8 @@
 	max_specific_storage = WEIGHT_CLASS_SMALL
 
 /datum/storage/lockbox/medal/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/clothing/accessory/medal)
 
@@ -23,6 +27,8 @@
 	max_specific_storage = WEIGHT_CLASS_SMALL
 
 /datum/storage/lockbox/dueling/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/gun/energy/dueling)
 
@@ -32,5 +38,7 @@
 	max_total_storage = 3
 
 /datum/storage/lockbox/bitrunning_decrypted/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_locked(STORAGE_NOT_LOCKED)

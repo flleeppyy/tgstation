@@ -4,6 +4,8 @@
 /datum/element/bugkiller_reagent
 
 /datum/element/bugkiller_reagent/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(target, /datum/reagent))
 		return
@@ -11,6 +13,8 @@
 	RegisterSignal(target, COMSIG_REAGENT_EXPOSE_MOB, PROC_REF(on_expose))
 
 /datum/element/bugkiller_reagent/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_REAGENT_EXPOSE_MOB)
 
@@ -52,11 +56,15 @@
 	var/spasm_loops = 0
 
 /datum/status_effect/bugkiller_death/on_creation(mob/living/new_other, duration = 4 SECONDS)
+	procstart = null
+	src.procstart = null
 	src.duration = duration
 	src.spasm_loops = ROUND_UP(duration / 0.8) // one spasm ~= 0.8 deciseconds (yes deciseconds)
 	return ..()
 
 /datum/status_effect/bugkiller_death/on_apply()
+	procstart = null
+	src.procstart = null
 	if(owner.stat == DEAD)
 		return FALSE
 	playsound(owner, 'sound/mobs/humanoids/human/scream/malescream_1.ogg', 25, TRUE, extrarange = SILENCED_SOUND_EXTRARANGE, frequency = 5)
@@ -66,6 +74,8 @@
 	return TRUE
 
 /datum/status_effect/bugkiller_death/on_remove()
+	procstart = null
+	src.procstart = null
 	if(owner.stat == DEAD || QDELETED(owner))
 		return
 

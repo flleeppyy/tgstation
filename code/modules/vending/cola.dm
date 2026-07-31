@@ -55,6 +55,8 @@
 		)
 
 /obj/machinery/vending/cola/on_dispense(obj/item/vended_item, dispense_returned = FALSE)
+	procstart = null
+	src.procstart = null
 	// Only apply to newly dispensed items
 	if(dispense_returned)
 		return
@@ -160,9 +162,13 @@
 	icon_state = "refill_shamblers"
 
 /obj/machinery/vending/cola/shamblers/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_active_language(get_random_spoken_language())
 
 /obj/machinery/vending/cola/shamblers/speak(message)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_active_language(get_random_spoken_language())

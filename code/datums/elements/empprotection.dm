@@ -4,6 +4,8 @@
 	var/flags = NONE
 
 /datum/element/empprotection/Attach(datum/target, _flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == ELEMENT_INCOMPATIBLE || !isatom(target))
 		return ELEMENT_INCOMPATIBLE
@@ -12,15 +14,21 @@
 	RegisterSignal(target, COMSIG_ATOM_EXAMINE_TAGS, PROC_REF(get_examine_tags))
 
 /datum/element/empprotection/Detach(atom/target)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, list(COMSIG_ATOM_PRE_EMP_ACT, COMSIG_ATOM_EXAMINE_TAGS))
 	return ..()
 
 /datum/element/empprotection/proc/getEmpFlags(datum/source, severity)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return (flags & EMP_PROTECT_ALL)
 
 /datum/element/empprotection/proc/get_examine_tags(atom/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(flags & EMP_NO_EXAMINE)

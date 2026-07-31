@@ -14,6 +14,8 @@
 
 //Check if there's a tram we can cause to malfunction.
 /datum/round_event_control/tram_malfunction/can_spawn_event(players_amt, allow_magic = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -32,15 +34,21 @@
 	var/specific_transport_id = TRAMSTATION_LINE_1
 
 /datum/round_event/tram_malfunction/setup()
+	procstart = null
+	src.procstart = null
 	end_when = rand(TRAM_MALFUNCTION_TIME_LOWER, TRAM_MALFUNCTION_TIME_UPPER)
 
 /datum/round_event/tram_malfunction/start()
+	procstart = null
+	src.procstart = null
 	for(var/datum/transport_controller/linear/tram/malfunctioning_controller as anything in SStransport.transports_by_type[TRANSPORT_TYPE_TRAM])
 		if(malfunctioning_controller.specific_transport_id == specific_transport_id)
 			malfunctioning_controller.start_malf_event()
 			return
 
 /datum/round_event/tram_malfunction/end()
+	procstart = null
+	src.procstart = null
 	for(var/datum/transport_controller/linear/tram/malfunctioning_controller as anything in SStransport.transports_by_type[TRANSPORT_TYPE_TRAM])
 		if(malfunctioning_controller.specific_transport_id == specific_transport_id && malfunctioning_controller.malf_active != TRANSPORT_SYSTEM_NORMAL)
 			malfunctioning_controller.end_malf_event()

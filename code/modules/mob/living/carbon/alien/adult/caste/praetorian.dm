@@ -22,6 +22,8 @@
 	)
 
 /mob/living/carbon/alien/adult/royal/praetorian/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	real_name = name
 
 	var/static/list/innate_actions = list(
@@ -40,6 +42,8 @@
 	plasma_cost = 500
 
 /datum/action/cooldown/alien/evolve_to_queen/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -58,6 +62,8 @@
 	return TRUE
 
 /datum/action/cooldown/alien/evolve_to_queen/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/alien/adult/royal/evolver = owner
 	var/mob/living/carbon/alien/adult/royal/queen/new_queen = new(owner.loc)
 	evolver.alien_evolve(new_queen)

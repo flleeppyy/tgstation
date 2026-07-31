@@ -10,18 +10,24 @@
 	)
 
 /datum/component/storm_hating/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 	on_area_entered(parent, get_area(parent))
 
 /datum/component/storm_hating/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_ENTER_AREA, PROC_REF(on_area_entered))
 	RegisterSignal(parent, COMSIG_EXIT_AREA, PROC_REF(on_area_exited))
 	RegisterSignal(parent, COMSIG_MOB_LOGIN, PROC_REF(on_login))
 
 /datum/component/storm_hating/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, list(COMSIG_ENTER_AREA, COMSIG_EXIT_AREA))
 	var/area/old_area = get_area(parent)
@@ -29,18 +35,24 @@
 		on_area_exited(parent, old_area)
 
 /datum/component/storm_hating/proc/on_area_entered(atom/source, area/new_area)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for (var/weather in stormy_weather)
 		RegisterSignal(new_area, COMSIG_WEATHER_BEGAN_IN_AREA(weather), PROC_REF(on_storm_event))
 		RegisterSignal(new_area, COMSIG_WEATHER_ENDED_IN_AREA(weather), PROC_REF(on_storm_event))
 
 /datum/component/storm_hating/proc/on_area_exited(atom/source, area/old_area)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for (var/weather in stormy_weather)
 		UnregisterSignal(old_area, COMSIG_WEATHER_BEGAN_IN_AREA(weather))
 		UnregisterSignal(old_area, COMSIG_WEATHER_ENDED_IN_AREA(weather))
 
 /datum/component/storm_hating/proc/on_storm_event()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/parent_atom = parent
 	if (!isturf(parent_atom.loc))
@@ -49,5 +61,7 @@
 	qdel(src)
 
 /datum/component/storm_hating/proc/on_login(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)

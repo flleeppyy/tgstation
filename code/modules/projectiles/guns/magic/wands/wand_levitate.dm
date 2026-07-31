@@ -12,10 +12,14 @@
 	max_charges = 12
 
 /obj/item/gun/magic/wand/levitate/zap_self(mob/living/user, suicide = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.apply_status_effect(/datum/status_effect/levitate)
 
 /obj/item/gun/magic/wand/levitate/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (!iscarbon(user))
 		. = ..()
 		return SHAME
@@ -43,6 +47,8 @@
 	icon_state = "bluespace"
 
 /obj/projectile/magic/levitate/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/victim = target
 	if (!istype(victim))
@@ -56,12 +62,16 @@
 	alert_type = null
 
 /datum/status_effect/levitate/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.visible_message(span_warning("[owner] floats into the air!"))
 	owner.AddElement(/datum/element/forced_gravity, 0)
 	owner.add_filter("antigrav_glow", 2, list("type" = "outline", "color" = "#de3aff48", "size" = 2))
 	return ..()
 
 /datum/status_effect/levitate/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.visible_message(span_notice("[owner] gently descends to the ground"))
 	owner.RemoveElement(/datum/element/forced_gravity, 0)
 	owner.remove_filter("antigrav_glow")

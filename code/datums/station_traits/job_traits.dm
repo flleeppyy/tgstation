@@ -15,26 +15,36 @@
 	var/list/lobby_candidates
 
 /datum/station_trait/job/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	blacklist += subtypesof(/datum/station_trait/job) - type // All but ourselves
 	RegisterSignal(SSdcs, COMSIG_GLOB_PRE_JOBS_ASSIGNED, PROC_REF(pre_jobs_assigned))
 
 /datum/station_trait/job/setup_lobby_button(atom/movable/screen/lobby/button/sign_up/lobby_button)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(lobby_button, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(on_lobby_button_update_overlays))
 	lobby_button.desc = button_desc
 	return ..()
 
 /datum/station_trait/job/on_lobby_button_click(atom/movable/screen/lobby/button/sign_up/lobby_button, location, control, params, mob/dead/new_player/user)
+	procstart = null
+	src.procstart = null
 	if (LAZYFIND(lobby_candidates, user))
 		LAZYREMOVE(lobby_candidates, user)
 	else
 		LAZYADD(lobby_candidates, user)
 
 /datum/station_trait/job/on_lobby_button_destroyed(atom/movable/screen/lobby/button/sign_up/lobby_button)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	LAZYREMOVE(lobby_candidates, lobby_button.get_mob())
 
 /datum/station_trait/job/on_lobby_button_update_icon(atom/movable/screen/lobby/button/sign_up/lobby_button, updates)
+	procstart = null
+	src.procstart = null
 	if (LAZYFIND(lobby_candidates, lobby_button.get_mob()))
 		lobby_button.base_icon_state = "signup_on"
 	else
@@ -42,11 +52,15 @@
 
 /// Add an overlay based on whether you are actively signed up for this role
 /datum/station_trait/job/proc/on_lobby_button_update_overlays(atom/movable/screen/lobby/button/sign_up/lobby_button, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	overlays += LAZYFIND(lobby_candidates, lobby_button.get_mob()) ? "tick" : "cross"
 
 /// Called before we start assigning roles, assign ours first
 /datum/station_trait/job/proc/pre_jobs_assigned()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	sign_up_button = FALSE
 	destroy_lobby_buttons()
@@ -66,6 +80,8 @@
 	lobby_candidates = null
 
 /datum/station_trait/job/can_display_lobby_button(client/player)
+	procstart = null
+	src.procstart = null
 	var/datum/job/our_job = SSjob.get_job_type(job_to_add)
 	return our_job.player_old_enough(player) && ..()
 
@@ -78,15 +94,21 @@
 	job_to_add = /datum/job/cargo_gorilla
 
 /datum/station_trait/job/cargorilla/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSatoms, COMSIG_SUBSYSTEM_POST_INITIALIZE, PROC_REF(replace_cargo))
 
 /datum/station_trait/job/cargorilla/on_lobby_button_update_overlays(atom/movable/screen/lobby/button/sign_up/lobby_button, list/overlays)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	overlays += LAZYFIND(lobby_candidates, lobby_button.get_mob()) ? "gorilla_on" : "gorilla_off"
 
 /// Remove the cargo equipment and personnel that are being replaced by a gorilla.
 /datum/station_trait/job/cargorilla/proc/replace_cargo(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/basic/sloth/cargo_sloth = GLOB.cargo_sloth
 	if(isnull(cargo_sloth))
@@ -110,15 +132,21 @@
 	job_to_add = /datum/job/bridge_assistant
 
 /datum/station_trait/job/bridge_assistant/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSatoms, COMSIG_SUBSYSTEM_POST_INITIALIZE, PROC_REF(add_coffeemaker))
 
 /datum/station_trait/job/bridge_assistant/on_lobby_button_update_overlays(atom/movable/screen/lobby/button/sign_up/lobby_button, list/overlays)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	overlays += "bridge_assistant"
 
 /// Creates a coffeemaker in the bridge, if we don't have one yet.
 /datum/station_trait/job/bridge_assistant/proc/add_coffeemaker(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/area/bridge = GLOB.areas_by_type[/area/station/command/bridge]
 	if(isnull(bridge)) //no bridge, what will he assist?
@@ -163,6 +191,8 @@
 	job_to_add = /datum/job/veteran_advisor
 
 /datum/station_trait/job/veteran_advisor/on_lobby_button_update_overlays(atom/movable/screen/lobby/button/sign_up/lobby_button, list/overlays)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	overlays += "veteran_advisor"
 
@@ -177,20 +207,28 @@
 	trait_to_give = STATION_TRAIT_HUMAN_AI
 
 /datum/station_trait/job/human_ai/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSjob, COMSIG_OCCUPATIONS_SETUP, PROC_REF(remove_ai_job))
 	RegisterSignal(SSatoms, COMSIG_SUBSYSTEM_POST_INITIALIZE, PROC_REF(give_fax_machine))
 
 /datum/station_trait/job/human_ai/revert()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(SSjob, COMSIG_OCCUPATIONS_SETUP)
 	UnregisterSignal(SSatoms, COMSIG_SUBSYSTEM_POST_INITIALIZE)
 	return ..()
 
 /datum/station_trait/job/human_ai/on_lobby_button_update_overlays(atom/movable/screen/lobby/button/sign_up/lobby_button, list/overlays)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	overlays += LAZYFIND(lobby_candidates, lobby_button.get_mob()) ? "human_ai_on" : "human_ai_off"
 
 /datum/station_trait/job/human_ai/proc/remove_ai_job(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/datum/job_department/department = SSjob.joinable_departments_by_type[/datum/job_department/silicon]
 	department.remove_job(/datum/job/ai)
@@ -199,6 +237,8 @@
 
 /// Gives the AI SAT a fax machine if it doesn't have one. This is copy pasted from Bridge Assistant's coffee maker.
 /datum/station_trait/job/human_ai/proc/give_fax_machine(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/area/sat_area = GLOB.areas_by_type[/area/station/ai/satellite/chamber]
 	if(isnull(sat_area))
@@ -241,6 +281,8 @@
 	job_to_add = /datum/job/pun_pun
 
 /datum/station_trait/job/pun_pun/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//Make sure we don't have two Pun Puns if loaded before the start of the round.
 	if(SSticker.HasRoundStarted() || !GLOB.the_one_and_only_punpun)
@@ -249,5 +291,7 @@
 	qdel(GLOB.the_one_and_only_punpun)
 
 /datum/station_trait/job/pun_pun/on_lobby_button_update_overlays(atom/movable/screen/lobby/button/sign_up/lobby_button, list/overlays)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	overlays += LAZYFIND(lobby_candidates, lobby_button.get_mob()) ? "pun_pun_on" : "pun_pun_off"

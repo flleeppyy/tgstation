@@ -32,6 +32,8 @@
 	)
 
 /datum/storage/rped/can_insert(obj/item/to_insert, mob/user, messages = TRUE, force = FALSE)
+	procstart = null
+	src.procstart = null
 	//only stock parts permited
 	if(to_insert.get_part_rating())
 		return ..()
@@ -49,6 +51,8 @@
 	return ..()
 
 /datum/storage/rped/attempt_insert(obj/item/to_insert, mob/user, override, force, messages)
+	procstart = null
+	src.procstart = null
 	if(isstack(to_insert))
 		//user tried to insert invalid stacktype
 		if(!is_type_in_list(to_insert, allowed_material_types) && !is_type_in_list(to_insert, allowed_bluespace_types))
@@ -91,6 +95,8 @@
 	return ..()
 
 /datum/storage/rped/mass_empty(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/obj/item/parts_list = list()
 	for(var/obj/item/thing in real_location)
 		parts_list += thing

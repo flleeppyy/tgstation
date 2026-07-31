@@ -41,6 +41,8 @@
 	COOLDOWN_DECLARE(failure_cooldown)
 
 /datum/riding_minigame/New(mob/living/ridden, mob/living/rider)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	host = WEAKREF(ridden)
 	mounter = WEAKREF(rider)
@@ -59,12 +61,16 @@
 	START_PROCESSING(SSprocessing, src)
 
 /datum/riding_minigame/proc/set_difficulty(mob/living/ridden, mob/living/rider)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(rider, TRAIT_BEAST_EMPATHY) || HAS_TRAIT(ridden, TRAIT_MOB_EASY_TO_MOUNT))
 		linger_time *= easy_difficulty_multiplier
 	if(HAS_TRAIT(ridden, TRAIT_MOB_DIFFICULT_TO_MOUNT))
 		linger_time *= hard_difficulty_multiplier
 
 /datum/riding_minigame/proc/generate_visuals()
+	procstart = null
+	src.procstart = null
 	var/static/list/void_arrow_order = list(
 		"north",
 		"west",
@@ -85,6 +91,8 @@
 		x_offset += 16
 
 /datum/riding_minigame/proc/generate_heart_counter()
+	procstart = null
+	src.procstart = null
 	var/x_offset = -32
 	for(var/i in 1 to required_successes)
 		var/obj/effect/overlay/vis/ride_minigame/heart = new
@@ -96,6 +104,8 @@
 		heart_counter.vis_contents += heart
 
 /datum/riding_minigame/process()
+	procstart = null
+	src.procstart = null
 	if(current_attempts >= maximum_attempts)
 		lose_minigame()
 		return
@@ -107,6 +117,8 @@
 	generate_arrow()
 
 /datum/riding_minigame/proc/generate_arrow()
+	procstart = null
+	src.procstart = null
 	if(current_attempts >= maximum_attempts)
 		return
 	var/static/list/possible_arrows = list(
@@ -133,10 +145,14 @@
 	addtimer(CALLBACK(src, PROC_REF(add_active_arrow), new_arrow, picked_arrow), ((ENDING_ARROW_POSITION - (STARTING_ARROW_POSITION + get_arrow_height(picked_arrow))) / arrow_speed) SECONDS)
 
 /datum/riding_minigame/proc/get_arrow_height(text_direction)
+	procstart = null
+	src.procstart = null
 	var/direction = text2dir(text_direction)
 	return NSCOMPONENT(direction) ? VERTICAL_ARROW_HEIGHT : HORIZONTAL_ARROW_HEIGHT
 
 /datum/riding_minigame/proc/add_active_arrow(atom/arrow, direction)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(arrow))
 		return
 
@@ -157,12 +173,16 @@
 	addtimer(CALLBACK(src, PROC_REF(remove_active_arrow), arrow, direction), time_of_grace)
 
 /datum/riding_minigame/proc/remove_active_arrow(atom/arrow, direction)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(arrow))
 		return
 	animate(arrow, alpha = 0, time = FADE_AWAY_TIME)
 	QDEL_IN(arrow, FADE_AWAY_TIME)
 
 /datum/riding_minigame/proc/on_arrow_delete(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/arrow in cached_arrows)
 		var/list/arrow_details = cached_arrows[arrow]
@@ -171,6 +191,8 @@
 		arrow_details["is_active"] = null
 
 /datum/riding_minigame/proc/on_ridden_moved(atom/movable/source, atom/new_loc, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	. = NONE
 	if(new_loc.z != source.z || !COOLDOWN_FINISHED(src, failure_cooldown))
@@ -200,6 +222,8 @@
 	increment_failure()
 
 /datum/riding_minigame/proc/increment_counter()
+	procstart = null
+	src.procstart = null
 	current_succeeded++
 	var/obj/new_heart = hearts_list[current_succeeded]
 	new_heart.icon_state = "full_heart"
@@ -209,12 +233,16 @@
 		win_minigame()
 
 /datum/riding_minigame/proc/increment_failure()
+	procstart = null
+	src.procstart = null
 	current_failures++
 	COOLDOWN_START(src, failure_cooldown, 2 SECONDS)
 	if(current_failures > (maximum_attempts - required_successes))
 		lose_minigame()
 
 /datum/riding_minigame/proc/lose_minigame()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/living_host = host?.resolve()
 	var/mob/living/living_rider = mounter?.resolve()
@@ -230,6 +258,8 @@
 	qdel(src)
 
 /datum/riding_minigame/proc/win_minigame()
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_host = host?.resolve()
 	var/mob/living/living_rider = mounter?.resolve()
 	if(isnull(living_host) || isnull(living_rider))
@@ -240,6 +270,8 @@
 	qdel(src)
 
 /datum/riding_minigame/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSprocessing, src)
 
 	var/mob/living/living_mounter = mounter?.resolve()

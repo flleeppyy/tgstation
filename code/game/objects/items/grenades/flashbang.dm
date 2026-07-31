@@ -13,12 +13,18 @@
 	var/flashbang_light = LIGHT_COLOR_INTENSE_RED
 
 /obj/item/grenade/flashbang/apply_grenade_fantasy_bonuses(quality)
+	procstart = null
+	src.procstart = null
 	flashbang_range = modify_fantasy_variable("flashbang_range", flashbang_range, quality)
 
 /obj/item/grenade/flashbang/remove_grenade_fantasy_bonuses(quality)
+	procstart = null
+	src.procstart = null
 	flashbang_range = reset_fantasy_variable("flashbang_range", flashbang_range)
 
 /obj/item/grenade/flashbang/arm_grenade(mob/user, delayoverride, msg = TRUE, volume = 60)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -27,6 +33,8 @@
 	set_light(sweetspot_range, sweetspot_range, flashbang_light)
 
 /obj/item/grenade/flashbang/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -49,6 +57,8 @@
 	qdel(src)
 
 /obj/item/grenade/flashbang/proc/bang(turf/turf, mob/living/living_mob, soundbang = TRUE)
+	procstart = null
+	src.procstart = null
 	if(living_mob.stat == DEAD) //They're dead!
 		return
 	living_mob.show_message(span_warning("BANG"), MSG_AUDIBLE)
@@ -109,6 +119,8 @@
 	shrapnel_radius = 12
 
 /obj/item/grenade/stingbang/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	if(dud_flags)
 		active = FALSE
 		update_appearance()
@@ -139,6 +151,8 @@
 	qdel(src)
 
 /obj/item/grenade/stingbang/proc/pop(turf/turf, mob/living/living_mob)
+	procstart = null
+	src.procstart = null
 	if(living_mob.stat == DEAD) //They're dead!
 		return
 	living_mob.show_message(span_warning("POP"), MSG_AUDIBLE)
@@ -172,6 +186,8 @@
 	var/rots = 1 /// how many times we've "rotated" the charge
 
 /obj/item/grenade/primer/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		user.playsound_local(user, 'sound/misc/box_deploy.ogg', 50, TRUE)
@@ -179,6 +195,8 @@
 		user.changeNext_move(CLICK_CD_RAPID)
 
 /obj/item/grenade/primer/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	shrapnel_radius = round(rots / rots_per_mag)
 	. = ..()
 	if(!.)

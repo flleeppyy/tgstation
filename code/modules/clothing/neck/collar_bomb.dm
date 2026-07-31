@@ -22,23 +22,31 @@
 	acid = 97
 
 /obj/item/clothing/neck/collar_bomb/Initialize(mapload, obj/item/collar_bomb_button/button)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.button = button
 	button?.collar = src
 	set_wires(new /datum/wires/collar_bomb(src))
 
 /obj/item/clothing/neck/collar_bomb/Destroy()
+	procstart = null
+	src.procstart = null
 	button?.collar = null
 	button = null
 	return ..()
 
 /obj/item/clothing/neck/collar_bomb/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user.get_item_by_slot(ITEM_SLOT_NECK) == src)
 		return
 	. += span_tinynotice("It has a [EXAMINE_HINT("wire")] panel that could be interacted with...")
 
 /obj/item/clothing/neck/collar_bomb/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!is_wire_tool(tool))
 		return ..()
 
@@ -46,15 +54,21 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/clothing/neck/collar_bomb/equipped(mob/user, slot, initial = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot == ITEM_SLOT_NECK)
 		ADD_TRAIT(src, TRAIT_NODROP, INNATE_TRAIT)
 
 /obj/item/clothing/neck/collar_bomb/dropped(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(src, TRAIT_NODROP, INNATE_TRAIT)
 
 /obj/item/clothing/neck/collar_bomb/proc/explosive_countdown(ticks_left)
+	procstart = null
+	src.procstart = null
 	active = TRUE
 	if(ticks_left > 0)
 		playsound(src, 'sound/items/timer.ogg', 30, FALSE)
@@ -96,6 +110,8 @@
 	var/obj/item/clothing/neck/collar_bomb/collar
 
 /obj/item/collar_bomb_button/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(DOING_INTERACTION_WITH_TARGET(user, src))
 		return
@@ -114,6 +130,8 @@
 
 
 /obj/item/collar_bomb_button/Destroy()
+	procstart = null
+	src.procstart = null
 	collar?.button = null
 	collar = null
 	return ..()

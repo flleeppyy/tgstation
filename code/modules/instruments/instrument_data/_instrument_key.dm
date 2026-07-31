@@ -13,6 +13,8 @@
 	var/deviation
 
 /datum/instrument_key/New(sample = src.sample, key = src.key, deviation = src.deviation, frequency = src.frequency)
+	procstart = null
+	src.procstart = null
 	src.sample = sample
 	src.key = key
 	src.deviation = deviation
@@ -24,6 +26,8 @@
  * Calculates and stores our deviation.
  */
 /datum/instrument_key/proc/calculate()
+	procstart = null
+	src.procstart = null
 	if(!deviation)
 		CRASH("Invalid calculate call: No deviation or sample in instrument_key")
 	#define KEY_TWELTH (1/12)

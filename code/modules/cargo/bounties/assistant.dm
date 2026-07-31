@@ -56,6 +56,8 @@
 	)
 
 /datum/bounty/item/assistant/toolbox/applies_to(obj/shipped)
+	procstart = null
+	src.procstart = null
 	var/list/packing_list = static_packing_list.Copy()
 	for(var/obj/item_contents as anything in shipped.contents)
 		for(var/match_type in packing_list)
@@ -67,6 +69,8 @@
 	return FALSE
 
 /datum/bounty/item/assistant/toolbox/ship(obj/shipped)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/object as anything in shipped.contents)
 		if(!is_type_in_list(object, static_packing_list))
@@ -240,10 +244,14 @@
 	var/shipping_penalty
 
 /datum/bounty/item/assistant/fish/New()
+	procstart = null
+	src.procstart = null
 	..()
 	shipping_penalty = reward * 0.5 / required_count
 
 /datum/bounty/item/assistant/fish/applies_to(obj/shipped)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -255,9 +263,13 @@
 	return can_ship_fish(fishie)
 
 /datum/bounty/item/assistant/fish/proc/can_ship_fish(obj/item/fish/fishie)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/bounty/item/assistant/fish/ship(obj/shipped)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -274,10 +286,14 @@
 	var/fluid_type
 
 /datum/bounty/item/assistant/fish/fluid/New()
+	procstart = null
+	src.procstart = null
 	..()
 	fluid_type = pick(AQUARIUM_FLUID_FRESHWATER, AQUARIUM_FLUID_SALTWATER, AQUARIUM_FLUID_SULPHWATEVER)
 	name = "[fluid_type] Fish"
 	description = "We need [LOWER_TEXT(fluid_type)] fish to populate our aquariums with. Fishes that are dead or bought from cargo will only be paid half as much."
 
 /datum/bounty/item/assistant/fish/fluid/can_ship_fish(obj/item/fish/fishie)
+	procstart = null
+	src.procstart = null
 	return (fluid_type in GLOB.fish_compatible_fluid_types[fishie.required_fluid_type])

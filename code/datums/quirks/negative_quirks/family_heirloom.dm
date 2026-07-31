@@ -11,6 +11,8 @@
 	mail_goodies = list(/obj/item/storage/briefcase/secure)
 
 /datum/quirk/item_quirk/family_heirloom/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	var/obj/item/heirloom_type
 
@@ -44,6 +46,8 @@
 	)
 
 /datum/quirk/item_quirk/family_heirloom/post_add()
+	procstart = null
+	src.procstart = null
 	var/list/names = splittext(quirk_holder.real_name, " ")
 	var/family_name = names[names.len]
 
@@ -57,6 +61,8 @@
 	return ..()
 
 /datum/quirk/item_quirk/family_heirloom/process()
+	procstart = null
+	src.procstart = null
 	var/obj/family_heirloom = heirloom?.resolve()
 
 	if(family_heirloom && quirk_holder.contains(family_heirloom))
@@ -67,5 +73,7 @@
 		quirk_holder.add_mood_event("family_heirloom_missing", /datum/mood_event/family_heirloom_missing)
 
 /datum/quirk/item_quirk/family_heirloom/remove()
+	procstart = null
+	src.procstart = null
 	quirk_holder.clear_mood_event("family_heirloom_missing")
 	quirk_holder.clear_mood_event("family_heirloom")

@@ -23,6 +23,8 @@
 	var/default_protection
 
 /datum/config_entry/New()
+	procstart = null
+	src.procstart = null
 	if(type == abstract_type)
 		CRASH("Abstract config entry [type] instatiated!")
 	name = LOWER_TEXT(type2top(type))
@@ -30,6 +32,8 @@
 	set_default()
 
 /datum/config_entry/Destroy()
+	procstart = null
+	src.procstart = null
 	config.RemoveEntry(src)
 	return ..()
 
@@ -37,6 +41,8 @@
  * Returns the value of the configuration datum to its default, used for resetting a config value. Note this also sets the protection back to default.
  */
 /datum/config_entry/proc/set_default()
+	procstart = null
+	src.procstart = null
 	if ((protection & CONFIG_ENTRY_LOCKED) && IsAdminAdvancedProcCall())
 		log_admin_private("[key_name(usr)] attempted to reset locked config entry [type] to its default")
 		return
@@ -50,11 +56,15 @@
 	modified = FALSE
 
 /datum/config_entry/can_vv_get(var_name)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(var_name == NAMEOF(src, config_entry_value) || var_name == NAMEOF(src, default))
 		. &= !(protection & CONFIG_ENTRY_HIDDEN)
 
 /datum/config_entry/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	var/static/list/banned_edits = list(NAMEOF_STATIC(src, name), NAMEOF_STATIC(src, vv_VAS), NAMEOF_STATIC(src, default), NAMEOF_STATIC(src, resident_file), NAMEOF_STATIC(src, protection), NAMEOF_STATIC(src, abstract_type), NAMEOF_STATIC(src, modified), NAMEOF_STATIC(src, dupes_allowed))
 	if(var_name == NAMEOF(src, config_entry_value))
 		if(protection & CONFIG_ENTRY_LOCKED)
@@ -71,18 +81,26 @@
 	return ..()
 
 /datum/config_entry/proc/VASProcCallGuard(str_val)
+	procstart = null
+	src.procstart = null
 	. = !((protection & CONFIG_ENTRY_LOCKED) && IsAdminAdvancedProcCall())
 	if(!.)
 		log_admin_private("[key_name(usr)] attempted to set locked config entry [type] to '[str_val]'")
 
 /datum/config_entry/proc/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	VASProcCallGuard(str_val)
 	CRASH("Invalid config entry type!")
 
 /datum/config_entry/proc/ValidateListEntry(key_name, key_value)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/config_entry/proc/DeprecationUpdate(value)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/config_entry/string
@@ -93,9 +111,13 @@
 	var/lowercase = FALSE
 
 /datum/config_entry/string/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	return var_name != NAMEOF(src, auto_trim) && ..()
 
 /datum/config_entry/string/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	if(!VASProcCallGuard(str_val))
 		return FALSE
 	config_entry_value = auto_trim ? trim(str_val) : str_val
@@ -111,6 +133,8 @@
 	var/min_val = -INFINITY
 
 /datum/config_entry/number/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	if(!VASProcCallGuard(str_val))
 		return FALSE
 	var/temp = text2num(trim(str_val))
@@ -122,6 +146,8 @@
 	return FALSE
 
 /datum/config_entry/number/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	var/static/list/banned_edits = list(NAMEOF_STATIC(src, max_val), NAMEOF_STATIC(src, min_val), NAMEOF_STATIC(src, integer))
 	return !(var_name in banned_edits) && ..()
 
@@ -130,6 +156,8 @@
 	abstract_type = /datum/config_entry/flag
 
 /datum/config_entry/flag/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	if(!VASProcCallGuard(str_val))
 		return FALSE
 	config_entry_value = text2num(trim(str_val)) != 0
@@ -144,6 +172,8 @@
 	var/lowercase = FALSE
 
 /datum/config_entry/str_list/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	if (!VASProcCallGuard(str_val))
 		return FALSE
 	str_val = trim(str_val)
@@ -156,6 +186,8 @@
 	default = list()
 
 /datum/config_entry/number_list/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	if(!VASProcCallGuard(str_val))
 		return FALSE
 	str_val = trim(str_val)
@@ -183,11 +215,15 @@
 	var/lowercase_key = TRUE
 
 /datum/config_entry/keyed_list/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(key_mode) || isnull(value_mode))
 		CRASH("Keyed list of type [type] created with null key or value mode!")
 
 /datum/config_entry/keyed_list/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	if(!VASProcCallGuard(str_val))
 		return FALSE
 
@@ -204,6 +240,8 @@
 	return FALSE
 
 /datum/config_entry/keyed_list/proc/parse_key_and_value(option_string)
+	procstart = null
+	src.procstart = null
 	// Blank or null option string? Bad mojo!
 	if(!option_string)
 		log_config("ERROR: Keyed list config tried to parse with no key or value data.")
@@ -261,6 +299,8 @@
 
 /// Takes a given config key and validates it. If successful, returns the formatted key. If unsuccessful, returns null.
 /datum/config_entry/keyed_list/proc/validate_config_key(key)
+	procstart = null
+	src.procstart = null
 	switch(key_mode)
 		if(KEY_MODE_TEXT)
 			return key
@@ -278,6 +318,8 @@
 
 /// Takes a given config value and validates it. If successful, returns the formatted key. If unsuccessful, returns null.
 /datum/config_entry/keyed_list/proc/validate_config_value(value)
+	procstart = null
+	src.procstart = null
 	switch(value_mode)
 		if(VALUE_MODE_FLAG)
 			return value
@@ -295,4 +337,6 @@
 			return value
 
 /datum/config_entry/keyed_list/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	return var_name != NAMEOF(src, splitter) && ..()

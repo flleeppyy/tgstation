@@ -48,10 +48,14 @@
 	var/obj/effect/dummy/lighting_obj/ethereal_light
 
 /datum/species/ethereal/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(ethereal_light)
 	return ..()
 
 /datum/species/ethereal/on_species_gain(mob/living/carbon/human/new_ethereal, datum/species/old_species, pref_load, regenerate_icons)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(new_ethereal))
 		return
@@ -72,6 +76,8 @@
 			limb.update_limb(is_creating = TRUE)
 
 /datum/species/ethereal/on_species_loss(mob/living/carbon/human/former_ethereal, datum/species/new_species, pref_load)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(former_ethereal, list(
 		COMSIG_ATOM_EMAG_ACT,
 		COMSIG_ATOM_EMP_ACT,
@@ -83,11 +89,15 @@
 	return ..()
 
 /datum/species/ethereal/randomize_features()
+	procstart = null
+	src.procstart = null
 	var/list/features = ..()
 	features[FEATURE_ETHEREAL_COLOR] = GLOB.color_list_ethereal[pick(GLOB.color_list_ethereal)]
 	return features
 
 /datum/species/ethereal/proc/refresh_light_color(mob/living/carbon/human/ethereal)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isnull(ethereal_light))
 		return
@@ -124,6 +134,8 @@
 		ethereal.update_body()
 
 /datum/species/ethereal/proc/on_emp_act(mob/living/carbon/human/source, severity, protection)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(protection & EMP_PROTECT_SELF)
 		return
@@ -137,6 +149,8 @@
 			addtimer(CALLBACK(src, PROC_REF(stop_emp), source), 20 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE) //We're out for 20 seconds
 
 /datum/species/ethereal/proc/hit_by_saboteur(mob/living/carbon/human/source, disrupt_duration)
+	procstart = null
+	src.procstart = null
 	disrupted = TRUE
 	refresh_light_color(source)
 	to_chat(source, span_warning("Something inside of you crackles in a bad way."))
@@ -145,6 +159,8 @@
 	return TRUE
 
 /datum/species/ethereal/proc/on_emag_act(mob/living/carbon/human/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(emageffect)
 		return FALSE
@@ -158,16 +174,22 @@
 
 /// Special handling for getting hit with a light eater
 /datum/species/ethereal/proc/on_light_eater(mob/living/carbon/human/source, datum/light_eater)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	source.emp_act(EMP_LIGHT)
 	return COMPONENT_BLOCK_LIGHT_EATER
 
 /datum/species/ethereal/proc/stop_emp(mob/living/carbon/human/ethereal)
+	procstart = null
+	src.procstart = null
 	disrupted = FALSE
 	refresh_light_color(ethereal)
 	to_chat(ethereal, span_notice("You feel more energized as your shine comes back."))
 
 /datum/species/ethereal/proc/handle_emag(mob/living/carbon/human/ethereal)
+	procstart = null
+	src.procstart = null
 	if(!emageffect)
 		return
 	current_color = GLOB.color_list_ethereal[pick(GLOB.color_list_ethereal)]
@@ -175,17 +197,23 @@
 	addtimer(CALLBACK(src, PROC_REF(handle_emag), ethereal), 0.5 SECONDS)
 
 /datum/species/ethereal/proc/stop_emag(mob/living/carbon/human/ethereal)
+	procstart = null
+	src.procstart = null
 	emageffect = FALSE
 	refresh_light_color(ethereal)
 	ethereal.visible_message(span_danger("[ethereal] stops flickering and goes back to their normal state!"))
 
 /datum/species/ethereal/proc/handle_glow_emote(mob/living/carbon/human/ethereal, power, range, flare = FALSE, duration = 5 SECONDS, flare_time = 0)
+	procstart = null
+	src.procstart = null
 	powermult = power
 	rangemult = range
 	refresh_light_color(ethereal)
 	addtimer(CALLBACK(src, PROC_REF(stop_glow_emote), ethereal, flare, flare_time), duration)
 
 /datum/species/ethereal/proc/stop_glow_emote(mob/living/carbon/human/ethereal, flare, flare_time)
+	procstart = null
+	src.procstart = null
 	if(!flare)
 		powermult = 1
 		rangemult = 1
@@ -204,11 +232,15 @@
 
 
 /datum/species/ethereal/proc/start_flicker(mob/living/carbon/human/ethereal, duration = 6 SECONDS, min = 1, max = 4)
+	procstart = null
+	src.procstart = null
 	flickering = TRUE
 	handle_flicker(ethereal, min, max)
 	addtimer(CALLBACK(src, PROC_REF(stop_flicker), ethereal), duration)
 
 /datum/species/ethereal/proc/handle_flicker(mob/living/carbon/human/ethereal, flickmin = 1, flickmax = 4)
+	procstart = null
+	src.procstart = null
 	if(!flickering)
 		currently_flickered = FALSE
 		refresh_light_color(ethereal)
@@ -221,10 +253,14 @@
 	addtimer(CALLBACK(src, PROC_REF(handle_flicker), ethereal), rand(1, 4))
 
 /datum/species/ethereal/proc/stop_flicker(mob/living/carbon/human/ethereal)
+	procstart = null
+	src.procstart = null
 	flickering = FALSE
 	currently_flickered = FALSE
 
 /datum/species/ethereal/get_features()
+	procstart = null
+	src.procstart = null
 	var/list/features = ..()
 
 	features += "feature_ethcolor"
@@ -232,6 +268,8 @@
 	return features
 
 /datum/species/ethereal/get_scream_sound(mob/living/carbon/human/ethereal)
+	procstart = null
+	src.procstart = null
 	return pick(
 		'sound/mobs/humanoids/ethereal/ethereal_scream_1.ogg',
 		'sound/mobs/humanoids/ethereal/ethereal_scream_2.ogg',
@@ -239,19 +277,27 @@
 	)
 
 /datum/species/ethereal/get_hiss_sound(mob/living/carbon/human/ethereal)
+	procstart = null
+	src.procstart = null
 	return 'sound/mobs/humanoids/ethereal/ethereal_hiss.ogg'
 
 /datum/species/ethereal/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "Ethereals process electricity as their power supply, not food, and are somewhat resistant to it.\
 		They do so via their crystal core, their equivalent of a human heart, which will also encase them in a reviving crystal if they die.\
 		However, their skin is very thin and easy to pierce with brute weaponry."
 
 /datum/species/ethereal/get_species_description()
+	procstart = null
+	src.procstart = null
 	return "Coming from the planet of Sprout, the theocratic ethereals are \
 		separated socially by caste, and espouse a dogma of aiding the weak and \
 		downtrodden."
 
 /datum/species/ethereal/get_species_lore()
+	procstart = null
+	src.procstart = null
 	return list(
 		"Ethereals are a species native to the planet Sprout. \
 		When they were originally discovered, they were at a medieval level of technological progression, \
@@ -259,6 +305,8 @@
 	)
 
 /datum/species/ethereal/create_pref_unique_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 
 	to_add += list(
@@ -322,10 +370,14 @@
 	)
 
 /datum/species/ethereal/lustrous/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "Lustrous are what remains of an Ethereal after freebasing esoteric drugs. \
 		They are pressure immune, virus immune, can see bluespace tears in reality, and have a really weird scream. They remain vulnerable to physical damage."
 
 /datum/species/ethereal/lustrous/get_scream_sound(mob/living/carbon/human/ethereal)
+	procstart = null
+	src.procstart = null
 	return pick(
 		'sound/mobs/humanoids/ethereal/lustrous_scream_1.ogg',
 		'sound/mobs/humanoids/ethereal/lustrous_scream_2.ogg',
@@ -333,6 +385,8 @@
 	)
 
 /datum/species/ethereal/lustrous/on_species_gain(mob/living/carbon/new_lustrous, datum/species/old_species, pref_load, regenerate_icons)
+	procstart = null
+	src.procstart = null
 	..()
 	default_color = new_lustrous.dna.features[FEATURE_ETHEREAL_COLOR]
 	new_lustrous.dna.features[FEATURE_ETHEREAL_COLOR] = GLOB.color_list_lustrous[pick(GLOB.color_list_lustrous)] //Picks one of 5 lustrous-specific colors.

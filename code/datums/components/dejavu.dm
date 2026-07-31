@@ -38,6 +38,8 @@
 	var/list/datum/saved_bodypart/saved_bodyparts
 
 /datum/component/dejavu/Initialize(rewinds = 1, interval = 10 SECONDS, add_component = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -72,11 +74,15 @@
 	addtimer(CALLBACK(src, rewind_type), rewind_interval)
 
 /datum/component/dejavu/Destroy()
+	procstart = null
+	src.procstart = null
 	starting_turf = null
 	saved_bodyparts = null
 	return ..()
 
 /datum/component/dejavu/proc/rewind()
+	procstart = null
+	src.procstart = null
 	to_chat(parent, span_notice(rewind_message))
 
 	//comes after healing so new limbs comically drop to the floor
@@ -95,6 +101,8 @@
 		qdel(src)
 
 /datum/component/dejavu/proc/rewind_living()
+	procstart = null
+	src.procstart = null
 	if (rewinds_remaining == 1 && repeating_component && !iscarbon(parent) && !isanimal_or_basicmob(parent))
 		parent.AddComponent(type, 1, rewind_interval, TRUE)
 
@@ -106,6 +114,8 @@
 	rewind()
 
 /datum/component/dejavu/proc/rewind_carbon()
+	procstart = null
+	src.procstart = null
 	if (rewinds_remaining == 1 && repeating_component)
 		parent.AddComponent(type, 1, rewind_interval, TRUE)
 
@@ -115,6 +125,8 @@
 	rewind_living()
 
 /datum/component/dejavu/proc/rewind_animal()
+	procstart = null
+	src.procstart = null
 	if (rewinds_remaining == 1 && repeating_component)
 		parent.AddComponent(type, 1, rewind_interval, TRUE)
 
@@ -124,6 +136,8 @@
 	rewind_living()
 
 /datum/component/dejavu/proc/rewind_obj()
+	procstart = null
+	src.procstart = null
 	if (rewinds_remaining == 1 && repeating_component)
 		parent.AddComponent(type, 1, rewind_interval, TRUE)
 
@@ -137,6 +151,8 @@
 	no_rewinds_message = "\"Rewind complete. You have arrived at: 10 seconds ago.\""
 
 /datum/component/dejavu/timeline/rewind()
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(parent), 'sound/items/modsuit/rewinder.ogg', 50, TRUE)
 	return ..()
 
@@ -144,5 +160,7 @@
 	rewind_message = "Your temporal ward activated, pulling you through spacetime!"
 
 /datum/component/dejavu/wizard/rewind()
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(parent), 'sound/items/modsuit/rewinder.ogg', 50, TRUE)
 	return ..()

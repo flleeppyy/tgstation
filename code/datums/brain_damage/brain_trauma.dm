@@ -30,6 +30,8 @@
 	var/known_trauma = TRUE
 
 /datum/brain_trauma/Destroy()
+	procstart = null
+	src.procstart = null
 	// Handles our references with our brain
 	brain?.remove_trauma_from_traumas(src)
 	if(owner)
@@ -40,14 +42,20 @@
 
 //Called on life ticks
 /datum/brain_trauma/proc/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	return
 
 //Called on death
 /datum/brain_trauma/proc/on_death()
+	procstart = null
+	src.procstart = null
 	return
 
 //Called when given to a mob
 /datum/brain_trauma/proc/on_gain()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(gain_text)
 		to_chat(owner, gain_text)
@@ -57,6 +65,8 @@
 
 //Called when removed from a mob
 /datum/brain_trauma/proc/on_lose(silent)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(!silent && lose_text)
 		to_chat(owner, lose_text)
@@ -65,12 +75,16 @@
 
 //Called when hearing a spoken message
 /datum/brain_trauma/proc/handle_hearing(datum/source, list/hearing_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(owner, COMSIG_MOVABLE_HEAR)
 
 //Called when speaking
 /datum/brain_trauma/proc/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(owner, COMSIG_MOB_SAY)

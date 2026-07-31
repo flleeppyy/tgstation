@@ -23,10 +23,14 @@
 		TEST_FAIL(failure_message)
 
 /datum/unit_test/security_officer_roundstart_distribution/Run()
+	procstart = null
+	src.procstart = null
 	test_distributions()
 	test_with_mock_players()
 
 /datum/unit_test/security_officer_roundstart_distribution/proc/test_distributions()
+	procstart = null
+	src.procstart = null
 	test(list("a"), list("a"))
 	test(list("a", "b"), list("a", "a"))
 	test(list("a", "b", "c"), list("a", "a", "a"))
@@ -39,6 +43,8 @@
 	test(list(SEC_DEPT_NONE, SEC_DEPT_NONE, SEC_DEPT_NONE, SEC_DEPT_NONE), list("d", "d", "c", "c"))
 
 /datum/unit_test/security_officer_roundstart_distribution/proc/test_with_mock_players()
+	procstart = null
+	src.procstart = null
 	var/mob/dead/new_player/officer_a = create_officer("a")
 	var/mob/dead/new_player/officer_b = create_officer("b")
 	var/mob/dead/new_player/officer_c = create_officer("c")
@@ -55,6 +61,8 @@
 	TEST_ASSERT_EQUAL(outcome[REF(officer_d.new_character)], SECURITY_OFFICER_DEPARTMENTS_TO_NAMES["a"], "Officer D's department outcome was incorrect.")
 
 /datum/unit_test/security_officer_roundstart_distribution/proc/create_officer(preference)
+	procstart = null
+	src.procstart = null
 	var/mob/dead/new_player/new_player = allocate(/mob/dead/new_player)
 	var/datum/client_interface/mock_client = new
 
@@ -99,6 +107,8 @@
 	TEST_ASSERT_EQUAL(result, expected, failure_message)
 
 /datum/unit_test/security_officer_latejoin_distribution/Run()
+	procstart = null
+	src.procstart = null
 	test("a", list(), "a")
 	test("b", list(), "b")
 	test("a", list("b"), "b")

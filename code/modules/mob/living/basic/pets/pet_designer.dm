@@ -66,6 +66,8 @@ GLOBAL_LIST_INIT(pet_options, list(
 	)
 
 /datum/pet_customization/New(client/player_client)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(custom_pet_carriers))
 		custom_pet_carriers = setup_pet_carriers()
@@ -73,6 +75,8 @@ GLOBAL_LIST_INIT(pet_options, list(
 	GLOB.customized_pets[REF(player_client)] = src
 
 /datum/pet_customization/proc/setup_pet_carriers()
+	procstart = null
+	src.procstart = null
 	var/list/list_to_return = list()
 
 	var/obj/item/pet_carrier/demo_carrier = new()
@@ -86,12 +90,16 @@ GLOBAL_LIST_INIT(pet_options, list(
 	return list_to_return
 
 /datum/pet_customization/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PetBuilder")
 		ui.open()
 
 /datum/pet_customization/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["pet_name"] = custom_name
 	data["pet_path"] = selected_path
@@ -119,9 +127,13 @@ GLOBAL_LIST_INIT(pet_options, list(
 	return data
 
 /datum/pet_customization/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 /datum/pet_customization/proc/retrieve_pet_options(pet_specie, list/input_list)
+	procstart = null
+	src.procstart = null
 	var/list/pet_options = list()
 	for(var/mob/living/pet_type as anything in input_list)
 		pet_options += list(list(
@@ -134,6 +146,8 @@ GLOBAL_LIST_INIT(pet_options, list(
 	return pet_options
 
 /datum/pet_customization/ui_act(action, params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(action)
 		if("finalize_pet")
@@ -180,6 +194,8 @@ GLOBAL_LIST_INIT(pet_options, list(
 	return TRUE
 
 /datum/pet_customization/proc/create_pet(mob/living/spawned, client/player_client)
+	procstart = null
+	src.procstart = null
 	var/obj/item/pet_carrier/carrier = new(get_turf(spawned))
 	carrier.open = FALSE
 	carrier.update_appearance()

@@ -15,16 +15,22 @@
 	var/egg_type = /obj/effect/mob_spawn/ghost_role/spider
 
 /datum/action/cooldown/mob_cooldown/lay_eggs/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!owner)
 		return
 	RegisterSignals(owner, list(COMSIG_MOVABLE_MOVED, COMSIG_DO_AFTER_BEGAN, COMSIG_DO_AFTER_ENDED), PROC_REF(update_status_on_signal))
 
 /datum/action/cooldown/mob_cooldown/lay_eggs/Remove(mob/removed_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(removed_from, list(COMSIG_MOVABLE_MOVED, COMSIG_DO_AFTER_BEGAN, COMSIG_DO_AFTER_ENDED))
 
 /datum/action/cooldown/mob_cooldown/lay_eggs/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -40,6 +46,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/lay_eggs/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	owner.balloon_alert_to_viewers("laying eggs...")
 	StartCooldown(360 SECONDS, 360 SECONDS)
 	if(!do_after(owner, egg_lay_time, target = get_turf(owner), interaction_key = DOAFTER_SOURCE_SPIDER))
@@ -54,6 +62,8 @@
 	StartCooldown()
 
 /datum/action/cooldown/mob_cooldown/lay_eggs/proc/lay_egg()
+	procstart = null
+	src.procstart = null
 	var/obj/effect/mob_spawn/ghost_role/spider/new_eggs = new egg_type(get_turf(owner))
 	SET_FACTION_AND_ALLIES_FROM(new_eggs, owner)
 	var/datum/action/cooldown/mob_cooldown/set_spider_directive/spider_directive = locate() in owner.actions
@@ -77,6 +87,8 @@
 	var/charges = 0
 
 /datum/action/cooldown/mob_cooldown/lay_eggs/enriched/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -87,5 +99,7 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/lay_eggs/enriched/lay_egg()
+	procstart = null
+	src.procstart = null
 	charges--
 	return ..()

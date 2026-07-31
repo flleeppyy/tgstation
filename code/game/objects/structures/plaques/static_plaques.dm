@@ -4,15 +4,21 @@
 	engraved = TRUE
 
 /obj/structure/plaque/static_plaque/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isopenturf(loc) && !isProbablyWallMounted(src))
 		SET_PLANE_IMPLICIT(src, FLOOR_PLANE)
 		layer = HIGH_TURF_LAYER
 
 /obj/structure/plaque/static_plaque/get_mountable_objects()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /obj/structure/plaque/static_plaque/find_and_mount_on_atom(mark_for_late_init, late_init)
+	procstart = null
+	src.procstart = null
 	if(isProbablyWallMounted(src))
 		return ..()
 

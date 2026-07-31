@@ -19,9 +19,13 @@
 	return ..()
 
 /mob/living/brain/can_speak(allow_mimes)
+	procstart = null
+	src.procstart = null
 	return istype(container, /obj/item/mmi) && ..()
 
 /mob/living/brain/radio(message, list/message_mods = list(), list/spans, language)
+	procstart = null
+	src.procstart = null
 	if(message_mods[MODE_HEADSET] && istype(container, /obj/item/mmi))
 		var/obj/item/mmi/R = container
 		if(R.radio)
@@ -31,6 +35,8 @@
 		return ..()
 
 /mob/living/brain/treat_message(message, tts_message, tts_filter, capitalize_message = TRUE)
+	procstart = null
+	src.procstart = null
 	if(capitalize_message)
 		message = capitalize(message)
 	return list(message = message, tts_message = message, tts_filter = list())

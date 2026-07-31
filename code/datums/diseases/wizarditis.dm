@@ -29,6 +29,8 @@
 	var/robe_type
 
 /datum/disease/wizarditis/after_add()
+	procstart = null
+	src.procstart = null
 	switch(pick("blue", "red", "yellow"))
 		if("blue")
 			hat_type = /obj/item/clothing/head/wizard
@@ -43,11 +45,15 @@
 	init_spells()
 
 /datum/disease/wizarditis/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(random_spells)
 	QDEL_LIST(random_targeted_spells)
 	return ..()
 
 /datum/disease/wizarditis/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -103,6 +109,8 @@
 				return
 
 /datum/disease/wizarditis/proc/spawn_wizard_clothes(chance = 0)
+	procstart = null
+	src.procstart = null
 	if(prob(chance) && affected_mob.usable_hands >= 1)
 		var/obj/item/staff/funny_staff = new(affected_mob)
 		if(!affected_mob.put_in_hands(funny_staff))
@@ -126,6 +134,8 @@
 			human_mob.equip_to_slot_or_del(new /obj/item/clothing/shoes/sandal/magic(human_mob), ITEM_SLOT_FEET)
 
 /datum/disease/wizarditis/proc/init_spells()
+	procstart = null
+	src.procstart = null
 	// Some self cast spells
 	var/datum/action/cooldown/spell/teleport/area_teleport/wizard/sneeze_teleport = new(src)
 	sneeze_teleport.randomise_selection = TRUE

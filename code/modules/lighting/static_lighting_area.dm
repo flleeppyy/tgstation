@@ -12,6 +12,8 @@ GLOBAL_LIST_INIT_TYPED(starlight_objects, /obj, list(starlight_object(0)))
 	screen_loc = "1,1"
 
 /proc/starlight_object(offset)
+	procstart = null
+	src.procstart = null
 	var/obj/starlight_appearance/glow = new()
 	SET_PLANE_W_SCALAR(glow, LIGHTING_PLANE, offset)
 	glow.layer = LIGHTING_PRIMARY_LAYER
@@ -27,6 +29,8 @@ GLOBAL_LIST_INIT_TYPED(starlight_objects, /obj, list(starlight_object(0)))
 GLOBAL_LIST_INIT_TYPED(starlight_overlays, /obj, list(starlight_overlay(0)))
 
 /proc/starlight_overlay(offset)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/glow = new /mutable_appearance()
 	SET_PLANE_W_SCALAR(glow, LIGHTING_PLANE, offset)
 	glow.layer = LIGHTING_PRIMARY_LAYER
@@ -44,6 +48,8 @@ GLOBAL_LIST_INIT_TYPED(starlight_overlays, /obj, list(starlight_overlay(0)))
 
 ///regenerates lighting objects for turfs in this area, primary use is VV changes
 /area/proc/create_area_lighting_objects()
+	procstart = null
+	src.procstart = null
 	for(var/turf/T in src)
 		if(T.space_lit)
 			continue
@@ -52,6 +58,8 @@ GLOBAL_LIST_INIT_TYPED(starlight_overlays, /obj, list(starlight_overlay(0)))
 
 ///Removes lighting objects from turfs in this area if we have them, primary use is VV changes
 /area/proc/remove_area_lighting_objects()
+	procstart = null
+	src.procstart = null
 	for(var/turf/T in src)
 		if(T.space_lit)
 			continue

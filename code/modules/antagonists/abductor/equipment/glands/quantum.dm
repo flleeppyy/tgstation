@@ -9,6 +9,8 @@
 	var/mob/living/carbon/entangled_mob
 
 /obj/item/organ/heart/gland/quantum/activate()
+	procstart = null
+	src.procstart = null
 	if(entangled_mob)
 		return
 	for(var/mob/M in oview(owner, 7))
@@ -19,6 +21,8 @@
 		return
 
 /obj/item/organ/heart/gland/quantum/proc/quantum_swap()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(entangled_mob))
 		entangled_mob = null
 		return
@@ -31,6 +35,8 @@
 		entangled_mob = null
 
 /obj/item/organ/heart/gland/quantum/mind_control(command, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(entangled_mob && ishuman(entangled_mob) && (entangled_mob.stat != DEAD))
 			to_chat(entangled_mob, span_userdanger("You suddenly feel an irresistible compulsion to follow an order..."))
@@ -42,6 +48,8 @@
 			update_gland_hud()
 
 /obj/item/organ/heart/gland/quantum/clear_mind_control()
+	procstart = null
+	src.procstart = null
 	if(active_mind_control)
 		to_chat(entangled_mob, span_userdanger("You feel the compulsion fade, and you completely forget about your previous orders."))
 		entangled_mob.clear_alert(ALERT_MIND_CONTROL)

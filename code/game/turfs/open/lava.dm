@@ -48,6 +48,8 @@
 	var/list/checked_atoms = null
 
 /turf/open/lava/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(fish_source_type)
 		add_lazy_fishing(fish_source_type)
@@ -60,6 +62,8 @@
 	RegisterSignal(src, SIGNAL_REMOVETRAIT(TRAIT_LAVA_STOPPED), PROC_REF(drop_contents_into_lava))
 
 /turf/open/lava/Destroy()
+	procstart = null
+	src.procstart = null
 	checked_atoms = null
 	UnregisterSignal(src, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON)
 	for(var/mob/living/leaving_mob in contents)
@@ -69,6 +73,8 @@
 
 ///We lazily add the immerse element when something is spawned or crosses this turf and not before.
 /turf/open/lava/proc/on_atom_inited(datum/source, atom/movable/movable)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(burn_stuff(movable))
 		START_PROCESSING(SSobj, src)
@@ -83,6 +89,8 @@
  * before we add the immerse element.
  */
 /turf/open/lava/Entered(atom/movable/arrived)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!immerse_added && !is_type_in_typecache(arrived, GLOB.immerse_ignored_movable))
 		AddElement(/datum/element/immerse, "immerse", 215)
@@ -91,6 +99,8 @@
 		START_PROCESSING(SSobj, src)
 
 /turf/open/lava/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance(mask_icon, mask_state, src)
 	// We need a light overlay here because not every lava turf casts light, only the edge ones
@@ -108,6 +118,8 @@
 
 /// Refreshes this lava turf's lighting
 /turf/open/lava/proc/refresh_light()
+	procstart = null
+	src.procstart = null
 	var/border_turf = FALSE
 	var/list/turfs_to_check = RANGE_TURFS(1, src)
 	if(GET_LOWEST_STACK_OFFSET(z))
@@ -130,6 +142,8 @@
 	set_light(l_on = TRUE)
 
 /turf/open/lava/ChangeTurf(path, list/new_baseturfs, flags)
+	procstart = null
+	src.procstart = null
 	var/turf/result = ..()
 
 	if(result && !islava(result))
@@ -148,64 +162,96 @@
 	return result
 
 /turf/open/lava/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(fish_source)
 		GLOB.preset_fish_sources[fish_source].spawn_reward_from_explosion(src, severity)
 	return FALSE
 
 /turf/open/lava/MakeSlippery(wet_setting, min_wet_time, wet_time_to_add, max_wet_time, permanent)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/lava/Melt()
+	procstart = null
+	src.procstart = null
 	to_be_destroyed = FALSE
 	return src
 
 /turf/open/lava/acid_act(acidpwr, acid_volume)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/open/lava/MakeDry(wet_setting = TURF_WET_WATER)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/lava/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(gone) && !islava(gone.loc))
 		gone.RemoveElement(/datum/element/perma_fire_overlay)
 		REMOVE_TRAIT(gone, TRAIT_NO_EXTINGUISH, TURF_TRAIT)
 
 /turf/open/lava/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(burn_stuff(AM))
 		START_PROCESSING(SSobj, src)
 
 /turf/open/lava/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!burn_stuff(null, seconds_per_tick))
 		checked_atoms = null
 		return PROCESS_KILL
 
 /turf/open/lava/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	if(the_rcd.mode == RCD_TURF && the_rcd.rcd_design_path == /turf/open/floor/plating/rcd)
 		return list("delay" = 0, "cost" = 3)
 	return FALSE
 
 /turf/open/lava/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	procstart = null
+	src.procstart = null
 	if(rcd_data[RCD_DESIGN_MODE] == RCD_TURF && rcd_data[RCD_DESIGN_PATH] == /turf/open/floor/plating/rcd)
 		place_on_top(/turf/open/floor/plating, flags = CHANGETURF_INHERIT_AIR)
 		return TRUE
 	return FALSE
 
 /turf/open/lava/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/lava/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/lava/GetHeatCapacity()
+	procstart = null
+	src.procstart = null
 	. = 700000
 
 /turf/open/lava/GetTemperature()
+	procstart = null
+	src.procstart = null
 	. = lava_temperature
 
 /turf/open/lava/TakeTemperature(temp)
+	procstart = null
+	src.procstart = null
 
 /turf/open/lava/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ITEM_INTERACT_ANY_BLOCKER & .)
 		return .
@@ -242,6 +288,8 @@
 		return ITEM_INTERACT_SUCCESS
 
 /turf/open/lava/proc/is_safe()
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(src, TRAIT_LAVA_STOPPED)
 
 ///Generic return value of the can_burn_stuff() proc. Does nothing.
@@ -253,6 +301,8 @@
 
 ///Proc that sets on fire something or everything on the turf that's not immune to lava. Returns TRUE to make the turf start processing.
 /turf/open/lava/proc/burn_stuff(atom/movable/to_burn, seconds_per_tick = 1)
+	procstart = null
+	src.procstart = null
 	if(is_safe())
 		return FALSE
 
@@ -271,6 +321,8 @@
 
 /// Wrapper for can_burn_stuff that checks if something can be burnt and caches the result
 /turf/open/lava/proc/cache_burn_check(atom/movable/burn_target)
+	procstart = null
+	src.procstart = null
 	var/check_result = checked_atoms[burn_target.weak_reference]
 	if(isnull(check_result))
 		check_result = can_burn_stuff(burn_target)
@@ -278,6 +330,8 @@
 	return check_result
 
 /turf/open/lava/proc/can_burn_stuff(atom/movable/burn_target)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(burn_target))
 		return LAVA_BE_IGNORING
 	if((burn_target.movement_type & MOVETYPES_NOT_TOUCHING_GROUND) || burn_target.throwing || !burn_target.has_gravity()) //you're flying over it.
@@ -318,6 +372,8 @@
 #undef LAVA_BE_BURNING
 
 /turf/open/lava/proc/do_burn(atom/movable/burn_target, seconds_per_tick = 1)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(burn_target))
 		return FALSE
 
@@ -353,6 +409,8 @@
  * Called when a lava stopper (Catwalks/boulder platforms) is removed and it's contents need to be subjected to the lava underneath.
  */
 /turf/open/lava/proc/drop_contents_into_lava()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	balloon_alert_to_hearers("[pick("splash","pshhhh","hiss","blorble")]!")
 	playsound(src, 'sound/items/match_strike.ogg', 15, TRUE)
@@ -361,6 +419,8 @@
 	return TRUE
 
 /turf/open/lava/can_cross_safely(atom/movable/crossing)
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(src, TRAIT_LAVA_STOPPED) || HAS_TRAIT(crossing, immunity_trait ) || HAS_TRAIT(crossing, TRAIT_MOVE_FLYING)
 
 /turf/open/lava/airless
@@ -386,6 +446,8 @@
 	var/shale_junction = NONE
 
 /turf/open/lava/smooth/bitmask_smooth()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	basalt_junction = ALL_SMOOTHING_JUNCTIONS
 	siderite_junction = ALL_SMOOTHING_JUNCTIONS
@@ -415,11 +477,15 @@
 				shale_junction &= ~junction
 
 /turf/open/lava/smooth/smooth_icon()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	mask_state = "lava-[smoothing_junction & (basalt_junction & siderite_junction & shale_junction)]"
 	update_appearance(~UPDATE_SMOOTHING)
 
 /turf/open/lava/smooth/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (basalt_junction != ALL_SMOOTHING_JUNCTIONS)
 		. += mutable_appearance('icons/turf/floors/basalt_outline.dmi', "basalt_outline-[basalt_junction]")
@@ -430,6 +496,8 @@
 
 /// Smooth lava needs to take after basalt in order to blend better.
 /turf/open/lava/smooth/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	underlay_appearance.icon = /turf/open/misc/asteroid/basalt::icon
 	underlay_appearance.icon_state = /turf/open/misc/asteroid/basalt::icon_state
 	return TRUE
@@ -458,10 +526,14 @@
 	lava_temperature = 100
 
 /turf/open/lava/plasma/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/reagent_scoopable_atom, /datum/reagent/toxin/plasma)
 
 /turf/open/lava/plasma/do_burn(atom/movable/burn_target, seconds_per_tick = 1)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	if(!isliving(burn_target))
 		return FALSE

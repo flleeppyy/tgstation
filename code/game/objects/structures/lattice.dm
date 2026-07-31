@@ -19,6 +19,8 @@
 	var/list/give_turf_traits = list(TRAIT_CHASM_STOPPED, TRAIT_HYPERSPACE_STOPPED, TRAIT_TURF_IGNORE_SLOWDOWN, TRAIT_IMMERSE_STOPPED)
 
 /obj/structure/lattice/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (length(give_turf_traits))
 		give_turf_traits = string_list(give_turf_traits)
@@ -38,10 +40,14 @@
 	acid = 50
 
 /obj/structure/lattice/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += deconstruction_hints(user)
 
-/obj/structure/lattice/Destroy(force) // so items on the lattice fall when the lattice is destroyed
+/obj/structure/lattice/Destroy(force)
+	procstart = null
+	src.procstart = null // so items on the lattice fall when the lattice is destroyed
 	var/turf/turfloc = loc
 	. = ..()
 	if(isturf(turfloc))
@@ -53,9 +59,13 @@
 		set_turf_to_area(turfloc, GLOB.areas_by_type[/area/space])
 
 /obj/structure/lattice/proc/deconstruction_hints(mob/user)
+	procstart = null
+	src.procstart = null
 	return span_notice("The rods look like they could be <b>cut</b>. There's space for more <i>rods</i> or a <i>tile</i>.")
 
 /obj/structure/lattice/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/structure/lattice/LAT in loc)
 		if(LAT == src)
@@ -64,13 +74,19 @@
 		return INITIALIZE_HINT_QDEL
 
 /obj/structure/lattice/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/lattice/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/turf/underneath = get_turf(src)
 	return underneath.item_interaction(user, tool) //hand this off to the turf instead (for building plating, catwalks, etc)
 
 /obj/structure/lattice/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(resistance_flags & INDESTRUCTIBLE)
 		return NONE
 	to_chat(user, span_notice("Slicing [name] joints ..."))
@@ -78,15 +94,21 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/lattice/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!isnull(build_material) && number_of_mats >= 1)
 		new build_material(get_turf(src), number_of_mats)
 
 /obj/structure/lattice/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	if(the_rcd.mode == RCD_TURF)
 		return list("delay" = 0, "cost" = the_rcd.rcd_design_path == /obj/structure/lattice/catwalk ? 2 : 1)
 	return FALSE
 
 /obj/structure/lattice/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	procstart = null
+	src.procstart = null
 	if(rcd_data[RCD_DESIGN_MODE] == RCD_TURF)
 		var/design_structure = rcd_data[RCD_DESIGN_PATH]
 		if(design_structure == /turf/open/floor/plating/rcd)
@@ -101,10 +123,14 @@
 	return FALSE
 
 /obj/structure/lattice/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	if(current_size >= STAGE_FOUR)
 		deconstruct()
 
 /obj/structure/lattice/proc/replace_with_catwalk()
+	procstart = null
+	src.procstart = null
 	var/list/post_replacement_callbacks = list()
 	SEND_SIGNAL(src, COMSIG_LATTICE_PRE_REPLACE_WITH_CATWALK, post_replacement_callbacks)
 	var/turf/turf = loc
@@ -127,26 +153,36 @@
 	give_turf_traits = list(TRAIT_TURF_IGNORE_SLOWDOWN, TRAIT_LAVA_STOPPED, TRAIT_CHASM_STOPPED, TRAIT_IMMERSE_STOPPED, TRAIT_HYPERSPACE_STOPPED)
 
 /obj/structure/lattice/catwalk/deconstruction_hints(mob/user)
+	procstart = null
+	src.procstart = null
 	return span_notice("The supporting rods look like they could be <b>cut</b>.")
 
 /obj/structure/lattice/catwalk/Move()
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 	for(var/obj/structure/cable/C in T)
 		C.deconstruct()
 	..()
 
 /obj/structure/lattice/catwalk/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	..()
 	var/turf/T = loc
 	for(var/obj/structure/cable/C in T)
 		C.deconstruct()
 
 /obj/structure/lattice/catwalk/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	if(the_rcd.mode == RCD_DECONSTRUCT)
 		return list("mode" = RCD_DECONSTRUCT, "delay" = 1 SECONDS, "cost" = 5)
 	return FALSE
 
 /obj/structure/lattice/catwalk/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, passed_mode)
+	procstart = null
+	src.procstart = null
 	if(passed_mode == RCD_DECONSTRUCT)
 		var/turf/turf = loc
 		for(var/obj/structure/cable/cable_coil in turf)
@@ -160,6 +196,8 @@
 	resistance_flags = INDESTRUCTIBLE
 
 /obj/structure/lattice/catwalk/mining/deconstruction_hints(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/lattice/catwalk/lava
@@ -173,9 +211,13 @@
 	resistance_flags = FIRE_PROOF | LAVA_PROOF
 
 /obj/structure/lattice/catwalk/lava/deconstruction_hints(mob/user)
+	procstart = null
+	src.procstart = null
 	return span_notice("The rods look like they could be <b>cut</b>, but the <i>heat treatment will shatter off</i>. There's space for a <i>tile</i>.")
 
 /obj/structure/lattice/catwalk/lava/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!ismetaltile(tool))
 		return ..()
 	var/obj/item/stack/tile/iron/attacking_tiles = tool
@@ -205,23 +247,31 @@
 	var/warning_particle = /particles/smoke/ash
 
 /obj/structure/lattice/catwalk/boulder/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	fast_emissive_blocker(src)
 	AddElement(/datum/element/elevation, pixel_shift = 8)
 
 /obj/structure/lattice/catwalk/boulder/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(ismetaltile(tool))
 		balloon_alert(user, "too unstable!")
 		return ITEM_INTERACT_BLOCKING
 	return ..()
 
 /obj/structure/lattice/catwalk/boulder/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	if(istype(mover, /obj/structure/ore_box))
 		self_destruct()
 		return TRUE
 	. = ..()
 
 /obj/structure/lattice/catwalk/boulder/proc/pre_self_destruct()
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/cracks_overlay = mutable_appearance('icons/obj/ore.dmi', istype(loc, /turf/open/lava/plasma) ? "plasma_cracks" : "lava_cracks", src)
 	cracks_overlay.blend_mode = BLEND_INSET_OVERLAY
 	add_overlay(cracks_overlay)
@@ -232,6 +282,8 @@
  * Handles platforms deleting themselves with a visual effect and message.
  */
 /obj/structure/lattice/catwalk/boulder/proc/self_destruct()
+	procstart = null
+	src.procstart = null
 	visible_message(span_notice("\The [src] sinks and dissapears!"))
 	playsound(src, 'sound/effects/gas_hissing.ogg', 20)
 	remove_shared_particles(warning_particle)

@@ -28,9 +28,13 @@
 	circuit_flags = CIRCUIT_FLAG_INPUT_SIGNAL
 
 /obj/item/circuit_component/list_pick/proc/make_list_port()
+	procstart = null
+	src.procstart = null
 	input_list = add_input_port("List", PORT_TYPE_LIST(PORT_TYPE_STRING))
 
 /obj/item/circuit_component/list_pick/populate_ports()
+	procstart = null
+	src.procstart = null
 	input_name = add_input_port("Input Name", PORT_TYPE_STRING)
 	user = add_input_port("User", PORT_TYPE_USER)
 	make_list_port()
@@ -40,6 +44,8 @@
 	success = add_output_port("On Success", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/list_pick/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	var/mob/mob_user = user.value
 	if(!ismob(mob_user) || HAS_TRAIT_FROM(parent, TRAIT_CIRCUIT_UI_OPEN, REF(mob_user)))
 		failure.set_output(COMPONENT_SIGNAL)
@@ -48,6 +54,8 @@
 
 /// Show a list of options to the user using standed TGUI input list
 /obj/item/circuit_component/list_pick/proc/show_list(mob/user, message, list/showed_list)
+	procstart = null
+	src.procstart = null
 	if(!showed_list || showed_list.len == 0)
 		failure.set_output(COMPONENT_SIGNAL)
 		return
@@ -68,6 +76,8 @@
 	choose_item(picked, showed_list)
 
 /obj/item/circuit_component/list_pick/proc/choose_item(choice, list/choice_list)
+	procstart = null
+	src.procstart = null
 	if(choice)
 		output.set_output(choice)
 		success.set_output(COMPONENT_SIGNAL)

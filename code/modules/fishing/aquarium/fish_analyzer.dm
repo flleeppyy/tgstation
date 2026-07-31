@@ -26,6 +26,8 @@
 	var/atom/scanned_object
 
 /obj/item/fish_analyzer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	case_color = rgb(rand(16, 255), rand(16, 255), rand(16, 255))
 	set_greyscale(colors = list(case_color))
 	. = ..()
@@ -45,18 +47,26 @@
 	AddElement(/datum/element/adjust_fishing_difficulty, -3, ITEM_SLOT_HANDS)
 
 /obj/item/fish_analyzer/Destroy()
+	procstart = null
+	src.procstart = null
 	scanned_object = null
 	return ..()
 
 /obj/item/fish_analyzer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("<b>Alt-Click</b> to access the Experiment Configuration UI")
 
 /obj/item/fish_analyzer/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = base_icon_state
 
 /obj/item/fish_analyzer/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/case = mutable_appearance(icon, "fish_analyzer_case")
 	case.color = case_color
@@ -64,6 +74,8 @@
 	. += emissive_appearance(icon, "fish_analyzer_emissive", src)
 
 /obj/item/fish_analyzer/interact_with_atom(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isfish(target) && !HAS_TRAIT(target, TRAIT_IS_AQUARIUM))
 		return NONE
 	if(!user.can_read(src) || user.is_blind())
@@ -77,20 +89,28 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/fish_analyzer/proc/register_scanned(atom/target)
+	procstart = null
+	src.procstart = null
 	scanned_object = target
 	RegisterSignal(target, COMSIG_QDELETING, PROC_REF(on_target_deleted))
 
 /obj/item/fish_analyzer/proc/unregister_scanned()
+	procstart = null
+	src.procstart = null
 	if(!scanned_object)
 		return
 	UnregisterSignal(scanned_object, COMSIG_QDELETING)
 	scanned_object = null
 
 /obj/item/fish_analyzer/proc/on_target_deleted()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	unregister_scanned()
 
 /obj/item/fish_analyzer/ui_interact(mob/living/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(isnull(scanned_object))
 		balloon_alert(user, "no specimen data!")
 		return TRUE
@@ -105,6 +125,8 @@
 		ui.open()
 
 /obj/item/fish_analyzer/ui_status(mob/living/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(!istype(user)) //observers shouldn't disrupt things.
 		return ..()
 	if(!scanned_object || !(scanned_object in (view(7, get_turf(src)) | user.get_equipped_items(INCLUDE_HELD))))
@@ -114,6 +136,8 @@
 	return ..()
 
 /obj/item/fish_analyzer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["fish_list"] = list()
 	data["fish_scanned"] = FALSE
@@ -128,6 +152,8 @@
 	return data
 
 /obj/item/fish_analyzer/proc/extract_fish_info(list/data, obj/item/fish/fishie)
+	procstart = null
+	src.procstart = null
 	var/list/fish_traits = list()
 	var/list/fish_evolutions = list()
 

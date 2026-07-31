@@ -4,6 +4,8 @@
 	var/hand_hits = 0
 
 /datum/unit_test/hulk_attack/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/hulk = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 
@@ -20,10 +22,14 @@
 	TEST_ASSERT(dummy.get_brute_loss(), "Dummy should have taken brute damage from being hulk punched.")
 
 /datum/unit_test/hulk_attack/proc/hulk_sig_fire()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	hulk_hits += 1
 
 /datum/unit_test/hulk_attack/proc/hand_sig_fire()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	hand_hits += 1
 
@@ -31,6 +37,8 @@
 /datum/unit_test/hulk_north_star
 
 /datum/unit_test/hulk_north_star/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/hulk = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/clothing/gloves/rapid/fotns = allocate(/obj/item/clothing/gloves/rapid)

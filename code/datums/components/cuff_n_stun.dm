@@ -30,6 +30,8 @@
 	post_stun_callback,
 	post_arrest_callback,
 	)
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -44,15 +46,21 @@
 
 
 /datum/component/stun_n_cuff/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(on_unarmed_attack))
 
 /datum/component/stun_n_cuff/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_HOSTILE_PRE_ATTACKINGTARGET)
 	REMOVE_TRAIT(parent, TRAIT_MOB_BREEDER, REF(src))
 	post_stun_callback = null
 	post_arrest_callback = null
 
 /datum/component/stun_n_cuff/proc/on_unarmed_attack(mob/living/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(target == source || !iscarbon(target))
@@ -70,6 +78,8 @@
 	return COMPONENT_HOSTILE_NO_ATTACK
 
 /datum/component/stun_n_cuff/proc/cuff_target(mob/living/carbon/human_target)
+	procstart = null
+	src.procstart = null
 	if(human_target.handcuffed)
 		var/mob/living/living_parent = parent
 		living_parent.balloon_alert(human_target, "already cuffed!")
@@ -85,6 +95,8 @@
 	post_arrest_callback?.Invoke(human_target)
 
 /datum/component/stun_n_cuff/proc/stun_target(mob/living/carbon/human_target)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, stun_cooldown))
 		return
 	playsound(parent, stun_sound, 50, TRUE)

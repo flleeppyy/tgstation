@@ -5,6 +5,8 @@
 	var/range = 7
 
 /datum/bt_node/decorator/no_humans_watching/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/human/watcher in hearers(range, controller.pawn))
 		if(watcher.stat != DEAD)
 			return FALSE

@@ -33,6 +33,8 @@
 
 
 /obj/machinery/netpod/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	disconnect_damage = BASE_DISCONNECT_DAMAGE
@@ -47,12 +49,16 @@
 
 
 /obj/machinery/netpod/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	QDEL_LIST(cached_outfits)
 
 
 /obj/machinery/netpod/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isnull(held_item))
@@ -74,6 +80,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/netpod/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	. += span_notice("Its maintenance panel can be [EXAMINE_HINT("screwed")] [panel_open ? "close" : "open"].")
@@ -110,6 +118,8 @@
 
 
 /obj/machinery/netpod/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!is_operational)
 		icon_state = base_icon_state
 		return ..()
@@ -130,6 +140,8 @@
 
 
 /obj/machinery/netpod/mouse_drop_receive(mob/target, mob/user, params)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/player = user
 
 	if(!iscarbon(player) || !is_operational || !state_open || player.buckled)
@@ -139,12 +151,16 @@
 
 
 /obj/machinery/netpod/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!state_open && user == occupant)
 		container_resist_act(user)
 
 
 /obj/machinery/netpod/attack_ghost(mob/dead/observer/our_observer)
+	procstart = null
+	src.procstart = null
 	var/our_target = avatar_ref?.resolve()
 	if(isnull(our_target) || !our_observer.orbit(our_target))
 		return ..()
@@ -152,11 +168,15 @@
 
 /// When the server is upgraded, drops brain damage a little
 /obj/machinery/netpod/proc/on_server_upgraded(obj/machinery/quantum_server/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	disconnect_damage = BASE_DISCONNECT_DAMAGE * (1 - source.servo_bonus)
 
 /obj/machinery/netpod/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(world.time < scanning_can_toggle)
 		return CLICK_ACTION_BLOCKING
 	copy_body = !copy_body

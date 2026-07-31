@@ -29,11 +29,15 @@
 	var/target_key = BB_CURRENT_TARGET
 
 /mob/living/basic/illusion/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(on_preattack))
 	RegisterSignal(src, COMSIG_MOB_AFTER_APPLY_DAMAGE, PROC_REF(on_damage_taken))
 
 /mob/living/basic/illusion/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/parent_mob = parent_mob_ref?.resolve()
 	if(parent_mob)
 		return parent_mob.examine(user)
@@ -41,16 +45,22 @@
 
 /// Signal handler for when we attack something. Hook for replicating on standard behavior, with additional behavior on subtypes.
 /mob/living/basic/illusion/proc/on_preattack(mob/living/source, atom/attacked_target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	try_replicate()
 
 /// Signal handler for when we are attacked.
 /mob/living/basic/illusion/proc/on_damage_taken(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	try_replicate()
 
 /// Full setup for illusion mobs to lessen code duplication in the individual files.
 /mob/living/basic/illusion/proc/full_setup(mob/living/original, mob/living/target_mob = null, list/faction_override = null, life = 5 SECONDS, hp = 100, damage = 0, replicate = 0)
+	procstart = null
+	src.procstart = null
 	mock_as(original, life, hp, damage, replicate)
 	SET_FACTION_AND_ALLIES_FROM(src, original)
 	if(faction_override)
@@ -59,12 +69,16 @@
 
 /// Gives the illusion a target to focus on in whatever behavior it wants to engage as.
 /mob/living/basic/illusion/proc/set_target(mob/living/target_mob)
+	procstart = null
+	src.procstart = null
 	if(target_mob == null)
 		return
 	ai_controller.set_blackboard_key(target_key, target_mob)
 
 /// Does the actual work of setting up the illusion's appearance and some other functionality.
 /mob/living/basic/illusion/proc/mock_as(mob/living/original, life, hp, damage, replicate)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(original))
 		return
 
@@ -92,11 +106,15 @@
 
 /// See if we are able to replicate, and if so, do it.
 /mob/living/basic/illusion/proc/try_replicate()
+	procstart = null
+	src.procstart = null
 	if(prob(multiply_chance))
 		replicate()
 
 /// Actually perform the replication of this illusion.
 /mob/living/basic/illusion/proc/replicate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/parent_mob = parent_mob_ref.resolve()
 	if(QDELETED(parent_mob))
 		return

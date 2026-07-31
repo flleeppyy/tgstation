@@ -14,6 +14,8 @@
 	var/list/datum/weakref/active_servers = list()
 
 /datum/round_event_control/bitrunning_glitch/can_spawn_event(players_amt, allow_magic = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -27,6 +29,8 @@
 
 /// All servers currently running, has players in it, and map has valid mobs
 /datum/round_event_control/bitrunning_glitch/proc/validate_servers()
+	procstart = null
+	src.procstart = null
 	active_servers.Cut()
 	for(var/obj/machinery/quantum_server/server in SSmachines.get_machines_by_type(/obj/machinery/quantum_server))
 		if(server.validate_mutation_candidates() && server.generated_domain.difficulty != BITRUNNER_DIFFICULTY_NONE)
@@ -38,12 +42,16 @@
 	input_text = "Select a role to spawn."
 
 /datum/event_admin_setup/listed_options/bitrunning_glitch/get_list()
+	procstart = null
+	src.procstart = null
 	var/list/available = list("Random")
 	available += subtypesof(/datum/antagonist/bitrunning_glitch)
 
 	return available
 
 /datum/event_admin_setup/listed_options/bitrunning_glitch/apply_to_event(datum/round_event/ghost_role/bitrunning_glitch/event)
+	procstart = null
+	src.procstart = null
 	if(chosen == "Random")
 		event.forced_role = null
 	else
@@ -53,6 +61,8 @@
 	output_text = "There must be valid mobs to mutate!"
 
 /datum/event_admin_setup/minimum_candidate_requirement/bitrunning_glitch/count_candidates()
+	procstart = null
+	src.procstart = null
 	var/datum/round_event_control/bitrunning_glitch/cyber_control = event_control
 
 	cyber_control.validate_servers()
@@ -75,6 +85,8 @@
 	var/forced_role
 
 /datum/round_event/ghost_role/bitrunning_glitch/spawn_role()
+	procstart = null
+	src.procstart = null
 	var/datum/round_event_control/bitrunning_glitch/cyber_control = control
 	if(!length(cyber_control.active_servers))
 		return WAITING_FOR_SOMETHING

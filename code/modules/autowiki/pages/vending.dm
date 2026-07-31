@@ -2,6 +2,8 @@
 	page = "Template:Autowiki/Content/VendingMachines"
 
 /datum/autowiki/vending/generate()
+	procstart = null
+	src.procstart = null
 	var/output = ""
 
 	var/list/cached_products = list()
@@ -48,6 +50,8 @@
 	return output
 
 /datum/autowiki/vending/proc/format_product_list(list/product_list)
+	procstart = null
+	src.procstart = null
 	var/output = ""
 
 	for (var/obj/product_path as anything in product_list)

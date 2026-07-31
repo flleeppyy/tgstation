@@ -1,5 +1,7 @@
 /// Produces a mutable appearance glued to the [EMISSIVE_PLANE] dyed to be the [EMISSIVE_COLOR].
 /proc/emissive_appearance(icon, icon_state = "", atom/offset_spokesman, layer, alpha = 255, appearance_flags = NONE, offset_const, effect_type = EMISSIVE_BLOOM)
+	procstart = null
+	src.procstart = null
 	if((isnull(layer) || layer == FLOAT_LAYER) && IS_TOPDOWN_PLANE(offset_spokesman.plane))
 		layer = TOPDOWN_TO_EMISSIVE_LAYER(offset_spokesman.layer)
 	else if(isnull(layer))
@@ -34,6 +36,8 @@
 // This is a semi hot proc, so we micro it. saves maybe 150ms
 // sorry :)
 /proc/fast_emissive_blocker(atom/make_blocker)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/blocker = new()
 	blocker.icon = make_blocker.icon
 	blocker.icon_state = make_blocker.icon_state
@@ -57,6 +61,8 @@
 
 /// Produces a mutable appearance glued to the [EMISSIVE_PLANE] dyed to be the [EM_BLOCK_COLOR].
 /proc/emissive_blocker(icon, icon_state = "", atom/offset_spokesman, layer, alpha = 255, appearance_flags = NONE, offset_const)
+	procstart = null
+	src.procstart = null
 	if (isnull(layer))
 		if(IS_TOPDOWN_PLANE(offset_spokesman.plane))
 			layer = TOPDOWN_TO_EMISSIVE_LAYER(offset_spokesman.layer)
@@ -75,6 +81,8 @@
 /// Returns a list of objects, automatically added to your vis_contents, that apply this effect
 /// QDEL them when appropriate
 /proc/partially_block_emissives(atom/make_blocker, alpha_to_leave)
+	procstart = null
+	src.procstart = null
 	var/static/uid = 0
 	uid++
 	if(!make_blocker.render_target)

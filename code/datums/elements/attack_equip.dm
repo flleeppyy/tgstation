@@ -6,17 +6,23 @@
 /datum/element/attack_equip
 
 /datum/element/attack_equip/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
 	RegisterSignal(target, COMSIG_ITEM_ATTACK, PROC_REF(on_item_attack))
 
 /datum/element/attack_equip/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	UnregisterSignal(source, COMSIG_ITEM_ATTACK)
 
 /datum/element/attack_equip/proc/on_item_attack(obj/item/attire, mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(user.combat_mode || !ishuman(target) || target == user)
 		return
@@ -33,6 +39,8 @@
 
 
 /datum/element/attack_equip/proc/equip(obj/item/attire, mob/living/carbon/human/sharp_dresser, mob/living/user)
+	procstart = null
+	src.procstart = null
 
 	if(HAS_TRAIT(attire, TRAIT_NODROP))
 		to_chat(user, span_warning("You can't put [attire] on [sharp_dresser], it's stuck to your hand!"))

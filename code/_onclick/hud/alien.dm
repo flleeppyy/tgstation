@@ -2,6 +2,8 @@
 	ui_style = 'icons/hud/screen_alien.dmi'
 
 /datum/hud/alien/initialize_screen_objects()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	build_hand_slots()
 

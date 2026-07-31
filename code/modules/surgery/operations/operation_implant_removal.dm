@@ -14,12 +14,18 @@
 	any_surgery_states_blocked = SURGERY_VESSELS_UNCLAMPED
 
 /datum/surgery_operation/basic/implant_removal/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/obj/medical/syringe.dmi', "implantcase-b")
 
 /datum/surgery_operation/basic/implant_removal/any_optional_strings()
+	procstart = null
+	src.procstart = null
 	return ..() + list("have an implant case below or inhand to store removed implants")
 
 /datum/surgery_operation/basic/implant_removal/on_preop(mob/living/patient, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		patient,
@@ -31,6 +37,8 @@
 		display_pain(patient, "You feel a serious pain as [surgeon] digs around inside you!")
 
 /datum/surgery_operation/basic/implant_removal/on_success(mob/living/patient, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	var/obj/item/implant/implant = LAZYACCESS(patient.implants, 1)
 	if(isnull(implant))
 		display_results(
@@ -71,6 +79,8 @@
 	)
 
 /datum/surgery_operation/basic/implant_removal/proc/get_case(mob/living/surgeon, mob/living/target)
+	procstart = null
+	src.procstart = null
 	var/list/locations = list(
 		surgeon.is_holding_item_of_type(/obj/item/implantcase),
 		locate(/obj/item/implantcase) in surgeon.loc,

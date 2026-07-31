@@ -12,15 +12,21 @@
 	var/datum/port/input/haystack
 
 /obj/item/circuit_component/compare/contains/populate_custom_ports()
+	procstart = null
+	src.procstart = null
 	needle = add_input_port("Needle", PORT_TYPE_STRING)
 	haystack = add_input_port("Haystack", PORT_TYPE_STRING)
 
 /obj/item/circuit_component/compare/contains/Destroy()
+	procstart = null
+	src.procstart = null
 	needle = null
 	haystack = null
 	return ..()
 
 /obj/item/circuit_component/compare/contains/do_comparisons()
+	procstart = null
+	src.procstart = null
 	var/to_find = needle.value
 	var/to_search = haystack.value
 

@@ -4,12 +4,16 @@
 	rite_flags = parent_type::rite_flags & ~RITE_ONE_TIME_USE
 
 /datum/religion_rites/deaconize/dreamers/invoke_effect(mob/living/carbon/human/user, atom/movable/religious_tool)
+	procstart = null
+	src.procstart = null
 	if(isnightmare(potential_deacon))
 		to_chat(user, span_warning("[potential_deacon] is a nightmare, an affront to [GLOB.deity] and all they stand for!"))
 		return FALSE
 	return ..()
 
 /datum/religion_rites/deaconize/dreamers/post_invoke_effects(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(GLOB.religious_sect, /datum/religion_sect/dreams))
 		return

@@ -12,15 +12,21 @@
 	can_adjust = FALSE
 
 /obj/item/clothing/under/ethereal_tunic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon(UPDATE_OVERLAYS)
 
 /obj/item/clothing/under/ethereal_tunic/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance('icons/mob/clothing/under/ethereal.dmi', "eth_tunic_emissive", offset_spokesman = src, alpha = src.alpha)
 
 /obj/item/clothing/under/ethereal_tunic/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance('icons/obj/clothing/under/ethereal.dmi', "eth_tunic_emissive", offset_spokesman = src, alpha = src.alpha)
 
@@ -31,6 +37,8 @@
 	greyscale_colors = "#32a87d"
 
 /obj/item/clothing/under/ethereal_tunic/trailwarden/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isethereal(user) && (slot & ITEM_SLOT_ICLOTHING))
 		var/mob/living/carbon/human/ethereal = user

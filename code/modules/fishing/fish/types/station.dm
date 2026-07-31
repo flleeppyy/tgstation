@@ -22,20 +22,30 @@
 	beauty = FISH_BEAUTY_DISGUSTING
 
 /obj/item/fish/ratfish/get_fish_taste()
+	procstart = null
+	src.procstart = null
 	return list("vermin" = 2, "maintenance" = 1)
 
 /obj/item/fish/ratfish/get_fish_taste_cooked()
+	procstart = null
+	src.procstart = null
 	return list("cooked vermin" = 2, "burned fur" = 0.5)
 
 /obj/item/fish/ratfish/get_food_types()
+	procstart = null
+	src.procstart = null
 	return MEAT|RAW|GORE //Not-so-quite-seafood
 
 /obj/item/fish/ratfish/get_base_edible_reagents_to_add()
+	procstart = null
+	src.procstart = null
 	var/list/return_list = ..()
 	return_list[/datum/reagent/rat_spit] = 1
 	return return_list
 
 /obj/item/fish/ratfish/Initialize(mapload, apply_qualities = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//stable pop reflects the config for how many mice migrate. powerful...
 	stable_population = CONFIG_GET(number/mice_roundstart)
@@ -60,6 +70,8 @@
 	beauty = FISH_BEAUTY_NULL
 
 /obj/item/fish/sludgefish/get_fish_taste()
+	procstart = null
+	src.procstart = null
 	return list("raw fish" = 2, "eau de toilet" = 1)
 
 /obj/item/fish/sludgefish/purple
@@ -100,9 +112,13 @@
 	beauty = FISH_BEAUTY_GREAT
 
 /obj/item/fish/slimefish/get_food_types()
+	procstart = null
+	src.procstart = null
 	return SEAFOOD|TOXIC
 
 /obj/item/fish/slimefish/get_base_edible_reagents_to_add()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/toxin/slimejelly = 5)
 
 /obj/item/fish/fryish
@@ -146,18 +162,24 @@
 	var/growth_time = 3.5 MINUTES
 
 /obj/item/fish/fryish/Initialize(mapload, apply_qualities = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_bait)
 		add_traits(list(TRAIT_FISHING_BAIT, TRAIT_GREAT_QUALITY_BAIT), INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_FISH_SURVIVE_COOKING, INNATE_TRAIT)
 
 /obj/item/fish/fryish/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] swallows [src] whole! It looks like [user.p_theyre()] trying to commit suicide!"))
 	user.say("Mmmm! Delicious!", forced = "fryfish suicide")
 	qdel(src)
 	return OXYLOSS
 
 /obj/item/fish/fryish/update_size_and_weight(new_size = average_size, new_weight = average_weight, update_materials = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!next_type)
 		return
@@ -166,15 +188,23 @@
 	AddComponent(/datum/component/fish_growth, next_type, growth_time * multiplier, use_drop_loc = FALSE)
 
 /obj/item/fish/fryish/get_fish_taste()
+	procstart = null
+	src.procstart = null
 	return list("fried fish" = 1)
 
 /obj/item/fish/fryish/get_fish_taste_cooked()
+	procstart = null
+	src.procstart = null
 	return list("extra-fried fish" = 1)
 
 /obj/item/fish/fryish/get_food_types()
+	procstart = null
+	src.procstart = null
 	return FRIED|MEAT|SEAFOOD
 
 /obj/item/fish/fryish/get_base_edible_reagents_to_add()
+	procstart = null
+	src.procstart = null
 	var/list/return_list = list(
 		/datum/reagent/consumable/nutriment/protein = 2,
 		/datum/reagent/consumable/nutriment/fat = 1.5,
@@ -205,11 +235,15 @@
 	var/variant = FISH_FRITTERISH
 
 /obj/item/fish/fryish/fritterish/Initialize(mapload, apply_qualities = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	variant = pick(FISH_FRITTERISH, FISH_BERNARD, FISH_MATTHEW)
 	load_variant(pick(FISH_FRITTERISH, FISH_BERNARD, FISH_MATTHEW))
 
 /obj/item/fish/fryish/fritterish/proc/load_variant(new_variant)
+	procstart = null
+	src.procstart = null
 	variant = new_variant
 	switch(variant)
 		if(FISH_BERNARD)
@@ -224,14 +258,20 @@
 #define PERSISTENCE_FISH_FRITTERISH_VARIANT "fritterish_variant"
 
 /obj/item/fish/fryish/fritterish/persistence_save(list/data)
+	procstart = null
+	src.procstart = null
 	data[PERSISTENCE_FISH_FRITTERISH_VARIANT] = variant
 
 /obj/item/fish/fryish/fritterish/persistence_load(list/data)
+	procstart = null
+	src.procstart = null
 	load_variant(data[PERSISTENCE_FISH_FRITTERISH_VARIANT])
 
 #undef PERSISTENCE_FISH_FRITTERISH_VARIANT
 
 /obj/item/fish/fryish/fritterish/update_name()
+	procstart = null
+	src.procstart = null
 	switch(variant)
 		if(FISH_BERNARD)
 			name = "bernard-fish"
@@ -240,6 +280,8 @@
 	return ..()
 
 /obj/item/fish/fryish/fritterish/update_desc()
+	procstart = null
+	src.procstart = null
 	switch(variant)
 		if(FISH_BERNARD)
 			desc = "A <u>deliciously</u> extremophile alien fish shaped like a dinosaur. Children love it."

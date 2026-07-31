@@ -92,11 +92,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/incident_display/delam, 32)
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/incident_display/tram, 32)
 
 /obj/machinery/incident_display/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	register_context()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/incident_display/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.map_incident_displays += src
 	update_delam_count(SSpersistence.rounds_since_engine_exploded, SSpersistence.delam_highscore)
@@ -105,10 +109,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/incident_display/tram, 32)
 	update_appearance()
 
 /obj/machinery/incident_display/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.map_incident_displays -= src
 	return ..()
 
 /obj/machinery/incident_display/process()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (NOPOWER|BROKEN|MAINT))
 		return
 
@@ -126,6 +134,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/incident_display/tram, 32)
 		update_appearance()
 
 /obj/machinery/incident_display/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		return
 
@@ -143,6 +153,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/incident_display/tram, 32)
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/incident_display/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return FALSE
 
@@ -162,6 +174,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/incident_display/tram, 32)
 
 // Switch modes with multitool
 /obj/machinery/incident_display/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return FALSE
 
@@ -186,6 +200,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/incident_display/tram, 32)
 
 // EMP causes the display to display random numbers or outright break.
 /obj/machinery/incident_display/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(50))
 		set_machine_stat(machine_stat | BROKEN)
@@ -205,6 +221,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/incident_display/tram, 32)
 	update_appearance()
 
 /obj/machinery/incident_display/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/mineral/titanium(drop_location(), 2)
 	new /obj/item/shard(drop_location())
 	new /obj/item/shard(drop_location())
@@ -218,6 +236,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/incident_display/tram, 32)
  * * record - current high score for the delam count
  */
 /obj/machinery/incident_display/proc/update_delam_count(new_count, record)
+	procstart = null
+	src.procstart = null
 	delam_record = record
 	last_delam = min(new_count, 199)
 	update_appearance()
@@ -231,6 +251,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/incident_display/tram, 32)
  * * tram_collisions - current number of tram hits
  */
 /obj/machinery/incident_display/proc/update_tram_count(source, tram_collisions)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	hit_count = min(tram_collisions, 199)
@@ -244,16 +266,22 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/incident_display/tram, 32)
  * * duration - length of the advert animation
  */
 /obj/machinery/incident_display/proc/show_advert(advert, duration = 7 SECONDS)
+	procstart = null
+	src.procstart = null
 	COOLDOWN_START(src, active_advert, duration)
 	live_display = TRUE
 	update_appearance()
 	flick(advert, src)
 
 /obj/machinery/incident_display/on_set_machine_stat(old_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/machinery/incident_display/update_appearance(updates = ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & NOPOWER)
 		icon_state = "display_normal"
@@ -270,6 +298,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/incident_display/tram, 32)
 		set_light(l_range = 1.7, l_power = 1.5, l_color = LIGHT_COLOR_NORMAL, l_on = TRUE)
 
 /obj/machinery/incident_display/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & (NOPOWER|BROKEN))
 		return
@@ -366,6 +396,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/incident_display/tram, 32)
 			. += tram_trend_emissive
 
 /obj/machinery/incident_display/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(atom_integrity < max_integrity)
 		. += span_notice("It can be repaired with a [EXAMINE_HINT("welder")].")

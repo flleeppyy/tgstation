@@ -67,6 +67,8 @@
 	wound = 10
 
 /obj/item/clothing/head/helmet/perceptomatrix/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_ICON_STATE)
 	update_anomaly_state()
@@ -74,24 +76,32 @@
 	AddComponent(/datum/component/hat_stabilizer, loose_hat = TRUE)
 
 /obj/item/clothing/head/helmet/perceptomatrix/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot & ITEM_SLOT_HEAD)
 		RegisterSignal(user, COMSIG_MOB_BEFORE_SPELL_CAST, PROC_REF(pre_cast_core_check))
 		user.update_sight()
 
 /obj/item/clothing/head/helmet/perceptomatrix/dropped(mob/living/user, silent)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(user, COMSIG_MOB_BEFORE_SPELL_CAST)
 	user.update_sight()
 	..()
 
 // Prevent casting the spell w/o the core.
 /obj/item/clothing/head/helmet/perceptomatrix/proc/pre_cast_core_check(mob/caster, datum/action/cooldown/spell/spell)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if((!core_installed) && spell.school == SCHOOL_PSYCHIC)
 		to_chat(caster, span_warning("You can't zap minds through [src]'s shielding without a core installed!"))
 		return SPELL_CANCEL_CAST
 
 /obj/item/clothing/head/helmet/perceptomatrix/proc/update_anomaly_state()
+	procstart = null
+	src.procstart = null
 
 	// If the core isn't installed, or it's temporarily deactivated, disable special functions.
 	if(!core_installed)
@@ -121,20 +131,28 @@
 	update_icon_state()
 
 /obj/item/clothing/head/helmet/perceptomatrix/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(active_components)
 	return ..()
 
 /obj/item/clothing/head/helmet/perceptomatrix/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!core_installed)
 		. += span_warning("It requires a hallucination anomaly core in order to function.")
 
 /obj/item/clothing/head/helmet/perceptomatrix/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = base_icon_state + (core_installed ? "" : "_inactive")
 	worn_icon_state = base_icon_state + (core_installed ? "" : "_inactive")
 	return ..()
 
 /obj/item/clothing/head/helmet/perceptomatrix/item_interaction(mob/user, obj/item/weapon, params)
+	procstart = null
+	src.procstart = null
 	if (!istype(weapon, /obj/item/assembly/signaler/anomaly/hallucination))
 		return NONE
 	balloon_alert(user, "inserting...")
@@ -174,6 +192,8 @@
 	var/hallucination_duration = 25 SECONDS
 
 /datum/action/cooldown/spell/pointed/percept_hallucination/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -185,6 +205,8 @@
 	return FALSE
 
 /datum/action/cooldown/spell/pointed/percept_hallucination/proc/blows_up_pancakes_with_mind(obj/item/food/pancakes/pancakes)
+	procstart = null
+	src.procstart = null
 
 	owner.visible_message(
 		span_userdanger("[owner] blows up [pancakes] with [owner.p_their()] mind!"),
@@ -207,16 +229,22 @@
 	addtimer(CALLBACK(src, PROC_REF(pancake_explosion), pancakes), 1.5 SECONDS)
 
 /datum/action/cooldown/spell/pointed/percept_hallucination/proc/pancake_explosion(obj/pancakes)
+	procstart = null
+	src.procstart = null
 	explosion(pancakes, devastation_range = -1, heavy_impact_range = -1, light_impact_range = 1, flame_range = 2)
 	qdel(pancakes)
 	StartCooldown()
 
 /datum/action/cooldown/spell/pointed/percept_hallucination/proc/cast_fx(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	owner.Beam(cast_on, icon_state = "greyscale_lightning", beam_color = COLOR_FADED_PINK, time = 0.5 SECONDS)
 	do_sparks(2, TRUE, get_turf(owner), spark_type = /datum/effect_system/basic/spark_spread/quantum)
 	do_sparks(4, TRUE, get_turf(owner), spark_type = /datum/effect_system/basic/spark_spread/quantum)
 
 /datum/action/cooldown/spell/pointed/percept_hallucination/cast(mob/living/carbon/human/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	cast_fx(cast_on)

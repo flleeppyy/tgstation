@@ -40,6 +40,8 @@
 	var/list/fibers
 
 /datum/forensics/New(atom/parent, list/fingerprints, list/hiddenprints, list/blood_DNA, list/fibers)
+	procstart = null
+	src.procstart = null
 	if(!isatom(parent))
 		stack_trace("We tried adding a forensics datum to something that isnt an atom. What the hell are you doing?")
 		qdel(src)
@@ -55,7 +57,9 @@
 	check_blood()
 
 /// Merges the given lists into the preexisting values
-/datum/forensics/proc/inherit_new(list/fingerprints, list/hiddenprints, list/blood_DNA, list/fibers) //Use of | and |= being different here is INTENTIONAL.
+/datum/forensics/proc/inherit_new(list/fingerprints, list/hiddenprints, list/blood_DNA, list/fibers)
+	procstart = null
+	src.procstart = null //Use of | and |= being different here is INTENTIONAL.
 	if (fingerprints)
 		src.fingerprints = LAZY_LISTS_OR(src.fingerprints, fingerprints)
 	if (hiddenprints)
@@ -67,12 +71,16 @@
 	check_blood()
 
 /datum/forensics/Destroy(force)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_COMPONENT_CLEAN_ACT)
 	parent = null
 	return ..()
 
 /// Empties the fingerprints list
 /datum/forensics/proc/wipe_fingerprints()
+	procstart = null
+	src.procstart = null
 	if(isnull(fingerprints))
 		return NONE
 
@@ -81,6 +89,8 @@
 
 /// Empties the blood_DNA list
 /datum/forensics/proc/wipe_blood_DNA()
+	procstart = null
+	src.procstart = null
 	if(isnull(blood_DNA))
 		return NONE
 
@@ -89,6 +99,8 @@
 
 /// Empties the fibers list
 /datum/forensics/proc/wipe_fibers()
+	procstart = null
+	src.procstart = null
 	if(isnull(fibers))
 		return NONE
 
@@ -97,6 +109,8 @@
 
 /// Handles cleaning up the various forensic types
 /datum/forensics/proc/clean_act(datum/source, clean_types)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	. = NONE
@@ -109,6 +123,8 @@
 
 /// Adds the given list into fingerprints
 /datum/forensics/proc/add_fingerprint_list(list/fingerprints)
+	procstart = null
+	src.procstart = null
 	if(!length(fingerprints))
 		return
 	LAZYINITLIST(src.fingerprints)
@@ -118,6 +134,8 @@
 
 /// Adds a single fingerprint
 /datum/forensics/proc/add_fingerprint(mob/living/suspect, ignoregloves = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!isliving(suspect))
 		if(!iseyemob(suspect))
 			return
@@ -143,6 +161,8 @@
 
 /// Adds the given list into fibers
 /datum/forensics/proc/add_fiber_list(list/fibers)
+	procstart = null
+	src.procstart = null
 	if(!length(fibers))
 		return
 	LAZYINITLIST(src.fibers)
@@ -155,6 +175,8 @@
 
 /// Adds a single fiber
 /datum/forensics/proc/add_fibers(mob/living/carbon/human/suspect)
+	procstart = null
+	src.procstart = null
 	var/fibertext
 	var/item_multiplier = isitem(parent) ? ITEM_FIBER_MULTIPLIER : NON_ITEM_FIBER_MULTIPLIER
 	if(suspect.wear_suit)
@@ -190,6 +212,8 @@
 
 /// Adds the given list into hiddenprints
 /datum/forensics/proc/add_hiddenprint_list(list/hiddenprints) //list(ckey = text)
+	procstart = null
+	src.procstart = null
 	if(!length(hiddenprints))
 		return
 	LAZYINITLIST(src.hiddenprints)
@@ -199,6 +223,8 @@
 
 /// Adds a single hiddenprint
 /datum/forensics/proc/add_hiddenprint(mob/suspect)
+	procstart = null
+	src.procstart = null
 	if(!isliving(suspect))
 		if(!iseyemob(suspect))
 			return
@@ -227,6 +253,8 @@
 
 /// Adds the given list into blood_DNA
 /datum/forensics/proc/add_blood_DNA(list/blood_DNA)
+	procstart = null
+	src.procstart = null
 	if(!length(blood_DNA))
 		return
 	LAZYINITLIST(src.blood_DNA)
@@ -237,6 +265,8 @@
 
 /// Updates the blood displayed on parent
 /datum/forensics/proc/check_blood()
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent) || isorgan(parent)) // organs don't spawn with blood decals by default
 		return
 	var/blood_color = parent.get_blood_dna_color()
@@ -245,6 +275,8 @@
 
 /// Returns how many blood datums on us fit our parent's expose flags
 /datum/forensics/proc/get_visible_blood()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 	var/expose_flag = null
 	if (isturf(parent) || istype(parent, /obj/effect/decal))

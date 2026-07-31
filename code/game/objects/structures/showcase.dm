@@ -18,6 +18,8 @@
 	icon_state = "computer"
 
 /obj/structure/showcase/fakeid/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_overlay("id")
 	add_overlay("id_key")
@@ -29,6 +31,8 @@
 	icon_state = "computer"
 
 /obj/structure/showcase/fakesec/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "security"
 	. += "security_key"
@@ -137,6 +141,8 @@
 //However if a player wants to move an existing showcase or remove one, this is for that.
 
 /obj/structure/showcase/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(anchored)
 		return FALSE
 	if(deconstruction_state == SHOWCASE_SCREWDRIVERED)
@@ -150,6 +156,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/showcase/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!tool.use_tool(src, user, 2 SECONDS, volume=100))
 		return
 	to_chat(user, span_notice("You start to crowbar the showcase apart..."))
@@ -158,6 +166,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/showcase/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(deconstruction_state != SHOWCASE_CONSTRUCTED)
 		return FALSE
 	default_unfasten_wrench(user, tool)
@@ -166,6 +176,8 @@
 //Feedback is given in examine because showcases can basically have any sprite assigned to them
 
 /obj/structure/showcase/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	switch(deconstruction_state)

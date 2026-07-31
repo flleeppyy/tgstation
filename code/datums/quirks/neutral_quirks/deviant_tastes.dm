@@ -9,6 +9,8 @@
 	mail_goodies = list(/obj/item/food/urinalcake, /obj/item/food/badrecipe) // Mhhhmmm yummy
 
 /datum/quirk/deviant_tastes/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/tongue/tongue = quirk_holder.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!tongue)
 		return
@@ -17,6 +19,8 @@
 	tongue.disliked_foodtypes = liked_foodtypes
 
 /datum/quirk/deviant_tastes/remove()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/tongue/tongue = quirk_holder.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!tongue)
 		return

@@ -1,4 +1,6 @@
 /datum/unit_test/omnitools/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/borg = allocate(__IMPLIED_TYPE__)
 	var/obj/structure/frame/machine/test_frame = allocate(__IMPLIED_TYPE__)
 	test_frame.state = FRAME_STATE_WIRED
@@ -34,6 +36,8 @@
 /datum/unit_test/omnitool_icons
 
 /datum/unit_test/omnitool_icons/Run()
+	procstart = null
+	src.procstart = null
 	var/list/all_tools = GLOB.all_tool_behaviours.Copy()
 	for(var/tool, tool_image in GLOB.tool_to_image)
 		if(!(tool in GLOB.all_tool_behaviours))

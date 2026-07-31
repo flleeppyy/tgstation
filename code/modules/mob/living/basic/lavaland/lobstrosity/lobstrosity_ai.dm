@@ -30,6 +30,8 @@
 	behavior_tree_json = "code/modules/mob/living/basic/lavaland/lobstrosity/lobstrosity.bt.json"
 
 /datum/ai_controller/basic_controller/lobstrosity/TryPossessPawn(atom/new_pawn)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & AI_CONTROLLER_INCOMPATIBLE)
 		return

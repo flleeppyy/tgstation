@@ -125,6 +125,8 @@
 	var/exponential_falloff = 4
 
 /datum/song/New(atom/parent, list/instrument_ids, new_range)
+	procstart = null
+	src.procstart = null
 	SSinstruments.on_song_new(src)
 	lines = list()
 	tempo = sanitize_tempo(tempo, TRUE)
@@ -140,6 +142,8 @@
 		instrument_range = new_range
 
 /datum/song/Destroy()
+	procstart = null
+	src.procstart = null
 	stop_playing()
 	SSinstruments.on_song_del(src)
 	lines = null
@@ -154,6 +158,8 @@
  * Checks and stores which mobs can hear us. Terminates sounds for mobs that leave our range.
  */
 /datum/song/proc/do_hearcheck()
+	procstart = null
+	src.procstart = null
 	last_hearcheck = world.time
 	var/list/old = hearing_mobs.Copy()
 	hearing_mobs.len = 0
@@ -168,6 +174,8 @@
  * Sets our instrument, caching anything necessary for faster accessing. Accepts an ID, typepath, or instantiated instrument datum.
  */
 /datum/song/proc/set_instrument(datum/instrument/I)
+	procstart = null
+	src.procstart = null
 	terminate_all_sounds()
 	var/old_legacy
 	if(using_instrument)
@@ -199,6 +207,8 @@
  * Attempts to start playing our song.
  */
 /datum/song/proc/start_playing(atom/user)
+	procstart = null
+	src.procstart = null
 	if(playing)
 		return
 	if(!using_instrument?.ready())
@@ -226,6 +236,8 @@
  * Attempts to find other instruments with the same ID and syncs them to our song.
  */
 /datum/song/proc/sync_play(atom/user)
+	procstart = null
+	src.procstart = null
 	for(var/datum/song/other_instrument as anything in SSinstruments.songs)
 		if(other_instrument == src || other_instrument.id != id)
 			continue
@@ -244,6 +256,8 @@
  * Finds a player which would reasonably be able to play this song.
  */
 /datum/song/proc/find_sync_player()
+	procstart = null
+	src.procstart = null
 	return null
 
 /**
@@ -253,6 +267,8 @@
  * * finished: boolean, whether the song ended via reaching the end.
  */
 /datum/song/proc/stop_playing(finished = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!playing)
 		return
 	playing = FALSE
@@ -268,6 +284,8 @@
  * Processes our song.
  */
 /datum/song/proc/process_song(wait)
+	procstart = null
+	src.procstart = null
 	if(!length(compiled_chords))
 		stop_playing(TRUE)
 		return
@@ -295,6 +313,8 @@
  * Converts a tempodiv to ticks to elapse before playing the next chord, taking into account our tempo.
  */
 /datum/song/proc/tempodiv_to_delay(tempodiv)
+	procstart = null
+	src.procstart = null
 	if(!tempodiv)
 		tempodiv = 1 // no division by 0. some song converters tend to use 0 for when it wants to have no div, for whatever reason.
 	return max(1, round((tempo/tempodiv) / world.tick_lag, 1))
@@ -303,12 +323,16 @@
  * Compiles chords.
  */
 /datum/song/proc/compile_chords()
+	procstart = null
+	src.procstart = null
 	legacy? compile_legacy() : compile_synthesized()
 
 /**
  * Plays a chord.
  */
 /datum/song/proc/play_chord(list/chord)
+	procstart = null
+	src.procstart = null
 	// last value is timing information
 	for(var/i in 1 to (length(chord) - 1))
 		legacy? playkey_legacy(chord[i][1], chord[i][2], chord[i][3], music_player) : playkey_synth(chord[i], music_player)
@@ -317,12 +341,16 @@
  * Checks if we should halt playback.
  */
 /datum/song/proc/should_stop_playing(atom/player)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(player) || !using_instrument || !playing)
 		return STOP_PLAYING
 	return SEND_SIGNAL(parent, COMSIG_INSTRUMENT_SHOULD_STOP_PLAYING, player)
 
 /// Sets and sanitizes the repeats variable.
 /datum/song/proc/set_repeats(new_repeats_value)
+	procstart = null
+	src.procstart = null
 	if(playing)
 		return //So that people cant keep adding to repeat. If the do it intentionally, it could result in the server crashing.
 	repeat = round(new_repeats_value)
@@ -336,6 +364,8 @@
  * Sanitizes tempo to a value that makes sense and fits the current world.tick_lag.
  */
 /datum/song/proc/sanitize_tempo(new_tempo, initializing = FALSE)
+	procstart = null
+	src.procstart = null
 	new_tempo = abs(new_tempo)
 	if(!initializing) // not only is it not helpful while initializing but it will runtime really hard since nothing is set up
 		SEND_SIGNAL(parent, COMSIG_INSTRUMENT_TEMPO_CHANGE, src)
@@ -345,15 +375,21 @@
  * Gets our beats per minute based on our tempo.
  */
 /datum/song/proc/get_bpm()
+	procstart = null
+	src.procstart = null
 	return 600 / tempo
 
 /**
  * Sets our tempo from a beats-per-minute, sanitizing it to a valid number first.
  */
 /datum/song/proc/set_bpm(bpm)
+	procstart = null
+	src.procstart = null
 	tempo = sanitize_tempo(600 / bpm)
 
 /datum/song/process(wait)
+	procstart = null
+	src.procstart = null
 	if(!playing)
 		return PROCESS_KILL
 	// it's expected this ticks at every world.tick_lag. if it lags, do not attempt to catch up.
@@ -364,6 +400,8 @@
  * Updates our cached linear/exponential falloff stuff, saving calculations down the line.
  */
 /datum/song/proc/update_sustain()
+	procstart = null
+	src.procstart = null
 	// Exponential is easy
 	cached_exponential_dropoff = sustain_exponential_dropoff
 	// Linear, not so much, since it's a target duration from 100 volume rather than an exponential rate.
@@ -376,6 +414,8 @@
  * Setter for setting output volume.
  */
 /datum/song/proc/set_volume(volume)
+	procstart = null
+	src.procstart = null
 	src.volume = clamp(round(volume, 1), max(0, min_volume), min(100, max_volume))
 	update_sustain()
 
@@ -383,6 +423,8 @@
  * Setter for setting how low the volume has to get before a note is considered "dead" and dropped
  */
 /datum/song/proc/set_dropoff_volume(volume)
+	procstart = null
+	src.procstart = null
 	sustain_dropoff_volume = clamp(round(volume, 0.01), INSTRUMENT_MIN_SUSTAIN_DROPOFF, 100)
 	update_sustain()
 
@@ -390,6 +432,8 @@
  * Setter for setting exponential falloff factor.
  */
 /datum/song/proc/set_exponential_drop_rate(drop)
+	procstart = null
+	src.procstart = null
 	sustain_exponential_dropoff = clamp(round(drop, 0.00001), INSTRUMENT_EXP_FALLOFF_MIN, INSTRUMENT_EXP_FALLOFF_MAX)
 	update_sustain()
 
@@ -397,10 +441,14 @@
  * Setter for setting linear falloff duration.
  */
 /datum/song/proc/set_linear_falloff_duration(duration)
+	procstart = null
+	src.procstart = null
 	sustain_linear_duration = clamp(round(duration * 10, world.tick_lag), world.tick_lag, INSTRUMENT_MAX_TOTAL_SUSTAIN)
 	update_sustain()
 
 /datum/song/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		switch(var_name)
@@ -417,6 +465,8 @@
 /datum/song/handheld
 
 /datum/song/handheld/should_stop_playing(atom/player)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == STOP_PLAYING || . == IGNORE_INSTRUMENT_CHECKS)
 		return
@@ -424,6 +474,8 @@
 	return I.can_play(player) ? NONE : STOP_PLAYING
 
 /datum/song/handheld/find_sync_player()
+	procstart = null
+	src.procstart = null
 	var/obj/item/instrument/instrument = parent
 	var/mob/living/player = get(parent, /mob/living)
 	if(instrument.can_play(player))
@@ -434,6 +486,8 @@
 /datum/song/stationary
 
 /datum/song/stationary/should_stop_playing(atom/player)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == STOP_PLAYING || . == IGNORE_INSTRUMENT_CHECKS)
 		return
@@ -441,6 +495,8 @@
 	return M.can_play(player) ? NONE : STOP_PLAYING
 
 /datum/song/stationary/find_sync_player()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/musician/piano = parent
 	for(var/mob/living/player in view(parent, 1))
 		if(piano.can_play(player))

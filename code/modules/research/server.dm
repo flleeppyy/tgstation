@@ -26,6 +26,8 @@
 	var/research_disabled = FALSE
 
 /obj/machinery/rnd/server/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//servers handle techwebs differently as we are expected to be there to connect
 	//every other machinery on-station.
@@ -39,6 +41,8 @@
 	name += " [num2hex(rand(1,65535), -1)]" //gives us a random four-digit hex number as part of the name. Y'know, for fluff.
 
 /obj/machinery/rnd/server/Destroy()
+	procstart = null
+	src.procstart = null
 	if(stored_research)
 		stored_research.techweb_servers -= src
 	if(CONFIG_GET(flag/no_default_techweb_link))
@@ -46,6 +50,8 @@
 	return ..()
 
 /obj/machinery/rnd/server/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & NOPOWER)
 		icon_state = "[base_icon_state]-off"
@@ -56,15 +62,21 @@
 		icon_state = "[base_icon_state]-[working ? "on" : "halt"]"
 
 /obj/machinery/rnd/server/power_change()
+	procstart = null
+	src.procstart = null
 	refresh_working()
 	return ..()
 
 /obj/machinery/rnd/server/on_set_machine_stat()
+	procstart = null
+	src.procstart = null
 	refresh_working()
 	return ..()
 
 /// Checks if we should be working or not, and updates accordingly.
 /obj/machinery/rnd/server/proc/refresh_working()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (NOPOWER|EMPED) || research_disabled)
 		working = FALSE
 	else
@@ -74,6 +86,8 @@
 	update_appearance(UPDATE_ICON_STATE)
 
 /obj/machinery/rnd/server/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -83,17 +97,23 @@
 
 /// Callback to un-emp the server afetr some time.
 /obj/machinery/rnd/server/proc/fix_emp()
+	procstart = null
+	src.procstart = null
 	set_machine_stat(machine_stat & ~EMPED)
 	refresh_working()
 
 /// Toggles whether or not researched_disabled is, yknow, disabled
 /obj/machinery/rnd/server/proc/toggle_disable(mob/user)
+	procstart = null
+	src.procstart = null
 	research_disabled = !research_disabled
 	user.log_message("[research_disabled ? "shut off" : "turned on"] [src]", LOG_GAME)
 	refresh_working()
 
 /// Gets status text based on this server's status for the computer.
 /obj/machinery/rnd/server/proc/get_status_text()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & EMPED)
 		return "O&F@I*$ - R3*&O$T R@U!R%D"
 	else if(machine_stat & NOPOWER)
@@ -108,6 +128,8 @@
 	return SERVER_NOMINAL_TEXT
 
 /obj/machinery/rnd/server/multitool_act(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	if(!stored_research)
 		return
 	tool.set_buffer(stored_research)
@@ -124,6 +146,8 @@
 	var/hdd_wires = 6
 
 /obj/machinery/rnd/server/master/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "\improper Master " + name
 	desc += "\nIt looks incredibly resistant to damage!"
@@ -132,16 +156,22 @@
 	add_overlay("RD-server-objective-stripes")
 
 /obj/machinery/rnd/server/master/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(source_code_hdd)
 	return ..()
 
 /obj/machinery/rnd/server/master/get_status_text()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Give us a special message if we're nominal, but our hard drive is gone
 	if(. == SERVER_NOMINAL_TEXT && !source_code_hdd)
 		return "<font color=orange>Nominal - Hard Drive Missing</font>"
 
 /obj/machinery/rnd/server/master/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	switch(deconstruction_state)
@@ -157,6 +187,8 @@
 			. += "The front panel is dangling open. The HDD inside is destroyed and the wires are all burned."
 
 /obj/machinery/rnd/server/master/tool_act(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!tool.tool_behaviour)
 		return ..()
 	// Only antags are given the training and knowledge to disassemble this thing.
@@ -168,6 +200,8 @@
 	return ..()
 
 /obj/machinery/rnd/server/master/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/disk/computer/hdd_theft))
 		return NONE
 	switch(deconstruction_state)
@@ -184,6 +218,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/machinery/rnd/server/master/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(deconstruction_state != HDD_PANEL_CLOSED || user.combat_mode)
 		return NONE
 
@@ -200,6 +236,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/rnd/server/master/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(deconstruction_state != HDD_PANEL_OPEN || user.combat_mode)
 		return FALSE
 
@@ -210,6 +248,8 @@
 	return TRUE
 
 /obj/machinery/rnd/server/master/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(deconstruction_state != HDD_PRIED || user.combat_mode)
 		return FALSE
 
@@ -228,6 +268,8 @@
 	return TRUE
 
 /obj/machinery/rnd/server/master/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	// If the machine contains a source code HDD, destroying it will negatively impact research speed. Safest to log this.
 	if(source_code_hdd)
 		// Destroyed with a hard drive inside = harm income
@@ -247,6 +289,8 @@
 
 /// Destroys the source_code_hdd if present and sets the machine state to overloaded, adding the panel open overlay if necessary.
 /obj/machinery/rnd/server/master/proc/overload_source_code_hdd()
+	procstart = null
+	src.procstart = null
 	if(source_code_hdd)
 		QDEL_NULL(source_code_hdd)
 		// Overloaded = harm income

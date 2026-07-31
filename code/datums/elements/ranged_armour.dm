@@ -36,11 +36,15 @@
 		RegisterSignal(target, COMSIG_ATOM_PREHITBY, PROC_REF(pre_thrown_impact))
 
 /datum/element/ranged_armour/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, list(COMSIG_PROJECTILE_PREHIT, COMSIG_ATOM_PREHITBY))
 	return ..()
 
 /// Modify or ignore bullet damage based on projectile properties
 /datum/element/ranged_armour/proc/pre_bullet_impact(atom/parent, obj/projectile/bullet)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (bullet.damage >= minimum_projectile_force || (bullet.damage_type in vulnerable_projectile_types))
 		return
@@ -52,6 +56,8 @@
 
 /// Ignore thrown damage based on projectile properties. There's no elegant way to multiply the damage because throwforce is persistent.
 /datum/element/ranged_armour/proc/pre_thrown_impact(atom/parent, obj/item/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!isitem(hit_atom) || HAS_TRAIT(hit_atom, TRAIT_BYPASS_RANGED_ARMOR))
 		return

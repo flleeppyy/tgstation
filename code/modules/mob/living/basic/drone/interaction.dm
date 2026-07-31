@@ -1,6 +1,8 @@
 // Drones' interactions with other mobs
 
 /mob/living/basic/drone/attack_drone(mob/living/basic/drone/drone)
+	procstart = null
+	src.procstart = null
 	if(drone == src || stat != DEAD)
 		return FALSE
 	var/input = tgui_alert(drone, "Perform which action?", "Drone Interaction", list("Reactivate", "Cannibalize"))
@@ -24,19 +26,27 @@
 				to_chat(drone, span_warning("You need to remain still to cannibalize [src]!"))
 
 /mob/living/basic/drone/attack_drone_secondary(mob/living/basic/drone/drone)
+	procstart = null
+	src.procstart = null
 	return SECONDARY_ATTACK_CALL_NORMAL
 
 /mob/living/basic/drone/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isdrone(user))
 		attack_drone(user)
 	return ..()
 
 /mob/living/basic/drone/mob_try_pickup(mob/living/user, instant=FALSE)
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD || HAS_TRAIT(src, TRAIT_GODMODE))
 		return
 	return ..()
 
 /mob/living/basic/drone/mob_pickup(mob/living/user)
+	procstart = null
+	src.procstart = null
 	drop_all_held_items()
 	return ..()
 
@@ -50,6 +60,8 @@
  * * user - The [/mob/living] attempting to reactivate the drone
  */
 /mob/living/basic/drone/proc/try_reactivate(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/G = get_ghost()
 	if(!client && (!G || !G.client))
 		var/list/faux_gadgets = list(
@@ -78,6 +90,8 @@
 
 /// Screwdrivering repairs the drone to full hp, if it isn't dead.
 /mob/living/basic/drone/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		if(isdrone(user))
 			user.balloon_alert(user, "reactivate instead!")
@@ -99,6 +113,8 @@
 
 /// Wrenching un-hacks hacked drones.
 /mob/living/basic/drone/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user == src)
 		return FALSE
 	user.visible_message(
@@ -114,6 +130,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /mob/living/basic/drone/getarmor(def_zone, type)
+	procstart = null
+	src.procstart = null
 	var/armorval = 0
 
 	if(head)
@@ -122,6 +140,8 @@
 
 /// Returns a multiplier for any head armor you wear as a drone.
 /mob/living/basic/drone/proc/get_armor_effectiveness()
+	procstart = null
+	src.procstart = null
 	return 0.8
 
 /**
@@ -137,6 +157,8 @@
  * * hack - Boolean if the drone is being hacked or unhacked
  */
 /mob/living/basic/drone/proc/update_drone_hack(hack)
+	procstart = null
+	src.procstart = null
 	if(!mind)
 		return
 	if(hack)
@@ -181,6 +203,8 @@
  * Only currently used for players wabbajacked into drones.
  */
 /mob/living/basic/drone/proc/liberate()
+	procstart = null
+	src.procstart = null
 	laws = "1. You are a Free Drone."
 	set_shy(FALSE)
 	to_chat(src, laws)
@@ -194,7 +218,9 @@
  * * [REPAIRDRONE]
  * * [SCOUTDRONE]
  */
-/mob/living/basic/drone/proc/update_drone_icon_hacked() //this is hacked both ways
+/mob/living/basic/drone/proc/update_drone_icon_hacked()
+	procstart = null
+	src.procstart = null //this is hacked both ways
 	var/static/hacked_appearances = list(
 		SCOUTDRONE = SCOUTDRONE_HACKED,
 		REPAIRDRONE = REPAIRDRONE_HACKED,

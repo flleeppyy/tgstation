@@ -15,6 +15,8 @@
 	var/fishing_modifier = -6
 
 /obj/item/clothing/head/wizard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CASTING_CLOTHING, INNATE_TRAIT)
 	AddElement(/datum/element/adjust_fishing_difficulty, fishing_modifier) //A wizard always practices his casting (ba dum tsh)
@@ -129,6 +131,8 @@
 	var/fishing_modifier = -7
 
 /obj/item/clothing/suit/wizrobe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CASTING_CLOTHING, INNATE_TRAIT)
 	AddElement(/datum/element/adjust_fishing_difficulty, fishing_modifier) //A wizard always practices his casting (ba dum tsh)
@@ -285,6 +289,8 @@
 	actions_types = list(/datum/action/item_action/stickmen)
 
 /obj/item/clothing/suit/wizrobe/paper/ui_action_click(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return
 
@@ -295,6 +301,8 @@
 	conjure_stickmen(user)
 
 /obj/item/clothing/suit/wizrobe/paper/proc/conjure_stickmen(mob/living/carbon/human/summoner)
+	procstart = null
+	src.procstart = null
 	summoner.force_say()
 	summoner.say("Rise, my creation! Off your page into this realm!", forced = "stickman summoning")
 	playsound(src, 'sound/effects/magic/summon_magic.ogg', 50, TRUE, TRUE)

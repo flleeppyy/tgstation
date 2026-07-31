@@ -2,6 +2,8 @@
 /datum/unit_test/bitrunner_vdom_settings
 
 /datum/unit_test/bitrunner_vdom_settings/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/closet/crate/secure/bitrunning/decrypted/cache = allocate(/obj/structure/closet/crate/secure/bitrunning/decrypted)
 
 	for(var/path in subtypesof(/datum/lazy_template/virtual_domain))

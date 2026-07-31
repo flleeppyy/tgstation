@@ -6,6 +6,8 @@ GLOBAL_LIST_INIT(lazy_templates, generate_lazy_template_map())
  * Screams if more than one key exists, loudly.
  */
 /proc/generate_lazy_template_map()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/datum/lazy_template/template as anything in subtypesof(/datum/lazy_template))
 		var/key = initial(template.key)

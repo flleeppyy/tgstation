@@ -15,6 +15,8 @@
 	customization_options = list(/datum/preference/choiced/scarred_eye)
 
 /datum/quirk/item_quirk/scarred_eye/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	if (client_source?.prefs.read_preference(/datum/preference/choiced/scarred_eye) == "Double")
 		give_item_to_holder(new /obj/item/clothing/glasses/blindfold/white(get_turf(quirk_holder)), list(
 			LOCATION_EYES,
@@ -34,6 +36,8 @@
 	))
 
 /datum/quirk/item_quirk/scarred_eye/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_owner = quirk_holder
 	var/obj/item/organ/eyes/eyes = human_owner.get_organ_slot(ORGAN_SLOT_EYES)
 	if (isnull(eyes))
@@ -56,6 +60,8 @@
 	eyes.apply_scar(eye_side)
 
 /datum/quirk/item_quirk/scarred_eye/remove()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_owner = quirk_holder
 	var/obj/item/organ/eyes/eyes = human_owner.get_organ_slot(ORGAN_SLOT_EYES)
 	if (!isnull(eyes))

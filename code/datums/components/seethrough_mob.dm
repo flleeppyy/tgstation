@@ -18,6 +18,8 @@
 	var/personal_uid
 
 /datum/component/seethrough_mob/Initialize(target_alpha = 100, animation_time = 0.5 SECONDS, clickthrough = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!ismob(parent))
@@ -43,11 +45,15 @@
 	action.Grant(parent)
 
 /datum/component/seethrough_mob/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(render_source_atom)
 	return ..()
 
 ///Set up everything we need to trick the client and keep it looking normal for everyone else
 /datum/component/seethrough_mob/proc/trick_mob()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/fool = parent
@@ -80,6 +86,8 @@
 
 ///Remove the screen object and make us appear solid to ourselves again
 /datum/component/seethrough_mob/proc/untrick_mob()
+	procstart = null
+	src.procstart = null
 	var/mob/fool = parent
 	animate(trickery_image, alpha = 255, time = animation_time)
 	UnregisterSignal(fool, COMSIG_MOB_LOGOUT)
@@ -89,6 +97,8 @@
 
 ///Remove the image and the trick atom
 /datum/component/seethrough_mob/proc/clear_image(image/removee, client/remove_from)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/atom_parent = parent
 	atom_parent.vis_contents -= render_source_atom
 	atom_parent.render_target = initial_render_target_value
@@ -96,6 +106,8 @@
 
 ///Effect is disabled when they log out because client gets deleted
 /datum/component/seethrough_mob/proc/on_client_disconnect()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/fool = parent
@@ -106,6 +118,8 @@
 	clear_image(trickery_image, fool.client)
 
 /datum/component/seethrough_mob/proc/toggle_active()
+	procstart = null
+	src.procstart = null
 	is_active = !is_active
 	if(is_active)
 		trick_mob()
@@ -123,12 +137,16 @@
 	can_be_shared = FALSE
 
 /datum/action/cooldown/toggle_seethrough/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	var/datum/component/seethrough_mob/transparency = target
 	if(transparency.is_active)
 		transparency.untrick_mob()
 	return ..()
 
 /datum/action/cooldown/toggle_seethrough/Activate(atom/t)
+	procstart = null
+	src.procstart = null
 	StartCooldown()
 	var/datum/component/seethrough_mob/transparency = target
 	transparency.toggle_active()

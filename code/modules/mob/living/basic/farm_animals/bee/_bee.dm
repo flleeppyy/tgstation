@@ -61,6 +61,8 @@
 	)
 
 /mob/living/basic/bee/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_SPACEWALK, TRAIT_VENTCRAWLER_ALWAYS), INNATE_TRAIT)
 	generate_bee_visuals()
@@ -73,6 +75,8 @@
 	AddElement(/datum/element/can_be_held)
 
 /mob/living/basic/bee/mob_pickup(mob/living/picker)
+	procstart = null
+	src.procstart = null
 	if(flags_1 & HOLOGRAM_1)
 		return
 	var/obj/item/mob_holder/destructible/holder = new(get_turf(src), src, held_state, head_icon, held_lh, held_rh, worn_slot_flags)
@@ -85,15 +89,21 @@
 	picker.put_in_hands(holder)
 
 /mob/living/basic/bee/will_escape_storage()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /mob/living/basic/bee/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isnull(beehome))
 		. += span_warning("This bee is homeless!")
 
 /mob/living/basic/bee/Destroy()
+	procstart = null
+	src.procstart = null
 	if(beehome)
 		beehome.bees -= src
 		beehome = null
@@ -101,15 +111,21 @@
 	return ..()
 
 /mob/living/basic/bee/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & HOLOGRAM_1) && !gibbed)
 		spawn_corpse()
 	return ..()
 
 /// Leave something to remember us by
 /mob/living/basic/bee/proc/spawn_corpse()
+	procstart = null
+	src.procstart = null
 	new /obj/item/trash/bee(loc, src)
 
 /mob/living/basic/bee/early_melee_attack(atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -125,6 +141,8 @@
 		return BASIC_MOB_END_ATTACK_CHAIN_COOLDOWN
 
 /mob/living/basic/bee/proc/handle_habitation(obj/structure/beebox/hive)
+	procstart = null
+	src.procstart = null
 	if(hive == beehome) //if its our home, we enter or exit it
 		var/drop_location = (src in beehome.contents) ? get_turf(beehome) : beehome
 		forceMove(drop_location)
@@ -139,6 +157,8 @@
 		beehome.queen_bee = src
 
 /mob/living/basic/bee/proc/reagent_incompatible(mob/living/basic/bee/ruler)
+	procstart = null
+	src.procstart = null
 	if(!ruler)
 		return FALSE
 	if(ruler.beegent?.type != beegent?.type)
@@ -146,6 +166,8 @@
 	return FALSE
 
 /mob/living/basic/bee/proc/generate_bee_visuals()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 
 	var/bee_color = BEE_DEFAULT_COLOUR
@@ -164,6 +186,8 @@
 	add_overlay("[icon_base]_wings")
 
 /mob/living/basic/bee/proc/pollinate(obj/machinery/hydroponics/hydro)
+	procstart = null
+	src.procstart = null
 	if(!hydro.can_bee_pollinate())
 		return FALSE
 	hydro.recent_bee_visit = TRUE
@@ -184,6 +208,8 @@
 		beehome.bee_resources = min(beehome.bee_resources + growth, 100)
 
 /mob/living/basic/bee/proc/assign_reagent(datum/reagent/toxin)
+	procstart = null
+	src.procstart = null
 	if(!istype(toxin))
 		return
 	var/static/list/injection_range
@@ -199,9 +225,13 @@
 
 /// Picks a random toxin and assigns it to the bee
 /mob/living/basic/bee/proc/assign_random_toxin_reagent()
+	procstart = null
+	src.procstart = null
 	assign_reagent(GLOB.chemical_reagents_list[get_random_reagent_id(whitelist = subtypesof(/datum/reagent/toxin))])
 
 /mob/living/basic/bee/mutate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		assign_random_toxin_reagent()
@@ -215,12 +245,16 @@
 	ai_controller = /datum/ai_controller/basic_controller/queen_bee
 
 /mob/living/basic/bee/queen/will_escape_storage()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/basic/bee/toxin
 	desc = "This bee is holding some sort of fluid."
 
 /mob/living/basic/bee/toxin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	assign_random_toxin_reagent()
 
@@ -233,10 +267,14 @@
 	lifespan = 25 SECONDS
 
 /mob/living/basic/bee/timed/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(death)), lifespan)
 
 /mob/living/basic/bee/timed/spawn_corpse()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/despawn_effect(get_turf(src), /* copy_from = */ src)
 
 /obj/item/queen_bee
@@ -249,15 +287,21 @@
 	var/mob/living/basic/bee/queen/queen
 
 /obj/item/queen_bee/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_QUEEN_BEE, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 	RegisterSignal(src, COMSIG_ATOM_ATTACKBY, PROC_REF(handle_needle))
 
 /obj/item/queen_bee/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(queen)
 	return ..()
 
 /obj/item/queen_bee/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone != queen)
 		return
@@ -267,6 +311,8 @@
 		qdel(src)
 
 /obj/item/queen_bee/proc/handle_needle(obj/item/source, obj/item/syringe, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(syringe, /obj/item/reagent_containers/syringe))
@@ -300,6 +346,8 @@
 	name = queen.name
 
 /obj/item/queen_bee/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] eats [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	user.say("IT'S HIP TO EAT BEES!")
 	qdel(src)
@@ -308,6 +356,8 @@
 /obj/item/queen_bee/bought
 
 /obj/item/queen_bee/bought/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	queen = new(src)
 
@@ -322,6 +372,8 @@
 	var/bee_type = /mob/living/basic/bee
 
 /obj/item/trash/bee/Initialize(mapload, mob/living/basic/bee/dead_bee)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponentFrom(SOURCE_EDIBLE_INNATE, /datum/component/edible, list(/datum/reagent/consumable/nutriment/vitamin = 5), null, BEE_FOODGROUPS, 10, 0, list("bee"), null, 10)
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_QUEEN_BEE, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
@@ -338,10 +390,14 @@
 
 
 /obj/item/trash/bee/Destroy()
+	procstart = null
+	src.procstart = null
 	beegent = null
 	return ..()
 
 /obj/item/trash/bee/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/body_overlay = mutable_appearance(icon = icon, icon_state = "bee_item_overlay")
 	body_overlay.color = beegent ? beegent.color : BEE_DEFAULT_COLOUR
@@ -349,6 +405,8 @@
 
 ///Spawn a new bee from this trash item when hit by a lazarus injector and conditions are met.
 /obj/item/trash/bee/proc/use_lazarus(datum/source, obj/item/lazarus_injector/injector, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(injector.revive_type != SENTIENCE_ORGANIC)
 		balloon_alert(user, "invalid creature!")

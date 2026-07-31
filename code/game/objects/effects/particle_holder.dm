@@ -15,6 +15,8 @@
 	var/atom/parent
 
 /obj/effect/abstract/particle_holder/Initialize(mapload, particle_path = /particles/smoke, particle_flags = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!loc)
 		stack_trace("particle holder was created with no loc!")
@@ -41,18 +43,24 @@
 	on_move(parent, null, NORTH)
 
 /obj/effect/abstract/particle_holder/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(particles)
 	parent = null
 	return ..()
 
 /// Non movables don't delete contents on destroy, so we gotta do this
 /obj/effect/abstract/particle_holder/proc/parent_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /// signal called when a parent that's been hooked into this moves
 /// does a variety of checks to ensure overrides work out properly
 /obj/effect/abstract/particle_holder/proc/on_move(atom/movable/attached, atom/oldloc, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(particle_flags & PARTICLE_ATTACH_MOB))
@@ -70,4 +78,6 @@
 
 /// Sets the particles position to the passed coordinates
 /obj/effect/abstract/particle_holder/proc/set_particle_position(x = 0, y = 0, z = 0)
+	procstart = null
+	src.procstart = null
 	particles.position = list(x, y, z)

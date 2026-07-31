@@ -18,16 +18,22 @@
 	acid = 60
 
 /obj/vehicle/ridden/atv/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/atv)
 	if(!atvcover)
 		atvcover = mutable_appearance(icon, "atvcover", MOB_LAYER + 0.1)
 
 /obj/vehicle/ridden/atv/post_buckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	add_overlay(atvcover)
 	return ..()
 
 /obj/vehicle/ridden/atv/post_unbuckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(!has_buckled_mobs())
 		cut_overlay(atvcover)
 	return ..()
@@ -42,11 +48,15 @@
 	density = FALSE
 
 /obj/vehicle/ridden/atv/turret/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	turret = new(loc)
 	turret.base = src
 
 /obj/vehicle/ridden/atv/turret/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!turret)
 		return
@@ -73,6 +83,8 @@
 			turret.layer = OBJ_LAYER
 
 /obj/vehicle/ridden/atv/welder_act(mob/living/user, obj/item/W)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return
 	. = TRUE
@@ -100,10 +112,14 @@
 		user.balloon_alert_to_viewers("stopped welding [src]", "interrupted the repair!")
 
 /obj/vehicle/ridden/atv/atom_break()
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/vehicle/ridden/atv/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(atom_integrity >= integrity_failure * max_integrity)
 		return PROCESS_KILL
 	if(SPT_PROB(10, seconds_per_tick))
@@ -111,6 +127,8 @@
 	do_smoke(0, src, src)
 
 /obj/vehicle/ridden/atv/projectile_hit(obj/projectile/hitting_projectile, def_zone, piercing_hit, blocked)
+	procstart = null
+	src.procstart = null
 	if(prob(50) || !LAZYLEN(buckled_mobs))
 		return ..()
 	for(var/mob/buckled_mob as anything in buckled_mobs)
@@ -118,9 +136,13 @@
 	return ..()
 
 /obj/vehicle/ridden/atv/atom_destruction()
+	procstart = null
+	src.procstart = null
 	explosion(src, devastation_range = -1, light_impact_range = 2, flame_range = 3, flash_range = 4)
 	return ..()
 
 /obj/vehicle/ridden/atv/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj,src)
 	return ..()

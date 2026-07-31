@@ -59,6 +59,8 @@
 	var/blacklist_result = BLACKLIST_RESULT_IF_NOT_IN_REQS
 
 /datum/crafting_recipe/New()
+	procstart = null
+	src.procstart = null
 	if(!name && result)
 		var/atom/atom_result = result
 		name = initial(atom_result.name)
@@ -77,6 +79,8 @@
 	abstract_type = /datum/crafting_recipe/stack
 
 /datum/crafting_recipe/stack/New(obj/item/stack/material, datum/stack_recipe/stack_recipe)
+	procstart = null
+	src.procstart = null
 	if(!material || !stack_recipe || !stack_recipe.result_type)
 		stack_trace("Invalid stack recipe [stack_recipe]")
 		return
@@ -100,12 +104,18 @@
  * collected_requirements: A list of lists of /obj/item instances that satisfy reqs. Top level list is keyed by requirement path.
  */
 /datum/crafting_recipe/proc/check_requirements(mob/user, list/collected_requirements)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 ///Run custom pre-craft checks for this recipe for tools, rather than consumed requirements.
 /datum/crafting_recipe/proc/check_tools(atom/source, list/collected_tools, final_check = FALSE)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Additional UI data to be passed to the crafting UI for this recipe
 /datum/crafting_recipe/proc/crafting_ui_data()
+	procstart = null
+	src.procstart = null
 	return list()

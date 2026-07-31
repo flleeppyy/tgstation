@@ -2,6 +2,8 @@
 /datum/unit_test/ablative_hood_hud
 
 /datum/unit_test/ablative_hood_hud/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/person = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/clothing/suit/hooded/ablative/coat = allocate(/obj/item/clothing/suit/hooded/ablative)
 	var/datum/component/toggle_attached_clothing/hood = coat.GetComponent(/datum/component/toggle_attached_clothing)
@@ -16,6 +18,8 @@
 /datum/unit_test/ablative_hood_hud_with_helmet
 
 /datum/unit_test/ablative_hood_hud_with_helmet/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/person = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/clothing/suit/hooded/ablative/coat = allocate(/obj/item/clothing/suit/hooded/ablative)
 	var/datum/component/toggle_attached_clothing/hood = coat.GetComponent(/datum/component/toggle_attached_clothing)

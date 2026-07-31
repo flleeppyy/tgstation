@@ -9,6 +9,8 @@
 	max_wizard_trigger_potency = 7
 
 /datum/round_event/wizard/invincible/start()
+	procstart = null
+	src.procstart = null
 
 	for(var/mob/living/carbon/human/H in GLOB.alive_mob_list)
 		H.reagents.add_reagent(/datum/reagent/medicine/adminordrazine, 40) //100 ticks of absolute invinciblity (barring gibs)

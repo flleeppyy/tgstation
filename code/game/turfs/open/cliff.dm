@@ -23,6 +23,8 @@
 	var/underlay_plane
 
 /turf/open/cliff/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	RegisterSignal(src, COMSIG_TURF_MOVABLE_THROW_LANDED, PROC_REF(on_turf_movable_throw_landed))
@@ -36,10 +38,14 @@
 	underlays += underlay
 
 /turf/open/cliff/Destroy(force)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(src, COMSIG_TURF_MOVABLE_THROW_LANDED)
 	return ..()
 
 /turf/open/cliff/CanPass(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(border_dir & can_fall_from_direction || !can_fall(mover))
@@ -48,26 +54,36 @@
 	return FALSE
 
 /turf/open/cliff/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	try_fall(arrived)
 
 /turf/open/cliff/zImpact(atom/movable/falling, levels, turf/prev_turf, flags)
+	procstart = null
+	src.procstart = null
 	. = ..(flags = flags | FALL_INTERCEPTED)
 
 /// Something landed on us
 /turf/open/cliff/proc/on_turf_movable_throw_landed(turf/turf, atom/movable/arrived)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	try_fall(arrived)
 
 /// Try and make them fall
 /turf/open/cliff/proc/try_fall(atom/movable/arrived)
+	procstart = null
+	src.procstart = null
 	if(can_fall(arrived))
 		fall(arrived)
 
 /// Check if they can fall from us
 /turf/open/cliff/proc/can_fall(atom/movable/arrived)
+	procstart = null
+	src.procstart = null
 	// Check if we're a protected type that doesnt make sense to fall (like effects and bullets)
 	if(is_type_in_list(arrived, protected_types))
 		return FALSE
@@ -92,11 +108,15 @@
 
 /// Make them fall!
 /turf/open/cliff/proc/fall(atom/movable/arrived)
+	procstart = null
+	src.procstart = null
 	SScliff_falling.start_falling(arrived, src) //the movement is handled by the subsystem, but we get asked about behaviour later
 	on_fall(arrived)
 
 /// We just fell onto this chasm tile
 /turf/open/cliff/proc/on_fall(atom/movable/faller)
+	procstart = null
+	src.procstart = null
 	if(!isliving(faller))
 		return
 	var/mob/living/living = faller
@@ -105,6 +125,8 @@
 
 /// Check if the movement direction we're moving on (while already falling on us) is valid
 /turf/open/cliff/proc/can_move(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	//check if the relative direction we're moving is allowed, if not we block the movement
 	if(!(valid_move_dirs & get_dir(src, target)))
 		return FALSE

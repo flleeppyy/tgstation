@@ -12,6 +12,8 @@
 	var/surgical
 
 /datum/element/dangerous_organ_removal/Attach(datum/target, surgical = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isorgan(target))
 		return ELEMENT_INCOMPATIBLE
@@ -24,11 +26,15 @@
 		RegisterSignal(target, COMSIG_ORGAN_REMOVED, PROC_REF(on_removal))
 
 /datum/element/dangerous_organ_removal/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	UnregisterSignal(source, list(COMSIG_ORGAN_SURGICALLY_REMOVED, COMSIG_ORGAN_REMOVED))
 
 /datum/element/dangerous_organ_removal/proc/on_removal(obj/item/organ/source, mob/living/user, mob/living/carbon/old_owner, target_zone, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(surgical && source.organ_flags & (ORGAN_FAILING|ORGAN_EMP))

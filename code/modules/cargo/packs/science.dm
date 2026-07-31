@@ -27,6 +27,8 @@
 	crate_type = /obj/structure/closet/crate/secure/science
 
 /datum/supply_pack/science/raw_anomaly/generate_supply_packs()
+	procstart = null
+	src.procstart = null
 	if(length(contains))
 		return null // having contents indicates this is a generated pack so it doesn't need to generate more
 

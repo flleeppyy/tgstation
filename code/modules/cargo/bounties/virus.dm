@@ -5,6 +5,8 @@
 	var/stat_name = ""
 
 /datum/bounty/virus/New()
+	procstart = null
+	src.procstart = null
 	..()
 	stat_value = rand(4, 11)
 	if(rand(3) == 1)
@@ -14,12 +16,18 @@
 	reward += rand(0, 4) * CARGO_CRATE_VALUE
 
 /datum/bounty/virus/print_required()
+	procstart = null
+	src.procstart = null
 	return "At least 1u"
 
 /datum/bounty/virus/can_claim()
+	procstart = null
+	src.procstart = null
 	return shipped
 
 /datum/bounty/virus/applies_to(obj/export)
+	procstart = null
+	src.procstart = null
 	if(shipped)
 		return FALSE
 	if(export.flags_1 & HOLOGRAM_1)
@@ -33,34 +41,46 @@
 	return FALSE
 
 /datum/bounty/virus/ship(obj/export)
+	procstart = null
+	src.procstart = null
 	if(!applies_to(export))
 		return FALSE
 	shipped = TRUE
 	return TRUE
 
 /datum/bounty/virus/proc/accepts_virus(virus)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/bounty/virus/resistance
 	stat_name = "resistance"
 
 /datum/bounty/virus/resistance/accepts_virus(datum/disease/advance/virus)
+	procstart = null
+	src.procstart = null
 	return virus.totalResistance() == stat_value
 
 /datum/bounty/virus/stage_speed
 	stat_name = "stage speed"
 
 /datum/bounty/virus/stage_speed/accepts_virus(datum/disease/advance/virus)
+	procstart = null
+	src.procstart = null
 	return virus.totalStageSpeed() == stat_value
 
 /datum/bounty/virus/stealth
 	stat_name = "stealth"
 
 /datum/bounty/virus/stealth/accepts_virus(datum/disease/advance/virus)
+	procstart = null
+	src.procstart = null
 	return virus.totalStealth() == stat_value
 
 /datum/bounty/virus/transmit
 	stat_name = "transmission"
 
 /datum/bounty/virus/transmit/accepts_virus(datum/disease/advance/virus)
+	procstart = null
+	src.procstart = null
 	return virus.totalTransmittable() == stat_value

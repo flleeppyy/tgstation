@@ -30,11 +30,15 @@
 	var/datum/weakref/current
 
 /obj/item/hot_potato/Destroy()
+	procstart = null
+	src.procstart = null
 	if(active)
 		deactivate()
 	return ..()
 
 /obj/item/hot_potato/proc/colorize(mob/target)
+	procstart = null
+	src.procstart = null
 	//Clear color from old target
 	if(current)
 		var/mob/M = current.resolve()
@@ -49,6 +53,8 @@
 		target.add_atom_colour(color_val? "#ffff00" : "#00ffff", FIXED_COLOUR_PRIORITY)
 
 /obj/item/hot_potato/proc/detonate()
+	procstart = null
+	src.procstart = null
 	var/atom/location = loc
 	location.visible_message(span_userdanger("[src] [detonate_explosion? "explodes" : "activates"]!"), span_userdanger("[src] activates! You've ran out of time!"))
 	if(detonate_explosion && isliving(loc))
@@ -64,6 +70,8 @@
 		qdel(src)
 
 /obj/item/hot_potato/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(activate(timer, user))
 		user.visible_message(span_boldwarning("[user] squeezes [src], which promptly starts to flash red-hot colors!"), span_boldwarning("You squeeze [src], activating its countdown and attachment mechanism!"),
 		span_boldwarning("You hear a mechanical click and a loud beeping!"))
@@ -71,6 +79,8 @@
 	return ..()
 
 /obj/item/hot_potato/process()
+	procstart = null
+	src.procstart = null
 	if(!isliving(loc))
 		return
 	var/mob/living/L = loc
@@ -87,6 +97,8 @@
 
 
 /obj/item/hot_potato/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		. += span_warning("[src] is flashing red-hot! You should probably get rid of it!")
@@ -94,11 +106,15 @@
 			. += span_warning("[src]'s timer looks to be at [DisplayTimeText(activation_time - world.time)]!")
 
 /obj/item/hot_potato/equipped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		to_chat(user, span_userdanger("You have a really bad feeling about [src]!"))
 
 /obj/item/hot_potato/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -106,6 +122,8 @@
 	return force_onto(target_mob, user)
 
 /obj/item/hot_potato/proc/force_onto(mob/living/victim, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(victim) || user != loc || victim == user)
 		return FALSE
 	if(!victim.client)
@@ -135,10 +153,14 @@
 		user.put_in_hands(src)
 
 /obj/item/hot_potato/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	colorize(null)
 
 /obj/item/hot_potato/proc/activate(delay, mob/user)
+	procstart = null
+	src.procstart = null
 	if(active)
 		return
 	update_appearance()
@@ -161,6 +183,8 @@
 		)
 
 /obj/item/hot_potato/proc/deactivate()
+	procstart = null
+	src.procstart = null
 	update_appearance()
 	name = initial(name)
 	REMOVE_TRAIT(src, TRAIT_NODROP, HOT_POTATO_TRAIT)
@@ -171,6 +195,8 @@
 	active = FALSE
 
 /obj/item/hot_potato/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = active ? icon_on : icon_off
 	return ..()
 

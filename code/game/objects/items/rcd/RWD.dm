@@ -39,16 +39,22 @@
 #undef RWD_MAX_CABLES_MATS
 
 /obj/item/rwd/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/two_handed, wield_callback = CALLBACK(src, PROC_REF(on_wield)), unwield_callback = CALLBACK(src, PROC_REF(on_unwield)))
 	update_appearance(UPDATE_ICON_STATE)
 
 /obj/item/rwd/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!QDELETED(cable))
 		QDEL_NULL(cable)
 
 /obj/item/rwd/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "Dual wield & walk over floors to lay cable."
 	. += "It has [current_amount] pieces remaining."
@@ -56,6 +62,8 @@
 	. += "Alt click to change cable layer."
 
 /obj/item/rwd/update_icon_state()
+	procstart = null
+	src.procstart = null
 	switch(current_amount)
 		if(61 to INFINITY)
 			icon_state = "rwd-30-layer[cable_layer]"
@@ -72,6 +80,8 @@
 	return ..()
 
 /obj/item/rwd/attack_self_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	if(current_amount <= 0)
 		balloon_alert(user, "nothing to dispense!")
 		return
@@ -107,13 +117,19 @@
 
 /// triggered on wield of two handed item
 /obj/item/rwd/proc/on_wield(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	active = TRUE
 
 /// triggered on unwield of two handed item
 /obj/item/rwd/proc/on_unwield(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	active = FALSE
 
 /obj/item/rwd/pickup(mob/to_hook)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(listeningTo == to_hook)
 		return .
@@ -123,18 +139,24 @@
 	listeningTo = to_hook
 
 /obj/item/rwd/dropped(mob/wearer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(wearer, COMSIG_MOVABLE_MOVED)
 	listeningTo = null
 
 /// for inserting cable into the rwd
 /obj/item/rwd/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stack/cable_coil))
 		return NONE
 	add_cable(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/rwd/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!radial_menu)
 		radial_menu = list(
 			"Layer 1" = image(icon = 'icons/hud/radial.dmi', icon_state = "coil-red"),
@@ -156,6 +178,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/rwd/proc/check_menu(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(!ISADVANCEDTOOLUSER(user))
@@ -167,6 +191,8 @@
 
 /// insert cable into the rwd
 /obj/item/rwd/proc/add_cable(mob/user, obj/item/stack/cable_coil/cable)
+	procstart = null
+	src.procstart = null
 	if(current_amount == max_amount)
 		balloon_alert(user, "device is full!")
 		return
@@ -181,6 +207,8 @@
 
 /// modify cable properties according to its layer
 /obj/item/rwd/proc/modify_cable(obj/item/stack/cable_coil/target_cable)
+	procstart = null
+	src.procstart = null
 	switch(cable_layer)
 		if(CABLE_LAYER_1)
 			target_cable.set_cable_color(CABLE_COLOR_RED)
@@ -198,6 +226,8 @@
 
 /// get cached reference of cable which gets used over time
 /obj/item/rwd/proc/get_cable()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(cable))
 		var/create_amount = min(30, current_amount)
 		if(create_amount <= 0)
@@ -207,6 +237,8 @@
 
 /// check if the turf has the same cable layer as this design. If it does don't put cable here
 /obj/item/rwd/proc/cable_allowed_here(turf/the_turf)
+	procstart = null
+	src.procstart = null
 	// infer our intended cable design from the layer
 	var/obj/structure/cable/design_type
 	switch(cable_layer)
@@ -226,6 +258,8 @@
 
 /// extra safe modify just to be sure
 /obj/item/rwd/proc/delta_cable(amount, decrement)
+	procstart = null
+	src.procstart = null
 	if(decrement)
 		current_amount -= amount
 	else
@@ -234,6 +268,8 @@
 
 /// stuff to do when moving
 /obj/item/rwd/proc/on_move(mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isturf(user.loc))

@@ -30,10 +30,14 @@
 	var/activation_cooldown = 3 SECONDS
 
 /obj/item/assembly/Destroy()
+	procstart = null
+	src.procstart = null
 	holder = null
 	return ..()
 
 /obj/item/assembly/get_part_rating()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /**
@@ -42,6 +46,8 @@
  * Will also be called if the assembly holder is attached to a plasma (internals) tank or welding fuel (dispenser) tank.
  */
 /obj/item/assembly/proc/on_attach()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(!holder && connected)
 		holder = connected.holder
@@ -51,6 +57,8 @@
  * on_detach: Called when removed from an assembly holder or wiring datum
  */
 /obj/item/assembly/proc/on_detach()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(connected)
 		connected = null
@@ -66,12 +74,16 @@
  * holder_movement: Called when the assembly's holder detects movement
  */
 /obj/item/assembly/proc/holder_movement()
+	procstart = null
+	src.procstart = null
 	if(!holder)
 		return FALSE
 	setDir(holder.dir)
 	return TRUE
 
 /obj/item/assembly/proc/is_secured(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!secured)
 		to_chat(user, span_warning("\The [src] is unsecured!"))
 		return FALSE
@@ -83,6 +95,8 @@
  * * pulser: Who triggered the pulse
  */
 /obj/item/assembly/proc/pulsed(mob/pulser)
+	procstart = null
+	src.procstart = null
 	INVOKE_ASYNC(src, PROC_REF(activate), pulser)
 	SEND_SIGNAL(src, COMSIG_ASSEMBLY_PULSED)
 	return TRUE
@@ -91,6 +105,8 @@
  * Pulse: This device is emitting a pulse to act on another device
  */
 /obj/item/assembly/proc/pulse()
+	procstart = null
+	src.procstart = null
 	// if we have connected wires and are a pulsing assembly, pulse it
 	if(connected)
 		connected.pulse_assembly(src)
@@ -101,12 +117,16 @@
 
 /// What the device does when turned on
 /obj/item/assembly/proc/activate(mob/activator)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || !secured || !COOLDOWN_FINISHED(src, next_activate))
 		return FALSE
 	COOLDOWN_START(src, next_activate, activation_cooldown)
 	return TRUE
 
 /obj/item/assembly/proc/toggle_secure()
+	procstart = null
+	src.procstart = null
 	secured = !secured
 	update_appearance()
 	return secured
@@ -116,11 +136,15 @@
 // That would need to be added to all parent objects, or a signal created, whatever.
 // Anyway this return check prevents you from picking up every assembly inside the holder at once.
 /obj/item/assembly/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(holder || connected)
 		return
 	. = ..()
 
 /obj/item/assembly/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isassembly(tool))
 		var/obj/item/assembly/new_assembly = tool
 		// Check both our's and their's assembly flags to see if either should not duplicate
@@ -150,6 +174,8 @@
 	return NONE
 
 /obj/item/assembly/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(toggle_secure())
 		to_chat(user, span_notice("\The [src] is ready!"))
 	else
@@ -158,10 +184,14 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/assembly/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("\The [src] [secured? "is secured and ready to be used!" : "can be attached to other things."]")
 
 /obj/item/assembly/ui_host(mob/user)
+	procstart = null
+	src.procstart = null
 	// In order, return:
 	// - The conencted wiring datum's owner, or
 	// - The thing your assembly holder is attached to, or
@@ -170,4 +200,6 @@
 	return connected?.holder || holder?.master || holder || src
 
 /obj/item/assembly/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.hands_state

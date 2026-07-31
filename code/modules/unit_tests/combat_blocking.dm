@@ -2,6 +2,8 @@
 /datum/unit_test/unarmed_blocking
 
 /datum/unit_test/unarmed_blocking/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/attacker = EASY_ALLOCATE()
 	var/mob/living/carbon/human/consistent/victim = EASY_ALLOCATE()
 	var/obj/item/chair/chair = EASY_ALLOCATE()
@@ -17,6 +19,8 @@
 /datum/unit_test/armed_blocking
 
 /datum/unit_test/armed_blocking/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/attacker = EASY_ALLOCATE()
 	var/mob/living/carbon/human/consistent/victim = EASY_ALLOCATE()
 	var/obj/item/shield/riot/shield = EASY_ALLOCATE()

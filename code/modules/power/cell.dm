@@ -21,6 +21,8 @@
 	custom_materials = list(/datum/material/iron=SMALL_MATERIAL_AMOUNT*7, /datum/material/glass=SMALL_MATERIAL_AMOUNT*0.5)
 
 /obj/item/stock_parts/power_store/cell/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_FISHING_BAIT, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_POISONOUS_BAIT, INNATE_TRAIT) //bro is fishing using lithium...
@@ -31,6 +33,8 @@
 	)
 
 /obj/item/stock_parts/power_store/cell/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/lithium = 15, /datum/reagent/iron = 5, /datum/reagent/silicon = 5)
 
 /* Cell variants*/
@@ -45,6 +49,8 @@
 	custom_materials = list(/datum/material/glass=SMALL_MATERIAL_AMOUNT*0.4)
 
 /obj/item/stock_parts/power_store/cell/crap/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/update_icon_blocker)
 	return ..()
 
@@ -61,6 +67,8 @@
 	chargerate = STANDARD_CELL_RATE * 0.5
 
 /obj/item/stock_parts/power_store/cell/upgraded/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/update_icon_blocker)
 	return ..()
 
@@ -174,6 +182,8 @@
 	ratingdesc = FALSE
 
 /obj/item/stock_parts/power_store/cell/infinite/use(used, force = FALSE)
+	procstart = null
+	src.procstart = null
 	return used
 
 /obj/item/stock_parts/power_store/cell/infinite/abductor
@@ -185,6 +195,8 @@
 	ratingdesc = FALSE
 
 /obj/item/stock_parts/power_store/cell/infinite/abductor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/update_icon_blocker)
 	return ..()
 
@@ -202,6 +214,8 @@
 	custom_premium_price = PAYCHECK_CREW
 
 /obj/item/stock_parts/power_store/cell/potato/Initialize(mapload, override_maxcharge)
+	procstart = null
+	src.procstart = null
 	charge = maxcharge * 0.3
 	. = ..()
 
@@ -212,6 +226,8 @@
 	maxcharge = STANDARD_CELL_CHARGE * 0.5
 
 /obj/item/stock_parts/power_store/cell/emproof/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/empprotection, EMP_PROTECT_SELF)
 	return ..()
 
@@ -219,6 +235,8 @@
 	empty = TRUE
 
 /obj/item/stock_parts/power_store/cell/emproof/corrupt()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/stock_parts/power_store/cell/emproof/slime
@@ -239,6 +257,8 @@
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/stock_parts/power_store/cell/emergency_light/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/area/area = get_area(src)
 	if(area)
@@ -256,6 +276,8 @@
 	custom_materials = null
 
 /obj/item/stock_parts/power_store/cell/crystal_cell/grind_results()
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/item/stock_parts/power_store/cell/ethereal
@@ -270,8 +292,12 @@
 	emp_damage_modifier = 0
 
 /obj/item/stock_parts/power_store/cell/ethereal/grind_results()
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/item/stock_parts/power_store/cell/ethereal/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	CRASH("[src.type] got examined by [user]")

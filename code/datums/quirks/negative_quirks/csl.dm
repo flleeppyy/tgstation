@@ -13,6 +13,8 @@
 	VAR_PRIVATE/native_language
 
 /datum/quirk/csl/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	quirk_holder.remove_language(/datum/language/common, UNDERSTOOD_LANGUAGE, LANGUAGE_SPECIES)
 	quirk_holder.remove_language(/datum/language/common, UNDERSTOOD_LANGUAGE, LANGUAGE_ATOM)
 	if(length(quirk_holder.get_understood_languages()) < 1)
@@ -24,6 +26,8 @@
 	native_language = get_native_language()
 
 /datum/quirk/csl/remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(quirk_holder, COMSIG_SPECIES_GAIN)
 	UnregisterSignal(quirk_holder, COMSIG_MOB_SAY)
 
@@ -42,6 +46,8 @@
 		quirk_holder.grant_language(/datum/language/common, UNDERSTOOD_LANGUAGE, LANGUAGE_ATOM)
 
 /datum/quirk/csl/is_species_appropriate(datum/species/mob_species)
+	procstart = null
+	src.procstart = null
 	var/datum/language_holder/species_holder = GLOB.prototype_language_holders[mob_species.species_language_holder]
 	if(isnull(species_holder))
 		return FALSE
@@ -51,6 +57,8 @@
 
 /// Gets our native language from our list of spoken languages
 /datum/quirk/csl/proc/get_native_language()
+	procstart = null
+	src.procstart = null
 	var/list/language_pool = quirk_holder.get_language_holder()?.spoken_languages?.Copy()
 	if(!length(language_pool))
 		return // no languages to pick from at all?
@@ -70,12 +78,16 @@
 
 // Every time we change species we need to re-remove common from our list
 /datum/quirk/csl/proc/reremove_common(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	quirk_holder.remove_language(/datum/language/common, UNDERSTOOD_LANGUAGE, LANGUAGE_SPECIES)
 	native_language = get_native_language()
 
 // At low sanity we translate everything to our native language
 /datum/quirk/csl/proc/translate_parts(datum/source, list/say_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(say_args[SPEECH_FORCED] || isnull(native_language) || quirk_holder.mob_mood?.sanity > 75)

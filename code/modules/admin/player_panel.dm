@@ -1,4 +1,6 @@
-/datum/admins/proc/player_panel_new()//The new one
+/datum/admins/proc/player_panel_new()
+	procstart = null
+	src.procstart = null//The new one
 	if(!check_rights())
 		return
 	log_admin("[key_name(usr)] checked the player panel.")

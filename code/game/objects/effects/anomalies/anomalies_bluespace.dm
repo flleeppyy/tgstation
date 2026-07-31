@@ -11,19 +11,27 @@
 	var/teleport_distance = 4
 
 /obj/effect/anomaly/bluespace/Initialize(mapload, new_lifespan)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	apply_wibbly_filters(src)
 
 /obj/effect/anomaly/bluespace/anomalyEffect()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/mob/living/M in range(teleport_range,src))
 		do_teleport(M, locate(M.x, M.y, M.z), teleport_distance, channel = TELEPORT_CHANNEL_BLUESPACE)
 
 /obj/effect/anomaly/bluespace/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(isliving(AM))
 		do_teleport(AM, locate(AM.x, AM.y, AM.z), 8, channel = TELEPORT_CHANNEL_BLUESPACE)
 
 /obj/effect/anomaly/bluespace/detonate()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/circle_wave/bluespace(get_turf(src))
 	playsound(src, 'sound/effects/magic/cosmic_energy.ogg', vol = 50)
 
@@ -78,6 +86,8 @@
 			give_sparkles.flash_act(affect_silicon = TRUE, visual = TRUE, type = /atom/movable/screen/fullscreen/bluespace_sparkle, length = 2 SECONDS)
 
 /obj/effect/anomaly/bluespace/stabilize(anchor, has_core)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	teleport_range = 0 //bumping already teleports, so this just prevents people from being teleported when they don't expect it when interacting with stable bsanoms
@@ -90,11 +100,15 @@
 	anomaly_core = null
 
 /obj/effect/anomaly/bluespace/big/Initialize(mapload, new_lifespan)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	transform *= 3
 
 /obj/effect/anomaly/bluespace/big/Bumped(atom/movable/bumpee)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(bumpee))
 		var/mob/living/carbon/carbon = bumpee
 		carbon.reagents?.add_reagent(/datum/reagent/bluespace, 20)

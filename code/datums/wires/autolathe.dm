@@ -3,6 +3,8 @@
 	proper_name = "Autolathe"
 
 /datum/wires/autolathe/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(
 		WIRE_HACK, WIRE_DISABLE,
 		WIRE_SHOCK, WIRE_ZAP
@@ -11,6 +13,8 @@
 	..()
 
 /datum/wires/autolathe/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/obj/machinery/autolathe/A = holder
@@ -18,6 +22,8 @@
 		return TRUE
 
 /datum/wires/autolathe/get_status()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/autolathe/A = holder
 	var/list/status = list()
 	status += "The red light is [A.disabled ? "on" : "off"]."
@@ -25,6 +31,8 @@
 	return status
 
 /datum/wires/autolathe/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/autolathe/A = holder
 	switch(wire)
 		if(WIRE_HACK)
@@ -38,6 +46,8 @@
 			addtimer(CALLBACK(A, TYPE_PROC_REF(/obj/machinery/autolathe, reset), wire), 6 SECONDS)
 
 /datum/wires/autolathe/on_cut(wire, mend, source)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/autolathe/A = holder
 	switch(wire)
 		if(WIRE_HACK)

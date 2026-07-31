@@ -42,6 +42,8 @@
  * blood_or_dna - Either a blood type which will get added, or a full list of DNA
  */
 /obj/effect/decal/cleanable/blood/Initialize(mapload, list/datum/disease/diseases, list/blood_or_dna = get_default_blood_type())
+	procstart = null
+	src.procstart = null
 	var/can_hold_viruses = TRUE
 	if(istype(blood_or_dna, /datum/blood_type))
 		var/datum/blood_type/default_type = blood_or_dna
@@ -74,6 +76,8 @@
 		update_appearance()
 
 /obj/effect/decal/cleanable/blood/Destroy(force)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSblood_drying, src)
 	// connect_loc only unregisters via COMSIG_MOVABLE_MOVED, which never fires when the turf we're on gets replaced by ChangeTurf()
 	RemoveElement(/datum/element/connect_loc, loc_connections)
@@ -81,10 +85,14 @@
 
 /// Returns the default blood type for this decal for maploaded decals
 /obj/effect/decal/cleanable/blood/proc/get_default_blood_type()
+	procstart = null
+	src.procstart = null
 	return random_human_blood_type()
 
 // Add "bloodiness" of this blood's type to the human's shoes
 /obj/effect/decal/cleanable/blood/proc/on_entered(datum/source, atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(dried)
@@ -94,6 +102,8 @@
 		SEND_SIGNAL(AM, COMSIG_STEP_ON_BLOOD, src)
 
 /obj/effect/decal/cleanable/blood/update_name(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = initial(name)
 	if(base_name)
@@ -104,6 +114,8 @@
 		name = "[dry_prefix] [name]"
 
 /obj/effect/decal/cleanable/blood/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = initial(desc)
 	if(dried && dry_desc)
@@ -111,6 +123,8 @@
 
 /// Returns a string of all the blood reagents in the blood
 /obj/effect/decal/cleanable/blood/proc/get_blood_string()
+	procstart = null
+	src.procstart = null
 	var/list/blood_DNA = GET_ATOM_BLOOD_DECALS(src)
 	var/list/all_blood_names = list()
 	for(var/dna_sample in blood_DNA)
@@ -119,14 +133,20 @@
 	return english_list(all_blood_names, nothing_text = "blood")
 
 /obj/effect/decal/cleanable/blood/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(icon_state && emissive_alpha && emissive_alpha < alpha && !dried)
 		. += blood_emissive(icon, icon_state)
 
 /obj/effect/decal/cleanable/blood/proc/blood_emissive(icon_to_use, icon_state_to_use)
+	procstart = null
+	src.procstart = null
 	return emissive_appearance(icon_to_use, icon_state_to_use, src, alpha = 255 * emissive_alpha / alpha, effect_type = EMISSIVE_NO_BLOOM)
 
 /obj/effect/decal/cleanable/blood/lazy_init_reagents()
+	procstart = null
+	src.procstart = null
 	if (reagents)
 		return reagents
 
@@ -145,16 +165,22 @@
 	return reagents
 
 /obj/effect/decal/cleanable/blood/replace_decal(obj/effect/decal/cleanable/blood/merger)
+	procstart = null
+	src.procstart = null
 	if(merger.dried) // New blood will lie on dry blood
 		return FALSE
 	return ..()
 
 /obj/effect/decal/cleanable/blood/handle_merge_decal(obj/effect/decal/cleanable/blood/merger)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	merger.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
 	merger.adjust_bloodiness(bloodiness)
 
 /obj/effect/decal/cleanable/blood/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(dried || !can_dry)
 		return PROCESS_KILL
 
@@ -168,12 +194,16 @@
 /// Slows down the drying time by a given amount,
 /// then updates the effect, meaning the animation will slow down
 /obj/effect/decal/cleanable/blood/proc/slow_dry(by_amount)
+	procstart = null
+	src.procstart = null
 	drying_time += by_amount
 	total_dry_time += by_amount
 	update_atom_colour()
 
 /// This is what actually "dries" the blood
 /obj/effect/decal/cleanable/blood/proc/dry()
+	procstart = null
+	src.procstart = null
 	dried = TRUE
 	// Not deleting as doing so would cause reagents to get lazyloaded again
 	reagents?.clear_reagents()
@@ -183,6 +213,8 @@
 
 /// Increments or decrements the bloodiness value
 /obj/effect/decal/cleanable/blood/proc/adjust_bloodiness(by_amount, ignore_timer = FALSE)
+	procstart = null
+	src.procstart = null
 	if(by_amount == 0)
 		return FALSE
 
@@ -197,11 +229,15 @@
 	return TRUE
 
 /obj/effect/decal/cleanable/blood/update_atom_colour()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_blood_color()
 
 // When color changes we need to update the drying animation
 /obj/effect/decal/cleanable/blood/proc/update_blood_color()
+	procstart = null
+	src.procstart = null
 	var/base_color = BLOOD_COLOR_RED
 	// Get a default color based on DNA if it ends up unset somehow
 	var/list/blood_DNA = GET_ATOM_BLOOD_DECALS(src)
@@ -235,6 +271,8 @@
 /// Calculates and returns either an RGB or a matrix color for dried blood, depending on whever our current color is RGB or matrix
 /// Because BYOND does *not* like animating from text to matrix and vice versa
 /obj/effect/decal/cleanable/blood/proc/get_dried_color(base_color)
+	procstart = null
+	src.procstart = null
 	var/list/starting_color = rgb2num(base_color)
 
 	if (!starting_color)
@@ -279,6 +317,8 @@
 	is_mopped = FALSE
 
 /obj/effect/decal/cleanable/blood/splatter/over_window/NeverShouldHaveComeHere(turf/here_turf)
+	procstart = null
+	src.procstart = null
 	return isgroundlessturf(here_turf)
 
 /obj/effect/decal/cleanable/blood/tracks
@@ -303,6 +343,8 @@
 	var/list/obj/effect/decal/cleanable/blood/trail/trail_components
 
 /obj/effect/decal/cleanable/blood/trail_holder/Initialize(mapload, list/datum/disease/diseases, list/blood_or_dna = get_default_blood_type())
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "nothing"
 	update_appearance() // Cut possible overlays
@@ -310,6 +352,8 @@
 		add_dir_to_trail(dir)
 
 /obj/effect/decal/cleanable/blood/trail_holder/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST_ASSOC_VAL(trail_components)
 	return ..()
 
@@ -325,6 +369,8 @@
  * For example if you pass dir = EAST it will return the first SOUTHEAST, EAST, NORTHEAST, WEST, SOUTHWEST, or NORTHWEST trail component
  */
 /obj/effect/decal/cleanable/blood/trail_holder/proc/get_trail_component(for_dir, check_reverse = FALSE, check_diagonals = FALSE, check_reverse_diagonals = FALSE)
+	procstart = null
+	src.procstart = null
 	. = LAZYACCESS(trail_components, "[for_dir]")
 	if(.)
 		return .
@@ -362,6 +408,8 @@
  * Returns the new trail, a [/obj/effect/decal/cleanable/blood/trail]
  */
 /obj/effect/decal/cleanable/blood/trail_holder/proc/add_dir_to_trail(new_dir = NORTH, mob/living/source, blood_to_add = BLOOD_AMOUNT_PER_DECAL * 0.1, half_piece = FALSE)
+	procstart = null
+	src.procstart = null
 	var/check_reverse = TRUE
 	// Do not check the reverse dir if we're a diagonal corner
 	if (new_dir > 0 && !(new_dir in GLOB.cardinals))
@@ -467,6 +515,8 @@
 	var/very_bloody = FALSE
 
 /obj/effect/decal/cleanable/blood/trail/Initialize(mapload, list/datum/disease/diseases, list/blood_or_dna)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Despite having VIS_INHERIT_PLANE, our emissives still inherit our plane offset, so we need to inherit our parent's offset to have them render correctly
 	if(istype(loc, /obj/effect/decal/cleanable/blood/trail_holder))
@@ -486,14 +536,20 @@
 	return INITIALIZE_HINT_QDEL
 
 /obj/effect/decal/cleanable/blood/trail/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = "A [dried ? "dried " : ""]trail of [get_blood_string()]."
 
 /obj/effect/decal/cleanable/blood/trail/lazy_init_reagents()
+	procstart = null
+	src.procstart = null
 	if(!istype(loc, /obj/effect/decal/cleanable/blood/trail_holder))
 		return ..()
 
 /obj/effect/decal/cleanable/blood/trail/adjust_bloodiness(by_amount, ignore_timer = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(very_bloody || bloodiness < 0.25 * BLOOD_AMOUNT_PER_DECAL)
 		return
@@ -504,6 +560,8 @@
 	update_appearance()
 
 /obj/effect/decal/cleanable/blood/trail/update_icon(updates)
+	procstart = null
+	src.procstart = null
 	if (half_piece)
 		icon_state = "[base_icon_state]_start"
 	else
@@ -536,6 +594,8 @@
 	var/leave_blood = TRUE
 
 /obj/effect/decal/cleanable/blood/gibs/Initialize(mapload, list/datum/disease/diseases, list/blood_or_dna = get_default_blood_type())
+	procstart = null
+	src.procstart = null
 	. = ..()
 	leave_blood = has_blood_flag(GET_ATOM_BLOOD_DNA(src), BLOOD_COVER_TURFS)
 	if(squishy)
@@ -545,11 +605,15 @@
 
 /// Don't override our reagents with our bloodtype ones, if bloodtypes want unique reagents they need to do it themselves (like oil)
 /obj/effect/decal/cleanable/blood/gibs/lazy_init_reagents()
+	procstart = null
+	src.procstart = null
 	if (reagents)
 		return reagents
 	return init_reagents(decal_reagent, reagent_amount)
 
 /obj/effect/decal/cleanable/blood/gibs/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!has_overlay)
 		return
@@ -561,16 +625,24 @@
 	. += gib_overlay
 
 /obj/effect/decal/cleanable/blood/gibs/get_blood_string()
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/effect/decal/cleanable/blood/gibs/Destroy()
+	procstart = null
+	src.procstart = null
 	LAZYNULL(streak_diseases)
 	return ..()
 
 /obj/effect/decal/cleanable/blood/gibs/replace_decal(obj/effect/decal/cleanable/C)
+	procstart = null
+	src.procstart = null
 	return FALSE //Never fail to place us
 
 /obj/effect/decal/cleanable/blood/gibs/dry()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -578,9 +650,13 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/effect/decal/cleanable/blood/gibs/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/effect/decal/cleanable/blood/gibs/proc/on_pipe_eject(atom/source, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/list/dirs
@@ -592,6 +668,8 @@
 	streak(dirs)
 
 /obj/effect/decal/cleanable/blood/gibs/proc/streak(list/directions, mapload = FALSE)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_GIBS_STREAK, directions)
 	var/direction = pick(directions)
 	var/delay = 2
@@ -613,11 +691,15 @@
 			break
 
 /obj/effect/decal/cleanable/blood/gibs/proc/create_splatter()
+	procstart = null
+	src.procstart = null
 	var/turf/my_turf = get_turf(src)
 	if(!isgroundlessturf(my_turf) || GET_TURF_BELOW(my_turf))
 		new /obj/effect/decal/cleanable/blood/splatter(my_turf, streak_diseases, GET_ATOM_BLOOD_DNA(src))
 
 /obj/effect/decal/cleanable/blood/gibs/proc/spread_movement_effects(datum/move_loop/has_target/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!NeverShouldHaveComeHere(loc))
 		new /obj/effect/decal/cleanable/blood/splatter(loc, streak_diseases, GET_ATOM_BLOOD_DNA(src))
@@ -656,6 +738,8 @@
 	dry_desc = null
 
 /obj/effect/decal/cleanable/blood/gibs/old/Initialize(mapload, list/datum/disease/diseases, list/blood_or_dna = get_default_blood_type())
+	procstart = null
+	src.procstart = null
 	. = ..()
 	setDir(pick(GLOB.cardinals))
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_SLUDGE, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 10)
@@ -690,6 +774,8 @@
 	var/list/species_types
 
 /obj/effect/decal/cleanable/blood/footprints/Initialize(mapload, list/datum/disease/diseases, list/blood_or_dna = get_default_blood_type())
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "" // All of the footprint visuals come from overlays
 	if(mapload)
@@ -697,10 +783,14 @@
 	update_appearance()
 
 /obj/effect/decal/cleanable/blood/footprints/get_blood_string()
+	procstart = null
+	src.procstart = null
 	return null
 
 //Rotate all of the footprint directions too
 /obj/effect/decal/cleanable/blood/footprints/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	if(dir == newdir)
 		return ..()
 
@@ -720,6 +810,8 @@
 	return ..()
 
 /obj/effect/decal/cleanable/blood/footprints/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/bloody_footprints_cache = list()
 	var/icon_state_to_use = "blood"
@@ -764,6 +856,8 @@
 				. += emissive_overlay
 
 /obj/effect/decal/cleanable/blood/footprints/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(LAZYLEN(species_types) + LAZYLEN(shoe_types) == 0)
 		return
@@ -816,6 +910,8 @@
 	var/leave_blood = TRUE
 
 /obj/effect/decal/cleanable/blood/hitsplatter/Initialize(mapload, list/datum/disease/diseases, list/blood_or_dna = get_default_blood_type(), splatter_strength)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	leave_blood = has_blood_flag(GET_ATOM_BLOOD_DNA(src), BLOOD_COVER_TURFS)
 	prev_loc = loc //Just so we are sure prev_loc exists
@@ -823,6 +919,8 @@
 		src.splatter_strength = splatter_strength
 
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/expire()
+	procstart = null
+	src.procstart = null
 	if(isturf(loc) && !skip)
 		playsound(src, 'sound/effects/wounds/splatter.ogg', 60, TRUE, -1)
 		loc.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
@@ -830,6 +928,8 @@
 
 /// Set the splatter up to fly through the air until it rounds out of steam or hits something
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/fly_towards(turf/target_turf, range)
+	procstart = null
+	src.procstart = null
 	flight_dir = get_dir(src, target_turf)
 	var/datum/move_loop/loop = GLOB.move_manager.move_towards(src, target_turf, splatter_speed, timeout = splatter_speed * range, priority = MOVEMENT_ABOVE_SPACE_PRIORITY, flags = MOVEMENT_LOOP_START_FAST)
 	RegisterSignal(loop, COMSIG_MOVELOOP_PREPROCESS_CHECK, PROC_REF(pre_move))
@@ -837,10 +937,14 @@
 	RegisterSignal(loop, COMSIG_QDELETING, PROC_REF(loop_done))
 
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/pre_move(datum/move_loop/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	prev_loc = loc
 
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/post_move(datum/move_loop/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(loc == prev_loc || !isturf(loc))
 		return
@@ -877,11 +981,15 @@
 	fly_trail.update_appearance()
 
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/loop_done(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!QDELETED(src))
 		expire()
 
 /obj/effect/decal/cleanable/blood/hitsplatter/Bump(atom/bumped_atom)
+	procstart = null
+	src.procstart = null
 	if(!iswallturf(bumped_atom) && !istype(bumped_atom, /obj/structure/window))
 		expire()
 		return
@@ -916,6 +1024,8 @@
 
 /// A special case for hitsplatters hitting windows, since those can actually be moved around, store it in the window and slap it in the vis_contents
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/land_on_window(obj/structure/window/the_window)
+	procstart = null
+	src.procstart = null
 	if(!leave_blood)
 		the_window.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
 		return TRUE

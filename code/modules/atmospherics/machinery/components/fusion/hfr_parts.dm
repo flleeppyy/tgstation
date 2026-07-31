@@ -24,20 +24,30 @@
 	var/cracked = FALSE
 
 /obj/machinery/atmospherics/components/unary/hypertorus/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	initialize_directions = dir
 
 /obj/machinery/atmospherics/components/unary/hypertorus/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("[src] can be rotated by first opening the panel with a screwdriver and then using a wrench on it.")
 
 /obj/machinery/atmospherics/components/unary/hypertorus/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return fusion_started ? NONE : default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/atmospherics/components/unary/hypertorus/wrench_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	return default_change_direction_wrench(user, I)
 
 /obj/machinery/atmospherics/components/unary/hypertorus/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!cracked)
 		return FALSE
 	if(user.combat_mode)
@@ -49,9 +59,13 @@
 		update_appearance(UPDATE_ICON)
 
 /obj/machinery/atmospherics/components/unary/hypertorus/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return crowbar_deconstruction_act(user, tool)
 
 /obj/machinery/atmospherics/components/unary/hypertorus/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		icon_state = "[base_icon_state]_open"
 		return ..()
@@ -59,6 +73,8 @@
 	return ..()
 
 /obj/machinery/atmospherics/components/unary/hypertorus/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cracked)
 		. += image(icon, "crack", dir = src.dir)
@@ -67,6 +83,8 @@
 		. += emissive_appearance(icon, "[base_icon_state]_active", src, alpha = src.alpha)
 
 /obj/machinery/atmospherics/components/unary/hypertorus/update_layer()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/atmospherics/components/unary/hypertorus/fuel_input
@@ -109,19 +127,29 @@
 	var/fusion_started = FALSE
 
 /obj/machinery/hypertorus/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("[src] can be rotated by first opening the panel with a screwdriver and then using a wrench on it.")
 
 /obj/machinery/hypertorus/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return fusion_started ? NONE : default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/hypertorus/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_change_direction_wrench(user, tool)
 
 /obj/machinery/hypertorus/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/hypertorus/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		icon_state = "[base_icon_state]_open"
 		return ..()
@@ -129,6 +157,8 @@
 	return ..()
 
 /obj/machinery/hypertorus/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		. += "[base_icon_state]_active"
@@ -146,11 +176,15 @@
 	var/obj/machinery/atmospherics/components/unary/hypertorus/core/connected_core
 
 /obj/machinery/hypertorus/interface/Destroy()
+	procstart = null
+	src.procstart = null
 	if(connected_core)
 		connected_core = null
 	return..()
 
 /obj/machinery/hypertorus/interface/multitool_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/T = get_step(src,REVERSE_DIR(dir))
 	var/obj/machinery/atmospherics/components/unary/hypertorus/core/centre = locate() in T
@@ -168,6 +202,8 @@
 	return TRUE
 
 /obj/machinery/hypertorus/interface/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(active)
 		ui = SStgui.try_update_ui(user, src, ui)
 		if(!ui)
@@ -178,6 +214,8 @@
 		ui.close()
 
 /obj/machinery/hypertorus/interface/proc/gas_list_to_gasid_list(list/gas_list)
+	procstart = null
+	src.procstart = null
 	var/list/gasid_list = list()
 	for(var/gas_type in gas_list)
 		var/datum/gas/gas = gas_type
@@ -187,6 +225,8 @@
 
 
 /obj/machinery/hypertorus/interface/ui_static_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["base_max_temperature"] = FUSION_MAXIMUM_TEMPERATURE
 	data["selectable_fuel"] = list(list("name" = "Nothing", "id" = null))
@@ -209,6 +249,8 @@
 	return data
 
 /obj/machinery/hypertorus/interface/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 
 	if(connected_core.selected_fuel)
@@ -302,6 +344,8 @@
 	return data
 
 /obj/machinery/hypertorus/interface/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -460,6 +504,8 @@
 	part_path = /obj/machinery/atmospherics/components/unary/hypertorus/core
 
 /obj/item/hfr_box/core/multitool_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/parts = list()
 	for(var/obj/item/hfr_box/box in orange(1,src))
@@ -488,6 +534,8 @@
 	return
 
 /obj/item/hfr_box/core/proc/build_reactor(list/parts)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/hfr_box/box in parts)
 		if(box.box_type == "corner")
 			var/obj/machinery/hypertorus/corner/corner = new box.part_path(box.loc)

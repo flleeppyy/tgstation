@@ -9,12 +9,16 @@
 	var/list/sources_watching
 
 /obj/machinery/camera/silicon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(loc))
 		return INITIALIZE_HINT_QDEL
 	living_host = loc
 
 /obj/machinery/camera/silicon/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!isnull(living_host))
 		if(living_host.has_alert(ALERT_SILICON_RECORDING))
 			living_host.clear_alert(ALERT_SILICON_RECORDING)
@@ -23,10 +27,14 @@
 	return ..()
 
 /obj/machinery/camera/silicon/on_start_watching(datum/source)
+	procstart = null
+	src.procstart = null
 	LAZYADD(sources_watching, source)
 	living_host.throw_alert(ALERT_SILICON_RECORDING, /atom/movable/screen/alert/being_recorded)
 
 /obj/machinery/camera/silicon/on_stop_watching(datum/no_longer_watching)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(sources_watching, no_longer_watching)
 	if(!LAZYLEN(sources_watching) && living_host.has_alert(ALERT_SILICON_RECORDING))
 		living_host.clear_alert(ALERT_SILICON_RECORDING)

@@ -26,6 +26,8 @@
 	var/atom/movable/screen/buildmode/preview_item/preview
 
 /datum/buildmode/New(client/c)
+	procstart = null
+	src.procstart = null
 	mode = new /datum/buildmode_mode/basic(src)
 	holder = c
 	buttons = list()
@@ -38,6 +40,8 @@
 	mode.enter_mode(src)
 
 /datum/buildmode/proc/quit()
+	procstart = null
+	src.procstart = null
 	mode.exit_mode(src)
 	holder.screen -= buttons
 	holder.click_intercept = null
@@ -45,6 +49,8 @@
 	qdel(src)
 
 /datum/buildmode/Destroy()
+	procstart = null
+	src.procstart = null
 	close_switchstates()
 	close_preview()
 	holder.persistent_client.post_login_callbacks -= li_cb
@@ -59,6 +65,8 @@
 	return ..()
 
 /datum/buildmode/proc/post_login()
+	procstart = null
+	src.procstart = null
 	// since these will get wiped upon login
 	holder.screen += buttons
 	// re-open the according switch mode
@@ -69,6 +77,8 @@
 			open_dirswitch()
 
 /datum/buildmode/proc/create_buttons()
+	procstart = null
+	src.procstart = null
 	// keep a reference so we can update it upon mode switch
 	modebutton = new /atom/movable/screen/buildmode/mode(src)
 	buttons += modebutton
@@ -84,6 +94,8 @@
 // this creates a nice offset grid for choosing between buildmode options,
 // because going "click click click ah hell" sucks.
 /datum/buildmode/proc/build_options_grid(list/elements, list/buttonslist, buttontype)
+	procstart = null
+	src.procstart = null
 	var/pos_idx = 0
 	for(var/thing in elements)
 		var/x = pos_idx % switch_width
@@ -95,6 +107,8 @@
 		pos_idx++
 
 /datum/buildmode/proc/close_switchstates()
+	procstart = null
+	src.procstart = null
 	switch(switch_state)
 		if(BM_SWITCHSTATE_MODE)
 			close_modeswitch()
@@ -102,6 +116,8 @@
 			close_dirswitch()
 
 /datum/buildmode/proc/toggle_modeswitch()
+	procstart = null
+	src.procstart = null
 	if(switch_state == BM_SWITCHSTATE_MODE)
 		close_modeswitch()
 	else
@@ -109,14 +125,20 @@
 		open_modeswitch()
 
 /datum/buildmode/proc/open_modeswitch()
+	procstart = null
+	src.procstart = null
 	switch_state = BM_SWITCHSTATE_MODE
 	holder.screen += modeswitch_buttons
 
 /datum/buildmode/proc/close_modeswitch()
+	procstart = null
+	src.procstart = null
 	switch_state = BM_SWITCHSTATE_NONE
 	holder.screen -= modeswitch_buttons
 
 /datum/buildmode/proc/toggle_dirswitch()
+	procstart = null
+	src.procstart = null
 	if(switch_state == BM_SWITCHSTATE_DIR)
 		close_dirswitch()
 	else
@@ -124,14 +146,20 @@
 		open_dirswitch()
 
 /datum/buildmode/proc/open_dirswitch()
+	procstart = null
+	src.procstart = null
 	switch_state = BM_SWITCHSTATE_DIR
 	holder.screen += dirswitch_buttons
 
 /datum/buildmode/proc/close_dirswitch()
+	procstart = null
+	src.procstart = null
 	switch_state = BM_SWITCHSTATE_NONE
 	holder.screen -= dirswitch_buttons
 
 /datum/buildmode/proc/preview_selected_item(atom/typepath)
+	procstart = null
+	src.procstart = null
 	close_preview()
 	preview = new /atom/movable/screen/buildmode/preview_item(src)
 	preview.name = initial(typepath.name)
@@ -146,12 +174,16 @@
 	holder.screen += preview
 
 /datum/buildmode/proc/close_preview()
+	procstart = null
+	src.procstart = null
 	if(isnull(preview))
 		return
 	holder.screen -= preview
 	QDEL_NULL(preview)
 
 /datum/buildmode/proc/change_mode(newmode)
+	procstart = null
+	src.procstart = null
 	mode.exit_mode(src)
 	QDEL_NULL(mode)
 	close_switchstates()
@@ -161,12 +193,16 @@
 	modebutton.update_appearance()
 
 /datum/buildmode/proc/change_dir(newdir)
+	procstart = null
+	src.procstart = null
 	build_dir = newdir
 	close_dirswitch()
 	dirbutton.update_appearance()
 	return 1
 
 /datum/buildmode/proc/InterceptClickOn(mob/user, params, atom/object)
+	procstart = null
+	src.procstart = null
 	mode.handle_click(user.client, params, object)
 	return TRUE // no doing underlying actions
 

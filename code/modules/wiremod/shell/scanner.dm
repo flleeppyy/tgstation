@@ -17,6 +17,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 3.5, /datum/material/glass = SHEET_MATERIAL_AMOUNT)
 
 /obj/item/wiremod_scanner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/shell, list(
 		new /obj/item/circuit_component/wiremod_scanner()
@@ -38,20 +40,28 @@
 
 
 /obj/item/circuit_component/wiremod_scanner/populate_ports()
+	procstart = null
+	src.procstart = null
 	attacker = add_output_port("Scanner", PORT_TYPE_ATOM)
 	attacking = add_output_port("Scanned Entity", PORT_TYPE_ATOM)
 	signal = add_output_port("Scanned", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/wiremod_scanner/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(shell, COMSIG_ITEM_INTERACTING_WITH_ATOM, PROC_REF(handle_interaction))
 
 /obj/item/circuit_component/wiremod_scanner/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(shell, COMSIG_ITEM_INTERACTING_WITH_ATOM)
 
 /**
  * Called when the shell item attacks something
  */
 /obj/item/circuit_component/wiremod_scanner/proc/handle_interaction(atom/source, mob/user, atom/target, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	source.balloon_alert(user, "scanned object")
 	playsound(source, SFX_TERMINAL_TYPE, 25, FALSE)

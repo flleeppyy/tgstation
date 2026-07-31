@@ -5,12 +5,18 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/choiced/mod_select/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list(MIDDLE_CLICK, ALT_CLICK)
 
 /datum/preference/choiced/mod_select/create_default_value()
+	procstart = null
+	src.procstart = null
 	return MIDDLE_CLICK
 
 /datum/preference/choiced/mod_select/apply_to_client_updated(client/client, value)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(client.mob))
 		return
 	var/mob/living/carbon/human/client_owner = client.mob

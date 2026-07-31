@@ -6,6 +6,8 @@
 /datum/unit_test/wizard_loadout
 
 /datum/unit_test/wizard_loadout/Run()
+	procstart = null
+	src.procstart = null
 	for(var/loadout in ALL_WIZARD_LOADOUTS)
 		var/obj/item/spellbook/wizard_book = allocate(/obj/item/spellbook)
 		var/mob/living/carbon/human/wizard = allocate(/mob/living/carbon/human/consistent)

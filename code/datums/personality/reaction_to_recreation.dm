@@ -19,15 +19,21 @@
 	var/mood_event_type
 
 /datum/personality/slacking/apply_to_mob(mob/living/who)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	who.apply_status_effect(/datum/status_effect/moodlet_in_area, mood_event_type, slacker_areas, CALLBACK(src, PROC_REF(is_slacking)))
 
 /datum/personality/slacking/remove_from_mob(mob/living/who)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	who.remove_status_effect(/datum/status_effect/moodlet_in_area, mood_event_type)
 
 /// Callback for the moodlet_in_area status effect to determine if we're slacking off
 /datum/personality/slacking/proc/is_slacking(mob/living/who, area/new_area)
+	procstart = null
+	src.procstart = null
 	if(!istype(new_area, /area/station/service))
 		return TRUE
 	// Service workers don't slack in service
@@ -54,18 +60,24 @@
 	groups = list(PERSONALITY_GROUP_RECREATION)
 
 /datum/personality/slacking/diligent/apply_to_mob(mob/living/who)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignals(who, list(COMSIG_MOB_MIND_TRANSFERRED_INTO, COMSIG_MOB_MIND_SET_ROLE), PROC_REF(update_effect))
 	// Unfortunate side effect here in that IC job changes, IE HoP are missed
 	who.apply_status_effect(/datum/status_effect/moodlet_in_area, /datum/mood_event/working_diligent, who.mind?.get_work_areas())
 
 /datum/personality/slacking/diligent/remove_from_mob(mob/living/who)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(who, list(COMSIG_MOB_MIND_TRANSFERRED_INTO, COMSIG_MOB_MIND_SET_ROLE))
 	who.remove_status_effect(/datum/status_effect/moodlet_in_area, /datum/mood_event/working_diligent)
 
 /// Signal handler to update our status effect when our job changes
 /datum/personality/slacking/diligent/proc/update_effect(mob/living/source, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	source.remove_status_effect(/datum/status_effect/moodlet_in_area, /datum/mood_event/working_diligent)

@@ -20,11 +20,15 @@
 	var/valid_output_configuration = FALSE
 
 /obj/machinery/plumbing/bottler/Initialize(mapload, layer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/plumbing/simple_demand, layer, distinct_reagent_cap = 3)
 	setDir(dir)
 
 /obj/machinery/plumbing/bottler/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("A small screen indicates that it will fill for [wanted_amount]u.")
 	if(!valid_output_configuration)
@@ -32,6 +36,8 @@
 
 ///changes the tile array
 /obj/machinery/plumbing/bottler/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/target_turf = get_turf(src)
 	switch(dir)
@@ -59,6 +65,8 @@
 
 ///changing input ammount with a window
 /obj/machinery/plumbing/bottler/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!valid_output_configuration)
 		to_chat(user, span_warning("A flashing notification on the screen reads: \"Output location error!\""))
@@ -70,6 +78,8 @@
 	to_chat(user, span_notice(" The [src] will now fill for [wanted_amount]u."))
 
 /obj/machinery/plumbing/bottler/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!is_operational)
 		return
 	// Sanity check the result locations and stop processing if they don't exist

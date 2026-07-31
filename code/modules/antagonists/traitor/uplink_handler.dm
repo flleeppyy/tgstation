@@ -38,25 +38,35 @@
 	var/datum/contractor_hub/contractor_hub
 
 /datum/uplink_handler/Destroy(force)
+	procstart = null
+	src.procstart = null
 	can_replace_objectives = null
 	replace_objectives = null
 	return ..()
 
 /// Called whenever an update occurs on this uplink handler. Used for UIs
 /datum/uplink_handler/proc/on_update()
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_UPLINK_HANDLER_ON_UPDATE)
 	return
 
 /// Checks if traitor has enough reputation to purchase an item
 /datum/uplink_handler/proc/not_enough_reputation(datum/uplink_item/to_purchase)
+	procstart = null
+	src.procstart = null
 	return has_progression && progression_points < to_purchase.progression_minimum
 
 /// Checks if there are enough joined players to purchase an item
 /datum/uplink_handler/proc/not_enough_population(datum/uplink_item/to_purchase)
+	procstart = null
+	src.procstart = null
 	return length(GLOB.joined_player_list) < to_purchase.population_minimum
 
 /// Checks for uplink flags as well as items restricted to roles and species
 /datum/uplink_handler/proc/check_if_restricted(datum/uplink_item/to_purchase)
+	procstart = null
+	src.procstart = null
 	if(!to_purchase.can_be_bought(src))
 		return FALSE
 	if((to_purchase in extra_purchasable))
@@ -70,6 +80,8 @@
 	return TRUE
 
 /datum/uplink_handler/proc/can_purchase_item(mob/user, datum/uplink_item/to_purchase)
+	procstart = null
+	src.procstart = null
 	if(debug_mode)
 		return TRUE
 
@@ -98,6 +110,8 @@
 	return TRUE
 
 /datum/uplink_handler/proc/purchase_item(mob/user, datum/uplink_item/to_purchase, atom/movable/source)
+	procstart = null
+	src.procstart = null
 	if(!can_purchase_item(user, to_purchase))
 		return
 
@@ -115,6 +129,8 @@
 	return TRUE
 
 /datum/uplink_handler/proc/purchase_raw_tc(mob/user, amount, atom/movable/source)
+	procstart = null
+	src.procstart = null
 	if(shop_locked)
 		return FALSE
 	if(telecrystals < amount)
@@ -130,9 +146,13 @@
 
 ///Helper to add telecrystals to the uplink handler, calling set_telecrystals.
 /datum/uplink_handler/proc/add_telecrystals(amount)
+	procstart = null
+	src.procstart = null
 	set_telecrystals(telecrystals + amount)
 
 ///Sets how many telecrystals the uplink handler has, then updates the UI for any players watching.
 /datum/uplink_handler/proc/set_telecrystals(amount)
+	procstart = null
+	src.procstart = null
 	telecrystals = amount
 	on_update()

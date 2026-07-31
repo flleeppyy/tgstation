@@ -3,6 +3,8 @@
 	var/was_clicked = FALSE
 
 /datum/unit_test/alerts/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 	dummy.mock_client = new /datum/client_interface()
 
@@ -21,6 +23,8 @@
 	var/datum/unit_test/alerts/linked
 
 /atom/movable/screen/alert/test_alert/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -28,12 +32,16 @@
 	linked.was_clicked = TRUE
 
 /atom/movable/screen/alert/test_alert/Destroy()
+	procstart = null
+	src.procstart = null
 	linked = null
 	return ..()
 
 /datum/unit_test/alert_underlay_stripping
 
 /datum/unit_test/alert_underlay_stripping/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/dummy = EASY_ALLOCATE()
 	dummy.equipOutfit(/datum/outfit/job/assistant/consistent)
 	dummy.mock_client = new /datum/client_interface()

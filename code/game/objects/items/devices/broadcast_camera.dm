@@ -36,20 +36,28 @@
 	var/obj/item/radio/entertainment/microphone/internal_radio
 
 /obj/item/broadcast_camera/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddElement(/datum/element/empprotection, EMP_PROTECT_ALL)
 
 /obj/item/broadcast_camera/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(internal_radio)
 	QDEL_NULL(internal_camera)
 	return ..()
 
 /obj/item/broadcast_camera/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][active]"
 	return ..()
 
 /obj/item/broadcast_camera/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	active = !active
 	if(active)
@@ -58,26 +66,36 @@
 		on_deactivating()
 
 /obj/item/broadcast_camera/attack_self_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	broadcast_name = tgui_input_text(user = user, title = "Broadcast Name", message = "What will be the name of your broadcast?", default = "[broadcast_name]", max_length = MAX_CHARTER_LEN)
 
 /obj/item/broadcast_camera/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Broadcast name is <b>[broadcast_name]</b>")
 	. += span_notice("The microphone is <b>[active_microphone ? "On" : "Off"]</b>")
 
 /obj/item/broadcast_camera/on_enter_storage(datum/storage/master_storage)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		on_deactivating()
 
 /obj/item/broadcast_camera/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		on_deactivating()
 
 /// When activating the camera
 /obj/item/broadcast_camera/proc/on_activating()
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(loc))
 		return
 	active = TRUE
@@ -104,6 +122,8 @@
 
 /// When deactivating the camera
 /obj/item/broadcast_camera/proc/on_deactivating()
+	procstart = null
+	src.procstart = null
 	active = FALSE
 	update_icon_state()
 	QDEL_NULL(internal_camera)
@@ -116,6 +136,8 @@
 	balloon_alert_to_viewers("offline")
 
 /obj/item/broadcast_camera/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	active_microphone = !active_microphone
 
 	/// Text popup for letting the user know that the microphone has changed state
@@ -128,6 +150,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/broadcast_camera/proc/set_microphone_state()
+	procstart = null
+	src.procstart = null
 	internal_radio.set_broadcasting(active_microphone)
 
 // Orderable from cargo
@@ -138,6 +162,8 @@
 	camera_range = 5
 
 /obj/item/broadcast_camera/cargo/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Gives each cargo camera a unique network id
 	var/static/cargo_camera_network_id = 0

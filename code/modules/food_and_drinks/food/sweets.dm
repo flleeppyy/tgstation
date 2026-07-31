@@ -205,11 +205,15 @@
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/food/bubblegum/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] swallows [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	qdel(src)
 	return TOXLOSS
 
 /obj/item/food/bubblegum/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/chewable)
 
@@ -237,19 +241,27 @@
 	tastes = list("hell" = 1, "people" = 1)
 
 /obj/item/food/bubblegum/bubblegum/process()
+	procstart = null
+	src.procstart = null
 	if(iscarbon(loc))
 		hallucinate(loc)
 
 /obj/item/food/bubblegum/bubblegum/make_edible()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponentFrom(SOURCE_EDIBLE_INNATE, /datum/component/edible, on_consume = CALLBACK(src, PROC_REF(OnConsume)))
 
 /obj/item/food/bubblegum/bubblegum/proc/OnConsume(mob/living/eater, mob/living/feeder)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(eater))
 		hallucinate(eater)
 
 ///This proc has a 5% chance to have a bubblegum line appear, with an 85% chance for just text and 15% for a bubblegum hallucination and scarier text.
 /obj/item/food/bubblegum/bubblegum/proc/hallucinate(mob/living/carbon/victim)
+	procstart = null
+	src.procstart = null
 	if(prob(95)) //cursed by bubblegum
 		return
 	if(prob(15))
@@ -258,6 +270,8 @@
 		to_chat(victim, span_warning("[pick("You hear faint whispers.", "You smell ash.", "You feel hot.", "You hear a roar in the distance.")]"))
 
 /obj/item/food/bubblegum/bubblegum/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.say(";[pick(BUBBLEGUM_HALLUCINATION_LINES)]", spans = list(SPAN_COLOSSUS))
 	return ..()
 
@@ -276,6 +290,8 @@
 	venue_value = FOOD_PRICE_WORTHLESS
 
 /obj/item/food/gumball/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	color = rgb(rand(0, 255), rand(0, 255), rand(0, 255))
 	AddElement(/datum/element/chewable)
@@ -304,18 +320,24 @@
 	var/head_color = rgb(0, 0, 0)
 
 /obj/item/food/lollipop/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	head = mutable_appearance('icons/obj/food/lollipop.dmi', "lollipop_head")
 	change_head_color(rgb(rand(0, 255), rand(0, 255), rand(0, 255)))
 	AddElement(/datum/element/chewable)
 
 /obj/item/food/lollipop/proc/change_head_color(C)
+	procstart = null
+	src.procstart = null
 	head_color = C
 	cut_overlay(head)
 	head.color = C
 	add_overlay(head)
 
 /obj/item/food/lollipop/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	..(hit_atom)
 	throw_speed = 1
 	throwforce = 0
@@ -348,6 +370,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/spiderlollipop/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/chewable)
 
@@ -369,5 +393,7 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/swirl_lollipop/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/chewable)

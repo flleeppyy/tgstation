@@ -8,6 +8,8 @@
 	var/on_cooldown
 
 /obj/item/implant/abductor/activate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(on_cooldown)
 		to_chat(imp_in, span_warning("You must wait [timeleft(on_cooldown)*0.1] seconds to use [src] again!"))
@@ -21,6 +23,8 @@
 	on_cooldown = addtimer(VARSET_CALLBACK(src, on_cooldown, null), cooldown , TIMER_STOPPABLE)
 
 /obj/item/implant/abductor/implant(mob/living/target, mob/user, silent = FALSE, force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 
@@ -35,6 +39,8 @@
  */
 
 /obj/item/implant/abductor/proc/link_pad()
+	procstart = null
+	src.procstart = null
 	if(home)
 		return TRUE
 

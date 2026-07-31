@@ -14,17 +14,23 @@
 	var/ghosts_orbiting = 0
 
 /obj/effect/anomaly/ectoplasm/Initialize(mapload, new_lifespan)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddComponent(/datum/component/deadchat_control/cardinal_movement, _deadchat_mode = ANARCHY_MODE, _inputs = list(), _input_cooldown = 7 SECONDS)
 
 /obj/effect/anomaly/ectoplasm/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isobserver(user))
 		. += span_info("Orbiting this anomaly will increase the size and intensity of its effects.")
 
 /obj/effect/anomaly/ectoplasm/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	switch(effect_power)
@@ -36,6 +42,8 @@
 			. += span_alert("The anomaly pulsates heavily, about to burst with unearthly energy. This can't be good.")
 
 /obj/effect/anomaly/ectoplasm/anomalyEffect(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(override_ghosts)
@@ -54,6 +62,8 @@
 	intensity_update()
 
 /obj/effect/anomaly/ectoplasm/detonate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(effect_power < 10) //Under 10% participation, we do nothing more than a small visual *poof*.
@@ -113,6 +123,8 @@
  */
 
 /obj/effect/anomaly/ectoplasm/proc/intensity_update()
+	procstart = null
+	src.procstart = null
 	if(effect_power >= 50) //If we're at the threshold for the highest tier effect, we change sprites in preparation for the spooks.
 		icon_state = "ectoplasm_heavy"
 		update_icon_state()
@@ -141,6 +153,8 @@
 	var/list/ghosts_spawned = list()
 
 /obj/structure/ghost_portal/Initialize(mapload, candidate_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	START_PROCESSING(SSobj, src)
@@ -149,17 +163,23 @@
 	QDEL_IN(WEAKREF(src), 2 MINUTES)
 
 /obj/structure/ghost_portal/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(prob(5))
 		playsound(src, pick(spooky_noises), 100)
 
 /obj/structure/ghost_portal/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	playsound(loc, 'sound/effects/empulse.ogg', 75, TRUE)
 	if(prob(40))
 		playsound(src, pick(spooky_noises), 50)
 
 /obj/structure/ghost_portal/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	STOP_PROCESSING(SSobj, src)
@@ -174,6 +194,8 @@
  */
 
 /obj/structure/ghost_portal/proc/make_ghost_swarm(list/candidate_list = list())
+	procstart = null
+	src.procstart = null
 	if(!length(candidate_list)) //If we are not passed a candidate list we just poll everyone who is dead, meaning these can also be spawned directly.
 		candidate_list += GLOB.current_observers_list
 		candidate_list += GLOB.dead_player_list
@@ -202,6 +224,8 @@
  */
 
 /proc/cleanup_ghosts(list/delete_list)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/mob_to_delete as anything in delete_list)
 		mob_to_delete.visible_message(span_alert("The [mob_to_delete] wails as it is torn back into the void!"), span_alert("You let out one last wail as you are sucked back into the realm of the dead. Then suddenly, you're back in the comforting embrace of the afterlife."), span_hear("You hear ethereal wailing."))
 		playsound(mob_to_delete, pick(delete_list), 50)

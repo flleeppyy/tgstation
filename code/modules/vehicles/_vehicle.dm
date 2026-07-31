@@ -47,6 +47,8 @@
 	acid = 60
 
 /obj/vehicle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	occupants = list()
 	autogrant_actions_passenger = list()
@@ -56,11 +58,15 @@
 	ADD_TRAIT(src, TRAIT_CASTABLE_LOC, INNATE_TRAIT)
 
 /obj/vehicle/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(trailer)
 	inserted_key = null
 	return ..()
 
 /obj/vehicle/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if(gone == inserted_key)
 		inserted_key = null
 	if(exit_sound)
@@ -68,11 +74,15 @@
 	return ..()
 
 /obj/vehicle/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += generate_integrity_message()
 
 /// Returns a readable string of the vehicle's health for examining. Overridden by subtypes who want to be more verbose with their health messages.
 /obj/vehicle/proc/generate_integrity_message()
+	procstart = null
+	src.procstart = null
 	var/examine_text = ""
 	var/integrity = atom_integrity/max_integrity * 100
 	switch(integrity)
@@ -86,21 +96,31 @@
 	return examine_text
 
 /obj/vehicle/proc/is_key(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return istype(I, key_type)
 
 /obj/vehicle/proc/return_occupants()
+	procstart = null
+	src.procstart = null
 	return occupants
 
 /obj/vehicle/proc/occupant_amount()
+	procstart = null
+	src.procstart = null
 	return LAZYLEN(occupants)
 
 /obj/vehicle/proc/return_amount_of_controllers_with_flag(flag)
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/i in occupants)
 		if(occupants[i] & flag)
 			.++
 
 /obj/vehicle/proc/return_controllers_with_flag(flag)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list/mob)
 	. = list()
 	for(var/i in occupants)
@@ -108,18 +128,28 @@
 			. += i
 
 /obj/vehicle/proc/return_drivers()
+	procstart = null
+	src.procstart = null
 	return return_controllers_with_flag(VEHICLE_CONTROL_DRIVE)
 
 /obj/vehicle/proc/driver_amount()
+	procstart = null
+	src.procstart = null
 	return return_amount_of_controllers_with_flag(VEHICLE_CONTROL_DRIVE)
 
 /obj/vehicle/proc/is_driver(mob/M)
+	procstart = null
+	src.procstart = null
 	return is_occupant(M) && occupants[M] & VEHICLE_CONTROL_DRIVE
 
 /obj/vehicle/proc/is_occupant(mob/M)
+	procstart = null
+	src.procstart = null
 	return !isnull(LAZYACCESS(occupants, M))
 
 /obj/vehicle/proc/add_occupant(mob/M, control_flags, forced)
+	procstart = null
+	src.procstart = null
 	if(!istype(M) || is_occupant(M))
 		return FALSE
 	if(enter_sound && !forced)
@@ -131,13 +161,19 @@
 	return TRUE
 
 /obj/vehicle/proc/after_add_occupant(mob/M)
+	procstart = null
+	src.procstart = null
 	auto_assign_occupant_flags(M)
 
-/obj/vehicle/proc/auto_assign_occupant_flags(mob/M) //override for each type that needs it. Default is assign driver if drivers is not at max.
+/obj/vehicle/proc/auto_assign_occupant_flags(mob/M)
+	procstart = null
+	src.procstart = null //override for each type that needs it. Default is assign driver if drivers is not at max.
 	if(driver_amount() < max_drivers)
 		add_control_flags(M, VEHICLE_CONTROL_DRIVE)
 
 /obj/vehicle/proc/remove_occupant(mob/M)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(!istype(M))
 		return FALSE
@@ -150,8 +186,12 @@
 	return TRUE
 
 /obj/vehicle/proc/after_remove_occupant(mob/M)
+	procstart = null
+	src.procstart = null
 
 /obj/vehicle/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(!canmove)
 		return FALSE
 	if(is_driver(user))
@@ -159,9 +199,13 @@
 	return FALSE
 
 /obj/vehicle/proc/after_move(direction)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/vehicle/proc/add_control_flags(mob/controller, flags)
+	procstart = null
+	src.procstart = null
 	if(!is_occupant(controller) || !flags)
 		return FALSE
 	occupants[controller] |= flags
@@ -171,6 +215,8 @@
 	return TRUE
 
 /obj/vehicle/proc/remove_control_flags(mob/controller, flags)
+	procstart = null
+	src.procstart = null
 	if(!is_occupant(controller) || !flags)
 		return FALSE
 	occupants[controller] &= ~flags
@@ -181,16 +227,22 @@
 
 /// To add a trailer to the vehicle in a manner that allows safe qdels
 /obj/vehicle/proc/add_trailer(obj/vehicle/added_vehicle)
+	procstart = null
+	src.procstart = null
 	trailer = added_vehicle
 	RegisterSignal(trailer, COMSIG_QDELETING, PROC_REF(remove_trailer))
 
 /// To remove a trailer from the vehicle in a manner that allows safe qdels
 /obj/vehicle/proc/remove_trailer()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(trailer, COMSIG_QDELETING)
 	trailer = null
 
 /obj/vehicle/Move(newloc, dir)
+	procstart = null
+	src.procstart = null
 	// It is unfortunate, but this is the way to make it not mess up
 	var/atom/old_loc = loc
 	// When we do this, it will set the loc to the new loc

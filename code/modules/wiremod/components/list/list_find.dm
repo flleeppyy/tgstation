@@ -28,9 +28,13 @@
 	circuit_flags = CIRCUIT_FLAG_INPUT_SIGNAL
 
 /obj/item/circuit_component/listin/populate_options()
+	procstart = null
+	src.procstart = null
 	list_type = add_option_port("List Type", GLOB.wiremod_basic_types)
 
 /obj/item/circuit_component/listin/populate_ports()
+	procstart = null
+	src.procstart = null
 	list_to_check = add_input_port("List", PORT_TYPE_LIST(PORT_TYPE_ANY))
 	to_check = add_input_port("To Check", PORT_TYPE_ANY)
 
@@ -40,11 +44,15 @@
 	index = add_output_port("Index", PORT_TYPE_NUMBER)
 
 /obj/item/circuit_component/listin/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	list_to_check.set_datatype(PORT_TYPE_LIST(list_type.value))
 	to_check.set_datatype(list_type.value)
 
 /obj/item/circuit_component/listin/input_received(datum/port/input/port, list/return_values)
+	procstart = null
+	src.procstart = null
 	var/list/info = list_to_check.value
 	if(!info)
 		return

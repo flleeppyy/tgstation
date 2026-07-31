@@ -4,10 +4,14 @@
 	proper_name = "Emitter"
 
 /datum/wires/emitter/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(WIRE_ZAP,WIRE_HACK)
 	..()
 
 /datum/wires/emitter/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/power/emitter/E = holder
 	switch(wire)
 		if(WIRE_ZAP)

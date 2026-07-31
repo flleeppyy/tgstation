@@ -32,6 +32,8 @@
 	icon_state = "tallcabinet"
 
 /obj/structure/filingcabinet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		for(var/obj/item/I in loc)
@@ -39,11 +41,15 @@
 				I.forceMove(src)
 
 /obj/structure/filingcabinet/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/iron(loc, 2)
 	for(var/obj/item/obj in src)
 		obj.forceMove(loc)
 
 /obj/structure/filingcabinet/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(tool.w_class < WEIGHT_CLASS_NORMAL)
 		if(!user.transferItemToLoc(tool, src))
 			return ITEM_INTERACT_BLOCKING
@@ -58,6 +64,8 @@
 	return NONE
 
 /obj/structure/filingcabinet/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You begin to [anchored ? "unwrench" : "wrench"] [src]."))
 	if(!tool.use_tool(src, user, 20, volume=50))
 		return ITEM_INTERACT_BLOCKING
@@ -66,16 +74,22 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/filingcabinet/attack_hand(mob/living/carbon/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui_interact(user)
 
 /obj/structure/filingcabinet/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "FilingCabinet")
 		ui.open()
 
 /obj/structure/filingcabinet/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["cabinet_name"] = "[name]"
@@ -88,6 +102,8 @@
 	return data
 
 /obj/structure/filingcabinet/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -103,11 +119,15 @@
 				return TRUE
 
 /obj/structure/filingcabinet/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(anchored)
 		return attack_self_tk(user)
 	return ..()
 
 /obj/structure/filingcabinet/attack_self_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_BLOCKING
 	if(contents.len)
 		if(prob(40 + contents.len * 5))
@@ -126,6 +146,8 @@
 	var/virgin = TRUE
 
 /obj/structure/filingcabinet/security/proc/populate()
+	procstart = null
+	src.procstart = null
 	if(!virgin)
 		return
 	for(var/datum/record/crew/target in GLOB.manifest.general)
@@ -135,10 +157,14 @@
 					//before the records have been generated, so we do this inside the loop.
 
 /obj/structure/filingcabinet/security/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	populate()
 	return ..()
 
 /obj/structure/filingcabinet/security/attack_tk()
+	procstart = null
+	src.procstart = null
 	populate()
 	return ..()
 
@@ -150,6 +176,8 @@
 	var/virgin = TRUE
 
 /obj/structure/filingcabinet/medical/proc/populate()
+	procstart = null
+	src.procstart = null
 	if(!virgin)
 		return
 	for(var/datum/record/crew/record in GLOB.manifest.general)
@@ -166,10 +194,14 @@
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/structure/filingcabinet/medical/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	populate()
 	return ..()
 
 /obj/structure/filingcabinet/medical/attack_tk()
+	procstart = null
+	src.procstart = null
 	populate()
 	return ..()
 
@@ -185,14 +217,20 @@ GLOBAL_LIST_EMPTY(employmentCabinets)
 	var/virgin = TRUE
 
 /obj/structure/filingcabinet/employment/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.employmentCabinets += src
 
 /obj/structure/filingcabinet/employment/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.employmentCabinets -= src
 	return ..()
 
 /obj/structure/filingcabinet/employment/proc/fillCurrent()
+	procstart = null
+	src.procstart = null
 	//This proc fills the cabinet with the current crew.
 	for(var/datum/record/locked/target in GLOB.manifest.locked)
 		var/datum/mind/filed_mind = target.mind_ref.resolve()
@@ -200,9 +238,13 @@ GLOBAL_LIST_EMPTY(employmentCabinets)
 			addFile(filed_mind.current)
 
 /obj/structure/filingcabinet/employment/proc/addFile(mob/living/carbon/human/employee)
+	procstart = null
+	src.procstart = null
 	new /obj/item/paper/employment_contract(src, employee.mind.name)
 
 /obj/structure/filingcabinet/employment/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(virgin)
 		fillCurrent()
 		virgin = FALSE

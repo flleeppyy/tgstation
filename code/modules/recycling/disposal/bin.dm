@@ -48,6 +48,8 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 // create a new disposal
 // find the attached trunk (if present) and init gas resvr.
 /obj/machinery/disposal/Initialize(mapload, obj/structure/disposalconstruct/make_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(make_from)
@@ -75,10 +77,14 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 	return INITIALIZE_HINT_LATELOAD //we need turfs to have air
 
 /obj/machinery/disposal/AllowDrop()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Checks if there a connecting trunk diposal pipe under the disposal
 /obj/machinery/disposal/proc/trunk_check()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/disposalpipe/trunk/found_trunk = locate() in loc
 	if(!found_trunk)
 		pressure_charging = FALSE
@@ -92,6 +98,8 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 		trunk = found_trunk
 
 /obj/machinery/disposal/Destroy()
+	procstart = null
+	src.procstart = null
 	eject()
 	if(trunk)
 		trunk.linked = null
@@ -99,17 +107,23 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 	return ..()
 
 /obj/machinery/disposal/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == stored && !QDELETED(src))
 		stored = null
 		deconstruct(FALSE)
 
 /obj/machinery/disposal/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_size >= STAGE_FIVE)
 		deconstruct()
 
 /obj/machinery/disposal/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//this will get a copy of the air turf and take a SEND PRESSURE amount of air from it
 	var/atom/L = loc
@@ -120,6 +134,8 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 	trunk_check()
 
 /obj/machinery/disposal/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(!user.combat_mode || (tool.item_flags & NOBLUDGEON))
 		if(tool.item_flags & ABSTRACT)
@@ -130,6 +146,8 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 	return NONE
 
 /obj/machinery/disposal/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(pressure_charging || full_pressure || flush)
 		return NONE
 	toggle_panel_open()
@@ -138,6 +156,8 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/disposal/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(pressure_charging || full_pressure || flush || !panel_open)
 		return NONE
 	if(!tool.tool_start_check(user, amount=1, heat_required = HIGH_TEMPERATURE_REQUIRED))
@@ -151,6 +171,8 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 
 /// The regal rat spawns ratty treasures from the disposal
 /obj/machinery/disposal/proc/rat_rummage(mob/living/basic/regal_rat/king)
+	procstart = null
+	src.procstart = null
 	king.visible_message(span_warning("[king] starts rummaging through [src]."),span_notice("You rummage through [src]..."))
 	if (!do_after(king, 2 SECONDS, src, interaction_key = "regalrat"))
 		return
@@ -184,6 +206,8 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 
 /// Moves an item into the diposal bin
 /obj/machinery/disposal/proc/place_item_in_disposal(obj/item/disposing_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.transferItemToLoc(disposing_item, newloc = src))
 		return FALSE
 	user.visible_message(
@@ -194,6 +218,8 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 
 /// Mouse drop another mob or self
 /obj/machinery/disposal/mouse_drop_receive(atom/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(isliving(target))
 		stuff_mob_in(target, user)
 	if(istype(target, /obj/structure/closet/body_bag) && (user.mobility_flags & (MOBILITY_PICKUP|MOBILITY_STAND) == (MOBILITY_PICKUP|MOBILITY_STAND)))
@@ -201,6 +227,8 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 
 /// Handles stuffing a grabbed mob into the disposal
 /obj/machinery/disposal/proc/stuff_mob_in(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/ventcrawler = HAS_TRAIT(user, TRAIT_VENTCRAWLER_ALWAYS) || HAS_TRAIT(user, TRAIT_VENTCRAWLER_NUDE)
 	if(user == target) //we didn't check this before even though we're asserting here whether we can put ourself in, bruh.
 		if(!iscarbon(user) && !ventcrawler) //only carbon and ventcrawlers can climb into disposal by themselves.
@@ -234,6 +262,8 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 	return TRUE
 
 /obj/machinery/disposal/proc/stuff_bodybag_in(obj/structure/closet/body_bag/bag, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!length(bag.contents))
 		bag.undeploy_bodybag(src)
 		qdel(bag)
@@ -268,25 +298,35 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 	return TRUE
 
 /obj/machinery/disposal/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	attempt_escape(user)
 
 // resist to escape the bin
 /obj/machinery/disposal/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	attempt_escape(user)
 
 /// Checks if a mob can climb out of the disposal, and lets them if they can
 /obj/machinery/disposal/proc/attempt_escape(mob/user)
+	procstart = null
+	src.procstart = null
 	if(flushing)
 		return
 	go_out(user)
 
 /// Makes a mob in the disposal climb out
 /obj/machinery/disposal/proc/go_out(mob/user)
+	procstart = null
+	src.procstart = null
 	user.forceMove(loc)
 	update_appearance()
 
 // clumsy monkeys and xenos can only pull the flush lever
 /obj/machinery/disposal/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(ISADVANCEDTOOLUSER(user))
 		return ..()
 	if(machine_stat & BROKEN)
@@ -297,11 +337,15 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 
 /// Ejects the contents of the disposal unit
 /obj/machinery/disposal/proc/eject()
+	procstart = null
+	src.procstart = null
 	pipe_eject(src, FALSE, FALSE)
 	update_appearance()
 
 /// Plays the animations and sounds for flushing, and initializes the diposal holder object
 /obj/machinery/disposal/proc/flush()
+	procstart = null
+	src.procstart = null
 	flushing = TRUE
 	flushAnimation()
 	sleep(1 SECONDS)
@@ -321,6 +365,8 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 
 /// Sets the default destinationTag of the disposal holder object
 /obj/machinery/disposal/proc/newHolderDestination(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	H.destinationTag = SORT_TYPE_DISPOSALS
 	for(var/obj/item/delivery/O in src)
 		H.tomail = TRUE
@@ -328,10 +374,14 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 
 /// Plays the flushing animation of the disposal
 /obj/machinery/disposal/proc/flushAnimation()
+	procstart = null
+	src.procstart = null
 	flick("[icon_state]-flush", src)
 
 /// Called when holder is expelled from a disposal
 /obj/machinery/disposal/proc/expel(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	H.active = FALSE
 
 	playsound(src, 'sound/machines/hiss.ogg', 50, FALSE, FALSE)
@@ -342,6 +392,8 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 	qdel(H)
 
 /obj/machinery/disposal/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 	if(stored)
 		var/obj/structure/disposalconstruct/construct = stored
@@ -356,6 +408,8 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 
 ///How disposal handles getting a storage dump from a storage object
 /obj/machinery/disposal/proc/on_storage_dump(datum/source, datum/storage/storage, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	. = STORAGE_DUMP_HANDLED
@@ -373,11 +427,15 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 	update_appearance()
 
 /obj/machinery/disposal/force_pushed(atom/movable/pusher, force = MOVE_FORCE_DEFAULT, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	visible_message(span_warning("[src] is ripped free from the floor!"))
 	deconstruct()
 
 /obj/machinery/disposal/move_crushed(atom/movable/pusher, force = MOVE_FORCE_DEFAULT, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	visible_message(span_warning("[src] is ripped free from the floor!"))
 	deconstruct()
@@ -385,6 +443,8 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 
 /// Handles the signal for the rat king looking inside the disposal
 /obj/machinery/disposal/proc/on_rat_rummage(datum/source, mob/living/basic/regal_rat/king)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(king.combat_mode)
 		return
@@ -394,6 +454,8 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 
 /// Handles a carbon mob getting shoved into the disposal bin
 /obj/machinery/disposal/proc/trash_living(datum/source, mob/living/shover, mob/living/target, shove_flags, obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if((shove_flags & SHOVE_KNOCKDOWN_BLOCKED) || !(shove_flags & SHOVE_BLOCKED))
 		return
@@ -413,6 +475,8 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 
 ///Called when a push broom is trying to sweep items onto the turf this object is standing on. Garbage will be moved inside.
 /obj/machinery/disposal/proc/ready_for_trash(datum/source, obj/item/pushbroom/broom, mob/user, list/items_to_sweep)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!items_to_sweep)
 		return
@@ -449,11 +513,15 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 	var/contained_animal
 
 /obj/machinery/disposal/bin/Initialize(mapload, obj/structure/disposalconstruct/make_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload && prob(CONTAINS_ANIMAL_CHANCE) && GLOB.disposals_animals_spawned < MAXIMUM_ANIMAL_SPAWNS)
 		spawn_contained_animal()
 
 /obj/machinery/disposal/bin/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/storage/bag/trash))
 		return ..()
 	var/obj/item/storage/bag/trash/bag = tool
@@ -463,6 +531,8 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/disposal/bin/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/dest_tagger))
 		return ..()
 	if(mounted_tagger)
@@ -480,6 +550,8 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/disposal/bin/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mounted_tagger)
 		balloon_alert(user, "no destination tagger!")
@@ -496,6 +568,8 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/disposal/bin/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(mounted_tagger))
 		. += span_notice("The destination tagger mount is empty.")
@@ -503,20 +577,28 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 		. += span_notice("\The [mounted_tagger] is hanging on the side. Right Click to remove.")
 
 /obj/machinery/disposal/bin/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!isnull(mounted_tagger))
 		QDEL_NULL(mounted_tagger)
 	return ..()
 
 /obj/machinery/disposal/bin/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(mounted_tagger))
 		mounted_tagger.forceMove(drop_location())
 		mounted_tagger = null
 
 /obj/machinery/disposal/bin/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.notcontained_state
 
 /obj/machinery/disposal/bin/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & BROKEN)
 		return
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -525,6 +607,8 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 		ui.open()
 
 /obj/machinery/disposal/bin/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["flush"] = flush
 	data["full_pressure"] = full_pressure
@@ -535,6 +619,8 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 	return data
 
 /obj/machinery/disposal/bin/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -565,6 +651,8 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 
 
 /obj/machinery/disposal/bin/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(isitem(AM) && AM.CanEnterDisposals())
 		var/mob/thrower = throwingdatum?.get_thrower()
 		if((istype(thrower) && HAS_TRAIT(thrower, TRAIT_THROWINGARM)) || prob(75))
@@ -578,11 +666,15 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 		return ..()
 
 /obj/machinery/disposal/bin/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(contained_animal)
 		release_animal()
 
 /obj/machinery/disposal/bin/flush()
+	procstart = null
+	src.procstart = null
 	..()
 	full_pressure = FALSE
 	pressure_charging = TRUE
@@ -591,6 +683,8 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 	update_appearance()
 
 /obj/machinery/disposal/bin/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & BROKEN)
 		return
@@ -621,11 +715,15 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 
 /// Create a random animal to be infesting this disposals bin
 /obj/machinery/disposal/bin/proc/spawn_contained_animal()
+	procstart = null
+	src.procstart = null
 	contained_animal = pick_weight(weighted_animal_list)
 	GLOB.disposals_animals_spawned++
 
 /// Release whoever is living inside here
 /obj/machinery/disposal/bin/proc/release_animal()
+	procstart = null
+	src.procstart = null
 	var/list/open_turfs = get_adjacent_open_turfs(src)
 	var/turf/final_turf = length(open_turfs) ? pick(open_turfs) : drop_location()
 	var/mob/living/startled_animal = new contained_animal(drop_location())
@@ -635,12 +733,16 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 
 /// Initiates flushing
 /obj/machinery/disposal/bin/proc/do_flush()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	flush()
 
 //timed process
 //charge the gas reservoir and perform flush if ready
 /obj/machinery/disposal/bin/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 
 	if(contained_animal && prob(ANIMAL_SHAKE_CHANCE))
 		Shake(duration = 2 SECONDS, pixelshiftx = 1, pixelshifty = 0, duration = (seconds_per_tick SECONDS), shake_interval = 0.1 SECONDS)
@@ -691,10 +793,14 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 	return
 
 /obj/machinery/disposal/bin/get_remote_view_fullscreens(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.stat == DEAD || !(user.sight & (SEEOBJS|SEEMOBS)))
 		user.overlay_fullscreen("remote_view", /atom/movable/screen/fullscreen/impaired, 2)
 
 /obj/machinery/disposal/bin/tagger/Initialize(mapload, obj/structure/disposalconstruct/make_from)
+	procstart = null
+	src.procstart = null
 	mounted_tagger = new /obj/item/dest_tagger(null)
 	return ..()
 
@@ -709,11 +815,15 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 	pressure_charging = FALSE // the chute doesn't need charging and always works
 
 /obj/machinery/disposal/delivery_chute/place_item_in_disposal(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(I.CanEnterDisposals())
 		..()
 		flush()
 
-/obj/machinery/disposal/delivery_chute/Bumped(atom/movable/AM) //Go straight into the chute
+/obj/machinery/disposal/delivery_chute/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null //Go straight into the chute
 	if(QDELETED(AM) || !AM.CanEnterDisposals())
 		return
 	switch(dir)
@@ -744,15 +854,23 @@ GLOBAL_VAR_INIT(disposals_animals_spawned, 0)
 
 /// Called to check if an atom can fit inside the diposal
 /atom/movable/proc/CanEnterDisposals()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/projectile/CanEnterDisposals()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/CanEnterDisposals()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/vehicle/sealed/mecha/CanEnterDisposals()
+	procstart = null
+	src.procstart = null
 	return
 
 #undef SEND_PRESSURE

@@ -36,6 +36,8 @@
 	layout_prefs_used = /datum/preference/choiced/tgui_layout/smartfridge
 
 /obj/machinery/smartfridge/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(100, NO_REACT)
 	air_update_turf(TRUE, TRUE)
@@ -52,11 +54,15 @@
 				load(new typekey(src))
 
 /obj/machinery/smartfridge/Move(atom/newloc, direct, glide_size_override, update_dir)
+	procstart = null
+	src.procstart = null
 	var/turf/old_loc = loc
 	. = ..()
 	move_update_air(old_loc)
 
 /obj/machinery/smartfridge/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!can_be_welded_down)
 		return ..()
 	if(welded_down)
@@ -97,6 +103,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/smartfridge/welder_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!(machine_stat & BROKEN))
 		balloon_alert(user, "no repair needed!")
 		return ITEM_INTERACT_BLOCKING
@@ -120,32 +128,46 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/smartfridge/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/smartfridge/can_be_unfasten_wrench(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	if(welded_down)
 		balloon_alert(user, "unweld first!")
 		return FAILED_UNFASTEN
 	return ..()
 
 /obj/machinery/smartfridge/set_anchored(anchorvalue)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!anchored && welded_down) //make sure they're keep in sync in case it was forcibly unanchored by badmins or by a megafauna.
 		welded_down = FALSE
 	recheck_atmos_passing()
 
 /obj/machinery/smartfridge/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(default_unfasten_wrench(user, tool) == SUCCESSFUL_UNFASTEN)
 		power_change()
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/smartfridge/can_crowbar_deconstruct()
+	procstart = null
+	src.procstart = null
 	return ..() && !welded_down
 
 /obj/machinery/smartfridge/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_pry_open(user, tool, close_after_pry = TRUE, deconstruct_on_fail = TRUE)
 
 /obj/machinery/smartfridge/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item))
 		return NONE
 
@@ -177,11 +199,15 @@
 	return tool_tip_set ? CONTEXTUAL_SCREENTIP_SET : NONE
 
 /obj/machinery/smartfridge/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/stock_part/matter_bin/matter_bin in component_parts)
 		max_n_of_items = initial(max_n_of_items) * matter_bin.tier
 
 /obj/machinery/smartfridge/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(in_range(user, src) || isobserver(user))
@@ -190,6 +216,8 @@
 	. += structure_examine()
 
 /obj/machinery/smartfridge/on_set_machine_stat(old_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	recheck_atmos_passing()
 	if(machine_stat & BROKEN)
@@ -199,6 +227,8 @@
 
 /// Returns details related to the fridge structure
 /obj/machinery/smartfridge/proc/structure_examine()
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	if(welded_down)
@@ -213,16 +243,22 @@
 
 /// Returns details related to the fridge status
 /obj/machinery/smartfridge/proc/status_examine()
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	. += span_notice("The status display reads: This unit can hold a maximum of <b>[max_n_of_items]</b> items.")
 
 /obj/machinery/smartfridge/update_appearance(updates=ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	set_light((!(machine_stat & BROKEN) && powered()) ? MINIMUM_USEFUL_LIGHT_RANGE : 0)
 
 /obj/machinery/smartfridge/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state]"
 	if(machine_stat & BROKEN)
 		icon_state += "-broken"
@@ -230,9 +266,13 @@
 
 /// Returns the number of items visible in the fridge. Faster than subtracting 2 lists
 /obj/machinery/smartfridge/proc/visible_items()
+	procstart = null
+	src.procstart = null
 	return contents.len - 1 // Exclude circuitboard
 
 /obj/machinery/smartfridge/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(panel_open)
@@ -256,6 +296,8 @@
 		. += emissive_appearance(icon, "[base_icon_state]-light-mask", src, alpha = src.alpha)
 
 /obj/machinery/smartfridge/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			playsound(src.loc, 'sound/effects/glass/glasshit.ogg', 75, TRUE)
@@ -263,13 +305,19 @@
 			playsound(src.loc, 'sound/items/tools/welder.ogg', 100, TRUE)
 
 /obj/machinery/smartfridge/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	playsound(src, SFX_SHATTER, 50, TRUE)
 	return ..()
 
 /obj/machinery/smartfridge/proc/can_load_item(obj/item/loadable)
+	procstart = null
+	src.procstart = null
 	return !(loadable.item_flags & ABSTRACT) && !(loadable.flags_1 & HOLOGRAM_1) && accept_check(loadable)
 
 /obj/machinery/smartfridge/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 	if(machine_stat)
@@ -332,6 +380,8 @@
  * * [weapon][obj/item] - the item to accept
  */
 /obj/machinery/smartfridge/proc/accept_check(obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	var/static/list/accepted_items = list(
 		/obj/item/food/grown,
 		/obj/item/seeds,
@@ -346,6 +396,8 @@
  * * [weapon][obj/item] - the item to load. If the item is being held by a mo it will transfer it from hand else directly force move
  */
 /obj/machinery/smartfridge/proc/load(obj/item/weapon, mob/user)
+	procstart = null
+	src.procstart = null
 	if(ismob(weapon.loc))
 		var/mob/owner = weapon.loc
 		if(!owner.transferItemToLoc(weapon, src))
@@ -360,6 +412,8 @@
 			return TRUE
 
 /obj/machinery/smartfridge/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SmartVend", name)
@@ -367,6 +421,8 @@
 		ui.open()
 
 /obj/machinery/smartfridge/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	var/listofitems = list()
@@ -392,11 +448,15 @@
 	.["name"] = name
 	.["isdryer"] = FALSE
 
-/obj/machinery/smartfridge/Exited(atom/movable/gone, direction) // Update the UIs in case something inside is removed
+/obj/machinery/smartfridge/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null // Update the UIs in case something inside is removed
 	. = ..()
 	SStgui.update_uis(src)
 
 /obj/machinery/smartfridge/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !ui.user.can_perform_action(src, FORBID_TELEKINESIS_REACH))
 		return
@@ -438,6 +498,8 @@
 	return FALSE
 
 /obj/machinery/smartfridge/proc/recheck_atmos_passing()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & BROKEN)
 		can_atmos_pass = ATMOS_PASS_YES
 	else
@@ -467,13 +529,19 @@
 	var/datum/weakref/current_user
 
 /obj/machinery/smartfridge/drying/Destroy()
+	procstart = null
+	src.procstart = null
 	current_user = null
 	return ..()
 
 /obj/machinery/smartfridge/drying/AllowDrop()
+	procstart = null
+	src.procstart = null
 	return TRUE // Allow drying results to stay inside
 
 /obj/machinery/smartfridge/drying/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(visible_contents && powered() && !(machine_stat & BROKEN))
 		var/suffix = drying ? "on" : "off"
@@ -481,14 +549,20 @@
 		. += emissive_appearance(icon, "[base_icon_state]-[suffix]", src, alpha = src.alpha)
 
 /obj/machinery/smartfridge/drying/visible_items()
+	procstart = null
+	src.procstart = null
 	return min(1, (contents.len - 1)) // Return one if has any, as there's only one icon for overlay
 
 /obj/machinery/smartfridge/drying/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["isdryer"] = TRUE
 	.["drying"] = drying
 
 /obj/machinery/smartfridge/drying/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		update_appearance() // This is to handle a case where the last item is taken out manually instead of through drying pop-out
@@ -501,14 +575,20 @@
 			return TRUE
 
 /obj/machinery/smartfridge/drying/powered()
+	procstart = null
+	src.procstart = null
 	return !anchored ? FALSE : ..()
 
 /obj/machinery/smartfridge/drying/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!powered())
 		toggle_drying(TRUE)
 
-/obj/machinery/smartfridge/drying/load(obj/item/dried_object, mob/user) //For updating the filled overlay
+/obj/machinery/smartfridge/drying/load(obj/item/dried_object, mob/user)
+	procstart = null
+	src.procstart = null //For updating the filled overlay
 	. = ..()
 	if(!.)
 		return
@@ -517,6 +597,8 @@
 		current_user = WEAKREF(user.mind)
 
 /obj/machinery/smartfridge/drying/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(drying)
 		for(var/obj/item/item_iterator in src)
 			if(!accept_check(item_iterator))
@@ -528,6 +610,8 @@
 		use_energy(active_power_usage)
 
 /obj/machinery/smartfridge/drying/accept_check(obj/item/O)
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(O, TRAIT_DRYABLE) && !HAS_TRAIT(O, TRAIT_DRIED)
 
 /**
@@ -536,6 +620,8 @@
  * * forceoff - if TRUE will force the dryer off always
  */
 /obj/machinery/smartfridge/drying/proc/toggle_drying(forceoff, mob/user)
+	procstart = null
+	src.procstart = null
 	if(drying || forceoff)
 		drying = FALSE
 		current_user = null
@@ -548,6 +634,8 @@
 	update_appearance()
 
 /obj/machinery/smartfridge/drying/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -567,6 +655,8 @@
 	custom_materials = list(/datum/material/wood = SHEET_MATERIAL_AMOUNT * 10)
 
 /obj/machinery/smartfridge/drying/rack/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//so we don't drop any of the parent smart fridge parts upon deconstruction
 	clear_components()
@@ -574,6 +664,8 @@
 	AddElement(/datum/element/tool_blocker, TOOL_SCREWDRIVER)
 
 /obj/machinery/smartfridge/drying/rack/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item))
 		return NONE
 
@@ -588,26 +680,40 @@
 	return tool_tip_set ? CONTEXTUAL_SCREENTIP_SET : NONE
 
 /obj/machinery/smartfridge/drying/rack/status_examine()
+	procstart = null
+	src.procstart = null
 	. = list()
 	. += span_notice("It looks like this unit can hold a maximum of <b>[max_n_of_items]</b> items.")
 
 /obj/machinery/smartfridge/drying/rack/structure_examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info("The whole rack can be [EXAMINE_HINT("pried")] apart.")
 
 /obj/machinery/smartfridge/drying/rack/exchange_parts()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/smartfridge/drying/rack/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/mineral/wood(drop_location(), 10)
 
 /obj/machinery/smartfridge/drying/rack/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/smartfridge/drying/rack/can_crowbar_deconstruct()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/machinery/smartfridge/drying/rack/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(drying)
 		. += "[base_icon_state]-drying"
@@ -624,6 +730,8 @@
 	contents_overlay_icon = "drink"
 
 /obj/machinery/smartfridge/drinks/accept_check(obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	//not an item or valid container
 	if(!is_reagent_container(weapon))
 		return FALSE
@@ -644,6 +752,8 @@
 	contents_overlay_icon = "food"
 
 /obj/machinery/smartfridge/food/accept_check(obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	if(weapon.w_class >= WEIGHT_CLASS_BULKY)
 		return FALSE
 	if(IS_EDIBLE(weapon))
@@ -662,6 +772,8 @@
 	contents_overlay_icon = "slime"
 
 /obj/machinery/smartfridge/extract/accept_check(obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	return (istype(weapon, /obj/item/slime_extract) || istype(weapon, /obj/item/slime_scanner))
 
 /obj/machinery/smartfridge/extract/preloaded
@@ -677,6 +789,8 @@
 	contents_overlay_icon = "petri"
 
 /obj/machinery/smartfridge/petri/accept_check(obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	return istype(weapon, /obj/item/petri_dish)
 
 /obj/machinery/smartfridge/petri/preloaded
@@ -695,9 +809,13 @@
 	var/repair_rate = 0
 
 /obj/machinery/smartfridge/organ/accept_check(obj/item/O)
+	procstart = null
+	src.procstart = null
 	return (isorgan(O) || isbodypart(O))
 
 /obj/machinery/smartfridge/organ/load(obj/item/item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.) //if the item loads, clear can_decompose
 		return
@@ -712,12 +830,16 @@
 			stored.organ_flags |= ORGAN_FROZEN
 
 /obj/machinery/smartfridge/organ/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/stock_part/matter_bin/matter_bin in component_parts)
 		max_n_of_items = 20 * matter_bin.tier
 		repair_rate = max(0, STANDARD_ORGAN_HEALING * (matter_bin.tier - 1) * 0.5)
 
 /obj/machinery/smartfridge/organ/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/organ/target_organ in contents)
 		if(!target_organ.damage)
 			continue
@@ -725,6 +847,8 @@
 		target_organ.apply_organ_damage(-repair_rate * target_organ.maxHealth * seconds_per_tick, required_organ_flag = ORGAN_ORGANIC)
 
 /obj/machinery/smartfridge/organ/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isorgan(gone))
@@ -746,6 +870,8 @@
 	contents_overlay_icon = "chem"
 
 /obj/machinery/smartfridge/chemistry/accept_check(obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	// not an item or reagent container
 	if(!is_reagent_container(weapon))
 		return FALSE
@@ -823,4 +949,6 @@
 	base_build_path = /obj/machinery/smartfridge/disks
 
 /obj/machinery/smartfridge/disks/accept_check(obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	return istype(weapon, /obj/item/disk)

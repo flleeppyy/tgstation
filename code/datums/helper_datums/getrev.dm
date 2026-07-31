@@ -5,12 +5,16 @@
 	var/list/testmerge = list()
 
 /datum/getrev/New()
+	procstart = null
+	src.procstart = null
 	commit = rustg_git_revparse("HEAD")
 	if(commit)
 		date = rustg_git_commit_date(commit)
 	originmastercommit = rustg_git_revparse("origin/master")
 
 /datum/getrev/proc/load_tgs_info()
+	procstart = null
+	src.procstart = null
 	testmerge = world.TgsTestMerges()
 	var/datum/tgs_revision_information/revinfo = world.TgsRevision()
 	if(revinfo)
@@ -22,6 +26,8 @@
 	log_world(get_log_message())
 
 /datum/getrev/proc/get_log_message()
+	procstart = null
+	src.procstart = null
 	var/list/msg = list()
 	msg += "Running /tg/ revision: [date]"
 	if(originmastercommit)
@@ -42,6 +48,8 @@
 	return msg.Join("\n")
 
 /datum/getrev/proc/GetDatabaseCommitSha()
+	procstart = null
+	src.procstart = null
 	. = originmastercommit
 	if (commit == .)
 		return .
@@ -62,6 +70,8 @@
 	return .
 
 /datum/getrev/proc/GetTestMergeInfo(header = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!testmerge.len)
 		return ""
 	. = header ? "The following pull requests are currently test merged:<br>" : ""

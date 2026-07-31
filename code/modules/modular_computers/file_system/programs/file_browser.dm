@@ -1,6 +1,8 @@
 GLOBAL_LIST_INIT(print_types, init_print_types())
 
 /proc/init_print_types()
+	procstart = null
+	src.procstart = null
 	var/list/print_types = list()
 	for(var/obj/item/canvas/canvas_type as anything in typesof(/obj/item/canvas))
 		var/width = canvas_type::width
@@ -28,6 +30,8 @@ GLOBAL_LIST_INIT(print_types, init_print_types())
 	return print_types
 
 /proc/check_can_print_canvas(_typepath, _image_file, obj/item/modular_computer/computer, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!(computer.hardware_flag & PROGRAM_CONSOLE))
 		to_chat(user, span_notice("Printing error: Canvas printing is only supported on stationary consoles."))
 		return FALSE
@@ -37,6 +41,8 @@ GLOBAL_LIST_INIT(print_types, init_print_types())
 	return TRUE
 
 /proc/prepare_canvas_from_file(obj/item/canvas/canvas, datum/computer_file/image/image_file, obj/item/modular_computer/computer, width, height, x, y)
+	procstart = null
+	src.procstart = null
 	computer.stored_paper -= CANVAS_PAPER_COST
 	if(istype(image_file.source_photo_or_painting, /datum/painting))
 		var/datum/painting/source_painting = image_file.source_photo_or_painting
@@ -58,12 +64,16 @@ GLOBAL_LIST_INIT(print_types, init_print_types())
 	canvas.update_icon()
 
 /proc/check_can_print_photo(_typepath, _image_file, obj/item/modular_computer/computer, mob/user)
+	procstart = null
+	src.procstart = null
 	if(computer.stored_paper < PHOTO_PAPER_COST)
 		to_chat(user, span_notice("Printing error: Your printer needs at least [PHOTO_PAPER_COST] paper to print a photo."))
 		return FALSE
 	return TRUE
 
 /proc/prepare_photo_from_file(obj/item/photo/photo, datum/computer_file/image/image_file, obj/item/modular_computer/computer, width, height, x, y)
+	procstart = null
+	src.procstart = null
 	computer.stored_paper -= PHOTO_PAPER_COST
 	var/icon/photo_image = image_file.stored_icon
 	var/image_width = photo_image.Width()
@@ -99,6 +109,8 @@ GLOBAL_LIST_INIT(print_types, init_print_types())
 	var/error
 
 /datum/computer_file/program/filemanager/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(action)
 		if("PRG_deletefile")
@@ -178,6 +190,8 @@ GLOBAL_LIST_INIT(print_types, init_print_types())
 			try_print(picture, params["width"], params["height"], params["offsetX"], params["offsetY"], params["typepath"], usr)
 
 /datum/computer_file/program/filemanager/proc/try_print(datum/computer_file/image/picture, width, height, offset_x, offset_y, typepath, mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/print_type = GLOB.print_types["[width]x[height]"]
 	if(!length(print_type))
 		return
@@ -200,6 +214,8 @@ GLOBAL_LIST_INIT(print_types, init_print_types())
 	playsound(computer.physical, 'sound/machines/printer.ogg', 100, TRUE)
 
 /datum/computer_file/program/filemanager/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/print_types = list()
 	for(var/dimensions, types_for_dimensions in GLOB.print_types)
 		var/list/typepath =  types_for_dimensions["typepath"]
@@ -214,6 +230,8 @@ GLOBAL_LIST_INIT(print_types, init_print_types())
 	return list("printTypes" = print_types)
 
 /datum/computer_file/program/filemanager/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	if(error)
 		data["error"] = error

@@ -53,6 +53,8 @@
 		)
 
 /obj/item/gas_filter/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("[src] is at <b>[filter_status]%</b> durability.")
 
@@ -65,6 +67,8 @@
  *
  */
 /obj/item/gas_filter/proc/reduce_filter_status(datum/gas_mixture/breath)
+	procstart = null
+	src.procstart = null
 
 	var/danger_points = 0
 
@@ -103,6 +107,8 @@
 	filter_status = 50 //override on initialize
 
 /obj/item/gas_filter/damaged/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	filter_status = rand(35, 65)
 

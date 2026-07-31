@@ -14,6 +14,8 @@
 	var/restoring = FALSE
 
 /obj/machinery/computer/aifixer/screwdriver_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(occupier)
 		if(machine_stat & (NOPOWER|BROKEN))
 			to_chat(user, span_warning("The screws on [name]'s screen won't budge."))
@@ -23,6 +25,8 @@
 		return ..()
 
 /obj/machinery/computer/aifixer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -30,6 +34,8 @@
 		ui.open()
 
 /obj/machinery/computer/aifixer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["ejectable"] = FALSE
@@ -48,6 +54,8 @@
 	return data
 
 /obj/machinery/computer/aifixer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -65,6 +73,8 @@
 				. = TRUE
 
 /obj/machinery/computer/aifixer/proc/Fix()
+	procstart = null
+	src.procstart = null
 	if(!use_energy(active_power_usage, force = TRUE))
 		say("Not enough energy. Restoration cancelled.")
 		return FALSE
@@ -82,6 +92,8 @@
 	return occupier.health < 100
 
 /obj/machinery/computer/aifixer/process()
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(restoring)
 			var/oldstat = occupier.stat
@@ -90,6 +102,8 @@
 				update_appearance()
 
 /obj/machinery/computer/aifixer/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & (NOPOWER|BROKEN))
 		return
@@ -107,6 +121,8 @@
 		. += "ai-fixer-full"
 
 /obj/machinery/computer/aifixer/transfer_ai(interaction, mob/user, mob/living/silicon/ai/AI, obj/item/aicard/card)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	//Downloading AI from card to terminal.
@@ -137,10 +153,14 @@
 			to_chat(user, span_alert("ERROR: Unable to locate artificial intelligence."))
 
 /obj/machinery/computer/aifixer/Destroy()
+	procstart = null
+	src.procstart = null
 	if(occupier)
 		QDEL_NULL(occupier)
 	return ..()
 
 /obj/machinery/computer/aifixer/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	if(occupier)
 		QDEL_NULL(occupier)

@@ -7,9 +7,13 @@ GLOBAL_LIST_EMPTY(asset_datums)
 //get an assetdatum or make a new one
 //does NOT ensure it's filled, if you want that use get_asset_datum()
 /proc/load_asset_datum(type)
+	procstart = null
+	src.procstart = null
 	return GLOB.asset_datums[type] || new type()
 
 /proc/get_asset_datum(type)
+	procstart = null
+	src.procstart = null
 	var/datum/asset/loaded_asset = GLOB.asset_datums[type] || new type()
 	return loaded_asset.ensure_ready()
 
@@ -28,23 +32,33 @@ GLOBAL_LIST_EMPTY(asset_datums)
 	var/cross_round_cachable = FALSE
 
 /datum/asset/New()
+	procstart = null
+	src.procstart = null
 	GLOB.asset_datums[type] = src
 	register()
 
 /// Stub that allows us to react to something trying to get us
 /// Not useful here, more handy for sprite sheets
 /datum/asset/proc/ensure_ready()
+	procstart = null
+	src.procstart = null
 	return src
 
 /// Stub to hook into if your asset is having its generation queued by SSasset_loading
 /datum/asset/proc/queued_generation()
+	procstart = null
+	src.procstart = null
 	CRASH("[type] inserted into SSasset_loading despite not implementing /proc/queued_generation")
 
 /datum/asset/proc/get_url_mappings()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /// Returns a cached tgui message of URL mappings
 /datum/asset/proc/get_serialized_url_mappings()
+	procstart = null
+	src.procstart = null
 	if (isnull(cached_serialized_url_mappings) || cached_serialized_url_mappings_transport_type != SSassets.transport.type)
 		cached_serialized_url_mappings = TGUI_CREATE_MESSAGE("asset/mappings", get_url_mappings())
 		cached_serialized_url_mappings_transport_type = SSassets.transport.type
@@ -52,17 +66,25 @@ GLOBAL_LIST_EMPTY(asset_datums)
 	return cached_serialized_url_mappings
 
 /datum/asset/proc/register()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/asset/proc/send(client)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Returns whether or not the asset should attempt to read from cache
 /datum/asset/proc/should_refresh()
+	procstart = null
+	src.procstart = null
 	return !cross_round_cachable || !CONFIG_GET(flag/cache_assets)
 
 /// Immediately regenerate the asset, overwriting any cache.
 /datum/asset/proc/regenerate()
+	procstart = null
+	src.procstart = null
 	unregister()
 	cached_serialized_url_mappings = null
 	cached_serialized_url_mappings_transport_type = null
@@ -70,11 +92,15 @@ GLOBAL_LIST_EMPTY(asset_datums)
 
 /// Unregisters any assets from the transport.
 /datum/asset/proc/unregister()
+	procstart = null
+	src.procstart = null
 	CRASH("unregister() not implemented for asset [type]!")
 
 /// Simply takes any generated file and saves it to the round-specific /logs folder. Useful for debugging potential issues with spritesheet generation/display.
 /// Only called when the SAVE_SPRITESHEETS config option is uncommented.
 /datum/asset/proc/save_to_logs(file_name, file_location)
+	procstart = null
+	src.procstart = null
 	var/asset_path = "[GLOB.log_directory]/generated_assets/[file_name]"
 	fdel(asset_path) // just in case, sadly we can't use rust_g stuff here.
 	fcopy(file_location, asset_path)
@@ -93,6 +119,8 @@ GLOBAL_LIST_EMPTY(asset_datums)
 	var/keep_local_name = FALSE
 
 /datum/asset/simple/register()
+	procstart = null
+	src.procstart = null
 	for(var/asset_name in assets)
 		var/datum/asset_cache_item/ACI = SSassets.transport.register_asset(asset_name, assets[asset_name])
 		if (!ACI)
@@ -105,14 +133,20 @@ GLOBAL_LIST_EMPTY(asset_datums)
 		assets[asset_name] = ACI
 
 /datum/asset/simple/send(client)
+	procstart = null
+	src.procstart = null
 	. = SSassets.transport.send_assets(client, assets)
 
 /datum/asset/simple/get_url_mappings()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for (var/asset_name in assets)
 		.[asset_name] = SSassets.transport.get_asset_url(asset_name, assets[asset_name])
 
 /datum/asset/simple/unregister()
+	procstart = null
+	src.procstart = null
 	for (var/asset_name in assets)
 		SSassets.transport.unregister_asset(asset_name)
 
@@ -122,21 +156,29 @@ GLOBAL_LIST_EMPTY(asset_datums)
 	var/list/children
 
 /datum/asset/group/register()
+	procstart = null
+	src.procstart = null
 	for(var/type in children)
 		load_asset_datum(type)
 
 /datum/asset/group/send(client/C)
+	procstart = null
+	src.procstart = null
 	for(var/type in children)
 		var/datum/asset/A = get_asset_datum(type)
 		. = A.send(C) || .
 
 /datum/asset/group/get_url_mappings()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/type in children)
 		var/datum/asset/A = get_asset_datum(type)
 		. += A.get_url_mappings()
 
 /datum/asset/group/unregister()
+	procstart = null
+	src.procstart = null
 	for (var/type in children)
 		var/datum/asset/A = get_asset_datum(type)
 		A.unregister()
@@ -146,20 +188,28 @@ GLOBAL_LIST_EMPTY(asset_datums)
 	var/item_filename
 
 /datum/asset/changelog_item/New(date)
+	procstart = null
+	src.procstart = null
 	item_filename = SANITIZE_FILENAME("[date].yml")
 	SSassets.transport.register_asset(item_filename, file("html/changelogs/archive/" + item_filename))
 
 /datum/asset/changelog_item/send(client)
+	procstart = null
+	src.procstart = null
 	if (!item_filename)
 		return
 	. = SSassets.transport.send_assets(client, item_filename)
 
 /datum/asset/changelog_item/get_url_mappings()
+	procstart = null
+	src.procstart = null
 	if (!item_filename)
 		return
 	. = list("[item_filename]" = SSassets.transport.get_asset_url(item_filename))
 
 /datum/asset/changelog_item/unregister()
+	procstart = null
+	src.procstart = null
 	if (!item_filename)
 		return
 	SSassets.transport.unregister_asset(item_filename)
@@ -176,6 +226,8 @@ GLOBAL_LIST_EMPTY(asset_datums)
 	var/generic_icon_names = FALSE //generate icon filenames using generate_asset_name() instead the above format
 
 /datum/asset/simple/icon_states/register(_icon = icon)
+	procstart = null
+	src.procstart = null
 	for(var/icon_state_name in icon_states(_icon))
 		for(var/direction in directions)
 			var/asset = icon(_icon, icon_state_name, direction, frame, movement_states)
@@ -194,6 +246,8 @@ GLOBAL_LIST_EMPTY(asset_datums)
 	var/list/icons
 
 /datum/asset/simple/icon_states/multiple_icons/register()
+	procstart = null
+	src.procstart = null
 	for(var/i in icons)
 		..(i)
 
@@ -209,6 +263,8 @@ GLOBAL_LIST_EMPTY(asset_datums)
 	var/list/parents = list()
 
 /datum/asset/simple/namespaced/register()
+	procstart = null
+	src.procstart = null
 	if (legacy)
 		assets |= parents
 	var/list/hashlist = list()
@@ -244,6 +300,8 @@ GLOBAL_LIST_EMPTY(asset_datums)
 /// Get a html string that will load a html asset.
 /// Needed because byond doesn't allow you to browse() to a url.
 /datum/asset/simple/namespaced/proc/get_htmlloader(filename)
+	procstart = null
+	src.procstart = null
 	return url2htmlloader(SSassets.transport.get_asset_url(filename, assets[filename]))
 
 /// A subtype to generate a JSON file from a list
@@ -253,14 +311,20 @@ GLOBAL_LIST_EMPTY(asset_datums)
 	var/name
 
 /datum/asset/json/send(client)
+	procstart = null
+	src.procstart = null
 	return SSassets.transport.send_assets(client, "[name].json")
 
 /datum/asset/json/get_url_mappings()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[name].json" = SSassets.transport.get_asset_url("[name].json"),
 	)
 
 /datum/asset/json/register()
+	procstart = null
+	src.procstart = null
 	var/filename = "data/[name].json"
 	fdel(filename)
 	rustg_file_write(json_encode(generate()), filename)
@@ -269,7 +333,11 @@ GLOBAL_LIST_EMPTY(asset_datums)
 
 /// Returns the data that will be JSON encoded
 /datum/asset/json/proc/generate()
+	procstart = null
+	src.procstart = null
 	CRASH("generate() not implemented for [type]!")
 
 /datum/asset/json/unregister()
+	procstart = null
+	src.procstart = null
 	SSassets.transport.unregister_asset("[name].json")

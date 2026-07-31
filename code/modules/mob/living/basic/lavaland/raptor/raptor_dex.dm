@@ -8,19 +8,27 @@
 	var/list/scan_data = list("raptor_scan" = FALSE)
 
 /obj/item/raptor_dex/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_item_context()
 
 /obj/item/raptor_dex/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "RaptorDex")
 		ui.open()
 
 /obj/item/raptor_dex/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return scan_data
 
 /obj/item/raptor_dex/interact_with_atom(atom/attacked_atom, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(attacked_atom, /mob/living/basic/raptor))
 		return NONE
 
@@ -70,6 +78,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/raptor_dex/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(target, /mob/living/basic/raptor))
 		return NONE
 	context[SCREENTIP_CONTEXT_LMB] = "Scan Raptor"

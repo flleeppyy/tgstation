@@ -25,6 +25,8 @@
 
 
 /obj/effect/mob_spawn/ghost_role/human/golem/Initialize(mapload, mob/living/creator, made_of)
+	procstart = null
+	src.procstart = null
 	initial_type = made_of
 	. = ..()
 	var/area/init_area = get_area(src)
@@ -39,6 +41,8 @@
 		)
 
 /obj/effect/mob_spawn/ghost_role/human/golem/special(mob/living/new_spawn, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_path_in_list(initial_type, GLOB.golem_stack_food_directory))
 		var/datum/golem_food_buff/initial_buff = GLOB.golem_stack_food_directory[initial_type]
@@ -50,6 +54,8 @@
 
 /// Gives lavaland golems some noble ideas, and enslaved ones a master
 /obj/effect/mob_spawn/ghost_role/human/golem/proc/give_directive(mob/living/new_spawn)
+	procstart = null
+	src.procstart = null
 	new_spawn.log_message("possessed a free golem shell.", LOG_GAME)
 	log_admin("[key_name(new_spawn)] possessed a free golem shell.")
 
@@ -61,6 +67,8 @@
 
 /// Makes free golems slow and sad on the space station
 /obj/effect/mob_spawn/ghost_role/human/golem/proc/try_keep_home(mob/new_spawn)
+	procstart = null
+	src.procstart = null
 	var/static/list/allowed_areas = typecacheof(list(/area/icemoon, /area/lavaland, /area/ruin, /area/misc/survivalpod, /area/golem))
 	ADD_TRAIT(new_spawn, TRAIT_FORBID_MINING_SHUTTLE_CONSOLE_OUTSIDE_STATION, INNATE_TRAIT)
 	new_spawn.AddComponent(/datum/component/hazard_area, area_whitelist = allowed_areas)
@@ -73,6 +81,8 @@
 	prompt_name = "a free golem"
 
 /obj/effect/mob_spawn/ghost_role/human/golem/adamantine/special(mob/living/new_spawn, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(new_spawn))
 		return
@@ -91,12 +101,16 @@
 	var/datum/weakref/owner_ref
 
 /obj/effect/mob_spawn/ghost_role/human/golem/servant/Initialize(mapload, mob/living/creator, made_of)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!creator)
 		return
 	owner_ref = WEAKREF(creator)
 
 /obj/effect/mob_spawn/ghost_role/human/golem/servant/give_directive(mob/living/new_spawn)
+	procstart = null
+	src.procstart = null
 	var/mob/living/real_owner = owner_ref?.resolve()
 	if(QDELETED(real_owner))
 		new_spawn.log_message("possessed a servant golem shell with no owner.", LOG_GAME)
@@ -109,12 +123,16 @@
 	to_chat(new_spawn, span_userdanger("Serve [real_owner.real_name], and assist [real_owner.p_them()] in completing [real_owner.p_their()] goals at any cost."))
 
 /obj/effect/mob_spawn/ghost_role/human/golem/servant/name_mob(mob/living/spawned_mob, forced_name)
+	procstart = null
+	src.procstart = null
 	if(owner_ref?.resolve())
 		forced_name =  "Golem ([rand(1,999)])"
 	return ..()
 
 
 /obj/effect/mob_spawn/ghost_role/human/golem/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 
 	if(DOING_INTERACTION_WITH_TARGET(user, src))
 		return ITEM_INTERACT_SUCCESS

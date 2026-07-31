@@ -29,18 +29,24 @@
 	var/burner_knob = 1
 
 /obj/structure/chem_separator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(100, TRANSPARENT | INJECTABLE)
 	soundloop = new(src)
 	register_context()
 
 /obj/structure/chem_separator/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(distilled_container)
 	QDEL_NULL(fuel_container)
 	QDEL_NULL(soundloop)
 	return ..()
 
 /obj/structure/chem_separator/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	var/atom/drop = drop_location()
 
 	new /obj/item/stack/sheet/mineral/wood(drop)
@@ -59,6 +65,8 @@
 		fuel_container.forceMove(drop)
 
 /obj/structure/chem_separator/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(distilled_container == gone)
 		distilled_container = null
@@ -69,6 +77,8 @@
 		update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/chem_separator/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(isnull(held_item))
 		if(!QDELETED(distilled_container))
@@ -99,6 +109,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/chem_separator/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(reagents.total_volume)
@@ -127,6 +139,8 @@
 	. += span_notice("The whole aparatus can be [EXAMINE_HINT("pried")] apart.")
 
 /obj/structure/chem_separator/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	. += span_notice("For burner fuel Plasma > Oil > Welding Fuel = Oxygen > Ethanol > Monkey Energy")
@@ -136,6 +150,8 @@
 		. += span_notice("[reg.name] [get_boiling_point(reg)]K")
 
 /obj/structure/chem_separator/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	//burner overlays
@@ -182,6 +198,8 @@
  * * datum/reagent/reg - the reagent whos boiling point we are trying to compute
  */
 /obj/structure/chem_separator/proc/get_boiling_point(datum/reagent/reg)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	//use the constant mass set on init
@@ -199,6 +217,8 @@
  * whereas a +ve value(<= 1) means the flame can burn at maximum efficiency
  */
 /obj/structure/chem_separator/proc/get_ignition_coefficient()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(QDELETED(fuel_container))
@@ -233,6 +253,8 @@
  * * state - on or off
  */
 /obj/structure/chem_separator/proc/toggle_burner(state)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(!state)
@@ -250,13 +272,19 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/chem_separator/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	toggle_burner(TRUE)
 
 /obj/structure/chem_separator/extinguish()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	toggle_burner(FALSE)
 
 /obj/structure/chem_separator/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(user.combat_mode || tool.item_flags & ABSTRACT || tool.flags_1 & HOLOGRAM_1 || !user.can_perform_action(src, ALLOW_SILICON_REACH))
 		return ITEM_INTERACT_SKIP_TO_ATTACK
@@ -298,10 +326,14 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/chem_separator/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	deconstruct(TRUE)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/chem_separator/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(distilled_container))
 		if(!SStgui.get_open_ui(user, src)) //for convinience open ui first then interact with beakers if you still want to
 			ui_interact(user)
@@ -315,6 +347,8 @@
 	return ..()
 
 /obj/structure/chem_separator/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(user.combat_mode || tool.item_flags & ABSTRACT || tool.flags_1 & HOLOGRAM_1 || !user.can_perform_action(src, ALLOW_SILICON_REACH))
 		return ITEM_INTERACT_SKIP_TO_ATTACK
@@ -335,6 +369,8 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/structure/chem_separator/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(fuel_container))
 		if(!SStgui.get_open_ui(user, src)) //for convinience open ui first then interact with beakers if you still want to
 			ui_interact(user)
@@ -349,6 +385,8 @@
 
 ///Returns the coefficient of cooling of reagents, taking into consideration the condenser
 /obj/structure/chem_separator/proc/get_cool_coefficient()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/coefficient = 0.2
@@ -364,6 +402,8 @@
 	return coefficient
 
 /obj/structure/chem_separator/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!reagents.total_volume)
 		if(QDELETED(distilled_container) || !distilled_container.reagents.total_volume)
 			boiling = FALSE
@@ -437,18 +477,24 @@
 		update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/chem_separator/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ChemSeparator", name)
 		ui.open()
 
 /obj/structure/chem_separator/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		"condenser_installed" = condenser_installed,
 		"max_burner_knob_settings" = MAX_BURNER_KNOB_SETTINGS,
 	)
 
 /obj/structure/chem_separator/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	//distilation flask data
@@ -491,6 +537,8 @@
 	.["condenser_on"] = condenser_on
 
 /obj/structure/chem_separator/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -534,6 +582,8 @@
 			return TRUE
 
 /obj/structure/chem_separator/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!burner_on)
 		return CLICK_ACTION_BLOCKING
 

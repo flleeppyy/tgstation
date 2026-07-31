@@ -23,12 +23,16 @@ SUBSYSTEM_DEF(library)
 	var/list/library_areas = list()
 
 /datum/controller/subsystem/library/Initialize()
+	procstart = null
+	src.procstart = null
 	prepare_official_posters()
 	prepare_library_areas()
 	load_shelves()
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/library/proc/load_shelves()
+	procstart = null
+	src.procstart = null
 	var/list/datum/callback/load_callbacks = list()
 
 	for(var/obj/structure/bookcase/case_to_load as anything in shelves_to_load)
@@ -43,6 +47,8 @@ SUBSYSTEM_DEF(library)
 
 /// Returns a list of copied book datums that we consider to be "in" the passed in area at roundstart
 /datum/controller/subsystem/library/proc/get_area_books(area/book_parent)
+	procstart = null
+	src.procstart = null
 	var/list/areas = list(book_parent.type)
 	// If we have an area that's in the global libraries list, we want all the others too
 	if(length(areas & library_areas))
@@ -56,12 +62,16 @@ SUBSYSTEM_DEF(library)
 	return books
 
 /datum/controller/subsystem/library/proc/prepare_official_posters()
+	procstart = null
+	src.procstart = null
 	printable_posters = list()
 	for(var/obj/structure/sign/poster/official/poster_type as anything in subtypesof(/obj/structure/sign/poster/official))
 		if (initial(poster_type.pixel_x) == 0 && initial(poster_type.pixel_y) == 0) //Anything with an initial pixel offset is a directional subtype, keep it out the list
 			printable_posters[initial(poster_type.name)] = poster_type
 
 /datum/controller/subsystem/library/proc/prepare_library_areas()
+	procstart = null
+	src.procstart = null
 	library_areas = typesof(/area/station/service/library) - /area/station/service/library/abandoned
 	var/list/additional_areas = SSmapping.current_map.library_areas
 	if(additional_areas)

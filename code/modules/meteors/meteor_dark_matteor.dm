@@ -19,6 +19,8 @@
 	var/previous_security_level
 
 /obj/effect/meteor/dark_matteor/Initialize(mapload, turf/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/current_sec_level = SSsecurity_level.get_current_level_as_number()
 	if(current_sec_level < SEC_LEVEL_RED)
@@ -31,11 +33,15 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/effect/meteor/dark_matteor/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	//meteor's warp quickly contracts then slowly expands its ring
 	animate(warp, time = seconds_per_tick*3, transform = matrix().Scale(0.5,0.5))
 	animate(time = seconds_per_tick*7, transform = matrix())
 
 /obj/effect/meteor/dark_matteor/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(same_z_layer)
 		return
@@ -43,23 +49,31 @@
 		SET_PLANE(warp, PLANE_TO_TRUE(warp.plane), new_turf)
 
 /obj/effect/meteor/dark_matteor/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(spark_system)
 	vis_contents -= warp
 	QDEL_NULL(warp)
 	return ..()
 
 /obj/effect/meteor/dark_matteor/Move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		spark_system.start()
 
 /obj/effect/meteor/dark_matteor/shield_defense(obj/machinery/satellite/meteor_shield/defender)
+	procstart = null
+	src.procstart = null
 	defender.visible_message(span_danger("[defender]'s beam is reflected by [src]!"))
 	new /obj/effect/temp_visual/explosion/fast(get_turf(defender))
 	qdel(defender)
 	return FALSE
 
 /obj/effect/meteor/dark_matteor/moved_off_z()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(previous_security_level && SSsecurity_level.get_current_level_as_number() != SEC_LEVEL_DELTA)
 		SSsecurity_level.set_level(previous_security_level)

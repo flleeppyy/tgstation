@@ -30,15 +30,23 @@
 	var/implant_lore = "No information available."
 
 /obj/item/implant/proc/activate()
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_IMPLANT_ACTIVATED)
 
 /obj/item/implant/ui_action_click()
+	procstart = null
+	src.procstart = null
 	INVOKE_ASYNC(src, PROC_REF(activate), "action_button")
 
 /obj/item/implant/item_action_slot_check(slot, mob/user)
+	procstart = null
+	src.procstart = null
 	return user == imp_in
 
 /obj/item/implant/proc/can_be_implanted_in(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(issilicon(target))
 		return FALSE
 
@@ -62,6 +70,8 @@
  * * force - if true, implantation will not fail if can_be_implanted_in returns false
  */
 /obj/item/implant/proc/implant(mob/living/target, mob/user, silent = FALSE, force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_IMPLANT_IMPLANTING, args) & COMPONENT_STOP_IMPLANTING)
 		return
 	LAZYINITLIST(target.implants)
@@ -126,6 +136,8 @@
  * * special - Set to true if removed by admin panel, should bypass any side effects
  */
 /obj/item/implant/proc/removed(mob/living/source, silent = FALSE, special = FALSE)
+	procstart = null
+	src.procstart = null
 	moveToNullspace()
 	imp_in = null
 	source.implants -= src
@@ -140,6 +152,8 @@
 	return TRUE
 
 /obj/item/implant/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(imp_in)
 		removed(imp_in, silent = TRUE, special = TRUE)
 	return ..()
@@ -148,21 +162,29 @@
  * Gets the implant's info, for the implant pad.
  */
 /obj/item/implant/proc/get_data()
+	procstart = null
+	src.procstart = null
 	return implant_info
 
 /**
  * Gets the implant's lore info, also for the implant pad.
  */
 /obj/item/implant/proc/get_lore()
+	procstart = null
+	src.procstart = null
 	return implant_lore
 
 /obj/item/implant/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	..()
 
 /// Determines if the implant is visible on the implant management console.
 /// Note that this would only ever be called on implants currently inserted into a mob.
 /obj/item/implant/proc/is_shown_on_console(obj/machinery/computer/prisoner/management/console)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /**
@@ -171,6 +193,8 @@
  * Unlike normal UI data, the keys of the list are shown on the UI itself, so they should be human readable.
  */
 /obj/item/implant/proc/get_management_console_data()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 
 	var/list/info_shown = list()
@@ -189,6 +213,8 @@
  * * action_params - optional, additional params passed when the button is clicked
  */
 /obj/item/implant/proc/get_management_console_buttons()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	RETURN_TYPE(/list)
 
@@ -211,6 +237,8 @@
  * * console - the console the button was clicked on
  */
 /obj/item/implant/proc/handle_management_console_action(mob/user, list/params, obj/machinery/computer/prisoner/management/console)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(params["implant_action"] == "self_destruct")

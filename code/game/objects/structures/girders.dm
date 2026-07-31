@@ -31,10 +31,14 @@
 	var/projectile_pass_chance = 20
 
 /obj/structure/girder/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/uses_girder_wall_recipes)
 
 /obj/structure/girder/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(state)
 		if(GIRDER_REINF)
@@ -54,6 +58,8 @@
 		. += span_notice("The frame could be sliced apart with a <b>plasmacutter</b>.")
 
 /obj/structure/girder/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (user.combat_mode)
 		return
 	if (istype(tool, /obj/item/stack/sheet/plasteel))
@@ -63,6 +69,8 @@
 		return ITEM_INTERACT_BLOCKING
 
 /obj/structure/girder/screwdriver_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_BLOCKING
 	switch (state)
 		if (GIRDER_TRAM)
@@ -83,6 +91,8 @@
 				return ITEM_INTERACT_SUCCESS
 
 /obj/structure/girder/wirecutter_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_BLOCKING
 	if (try_construction_step(user, tool, 4 SECONDS, req_state = GIRDER_REINF_STRUTS, start_alert = "removing inner grille..."))
 		new /obj/item/stack/sheet/plasteel(get_turf(src))
@@ -90,6 +100,8 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/structure/girder/wrench_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_BLOCKING
 	if (!can_displace)
 		balloon_alert(user, "no bolts!")
@@ -105,6 +117,8 @@
 				return ITEM_INTERACT_SUCCESS
 
 /obj/structure/girder/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_BLOCKING
 	// Plasmacutters can always slice apart girders.
 	if (!can_weld_apart && !istype(tool, /obj/item/gun/energy/plasmacutter))
@@ -115,6 +129,8 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/structure/girder/proc/try_construction_step(mob/living/user, obj/item/tool, delay, req_state, req_floor, start_alert, volume = 100, amount = 0)
+	procstart = null
+	src.procstart = null
 	if (!check_state(user, req_state, req_floor))
 		return FALSE
 
@@ -126,6 +142,8 @@
 	return tool.use_tool(src, user, delay, amount, volume, CALLBACK(src, PROC_REF(check_state), user, req_state, req_floor))
 
 /obj/structure/girder/proc/check_state(mob/living/user, req_state, req_anchored, req_floor)
+	procstart = null
+	src.procstart = null
 	if (!isnull(req_state) && req_state != state)
 		return FALSE
 	if (req_floor && !isfloorturf(loc))
@@ -137,17 +155,23 @@
 // That said, ultimately, it would be a better solution for all of it to just be [/obj/structure/girder] at base.
 // For example right now if you paint a girder and use a wrench on it, it will magically lose that paint.
 /obj/structure/girder/proc/replace_girder(girder_type)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/girder/new_girder = new girder_type(loc)
 	transfer_fingerprints_to(new_girder)
 	new_girder.update_integrity(new_girder.max_integrity * (atom_integrity / max_integrity))
 	qdel(src)
 
 /obj/structure/girder/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((mover.pass_flags & PASSGRILLE) || isprojectile(mover))
 		return prob(projectile_pass_chance)
 
 /obj/structure/girder/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	procstart = null
+	src.procstart = null
 	if(!density)
 		return TRUE
 	if(pass_info.pass_flags & PASSGRILLE)
@@ -155,6 +179,8 @@
 	return FALSE
 
 /obj/structure/girder/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if (disassembled || always_drop_stack)
 		new stack_type(drop_location(), stack_amount)
 	else
@@ -162,6 +188,8 @@
 		new remains(drop_location())
 
 /obj/structure/girder/narsie_act()
+	procstart = null
+	src.procstart = null
 	replace_girder(/obj/structure/girder/cult)
 
 /obj/structure/girder/displaced
@@ -218,9 +246,13 @@
 	can_weld_apart = TRUE
 
 /obj/structure/girder/cult/narsie_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/girder/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	switch(the_rcd.mode)
 		if(RCD_TURF)
 			if(the_rcd.rcd_design_path != /turf/open/floor/plating/rcd)
@@ -235,6 +267,8 @@
 	return FALSE
 
 /obj/structure/girder/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	procstart = null
+	src.procstart = null
 	switch(rcd_data[RCD_DESIGN_MODE])
 		if(RCD_TURF)
 			if(the_rcd.rcd_design_path != /turf/open/floor/plating/rcd)

@@ -14,6 +14,8 @@
 	shared_cooldown = MOB_SHARED_COOLDOWN_2
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/magicarp_bolt/chaos/attack_sequence(mob/living/firer, atom/target)
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(firer), projectile_sound, 100, vary = TRUE)
 	return ..()
 
@@ -23,12 +25,16 @@
 	var/list/permitted_projectiles = list()
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/magicarp_bolt/chaos/attack_sequence(mob/living/firer, atom/target)
+	procstart = null
+	src.procstart = null
 	if (!length(permitted_projectiles))
 		return
 	projectile_type = pick(permitted_projectiles)
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/magicarp_bolt/InterceptClickOn(mob/living/clicker, params, atom/target)
+	procstart = null
+	src.procstart = null
 	if (!clicker.combat_mode)
 		return FALSE
 	return ..()
@@ -48,6 +54,8 @@
 	var/max_range = 3
 
 /datum/action/cooldown/mob_cooldown/lesser_carp_rift/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	if (get_dist(get_turf(owner), target_atom) > max_range)
 		target_atom = get_ranged_target_turf_direct(owner, target_atom, range = max_range)
 	if (!make_rift(target_atom))
@@ -56,6 +64,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/lesser_carp_rift/proc/make_rift(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	if (owner.Adjacent(target_atom))
 		owner.balloon_alert(owner, "too close!")
 		return FALSE
@@ -95,14 +105,20 @@
 	var/destroy_timer
 
 /obj/effect/temp_visual/lesser_carp_rift/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	destroy_timer = addtimer(CALLBACK(src, PROC_REF(animate_out)), duration - 1, TIMER_STOPPABLE)
 	return ..()
 
 /obj/effect/temp_visual/lesser_carp_rift/proc/animate_out()
+	procstart = null
+	src.procstart = null
 	var/obj/effect/temp_visual/lesser_carp_rift_dissipating/animate_out = new(loc)
 	animate_out.setup_animation(alpha)
 
 /obj/effect/temp_visual/lesser_carp_rift/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	deltimer(destroy_timer)
 
@@ -114,6 +130,8 @@
 	var/disorient_time = CLICK_CD_MELEE
 
 /obj/effect/temp_visual/lesser_carp_rift/entrance/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
@@ -121,6 +139,8 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/effect/temp_visual/lesser_carp_rift/entrance/proc/on_entered(datum/source, atom/movable/entered_atom)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!length(exit_locs))
@@ -155,5 +175,7 @@
 	duration = 1 SECONDS
 
 /obj/effect/temp_visual/lesser_carp_rift_dissipating/proc/setup_animation(new_alpha)
+	procstart = null
+	src.procstart = null
 	alpha = new_alpha
 	animate(src, alpha = 0, time = duration - 1)

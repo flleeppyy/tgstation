@@ -11,15 +11,21 @@
 	var/datum/song/stationary/song
 
 /obj/structure/musician/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	song = new(src, allowed_instrument_ids)
 	allowed_instrument_ids = null
 
 /obj/structure/musician/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(song)
 	return ..()
 
 /obj/structure/musician/proc/can_play(atom/music_player)
+	procstart = null
+	src.procstart = null
 	if(!anchored && !can_play_unanchored)
 		return FALSE
 	if(!ismob(music_player))
@@ -34,9 +40,13 @@
 	return TRUE
 
 /obj/structure/musician/ui_interact(mob/user)
+	procstart = null
+	src.procstart = null
 	return song.ui_interact(user)
 
 /obj/structure/musician/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool, time = 4 SECONDS)
 	return ITEM_INTERACT_SUCCESS
@@ -51,12 +61,16 @@
 	var/broken_icon_state = "pianobroken"
 
 /obj/structure/musician/piano/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/falling_hazard, damage = 60, wound_bonus = 10, hardhat_safety = FALSE, crushes = TRUE, impact_sound = 'sound/effects/piano_hit.ogg')
 	AddElement(/datum/element/climbable)
 	AddElement(/datum/element/elevation, pixel_shift = 10)
 
 /obj/structure/musician/piano/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			playsound(src, 'sound/effects/piano_hit.ogg', 100, TRUE)
@@ -64,6 +78,8 @@
 			playsound(src, 'sound/items/tools/welder.ogg', 100, TRUE)
 
 /obj/structure/musician/piano/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!broken)
 		broken = TRUE

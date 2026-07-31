@@ -30,17 +30,23 @@
 	src.on_cleaned_callback = on_cleaned_callback
 
 /datum/component/cleaner/Destroy(force)
+	procstart = null
+	src.procstart = null
 	pre_clean_callback = null
 	on_cleaned_callback = null
 	return ..()
 
 /datum/component/cleaner/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	if(ismob(parent))
 		RegisterSignal(parent, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(on_unarmed_attack))
 	if(isitem(parent))
 		RegisterSignal(parent, COMSIG_ITEM_INTERACTING_WITH_ATOM, PROC_REF(on_interaction))
 
 /datum/component/cleaner/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ITEM_INTERACTING_WITH_ATOM,
 		COMSIG_LIVING_UNARMED_ATTACK,
@@ -51,6 +57,8 @@
  * Redirects to afterattack, while setting parent (the bot) as user.
  */
 /datum/component/cleaner/proc/on_unarmed_attack(datum/source, atom/target, proximity_flags, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(on_interaction(source, source, target, modifiers) & ITEM_INTERACT_ANY_BLOCKER)
 		return COMPONENT_CANCEL_ATTACK_CHAIN
@@ -60,6 +68,8 @@
  * Handles the COMSIG_ITEM_INTERACTING_WITH_ATOM signal by calling the clean proc.
  */
 /datum/component/cleaner/proc/on_interaction(datum/source, mob/living/user, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isitem(source) && SHOULD_SKIP_INTERACTION(target, source, user))
@@ -92,6 +102,8 @@
  * * grant_xp set this to false if the user should not be granted cleaning experience
  */
 /datum/component/cleaner/proc/clean(datum/source, atom/target, mob/living/user, call_wash = TRUE, grant_xp = TRUE)
+	procstart = null
+	src.procstart = null
 	//make sure we don't attempt to clean something while it's already being cleaned
 	if(HAS_TRAIT(target, TRAIT_CURRENTLY_CLEANING) || (SEND_SIGNAL(target, COMSIG_ATOM_PRE_CLEAN, user) & COMSIG_ATOM_CANCEL_CLEAN))
 		return
@@ -143,6 +155,8 @@
 	REMOVE_TRAIT(target, TRAIT_CURRENTLY_CLEANING, REF(src))
 
 /datum/component/cleaner/proc/cleaning_target_moved(atom/movable/source, turf/old_turf, turf/new_turf, same_z_layer)
+	procstart = null
+	src.procstart = null
 	if(same_z_layer)
 		return
 	// First, get rid of the old overlay

@@ -6,6 +6,8 @@
 	result_path = /obj/machinery/power/apc/auto_name
 
 /obj/item/wallframe/apc/try_build(turf/on_wall, user)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(on_wall) //the user is not where it needs to be.
 	var/area/A = get_area(user)
 	if(A.apc)
@@ -21,6 +23,8 @@
 	return ..()
 
 /obj/item/wallframe/apc/after_attach(obj/machinery/power/apc/attached_to)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/power/terminal/E in attached_to.loc)
 		attached_to.make_terminal()
 		return

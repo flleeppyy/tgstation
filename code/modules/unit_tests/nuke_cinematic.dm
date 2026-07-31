@@ -14,6 +14,8 @@
 	var/cinematic_playing_type
 
 /datum/unit_test/nuke_cinematic/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/nuclearbomb/syndicate/nuke = allocate(/obj/machinery/nuclearbomb/syndicate)
 	var/mob/living/carbon/human/nuked = allocate(/mob/living/carbon/human/consistent)
 	var/datum/client_interface/mock_client = new
@@ -54,6 +56,8 @@
 
 /// Used to track whenever a cinematic starts playing, so we can check if it's the right one.
 /datum/unit_test/nuke_cinematic/proc/check_cinematic(datum/source, datum/cinematic/playing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	cinematic_playing_type = playing.type

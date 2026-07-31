@@ -35,6 +35,8 @@
 	var/static/mutable_appearance/eyes_emissive
 
 /mob/living/basic/blob_minion/blobbernaut/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_BLOBBERNAUT, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 	AddElement(/datum/element/damage_threshold, 10)
@@ -52,18 +54,24 @@
 	update_appearance()
 
 /mob/living/basic/blob_minion/blobbernaut/death(gibbed)
+	procstart = null
+	src.procstart = null
 	flick("[icon_state]_death", src)
 	playsound(src, 'sound/mobs/non-humanoids/blobmob/blobbernaut_death.ogg', 100, TRUE)
 	update_appearance(UPDATE_OVERLAYS)
 	return ..()
 
 /mob/living/basic/blob_minion/blobbernaut/create_mob_hud()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	hud_used.add_screen_object(/atom/movable/screen/healths/blob/overmind, HUD_BLOBBERNAUT_OVERMIND, HUD_GROUP_INFO, update_screen = TRUE)
 
 /mob/living/basic/blob_minion/blobbernaut/on_strain_updated(mob/eye/blob/overmind, datum/blobstrain/new_strain)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(new_strain)
 		attack_verb_continuous = new_strain.blobbernaut_message
@@ -85,6 +93,8 @@
 	update_appearance()
 
 /mob/living/basic/blob_minion/blobbernaut/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!vein_overlay)
 		vein_overlay = mutable_appearance(icon, "[base_icon_state]_veins", appearance_flags = RESET_COLOR | KEEP_APART)
@@ -109,6 +119,8 @@
 	var/orphaned = FALSE
 
 /mob/living/basic/blob_minion/blobbernaut/minion/Life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -162,6 +174,8 @@
 
 /// Called by the blob creation power to give us a mind and a basic task orientation
 /mob/living/basic/blob_minion/blobbernaut/minion/proc/assign_key(ckey, datum/blobstrain/blobstrain)
+	procstart = null
+	src.procstart = null
 	key = ckey
 	flick("blobbernaut_produce", src)
 	health = maxHealth / 2 // Start out injured to encourage not beelining away from the blob
@@ -174,6 +188,8 @@
 
 /// Called by our factory to inform us that it's not going to support us financially any more
 /mob/living/basic/blob_minion/blobbernaut/minion/on_factory_destroyed()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	orphaned = TRUE
 	throw_alert("nofactory", /atom/movable/screen/alert/nofactory)

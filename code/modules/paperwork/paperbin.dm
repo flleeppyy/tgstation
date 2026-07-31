@@ -25,6 +25,8 @@
 	var/mutable_appearance/bin_overlay
 
 /obj/item/paper_bin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	interaction_flags_item &= ~INTERACT_ITEM_ATTACK_HAND_PICKUP
 	AddElement(/datum/element/drag_pickup)
@@ -36,11 +38,15 @@
 	update_appearance()
 
 /obj/item/paper_bin/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(paper_stack)
 	return ..()
 
 /// Returns a fresh piece of paper
 /obj/item/paper_bin/proc/generate_paper()
+	procstart = null
+	src.procstart = null
 	var/obj/item/paper/paper = new papertype
 	if(check_holidays(APRIL_FOOLS))
 		if(prob(30))
@@ -50,6 +56,8 @@
 	return paper
 
 /obj/item/paper_bin/dump_contents(atom/droppoint, collapse = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!droppoint)
 		droppoint = drop_location()
 	if(collapse)
@@ -77,6 +85,8 @@
 	update_appearance()
 
 /obj/item/paper_bin/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(total_paper > 0)
 		total_paper = 0
 		QDEL_LIST(paper_stack)
@@ -85,10 +95,14 @@
 	..()
 
 /obj/item/paper_bin/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/paper_bin/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isliving(user))
 		var/mob/living/living_mob = user
 		if(!(living_mob.mobility_flags & MOBILITY_PICKUP))
@@ -119,6 +133,8 @@
 	return ..()
 
 /obj/item/paper_bin/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(at_overlay_limit())
 		dump_contents(drop_location(), TRUE)
 		return ITEM_INTERACT_SUCCESS
@@ -143,15 +159,21 @@
 	return NONE
 
 /obj/item/paper_bin/proc/at_overlay_limit()
+	procstart = null
+	src.procstart = null
 	return overlays.len >= MAX_ATOM_OVERLAYS - 1
 
 /obj/item/paper_bin/proc/remove_paper(amount = 1)
+	procstart = null
+	src.procstart = null
 	var/obj/item/paper/top_paper = pop(paper_stack)
 	if(top_paper)
 		qdel(top_paper)
 	total_paper -= amount
 
 /obj/item/paper_bin/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(total_paper)
 		. += "It contains [total_paper > 1 ? "[total_paper] papers" : "one paper"]."
@@ -159,6 +181,8 @@
 		. += "It doesn't contain anything."
 
 /obj/item/paper_bin/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(total_paper < 1)
 		icon_state = "paper_bin0"
 	else
@@ -166,6 +190,8 @@
 	return ..()
 
 /obj/item/paper_bin/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/static/obj/item/paper/reference_paper
@@ -227,35 +253,49 @@
 	var/obj/item/stack/cable_coil/binding_cable
 
 /obj/item/paper_bin/bundlenatural/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	binding_cable = new(src, 2)
 	binding_cable.set_cable_color(CABLE_COLOR_BROWN)
 	binding_cable.desc += " Non-natural."
 	return ..()
 
 /obj/item/paper_bin/bundlenatural/dump_contents(atom/droppoint)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	binding_cable.forceMove(droppoint)
 	binding_cable = null
 	qdel(src)
 
 /obj/item/paper_bin/bundlenatural/update_overlays()
+	procstart = null
+	src.procstart = null
 	bin_overlay = mutable_appearance(icon, bin_overlay_string)
 	bin_overlay.color = binding_cable.color
 	return ..()
 
 /obj/item/paper_bin/bundlenatural/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(total_paper == 0)
 		deconstruct(FALSE)
 
 /obj/item/paper_bin/bundlenatural/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	dump_contents(drop_location())
 	return ..()
 
 /obj/item/paper_bin/bundlenatural/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /obj/item/paper_bin/bundlenatural/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/paper/carbon))
 		to_chat(user, span_warning("[tool] won't fit into [src]."))
 		return ITEM_INTERACT_BLOCKING

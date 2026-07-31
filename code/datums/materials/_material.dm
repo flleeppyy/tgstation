@@ -90,6 +90,8 @@ Simple datum which is instanced once per type and is used for every object of sa
  * - _id: The ID the material should use. Overrides the existing ID.
  */
 /datum/material/proc/Initialize(_id, ...)
+	procstart = null
+	src.procstart = null
 	if(_id)
 		id = _id
 	else if(isnull(id))
@@ -107,6 +109,8 @@ Simple datum which is instanced once per type and is used for every object of sa
 /// This proc is called when the material is added to an object.
 /// Can be called even if the material is covered by a slot
 /datum/material/proc/on_applied(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_MATERIAL_APPLIED, source, mat_amount, multiplier, from_slot)
 
@@ -143,11 +147,15 @@ Simple datum which is instanced once per type and is used for every object of sa
 /// This proc is called when the material becomes the one the object is composed of the most
 /// Only called when the material isn't assigned to a slot
 /datum/material/proc/on_main_applied(atom/source, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_MATERIAL_MAIN_APPLIED, source, mat_amount, multiplier)
 
 /// This proc is called when the material is removed from an object.
 /datum/material/proc/on_removed(atom/source, mat_amount, material_flags, from_slot)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_MATERIAL_REMOVED, source, mat_amount, material_flags, from_slot)
 
@@ -181,10 +189,14 @@ Simple datum which is instanced once per type and is used for every object of sa
 
 /// This proc is called when the material is no longer the one the object is composed by the most
 /datum/material/proc/on_main_removed(atom/source, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_MATERIAL_MAIN_REMOVED, source, mat_amount, multiplier)
 
 /datum/material/proc/on_wall_shove_collide(turf/closed/source, mob/living/shover, mob/living/target, shove_flags, obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// If any part is exposed it makes sense it'd impact the wall
@@ -197,6 +209,8 @@ Simple datum which is instanced once per type and is used for every object of sa
 	SEND_SIGNAL(src, COMSIG_MATERIAL_EFFECT_TOUCH, source, target, shover, null, !!skin_contact)
 
 /datum/material/proc/on_item_attack(obj/item/source, mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	impact_affect_touch(source, user, user)
 	// Living mobs use a different signal
@@ -204,6 +218,8 @@ Simple datum which is instanced once per type and is used for every object of sa
 		impact_affect_target(source, target, user)
 
 /datum/material/proc/on_item_attack_living(obj/item/source, mob/living/target, mob/living/user, def_zone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/skin_contact = body_zone2cover_flags(def_zone)
 	for (var/obj/item/worn_item in target.get_equipped_items(INCLUDE_ABSTRACT))
@@ -214,10 +230,14 @@ Simple datum which is instanced once per type and is used for every object of sa
 	impact_affect_target(source, target, user, def_zone, !!skin_contact)
 
 /datum/material/proc/on_item_attack_self(obj/item/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	impact_affect_touch(source, user, user)
 
 /datum/material/proc/on_throw_impact(obj/item/source, atom/hit_atom, datum/thrownthing/throwing_datum, caught)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (caught)
 		impact_affect_touch(source, hit_atom, astype(throwing_datum.thrower?.resolve(), /mob/living))
@@ -225,6 +245,8 @@ Simple datum which is instanced once per type and is used for every object of sa
 		impact_affect_throw_impact(source, hit_atom, astype(throwing_datum.thrower?.resolve(), /mob/living))
 
 /datum/material/proc/on_throw_impact_living(obj/item/source, mob/living/target, def_zone, blocked, datum/thrownthing/throwing_datum)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/skin_contact = body_zone2cover_flags(def_zone)
@@ -236,6 +258,8 @@ Simple datum which is instanced once per type and is used for every object of sa
 	impact_affect_throw_impact(source, target, astype(throwing_datum.thrower?.resolve(), /mob/living), def_zone, !!skin_contact)
 
 /datum/material/proc/impact_affect_touch(obj/item/source, mob/living/user, mob/living/initiator)
+	procstart = null
+	src.procstart = null
 	var/arm_dir = IS_LEFT_INDEX(user.active_hand_index) ? BODY_ZONE_L_ARM : BODY_ZONE_R_ARM
 	if (!ishuman(user))
 		SEND_SIGNAL(src, COMSIG_MATERIAL_EFFECT_TOUCH, source, user, initiator, arm_dir, TRUE)
@@ -257,12 +281,18 @@ Simple datum which is instanced once per type and is used for every object of sa
 	SEND_SIGNAL(src, COMSIG_MATERIAL_EFFECT_TOUCH, source, user, initiator, hand.body_zone, !hand_covered)
 
 /datum/material/proc/impact_affect_target(obj/item/source, atom/target, mob/living/user, def_zone, skin_contact = TRUE)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_MATERIAL_EFFECT_HIT, source, target, user, def_zone, skin_contact)
 
 /datum/material/proc/impact_affect_throw_impact(obj/item/source, atom/target, mob/living/user, def_zone, skin_contact = TRUE)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_MATERIAL_EFFECT_THROW_IMPACT, source, target, user, def_zone, skin_contact)
 
 /datum/material/proc/setup_glow(turf/on)
+	procstart = null
+	src.procstart = null
 	if(GET_TURF_PLANE_OFFSET(on) != GET_LOWEST_STACK_OFFSET(on.z)) // We ain't the bottom brother
 		return
 	// We assume no parallax means no space means no light
@@ -274,19 +304,27 @@ Simple datum which is instanced once per type and is used for every object of sa
 	on.set_light(2, 1, starlight_color || GLOB.starlight_color, l_height = LIGHTING_HEIGHT_SPACE)
 
 /turf/proc/material_starlight_changed(datum/source, old_star, new_star)
+	procstart = null
+	src.procstart = null
 	if(light_color == old_star)
 		set_light_color(new_star)
 
 /datum/material/proc/lit_turf_deleted(turf/source)
+	procstart = null
+	src.procstart = null
 	source.set_light(0, 0, null)
 
 
 ////Called in `/datum/component/edible/proc/on_material_effects`
 /datum/material/proc/on_edible_applied(atom/source, datum/component/edible/edible)
+	procstart = null
+	src.procstart = null
 	return
 
 ////Called in `/datum/component/edible/proc/on_remove_material_effects`
 /datum/material/proc/on_edible_removed(atom/source, datum/component/edible/edible)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -296,6 +334,8 @@ Simple datum which is instanced once per type and is used for every object of sa
  * * S - (optional) item the mat is contained in (NOT the item with the mat itself)
  */
 /datum/material/proc/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if (!material_reagent)
@@ -321,11 +361,15 @@ Simple datum which is instanced once per type and is used for every object of sa
  * - amount: The amount of the material to break down.
  */
 /datum/material/proc/return_composition(amount = 1, flags)
+	procstart = null
+	src.procstart = null
 	// Yes we need the parenthesis, without them BYOND stringifies src into "src" and things break.
 	return list((src) = amount)
 
 ///Returns the list of armor modifiers, with each element having its assoc value multiplied by the multiplier arg
 /datum/material/proc/get_armor_modifiers(multiplier)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	var/density = get_property(MATERIAL_DENSITY)
 	var/hardness = get_property(MATERIAL_HARDNESS)
@@ -365,6 +409,8 @@ Simple datum which is instanced once per type and is used for every object of sa
 	return armor_modifiers
 
 /datum/material/proc/get_property(prop_id)
+	procstart = null
+	src.procstart = null
 	if (!isnull(mat_properties?[prop_id]))
 		return mat_properties[prop_id]
 

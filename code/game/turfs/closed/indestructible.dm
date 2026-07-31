@@ -9,16 +9,24 @@
 
 
 /turf/closed/indestructible/TerraformTurf(path, new_baseturf, flags, defer_change = FALSE, ignore_air = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/closed/indestructible/acid_act(acidpwr, acid_volume, acid_id)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/closed/indestructible/Melt()
+	procstart = null
+	src.procstart = null
 	to_be_destroyed = FALSE
 	return src
 
 /turf/closed/indestructible/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/closed/indestructible/oldshuttle
@@ -38,10 +46,14 @@
 	var/static/mutable_appearance/indestructible_paper = mutable_appearance('icons/obj/smooth_structures/structure_variations.dmi',icon_state = "paper-whole", layer = CLOSED_TURF_LAYER - 0.1)
 
 /turf/closed/indestructible/weeb/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /turf/closed/indestructible/weeb/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += indestructible_paper
 
@@ -70,6 +82,8 @@
 INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 
 /turf/closed/indestructible/splashscreen/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SStitle.splash_turf = src
 	if(SStitle.icon)
@@ -78,6 +92,8 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 
 ///helper proc that will center the screen if the icon is changed to a generic width, to make admins have to fudge around with pixel_x less. returns null
 /turf/closed/indestructible/splashscreen/proc/handle_generic_titlescreen_sizes()
+	procstart = null
+	src.procstart = null
 	var/icon/size_check = icon(SStitle.icon, icon_state)
 	var/width = size_check.Width()
 	if(width == 480) // 480x480 is nonwidescreen
@@ -86,6 +102,8 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 		pixel_x = -64
 
 /turf/closed/indestructible/splashscreen/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		switch(var_name)
@@ -94,6 +112,8 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 				handle_generic_titlescreen_sizes()
 
 /turf/closed/indestructible/splashscreen/examine()
+	procstart = null
+	src.procstart = null
 	desc = pick(strings(SPLASH_FILE, "splashes"))
 	return ..()
 
@@ -207,6 +227,8 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	canSmoothWith = SMOOTH_GROUP_WINDOW_FULLTILE
 
 /turf/closed/indestructible/fakeglass/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	underlays += mutable_appearance('icons/obj/structures.dmi', "grille", layer - 0.01, src) //add a grille underlay
 	underlays += mutable_appearance('icons/turf/floors.dmi', "plating", layer - 0.02, src) //add the plating underlay, below the grille
@@ -222,6 +244,8 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	canSmoothWith = SMOOTH_GROUP_WINDOW_FULLTILE_PLASTITANIUM
 
 /turf/closed/indestructible/opsglass/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	underlays += mutable_appearance('icons/obj/structures.dmi', "grille", layer - 0.01, src)
 	underlays += mutable_appearance('icons/turf/floors.dmi', "plating", layer - 0.02, src)
@@ -266,6 +290,8 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	var/wall_icon_state = "rock"
 
 /turf/closed/indestructible/rock/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_large_wall_overlay('icons/turf/mining.dmi', wall_icon_state)
 
@@ -310,6 +336,8 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	baseturfs = /turf/closed/indestructible/necropolis
 
 /turf/closed/indestructible/necropolis/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	underlay_appearance.icon = 'icons/turf/floors.dmi'
 	underlay_appearance.icon_state = "necro1"
 	return TRUE
@@ -344,6 +372,8 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	opacity = FALSE
 
 /turf/closed/indestructible/riveted/boss/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	underlay_appearance.icon = 'icons/turf/floors.dmi'
 	underlay_appearance.icon_state = "basalt"
 	return TRUE
@@ -359,10 +389,14 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	canSmoothWith = SMOOTH_GROUP_HIERO_WALL
 
 /turf/closed/indestructible/riveted/hierophant/set_smoothed_icon_state(new_junction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_OVERLAYS)
 
 /turf/closed/indestructible/riveted/hierophant/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance('icons/turf/walls/hierophant_wall_e.dmi', icon_state, src)
 
@@ -385,6 +419,8 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	canSmoothWith = SMOOTH_GROUP_ALIEN_WALLS
 
 /turf/closed/indestructible/resin/membrane/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	underlays += mutable_appearance('icons/turf/floors.dmi', "engine", layer - 0.01, src) // add the reinforced floor underneath
 
@@ -395,6 +431,8 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	base_icon_state = "grille"
 
 /turf/closed/indestructible/grille/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	underlays += mutable_appearance('icons/turf/floors.dmi', "plating", layer - 0.01, src)
 

@@ -13,6 +13,8 @@
 	var/obj/item/janicart_upgrade/installed_upgrade
 
 /obj/vehicle/ridden/janicart/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 	update_appearance()
@@ -22,6 +24,8 @@
 		installed_upgrade.install(src)
 
 /obj/vehicle/ridden/janicart/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.janitor_devices -= src
 	if (trash_bag)
 		QDEL_NULL(trash_bag)
@@ -30,11 +34,15 @@
 	return ..()
 
 /obj/vehicle/ridden/janicart/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (installed_upgrade)
 		. += "It has been upgraded with [installed_upgrade], which can be removed with a screwdriver."
 
 /obj/vehicle/ridden/janicart/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -71,6 +79,8 @@
 	return NONE
 
 /obj/vehicle/ridden/janicart/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if (!installed_upgrade)
 		return ITEM_INTERACT_BLOCKING
 	installed_upgrade.uninstall(src)
@@ -82,6 +92,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/vehicle/ridden/janicart/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(trash_bag)
 		if(istype(trash_bag, /obj/item/storage/bag/trash/bluespace))
@@ -94,12 +106,16 @@
 		. += overlay
 
 /obj/vehicle/ridden/janicart/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// right click removes bag without unbuckling when possible
 	. = (LAZYACCESS(modifiers, RIGHT_CLICK) && try_remove_bag(user)) || ..()
 	if (!.)
 		try_remove_bag(user)
 
 /obj/vehicle/ridden/janicart/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!held_item)
@@ -142,6 +158,8 @@
  * Called if the attached bag is being qdeleted, ensures appearance is maintained properly
  */
 /obj/vehicle/ridden/janicart/proc/bag_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(try_remove_bag))
 
@@ -152,6 +170,8 @@
  * * remover - The (optional) mob attempting to remove the bag
  */
 /obj/vehicle/ridden/janicart/proc/try_remove_bag(mob/remover = null)
+	procstart = null
+	src.procstart = null
 	if (!trash_bag)
 		return FALSE
 	if (remover)
@@ -192,6 +212,8 @@
  * * installee - The cart the upgrade is being installed into
  */
 /obj/item/janicart_upgrade/proc/install(obj/vehicle/ridden/janicart/installee)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /**
@@ -201,6 +223,8 @@
  * * installee - The cart the upgrade is being removed from
  */
 /obj/item/janicart_upgrade/proc/uninstall(obj/vehicle/ridden/janicart/installee)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/item/janicart_upgrade/buffer
@@ -212,9 +236,13 @@
 	greyscale_colors = "#ffffff#6aa3ff#a2a2a2#d1d15f"
 
 /obj/item/janicart_upgrade/buffer/install(obj/vehicle/ridden/janicart/installee)
+	procstart = null
+	src.procstart = null
 	installee.AddElement(/datum/element/cleaning)
 
 /obj/item/janicart_upgrade/buffer/uninstall(obj/vehicle/ridden/janicart/installee)
+	procstart = null
+	src.procstart = null
 	installee.RemoveElement(/datum/element/cleaning)
 
 /obj/item/janicart_upgrade/vacuum
@@ -226,7 +254,11 @@
 	greyscale_colors = "#ffffff#ffea6a#a2a2a2#d1d15f"
 
 /obj/item/janicart_upgrade/vacuum/install(obj/vehicle/ridden/janicart/installee)
+	procstart = null
+	src.procstart = null
 	installee.AddComponent(/datum/component/vacuum, installee.trash_bag)
 
 /obj/item/janicart_upgrade/vacuum/uninstall(obj/vehicle/ridden/janicart/installee)
+	procstart = null
+	src.procstart = null
 	qdel(installee.GetComponent(/datum/component/vacuum))

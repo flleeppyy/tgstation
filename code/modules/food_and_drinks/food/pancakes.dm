@@ -26,6 +26,8 @@
 	foodtypes_added_when_cooked = BREAKFAST
 
 /obj/item/food/pancakes/raw/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable,\
 				cook_result = /obj/item/food/pancakes,\
 				required_cook_time = rand(30 SECONDS, 40 SECONDS),\
@@ -33,6 +35,8 @@
 				use_large_steam_sprite = TRUE)
 
 /obj/item/food/pancakes/raw/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(name != initial(name))// we already have additives
 		return ..()
 
@@ -56,6 +60,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/food/pancakes/raw/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(name == initial(name))
 		. += span_notice("You can modify the pancake by adding <b>blueberries</b> or <b>chocolate</b> before finishing the griddle.")
@@ -85,14 +91,20 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/pancakes/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/item/food/pancakes/update_name()
+	procstart = null
+	src.procstart = null
 	name = contents.len ? "stack of pancakes" : initial(name)
 	return ..()
 
 /obj/item/food/pancakes/update_icon(updates = ALL)
+	procstart = null
+	src.procstart = null
 	if(!(updates & UPDATE_OVERLAYS))
 		return ..()
 
@@ -104,6 +116,8 @@
 	. |= UPDATE_OVERLAYS
 
 /obj/item/food/pancakes/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	var/ingredients_listed = ""
 	var/pancakeCount = contents.len
 	switch(pancakeCount)
@@ -124,6 +138,8 @@
 		. += "It contains [contents.len?"[ingredients_listed]":"no ingredient, "]on top of a [initial(name)]."
 
 /obj/item/food/pancakes/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/food/pancakes))
 		var/obj/item/food/pancakes/pancake = tool
 		if((contents.len >= PANCAKE_MAX_STACK) || ((pancake.contents.len + contents.len) > PANCAKE_MAX_STACK))
@@ -154,6 +170,8 @@
 	return NONE
 
 /obj/item/food/pancakes/proc/update_snack_overlays(obj/item/food/pancakes/pancake)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/pancake_visual = mutable_appearance(icon, "[pancake.stack_name]_[rand(1, 3)]")
 	pancake_visual.pixel_w = rand(-1, 1)
 	pancake_visual.pixel_z = 3 * contents.len - 1
@@ -162,6 +180,8 @@
 	update_appearance()
 
 /obj/item/food/pancakes/attack(mob/target, mob/living/user, params, stacked = TRUE)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode || !contents.len || !stacked)
 		return ..()
 	var/obj/item/item = contents[contents.len]

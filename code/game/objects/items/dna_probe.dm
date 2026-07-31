@@ -36,6 +36,8 @@
 	))
 
 /obj/item/dna_probe/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(interacting_with, /obj/machinery/dna_vault))
 		if(dna_vault_ref?.resolve())
 			// Weirdly we can upload to any existing DNA vault so long as we're linked to any other existing DNA vault.
@@ -51,6 +53,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/dna_probe/proc/try_linking_vault(obj/machinery/dna_vault/target, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/dna_vault/our_vault = dna_vault_ref?.resolve()
 	if(!our_vault)
 		dna_vault_ref = WEAKREF(target)//linking the dna vault with the probe
@@ -60,6 +64,8 @@
 	return FALSE
 
 /obj/item/dna_probe/proc/try_upload_dna(obj/machinery/dna_vault/target, mob/user)
+	procstart = null
+	src.procstart = null
 	var/uploaded = 0
 	stored_dna_plants -= target.plant_dna
 	stored_dna_human -= target.human_dna
@@ -85,6 +91,8 @@
 	return uploaded
 
 /obj/item/dna_probe/proc/scan_dna(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/dna_vault/our_vault = dna_vault_ref?.resolve()
 	if(!our_vault)
 		playsound(user, 'sound/machines/buzz/buzz-sigh.ogg', 50)
@@ -144,6 +152,8 @@
 	return TRUE
 
 /obj/item/dna_probe/proc/valid_scan_target(atom/target)
+	procstart = null
+	src.procstart = null
 	if((allowed_scans & DNA_PROBE_SCAN_PLANTS) && istype(target, /obj/machinery/hydroponics))
 		return TRUE
 	if((allowed_scans & DNA_PROBE_SCAN_HUMANS) && (ishuman(target) && !ismonkey(target)))
@@ -162,10 +172,14 @@
 	var/carp_dna_loaded = FALSE
 
 /obj/item/dna_probe/carp_scanner/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. = list(span_notice("Using this on a Space Carp will harvest its DNA. Use it in-hand once complete to mutate it with yourself."))
 
 /obj/item/dna_probe/carp_scanner/scan_dna(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(target, /mob/living/basic/carp))
 		carp_dna_loaded = TRUE
 		playsound(src, 'sound/machines/compiler/compiler-stage2.ogg', 50)
@@ -174,11 +188,15 @@
 		return ..()
 
 /obj/item/dna_probe/carp_scanner/valid_scan_target(atom/target)
+	procstart = null
+	src.procstart = null
 	if (istype(target, /mob/living/basic/carp))
 		return TRUE
 	return ..()
 
 /obj/item/dna_probe/carp_scanner/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!carp_dna_loaded)
 		to_chat(user, span_notice("Space carp DNA is required to use the self-mutation mechanism!"))

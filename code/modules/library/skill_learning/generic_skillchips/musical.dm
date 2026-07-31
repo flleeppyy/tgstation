@@ -10,18 +10,26 @@
 	custom_premium_price = PAYCHECK_CREW * 4
 
 /obj/item/skillchip/musical/Initialize(mapload, is_removable)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = replacetext(name, "Old", round(CURRENT_STATION_YEAR - pick(50, 100, 150, 200, 250), 5))
 
 /obj/item/skillchip/musical/on_activate(mob/living/carbon/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(user, COMSIG_MOB_SAY, PROC_REF(make_music))
 
 /obj/item/skillchip/musical/on_deactivate(mob/living/carbon/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, COMSIG_MOB_SAY)
 
 /obj/item/skillchip/musical/proc/make_music(mob/living/carbon/source, list/say_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/raw_message = say_args[SPEECH_MESSAGE]
@@ -69,10 +77,14 @@
 	say_args[SPEECH_MODS][MODE_SING] = TRUE
 
 /obj/item/skillchip/musical/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_tinynoticeital("Huh, looks like it'd fit in a skillchip adapter.")
 
 /obj/item/skillchip/musical/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/songs = list()
 	songs += "&bull; \"The Ballad of Space Station 13\""

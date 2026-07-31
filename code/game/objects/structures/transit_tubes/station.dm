@@ -23,17 +23,25 @@
 	var/boarding_dir //from which direction you can board the tube
 
 /obj/structure/transit_tube/station/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/transit_tube/station/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/structure/transit_tube/station/should_stop_pod(pod, from_dir)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/structure/transit_tube/station/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(!pod_moving && open_status == STATION_TUBE_OPEN && ismob(AM) && AM.dir == boarding_dir)
 		for(var/obj/structure/transit_tube_pod/pod in loc)
 			if(!pod.moving)
@@ -43,6 +51,8 @@
 
 //pod insertion
 /obj/structure/transit_tube/station/mouse_drop_receive(obj/structure/c_transit_tube_pod/R, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (!istype(R) || get_dist(user, src) > 1 || get_dist(src, R) > 1)
 		return
 	for(var/obj/structure/transit_tube_pod/pod in loc)
@@ -56,6 +66,8 @@
 
 
 /obj/structure/transit_tube/station/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -94,6 +106,8 @@
 
 
 /obj/structure/transit_tube/station/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	var/anything_done = FALSE
 	for(var/obj/structure/transit_tube_pod/victim in loc)
 		victim.deconstruct(FALSE, user)
@@ -102,12 +116,16 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/transit_tube/station/proc/open_animation()
+	procstart = null
+	src.procstart = null
 	if(open_status == STATION_TUBE_CLOSED)
 		icon_state = "opening_[base_icon_state]"
 		open_status = STATION_TUBE_OPENING
 		addtimer(CALLBACK(src, PROC_REF(finish_animation)), OPEN_DURATION)
 
 /obj/structure/transit_tube/station/proc/finish_animation()
+	procstart = null
+	src.procstart = null
 	switch(open_status)
 		if(STATION_TUBE_OPENING)
 			icon_state = "open_[base_icon_state]"
@@ -125,12 +143,16 @@
 			open_status = STATION_TUBE_CLOSED
 
 /obj/structure/transit_tube/station/proc/close_animation()
+	procstart = null
+	src.procstart = null
 	if(open_status == STATION_TUBE_OPEN)
 		icon_state = "closing_[base_icon_state]"
 		open_status = STATION_TUBE_CLOSING
 		addtimer(CALLBACK(src, PROC_REF(finish_animation)), CLOSE_DURATION)
 
 /obj/structure/transit_tube/station/proc/launch_pod()
+	procstart = null
+	src.procstart = null
 	if(launch_cooldown >= world.time)
 		return
 	for(var/obj/structure/transit_tube_pod/pod in loc)
@@ -145,14 +167,20 @@
 	return FALSE
 
 /obj/structure/transit_tube/station/process()
+	procstart = null
+	src.procstart = null
 	if(!pod_moving)
 		launch_pod()
 
 /obj/structure/transit_tube/station/pod_stopped(obj/structure/transit_tube_pod/pod, from_dir)
+	procstart = null
+	src.procstart = null
 	pod_moving = TRUE
 	addtimer(CALLBACK(src, PROC_REF(start_stopped), pod), 0.5 SECONDS)
 
 /obj/structure/transit_tube/station/proc/start_stopped(obj/structure/transit_tube_pod/pod)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(pod))
 		return
 	if(reverse_launch)
@@ -162,6 +190,8 @@
 	addtimer(CALLBACK(src, PROC_REF(finish_stopped), pod), OPEN_DURATION + 2)
 
 /obj/structure/transit_tube/station/proc/finish_stopped(obj/structure/transit_tube_pod/pod)
+	procstart = null
+	src.procstart = null
 	pod_moving = FALSE
 	if(QDELETED(pod))
 		return
@@ -170,6 +200,8 @@
 		air_update_turf(FALSE, FALSE)
 
 /obj/structure/transit_tube/station/init_tube_dirs()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			tube_dirs = list(EAST, WEST)
@@ -188,6 +220,8 @@
 	tube_construction = /obj/structure/c_transit_tube/station/flipped
 
 /obj/structure/transit_tube/station/flipped/init_tube_dirs()
+	procstart = null
+	src.procstart = null
 	..()
 	boarding_dir = dir
 
@@ -200,6 +234,8 @@
 	base_icon_state = "terminus0"
 
 /obj/structure/transit_tube/station/reverse/init_tube_dirs()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			tube_dirs = list(EAST)
@@ -217,6 +253,8 @@
 	tube_construction = /obj/structure/c_transit_tube/station/reverse/flipped
 
 /obj/structure/transit_tube/station/reverse/flipped/init_tube_dirs()
+	procstart = null
+	src.procstart = null
 	..()
 	boarding_dir = dir
 
@@ -234,9 +272,13 @@
 	COOLDOWN_DECLARE(freight_message)
 
 /obj/structure/transit_tube/station/dispenser/close_animation()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/transit_tube/station/dispenser/launch_pod()
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/transit_tube_pod/pod in loc)
 		if(!pod.moving)
 			pod_moving = TRUE
@@ -246,10 +288,14 @@
 	return FALSE
 
 /obj/structure/transit_tube/station/dispenser/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("This station will create a pod for you to ride, no need to wait for one.")
 
 /obj/structure/transit_tube/station/dispenser/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(!(istype(AM) && AM.dir == boarding_dir) || AM.anchored)
 		return
 	if(!isliving(AM))
@@ -269,6 +315,8 @@
 	launch_pod()
 
 /obj/structure/transit_tube/station/dispenser/pod_stopped(obj/structure/transit_tube_pod/pod, from_dir)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/machines/ding.ogg', 50, TRUE)
 	qdel(pod)
 
@@ -278,6 +326,8 @@
 	tube_construction = /obj/structure/c_transit_tube/station/dispenser/flipped
 
 /obj/structure/transit_tube/station/dispenser/flipped/init_tube_dirs()
+	procstart = null
+	src.procstart = null
 	..()
 	boarding_dir = dir
 
@@ -289,6 +339,8 @@
 	base_icon_state = "terminusdispenser0"
 
 /obj/structure/transit_tube/station/dispenser/reverse/init_tube_dirs()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			tube_dirs = list(EAST)
@@ -306,6 +358,8 @@
 	tube_construction = /obj/structure/c_transit_tube/station/dispenser/reverse/flipped
 
 /obj/structure/transit_tube/station/dispenser/reverse/flipped/init_tube_dirs()
+	procstart = null
+	src.procstart = null
 	..()
 	boarding_dir = dir
 

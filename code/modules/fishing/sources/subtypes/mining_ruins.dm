@@ -30,6 +30,8 @@
 	fish_source_flags = FISH_SOURCE_FLAG_EXPLOSIVE_NONE
 
 /datum/fish_source/chasm/on_start_fishing(obj/item/fishing_rod/rod, mob/fisherman, atom/parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(rod.hook, /obj/item/fishing_hook/rescue))
 		to_chat(fisherman, span_notice("The rescue hook falls straight down the chasm! Hopefully it catches a corpse."))
@@ -37,6 +39,8 @@
 	to_chat(fisherman, span_danger("Your fishing hook makes a soft 'thud' noise as it gets stuck on the wall of the chasm. It doesn't look like it's going to catch much of anything, except maybe some detritus."))
 
 /datum/fish_source/chasm/roll_reward(obj/item/fishing_rod/rod, mob/fisherman)
+	procstart = null
+	src.procstart = null
 	var/rolled_reward = ..()
 
 	if(!rod.hook || !ispath(rolled_reward, /datum/chasm_detritus))
@@ -80,6 +84,8 @@
 	safe_turfs_blacklist = list(/turf/open/lava/plasma)
 
 /datum/fish_source/lavaland/reason_we_cant_fish(obj/item/fishing_rod/rod, mob/fisherman, atom/parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(rod, TRAIT_ROD_LAVA_USABLE))
 		return "You'll need reinforced fishing line to fish in there."

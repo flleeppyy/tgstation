@@ -9,19 +9,27 @@
 	var/old_heat_capacity
 
 /obj/effect/shield/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/location = get_turf(src)
 	old_heat_capacity = location.heat_capacity
 	location.heat_capacity = INFINITY
 
 /obj/effect/shield/Destroy()
+	procstart = null
+	src.procstart = null
 	var/turf/location = get_turf(src)
 	location.heat_capacity = old_heat_capacity
 	return ..()
 
 /obj/effect/shield/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/shield/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 

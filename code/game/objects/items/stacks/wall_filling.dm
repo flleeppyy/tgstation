@@ -24,6 +24,8 @@
 	var/made_from
 
 /obj/item/stack/wall_filling/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Use while in your hand to change what type of [src] you want.")
 	if(throwforce && !is_cyborg) //do not want to divide by zero or show the message to borgs who can't throw
@@ -44,6 +46,8 @@
 		. += span_notice("Those could work as a [damage_value] throwing weapon.")
 
 /obj/item/stack/wall_filling/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (tool.tool_behaviour != TOOL_WELDER)
 		return ..()
 
@@ -69,6 +73,8 @@ GLOBAL_LIST_EMPTY(wall_reskin_lists)
  * Yup, literally copied over from tile reskinning, except we don't need a dir as walls don't rotate, so, that much simpler.
  */
 /obj/item/stack/wall_filling/proc/wall_reskin_list(list/values)
+	procstart = null
+	src.procstart = null
 	var/string_id = values.Join("-")
 	. = GLOB.wall_reskin_lists[string_id]
 	if(.)
@@ -79,6 +85,8 @@ GLOBAL_LIST_EMPTY(wall_reskin_lists)
 	return GLOB.wall_reskin_lists[string_id] = values
 
 /obj/item/stack/wall_filling/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/wall_filling/choice = show_radial_menu(user, src, wall_reskin_types, radius = 48, require_near = TRUE)
 	if(!choice || choice == type)
 		return
@@ -89,6 +97,8 @@ GLOBAL_LIST_EMPTY(wall_reskin_lists)
 	qdel(src)
 
 /obj/item/stack/wall_filling/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(wall_reskin_types)
 		wall_reskin_types = wall_reskin_list(wall_reskin_types)

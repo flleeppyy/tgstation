@@ -41,6 +41,8 @@ Then the player gets the profit from selling his own wasted time.
 	** export_markets: Defines the market that the items are being sold to.
 */
 /proc/export_item_and_contents(atom/movable/exported_atom, apply_elastic = TRUE, delete_unsold = TRUE, dry_run = FALSE, datum/export_report/external_report, list/ignore_typecache, export_markets = list(EXPORT_MARKET_STATION))
+	procstart = null
+	src.procstart = null
 	if(!islist(export_markets))
 		export_markets = list(export_markets)
 
@@ -66,6 +68,8 @@ Then the player gets the profit from selling his own wasted time.
 
 /// It works like export_item_and_contents(), however it ignores the contents. Meaning only `exported_atom` will be valued.
 /proc/export_single_item(atom/movable/exported_atom, apply_elastic = TRUE, delete_unsold = TRUE, dry_run = FALSE, datum/export_report/external_report, export_markets = list(EXPORT_MARKET_STATION))
+	procstart = null
+	src.procstart = null
 	if(!external_report)
 		external_report = new
 
@@ -79,6 +83,8 @@ Then the player gets the profit from selling his own wasted time.
 
 /// The main bit responsible for selling the item. Shared by export_single_item() and export_item_and_contents()
 /proc/_export_loop(atom/movable/exported_atom, apply_elastic = TRUE, dry_run = FALSE, datum/export_report/external_report, export_markets)
+	procstart = null
+	src.procstart = null
 	var/sold = EXPORT_NOT_SOLD
 	for(var/datum/export/export as anything in GLOB.exports_list)
 		if(export.applies_to(exported_atom, apply_elastic, export_markets))
@@ -125,14 +131,20 @@ Then the player gets the profit from selling his own wasted time.
 	var/sales_market = EXPORT_MARKET_STATION
 
 /datum/export/New()
+	procstart = null
+	src.procstart = null
 	..()
 	export_types = typecacheof(export_types, only_root_path = !include_subtypes)
 	exclude_types = typecacheof(exclude_types)
 
 /datum/export/Destroy()
+	procstart = null
+	src.procstart = null
 	return ..()
 
 /datum/export/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	k_elasticity += seconds_per_tick / k_recovery_time
 	if(k_elasticity >= 1)
 		k_elasticity = 1
@@ -145,6 +157,8 @@ Then the player gets the profit from selling his own wasted time.
  * * obj/exported_item - the item we whos base cost we are trying to compute
 */
 /datum/export/proc/get_base_cost(obj/exported_item)
+	procstart = null
+	src.procstart = null
 	return cost
 
 /*
@@ -155,6 +169,8 @@ Then the player gets the profit from selling his own wasted time.
  * * obj/exported_item - the amount of units in this exported item
 */
 /datum/export/proc/get_amount(obj/exported_item)
+	procstart = null
+	src.procstart = null
 	return 1
 
 
@@ -166,6 +182,8 @@ Then the player gets the profit from selling his own wasted time.
  * * apply_elastic - should we use elasticity
 */
 /datum/export/proc/get_cost(obj/exported_item, apply_elastic = TRUE)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	var/total = get_base_cost(exported_item) * get_amount(exported_item)
@@ -175,6 +193,8 @@ Then the player gets the profit from selling his own wasted time.
 
 /// Checks if the item is fit for export datum.
 /datum/export/proc/applies_to(obj/exported_item, apply_elastic = TRUE, export_markets)
+	procstart = null
+	src.procstart = null
 	for(var/found_market in export_markets)
 		if(!is_type_in_typecache(exported_item, export_types))
 			continue
@@ -197,6 +217,8 @@ Then the player gets the profit from selling his own wasted time.
  *
  */
 /datum/export/proc/sell_object(obj/sold_item, datum/export_report/report, dry_run = TRUE, apply_elastic = TRUE)
+	procstart = null
+	src.procstart = null
 	///This is the value of the object, as derived from export datums.
 	var/export_value = get_cost(sold_item, apply_elastic)
 	///Quantity of the object in question.
@@ -231,6 +253,8 @@ Then the player gets the profit from selling his own wasted time.
 * It must always return something if the datum adds or removes any credtis.
 */
 /datum/export/proc/total_printout(datum/export_report/ex, notes = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!ex.total_amount[src] || !ex.total_value[src])
 		return ""
 

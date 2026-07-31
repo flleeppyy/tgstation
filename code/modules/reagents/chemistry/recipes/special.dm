@@ -39,6 +39,8 @@
 	var/list/possible_containers
 
 /datum/chemical_reaction/randomized/New(recipe_data)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!recipe_data || !load_recipe(recipe_data))
@@ -49,6 +51,8 @@
 
 
 /datum/chemical_reaction/randomized/proc/load_recipe(recipe_data)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	// Timestamp
 	created = text2num(recipe_data["timestamp"])
@@ -92,6 +96,8 @@
 	return TRUE
 
 /datum/chemical_reaction/randomized/proc/generate_recipe()
+	procstart = null
+	src.procstart = null
 	// Timestamp
 	created = world.realtime
 
@@ -158,6 +164,8 @@
  * * kind - see above defines
 */
 /datum/chemical_reaction/randomized/proc/GetPossibleReagents(kind)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	return list()
@@ -169,6 +177,8 @@
  * * list/textreagents - the list reagents
 */
 /datum/chemical_reaction/randomized/proc/unwrap_reagent_list(list/textreagents)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	. = list()
@@ -184,6 +194,8 @@
 	results = list(/datum/reagent/consumable/secretsauce = 1)
 
 /datum/chemical_reaction/randomized/secret_sauce/GetPossibleReagents(kind)
+	procstart = null
+	src.procstart = null
 	switch(kind)
 		if(RNGCHEM_INPUT,RNGCHEM_CATALYSTS)
 			var/food_reagent_ids = list()
@@ -202,6 +214,8 @@
 	results = list(/datum/reagent/metalgen = 20)
 
 /datum/chemical_reaction/randomized/metalgen/GetPossibleReagents(kind)
+	procstart = null
+	src.procstart = null
 	switch(kind)
 		if(RNGCHEM_INPUT)
 			var/list/possible_ingredients = list()
@@ -220,6 +234,8 @@
 	results = list(/datum/reagent/metalgen/gorgium = 20)
 
 /datum/chemical_reaction/randomized/gorgium/GetPossibleReagents(kind)
+	procstart = null
+	src.procstart = null
 	var/list/possible_ingredients = list()
 	for(var/datum/reagent/reagent as anything in valid_subtypesof(/datum/reagent))
 		var/chemical_flags = reagent::chemical_flags
@@ -233,6 +249,8 @@
 	var/list/possible_recipes = list(/datum/chemical_reaction/randomized/metalgen, /datum/chemical_reaction/randomized/secret_sauce)
 
 /obj/item/paper/secretrecipe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(SSpersistence.initialized)
@@ -241,6 +259,8 @@
 		SSticker.OnRoundstart(CALLBACK(src, PROC_REF(UpdateInfo)))
 
 /obj/item/paper/secretrecipe/ui_static_data(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(user) || user.stat == DEAD)
 		.["text"] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
@@ -253,6 +273,8 @@
 
 ///Updates the paper info
 /obj/item/paper/secretrecipe/proc/UpdateInfo()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/datum/chemical_reaction/recipe = GLOB.chemical_reactions_list[pick(possible_recipes)]
@@ -299,6 +321,8 @@
 	possible_recipes = list(/datum/chemical_reaction/randomized/gorgium)
 
 /obj/item/paper/secretrecipe/gorgium/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	metal_transmute(src, /datum/material/rock)
@@ -309,6 +333,8 @@
 	possible_recipes = list(/datum/chemical_reaction/randomized/metalgen)
 
 /obj/item/paper/secretrecipe/metalgen/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	metal_transmute(src, /datum/material/uranium)

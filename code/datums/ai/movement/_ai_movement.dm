@@ -7,6 +7,8 @@
 
 //Override this to setup the moveloop you want to use
 /datum/ai_movement/proc/start_moving_towards(datum/ai_controller/controller, atom/current_movement_target, min_distance, delay_override)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	var/old_movement_target = moving_controllers[controller]
 	if(old_movement_target)
@@ -23,10 +25,14 @@
 	return TRUE
 
 /datum/ai_movement/proc/update_movement_target(datum/ai_controller/controller, atom/new_target)
+	procstart = null
+	src.procstart = null
 	moving_controllers[controller] = new_target
 	controller.set_blackboard_key(BB_CURRENT_MOVEMENT_TARGET, new_target)
 
 /datum/ai_movement/proc/stop_moving_towards(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.consecutive_pathing_attempts = 0
 	moving_controllers -= controller
 	// We got deleted as we finished an action
@@ -35,18 +41,26 @@
 		GLOB.move_manager.stop_looping(controller.pawn, SSai_movement)
 
 /datum/ai_movement/proc/increment_pathing_failures(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.consecutive_pathing_attempts++
 	if(controller.consecutive_pathing_attempts >= max_pathing_attempts)
 		fail_movement(controller)
 
 /datum/ai_movement/proc/fail_movement(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	stop_moving_towards(controller)
 	SEND_SIGNAL(controller.pawn, COMSIG_MOB_AI_MOVEMENT_FAILED, moving_controllers[controller])
 
 /datum/ai_movement/proc/reset_pathing_failures(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.consecutive_pathing_attempts = 0
 
 /datum/ai_movement/proc/allowed_to_move(datum/move_loop/source)
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 
 	var/atom/movable/pawn = source.moving
@@ -78,6 +92,8 @@
 
 ///Anything to do before moving; any checks if the pawn should be able to move should be placed in allowed_to_move() and called by this proc
 /datum/ai_movement/proc/pre_move(datum/move_loop/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SHOULD_NOT_OVERRIDE(TRUE)
 
@@ -97,6 +113,8 @@
 
 //Anything to do post movement
 /datum/ai_movement/proc/post_move(datum/move_loop/source, succeeded)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/datum/ai_controller/controller = source.extra_info
 	switch(succeeded)

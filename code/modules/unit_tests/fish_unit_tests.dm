@@ -5,6 +5,8 @@
 /datum/unit_test/fish_aquarium_icons
 
 /datum/unit_test/fish_aquarium_icons/Run()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/fish/fish as anything in subtypesof(/obj/item/fish))
 		if(ispath(fish, /obj/item/fish/testdummy)) //We don't care about unit test fish.
 			continue
@@ -21,6 +23,8 @@
 /datum/unit_test/fish_size_weight
 
 /datum/unit_test/fish_size_weight/Run()
+	procstart = null
+	src.procstart = null
 
 	var/obj/structure/table/table = allocate(/obj/structure/table)
 	var/obj/item/fish/testdummy/fish = allocate(__IMPLIED_TYPE__, table.loc)
@@ -45,6 +49,8 @@
 /datum/unit_test/fish_feeding
 
 /datum/unit_test/fish_feeding/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/item/fish/testdummy/hungry = allocate(__IMPLIED_TYPE__)
 	hungry.last_feeding = 0 //the fish should be hungry.
 	TEST_ASSERT(hungry.get_hunger(), "the fish doesn't seem to be hungry in the slightest")
@@ -64,6 +70,8 @@
 /datum/unit_test/fish_breeding
 
 /datum/unit_test/fish_breeding/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/item/fish_tank/reproduction/fish_tank = allocate(__IMPLIED_TYPE__)
 	///Check if the fishes can generate offsprings at all.
 	var/obj/item/fish/new_fish = fish_tank.fish.try_to_reproduce()
@@ -88,11 +96,15 @@
 	var/obj/item/fish/testdummy/small/partner
 
 /obj/item/fish_tank/reproduction/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	fish = new(src)
 	partner = new(src)
 
 /obj/item/fish_tank/reproduction/Destroy()
+	procstart = null
+	src.procstart = null
 	fish = null
 	partner = null
 	return ..()
@@ -101,6 +113,8 @@
 /datum/unit_test/fish_evolution
 
 /datum/unit_test/fish_evolution/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/aquarium/evolution/aquarium = allocate(/obj/structure/aquarium/evolution)
 	var/obj/item/fish/evolve_jr = aquarium.evolve.try_to_reproduce()
 	TEST_ASSERT(evolve_jr, "The test aquarium's evolution fish didn't manage to reproduce when it should have")
@@ -112,6 +126,8 @@
 /datum/unit_test/fish_scanning
 
 /datum/unit_test/fish_scanning/Run()
+	procstart = null
+	src.procstart = null
 	var/scannable_fishes = 0
 	for(var/obj/item/fish/fish_prototype as anything in subtypesof(/obj/item/fish))
 		if(initial(fish_prototype.fish_flags) & FISH_FLAG_EXPERIMENT_SCANNABLE)
@@ -137,6 +153,8 @@
 	var/expected_num_fillets = 0
 
 /obj/item/fish/testdummy/fish_grind_results()
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/item/fish/testdummy/small
@@ -144,6 +162,8 @@
 	average_size = /obj/item/fish_tank::max_total_size * 0.2
 
 /obj/item/fish/testdummy/add_fillet_type()
+	procstart = null
+	src.procstart = null
 	expected_num_fillets = ..()
 	return expected_num_fillets
 
@@ -156,6 +176,8 @@
 	reagents_to_add = list(/datum/reagent/fishdummy = FISH_REAGENT_AMOUNT)
 
 /datum/fish_trait/dummy/apply_to_fish(obj/item/fish/fish, initial = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(fish, TRAIT_FISH_TESTING, FISH_TRAIT_DATUM)
 
@@ -172,12 +194,16 @@
 	var/obj/item/fish/testdummy/sterile/sterile
 
 /obj/structure/aquarium/traits/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	crossbreeder = new(src)
 	cloner = new(src)
 	sterile = new(src)
 
 /obj/structure/aquarium/traits/Destroy()
+	procstart = null
+	src.procstart = null
 	crossbreeder = null
 	cloner = null
 	sterile = null
@@ -197,11 +223,15 @@
 	var/obj/item/fish/testdummy/evolve_two/evolve_two
 
 /obj/structure/aquarium/evolution/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	evolve = new(src)
 	evolve_two = new(src)
 
 /obj/structure/aquarium/evolution/Destroy()
+	procstart = null
+	src.procstart = null
 	evolve = null
 	evolve_two = null
 	return ..()
@@ -226,11 +256,15 @@
 	new_fish_type = /obj/item/fish/goldfish
 
 /datum/fish_evolution/dummy/two/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	probability = 0 //works around the global list initialization skipping abstract/impossible evolutions.
 
 ///During the fish_growth unit test, we spawn a fish outside of the aquarium and check that this actually stops it from growing
 /datum/fish_evolution/dummy/two/growth_checks(obj/item/fish/source, seconds_per_tick, growth)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!source.loc || !HAS_TRAIT(source.loc, TRAIT_IS_AQUARIUM))
 		return COMPONENT_DONT_GROW
@@ -239,6 +273,8 @@
 /datum/unit_test/fish_portal_gen_linking
 
 /datum/unit_test/fish_portal_gen_linking/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/user = allocate(__IMPLIED_TYPE__)
 	var/obj/machinery/fishing_portal_generator/portal = allocate(__IMPLIED_TYPE__)
 	var/obj/structure/toilet/unit_test/fishing_spot = new(get_turf(user)) //This is deleted during the test
@@ -276,6 +312,8 @@
 	TEST_ASSERT(!length(portal.linked_fishing_spots), "We managed to link to an unlinkable fishing spot")
 
 /obj/structure/toilet/unit_test/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(src, TRAIT_FISHING_SPOT)) //Ensure this toilet has a fishing spot because only maploaded ones have it.
 		AddComponent(/datum/component/fishing_spot, GLOB.preset_fish_sources[/datum/fish_source/toilet])
@@ -292,6 +330,8 @@
 	var/list/mobs_spawned
 
 /datum/unit_test/fish_rescue_hook/Run()
+	procstart = null
+	src.procstart = null
 	// create our human dummies to be dropped into the chasm
 	var/mob/living/carbon/human/consistent/get_in_the_hole = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/basic/mining/lobstrosity/you_too = allocate(/mob/living/basic/mining/lobstrosity)
@@ -349,6 +389,8 @@
 
 // clean up so we don't mess up subsequent tests
 /datum/unit_test/fish_rescue_hook/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(mobs_spawned)
 	run_loc_floor_bottom_left.ChangeTurf(original_turf_type, original_turf_baseturfs)
 	return ..()
@@ -357,6 +399,8 @@
 /datum/unit_test/fish_growth
 
 /datum/unit_test/fish_growth/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/aquarium/crab/aquarium = allocate(/obj/structure/aquarium/crab)
 	var/list/growth_comps = aquarium.crabbie.GetComponents(/datum/component/fish_growth) //Can't use GetComponent() without s because the comp is dupe-selective
 	var/datum/component/fish_growth/crab_growth = growth_comps[1]
@@ -390,6 +434,8 @@
 	var/obj/item/fish/chasm_crab/instant_growth/crabbie
 
 /obj/structure/aquarium/crab/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	crabbie = new(src)
 	crabbie.AddComponent(/datum/component/rename, "Crabbie", crabbie.desc)
@@ -397,6 +443,8 @@
 	crabbie.AddComponent(/datum/component/fish_growth, crabbie.lob_type, 1 SECONDS)
 
 /obj/structure/aquarium/crab/Exited(atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == crabbie) //the fish item is deleted once it grows up
 		crabbie = null
@@ -408,6 +456,8 @@
 /datum/unit_test/fish_sources
 
 /datum/unit_test/fish_sources/Run()
+	procstart = null
+	src.procstart = null
 	var/datum/fish_source/source = GLOB.preset_fish_sources[/datum/fish_source/unit_test_explosive]
 	source.spawn_reward_from_explosion(run_loc_floor_bottom_left, 1)
 
@@ -453,6 +503,8 @@
 /datum/fish_source/unit_test_all_fish
 
 /datum/fish_source/unit_test_all_fish/New()
+	procstart = null
+	src.procstart = null
 	for(var/fish_type in subtypesof(/obj/item/fish))
 		fish_table[fish_type] = 10
 	return ..()
@@ -460,6 +512,8 @@
 /datum/unit_test/edible_fish
 
 /datum/unit_test/edible_fish/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/item/fish/fish = allocate(/obj/item/fish/testdummy/food)
 	var/datum/component/edible/edible = fish.GetComponent(/datum/component/edible)
 	TEST_ASSERT(edible, "Fish is not edible")
@@ -511,6 +565,8 @@
 /datum/unit_test/fish_randomize_size_weight
 
 /datum/unit_test/fish_randomize_size_weight/Run()
+	procstart = null
+	src.procstart = null
 	for(var/fish_type in subtypesof(/obj/item/fish))
 		var/obj/item/fish/fish = allocate(fish_type)
 		fish.randomize_size_and_weight()
@@ -518,6 +574,8 @@
 /datum/unit_test/aquarium_upgrade
 
 /datum/unit_test/aquarium_upgrade/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy/user = allocate(__IMPLIED_TYPE__)
 	var/obj/item/aquarium_upgrade/bioelec_gen/upgrade = allocate(__IMPLIED_TYPE__)
 	var/obj/structure/aquarium/aquarium = allocate(upgrade::upgrade_from_type)

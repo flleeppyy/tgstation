@@ -15,33 +15,47 @@
 	var/state = FRAME_STATE_EMPTY
 
 /obj/structure/frame/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_ICON_STATE)
 
 /obj/structure/frame/examine(user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(circuit)
 		. += "It has \a [circuit] installed."
 
 /obj/structure/frame/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	if(isprojectile(mover))
 		return TRUE
 	return ..()
 
 /obj/structure/frame/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/drop_loc = drop_location()
 	new /obj/item/stack/sheet/iron(drop_loc, 5)
 	circuit?.forceMove(drop_loc)
 
 /// Called when circuit has been set to a new board
 /obj/structure/frame/proc/circuit_added(obj/item/circuitboard/added)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called when circuit has been removed from the frame
 /obj/structure/frame/proc/circuit_removed(obj/item/circuitboard/removed)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/frame/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone != circuit)
 		return
@@ -53,15 +67,21 @@
 	circuit_removed(gone)
 
 /obj/structure/frame/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(circuit)
 	return ..()
 
 /obj/structure/frame/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state][state]"
 
 /// Checks if the frame can be disassembled, and if so, begins the process
 /obj/structure/frame/proc/try_dissassemble(mob/living/user, obj/item/tool, disassemble_time = 8 SECONDS)
+	procstart = null
+	src.procstart = null
 	if(state != FRAME_STATE_EMPTY)
 		return NONE
 	if(anchored && state == FRAME_STATE_EMPTY) //when using a screwdriver on an incomplete frame(missing components) no point checking for this
@@ -86,9 +106,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/frame/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return try_dissassemble(user, tool, disassemble_time = 8 SECONDS)
 
 /obj/structure/frame/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return try_dissassemble(user, tool, disassemble_time = 2 SECONDS)
 
 /**
@@ -101,10 +125,14 @@
  * * tool - the tool used to finalize the construction
  */
 /obj/structure/frame/proc/finalize_construction(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	stack_trace("[type] finalize_construction unimplemented.")
 	return FALSE
 
 /obj/structure/frame/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	switch(default_unfasten_wrench(user, tool, 4 SECONDS))
 		if(SUCCESSFUL_UNFASTEN)
@@ -114,11 +142,15 @@
 	return .
 
 /obj/structure/frame/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(istype(tool, /obj/item/circuitboard)) // Install board will fail if passed an invalid circuitboard and give feedback
 		return install_board(user, tool, by_hand = TRUE) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 
 /obj/structure/frame/ranged_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 
 	if(!istype(tool, /obj/item/storage/part_replacer/bluespace))
@@ -140,6 +172,8 @@
  * Used to decide how to transfer the board into the frame
  */
 /obj/structure/frame/proc/install_board(mob/living/user, obj/item/circuitboard/board, by_hand = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(board, board_type) || !board.build_path)
 		balloon_alert(user, "invalid board!")
 		return FALSE
@@ -165,6 +199,8 @@
  * * no_sound - if true, no sound will be played
  */
 /obj/structure/frame/proc/install_circuit_from_part_replacer(mob/living/user, obj/item/storage/part_replacer/replacer, no_sound = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!length(replacer.contents))
 		return FALSE
 
@@ -211,4 +247,6 @@
  * * no_sound - if true, no sound will be played
  */
 /obj/structure/frame/proc/install_parts_from_part_replacer(mob/living/user, obj/item/storage/part_replacer/replacer, no_sound = FALSE)
+	procstart = null
+	src.procstart = null
 	return FALSE

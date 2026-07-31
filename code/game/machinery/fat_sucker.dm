@@ -28,15 +28,21 @@
 	)
 
 /obj/machinery/fat_sucker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	soundloop = new(src,  FALSE)
 	update_appearance()
 
 /obj/machinery/fat_sucker/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(soundloop)
 	. = ..()
 
 /obj/machinery/fat_sucker/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/rating = 0
 	for(var/datum/stock_part/micro_laser/micro_laser in component_parts)
@@ -45,12 +51,16 @@
 	nutrient_to_meat = initial(nutrient_to_meat) - rating * 5
 
 /obj/machinery/fat_sucker/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += {"[span_notice("Alt-Click to toggle the safety hatch.")]
 				[span_notice("Removing [bite_size] nutritional units per operation.")]
 				[span_notice("Requires [nutrient_to_meat] nutritional units per meat slab.")]"}
 
 /obj/machinery/fat_sucker/close_machine(mob/user, density_to_set = TRUE)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		to_chat(user, span_warning("You need to close the maintenance hatch first!"))
 		return
@@ -66,6 +76,8 @@
 		update_appearance()
 
 /obj/machinery/fat_sucker/open_machine(mob/user, density_to_set = FALSE)
+	procstart = null
+	src.procstart = null
 	make_meat()
 	playsound(src, 'sound/machines/click.ogg', 50)
 	if(processing)
@@ -73,6 +85,8 @@
 	..()
 
 /obj/machinery/fat_sucker/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!free_exit || state_open)
 		to_chat(user, span_notice("The emergency release is not responding! You start pushing against the hull!"))
 		user.changeNext_move(CLICK_CD_BREAKOUT)
@@ -91,6 +105,8 @@
 	open_machine()
 
 /obj/machinery/fat_sucker/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(state_open)
 		close_machine()
 	else if(!processing || free_exit)
@@ -99,6 +115,8 @@
 		to_chat(user, span_warning("The safety hatch has been disabled!"))
 
 /obj/machinery/fat_sucker/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user == occupant)
 		to_chat(user, span_warning("You can't reach the controls from inside!"))
 		return CLICK_ACTION_BLOCKING
@@ -110,6 +128,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/fat_sucker/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!state_open)
@@ -132,6 +152,8 @@
 		. += "[icon_state]_panel"
 
 /obj/machinery/fat_sucker/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!processing)
 		return
 	if(!powered() || !occupant || !iscarbon(occupant))
@@ -155,6 +177,8 @@
 	use_energy(active_power_usage * seconds_per_tick)
 
 /obj/machinery/fat_sucker/proc/start_extracting()
+	procstart = null
+	src.procstart = null
 	if(state_open || !occupant || processing || !powered())
 		return
 	if(iscarbon(occupant))
@@ -170,11 +194,15 @@
 			overlays += "[icon_state]_red" //throw a red light icon over it, to show that it won't work
 
 /obj/machinery/fat_sucker/proc/stop()
+	procstart = null
+	src.procstart = null
 	processing = FALSE
 	soundloop.stop()
 	set_light(0, 0)
 
 /obj/machinery/fat_sucker/proc/make_meat()
+	procstart = null
+	src.procstart = null
 	if(occupant && iscarbon(occupant))
 		var/mob/living/carbon/C = occupant
 		if(C.type_of_meat)
@@ -191,6 +219,8 @@
 			nutrients = 0
 
 /obj/machinery/fat_sucker/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(occupant)
 		to_chat(user, span_warning("[src] is currently occupied!"))
 		return ITEM_INTERACT_BLOCKING
@@ -200,9 +230,13 @@
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/fat_sucker/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/fat_sucker/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	start_at = 100

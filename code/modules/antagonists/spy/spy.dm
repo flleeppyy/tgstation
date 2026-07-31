@@ -25,6 +25,8 @@
 	var/datum/weakref/uplink_weakref
 
 /datum/antagonist/spy/on_gain()
+	procstart = null
+	src.procstart = null
 	if(!uplink_created)
 		auto_create_spy_uplink(owner.current)
 	if(spawn_with_objectives)
@@ -33,11 +35,15 @@
 	SEND_SOUND(owner.current, sound('sound/music/antag/spy.ogg'))
 
 /datum/antagonist/spy/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 	data["uplink_location"] = uplink_location
 	return data
 
 /datum/antagonist/spy/get_admin_commands()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// I wanted to put this in check-antagonists but it's less conducive to that
 	.["See All Bounties (For all spies)"] = CALLBACK(src, PROC_REF(see_bounties))
@@ -46,6 +52,8 @@
 	.["Bounty Handler VV"] = CALLBACK(src, PROC_REF(bounty_handler_vv))
 
 /datum/antagonist/spy/proc/see_bounties()
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_ADMIN|R_DEBUG))
 		return
 
@@ -57,6 +65,8 @@
 	uplink.ui_interact(usr)
 
 /datum/antagonist/spy/proc/refresh_bounties()
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_ADMIN|R_DEBUG))
 		return
 
@@ -69,6 +79,8 @@
 	tgui_alert(usr, "Bounties refreshed.", "Mission Success")
 
 /datum/antagonist/spy/proc/admin_create_spy_uplink()
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_ADMIN|R_DEBUG))
 		return
 
@@ -76,6 +88,8 @@
 		tgui_alert(usr, "Failed to give [owner.current] a spy uplink - likely don't have a valid item to host it.", "Mission Failed")
 
 /datum/antagonist/spy/proc/bounty_handler_vv()
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_ADMIN|R_DEBUG))
 		return
 
@@ -87,6 +101,8 @@
 	usr.client?.debug_variables(uplink.handler)
 
 /datum/antagonist/spy/proc/auto_create_spy_uplink(mob/living/carbon/spy, give_backup = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(spy))
 		return FALSE
 
@@ -105,6 +121,8 @@
 	return TRUE
 
 /datum/antagonist/spy/proc/create_spy_uplink(mob/living/carbon/spy, obj/item/spy_uplink)
+	procstart = null
+	src.procstart = null
 	var/datum/component/spy_uplink/uplink = spy_uplink.AddComponent(/datum/component/spy_uplink, src)
 	if(!uplink)
 		return FALSE
@@ -127,6 +145,8 @@
 	return TRUE
 
 /datum/antagonist/spy/proc/give_random_objectives()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to rand(1, 3))
 		var/datum/objective/custom/your_mission = new()
 		your_mission.owner = owner
@@ -181,9 +201,13 @@
 		objectives += gtfo
 
 /datum/antagonist/spy/antag_panel_data()
+	procstart = null
+	src.procstart = null
 	return "Bounties Claimed: [bounties_claimed]"
 
 /datum/antagonist/spy/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/report = list()
 	report += printplayer(owner)
 	report += " - They completed <b>[bounties_claimed]</b> bounties."
@@ -193,6 +217,8 @@
 	return report.Join("<br>")
 
 /datum/antagonist/spy/get_preview_icon()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy/consistent/dummy = new()
 	dummy.set_haircolor(COLOR_SILVER, update = FALSE)
 	dummy.set_hairstyle("CIA", update = FALSE)
@@ -222,12 +248,16 @@
 	)
 
 /datum/action/backup_uplink/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(Target, /datum/antagonist/spy))
 		stack_trace("[type] created on invalid target [Target || "null"]")
 		qdel(src)
 
 /datum/action/backup_uplink/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

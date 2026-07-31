@@ -28,6 +28,8 @@
 	var/list/imported_designs = list()
 
 /obj/machinery/limbgrower/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	create_reagents(100, OPENCONTAINER)
 	if(!GLOB.autounlock_techwebs[/datum/techweb/autounlocking/limbgrower])
 		GLOB.autounlock_techwebs[/datum/techweb/autounlocking/limbgrower] = new /datum/techweb/autounlocking/limbgrower
@@ -38,6 +40,8 @@
 	register_context()
 
 /obj/machinery/limbgrower/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!held_item)
 		return NONE
@@ -56,6 +60,8 @@
 
 /// Emagging a limbgrower allows you to build synthetic armblades.
 /obj/machinery/limbgrower/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(obj_flags & EMAGGED)
 		return FALSE
@@ -65,6 +71,8 @@
 	return TRUE
 
 /obj/machinery/limbgrower/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -72,9 +80,13 @@
 		ui.open()
 
 /obj/machinery/limbgrower/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.physical_state
 
 /obj/machinery/limbgrower/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	for(var/datum/reagent/reagent_id in reagents.reagent_list)
@@ -92,6 +104,8 @@
 	return data
 
 /obj/machinery/limbgrower/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["categories"] = list()
 
@@ -137,11 +151,15 @@
 	return data
 
 /obj/machinery/limbgrower/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/reagent_containers/cup/our_beaker in component_parts)
 		reagents.trans_to(our_beaker, our_beaker.reagents.maximum_volume)
 	return ..()
 
 /obj/machinery/limbgrower/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user.combat_mode)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
@@ -163,18 +181,24 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/limbgrower/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(check_busy(user))
 		return ITEM_INTERACT_BLOCKING
 
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/limbgrower/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(check_busy(user))
 		return ITEM_INTERACT_BLOCKING
 
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/limbgrower/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(check_busy(user))
 		return ITEM_INTERACT_BLOCKING
@@ -183,6 +207,8 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/limbgrower/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(busy)
 		icon_state = "[base_icon_state]_idleon"
@@ -192,6 +218,8 @@
 		icon_state = "[base_icon_state]_idleoff"
 
 /obj/machinery/limbgrower/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -247,6 +275,8 @@
  * modified_consumed_reagents_list - the list of reagents we will consume on build, modified by the production coefficient.
  */
 /obj/machinery/limbgrower/proc/build_item(list/modified_consumed_reagents_list)
+	procstart = null
+	src.procstart = null
 	for(var/reagent_id in modified_consumed_reagents_list)
 		if(!reagents.has_reagent(reagent_id, modified_consumed_reagents_list[reagent_id]))
 			audible_message(span_notice("The [src] buzzes."))
@@ -275,6 +305,8 @@
  * buildpath - the path of the bodypart we're building.
  */
 /obj/machinery/limbgrower/proc/build_limb(buildpath)
+	procstart = null
+	src.procstart = null
 	/// The limb we're making with our buildpath, so we can edit it.
 	//i need to create a body part manually using a set icon (otherwise it doesn't appear)
 	var/obj/item/bodypart/limb
@@ -286,6 +318,8 @@
 
 ///Returns a valid limb typepath based on the selected option
 /obj/machinery/limbgrower/proc/create_buildpath()
+	procstart = null
+	src.procstart = null
 	var/part_type = being_built.id //their ids match bodypart typepaths
 	var/species = selected_category
 	var/path
@@ -296,6 +330,8 @@
 	return text2path(path)
 
 /obj/machinery/limbgrower/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.maximum_volume = 0
 	for(var/obj/item/reagent_containers/cup/our_beaker in component_parts)
@@ -307,6 +343,8 @@
 	production_coefficient = clamp(production_coefficient, 0, 1) // coefficient goes from 1 -> 0.75 -> 0.5 -> 0.25
 
 /obj/machinery/limbgrower/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
 		. += span_notice("The status display reads: Storing up to <b>[reagents.maximum_volume]u</b> of reagents.<br>Reagent consumption rate at <b>[production_coefficient * 100]%</b>.")
@@ -319,6 +357,8 @@
  * returns the value of src.busy.
  */
 /obj/machinery/limbgrower/proc/check_busy(mob/user)
+	procstart = null
+	src.procstart = null
 	. = busy
 	if(.)
 		to_chat(user, span_warning("The limb grower is busy. Please wait for completion of previous operation."))
@@ -331,6 +371,8 @@
  * returns TRUE if we have enough reagent to build it. Returns FALSE if we do not.
  */
 /obj/machinery/limbgrower/proc/can_build(datum/design/limb_design)
+	procstart = null
+	src.procstart = null
 	for(var/datum/reagent/reagent_id in limb_design.reagents_list)
 		if(!reagents.has_reagent(reagent_id, limb_design.reagents_list[reagent_id] * production_coefficient))
 			return FALSE
@@ -341,6 +383,8 @@
 	circuit = /obj/item/circuitboard/machine/limbgrower/fullupgrade
 
 /obj/machinery/limbgrower/fullupgrade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/id in SSresearch.techweb_designs)
 		var/datum/design/found_design = SSresearch.techweb_design_by_id(id)

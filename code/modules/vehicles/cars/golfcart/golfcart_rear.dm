@@ -46,6 +46,8 @@
 
 ///Try to load something onto the cart. This proc may fail if the obj is not in allowed_cargo or is in banned_cargo.
 /obj/golfcart_rear/proc/load(obj/to_load)
+	procstart = null
+	src.procstart = null
 	if (!to_load)
 		return
 	if (cargo)
@@ -64,6 +66,8 @@
 	parent.update_appearance(UPDATE_ICON)
 
 /obj/golfcart_rear/proc/unload()
+	procstart = null
+	src.procstart = null
 	if (!cargo)
 		return
 	var/list/candidates = list(
@@ -83,6 +87,8 @@
 
 ///Jiggles the cargo_image as long as someone is trying to jiggle it.
 /obj/golfcart_rear/proc/check_if_shake()
+	procstart = null
+	src.procstart = null
 	if (!cargo)
 		return FALSE
 
@@ -103,6 +109,8 @@
 	return FALSE
 
 /obj/golfcart_rear/proc/after_escape(obj/container, mob/living/user)
+	procstart = null
+	src.procstart = null
 	user?.visible_message(
 		span_danger("The [container] falls off of the [src]!"),
 		span_userdanger("You knock the crate off the [src]!")
@@ -115,6 +123,8 @@
 
 ///Unload the container from the golfcart if it is cargo
 /obj/golfcart_rear/proc/easy_escape(mob/living/user, obj/container)
+	procstart = null
+	src.procstart = null
 	if (!cargo || cargo != container)
 		return
 	unload()
@@ -122,6 +132,8 @@
 
 ///Unload the container from the golfcart if it is cargo and after a little jiggling and a some time
 /obj/golfcart_rear/proc/hard_escape(mob/living/user, obj/container)
+	procstart = null
+	src.procstart = null
 	addtimer(CALLBACK(src, PROC_REF(check_if_shake)), 0)
 	if (do_after(user, 5 SECONDS, target=src, timed_action_flags=IGNORE_USER_LOC_CHANGE))
 		if (!cargo || cargo != container || !(user in cargo))
@@ -131,6 +143,8 @@
 
 ///Called when someone resists inside of the cargo hitch.
 /obj/golfcart_rear/relay_container_resist_act(mob/living/user, obj/container)
+	procstart = null
+	src.procstart = null
 	user.visible_message(
 		span_danger("[user] tries to escape the [container]!"),
 		span_userdanger("You try to escape the [container]!"),
@@ -148,17 +162,23 @@
 	return easy_escape(user, container)
 
 /obj/golfcart_rear/take_damage(damage_amount, damage_type, damage_flag, sound_effect, attack_dir, armour_penetration)
+	procstart = null
+	src.procstart = null
 	if (!parent)
 		return
 	return parent.take_damage(damage_amount, damage_type, damage_flag, sound_effect, attack_dir, armour_penetration)
 
 /obj/golfcart_rear/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isnull(cargo))
 		unload()
 		return TRUE
 	return ..()
 
 /obj/golfcart_rear/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!cargo)
 		return
@@ -167,9 +187,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/golfcart_rear/proc/can_load(thing)
+	procstart = null
+	src.procstart = null
 	return is_type_in_typecache(thing, parent.allowed_cargo) && (!is_type_in_typecache(thing, parent.banned_cargo)) && (!has_buckled_mobs())
 
 /obj/golfcart_rear/mouse_drop_receive(atom/dropped, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (!can_load(dropped))
 		if (!isliving(dropped) || (has_buckled_mobs() && buckled_mobs.len >= max_buckled_mobs))
 			balloon_alert_to_viewers("blocked!")
@@ -196,6 +220,8 @@
 	return load(dropped_obj)
 
 /obj/golfcart_rear/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	if (!parent)
 		. = ..()
 		. += span_warning("A lone golf cart bed must be a bad omen...")
@@ -203,18 +229,24 @@
 	return parent.examine(user)
 
 /obj/golfcart_rear/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	if (!parent)
 		return ..()
 	return parent.examine_more(user)
 
 ///Called if the rear of the golfcart MUST move to destination and must NOT notify the parent about it.
 /obj/golfcart_rear/proc/move_from_parent(atom/destination)
+	procstart = null
+	src.procstart = null
 	moving_from_parent = TRUE
 	currently_z_moving = destination.z != loc.z
 	. = forceMove(destination)
 	moving_from_parent = FALSE
 
 /obj/golfcart_rear/doMove(atom/destination)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!moving_from_parent)
 		return
@@ -234,6 +266,8 @@
 
 
 /obj/golfcart_rear/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!parent)
 		return
@@ -245,6 +279,8 @@
 		return TRUE
 
 /obj/golfcart_rear/Move(atom/newloc, direct, glide_size_override = 0, update_dir = TRUE)
+	procstart = null
+	src.procstart = null
 	if (moving_from_parent)
 		return
 
@@ -276,6 +312,8 @@
 
 ///Called for COMSIG_ATOM_TRIED_PASS on passengers buckled to the cart. Allows them to not block each other's movement / get blocked by the cart.
 /obj/golfcart_rear/proc/allow_movement_between_bed_passengers(atom/source, atom/mover)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (mover == parent)
@@ -287,6 +325,8 @@
 
 ///Called when the golfcart rear turns in order to keep the buckled mobs in the right places
 /obj/golfcart_rear/proc/update_passenger_layers(new_dir)
+	procstart = null
+	src.procstart = null
 	if (isnull(new_dir))
 		new_dir = dir
 	var/layer = HUMAN_RIDING_LAYER
@@ -310,6 +350,8 @@
 
 ///Called from COMSIG_ATOM_POST_DIR_CHANGE on the rear of the cart. Only used to change buckled mobs' position / layers.
 /obj/golfcart_rear/proc/on_dir_changed(datum/source, old_dir, new_dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!has_buckled_mobs())
@@ -317,12 +359,16 @@
 	update_passenger_layers(new_dir)
 
 /obj/golfcart_rear/Initialize(mapload, obj/vehicle/ridden/golfcart/progenitor)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	parent = progenitor
 	layer = BELOW_HUMAN_HITBOX_LAYER
 	RegisterSignal(parent, COMSIG_ATOM_POST_DIR_CHANGE, PROC_REF(on_dir_changed))
 
 /obj/golfcart_rear/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (dir & NORTH)
 		var/mutable_appearance/hitbox_overlay = mutable_appearance(icon, "rear_hitbox_overlay", layer)
@@ -337,6 +383,8 @@
 
 ///Called when a passenger tries lying down/getting up. Automatically drops out people who can't stay on
 /obj/golfcart_rear/proc/passenger_falling_down(atom/source, new_bodypos)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!isliving(source))
@@ -351,6 +399,8 @@
 	unbuckle_mob(passenger, TRUE)
 
 /obj/golfcart_rear/is_buckle_possible(mob/living/target, force, check_loc)
+	procstart = null
+	src.procstart = null
 	// these are to_viewers because you can buckle someone on their behalf
 	if (cargo)
 		balloon_alert_to_viewers("blocked!")
@@ -372,11 +422,15 @@
 
 ///Called on COMSIG_MOVABLE_PREBUCKLE for anything that's buckled to us. Disallows stacking buckles
 /obj/golfcart_rear/proc/on_attempted_bucklestack()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return COMPONENT_BLOCK_BUCKLE
 
 /obj/golfcart_rear/post_buckle_mob(mob/living/buckled_mob)
+	procstart = null
+	src.procstart = null
 	buckled_mob.pulledby?.stop_pulling()
 	RegisterSignal(buckled_mob, COMSIG_ATOM_TRIED_PASS, PROC_REF(allow_movement_between_bed_passengers))
 	RegisterSignal(buckled_mob, COMSIG_LIVING_SET_BODY_POSITION, PROC_REF(passenger_falling_down))
@@ -385,6 +439,8 @@
 	update_passenger_layers()
 
 /obj/golfcart_rear/post_unbuckle_mob(mob/living/buckled_mob)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(buckled_mob, COMSIG_ATOM_TRIED_PASS)
 	UnregisterSignal(buckled_mob, COMSIG_LIVING_SET_BODY_POSITION)
 	UnregisterSignal(buckled_mob, COMSIG_MOVABLE_PREBUCKLE)
@@ -396,6 +452,8 @@
 	return ..()
 
 /obj/golfcart_rear/Destroy()
+	procstart = null
+	src.procstart = null
 	if (parent)
 		UnregisterSignal(parent, COMSIG_ATOM_POST_DIR_CHANGE)
 	if (!QDELETED(parent))

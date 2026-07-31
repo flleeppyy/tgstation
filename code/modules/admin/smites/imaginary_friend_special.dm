@@ -25,6 +25,8 @@
 	var/polled_friend_count
 
 /datum/smite/custom_imaginary_friend/configure(client/user)
+	procstart = null
+	src.procstart = null
 	var/appearance_choice = tgui_alert(user,
 		"Do you want the imaginary friend(s) to share name and appearance with their currently selected character preferences?",
 		"Imaginary Friend Appearance?",
@@ -53,6 +55,8 @@
 
 /// Try to offer the role to ghosts
 /datum/smite/custom_imaginary_friend/proc/poll_ghosts(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	var/list/volunteers = SSpolling.poll_ghost_candidates(
 		check_jobban = ROLE_PAI,
 		poll_time = 10 SECONDS,
@@ -77,6 +81,8 @@
 
 /// Pick client manually
 /datum/smite/custom_imaginary_friend/proc/pick_client(client/user)
+	procstart = null
+	src.procstart = null
 	var/picked_client = tgui_input_list(user, "Pick the player to put in control", "New Imaginary Friend", sort_list(GLOB.clients))
 	if(isnull(picked_client))
 		return
@@ -102,6 +108,8 @@
 
 
 /datum/smite/custom_imaginary_friend/effect(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Run this check before and after polling, we don't wanna poll for something which already stopped existing

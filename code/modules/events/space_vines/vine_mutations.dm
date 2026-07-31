@@ -11,15 +11,21 @@
 	var/quality
 
 /datum/spacevine_mutation/proc/add_mutation_to_vinepiece(obj/structure/spacevine/holder)
+	procstart = null
+	src.procstart = null
 	holder.mutations |= src
 	holder.add_atom_colour(hue, FIXED_COLOUR_PRIORITY)
 
 /datum/spacevine_mutation/proc/on_buckle(obj/structure/spacevine/holder, mob/living/buckled)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	buckled.layer = SPACEVINE_MOB_LAYER
 	RegisterSignal(buckled, COMSIG_MOB_UNBUCKLED, PROC_REF(on_unbuckle))
 
 /datum/spacevine_mutation/proc/on_unbuckle(datum/source)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SIGNAL_HANDLER
 	if(!isliving(source))
@@ -29,39 +35,63 @@
 	UnregisterSignal(buckled, COMSIG_MOB_UNBUCKLED)
 
 /datum/spacevine_mutation/proc/process_mutation(obj/structure/spacevine/holder)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/spacevine_mutation/proc/on_birth(obj/structure/spacevine/holder)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/spacevine_mutation/proc/on_grow(obj/structure/spacevine/holder)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/spacevine_mutation/proc/on_death(obj/structure/spacevine/holder)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/spacevine_mutation/proc/on_hit(obj/structure/spacevine/holder, mob/hitter, obj/item/item, expected_damage)
+	procstart = null
+	src.procstart = null
 	. = expected_damage
 
 /datum/spacevine_mutation/proc/on_cross(obj/structure/spacevine/holder, mob/crosser)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/spacevine_mutation/proc/on_chem(obj/structure/spacevine/holder, datum/reagent/chem)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/spacevine_mutation/proc/on_eat(obj/structure/spacevine/holder, mob/living/eater)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/spacevine_mutation/proc/on_spread(obj/structure/spacevine/holder, turf/target)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/spacevine_mutation/proc/on_explosion(severity, target, obj/structure/spacevine/holder)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /datum/spacevine_mutation/proc/additional_atmos_processes(obj/structure/spacevine/holder, datum/gas_mixture/air)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/spacevine_mutation/aggressive_spread/proc/aggrospread_act(obj/structure/spacevine/vine, mob/living/M)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/spacevine_mutation/light
@@ -72,6 +102,8 @@
 	severity = SEVERITY_TRIVIAL
 
 /datum/spacevine_mutation/light/on_grow(obj/structure/spacevine/holder)
+	procstart = null
+	src.procstart = null
 	if(holder.growth_stage)
 		holder.set_light(LIGHT_MUTATION_BRIGHTNESS, 0.3)
 
@@ -84,6 +116,8 @@
 	var/required_coverage = HEAD|CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 
 /datum/spacevine_mutation/toxicity/on_cross(obj/structure/spacevine/holder, mob/living/crosser)
+	procstart = null
+	src.procstart = null
 	if(isvineimmune(crosser) || issilicon(crosser))
 		return
 	if(!prob(TOXICITY_MUTATION_PROB))
@@ -109,6 +143,8 @@
 	crosser.apply_damage(20, TOX)
 
 /datum/spacevine_mutation/toxicity/on_eat(obj/structure/spacevine/holder, mob/living/eater)
+	procstart = null
+	src.procstart = null
 	if(!isvineimmune(eater))
 		eater.apply_damage(20, TOX)
 
@@ -120,6 +156,8 @@
 	severity = SEVERITY_MAJOR
 
 /datum/spacevine_mutation/explosive/on_explosion(explosion_severity, target, obj/structure/spacevine/holder)
+	procstart = null
+	src.procstart = null
 	if(explosion_severity >= EXPLODE_DEVASTATE)
 		QDEL_IN(holder, 0.5 SECONDS)
 		return TRUE
@@ -128,6 +166,8 @@
 	return FALSE
 
 /datum/spacevine_mutation/explosive/on_death(obj/structure/spacevine/holder, mob/hitter, obj/item/item)
+	procstart = null
+	src.procstart = null
 	explosion(holder, light_impact_range = EXPLOSION_MUTATION_IMPACT_RADIUS, adminlog = FALSE)
 
 /datum/spacevine_mutation/fire_proof
@@ -138,10 +178,14 @@
 	severity = SEVERITY_ABOVE_AVERAGE
 
 /datum/spacevine_mutation/fire_proof/add_mutation_to_vinepiece(obj/structure/spacevine/holder)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	holder.trait_flags |= SPACEVINE_HEAT_RESISTANT
 
 /datum/spacevine_mutation/fire_proof/on_hit(obj/structure/spacevine/holder, mob/hitter, obj/item/attacking_item, expected_damage)
+	procstart = null
+	src.procstart = null
 	if(attacking_item && attacking_item.damtype == BURN)
 		return 0
 	return expected_damage
@@ -154,6 +198,8 @@
 	severity = SEVERITY_AVERAGE
 
 /datum/spacevine_mutation/cold_proof/add_mutation_to_vinepiece(obj/structure/spacevine/holder)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	holder.trait_flags |= SPACEVINE_COLD_RESISTANT
 
@@ -165,10 +211,14 @@
 	severity = SEVERITY_MINOR
 
 /datum/spacevine_mutation/temp_stabilisation/add_mutation_to_vinepiece(obj/structure/spacevine/holder)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	holder.always_atmos_process = TRUE
 
 /datum/spacevine_mutation/temp_stabilisation/additional_atmos_processes(obj/structure/spacevine/holder, datum/gas_mixture/air)
+	procstart = null
+	src.procstart = null
 	var/heat_capacity = air.heat_capacity()
 	if(!heat_capacity) // No heating up space or vacuums
 		return
@@ -190,6 +240,8 @@
 
 /// Destroys any vine on spread-target's tile. The checks for if this should be done are in the spread() proc.
 /datum/spacevine_mutation/vine_eating/on_spread(obj/structure/spacevine/holder, turf/target)
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/spacevine/prey in target)
 		qdel(prey)
 
@@ -202,16 +254,22 @@
 
 /// Checks mobs on spread-target's turf to see if they should be hit by a damaging proc or not.
 /datum/spacevine_mutation/aggressive_spread/on_spread(obj/structure/spacevine/holder, turf/turf, mob/living)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/victim in turf)
 		aggrospread_act(holder, victim)
 
 /// What happens if an aggr spreading vine buckles a mob.
 /datum/spacevine_mutation/aggressive_spread/on_buckle(obj/structure/spacevine/holder, mob/living/buckled)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	aggrospread_act(holder, buckled)
 
 /// Hurts mobs. To be used when a vine with aggressive spread mutation spreads into the mob's tile or buckles them.
 /datum/spacevine_mutation/aggressive_spread/aggrospread_act(obj/structure/spacevine/vine, mob/living/living_mob)
+	procstart = null
+	src.procstart = null
 	if(isvineimmune(living_mob) || living_mob.stat == DEAD)
 		return
 
@@ -266,6 +324,8 @@
 	severity = SEVERITY_TRIVIAL
 
 /datum/spacevine_mutation/transparency/on_birth(obj/structure/spacevine/holder)
+	procstart = null
+	src.procstart = null
 	holder.light_state = PASS_LIGHT
 	holder.alpha = 125
 	holder.unblock_sunlight()
@@ -276,6 +336,8 @@
 	var/datum/gas/gas_type = null
 
 /datum/spacevine_mutation/gas_eater/process_mutation(obj/structure/spacevine/holder)
+	procstart = null
+	src.procstart = null
 	if(isnull(gas_type))
 		stack_trace("gas_type not set for gas_eater mutation [type]")
 		return
@@ -331,6 +393,8 @@
 	quality = NEGATIVE
 
 /datum/spacevine_mutation/thorns/on_cross(obj/structure/spacevine/holder, mob/living/crosser)
+	procstart = null
+	src.procstart = null
 	if(isvineimmune(crosser) || HAS_TRAIT(crosser, TRAIT_PIERCEIMMUNE))
 		return
 	if(prob(THORN_MUTATION_CUT_PROB))
@@ -339,6 +403,8 @@
 			to_chat(victim, span_danger("You cut yourself on the thorny vines."))
 
 /datum/spacevine_mutation/thorns/on_hit(obj/structure/spacevine/holder, mob/living/hitter, obj/item/item, expected_damage)
+	procstart = null
+	src.procstart = null
 	if(isvineimmune(hitter) || HAS_TRAIT(hitter, TRAIT_PIERCEIMMUNE) || HAS_TRAIT(hitter, TRAIT_PLANT_SAFE))
 		return expected_damage
 
@@ -363,11 +429,15 @@
 	severity = SEVERITY_ABOVE_AVERAGE
 
 /datum/spacevine_mutation/hardened/on_grow(obj/structure/spacevine/holder)
+	procstart = null
+	src.procstart = null
 	if(holder.growth_stage)
 		holder.set_density(TRUE)
 	holder.modify_max_integrity(100)
 
 /datum/spacevine_mutation/hardened/on_hit(obj/structure/spacevine/holder, mob/living/hitter, obj/item/item, expected_damage)
+	procstart = null
+	src.procstart = null
 	if(item?.get_sharpness())
 		return expected_damage * 0.5
 	return expected_damage
@@ -381,6 +451,8 @@
 
 //This specific mutation only covers floors instead of structures, items, mobs and cant tangle mobs
 /datum/spacevine_mutation/timid/on_birth(obj/structure/spacevine/holder)
+	procstart = null
+	src.procstart = null
 	SET_PLANE_IMPLICIT(holder, FLOOR_PLANE)
 	holder.layer = ABOVE_OPEN_TURF_LAYER
 	holder.light_state = PASS_LIGHT
@@ -395,6 +467,8 @@
 	severity = SEVERITY_MAJOR
 
 /datum/spacevine_mutation/flowering/on_grow(obj/structure/spacevine/holder)
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/structure/alien/resin/flower_bud) in range(5, holder))
 		return
 	if(holder.growth_stage == 2 && prob(FLOWERING_MUTATION_SPAWN_PROB))
@@ -402,5 +476,7 @@
 		spawned_flower_bud.trait_flags = holder.trait_flags
 
 /datum/spacevine_mutation/flowering/on_cross(obj/structure/spacevine/holder, mob/living/crosser)
+	procstart = null
+	src.procstart = null
 	if(prob(25))
 		holder.entangle(crosser)

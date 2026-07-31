@@ -10,6 +10,8 @@
 	var/tally_string
 
 /datum/element/mob_killed_tally/Attach(datum/target, tally_string)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isliving(target))
@@ -20,10 +22,14 @@
 	src.tally_string = tally_string
 
 /datum/element/mob_killed_tally/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, COMSIG_LIVING_DEATH)
 	return ..()
 
 /datum/element/mob_killed_tally/proc/on_death(mob/living/target, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	SSblackbox.record_feedback("tally", tally_string, 1, target.type)

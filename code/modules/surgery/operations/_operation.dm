@@ -9,6 +9,8 @@
  * Returns an ITEM_INTERACT_* flag
  */
 /mob/living/proc/perform_surgery(atom/movable/operating_on, potential_tool = IMPLEMENT_HAND, intentionally_fail = FALSE, operating_zone = zone_selected)
+	procstart = null
+	src.procstart = null
 	if(DOING_INTERACTION(src, (HAS_TRAIT(src, TRAIT_HIPPOCRATIC_OATH) ? operating_on : DOAFTER_SOURCE_SURGERY)))
 		operating_on.balloon_alert(src, "already performing surgery!")
 		return ITEM_INTERACT_BLOCKING
@@ -95,6 +97,8 @@
  * * [2] - a list of option-specific info
  */
 /mob/living/proc/get_available_operations(atom/movable/operating_on, potential_tool = IMPLEMENT_HAND, operating_zone = zone_selected)
+	procstart = null
+	src.procstart = null
 	// List of typepaths of operations we *can* do
 	var/list/possible_operations = GLOB.operations.unlocked.Copy()
 	// Signals can add operation types to the list to unlock special ones
@@ -120,6 +124,8 @@
 
 /// Callback for checking if the surgery radial can be kept open
 /mob/living/proc/surgery_check(obj/item/tool, atom/movable/operating_on)
+	procstart = null
+	src.procstart = null
 	var/obj/item/holding = get_active_held_item()
 
 	if(tool == IMPLEMENT_HAND)
@@ -132,6 +138,8 @@
 
 /// src attempts to cauterize themselves to reset their surgery state. Basically a manual form of the real "close skin" operation
 /mob/living/proc/try_manual_cauterize(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	var/cauterize_zone = deprecise_zone(zone_selected)
 	var/obj/item/bodypart/limb = get_bodypart(cauterize_zone)
 	if(!manual_cauterize_check(tool, limb))
@@ -173,6 +181,8 @@
 
 /// Callback for checking if the cauterization do-after can continue
 /mob/living/proc/manual_cauterize_check(obj/item/tool, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(QDELETED(limb) || limb.owner != src)
@@ -207,6 +217,8 @@
 
 /// Debug proc to print all surgeries available to whoever called the proc
 /mob/living/proc/debug_get_all_available_surgeries()
+	procstart = null
+	src.procstart = null
 	var/mob/living/surgeon = usr
 	if(!isliving(surgeon))
 		return
@@ -227,6 +239,8 @@
 /// Takes a target zone and returns a list of readable surgery states for that zone.
 /// Example output may be list("Skin is cut", "Blood vessels are unclamped", "Bone is sawed")
 /mob/living/proc/get_surgery_state_as_list(target_zone)
+	procstart = null
+	src.procstart = null
 	var/list/state = list()
 	if(has_limbs)
 		var/obj/item/bodypart/part = get_bodypart(target_zone)
@@ -271,6 +285,8 @@
  * If null, it will be permanent until removed.
  */
 /mob/living/proc/add_surgery_speed_mod(id, amount, duration)
+	procstart = null
+	src.procstart = null
 	ASSERT(!isnull(id), "Surgery speed mod ID cannot be null")
 	ASSERT(isnum(amount), "Surgery speed mod amount must be a number")
 	ASSERT(isnum(duration) || isnull(duration), "Surgery speed mod duration must be a number or null")
@@ -301,6 +317,8 @@
  * * id - id of the modifier to remove, string
  */
 /mob/living/proc/remove_surgery_speed_mod(id)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(mob_surgery_speed_mods, id)
 
 GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
@@ -316,6 +334,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 	var/list/locked
 
 /datum/operation_holder/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	operations_by_typepath = list()
 	unlocked = list()
@@ -334,6 +354,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 
 /// Takes in a list of operation typepaths and returns their singleton instances. Optionally can filter out replaced surgeries and by certain operation flags.
 /datum/operation_holder/proc/get_instances_from(list/typepaths, filter_replaced = TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/result = list()
 	for(var/datum/surgery_operation/operation_type as anything in typepaths)
 		var/datum/surgery_operation/operation = operations_by_typepath[operation_type]
@@ -346,6 +368,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 
 /// Check if the passed operation has been replaced by a typepath in the provided operation pool
 /datum/operation_holder/proc/is_replaced(datum/surgery_operation/operation, list/operation_pool)
+	procstart = null
+	src.procstart = null
 	if(isnull(operation.replaced_by) || !length(operation_pool))
 		return FALSE
 	if(operation.replaced_by == operation.type)
@@ -468,6 +492,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * This is the main entry point for checking availability
  */
 /datum/surgery_operation/proc/check_availability(mob/living/patient, atom/movable/operating_on, mob/living/surgeon, tool, operated_zone)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	SHOULD_NOT_SLEEP(TRUE)
 	SHOULD_BE_PURE(TRUE)
@@ -498,6 +524,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * Snowflake checks for surgeries which need many interconnected conditions to be met
  */
 /datum/surgery_operation/proc/snowflake_check_availability(atom/movable/operating_on, mob/living/surgeon, tool, operated_zone)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	return TRUE
 
@@ -509,6 +537,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * 1 = standard quality
  */
 /datum/surgery_operation/proc/get_tool_quality(tool = IMPLEMENT_HAND)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	if(!length(implements))
 		return 1
@@ -527,6 +557,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * but you can override this proc to return multiple options for one operation, like selecting which organ to operate on.
  */
 /datum/surgery_operation/proc/get_radial_options(atom/movable/operating_on, obj/item/tool, operating_zone)
+	procstart = null
+	src.procstart = null
 	if(!main_option)
 		main_option = new()
 		main_option.image = get_default_radial_image()
@@ -539,6 +571,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * Checks to see if this operation can be performed on the provided target
  */
 /datum/surgery_operation/proc/is_available(atom/movable/operating_on, operated_zone)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 
@@ -567,11 +601,15 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 
 /// Check if the movable being operated on has all the passed surgery states
 /datum/surgery_operation/proc/has_surgery_state(atom/movable/operating_on, state)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	return FALSE
 
 /// Check if the movable being operated on has any of the passed surgery states
 /datum/surgery_operation/proc/has_any_surgery_state(atom/movable/operating_on, state)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	return FALSE
 
@@ -579,6 +617,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * Any operation specific state checks, such as checking for traits or more complex state requirements
  */
 /datum/surgery_operation/proc/state_check(atom/movable/operating_on)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	return TRUE
 
@@ -587,6 +627,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * You can override this to add more specific checks, such as checking sharpness
  */
 /datum/surgery_operation/proc/tool_check(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	return TRUE
 
@@ -594,6 +636,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * Returns the name of whatever tool is recommended for this operation, such as "hemostat"
  */
 /datum/surgery_operation/proc/get_recommended_tool()
+	procstart = null
+	src.procstart = null
 	if(!length(implements))
 		return null
 	var/recommendation = implements[1]
@@ -610,12 +654,16 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * For surgery operations that can be performed with any item, this explains what kind of item is needed
  */
 /datum/surgery_operation/proc/get_any_tool()
+	procstart = null
+	src.procstart = null
 	return "Any item"
 
 /**
  * Return a list of lists of strings indicating the various requirements for this operation
  */
 /datum/surgery_operation/proc/get_requirements()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	return list(
 		all_required_strings(),
@@ -627,6 +675,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 /// Returns a list of strings indicating requirements for this operation
 /// "All requirements" are formatted as "All of the following must be true:"
 /datum/surgery_operation/proc/all_required_strings()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	. = bitfield_to_list(all_surgery_states_required, SURGERY_STATE_GUIDES("must"))
 	if(!(operation_flags & OPERATION_STANDING_ALLOWED))
@@ -635,6 +685,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 /// Returns a list of strings indicating any of the requirements for this operation
 /// "Any requirements" are formatted as "At least one of the following must be true:"
 /datum/surgery_operation/proc/any_required_strings()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	. = list()
 	// grouped states are filtered down to make it more readable
@@ -654,6 +706,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 /// Returns a list of strings indicating optional conditions for this operation
 /// "Optional conditions" are formatted as "Additionally, any of the following may be true:"
 /datum/surgery_operation/proc/any_optional_strings()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	. = list()
 	if(operation_flags & OPERATION_SELF_OPERABLE)
@@ -662,6 +716,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 /// Returns a list of strings indicating blocked states for this operation
 /// "Blocked requirements" are formatted as "However, none of the following may be true:"
 /datum/surgery_operation/proc/all_blocked_strings()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	. = list()
 	// grouped states are filtered down to make it more readable
@@ -686,10 +742,14 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * Also used when generating icons for the wiki
  */
 /datum/surgery_operation/proc/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(icon = 'icons/effects/random_spawners.dmi', icon_state = "questionmark")
 
 /// Helper to get a generic limb radial image based on body zone
 /datum/surgery_operation/proc/get_generic_limb_radial_image(body_zone)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	PROTECTED_PROC(TRUE)
 
@@ -712,6 +772,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * Returns a list of images
  */
 /datum/surgery_operation/proc/add_radial_overlays(list/overlay_icons)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	PROTECTED_PROC(TRUE)
 
@@ -736,6 +798,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * Collates all time modifiers for this operation and returns the final modifier
  */
 /datum/surgery_operation/proc/get_time_modifiers(atom/movable/operating_on, mob/living/surgeon, tool)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	var/total_mod = 1.0
 	total_mod *= get_tool_quality(tool) || 1.0
@@ -753,6 +817,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 
 /// Returns a time modifier based on the mob's status
 /datum/surgery_operation/proc/get_mob_surgery_speed_mod(mob/living/patient, mob/living/surgeon, tool)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	var/basemod = 1.0
 	for(var/mod_id, mod_amt in patient.mob_surgery_speed_mods)
@@ -765,6 +831,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 
 /// Returns a time modifier based on the surgeon's status
 /datum/surgery_operation/proc/get_surgeon_surgery_speed_mod(mob/living/patient, mob/living/surgeon, tool)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	var/basemod = 1.0
 	if((operation_flags & OPERATION_MORBID) && HAS_MIND_TRAIT(surgeon, TRAIT_MORBID) && isitem(tool))
@@ -783,6 +851,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 
 /// Gets the surgery speed modifier for a given mob, based off what sort of table/bed/whatever is on their turf.
 /datum/surgery_operation/proc/get_location_modifier(turf/operation_turf, mob/living/patient, mob/living/surgeon, tool)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	// Technically this IS a typecache, just not the usual kind :3
 	// The order of the modifiers matter, latter entries override earlier ones
@@ -810,12 +880,16 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * Returns the atom/movable being operated on
  */
 /datum/surgery_operation/proc/get_operation_target(atom/movable/operating_on, body_zone)
+	procstart = null
+	src.procstart = null
 	return operating_on
 
 /**
  * Called by operating computers to hint that this surgery could come next given the target's current state
  */
 /datum/surgery_operation/proc/show_as_next_step(atom/movable/potential_target, operated_zone)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/operate_on = get_operation_target(potential_target, operated_zone)
 	return !isnull(operate_on) && is_available(operate_on, operated_zone)
 
@@ -831,6 +905,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * Returns an item interaction flag - intended to be invoked from the interaction chain
  */
 /datum/surgery_operation/proc/try_perform(atom/movable/operating_on, mob/living/surgeon, tool, list/operation_args = list())
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	var/mob/living/patient = get_patient(operating_on)
 
@@ -923,6 +999,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 	return result
 
 /datum/surgery_operation/proc/get_patient_blood_dna(mob/living/patient, atom/movable/operating_on)
+	procstart = null
+	src.procstart = null
 	if (patient)
 		return patient.get_blood_dna_list()
 
@@ -936,11 +1014,15 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 
 /// Called after an operation to check if it can be repeated/looped
 /datum/surgery_operation/proc/can_loop(mob/living/patient, atom/movable/operating_on, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	return operate_check(patient, operating_on, surgeon, tool, operation_args)
 
 /// Called during the do-after to check if the operation can continue
 /datum/surgery_operation/proc/operate_check(mob/living/patient, atom/movable/operating_on, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	if(isstack(tool))
@@ -966,11 +1048,15 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * Return TRUE to continue
  */
 /datum/surgery_operation/proc/pre_preop(atom/movable/operating_on, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	return TRUE
 
 /// Used to display messages to the surgeon and patient
 /datum/surgery_operation/proc/display_results(mob/living/surgeon, mob/living/target, self_message, detailed_message, vague_message, target_detailed = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	PROTECTED_PROC(TRUE)
 
@@ -1002,6 +1088,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 
 /// Display pain message to the target based on their traits and condition
 /datum/surgery_operation/proc/display_pain(mob/living/target, pain_message, mechanical_surgery = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	PROTECTED_PROC(TRUE)
 
@@ -1029,6 +1117,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 
 /// Plays a sound for the operation based on the tool used
 /datum/surgery_operation/proc/play_operation_sound(atom/movable/operating_on, mob/living/surgeon, tool, sound_or_sound_list)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	if(isitem(tool) && (operation_flags & OPERATION_MECHANIC))
@@ -1052,11 +1142,15 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 
 /// Helper for getting the mob who is ultimately being operated on, given the movable that is truly being operated on.
 /// For example in limb surgeries this would return the mob the limb is attached to.
-/datum/surgery_operation/proc/get_patient(atom/movable/operating_on) as /mob/living
+/datum/surgery_operation/proc/get_patient(atom/movable/operating_on)
+	procstart = null
+	src.procstart = null
 	return operating_on
 
 /// Helper for getting an operating compupter the patient is linked to
 /datum/surgery_operation/proc/locate_operating_computer(atom/movable/operating_on)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	var/turf/operating_turf = get_turf(operating_on)
 	if(isnull(operating_turf))
@@ -1072,6 +1166,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 
 /// Updates a patient's mood based on the surgery state and their traits
 /datum/surgery_operation/proc/update_surgery_mood(mob/living/patient, surgery_state)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	if(!(operation_flags & OPERATION_AFFECTS_MOOD))
 		return
@@ -1101,6 +1197,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * Don't touch this proc, override on_preop() instead
  */
 /datum/surgery_operation/proc/start_operation(atom/movable/operating_on, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	PRIVATE_PROC(TRUE)
 
@@ -1125,6 +1223,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * Used to customize behavior when the operation starts
  */
 /datum/surgery_operation/proc/on_preop(atom/movable/operating_on, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	var/mob/living/patient = get_patient(operating_on)
 	var/atom/movable/display_target = patient || operating_on
@@ -1141,6 +1241,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * Don't touch this proc, override on_success() instead
  */
 /datum/surgery_operation/proc/success(atom/movable/operating_on, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	PRIVATE_PROC(TRUE)
 	SHOULD_NOT_SLEEP(TRUE)
@@ -1157,6 +1259,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * Used to customize behavior when the operation is successful
  */
 /datum/surgery_operation/proc/on_success(atom/movable/operating_on, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	var/mob/living/patient = get_patient(operating_on)
 
@@ -1173,6 +1277,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * Don't touch this proc, override on_failure() instead
  */
 /datum/surgery_operation/proc/failure(atom/movable/operating_on, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	PRIVATE_PROC(TRUE)
 	SHOULD_NOT_SLEEP(TRUE)
@@ -1193,6 +1299,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * At its lowest, it will be just above 2.5 (the threshold for success), and can go up to infinity (theoretically)
  */
 /datum/surgery_operation/proc/on_failure(atom/movable/operating_on, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	var/mob/living/patient = get_patient(operating_on)
 
@@ -1239,6 +1347,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 	var/required_bodytype = ~BODYTYPE_ROBOTIC
 
 /datum/surgery_operation/basic/all_required_strings()
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(required_biotype)
 		. += "operate on [target_zone ? "[parse_zone(target_zone)] (target [parse_zone(target_zone)])" : "patient"]"
@@ -1247,6 +1357,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 	. += ..()
 
 /datum/surgery_operation/basic/all_blocked_strings()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(required_biotype & MOB_ROBOTIC)
 		. += "the patient must not be organic"
@@ -1254,6 +1366,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 		. += "the patient must not be robotic"
 
 /datum/surgery_operation/basic/is_available(mob/living/patient, operated_zone)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(target_zone && target_zone != operated_zone)
@@ -1275,6 +1389,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 	return ..()
 
 /datum/surgery_operation/basic/has_surgery_state(mob/living/patient, state)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/carbon_part = patient.get_bodypart(target_zone)
 	if(isnull(carbon_part)) // non-carbon
 		var/datum/status_effect/basic_surgery_state/state_holder = patient.has_status_effect(__IMPLIED_TYPE__)
@@ -1283,6 +1399,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 	return LIMB_HAS_SURGERY_STATE(carbon_part, state)
 
 /datum/surgery_operation/basic/has_any_surgery_state(mob/living/patient, state)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/carbon_part = patient.get_bodypart(target_zone)
 	if(isnull(carbon_part)) // non-carbon
 		var/datum/status_effect/basic_surgery_state/state_holder = patient.has_status_effect(__IMPLIED_TYPE__)
@@ -1307,6 +1425,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 	var/allow_stumps = FALSE
 
 /datum/surgery_operation/limb/all_blocked_strings()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(required_bodytype & BODYTYPE_ROBOTIC)
 		. += "the limb must not be organic"
@@ -1314,6 +1434,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 		. += "the limb must not be cybernetic"
 
 /datum/surgery_operation/limb/get_operation_target(atom/movable/operating_on, body_zone)
+	procstart = null
+	src.procstart = null
 	if (isliving(operating_on))
 		var/mob/living/patient = operating_on
 		return patient.get_bodypart(deprecise_zone(body_zone), allow_stumps)
@@ -1322,6 +1444,8 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 	return operating_on
 
 /datum/surgery_operation/limb/is_available(obj/item/bodypart/limb, operated_zone)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	// targeting groin will redirect you to the chest
@@ -1334,12 +1458,18 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 	return ..()
 
 /datum/surgery_operation/limb/has_surgery_state(obj/item/bodypart/limb, state)
+	procstart = null
+	src.procstart = null
 	return LIMB_HAS_SURGERY_STATE(limb, state)
 
 /datum/surgery_operation/limb/has_any_surgery_state(obj/item/bodypart/limb, state)
+	procstart = null
+	src.procstart = null
 	return LIMB_HAS_ANY_SURGERY_STATE(limb, state)
 
 /datum/surgery_operation/limb/get_patient(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	return limb.owner
 
 /**
@@ -1358,9 +1488,13 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 	var/obj/item/organ/target_type
 
 /datum/surgery_operation/organ/all_required_strings()
+	procstart = null
+	src.procstart = null
 	return list("operate on [target_type::name] (target [target_type::zone])") + ..()
 
 /datum/surgery_operation/organ/all_blocked_strings()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(required_organ_flag & BODYTYPE_ROBOTIC)
 		. += "the organ must not be organic"
@@ -1368,9 +1502,13 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 		. += "the organ must not be cybernetic"
 
 /datum/surgery_operation/organ/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return get_generic_limb_radial_image(target_type::zone)
 
 /datum/surgery_operation/organ/get_operation_target(atom/movable/operating_on, body_zone)
+	procstart = null
+	src.procstart = null
 	if (isliving(operating_on))
 		var/mob/living/patient = operating_on
 		return patient.get_organ_by_type(target_type)
@@ -1381,9 +1519,13 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 	return locate(target_type) in operating_on
 
 /datum/surgery_operation/organ/get_patient(obj/item/organ/organ)
+	procstart = null
+	src.procstart = null
 	return organ.owner
 
 /datum/surgery_operation/organ/is_available(obj/item/organ/organ, operated_zone)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(organ.zone != operated_zone) // this check prevents eyes from showing up in head operations
@@ -1396,7 +1538,11 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 	return ..()
 
 /datum/surgery_operation/organ/has_surgery_state(obj/item/organ/organ, state)
+	procstart = null
+	src.procstart = null
 	return LIMB_HAS_SURGERY_STATE(organ.bodypart_owner, state)
 
 /datum/surgery_operation/organ/has_any_surgery_state(obj/item/organ/organ, state)
+	procstart = null
+	src.procstart = null
 	return LIMB_HAS_ANY_SURGERY_STATE(organ.bodypart_owner, state)

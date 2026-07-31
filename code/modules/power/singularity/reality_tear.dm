@@ -26,6 +26,8 @@
 	var/collapse_spawn_time = 9 SECONDS
 
 /obj/reality_tear/proc/start_disaster()
+	procstart = null
+	src.procstart = null
 	apply_wibbly_filters(src)
 	playsound(loc, 'sound/effects/clockcult_gateway_disrupted.ogg', vary = 200, extrarange = 3, falloff_exponent = 1, frequency = 0.33, pressure_affected = FALSE, ignore_walls = TRUE, falloff_distance = 7)
 	AddComponent(
@@ -41,6 +43,8 @@
 	animate(time = 0.5 SECONDS, alpha = 0)
 
 /obj/reality_tear/proc/reality_collapse()
+	procstart = null
+	src.procstart = null
 	playsound(loc, 'sound/effects/supermatter.ogg', 200, vary = TRUE, extrarange = 3, falloff_exponent = 1, frequency = 0.5, pressure_affected = FALSE, ignore_walls = TRUE, falloff_distance = 7)
 	var/obj/singularity/bagulo = new(loc)
 	bagulo.expand(STAGE_TWO)
@@ -48,6 +52,8 @@
 	qdel(src)
 
 /obj/reality_tear/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		return
 	var/mob/living/jedi = user
@@ -65,4 +71,6 @@
 	collapse_spawn_time = 2 SECONDS
 
 /obj/reality_tear/temporary/reality_collapse()
+	procstart = null
+	src.procstart = null
 	qdel(src)

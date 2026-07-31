@@ -8,6 +8,8 @@
 	var/list/sources = list()
 
 /datum/status_effect/grouped/on_creation(mob/living/new_owner, source, ...)
+	procstart = null
+	src.procstart = null
 	//Get our supplied arguments, without new_owner
 	var/list/new_source_args = args.Copy(2)
 
@@ -35,6 +37,8 @@
  * this includes the first source added after creation.
  */
 /datum/status_effect/grouped/proc/source_added(source, ...)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -43,9 +47,13 @@
  * the effect will be deleted.
  */
 /datum/status_effect/grouped/proc/source_removed(source, removing)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/status_effect/grouped/before_remove(source)
+	procstart = null
+	src.procstart = null
 	sources -= source
 	var/was_last_source = !length(sources)
 	source_removed(source, was_last_source)

@@ -1,5 +1,7 @@
 /// Removes all the loot and achievements from megafauna for bitrunning related (/simple_animal/hostile/megafauna version)
 /mob/living/simple_animal/hostile/megafauna/proc/make_virtual_megafauna()
+	procstart = null
+	src.procstart = null
 	var/new_max = clamp(maxHealth * 0.5, 600, 1300)
 	maxHealth = new_max
 	health = new_max
@@ -29,6 +31,8 @@
 
 /// Removes all the loot and achievements from megafauna for bitrunning related (/basic/boss version)
 /mob/living/basic/boss/proc/make_virtual_megafauna()
+	procstart = null
+	src.procstart = null
 	var/new_max = clamp(maxHealth * 0.5, 600, 1300)
 	maxHealth = new_max
 	health = new_max

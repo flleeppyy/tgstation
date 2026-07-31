@@ -17,6 +17,8 @@
 	var/current_cooldown = 0
 
 /obj/item/mining_scanner/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.client)
 		return
 	if(current_cooldown <= world.time)
@@ -27,6 +29,8 @@
 /obj/item/mining_scanner/admin
 
 /obj/item/mining_scanner/admin/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/turf/closed/mineral/rock in world)
 		if(rock.scan_state)
 			var/mutable_appearance/rock_overlay = mutable_appearance(rock.scan_icon, rock.scan_state, FLASH_LAYER, rock, ABOVE_LIGHTING_PLANE, appearance_flags = RESET_TRANSFORM)
@@ -52,9 +56,13 @@
 
 //get no effects from the t-ray scanner, which auto-shuts off.
 /obj/item/t_scanner/adv_mining_scanner/cyborg_unequip(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/t_scanner/adv_mining_scanner/cyborg/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	toggle_on()
 
@@ -67,12 +75,16 @@
 	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/silver = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/t_scanner/adv_mining_scanner/scan()
+	procstart = null
+	src.procstart = null
 	if(current_cooldown <= world.time)
 		current_cooldown = world.time + cooldown
 		var/turf/t = get_turf(src)
 		mineral_scan_pulse(t, range, src)
 
 /proc/mineral_scan_pulse(turf/start_turf, range = world.view, obj/item/scanner)
+	procstart = null
+	src.procstart = null
 	var/vents_nearby = FALSE
 	var/undiscovered = FALSE
 	var/radar_volume = 30
@@ -111,5 +123,7 @@
 	var/easing_style = EASE_IN
 
 /obj/effect/temp_visual/mining_overlay/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, alpha = 0, time = duration, easing = easing_style)

@@ -21,6 +21,8 @@ GAME_VERB(/client, fix_tgui_panel, "Fix chat", "OOC")
 		log_tgui(src, "Failed to fix.", context = "verb/fix_tgui_panel")
 
 /client/proc/nuke_chat()
+	procstart = null
+	src.procstart = null
 	// Catch all solution (kick the whole thing in the pants)
 	winset(src, OUTPUT_SELECTOR_LEGACY_OUTPUT_SELECTOR, "left=output_legacy")
 	if(!tgui_panel || !istype(tgui_panel))

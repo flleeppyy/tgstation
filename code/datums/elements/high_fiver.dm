@@ -6,6 +6,8 @@
 /datum/element/high_fiver
 
 /datum/element/high_fiver/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -14,11 +16,15 @@
 	RegisterSignal(target, COMSIG_ITEM_OFFER_TAKEN, PROC_REF(on_offer_taken))
 
 /datum/element/high_fiver/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, list(COMSIG_ITEM_OFFERING, COMSIG_ITEM_OFFER_TAKEN))
 
 /// Signal proc for [COMSIG_ITEM_OFFERING] to set up the high-five on offer
 /datum/element/high_fiver/proc/on_offer(obj/item/source, mob/living/offerer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	offerer.visible_message(
@@ -32,6 +38,8 @@
 
 /// Signal proc for [COMSIG_ITEM_OFFER_TAKEN] to continue through with the high-five on take
 /datum/element/high_fiver/proc/on_offer_taken(obj/item/source, mob/living/offerer, mob/living/taker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/open_hands_taker = 0

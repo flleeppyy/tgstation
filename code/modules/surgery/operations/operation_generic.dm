@@ -26,12 +26,18 @@
 	var/biostate_blacklist = BIO_CHITIN
 
 /datum/surgery_operation/limb/incise_skin/get_any_tool()
+	procstart = null
+	src.procstart = null
 	return "Any sharp edged item"
 
 /datum/surgery_operation/limb/incise_skin/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/hud/surgery_radial.dmi', "make_incision")
 
 /datum/surgery_operation/limb/incise_skin/tool_check(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	// Require edged sharpness OR a tool behavior match
 	if((tool.get_sharpness() & SHARP_EDGED) || implements[tool.tool_behaviour])
 		return TRUE
@@ -41,9 +47,13 @@
 	return FALSE
 
 /datum/surgery_operation/limb/incise_skin/state_check(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	return !(limb.biological_state & biostate_blacklist)
 
 /datum/surgery_operation/limb/incise_skin/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -54,6 +64,8 @@
 	display_pain(limb.owner, "You feel a stabbing in your [limb.plaintext_zone].")
 
 /datum/surgery_operation/limb/incise_skin/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..() // default success message
 	limb.add_surgical_state(SURGERY_SKIN_CUT|SURGERY_VESSELS_UNCLAMPED) // ouch, cuts the vessels
 	if(!limb.can_bleed())
@@ -87,9 +99,13 @@
 	biostate_blacklist = BIO_FLESH|BIO_METAL
 
 /datum/surgery_operation/limb/incise_skin/thick/get_any_tool()
+	procstart = null
+	src.procstart = null
 	return "Any sharp edged item with decent force"
 
 /datum/surgery_operation/limb/incise_skin/thick/tool_check(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return ..() && tool.force >= 10
 
 /datum/surgery_operation/limb/incise_skin/abductor
@@ -119,9 +135,13 @@
 	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/retract_skin/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/hud/surgery_radial.dmi', "retract_skin")
 
 /datum/surgery_operation/limb/retract_skin/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -132,6 +152,8 @@
 	display_pain(limb.owner, "You feel a severe stinging pain spreading across your [limb.plaintext_zone] as the skin is pulled back.")
 
 /datum/surgery_operation/limb/retract_skin/on_success(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// the limb SHOULD either have unclamped or clamped vessels if we're retracting skin
 	// if it doesn't, some shenanigans happened (likely due to wounds), so we add unclamped if needed - just to be thorough
@@ -170,18 +192,28 @@
 	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/close_skin/get_any_tool()
+	procstart = null
+	src.procstart = null
 	return "Any heat source"
 
 /datum/surgery_operation/limb/close_skin/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/hud/surgery_radial.dmi', "mend_incision")
 
 /datum/surgery_operation/limb/close_skin/all_required_strings()
+	procstart = null
+	src.procstart = null
 	return ..() + list("the limb must have skin")
 
 /datum/surgery_operation/limb/close_skin/state_check(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	return LIMB_HAS_SKIN(limb)
 
 /datum/surgery_operation/limb/close_skin/tool_check(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/stack/medical/suture))
 		return TRUE
 
@@ -192,6 +224,8 @@
 	return tool.get_temperature() >= FIRE_MINIMUM_TEMPERATURE_TO_EXIST
 
 /datum/surgery_operation/limb/close_skin/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -202,6 +236,8 @@
 	display_pain(limb.owner, "Your [limb.plaintext_zone] is being [istype(tool, /obj/item/stack/medical/suture) ? "pinched" : "burned"]!")
 
 /datum/surgery_operation/limb/close_skin/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(LIMB_HAS_SURGERY_STATE(limb, SURGERY_BONE_SAWED))
 		limb.heal_damage(40)
@@ -231,9 +267,13 @@
 	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/clamp_bleeders/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/hud/surgery_radial.dmi', "clamp_bleeders")
 
 /datum/surgery_operation/limb/clamp_bleeders/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -244,6 +284,8 @@
 	display_pain(limb.owner, "You feel a pinch as the bleeding in your [limb.plaintext_zone] is slowed.")
 
 /datum/surgery_operation/limb/clamp_bleeders/on_success(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// free brute healing if you do it after sawing bones
 	if(LIMB_HAS_SURGERY_STATE(limb, SURGERY_BONE_SAWED))
@@ -275,15 +317,23 @@
 	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/unclamp_bleeders/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/hud/surgery_radial.dmi', "unclamp_bleeders")
 
 /datum/surgery_operation/limb/unclamp_bleeders/all_required_strings()
+	procstart = null
+	src.procstart = null
 	return ..() + list("the limb must have blood vessels")
 
 /datum/surgery_operation/limb/unclamp_bleeders/state_check(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	return LIMB_HAS_VESSELS(limb)
 
 /datum/surgery_operation/limb/unclamp_bleeders/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -294,6 +344,8 @@
 	display_pain(limb.owner, "You feel a pressure release as blood starts flowing in your [limb.plaintext_zone] again.")
 
 /datum/surgery_operation/limb/unclamp_bleeders/on_success(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	limb.add_surgical_state(SURGERY_VESSELS_UNCLAMPED)
 	limb.remove_surgical_state(SURGERY_VESSELS_CLAMPED)
@@ -333,16 +385,24 @@
 	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/saw_bones/get_any_tool()
+	procstart = null
+	src.procstart = null
 	return "Any sharp edged item with decent force"
 
 /datum/surgery_operation/limb/saw_bones/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/hud/surgery_radial.dmi', "saw_bones")
 
 /datum/surgery_operation/limb/saw_bones/tool_check(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	// Require edged sharpness and sufficient force OR a tool behavior match
 	return (((tool.get_sharpness() & SHARP_EDGED) && tool.force >= 10) || implements[tool.tool_behaviour])
 
 /datum/surgery_operation/limb/saw_bones/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -353,6 +413,8 @@
 	display_pain(limb.owner, "You feel a horrid ache spread through the inside of your [limb.plaintext_zone]!")
 
 /datum/surgery_operation/limb/saw_bones/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	limb.add_surgical_state(SURGERY_BONE_SAWED)
 	limb.receive_damage(50, sharpness = tool.get_sharpness(), wound_bonus = CANT_WOUND, damage_source = tool)
@@ -390,12 +452,18 @@
 	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/fix_bones/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/hud/surgery_radial.dmi', "fix_bones")
 
 /datum/surgery_operation/limb/fix_bones/all_required_strings()
+	procstart = null
+	src.procstart = null
 	return ..() + list("the limb must have bones")
 
 /datum/surgery_operation/limb/fix_bones/state_check(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	if(!LIMB_HAS_BONES(limb))
 		return FALSE
 
@@ -407,6 +475,8 @@
 	return TRUE
 
 /datum/surgery_operation/limb/fix_bones/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -417,6 +487,8 @@
 	display_pain(limb.owner, "You feel a grinding sensation in your [limb.plaintext_zone] as the bones are set back in place.")
 
 /datum/surgery_operation/limb/fix_bones/on_success(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// if the limb lacks skin, fix bones needs to act as an analog to mend incision (clearing most surgical states)
 	if(!LIMB_HAS_SKIN(limb))
@@ -446,16 +518,24 @@
 	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/drill_bones/get_any_tool()
+	procstart = null
+	src.procstart = null
 	return "Any sharp pointed item with decent force"
 
 /datum/surgery_operation/limb/drill_bones/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/hud/surgery_radial.dmi', "drill_bones")
 
 /datum/surgery_operation/limb/drill_bones/tool_check(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	// Require pointy sharpness and sufficient force OR a tool behavior match
 	return (((tool.get_sharpness() & SHARP_POINTY) && tool.force >= 10) || implements[tool.tool_behaviour])
 
 /datum/surgery_operation/limb/drill_bones/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -466,6 +546,8 @@
 	display_pain(limb.owner, "You feel a horrible piercing pain in your [limb.plaintext_zone]!")
 
 /datum/surgery_operation/limb/drill_bones/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	limb.add_surgical_state(SURGERY_BONE_DRILLED)
 	display_results(
@@ -499,16 +581,24 @@
 	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/incise_organs/get_any_tool()
+	procstart = null
+	src.procstart = null
 	return "Any sharp edged item"
 
 /datum/surgery_operation/limb/incise_organs/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/hud/surgery_radial.dmi', "incise_organs")
 
 /datum/surgery_operation/limb/incise_organs/tool_check(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	// Require edged sharpness OR a tool behavior match. Also saws are a no-go, you'll rip up the organs!
 	return ((tool.get_sharpness() & SHARP_EDGED) || implements[tool.tool_behaviour]) && tool.tool_behaviour != TOOL_SAW
 
 /datum/surgery_operation/limb/incise_organs/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -519,6 +609,8 @@
 	display_pain(limb.owner, "You feel a stabbing in your [limb.plaintext_zone].")
 
 /datum/surgery_operation/limb/incise_organs/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	limb.add_surgical_state(SURGERY_ORGANS_CUT)
 	limb.receive_damage(10, sharpness = tool.get_sharpness(), wound_bonus = CANT_WOUND, damage_source = tool)
@@ -536,4 +628,6 @@
 	required_bodytype = NONE
 
 /datum/surgery_operation/limb/incise_organs/abductor/state_check(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	return TRUE // You can incise chests without sawing ribs

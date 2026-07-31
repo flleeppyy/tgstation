@@ -2,16 +2,22 @@
 /datum/element/wheel
 
 /datum/element/wheel/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(target))
 		return ELEMENT_INCOMPATIBLE
 	RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved))
 
 /datum/element/wheel/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_MOVABLE_MOVED)
 
 /datum/element/wheel/proc/on_moved(atom/movable/moved, atom/oldloc, direction, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(forced || CHECK_MOVE_LOOP_FLAGS(moved, MOVEMENT_LOOP_OUTSIDE_CONTROL))
 		return

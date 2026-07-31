@@ -20,6 +20,8 @@
 	var/custom_reconcilation = FALSE
 
 /obj/machinery/atmospherics/components/get_save_vars()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!override_naming)
 		// Prevents saving the dynamic name with \proper due to it converting to "???"
@@ -28,6 +30,8 @@
 	return .
 
 /obj/machinery/atmospherics/components/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	parents = new(device_type)
 	airs = new(device_type)
 
@@ -48,9 +52,13 @@
  * Called by update_icon(), used individually by each component to determine the icon state without the pipe in consideration
  */
 /obj/machinery/atmospherics/components/proc/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/atmospherics/components/on_hide(datum/source, underfloor_accessibility)
+	procstart = null
+	src.procstart = null
 	hide_pipe(underfloor_accessibility)
 	return ..()
 
@@ -58,6 +66,8 @@
  * Called in on_hide(), set the underfloor_state var to true or false depending on the situation, calls update_icon()
  */
 /obj/machinery/atmospherics/components/proc/hide_pipe(underfloor_accessibility)
+	procstart = null
+	src.procstart = null
 	underfloor_state = underfloor_accessibility
 	if(underfloor_state)
 		REMOVE_TRAIT(src, TRAIT_UNDERFLOOR, REF(src))
@@ -66,6 +76,8 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/machinery/atmospherics/components/update_icon()
+	procstart = null
+	src.procstart = null
 	update_icon_nopipes()
 
 	underlays.Cut()
@@ -111,6 +123,8 @@
 	return ..()
 
 /obj/machinery/atmospherics/components/get_pipe_image(iconfile, iconstate, direction, color, piping_layer, trinary)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/pipe_appearance = ..()
 	if (underfloor_state == UNDERFLOOR_VISIBLE || (loc && HAS_TRAIT(loc, TRAIT_UNCOVERED_TURF)))
 		pipe_appearance.layer = BELOW_CATWALK_LAYER + get_pipe_layer_offset()
@@ -120,25 +134,35 @@
 // Pipenet stuff; housekeeping
 
 /obj/machinery/atmospherics/components/nullify_node(i)
+	procstart = null
+	src.procstart = null
 	if(parents[i])
 		nullify_pipenet(parents[i])
 	airs[i] = null
 	return ..()
 
 /obj/machinery/atmospherics/components/on_construction(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_parents()
 
 /obj/machinery/atmospherics/components/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	relocate_airs()
 	return ..()
 
 /obj/machinery/atmospherics/components/rebuild_pipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(update_parents_after_rebuild)
 		update_parents()
 
 /obj/machinery/atmospherics/components/get_rebuild_targets()
+	procstart = null
+	src.procstart = null
 	var/list/to_return = list()
 	for(var/i in 1 to device_type)
 		if(parents[i])
@@ -153,6 +177,8 @@
  * * -reference: the pipeline the component is attached to
  */
 /obj/machinery/atmospherics/components/proc/nullify_pipenet(datum/pipeline/reference)
+	procstart = null
+	src.procstart = null
 	if(!reference)
 		CRASH("nullify_pipenet(null) called by [type] on [COORD(src)]")
 
@@ -179,6 +205,8 @@
 		qdel(reference)
 
 /obj/machinery/atmospherics/components/return_pipenet_airs(datum/pipeline/reference)
+	procstart = null
+	src.procstart = null
 	var/list/returned_air = list()
 
 	for (var/i in 1 to parents.len)
@@ -187,17 +215,25 @@
 	return returned_air
 
 /obj/machinery/atmospherics/components/pipeline_expansion(datum/pipeline/reference)
+	procstart = null
+	src.procstart = null
 	if(reference)
 		return list(nodes[parents.Find(reference)])
 	return ..()
 
 /obj/machinery/atmospherics/components/set_pipenet(datum/pipeline/reference, obj/machinery/atmospherics/target_component)
+	procstart = null
+	src.procstart = null
 	parents[nodes.Find(target_component)] = reference
 
-/obj/machinery/atmospherics/components/return_pipenet(obj/machinery/atmospherics/target_component = nodes[1]) //returns parents[1] if called without argument
+/obj/machinery/atmospherics/components/return_pipenet(obj/machinery/atmospherics/target_component = nodes[1])
+	procstart = null
+	src.procstart = null //returns parents[1] if called without argument
 	return parents[nodes.Find(target_component)]
 
 /obj/machinery/atmospherics/components/replace_pipenet(datum/pipeline/Old, datum/pipeline/New)
+	procstart = null
+	src.procstart = null
 	parents[parents.Find(Old)] = New
 
 // Helpers
@@ -207,6 +243,8 @@
  * This way gases won't get stuck
  */
 /obj/machinery/atmospherics/components/proc/update_parents()
+	procstart = null
+	src.procstart = null
 	if(!SSair.initialized)
 		return
 	if(rebuilding)
@@ -221,6 +259,8 @@
 			parent.update = TRUE
 
 /obj/machinery/atmospherics/components/return_pipenets()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/i in 1 to device_type)
 		. += return_pipenet(nodes[i])
@@ -228,16 +268,22 @@
 /// When this machine is in a pipenet that is reconciling airs, this proc can add pipelines to the calculation.
 /// Can be either a list of pipenets or a single pipenet.
 /obj/machinery/atmospherics/components/proc/return_pipenets_for_reconcilation(datum/pipeline/requester)
+	procstart = null
+	src.procstart = null
 	return list()
 
 /// When this machine is in a pipenet that is reconciling airs, this proc can add airs to the calculation.
 /// Can be either a list of airs or a single air mix.
 /obj/machinery/atmospherics/components/proc/return_airs_for_reconcilation(datum/pipeline/requester)
+	procstart = null
+	src.procstart = null
 	return list()
 
 // UI Stuff
 
 /obj/machinery/atmospherics/components/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(allowed(user))
 		return ..()
 	to_chat(user, span_danger("Access denied."))
@@ -246,12 +292,16 @@
 // Tool acts
 
 /obj/machinery/atmospherics/components/return_analyzable_air()
+	procstart = null
+	src.procstart = null
 	return airs
 
 /**
  * Handles machinery deconstruction and unsafe pressure release
  */
 /obj/machinery/atmospherics/components/proc/crowbar_deconstruction_act(mob/living/user, obj/item/tool, internal_pressure = 0)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		balloon_alert(user, "open panel!")
 		return ITEM_INTERACT_SUCCESS
@@ -287,6 +337,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/atmospherics/components/default_change_direction_wrench(mob/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -295,6 +347,8 @@
 	return TRUE
 
 /obj/machinery/atmospherics/components/proc/reconnect_nodes()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to device_type)
 		var/obj/machinery/atmospherics/node = nodes[i]
 		if(node)
@@ -318,6 +372,8 @@
  * Nullify our parent pipenet
  */
 /obj/machinery/atmospherics/components/proc/disconnect_nodes()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to device_type)
 		var/obj/machinery/atmospherics/node = nodes[i]
 		if(node)
@@ -332,6 +388,8 @@
  * Calls atmos_init() on the node and on us.
  */
 /obj/machinery/atmospherics/components/proc/connect_nodes()
+	procstart = null
+	src.procstart = null
 	atmos_init()
 	for(var/i in 1 to device_type)
 		var/obj/machinery/atmospherics/node = nodes[i]
@@ -347,12 +405,16 @@
  * * disconnect - if TRUE, disconnects all nodes. If FALSE, connects all nodes.
  */
 /obj/machinery/atmospherics/components/proc/change_nodes_connection(disconnect)
+	procstart = null
+	src.procstart = null
 	if(disconnect)
 		disconnect_nodes()
 		return
 	connect_nodes()
 
 /obj/machinery/atmospherics/components/update_layer()
+	procstart = null
+	src.procstart = null
 	if (!underfloor_state)
 		layer = BELOW_CATWALK_LAYER
 	else if (PLANE_TO_TRUE(plane) == FLOOR_PLANE)
@@ -362,12 +424,16 @@
 	layer += get_pipe_layer_offset()
 
 /obj/machinery/atmospherics/components/proc/get_pipe_layer_offset()
+	procstart = null
+	src.procstart = null
 	return (piping_layer - PIPING_LAYER_DEFAULT) * PIPING_LAYER_LCHANGE + (GLOB.pipe_colors_ordered[pipe_color] * 0.001)
 
 /**
  * Handles air relocation to the pipenet/environment
  */
 /obj/machinery/atmospherics/components/proc/relocate_airs(datum/gas_mixture/to_release)
+	procstart = null
+	src.procstart = null
 	var/turf/local_turf = get_turf(src)
 	for(var/i in 1 to device_type)
 		var/datum/gas_mixture/air = airs[i]

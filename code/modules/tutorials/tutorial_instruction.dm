@@ -10,6 +10,8 @@
 	var/atom/movable/screen/tutorial_instruction_text/instruction_text
 
 /atom/movable/screen/tutorial_instruction/Initialize(mapload, datum/hud/hud_owner, message, client/client)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	transform = transform.Scale(36, 2.5)
@@ -20,11 +22,15 @@
 	vis_contents += instruction_text
 
 /atom/movable/screen/tutorial_instruction/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(instruction_text)
 
 	return ..()
 
 /atom/movable/screen/tutorial_instruction/proc/change_message(message)
+	procstart = null
+	src.procstart = null
 	instruction_text.change_message(message)
 
 /atom/movable/screen/tutorial_instruction_text
@@ -35,6 +41,8 @@
 	appearance_flags = parent_type::appearance_flags | KEEP_APART
 
 /atom/movable/screen/tutorial_instruction_text/Initialize(mapload, datum/hud/hud_owner, message, client/client)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/view = client?.view_size.getView()
@@ -44,6 +52,8 @@
 	change_message(message)
 
 /atom/movable/screen/tutorial_instruction_text/proc/change_message(message)
+	procstart = null
+	src.procstart = null
 	message = MAPTEXT_VCR_OSD_MONO("<span style='font-size: 22px; text-align: center'>[message]</span>")
 
 	animate(src, alpha = 0, time = (maptext ? 0.5 SECONDS : 0), easing = SINE_EASING)

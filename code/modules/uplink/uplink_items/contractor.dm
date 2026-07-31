@@ -16,6 +16,8 @@
 	population_minimum = TRAITOR_POPULATION_LOWPOP
 
 /datum/uplink_item/bundles_tc/contract_kit/purchase(mob/user, datum/uplink_handler/uplink_handler, atom/movable/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/uplink_items in subtypesof(/datum/uplink_item/contractor))
 		var/datum/uplink_item/uplink_item = new uplink_items
@@ -28,6 +30,8 @@
 
 //prevents buying contractor stuff before you make an account.
 /datum/uplink_item/contractor/can_be_bought(datum/uplink_handler/uplink_handler)
+	procstart = null
+	src.procstart = null
 	if(!uplink_handler.contractor_hub)
 		return FALSE
 	return ..()
@@ -41,6 +45,8 @@
 	cost = 0
 
 /datum/uplink_item/contractor/reroll/spawn_item(spawn_path, mob/user, datum/uplink_handler/uplink_handler, atom/movable/source)
+	procstart = null
+	src.procstart = null
 	//We're not regenerating already completed/aborted/extracting contracts, but we don't want to repeat their targets.
 	var/list/new_target_list = list()
 	for(var/datum/syndicate_contract/contract_check in uplink_handler.contractor_hub.assigned_contracts)

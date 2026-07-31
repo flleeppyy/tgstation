@@ -9,6 +9,8 @@
 
 ///Instantiate a fish, then set its size, weight, eventually materials and finally add it to the mount.
 /datum/controller/subsystem/persistence/proc/load_trophy_fish(obj/structure/fish_mount/mount)
+	procstart = null
+	src.procstart = null
 	if(!mount.persistence_id)
 		return
 	if(isnull(trophy_fishes_database))
@@ -47,6 +49,8 @@
 	mount.add_fish(fish, from_persistence = TRUE, catcher = data[PERSISTENCE_FISH_CATCHER])
 
 /datum/controller/subsystem/persistence/proc/save_trophy_fish(obj/structure/fish_mount/mount)
+	procstart = null
+	src.procstart = null
 	var/obj/item/fish/fish = mount.mounted_fish
 	if(!fish || !mount.persistence_id)
 		return

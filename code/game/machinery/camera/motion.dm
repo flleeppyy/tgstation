@@ -1,4 +1,6 @@
 /obj/machinery/camera/process()
+	procstart = null
+	src.procstart = null
 	// motion camera event loop
 	if(!isMotion())
 		return PROCESS_KILL // FIXME: This is never undone if the camera gets upgraded to a motion camera
@@ -16,11 +18,15 @@
 				lost_target(target)
 
 /obj/machinery/camera/proc/getTargetList()
+	procstart = null
+	src.procstart = null
 	if(area_motion)
 		return area_motion.motion_targets
 	return localMotionTargets
 
 /obj/machinery/camera/proc/new_target(mob/target)
+	procstart = null
+	src.procstart = null
 	if(isAI(target))
 		return FALSE
 	if (detectTime == 0)
@@ -30,23 +36,31 @@
 	return TRUE
 
 /obj/machinery/camera/proc/lost_target(mob/target)
+	procstart = null
+	src.procstart = null
 	var/list/targets = getTargetList()
 	targets -= WEAKREF(target)
 	if (!length(targets))
 		cancelAlarm()
 
 /obj/machinery/camera/Destroy()
+	procstart = null
+	src.procstart = null
 	localMotionTargets = null
 	cancelAlarm()
 	return ..()
 
 /obj/machinery/camera/proc/cancelAlarm()
+	procstart = null
+	src.procstart = null
 	if (detectTime == -1 && camera_enabled)
 		alarm_manager.clear_alarm(ALARM_MOTION)
 	detectTime = 0
 	return TRUE
 
 /obj/machinery/camera/proc/triggerAlarm()
+	procstart = null
+	src.procstart = null
 	if (!detectTime)
 		return FALSE
 	if(camera_enabled)
@@ -56,6 +70,8 @@
 	return TRUE
 
 /obj/machinery/camera/HasProximity(atom/movable/AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	// Motion cameras outside of an "ai monitored" area will use this to detect stuff.
 	if (!area_motion)
 		if(isliving(AM))
@@ -68,10 +84,14 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF | FREEZE_PROOF
 
 /obj/machinery/camera/motion/thunderdome/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	proximity_monitor.set_range(7)
 
 /obj/machinery/camera/motion/thunderdome/HasProximity(atom/movable/AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	if (!isliving(AM) || get_area(AM) != get_area(src))
 		return
 	localMotionTargets |= WEAKREF(AM)
@@ -81,6 +101,8 @@
 	detectTime = world.time + 30 SECONDS
 
 /obj/machinery/camera/motion/thunderdome/process()
+	procstart = null
+	src.procstart = null
 	if (!detectTime)
 		return
 

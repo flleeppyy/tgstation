@@ -2,6 +2,8 @@
 /datum/unit_test/suit_sensor
 
 /datum/unit_test/suit_sensor/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/dummy = allocate(__IMPLIED_TYPE__)
 	var/obj/item/clothing/under/sensor_test/under = allocate(__IMPLIED_TYPE__)
 

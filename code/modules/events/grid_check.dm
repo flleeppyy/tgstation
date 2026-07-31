@@ -16,6 +16,8 @@
 	start_when = 1
 
 /datum/round_event/grid_check/announce(fake)
+	procstart = null
+	src.procstart = null
 	var/datum/round_event_control/grid_check/controller = control
 	if(!fake)
 		if(!controller)
@@ -27,4 +29,6 @@
 		COOLDOWN_START(controller, announcement_spam_protection, 30 SECONDS)
 
 /datum/round_event/grid_check/start()
+	procstart = null
+	src.procstart = null
 	power_fail(60, 240) // 1 to 4 minutes

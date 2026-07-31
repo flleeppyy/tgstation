@@ -45,6 +45,8 @@
 	duration = 12
 
 /obj/effect/temp_visual/cosmic_gem/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(-12, 12)
 	pixel_y = rand(-9, 0)

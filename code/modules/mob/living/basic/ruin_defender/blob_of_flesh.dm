@@ -33,6 +33,8 @@
 	ai_controller = /datum/ai_controller/basic_controller/fleshblob
 
 /mob/living/basic/fleshblob/Initialize(mapload, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	grant_actions_by_list(list(/datum/action/consume/fleshblob))
 	ADD_TRAIT(src, TRAIT_STRONG_GRABBER, INNATE_TRAIT)
@@ -44,6 +46,8 @@
 	)
 
 /mob/living/basic/fleshblob/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!do_after(user, 4 SECONDS, target = src, timed_action_flags = IGNORE_TARGET_LOC_CHANGE|IGNORE_USER_LOC_CHANGE|IGNORE_INCAPACITATED))
 		return FALSE
@@ -53,6 +57,8 @@
 	consume.stop_consuming()
 
 /mob/living/basic/fleshblob/melee_attack(mob/living/target, list/modifiers, ignore_cooldown = FALSE)
+	procstart = null
+	src.procstart = null
 	if(target.loc == src || pulling == target)
 		return FALSE
 	. = ..()

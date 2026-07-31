@@ -6,6 +6,8 @@
 	wanted_types = list(/obj/item/relic = TRUE)
 
 /datum/bounty/item/science/relic/applies_to(obj/O)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/obj/item/relic/experiment = O
@@ -31,12 +33,16 @@
 	var/desired_instability = 0
 
 /datum/bounty/item/science/genetics/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desired_instability = rand(10,40)
 	reward += desired_instability * (CARGO_CRATE_VALUE * 0.2)
 	description += " We want a DNA injector whose total instability is higher than [desired_instability] points."
 
 /datum/bounty/item/science/genetics/applies_to(obj/O)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/obj/item/dnainjector/mutator = O
@@ -62,6 +68,8 @@
 	var/require_powered = TRUE
 
 /datum/bounty/item/science/ntnet/applies_to(obj/O)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	if(require_powered)
@@ -86,6 +94,8 @@
 	require_powered = FALSE
 
 /datum/bounty/item/science/ntnet/console/applies_to(obj/O)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/obj/machinery/modular_computer/computer = O
@@ -102,6 +112,8 @@
 	wanted_types = list(/obj/item/assembly/signaler/anomaly/bluespace = TRUE)
 
 /datum/bounty/item/science/ref_anomaly/can_get(obj/O)
+	procstart = null
+	src.procstart = null
 	var/anomaly_type = wanted_types[1]
 	if(SSresearch.created_anomaly_types[anomaly_type] >= SSresearch.anomaly_hard_limit_by_type[anomaly_type])
 		return FALSE

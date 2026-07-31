@@ -8,6 +8,8 @@
 	light_range = 1.6
 
 /obj/machinery/mining_weather_monitor/Initialize(mapload, ndir, nbuild)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/weather_announcer, \
@@ -18,6 +20,8 @@
 	)
 
 /obj/machinery/mining_weather_monitor/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((machine_stat & BROKEN) || !powered())
 		return
@@ -68,6 +72,8 @@ GLOBAL_LIST_EMPTY(weather_towers)
 	COOLDOWN_DECLARE(clear_weather_cd)
 
 /obj/machinery/power/weather_tower/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(anchored)
 		connect_to_network()
@@ -77,18 +83,26 @@ GLOBAL_LIST_EMPTY(weather_towers)
 	AddComponent(/datum/component/gps, "Radar Tower")
 
 /obj/machinery/power/weather_tower/Destroy()
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(GLOB.weather_towers["[src.z]"], src)
 	QDEL_NULL(core)
 	SSmachines.processing_early -= src
 	return ..()
 
 /obj/machinery/power/weather_tower/connect_to_network()
+	procstart = null
+	src.procstart = null
 	return anchored && ..()
 
 /obj/machinery/power/weather_tower/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/plasteel(loc, disassembled ? 12 : 4)
 
 /obj/machinery/power/weather_tower/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == core)
 		core = null
@@ -96,6 +110,8 @@ GLOBAL_LIST_EMPTY(weather_towers)
 			update_appearance()
 
 /obj/machinery/power/weather_tower/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		. += mutable_appearance(icon, "[base_icon_state]_on", alpha = src.alpha)
@@ -108,6 +124,8 @@ GLOBAL_LIST_EMPTY(weather_towers)
 		. += emissive_appearance(icon, "[base_icon_state]_core_em", src, alpha = src.alpha)
 
 /obj/machinery/power/weather_tower/update_name(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(core))
 		name = initial(name)
@@ -115,6 +133,8 @@ GLOBAL_LIST_EMPTY(weather_towers)
 		name = "anomalous [initial(name)]"
 
 /obj/machinery/power/weather_tower/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(core))
 		. += span_info("It has a slot in which you could install a weather anomaly core.")
@@ -122,6 +142,8 @@ GLOBAL_LIST_EMPTY(weather_towers)
 		. += span_info("It has \a [core] installed, unlocking weather control.")
 
 /obj/machinery/power/weather_tower/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(isnull(core))
 		return
 
@@ -132,6 +154,8 @@ GLOBAL_LIST_EMPTY(weather_towers)
 		ui.open()
 
 /obj/machinery/power/weather_tower/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(isnull(core))
 		return UI_CLOSE
 	if(!active)
@@ -139,6 +163,8 @@ GLOBAL_LIST_EMPTY(weather_towers)
 	return ..()
 
 /obj/machinery/power/weather_tower/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	if(isnull(core))
@@ -158,6 +184,8 @@ GLOBAL_LIST_EMPTY(weather_towers)
 	return data
 
 /obj/machinery/power/weather_tower/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/summonable_weather_types = list()
 	for(var/datum/weather/weather_type as anything in get_summonable_weather_types())
@@ -173,6 +201,8 @@ GLOBAL_LIST_EMPTY(weather_towers)
 	return data
 
 /obj/machinery/power/weather_tower/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -187,6 +217,8 @@ GLOBAL_LIST_EMPTY(weather_towers)
 			return TRUE
 
 /obj/machinery/power/weather_tower/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/assembly/signaler/anomaly))
 		if(!isnull(core))
 			to_chat(user, span_warning("The weather core slot is already occupied."))
@@ -208,6 +240,8 @@ GLOBAL_LIST_EMPTY(weather_towers)
 	return NONE
 
 /obj/machinery/power/weather_tower/set_anchored(anchorvalue)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.))
 		return
@@ -218,6 +252,8 @@ GLOBAL_LIST_EMPTY(weather_towers)
 		disconnect_from_network()
 
 /obj/machinery/power/weather_tower/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(old_turf)
 		LAZYREMOVE(GLOB.weather_towers["[old_turf.z]"], src)
@@ -225,6 +261,8 @@ GLOBAL_LIST_EMPTY(weather_towers)
 		LAZYADD(GLOB.weather_towers["[new_turf.z]"], src)
 
 /obj/machinery/power/weather_tower/process_early()
+	procstart = null
+	src.procstart = null
 	if(anchored && surplus() >= idle_power_usage)
 		add_load(idle_power_usage)
 		if(!active)
@@ -236,18 +274,26 @@ GLOBAL_LIST_EMPTY(weather_towers)
 		update_appearance()
 
 /obj/machinery/power/weather_tower/process()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Check whether this tower is on a station z-level or not
 /obj/machinery/power/weather_tower/proc/is_on_station()
+	procstart = null
+	src.procstart = null
 	return is_station_level(src.z) && !SSmapping.is_planetary()
 
 /// Calculate the charge cost to summon weather based on whether the tower is on station or not
 /obj/machinery/power/weather_tower/proc/weather_charge_cost()
+	procstart = null
+	src.procstart = null
 	return is_on_station() ? /obj/item/assembly/signaler/anomaly/weather::charges * 0.5 : 1
 
 /// Summon a weather event of the given type on this tower's z-level
 /obj/machinery/power/weather_tower/proc/summon_weather(datum/weather/weather_type, mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(core) || !active)
 		return FALSE
 	if(!COOLDOWN_FINISHED(src, summon_weather_cd))
@@ -315,6 +361,8 @@ GLOBAL_LIST_EMPTY(weather_towers)
 
 /// Subtract a charge and handle core depletion
 /obj/machinery/power/weather_tower/proc/use_core_charge(amount)
+	procstart = null
+	src.procstart = null
 	if(isnull(core))
 		CRASH("Tried to use weather core charge when no core is installed!")
 
@@ -326,6 +374,8 @@ GLOBAL_LIST_EMPTY(weather_towers)
 
 /// Clears whatever weather datum is referenced with weather_ref
 /obj/machinery/power/weather_tower/proc/clear_weather(weather_ref, mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(core) || !active)
 		return FALSE
 	if(!COOLDOWN_FINISHED(src, clear_weather_cd))
@@ -345,6 +395,8 @@ GLOBAL_LIST_EMPTY(weather_towers)
 
 /// Return a list of weather typepaths that this tower can summon when given a weather core.
 /obj/machinery/power/weather_tower/proc/get_summonable_weather_types()
+	procstart = null
+	src.procstart = null
 	. = list(
 		/datum/weather/particle/ash_storm,
 		/datum/weather/particle/rain_storm,
@@ -356,6 +408,8 @@ GLOBAL_LIST_EMPTY(weather_towers)
 
 /// Returns a list of active weather datums that are active on this tower's z-level.
 /obj/machinery/power/weather_tower/proc/get_active_weather_on_z()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/datum/weather/ongoing as anything in SSweather.processing)
 		if(ongoing.stage != MAIN_STAGE)
@@ -370,6 +424,8 @@ GLOBAL_LIST_EMPTY(weather_towers)
 /obj/machinery/power/weather_tower/core
 
 /obj/machinery/power/weather_tower/core/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	core = new(src)
 	update_appearance()

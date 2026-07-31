@@ -1,11 +1,15 @@
 /datum/objective/revenant
 
 /datum/objective/revenant/New()
+	procstart = null
+	src.procstart = null
 	target_amount = rand(350, 600)
 	explanation_text = "Absorb [target_amount] points of essence from humans."
 	return ..()
 
 /datum/objective/revenant/check_completion()
+	procstart = null
+	src.procstart = null
 	if(!isrevenant(owner.current))
 		return FALSE
 	var/mob/living/basic/revenant/owner_mob = owner.current
@@ -17,6 +21,8 @@
 /datum/objective/revenant_fluff
 
 /datum/objective/revenant_fluff/New()
+	procstart = null
+	src.procstart = null
 	var/list/explanation_texts = list(
 		"Assist and exacerbate existing threats at critical moments.",
 		"Cause as much chaos and anger as you can without being killed.",
@@ -37,4 +43,6 @@
 	return ..()
 
 /datum/objective/revenant_fluff/check_completion()
+	procstart = null
+	src.procstart = null
 	return TRUE

@@ -12,12 +12,16 @@
 	var/static/list/blacklisted_atoms = typecacheof(list(/atom/movable/screen))
 
 /datum/mutation/telekinesis/on_acquiring(mob/living/carbon/human/homan)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	RegisterSignal(homan, COMSIG_MOB_ATTACK_RANGED, PROC_REF(on_ranged_attack))
 
 /datum/mutation/telekinesis/on_losing(mob/living/carbon/human/homan)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -25,6 +29,8 @@
 
 ///Triggers on COMSIG_MOB_ATTACK_RANGED. Usually handles stuff like picking up items at range.
 /datum/mutation/telekinesis/proc/on_ranged_attack(mob/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(is_type_in_typecache(target, blacklisted_atoms))
 		return
@@ -44,6 +50,8 @@
 	mutation_traits = list(TRAIT_CHUNKYFINGERS, TRAIT_NO_TWOHANDING)
 
 /datum/mutation/elastic_arms/on_acquiring(mob/living/carbon/human/homan)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -52,6 +60,8 @@
 	homan.reach_length++
 
 /datum/mutation/elastic_arms/on_losing(mob/living/carbon/human/homan)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -60,6 +70,8 @@
 
 /// signal sent when prompting if an item can be equipped
 /datum/mutation/elastic_arms/proc/on_owner_equipping_item(mob/living/carbon/human/owner, obj/item/pick_item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if((pick_item.w_class > WEIGHT_CLASS_BULKY) && !(pick_item.item_flags & (ABSTRACT|HAND_ITEM))) // cant decide if i should limit to huge or bulky.
 		pick_item.balloon_alert(owner, "arms too floppy to wield!")
@@ -67,6 +79,8 @@
 
 /// signal sent when owner tries to pull
 /datum/mutation/elastic_arms/proc/on_owner_try_pull(mob/living/carbon/owner, atom/movable/target, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isliving(target))
 		var/mob/living/living_target = target

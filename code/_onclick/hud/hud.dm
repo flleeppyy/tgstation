@@ -18,6 +18,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 ))
 
 /proc/ui_style2icon(ui_style)
+	procstart = null
+	src.procstart = null
 	return GLOB.available_ui_styles[ui_style] || GLOB.available_ui_styles[GLOB.available_ui_styles[1]]
 
 /datum/hud
@@ -89,6 +91,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	var/list/asset_refs_for_reuse = list()
 
 /datum/hud/New(mob/owner)
+	procstart = null
+	src.procstart = null
 	mymob = owner
 
 	if (!ui_style)
@@ -132,6 +136,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	update_sightflags(mymob, mymob.sight, NONE)
 
 /datum/hud/Destroy()
+	procstart = null
+	src.procstart = null
 	if(mymob.hud_used == src)
 		mymob.hud_used = null
 
@@ -150,6 +156,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 /// Creates and registers a managed screen object
 /datum/hud/proc/add_screen_object(atom/movable/screen/new_object, hud_key, group_key = HUD_GROUP_STATIC, ui_icon, ui_loc, update_screen = FALSE)
+	procstart = null
+	src.procstart = null
 	if (ispath(new_object))
 		new_object = new new_object(null, src, ui_loc)
 
@@ -178,6 +186,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 /// Removes a screen object and refreshes the hud. Can just be passed a key.
 /datum/hud/proc/remove_screen_object(atom/movable/screen/to_remove, update = TRUE)
+	procstart = null
+	src.procstart = null
 	if (!istype(to_remove))
 		to_remove = screen_objects[to_remove]
 		if (!to_remove)
@@ -188,25 +198,35 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 /// Proc for children to spawn their screen object in
 /datum/hud/proc/initialize_screen_objects()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/hud/proc/client_refresh(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/client/client = mymob.canon_client
 	RegisterSignal(client, COMSIG_CLIENT_SET_EYE, PROC_REF(on_eye_change))
 	on_eye_change(null, null, client.eye)
 
 /datum/hud/proc/clear_client(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(mymob.canon_client)
 		UnregisterSignal(mymob.canon_client, COMSIG_CLIENT_SET_EYE)
 
 /datum/hud/proc/on_viewdata_update(datum/source, view)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	view_audit_buttons()
 
 /datum/hud/proc/on_eye_change(datum/source, atom/old_eye, atom/new_eye)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SEND_SIGNAL(src, COMSIG_HUD_EYE_CHANGED, old_eye, new_eye)
 
@@ -220,6 +240,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	eye_z_changed(new_eye)
 
 /datum/hud/proc/update_sightflags(datum/source, new_sight, old_sight)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// If neither the old and new flags can see turfs but not objects, don't transform the turfs
 	// This is to ensure parallax works when you can't see holder objects
@@ -231,12 +253,18 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 		group.build_planes_offset(src, current_plane_offset)
 
 /datum/hud/proc/should_use_scale()
+	procstart = null
+	src.procstart = null
 	return should_sight_scale(mymob.sight)
 
 /datum/hud/proc/should_sight_scale(sight_flags)
+	procstart = null
+	src.procstart = null
 	return (sight_flags & (SEE_TURFS | SEE_OBJS)) != SEE_TURFS
 
 /datum/hud/proc/eye_z_changed(atom/eye)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_parallax_pref() // If your eye changes z level, so should your parallax prefs
 	var/turf/eye_turf = get_turf(eye)
@@ -255,6 +283,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 		group.build_planes_offset(src, new_offset)
 
 /datum/hud/proc/on_plane_increase(datum/source, old_max_offset, new_max_offset)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/i in old_max_offset + 1 to new_max_offset)
 		register_reuse(GLOB.starlight_objects[i + 1])
@@ -262,18 +292,24 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 /// Creates the required plane masters to fill out new z layers (because each "level" of multiz gets its own plane master set)
 /datum/hud/proc/build_plane_groups(starting_offset, ending_offset)
+	procstart = null
+	src.procstart = null
 	for(var/group_key in master_groups)
 		var/datum/plane_master_group/group = master_groups[group_key]
 		group.build_plane_masters(starting_offset, ending_offset)
 
 /// Returns the plane master that matches the input plane from the passed in group
 /datum/hud/proc/get_plane_master(plane, group_key = PLANE_GROUP_MAIN)
+	procstart = null
+	src.procstart = null
 	var/plane_key = "[plane]"
 	var/datum/plane_master_group/group = master_groups[group_key]
 	return group.plane_masters[plane_key]
 
 /// Returns a list of all plane masters that match the input true plane, drawn from the passed in group (ignores z layer offsets)
 /datum/hud/proc/get_true_plane_masters(true_plane, group_key = PLANE_GROUP_MAIN)
+	procstart = null
+	src.procstart = null
 	var/list/atom/movable/screen/plane_master/masters = list()
 	for(var/plane in TRUE_PLANE_TO_OFFSETS(true_plane))
 		masters += get_plane_master(plane, group_key)
@@ -281,15 +317,21 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 /// Returns all the planes belonging to the passed in group key
 /datum/hud/proc/get_planes_from(group_key)
+	procstart = null
+	src.procstart = null
 	var/datum/plane_master_group/group = master_groups[group_key]
 	return group.plane_masters
 
 /// Returns the corresponding plane group datum if one exists
 /datum/hud/proc/get_plane_group(key)
+	procstart = null
+	src.procstart = null
 	return master_groups[key]
 
 ///Creates the mob's visible HUD, returns FALSE if it can't, TRUE if it did.
 /mob/proc/create_mob_hud()
+	procstart = null
+	src.procstart = null
 	if(!client || hud_used)
 		return FALSE
 	set_hud_used(new hud_type(src))
@@ -298,6 +340,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	return TRUE
 
 /mob/proc/set_hud_used(datum/hud/new_hud)
+	procstart = null
+	src.procstart = null
 	hud_used = new_hud
 	new_hud.build_action_groups()
 
@@ -310,6 +354,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
  * * viewmob - what mob to show the hud to. Can be this hud's mob, can be another mob, can be null (will use this hud's mob if so)
  */
 /datum/hud/proc/show_hud(version = 0, mob/viewmob)
+	procstart = null
+	src.procstart = null
 	if (!ismob(mymob))
 		return FALSE
 
@@ -414,12 +460,16 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	return TRUE
 
 /datum/hud/proc/plane_masters_update()
+	procstart = null
+	src.procstart = null
 	for(var/group_key in master_groups)
 		var/datum/plane_master_group/group = master_groups[group_key]
 		// Plane masters are always shown to OUR mob, never to observers
 		group.refresh_hud()
 
 /datum/hud/human/show_hud(version = 0,mob/viewmob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -427,6 +477,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	inventory_update(screenmob)
 
 /datum/hud/proc/inventory_update(mob/viewer)
+	procstart = null
+	src.procstart = null
 	if (isnull(mymob))
 		return
 
@@ -436,6 +488,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 			slot.update_inventory_slot(src, mymob)
 
 /datum/hud/proc/update_inventory_slot(slot_id, ...)
+	procstart = null
+	src.procstart = null
 	if(isnull(mymob))
 		return
 	var/datum/inventory_slot/slot = inventory_slots[slot_id]
@@ -444,6 +498,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 		slot.update_inventory_slot(arglist(slot_args))
 
 /datum/hud/proc/update_ui_style(new_ui_style)
+	procstart = null
+	src.procstart = null
 	// do nothing if overridden by a subtype or already on that style
 	if (initial(ui_style) || ui_style == new_ui_style)
 		return
@@ -457,14 +513,20 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	build_hand_slots(update_hud = TRUE)
 
 /datum/hud/proc/register_reuse(atom/movable/screen/reuse)
+	procstart = null
+	src.procstart = null
 	asset_refs_for_reuse += WEAKREF(reuse)
 	mymob?.client?.screen += reuse
 
 /datum/hud/proc/unregister_reuse(atom/movable/screen/reuse)
+	procstart = null
+	src.procstart = null
 	asset_refs_for_reuse -= WEAKREF(reuse)
 	mymob?.client?.screen -= reuse
 
 /datum/hud/proc/update_reuse(mob/show_to)
+	procstart = null
+	src.procstart = null
 	for(var/datum/weakref/screen_ref as anything in asset_refs_for_reuse)
 		var/atom/movable/screen/reuse = screen_ref.resolve()
 		if(isnull(reuse))
@@ -474,6 +536,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 /// Rebuilds our mob's hand slot screen elements
 /datum/hud/proc/build_hand_slots(update_hud = FALSE)
+	procstart = null
+	src.procstart = null
 	// Clean up existing hand slot objects
 	for (var/atom/movable/screen/inventory/hand/hand in screen_groups[HUD_GROUP_STATIC])
 		remove_screen_object(hand, FALSE)
@@ -511,10 +575,14 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 /// Handles dimming inventory slots that a mob can't equip items to in their current state
 /datum/hud/proc/update_locked_slots()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Creates inventory slot screen elements based on our assigned default_inventory_slots
 /datum/hud/proc/create_inventory_slots()
+	procstart = null
+	src.procstart = null
 	var/list/created_paths = default_inventory_slots
 	if (ispath(created_paths))
 		created_paths = valid_subtypesof(created_paths)
@@ -532,6 +600,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	inventory_update()
 
 /datum/hud/proc/position_action(atom/movable/screen/movable/action_button/button, position)
+	procstart = null
+	src.procstart = null
 	// This is kinda a hack, I'm sorry.
 	// Basically, FLOATING is never a valid position to pass into this proc. It exists as a generic marker for manually positioned buttons
 	// Not as a position to target
@@ -563,6 +633,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	button.location = position
 
 /datum/hud/proc/position_action_relative(atom/movable/screen/movable/action_button/button, atom/movable/screen/movable/action_button/relative_to)
+	procstart = null
+	src.procstart = null
 	if(button.location != SCRN_OBJ_DEFAULT)
 		hide_action(button)
 
@@ -589,6 +661,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 /// Removes the passed in action from its current position on the screen
 /datum/hud/proc/hide_action(atom/movable/screen/movable/action_button/button)
+	procstart = null
+	src.procstart = null
 	switch(button.location)
 		if(SCRN_OBJ_DEFAULT) // Invalid
 			CRASH("We just tried to hide an action buttion that somehow has the default position as its location, you done fucked up")
@@ -608,6 +682,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 /// Generates visual landings for all groups that the button is not a memeber of
 /datum/hud/proc/generate_landings(atom/movable/screen/movable/action_button/button)
+	procstart = null
+	src.procstart = null
 	listed_actions.generate_landing()
 	palette_actions.generate_landing()
 	var/atom/movable/screen/button_palette/toggle_palette = screen_objects[HUD_MOB_TOGGLE_PALETTE]
@@ -615,6 +691,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 /// Clears all currently visible landings
 /datum/hud/proc/hide_landings()
+	procstart = null
+	src.procstart = null
 	listed_actions.clear_landing()
 	palette_actions.clear_landing()
 	var/atom/movable/screen/button_palette/toggle_palette = screen_objects[HUD_MOB_TOGGLE_PALETTE]
@@ -622,6 +700,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 // Updates any existing "owned" visuals, ensures they continue to be visible
 /datum/hud/proc/update_our_owner()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/screen/button_palette/toggle_palette = screen_objects[HUD_MOB_TOGGLE_PALETTE]
 	var/atom/movable/screen/palette_scroll/palette_down = screen_objects[HUD_MOB_PALETTE_DOWN]
 	var/atom/movable/screen/palette_scroll/palette_up = screen_objects[HUD_MOB_PALETTE_UP]
@@ -635,6 +715,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 /// Ensures all of our buttons are properly within the bounds of our client's view, moves them if they're not
 /datum/hud/proc/view_audit_buttons()
+	procstart = null
+	src.procstart = null
 	var/our_view = mymob?.canon_client?.view
 	if(!our_view)
 		return
@@ -647,6 +729,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 /// Generates and fills new action groups with our mob's current actions
 /datum/hud/proc/build_action_groups()
+	procstart = null
+	src.procstart = null
 	listed_actions = new(src)
 	palette_actions = new(src)
 	floating_actions = list()

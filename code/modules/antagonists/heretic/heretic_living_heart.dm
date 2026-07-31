@@ -12,6 +12,8 @@
 	var/datum/action/cooldown/track_target/action
 
 /datum/component/living_heart/Initialize()
+	procstart = null
+	src.procstart = null
 	if(!isorgan(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -20,19 +22,27 @@
 	action.Grant(organ_parent.owner)
 
 /datum/component/living_heart/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(action)
 	return ..()
 
 /datum/component/living_heart/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(parent, TRAIT_LIVING_HEART, REF(src))
 	RegisterSignal(parent, COMSIG_ORGAN_REMOVED, PROC_REF(on_organ_removed))
 	RegisterSignal(parent, COMSIG_ORGAN_BEING_REPLACED, PROC_REF(on_organ_replaced))
 
 /datum/component/living_heart/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(parent, TRAIT_LIVING_HEART, REF(src))
 	UnregisterSignal(parent, list(COMSIG_ORGAN_REMOVED, COMSIG_ORGAN_BEING_REPLACED))
 
 /datum/component/living_heart/PostTransfer(datum/new_parent)
+	procstart = null
+	src.procstart = null
 	if(!isorgan(new_parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -42,6 +52,8 @@
  * If the organ is removed, the component will remove itself.
  */
 /datum/component/living_heart/proc/on_organ_removed(obj/item/organ/source, mob/living/carbon/old_owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	to_chat(old_owner, span_userdanger("As your living [source.name] leaves your body, you feel less connected to the Mansus!"))
@@ -53,6 +65,8 @@
  * If the organ is replaced, before it's done transfer the component over
  */
 /datum/component/living_heart/proc/on_organ_replaced(obj/item/organ/source, obj/item/organ/replacement)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(IS_ROBOTIC_ORGAN(replacement))
@@ -84,12 +98,16 @@
 	var/datum/status_effect/agent_pinpointer/scan/heretic/heretic_pinpointer
 
 /datum/action/cooldown/track_target/Grant(mob/granted)
+	procstart = null
+	src.procstart = null
 	if(!IS_HERETIC(granted))
 		return
 
 	return ..()
 
 /datum/action/cooldown/track_target/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -102,10 +120,14 @@
 	return TRUE
 
 /datum/action/cooldown/track_target/Trigger(mob/clicker, trigger_flags, atom/target)
+	procstart = null
+	src.procstart = null
 	right_clicked = !!(trigger_flags & TRIGGER_SECONDARY_ACTION)
 	return ..()
 
 /datum/action/cooldown/track_target/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/heretic/heretic_datum = GET_HERETIC(owner)
 	var/datum/heretic_knowledge/sac_knowledge = heretic_datum.get_knowledge(/datum/heretic_knowledge/hunt_and_sacrifice)
 
@@ -182,6 +204,8 @@
 
 /// Callback for the radial to ensure it's closed when not allowed.
 /datum/action/cooldown/track_target/proc/check_menu()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return FALSE
 	if(!IS_HERETIC(owner))
@@ -190,6 +214,8 @@
 
 /// Gets the balloon message for who we're tracking.
 /datum/action/cooldown/track_target/proc/get_balloon_message(atom/tracked_thing)
+	procstart = null
+	src.procstart = null
 	var/balloon_message = "error text!"
 	var/turf/their_turf = get_turf(tracked_thing)
 	var/turf/our_turf = get_turf(owner)
@@ -269,6 +295,8 @@
 	screen_loc = around_player
 
 /atom/movable/screen/navigate_arrow/proc/start_effect(turf/tracked_turf, arrow_color)
+	procstart = null
+	src.procstart = null
 	var/mob/owner = get_mob()
 	if (owner)
 		animate(src, transform = matrix(get_angle(owner, tracked_turf), MATRIX_ROTATE), 0.2 SECONDS)
@@ -276,11 +304,15 @@
 	addtimer(CALLBACK(src, PROC_REF(end_effect)), 1.6 SECONDS)
 
 /atom/movable/screen/navigate_arrow/Destroy()
+	procstart = null
+	src.procstart = null
 	var/datum/hud/our_hud = hud
 	. = ..()
 	if (!QDELETED(our_hud))
 		INVOKE_ASYNC(our_hud, TYPE_PROC_REF(/datum/hud, show_hud), our_hud.hud_version)
 
 /atom/movable/screen/navigate_arrow/proc/end_effect()
+	procstart = null
+	src.procstart = null
 	icon_state = "navigate_arrow_disappear"
 	QDEL_IN(src, 0.4 SECONDS)

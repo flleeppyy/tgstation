@@ -21,6 +21,8 @@
 	max_total_storage = 15
 
 /datum/storage/backpack/satchel_flat/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(cant_hold_list = /obj/item/storage/backpack/satchel/flat) //muh recursive backpacks
 

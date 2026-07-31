@@ -15,6 +15,8 @@
 	start_active = TRUE
 
 /obj/machinery/camera/emp_proof/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	upgradeEmpProof()
 
@@ -23,6 +25,8 @@
  * Same as EMP but also starts with motion upgrade.
  */
 /obj/machinery/camera/emp_proof/motion/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	upgradeMotion()
 
@@ -35,6 +39,8 @@
 	icon_state = "xraycamera" //mapping icon only
 
 /obj/machinery/camera/xray/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	upgradeXRay()
 
@@ -47,6 +53,8 @@
 	name = "motion-sensitive security camera"
 
 /obj/machinery/camera/motion/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	upgradeMotion()
 
@@ -59,6 +67,8 @@
 	icon_state = "xraycamera" //mapping icon.
 
 /obj/machinery/camera/all/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	upgradeEmpProof()
 	upgradeXRay()
@@ -73,10 +83,14 @@
 	var/number = 0 //camera number in area
 
 /obj/machinery/camera/autoname/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/camera/autoname/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/autonames_in_areas = list()
 	var/area/camera_area = get_area(src)
@@ -89,6 +103,8 @@
 	name = "motion-sensitive security camera"
 
 /obj/machinery/camera/autoname/motion/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	upgradeMotion()
 
@@ -122,12 +138,16 @@
 
 ///Restore the camera's view default view range after an EMP
 /obj/machinery/camera/exosuit/proc/emp_refocus(obj/vehicle/sealed/mecha/our_chassis)
+	procstart = null
+	src.procstart = null
 	is_emp_scrambled = FALSE
 	setViewRange(initial(view_range))
 	our_chassis.diag_hud_set_camera()
 
 ///Updates the c_tag of the mech camera while preventing duplicate c_tag usage due to having mechs with the same name
 /obj/machinery/camera/exosuit/proc/update_c_tag(obj/vehicle/sealed/mecha/mech)
+	procstart = null
+	src.procstart = null
 	//List of all used mech names
 	var/static/list/existing_mech_names = list()
 	//Name of the mech passed with this proc. We use format_text to wipe away stuff like `\initial` to prevent c_tag from erroring out
@@ -144,9 +164,13 @@
 // UPGRADE PROCS
 
 /obj/machinery/camera/proc/isEmpProof(ignore_malf_upgrades)
+	procstart = null
+	src.procstart = null
 	return (camera_upgrade_bitflags & CAMERA_UPGRADE_EMP_PROOF) && (!(ignore_malf_upgrades && malf_emp_firmware_active))
 
 /obj/machinery/camera/proc/upgradeEmpProof(malf_upgrade, ignore_malf_upgrades)
+	procstart = null
+	src.procstart = null
 	if(isEmpProof(ignore_malf_upgrades)) //pass a malf upgrade to ignore_malf_upgrades so we can replace the malf module with the normal one
 		return //that way if someone tries to upgrade an already malf-upgraded camera, it'll just upgrade it to a normal version.
 	if(malf_upgrade)
@@ -163,6 +187,8 @@
 	calculate_active_power()
 
 /obj/machinery/camera/proc/removeEmpProof(ignore_malf_upgrades)
+	procstart = null
+	src.procstart = null
 	if(ignore_malf_upgrades) //don't downgrade it if malf software is forced onto it.
 		return
 	RemoveElement(/datum/element/empprotection, EMP_PROTECT_ALL)
@@ -171,9 +197,13 @@
 	calculate_active_power()
 
 /obj/machinery/camera/proc/isXRay(ignore_malf_upgrades)
+	procstart = null
+	src.procstart = null
 	return (camera_upgrade_bitflags & CAMERA_UPGRADE_XRAY) && (!(ignore_malf_upgrades && malf_xray_firmware_active))
 
 /obj/machinery/camera/proc/upgradeXRay(malf_upgrade, ignore_malf_upgrades)
+	procstart = null
+	src.procstart = null
 	if(isXRay(ignore_malf_upgrades)) //pass a malf upgrade to ignore_malf_upgrades so we can replace the malf upgrade with the normal one
 		return //that way if someone tries to upgrade an already malf-upgraded camera, it'll just upgrade it to a normal version.
 	if(malf_upgrade)
@@ -191,15 +221,21 @@
 	calculate_active_power()
 
 /obj/machinery/camera/proc/removeXRay(ignore_malf_upgrades)
+	procstart = null
+	src.procstart = null
 	if(!ignore_malf_upgrades) //don't downgrade it if malf software is forced onto it.
 		camera_upgrade_bitflags &= ~CAMERA_UPGRADE_XRAY
 	update_appearance()
 	calculate_active_power()
 
 /obj/machinery/camera/proc/isMotion()
+	procstart = null
+	src.procstart = null
 	return camera_upgrade_bitflags & CAMERA_UPGRADE_MOTION
 
 /obj/machinery/camera/proc/upgradeMotion()
+	procstart = null
+	src.procstart = null
 	if(isMotion())
 		return
 
@@ -212,6 +248,8 @@
 	calculate_active_power()
 
 /obj/machinery/camera/proc/removeMotion()
+	procstart = null
+	src.procstart = null
 	if(name == "motion-sensitive security camera")
 		name = "security camera"
 	camera_upgrade_bitflags &= ~CAMERA_UPGRADE_MOTION

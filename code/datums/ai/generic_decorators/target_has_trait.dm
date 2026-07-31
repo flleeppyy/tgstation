@@ -8,6 +8,8 @@
 	var/atom/observed_target = null
 
 /datum/bt_node/decorator/target_has_trait/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	var/atom/target = owning_controller?.blackboard[key]
 	if(target)
 		observed_target = target
@@ -16,6 +18,8 @@
 	return TRUE
 
 /datum/bt_node/decorator/target_has_trait/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	if(observed_target)
 		UnregisterSignal(observed_target, list(SIGNAL_ADDTRAIT(trait), SIGNAL_REMOVETRAIT(trait)))
 		observed_target = null
@@ -23,6 +27,8 @@
 
 /// Fires when the blackboard key changes. Rebinds trait signals to the new target and re-evaluates.
 /datum/bt_node/decorator/target_has_trait/proc/on_target_key_changed(atom/source, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/target = owning_controller?.blackboard[key]
 	if(target == observed_target)
@@ -37,6 +43,8 @@
 		on_observed_change(owning_controller, null)
 
 /datum/bt_node/decorator/target_has_trait/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[key]
 	if(QDELETED(target))
 		return FALSE

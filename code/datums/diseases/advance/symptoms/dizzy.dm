@@ -27,6 +27,8 @@
 	)
 
 /datum/symptom/dizzy/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -36,6 +38,8 @@
 		power = 2
 
 /datum/symptom/dizzy/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

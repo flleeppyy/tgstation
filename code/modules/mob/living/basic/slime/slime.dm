@@ -111,6 +111,8 @@
 	var/datum/action/innate/slime/reproduce/reproduce_action
 
 /mob/living/basic/slime/Initialize(mapload, new_type = /datum/slime_type/grey, new_life_stage = SLIME_LIFE_STAGE_BABY)
+	procstart = null
+	src.procstart = null
 
 	. = ..()
 
@@ -147,6 +149,8 @@
 	ai_controller.set_blackboard_key(BB_SLIME_REPRODUCE, reproduce_action)
 
 /mob/living/basic/slime/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(evolve_action)
 	QDEL_NULL(reproduce_action)
 	slime_type = null
@@ -157,6 +161,8 @@
 /mob/living/basic/slime/random
 
 /mob/living/basic/slime/random/Initialize(mapload, new_colour, new_life_stage)
+	procstart = null
+	src.procstart = null
 	return ..(mapload, SLIME_TYPE_RANDOM, prob(50) ? SLIME_LIFE_STAGE_ADULT : SLIME_LIFE_STAGE_BABY)
 
 ///Friendly docile subtype
@@ -164,6 +170,8 @@
 	hunger_disabled = TRUE
 
 /mob/living/basic/slime/pet/Initialize(mapload, new_colour, new_life_stage)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_pacified_behaviour()
 
@@ -171,19 +179,27 @@
 /mob/living/basic/slime/hilbert
 
 /mob/living/basic/slime/hilbert/Initialize(mapload, new_colour, new_life_stage)
+	procstart = null
+	src.procstart = null
 	. = ..(mapload, /datum/slime_type/bluespace)
 	ai_controller?.set_blackboard_key(BB_SLIME_RABID, TRUE)
 
 /mob/living/basic/slime/adjust_nutrition(change, forced)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	nutrition = min(nutrition, SLIME_MAX_NUTRITION)
 
 /mob/living/basic/slime/set_nutrition(set_to, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	nutrition = min(nutrition, SLIME_MAX_NUTRITION)
 
 
 /mob/living/basic/slime/update_name()
+	procstart = null
+	src.procstart = null
 	///Checks if the slime has a generic name, in the format of baby/adult slime (123)
 	var/static/regex/slime_name_regex = new("\\w+ (baby|adult) slime \\(\\d+\\)")
 	if(slime_name_regex.Find(name))
@@ -193,6 +209,8 @@
 	return ..()
 
 /mob/living/basic/slime/regenerate_icons()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(slime_type.transparent)
 		alpha = SLIME_TRANSPARENCY_ALPHA
@@ -210,6 +228,8 @@
 	return ..()
 
 /mob/living/basic/slime/get_status_tab_items()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!hunger_disabled)
 		. += "Nutrition: [nutrition]/[SLIME_MAX_NUTRITION]"
@@ -217,6 +237,8 @@
 		. += "Power Level: [powerlevel]/[SLIME_MAX_POWER]"
 
 /mob/living/basic/slime/mouse_drop_dragged(atom/target_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	if(isliving(target_atom) && target_atom != src && user == src)
 		var/mob/living/food = target_atom
 		if(can_feed_on(food))
@@ -224,14 +246,20 @@
 
 ///Slimes can hop off mobs they have latched onto
 /mob/living/basic/slime/resist_buckle()
+	procstart = null
+	src.procstart = null
 	if(isliving(buckled))
 		buckled.unbuckle_mob(src,force=TRUE)
 
 //slimes can not pull
 /mob/living/basic/slime/start_pulling(atom/movable/moveable_atom, state, force = move_force, supress_message = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/basic/slime/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	switch(powerlevel)
@@ -252,6 +280,8 @@
 
 ///Changes the slime's current life state
 /mob/living/basic/slime/proc/set_life_stage(new_life_stage = SLIME_LIFE_STAGE_BABY, initial = FALSE)
+	procstart = null
+	src.procstart = null
 	life_stage = new_life_stage
 	if(life_stage == SLIME_LIFE_STAGE_ADULT)
 		health /= 0.75
@@ -275,6 +305,8 @@
 /// Sets the slime's type, name and its icons.
 /// If not provided with a type it will instead be random
 /mob/living/basic/slime/proc/set_slime_type(new_type = SLIME_TYPE_RANDOM)
+	procstart = null
+	src.procstart = null
 	if(new_type == SLIME_TYPE_RANDOM)
 		new_type = pick(subtypesof(/datum/slime_type))
 
@@ -284,6 +316,8 @@
 
 ///Handles slime attacking restrictions, and any extra effects that would trigger
 /mob/living/basic/slime/proc/on_slime_pre_attack(mob/living/basic/slime/our_slime, atom/target, proximity, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(LAZYACCESS(modifiers, RIGHT_CLICK) && isliving(target) && target != src)
@@ -351,6 +385,8 @@
 
 ///Spawns a crossed slimecore item
 /mob/living/basic/slime/proc/spawn_corecross()
+	procstart = null
+	src.procstart = null
 	var/static/list/crossbreeds = subtypesof(/obj/item/slimecross)
 	visible_message(span_danger("[src] shudders, its mutated core consuming the rest of its body!"))
 	playsound(src, 'sound/effects/magic/smoke.ogg', 50, TRUE)
@@ -368,6 +404,8 @@
 
 ///Proc for slime core removal surgery, tries to remove cores from a dead slime.
 /mob/living/basic/slime/proc/try_extract_cores(count = 1)
+	procstart = null
+	src.procstart = null
 	if(stat != DEAD)
 		return FALSE
 	if(count <= 0 || cores < count)
@@ -384,6 +422,8 @@
 
 ///Makes the slime peaceful and content
 /mob/living/basic/slime/proc/set_pacified_behaviour()
+	procstart = null
+	src.procstart = null
 	hunger_disabled = TRUE
 	ai_controller?.set_blackboard_key(BB_SLIME_RABID, FALSE)
 	ai_controller?.set_blackboard_key(BB_SLIME_HUNGER_DISABLED, TRUE)
@@ -391,12 +431,16 @@
 
 ///Makes the slime angry and hungry
 /mob/living/basic/slime/proc/set_enraged_behaviour()
+	procstart = null
+	src.procstart = null
 	hunger_disabled = FALSE
 	ai_controller?.set_blackboard_key(BB_SLIME_HUNGER_DISABLED, FALSE)
 	ai_controller?.set_blackboard_key(BB_SLIME_RABID, TRUE)
 
 ///Makes the slime hungry but mostly friendly
 /mob/living/basic/slime/proc/set_default_behaviour()
+	procstart = null
+	src.procstart = null
 	hunger_disabled = FALSE
 	ai_controller?.set_blackboard_key(BB_SLIME_HUNGER_DISABLED, FALSE)
 	ai_controller?.set_blackboard_key(BB_SLIME_RABID, FALSE)

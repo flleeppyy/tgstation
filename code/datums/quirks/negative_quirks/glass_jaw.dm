@@ -13,6 +13,8 @@
 	)
 
 /datum/quirk/glass_jaw/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//randomly picks between blue or red equipment for goodies
 	if(prob(50))
@@ -27,12 +29,18 @@
 		)
 
 /datum/quirk/glass_jaw/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(quirk_holder, COMSIG_MOB_APPLY_DAMAGE, PROC_REF(punch_out))
 
 /datum/quirk/glass_jaw/remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(quirk_holder, COMSIG_MOB_APPLY_DAMAGE)
 
 /datum/quirk/glass_jaw/proc/punch_out(mob/living/carbon/source, damage, damagetype, def_zone, blocked, wound_bonus, exposed_wound_bonus, sharpness, attack_direction, attacking_item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isbodypart(def_zone))

@@ -11,11 +11,15 @@
 	var/armed = 0
 
 /datum/computer_file/program/revelation/on_start(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..(user)
 	if(armed)
 		activate()
 
 /datum/computer_file/program/revelation/proc/activate()
+	procstart = null
+	src.procstart = null
 	if(computer)
 		if(istype(computer, /obj/item/modular_computer/pda/silicon)) //If this is a borg's integrated tablet
 			var/obj/item/modular_computer/pda/silicon/modularInterface = computer
@@ -37,6 +41,8 @@
 			do_sparks(3, FALSE, src)
 
 /datum/computer_file/program/revelation/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(action)
 		if("PRG_arm")
@@ -54,11 +60,15 @@
 
 
 /datum/computer_file/program/revelation/clone()
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/program/revelation/temp = ..()
 	temp.armed = armed
 	return temp
 
 /datum/computer_file/program/revelation/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["armed"] = armed

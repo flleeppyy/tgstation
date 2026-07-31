@@ -83,6 +83,8 @@
 INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 /obj/item/organ/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	blood_dna_info = list("Unknown DNA" = get_blood_type(BLOOD_TYPE_O_PLUS))
 	if(organ_flags & ORGAN_EDIBLE)
@@ -106,6 +108,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	START_PROCESSING(SSobj, src)
 
 /obj/item/organ/Destroy()
+	procstart = null
+	src.procstart = null
 	if(bodypart_owner && !owner && !QDELETED(bodypart_owner))
 		bodypart_remove(bodypart_owner)
 	else if(owner && QDESTROYING(owner))
@@ -119,6 +123,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 /// Add a Trait to an organ that it will give its owner.
 /obj/item/organ/proc/add_organ_trait(trait)
+	procstart = null
+	src.procstart = null
 	LAZYOR(organ_traits, trait)
 	if(isnull(owner))
 		return
@@ -126,6 +132,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 /// Removes a Trait from an organ, and by extension, its owner.
 /obj/item/organ/proc/remove_organ_trait(trait)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(organ_traits, trait)
 	if(isnull(owner))
 		return
@@ -133,6 +141,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 /// Add a Status Effect to an organ that it will give its owner.
 /obj/item/organ/proc/add_organ_status(status)
+	procstart = null
+	src.procstart = null
 	LAZYADD(organ_effects, status)
 	if(isnull(owner))
 		return
@@ -140,15 +150,21 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 /// Removes a Status Effect from an organ, and by extension, its owner.
 /obj/item/organ/proc/remove_organ_status(status)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(organ_effects, status)
 	if(isnull(owner))
 		return
 	owner.remove_status_effect(status, type)
 
 /obj/item/organ/proc/on_find(mob/living/finder)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/organ/wash(clean_types)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -156,7 +172,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	if(!IS_ROBOTIC_ORGAN(src) && (clean_types & CLEAN_TYPE_BLOOD))
 		add_blood_DNA(blood_dna_info)
 
-/obj/item/organ/proc/on_death(seconds_per_tick) //runs decay when outside of a person
+/obj/item/organ/proc/on_death(seconds_per_tick)
+	procstart = null
+	src.procstart = null //runs decay when outside of a person
 	if(organ_flags & (ORGAN_ROBOTIC | ORGAN_FROZEN))
 		return
 
@@ -170,7 +188,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			var/air_temperature_factor = min((exposed_air.temperature - T0C) / 20, 1)
 			apply_organ_damage(decay_factor * maxHealth * seconds_per_tick * air_temperature_factor)
 
-/obj/item/organ/proc/on_life(seconds_per_tick) //repair organ damage if the organ is not failing
+/obj/item/organ/proc/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null //repair organ damage if the organ is not failing
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(organ_flags & ORGAN_FAILING)
@@ -197,6 +217,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	apply_organ_damage(-healing_amount * maxHealth * seconds_per_tick, damage) // pass curent damage incase we are over cap
 
 /obj/item/organ/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	. += zones_tip()
@@ -217,6 +239,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 /// Returns a line to be displayed regarding valid insertion zones
 /obj/item/organ/proc/zones_tip()
+	procstart = null
+	src.procstart = null
 	if (!valid_zones)
 		return span_notice("It should be inserted in the [parse_zone(zone)].")
 
@@ -227,25 +251,37 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 ///Used as callbacks by object pooling
 /obj/item/organ/proc/exit_wardrobe()
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSobj, src)
 	bodypart_overlay?.imprint_on_next_insertion = TRUE
 
 //See above
 /obj/item/organ/proc/enter_wardrobe()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 
 /obj/item/organ/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	on_death(seconds_per_tick) //Kinda hate doing it like this, but I really don't want to call process directly.
 
 /obj/item/organ/proc/OnEatFrom(eater, feeder)
+	procstart = null
+	src.procstart = null
 	// You can't use it anymore after eating it
 	organ_flags |= ORGAN_UNUSABLE
 
 /obj/item/organ/item_action_slot_check(slot,mob/user)
+	procstart = null
+	src.procstart = null
 	return //so we don't grant the organ's action to mobs who pick up the organ.
 
 ///Adjusts an organ's damage by the amount "damage_amount", up to a maximum amount, which is by default max damage. Returns the net change in organ damage.
-/obj/item/organ/proc/apply_organ_damage(damage_amount, maximum = maxHealth, required_organ_flag = NONE) //use for damaging effects
+/obj/item/organ/proc/apply_organ_damage(damage_amount, maximum = maxHealth, required_organ_flag = NONE)
+	procstart = null
+	src.procstart = null //use for damaging effects
 	if(!damage_amount) //Micro-optimization.
 		return FALSE
 	maximum = clamp(maximum, 0, maxHealth) // the logical max is, our max
@@ -263,7 +299,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		to_chat(owner, message)
 
 ///SETS an organ's damage to the amount "damage_amount", and in doing so clears or sets the failing flag, good for when you have an effect that should fix an organ if broken
-/obj/item/organ/proc/set_organ_damage(damage_amount, required_organ_flag = NONE) //use mostly for admin heals
+/obj/item/organ/proc/set_organ_damage(damage_amount, required_organ_flag = NONE)
+	procstart = null
+	src.procstart = null //use mostly for admin heals
 	return apply_organ_damage(damage_amount - damage, required_organ_flag = required_organ_flag)
 
 /** check_damage_thresholds
@@ -273,6 +311,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
  *  If we have, send the corresponding threshold message to the owner, if such a message exists.
  */
 /obj/item/organ/proc/check_damage_thresholds()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(damage == prev_damage)
 		return
@@ -311,26 +351,38 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
  * and you're more than welcome to improve or refactor any portion of the code around these mechanics
  */
 /obj/item/organ/proc/on_low_damage_received()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Called when the damage goes below the low damage threshold
 /obj/item/organ/proc/on_low_damage_healed()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Called when the damage surpasses the high damage threshold
 /obj/item/organ/proc/on_high_damage_received()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Called when the damage goes below the high damage threshold
 /obj/item/organ/proc/on_high_damage_healed()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Called when the organ enters failing stage
 /obj/item/organ/proc/on_begin_failure()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Called when the organ recovers from failing stage
 /obj/item/organ/proc/on_failure_recovery()
+	procstart = null
+	src.procstart = null
 	return
 
 //Looking for brains?
@@ -343,6 +395,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
  */
 
 /mob/living/carbon/proc/regenerate_organs(remove_hazardous = FALSE)
+	procstart = null
+	src.procstart = null
 	// Delegate to species if possible.
 	if(dna?.species)
 		for(var/obj/item/organ/organ as anything in organs)
@@ -401,6 +455,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 ///Organs don't die instantly, and neither should you when you get fucked up
 /obj/item/organ/proc/handle_failing_organs(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(owner.stat == DEAD)
 		return
 
@@ -415,6 +471,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
  * seconds_per_tick - seconds since last tick
  */
 /obj/item/organ/proc/organ_failure(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	return
 
 /** get_availability
@@ -429,6 +487,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
  * owner_mob - for more specific checks, like nightmares.
  */
 /obj/item/organ/proc/get_availability(datum/species/owner_species, mob/living/owner_mob)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /**
@@ -441,6 +501,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
  * * replace_current - boolean, *generally* force the organ to be deleted whether or not they pass the species' ability to keep that organ.
  */
 /obj/item/organ/proc/get_replaceability(obj/item/organ/new_organ_type, obj/item/organ/expected_organ_type, datum/species/old_species, replace_current = TRUE)
+	procstart = null
+	src.procstart = null
 	// we don't want to remove organs that are the same as the new one
 	if(type == new_organ_type)
 		return FALSE
@@ -453,6 +515,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 /// Called before organs are replaced in regenerate_organs with new ones
 /obj/item/organ/proc/before_organ_replacement(obj/item/organ/replacement)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	SEND_SIGNAL(src, COMSIG_ORGAN_BEING_REPLACED, replacement)
@@ -463,6 +527,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 /// Called by medical scanners to get a simple summary of how healthy the organ is. Returns an empty string if things are fine.
 /obj/item/organ/proc/get_status_text(scanpower, add_tooltips, colored = TRUE)
+	procstart = null
+	src.procstart = null
 	if(scanpower >= SCANPOWER_ADVANCED && (organ_flags & ORGAN_HAZARDOUS))
 		return conditional_tooltip("[colored ? "<font color='#cc3333'>" : ""]Harmful Foreign Body[colored ? "</font>" : ""]", "Remove surgically.", add_tooltips)
 
@@ -489,11 +555,15 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 /// Determines if this organ is shown when a user has condensed scans enabled
 /obj/item/organ/proc/show_on_condensed_scans()
+	procstart = null
+	src.procstart = null
 	// We don't need to show *most* damaged organs as they have no effects associated
 	return (organ_flags & (ORGAN_PROMINENT|ORGAN_HAZARDOUS|ORGAN_FAILING|ORGAN_VITAL))
 
 /// Similar to get_status_text, but appends the text after the damage report, for additional status info
 /obj/item/organ/proc/get_status_appendix(scanpower, add_tooltips)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -510,6 +580,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
  * Return a string, to be concatenated with other organ / limb status strings. Include spans and punctuation.
  */
 /obj/item/organ/proc/feel_for_damage(self_aware)
+	procstart = null
+	src.procstart = null
 	if(organ_flags & ORGAN_EXTERNAL)
 		return ""
 	if(damage < low_threshold)
@@ -520,10 +592,14 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 /// Tries to replace the existing organ on the passed mob with this one, with special handling for replacing a brain without ghosting target
 /obj/item/organ/proc/replace_into(mob/living/carbon/new_owner)
+	procstart = null
+	src.procstart = null
 	Insert(new_owner, special = TRUE, movement_flags = DELETE_IF_REPLACED)
 
 /// Signal proc for [COMSIG_FOOD_ATTEMPT_EAT], block feeding an organ to a mob if they are marked as ready to operate - to prevent mistakenly feeding your patient
 /obj/item/organ/proc/block_nom(datum/source, mob/living/carbon/eater, mob/living/carbon/feeder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!HAS_TRAIT(eater, TRAIT_READY_TO_OPERATE))
 		return NONE
@@ -535,6 +611,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 /// Get all possible organ slots by checking every organ, and then store it and give it whenever needed
 /proc/get_all_slots()
+	procstart = null
+	src.procstart = null
 	var/static/list/all_organ_slots = list()
 
 	if(!all_organ_slots.len)

@@ -16,6 +16,8 @@
 	var/obj/item/contains_type = null
 
 /obj/item/gift/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(-10,10)
 	pixel_y = rand(-10,10)
@@ -25,15 +27,21 @@
 		contains_type = get_gift_type()
 
 /obj/item/gift/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] peeks inside [src] and cries [user.p_them()]self to death! It looks like [user.p_they()] [user.p_were()] on the naughty list..."))
 	return BRUTELOSS
 
 /obj/item/gift/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_MIND_TRAIT(user, TRAIT_PRESENT_VISION) || isobserver(user))
 		. += span_notice("It contains \a [initial(contains_type.name)].")
 
 /obj/item/gift/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_MIND_TRAIT(user, TRAIT_CANNOT_OPEN_PRESENTS))
 		to_chat(user, span_warning("You're supposed to be spreading gifts, not opening them yourself!"))
 		return
@@ -54,6 +62,8 @@
 	qdel(src)
 
 /obj/item/gift/proc/get_gift_type()
+	procstart = null
+	src.procstart = null
 	var/static/list/gift_type_list = null
 
 	if(isnull(gift_type_list))
@@ -111,6 +121,8 @@
 	var/datum/weakref/recipient_ref = null
 
 /obj/item/gift/anything/get_gift_type()
+	procstart = null
+	src.procstart = null
 	var/static/list/obj/item/possible_gifts = null
 
 	if(isnull(possible_gifts))
@@ -120,6 +132,8 @@
 	return gift_type
 
 /obj/item/gift/anything/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if (isnull(recipient_ref))
 		return ..()
 
@@ -131,6 +145,8 @@
 
 /// Assign the mind of someone as the person this gift is for
 /obj/item/gift/anything/proc/assign_recipient(datum/mind/recipient)
+	procstart = null
+	src.procstart = null
 	if (ismob(recipient)) // You're presumably at this point because you are an admin who fucked up but I will save you
 		var/mob/recipient_mob = recipient
 		recipient = recipient_mob.mind

@@ -7,10 +7,14 @@
 	var/update_id_name = FALSE //If the name of the human is same as the name on the id they're wearing we'll update provided id when equipping
 
 /datum/outfit/varedit/pre_equip(mob/living/carbon/human/equipping_mob, visuals_only)
+	procstart = null
+	src.procstart = null
 	equipping_mob.delete_equipment() //Applying VV to wrong objects is not reccomended.
 	return ..()
 
 /datum/outfit/varedit/proc/set_equipment_by_slot(slot,item_path)
+	procstart = null
+	src.procstart = null
 	switch(slot)
 		if(ITEM_SLOT_ICLOTHING)
 			uniform = item_path
@@ -45,6 +49,8 @@
 
 
 /proc/collect_vv(obj/item/item)
+	procstart = null
+	src.procstart = null
 	//Temporary/Internal stuff, do not copy these.
 	var/static/list/ignored_vars = list(
 		NAMEOF(item, animate_movement),
@@ -78,6 +84,8 @@
 		return vedits
 
 /mob/living/carbon/human/proc/copy_outfit()
+	procstart = null
+	src.procstart = null
 	var/datum/outfit/varedit/outfit = new
 
 	//Copy equipment
@@ -140,6 +148,8 @@
 	to_chat(usr,"Outfit registered, use select equipment to equip it.")
 
 /datum/outfit/varedit/post_equip(mob/living/carbon/human/human, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//Apply VV
 	for(var/slot in vv_values)
@@ -166,6 +176,8 @@
 			card.update_icon()
 
 /datum/outfit/varedit/get_json_data()
+	procstart = null
+	src.procstart = null
 	. = .. ()
 	.["stored_access"] = stored_access
 	.["update_id_name"] = update_id_name
@@ -181,6 +193,8 @@
 	.["vv_values"] = stripped_vv
 
 /datum/outfit/varedit/load_from(list/outfit_data)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	stored_access = outfit_data["stored_access"]
 	vv_values = outfit_data["vv_values"]

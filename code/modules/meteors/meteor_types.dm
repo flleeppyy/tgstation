@@ -36,6 +36,8 @@
 	var/signature = "motion"
 
 /obj/effect/meteor/Initialize(mapload, turf/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	z_original = z
 	GLOB.meteor_list += src
@@ -51,6 +53,8 @@
 	)
 
 /obj/effect/meteor/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.meteor_list -= src
 	var/datum/move_loop/moveloop = GLOB.move_manager.processing_on(src, SSmovement)
 	if (!isnull(moveloop))
@@ -58,6 +62,8 @@
 	return ..()
 
 /obj/effect/meteor/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(src))
 		return
@@ -73,9 +79,13 @@
 		moved_off_z()
 
 /obj/effect/meteor/Process_Spacemove(movement_dir = 0, continuous_move = FALSE)
+	procstart = null
+	src.procstart = null
 	return TRUE //Keeps us from drifting for no reason
 
 /obj/effect/meteor/Bump(atom/A)
+	procstart = null
+	src.procstart = null
 	. = ..() //What could go wrong
 	if(A)
 		ram_turf(get_turf(A))
@@ -83,6 +93,8 @@
 		get_hit()
 
 /obj/effect/meteor/proc/chase_target(atom/chasing, delay, home)
+	procstart = null
+	src.procstart = null
 	if(!isatom(chasing))
 		return
 	var/datum/move_loop/new_loop = GLOB.move_manager.move_towards(src, chasing, delay, home, lifetime)
@@ -90,18 +102,26 @@
 		RegisterSignal(new_loop, COMSIG_MOVELOOP_STOP, PROC_REF(on_loop_stopped))
 
 /obj/effect/meteor/proc/setup_extra_drops()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/meteor/proc/on_loop_stopped(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!move_packet || !length(move_packet.existing_loops))
 		qdel(src)
 
 ///Deals with what happens when we stop moving, IE we die
 /obj/effect/meteor/proc/moved_off_z()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /obj/effect/meteor/proc/ram_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	//first yell at mobs about them dying horribly
 	for(var/mob/living/thing in T)
 		thing.visible_message(span_warning("[src] slams into [thing]."), span_userdanger("[src] slams into you!."))
@@ -118,6 +138,8 @@
 //process getting 'hit' by colliding with a dense object
 //or randomly when ramming turfs
 /obj/effect/meteor/proc/get_hit()
+	procstart = null
+	src.procstart = null
 	hits--
 	if(hits <= 0)
 		make_debris()
@@ -125,6 +147,8 @@
 		qdel(src)
 
 /obj/effect/meteor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if((user.mind?.get_skill_level(/datum/skill/athletics) >= SKILL_LEVEL_LEGENDARY))
@@ -133,15 +157,21 @@
 
 ///Called by component/meteor_combat to send us moving to the edge of the map away from whoever punched us
 /obj/effect/meteor/proc/redirect(mob/athlete)
+	procstart = null
+	src.procstart = null
 	dest = spaceDebrisStartLoc(get_cardinal_dir(athlete, src), z)
 	chase_target(dest)
 
 /obj/effect/meteor/proc/make_debris()
+	procstart = null
+	src.procstart = null
 	for(var/throws = dropamt, throws > 0, throws--)
 		var/thing_to_spawn = pick(meteordrop)
 		new thing_to_spawn(get_turf(src))
 
 /obj/effect/meteor/proc/meteor_effect()
+	procstart = null
+	src.procstart = null
 	if(heavy)
 		var/sound/meteor_sound = sound(meteorsound)
 		var/random_frequency = get_rand_frequency()
@@ -167,6 +197,8 @@
  */
 
 /obj/effect/meteor/proc/check_examine_award(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & ADMIN_SPAWNED_1) && isliving(user))
 		user.client.give_award(/datum/award/achievement/misc/meteor_examine, user)
 
@@ -182,6 +214,8 @@
  */
 
 /obj/effect/meteor/proc/shield_defense(obj/machinery/satellite/meteor_shield/defender)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 ///////////////////////
@@ -198,9 +232,13 @@
 	threat = 1
 
 /obj/effect/meteor/sand/make_debris()
+	procstart = null
+	src.procstart = null
 	return //We drop NOTHING
 
 /obj/effect/meteor/sand/ram_turf(turf/turf_to_ram)
+	procstart = null
+	src.procstart = null
 	if(istype(turf_to_ram, /turf/closed/wall)) //sand is too weak to affect rwalls or walls with similar durability.
 		var/turf/closed/wall/wall_to_ram = turf_to_ram
 		if(wall_to_ram.hardness <= 25)
@@ -212,7 +250,9 @@
 
 	return ..()
 
-/obj/effect/meteor/sand/check_examine_award(mob/user) //Too insignificant and predictable to warrant an award.
+/obj/effect/meteor/sand/check_examine_award(mob/user)
+	procstart = null
+	src.procstart = null //Too insignificant and predictable to warrant an award.
 	return
 
 //Dust
@@ -233,6 +273,8 @@
 	threat = 5
 
 /obj/effect/meteor/medium/meteor_effect()
+	procstart = null
+	src.procstart = null
 	..()
 	explosion(src, heavy_impact_range = 1, light_impact_range = 2, flash_range = 3, adminlog = FALSE)
 
@@ -246,6 +288,8 @@
 	threat = 10
 
 /obj/effect/meteor/big/meteor_effect()
+	procstart = null
+	src.procstart = null
 	..()
 	explosion(src, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 3, flash_range = 4, adminlog = FALSE)
 
@@ -262,6 +306,8 @@
 	signature = "thermal"
 
 /obj/effect/meteor/flaming/meteor_effect()
+	procstart = null
+	src.procstart = null
 	..()
 	explosion(src, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 3, flame_range = 5, flash_range = 4, adminlog = FALSE)
 
@@ -277,6 +323,8 @@
 	signature = "radiation"
 
 /obj/effect/meteor/irradiated/meteor_effect()
+	procstart = null
+	src.procstart = null
 	..()
 	explosion(src, heavy_impact_range = 1, light_impact_range = 3, flash_range = 6, adminlog = FALSE)
 	for(var/turf/open/floor/surviving_ground in range(2, get_turf(src)))
@@ -297,6 +345,8 @@
 	var/cluster_count = 8
 
 /obj/effect/meteor/cluster/meteor_effect()
+	procstart = null
+	src.procstart = null
 	..()
 
 	var/start_turf = get_turf(src)
@@ -327,6 +377,8 @@
 	signature = "fishing and trawling"
 
 /obj/effect/meteor/carp/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(prob(2))
 		meteordrop = list(/mob/living/basic/carp/mega) //hehe
 	return ..()
@@ -343,6 +395,8 @@
 	signature = "bluespace flux"
 
 /obj/effect/meteor/bluespace/Bump(atom/bumped_atom)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!QDELETED(src) && prob(35))
 		do_teleport(src, get_turf(src), 6, asoundin = 'sound/effects/phasein.ogg', channel = TELEPORT_CHANNEL_BLUESPACE)
@@ -360,6 +414,8 @@
 	signature = "comedy"
 
 /obj/effect/meteor/banana/meteor_effect()
+	procstart = null
+	src.procstart = null
 	..()
 	playsound(src, 'sound/items/airhorn/AirHorn.ogg', 100, TRUE, -1)
 	for(var/atom/movable/object in view(4, get_turf(src)))
@@ -367,6 +423,8 @@
 		object.safe_throw_at(throwtarget, 5, 1, force = MOVE_FORCE_STRONG)
 
 /obj/effect/meteor/banana/ram_turf(turf/bumped)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/slipped in get_turf(bumped))
 		slipped.slip(100, slipped.loc,- GALOSHES_DONT_HELP|SLIDE)
 		slipped.visible_message(span_warning("[src] honks [slipped] to the floor!"), span_userdanger("[src] harmlessly passes through you, knocking you over."))
@@ -381,11 +439,15 @@
 	signature = "electromagnetic interference"
 
 /obj/effect/meteor/emp/Move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		new /obj/effect/temp_visual/impact_effect/ion(get_turf(src))
 
 /obj/effect/meteor/emp/meteor_effect()
+	procstart = null
+	src.procstart = null
 	..()
 	playsound(src, 'sound/items/weapons/zapbang.ogg', 100, TRUE, -1)
 	empulse(src, 3, 8, emp_source = src)
@@ -404,18 +466,26 @@
 	signature = "culinary material"
 
 /obj/effect/meteor/meaty/setup_extra_drops()
+	procstart = null
+	src.procstart = null
 	meteordrop += pick(subtypesof(/obj/item/food/meat/slab/human/mutant))
 	meteordrop += pick(typesof(/obj/item/organ/tongue))
 
 /obj/effect/meteor/meaty/make_debris()
+	procstart = null
+	src.procstart = null
 	..()
 	new meteorgibs(get_turf(src))
 
 /obj/effect/meteor/meaty/ram_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	if(!isspaceturf(T))
 		new /obj/effect/decal/cleanable/blood(T)
 
 /obj/effect/meteor/meaty/Bump(atom/A)
+	procstart = null
+	src.procstart = null
 	EX_ACT(A, hitpwr)
 	get_hit()
 
@@ -427,9 +497,13 @@
 	signature = "exotic culinary material"
 
 /obj/effect/meteor/meaty/xeno/setup_extra_drops()
+	procstart = null
+	src.procstart = null
 	meteordrop += subtypesof(/obj/item/organ/alien)
 
 /obj/effect/meteor/meaty/xeno/ram_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	if(!isspaceturf(T))
 		new /obj/effect/decal/cleanable/blood/xeno(T)
 
@@ -447,15 +521,21 @@
 	signature = "armageddon"
 
 /obj/effect/meteor/tunguska/Move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		new /obj/effect/temp_visual/revenant(get_turf(src))
 
 /obj/effect/meteor/tunguska/meteor_effect()
+	procstart = null
+	src.procstart = null
 	..()
 	explosion(src, devastation_range = 5, heavy_impact_range = 10, light_impact_range = 15, flash_range = 20, adminlog = FALSE)
 
 /obj/effect/meteor/tunguska/Bump()
+	procstart = null
+	src.procstart = null
 	..()
 	if(prob(20))
 		explosion(src, devastation_range = 2, heavy_impact_range = 4, light_impact_range = 6, flash_range = 8, adminlog = FALSE)
@@ -472,6 +552,8 @@
 	threat = 100
 
 /obj/effect/meteor/pumpkin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	meteorsound = SFX_HALLUCINATION_I_M_HERE
 

@@ -12,6 +12,8 @@
 	var/starting_angle = 0
 
 /datum/element/bed_tuckable/Attach(obj/target, mapload = FALSE, x = 0, y = 0, rotation = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -29,6 +31,8 @@
 	tuck(target, eepy)
 
 /datum/element/bed_tuckable/Detach(obj/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, list(COMSIG_ITEM_ATTACK_ATOM, COMSIG_ITEM_PICKUP))
 
@@ -40,6 +44,8 @@
  * tucker - the guy doing the tucking
  */
 /datum/element/bed_tuckable/proc/tuck_into_bed(obj/item/tucked, obj/structure/bed/target_bed, mob/living/tucker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(target_bed))
@@ -53,6 +59,8 @@
 	return COMPONENT_NO_AFTERATTACK
 
 /datum/element/bed_tuckable/proc/tuck(obj/item/tucked, obj/structure/bed/target_bed)
+	procstart = null
+	src.procstart = null
 	tucked.dir = target_bed.dir & target_bed.left_headrest_dirs ? EAST : WEST
 	tucked.pixel_x = target_bed.dir & target_bed.left_headrest_dirs ? -x_offset : x_offset
 	tucked.pixel_y = y_offset
@@ -67,6 +75,8 @@
  * tucked - the object that is tucked
  */
 /datum/element/bed_tuckable/proc/untuck(obj/item/tucked)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	tucked.transform = turn(tucked.transform, -rotation_degree)

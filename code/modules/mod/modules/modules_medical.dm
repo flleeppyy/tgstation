@@ -26,6 +26,8 @@
 	var/static/list/modes = list(HEALTH_SCAN, WOUND_SCAN, CHEM_SCAN)
 
 /obj/item/mod/module/health_analyzer/add_ui_data()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["health"] = mod.wearer?.health || 0
 	.["health_max"] = mod.wearer?.getMaxHealth() || 0
@@ -37,6 +39,8 @@
 	return .
 
 /obj/item/mod/module/health_analyzer/on_select_use(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -52,10 +56,14 @@
 	drain_power(use_energy_cost)
 
 /obj/item/mod/module/health_analyzer/get_configuration()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["mode"] = add_ui_configuration("Scan Mode", "list", mode, modes)
 
 /obj/item/mod/module/health_analyzer/configure_edit(key, value)
+	procstart = null
+	src.procstart = null
 	switch(key)
 		if("mode")
 			mode = value
@@ -78,11 +86,15 @@
 	var/quick_carry_trait = TRAIT_QUICK_CARRY
 
 /obj/item/mod/module/quick_carry/on_part_activation()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(mod.wearer, TRAIT_FASTMED, REF(src))
 	ADD_TRAIT(mod.wearer, quick_carry_trait, REF(src))
 
 /obj/item/mod/module/quick_carry/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(mod.wearer, TRAIT_FASTMED, REF(src))
 	REMOVE_TRAIT(mod.wearer, quick_carry_trait, REF(src))
@@ -122,6 +134,8 @@
 	custom_materials = null
 
 /obj/item/reagent_containers/syringe/mod/update_reagent_overlay()
+	procstart = null
+	src.procstart = null
 	if(reagents?.total_volume)
 		var/mutable_appearance/filling_overlay = mutable_appearance('icons/obj/medical/reagent_fillings.dmi', "mod[get_rounded_vol()]")
 		filling_overlay.color = mix_color_from_reagents(reagents.reagent_list)
@@ -149,6 +163,8 @@
 	var/organ_list = list()
 
 /obj/item/mod/module/organizer/on_select_use(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -185,6 +201,8 @@
 	var/obj/item/organ/organ
 
 /obj/projectile/organ/Initialize(mapload, obj/item/stored_organ)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!stored_organ)
 		return INITIALIZE_HINT_QDEL
@@ -193,15 +211,21 @@
 	organ = stored_organ
 
 /obj/projectile/organ/Destroy()
+	procstart = null
+	src.procstart = null
 	organ = null
 	return ..()
 
 /obj/projectile/organ/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == organ)
 		organ = null
 
 /obj/projectile/organ/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target) || (organ.organ_flags & ORGAN_UNUSABLE))
 		organ.forceMove(drop_location())
@@ -255,10 +279,14 @@
 	var/defib_cooldown = 5 SECONDS
 
 /obj/item/mod/module/defibrillator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(device, COMSIG_DEFIBRILLATOR_SUCCESS, PROC_REF(on_defib_success))
 
 /obj/item/mod/module/defibrillator/proc/on_defib_success(obj/item/shockpaddles/source)
+	procstart = null
+	src.procstart = null
 	drain_power(use_energy_cost)
 	source.recharge(defib_cooldown)
 	return COMPONENT_DEFIB_STOP
@@ -319,6 +347,8 @@
 	var/list/ripped_clothing = list()
 
 /obj/item/mod/module/thread_ripper/on_select_use(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -344,6 +374,8 @@
 			clothing.body_parts_covered &= ~shared_flags
 
 /obj/item/mod/module/thread_ripper/on_process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -365,6 +397,8 @@
 		balloon_alert(mod.wearer, "clothing mended")
 
 /obj/item/mod/module/thread_ripper/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!length(ripped_clothing))
 		return
 	for(var/obj/item/clothing as anything in ripped_clothing)

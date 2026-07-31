@@ -1,4 +1,6 @@
 /proc/create_portal_pair(turf/source, turf/destination, _lifespan = 300, accuracy = 0, newtype = /obj/effect/portal)
+	procstart = null
+	src.procstart = null
 	if(!istype(source) || !istype(destination))
 		return
 	var/turf/actual_destination = get_valid_teleport_turf(source, destination, accuracy)
@@ -60,6 +62,8 @@
 	wibbles = FALSE
 
 /obj/effect/portal/Move(newloc)
+	procstart = null
+	src.procstart = null
 	for(var/T in newloc)
 		if(istype(T, /obj/effect/portal))
 			return FALSE
@@ -67,9 +71,13 @@
 
 // Prevents portals spawned by jaunter/handtele from floating into space when relocated to an adjacent tile.
 /obj/effect/portal/newtonian_move(inertia_angle, instant = FALSE, start_delay = 0, drift_force = 0, controlled_cap = null)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/effect/portal/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!Adjacent(user) || istype(tool, /obj/item/hand_tele))
 		return ..()
 
@@ -77,14 +85,20 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/effect/portal/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(mover, TRAIT_NO_TELEPORT) && !force_teleport)
 		return TRUE
 
 /obj/effect/portal/Bumped(atom/movable/bumper)
+	procstart = null
+	src.procstart = null
 	teleport(bumper)
 
 /obj/effect/portal/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -93,10 +107,14 @@
 
 
 /obj/effect/portal/attack_robot(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(Adjacent(user))
 		teleport(user)
 
 /obj/effect/portal/Initialize(mapload, _lifespan = 0, obj/effect/portal/_linked, automatic_link = FALSE, turf/hard_target_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.portals += src
 	if(!istype(_linked) && automatic_link)
@@ -112,19 +130,29 @@
 		apply_wibbly_filters(src)
 
 /obj/effect/portal/proc/expire()
+	procstart = null
+	src.procstart = null
 	playsound(loc, SFX_PORTAL_CLOSE, 50, FALSE, SHORT_RANGE_SOUND_EXTRARANGE)
 	qdel(src)
 
 /obj/effect/portal/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/portal/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/portal/proc/link_portal(obj/effect/portal/newlink)
+	procstart = null
+	src.procstart = null
 	linked = newlink
 
 /obj/effect/portal/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.portals -= src
 	if(hardlinked && !QDELETED(linked))
 		QDEL_NULL(linked)
@@ -133,16 +161,22 @@
 	return ..()
 
 /obj/effect/portal/attack_ghost(mob/dead/observer/ghost)
+	procstart = null
+	src.procstart = null
 	if(!teleport(ghost, force = TRUE))
 		return ..()
 	return BULLET_ACT_FORCE_PIERCE
 
 /obj/effect/portal/projectile_hit(obj/projectile/hitting_projectile, def_zone, piercing_hit, blocked)
+	procstart = null
+	src.procstart = null
 	if (teleport(hitting_projectile, force = TRUE))
 		return BULLET_ACT_FORCE_PIERCE
 	return ..()
 
 /obj/effect/portal/proc/teleport(atom/movable/moving, force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!force && (!istype(moving) || iseffect(moving) || (ismecha(moving) && !mech_sized) || (!isobj(moving) && !ismob(moving)))) //Things that shouldn't teleport.
 		return
 	var/turf/real_target = get_link_target_turf()
@@ -168,6 +202,8 @@
 	return FALSE
 
 /obj/effect/portal/proc/get_link_target_turf()
+	procstart = null
+	src.procstart = null
 	var/turf/real_target
 	if(!istype(linked) || QDELETED(linked))
 		if(hardlinked)
@@ -190,6 +226,8 @@
 	var/id // var edit or set id in map editor
 
 /obj/effect/portal/permanent/proc/set_linked()
+	procstart = null
+	src.procstart = null
 	if(!id)
 		return
 	for(var/obj/effect/portal/permanent/P in GLOB.portals - src)
@@ -199,6 +237,8 @@
 			break
 
 /obj/effect/portal/permanent/teleport(atom/movable/moving, force = FALSE)
+	procstart = null
+	src.procstart = null
 	set_linked() // update portal links
 	. = ..()
 
@@ -207,6 +247,8 @@
 	desc = "You get the feeling that this might not be the safest thing you've ever done."
 
 /obj/effect/portal/permanent/one_way/set_linked()
+	procstart = null
+	src.procstart = null
 	if(!id)
 		return
 	var/list/possible_turfs = list()
@@ -223,6 +265,8 @@
 	desc = "This is probably the worst decision you'll ever make in your life."
 
 /obj/effect/portal/permanent/one_way/one_use/teleport(atom/movable/moving, force = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. && !isdead(moving))
 		expire()
@@ -236,6 +280,8 @@
 	duration = 0.25 SECONDS
 
 /obj/effect/temp_visual/portal_animation/Initialize(mapload, atom/portal, atom/movable/teleporting)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(portal) || isnull(teleporting))
 		return

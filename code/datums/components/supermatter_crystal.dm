@@ -11,6 +11,8 @@
 	))
 
 /datum/component/supermatter_crystal/Initialize(datum/callback/tool_act_callback, datum/callback/consume_callback)
+	procstart = null
+	src.procstart = null
 
 	RegisterSignal(parent, COMSIG_ATOM_BLOB_ACT, PROC_REF(blob_hit))
 	RegisterSignal(parent, COMSIG_ATOM_ATTACK_PAW, PROC_REF(paw_hit))
@@ -29,11 +31,15 @@
 	src.consume_callback = consume_callback
 
 /datum/component/supermatter_crystal/Destroy(force)
+	procstart = null
+	src.procstart = null
 	tool_act_callback = null
 	consume_callback = null
 	return ..()
 
 /datum/component/supermatter_crystal/UnregisterFromParent(force, silent)
+	procstart = null
+	src.procstart = null
 	var/list/signals_to_remove = list(
 		COMSIG_ATOM_BLOB_ACT,
 		COMSIG_ATOM_ATTACK_PAW,
@@ -52,6 +58,8 @@
 	UnregisterSignal(parent, signals_to_remove)
 
 /datum/component/supermatter_crystal/proc/blob_hit(datum/source, obj/structure/blob/blob)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/atom_source = source
 	if(!blob || isspaceturf(atom_source)) //does nothing in space
@@ -68,6 +76,8 @@
 		consume(atom_source, blob)
 
 /datum/component/supermatter_crystal/proc/paw_hit(datum/source, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isliving(user))
 		var/mob/living/living_mob = user
@@ -79,6 +89,8 @@
 	dust_mob(source, user, cause = "monkey attack")
 
 /datum/component/supermatter_crystal/proc/animal_hit(datum/source, mob/living/simple_animal/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(user.incorporeal_move || HAS_TRAIT(user, TRAIT_GODMODE))
 		return
@@ -94,10 +106,14 @@
 	"simple animal attack")
 
 /datum/component/supermatter_crystal/proc/hulk_hit(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	dust_mob(source, user, cause = "hulk attack")
 
 /datum/component/supermatter_crystal/proc/unarmed_hit(datum/source, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isliving(user))
 		var/mob/living/living_mob = user
@@ -114,6 +130,8 @@
 		return
 
 /datum/component/supermatter_crystal/proc/hand_hit(datum/source, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(user.incorporeal_move || HAS_TRAIT(user, TRAIT_GODMODE))
 		return
@@ -155,6 +173,8 @@
 	)
 
 /datum/component/supermatter_crystal/proc/attackby_hit(datum/source, obj/item/item, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/atom_source = source
 	if(!istype(item) || (item.item_flags & ABSTRACT) || !istype(user))
@@ -205,6 +225,8 @@
 		dust_mob(source, user, vis_msg, mob_msg)
 
 /datum/component/supermatter_crystal/proc/tool_hit(datum/source, mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(tool_act_callback)
 		tool_act_callback.Invoke(user, tool)
@@ -212,6 +234,8 @@
 	attackby_hit(source, tool, user)
 
 /datum/component/supermatter_crystal/proc/bumped_hit(datum/source, atom/movable/hit_object)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isliving(hit_object))
 		var/mob/living/hit_mob = hit_object
@@ -235,6 +259,8 @@
 	consume(atom_source, hit_object)
 
 /datum/component/supermatter_crystal/proc/intercept_z_fall(datum/source, list/falling_movables, levels)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/atom/movable/hit_object as anything in falling_movables)
 		if(parent == hit_object)
@@ -244,6 +270,8 @@
 	return FALL_INTERCEPTED | FALL_NO_MESSAGE
 
 /datum/component/supermatter_crystal/proc/on_z_impact(datum/source, turf/impacted_turf, levels)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/atom_source = source
@@ -268,6 +296,8 @@
 			span_hear("You hear a loud crack as you are washed with a wave of heat."))
 
 /datum/component/supermatter_crystal/proc/dust_mob(datum/source, mob/living/nom, vis_msg, mob_msg, cause)
+	procstart = null
+	src.procstart = null
 	if(nom.incorporeal_move || HAS_TRAIT(nom, TRAIT_GODMODE)) //try to keep supermatter sliver's + hemostat's dust conditions in sync with this too
 		return
 	var/atom/atom_source = source
@@ -284,6 +314,8 @@
 	consume(atom_source, nom)
 
 /datum/component/supermatter_crystal/proc/consume(atom/source, atom/movable/consumed_object)
+	procstart = null
+	src.procstart = null
 	if(consumed_object.flags_1 & SUPERMATTER_IGNORES_1)
 		return
 	if(HAS_TRAIT(consumed_object, TRAIT_GODMODE))
@@ -367,5 +399,7 @@
 		our_crystal.log_activation(who = consumed_object)
 
 /datum/component/supermatter_crystal/proc/consume_returns(matter_increase = 0, damage_increase = 0)
+	procstart = null
+	src.procstart = null
 	if(consume_callback)
 		consume_callback.Invoke(matter_increase, damage_increase)

@@ -256,6 +256,8 @@
 	loot = list()
 
 /obj/effect/spawner/random/entertainment/toy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	loot += GLOB.arcade_prize_pool
 	return ..()
 

@@ -3,9 +3,13 @@
 	exp_tag = "Cytology Scan"
 
 /datum/experiment/scanning/cytology/final_contributing_index_checks(datum/component/experiment_handler/experiment_handler, atom/target, typepath)
+	procstart = null
+	src.procstart = null
 	return ..() && HAS_TRAIT(target, TRAIT_VATGROWN)
 
 /datum/experiment/scanning/cytology/serialize_progress_stage(atom/target, list/seen_instances)
+	procstart = null
+	src.procstart = null
 	return EXPERIMENT_PROG_INT("Scan samples of \a vat-grown [initial(target.name)]", seen_instances.len, required_atoms[target])
 
 /datum/experiment/scanning/cytology/slime

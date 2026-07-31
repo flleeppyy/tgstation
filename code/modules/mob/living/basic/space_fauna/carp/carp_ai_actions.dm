@@ -16,6 +16,8 @@
 	var/target_key = BB_BASIC_MOB_FLEE_TARGET
 
 /datum/bt_node/decorator/carp_should_flee/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/flee_from = controller.blackboard[target_key]
 	if(QDELETED(flee_from))
 		return FALSE
@@ -24,6 +26,8 @@
 	return !controller.blackboard[BB_BASIC_MOB_STOP_FLEEING]
 
 /datum/bt_node/decorator/carp_should_flee/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	RegisterSignals(pawn, list(
 		COMSIG_AI_BLACKBOARD_KEY_SET(target_key),
 		COMSIG_AI_BLACKBOARD_KEY_CLEARED(target_key),
@@ -33,6 +37,8 @@
 	return TRUE
 
 /datum/bt_node/decorator/carp_should_flee/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(pawn, list(
 		COMSIG_AI_BLACKBOARD_KEY_SET(target_key),
 		COMSIG_AI_BLACKBOARD_KEY_CLEARED(target_key),
@@ -56,6 +62,8 @@
 	var/special_targeting_key = BB_MAGICARP_SPELL_SPECIAL_TARGETING
 
 /datum/bt_node/ai_behavior/find_magicarp_spell_target/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/datum/action/cooldown/using_action = controller.blackboard[ability_key]
 	if(!using_action?.IsAvailable())
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED
@@ -79,6 +87,8 @@
 
 /// Nearest valid combat target which isn't a scary fisherman (default spell targeting)
 /datum/bt_node/ai_behavior/find_magicarp_spell_target/proc/find_nearest_enemy(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	var/datum/targeting_strategy/strategy = GET_TARGETING_STRATEGY(controller.blackboard[targeting_strategy_key])
 	if(!strategy)
@@ -96,6 +106,8 @@
 
 /// An object or structure we could animate with a staff of change
 /datum/bt_node/ai_behavior/find_magicarp_spell_target/proc/find_animatable(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	var/list/nearby_items = list()
 	for(var/obj/new_friend in oview(MAGICARP_SPELL_TARGET_SEEK_RANGE, living_pawn))
@@ -112,6 +124,8 @@
 
 /// The nearest wall which isn't invulnerable
 /datum/bt_node/ai_behavior/find_magicarp_spell_target/proc/find_nearest_wall(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	var/list/nearby_walls = list()
 	for(var/turf/closed/new_wall in oview(MAGICARP_SPELL_TARGET_SEEK_RANGE, living_pawn))
@@ -124,6 +138,8 @@
 
 /// A corpse who shares our faction, for resurrection spells
 /datum/bt_node/ai_behavior/find_magicarp_spell_target/proc/find_friendly_corpse(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	var/list/nearby_bodies = list()
 	for(var/mob/living/dead_pal in oview(MAGICARP_SPELL_TARGET_SEEK_RANGE, living_pawn))

@@ -54,6 +54,8 @@ GLOBAL_PROTECT(href_token)
 	var/given_profiling = FALSE
 
 /datum/admins/New(list/datum/admin_rank/ranks, ckey, force_active = FALSE, protected)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		alert_to_permissions_elevation_attempt(usr)
 		if (!target) //only del if this is a true creation (and not just a New() proc call), other wise trialmins/coders could abuse this to deadmin other admins
@@ -80,6 +82,8 @@ GLOBAL_PROTECT(href_token)
 		deactivate()
 
 /datum/admins/Destroy()
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		alert_to_permissions_elevation_attempt(usr)
 		return QDEL_HINT_LETMELIVE
@@ -87,11 +91,15 @@ GLOBAL_PROTECT(href_token)
 	return ..()
 
 /datum/admins/can_vv_get(var_name)
+	procstart = null
+	src.procstart = null
 	if(var_name == NAMEOF(src, href_token))
 		return FALSE
 	return ..()
 
 /datum/admins/proc/activate()
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		alert_to_permissions_elevation_attempt(usr)
 		return
@@ -105,6 +113,8 @@ GLOBAL_PROTECT(href_token)
 
 
 /datum/admins/proc/deactivate()
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		alert_to_permissions_elevation_attempt(usr)
 		return
@@ -125,6 +135,8 @@ GLOBAL_PROTECT(href_token)
 		client.set_stat_panel()
 
 /datum/admins/proc/associate(client/client)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		alert_to_permissions_elevation_attempt(usr)
 		return
@@ -168,6 +180,8 @@ GLOBAL_PROTECT(href_token)
 	try_give_profiling()
 
 /datum/admins/proc/disassociate()
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		alert_to_permissions_elevation_attempt(usr)
 		return
@@ -179,6 +193,8 @@ GLOBAL_PROTECT(href_token)
 
 /// Returns the feedback forum thread for the admin holder's owner, as according to DB.
 /datum/admins/proc/feedback_link()
+	procstart = null
+	src.procstart = null
 	// This intentionally does not follow the 10-second maximum TTL rule,
 	// as this can be reloaded through the Reload-Admins verb.
 	if (cached_feedback_link == NO_FEEDBACK_LINK)
@@ -210,11 +226,15 @@ GLOBAL_PROTECT(href_token)
 	return cached_feedback_link
 
 /datum/admins/proc/check_for_rights(rights_required)
+	procstart = null
+	src.procstart = null
 	if(rights_required && !(rights_required & rank_flags()))
 		return FALSE
 	return TRUE
 
 /datum/admins/proc/check_if_greater_rights_than_holder(datum/admins/other)
+	procstart = null
+	src.procstart = null
 	if(!other)
 		return TRUE //they have no rights
 	if(rank_flags() == R_EVERYTHING)
@@ -234,6 +254,8 @@ GLOBAL_PROTECT(href_token)
 /// check was successful, the 2nd is the ID of the associated database entry
 /// if its a false result and if one can be found.
 /datum/admins/proc/check_2fa(client/client)
+	procstart = null
+	src.procstart = null
 	if (bypass_2fa)
 		return VALID_2FA_CONNECTION
 
@@ -284,6 +306,8 @@ GLOBAL_PROTECT(href_token)
 #define ERROR_2FA_REQUEST_PERMISSIONS "<h1><b class='danger'>You could not be verified, and a DB connection couldn't be established. Please contact an admin with +PERMISSIONS to grant you permission.</b></h1>"
 
 /datum/admins/proc/start_2fa_process(client/client, id)
+	procstart = null
+	src.procstart = null
 	ASSIGN_GAME_VERB(client, /client, admin_2fa_verify)
 	client?.init_verbs()
 
@@ -338,6 +362,8 @@ GLOBAL_PROTECT(href_token)
 
 /// Returns true if the admin's cid/ip is verified in the local cache
 /datum/admins/proc/verify_admin_from_local_cache(client/client)
+	procstart = null
+	src.procstart = null
 	var/backup_filename = "data/admin_connections/[ckey(client?.ckey)].json"
 	if (!fexists(backup_filename))
 		return FALSE
@@ -362,6 +388,8 @@ GLOBAL_PROTECT(href_token)
 
 
 /datum/admins/proc/alert_2fa_necessary(client/client)
+	procstart = null
+	src.procstart = null
 	var/msg = " is trying to join, but needs to verify their ckey."
 	message_admins("[key_name_admin(client)][msg]")
 	log_admin("[key_name(client)][msg]")
@@ -381,6 +409,8 @@ GLOBAL_PROTECT(href_token)
 		)
 
 /datum/admins/proc/backup_connections()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if (!length(CONFIG_GET(string/admin_2fa_url)))
 		return
@@ -422,10 +452,14 @@ GLOBAL_PROTECT(href_token)
 
 /// Get the rank name of the admin
 /datum/admins/proc/rank_names()
+	procstart = null
+	src.procstart = null
 	return join_admin_ranks(ranks)
 
 /// Get the rank flags of the admin
 /datum/admins/proc/rank_flags()
+	procstart = null
+	src.procstart = null
 	var/combined_flags = NONE
 
 	for (var/datum/admin_rank/rank as anything in ranks)
@@ -435,6 +469,8 @@ GLOBAL_PROTECT(href_token)
 
 /// Get the permissions this admin is allowed to edit on other ranks
 /datum/admins/proc/can_edit_rights_flags()
+	procstart = null
+	src.procstart = null
 	var/combined_flags = NONE
 
 	for (var/datum/admin_rank/rank as anything in ranks)
@@ -443,6 +479,8 @@ GLOBAL_PROTECT(href_token)
 	return combined_flags
 
 /datum/admins/proc/try_give_profiling()
+	procstart = null
+	src.procstart = null
 	if (CONFIG_GET(flag/forbid_admin_profiling))
 		return
 
@@ -456,6 +494,8 @@ GLOBAL_PROTECT(href_token)
 	world.SetConfig("APP/admin", owner.ckey, "role=admin")
 
 /datum/admins/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	return FALSE //nice try trialmin
 
 /*
@@ -465,6 +505,8 @@ if it doesn't return 1 and show_msg=1 it will prints a message explaining why th
 generally it would be used like so:
 
 /proc/admin_proc()
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_ADMIN))
 		return
 	to_chat(world, "you have enough rights!", confidential = TRUE)
@@ -473,6 +515,8 @@ NOTE: it checks usr! not src! So if you're checking somebody's rank in a proc wh
 you will have to do something like if(client.rights & R_ADMIN) yourself.
 */
 /proc/check_rights(rights_required, show_msg=1)
+	procstart = null
+	src.procstart = null
 	if(usr?.client)
 		if (check_rights_for(usr.client, rights_required))
 			return TRUE
@@ -483,6 +527,8 @@ you will have to do something like if(client.rights & R_ADMIN) yourself.
 
 //probably a bit iffy - will hopefully figure out a better solution
 /proc/check_if_greater_rights_than(client/other)
+	procstart = null
+	src.procstart = null
 	if(usr?.client)
 		if(usr.client.holder)
 			if(!other || !other.holder)
@@ -492,16 +538,22 @@ you will have to do something like if(client.rights & R_ADMIN) yourself.
 
 //This proc checks whether subject has at least ONE of the rights specified in rights_required.
 /proc/check_rights_for(client/subject, rights_required)
+	procstart = null
+	src.procstart = null
 	if(subject?.holder)
 		return subject.holder.check_for_rights(rights_required)
 	return FALSE
 
 /proc/GenerateToken()
+	procstart = null
+	src.procstart = null
 	. = ""
 	for(var/I in 1 to 32)
 		. += "[rand(10)]"
 
 /proc/RawHrefToken(forceGlobal = FALSE)
+	procstart = null
+	src.procstart = null
 	var/tok = GLOB.href_token
 	if(!forceGlobal && usr)
 		var/client/C = usr.client
@@ -513,9 +565,13 @@ you will have to do something like if(client.rights & R_ADMIN) yourself.
 	return tok
 
 /proc/HrefToken(forceGlobal = FALSE)
+	procstart = null
+	src.procstart = null
 	return "admin_token=[RawHrefToken(forceGlobal)]"
 
 /proc/HrefTokenFormField(forceGlobal = FALSE)
+	procstart = null
+	src.procstart = null
 	return "<input type='hidden' name='admin_token' value='[RawHrefToken(forceGlobal)]'>"
 
 #undef RESULT_2FA_VALID

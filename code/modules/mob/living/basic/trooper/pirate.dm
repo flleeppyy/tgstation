@@ -13,6 +13,8 @@
 	var/plunder_credits = 25
 
 /mob/living/basic/trooper/pirate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/plundering_attacks, plunder_amount = plunder_credits)
 
@@ -46,6 +48,8 @@
 	corpse = /obj/effect/mob_spawn/corpse/human/pirate/melee/space
 
 /mob/living/basic/trooper/pirate/melee/space/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_SPACEWALK, INNATE_TRAIT)
 
@@ -65,6 +69,8 @@
 	var/ranged_cooldown = 6 SECONDS
 
 /mob/living/basic/trooper/pirate/ranged/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(\
 		/datum/component/ranged_attacks,\
@@ -83,5 +89,7 @@
 	r_hand = /obj/item/gun/energy/e_gun/lethal
 
 /mob/living/basic/trooper/pirate/ranged/space/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_SPACEWALK, INNATE_TRAIT)

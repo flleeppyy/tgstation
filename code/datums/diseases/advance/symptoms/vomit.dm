@@ -32,6 +32,8 @@ and your disease can spread via people walking on vomit.
 	var/proj_vomit = 0
 
 /datum/symptom/vomit/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -43,6 +45,8 @@ and your disease can spread via people walking on vomit.
 		proj_vomit = 5
 
 /datum/symptom/vomit/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -55,6 +59,8 @@ and your disease can spread via people walking on vomit.
 			vomit(M)
 
 /datum/symptom/vomit/proc/vomit(mob/living/carbon/vomiter)
+	procstart = null
+	src.procstart = null
 	var/deductable_nutrition = 0
 	var/constructed_flags = (MOB_VOMIT_MESSAGE | MOB_VOMIT_HARM)
 	var/type_of_vomit = /obj/effect/decal/cleanable/vomit/toxic

@@ -14,12 +14,16 @@
 	var/pipename
 
 /obj/structure/disposalconstruct/set_anchored(anchorvalue)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.))
 		return
 	set_density(anchorvalue ? initial(pipe_type.density) : FALSE)
 
 /obj/structure/disposalconstruct/Initialize(mapload, _pipe_type, _dir = SOUTH, flip = FALSE, obj/make_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(make_from)
 		pipe_type = make_from.type
@@ -45,11 +49,15 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/structure/disposalconstruct/Move()
+	procstart = null
+	src.procstart = null
 	var/old_dir = dir
 	..()
 	setDir(old_dir) //pipes changing direction when moved is just annoying and buggy
 
 /obj/structure/disposalconstruct/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(ispath(pipe_type, /obj/machinery/disposal/bin))
 		// Disposal bins receive special icon treating
 		icon_state = "[anchored ? "con" : null]disposal"
@@ -60,6 +68,8 @@
 
 // Extra layer handling
 /obj/structure/disposalconstruct/update_icon()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!is_pipe())
 		return
@@ -67,6 +77,8 @@
 	layer = anchored ? initial(pipe_type.layer) : initial(layer)
 
 /obj/structure/disposalconstruct/proc/get_disposal_dir()
+	procstart = null
+	src.procstart = null
 	if(!is_pipe())
 		return NONE
 
@@ -89,6 +101,8 @@
 	return dpdir
 
 /obj/structure/disposalconstruct/proc/post_rotation(mob/user, degrees)
+	procstart = null
+	src.procstart = null
 	if(degrees == ROTATION_FLIP)
 		var/obj/structure/disposalpipe/temp = pipe_type
 		if(initial(temp.flip_type))
@@ -102,6 +116,8 @@
 // wrench: (un)anchor
 // weldingtool: convert to real pipe
 /obj/structure/disposalconstruct/wrench_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	..()
 	if(anchored)
 		set_anchored(FALSE)
@@ -147,6 +163,8 @@
 	return TRUE
 
 /obj/structure/disposalconstruct/welder_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	..()
 	if(anchored)
 		var/turf/T = get_turf(src)
@@ -168,10 +186,14 @@
 	return TRUE
 
 /obj/structure/disposalconstruct/proc/is_pipe()
+	procstart = null
+	src.procstart = null
 	return ispath(pipe_type, /obj/structure/disposalpipe)
 
 //helper proc that makes sure you can place the construct (i.e no dense objects stacking)
 /obj/structure/disposalconstruct/proc/can_place()
+	procstart = null
+	src.procstart = null
 	if(is_pipe())
 		return TRUE
 

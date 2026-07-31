@@ -1,10 +1,16 @@
 /proc/molar_cmp_less_than(a,b,epsilon = MAXIMUM_ERROR_GAS_REMOVAL)
+	procstart = null
+	src.procstart = null
 	return (a < (b + epsilon))
 
 /proc/molar_cmp_greater_than(a,b,epsilon = MAXIMUM_ERROR_GAS_REMOVAL)
+	procstart = null
+	src.procstart = null
 	return ((a + epsilon) > b)
 
 /proc/molar_cmp_equals(a,b,epsilon = MAXIMUM_ERROR_GAS_REMOVAL)
+	procstart = null
+	src.procstart = null
 	return (((a + epsilon) > b) && ((a - epsilon) < b))
 
 /** A simple rudimentary gasmix to information list converter. Can be used for UIs.
@@ -29,6 +35,8 @@
  * Returned list should always be filled with keys even if value are nulls.
  */
 /proc/gas_mixture_parser(datum/gas_mixture/gasmix, name)
+	procstart = null
+	src.procstart = null
 	. = list(
 		"gases" = list(),
 		"reactions" = list(),
@@ -67,6 +75,8 @@ GLOBAL_LIST_EMPTY(gas_handbook)
 /// Automatically populates gas_handbook and reaction_handbook. They are formatted lists containing information regarding gases and reactions they participate in.
 /// Structure can be found in TS form at AtmosHandbook.tsx
 /proc/atmos_handbooks_init()
+	procstart = null
+	src.procstart = null
 	if(length(GLOB.reaction_handbook))
 		GLOB.reaction_handbook = list()
 	if(length(GLOB.gas_handbook))
@@ -157,9 +167,13 @@ GLOBAL_LIST_EMPTY(gas_handbook)
 /// Returns an assoc list of the gas handbook and the reaction handbook.
 /// For UIs, simply do data += return_atmos_handbooks() to use.
 /proc/return_atmos_handbooks()
+	procstart = null
+	src.procstart = null
 	return list("gasInfo" = GLOB.gas_handbook, "reactionInfo" = GLOB.reaction_handbook)
 
 /proc/extract_id_tags(list/objects)
+	procstart = null
+	src.procstart = null
 	var/list/tags = list()
 
 	for (var/obj/object as anything in objects)
@@ -168,6 +182,8 @@ GLOBAL_LIST_EMPTY(gas_handbook)
 	return tags
 
 /proc/find_by_id_tag(list/objects, id_tag)
+	procstart = null
+	src.procstart = null
 	for (var/obj/object as anything in objects)
 		if (object.id_tag == id_tag)
 			return object
@@ -175,6 +191,8 @@ GLOBAL_LIST_EMPTY(gas_handbook)
 	return null
 
 /proc/print_gas_mixture(datum/gas_mixture/gas_mixture)
+	procstart = null
+	src.procstart = null
 	var/message = "TEMPERATURE: [gas_mixture.temperature]K, QUANTITY: [gas_mixture.total_moles()] mols, VOLUME: [gas_mixture.volume]L; "
 	var/list/cached_gas_id = GAS_META[META_GAS_ID]
 	for(var/gas_id, amount in gas_mixture.moles)

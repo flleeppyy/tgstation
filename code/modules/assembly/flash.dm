@@ -30,10 +30,14 @@
 	var/last_trigger = 0 //Last time it was successfully triggered.
 
 /obj/item/assembly/flash/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ITEM_IN_UNWRAPPED_TRAITOR_MAIL, PROC_REF(on_mail_unwrap))
 
 /obj/item/assembly/flash/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(burnt_out)
 		user.visible_message(span_suicide("[user] raises \the [src] up to [user.p_their()] eyes and activates it ... but it's burnt out!"))
 		return SHAME
@@ -45,6 +49,8 @@
 	return FIRELOSS
 
 /obj/item/assembly/flash/update_icon(updates=ALL, flash = FALSE)
+	procstart = null
+	src.procstart = null
 	inhand_icon_state = "[burnt_out ? "flashtool_burnt" : "[initial(inhand_icon_state)]"]"
 	flashing = flash
 	. = ..()
@@ -53,6 +59,8 @@
 	holder?.update_icon(updates)
 
 /obj/item/assembly/flash/update_overlays()
+	procstart = null
+	src.procstart = null
 	attached_overlays = list()
 	. = ..()
 	if(burnt_out)
@@ -63,22 +71,30 @@
 		attached_overlays += flashing_overlay
 
 /obj/item/assembly/flash/update_name()
+	procstart = null
+	src.procstart = null
 	name = "[burnt_out ? "burnt-out [initial(name)]" : "[initial(name)]"]"
 	return ..()
 
 /obj/item/assembly/flash/proc/clown_check(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(user, TRAIT_CLUMSY) && prob(50))
 		flash_mob(user, user, confusion_duration = 15 SECONDS, targeted = FALSE)
 		return FALSE
 	return TRUE
 
-/obj/item/assembly/flash/proc/burn_out() //Made so you can override it if you want to have an invincible flash from R&D or something.
+/obj/item/assembly/flash/proc/burn_out()
+	procstart = null
+	src.procstart = null //Made so you can override it if you want to have an invincible flash from R&D or something.
 	if(!burnt_out)
 		burnt_out = TRUE
 		loc?.visible_message(span_danger("[src] burns out!"),span_userdanger("[src] burns out!"))
 		update_appearance()
 
 /obj/item/assembly/flash/proc/flash_recharge(interval = 10)
+	procstart = null
+	src.procstart = null
 	var/deciseconds_passed = world.time - last_used
 	for(var/seconds = deciseconds_passed / 10, seconds >= interval, seconds -= interval) //get 1 charge every interval
 		times_used--
@@ -91,6 +107,8 @@
 
 //BYPASS CHECKS ALSO PREVENTS BURNOUT!
 /obj/item/assembly/flash/proc/AOE_flash(bypass_checks = FALSE, range = 3, confusion_duration = 5 SECONDS, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!bypass_checks && !try_use_flash())
 		return FALSE
 	var/list/mob/targets = get_flash_targets(get_turf(src), range, FALSE)
@@ -102,6 +120,8 @@
 	return TRUE
 
 /obj/item/assembly/flash/proc/get_flash_targets(atom/target_loc, range = 3, override_vision_checks = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!target_loc)
 		target_loc = loc
 	if(override_vision_checks)
@@ -112,6 +132,8 @@
 		return typecache_filter_list(target_loc.get_all_contents(), GLOB.typecache_living)
 
 /obj/item/assembly/flash/proc/try_use_flash(mob/user = null)
+	procstart = null
+	src.procstart = null
 	if(burnt_out || (world.time < last_trigger + cooldown))
 		return FALSE
 	last_trigger = world.time
@@ -129,6 +151,8 @@
 
 
 /obj/item/assembly/flash/proc/flash_end()
+	procstart = null
+	src.procstart = null
 	set_light_on(FALSE)
 
 /**
@@ -143,6 +167,8 @@
  * * generic_message - checks if it should display default message.
  */
 /obj/item/assembly/flash/proc/flash_mob(mob/living/flashed, mob/user, confusion_duration = 15 SECONDS, targeted = TRUE, generic_message = FALSE, extra_log =  null)
+	procstart = null
+	src.procstart = null
 	if(!istype(flashed))
 		return FALSE
 	if(user)
@@ -223,6 +249,8 @@
  * * attacker - Attacker
  */
 /obj/item/assembly/flash/proc/calculate_deviation(mob/victim, atom/attacker)
+	procstart = null
+	src.procstart = null
 	// Tactical combat emote-spinning should not counter intended gameplay mechanics.
 	// This trumps same-loc checks to discourage floor spinning in general to counter flashes.
 	// In short, combat spinning is silly and you should feel silly for doing it.
@@ -271,6 +299,8 @@
 	return DEVIATION_PARTIAL
 
 /obj/item/assembly/flash/proc/on_mail_unwrap(atom/source, mob/user, obj/item/mail/traitor/letter)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!try_use_flash())
 		return NONE
@@ -280,6 +310,8 @@
 	return COMPONENT_TRAITOR_MAIL_HANDLED
 
 /obj/item/assembly/flash/attack(mob/living/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!try_use_flash(user))
 		return FALSE
 
@@ -287,6 +319,8 @@
 	return TRUE
 
 /obj/item/assembly/flash/attack_self(mob/living/carbon/user, flag = 0, emp = 0)
+	procstart = null
+	src.procstart = null
 	if(holder)
 		return FALSE
 	if(!AOE_flash(user = user))
@@ -294,6 +328,8 @@
 	return TRUE
 
 /obj/item/assembly/flash/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -301,7 +337,9 @@
 		return
 	burn_out()
 
-/obj/item/assembly/flash/activate()//AOE flash on signal received
+/obj/item/assembly/flash/activate()
+	procstart = null
+	src.procstart = null//AOE flash on signal received
 	if(!..())
 		return
 	AOE_flash()
@@ -309,19 +347,27 @@
 /obj/item/assembly/flash/cyborg
 
 /obj/item/assembly/flash/cyborg/attack(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		new /obj/effect/temp_visual/borgflash(get_turf(src))
 
 /obj/item/assembly/flash/cyborg/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		new /obj/effect/temp_visual/borgflash(get_turf(src))
 
 /obj/item/assembly/flash/cyborg/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/assembly/flash/cyborg/screwdriver_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/assembly/flash/memorizer
@@ -344,6 +390,8 @@
 	var/datum/weakref/arm
 
 /obj/item/assembly/flash/armimplant/burn_out()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/cyberimp/arm/toolkit/flash/real_arm = arm.resolve()
 	if(real_arm?.owner)
 		to_chat(real_arm.owner, span_warning("Your photon projector implant overheats and deactivates!"))
@@ -352,6 +400,8 @@
 	addtimer(CALLBACK(src, PROC_REF(cooldown)), flashcd * 2)
 
 /obj/item/assembly/flash/armimplant/try_use_flash(mob/user = null)
+	procstart = null
+	src.procstart = null
 	if(overheat)
 		var/obj/item/organ/cyberimp/arm/toolkit/flash/real_arm = arm.resolve()
 		if(real_arm?.owner)
@@ -365,9 +415,13 @@
 
 
 /obj/item/assembly/flash/armimplant/proc/cooldown()
+	procstart = null
+	src.procstart = null
 	overheat = FALSE
 
 /obj/item/assembly/flash/armimplant/screwdriver_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("\The [src] is an implant! It cannot be unsecured!"))
 	add_fingerprint(user)
 
@@ -378,9 +432,13 @@
 	cooldown = 20
 
 /obj/item/assembly/flash/hypnotic/burn_out()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/assembly/flash/hypnotic/flash_mob(mob/living/flashed, mob/user, confusion_duration = 5 SECONDS, targeted = TRUE, generic_message = FALSE, extra_log =  null)
+	procstart = null
+	src.procstart = null
 	if(user)
 		log_combat(user, flashed, "[targeted? "hypno-flashed(targeted)" : "hypno-flashed(AOE)"] [extra_log]", src)
 	else //caused by emp/remote signal

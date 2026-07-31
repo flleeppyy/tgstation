@@ -38,6 +38,8 @@
 	job_tone = "honk"
 
 /datum/job/clown/after_spawn(mob/living/spawned, client/player_client)
+	procstart = null
+	src.procstart = null
 	if (ishuman(spawned))
 		spawned.apply_pref_name(/datum/preference/name/clown, player_client)
 		if(check_holidays(APRIL_FOOLS)) // Clown blood is real
@@ -84,16 +86,22 @@
 	internals_slot = ITEM_SLOT_SUITSTORE
 
 /datum/outfit/job/clown/pre_equip(mob/living/carbon/human/H, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(SSstation, STATION_TRAIT_BANANIUM_SHIPMENTS))
 		backpack_contents[/obj/item/stack/sheet/mineral/bananium/five] = 1
 
 /datum/outfit/job/clown/get_types_to_preload()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(SSstation, STATION_TRAIT_BANANIUM_SHIPMENTS))
 		. += /obj/item/stack/sheet/mineral/bananium/five
 
 /datum/outfit/job/clown/post_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	if(visuals_only)
 		return

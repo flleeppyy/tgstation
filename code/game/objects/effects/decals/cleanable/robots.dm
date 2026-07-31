@@ -8,13 +8,19 @@
 	color = null
 
 /obj/effect/decal/cleanable/blood/gibs/robot_debris/get_default_blood_type()
+	procstart = null
+	src.procstart = null
 	return get_blood_type(BLOOD_TYPE_OIL)
 
 /obj/effect/decal/cleanable/blood/gibs/robot_debris/create_splatter()
+	procstart = null
+	src.procstart = null
 	if(prob(40))
 		return ..()
 
 /obj/effect/decal/cleanable/blood/gibs/robot_debris/spread_movement_effects(datum/move_loop/has_target/source)
+	procstart = null
+	src.procstart = null
 	if(NeverShouldHaveComeHere(loc))
 		return
 	if (prob(40))
@@ -24,6 +30,8 @@
 
 // Doesn't have overlay support as of now
 /obj/effect/decal/cleanable/blood/gibs/robot_debris/update_blood_color()
+	procstart = null
+	src.procstart = null
 	color = null
 
 /obj/effect/decal/cleanable/blood/gibs/robot_debris/limb
@@ -45,9 +53,13 @@
 	color = /datum/blood_type/oil::color // For mapper sanity
 
 /obj/effect/decal/cleanable/blood/oil/get_default_blood_type()
+	procstart = null
+	src.procstart = null
 	return get_blood_type(BLOOD_TYPE_OIL)
 
 /obj/effect/decal/cleanable/blood/oil/slippery/Initialize(mapload, list/datum/disease/diseases, list/blood_or_dna)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/slippery, 80, (NO_SLIP_WHEN_WALKING | SLIDE))
 
@@ -56,4 +68,6 @@
 	color = /datum/blood_type/oil::color
 
 /obj/effect/decal/cleanable/blood/splatter/oil/get_default_blood_type()
+	procstart = null
+	src.procstart = null
 	return get_blood_type(BLOOD_TYPE_OIL)

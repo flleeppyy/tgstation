@@ -4,17 +4,25 @@
 	rust_resistance = RUST_RESISTANCE_BASIC
 
 /turf/open/floor/iron/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("damaged1", "damaged2", "damaged3", "damaged4", "damaged5")
 
 /turf/open/floor/iron/burnt_states()
+	procstart = null
+	src.procstart = null
 	return list("floorscorched1", "floorscorched2")
 
 
 /turf/open/floor/iron/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("There's a <b>small crack</b> on the edge of it.")
 
 /turf/open/floor/iron/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(broken || burnt)
 		return ..()
 	icon_state = base_icon_state

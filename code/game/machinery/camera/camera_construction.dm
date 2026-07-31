@@ -1,4 +1,6 @@
 /obj/machinery/camera/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	switch(camera_construction_state)
 		if(CAMERA_STATE_WRENCHED, CAMERA_STATE_WELDED)
 			if(!tool.tool_start_check(user, amount = 1))
@@ -27,6 +29,8 @@
 	return ..()
 
 /obj/machinery/camera/screwdriver_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	switch(camera_construction_state)
 		if(CAMERA_STATE_WIRED)
 			tool.play_tool_sound(src)
@@ -53,6 +57,8 @@
 	return ..()
 
 /obj/machinery/camera/wirecutter_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	switch(camera_construction_state)
 		if(CAMERA_STATE_WIRED)
 			new /obj/item/stack/cable_coil(drop_location(), 2)
@@ -71,6 +77,8 @@
 	return ..()
 
 /obj/machinery/camera/wrench_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(camera_construction_state != CAMERA_STATE_WRENCHED)
 		return NONE
 	tool.play_tool_sound(src)
@@ -79,6 +87,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/camera/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(camera_construction_state != CAMERA_STATE_FINISHED || !panel_open)
 		return NONE
 	var/list/droppable_parts = list()
@@ -109,6 +119,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/camera/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(camera_construction_state != CAMERA_STATE_FINISHED || !panel_open)
 		return NONE
 	setViewRange((view_range == initial(view_range)) ? short_range : initial(view_range))
@@ -116,6 +128,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/camera/proc/gas_analyzer_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(camera_construction_state == CAMERA_STATE_FINISHED && !panel_open)
 		return NONE
 	if(isXRay(TRUE))
@@ -129,6 +143,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/camera/proc/plasma_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(camera_construction_state == CAMERA_STATE_FINISHED && !panel_open)
 		return NONE
 	if(isEmpProof(TRUE))
@@ -141,6 +157,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/camera/proc/prox_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(camera_construction_state == CAMERA_STATE_FINISHED && !panel_open)
 		return NONE
 	if(isMotion())
@@ -154,6 +172,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/camera/proc/cable_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(camera_construction_state != CAMERA_STATE_WELDED)
 		return NONE
 	if(!astype(tool, /obj/item/stack/cable_coil)?.use(2))
@@ -164,6 +184,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/camera/proc/computer_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(camera_construction_state != CAMERA_STATE_FINISHED)
 		return NONE
 	var/obj/item/modular_computer/computer = tool
@@ -178,6 +200,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/camera/proc/paper_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(camera_construction_state != CAMERA_STATE_FINISHED)
 		return NONE
 	var/obj/item/paper/paper = tool
@@ -188,6 +212,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/camera/proc/display_note(mob/living/user, title, text, is_computer)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You hold up \the [title] up to the camera..."))
 	user.log_talk(title, LOG_GAME, "Pressed to camera", TRUE)
 	user.changeNext_move(CLICK_CD_MELEE)
@@ -224,6 +250,8 @@
 				potential_viewer << browse("<HTML><HEAD><TITLE>[title]</TITLE></HEAD><BODY><TT>[text]</TT></BODY></HTML>", "window=[title]")
 
 /obj/machinery/camera/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 	if(istype(tool, /obj/item/stack/sheet/mineral/plasma))

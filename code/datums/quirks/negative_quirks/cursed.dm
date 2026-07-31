@@ -10,6 +10,8 @@
 	hardcore_value = 8
 
 /datum/quirk/cursed/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	quirk_holder.AddComponent( \
 		/datum/component/omen, \
 		incidents_left = INFINITY, \
@@ -20,6 +22,8 @@
 	)
 
 /datum/quirk/cursed/proc/on_death(datum/component/omen/omen)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/cursed = omen.parent
 	if(!iscarbon(cursed))
 		cursed.gib(DROP_ALL_REMAINS)

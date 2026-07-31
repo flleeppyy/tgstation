@@ -231,6 +231,8 @@
 	crate_type = /obj/structure/closet/crate/freezer/food
 
 /datum/supply_pack/service/randomized/donkpockets/fill(obj/container)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		var/item = pick(contains)
 		new item(container)
@@ -253,6 +255,8 @@
 	discountable = SUPPLY_PACK_UNCOMMON_DISCOUNTABLE
 
 /datum/supply_pack/service/randomized/ready_donk/fill(obj/container)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		var/item = pick(contains)
 		new item(container)

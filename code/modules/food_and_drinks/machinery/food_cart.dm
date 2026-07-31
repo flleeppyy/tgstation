@@ -17,6 +17,8 @@
 	var/list/packed_things
 
 /obj/machinery/food_cart/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cart_griddle = new(src)
 	cart_smartfridge = new(src)
@@ -29,6 +31,8 @@
 	RegisterSignal(cart_tent, COMSIG_QDELETING, PROC_REF(lost_part))
 
 /obj/machinery/food_cart/Destroy()
+	procstart = null
+	src.procstart = null
 	if(cart_griddle)
 		QDEL_NULL(cart_griddle)
 	if(cart_smartfridge)
@@ -41,6 +45,8 @@
 	return ..()
 
 /obj/machinery/food_cart/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(machine_stat & BROKEN))
 		if(cart_griddle.machine_stat & BROKEN)
@@ -51,6 +57,8 @@
 		. += span_notice("The stand's <b>table</b> seems fine.")
 
 /obj/machinery/food_cart/proc/pack_up()
+	procstart = null
+	src.procstart = null
 	if(!unpacked)
 		return
 	visible_message(span_notice("[src] retracts all of it's unpacked components."))
@@ -62,6 +70,8 @@
 	unpacked = FALSE
 
 /obj/machinery/food_cart/proc/unpack(mob/user)
+	procstart = null
+	src.procstart = null
 	if(unpacked)
 		return
 	if(!check_setup_place())
@@ -80,6 +90,8 @@
 	unpacked = TRUE
 
 /obj/machinery/food_cart/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & BROKEN)
 		to_chat(user, span_warning("[src] is completely busted."))
@@ -98,6 +110,8 @@
 		unpack(user)
 
 /obj/machinery/food_cart/proc/check_setup_place()
+	procstart = null
+	src.procstart = null
 	var/has_space = TRUE
 	var/turf/grabbed_turf = get_step(get_turf(src), EAST)
 	for(var/angle in list(0, -45, 45))
@@ -110,6 +124,8 @@
 	return has_space
 
 /obj/machinery/food_cart/proc/lost_part(atom/movable/source, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	//okay, so it's deleting the fridge or griddle which are more important. We're gonna break the machine then
@@ -120,6 +136,8 @@
 	atom_break()
 
 /obj/machinery/food_cart/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pack_up()
 	if(!QDELETED(cart_griddle))

@@ -35,6 +35,8 @@
 	var/ongoing_arena
 
 /datum/action/cooldown/spell/wolves_among_sheep/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	center_turf = get_turf(owner)
 	playsound(center_turf,'sound/machines/airlock/airlockopen.ogg', 750, TRUE)
@@ -61,6 +63,8 @@
 	apply_visual(list(center_turf))
 
 /datum/action/cooldown/spell/wolves_among_sheep/can_cast_spell(feedback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/nearby_arena in GLOB.heretic_arenas)
 		// We can't allow arenas to overlap because they break each other during cleanup.
@@ -72,6 +76,8 @@
 
 /// Applies a visual to each turf
 /datum/action/cooldown/spell/wolves_among_sheep/proc/apply_visual(list/turfs)
+	procstart = null
+	src.procstart = null
 	for(var/turf/target as anything in turfs)
 		if(isopenturf(target))
 			var/turf_icon = "rose_stone_" + "[pick(1, 2, 3, 4, 5, 6, 7, 8)]"
@@ -93,6 +99,8 @@
 
 /// Sets up the proximity monitor which handles things that are within the area and leave once they get someone to crit
 /datum/action/cooldown/spell/wolves_among_sheep/proc/create_arena(turf/target)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(owner, COMSIG_MOB_STATCHANGE, PROC_REF(on_caster_crit))
 
 	// This is where most of the funcionality of the spell is
@@ -101,6 +109,8 @@
 
 /// Clears the timer if the arena is deleted
 /datum/action/cooldown/spell/wolves_among_sheep/proc/on_arena_delete()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	deltimer(revert_timer)
 	ongoing_arena = null
@@ -108,6 +118,8 @@
 
 /// If the caster goes into crit, the arena falls apart right away
 /datum/action/cooldown/spell/wolves_among_sheep/proc/on_caster_crit(datum/source, new_stat, old_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(new_stat < SOFT_CRIT)
 		return
@@ -116,6 +128,8 @@
 
 /// Undoes our changes
 /datum/action/cooldown/spell/wolves_among_sheep/proc/revert_effects()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_MOB_STATCHANGE)
 	for(var/iterator in 1 to greatest_dist)
 		var/backwards_iterator = greatest_dist - iterator + 1 //We go backwards
@@ -128,6 +142,8 @@
 
 /// Transforms all the turfs and restores the airlocks
 /datum/action/cooldown/spell/wolves_among_sheep/proc/revert_terrain(list/turfs)
+	procstart = null
+	src.procstart = null
 	for(var/turf/target as anything in turfs)
 		target.remove_alt_appearance("heretic_arena")
 		target.turf_flags = initial(target.turf_flags) // Restore flags to what they were

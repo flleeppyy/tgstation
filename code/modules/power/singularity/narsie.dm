@@ -39,11 +39,15 @@
 	var/resolved = FALSE
 
 /obj/narsie/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	narsie_spawn_animation()
 
 /obj/narsie/Destroy()
+	procstart = null
+	src.procstart = null
 	if (GLOB.cult_narsie == src)
 		fall_of_the_harbinger()
 		GLOB.cult_narsie = null
@@ -53,6 +57,8 @@
 /// This proc sets up all of Nar'Sie's abilities, stats, and begins her round-ending capabilities. She does not do anything unless this proc is invoked.
 /// This is only meant to be invoked after this instance is initialized in specific pro-sumer procs, as it WILL derail the entire round.
 /obj/narsie/proc/start_ending_the_round()
+	procstart = null
+	src.procstart = null
 	GLOB.cult_narsie = src
 	SSpoints_of_interest.make_point_of_interest(src)
 
@@ -109,6 +115,8 @@
 
 /// Cleans up all of Nar'Sie's abilities, stats, and ends her round-ending capabilities. This should only be called if `start_ending_the_round()` successfully started.
 /obj/narsie/proc/fall_of_the_harbinger()
+	procstart = null
+	src.procstart = null
 	var/list/all_cults = list()
 
 	for (var/datum/antagonist/cult/cultist in GLOB.antagonists)
@@ -127,11 +135,15 @@
 	sound_to_playing_players('sound/effects/magic/demon_dies.ogg', 50)
 
 /obj/narsie/vv_get_dropdown()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	VV_DROPDOWN_OPTION("", "--- /narsie ---")
 	VV_DROPDOWN_OPTION(VV_HK_BEGIN_NARSIE_ROUNDEND, "Begin Nar'Sie Roundender")
 
 /obj/narsie/vv_do_topic(list/href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)
@@ -147,12 +159,16 @@
 	start_ending_the_round()
 
 /obj/narsie/attack_ghost(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	if(is_banned_from(user.ckey, ROLE_CULTIST))
 		return
 	if(tgui_alert(user, "Do you wish to become an occult harvester?", "Become Harvester?", list("Yes", "No"), timeout = 10 SECONDS) == "Yes")
 		make_new_construct(/mob/living/basic/construct/harvester, user, cultoverride = TRUE, loc_override = loc, ghost_activated = TRUE)
 
 /obj/narsie/process()
+	procstart = null
+	src.procstart = null
 	var/datum/component/singularity/singularity_component = singularity.resolve()
 
 	if (!isnull(singularity_component) && (!singularity_component?.target || prob(NARSIE_CHANCE_TO_PICK_NEW_TARGET)))
@@ -162,6 +178,8 @@
 		mesmerize()
 
 /obj/narsie/Bump(atom/target)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(target)
 	if (target_turf == loc)
 		target_turf = get_step(target, target.dir) //please don't slam into a window like a bird, Nar'Sie
@@ -169,6 +187,8 @@
 
 /// Stun people around Nar'Sie that aren't cultists
 /obj/narsie/proc/mesmerize()
+	procstart = null
+	src.procstart = null
 	for (var/mob/living/carbon/victim in viewers(NARSIE_CONSUME_RANGE, src))
 		if (!IS_UNCONSCIOUS_OR_CRIT(victim))
 			if (!IS_CULTIST(victim))
@@ -177,6 +197,8 @@
 
 /// Narsie rewards her cultists with being devoured first, then picks a ghost to follow.
 /obj/narsie/proc/pickcultist()
+	procstart = null
+	src.procstart = null
 	var/list/cultists = list()
 	var/list/noncultists = list()
 
@@ -210,6 +232,8 @@
 
 /// Nar'Sie gets a taste of something, and will start to gravitate towards it
 /obj/narsie/proc/acquire(atom/food)
+	procstart = null
+	src.procstart = null
 	var/datum/component/singularity/singularity_component = singularity.resolve()
 
 	if (isnull(singularity_component))
@@ -228,15 +252,21 @@
 
 /// Called to make Nar'Sie convert objects to cult stuff, or to eat
 /obj/narsie/proc/consume(atom/target)
+	procstart = null
+	src.procstart = null
 	if (isturf(target))
 		target.narsie_act()
 
 /obj/narsie/proc/narsie_spawn_animation()
+	procstart = null
+	src.procstart = null
 	setDir(SOUTH)
 	flick("narsie_spawn_anim", src)
 	addtimer(CALLBACK(src, PROC_REF(narsie_spawn_animation_end)), 3.5 SECONDS)
 
 /obj/narsie/proc/narsie_spawn_animation_end()
+	procstart = null
+	src.procstart = null
 	var/datum/component/singularity/singularity_component = singularity?.resolve()
 	singularity_component?.roaming = TRUE
 
@@ -251,10 +281,14 @@
  *  * [/proc/cult_ending_helper()]
  */
 /proc/begin_the_end()
+	procstart = null
+	src.procstart = null
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(narsie_end_begin_check)), 5 SECONDS)
 
 ///First crew last second win check and flufftext for [/proc/begin_the_end()]
 /proc/narsie_end_begin_check()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(GLOB.cult_narsie)) // uno
 		priority_announce("Status report? We detected an anomaly, but it disappeared almost immediately.","[command_name()] Higher Dimensional Affairs", 'sound/announcer/notice/notice1.ogg')
 		GLOB.cult_narsie = null
@@ -269,6 +303,8 @@
 
 ///Second crew last second win check and flufftext for [/proc/begin_the_end()]
 /proc/narsie_end_second_check()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(GLOB.cult_narsie)) // dos
 		priority_announce("Simulations aborted, sensors report that the acasual event is normalizing. Good work, crew.","[command_name()] Higher Dimensional Affairs", 'sound/announcer/notice/notice1.ogg')
 		GLOB.cult_narsie = null
@@ -279,6 +315,8 @@
 
 ///security level and shuttle lockdowns for [/proc/begin_the_end()]
 /proc/narsie_start_destroy_station()
+	procstart = null
+	src.procstart = null
 	SSsecurity_level.set_level(SEC_LEVEL_DELTA)
 	SSshuttle.registerHostileEnvironment(GLOB.cult_narsie)
 	SSshuttle.lockdown = TRUE
@@ -286,6 +324,8 @@
 
 ///Third crew last second win check and flufftext for [/proc/begin_the_end()]
 /proc/narsie_apocalypse()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(GLOB.cult_narsie)) // tres
 		priority_announce("Normalization detected! Abort the solution package!","[command_name()] Higher Dimensional Affairs", 'sound/announcer/notice/notice1.ogg')
 		SSshuttle.clearHostileEnvironment(GLOB.cult_narsie)
@@ -299,12 +339,16 @@
 
 ///Called only if the crew managed to destroy narsie at the very last second for [/proc/begin_the_end()]
 /proc/narsie_last_second_win()
+	procstart = null
+	src.procstart = null
 	SSsecurity_level.set_level(SEC_LEVEL_RED)
 	SSshuttle.lockdown = FALSE
 	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(cult_ending_helper), CULT_FAILURE_NARSIE_KILLED)
 
 ///Helper to set the round to end asap. Current usage Cult round end code
 /proc/ending_helper()
+	procstart = null
+	src.procstart = null
 	SSticker.force_ending = FORCE_END_ROUND
 
 /**
@@ -312,6 +356,8 @@
  * called either when narsie eats everyone, or when [/proc/begin_the_end()] reaches its conclusion
  */
 /proc/cult_ending_helper(ending_type = CULT_VICTORY_NUKE)
+	procstart = null
+	src.procstart = null
 	switch(ending_type)
 		// Narsie was killed
 		if(CULT_FAILURE_NARSIE_KILLED)

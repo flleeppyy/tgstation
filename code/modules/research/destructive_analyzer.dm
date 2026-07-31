@@ -15,10 +15,14 @@
 	circuit = /obj/item/circuitboard/machine/destructive_analyzer
 
 /obj/machinery/rnd/destructive_analyzer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/tool_blocker, TOOL_SCREWDRIVER, TOOL_ACT_PRIMARY) //This allows people to put syndicate screwdrivers in the machine. Secondary act still passes.
 
 /obj/machinery/rnd/destructive_analyzer/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/screentip_set = FALSE
@@ -33,6 +37,8 @@
 		. = CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/rnd/destructive_analyzer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!in_range(user, src) && !isobserver(user))
 		return
@@ -43,6 +49,8 @@
 		. += span_notice("An item can be loaded inside via [EXAMINE_HINT("Left-Click")].")
 
 /obj/machinery/rnd/destructive_analyzer/base_item_interaction(mob/living/user, obj/item/weapon, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(LAZYACCESS(modifiers, RIGHT_CLICK))
 		return ..()
 	if(user.combat_mode)
@@ -61,10 +69,14 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/rnd/destructive_analyzer/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	unload_item()
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/rnd/destructive_analyzer/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(panel_open && !loaded_item)
 		return // use parent call state
@@ -72,12 +84,16 @@
 	icon_state = "[base_icon_state][loaded_item ? "_l" : ""]"
 
 /obj/machinery/rnd/destructive_analyzer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "DestructiveAnalyzer")
 		ui.open()
 
 /obj/machinery/rnd/destructive_analyzer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["server_connected"] = !!stored_research
 	data["node_data"] = list()
@@ -102,11 +118,15 @@
 	return data
 
 /obj/machinery/rnd/destructive_analyzer/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["research_point_id"] = DESTRUCTIVE_ANALYZER_DESTROY_POINTS
 	return data
 
 /obj/machinery/rnd/destructive_analyzer/ui_act(action, params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -126,6 +146,8 @@
 			return TRUE
 
 /obj/machinery/rnd/destructive_analyzer/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// Cringe way to let emags insert on RMB because we still use attackby to insert
 	if(istype(tool, /obj/item/card/emag))
 		return ITEM_INTERACT_SKIP_TO_ATTACK
@@ -133,16 +155,22 @@
 
 //We need to call default_deconstruction_screwdriver here since its parent will call screwdriver_act on this level which will stop us from ever deconstructing.
 /obj/machinery/rnd/destructive_analyzer/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 //We need to let wire cutter in (not block) so we can analyze alien wirecutters.
 /obj/machinery/rnd/destructive_analyzer/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		wires.interact(user)
 		return ITEM_INTERACT_SUCCESS
 
 ///Drops the loaded item where it can and nulls it.
 /obj/machinery/rnd/destructive_analyzer/proc/unload_item()
+	procstart = null
+	src.procstart = null
 	if(!loaded_item)
 		return FALSE
 	playsound(loc, 'sound/machines/terminal/terminal_insert_disc.ogg', 30, FALSE)
@@ -154,6 +182,8 @@
 ///Called in a timer callback after loading something into it, this handles resetting the 'busy' state back to its initial state
 ///So the machine can be used.
 /obj/machinery/rnd/destructive_analyzer/proc/finish_loading()
+	procstart = null
+	src.procstart = null
 	update_appearance(UPDATE_ICON)
 	reset_busy()
 
@@ -163,6 +193,8 @@
  * gain_research_points - Whether deconstructing each individual item should check for research points to boost.
  */
 /obj/machinery/rnd/destructive_analyzer/proc/destroy_item(gain_research_points = FALSE)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(loaded_item) || QDELETED(src))
 		return FALSE
 	flick("[base_icon_state]_process", src)
@@ -184,6 +216,8 @@
  * gain_research_points - Whether deconstructing this should give research points to the stored techweb, if applicable.
  */
 /obj/machinery/rnd/destructive_analyzer/proc/destroy_item_individual(obj/item/thing, gain_research_points = FALSE)
+	procstart = null
+	src.procstart = null
 	if(isliving(thing))
 		var/mob/living/mob_thing = thing
 		if(mob_thing.stat != DEAD)
@@ -201,6 +235,8 @@
  * id - The techweb ID node that we're meant to unlock if applicable.
  */
 /obj/machinery/rnd/destructive_analyzer/proc/user_try_decon_id(id)
+	procstart = null
+	src.procstart = null
 	if(!istype(loaded_item))
 		return FALSE
 	if(isnull(id))

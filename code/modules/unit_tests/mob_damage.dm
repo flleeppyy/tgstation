@@ -3,10 +3,14 @@
 	priority = TEST_LONGER
 
 /datum/unit_test/mob_damage/Destroy()
+	procstart = null
+	src.procstart = null
 	SSmobs.ignite()
 	return ..()
 
 /datum/unit_test/mob_damage/Run()
+	procstart = null
+	src.procstart = null
 	SSmobs.pause()
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 	dummy.maxHealth = 200 // tank mode
@@ -51,6 +55,8 @@
  * * forced - whether or not this is forced damage
  */
 /datum/unit_test/mob_damage/proc/test_apply_damage(mob/living/testing_mob, amount, expected = -amount, amount_after, included_types, biotypes, bodytypes, forced)
+	procstart = null
+	src.procstart = null
 	if(isnull(amount_after))
 		amount_after = testing_mob.get_stamina_loss() - expected // stamina loss applies to both carbon and basic mobs the same way, so that's why we're using it here
 	if(!apply_damage(testing_mob, amount, expected, included_types, biotypes, bodytypes, forced))
@@ -76,6 +82,8 @@
  * * forced - whether or not this is forced damage
  */
 /datum/unit_test/mob_damage/proc/test_set_damage(mob/living/testing_mob, amount, expected, amount_after, included_types, biotypes, bodytypes, forced)
+	procstart = null
+	src.procstart = null
 	if(isnull(amount_after))
 		amount_after = testing_mob.get_stamina_loss() - expected
 	if(!set_damage(testing_mob, amount, expected, included_types, biotypes, bodytypes, forced))
@@ -94,6 +102,8 @@
  * * included_types - Bitflag of damage types to check.
  */
 /datum/unit_test/mob_damage/proc/verify_damage(mob/living/carbon/testing_mob, amount, included_types = ALL)
+	procstart = null
+	src.procstart = null
 	if(included_types & TOXLOSS)
 		TEST_ASSERT_EQUAL(testing_mob.get_tox_loss(), amount, \
 			"[testing_mob] should have [amount] toxin damage, instead they have [testing_mob.get_tox_loss()]!")
@@ -129,6 +139,8 @@
  * * forced - whether or not this is forced damage
  */
 /datum/unit_test/mob_damage/proc/apply_damage(mob/living/carbon/testing_mob, amount, expected = -amount, included_types = ALL, biotypes = ALL, bodytypes = ALL, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	var/damage_returned
 	if(included_types & TOXLOSS)
 		damage_returned = testing_mob.adjust_tox_loss(amount, updating_health = FALSE, forced = forced, required_biotype = biotypes)
@@ -166,6 +178,8 @@
  * * forced - whether or not this is forced damage
  */
 /datum/unit_test/mob_damage/proc/set_damage(mob/living/carbon/testing_mob, amount, expected = -amount, included_types = ALL, biotypes = ALL, bodytypes = ALL, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	var/damage_returned
 	if(included_types & TOXLOSS)
 		damage_returned = testing_mob.set_tox_loss(amount, updating_health = FALSE, forced = forced, required_biotype = biotypes)
@@ -191,6 +205,8 @@
 
 ///	Sanity tests damage and healing using adjust_tox_loss, adjust_brute_loss, etc
 /datum/unit_test/mob_damage/proc/test_sanity_simple(mob/living/carbon/human/consistent/dummy)
+	procstart = null
+	src.procstart = null
 	// Apply 5 damage and then heal it
 	if(!test_apply_damage(dummy, amount = 5))
 		TEST_FAIL("ABOVE FAILURE: failed test_sanity_simple! damage was not applied correctly")
@@ -221,6 +237,8 @@
 
 ///	Sanity tests damage and healing using the more complex procs like take_overall_damage(), heal_overall_damage(), etc
 /datum/unit_test/mob_damage/proc/test_sanity_complex(mob/living/carbon/human/consistent/dummy)
+	procstart = null
+	src.procstart = null
 	// Heal up, so that errors from the previous tests we won't cause this one to fail
 	dummy.fully_heal(HEAL_DAMAGE)
 
@@ -291,6 +309,8 @@
 
 ///	Tests damage procs with godmode on
 /datum/unit_test/mob_damage/proc/test_godmode(mob/living/carbon/human/consistent/dummy)
+	procstart = null
+	src.procstart = null
 	// Heal up, so that errors from the previous tests we won't cause this one to fail
 	dummy.fully_heal(HEAL_DAMAGE)
 	// add godmode
@@ -315,6 +335,8 @@
 
 /// Testing biotypes
 /datum/unit_test/mob_damage/proc/test_biotypes(mob/living/carbon/human/consistent/dummy)
+	procstart = null
+	src.procstart = null
 	// Heal up, so that errors from the previous tests we won't cause this one to fail
 	dummy.fully_heal(HEAL_DAMAGE)
 	// Testing biotypes using a plasmaman, who is MOB_MINERAL and MOB_HUMANOID
@@ -350,6 +372,8 @@
 
 /// Testing oxyloss with the TRAIT_NOBREATH
 /datum/unit_test/mob_damage/proc/test_nobreath(mob/living/carbon/human/consistent/dummy)
+	procstart = null
+	src.procstart = null
 	// Heal up, so that errors from the previous tests we won't cause this one to fail
 	dummy.fully_heal(HEAL_DAMAGE)
 
@@ -370,6 +394,8 @@
 
 /// Testing toxloss with TRAIT_TOXINLOVER and TRAIT_TOXIMMUNE
 /datum/unit_test/mob_damage/proc/test_toxintraits(mob/living/carbon/human/consistent/dummy)
+	procstart = null
+	src.procstart = null
 	// Heal up, so that errors from the previous tests we won't cause this one to fail
 	dummy.fully_heal(HEAL_DAMAGE)
 
@@ -405,6 +431,8 @@
 
 /// Testing heal_ordered_damage()
 /datum/unit_test/mob_damage/proc/test_ordered_healing(mob/living/carbon/human/consistent/dummy)
+	procstart = null
+	src.procstart = null
 	// Heal up, so that errors from the previous tests we won't cause this one to fail
 	dummy.fully_heal(HEAL_DAMAGE)
 	var/damage_returned
@@ -442,6 +470,8 @@
 /datum/unit_test/mob_damage/animal
 
 /datum/unit_test/mob_damage/animal/Run()
+	procstart = null
+	src.procstart = null
 	SSmobs.pause()
 
 	// Basic mobs
@@ -474,6 +504,8 @@
  * * included_types - Bitflag of damage types to check.
  */
 /datum/unit_test/mob_damage/animal/verify_damage(mob/living/carbon/testing_mob, amount, expected, included_types = ALL)
+	procstart = null
+	src.procstart = null
 	if(included_types & TOXLOSS)
 		TEST_ASSERT_EQUAL(testing_mob.get_tox_loss(), 0, \
 			"[testing_mob] should have [0] toxin damage, instead they have [testing_mob.get_tox_loss()]!")
@@ -492,6 +524,8 @@
 	return TRUE
 
 /datum/unit_test/mob_damage/animal/test_sanity_simple(mob/living/carbon/test_mob)
+	procstart = null
+	src.procstart = null
 	// check to see if basic mob damage works
 
 	// Simple damage and healing
@@ -523,6 +557,8 @@
 		TEST_FAIL("ABOVE FAILURE: failed test_sanity_simple! overhealing was not applied correctly")
 
 /datum/unit_test/mob_damage/animal/test_sanity_complex(mob/living/carbon/test_mob)
+	procstart = null
+	src.procstart = null
 	// Heal up, so that errors from the previous tests we won't cause this one to fail
 	test_mob.fully_heal(HEAL_DAMAGE)
 	var/damage_returned
@@ -601,6 +637,8 @@
 /datum/unit_test/human_tox_damage
 
 /datum/unit_test/human_tox_damage/Run()
+	procstart = null
+	src.procstart = null
 	// Spawn a dummy, give it a bunch of tox damage. It should get the status effect.
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 	dummy.set_tox_loss(75)

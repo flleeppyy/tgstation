@@ -92,6 +92,8 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 	var/datum/weakref/linked_component_printer
 
 /obj/item/integrated_circuit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	GLOB.integrated_circuits += src
@@ -99,10 +101,14 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 	RegisterSignal(src, COMSIG_ATOM_USB_CABLE_TRY_ATTACH, PROC_REF(on_atom_usb_cable_try_attach))
 
 /obj/item/integrated_circuit/loaded/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_cell(new /obj/item/stock_parts/power_store/cell/high(src))
 
 /obj/item/integrated_circuit/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/circuit_component/to_delete in attached_components)
 		remove_component(to_delete)
 		qdel(to_delete)
@@ -117,6 +123,8 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 	return ..()
 
 /obj/item/integrated_circuit/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cell)
 		. += span_notice("The charge meter reads [cell ? round(cell.percent(), 1) : 0]%.")
@@ -124,6 +132,8 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 		. += span_notice("There is no power cell installed.")
 
 /obj/item/integrated_circuit/drop_location()
+	procstart = null
+	src.procstart = null
 	if(shell)
 		return shell.drop_location()
 	return ..()
@@ -135,6 +145,8 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
  * * cell_to_set - The new cell of the circuit. Can be null.
  **/
 /obj/item/integrated_circuit/proc/set_cell(obj/item/stock_parts/power_store/cell_to_set)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_CIRCUIT_SET_CELL, cell_to_set)
 	cell = cell_to_set
 
@@ -145,10 +157,14 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
  * * new_value - A boolean that determines if the circuit is locked or not.
  **/
 /obj/item/integrated_circuit/proc/set_locked(new_value)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_CIRCUIT_SET_LOCKED, new_value)
 	locked = new_value
 
 /obj/item/integrated_circuit/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/circuit_component))
 		return add_component_manually(tool, user) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 
@@ -173,6 +189,8 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 	return NONE
 
 /obj/item/integrated_circuit/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!cell)
 		balloon_alert(user, "power cell missing!")
 		return ITEM_INTERACT_BLOCKING
@@ -192,6 +210,8 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
  * * new_shell - The new shell to register.
  */
 /obj/item/integrated_circuit/proc/set_shell(atom/movable/new_shell)
+	procstart = null
+	src.procstart = null
 	remove_current_shell()
 	set_on(TRUE)
 	SEND_SIGNAL(src, COMSIG_CIRCUIT_SET_SHELL, new_shell)
@@ -207,6 +227,8 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
  * Unregisters the current shell attached to this circuit.
  */
 /obj/item/integrated_circuit/proc/remove_current_shell()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!shell)
 		return
@@ -225,6 +247,8 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
  * * new_value - A boolean that determines if the circuit is on or not.
  **/
 /obj/item/integrated_circuit/proc/set_on(new_value)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_CIRCUIT_SET_ON, new_value)
 	on = new_value
 
@@ -236,6 +260,8 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
  * * to_check - The component to check.
  **/
 /obj/item/integrated_circuit/proc/is_duplicate(obj/item/circuit_component/to_check)
+	procstart = null
+	src.procstart = null
 	for(var/component in attached_components)
 		if(component == to_check)
 			continue
@@ -256,6 +282,8 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
  * Once the component is added, the ports can be attached to other components
  */
 /obj/item/integrated_circuit/proc/add_component(obj/item/circuit_component/to_add, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(to_add.parent)
 		return FALSE
 
@@ -296,12 +324,16 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
  * Adds a component to the circuitboard through a manual action.
  */
 /obj/item/integrated_circuit/proc/add_component_manually(obj/item/circuit_component/to_add, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (SEND_SIGNAL(src, COMSIG_CIRCUIT_ADD_COMPONENT_MANUALLY, to_add, user) & COMPONENT_CANCEL_ADD_COMPONENT)
 		return FALSE
 
 	return add_component(to_add, user)
 
 /obj/item/integrated_circuit/proc/component_move_handler(obj/item/circuit_component/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(source.loc != src)
 		remove_component(source)
@@ -312,6 +344,8 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
  * This removes all connects between the ports
  */
 /obj/item/integrated_circuit/proc/remove_component(obj/item/circuit_component/to_remove)
+	procstart = null
+	src.procstart = null
 	if(shell)
 		to_remove.unregister_shell(shell)
 
@@ -325,15 +359,21 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 	to_remove.removed_from(src)
 
 /obj/item/integrated_circuit/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/item/integrated_circuit/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/simple/circuit_assets),
 		get_asset_datum(/datum/asset/json/circuit_components)
 	)
 
 /obj/item/integrated_circuit/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["global_basic_types"] = GLOB.wiremod_basic_types
 	.["screen_x"] = screen_x
@@ -345,6 +385,8 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 	.["stored_designs"] = printer.current_unlocked_designs
 
 /obj/item/integrated_circuit/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["components"] = list()
 	for(var/obj/item/circuit_component/component as anything in attached_components)
@@ -417,16 +459,22 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 	.["is_admin"] = (admin_only || isAdminGhostAI(user)) && check_rights_for(user.client, R_VAREDIT)
 
 /obj/item/integrated_circuit/ui_host(mob/user)
+	procstart = null
+	src.procstart = null
 	if(shell)
 		return shell
 	return ..()
 
 /obj/item/integrated_circuit/can_interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		return FALSE
 	return ..()
 
 /obj/item/integrated_circuit/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (isobserver(user))
@@ -441,11 +489,15 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 			return UI_INTERACTIVE
 
 /obj/item/integrated_circuit/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!shell)
 		return GLOB.hands_state
 	return GLOB.physical_obscured_state
 
 /obj/item/integrated_circuit/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "IntegratedCircuit", name)
@@ -455,6 +507,8 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 #define WITHIN_RANGE(id, table) (id >= 1 && id <= length(table))
 
 /obj/item/integrated_circuit/ui_act(action, list/params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -700,11 +754,15 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 #undef WITHIN_RANGE
 
 /obj/item/integrated_circuit/balloon_alert(mob/viewer, text)
+	procstart = null
+	src.procstart = null
 	if(shell)
 		return shell.balloon_alert(viewer, text)
 	return ..()
 
 /obj/item/integrated_circuit/proc/clear_setter_or_getter(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// This'll also be called in the Destroy() override of /obj/item/circuit_component
 	if(!QDELING(source))
@@ -712,12 +770,16 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 	setter_and_getter_count--
 
 /obj/item/integrated_circuit/proc/on_atom_usb_cable_try_attach(datum/source, obj/item/usb_cable/usb_cable, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	usb_cable.balloon_alert(user, "circuit needs to be in a compatible shell")
 	return COMSIG_CANCEL_USB_CABLE_ATTACK
 
 /// Sets the display name that appears on the shell.
 /obj/item/integrated_circuit/proc/set_display_name(new_name)
+	procstart = null
+	src.procstart = null
 	display_name = copytext_char(new_name, 1, label_max_length)
 	if(!shell)
 		return
@@ -732,18 +794,24 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 
 /// Toggles the grid mode property for this circuit.
 /obj/item/integrated_circuit/proc/toggle_grid_mode()
+	procstart = null
+	src.procstart = null
 	grid_mode = !grid_mode
 
 /**
  * Returns the creator of the integrated circuit. Used in admin messages and other related things.
  */
 /obj/item/integrated_circuit/proc/get_creator_admin()
+	procstart = null
+	src.procstart = null
 	return get_creator(include_link = TRUE)
 
 /**
  * Returns the creator of the integrated circuit. Used in admin logs and other related things.
  */
 /obj/item/integrated_circuit/proc/get_creator(include_link = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/mind/inserter
 	if(inserter_mind)
 		inserter = inserter_mind.resolve()
@@ -756,6 +824,8 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 
 /// Attempts to save a circuit to a given client
 /obj/item/integrated_circuit/proc/attempt_save_to(client/saver)
+	procstart = null
+	src.procstart = null
 	if(!check_rights_for(saver, R_VAREDIT))
 		return FALSE
 	var/temp_file = file("data/CircuitDownloadTempFile")

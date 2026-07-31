@@ -21,6 +21,8 @@
 	var/node_priority = AGGRO_PRIORITY_NODE
 
 /datum/target_priority_strategy/mining/get_target_priority(datum/ai_controller/controller, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if (!isliving(target))
 		return ..()
 
@@ -55,6 +57,8 @@
 	return target.has_faction(FACTION_ASHWALKER) ? AGGRO_PRIORITY_ASHWALKER : AGGRO_PRIORITY_HUMAN
 
 /datum/target_priority_strategy/mining/select_target(datum/ai_controller/controller, list/atom/targets)
+	procstart = null
+	src.procstart = null
 	var/max_priority = 0
 	var/min_distance = INFINITY
 	var/lucky_fella = null

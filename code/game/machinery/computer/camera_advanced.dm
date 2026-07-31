@@ -32,6 +32,8 @@
 	interaction_flags_machine = INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_REQUIRES_SIGHT
 
 /obj/machinery/computer/camera_advanced/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in networks)
 		networks -= i
@@ -66,6 +68,8 @@
 		)
 
 /obj/machinery/computer/camera_advanced/Destroy()
+	procstart = null
+	src.procstart = null
 	unset_machine()
 	QDEL_NULL(eyeobj)
 	QDEL_LIST(actions)
@@ -73,11 +77,15 @@
 	return ..()
 
 /obj/machinery/computer/camera_advanced/process()
+	procstart = null
+	src.procstart = null
 	if(!can_use(current_user) || (issilicon(current_user) && !HAS_SILICON_ACCESS(current_user)))
 		unset_machine()
 		return PROCESS_KILL
 
 /obj/machinery/computer/camera_advanced/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
+	procstart = null
+	src.procstart = null
 	for(var/i in networks)
 		networks -= i
 		networks += "[port.shuttle_id]_[i]"
@@ -88,6 +96,8 @@
 	circuit = /obj/item/circuitboard/computer/advanced_camera
 
 /obj/machinery/computer/camera_advanced/syndie/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
+	procstart = null
+	src.procstart = null
 	return //For syndie nuke shuttle, to spy for station.
 
 /**
@@ -96,6 +106,8 @@
  * Will return nothing if it runtimes.
  */
 /obj/machinery/computer/camera_advanced/proc/CreateEye()
+	procstart = null
+	src.procstart = null
 	if(eyeobj)
 		CRASH("Tried to make another eyeobj for some reason. Why?")
 
@@ -103,13 +115,19 @@
 	return TRUE
 
 /obj/machinery/computer/camera_advanced/proc/GrantActions(mob/living/user)
+	procstart = null
+	src.procstart = null
 	for(var/datum/action/to_grant as anything in actions)
 		to_grant.Grant(user)
 
 /obj/machinery/proc/remove_eye_control(mob/living/user)
+	procstart = null
+	src.procstart = null
 	CRASH("[type] does not implement camera eye handling")
 
 /obj/machinery/computer/camera_advanced/proc/give_eye_control(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(user?.client))
 		return
 
@@ -122,6 +140,8 @@
 	begin_processing()
 
 /obj/machinery/computer/camera_advanced/remove_eye_control(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(user?.client))
 		return
 
@@ -136,23 +156,33 @@
 	playsound(src, 'sound/machines/terminal/terminal_off.ogg', 25, FALSE)
 
 /obj/machinery/computer/camera_advanced/on_set_is_operational(old_value)
+	procstart = null
+	src.procstart = null
 	if(!is_operational)
 		unset_machine()
 
 /obj/machinery/computer/camera_advanced/proc/unset_machine()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(current_user))
 		remove_eye_control(current_user)
 	end_processing()
 
 /obj/machinery/computer/camera_advanced/proc/can_use(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return can_interact(user)
 
 /obj/machinery/computer/camera_advanced/abductor/can_use(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isabductor(user))
 		return FALSE
 	return ..()
 
 /obj/machinery/computer/camera_advanced/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -204,9 +234,13 @@
 		unset_machine()
 
 /obj/machinery/computer/camera_advanced/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/computer/camera_advanced/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return //AIs would need to disable their own camera procs to use the console safely. Bugs happen otherwise.
 
 /datum/action/innate/camera_off
@@ -215,6 +249,8 @@
 	button_icon_state = "camera_off"
 
 /datum/action/innate/camera_off/Activate()
+	procstart = null
+	src.procstart = null
 	if(!owner || !isliving(owner))
 		return
 	var/mob/eye/camera/remote/remote_eye = owner.remote_control
@@ -227,6 +263,8 @@
 	button_icon_state = "camera_jump"
 
 /datum/action/innate/camera_jump/Activate()
+	procstart = null
+	src.procstart = null
 	if(!owner || !isliving(owner))
 		return
 	var/mob/eye/camera/remote/remote_eye = owner.remote_control
@@ -257,6 +295,8 @@
 	button_icon_state = "move_up"
 
 /datum/action/innate/camera_multiz_up/Activate()
+	procstart = null
+	src.procstart = null
 	if(!owner || !isliving(owner))
 		return
 	var/mob/eye/camera/remote/remote_eye = owner.remote_control
@@ -271,6 +311,8 @@
 	button_icon_state = "move_down"
 
 /datum/action/innate/camera_multiz_down/Activate()
+	procstart = null
+	src.procstart = null
 	if(!owner || !isliving(owner))
 		return
 	var/mob/eye/camera/remote/remote_eye = owner.remote_control
@@ -280,6 +322,8 @@
 		to_chat(owner, span_notice("You can't move downwards!"))
 
 /obj/machinery/computer/camera_advanced/human_ai/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	balloon_alert(user, "repackaging...")
 	if(!do_after(user, 5 SECONDS, src))
 		return ITEM_INTERACT_BLOCKING
@@ -291,12 +335,16 @@
 /// Equipment action component support
 
 /obj/machinery/computer/camera_advanced/proc/register_usb_port(datum/component/usb_port/port)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(port, COMSIG_USB_PORT_REGISTER_PHYSICAL_OBJECT, PROC_REF(on_port_register_object))
 	RegisterSignal(port, COMSIG_USB_PORT_UNREGISTER_PHYSICAL_OBJECT, PROC_REF(on_port_unregister_object))
 	if(port.physical_object)
 		on_port_register_object(port, port.physical_object)
 
 /obj/machinery/computer/camera_advanced/proc/on_port_register_object(datum/component/usb_port/source, atom/movable/object)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/item/integrated_circuit/circuit = source.attached_circuit
 	if(object == circuit)
@@ -307,6 +355,8 @@
 		add_circuit_action(null, action_comp)
 
 /obj/machinery/computer/camera_advanced/proc/add_circuit_action(datum/_source, obj/item/circuit_component/equipment_action/action_comp)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/datum/action/innate/circuit_equipment_action/new_action = new(src, action_comp)
 	LAZYADD(actions, new_action)
@@ -314,6 +364,8 @@
 		new_action.Grant(current_user)
 
 /obj/machinery/computer/camera_advanced/proc/remove_circuit_action(datum/_source, obj/item/circuit_component/equipment_action/action_comp)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/datum/action/innate/circuit_equipment_action/action = action_comp.granted_to[REF(src)]
 	if(!istype(action))
@@ -322,6 +374,8 @@
 	QDEL_LIST_ASSOC_VAL(action_comp.granted_to)
 
 /obj/machinery/computer/camera_advanced/proc/on_port_unregister_object(datum/component/usb_port/source, atom/movable/object)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/item/integrated_circuit/circuit = source.attached_circuit
 	for(var/obj/item/circuit_component/equipment_action/action_comp in circuit.attached_components)
@@ -329,6 +383,8 @@
 	UnregisterSignal(object, list(COMSIG_CIRCUIT_ACTION_COMPONENT_REGISTERED, COMSIG_CIRCUIT_ACTION_COMPONENT_UNREGISTERED))
 
 /obj/machinery/computer/camera_advanced/proc/unregister_usb_port(datum/component/usb_port/port)
+	procstart = null
+	src.procstart = null
 	if(port.physical_object)
 		on_port_unregister_object(port, port.physical_object)
 	UnregisterSignal(port, list(COMSIG_USB_PORT_REGISTER_PHYSICAL_OBJECT, COMSIG_USB_PORT_UNREGISTER_PHYSICAL_OBJECT))
@@ -346,11 +402,15 @@
 	var/obj/machinery/computer/camera_advanced/attached_console
 
 /obj/item/circuit_component/advanced_camera/populate_ports()
+	procstart = null
+	src.procstart = null
 	eye_x = add_output_port("X", PORT_TYPE_NUMBER)
 	eye_y = add_output_port("Y", PORT_TYPE_NUMBER)
 	eye_z = add_output_port("Z", PORT_TYPE_NUMBER)
 
 /obj/item/circuit_component/advanced_camera/register_usb_parent(atom/movable/parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(parent, /obj/machinery/computer/camera_advanced))
 		attached_console = parent
@@ -360,14 +420,20 @@
 			RegisterSignal(attached_console, COMSIG_ADVANCED_CAMERA_EYE_CREATED, PROC_REF(on_parent_eye_created))
 
 /obj/item/circuit_component/advanced_camera/proc/on_parent_eye_created(datum/_source, mob/eye/camera/remote/eyeobj)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(attached_console, COMSIG_ADVANCED_CAMERA_EYE_CREATED)
 	register_eyeobj(eyeobj)
 
 /obj/item/circuit_component/advanced_camera/proc/register_eyeobj(mob/eye/camera/remote/eyeobj)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(eyeobj, COMSIG_MOVABLE_MOVED, PROC_REF(on_eyeobj_moved))
 
 /obj/item/circuit_component/advanced_camera/unregister_usb_parent(atom/movable/parent)
+	procstart = null
+	src.procstart = null
 	if(istype(parent, /obj/machinery/computer/camera_advanced))
 		UnregisterSignal(attached_console, COMSIG_ADVANCED_CAMERA_EYE_CREATED)
 		if(attached_console.eyeobj)
@@ -376,6 +442,8 @@
 	return ..()
 
 /obj/item/circuit_component/advanced_camera/proc/on_eyeobj_moved(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/turf/eye_turf = get_turf(source)
 	if(!eye_turf)
@@ -406,6 +474,8 @@
 	var/obj/machinery/computer/camera_advanced/attached_console
 
 /obj/item/circuit_component/advanced_camera_intercept/populate_ports()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	enabled = add_input_port("Enabled", PORT_TYPE_NUMBER)
 
@@ -419,6 +489,8 @@
 	secondary_click = add_output_port("Secondary", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/advanced_camera_intercept/register_usb_parent(atom/movable/parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(parent, /obj/machinery/computer/camera_advanced))
 		attached_console = parent
@@ -428,6 +500,8 @@
 			RegisterSignal(attached_console, COMSIG_ADVANCED_CAMERA_EYE_CREATED, PROC_REF(on_parent_eye_created))
 
 /obj/item/circuit_component/advanced_camera_intercept/input_received(datum/port/input/port, list/return_values)
+	procstart = null
+	src.procstart = null
 	if(port != enabled)
 		return
 	if(enabled.value)
@@ -436,16 +510,22 @@
 		attached_console.current_user?.click_intercept = null
 
 /obj/item/circuit_component/advanced_camera_intercept/proc/on_parent_eye_created(datum/_source, mob/eye/camera/remote/eyeobj)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(attached_console, COMSIG_ADVANCED_CAMERA_EYE_CREATED)
 	register_eyeobj(eyeobj)
 
 /obj/item/circuit_component/advanced_camera_intercept/proc/register_eyeobj(mob/eye/camera/remote/eyeobj)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(eyeobj, COMSIG_REMOTE_CAMERA_ASSIGN_USER, PROC_REF(on_parent_assign_user))
 	if(enabled.value)
 		attached_console.current_user?.click_intercept = src
 
 /obj/item/circuit_component/advanced_camera_intercept/unregister_usb_parent(atom/movable/parent)
+	procstart = null
+	src.procstart = null
 	if(istype(parent, /obj/machinery/computer/camera_advanced))
 		attached_console.current_user?.click_intercept = null
 		if(attached_console.eyeobj)
@@ -455,12 +535,16 @@
 	return ..()
 
 /obj/item/circuit_component/advanced_camera_intercept/proc/on_parent_assign_user(datum/_source, mob/living/new_user, mob/living/old_user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	old_user?.click_intercept = null
 	if(enabled.value)
 		new_user?.click_intercept = src
 
 /obj/item/circuit_component/advanced_camera_intercept/proc/InterceptClickOn(mob/user, params, atom/target)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 	if(LAZYACCESS(modifiers, SHIFT_CLICK))
 		return

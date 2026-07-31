@@ -5,6 +5,8 @@
 	priority = TEST_LONGER
 
 /datum/unit_test/maptest_area_contents/Run()
+	procstart = null
+	src.procstart = null
 	// First, we check that there are no entries in more then one area
 	// That or duplicate entries
 	for (var/area/area_to_test in GLOB.areas)

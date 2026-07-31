@@ -42,17 +42,23 @@
 	pointer_icon_state = "purple_laser"
 
 /obj/item/laser_pointer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	diode = new(src)
 	if(!pointer_icon_state)
 		pointer_icon_state = pick("red_laser", "green_laser", "blue_laser", "purple_laser")
 
 /obj/item/laser_pointer/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(crystal_lens)
 	QDEL_NULL(diode)
 	return ..()
 
 /obj/item/laser_pointer/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == crystal_lens)
 		crystal_lens = null
@@ -60,6 +66,8 @@
 		diode = null
 
 /obj/item/laser_pointer/upgraded/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	diode = new /obj/item/stock_parts/micro_laser/ultra
 
@@ -69,10 +77,14 @@
 	max_range = INFINITY
 
 /obj/item/laser_pointer/infinite_range/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	diode = new /obj/item/stock_parts/micro_laser/quadultra
 
 /obj/item/laser_pointer/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(diode)
 		tool.play_tool_sound(src)
 		balloon_alert(user, "removed diode")
@@ -81,6 +93,8 @@
 		return TRUE
 
 /obj/item/laser_pointer/tool_act(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isnull(crystal_lens))
 		return ..()
 	if(tool_behaviour != TOOL_WIRECUTTER && tool_behaviour != TOOL_HEMOSTAT)
@@ -92,6 +106,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/laser_pointer/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/stock_parts/micro_laser))
 		if(diode)
 			balloon_alert(user, "already has a diode!")
@@ -158,6 +174,8 @@
 	return NONE
 
 /obj/item/laser_pointer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
 		if(isnull(diode))
@@ -171,6 +189,8 @@
 			. += span_notice("<i>You could examine it more thoroughly...</i>")
 
 /obj/item/laser_pointer/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(crystal_lens) || isnull(diode))
 		return
@@ -184,16 +204,22 @@
 			and the wide margin between it and the focus lens could probably house <b>a crystal</b> of some sort.</i>"
 
 /obj/item/laser_pointer/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	laser_act(interacting_with, user, modifiers)
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/laser_pointer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(interacting_with, TRAIT_COMBAT_MODE_SKIP_INTERACTION))
 		return NONE
 	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 ///Handles shining the clicked atom,
 /obj/item/laser_pointer/proc/laser_act(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isnull(diode))
 		to_chat(user, span_notice("You point [src] at [target], but nothing happens!"))
 		return
@@ -324,6 +350,8 @@
 	icon_state = "pointer"
 
 /obj/item/laser_pointer/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(isnull(diode))
 		recharging = FALSE
 		return PROCESS_KILL

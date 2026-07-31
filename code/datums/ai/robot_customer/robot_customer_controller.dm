@@ -14,12 +14,16 @@
 	)
 
 /datum/ai_controller/robot_customer/Destroy()
+	procstart = null
+	src.procstart = null
 	clear_blackboard_key(BB_CUSTOMER_CURRENT_ORDER)
 	clear_blackboard_key(BB_CUSTOMER_CUSTOMERINFO)
 	clear_blackboard_key(BB_CUSTOMER_EXIT_PORTAL)
 	return ..()
 
 /datum/ai_controller/robot_customer/TryPossessPawn(atom/new_pawn)
+	procstart = null
+	src.procstart = null
 	if(!istype(new_pawn, /mob/living/basic/robot_customer))
 		return AI_CONTROLLER_INCOMPATIBLE
 	new_pawn.AddElement(/datum/element/relay_attackers)
@@ -30,6 +34,8 @@
 	return ..() //Run parent at end
 
 /datum/ai_controller/robot_customer/UnpossessPawn(destroy)
+	procstart = null
+	src.procstart = null
 	if(isnull(pawn))
 #ifndef UNIT_TESTS
 		stack_trace("Robot Customer AI Controller UnpossessPawn called with null pawn! This shouldn't happen in normal circumstances.") // and unit tests are abnormal circumstances
@@ -40,6 +46,8 @@
 	return ..() //Run parent at end
 
 /datum/ai_controller/robot_customer/proc/on_attackby(datum/source, obj/item/I, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/datum/venue/attending_venue = blackboard[BB_CUSTOMER_ATTENDING_VENUE]
 	if(attending_venue.is_correct_order(I, blackboard[BB_CUSTOMER_CURRENT_ORDER]))
@@ -52,10 +60,14 @@
 		INVOKE_ASYNC(src, PROC_REF(warn_greytider), user)
 
 /datum/ai_controller/robot_customer/proc/on_attacked(datum/source, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(warn_greytider), attacker)
 
 /datum/ai_controller/robot_customer/proc/eat_order(obj/item/order_item, datum/venue/attending_venue)
+	procstart = null
+	src.procstart = null
 	if(blackboard[BB_CUSTOMER_EATING])
 		return
 
@@ -69,12 +81,16 @@
 
 ///Called when
 /datum/ai_controller/robot_customer/proc/on_get_pulled(datum/source, mob/living/puller)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 
 	INVOKE_ASYNC(src, PROC_REF(async_on_get_pulled), source, puller)
 
 /datum/ai_controller/robot_customer/proc/async_on_get_pulled(datum/source, mob/living/puller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/robot_customer/customer = pawn
 	var/datum/customer_data/customer_data = blackboard[BB_CUSTOMER_CUSTOMERINFO]
 	var/datum/venue/attending_venue = blackboard[BB_CUSTOMER_ATTENDING_VENUE]
@@ -89,11 +105,15 @@
 
 
 /datum/ai_controller/robot_customer/proc/dont_want_that(mob/living/chef, obj/item/thing)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/robot_customer/customer = pawn
 	var/datum/customer_data/customer_data = blackboard[BB_CUSTOMER_CUSTOMERINFO]
 	customer.say(customer_data.wrong_item_line)
 
 /datum/ai_controller/robot_customer/proc/warn_greytider(mob/living/greytider)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/robot_customer/customer = pawn
 	var/datum/venue/attending_venue = blackboard[BB_CUSTOMER_ATTENDING_VENUE]
 	var/datum/customer_data/customer_data = blackboard[BB_CUSTOMER_CUSTOMERINFO]
@@ -114,6 +134,8 @@
 	cancel_current_plan()
 
 /datum/ai_controller/robot_customer/proc/on_get_punched(datum/source, mob/living/living_hitter)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/venue/attending_venue = blackboard[BB_CUSTOMER_ATTENDING_VENUE]

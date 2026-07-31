@@ -9,15 +9,21 @@
 	max_integrity = 15
 
 /obj/structure/spider/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/atmos_sensitive, mapload)
 	ADD_TRAIT(src, TRAIT_INVERTED_DEMOLITION, INNATE_TRAIT)
 
 /obj/structure/spider/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	if(damage_type == BURN)//the stickiness of the web mutes all attack sounds except fire damage type
 		playsound(loc, 'sound/items/tools/welder.ogg', 100, TRUE)
 
 /obj/structure/spider/run_atom_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
+	procstart = null
+	src.procstart = null
 	if(damage_flag == MELEE)
 		switch(damage_type)
 			if(BURN)
@@ -27,9 +33,13 @@
 	return ..()
 
 /obj/structure/spider/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return exposed_temperature > 350
 
 /obj/structure/spider/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	take_damage(5, BURN, 0, 0)
 
 /obj/structure/spider/stickyweb
@@ -51,6 +61,8 @@
 	var/projectile_stuck_chance = 30
 
 /obj/structure/spider/stickyweb/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	// Offset on init so that they look nice in the map editor
 	if (has_frill)
 		pixel_x = -9
@@ -63,6 +75,8 @@
 	return ..()
 
 /obj/structure/spider/stickyweb/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	.= ..()
 	if(.)
 		return
@@ -77,6 +91,8 @@
 	user.put_in_hands(woven_cloth)
 
 /obj/structure/spider/stickyweb/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(sealed)
 		return FALSE
@@ -85,9 +101,13 @@
 	return .
 
 /obj/structure/spider/stickyweb/proc/is_whitelisted(mob/candidate)
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(candidate, TRAIT_WEB_SURFER)
 
 /obj/structure/spider/stickyweb/proc/on_entered(datum/source, atom/movable/victim, old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(victim))
@@ -99,6 +119,8 @@
 
 /// Drains stamina and shows feedback when you get stuck moving thru a web
 /obj/structure/spider/stickyweb/proc/stuck_react(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	if(victim.get_stamina_loss() > 90)
 		if(victim.body_position != LYING_DOWN)
 			to_chat(victim, span_warning("You trip over \the [src] due to exhaustion!"))
@@ -119,15 +141,21 @@
 	var/mob/living/allowed_mob
 
 /obj/structure/spider/stickyweb/genetic/Initialize(mapload, allowedmob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Tint it purple so that spiders don't get confused about why they can't cross this one
 	add_filter(SPIDER_WEB_TINT, 10, list("type" = "outline", "color" = "#ffaaf8ff", "size" = 0.1))
 
 /obj/structure/spider/stickyweb/genetic/Initialize(mapload, allowedmob)
+	procstart = null
+	src.procstart = null
 	allowed_mob = allowedmob
 	return ..()
 
 /obj/structure/spider/stickyweb/genetic/is_whitelisted(mob/candidate)
+	procstart = null
+	src.procstart = null
 	return candidate == allowed_mob
 
 /// Web with a 100% chance to intercept movement
@@ -138,10 +166,14 @@
 	projectile_stuck_chance = 100
 
 /obj/structure/spider/stickyweb/very_sticky/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_filter(SPIDER_WEB_TINT, 10, list("type" = "outline", "color" = "#ffffaaff", "size" = 0.1))
 
 /obj/structure/spider/stickyweb/very_sticky/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/web_overlay = mutable_appearance(icon = 'icons/effects/web.dmi', icon_state = "sticky_overlay", layer = layer + 1)
 	web_overlay.pixel_w -= pixel_x
@@ -165,6 +197,8 @@
 	can_atmos_pass = ATMOS_PASS_NO
 
 /obj/structure/spider/stickyweb/sealed/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	air_update_turf(TRUE, TRUE)
 
@@ -214,6 +248,8 @@
 	resistance_flags = FIRE_PROOF | FREEZE_PROOF
 
 /obj/structure/spider/passage/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = -9
 	pixel_y = -9
@@ -227,10 +263,14 @@
 	max_integrity = 60
 
 /obj/structure/spider/cocoon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	icon_state = pick("cocoon1","cocoon2","cocoon3")
 	. = ..()
 
 /obj/structure/spider/cocoon/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/breakout_time = 600
 	user.changeNext_move(CLICK_CD_BREAKOUT)
 	user.last_special = world.time + CLICK_CD_BREAKOUT
@@ -242,6 +282,8 @@
 		qdel(src)
 
 /obj/structure/spider/cocoon/Destroy()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	src.visible_message(span_warning("\The [src] splits open."))
 	for(var/atom/movable/A in contents)
@@ -263,6 +305,8 @@
 	max_integrity = 40
 
 /obj/structure/spider/spikes/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = -9
 	pixel_y = -9
@@ -278,6 +322,8 @@
 	anchored = FALSE
 
 /obj/structure/spider/effigy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	fade_into_nothing(1 MINUTES)
 

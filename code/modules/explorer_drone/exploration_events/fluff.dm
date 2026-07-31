@@ -3,4 +3,6 @@
 	name = "fluff event"
 
 /datum/exploration_event/fluff/get_discovery_message(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	return pick_list(EXODRONE_FILE,drone.location.fluff_type)

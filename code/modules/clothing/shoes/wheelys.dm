@@ -21,12 +21,16 @@
 	var/obj/vehicle/ridden/scooter/skateboard/wheelys/wheels = /obj/vehicle/ridden/scooter/skateboard/wheelys
 
 /obj/item/clothing/shoes/wheelys/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 	wheels = new wheels(null)
 	wheels.link_shoes(src)
 
 /obj/item/clothing/shoes/wheelys/ui_action_click(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		return
 	if(!istype(user.get_item_by_slot(ITEM_SLOT_FEET), /obj/item/clothing/shoes/wheelys))
@@ -44,12 +48,16 @@
 	wheelToggle = TRUE
 
 /obj/item/clothing/shoes/wheelys/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	if(wheelToggle)
 		wheels.unbuckle_mob(user)
 		wheelToggle = FALSE
 	..()
 
 /obj/item/clothing/shoes/wheelys/proc/toggle_wheels(status)
+	procstart = null
+	src.procstart = null
 	if (status)
 		worn_icon_state = "[initial(worn_icon_state)]-on"
 	else
@@ -58,6 +66,8 @@
 	update_appearance()
 
 /obj/item/clothing/shoes/wheelys/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(wheels)
 	. = ..()
 

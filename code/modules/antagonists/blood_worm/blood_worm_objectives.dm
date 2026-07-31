@@ -2,6 +2,8 @@
 	abstract_type = /datum/objective/blood_worm
 
 /datum/objective/blood_worm/proc/get_blood_worm_team()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/team/blood_worm)
 	return team
 
@@ -10,6 +12,8 @@
 	explanation_text = "We must prevent all members of station command from escaping alive on the emergency shuttle."
 
 /datum/objective/blood_worm/kill/check_completion()
+	procstart = null
+	src.procstart = null
 	for (var/mob/player_mob as anything in GLOB.player_list)
 		if (!(player_mob.mind?.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND))
 			continue
@@ -29,13 +33,19 @@
 	var/blood_required = 0
 
 /datum/objective/blood_worm/consume/New(text)
+	procstart = null
+	src.procstart = null
 	blood_required = rand(20, 30) * 100
 	update_explanation_text()
 
 /datum/objective/blood_worm/consume/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	explanation_text = "We must consume a total of at least [blood_required] units of real blood to sate our appetite."
 
 /datum/objective/blood_worm/consume/check_completion()
+	procstart = null
+	src.procstart = null
 	return get_blood_worm_team().blood_consumed_total >= blood_required
 
 /datum/objective/blood_worm/multiply
@@ -44,13 +54,19 @@
 	var/times_required = 0
 
 /datum/objective/blood_worm/multiply/New(text)
+	procstart = null
+	src.procstart = null
 	times_required = rand(2, 3)
 	update_explanation_text()
 
 /datum/objective/blood_worm/multiply/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	explanation_text = "At least [times_required] of us must reproduce to pave the way for our overwhelming numbers."
 
 /datum/objective/blood_worm/multiply/check_completion()
+	procstart = null
+	src.procstart = null
 	return get_blood_worm_team().times_reproduced_total >= times_required
 
 /datum/objective/blood_worm/conquer
@@ -59,13 +75,19 @@
 	var/worms_required = 0
 
 /datum/objective/blood_worm/conquer/New(text)
+	procstart = null
+	src.procstart = null
 	worms_required = rand(3, 4)
 	update_explanation_text()
 
 /datum/objective/blood_worm/conquer/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	explanation_text = "At least [worms_required] of us must escape alive on the emergency shuttle to conquer what is on the other side."
 
 /datum/objective/blood_worm/conquer/check_completion()
+	procstart = null
+	src.procstart = null
 	var/conquerors = 0
 
 	for (var/datum/mind/member as anything in team.members)

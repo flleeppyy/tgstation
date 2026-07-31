@@ -30,6 +30,8 @@
 	var/ascend_bonus = 15
 
 /obj/item/his_grace/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool,/obj/item/slimepotion/genderchange))
 		var/turf/T = get_turf(src)
 		var/mob/living/holder
@@ -59,6 +61,8 @@
 		return ITEM_INTERACT_SUCCESS
 	return NONE
 /obj/item/his_grace/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSprocessing, src)
 	SSpoints_of_interest.make_point_of_interest(src)
@@ -66,12 +70,16 @@
 	update_appearance()
 
 /obj/item/his_grace/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSprocessing, src)
 	for(var/mob/living/L in src)
 		L.forceMove(get_turf(src))
 	return ..()
 
 /obj/item/his_grace/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(ascended)
 		icon_state = "gold"
 		inhand_icon_state = "toolbox_gold"
@@ -84,6 +92,8 @@
 	return ..()
 
 /obj/item/his_grace/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ascended)
 		. += "triple_latch"
@@ -93,10 +103,14 @@
 		. += "single_latch"
 
 /obj/item/his_grace/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!awakened)
 		INVOKE_ASYNC(src, PROC_REF(awaken), user)
 
 /obj/item/his_grace/attack(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(awakened && IS_UNCONSCIOUS_OR_CRIT(M))
 		if(gender == FEMALE)
 			var/dx = M.x - user.x
@@ -112,10 +126,14 @@
 		..()
 
 /obj/item/his_grace/item_ctrl_click(mob/user)
+	procstart = null
+	src.procstart = null
 	//you can't pull his grace
 	return NONE
 
 /obj/item/his_grace/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(awakened)
 		switch(bloodthirst)
@@ -134,12 +152,16 @@
 	else
 		. += span_his_grace("[src] is latched closed.")
 
-/obj/item/his_grace/relaymove(mob/living/user, direction) //Allows changelings, etc. to climb out of Him after they revive, provided He isn't active
+/obj/item/his_grace/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null //Allows changelings, etc. to climb out of Him after they revive, provided He isn't active
 	if(!awakened)
 		user.forceMove(get_turf(src))
 		user.visible_message(span_warning("[user] scrambles out of [src]!"), span_notice("You climb out of [src]!"))
 
 /obj/item/his_grace/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!bloodthirst)
 		drowse()
 		return
@@ -186,7 +208,9 @@
 		else
 			consume(L)
 
-/obj/item/his_grace/proc/awaken(mob/user) //Good morning, Mr. Grace.
+/obj/item/his_grace/proc/awaken(mob/user)
+	procstart = null
+	src.procstart = null //Good morning, Mr. Grace.
 	if(awakened)
 		return
 	awakened = TRUE
@@ -205,6 +229,8 @@
 	move_gracefully()
 
 /obj/item/his_grace/proc/move_gracefully()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!awakened)
@@ -212,7 +238,9 @@
 
 	spasm_animation()
 
-/obj/item/his_grace/proc/drowse() //Good night, Mr. Grace.
+/obj/item/his_grace/proc/drowse()
+	procstart = null
+	src.procstart = null //Good night, Mr. Grace.
 	if(!awakened || ascended)
 		return
 	var/turf/T = get_turf(src)
@@ -230,7 +258,9 @@
 	bloodthirst = 0
 	update_appearance()
 
-/obj/item/his_grace/proc/consume(mob/living/meal) //Here's your dinner, Mr. Grace.
+/obj/item/his_grace/proc/consume(mob/living/meal)
+	procstart = null
+	src.procstart = null //Here's your dinner, Mr. Grace.
 	if(!meal)
 		return
 	var/victims = 0
@@ -253,6 +283,8 @@
 	update_stats()
 
 /obj/item/his_grace/proc/adjust_bloodthirst(amt)
+	procstart = null
+	src.procstart = null
 	prev_bloodthirst = bloodthirst
 	if(prev_bloodthirst < HIS_GRACE_CONSUME_OWNER && !ascended)
 		bloodthirst = clamp(bloodthirst + amt, HIS_GRACE_SATIATED, HIS_GRACE_CONSUME_OWNER)
@@ -261,6 +293,8 @@
 	update_stats()
 
 /obj/item/his_grace/proc/update_stats()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(src, TRAIT_NODROP, HIS_GRACE_TRAIT)
 	var/mob/living/master = get_atom_on_turf(src, /mob/living)
 	if (isnull(master))
@@ -301,6 +335,8 @@
 	force = initial(force) + force_bonus
 
 /obj/item/his_grace/proc/ascend()
+	procstart = null
+	src.procstart = null
 	if(ascended)
 		return
 	var/mob/living/carbon/human/master = loc

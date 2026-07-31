@@ -36,6 +36,8 @@
 	var/custom_transfer_amount = 15
 
 /obj/machinery/chem_master/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	create_reagents(100)
 
 	printable_containers = load_printable_containers()
@@ -52,10 +54,14 @@
 	board.name = name
 
 /obj/machinery/chem_master/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(beaker)
 	return ..()
 
 /obj/machinery/chem_master/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(isnull(held_item) || (held_item.item_flags & ABSTRACT) || (held_item.flags_1 & HOLOGRAM_1))
 		if(isnull(held_item))
@@ -81,6 +87,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/chem_master/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
 		. += span_notice("The status display reads:<br>Reagent buffer capacity: <b>[reagents.maximum_volume]</b> units.<br>Printing speed: <b>[0.75 SECONDS / printing_speed * 100]%</b>.")
@@ -96,6 +104,8 @@
 			. += span_notice("The machine can be [EXAMINE_HINT("pried")] apart.")
 
 /obj/machinery/chem_master/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(panel_open || !is_operational)
 		set_light(0)
@@ -103,6 +113,8 @@
 		set_light(1, 1, "#fffb00")
 
 /obj/machinery/chem_master/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(beaker))
 		. += mutable_appearance(icon, base_icon_state + "_overlay_container")
@@ -134,17 +146,23 @@
 			. += filling
 
 /obj/machinery/chem_master/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == beaker)
 		beaker = null
 		update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/chem_master/on_set_is_operational(old_value)
+	procstart = null
+	src.procstart = null
 	if(!is_operational)
 		is_printing = FALSE
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/chem_master/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.maximum_volume = 0
 	for(var/obj/item/reagent_containers/cup/beaker/beaker in component_parts)
@@ -158,6 +176,8 @@
 
 ///Return a map of category->list of containers this machine can print
 /obj/machinery/chem_master/proc/load_printable_containers()
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	SHOULD_BE_PURE(TRUE)
 
@@ -171,6 +191,8 @@
 	return containers
 
 /obj/machinery/chem_master/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!tool.can_insert_container(user, src))
 		return NONE
 	if(!replace_beaker(user, tool))
@@ -180,6 +202,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/chem_master/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(is_printing)
 		balloon_alert(user, "still printing!")
 		return ITEM_INTERACT_BLOCKING
@@ -189,6 +213,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/machinery/chem_master/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(is_printing)
 		balloon_alert(user, "still printing!")
 		return ITEM_INTERACT_BLOCKING
@@ -196,6 +222,8 @@
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/chem_master/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(is_printing)
 		balloon_alert(user, "still printing!")
 		return ITEM_INTERACT_BLOCKING
@@ -210,6 +238,8 @@
  * * obj/item/reagent_containers/new_beaker - the beaker we are trying to insert, swap with existing or remove if null
  */
 /obj/machinery/chem_master/proc/replace_beaker(mob/living/user, obj/item/reagent_containers/new_beaker)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(!QDELETED(beaker))
@@ -225,6 +255,8 @@
 	return TRUE
 
 /obj/machinery/chem_master/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return .
@@ -234,18 +266,26 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/chem_master/attack_robot_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand_secondary(user, modifiers)
 
 /obj/machinery/chem_master/attack_ai_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand_secondary(user, modifiers)
 
 /obj/machinery/chem_master/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ChemMaster", name)
 		ui.open()
 
 /obj/machinery/chem_master/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["maxPrintable"] = MAX_CONTAINER_PRINT_AMOUNT
@@ -274,6 +314,8 @@
 	return data
 
 /obj/machinery/chem_master/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	//printing statictics
@@ -370,6 +412,8 @@
  * * do_transfer - transfer the reagents else destroy them
  */
 /obj/machinery/chem_master/proc/transfer_reagent(datum/reagents/source, datum/reagents/target, datum/reagent/path, amount, do_transfer)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	//sanity checks for transfer amount
@@ -397,6 +441,8 @@
 		update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/chem_master/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -550,6 +596,8 @@
  * * chosen_container - type of the container we're going to print
  */
 /obj/machinery/chem_master/proc/create_containers(mob/user, item_count, item_name, volume_in_each, chosen_container)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	//lost power or manually stopped
@@ -588,6 +636,8 @@
 	icon_state = "condimaster"
 
 /obj/machinery/chem_master/condimaster/load_printable_containers()
+	procstart = null
+	src.procstart = null
 	var/static/list/containers
 	if(!length(containers))
 		containers = list(CAT_CONDIMENTS = GLOB.reagent_containers[CAT_CONDIMENTS])

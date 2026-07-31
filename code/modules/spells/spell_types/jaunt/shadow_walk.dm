@@ -13,20 +13,28 @@
 	var/light_threshold = SHADOW_SPECIES_LIGHT_THRESHOLD
 
 /datum/action/cooldown/spell/jaunt/shadow_walk/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(grant_to, COMSIG_MOVABLE_MOVED, PROC_REF(update_status_on_signal))
 
 /datum/action/cooldown/spell/jaunt/shadow_walk/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(remove_from, COMSIG_MOVABLE_MOVED)
 
 /datum/action/cooldown/spell/jaunt/shadow_walk/enter_jaunt(mob/living/jaunter, turf/loc_override)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/dummy/phased_mob/shadow/shadow = ..()
 	if(istype(shadow))
 		shadow.light_max = light_threshold
 	return shadow
 
 /datum/action/cooldown/spell/jaunt/shadow_walk/can_cast_spell(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -40,6 +48,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/jaunt/shadow_walk/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_jaunting(cast_on))
 		exit_jaunt(cast_on)
@@ -64,14 +74,20 @@
 	var/light_alert_given = FALSE
 
 /obj/effect/dummy/phased_mob/shadow/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/effect/dummy/phased_mob/shadow/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/effect/dummy/phased_mob/shadow/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(!jaunter || jaunter.loc != src)
 		qdel(src)
@@ -85,6 +101,8 @@
 		living_jaunter.heal_overall_damage(brute = (healing_rate * seconds_per_tick), burn = (healing_rate * seconds_per_tick), required_bodytype = BODYTYPE_ORGANIC)
 
 /obj/effect/dummy/phased_mob/shadow/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	var/turf/oldloc = loc
 	. = ..()
 	if(loc != oldloc)
@@ -92,6 +110,8 @@
 			eject_jaunter(TRUE)
 
 /obj/effect/dummy/phased_mob/shadow/phased_check(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && isspaceturf(.))
 		to_chat(user, span_warning("It really would not be wise to go into space."))
@@ -101,6 +121,8 @@
 			return FALSE
 
 /obj/effect/dummy/phased_mob/shadow/eject_jaunter(forced_out = FALSE)
+	procstart = null
+	src.procstart = null
 	var/turf/reveal_turf = get_turf(src)
 
 	if(istype(reveal_turf))
@@ -122,6 +144,8 @@
  */
 
 /obj/effect/dummy/phased_mob/shadow/proc/check_light_level(atom/location_to_check)
+	procstart = null
+	src.procstart = null
 	var/turf/light_turf = get_turf(location_to_check)
 	return light_turf.get_lumcount() > light_max // jaunt ends on TRUE
 
@@ -133,6 +157,8 @@
  */
 
 /obj/effect/dummy/phased_mob/shadow/proc/light_step_warning()
+	procstart = null
+	src.procstart = null
 	if(!light_alert_given) //Give the user a warning that they're leaving the darkness
 		balloon_alert(jaunter, "leaving the shadows...")
 		light_alert_given = TRUE
@@ -154,4 +180,6 @@
  */
 
 /obj/effect/dummy/phased_mob/shadow/proc/reactivate_light_alert()
+	procstart = null
+	src.procstart = null
 	light_alert_given = FALSE

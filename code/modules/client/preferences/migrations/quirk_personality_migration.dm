@@ -6,6 +6,8 @@
  * quirk sanitization happens AFTER migration
  */
 /datum/preferences/proc/migrate_quirk_to_personality(quirk_to_migrate, datum/personality/new_typepath)
+	procstart = null
+	src.procstart = null
 	ASSERT(istext(quirk_to_migrate) && ispath(new_typepath, /datum/personality))
 	if(!(quirk_to_migrate in all_quirks))
 		return

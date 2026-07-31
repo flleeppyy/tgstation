@@ -10,6 +10,8 @@
 	var/flash_strength
 
 /datum/element/tool_flash/Attach(datum/target, flash_strength)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -20,10 +22,14 @@
 	RegisterSignal(target, COMSIG_TOOL_START_USE, PROC_REF(flash))
 
 /datum/element/tool_flash/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, list(COMSIG_TOOL_IN_USE, COMSIG_TOOL_START_USE))
 
 /datum/element/tool_flash/proc/prob_flash(datum/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(prob(90))
@@ -31,6 +37,8 @@
 	flash(source, user)
 
 /datum/element/tool_flash/proc/flash(datum/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(user && flash_strength > 0 && get_dist(get_turf(source), get_turf(user)) <= 1)

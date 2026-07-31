@@ -2,6 +2,8 @@
 	ui_style = 'icons/hud/screen_ai.dmi'
 
 /datum/hud/ai/initialize_screen_objects()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_screen_object(/atom/movable/screen/language_menu, HUD_MOB_LANGUAGE_MENU, HUD_GROUP_STATIC, ui_style, ui_ai_language_menu)
 	add_screen_object(/atom/movable/screen/memories, HUD_MOB_MEMORIES, HUD_GROUP_STATIC, ui_style, ui_ai_memories_menu)

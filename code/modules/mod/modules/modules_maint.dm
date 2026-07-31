@@ -17,23 +17,33 @@
 	var/step_change = 0.5
 
 /obj/item/mod/module/springlock/on_install()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	mod.activation_step_time *= step_change
 
 /obj/item/mod/module/springlock/on_uninstall(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	mod.activation_step_time /= step_change
 
 /obj/item/mod/module/springlock/on_part_activation()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(mod.wearer, COMSIG_ATOM_EXPOSE_REAGENTS, PROC_REF(on_wearer_exposed))
 	AddComponent(/datum/component/connect_loc_behalf, mod.wearer, gas_connections)
 
 /obj/item/mod/module/springlock/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(mod.wearer, COMSIG_ATOM_EXPOSE_REAGENTS)
 	qdel(GetComponent(/datum/component/connect_loc_behalf))
 
 ///Registers the signal COMSIG_MOD_ACTIVATE and calls the proc snap_shut() after a timer
 /obj/item/mod/module/springlock/proc/snap_signal()
+	procstart = null
+	src.procstart = null
 	if (set_off || mod.wearer.stat == DEAD)
 		return
 
@@ -55,6 +65,8 @@
 
 ///Calls snap_signal() when exposed to a reagent via VAPOR, PATCH or TOUCH
 /obj/item/mod/module/springlock/proc/on_wearer_exposed(atom/source, list/reagents, datum/reagents/source_reagents, methods, show_message)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(methods & (VAPOR|PATCH|TOUCH)))
@@ -63,6 +75,8 @@
 
 ///Calls snap_signal() when exposed to water vapor
 /obj/item/mod/module/springlock/proc/on_wearer_exposed_gas()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/turf/wearer_turf = get_turf(src)
@@ -73,12 +87,16 @@
 
 ///Signal fired when wearer attempts to activate/deactivate suits
 /obj/item/mod/module/springlock/proc/on_activate_spring_block(datum/source, user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	balloon_alert(user, "springlocks aren't responding...?")
 	return MOD_CANCEL_ACTIVATE
 
 ///Delayed death proc of the suit after the wearer is exposed to reagents
 /obj/item/mod/module/springlock/proc/snap_shut()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(mod, list(COMSIG_MOD_ACTIVATE, COMSIG_MOD_PART_RETRACTING))
 	if(!mod.wearer) //while there is a guaranteed user when on_wearer_exposed() fires, that isn't the same case for this proc
 		return
@@ -127,21 +145,29 @@
 	var/datum/jukebox/single_mob/music_player
 
 /obj/item/mod/module/visor/rave/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	music_player = new(src)
 	music_player.sound_loops = TRUE
 
 /obj/item/mod/module/visor/rave/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(music_player)
 	QDEL_NULL(rave_screen)
 	return ..()
 
 /obj/item/mod/module/visor/rave/on_activation(mob/activator)
+	procstart = null
+	src.procstart = null
 	rave_screen = mod.wearer.add_client_colour(/datum/client_colour/rave, REF(src))
 	rave_screen.update_color(rainbow_order[rave_number])
 	music_player.start_music(mod.wearer)
 
 /obj/item/mod/module/visor/rave/on_deactivation(mob/activator, display_message = TRUE, deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(rave_screen)
 	if(isnull(music_player.active_song_sound))
 		return
@@ -152,6 +178,8 @@
 	SEND_SOUND(mod.wearer, sound('sound/machines/terminal/terminal_off.ogg', volume = 50, channel = CHANNEL_JUKEBOX))
 
 /obj/item/mod/module/visor/rave/generate_worn_overlay(obj/item/source, mutable_appearance/standing)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -163,6 +191,8 @@
 	. += visor_overlay
 
 /obj/item/mod/module/visor/rave/on_active_process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	rave_number++
 	if(rave_number > length(rainbow_order))
 		rave_number = 1
@@ -170,11 +200,15 @@
 	rave_screen.update_color(rainbow_order[rave_number])
 
 /obj/item/mod/module/visor/rave/get_configuration()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(length(music_player.songs))
 		.["selection"] = add_ui_configuration("Song", "list", music_player.selection.song_name, music_player.songs)
 
 /obj/item/mod/module/visor/rave/configure_edit(key, value)
+	procstart = null
+	src.procstart = null
 	switch(key)
 		if("selection")
 			if(!isnull(music_player.active_song_sound))
@@ -200,6 +234,8 @@
 	required_slots = list(ITEM_SLOT_OCLOTHING|ITEM_SLOT_ICLOTHING)
 
 /obj/item/mod/module/tanner/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/machines/microwave/microwave-end.ogg', 50, TRUE)
 	var/datum/reagents/holder = new()
 	holder.add_reagent(/datum/reagent/spraytan, 10)
@@ -224,6 +260,8 @@
 	var/oxygen_damage = 20
 
 /obj/item/mod/module/balloon/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	if(!do_after(mod.wearer, blowing_time, target = mod))
 		return FALSE
 	mod.wearer.adjust_oxy_loss(oxygen_damage)
@@ -248,6 +286,8 @@
 	var/num_sheets_dispensed = 0
 
 /obj/item/mod/module/paper_dispenser/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	if(!do_after(mod.wearer, 1 SECONDS, target = mod))
 		return FALSE
 
@@ -294,6 +334,8 @@
 	icon_state = "stamp-ok"
 
 /obj/item/stamp/mod/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 
 	var/choices = list()
 	var/icon_states = list()
@@ -309,6 +351,8 @@
 		src.icon_state = icon_states[chosen_icon_state]
 
 /obj/item/stamp/mod/proc/check_menu(datum/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated || !user.is_holding(target))
 		return FALSE
 	return TRUE
@@ -330,6 +374,8 @@
 	var/you_fucked_up = FALSE
 
 /obj/item/mod/module/atrocinator/on_activation(mob/activator)
+	procstart = null
+	src.procstart = null
 	// Auto-unbuckle anyone being carried to avoid lag issues
 	if(length(mod.wearer.buckled_mobs))
 		mod.wearer.visible_message("As [mod.wearer] flips, [mod.wearer.buckled_mobs[1]] flies off of [mod.wearer.p_their()] back!")
@@ -345,12 +391,16 @@
 	check_upstairs() //todo at some point flip your screen around
 
 /obj/item/mod/module/atrocinator/deactivate(mob/activator, display_message = TRUE, deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	if(you_fucked_up && !deleting)
 		to_chat(activator, span_danger("It's too late."))
 		return FALSE
 	return ..()
 
 /obj/item/mod/module/atrocinator/on_deactivation(mob/activator, display_message = TRUE, deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!deleting)
 		playsound(src, 'sound/effects/curse/curseattack.ogg', 50)
 	qdel(mod.wearer.RemoveElement(/datum/element/forced_gravity, NEGATIVE_GRAVITY))
@@ -365,6 +415,8 @@
 		current_turf.zFall(mod.wearer, falling_from_move = TRUE)
 
 /obj/item/mod/module/atrocinator/proc/check_upstairs(atom/movable/source, atom/oldloc, direction, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(you_fucked_up || mod.wearer.has_gravity() > NEGATIVE_GRAVITY)
@@ -400,6 +452,8 @@
 #define FLY_TIME (5 SECONDS)
 
 /obj/item/mod/module/atrocinator/proc/fly_away()
+	procstart = null
+	src.procstart = null
 	you_fucked_up = TRUE
 	playsound(src, 'sound/effects/whirthunk.ogg', 75)
 	to_chat(mod.wearer, span_userdanger("That was stupid."))
@@ -411,11 +465,15 @@
 #undef FLY_TIME
 
 /obj/item/mod/module/atrocinator/proc/on_talk(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	speech_args[SPEECH_SPANS] |= "upside_down"
 
 /// Prevent someone from being buckled to the wearer while atrocinator is active
 /obj/item/mod/module/atrocinator/proc/on_someone_buckled(datum/source, mob/living/buckled_mob, mob/living/buckler)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	balloon_alert(buckler, "[buckler == mod.wearer ? "you're" : "they're"] upside down!")
 	return COMPONENT_BLOCK_BUCKLE

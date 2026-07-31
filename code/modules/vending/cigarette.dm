@@ -89,6 +89,8 @@
 	icon_state = "refill_smoke"
 
 /obj/machinery/vending/cigarette/pre_throw(obj/item/thrown_item)
+	procstart = null
+	src.procstart = null
 	if(istype(thrown_item, /obj/item/lighter))
 		var/obj/item/lighter/thrown_lighter = thrown_item
 		thrown_lighter.set_lit(TRUE)

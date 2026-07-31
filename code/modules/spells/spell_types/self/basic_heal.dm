@@ -18,9 +18,13 @@
 	var/burn_to_heal = 10
 
 /datum/action/cooldown/spell/basic_heal/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return isliving(cast_on)
 
 /datum/action/cooldown/spell/basic_heal/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cast_on.visible_message(
 		span_warning("A wreath of gentle light passes over [cast_on]!"),

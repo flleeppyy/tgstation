@@ -1,4 +1,6 @@
 /proc/generate_underwear_icon(datum/sprite_accessory/accessory, datum/universal_icon/base_icon, color)
+	procstart = null
+	src.procstart = null
 	var/datum/universal_icon/final_icon = base_icon.copy()
 
 	if (!isnull(accessory))
@@ -21,6 +23,8 @@
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/backpack/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list(
 		GBACKPACK,
 		GSATCHEL,
@@ -34,9 +38,13 @@
 	)
 
 /datum/preference/choiced/backpack/create_default_value()
+	procstart = null
+	src.procstart = null
 	return DBACKPACK
 
 /datum/preference/choiced/backpack/icon_for(value)
+	procstart = null
+	src.procstart = null
 	switch (value)
 		if (GBACKPACK)
 			return /obj/item/storage/backpack
@@ -63,6 +71,8 @@
 			return /obj/item/storage/backpack/messenger/med
 
 /datum/preference/choiced/backpack/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	target.backpack = value
 
 /// Jumpsuit preference
@@ -75,15 +85,21 @@
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/jumpsuit/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list(
 		PREF_SUIT,
 		PREF_SKIRT,
 	)
 
 /datum/preference/choiced/jumpsuit/create_default_value()
+	procstart = null
+	src.procstart = null
 	return PREF_SUIT
 
 /datum/preference/choiced/jumpsuit/icon_for(value)
+	procstart = null
+	src.procstart = null
 	switch (value)
 		if (PREF_SUIT)
 			return /obj/item/clothing/under/color/grey
@@ -91,6 +107,8 @@
 			return /obj/item/clothing/under/color/jumpskirt/grey
 
 /datum/preference/choiced/jumpsuit/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	target.jumpsuit_style = value
 
 /// Socks preference
@@ -103,12 +121,18 @@
 	can_randomize = FALSE
 
 /datum/preference/choiced/socks/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return assoc_to_keys_features(SSaccessories.socks_list)
 
 /datum/preference/choiced/socks/create_default_value()
+	procstart = null
+	src.procstart = null
 	return /datum/sprite_accessory/clothing/socks/nude::name
 
 /datum/preference/choiced/socks/icon_for(value)
+	procstart = null
+	src.procstart = null
 	var/static/datum/universal_icon/lower_half
 
 	if (isnull(lower_half))
@@ -119,6 +143,8 @@
 	return generate_underwear_icon(SSaccessories.socks_list[value], lower_half)
 
 /datum/preference/choiced/socks/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	target.socks = value
 
 /// Undershirt preference
@@ -132,12 +158,18 @@
 	can_randomize = FALSE
 
 /datum/preference/choiced/undershirt/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return assoc_to_keys_features(SSaccessories.undershirt_list)
 
 /datum/preference/choiced/undershirt/create_default_value()
+	procstart = null
+	src.procstart = null
 	return /datum/sprite_accessory/clothing/undershirt/nude::name
 
 /datum/preference/choiced/undershirt/create_informed_default_value(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	switch(preferences.read_preference(/datum/preference/choiced/gender))
 		if(MALE)
 			return /datum/sprite_accessory/clothing/undershirt/nude::name
@@ -147,6 +179,8 @@
 	return ..()
 
 /datum/preference/choiced/undershirt/icon_for(value)
+	procstart = null
+	src.procstart = null
 	var/static/datum/universal_icon/body
 	if (isnull(body))
 		body = uni_icon('icons/mob/human/bodyparts_greyscale.dmi', "human_r_leg")
@@ -168,6 +202,8 @@
 	return icon_with_undershirt
 
 /datum/preference/choiced/undershirt/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	target.undershirt = value
 
 /// Underwear preference
@@ -180,12 +216,18 @@
 	can_randomize = FALSE
 
 /datum/preference/choiced/underwear/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return assoc_to_keys_features(SSaccessories.underwear_list)
 
 /datum/preference/choiced/underwear/create_default_value()
+	procstart = null
+	src.procstart = null
 	return /datum/sprite_accessory/clothing/underwear/male_hearts::name
 
 /datum/preference/choiced/underwear/icon_for(value)
+	procstart = null
+	src.procstart = null
 	var/static/datum/universal_icon/lower_half
 
 	if (isnull(lower_half))
@@ -197,9 +239,13 @@
 	return generate_underwear_icon(SSaccessories.underwear_list[value], lower_half, COLOR_ALMOST_BLACK)
 
 /datum/preference/choiced/underwear/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	target.underwear = value
 
 /datum/preference/choiced/underwear/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if (!..(preferences))
 		return FALSE
 
@@ -208,6 +254,8 @@
 	return !(TRAIT_NO_UNDERWEAR in species.inherent_traits)
 
 /datum/preference/choiced/underwear/compile_constant_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 
 	data[SUPPLEMENTAL_FEATURE_KEY] = "underwear_color"

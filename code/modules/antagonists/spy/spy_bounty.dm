@@ -37,6 +37,8 @@
 	VAR_FINAL/datum/uplink_item/reward_item
 
 /datum/spy_bounty/New(datum/spy_bounty_handler/handler)
+	procstart = null
+	src.procstart = null
 	if(!init_bounty(handler))
 		return
 
@@ -45,6 +47,8 @@
 
 /// Helper that translates the bounty into UI data for TGUI
 /datum/spy_bounty/proc/to_ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	return list(
 		"name" = name,
@@ -57,6 +61,8 @@
 
 /// Check if the passed mob can claim this bounty.
 /datum/spy_bounty/proc/can_claim(mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 	return TRUE
 
@@ -68,10 +74,14 @@
  * Returning FALSE will cancel initialization and force it to reroll the bounty.
  */
 /datum/spy_bounty/proc/init_bounty(datum/spy_bounty_handler/handler)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// Selects what uplink item the bounty will reward on completion.
 /datum/spy_bounty/proc/select_reward(datum/spy_bounty_handler/handler)
+	procstart = null
+	src.procstart = null
 	loot_difficulty = difficulty
 
 	var/list/loot_pool
@@ -105,6 +115,8 @@
  * * handler - The bounty handler that is handling this bounty.
  */
 /datum/spy_bounty/proc/clear_bounty(datum/spy_bounty_handler/handler)
+	procstart = null
+	src.procstart = null
 	ASSERT(initalized, "Trying to clear an uninitialized bounty!")
 
 	// another chance to return unclaimed reward items to the bounty pool
@@ -121,6 +133,8 @@
  * Returning FALSE simply means that the passed movable is not valid for this bounty.
  */
 /datum/spy_bounty/proc/is_stealable(atom/movable/stealing)
+	procstart = null
+	src.procstart = null
 	// SHOULD_BE_PURE(TRUE)
 	return FALSE
 
@@ -135,6 +149,8 @@
  * Return a string key, what this uses for dupe protection.
  */
 /datum/spy_bounty/proc/get_dupe_protection_key(atom/movable/stealing)
+	procstart = null
+	src.procstart = null
 	return stealing.type
 
 /**
@@ -148,6 +164,8 @@
  * Returns TRUE if the bounty is a dupe, FALSE if it is not.
  */
 /datum/spy_bounty/proc/check_dupe(datum/spy_bounty_handler/handler, dupe_key, dupe_prob = 0)
+	procstart = null
+	src.procstart = null
 	if(handler.claimed_bounties_from_last_pool[dupe_key])
 		return TRUE
 	if(prob(dupe_prob * handler.all_claimed_bounty_types[dupe_key]))
@@ -163,6 +181,8 @@
  * * spy - The spy that stole the item.
  */
 /datum/spy_bounty/proc/clean_up_stolen_item(atom/movable/stealing, mob/living/spy)
+	procstart = null
+	src.procstart = null
 	do_sparks(3, FALSE, stealing)
 
 	if(isitem(stealing) && stealing.loc == spy)
@@ -192,6 +212,8 @@
  * * stealing - The item that was stolen.
  */
 /datum/spy_bounty/proc/finish_cleanup(atom/movable/stealing)
+	procstart = null
+	src.procstart = null
 	qdel(stealing)
 
 /**
@@ -202,6 +224,8 @@
  * * thing - The item to put up on the black market.
  */
 /datum/spy_bounty/proc/send_to_black_market(atom/movable/thing, had_attack_hand_interaction, was_anchored)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(thing)) // Just in case anything does anything weird
 		return FALSE
 
@@ -240,13 +264,19 @@
 	))
 
 /datum/spy_bounty/objective_item/can_claim(mob/user)
+	procstart = null
+	src.procstart = null
 	return !(user.mind?.assigned_role.title in desired_item.excludefromjob)
 
 /datum/spy_bounty/objective_item/get_dupe_protection_key(atom/movable/stealing)
+	procstart = null
+	src.procstart = null
 	return desired_item.targetitem
 
 /// Determines if the passed objective item is a reasonable, valid theft target.
 /datum/spy_bounty/objective_item/proc/is_valid_objective_item(datum/objective_item/item)
+	procstart = null
+	src.procstart = null
 	if(length(item.special_equipment) || item.difficulty <= 0 || item.difficulty >= 6)
 		return FALSE
 	if(is_type_in_typecache(item, blacklisted_item_types))
@@ -269,6 +299,8 @@
 	return TRUE
 
 /datum/spy_bounty/objective_item/init_bounty(datum/spy_bounty_handler/handler)
+	procstart = null
+	src.procstart = null
 	var/list/valid_possible_items = list()
 	for(var/datum/objective_item/item as anything in GLOB.possible_items)
 		if(check_dupe(handler, item.targetitem, 33))
@@ -301,6 +333,8 @@
 	return TRUE
 
 /datum/spy_bounty/objective_item/is_stealable(atom/movable/stealing)
+	procstart = null
+	src.procstart = null
 	return istype(stealing, desired_item.targetitem) \
 		&& !HAS_TRAIT(stealing, TRAIT_ITEM_OBJECTIVE_BLOCKED) \
 		&& desired_item.check_special_completion(stealing)
@@ -329,13 +363,19 @@
 	var/list/original_options_weakrefs = list()
 
 /datum/spy_bounty/machine/Destroy()
+	procstart = null
+	src.procstart = null
 	original_options_weakrefs.Cut() // Just in case
 	return ..()
 
 /datum/spy_bounty/machine/get_dupe_protection_key(atom/movable/stealing)
+	procstart = null
+	src.procstart = null
 	return target_type
 
 /datum/spy_bounty/machine/send_to_black_market(obj/machinery/thing)
+	procstart = null
+	src.procstart = null
 	if(!istype(thing.circuit, /obj/item/circuitboard))
 		qdel(thing)
 		return FALSE
@@ -361,10 +401,14 @@
 	return TRUE
 
 /datum/spy_bounty/machine/finish_cleanup(obj/machinery/stealing)
+	procstart = null
+	src.procstart = null
 	stealing.dump_inventory_contents()
 	return ..()
 
 /datum/spy_bounty/machine/init_bounty(datum/spy_bounty_handler/handler)
+	procstart = null
+	src.procstart = null
 	if(isnull(target_type))
 		return FALSE
 
@@ -404,6 +448,8 @@
 	return TRUE
 
 /datum/spy_bounty/machine/is_stealable(atom/movable/stealing)
+	procstart = null
+	src.procstart = null
 	if(!istype(stealing, target_type))
 		return FALSE
 	if(WEAKREF(stealing) in original_options_weakrefs)
@@ -417,6 +463,8 @@
 	var/list/random_options = list()
 
 /datum/spy_bounty/machine/random/init_bounty(datum/spy_bounty_handler/handler)
+	procstart = null
+	src.procstart = null
 	var/list/options = random_options.Copy()
 	for(var/datum/spy_bounty/machine/existing_bounty in handler.get_all_bounties())
 		options -= existing_bounty.target_type
@@ -474,6 +522,8 @@
 	location_type = /area/station/engineering/supermatter/
 
 /datum/spy_bounty/machine/engineering_emitter/can_claim(mob/user)
+	procstart = null
+	src.procstart = null
 	return !(user.mind?.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_ENGINEERING)
 
 /datum/spy_bounty/machine/random/hard
@@ -484,7 +534,9 @@
 		/obj/machinery/modular_computer/preset/id,
 	)
 
-/datum/spy_bounty/machine/random/hard/can_claim(mob/user) // These would all be too easy with command level access
+/datum/spy_bounty/machine/random/hard/can_claim(mob/user)
+	procstart = null
+	src.procstart = null // These would all be too easy with command level access
 	return !(user.mind?.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND)
 
 /datum/spy_bounty/machine/random/hard/ai_sat_teleporter
@@ -502,13 +554,19 @@
 	VAR_FINAL/datum/weakref/target_ref
 
 /datum/spy_bounty/targets_person/get_dupe_protection_key(atom/movable/stealing)
+	procstart = null
+	src.procstart = null
 	// Prevents the same player from being selected twice, but if they're straight up gone, whatever
 	return REF(target_ref.resolve() || stealing)
 
 /datum/spy_bounty/targets_person/can_claim(mob/user)
+	procstart = null
+	src.procstart = null
 	return !IS_WEAKREF_OF(user, target_ref)
 
 /datum/spy_bounty/targets_person/init_bounty(datum/spy_bounty_handler/handler)
+	procstart = null
+	src.procstart = null
 	var/list/mob/possible_targets = list()
 	for(var/datum/mind/crew_mind as anything in get_crewmember_minds())
 		var/mob/living/real_target = crew_mind.current
@@ -542,6 +600,8 @@
  * Returning FALSE will exclude them from the list of possible targets.
  */
 /datum/spy_bounty/targets_person/proc/is_valid_crewmember(mob/crewmember)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /**
@@ -552,6 +612,8 @@
  * Returning FALSE will stop the bounty from being finalized, this can be used for last minute checks.
  */
 /datum/spy_bounty/targets_person/proc/target_found(mob/crewmember)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// Subtype for a bounty that targets a specific crew member and a specific item on them
@@ -562,9 +624,13 @@
 	VAR_FINAL/datum/weakref/target_original_desired_ref
 
 /datum/spy_bounty/targets_person/some_item/is_valid_crewmember(mob/living/carbon/human/crewmember)
+	procstart = null
+	src.procstart = null
 	return istype(crewmember) && find_desired_thing(crewmember)
 
 /datum/spy_bounty/targets_person/some_item/is_stealable(atom/movable/stealing)
+	procstart = null
+	src.procstart = null
 	if(IS_WEAKREF_OF(stealing, target_original_desired_ref))
 		return TRUE
 	if(IS_WEAKREF_OF(stealing, target_ref))
@@ -576,6 +642,8 @@
 	return FALSE
 
 /datum/spy_bounty/targets_person/some_item/clean_up_stolen_item(atom/movable/stealing, mob/living/spy)
+	procstart = null
+	src.procstart = null
 	if(IS_WEAKREF_OF(stealing, target_original_desired_ref))
 		return ..()
 
@@ -589,6 +657,8 @@
 	return ..(real_stolen_item, spy)
 
 /datum/spy_bounty/targets_person/some_item/target_found(mob/crewmember)
+	procstart = null
+	src.procstart = null
 	var/obj/item/desired_thing = find_desired_thing(crewmember)
 	target_original_desired_ref = WEAKREF(desired_thing)
 	name = "[crewmember.real_name]'s [desired_thing.name]"
@@ -598,6 +668,8 @@
 
 /// Finds the desired item type in the target crewmember.
 /datum/spy_bounty/targets_person/some_item/proc/find_desired_thing(mob/living/carbon/human/crewmember)
+	procstart = null
+	src.procstart = null
 	return locate(desired_type) in crewmember.get_all_gear()
 
 // Steal someone's ID card
@@ -605,6 +677,8 @@
 	desired_type = /obj/item/card/id/advanced
 
 /datum/spy_bounty/targets_person/some_item/id/find_desired_thing(mob/living/carbon/human/crewmember)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/card/id/advanced/id in crewmember.get_all_gear())
 		if(id.registered_account?.account_id == crewmember.account_id)
 			return id
@@ -612,6 +686,8 @@
 	return null
 
 /datum/spy_bounty/targets_person/some_item/id/target_found(mob/crewmember)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[crewmember.real_name]'s ID Card"
 
@@ -620,6 +696,8 @@
 	desired_type = /obj/item/modular_computer/pda
 
 /datum/spy_bounty/targets_person/some_item/pda/find_desired_thing(mob/living/carbon/human/crewmember)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/modular_computer/pda/pda in crewmember.get_all_gear())
 		if(pda.saved_identification == crewmember.real_name)
 			return pda
@@ -627,6 +705,8 @@
 	return null
 
 /datum/spy_bounty/targets_person/some_item/pda/target_found(mob/crewmember)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[crewmember.real_name]'s PDA"
 
@@ -636,10 +716,14 @@
 	black_market_prob = 100
 
 /datum/spy_bounty/targets_person/some_item/heirloom/find_desired_thing(mob/living/crewmember)
+	procstart = null
+	src.procstart = null
 	var/datum/quirk/item_quirk/family_heirloom/quirk = crewmember.get_quirk(/datum/quirk/item_quirk/family_heirloom)
 	return quirk?.heirloom?.resolve()
 
 /datum/spy_bounty/targets_person/some_item/heirloom/target_found(mob/crewmember)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[crewmember.real_name]'s heirloom"
 
@@ -648,6 +732,8 @@
 	weight = 4 // lots to pick from here
 
 /datum/spy_bounty/targets_person/some_item/limb_or_organ/init_bounty(datum/spy_bounty_handler/handler)
+	procstart = null
+	src.procstart = null
 	desired_type = pick(
 		/obj/item/bodypart/arm/left,
 		/obj/item/bodypart/arm/right,
@@ -661,6 +747,8 @@
 	return ..()
 
 /datum/spy_bounty/targets_person/some_item/limb_or_organ/find_desired_thing(mob/living/carbon/human/crewmember)
+	procstart = null
+	src.procstart = null
 	if(ispath(desired_type, /obj/item/bodypart))
 		return locate(desired_type) in crewmember.get_bodyparts()
 	if(ispath(desired_type, /obj/item/organ))
@@ -676,9 +764,13 @@
 	VAR_FINAL/datum/weakref/target_bot_ref
 
 /datum/spy_bounty/some_bot/get_dupe_protection_key(atom/movable/stealing)
+	procstart = null
+	src.procstart = null
 	return bot_type
 
 /datum/spy_bounty/some_bot/finish_cleanup(mob/living/basic/bot/stealing)
+	procstart = null
+	src.procstart = null
 	if(stealing.client)
 		to_chat(stealing, span_deadsay("You've been stolen! You are shipped off to the black market and taken apart for spare parts..."))
 		stealing.investigate_log("was stolen by a spy (and deleted)", INVESTIGATE_DEATHS)
@@ -686,6 +778,8 @@
 	return ..()
 
 /datum/spy_bounty/some_bot/init_bounty(datum/spy_bounty_handler/handler)
+	procstart = null
+	src.procstart = null
 	for(var/datum/spy_bounty/some_bot/existing_bounty in handler.get_all_bounties())
 		var/mob/living/existing_bot_type = existing_bounty.bot_type
 		// ensures we don't get two similar bounties.
@@ -711,6 +805,8 @@
 	return TRUE
 
 /datum/spy_bounty/some_bot/is_stealable(atom/movable/stealing)
+	procstart = null
+	src.procstart = null
 	return IS_WEAKREF_OF(stealing, target_bot_ref)
 
 /datum/spy_bounty/some_bot/beepsky
@@ -740,4 +836,6 @@
 	help = "Abduct Scrubs, MD - commonly found mopping up blood in Medbay."
 
 /datum/spy_bounty/some_bot/scrubs/can_claim(mob/user)
+	procstart = null
+	src.procstart = null
 	return !(user.mind?.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_MEDICAL)

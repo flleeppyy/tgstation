@@ -8,6 +8,8 @@
 	var/health
 
 /datum/gutlunch_inherited_stats/New(mob/living/basic/parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	attack = parent.melee_damage_lower
 	speed = parent.speed

@@ -21,6 +21,8 @@
 	energy = 100
 
 /obj/structure/closet/crate/secure/syndicrate/before_open(mob/living/user, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -32,6 +34,8 @@
 	return TRUE
 
 /obj/structure/closet/crate/secure/syndicrate/take_damage(damage_amount, damage_type = BRUTE, damage_flag = "", sound_effect = TRUE, attack_dir, armour_penetration = 0)
+	procstart = null
+	src.procstart = null
 	if(created_items)
 		return ..()
 	if(damage_amount < DAMAGE_PRECISION)
@@ -44,6 +48,8 @@
 
 ///ensures that the syndicrate can only be unlocked by opening it with a syndicrate_key
 /obj/structure/closet/crate/secure/syndicrate/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/syndicrate_key) || created_items)
 		return ..()
 	created_items = TRUE
@@ -57,6 +63,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/closet/crate/secure/syndicrate/togglelock(mob/living/user, silent)
+	procstart = null
+	src.procstart = null
 	if(broken || !created_items)
 		return
 	if(iscarbon(user))
@@ -69,6 +77,8 @@
 	update_appearance()
 
 /obj/structure/closet/crate/secure/syndicrate/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/syndicrate_key
@@ -79,10 +89,14 @@
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/syndicrate_key/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_item_context()
 
 /obj/item/syndicrate_key/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/obj/structure/closet/crate/secure/syndicrate/target_structure = target

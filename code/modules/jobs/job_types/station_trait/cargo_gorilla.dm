@@ -18,11 +18,15 @@
 	job_flags = STATION_TRAIT_JOB_FLAGS | JOB_ANNOUNCE_ARRIVAL | JOB_NEW_PLAYER_JOINABLE | JOB_EQUIP_RANK |JOB_ANTAG_BLACKLISTED
 
 /datum/job/cargo_gorilla/get_roundstart_spawn_point()
+	procstart = null
+	src.procstart = null
 	if (length(GLOB.gorilla_start))
 		return pick(GLOB.gorilla_start)
 	return ..()
 
 /datum/job/cargo_gorilla/get_spawn_mob(client/player_client, atom/spawn_point)
+	procstart = null
+	src.procstart = null
 	if (!player_client)
 		return
 	var/mob/living/the_big_man = new spawn_type(get_turf(spawn_point))
@@ -30,6 +34,8 @@
 	return the_big_man
 
 /datum/job/cargo_gorilla/after_spawn(mob/living/spawned, client/player_client)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Gorilla with a wage, what's he buyin?
 	var/datum/bank_account/bank_account = new(spawned.real_name, src)

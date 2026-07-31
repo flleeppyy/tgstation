@@ -12,15 +12,21 @@
 
 ///Set the HUD in New, as lobby screens are made before Atoms are Initialized.
 /atom/movable/screen/lobby/New(loc, datum/hud/our_hud, ...)
+	procstart = null
+	src.procstart = null
 	set_new_hud(our_hud)
 	return ..()
 
 ///Run sleeping actions after initialize
 /atom/movable/screen/lobby/proc/SlowInit()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Animates moving the button off-screen
 /atom/movable/screen/lobby/proc/collapse_button()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	//wait for the shutter to come down
 	animate(src, transform = transform, time = SHUTTER_MOVEMENT_DURATION + SHUTTER_WAIT_DURATION)
@@ -29,6 +35,8 @@
 
 ///Animates moving the button back into place
 /atom/movable/screen/lobby/proc/expand_button()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	//the buttons are off-screen, so we sync them up to come down with the shutter
 	animate(src, transform = matrix(), time = SHUTTER_MOVEMENT_DURATION, easing = CUBIC_EASING|EASE_OUT)
@@ -49,6 +57,8 @@
 	var/select_sound_play = TRUE
 
 /atom/movable/screen/lobby/button/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(usr != get_mob())
 		return
 
@@ -68,6 +78,8 @@
 	return TRUE
 
 /atom/movable/screen/lobby/button/MouseEntered(location,control,params)
+	procstart = null
+	src.procstart = null
 	if(usr != get_mob())
 		return
 
@@ -79,6 +91,8 @@
 	update_appearance(UPDATE_ICON)
 
 /atom/movable/screen/lobby/button/MouseExited()
+	procstart = null
+	src.procstart = null
 	if(usr != get_mob())
 		return
 
@@ -90,6 +104,8 @@
 	update_appearance(UPDATE_ICON)
 
 /atom/movable/screen/lobby/button/update_icon(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!enabled)
 		icon_state = "[base_icon_state]_disabled"
@@ -101,6 +117,8 @@
 
 ///Updates the button's status: TRUE to enable interaction with the button, FALSE to disable
 /atom/movable/screen/lobby/button/proc/set_button_status(status)
+	procstart = null
+	src.procstart = null
 	if(status == enabled)
 		return FALSE
 	enabled = status
@@ -118,6 +136,8 @@
 	enabled = FALSE
 
 /atom/movable/screen/lobby/button/character_setup/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// We need IconForge and the assets to be ready before allowing the menu to open
 	if(SSearly_assets.initialized == INITIALIZATION_INNEW_REGULAR || SSatoms.initialized == INITIALIZATION_INNEW_REGULAR)
@@ -129,6 +149,8 @@
 		RegisterSignal(SSatoms, COMSIG_SUBSYSTEM_POST_INITIALIZE, PROC_REF(enable_character_setup))
 
 /atom/movable/screen/lobby/button/character_setup/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -139,6 +161,8 @@
 	preferences.ui_interact(usr)
 
 /atom/movable/screen/lobby/button/character_setup/proc/enable_character_setup()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	flick("[base_icon_state]_enabled", src)
 	set_button_status(TRUE)
@@ -154,6 +178,8 @@
 	base_icon_state = "not_ready"
 
 /atom/movable/screen/lobby/button/ready/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(SSticker.current_state)
 		if(GAME_STATE_PREGAME, GAME_STATE_STARTUP)
@@ -165,18 +191,24 @@
 			set_button_status(FALSE)
 
 /atom/movable/screen/lobby/button/ready/proc/hide_ready_button()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_button_status(FALSE)
 	UnregisterSignal(SSticker, COMSIG_TICKER_ENTER_SETTING_UP)
 	RegisterSignal(SSticker, COMSIG_TICKER_ERROR_SETTING_UP, PROC_REF(show_ready_button))
 
 /atom/movable/screen/lobby/button/ready/proc/show_ready_button()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_button_status(TRUE)
 	UnregisterSignal(SSticker, COMSIG_TICKER_ERROR_SETTING_UP)
 	RegisterSignal(SSticker, COMSIG_TICKER_ENTER_SETTING_UP, PROC_REF(hide_ready_button))
 
 /atom/movable/screen/lobby/button/ready/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -204,6 +236,8 @@
 	enabled = null // set in init
 
 /atom/movable/screen/lobby/button/join/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(SSticker.current_state)
 		if(GAME_STATE_PREGAME, GAME_STATE_STARTUP)
@@ -216,6 +250,8 @@
 			set_button_status(TRUE)
 
 /atom/movable/screen/lobby/button/join/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -258,12 +294,16 @@
 
 
 /atom/movable/screen/lobby/button/join/proc/show_join_button()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_button_status(TRUE)
 	UnregisterSignal(SSticker, COMSIG_TICKER_ENTER_SETTING_UP)
 	RegisterSignal(SSticker, COMSIG_TICKER_ERROR_SETTING_UP, PROC_REF(hide_join_button))
 
 /atom/movable/screen/lobby/button/join/proc/hide_join_button()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_button_status(FALSE)
 	UnregisterSignal(SSticker, COMSIG_TICKER_ERROR_SETTING_UP)
@@ -278,6 +318,8 @@
 	enabled = null // set in init
 
 /atom/movable/screen/lobby/button/observe/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(SSticker.current_state > GAME_STATE_STARTUP)
 		set_button_status(TRUE)
@@ -286,6 +328,8 @@
 		RegisterSignal(SSticker, COMSIG_TICKER_ENTER_PREGAME, PROC_REF(enable_observing))
 
 /atom/movable/screen/lobby/button/observe/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -293,6 +337,8 @@
 	new_player.make_me_an_observer()
 
 /atom/movable/screen/lobby/button/observe/proc/enable_observing()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	flick("[base_icon_state]_enabled", src)
 	set_button_status(TRUE)
@@ -311,6 +357,8 @@
 	enabled = FALSE
 
 /atom/movable/screen/lobby/button/bottom/settings/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// We need IconForge and the assets to be ready before allowing the menu to open
 	if(SSearly_assets.initialized == INITIALIZATION_INNEW_REGULAR || SSatoms.initialized == INITIALIZATION_INNEW_REGULAR)
@@ -321,6 +369,8 @@
 		RegisterSignal(SSatoms, COMSIG_SUBSYSTEM_POST_INITIALIZE, PROC_REF(enable_settings))
 
 /atom/movable/screen/lobby/button/bottom/settings/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -331,6 +381,8 @@
 	preferences.ui_interact(usr)
 
 /atom/movable/screen/lobby/button/bottom/settings/proc/enable_settings()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_button_status(TRUE)
 	UnregisterSignal(SSearly_assets, COMSIG_SUBSYSTEM_POST_INITIALIZE)
@@ -343,6 +395,8 @@
 	screen_loc ="TOP:-122,CENTER:+57"
 
 /atom/movable/screen/lobby/button/bottom/changelog_button/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	usr.client?.changelog()
 
@@ -353,6 +407,8 @@
 	screen_loc = "TOP:-122,CENTER:+2"
 
 /atom/movable/screen/lobby/button/bottom/crew_manifest/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -368,6 +424,8 @@
 	var/new_poll = FALSE
 
 /atom/movable/screen/lobby/button/bottom/poll/SlowInit(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!usr)
 		return
@@ -412,11 +470,15 @@
 		return
 
 /atom/movable/screen/lobby/button/bottom/poll/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(new_poll)
 		. += mutable_appearance('icons/hud/lobby/poll_overlay.dmi', "new_poll")
 
 /atom/movable/screen/lobby/button/bottom/poll/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -431,12 +493,16 @@
 	always_available = FALSE
 
 /atom/movable/screen/lobby/button/sign_up/MouseEntered(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(src) || !desc)
 		return
 	openToolTip(usr, tip_src = src, params = params, title = name, content = desc,)
 
 /atom/movable/screen/lobby/button/sign_up/MouseExited()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	closeToolTip(usr)
 
@@ -452,6 +518,8 @@
 	var/blip_enabled = TRUE
 
 /atom/movable/screen/lobby/button/collapse/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(SSticker.current_state)
 		if(GAME_STATE_PREGAME, GAME_STATE_STARTUP)
@@ -467,10 +535,14 @@
 	update_icon(UPDATE_OVERLAYS)
 
 /atom/movable/screen/lobby/button/collapse/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += get_blip_overlay()
 
 /atom/movable/screen/lobby/button/collapse/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -501,11 +573,15 @@
 
 ///Proc to update the ready blip state upon new player's ready status change
 /atom/movable/screen/lobby/button/collapse/proc/on_player_ready_toggle()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_appearance(UPDATE_ICON)
 
 ///Returns a ready blip overlay depending on the player's ready state
 /atom/movable/screen/lobby/button/collapse/proc/get_blip_overlay()
+	procstart = null
+	src.procstart = null
 	var/blip_icon_state = "ready_blip"
 	if(blip_enabled && hud)
 		var/mob/dead/new_player/new_player = hud.mymob
@@ -517,6 +593,8 @@
 
 ///Disables the ready blip; makes us listen for the setup error to re-enable the blip
 /atom/movable/screen/lobby/button/collapse/proc/disable_blip()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	blip_enabled = FALSE
 	UnregisterSignal(SSticker, COMSIG_TICKER_ENTER_SETTING_UP)
@@ -525,6 +603,8 @@
 
 ///Enables the ready blip; makes us listen for the setup completion and game start to disable the blip
 /atom/movable/screen/lobby/button/collapse/proc/enable_blip()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	blip_enabled = TRUE
 	UnregisterSignal(SSticker, COMSIG_TICKER_ERROR_SETTING_UP)
@@ -534,6 +614,8 @@
 ///Moves the button to the top of the screen, leaving only the screen part in view
 ///Sends a signal on the hud for the menu hud elements to listen to
 /atom/movable/screen/lobby/button/collapse/proc/collapse_menu()
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(hud, COMSIG_HUD_LOBBY_COLLAPSED)
 	//wait for the shutter to come down
 	animate(src, transform = transform, time = SHUTTER_MOVEMENT_DURATION + SHUTTER_WAIT_DURATION)
@@ -544,6 +626,8 @@
 ///Extends the button back to its usual spot
 ///Sends a signal on the hud for the menu hud elements to listen to
 /atom/movable/screen/lobby/button/collapse/proc/expand_menu()
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(hud, COMSIG_HUD_LOBBY_EXPANDED)
 	animate(src, transform = matrix(), time = SHUTTER_MOVEMENT_DURATION, easing = CUBIC_EASING|EASE_OUT)
 	SEND_SOUND(hud.mymob, sound('sound/misc/menu/menu_rolldown1.ogg'))
@@ -558,6 +642,8 @@
 
 ///Sets up the shutter pulling down and up. It's the same animation for both collapsing and expanding the menu.
 /atom/movable/screen/lobby/shutter/proc/setup_shutter_animation()
+	procstart = null
+	src.procstart = null
 	//bring down the shutter
 	animate(src, transform = transform.Translate(x = 0, y = -143), time = SHUTTER_MOVEMENT_DURATION, easing = CUBIC_EASING|EASE_OUT)
 
@@ -578,6 +664,8 @@
 	select_sound_play = FALSE
 
 /atom/movable/screen/lobby/button/start_now/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !usr.client.is_localhost() || !check_rights_for(usr.client, R_SERVER))
 		return
@@ -607,6 +695,8 @@
 	var/static/mutable_appearance/job_overlay
 
 /atom/movable/screen/lobby/new_player_info/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSnewplayer_info, src)
 	update_text()
@@ -627,24 +717,34 @@
 	update_appearance(UPDATE_ICON)
 
 /atom/movable/screen/lobby/new_player_info/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSnewplayer_info, src)
 	return ..()
 
 /atom/movable/screen/lobby/new_player_info/MouseEntered(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(src) || isnull(job_overlay))
 		return
 	openToolTip(usr, src, params, title = "[SSjob.overflow_role::title] overflow", content = "The overflow for the round has been set as [SSjob.overflow_role::title].")
 
 /atom/movable/screen/lobby/new_player_info/MouseExited()
+	procstart = null
+	src.procstart = null
 	closeToolTip(usr)
 	return ..()
 
 /atom/movable/screen/lobby/new_player_info/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = base_icon_state
 
 /atom/movable/screen/lobby/new_player_info/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += mutable_appearance(icon, "[base_icon_state]_overlay", layer = src.layer+0.01)
 	if(!show_static)
@@ -660,9 +760,13 @@
 	. += scanline
 
 /atom/movable/screen/lobby/new_player_info/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	update_text()
 
 /atom/movable/screen/lobby/new_player_info/collapse_button()
+	procstart = null
+	src.procstart = null
 	show_static = FALSE
 	update_text()
 	//to be in sync with parent, we'll turn the TV off in this time instead.
@@ -671,12 +775,16 @@
 	animate(transform = transform.Translate(x = 146, y = 0), time = SHUTTER_MOVEMENT_DURATION, easing = CUBIC_EASING|EASE_IN)
 
 /atom/movable/screen/lobby/new_player_info/expand_button()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	show_static = TRUE
 	update_appearance(UPDATE_ICON)
 	update_text()
 
 /atom/movable/screen/lobby/new_player_info/proc/update_text()
+	procstart = null
+	src.procstart = null
 	if(!hud || !show_static)
 		maptext = null
 		return
@@ -710,6 +818,8 @@
 	maptext = MAPTEXT(new_maptext)
 
 /atom/movable/screen/lobby/new_player_info/proc/time_remaining_str()
+	procstart = null
+	src.procstart = null
 	var/time_remaining = SSticker.GetTimeLeft()
 	if(time_remaining > 0)
 		return "[round(time_remaining/10)]s"

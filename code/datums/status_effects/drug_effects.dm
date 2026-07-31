@@ -5,6 +5,8 @@
 	alert_type = /atom/movable/screen/alert/status_effect/woozy
 
 /datum/status_effect/woozy/nextmove_modifier()
+	procstart = null
+	src.procstart = null
 	return 1.5
 
 /atom/movable/screen/alert/status_effect/woozy
@@ -20,6 +22,8 @@
 	alert_type = /atom/movable/screen/alert/status_effect/high_blood_pressure
 
 /datum/status_effect/high_blood_pressure/on_apply()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(owner))
 		return FALSE
 
@@ -28,6 +32,8 @@
 	return TRUE
 
 /datum/status_effect/high_blood_pressure/on_remove()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(owner))
 		return
 
@@ -47,6 +53,8 @@
 	alert_type = /atom/movable/screen/alert/status_effect/seizure
 
 /datum/status_effect/seizure/on_apply()
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(owner))
 		return FALSE
 	var/amplitude = rand(1 SECONDS, 3 SECONDS)
@@ -70,6 +78,8 @@
 	status_type = STATUS_EFFECT_REFRESH
 
 /datum/status_effect/stoned/on_apply()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(owner))
 		return FALSE
 	var/mob/living/carbon/human/human_owner = owner
@@ -81,6 +91,8 @@
 	return TRUE
 
 /datum/status_effect/stoned/on_remove()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(owner))
 		return
 	var/mob/living/carbon/human/human_owner = owner

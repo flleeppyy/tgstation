@@ -5,6 +5,8 @@
 /datum/asset/simple/body_zones
 
 /datum/asset/simple/body_zones/register()
+	procstart = null
+	src.procstart = null
 	assets["body_zones.base_midnight.png"] = icon('icons/hud/screen_midnight.dmi', "zone_sel")
 	assets["body_zones.base_slimecore.png"] = icon('icons/hud/screen_slimecore.dmi', "zone_sel")
 
@@ -21,4 +23,6 @@
 	return ..()
 
 /datum/asset/simple/body_zones/proc/add_limb(limb)
+	procstart = null
+	src.procstart = null
 	assets[SANITIZE_FILENAME("body_zones.[limb].png")] = icon('icons/hud/screen_gen.dmi', limb)

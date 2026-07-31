@@ -1,6 +1,8 @@
 // Its not full proof but it standerizes behavoir between gifts and lootboxes
 /// Used for random item gen to try and generate a list of types that arent weird parent types and similar
 /proc/get_sane_item_types(requested_type)
+	procstart = null
+	src.procstart = null
 	if(!ispath(requested_type, /obj/item))
 		return list()
 	var/list/all_valid_types = list()

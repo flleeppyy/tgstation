@@ -2,6 +2,8 @@
 /datum/element/reagents_exposed_on_fire
 
 /datum/element/reagents_exposed_on_fire/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
@@ -9,16 +11,22 @@
 	RegisterSignal(target, COMSIG_ITEM_MICROWAVE_ACT, PROC_REF(on_microwave))
 
 /datum/element/reagents_exposed_on_fire/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, COMSIG_ATOM_FIRE_ACT)
 	UnregisterSignal(source, COMSIG_ITEM_MICROWAVE_ACT)
 	return ..()
 
 /datum/element/reagents_exposed_on_fire/proc/on_fire(atom/source, exposed_temp, exposed_vol)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	source.reagents?.expose_temperature(exposed_temp)
 
 /datum/element/reagents_exposed_on_fire/proc/on_microwave(atom/source, obj/machinery/microwave/microwave_source, mob/microwaver, randomize_pixel_offset)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	source.reagents?.expose_temperature(1000)

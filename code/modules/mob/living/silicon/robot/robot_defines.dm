@@ -145,6 +145,8 @@
 	var/set_model = /obj/item/robot_model
 
 /mob/living/silicon/robot/model/Initialize(mapload, datum/ai_laws/innate_laws, mob/living/silicon/master_ai, aisync, lawsync)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	INVOKE_ASYNC(model, TYPE_PROC_REF(/obj/item/robot_model, transform_to), set_model, TRUE)
 
@@ -197,24 +199,34 @@
 	radio = /obj/item/radio/borg/syndicate
 
 /mob/living/silicon/robot/model/syndicate/Initialize(mapload, datum/ai_laws/innate_laws, mob/living/silicon/master_ai, aisync, lawsync)
+	procstart = null
+	src.procstart = null
 	aisync = FALSE
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(show_playstyle)), 0.5 SECONDS)
 
 /mob/living/silicon/robot/model/syndicate/make_laws()
+	procstart = null
+	src.procstart = null
 	laws = new /datum/ai_laws/syndicate_override()
 
 /mob/living/silicon/robot/model/syndicate/create_modularInterface()
+	procstart = null
+	src.procstart = null
 	if(!modularInterface)
 		modularInterface = new /obj/item/modular_computer/pda/silicon/cyborg/syndicate(src)
 		modularInterface.imprint_id(job_name = "Cyborg")
 	return ..()
 
 /mob/living/silicon/robot/model/syndicate/proc/show_playstyle()
+	procstart = null
+	src.procstart = null
 	if(playstyle_string)
 		to_chat(src, playstyle_string)
 
 /mob/living/silicon/robot/model/syndicate/ResetModel()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/silicon/robot/model/syndicate/medical

@@ -3,6 +3,8 @@
 	weight = WEIGHT_MOB
 
 /datum/keybinding/human/can_use(client/user)
+	procstart = null
+	src.procstart = null
 	return ishuman(user.mob)
 
 /datum/keybinding/human/quick_equip
@@ -13,6 +15,8 @@
 	keybind_signal = COMSIG_KB_HUMAN_QUICKEQUIP_DOWN
 
 /datum/keybinding/human/quick_equip/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -32,6 +36,8 @@
 	keybind_signal = COMSIG_KB_HUMAN_QUICKEQUIPBELT_DOWN
 
 /datum/keybinding/human/quick_equip_belt/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

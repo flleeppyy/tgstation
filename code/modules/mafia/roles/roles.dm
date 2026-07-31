@@ -53,6 +53,8 @@
 	COOLDOWN_DECLARE(note_chat_sending_cooldown)
 
 /datum/mafia_role/New(datum/mafia_controller/new_game)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.mafia_game_controller = new_game
 	mafia_panel = new(null, new_game)
@@ -61,6 +63,8 @@
 		role_unique_actions -= abilities
 
 /datum/mafia_role/Destroy(force)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(body, list(COMSIG_MOB_SAY, COMSIG_MOB_DEADSAY))
 	QDEL_NULL(mafia_alert)
 	QDEL_NULL(mafia_panel)
@@ -72,6 +76,8 @@
 	return ..()
 
 /datum/mafia_role/proc/register_body(mob/living/carbon/human/new_body)
+	procstart = null
+	src.procstart = null
 	if(body)
 		UnregisterSignal(new_body, list(COMSIG_MOB_SAY, COMSIG_MOB_DEADSAY))
 		mafia_panel.Remove(body)
@@ -89,6 +95,8 @@
  * * balloon_alert - Whether it should be as a balloon alert, only if it's to a non-PDA user.
  */
 /datum/mafia_role/proc/send_message_to_player(message, balloon_alert = FALSE)
+	procstart = null
+	src.procstart = null
 	if(player_pda)
 		role_messages += message
 		return
@@ -105,6 +113,8 @@
  * if none affects it, we will go to day chat (if it is indeed day).
  */
 /datum/mafia_role/proc/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/datum/mafia_ability/abilities as anything in role_unique_actions)
 		if(abilities.handle_speech(source, speech_args))
@@ -116,6 +126,8 @@
 
 ///Same as handle_speech, but for dead players.
 /datum/mafia_role/proc/handle_speech_dead(datum/source, message)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/message_sent = span_changeling("<b>\[DEAD CHAT\] [source]</b>: [message]")
 	mafia_game_controller.send_message(message_sent, team = MAFIA_TEAM_DEAD)
@@ -126,6 +138,8 @@
  * Adds the playing_mafia trait so people examining them will know why they're currently lacking a soul.
  */
 /datum/mafia_role/proc/put_player_in_body(client/player)
+	procstart = null
+	src.procstart = null
 	if(player.mob.mind)
 		body.AddComponent( \
 			/datum/component/temporary_body, \
@@ -140,6 +154,8 @@
  * Does not count as visiting, see visit proc.
  */
 /datum/mafia_role/proc/kill(datum/mafia_controller/game, datum/mafia_role/attacker, lynch = FALSE)
+	procstart = null
+	src.procstart = null
 	if(game_status == MAFIA_DEAD)
 		return FALSE
 	if(attacker && (attacker.role_flags & ROLE_ROLEBLOCKED))
@@ -156,6 +172,8 @@
 	return TRUE
 
 /datum/mafia_role/proc/greet()
+	procstart = null
+	src.procstart = null
 	mafia_alert = new(body, src)
 	SEND_SOUND(body, 'sound/ambience/misc/ambifailure.ogg')
 	to_chat(body, span_danger("You are the [name]."))
@@ -170,6 +188,8 @@
 	to_chat(body, "<span class='warningplain'><b>Be sure to read <a href=\"https://tgstation13.org/wiki/Mafia\">the wiki page</a> to learn more, if you have no idea what's going on.</b></span>")
 
 /datum/mafia_role/proc/reveal_role(datum/mafia_controller/game, verbose = FALSE)
+	procstart = null
+	src.procstart = null
 	if((role_flags & ROLE_REVEALED))
 		return
 	if(verbose)
@@ -182,9 +202,13 @@
 	role_flags |= ROLE_REVEALED
 
 /datum/mafia_role/proc/special_reveal_equip(datum/mafia_controller/game)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/mafia_role/proc/show_help(clueless)
+	procstart = null
+	src.procstart = null
 	var/list/result = list()
 	var/team_desc = ""
 	var/team_span = ""

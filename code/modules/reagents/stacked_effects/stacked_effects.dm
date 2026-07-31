@@ -11,6 +11,8 @@
  * * list/reagents_metabolized - the list of reagents metabolized
 */
 /datum/stacked_metabolization_effect/proc/average(list/reagents_metabolized)
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 	SHOULD_NOT_OVERRIDE(TRUE)
 
@@ -28,6 +30,8 @@
  * * seconds_per_tick - passed from /datum/reagents/proc/metabolize_reagent()
 */
 /datum/stacked_metabolization_effect/proc/check_and_apply(list/reagents_metabolized, mob/living/carbon/owner, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	. = 0
 
@@ -55,6 +59,8 @@
  * Returns a positive value if the mobs health needs to be updated
 */
 /datum/stacked_metabolization_effect/proc/apply(list/reagents_metabolized, mob/living/carbon/owner, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	SHOULD_NOT_SLEEP(TRUE)
 

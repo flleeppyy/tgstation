@@ -5,6 +5,8 @@
 	req_access = list(ACCESS_MEDICAL)
 
 /obj/structure/closet/secure_closet/medical1/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	var/list/items_inside = list(
 		/obj/item/reagent_containers/cup/beaker = 2,
@@ -25,6 +27,8 @@
 	req_access = list(ACCESS_SURGERY)
 
 /obj/structure/closet/secure_closet/medical2/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 3)
 		new /obj/item/tank/internals/anesthetic(src)
@@ -37,6 +41,8 @@
 	icon_state = "med_secure"
 
 /obj/structure/closet/secure_closet/medical3/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/radio/headset/headset_med(src)
 	new /obj/item/defibrillator/loaded(src)
@@ -56,6 +62,8 @@
 	close_sound_volume = 50
 
 /obj/structure/closet/secure_closet/psychology/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/under/costume/buttondown/slacks/service(src)
 	new /obj/item/clothing/under/costume/buttondown/skirt/service(src)
@@ -75,6 +83,8 @@
 	icon_state = "cmo"
 
 /obj/structure/closet/secure_closet/chief_medical/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 
 	new /obj/item/clothing/suit/bio_suit/cmo(src)
@@ -92,6 +102,8 @@
 	new /obj/item/storage/lockbox/medal/med(src)
 
 /obj/structure/closet/secure_closet/chief_medical/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Traitor steal objective
@@ -106,6 +118,8 @@
 	req_access = list(ACCESS_SURGERY)
 
 /obj/structure/closet/secure_closet/animal/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/assembly/signaler(src)
 	for(var/i in 1 to 3)
@@ -118,6 +132,8 @@
 	icon_state = "chem_secure"
 
 /obj/structure/closet/secure_closet/chemical/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/storage/box/pillbottles(src)
 	new /obj/item/storage/box/pillbottles(src)
@@ -132,6 +148,8 @@
 	req_access = list(ACCESS_PLUMBING)
 
 /obj/structure/closet/secure_closet/chemical/heisenberg/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/reagent_containers/dropper(src)
 	new /obj/item/reagent_containers/dropper(src)
@@ -145,6 +163,8 @@
 	icon_state = "paramed_secure"
 
 /obj/structure/closet/secure_closet/paramedic/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 
 	var/list/items_inside = list(

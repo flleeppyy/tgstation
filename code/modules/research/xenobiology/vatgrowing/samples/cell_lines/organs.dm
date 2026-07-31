@@ -5,6 +5,8 @@
 	consumption_rate = REAGENTS_METABOLISM
 
 /datum/micro_organism/cell_line/organs/mutate_color(atom/beautiful_mutant)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isorgan(beautiful_mutant))

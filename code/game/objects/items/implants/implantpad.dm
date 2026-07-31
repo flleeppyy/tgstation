@@ -19,10 +19,14 @@
 	var/datum/deathrattle_group/saved_deathrattle_group
 
 /obj/item/implantpad/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state]-[!isnull(inserted_case)]"
 	return ..()
 
 /obj/item/implantpad/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!inserted_case)
 		. += span_info("It is currently empty.")
@@ -35,12 +39,16 @@
 	. += span_info("Alt-click to remove [inserted_case].")
 
 /obj/item/implantpad/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == inserted_case)
 		inserted_case = null
 		update_appearance(UPDATE_ICON)
 
 /obj/item/implantpad/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(inserted_case || !istype(tool, /obj/item/implantcase))
 		return NONE
 	if(!user.transferItemToLoc(tool, src))
@@ -52,16 +60,22 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/implantpad/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	remove_implant(user)
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/implantpad/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		ui = new(user, src, "ImplantPad", name)
 		ui.open()
 
 /obj/item/implantpad/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["saved_deathrattle_group"] = saved_deathrattle_group ? saved_deathrattle_group.name : null
 	data["current_deathrattle_group"] = null
@@ -79,6 +93,8 @@
 	return data
 
 /obj/item/implantpad/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/user = usr
 	if(action == "eject_implant")
@@ -93,6 +109,8 @@
 
 ///Removes the implant from the pad and puts it in the user's hands if possible.
 /obj/item/implantpad/proc/remove_implant(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!inserted_case)
 		user.balloon_alert(user, "no case inside!")
 		return FALSE
@@ -106,6 +124,8 @@
 
 /// Saves the currently inserted implant's deathrattle group.
 /obj/item/implantpad/proc/save_deathrattle_group(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!inserted_case)
 		user.balloon_alert(user, "no case inside!")
 		return FALSE
@@ -124,6 +144,8 @@
 
 /// Sets the currently inserted implant's deathrattle group to saved.
 /obj/item/implantpad/proc/set_deathrattle_group(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!inserted_case)
 		user.balloon_alert(user, "no case inside!")
 		return FALSE
@@ -145,6 +167,8 @@
 
 /// Initializes and saves a new deathrattle group, then registers the current implant to it.
 /obj/item/implantpad/proc/init_deathrattle_group(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!inserted_case)
 		user.balloon_alert(user, "no case inside!")
 		return FALSE

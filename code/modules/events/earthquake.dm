@@ -17,6 +17,8 @@
 	admin_setup = list(/datum/event_admin_setup/set_location/earthquake)
 
 /datum/round_event_control/earthquake/can_spawn_event(players_amt, allow_magic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -41,6 +43,8 @@
 	var/list/edges = list()
 
 /datum/round_event/earthquake/setup()
+	procstart = null
+	src.procstart = null
 	if(special_spot)
 		epicenter = special_spot
 	else
@@ -95,9 +99,13 @@
 		underbelly += GET_TURF_BELOW(turf_to_quake)
 
 /datum/round_event/earthquake/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("Planetary monitoring systems indicate a devastating seismic event in the near future.", "Seismic Report")
 
 /datum/round_event/earthquake/start()
+	procstart = null
+	src.procstart = null
 	notify_ghosts(
 		"The earthquake's epicenter has been located: [get_area_name(epicenter)]!",
 		source = epicenter,
@@ -105,6 +113,8 @@
 	)
 
 /datum/round_event/earthquake/tick()
+	procstart = null
+	src.procstart = null
 	if(ISMULTIPLE(activeFor, 5))
 		for(var/turf/turf_to_quake in turfs_to_shred)
 			turf_to_quake.Shake(pixelshiftx = 0.1, pixelshifty = 0.1, duration = 1 SECONDS)
@@ -155,6 +165,8 @@
 		playsound(epicenter, 'sound/misc/metal_creak.ogg', 125, TRUE)
 
 /datum/round_event/earthquake/end()
+	procstart = null
+	src.procstart = null
 	playsound(epicenter, 'sound/ambience/earth_rumble/earth_rumble.ogg', 125)
 	for(var/mob/earthquake_witness as anything in GLOB.player_list)
 		if(!is_station_level(earthquake_witness.z) || !is_mining_level(earthquake_witness.z))
@@ -189,6 +201,8 @@
 	input_text = "Have the epicenter be at the current location?"
 
 /datum/event_admin_setup/set_location/earthquake/apply_to_event(datum/round_event/earthquake/event)
+	procstart = null
+	src.procstart = null
 	event.special_spot = chosen_turf
 	var/log_message = "[key_name_admin(usr)] triggered an earthquake at [event.special_spot ? AREACOORD(event.special_spot) : "a random location"]."
 	message_admins(log_message)

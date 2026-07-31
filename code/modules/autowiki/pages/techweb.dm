@@ -2,6 +2,8 @@
 	page = "Template:Autowiki/Content/Techweb"
 
 /datum/autowiki/techweb/generate()
+	procstart = null
+	src.procstart = null
 	var/output = ""
 
 	for (var/node_id in sort_list(SSresearch.techweb_nodes, GLOBAL_PROC_REF(sort_research_nodes)))
@@ -22,9 +24,13 @@
 	return output
 
 /datum/autowiki/techweb/proc/valid_node(datum/techweb_node/node)
+	procstart = null
+	src.procstart = null
 	return !node.experimental
 
 /datum/autowiki/techweb/proc/generate_designs(list/design_ids)
+	procstart = null
+	src.procstart = null
 	var/output = ""
 
 	for (var/design_id in design_ids)
@@ -37,6 +43,8 @@
 	return output
 
 /datum/autowiki/techweb/proc/generate_prerequisites(list/prereq_ids)
+	procstart = null
+	src.procstart = null
 	var/output = ""
 
 	for (var/prereq_id in prereq_ids)
@@ -51,9 +59,13 @@
 	page = "Template:Autowiki/Content/Techweb/Experimental"
 
 /datum/autowiki/techweb/experimental/valid_node(datum/techweb_node/node)
+	procstart = null
+	src.procstart = null
 	return node.experimental
 
 /proc/sort_research_nodes(node_id_a, node_id_b)
+	procstart = null
+	src.procstart = null
 	var/datum/techweb_node/node_a = SSresearch.techweb_nodes[node_id_a]
 	var/datum/techweb_node/node_b = SSresearch.techweb_nodes[node_id_b]
 

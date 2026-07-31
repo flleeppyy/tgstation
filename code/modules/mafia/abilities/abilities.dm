@@ -18,6 +18,8 @@
 	var/datum/mafia_role/target_role
 
 /datum/mafia_ability/New(datum/mafia_role/host_role)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.host_role = host_role
 	if(action_priority)
@@ -25,12 +27,16 @@
 		RegisterSignal(host_role.mafia_game_controller, COMSIG_MAFIA_NIGHT_END, PROC_REF(clean_action_refs))
 
 /datum/mafia_ability/Destroy(force)
+	procstart = null
+	src.procstart = null
 	host_role = null
 	target_role = null
 	return ..()
 
 ///Handles special messagese sent by ability-specific stuff (such as changeling chat).
 /datum/mafia_ability/proc/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return FALSE
 
@@ -38,6 +44,8 @@
  * Called when refs need to be cleared, the last thing that is called in a night cycle.
  */
 /datum/mafia_ability/proc/clean_action_refs(datum/mafia_controller/game)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	SHOULD_CALL_PARENT(TRUE)
@@ -52,6 +60,8 @@
  * silent - Whether to give feedback to the player about why the action cannot be used.
  */
 /datum/mafia_ability/proc/validate_action_target(datum/mafia_role/potential_target, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(host_role.game_status == MAFIA_DEAD)
@@ -91,6 +101,8 @@
  * day_target - Set when using actions during the day, this is the person that is the target during this phase.
  */
 /datum/mafia_ability/proc/perform_action_target(datum/mafia_controller/game, datum/mafia_role/day_target)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(!using_ability)
@@ -113,6 +125,8 @@
  * Subtypes can override this for things like self-abilities (such as shooting visitors).
  */
 /datum/mafia_ability/proc/set_target(datum/mafia_role/new_target)
+	procstart = null
+	src.procstart = null
 	if(!validate_action_target(new_target))
 		return FALSE
 

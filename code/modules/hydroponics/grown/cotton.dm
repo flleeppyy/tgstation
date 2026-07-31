@@ -34,6 +34,8 @@
 	var/cotton_name = "raw cotton"
 
 /obj/item/grown/cotton/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/cotton_count = 1
 	if(seed)
 		cotton_count += round(seed.potency / 25)

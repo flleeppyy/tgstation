@@ -24,6 +24,8 @@
  * Returns null if entry is abstract or invalid for current circumstances.
  */
 /datum/grand_finale/proc/get_radial_choice()
+	procstart = null
+	src.procstart = null
 	if (!name || !desc || !icon || !icon_state)
 		return
 	var/time_remaining_desc = ""
@@ -41,10 +43,14 @@
  * * invoker - The wizard casting this.
  */
 /datum/grand_finale/proc/trigger(mob/living/invoker)
+	procstart = null
+	src.procstart = null
 	// Do something cool.
 
 /// Tries to equip something into an inventory slot, then hands, then the floor.
 /datum/grand_finale/proc/equip_to_slot_then_hands(mob/living/carbon/human/invoker, slot, obj/item/item)
+	procstart = null
+	src.procstart = null
 	if(!item)
 		return
 	if(!invoker.equip_to_slot_if_possible(item, slot, disable_warning = TRUE))
@@ -52,6 +58,8 @@
 
 /// They are not going to take this lying down.
 /datum/grand_finale/proc/create_vendetta(datum/mind/aggrieved_crewmate, datum/mind/wizard)
+	procstart = null
+	src.procstart = null
 	aggrieved_crewmate.add_antag_datum(/datum/antagonist/wizard_prank_vendetta)
 	var/datum/antagonist/wizard_prank_vendetta/antag_datum = aggrieved_crewmate.has_antag_datum(/datum/antagonist/wizard_prank_vendetta)
 	var/datum/objective/assassinate/wizard_murder = new
@@ -84,5 +92,7 @@
 	icon_state = "scroll"
 
 /datum/grand_finale/magic/trigger(mob/living/carbon/human/invoker)
+	procstart = null
+	src.procstart = null
 	message_admins("[key_name(invoker)] summoned magic")
 	summon_magic(survivor_probability = 20) // Wow, this one was easy!

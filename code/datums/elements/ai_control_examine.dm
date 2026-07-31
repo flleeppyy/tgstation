@@ -11,6 +11,8 @@
 	var/list/noticable_organ_examines
 
 /datum/element/ai_control_examine/Attach(datum/target, noticable_organ_examines = list(ORGAN_SLOT_BRAIN = span_deadsay("doesn't appear to be themself.")))
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!istype(target, /datum/ai_controller))
@@ -21,6 +23,8 @@
 	RegisterSignal(target_controller, COMSIG_AI_CONTROLLER_UNPOSSESSED_PAWN, PROC_REF(on_ai_controller_unpossessed_pawn))
 
 /datum/element/ai_control_examine/Detach(datum/ai_controller/target_controller)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target_controller, list(COMSIG_AI_CONTROLLER_POSSESSED_PAWN, COMSIG_AI_CONTROLLER_UNPOSSESSED_PAWN))
 	if(target_controller.pawn && ishuman(target_controller.pawn))
@@ -28,6 +32,8 @@
 
 /// Signal when the ai controller possesses a pawn
 /datum/element/ai_control_examine/proc/on_ai_controller_possessed_pawn(datum/ai_controller/source_controller)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!ishuman(source_controller.pawn))
@@ -43,17 +49,23 @@
 	RegisterSignal(human_pawn, COMSIG_ORGAN_IMPLANTED, PROC_REF(on_organ_implanted))
 
 /datum/element/ai_control_examine/proc/on_organ_implanted(obj/item/organ/possibly_noticable, mob/living/carbon/receiver)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(noticable_organ_examines[possibly_noticable.slot])
 		make_organ_noticable(possibly_noticable.slot, possibly_noticable)
 
 /datum/element/ai_control_examine/proc/make_organ_noticable(organ_slot, obj/item/organ/noticable_organ, mob/living/carbon/human/human_pawn)
+	procstart = null
+	src.procstart = null
 	var/examine_text = noticable_organ_examines[organ_slot]
 	var/body_zone = organ_slot != ORGAN_SLOT_BRAIN ? noticable_organ.zone : null
 	noticable_organ.AddElement(/datum/element/noticable_organ/ai_control, examine_text, body_zone)
 
 /// Signal when the ai controller stops possessing a pawn, either it's deleted or it got moved to another pawn for some reason
 /datum/element/ai_control_examine/proc/on_ai_controller_unpossessed_pawn(datum/ai_controller/source_controller)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!ishuman(source_controller.pawn))
 		return
@@ -69,6 +81,8 @@
 	UnregisterSignal(human_pawn, COMSIG_ORGAN_IMPLANTED)
 
 /datum/element/ai_control_examine/proc/make_organ_uninteresting(organ_slot, obj/item/organ/noticable_organ, mob/living/carbon/human/human_pawn)
+	procstart = null
+	src.procstart = null
 	var/examine_text = noticable_organ_examines[organ_slot]
 	var/body_zone = organ_slot != ORGAN_SLOT_BRAIN ? noticable_organ.zone : null
 	noticable_organ.RemoveElement(/datum/element/noticable_organ/ai_control, examine_text, body_zone)

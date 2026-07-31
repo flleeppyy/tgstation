@@ -18,11 +18,15 @@
 	var/area/detonation_area
 
 /obj/item/grenade/c4/ninja/Destroy()
+	procstart = null
+	src.procstart = null
 	detonator = null
 	detonation_area = null
 	return ..()
 
 /obj/item/grenade/c4/ninja/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!IS_SPACE_NINJA(user))
 		return
@@ -40,6 +44,8 @@
  * * datum/antagonist/ninja/ninja_antag - The antag datum for the owner of the c4
  */
 /obj/item/grenade/c4/ninja/proc/set_detonation_area(datum/antagonist/ninja/ninja_antag)
+	procstart = null
+	src.procstart = null
 	if (!ninja_antag)
 		return
 	var/datum/objective/plant_explosive/objective = locate() in ninja_antag.objectives
@@ -48,6 +54,8 @@
 	detonation_area = objective.detonation_location
 
 /obj/item/grenade/c4/ninja/plant_c4(atom/bomb_target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!IS_SPACE_NINJA(user))
 		say("Access denied.")
 		return FALSE
@@ -59,6 +67,8 @@
 	return TRUE
 
 /obj/item/grenade/c4/ninja/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	if(!check_loc(target, detonator.resolve())) // if its moved, deactivate the c4
 		var/obj/item/grenade/c4/ninja/new_c4 = new /obj/item/grenade/c4/ninja(target.loc)
 		new_c4.detonation_area = detonation_area
@@ -88,6 +98,8 @@
  * * mob/user - The planter of the c4
  */
 /obj/item/grenade/c4/ninja/proc/check_loc(atom/bomb_target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(detonation_area))
 		balloon_alert(user, "no location set!")
 		return FALSE

@@ -5,17 +5,23 @@
 /datum/element/openspace_item_click_handler
 
 /datum/element/openspace_item_click_handler/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
 	RegisterSignal(target, COMSIG_RANGED_ITEM_INTERACTING_WITH_ATOM, PROC_REF(divert_interaction))
 
 /datum/element/openspace_item_click_handler/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, COMSIG_RANGED_ITEM_INTERACTING_WITH_ATOM)
 	return ..()
 
 //Invokes the proctype with a turf above as target.
 /datum/element/openspace_item_click_handler/proc/divert_interaction(obj/item/source, mob/user, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if((target.z == 0) || (user.z == 0) || target.z == user.z)
 		return NONE

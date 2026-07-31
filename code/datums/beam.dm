@@ -111,6 +111,8 @@
  * Proc called by the atom Beam() proc. Sets up signals, and draws the beam for the first time.
  */
 /datum/beam/proc/Start()
+	procstart = null
+	src.procstart = null
 	visuals = new beam_type()
 	set_up_effect(visuals, icon_state)
 	Draw()
@@ -126,6 +128,8 @@
  * direction: in what direction mover moved from.
  */
 /datum/beam/proc/redrawing(atom/movable/mover, atom/oldloc, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(QDELING(src))
 		return
@@ -143,6 +147,8 @@
 
 /** Returns the last drawn endpoints for reuse by inherit_glide(), or null if undrawn. */
 /datum/beam/proc/get_last_geometry()
+	procstart = null
+	src.procstart = null
 	if(!last_draw_valid)
 		return null
 	return list(
@@ -158,6 +164,8 @@
 
 /** Seeds the next Draw() from saved geometry so rebuilt beams glide instead of snapping. */
 /datum/beam/proc/inherit_glide(list/geometry, animate_time)
+	procstart = null
+	src.procstart = null
 	if(!geometry || animate_time <= 0)
 		return
 	last_origin_x = geometry["origin_x"]
@@ -184,6 +192,8 @@
 	pending_animate_time = animate_time
 
 /datum/beam/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(elements)
 	QDEL_NULL(visuals)
 	UnregisterSignal(origin, list(COMSIG_MOVABLE_MOVED, COMSIG_QDELETING))
@@ -196,6 +206,8 @@
  * Creates the beam effects and places them in a line from the origin to the target. Sets their rotation to make the beams face the target, too.
  */
 /datum/beam/proc/Draw(atom/movable/mover = null, atom/oldloc = null)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_BEAM_BEFORE_DRAW) & BEAM_CANCEL_DRAW)
 		return
 	var/animate_time = pending_animate_time
@@ -384,6 +396,8 @@
 	last_draw_valid = TRUE
 
 /datum/beam/proc/set_up_effect(obj/effect/ebeam/beam_effect, effect_icon_state)
+	procstart = null
+	src.procstart = null
 	beam_effect.icon = icon
 	beam_effect.icon_state = effect_icon_state
 	beam_effect.color = beam_color
@@ -394,6 +408,8 @@
 
 ///sets the sprite of the segment, using the more performant viscontents by default
 /datum/beam/proc/set_subsegment_appearance(obj/effect/ebeam/segment)
+	procstart = null
+	src.procstart = null
 	//Assign our single visual ebeam to each ebeam's vis_contents
 	segment.vis_contents += visuals
 
@@ -425,6 +441,8 @@
 	src.icon_state_variants = icon_state_variants
 
 /datum/beam/varied/set_subsegment_appearance(obj/effect/ebeam/segment)
+	procstart = null
+	src.procstart = null
 	//we use reall ass icon states here.
 	set_up_effect(segment, "[icon_state][rand(1, icon_state_variants)]")
 
@@ -437,20 +455,30 @@
 	var/datum/beam/owner
 
 /obj/effect/ebeam/Initialize(mapload, beam_owner)
+	procstart = null
+	src.procstart = null
 	owner = beam_owner
 	return ..()
 
 /obj/effect/ebeam/Destroy()
+	procstart = null
+	src.procstart = null
 	owner = null
 	return ..()
 
 /obj/effect/ebeam/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/ebeam/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/ebeam/Process_Spacemove(movement_dir, continuous_move)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// A beam subtype used for advanced beams, to react to atoms entering the beam
@@ -459,6 +487,8 @@
 	var/react_on_init = FALSE
 
 /obj/effect/ebeam/reacting/Initialize(mapload, beam_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
@@ -474,6 +504,8 @@
 		beam_entered(existing)
 
 /obj/effect/ebeam/reacting/proc/on_entered(datum/source, atom/movable/entered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(owner))
@@ -482,6 +514,8 @@
 	beam_entered(entered)
 
 /obj/effect/ebeam/reacting/proc/on_exited(datum/source, atom/movable/exited)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(owner))
@@ -490,6 +524,8 @@
 	beam_exited(exited)
 
 /obj/effect/ebeam/reacting/proc/on_turf_change(datum/source, path, new_baseturfs, flags, list/datum/callback/post_change_callbacks)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(owner))
@@ -499,16 +535,22 @@
 
 /// Some atom entered the beam's line
 /obj/effect/ebeam/reacting/proc/beam_entered(atom/movable/entered)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(owner, COMSIG_BEAM_ENTERED, src, entered)
 
 /// Some atom exited the beam's line
 /obj/effect/ebeam/reacting/proc/beam_exited(atom/movable/exited)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(owner, COMSIG_BEAM_EXITED, src, exited)
 
 /// Some turf the beam covers has changed to a new turf type
 /obj/effect/ebeam/reacting/proc/beam_turfs_changed(list/datum/callback/post_change_callbacks)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(owner, COMSIG_BEAM_TURFS_CHANGED, post_change_callbacks)
 
@@ -543,20 +585,28 @@
 	var/lefthand_n_py = 15
 
 /datum/beam/held/Start()
+	procstart = null
+	src.procstart = null
 	update_offsets(origin.dir)
 	. = ..()
 	RegisterSignal(origin, COMSIG_ATOM_DIR_CHANGE, PROC_REF(handle_dir_change))
 
 /datum/beam/held/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(origin, COMSIG_ATOM_DIR_CHANGE)
 	. = ..()
 
 /datum/beam/held/proc/handle_dir_change(atom/movable/source, olddir, newdir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_offsets(newdir)
 	INVOKE_ASYNC(src, TYPE_PROC_REF(/datum/beam, redrawing))
 
 /datum/beam/held/proc/update_offsets(user_dir)
+	procstart = null
+	src.procstart = null
 	switch(user_dir)
 		if(SOUTH)
 			override_origin_pixel_x = lefthand ? lefthand_s_px : righthand_s_px

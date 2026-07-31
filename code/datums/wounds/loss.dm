@@ -27,6 +27,8 @@
 
 /// Our special proc for our special dismembering, the wounding type only matters for what text we have
 /datum/wound/loss/proc/apply_dismember(obj/item/bodypart/dismembered_part, wounding_type = WOUND_SLASH, outright = FALSE, attack_direction)
+	procstart = null
+	src.procstart = null
 	if(!istype(dismembered_part) || !dismembered_part.owner || !(dismembered_part.body_zone in get_viable_zones()) || isalien(dismembered_part.owner) || !dismembered_part.can_dismember())
 		qdel(src)
 		return
@@ -56,6 +58,8 @@
 	return TRUE
 
 /obj/item/bodypart/proc/get_dismember_message(wounding_type, outright)
+	procstart = null
+	src.procstart = null
 	var/occur_text
 
 	if(outright)

@@ -5,6 +5,8 @@
 	)
 
 /datum/stacked_metabolization_effect/sweet_coffee/apply(list/reagents_metabolized, mob/living/carbon/owner, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!owner.mob_mood.mood_events["sweet_coffee"])
 		owner.add_mood_event("sweet_coffee", /datum/mood_event/sweetcoffee)
 
@@ -15,6 +17,8 @@
 	)
 
 /datum/stacked_metabolization_effect/sweet_tea/apply(list/reagents_metabolized, mob/living/carbon/owner, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!owner.mob_mood.mood_events["sweet_tea"])
 		owner.add_mood_event("sweet_tea", /datum/mood_event/sweettea)
 
@@ -25,6 +29,8 @@
 	)
 
 /datum/stacked_metabolization_effect/coffee_oxidise/apply(list/reagents_metabolized, mob/living/carbon/owner, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(SPT_PROB(30, seconds_per_tick))
 		return owner.adjust_oxy_loss(-2 * average(reagents_metabolized), updating_health = FALSE)
 
@@ -36,6 +42,8 @@
 	)
 
 /datum/stacked_metabolization_effect/coffee_oxidise_triple/apply(list/reagents_metabolized, mob/living/carbon/owner, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(SPT_PROB(70, seconds_per_tick))
 		return owner.adjust_oxy_loss(-3 * average(reagents_metabolized), updating_health = FALSE)
 
@@ -46,4 +54,6 @@
 	)
 
 /datum/stacked_metabolization_effect/astrotame_cream/apply(list/reagents_metabolized, mob/living/carbon/owner, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	owner.adjust_disgust(-1.5 * average(reagents_metabolized) * seconds_per_tick)

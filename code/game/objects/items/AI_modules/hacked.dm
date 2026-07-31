@@ -4,6 +4,8 @@
 	laws = list("")
 
 /obj/item/ai_module/law/syndicate/configure(mob/user)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	var/targName = tgui_input_text(user, "Enter a new law for the AI", "Freeform Law Entry", laws[1], max_length = CONFIG_GET(number/max_law_len), multiline = TRUE)
 	if(!targName || !user.is_holding(src))
@@ -20,6 +22,8 @@
 	laws[1] = targName
 
 /obj/item/ai_module/law/syndicate/apply_to_combined_lawset(datum/ai_laws/combined_lawset)
+	procstart = null
+	src.procstart = null
 	combined_lawset.add_hacked_law(laws[1])
 
 /// Makes the AI Malf, as well as give it syndicate laws.
@@ -45,12 +49,16 @@
 	var/functional = TRUE
 
 /obj/item/malf_board/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_TRAITOR(user) && isliving(user) && functional)
 		. += span_alert("You can use this on an AI core to infect it with a virus, causing it to malfunction.")
 		. += span_alert("It can alternatively be used on a core module rack to infect the first AI linked to it, if any.")
 
 /obj/item/malf_board/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/blocking = ismachinery(interacting_with) || issilicon(interacting_with)
 	if(!IS_TRAITOR(user))
 		if(blocking)
@@ -91,16 +99,22 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/malf_board/update_name(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!functional)
 		name = "Broken AI Module"
 
 /obj/item/malf_board/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!functional)
 		desc = "A law upload module, it is broken and non-functional."
 
 /obj/item/malf_board/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!functional)
 		. += "damaged"

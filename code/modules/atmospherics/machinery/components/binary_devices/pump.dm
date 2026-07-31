@@ -23,17 +23,23 @@
 	var/target_pressure = ONE_ATMOSPHERE
 
 /obj/machinery/atmospherics/components/binary/pump/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/usb_port, typecacheof(list(/obj/item/circuit_component/atmos_pump), only_root_path = TRUE))
 	register_context()
 
 /obj/machinery/atmospherics/components/binary/pump/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	context[SCREENTIP_CONTEXT_CTRL_LMB] = "Turn [on ? "off" : "on"]"
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "Maximize target pressure"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/atmospherics/components/binary/pump/click_ctrl(mob/user)
+	procstart = null
+	src.procstart = null
 	if(is_operational)
 		set_on(!on)
 		balloon_alert(user, "turned [on ? "on" : "off"]")
@@ -42,6 +48,8 @@
 	return CLICK_ACTION_BLOCKING
 
 /obj/machinery/atmospherics/components/binary/pump/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(target_pressure == MAX_OUTPUT_PRESSURE)
 		return CLICK_ACTION_BLOCKING
 
@@ -52,9 +60,13 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/atmospherics/components/binary/pump/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	icon_state = (on && is_operational) ? "pump_on-[set_overlay_offset(piping_layer)]" : "pump_off-[set_overlay_offset(piping_layer)]"
 
 /obj/machinery/atmospherics/components/binary/pump/process_atmos()
+	procstart = null
+	src.procstart = null
 	if(!on || !is_operational)
 		return
 
@@ -66,12 +78,16 @@
 		update_parents()
 
 /obj/machinery/atmospherics/components/binary/pump/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AtmosPump", name)
 		ui.open()
 
 /obj/machinery/atmospherics/components/binary/pump/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["on"] = on
 	data["pressure"] = round(target_pressure)
@@ -79,6 +95,8 @@
 	return data
 
 /obj/machinery/atmospherics/components/binary/pump/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -101,6 +119,8 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/machinery/atmospherics/components/binary/pump/can_unwrench(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && on && is_operational)
 		to_chat(user, span_warning("You cannot unwrench [src], turn it off first!"))
@@ -163,6 +183,8 @@
 	var/obj/machinery/atmospherics/components/binary/pump/connected_pump
 
 /obj/item/circuit_component/atmos_pump/populate_ports()
+	procstart = null
+	src.procstart = null
 	pressure_value = add_input_port("New Pressure", PORT_TYPE_NUMBER, trigger = PROC_REF(set_pump_pressure))
 	on = add_input_port("Turn On", PORT_TYPE_SIGNAL, trigger = PROC_REF(set_pump_on))
 	off = add_input_port("Turn Off", PORT_TYPE_SIGNAL, trigger = PROC_REF(set_pump_off))
@@ -178,20 +200,28 @@
 	turned_off = add_output_port("Turned Off", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/atmos_pump/register_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/machinery/atmospherics/components/binary/pump))
 		connected_pump = shell
 		RegisterSignal(connected_pump, COMSIG_ATMOS_MACHINE_SET_ON, PROC_REF(handle_pump_activation))
 
 /obj/item/circuit_component/atmos_pump/unregister_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(connected_pump, COMSIG_ATMOS_MACHINE_SET_ON)
 	connected_pump = null
 	return ..()
 
 /obj/item/circuit_component/atmos_pump/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	pressure_value.set_value(clamp(pressure_value.value, 0, MAX_OUTPUT_PRESSURE))
 
 /obj/item/circuit_component/atmos_pump/proc/handle_pump_activation(datum/source, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	is_active.set_output(active)
 	if(active)
@@ -200,18 +230,24 @@
 		turned_off.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/atmos_pump/proc/set_pump_pressure()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!connected_pump)
 		return
 	connected_pump.target_pressure = pressure_value.value
 
 /obj/item/circuit_component/atmos_pump/proc/set_pump_on()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!connected_pump)
 		return
 	connected_pump.set_on(TRUE)
 
 /obj/item/circuit_component/atmos_pump/proc/set_pump_off()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!connected_pump)
 		return
@@ -219,6 +255,8 @@
 	connected_pump.update_appearance(UPDATE_ICON)
 
 /obj/item/circuit_component/atmos_pump/proc/request_pump_data()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!connected_pump)
 		return

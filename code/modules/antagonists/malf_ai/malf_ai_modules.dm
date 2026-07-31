@@ -72,6 +72,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	var/cooldown_period = 0 SECONDS
 
 /datum/action/innate/ai/Grant(mob/living/player)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isAI(owner))
 		WARNING("AI action [name] attempted to grant itself to non-AI mob [key_name(player)]!")
@@ -80,11 +82,15 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 		owner_AI = owner
 
 /datum/action/innate/ai/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	if(owner_AI && !COOLDOWN_FINISHED(owner_AI, malf_cooldown))
 		return FALSE
 	. = ..()
 
 /datum/action/innate/ai/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -94,6 +100,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 		COOLDOWN_START(owner_AI, malf_cooldown, cooldown_period)
 
 /datum/action/innate/ai/proc/adjust_uses(amt, silent)
+	procstart = null
+	src.procstart = null
 	uses += amt
 	if(!silent && uses)
 		to_chat(owner, span_notice("[name] now has <b>[uses]</b> use[uses > 1 ? "s" : ""] remaining."))
@@ -109,6 +117,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	click_action = TRUE
 
 /datum/action/innate/ai/ranged/adjust_uses(amt, silent)
+	procstart = null
+	src.procstart = null
 	uses += amt
 	if(!silent && uses)
 		to_chat(owner, span_notice("[name] now has <b>[uses]</b> use\s remaining."))
@@ -142,6 +152,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 
 /// Applies upgrades
 /datum/ai_module/proc/upgrade(mob/living/silicon/ai/AI)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Modules causing destruction
@@ -183,6 +195,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	auto_use_uses = FALSE
 
 /datum/action/innate/ai/nuke_station/Activate()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(owner)
 	if(!istype(T) || !is_station_level(T.z))
 		to_chat(owner, span_warning("You cannot activate the doomsday device while off-station!"))
@@ -197,6 +211,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	set_up_us_the_bomb(owner)
 
 /datum/action/innate/ai/nuke_station/proc/set_up_us_the_bomb(mob/living/owner)
+	procstart = null
+	src.procstart = null
 	//oh my GOD.
 	set waitfor = FALSE
 	message_admins("[key_name_admin(owner)][ADMIN_FLW(owner)] has activated AI Doomsday.")
@@ -308,6 +324,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	var/mob/living/silicon/ai/owner
 
 /obj/machinery/doomsday_device/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isAI(loc))
 		stack_trace("Doomsday created outside an AI somehow, shit's fucking broke. Anyway, we're just gonna qdel now. Go make a github issue report.")
@@ -316,6 +334,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	countdown = new(src)
 
 /obj/machinery/doomsday_device/Destroy()
+	procstart = null
+	src.procstart = null
 	timing = FALSE
 	QDEL_NULL(countdown)
 	STOP_PROCESSING(SSfastprocess, src)
@@ -334,6 +354,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	return ..()
 
 /obj/machinery/doomsday_device/proc/start()
+	procstart = null
+	src.procstart = null
 	detonation_timer = world.time + DEFAULT_DOOMSDAY_TIMER
 	next_announce = world.time + DOOMSDAY_ANNOUNCE_INTERVAL
 	timing = TRUE
@@ -346,9 +368,13 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 		borg.toggle_headlamp(FALSE, TRUE) //forces borg lamp to update
 
 /obj/machinery/doomsday_device/proc/seconds_remaining()
+	procstart = null
+	src.procstart = null
 	. = max(0, (round((detonation_timer - world.time) / 10)))
 
 /obj/machinery/doomsday_device/process()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(!T || !is_station_level(T.z))
 		minor_announce("DOOMSDAY DEVICE OUT OF STATION RANGE, ABORTING", "ERROR ER0RR $R0RRO$!R41.%%!!(%$^^__+ @#F0E4", TRUE)
@@ -368,11 +394,15 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 		next_announce += DOOMSDAY_ANNOUNCE_INTERVAL
 
 /obj/machinery/doomsday_device/proc/trigger_doomsday()
+	procstart = null
+	src.procstart = null
 	callback_on_everyone_on_z(SSmapping.levels_by_trait(ZTRAIT_STATION), CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(bring_doomsday)), src)
 	to_chat(world, span_bold("The AI cleansed the station of life with [src]!"))
 	SSticker.force_ending = FORCE_END_ROUND
 
 /proc/bring_doomsday(mob/living/victim, atom/source)
+	procstart = null
+	src.procstart = null
 	if(issilicon(victim))
 		return FALSE
 
@@ -403,9 +433,13 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	var/hack_in_progress  = FALSE
 
 /datum/action/innate/ai/lockdown/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	return ..() && !hack_in_progress
 
 /datum/action/innate/ai/lockdown/Activate()
+	procstart = null
+	src.procstart = null
 	hack_in_progress = TRUE
 	for(var/obj/machinery/door/locked_down as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/door))
 		if(QDELETED(locked_down) || !is_station_level(locked_down.z))
@@ -427,6 +461,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 
 /// For Lockdown malf AI ability. Opens all doors on the station.
 /proc/_malf_ai_undo_lockdown()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/door/locked_down as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/door))
 		if(QDELETED(locked_down) || !is_station_level(locked_down.z))
 			continue
@@ -455,10 +491,14 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	disable_text = span_notice("You release your hold on the powernet.")
 
 /datum/action/innate/ai/ranged/override_machine/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = "[desc] It has [uses] use\s remaining."
 
 /datum/action/innate/ai/ranged/override_machine/do_ability(mob/living/clicker, atom/clicked_on)
+	procstart = null
+	src.procstart = null
 	if(clicker.incapacitated)
 		unset_ranged_ability(clicker)
 		return FALSE
@@ -488,6 +528,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	return TRUE
 
 /datum/action/innate/ai/ranged/override_machine/proc/animate_machine(mob/living/clicker, obj/machinery/to_animate)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(to_animate))
 		return
 
@@ -511,6 +553,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	cooldown_period = 10 SECONDS
 
 /datum/action/innate/ai/destroy_rcds/Activate()
+	procstart = null
+	src.procstart = null
 	for(var/potential_rcd in GLOB.rcd_list)
 		if(istype(potential_rcd, /obj/item/construction/rcd/borg)) //Ensures that cyborg RCDs are spared.
 			continue
@@ -538,10 +582,14 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	disable_text = span_notice("You release your hold on the powernet.")
 
 /datum/action/innate/ai/ranged/overload_machine/New()
+	procstart = null
+	src.procstart = null
 	..()
 	desc = "[desc] It has [uses] use\s remaining."
 
 /datum/action/innate/ai/ranged/overload_machine/proc/detonate_machine(mob/living/clicker, obj/machinery/to_explode)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(to_explode))
 		return
 
@@ -553,6 +601,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 		qdel(to_explode)
 
 /datum/action/innate/ai/ranged/overload_machine/do_ability(mob/living/clicker, atom/clicked_on)
+	procstart = null
+	src.procstart = null
 	if(clicker.incapacitated)
 		unset_ranged_ability(clicker)
 		return FALSE
@@ -597,10 +647,14 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	auto_use_uses = FALSE
 
 /datum/action/innate/ai/blackout/New()
+	procstart = null
+	src.procstart = null
 	..()
 	desc = "[desc] It has [uses] use\s remaining."
 
 /datum/action/innate/ai/blackout/Activate()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/power/apc/apc as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/power/apc))
 		if(prob(30 * apc.overload))
 			apc.overload_lighting()
@@ -631,6 +685,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	uses = 2
 
 /datum/action/innate/ai/honk/Activate()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_clown("The intercom system plays your prepared file as commanded."))
 	for(var/obj/item/radio/intercom/found_intercom as anything in GLOB.intercoms_list)
 		if(!found_intercom.is_on() || !found_intercom.get_listening() || found_intercom.wires.is_cut(WIRE_RX)) //Only operating intercoms play the honk
@@ -665,12 +721,16 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	var/list/turfOverlays
 
 /datum/action/innate/ai/place_transformer/New()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 3)
 		var/image/I = image("icon" = 'icons/turf/overlays.dmi')
 		LAZYADD(turfOverlays, I)
 
 /datum/action/innate/ai/place_transformer/Activate()
+	procstart = null
+	src.procstart = null
 	if(!owner_AI.can_place_transformer(src))
 		return
 	active = TRUE
@@ -691,10 +751,14 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	active = FALSE
 
 /mob/living/silicon/ai/proc/remove_transformer_image(client/C, image/I, turf/T)
+	procstart = null
+	src.procstart = null
 	if(C && I.loc == T)
 		C.images -= I
 
 /mob/living/silicon/ai/proc/can_place_transformer(datum/action/innate/ai/place_transformer/action)
+	procstart = null
+	src.procstart = null
 	if(!eyeobj || !isturf(loc) || incapacitated || !action)
 		return
 	var/turf/middle = get_turf(eyeobj)
@@ -740,6 +804,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	uses = 1
 
 /datum/action/innate/ai/break_air_alarms/Activate()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/airalarm/AA in GLOB.air_alarms)
 		if(!is_station_level(AA.z))
 			continue
@@ -766,6 +832,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	uses = 1
 
 /datum/action/innate/ai/break_fire_alarms/Activate()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/firealarm/bellman as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/firealarm))
 		if(!is_station_level(bellman.z))
 			continue
@@ -797,6 +865,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	uses = 1
 
 /datum/action/innate/ai/emergency_lights/Activate()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/light/L as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/light))
 		if(is_station_level(L.z))
 			L.no_low_power = TRUE
@@ -825,10 +895,14 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	cooldown_period = 3 SECONDS
 
 /datum/action/innate/ai/reactivate_cameras/New()
+	procstart = null
+	src.procstart = null
 	..()
 	desc = "[desc] It has [uses] use\s remaining."
 
 /datum/action/innate/ai/reactivate_cameras/Activate()
+	procstart = null
+	src.procstart = null
 	var/fixed_cameras = 0
 	for(var/obj/machinery/camera/C as anything in SScameras.cameras)
 		if(!uses)
@@ -859,6 +933,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	unlock_sound = 'sound/items/tools/rped.ogg'
 
 /datum/ai_module/malf/upgrade/upgrade_cameras/upgrade(mob/living/silicon/ai/AI)
+	procstart = null
+	src.procstart = null
 	// Sets up nightvision
 	RegisterSignal(AI, COMSIG_MOB_UPDATE_SIGHT, PROC_REF(on_update_sight))
 	AI.update_sight()
@@ -881,6 +957,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	unlock_text = replacetext(unlock_text, "CAMSUPGRADED", "<b>[upgraded_cameras]</b>") //This works, since unlock text is called after upgrade()
 
 /datum/ai_module/malf/upgrade/upgrade_cameras/proc/on_update_sight(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Dim blue, pretty
 	source.lighting_color_cutoffs = blend_cutoff_colors(source.lighting_color_cutoffs, list(5, 25, 35))
@@ -897,6 +975,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	unlock_sound = 'sound/items/tools/rped.ogg'
 
 /datum/ai_module/malf/upgrade/upgrade_turrets/upgrade(mob/living/silicon/ai/AI)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/porta_turret/ai/turret as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/porta_turret/ai))
 		turret.AddElement(/datum/element/empprotection, EMP_PROTECT_ALL|EMP_NO_EXAMINE)
 		turret.max_integrity = 200
@@ -917,6 +997,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	unlock_sound = 'sound/items/tools/rped.ogg'
 
 /datum/ai_module/malf/upgrade/eavesdrop/upgrade(mob/living/silicon/ai/AI)
+	procstart = null
+	src.procstart = null
 	if(AI.eyeobj)
 		AI.eyeobj.relay_speech = TRUE
 
@@ -935,6 +1017,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	unlock_sound = 'sound/vehicles/mecha/nominal.ogg'
 
 /datum/ai_module/malf/upgrade/mecha_domination/upgrade(mob/living/silicon/ai/AI)
+	procstart = null
+	src.procstart = null
 	AI.can_dominate_mechs = TRUE //Yep. This is all it does. Honk!
 
 /datum/ai_module/malf/upgrade/voice_changer
@@ -954,6 +1038,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	var/obj/machinery/ai_voicechanger/voice_changer_machine
 
 /datum/action/innate/ai/voice_changer/Activate()
+	procstart = null
+	src.procstart = null
 	if(!voice_changer_machine)
 		voice_changer_machine = new(owner_AI)
 	voice_changer_machine.ui_interact(usr)
@@ -984,6 +1070,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	var/static/list/voice_options = list("normal", SPAN_ROBOT, SPAN_YELL, SPAN_CLOWN)
 
 /obj/machinery/ai_voicechanger/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isAI(loc))
 		return INITIALIZE_HINT_QDEL
@@ -996,18 +1084,24 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	say_span = owner.speech_span
 
 /obj/machinery/ai_voicechanger/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AiVoiceChanger")
 		ui.open()
 
 /obj/machinery/ai_voicechanger/Destroy()
+	procstart = null
+	src.procstart = null
 	if(owner)
 		owner.ai_voicechanger = null
 		owner = null
 	return ..()
 
 /obj/machinery/ai_voicechanger/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["voices"] = voice_options
 	data["loud"] = loudvoice
@@ -1018,6 +1112,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	return data
 
 /obj/machinery/ai_voicechanger/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -1095,13 +1191,19 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	ranged_mousepointer = 'icons/effects/mouse_pointers/supplypod_target.dmi'
 
 /datum/action/innate/ai/ranged/emag/Destroy()
+	procstart = null
+	src.procstart = null
 	return ..()
 
 /datum/action/innate/ai/ranged/emag/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = "[desc] It has [uses] use\s remaining."
 
 /datum/action/innate/ai/ranged/emag/do_ability(mob/living/clicker, atom/clicked_on)
+	procstart = null
+	src.procstart = null
 
 	// Only things with of or subtyped of any of these types may be remotely emagged
 	var/static/list/compatable_typepaths = list(
@@ -1195,10 +1297,14 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	var/roll_over_cooldown = MALF_AI_ROLL_COOLDOWN
 
 /datum/action/innate/ai/ranged/core_tilt/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = "[desc] It has [uses] use\s remaining."
 
 /datum/action/innate/ai/ranged/core_tilt/do_ability(mob/living/clicker, atom/clicked_on)
+	procstart = null
+	src.procstart = null
 
 	if (!COOLDOWN_FINISHED(src, time_til_next_tilt))
 		clicker.balloon_alert(clicker, "on cooldown!")
@@ -1236,6 +1342,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	COOLDOWN_START(src, time_til_next_tilt, roll_over_cooldown)
 
 /datum/action/innate/ai/ranged/core_tilt/proc/do_roll_over(mob/living/silicon/ai/ai_clicker, picked_dir)
+	procstart = null
+	src.procstart = null
 	if (ai_clicker.incapacitated || !isturf(ai_clicker.loc)) // prevents bugs where the ai is carded and rolls
 		return
 
@@ -1250,6 +1358,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 
 /// Used in our radial menu, state-checking proc after the radial menu sleeps
 /datum/action/innate/ai/ranged/core_tilt/proc/radial_check(mob/living/silicon/ai/clicker)
+	procstart = null
+	src.procstart = null
 	if (QDELETED(clicker) || clicker.incapacitated || clicker.stat == DEAD)
 		return FALSE
 
@@ -1259,6 +1369,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	return TRUE
 
 /datum/action/innate/ai/ranged/core_tilt/proc/get_rotation_from_dir(dir)
+	procstart = null
+	src.procstart = null
 	switch (dir)
 		if (NORTH, NORTHWEST, WEST, SOUTHWEST)
 			return 270 // try our best to not return 180 since it works badly with animate
@@ -1288,10 +1400,14 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	disable_text = span_notice("You stop focusing on tipping vendors.")
 
 /datum/action/innate/ai/ranged/remote_vendor_tilt/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = "[desc] It has [uses] use\s remaining."
 
 /datum/action/innate/ai/ranged/remote_vendor_tilt/do_ability(mob/living/clicker, atom/clicked_on)
+	procstart = null
+	src.procstart = null
 
 	if (!isAI(clicker))
 		return FALSE
@@ -1343,6 +1459,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	return TRUE
 
 /datum/action/innate/ai/ranged/remote_vendor_tilt/proc/do_vendor_tilt(obj/machinery/vending/vendor, turf/target)
+	procstart = null
+	src.procstart = null
 	if (QDELETED(vendor))
 		return FALSE
 
@@ -1353,6 +1471,8 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 
 /// Used in our radial menu, state-checking proc after the radial menu sleeps
 /datum/action/innate/ai/ranged/remote_vendor_tilt/proc/radial_check(mob/living/silicon/ai/clicker, obj/machinery/vending/clicked_vendor)
+	procstart = null
+	src.procstart = null
 	if (QDELETED(clicker) || clicker.incapacitated || clicker.stat == DEAD)
 		return FALSE
 

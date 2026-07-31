@@ -5,6 +5,8 @@
 	var/desired_moodlet = /datum/mood_event/conditional/see_death
 
 /datum/unit_test/death_moodlets/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/dummy = allocate(__IMPLIED_TYPE__)
 	dummy.mind_initialize()
 	prepare_dummy(dummy)
@@ -18,14 +20,20 @@
 
 /// Override to prepare the dummy as needed
 /datum/unit_test/death_moodlets/proc/prepare_dummy(mob/living/carbon/human/consistent/dummy)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Override to provide the mob that will die
 /datum/unit_test/death_moodlets/proc/get_dying_mob()
+	procstart = null
+	src.procstart = null
 	return allocate(/mob/living/carbon/human/consistent)
 
 /// Override to prepare the dying mob as needed
 /datum/unit_test/death_moodlets/proc/prepare_dying_mob(mob/living/dying)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Base type for human death moodlets
@@ -37,6 +45,8 @@
 	abstract_type = /datum/unit_test/death_moodlets/pet
 
 /datum/unit_test/death_moodlets/pet/get_dying_mob()
+	procstart = null
+	src.procstart = null
 	return allocate(/mob/living/basic/pet/cat/_proc)
 
 /// Test the normal ol default moodlet
@@ -48,6 +58,8 @@
 	desired_moodlet = /datum/mood_event/conditional/see_death/desensitized
 
 /datum/unit_test/death_moodlets/human/desensitized/prepare_dummy(mob/living/carbon/human/consistent/dummy)
+	procstart = null
+	src.procstart = null
 	dummy.mind.desensitized_level = DESENSITIZED_THRESHOLD
 
 /// Test callous moodlet
@@ -55,6 +67,8 @@
 	desired_moodlet = /datum/mood_event/conditional/see_death/dontcare
 
 /datum/unit_test/death_moodlets/human/callous/prepare_dummy(mob/living/carbon/human/consistent/dummy)
+	procstart = null
+	src.procstart = null
 	dummy.add_personality(/datum/personality/callous)
 
 /// Tests that callous is prioritized over desensitized
@@ -62,6 +76,8 @@
 	desired_moodlet = /datum/mood_event/conditional/see_death/dontcare
 
 /datum/unit_test/death_moodlets/human/desensitized_and_callous/prepare_dummy(mob/living/carbon/human/consistent/dummy)
+	procstart = null
+	src.procstart = null
 	dummy.add_personality(/datum/personality/callous)
 	dummy.mind.desensitized_level = DESENSITIZED_THRESHOLD
 
@@ -70,6 +86,8 @@
 	desired_moodlet = /datum/mood_event/conditional/see_death/cult
 
 /datum/unit_test/death_moodlets/human/cultist/prepare_dummy(mob/living/carbon/human/consistent/dummy)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(dummy, TRAIT_CULT_HALO, TRAIT_SOURCE_UNIT_TESTS)
 
 /// Tests cultists are still sad when other cultists die
@@ -77,6 +95,8 @@
 	desired_moodlet = /datum/mood_event/conditional/see_death
 
 /datum/unit_test/death_moodlets/human/cultist/friendly_fire/prepare_dying_mob(mob/living/dying)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(dying, TRAIT_CULT_HALO, TRAIT_SOURCE_UNIT_TESTS)
 
 /// Tests animal moodlet
@@ -88,6 +108,8 @@
 	desired_moodlet = /datum/mood_event/conditional/see_death/pet
 
 /datum/unit_test/death_moodlets/pet/desensitized_to_pet/prepare_dummy(mob/living/carbon/human/consistent/dummy)
+	procstart = null
+	src.procstart = null
 	dummy.mind.desensitized_level = DESENSITIZED_THRESHOLD
 
 /// Tests callous moodlet when a pet dies
@@ -95,6 +117,8 @@
 	desired_moodlet = /datum/mood_event/conditional/see_death/dontcare
 
 /datum/unit_test/death_moodlets/pet/callous_to_pet/prepare_dummy(mob/living/carbon/human/consistent/dummy)
+	procstart = null
+	src.procstart = null
 	dummy.add_personality(/datum/personality/callous)
 
 /// Tests animal disliker moodlet when a pet dies
@@ -102,12 +126,16 @@
 	desired_moodlet = /datum/mood_event/conditional/see_death/dontcare
 
 /datum/unit_test/death_moodlets/pet/animal_disliker_to_pet/prepare_dummy(mob/living/carbon/human/consistent/dummy)
+	procstart = null
+	src.procstart = null
 	dummy.add_personality(/datum/personality/animal_disliker)
 
 // This one just tests that the death desensitized status effect works as expected
 /datum/unit_test/desensitized_status_effect
 
 /datum/unit_test/desensitized_status_effect/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/normal_dummy = EASY_ALLOCATE()
 	var/mob/living/carbon/human/consistent/desensitized_dummy = EASY_ALLOCATE()
 	desensitized_dummy.mind_initialize()

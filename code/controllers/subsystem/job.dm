@@ -90,6 +90,8 @@ SUBSYSTEM_DEF(job)
 	## Best of luck editing!\n"
 
 /datum/controller/subsystem/job/Initialize()
+	procstart = null
+	src.procstart = null
 	setup_job_lists()
 	job_config_datum_singletons = generate_config_singletons() // we set this up here regardless in case someone wants to use the verb to generate the config file.
 	if(!length(all_occupations))
@@ -108,6 +110,8 @@ SUBSYSTEM_DEF(job)
 
 /// Returns a list of jobs that we are allowed to fuck with during random events
 /datum/controller/subsystem/job/proc/get_valid_overflow_jobs()
+	procstart = null
+	src.procstart = null
 	var/static/list/overflow_jobs
 	if (!isnull(overflow_jobs))
 		return overflow_jobs
@@ -120,6 +124,8 @@ SUBSYSTEM_DEF(job)
 	return overflow_jobs
 
 /datum/controller/subsystem/job/proc/set_overflow_role(new_overflow_role)
+	procstart = null
+	src.procstart = null
 	var/datum/job/new_overflow = ispath(new_overflow_role) ? get_job_type(new_overflow_role) : get_job(new_overflow_role)
 	if(!new_overflow)
 		job_debug("SET_OVRFLW: Failed to set new overflow role: [new_overflow_role]")
@@ -143,6 +149,8 @@ SUBSYSTEM_DEF(job)
 	job_debug("SET_OVRFLW: Overflow role set to: [new_overflow.type]")
 
 /datum/controller/subsystem/job/proc/setup_occupations()
+	procstart = null
+	src.procstart = null
 	name_occupations = list()
 	type_occupations = list()
 
@@ -217,17 +225,23 @@ SUBSYSTEM_DEF(job)
 
 
 /datum/controller/subsystem/job/proc/get_job(rank)
+	procstart = null
+	src.procstart = null
 	if(!length(all_occupations))
 		setup_occupations()
 	return name_occupations[rank]
 
 /datum/controller/subsystem/job/proc/get_job_type(jobtype)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/job)
 	if(!length(all_occupations))
 		setup_occupations()
 	return type_occupations[jobtype]
 
 /datum/controller/subsystem/job/proc/get_department_type(department_type)
+	procstart = null
+	src.procstart = null
 	if(!length(all_occupations))
 		setup_occupations()
 	return joinable_departments_by_type[department_type]
@@ -242,6 +256,8 @@ SUBSYSTEM_DEF(job)
  * * do_eligibility_checks - Set to TRUE to conduct all job eligibility tests and reject on failure. Set to FALSE if job eligibility has been tested elsewhere and they can be safely skipped.
  */
 /datum/controller/subsystem/job/proc/assign_role(mob/dead/new_player/player, datum/job/job, latejoin = FALSE, do_eligibility_checks = TRUE)
+	procstart = null
+	src.procstart = null
 	job_debug("AR: Running, Player: [player], Job: [isnull(job) ? "null" : job], LateJoin: [latejoin]")
 	if(!player?.mind || !job)
 		job_debug("AR: Failed, player has no mind or job is null. Player: [player], Rank: [isnull(job) ? "null" : job.type]")
@@ -257,6 +273,8 @@ SUBSYSTEM_DEF(job)
 	return TRUE
 
 /datum/controller/subsystem/job/proc/find_occupation_candidates(datum/job/job, level = 0)
+	procstart = null
+	src.procstart = null
 	job_debug("FOC: Now running, Job: [job], Level: [job_priority_level_to_string(level)]")
 	var/list/candidates = list()
 	for(var/mob/dead/new_player/player in unassigned)
@@ -289,6 +307,8 @@ SUBSYSTEM_DEF(job)
 
 
 /datum/controller/subsystem/job/proc/give_random_job(mob/dead/new_player/player)
+	procstart = null
+	src.procstart = null
 	job_debug("GRJ: Giving random job, Player: [player]")
 	. = FALSE
 	for(var/datum/job/job as anything in shuffle(joinable_occupations))
@@ -320,6 +340,8 @@ SUBSYSTEM_DEF(job)
 
 
 /datum/controller/subsystem/job/proc/reset_occupations()
+	procstart = null
+	src.procstart = null
 	job_debug("RO: Occupations reset.")
 	for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
 		if(!player?.mind)
@@ -339,6 +361,8 @@ SUBSYSTEM_DEF(job)
  * Returns TRUE if a player was selected and assigned the role. FALSE otherwise.
  */
 /datum/controller/subsystem/job/proc/force_one_head_assignment()
+	procstart = null
+	src.procstart = null
 	var/datum/job_department/command_department = get_department_type(/datum/job_department/command)
 	if(!command_department)
 		return FALSE
@@ -364,6 +388,8 @@ SUBSYSTEM_DEF(job)
  * * level - One of the JP_LOW, JP_MEDIUM, JP_HIGH or JP_ANY defines. Attempts to find candidates with head jobs at that priority only.
  */
 /datum/controller/subsystem/job/proc/fill_all_head_positions_at_priority(level)
+	procstart = null
+	src.procstart = null
 	. = 0
 	var/datum/job_department/command_department = get_department_type(/datum/job_department/command)
 
@@ -391,6 +417,8 @@ SUBSYSTEM_DEF(job)
 
 /// Attempts to fill out all available AI positions.
 /datum/controller/subsystem/job/proc/fill_ai_positions()
+	procstart = null
+	src.procstart = null
 	var/datum/job/ai_job = get_job(JOB_AI)
 	if(!ai_job)
 		return
@@ -411,6 +439,8 @@ SUBSYSTEM_DEF(job)
  *  This proc must not have any side effect besides of modifying "assigned_role".
  **/
 /datum/controller/subsystem/job/proc/divide_occupations(pure = FALSE, allow_all = FALSE)
+	procstart = null
+	src.procstart = null
 	//Setup new player list and get the jobs list
 	job_debug("DO: Running, allow_all = [allow_all], pure = [pure]")
 	run_divide_occupation_pure = pure
@@ -551,6 +581,8 @@ SUBSYSTEM_DEF(job)
 
 //We couldn't find a job from prefs for this guy.
 /datum/controller/subsystem/job/proc/handle_unassigned(mob/dead/new_player/player, allow_all = FALSE)
+	procstart = null
+	src.procstart = null
 	var/jobless_role = player.client.prefs.read_preference(/datum/preference/choiced/jobless_role)
 
 	if(!allow_all)
@@ -595,6 +627,8 @@ SUBSYSTEM_DEF(job)
 
 //Gives the player the stuff he should have with his rank
 /datum/controller/subsystem/job/proc/equip_rank(mob/living/equipping, datum/job/job, client/player_client)
+	procstart = null
+	src.procstart = null
 	equipping.job = job.title
 
 	SEND_SIGNAL(equipping, COMSIG_JOB_RECEIVED, job)
@@ -612,6 +646,8 @@ SUBSYSTEM_DEF(job)
 	job.after_spawn(equipping, player_client)
 
 /datum/controller/subsystem/job/proc/handle_auto_deadmin_roles(client/C, rank)
+	procstart = null
+	src.procstart = null
 	if(!C?.holder)
 		return TRUE
 	var/datum/job/job = get_job(rank)
@@ -632,6 +668,8 @@ SUBSYSTEM_DEF(job)
 		return C.holder.auto_deadmin()
 
 /datum/controller/subsystem/job/proc/setup_officer_positions()
+	procstart = null
+	src.procstart = null
 	var/datum/job/J = SSjob.get_job(JOB_SECURITY_OFFICER)
 	if(!J)
 		CRASH("setup_officer_positions(): Security officer job is missing")
@@ -657,6 +695,8 @@ SUBSYSTEM_DEF(job)
 			break
 
 /datum/controller/subsystem/job/proc/handle_feedback_gathering()
+	procstart = null
+	src.procstart = null
 	for(var/datum/job/job as anything in joinable_occupations)
 		var/high = 0 //high
 		var/medium = 0 //medium
@@ -696,6 +736,8 @@ SUBSYSTEM_DEF(job)
 		SSblackbox.record_feedback("nested tally", "job_preferences", newbie, list("[job.title]", "newbie"))
 
 /datum/controller/subsystem/job/proc/popcap_reached()
+	procstart = null
+	src.procstart = null
 	var/hpc = CONFIG_GET(number/hard_popcap)
 	var/epc = CONFIG_GET(number/extreme_popcap)
 	if(hpc || epc)
@@ -705,6 +747,8 @@ SUBSYSTEM_DEF(job)
 	return 0
 
 /datum/controller/subsystem/job/proc/try_reject_player(mob/dead/new_player/player)
+	procstart = null
+	src.procstart = null
 	for(var/datum/dynamic_ruleset/roundstart/ruleset in SSdynamic.queued_rulesets)
 		if(player.mind in ruleset.selected_minds)
 			job_debug("RJCT: Player unable to be rejected due to being selected by dynamic, Player: [player], Ruleset: [ruleset]")
@@ -718,6 +762,8 @@ SUBSYSTEM_DEF(job)
 
 
 /datum/controller/subsystem/job/Recover()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	var/oldjobs = SSjob.all_occupations
 	sleep(2 SECONDS)
@@ -725,6 +771,8 @@ SUBSYSTEM_DEF(job)
 		INVOKE_ASYNC(src, PROC_REF(recover_job), job)
 
 /datum/controller/subsystem/job/proc/recover_job(datum/job/J)
+	procstart = null
+	src.procstart = null
 	var/datum/job/newjob = get_job(J.title)
 	if (!istype(newjob))
 		return
@@ -733,6 +781,8 @@ SUBSYSTEM_DEF(job)
 	newjob.current_positions = J.current_positions
 
 /atom/proc/JoinPlayerHere(mob/joining_mob, buckle)
+	procstart = null
+	src.procstart = null
 	// By default, just place the mob on the same turf as the marker or whatever.
 	// Set joining_mob as the new mob so subtypes can use it as a proper mob.
 	if(ispath(joining_mob))
@@ -742,6 +792,8 @@ SUBSYSTEM_DEF(job)
 	return joining_mob
 
 /obj/structure/chair/JoinPlayerHere(mob/joining_mob, buckle)
+	procstart = null
+	src.procstart = null
 	var/mob/created_joining_mob = ..()
 	// Placing a mob in a chair will attempt to buckle it, or else fall back to default.
 	if(buckle && isliving(created_joining_mob))
@@ -749,6 +801,8 @@ SUBSYSTEM_DEF(job)
 	return created_joining_mob
 
 /datum/controller/subsystem/job/proc/send_to_late_join(mob/M, buckle = TRUE)
+	procstart = null
+	src.procstart = null
 	var/atom/destination
 	if(M.mind && !is_unassigned_job(M.mind.assigned_role) && length(GLOB.jobspawn_overrides[M.mind.assigned_role.title])) //We're doing something special today.
 		destination = pick(GLOB.jobspawn_overrides[M.mind.assigned_role.title])
@@ -765,6 +819,8 @@ SUBSYSTEM_DEF(job)
 
 
 /datum/controller/subsystem/job/proc/get_last_resort_spawn_points()
+	procstart = null
+	src.procstart = null
 	var/area/shuttle/arrival/arrivals_area = GLOB.areas_by_type[/area/shuttle/arrival]
 	if(!isnull(arrivals_area))
 		var/list/turf/available_turfs = list()
@@ -785,6 +841,8 @@ SUBSYSTEM_DEF(job)
 
 /// Returns a list of minds of all heads of staff who are alive
 /datum/controller/subsystem/job/proc/get_living_heads()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/datum/mind/head as anything in get_crewmember_minds())
 		if(!(head.assigned_role.job_flags & JOB_HEAD_OF_STAFF))
@@ -795,6 +853,8 @@ SUBSYSTEM_DEF(job)
 
 /// Returns a list of minds of all heads of staff
 /datum/controller/subsystem/job/proc/get_all_heads()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/datum/mind/head as anything in get_crewmember_minds())
 		if(head.assigned_role.job_flags & JOB_HEAD_OF_STAFF)
@@ -802,6 +862,8 @@ SUBSYSTEM_DEF(job)
 
 /// Returns a list of minds of all security members who are alive
 /datum/controller/subsystem/job/proc/get_living_sec()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/datum/mind/sec as anything in get_crewmember_minds())
 		if(!(sec.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_SECURITY))
@@ -812,16 +874,22 @@ SUBSYSTEM_DEF(job)
 
 /// Returns a list of minds of all security members
 /datum/controller/subsystem/job/proc/get_all_sec()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/datum/mind/sec as anything in get_crewmember_minds())
 		if(sec.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_SECURITY)
 			. += sec
 
 /datum/controller/subsystem/job/proc/job_debug(message)
+	procstart = null
+	src.procstart = null
 	log_job_debug(message)
 
 /// Builds various lists of jobs based on station, centcom and additional jobs with icons associated with them.
 /datum/controller/subsystem/job/proc/setup_job_lists()
+	procstart = null
+	src.procstart = null
 	job_priorities_to_strings = list(
 		"[JP_LOW]" = "Low Priority",
 		"[JP_MEDIUM]" = "Medium Priority",
@@ -833,6 +901,8 @@ SUBSYSTEM_DEF(job)
 	desc = "Proof that you have been approved for Captaincy, with all its glory and all its horror."
 
 /obj/item/paper/paperslip/corporate/fluff/spare_id_safe_code/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	var/safe_code = SSid_access.spare_id_safe_code
 	default_raw_text = "Captain's Spare ID safe code combination: [safe_code ? safe_code : "\[REDACTED\]"]<br><br>The spare ID can be found in its dedicated safe on the bridge.<br><br>If your job would not ordinarily have Head of Staff access, your ID card has been specially modified to possess it."
 	return ..()
@@ -842,11 +912,15 @@ SUBSYSTEM_DEF(job)
 	desc = "Proof that nobody has been approved for Captaincy. A skeleton key for a skeleton shift."
 
 /obj/item/paper/paperslip/corporate/fluff/emergency_spare_id_safe_code/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	var/safe_code = SSid_access.spare_id_safe_code
 	default_raw_text = "Captain's Spare ID safe code combination: [safe_code ? safe_code : "\[REDACTED\]"]<br><br>The spare ID can be found in its dedicated safe on the bridge."
 	return ..()
 
 /datum/controller/subsystem/job/proc/promote_to_captain(mob/living/carbon/human/new_captain, acting_captain = FALSE)
+	procstart = null
+	src.procstart = null
 	var/id_safe_code = SSid_access.spare_id_safe_code
 
 	if(!id_safe_code)
@@ -878,6 +952,8 @@ SUBSYSTEM_DEF(job)
 
 /// Send a drop pod containing a piece of paper with the spare ID safe code to loc
 /datum/controller/subsystem/job/proc/send_spare_id_safe_code(loc)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/pod_landingzone(loc, /obj/structure/closet/supplypod/centcompod, new /obj/item/folder/biscuit/confidential/emergency_spare_id_safe_code())
 	safe_code_timer_id = null
 	safe_code_request_loc = null
@@ -885,6 +961,8 @@ SUBSYSTEM_DEF(job)
 /// Assigns roles that are considered high priority, either due to dynamic needing to force a specific role for a specific ruleset
 /// or making sure roles critical to round progression exist where possible every shift.
 /datum/controller/subsystem/job/proc/assign_priority_positions()
+	procstart = null
+	src.procstart = null
 	job_debug("APP: Assigning Dynamic ruleset forced occupations: [LAZYLEN(forced_occupations)]")
 	for(var/datum/mind/mind as anything in forced_occupations)
 		var/mob/dead/new_player = mind.current
@@ -906,6 +984,8 @@ SUBSYSTEM_DEF(job)
 	fill_ai_positions()
 
 /datum/controller/subsystem/job/proc/assign_all_overflow_positions()
+	procstart = null
+	src.procstart = null
 	job_debug("OVRFLW: Assigning all overflow roles.")
 	job_debug("OVRFLW: This shift's overflow role: [overflow_role]")
 	var/datum/job/overflow_datum = get_job_type(overflow_role)
@@ -933,6 +1013,8 @@ SUBSYSTEM_DEF(job)
 
 /// Takes a job priority #define such as JP_LOW and gets its string representation for logging.
 /datum/controller/subsystem/job/proc/job_priority_level_to_string(priority)
+	procstart = null
+	src.procstart = null
 	return job_priorities_to_strings["[priority]"] || "Undefined Priority \[[priority]\]"
 
 /**
@@ -951,6 +1033,8 @@ SUBSYSTEM_DEF(job)
  * * add_job_to_log - If TRUE, appends the job type to the log entry. If FALSE, does not. Set to FALSE when check is part of iterating over players for a specific job, set to TRUE when check is part of iterating over jobs for a specific player and you don't want extra log entry spam.
  */
 /datum/controller/subsystem/job/proc/check_job_eligibility(mob/dead/new_player/player, datum/job/possible_job, debug_prefix = "", add_job_to_log = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!player.mind)
 		job_debug("[debug_prefix]: Player has no mind, Player: [player][add_job_to_log ? ", Job: [possible_job]" : ""]")
 		return JOB_UNAVAILABLE_GENERIC
@@ -997,6 +1081,8 @@ SUBSYSTEM_DEF(job)
  *
 */
 /datum/controller/subsystem/job/proc/has_minimum_jobs(crew_threshold, list/jobs = list(), list/head_jobs = list())
+	procstart = null
+	src.procstart = null
 	var/employees = 0
 	for(var/datum/record/crew/target in GLOB.manifest.general)
 		if(target.trim in head_jobs)

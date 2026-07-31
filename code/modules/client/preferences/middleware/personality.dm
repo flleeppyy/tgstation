@@ -5,6 +5,8 @@
 	)
 
 /datum/preference_middleware/personality/proc/handle_personality(list/params, mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/personality/personality_type = text2path(params["personality_type"])
 	if(!ispath(personality_type, /datum/personality))
 		return FALSE
@@ -23,10 +25,14 @@
 	return TRUE
 
 /datum/preference_middleware/personality/proc/clear_personalities(list/params, mob/user)
+	procstart = null
+	src.procstart = null
 	preferences.update_preference(GLOB.preference_entries[/datum/preference/personality], null)
 	return TRUE
 
 /datum/preference_middleware/personality/get_constant_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["personalities"] = list()
@@ -47,6 +53,8 @@
 	return data
 
 /datum/preference_middleware/personality/get_ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/max = CONFIG_GET(number/max_personalities)
@@ -56,6 +64,8 @@
 	return data
 
 /datum/preference_middleware/personality/get_ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["selected_personalities"] = list()

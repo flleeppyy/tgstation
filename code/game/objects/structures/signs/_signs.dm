@@ -21,15 +21,21 @@
 	acid = 50
 
 /obj/structure/sign/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 	if(mapload && !find_and_mount_on_atom(mark_for_late_init = TRUE))
 		return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/sign/LateInitialize()
+	procstart = null
+	src.procstart = null
 	find_and_mount_on_atom(late_init = TRUE)
 
 /obj/structure/sign/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch (held_item?.tool_behaviour)
 		if (TOOL_WELDER)
@@ -43,12 +49,16 @@
 	return NONE
 
 /obj/structure/sign/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || user.is_blind())
 		return
 	user.examinate(src)
 
 /obj/structure/sign/wrench_act(mob/living/user, obj/item/wrench/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!buildable_sign)
 		return ITEM_INTERACT_FAILURE
@@ -64,6 +74,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/sign/welder_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user.combat_mode)
 		return FALSE
@@ -82,6 +94,8 @@
 	return TRUE
 
 /obj/structure/sign/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!is_editable || !IS_WRITING_UTENSIL(tool))
 		return NONE
 
@@ -115,6 +129,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/sign/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	var/turf/drop_turf = drop_location()
 	var/obj/item/sign/unwrenched_sign = new (drop_turf)
 	if(type != /obj/structure/sign/blank) //If it's still just a basic sign backing, we can (and should) skip some of the below variable transfers.
@@ -157,7 +173,9 @@
 	fire = 50
 	acid = 50
 
-/obj/item/sign/Initialize(mapload) //Signs not attached to walls are always rotated so they look like they're laying horizontal.
+/obj/item/sign/Initialize(mapload)
+	procstart = null
+	src.procstart = null //Signs not attached to walls are always rotated so they look like they're laying horizontal.
 	. = ..()
 	var/matrix/M = matrix()
 	M.Turn(90)
@@ -165,12 +183,16 @@
 	register_context()
 
 /obj/item/sign/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_editable && IS_WRITING_UTENSIL(held_item))
 		context[SCREENTIP_CONTEXT_LMB] = "Change design"
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/sign/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!is_editable || !IS_WRITING_UTENSIL(tool))
 		return ..()
 	if(!length(GLOB.editable_sign_types))
@@ -189,6 +211,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/sign/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!iswallturf(interacting_with) && !istype(interacting_with, /obj/structure/tram))
 		return NONE
 	var/turf/target_turf = interacting_with
@@ -217,6 +241,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/sign/welder_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user.combat_mode)
 		return FALSE
@@ -235,9 +261,13 @@
 	return TRUE
 
 /obj/item/sign/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return interact_with_atom(get_step(get_turf(user), user.dir), user)
 
 /obj/item/sign/proc/set_sign_type(obj/structure/sign/fake_type)
+	procstart = null
+	src.procstart = null
 	name = initial(fake_type.name)
 	if(fake_type != /obj/structure/sign/blank)
 		desc = "[initial(fake_type.desc)] It can be placed on a wall."
@@ -247,6 +277,8 @@
 	sign_path = fake_type
 
 /obj/item/sign/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_sign_type(GLOB.editable_sign_types[pick(GLOB.editable_sign_types)])
 /**
@@ -255,6 +287,8 @@
  * The first time a pen is used on any sign, this populates GLOBAL_LIST_EMPTY(editable_sign_types), creating a global list of all the signs that you can set a sign backing to with a pen.
  */
 /proc/populate_editable_sign_types()
+	procstart = null
+	src.procstart = null
 	var/list/output = list()
 	for(var/s in subtypesof(/obj/structure/sign))
 		var/obj/structure/sign/potential_sign = s

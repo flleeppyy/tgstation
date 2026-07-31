@@ -13,6 +13,8 @@
 	var/color_strength
 
 /obj/effect/decal/cleanable/crayon/Initialize(mapload, main, type, e_name, graf_rot, alt_icon = null, desc_override = null, color_strength)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isclosedturf(loc) && loc.density)
 		// allows for wall graffiti to be seen
@@ -41,9 +43,13 @@
 	RegisterSignal(src, COMSIG_OBJ_PAINTED, PROC_REF(on_painted))
 
 /obj/effect/decal/cleanable/crayon/NeverShouldHaveComeHere(turf/here_turf)
+	procstart = null
+	src.procstart = null
 	return isgroundlessturf(here_turf)
 
 /obj/effect/decal/cleanable/crayon/proc/on_painted(datum/source, mob/user, obj/item/toy/crayon/spraycan/spraycan, is_dark_color)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/cost = spraycan.all_drawables[icon_state] || CRAYON_COST_DEFAULT
 	if (HAS_TRAIT(user, TRAIT_TAGGER))
@@ -60,6 +66,8 @@
  * add_mouse_opacity: Boolean on whether you want mouse opacity, which allows the outline to be clickable/examinable without the context menu.
  */
 /obj/effect/decal/cleanable/crayon/proc/create_outline(atom/outlined_atom, add_mouse_opacity = FALSE)
+	procstart = null
+	src.procstart = null
 	icon = null
 	icon_state = null
 	if(add_mouse_opacity)

@@ -2,6 +2,8 @@
 /datum/unit_test/dynamic_ruleset_sanity
 
 /datum/unit_test/dynamic_ruleset_sanity/Run()
+	procstart = null
+	src.procstart = null
 	for (var/datum/dynamic_ruleset/midround/ruleset as anything in subtypesof(/datum/dynamic_ruleset/midround))
 		if(!initial(ruleset.config_tag))
 			continue
@@ -13,6 +15,8 @@
 /datum/unit_test/dynamic_unique_antag_flags
 
 /datum/unit_test/dynamic_unique_antag_flags/Run()
+	procstart = null
+	src.procstart = null
 	var/list/known_antag_flags = list()
 
 	for (var/datum/dynamic_ruleset/ruleset as anything in subtypesof(/datum/dynamic_ruleset))

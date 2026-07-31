@@ -17,6 +17,8 @@
 	var/list/mob/living/basic/tie/possessed_souls = list()
 
 /obj/item/clothing/neck/tie/disco/Destroy()
+	procstart = null
+	src.procstart = null
 	hears_us = null
 	QDEL_LIST(possessed_souls)
 	SSpoints_of_interest.remove_point_of_interest(src)
@@ -24,11 +26,15 @@
 	return ..()
 
 /obj/item/clothing/neck/tie/disco/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!length(possessed_souls))
 		. += span_notice("It may be given sentience by [EXAMINE_HINT("using it in hand")].")
 
 /obj/item/clothing/neck/tie/disco/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(slot & slot_flags))
 		return
@@ -37,12 +43,16 @@
 		LAZYADDASSOCLIST(GLOB.joinable_mobs, initial(name), src)
 
 /obj/item/clothing/neck/tie/disco/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(src))
 		SSpoints_of_interest.remove_point_of_interest(src)
 		LAZYREMOVEASSOC(GLOB.joinable_mobs, initial(name), src)
 	return ..()
 
 /obj/item/clothing/neck/tie/disco/attack_self(mob/living/user, modifiers)
+	procstart = null
+	src.procstart = null
 	if(using || (hears_us && (user.mind != hears_us)))
 		return ..()
 
@@ -71,6 +81,8 @@
 
 //this is also called by the spawners menu via `joinable_mobs`
 /obj/item/clothing/neck/tie/disco/attack_ghost(mob/hopeful_ghost)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!(GLOB.ghost_role_flags & GHOSTROLE_SPAWNER))
 		to_chat(hopeful_ghost, span_warning("Ghost roles have been temporarily disabled!"))
@@ -83,6 +95,8 @@
 
 ///Called by `ghost_direct_control`, lets ghosts force themselves into the tie.
 /obj/item/clothing/neck/tie/disco/proc/became_player_controlled(mob/suddenly_new_tie)
+	procstart = null
+	src.procstart = null
 	if(isnull(hears_us))
 		var/mob/living/worn_by = loc
 		if(!ismob(worn_by))
@@ -92,12 +106,16 @@
 
 ///Called when one of our ghosts die (like from logging out/ghosting).
 /obj/item/clothing/neck/tie/disco/proc/on_deleting(datum/source, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	possessed_souls -= source
 	to_chat(hears_us.current, span_notice("You feel like a voice just exited your mind."))
 
 ///Creates the ghost itself and adds them to the list of possessed souls in the tie.
 /obj/item/clothing/neck/tie/disco/proc/create_ghost(mob/new_ghost)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/tie/new_soul = new(src)
 	new_soul.PossessByPlayer(new_ghost.ckey)
 	RegisterSignal(new_soul, COMSIG_LIVING_SEND_SPEECH, PROC_REF(on_speech_sent))
@@ -107,6 +125,8 @@
 
 ///Called when a voice in the tie speaks, we use this to remove all listeners except the voices and creator.
 /obj/item/clothing/neck/tie/disco/proc/on_speech_sent(atom/source, list/listeners)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	listeners.Cut()
 	listeners += possessed_souls
@@ -122,15 +142,21 @@
 	unsuitable_atmos_damage = 0
 
 /mob/living/basic/tie/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GRANT_ACTION(/datum/action/innate/change_name)
 
 /mob/living/basic/tie/Login()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(src, span_notice("You are the horrific necktie of the person who summoned you, \
 		the only person who is able to hear you. Like a voice in their head, you are their reasoning, \
 		their second-in-command. Take good care of them."))
 
 /mob/living/basic/tie/Logout()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(src)

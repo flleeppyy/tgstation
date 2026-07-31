@@ -16,8 +16,12 @@
 	drop_sound = SFX_GENERIC_DEVICE_DROP
 
 /obj/item/sensor_device/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	GLOB.crewmonitor.show(user,src) //Proc already exists, just had to call it
 
 /obj/item/sensor_device/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/drag_to_activate)

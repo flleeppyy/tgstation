@@ -15,6 +15,8 @@
 	var/deconstructible = TRUE
 
 /obj/structure/fluff/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!deconstructible)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 	user.visible_message(span_notice("[user] starts disassembling [src]..."), \
@@ -135,6 +137,8 @@
 	icon_state = "driverseat"
 
 /obj/structure/fluff/bus/passable/seat/driver/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/items/carhorn.ogg', 50, TRUE)
 	. = ..()
 
@@ -296,11 +300,15 @@
 	buckle_lying = 90
 
 /obj/structure/fluff/tram_rail/post_buckle_mob(mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	target.pixel_y += dir == SOUTH ? -3 : 14
 	RegisterSignal(target, COMSIG_LIVING_HIT_BY_TRAM, PROC_REF(on_buckled_tram_smashed))
 
 /obj/structure/fluff/tram_rail/post_unbuckle_mob(mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	target.pixel_y -= dir == SOUTH ? -3 : 14
 	UnregisterSignal(target, COMSIG_LIVING_HIT_BY_TRAM)
@@ -308,6 +316,8 @@
 /// If someone gets hit by the tram while buckled to us (mission accomplished) unbuckle them so that they can fly away
 /// Also we rip one of their arms off to "uncuff" them
 /obj/structure/fluff/tram_rail/proc/on_buckled_tram_smashed(mob/living/smashed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	unbuckle_mob(smashed, force = TRUE, can_fall = FALSE) // Make sure they don't fall down a z-level until they've been thrown
 
@@ -332,6 +342,8 @@
 	icon_state = "anchor"
 
 /obj/structure/fluff/tram_rail/electric/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(\
 		/datum/component/electrified_buckle,\
@@ -345,6 +357,8 @@
 	)
 
 /obj/structure/fluff/tram_rail/electric/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/area/our_area = get_area(src)
 	if(our_area?.powered(power_channel) && user.electrocute_act(75, src))

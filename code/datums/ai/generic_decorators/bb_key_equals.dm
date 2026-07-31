@@ -4,4 +4,6 @@
 	var/value
 
 /datum/bt_node/decorator/bb_key_equals/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	return bb_key_equals(controller, key, value)

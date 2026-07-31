@@ -16,6 +16,8 @@
 	toggle_button_type = /datum/action/cooldown/guardian/toggle_mode
 
 /mob/living/basic/guardian/ranged/Initialize(mapload, datum/guardian_fluff/theme)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(\
 		/datum/component/ranged_attacks,\
@@ -28,6 +30,8 @@
 	snare.Grant(src)
 
 /mob/living/basic/guardian/ranged/toggle_modes()
+	procstart = null
+	src.procstart = null
 	if(is_deployed() && !isnull(summoner))
 		balloon_alert(src, "must not be manifested!")
 		return
@@ -37,6 +41,8 @@
 	apply_status_effect(/datum/status_effect/guardian_scout_mode)
 
 /mob/living/basic/guardian/ranged/toggle_light()
+	procstart = null
+	src.procstart = null
 	var/msg
 	switch(lighting_cutoff)
 		if (LIGHTING_CUTOFF_VISIBLE)
@@ -68,6 +74,8 @@
 	alert_type = null
 
 /datum/status_effect/guardian_scout_mode/on_apply()
+	procstart = null
+	src.procstart = null
 	animate(owner, alpha = 45, time = 0.5 SECONDS)
 	RegisterSignal(owner, COMSIG_GUARDIAN_MANIFESTED, PROC_REF(on_manifest))
 	RegisterSignal(owner, COMSIG_GUARDIAN_RECALLED, PROC_REF(on_recall))
@@ -80,6 +88,8 @@
 	return TRUE
 
 /datum/status_effect/guardian_scout_mode/on_remove()
+	procstart = null
+	src.procstart = null
 	animate(owner, alpha = initial(owner.alpha), time = 0.5 SECONDS)
 	UnregisterSignal(owner, list(
 		COMSIG_BASICMOB_PRE_ATTACK_RANGED,
@@ -93,21 +103,29 @@
 
 /// Restore incorporeal move when we become corporeal, yes I know that suonds silly
 /datum/status_effect/guardian_scout_mode/proc/on_manifest()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	owner.incorporeal_move = INCORPOREAL_MOVE_BASIC
 
 /// Stop having incorporeal move when we recall so that we can't move
 /datum/status_effect/guardian_scout_mode/proc/on_recall()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	owner.incorporeal_move = FALSE
 
 /// While this is active we can't click anything
 /datum/status_effect/guardian_scout_mode/proc/on_click()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return COMSIG_MOB_CANCEL_CLICKON
 
 /// We can't do any ranged attacks while in scout mode.
 /datum/status_effect/guardian_scout_mode/proc/on_ranged_attack()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	owner.balloon_alert(owner, "need to be in ranged mode!")
 	return COMPONENT_CANCEL_RANGED_ATTACK
@@ -130,6 +148,8 @@
 	var/list/placed_snares = list()
 
 /datum/action/cooldown/mob_cooldown/guardian_alarm_snare/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	StartCooldown(360 SECONDS)
 
 	if (length(placed_snares) >= maximum_snares)
@@ -153,6 +173,8 @@
 
 /// When a snare is deleted remove it from tracking
 /datum/action/cooldown/mob_cooldown/guardian_alarm_snare/proc/on_snare_deleted(atom/snare)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	placed_snares -= snare
 
@@ -166,6 +188,8 @@
 	var/mob/living/owner
 
 /obj/effect/abstract/surveillance_snare/Initialize(mapload, spawning_guardian)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[get_area(src)] snare ([rand(1, 1000)])"
 	var/static/list/loc_connections = list(COMSIG_ATOM_ENTERED = PROC_REF(on_entered))
@@ -173,6 +197,8 @@
 
 /// Set up crossed notification
 /obj/effect/abstract/surveillance_snare/proc/assign_owner(mob/living/new_owner)
+	procstart = null
+	src.procstart = null
 	if (isnull(new_owner))
 		qdel(src)
 		return
@@ -181,6 +207,8 @@
 
 /// When crossed notify our owner
 /obj/effect/abstract/surveillance_snare/proc/on_entered(atom/source, crossed_object)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (isnull(owner))
 		qdel(src)
@@ -203,6 +231,8 @@
 
 /// If the person who placed us doesn't exist we might as well die
 /obj/effect/abstract/surveillance_snare/proc/owner_destroyed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	owner = null
 	qdel(src)

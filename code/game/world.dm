@@ -63,6 +63,8 @@ GLOBAL_VAR(restart_counter)
  * SO HELP ME GOD IF I FIND ABSTRACTION LAYERS OVER THIS!
  */
 /world/proc/Genesis(tracy_initialized = FALSE)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/controller/master)
 
 	if(!tracy_initialized)
@@ -126,6 +128,8 @@ GLOBAL_VAR(restart_counter)
  * All atoms in both compiled and uncompiled maps are initialized()
  */
 /world/New()
+	procstart = null
+	src.procstart = null
 	log_world("World loaded at [server_timestamp()]!")
 
 	// First possible sleep()
@@ -144,11 +148,15 @@ GLOBAL_VAR(restart_counter)
 
 /// Initializes TGS and loads the returned revising info into GLOB.revdata
 /world/proc/InitTgs()
+	procstart = null
+	src.procstart = null
 	TgsNew(new /datum/tgs_event_handler/impl, TGS_SECURITY_TRUSTED)
 	GLOB.revdata.load_tgs_info()
 
 /// Runs after config is loaded but before Master is initialized
 /world/proc/ConfigLoaded()
+	procstart = null
+	src.procstart = null
 	// Everything in here is prioritized in a very specific way.
 	// If you need to add to it, ask yourself hard if what your adding is in the right spot
 	// (i.e. basically nothing should be added before load_admins() in here)
@@ -171,6 +179,8 @@ GLOBAL_VAR(restart_counter)
 
 /// Runs after the call to Master.Initialize, but before the delay kicks in. Used to turn the world execution into some single function then exit
 /world/proc/RunUnattendedFunctions()
+	procstart = null
+	src.procstart = null
 	#ifdef UNIT_TESTS
 	HandleTestRun()
 	#endif
@@ -184,6 +194,8 @@ GLOBAL_VAR(restart_counter)
 	#endif
 
 /world/proc/HandleTestRun()
+	procstart = null
+	src.procstart = null
 	//trigger things to run the whole process
 	Master.sleep_offline_after_initializations = FALSE
 	SSticker.start_immediately = TRUE
@@ -197,6 +209,8 @@ GLOBAL_VAR(restart_counter)
 	SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), cb, 10 SECONDS))
 
 /world/proc/queue_performance_tests()
+	procstart = null
+	src.procstart = null
 	//trigger things to run the whole process
 	Master.sleep_offline_after_initializations = FALSE
 	SSticker.start_immediately = TRUE
@@ -206,6 +220,8 @@ GLOBAL_VAR(restart_counter)
 /// Stub proc intended to be filled with code that does some test, profiles it, and logs that test.
 /// Intended to be used with line by line macros, but you should live your truth
 /world/proc/run_performance_tests()
+	procstart = null
+	src.procstart = null
 	// In case we do somethin that could otherwise end the round
 	SSticker.delay_end = TRUE
 	// Your code goes here
@@ -217,6 +233,8 @@ GLOBAL_VAR(restart_counter)
 
 /// Returns a list of data about the world state, don't clutter
 /world/proc/get_world_state_for_logging()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["tick_usage"] = world.tick_usage
 	data["tick_lag"] = world.tick_lag
@@ -225,6 +243,8 @@ GLOBAL_VAR(restart_counter)
 	return data
 
 /world/proc/SetupLogs()
+	procstart = null
+	src.procstart = null
 	var/override_dir = params[OVERRIDE_LOG_DIRECTORY_PARAMETER]
 	if(!override_dir)
 		var/realtime = world.realtime
@@ -272,10 +292,14 @@ GLOBAL_VAR(restart_counter)
 /// The world.time we last ran maptick, used for stupid reasons
 GLOBAL_VAR_INIT(last_maptick_time, 0)
 /world/Tick()
+	procstart = null
+	src.procstart = null
 	// We need a hook for if maptick has happen yet
 	GLOB.last_maptick_time = world.time
 
 /world/Topic(T, addr, master, key)
+	procstart = null
+	src.procstart = null
 	TGS_TOPIC //redirect to server tools if necessary
 
 	var/static/list/topic_handlers = TopicHandlers()
@@ -297,6 +321,8 @@ GLOBAL_VAR_INIT(last_maptick_time, 0)
 	return handler.TryRun(input)
 
 /world/proc/AnnouncePR(announcement, list/payload)
+	procstart = null
+	src.procstart = null
 	var/static/list/PRcounts = list() //PR id -> number of times announced this round
 	var/id = "[payload["pull_request"]["id"]]"
 	if(!PRcounts[id])
@@ -311,6 +337,8 @@ GLOBAL_VAR_INIT(last_maptick_time, 0)
 		C.AnnouncePR(final_composed)
 
 /world/proc/FinishTestRun()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	var/list/fail_reasons
 	if(GLOB)
@@ -333,6 +361,8 @@ GLOBAL_VAR_INIT(last_maptick_time, 0)
 
 /// Returns TRUE if the world should do a TGS hard reboot.
 /world/proc/check_hard_reboot()
+	procstart = null
+	src.procstart = null
 	if(!TgsAvailable())
 		return FALSE
 	// byond-tracy can't clean up itself, and thus we should always hard reboot if its enabled, to avoid an infinitely growing trace.
@@ -352,6 +382,8 @@ GLOBAL_VAR_INIT(last_maptick_time, 0)
 				return FALSE
 
 /world/Reboot(reason = 0, fast_track = FALSE)
+	procstart = null
+	src.procstart = null
 	if (reason || fast_track) //special reboot, do none of the normal stuff
 		if (usr)
 			log_admin("[key_name(usr)] Has requested an immediate world restart via client side debugging tools")
@@ -385,11 +417,15 @@ GLOBAL_VAR_INIT(last_maptick_time, 0)
 	#endif
 
 /world/Del()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(Tracy)
 	QDEL_NULL(Debugger)
 	. = ..()
 
 /world/proc/update_status()
+	procstart = null
+	src.procstart = null
 
 	var/list/features = list()
 
@@ -442,6 +478,8 @@ GLOBAL_VAR_INIT(last_maptick_time, 0)
 	status = new_status
 
 /world/proc/update_hub_visibility(new_visibility)
+	procstart = null
+	src.procstart = null
 	if(new_visibility == GLOB.hub_visibility)
 		return
 	GLOB.hub_visibility = new_visibility
@@ -456,6 +494,8 @@ GLOBAL_VAR_INIT(last_maptick_time, 0)
  * This is because maploading will handle the turfs it loads itself.
  */
 /world/proc/increase_max_x(new_maxx, map_load_z_cutoff = maxz)
+	procstart = null
+	src.procstart = null
 	if(new_maxx <= maxx)
 		return
 	var/old_max = world.maxx
@@ -473,6 +513,8 @@ GLOBAL_VAR_INIT(last_maptick_time, 0)
 		global_area.turfs_by_zlevel[zlevel] += to_add
 
 /world/proc/increase_max_y(new_maxy, map_load_z_cutoff = maxz)
+	procstart = null
+	src.procstart = null
 	if(new_maxy <= maxy)
 		return
 	var/old_maxy = maxy
@@ -489,11 +531,15 @@ GLOBAL_VAR_INIT(last_maptick_time, 0)
 		global_area.turfs_by_zlevel[zlevel] += to_add
 
 /world/proc/incrementMaxZ()
+	procstart = null
+	src.procstart = null
 	maxz++
 	SSmobs.MaxZChanged()
 	SSai_controllers.on_max_z_changed()
 
 /world/proc/change_fps(new_value = 20)
+	procstart = null
+	src.procstart = null
 	if(new_value <= 0)
 		CRASH("change_fps() called with [new_value] new_value.")
 	if(fps == new_value)
@@ -504,6 +550,8 @@ GLOBAL_VAR_INIT(last_maptick_time, 0)
 
 
 /world/proc/change_tick_lag(new_value = 0.5)
+	procstart = null
+	src.procstart = null
 	if(new_value <= 0)
 		CRASH("change_tick_lag() called with [new_value] new_value.")
 	if(tick_lag == new_value)
@@ -514,12 +562,16 @@ GLOBAL_VAR_INIT(last_maptick_time, 0)
 
 
 /world/proc/on_tickrate_change()
+	procstart = null
+	src.procstart = null
 	SStimer?.reset_buckets()
 #ifndef DISABLE_DREAMLUAU
 	DREAMLUAU_SET_EXECUTION_LIMIT_MILLIS(tick_lag * 100)
 #endif
 
 /world/Profile(command, type, format)
+	procstart = null
+	src.procstart = null
 	if((command & PROFILE_STOP) || !global.config?.loaded || !CONFIG_GET(flag/forbid_all_profiling))
 		. = ..()
 

@@ -14,6 +14,8 @@ GLOBAL_LIST_EMPTY(meteor_eyeballs)
 	plane = FLOOR_PLANE
 
 /obj/structure/meateor_fluff/eyeball/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.meteor_eyeballs += src
 	set_light(l_range = 4, l_color = COLOR_VERY_SOFT_YELLOW)
@@ -21,14 +23,20 @@ GLOBAL_LIST_EMPTY(meteor_eyeballs)
 
 /// Play a blinking animation and queue it again
 /obj/structure/meateor_fluff/eyeball/proc/blink()
+	procstart = null
+	src.procstart = null
 	flick("eyeball_blink", src)
 	addtimer(CALLBACK(src, PROC_REF(blink)), rand(EYEBALL_BLINK_INTERVAL_MIN, EYEBALL_BLINK_INTERVAL_MAX), TIMER_DELETE_ME)
 
 /obj/structure/meateor_fluff/eyeball/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/gibspawner/generic(loc)
 	return ..()
 
 /obj/structure/meateor_fluff/eyeball/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.meteor_eyeballs -= src
 	return ..()
 

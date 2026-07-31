@@ -2,6 +2,8 @@
 /datum/unit_test/wallmount
 
 /datum/unit_test/wallmount/Run()
+	procstart = null
+	src.procstart = null
 	//Test 1 light must priotize wall and not table
 	var/obj/structure/table/test_table = EASY_ALLOCATE()
 	var/obj/machinery/light/directional/south/test_light = EASY_ALLOCATE()

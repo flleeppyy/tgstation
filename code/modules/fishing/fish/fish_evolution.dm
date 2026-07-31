@@ -32,6 +32,8 @@ GLOBAL_LIST_EMPTY(fishes_by_fish_evolution)
 	var/show_result_on_wiki = TRUE
 
 /datum/fish_evolution/New()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	..()
 	if(!ispath(new_fish_type, /obj/item/fish))
@@ -44,6 +46,8 @@ GLOBAL_LIST_EMPTY(fishes_by_fish_evolution)
  * the fish is self-reproducing or this evolution is a result of a fish_growth component
  */
 /datum/fish_evolution/proc/check_conditions(obj/item/fish/source, obj/item/fish/mate, atom/movable/aquarium)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	//the fish don't reproduce outside of aquariums but can still grow there, so we just check if the temperature is right.
 	if(!aquarium)
@@ -54,6 +58,8 @@ GLOBAL_LIST_EMPTY(fishes_by_fish_evolution)
 
 ///This is called when the evolution is set as the result type of a fish_growth component
 /datum/fish_evolution/proc/growth_checks(obj/item/fish/source, seconds_per_tick, growth)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SHOULD_CALL_PARENT(TRUE)
 	if(source.get_health_percentage() < 0.5)
@@ -67,6 +73,8 @@ GLOBAL_LIST_EMPTY(fishes_by_fish_evolution)
 
 ///Called by the fish analyzer right click function. Returns a text string used as tooltip.
 /datum/fish_evolution/proc/get_evolution_tooltip()
+	procstart = null
+	src.procstart = null
 	. = ""
 	if(required_temperature_min > 0 || required_temperature_max < INFINITY)
 		var/temp_reqs = ""
@@ -89,6 +97,8 @@ GLOBAL_LIST_EMPTY(fishes_by_fish_evolution)
 	conditions_note = "The fish must be fed lube beforehand."
 
 /datum/fish_evolution/lubefish/check_conditions(obj/item/fish/source, obj/item/fish/mate, atom/movable/aquarium)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(source, TRAIT_FISH_FED_LUBE))
 		return FALSE
 	return ..()
@@ -108,6 +118,8 @@ GLOBAL_LIST_EMPTY(fishes_by_fish_evolution)
 	show_result_on_wiki = FALSE
 
 /datum/fish_evolution/mastodon/check_conditions(obj/item/fish/source, obj/item/fish/mate, atom/movable/aquarium)
+	procstart = null
+	src.procstart = null
 	if((source.size < 120 || source.weight < 3000) || (mate && (mate.size < 120 || mate.weight < 3000)))
 		return FALSE
 	return ..()
@@ -136,6 +148,8 @@ GLOBAL_LIST_EMPTY(fishes_by_fish_evolution)
 	conditions_note = "The fish needs to be unusually big and territorial"
 
 /datum/fish_evolution/chainsawfish/check_conditions(obj/item/fish/source, obj/item/fish/mate, atom/movable/aquarium)
+	procstart = null
+	src.procstart = null
 	var/double_avg_size = /obj/item/fish/goldfish::average_size * 2
 	var/double_avg_weight = /obj/item/fish/goldfish::average_weight * 2
 	if(source.size >= double_avg_size && source.weight >= double_avg_weight && (/datum/fish_trait/territorial in source.fish_traits))
@@ -148,6 +162,8 @@ GLOBAL_LIST_EMPTY(fishes_by_fish_evolution)
 	conditions_note = "The fish needs to have the stinger trait"
 
 /datum/fish_evolution/armored_pike/check_conditions(obj/item/fish/source, obj/item/fish/mate, atom/movable/aquarium)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(source, TRAIT_FISH_STINGER))
 		return ..()
 	return FALSE
@@ -164,6 +180,8 @@ GLOBAL_LIST_EMPTY(fishes_by_fish_evolution)
 	show_result_on_wiki = FALSE
 
 /datum/fish_evolution/nessiefish/check_conditions(obj/item/fish/source, obj/item/fish/mate, atom/movable/aquarium)
+	procstart = null
+	src.procstart = null
 	if(source.size >= (/obj/item/fish/fryish/fritterish::average_size * 1.5) && source.size >= (/obj/item/fish/fryish/fritterish::average_weight * 1.5))
 		return ..()
 	return FALSE
@@ -174,6 +192,8 @@ GLOBAL_LIST_EMPTY(fishes_by_fish_evolution)
 	conditions_note = "Requires the dwarf moonfish to be big enough."
 
 /datum/fish_evolution/moonfish/check_conditions(obj/item/fish/source, obj/item/fish/mate, obj/structure/aquarium/aquarium)
+	procstart = null
+	src.procstart = null
 	if(source.size < (/obj/item/fish/moonfish/dwarf::average_size * 1.5) && source.size < (/obj/item/fish/moonfish/dwarf::average_weight * 1.5))
 		return FALSE
 	if(mate && (mate.size < (/obj/item/fish/moonfish::average_size * 1.3) && mate.size < (/obj/item/fish/moonfish::average_weight * 1.3)))
@@ -186,6 +206,8 @@ GLOBAL_LIST_EMPTY(fishes_by_fish_evolution)
 	conditions_note = "Requires the moonfish to be small enough."
 
 /datum/fish_evolution/dwarf_moonfish/check_conditions(obj/item/fish/source, obj/item/fish/mate, obj/structure/aquarium/aquarium)
+	procstart = null
+	src.procstart = null
 	if(source.size > (/obj/item/fish/moonfish::average_size * 0.66) && source.size > (/obj/item/fish/moonfish::average_weight * 0.66))
 		return FALSE
 	if(mate && (mate.size > (/obj/item/fish/moonfish::average_size * 0.7) && mate.size > (/obj/item/fish/moonfish::average_weight * 0.7)))

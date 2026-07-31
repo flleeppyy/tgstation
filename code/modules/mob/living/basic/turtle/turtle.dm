@@ -63,6 +63,8 @@
 
 
 /mob/living/basic/turtle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	desc = pick(
@@ -87,12 +89,16 @@
 	START_PROCESSING(SSprocessing, src)
 
 /mob/living/basic/turtle/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	if(REVERSE_DIR(last_direction) & newdir)
 		transform = transform.Scale(-1, 1)
 		last_direction = REVERSE_DIR(last_direction)
 	return ..()
 
 /mob/living/basic/turtle/proc/retrieve_destined_path()
+	procstart = null
+	src.procstart = null
 	var/current_max_growth = 0
 	var/destined_path
 	for(var/evolution_path in path_growth_progress)
@@ -104,6 +110,8 @@
 	return destined_path
 
 /mob/living/basic/turtle/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_STASIS))
 		return
 	if(isnull(reagents) || !length(reagents.reagent_list)) //if we have no reagents, default to our highest destined path
@@ -124,11 +132,15 @@
 		reagents.remove_reagent(existing_reagent.type, 0.5)
 
 /mob/living/basic/turtle/proc/set_plant_growth(evolution_path, amount)
+	procstart = null
+	src.procstart = null
 	path_growth_progress[evolution_path] += amount
 	if(path_growth_progress[evolution_path] >= REQUIRED_TREE_GROWTH)
 		evolve_turtle(evolution_path)
 
 /mob/living/basic/turtle/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(stat == DEAD)
@@ -152,6 +164,8 @@
 
 
 /mob/living/basic/turtle/proc/evolve_turtle(evolution_path)
+	procstart = null
+	src.procstart = null
 	var/static/list/evolution_gains = list(
 		PATH_PLANT_HEALER = list(
 			"tree_appearance" = "healer_tree",
@@ -179,12 +193,16 @@
 	update_appearance()
 
 /mob/living/basic/turtle/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat == DEAD)
 		return
 	icon_state = resting ? "[base_icon_state]_resting" : base_icon_state
 
 /mob/living/basic/turtle/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat == DEAD)
 		var/mutable_appearance/dead_overlay = mutable_appearance(icon = 'icons/mob/simple/pets.dmi', icon_state = developed_path ? "dead_tree" : "growing_tree")
@@ -197,12 +215,16 @@
 	. += living_tree
 
 /mob/living/basic/turtle/update_resting()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat == DEAD)
 		return
 	update_appearance()
 
 /mob/living/basic/turtle/item_interaction(mob/living/user, obj/item/used_item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(used_item, /obj/item/reagent_containers))
 		return NONE
 
@@ -233,6 +255,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /mob/living/basic/turtle/proc/pre_eat_food(datum/source, obj/item/seeds/potential_food)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(potential_food))
@@ -241,6 +265,8 @@
 	return ispath(potential_food.product, /obj/item/food/grown) ? NONE : COMSIG_MOB_CANCEL_EAT
 
 /mob/living/basic/turtle/proc/post_eat(datum/source, obj/item/seeds/potential_food)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(is_type_in_typecache(potential_food, indigestible_seeds))
 		potential_food.forceMove(src)
@@ -251,6 +277,8 @@
 	return NONE
 
 /mob/living/basic/turtle/proc/process_food(potential_food)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || IS_UNCONSCIOUS_OR_CRIT(src))
 		return
 
@@ -264,6 +292,8 @@
 	balloon_alert_to_viewers("spits out some food")
 
 /mob/living/basic/turtle/death(gibbed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	STOP_PROCESSING(SSprocessing, src)
 

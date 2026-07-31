@@ -12,6 +12,8 @@
 	var/power_per_obj = 1000
 
 /obj/machinery/mass_driver/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	wires = new /datum/wires/mass_driver(src)
 
@@ -29,15 +31,21 @@
 	id = MASSDRIVER_SHACK
 
 /obj/machinery/mass_driver/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/computer/pod/control as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/computer/pod))
 		if(control.id == id)
 			control.connected = null
 	return ..()
 
 /obj/machinery/mass_driver/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
+	procstart = null
+	src.procstart = null
 	id = "[port.shuttle_id]_[id]"
 
 /obj/machinery/mass_driver/proc/drive(amount)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (BROKEN|NOPOWER) || panel_open)
 		return
 	use_energy(power_per_obj)
@@ -56,10 +64,14 @@
 	flick("[base_icon_state]1", src)
 
 /obj/machinery/mass_driver/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]_o" : base_icon_state
 
 /obj/machinery/mass_driver/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(is_wire_tool(tool) && panel_open)
 		wires.interact(user)
 		return ITEM_INTERACT_SUCCESS
@@ -67,20 +79,30 @@
 	return NONE
 
 /obj/machinery/mass_driver/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/mass_driver/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_change_direction_wrench(user, tool)
 
 /obj/machinery/mass_driver/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/mass_driver/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/stock_part/servo/new_servo in component_parts)
 		drive_range += new_servo.tier * 10
 
 /obj/machinery/mass_driver/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. & EMP_PROTECT_SELF)
 		return

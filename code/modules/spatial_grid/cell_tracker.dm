@@ -29,10 +29,14 @@
 /// Accepts a width and height to use for this tracker
 /// Also accepts the ratio to use between inner and outer window. Optional, defaults to 2
 /datum/cell_tracker/New(width, height, inner_outer_ratio)
+	procstart = null
+	src.procstart = null
 	set_bounds(width, height, inner_outer_ratio)
 	return ..()
 
 /datum/cell_tracker/Destroy(force)
+	procstart = null
+	src.procstart = null
 	stack_trace("Attempted to delete a cell tracker. They don't hold any refs outside of cells, what are you doing")
 	if(!force)
 		return QDEL_HINT_LETMELIVE
@@ -41,6 +45,8 @@
 
 /// Takes a width and height, and uses them to set the inner window, and interpolate the outer window
 /datum/cell_tracker/proc/set_bounds(width = 0, height = 0, ratio = 2)
+	procstart = null
+	src.procstart = null
 	// We want to store these as radii, rather then width and height, since that's convineient for spatial grid code
 	var/x_radius = CEILING(width, 2)
 	var/y_radius = CEILING(height, 2)
@@ -53,6 +59,8 @@
 /// Returns a list of newly and formerly joined spatial grid managed objects of type [type] in the form list(new, old)
 /// Takes the center of our window as input
 /datum/cell_tracker/proc/recalculate_type_members(turf/center, type)
+	procstart = null
+	src.procstart = null
 	var/list/new_and_old = recalculate_cells(center)
 
 	var/list/new_members = list()
@@ -80,6 +88,8 @@
 /// Recalculates our member list, returns a list in the form list(new members, old members) for reaction
 /// Accepts the turf to use as our "center"
 /datum/cell_tracker/proc/recalculate_cells(turf/center)
+	procstart = null
+	src.procstart = null
 	if(!center)
 		CRASH("/datum/cell_tracker had an invalid location on refresh, ya done fucked")
 	// This is a mild waste of cpu time. Consider optimizing by adding a new helper function to get just the space between two bounds

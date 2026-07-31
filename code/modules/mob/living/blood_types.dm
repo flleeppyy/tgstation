@@ -21,6 +21,8 @@
 	var/blood_flags = BLOOD_ADD_DNA | BLOOD_COVER_ALL | BLOOD_TRANSFER_VIRAL_DATA
 
 /datum/blood_type/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	id = name
 	compatible_types |= type_key()
@@ -28,6 +30,8 @@
 		desc = reagent_type::description
 
 /datum/blood_type/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(!force)
 		stack_trace("qdel called on blood type singleton! (use FORCE if necessary)")
 		return QDEL_HINT_LETMELIVE
@@ -40,14 +44,20 @@
  * Allows for more complex or dynamically generated blood types
  */
 /datum/blood_type/proc/type_key()
+	procstart = null
+	src.procstart = null
 	return type
 
 /// Name of the reagent we use for blood
 /datum/blood_type/proc/get_blood_name()
+	procstart = null
+	src.procstart = null
 	return capitalize(LOWER_TEXT(reagent_type::name))
 
 /// Type string of this bloodtype. Used to prevent "Oil type: Oil" scenarios
 /datum/blood_type/proc/get_type()
+	procstart = null
+	src.procstart = null
 	if (reagent_type != /datum/reagent/blood)
 		return null
 	return name
@@ -56,19 +66,27 @@
 /// Useful when you want to have a blood color with values out of normal hex bounds for that acidic look
 /// set dynamic to TRUE to redo the matrix each time (e.g. for clown blood dynamically shifting each time)
 /datum/blood_type/proc/get_color(dynamic = FALSE)
+	procstart = null
+	src.procstart = null
 	return color
 
 /// Returns blood color for mob damage overlays
 /datum/blood_type/proc/get_damage_color(mob/living/carbon/victim)
+	procstart = null
+	src.procstart = null
 	return get_color()
 
 /// Returns blood color for wound bleeding overlays
 /datum/blood_type/proc/get_wound_color(mob/living/carbon/victim)
+	procstart = null
+	src.procstart = null
 	return get_color()
 
 /// Returns emissive value for an atom
 /// is_worn - Emissive is being fetched for a mob overlay and not the item itself
 /datum/blood_type/proc/get_emissive_alpha(atom/source, is_worn = FALSE)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /**
@@ -82,6 +100,8 @@
  * * new_splat - whether this is a newly instantiated blood decal, or an existing one this blood is being added to
  */
 /datum/blood_type/proc/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat = FALSE)
+	procstart = null
+	src.procstart = null
 	if(new_splat && !blood.decal_reagent)
 		blood.decal_reagent = reagent_type
 	else if(blood.reagents && blood.bloodiness) // If reagents don't exist yet, we'll be added via lazyloading
@@ -97,6 +117,8 @@
  * * drip - whether to spawn a drip or a splatter
  */
 /datum/blood_type/proc/make_blood_splatter(mob/living/bleeding, turf/blood_turf, drip = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!(blood_flags & BLOOD_COVER_TURFS))
 		return
 
@@ -228,6 +250,8 @@
 	name = BLOOD_TYPE_UNIVERSAL
 
 /datum/blood_type/human/universal/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	compatible_types = subtypesof(/datum/blood_type)
 
@@ -254,11 +278,15 @@
 	reagent_type = /datum/reagent/consumable/liquidelectricity
 
 /datum/blood_type/ethereal/get_emissive_alpha(atom/source, is_worn = FALSE)
+	procstart = null
+	src.procstart = null
 	if (is_worn)
 		return 102
 	return 125
 
 /datum/blood_type/ethereal/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	blood.emissive_alpha = max(blood.emissive_alpha, new_splat ? 125 : 63)
 	if (new_splat)
@@ -274,6 +302,8 @@
 	blood_flags = BLOOD_COVER_ALL
 
 /datum/blood_type/oil/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!new_splat)
 		return
@@ -308,9 +338,13 @@
 	blood_flags = BLOOD_ADD_DNA | BLOOD_COVER_ALL
 
 /datum/blood_type/xeno/get_blood_name()
+	procstart = null
+	src.procstart = null
 	return "Acid" // "pool of sulphuric acid" is a bit too lengthy of a name
 
 /datum/blood_type/xeno/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!new_splat)
 		return
@@ -329,6 +363,8 @@
 	var/list/random_color_list
 
 /datum/blood_type/clown/get_color(dynamic = TRUE)
+	procstart = null
+	src.procstart = null
 	// Set up the random color list if we haven't done that yet. Only need to do this once.
 	if(isnull(random_color_list))
 		var/datum/reagent/colorful_reagent/clown_blood = new
@@ -348,9 +384,13 @@
 
 // Ensures that lighter slimefolk look half-decent when wounded and bleeding
 /datum/blood_type/slime/get_wound_color(mob/living/carbon/victim)
+	procstart = null
+	src.procstart = null
 	return victim.dna?.features?[FEATURE_MUTANT_COLOR] || get_color()
 
 /datum/blood_type/slime/get_damage_color(mob/living/carbon/victim)
+	procstart = null
+	src.procstart = null
 	return victim.dna?.features?[FEATURE_MUTANT_COLOR] || get_color()
 
 /// Podpeople blood
@@ -364,6 +404,8 @@
 
 // Prevents awkward grey wounds on the mob while keeping bleed overlays looking like water leaking from a balloon
 /datum/blood_type/water/get_damage_color(mob/living/carbon/victim)
+	procstart = null
+	src.procstart = null
 	return COLOR_LIME
 
 /// Snail blood
@@ -374,6 +416,8 @@
 	restoration_chem = /datum/reagent/silicon
 
 /datum/blood_type/snail/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(blood.bloodiness < BLOOD_AMOUNT_PER_DECAL)
 		return
@@ -386,6 +430,8 @@
 	abstract_type = /datum/blood_type/random_chemical
 
 /datum/blood_type/random_chemical/New(datum/reagent/reagent)
+	procstart = null
+	src.procstart = null
 	name = initial(reagent.name)
 	desc = initial(reagent.description)
 	. = ..()
@@ -395,4 +441,6 @@
 	abstract_type = null
 
 /datum/blood_type/random_chemical/type_key()
+	procstart = null
+	src.procstart = null
 	return reagent_type

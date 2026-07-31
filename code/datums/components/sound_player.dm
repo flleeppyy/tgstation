@@ -29,6 +29,8 @@
  * If out of uses, will qdel itself.
  */
 /datum/component/sound_player/proc/play_sound()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	playsound(parent, pick(sounds), volume, TRUE)

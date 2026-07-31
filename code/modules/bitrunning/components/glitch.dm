@@ -4,6 +4,8 @@
 	var/datum/weakref/distort_component
 
 /datum/component/glitch/Initialize(obj/machinery/quantum_server/server, obj/machinery/byteforge/forge)
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -24,15 +26,21 @@
 	owner.create_digital_aura()
 
 /datum/component/glitch/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_LIVING_DEATH, PROC_REF(on_death))
 	distort_component = WEAKREF(parent.AddComponent(/datum/component/holographic_nature))
 
 /datum/component/glitch/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_LIVING_DEATH)
 	QDEL_NULL(distort_component)
 
 /// We don't want digital entities just lingering around as corpses.
 /datum/component/glitch/proc/on_death()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(QDELETED(parent))
@@ -48,6 +56,8 @@
 
 /// If the forge breaks, we take a massive slowdown
 /datum/component/glitch/proc/on_forge_broken(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/player = parent
@@ -67,6 +77,8 @@
 
 /// Power restored
 /datum/component/glitch/proc/on_forge_power_restored(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/machinery/byteforge/forge = source

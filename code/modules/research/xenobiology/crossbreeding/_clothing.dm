@@ -22,6 +22,8 @@ Slimecrossing Armor
 	bio = 50
 
 /obj/item/clothing/mask/nobreath/equipped(mob/living/carbon/human/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot & ITEM_SLOT_MASK)
 		user.failed_last_breath = FALSE
@@ -29,6 +31,8 @@ Slimecrossing Armor
 		user.apply_status_effect(/datum/status_effect/rebreathing)
 
 /obj/item/clothing/mask/nobreath/dropped(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	..()
 	user.remove_status_effect(/datum/status_effect/rebreathing)
 
@@ -43,6 +47,8 @@ Slimecrossing Armor
 	var/glasses_color = COLOR_WHITE
 
 /obj/item/clothing/glasses/prism_glasses/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/wearable_client_colour, /datum/client_colour/glass_colour, ITEM_SLOT_EYES, GLASSES_TRAIT, glasses_color, forced_glass_color)
 
@@ -56,6 +62,8 @@ Slimecrossing Armor
 	max_integrity = 10
 
 /obj/structure/light_prism/Initialize(mapload, newcolor)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(newcolor)
 		color = newcolor
@@ -63,6 +71,8 @@ Slimecrossing Armor
 	set_light(5)
 
 /obj/structure/light_prism/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You dispel [src]."))
 	qdel(src)
 
@@ -72,6 +82,8 @@ Slimecrossing Armor
 	button_icon_state = "prismcolor"
 
 /datum/action/item_action/change_prism_colour/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/glasses/prism_glasses/glasses = target
 	var/new_color = tgui_color_picker(owner, "Choose the lens color:", "Color change",glasses.glasses_color)
 	if(!new_color)
@@ -86,6 +98,8 @@ Slimecrossing Armor
 	button_icon_state = "lightprism"
 
 /datum/action/item_action/place_light_prism/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/glasses/prism_glasses/glasses = target
 	if(locate(/obj/structure/light_prism) in get_turf(owner))
 		to_chat(owner, span_warning("There isn't enough ambient energy to fabricate another light prism here."))
@@ -114,6 +128,8 @@ Slimecrossing Armor
 	throw_range = 3
 
 /obj/item/clothing/head/peaceflower/can_mob_unequip(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.get_item_by_slot(slot_flags) == src)
 		to_chat(user, span_warning("You feel at peace. <b style='color:pink'>Why would you want anything else?</b>"))
 		return FALSE
@@ -132,10 +148,14 @@ Slimecrossing Armor
 	var/hit_reflect_chance = 40
 
 /obj/item/clothing/suit/armor/heavy/adamantine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/item_equipped_movement_rustle, SFX_PLATE_ARMOR_RUSTLE, 8)
 
 /obj/item/clothing/suit/armor/heavy/adamantine/IsReflect(def_zone)
+	procstart = null
+	src.procstart = null
 	if((def_zone in list(BODY_ZONE_CHEST, BODY_ZONE_R_ARM, BODY_ZONE_L_ARM, BODY_ZONE_R_LEG, BODY_ZONE_L_LEG)) && prob(hit_reflect_chance))
 		return TRUE
 	else

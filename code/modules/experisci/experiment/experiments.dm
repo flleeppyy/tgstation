@@ -345,6 +345,8 @@
 	required_traits_desc = "random mutation"
 
 /datum/experiment/scanning/people/mutant/is_valid_scan_target(mob/living/carbon/human/check, datum/component/experiment_handler/experiment_handler)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -363,6 +365,8 @@
 	var/organic_only = TRUE
 
 /datum/experiment/scanning/people/novel_organs/is_valid_scan_target(mob/living/carbon/human/check)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -401,6 +405,8 @@
 	required_count = 1
 
 /datum/experiment/scanning/people/augmented_organs/is_valid_scan_target(mob/living/carbon/human/check)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -426,6 +432,8 @@
 	required_traits_desc = "skill chip implant"
 
 /datum/experiment/scanning/people/skillchip/is_valid_scan_target(mob/living/carbon/human/check, datum/component/experiment_handler/experiment_handler)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -447,6 +455,8 @@
 	required_count = 1
 
 /datum/experiment/scanning/people/android/is_valid_scan_target(mob/living/carbon/human/check, datum/component/experiment_handler/experiment_handler)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return

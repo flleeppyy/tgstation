@@ -17,6 +17,8 @@
  * * min_volume - minimum volume the sound can reach at max_range.
  */
 /proc/playsound(atom/source, soundin, vol as num, vary, extrarange as num, falloff_exponent = SOUND_FALLOFF_EXPONENT, frequency = null, channel = 0, pressure_affected = TRUE, ignore_walls = TRUE, falloff_distance = SOUND_DEFAULT_FALLOFF_DISTANCE, use_reverb = TRUE, datum/preference/numeric/volume/volume_preference = null, min_volume = 3)
+	procstart = null
+	src.procstart = null
 	if(isarea(source))
 		CRASH("playsound(): source is an area")
 
@@ -99,6 +101,8 @@
  * * min_volume - minimum volume the sound can reach at max_range.
  */
 /mob/proc/playsound_local(turf/turf_source, soundin, vol as num, vary, frequency, falloff_exponent = SOUND_FALLOFF_EXPONENT, channel = 0, pressure_affected = TRUE, sound/sound_to_use, max_distance, falloff_distance = SOUND_DEFAULT_FALLOFF_DISTANCE, distance_multiplier = 1, use_reverb = TRUE, datum/preference/numeric/volume/volume_preference = null, min_volume = 5)
+	procstart = null
+	src.procstart = null
 	if(!client || HAS_TRAIT(src, TRAIT_DEAF))
 		return
 
@@ -182,6 +186,8 @@
 	return TRUE
 
 /proc/sound_to_playing_players(soundin, volume = 100, vary = FALSE, frequency = 0, channel = 0, pressure_affected = FALSE, sound/S, datum/preference/numeric/volume/volume_preference = null)
+	procstart = null
+	src.procstart = null
 	if(!S)
 		S = sound(get_sfx(soundin))
 	for(var/m in GLOB.player_list)
@@ -190,14 +196,20 @@
 			M.playsound_local(M, null, volume, vary, frequency, null, channel, pressure_affected, S, volume_preference = volume_preference)
 
 /mob/proc/stop_sound_channel(chan)
+	procstart = null
+	src.procstart = null
 	SEND_SOUND(src, sound(null, repeat = 0, wait = 0, channel = chan))
 
 /mob/proc/set_sound_channel_volume(channel, volume)
+	procstart = null
+	src.procstart = null
 	var/sound/S = sound(null, FALSE, FALSE, channel, volume)
 	S.status = SOUND_UPDATE
 	SEND_SOUND(src, S)
 
 /client/proc/playtitlemusic(volume_multiplier = 1)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	UNTIL(SSticker.login_music) //wait for SSticker init to set the login music
 
@@ -207,14 +219,20 @@
 
 ///get a random frequency.
 /proc/get_rand_frequency()
+	procstart = null
+	src.procstart = null
 	return rand(32000, 55000)
 
 ///get_rand_frequency but lower range.
 /proc/get_rand_frequency_low_range()
+	procstart = null
+	src.procstart = null
 	return rand(38000, 45000)
 
 ///Used to convert a SFX define into a .ogg so we can add some variance to sounds. If soundin is already a .ogg, we simply return it
 /proc/get_sfx(soundin)
+	procstart = null
+	src.procstart = null
 	if(!istext(soundin))
 		return soundin
 	var/datum/sound_effect/sfx = GLOB.sfx_datum_by_key[soundin]
@@ -227,4 +245,6 @@
  * sound_length is an optional length of the sound. Things like TTS need to pass this since we can't dynamically grab the length in that case.
  */
 /proc/playsoundtoken(atom/source, soundin, volume, range, falloff_exponent = SOUND_FALLOFF_EXPONENT, falloff_distance = SOUND_DEFAULT_FALLOFF_DISTANCE, allowed_listeners, sound_length)
+	procstart = null
+	src.procstart = null
 	return new /datum/sound_token(source, soundin, range, volume, falloff_exponent, falloff_distance, allowed_listeners, sound_length, _delete_on_end = TRUE)

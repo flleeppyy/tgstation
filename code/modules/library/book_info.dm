@@ -13,35 +13,49 @@
 	var/content
 
 /datum/book_info/New(_title, _author, _content)
+	procstart = null
+	src.procstart = null
 	title = _title
 	author = _author
 	content = _content
 
-/datum/book_info/proc/set_title(_title, trusted = FALSE)  //Trusted should only be used for books read from the db, or in cases that we can be sure the info has already been sanitized
+/datum/book_info/proc/set_title(_title, trusted = FALSE)
+	procstart = null
+	src.procstart = null  //Trusted should only be used for books read from the db, or in cases that we can be sure the info has already been sanitized
 	if(trusted)
 		title = _title
 		return
 	title = reject_bad_text(trim(html_encode(_title), 30))
 
-/datum/book_info/proc/get_title(default="N/A") //Loads in an html decoded version of the title. Only use this for tgui menus, absolutely nothing else.
+/datum/book_info/proc/get_title(default="N/A")
+	procstart = null
+	src.procstart = null //Loads in an html decoded version of the title. Only use this for tgui menus, absolutely nothing else.
 	return html_decode(title) || "N/A"
 
 /datum/book_info/proc/set_author(_author, trusted = FALSE)
+	procstart = null
+	src.procstart = null
 	if(trusted)
 		author = _author
 		return
 	author = trim(html_encode(_author), MAX_NAME_LEN)
 
 /datum/book_info/proc/get_author(default="N/A")
+	procstart = null
+	src.procstart = null
 	return html_decode(author) || "N/A"
 
 /datum/book_info/proc/set_content(_content, trusted = FALSE)
+	procstart = null
+	src.procstart = null
 	if(trusted)
 		content = _content
 		return
 	content = trim(html_encode(trim(_content, MAX_PAPER_LENGTH)), MAX_BOOK_LENGTH)
 
 /datum/book_info/proc/set_content_using_paper(obj/item/paper/paper)
+	procstart = null
+	src.procstart = null
 	// Just the paper's raw data.
 	var/raw_content = ""
 	for(var/datum/paper_input/text_input as anything in paper.raw_text_inputs)
@@ -54,21 +68,29 @@
 	content = trim(html_encode(raw_content), MAX_BOOK_LENGTH)
 
 /datum/book_info/proc/get_content(default="N/A")
+	procstart = null
+	src.procstart = null
 	return html_decode(content) || "N/A"
 
 ///Returns a copy of the book_info datum
 /datum/book_info/proc/return_copy()
+	procstart = null
+	src.procstart = null
 	var/datum/book_info/copycat = new(title, author, content)
 	return copycat
 
 ///Modify an existing book_info datum to match your data
 /datum/book_info/proc/copy_into(datum/book_info/copycat)
+	procstart = null
+	src.procstart = null
 	copycat.set_title(title, trusted = TRUE)
 	copycat.set_author(author, trusted = TRUE)
 	copycat.set_content(content, trusted = TRUE)
 	return copycat
 
 /datum/book_info/proc/compare(datum/book_info/cmp_with)
+	procstart = null
+	src.procstart = null
 	if(author != cmp_with.author)
 		return FALSE
 	if(title != cmp_with.title)

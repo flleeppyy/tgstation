@@ -8,6 +8,8 @@
 
 
 /obj/machinery/door/airlock/mouse_drop_receive(mob/living/dropping, mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// We add the component only once here & not in Initialize() because there are tons of airlocks & we don't want to add to their init times
 	// This is on airlock rather than on door because windoors are door and leaning looks whack on windoors
@@ -16,6 +18,8 @@
 
 /// Forces the airlock to unbolt and open
 /obj/machinery/door/airlock/proc/secure_open()
+	procstart = null
+	src.procstart = null
 	locked = FALSE
 	update_appearance()
 
@@ -27,6 +31,8 @@
 
 /// Forces the airlock to close and bolt
 /obj/machinery/door/airlock/proc/secure_close(force_crush = FALSE)
+	procstart = null
+	src.procstart = null
 	locked = FALSE
 	close(forced = TRUE, force_crush = force_crush)
 
@@ -35,6 +41,8 @@
 	update_appearance()
 
 /obj/machinery/door/airlock/on_magic_unlock(datum/source, datum/action/cooldown/spell/aoe/knock/spell, mob/living/caster)
+	procstart = null
+	src.procstart = null
 	// Airlocks should unlock themselves when knock is casted, THEN open up.
 	locked = FALSE
 	return ..()
@@ -66,6 +74,8 @@
 	master_tag = INCINERATOR_SYNDICATELAVA_AIRLOCK_CONTROLLER
 
 /obj/machinery/airlock_sensor/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!on)
 		icon_state = "[base_icon_state]_off"
 	else
@@ -76,6 +86,8 @@
 	return ..()
 
 /obj/machinery/airlock_sensor/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -86,6 +98,8 @@
 	flick("airlock_sensor_cycle", src)
 
 /obj/machinery/airlock_sensor/process()
+	procstart = null
+	src.procstart = null
 	if(on)
 		var/datum/gas_mixture/air_sample = return_air()
 		var/pressure = round(air_sample.return_pressure(),0.1)

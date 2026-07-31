@@ -63,6 +63,8 @@
 	show_on_wiki = FALSE
 
 /datum/techweb_node/proc/Initialize()
+	procstart = null
+	src.procstart = null
 	//Make lists associative for lookup
 	for(var/id in prereq_ids)
 		prereq_ids[id] = TRUE
@@ -72,23 +74,35 @@
 		unlock_ids[id] = TRUE
 
 /datum/techweb_node/Destroy()
+	procstart = null
+	src.procstart = null
 	SSresearch.techweb_nodes -= id
 	return ..()
 
 /datum/techweb_node/proc/on_design_deletion(datum/design/D)
+	procstart = null
+	src.procstart = null
 	prune_design_id(D.id)
 
 /datum/techweb_node/proc/on_node_deletion(datum/techweb_node/TN)
+	procstart = null
+	src.procstart = null
 	prune_node_id(TN.id)
 
 /datum/techweb_node/proc/prune_design_id(design_id)
+	procstart = null
+	src.procstart = null
 	design_ids -= design_id
 
 /datum/techweb_node/proc/prune_node_id(node_id)
+	procstart = null
+	src.procstart = null
 	prereq_ids -= node_id
 	unlock_ids -= node_id
 
 /datum/techweb_node/proc/get_price(datum/techweb/host)
+	procstart = null
+	src.procstart = null
 	if(!host)
 		return research_costs
 
@@ -107,6 +121,8 @@
 	return actual_costs
 
 /datum/techweb_node/proc/is_free(datum/techweb/host)
+	procstart = null
+	src.procstart = null
 	var/list/costs = get_price(host)
 	var/total_points = 0
 
@@ -118,10 +134,14 @@
 	return FALSE
 
 /datum/techweb_node/proc/price_display(datum/techweb/TN)
+	procstart = null
+	src.procstart = null
 	return techweb_point_display_generic(get_price(TN))
 
 ///Proc called when the Station (Science techweb specific) researches a node.
 /datum/techweb_node/proc/on_station_research(atom/research_source)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	var/channels_to_use = announce_channels
 	if(istype(research_source, /obj/machinery/computer/rdconsole))

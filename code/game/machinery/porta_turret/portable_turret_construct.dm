@@ -23,6 +23,8 @@
 	var/obj/item/gun/installed_gun = null
 
 /obj/machinery/porta_turret_construct/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(build_step)
 		if(PTURRET_UNSECURED)
@@ -43,6 +45,8 @@
 			. += span_notice("The turret's armor needs to be <b>welded</b> in place, the armor looks like it could be <i>pried</i> off.")
 
 /obj/machinery/porta_turret_construct/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	//this is a bit unwieldy but self-explanatory
 	switch(build_step)
 		if(PTURRET_BOLTED)
@@ -95,6 +99,8 @@
 	return NONE
 
 /obj/machinery/porta_turret_construct/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	switch(build_step)
 		if(PTURRET_UNSECURED)
 			tool.play_tool_sound(src, 100)
@@ -125,6 +131,8 @@
 	return ITEM_INTERACT_SKIP_TO_ATTACK
 
 /obj/machinery/porta_turret_construct/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	switch(build_step)
 		if(PTURRET_UNSECURED)
 			tool.play_tool_sound(src, 75)
@@ -143,6 +151,8 @@
 	return ITEM_INTERACT_SKIP_TO_ATTACK
 
 /obj/machinery/porta_turret_construct/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	switch(build_step)
 		if(PTURRET_START_INTERNAL_ARMOUR)
 			if(!tool.tool_start_check(user, amount = 5)) //uses up 5 fuel
@@ -184,6 +194,8 @@
 	return ITEM_INTERACT_SKIP_TO_ATTACK
 
 /obj/machinery/porta_turret_construct/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	switch(build_step)
 		if(PTURRET_SENSORS_ON)
 			tool.play_tool_sound(src, 100)
@@ -200,13 +212,19 @@
 	return ITEM_INTERACT_SKIP_TO_ATTACK
 
 /obj/machinery/porta_turret_construct/nameformat(input, user)
+	procstart = null
+	src.procstart = null
 	finish_name = input
 	return input
 
 /obj/machinery/porta_turret_construct/rename_reset()
+	procstart = null
+	src.procstart = null
 	finish_name = initial(finish_name)
 
 /obj/machinery/porta_turret_construct/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -224,6 +242,8 @@
 			build_step = PTURRET_GUN_EQUIPPED
 
 /obj/machinery/porta_turret_construct/attack_ai()
+	procstart = null
+	src.procstart = null
 	return
 
 #undef PTURRET_BOLTED

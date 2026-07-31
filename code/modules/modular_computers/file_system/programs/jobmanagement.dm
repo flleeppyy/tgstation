@@ -23,11 +23,15 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 	var/list/opened_positions = list()
 
 /datum/computer_file/program/job_management/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	change_position_cooldown = CONFIG_GET(number/id_console_jobslot_delay)
 
 
 /datum/computer_file/program/job_management/proc/can_edit_job(datum/job/job)
+	procstart = null
+	src.procstart = null
 	if(!istype(job))
 		return FALSE
 	if(!(job.job_flags & JOB_CREW_MEMBER))
@@ -38,6 +42,8 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 
 
 /datum/computer_file/program/job_management/proc/can_open_job(datum/job/job)
+	procstart = null
+	src.procstart = null
 	if((job.total_positions <= length(GLOB.player_list) * (max_relative_positions / 100)))
 		var/delta = (world.time / 10) - GLOB.time_last_changed_position
 		if((change_position_cooldown < delta) || (opened_positions[job.title] < 0))
@@ -46,6 +52,8 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 
 
 /datum/computer_file/program/job_management/proc/can_close_job(datum/job/job)
+	procstart = null
+	src.procstart = null
 	if(job.total_positions > length(GLOB.player_list) * (max_relative_positions / 100))
 		var/delta = (world.time / 10) - GLOB.time_last_changed_position
 		if((change_position_cooldown < delta) || (opened_positions[job.title] > 0))
@@ -54,6 +62,8 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 
 
 /datum/computer_file/program/job_management/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/card/id/user_id = computer.stored_id
 	if(!user_id || !(ACCESS_CHANGE_IDS in user_id.access))
@@ -104,6 +114,8 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 
 
 /datum/computer_file/program/job_management/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/authed = FALSE

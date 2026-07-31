@@ -12,10 +12,14 @@
 	var/always_floorplane = FALSE
 
 /obj/structure/broken_flooring/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/broken_flooring/LateInitialize()
+	procstart = null
+	src.procstart = null
 	var/turf/turf = get_turf(src)
 	if(!isplatingturf(turf) && !always_floorplane) // Render as trash if not on plating
 		plane = GAME_PLANE
@@ -27,6 +31,8 @@
 			CHECK_TICK
 
 /obj/structure/broken_flooring/crowbar_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	I.play_tool_sound(src, 80)
 	balloon_alert(user, "tile reclaimed")
 	new /obj/item/stack/tile/iron(get_turf(src))

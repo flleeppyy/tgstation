@@ -7,6 +7,8 @@
 	var/static/list/items = list(/obj/item/binoculars, /obj/item/camera, /obj/item/clothing/under/color/blue, /obj/item/clothing/under/color/black)
 
 /datum/asset/spritesheet_batched/test/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	for(var/atom/item as anything in items)
 		if (!ispath(item, /atom))
 			return FALSE
@@ -21,12 +23,16 @@
 	insert_icon("test", I)
 
 /datum/asset/spritesheet_batched/test/unregister()
+	procstart = null
+	src.procstart = null
 	SSassets.transport.unregister_asset("spritesheet_[name].css")
 	if(length(sizes))
 		for(var/size_id in sizes)
 			SSassets.transport.unregister_asset("[name]_[size_id].png")
 
 /datum/unit_test/test_asset_smart_cache/Run()
+	procstart = null
+	src.procstart = null
 	fdel("[ASSET_CROSS_ROUND_SMART_CACHE_DIRECTORY]/spritesheet_cache.test.json")
 	fdel("data/spritesheets/spritesheet_test.css")
 	var/datum/asset/spritesheet_batched/test/sheet = new()

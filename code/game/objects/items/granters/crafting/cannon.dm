@@ -15,5 +15,7 @@
 	)
 
 /obj/item/book/granter/crafting_recipe/trash_cannon/recoil(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("The book turns to dust in your hands."))
 	qdel(src)

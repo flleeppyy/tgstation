@@ -3,11 +3,15 @@
 	var/list/orphaned_keys
 
 /datum/achievement_admin_panel/proc/reload_data()
+	procstart = null
+	src.procstart = null
 	if(!SSachievements.achievements_enabled)
 		return
 	orphaned_keys = SSachievements.get_orphaned_keys()
 
 /datum/achievement_admin_panel/ui_data()
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/list/orphaned_only = list()
 	var/list/archived_only = list()
@@ -20,15 +24,21 @@
 	.["archived_keys"] = archived_only
 
 /datum/achievement_admin_panel/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_ADMIN)
 
 /datum/achievement_admin_panel/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AchievementsAdminPanel")
 		ui.open()
 
 /datum/achievement_admin_panel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -47,6 +57,8 @@
 
 
 /datum/achievement_admin_panel/proc/cleanup_outdated_achievement(achievement_key)
+	procstart = null
+	src.procstart = null
 	// ensure key is actually orphaned just in case
 	if(!(achievement_key in orphaned_keys))
 		return
@@ -58,6 +70,8 @@
 	), warn = TRUE, qdel = TRUE)
 
 /datum/achievement_admin_panel/proc/archive_achievement(achievement_key)
+	procstart = null
+	src.procstart = null
 	// ensure key is actually orphaned just in case
 	if(!(achievement_key in orphaned_keys))
 		return

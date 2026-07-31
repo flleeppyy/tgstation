@@ -2,6 +2,8 @@
 #define SET_REACTION_RESULTS(amount) air.reaction_results[type] = amount
 
 /proc/init_gas_reactions()
+	procstart = null
+	src.procstart = null
 	var/list/priority_reactions = list()
 
 	//Builds a list of gas id to reaction group
@@ -70,15 +72,23 @@
 	var/list/factor
 
 /datum/gas_reaction/New()
+	procstart = null
+	src.procstart = null
 	init_reqs()
 	init_factors()
 
-/datum/gas_reaction/proc/init_reqs() // Override this
+/datum/gas_reaction/proc/init_reqs()
+	procstart = null
+	src.procstart = null // Override this
 	CRASH("Reaction [type] made without specifying requirements.")
 
 /datum/gas_reaction/proc/init_factors()
+	procstart = null
+	src.procstart = null
 
 /datum/gas_reaction/proc/react(datum/gas_mixture/air, atom/location)
+	procstart = null
+	src.procstart = null
 	return NO_REACTION
 
 
@@ -95,12 +105,16 @@
 	desc = "Water vapor condensation that can make things slippery."
 
 /datum/gas_reaction/water_vapor/init_reqs()
+	procstart = null
+	src.procstart = null
 	requirements = list(
 		/datum/gas/water_vapor = MOLES_GAS_VISIBLE,
 		"MAX_TEMP" = WATER_VAPOR_CONDENSATION_POINT,
 	)
 
 /datum/gas_reaction/water_vapor/react(datum/gas_mixture/air, datum/holder)
+	procstart = null
+	src.procstart = null
 	. = NO_REACTION
 	if(!isturf(holder))
 		return
@@ -137,12 +151,16 @@
 	desc = "Pathogens cannot survive in a hot environment. Miasma decomposes on high temperature."
 
 /datum/gas_reaction/miaster/init_reqs()
+	procstart = null
+	src.procstart = null
 	requirements = list(
 		/datum/gas/miasma = MINIMUM_MOLE_COUNT,
 		"MIN_TEMP" = MIASTER_STERILIZATION_TEMP,
 	)
 
 /datum/gas_reaction/miaster/react(datum/gas_mixture/air, datum/holder)
+	procstart = null
+	src.procstart = null
 	var/list/cached_moles = air.moles
 	var/water_vapor_moles = cached_moles[/datum/gas/water_vapor]
 	var/miasma_moles = cached_moles[/datum/gas/miasma]
@@ -179,6 +197,8 @@
 	desc = "Combustion of oxygen and plasma. Able to produce tritium or carbon dioxide and water vapor."
 
 /datum/gas_reaction/plasmafire/init_reqs()
+	procstart = null
+	src.procstart = null
 	requirements = list(
 		/datum/gas/plasma = MINIMUM_MOLE_COUNT,
 		/datum/gas/oxygen = MINIMUM_MOLE_COUNT,
@@ -186,6 +206,8 @@
 	)
 
 /datum/gas_reaction/plasmafire/react(datum/gas_mixture/air, datum/holder)
+	procstart = null
+	src.procstart = null
 	. = NO_REACTION
 	// This reaction should proceed faster at higher temperatures.
 	var/temperature = air.temperature
@@ -257,6 +279,8 @@
 	desc = "Combustion of hydrogen with oxygen. Can be extremely fast and energetic if a few conditions are fulfilled."
 
 /datum/gas_reaction/h2fire/init_reqs()
+	procstart = null
+	src.procstart = null
 	requirements = list(
 		/datum/gas/hydrogen = MINIMUM_MOLE_COUNT,
 		/datum/gas/oxygen = MINIMUM_MOLE_COUNT,
@@ -264,6 +288,8 @@
 	)
 
 /datum/gas_reaction/h2fire/react(datum/gas_mixture/air, datum/holder)
+	procstart = null
+	src.procstart = null
 	. = NO_REACTION
 	var/list/cached_moles = air.moles //this speeds things up because accessing datum vars is slow
 	var/hydrogen_moles = cached_moles[/datum/gas/hydrogen]
@@ -313,6 +339,8 @@
 	desc = "Combustion of tritium with oxygen. Can be extremely fast and energetic if a few conditions are fulfilled."
 
 /datum/gas_reaction/tritfire/init_reqs()
+	procstart = null
+	src.procstart = null
 	requirements = list(
 		/datum/gas/tritium = MINIMUM_MOLE_COUNT,
 		/datum/gas/oxygen = MINIMUM_MOLE_COUNT,
@@ -320,6 +348,8 @@
 	)
 
 /datum/gas_reaction/tritfire/react(datum/gas_mixture/air, datum/holder)
+	procstart = null
+	src.procstart = null
 	. = NO_REACTION
 	var/list/cached_moles = air.moles //this speeds things up because accessing datum vars is slow
 	var/tritium_moles = cached_moles[/datum/gas/tritium]
@@ -377,6 +407,8 @@
 	desc = "Reaction between oxygen and freon that consumes a huge amount of energy and can cool things significantly. Also able to produce hot ice."
 
 /datum/gas_reaction/freonfire/init_reqs()
+	procstart = null
+	src.procstart = null
 	requirements = list(
 		/datum/gas/oxygen = MINIMUM_MOLE_COUNT,
 		/datum/gas/freon = MINIMUM_MOLE_COUNT,
@@ -385,6 +417,8 @@
 	)
 
 /datum/gas_reaction/freonfire/react(datum/gas_mixture/air, datum/holder)
+	procstart = null
+	src.procstart = null
 	. = NO_REACTION
 	var/temperature = air.temperature
 	var/temperature_scale
@@ -450,6 +484,8 @@
 	desc = "Production of nitrous oxide with BZ as a catalyst."
 
 /datum/gas_reaction/nitrousformation/init_reqs()
+	procstart = null
+	src.procstart = null
 	requirements = list(
 		/datum/gas/oxygen = 10,
 		/datum/gas/nitrogen = 20,
@@ -459,6 +495,8 @@
 	)
 
 /datum/gas_reaction/nitrousformation/react(datum/gas_mixture/air)
+	procstart = null
+	src.procstart = null
 	var/list/cached_moles = air.moles
 	var/oxygen_moles = cached_moles[/datum/gas/oxygen]
 	var/nitrogen_moles = cached_moles[/datum/gas/nitrogen]
@@ -492,6 +530,8 @@
 	desc = "Decomposition of nitrous oxide under high temperature."
 
 /datum/gas_reaction/nitrous_decomp/init_reqs()
+	procstart = null
+	src.procstart = null
 	requirements = list(
 		/datum/gas/nitrous_oxide = MINIMUM_MOLE_COUNT * 2,
 		"MIN_TEMP" = N2O_DECOMPOSITION_MIN_TEMPERATURE,
@@ -499,6 +539,8 @@
 	)
 
 /datum/gas_reaction/nitrous_decomp/react(datum/gas_mixture/air, datum/holder)
+	procstart = null
+	src.procstart = null
 	var/list/cached_moles = air.moles //this speeds things up because accessing datum vars is slow
 	var/nitrous_oxide_moles = cached_moles[/datum/gas/nitrous_oxide]
 	var/temperature = air.temperature
@@ -534,6 +576,8 @@
 	desc = "Production of BZ using plasma and nitrous oxide."
 
 /datum/gas_reaction/bzformation/init_reqs()
+	procstart = null
+	src.procstart = null
 	requirements = list(
 		/datum/gas/nitrous_oxide = 10,
 		/datum/gas/plasma = 10,
@@ -541,6 +585,8 @@
 	)
 
 /datum/gas_reaction/bzformation/react(datum/gas_mixture/air)
+	procstart = null
+	src.procstart = null
 	var/list/cached_moles = air.moles
 	var/nitrous_oxide_moles = cached_moles[/datum/gas/nitrous_oxide]
 	var/plasma_moles = cached_moles[/datum/gas/plasma]
@@ -594,6 +640,8 @@
 	desc = "Alternate production for pluoxium which uses tritium."
 
 /datum/gas_reaction/pluox_formation/init_reqs()
+	procstart = null
+	src.procstart = null
 	requirements = list(
 		/datum/gas/carbon_dioxide = MINIMUM_MOLE_COUNT,
 		/datum/gas/oxygen = MINIMUM_MOLE_COUNT,
@@ -603,6 +651,8 @@
 	)
 
 /datum/gas_reaction/pluox_formation/react(datum/gas_mixture/air, datum/holder)
+	procstart = null
+	src.procstart = null
 	var/list/cached_moles = air.moles
 	var/carbon_dioxide_moles = cached_moles[/datum/gas/carbon_dioxide]
 	var/oxygen_moles = cached_moles[/datum/gas/oxygen]
@@ -642,6 +692,8 @@
 	desc = "Production of nitrium from BZ, tritium, and nitrogen."
 
 /datum/gas_reaction/nitrium_formation/init_reqs()
+	procstart = null
+	src.procstart = null
 	requirements = list(
 		/datum/gas/tritium = 20,
 		/datum/gas/nitrogen = 10,
@@ -650,6 +702,8 @@
 	)
 
 /datum/gas_reaction/nitrium_formation/react(datum/gas_mixture/air)
+	procstart = null
+	src.procstart = null
 	var/list/cached_moles = air.moles
 	var/tritium_moles = cached_moles[/datum/gas/tritium]
 	var/nitrogen_moles = cached_moles[/datum/gas/nitrogen]
@@ -689,6 +743,8 @@
 	desc = "Decomposition of nitrium when exposed to oxygen under normal temperatures."
 
 /datum/gas_reaction/nitrium_decomposition/init_reqs()
+	procstart = null
+	src.procstart = null
 	requirements = list(
 		/datum/gas/oxygen = MINIMUM_MOLE_COUNT,
 		/datum/gas/nitrium = MINIMUM_MOLE_COUNT,
@@ -696,6 +752,8 @@
 	)
 
 /datum/gas_reaction/nitrium_decomposition/react(datum/gas_mixture/air)
+	procstart = null
+	src.procstart = null
 	var/list/cached_moles = air.moles
 	var/nitrium_moles = cached_moles[/datum/gas/nitrium]
 	var/temperature = air.temperature
@@ -732,7 +790,9 @@
 	id = "freonformation"
 	desc = "Production of freon using plasma, carbon dioxide, and BZ under high temperature."
 
-/datum/gas_reaction/freonformation/init_reqs() //minimum requirements for freon formation
+/datum/gas_reaction/freonformation/init_reqs()
+	procstart = null
+	src.procstart = null //minimum requirements for freon formation
 	requirements = list(
 		/datum/gas/plasma = MINIMUM_MOLE_COUNT * 6,
 		/datum/gas/carbon_dioxide = MINIMUM_MOLE_COUNT * 3,
@@ -741,6 +801,8 @@
 	)
 
 /datum/gas_reaction/freonformation/react(datum/gas_mixture/air)
+	procstart = null
+	src.procstart = null
 	var/list/cached_moles = air.moles
 	var/plasma_moles = cached_moles[/datum/gas/plasma]
 	var/carbon_dioxide_moles = cached_moles[/datum/gas/carbon_dioxide]
@@ -786,6 +848,8 @@
 	desc = "Production of hyper-noblium from nitrogen and tritium under very low temperatures. Extremely energetic."
 
 /datum/gas_reaction/nobliumformation/init_reqs()
+	procstart = null
+	src.procstart = null
 	requirements = list(
 		/datum/gas/nitrogen = 10,
 		/datum/gas/tritium = 5,
@@ -794,6 +858,8 @@
 	)
 
 /datum/gas_reaction/nobliumformation/react(datum/gas_mixture/air)
+	procstart = null
+	src.procstart = null
 	. = NO_REACTION
 	var/list/cached_moles = air.moles
 	var/nitrogen_moles = cached_moles[/datum/gas/nitrogen]
@@ -839,6 +905,8 @@
 	desc = "Halon interaction with oxygen that can be used to snuff fires out."
 
 /datum/gas_reaction/halon_o2removal/init_reqs()
+	procstart = null
+	src.procstart = null
 	requirements = list(
 		/datum/gas/halon = MINIMUM_MOLE_COUNT,
 		/datum/gas/oxygen = MINIMUM_MOLE_COUNT,
@@ -846,6 +914,8 @@
 	)
 
 /datum/gas_reaction/halon_o2removal/react(datum/gas_mixture/air, datum/holder)
+	procstart = null
+	src.procstart = null
 	. = NO_REACTION
 	var/list/cached_moles = air.moles
 	var/halon_moles = cached_moles[/datum/gas/halon]
@@ -892,6 +962,8 @@
 	desc = "Production of healium using BZ and freon."
 
 /datum/gas_reaction/healium_formation/init_reqs()
+	procstart = null
+	src.procstart = null
 	requirements = list(
 		/datum/gas/bz = MINIMUM_MOLE_COUNT,
 		/datum/gas/freon = MINIMUM_MOLE_COUNT,
@@ -900,6 +972,8 @@
 	)
 
 /datum/gas_reaction/healium_formation/react(datum/gas_mixture/air, datum/holder)
+	procstart = null
+	src.procstart = null
 	var/list/cached_moles = air.moles
 	var/bz_moles = cached_moles[/datum/gas/bz]
 	var/freon_moles = cached_moles[/datum/gas/freon]
@@ -933,6 +1007,8 @@
 	desc = "Production of zauker using hyper-noblium and nitrium under very high temperatures."
 
 /datum/gas_reaction/zauker_formation/init_reqs()
+	procstart = null
+	src.procstart = null
 	requirements = list(
 		/datum/gas/hypernoblium = MINIMUM_MOLE_COUNT,
 		/datum/gas/nitrium = MINIMUM_MOLE_COUNT,
@@ -941,6 +1017,8 @@
 	)
 
 /datum/gas_reaction/zauker_formation/react(datum/gas_mixture/air, datum/holder)
+	procstart = null
+	src.procstart = null
 	var/list/cached_moles = air.moles
 	var/hypernoblium_moles = cached_moles[/datum/gas/hypernoblium]
 	var/nitrium_moles = cached_moles[/datum/gas/nitrium]
@@ -976,12 +1054,16 @@
 	desc = "Decomposition of zauker when exposed to nitrogen."
 
 /datum/gas_reaction/zauker_decomp/init_reqs()
+	procstart = null
+	src.procstart = null
 	requirements = list(
 		/datum/gas/nitrogen = MINIMUM_MOLE_COUNT,
 		/datum/gas/zauker = MINIMUM_MOLE_COUNT,
 	)
 
 /datum/gas_reaction/zauker_decomp/react(datum/gas_mixture/air, datum/holder)
+	procstart = null
+	src.procstart = null
 	var/list/cached_moles = air.moles //this speeds things up because accessing datum vars is slow
 	var/nitrogen_moles = cached_moles[/datum/gas/nitrogen]
 	var/zauker_moles = cached_moles[/datum/gas/zauker]
@@ -1016,6 +1098,8 @@
 	desc = "Production of proto-nitrate from pluoxium and hydrogen under high temperatures."
 
 /datum/gas_reaction/proto_nitrate_formation/init_reqs()
+	procstart = null
+	src.procstart = null
 	requirements = list(
 		/datum/gas/pluoxium = MINIMUM_MOLE_COUNT,
 		/datum/gas/hydrogen = MINIMUM_MOLE_COUNT,
@@ -1024,6 +1108,8 @@
 	)
 
 /datum/gas_reaction/proto_nitrate_formation/react(datum/gas_mixture/air, datum/holder)
+	procstart = null
+	src.procstart = null
 	var/list/cached_moles = air.moles
 	var/pluoxium_moles = cached_moles[/datum/gas/pluoxium]
 	var/hydrogen_moles = cached_moles[/datum/gas/hydrogen]
@@ -1058,12 +1144,16 @@
 	desc = "Conversion of hydrogen into proto nitrate."
 
 /datum/gas_reaction/proto_nitrate_hydrogen_response/init_reqs()
+	procstart = null
+	src.procstart = null
 	requirements = list(
 		/datum/gas/proto_nitrate = MINIMUM_MOLE_COUNT,
 		/datum/gas/hydrogen = PN_HYDROGEN_CONVERSION_THRESHOLD,
 	)
 
 /datum/gas_reaction/proto_nitrate_hydrogen_response/react(datum/gas_mixture/air, datum/holder)
+	procstart = null
+	src.procstart = null
 	var/list/cached_moles = air.moles
 	var/proto_nitrate_moles = cached_moles[/datum/gas/proto_nitrate]
 	var/hydrogen_moles = cached_moles[/datum/gas/hydrogen]
@@ -1096,6 +1186,8 @@
 	desc = "Conversion of tritium into hydrogen that consumes a small amount of proto-nitrate."
 
 /datum/gas_reaction/proto_nitrate_tritium_response/init_reqs()
+	procstart = null
+	src.procstart = null
 	requirements = list(
 		/datum/gas/proto_nitrate = MINIMUM_MOLE_COUNT,
 		/datum/gas/tritium = MINIMUM_MOLE_COUNT,
@@ -1104,6 +1196,8 @@
 	)
 
 /datum/gas_reaction/proto_nitrate_tritium_response/react(datum/gas_mixture/air, datum/holder)
+	procstart = null
+	src.procstart = null
 	. = NO_REACTION
 	var/list/cached_moles = air.moles
 	var/proto_nitrate_moles = cached_moles[/datum/gas/proto_nitrate]
@@ -1149,6 +1243,8 @@
 	desc = "Breakdown of BZ into nitrogen, helium, and plasma by proto-nitrate under low temperatures."
 
 /datum/gas_reaction/proto_nitrate_bz_response/init_reqs()
+	procstart = null
+	src.procstart = null
 	requirements = list(
 		/datum/gas/proto_nitrate = MINIMUM_MOLE_COUNT,
 		/datum/gas/bz = MINIMUM_MOLE_COUNT,
@@ -1157,6 +1253,8 @@
 	)
 
 /datum/gas_reaction/proto_nitrate_bz_response/react(datum/gas_mixture/air, datum/holder)
+	procstart = null
+	src.procstart = null
 	. = NO_REACTION
 	var/list/cached_moles = air.moles
 	var/proto_nitrate_moles = cached_moles[/datum/gas/proto_nitrate]
@@ -1201,6 +1299,8 @@
 	desc = "Antinoblium breaks down all gases into more of itself."
 
 /datum/gas_reaction/antinoblium_replication/init_reqs()
+	procstart = null
+	src.procstart = null
 	requirements = list(
 		/datum/gas/antinoblium = MOLES_GAS_VISIBLE,
 		"MIN_TEMP" = REACTION_OPPRESSION_MIN_TEMP,
@@ -1212,6 +1312,8 @@
  * Converts all gases into antinoblium.
  */
 /datum/gas_reaction/antinoblium_replication/react(datum/gas_mixture/air, datum/holder)
+	procstart = null
+	src.procstart = null
 	. = REACTING | VOLATILE_REACTION
 	var/list/cached_moles = air.moles
 	var/heat_capacity = air.heat_capacity()

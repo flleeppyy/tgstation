@@ -1,6 +1,8 @@
 /obj/item/book/granter/action/spell
 
 /obj/item/book/granter/action/spell/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ITEM_MAGICALLY_CHARGED, PROC_REF(on_magic_charge))
 
@@ -10,6 +12,8 @@
  * Refreshes uses on our spell granter, or make it quicker to read if it's already infinite use
  */
 /obj/item/book/granter/action/spell/proc/on_magic_charge(datum/source, datum/action/cooldown/spell/spell, mob/living/caster)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// What're the odds someone uses 2000 uses of an infinite use book?
@@ -30,6 +34,8 @@
 	return COMPONENT_ITEM_CHARGED
 
 /obj/item/book/granter/action/spell/can_learn(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!granted_action)
 		CRASH("Someone attempted to learn [type], which did not have a spell set.")
 	if(locate(granted_action) in user.actions)
@@ -42,10 +48,14 @@
 	return TRUE
 
 /obj/item/book/granter/action/spell/on_reading_start(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You start reading about casting [action_name]..."))
 	return TRUE
 
 /obj/item/book/granter/action/spell/on_reading_finished(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You feel like you've experienced enough to cast [action_name]!"))
 	var/datum/action/cooldown/spell/new_spell = new granted_action(user.mind || user)
 	new_spell.Grant(user)
@@ -54,6 +64,8 @@
 		user.visible_message(span_warning("[src] glows dark for a second!"))
 
 /obj/item/book/granter/action/spell/recoil(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_warning("[src] glows in a black light!"))
 
 /// Simple granter that's replaced with a random spell granter on Initialize.
@@ -61,6 +73,8 @@
 	icon_state = "random_book"
 
 /obj/item/book/granter/action/spell/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/banned_spells = list(
 		/obj/item/book/granter/action/spell/true_random,
@@ -79,6 +93,8 @@
 	var/static/list/blacklisted_schools = list(SCHOOL_UNSET, SCHOOL_HOLY, SCHOOL_MIME)
 
 /obj/item/book/granter/action/spell/true_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/static/list/spell_options

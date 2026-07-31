@@ -49,6 +49,8 @@
 	var/list/scar_priorities
 
 /datum/wound_pregen_data/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (!abstract)
@@ -61,6 +63,8 @@
 
 /// Should return a list of BIO_ biostate priorities, in order. See [scar_priorities] for further documentation.
 /datum/wound_pregen_data/proc/generate_scar_priorities()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 
 	var/list/priorities = list(
@@ -84,6 +88,8 @@
  * TRUE otherwise.
  */
 /datum/wound_pregen_data/proc/can_be_applied_to(obj/item/bodypart/limb, suggested_wounding_type = required_wounding_type, datum/wound/old_wound, random_roll = FALSE, duplicates_allowed = src.duplicates_allowed, care_about_existing_wounds = TRUE)
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 
 	if (!istype(limb))
@@ -121,6 +127,8 @@
 
 /// Returns true if we have the given biostates, or any biostate in it if check_for_any is true. False otherwise.
 /datum/wound_pregen_data/proc/biostate_valid(biostate)
+	procstart = null
+	src.procstart = null
 	if (require_any_biostate)
 		if (!(biostate & required_limb_biostate))
 			return FALSE
@@ -143,10 +151,14 @@
  * Our weight.
  */
 /datum/wound_pregen_data/proc/get_weight(obj/item/bodypart/limb, woundtype, damage, attack_direction, damage_source)
+	procstart = null
+	src.procstart = null
 	return weight
 
 /// Returns TRUE if we use WOUND_ALL or our wounding type
 /datum/wound_pregen_data/proc/wounding_types_valid(suggested_wounding_type)
+	procstart = null
+	src.procstart = null
 	if (required_wounding_type == WOUND_ALL)
 		return TRUE
 	return suggested_wounding_type == required_wounding_type
@@ -160,15 +172,21 @@
  * * damage_source: The source of the damage that'd cause us. Nullable.
  */
 /datum/wound_pregen_data/proc/get_threshold_for(obj/item/bodypart/part, attack_direction, damage_source)
+	procstart = null
+	src.procstart = null
 	return threshold_minimum
 
 /// Returns a new instance of our wound datum.
 /datum/wound_pregen_data/proc/generate_instance(obj/item/bodypart/limb, ...)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/wound)
 
 	return new wound_path_to_generate
 
 /datum/wound_pregen_data/Destroy(force)
+	procstart = null
+	src.procstart = null
 	var/error_message = "[src], a singleton wound pregen data instance, was destroyed! This should not happen!"
 	if (force)
 		error_message += " NOTE: This Destroy() was called with force == TRUE. This instance will be deleted and replaced with a new one."

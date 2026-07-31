@@ -20,6 +20,8 @@
  * * detection_threshold_percent - The minimum relative percentage a flavor must reach to be tasted.
  */
 /proc/generate_reagents_taste_message(list/reagent_list, mob/living/taster, detection_threshold_percent)
+	procstart = null
+	src.procstart = null
 	// We can't taste anything
 	if(detection_threshold_percent > 100)
 		return TEXT_NO_TASTE

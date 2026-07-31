@@ -37,6 +37,8 @@
 	acid = 80
 
 /obj/machinery/navbeacon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	original_location = location
@@ -48,10 +50,14 @@
 	AddElement(/datum/element/undertile, TRAIT_T_RAY_VISIBLE)
 
 /obj/machinery/navbeacon/Destroy()
+	procstart = null
+	src.procstart = null
 	glob_lists_deregister()
 	return ..()
 
 /obj/machinery/navbeacon/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	if (GLOB.navbeacons["[old_turf?.z]"])
 		GLOB.navbeacons["[old_turf?.z]"] -= src
 	if (GLOB.navbeacons["[new_turf?.z]"])
@@ -59,6 +65,8 @@
 	return ..()
 
 /obj/machinery/navbeacon/on_construction(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = loc
 	if(!isfloorturf(our_turf))
 		return
@@ -68,6 +76,8 @@
 
 ///Set the transponder codes assoc list from codes_txt during initialization, or during reset
 /obj/machinery/navbeacon/proc/set_codes()
+	procstart = null
+	src.procstart = null
 
 	codes = list()
 
@@ -87,6 +97,8 @@
 
 ///Removes the nav beacon from the global beacon lists
 /obj/machinery/navbeacon/proc/glob_lists_deregister()
+	procstart = null
+	src.procstart = null
 	if (GLOB.navbeacons["[z]"])
 		GLOB.navbeacons["[z]"] -= src //Remove from beacon list, if in one.
 	GLOB.deliverybeacons -= src
@@ -94,6 +106,8 @@
 
 ///Registers the navbeacon to the global beacon lists
 /obj/machinery/navbeacon/proc/glob_lists_register(init=FALSE)
+	procstart = null
+	src.procstart = null
 	if(!init)
 		glob_lists_deregister()
 	if(!codes)
@@ -107,19 +121,27 @@
 		GLOB.deliverybeacontags += location
 
 /obj/machinery/navbeacon/crowbar_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, I)
 
 /obj/machinery/navbeacon/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!panel_open && cover_locked)
 		balloon_alert(user, "hatch locked!")
 		return ITEM_INTERACT_BLOCKING
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/navbeacon/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state][panel_open]"
 
 /obj/machinery/navbeacon/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = loc
 	if(our_turf.underfloor_accessibility < UNDERFLOOR_INTERACTABLE)
 		return ITEM_INTERACT_BLOCKING// prevent interaction when T-scanner revealed
@@ -138,12 +160,18 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/navbeacon/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	interact(user)
 
 /obj/machinery/navbeacon/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/navbeacon/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/turf/our_turf = loc
@@ -157,6 +185,8 @@
 		ui.open()
 
 /obj/machinery/navbeacon/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/controls = list()
 
@@ -174,6 +204,8 @@
 	return data
 
 /obj/machinery/navbeacon/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/static_controls = list()
 	var/static/list/direction_options = list("none", dir2text(EAST), dir2text(NORTH), dir2text(SOUTH), dir2text(WEST))
@@ -185,6 +217,8 @@
 	return data
 
 /obj/machinery/navbeacon/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -234,6 +268,8 @@
 
 ///Adds or removes a specific code
 /obj/machinery/navbeacon/proc/toggle_code(code)
+	procstart = null
+	src.procstart = null
 	if(codes[code])
 		codes.Remove(code)
 	else

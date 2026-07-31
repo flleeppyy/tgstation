@@ -6,6 +6,8 @@
 	var/key_b
 
 /datum/bt_node/decorator/keys_different_gender/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	RegisterSignals(pawn, list(
 		COMSIG_AI_BLACKBOARD_KEY_SET(key_a),
 		COMSIG_AI_BLACKBOARD_KEY_CLEARED(key_a),
@@ -15,6 +17,8 @@
 	return TRUE
 
 /datum/bt_node/decorator/keys_different_gender/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(pawn, list(
 		COMSIG_AI_BLACKBOARD_KEY_SET(key_a),
 		COMSIG_AI_BLACKBOARD_KEY_CLEARED(key_a),
@@ -23,6 +27,8 @@
 	))
 
 /datum/bt_node/decorator/keys_different_gender/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/mob_a = controller.blackboard[key_a]
 	var/mob/mob_b = controller.blackboard[key_b]
 	if(isnull(mob_a) || isnull(mob_b))

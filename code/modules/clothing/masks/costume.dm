@@ -32,6 +32,8 @@
 	flags_inv = HIDESNOUT
 
 /obj/item/clothing/mask/joy/setup_reskins()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/reskinable_item, /datum/atom_skin/joy_mask, infinite = TRUE)
 
 /obj/item/clothing/mask/mummy
@@ -65,6 +67,8 @@
 	flags_1 = IS_PLAYER_COLORABLE_1
 
 /obj/item/clothing/mask/kitsune/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(up)
 		. += "Use in-hand to wear as a mask!"
@@ -73,6 +77,8 @@
 		. += "Use in-hand to wear as a hat!"
 
 /obj/item/clothing/mask/kitsune/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	adjust_visor(user)
 	alternate_worn_layer = up ? ABOVE_BODY_FRONT_HEAD_LAYER : null
 	flags_inv = up ? NONE : (HIDEFACE|HIDEFACIALHAIR)

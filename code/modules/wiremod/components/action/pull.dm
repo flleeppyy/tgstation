@@ -13,9 +13,13 @@
 	circuit_flags = CIRCUIT_FLAG_INPUT_SIGNAL|CIRCUIT_FLAG_OUTPUT_SIGNAL
 
 /obj/item/circuit_component/pull/populate_ports()
+	procstart = null
+	src.procstart = null
 	target = add_input_port("Target", PORT_TYPE_ATOM)
 
 /obj/item/circuit_component/pull/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	var/atom/target_atom = target.value
 	if(!target_atom)
 		return

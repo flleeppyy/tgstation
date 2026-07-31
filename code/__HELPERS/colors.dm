@@ -1,11 +1,15 @@
 /// Given a color in the format of "#RRGGBB", will return if the color
 /// is dark.
 /proc/is_color_dark(color, threshold = 25)
+	procstart = null
+	src.procstart = null
 	var/hsl = rgb2num(color, COLORSPACE_HSL)
 	return hsl[3] < threshold
 
 /// Given a 3 character color (no hash), converts it into #RRGGBB (with hash)
 /proc/expand_three_digit_color(color)
+	procstart = null
+	src.procstart = null
 	if (length_char(color) != 3)
 		CRASH("Invalid 3 digit color: [color]")
 
@@ -19,6 +23,8 @@
 
 /// Given a color in the format of "#RRGGBB" or "#RRGGBBAA", gives back a 4 entry list with the number values of each
 /proc/split_color(color)
+	procstart = null
+	src.procstart = null
 	var/list/output = rgb2num(color)
 	if(length(output) == 3)
 		output += 255
@@ -26,6 +32,8 @@
 
 ///Returns a random color picked from a list, has 2 modes (0 and 1), mode 1 doesn't pick white, black or gray
 /proc/random_colour(mode = 0)
+	procstart = null
+	src.procstart = null
 	switch(mode)
 		if(0)
 			return pick("white","black","gray","red","green","blue","brown","yellow","orange","darkred",
@@ -38,6 +46,8 @@
 
 ///Inverts the colour of an HTML string
 /proc/invert_HTML_colour(HTMLstring)
+	procstart = null
+	src.procstart = null
 	if(!istext(HTMLstring))
 		CRASH("Given non-text argument!")
 	else if(length(HTMLstring) != 7)
@@ -51,6 +61,8 @@
 
 ///Flash a color on the passed mob
 /proc/flash_color(mob_or_client, flash_color=COLOR_CULT_RED, flash_time=20)
+	procstart = null
+	src.procstart = null
 	var/mob/flashed_mob
 	if(ismob(mob_or_client))
 		flashed_mob = mob_or_client
@@ -75,6 +87,8 @@
 /// Screen blend will always lighten the resulting color, since before multiplication we invert the colors
 /// This makes our resulting output brighter instead of darker
 /proc/blend_screen_color(list/first_color, list/second_color)
+	procstart = null
+	src.procstart = null
 	var/list/output = new /list(4)
 
 	// max out any non existant alphas
@@ -93,6 +107,8 @@
 /// But paired down and modified to work for our color range
 /// Accepts the color cutoffs as two 3 length list(0-100,...) arguments
 /proc/blend_cutoff_colors(list/first_color, list/second_color)
+	procstart = null
+	src.procstart = null
 	// These runtimes usually mean that either the eye or the glasses have an incorrect color_cutoffs
 	ASSERT(first_color?.len == 3, "First color must be a 3 length list, received [json_encode(first_color)]")
 	ASSERT(second_color?.len == 3, "Second color must be a 3 length list, received [json_encode(second_color)]")
@@ -116,6 +132,8 @@
  * * lum_shift - A value between 0 and 1 that will be multiplied against the luminescence
  */
 /proc/colorize_string(name, sat_shift = 1, lum_shift = 1)
+	procstart = null
+	src.procstart = null
 	// seed to help randomness
 	var/static/rseed = rand(1,26)
 
@@ -160,6 +178,8 @@
  * SATURATION_OVERRIDE- Affects original lightness/saturation to ensure that pale objects still get doused in color
  */
 /proc/color_transition_filter(new_color, saturation_behavior = SATURATION_MULTIPLY)
+	procstart = null
+	src.procstart = null
 	if (islist(new_color))
 		new_color = rgb(new_color[1], new_color[2], new_color[3])
 	new_color = rgb2num(new_color, COLORSPACE_HSL)
@@ -182,6 +202,8 @@
 
 /// Applies a color filter to a hex/RGB list color
 /proc/apply_matrix_to_color(color, list/matrix, colorspace = COLORSPACE_HSL)
+	procstart = null
+	src.procstart = null
 	if (islist(color))
 		color = rgb(color[1], color[2], color[3], color[4])
 	color = rgb2num(color, colorspace)
@@ -248,6 +270,8 @@
 
 /// Recursively applies a filter to a passed in static appearance, returns the modified appearance
 /proc/filter_appearance_recursive(mutable_appearance/filter, filter_to_apply)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/modify = new(filter)
 	var/list/existing_filters = modify.filters.Copy()
 	modify.filters = list(filter_to_apply) + existing_filters
@@ -269,6 +293,8 @@
 
 /// Blend two colors using the normal blend mode of the CSS compositing algorithm
 /proc/blend_color(backdrop = "#00000000", source)
+	procstart = null
+	src.procstart = null
 	var/list/rgb_source = split_color(source)
 	var/source_alpha = rgb_source[4]
 	if(source_alpha == 0)

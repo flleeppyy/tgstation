@@ -17,10 +17,14 @@
 	var/content_overlays = FALSE //If this is true, the belt will gain overlays based on what it's holding
 
 /obj/item/storage/belt/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins belting [user.p_them()]self with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 
 /obj/item/storage/belt/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!content_overlays)
 		return
@@ -28,6 +32,8 @@
 		. += I.get_belt_overlay()
 
 /obj/item/storage/belt/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/attack_equip)
 	update_appearance()
@@ -55,6 +61,8 @@
 	preload = TRUE
 
 /obj/item/storage/belt/utility/chief/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	SSwardrobe.provide_type(/obj/item/screwdriver/power, src)
 	SSwardrobe.provide_type(/obj/item/crowbar/power, src)
 	SSwardrobe.provide_type(/obj/item/weldingtool/experimental, src)
@@ -65,6 +73,8 @@
 	//much roomier now that we've managed to remove two tools
 
 /obj/item/storage/belt/utility/chief/full/get_types_to_preload()
+	procstart = null
+	src.procstart = null
 	var/list/to_preload = list() //Yes this is a pain. Yes this is the point
 	to_preload += /obj/item/screwdriver/power
 	to_preload += /obj/item/crowbar/power
@@ -76,6 +86,8 @@
 	return to_preload
 
 /obj/item/storage/belt/utility/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	SSwardrobe.provide_type(/obj/item/screwdriver, src)
 	SSwardrobe.provide_type(/obj/item/wrench, src)
 	SSwardrobe.provide_type(/obj/item/weldingtool, src)
@@ -85,6 +97,8 @@
 	SSwardrobe.provide_type(/obj/item/stack/cable_coil, src)
 
 /obj/item/storage/belt/utility/full/get_types_to_preload()
+	procstart = null
+	src.procstart = null
 	var/list/to_preload = list() //Yes this is a pain. Yes this is the point
 	to_preload += /obj/item/screwdriver
 	to_preload += /obj/item/wrench
@@ -99,6 +113,8 @@
 	preload = FALSE
 
 /obj/item/storage/belt/utility/full/powertools/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/screwdriver/power(src)
 	new /obj/item/crowbar/power(src)
 	new /obj/item/weldingtool/experimental(src)
@@ -108,6 +124,8 @@
 	new /obj/item/stack/cable_coil(src)
 
 /obj/item/storage/belt/utility/full/powertools/rcd/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/screwdriver/power(src)
 	new /obj/item/crowbar/power(src)
 	new /obj/item/weldingtool/experimental(src)
@@ -117,6 +135,8 @@
 	new /obj/item/stack/cable_coil(src)
 
 /obj/item/storage/belt/utility/full/engi/PopulateContents()
+	procstart = null
+	src.procstart = null
 	SSwardrobe.provide_type(/obj/item/screwdriver, src)
 	SSwardrobe.provide_type(/obj/item/wrench, src)
 	SSwardrobe.provide_type(/obj/item/weldingtool/largetank, src)
@@ -126,6 +146,8 @@
 	SSwardrobe.provide_type(/obj/item/stack/cable_coil, src)
 
 /obj/item/storage/belt/utility/full/engi/get_types_to_preload()
+	procstart = null
+	src.procstart = null
 	var/list/to_preload = list() //Yes this is a pain. Yes this is the point
 	to_preload += /obj/item/screwdriver
 	to_preload += /obj/item/wrench
@@ -137,6 +159,8 @@
 	return to_preload
 
 /obj/item/storage/belt/utility/atmostech/PopulateContents()
+	procstart = null
+	src.procstart = null
 	SSwardrobe.provide_type(/obj/item/screwdriver, src)
 	SSwardrobe.provide_type(/obj/item/wrench, src)
 	SSwardrobe.provide_type(/obj/item/weldingtool, src)
@@ -146,6 +170,8 @@
 	SSwardrobe.provide_type(/obj/item/extinguisher/mini, src)
 
 /obj/item/storage/belt/utility/atmostech/get_types_to_preload()
+	procstart = null
+	src.procstart = null
 	var/list/to_preload = list() //Yes this is a pain. Yes this is the point
 	to_preload += /obj/item/screwdriver
 	to_preload += /obj/item/wrench
@@ -157,6 +183,8 @@
 	return to_preload
 
 /obj/item/storage/belt/utility/full/inducer/PopulateContents()
+	procstart = null
+	src.procstart = null
 	SSwardrobe.provide_type(/obj/item/screwdriver, src)
 	SSwardrobe.provide_type(/obj/item/wrench, src)
 	SSwardrobe.provide_type(/obj/item/weldingtool, src)
@@ -166,6 +194,8 @@
 	SSwardrobe.provide_type(/obj/item/inducer, src)
 
 /obj/item/storage/belt/utility/full/inducer/get_types_to_preload()
+	procstart = null
+	src.procstart = null
 	var/list/to_preload = list() //Yes this is a pain. Yes this is the point
 	to_preload += /obj/item/screwdriver
 	to_preload += /obj/item/wrench
@@ -180,6 +210,8 @@
 	preload = FALSE
 
 /obj/item/storage/belt/utility/syndicate/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/screwdriver/nuke(src)
 	new /obj/item/wrench/combat(src)
 	new /obj/item/weldingtool/largetank(src)
@@ -206,6 +238,8 @@
 	preload = TRUE
 
 /obj/item/storage/belt/medical/paramedic/PopulateContents()
+	procstart = null
+	src.procstart = null
 	SSwardrobe.provide_type(/obj/item/sensor_device, src)
 	SSwardrobe.provide_type(/obj/item/stack/medical/wrap/gauze/twelve, src)
 	SSwardrobe.provide_type(/obj/item/tourniquet, src)
@@ -216,6 +250,8 @@
 	update_appearance()
 
 /obj/item/storage/belt/medical/paramedic/get_types_to_preload()
+	procstart = null
+	src.procstart = null
 	var/list/to_preload = list() //Yes this is a pain. Yes this is the point
 	to_preload += /obj/item/sensor_device
 	to_preload += /obj/item/stack/medical/wrap/gauze/twelve
@@ -233,6 +269,8 @@
 	preload = TRUE
 
 /obj/item/storage/belt/medical/ert/PopulateContents()
+	procstart = null
+	src.procstart = null
 	SSwardrobe.provide_type(/obj/item/sensor_device, src)
 	SSwardrobe.provide_type(/obj/item/pinpointer/crew, src)
 	SSwardrobe.provide_type(/obj/item/scalpel/advanced, src)
@@ -243,6 +281,8 @@
 	update_appearance()
 
 /obj/item/storage/belt/medical/ert/get_types_to_preload()
+	procstart = null
+	src.procstart = null
 	var/list/to_preload = list()
 	to_preload += /obj/item/sensor_device
 	to_preload += /obj/item/pinpointer/crew
@@ -263,6 +303,8 @@
 	storage_type = /datum/storage/security_belt
 
 /obj/item/storage/belt/security/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/reagent_containers/spray/pepper(src)
 	new /obj/item/restraints/handcuffs(src)
 	new /obj/item/grenade/flashbang(src)
@@ -290,6 +332,8 @@
 	storage_type = /datum/storage/mining_belt
 
 /obj/item/storage/belt/mining/vendor/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/survivalcapsule(src)
 
 /obj/item/storage/belt/mining/alt
@@ -298,6 +342,8 @@
 	worn_icon_state = "explorer2"
 
 /obj/item/storage/belt/mining/healing/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 2)
 		new /obj/item/reagent_containers/hypospray/medipen/survival/luxury(src)
 	for(var/i in 1 to 2)
@@ -325,10 +371,14 @@
 	storage_type = /datum/storage/soulstone_belt
 
 /obj/item/storage/belt/soulstone/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		new /obj/item/soulstone/mystic(src)
 
 /obj/item/storage/belt/soulstone/full/chappy/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		new /obj/item/soulstone/anybody/chaplain(src)
 
@@ -342,6 +392,8 @@
 	storage_type = /datum/storage/champion_belt
 
 /obj/item/storage/belt/champion/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddElement(/datum/element/adjust_fishing_difficulty, -2)
@@ -360,11 +412,15 @@
 	storage_type = /datum/storage/military_belt/snack
 
 /obj/item/storage/belt/military/snack/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/sponsor = pick("Donk Co.", "Waffle Corp.", "Roffle Co.", "Gorlex Marauders", "Tiger Cooperative")
 	desc = "A set of snack-tical webbing worn by athletes of the [sponsor] VR sports division."
 
 /obj/item/storage/belt/military/snack/full/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/amount = 5
 	var/rig_snacks
@@ -405,6 +461,8 @@
 	content_overlays = TRUE
 
 /obj/item/storage/belt/military/abductor/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/screwdriver/abductor(src)
 	new /obj/item/wrench/abductor(src)
 	new /obj/item/weldingtool/abductor(src)
@@ -429,6 +487,8 @@
 	storage_type = /datum/storage/military_belt/assault
 
 /obj/item/storage/belt/military/assault/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	generate_items_inside(list(
 		/obj/item/ammo_box/magazine/wt550m9 = 4,
 		/obj/item/ammo_box/magazine/wt550m9/wtap = 2,
@@ -445,6 +505,8 @@
 	storage_type = /datum/storage/grenade_belt
 
 /obj/item/storage/belt/grenade/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	generate_items_inside(list(
 		/obj/item/grenade/chem_grenade/incendiary = 2,
 		/obj/item/grenade/empgrenade = 2,
@@ -468,6 +530,8 @@
 
 /// Put some wands in that bad boy
 /obj/item/storage/belt/wands/full/proc/create_wands()
+	procstart = null
+	src.procstart = null
 	new /obj/item/gun/magic/wand/death(src)
 	new /obj/item/gun/magic/wand/resurrection(src)
 	new /obj/item/gun/magic/wand/polymorph(src)
@@ -477,6 +541,8 @@
 	new /obj/item/gun/magic/wand/shrink(src)
 
 /obj/item/storage/belt/wands/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	create_wands()
 	for(var/obj/item/gun/magic/wand/W in contents) //All wands in this pack come in the best possible condition
 		W.max_charges = initial(W.max_charges)
@@ -507,6 +573,8 @@
 	)
 
 /obj/item/storage/belt/wands/full/discount/create_wands()
+	procstart = null
+	src.procstart = null
 	var/list/available_options = possible_options.Copy()
 	for (var/i in 1 to 6)
 		if (!length(available_options))
@@ -525,6 +593,8 @@
 	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/storage/belt/wand_bandolier/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!(slot & ITEM_SLOT_SUITSTORE))
 		return
@@ -532,16 +602,22 @@
 	RegisterSignal(user, COMSIG_MOB_FIRED_GUN, PROC_REF(on_gun_fired))
 
 /obj/item/storage/belt/wand_bandolier/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_CLOTHING_TRAIT(user, TRAIT_GUNFLIP)
 	UnregisterSignal(user, COMSIG_MOB_FIRED_GUN)
 
 /// After we fire a gun, check if it's a wand. If it is and it's empty, do a swap
 /obj/item/storage/belt/wand_bandolier/proc/on_gun_fired(mob/living/wizard, obj/item/gun/magic/wand/old_wand)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(equip_new_wand), wizard, old_wand)
 
 /obj/item/storage/belt/wand_bandolier/proc/equip_new_wand(mob/living/wizard, obj/item/gun/magic/wand/old_wand)
+	procstart = null
+	src.procstart = null
 	if (!istype(old_wand))
 		return
 	if (!atom_storage.real_location.contents.len) // no other wands
@@ -577,6 +653,8 @@
 	storage_type = /datum/storage/janitor_belt
 
 /obj/item/storage/belt/janitor/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/lightreplacer(src)
 	new /obj/item/reagent_containers/spray/cleaner(src)
 	new /obj/item/soap/nanotrasen(src)
@@ -592,6 +670,8 @@
 	storage_type = /datum/storage/bandolier_belt
 
 /obj/item/storage/belt/bandolier/china_lake_extra/PopulateContents()
+	procstart = null
+	src.procstart = null
 	generate_items_inside(list(
 		/obj/item/ammo_casing/a40mm = 12,
 	), src)
@@ -664,6 +744,8 @@
 	worn_icon_state = "cummerbund"
 
 /obj/item/storage/belt/fannypack/yellow/bee_terrorist/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/grenade/c4 (src)
 	new /obj/item/reagent_containers/applicator/pill/cyanide(src)
 	new /obj/item/grenade/chem_grenade/facid(src)
@@ -672,6 +754,8 @@
 	name = "fannypack of ULTIMATE DESPAIR"
 
 /obj/item/storage/belt/fannypack/black/rogue/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/food/drug/saturnx(src)
 	new /obj/item/reagent_containers/cup/blastoff_ampoule(src)
 	new /obj/item/reagent_containers/hypospray/medipen/methamphetamine(src)
@@ -687,20 +771,28 @@
 	COOLDOWN_DECLARE(full_ability_cooldown)
 
 /obj/item/storage/belt/sheath/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob, action_slots)
 	RegisterSignal(src, COMSIG_ATOM_STORED_ITEM, PROC_REF(post_resheath))
 
 /obj/item/storage/belt/sheath/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(src, COMSIG_ATOM_STORED_ITEM)
 
 /obj/item/storage/belt/sheath/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(length(contents))
 		. += span_notice("Alt-click it to quickly draw the blade.")
 
 /obj/item/storage/belt/sheath/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!length(contents))
 		balloon_alert(user, "it's empty!")
 		return CLICK_ACTION_BLOCKING
@@ -711,6 +803,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/storage/belt/sheath/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = initial(icon_state)
 	inhand_icon_state = initial(inhand_icon_state)
 	worn_icon_state = initial(worn_icon_state)
@@ -721,11 +815,15 @@
 	return ..()
 
 /obj/item/storage/belt/sheath/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(stored_blade)
 		new stored_blade(src)
 		update_appearance()
 
 /obj/item/storage/belt/sheath/proc/post_resheath()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	COOLDOWN_START(src, resheath_cooldown, 10 SECONDS)
 
@@ -744,6 +842,8 @@
 	var/datum/weakref/eyed_fool
 
 /datum/action/innate/blade_counter/IsAvailable(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!isliving(owner))
 		return FALSE
 	var/obj/item/storage/belt/sheath/owners_sheath = target
@@ -762,6 +862,8 @@
 	return TRUE
 
 /datum/action/innate/blade_counter/proc/final_checks(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	if(!isliving(cast_on))
 		return FALSE
 	if(owner == cast_on)
@@ -777,6 +879,8 @@
 	return TRUE
 
 /datum/action/innate/blade_counter/do_ability(mob/living/swordsman, mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	if(!final_checks(cast_on))
 		return TRUE
 	var/obj/item/storage/belt/sheath/used_sheath = target
@@ -792,6 +896,8 @@
 #define COUNTERMULTIPLIER 3
 
 /datum/action/innate/blade_counter/proc/counter_attack(mob/living/forward_thinker, atom/attackingthing, damage, attack_text, attack_type)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/item/storage/belt/sheath/used_sheath = target
 	if(!used_sheath || !length(used_sheath.contents) || (attack_type != MELEE_ATTACK && attack_type != UNARMED_ATTACK))
@@ -807,6 +913,8 @@
 	return SUCCESSFUL_BLOCK
 
 /datum/action/innate/blade_counter/proc/do_strike(mob/living/fool, mob/living/forward_thinker, obj/item/justicetool)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/offending_hand = fool.get_active_hand()
 	forward_thinker.visible_message(span_danger("[forward_thinker] swiftly draws \the [justicetool] and strikes [fool] during [fool.p_their()] attack!"), span_notice("You swiftly draw \the [justicetool] and counter-attack [fool]!"))
 	fool.apply_damage(
@@ -823,6 +931,8 @@
 
 
 /datum/action/innate/blade_counter/proc/relax(mob/living/holder, obj/item/storage/belt/sheath/active_sheath)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(holder, COMSIG_LIVING_CHECK_BLOCK)
 
 /datum/action/innate/blade_counter/gunpowered
@@ -833,11 +943,15 @@
 	var/succeeded_attempt = FALSE
 
 /datum/action/innate/blade_counter/gunpowered/do_ability(mob/living/swordsman, mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	succeeded_attempt = FALSE
 
 
 /datum/action/innate/blade_counter/gunpowered/do_strike(mob/living/fool, mob/living/forward_thinker, obj/item/justicetool)
+	procstart = null
+	src.procstart = null
 	if(forward_thinker.get_slot_by_item(target) == ITEM_SLOT_SUITSTORE)
 		return ..()
 	succeeded_attempt = TRUE
@@ -873,6 +987,8 @@
 
 
 /datum/action/innate/blade_counter/gunpowered/relax(mob/living/holder, obj/item/storage/belt/sheath/active_sheath)
+	procstart = null
+	src.procstart = null
 	..()
 	if(succeeded_attempt || holder.get_slot_by_item(target) == ITEM_SLOT_SUITSTORE)
 		return

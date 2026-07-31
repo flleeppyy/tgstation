@@ -11,11 +11,15 @@
 	var/honey_color = ""
 
 /obj/item/food/honeycomb/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = base_pixel_x + rand(-5, 5)
 	pixel_y = base_pixel_y + rand(-5, 5)
 
 /obj/item/food/honeycomb/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/honey_overlay = mutable_appearance(icon, "honey")
 	if(honey_color)
@@ -24,6 +28,8 @@
 		. += honey_overlay
 
 /obj/item/food/honeycomb/proc/set_reagent(reagent)
+	procstart = null
+	src.procstart = null
 	var/datum/reagent/R = GLOB.chemical_reagents_list[reagent]
 	if(istype(R))
 		name = "honeycomb ([R.name])"

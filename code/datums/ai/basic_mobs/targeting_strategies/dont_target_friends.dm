@@ -10,6 +10,8 @@
 
 ///Returns true or false depending on if the target can be attacked by the mob
 /datum/targeting_strategy/basic/not_friends/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	if(attack_closed_turf && isclosedturf(target))
 		return TRUE
 
@@ -38,6 +40,8 @@
 /datum/targeting_strategy/basic/not_friends/allow_items
 
 /datum/targeting_strategy/basic/not_friends/allow_items/is_valid_target(mob/living/living_mob, atom/the_target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isitem(the_target))
 		// trust fall exercise

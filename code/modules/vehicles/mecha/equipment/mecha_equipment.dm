@@ -41,6 +41,8 @@
 	var/action_type = /datum/action/vehicle/sealed/mecha/equipment
 
 /obj/item/mecha_parts/mecha_equipment/Destroy()
+	procstart = null
+	src.procstart = null
 	if(chassis)
 		if(LAZYLEN(chassis.occupants))
 			to_chat(chassis.occupants, "[icon2html(src, chassis.occupants)][span_danger("[src] is destroyed!")]")
@@ -51,6 +53,8 @@
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/try_attach_part(mob/user, obj/vehicle/sealed/mecha/M, attach_right = FALSE)
+	procstart = null
+	src.procstart = null
 	if(can_attach(M, attach_right, user))
 		if(!user.temporarilyRemoveItemFromInventory(src))
 			return ITEM_INTERACT_BLOCKING
@@ -62,6 +66,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/mecha_parts/mecha_equipment/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -89,10 +95,14 @@
 
 /// called after ui_act, for custom ui act handling
 /obj/item/mecha_parts/mecha_equipment/proc/handle_ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 
 
 /obj/item/mecha_parts/mecha_equipment/proc/get_equip_cooldown(atom/target)
+	procstart = null
+	src.procstart = null
 	return equip_cooldown
 
 /**
@@ -102,6 +112,8 @@
  * * target: atom we are activating/clicked on
  */
 /obj/item/mecha_parts/mecha_equipment/proc/action_checks(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return FALSE
 	if(!chassis)
@@ -123,6 +135,8 @@
 	return TRUE
 
 /obj/item/mecha_parts/mecha_equipment/proc/action(mob/source, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	TIMER_COOLDOWN_START(chassis, COOLDOWN_MECHA_EQUIPMENT(type), get_equip_cooldown(target))//Cooldown is on the MECH so people dont bypass it by switching equipment
 	SEND_SIGNAL(source, COMSIG_MOB_USED_MECH_EQUIPMENT, chassis)
 	chassis.use_energy(energy_drain)
@@ -138,6 +152,8 @@
  * * flags: bitfield for different checks on do_after_checks
  */
 /obj/item/mecha_parts/mecha_equipment/proc/do_after_cooldown(atom/target, mob/user, interaction_key, flags)
+	procstart = null
+	src.procstart = null
 	if(!chassis)
 		return FALSE
 	chassis.use_energy(energy_drain)
@@ -145,10 +161,14 @@
 
 ///Do after wrapper for mecha equipment
 /obj/item/mecha_parts/mecha_equipment/proc/do_after_mecha(atom/target, mob/user, delay, flags)
+	procstart = null
+	src.procstart = null
 	return do_after(user, delay, target, extra_checks = CALLBACK(src, PROC_REF(do_after_checks), target, flags))
 
 /// do after checks for the mecha equipment do afters
 /obj/item/mecha_parts/mecha_equipment/proc/do_after_checks(atom/target, flags = MECH_DO_AFTER_DIR_CHANGE_FLAG)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 
 	if(!chassis)
@@ -161,9 +181,13 @@
 		return FALSE
 
 /obj/item/mecha_parts/mecha_equipment/proc/can_attach(obj/vehicle/sealed/mecha/mech, attach_right = FALSE, mob/user)
+	procstart = null
+	src.procstart = null
 	return default_can_attach(mech, attach_right, user)
 
 /obj/item/mecha_parts/mecha_equipment/proc/default_can_attach(obj/vehicle/sealed/mecha/mech, attach_right = FALSE, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!(mech_flags & mech.mech_type))
 		to_chat(user, span_warning("\The [src] is incompatible with [mech]!"))
 		return FALSE
@@ -202,9 +226,13 @@
  * * checkonly: check if we are able to handle the attach procedure ourselves, but don't actually do it yet.
  */
 /obj/item/mecha_parts/mecha_equipment/proc/special_attaching_interaction(attach_right = FALSE, obj/vehicle/sealed/mecha/mech, mob/user, checkonly = FALSE)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/item/mecha_parts/mecha_equipment/proc/attach(obj/vehicle/sealed/mecha/new_mecha, attach_right = FALSE)
+	procstart = null
+	src.procstart = null
 	LAZYADD(new_mecha.flat_equipment, src)
 	var/to_equip_slot = equipment_slot
 	if(equipment_slot == MECHA_WEAPON)
@@ -228,6 +256,8 @@
  * * moveto: optional target to move this equipment to
  */
 /obj/item/mecha_parts/mecha_equipment/proc/detach(atom/moveto)
+	procstart = null
+	src.procstart = null
 	chassis.on_equipment_detach(src)
 	moveto = moveto || get_turf(chassis)
 	forceMove(moveto)
@@ -248,9 +278,13 @@
 	chassis = null
 
 /obj/item/mecha_parts/mecha_equipment/proc/set_active(active)
+	procstart = null
+	src.procstart = null
 	src.active = active
 
 /obj/item/mecha_parts/mecha_equipment/log_message(message, message_type=LOG_GAME, color=null, log_globally, list/data)
+	procstart = null
+	src.procstart = null
 	if(chassis)
 		return chassis.log_message("ATTACHMENT: [src] [message]", message_type, color)
 	return ..()
@@ -264,6 +298,8 @@
  * * must include an list("snowflake_id" = snowflake_id)
  */
 /obj/item/mecha_parts/mecha_equipment/proc/get_snowflake_data()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /**
@@ -271,9 +307,13 @@
  * note that this is old and likely broken code
  */
 /obj/item/mecha_parts/mecha_equipment/proc/rearm()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// AI mech pilot: returns TRUE if the Ai should try to reload the mecha
 /obj/item/mecha_parts/mecha_equipment/proc/needs_rearm()
+	procstart = null
+	src.procstart = null
 	return FALSE
 

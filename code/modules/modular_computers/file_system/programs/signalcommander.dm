@@ -22,14 +22,20 @@
 	COOLDOWN_DECLARE(signal_cooldown)
 
 /datum/computer_file/program/signal_commander/on_start(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_frequency(signal_frequency)
 
 /datum/computer_file/program/signal_commander/kill_program(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSradio.remove_object(computer, signal_frequency)
 
 /datum/computer_file/program/signal_commander/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["frequency"] = signal_frequency
 	data["cooldown"] = signal_cooldown_time
@@ -39,6 +45,8 @@
 	return data
 
 /datum/computer_file/program/signal_commander/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(action)
 		if("signal")
@@ -60,6 +68,8 @@
 			. = TRUE
 
 /datum/computer_file/program/signal_commander/proc/signal(atom/source)
+	procstart = null
+	src.procstart = null
 	if(!radio_connection)
 		return
 
@@ -93,6 +103,8 @@
 	radio_connection.post_signal(computer, signal)
 
 /datum/computer_file/program/signal_commander/proc/set_frequency(new_frequency)
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(computer, signal_frequency)
 	signal_frequency = new_frequency
 	radio_connection = SSradio.add_object(computer, signal_frequency, RADIO_SIGNALER)
@@ -107,17 +119,25 @@
 	var/datum/port/input/code
 
 /obj/item/circuit_component/mod_program/signaler/populate_ports()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	freq = add_input_port("Frequency", PORT_TYPE_NUMBER, trigger = PROC_REF(set_freq), default = FREQ_SIGNALER)
 	code = add_input_port("Code", PORT_TYPE_NUMBER, trigger = PROC_REF(set_code), default = DEFAULT_SIGNALER_CODE)
 
 /obj/item/circuit_component/mod_program/signaler/proc/set_freq(datum/port/port)
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/program/signal_commander/signaler = associated_program
 	signaler.set_frequency(clamp(freq.value, MIN_FREE_FREQ, MAX_FREE_FREQ))
 
 /obj/item/circuit_component/mod_program/signaler/proc/set_code(datum/port/port)
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/program/signal_commander/signaler = associated_program
 	signaler.signal_code = round(clamp(code.value, 1, 100))
 
 /obj/item/circuit_component/mod_program/signaler/input_received(datum/port/port)
+	procstart = null
+	src.procstart = null
 	INVOKE_ASYNC(associated_program, TYPE_PROC_REF(/datum/computer_file/program/signal_commander, signal), src)

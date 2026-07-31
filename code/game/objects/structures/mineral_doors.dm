@@ -36,6 +36,8 @@
 	acid = 50
 
 /obj/structure/mineral_door/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/stack/initialized_mineral = new sheetType // Okay this kinda sucks.
 	set_custom_materials(initialized_mineral.mats_per_unit, sheetAmount)
@@ -43,22 +45,30 @@
 	air_update_turf(TRUE, TRUE)
 
 /obj/structure/mineral_door/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!door_opened)
 		air_update_turf(TRUE, FALSE)
 	. = ..()
 
 /obj/structure/mineral_door/Move()
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 	. = ..()
 	if(!door_opened)
 		move_update_air(T)
 
 /obj/structure/mineral_door/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!door_opened)
 		return TryToSwitchState(AM)
 
-/obj/structure/mineral_door/attack_ai(mob/user) //those aren't machinery, they're just big fucking slabs of a mineral
+/obj/structure/mineral_door/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null //those aren't machinery, they're just big fucking slabs of a mineral
 	if(isAI(user)) //so the AI can't open it
 		return
 	else if(iscyborg(user)) //but cyborgs can
@@ -66,20 +76,28 @@
 			return TryToSwitchState(user)
 
 /obj/structure/mineral_door/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/structure/mineral_door/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
 	return TryToSwitchState(user)
 
 /obj/structure/mineral_door/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(mover, /obj/effect/beam))
 		return !opacity
 
 /obj/structure/mineral_door/proc/TryToSwitchState(atom/user)
+	procstart = null
+	src.procstart = null
 	if(isSwitchingStates || !anchored)
 		return
 	if(isliving(user))
@@ -95,12 +113,16 @@
 		SwitchState()
 
 /obj/structure/mineral_door/proc/SwitchState()
+	procstart = null
+	src.procstart = null
 	if(door_opened)
 		Close()
 	else
 		Open()
 
 /obj/structure/mineral_door/proc/Open()
+	procstart = null
+	src.procstart = null
 	isSwitchingStates = TRUE
 	playsound(src, openSound, 100, TRUE)
 	set_opacity(FALSE)
@@ -117,6 +139,8 @@
 		addtimer(CALLBACK(src, PROC_REF(Close)), close_delay)
 
 /obj/structure/mineral_door/proc/Close()
+	procstart = null
+	src.procstart = null
 	if(isSwitchingStates || !door_opened)
 		return
 	var/turf/T = get_turf(src)
@@ -135,10 +159,14 @@
 	isSwitchingStates = FALSE
 
 /obj/structure/mineral_door/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)][door_opened ? "open":""]"
 	return ..()
 
 /obj/structure/mineral_door/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(pickaxe_door(user, tool))
 		return ITEM_INTERACT_SUCCESS
 
@@ -148,11 +176,15 @@
 	return NONE
 
 /obj/structure/mineral_door/set_anchored(anchorvalue) //called in default_unfasten_wrench() chain
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_opacity(anchored ? !door_opened : FALSE)
 	air_update_turf(TRUE, anchorvalue)
 
 /obj/structure/mineral_door/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool, time = 4 SECONDS)
 	return ITEM_INTERACT_SUCCESS
@@ -161,7 +193,9 @@
 /////////////////////// TOOL OVERRIDES ///////////////////////
 
 
-/obj/structure/mineral_door/proc/pickaxe_door(mob/living/user, obj/item/I) //override if the door isn't supposed to be a minable mineral.
+/obj/structure/mineral_door/proc/pickaxe_door(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null //override if the door isn't supposed to be a minable mineral.
 	if(!istype(user))
 		return
 	if(I.tool_behaviour != TOOL_MINING)
@@ -172,7 +206,9 @@
 		to_chat(user, span_notice("You finish digging."))
 		deconstruct(TRUE)
 
-/obj/structure/mineral_door/welder_act(mob/living/user, obj/item/I) //override if the door is supposed to be flammable.
+/obj/structure/mineral_door/welder_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null //override if the door is supposed to be flammable.
 	..()
 	. = TRUE
 	if(anchored)
@@ -188,6 +224,8 @@
 	deconstruct(TRUE)
 
 /obj/structure/mineral_door/proc/crowbar_door(mob/living/user, obj/item/I) //if the door is flammable, call this in crowbar_act() so we can still decon it
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	if(anchored)
 		to_chat(user, span_warning("[src] is still firmly secured to the ground!"))
@@ -206,6 +244,8 @@
 
 
 /obj/structure/mineral_door/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(disassembled)
 		new sheetType(T, sheetAmount)
@@ -248,6 +288,8 @@
 	rad_insulation = RAD_VERY_LIGHT_INSULATION
 
 /obj/structure/mineral_door/transparent/Close()
+	procstart = null
+	src.procstart = null
 	..()
 	set_opacity(FALSE)
 
@@ -274,15 +316,23 @@
 	rad_insulation = RAD_VERY_LIGHT_INSULATION
 
 /obj/structure/mineral_door/wood/pickaxe_door(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/mineral_door/wood/welder_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/mineral_door/wood/crowbar_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	return crowbar_door(user, I)
 
 /obj/structure/mineral_door/wood/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(tool.get_temperature() >= FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
 		fire_act(tool.get_temperature())
 		return ITEM_INTERACT_SUCCESS
@@ -300,25 +350,37 @@
 	max_integrity = 20
 
 /obj/structure/mineral_door/paperframe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(smoothing_flags & USES_SMOOTHING)
 		QUEUE_SMOOTH_NEIGHBORS(src)
 
 /obj/structure/mineral_door/paperframe/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(atom_integrity < max_integrity)
 		. += span_info("It looks a bit damaged, you may be able to fix it with some <b>paper</b>.")
 
 /obj/structure/mineral_door/paperframe/pickaxe_door(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/mineral_door/paperframe/welder_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/mineral_door/paperframe/crowbar_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	return crowbar_door(user, I)
 
 /obj/structure/mineral_door/paperframe/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(tool.get_temperature() >= FIRE_MINIMUM_TEMPERATURE_TO_EXIST) //BURN IT ALL DOWN JIM
 		fire_act(tool.get_temperature())
 		return ITEM_INTERACT_SUCCESS
@@ -335,6 +397,8 @@
 	return ..()
 
 /obj/structure/mineral_door/paperframe/Destroy()
+	procstart = null
+	src.procstart = null
 	if(smoothing_flags & USES_SMOOTHING)
 		QUEUE_SMOOTH_NEIGHBORS(src)
 	return ..()

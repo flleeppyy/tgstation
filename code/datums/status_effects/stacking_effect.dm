@@ -32,6 +32,8 @@
 	var/mutable_appearance/status_overlay
 
 /datum/status_effect/stacking/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!owner || !status_overlay)
 		return ..()
 
@@ -41,22 +43,32 @@
 
 /// Effects that occur when the stack count crosses stack_threshold
 /datum/status_effect/stacking/proc/threshold_cross_effect()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Effects that occur if the status effect is removed due to the stack_threshold being crossed
 /datum/status_effect/stacking/proc/stacks_consumed_effect()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Effects that occur if the status is removed due to being under 1 remaining stack
 /datum/status_effect/stacking/proc/fadeout_effect()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Runs every time tick(), causes stacks to decay over time
 /datum/status_effect/stacking/proc/stack_decay_effect()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called when the stack_threshold is crossed (stacks go over the threshold)
 /datum/status_effect/stacking/proc/on_threshold_cross()
+	procstart = null
+	src.procstart = null
 	threshold_cross_effect()
 	if(consumed_on_threshold)
 		stacks_consumed_effect()
@@ -64,24 +76,34 @@
 
 /// Called when the stack_threshold is uncrossed / dropped (stacks go under the threshold after being over it)
 /datum/status_effect/stacking/proc/on_threshold_drop()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Whether the owner can have the status effect.
 /// Return FALSE if the owner is not in a valid state (self-deletes the effect), or TRUE otherwise
 /datum/status_effect/stacking/proc/can_have_status()
+	procstart = null
+	src.procstart = null
 	return owner.stat != DEAD
 
 /// Whether the owner can currently gain stacks or not
 /// Return FALSE if the owner is not in a valid state, or TRUE otherwise
 /datum/status_effect/stacking/proc/can_gain_stacks()
+	procstart = null
+	src.procstart = null
 	return owner.stat != DEAD
 
 /datum/status_effect/stacking/on_creation(mob/living/new_owner, stacks_to_apply)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		add_stacks(stacks_to_apply)
 
 /datum/status_effect/stacking/on_apply()
+	procstart = null
+	src.procstart = null
 	if(!can_have_status())
 		return FALSE
 	if(!overlay_file || !overlay_state)
@@ -95,6 +117,8 @@
 	return ..()
 
 /datum/status_effect/stacking/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(!can_have_status())
 		qdel(src)
 	else
@@ -103,6 +127,8 @@
 
 /// Add (or remove) [stacks_added] stacks to our current stack count.
 /datum/status_effect/stacking/proc/add_stacks(stacks_added)
+	procstart = null
+	src.procstart = null
 	if(stacks_added > 0 && !can_gain_stacks())
 		return FALSE
 	if(status_overlay)

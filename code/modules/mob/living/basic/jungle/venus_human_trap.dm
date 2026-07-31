@@ -37,6 +37,8 @@
 	var/obj/effect/mob_spawn/ghost_role/venus_human_trap/spawner
 
 /obj/structure/alien/resin/flower_bud/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spawner = new(get_turf(loc))
 	spawner.flower_bud = src
@@ -55,11 +57,15 @@
 	countdown.start()
 
 /obj/structure/alien/resin/flower_bud/run_atom_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
+	procstart = null
+	src.procstart = null
 	if((trait_flags & SPACEVINE_HEAT_RESISTANT) && damage_type == BURN)
 		damage_amount = 0
 	. = ..()
 
 /obj/structure/alien/resin/flower_bud/attacked_by(obj/item/item, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	LAZYSET(attack_modifiers, SILENCE_DEFAULT_MESSAGES, TRUE)
 	LAZYSET(attack_modifiers, FORCE_MULTIPLIER, 1)
 	if(item.damtype == BURN)
@@ -69,6 +75,8 @@
 	return ..()
 
 /obj/structure/alien/resin/flower_bud/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(vines)
 	QDEL_NULL(countdown)
 	if(spawner) // anti harddel checks
@@ -79,11 +87,15 @@
 
 /// Tells the spawner that the venus human trap is ready
 /obj/structure/alien/resin/flower_bud/proc/bear_fruit()
+	procstart = null
+	src.procstart = null
 	visible_message(span_danger("The plant has borne fruit!"))
 	if(spawner)
 		spawner.bear_fruit()
 
 /obj/structure/alien/resin/flower_bud/proc/progress_growth()
+	procstart = null
+	src.procstart = null
 	growth_icon++
 	icon_state = "bud[growth_icon]"
 	if(growth_icon == FINAL_BUD_GROWTH_ICON)
@@ -91,6 +103,8 @@
 	addtimer(CALLBACK(src, PROC_REF(progress_growth)), growth_time/4)
 
 /obj/structure/alien/resin/flower_bud/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	spawner.attack_ghost(user)
 
 /obj/effect/ebeam/vine
@@ -99,6 +113,8 @@
 	desc = "A thick vine, painful to the touch."
 
 /obj/effect/ebeam/vine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
@@ -106,6 +122,8 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/effect/ebeam/vine/proc/on_entered(datum/source, atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isliving(AM))
 		var/mob/living/L = AM
@@ -170,6 +188,8 @@
 	var/alert_shown = FALSE
 
 /mob/living/basic/venus_human_trap/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/lifesteal, 5)
 	var/static/list/innate_actions = list(
@@ -178,6 +198,8 @@
 	grant_actions_by_list(innate_actions)
 
 /mob/living/basic/venus_human_trap/RangedAttack(atom/victim)
+	procstart = null
+	src.procstart = null
 	if(!combat_mode)
 		return
 	var/datum/action/cooldown/mob_cooldown/tangle_ability = ai_controller.blackboard[BB_TARGETED_ACTION]
@@ -186,6 +208,8 @@
 	tangle_ability.Trigger(target = victim)
 
 /mob/living/basic/venus_human_trap/Life(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -213,10 +237,14 @@
 	var/vine_duration = 2 SECONDS
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/vine_tangle/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(vines)
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/vine_tangle/Activate(atom/movable/target_atom)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(target_atom) || istype(target_atom, /obj/structure/spacevine))
 		return
 	if(target_atom.anchored)
@@ -250,6 +278,8 @@
  * * datum/beam/vine - The vine to be removed from the list.
  */
 /datum/action/cooldown/mob_cooldown/projectile_attack/vine_tangle/proc/remove_vine(datum/beam/vine)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(vines[vine])

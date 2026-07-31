@@ -13,16 +13,22 @@
 	var/extra_duration = 0 SECONDS
 
 /datum/action/cooldown/mob_cooldown/goose_vomit/Grant(mob/granted_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!owner)
 		return
 	RegisterSignals(owner, list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_EXITED), PROC_REF(update_status_on_signal))
 
 /datum/action/cooldown/mob_cooldown/goose_vomit/Remove(mob/removed_from)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_EXITED))
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/goose_vomit/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -37,6 +43,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/goose_vomit/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	StartCooldown(INFINITY)
 	if (istype(owner, /mob/living/basic/goose))
 		owner.icon_state = "vomit"
@@ -48,6 +56,8 @@
 
 /// Start the performance
 /datum/action/cooldown/mob_cooldown/goose_vomit/proc/start_vomiting()
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_owner = owner
 	living_owner.apply_status_effect(/datum/status_effect/goose_vomit, extra_duration)
 	extra_duration = 0
@@ -67,10 +77,14 @@
 	var/vomit_item_chance = 50
 
 /datum/status_effect/goose_vomit/on_creation(mob/living/new_owner, extra_duration = 0)
+	procstart = null
+	src.procstart = null
 	vomit_duration += extra_duration
 	return ..()
 
 /datum/status_effect/goose_vomit/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.set_jitter_if_lower(vomit_duration)
 	owner.ai_controller?.set_blackboard_key(BB_GOOSE_PANICKED, TRUE)
 	RegisterSignal(owner, COMSIG_LIVING_DEATH, PROC_REF(on_owner_died))
@@ -78,6 +92,8 @@
 	return TRUE
 
 /datum/status_effect/goose_vomit/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, list(COMSIG_LIVING_DEATH, COMSIG_MOVABLE_MOVED))
 	owner.ai_controller?.set_blackboard_key(BB_GOOSE_PANICKED, FALSE)
 	if (istype(owner, /mob/living/basic/goose) && owner.stat != DEAD)
@@ -90,15 +106,21 @@
 
 /// Don't keep vomiting from beyond the grave
 /datum/status_effect/goose_vomit/proc/on_owner_died()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /// For good measure we'll spit up every time we take a step too
 /datum/status_effect/goose_vomit/proc/on_owner_moved()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	vomit_iteratively(can_move = FALSE)
 
 /datum/status_effect/goose_vomit/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	elapsed_time += seconds_between_ticks
 
 	if (!length(owner.contents))
@@ -112,6 +134,8 @@
 
 /// One to come up
 /datum/status_effect/goose_vomit/proc/vomit_iteratively(can_move = TRUE)
+	procstart = null
+	src.procstart = null
 	if (prob(vomit_item_chance))
 		hurl_item()
 	else
@@ -124,12 +148,16 @@
 
 /// Stop fucking around and get the rest of it out
 /datum/status_effect/goose_vomit/proc/vomit_finale()
+	procstart = null
+	src.procstart = null
 	tick_interval = 0.2 SECONDS
 	owner.set_jitter_if_lower(1 SECONDS)
 	hurl_item(vomit_strongly = TRUE)
 
 /// Produce an item from our inventory
 /datum/status_effect/goose_vomit/proc/hurl_item(vomit_strongly = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!length(owner.contents))
 		return
 	var/obj/item/thing = pick_n_take(owner.contents)
@@ -147,6 +175,8 @@
 
 /// Make a mess
 /datum/status_effect/goose_vomit/proc/make_mess(turf/open/drop_turf)
+	procstart = null
+	src.procstart = null
 	if (!istype(drop_turf))
 		return
 	playsound(drop_turf, 'sound/effects/splat.ogg', 50, TRUE)
@@ -165,16 +195,22 @@
 	var/static/list/emotes = list("chokes.", "coughs.", "gasps.", "tries urgently to breathe.", "shudders violently.", "wheezes.")
 
 /datum/status_effect/goose_choking/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if (SPT_PROB(emote_prob, seconds_between_ticks))
 		owner.manual_emote(pick(emotes))
 
 /datum/status_effect/goose_choking/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.set_jitter_if_lower(duration)
 	owner.ai_controller?.set_blackboard_key(BB_GOOSE_PANICKED, TRUE)
 	RegisterSignal(owner, COMSIG_LIVING_DEATH, PROC_REF(on_owner_died))
 	return TRUE
 
 /datum/status_effect/goose_choking/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_LIVING_DEATH)
 	if (duration > 0)
 		return // Saved by something, although probably by dying early
@@ -183,5 +219,7 @@
 
 /// Don't keep dying if we died
 /datum/status_effect/goose_choking/proc/on_owner_died()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)

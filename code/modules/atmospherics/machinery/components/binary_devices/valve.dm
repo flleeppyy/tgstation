@@ -22,6 +22,8 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 	var/switching = FALSE
 
 /obj/machinery/atmospherics/components/binary/valve/update_icon_nopipes(animation = FALSE)
+	procstart = null
+	src.procstart = null
 	normalize_cardinal_directions()
 	if(animation)
 		flick("[valve_type]valve_[on][!on]-[set_overlay_offset(piping_layer)]", src)
@@ -32,6 +34,8 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
  * Called by finish_interact(), switch between open and closed, reconcile the air between two pipelines
  */
 /obj/machinery/atmospherics/components/binary/valve/proc/set_open(to_open)
+	procstart = null
+	src.procstart = null
 	if(on == to_open)
 		return
 	SEND_SIGNAL(src, COMSIG_VALVE_SET_OPEN, to_open)
@@ -54,6 +58,8 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 // This is what handles the actual functionality of combining 2 pipenets when the valve is open
 // Basically when a pipenet updates it will consider both sides to be the same for the purpose of the gas update
 /obj/machinery/atmospherics/components/binary/valve/return_pipenets_for_reconcilation(datum/pipeline/requester)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!on)
 		return
@@ -61,6 +67,8 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 	. |= parents[2]
 
 /obj/machinery/atmospherics/components/binary/valve/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(usr)
 	if(switching)
 		return
@@ -72,6 +80,8 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
  * Called by iteract() after a 1 second timer, calls toggle(), allows another interaction with the component.
  */
 /obj/machinery/atmospherics/components/binary/valve/proc/finish_interact()
+	procstart = null
+	src.procstart = null
 	set_open(!on)
 	switching = FALSE
 
@@ -86,6 +96,8 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 	interaction_flags_machine = INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OFFLINE | INTERACT_MACHINE_OPEN | INTERACT_MACHINE_OPEN_SILICON
 
 /obj/machinery/atmospherics/components/binary/valve/digital/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/usb_port, typecacheof(list(/obj/item/circuit_component/digital_valve), only_root_path = TRUE))
 
@@ -108,6 +120,8 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 	var/datum/port/output/closed
 
 /obj/item/circuit_component/digital_valve/populate_ports()
+	procstart = null
+	src.procstart = null
 	open = add_input_port("Open", PORT_TYPE_SIGNAL)
 	close = add_input_port("Close", PORT_TYPE_SIGNAL)
 
@@ -116,17 +130,23 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 	closed = add_output_port("Closed", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/digital_valve/register_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/machinery/atmospherics/components/binary/valve/digital))
 		attached_valve = shell
 		RegisterSignal(attached_valve, COMSIG_VALVE_SET_OPEN, PROC_REF(handle_valve_toggled))
 
 /obj/item/circuit_component/digital_valve/unregister_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(attached_valve, COMSIG_VALVE_SET_OPEN)
 	attached_valve = null
 	return ..()
 
 /obj/item/circuit_component/digital_valve/proc/handle_valve_toggled(datum/source, on)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	is_open.set_output(on)
 	if(on)
@@ -135,6 +155,8 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 		closed.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/digital_valve/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 
 	if(!attached_valve)
 		return
@@ -145,6 +167,8 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 		attached_valve.set_open(FALSE)
 
 /obj/machinery/atmospherics/components/binary/valve/digital/update_icon_nopipes(animation)
+	procstart = null
+	src.procstart = null
 	if(!is_operational)
 		normalize_cardinal_directions()
 		icon_state = "dvalve_nopower-[set_overlay_offset(piping_layer)]"

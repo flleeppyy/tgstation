@@ -2,6 +2,8 @@
 /datum/unit_test/reagent_names
 
 /datum/unit_test/reagent_names/Run()
+	procstart = null
+	src.procstart = null
 	var/used_names = list()
 
 	for (var/datum/reagent/reagent as anything in valid_subtypesof(/datum/reagent))

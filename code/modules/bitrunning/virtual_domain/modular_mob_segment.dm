@@ -6,6 +6,8 @@
 
 /// Handles spawning mobs for this landmark. Sends a signal when done.
 /obj/effect/landmark/bitrunning/mob_segment/proc/spawn_mobs(turf/origin, datum/modular_mob_segment/segment)
+	procstart = null
+	src.procstart = null
 	var/list/mob/living/spawned_mobs = list()
 
 	spawned_mobs += segment.spawn_mobs(origin)
@@ -38,6 +40,8 @@
 
 /// Spawns mobs in a circle around the location
 /datum/modular_mob_segment/proc/spawn_mobs(turf/origin)
+	procstart = null
+	src.procstart = null
 	if(!prob(probability))
 		return
 

@@ -36,6 +36,8 @@
 	var/strikes_to_lose_limb = 3
 
 /datum/wound/burn/flesh/handle_process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 
 	if (!victim || HAS_TRAIT(victim, TRAIT_STASIS))
 		return
@@ -142,6 +144,8 @@
 						set_disabling(TRUE)
 
 /datum/wound/burn/flesh/set_disabling(new_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(new_value && strikes_to_lose_limb <= 0)
 		treat_text_short = "Amputate or augment limb immediately, or place the patient into cryogenics."
@@ -149,6 +153,8 @@
 		treat_text_short = initial(treat_text_short)
 
 /datum/wound/burn/flesh/get_wound_description(mob/user)
+	procstart = null
+	src.procstart = null
 	if(strikes_to_lose_limb <= 0)
 		return span_deadsay("<B>[victim.p_Their()] [limb.plaintext_zone] has locked up completely and is non-functional.</B>")
 
@@ -183,6 +189,8 @@
 	return "<B>[condition.Join()]</B>"
 
 /datum/wound/burn/flesh/severity_text(simple = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += " Burn / "
 	switch(infection)
@@ -199,6 +207,8 @@
 	. += " Infection"
 
 /datum/wound/burn/flesh/get_scanner_description(mob/user)
+	procstart = null
+	src.procstart = null
 	if(strikes_to_lose_limb <= 0) // Unclear if it can go below 0, best to not take the chance
 		var/oopsie = "Type: [name]<br>Severity: [severity_text()]"
 		oopsie += "<div class='ml-3'>Infection Level: [span_deadsay("The body part has suffered complete sepsis and must be removed. Amputate or augment limb immediately, or place the patient in a cryotube.")]</div>"
@@ -232,6 +242,8 @@
 
 /// Checks if the wound is in a state that ointment or flesh will help
 /datum/wound/burn/flesh/proc/can_be_ointmented_or_meshed()
+	procstart = null
+	src.procstart = null
 	if(infection > 0 && sanitization < infection)
 		return TRUE
 	if(flesh_damage > 0 && flesh_healing <= flesh_damage)
@@ -240,6 +252,8 @@
 
 /// Paramedic UV penlights
 /datum/wound/burn/flesh/proc/uv(obj/item/flashlight/pen/paramedic/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(I, uv_cooldown))
 		to_chat(user, span_notice("[I] is still recharging!"))
 		return
@@ -252,11 +266,15 @@
 	COOLDOWN_START(I, uv_cooldown, I.uv_cooldown_length)
 
 /datum/wound/burn/flesh/treat(obj/item/tool, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/flashlight/pen/paramedic))
 		uv(tool, user)
 
 // people complained about burns not healing on stasis beds, so in addition to checking if it's cured, they also get the special ability to very slowly heal on stasis beds if they have the healing effects stored
 /datum/wound/burn/flesh/on_stasis(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(strikes_to_lose_limb <= 0) // we've already hit sepsis, nothing more to do
 		if(SPT_PROB(0.5, seconds_per_tick))
@@ -272,6 +290,8 @@
 		infection = max(infection - (0.1 * WOUND_BURN_SANITIZATION_RATE * seconds_per_tick), 0)
 
 /datum/wound/burn/flesh/on_synthflesh(reac_volume)
+	procstart = null
+	src.procstart = null
 	flesh_healing += reac_volume * 0.5 // 20u patch will heal 10 flesh standard
 
 /datum/wound_pregen_data/flesh_burn
@@ -283,6 +303,8 @@
 	wound_series = WOUND_SERIES_FLESH_BURN_BASIC
 
 /datum/wound/burn/get_limb_examine_description()
+	procstart = null
+	src.procstart = null
 	return span_warning("The flesh on this limb appears badly cooked.")
 
 // we don't even care about first degree burns, straight to second
@@ -395,6 +417,8 @@
 	occur_text = "chars rapidly into a pattern that can only be described as an agglomeration of several financial symbols, burned into the flesh"
 
 /datum/wound/burn/flesh/severe/cursed_brand/get_limb_examine_description()
+	procstart = null
+	src.procstart = null
 	return span_warning("The flesh on this limb has several ornate symbols burned into it, with pitting throughout.")
 
 /datum/wound_pregen_data/flesh_burn/third_degree/cursed_brand

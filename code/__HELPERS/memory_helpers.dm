@@ -17,6 +17,8 @@
 
 /// Unless you need to use this for an explicit reason, use the add_memory_in_range macro wrapper.
 /proc/_add_memory_in_range(atom/source, range = 7, list/memory_args)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/memorizer in hearers(range, source))
 		memorizer.mind?._add_memory(memory_args.Copy()) // One copy for each memory, since it mutates the list
 
@@ -57,6 +59,8 @@
 
 /// Unless you need to use this for an explicit reason, use the add_memory, add_mob_memory, or add_memory_in_range macro wrappers.
 /datum/mind/proc/_add_memory(list/memory_args)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/memory)
 	var/datum/memory/memory_type = memory_args[1]
 	if(!ispath(memory_type))
@@ -91,6 +95,8 @@
  * Returns the memory selected, or null otherwise.
  */
 /datum/mind/proc/select_memory(verbage = "use")
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/memory)
 	var/list/choice_list = list()
 
@@ -111,10 +117,14 @@
 
 /// Small helper to clean out memories.
 /datum/mind/proc/wipe_memory()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST_ASSOC_VAL(memories)
 
 /// Helder to wipe the passed memory type ONLY from our list of memories
 /datum/mind/proc/wipe_memory_type(memory_type)
+	procstart = null
+	src.procstart = null
 	qdel(memories[memory_type])
 	memories -= memory_type
 
@@ -122,6 +132,8 @@
 /// Quick copies aren't full copies - just basic copies containing necessities.
 /// They cannot be used in stories.
 /datum/mind/proc/quick_copy_all_memories(datum/mind/new_memorizer)
+	procstart = null
+	src.procstart = null
 	for(var/memory_path in memories)
 		var/datum/memory/prime_memory = memories[memory_path]
 		new_memorizer.memories[memory_path] = prime_memory.quick_copy_memory(new_memorizer)

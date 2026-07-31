@@ -1,26 +1,38 @@
 /proc/count_unique_techweb_nodes()
+	procstart = null
+	src.procstart = null
 	var/static/list/L = typesof(/datum/techweb_node)
 	return L.len
 
 /proc/count_unique_techweb_designs()
+	procstart = null
+	src.procstart = null
 	var/static/list/L = typesof(/datum/design)
 	return L.len
 
 /proc/node_boost_error(id, message)
+	procstart = null
+	src.procstart = null
 	WARNING("Invalid boost information for node \[[id]\]: [message]")
 	SSresearch.invalid_node_boost[id] = message
 
 ///Returns an associative list of techweb node datums with values of the nodes it unlocks.
 /proc/techweb_item_unlock_check(obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(SSresearch.techweb_unlock_items[I.type])
 		return SSresearch.techweb_unlock_items[I.type] //It should already be formatted in node datum = list(point type = value)
 
 /proc/techweb_item_point_check(obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(SSresearch.techweb_point_items[I.type])
 		return SSresearch.techweb_point_items[I.type]
 	return FALSE
 
 /proc/techweb_point_display_generic(pointlist)
+	procstart = null
+	src.procstart = null
 	var/list/ret = list()
 	for(var/i in pointlist)
 		if(i in SSresearch.point_types)
@@ -30,6 +42,8 @@
 	return ret.Join("<BR>")
 
 /proc/techweb_point_display_rdconsole(pointlist, last_pointlist)
+	procstart = null
+	src.procstart = null
 	var/list/ret = list()
 	for(var/i in pointlist)
 		var/research_line = "[(i in SSresearch.point_types) || "ERRORED POINT TYPE"]: [pointlist[i]]"

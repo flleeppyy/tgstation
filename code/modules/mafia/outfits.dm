@@ -164,6 +164,8 @@
 	suit = /obj/item/clothing/suit/apron
 
 /datum/outfit/mafia/obsessed/post_equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/carried_item in H.get_equipped_items(INCLUDE_POCKETS | INCLUDE_ACCESSORIES))
 		carried_item.add_mob_blood(H)//Oh yes, there will be blood...
 	H.regenerate_icons()

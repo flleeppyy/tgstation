@@ -1,5 +1,7 @@
 
 /mob/living/proc/HasDisease(datum/disease/D)
+	procstart = null
+	src.procstart = null
 	for(var/thing in diseases)
 		var/datum/disease/DD = thing
 		if(D.IsSame(DD))
@@ -8,6 +10,8 @@
 
 
 /mob/living/proc/CanContractDisease(datum/disease/D)
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD && !D.process_dead)
 		return FALSE
 
@@ -27,12 +31,16 @@
 
 
 /mob/living/proc/ContactContractDisease(datum/disease/D)
+	procstart = null
+	src.procstart = null
 	if(!CanContractDisease(D))
 		return FALSE
 	D.try_infect(src)
 
 
 /mob/living/carbon/ContactContractDisease(datum/disease/disease, target_zone)
+	procstart = null
+	src.procstart = null
 	if(!CanContractDisease(disease))
 		return FALSE
 
@@ -100,6 +108,8 @@
  * * disease - the disease datum that's infecting us
  */
 /mob/living/proc/contract_airborne_disease(datum/disease/disease)
+	procstart = null
+	src.procstart = null
 	if(!can_be_spread_airborne_disease())
 		return FALSE
 	if(!prob(min((50 * disease.spreading_modifier - 1), 50)))
@@ -110,6 +120,8 @@
 
 //Proc to use when you 100% want to try to infect someone (ignoreing protective clothing and such), as long as they aren't immune
 /mob/living/proc/ForceContractDisease(datum/disease/D, make_copy = TRUE, del_on_fail = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!CanContractDisease(D))
 		if(del_on_fail)
 			qdel(D)
@@ -122,6 +134,8 @@
 
 
 /mob/living/carbon/human/CanContractDisease(datum/disease/disease)
+	procstart = null
+	src.procstart = null
 	if(dna)
 		if(HAS_TRAIT(src, TRAIT_VIRUSIMMUNE) && !disease.bypasses_immunity)
 			return FALSE
@@ -134,6 +148,8 @@
 /// Checks if this mob can currently spread air based diseases.
 /// Nondeterministic
 /mob/living/proc/can_spread_airborne_diseases()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(HAS_TRAIT(src, TRAIT_NOBREATH))
 		return FALSE
@@ -153,6 +169,8 @@
 	return TRUE
 
 /mob/living/carbon/can_spread_airborne_diseases()
+	procstart = null
+	src.procstart = null
 	if(internal || external)
 		return FALSE
 
@@ -161,6 +179,8 @@
 /// Checks if this mob can currently be infected by air based diseases
 /// Nondeterministic
 /mob/living/proc/can_be_spread_airborne_disease()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NOBREATH))
 		return FALSE
 	if(losebreath >= 1)
@@ -179,6 +199,8 @@
 	return TRUE
 
 /mob/living/carbon/can_be_spread_airborne_disease()
+	procstart = null
+	src.procstart = null
 	// Using an isolated air supply is also effective
 	if((internal || external) && prob(75))
 		return FALSE

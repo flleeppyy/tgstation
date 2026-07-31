@@ -15,30 +15,44 @@
 	var/value = 0
 
 /obj/item/stack/spacecash/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_FISHING_BAIT, TRAIT_BAIT_ALLOW_FISHING_DUD), INNATE_TRAIT)
 	update_desc()
 
 /obj/item/stack/spacecash/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/cellulose = 10)
 
 /obj/item/stack/spacecash/update_desc()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/total_worth = get_item_credit_value()
 	desc = "It's worth [total_worth] [MONEY_NAME_AUTOPURAL(total_worth)] in total."
 
 /obj/item/stack/spacecash/get_item_credit_value()
+	procstart = null
+	src.procstart = null
 	return (amount*value)
 
 /obj/item/stack/spacecash/merge(obj/item/stack/target_stack, limit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_desc()
 
 /obj/item/stack/spacecash/use(used, transfer = FALSE, check = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_desc()
 
 /obj/item/stack/spacecash/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(amount)
 		if(1)
@@ -59,6 +73,8 @@
  * If you provide a decimal, rounds down to the nearest whole number.
  */
 /proc/credits_to_spacecash(amount)
+	procstart = null
+	src.procstart = null
 	amount = floor(amount)
 	// ordered by value so we can always provide the highest denominations possible
 	var/list/spacecash_types_by_value = list(

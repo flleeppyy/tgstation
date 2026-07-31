@@ -6,19 +6,27 @@
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/ai_core_display/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return GLOB.ai_core_display_screens - "Portrait"
 
 /datum/preference/choiced/ai_core_display/icon_for(value)
+	procstart = null
+	src.procstart = null
 	if (value == "Random")
 		return uni_icon('icons/mob/silicon/ai.dmi', "questionmark")
 	else
 		return uni_icon('icons/mob/silicon/ai.dmi', resolve_ai_icon_sync(value))
 
 /datum/preference/choiced/ai_core_display/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if (!..(preferences))
 		return FALSE
 
 	return istype(preferences.get_highest_priority_job(), /datum/job/ai)
 
 /datum/preference/choiced/ai_core_display/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return

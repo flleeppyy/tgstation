@@ -1,4 +1,6 @@
 /proc/circuit_signal_response(name, bitflag)
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 	return list(
 		"name" = name,
@@ -7,6 +9,8 @@
 	)
 
 /proc/circuit_signal_param(name, type)
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 	return list(
 		"name" = name,
@@ -17,6 +21,8 @@
 GLOBAL_LIST_INIT(integrated_circuit_signal_ids, generate_circuit_signal_list())
 
 /proc/generate_circuit_signal_list()
+	procstart = null
+	src.procstart = null
 	var/cancel_attack = circuit_signal_response("Cancel Attack", COMPONENT_CANCEL_ATTACK_CHAIN)
 	var/secondary_cancel_attack = circuit_signal_response("Cancel Attack", COMPONENT_SECONDARY_CANCEL_ATTACK_CHAIN)
 	var/secondary_continue_attack = circuit_signal_response("Continue Attack", COMPONENT_SECONDARY_CONTINUE_ATTACK_CHAIN)
@@ -48,6 +54,8 @@ GLOBAL_LIST_INIT(integrated_circuit_signal_ids, generate_circuit_signal_list())
 GLOBAL_LIST_INIT(integrated_circuit_global_signal_ids, generate_global_circuit_signal_list())
 
 /proc/generate_global_circuit_signal_list()
+	procstart = null
+	src.procstart = null
 	var/client_ent = circuit_signal_param("Client", PORT_TYPE_ATOM)
 	var/entity = circuit_signal_param("Entity", PORT_TYPE_ATOM)
 
@@ -61,14 +69,20 @@ GLOBAL_LIST_INIT(integrated_circuit_global_signal_ids, generate_global_circuit_s
 	)
 
 /obj/item/circuit_component/signal_handler/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_ADMIN)
 
 /obj/item/circuit_component/signal_handler/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["global_port_types"] = GLOB.wiremod_fundamental_types
 
 
 /obj/item/circuit_component/signal_handler/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "CircuitSignalHandler", name)
@@ -76,6 +90,8 @@ GLOBAL_LIST_INIT(integrated_circuit_global_signal_ids, generate_global_circuit_s
 		ui.set_autoupdate(FALSE)
 
 /obj/item/circuit_component/signal_handler/ui_act(action, list/params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

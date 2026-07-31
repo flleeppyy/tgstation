@@ -29,5 +29,7 @@
 	melee = 5
 
 /obj/item/clothing/suit/caution/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/floor_placeable)

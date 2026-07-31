@@ -3,6 +3,8 @@
 	var/ability_key = BB_GENERIC_ACTION
 
 /datum/bt_node/ai_behavior/use_mob_ability/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/async_flags = handle_async()
 	if(async_flags)
 		return async_flags
@@ -14,12 +16,16 @@
 
 /// Returns the action to trigger, or null if it isn't available. Override to prep the action before it fires.
 /datum/bt_node/ai_behavior/use_mob_ability/proc/get_valid_ability(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/datum/action/using_action = controller.blackboard[ability_key]
 	if(QDELETED(using_action) || !using_action.IsAvailable())
 		return null
 	return using_action
 
 /datum/bt_node/ai_behavior/use_mob_ability/perform_async(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/datum/action/using_action = controller.blackboard[ability_key]
 	var/result = using_action.Trigger()
 	if(!async_still_valid())
@@ -31,6 +37,8 @@
 	ability_key = BB_SHAPESHIFT_ACTION
 
 /datum/bt_node/ai_behavior/use_mob_ability/shapeshift/get_valid_ability(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/datum/action/cooldown/spell/shapeshift/using_action = ..()
 	if(QDELETED(using_action))
 		return null

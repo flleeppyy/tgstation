@@ -40,6 +40,8 @@
 	resistance_flags = FIRE_PROOF
 
 /obj/item/clothing/suit/utility/fire/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, 7)
 
@@ -54,6 +56,8 @@
 	acid = 50
 
 /obj/item/clothing/suit/utility/fire/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "[icon_state]-emissive", src, alpha = src.alpha, effect_type = EMISSIVE_SPECULAR)
@@ -105,6 +109,8 @@
 	resistance_flags = NONE
 
 /obj/item/clothing/head/utility/bomb_hood/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/clothing_dirt, "bomb_dirt")
 	AddElement(/datum/element/adjust_fishing_difficulty, 8)
@@ -139,6 +145,8 @@
 	resistance_flags = NONE
 
 /obj/item/clothing/suit/utility/bomb_suit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, 8)
 
@@ -185,6 +193,8 @@
 	resistance_flags = NONE
 
 /obj/item/clothing/head/utility/radiation/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, 7)
 	AddComponent(/datum/component/hat_stabilizer, loose_hat = TRUE)
@@ -217,6 +227,8 @@
 	resistance_flags = NONE
 
 /obj/item/clothing/suit/utility/radiation/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/radiation_protected_clothing)
 	AddElement(/datum/element/adjust_fishing_difficulty, 7)

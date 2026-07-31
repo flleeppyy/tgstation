@@ -18,6 +18,8 @@
 	var/list/admin_forced_args
 
 /datum/round_event/mass_hallucination/start()
+	procstart = null
+	src.procstart = null
 	if(!admin_forced_hallucination)
 		var/category_to_pick_from = rand(1, 10)
 		switch(category_to_pick_from)
@@ -103,6 +105,8 @@
 	var/list/admin_forced_args
 
 /datum/event_admin_setup/mass_hallucination/prompt_admins()
+	procstart = null
+	src.procstart = null
 	var/force = tgui_alert(usr, "Do you want to force a hallucination?", event_control.name, list("Yes", "No", "Cancel"))
 	if(force == "Cancel")
 		return ADMIN_CANCEL_EVENT
@@ -130,5 +134,7 @@
 			admin_forced_args = chosen_args.Copy(HALLUCINATION_ARGLIST)
 
 /datum/event_admin_setup/mass_hallucination/apply_to_event(datum/round_event/mass_hallucination/event)
+	procstart = null
+	src.procstart = null
 	event.admin_forced_hallucination = admin_forced_hallucination
 	event.admin_forced_args = admin_forced_args

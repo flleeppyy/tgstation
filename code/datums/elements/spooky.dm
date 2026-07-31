@@ -9,6 +9,8 @@
 	var/stam_damage_mult
 
 /datum/element/spooky/Attach(datum/target, too_spooky = TRUE, single_use = FALSE, stam_damage_mult = 1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -18,10 +20,14 @@
 	RegisterSignal(target, COMSIG_ITEM_ATTACK, PROC_REF(spectral_attack))
 
 /datum/element/spooky/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, COMSIG_ITEM_ATTACK)
 	return ..()
 
 /datum/element/spooky/proc/spectral_attack(datum/source, mob/living/carbon/target, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(ishuman(user) && !isskeleton(user)) //this weapon wasn't meant for mortals.
@@ -49,6 +55,8 @@
 
 ///Cause jitteriness and stamina to the target relative to the amount of their bodyparts made of flesh and bone.
 /datum/element/spooky/proc/rattle_bones(mob/living/carbon/human/human, stam_dam_mult = stam_damage_mult)
+	procstart = null
+	src.procstart = null
 	if(isskeleton(human))
 		return FALSE //undeads are unaffected by the spook-pocalypse.
 	var/bone_amount = 0
@@ -65,6 +73,8 @@
 	return bone_amount
 
 /datum/element/spooky/proc/spectral_change(mob/living/carbon/human/human, mob/living/user, obj/item/source)
+	procstart = null
+	src.procstart = null
 	if(human.get_stamina_loss() <= 95)
 		return
 
@@ -97,6 +107,8 @@
 	new instrument(turf)
 
 /datum/element/spooky/proc/change_name(mob/living/carbon/human/spooked)
+	procstart = null
+	src.procstart = null
 	var/skeleton_name = spooked.client ? sanitize_name(tgui_input_text(spooked, "Enter your new skeleton name", "Spookifier", spooked.real_name, MAX_NAME_LEN)) : null
 	if(!skeleton_name)
 		skeleton_name = "\improper spooky skeleton"

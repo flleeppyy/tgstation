@@ -11,6 +11,8 @@
 	cut_type = /obj/item/clothing/gloves/fingerless
 
 /obj/item/clothing/gloves/color/black/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/radio_containing/radiogloves)
 
@@ -42,6 +44,8 @@
 	clothing_traits = list(TRAIT_FINGERPRINT_PASSTHROUGH)
 
 /obj/item/clothing/gloves/fingerless/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/gripperoffbrand)
 	AddElement(/datum/element/adjust_fishing_difficulty, -4)

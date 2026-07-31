@@ -16,6 +16,8 @@
 
 /// Remove old decals and apply new decals after rotation as necessary
 /datum/controller/subsystem/processing/dcs/proc/rotate_decals(datum/source, old_dir, new_dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(old_dir == new_dir)
@@ -41,6 +43,8 @@
 
 
 /datum/element/decal/proc/get_rotated_parameters(old_dir,new_dir)
+	procstart = null
+	src.procstart = null
 	var/rotation = 0
 	if(directional) //Even when the dirs are the same rotation is coming out as not 0 for some reason
 		rotation = SIMPLIFY_DEGREES(dir2angle(new_dir)-dir2angle(old_dir))
@@ -66,6 +70,8 @@
 
 
 /datum/element/decal/Attach(atom/target, _icon, _icon_state, _dir, _plane=FLOAT_PLANE, _layer=FLOAT_LAYER, _alpha=255, _color, _smoothing, _cleanable=FALSE, _description, mutable_appearance/_pic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
@@ -110,6 +116,8 @@
  * (except source, source is the object whose appearance we're copying.)
  */
 /datum/element/decal/proc/generate_appearance(_icon, _icon_state, _dir, _plane, _layer, _color, _alpha, _smoothing, source)
+	procstart = null
+	src.procstart = null
 	if(!_icon || !_icon_state)
 		return FALSE
 
@@ -126,6 +134,8 @@
 	return TRUE
 
 /datum/element/decal/Detach(atom/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, list(COMSIG_ATOM_DIR_CHANGE, COMSIG_COMPONENT_CLEAN_ACT, COMSIG_ATOM_EXAMINE, COMSIG_ATOM_UPDATE_OVERLAYS, COMSIG_TURF_ON_SHUTTLE_MOVE, COMSIG_ATOM_SMOOTHED_ICON, COMSIG_ATOM_DECALS_ROTATING))
 	SSdcs.UnregisterSignal(source, COMSIG_ATOM_DIR_CHANGE)
 	source.update_appearance(UPDATE_OVERLAYS)
@@ -135,6 +145,8 @@
 	return ..()
 
 /datum/element/decal/proc/late_update_icon(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(source) && !(source.flags_1 & DECAL_INIT_UPDATE_EXPERIENCED_1))
@@ -143,11 +155,15 @@
 		UnregisterSignal(source, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZE)
 
 /datum/element/decal/proc/apply_overlay(atom/source, list/overlay_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	overlay_list += pic
 
 /datum/element/decal/proc/clean_react(datum/source, clean_types)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(clean_types & cleanable)
@@ -156,11 +172,15 @@
 	return NONE
 
 /datum/element/decal/proc/examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += description
 
 /datum/element/decal/proc/shuttle_move_react(datum/source, turf/new_turf)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(new_turf == source)
@@ -172,6 +192,8 @@
 	new_turf.AddElement(type, pic.icon, base_icon_state, directional, pic.plane, pic.layer, pic.alpha, pic_color, smoothing, cleanable, description)
 
 /datum/element/decal/proc/shuttle_rotate(datum/source, list/datum/element/decal/rotating)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	rotating += src
 
@@ -182,6 +204,8 @@
  * - [source][/atom]: The source of the signal and recently smoothed atom.
  */
 /datum/element/decal/proc/smooth_react(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/smoothing_junction = source.smoothing_junction
 	if(smoothing_junction == smoothing)

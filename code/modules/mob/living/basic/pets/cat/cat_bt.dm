@@ -4,6 +4,8 @@
 /datum/bt_node/decorator/cat_holding_food
 
 /datum/bt_node/decorator/cat_holding_food/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/pet/cat/cat = controller.pawn
 	return istype(cat) && !isnull(cat.held_food)
 
@@ -16,10 +18,14 @@
 	var/consume_chance = 70
 
 /datum/bt_node/ai_behavior/play_with_mouse/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = controller.blackboard[target_key]
 	return !QDELETED(target)
 
 /datum/bt_node/ai_behavior/play_with_mouse/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/mouse/target = controller.blackboard[target_key]
 	if(QDELETED(target))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
@@ -30,6 +36,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
 
 /datum/bt_node/ai_behavior/play_with_mouse/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/living_pawn = controller.pawn
 	var/atom/target = controller.blackboard[target_key]
@@ -49,10 +57,14 @@
 	var/food_key
 
 /datum/bt_node/ai_behavior/deliver_food_to_kitten/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = controller.blackboard[target_key]
 	return !QDELETED(target)
 
 /datum/bt_node/ai_behavior/deliver_food_to_kitten/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = controller.blackboard[target_key]
 	if(QDELETED(target))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
@@ -64,6 +76,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/deliver_food_to_kitten/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(target_key)
 	controller.clear_blackboard_key(food_key)
@@ -79,6 +93,8 @@
 	var/end_battle_chance = 25
 
 /datum/bt_node/ai_behavior/territorial_struggle/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	var/mob/living/target = controller.blackboard[target_key]
 	if(QDELETED(target))
@@ -89,6 +105,8 @@
 	return TRUE
 
 /datum/bt_node/ai_behavior/territorial_struggle/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = controller.blackboard[target_key]
 	if(QDELETED(target))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
@@ -108,6 +126,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/territorial_struggle/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(target_key)
 
@@ -120,10 +140,14 @@
 	var/search_range = 9
 
 /datum/bt_node/ai_behavior/find_cat_tresspasser/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	return living_pawn.gender == MALE
 
 /datum/bt_node/ai_behavior/find_cat_tresspasser/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	var/list/ignore_types = controller.blackboard[BB_BABIES_CHILD_TYPES]
 	for(var/mob/living/basic/pet/cat/potential_enemy in oview(search_range, living_pawn))
@@ -152,10 +176,14 @@
 	var/meows_key
 
 /datum/bt_node/ai_behavior/beacon_for_food/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[target_key]
 	return !QDELETED(target)
 
 /datum/bt_node/ai_behavior/beacon_for_food/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[target_key]
 	if(QDELETED(target))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
@@ -167,6 +195,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/beacon_for_food/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(target_key)
 
@@ -178,6 +208,8 @@
 	var/search_range = 9
 
 /datum/bt_node/ai_behavior/find_human_to_beg/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	var/list/locate_items = controller.blackboard[BB_HUNTABLE_PREY]
 	for(var/mob/living/carbon/human/human_target in oview(search_range, living_pawn))
@@ -195,6 +227,8 @@
 	var/leave_home_chance = 15
 
 /datum/bt_node/ai_behavior/leave_cat_home/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/cat_house/home = controller.pawn.loc
 	if(!istype(home))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED
@@ -208,6 +242,8 @@
 	always_reset_target = TRUE
 
 /datum/bt_node/ai_behavior/hunt_target/decorate_donuts/target_caught(mob/living/hunter, atom/hunted)
+	procstart = null
+	src.procstart = null
 	hunter.spin(spintime = 4, speed = 1)
 
 /// Enters (or exits if already resident) a cat house keyed in target_key.
@@ -215,10 +251,14 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/enter_cat_home/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/cat_house/home = controller.blackboard[target_key]
 	return !QDELETED(home)
 
 /datum/bt_node/ai_behavior/enter_cat_home/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/cat_house/home = controller.blackboard[target_key]
 	if(QDELETED(home))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
@@ -229,6 +269,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
 
 /datum/bt_node/ai_behavior/enter_cat_home/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(target_key)
 

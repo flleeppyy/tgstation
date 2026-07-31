@@ -44,6 +44,8 @@
 	acid = 70
 
 /obj/item/dualsaber/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/two_handed, \
 		force_unwielded = force, \
@@ -57,6 +59,8 @@
 /// Triggered on wield of two handed item
 /// Specific hulk checks due to reflection chance for balance issues and switches hitsounds.
 /obj/item/dualsaber/proc/on_wield(obj/item/source, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(user && HAS_TRAIT(user, TRAIT_HULK))
 		to_chat(user, span_warning("You lack the grace to wield this!"))
 		return COMPONENT_TWOHANDED_BLOCK_WIELD
@@ -71,21 +75,29 @@
 /// Triggered on unwield of two handed item
 /// switch hitsounds
 /obj/item/dualsaber/proc/on_unwield(obj/item/source, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	update_weight_class(initial(w_class))
 	hitsound = SFX_SWING_HIT
 	STOP_PROCESSING(SSobj, src)
 	set_light_on(FALSE)
 
 /obj/item/dualsaber/get_sharpness()
+	procstart = null
+	src.procstart = null
 	if (!HAS_TRAIT(src, TRAIT_WIELDED))
 		return NONE
 	return ..()
 
 /obj/item/dualsaber/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = inhand_icon_state = HAS_TRAIT(src, TRAIT_WIELDED) ? "dualsaber[saber_color][HAS_TRAIT(src, TRAIT_WIELDED)]" : "dualsaber0"
 	return ..()
 
 /obj/item/dualsaber/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_WIELDED))
 		user.visible_message(span_suicide("[user] begins spinning way too fast! It looks like [user.p_theyre()] trying to commit suicide!"))
 
@@ -112,6 +124,8 @@
 	return BRUTELOSS
 
 /obj/item/dualsaber/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(LAZYLEN(possible_colors))
 		saber_color = pick(possible_colors)
@@ -126,10 +140,14 @@
 				set_light_color(LIGHT_COLOR_LAVENDER)
 
 /obj/item/dualsaber/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
 /obj/item/dualsaber/attack(mob/target, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(user, TRAIT_HULK))
 		to_chat(user, span_warning("You grip the blade too hard and accidentally drop it!"))
 		if(HAS_TRAIT(src, TRAIT_WIELDED))
@@ -146,9 +164,13 @@
 		INVOKE_ASYNC(src, PROC_REF(jedi_spin), user)
 
 /obj/item/dualsaber/proc/jedi_spin(mob/living/user)
+	procstart = null
+	src.procstart = null
 	dance_rotate(user, CALLBACK(user, TYPE_PROC_REF(/mob, dance_flip)))
 
 /obj/item/dualsaber/proc/impale(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("You twirl around a bit before losing your balance and impaling yourself on [src]."))
 	if(HAS_TRAIT(src, TRAIT_WIELDED))
 		user.take_bodypart_damage(20,25,check_armor = TRUE)
@@ -156,6 +178,8 @@
 		user.adjust_stamina_loss(25)
 
 /obj/item/dualsaber/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_WIELDED))
 		return FALSE //not interested unless we're wielding
 
@@ -176,6 +200,8 @@
 	return ..()
 
 /obj/item/dualsaber/process()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_WIELDED))
 		if(hacked)
 			set_light_color(pick(COLOR_SOFT_RED, LIGHT_COLOR_GREEN, LIGHT_COLOR_LIGHT_CYAN, LIGHT_COLOR_LAVENDER))
@@ -184,10 +210,14 @@
 		return PROCESS_KILL
 
 /obj/item/dualsaber/IsReflect()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_WIELDED) && prob(block_chance))
 		return TRUE
 
 /obj/item/dualsaber/ignition_effect(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	// same as /obj/item/melee/energy, mostly
 	if(!HAS_TRAIT(src, TRAIT_WIELDED))
 		return ""
@@ -213,6 +243,8 @@
 	possible_colors = list("purple")
 
 /obj/item/dualsaber/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(hacked)
 		to_chat(user, span_warning("It's starting to look like a triple rainbow - no, nevermind."))
 		return ITEM_INTERACT_BLOCKING

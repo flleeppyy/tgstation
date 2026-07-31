@@ -4,6 +4,8 @@ GLOBAL_LIST_INIT(freon_color_matrix, list("#2E5E69", "#60A2A8", "#A1AFB1", rgb(0
 /datum/element/frozen
 
 /datum/element/frozen/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isobj(target))
 		return ELEMENT_INCOMPATIBLE
@@ -33,6 +35,8 @@ GLOBAL_LIST_INIT(freon_color_matrix, list("#2E5E69", "#60A2A8", "#A1AFB1", rgb(0
 	RegisterSignal(target, COMSIG_OBJ_UNFREEZE, PROC_REF(on_unfreeze))
 
 /datum/element/frozen/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	var/obj/obj_source = source
 	REMOVE_TRAIT(obj_source, TRAIT_FROZEN, ELEMENT_TRAIT(type))
 	UnregisterSignal(obj_source, list(COMSIG_MOVABLE_MOVED, COMSIG_MOVABLE_THROW_LANDED, COMSIG_MOVABLE_IMPACT, COMSIG_OBJ_UNFREEZE))
@@ -51,16 +55,22 @@ GLOBAL_LIST_INIT(freon_color_matrix, list("#2E5E69", "#60A2A8", "#A1AFB1", rgb(0
 
 ///signal handler for COMSIG_OBJ_UNFREEZE that forces us to detach from the target
 /datum/element/frozen/proc/on_unfreeze(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	Detach(source)
 
 /datum/element/frozen/proc/shatter_on_throw(datum/source, atom/hit_atom, datum/thrownthing/throwing_datum, caught)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!caught)
 		shatter_on_landed(source, throwing_datum)
 
 ///signal handler that shatters our target after impacting after a throw.
 /datum/element/frozen/proc/shatter_on_landed(datum/target, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/obj_target = target
 	if(ismob(throwingdatum.thrower))
@@ -74,6 +84,8 @@ GLOBAL_LIST_INIT(freon_color_matrix, list("#2E5E69", "#60A2A8", "#A1AFB1", rgb(0
 /// signal handler for COMSIG_MOVABLE_MOVED that unfreezes our target if it moves onto an open turf thats hotter than
 /// our melting temperature.
 /datum/element/frozen/proc/on_moved(datum/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/movable/movable_target = target
 

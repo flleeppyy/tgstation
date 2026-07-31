@@ -27,14 +27,20 @@
 	var/fishing_modifier = -7
 
 /obj/item/clothing/gloves/tackler/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, fishing_modifier) //fishing tackle equipment (ba dum tsh)
 
 /obj/item/clothing/gloves/tackler/Destroy()
+	procstart = null
+	src.procstart = null
 	tackler = null
 	return ..()
 
 /obj/item/clothing/gloves/tackler/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(user))
 		return
@@ -43,6 +49,8 @@
 		tackler = H.AddComponent(/datum/component/tackler, stamina_cost=tackle_stam_cost, base_knockdown = base_knockdown, range = tackle_range, speed = tackle_speed, skill_mod = skill_mod, min_distance = min_distance)
 
 /obj/item/clothing/gloves/tackler/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(user))
 		return

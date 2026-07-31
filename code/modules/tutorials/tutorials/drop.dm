@@ -13,12 +13,16 @@
 	var/obj/last_held_item
 
 /datum/tutorial/drop/Destroy(force)
+	procstart = null
+	src.procstart = null
 	last_held_item = null
 	user.client?.screen -= drop_preview
 	QDEL_NULL(drop_preview)
 	return ..()
 
 /datum/tutorial/drop/perform(list/modifiers)
+	procstart = null
+	src.procstart = null
 	create_drop_preview(modifiers[SCREEN_LOC])
 	addtimer(CALLBACK(src, PROC_REF(show_instructions)), TIME_TO_START_MOVING_DROP_ICON)
 
@@ -29,6 +33,8 @@
 	update_held_item()
 
 /datum/tutorial/drop/perform_completion_effects_with_delay()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(user, list(COMSIG_MOB_DROPPING_ITEM, COMSIG_MOB_SWAP_HANDS, COMSIG_LIVING_PICKED_UP_ITEM))
 	if (!isnull(last_held_item))
 		UnregisterSignal(last_held_item, COMSIG_MOVABLE_MOVED)
@@ -36,6 +42,8 @@
 	return 0
 
 /datum/tutorial/drop/proc/create_drop_preview(initial_screen_loc)
+	procstart = null
+	src.procstart = null
 	drop_preview = animate_ui_element(
 		"act_drop",
 		initial_screen_loc,
@@ -44,6 +52,8 @@
 	)
 
 /datum/tutorial/drop/proc/show_instructions()
+	procstart = null
+	src.procstart = null
 	if (QDELETED(src))
 		return
 
@@ -58,6 +68,8 @@
 			show_instruction("Pick something up!")
 
 /datum/tutorial/drop/proc/on_swap_hands(mob/living/source, obj/item/swapped_to, obj/item/swapped_from)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (isnull(swapped_to))
@@ -71,12 +83,16 @@
 	update_held_item()
 
 /datum/tutorial/drop/proc/on_dropped_item()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	stage = STAGE_PICK_SOMETHING_UP
 	show_instructions()
 
 /datum/tutorial/drop/proc/on_pick_up_item()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (stage != STAGE_PICK_SOMETHING_UP)
@@ -87,6 +103,8 @@
 
 // Exists so that if we, say, place the item on a table, we don't count that as completion
 /datum/tutorial/drop/proc/update_held_item()
+	procstart = null
+	src.procstart = null
 	if (!isnull(last_held_item))
 		UnregisterSignal(last_held_item, COMSIG_MOVABLE_MOVED)
 
@@ -97,6 +115,8 @@
 	RegisterSignal(last_held_item, COMSIG_MOVABLE_MOVED, PROC_REF(on_held_item_moved))
 
 /datum/tutorial/drop/proc/on_held_item_moved()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (stage == STAGE_PICK_SOMETHING_UP)

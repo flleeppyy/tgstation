@@ -16,6 +16,8 @@
 	mob_biotypes = MOB_ROBOTIC|MOB_MINERAL
 
 /mob/living/basic/heretic_summon/rust_walker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/footstep, FOOTSTEP_MOB_RUST)
 
@@ -26,13 +28,19 @@
 	grant_actions_by_list(grantable_spells)
 
 /mob/living/basic/heretic_summon/rust_walker/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_ICON_STATE)
 
 /mob/living/basic/heretic_summon/rust_walker/do_rust_heretic_act(atom/target)
+	procstart = null
+	src.procstart = null
 	target.rust_heretic_act(RUST_RESISTANCE_TITANIUM)
 
 /mob/living/basic/heretic_summon/rust_walker/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat == DEAD) // We usually delete on death but just in case
 		return
@@ -43,6 +51,8 @@
 	icon_living = icon_state
 
 /mob/living/basic/heretic_summon/rust_walker/Life(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.) //dead or deleted
 		return

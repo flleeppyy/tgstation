@@ -27,6 +27,8 @@
 	var/far_from_home = FALSE
 
 /obj/item/clothing/accessory/kheiral_cuffs/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon(UPDATE_OVERLAYS)
 	RegisterSignal(src, COMSIG_MOVABLE_Z_CHANGED, PROC_REF(check_z))
@@ -34,11 +36,15 @@
 	check_z(new_turf = loc)
 
 /obj/item/clothing/accessory/kheiral_cuffs/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gps_enabled)
 		. += span_notice("The cuff's GPS signal is on.")
 
 /obj/item/clothing/accessory/kheiral_cuffs/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(slot & ITEM_SLOT_GLOVES) && !(slot & ITEM_SLOT_ICLOTHING))
 		return
@@ -47,6 +53,8 @@
 	connect_kheiral_network(user)
 
 /obj/item/clothing/accessory/kheiral_cuffs/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(on_wrist)
 		playsound(loc, 'sound/items/weapons/handcuffs.ogg', 30, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
@@ -55,6 +63,8 @@
 
 /// Enables the GPS and adds the multiz trait
 /obj/item/clothing/accessory/kheiral_cuffs/proc/connect_kheiral_network(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(gps_enabled)
 		return
 	if(!on_wrist || !far_from_home)
@@ -70,6 +80,8 @@
 
 /// Disables the GPS and removes the multiz trait
 /obj/item/clothing/accessory/kheiral_cuffs/proc/remove_kheiral_network(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!gps_enabled)
 		return
 	if(on_wrist && far_from_home)
@@ -80,6 +92,8 @@
 
 /// If we're off the Z-level, set far_from_home = TRUE. If being worn, trigger kheiral_network proc
 /obj/item/clothing/accessory/kheiral_cuffs/proc/check_z(datum/source, turf/old_turf, turf/new_turf)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isturf(new_turf))
@@ -101,15 +115,21 @@
 			connect_kheiral_network(loc.loc)
 
 /obj/item/clothing/accessory/kheiral_cuffs/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "strandcuff_emissive", src, alpha = src.alpha)
 
 /obj/item/clothing/accessory/kheiral_cuffs/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance(icon, "strand_light", src, alpha = src.alpha)
 
 /obj/item/clothing/accessory/kheiral_cuffs/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		user.visible_message(span_suicide("[user] locks [src] around their neck, wrinkles forming across their face. It looks like [user.p_theyre()] trying to commit suicide!"))
 		return OXYLOSS

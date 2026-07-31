@@ -21,16 +21,22 @@
 	var/obj/machinery/portable_atmospherics/connected_device
 
 /obj/machinery/atmospherics/components/unary/portables_connector/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/gas_mixture/air_contents = airs[1]
 	air_contents.volume = 0
 
 /obj/machinery/atmospherics/components/unary/portables_connector/Destroy()
+	procstart = null
+	src.procstart = null
 	if(connected_device)
 		connected_device.disconnect()
 	return ..()
 
 /obj/machinery/atmospherics/components/unary/portables_connector/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(underfloor_state)
 		var/image/cap = get_pipe_image(icon, "connector_cap", initialize_directions, pipe_color)
@@ -41,17 +47,23 @@
 	icon_state = "connector"
 
 /obj/machinery/atmospherics/components/unary/portables_connector/process_atmos()
+	procstart = null
+	src.procstart = null
 	if(!connected_device)
 		return
 	update_parents()
 
 /obj/machinery/atmospherics/components/unary/portables_connector/return_airs_for_reconcilation(datum/pipeline/requester)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!connected_device)
 		return
 	. += connected_device.return_air()
 
 /obj/machinery/atmospherics/components/unary/portables_connector/can_unwrench(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && connected_device)
 		to_chat(user, span_warning("You cannot unwrench [src], detach [connected_device] first!"))

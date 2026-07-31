@@ -4,6 +4,8 @@
 	datum_var_name = "minimal_player_age"
 
 /datum/job_config_type/required_account_age/validate_value(value)
+	procstart = null
+	src.procstart = null
 	if(isnum(value))
 		return TRUE
 	return FALSE

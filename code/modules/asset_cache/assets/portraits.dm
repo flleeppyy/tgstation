@@ -2,6 +2,8 @@
 	assets = list()
 
 /datum/asset/simple/portraits/New()
+	procstart = null
+	src.procstart = null
 	if(!length(SSpersistent_paintings.paintings))
 		return
 	for(var/datum/painting/portrait as anything in SSpersistent_paintings.paintings)

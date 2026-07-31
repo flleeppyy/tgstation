@@ -45,6 +45,8 @@
 	acid = 30
 
 /obj/machinery/portable_atmospherics/get_save_vars()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/gas_mixture/gasmix = air_contents
 	initial_gas_mix = gasmix.to_string()
@@ -52,6 +54,8 @@
 	return .
 
 /obj/machinery/portable_atmospherics/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(initial_gas_mix)
 		air_contents = SSair.parse_gas_string(initial_gas_mix)
@@ -65,16 +69,22 @@
 	register_context()
 
 /obj/machinery/portable_atmospherics/on_construction(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_anchored(FALSE)
 
 /obj/machinery/portable_atmospherics/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	if(nob_crystal_inserted)
 		new /obj/item/hypernoblium_crystal(src)
 
 	return ..()
 
 /obj/machinery/portable_atmospherics/Destroy()
+	procstart = null
+	src.procstart = null
 	disconnect(destroyed = TRUE)
 	air_contents = null
 	if(holding)
@@ -84,6 +94,8 @@
 	return ..()
 
 /obj/machinery/portable_atmospherics/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(nob_crystal_inserted)
 		. += "There is a hypernoblium crystal inside it that allows for reactions inside to be suppressed."
@@ -91,6 +103,8 @@
 		. += "The hypernoblium crystal inside is glowing with a faint blue colour, indicating reactions inside are currently being suppressed."
 
 /obj/machinery/portable_atmospherics/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(resistance_flags & INDESTRUCTIBLE)
 		return FALSE //Indestructible cans shouldn't release air
 
@@ -102,12 +116,16 @@
 	return ..()
 
 /obj/machinery/portable_atmospherics/process_atmos()
+	procstart = null
+	src.procstart = null
 	excited = (!suppress_reactions && (excited || air_contents.react(src)))
 	if(!excited)
 		return PROCESS_KILL
 	excited = FALSE
 
 /obj/machinery/portable_atmospherics/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 	if(atom_integrity >= max_integrity || (machine_stat & BROKEN) || !tool.tool_start_check(user, amount = 1, heat_required = HIGH_TEMPERATURE_REQUIRED))
@@ -123,6 +141,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/portable_atmospherics/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(user) || !Adjacent(user))
 		return .
@@ -134,6 +154,8 @@
 /// The damage multiplier is treated as 1 if something is being ignored while the other one is exceeded.
 /// On most cases only one will be exceeded, so the other one is scaled down.
 /obj/machinery/portable_atmospherics/proc/take_atmos_damage()
+	procstart = null
+	src.procstart = null
 	var/taking_damage = FALSE
 
 	var/temp_damage = 1
@@ -154,10 +176,14 @@
 	return TRUE
 
 /obj/machinery/portable_atmospherics/return_air()
+	procstart = null
+	src.procstart = null
 	SSair.start_processing_machine(src)
 	return air_contents
 
 /obj/machinery/portable_atmospherics/return_analyzable_air()
+	procstart = null
+	src.procstart = null
 	return air_contents
 
 /**
@@ -166,6 +192,8 @@
  * * new_port - the connector that we trying to connect to
  */
 /obj/machinery/portable_atmospherics/proc/connect(obj/machinery/atmospherics/components/unary/portables_connector/new_port)
+	procstart = null
+	src.procstart = null
 	//Make sure not already connected to something else
 	if(connected_port || !new_port || new_port.connected_device)
 		return FALSE
@@ -189,6 +217,8 @@
 	return TRUE
 
 /obj/machinery/portable_atmospherics/Move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		disconnect()
@@ -197,6 +227,8 @@
  * Allow the portable machine to be disconnected from the connector
  */
 /obj/machinery/portable_atmospherics/proc/disconnect(destroyed = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!connected_port)
 		return FALSE
 	connected_port.connected_device = null
@@ -213,6 +245,8 @@
 	return TRUE
 
 /obj/machinery/portable_atmospherics/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!holding)
 		return CLICK_ACTION_BLOCKING
 	to_chat(user, span_notice("You remove [holding] from [src]."))
@@ -220,6 +254,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/portable_atmospherics/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!holding)
 		return
@@ -234,6 +270,8 @@
  * * new_tank: the tank we are trying to put in the machine
  */
 /obj/machinery/portable_atmospherics/proc/replace_tank(mob/living/user, close_valve, obj/item/tank/new_tank)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & BROKEN)
 		return FALSE
 	if(!user)
@@ -272,6 +310,8 @@
 	return TRUE
 
 /obj/machinery/portable_atmospherics/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/tank))
 		return NONE
 
@@ -281,6 +321,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/portable_atmospherics/wrench_act(mob/living/user, obj/item/wrench)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & BROKEN)
 		return FALSE
 	if(connected_port)
@@ -310,14 +352,20 @@
 	return TRUE
 
 /obj/machinery/portable_atmospherics/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	damage_deflection = 0
 
 /obj/machinery/portable_atmospherics/atom_fix()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	damage_deflection = initial(damage_deflection)
 
 /obj/machinery/portable_atmospherics/attacked_by(obj/item/item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. <= 0)
 		return
@@ -327,6 +375,8 @@
 /// Holding tanks can get to zero integrity and be destroyed without other warnings due to pressure change.
 /// This checks for that case and removes our reference to it.
 /obj/machinery/portable_atmospherics/proc/unregister_holding()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(holding, COMSIG_QDELETING)
@@ -334,6 +384,8 @@
 
 /// Insert Hypernob crystal into the machine
 /obj/machinery/portable_atmospherics/proc/insert_nob_crystal()
+	procstart = null
+	src.procstart = null
 	nob_crystal_inserted = TRUE
 
 #undef PORTABLE_ATMOS_IGNORE_ATMOS_LIMIT

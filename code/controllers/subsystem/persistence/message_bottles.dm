@@ -1,5 +1,7 @@
 ///This proc is used to save photos, papers and cash stored inside a bottle when tossed into the ocean.
 /datum/controller/subsystem/persistence/proc/save_message_bottle(obj/item/message, bottle_type = /obj/item/reagent_containers/cup/glass/bottle)
+	procstart = null
+	src.procstart = null
 	if(isnull(message_bottles_database))
 		message_bottles_database = new("data/message_bottles.json")
 
@@ -23,6 +25,8 @@
 	message_bottles_database.set_key("message-[GLOB.round_id]-[message_bottles_index]", data)
 
 /datum/controller/subsystem/persistence/proc/load_message_bottle(atom/loc)
+	procstart = null
+	src.procstart = null
 	if(isnull(message_bottles_database))
 		message_bottles_database = new("data/message_bottles.json")
 
@@ -49,6 +53,8 @@
 	bottle.update_icon(UPDATE_OVERLAYS)
 
 /datum/controller/subsystem/persistence/proc/save_queued_message_bottles()
+	procstart = null
+	src.procstart = null
 	for(var/item in queued_message_bottles)
 		save_message_bottle(item)
 	queued_message_bottles = null

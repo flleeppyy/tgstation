@@ -31,25 +31,35 @@
 	)
 
 /obj/item/holosign_creator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/openspace_item_click_handler)
 	RegisterSignal(src, COMSIG_OBJ_PAINTED, TYPE_PROC_REF(/obj/item/holosign_creator, on_color_change))
 
 /obj/item/holosign_creator/handle_openspace_click(turf/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	interact_with_atom(target, user, modifiers)
 
 /obj/item/holosign_creator/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!signs)
 		return
 	. += span_notice("It is currently maintaining <b>[signs.len]/[max_signs]</b> projections.")
 
 /obj/item/holosign_creator/check_allowed_items(atom/target, not_inside, target_self)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(target, TRAIT_COMBAT_MODE_SKIP_INTERACTION))
 		return FALSE
 	return ..()
 
 /obj/item/holosign_creator/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!check_allowed_items(interacting_with, not_inside = TRUE))
 		return NONE
 
@@ -84,9 +94,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/holosign_creator/attack(mob/living/carbon/human/M, mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/holosign_creator/proc/create_holosign(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	var/atom/new_holosign = new holosign_type(get_turf(target), src)
 	new_holosign.add_hiddenprint(user)
 	if(color)
@@ -94,18 +108,24 @@
 	return new_holosign
 
 /obj/item/holosign_creator/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(signs))
 		for(var/obj/structure/holosign/hologram as anything in signs)
 			qdel(hologram)
 		balloon_alert(user, "holograms cleared")
 
 /obj/item/holosign_creator/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(LAZYLEN(signs))
 		for(var/obj/structure/holosign/hologram as anything in signs)
 			qdel(hologram)
 
 /obj/item/holosign_creator/proc/on_color_change(obj/item/holosign_creator, mob/user, obj/item/toy/crayon/spraycan/spraycan, is_dark_color)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!spraycan.actually_paints)
 		return
@@ -160,10 +180,14 @@
 	var/clearview_timer
 
 /obj/item/holosign_creator/atmos/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/item/holosign_creator/atmos/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(. & ITEM_INTERACT_SUCCESS))
 		return
@@ -171,12 +195,16 @@
 	firelock?.open()
 
 /obj/item/holosign_creator/atmos/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(LAZYLEN(signs))
 		context[SCREENTIP_CONTEXT_RMB] = "[clearview ? "Turn off" : "Temporarily activate"] clearview"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/holosign_creator/atmos/create_holosign(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/holosign/barrier/atmos/new_holosign = new holosign_type(get_turf(target), src)
 	new_holosign.add_hiddenprint(user)
 	if(color)
@@ -186,6 +214,8 @@
 	return new_holosign
 
 /obj/item/holosign_creator/atmos/attack_self_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	if(clearview)
 		reset_hologram_transparency()
 		balloon_alert(user, "turned off clearview")
@@ -199,6 +229,8 @@
 	return ..()
 
 /obj/item/holosign_creator/atmos/proc/reset_hologram_transparency()
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(signs))
 		for(var/obj/structure/holosign/barrier/atmos/hologram as anything in signs)
 			hologram.reset_transparency()
@@ -223,6 +255,8 @@
 	var/shock = FALSE
 
 /obj/item/holosign_creator/cyborg/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(user))
 		var/mob/living/silicon/robot/borg = user
 

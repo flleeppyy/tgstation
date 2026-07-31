@@ -30,16 +30,22 @@ SUBSYSTEM_DEF(modular_computers)
 	var/next_discount = 0
 
 /datum/controller/subsystem/modular_computers/Initialize()
+	procstart = null
+	src.procstart = null
 	build_software_lists()
 	initialized = TRUE
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/modular_computers/fire(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	if(discount_coupons && world.time >= next_discount)
 		announce_coupon()
 
 ///Generate new coupon codes that can be redeemed with the Coupon Master App
 /datum/controller/subsystem/modular_computers/proc/announce_coupon()
+	procstart = null
+	src.procstart = null
 	//If there's no way to announce the coupon, we may as well skip it.
 	var/obj/machinery/announcement_system/announcement_system = get_announcement_system()
 	if(!announcement_system)
@@ -114,6 +120,8 @@ SUBSYSTEM_DEF(modular_computers)
 
 ///Finds all downloadable programs and adds them to their respective downloadable list.
 /datum/controller/subsystem/modular_computers/proc/build_software_lists()
+	procstart = null
+	src.procstart = null
 	for(var/datum/computer_file/program/prog as anything in subtypesof(/datum/computer_file/program))
 		// Has no TGUI file so is not meant to be a downloadable thing.
 		if(!initial(prog.tgui_id) || !initial(prog.filename))
@@ -127,6 +135,8 @@ SUBSYSTEM_DEF(modular_computers)
 
 ///Attempts to find a new file through searching the available stores with its name.
 /datum/controller/subsystem/modular_computers/proc/find_ntnet_file_by_name(filename)
+	procstart = null
+	src.procstart = null
 	for(var/datum/computer_file/program/programs as anything in available_station_software + available_antag_software)
 		if(filename == programs.filename)
 			return programs
@@ -134,6 +144,8 @@ SUBSYSTEM_DEF(modular_computers)
 
 ///Attempts to find a chatorom using the ID of the channel.
 /datum/controller/subsystem/modular_computers/proc/get_chat_channel_by_id(id)
+	procstart = null
+	src.procstart = null
 	for(var/datum/ntnet_conversation/chan as anything in chat_channels)
 		if(chan.id == id)
 			return chan
@@ -145,6 +157,8 @@ SUBSYSTEM_DEF(modular_computers)
  * * log_string - The message being logged
  */
 /datum/controller/subsystem/modular_computers/proc/add_log(log_string)
+	procstart = null
+	src.procstart = null
 	var/list/log_text = list()
 	log_text += "\[[round_timestamp()]\]"
 	log_text += "*SYSTEM* - "
@@ -161,6 +175,8 @@ SUBSYSTEM_DEF(modular_computers)
  * Removes all station logs and leaves it with an alert that it's been wiped.
  */
 /datum/controller/subsystem/modular_computers/proc/purge_logs()
+	procstart = null
+	src.procstart = null
 	modpc_logs = list()
 	add_log("-!- LOGS DELETED BY SYSTEM OPERATOR -!-")
 
@@ -169,6 +185,8 @@ SUBSYSTEM_DEF(modular_computers)
  * Use this function to get asset names and to avoid cache duplicates/overwriting.
  */
 /datum/controller/subsystem/modular_computers/proc/get_next_picture_name()
+	procstart = null
+	src.procstart = null
 	var/next_uid = next_picture_id
 	next_picture_id++
 	return "ntos_picture_[next_uid].png"

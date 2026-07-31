@@ -16,6 +16,8 @@
 
 
 /obj/machinery/atmospherics/components/unary/passive_vent/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(underfloor_state)
 		var/image/cap = get_pipe_image(icon, "vent_cap", initialize_directions, pipe_color)
@@ -26,6 +28,8 @@
 	icon_state = "passive_vent"
 
 /obj/machinery/atmospherics/components/unary/passive_vent/process_atmos()
+	procstart = null
+	src.procstart = null
 	var/turf/location = get_turf(loc)
 	if(isclosedturf(location))
 		return

@@ -30,6 +30,8 @@
 	acid = 100
 
 /obj/item/singularityhammer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/kneejerk)
 	AddComponent(/datum/component/two_handed, \
@@ -38,10 +40,14 @@
 	)
 
 /obj/item/singularityhammer/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state]0"
 	return ..()
 
 /obj/item/singularityhammer/proc/vortex(turf/pull, mob/wielder)
+	procstart = null
+	src.procstart = null
 	for(var/atom/X in orange(5,pull))
 		if(ismovable(X))
 			var/atom/movable/A = X
@@ -59,6 +65,8 @@
 				step_towards(A,pull)
 
 /obj/item/singularityhammer/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_WIELDED))
 		return
 	if(!charged)
@@ -91,6 +99,8 @@
 	w_class = WEIGHT_CLASS_HUGE
 
 /obj/item/mjollnir/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/two_handed, \
 		force_multiplier = 5, \
@@ -99,10 +109,14 @@
 	)
 
 /obj/item/mjollnir/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state]0"
 	return ..()
 
 /obj/item/mjollnir/proc/yeet_shock(mob/living/target)
+	procstart = null
+	src.procstart = null
 	target.Stun(1.5 SECONDS)
 	target.Knockdown(10 SECONDS)
 	var/datum/effect_system/basic/lightning_spread/lightning = new(target.loc, 5, TRUE)
@@ -114,12 +128,16 @@
 	target.throw_at(throw_target, 200, 4)
 
 /obj/item/mjollnir/afterattack(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target))
 		return
 	if(HAS_TRAIT(src, TRAIT_WIELDED) && isliving(target))
 		yeet_shock(target)
 
 /obj/item/mjollnir/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

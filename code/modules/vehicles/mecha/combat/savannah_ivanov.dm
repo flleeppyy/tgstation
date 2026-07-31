@@ -50,6 +50,8 @@
 	acid = 100
 
 /obj/vehicle/sealed/mecha/savannah_ivanov/get_mecha_occupancy_state()
+	procstart = null
+	src.procstart = null
 	var/driver_present = driver_amount() != 0
 	var/gunner_present = return_amount_of_controllers_with_flag(VEHICLE_CONTROL_EQUIPMENT) > 0
 	var/list/mob/drivers = return_drivers()
@@ -60,12 +62,16 @@
 	return "[base_icon_state]_[leap_state][gunner_present]_[driver_present]"
 
 /obj/vehicle/sealed/mecha/savannah_ivanov/auto_assign_occupant_flags(mob/new_occupant)
+	procstart = null
+	src.procstart = null
 	if(driver_amount() < max_drivers) //movement
 		add_control_flags(new_occupant, VEHICLE_CONTROL_DRIVE|VEHICLE_CONTROL_SETTINGS)
 	else //weapons
 		add_control_flags(new_occupant, VEHICLE_CONTROL_MELEE|VEHICLE_CONTROL_EQUIPMENT)
 
 /obj/vehicle/sealed/mecha/savannah_ivanov/generate_actions()
+	procstart = null
+	src.procstart = null
 	initialize_passenger_action_type(/datum/action/vehicle/sealed/mecha/swap_seat)
 	. = ..()
 	initialize_controller_action_type(/datum/action/vehicle/sealed/mecha/skyfall, VEHICLE_CONTROL_DRIVE)
@@ -73,6 +79,8 @@
 
 // Pass through obstacles freely if we're flying
 /obj/vehicle/sealed/mecha/savannah_ivanov/CanPassThrough(atom/blocker, movement_dir, blocker_opinion)
+	procstart = null
+	src.procstart = null
 	if(!flying || throwing)
 		return ..()
 	var/turf/destination_turf = get_step(loc, movement_dir)
@@ -81,6 +89,8 @@
 	return TRUE
 
 /obj/vehicle/sealed/mecha/savannah_ivanov/can_interact_with(atom/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!. || !flying)
 		return
@@ -97,6 +107,8 @@
 	var/skyfall_charge_level = 0
 
 /datum/action/vehicle/sealed/mecha/skyfall/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -123,6 +135,8 @@
  * the other way the loop ends is if charge level (var it's ticking up) gets to SKYFALL_CHARGELEVEL_LAUNCH, in which case it ends the loop and does the ability.
  */
 /datum/action/vehicle/sealed/mecha/skyfall/proc/skyfall_charge_loop()
+	procstart = null
+	src.procstart = null
 	if(!do_after(owner, SKYFALL_SINGLE_CHARGE_TIME, target = chassis))
 		abort_skyfall()
 		return
@@ -179,6 +193,8 @@
  * it's just the animations of the mecha coming down + another timer for the final landing effect
  */
 /datum/action/vehicle/sealed/mecha/skyfall/proc/begin_landing()
+	procstart = null
+	src.procstart = null
 	animate(chassis, pixel_z = 0, time = 10, easing = QUAD_EASING|EASE_IN, flags = ANIMATION_PARALLEL)
 	animate(chassis, alpha = 255, time = 8, easing = QUAD_EASING|EASE_IN, flags = ANIMATION_PARALLEL)
 	addtimer(CALLBACK(src, PROC_REF(land)), 1 SECONDS)
@@ -190,6 +206,8 @@
  * it's just the animations of the mecha coming down + another timer for the final landing effect
  */
 /datum/action/vehicle/sealed/mecha/skyfall/proc/land()
+	procstart = null
+	src.procstart = null
 	var/turf/landed_on = get_turf(chassis)
 	chassis.visible_message(span_danger("[chassis] lands from above!"))
 	playsound(chassis, 'sound/effects/explosion/explosion1.ogg', 50, 1)
@@ -244,6 +262,8 @@
  * Applies cooldown and resets charge level
  */
 /datum/action/vehicle/sealed/mecha/skyfall/proc/abort_skyfall()
+	procstart = null
+	src.procstart = null
 	chassis.balloon_alert(owner, "skyfall aborted")
 	S_TIMER_COOLDOWN_START(chassis, COOLDOWN_MECHA_MISSILE_STRIKE, skyfall_charge_level * 10 SECONDS) //so aborting skyfall later in the process imposes a longer cooldown
 	skyfall_charge_level = 0
@@ -255,6 +275,8 @@
  * called after an addtimer when the cooldown is finished with the skyfall, resets the icon
  */
 /datum/action/vehicle/sealed/mecha/skyfall/proc/reset_button_icon()
+	procstart = null
+	src.procstart = null
 	button_icon_state = "mech_savannah"
 	build_all_button_icons()
 
@@ -268,11 +290,15 @@
 	var/aiming_missile = FALSE
 
 /datum/action/vehicle/sealed/mecha/ivanov_strike/Destroy()
+	procstart = null
+	src.procstart = null
 	if(aiming_missile)
 		end_missile_targeting()
 	return ..()
 
 /datum/action/vehicle/sealed/mecha/ivanov_strike/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -293,6 +319,8 @@
  * called after an addtimer when the cooldown is finished with the ivanov strike, resets the icon
  */
 /datum/action/vehicle/sealed/mecha/ivanov_strike/proc/reset_button_icon()
+	procstart = null
+	src.procstart = null
 	button_icon_state = "mech_ivanov"
 	build_all_button_icons()
 
@@ -303,6 +331,8 @@
  * Plus other flavor like the overlay
  */
 /datum/action/vehicle/sealed/mecha/ivanov_strike/proc/start_missile_targeting()
+	procstart = null
+	src.procstart = null
 	chassis.balloon_alert(owner, "missile mode on (click to target)")
 	aiming_missile = TRUE
 	rockets_left = 3
@@ -320,6 +350,8 @@
  * Unhooks signals into clicking to call drop_missile plus other flavor like the overlay
  */
 /datum/action/vehicle/sealed/mecha/ivanov_strike/proc/end_missile_targeting()
+	procstart = null
+	src.procstart = null
 	aiming_missile = FALSE
 	rockets_left = 0
 	UnregisterSignal(chassis, list(COMSIG_MECHA_MELEE_CLICK, COMSIG_MECHA_EQUIPMENT_CLICK))
@@ -329,6 +361,8 @@
 
 ///signal called from clicking with no equipment
 /datum/action/vehicle/sealed/mecha/ivanov_strike/proc/on_melee_click(datum/source, mob/living/pilot, atom/target, on_cooldown, is_adjacent)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!target)
 		return
@@ -336,6 +370,8 @@
 
 ///signal called from clicking with equipment
 /datum/action/vehicle/sealed/mecha/ivanov_strike/proc/on_equipment_click(datum/source, mob/living/pilot, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!target)
 		return
@@ -350,6 +386,8 @@
  * * target_turf: turf of the atom that was clicked on
  */
 /datum/action/vehicle/sealed/mecha/ivanov_strike/proc/drop_missile(turf/target_turf)
+	procstart = null
+	src.procstart = null
 	rockets_left--
 	if(rockets_left <= 0)
 		end_missile_targeting()
@@ -381,6 +419,8 @@
 	var/obj/vehicle/sealed/mecha/mecha
 
 /obj/effect/skyfall_landingzone/Initialize(mapload, obj/vehicle/sealed/mecha/mecha)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mecha)
 		stack_trace("Skyfall landing zone created without mecha")
@@ -391,11 +431,15 @@
 	QDEL_IN(src, TOTAL_SKYFALL_LEAP_TIME) //when the animations land
 
 /obj/effect/skyfall_landingzone/Destroy(force)
+	procstart = null
+	src.procstart = null
 	mecha = null
 	return ..()
 
 ///called when the mecha moves
 /obj/effect/skyfall_landingzone/proc/follow(datum/source_mecha)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	forceMove(get_turf(source_mecha))
 

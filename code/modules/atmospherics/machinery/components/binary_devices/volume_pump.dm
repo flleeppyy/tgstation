@@ -27,6 +27,8 @@
 	var/mutable_appearance/overclock_overlay
 
 /obj/machinery/atmospherics/components/binary/volume_pump/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/usb_port, \
 		typecacheof(list(
@@ -36,6 +38,8 @@
 	register_context()
 
 /obj/machinery/atmospherics/components/binary/volume_pump/click_ctrl(mob/user)
+	procstart = null
+	src.procstart = null
 	if(can_interact(user))
 		set_on(!on)
 		balloon_alert(user, "turned [on ? "on" : "off"]")
@@ -44,6 +48,8 @@
 	return CLICK_ACTION_BLOCKING
 
 /obj/machinery/atmospherics/components/binary/volume_pump/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(transfer_rate == MAX_TRANSFER_RATE)
 		return CLICK_ACTION_BLOCKING
 
@@ -54,6 +60,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/atmospherics/components/binary/volume_pump/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	icon_state = on && is_operational ? "volpump_on-[set_overlay_offset(piping_layer)]" : "volpump_off-[set_overlay_offset(piping_layer)]"
 	var/altlayeroverlay = FALSE
 	if(set_overlay_offset(piping_layer) == 2)
@@ -65,6 +73,8 @@
 		cut_overlay(overclock_overlay)
 
 /obj/machinery/atmospherics/components/binary/volume_pump/process_atmos()
+	procstart = null
+	src.procstart = null
 	if(!on || !is_operational)
 		return
 
@@ -105,12 +115,16 @@
 	update_parents()
 
 /obj/machinery/atmospherics/components/binary/volume_pump/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Its pressure limits could be [overclocked ? "en" : "dis"]abled with a <b>multitool</b>.")
 	if(overclocked)
 		. += "Its warning light is on[on ? " and it's spewing gas!" : "."]"
 
 /obj/machinery/atmospherics/components/binary/volume_pump/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	context[SCREENTIP_CONTEXT_CTRL_LMB] = "Turn [on ? "off" : "on"]"
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "Maximize transfer rate"
@@ -119,12 +133,16 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/atmospherics/components/binary/volume_pump/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AtmosPump", name)
 		ui.open()
 
 /obj/machinery/atmospherics/components/binary/volume_pump/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["on"] = on
 	data["rate"] = round(transfer_rate)
@@ -132,6 +150,8 @@
 	return data
 
 /obj/machinery/atmospherics/components/binary/volume_pump/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -154,12 +174,16 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/machinery/atmospherics/components/binary/volume_pump/can_unwrench(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && on && is_operational)
 		to_chat(user, span_warning("You cannot unwrench [src], turn it off first!"))
 		return FALSE
 
 /obj/machinery/atmospherics/components/binary/volume_pump/multitool_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(!overclocked)
 		overclocked = TRUE
 		to_chat(user, "The pump makes a grinding noise and air starts to hiss out as you disable its pressure limits.")
@@ -224,6 +248,8 @@
 	var/obj/machinery/atmospherics/components/binary/volume_pump/connected_pump
 
 /obj/item/circuit_component/atmos_volume_pump/populate_ports()
+	procstart = null
+	src.procstart = null
 	transfer_rate = add_input_port("New Transfer Rate", PORT_TYPE_NUMBER, trigger = PROC_REF(set_transfer_rate))
 	on = add_input_port("Turn On", PORT_TYPE_SIGNAL, trigger = PROC_REF(set_pump_on))
 	off = add_input_port("Turn Off", PORT_TYPE_SIGNAL, trigger = PROC_REF(set_pump_off))
@@ -239,20 +265,28 @@
 	turned_off = add_output_port("Turned Off", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/atmos_volume_pump/register_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/machinery/atmospherics/components/binary/volume_pump))
 		connected_pump = shell
 		RegisterSignal(connected_pump, COMSIG_ATMOS_MACHINE_SET_ON, PROC_REF(handle_pump_activation))
 
 /obj/item/circuit_component/atmos_volume_pump/unregister_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(connected_pump, COMSIG_ATMOS_MACHINE_SET_ON)
 	connected_pump = null
 	return ..()
 
 /obj/item/circuit_component/atmos_volume_pump/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	transfer_rate.set_value(clamp(transfer_rate.value, 0, MAX_TRANSFER_RATE))
 
 /obj/item/circuit_component/atmos_volume_pump/proc/handle_pump_activation(datum/source, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	is_active.set_output(active)
 	if(active)
@@ -261,12 +295,16 @@
 		turned_off.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/atmos_volume_pump/proc/set_transfer_rate()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!connected_pump)
 		return
 	connected_pump.transfer_rate = transfer_rate.value
 
 /obj/item/circuit_component/atmos_volume_pump/proc/set_pump_on()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!connected_pump)
 		return
@@ -274,6 +312,8 @@
 	connected_pump.update_appearance(UPDATE_ICON)
 
 /obj/item/circuit_component/atmos_volume_pump/proc/set_pump_off()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!connected_pump)
 		return
@@ -281,6 +321,8 @@
 	connected_pump.update_appearance(UPDATE_ICON)
 
 /obj/item/circuit_component/atmos_volume_pump/proc/request_pump_data()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!connected_pump)
 		return

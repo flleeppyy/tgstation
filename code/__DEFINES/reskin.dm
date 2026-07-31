@@ -2,6 +2,8 @@
 GLOBAL_LIST_EMPTY_TYPED(atom_skins, /datum/atom_skin)
 
 /proc/get_atom_skins()
+	procstart = null
+	src.procstart = null
 	if(!length(GLOB.atom_skins))
 		GLOB.atom_skins = init_subtypes_w_path_keys(/datum/atom_skin)
 	return GLOB.atom_skins

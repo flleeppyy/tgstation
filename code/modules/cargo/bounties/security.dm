@@ -21,6 +21,8 @@
 	VAR_FINAL/alerted = 0
 
 /datum/bounty/patrol/New()
+	procstart = null
+	src.procstart = null
 	demanded_area = pick(get_patrol_area_types() & GLOB.areas_by_type)
 
 	var/total_coverage = 0
@@ -39,10 +41,14 @@
 	reward *= (needed_coverage / 100)
 
 /datum/bounty/patrol/can_get()
+	procstart = null
+	src.procstart = null
 	// only give out bounties worth completing.
 	return needed_coverage >= 20
 
 /datum/bounty/patrol/proc/get_patrol_area_types()
+	procstart = null
+	src.procstart = null
 	return typecacheof(list(
 		/area/station/commons,
 		/area/station/hallway,
@@ -53,33 +59,49 @@
 	))
 
 /datum/bounty/patrol/proc/get_progress()
+	procstart = null
+	src.procstart = null
 	var/progress = 0
 	for(var/turf_id, count in walked_turfs)
 		progress += count
 	return progress
 
 /datum/bounty/patrol/print_required()
+	procstart = null
+	src.procstart = null
 	return "[get_progress()]/[needed_coverage] meters"
 
 /datum/bounty/patrol/can_claim()
+	procstart = null
+	src.procstart = null
 	return get_progress() >= needed_coverage
 
 /datum/bounty/patrol/on_selected(obj/item/card/id/id_card)
+	procstart = null
+	src.procstart = null
 	start_tracking(id_card)
 
 /datum/bounty/patrol/proc/start_tracking(obj/item/card/id/id_card)
+	procstart = null
+	src.procstart = null
 	contribution |= id_card.registered_account
 	tracker = AddComponent(/datum/component/connect_containers, id_card, list(COMSIG_MOVABLE_MOVED = PROC_REF(on_card_moved)))
 	RegisterSignal(id_card, COMSIG_MOVABLE_MOVED, PROC_REF(on_card_moved))
 
 /datum/bounty/patrol/on_reset(obj/item/card/id/id_card)
+	procstart = null
+	src.procstart = null
 	stop_tracking(id_card)
 
 /datum/bounty/patrol/proc/stop_tracking(obj/item/card/id/id_card)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(tracker)
 	UnregisterSignal(id_card, COMSIG_MOVABLE_MOVED)
 
 /datum/bounty/patrol/proc/on_card_moved(atom/movable/moving, atom/old_loc, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/turf/new_turf = get_turf(moving)
@@ -141,6 +163,8 @@
 	allow_duplicate = FALSE
 
 /datum/bounty/patrol/supply/get_patrol_area_types()
+	procstart = null
+	src.procstart = null
 	return typecacheof(list(
 		/area/station/cargo/breakroom,
 		/area/station/cargo/lobby,
@@ -164,6 +188,8 @@
 	allow_duplicate = FALSE
 
 /datum/bounty/patrol/medical/get_patrol_area_types()
+	procstart = null
+	src.procstart = null
 	return typecacheof(list(
 		/area/station/maintenance/department/medical,
 		/area/station/medical/abandoned,
@@ -186,6 +212,8 @@
 	allow_duplicate = FALSE
 
 /datum/bounty/patrol/science/get_patrol_area_types()
+	procstart = null
+	src.procstart = null
 	return typecacheof(list(
 		/area/station/science/auxlab,
 		/area/station/science/breakroom,
@@ -205,6 +233,8 @@
 	allow_duplicate = FALSE
 
 /datum/bounty/patrol/engineering/get_patrol_area_types()
+	procstart = null
+	src.procstart = null
 	return typecacheof(list(
 		/area/station/engineering/break_room,
 		/area/station/engineering/lobby,
@@ -226,4 +256,6 @@
 	wanted_types = list(/obj/item = TRUE)
 
 /datum/bounty/item/contraband/applies_to(obj/O)
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(O, TRAIT_CONTRABAND)

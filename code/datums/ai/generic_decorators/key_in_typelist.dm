@@ -6,6 +6,8 @@
 	var/typelist_key
 
 /datum/bt_node/decorator/key_in_typelist/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	RegisterSignals(pawn, list(
 		COMSIG_AI_BLACKBOARD_KEY_SET(key),
 		COMSIG_AI_BLACKBOARD_KEY_CLEARED(key),
@@ -15,6 +17,8 @@
 	return TRUE
 
 /datum/bt_node/decorator/key_in_typelist/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(pawn, list(
 		COMSIG_AI_BLACKBOARD_KEY_SET(key),
 		COMSIG_AI_BLACKBOARD_KEY_CLEARED(key),
@@ -23,6 +27,8 @@
 	))
 
 /datum/bt_node/decorator/key_in_typelist/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[key]
 	var/list/types = controller.blackboard[typelist_key]
 	if(QDELETED(target) || isnull(types))

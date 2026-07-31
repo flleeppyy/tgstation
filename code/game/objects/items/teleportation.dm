@@ -27,12 +27,16 @@
 	var/tracking_range = 35
 
 /obj/item/locator/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "BluespaceLocator", name)
 		ui.open()
 
 /obj/item/locator/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["trackingrange"] = tracking_range;
 
@@ -113,6 +117,8 @@
 
 ///Checks if the targeted portal was created by us, then causes it to expire, removing it
 /obj/item/hand_tele/proc/try_dispel_portal(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(is_parent_of_portal(target))
 		to_chat(user, span_notice("You dispel [target] with [src]!"))
 		var/obj/effect/portal/portal = target
@@ -121,14 +127,20 @@
 	return FALSE
 
 /obj/item/hand_tele/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(try_dispel_portal(interacting_with, user))
 		return ITEM_INTERACT_SUCCESS
 	return NONE
 
 /obj/item/hand_tele/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/hand_tele/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/portal_location = last_portal_location
 
 	if (isweakref(portal_location))
@@ -143,9 +155,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/hand_tele/ranged_interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return interact_with_atom_secondary(interacting_with, user, modifiers)
 
 /obj/item/hand_tele/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if (!can_teleport_notifies(user))
 		return
 
@@ -200,6 +216,8 @@
 
 /// Takes either PORTAL_LOCATION_DANGEROUS or an /obj/machinery/computer/teleport/computer.
 /obj/item/hand_tele/proc/try_create_portal_to(mob/user, teleport_location)
+	procstart = null
+	src.procstart = null
 	if (length(active_portal_pairs) >= max_portal_pairs)
 		user.show_message(span_notice("[src] is recharging!"))
 		return
@@ -263,6 +281,8 @@
 ///returning FALSE when in a NOTELEPORT area, an away mission or when the user is not on a turf.
 ///Is, for some reason, separate from the teleport target's check in try_create_portal_to()
 /obj/item/hand_tele/proc/can_teleport_notifies(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/current_location = get_turf(user)
 	if (!current_location || !check_teleport_valid(src, current_location) || !isturf(user.loc) || (away_restricted && is_away_level(current_location.z)))
 		to_chat(user, span_notice("[src] is malfunctioning."))
@@ -272,6 +292,8 @@
 
 ///Clears last teleport location when the teleporter providing our target location changes its target
 /obj/item/hand_tele/proc/on_teleporter_new_target(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (IS_WEAKREF_OF(source, last_portal_location))
@@ -280,11 +302,15 @@
 
 ///Removes a destroyed portal from active_portal_pairs list
 /obj/item/hand_tele/proc/on_portal_destroy(obj/effect/portal/P)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	active_portal_pairs -= P //If this portal pair is made by us it'll be erased along with the other portal by the portal.
 
 /obj/item/hand_tele/proc/is_parent_of_portal(obj/effect/portal/P)
+	procstart = null
+	src.procstart = null
 	if(!istype(P))
 		return FALSE
 	if(active_portal_pairs[P])
@@ -295,6 +321,8 @@
 	return FALSE
 
 /obj/item/hand_tele/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(user))
 		user.visible_message(span_suicide("[user] is creating a weak portal and sticking [user.p_their()] head through! It looks like [user.p_theyre()] trying to commit suicide!"))
 		var/mob/living/carbon/itemUser = user
@@ -335,18 +363,26 @@
 	var/bleed_amount = 20
 
 /obj/item/syndicate_teleporter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/syndicate_teleporter/Destroy(force)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/syndicate_teleporter/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("[src] has <b>[charges]</b> out of [max_charges] charges left.")
 
 /obj/item/syndicate_teleporter/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -354,6 +390,8 @@
 	return TRUE
 
 /obj/item/syndicate_teleporter/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(SPT_PROB(10, seconds_per_tick) && charges < max_charges)
 		charges++
 		if(ishuman(loc))
@@ -362,6 +400,8 @@
 		playsound(src, 'sound/machines/beep/twobeep.ogg', 10, TRUE, extrarange = SILENCED_SOUND_EXTRARANGE, falloff_distance = 0)
 
 /obj/item/syndicate_teleporter/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!prob(50/severity))
 		return
@@ -388,6 +428,8 @@
  * Mobs on same tile as destination get telefragged.
  **/
 /obj/item/syndicate_teleporter/proc/attempt_teleport(mob/user, triggered_by_emp = FALSE, not_holding_tele = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!charges && !triggered_by_emp)
 		balloon_alert(user, "recharging!")
 		return
@@ -428,6 +470,8 @@
 		playsound(destination, SFX_PORTAL_ENTER, 50, 1, SHORT_RANGE_SOUND_EXTRARANGE)
 
 /obj/item/syndicate_teleporter/proc/malfunctioning(mob/guy_teleporting, turf/current_location)
+	procstart = null
+	src.procstart = null
 	if(!current_location)
 		return TRUE
 	if(!check_teleport_valid(src, current_location))
@@ -447,6 +491,8 @@
  * If no valid closed turfs found, gib user.
  **/
 /obj/item/syndicate_teleporter/proc/panic_teleport(mob/user, turf/destination)
+	procstart = null
+	src.procstart = null
 	var/turf/mobloc = get_turf(user)
 	var/turf/emergency_destination = get_teleport_loc(destination, user, distance = 0, closed_turf_check = TRUE, errorx = parallel_teleport_distance)
 
@@ -470,6 +516,8 @@
 
 ///Force move victim to destination, explode destination, drop all victim's items, gib them
 /obj/item/syndicate_teleporter/proc/get_fragged(mob/living/victim, turf/destination, not_holding_tele = FALSE)
+	procstart = null
+	src.procstart = null
 	var/turf/mobloc = get_turf(victim)
 	victim.forceMove(destination)
 	new /obj/effect/temp_visual/teleport_abductor/syndi_teleporter(mobloc)
@@ -487,7 +535,9 @@
 	victim.gib(DROP_ALL_REMAINS)
 
 ///Damage and stun all mobs in fragging_location turf, called after a teleport
-/obj/item/syndicate_teleporter/proc/telefrag(turf/fragging_location, mob/user) // Don't let this gib. Never let this gib.
+/obj/item/syndicate_teleporter/proc/telefrag(turf/fragging_location, mob/user)
+	procstart = null
+	src.procstart = null // Don't let this gib. Never let this gib.
 	for(var/mob/living/victim in fragging_location)//Hit everything in the turf
 		victim.apply_damage(20, BRUTE)
 		victim.Paralyze(6 SECONDS)
@@ -496,6 +546,8 @@
 
 ///Bleed and make blood splatters at tele start and end points
 /obj/item/syndicate_teleporter/proc/make_bloods(turf/old_location, turf/new_location, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.can_bleed(BLOOD_COVER_TURFS) != BLEED_SPLATTER)
 		return FALSE
 	user.add_splatter_floor(old_location)

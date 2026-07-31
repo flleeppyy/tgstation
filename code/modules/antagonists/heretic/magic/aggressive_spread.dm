@@ -17,6 +17,8 @@
 	aoe_radius = 2
 
 /datum/action/cooldown/spell/aoe/rust_conversion/before_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & SPELL_CANCEL_CAST)
 		return
@@ -24,6 +26,8 @@
 	return SPELL_NO_IMMEDIATE_COOLDOWN
 
 /datum/action/cooldown/spell/aoe/rust_conversion/after_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/status_effect/heretic_passive/rust/rust_passive = owner.has_status_effect(/datum/status_effect/heretic_passive/rust)
 	if(!rust_passive)
@@ -34,6 +38,8 @@
 	StartCooldown(new_cooldown)
 
 /datum/action/cooldown/spell/aoe/rust_conversion/get_things_to_cast_on(atom/center)
+	procstart = null
+	src.procstart = null
 
 	var/list/things_to_convert = RANGE_TURFS(aoe_radius, center)
 
@@ -46,6 +52,8 @@
 	return things_to_convert
 
 /datum/action/cooldown/spell/aoe/rust_conversion/cast_on_thing_in_aoe(turf/victim, mob/living/caster)
+	procstart = null
+	src.procstart = null
 	// We have less chance of rusting stuff that's further
 	var/distance_to_caster = get_dist(victim, caster)
 	var/chance_of_not_rusting = (max(distance_to_caster, 1) - 1) * 100 / (aoe_radius + 1)

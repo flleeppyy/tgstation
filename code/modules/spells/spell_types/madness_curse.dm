@@ -1,6 +1,8 @@
 GLOBAL_VAR_INIT(curse_of_madness_triggered, FALSE)
 
 /proc/curse_of_madness(mob/user, message)
+	procstart = null
+	src.procstart = null
 	if(user) //in this case either someone holding a spellbook or a badmin
 		to_chat(user, span_warning("You sent a curse of madness with the message \"[message]\"!"))
 		message_admins("[ADMIN_LOOKUPFLW(user)] sent a curse of madness with the message \"[message]\"!")
@@ -22,6 +24,8 @@ GLOBAL_VAR_INIT(curse_of_madness_triggered, FALSE)
 		give_madness(to_curse, message)
 
 /proc/give_madness(mob/living/carbon/human/to_curse, message)
+	procstart = null
+	src.procstart = null
 	to_curse.playsound_local(get_turf(to_curse), 'sound/effects/magic/curse.ogg', 40, 1)
 	to_chat(to_curse, span_reallybig(span_hypnophrase(message)))
 	to_chat(to_curse, span_warning("Your mind shatters!"))

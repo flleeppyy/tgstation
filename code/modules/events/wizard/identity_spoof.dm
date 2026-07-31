@@ -6,6 +6,8 @@
 	description = "Makes everyone dressed up like a wizard."
 
 /datum/round_event_control/wizard/identity_spoof/can_spawn_event(players_amt, allow_magic = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -15,6 +17,8 @@
 	return TRUE
 
 /datum/round_event/wizard/identity_spoof/start()
+	procstart = null
+	src.procstart = null
 	if(GLOB.current_anonymous_theme)
 		QDEL_NULL(GLOB.current_anonymous_theme)
 	GLOB.current_anonymous_theme = new /datum/anonymous_theme/wizards(extras_enabled = TRUE, alert_players = TRUE)

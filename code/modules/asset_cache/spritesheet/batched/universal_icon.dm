@@ -11,6 +11,8 @@
 
 /// Don't instantiate these yourself, use uni_icon.
 /datum/universal_icon/New(icon/icon_file, icon_state="", dir=null, frame=null, datum/icon_transformer/transform=null, color=null)
+	procstart = null
+	src.procstart = null
 	#ifdef UNIT_TESTS
 	// This check is kinda slow and shouldn't fail unless a developer makes a mistake. So it'll get caught in unit tests.
 	if((!isicon(icon_file) && !isfile(icon_file)) || "[icon_file]" == "/icon" || !length("[icon_file]"))
@@ -32,6 +34,8 @@
 		src.transform = null
 
 /datum/universal_icon/proc/copy()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/universal_icon)
 	var/datum/universal_icon/new_icon = new(icon_file, icon_state, dir, frame)
 	if(!isnull(src.transform))
@@ -39,60 +43,80 @@
 	return new_icon
 
 /datum/universal_icon/proc/blend_color(color, blend_mode)
+	procstart = null
+	src.procstart = null
 	if(!transform)
 		transform = new
 	transform.blend_color(color, blend_mode)
 	return src
 
 /datum/universal_icon/proc/blend_icon(datum/universal_icon/icon_object, blend_mode, x=1, y=1)
+	procstart = null
+	src.procstart = null
 	if(!transform)
 		transform = new
 	transform.blend_icon(icon_object, blend_mode, x, y)
 	return src
 
 /datum/universal_icon/proc/scale(width, height)
+	procstart = null
+	src.procstart = null
 	if(!transform)
 		transform = new
 	transform.scale(width, height)
 	return src
 
 /datum/universal_icon/proc/crop(x1, y1, x2, y2)
+	procstart = null
+	src.procstart = null
 	if(!transform)
 		transform = new
 	transform.crop(x1, y1, x2, y2)
 	return src
 
 /datum/universal_icon/proc/flip(dir)
+	procstart = null
+	src.procstart = null
 	if(!transform)
 		transform = new
 	transform.flip(dir)
 	return src
 
 /datum/universal_icon/proc/rotate(angle)
+	procstart = null
+	src.procstart = null
 	if(!transform)
 		transform = new
 	transform.rotate(angle)
 	return src
 
 /datum/universal_icon/proc/shift(dir, offset, wrap=0)
+	procstart = null
+	src.procstart = null
 	if(!transform)
 		transform = new
 	transform.shift(dir, offset, wrap)
 	return src
 
 /datum/universal_icon/proc/swap_color(src_color, dst_color)
+	procstart = null
+	src.procstart = null
 	if(!transform)
 		transform = new
 	transform.swap_color(src_color, dst_color)
 	return src
 
 /datum/universal_icon/proc/draw_box(color, x1, y1, x2=x1, y2=y1)
+	procstart = null
+	src.procstart = null
 	if(!transform)
 		transform = new
 	transform.draw_box(color, x1, y1, x2, y2)
 	return src
 
 /datum/universal_icon/proc/map_colors_inferred(list/color_args)
+	procstart = null
+	src.procstart = null
 	var/num_args = length(color_args)
 	if(num_args <= 20 || num_args >= 16)
 		src.map_colors_rgba(arglist(color_args))
@@ -110,18 +134,24 @@
 		src.map_colors_rgb_hex(arglist(color_args))
 
 /datum/universal_icon/proc/map_colors_rgba(rr, rg, rb, ra, gr, gg, gb, ga, br, bg, bb, ba, ar, ag, ab, aa, r0=0, g0=0, b0=0, a0=0)
+	procstart = null
+	src.procstart = null
 	if(!transform)
 		transform = new
 	transform.map_colors(rr, rg, rb, ra, gr, gg, gb, ga, br, bg, bb, ba, ar, ag, ab, aa, r0, g0, b0, a0)
 	return src
 
 /datum/universal_icon/proc/map_colors_rgb(rr, rg, rb, gr, gg, gb, br, bg, bb, r0=0, g0=0, b0=0)
+	procstart = null
+	src.procstart = null
 	if(!transform)
 		transform = new
 	transform.map_colors(rr, rg, rb, 0, gr, gg, gb, 0, br, bg, bb, 0, 0, 0, 0, 1, r0, g0, b0, 0)
 	return src
 
 /datum/universal_icon/proc/map_colors_rgb_hex(r_rgb, g_rgb, b_rgb, rgb0=rgb(0,0,0))
+	procstart = null
+	src.procstart = null
 	if(!transform)
 		transform = new
 	var/rr = hex2num(copytext(r_rgb, 2, 4)) / 255
@@ -144,6 +174,8 @@
 	return src
 
 /datum/universal_icon/proc/map_colors_rgba_hex(r_rgba, g_rgba, b_rgba, a_rgba, rgba0="#00000000")
+	procstart = null
+	src.procstart = null
 	if(!transform)
 		transform = new
 	var/rr = hex2num(copytext(r_rgba, 2, 4)) / 255
@@ -177,6 +209,8 @@
 /// Internally performs a color blend.
 /// Amount ranges from 0-1 (100% opacity)
 /datum/universal_icon/proc/change_opacity(amount)
+	procstart = null
+	src.procstart = null
 	if(!transform)
 		transform = new
 	transform.blend_color("#ffffff[num2hex(clamp(amount, 0, 1) * 255, 2)]", ICON_MULTIPLY)
@@ -184,18 +218,26 @@
 
 
 /datum/universal_icon/proc/to_list()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 	return list("icon_file" = "[icon_file]", "icon_state" = icon_state, "dir" = dir, "frame" = frame, "transform" = !isnull(transform) ? transform.to_list() : list())
 
 /proc/universal_icon_from_list(list/input_in)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/universal_icon)
 	var/list/input = input_in.Copy() // copy, since icon_transformer_from_list will mutate the list.
 	return uni_icon(input["icon_file"], input["icon_state"], input["dir"], input["frame"], icon_transformer_from_list(input["transform"]))
 
 /datum/universal_icon/proc/to_json()
+	procstart = null
+	src.procstart = null
 	return json_encode(to_list())
 
 /datum/universal_icon/proc/to_icon()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/icon)
 	var/icon/self = icon(src.icon_file, src.icon_state, dir=src.dir, frame=src.frame)
 	if(istype(src.transform))
@@ -206,10 +248,14 @@
 	var/list/transforms = null
 
 /datum/icon_transformer/New()
+	procstart = null
+	src.procstart = null
 	transforms = list()
 
 /// Applies the contained set of transforms to an icon
 /datum/icon_transformer/proc/apply(icon/target)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/icon)
 	for(var/transform in src.transforms)
 		switch(transform["type"])
@@ -246,6 +292,8 @@
 	return target
 
 /datum/icon_transformer/proc/copy()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/icon_transformer)
 	var/datum/icon_transformer/new_transformer = new()
 	new_transformer.transforms = list()
@@ -254,6 +302,8 @@
 	return new_transformer
 
 /datum/icon_transformer/proc/blend_color(color, blend_mode)
+	procstart = null
+	src.procstart = null
 	#ifdef UNIT_TESTS
 	if(!istext(color))
 		CRASH("Invalid color provided to blend_color: [color]")
@@ -263,6 +313,8 @@
 	transforms += list(list("type" = RUSTG_ICONFORGE_BLEND_COLOR, "color" = color, "blend_mode" = blend_mode))
 
 /datum/icon_transformer/proc/blend_icon(datum/universal_icon/icon_object, blend_mode, x=1, y=1)
+	procstart = null
+	src.procstart = null
 	#ifdef UNIT_TESTS
 	// icon_object's type is checked later in to_list
 	if(!isnum(blend_mode))
@@ -275,6 +327,8 @@
 	transforms += list(list("type" = RUSTG_ICONFORGE_BLEND_ICON, "icon" = icon_object, "blend_mode" = blend_mode, "x" = x, "y" = y))
 
 /datum/icon_transformer/proc/scale(width, height)
+	procstart = null
+	src.procstart = null
 	#ifdef UNIT_TESTS
 	if(!isnum(width) || !isnum(height))
 		CRASH("Invalid arguments provided to scale: [width],[height]")
@@ -282,6 +336,8 @@
 	transforms += list(list("type" = RUSTG_ICONFORGE_SCALE, "width" = width, "height" = height))
 
 /datum/icon_transformer/proc/crop(x1, y1, x2, y2)
+	procstart = null
+	src.procstart = null
 	#ifdef UNIT_TESTS
 	if(!isnum(x1) || !isnum(y1) || !isnum(x2) || !isnum(y2))
 		CRASH("Invalid arguments provided to crop: [x1],[y1],[x2],[y2]")
@@ -289,6 +345,8 @@
 	transforms += list(list("type" = RUSTG_ICONFORGE_CROP, "x1" = x1, "y1" = y1, "x2" = x2, "y2" = y2))
 
 /datum/icon_transformer/proc/flip(dir)
+	procstart = null
+	src.procstart = null
 	#ifdef UNIT_TESTS
 	if(!isnum(dir))
 		CRASH("Invalid arguments provided to flip: [dir]")
@@ -296,6 +354,8 @@
 	transforms += list(list("type" = RUSTG_ICONFORGE_FLIP, "dir" = dir))
 
 /datum/icon_transformer/proc/rotate(angle)
+	procstart = null
+	src.procstart = null
 	#ifdef UNIT_TESTS
 	if(!isnum(angle))
 		CRASH("Invalid arguments provided to rotate: [angle]")
@@ -303,6 +363,8 @@
 	transforms += list(list("type" = RUSTG_ICONFORGE_TURN, "angle" = angle))
 
 /datum/icon_transformer/proc/shift(dir, offset, wrap=FALSE)
+	procstart = null
+	src.procstart = null
 	#ifdef UNIT_TESTS
 	if(!isnum(dir) || !isnum(offset) || (wrap != FALSE && wrap != TRUE))
 		CRASH("Invalid arguments provided to shift: [dir],[offset],[wrap]")
@@ -310,6 +372,8 @@
 	transforms += list(list("type" = RUSTG_ICONFORGE_SHIFT, "dir" = dir, "offset" = offset, "wrap" = wrap))
 
 /datum/icon_transformer/proc/swap_color(src_color, dst_color)
+	procstart = null
+	src.procstart = null
 	#ifdef UNIT_TESTS
 	if(!istext(src_color) || !istext(dst_color))
 		CRASH("Invalid arguments provided to swap_color: [src_color],[dst_color]")
@@ -317,6 +381,8 @@
 	transforms += list(list("type" = RUSTG_ICONFORGE_SWAP_COLOR, "src_color" = src_color, "dst_color" = dst_color))
 
 /datum/icon_transformer/proc/draw_box(color, x1, y1, x2=x1, y2=y1)
+	procstart = null
+	src.procstart = null
 	#ifdef UNIT_TESTS
 	if(!istext(color) || !isnum(x1) || !isnum(y1) || !isnum(x2) || !isnum(y2))
 		CRASH("Invalid arguments provided to draw_box: [color],[x1],[y1],[x2],[y2]")
@@ -324,6 +390,8 @@
 	transforms += list(list("type" = RUSTG_ICONFORGE_DRAW_BOX, "color" = color, "x1" = x1, "y1" = y1, "x2" = x2, "y2" = y2))
 
 /datum/icon_transformer/proc/map_colors(rr, rg, rb, ra, gr, gg, gb, ga, br, bg, bb, ba, ar, ag, ab, aa, r0=0, g0=0, b0=0, a0=0)
+	procstart = null
+	src.procstart = null
 	transforms += list(list(
 		"type" = RUSTG_ICONFORGE_MAP_COLORS,
 		"rr" = rr, "rg" = rg, "rb" = rb, "ra" = ra,
@@ -335,6 +403,8 @@
 
 /// Recursively converts all contained [/datum/universal_icon]s and their associated [/datum/icon_transformer]s into list form so the transforms can be JSON encoded.
 /datum/icon_transformer/proc/to_list()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 	var/list/transforms_out = list()
 	var/list/transforms_original = src.transforms.Copy()
@@ -352,6 +422,8 @@
 
 /// Reverse operation of /datum/icon_transformer/to_list()
 /proc/icon_transformer_from_list(list/input)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/icon_transformer)
 	var/list/transforms = list()
 	for(var/list/transform as anything in input)
@@ -366,6 +438,8 @@
 
 /// Constructs a transformer, with optional color multiply pre-added.
 /proc/color_transform(color=null)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/icon_transformer)
 	var/datum/icon_transformer/transform = new()
 	if(color)
@@ -374,6 +448,8 @@
 
 /// Converts a GAGS atom to a universal icon by generating blend operations.
 /proc/gags_to_universal_icon(atom/path)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/universal_icon)
 	if(!ispath(path, /atom) || !initial(path.greyscale_config) || !initial(path.greyscale_colors))
 		CRASH("gags_to_universal_icon() received an invalid path of \"[path]\"!")
@@ -385,6 +461,8 @@
 /// Gets the relevant universal icon for an atom, when displayed in TGUI. (see: icon_state_preview)
 /// Supports GAGS items and colored items.
 /proc/get_display_icon_for(atom/atom_path)
+	procstart = null
+	src.procstart = null
 	if (!ispath(atom_path, /atom))
 		return FALSE
 	var/icon_file = atom_path::icon
@@ -400,6 +478,8 @@
 /// getFlatIcon for [/datum/universal_icon]s
 /// Still fairly slow for complex appearances due to filesystem operations. Try to avoid using it
 /proc/get_flat_uni_icon(image/appearance, defdir, deficon, defstate, defblend, start = TRUE, parentcolor)
+	procstart = null
+	src.procstart = null
 	// Loop through the underlays, then overlays, sorting them into the layers list
 	#define PROCESS_OVERLAYS_OR_UNDERLAYS(flat, process, base_layer) \
 		for (var/i in 1 to process.len) { \

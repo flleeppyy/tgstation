@@ -8,6 +8,8 @@
 	var/expected_container = /obj/item/reagent_containers/cup/bowl
 
 /datum/crafting_recipe/food/reaction/soup/New()
+	procstart = null
+	src.procstart = null
 	// What are ya using this path for if it's not a food reaction?
 	if(!ispath(reaction, /datum/chemical_reaction/food))
 		return ..()
@@ -21,6 +23,8 @@
 	return ..()
 
 /datum/crafting_recipe/food/reaction/soup/get_food_types()
+	procstart = null
+	src.procstart = null
 	var/datum/glass_style/has_foodtype/soup_style = GLOB.glass_style_singletons[expected_container][result]
 	if(istype(soup_style))
 		return soup_style.drink_type
@@ -28,6 +32,8 @@
 	return ..()
 
 /datum/crafting_recipe/food/reaction/soup/setup_chemical_reaction_details(datum/chemical_reaction/food/soup/chemical_reaction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(chemical_reaction))
 		return

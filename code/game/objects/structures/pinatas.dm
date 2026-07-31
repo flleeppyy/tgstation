@@ -21,10 +21,14 @@
 	var/debris = /obj/effect/decal/cleanable/wrapping/pinata
 
 /obj/structure/pinata/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/pinata, candy = candy_options, death_drop = destruction_loot)
 
 /obj/structure/pinata/take_damage(damage_amount, damage_type, damage_flag, sound_effect, attack_dir, armour_penetration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(get_integrity() < (max_integrity/2))
 		icon_state = "[base_icon_state]_damaged"
@@ -32,6 +36,8 @@
 		flick("[icon_state]_swing", src)
 
 /obj/structure/pinata/play_attack_sound(damage_amount, damage_type, damage_flag)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(damage_amount)
@@ -42,6 +48,8 @@
 			playsound(src, 'sound/items/tools/welder.ogg', 100, TRUE)
 
 /obj/structure/pinata/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	new debris(get_turf(src))
 
 ///An item that when used inhand spawns an immovable pinata
@@ -54,6 +62,8 @@
 	var/pinata_type = /obj/structure/pinata
 
 /obj/item/pinata/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/player_turf = get_turf(user)
 	if(player_turf?.is_blocked_turf(TRUE))
 		return FALSE

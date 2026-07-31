@@ -4,6 +4,8 @@
 	req_access = list(ACCESS_CAPTAIN)
 
 /obj/structure/closet/secure_closet/captains/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/neck/petcollar(src)
 	new /obj/item/pet_carrier(src)
@@ -15,6 +17,8 @@
 	new /obj/item/megaphone/command(src)
 
 /obj/structure/closet/secure_closet/captains/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	new /obj/item/gun/energy/e_gun(src)
 	new /obj/item/storage/belt/sheath/sabre(src)
 
@@ -26,6 +30,8 @@
 	req_access = list(ACCESS_HOP)
 
 /obj/structure/closet/secure_closet/hop/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/dog_bone(src)
 	new /obj/item/storage/bag/garment/hop(src)
@@ -44,6 +50,8 @@
 	new /obj/item/storage/box/stamps(src)
 
 /obj/structure/closet/secure_closet/hop/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	new /obj/item/gun/energy/e_gun(src)
 
 	new /obj/item/storage/photo_album/hop(src)
@@ -54,6 +62,8 @@
 	req_access = list(ACCESS_HOS)
 
 /obj/structure/closet/secure_closet/hos/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 
 	new /obj/item/disk/computer/command/hos(src)
@@ -70,6 +80,8 @@
 	new /obj/item/circuitboard/machine/techfab/department/security(src)
 
 /obj/structure/closet/secure_closet/hos/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Traitor steal objectives
@@ -84,6 +96,8 @@
 	req_access = list(ACCESS_ARMORY)
 
 /obj/structure/closet/secure_closet/warden/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/dog_bone(src)
 	new /obj/item/radio/headset/headset_sec(src)
@@ -98,6 +112,8 @@
 
 
 /obj/structure/closet/secure_closet/warden/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Traitor steal objective
@@ -109,6 +125,8 @@
 	req_access = list(ACCESS_BRIG)
 
 /obj/structure/closet/secure_closet/security/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/suit/armor/vest/alt/sec(src)
 	new /obj/item/clothing/head/helmet/sec(src)
@@ -121,12 +139,16 @@
 /obj/structure/closet/secure_closet/security/sec
 
 /obj/structure/closet/secure_closet/security/sec/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/storage/belt/security/full(src)
 
 /obj/structure/closet/secure_closet/security/cargo
 
 /obj/structure/closet/secure_closet/security/cargo/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/accessory/armband/cargo(src)
 	new /obj/item/encryptionkey/headset_cargo(src)
@@ -134,6 +156,8 @@
 /obj/structure/closet/secure_closet/security/engine
 
 /obj/structure/closet/secure_closet/security/engine/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/accessory/armband/engine(src)
 	new /obj/item/encryptionkey/headset_eng(src)
@@ -141,6 +165,8 @@
 /obj/structure/closet/secure_closet/security/science
 
 /obj/structure/closet/secure_closet/security/science/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/accessory/armband/science(src)
 	new /obj/item/encryptionkey/headset_sci(src)
@@ -148,6 +174,8 @@
 /obj/structure/closet/secure_closet/security/med
 
 /obj/structure/closet/secure_closet/security/med/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/accessory/armband/medblue(src)
 	new /obj/item/encryptionkey/headset_med(src)
@@ -163,6 +191,8 @@
 	req_access = list(ACCESS_DETECTIVE)
 
 /obj/structure/closet/secure_closet/detective/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/storage/box/evidence(src)
 	new /obj/item/radio/headset/headset_sec(src)
@@ -182,6 +212,8 @@
 	req_access = list(ACCESS_ARMORY)
 
 /obj/structure/closet/secure_closet/injection/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 5)
 		new /obj/item/reagent_containers/syringe/lethal/execution(src)
@@ -202,10 +234,14 @@
 	paint_jobs = null
 
 /obj/structure/closet/secure_closet/brig/genpop/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("<b>Right-click</b> with a Security-level ID to reset [src]'s registered ID.")
 
 /obj/structure/closet/secure_closet/brig/genpop/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!secure || !istype(tool, /obj/item/card/id))
 		return ..()
 
@@ -218,6 +254,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/closet/secure_closet/brig/genpop/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/list/id_access = astype(tool, /obj/item/card/id).GetAccess()
 	if(!id_card || !(ACCESS_BRIG in id_access))
 		return NONE
@@ -226,6 +264,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/closet/secure_closet/brig/genpop/proc/clear_access()
+	procstart = null
+	src.procstart = null
 	say("Authorized ID detected. Unlocking locker and resetting ID.")
 	locked = FALSE
 	id_card = null
@@ -238,6 +278,8 @@
 	req_one_access = list(ACCESS_ARMORY, ACCESS_DETECTIVE)
 
 /obj/structure/closet/secure_closet/brig/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 
 	new /obj/item/clothing/under/rank/prisoner( src )
@@ -249,6 +291,8 @@
 	req_access = list(ACCESS_COURT)
 
 /obj/structure/closet/secure_closet/courtroom/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/shoes/laceup(src)
 	for(var/i in 1 to 3)
@@ -276,6 +320,8 @@
 	req_access = list(ACCESS_ARMORY)
 
 /obj/structure/closet/secure_closet/armory1/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/suit/armor/riot(src)
@@ -285,6 +331,8 @@
 		new /obj/item/shield/riot(src)
 
 /obj/structure/closet/secure_closet/armory1/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Traitor steal objective
@@ -297,12 +345,16 @@
 	req_access = list(ACCESS_ARMORY)
 
 /obj/structure/closet/secure_closet/armory2/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/storage/box/firingpins(src)
 	for(var/i in 1 to 3)
 		new /obj/item/storage/box/rubbershot(src)
 
 /obj/structure/closet/secure_closet/armory2/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/gun/ballistic/shotgun/riot(src)
 
@@ -313,6 +365,8 @@
 	req_access = list(ACCESS_ARMORY)
 
 /obj/structure/closet/secure_closet/armory3/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/storage/box/firingpins(src)
 	new /obj/item/gun/energy/ionrifle(src)
@@ -320,6 +374,8 @@
 		new /obj/item/gun/energy/laser/pistol(src)
 
 /obj/structure/closet/secure_closet/armory3/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/gun/energy/e_gun(src)
 	for(var/i in 1 to 3)
@@ -331,6 +387,8 @@
 	req_access = list(ACCESS_ARMORY)
 
 /obj/structure/closet/secure_closet/tac/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/gun/ballistic/automatic/wt550(src)
 	new /obj/item/clothing/head/helmet/alt(src)
@@ -343,6 +401,8 @@
 	req_access = list(ACCESS_SECURITY)
 
 /obj/structure/closet/secure_closet/labor_camp_security/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/suit/armor/vest(src)
 	new /obj/item/clothing/head/helmet/sec(src)

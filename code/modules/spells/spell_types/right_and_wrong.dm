@@ -143,6 +143,8 @@ GLOBAL_LIST_INIT(summoned_magic_objectives, list(
  * Gives [to_equip] a random gun from a list.
  */
 /proc/give_guns(mob/living/carbon/human/to_equip)
+	procstart = null
+	src.procstart = null
 	if(!GLOB.summon_guns)
 		CRASH("give_guns() was called without a summon guns global datum!")
 	if(to_equip.stat == DEAD || !to_equip.client || !to_equip.mind)
@@ -168,6 +170,8 @@ GLOBAL_LIST_INIT(summoned_magic_objectives, list(
  * Gives [to_equip] a random magical spell from a list.
  */
 /proc/give_magic(mob/living/carbon/human/to_equip)
+	procstart = null
+	src.procstart = null
 	if(!GLOB.summon_magic)
 		CRASH("give_magic() was called without a summon magic global datum!")
 	if(to_equip.stat == DEAD || !to_equip.client || !to_equip.mind)
@@ -194,6 +198,8 @@ GLOBAL_LIST_INIT(summoned_magic_objectives, list(
  * Triggers Summon Ghosts from [user].
  */
 /proc/summon_ghosts(mob/user)
+	procstart = null
+	src.procstart = null
 
 	var/datum/round_event_control/wizard/ghost/ghost_event = locate() in SSevents.control
 	if(ghost_event)
@@ -216,6 +222,8 @@ GLOBAL_LIST_INIT(summoned_magic_objectives, list(
  * If Summon Magic has already been triggered, gives out magic to everyone again.
  */
 /proc/summon_magic(mob/user, survivor_probability = 0)
+	procstart = null
+	src.procstart = null
 	if(user)
 		to_chat(user, span_warning("You summoned magic!"))
 		message_admins("[ADMIN_LOOKUPFLW(user)] summoned magic!")
@@ -236,6 +244,8 @@ GLOBAL_LIST_INIT(summoned_magic_objectives, list(
  * If Summon Guns has already been triggered, gives out guns to everyone again.
  */
 /proc/summon_guns(mob/user, survivor_probability = 0)
+	procstart = null
+	src.procstart = null
 	if(user)
 		to_chat(user, span_warning("You summoned guns!"))
 		message_admins("[ADMIN_LOOKUPFLW(user)] summoned guns!")
@@ -255,6 +265,8 @@ GLOBAL_LIST_INIT(summoned_magic_objectives, list(
  * If Summon Events has already been triggered, speeds up the event timer.
  */
 /proc/summon_events(mob/user)
+	procstart = null
+	src.procstart = null
 	// Already in wiz-mode? Speed er up
 	if(SSevents.wizardmode)
 		SSevents.frequency_upper -= 1 MINUTES //The upper bound falls a minute each time, making the AVERAGE time between events lessen
@@ -302,18 +314,26 @@ GLOBAL_LIST_INIT(summoned_magic_objectives, list(
 	var/survivor_probability = 0
 
 /datum/summon_things_controller/New()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(SSdcs, COMSIG_GLOB_CREWMEMBER_JOINED, PROC_REF(on_latejoin))
 
 /datum/summon_things_controller/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(SSdcs, COMSIG_GLOB_CREWMEMBER_JOINED)
 
 /// Determins if the mob is valid to be given whatever we're handing out.
 /datum/summon_things_controller/proc/can_give_to(mob/who)
+	procstart = null
+	src.procstart = null
 	return ishuman(who)
 
 /// Returns a list of minds of all mobs affected by what we're giving out.
 /datum/summon_things_controller/proc/get_affected_minds()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list/datum/mind)
 	var/list/affected = list()
 	for(var/datum/mind/maybe_affected as anything in get_crewmember_minds() | get_antag_minds())
@@ -328,6 +348,8 @@ GLOBAL_LIST_INIT(summoned_magic_objectives, list(
 /// Signal proc from [COMSIG_GLOB_CREWMEMBER_JOINED].
 /// Calls give_proc_path on latejoiners a number of times (based on num_to_give_to_latejoiners)
 /datum/summon_things_controller/proc/on_latejoin(datum/source, mob/living/new_crewmember, rank)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!can_give_to(new_crewmember))
@@ -337,10 +359,14 @@ GLOBAL_LIST_INIT(summoned_magic_objectives, list(
 
 /// Called manually to give out our things to all minds returned by [proc/get_affected_minds()]
 /datum/summon_things_controller/proc/equip_all_affected()
+	procstart = null
+	src.procstart = null
 	CRASH("[type] did not implement equip_all_affected()!")
 
 /// Called via signal to equip latejoin crewmembers
 /datum/summon_things_controller/proc/equip_latejoiner(mob/living/carbon/human/new_crewmember)
+	procstart = null
+	src.procstart = null
 	CRASH("[type] did not implement equip_latejoiner()!")
 
 /datum/summon_things_controller/item
@@ -350,6 +376,8 @@ GLOBAL_LIST_INIT(summoned_magic_objectives, list(
 	var/num_to_give_to_latejoiners = 0
 
 /datum/summon_things_controller/item/New(survivor_probability = 0, give_proc_path)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(give_proc_path))
 		CRASH("[type] was created without a give_proc_path (the proc that gives people stuff)!")
@@ -358,11 +386,15 @@ GLOBAL_LIST_INIT(summoned_magic_objectives, list(
 	src.give_proc_path = give_proc_path
 
 /datum/summon_things_controller/item/equip_all_affected()
+	procstart = null
+	src.procstart = null
 	num_to_give_to_latejoiners += 1
 	for(var/datum/mind/crewmember_mind as anything in get_affected_minds())
 		INVOKE_ASYNC(GLOBAL_PROC, give_proc_path, crewmember_mind.current)
 
 /datum/summon_things_controller/item/equip_latejoiner(mob/living/carbon/human/new_crewmember)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to num_to_give_to_latejoiners)
 		INVOKE_ASYNC(GLOBAL_PROC, give_proc_path, new_crewmember)
 
@@ -371,13 +403,19 @@ GLOBAL_LIST_INIT(summoned_magic_objectives, list(
 	var/datum/spellbook_entry/used_entry
 
 /datum/summon_things_controller/spellbook_entry/can_give_to(mob/who)
+	procstart = null
+	src.procstart = null
 	return istype(used_entry, /datum/spellbook_entry/item) ? ishuman(who) : isliving(who)
 
 /datum/summon_things_controller/spellbook_entry/get_affected_minds()
+	procstart = null
+	src.procstart = null
 	// The wizards get in on this too, wherever they may be
 	return ..() | get_antag_minds(/datum/antagonist/wizard)
 
 /datum/summon_things_controller/spellbook_entry/New(entry_type)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ispath(entry_type, /datum/spellbook_entry))
 		CRASH("[type] was created with an invalid entry type (must be a spellbook entry typepath)!")
@@ -385,13 +423,19 @@ GLOBAL_LIST_INIT(summoned_magic_objectives, list(
 	used_entry = new entry_type()
 
 /datum/summon_things_controller/spellbook_entry/equip_all_affected()
+	procstart = null
+	src.procstart = null
 	for(var/datum/mind/crewmember_mind as anything in get_affected_minds())
 		INVOKE_ASYNC(src, PROC_REF(grant_entry), crewmember_mind.current)
 
 /datum/summon_things_controller/spellbook_entry/equip_latejoiner(mob/living/carbon/human/new_crewmember)
+	procstart = null
+	src.procstart = null
 	grant_entry(new_crewmember)
 
 /datum/summon_things_controller/spellbook_entry/proc/grant_entry(mob/to_who)
+	procstart = null
+	src.procstart = null
 	var/gained = used_entry.buy_spell(to_who, log_buy = FALSE)
 	// Make spells castable without robes
 	if(istype(gained, /datum/action/cooldown/spell))

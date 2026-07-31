@@ -23,6 +23,8 @@
 	COOLDOWN_DECLARE(last_tox_damage)
 
 /datum/component/irradiated/Initialize()
+	procstart = null
+	src.procstart = null
 	if (!CAN_IRRADIATE(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -49,11 +51,15 @@
 		human_parent.throw_alert(ALERT_IRRADIATED, /atom/movable/screen/alert/irradiated)
 
 /datum/component/irradiated/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(on_clean))
 	RegisterSignal(parent, COMSIG_GEIGER_COUNTER_SCAN, PROC_REF(on_geiger_counter_scan))
 	RegisterSignal(parent, COMSIG_LIVING_HEALTHSCAN, PROC_REF(on_healthscan))
 
 /datum/component/irradiated/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_COMPONENT_CLEAN_ACT,
 		COMSIG_GEIGER_COUNTER_SCAN,
@@ -61,6 +67,8 @@
 	))
 
 /datum/component/irradiated/Destroy(force)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/parent_movable = parent
 	if (istype(parent_movable))
 		parent_movable.remove_filter("rad_glow")
@@ -77,6 +85,8 @@
 	return ..()
 
 /datum/component/irradiated/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if (!ishuman(parent))
 		return PROCESS_KILL
 
@@ -98,6 +108,8 @@
 	process_tox_damage(human_parent, seconds_per_tick)
 
 /datum/component/irradiated/proc/should_halt_effects(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	if (HAS_TRAIT(target, TRAIT_STASIS))
 		return TRUE
 
@@ -110,6 +122,8 @@
 	return FALSE
 
 /datum/component/irradiated/proc/process_tox_damage(mob/living/carbon/human/target, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if (!COOLDOWN_FINISHED(src, last_tox_damage))
 		return
 
@@ -117,9 +131,13 @@
 	COOLDOWN_START(src, last_tox_damage, RADIATION_TOX_INTERVAL)
 
 /datum/component/irradiated/proc/start_burn_splotch_timer()
+	procstart = null
+	src.procstart = null
 	addtimer(CALLBACK(src, PROC_REF(give_burn_splotches)), rand(RADIATION_BURN_INTERVAL_MIN, RADIATION_BURN_INTERVAL_MAX), TIMER_STOPPABLE)
 
 /datum/component/irradiated/proc/give_burn_splotches()
+	procstart = null
+	src.procstart = null
 	// This shouldn't be possible, but just in case.
 	if (QDELETED(src))
 		return
@@ -149,6 +167,8 @@
 	)
 
 /datum/component/irradiated/proc/create_glow()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/parent_movable = parent
 	if (!istype(parent_movable))
 		return
@@ -157,6 +177,8 @@
 	addtimer(CALLBACK(src, PROC_REF(start_glow_loop), parent_movable), rand(0.1 SECONDS, 1.9 SECONDS)) // Things should look uneven
 
 /datum/component/irradiated/proc/start_glow_loop(atom/movable/parent_movable)
+	procstart = null
+	src.procstart = null
 	var/filter = parent_movable.get_filter("rad_glow")
 	if (!filter)
 		return
@@ -165,6 +187,8 @@
 	animate(alpha = 40, time = 2.5 SECONDS)
 
 /datum/component/irradiated/proc/on_clean(datum/source, clean_types)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!(clean_types & CLEAN_TYPE_RADIATION))
@@ -177,6 +201,8 @@
 	COOLDOWN_START(src, clean_cooldown, RADIATION_CLEAN_IMMUNITY_TIME)
 
 /datum/component/irradiated/proc/on_geiger_counter_scan(datum/source, mob/user, obj/item/geiger_counter/geiger_counter)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (isliving(source))
@@ -189,6 +215,8 @@
 	return COMSIG_GEIGER_COUNTER_SCAN_SUCCESSFUL
 
 /datum/component/irradiated/proc/on_healthscan(datum/source, list/render_list, scanpower, mob/user, mode, tochat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	render_list += "<span class='alert ml-1'>"

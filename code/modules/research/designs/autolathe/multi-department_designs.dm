@@ -200,6 +200,8 @@
 	)
 
 /datum/design/toolbox/create_result(atom/drop_loc, list/custom_materials, amount)
+	procstart = null
+	src.procstart = null
 	var/obj/item/storage/toolbox/toolbox = ..()
 	if (length(custom_materials) && !istype(custom_materials[1], /datum/material/iron))
 		return toolbox

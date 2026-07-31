@@ -29,6 +29,8 @@
 	src.on_began_forecast = on_began_forecast
 
 /datum/component/basic_mob_attack_telegraph/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(current_target)
 		forget_target(current_target)
 	target_overlay = null
@@ -36,10 +38,14 @@
 	return ..()
 
 /datum/component/basic_mob_attack_telegraph/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(on_attack))
 
 /datum/component/basic_mob_attack_telegraph/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	if (current_target)
 		forget_target(current_target)
 	QDEL_NULL(target_overlay)
@@ -49,6 +55,8 @@
 
 /// When we attempt to attack, check if it is allowed
 /datum/component/basic_mob_attack_telegraph/proc/on_attack(mob/living/basic/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!(isliving(target) || ismecha(target))) // Curse you CLARKE
 		return
@@ -62,6 +70,8 @@
 
 /// Perform an attack after a delay
 /datum/component/basic_mob_attack_telegraph/proc/delayed_attack(mob/living/source, atom/target)
+	procstart = null
+	src.procstart = null
 	current_target = target
 
 	if(target_overlay)
@@ -89,6 +99,8 @@
 
 /// The guy we're trying to attack moved, is he still in range?
 /datum/component/basic_mob_attack_telegraph/proc/target_moved(atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (in_range(parent, target))
 		return
@@ -96,12 +108,16 @@
 
 /// The guy we're trying to attack isn't a valid target any more
 /datum/component/basic_mob_attack_telegraph/proc/forget_target(atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	current_target = null
 	target.update_appearance()
 	UnregisterSignal(target, list(COMSIG_QDELETING, COMSIG_MOVABLE_MOVED, COMSIG_ATOM_UPDATE_OVERLAYS))
 
 /datum/component/basic_mob_attack_telegraph/proc/on_target_overlays_update(atom/parent_atom, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(parent_atom == current_target)
 		overlays += target_overlay

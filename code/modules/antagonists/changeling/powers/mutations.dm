@@ -23,34 +23,46 @@
 	var/weapon_name_simple
 
 /datum/action/changeling/weapon/Grant(mob/granted_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!owner || !req_human)
 		return
 	RegisterSignal(granted_to, COMSIG_HUMAN_MONKEYIZE, PROC_REF(became_monkey))
 
 /datum/action/changeling/weapon/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(remove_from, COMSIG_HUMAN_MONKEYIZE)
 	unequip_held(remove_from)
 	return ..()
 
 /// Remove weapons if we become a monkey
 /datum/action/changeling/weapon/proc/became_monkey(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	unequip_held(source)
 
 /// Removes weapon if it exists, returns true if we removed something
 /datum/action/changeling/weapon/proc/unequip_held(mob/user)
+	procstart = null
+	src.procstart = null
 	var/found_weapon = FALSE
 	for(var/obj/item/held in user.held_items)
 		found_weapon = check_weapon(user, held) || found_weapon
 	return found_weapon
 
 /datum/action/changeling/weapon/try_to_sting(mob/user, mob/target)
+	procstart = null
+	src.procstart = null
 	if (unequip_held(user))
 		return
 	..(user, target)
 
 /datum/action/changeling/weapon/proc/check_weapon(mob/user, obj/item/hand_item)
+	procstart = null
+	src.procstart = null
 	if(istype(hand_item, weapon_type))
 		user.temporarilyRemoveItemFromInventory(hand_item, TRUE) //DROPDEL will delete the item
 		if(!silent)
@@ -60,6 +72,8 @@
 		return TRUE
 
 /datum/action/changeling/weapon/sting_action(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/held = user.get_active_held_item()
 	if(held && !user.dropItemToGround(held))
 		user.balloon_alert(user, "hand occupied!")
@@ -103,22 +117,30 @@
 	var/blood_on_castoff = 0
 
 /datum/action/changeling/suit/Grant(mob/granted_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!owner || !req_human)
 		return
 	RegisterSignal(granted_to, COMSIG_HUMAN_MONKEYIZE, PROC_REF(became_monkey))
 
 /datum/action/changeling/suit/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(remove_from, COMSIG_HUMAN_MONKEYIZE)
 	check_suit(remove_from)
 	return ..()
 
 /// Remove suit if we become a monkey
 /datum/action/changeling/suit/proc/became_monkey()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	check_suit(owner)
 
 /datum/action/changeling/suit/try_to_sting(mob/user, mob/target)
+	procstart = null
+	src.procstart = null
 	if(check_suit(user))
 		return
 	var/mob/living/carbon/human/H = user
@@ -126,6 +148,8 @@
 
 //checks if we already have an organic suit and casts it off.
 /datum/action/changeling/suit/proc/check_suit(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/changeling/changeling = IS_CHANGELING(user)
 	if(!ishuman(user) || !changeling)
 		return 1
@@ -150,6 +174,8 @@
 		return 1
 
 /datum/action/changeling/suit/sting_action(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!user.canUnEquip(user.wear_suit) && !isnull(suit_type))
 		user.balloon_alert(user, "body occupied!")
 		return
@@ -213,6 +239,8 @@
 	var/list/alt_simple = list("stab", "pierce", "impale")
 
 /obj/item/melee/arm_blade/Initialize(mapload,silent,synthetic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CHANGELING_TRAIT)
 	if(ismob(loc) && !silent)
@@ -228,6 +256,8 @@
 	)
 
 /obj/item/melee/arm_blade/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target))
 		return
 	if(istype(target, /obj/structure/table))
@@ -258,6 +288,8 @@
 		opening.open(BYPASS_DOOR_CHECKS)
 
 /obj/item/melee/arm_blade/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(can_drop)
 		new /obj/item/melee/synthetic_arm_blade(get_turf(user))
@@ -308,6 +340,8 @@
 	can_hold_up = FALSE
 
 /obj/item/gun/magic/tentacle/Initialize(mapload, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CHANGELING_TRAIT)
 	if(ismob(loc))
@@ -318,9 +352,13 @@
 
 
 /obj/item/gun/magic/tentacle/shoot_with_empty_chamber(mob/living/user as mob|obj)
+	procstart = null
+	src.procstart = null
 	user.balloon_alert(user, "not ready!")
 
 /obj/item/gun/magic/tentacle/process_fire(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
+	procstart = null
+	src.procstart = null
 	var/obj/projectile/tentacle/tentacle_shot = chambered.loaded_projectile //Gets the actual projectile we will fire
 	tentacle_shot.fire_modifiers = params2list(params)
 	. = ..()
@@ -328,6 +366,8 @@
 		qdel(src)
 
 /obj/item/gun/magic/tentacle/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] coils [src] tightly around [user.p_their()] neck! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return OXYLOSS
 
@@ -340,10 +380,14 @@
 	var/obj/item/gun/magic/tentacle/gun //the item that shot it
 
 /obj/item/ammo_casing/magic/tentacle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	gun = loc
 	. = ..()
 
 /obj/item/ammo_casing/magic/tentacle/Destroy()
+	procstart = null
+	src.procstart = null
 	gun = null
 	return ..()
 
@@ -361,19 +405,27 @@
 	var/list/fire_modifiers
 
 /obj/projectile/tentacle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	source = loc
 	. = ..()
 
 /obj/projectile/tentacle/fire(setAngle)
+	procstart = null
+	src.procstart = null
 	if(firer)
 		chain = firer.Beam(src, icon_state = "tentacle", emissive = FALSE)
 	..()
 
 /obj/projectile/tentacle/proc/reset_throw(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(user.throw_mode)
 		user.throw_mode_off(THROW_MODE_TOGGLE) //Don't annoy the changeling if he doesn't catch the item
 
 /obj/projectile/tentacle/proc/tentacle_grab(mob/living/carbon/human/user, mob/living/carbon/victim)
+	procstart = null
+	src.procstart = null
 	if(!user.Adjacent(victim))
 		return
 
@@ -396,6 +448,8 @@
 			return
 
 /obj/projectile/tentacle/on_hit(atom/movable/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	if(!isliving(firer) || !ismovable(target))
 		return ..()
 
@@ -478,6 +532,8 @@
 	return BULLET_ACT_HIT
 
 /obj/projectile/tentacle/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(chain)
 	source = null
 	return ..()
@@ -500,6 +556,8 @@
 	weapon_name_simple = "shield"
 
 /datum/action/changeling/weapon/shield/sting_action(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/changeling/changeling = IS_CHANGELING(user) //So we can read the absorbed_count.
 	if(!changeling)
 		return
@@ -522,12 +580,16 @@
 	var/remaining_uses //Set by the changeling ability.
 
 /obj/item/shield/changeling/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CHANGELING_TRAIT)
 	if(ismob(loc))
 		loc.visible_message(span_warning("The end of [loc.name]\'s hand inflates rapidly, forming a huge shield-like mass!"), span_warning("We inflate our hand into a strong shield."), span_hear("You hear organic matter ripping and tearing!"))
 
 /obj/item/shield/changeling/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(attack_type == OVERWHELMING_ATTACK)
 		return FALSE
 
@@ -583,6 +645,8 @@
 	acid = 90
 
 /obj/item/clothing/suit/armor/changeling/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CHANGELING_TRAIT)
 	if(ismob(loc))
@@ -608,6 +672,8 @@
 	acid = 90
 
 /obj/item/clothing/head/helmet/changeling/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CHANGELING_TRAIT)
 
@@ -639,6 +705,8 @@
 	var/holds_reagents = TRUE
 
 /obj/item/clothing/head/helmet/changeling_hivehead/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(holds_reagents)
 		create_reagents(50, REFILLABLE)
@@ -651,10 +719,14 @@
 	bio = 50
 
 /obj/item/clothing/head/helmet/changeling_hivehead/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CHANGELING_TRAIT)
 
 /obj/item/clothing/head/helmet/changeling_hivehead/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/organ/monster_core/regenerative_core/legion) || !holds_reagents)
 		return NONE
 	visible_message(span_boldwarning("As [user] shoves [tool] into [src], [src] begins to mutate."))
@@ -679,12 +751,16 @@
 	var/spawn_count = 6
 
 /datum/action/cooldown/hivehead_spawn_minions/PreActivate(atom/target)
+	procstart = null
+	src.procstart = null
 	if(owner.movement_type & VENTCRAWLING)
 		owner.balloon_alert(owner, "unavailable here")
 		return FALSE
 	return ..()
 
 /datum/action/cooldown/hivehead_spawn_minions/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	do_tell()
 	var/spawns = spawn_count
@@ -698,11 +774,15 @@
 
 ///Our tell that we're using this ability. Usually a sound and a visible message.area
 /datum/action/cooldown/hivehead_spawn_minions/proc/do_tell()
+	procstart = null
+	src.procstart = null
 	owner.visible_message(span_warning("[owner]'s head begins to buzz as bees begin to pour out!"), span_warning("We release the bees."), span_hear("You hear a loud buzzing sound!"))
 	playsound(owner, 'sound/mobs/non-humanoids/bee/bee_swarm.ogg', 60, TRUE)
 
 ///Stuff we want to do to our minions. This is in its own proc so subtypes can override this behaviour.
 /datum/action/cooldown/hivehead_spawn_minions/proc/minion_additional_changes(mob/living/basic/minion)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bee/summoned_bee = minion
 	var/obj/item/clothing/head/helmet/changeling_hivehead/hivehead = owner.get_item_by_slot(ITEM_SLOT_HEAD)
 	if(istype(summoned_bee) && istype(hivehead) && length(hivehead.reagents.reagent_list))
@@ -725,10 +805,14 @@
 	spawn_count = 4
 
 /datum/action/cooldown/hivehead_spawn_minions/legion/do_tell()
+	procstart = null
+	src.procstart = null
 	owner.visible_message(span_warning("[owner]'s head begins to shake as legion begin to pour out!"), span_warning("We release the legion."), span_hear("You hear a loud squishing sound!"))
 	playsound(owner, 'sound/effects/blob/attackblob.ogg', 60, TRUE)
 
 /datum/action/cooldown/hivehead_spawn_minions/legion/minion_additional_changes(mob/living/basic/minion)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/mining/legion_brood/brood = minion
 	if (istype(brood))
 		brood.assign_creator(owner, FALSE)

@@ -8,6 +8,8 @@
 	var/base_damage = 5
 
 /datum/status_effect/dagger_swinging/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -18,6 +20,8 @@
 	RegisterSignal(owner, COMSIG_LIVING_CHECK_BLOCK, PROC_REF(block_attack))
 
 /datum/status_effect/dagger_swinging/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(!isturf(owner.loc))
 		return
 
@@ -30,6 +34,8 @@
 		playsound(owner, 'sound/items/weapons/bladeslice.ogg', 75, FALSE) //just play it once
 
 /datum/status_effect/dagger_swinging/proc/hit_by_projectile(mob/living/swinger, obj/projectile/projectile, hit_area)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isturf(owner.loc))
@@ -66,6 +72,8 @@
 	return SUCCESSFUL_BLOCK
 
 /datum/status_effect/dagger_swinging/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(owner, TRAIT_TENTACLE_IMMUNE, REF(src))
 
@@ -79,6 +87,8 @@
 	var/static/mutable_appearance/stun_lightning = mutable_appearance('icons/effects/effects.dmi', "lightning", layer = ABOVE_ALL_MOB_LAYER)
 
 /datum/status_effect/dagger_stun/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -88,11 +98,15 @@
 	owner.update_appearance()
 
 /datum/status_effect/dagger_stun/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(owner, TRAIT_AI_PAUSED, REF(src))
 	UnregisterSignal(owner, COMSIG_ATOM_UPDATE_OVERLAYS)
 	owner.update_appearance()
 
 /datum/status_effect/dagger_stun/proc/on_overlays_updated(atom/parent_atom, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	overlays += stun_lightning

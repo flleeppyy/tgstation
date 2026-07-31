@@ -18,16 +18,22 @@
 	var/is_gas_flowing = FALSE
 
 /obj/machinery/atmospherics/components/binary/temperature_gate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/machinery/atmospherics/components/binary/temperature_gate/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	context[SCREENTIP_CONTEXT_CTRL_LMB] = "Turn [on ? "off" : "on"]"
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "Maximize target temperature"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/atmospherics/components/binary/temperature_gate/click_ctrl(mob/user)
+	procstart = null
+	src.procstart = null
 	if(is_operational)
 		set_on(!on)
 		balloon_alert(user, "turned [on ? "on" : "off"]")
@@ -36,6 +42,8 @@
 	return CLICK_ACTION_BLOCKING
 
 /obj/machinery/atmospherics/components/binary/temperature_gate/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(target_temperature == max_temperature)
 		return CLICK_ACTION_BLOCKING
 
@@ -47,6 +55,8 @@
 
 
 /obj/machinery/atmospherics/components/binary/temperature_gate/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "This device will let gas flow if the temperature of the gas in the input is [inverted ? "higher" : "lower"] than the temperature set in the interface."
 	if(inverted)
@@ -55,6 +65,8 @@
 		. += "The sensor's settings can be changed by using a multitool on the device."
 
 /obj/machinery/atmospherics/components/binary/temperature_gate/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	if(on && is_operational && is_gas_flowing)
 		icon_state = "tgate_flow-[set_overlay_offset(piping_layer)]"
 	else if(on && is_operational && !is_gas_flowing)
@@ -64,6 +76,8 @@
 
 
 /obj/machinery/atmospherics/components/binary/temperature_gate/process_atmos()
+	procstart = null
+	src.procstart = null
 	if(!on || !is_operational)
 		return
 
@@ -88,17 +102,23 @@
 	update_icon_nopipes()
 
 /obj/machinery/atmospherics/components/binary/temperature_gate/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(!on || direction != dir)
 		return
 	. = ..()
 
 /obj/machinery/atmospherics/components/binary/temperature_gate/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AtmosTempGate", name)
 		ui.open()
 
 /obj/machinery/atmospherics/components/binary/temperature_gate/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["on"] = on
 	data["temperature"] = round(target_temperature)
@@ -107,6 +127,8 @@
 	return data
 
 /obj/machinery/atmospherics/components/binary/temperature_gate/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -129,12 +151,16 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/machinery/atmospherics/components/binary/temperature_gate/can_unwrench(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && on && is_operational)
 		to_chat(user, span_warning("You cannot unwrench [src], turn it off first!"))
 		return FALSE
 
 /obj/machinery/atmospherics/components/binary/temperature_gate/multitool_act(mob/living/user, obj/item/multitool/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (istype(I))
 		inverted = !inverted

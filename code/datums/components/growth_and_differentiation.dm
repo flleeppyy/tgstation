@@ -71,6 +71,8 @@
 	return setup_growth_tracking()
 
 /datum/component/growth_and_differentiation/Destroy(force)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSdcs, src)
 	deltimer(timer_id)
 	optional_checks = null
@@ -79,17 +81,23 @@
 
 /// Wrapper for qdel() so we can pass it in RegisterSignals(). I hate it here too.
 /datum/component/growth_and_differentiation/proc/stop_component_processing_entirely()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /// What we invoke when the round starts so we can set up our timer.
 /datum/component/growth_and_differentiation/proc/comp_on_round_start()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	setup_growth_tracking()
 	UnregisterSignal(SSticker, COMSIG_TICKER_ROUND_STARTING)
 
 /// Sets up the two different systems for growth: the timer and the probability based one. Both can coexist. Return COMPONENT_INCOMPATIBLE if we fail to set up either.
 /datum/component/growth_and_differentiation/proc/setup_growth_tracking()
+	procstart = null
+	src.procstart = null
 	var/did_we_add_at_least_one_thing = FALSE
 
 	if(!isnull(growth_time))
@@ -107,7 +115,9 @@
 
 	return null // just for explicitness's sake, if they ever change Component's Initialize to have more return values make sure this is the one for "Success!"
 
-/datum/component/growth_and_differentiation/process(seconds_per_tick) // check the prob we were passed in, and if we're lucky, grow!
+/datum/component/growth_and_differentiation/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null // check the prob we were passed in, and if we're lucky, grow!
 	if(ready_to_grow)
 		INVOKE_ASYNC(src, PROC_REF(grow), FALSE)
 		return
@@ -124,6 +134,8 @@
 			percent_grown += rand(lower_growth_value, upper_growth_value)
 
 /datum/component/growth_and_differentiation/proc/on_happiness_change(datum/source, happiness_percentage)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/probability_to_add = initial_growth_probability * happiness_percentage
@@ -131,6 +143,8 @@
 
 /// Grows the mob into its new form.
 /datum/component/growth_and_differentiation/proc/grow(silent)
+	procstart = null
+	src.procstart = null
 	if(!isnull(optional_checks) && !optional_checks.Invoke()) // we failed our checks somehow, but we're still ready to grow. Let's wait until next tick to see if our circumstances have changed.
 		ready_to_grow = TRUE
 		return

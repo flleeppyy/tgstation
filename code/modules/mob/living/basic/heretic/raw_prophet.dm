@@ -24,6 +24,8 @@
 	)
 
 /mob/living/basic/heretic_summon/raw_prophet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/wheel)
 	var/static/list/body_parts = list(/obj/effect/gibspawner/human, /obj/item/bodypart/arm/left, /obj/item/organ/eyes)
@@ -48,6 +50,8 @@
 
 /// Returns a list of abilities that we should add.
 /mob/living/basic/heretic_summon/raw_prophet/proc/get_innate_abilities()
+	procstart = null
+	src.procstart = null
 	var/list/returnable_list = innate_abilities.Copy()
 	returnable_list += list(/datum/action/cooldown/spell/pointed/blind/eldritch = BB_TARGETED_ACTION)
 	return returnable_list
@@ -57,6 +61,8 @@
  * Stuns people who are ejected from the network.
  */
 /mob/living/basic/heretic_summon/raw_prophet/proc/after_unlink(mob/living/unlinked_mob)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(unlinked_mob) || unlinked_mob.stat == DEAD)
 		return
 
@@ -64,6 +70,8 @@
 	unlinked_mob.AdjustParalyzed(0.5 SECONDS) //micro stun
 
 /mob/living/basic/heretic_summon/raw_prophet/melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	SpinAnimation(speed = 5, loops = 1)
 	if (target == src)
 		return
@@ -79,6 +87,8 @@
 	ai_controller = /datum/ai_controller/basic_controller/raw_prophet
 
 /mob/living/basic/heretic_summon/raw_prophet/ruins/get_innate_abilities()
+	procstart = null
+	src.procstart = null
 	var/list/returnable_list = innate_abilities.Copy()
 	returnable_list += list(/datum/action/cooldown/mob_cooldown/watcher_gaze = BB_TARGETED_ACTION)
 	return returnable_list

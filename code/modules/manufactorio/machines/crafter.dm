@@ -18,6 +18,8 @@
 	var/cooking = FALSE
 
 /obj/machinery/power/manufacturing/crafter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	craftsman = AddComponent(/datum/component/personal_crafting/machine)
 	if(ispath(recipe))
@@ -25,6 +27,8 @@
 	START_PROCESSING(SSmanufacturing, src)
 
 /obj/machinery/power/manufacturing/crafter/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It is currently manufacturing <b>[isnull(recipe) ? "nothing. Use a multitool to set it" : recipe.name]</b>.")
 	if(isnull(recipe))
@@ -43,6 +47,8 @@
 		. += "[amount > 1 ? ("[amount]" + " of") : "a"] [initial(ingredient.name)]"
 
 /obj/machinery/power/manufacturing/crafter/receive_resource(obj/receiving, atom/from, receive_dir)
+	procstart = null
+	src.procstart = null
 	var/turf/machine_turf = get_turf(src)
 	if(length(machine_turf.contents) >= MANUFACTURING_TURF_LAG_LIMIT)
 		return MANUFACTURING_FAIL
@@ -50,6 +56,8 @@
 	return MANUFACTURING_SUCCESS
 
 /obj/machinery/power/manufacturing/crafter/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	var/list/available = list()
 	for(var/datum/crafting_recipe/potential_recipe as anything in craftsman.get_visible_recipes(user))
 		var/obj/as_obj = potential_recipe.result
@@ -63,12 +71,16 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/manufacturing/crafter/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	recipe = null
 	craftsman = null
 	withheld.Cut()
 
 /obj/machinery/power/manufacturing/crafter/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	send_withheld() // try send any pending stuff
 	if(!isnull(craft_timer))
 		if(surplus() >= power_cost)
@@ -84,6 +96,8 @@
 	craft_timer = addtimer(CALLBACK(src, PROC_REF(craft), recipe), recipe.time, TIMER_STOPPABLE)
 
 /obj/machinery/power/manufacturing/crafter/proc/send_withheld()
+	procstart = null
+	src.procstart = null
 	if(!length(withheld))
 		return FALSE
 	for(var/datum/weakref/weakref as anything in withheld)
@@ -96,6 +110,8 @@
 	return length(withheld)
 
 /obj/machinery/power/manufacturing/crafter/proc/craft(datum/crafting_recipe/recipe)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	craft_timer = null

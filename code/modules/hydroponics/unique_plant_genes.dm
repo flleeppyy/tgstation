@@ -11,6 +11,8 @@
 	var/shield_uses = 1
 
 /datum/plant_gene/trait/anti_magic/on_new_plant(obj/item/our_plant, newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -27,10 +29,14 @@
 
 /// When the plant our gene is hosted in is drained of an anti-magic charge.
 /datum/plant_gene/trait/anti_magic/proc/drain_antimagic(mob/user, obj/item/our_plant)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("[our_plant] hums slightly, and seems to decay a bit."))
 
 /// When the plant our gene is hosted in is drained of all of its anti-magic charges.
 /datum/plant_gene/trait/anti_magic/proc/expire(mob/user, obj/item/our_plant)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("[our_plant] rapidly turns into ash!"))
 	new /obj/effect/decal/cleanable/ash(our_plant.drop_location())
 	qdel(our_plant)
@@ -48,6 +54,8 @@
 	var/degradation_noun = "leaves"
 
 /datum/plant_gene/trait/attack/on_new_plant(obj/item/our_plant, newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -60,6 +68,8 @@
 
 /// Signal proc for [COMSIG_ITEM_ATTACK] that allows for effects on attack
 /datum/plant_gene/trait/attack/proc/on_plant_attack(obj/item/source, mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(attack_effect), source, target, user)
@@ -73,10 +83,14 @@
  * target - the person who is attacked by the plant
  */
 /datum/plant_gene/trait/attack/proc/attack_effect(obj/item/our_plant, mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Signal proc for [COMSIG_ITEM_AFTERATTACK] that allows for effects after an attack is done
 /datum/plant_gene/trait/attack/proc/after_plant_attack(obj/item/source, atom/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(after_attack_effect), source, target, user)
 
@@ -89,6 +103,8 @@
  * target - the atom which is attacked by the plant
  */
 /datum/plant_gene/trait/attack/proc/after_attack_effect(obj/item/our_plant, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(!degrades_after_hit)
@@ -113,6 +129,8 @@
 	trait_flags = TRAIT_SHOW_EXAMINE
 
 /datum/plant_gene/trait/attack/novaflower_attack/attack_effect(obj/item/our_plant, mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(target))
 		return
 
@@ -131,6 +149,8 @@
 	description = "Makes others feel the power on hit."
 
 /datum/plant_gene/trait/attack/sunflower_attack/after_attack_effect(obj/item/our_plant, atom/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(ismob(target))
 		var/mob/target_mob = target
 		user.visible_message("<font color='green'>[user] smacks [target_mob] with [user.p_their()] [our_plant.name]! <font color='orange'><b>FLOWER POWER!</b></font></font>", ignored_mobs = list(target_mob, user))
@@ -164,6 +184,8 @@
 	var/list/genes_to_check
 
 /datum/plant_gene/trait/backfire/on_new_plant(obj/item/our_plant, newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -176,6 +198,8 @@
 
 /// Signal proc for [COMSIG_PLANT_ON_BACKFIRE] that causes the backfire effect.
 /datum/plant_gene/trait/backfire/proc/on_backfire(obj/item/source, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(backfire_effect), source, user)
@@ -185,6 +209,8 @@
  * Override with plant-specific effects.
  */
 /datum/plant_gene/trait/backfire/proc/backfire_effect(obj/item/our_plant, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Rose's prick on backfire
@@ -195,6 +221,8 @@
 	trait_flags = TRAIT_SHOW_EXAMINE
 
 /datum/plant_gene/trait/backfire/rose_thorns/backfire_effect(obj/item/our_plant, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/seeds/our_seed = our_plant.get_plant_seed()
 	if(!our_seed.get_gene(/datum/plant_gene/trait/sticky) && prob(66))
 		to_chat(user, span_danger("[our_plant]'s thorns nearly prick your hand. Best be careful."))
@@ -212,6 +240,8 @@
 	trait_flags = TRAIT_SHOW_EXAMINE
 
 /datum/plant_gene/trait/backfire/novaflower_heat/backfire_effect(obj/item/our_plant, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_danger("[our_plant] singes your bare hand!"))
 	our_plant.investigate_log("self-burned [key_name(user)] for [our_plant.force] at [AREACOORD(user)]", INVESTIGATE_BOTANY)
 	user.apply_damage(our_plant.force, our_plant.damtype, user.get_active_hand(), wound_bonus = CANT_WOUND)
@@ -223,6 +253,8 @@
 	trait_flags = TRAIT_SHOW_EXAMINE
 
 /datum/plant_gene/trait/backfire/nettle_burn/backfire_effect(obj/item/our_plant, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_danger("[our_plant] burns your bare hand!"))
 	our_plant.investigate_log("self-burned [key_name(user)] for [our_plant.force] at [AREACOORD(user)]", INVESTIGATE_BOTANY)
 	user.apply_damage(our_plant.force, our_plant.damtype, user.get_active_hand(), wound_bonus = CANT_WOUND)
@@ -233,6 +265,8 @@
 	cancel_action_on_backfire = TRUE
 
 /datum/plant_gene/trait/backfire/nettle_burn/death/backfire_effect(obj/item/our_plant, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || prob(50))
 		return
@@ -252,6 +286,8 @@
 	var/datum/weakref/our_chili
 
 /datum/plant_gene/trait/backfire/chili_heat/on_new_plant(obj/item/our_plant, newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -266,6 +302,8 @@
  * user - the mob holding our plant
  */
 /datum/plant_gene/trait/backfire/chili_heat/backfire_effect(obj/item/our_plant, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	held_mob = WEAKREF(user)
 	START_PROCESSING(SSobj, src)
 
@@ -275,6 +313,8 @@
  * our_plant - our source plant
  */
 /datum/plant_gene/trait/backfire/chili_heat/proc/stop_backfire_effect(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	held_mob = null
@@ -285,6 +325,8 @@
  * Stops processing if we're no longer being held by [held mob].
  */
 /datum/plant_gene/trait/backfire/chili_heat/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/our_mob = held_mob?.resolve()
 	var/obj/item/our_plant = our_chili?.resolve()
 
@@ -305,6 +347,8 @@
 	genes_to_check = list(/datum/plant_gene/trait/squash)
 
 /datum/plant_gene/trait/backfire/bluespace/backfire_effect(obj/item/our_plant, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(prob(50))
 		return
 
@@ -334,6 +378,8 @@
 	var/mob_speed_multiplier = 1
 
 /datum/plant_gene/trait/mob_transformation/on_new_plant(obj/item/our_plant, newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -352,6 +398,8 @@
  * user - the mob feeding someone the plant (generally, target == user)
  */
 /datum/plant_gene/trait/mob_transformation/proc/pre_consumption_check(obj/item/our_plant, atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!awakening)
@@ -373,6 +421,8 @@
  * user - the mob activating the plant
  */
 /datum/plant_gene/trait/mob_transformation/proc/manual_awakening(obj/item/our_plant, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(awakening || isspaceturf(user.loc))
@@ -393,6 +443,8 @@
  * user - the mob handling the plant
  */
 /datum/plant_gene/trait/mob_transformation/proc/early_awakening(obj/item/our_plant, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!awakening && !isspaceturf(user.loc) && prob(25))
@@ -406,6 +458,8 @@
  * awaken_time - the time, in seconds, it will take for the plant to spawn.
  */
 /datum/plant_gene/trait/mob_transformation/proc/begin_awaken(obj/item/our_plant, awaken_time)
+	procstart = null
+	src.procstart = null
 	awakening = TRUE
 	addtimer(CALLBACK(src, PROC_REF(awaken), our_plant), awaken_time)
 
@@ -415,6 +469,8 @@
  * our_plant - the plant that's waking up
  */
 /datum/plant_gene/trait/mob_transformation/proc/awaken(obj/item/our_plant)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(our_plant))
 		return
 	if(!ispath(killer_plant))
@@ -465,6 +521,8 @@
 	trait_flags = TRAIT_SHOW_EXAMINE
 
 /datum/plant_gene/trait/one_bite/on_new_plant(obj/item/our_plant, newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -482,6 +540,8 @@
 	var/new_capacity = 100
 
 /datum/plant_gene/trait/modified_volume/on_new_plant(obj/item/our_plant, newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -511,6 +571,8 @@
 	trait_ids = ATTACK_SELF_ID
 
 /datum/plant_gene/trait/bomb_plant/on_new_plant(obj/item/our_plant, newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -527,6 +589,8 @@
  * user - the mob detonating the plant
  */
 /datum/plant_gene/trait/bomb_plant/proc/trigger_detonation(obj/item/our_plant, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/seeds/our_seed = our_plant.get_plant_seed()
@@ -553,6 +617,8 @@
  * disassembled - if it was disassembled when it was deconstructed.
  */
 /datum/plant_gene/trait/bomb_plant/proc/deconstruct_reaction(obj/item/our_plant, disassembled)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!disassembled)
@@ -569,6 +635,8 @@
  * severity - severity of the explosion
  */
 /datum/plant_gene/trait/bomb_plant/proc/explosion_reaction(obj/item/our_plant, severity)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(our_plant)
@@ -579,6 +647,8 @@
  * our_plant - the plant that's exploding for real
  */
 /datum/plant_gene/trait/bomb_plant/proc/detonate(obj/item/our_plant)
+	procstart = null
+	src.procstart = null
 	our_plant.reagents.chem_temp = 1000 //Sets off the gunpowder
 	our_plant.reagents.handle_reactions()
 
@@ -587,6 +657,8 @@
 	name = "Explosive Nature"
 
 /datum/plant_gene/trait/bomb_plant/potency_based/trigger_detonation(obj/item/our_plant, mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(
 		span_warning("[user] primes [our_plant]!"),
 		span_userdanger("You prime [our_plant]!"),
@@ -603,6 +675,8 @@
 	addtimer(CALLBACK(src, PROC_REF(detonate), our_plant), rand(1 SECONDS, 6 SECONDS))
 
 /datum/plant_gene/trait/bomb_plant/potency_based/detonate(obj/item/our_plant)
+	procstart = null
+	src.procstart = null
 	var/obj/item/seeds/our_seed = our_plant.get_plant_seed()
 	var/flame_reach = clamp(round(our_seed.potency / 20), 1, 5) //Like IEDs - their flame range can get up to 5, but their real boom is small
 
@@ -622,12 +696,16 @@
 	var/datum/weakref/stinky_seed
 
 /datum/plant_gene/trait/gas_production/on_new_seed(obj/item/seeds/new_seed)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(new_seed, COMSIG_SEED_ON_PLANTED, PROC_REF(set_home_tray))
 	RegisterSignal(new_seed, COMSIG_SEED_ON_GROW, PROC_REF(try_release_gas))
 	RegisterSignal(new_seed, COMSIG_QDELETING, PROC_REF(stop_gas))
 	stinky_seed = WEAKREF(new_seed)
 
 /datum/plant_gene/trait/gas_production/on_removed(obj/item/seeds/old_seed)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(old_seed, list(COMSIG_QDELETING, COMSIG_SEED_ON_PLANTED, COMSIG_SEED_ON_GROW))
 	stop_gas()
 
@@ -638,6 +716,8 @@
  * grown_tray - the tray we were planted in
  */
 /datum/plant_gene/trait/gas_production/proc/set_home_tray(obj/item/seeds/our_seed, obj/machinery/hydroponics/grown_tray)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	home_tray = WEAKREF(grown_tray)
@@ -649,6 +729,8 @@
  * grown_tray - the tray, we're currently growing within
  */
 /datum/plant_gene/trait/gas_production/proc/try_release_gas(obj/item/seeds/our_seed, obj/machinery/hydroponics/grown_tray)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(grown_tray.age < our_seed.maturation) // Start a little before it blooms
@@ -660,6 +742,8 @@
  * Stop the seed from releasing gas.
  */
 /datum/plant_gene/trait/gas_production/proc/stop_gas(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	STOP_PROCESSING(SSobj, src)
@@ -668,6 +752,8 @@
  * If the conditions are acceptable and the potency is high enough, release miasma into the air.
  */
 /datum/plant_gene/trait/gas_production/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/obj/item/seeds/seed = stinky_seed?.resolve()
 	var/obj/machinery/hydroponics/tray = home_tray?.resolve()
 
@@ -703,14 +789,20 @@
 	var/extracted = FALSE
 
 /datum/plant_gene/trait/opium_production/on_plant_in_tray(obj/machinery/hydroponics/tray, obj/item/seeds/seed)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(tray, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(try_extract))
 	extracted = FALSE // just in case...
 
 /datum/plant_gene/trait/opium_production/on_unplanted_from_tray(obj/machinery/hydroponics/tray, obj/item/seeds/seed)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(tray, COMSIG_ATOM_ITEM_INTERACTION)
 
 /// Redirect tray item interaction so we can have custom extracting behavior
 /datum/plant_gene/trait/opium_production/proc/try_extract(obj/machinery/hydroponics/source, mob/living/user, obj/item/tool, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!tool.sharpness || tool.tool_behaviour == TOOL_SHOVEL)
@@ -750,6 +842,8 @@
 	mutability_flags = PLANT_GENE_GRAFTABLE
 
 /datum/plant_gene/reagent/preset/New(new_reagent_id, new_reagent_rate = 0.04)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_reagent(reagent_id)
 

@@ -142,6 +142,8 @@
 	announce_channels = list(RADIO_CHANNEL_SCIENCE, RADIO_CHANNEL_ENGINEERING)
 
 /datum/techweb_node/mod_engi_adv/New()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(SSstation, STATION_TRAIT_RADIOACTIVE_NEBULA)) //we'll really need the rad protection modsuit module
 		starting_node = TRUE
 	return ..()

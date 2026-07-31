@@ -3,6 +3,8 @@
 	default_location = "icons/mob/clothing/"
 
 /datum/unit_test/missing_icons/worn_icons/Run()
+	procstart = null
+	src.procstart = null
 	compile_icon_state_locations()
 
 	var/list/already_warned_icons = list()

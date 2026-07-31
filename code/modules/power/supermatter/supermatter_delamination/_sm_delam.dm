@@ -17,6 +17,8 @@ GLOBAL_LIST_INIT(sm_delam_list, list(
 /// Whether we are eligible for this delamination or not. TRUE if valid, FALSE if not.
 /// [/obj/machinery/power/supermatter_crystal/proc/set_delam]
 /datum/sm_delam/proc/can_select(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 #define ROUNDCOUNT_ENGINE_JUST_EXPLODED -1
@@ -24,6 +26,8 @@ GLOBAL_LIST_INIT(sm_delam_list, list(
 /// Called when the count down has been finished, do the nasty work.
 /// [/obj/machinery/power/supermatter_crystal/proc/count_down]
 /datum/sm_delam/proc/delaminate(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	if (sm.is_main_engine)
 		SSpersistence.delam_highscore = SSpersistence.rounds_since_engine_exploded
 		SSpersistence.rounds_since_engine_exploded = ROUNDCOUNT_ENGINE_JUST_EXPLODED
@@ -38,6 +42,8 @@ GLOBAL_LIST_INIT(sm_delam_list, list(
 /// Returns TRUE if we just told people a delam is going on. FALSE if its healing or we didnt say anything.
 /// [/obj/machinery/power/supermatter_crystal/proc/process_atmos]
 /datum/sm_delam/proc/delam_progress(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	if(sm.damage <= sm.warning_point) // Damage is too low, lets not
 		return FALSE
 
@@ -81,12 +87,16 @@ GLOBAL_LIST_INIT(sm_delam_list, list(
 
 /// Generates an admin message and creates an investigate log.
 /datum/sm_delam/proc/log_delamination(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	message_admins("[ADMIN_VERBOSEJMP(sm)] triggered a [name].")
 	sm.investigate_log("triggered a [name].", INVESTIGATE_ENGINE)
 
 /// Called when a supermatter switches its strategy from another one to us.
 /// [/obj/machinery/power/supermatter_crystal/proc/set_delam]
 /datum/sm_delam/proc/on_select(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	sm.investigate_log("functional strategy is now [name].", INVESTIGATE_ENGINE)
 	if(SSticker.HasRoundStarted())
@@ -95,17 +105,23 @@ GLOBAL_LIST_INIT(sm_delam_list, list(
 /// Called when a supermatter switches its strategy from us to something else.
 /// [/obj/machinery/power/supermatter_crystal/proc/set_delam]
 /datum/sm_delam/proc/on_deselect(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	sm.investigate_log("previous strategy was [name].", INVESTIGATE_ENGINE)
 
 /// Added to an examine return value.
 /// [/obj/machinery/power/supermatter_crystal/examine]
 /datum/sm_delam/proc/examine(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	return list()
 
 /// Add whatever overlay to the sm.
 /// [/obj/machinery/power/supermatter_crystal/update_overlays]
 /datum/sm_delam/proc/overlays(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	if(sm.final_countdown)
 		return list(mutable_appearance(icon = sm.icon, icon_state = "causality_field", layer = FLOAT_LAYER))
 	return list()
@@ -113,6 +129,8 @@ GLOBAL_LIST_INIT(sm_delam_list, list(
 /// Applies filters to the SM.
 /// [/obj/machinery/power/supermatter_crystal/process_atmos]
 /datum/sm_delam/proc/filters(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	var/new_filter = isnull(sm.get_filter("ray"))
 
 	sm.add_filter(name = "ray", priority = 1, params = list(
@@ -132,6 +150,8 @@ GLOBAL_LIST_INIT(sm_delam_list, list(
 // Change how bright the rock is.
 /// [/obj/machinery/power/supermatter_crystal/process_atmos]
 /datum/sm_delam/proc/lights(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	sm.set_light(
 		l_range = ROUND_UP(clamp(sm.internal_energy / 500, 4, 10)),
 		l_power = ROUND_UP(clamp(sm.internal_energy / 1000, 1, 5)),
@@ -142,6 +162,8 @@ GLOBAL_LIST_INIT(sm_delam_list, list(
 /// Returns a set of messages to be spouted during delams
 /// First message is start of count down, second message is quitting of count down (if sm healed), third is 5 second intervals
 /datum/sm_delam/proc/count_down_messages(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	var/list/messages = list()
 	messages += "CRYSTAL DELAMINATION IMMINENT. The supermatter has reached critical integrity failure. Emergency causality destabilization field has been activated."
 	messages += "Crystalline hyperstructure returning to safe operating parameters. Failsafe has been disengaged."

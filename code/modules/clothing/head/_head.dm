@@ -10,6 +10,8 @@
 
 ///Special throw_impact for hats to frisbee hats at people to place them on their heads/attempt to de-hat them.
 /obj/item/clothing/head/throw_impact(atom/hit_atom, datum/thrownthing/thrownthing)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	///if the thrown object's target zone isn't the head
 	if(thrownthing.target_zone != BODY_ZONE_HEAD)
@@ -56,6 +58,8 @@
 			R.place_on_head(src) //hats aren't designed to snugly fit borg heads or w/e so they'll always manage to knock eachother off
 
 /obj/item/clothing/head/worn_overlays(mutable_appearance/standing, isinhands = FALSE, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isinhands)
 		return
@@ -63,6 +67,8 @@
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damagedhelmet")
 
 /obj/item/clothing/head/separate_worn_overlays(mutable_appearance/standing, mutable_appearance/draw_target, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isinhands)
 		return
@@ -71,6 +77,8 @@
 		. += blood_overlay
 
 /obj/item/clothing/head/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ismob(loc))
 		var/mob/M = loc

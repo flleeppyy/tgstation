@@ -28,6 +28,8 @@
 	var/humanize_plasmamen = TRUE
 
 /obj/structure/outfit_wardrobe/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

@@ -13,10 +13,14 @@
 	var/list/datum/mafia_role/darkened_players = list()
 
 /datum/mafia_ability/flicker_rampage/New(datum/mafia_role/host_role)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(host_role, COMSIG_MAFIA_ON_KILL, PROC_REF(flickering_immunity))
 
 /datum/mafia_ability/flicker_rampage/perform_action_target(datum/mafia_controller/game, datum/mafia_role/day_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -32,6 +36,8 @@
 	return TRUE
 
 /datum/mafia_ability/flicker_rampage/proc/flickering_immunity(datum/source,datum/mafia_controller/game,datum/mafia_role/attacker,lynch)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!attacker)
 		return //no chance man, that's a town lynch

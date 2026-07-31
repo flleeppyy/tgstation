@@ -1,5 +1,7 @@
 ////////////////////////////////
 /proc/message_admins(msg)
+	procstart = null
+	src.procstart = null
 	msg = "<span class=\"admin\"><span class=\"prefix\">ADMIN LOG:</span> <span class=\"message\">[msg]</span></span>"
 	to_chat(GLOB.admins,
 		type = MESSAGE_TYPE_ADMINLOG,
@@ -7,6 +9,8 @@
 		confidential = TRUE)
 
 /proc/relay_msg_admins(msg)
+	procstart = null
+	src.procstart = null
 	msg = "<span class=\"admin\"><span class=\"prefix\">RELAY:</span> <span class=\"message\">[msg]</span></span>"
 	to_chat(GLOB.admins,
 		type = MESSAGE_TYPE_ADMINLOG,
@@ -16,6 +20,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////Panels
 
 /datum/admins/proc/Game()
+	procstart = null
+	src.procstart = null
 	if(!check_rights(0))
 		return
 
@@ -112,6 +118,8 @@ ADMIN_VERB(create_or_modify_area, R_DEBUG, "Create Or Modify Area", "Create of m
 //defaults to kicking everyone (afk + non afk clients in the lobby)
 //returns a list of ckeys of the kicked clients
 /proc/kick_clients_in_lobby(message, kick_only_afk = 0)
+	procstart = null
+	src.procstart = null
 	var/list/kicked_client_names = list()
 	for(var/client/C in GLOB.clients)
 		if(isnewplayer(C.mob))
@@ -126,6 +134,8 @@ ADMIN_VERB(create_or_modify_area, R_DEBUG, "Create Or Modify Area", "Create of m
 //returns TRUE to let the dragdrop code know we are trapping this event
 //returns FALSE if we don't plan to trap the event
 /datum/admins/proc/cmd_ghost_drag(mob/dead/observer/frommob, mob/tomob)
+	procstart = null
+	src.procstart = null
 
 	//this is the exact two check rights checks required to edit a ckey with vv.
 	if (!check_rights(R_VAREDIT,0) || !check_rights(R_SPAWN|R_DEBUG,0))
@@ -167,6 +177,8 @@ ADMIN_VERB(create_or_modify_area, R_DEBUG, "Create Or Modify Area", "Create of m
 /// Sends a message to adminchat when anyone with a holder logs in or logs out.
 /// Is dependent on admin preferences and configuration settings, which means that this proc can fire without sending a message.
 /client/proc/adminGreet(logout = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!SSticker.HasRoundStarted())
 		return
 

@@ -23,15 +23,21 @@
 	laser = 25
 
 /obj/structure/blob/special/factory/scannerreport()
+	procstart = null
+	src.procstart = null
 	if(blobbernaut)
 		return "It is currently sustaining a blobbernaut, making it fragile and unable to produce blob spores."
 	return "Will produce a blob spore every few seconds."
 
 /obj/structure/blob/special/factory/creation_action()
+	procstart = null
+	src.procstart = null
 	if(overmind)
 		overmind.factory_blobs += src
 
 /obj/structure/blob/special/factory/Destroy()
+	procstart = null
+	src.procstart = null
 	spores_and_zombies = null
 	blobbernaut = null
 	if(overmind)
@@ -39,6 +45,8 @@
 	return ..()
 
 /obj/structure/blob/special/factory/Be_Pulsed()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(blobbernaut)
 		return
@@ -53,6 +61,8 @@
 
 /// Tracks the existence of a mob in our mobs list
 /obj/structure/blob/special/factory/proc/register_mob(mob/living/basic/blob_minion/blob_mob)
+	procstart = null
+	src.procstart = null
 	spores_and_zombies |= blob_mob
 	blob_mob.link_to_factory(src)
 	RegisterSignal(blob_mob, COMSIG_LIVING_DEATH, PROC_REF(on_spore_died))
@@ -60,21 +70,29 @@
 
 /// When a spore or zombie dies reset our spawn cooldown so we don't instantly replace it
 /obj/structure/blob/special/factory/proc/on_spore_died(mob/living/dead_spore)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	COOLDOWN_START(src, spore_delay, spore_cooldown)
 
 /// When a spore is deleted remove it from our list
 /obj/structure/blob/special/factory/proc/on_spore_lost(mob/living/dead_spore)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	spores_and_zombies -= dead_spore
 
 /// When a spore makes a zombie add it to our mobs list
 /obj/structure/blob/special/factory/proc/on_zombie_created(mob/living/spore, mob/living/zombie)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	register_mob(zombie)
 
 /// Produce a blobbernaut
 /obj/structure/blob/special/factory/proc/assign_blobbernaut(mob/living/new_naut)
+	procstart = null
+	src.procstart = null
 	is_creating_blobbernaut = FALSE
 	if (isnull(new_naut))
 		return
@@ -90,6 +108,8 @@
 
 /// When our brave soldier dies, reset our max integrity
 /obj/structure/blob/special/factory/proc/on_blobbernaut_death(mob/living/death_naut)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (isnull(blobbernaut) || blobbernaut != death_naut)
 		return

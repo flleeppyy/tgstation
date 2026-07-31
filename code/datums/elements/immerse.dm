@@ -24,6 +24,8 @@ GLOBAL_LIST_INIT(immerse_ignored_movable, typecacheof(list(
 	var/alpha = 180
 
 /datum/element/immerse/Attach(turf/target, mask_icon = "immerse", alpha = 180)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isturf(target) || !mask_icon)
 		return ELEMENT_INCOMPATIBLE
@@ -38,6 +40,8 @@ GLOBAL_LIST_INIT(immerse_ignored_movable, typecacheof(list(
 		start_immersion(target)
 
 /datum/element/immerse/Detach(turf/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, list(SIGNAL_ADDTRAIT(TRAIT_IMMERSE_STOPPED), SIGNAL_REMOVETRAIT(TRAIT_IMMERSE_STOPPED)))
 	if(!HAS_TRAIT(source, TRAIT_IMMERSE_STOPPED))
 		stop_immersion(source)
@@ -46,6 +50,8 @@ GLOBAL_LIST_INIT(immerse_ignored_movable, typecacheof(list(
 
 /// Makes the element start affecting the turf and its contents. Called on Attach() or when TRAIT_IMMERSE_STOPPED is removed.
 /datum/element/immerse/proc/start_immersion(turf/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	RegisterSignals(source, list(COMSIG_ATOM_ABSTRACT_ENTERED, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON), PROC_REF(on_init_or_entered))
 	RegisterSignal(source, COMSIG_ATOM_ABSTRACT_EXITED, PROC_REF(on_atom_exited))
@@ -57,6 +63,8 @@ GLOBAL_LIST_INIT(immerse_ignored_movable, typecacheof(list(
 
 /// Stops the element from affecting on the turf and its contents. Called on Detach() or when TRAIT_IMMERSE_STOPPED is added.
 /datum/element/immerse/proc/stop_immersion(turf/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(source, list(COMSIG_ATOM_ABSTRACT_ENTERED, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON, COMSIG_ATOM_ABSTRACT_EXITED))
 	for(var/atom/movable/movable as anything in attached_turf_contents[source])
@@ -69,6 +77,8 @@ GLOBAL_LIST_INIT(immerse_ignored_movable, typecacheof(list(
  * unless the movable is flying, it'll appear as if immersed in that water.
  */
 /datum/element/immerse/proc/on_init_or_entered(turf/source, atom/movable/movable)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(QDELETED(movable))
 		return
@@ -99,6 +109,8 @@ GLOBAL_LIST_INIT(immerse_ignored_movable, typecacheof(list(
 	ADD_TRAIT(movable, TRAIT_IMMERSED, ELEMENT_TRAIT(src))
 
 /datum/element/immerse/proc/on_movable_qdel(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	remove_from_element(source.loc, source)
 
@@ -108,6 +120,8 @@ GLOBAL_LIST_INIT(immerse_ignored_movable, typecacheof(list(
  * as well as movetype signals when the movable isn't buckled.
  */
 /datum/element/immerse/proc/try_immerse(atom/movable/movable, atom/movable/buckled)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/to_check = buckled || movable
 	if(!(to_check.movement_type & MOVETYPES_NOT_TOUCHING_GROUND) && !movable.throwing)
 		add_immerse_overlay(movable)
@@ -121,6 +135,8 @@ GLOBAL_LIST_INIT(immerse_ignored_movable, typecacheof(list(
 /// Called by on_set_buckled() and remove_from_element().
 /// This removes the filter and signals from the movable unless it doesn't have them.
 /datum/element/immerse/proc/try_unimmerse(atom/movable/movable, atom/movable/buckled)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/to_check = buckled || movable
 	if(!(to_check.movement_type & MOVETYPES_NOT_TOUCHING_GROUND) && !movable.throwing)
 		remove_immerse_overlay(movable)
@@ -134,12 +150,16 @@ GLOBAL_LIST_INIT(immerse_ignored_movable, typecacheof(list(
 	))
 
 /datum/element/immerse/proc/on_set_buckled(mob/living/source, atom/movable/new_buckled)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	try_unimmerse(source, source.buckled)
 	try_immerse(source, new_buckled)
 
 /// Removes the overlay from mob and bucklees is flying.
 /datum/element/immerse/proc/on_move_flag_enabled(atom/movable/source, flag, old_movement_type)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!(flag & MOVETYPES_NOT_TOUCHING_GROUND) || (old_movement_type & MOVETYPES_NOT_TOUCHING_GROUND) || source.throwing)
 		return
@@ -149,6 +169,8 @@ GLOBAL_LIST_INIT(immerse_ignored_movable, typecacheof(list(
 
 /// Works just like on_move_flag_enabled, except it only has to check that movable isn't flying
 /datum/element/immerse/proc/on_throw(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(source.movement_type & MOVETYPES_NOT_TOUCHING_GROUND)
 		return
@@ -158,6 +180,8 @@ GLOBAL_LIST_INIT(immerse_ignored_movable, typecacheof(list(
 
 /// Readds the overlay to the mob and bucklees if no longer flying.
 /datum/element/immerse/proc/on_move_flag_disabled(atom/movable/source, flag, old_movement_type)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!(flag & MOVETYPES_NOT_TOUCHING_GROUND) || (source.movement_type & MOVETYPES_NOT_TOUCHING_GROUND) || source.throwing)
 		return
@@ -167,6 +191,8 @@ GLOBAL_LIST_INIT(immerse_ignored_movable, typecacheof(list(
 
 /// Works just like on_move_flag_disabled, except it only has to check that movable isn't flying
 /datum/element/immerse/proc/on_throw_landed(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(source.movement_type & MOVETYPES_NOT_TOUCHING_GROUND)
 		return
@@ -177,6 +203,8 @@ GLOBAL_LIST_INIT(immerse_ignored_movable, typecacheof(list(
 /// Called when a movable exits the turf. If its new location is not in the list of turfs with this element,
 /// remove the movable from the element.
 /datum/element/immerse/proc/on_atom_exited(turf/source, atom/movable/exited, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!attached_turf_contents[exited.loc])
 		remove_from_element(source, exited)
@@ -186,6 +214,8 @@ GLOBAL_LIST_INIT(immerse_ignored_movable, typecacheof(list(
 
 //// Remove any signal, overlay, trait given to the movable and reference to it within the element.
 /datum/element/immerse/proc/remove_from_element(turf/source, atom/movable/movable)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/buckled = null
 	if(isliving(movable))
 		var/mob/living/living_mob = movable
@@ -198,6 +228,8 @@ GLOBAL_LIST_INIT(immerse_ignored_movable, typecacheof(list(
 
 /// Generate a mask filter mutable to use as render_source for the alpha filter based on provided width, height and immersion state
 /datum/element/immerse/proc/generate_immerse_mask(width, height, is_below_water)
+	procstart = null
+	src.procstart = null
 	if (!width || !height)
 		return
 	var/clean_height = height
@@ -242,6 +274,8 @@ GLOBAL_LIST_INIT(immerse_ignored_movable, typecacheof(list(
 	return target_mask
 
 /datum/element/immerse/proc/add_immerse_overlay(atom/movable/movable)
+	procstart = null
+	src.procstart = null
 	// This determines if the overlay should cover the entire surface of the object or not
 	var/layer_to_check = IS_TOPDOWN_PLANE(movable.plane) ? TOPDOWN_WATER_LEVEL_LAYER : WATER_LEVEL_LAYER
 	var/is_below_water = (movable.layer < layer_to_check) ? "underwater-" : ""
@@ -273,6 +307,8 @@ GLOBAL_LIST_INIT(immerse_ignored_movable, typecacheof(list(
 	movable.add_filter("immerse_mask", INFINITY, alpha_mask_filter(y = -floor((movable.get_cached_height() - ICON_SIZE_Y) / 2) - movable.pixel_z, render_source = effect_relay.render_target, flags = MASK_INVERSE))
 
 /datum/element/immerse/proc/remove_immerse_overlay(atom/movable/movable, deleting = TRUE)
+	procstart = null
+	src.procstart = null
 	movable.remove_filter("immerse_mask")
 	if (!deleting)
 		return
@@ -283,6 +319,8 @@ GLOBAL_LIST_INIT(immerse_ignored_movable, typecacheof(list(
 
 /// A band-aid to keep the (unique) visual overlay from scaling and rotating along with its owner. I'm sorry.
 /datum/element/immerse/proc/on_update_transform(mob/living/source, resize, new_lying_angle, is_opposite_angle)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/movable/immerse_mask/effect_relay = generated_visual_overlays[source]
 	if (!effect_relay)
@@ -296,12 +334,16 @@ GLOBAL_LIST_INIT(immerse_ignored_movable, typecacheof(list(
 
 /// Spin the overlay in the opposite direction so it doesn't look like it's spinning at all.
 /datum/element/immerse/proc/on_spin_animation(atom/source, speed, loops, segments, segment)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/movable/immerse_mask/immerse_mask = generated_visual_overlays[source]
 	if (immerse_mask)
 		immerse_mask.do_spin_animation(speed, loops, segments, -segment)
 
 /datum/element/immerse/proc/on_update_offsets(mob/living/source, new_x, new_y, new_w, new_z, animate)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!generated_visual_overlays[source])
 		return

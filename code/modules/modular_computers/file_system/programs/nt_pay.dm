@@ -22,6 +22,8 @@
 	var/wanted_token
 
 /datum/computer_file/program/nt_pay/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(action)
 		if("Transaction")
@@ -40,6 +42,8 @@
 				return wanted_token = "Account \"[params["wanted_name"]]\" not found."
 
 /datum/computer_file/program/nt_pay/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	current_user = computer.stored_id?.registered_account || null
@@ -56,10 +60,14 @@
 
 ///Wrapper and signal for the main payment function of this program
 /datum/computer_file/program/nt_pay/proc/make_payment(token, money_to_send, mob/user)
+	procstart = null
+	src.procstart = null
 	var/payment_result = _pay(token, money_to_send, user)
 	SEND_SIGNAL(computer, COMSIG_MODULAR_COMPUTER_NT_PAY_RESULT, payment_result)
 
 /datum/computer_file/program/nt_pay/proc/_pay(token, money_to_send, mob/user)
+	procstart = null
+	src.procstart = null
 	var/area/user_area = get_area(user)
 	if(user_area && is_area_virtual(user_area))
 		to_chat(user, span_notice("You cannot send virtual money to real accounts."))
@@ -128,6 +136,8 @@
 	var/datum/port/output/payment_received
 
 /obj/item/circuit_component/mod_program/nt_pay/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/modular_computer/modpc = associated_program.computer
 	RegisterSignal(modpc, COMSIG_MODULAR_COMPUTER_NT_PAY_RESULT, PROC_REF(on_payment_done))
@@ -136,6 +146,8 @@
 		register_id(inserted_id = modpc.stored_id)
 
 /obj/item/circuit_component/mod_program/nt_pay/unregister_shell()
+	procstart = null
+	src.procstart = null
 	var/obj/item/modular_computer/modpc = associated_program.computer
 	UnregisterSignal(modpc, list(COMSIG_MODULAR_COMPUTER_NT_PAY_RESULT, COMSIG_MODULAR_COMPUTER_INSERTED_ID))
 	if(modpc.stored_id)
@@ -143,15 +155,21 @@
 	return ..()
 
 /obj/item/circuit_component/mod_program/nt_pay/proc/register_id(datum/source, obj/item/card/inserted_id, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	RegisterSignal(inserted_id, COMSIG_ID_CARD_NTPAY_MONEY_RECEIVED, PROC_REF(on_payment_received))
 	RegisterSignal(inserted_id, COMSIG_MOVABLE_MOVED, PROC_REF(unregister_id))
 
 /obj/item/circuit_component/mod_program/nt_pay/proc/unregister_id(obj/item/card/gone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(gone, list(COMSIG_ID_CARD_NTPAY_MONEY_RECEIVED, COMSIG_MOVABLE_MOVED))
 
 /obj/item/circuit_component/mod_program/nt_pay/populate_ports()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	token_port = add_input_port("Token", PORT_TYPE_STRING)
 	money_port = add_input_port("Amount", PORT_TYPE_NUMBER)
@@ -161,6 +179,8 @@
 	payment_received = add_output_port("Received Payment", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/mod_program/nt_pay/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("Outputs require inserted ID", "orange")
 	. += create_ui_notice("NT-Pay Statuses:")
@@ -172,14 +192,20 @@
 	. += create_ui_notice("Fail (Invalid Amount) - [NT_PAY_STATUS_INVALID_MONEY]", "red")
 
 /obj/item/circuit_component/mod_program/nt_pay/input_received(datum/port/port)
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/program/nt_pay/program = associated_program
 	program.make_payment(token_port.value, money_port.value)
 
 /obj/item/circuit_component/mod_program/nt_pay/proc/on_payment_done(datum/source, payment_result)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	payment_status.set_output(payment_result)
 
 /obj/item/circuit_component/mod_program/nt_pay/proc/on_payment_received(datum/source, obj/item/modular_computer/computer, money_received)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	payment_device.set_output(computer)
 	payment_amount.set_output(money_received)

@@ -12,6 +12,8 @@
 	var/datum/gizmo_controller/controller = /datum/gizmo_controller/item
 
 /obj/item/gizmo/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(icon_states)
@@ -22,6 +24,8 @@
 	controller.generate_interfaces(src)
 
 /obj/item/gizmo/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 
 	if(is_wire_tool(tool))

@@ -6,6 +6,8 @@
 	var/dunk_amount // the amount of reagents that will be transferred from the container to the item on each click
 
 /datum/element/dunkable/Attach(datum/target, amount_per_dunk)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -13,10 +15,14 @@
 	RegisterSignal(target, COMSIG_ITEM_INTERACTING_WITH_ATOM, PROC_REF(get_dunked))
 
 /datum/element/dunkable/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_ITEM_INTERACTING_WITH_ATOM)
 
 /datum/element/dunkable/proc/get_dunked(obj/item/source, mob/user, atom/target, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!target.is_dunkable()) // container should be a valid target for dunking

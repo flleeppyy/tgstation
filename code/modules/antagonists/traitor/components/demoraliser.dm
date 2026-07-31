@@ -9,11 +9,15 @@
 	var/datum/demoralise_moods/moods
 
 /datum/proximity_monitor/advanced/demoraliser/New(atom/_host, range, _ignore_if_not_on_turf = TRUE, datum/demoralise_moods/moods)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.moods = moods
 	RegisterSignal(host, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/proximity_monitor/advanced/demoraliser/field_turf_crossed(atom/movable/crossed, turf/old_location, turf/new_location)
+	procstart = null
+	src.procstart = null
 	if (!isliving(crossed))
 		return
 	if (!can_see(crossed, host, current_range))
@@ -26,6 +30,8 @@
  * If someone wants to make themselves sad through a camera that's their choice I guess.
  */
 /datum/proximity_monitor/advanced/demoraliser/proc/on_examine(datum/source, mob/examiner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (isliving(examiner))
 		on_seen(examiner)
@@ -39,6 +45,8 @@
  * * viewer - Whoever is looking at this.
  */
 /datum/proximity_monitor/advanced/demoraliser/proc/on_seen(mob/living/viewer)
+	procstart = null
+	src.procstart = null
 	if (!viewer.mind)
 		return
 	// If you're not conscious you're too busy or dead to look at propaganda
@@ -71,6 +79,8 @@
  * * viewer - Whoever just saw the parent.
  */
 /datum/proximity_monitor/advanced/demoraliser/proc/should_demoralise(mob/living/viewer)
+	procstart = null
+	src.procstart = null
 	if (!viewer.mob_mood)
 		return FALSE
 

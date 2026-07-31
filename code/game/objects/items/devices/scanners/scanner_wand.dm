@@ -13,6 +13,8 @@
 	var/selected_target = null
 
 /obj/item/scanner_wand/attack(mob/living/M, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	flick("[icon_state]_active", src) //nice little visual flash when scanning someone else.
 
 	if((HAS_TRAIT(user, TRAIT_CLUMSY) || HAS_TRAIT(user, TRAIT_DUMB)) && prob(25))
@@ -32,9 +34,13 @@
 	return
 
 /obj/item/scanner_wand/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_info("You clear the scanner's target."))
 	selected_target = null
 
 /obj/item/scanner_wand/proc/return_patient()
+	procstart = null
+	src.procstart = null
 	var/returned_target = selected_target
 	return returned_target

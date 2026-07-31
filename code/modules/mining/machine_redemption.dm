@@ -49,6 +49,8 @@
 	requires_silo = FALSE
 
 /obj/machinery/mineral/ore_redemption/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!GLOB.autounlock_techwebs[/datum/techweb/autounlocking/smelter])
 		GLOB.autounlock_techwebs[/datum/techweb/autounlocking/smelter] = new /datum/techweb/autounlocking/smelter
@@ -70,22 +72,30 @@
 	RegisterSignal(src, COMSIG_SILO_ITEM_CONSUMED, TYPE_PROC_REF(/obj/machinery/mineral/ore_redemption, silo_redeem_points))
 
 /obj/machinery/mineral/ore_redemption/Destroy()
+	procstart = null
+	src.procstart = null
 	stored_research = null
 	QDEL_NULL(materials)
 	return ..()
 
 /obj/machinery/mineral/ore_redemption/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(panel_open)
 		. += span_notice("Alt-click to rotate the input and output direction.")
 
 
 /obj/machinery/mineral/ore_redemption/proc/silo_redeem_points(obj/machinery/mineral/ore_redemption/machine, container, obj/item/stack/ore/gathered_ore)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	local_redeem_points(container, gathered_ore)
 
 /obj/machinery/mineral/ore_redemption/proc/local_redeem_points(container, obj/item/stack/ore/gathered_ore)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(gathered_ore) && gathered_ore.refined_type)
@@ -93,6 +103,8 @@
 
 /// Returns the amount of a specific alloy design, based on the accessible materials
 /obj/machinery/mineral/ore_redemption/proc/can_smelt_alloy(datum/design/design)
+	procstart = null
+	src.procstart = null
 	var/datum/material_container/mat_container = materials.mat_container
 	if(!mat_container || design.make_reagent)
 		return FALSE
@@ -119,6 +131,8 @@
 
 /// Sends a message to the request consoles that signed up for ore updates
 /obj/machinery/mineral/ore_redemption/proc/send_console_message()
+	procstart = null
+	src.procstart = null
 	var/datum/material_container/mat_container = materials.mat_container
 	if(!mat_container || !is_station_level(z))
 		return
@@ -152,6 +166,8 @@
 	signal.send_to_receivers()
 
 /obj/machinery/mineral/ore_redemption/base_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!materials.mat_container || panel_open || !powered())
 		return ..()
 
@@ -175,6 +191,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/mineral/ore_redemption/pickup_item(datum/source, atom/movable/target, direction)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target))
 		return
 
@@ -209,6 +227,8 @@
 		console_notify_timer = addtimer(CALLBACK(src, PROC_REF(send_console_message)), 5 SECONDS)
 
 /obj/machinery/mineral/ore_redemption/default_unfasten_wrench(mob/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. != SUCCESSFUL_UNFASTEN)
 		return
@@ -218,16 +238,24 @@
 		unregister_input_turf() // someone just un-wrenched us, unregister the turf
 
 /obj/machinery/mineral/ore_redemption/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/mineral/ore_redemption/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/mineral/ore_redemption/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/mineral/ore_redemption/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		return CLICK_ACTION_BLOCKING
 	input_dir = turn(input_dir, -90)
@@ -239,12 +267,16 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/mineral/ore_redemption/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "OreRedemptionMachine")
 		ui.open()
 
 /obj/machinery/mineral/ore_redemption/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["unclaimedPoints"] = points
 	data["materials"] = list()
@@ -305,6 +337,8 @@
 	return data
 
 /obj/machinery/mineral/ore_redemption/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -380,14 +414,20 @@
 			return TRUE
 
 /obj/machinery/mineral/ore_redemption/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	do_sparks(5, TRUE, src)
 	return ..()
 
 /obj/machinery/mineral/ore_redemption/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][panel_open ? "-open" : powered() ? null : "-off"]"
 	return ..()
 
 /obj/machinery/mineral/ore_redemption/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((machine_stat & NOPOWER))
 		return

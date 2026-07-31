@@ -11,6 +11,8 @@
 	clickable_glow = TRUE
 
 /atom/movable/screen/alert/status_effect/slimed/Click()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -21,6 +23,8 @@
 
 /// Confirm that we are capable of washing off slime
 /atom/movable/screen/alert/status_effect/slimed/proc/can_wash()
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_owner = owner
 	if (!living_owner.can_resist())
 		return FALSE
@@ -32,6 +36,8 @@
 
 /// Try to get rid of it
 /atom/movable/screen/alert/status_effect/slimed/proc/remove_slime()
+	procstart = null
+	src.procstart = null
 	owner.balloon_alert(owner, "cleaning off slime...")
 	var/datum/status_effect/slimed/slime_effect = owner.has_status_effect(/datum/status_effect/slimed)
 	while (!QDELETED(src) && !isnull(slime_effect))
@@ -57,25 +63,35 @@
 	var/rainbow
 
 /datum/status_effect/slimed/on_creation(mob/living/new_owner, slime_color = COLOR_SLIME_GREY, rainbow = FALSE)
+	procstart = null
+	src.procstart = null
 	src.slime_color = slime_color
 	src.rainbow = rainbow
 	return ..()
 
 /datum/status_effect/slimed/on_apply()
+	procstart = null
+	src.procstart = null
 	if(owner.get_organic_health() <= MIN_HEALTH)
 		return FALSE
 	to_chat(owner, span_userdanger("You have been covered in a thick layer of slime! Find a way to wash it off!"))
 	return ..()
 
 /datum/status_effect/slimed/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_shared_particles(rainbow ? "slimed_rainbow" : "slimed_[slime_color]")
 
 /datum/status_effect/slimed/update_particles()
+	procstart = null
+	src.procstart = null
 	var/obj/effect/abstract/shared_particle_holder/holder = owner.add_shared_particles(rainbow ? /particles/slime/rainbow : /particles/slime, rainbow ? "slimed_rainbow" : "slimed_[slime_color]")
 	if (!rainbow)
 		holder.particles.color = "[slime_color]a0"
 
 /datum/status_effect/slimed/proc/remove_stacks(stacks_to_remove = 1)
+	procstart = null
+	src.procstart = null
 	slime_stacks -= stacks_to_remove // lose 1 stack per second
 	if(slime_stacks <= 0)
 		to_chat(owner, span_notice("You manage to wash off the layer of slime completely."))
@@ -86,6 +102,8 @@
 		to_chat(owner,span_warning("The layer of slime is slowly getting thinner."))
 
 /datum/status_effect/slimed/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	// remove from the mob once we have dealt enough damage
 	if(owner.get_organic_health() <= MIN_HEALTH)
 		to_chat(owner, span_warning("You feel the layer of slime crawling off of your weakened body."))
@@ -112,6 +130,8 @@
 		to_chat(owner, span_userdanger("[feedback_text] as the layer of slime eats away at you!"))
 
 /datum/status_effect/slimed/get_examine_text()
+	procstart = null
+	src.procstart = null
 	return span_warning("[owner.p_They()] [owner.p_are()] covered in bubbling slime!")
 
 #undef MIN_HEALTH

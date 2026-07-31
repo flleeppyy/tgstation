@@ -19,17 +19,23 @@
 	var/uses_skin_color = FALSE
 
 /obj/item/stack/sheet/animalhide/carbon/Initialize(mapload, new_amount, merge, list/mat_override, mat_amt, new_skin_color)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!skin_color)
 		set_skin_color(new_skin_color || get_random_skin_color())
 
 /obj/item/stack/sheet/animalhide/carbon/can_merge(obj/item/stack/sheet/animalhide/carbon/check, inhand)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!. || !uses_skin_color)
 		return
 	return check.skin_color == skin_color // segregation, in my human butcher shop? how queer!
 
 /obj/item/stack/sheet/animalhide/carbon/proc/set_skin_color(new_skin_color)
+	procstart = null
+	src.procstart = null
 	skin_color = new_skin_color
 	if (skin_color && uses_skin_color)
 		add_atom_colour(skin_color, FIXED_COLOUR_PRIORITY)
@@ -37,6 +43,8 @@
 		remove_atom_colour(FIXED_COLOUR_PRIORITY)
 
 /obj/item/stack/sheet/animalhide/carbon/split_stack(amount)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/sheet/animalhide/carbon/new_stack = ..()
 	if (!new_stack)
 		return
@@ -45,6 +53,8 @@
 
 /// Select a random skin color to spawn
 /obj/item/stack/sheet/animalhide/carbon/proc/get_random_skin_color()
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/item/stack/sheet/animalhide/carbon/human
@@ -60,6 +70,8 @@ GLOBAL_LIST_INIT(human_recipes, list( \
 	))
 
 /obj/item/stack/sheet/animalhide/carbon/human/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.human_recipes
 
@@ -110,6 +122,8 @@ GLOBAL_LIST_INIT(gondola_recipes, list ( \
 	merge_type = /obj/item/stack/sheet/animalhide/gondola
 
 /obj/item/stack/sheet/animalhide/gondola/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.gondola_recipes
 
@@ -118,6 +132,8 @@ GLOBAL_LIST_INIT(corgi_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/animalhide/corgi/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.corgi_recipes
 
@@ -146,6 +162,8 @@ GLOBAL_LIST_INIT(monkey_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/animalhide/carbon/monkey/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.monkey_recipes
 
@@ -162,6 +180,8 @@ GLOBAL_LIST_INIT(monkey_recipes, list ( \
 	uses_skin_color = TRUE
 
 /obj/item/stack/sheet/animalhide/carbon/lizard/get_random_skin_color()
+	procstart = null
+	src.procstart = null
 	return sanitize_hexcolor("[pick("7F", "FF")][pick("7F", "FF")][pick("7F", "FF")]")
 
 /obj/item/stack/sheet/animalhide/carbon/lizard/five
@@ -181,6 +201,8 @@ GLOBAL_LIST_INIT(xeno_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/animalhide/xeno/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.xeno_recipes
 
@@ -205,6 +227,8 @@ GLOBAL_LIST_INIT(carp_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/animalhide/carp/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.carp_recipes
 
@@ -268,6 +292,8 @@ GLOBAL_LIST_INIT(leather_recipes, list ( \
 ))
 
 /obj/item/stack/sheet/leather/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.leather_recipes
 
@@ -292,6 +318,8 @@ GLOBAL_LIST_INIT(leather_recipes, list ( \
 	var/trophy_type = /datum/crafting_recipe/crusher_trophy/watcher_wing
 
 /obj/item/stack/sheet/sinew/Initialize(mapload, new_amount, merge, list/mat_override, mat_amt)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// As bone and sinew have just a little too many recipes for this, we'll just split them up.
 	// Sinew slapcrafting will mostly-sinew recipes, and bones will have mostly-bones recipes.
@@ -337,6 +365,8 @@ GLOBAL_LIST_INIT(sinew_recipes, list ( \
 ))
 
 /obj/item/stack/sheet/sinew/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.sinew_recipes
 
@@ -376,6 +406,8 @@ GLOBAL_LIST_INIT(sinew_recipes, list ( \
 	merge_type = /obj/item/stack/sheet/animalhide/ashdrake
 
 /obj/item/stack/sheet/animalhide/ashdrake/Initialize(mapload, new_amount, merge, list/mat_override, mat_amt)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/drakecloak)
@@ -399,11 +431,15 @@ GLOBAL_LIST_INIT(bear_pelt_recipes, list ( \
 ))
 
 /obj/item/stack/sheet/animalhide/bear/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.bear_pelt_recipes
 
 //Step one - dehairing.
 /obj/item/stack/sheet/animalhide/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!tool.get_sharpness())
 		return ..()
 	playsound(loc, 'sound/items/weapons/slice.ogg', 50, TRUE, -1)
@@ -416,6 +452,8 @@ GLOBAL_LIST_INIT(bear_pelt_recipes, list ( \
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/stack/sheet/animalhide/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You can remove the hair with any sharp object.")
 
@@ -433,6 +471,8 @@ GLOBAL_LIST_INIT(bear_pelt_recipes, list ( \
 	drop_sound = 'sound/items/handling/materials/skin_drop.ogg'
 
 /obj/item/stack/sheet/hairlesshide/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You can clean it up by washing in the water.")
 
@@ -453,10 +493,14 @@ GLOBAL_LIST_INIT(bear_pelt_recipes, list ( \
 	var/drying_threshold_temperature = 500
 
 /obj/item/stack/sheet/wethide/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You can dry it up to make leather.")
 
 /obj/item/stack/sheet/wethide/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/atmos_sensitive, mapload)
 	AddElement(/datum/element/dryable, /obj/item/stack/sheet/leather)
@@ -465,14 +509,20 @@ GLOBAL_LIST_INIT(bear_pelt_recipes, list ( \
 	AddComponent(/datum/component/bakeable, /obj/item/stack/sheet/leather, rand(15 SECONDS, 20 SECONDS), TRUE, TRUE)
 
 /obj/item/stack/sheet/wethide/burn()
+	procstart = null
+	src.procstart = null
 	visible_message(span_notice("[src] dries up!"))
 	new /obj/item/stack/sheet/leather(loc, amount) // all the sheets to incentivize not losing your whole stack by accident
 	qdel(src)
 
 /obj/item/stack/sheet/wethide/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return (exposed_temperature > drying_threshold_temperature)
 
 /obj/item/stack/sheet/wethide/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	wetness--
 	if(wetness == 0)
 		new /obj/item/stack/sheet/leather(drop_location(), amount)

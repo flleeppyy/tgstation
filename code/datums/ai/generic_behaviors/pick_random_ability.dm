@@ -10,6 +10,8 @@
 	var/result_key = BB_GENERIC_ACTION
 
 /datum/bt_node/ai_behavior/pick_random_ability/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/list/possible = ability_keys.Copy()
 	var/last_used = last_used_key ? controller.blackboard[last_used_key] : null
 	if(last_used)

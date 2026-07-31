@@ -5,6 +5,8 @@
 	card_reader_installed = TRUE
 
 /obj/structure/closet/secure_closet/personal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/choices
 	if(isnull(choices))
@@ -12,6 +14,8 @@
 	access_choices = choices
 
 /obj/structure/closet/secure_closet/personal/can_unlock(mob/living/user, obj/item/card/id/player_id, obj/item/card/id/registered_id)
+	procstart = null
+	src.procstart = null
 	if(isnull(registered_id)) //first time anyone can unlock
 		return TRUE
 	else
@@ -20,6 +24,8 @@
 		return player_id == registered_id
 
 /obj/structure/closet/secure_closet/personal/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	if(prob(50))
 		new /obj/item/storage/backpack/duffelbag(src)
@@ -33,6 +39,8 @@
 	name = "patient's closet"
 
 /obj/structure/closet/secure_closet/personal/patient/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/color/white( src )
 	new /obj/item/clothing/shoes/sneakers/white( src )
 
@@ -49,6 +57,8 @@
 	material_drop = /obj/item/stack/sheet/mineral/wood
 
 /obj/structure/closet/secure_closet/personal/cabinet/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/storage/backpack/satchel/leather/withwallet( src )
 	new /obj/item/instrument/piano_synth(src)
 	new /obj/item/radio/headset( src )

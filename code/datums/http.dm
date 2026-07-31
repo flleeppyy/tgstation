@@ -15,6 +15,8 @@
 	var/_raw_response
 
 /datum/http_request/proc/prepare(method, url, body = "", list/headers, output_file, timeout_seconds)
+	procstart = null
+	src.procstart = null
 	if (!length(headers))
 		headers = ""
 	else
@@ -28,14 +30,20 @@
 	src.timeout_seconds = timeout_seconds
 
 /datum/http_request/proc/fire_and_forget()
+	procstart = null
+	src.procstart = null
 	var/result = rustg_http_request_fire_and_forget(method, url, body, headers, build_options())
 	if(result != "ok")
 		CRASH("[result]")
 
 /datum/http_request/proc/execute_blocking()
+	procstart = null
+	src.procstart = null
 	_raw_response = rustg_http_request_blocking(method, url, body, headers, build_options())
 
 /datum/http_request/proc/begin_async()
+	procstart = null
+	src.procstart = null
 	if (in_progress)
 		CRASH("Attempted to re-use a request object.")
 
@@ -48,6 +56,8 @@
 		in_progress = TRUE
 
 /datum/http_request/proc/build_options()
+	procstart = null
+	src.procstart = null
 	return json_encode(list(
 		"output_filename" = output_file ? output_file : null,
 		"body_filename" = null,
@@ -55,6 +65,8 @@
 	))
 
 /datum/http_request/proc/is_complete()
+	procstart = null
+	src.procstart = null
 	if (isnull(id))
 		return TRUE
 
@@ -71,6 +83,8 @@
 		return TRUE
 
 /datum/http_request/proc/into_response() as /datum/http_response
+	procstart = null
+	src.procstart = null
 	var/datum/http_response/response = new
 
 	try
@@ -93,6 +107,8 @@
 	var/error
 
 /datum/http_response/serialize_list(list/options, list/semvers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["status_code"] = status_code
 	.["body"] = body

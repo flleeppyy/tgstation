@@ -4,10 +4,14 @@
 	var/list/tracked_fish = list()
 
 /datum/element/fish_safe_storage/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSprocessing, src)
 
 /datum/element/fish_safe_storage/Attach(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
@@ -21,6 +25,8 @@
 		ADD_TRAIT(fish, TRAIT_FISH_STASIS, REF(src))
 
 /datum/element/fish_safe_storage/Detach(atom/source)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/fish/fish in source)
 		tracked_fish -= fish
 		REMOVE_TRAIT(fish, TRAIT_FISH_STASIS, REF(src))
@@ -29,24 +35,32 @@
 	return ..()
 
 /datum/element/fish_safe_storage/proc/on_enter(datum/source, obj/item/fish/arrived)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isfish(arrived))
 		tracked_fish |= arrived
 		ADD_TRAIT(arrived, TRAIT_FISH_STASIS, REF(src))
 
 /datum/element/fish_safe_storage/proc/on_init_on(datum/source, obj/item/fish/created)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isfish(created) && !QDELETED(created))
 		tracked_fish |= created
 		ADD_TRAIT(created, TRAIT_FISH_STASIS, REF(src))
 
 /datum/element/fish_safe_storage/proc/on_exit(datum/source, obj/item/fish/gone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isfish(gone))
 		tracked_fish -= gone
 		REMOVE_TRAIT(gone, TRAIT_FISH_STASIS, REF(src))
 
 /datum/element/fish_safe_storage/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/fish/fish as anything in tracked_fish)
 		///Keep delaying hunger and breeding while in stasis, and also heal them.
 		fish.last_feeding += seconds_per_tick SECONDS

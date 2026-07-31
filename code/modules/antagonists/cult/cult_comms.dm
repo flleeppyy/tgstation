@@ -10,6 +10,8 @@
 	ranged_mousepointer = 'icons/effects/mouse_pointers/cult_target.dmi'
 
 /datum/action/innate/cult/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!IS_CULTIST(owner))
 		return FALSE
 	return ..()
@@ -22,11 +24,15 @@
 	check_flags = AB_CHECK_INCAPACITATED|AB_CHECK_CONSCIOUS
 
 /datum/action/innate/cult/comm/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	if(isshade(owner) && IS_CULTIST(owner))
 		return TRUE
 	return ..()
 
 /datum/action/innate/cult/comm/Activate()
+	procstart = null
+	src.procstart = null
 	var/input = tgui_input_text(usr, "Message to tell to the other acolytes", "Voice of Blood", max_length = MAX_MESSAGE_LEN)
 	if(!input || !IsAvailable(feedback = TRUE))
 		return
@@ -45,6 +51,8 @@
 	cultist_commune(usr, input)
 
 /datum/action/innate/cult/comm/proc/cultist_commune(mob/living/user, message)
+	procstart = null
+	src.procstart = null
 	var/my_message
 	if(!message || !user.mind)
 		return
@@ -73,11 +81,15 @@
 	desc = "Conveys a message from the spirit realm that all cultists can hear."
 
 /datum/action/innate/cult/comm/spirit/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	if(IS_CULTIST(owner.mind.current))
 		return TRUE
 	return ..()
 
 /datum/action/innate/cult/comm/spirit/cultist_commune(mob/living/user, message)
+	procstart = null
+	src.procstart = null
 	var/my_message
 	if(!message)
 		return
@@ -90,6 +102,8 @@
 			to_chat(player_list, "[link] [my_message]")
 
 /datum/action/innate/cult/master/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!owner.mind || GLOB.cult_narsie)
 		return FALSE
 	var/datum/antagonist/cult/cult_datum = owner.mind.has_antag_datum(/datum/antagonist/cult)
@@ -104,6 +118,8 @@
 	check_flags = AB_CHECK_INCAPACITATED|AB_CHECK_CONSCIOUS|AB_CHECK_HANDS_BLOCKED
 
 /datum/action/innate/cult/master/pass_role/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -112,6 +128,8 @@
 		return FALSE
 
 /datum/action/innate/cult/master/pass_role/Activate()
+	procstart = null
+	src.procstart = null
 	var/list/choices = list()
 	var/datum/antagonist/cult/owner_datum = owner.mind.has_antag_datum(/datum/antagonist/cult)
 	for(var/datum/mind/team_member as anything in owner_datum.cult_team.members)
@@ -160,6 +178,8 @@
 	button_icon_state = "sintouch"
 
 /datum/action/innate/cult/master/finalreck/Activate()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/cult/antag = owner.mind.has_antag_datum(/datum/antagonist/cult,TRUE)
 	if(!antag)
 		return
@@ -207,10 +227,14 @@
 	Remove(owner)
 
 /mob/proc/reckon(turf/final)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/cult/blood/out(get_turf(src))
 	forceMove(final)
 
 /datum/action/innate/cult/master/finalreck/proc/chant(chant_number)
+	procstart = null
+	src.procstart = null
 	switch(chant_number)
 		if(1)
 			owner.say("C'arta forbici!", language = /datum/language/common, forced = "cult invocation")
@@ -239,9 +263,13 @@
 	COOLDOWN_DECLARE(cult_mark_cooldown)
 
 /datum/action/innate/cult/master/cultmark/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	return ..() && COOLDOWN_FINISHED(src, cult_mark_cooldown)
 
 /datum/action/innate/cult/master/cultmark/InterceptClickOn(mob/clicker, params, atom/clicked_on)
+	procstart = null
+	src.procstart = null
 	var/turf/clicker_turf = get_turf(clicker)
 	if(!isturf(clicker_turf))
 		return FALSE
@@ -252,6 +280,8 @@
 	return ..()
 
 /datum/action/innate/cult/master/cultmark/do_ability(mob/living/clicker, atom/clicked_on)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/cult/cultist = clicker.mind.has_antag_datum(/datum/antagonist/cult, TRUE)
 	if(!cultist)
 		CRASH("[type] was casted by someone without a cult antag datum.")
@@ -287,9 +317,13 @@
 	COOLDOWN_DECLARE(cult_mark_cooldown)
 
 /datum/action/innate/cult/ghostmark/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	return ..() && isobserver(owner)
 
 /datum/action/innate/cult/ghostmark/Activate()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/cult/cultist = owner.mind?.has_antag_datum(/datum/antagonist/cult, TRUE)
 	if(!cultist)
 		CRASH("[type] was casted by someone without a cult antag datum.")
@@ -326,6 +360,8 @@
 	return FALSE
 
 /datum/action/innate/cult/ghostmark/update_button_name(atom/movable/screen/movable/action_button/current_button, force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(COOLDOWN_FINISHED(src, cult_mark_duration))
 		name = initial(name)
 		desc = initial(desc)
@@ -336,6 +372,8 @@
 	return ..()
 
 /datum/action/innate/cult/ghostmark/apply_button_icon(atom/movable/screen/movable/action_button/current_button, force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(COOLDOWN_FINISHED(src, cult_mark_duration))
 		button_icon_state = initial(button_icon_state)
 	else
@@ -344,6 +382,8 @@
 	return ..()
 
 /datum/action/innate/cult/ghostmark/proc/reset_button()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(owner) || QDELETED(src))
 		return
 
@@ -369,9 +409,13 @@
 	COOLDOWN_DECLARE(pulse_cooldown)
 
 /datum/action/innate/cult/master/pulse/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	return ..() && COOLDOWN_FINISHED(src, pulse_cooldown)
 
 /datum/action/innate/cult/master/pulse/InterceptClickOn(mob/living/clicker, params, atom/clicked_on)
+	procstart = null
+	src.procstart = null
 	var/turf/clicker_turf = get_turf(clicker)
 	if(!isturf(clicker_turf))
 		return FALSE
@@ -385,6 +429,8 @@
 	return ..()
 
 /datum/action/innate/cult/master/pulse/do_ability(mob/living/clicker, atom/clicked_on)
+	procstart = null
+	src.procstart = null
 	var/atom/throwee = throwee_ref?.resolve()
 	if(throwee && QDELING(throwee))
 		to_chat(clicker, span_cult("You lost your target!"))

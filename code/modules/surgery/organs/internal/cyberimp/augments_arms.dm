@@ -13,31 +13,43 @@
 	var/obj/hand
 
 /obj/item/organ/cyberimp/arm/get_overlay_state(image_layer, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	return "[aug_overlay][zone == BODY_ZONE_L_ARM ? "_left" : "_right"]"
 
 /obj/item/organ/cyberimp/arm/on_mob_insert(mob/living/carbon/arm_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(arm_owner, COMSIG_CARBON_POST_ATTACH_LIMB, PROC_REF(on_limb_attached))
 	on_limb_attached(arm_owner, arm_owner.hand_bodyparts[zone == BODY_ZONE_R_ARM ? RIGHT_HANDS : LEFT_HANDS])
 
 /obj/item/organ/cyberimp/arm/on_mob_remove(mob/living/carbon/arm_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(arm_owner, COMSIG_CARBON_POST_ATTACH_LIMB)
 	on_limb_detached(hand)
 
 /obj/item/organ/cyberimp/arm/proc/on_limb_attached(mob/living/carbon/source, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!limb || QDELETED(limb) || limb.body_zone != zone)
 		return
 	handle_attachment(limb)
 
 /obj/item/organ/cyberimp/arm/proc/handle_attachment(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	if(hand)
 		on_limb_detached(hand)
 	RegisterSignal(limb, COMSIG_BODYPART_REMOVED, PROC_REF(on_limb_detached))
 	hand = limb
 
 /obj/item/organ/cyberimp/arm/proc/on_limb_detached(obj/item/bodypart/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(source != hand || QDELETED(hand))
 		return
@@ -63,6 +75,8 @@
 	var/hand_state = TRUE
 
 /obj/item/organ/cyberimp/arm/toolkit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ispath(active_item))
 		active_item = new active_item(src)
@@ -75,6 +89,8 @@
 		items_list += WEAKREF(new_item)
 
 /obj/item/organ/cyberimp/arm/toolkit/Destroy()
+	procstart = null
+	src.procstart = null
 	hand = null
 	active_item = null
 	for(var/datum/weakref/ref in items_list)
@@ -89,29 +105,41 @@
 	desc = "You can also activate your empty hand or the tool in your hand to open the tools radial menu."
 
 /obj/item/organ/cyberimp/arm/toolkit/on_mob_insert(mob/living/carbon/arm_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(arm_owner, COMSIG_KB_MOB_DROPITEM_DOWN, PROC_REF(dropkey)) //We're nodrop, but we'll watch for the drop hotkey anyway and then stow if possible.
 
 /obj/item/organ/cyberimp/arm/toolkit/on_mob_remove(mob/living/carbon/arm_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(arm_owner, COMSIG_KB_MOB_DROPITEM_DOWN)
 	Retract()
 
 /obj/item/organ/cyberimp/arm/toolkit/handle_attachment(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(limb, COMSIG_ITEM_ATTACK_SELF, PROC_REF(on_item_attack_self))
 
 /obj/item/organ/cyberimp/arm/toolkit/on_limb_detached(obj/item/bodypart/source)
+	procstart = null
+	src.procstart = null
 	if(source != hand || QDELETED(hand))
 		return
 	UnregisterSignal(hand, list(COMSIG_BODYPART_REMOVED, COMSIG_ITEM_ATTACK_SELF))
 	hand = null
 
 /obj/item/organ/cyberimp/arm/toolkit/proc/on_item_attack_self()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(ui_action_click))
 
 /obj/item/organ/cyberimp/arm/toolkit/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF || !IS_ROBOTIC_ORGAN(src))
 		return
@@ -121,6 +149,8 @@
 		Retract()
 
 /obj/item/organ/cyberimp/arm/toolkit/get_overlay(image_layer, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	if (!hand_state)
 		return ..()
 
@@ -144,6 +174,8 @@
  * selected, and that the item is actually owned by us, and then we'll hand off the rest to Retract()
 **/
 /obj/item/organ/cyberimp/arm/toolkit/proc/dropkey(mob/living/carbon/host)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!host)
 		return //How did we even get here
@@ -153,6 +185,8 @@
 		return COMSIG_KB_ACTIVATED
 
 /obj/item/organ/cyberimp/arm/toolkit/proc/Retract()
+	procstart = null
+	src.procstart = null
 	if(!active_item || (active_item in src))
 		return FALSE
 	active_item.resistance_flags = active_item::resistance_flags
@@ -174,6 +208,8 @@
 	return TRUE
 
 /obj/item/organ/cyberimp/arm/toolkit/proc/Extend(obj/item/augment)
+	procstart = null
+	src.procstart = null
 	if(!(augment in src))
 		return
 
@@ -212,11 +248,15 @@
 		RegisterSignals(active_item, list(COMSIG_ITEM_ATTACK_SELF, COMSIG_ITEM_ATTACK_SELF_SECONDARY), PROC_REF(swap_tools)) // secondary for welders
 
 /obj/item/organ/cyberimp/arm/toolkit/proc/swap_tools(active_item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	Retract(active_item)
 	INVOKE_ASYNC(src, PROC_REF(ui_action_click))
 
 /obj/item/organ/cyberimp/arm/toolkit/ui_action_click()
+	procstart = null
+	src.procstart = null
 	if((organ_flags & ORGAN_FAILING) || (!active_item && !contents.len))
 		to_chat(owner, span_warning("The implant doesn't respond. It seems to be broken..."))
 		return
@@ -241,6 +281,8 @@
 		Retract()
 
 /obj/item/organ/cyberimp/arm/toolkit/gun/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -302,6 +344,8 @@
 	name = "integrated electronic stamp"
 
 /obj/item/organ/cyberimp/arm/toolkit/paperwork/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	for(var/datum/weakref/created_item in items_list)
 		var/obj/potential_tool = created_item.resolve()
 		if(istype(potential_tool, /obj/item/stamp/chameleon))
@@ -312,6 +356,8 @@
 	return TRUE
 
 /obj/item/organ/cyberimp/arm/toolkit/toolset/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	for(var/datum/weakref/created_item in items_list)
 		var/obj/potential_knife = created_item.resolve()
 		if(istype(potential_knife, /obj/item/knife/combat/cyborg))
@@ -340,6 +386,8 @@
 	items_to_create = list(/obj/item/assembly/flash/armimplant)
 
 /obj/item/organ/cyberimp/arm/toolkit/flash/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/weakref/created_item in items_list)
 		var/obj/potential_flash = created_item.resolve()
@@ -349,11 +397,15 @@
 		flash.arm = WEAKREF(src)
 
 /obj/item/organ/cyberimp/arm/toolkit/flash/Extend()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	active_item.set_light_range(7)
 	active_item.set_light_on(TRUE)
 
 /obj/item/organ/cyberimp/arm/toolkit/flash/Retract()
+	procstart = null
+	src.procstart = null
 	if(active_item)
 		active_item.set_light_on(FALSE)
 	return ..()
@@ -376,6 +428,8 @@
 	)
 
 /obj/item/organ/cyberimp/arm/toolkit/combat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/weakref/created_item in items_list)
 		var/obj/potential_flash = created_item.resolve()
@@ -477,19 +531,27 @@
 	COOLDOWN_DECLARE(slam_cooldown)
 
 /obj/item/organ/cyberimp/arm/strongarm/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/strongarm)
 
 /obj/item/organ/cyberimp/arm/strongarm/on_mob_insert(mob/living/carbon/arm_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ishuman(arm_owner)) //Sorry, only humans
 		RegisterSignal(arm_owner, COMSIG_LIVING_EARLY_UNARMED_ATTACK, PROC_REF(on_attack_hand))
 
 /obj/item/organ/cyberimp/arm/strongarm/on_mob_remove(mob/living/carbon/arm_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(arm_owner, COMSIG_LIVING_EARLY_UNARMED_ATTACK)
 
 /obj/item/organ/cyberimp/arm/strongarm/on_bodypart_insert(obj/item/bodypart/arm)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	arm.unarmed_damage_low += lower_punch_damage
 	arm.unarmed_damage_high += upper_punch_damage
@@ -497,6 +559,8 @@
 	arm.unarmed_grab_damage_bonus += bonus_grab_damage
 
 /obj/item/organ/cyberimp/arm/strongarm/on_bodypart_remove(obj/item/bodypart/arm)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	arm.unarmed_damage_low -= lower_punch_damage
 	arm.unarmed_damage_high -= upper_punch_damage
@@ -504,6 +568,8 @@
 	arm.unarmed_grab_damage_bonus -= bonus_grab_damage
 
 /obj/item/organ/cyberimp/arm/strongarm/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((organ_flags & ORGAN_FAILING) || . & EMP_PROTECT_SELF)
 		return
@@ -512,10 +578,14 @@
 	addtimer(CALLBACK(src, PROC_REF(reboot)), 90 / severity)
 
 /obj/item/organ/cyberimp/arm/strongarm/proc/reboot()
+	procstart = null
+	src.procstart = null
 	organ_flags &= ~ORGAN_FAILING
 	owner.balloon_alert(owner, "your arm stops spasming!")
 
 /obj/item/organ/cyberimp/arm/strongarm/proc/on_attack_hand(mob/living/carbon/human/source, atom/target, proximity, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source.get_active_hand() != hand || !proximity)
@@ -630,12 +700,16 @@
 	required_biotype = NONE
 
 /datum/status_effect/organ_set_bonus/strongarm/enable_bonus(obj/item/organ/inserted_organ)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	owner.AddElement(/datum/element/door_pryer, pry_time = 6 SECONDS, interaction_key = DOAFTER_SOURCE_STRONGARM_INTERACTION)
 
 /datum/status_effect/organ_set_bonus/strongarm/disable_bonus(obj/item/organ/removed_organ)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.RemoveElement(/datum/element/door_pryer, pry_time = 6 SECONDS, interaction_key = DOAFTER_SOURCE_STRONGARM_INTERACTION)
 

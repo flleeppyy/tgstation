@@ -2,6 +2,8 @@
 /datum/unit_test/unequip_defib
 
 /datum/unit_test/unequip_defib/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/dummy = EASY_ALLOCATE()
 	dummy.mock_client = new()
 	dummy.set_hud_used(new dummy.hud_type(dummy))

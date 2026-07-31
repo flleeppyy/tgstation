@@ -3,6 +3,8 @@
 	weight = WEIGHT_ROBOT
 
 /datum/keybinding/robot/can_use(client/user)
+	procstart = null
+	src.procstart = null
 	return iscyborg(user.mob)
 
 /datum/keybinding/robot/moduleone
@@ -13,6 +15,8 @@
 	keybind_signal = COMSIG_KB_SILICON_TOGGLEMODULEONE_DOWN
 
 /datum/keybinding/robot/moduleone/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -28,6 +32,8 @@
 	keybind_signal = COMSIG_KB_SILICON_TOGGLEMODULETWO_DOWN
 
 /datum/keybinding/robot/moduletwo/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -43,6 +49,8 @@
 	keybind_signal = COMSIG_KB_SILICON_TOGGLEMODULETHREE_DOWN
 
 /datum/keybinding/robot/modulethree/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -58,6 +66,8 @@
 	keybind_signal = COMSIG_KB_SILICON_UNEQUIPMODULE_DOWN
 
 /datum/keybinding/robot/unequip_module/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -74,6 +84,8 @@
 	keybind_signal = COMSIG_KB_SILION_UNDEPLOY_DOWN
 
 /datum/keybinding/robot/undeploy/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

@@ -19,6 +19,8 @@
 	var/source
 
 /datum/component/codeword_hearing/Initialize(regex/codeword_regex, highlight_span_class, component_source)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -28,13 +30,19 @@
 	return ..()
 
 /datum/component/codeword_hearing/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_MOVABLE_HEAR, PROC_REF(handle_hearing))
 
 /datum/component/codeword_hearing/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_MOVABLE_HEAR)
 
 /// Callback for COMSIG_MOVABLE_HEAR which highlights syndicate code phrases in chat.
 /datum/component/codeword_hearing/proc/handle_hearing(datum/source, list/hearing_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/owner = parent
@@ -51,6 +59,8 @@
 
 /// Since a parent can have multiple of these components on them simultaneously, this allows a datum to delete components from a specific source.
 /datum/component/codeword_hearing/proc/delete_if_from_source(component_source)
+	procstart = null
+	src.procstart = null
 	if(source == component_source)
 		qdel(src)
 		return TRUE

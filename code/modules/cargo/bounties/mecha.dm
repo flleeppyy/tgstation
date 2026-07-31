@@ -4,10 +4,14 @@
 	var/required_data = null
 
 /datum/bounty/item/mech/New()
+	procstart = null
+	src.procstart = null
 	..()
 	description = "Upper management has requested holodiagnostic scans of \a [name] mech be sent as soon as possible. A <b>diagnostic holoscan</b> can be generated from inside a new mecha. Ship it to receive a large payment."
 
 /datum/bounty/item/mech/applies_to(obj/shipped)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

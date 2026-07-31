@@ -8,6 +8,8 @@
 	give_uplink = FALSE
 
 /datum/antagonist/traitor/contractor_support/forge_traitor_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/generic_objective = new
 	generic_objective.name = "Follow Contractor's Orders"
 	generic_objective.explanation_text = "Follow your orders. Assist agents in this mission area."
@@ -15,6 +17,8 @@
 	objectives += generic_objective
 
 /datum/antagonist/traitor/contractor_support/forge_ending_objective()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/outfit/contractor_partner
@@ -40,6 +44,8 @@
 	)
 
 /datum/outfit/contractor_partner/post_equip(mob/living/carbon/human/H, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/cigarette/syndicate/cig = H.get_item_by_slot(ITEM_SLOT_MASK)
 	cig.light()

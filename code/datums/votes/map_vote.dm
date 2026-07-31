@@ -6,10 +6,14 @@
 	display_statistics = FALSE
 
 /datum/vote/map_vote/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_choices = SSmap_vote.get_valid_map_vote_choices()
 
 /datum/vote/map_vote/create_vote()
+	procstart = null
+	src.procstart = null
 	default_choices = SSmap_vote.get_valid_map_vote_choices()
 	. = ..()
 	if(!.)
@@ -29,12 +33,18 @@
 	return TRUE
 
 /datum/vote/map_vote/toggle_votable()
+	procstart = null
+	src.procstart = null
 	CONFIG_SET(flag/allow_vote_map, !CONFIG_GET(flag/allow_vote_map))
 
 /datum/vote/map_vote/is_config_enabled()
+	procstart = null
+	src.procstart = null
 	return CONFIG_GET(flag/allow_vote_map)
 
 /datum/vote/map_vote/can_be_initiated(forced)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. != VOTE_AVAILABLE)
 		return .
@@ -55,9 +65,13 @@
 	return VOTE_AVAILABLE
 
 /datum/vote/map_vote/get_result_text(list/all_winners, real_winner, list/non_voters)
+	procstart = null
+	src.procstart = null
 	return null
 
 /datum/vote/map_vote/get_vote_result(list/non_voters)
+	procstart = null
+	src.procstart = null
 	// Even if we have default no vote off,
 	// if our default map is null for some reason, we shouldn't continue
 	if(CONFIG_GET(flag/default_no_vote) || isnull(global.config.defaultmap))
@@ -76,4 +90,6 @@
 	return ..()
 
 /datum/vote/map_vote/finalize_vote(winning_option)
+	procstart = null
+	src.procstart = null
 	SSmap_vote.finalize_map_vote(src)

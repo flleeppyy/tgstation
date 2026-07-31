@@ -27,10 +27,14 @@
 	var/target_dept
 
 /datum/computer_file/program/card_mod/on_install(datum/computer_file/source, obj/item/modular_computer/computer_installing, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(computer_installing, TRAIT_MODPC_TWO_ID_SLOTS, REF(src))
 
 /datum/computer_file/program/card_mod/Destroy()
+	procstart = null
+	src.procstart = null
 	if(computer)
 		REMOVE_TRAIT(computer, TRAIT_MODPC_TWO_ID_SLOTS, REF(src))
 	return ..()
@@ -46,6 +50,8 @@
  * * auth_card - The ID card to attempt to authenticate under.
  */
 /datum/computer_file/program/card_mod/proc/authenticate(mob/user, obj/item/card/id/auth_card)
+	procstart = null
+	src.procstart = null
 	if(!auth_card)
 		return
 
@@ -82,12 +88,16 @@
 	return FALSE
 
 /datum/computer_file/program/card_mod/on_start(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
 	computer.crew_manifest_update = TRUE
 
 /datum/computer_file/program/card_mod/kill_program(mob/user)
+	procstart = null
+	src.procstart = null
 	computer.crew_manifest_update = FALSE
 	var/obj/item/card/id/modified_id = computer.alt_stored_id
 	if(modified_id)
@@ -96,6 +106,8 @@
 	return ..()
 
 /datum/computer_file/program/card_mod/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/user = usr
 	var/obj/item/card/id/auth_card = computer.stored_id
@@ -281,6 +293,8 @@
 			return TRUE
 
 /datum/computer_file/program/card_mod/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/list/regions = list()
@@ -304,6 +318,8 @@
 	return data
 
 /datum/computer_file/program/card_mod/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["authed_user"] = authenticated_card
@@ -318,6 +334,8 @@
 	return data
 
 /datum/computer_file/program/card_mod/proc/get_id_ui_data(obj/item/card/id/card)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/datum/id_trim/card_trim = card.trim

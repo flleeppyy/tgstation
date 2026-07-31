@@ -6,12 +6,16 @@ GLOBAL_DATUM(ctf_spawner, /obj/effect/landmark/ctf)
 	var/list/map_bounds
 
 /obj/effect/landmark/ctf/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(GLOB.ctf_spawner)
 		qdel(GLOB.ctf_spawner)
 	GLOB.ctf_spawner = src
 
 /obj/effect/landmark/ctf/Destroy()
+	procstart = null
+	src.procstart = null
 	if(map_bounds)
 		for(var/turf/ctf_turf in block(
 			map_bounds[MAP_MINX], map_bounds[MAP_MINY], map_bounds[MAP_MINZ],
@@ -22,6 +26,8 @@ GLOBAL_DATUM(ctf_spawner, /obj/effect/landmark/ctf)
 	return ..()
 
 /obj/effect/landmark/ctf/proc/load_map(user)
+	procstart = null
+	src.procstart = null
 	if (map_bounds)
 		return
 

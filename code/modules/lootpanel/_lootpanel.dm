@@ -17,12 +17,16 @@
 
 
 /datum/lootpanel/New(client/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	src.owner = owner
 
 
 /datum/lootpanel/Destroy(force)
+	procstart = null
+	src.procstart = null
 	SSlooting.backlog -= src
 	SSlooting.processing -= src
 	reset_contents()
@@ -33,6 +37,8 @@
 
 
 /datum/lootpanel/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "LootPanel")
@@ -41,10 +47,14 @@
 
 
 /datum/lootpanel/ui_host(mob/user)
+	procstart = null
+	src.procstart = null
 	return source_turf
 
 
 /datum/lootpanel/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	UnregisterSignal(source_turf, list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON))
@@ -53,6 +63,8 @@
 
 
 /datum/lootpanel/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["contents"] = get_contents()
@@ -63,6 +75,8 @@
 
 
 /datum/lootpanel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

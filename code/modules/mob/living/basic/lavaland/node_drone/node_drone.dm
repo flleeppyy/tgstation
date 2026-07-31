@@ -49,20 +49,28 @@
 	var/escaping = FALSE
 
 /mob/living/basic/node_drone/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_MINING_AOE_IMMUNE, INNATE_TRAIT)
 	AddElement(/datum/element/ai_retaliate)
 
 /mob/living/basic/node_drone/death(gibbed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	explosion(origin = src, light_impact_range = 1, smoke = 1)
 
 /mob/living/basic/node_drone/Destroy()
+	procstart = null
+	src.procstart = null
 	attached_vent?.node = null //clean our reference to the vent both ways.
 	attached_vent = null
 	return ..()
 
 /mob/living/basic/node_drone/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/sameside = user.faction_check_atom(src, exact_match = FALSE)
 	if(sameside)
@@ -71,6 +79,8 @@
 		. += span_warning("This vile Nanotrasen trash is trying to destroy the environment. Attack it to free the mineral vent from its grasp.")
 
 /mob/living/basic/node_drone/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	icon_state = "mining_node_active"
@@ -79,6 +89,8 @@
 		icon_state = "mining_node_flying"
 
 /mob/living/basic/node_drone/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(attached_vent)
 		var/time_remaining = COOLDOWN_TIMELEFT(attached_vent, wave_cooldown)
@@ -104,6 +116,8 @@
 		return
 
 /mob/living/basic/node_drone/proc/arrive(obj/structure/ore_vent/parent_vent)
+	procstart = null
+	src.procstart = null
 	attached_vent = parent_vent
 	maxHealth = 300 + ((attached_vent.boulder_size/BOULDER_SIZE_SMALL) * 100)
 	health = maxHealth
@@ -117,6 +131,8 @@
  * Called when wave defense is completed. Visually flicks the escape sprite and then deletes the mob.
  */
 /mob/living/basic/node_drone/proc/escape(success)
+	procstart = null
+	src.procstart = null
 	var/funny_ending = FALSE
 	flying_state = FLY_OUT_STATE
 	update_appearance(UPDATE_ICON_STATE)
@@ -136,6 +152,8 @@
 
 
 /mob/living/basic/node_drone/proc/pre_escape(success = TRUE)
+	procstart = null
+	src.procstart = null
 	if(buckled)
 		buckled.unbuckle_mob(src)
 	if(attached_vent)
@@ -163,6 +181,8 @@
 /datum/targeting_strategy/ore_vent_unclaimed
 
 /datum/targeting_strategy/ore_vent_unclaimed/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

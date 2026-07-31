@@ -31,9 +31,13 @@
 	var/allow_cyber_organs = FALSE
 
 /datum/action/cooldown/spell/touch/flesh_surgery/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return isliving(cast_on) || isorgan(cast_on)
 
 /datum/action/cooldown/spell/touch/flesh_surgery/remove_hand(mob/living/hand_owner, reset_cooldown_after)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/the_organ = held_organ
 	if(the_organ)
 		unregister_held_organ(the_organ)
@@ -42,6 +46,8 @@
 	return ..()
 
 /datum/action/cooldown/spell/touch/flesh_surgery/cast_on_hand_hit(obj/item/melee/touch_attack/flesh_surgery/hand, atom/victim, mob/living/carbon/caster)
+	procstart = null
+	src.procstart = null
 	if(isorgan(victim))
 		grab_organ(hand, victim, caster)
 		return FALSE
@@ -54,6 +60,8 @@
 	return FALSE
 
 /datum/action/cooldown/spell/touch/flesh_surgery/cast_on_secondary_hand_hit(obj/item/melee/touch_attack/flesh_surgery/hand, atom/victim, mob/living/carbon/caster)
+	procstart = null
+	src.procstart = null
 	if(isorgan(victim))
 		return heal_organ(hand, victim, caster)
 
@@ -68,22 +76,30 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /datum/action/cooldown/spell/touch/flesh_surgery/register_hand_signals()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(attached_hand, COMSIG_ITEM_REQUESTING_CONTEXT_FOR_TARGET, PROC_REF(add_item_context))
 	RegisterSignal(attached_hand, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(hand_interacted_with))
 	attached_hand.item_flags |= ITEM_HAS_CONTEXTUAL_SCREENTIPS
 
 /datum/action/cooldown/spell/touch/flesh_surgery/unregister_hand_signals()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(attached_hand, list(COMSIG_ITEM_REQUESTING_CONTEXT_FOR_TARGET, COMSIG_ATOM_ITEM_INTERACTION))
 
 /datum/action/cooldown/spell/touch/flesh_surgery/proc/hand_interacted_with(obj/item/melee/touch_attack/source, mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isorgan(tool))
 		return grab_organ(source, tool, user)
 
 /// Signal proc for [COMSIG_ITEM_REQUESTING_CONTEXT_FOR_TARGET] to add some context to the hand.
 /datum/action/cooldown/spell/touch/flesh_surgery/proc/add_item_context(obj/item/melee/touch_attack/source, list/context, atom/victim, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	. = NONE
@@ -111,6 +127,8 @@
 
 /// If cast on an organ with left-click, we'll try to grab it.
 /datum/action/cooldown/spell/touch/flesh_surgery/proc/grab_organ(obj/item/melee/touch_attack/hand, obj/item/organ/to_grab, mob/living/carbon/caster)
+	procstart = null
+	src.procstart = null
 	if(held_organ)
 		hand.balloon_alert(caster, "already holding organ!")
 		return ITEM_INTERACT_FAILURE
@@ -124,6 +142,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /datum/action/cooldown/spell/touch/flesh_surgery/proc/register_held_organ(obj/item/organ/new_held_organ, obj/item/melee/touch_attack/hand)
+	procstart = null
+	src.procstart = null
 	hand.vis_contents += new_held_organ
 	held_organ = new_held_organ
 	ADD_TRAIT(new_held_organ, TRAIT_SKIP_BASIC_REACH_CHECK, REF(src))
@@ -137,6 +157,8 @@
 	new_held_organ.pixel_y = 0
 
 /datum/action/cooldown/spell/touch/flesh_surgery/proc/unregister_held_organ(obj/item/organ/removed_organ)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(attached_hand.vis_contents, removed_organ)
 	held_organ = null
 	REMOVE_TRAIT(removed_organ, TRAIT_SKIP_BASIC_REACH_CHECK, REF(src))
@@ -150,6 +172,8 @@
 
 /// If cast on an organ with right-click, we'll restore its health and even un-fail it.
 /datum/action/cooldown/spell/touch/flesh_surgery/proc/heal_organ(obj/item/melee/touch_attack/hand, obj/item/organ/to_heal, mob/living/carbon/caster)
+	procstart = null
+	src.procstart = null
 	if(held_organ)
 		hand.balloon_alert(caster, "drop held organ first!")
 		return FALSE
@@ -176,6 +200,8 @@
 
 /// If cast on a heretic monster who's not dead we'll heal it a bit.
 /datum/action/cooldown/spell/touch/flesh_surgery/proc/heal_heretic_monster(obj/item/melee/touch_attack/hand, mob/living/to_heal, mob/living/carbon/caster)
+	procstart = null
+	src.procstart = null
 	var/what_are_we = ishuman(to_heal) ? "minion" : "summon"
 	to_heal.balloon_alert(caster, "healing [what_are_we]...")
 	if(!do_after(caster, 1 SECONDS, to_heal, extra_checks = CALLBACK(src, PROC_REF(heal_checks), hand, to_heal, caster)))
@@ -196,6 +222,8 @@
 
 /// If cast on a carbon, we'll try to steal one of their organs directly from their person.
 /datum/action/cooldown/spell/touch/flesh_surgery/proc/steal_organ_from_mob(obj/item/melee/touch_attack/hand, mob/living/victim, mob/living/carbon/caster)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/carbon_victim = victim
 	if(!istype(carbon_victim) || !length(carbon_victim.organs))
 		victim.balloon_alert(caster, "no organs!")
@@ -283,6 +311,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/touch/flesh_surgery/proc/insert_organ_into_mob(obj/item/organ/inserted_organ, obj/item/melee/touch_attack/flesh_surgery/hand, mob/living/carbon/victim, mob/living/carbon/caster)
+	procstart = null
+	src.procstart = null
 	if(!istype(victim))
 		hand.balloon_alert(caster, "no organs!")
 		return FALSE
@@ -367,6 +397,8 @@
 
 /// Extra checks ran while we're extracting an organ to make sure we can continue to do.
 /datum/action/cooldown/spell/touch/flesh_surgery/proc/extraction_checks(obj/item/organ/picked_organ, obj/item/melee/touch_attack/flesh_surgery/hand, mob/living/carbon/victim, mob/living/carbon/caster)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || QDELETED(hand) || QDELETED(picked_organ) || QDELETED(victim) || held_organ || !IsAvailable())
 		return FALSE
 
@@ -374,6 +406,8 @@
 
 /// Extra checks ran while we're healing something (organ, mob).
 /datum/action/cooldown/spell/touch/flesh_surgery/proc/heal_checks(obj/item/melee/touch_attack/flesh_surgery/hand, atom/healing, mob/living/carbon/caster)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || QDELETED(hand) || QDELETED(healing) || held_organ || !IsAvailable())
 		return FALSE
 
@@ -381,6 +415,8 @@
 
 /// Extra checks ran while we're inserting an organ.
 /datum/action/cooldown/spell/touch/flesh_surgery/proc/insertion_checks(obj/item/organ/inserted_organ, obj/item/melee/touch_attack/flesh_surgery/hand, mob/living/carbon/victim, mob/living/carbon/caster)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || QDELETED(hand) || QDELETED(victim) || QDELETED(inserted_organ) || (held_organ != inserted_organ) || !IsAvailable())
 		return FALSE
 	var/obj/item/organ/organ_victim_already_has = victim.get_organ_slot(inserted_organ.slot)

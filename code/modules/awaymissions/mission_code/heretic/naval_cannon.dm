@@ -31,6 +31,8 @@
 	armour_penetration = 50
 
 /obj/projectile/bullet/mm40/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	..()
 	explosion(target, devastation_range = -1, heavy_impact_range = 2, light_impact_range = 3, flame_range = 4, flash_range = 6, adminlog = FALSE)
 	return BULLET_ACT_HIT

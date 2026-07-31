@@ -2,6 +2,8 @@
 	name = "Hitsplat"
 
 /datum/smite/hitsplat/effect(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	target.AddComponent(/datum/component/hitsplat, /obj/effect/overlay/vis/hitsplat/lore_accurate)
 
@@ -11,6 +13,8 @@
 	name = "Stackout (Hitsplat)"
 
 /datum/smite/hitsplat/stackout/effect(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/attack in 1 to 4)
 		playsound(target, SFX_SWING_HIT, 50, TRUE)

@@ -40,16 +40,22 @@
 	)
 
 /obj/item/airlock_painter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ink = new initial_ink_type(src)
 
 /obj/item/airlock_painter/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(ink)
 	return ..()
 
 //This proc doesn't just check if the painter can be used, but also uses it.
 //Only call this if you are certain that the painter will be used right after this check!
 /obj/item/airlock_painter/proc/use_paint(mob/user)
+	procstart = null
+	src.procstart = null
 	if(can_use(user))
 		ink.charges--
 		playsound(src.loc, 'sound/effects/spray2.ogg', 50, TRUE)
@@ -61,6 +67,8 @@
 //Call this if you don't want the painter to be used right after this check, for example
 //because you're expecting user input.
 /obj/item/airlock_painter/proc/can_use(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ink)
 		balloon_alert(user, "no cartridge!")
 		return FALSE
@@ -71,6 +79,8 @@
 		return TRUE
 
 /obj/item/airlock_painter/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/lungs/L = user.get_organ_slot(ORGAN_SLOT_LUNGS)
 
 	if(can_use(user) && L)
@@ -118,6 +128,8 @@
 
 
 /obj/item/airlock_painter/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ink)
 		. += span_notice("It doesn't have a toner cartridge installed.")
@@ -132,6 +144,8 @@
 	. += span_notice("Its ink levels look [ink_level].")
 
 /obj/item/airlock_painter/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/toner))
 		return NONE
 
@@ -148,6 +162,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/airlock_painter/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ink)
 		return CLICK_ACTION_BLOCKING
 

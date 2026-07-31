@@ -17,6 +17,8 @@
 	var/tally_string = "megafauna_kills"
 
 /datum/element/kill_achievement/Attach(datum/target, list/achievement_types, crusher_achievement_type, kill_memory_type, achievement_range = 7, crusher_kill_threshold = 0.6, tally_string = "megafauna_kills")
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(target) || !length(achievement_types))
 		return ELEMENT_INCOMPATIBLE
@@ -29,10 +31,14 @@
 	RegisterSignal(target, COMSIG_LIVING_DEATH, PROC_REF(on_death))
 
 /datum/element/kill_achievement/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_LIVING_DEATH)
 
 /datum/element/kill_achievement/proc/on_death(mob/living/source, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if ((source.flags_1 & ADMIN_SPAWNED_1) || !SSachievements.achievements_enabled)

@@ -5,6 +5,8 @@
 	var/hacked = FALSE
 
 /obj/effect/spawner/random/vending/make_item(spawn_loc, type_path_to_make)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/vending/vending = ..()
 	if(istype(vending))
 		vending.extended_inventory = hacked
@@ -19,6 +21,8 @@
 	loot = list()
 
 /obj/effect/spawner/random/vending/snackvend/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(check_holidays(HOTDOG_DAY))
 		loot += /obj/machinery/vending/hotdog
 	return ..()

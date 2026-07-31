@@ -25,6 +25,8 @@
 	var/datum/dna/stored_dna
 
 /obj/item/dnainjector/Initialize(mapload, datum/dna/stored_dna, damage_coeff = 1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 	if(used)
@@ -33,6 +35,8 @@
 	src.damage_coeff = damage_coeff
 
 /obj/item/dnainjector/Destroy()
+	procstart = null
+	src.procstart = null
 	if(stored_dna?.holder)
 		stack_trace("DNA injector got owned DNA somehow")
 		stored_dna = null
@@ -41,22 +45,32 @@
 	return ..()
 
 /obj/item/dnainjector/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vname == NAMEOF(src, used))
 		update_appearance()
 
 /obj/item/dnainjector/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = inhand_icon_state = "[initial(icon_state)][used ? "0" : null]"
 
 /obj/item/dnainjector/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = "[initial(desc)][used ? "This one is used up." : null]"
 
 /obj/item/dnainjector/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/item/dnainjector/proc/inject(mob/living/carbon/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!target.can_mutate())
 		return FALSE
 	if(target.stat == DEAD) //prevents dead people from having their DNA changed
@@ -82,6 +96,8 @@
 	return TRUE
 
 /obj/item/dnainjector/attack(mob/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ISADVANCEDTOOLUSER(user))
 		to_chat(user, span_warning("You don't have the dexterity to do this!"))
 		return
@@ -136,6 +152,8 @@
 	var/crispr_charge = FALSE // Look for viruses, look at symptoms, if research and Dormant DNA Activator or Viral Evolutionary Acceleration, set to true
 
 /obj/item/dnainjector/activator/inject(mob/living/carbon/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!target.can_mutate())
 		return FALSE
 	for(var/mutation in add_mutations)

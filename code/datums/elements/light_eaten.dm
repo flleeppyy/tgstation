@@ -5,6 +5,8 @@
 	element_flags = ELEMENT_DETACH_ON_HOST_DESTROY // Detach for turfs
 
 /datum/element/light_eaten/Attach(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
 
@@ -26,6 +28,8 @@
 			target.update_icon()
 
 /datum/element/light_eaten/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, list(
 		COMSIG_ATOM_SET_LIGHT_POWER,
 		COMSIG_ATOM_SET_LIGHT_RANGE,
@@ -36,6 +40,8 @@
 
 /// Prevents the light power of the target atom from exceeding 0 or increasing.
 /datum/element/light_eaten/proc/block_light_power(atom/eaten_light, new_power)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(new_power > 0)
 		return COMPONENT_BLOCK_LIGHT_UPDATE
@@ -45,6 +51,8 @@
 
 /// Prevents the light range of the target atom from exceeding 0 while the light power is greater than 0.
 /datum/element/light_eaten/proc/block_light_range(atom/eaten_light, new_range)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(new_range <= 0)
 		return NONE
@@ -54,6 +62,8 @@
 
 /// Prevents the light from turning on while the light power is greater than 0.
 /datum/element/light_eaten/proc/block_light_on(atom/eaten_light, new_on)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(new_on)
 		return COMPONENT_BLOCK_LIGHT_UPDATE
@@ -61,6 +71,8 @@
 
 /// Signal handler for light eater flavortext
 /datum/element/light_eaten/proc/on_examine(atom/eaten_light, mob/examiner, list/examine_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_text += span_warning("It's dark and empty...")
 	if(isliving(examiner) && prob(20))

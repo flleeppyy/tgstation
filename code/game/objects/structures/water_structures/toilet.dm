@@ -34,6 +34,8 @@
 	var/obj/item/stuck_item = null
 
 /obj/structure/toilet/Initialize(mapload, has_water_reclaimer = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cover_open = round(rand(0, 1))
 	if(!isnull(has_water_reclaimer))
@@ -49,6 +51,8 @@
 	AddComponent(/datum/component/plumbing/simple_demand/extended)
 
 /obj/structure/toilet/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user.pulling && isliving(user.pulling))
 		context[SCREENTIP_CONTEXT_LMB] = "Give Swirlie"
@@ -76,6 +80,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/toilet/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cover_open)
 		if(LAZYLEN(fishes))
@@ -87,17 +93,23 @@
 		. += span_notice("Its display states: [reagents.total_volume]/[reagents.maximum_volume] liquids remaining.")
 
 /obj/structure/toilet/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cistern_open && LAZYLEN(cistern_items))
 		. += span_notice("You can see [cistern_items.len] items inside of the cistern.")
 
 /obj/structure/toilet/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_LAZYLIST(fishes)
 	QDEL_LAZYLIST(cistern_items)
 	QDEL_NULL(stuck_item)
 
 /obj/structure/toilet/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone in cistern_items)
 		LAZYREMOVE(cistern_items, gone)
@@ -111,6 +123,8 @@
 		stuck_item = null
 
 /obj/structure/toilet/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -187,6 +201,8 @@
 		to_chat(user, span_notice("You take [random_fish] out of the toilet, poor thing."))
 
 /obj/structure/toilet/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(flushing)
 		return CLICK_ACTION_BLOCKING
 	cover_open = !cover_open
@@ -194,6 +210,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/structure/toilet/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(flushing)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
@@ -224,26 +242,36 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/structure/toilet/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][cover_open][cistern_open]"
 	return ..()
 
 /obj/structure/toilet/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!flushing && cover_open)
 		. += "[base_icon_state]-water"
 
 /obj/structure/toilet/dump_contents()
+	procstart = null
+	src.procstart = null
 	for(var/obj/toilet_item in (cistern_items + fishes))
 		toilet_item.forceMove(drop_location())
 	stuck_item?.forceMove(drop_location())
 
 /obj/structure/toilet/atom_deconstruct(dissambled = TRUE)
+	procstart = null
+	src.procstart = null
 	dump_contents()
 	drop_custom_materials()
 	if(has_water_reclaimer)
 		new /obj/item/stock_parts/water_recycler(drop_location())
 
 /obj/structure/toilet/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 
@@ -331,11 +359,15 @@
 
 /// Hides an item inside the toilet for later retrievalk
 /obj/structure/toilet/proc/add_cistern_item(obj/item/thing)
+	procstart = null
+	src.procstart = null
 	if (isitem(thing))
 		w_items += thing.w_class
 	LAZYADD(cistern_items, thing)
 
 /obj/structure/toilet/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You start to [cistern_open ? "replace the lid on" : "lift the lid off"] the cistern..."))
 	playsound(loc, 'sound/effects/stonedoor_openclose.ogg', 50, TRUE)
 	if(tool.use_tool(src, user, 30))
@@ -348,6 +380,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/toilet/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!cistern_open)
 		to_chat(user, span_warning("You need to open [src]'s cistern first!"))
 		return ITEM_INTERACT_BLOCKING
@@ -363,11 +397,15 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/toilet/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(src)
 	deconstruct()
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/toilet/plunger_act(obj/item/plunger/attacking_plunger, mob/living/user, reinforced)
+	procstart = null
+	src.procstart = null
 	user.balloon_alert_to_viewers("furiously plunging...")
 	if(!do_after(user, 3 SECONDS, target = src))
 		return TRUE
@@ -382,15 +420,21 @@
 
 ///Ends the flushing animation and updates overlays if necessary
 /obj/structure/toilet/proc/end_flushing()
+	procstart = null
+	src.procstart = null
 	flushing = FALSE
 	if(cover_open && (dir & SOUTH))
 		update_appearance(UPDATE_OVERLAYS)
 	QDEL_LAZYLIST(fishes)
 
 /obj/structure/toilet/proc/begin_reclamation()
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/toilet/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	// Water reclamation complete?
 	if(!has_water_reclaimer || reagents.total_volume >= reagents.maximum_volume)
 		return PROCESS_KILL
@@ -405,6 +449,8 @@
 	var/secret_type = null
 
 /obj/structure/toilet/secret/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!secret_type)
 		return
@@ -418,6 +464,8 @@
 	This one seems to be made out of the flesh of a devoted employee of the RnD department."
 
 /obj/structure/toilet/greyscale/flesh/Initialize(mapload, mob/living/suicide)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	///The suicide victim's brain that will be placed inside the toilet's cistern
 	var/obj/item/organ/brain/toilet_brain
@@ -438,6 +486,8 @@
 
 //this also prevents the toilet from dropping meat sheets. if you want to cheese the meat exepriments, sacrifice more people
 /obj/structure/toilet/greyscale/flesh/atom_deconstruct(dissambled = TRUE)
+	procstart = null
+	src.procstart = null
 	for(var/obj/toilet_item in cistern_items)
 		toilet_item.forceMove(drop_location())
 	new /obj/effect/decal/remains/human(loc)

@@ -5,6 +5,8 @@
 	var/datum/bodypart_overlay/simple/emote/blush_overlay
 
 /datum/mood_event/drunk/add_effects(drunkness)
+	procstart = null
+	src.procstart = null
 	update_change(drunkness)
 	if(!ishuman(owner))
 		return
@@ -14,6 +16,8 @@
 /// Updates the description and value of the moodlet according to the passed drunkness value
 /// (Does not add to or remove from the current level - it will sets it directly to the new value)
 /datum/mood_event/drunk/proc/update_change(drunkness = 0)
+	procstart = null
+	src.procstart = null
 	var/old_mood = mood_change
 	switch(drunkness)
 		if(0 to 30)
@@ -40,6 +44,8 @@
 		owner.mob_mood.update_mood()
 
 /datum/mood_event/drunk/remove_effects()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(blush_overlay)
 
 /datum/mood_event/drunk_after

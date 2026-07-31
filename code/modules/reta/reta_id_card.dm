@@ -11,6 +11,8 @@
 
 /// Grants temporary department access to this ID card
 /obj/item/card/id/proc/grant_reta_access(dept, duration_ds)
+	procstart = null
+	src.procstart = null
 	if(!GLOB.reta_dept_grants[dept])
 		return FALSE
 
@@ -63,6 +65,8 @@
 
 /// Clears temporary access for a specific department
 /obj/item/card/id/proc/clear_reta_access_for_dept(dept)
+	procstart = null
+	src.procstart = null
 	if(!reta_temp_access[dept] || !LAZYLEN(reta_temp_access[dept]))
 		return
 
@@ -104,6 +108,8 @@
 
 /// Clears all temporary department access from this ID card
 /obj/item/card/id/proc/clear_reta_access()
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(reta_temp_access))
 		return
 
@@ -145,6 +151,8 @@
 
 /// Checks if this ID card has any temporary access
 /obj/item/card/id/proc/has_any_reta_access()
+	procstart = null
+	src.procstart = null
 	for(var/dept in reta_temp_access)
 		if(reta_temp_access[dept] && LAZYLEN(reta_temp_access[dept]))
 			return TRUE
@@ -152,6 +160,8 @@
 
 /// Checks if this ID card has temporary access to a specific flag
 /obj/item/card/id/proc/has_reta_access(access_flag)
+	procstart = null
+	src.procstart = null
 	for(var/dept in reta_temp_access)
 		if(reta_temp_access[dept] && (access_flag in reta_temp_access[dept]))
 			return TRUE
@@ -159,10 +169,14 @@
 
 /// Checks if this ID card has temporary access for a specific department
 /obj/item/card/id/proc/has_reta_access_for_dept(dept)
+	procstart = null
+	src.procstart = null
 	return reta_temp_access[dept] && LAZYLEN(reta_temp_access[dept])
 
 /// Gets all current temporary access flags for this ID card
 /obj/item/card/id/proc/get_reta_access()
+	procstart = null
+	src.procstart = null
 	var/list/all_access = list()
 	for(var/dept in reta_temp_access)
 		if(reta_temp_access[dept])
@@ -171,11 +185,15 @@
 
 /// Gets temporary access flags for a specific department
 /obj/item/card/id/proc/get_reta_access_for_dept(dept)
+	procstart = null
+	src.procstart = null
 	var/list/dept_access = reta_temp_access[dept]
 	return dept_access?.Copy() || list()
 
 /// Gets a summary of all active RETA accesses (for debugging/display)
 /obj/item/card/id/proc/get_reta_summary()
+	procstart = null
+	src.procstart = null
 	var/list/summary = list()
 	for(var/dept in reta_temp_access)
 		if(reta_temp_access[dept] && LAZYLEN(reta_temp_access[dept]))
@@ -189,6 +207,8 @@
 
 /// Helper to get the human holding this ID card
 /obj/item/card/id/proc/get_id_holder()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/holder
 	if(istype(loc, /mob/living/carbon/human))
 		holder = loc
@@ -204,6 +224,8 @@
 
 /// Cleanup temporary access when ID card is deleted
 /obj/item/card/id/Destroy()
+	procstart = null
+	src.procstart = null
 	// Clear all department timers
 	for(var/dept in reta_timers)
 		if(reta_timers[dept] && reta_timers[dept] != -1)
@@ -212,6 +234,8 @@
 	return ..()
 /*
 /mob/living/death(gibbed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	clear_temp_dept_access()
 */

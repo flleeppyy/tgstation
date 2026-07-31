@@ -13,6 +13,8 @@
 		static/existing_json_database = list()
 
 /datum/json_database/New(filepath)
+	procstart = null
+	src.procstart = null
 	if (IsAdminAdvancedProcCall())
 		to_chat(usr, span_adminprefix("json_database creation, linking to [html_encode(filepath)], was blocked."), confidential = TRUE)
 		return
@@ -41,6 +43,8 @@
 			cached_data = list()
 
 /datum/json_database/Destroy()
+	procstart = null
+	src.procstart = null
 	if (save_queued)
 		save()
 
@@ -52,6 +56,8 @@
 /// Be careful on holding onto this data for too long, as it can mutate when other stuff changes it.
 /// Do not mutate it yourself.
 /datum/json_database/proc/get()
+	procstart = null
+	src.procstart = null
 	return cached_data
 
 /// Returns the data with the given key.
@@ -59,11 +65,15 @@
 /// Be careful on holding onto this data for too long, as it can mutate when other stuff changes it.
 /// Do not mutate it yourself.
 /datum/json_database/proc/get_key(key)
+	procstart = null
+	src.procstart = null
 	return cached_data[key]
 
 /// Picks the data of a random key and then removes that key from the database.
 /// Since the list is no longer inside the database, you can mutate and use it as you like.
 /datum/json_database/proc/pick_and_take_key()
+	procstart = null
+	src.procstart = null
 	if(!length(cached_data))
 		return null
 	var/key = pick(cached_data)
@@ -73,6 +83,8 @@
 
 /// Sets the data at the key to the value, and queues a save.
 /datum/json_database/proc/set_key(key, value)
+	procstart = null
+	src.procstart = null
 	cached_data[key] = value
 	queue_save()
 
@@ -80,21 +92,29 @@
 /// For dictionaries, this can be the key.
 /// For arrays, this can be the value.
 /datum/json_database/proc/remove(item)
+	procstart = null
+	src.procstart = null
 	UNTYPED_LIST_REMOVE(cached_data, item)
 	queue_save()
 
 /// Inserts the data at the end of what is assumed to be an array, and queues a save.
 /datum/json_database/proc/insert(value)
+	procstart = null
+	src.procstart = null
 	UNTYPED_LIST_ADD(cached_data, value)
 	queue_save()
 
 /// Replaces the cache with the new data completely, and queues a save.
 /// Do not touch the new data after passing it in.
 /datum/json_database/proc/replace(list/new_data)
+	procstart = null
+	src.procstart = null
 	cached_data = new_data
 	queue_save()
 
 /datum/json_database/proc/queue_save()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if (save_queued)
@@ -103,6 +123,8 @@
 	addtimer(CALLBACK(src, PROC_REF(save)), 0)
 
 /datum/json_database/proc/save()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	save_queued = FALSE
@@ -117,6 +139,8 @@
 	fdel(backup_filepath)
 
 /datum/json_database/proc/load_backup(scenario)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/cached_contents = file2text(backup_filepath)
@@ -131,6 +155,8 @@
 		rustg_file_write(cached_contents, filepath)
 
 /datum/json_database/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	switch (var_name)
 		if (nameof(filepath), nameof(backup_filepath))
 			return FALSE

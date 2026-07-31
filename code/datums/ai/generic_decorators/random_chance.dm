@@ -4,4 +4,6 @@
 	var/chance = 0.5
 
 /datum/bt_node/decorator/random_chance/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	return prob(chance * 100)

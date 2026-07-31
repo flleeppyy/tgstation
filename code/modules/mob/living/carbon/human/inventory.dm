@@ -7,6 +7,8 @@
  */
 
 /mob/living/carbon/human/get_equipped_items(include_flags = NONE)
+	procstart = null
+	src.procstart = null
 	var/list/items = ..()
 	if(!(include_flags & INCLUDE_POCKETS))
 		items -= list(l_store, r_store, s_store)
@@ -16,6 +18,8 @@
 	return items
 
 /mob/living/carbon/human/can_equip(obj/item/equip_target, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE, ignore_equipped = FALSE, indirect_action = FALSE)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_HUMAN_EQUIPPING_ITEM, equip_target, slot) == COMPONENT_BLOCK_EQUIP)
 		return FALSE
 	if(HAS_TRAIT(equip_target, TRAIT_NODROP) && (equip_target in held_items))
@@ -25,6 +29,8 @@
 	return dna.species.can_equip(equip_target, slot, disable_warning, src, bypass_equip_delay_self, ignore_equipped, indirect_action)
 
 /mob/living/carbon/human/get_item_by_slot(slot_id)
+	procstart = null
+	src.procstart = null
 	switch(slot_id)
 		if(ITEM_SLOT_BACK)
 			return back
@@ -60,6 +66,8 @@
 	return ..()
 
 /mob/living/carbon/human/get_slot_by_item(obj/item/looking_for)
+	procstart = null
+	src.procstart = null
 	if(looking_for == back)
 		return ITEM_SLOT_BACK
 
@@ -111,6 +119,8 @@
 	return ..()
 
 /mob/living/carbon/human/get_visible_items()
+	procstart = null
+	src.procstart = null
 	var/list/visible_items = ..()
 	var/obj/item/clothing/under/under = w_uniform
 	if(istype(under) && length(under.attached_accessories) && (under in visible_items))
@@ -120,6 +130,8 @@
 //This is an UNSAFE proc. Use mob_can_equip() before calling this one! Or rather use equip_to_slot_if_possible() or advanced_equip_to_slot_if_possible()
 // Initial is used to indicate whether or not this is the initial equipment (job datums etc) or just a player doing it
 /mob/living/carbon/human/equip_to_slot(obj/item/equipping, slot, initial = FALSE, redraw_mob = FALSE, indirect_action = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!..()) //a check failed or the item has already found its slot
 		return
 
@@ -212,6 +224,8 @@
 	return not_handled //For future deeper overrides
 
 /mob/living/carbon/human/doUnEquip(obj/item/item_dropping, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..() //See mob.dm for an explanation on this and some rage about people copypasting instead of calling ..() like they should.
 	if(!. || !item_dropping)
 		return
@@ -293,12 +307,16 @@
 			update_suit_storage()
 
 /mob/living/carbon/human/item_coverage_changed(added_slots, removed_slots)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((added_slots|removed_slots) & HIDEFACE)
 		sec_hud_set_security_status()
 		update_visible_name()
 
 /mob/living/carbon/human/toggle_internals(obj/item/tank, is_external = FALSE)
+	procstart = null
+	src.procstart = null
 	// Just close the tank if it's the one the mob already has open.
 	var/obj/item/existing_tank = is_external ? external : internal
 	if(tank == existing_tank)
@@ -339,9 +357,13 @@
 
 /// Returns TRUE if the tank successfully toggles open/closed. Opens the tank only if a breathing apparatus is found.
 /mob/living/carbon/human/toggle_externals(obj/item/tank)
+	procstart = null
+	src.procstart = null
 	return toggle_internals(tank, TRUE)
 
 /mob/living/carbon/human/proc/equipOutfit(outfit, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/outfit/O = null
 
 	if(ispath(outfit))
@@ -358,6 +380,8 @@
 
 ///A version of equipOutfit that overrides passed in outfits with their entry on the species' outfit override registry
 /mob/living/carbon/human/proc/equip_species_outfit(outfit, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/outfit/outfit_to_equip
 
 	var/override_outfit_path = dna?.species.outfit_override_registry[outfit]
@@ -374,6 +398,8 @@
 
 //delete all equipment without dropping anything
 /mob/living/carbon/human/proc/delete_equipment()
+	procstart = null
+	src.procstart = null
 	for(var/slot in get_equipped_items(INCLUDE_POCKETS|INCLUDE_HELD))//order matters, dependant slots go first
 		qdel(slot)
 	for(var/obj/item/held_item in held_items)
@@ -382,6 +408,8 @@
 /// take the most recent item out of a slot or place held item in a slot
 
 /mob/living/carbon/human/proc/smart_equip_targeted(slot_type = ITEM_SLOT_BELT, slot_item_name = "belt")
+	procstart = null
+	src.procstart = null
 	if(incapacitated)
 		return
 	var/obj/item/thing = get_active_held_item()
@@ -424,6 +452,8 @@
 	return
 
 /mob/living/carbon/human/change_number_of_hands(amt)
+	procstart = null
+	src.procstart = null
 	var/old_limbs = held_items.len
 	if(amt < old_limbs)
 		for(var/i in hand_bodyparts.len to amt step -1)
@@ -449,14 +479,20 @@
 
 /// Returns the helmet if an air tank compatible helmet is equipped.
 /mob/living/carbon/human/proc/can_breathe_helmet()
+	procstart = null
+	src.procstart = null
 	if (astype(head, /obj/item/clothing)?.clothing_flags & HEADINTERNALS)
 		return head
 
 /// Returns the mask if an air tank compatible mask is equipped.
 /mob/living/carbon/human/proc/can_breathe_mask()
+	procstart = null
+	src.procstart = null
 	if (astype(wear_mask, /obj/item/clothing)?.clothing_flags & MASKINTERNALS)
 		return wear_mask
 
 /// Returns the object that allows us to breathe internals - tube implant, mask or helmet
 /mob/living/carbon/human/can_breathe_internals()
+	procstart = null
+	src.procstart = null
 	return can_breathe_tube() || can_breathe_mask() || can_breathe_helmet()

@@ -48,10 +48,14 @@
 	var/datum/objective/ending_objective
 
 /datum/antagonist/traitor/New(give_objectives = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.give_objectives = give_objectives
 
 /datum/antagonist/traitor/on_gain()
+	procstart = null
+	src.procstart = null
 	if(give_uplink)
 		owner.give_uplink(silent = TRUE, antag_datum = src)
 
@@ -93,6 +97,8 @@
 	return ..()
 
 /datum/antagonist/traitor/on_removal()
+	procstart = null
+	src.procstart = null
 	if(!isnull(uplink_handler))
 		uplink_handler.can_replace_objectives = null
 		uplink_handler.replace_objectives = null
@@ -101,9 +107,13 @@
 
 /// Returns true if we're allowed to assign ourselves a new objective
 /datum/antagonist/traitor/proc/can_change_objectives()
+	procstart = null
+	src.procstart = null
 	return can_assign_self_objectives
 
 /datum/antagonist/traitor/proc/pick_employer()
+	procstart = null
+	src.procstart = null
 	if(!employer)
 		var/faction = prob(75) ? FLAVOR_FACTION_SYNDICATE : FLAVOR_FACTION_NANOTRASEN
 		var/list/possible_employers = list()
@@ -125,6 +135,8 @@
 
 /// Generates a complete set of traitor objectives up to the traitor objective limit, including non-generic objectives such as martyr and hijack.
 /datum/antagonist/traitor/proc/forge_traitor_objectives()
+	procstart = null
+	src.procstart = null
 	var/objective_count = 0
 
 	if((GLOB.joined_player_list.len >= HIJACK_MIN_PLAYERS) && prob(HIJACK_PROB))
@@ -147,6 +159,8 @@
  * Forges the endgame objective and adds it to this datum's objective list.
  */
 /datum/antagonist/traitor/proc/forge_ending_objective()
+	procstart = null
+	src.procstart = null
 	if(is_hijacker)
 		ending_objective = new /datum/objective/hijack
 		ending_objective.owner = owner
@@ -170,6 +184,8 @@
 	objectives += ending_objective
 
 /datum/antagonist/traitor/proc/forge_single_generic_objective(job_objective)
+	procstart = null
+	src.procstart = null
 	if(prob(JOB_PROB) && job_objective)
 		return job_objective
 
@@ -198,11 +214,15 @@
 	return steal_objective
 
 /datum/antagonist/traitor/proc/forge_job_objective()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/job_objective = owner.assigned_role.generate_traitor_objective() // can return null
 	job_objective?.owner = owner
 	return job_objective
 
 /datum/antagonist/traitor/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/datum_owner = mob_override || owner.current
 
@@ -212,6 +232,8 @@
 		datum_owner.AddComponent(/datum/component/codeword_hearing, SStraitor.syndicate_code_response_regex, "red", src)
 
 /datum/antagonist/traitor/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/datum_owner = mob_override || owner.current
 	handle_clown_mutation(datum_owner, removing = FALSE)
 
@@ -219,12 +241,16 @@
 		component.delete_if_from_source(src)
 
 /datum/antagonist/traitor/submit_player_objective(retain_existing, retain_escape, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
 	owner.current.playsound_local(get_turf(owner.current), 'sound/music/antag/traitor/final_objective.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 
 /datum/antagonist/traitor/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/component/uplink/uplink = uplink_ref?.resolve()
 	var/list/data = list()
 	data["has_codewords"] = should_give_codewords
@@ -246,6 +272,8 @@
 	return data
 
 /datum/antagonist/traitor/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/result = list()
 
 	var/traitor_won = TRUE
@@ -299,6 +327,8 @@
 
 ///Tells how many contracts have been completed.
 /datum/antagonist/traitor/proc/contractor_round_end()
+	procstart = null
+	src.procstart = null
 	var/completed_contracts = uplink_handler.contractor_hub.contracts_completed
 	var/tc_total = uplink_handler.contractor_hub.contract_TC_payed_out + uplink_handler.contractor_hub.contract_TC_to_redeem
 
@@ -315,6 +345,8 @@
 	return sent_data
 
 /datum/antagonist/traitor/roundend_report_footer()
+	procstart = null
+	src.procstart = null
 	var/phrases = jointext(SStraitor.syndicate_code_phrase, ", ")
 	var/responses = jointext(SStraitor.syndicate_code_response, ", ")
 
@@ -336,6 +368,8 @@
 	shoes = /obj/item/clothing/shoes/magboots/advance
 
 /datum/outfit/traitor/post_equip(mob/living/carbon/human/H, visuals_only)
+	procstart = null
+	src.procstart = null
 	var/obj/item/melee/energy/sword/sword = locate() in H.held_items
 	if(sword.flags_1 & INITIALIZED_1)
 		sword.attack_self()
@@ -350,6 +384,8 @@
 #undef FLAVOR_FACTION_NANOTRASEN
 
 /datum/antagonist/traitor/on_respawn(mob/new_character)
+	procstart = null
+	src.procstart = null
 	SSjob.equip_rank(new_character, new_character.mind.assigned_role, new_character.client)
 	new_character.mind.give_uplink(silent = TRUE, antag_datum = src)
 	return TRUE

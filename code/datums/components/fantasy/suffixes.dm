@@ -7,6 +7,8 @@
 	var/list/badSuffixes
 
 /datum/fantasy_affix/cosmetic_suffixes/New()
+	procstart = null
+	src.procstart = null
 	goodSuffixes = list(
 		"dexterity",
 		"constitution",
@@ -41,6 +43,8 @@
 	weight = (length(goodSuffixes) + length(badSuffixes)) * 10
 
 /datum/fantasy_affix/cosmetic_suffixes/apply(datum/component/fantasy/comp, newName)
+	procstart = null
+	src.procstart = null
 	if(comp.quality > 0 || (comp.quality == 0 && prob(50)))
 		. = "[newName] of [pick(goodSuffixes)]"
 		if(comp.quality >= 10)
@@ -60,6 +64,8 @@
 	alignment = AFFIX_GOOD
 
 /datum/fantasy_affix/bane/apply(datum/component/fantasy/comp, newName)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// This is set up to be easy to add to these lists as I expect it will need modifications
 	var/static/list/possible_mobtypes
@@ -92,6 +98,8 @@
 	weight = 5
 
 /datum/fantasy_affix/summoning/apply(datum/component/fantasy/comp, newName)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// This is set up to be easy to add to these lists as I expect it will need modifications
 	var/static/list/possible_mobtypes
@@ -133,11 +141,15 @@
 	alignment = AFFIX_GOOD
 
 /datum/fantasy_affix/shrapnel/validate(obj/item/attached)
+	procstart = null
+	src.procstart = null
 	if(isgun(attached))
 		return TRUE
 	return FALSE
 
 /datum/fantasy_affix/shrapnel/apply(datum/component/fantasy/comp, newName)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// higher means more likely
 	var/list/weighted_projectile_types = list(
@@ -169,12 +181,16 @@
 	alignment = AFFIX_GOOD
 
 /datum/fantasy_affix/strength/apply(datum/component/fantasy/comp, newName)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/master = comp.parent
 	master.AddElement(/datum/element/knockback, CEILING(comp.quality/2, 1), FLOOR(comp.quality/10, 1))
 	return "[newName] of strength"
 
 /datum/fantasy_affix/strength/remove(datum/component/fantasy/comp)
+	procstart = null
+	src.procstart = null
 	var/obj/item/master = comp.parent
 	master.RemoveElement(/datum/element/knockback, CEILING(comp.quality/2, 1), FLOOR(comp.quality/10, 1))
 
@@ -186,6 +202,8 @@
 	alignment = AFFIX_EVIL
 
 /datum/fantasy_affix/fool/apply(datum/component/fantasy/comp, newName)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/master = comp.parent
 	comp.appliedComponents += master.AddComponent(/datum/component/squeak, list('sound/items/bikehorn.ogg' = 1), 50, falloff_exponent = 20)
@@ -198,6 +216,8 @@
 	weight = 5
 
 /datum/fantasy_affix/curse_of_hunger/validate(obj/item/attached)
+	procstart = null
+	src.procstart = null
 	// Curse of hunger can be really unbearable to deal with,
 	// so it should not start on someone or in a bag.
 	if(!isturf(attached.loc))
@@ -205,6 +225,8 @@
 	return TRUE
 
 /datum/fantasy_affix/curse_of_hunger/apply(datum/component/fantasy/comp, newName)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/master = comp.parent
 	var/filter_color = "#8a0c0ca1" //clarified args
@@ -214,6 +236,8 @@
 	return "[newName][new_name]"
 
 /datum/fantasy_affix/curse_of_hunger/remove(datum/component/fantasy/comp)
+	procstart = null
+	src.procstart = null
 	var/obj/item/master = comp.parent
 	master.RemoveElement(/datum/element/curse_announcement) //just in case
 
@@ -223,6 +247,8 @@
 	alignment = AFFIX_EVIL
 
 /datum/fantasy_affix/curse_of_polymorph/validate(obj/item/attached)
+	procstart = null
+	src.procstart = null
 	// Don't start on someone so that it doesn't immediately polymorph them.
 	if(ismob(attached.loc))
 		return FALSE
@@ -231,6 +257,8 @@
 	return TRUE
 
 /datum/fantasy_affix/curse_of_polymorph/apply(datum/component/fantasy/comp, newName)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/master = comp.parent
 	var/filter_color = "#800080a1" //clarified args
@@ -248,6 +276,8 @@
 	return "[newName][new_name]"
 
 /datum/fantasy_affix/curse_of_polymorph/remove(datum/component/fantasy/comp)
+	procstart = null
+	src.procstart = null
 	var/obj/item/master = comp.parent
 	master.RemoveElement(/datum/element/curse_announcement) //just in case
 
@@ -257,17 +287,23 @@
 	alignment = AFFIX_GOOD
 
 /datum/fantasy_affix/speed/validate(obj/item/attached)
+	procstart = null
+	src.procstart = null
 	if(!istype(attached, /obj/item/clothing/shoes))
 		return FALSE
 	return TRUE
 
 /datum/fantasy_affix/speed/apply(datum/component/fantasy/comp, newName)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/master = comp.parent
 	master.slowdown = min(-comp.quality / 5, master.slowdown)
 	return "[newName] of speed"
 
 /datum/fantasy_affix/speed/remove(datum/component/fantasy/comp)
+	procstart = null
+	src.procstart = null
 	var/obj/item/master = comp.parent
 	master.slowdown = initial(master.slowdown)
 
@@ -278,11 +314,15 @@
 	weight = 1
 
 /datum/fantasy_affix/doot/apply(datum/component/fantasy/comp, newName)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	comp.parent.AddElement(/datum/element/spooky, too_spooky = comp.quality > 17, stam_damage_mult = comp.quality * 0.15)
 	return "[newName] of [pick("dooting", "spooks", "rattling", "the bones")]"
 
 /datum/fantasy_affix/doot/remove(datum/component/fantasy/comp)
+	procstart = null
+	src.procstart = null
 	comp.parent.RemoveElement(/datum/element/spooky, too_spooky = comp.quality > 17, stam_damage_mult = comp.quality * 0.15)
 
 // On hitting a mob their click cd is slowed marginally
@@ -293,11 +333,17 @@
 	weight = 3
 
 /datum/fantasy_affix/windseeker/apply(datum/component/fantasy/comp, newName)
+	procstart = null
+	src.procstart = null
 	comp.parent.AddElement(/datum/element/slow_target_click_cd_attack, get_cd_penalty(comp))
 	return "[newName] of the Windseeker"
 
 /datum/fantasy_affix/windseeker/remove(datum/component/fantasy/comp)
+	procstart = null
+	src.procstart = null
 	comp.parent.RemoveElement(/datum/element/slow_target_click_cd_attack, get_cd_penalty(comp))
 
 /datum/fantasy_affix/windseeker/proc/get_cd_penalty(datum/component/fantasy/comp)
+	procstart = null
+	src.procstart = null
 	return min(round(sqrt(comp.quality) * 0.1, 0.1), 0.4) // this gives you a small number, like 0.2 seconds

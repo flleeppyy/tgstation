@@ -13,6 +13,8 @@
 	custom_materials = list(/datum/material/iron=SMALL_MATERIAL_AMOUNT * 3, /datum/material/glass=SMALL_MATERIAL_AMOUNT)
 
 /obj/item/disk/surgery/debug/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	surgeries = list()
 	for(var/datum/surgery_operation/operation as anything in GLOB.operations.get_instances_from(subtypesof(/datum/surgery_operation)))
@@ -27,6 +29,8 @@
 	)
 
 /obj/item/disk/surgery/advanced_plastic_surgery/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info("Unlocks the <b>[/datum/surgery_operation/limb/add_plastic::name]</b> surgical operation.")
 	. += span_info("Performing this before a <i>[/datum/surgery_operation/limb/plastic_surgery::name]</i> upgrades the operation, \
@@ -34,6 +38,8 @@
 		provided you have a photo of them in your offhand during the surgery.")
 
 /obj/item/disk/surgery/advanced_plastic_surgery/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/examine_lore, \
 		lore = "Most forms of plastic surgery became obsolete due in no small part to advances in genetics technology. \

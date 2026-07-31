@@ -19,12 +19,16 @@
 	var/hud_color = "#3CB8A5"
 
 /obj/item/organ/cyberimp/eyes/hud/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(toggled_on)
 		for(var/hud_trait in HUD_traits)
 			add_organ_trait(hud_trait)
 
 /obj/item/organ/cyberimp/eyes/hud/proc/toggle_hud(mob/living/carbon/human/eye_owner)
+	procstart = null
+	src.procstart = null
 	if(toggled_on)
 		toggled_on = FALSE
 		for(var/hud_trait in HUD_traits)
@@ -41,11 +45,15 @@
 		eye_owner.add_eye_color_right(hud_color, EYE_COLOR_HUD_PRIORITY)
 
 /obj/item/organ/cyberimp/eyes/hud/on_mob_insert(mob/living/carbon/human/eye_owner, special = FALSE, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(toggled_on && hud_color)
 		eye_owner.add_eye_color_right(hud_color, EYE_COLOR_HUD_PRIORITY, !special)
 
 /obj/item/organ/cyberimp/eyes/hud/on_mob_remove(mob/living/carbon/human/eye_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(toggled_on && hud_color)
 		eye_owner.remove_eye_color(EYE_COLOR_HUD_PRIORITY, !special)

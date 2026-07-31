@@ -15,6 +15,8 @@
 
 /// Actually perform the process
 /datum/admin_ai_template/proc/apply(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	if (QDELETED(target) || !isliving(target))
 		to_chat(user, span_warning("Invalid target for AI controller."))
 		return
@@ -23,6 +25,8 @@
 
 /// Set up any stored variables before we actually apply the controller
 /datum/admin_ai_template/proc/gather_information(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	override_client = tgui_alert(user, "Would you like this controller to be active even while the mob has a client controlling it?", "Override Client?", list("Yes", "No"))
 	if (isnull(override_client))
 		return FALSE
@@ -53,6 +57,8 @@
 	return TRUE
 
 /datum/admin_ai_template/proc/apply_controller(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	if (QDELETED(target))
 		to_chat(user, span_warning("Target stopped existing while you were answering prompts :("))
 		return
@@ -96,6 +102,8 @@
 	var/projectile_sound
 
 /datum/admin_ai_template/hostile_ranged/gather_information(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -107,6 +115,8 @@
 
 /// Give target a gun
 /datum/admin_ai_template/hostile_ranged/proc/setup_ranged_attacks(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	if (target.GetComponent(/datum/component/ranged_attacks))
 		return TRUE
 
@@ -140,6 +150,8 @@
 
 /// Decide our movement details
 /datum/admin_ai_template/hostile_ranged/proc/decide_min_max_range(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	min_range = tgui_input_number(user, "How far should this mob try to stay away from its target?", "Min Distance", max_value = 9, min_value = 0, default = 2)
 	if (isnull(min_range))
 		return FALSE
@@ -151,6 +163,8 @@
 	return TRUE
 
 /datum/admin_ai_template/hostile_ranged/apply_controller(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/datum/ai_controller/controller = target.ai_controller
@@ -178,6 +192,8 @@
 	controller_type = /datum/ai_controller/basic_controller/simple/simple_skirmisher
 
 /datum/admin_ai_template/hostile_ranged/and_melee/decide_min_max_range(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Maintain distance from a guy and use an ability on cooldown
@@ -192,6 +208,8 @@
 	var/max_range
 
 /datum/admin_ai_template/ability/gather_information(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -212,6 +230,8 @@
 
 /// Decide our movement details, some copy/paste here unfortunately
 /datum/admin_ai_template/ability/proc/decide_min_max_range(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	min_range = tgui_input_number(user, "How far should this mob try to stay away from its target?", "Min Distance", max_value = 9, min_value = 0, default = 2)
 	if (isnull(min_range))
 		return FALSE
@@ -223,6 +243,8 @@
 	return TRUE
 
 /datum/admin_ai_template/ability/apply_controller(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/datum/action/cooldown/ability = locate(ability_type) in target.actions
@@ -241,6 +263,8 @@
 	controller_type = /datum/ai_controller/basic_controller/simple/simple_ability_melee
 
 /datum/admin_ai_template/ability/melee/decide_min_max_range(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Stays away from a guy and uses an ability on that guy
@@ -251,6 +275,8 @@
 	var/ability_type
 
 /datum/admin_ai_template/hostile_ranged/ability/gather_information(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -269,6 +295,8 @@
 	return TRUE
 
 /datum/admin_ai_template/hostile_ranged/ability/apply_controller(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/datum/action/cooldown/ability = locate(ability_type) in target.actions
@@ -286,6 +314,8 @@
 	make_hostile = FALSE
 
 /datum/admin_ai_template/retaliate/apply_controller(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!HAS_TRAIT_FROM(target, TRAIT_SUBTREE_REQUIRED_OPERATIONAL_DATUM, /datum/element/ai_retaliate)) // Not really what this is for but it should work
 		target.AddElement(/datum/element/ai_retaliate)
@@ -297,6 +327,8 @@
 	make_hostile = FALSE
 
 /datum/admin_ai_template/hostile_ranged/ability/retaliate/apply_controller(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!HAS_TRAIT_FROM(target, TRAIT_SUBTREE_REQUIRED_OPERATIONAL_DATUM, /datum/element/ai_retaliate)) // Not really what this is for but it should work
 		target.AddElement(/datum/element/ai_retaliate)
@@ -308,6 +340,8 @@
 	make_hostile = FALSE
 
 /datum/admin_ai_template/ability/retaliate/apply_controller(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!HAS_TRAIT_FROM(target, TRAIT_SUBTREE_REQUIRED_OPERATIONAL_DATUM, /datum/element/ai_retaliate)) // Not really what this is for but it should work
 		target.AddElement(/datum/element/ai_retaliate)
@@ -323,6 +357,8 @@
 	var/calm_down_chance
 
 /datum/admin_ai_template/grumpy/gather_information(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -338,6 +374,8 @@
 	return TRUE
 
 /datum/admin_ai_template/grumpy/apply_controller(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/ai_controller/controller = target.ai_controller
 	controller.set_blackboard_key(BB_RANDOM_AGGRO_CHANCE, flipout_chance)
@@ -361,6 +399,8 @@
 	controller_type = /datum/ai_controller/basic_controller/simple/simple_skittish
 
 /datum/admin_ai_template/skittish/apply_controller(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!HAS_TRAIT_FROM(target, TRAIT_SUBTREE_REQUIRED_OPERATIONAL_DATUM, /datum/element/ai_retaliate)) // Not really what this is for but it should work
 		target.AddElement(/datum/element/ai_retaliate)
@@ -373,6 +413,8 @@
 	var/mob/living/da_boss
 
 /datum/admin_ai_template/goon/gather_information(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -388,6 +430,8 @@
 
 /// Find a mob to make the boss
 /datum/admin_ai_template/goon/proc/grab_mob(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	var/list/mobs_in_my_tile = list()
 	for (var/mob/living/dude in (range(0, user.mob) - target))
 		mobs_in_my_tile[dude.real_name] = dude
@@ -411,6 +455,8 @@
 	return grab_mob(target, user)
 
 /datum/admin_ai_template/goon/apply_controller(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// There's not really much point making this customisable at the moment
 	var/static/list/pet_commands = list(
@@ -432,9 +478,13 @@
 	name = "Reset"
 
 /datum/admin_ai_template/reset/gather_information(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/admin_ai_template/reset/apply_controller(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(target.ai_controller)
 	var/controller_type = initial(target.ai_controller)
 	target.ai_controller = new controller_type(src)
@@ -444,7 +494,11 @@
 	name = "None"
 
 /datum/admin_ai_template/clear/gather_information(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/admin_ai_template/clear/apply_controller(mob/living/target, client/user)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(target.ai_controller)

@@ -8,6 +8,8 @@
 	)
 
 /datum/component/soapbox/Initialize(...)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
 	add_connect_loc_behalf_to_parent()
@@ -15,6 +17,8 @@
 
 ///Applies loud speech to our movable when entering the turf our parent is on
 /datum/component/soapbox/proc/on_loc_entered(datum/source, mob/living/soapbox_arrive)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isliving(soapbox_arrive))
 		return
@@ -25,6 +29,8 @@
 
 ///Takes away loud speech from our movable when it leaves the turf our parent is on
 /datum/component/soapbox/proc/on_loc_exited(datum/source, mob/living/soapbox_leave)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(soapbox_leave in soapboxers)
 		UnregisterSignal(soapbox_leave, COMSIG_MOB_SAY)
@@ -32,6 +38,8 @@
 
 ///We don't want our soapboxxer to keep their loud say if the parent is moved out from under them
 /datum/component/soapbox/proc/parent_moved(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/atom/movable/loud as anything in soapboxers)
 		UnregisterSignal(loud, COMSIG_MOB_SAY)
@@ -39,8 +47,12 @@
 
 ///Gives a mob a unique say span
 /datum/component/soapbox/proc/soapbox_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	speech_args[SPEECH_SPANS] |= SPAN_SOAPBOX
 
 /datum/component/soapbox/proc/add_connect_loc_behalf_to_parent()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/connect_loc_behalf, parent, loc_connections)

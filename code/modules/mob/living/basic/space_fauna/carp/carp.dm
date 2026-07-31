@@ -95,6 +95,8 @@
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 
 /mob/living/basic/carp/Initialize(mapload, mob/tamer)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(src, TRAIT_FREE_HYPERSPACE_MOVEMENT, INNATE_TRAIT) //Need to set before init cause if we init in hyperspace we get dragged before the trait can be added
 	. = ..()
 	apply_colour()
@@ -124,11 +126,15 @@
 	ai_controller.set_blackboard_key(BB_OBSTACLE_TARGETING_WHITELIST, allowed_obstacle_targets)
 
 /mob/living/basic/carp/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(teleport)
 	return ..()
 
 /// Tell the elements and the blackboard what food we want to eat
 /mob/living/basic/carp/proc/setup_eating()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/basic_eating, food_types = desired_food)
 	AddElement(/datum/element/basic_eating, heal_amt = 0, damage_amount = 10, damage_type = BRUTE, food_types = desired_trash) // We are killing our planet
 	var/list/foods_list = desired_food + desired_trash
@@ -136,12 +142,16 @@
 
 /// Set a random colour on the carp, override to do something else
 /mob/living/basic/carp/proc/apply_colour()
+	procstart = null
+	src.procstart = null
 	if (!greyscale_config)
 		return
 	set_greyscale(colors = list(pick_weight(GLOB.carp_colors)))
 
 /// Called when another mob has forged a bond of friendship with this one, passed the taming mob as 'tamer'
 /mob/living/basic/carp/tamed(mob/living/tamer, atom/food, feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/ridable, ridable_data)
 	AddComponent(/datum/component/obeys_commands, tamed_commands)
@@ -152,10 +162,14 @@
 
 /// Teleport when you right click away from you
 /mob/living/basic/carp/ranged_secondary_attack(atom/atom_target, modifiers)
+	procstart = null
+	src.procstart = null
 	teleport.Trigger(target = atom_target)
 
 /// Gives the carp a list of weakrefs of destinations to try and travel between when it has nothing better to do
 /mob/living/basic/carp/proc/migrate_to(list/datum/weakref/migration_points)
+	procstart = null
+	src.procstart = null
 	ai_controller.ai_traits |= RUN_WHILE_UNWATCHED
 	ai_controller.reset_ai_status() // We need them to actually keep walking to the station
 	var/list/actual_points = list()
@@ -168,11 +182,15 @@
 	ai_controller.set_blackboard_key(BB_CARP_MIGRATION_PATH, actual_points)
 
 /mob/living/basic/carp/death(gibbed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	REMOVE_TRAIT(src, TRAIT_FREE_HYPERSPACE_MOVEMENT, INNATE_TRAIT)
 
 /mob/living/basic/carp/revive(full_heal_flags, excess_healing, force_grab_ghost)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	ADD_TRAIT(src, TRAIT_FREE_HYPERSPACE_MOVEMENT, INNATE_TRAIT)
@@ -190,11 +208,15 @@
 	regenerate_colour = "#ffffff"
 
 /mob/living/basic/carp/holographic/Initialize(mapload, mob/tamer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/holographic_nature)
 
 /// Holocarp don't eat food
 /mob/living/basic/carp/holographic/setup_eating()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /**
@@ -208,6 +230,8 @@
 	initial_language_holder = /datum/language_holder/carp/hear_common
 
 /mob/living/basic/carp/pet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/ai_retaliate)
 	AddElement(/datum/element/pet_bonus, "bloop")
@@ -248,6 +272,8 @@
 	var/mutable_appearance/mouth_overlay
 
 /mob/living/basic/carp/pet/cayenne/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/callback/got_disk = CALLBACK(src, PROC_REF(got_disk))
 	var/datum/callback/display_disk = CALLBACK(src, PROC_REF(display_disk))
@@ -256,6 +282,8 @@
 	implanter.implant(src, null, TRUE)
 
 /mob/living/basic/carp/pet/cayenne/apply_colour()
+	procstart = null
+	src.procstart = null
 	if (prob(RARE_CAYENNE_CHANCE))
 		set_greyscale(colors = list(COLOR_CARP_SILVER))
 	else
@@ -263,12 +291,16 @@
 
 /// She did it! Treats for Cayenne!
 /mob/living/basic/carp/pet/cayenne/proc/got_disk(obj/item/disk/nuclear/disky)
+	procstart = null
+	src.procstart = null
 	if (disky.fake) // Never mind she didn't do it
 		return
 	client.give_award(/datum/award/achievement/misc/cayenne_disk, src)
 
 /// Adds an overlay to show the disk on Cayenne
 /mob/living/basic/carp/pet/cayenne/proc/display_disk(list/new_overlays)
+	procstart = null
+	src.procstart = null
 	if (!mouth_overlay)
 		mouth_overlay = mutable_appearance(SSgreyscale.GetColoredIconByType(/datum/greyscale_config/carp/disk_mouth, greyscale_colors), "disk_mouth")
 	new_overlays += mouth_overlay
@@ -292,6 +324,8 @@
 	gold_core_spawnable = NO_SPAWN
 
 /mob/living/basic/carp/ella/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	death() // It comes into the world dead when the disease is cured
 
@@ -314,6 +348,8 @@
 	gold_core_spawnable = FRIENDLY_SPAWN
 
 /mob/living/basic/carp/passive/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ai_retaliate_advanced, CALLBACK(src, PROC_REF(on_attacked)))
 	AddElement(/datum/element/pet_bonus, "bloop")
@@ -321,5 +357,7 @@
 
 /// If someone slaps one of the school, scatter
 /mob/living/basic/carp/passive/proc/on_attacked(mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/basic/carp/passive/schoolmate in oview(src, 9))
 		schoolmate.ai_controller?.set_blackboard_key_assoc_lazylist(BB_BASIC_MOB_RETALIATE_LIST, attacker, world.time)

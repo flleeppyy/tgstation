@@ -22,13 +22,19 @@
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_ORGANS_CUT|SURGERY_BONE_SAWED
 
 /datum/surgery_operation/organ/brainwash/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(/atom/movable/screen/alert/hypnosis::overlay_icon, /atom/movable/screen/alert/hypnosis::overlay_state)
 
 /datum/surgery_operation/organ/brainwash/pre_preop(obj/item/organ/brain/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	operation_args[OPERATION_OBJECTIVE] = tgui_input_text(surgeon, "Choose the objective to imprint on your patient's brain", "Brainwashing", max_length = MAX_MESSAGE_LEN)
 	return !!operation_args[OPERATION_OBJECTIVE]
 
 /datum/surgery_operation/organ/brainwash/on_preop(obj/item/organ/brain/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		organ.owner,
@@ -39,6 +45,8 @@
 	display_pain(organ.owner, "Your head pounds with unimaginable pain!") // Same message as other brain surgeries
 
 /datum/surgery_operation/organ/brainwash/on_success(obj/item/organ/brain/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	if(!organ.owner.mind)
 		to_chat(surgeon, span_warning("[organ.owner] doesn't respond to the brainwashing, as if [organ.owner.p_they()] lacked a mind..."))
 		return ..()
@@ -56,6 +64,8 @@
 	on_brainwash(organ.owner, surgeon, tool, operation_args)
 
 /datum/surgery_operation/organ/brainwash/proc/on_brainwash(mob/living/carbon/brainwashed, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	var/objective = operation_args[OPERATION_OBJECTIVE] || "Oooo no objective set somehow report this to an admin"
 	to_chat(brainwashed, span_notice("A new thought forms in your mind: '[objective]'"))
 	brainwash(brainwashed, objective)
@@ -65,6 +75,8 @@
 	surgeon.log_message("surgically brainwashed [key_name(brainwashed)] with the objective '[objective]'.", LOG_GAME)
 
 /datum/surgery_operation/organ/brainwash/on_failure(obj/item/organ/brain/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		organ.owner,
@@ -115,10 +127,14 @@
 	)
 
 /datum/surgery_operation/organ/brainwash/sleeper/pre_preop(obj/item/organ/brain/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	operation_args[OPERATION_OBJECTIVE] = pick(possible_objectives)
 	return TRUE
 
 /datum/surgery_operation/organ/brainwash/sleeper/on_preop(obj/item/organ/brain/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		organ.owner,
@@ -129,6 +145,8 @@
 	display_pain(organ.owner, "Your head pounds with unimaginable pain!") // Same message as other brain surgeries
 
 /datum/surgery_operation/organ/brainwash/sleeper/on_brainwash(mob/living/carbon/brainwashed, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	brainwashed.gain_trauma(new /datum/brain_trauma/mild/phobia/conspiracies(), TRAUMA_RESILIENCE_LOBOTOMY)
 

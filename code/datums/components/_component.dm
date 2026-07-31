@@ -41,6 +41,8 @@
  * * datum/P the parent datum this component reacts to signals from
  */
 /datum/component/New(list/raw_args)
+	procstart = null
+	src.procstart = null
 	parent = raw_args[1]
 	var/list/arguments = raw_args.Copy(2)
 
@@ -66,6 +68,8 @@
  * Do not call `qdel(src)` from this function, `return COMPONENT_INCOMPATIBLE` instead
  */
 /datum/component/proc/Initialize(...)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -75,6 +79,8 @@
  * * force - makes it not check for and remove the component from the parent
  */
 /datum/component/Destroy(force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!parent)
 		return ..()
 	if(!force)
@@ -87,6 +93,8 @@
  * Internal proc to handle behaviour of components when joining a parent
  */
 /datum/component/proc/_JoinParent()
+	procstart = null
+	src.procstart = null
 	var/datum/P = parent
 	//lazy init the parent's dc list
 	var/list/dc = P._datum_components
@@ -125,6 +133,8 @@
  * Internal proc to handle behaviour when being removed from a parent
  */
 /datum/component/proc/_RemoveFromParent()
+	procstart = null
+	src.procstart = null
 	var/datum/parent = src.parent
 	var/list/parents_components = parent._datum_components
 	for(var/I in _GetInverseTypeList())
@@ -154,6 +164,8 @@
  * Overridable proc that's called when added to a new parent
  */
 /datum/component/proc/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -165,6 +177,8 @@
  * *
  */
 /datum/component/proc/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -172,6 +186,8 @@
  * Return COMPONENT_INCOMPATIBLE to signal that the source is incompatible and should not be added
  */
 /datum/component/proc/on_source_add(source, ...)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(dupe_mode != COMPONENT_DUPE_SOURCES)
 		return COMPONENT_INCOMPATIBLE
@@ -182,6 +198,8 @@
  * You probably want to call parent after you do your logic because at the end of this we qdel if we have no sources remaining!
  */
 /datum/component/proc/on_source_remove(source)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(dupe_mode != COMPONENT_DUPE_SOURCES)
 		CRASH("Component '[type]' does not use sources but is trying to remove a source")
@@ -197,6 +215,8 @@
  * `C`'s type will always be the same of the called component
  */
 /datum/component/proc/InheritComponent(datum/component/C, i_am_original)
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -210,6 +230,8 @@
  * return TRUE if you are absorbing the component, otherwise FALSE if you are fine having it exist as a duplicate component
  */
 /datum/component/proc/CheckDupeComponent(datum/component/C, ...)
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -219,6 +241,8 @@
  * Use this to do any special cleanup you might need to do before being deregged from an object
  */
 /datum/component/proc/PreTransfer(datum/new_parent)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -229,12 +253,16 @@
  * Do not call `qdel(src)` from this function, `return COMPONENT_INCOMPATIBLE` instead
  */
 /datum/component/proc/PostTransfer(datum/new_parent)
+	procstart = null
+	src.procstart = null
 	return COMPONENT_INCOMPATIBLE //Do not support transfer by default as you must properly support it
 
 /**
  * Internal proc to create a list of our type and all parent types
  */
 /datum/component/proc/_GetInverseTypeList(our_type = type)
+	procstart = null
+	src.procstart = null
 	//we can do this one simple trick
 	. = list(our_type)
 	var/datum/current_type = parent_type
@@ -253,6 +281,8 @@
  * * datum/component/c_type The typepath of the component you want to get a reference to
  */
 /datum/proc/GetComponent(datum/component/c_type)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(c_type)
 	if(initial(c_type.dupe_mode) == COMPONENT_DUPE_ALLOWED || initial(c_type.dupe_mode) == COMPONENT_DUPE_SELECTIVE)
 		stack_trace("GetComponent was called to get a component of which multiple copies could be on an object. This can easily break and should be changed. Type: \[[c_type]\]")
@@ -273,6 +303,8 @@
  * * datum/component/c_type The typepath of the component you want to get a reference to
  */
 /datum/proc/GetExactComponent(datum/component/c_type)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(c_type)
 	var/initial_type_mode = initial(c_type.dupe_mode)
 	if(initial_type_mode == COMPONENT_DUPE_ALLOWED || initial_type_mode == COMPONENT_DUPE_SELECTIVE)
@@ -294,6 +326,8 @@
  * * c_type The component type path
  */
 /datum/proc/GetComponents(c_type)
+	procstart = null
+	src.procstart = null
 	var/list/components = _datum_components?[c_type]
 	if(!components)
 		return list()
@@ -311,6 +345,8 @@
  * Properly handles duplicate situations based on the `dupe_mode` var
  */
 /datum/proc/_AddComponent(list/raw_args, source)
+	procstart = null
+	src.procstart = null
 	var/original_type = raw_args[1]
 	var/datum/component/component_type = original_type
 
@@ -408,6 +444,8 @@
  * Removes a component source from this datum
  */
 /datum/proc/RemoveComponentSource(source, datum/component/component_type)
+	procstart = null
+	src.procstart = null
 	if(ispath(component_type))
 		component_type = GetExactComponent(component_type)
 	if(!component_type)
@@ -424,6 +462,8 @@
  * * ... additional arguments to be passed when creating the component if it does not exist
  */
 /datum/proc/_LoadComponent(list/arguments)
+	procstart = null
+	src.procstart = null
 	. = GetComponent(arguments[1])
 	if(!.)
 		return _AddComponent(arguments)
@@ -433,6 +473,8 @@
  * Used as a helper proc by the component transfer proc, does not clean up the component like Destroy does
  */
 /datum/component/proc/ClearFromParent(datum/new_parent)
+	procstart = null
+	src.procstart = null
 	if(!parent)
 		return
 	var/datum/old_parent = parent
@@ -450,6 +492,8 @@
  * * datum/component/target Target datum to transfer to
  */
 /datum/proc/TakeComponent(datum/component/target)
+	procstart = null
+	src.procstart = null
 	if(!target || target.parent == src)
 		return
 	if(target.parent)
@@ -478,6 +522,8 @@
  * * /datum/target the target to move the components to
  */
 /datum/proc/TransferComponents(datum/target)
+	procstart = null
+	src.procstart = null
 	var/list/dc = _datum_components
 	if(!dc)
 		return
@@ -496,8 +542,12 @@
  * Return the object that is the host of any UI's that this component has
  */
 /datum/component/ui_host()
+	procstart = null
+	src.procstart = null
 	return parent
 
 ///Whether the component is allowed to call on_source_add() on a source that's already present
 /datum/component/proc/allow_source_update(source)
+	procstart = null
+	src.procstart = null
 	return FALSE

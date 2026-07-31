@@ -21,21 +21,29 @@
 	var/obj/effect/abstract/particle_holder/particle_effect
 
 /obj/item/skillchip/acrobatics/on_activate(mob/living/carbon/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(user, COMSIG_MOB_EMOTE_COOLDOWN_CHECK, PROC_REF(whowee))
 	AddElement(/datum/element/obj_regen, 0.01) // 1% regen per SSobj tick.
 
 /obj/item/skillchip/acrobatics/on_deactivate(mob/living/carbon/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, COMSIG_MOB_EMOTE_COOLDOWN_CHECK)
 	RemoveElement(/datum/element/obj_regen, 0.01)
 
 /obj/item/skillchip/acrobatics/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(sparks)
 	QDEL_NULL(particle_effect)
 	return ..()
 
 /obj/item/skillchip/acrobatics/proc/whowee(mob/living/carbon/bozo, emote_key, emote_intentional)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(emote_key in affected_emotes))
@@ -156,6 +164,8 @@
 	return COMPONENT_EMOTE_COOLDOWN_BYPASS
 
 /obj/item/skillchip/acrobatics/proc/charge()
+	procstart = null
+	src.procstart = null
 	allowed_usage++
 
 /obj/item/skillchip/acrobatics/kiss

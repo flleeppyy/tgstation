@@ -53,10 +53,14 @@
 	acid = 100
 
 /obj/vehicle/sealed/mecha/ripley/Move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_pressure()
 
 /obj/vehicle/sealed/mecha/ripley/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/armor_plate, 3, /obj/item/stack/sheet/animalhide/goliath_hide, /datum/armor/armor_plate_ripley_goliath)
 
@@ -132,11 +136,15 @@
 	acid = 100
 
 /obj/vehicle/sealed/mecha/ripley/paddy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	weewooloop = new(src, FALSE, FALSE)
 	weewooloop.volume = 100
 
 /obj/vehicle/sealed/mecha/ripley/paddy/mob_exit(mob/M, silent = FALSE, randomstep = FALSE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/mecha_parts/mecha_equipment/ejector/seccage/cargo_holder = locate(/obj/item/mecha_parts/mecha_equipment/ejector/seccage) in equip_by_category[MECHA_UTILITY]
 	for(var/mob/contained in cargo_holder)
 		cargo_holder.cheese_it(contained)
@@ -145,6 +153,8 @@
 	return ..()
 
 /obj/vehicle/sealed/mecha/ripley/paddy/toggle_overclock(forced_state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -156,12 +166,16 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/vehicle/sealed/mecha/ripley/paddy/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!overclock_mode)
 		return
 	. += mutable_appearance(icon, "paddy_sirens", null, src, ABOVE_LIGHTING_PLANE)
 
 /obj/vehicle/sealed/mecha/ripley/paddy/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(weewooloop)
 	return ..()
 
@@ -170,6 +184,8 @@
 	button_icon_state = "mech_siren_off"
 
 /datum/action/vehicle/sealed/mecha/mech_overclock/siren/get_button_icon_state()
+	procstart = null
+	src.procstart = null
 	var/obj/vehicle/sealed/mecha/ripley/paddy/secmech = chassis
 	return "mech_siren_[secmech.overclock_mode ? "on" : "off"]"
 
@@ -221,6 +237,8 @@
 	name = "\improper APLU \"Miner\""
 
 /obj/vehicle/sealed/mecha/ripley/mining/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	take_damage(125)
 	if(cell)
@@ -254,6 +272,8 @@ GLOBAL_DATUM(cargo_ripley, /obj/vehicle/sealed/mecha/ripley/cargo)
 	max_integrity = 100 //Has half the health of a normal RIPLEY mech, so it's harder to use as a weapon.
 
 /obj/vehicle/sealed/mecha/ripley/cargo/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	//Attach hydraulic clamp ONLY
@@ -266,12 +286,16 @@ GLOBAL_DATUM(cargo_ripley, /obj/vehicle/sealed/mecha/ripley/cargo)
 	ADD_TRAIT(src, TRAIT_MECHA_DIAGNOSTIC_CREATED, REF(src)) //It was built *long* before the shift started.
 
 /obj/vehicle/sealed/mecha/ripley/cargo/Destroy()
+	procstart = null
+	src.procstart = null
 	if(GLOB.cargo_ripley == src)
 		GLOB.cargo_ripley = null
 
 	return ..()
 
 /obj/vehicle/sealed/mecha/ripley/cargo/populate_parts()
+	procstart = null
+	src.procstart = null
 	cell = new /obj/item/stock_parts/power_store/cell/high(src)
 	//No scanmod for Big Bess
 	capacitor = new /obj/item/stock_parts/capacitor(src)
@@ -290,17 +314,23 @@ GLOBAL_DATUM(cargo_ripley, /obj/vehicle/sealed/mecha/ripley/cargo)
 	var/cargo_capacity = 15
 
 /obj/item/mecha_parts/mecha_equipment/ejector/attach()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/vehicle/sealed/mecha/ripley/workmech = chassis
 	workmech.cargo_hold = src
 
 /obj/item/mecha_parts/mecha_equipment/ejector/detach(atom/moveto)
+	procstart = null
+	src.procstart = null
 	var/obj/vehicle/sealed/mecha/ripley/workmech = chassis
 	workmech.cargo_hold = null
 	drop_contents(isturf(moveto) ? moveto : moveto?.drop_location())
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/ejector/Destroy()
+	procstart = null
+	src.procstart = null
 	// Failsafe so we don't delete players
 	var/atom/droploc = drop_location() || get_turf(src)
 	for(var/mob/stored in get_all_contents())
@@ -310,21 +340,29 @@ GLOBAL_DATUM(cargo_ripley, /obj/vehicle/sealed/mecha/ripley/cargo)
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/ejector/atom_deconstruct(damage_flag)
+	procstart = null
+	src.procstart = null
 	drop_contents()
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/ejector/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	drop_contents(drop_prob = 10 * severity)
 	return ..()
 
 /// Spit out everything in our storage
 /obj/item/mecha_parts/mecha_equipment/ejector/proc/drop_contents(atom/drop_loc = drop_location(), drop_prob = 100)
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/stored in src)
 		if(prob(drop_prob))
 			stored.forceMove(drop_loc || get_turf(src))
 			step_rand(stored)
 
 /obj/item/mecha_parts/mecha_equipment/ejector/relay_container_resist_act(mob/living/user, obj/container)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You lean on the back of [container] and start pushing so it falls out of [src]."))
 	if(do_after(user, 30 SECONDS, target = container))
 		if(!user || IS_UNCONSCIOUS_OR_CRIT(user) || user.loc != src || container.loc != src )
@@ -336,6 +374,8 @@ GLOBAL_DATUM(cargo_ripley, /obj/vehicle/sealed/mecha/ripley/cargo)
 			to_chat(user, span_warning("You fail to push [container] out of [src]!"))
 
 /obj/item/mecha_parts/mecha_equipment/ejector/get_snowflake_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list(
 		"snowflake_id" = MECHA_SNOWFLAKE_ID_EJECTOR,
 		"cargo_capacity" = cargo_capacity,
@@ -349,6 +389,8 @@ GLOBAL_DATUM(cargo_ripley, /obj/vehicle/sealed/mecha/ripley/cargo)
 	return data
 
 /obj/item/mecha_parts/mecha_equipment/ejector/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -370,29 +412,41 @@ GLOBAL_DATUM(cargo_ripley, /obj/vehicle/sealed/mecha/ripley/cargo)
 	cargo_capacity = 4
 
 /obj/item/mecha_parts/mecha_equipment/ejector/seccage/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_MOB_REMOVING_CUFFS, PROC_REF(stop_cuff_removal))
 
 /obj/item/mecha_parts/mecha_equipment/ejector/seccage/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(src, COMSIG_MOB_REMOVING_CUFFS)
 	for(var/mob/freebird in contents) //Let's not qdel people iside the mech kthx
 		cheese_it(freebird)
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/ejector/seccage/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(arrived, COMSIG_MOB_REMOVING_CUFFS, PROC_REF(stop_cuff_removal))
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/ejector/seccage/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(gone, COMSIG_MOB_REMOVING_CUFFS)
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/ejector/seccage/proc/stop_cuff_removal(datum/source, obj/item/cuffs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	to_chat(source, span_warning("You don't have the room to remove [cuffs]!"))
 	return COMSIG_MOB_BLOCK_CUFF_REMOVAL
 
 /obj/item/mecha_parts/mecha_equipment/ejector/seccage/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(action == "eject")
 		var/mob/passenger = locate(params["cargoref"]) in contents
 		if(!passenger)
@@ -406,6 +460,8 @@ GLOBAL_DATUM(cargo_ripley, /obj/vehicle/sealed/mecha/ripley/cargo)
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/ejector/seccage/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/breakout_time = 1 MINUTES
 
 	if (user.mob_size > MOB_SIZE_HUMAN)
@@ -423,6 +479,8 @@ GLOBAL_DATUM(cargo_ripley, /obj/vehicle/sealed/mecha/ripley/cargo)
 			cheese_it(freebird)
 
 /obj/item/mecha_parts/mecha_equipment/ejector/seccage/proc/cheese_it(mob/living/escapee)
+	procstart = null
+	src.procstart = null
 	var/range = rand(1, 3)
 	var/variance = rand(-45, 45)
 	var/angle = 180
@@ -448,6 +506,8 @@ GLOBAL_DATUM(cargo_ripley, /obj/vehicle/sealed/mecha/ripley/cargo)
  * Checks for Lavaland pressure, if that works out the mech's speed is equal to fast_pressure_step_in and the cooldown for the mecha drill is halved. If not it uses slow_pressure_step_in and drill cooldown is normal.
  */
 /obj/vehicle/sealed/mecha/ripley/proc/update_pressure()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(loc)
 
 	if(lavaland_equipment_pressure_check(T))

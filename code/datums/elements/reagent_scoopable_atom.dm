@@ -4,6 +4,8 @@
 	var/datum/reagent/reagent_to_extract
 
 /datum/element/reagent_scoopable_atom/Attach(datum/target, reagent_to_extract)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
@@ -14,21 +16,29 @@
 	RegisterSignal(target, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(on_item_interaction))
 
 /datum/element/reagent_scoopable_atom/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, list(COMSIG_ATOM_EXAMINE, COMSIG_ATOM_ITEM_INTERACTION))
 	return ..()
 
 /datum/element/reagent_scoopable_atom/proc/on_examine(atom/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += span_info("Some <b>[reagent_to_extract::name]</b> could probably be scooped up with a <b>container</b>.")
 
 /datum/element/reagent_scoopable_atom/proc/on_item_interaction(atom/source, mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(tool.is_open_container())
 		return extract_reagents(source, tool, user)
 
 /datum/element/reagent_scoopable_atom/proc/extract_reagents(atom/source, obj/item/container, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!reagent_to_extract)
 		return ITEM_INTERACT_BLOCKING
 	if(!container.reagents.add_reagent(reagent_to_extract, rand(5, 10)))

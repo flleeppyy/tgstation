@@ -60,6 +60,8 @@
 	has_merged_sprites = FALSE
 
 /obj/structure/stairs/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	GLOB.stairs += src
@@ -83,6 +85,8 @@
 
 
 /obj/structure/stairs/Destroy()
+	procstart = null
+	src.procstart = null
 	clear_minimap_blips()
 	if(directly_above)
 		UnregisterSignal(directly_above, COMSIG_TURF_MULTIZ_NEW)
@@ -92,7 +96,9 @@
 	GLOB.stairs -= src
 	return ..()
 
-/obj/structure/stairs/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change) //Look this should never happen but...
+/obj/structure/stairs/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null //Look this should never happen but...
 	. = ..()
 	if(force_open_above)
 		build_signal_listener()
@@ -100,6 +106,8 @@
 
 /// Updates the sprite and the sprites of neighboring stairs to reflect merged sprites
 /obj/structure/stairs/proc/update_surrounding()
+	procstart = null
+	src.procstart = null
 	if(!has_merged_sprites)
 		return
 
@@ -113,6 +121,8 @@
 	update_minimap_blip()
 
 /obj/structure/stairs/proc/update_minimap_blip()
+	procstart = null
+	src.procstart = null
 	var/bottom_state = isTerminator() ? "stairs_up" : "stairs_down"
 	var/top_state = (bottom_state == "stairs_up") ? "stairs_down" : "stairs_up"
 	var/turf/current_turf = get_turf(src)
@@ -125,6 +135,8 @@
 	add_minimap_blip_if_valid(get_step_multiz(current_turf, UP), top_state)
 
 /obj/structure/stairs/proc/clear_minimap_blips()
+	procstart = null
+	src.procstart = null
 	if(!islist(minimap_blip_targets))
 		return
 	for(var/atom/target as anything in minimap_blip_targets)
@@ -132,6 +144,8 @@
 	LAZYCLEARLIST(minimap_blip_targets)
 
 /obj/structure/stairs/proc/add_minimap_blip_if_valid(atom/target, state)
+	procstart = null
+	src.procstart = null
 	if(isnull(target))
 		return
 	if(!should_place_minimap_blip(target))
@@ -145,6 +159,8 @@
 	LAZYADD(minimap_blip_targets, target)
 
 /obj/structure/stairs/proc/should_place_minimap_blip(atom/target)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(target)
 	if(isnull(target_turf))
 		return FALSE
@@ -153,6 +169,8 @@
 	return TRUE
 
 /obj/structure/stairs/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!has_merged_sprites)
 		return
@@ -179,6 +197,8 @@
 		icon_state = base_icon_state
 
 /obj/structure/stairs/proc/on_exit_stairs(datum/source, atom/movable/leaving, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(leaving == src)
@@ -194,6 +214,8 @@
 #define POINT_Y_COMPONENT(pdir) ((pdir & SOUTH) ? 2 : ((pdir & NORTH) ? -2 : 0))
 
 /obj/structure/stairs/proc/on_enter_range(datum/source, atom/movable/entered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(entered))
@@ -221,6 +243,8 @@
 	LAZYSET(mob_to_image, climber_ref, pointing_image)
 
 /obj/structure/stairs/proc/on_exit_range(datum/source, atom/movable/exited)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(exited))
@@ -235,6 +259,8 @@
 	clear_climber_image(climber_ref)
 
 /obj/structure/stairs/proc/clear_climber_image(datum/weakref/climber_ref, instant = FALSE)
+	procstart = null
+	src.procstart = null
 	var/image/pointing_image = LAZYACCESS(mob_to_image, climber_ref)
 	if(!pointing_image)
 		LAZYREMOVE(mob_to_image, climber_ref) // just in case
@@ -248,12 +274,16 @@
 	addtimer(CALLBACK(src, PROC_REF(clear_climber_image_callback), climber_ref, pointing_image), 1.5 SECONDS, TIMER_UNIQUE)
 
 /obj/structure/stairs/proc/clear_climber_image_callback(datum/weakref/climber_ref, image/pointing_image)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	var/mob/living/climber = climber_ref?.resolve()
 	climber?.client?.images -= pointing_image
 	LAZYREMOVE(mob_to_image, climber_ref)
 
 /obj/structure/stairs/proc/get_pointing_image()
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	var/image/point_image = image('icons/hud/screen_gen.dmi', src, "arrow_large_white_still")
 	point_image.color = COLOR_DARK_MODERATE_LIME_GREEN
@@ -267,11 +297,15 @@
 #undef POINT_Y_COMPONENT
 
 /obj/structure/stairs/Cross(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(isTerminator() && (get_dir(src, AM) == dir))
 		return FALSE
 	return ..()
 
 /obj/structure/stairs/proc/stair_ascend(atom/movable/climber)
+	procstart = null
+	src.procstart = null
 	var/turf/checking = get_step_multiz(src, UP)
 	if(!istype(checking))
 		return
@@ -288,6 +322,8 @@
 
 
 /obj/structure/stairs/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -302,6 +338,8 @@
 		force_open_above()
 
 /obj/structure/stairs/proc/build_signal_listener()
+	procstart = null
+	src.procstart = null
 	if(directly_above)
 		UnregisterSignal(directly_above, COMSIG_TURF_MULTIZ_NEW)
 	var/turf/open/openspace/T = get_step_multiz(src, UP)
@@ -309,11 +347,15 @@
 	directly_above = T
 
 /obj/structure/stairs/proc/force_open_above()
+	procstart = null
+	src.procstart = null
 	var/turf/open/openspace/T = get_step_multiz(src, UP)
 	if(T && !istype(T))
 		T.ChangeTurf(/turf/open/openspace, flags = CHANGETURF_INHERIT_AIR)
 
 /obj/structure/stairs/proc/on_multiz_new(turf/source, dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(dir == UP)
@@ -322,6 +364,8 @@
 			T.ChangeTurf(/turf/open/openspace, flags = CHANGETURF_INHERIT_AIR)
 
 /obj/structure/stairs/intercept_zImpact(list/falling_movables, levels = 1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// falling from a higher z level onto stairs
 	if(levels != 1 || !isTerminator())
@@ -335,6 +379,8 @@
 
 /// Will the passed mob tumble down the stairs instead of walking?
 /obj/structure/stairs/proc/can_fall_down_stairs(mob/living/falling)
+	procstart = null
+	src.procstart = null
 	if(falling.buckled || falling.pulledby)
 		return FALSE
 	if(IS_UNCONSCIOUS(falling)) // if you shove someone unconscious down the stairs, they'd probably roll
@@ -345,6 +391,8 @@
 
 /// What happens when a mob tumbles down the stairs
 /obj/structure/stairs/proc/on_fall(mob/living/falling)
+	procstart = null
+	src.procstart = null
 	falling.AdjustParalyzed(2 SECONDS)
 	falling.adjust_staggered(2 SECONDS)
 	falling.AdjustKnockdown(5 SECONDS)
@@ -352,7 +400,9 @@
 	falling.apply_damage(rand(4, 8), BRUTE, spread_damage = TRUE)
 	GLOB.move_manager.move_towards(falling, get_ranged_target_turf(src, REVERSE_DIR(dir), 2), delay = 0.4 SECONDS, timeout = 1 SECONDS)
 
-/obj/structure/stairs/proc/isTerminator() //If this is the last stair in a chain and should move mobs up
+/obj/structure/stairs/proc/isTerminator()
+	procstart = null
+	src.procstart = null //If this is the last stair in a chain and should move mobs up
 	if(terminator_mode != STAIR_TERMINATOR_AUTOMATIC)
 		return (terminator_mode == STAIR_TERMINATOR_YES)
 	var/turf/T = get_turf(src)
@@ -386,10 +436,14 @@
 	custom_materials = list(/datum/material/wood = SHEET_MATERIAL_AMOUNT * 10)
 
 /obj/structure/stairs_frame/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_rotation)
 
 /obj/structure/stairs_frame/examine(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(anchored)
 		. += span_notice("The frame is anchored and can be made into proper stairs with 10 sheets of material.")
@@ -397,6 +451,8 @@
 		. += span_notice("The frame will need to be secured with a wrench before it can be completed.")
 
 /obj/structure/stairs_frame/wrench_act(mob/living/user, obj/item/used_tool)
+	procstart = null
+	src.procstart = null
 	user.balloon_alert_to_viewers("securing stairs frame", "securing frame")
 	used_tool.play_tool_sound(src)
 	if(!used_tool.use_tool(src, user, 3 SECONDS))
@@ -410,6 +466,8 @@
 	return TRUE
 
 /obj/structure/stairs_frame/wrench_act_secondary(mob/living/user, obj/item/used_tool)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You start disassembling [src]..."))
 	used_tool.play_tool_sound(src)
 	if(!used_tool.use_tool(src, user, 3 SECONDS))
@@ -419,9 +477,13 @@
 	return TRUE
 
 /obj/structure/stairs_frame/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new frame_stack(get_turf(src), frame_stack_amount)
 
 /obj/structure/stairs_frame/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isstack(tool))
 		return NONE
 	if(!anchored)
@@ -467,6 +529,8 @@
 	return NONE
 
 /obj/structure/stairs_frame/proc/make_new_stairs(stairs_type, custom_materials)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/stairs/new_stairs = new stairs_type(loc)
 	new_stairs.setDir(dir)
 	if(custom_materials)

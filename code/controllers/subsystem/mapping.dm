@@ -95,6 +95,8 @@ SUBSYSTEM_DEF(mapping)
 	var/list/loaded_lazy_templates
 
 /datum/controller/subsystem/mapping/PreInit()
+	procstart = null
+	src.procstart = null
 	..()
 #ifdef FORCE_MAP
 	current_map = load_map_config(FORCE_MAP, FORCE_MAP_DIRECTORY)
@@ -103,6 +105,8 @@ SUBSYSTEM_DEF(mapping)
 #endif
 
 /datum/controller/subsystem/mapping/Initialize()
+	procstart = null
+	src.procstart = null
 	if(initialized)
 		return SS_INIT_SUCCESS
 	if(current_map.defaulted)
@@ -181,6 +185,8 @@ SUBSYSTEM_DEF(mapping)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/mapping/fire(resumed)
+	procstart = null
+	src.procstart = null
 	// Cache for sonic speed
 	var/list/unused_turfs = src.unused_turfs
 	var/list/world_contents = GLOB.areas_by_type[world.area].contents
@@ -216,14 +222,20 @@ SUBSYSTEM_DEF(mapping)
 	lists_to_reserve.Cut(1, index)
 
 /datum/controller/subsystem/mapping/proc/calculate_default_z_level_gravities()
+	procstart = null
+	src.procstart = null
 	for(var/z_level in 1 to length(z_list))
 		calculate_z_level_gravity(z_level)
 
 /datum/controller/subsystem/mapping/proc/generate_z_level_linkages()
+	procstart = null
+	src.procstart = null
 	for(var/z_level in 1 to length(z_list))
 		generate_linkages_for_z_level(z_level)
 
 /datum/controller/subsystem/mapping/proc/generate_linkages_for_z_level(z_level)
+	procstart = null
+	src.procstart = null
 	if(!isnum(z_level) || z_level <= 0)
 		return FALSE
 
@@ -239,6 +251,8 @@ SUBSYSTEM_DEF(mapping)
 	multiz_levels[z_level][Z_LEVEL_DOWN] = !!z_below
 
 /datum/controller/subsystem/mapping/proc/calculate_z_level_gravity(z_level_number)
+	procstart = null
+	src.procstart = null
 	if(!isnum(z_level_number) || z_level_number < 1)
 		return FALSE
 
@@ -257,6 +271,8 @@ SUBSYSTEM_DEF(mapping)
  * Sets up all of the ruins to be spawned
  */
 /datum/controller/subsystem/mapping/proc/setup_ruins()
+	procstart = null
+	src.procstart = null
 	// Generate mining ruins
 	var/list/lava_ruins = levels_by_trait(ZTRAIT_LAVA_RUINS)
 	if (lava_ruins.len)
@@ -280,6 +296,8 @@ SUBSYSTEM_DEF(mapping)
 
 ///loads all of the ruins we previously reserved space for
 /datum/controller/subsystem/mapping/proc/load_reserved_ruins()
+	procstart = null
+	src.procstart = null
 	for(var/list/reservation in reserved_ruins)
 		var/datum/map_template/ruin/reserved_ruin = reservation[1]
 		var/turf/central_turf = reservation[2]
@@ -292,6 +310,8 @@ SUBSYSTEM_DEF(mapping)
  * of the areas, since they get spawned AFTER normal terrain gen runs its pass
  */
 /datum/controller/subsystem/mapping/proc/load_ruin_now(datum/map_template/ruin/reserved_ruin, turf/central_turf, clear_below)
+	procstart = null
+	src.procstart = null
 	var/starting_area_count = GLOB.areas.len
 	reserved_ruin.load_reserved(central_turf, clear_below)
 	for(var/i in starting_area_count + 1 to GLOB.areas.len)
@@ -301,6 +321,8 @@ SUBSYSTEM_DEF(mapping)
 /// Sets up rivers, and things that behave like rivers. So lava/plasma rivers, and chasms
 /// It is important that this happens AFTER generating mineral walls and such, since we rely on them for river logic
 /datum/controller/subsystem/mapping/proc/setup_rivers()
+	procstart = null
+	src.procstart = null
 	// Generate mining ruins
 	var/list/lava_ruins = levels_by_trait(ZTRAIT_LAVA_RUINS)
 	for (var/lava_z in lava_ruins)
@@ -315,6 +337,8 @@ SUBSYSTEM_DEF(mapping)
 		spawn_rivers(ice_z, 4, level_trait(ice_z, ZTRAIT_BASETURF), /area/icemoon/underground/unexplored/rivers)
 
 /datum/controller/subsystem/mapping/proc/wipe_reservations(wipe_safety_delay = 100)
+	procstart = null
+	src.procstart = null
 	if(clearing_reserved_turfs || !initialized) //in either case this is just not needed.
 		return
 	clearing_reserved_turfs = TRUE
@@ -337,6 +361,8 @@ SUBSYSTEM_DEF(mapping)
 	clearing_reserved_turfs = FALSE
 
 /datum/controller/subsystem/mapping/proc/safety_clear_transit_dock(obj/docking_port/stationary/transit/T, obj/docking_port/mobile/M, list/returning)
+	procstart = null
+	src.procstart = null
 	M.setTimer(0)
 	var/error = M.initiate_docking(M.destination, M.preferred_direction)
 	if(!error)
@@ -344,6 +370,8 @@ SUBSYSTEM_DEF(mapping)
 		qdel(T, TRUE)
 
 /datum/controller/subsystem/mapping/proc/get_reservation_from_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/turf_reservation)
 	return used_turfs[T]
 
@@ -352,14 +380,20 @@ Used by the AI doomsday and the self-destruct nuke.
 */
 
 /datum/controller/subsystem/mapping/proc/add_nuke_threat(datum/nuke)
+	procstart = null
+	src.procstart = null
 	nuke_threats[nuke] = TRUE
 	check_nuke_threats()
 
 /datum/controller/subsystem/mapping/proc/remove_nuke_threat(datum/nuke)
+	procstart = null
+	src.procstart = null
 	nuke_threats -= nuke
 	check_nuke_threats()
 
 /datum/controller/subsystem/mapping/proc/check_nuke_threats()
+	procstart = null
+	src.procstart = null
 	for(var/datum/d in nuke_threats)
 		if(!istype(d) || QDELETED(d))
 			nuke_threats -= d
@@ -369,6 +403,8 @@ Used by the AI doomsday and the self-destruct nuke.
 		C.update_appearance()
 
 /datum/controller/subsystem/mapping/proc/determine_fake_sale()
+	procstart = null
+	src.procstart = null
 	if(length(SSmapping.levels_by_all_traits(list(ZTRAIT_STATION, ZTRAIT_NOPARALLAX))))
 		GLOB.arcade_prize_pool += /obj/item/stack/tile/fakeice/loaded
 	else
@@ -376,6 +412,8 @@ Used by the AI doomsday and the self-destruct nuke.
 
 
 /datum/controller/subsystem/mapping/Recover()
+	procstart = null
+	src.procstart = null
 	ss_flags |= SS_NO_INIT
 	initialized = SSmapping.initialized
 	map_templates = SSmapping.map_templates
@@ -401,6 +439,8 @@ Used by the AI doomsday and the self-destruct nuke.
 
 #define INIT_ANNOUNCE(X) to_chat(world, span_boldannounce("[X]"), MESSAGE_TYPE_DEBUG); log_world(X)
 /datum/controller/subsystem/mapping/proc/LoadGroup(list/errorList, name, path, files, list/traits, list/default_traits, silent = FALSE, height_autosetup = TRUE)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/start_time = REALTIMEOFDAY
 
@@ -460,6 +500,8 @@ Used by the AI doomsday and the self-destruct nuke.
 	return parsed_maps
 
 /datum/controller/subsystem/mapping/proc/loadWorld()
+	procstart = null
+	src.procstart = null
 	//if any of these fail, something has gone horribly, HORRIBLY, wrong
 	var/list/FailedZs = list()
 
@@ -510,6 +552,8 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 
 /// Generates the global station area list, filling it with typepaths of unique areas found on the station Z.
 /datum/controller/subsystem/mapping/proc/generate_station_area_list()
+	procstart = null
+	src.procstart = null
 	for(var/area/station/station_area in GLOB.areas)
 		if (!(station_area.area_flags_mapping & UNIQUE_AREA))
 			continue
@@ -521,15 +565,21 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 
 /// Generate the turfs of the area
 /datum/controller/subsystem/mapping/proc/run_map_terrain_generation()
+	procstart = null
+	src.procstart = null
 	for(var/area/A as anything in GLOB.areas)
 		A.RunTerrainGeneration()
 
 /// Populate the turfs of the area
 /datum/controller/subsystem/mapping/proc/run_map_terrain_population()
+	procstart = null
+	src.procstart = null
 	for(var/area/A as anything in GLOB.areas)
 		A.RunTerrainPopulation()
 
-/datum/controller/subsystem/mapping/proc/preloadTemplates(path = "_maps/templates/") //see master controller setup
+/datum/controller/subsystem/mapping/proc/preloadTemplates(path = "_maps/templates/")
+	procstart = null
+	src.procstart = null //see master controller setup
 	var/list/filelist = flist(path)
 	for(var/map in filelist)
 		var/datum/map_template/T = new(path = "[path][map]", rename = "[map]")
@@ -541,6 +591,8 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 	preloadHolodeckTemplates()
 
 /datum/controller/subsystem/mapping/proc/preloadRuinTemplates()
+	procstart = null
+	src.procstart = null
 	// Still supporting bans by filename
 	var/list/banned = generateMapList("spaceruinblacklist.txt")
 	if(current_map.minetype == MINETYPE_LAVALAND)
@@ -566,6 +618,8 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 		themed_ruins[R.ruin_type][R.name] = R
 
 /datum/controller/subsystem/mapping/proc/preloadShuttleTemplates()
+	procstart = null
+	src.procstart = null
 	var/list/unbuyable = generateMapList("unbuyableshuttles.txt")
 
 	for(var/item in subtypesof(/datum/map_template/shuttle))
@@ -581,6 +635,8 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 		map_templates[S.shuttle_id] = S
 
 /datum/controller/subsystem/mapping/proc/preloadShelterTemplates()
+	procstart = null
+	src.procstart = null
 	for(var/item in subtypesof(/datum/map_template/shelter))
 		var/datum/map_template/shelter/shelter_type = item
 		if(!(initial(shelter_type.mappath)))
@@ -591,6 +647,8 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 		map_templates[S.shelter_id] = S
 
 /datum/controller/subsystem/mapping/proc/preloadHolodeckTemplates()
+	procstart = null
+	src.procstart = null
 	for(var/item in subtypesof(/datum/map_template/holodeck))
 		var/datum/map_template/holodeck/holodeck_type = item
 		if(!(initial(holodeck_type.mappath)))
@@ -638,6 +696,8 @@ ADMIN_VERB(load_away_mission, R_FUN, "Load Away Mission", "Load a specific away 
 /// Adds a new reservation z level. A bit of space that can be handed out on request
 /// Of note, reservations default to transit turfs, to make their most common use, shuttles, faster
 /datum/controller/subsystem/mapping/proc/add_reservation_zlevel(for_shuttles)
+	procstart = null
+	src.procstart = null
 	num_of_res_levels++
 	return add_new_zlevel("Transit/Reserved #[num_of_res_levels]", list(ZTRAIT_RESERVED = TRUE))
 
@@ -676,6 +736,8 @@ ADMIN_VERB(load_away_mission, R_FUN, "Load Away Mission", "Load a specific away 
 ///This is not for wiping reserved levels, use wipe_reservations() for that.
 ///If this is called after SSatom init, it will call Initialize on all turfs on the passed z, as its name promises
 /datum/controller/subsystem/mapping/proc/initialize_reserved_level(z)
+	procstart = null
+	src.procstart = null
 	UNTIL(!clearing_reserved_turfs) //regardless, lets add a check just in case.
 	clearing_reserved_turfs = TRUE //This operation will likely clear any existing reservations, so lets make sure nothing tries to make one while we're doing it.
 	if(!level_trait(z,ZTRAIT_RESERVED))
@@ -702,12 +764,16 @@ ADMIN_VERB(load_away_mission, R_FUN, "Load Away Mission", "Load a specific away 
 /// Schedules a group of turfs to be handed back to the reservation system's control
 /// If await is true, will sleep until the turfs are finished work
 /datum/controller/subsystem/mapping/proc/reserve_turfs(list/turfs, await = FALSE)
+	procstart = null
+	src.procstart = null
 	lists_to_reserve += list(turfs)
 	if(await)
 		UNTIL(!length(turfs))
 
 //DO NOT CALL THIS PROC DIRECTLY, CALL wipe_reservations().
 /datum/controller/subsystem/mapping/proc/do_wipe_turf_reservations()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	UNTIL(initialized) //This proc is for AFTER init, before init turf reservations won't even exist and using this will likely break things.
 	for(var/i in turf_reservations)
@@ -726,16 +792,22 @@ ADMIN_VERB(load_away_mission, R_FUN, "Load Away Mission", "Load a specific away 
 
 ///Initialize all biomes, assoc as type || instance
 /datum/controller/subsystem/mapping/proc/initialize_biomes()
+	procstart = null
+	src.procstart = null
 	for(var/biome_path in subtypesof(/datum/biome))
 		var/datum/biome/biome_instance = new biome_path()
 		biomes[biome_path] += biome_instance
 
 /datum/controller/subsystem/mapping/proc/reg_in_areas_in_z(list/areas)
+	procstart = null
+	src.procstart = null
 	for(var/B in areas)
 		var/area/A = B
 		A.reg_in_areas_in_z()
 
 /datum/controller/subsystem/mapping/proc/get_isolated_ruin_z()
+	procstart = null
+	src.procstart = null
 	if(!isolated_ruins_z)
 		isolated_ruins_z = add_new_zlevel("Isolated Ruins/Reserved", list(ZTRAIT_RESERVED = TRUE, ZTRAIT_ISOLATED_RUINS = TRUE))
 		initialize_reserved_level(isolated_ruins_z.z_value)
@@ -744,6 +816,8 @@ ADMIN_VERB(load_away_mission, R_FUN, "Load Away Mission", "Load a specific away 
 /// Takes a z level datum, and tells the mapping subsystem to manage it
 /// Also handles things like plane offset generation, and other things that happen on a z level to z level basis
 /datum/controller/subsystem/mapping/proc/manage_z_level(datum/space_level/new_z, filled_with_space, contain_turfs = TRUE)
+	procstart = null
+	src.procstart = null
 	// First, add the z
 	z_list += new_z
 
@@ -770,6 +844,8 @@ ADMIN_VERB(load_away_mission, R_FUN, "Load Away Mission", "Load a specific away 
 		build_area_turfs(z_value, filled_with_space)
 
 /datum/controller/subsystem/mapping/proc/build_area_turfs(z_level, space_guaranteed)
+	procstart = null
+	src.procstart = null
 	// If we know this is filled with default tiles, we can use the default area
 	// Faster
 	if(space_guaranteed)
@@ -784,6 +860,8 @@ ADMIN_VERB(load_away_mission, R_FUN, "Load Away Mission", "Load a specific away 
 		our_area.turfs_by_zlevel[z_level] += to_contain
 
 /datum/controller/subsystem/mapping/proc/update_plane_tracking(datum/space_level/update_with)
+	procstart = null
+	src.procstart = null
 	// We're essentially going to walk down the stack of connected z levels, and set their plane offset as we go
 	var/plane_offset = 0
 	var/datum/space_level/current_z = update_with
@@ -819,6 +897,8 @@ ADMIN_VERB(load_away_mission, R_FUN, "Load Away Mission", "Load a specific away 
 /// Takes an offset to generate misc lists to, and a base to start from
 /// Use this to react globally to maintain parity with plane offsets
 /datum/controller/subsystem/mapping/proc/generate_offset_lists(gen_from, new_offset)
+	procstart = null
+	src.procstart = null
 	create_plane_offsets(gen_from, new_offset)
 	for(var/offset in gen_from to new_offset)
 		GLOB.starlight_objects += starlight_object(offset)
@@ -829,6 +909,8 @@ ADMIN_VERB(load_away_mission, R_FUN, "Load Away Mission", "Load a specific away 
 			GLOB.meta_gas_info[META_GAS_OVERLAY][gas_type] += generate_gas_overlays(gen_from, new_offset, gas_type)
 
 /datum/controller/subsystem/mapping/proc/create_plane_offsets(gen_from, new_offset)
+	procstart = null
+	src.procstart = null
 	for(var/plane_offset in gen_from to new_offset)
 		for(var/atom/movable/screen/plane_master/master_type as anything in subtypesof(/atom/movable/screen/plane_master) - /atom/movable/screen/plane_master/rendering_plate)
 			var/plane_to_use = initial(master_type.plane)
@@ -859,12 +941,16 @@ ADMIN_VERB(load_away_mission, R_FUN, "Load Away Mission", "Load a specific away 
 
 /// Takes a turf or a z level, and returns a list of all the z levels that are connected to it
 /datum/controller/subsystem/mapping/proc/get_connected_levels(turf/connected)
+	procstart = null
+	src.procstart = null
 	var/z_level = connected
 	if(isturf(z_level))
 		z_level = connected.z
 	return z_level_to_stack[z_level]
 
 /datum/controller/subsystem/mapping/proc/lazy_load_template(template_key, force = FALSE)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/turf_reservation)
 
 	UNTIL(initialized)
@@ -877,6 +963,8 @@ ADMIN_VERB(load_away_mission, R_FUN, "Load Away Mission", "Load a specific away 
 	return .
 
 /datum/controller/subsystem/mapping/proc/_lazy_load_template(template_key, force = FALSE)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(LAZYACCESS(loaded_lazy_templates, template_key)  && !force)
@@ -891,11 +979,15 @@ ADMIN_VERB(load_away_mission, R_FUN, "Load Away Mission", "Load a specific away 
 
 /// Returns true if the map we're playing on is on a planet
 /datum/controller/subsystem/mapping/proc/is_planetary()
+	procstart = null
+	src.procstart = null
 	return current_map.planetary
 
 /// For debug purposes, will add every single away mission present in a given directory.
 /// You can optionally pass in a string directory to load from instead of the default.
 /datum/controller/subsystem/mapping/proc/load_all_away_missions(map_directory)
+	procstart = null
+	src.procstart = null
 	if(!map_directory)
 		map_directory = "_maps/RandomZLevels/"
 	var/start_time = null // in case we're doing this at runtime, useful to know how much time we're spending loading all these away missions
@@ -953,6 +1045,8 @@ ADMIN_VERB(load_away_mission, R_FUN, "Load Away Mission", "Load a specific away 
 /// Lightweight proc that just checks to make sure that all of the expected z-levels were loaded. Split out for clarity from load_all_away_missions()
 /// Argument "checkable_levels" is just a list of the names (typically the filepaths) of the z-levels we were expected to load, which should correspond to the name on the space level datum.
 /datum/controller/subsystem/mapping/proc/validate_z_level_loading(list/checkable_levels)
+	procstart = null
+	src.procstart = null
 	for(var/z in 1 to max(world.maxz, length(z_list)))
 		var/datum/space_level/level = z_list[z]
 		if(isnull(level))
@@ -969,6 +1063,8 @@ ADMIN_VERB(load_away_mission, R_FUN, "Load Away Mission", "Load a specific away 
 
 ///Returns the map name, with an openlink action tied to it (if one exists) for the map.
 /datum/map_config/proc/return_map_name(webmap_included)
+	procstart = null
+	src.procstart = null
 	var/text
 	if(feedback_link)
 		text = "<a href='byond://?action=openLink&link=[url_encode(feedback_link)]'>[map_name]</a>"

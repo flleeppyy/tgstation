@@ -16,6 +16,8 @@
  * * text: The text to be shown to viewer. Must not be null.
  */
 /atom/proc/balloon_alert(mob/viewer, text)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 
 	INVOKE_ASYNC(src, PROC_REF(balloon_alert_perform), viewer, text)
@@ -23,6 +25,8 @@
 /// Create balloon alerts (text that floats up) to everything within range.
 /// Will only display to people who can see.
 /atom/proc/balloon_alert_to_viewers(message, self_message, vision_distance = DEFAULT_MESSAGE_RANGE, list/ignored_mobs)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 
 	var/list/hearers = get_hearers_in_view(vision_distance, src, RECURSIVE_CONTENTS_CLIENT_MOBS)
@@ -37,6 +41,8 @@
 /// Create balloon alerts (text that floats up) to everything within range.
 /// Will only display to people who can hear.
 /atom/proc/balloon_alert_to_hearers(message, self_message, hearing_distance = DEFAULT_MESSAGE_RANGE, list/ignored_mobs)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 
 	var/list/hearers = get_hearers_in_view(hearing_distance, src, RECURSIVE_CONTENTS_CLIENT_MOBS)
@@ -53,6 +59,8 @@
 // I would've made the maptext_height update on its own, but I don't know
 // if this would look bad on laggy clients.
 /atom/proc/balloon_alert_perform(mob/viewer, text)
+	procstart = null
+	src.procstart = null
 
 	var/client/viewer_client = viewer?.client
 	if (isnull(viewer_client))
@@ -103,6 +111,8 @@
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(remove_image_from_client), balloon_alert, viewer_client), BALLOON_TEXT_TOTAL_LIFETIME(length_mult))
 
 /atom/proc/forget_balloon_alert(image/balloon_alert)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(update_on_z, balloon_alert)
 
 #undef BALLOON_TEXT_CHAR_LIFETIME_INCREASE_MIN

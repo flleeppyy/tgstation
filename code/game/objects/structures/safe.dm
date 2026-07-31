@@ -48,6 +48,8 @@ FLOOR SAFES
 	var/explosion_count = 0
 
 /obj/structure/safe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/static/list/tool_behaviors = list(
@@ -79,15 +81,21 @@ FLOOR SAFES
 			inserting_item.forceMove(src)
 
 /obj/structure/safe/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("The locking mechanism gears are <b>wrenched</b> in place.")
 
 /obj/structure/safe/update_icon_state()
+	procstart = null
+	src.procstart = null
 	//uses the same icon as the captain's spare safe (therefore lockable storage) so keep it in line with that
 	icon_state = "[initial(icon_state)][open ? null : "_locked"]"
 	return ..()
 
 /obj/structure/safe/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!open)
 		balloon_alert(user, "must be open!")
 		return ITEM_INTERACT_BLOCKING
@@ -119,6 +127,8 @@ FLOOR SAFES
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/safe/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 
@@ -144,9 +154,13 @@ FLOOR SAFES
 
 
 /obj/structure/safe/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/safe/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(((severity == EXPLODE_HEAVY && target == src) || severity == EXPLODE_DEVASTATE) && explosion_count < BROKEN_THRESHOLD)
 		explosion_count++
 		switch(explosion_count)
@@ -162,20 +176,28 @@ FLOOR SAFES
 	return FALSE
 
 /obj/structure/safe/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/simple/safe),
 	)
 
 /obj/structure/safe/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.physical_state
 
 /obj/structure/safe/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Safe", name)
 		ui.open()
 
 /obj/structure/safe/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["dial"] = dial
 	data["open"] = open
@@ -192,6 +214,8 @@ FLOOR SAFES
 	return data
 
 /obj/structure/safe/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -274,12 +298,16 @@ FLOOR SAFES
  * Checks if safe is considered in a broken state for force-opening the safe
  */
 /obj/structure/safe/proc/check_broken()
+	procstart = null
+	src.procstart = null
 	return broken || explosion_count >= BROKEN_THRESHOLD
 
 /**
  * Called every dial turn to determine whether the safe should unlock or not.
  */
 /obj/structure/safe/proc/check_unlocked()
+	procstart = null
+	src.procstart = null
 	if(check_broken())
 		return TRUE
 	if(current_tumbler_index > number_of_tumblers)
@@ -293,6 +321,8 @@ FLOOR SAFES
  * Called every dial turn to provide feedback if possible.
  */
 /obj/structure/safe/proc/notify_user(user, canhear, sounds, total_ticks, current_tick)
+	procstart = null
+	src.procstart = null
 	if(!canhear)
 		return
 	if(current_tick == 2)
@@ -317,6 +347,8 @@ FLOOR SAFES
 	)
 
 /obj/structure/safe/floor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/undertile)
 
@@ -328,6 +360,8 @@ FLOOR SAFES
 /obj/structure/safe/vault
 
 /obj/structure/safe/vault/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/piggy_bank/vault/piggy = new(src)
 	space += piggy.w_class

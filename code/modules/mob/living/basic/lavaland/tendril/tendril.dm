@@ -47,6 +47,8 @@ GLOBAL_LIST_INIT(tendrils, list())
 	var/list/infected_turfs = list()
 
 /mob/living/basic/mining/tendril/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.tendrils += src
 	AddElement(/datum/element/death_drops, /obj/structure/closet/crate/necropolis/tendril)
@@ -87,6 +89,8 @@ GLOBAL_LIST_INIT(tendrils, list())
 			rock.ChangeTurf(/turf/open/indestructible/necropolis, null, CHANGETURF_IGNORE_AIR)
 
 /mob/living/basic/mining/tendril/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.tendrils -= src
 	QDEL_NULL(soundloop)
 	infected_turfs.Cut()
@@ -104,6 +108,8 @@ GLOBAL_LIST_INIT(tendrils, list())
 	return ..()
 
 /mob/living/basic/mining/tendril/death(gibbed)
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	playsound(our_turf, 'sound/effects/tendril_destroyed.ogg', 200, FALSE, 50, TRUE, TRUE)
 	// Change our infected turfs back into regular ones, but only if they haven't been already altered
@@ -115,19 +121,27 @@ GLOBAL_LIST_INIT(tendrils, list())
 	return ..()
 
 /mob/living/basic/mining/tendril/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance(icon, "[icon_state]_e", src, effect_type = EMISSIVE_NO_BLOOM)
 	. += emissive_appearance(icon, "[icon_state]_e_bloom", src, effect_type = EMISSIVE_BLOOM)
 
 /mob/living/basic/mining/tendril/Life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_heartbeat() // Just a single math op unless we need updating so its fine to put it here
 
 /mob/living/basic/mining/tendril/updatehealth()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_heartbeat()
 
 /mob/living/basic/mining/tendril/proc/update_heartbeat()
+	procstart = null
+	src.procstart = null
 	if (!soundloop)
 		return
 
@@ -139,6 +153,8 @@ GLOBAL_LIST_INIT(tendrils, list())
 		soundloop.set_mid_length(beat_rate)
 
 /mob/living/basic/mining/tendril/do_attack_animation(atom/attacked_atom, visual_effect_icon, obj/item/used_item, no_effect, fov_effect = TRUE, item_animation_override = null)
+	procstart = null
+	src.procstart = null
 	if(!no_effect && (visual_effect_icon || used_item))
 		do_item_attack_animation(attacked_atom, visual_effect_icon, used_item, animation_type = item_animation_override)
 
@@ -161,6 +177,8 @@ GLOBAL_LIST_INIT(tendrils, list())
 	duration = 0.4 SECONDS
 
 /mob/living/basic/mining/tendril/proc/snatch_react()
+	procstart = null
+	src.procstart = null
 	if (tendril_melee.IsAvailable())
 		tendril_melee.Activate(warning = FALSE)
 

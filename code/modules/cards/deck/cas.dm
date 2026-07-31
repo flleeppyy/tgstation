@@ -26,6 +26,8 @@ GLOBAL_LIST_INIT(card_decks, list(
 ))
 
 /obj/item/toy/cards/deck/cas/initialize_cards()
+	procstart = null
+	src.procstart = null
 	var/list/cards_against_space = GLOB.card_decks[deckstyle]
 	var/list/possible_cards = cards_against_space.Copy()
 

@@ -4,6 +4,8 @@
 
 
 /obj/item/antag_spawner/nuke_ops/ed209_nukie/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!(check_usability(user)))
 		return
 
@@ -13,6 +15,8 @@
 	qdel(src)
 
 /obj/item/antag_spawner/nuke_ops/ed209_nukie/proc/drop_bot()
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bot/secbot/ed209/nukie/nuclear_bot = new()
 	var/obj/structure/closet/supplypod/pod = setup_pod()
 	nuclear_bot.forceMove(pod)

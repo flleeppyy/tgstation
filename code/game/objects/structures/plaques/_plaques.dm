@@ -19,12 +19,16 @@
 	acid = 50
 
 /obj/structure/plaque/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		find_and_mount_on_atom()
 	register_context()
 
 /obj/structure/plaque/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch (held_item?.tool_behaviour)
 		if (TOOL_WELDER)
@@ -38,12 +42,16 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/plaque/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || user.is_blind())
 		return
 	user.examinate(src)
 
 /obj/structure/plaque/wrench_act(mob/living/user, obj/item/wrench/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.visible_message(span_notice("[user] starts removing [src]..."), \
 		span_notice("You start unfastening [src]."))
@@ -65,6 +73,8 @@
 	return TRUE
 
 /obj/structure/plaque/welder_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user.combat_mode)
 		return FALSE
@@ -83,6 +93,8 @@
 	return TRUE
 
 /obj/structure/plaque/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/pen))
 		return NONE
 
@@ -145,6 +157,8 @@
 	acid = 50
 
 /obj/item/plaque/welder_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user.combat_mode)
 		return FALSE
@@ -163,7 +177,9 @@
 	return TRUE
 
 
-/obj/item/plaque/item_interaction(mob/living/user, obj/item/tool, list/modifiers) //Same as part of the above, except for the item in hand instead of the structure.
+/obj/item/plaque/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null //Same as part of the above, except for the item in hand instead of the structure.
 	if(!istype(tool, /obj/item/pen))
 		return NONE
 
@@ -204,6 +220,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/plaque/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!iswallturf(interacting_with))
 		return NONE
 	var/turf/target_turf = interacting_with

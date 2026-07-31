@@ -21,6 +21,8 @@
 	var/ordering_private = TRUE
 
 /obj/machinery/materials_market/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		icon_state = "[base_icon_state]_open"
 		return ..()
@@ -31,17 +33,25 @@
 	return ..()
 
 /obj/machinery/materials_market/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(default_unfasten_wrench(user, tool, time = 1.5 SECONDS) == SUCCESSFUL_UNFASTEN)
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/materials_market/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/materials_market/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/materials_market/item_interaction(mob/living/user, obj/item/stack/exportable, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isstack(exportable))
 		return NONE
 
@@ -73,6 +83,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/materials_market/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!is_operational)
 		set_light(0, 0)
@@ -86,6 +98,8 @@
  * * is_ordering_private - is the player ordering privatly. If FALSE it means they are using cargo budget
  */
 /obj/machinery/materials_market/proc/find_order(mob/user, is_ordering_private)
+	procstart = null
+	src.procstart = null
 	for(var/datum/supply_order/order in SSshuttle.shopping_list)
 		// Must be a Galactic Materials Market order and payed by the null account(if ordered via cargo budget) or by correct user for private purchase
 		if(order.orderer_rank == GALATIC_MATERIAL_ORDER && ( \
@@ -96,6 +110,8 @@
 	return null
 
 /obj/machinery/materials_market/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!anchored)
 		return
@@ -104,10 +120,14 @@
 		ui.open()
 
 /obj/machinery/materials_market/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["CARGO_CRATE_VALUE"] = CARGO_CRATE_VALUE
 
 /obj/machinery/materials_market/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	//can this player use cargo budget
@@ -218,6 +238,8 @@
 	.["updateTime"] = SSstock_market.next_fire - world.time
 
 /obj/machinery/materials_market/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -353,11 +375,15 @@
 	var/fluid = FALSE
 
 /obj/item/stock_block/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(value_warning)), 1.5 MINUTES, TIMER_DELETE_ME)
 	addtimer(CALLBACK(src, PROC_REF(update_value)), 3 MINUTES, TIMER_DELETE_ME)
 
 /obj/item/stock_block/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/datum/material/export_mat = custom_materials[1]
@@ -370,11 +396,15 @@
 		. += span_notice("\The [src]'s value is still [span_boldnotice("locked in")]. [span_boldnotice("Sell it")] before its value becomes liquid!")
 
 /obj/item/stock_block/proc/value_warning()
+	procstart = null
+	src.procstart = null
 	visible_message(span_warning("\The [src] is starting to become liquid!"))
 	icon_state = "stock_block_fluid"
 	update_appearance(UPDATE_ICON_STATE)
 
 /obj/item/stock_block/proc/update_value()
+	procstart = null
+	src.procstart = null
 	export_value = SSstock_market.materials_prices[custom_materials[1]]
 	icon_state = "stock_block_liquid"
 	update_appearance(UPDATE_ICON_STATE)

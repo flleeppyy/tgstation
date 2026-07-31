@@ -61,6 +61,8 @@
 /datum/target_source/animatable_objects
 
 /datum/target_source/animatable_objects/collect_candidates(mob/living/pawn, datum/ai_controller/controller, range)
+	procstart = null
+	src.procstart = null
 	var/list/candidates = list()
 	for(var/obj/candidate in oview(range, pawn))
 		if(!isitem(candidate) && !isstructure(candidate))

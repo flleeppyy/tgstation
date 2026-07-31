@@ -57,6 +57,8 @@
 	dupe_mode = COMPONENT_DUPE_SOURCES
 
 /obj/item/camera/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	//we do this so if this camera is used as an internal component, the flash will still be visible
@@ -72,12 +74,16 @@
 	register_context()
 
 /obj/item/camera/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(light_holder)
 		light_holder.RemoveComponentSource(REF(src), /datum/component/overlay_lighting/camera)
 		light_holder = null
 	return ..()
 
 /obj/item/camera/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "Adjust Zoom"
 	context[SCREENTIP_CONTEXT_CTRL_LMB] = "Change Printer Mode"
 
@@ -96,6 +102,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/camera/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It has [pictures_left] photos left.")
 	. += span_notice("Alt-click to change its focusing, allowing you to set how big of an area it will capture.")
@@ -108,6 +116,8 @@
 		. += span_notice("It has \an [disk.name] inserted.")
 
 /obj/item/camera/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == disk)
 		disk = null
@@ -121,6 +131,8 @@
  * * mob/user - the optional user who is taking the photo. Passing the mob will ask for input and ignore the above params
 */
 /obj/item/camera/proc/adjust_zoom(desired_x = picture_size_x, desired_y = picture_size_y, mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(user)
@@ -144,6 +156,8 @@
 
 /// Resets flash to be used again
 /obj/item/camera/proc/cooldown()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	UNTIL(!blending)
@@ -152,6 +166,8 @@
 
 /// Turns the light/flash off
 /obj/item/camera/proc/flash_end()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	light_holder.set_light_on(FALSE)
@@ -164,6 +180,8 @@
  * * mob/user - the optional user who is taking the photo
 */
 /obj/item/camera/proc/on_flash(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 
@@ -181,6 +199,8 @@
  * * list/victims - list of all mobs captured in the image
 */
 /obj/item/camera/proc/steal_souls(list/mob/victims)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	return
@@ -194,6 +214,8 @@
  * * mob/user - the optional user who is taking the photo
 */
 /obj/item/camera/proc/attempt_picture(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(!on)
@@ -215,6 +237,8 @@
  * Arguments passed from attempt_picture()
 */
 /obj/item/camera/proc/capture_image(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	//Checking if we can target
 	var/turf/target_turf = get_turf(target)
@@ -322,6 +346,8 @@
  * * datum/picture/picture - the picture taken
 */
 /obj/item/camera/proc/after_picture(mob/user, datum/picture/picture)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	if(silent)
@@ -341,6 +367,8 @@
  * * datum/picture/picture - the picture taken
 */
 /obj/item/camera/proc/printpicture(mob/user, datum/picture/picture)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	var/obj/item/photo/new_photo
@@ -390,6 +418,8 @@
 	user.put_in_hands(new_photo)
 
 /obj/item/camera/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(disk))
 		return
 	playsound(src, 'sound/machines/card_slide.ogg', 50)
@@ -397,9 +427,13 @@
 	disk = null
 
 /obj/item/camera/attack(mob/living/carbon/human/M, mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/camera/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/camera_film))
 		if(pictures_left)
 			balloon_alert(user, "isn't empty!")
@@ -425,11 +459,15 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/item/camera/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(interacting_with, TRAIT_COMBAT_MODE_SKIP_INTERACTION))
 		return NONE
 	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/camera/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(disk)
 		if(!ismob(interacting_with))
 			to_chat(user, span_warning("Invalid holodisk target."))
@@ -446,6 +484,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/camera/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!adjust_zoom(user = user))
 		return CLICK_ACTION_BLOCKING
 	if(silent) // Don't out your silent cameras
@@ -455,6 +495,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/camera/item_ctrl_click(mob/user)
+	procstart = null
+	src.procstart = null
 	print_monochrome = !print_monochrome
 	user.balloon_alert(user, "printing [print_monochrome ? "monochrome" : "in color"]")
 	if(silent) // Don't out your silent cameras

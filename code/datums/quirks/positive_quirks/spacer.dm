@@ -34,6 +34,8 @@
 	VAR_FINAL/drift_mod = 0.75
 
 /datum/quirk/spacer_born/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/modded_height = GLOB.spacer_height_choices[client_source?.prefs?.read_preference(/datum/preference/choiced/spacer_height)]
 	if(isnull(modded_height))
 		modded_height = GLOB.spacer_height_choices[pick(GLOB.spacer_height_choices)]
@@ -62,6 +64,8 @@
 	human_quirker.physiology.cold_mod *= damage_mod
 
 /datum/quirk/spacer_born/post_add()
+	procstart = null
+	src.procstart = null
 	var/on_a_planet = SSmapping.is_planetary()
 	var/planet_job = istype(quirk_holder.mind?.assigned_role, /datum/job/shaft_miner)
 	if(!on_a_planet && !planet_job)
@@ -79,6 +83,8 @@
 		to_chat(quirk_holder, span_info("You have[isnull(spacer_account) ? " " : " also "]been given some anti-emetic patches to assist in adjusting to planetary gravity."))
 
 /datum/quirk/spacer_born/remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(quirk_holder, COMSIG_MOVABLE_Z_CHANGED)
 	UnregisterSignal(quirk_holder, COMSIG_LIVING_GRAVITY_CHANGED)
 
@@ -97,12 +103,16 @@
 
 /// Check on Z change whether we should start or stop timers
 /datum/quirk/spacer_born/proc/spacer_moved(mob/living/source, turf/old_turf, turf/new_turf, same_z_layer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	update_effects(source)
 
 /// Check on gravity change whether we should start or stop timers
 /datum/quirk/spacer_born/proc/spacer_grav(mob/living/source, new_gravity, old_gravity)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	update_effects(source)
@@ -114,6 +124,8 @@
  * * skip_timers - if TRUE, this is being done instantly / should not have feedback (such as in init)
  */
 /datum/quirk/spacer_born/proc/update_effects(mob/living/spacer, skip_timers = FALSE)
+	procstart = null
+	src.procstart = null
 	if(is_on_a_planet(spacer))
 		if(spacer.has_gravity())
 			on_planet(spacer, skip_timers)
@@ -131,6 +143,8 @@
  * * skip_timers - if TRUE, this is being done instantly / should not have feedback (such as in init)
  */
 /datum/quirk/spacer_born/proc/on_planet(mob/living/afflicted, skip_timers = FALSE)
+	procstart = null
+	src.procstart = null
 	if(planetside_timer || last_state == LAST_STATE_PLANET)
 		return
 	if(recovering_timer)
@@ -158,6 +172,8 @@
  * * skip_timers - if TRUE, this is being done instantly / should not have feedback (such as in init)
  */
 /datum/quirk/spacer_born/proc/on_planet_for_too_long(mob/living/afflicted, skip_timers = FALSE)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || QDELETED(afflicted))
 		return
 
@@ -183,6 +199,8 @@
  * * skip_timers - if TRUE, this is being done instantly / should not have feedback (such as in init)
  */
 /datum/quirk/spacer_born/proc/in_space(mob/living/afflicted, skip_timers = FALSE)
+	procstart = null
+	src.procstart = null
 	if(recovering_timer || last_state == LAST_STATE_SPACE)
 		return
 	if(planetside_timer)
@@ -209,6 +227,8 @@
  * * skip_timers - if TRUE, this is being done instantly / should not have feedback (such as in init)
  */
 /datum/quirk/spacer_born/proc/comfortably_in_space(mob/living/afflicted, skip_timers = FALSE)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || QDELETED(afflicted))
 		return
 
@@ -228,6 +248,8 @@
  * * skip_timers - if TRUE, this is being done instantly / should not have feedback (such as in init)
  */
 /datum/quirk/spacer_born/proc/has_nograv(mob/living/afflicted, skip_timers = FALSE)
+	procstart = null
+	src.procstart = null
 	if(last_state == LAST_STATE_NOGRAV)
 		return
 	if(planetside_timer)

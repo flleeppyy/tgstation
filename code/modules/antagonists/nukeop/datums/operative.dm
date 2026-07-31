@@ -38,11 +38,15 @@
 	var/discount_limited_amount = 10
 
 /datum/antagonist/nukeop/greet()
+	procstart = null
+	src.procstart = null
 	play_stinger()
 	to_chat(owner, span_big("You are a [nuke_team ? nuke_team.syndicate_name : "syndicate"] agent!"))
 	owner.announce_objectives()
 
 /datum/antagonist/nukeop/on_gain()
+	procstart = null
+	src.procstart = null
 	give_alias()
 	forge_objectives()
 	owner.current.add_personality(/datum/personality/callous)
@@ -73,19 +77,29 @@
 		memorize_code()
 
 /datum/antagonist/nukeop/get_team()
+	procstart = null
+	src.procstart = null
 	return nuke_team
 
 /datum/antagonist/nukeop/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	add_team_hud(mob_override || owner.current, /datum/antagonist/nukeop)
 
 /datum/antagonist/nukeop/forge_objectives()
+	procstart = null
+	src.procstart = null
 	if(nuke_team)
 		objectives |= nuke_team.objectives
 
 /datum/antagonist/nukeop/leader/get_spawnpoint()
+	procstart = null
+	src.procstart = null
 	return pick(GLOB.nukeop_base_leader_start)
 
 /datum/antagonist/nukeop/create_team(datum/team/nuclear/new_team)
+	procstart = null
+	src.procstart = null
 	if(!new_team)
 		// Find the first leader to join up
 		for(var/datum/antagonist/nukeop/leader/leader in GLOB.antagonists)
@@ -100,16 +114,22 @@
 	nuke_team = new_team
 
 /datum/antagonist/nukeop/admin_add(datum/mind/new_owner,mob/admin)
+	procstart = null
+	src.procstart = null
 	new_owner.add_antag_datum(src)
 	message_admins("[key_name_admin(admin)] has nuke op'ed [key_name_admin(new_owner)].")
 	log_admin("[key_name(admin)] has nuke op'ed [key_name(new_owner)].")
 
 /datum/antagonist/nukeop/get_admin_commands()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["Send to base"] = CALLBACK(src, PROC_REF(admin_send_to_base))
 	.["Tell code"] = CALLBACK(src, PROC_REF(admin_tell_code))
 
 /datum/antagonist/nukeop/get_preview_icon()
+	procstart = null
+	src.procstart = null
 	if (!preview_outfit)
 		return null
 
@@ -130,6 +150,8 @@
 	return finish_preview_icon(final_icon)
 
 /datum/antagonist/nukeop/proc/equip_op()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(owner.current))
 		return
 
@@ -148,9 +170,13 @@
 	return TRUE
 
 /datum/antagonist/nukeop/proc/admin_send_to_base(mob/admin)
+	procstart = null
+	src.procstart = null
 	owner.current.forceMove(pick(GLOB.nukeop_base_start))
 
 /datum/antagonist/nukeop/proc/admin_tell_code(mob/admin)
+	procstart = null
+	src.procstart = null
 	var/code
 	for (var/obj/machinery/nuclearbomb/bombue as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/nuclearbomb))
 		if (length(bombue.r_code) <= 5 && bombue.r_code != initial(bombue.r_code))
@@ -163,6 +189,8 @@
 		to_chat(admin, span_danger("No valid nuke found!"))
 
 /datum/antagonist/nukeop/proc/give_alias()
+	procstart = null
+	src.procstart = null
 	if(nuke_team?.syndicate_name)
 		var/mob/living/carbon/human/human_to_rename = owner.current
 		if(istype(human_to_rename)) // Reinforcements get a real name
@@ -174,12 +202,16 @@
 			owner.current.fully_replace_character_name(null, "[nuke_team.syndicate_name] Operative #[number]")
 
 /datum/antagonist/nukeop/proc/memorize_code()
+	procstart = null
+	src.procstart = null
 	antag_memory += "<B>[nuke_team.tracked_nuke] Code</B>: [nuke_team.memorized_code]<br>"
 	owner.add_memory(/datum/memory/key/nuke_code, nuclear_code = nuke_team.memorized_code)
 	to_chat(owner, "The nuclear authorization code is: <B>[nuke_team.memorized_code]</B>")
 
 /// Actually moves our nukie to where they should be
 /datum/antagonist/nukeop/proc/move_to_spawnpoint()
+	procstart = null
+	src.procstart = null
 	// Ensure that the nukiebase is loaded, and wait for it if required
 	SSmapping.lazy_load_template(LAZY_TEMPLATE_KEY_NUKIEBASE)
 	var/turf/destination = get_spawnpoint()
@@ -190,6 +222,8 @@
 
 /// Gets the position we spawn at
 /datum/antagonist/nukeop/proc/get_spawnpoint()
+	procstart = null
+	src.procstart = null
 	var/team_number = 1
 	if(nuke_team)
 		team_number = nuke_team.members.Find(owner)
@@ -197,6 +231,8 @@
 	return GLOB.nukeop_base_start[((team_number - 1) % GLOB.nukeop_base_start.len) + 1]
 
 /datum/antagonist/nukeop/proc/spawn_infiltrator()
+	procstart = null
+	src.procstart = null
 	var/datum/map_template/shuttle/infiltrator/ship = SSmapping.shuttle_templates[infiltrator_id]
 	var/x = (world.maxx - TRANSITIONEDGE - ship.width)
 	var/y = (world.maxy - TRANSITIONEDGE - ship.height)
@@ -223,6 +259,8 @@
 	mobile_port.setTimer(mobile_port.ignitionTime)
 
 /datum/antagonist/nukeop/on_respawn(mob/new_character)
+	procstart = null
+	src.procstart = null
 	new_character.forceMove(pick(GLOB.nukeop_base_start))
 	equip_op()
 	return TRUE

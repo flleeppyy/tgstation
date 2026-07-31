@@ -1,4 +1,6 @@
 /datum/unit_test/stomach/Run()
+	procstart = null
+	src.procstart = null
 
 	// Pause natural mob life so it can be handled entirely by the test
 	SSmobs.pause()
@@ -48,5 +50,7 @@
 	TEST_ASSERT_EQUAL(human.has_reagent(/datum/reagent/consumable/ketchup), FALSE, "Human has ketchup without a stomach")
 
 /datum/unit_test/stomach/Destroy()
+	procstart = null
+	src.procstart = null
 	SSmobs.ignite()
 	return ..()

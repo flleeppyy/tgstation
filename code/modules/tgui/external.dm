@@ -15,6 +15,8 @@
  * optional ui datum/tgui The UI to be updated, if it exists.
  */
 /datum/proc/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	return FALSE // Not implemented.
 
 /**
@@ -28,6 +30,8 @@
  * return list Data to be sent to the UI.
  */
 /datum/proc/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list() // Not implemented.
 
 /**
@@ -45,6 +49,8 @@
  * return list Static Data to be sent to the UI.
  */
 /datum/proc/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list()
 
 /**
@@ -58,6 +64,8 @@
  * always_instant when set to true stops the ui update cooldown from happening
  */
 /datum/proc/update_static_data(mob/user, datum/tgui/ui, always_instant)
+	procstart = null
+	src.procstart = null
 	if(!ui)
 		ui = SStgui.get_open_ui(user, src)
 	if(ui)
@@ -71,6 +79,8 @@
  * change static data.
  */
 /datum/proc/update_static_data_for_all_viewers()
+	procstart = null
+	src.procstart = null
 	for (var/datum/tgui/window as anything in open_uis)
 		window.send_full_update()
 
@@ -82,6 +92,8 @@
  * such as when you are not using the auto-update system.
  */
 /datum/proc/update_data_for_all_viewers()
+	procstart = null
+	src.procstart = null
 	for(var/datum/tgui/ui as anything in open_uis)
 		ui.send_update()
 
@@ -97,6 +109,8 @@
  * return bool If the user's input has been handled and the UI should update.
  */
 /datum/proc/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_UI_ACT, usr, action, params)
 	// If UI is not interactive or usr calling Topic is not the UI user, bail.
@@ -116,6 +130,8 @@
  * return list List of asset datums or file paths.
  */
 /datum/proc/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list()
 
 /**
@@ -126,6 +142,8 @@
  * and be a part of another object.
  */
 /datum/proc/ui_host(mob/user)
+	procstart = null
+	src.procstart = null
 	return src // Default src.
 
 /**
@@ -135,6 +153,8 @@
  * This is a proc over a var for memory reasons
  */
 /datum/proc/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.default_state
 
 /**
@@ -151,6 +171,8 @@
  * Tracks open UIs for a user.
  */
 /mob/var/list/tgui_open_uis = list()
+	procstart = null
+	src.procstart = null
 
 /**
  * global
@@ -158,6 +180,8 @@
  * Tracks open windows for a user.
  */
 /client/var/list/tgui_windows = list()
+	procstart = null
+	src.procstart = null
 
 /**
  * global
@@ -173,6 +197,8 @@
  * client/verb/uiclose(), which closes the ui window
  */
 /datum/proc/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 /**
@@ -196,6 +222,8 @@ GAME_VERB_HIDDEN(/client, uiclose, "uiclose", window_id as text)
  * return bool If TRUE, prevents propagation of the topic call.
  */
 /proc/tgui_Topic(href_list)
+	procstart = null
+	src.procstart = null
 	// Skip non-tgui topics
 	if(!href_list["tgui"])
 		return FALSE

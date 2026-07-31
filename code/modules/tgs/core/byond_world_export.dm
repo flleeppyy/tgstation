@@ -1,6 +1,8 @@
 /datum/tgs_http_handler/byond_world_export
 
 /datum/tgs_http_handler/byond_world_export/PerformGet(url)
+	procstart = null
+	src.procstart = null
 	// This is an infinite sleep until we get a response
 	var/export_response = world.Export(url)
 	TGS_DEBUG_LOG("byond_world_export: Export complete")

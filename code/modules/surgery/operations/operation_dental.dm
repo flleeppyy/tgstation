@@ -10,18 +10,26 @@
 	any_surgery_states_blocked = SURGERY_VESSELS_UNCLAMPED
 
 /datum/surgery_operation/limb/add_dental_implant/all_required_strings()
+	procstart = null
+	src.procstart = null
 	. = list()
 	. += "operate on mouth (target mouth)"
 	. += ..()
 	. += "the mouth must have teeth"
 
 /datum/surgery_operation/limb/add_dental_implant/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/hud/implants.dmi', "reagents")
 
 /datum/surgery_operation/limb/add_dental_implant/snowflake_check_availability(atom/movable/operating_on, mob/living/surgeon, tool, operated_zone)
+	procstart = null
+	src.procstart = null
 	return ..() && surgeon.canUnEquip(tool) && operated_zone == BODY_ZONE_PRECISE_MOUTH
 
 /datum/surgery_operation/limb/add_dental_implant/state_check(obj/item/bodypart/head/limb)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/head/teeth_receptangle = limb
 	if(!istype(teeth_receptangle))
 		return FALSE
@@ -35,6 +43,8 @@
 	return TRUE
 
 /datum/surgery_operation/limb/add_dental_implant/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -45,6 +55,8 @@
 	display_pain(limb.owner, "Something's being jammed into your [limb.plaintext_zone]!")
 
 /datum/surgery_operation/limb/add_dental_implant/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	// Pills go into head
 	surgeon.transferItemToLoc(tool, limb, TRUE)
 
@@ -74,18 +86,26 @@
 	any_surgery_states_blocked = SURGERY_VESSELS_UNCLAMPED
 
 /datum/surgery_operation/limb/remove_dental_implant/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(/obj/item/reagent_containers/applicator/pill)
 
 /datum/surgery_operation/limb/remove_dental_implant/snowflake_check_availability(atom/movable/operating_on, mob/living/surgeon, tool, operated_zone)
+	procstart = null
+	src.procstart = null
 	return ..() && operated_zone == BODY_ZONE_PRECISE_MOUTH
 
 /datum/surgery_operation/limb/remove_dental_implant/get_time_modifiers(atom/movable/operating_on, mob/living/surgeon, tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/flashlight/light in surgeon)
 		if(light.light_on) // Hey I can see a better!
 			. *= 0.8
 
 /datum/surgery_operation/limb/remove_dental_implant/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -96,6 +116,8 @@
 	display_pain(limb.owner, "You feel fingers poke around at your teeth.")
 
 /datum/surgery_operation/limb/remove_dental_implant/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	var/list/pills = list()
 	for(var/obj/item/reagent_containers/applicator/pill/dental in limb)
 		pills += dental
@@ -129,11 +151,15 @@
 	check_flags = NONE
 
 /datum/action/item_action/activate_pill/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS(owner))
 		return FALSE
 	return ..()
 
 /datum/action/item_action/activate_pill/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	owner.balloon_alert_to_viewers("[owner] grinds their teeth!", "you grit your teeth")
 	if(!do_after(owner, owner.stat * (2.5 SECONDS), owner,  IGNORE_USER_LOC_CHANGE | IGNORE_INCAPACITATED))
 		return FALSE

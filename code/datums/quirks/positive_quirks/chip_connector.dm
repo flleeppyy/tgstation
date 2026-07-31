@@ -10,10 +10,14 @@
 	var/obj/item/organ/cyberimp/brain/connector/connector
 
 /datum/quirk/chip_connector/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	mail_goodies = assoc_to_keys(GLOB.quirk_chipped_choice) + /datum/quirk/chipped::mail_goodies
 
 /datum/quirk/chip_connector/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/carbon/carbon_holder = quirk_holder
 	if(!iscarbon(quirk_holder))
@@ -22,7 +26,11 @@
 	connector.Insert(carbon_holder, special = TRUE)
 
 /datum/quirk/chip_connector/post_add()
+	procstart = null
+	src.procstart = null
 	to_chat(quirk_holder, span_bolddanger(desc)) // efficiency is clever laziness
 
 /datum/quirk/chip_connector/remove()
+	procstart = null
+	src.procstart = null
 	qdel(connector)

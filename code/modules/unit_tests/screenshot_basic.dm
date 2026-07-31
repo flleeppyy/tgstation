@@ -3,6 +3,8 @@
 /datum/unit_test/screenshot_basic
 
 /datum/unit_test/screenshot_basic/Run()
+	procstart = null
+	src.procstart = null
 	var/icon/red = icon('icons/blanks/32x32.dmi', "nothing")
 	red.Blend(COLOR_RED, ICON_OVERLAY)
 	test_screenshot("red", red)

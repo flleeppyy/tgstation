@@ -69,6 +69,8 @@
 	item_flags = DROPDEL
 
 /obj/item/clothing/suit/hooded/cultrobes/alt/ghost/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CULT_TRAIT)
 
@@ -93,10 +95,14 @@
 	resistance_flags = NONE
 
 /obj/item/clothing/suit/hooded/cultrobes/hardened/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_BIBLE_SMACKED, PROC_REF(on_bible_smacked))
 
 /obj/item/clothing/suit/hooded/cultrobes/hardened/proc/on_bible_smacked(obj/item/book/bible/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(attempt_exorcism), user)
 	return COMSIG_END_BIBLE_CHAIN
@@ -109,6 +115,8 @@
  * * exorcist: user who is attempting to remove the spirit
  */
 /obj/item/clothing/suit/hooded/cultrobes/hardened/proc/attempt_exorcism(mob/living/exorcist)
+	procstart = null
+	src.procstart = null
 	if(IS_CULTIST(exorcist))
 		return
 	balloon_alert(exorcist, "exorcising...")
@@ -137,15 +145,21 @@
 	acid = 100
 
 /obj/item/clothing/suit/hooded/cultrobes/hardened/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot_flags & slot)
 		START_PROCESSING(SSprocessing, src)
 
 /obj/item/clothing/suit/hooded/cultrobes/hardened/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	STOP_PROCESSING(SSprocessing, src)
 
 /obj/item/clothing/suit/hooded/cultrobes/hardened/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/wearer = loc
 	if(!istype(wearer) || IS_CULTIST(wearer))
 		return
@@ -200,6 +214,8 @@
 	acid = 60
 
 /obj/item/clothing/suit/hooded/cultrobes/cult_shield/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/shielded, \
@@ -210,6 +226,8 @@
 	)
 
 /obj/item/clothing/suit/hooded/cultrobes/cult_shield/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!IS_CULTIST(user))
 		to_chat(user, span_cult_large("\"I wouldn't advise that.\""))
@@ -220,6 +238,8 @@
 
 ///Callback when the shield breaks, since cult robes are stupid and have different effects.
 /obj/item/clothing/suit/hooded/cultrobes/cult_shield/proc/shield_damaged(mob/living/wearer, attack_text, new_current_charges)
+	procstart = null
+	src.procstart = null
 	wearer.visible_message(span_danger("[wearer]'s robes neutralize [attack_text] in a burst of blood-red sparks!"))
 	new /obj/effect/temp_visual/cult/sparks(get_turf(wearer))
 	if(new_current_charges == 0)
@@ -249,15 +269,21 @@
 	custom_materials = null
 
 /obj/item/clothing/glasses/hud/health/night/cultblind/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot_flags & slot)
 		START_PROCESSING(SSprocessing, src)
 
 /obj/item/clothing/glasses/hud/health/night/cultblind/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	STOP_PROCESSING(SSprocessing, src)
 
 /obj/item/clothing/glasses/hud/health/night/cultblind/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/wearer = loc
 	if(!istype(wearer) || IS_CULTIST(wearer))
 		return

@@ -3,6 +3,8 @@
 	var/locate_typepath
 
 /datum/target_source/held_items_typed/collect_candidates(mob/living/pawn, datum/ai_controller/controller, range)
+	procstart = null
+	src.procstart = null
 	var/list/candidates = list()
 	for(var/atom/candidate as anything in pawn.held_items)
 		if(istype(candidate, locate_typepath))

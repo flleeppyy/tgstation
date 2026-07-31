@@ -98,11 +98,15 @@
 		)
 
 /obj/structure/closet/crate/secure/loot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	code = generate_code(code_length)
 
 /// Generates a random code of specified length with no repeating digits
 /obj/structure/closet/crate/secure/loot/proc/generate_code(length)
+	procstart = null
+	src.procstart = null
 	var/list/digits = list("1", "2", "3", "4", "5", "6", "7", "8", "9", "0")
 	var/list/code_digits = list()
 
@@ -117,6 +121,8 @@
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/structure/closet/crate/secure/loot/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!locked)
 		return ..()
 	if(!user.can_perform_action(src))
@@ -145,6 +151,8 @@
 
 /// Checks if user input is a valid code attempt
 /obj/structure/closet/crate/secure/loot/proc/validate_input(input)
+	procstart = null
+	src.procstart = null
 	if(!input || code_length != length(input))
 		return FALSE
 
@@ -160,10 +168,14 @@
 	return TRUE
 
 /obj/structure/closet/crate/secure/loot/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	attack_hand(user) //this helps you not blow up so easily by overriding unlocking which results in an immediate boom.
 	return CLICK_ACTION_SUCCESS
 
 /obj/structure/closet/crate/secure/loot/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Attempt to update tgui ui, open and update if needed.
@@ -173,6 +185,8 @@
 		ui.open()
 
 /obj/structure/closet/crate/secure/loot/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["previous_attempts"] = previous_attempts
@@ -181,6 +195,8 @@
 	return data
 
 /obj/structure/closet/crate/secure/loot/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!locked)
 		return
 	if(Adjacent(user))
@@ -189,6 +205,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/closet/crate/secure/loot/multitool_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!locked)
 		return
 	attack_hand(user)
@@ -196,6 +214,8 @@
 
 /// Implements bulls and cows algorithm to compare guess against actual code
 /obj/structure/closet/crate/secure/loot/proc/bulls_and_cows(guess)
+	procstart = null
+	src.procstart = null
 	var/bulls = 0
 	var/cows = 0
 
@@ -211,6 +231,8 @@
 	return list("attempt" = guess, "bulls" = bulls, "cows" = cows)
 
 /obj/structure/closet/crate/secure/loot/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(locked)
@@ -219,6 +241,8 @@
 	return
 
 /obj/structure/closet/crate/secure/loot/togglelock(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!locked)
 		. = ..() //Run the normal code.
 		if(locked) //Double check if the crate actually locked itself when the normal code ran.
@@ -232,17 +256,23 @@
 	return ..()
 
 /obj/structure/closet/crate/secure/loot/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		boom()
 		return
 	return ..()
 
 /obj/structure/closet/crate/secure/loot/after_open(mob/living/user, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(qdel_on_open)
 		qdel(src)
 
 /obj/structure/closet/crate/secure/loot/proc/spawn_loot()
+	procstart = null
+	src.procstart = null
 	var/loot = pick_weight_recursive(possible_loot)
 	new loot(src)
 	spawned_loot = TRUE

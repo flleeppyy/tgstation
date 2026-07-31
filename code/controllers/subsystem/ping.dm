@@ -13,9 +13,13 @@ SUBSYSTEM_DEF(ping)
 	var/list/currentrun = list()
 
 /datum/controller/subsystem/ping/stat_entry()
+	procstart = null
+	src.procstart = null
 	..("P:[GLOB.clients.len]")
 
 /datum/controller/subsystem/ping/fire(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	// Prepare the new batch of clients
 	if (!resumed)
 		src.currentrun = GLOB.clients.Copy()

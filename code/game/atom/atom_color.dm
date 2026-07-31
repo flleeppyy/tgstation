@@ -20,6 +20,8 @@
 
 ///Adds an instance of colour_type to the atom's atom_colours list
 /atom/proc/add_atom_colour(coloration, colour_priority)
+	procstart = null
+	src.procstart = null
 	if(!atom_colours || !atom_colours.len)
 		atom_colours = list()
 		atom_colours.len = COLOUR_PRIORITY_AMOUNT //four priority levels currently.
@@ -37,6 +39,8 @@
 
 ///Removes an instance of colour_type from the atom's atom_colours list
 /atom/proc/remove_atom_colour(colour_priority, coloration)
+	procstart = null
+	src.procstart = null
 	if(!atom_colours)
 		return
 	if(colour_priority > atom_colours.len)
@@ -56,6 +60,8 @@
  * Can optionally be supplied with a range of priorities, IE only checking "washable" or above
  */
 /atom/proc/is_atom_colour(looking_for_color, min_priority_index = 1, max_priority_index = COLOUR_PRIORITY_AMOUNT)
+	procstart = null
+	src.procstart = null
 	// make sure uppertext hex strings don't mess with LOWER_TEXT hex strings
 	if (!islist(looking_for_color))
 		looking_for_color = LOWER_TEXT(looking_for_color)
@@ -92,6 +98,8 @@
 
 ///Resets the atom's color to null, and then sets it to the highest priority colour available
 /atom/proc/update_atom_colour()
+	procstart = null
+	src.procstart = null
 	var/old_filter = cached_color_filter
 	var/old_color = color
 	color = null
@@ -120,6 +128,8 @@
 
 /// Same as update_atom_color, but simplifies overlay coloring
 /atom/proc/color_atom_overlay(mutable_appearance/overlay)
+	procstart = null
+	src.procstart = null
 	overlay.color = color
 	if (!cached_color_filter)
 		return overlay

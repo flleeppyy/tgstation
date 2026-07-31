@@ -15,10 +15,14 @@
 	role_unique_actions = list(/datum/mafia_ability/changeling_kill)
 
 /datum/mafia_role/mafia/New(datum/mafia_controller/game)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(game, COMSIG_MAFIA_SUNDOWN, PROC_REF(mafia_text))
 
 /datum/mafia_role/mafia/proc/mafia_text(datum/mafia_controller/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	to_chat(body, "<b>Vote for who to kill tonight. The killer will be chosen randomly from voters.</b>")

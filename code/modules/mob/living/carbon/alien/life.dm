@@ -1,10 +1,14 @@
 /mob/living/carbon/alien/Life(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.) //dead or deleted
 		return
 	findQueen()
 
 /mob/living/carbon/alien/check_breath(datum/gas_mixture/breath)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_GODMODE))
 		return
 
@@ -44,6 +48,8 @@
 	handle_breath_temperature(breath)
 
 /mob/living/carbon/alien/adult/Life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(src))
 		return

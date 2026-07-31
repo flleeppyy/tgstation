@@ -30,15 +30,21 @@
 	var/mutable_appearance/blob_head_overlay
 
 /mob/living/basic/blob_minion/zombie/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_PERMANENTLY_MORTAL, INNATE_TRAIT) // This mob doesn't function visually without a corpse and wouldn't respawn with one
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_BLOBSPORE, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /mob/living/basic/blob_minion/zombie/death(gibbed)
+	procstart = null
+	src.procstart = null
 	corpse?.forceMove(loc)
 	return ..()
 
 /mob/living/basic/blob_minion/zombie/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (gone != corpse)
 		return
@@ -46,14 +52,20 @@
 	death()
 
 /mob/living/basic/blob_minion/zombie/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(corpse)
 	return ..()
 
 /mob/living/basic/blob_minion/zombie/on_factory_destroyed()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	death()
 
 /mob/living/basic/blob_minion/zombie/on_strain_updated(mob/eye/blob/overmind, datum/blobstrain/new_strain)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 	color = initial(color)
@@ -61,6 +73,8 @@
 	blob_head_overlay?.color = new_strain ? new_strain.color : COLOR_WHITE
 
 /mob/living/basic/blob_minion/zombie/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!blob_head_overlay)
 		blob_head_overlay = mutable_appearance('icons/mob/nonhuman-player/blob.dmi', "blob_head_independent")
@@ -68,6 +82,8 @@
 
 /// Store a body so that we can drop it on death
 /mob/living/basic/blob_minion/zombie/proc/consume_corpse(mob/living/carbon/human/new_corpse)
+	procstart = null
+	src.procstart = null
 	if(new_corpse.wear_suit)
 		maxHealth += new_corpse.get_armor_rating(MELEE)
 		health = maxHealth
@@ -81,6 +97,8 @@
 
 /// Dynamic changeling reentry
 /mob/living/basic/blob_minion/zombie/proc/on_corpse_revived()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	visible_message(span_boldwarning("[src] bursts from the inside!"))
 	death()
@@ -89,6 +107,8 @@
 /mob/living/basic/blob_minion/zombie/controlled
 
 /mob/living/basic/blob_minion/zombie/controlled/consume_corpse(mob/living/carbon/human/new_corpse)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isnull(client) || SSticker.current_state == GAME_STATE_FINISHED)
 		return

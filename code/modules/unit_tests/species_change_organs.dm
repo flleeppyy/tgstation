@@ -6,6 +6,8 @@
 /datum/unit_test/species_change_organs
 
 /datum/unit_test/species_change_organs/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 
 	// Give a trauma

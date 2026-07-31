@@ -15,6 +15,8 @@
 	var/impact_sound = 'sound/effects/magic/clockwork/fellowship_armory.ogg' //CLANG
 
 /datum/element/falling_hazard/Attach(datum/target, damage, wound_bonus, hardhat_safety, crushes, impact_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
@@ -28,11 +30,15 @@
 	RegisterSignal(target, COMSIG_ATOM_ON_Z_IMPACT, PROC_REF(fall_onto_stuff))
 
 /datum/element/falling_hazard/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_ATOM_ON_Z_IMPACT)
 
 /// Gathers every mob in the turf the target falls on, and does damage/crushes them/makes a message about the target falling on them
 /datum/element/falling_hazard/proc/fall_onto_stuff(datum/source, turf/impacted_turf, levels)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/poor_target = locate(/mob/living) in impacted_turf

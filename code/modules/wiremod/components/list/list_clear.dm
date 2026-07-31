@@ -11,6 +11,8 @@
 	circuit_flags = CIRCUIT_FLAG_INPUT_SIGNAL|CIRCUIT_FLAG_OUTPUT_SIGNAL
 
 /obj/item/circuit_component/variable/list/listclear/input_received(datum/port/input/port, list/return_values)
+	procstart = null
+	src.procstart = null
 	if(!current_variable)
 		return
 	current_variable.set_value(list())

@@ -4,6 +4,8 @@
 	early = TRUE
 
 /datum/asset/spritesheet_batched/preferences/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	for (var/preference_key in GLOB.preference_entries_by_key)
 		var/datum/preference/choiced/preference = GLOB.preference_entries_by_key[preference_key]
 		if (!istype(preference))
@@ -32,6 +34,8 @@
 
 /// Returns the key that will be used in the spritesheet for a given value.
 /datum/preference/proc/get_spritesheet_key(value)
+	procstart = null
+	src.procstart = null
 	return "[savefile_key]___[sanitize_css_class_name(value)]"
 
 /// Sends information needed for shared details on individual preferences
@@ -39,6 +43,8 @@
 	name = "preferences"
 
 /datum/asset/json/preferences/generate()
+	procstart = null
+	src.procstart = null
 	var/list/preference_data = list()
 
 	for (var/middleware_type in subtypesof(/datum/preference_middleware))

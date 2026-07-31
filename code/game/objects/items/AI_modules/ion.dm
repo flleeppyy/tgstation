@@ -9,19 +9,27 @@ CONTAINS:
 	desc = "An AI Module for programming laws to an AI. It looks slightly damaged."
 
 /obj/item/ai_module/law/core/full/damaged/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_ioned(TRUE)
 
 /obj/item/ai_module/law/core/full/damaged/proc/gen_laws()
+	procstart = null
+	src.procstart = null
 	laws.Cut()
 	laws += generate_ion_law()
 	while(prob(75))
 		laws += generate_ion_law()
 
 /obj/item/ai_module/law/core/full/damaged/on_rack_install(obj/machinery/ai_law_rack/rack)
+	procstart = null
+	src.procstart = null
 	gen_laws()
 
 /obj/item/ai_module/law/core/full/damaged/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	balloon_alert(user, "repairing ion damage..?")
 	if(!tool.use_tool(ismachinery(loc) ? loc : src, user, 4 SECONDS, volume = 25, extra_checks = CALLBACK(src, PROC_REF(multitool_cb), loc, user, tool)))
 		return ITEM_INTERACT_BLOCKING
@@ -39,9 +47,13 @@ CONTAINS:
 	laws = list("")
 
 /obj/item/ai_module/law/toy_ai/apply_to_combined_lawset(datum/ai_laws/combined_lawset)
+	procstart = null
+	src.procstart = null
 	combined_lawset.add_inherent_law(laws[1], 1)
 
 /obj/item/ai_module/law/toy_ai/configure(mob/user)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	laws[1] = generate_ion_law()
 	to_chat(user, span_notice("You press the button on [src]."))

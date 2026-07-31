@@ -4,11 +4,17 @@
 	var/min_count = 1
 
 /datum/bt_node/decorator/bb_key_list_min_count/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	RegisterSignals(pawn, list(COMSIG_AI_BLACKBOARD_KEY_SET(key), COMSIG_AI_BLACKBOARD_KEY_CLEARED(key)), PROC_REF(on_signal_changed))
 	return TRUE
 
 /datum/bt_node/decorator/bb_key_list_min_count/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(pawn, list(COMSIG_AI_BLACKBOARD_KEY_SET(key), COMSIG_AI_BLACKBOARD_KEY_CLEARED(key)))
 
 /datum/bt_node/decorator/bb_key_list_min_count/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	return LAZYLEN(controller.blackboard[key]) >= min_count

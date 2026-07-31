@@ -10,6 +10,8 @@ SUBSYSTEM_DEF(tutorials)
 	VAR_PRIVATE/list/datum/tutorial_manager/tutorial_managers_by_key = list()
 
 /datum/controller/subsystem/tutorials/Initialize()
+	procstart = null
+	src.procstart = null
 	init_tutorial_managers()
 	load_initial_tutorial_completions()
 	RegisterSignal(SSdcs, COMSIG_GLOB_CLIENT_CONNECT, PROC_REF(on_client_connect))
@@ -20,6 +22,8 @@ SUBSYSTEM_DEF(tutorials)
 /// Will check that they should actually see it, e.g. hasn't completed it yet, etc.
 /// Then, calls `/datum/tutorial/subtype/perform` with the extra arguments passed in.
 /datum/controller/subsystem/tutorials/proc/suggest_tutorial(mob/user, datum/tutorial/tutorial_type, ...)
+	procstart = null
+	src.procstart = null
 	var/datum/tutorial_manager/tutorial_manager = tutorial_managers[tutorial_type]
 	if (isnull(tutorial_manager))
 		CRASH("[tutorial_type] is not a valid tutorial type")
@@ -30,6 +34,8 @@ SUBSYSTEM_DEF(tutorials)
 	INVOKE_ASYNC(tutorial_manager, TYPE_PROC_REF(/datum/tutorial_manager, try_perform), user, args.Copy(3))
 
 /datum/controller/subsystem/tutorials/proc/init_tutorial_managers()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	for (var/datum/tutorial/tutorial_type as anything in subtypesof(/datum/tutorial))
@@ -38,6 +44,8 @@ SUBSYSTEM_DEF(tutorials)
 		tutorial_managers_by_key[tutorial_manager.get_key()] = tutorial_manager
 
 /datum/controller/subsystem/tutorials/proc/load_initial_tutorial_completions()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	set waitfor = FALSE // There's no reason to halt init for this
 
@@ -74,6 +82,8 @@ SUBSYSTEM_DEF(tutorials)
 	qdel(select_all_query)
 
 /datum/controller/subsystem/tutorials/proc/on_client_connect(datum/source, client/client)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/ckey = client.ckey
@@ -83,6 +93,8 @@ SUBSYSTEM_DEF(tutorials)
 	INVOKE_ASYNC(src, PROC_REF(check_completed_tutorials_for_ckey), ckey)
 
 /datum/controller/subsystem/tutorials/proc/check_completed_tutorials_for_ckey(ckey)
+	procstart = null
+	src.procstart = null
 	if (!SSdbcore.IsConnected())
 		return
 
@@ -103,6 +115,8 @@ SUBSYSTEM_DEF(tutorials)
 	qdel(select_tutorials_for_ckey)
 
 /datum/controller/subsystem/tutorials/proc/mark_ckey_completed_tutorial(ckey, tutorial_key)
+	procstart = null
+	src.procstart = null
 	var/datum/tutorial_manager/tutorial_manager = tutorial_managers_by_key[tutorial_key]
 	if (isnull(tutorial_manager))
 		// Not necessarily a bug.

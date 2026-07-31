@@ -59,6 +59,8 @@
 	wine_flavor = "a vector-graphic rabbit dancing on your tongue"
 
 /obj/item/food/grown/laugh/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/laughsyrup
 
 // World Peas - Peace at last, peace at last...

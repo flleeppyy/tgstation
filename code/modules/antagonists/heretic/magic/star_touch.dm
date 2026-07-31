@@ -24,16 +24,22 @@
 	var/ascended = FALSE
 
 /datum/action/cooldown/spell/touch/star_touch/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	if(!isliving(cast_on))
 		return FALSE
 	return TRUE
 
 /datum/action/cooldown/spell/touch/star_touch/on_antimagic_triggered(obj/item/melee/touch_attack/hand, atom/victim, mob/living/carbon/caster)
+	procstart = null
+	src.procstart = null
 	victim.visible_message(
 		span_danger("The spell bounces off of you!"),
 	)
 
 /datum/action/cooldown/spell/touch/star_touch/cast_on_hand_hit(obj/item/melee/touch_attack/hand, mob/living/victim, mob/living/carbon/caster)
+	procstart = null
+	src.procstart = null
 	if(!victim.has_status_effect(/datum/status_effect/star_mark))
 		victim.apply_status_effect(/datum/status_effect/star_mark, caster)
 		return TRUE
@@ -45,6 +51,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/touch/star_touch/proc/get_turfs(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	var/list/target_turfs = list(get_turf(owner))
 	var/range = ascended ? 2 : 1
 	var/list/directions = list(turn(owner.dir, 90), turn(owner.dir, 270))
@@ -55,10 +63,14 @@
 
 /// To set the star gazer
 /datum/action/cooldown/spell/touch/star_touch/proc/set_star_gazer(mob/living/basic/heretic_summon/star_gazer/star_gazer_mob)
+	procstart = null
+	src.procstart = null
 	star_gazer = WEAKREF(star_gazer_mob)
 
 /// To obtain the star gazer if there is one
 /datum/action/cooldown/spell/touch/star_touch/proc/get_star_gazer()
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/heretic_summon/star_gazer/star_gazer_resolved = star_gazer?.resolve()
 	if(star_gazer_resolved)
 		return star_gazer_resolved
@@ -72,6 +84,8 @@
 	inhand_icon_state = "star"
 
 /obj/item/melee/touch_attack/star_touch/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(\
 		/datum/component/effect_remover, \
@@ -82,6 +96,8 @@
 	)
 
 /obj/item/melee/touch_attack/star_touch/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(interacting_with))
 		return
@@ -94,6 +110,8 @@
  * Callback for effect_remover component.
  */
 /obj/item/melee/touch_attack/star_touch/proc/after_clear_rune(obj/effect/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/cosmic_rune_fade(get_turf(target))
 	var/datum/action/cooldown/spell/touch/star_touch/star_touch_spell = spell_which_made_us?.resolve()
 	star_touch_spell?.spell_feedback(user)
@@ -110,10 +128,14 @@
 		QDEL_NULL(second_rune)
 
 /obj/item/melee/touch_attack/star_touch/ignition_effect(atom/to_light, mob/user)
+	procstart = null
+	src.procstart = null
 	. = span_rose("[user] effortlessly snaps [user.p_their()] fingers near [to_light], igniting it with cosmic energies. Fucking badass!")
 	remove_hand_with_no_refund(user)
 
 /obj/item/melee/touch_attack/star_touch/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/datum/action/cooldown/spell/touch/star_touch/star_touch_spell = spell_which_made_us?.resolve()
 	var/mob/living/basic/heretic_summon/star_gazer/star_gazer_mob = star_touch_spell?.get_star_gazer()
 	if(!star_gazer_mob)
@@ -159,11 +181,15 @@
 	var/successful_teleport = FALSE
 
 /datum/status_effect/cosmic_beam/on_creation(mob/living/new_owner, mob/living/current_target)
+	procstart = null
+	src.procstart = null
 	cosmic_effect_trail = cosmic_trail_based_on_passive(new_owner)
 	start_beam(current_target, new_owner)
 	return ..()
 
 /datum/status_effect/cosmic_beam/on_remove()
+	procstart = null
+	src.procstart = null
 	if(current_target && get_dist(owner, current_target) <= max_range)
 		yoink_victim()
 		successful_teleport = TRUE
@@ -172,11 +198,15 @@
 
 /// Puts the victim to sleep and teleports them to the casters' location
 /datum/status_effect/cosmic_beam/proc/yoink_victim()
+	procstart = null
+	src.procstart = null
 	current_target.apply_effect(8 SECONDS, effecttype = EFFECT_UNCONSCIOUS)
 	do_teleport(current_target, owner, channel = TELEPORT_CHANNEL_MAGIC, forced = TRUE)
 	current_target.apply_status_effect(/datum/status_effect/star_mark)
 
 /datum/status_effect/cosmic_beam/be_replaced()
+	procstart = null
+	src.procstart = null
 	if(active)
 		QDEL_NULL(current_beam)
 		active = FALSE
@@ -187,6 +217,8 @@
  * Proc that always is called when we want to end the beam and makes sure things are cleaned up, see beam_died()
  */
 /datum/status_effect/cosmic_beam/proc/lose_target()
+	procstart = null
+	src.procstart = null
 	deltimer(teleport_timer)
 	if(active)
 		QDEL_NULL(current_beam)
@@ -201,6 +233,8 @@
  * automatic disconnection = beam_died, so we can give a warning message first
  */
 /datum/status_effect/cosmic_beam/proc/beam_died()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(successful_teleport)
 		return
@@ -211,6 +245,8 @@
 
 /// Used for starting the beam when a target has been acquired
 /datum/status_effect/cosmic_beam/proc/start_beam(atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 
 	if(current_target)
 		lose_target()
@@ -229,6 +265,8 @@
 
 /// What to add when the beam connects to a target
 /datum/status_effect/cosmic_beam/proc/on_beam_hit(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isstargazer(target))
 		return
 	ADD_TRAIT(target, TRAIT_NO_TELEPORT, REF(src))
@@ -236,6 +274,8 @@
 
 /// What to remove when the beam disconnects from a target
 /datum/status_effect/cosmic_beam/proc/on_beam_release(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(isstargazer(target))
 		return
 	REMOVE_TRAIT(target, TRAIT_NO_TELEPORT, REF(src))

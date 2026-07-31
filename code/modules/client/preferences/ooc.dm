@@ -5,9 +5,13 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/color/ooc_color/create_default_value()
+	procstart = null
+	src.procstart = null
 	return "#c43b23"
 
 /datum/preference/color/ooc_color/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if (!..(preferences))
 		return FALSE
 

@@ -45,9 +45,13 @@ the same goes for Remove(). if you override Remove(), call parent or else your p
 */
 
 /datum/action/changeling/proc/on_purchase(mob/user, is_respec)
+	procstart = null
+	src.procstart = null
 	Grant(user)//how powers are added rather than the checks in mob.dm
 
 /datum/action/changeling/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -67,6 +71,8 @@ the same goes for Remove(). if you override Remove(), call parent or else your p
  *Returns TRUE on a successful activation.
  */
 /datum/action/changeling/proc/try_to_sting(mob/living/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(!can_sting(user, target))
 		return FALSE
 	if(disabled_by_fire && user.fire_stacks && user.on_fire)
@@ -81,15 +87,21 @@ the same goes for Remove(). if you override Remove(), call parent or else your p
 	return FALSE
 
 /datum/action/changeling/proc/sting_action(mob/living/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SSblackbox.record_feedback("nested tally", "changeling_powers", 1, list("[name]"))
 	return FALSE
 
 /datum/action/changeling/proc/sting_feedback(mob/living/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 // Fairly important to remember to return 1 on success >.< // Return TRUE not 1 >.<
 /datum/action/changeling/proc/can_sting(mob/living/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(!can_be_used_by(user))
 		return FALSE
 	var/datum/antagonist/changeling/changeling = IS_CHANGELING(user)
@@ -111,6 +123,8 @@ the same goes for Remove(). if you override Remove(), call parent or else your p
 	return TRUE
 
 /datum/action/changeling/proc/can_be_used_by(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(user))
 		return FALSE
 	if(!ishuman(user))

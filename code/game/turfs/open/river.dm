@@ -5,6 +5,8 @@
 #define RANDOM_LOWER_Y 50
 
 /proc/spawn_rivers(target_z, nodes, turf_type, whitelist_area, min_x = RANDOM_LOWER_X, min_y = RANDOM_LOWER_Y, max_x = RANDOM_UPPER_X, max_y = RANDOM_UPPER_Y)
+	procstart = null
+	src.procstart = null
 	var/num_spawned = 0
 	var/width = max_x - min_x
 	var/height = max_y - min_y
@@ -70,14 +72,20 @@
 	invisibility = INVISIBILITY_ABSTRACT
 
 /obj/effect/landmark/river_waypoint/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	LAZYADD(GLOB.river_waypoint_list["[z]"], src)
 
 /obj/effect/landmark/river_waypoint/Destroy()
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(GLOB.river_waypoint_list["[z]"], src)
 	return ..()
 
 /turf/proc/Spread(probability = 30, prob_loss = 25, whitelisted_area)
+	procstart = null
+	src.procstart = null
 	if(probability <= 0)
 		return
 	var/list/cardinal_turfs = list()

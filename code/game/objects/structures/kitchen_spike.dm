@@ -11,15 +11,21 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5)
 
 /obj/structure/kitchenspike_frame/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/structure/kitchenspike_frame/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "It can be <b>welded</b> apart."
 	. += "You could attach <b>[MEATSPIKE_IRONROD_REQUIREMENT]</b> iron rods to it to create a <b>Meat Spike</b>."
 
 /obj/structure/kitchenspike_frame/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item))
 		return NONE
 
@@ -35,6 +41,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/kitchenspike_frame/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!tool.tool_start_check(user, amount = 0, heat_required = HIGH_TEMPERATURE_REQUIRED))
 		return FALSE
 	to_chat(user, span_notice("You begin cutting \the [src] apart..."))
@@ -48,10 +56,14 @@
 	return TRUE
 
 /obj/structure/kitchenspike_frame/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	default_unfasten_wrench(user, tool)
 	return TRUE
 
 /obj/structure/kitchenspike_frame/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(!istype(tool, /obj/item/stack/rods))
 		return NONE
@@ -83,16 +95,22 @@
 	buckle_delay = 10 SECONDS
 
 /obj/structure/kitchenspike/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 	ADD_TRAIT(src, TRAIT_DANGEROUS_BUCKLE, INNATE_TRAIT)
 
 /obj/structure/kitchenspike/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "<b>Drag a mob</b> onto it to hook it in place."
 	. += "A <b>crowbar</b> could remove those spikes."
 
 /obj/structure/kitchenspike/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item))
 		return NONE
 
@@ -103,9 +121,13 @@
 	return NONE
 
 /obj/structure/kitchenspike/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/structure/kitchenspike/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(has_buckled_mobs())
 		to_chat(user, span_warning("You can't do that while something's on the spike!"))
 		return TRUE
@@ -117,6 +139,8 @@
 	return FALSE
 
 /obj/structure/kitchenspike/user_buckle_mob(mob/living/target, mob/user, check_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(target) && !isanimal_or_basicmob(target))
 		return
 	if(target != user || target.loc == loc)
@@ -128,6 +152,8 @@
 	return ..()
 
 /obj/structure/kitchenspike/post_buckle_mob(mob/living/target)
+	procstart = null
+	src.procstart = null
 	playsound(src.loc, 'sound/effects/splat.ogg', 25, TRUE)
 	target.emote("scream")
 	target.add_splatter_floor()
@@ -139,6 +165,8 @@
 	target.AddComponentFrom(REF(src), /datum/component/free_operation)
 
 /obj/structure/kitchenspike/user_unbuckle_mob(mob/living/buckled_mob, mob/user)
+	procstart = null
+	src.procstart = null
 	if(buckled_mob != user)
 		buckled_mob.visible_message(span_notice("[user] tries to pull [buckled_mob] free of [src]!"),\
 			span_notice("[user] is trying to pull you off [src], opening up fresh wounds!"),\
@@ -161,6 +189,8 @@
 	return ..()
 
 /obj/structure/kitchenspike/post_unbuckle_mob(mob/living/buckled_mob)
+	procstart = null
+	src.procstart = null
 	buckled_mob.adjust_brute_loss(30)
 	INVOKE_ASYNC(buckled_mob, TYPE_PROC_REF(/mob, emote), "scream")
 	buckled_mob.AdjustParalyzed(20)
@@ -169,6 +199,8 @@
 	buckled_mob.RemoveComponentSource(REF(src), /datum/component/free_operation)
 
 /obj/structure/kitchenspike/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(disassembled)
 		var/obj/structure/meatspike_frame = new /obj/structure/kitchenspike_frame(src.loc)
 		transfer_fingerprints_to(meatspike_frame)

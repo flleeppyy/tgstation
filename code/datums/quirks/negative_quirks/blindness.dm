@@ -15,18 +15,26 @@
 	customization_options = list(/datum/preference/color/blindfold_color)
 
 /datum/quirk/item_quirk/blindness/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/glasses/blindfold/white/blindfold = new
 	blindfold.add_atom_colour(client_source?.prefs.read_preference(/datum/preference/color/blindfold_color), FIXED_COLOUR_PRIORITY)
 	blindfold.colored_before = TRUE
 	give_item_to_holder(blindfold, list(LOCATION_EYES, LOCATION_HANDS))
 
 /datum/quirk/item_quirk/blindness/is_species_appropriate(datum/species/mob_species)
+	procstart = null
+	src.procstart = null
 	if(ispath(mob_species, /datum/species/dullahan))
 		return FALSE
 	return ..()
 
 /datum/quirk/item_quirk/blindness/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	quirk_holder.become_blind(QUIRK_TRAIT)
 
 /datum/quirk/item_quirk/blindness/remove()
+	procstart = null
+	src.procstart = null
 	quirk_holder.cure_blind(QUIRK_TRAIT)

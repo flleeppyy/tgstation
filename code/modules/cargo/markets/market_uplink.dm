@@ -19,6 +19,8 @@
 	var/list/accessible_markets = list(/datum/market/blackmarket)
 
 /obj/item/market_uplink/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// We don't want to go through this at mapload because the SSmarket isn't initialized yet.
 	if(mapload)
@@ -28,6 +30,8 @@
 
 /// Simple internal proc for updating the viewing_category variable.
 /obj/item/market_uplink/proc/update_viewing_category()
+	procstart = null
+	src.procstart = null
 	if(accessible_markets.len)
 		viewing_market = accessible_markets[1]
 		var/list/categories = SSmarket.markets[viewing_market].categories
@@ -35,6 +39,8 @@
 			viewing_category = categories[1]
 
 /obj/item/market_uplink/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(!viewing_category)
 		update_viewing_category()
 
@@ -44,6 +50,8 @@
 		ui.open()
 
 /obj/item/market_uplink/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/datum/market/market = viewing_market ? SSmarket.markets[viewing_market] : null
 	var/obj/item/card/id/id_card
@@ -86,6 +94,8 @@
 	return data
 
 /obj/item/market_uplink/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["delivery_method_description"] = SSmarket.shipping_method_descriptions
 	data["ltsrbt_built"] = SSmarket.telepads.len
@@ -99,6 +109,8 @@
 	return data
 
 /obj/item/market_uplink/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -159,6 +171,8 @@
 	custom_premium_price = PAYCHECK_CREW * 2.5
 
 /obj/item/market_uplink/blackmarket/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CONTRABAND, INNATE_TRAIT)
 

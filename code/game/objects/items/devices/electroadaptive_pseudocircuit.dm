@@ -19,10 +19,14 @@
 	))//A typecache of circuits consumable for material
 
 /obj/item/electroadaptive_pseudocircuit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	maptext = MAPTEXT(circuits)
 
 /obj/item/electroadaptive_pseudocircuit/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscyborg(user))
 		. += "[span_notice("It has material for <b>[circuits]</b> circuit[circuits == 1 ? "" : "s"]. Use the pseudocircuit on existing circuits to gain material.")]\n"+\
@@ -30,6 +34,8 @@
 		span_notice("It can also be used on an APC with no power cell to <b>fabricate a low-capacity cell</b> at a high power cost.")
 
 /obj/item/electroadaptive_pseudocircuit/proc/adapt_circuit(mob/living/silicon/robot/R, circuit_cost = 0)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(R) || !istype(R))
 		return
 	if(!R.cell)
@@ -56,6 +62,8 @@
 	return TRUE //The actual circuit magic itself is done on a per-object basis
 
 /obj/item/electroadaptive_pseudocircuit/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!is_type_in_typecache(interacting_with, recycleable_circuits))
 		return NONE
 	circuits++
@@ -69,6 +77,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/electroadaptive_pseudocircuit/proc/recharge()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/machines/chime.ogg', 25, TRUE)
 	recharging = FALSE
 	icon_state = initial(icon_state)

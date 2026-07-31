@@ -10,29 +10,41 @@
 	var/obj/machinery/status_display/ai/target_display
 
 /datum/ai_status_display_picker/New(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	ai_user = user
 
 /datum/ai_status_display_picker/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(!ai_user || user != ai_user || ai_user.incapacitated)
 		return UI_CLOSE
 	return ..()
 
 /datum/ai_status_display_picker/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 /datum/ai_status_display_picker/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AiStatusDisplayPicker")
 		ui.open()
 
 /datum/ai_status_display_picker/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ai_user)
 		ai_user.status_display_picker = null
 
 // No assets needed for DMIcon system
 
 /datum/ai_status_display_picker/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	// Always ensure initialization
 	init_ai_status_display_options()
 
@@ -64,6 +76,8 @@
 	return data
 
 /datum/ai_status_display_picker/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	// Find current display emotion from first available AI status display
@@ -90,6 +104,8 @@
 	return data
 
 /datum/ai_status_display_picker/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

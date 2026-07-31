@@ -11,6 +11,8 @@
 	var/list/shown_station_trait_buttons
 
 /datum/hud/new_player/New(mob/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (!owner?.client || owner.client.interviewee)
@@ -34,16 +36,22 @@
 	start_button.RegisterSignal(src, COMSIG_HUD_LOBBY_EXPANDED, TYPE_PROC_REF(/atom/movable/screen/lobby, expand_button))
 
 /datum/hud/new_player/show_hud(version = 0, mob/viewmob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		show_station_trait_buttons()
 
 /datum/hud/new_player/on_viewdata_update()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	place_station_trait_buttons()
 
 /// Load and then display the buttons for relevant station traits
 /datum/hud/new_player/proc/show_station_trait_buttons()
+	procstart = null
+	src.procstart = null
 	if (!mymob?.client || mymob.client.interviewee || !length(GLOB.lobby_station_traits))
 		return
 	for (var/datum/station_trait/trait as anything in GLOB.lobby_station_traits)
@@ -61,6 +69,8 @@
 
 /// Display the buttosn for relevant station traits.
 /datum/hud/new_player/proc/place_station_trait_buttons()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(hud_version != HUD_STYLE_STANDARD || !mymob?.client)
 		return
@@ -86,6 +96,8 @@
 
 /// Remove a station trait button, then re-order the rest.
 /datum/hud/new_player/proc/remove_station_trait_button(datum/station_trait/trait)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/movable/screen/lobby/button/sign_up/button = LAZYACCESS(shown_station_trait_buttons, trait)
 	if(!button)

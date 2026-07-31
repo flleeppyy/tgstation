@@ -12,19 +12,27 @@
 	var/removal_time = -1
 
 /obj/item/organ/body_egg/changeling_egg/on_mob_insert(mob/living/carbon/egg_owner, special = FALSE, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	hatch_time = world.time + (removal_time == -1 ? EGG_INCUBATION_TIME : (hatch_time - removal_time))
 
 /obj/item/organ/body_egg/changeling_egg/on_mob_remove(mob/living/carbon/egg_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	removal_time = world.time
 
 /obj/item/organ/body_egg/changeling_egg/egg_process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(owner && hatch_time <= world.time)
 		pop()
 
 /// Once the egg is fully grown, we gib the host and spawn a monkey (with the changeling's player controlling it). Very descriptive proc name.
 /obj/item/organ/body_egg/changeling_egg/proc/pop()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/spawned_monkey = new(owner)
 	spawned_monkey.monkeyize(instant = TRUE)
 

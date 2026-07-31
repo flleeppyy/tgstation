@@ -3,6 +3,8 @@
 	test_flags = UNIT_TEST_MAP_TEST
 
 /datum/unit_test/maptest_job_roundstart_spawnpoints/Run()
+	procstart = null
+	src.procstart = null
 	for(var/datum/job/job as anything in SSjob.joinable_occupations)
 		if(job.spawn_positions <= 0)
 			// Zero spawn positions means we don't need to care if they don't have a roundstart landmark

@@ -21,6 +21,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	var/obj/effect/statclick/ticket_list/rstatclick = new(null, null, AHELP_RESOLVED)
 
 /datum/admin_help_tickets/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(active_tickets)
 	QDEL_LIST(closed_tickets)
 	QDEL_LIST(resolved_tickets)
@@ -30,6 +32,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	return ..()
 
 /datum/admin_help_tickets/proc/TicketByID(id)
+	procstart = null
+	src.procstart = null
 	var/list/lists = list(active_tickets, closed_tickets, resolved_tickets)
 	for(var/I in lists)
 		for(var/J in I)
@@ -38,6 +42,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 				return J
 
 /datum/admin_help_tickets/proc/TicketsByCKey(ckey)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/list/lists = list(active_tickets, closed_tickets, resolved_tickets)
 	for(var/I in lists)
@@ -48,6 +54,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 //private
 /datum/admin_help_tickets/proc/ListInsert(datum/admin_help/new_ticket)
+	procstart = null
+	src.procstart = null
 	var/list/ticket_list
 	switch(new_ticket.state)
 		if(AHELP_ACTIVE)
@@ -69,6 +77,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 //opens the ticket listings for one of the 3 states
 /datum/admin_help_tickets/proc/BrowseTickets(state)
+	procstart = null
+	src.procstart = null
 	var/list/l2b
 	var/title
 	switch(state)
@@ -93,6 +103,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 //Tickets statpanel
 /datum/admin_help_tickets/proc/stat_entry()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SHOULD_NOT_SLEEP(TRUE)
 	var/list/L = list()
@@ -114,6 +126,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 //Reassociate still open ticket if one exists
 /datum/admin_help_tickets/proc/ClientLogin(client/C)
+	procstart = null
+	src.procstart = null
 	C.current_ticket = CKey2ActiveTicket(C.ckey)
 	if(C.current_ticket)
 		C.current_ticket.initiator = C
@@ -122,6 +136,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 //Dissasociate ticket
 /datum/admin_help_tickets/proc/ClientLogout(client/C)
+	procstart = null
+	src.procstart = null
 	if(C.current_ticket)
 		var/datum/admin_help/T = C.current_ticket
 		T.AddInteraction("Client disconnected.")
@@ -131,6 +147,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 //Get a ticket given a ckey
 /datum/admin_help_tickets/proc/CKey2ActiveTicket(ckey)
+	procstart = null
+	src.procstart = null
 	for(var/I in active_tickets)
 		var/datum/admin_help/AH = I
 		if(AH.initiator_ckey == ckey)
@@ -144,10 +162,14 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	var/current_state
 
 /obj/effect/statclick/ticket_list/Initialize(mapload, name, state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	current_state = state
 
 /obj/effect/statclick/ticket_list/Click()
+	procstart = null
+	src.procstart = null
 	if (!usr.client?.holder)
 		message_admins("[key_name_admin(usr)] non-holder clicked on a ticket list statclick! ([src])")
 		usr.log_message("non-holder clicked on a ticket list statclick! ([src])", LOG_ADMIN)
@@ -157,6 +179,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 //called by admin topic
 /obj/effect/statclick/ticket_list/proc/Action()
+	procstart = null
+	src.procstart = null
 	Click()
 
 #define WEBHOOK_NONE 0
@@ -210,6 +234,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
  * * is_bwoink - Boolean operator, TRUE if this ticket was started by an admin PM
  */
 /datum/admin_help/New(msg_raw, client/C, is_bwoink, urgent = FALSE)
+	procstart = null
+	src.procstart = null
 	//clean the input msg
 	var/msg = sanitize(copytext_char(msg_raw, 1, MAX_MESSAGE_LEN))
 	if(!msg || !C || !C.mob)
@@ -245,6 +271,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	GLOB.ahelp_tickets.active_tickets += src
 
 /datum/admin_help/proc/format_embed_discord(message)
+	procstart = null
+	src.procstart = null
 	var/datum/discord_embed/embed = new()
 	embed.title = "Ticket #[id]"
 	embed.description = "<byond://[world.internet_address]:[world.port]>"
@@ -289,6 +317,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	return embed
 
 /datum/admin_help/proc/send_message_to_tgs(message, urgent = FALSE)
+	procstart = null
+	src.procstart = null
 	var/message_to_send = message
 
 	if(urgent)
@@ -315,6 +345,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 			webhook_sent = WEBHOOK_NON_URGENT
 
 /proc/send2adminchat_webhook(message_or_embed, urgent)
+	procstart = null
+	src.procstart = null
 	var/webhook = CONFIG_GET(string/urgent_adminhelp_webhook_url)
 	if(!urgent)
 		webhook = CONFIG_GET(string/regular_adminhelp_webhook_url)
@@ -344,12 +376,16 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	request.fire_and_forget()
 
 /datum/admin_help/Destroy()
+	procstart = null
+	src.procstart = null
 	RemoveActive()
 	GLOB.ahelp_tickets.closed_tickets -= src
 	GLOB.ahelp_tickets.resolved_tickets -= src
 	return ..()
 
 /datum/admin_help/proc/AddInteraction(formatted_message, player_message)
+	procstart = null
+	src.procstart = null
 	if (!isnull(usr) && usr.ckey != initiator_ckey)
 		admins_involved |= usr.ckey
 		if(heard_by_no_admins)
@@ -362,11 +398,15 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 //Removes the ahelp verb and returns it after 2 minutes
 /datum/admin_help/proc/TimeoutVerb()
+	procstart = null
+	src.procstart = null
 	remove_verb(initiator, /client/verb/adminhelp)
 	initiator.adminhelptimerid = addtimer(CALLBACK(initiator, TYPE_PROC_REF(/client, giveadminhelpverb)), 1200, TIMER_STOPPABLE) //2 minute cooldown of admin helps
 
 //private
 /datum/admin_help/proc/FullMonty(ref_src)
+	procstart = null
+	src.procstart = null
 	if(!ref_src)
 		ref_src = "[REF(src)]"
 	. = ADMIN_FULLMONTY_NONAME(initiator.mob)
@@ -378,6 +418,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 //private
 /datum/admin_help/proc/ClosureLinks(ref_src)
+	procstart = null
+	src.procstart = null
 	if(!ref_src)
 		ref_src = "[REF(src)]"
 	. = " (<A href='byond://?_src_=holder;[HrefToken(forceGlobal = TRUE)];ahelp=[ref_src];ahelp_action=reject'>REJT</A>)"
@@ -387,12 +429,16 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 //private
 /datum/admin_help/proc/LinkedReplyName(ref_src)
+	procstart = null
+	src.procstart = null
 	if(!ref_src)
 		ref_src = "[REF(src)]"
 	return "<A href='byond://?_src_=holder;[HrefToken(forceGlobal = TRUE)];ahelp=[ref_src];ahelp_action=reply'>[initiator_key_name]</A>"
 
 //private
 /datum/admin_help/proc/TicketHref(msg, ref_src, action = "ticket")
+	procstart = null
+	src.procstart = null
 	if(!ref_src)
 		ref_src = "[REF(src)]"
 	return "<A href='byond://?_src_=holder;[HrefToken(forceGlobal = TRUE)];ahelp=[ref_src];ahelp_action=[action]'>[msg]</A>"
@@ -400,6 +446,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 //message from the initiator without a target, all admins will see this
 //won't bug irc/discord
 /datum/admin_help/proc/MessageNoRecipient(msg, urgent = FALSE)
+	procstart = null
+	src.procstart = null
 	msg = sanitize(copytext_char(msg, 1, MAX_MESSAGE_LEN))
 	var/ref_src = "[REF(src)]"
 	//Message to be sent to all admins
@@ -429,6 +477,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 /// Sends a message to the player that they are replying to admins.
 /datum/admin_help/proc/reply_to_admins_notification(message)
+	procstart = null
+	src.procstart = null
 	to_chat(
 		initiator,
 		type = MESSAGE_TYPE_ADMINPM,
@@ -440,6 +490,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 //Reopen a closed ticket
 /datum/admin_help/proc/Reopen()
+	procstart = null
+	src.procstart = null
 	if(state == AHELP_ACTIVE)
 		to_chat(usr, span_warning("This ticket is already open."), confidential = TRUE)
 		return
@@ -472,6 +524,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 //private
 /datum/admin_help/proc/RemoveActive()
+	procstart = null
+	src.procstart = null
 	if(state != AHELP_ACTIVE)
 		return
 	closed_at = world.time
@@ -484,6 +538,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 //Mark open ticket as closed/meme
 /datum/admin_help/proc/Close(key_name = key_name_admin(usr), silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(state != AHELP_ACTIVE)
 		return
 	RemoveActive()
@@ -499,6 +555,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 //Mark open ticket as resolved/legitimate, returns ahelp verb
 /datum/admin_help/proc/Resolve(key_name = key_name_admin(usr), silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(state != AHELP_ACTIVE)
 		return
 	RemoveActive()
@@ -518,6 +576,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 //Close and return ahelp verb, use if ticket is incoherent
 /datum/admin_help/proc/Reject(key_name = key_name_admin(usr))
+	procstart = null
+	src.procstart = null
 	if(state != AHELP_ACTIVE)
 		return
 
@@ -540,6 +600,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 //Resolve ticket with IC Issue message
 /datum/admin_help/proc/ICIssue(key_name = key_name_admin(usr))
+	procstart = null
+	src.procstart = null
 	if(state != AHELP_ACTIVE)
 		return
 
@@ -559,6 +621,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 //Show the ticket panel
 /datum/admin_help/proc/TicketPanel()
+	procstart = null
+	src.procstart = null
 	var/list/dat = list("<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>Ticket #[id]</title></head>")
 	var/ref_src = "[REF(src)]"
 	dat += "<h4>Admin Help Ticket #[id]: [LinkedReplyName(ref_src)]</h4>"
@@ -598,6 +662,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
  * Renders the current status of the ticket into a displayable string
  */
 /datum/admin_help/proc/ticket_status()
+	procstart = null
+	src.procstart = null
 	switch(state)
 		if(AHELP_ACTIVE)
 			return "<font color='red'>OPEN</font>"
@@ -610,6 +676,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 			return "INVALID, CALL A CODER"
 
 /datum/admin_help/proc/Retitle()
+	procstart = null
+	src.procstart = null
 	var/new_title = input(usr, "Enter a title for the ticket", "Rename Ticket", name) as text|null
 	if(new_title)
 		name = new_title
@@ -621,6 +689,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 //Forwarded action from admin/Topic
 /datum/admin_help/proc/Action(action)
+	procstart = null
+	src.procstart = null
 	testing("Ahelp action: [action]")
 	if(webhook_sent != WEBHOOK_NONE)
 		var/datum/discord_embed/embed = new()
@@ -654,6 +724,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 			Reopen()
 
 /datum/admin_help/proc/player_ticket_panel()
+	procstart = null
+	src.procstart = null
 	var/list/dat = list("<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>Player Ticket</title></head>")
 	dat += "<b>State: "
 	switch(state)
@@ -687,13 +759,19 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	var/datum/admin_help/ahelp_datum
 
 /obj/effect/statclick/ahelp/Initialize(mapload, datum/admin_help/AH)
+	procstart = null
+	src.procstart = null
 	ahelp_datum = AH
 	. = ..()
 
 /obj/effect/statclick/ahelp/update()
+	procstart = null
+	src.procstart = null
 	return ..(ahelp_datum.name)
 
 /obj/effect/statclick/ahelp/Click()
+	procstart = null
+	src.procstart = null
 	if (!usr.client?.holder)
 		message_admins("[key_name_admin(usr)] non-holder clicked on an ahelp statclick! ([src])")
 		usr.log_message("non-holder clicked on an ahelp statclick! ([src])", LOG_ADMIN)
@@ -702,6 +780,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	ahelp_datum.TicketPanel()
 
 /obj/effect/statclick/ahelp/Destroy()
+	procstart = null
+	src.procstart = null
 	ahelp_datum = null
 	return ..()
 
@@ -710,6 +790,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 //
 
 /client/proc/giveadminhelpverb()
+	procstart = null
+	src.procstart = null
 	add_verb(src, /client/verb/adminhelp)
 	deltimer(adminhelptimerid)
 	adminhelptimerid = 0
@@ -720,14 +802,20 @@ GLOBAL_DATUM_INIT(admin_help_ui_handler, /datum/admin_help_ui_handler, new)
 	var/list/ahelp_cooldowns = list()
 
 /datum/admin_help_ui_handler/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 /datum/admin_help_ui_handler/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/list/admins = get_admin_counts(R_BAN)
 	.["adminCount"] = length(admins["present"])
 
 /datum/admin_help_ui_handler/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["bannedFromUrgentAhelp"] = is_banned_from(user.ckey, "Urgent Adminhelp")
 	.["urgentAhelpPromptMessage"] = CONFIG_GET(string/urgent_ahelp_user_prompt)
@@ -736,6 +824,8 @@ GLOBAL_DATUM_INIT(admin_help_ui_handler, /datum/admin_help_ui_handler, new)
 		.["urgentAhelpEnabled"] = TRUE
 
 /datum/admin_help_ui_handler/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Adminhelp")
@@ -743,6 +833,8 @@ GLOBAL_DATUM_INIT(admin_help_ui_handler, /datum/admin_help_ui_handler, new)
 		ui.set_autoupdate(FALSE)
 
 /datum/admin_help_ui_handler/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -760,6 +852,8 @@ GLOBAL_DATUM_INIT(admin_help_ui_handler, /datum/admin_help_ui_handler, new)
 	ui.close()
 
 /datum/admin_help_ui_handler/proc/perform_adminhelp(client/user_client, message, urgent)
+	procstart = null
+	src.procstart = null
 	if(GLOB.say_disabled) //This is here to try to identify lag problems
 		to_chat(usr, span_danger("Speech is currently admin-disabled."), confidential = TRUE)
 		return
@@ -839,6 +933,8 @@ GAME_VERB(/client, view_latest_ticket, "View Latest Ticket", "Admin")
 /// log_in_blackbox: Whether or not this message with the blackbox system.
 /// If disabled, this message should be logged with a different proc call
 /proc/admin_ticket_log(what, message, player_message, log_in_blackbox = TRUE)
+	procstart = null
+	src.procstart = null
 	var/client/mob_client
 	var/mob/Mob = what
 	if(istype(Mob))
@@ -869,6 +965,8 @@ GAME_VERB(/client, view_latest_ticket, "View Latest Ticket", "Admin")
 //
 
 /proc/get_admin_counts(requiredflags = R_BAN)
+	procstart = null
+	src.procstart = null
 	. = list("total" = list(), "noflags" = list(), "afk" = list(), "stealth" = list(), "present" = list())
 	for(var/client/X in GLOB.admins)
 		.["total"] += X
@@ -882,6 +980,8 @@ GAME_VERB(/client, view_latest_ticket, "View Latest Ticket", "Admin")
 			.["present"] += X
 
 /proc/send2tgs_adminless_only(source, msg, requiredflags = R_BAN)
+	procstart = null
+	src.procstart = null
 	var/list/adm = get_admin_counts(requiredflags)
 	var/list/activemins = adm["present"]
 	. = activemins.len
@@ -909,6 +1009,8 @@ GAME_VERB(/client, view_latest_ticket, "View Latest Ticket", "Admin")
  * * additional_data - An (optional) associated list of extra parameters and data to send with this world topic call
  */
 /proc/send2otherserver(source, msg, type = "Ahelp", target_servers, list/additional_data = list())
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(string/comms_key))
 		debug_world_log("Server cross-comms message not sent for lack of configured key")
 		return
@@ -929,6 +1031,8 @@ GAME_VERB(/client, view_latest_ticket, "View Latest Ticket", "Admin")
 
 /// Sends a message to a given cross comms server by name (by name for security).
 /world/proc/send_cross_comms(server_name, list/message, auth = TRUE)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if (auth)
 		var/comms_key = CONFIG_GET(string/comms_key)
@@ -944,6 +1048,8 @@ GAME_VERB(/client, view_latest_ticket, "View Latest Ticket", "Admin")
 
 
 /proc/tgsadminwho()
+	procstart = null
+	src.procstart = null
 	var/list/message = list("Admins: ")
 	var/list/admin_keys = list()
 	for(var/adm in GLOB.admins)
@@ -959,6 +1065,8 @@ GAME_VERB(/client, view_latest_ticket, "View Latest Ticket", "Admin")
 	return jointext(message, "")
 
 /proc/keywords_lookup(msg,external)
+	procstart = null
+	src.procstart = null
 
 	//This is a list of words which are ignored by the parser when comparing message contents for names. MUST BE IN LOWER CASE!
 	var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","alien","as", "i")
@@ -1028,6 +1136,8 @@ GAME_VERB(/client, view_latest_ticket, "View Latest Ticket", "Admin")
 	return msg
 
 /proc/get_mob_by_name(msg)
+	procstart = null
+	src.procstart = null
 	//This is a list of words which are ignored by the parser when comparing message contents for names. MUST BE IN LOWER CASE!
 	var/list/ignored_words = list("unknown","the","a","an","of","monkey","alien","as", "i")
 
@@ -1071,6 +1181,8 @@ GAME_VERB(/client, view_latest_ticket, "View Latest Ticket", "Admin")
  * * msg - the message being scanned
  */
 /proc/check_asay_links(msg)
+	procstart = null
+	src.procstart = null
 	var/list/msglist = splittext(msg, " ") //explode the input msg into a list
 	var/list/pinged_admins = list() // if we ping any admins, store them here so we can ping them after
 	var/modified = FALSE // did we find anything?

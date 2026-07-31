@@ -6,6 +6,8 @@
 	var/options = NONE
 
 /obj/item/assembly/control/transport/multitool_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/list/available_platforms = list()
 	for(var/obj/effect/landmark/transport/nav_beacon/tram/platform/platform as anything in SStransport.nav_beacons[specific_transport_id])
 		LAZYADD(available_platforms, platform.name)
@@ -35,16 +37,22 @@
 	id = 0
 
 /obj/item/assembly/control/transport/call_button/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/item/assembly/control/transport/call_button/LateInitialize()
+	procstart = null
+	src.procstart = null
 	if(!id_tag)
 		id_tag = assign_random_name()
 	SStransport.hello(src, name, id_tag)
 	RegisterSignal(SStransport, COMSIG_TRANSPORT_RESPONSE, PROC_REF(call_response))
 
 /obj/item/assembly/control/transport/proc/call_response(controller, list/relevant, response_code, response_info)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!LAZYFIND(relevant, src))
 		return
@@ -72,6 +80,8 @@
 					say("Tram controller error. Please contact the nearest engineer or crew member with telecommunications access to reset the controller.")
 
 /obj/item/assembly/control/transport/call_button/activate()
+	procstart = null
+	src.procstart = null
 	if(cooldown)
 		return
 	cooldown = TRUE
@@ -95,6 +105,8 @@
 
 /// We allow borgs to use the button locally, but not the AI remotely
 /obj/machinery/button/transport/tram/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isAI(user) || panel_open)
 		return
 	if(HAS_SILICON_ACCESS(user) && !issilicon(user)) //admins and remote controls can use it at a distance
@@ -105,12 +117,16 @@
 		to_chat(user, span_warning("You are too far away to activate the button!"))
 
 /obj/machinery/button/transport/tram/setup_device()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/assembly/control/transport/call_button/tram_device = device
 	if(istype(tram_device))
 		tram_device.specific_transport_id = specific_transport_id
 
 /obj/machinery/button/transport/tram/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("There's a small inscription on the button...")
 	. += span_notice("THIS CALLS THE TRAM! IT DOES NOT OPERATE IT! The console on the tram tells it where to go!")

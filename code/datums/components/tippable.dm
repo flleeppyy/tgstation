@@ -54,15 +54,21 @@
 	src.roleplay_callback = roleplay_callback
 
 /datum/component/tippable/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_ATTACK_HAND_SECONDARY, PROC_REF(interact_with_tippable))
 	if (roleplay_friendly)
 		RegisterSignal(parent, COMSIG_MOB_EMOTE, PROC_REF(accept_roleplay))
 
 
 /datum/component/tippable/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_ATOM_ATTACK_HAND_SECONDARY)
 
 /datum/component/tippable/Destroy()
+	procstart = null
+	src.procstart = null
 	pre_tipped_callback = null
 	post_tipped_callback = null
 	post_untipped_callback = null
@@ -76,6 +82,8 @@
  * user - the mob interacting with source
  */
 /datum/component/tippable/proc/interact_with_tippable(mob/living/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/living_user = user
@@ -100,6 +108,8 @@
  * tipper - the mob tipping the tipped_mob
  */
 /datum/component/tippable/proc/try_tip(mob/living/tipped_mob, mob/tipper)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(tipped_mob) && !HAS_TRAIT(tipped_mob, TRAIT_FORCED_STANDING))
 		return
 
@@ -131,6 +141,8 @@
  * tipper - the mob who tipped the tipped_mob
  */
 /datum/component/tippable/proc/do_tip(mob/living/tipped_mob, mob/tipper)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(tipped_mob))
 		CRASH("Tippable component: do_tip() called with QDELETED tipped_mob!")
 	if (is_tipped) // sanity check in case multiple people try to tip at the same time
@@ -163,6 +175,8 @@
  * untipper - the mob who is untipping the tipped_mob
  */
 /datum/component/tippable/proc/try_untip(mob/living/tipped_mob, mob/untipper)
+	procstart = null
+	src.procstart = null
 	if(untip_time > 0)
 		to_chat(untipper, span_notice("You begin righting [tipped_mob]..."))
 		tipped_mob.visible_message(
@@ -185,6 +199,8 @@
  * tipper - the mob who tipped the tipped_mob
  */
 /datum/component/tippable/proc/do_untip(mob/living/tipped_mob, mob/untipper)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(tipped_mob))
 		return
 	if (!is_tipped) // sanity check in case multiple people try to untip at the same time
@@ -209,6 +225,8 @@
  * tipped_mob - the mob who was tipped, and is freeing itself
  */
 /datum/component/tippable/proc/right_self(mob/living/tipped_mob)
+	procstart = null
+	src.procstart = null
 	if(!is_tipped || QDELETED(tipped_mob))
 		return
 
@@ -228,6 +246,8 @@
  * new_status - the tipped status we're setting the mob to - TRUE for tipped, FALSE for untipped
  */
 /datum/component/tippable/proc/set_tipped_status(mob/living/tipped_mob, new_status = FALSE)
+	procstart = null
+	src.procstart = null
 	is_tipped = new_status
 	if(is_tipped)
 		tipped_mob.transform = turn(tipped_mob.transform, 180)
@@ -245,6 +265,8 @@
  * * datum/emote/emote - The emote used by the mob
  */
 /datum/component/tippable/proc/accept_roleplay(mob/living/user, datum/emote/emote)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!is_tipped)

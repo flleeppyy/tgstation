@@ -13,6 +13,8 @@
 	var/death_cloud_size = BLOBMOB_CLOUD_NONE
 
 /datum/component/blob_minion/Initialize(mob/eye/blob/new_overmind, datum/callback/on_strain_changed, new_death_cloud_size, datum/blobstrain/new_strain)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -30,6 +32,8 @@
 		register_overlord(new_overmind)
 
 /datum/component/blob_minion/InheritComponent(datum/component/new_comp, i_am_original, mob/eye/blob/new_overmind, datum/callback/on_strain_changed, new_death_cloud_size, datum/blobstrain/new_strain)
+	procstart = null
+	src.procstart = null
 	if(isnum(new_death_cloud_size))
 		death_cloud_size = new_death_cloud_size
 
@@ -44,6 +48,8 @@
 
 
 /datum/component/blob_minion/proc/register_overlord(mob/eye/blob/new_overmind)
+	procstart = null
+	src.procstart = null
 	overmind = new_overmind
 	overmind.register_new_minion(parent)
 	RegisterSignal(overmind, COMSIG_QDELETING, PROC_REF(overmind_deleted))
@@ -54,12 +60,16 @@
 
 /// Our overmind is gone, uh oh!
 /datum/component/blob_minion/proc/overmind_deleted()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	overmind = null
 	strain_properties_changed()
 
 /// Our strain has changed, perhaps because our blob overmind has changed strain, died, or because of a mutation.
 /datum/component/blob_minion/proc/strain_properties_changed(mob/eye/blob/changed_overmind, datum/blobstrain/new_strain)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/living_parent = parent
 	if(new_strain)
@@ -71,6 +81,8 @@
 	on_strain_changed?.Invoke(changed_overmind, new_strain)
 
 /datum/component/blob_minion/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_parent = parent
 	living_parent.add_faction(ROLE_BLOB)
 	ADD_TRAIT(parent, TRAIT_BLOB_ALLY, REF(src))
@@ -91,6 +103,8 @@
 	GLOB.blob_telepathy_mobs |= parent
 
 /datum/component/blob_minion/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	if (!isnull(overmind))
 		overmind.blob_mobs -= parent
 	var/mob/living/living_parent = parent
@@ -116,6 +130,8 @@
 
 /// Become blobpilled when we gain a mind
 /datum/component/blob_minion/proc/on_mind_init(mob/living/minion, datum/mind/new_mind)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (isnull(overmind))
 		return
@@ -124,6 +140,8 @@
 
 /// When our icon is updated, update our colour too
 /datum/component/blob_minion/proc/on_update_appearance(mob/living/minion)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(our_strain?.color)
 		minion.add_atom_colour(our_strain.color, FIXED_COLOUR_PRIORITY)
@@ -132,6 +150,8 @@
 
 /// When our icon is updated, update our colour too
 /datum/component/blob_minion/proc/on_update_status_tab(mob/living/minion, list/status_items)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (isnull(overmind))
 		return
@@ -139,6 +159,8 @@
 
 /// If we feel the gentle caress of a blob, we feel better
 /datum/component/blob_minion/proc/on_blob_touched(mob/living/minion)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(minion.stat == DEAD || minion.health >= minion.maxHealth)
 		return COMPONENT_CANCEL_BLOB_ACT // Don't hurt us in order to heal us
@@ -150,6 +172,8 @@
 
 /// If we feel the fearsome bite of open flame, we feel worse
 /datum/component/blob_minion/proc/on_burned(mob/living/minion, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isnull(exposed_temperature))
 		minion.adjust_fire_loss(5)
@@ -158,12 +182,16 @@
 
 /// Someone is attempting to move through us, allow it if it is a blob tile
 /datum/component/blob_minion/proc/on_attempted_pass(mob/living/minion, atom/movable/incoming)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(istype(incoming, /obj/structure/blob))
 		return COMSIG_COMPONENT_PERMIT_PASSAGE
 
 /// If we're near a blob, stop drifting
 /datum/component/blob_minion/proc/on_space_move(mob/living/minion)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/structure/blob/blob_handhold = locate() in range(1, parent)
 	if (!isnull(blob_handhold))
@@ -171,11 +199,15 @@
 
 /// We only speak telepathically to blobs
 /datum/component/blob_minion/proc/on_try_speech(mob/living/minion, message, ignore_spam, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(send_blob_telepathy), minion, message)
 	return COMPONENT_CANNOT_SPEAK
 
 /datum/component/blob_minion/proc/send_blob_telepathy(mob/living/minion, message)
+	procstart = null
+	src.procstart = null
 	var/list/message_mods = list()
 	// Note: check_for_custom_say_emote can sleep.
 	var/adjusted_message = minion.check_for_custom_say_emote(message, message_mods)
@@ -186,10 +218,14 @@
 
 /// Called when a blob minion is transformed into something else, hopefully a spore into a zombie
 /datum/component/blob_minion/proc/on_transformed(mob/living/minion, mob/living/replacement)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	replacement.AddComponent(/datum/component/blob_minion, new_overmind = overmind, new_death_cloud_size = death_cloud_size, new_strain = our_strain)
 
 /datum/component/blob_minion/proc/on_death(mob/living/minion)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(death_cloud_size <= BLOBMOB_CLOUD_NONE)
@@ -204,6 +240,8 @@
 
 ///When am independent mob with this component mutates, like from a random cytology mutation, give them a strain and modify their name to let the players know they have something special.
 /datum/component/blob_minion/proc/on_mutated(mob/living/minion)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(overmind || our_strain)
 		return
@@ -218,6 +256,8 @@
 
 ///For when we want to trigger effects when a blobmob clicks something, such as clicking on items.
 /datum/component/blob_minion/proc/on_minion_atom_interacted(mob/living/minion, atom/interacted_atom, adjacent, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return our_strain?.on_blobmob_atom_interacted(minion, interacted_atom, adjacent, modifiers)

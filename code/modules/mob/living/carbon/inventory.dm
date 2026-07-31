@@ -1,5 +1,7 @@
 /// Convers HIDEX to ITEM_SLOT_X, should be phased out in favor of using latter everywhere later
 /proc/hidden_slots_to_inventory_slots(hidden_slots)
+	procstart = null
+	src.procstart = null
 	var/obscured = NONE
 	if(hidden_slots & HIDENECK)
 		obscured |= ITEM_SLOT_NECK
@@ -24,6 +26,8 @@
 	return obscured
 
 /mob/living/carbon/get_item_by_slot(slot_id)
+	procstart = null
+	src.procstart = null
 	switch(slot_id)
 		if(ITEM_SLOT_HANDCUFFED)
 			return handcuffed
@@ -33,6 +37,8 @@
 	return ..()
 
 /mob/living/carbon/get_slot_by_item(obj/item/looking_for)
+	procstart = null
+	src.procstart = null
 	if(looking_for == handcuffed)
 		return ITEM_SLOT_HANDCUFFED
 
@@ -43,6 +49,8 @@
 
 /// Returns items which are currently visible on the mob
 /mob/living/carbon/proc/get_visible_items()
+	procstart = null
+	src.procstart = null
 	var/list/visible_items = list()
 	var/obscured_item_slots = hidden_slots_to_inventory_slots(obscured_slots)
 	for(var/obj/item/thing in get_equipped_items(INCLUDE_HELD|INCLUDE_PROSTHETICS))
@@ -51,6 +59,8 @@
 	return visible_items
 
 /mob/living/carbon/proc/equip_in_one_of_slots(obj/item/equipping, list/slots, qdel_on_fail = TRUE, indirect_action = FALSE)
+	procstart = null
+	src.procstart = null
 	var/static/list/equip_slots = list(
 		LOCATION_LPOCKET = ITEM_SLOT_LPOCKET,
 		LOCATION_RPOCKET = ITEM_SLOT_RPOCKET,
@@ -79,6 +89,8 @@
 
 //This is an UNSAFE proc. Use mob_can_equip() before calling this one! Or rather use equip_to_slot_if_possible() or advanced_equip_to_slot_if_possible()
 /mob/living/carbon/equip_to_slot(obj/item/equipping, slot, initial = FALSE, redraw_mob = FALSE, indirect_action = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!slot)
 		return
 
@@ -123,6 +135,8 @@
 	return not_handled
 
 /mob/living/carbon/has_equipped(obj/item/item, slot, initial = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -137,6 +151,8 @@
 	add_item_coverage(item)
 
 /mob/living/carbon/has_unequipped(obj/item/item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -149,6 +165,8 @@
 	remove_item_coverage(item)
 
 /mob/living/carbon/doUnEquip(obj/item/item_dropping, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..() //Sets the default return value to what the parent returns.
 	if(!. || !item_dropping) //We don't want to set anything to null if the parent returned 0.
 		return
@@ -170,6 +188,8 @@
 
 /// Adds the passed item's coverage to the mob's coverage related flags
 /mob/living/carbon/proc/add_item_coverage(obj/item/item)
+	procstart = null
+	src.procstart = null
 	var/pre_coverage = obscured_slots
 	obscured_slots |= item.flags_inv
 	covered_slots |= item.flags_inv | item.transparent_protection
@@ -178,9 +198,13 @@
 
 /// Removes the passed item's coverage from the mob's coverage related flags
 /mob/living/carbon/proc/remove_item_coverage(obj/item/item)
+	procstart = null
+	src.procstart = null
 	refresh_obscured() // No way to remove a single item's coverage without recalculating everything
 
 /mob/living/carbon/refresh_obscured()
+	procstart = null
+	src.procstart = null
 	var/pre_coverage = obscured_slots
 
 	obscured_slots = NONE
@@ -203,6 +227,8 @@
  * * removed_slots - slots that were removed from obscured_slots
  */
 /mob/living/carbon/proc/item_coverage_changed(added_slots, removed_slots)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_CARBON_ITEM_COVERAGE_CHANGED, added_slots, removed_slots)
 	update_clothing(hidden_slots_to_inventory_slots(added_slots|removed_slots))
 	if((added_slots|removed_slots) & HIDESNOUT)
@@ -218,14 +244,20 @@
 
 /// Returns the tube if a breathing tube is equipped.
 /mob/living/carbon/proc/can_breathe_tube()
+	procstart = null
+	src.procstart = null
 	return get_organ_slot(ORGAN_SLOT_BREATHING_TUBE)
 
 /// Returns the object that allows us to breathe internals - tube implant, mask or helmet
 /mob/living/carbon/proc/can_breathe_internals()
+	procstart = null
+	src.procstart = null
 	return can_breathe_tube()
 
 /// Returns truthy if air tank is open and mob lacks apparatus, or if the tank moved away from the mob.
 /mob/living/carbon/proc/invalid_internals()
+	procstart = null
+	src.procstart = null
 	return (internal || external) && (!can_breathe_internals() || (internal && internal.loc != src))
 
 /**
@@ -238,6 +270,8 @@
  * * is_external - A boolean which indicates if the air tank must be equipped, or stored elsewhere.
  */
 /mob/living/carbon/proc/open_internals(obj/item/tank/target_tank, is_external = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!target_tank)
 		return
 	close_all_airtanks()
@@ -258,6 +292,8 @@
  * * is_external - A boolean which indicates if the air tank must be equipped, or stored elsewhere.
  */
 /mob/living/carbon/proc/try_open_internals(obj/item/tank/target_tank, is_external = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!can_breathe_internals())
 		return
 	return open_internals(target_tank, is_external)
@@ -270,6 +306,8 @@
  * * is_external - A boolean which indicates if the air tank must be equipped, or stored elsewhere.
  */
 /mob/living/carbon/proc/close_internals(is_external = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/tank/target_tank = is_external ? external : internal
 	if (!target_tank)
 		return
@@ -285,10 +323,14 @@
 
 /// Close the the currently open external (that's EX-ternal) air tank. Returns TRUE if successful.
 /mob/living/carbon/proc/close_externals()
+	procstart = null
+	src.procstart = null
 	return close_internals(TRUE)
 
 /// Quickly/lazily close all airtanks without any returns or notifications.
 /mob/living/carbon/proc/close_all_airtanks()
+	procstart = null
+	src.procstart = null
 	if (external)
 		close_externals()
 	if (internal)
@@ -304,6 +346,8 @@
  * * is_external - A boolean which indicates if the air tank must be equipped, or stored elsewhere.
  */
 /mob/living/carbon/proc/toggle_open_internals(obj/item/tank/target_tank, is_external = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!target_tank)
 		return
 	if(internal || (is_external && external))
@@ -321,6 +365,8 @@
  * * is_external - A boolean which indicates if the air tank must be equipped, or stored elsewhere.
  */
 /mob/living/carbon/proc/toggle_close_internals(is_external = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!internal && !external)
 		return
 	to_chat(src, span_notice("You close [is_external ? external : internal] valve."))
@@ -328,6 +374,8 @@
 
 /// Prepares emergency disconnect from open air tanks and notifies in chat. Usually called after mob suddenly unequips breathing apparatus.
 /mob/living/carbon/proc/cutoff_internals()
+	procstart = null
+	src.procstart = null
 	if (!external && !internal)
 		return
 	to_chat(src, span_notice("Your internals disconnect from [external || internal] and the valve closes."))
@@ -341,6 +389,8 @@
  * * tank - The given tank to toggle open and start breathing from internally.
  */
 /mob/living/carbon/proc/toggle_internals(obj/item/tank)
+	procstart = null
+	src.procstart = null
 	// Carbons can't open their own internals tanks.
 	return FALSE
 
@@ -352,15 +402,21 @@
  * * tank - The given tank to toggle open and start breathing from externally.
  */
 /mob/living/carbon/proc/toggle_externals(obj/item/tank)
+	procstart = null
+	src.procstart = null
 	// Carbons can't open their own externals tanks.
 	return FALSE
 
 /mob/living/carbon/proc/get_holding_bodypart_of_item(obj/item/I)
+	procstart = null
+	src.procstart = null
 	var/index = get_held_index_of_item(I)
 	return index && hand_bodyparts[index]
 
 ///Returns a list of all body_zones covered by clothing
 /mob/living/carbon/proc/get_covered_body_zones()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 	SHOULD_NOT_OVERRIDE(TRUE)
 
@@ -368,6 +424,8 @@
 
 ///Returns a bitfield of all zones covered by clothing
 /mob/living/carbon/proc/get_all_covered_flags()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	var/covered_flags = NONE
@@ -377,6 +435,8 @@
 	return covered_flags
 
 /mob/living/carbon/is_location_accessible(location, exluded_equipment_slots = NONE)
+	procstart = null
+	src.procstart = null
 	switch(location)
 		// Snowflake checks for these precise zones
 		if(BODY_ZONE_PRECISE_EYES)
@@ -411,6 +471,8 @@
 /// in their hands would be a dead giveaway that they are an antagonist.
 /// Returns the human readable name of where it placed the item, or null otherwise.
 /mob/living/carbon/proc/equip_conspicuous_item(obj/item/item, delete_item_if_failed = TRUE)
+	procstart = null
+	src.procstart = null
 	var/static/list/pockets = list(
 		"left pocket" = ITEM_SLOT_LPOCKET,
 		"right pocket" = ITEM_SLOT_RPOCKET

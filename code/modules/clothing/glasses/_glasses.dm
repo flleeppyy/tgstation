@@ -33,15 +33,21 @@
 	var/forced_glass_color = FALSE
 
 /obj/item/clothing/glasses/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(glass_colour_type)
 		AddElement(/datum/element/wearable_client_colour, glass_colour_type, ITEM_SLOT_EYES, GLASSES_TRAIT, forced = forced_glass_color, comsig_toggle = COMSIG_CLICK_ALT_SECONDARY)
 
 /obj/item/clothing/glasses/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is stabbing \the [src] into [user.p_their()] eyes! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 
 /obj/item/clothing/glasses/visor_toggling()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	alternate_worn_layer = up ? ABOVE_BODY_FRONT_HEAD_LAYER : null
 	if(visor_vars_to_toggle & VISOR_VISIONFLAGS)
@@ -50,11 +56,15 @@
 		invis_view ^= initial(invis_view)
 
 /obj/item/clothing/glasses/adjust_visor(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && !user.is_holding(src) && (visor_vars_to_toggle & (VISOR_VISIONFLAGS|VISOR_INVISVIEW)))
 		user.update_sight()
 
 /obj/item/clothing/glasses/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!(slot & ITEM_SLOT_EYES))
 		return
@@ -63,12 +73,16 @@
 		user.update_sight()
 
 /obj/item/clothing/glasses/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, COMSIG_CARBON_UPDATE_SIGHT_CUTOFFS)
 	if (vision_flags || invis_override || invis_view || !isnull(lighting_cutoff))
 		user.update_sight()
 
 /obj/item/clothing/glasses/proc/update_wearer_sight(mob/living/carbon/source, list/new_sight_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	new_sight_flags[1] |= vision_flags
@@ -83,6 +97,8 @@
 
 //called when thermal glasses are emped.
 /obj/item/clothing/glasses/proc/thermal_overload()
+	procstart = null
+	src.procstart = null
 	if(ishuman(src.loc))
 		var/mob/living/carbon/human/H = src.loc
 		var/obj/item/organ/eyes/eyes = H.get_organ_slot(ORGAN_SLOT_EYES)
@@ -95,6 +111,8 @@
 				eyes.apply_organ_damage(5)
 
 /obj/item/clothing/glasses/proc/change_glass_color(new_color_type)
+	procstart = null
+	src.procstart = null
 	if(glass_colour_type)
 		RemoveElement(/datum/element/wearable_client_colour, glass_colour_type, ITEM_SLOT_EYES, GLASSES_TRAIT, forced = forced_glass_color)
 	glass_colour_type = new_color_type
@@ -118,6 +136,8 @@
 	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/clothing/glasses/meson/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is putting \the [src] to [user.p_their()] eyes and overloading the brightness! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 
@@ -134,6 +154,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 0.6, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 0.6, /datum/material/uranium = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/plasma = SMALL_MATERIAL_AMOUNT * 3.5)
 
 /obj/item/clothing/glasses/meson/night/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = length(color_cutoffs) ? initial(icon_state) : "nvgmeson_off"
 
@@ -171,6 +193,8 @@
 	acid = 100
 
 /obj/item/clothing/glasses/science/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is tightening \the [src]'s straps around [user.p_their()] neck! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return OXYLOSS
 
@@ -186,6 +210,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 0.6, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 0.6, /datum/material/uranium = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/plasma = SMALL_MATERIAL_AMOUNT * 3.5)
 
 /obj/item/clothing/glasses/science/night/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = length(color_cutoffs) ? initial(icon_state) : "night_off"
 
@@ -206,6 +232,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 0.6, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 0.6, /datum/material/uranium = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/plasma = SMALL_MATERIAL_AMOUNT * 3.5)
 
 /obj/item/clothing/glasses/night/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = length(color_cutoffs) ? initial(icon_state) : "night_off"
 
@@ -224,14 +252,20 @@
 	custom_materials = null
 
 /obj/item/clothing/glasses/eyepatch/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	flip_eyepatch()
 
 /obj/item/clothing/glasses/eyepatch/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	flip_eyepatch()
 
 /obj/item/clothing/glasses/eyepatch/proc/flip_eyepatch()
+	procstart = null
+	src.procstart = null
 	flipped = !flipped
 	icon_state = flipped ? "[base_icon_state]_flipped" : base_icon_state
 	if (!ismob(loc))
@@ -248,6 +282,8 @@
 	human_user.update_tint()
 
 /obj/item/clothing/glasses/eyepatch/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	if (!ishuman(user))
 		return ..()
 	var/mob/living/carbon/human/human_user = user
@@ -259,6 +295,8 @@
 	return ..()
 
 /obj/item/clothing/glasses/eyepatch/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tint = initial(tint)
 
@@ -274,15 +312,21 @@
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 
 /obj/item/clothing/glasses/eyepatch/medical/chuuni/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CASTING_CLOTHING, INNATE_TRAIT)
 
 /obj/item/clothing/glasses/eyepatch/medical/chuuni/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot == ITEM_SLOT_EYES)
 		ADD_TRAIT(src, TRAIT_NODROP, type)
 
 /obj/item/clothing/glasses/eyepatch/medical/chuuni/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/chuuni_backstories
 	if(!chuuni_backstories)
@@ -345,6 +389,8 @@
 	clothing_traits = list(TRAIT_NEARSIGHTED_CORRECTED)
 
 /obj/item/clothing/glasses/regular/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/knockoff, 25, list(BODY_ZONE_PRECISE_EYES), slot_flags)
 	var/static/list/loc_connections = list(
@@ -354,6 +400,8 @@
 
 
 /obj/item/clothing/glasses/regular/proc/on_entered(datum/source, atom/movable/movable)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(damaged_clothes == CLOTHING_SHREDDED)
 		return
@@ -367,10 +415,14 @@
 			take_damage(100, sound_effect = FALSE)
 
 /obj/item/clothing/glasses/regular/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	detach_clothing_traits(TRAIT_NEARSIGHTED_CORRECTED)
 
 /obj/item/clothing/glasses/regular/welder_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(damaged_clothes == CLOTHING_PRISTINE)
 		return
@@ -383,6 +435,8 @@
 		return TRUE
 
 /obj/item/clothing/glasses/regular/repair()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	attach_clothing_traits(TRAIT_NEARSIGHTED_CORRECTED)
 
@@ -423,10 +477,14 @@
 	dog_fashion = /datum/dog_fashion/head
 
 /obj/item/clothing/glasses/sunglasses/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_glasses_slapcraft_component()
 
 /obj/item/clothing/glasses/sunglasses/proc/add_glasses_slapcraft_component()
+	procstart = null
+	src.procstart = null
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/hudsunsec, /datum/crafting_recipe/hudsunmed, /datum/crafting_recipe/hudsundiag, /datum/crafting_recipe/scienceglasses)
 
 	AddElement(
@@ -448,6 +506,8 @@
 	custom_materials = list(/datum/material/glass = SHEET_MATERIAL_AMOUNT * 0.8, /datum/material/iron = SHEET_MATERIAL_AMOUNT * 0.55)
 
 /obj/item/clothing/glasses/sunglasses/chemical/add_glasses_slapcraft_component()
+	procstart = null
+	src.procstart = null
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/scienceglassesremoval)
 
 	AddElement(
@@ -505,6 +565,8 @@
 	icon_state = "contacts"
 
 /obj/item/syndicate_contacts/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!user.get_organ_slot(ORGAN_SLOT_EYES))
 		to_chat(user, span_warning("You have no eyes to apply the contacts to!"))
@@ -536,14 +598,20 @@
 	equip_sound = SFX_GOGGLES_EQUIP
 
 /obj/item/clothing/glasses/welding/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!up)
 		AddElement(/datum/element/adjust_fishing_difficulty, 8)
 
 /obj/item/clothing/glasses/welding/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	adjust_visor(user)
 
 /obj/item/clothing/glasses/welding/adjust_visor(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(up)
 		RemoveElement(/datum/element/adjust_fishing_difficulty)
@@ -551,10 +619,14 @@
 		AddElement(/datum/element/adjust_fishing_difficulty, 8)
 
 /obj/item/clothing/glasses/welding/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[initial(icon_state)][up ? "up" : ""]"
 
 /obj/item/clothing/glasses/welding/up/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	visor_toggling()
 
@@ -570,6 +642,8 @@
 	custom_materials = null
 
 /obj/item/clothing/glasses/blindfold/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, 8)
 
@@ -589,6 +663,8 @@
 	var/colored_before = FALSE
 
 /obj/item/clothing/glasses/blindfold/white/visual_equipped(mob/living/carbon/human/user, slot)
+	procstart = null
+	src.procstart = null
 	if(ishuman(user) && (slot & ITEM_SLOT_EYES) && !colored_before)
 		add_atom_colour(BlendRGB(user.eye_color_left, user.eye_color_right, 0.5), FIXED_COLOUR_PRIORITY)
 		colored_before = TRUE
@@ -615,6 +691,8 @@
 	equip_sound = SFX_GOGGLES_EQUIP
 
 /obj/item/clothing/glasses/thermal/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -640,7 +718,9 @@
 	icon_state = "thermoncle"
 	flags_1 = null //doesn't protect eyes because it's a monocle, duh
 
-/obj/item/clothing/glasses/thermal/monocle/examine(mob/user) //Different examiners see a different description!
+/obj/item/clothing/glasses/thermal/monocle/examine(mob/user)
+	procstart = null
+	src.procstart = null //Different examiners see a different description!
 	if(user.gender == MALE)
 		desc = replacetext(desc, "person", "man")
 	else if(user.gender == FEMALE)
@@ -657,6 +737,8 @@
 	actions_types = list(/datum/action/item_action/flip)
 
 /obj/item/clothing/glasses/thermal/eyepatch/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = (icon_state == base_icon_state) ? "[base_icon_state]_flipped" : base_icon_state
 	user.update_worn_glasses()
@@ -739,10 +821,14 @@
 	equip_sound = SFX_GOGGLES_EQUIP
 
 /obj/item/clothing/glasses/debug/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -15)
 
 /obj/item/clothing/glasses/debug/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return CLICK_ACTION_BLOCKING
 	if(xray)
@@ -772,6 +858,8 @@
 	var/mob/living/carbon/human/bigshot
 
 /obj/item/clothing/glasses/salesman/equipped(mob/living/carbon/human/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!(slot & ITEM_SLOT_EYES))
 		return
@@ -779,6 +867,8 @@
 	RegisterSignal(bigshot, COMSIG_CARBON_SANITY_UPDATE, PROC_REF(moodshift))
 
 /obj/item/clothing/glasses/salesman/dropped(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	..()
 	UnregisterSignal(bigshot, COMSIG_CARBON_SANITY_UPDATE)
 	bigshot = initial(bigshot)
@@ -786,6 +876,8 @@
 	desc = initial(desc)
 
 /obj/item/clothing/glasses/salesman/proc/moodshift(atom/movable/source, amount)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(amount < SANITY_UNSTABLE)
 		icon_state = "salesman_fzz"
@@ -812,14 +904,20 @@
 	equip_sound = SFX_GOGGLES_EQUIP
 
 /obj/item/clothing/glasses/nightmare_vision/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, 13)
 
 /obj/item/clothing/glasses/nightmare_vision/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(stored_hallucination)
 	return ..()
 
 /obj/item/clothing/glasses/nightmare_vision/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(slot & ITEM_SLOT_EYES))
 		return
@@ -836,6 +934,8 @@
 		)
 
 /obj/item/clothing/glasses/nightmare_vision/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(stored_hallucination)
 

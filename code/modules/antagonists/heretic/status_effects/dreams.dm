@@ -7,16 +7,22 @@
 	COOLDOWN_DECLARE(dreaming_cooldown)
 
 /datum/status_effect/grouped/heretic_dreams/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_PRE_DREAMING, PROC_REF(add_heretic_dream))
 	RegisterSignal(owner, COMSIG_START_DREAMING, PROC_REF(start_heretic_dream))
 
 /datum/status_effect/grouped/heretic_dreams/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(owner, COMSIG_PRE_DREAMING)
 	UnregisterSignal(owner, COMSIG_START_DREAMING)
 
 /datum/status_effect/grouped/heretic_dreams/proc/add_heretic_dream(mob/living/dreamer, list/dream_pool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!COOLDOWN_FINISHED(src, dreaming_cooldown))
@@ -29,6 +35,8 @@
 	dream_pool[new /datum/dream/heretic(dream_center)] = 200
 
 /datum/status_effect/grouped/heretic_dreams/proc/start_heretic_dream(mob/living/dreamer, datum/dream/current_dream)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(current_dream, /datum/dream/heretic))
@@ -37,6 +45,8 @@
 	dreamer.add_mood_event("mansus_dream_fatigue", /datum/mood_event/mansus_dream_fatigue)
 
 /datum/status_effect/grouped/heretic_dreams/proc/get_dream_center(mob/living/dreamer)
+	procstart = null
+	src.procstart = null
 	// Select a random influence as the center of the dream
 	if(length(GLOB.reality_smash_track.smashes))
 		return pick(GLOB.reality_smash_track.smashes)
@@ -84,9 +94,13 @@
 	var/static/list/allowed_typecaches_by_root_type = null
 
 /datum/dream/heretic/New(atom/dream_center)
+	procstart = null
+	src.procstart = null
 	src.dream_center = dream_center
 
 /datum/dream/heretic/GenerateDream(mob/living/carbon/dreamer)
+	procstart = null
+	src.procstart = null
 	. = list()
 	. += "you wander through the forest of Mansus"
 	. += "there is a " + pick("pond", "well", "lake", "puddle", "stream", "spring", "brook", "marsh")

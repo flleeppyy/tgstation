@@ -27,6 +27,8 @@
 	hitsound = 'sound/items/lead_pipe_hit.ogg'
 
 /obj/item/lead_pipe/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/lead = 20)
 
 //A good battery early in the shift. Source of lead & sulfuric acid reagents.
@@ -46,10 +48,14 @@
 	connector_type = "leadacid"
 
 /obj/item/stock_parts/power_store/cell/lead/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/lead = 15, /datum/reagent/toxin/acid = 15, /datum/reagent/water = 20)
 
 //starts partially discharged
 /obj/item/stock_parts/power_store/cell/lead/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/update_icon_blocker)
 	. = ..()
 	var/initial_percent = rand(40, 60) / 100 // 250kJ to 350kJ
@@ -61,6 +67,8 @@
 
 // Give our owner shock touch when entering the digital realm
 /obj/item/stock_parts/power_store/cell/lead/proc/shockingly_improve_avatar(mob/living/carbon/human/neo, mob/living/carbon/human/avatar, domain_flags)
+	procstart = null
+	src.procstart = null
 	if(domain_flags & DOMAIN_FORBIDS_ABILITIES)
 		return BITRUNNER_GEAR_LOAD_BLOCKED
 

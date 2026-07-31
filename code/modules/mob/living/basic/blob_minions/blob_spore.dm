@@ -31,18 +31,26 @@
 
 
 /mob/living/basic/blob_minion/spore/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_flying)
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_BLOBSPORE, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 
 /mob/living/basic/blob_minion/spore/death(gibbed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 /mob/living/basic/blob_minion/spore/on_factory_destroyed()
+	procstart = null
+	src.procstart = null
 	death()
 
 /mob/living/basic/blob_minion/spore/melee_attack(mob/living/carbon/human/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!ishuman(target) || target.stat != DEAD)
 		return
@@ -50,6 +58,8 @@
 
 /// Become a zombie
 /mob/living/basic/blob_minion/spore/proc/zombify(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	visible_message(span_warning("The corpse of [target.name] suddenly rises!"))
 	var/mob/living/basic/blob_minion/zombie/blombie = change_mob_type(zombie_type, loc, new_name = initial(zombie_type.name))
 	blombie.pass_flags |= PASSBLOB //No way to pass the blob_borne info through change_mob_type() to Initilize(), so we just circumvent it here.
@@ -68,11 +78,15 @@
 	var/turf/z_turf
 
 /mob/living/basic/blob_minion/spore/minion/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_MOVABLE_Z_CHANGED, PROC_REF(on_z_changed))
 
 /// When we z-move check that we're on the same z level as our factory was
 /mob/living/basic/blob_minion/spore/minion/proc/on_z_changed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (isnull(z_turf))
 		return
@@ -81,11 +95,15 @@
 
 /// Mark the turf we need to track from our factory
 /mob/living/basic/blob_minion/spore/minion/link_to_factory(obj/structure/blob/special/factory/factory)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	z_turf = get_turf(factory)
 
 /// If the blob changes to distributed neurons then you can control the spores
 /mob/living/basic/blob_minion/spore/minion/on_strain_updated(mob/eye/blob/overmind, datum/blobstrain/new_strain)
+	procstart = null
+	src.procstart = null
 	if (isnull(overmind))
 		REMOVE_TRAIT(src, TRAIT_PERMANENTLY_MORTAL, INNATE_TRAIT)
 	else
@@ -113,9 +131,13 @@
 	obj_damage = 0
 
 /mob/living/basic/blob_minion/spore/minion/weak/zombify()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/basic/blob_minion/spore/minion/weak/on_strain_updated()
+	procstart = null
+	src.procstart = null
 	return
 
 /// independent spore spawned by cytology, extremely weak and shitty like all spores but exhibits a high degree of sentience in addition to the predatory nature of inherent to blob creatures.
@@ -128,6 +150,8 @@
 	loot = /obj/item/food/spore_sack/independent
 
 /mob/living/basic/blob_minion/spore/independent/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//free but incredibly shitty antag. Good job hazard to add some friction to gathering spore toxin.
 	AddComponent(\
@@ -139,5 +163,7 @@
 	)
 
 /mob/living/basic/blob_minion/spore/independent/proc/on_assumed_control()
+	procstart = null
+	src.procstart = null
 	to_chat(src, span_blobannounce("You are a spore born free from the shackles of an overmind.\n\nHowever this strange predicament has not muted the hostility you feel towards creatures that are not your kin, this base instinct appears to be a part of your true self."))
 	SEND_SOUND(src, sound('sound/music/antag/blobalert.ogg', volume = 50))

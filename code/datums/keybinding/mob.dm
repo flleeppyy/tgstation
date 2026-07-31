@@ -10,6 +10,8 @@
 	keybind_signal = COMSIG_KB_MOB_STOPPULLING_DOWN
 
 /datum/keybinding/mob/stop_pulling/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -28,6 +30,8 @@
 	keybind_signal = COMSIG_KB_MOB_SWAPHANDS_DOWN
 
 /datum/keybinding/mob/swap_hands/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -53,6 +57,8 @@
 	hand_index = LEFT_HANDS
 
 /datum/keybinding/mob/select_hand/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -73,6 +79,8 @@
 	keybind_signal = COMSIG_KB_MOB_ACTIVATEINHAND_DOWN
 
 /datum/keybinding/mob/activate_inhand/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -88,6 +96,8 @@
 	keybind_signal = COMSIG_KB_MOB_DROPITEM_DOWN
 
 /datum/keybinding/mob/drop_item/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -109,6 +119,8 @@
 	keybind_signal = COMSIG_KB_MOB_DROPITEM_DOWN
 
 /datum/keybinding/mob/drop_item_specific/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -127,6 +139,8 @@
 	return TRUE
 
 /datum/keybinding/mob/target/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -236,12 +250,16 @@
 	keybind_signal = COMSIG_KB_MOB_BLOCKMOVEMENT_DOWN
 
 /datum/keybinding/mob/prevent_movement/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
 	user.movement_locked = TRUE
 
 /datum/keybinding/mob/prevent_movement/up(client/user, turf/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

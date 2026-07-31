@@ -33,6 +33,8 @@
 
 ///Animates source spinning around itself. For docmentation on the args, check atom/proc/SpinAnimation()
 /atom/proc/do_spin_animation(speed = 1 SECONDS, loops = -1, segments = 3, angle = 120, parallel = TRUE, tag = null)
+	procstart = null
+	src.procstart = null
 	var/list/matrices = list()
 	for(var/i in 1 to segments-1)
 		var/matrix/segment_matrix = matrix(transform)
@@ -54,6 +56,8 @@
 
 /// Similar to shake but more spasm-y and jerk-y
 /atom/proc/spasm_animation(loops = -1)
+	procstart = null
+	src.procstart = null
 	var/list/transforms = list(
 		matrix(transform).Translate(-1, 0),
 		matrix(transform).Translate(0, 1),
@@ -81,6 +85,8 @@
  * * tag: animation tag to use, for parralel animations only
  */
 /atom/proc/SpinAnimation(speed = 1 SECONDS, loops = -1, clockwise = TRUE, segments = 3, parallel = TRUE, tag = null)
+	procstart = null
+	src.procstart = null
 	if(!segments)
 		return
 	var/segment = 360/segments
@@ -96,6 +102,8 @@
 /// An optional color_override replaces the default blue tint — either a hex string (opacity applied on top) or a color matrix/list (passed through as-is; caller owns its own alpha)
 /// Returns the glow mutable_appearance so callers can cut the overlay later
 /atom/proc/makeHologram(opacity = 0.5, color_override)
+	procstart = null
+	src.procstart = null
 	// First, we'll make things blue (roughly) and sorta transparent
 	var/color_value
 	if(islist(color_override))

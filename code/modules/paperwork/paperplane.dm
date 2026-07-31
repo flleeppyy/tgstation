@@ -22,6 +22,8 @@
 	hit_probability = 100
 
 /obj/item/paperplane/Initialize(mapload, obj/item/paper/paper_made_of)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = base_pixel_x + rand(-9, 9)
 	pixel_y = base_pixel_y + rand(-8, 8)
@@ -38,6 +40,8 @@
 	AddElement(/datum/element/burn_on_item_ignition)
 
 /obj/item/paperplane/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (internal_paper == gone)
 		internal_paper = null
@@ -45,15 +49,21 @@
 			qdel(src)
 
 /obj/item/paperplane/Destroy()
+	procstart = null
+	src.procstart = null
 	internal_paper = null
 	return ..()
 
 /obj/item/paperplane/custom_fire_overlay()
+	procstart = null
+	src.procstart = null
 	if (!custom_fire_overlay)
 		custom_fire_overlay = mutable_appearance('icons/obj/service/bureaucracy.dmi', "paperplane_onfire", appearance_flags = RESET_COLOR|KEEP_APART)
 	return custom_fire_overlay
 
 /obj/item/paperplane/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/eyes/eyes = user.get_organ_slot(ORGAN_SLOT_EYES)
 	user.Stun(20 SECONDS)
 	user.visible_message(span_suicide("[user] jams [src] in [user.p_their()] nose. It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -64,11 +74,15 @@
 	return BRUTELOSS
 
 /obj/item/paperplane/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/stamp in internal_paper.stamp_cache)
 		. += "[base_icon_state]_[stamp]"
 
 /obj/item/paperplane/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	balloon_alert(user, "unfolded")
 
 	var/atom/location = drop_location()
@@ -81,6 +95,8 @@
 	user.put_in_hands(released_paper)
 
 /obj/item/paperplane/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(IS_WRITING_UTENSIL(tool))
 		to_chat(user, span_warning("You should unfold [src] before changing it!"))
 		return ITEM_INTERACT_BLOCKING
@@ -92,6 +108,8 @@
 	return NONE
 
 /obj/item/paperplane/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(hit_atom) && HAS_TRAIT(hit_atom, TRAIT_PAPER_MASTER))
 		var/mob/living/carbon/hit_carbon = hit_atom
 		if(hit_carbon.can_catch_item(src, skip_throw_mode_check = TRUE))
@@ -113,4 +131,6 @@
 	hit_human.emote("scream")
 
 /obj/item/paperplane/throw_at(atom/target, range, speed, mob/thrower, spin=FALSE, diagonals_first = FALSE, datum/callback/callback, gentle, quickstart = TRUE, throw_type_path = /datum/thrownthing)
+	procstart = null
+	src.procstart = null
 	return ..(target, range, speed, thrower, FALSE, diagonals_first, callback, quickstart = quickstart)

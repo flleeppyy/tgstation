@@ -20,13 +20,19 @@
 
 
 /turf/open/floor/mineral/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icons = typelist("icons", icons)
 
 /turf/open/floor/mineral/broken_states()
+	procstart = null
+	src.procstart = null
 	return isnull(icon_state) ? list() : list("[initial(icon_state)]_dam")
 
 /turf/open/floor/mineral/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!broken && !burnt && !(icon_state in icons))
 		icon_state = initial(icon_state)
 	return ..()
@@ -44,6 +50,8 @@
 //Plasma floor that can't be removed, for disco inferno
 
 /turf/open/floor/mineral/plasma/disco/crowbar_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -76,6 +84,8 @@
 	rust_resistance = RUST_RESISTANCE_TITANIUM
 
 /turf/open/floor/mineral/titanium/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("damaged1", "damaged2", "damaged3", "damaged4", "damaged5")
 
 
@@ -122,6 +132,8 @@
 	floor_tile = /obj/item/stack/tile/mineral/titanium/tiled
 
 /turf/open/floor/mineral/titanium/tiled/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("damaged1", "damaged2", "damaged3", "damaged4", "damaged5")
 
 /turf/open/floor/mineral/titanium/tiled/airless
@@ -166,6 +178,8 @@
 	rust_resistance = RUST_RESISTANCE_TITANIUM
 
 /turf/open/floor/mineral/plastitanium/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("damaged1", "damaged2", "damaged3", "damaged4", "damaged5")
 
 /turf/open/floor/mineral/plastitanium/airless
@@ -216,6 +230,8 @@
 	var/sound_cooldown = 0
 
 /turf/open/floor/mineral/bananium/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -223,26 +239,36 @@
 		squeak()
 
 /turf/open/floor/mineral/bananium/attackby(obj/item/W, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	.=..()
 	if(!.)
 		honk()
 
 /turf/open/floor/mineral/bananium/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	.=..()
 	if(!.)
 		honk()
 
 /turf/open/floor/mineral/bananium/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	.=..()
 	if(!.)
 		honk()
 
 /turf/open/floor/mineral/bananium/proc/honk()
+	procstart = null
+	src.procstart = null
 	if(sound_cooldown < world.time)
 		playsound(src, 'sound/items/bikehorn.ogg', 50, TRUE)
 		sound_cooldown = world.time + 20
 
 /turf/open/floor/mineral/bananium/proc/squeak()
+	procstart = null
+	src.procstart = null
 	if(sound_cooldown < world.time)
 		playsound(src, SFX_CLOWN_STEP, 50, TRUE)
 		sound_cooldown = world.time + 10
@@ -274,6 +300,8 @@
 	var/active = null
 
 /turf/open/floor/mineral/uranium/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -281,21 +309,29 @@
 		radiate()
 
 /turf/open/floor/mineral/uranium/attackby(obj/item/W, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	.=..()
 	if(!.)
 		radiate()
 
 /turf/open/floor/mineral/uranium/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	.=..()
 	if(!.)
 		radiate()
 
 /turf/open/floor/mineral/uranium/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	.=..()
 	if(!.)
 		radiate()
 
 /turf/open/floor/mineral/uranium/proc/radiate()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		if(world.time > last_event+15)
 			active = TRUE
@@ -324,11 +360,17 @@
 	damaged_dmi = null
 
 /turf/open/floor/mineral/abductor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "alienpod[rand(1,9)]"
 
 /turf/open/floor/mineral/abductor/break_tile()
+	procstart = null
+	src.procstart = null
 	return //unbreakable
 
 /turf/open/floor/mineral/abductor/burn_tile()
+	procstart = null
+	src.procstart = null
 	return //unburnable

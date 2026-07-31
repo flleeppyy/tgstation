@@ -1,5 +1,7 @@
 /// Fully randomizes everything in the character.
 /datum/preferences/proc/randomise_appearance_prefs(randomize_flags = ALL)
+	procstart = null
+	src.procstart = null
 	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
 		if (!preference.included_in_randomization_flags(randomize_flags))
 			continue
@@ -9,6 +11,8 @@
 
 /// Randomizes the character according to preferences.
 /datum/preferences/proc/apply_character_randomization_prefs(antag_override = FALSE)
+	procstart = null
+	src.procstart = null
 	switch (read_preference(/datum/preference/choiced/random_body))
 		if (RANDOM_ANTAG_ONLY)
 			if (!antag_override)
@@ -23,6 +27,8 @@
 
 ///Setup the random hardcore quirks and give the character the new score prize.
 /datum/preferences/proc/hardcore_random_setup(mob/living/carbon/human/character)
+	procstart = null
+	src.procstart = null
 	var/next_hardcore_score = select_hardcore_quirks(character.dna.species.type)
 	character.hardcore_survival_score = next_hardcore_score ** 1.2  //30 points would be about 60 score
 	log_game("[character] started hardcore random with [english_list(all_quirks)], for a score of [next_hardcore_score].")
@@ -36,6 +42,8 @@
  * Returns the new value to be gained with this setup, plus the previously earned score.
  **/
 /datum/preferences/proc/select_hardcore_quirks(species)
+	procstart = null
+	src.procstart = null
 	. = 0
 
 	var/quirk_budget = rand(8, 35)
@@ -83,6 +91,8 @@
 
 /// Returns what job is marked as highest
 /datum/preferences/proc/get_highest_priority_job()
+	procstart = null
+	src.procstart = null
 	var/datum/job/preview_job
 	var/highest_pref = 0
 
@@ -94,6 +104,8 @@
 	return preview_job
 
 /datum/preferences/proc/render_new_preview_appearance(mob/living/carbon/human/dummy/mannequin, show_job_clothes = TRUE)
+	procstart = null
+	src.procstart = null
 	var/datum/job/no_job = SSjob.get_job_type(/datum/job/unassigned)
 	var/datum/job/preview_job = get_highest_priority_job() || no_job
 

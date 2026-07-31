@@ -24,6 +24,8 @@ ADMIN_VERB(cmd_admin_robotize, R_FUN, "Make Cyborg", ADMIN_VERB_NO_DESCRIPTION, 
 	INVOKE_ASYNC(target, TYPE_PROC_REF(/mob, Robotize))
 
 /client/proc/poll_type_to_del(search_string)
+	procstart = null
+	src.procstart = null
 	var/list/types = get_fancy_list_of_atom_types()
 	if (!isnull(search_string) && search_string != "")
 		types = filter_fancy_list(types, search_string)
@@ -405,6 +407,8 @@ ADMIN_VERB(cmd_admin_areatest_all, R_DEBUG, "Test Areas (ALL)", "Tests the areas
 	SSadmin_verbs.dynamic_invoke_verb(user, /datum/admin_verb/cmd_admin_areatest)
 
 /client/proc/robust_dress_shop()
+	procstart = null
+	src.procstart = null
 	var/list/baseoutfits = list("Naked","Custom","As Job...", "As Plasmaman...")
 	var/list/outfits = list()
 	var/list/paths = subtypesof(/datum/outfit) - typesof(/datum/outfit/job) - typesof(/datum/outfit/plasmaman)
@@ -480,6 +484,8 @@ ADMIN_VERB(modify_goals, R_ADMIN, "Modify Goals", "Modify the station goals for 
 	user.holder.modify_goals()
 
 /datum/admins/proc/modify_goals()
+	procstart = null
+	src.procstart = null
 	var/dat = ""
 	for(var/datum/station_goal/goal as anything in SSstation.get_station_goals())
 		dat += "[goal.name] - <a href='byond://?src=[REF(goal)];[HrefToken()];announce=1'>Announce</a> | <a href='byond://?src=[REF(goal)];[HrefToken()];remove=1'>Remove</a><br>"
@@ -560,6 +566,8 @@ ADMIN_VERB(debug_plane_masters, R_DEBUG, "Edit/Debug Planes", "Edit and visualiz
 	user.edit_plane_masters()
 
 /client/proc/edit_plane_masters(mob/debug_on)
+	procstart = null
+	src.procstart = null
 	if(!holder)
 		return
 	if(debug_on)
@@ -772,6 +780,8 @@ ADMIN_VERB(allow_browser_inspect, R_DEBUG, "Allow Browser Inspect", "Allow brows
 	winset(user, null, list("browser-options" = "+devtools"))
 
 /proc/generate_timer_source_output(list/datum/timedevent/events)
+	procstart = null
+	src.procstart = null
 	var/list/per_source = list()
 
 	// Collate all events and figure out what sources are creating the most
@@ -810,6 +820,8 @@ ADMIN_VERB(allow_browser_inspect, R_DEBUG, "Allow Browser Inspect", "Allow brows
 	return output
 
 /proc/cmp_timer_data(list/a, list/b)
+	procstart = null
+	src.procstart = null
 	return b["count"] - a["count"]
 
 #ifdef TESTING
@@ -921,6 +933,8 @@ ADMIN_VERB_CUSTOM_EXIST_CHECK(queue_tracy)
 /datum/mc_dependency_ui
 
 /datum/mc_dependency_ui/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "MCDependencyDebug")
@@ -928,9 +942,13 @@ ADMIN_VERB_CUSTOM_EXIST_CHECK(queue_tracy)
 		ui.open()
 
 /datum/mc_dependency_ui/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_DEBUG)
 
 /datum/mc_dependency_ui/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/list/subsystems = Master.subsystems.Copy()
@@ -950,6 +968,8 @@ ADMIN_VERB_CUSTOM_EXIST_CHECK(queue_tracy)
 	)
 
 /datum/mc_dependency_ui/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(get_asset_datum(/datum/asset/simple/plane_background))
 
 ADMIN_VERB(debug_mc_dependencies, R_DEBUG, "Debug MC Dependencies", "Debug MC dependencies.", ADMIN_CATEGORY_DEBUG)
@@ -1012,22 +1032,30 @@ ADMIN_VERB(count_instances, R_DEBUG, "Count Atoms/Datums", "Count how many atom 
 
 #ifndef OPENDREAM
 /proc/count_atoms()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/datum/thing in world) //atoms (don't believe its lies)
 		.[thing.type]++
 	sortTim(., cmp = GLOBAL_PROC_REF(cmp_numeric_dsc), associative = TRUE)
 
 /proc/count_datums()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/datum/thing)
 		.[thing.type]++
 	sortTim(., cmp = GLOBAL_PROC_REF(cmp_numeric_dsc), associative = TRUE)
 #else
 /proc/count_atoms()
+	procstart = null
+	src.procstart = null
 	. = list()
 	CRASH("count_atoms not supported on OpenDream")
 
 /proc/count_datums()
+	procstart = null
+	src.procstart = null
 	. = list()
 	CRASH("count_datums not supported on OpenDream")
 #endif

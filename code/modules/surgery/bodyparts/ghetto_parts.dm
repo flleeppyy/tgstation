@@ -21,6 +21,8 @@
 	butcher_replacement = null
 
 /obj/item/bodypart/arm/left/ghetto/Initialize(mapload, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_EASY_ATTACH, INNATE_TRAIT)
 
@@ -47,6 +49,8 @@
 	butcher_replacement = null
 
 /obj/item/bodypart/arm/right/ghetto/Initialize(mapload, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_EASY_ATTACH, INNATE_TRAIT)
 
@@ -71,6 +75,8 @@
 	butcher_replacement = null
 
 /obj/item/bodypart/leg/left/ghetto/Initialize(mapload, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_EASY_ATTACH, INNATE_TRAIT)
 
@@ -95,5 +101,7 @@
 	butcher_replacement = null
 
 /obj/item/bodypart/leg/right/ghetto/Initialize(mapload, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_EASY_ATTACH, INNATE_TRAIT)

@@ -1,4 +1,6 @@
 /datum/unit_test/metabolization/Run()
+	procstart = null
+	src.procstart = null
 	// Pause natural mob life so it can be handled entirely by the test
 	SSmobs.pause()
 
@@ -11,15 +13,21 @@
 		test_reagent(human, reagent_type)
 
 /datum/unit_test/metabolization/proc/test_reagent(mob/living/carbon/C, reagent_type)
+	procstart = null
+	src.procstart = null
 	C.reagents.add_reagent(reagent_type, 10)
 	C.reagents.metabolize(C, SSMOBS_DT, 0, can_overdose = TRUE)
 	C.reagents.clear_reagents()
 
 /datum/unit_test/metabolization/Destroy()
+	procstart = null
+	src.procstart = null
 	SSmobs.ignite()
 	return ..()
 
 /datum/unit_test/on_mob_end_metabolize/Run()
+	procstart = null
+	src.procstart = null
 	SSmobs.pause()
 
 	var/mob/living/carbon/human/user = allocate(/mob/living/carbon/human/consistent)
@@ -42,10 +50,14 @@
 	TEST_ASSERT(!user.has_movespeed_modifier(/datum/movespeed_modifier/reagent/methamphetamine), "User still has movespeed modifier despite not containing any more meth")
 
 /datum/unit_test/on_mob_end_metabolize/Destroy()
+	procstart = null
+	src.procstart = null
 	SSmobs.ignite()
 	return ..()
 
 /datum/unit_test/addictions/Run()
+	procstart = null
+	src.procstart = null
 	SSmobs.pause()
 
 	var/mob/living/carbon/human/pill_user = allocate(/mob/living/carbon/human/consistent)
@@ -120,5 +132,7 @@
 	TEST_ASSERT(pill_syringe_user.mind.addiction_points[addiction_type_to_check], "User did not gain addiction points after metabolizing meth")
 
 /datum/unit_test/addictions/Destroy()
+	procstart = null
+	src.procstart = null
 	SSmobs.ignite()
 	return ..()

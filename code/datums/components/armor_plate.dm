@@ -20,6 +20,8 @@
 	melee = 10
 
 /datum/component/armor_plate/Initialize(maxamount, obj/item/upgrade_item, datum/armor/armor_mod, upgrade_prefix = "reinforced")
+	procstart = null
+	src.procstart = null
 	if(!isobj(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -41,10 +43,14 @@
 	src.upgrade_name = initial(typecast.name)
 
 /datum/component/armor_plate/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(plate_component)
 	return ..()
 
 /datum/component/armor_plate/proc/examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	//upgrade_item could also be typecast here instead
@@ -63,6 +69,8 @@
 			examine_list += span_notice("It can be strengthened with up to [maxamount] [upgrade_name].")
 
 /datum/component/armor_plate/proc/applyplate(datum/source, obj/item/our_upgrade_item, mob/user, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(our_upgrade_item, upgrade_item))
@@ -111,6 +119,8 @@
 	plate_component.attach(mecha_for_upgrading)
 
 /datum/component/armor_plate/proc/dropplates(datum/source, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(ismecha(parent)) //items didn't drop the plates before and it causes erroneous behavior for the time being with collapsible helmets
@@ -118,6 +128,8 @@
 			new upgrade_item(get_turf(parent))
 
 /datum/component/armor_plate/proc/apply_mech_overlays(obj/vehicle/sealed/mecha/mech, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(amount)

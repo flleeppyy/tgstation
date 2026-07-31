@@ -49,6 +49,8 @@
 	))
 
 /obj/item/portable_wind_turbine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/drag_pickup)
 	RegisterSignal(src, COMSIG_MOVABLE_SET_ANCHORED, PROC_REF(on_anchor))
@@ -56,14 +58,20 @@
 	update_appearance()
 
 /obj/item/portable_wind_turbine/loaded/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cap = new /obj/item/stock_parts/capacitor(src)
 
 /obj/item/portable_wind_turbine/Destroy()
+	procstart = null
+	src.procstart = null
 	return ..()
 
 ///Called when src is anchored
 /obj/item/portable_wind_turbine/proc/on_anchor(atom/source, is_anchored)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (is_anchored)
@@ -79,12 +87,16 @@
 
 ///Called when src changes direction when not equipped
 /obj/item/portable_wind_turbine/proc/block_dir_changes_unanchored(atom/source, old_dir, new_dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return COMPONENT_ATOM_BLOCK_DIR_CHANGE
 
 ///Called when this resists space wind
 /obj/item/portable_wind_turbine/proc/on_space_wind(atom/source, pressure_difference, pressure_direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/portable_wind_turbine/turbine = source
@@ -96,10 +108,14 @@
 	set_rotor_tick(rotor_tick + 1)
 
 /obj/item/portable_wind_turbine/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_back()
 
 /obj/item/portable_wind_turbine/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 	if(slot & slot_flags)
@@ -112,18 +128,24 @@
 
 ///Called when the thing HOLDING the turbine changes direction
 /obj/item/portable_wind_turbine/proc/on_dir_change(datum/source, old_dir, new_dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	update_appearance()
 
 ///Updates the worn back icon for the current loc
 /obj/item/portable_wind_turbine/proc/update_back()
+	procstart = null
+	src.procstart = null
 	if (ishuman(loc))
 		var/mob/living/carbon/human/human = loc
 		human.update_worn_back()
 
 ///Tries to play the woosh sound effect. May not play it if it's been too soon since the last call.
 /obj/item/portable_wind_turbine/proc/try_playsound()
+	procstart = null
+	src.procstart = null
 	if ((world.time - last_sound_time) < TURBINE_MIN_SECONDS_BETWEEN_SOUNDS)
 		return
 	playsound(src, 'sound/machines/woosh.ogg', 20, FALSE)
@@ -131,6 +153,8 @@
 
 ///Sets the rotor animation tick to a new value. Returns TRUE if the rotor made a full rotation.
 /obj/item/portable_wind_turbine/proc/set_rotor_tick(new_tick)
+	procstart = null
+	src.procstart = null
 	var/last_rotor_tick = floor(rotor_tick)
 	rotor_tick = new_tick
 	var/made_full_rotation = FALSE
@@ -145,6 +169,8 @@
 
 ///Adds a certain amount of power to the internal buffer
 /obj/item/portable_wind_turbine/proc/add_power(power, ignore_cap = FALSE)
+	procstart = null
+	src.procstart = null
 	if (ignore_cap)
 		available_power += power
 	else
@@ -152,6 +178,8 @@
 
 ///Called when the thing HOLDING the turbine moves
 /obj/item/portable_wind_turbine/proc/on_move(atom/thing, atom/old_loc, dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/user = thing
@@ -185,6 +213,8 @@
 	playsound(source = src, soundin = 'sound/items/weapons/smash.ogg', vol = src.get_clamped_volume(), vary = TRUE)
 
 /obj/item/portable_wind_turbine/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	switch(default_unfasten_wrench(user, tool, 4 SECONDS))
 		if(SUCCESSFUL_UNFASTEN)
@@ -194,6 +224,8 @@
 	return .
 
 /obj/item/portable_wind_turbine/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!in_range(user, src) && !issilicon(user) && !isobserver(user))
@@ -211,6 +243,8 @@
 		[span_notice("- \A [charging].")]"}
 
 /obj/item/portable_wind_turbine/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(charging)
 		user.balloon_alert(user, "remove the [charging] first!")
@@ -227,6 +261,8 @@
 		return FALSE
 
 /obj/item/portable_wind_turbine/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	if(is_type_in_typecache(arrived, allowed_devices))
 		charging = arrived
 		START_PROCESSING(SSmachines, src)
@@ -235,6 +271,8 @@
 	return ..()
 
 /obj/item/portable_wind_turbine/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if(gone == charging)
 		if(!QDELING(charging))
 			charging.update_appearance()
@@ -244,6 +282,8 @@
 	return ..()
 
 /obj/item/portable_wind_turbine/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/stock_parts/capacitor))
 		if (cap)
 			balloon_alert(user, "already has a capacitor!")
@@ -272,6 +312,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/portable_wind_turbine/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(loc == user || (istype(loc, /turf) && !isnull(charging)))
 		take_charging_out(user)
 		return TRUE
@@ -279,24 +321,32 @@
 	return ..()
 
 /obj/item/portable_wind_turbine/handle_deconstruct(dissassembled)
+	procstart = null
+	src.procstart = null
 	charging?.forceMove(drop_location())
 	cap?.forceMove(drop_location())
 	return ..()
 
 ///Takes charging item out if there is one
 /obj/item/portable_wind_turbine/proc/take_charging_out(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(charging) || user.put_in_hands(charging))
 		return
 	charging.forceMove(drop_location())
 	update_appearance()
 
 /obj/item/portable_wind_turbine/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(charging))
 		return
 	charging.forceMove(drop_location())
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /obj/item/portable_wind_turbine/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	using_power = FALSE
 	if(isnull(charging))
 		return PROCESS_KILL
@@ -325,6 +375,8 @@
 		update_appearance()
 
 /obj/item/portable_wind_turbine/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. & EMP_PROTECT_CONTENTS)
 		return
@@ -338,6 +390,8 @@
 		batong?.cell.charge = 0
 
 /obj/item/portable_wind_turbine/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/rotor = mutable_appearance(worn_icon, "rotor_[floor(rotor_tick)]")
 	rotor.pixel_y -= 8
@@ -348,6 +402,8 @@
 		. += mutable_appearance(icon, "baton")
 
 /obj/item/portable_wind_turbine/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isinhands)
 		return

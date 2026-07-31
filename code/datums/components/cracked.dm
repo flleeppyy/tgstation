@@ -6,6 +6,8 @@
 	var/list/applied_cracks = list()
 
 /datum/component/cracked/Initialize(list/crack_appearances, crack_integrity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isobj(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -13,10 +15,14 @@
 	src.crack_integrity = crack_integrity
 
 /datum/component/cracked/Destroy(force)
+	procstart = null
+	src.procstart = null
 	RemoveCracks(parent, length(applied_cracks))
 	return ..()
 
 /datum/component/cracked/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_ATOM_INTEGRITY_CHANGED, PROC_REF(IntegrityChanged))
 	var/obj/master = parent
@@ -24,10 +30,14 @@
 	IntegrityChanged(parent, integrity, integrity)
 
 /datum/component/cracked/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, COMSIG_ATOM_INTEGRITY_CHANGED)
 
 /datum/component/cracked/proc/IntegrityChanged(obj/source, old_value, new_value)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/cracked_max_integrity = source.max_integrity * crack_integrity
 	if(new_value >= cracked_max_integrity)
@@ -52,6 +62,8 @@
 		RemoveCracks(source, current_cracks - cracks)
 
 /datum/component/cracked/proc/AddCracks(obj/source, count)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to count)
 		var/rand_x = rand(0, 20) - 10
 		var/rand_y = rand(0, 20) - 10
@@ -71,6 +83,8 @@
 		source.add_filter(render_source, 1, new_filter_data)
 
 /datum/component/cracked/proc/RemoveCracks(obj/source, count)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to count)
 		var/removed_filter = pick(applied_cracks)
 		source.remove_filter(removed_filter)

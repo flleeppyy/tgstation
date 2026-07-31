@@ -23,6 +23,8 @@
 	var/datum/port/input/enc_key
 
 /obj/item/circuit_component/wirenet_receive/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(\
 		/datum/component/circuit_component_wirenet_connection,\
@@ -32,32 +34,48 @@
 	)
 
 /obj/item/circuit_component/wirenet_receive/proc/on_powernet_connection(datum/powernet/new_powernet)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(new_powernet, COMSIG_POWERNET_CIRCUIT_TRANSMISSION, PROC_REF(on_circuit_transmission))
 
 /obj/item/circuit_component/wirenet_receive/proc/on_powernet_disconnection(datum/powernet/old_powernet)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(old_powernet, COMSIG_POWERNET_CIRCUIT_TRANSMISSION)
 
 /obj/item/circuit_component/wirenet_receive/proc/on_set_cable_layer(new_layer)
+	procstart = null
+	src.procstart = null
 	cable_layer = new_layer
 
 /obj/item/circuit_component/wirenet_receive/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("Set the cable layer to connect to with the \"1\", \"2\", and \"3\" buttons.", "green", "info")
 	. += create_ui_notice("Currently connected to: [GLOB.cable_layer_to_name["[cable_layer]"]]", "green", "info")
 
 /obj/item/circuit_component/wirenet_receive/populate_options()
+	procstart = null
+	src.procstart = null
 	list_options = add_option_port("List Type", GLOB.wiremod_basic_types)
 
 /obj/item/circuit_component/wirenet_receive/populate_ports()
+	procstart = null
+	src.procstart = null
 	data_package = add_output_port("Data Package", PORT_TYPE_LIST(PORT_TYPE_ANY))
 	enc_key = add_input_port("Encryption Key", PORT_TYPE_STRING)
 
 /obj/item/circuit_component/wirenet_receive/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(port == list_options)
 		var/new_datatype = list_options.value
 		data_package.set_datatype(PORT_TYPE_LIST(new_datatype))
 
 /obj/item/circuit_component/wirenet_receive/proc/on_circuit_transmission(_source, list/data)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(data["enc_key"] != enc_key.value)

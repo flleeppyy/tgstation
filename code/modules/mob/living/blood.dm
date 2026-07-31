@@ -9,18 +9,26 @@
 /// Returns whether this mob can have blood.
 /// Use the CAN_HAVE_BLOOD(mob) macro instead, this is used to update the cached value.
 /mob/living/proc/can_have_blood()
+	procstart = null
+	src.procstart = null
 	return default_blood_volume > 0
 
 /mob/living/carbon/can_have_blood()
+	procstart = null
+	src.procstart = null
 	return !HAS_TRAIT(src, TRAIT_NOBLOOD)
 
 /// Returns the blood volume of the mob.
 /// Apply modifiers when reading blood volume for oxyloss damage, HUDs and analyzers.
 /// Don't apply modifiers when using blood itself, like in spells and reagent transfers.
 /mob/living/proc/get_blood_volume(apply_modifiers = FALSE)
+	procstart = null
+	src.procstart = null
 	return CAN_HAVE_BLOOD(src) ? blood_volume : 0 // Overriding blood setting code can cause blood_volume to be non-zero even when a mob shouldn't have blood.
 
 /mob/living/carbon/get_blood_volume(apply_modifiers = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!CAN_HAVE_BLOOD(src))
 		return 0 // Overriding blood setting code can cause blood_volume to be non-zero even when a mob shouldn't have blood.
 	if (!apply_modifiers)
@@ -46,6 +54,8 @@
 
 /// Sets the base blood volume of the mob, returns the blood volume of the mob after.
 /mob/living/proc/set_blood_volume(amount, minimum = 0, maximum = BLOOD_VOLUME_MAXIMUM, cached_blood_volume = null)
+	procstart = null
+	src.procstart = null
 	if (!isnum(cached_blood_volume))
 		cached_blood_volume = get_blood_volume()
 
@@ -68,6 +78,8 @@
 /// Increases in blood volume give a positive return value and vice versa.
 /// Maximum only applies on positive amounts and vice versa.
 /mob/living/proc/adjust_blood_volume(amount, minimum = 0, maximum = BLOOD_VOLUME_MAXIMUM)
+	procstart = null
+	src.procstart = null
 	if (!CAN_HAVE_BLOOD(src) || amount == 0)
 		return 0
 
@@ -91,10 +103,14 @@
 
 /// Updates effects that rely on blood volume or status, like blood HUDs.
 /mob/living/proc/update_blood_effects()
+	procstart = null
+	src.procstart = null
 	blood_hud_set_status()
 
 /// Updates effects that rely on whether the mob can have blood.
 /mob/living/proc/update_blood_status()
+	procstart = null
+	src.procstart = null
 	var/had_blood = CAN_HAVE_BLOOD(src)
 	var/has_blood = can_have_blood()
 
@@ -127,20 +143,28 @@
 
 /// Sets the blood volume multiplier for the given source to the given multiplier value.
 /mob/living/proc/set_blood_volume_modifier(source, multiplier)
+	procstart = null
+	src.procstart = null
 	LAZYSET(blood_volume_modifiers, source, multiplier)
 	QUEUE_BLOOD_UPDATE(src)
 
 /// Removes the blood volume multiplier for the given source.
 /mob/living/proc/remove_blood_volume_modifier(source)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(blood_volume_modifiers, source)
 	QUEUE_BLOOD_UPDATE(src)
 
 /// A one-time coagulating effect of the mob's bloodiest cut/stab
 /// Returns TRUE if a wound was affected, FALSE if no wound was found
 /mob/living/proc/coagulant_effect(amount_to_heal = 1)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/carbon/coagulant_effect(amount_to_heal = 1)
+	procstart = null
+	src.procstart = null
 	var/datum/wound/bloodiest_wound
 	for(var/datum/wound/iter_wound as anything in all_wounds)
 		if(iter_wound.blood_flow && iter_wound.blood_flow > bloodiest_wound?.blood_flow)
@@ -151,6 +175,8 @@
 
 // Takes care blood loss and regeneration
 /mob/living/carbon/human/handle_blood(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	// Under these circumstances blood handling is not necessary
 	if(bodytemperature < BLOOD_STOP_TEMP || HAS_TRAIT(src, TRAIT_FAKEDEATH))
 		return
@@ -262,11 +288,15 @@
 
 /// Has each bodypart update its bleed/wound overlay icon states
 /mob/living/carbon/proc/update_bodypart_bleed_overlays()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/bodypart/iter_part as anything in get_bodyparts())
 		iter_part.update_part_wound_overlay()
 
 /// Bleeds amount units of blood from the mob, sometimes creating a blood splatter on the floor.
 /mob/living/proc/bleed(amount)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_GODMODE) || !can_bleed())
 		return
 
@@ -277,14 +307,20 @@
 		add_splatter_floor(loc, (amount_bled <= 10))
 
 /mob/living/carbon/human/bleed(amount)
+	procstart = null
+	src.procstart = null
 	amount *= physiology.bleed_mod
 	return ..()
 
 /// A helper to see how much blood we're losing per tick
 /mob/living/proc/get_bleed_rate()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /mob/living/carbon/get_bleed_rate()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_GODMODE) || !can_bleed())
 		return 0
 
@@ -293,6 +329,8 @@
 		. += bodypart.cached_bleed_rate
 
 /mob/living/carbon/human/get_bleed_rate()
+	procstart = null
+	src.procstart = null
 	return ..() * physiology.bleed_mod
 
 /**
@@ -303,6 +341,8 @@
  * * skip_cooldown - Skips caring about the bleed message cooldown.
  */
 /mob/living/carbon/proc/bleed_warn(bleed_rate = null, skip_cooldown = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!CAN_HAVE_BLOOD(src) || !client)
 		return
 	if(!COOLDOWN_FINISHED(src, bleeding_message_cd) && !skip_cooldown)
@@ -354,9 +394,13 @@
 	COOLDOWN_START(src, bleeding_message_cd, next_cooldown)
 
 /mob/living/proc/restore_blood()
+	procstart = null
+	src.procstart = null
 	set_blood_volume(default_blood_volume)
 
 /mob/living/carbon/restore_blood()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/bodypart/bodypart_to_restore as anything in get_bodyparts())
 		bodypart_to_restore.setBleedStacks(0)
@@ -368,6 +412,8 @@
 // Transfers blood from mob to a container or another mob, preserving all data in it.
 // Returns how much blood was able to be transferred.
 /mob/living/proc/transfer_blood_to(atom/movable/receiver, amount, ignore_low_blood = FALSE, ignore_incompatibility = FALSE, transfer_viruses = TRUE)
+	procstart = null
+	src.procstart = null
 	var/cached_blood_volume = get_blood_volume()
 
 	if(!cached_blood_volume || !receiver.reagents || amount <= 0)
@@ -428,9 +474,13 @@
 
 /// Callback that adds blood_reagent to any blood extracted from ourselves
 /mob/living/proc/on_blood_created(datum/blood_type/blood_type, datum/reagent/new_blood)
+	procstart = null
+	src.procstart = null
 	new_blood.AddElement(/datum/element/blood_reagent, src, blood_type)
 
 /mob/living/proc/get_blood_data()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	RETURN_TYPE(/list)
 
@@ -477,6 +527,8 @@
 	return blood_data
 
 /mob/living/carbon/get_blood_data()
+	procstart = null
+	src.procstart = null
 	var/list/blood_data = ..()
 	if (!blood_data)
 		return
@@ -509,6 +561,8 @@
 	return blood_data
 
 /mob/living/proc/get_bloodtype()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/blood_type)
 	if (!CAN_HAVE_BLOOD(src))
 		return
@@ -532,6 +586,8 @@
 
 /// Returns the reagent type this mob has for blood
 /mob/living/proc/get_blood_reagent()
+	procstart = null
+	src.procstart = null
 	if (!can_bleed())
 		return
 
@@ -540,6 +596,8 @@
 
 /// Check if a mob can bleed, and possibly if they're capable of leaving decals on turfs/mobs/items
 /mob/living/proc/can_bleed(bleed_flag = NONE)
+	procstart = null
+	src.procstart = null
 	if (!CAN_HAVE_BLOOD(src))
 		return BLEED_NONE
 
@@ -560,11 +618,15 @@
 
 /// Returns the blood_type datum that corresponds to the string id key in GLOB.blood_types
 /proc/get_blood_type(id)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/blood_type)
 	return GLOB.blood_types[id]
 
 /// Returns the hex color string, or a color matrix, of a given blood_type datum given an assoc list of blood_DNA e.g. ("Unknown Blood Type", "*X")
 /proc/get_color_from_blood_list(list/blood_DNA)
+	procstart = null
+	src.procstart = null
 	var/datum/blood_type/blood_type
 	if(!length(blood_DNA))
 		return get_blood_type(BLOOD_TYPE_O_PLUS).get_color()
@@ -597,6 +659,8 @@
 
 /// Checks if any of the passed blood types have certain blood flags
 /proc/has_blood_flag(list/blood_DNA, blood_flags)
+	procstart = null
+	src.procstart = null
 	if (isnull(blood_DNA))
 		return FALSE
 
@@ -615,6 +679,8 @@
  * * donor: Mob that is donating blood.
  */
 /mob/living/proc/get_blood_compatibility(mob/living/donor)
+	procstart = null
+	src.procstart = null
 	if (get_blood_reagent() != donor.get_blood_reagent())
 		return FALSE
 
@@ -624,6 +690,8 @@
 
 /// Create a small visual-only blood splatter
 /mob/living/proc/create_splatter(splatter_dir = pick(GLOB.cardinals))
+	procstart = null
+	src.procstart = null
 	// Check for TRAIT_NOBLOOD
 	if (!can_bleed()) // Even if we can't cover turfs, we still can add DNA to everything our blood hits
 		return
@@ -637,6 +705,8 @@
  * * small_drip
  */
 /mob/living/proc/add_splatter_floor(turf/splatter_turf, small_drip = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!splatter_turf)
 		splatter_turf = get_turf(src)
 
@@ -662,6 +732,8 @@
  * * splatter_strength: How many tiles it can go, and how many items it can pass over and dirty
  */
 /mob/living/proc/spray_blood(splatter_direction, splatter_strength = 3)
+	procstart = null
+	src.procstart = null
 	// Check if we can bleed and if our splatter can even go anywhere
 	if(!isturf(loc) || can_bleed(BLOOD_COVER_TURFS) != BLEED_SPLATTER)
 		return
@@ -673,6 +745,8 @@
 // To summarize, you can literally dupe blood and bypass bloodloss with a syringe and a beaker.
 // I'm writing this here because it's out of scope for my PR, but was discovered because of it.
 /mob/living/proc/make_blood_trail(turf/target_turf, turf/start, was_facing, movement_direction)
+	procstart = null
+	src.procstart = null
 	if(!has_gravity() || !isturf(start) || !can_bleed())
 		return
 
@@ -766,6 +840,8 @@
  * * half_piece - Should we only create a beginning of a trail, and not a full tile trail? Does not support corners
  */
 /mob/living/proc/create_blood_trail_component(turf/trail_turf, trail_dir, blood_to_add, half_piece)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/decal/cleanable/blood/trail_holder/trail
 	var/check_reverse = TRUE
 	// Do not check the reverse dir if we're a diagonal corner or a half piece
@@ -794,16 +870,22 @@
 	return trail.add_dir_to_trail(trail_dir, src, blood_to_add, half_piece)
 
 /mob/living/carbon/human/make_blood_trail(turf/target_turf, turf/start, direction)
+	procstart = null
+	src.procstart = null
 	if(!is_bleeding())
 		return
 	return ..()
 
 /// Returns how much blood we're losing from being dragged a tile, from [/mob/living/proc/make_blood_trail]
 /mob/living/proc/bleed_drag_amount()
+	procstart = null
+	src.procstart = null
 	var/brute_ratio = round(get_brute_loss() / maxHealth, 0.1)
 	return max(1, brute_ratio * 2)
 
 /mob/living/carbon/bleed_drag_amount()
+	procstart = null
+	src.procstart = null
 	var/bleed_amount = 0
 	for(var/i in all_wounds)
 		var/datum/wound/iter_wound = i
@@ -811,6 +893,8 @@
 	return bleed_amount
 
 /mob/living/proc/get_blood_alcohol_content()
+	procstart = null
+	src.procstart = null
 	var/blood_alcohol_content = 0
 	var/datum/status_effect/inebriated/inebriation = has_status_effect(/datum/status_effect/inebriated)
 	if(!isnull(inebriation))
@@ -820,6 +904,8 @@
 
 /// Returns on a 0-1 scale how synthetic this mobs blood is. Used for blood worms to cap growth from easily accessible sources of blood.
 /mob/living/proc/get_blood_synth_content()
+	procstart = null
+	src.procstart = null
 	if (IS_BLOOD_ALWAYS_SYNTHETIC(src))
 		return 1 // Basic mobs, simple mobs, born monkeys and spawned mobs have fully synthetic blood.
 

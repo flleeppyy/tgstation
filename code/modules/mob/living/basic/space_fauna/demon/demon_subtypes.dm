@@ -36,12 +36,16 @@
 	COOLDOWN_DECLARE(slam_cooldown)
 
 /mob/living/basic/demon/slaughter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GRANT_ACTION(crawl_type)
 	RegisterSignal(src, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(on_attack))
 	RegisterSignals(src, list(COMSIG_MOB_ENTER_JAUNT, COMSIG_MOB_AFTER_EXIT_JAUNT), PROC_REF(on_crawl))
 
 /mob/living/basic/demon/slaughter/grant_loot()
+	procstart = null
+	src.procstart = null
 	var/static/list/droppable_loot = list(
 		/obj/effect/decal/cleanable/blood,
 		/obj/effect/decal/cleanable/blood/innards,
@@ -52,6 +56,8 @@
 
 /// Whenever we enter or exit blood crawl, reset our bonus and hitstreaks.
 /mob/living/basic/demon/slaughter/proc/on_crawl(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Grant us a speed boost if we're on the mortal plane
@@ -66,6 +72,8 @@
 
 /// Performs the classic slaughter demon bodyslam on the attack_target. Yeets them a screen away.
 /mob/living/basic/demon/slaughter/proc/bodyslam(atom/attack_target)
+	procstart = null
+	src.procstart = null
 	if(!isliving(attack_target) || attack_target == src)
 		return
 
@@ -96,6 +104,8 @@
 
 /// Proc that we execute on attacking someone to keep track of our hitstreaks and wound bonuses. Also handles triggering the bodyslam on attacks.
 /mob/living/basic/demon/slaughter/proc/on_attack(mob/living/source, atom/attack_target, proximity_flag, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!proximity_flag)
@@ -138,21 +148,29 @@
 	crawl_type = /datum/action/cooldown/spell/jaunt/bloodcrawl/slaughter_demon/funny
 
 /mob/living/basic/demon/slaughter/laughter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_LIVING_DEATH, PROC_REF(on_death))
 	if(check_holidays(APRIL_FOOLS))
 		icon_state = "honk_demon"
 
 /mob/living/basic/demon/slaughter/laughter/grant_loot()
+	procstart = null
+	src.procstart = null
 	return list() // we do our thing... with the kittens...
 
 /// We do our own special thing on death, which is to spawn a kitten.
 /mob/living/basic/demon/slaughter/laughter/proc/on_death()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/basic/pet/cat/kitten/kitty = new(drop_location())
 	kitty.name = "Laughter"
 
 /mob/living/basic/demon/slaughter/laughter/ex_act(severity)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
 			investigate_log("has died from a devastating explosion.", INVESTIGATE_DEATHS)

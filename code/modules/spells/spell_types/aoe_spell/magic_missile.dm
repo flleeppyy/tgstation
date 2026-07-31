@@ -17,6 +17,8 @@
 	var/obj/projectile/projectile_type = /obj/projectile/magic/aoe/magic_missile
 
 /datum/action/cooldown/spell/aoe/magic_missile/get_things_to_cast_on(atom/center)
+	procstart = null
+	src.procstart = null
 	var/list/things = list()
 	for(var/mob/living/nearby_mob in view(aoe_radius, center))
 		if(nearby_mob == owner || nearby_mob == center)
@@ -27,9 +29,13 @@
 	return things
 
 /datum/action/cooldown/spell/aoe/magic_missile/cast_on_thing_in_aoe(mob/living/victim, atom/caster)
+	procstart = null
+	src.procstart = null
 	fire_projectile(victim, caster)
 
 /datum/action/cooldown/spell/aoe/magic_missile/proc/fire_projectile(atom/victim, mob/caster)
+	procstart = null
+	src.procstart = null
 	var/obj/projectile/to_fire = new projectile_type()
 	to_fire.aim_projectile(victim, caster)
 	SEND_SIGNAL(caster, COMSIG_MOB_SPELL_PROJECTILE, src, victim, to_fire)

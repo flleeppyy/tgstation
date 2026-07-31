@@ -12,6 +12,8 @@
 #define UNIT_TEST_SOURCE_B "source_b"
 
 /datum/unit_test/trait_addition_and_removal/Run()
+	procstart = null
+	src.procstart = null
 	var/datum/trait_target = allocate(/datum) // traits work on the datum-level, so use a datum to ensure that it'll work on all children
 
 	// We want to ensure that what we add is also removed when we're done with our "block" of tests, if it starts to get messy we might just have to reset the datum between tests to ensure cleanliness

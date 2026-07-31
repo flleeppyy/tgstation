@@ -3,6 +3,8 @@
 GLOBAL_LIST(whitelist)
 
 /proc/load_whitelist()
+	procstart = null
+	src.procstart = null
 	GLOB.whitelist = list()
 	for(var/line in world.file2list(WHITELISTFILE))
 		if(!line)
@@ -15,6 +17,8 @@ GLOBAL_LIST(whitelist)
 		GLOB.whitelist = null
 
 /proc/check_whitelist(ckey)
+	procstart = null
+	src.procstart = null
 	if(!GLOB.whitelist)
 		return FALSE
 	. = (ckey in GLOB.whitelist)

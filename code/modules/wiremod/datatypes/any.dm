@@ -4,9 +4,13 @@
 	datatype_flags = DATATYPE_FLAG_ALLOW_MANUAL_INPUT|DATATYPE_FLAG_ALLOW_ATOM_INPUT
 
 /datum/circuit_datatype/any/can_receive_from_datatype(datatype_to_check)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/circuit_datatype/any/handle_manual_input(datum/port/input/port, mob/user, user_input)
+	procstart = null
+	src.procstart = null
 	var/result = text2num(user_input)
 	if(isnull(result))
 		return user_input

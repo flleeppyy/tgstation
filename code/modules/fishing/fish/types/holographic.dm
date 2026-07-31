@@ -20,6 +20,8 @@
 	beauty = /obj/item/fish/goldfish::beauty
 
 /obj/item/fish/holo/Initialize(mapload, apply_qualities = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/area/station/holodeck/holo_area = get_area(src)
 	if(!istype(holo_area))
@@ -28,15 +30,21 @@
 	holo_area.linked.add_to_spawned(src)
 
 /obj/item/fish/holo/make_edible(weight_val)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/fish/holo/set_status(new_status, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(status == FISH_DEAD)
 		animate(src, alpha = 0, 3 SECONDS, easing = SINE_EASING)
 		QDEL_IN(src, 3 SECONDS)
 
 /obj/item/fish/holo/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	visible_message(span_suicide("[user] swallows [src] whole! It looks like [user.p_theyre()] trying to derez [user.p_them()]selves!"))
 	var/area/station/holodeck/holo_area = get_area(src)
 	if(!istype(holo_area))
@@ -112,6 +120,8 @@
 	beauty = FISH_BEAUTY_NULL
 
 /obj/item/fish/holo/checkered/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user))
 		return ..()
 

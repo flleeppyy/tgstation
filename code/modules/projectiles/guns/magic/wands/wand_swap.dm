@@ -12,6 +12,8 @@
 	max_charges = 20
 
 /obj/item/gun/magic/wand/swap/zap_self(mob/living/user, suicide = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(user, span_notice("You swap places with yourself! Amazing!"))
 	var/obj/effect/particle_effect/fluid/smoke/poof_in = new (get_turf(user))
@@ -19,6 +21,8 @@
 	charges--
 
 /obj/item/gun/magic/wand/swap/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.visible_message(span_suicide("As the smoke clears, [user] is lying completely alive on [get_turf(user)]."))
 	return SHAME
@@ -33,6 +37,8 @@
 	projectile_phasing = PASSTABLE | PASSGLASS | PASSGRILLE
 
 /obj/projectile/magic/swap/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/movable/hit_target = target
 	if (!istype(hit_target))

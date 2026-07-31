@@ -20,6 +20,8 @@
 	var/turf/open/camo_tile = /turf/open/space
 
 /datum/component/space_camo/Initialize(space_alpha, non_space_alpha, alpha_to_self = 120, reveal_after_combat, camo_icon)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -30,6 +32,8 @@
 	src.alpha_to_self = alpha_to_self
 
 /datum/component/space_camo/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_ENTERING, PROC_REF(on_atom_entering))
 	if(!isliving(parent))
 		return
@@ -52,6 +56,8 @@
 	show_client_image(parent)
 
 /datum/component/space_camo/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ATOM_ENTERING,
 		COMSIG_ATOM_WAS_ATTACKED,
@@ -64,16 +70,22 @@
 	remove_client_image(parent)
 
 /datum/component/space_camo/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	position_indicator = null
 
 /datum/component/space_camo/proc/on_atom_entering(atom/movable/entering, atom/entered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!attempt_enter_camo())
 		exit_camo(parent)
 
 /datum/component/space_camo/proc/attempt_enter_camo()
+	procstart = null
+	src.procstart = null
 	if(!istype(get_turf(parent), camo_tile) || next_camo > world.time || HAS_TRAIT(parent, TRAIT_INVISIBILITY_BLOCKED))
 		return FALSE
 
@@ -83,6 +95,8 @@
 	return TRUE
 
 /datum/component/space_camo/proc/force_exit_camo()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	exit_camo(parent)
@@ -90,6 +104,8 @@
 	addtimer(CALLBACK(src, PROC_REF(attempt_enter_camo)), reveal_after_combat, TIMER_OVERRIDE | TIMER_UNIQUE)
 
 /datum/component/space_camo/proc/enter_camo(atom/movable/parent)
+	procstart = null
+	src.procstart = null
 	if(parent.alpha != space_alpha)
 		animate(parent, alpha = space_alpha, time = 0.5 SECONDS)
 		if (position_indicator)
@@ -98,6 +114,8 @@
 	is_camouflaged = TRUE
 
 /datum/component/space_camo/proc/exit_camo(atom/movable/parent)
+	procstart = null
+	src.procstart = null
 	if(!is_camouflaged)
 		return
 
@@ -109,19 +127,27 @@
 	is_camouflaged = FALSE
 
 /datum/component/space_camo/proc/show_client_image(mob/show_to)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	show_to.client?.images |= position_indicator
 
 /datum/component/space_camo/proc/remove_client_image(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	remove_from.client?.images -= position_indicator
 
 /datum/component/space_camo/proc/added_invisibility_block(atom/movable/parent)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	exit_camo(parent)
 
 /datum/component/space_camo/proc/removed_invisibility_block(atom/movable/parent)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	attempt_enter_camo()

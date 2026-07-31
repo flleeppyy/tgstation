@@ -9,6 +9,8 @@
 
 /// Code that runs when this meltdown is picked
 /datum/instability_meltdown/proc/meltdown(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	return
 
 // Nonfatal meltdowns
@@ -17,12 +19,16 @@
 /datum/instability_meltdown/monkey
 
 /datum/instability_meltdown/monkey/meltdown(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	victim.monkeyize()
 
 /// Gives you brain trauma that makes your legs disfunctional and gifts you a wheelchair
 /datum/instability_meltdown/paraplegic
 
 /datum/instability_meltdown/paraplegic/meltdown(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	victim.gain_trauma(/datum/brain_trauma/severe/paralysis/paraplegic)
 	new /obj/vehicle/ridden/wheelchair(get_turf(victim))
 	to_chat(victim, span_warning("My flesh turned into a wheelchair and I can't feel my legs."))
@@ -31,18 +37,24 @@
 /datum/instability_meltdown/corgi
 
 /datum/instability_meltdown/corgi/meltdown(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	victim.corgize()
 
 /// Does nothing
 /datum/instability_meltdown/alright
 
 /datum/instability_meltdown/alright/meltdown(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	to_chat(victim, span_notice("Oh, I actually feel quite alright!"))
 
 /// Gives you the same text as above but now when you're hit you take 200 times more damage
 /datum/instability_meltdown/not_alright
 
 /datum/instability_meltdown/not_alright/meltdown(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	to_chat(victim, span_notice("Oh, I actually feel quite alright!"))
 	victim.physiology.damage_resistance -= 20000 //you thought
 	victim.log_message("has received x200 damage multiplier from [type] genetic meltdown")
@@ -51,6 +63,8 @@
 /datum/instability_meltdown/slime
 
 /datum/instability_meltdown/slime/meltdown(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	to_chat(victim, span_notice("Oh, I actually feel quite alright!"))
 	victim.reagents.add_reagent(/datum/reagent/aslimetoxin, 10)
 
@@ -58,12 +72,16 @@
 /datum/instability_meltdown/yeet
 
 /datum/instability_meltdown/yeet/meltdown(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	victim.apply_status_effect(/datum/status_effect/go_away)
 
 /// Makes you take cell damage and gibs you after some time
 /datum/instability_meltdown/decloning
 
 /datum/instability_meltdown/decloning/meltdown(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	to_chat(src, span_notice("Oh, I actually feel quite alright!"))
 	victim.ForceContractDisease(new /datum/disease/decloning) // slow acting, non-viral GBS
 
@@ -71,6 +89,8 @@
 /datum/instability_meltdown/organ_vomit
 
 /datum/instability_meltdown/organ_vomit/meltdown(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	var/list/elligible_organs = list()
 	for(var/obj/item/organ/organ as anything in victim.organs) //make sure we dont get an implant or cavity item
 		if(!(organ.organ_flags & ORGAN_EXTERNAL))
@@ -90,6 +110,8 @@
 	meltdown_weight = 2
 
 /datum/instability_meltdown/snail/meltdown(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	to_chat(victim, span_notice("Oh, I actually feel quite alright!"))
 	victim.ForceContractDisease(new/datum/disease/gastrolosis())
 
@@ -97,6 +119,8 @@
 /datum/instability_meltdown/crab
 
 /datum/instability_meltdown/crab/meltdown(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	to_chat(victim, span_notice("Your DNA mutates into the ultimate biological form!"))
 	victim.crabize()
 
@@ -110,6 +134,8 @@
 /datum/instability_meltdown/fatal/gib
 
 /datum/instability_meltdown/fatal/gib/meltdown(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	victim.investigate_log("has been gibbed by DNA instability.", INVESTIGATE_DEATHS)
 	victim.gib(DROP_ALL_REMAINS)
 
@@ -117,6 +143,8 @@
 /datum/instability_meltdown/fatal/dust
 
 /datum/instability_meltdown/fatal/dust/meltdown(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	victim.investigate_log("has been dusted by DNA instability.", INVESTIGATE_DEATHS)
 	victim.dust()
 
@@ -124,6 +152,8 @@
 /datum/instability_meltdown/fatal/petrify
 
 /datum/instability_meltdown/fatal/petrify/meltdown(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	victim.investigate_log("has been transformed into a statue by DNA instability.", INVESTIGATE_DEATHS)
 	victim.death()
 	victim.petrify(statue_timer = INFINITY, save_brain = FALSE)
@@ -133,6 +163,8 @@
 /datum/instability_meltdown/fatal/dismember
 
 /datum/instability_meltdown/fatal/dismember/meltdown(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/part = victim.get_bodypart(pick(BODY_ZONE_CHEST,BODY_ZONE_HEAD))
 	if(part)
 		part.dismember()
@@ -144,6 +176,8 @@
 /datum/instability_meltdown/fatal/skeletonize
 
 /datum/instability_meltdown/fatal/skeletonize/meltdown(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	victim.visible_message(span_warning("[victim]'s skin melts off!"), span_boldwarning("Your skin melts off!"))
 	victim.spawn_gibs()
 	victim.set_species(/datum/species/skeleton)
@@ -154,6 +188,8 @@
 /datum/instability_meltdown/fatal/ceiling
 
 /datum/instability_meltdown/fatal/ceiling/meltdown(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	to_chat(victim, span_phobia("LOOK UP!"))
 	addtimer(CALLBACK(victim, TYPE_PROC_REF(/mob/living/carbon/human, something_horrible_mindmelt)), 3 SECONDS)
 
@@ -161,4 +197,6 @@
 /datum/instability_meltdown/fatal/psyker
 
 /datum/instability_meltdown/fatal/psyker/meltdown(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	victim.slow_psykerize()

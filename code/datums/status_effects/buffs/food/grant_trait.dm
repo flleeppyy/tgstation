@@ -3,15 +3,21 @@
 	var/trait = TRAIT_DUMB // You need to override this
 
 /datum/status_effect/food/trait/on_apply()
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT_FROM(owner, trait, TRAIT_STATUS_EFFECT(id))) // Check if trait was already applied
 		ADD_TRAIT(owner, trait, TRAIT_STATUS_EFFECT(id))
 	return ..()
 
 /datum/status_effect/food/trait/be_replaced()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, trait, TRAIT_STATUS_EFFECT(id))
 	return ..()
 
 /datum/status_effect/food/trait/on_remove()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, trait, TRAIT_STATUS_EFFECT(id))
 	return ..()
 
@@ -50,6 +56,8 @@
 	trait = TRAIT_WADDLING
 
 /datum/status_effect/food/trait/waddle/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.AddElementTrait(trait, type, /datum/element/waddling)
 	return ..()
 

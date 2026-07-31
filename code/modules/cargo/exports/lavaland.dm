@@ -7,6 +7,8 @@
 	var/prefix = null
 
 /datum/export/lavaland/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch (SSmapping.current_map.minetype)
 		if (MINETYPE_NONE)
@@ -84,7 +86,9 @@
 		/obj/item/pickaxe/drill/jackhammer/demonic,
 	)
 
-/datum/export/lavaland/megafauna/total_printout(datum/export_report/ex, notes = TRUE) //in the unlikely case a miner feels like selling megafauna loot
+/datum/export/lavaland/megafauna/total_printout(datum/export_report/ex, notes = TRUE)
+	procstart = null
+	src.procstart = null //in the unlikely case a miner feels like selling megafauna loot
 	. = ..()
 	if(. && notes)
 		. += " On behalf of the Nanotrasen RnD division: Thank you for your hard work."

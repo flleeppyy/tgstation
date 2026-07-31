@@ -21,17 +21,23 @@ GLOBAL_LIST_EMPTY_TYPED(active_bets, /datum/active_bet)
 	var/datum/active_bet/created_bet
 
 /datum/computer_file/program/betting/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_COMPUTER_FILE_DELETE, PROC_REF(on_delete))
 
 ///Called when we're deleted, we'll be taking the bet with us.
 /datum/computer_file/program/betting/proc/on_delete(datum/source, obj/item/modular_computer/computer_uninstalling)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	created_bet.payout()
 	QDEL_NULL(created_bet)
 
 /datum/computer_file/program/betting/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["active_bets"] = list()
 	for(var/datum/active_bet/bets as anything in GLOB.active_bets)
@@ -55,12 +61,16 @@ GLOBAL_LIST_EMPTY_TYPED(active_bets, /datum/active_bet)
 	return data
 
 /datum/computer_file/program/betting/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["max_title_length"] = MAX_LENGTH_TITLE
 	data["max_description_length"] = MAX_LENGTH_DESCRIPTION
 	return data
 
 /datum/computer_file/program/betting/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/user = ui.user
 	if(isnull(computer.stored_id))
@@ -162,6 +172,8 @@ GLOBAL_LIST_EMPTY_TYPED(active_bets, /datum/active_bet)
 	var/datum/feed_message/newscaster_message
 
 /datum/active_bet/New(creator, name, description, options)
+	procstart = null
+	src.procstart = null
 	src.bet_owner = creator
 	src.name = name
 	src.description = description
@@ -173,12 +185,16 @@ GLOBAL_LIST_EMPTY_TYPED(active_bets, /datum/active_bet)
 	advertise_bet()
 
 /datum/active_bet/Destroy(force)
+	procstart = null
+	src.procstart = null
 	GLOB.active_bets -= src
 	newscaster_message = null
 	return ..()
 
 /// Place a feed article advertising our bet.
 /datum/active_bet/proc/advertise_bet()
+	procstart = null
+	src.procstart = null
 	var/datum/feed_channel/betting_channel = GLOB.news_network.network_channels_by_name[NEWSCASTER_SPACE_BETTING]
 	if(isnull(betting_channel))
 		return
@@ -188,6 +204,8 @@ GLOBAL_LIST_EMPTY_TYPED(active_bets, /datum/active_bet)
 
 /// Reply to our previously placed advertisement feed article.
 /datum/active_bet/proc/reply_to_feed(winning_option)
+	procstart = null
+	src.procstart = null
 	if(isnull(newscaster_message))
 		return
 	GLOB.news_network.submit_comment(
@@ -198,6 +216,8 @@ GLOBAL_LIST_EMPTY_TYPED(active_bets, /datum/active_bet)
 
 ///Returns how many bets there is per option
 /datum/active_bet/proc/get_bets(datum/bank_account/user_account)
+	procstart = null
+	src.procstart = null
 	var/list/bets_per_option = list()
 	for(var/option in options)
 		var/amount_personally_invested = 0
@@ -212,6 +232,8 @@ GLOBAL_LIST_EMPTY_TYPED(active_bets, /datum/active_bet)
 
 ///Pays out the loser's money equally to all the winners, or refunds it all if no winning option was given.
 /datum/active_bet/proc/payout(winning_option)
+	procstart = null
+	src.procstart = null
 	if(isnull(winning_option) || !(winning_option in options))
 		//no winner was selected (likely the host's PDA was destroyed or attempted href exploit), so let's refund everyone.
 		for(var/list/option in options)
@@ -238,6 +260,8 @@ GLOBAL_LIST_EMPTY_TYPED(active_bets, /datum/active_bet)
 
 ///Puts a bank account's money bet on a given option.
 /datum/active_bet/proc/bet_money(datum/bank_account/better, money_betting, option_betting)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		return
 	for(var/option in options)
@@ -284,6 +308,8 @@ GLOBAL_LIST_EMPTY_TYPED(active_bets, /datum/active_bet)
 
 ///Cancels your bet, removing your bet and refunding your money.
 /datum/active_bet/proc/cancel_bet(datum/bank_account/better)
+	procstart = null
+	src.procstart = null
 	for(var/option in options)
 		for(var/list/existing_bets in options[option])
 			if(existing_bets[1] == better)

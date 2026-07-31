@@ -48,6 +48,8 @@
 	var/datum/looping_sound/vent_pump_overclock/sound_loop
 
 /obj/machinery/atmospherics/components/unary/vent_pump/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(!id_tag)
 		id_tag = assign_random_name()
 		var/static/list/tool_screentips
@@ -66,6 +68,8 @@
 	assign_to_area()
 
 /obj/machinery/atmospherics/components/unary/vent_pump/on_update_integrity(old_value, new_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/condition_string
 	switch(get_integrity_percentage())
@@ -82,6 +86,8 @@
 	examine_condition = "The fan is in [condition_string] condition."
 
 /obj/machinery/atmospherics/components/unary/vent_pump/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You can link it with an air sensor using a multitool.")
 
@@ -94,6 +100,8 @@
 		. += span_warning("The fan is broken.")
 
 /obj/machinery/atmospherics/components/unary/vent_pump/multitool_act(mob/living/user, obj/item/multitool/multi_tool)
+	procstart = null
+	src.procstart = null
 	if(istype(multi_tool.buffer, /obj/machinery/air_sensor))
 		var/obj/machinery/air_sensor/sensor = multi_tool.buffer
 		multi_tool.set_buffer(src)
@@ -105,6 +113,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/atmospherics/components/unary/vent_pump/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	var/time_to_repair = (10 SECONDS) * (1 - get_integrity_percentage())
 	if(!time_to_repair)
 		return FALSE
@@ -119,16 +129,22 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/atmospherics/components/unary/vent_pump/atom_fix()
+	procstart = null
+	src.procstart = null
 	set_is_operational(TRUE)
 	update_appearance(UPDATE_ICON)
 	return ..()
 
 /obj/machinery/atmospherics/components/unary/vent_pump/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	set_is_operational(FALSE)
 	update_appearance()
 	return ..()
 
 /obj/machinery/atmospherics/components/unary/vent_pump/Destroy()
+	procstart = null
+	src.procstart = null
 	disconnect_from_area()
 	QDEL_NULL(sound_loop)
 
@@ -139,6 +155,8 @@
 	return ..()
 
 /obj/machinery/atmospherics/components/unary/vent_pump/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/area/old_area = get_area(old_loc)
@@ -151,10 +169,14 @@
 	assign_to_area(new_area)
 
 /obj/machinery/atmospherics/components/unary/vent_pump/on_enter_area(datum/source, area/area_to_register)
+	procstart = null
+	src.procstart = null
 	assign_to_area(area_to_register)
 	. = ..()
 
 /obj/machinery/atmospherics/components/unary/vent_pump/proc/assign_to_area(area/target_area = get_area(src))
+	procstart = null
+	src.procstart = null
 	//this vent is already assigned to an area. Unassign it from here first before reassigning it to an new area
 	if(isnull(target_area) || !isnull(assigned_area))
 		return
@@ -163,6 +185,8 @@
 	update_appearance(UPDATE_NAME)
 
 /obj/machinery/atmospherics/components/unary/vent_pump/proc/disconnect_from_area(area/target_area = get_area(src))
+	procstart = null
+	src.procstart = null
 	//you cannot unassign from an area we never were assigned to
 	if(isnull(target_area) || assigned_area != target_area)
 		return
@@ -170,10 +194,14 @@
 	assigned_area = null
 
 /obj/machinery/atmospherics/components/unary/vent_pump/on_exit_area(datum/source, area/area_to_unregister)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	disconnect_from_area(area_to_unregister)
 
 /obj/machinery/atmospherics/components/unary/vent_pump/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!powered())
 		return
@@ -185,6 +213,8 @@
 		. += mutable_appearance(icon, "overclocked")
 
 /obj/machinery/atmospherics/components/unary/vent_pump/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(underfloor_state)
 		var/image/cap = get_pipe_image(icon, "vent_cap", initialize_directions)
@@ -224,6 +254,8 @@
 		icon_state = "vent_in"
 
 /obj/machinery/atmospherics/components/unary/vent_pump/proc/toggle_overclock(source, from_break = FALSE)
+	procstart = null
+	src.procstart = null
 	fan_overclocked = !fan_overclocked
 
 	if(from_break)
@@ -240,6 +272,8 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/machinery/atmospherics/components/unary/vent_pump/process_atmos()
+	procstart = null
+	src.procstart = null
 	if(!is_operational)
 		return
 	if(!nodes[1])
@@ -310,12 +344,16 @@
 			update_parents()
 
 /obj/machinery/atmospherics/components/unary/vent_pump/update_name()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(override_naming)
 		return
 	name = "\proper [get_area_name(src)] [name] [id_tag]"
 
 /obj/machinery/atmospherics/components/unary/vent_pump/welder_act(mob/living/user, obj/item/welder)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!welder.tool_start_check(user, amount=1))
 		return TRUE
@@ -335,21 +373,29 @@
 	return TRUE
 
 /obj/machinery/atmospherics/components/unary/vent_pump/can_unwrench(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && on && is_operational)
 		to_chat(user, span_warning("You cannot unwrench [src], turn it off first!"))
 		return FALSE
 
 /obj/machinery/atmospherics/components/unary/vent_pump/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(welded)
 		. += "It seems welded shut."
 
 /obj/machinery/atmospherics/components/unary/vent_pump/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon_nopipes()
 
 /obj/machinery/atmospherics/components/unary/vent_pump/attack_alien(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!welded || !(do_after(user, 2 SECONDS, target = src)))
 		return
 	user.visible_message(span_warning("[user] furiously claws at [src]!"), span_notice("You manage to clear away the stuff blocking the vent."), span_hear("You hear loud scraping noises."))
@@ -364,6 +410,8 @@
 	power_channel = AREA_USAGE_EQUIP
 
 /obj/machinery/atmospherics/components/unary/vent_pump/high_volume/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/gas_mixture/air_contents = airs[1]
 	air_contents.volume = 1000

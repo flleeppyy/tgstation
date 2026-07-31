@@ -2,6 +2,8 @@
 /datum/unit_test/screenshot_dynamic_human_icons
 
 /datum/unit_test/screenshot_dynamic_human_icons/Run()
+	procstart = null
+	src.procstart = null
 	// Complicated MODsuit setup
 	var/appearance = get_dynamic_human_appearance(/datum/outfit/syndicatecommandocorpse)
 	test_screenshot("syndicate_commando", get_flat_icon_for_all_directions(appearance))

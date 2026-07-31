@@ -71,6 +71,8 @@
  * No need to check for what the location is, just get its limbs from its contents. It should always be a visible heretic rift. Should.
  */
 /datum/fish_source/dimensional_rift/get_fish_table(atom/location, from_explosion = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(location, /obj/machinery/fishing_portal_generator))
 		var/obj/machinery/fishing_portal_generator/portal = location
@@ -80,6 +82,8 @@
 		.[eaten_thing] = 6
 
 /datum/fish_source/dimensional_rift/on_challenge_completed(mob/user, datum/fishing_challenge/challenge, success)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!success)
@@ -101,6 +105,8 @@
  * Override for influences and arms.
  */
 /datum/fish_source/dimensional_rift/spawn_reward(reward_path, atom/spawn_location, atom/fishing_spot)
+	procstart = null
+	src.procstart = null
 	switch(reward_path)
 		if(FISHING_INFLUENCE)
 			return
@@ -112,6 +118,8 @@
  * This happens when a non-heretic fails the minigame. Their arm is ripped straight off and thrown into the rift.
  */
 /datum/fish_source/dimensional_rift/proc/on_epic_fail(mob/user, datum/fishing_challenge/challenge, success)
+	procstart = null
+	src.procstart = null
 	challenge.location.visible_message(span_danger("[challenge.location]'s tendrils lash out and pull on [user]'s [user.get_active_hand()], ripping it clean off and throwing it towards itself!"))
 	var/obj/item/bodypart/random_arm = user.get_active_hand()
 	if (random_arm.dismember(BRUTE, FALSE))
@@ -124,6 +132,8 @@
 	addtimer(CALLBACK(src, PROC_REF(check_item_location), challenge.location, challenge.used_rod), 1 SECONDS)
 
 /datum/fish_source/dimensional_rift/proc/check_item_location(atom/location, obj/item/used_rod)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/thingy in get_turf(location))
 		// If it's not in the list and it's not what we know as the used rod, skip.
 		// This lets fishing gloves be dragged in as well. I mean honestly if you try fishing in here with those you should just Fucking Die but that's for later.
@@ -133,12 +143,16 @@
 		location.visible_message(span_danger("Tendrils lash out from [location] and greedily drag [thingy] inwards. You're probably never seeing [thingy] again."))
 
 /datum/fish_source/dimensional_rift/proc/arm_fished(atom/spawn_location)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/arm/random_arm = pick(subtypesof(/obj/item/bodypart/arm))
 	random_arm = new random_arm(spawn_location)
 	spawn_location.visible_message(span_notice("A [random_arm] is snatched up from beneath the eldritch depths of [spawn_location]!"))
 	return random_arm
 
 /datum/fish_source/dimensional_rift/proc/influence_fished(mob/user, datum/fishing_challenge/challenge)
+	procstart = null
+	src.procstart = null
 	if(challenge.reward_path != FISHING_INFLUENCE)
 		return
 	var/mob/living/carbon/human/human_user

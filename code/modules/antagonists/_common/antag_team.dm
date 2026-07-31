@@ -17,6 +17,8 @@ GLOBAL_LIST_EMPTY(antagonist_teams)
 	var/list/players_spawned = list()
 
 /datum/team/New(starting_members)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.antagonist_teams += src
 	if(starting_members)
@@ -27,6 +29,8 @@ GLOBAL_LIST_EMPTY(antagonist_teams)
 			add_member(starting_members)
 
 /datum/team/Destroy(force)
+	procstart = null
+	src.procstart = null
 	GLOB.antagonist_teams -= src
 	members = null
 	for(var/datum/objective/objective as anything in objectives)
@@ -36,12 +40,18 @@ GLOBAL_LIST_EMPTY(antagonist_teams)
 	return ..()
 
 /datum/team/proc/add_member(datum/mind/new_member)
+	procstart = null
+	src.procstart = null
 	members |= new_member
 
 /datum/team/proc/remove_member(datum/mind/member)
+	procstart = null
+	src.procstart = null
 	members -= member
 
 /datum/team/proc/add_objective(datum/objective/new_objective, needs_target = FALSE)
+	procstart = null
+	src.procstart = null
 	new_objective.team = src
 	if(needs_target)
 		new_objective.find_target(dupe_search_range = list(src))
@@ -50,6 +60,8 @@ GLOBAL_LIST_EMPTY(antagonist_teams)
 
 //Display members/victory/failure/objectives for the team
 /datum/team/proc/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/report = list()
 
 	report += span_header("\The [name]:")
@@ -83,6 +95,8 @@ GLOBAL_LIST_EMPTY(antagonist_teams)
  * include_subtypes - Whether we allow suntypes of the antag_datum, otherwise it will stricly be type
  */
 /datum/team/proc/get_team_antags(antag_datum, include_subtypes = TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/antag_list = list()
 	for(var/datum/mind/team_mind as anything in members)
 		for(var/datum/antagonist/individual_datum in team_mind.antag_datums)
@@ -100,6 +114,8 @@ GLOBAL_LIST_EMPTY(antagonist_teams)
 
 /// Builds section for the team
 /datum/team/proc/antag_listing_entry()
+	procstart = null
+	src.procstart = null
 	//NukeOps:
 	// Jim (Status) FLW PM TP
 	// Joe (Status) FLW PM TP
@@ -115,4 +131,6 @@ GLOBAL_LIST_EMPTY(antagonist_teams)
 
 ///Custom names for individuals in a team
 /datum/team/proc/antag_listing_name()
+	procstart = null
+	src.procstart = null
 	return name

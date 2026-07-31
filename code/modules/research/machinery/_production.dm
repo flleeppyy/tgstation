@@ -27,6 +27,8 @@
 	var/techweb_updating = FALSE
 
 /obj/machinery/rnd/production/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	print_sound = new(src,  FALSE)
 	materials = new (
 		src, \
@@ -53,12 +55,16 @@
 	update_icon(UPDATE_OVERLAYS)
 
 /obj/machinery/rnd/production/Destroy()
+	procstart = null
+	src.procstart = null
 	cached_designs = null
 	QDEL_NULL(print_sound)
 	QDEL_NULL(materials)
 	return ..()
 
 /obj/machinery/rnd/production/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!stripe_color)
@@ -69,6 +75,8 @@
 	. += stripe
 
 /obj/machinery/rnd/production/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!in_range(user, src) && !isobserver(user))
 		return
@@ -82,17 +90,23 @@
 		. += span_notice("[EXAMINE_HINT("Drag")] towards a direction (while next to it) to change drop direction.")
 
 /obj/machinery/rnd/production/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(drop_direction)
 		context[SCREENTIP_CONTEXT_ALT_LMB] = "Reset Drop"
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/rnd/production/connect_techweb(datum/techweb/new_techweb)
+	procstart = null
+	src.procstart = null
 	if(stored_research)
 		UnregisterSignal(stored_research, list(COMSIG_TECHWEB_ADD_DESIGN, COMSIG_TECHWEB_REMOVE_DESIGN))
 	return ..()
 
 /obj/machinery/rnd/production/on_connected_techweb()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignals(
 		stored_research,
@@ -103,6 +117,8 @@
 
 /// Updates the list of designs this fabricator can print.
 /obj/machinery/rnd/production/proc/update_designs()
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	techweb_updating = FALSE
 
@@ -125,6 +141,8 @@
 	update_static_data_for_all_viewers()
 
 /obj/machinery/rnd/production/proc/on_techweb_update()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!techweb_updating) //so we batch these updates together
@@ -133,6 +151,8 @@
 
 ///When materials are instered via silo link
 /obj/machinery/rnd/production/proc/silo_material_insert(obj/machinery/rnd/machine, container, obj/item/item_inserted, last_inserted_id, list/mats_consumed, amount_inserted)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	process_item(item_inserted, mats_consumed, amount_inserted)
@@ -146,6 +166,8 @@
  * * amount_inserted - amount of material actually processed
  */
 /obj/machinery/rnd/production/proc/process_item(obj/item/item_inserted, list/mats_consumed, amount_inserted)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	//we use initial(active_power_usage) because higher tier parts will have higher active usage but we have no benifit from it
@@ -167,6 +189,8 @@
  * * mat - the material ref we are trying to animate on the machine
  */
 /obj/machinery/rnd/production/proc/flick_animation(datum/material/mat_ref)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	SHOULD_CALL_PARENT(FALSE)
 
@@ -178,11 +202,15 @@
 
 ///When materials are instered into local storage
 /obj/machinery/rnd/production/proc/local_material_insert(container, obj/item/item_inserted, last_inserted_id, list/mats_consumed, amount_inserted, atom/context)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	process_item(item_inserted, mats_consumed, amount_inserted)
 
 /obj/machinery/rnd/production/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/total_storage = 0
@@ -196,6 +224,8 @@
 
 ///Computes this machines cost efficiency based on the available parts
 /obj/machinery/rnd/production/proc/compute_efficiency()
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	var/efficiency = 1.2
@@ -211,6 +241,8 @@
  * * path - the design path to check for
  */
 /obj/machinery/rnd/production/proc/build_efficiency(datum/design/design)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	SHOULD_BE_PURE(TRUE)
 
@@ -219,18 +251,24 @@
 	return efficiency_coeff
 
 /obj/machinery/rnd/production/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/sheetmaterials),
 		get_asset_datum(/datum/asset/spritesheet_batched/research_designs)
 	)
 
 /obj/machinery/rnd/production/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Fabricator")
 		ui.open()
 
 /obj/machinery/rnd/production/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = materials.mat_container.ui_static_data()
 
 	var/list/designs = list()
@@ -263,6 +301,8 @@
 	return data
 
 /obj/machinery/rnd/production/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["materials"] = materials.mat_container.ui_data()
@@ -274,6 +314,8 @@
 	return data
 
 /obj/machinery/rnd/production/ui_act(action, list/params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -453,6 +495,8 @@
 /// Resets the busy flag
 /// Called at the end of do_make_item's timer loop
 /obj/machinery/rnd/production/proc/finalize_build()
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	print_sound.stop()
 	busy = FALSE
@@ -460,6 +504,8 @@
 	update_appearance()
 
 /obj/machinery/rnd/production/mouse_drop_dragged(atom/over, mob/user, src_location, over_location, params)
+	procstart = null
+	src.procstart = null
 	if(!can_interact(user) || (!HAS_SILICON_ACCESS(user) && !isAdminGhostAI(user)) && !Adjacent(user))
 		return
 	if(busy)
@@ -472,6 +518,8 @@
 	balloon_alert(user, "dropping [dir2text(drop_direction)]")
 
 /obj/machinery/rnd/production/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(drop_direction == 0)
 		return CLICK_ACTION_BLOCKING
 	if(busy)
@@ -482,6 +530,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/rnd/production/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(busy && production_animation)
 		icon_state = production_animation

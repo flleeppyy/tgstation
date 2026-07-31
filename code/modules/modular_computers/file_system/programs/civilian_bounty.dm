@@ -18,6 +18,8 @@
 	var/points = 0
 
 /datum/computer_file/program/civilianbounties/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["points"] = points
 	data["status_report"] = status_report
@@ -43,6 +45,8 @@
 	return data
 
 /datum/computer_file/program/civilianbounties/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/user = ui.user
 	switch(action)
@@ -53,6 +57,8 @@
 
 ///Here is where cargo bounties are added to the player's bank accounts, then adjusted and scaled into a civilian bounty.
 /datum/computer_file/program/civilianbounties/proc/add_bounties(mob/user, cooldown_reduction = 0)
+	procstart = null
+	src.procstart = null
 	var/datum/bank_account/id_account = computer.stored_id?.registered_account
 	if(!id_account)
 		return
@@ -75,6 +81,8 @@
  * @param choice The index of the bounty in the list of bounties that the player can choose from.
  */
 /datum/computer_file/program/civilianbounties/proc/pick_bounty(datum/bounty/choice)
+	procstart = null
+	src.procstart = null
 	var/datum/bank_account/id_account = computer.stored_id?.registered_account
 	if(!id_account?.bounties?[choice])
 		playsound(computer.loc, 'sound/machines/synth/synth_no.ogg', 40 , TRUE)

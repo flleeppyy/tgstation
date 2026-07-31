@@ -8,12 +8,18 @@
 	max_ammo = 20
 
 /obj/item/ammo_box/magazine/recharge/update_desc()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = "[initial(desc)] It has [length(stored_ammo)] shot\s left."
 
 /obj/item/ammo_box/magazine/recharge/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state]-[round(ammo_count(), 4)]"
 
-/obj/item/ammo_box/magazine/recharge/attack_self() //No popping out the "bullets"
+/obj/item/ammo_box/magazine/recharge/attack_self()
+	procstart = null
+	src.procstart = null //No popping out the "bullets"
 	return

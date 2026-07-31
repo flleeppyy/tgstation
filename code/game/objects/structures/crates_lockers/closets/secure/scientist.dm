@@ -4,6 +4,8 @@
 	icon_state = "rd"
 
 /obj/structure/closet/secure_closet/research_director/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 
 	new /obj/item/clothing/suit/bio_suit/scientist(src)
@@ -19,6 +21,8 @@
 	new /obj/item/storage/box/skillchips/science(src)
 
 /obj/structure/closet/secure_closet/research_director/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Traitor steal objectives
@@ -33,6 +37,8 @@
 	req_access = list(ACCESS_RESEARCH)
 
 /obj/structure/closet/secure_closet/cytology/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/pushbroom(src)
 	new /obj/item/storage/bag/xeno(src)

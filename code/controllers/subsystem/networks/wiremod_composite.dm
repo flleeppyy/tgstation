@@ -12,6 +12,8 @@ SUBSYSTEM_DEF(wiremod_composite)
 	var/list/templates = list()
 
 /datum/controller/subsystem/wiremod_composite/PreInit()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// This needs to execute before global variables have initialized.
 	for(var/datum/circuit_composite_template/type as anything in subtypesof(/datum/circuit_composite_template))
@@ -20,6 +22,8 @@ SUBSYSTEM_DEF(wiremod_composite)
 		templates[initial(type.datatype)] = new type()
 
 /datum/controller/subsystem/wiremod_composite/Initialize()
+	procstart = null
+	src.procstart = null
 	for(var/type in templates)
 		var/datum/circuit_composite_template/template = templates[type]
 		template.Initialize()
@@ -30,12 +34,16 @@ SUBSYSTEM_DEF(wiremod_composite)
  * to get an already existing composite datatype.
  */
 /datum/controller/subsystem/wiremod_composite/proc/composite_datatype(datatype, ...)
+	procstart = null
+	src.procstart = null
 	var/datum/circuit_composite_template/type = templates[datatype]
 	if(!type)
 		return
 	return type.generate_composite_type(args.Copy(2))
 
 /datum/controller/subsystem/wiremod_composite/proc/get_composite_type(base_type, datatype)
+	procstart = null
+	src.procstart = null
 	var/datum/circuit_composite_template/template = templates[base_type]
 	if(!template)
 		return

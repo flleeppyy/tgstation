@@ -48,6 +48,8 @@
 	var/welded_down = FALSE
 
 /obj/machinery/biogenerator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!GLOB.autounlock_techwebs[/datum/techweb/autounlocking/biogenerator])
 		GLOB.autounlock_techwebs[/datum/techweb/autounlocking/biogenerator] = new /datum/techweb/autounlocking/biogenerator
@@ -57,17 +59,23 @@
 		welded_down = TRUE
 
 /obj/machinery/biogenerator/can_be_unfasten_wrench(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	if(welded_down)
 		to_chat(user, span_warning("[src] is welded to the floor!"))
 		return FAILED_UNFASTEN
 	return ..()
 
 /obj/machinery/biogenerator/set_anchored(anchorvalue)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!anchored && welded_down) //make sure they're keep in sync in case it was forcibly unanchored by badmins or by a megafauna.
 		welded_down = FALSE
 
 /obj/machinery/biogenerator/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	..()
 	if(welded_down)
 		if(!tool.tool_start_check(user, amount=2))
@@ -100,11 +108,15 @@
 	return TRUE
 
 /obj/machinery/biogenerator/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(beaker)
 	QDEL_NULL(soundloop)
 	return ..()
 
 /obj/machinery/biogenerator/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!beaker)
 		return
@@ -118,12 +130,16 @@
 			SSexplosions.low_mov_atom += beaker
 
 /obj/machinery/biogenerator/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == beaker)
 		beaker = null
 		update_appearance()
 
 /obj/machinery/biogenerator/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/new_efficiency = 0
@@ -148,6 +164,8 @@
 
 
 /obj/machinery/biogenerator/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(in_range(user, src) || isobserver(user))
@@ -161,6 +179,8 @@
 		. += span_info("It's moored firmly to the floor. You can unsecure its moorings with a <b>welder</b>.")
 
 /obj/machinery/biogenerator/update_appearance()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/power = machine_stat & (NOPOWER|BROKEN) ? 0 : 1 + min(biomass / max_visual_biomass, 1) + (processing & 1)
@@ -168,6 +188,8 @@
 
 
 /obj/machinery/biogenerator/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(panel_open)
@@ -195,6 +217,8 @@
 	. += emissive_appearance(icon, "[icon_state]_o_screen", src)
 
 /obj/machinery/biogenerator/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	switch(default_unfasten_wrench(user, tool))
 		if(SUCCESSFUL_UNFASTEN)
 			return ITEM_INTERACT_SUCCESS
@@ -203,6 +227,8 @@
 	return NONE
 
 /obj/machinery/biogenerator/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = default_deconstruction_screwdriver(user, tool)
 	if(processing)
 		stop_process(FALSE)
@@ -214,6 +240,8 @@
 	return .
 
 /obj/machinery/biogenerator/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = default_deconstruction_crowbar(user, tool)
 	if(!(. & ITEM_INTERACT_SUCCESS))
 		return
@@ -224,6 +252,8 @@
 		new /obj/effect/decal/cleanable/greenglow(drop_location)
 
 /obj/machinery/biogenerator/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 
@@ -270,11 +300,15 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/machinery/biogenerator/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	eject_beaker(user)
 	return CLICK_ACTION_SUCCESS
 
 /// Activates biomass processing and converts all inserted food products into biomass
 /obj/machinery/biogenerator/proc/start_process()
+	procstart = null
+	src.procstart = null
 	if(machine_stat != NONE || panel_open)
 		return
 
@@ -292,6 +326,8 @@
 	update_appearance()
 
 /obj/machinery/biogenerator/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!processing)
 		return
 
@@ -322,6 +358,8 @@
 	update_appearance()
 
 /obj/machinery/biogenerator/proc/get_content_count()
+	procstart = null
+	src.procstart = null
 	content_count_cache = 0
 	for (var/obj/item/food/food in contents)
 		content_count_cache += 1
@@ -335,6 +373,8 @@
  * subsequently be deleted.
  */
 /obj/machinery/biogenerator/proc/convert_to_biomass(obj/item/food/food_to_convert)
+	procstart = null
+	src.procstart = null
 	var/nutriments = ROUND_UP(food_to_convert.reagents.get_reagent_amount(/datum/reagent/consumable/nutriment, type_check = REAGENT_PARENT_TYPE))
 	biomass += nutriments * productivity
 	qdel(food_to_convert)
@@ -347,6 +387,8 @@
  * Defaults to `TRUE`.
  */
 /obj/machinery/biogenerator/proc/stop_process(update_appearance = TRUE)
+	procstart = null
+	src.procstart = null
 	end_processing()
 	processing = FALSE
 	soundloop.stop()
@@ -356,6 +398,8 @@
 
 
 /obj/machinery/biogenerator/proc/use_biomass(list/materials, amount = 1, remove_biomass = TRUE)
+	procstart = null
+	src.procstart = null
 	if(materials.len != 1 || materials[1] != SSmaterials.get_material(/datum/material/biomass))
 		return FALSE
 
@@ -372,6 +416,8 @@
 
 
 /obj/machinery/biogenerator/proc/create_product(datum/design/design, amount)
+	procstart = null
+	src.procstart = null
 	if(design.make_reagent)
 		if(!beaker)
 			return FALSE
@@ -406,6 +452,8 @@
  * inserted_beaker - the beaker we're inserting into the biogen
  */
 /obj/machinery/biogenerator/proc/insert_beaker(mob/living/user, obj/item/reagent_containers/cup/inserted_beaker)
+	procstart = null
+	src.procstart = null
 	if(!can_interact(user))
 		return
 
@@ -430,6 +478,8 @@
  * silent - whether to give a message to the user that the beaker was ejected.
  */
 /obj/machinery/biogenerator/proc/eject_beaker(mob/living/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!beaker)
 		return
 
@@ -453,6 +503,8 @@
 
 
 /obj/machinery/biogenerator/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & BROKEN || panel_open)
 		return UI_CLOSE
 
@@ -460,12 +512,16 @@
 
 
 /obj/machinery/biogenerator/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/research_designs),
 	)
 
 
 /obj/machinery/biogenerator/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Biogenerator", name)
@@ -473,6 +529,8 @@
 
 
 /obj/machinery/biogenerator/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["beaker"] = beaker ? TRUE : FALSE
 	data["biomass"] = biomass
@@ -490,6 +548,8 @@
 
 
 /obj/machinery/biogenerator/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["categories"] = list()
 	data["max_visual_biomass"] = max_visual_biomass
@@ -523,6 +583,8 @@
 
 
 /obj/machinery/biogenerator/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

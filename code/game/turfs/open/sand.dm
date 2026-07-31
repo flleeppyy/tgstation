@@ -12,15 +12,21 @@
 	leave_footprints = TRUE
 
 /turf/open/misc/beach/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_lazy_fishing(/datum/fish_source/sand)
 
 /turf/open/misc/beach/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(fish_source)
 		GLOB.preset_fish_sources[fish_source].spawn_reward_from_explosion(src, severity)
 	return FALSE
 
 /turf/open/misc/beach/add_footprint(mob/living/carbon/human/walker, movement_direction)
+	procstart = null
+	src.procstart = null
 	if(!SSmapping.level_trait(z, ZTRAIT_SANDSTORM))
 		return ..()
 
@@ -38,6 +44,8 @@
 		RegisterSignal(SSdcs, COMSIG_WEATHER_START(sand_type), PROC_REF(sand_clear_footprints), override = TRUE)
 
 /turf/open/misc/beach/proc/sand_clear_footprints(datum/source, datum/weather/storm)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(loc in storm.impacted_areas))
@@ -56,6 +64,8 @@
 	baseturfs = /turf/open/misc/beach/sand
 
 /turf/open/misc/beach/sand/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(15))
 		icon_state = "sand[rand(1,4)]"
@@ -72,10 +82,14 @@
 	heavyfootstep = FOOTSTEP_WATER
 
 /turf/open/misc/beach/coast/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_MESSAGE_IN_A_BOTTLE_LOCATION, INNATE_TRAIT)
 
 /turf/open/misc/beach/coast/break_tile()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "beach"
 
@@ -84,6 +98,8 @@
 	base_icon_state = "beach-corner"
 
 /turf/open/misc/beach/coast/corner/break_tile()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "beach-corner"
 
@@ -104,10 +120,14 @@
 	rust_resistance = RUST_RESISTANCE_ORGANIC
 
 /turf/open/misc/sandy_dirt/break_tile()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "sand_damaged"
 
 /turf/open/misc/sandy_dirt/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("sand_damaged")
 
 /turf/open/misc/ironsand
@@ -122,5 +142,7 @@
 	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 
 /turf/open/misc/ironsand/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "ironsand[rand(1,15)]"

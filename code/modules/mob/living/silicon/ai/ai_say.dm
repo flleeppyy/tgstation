@@ -1,5 +1,7 @@
 //the following 2 procs are staying here because its for AI and its shells (also AI controlled)
 /mob/living/silicon/compose_track_href(atom/movable/speaker, namepart)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_CAN_GET_AI_TRACKING_MESSAGE))
 		return ""
 	var/mob/M = speaker.GetSource()
@@ -8,12 +10,16 @@
 	return ""
 
 /mob/living/silicon/compose_job(atom/movable/speaker, message_langs, raw_message, radio_freq)
+	procstart = null
+	src.procstart = null
 	//Also includes the </a> for AI hrefs, for convenience.
 	if(!HAS_TRAIT(src, TRAIT_CAN_GET_AI_TRACKING_MESSAGE))
 		return ""
 	return "[radio_freq ? " (" + speaker.GetJob() + ")" : ""]" + "[speaker.GetSource() ? "</a>" : ""]"
 
 /mob/living/silicon/ai/try_speak(message, ignore_spam = FALSE, forced = null, filterproof = FALSE)
+	procstart = null
+	src.procstart = null
 	// AIs cannot speak if silent AI is on.
 	// Unless forced is set, as that's probably stating laws or something.
 	if(!forced && CONFIG_GET(flag/silent_ai))
@@ -23,6 +29,8 @@
 	return ..()
 
 /mob/living/silicon/ai/radio(message, list/message_mods = list(), list/spans, language)
+	procstart = null
+	src.procstart = null
 	if(incapacitated)
 		return FALSE
 	if(!radio_enabled) //AI cannot speak if radio is disabled (via intellicard) or depowered.
@@ -46,6 +54,8 @@
 
 //For holopads only. Usable by AI.
 /mob/living/silicon/ai/proc/holopad_talk(message, list/spans = list(), language, list/message_mods = list())
+	procstart = null
+	src.procstart = null
 	message = trim(message)
 
 	if (!message)
@@ -97,6 +107,8 @@ GAME_VERB_DESC(/mob/living/silicon/ai, announcement_help, "Announcement Help", "
 
 
 /mob/living/silicon/ai/proc/announcement()
+	procstart = null
+	src.procstart = null
 	var/static/announcing_vox = 0 // Stores the time of the last announcement
 	if(announcing_vox > world.time)
 		to_chat(src, span_notice("Please wait [DisplayTimeText(announcing_vox - world.time)]."))
@@ -158,6 +170,8 @@ GAME_VERB_DESC(/mob/living/silicon/ai, announcement_help, "Announcement Help", "
 
 
 /proc/play_vox_word(word, ai_turf, mob/only_listener)
+	procstart = null
+	src.procstart = null
 
 	word = LOWER_TEXT(word)
 
@@ -189,6 +203,8 @@ GAME_VERB_DESC(/mob/living/silicon/ai, announcement_help, "Announcement Help", "
 	return FALSE
 
 /proc/does_target_have_vox_off(mob/target)
+	procstart = null
+	src.procstart = null
 	return !safe_read_pref(target.client, /datum/preference/numeric/volume/sound_ai_vox)
 
 #undef VOX_DELAY

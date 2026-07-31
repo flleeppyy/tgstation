@@ -1,5 +1,7 @@
 //general stuff
 /proc/sanitize_integer(number, min=0, max=1, default=0)
+	procstart = null
+	src.procstart = null
 	if(isnum(number))
 		number = round(number)
 		if(min <= number && number <= max)
@@ -7,6 +9,8 @@
 	return default
 
 /proc/sanitize_float(number, min=0, max=1, accuracy=1, default=0)
+	procstart = null
+	src.procstart = null
 	if(isnum(number))
 		number = round(number, accuracy)
 		if(round(min, accuracy) <= number && number <= round(max, accuracy))
@@ -14,17 +18,23 @@
 	return default
 
 /proc/sanitize_text(text, default="")
+	procstart = null
+	src.procstart = null
 	if(istext(text))
 		return text
 	return default
 
 /proc/sanitize_islist(value, default)
+	procstart = null
+	src.procstart = null
 	if(islist(value) && length(value))
 		return value
 	if(default)
 		return default
 
 /proc/sanitize_inlist(value, list/List, default)
+	procstart = null
+	src.procstart = null
 	if(value in List)
 		return value
 	if(default)
@@ -36,6 +46,8 @@
 
 //more specialised stuff
 /proc/sanitize_gender(gender,neuter=0,plural=1, default="male")
+	procstart = null
+	src.procstart = null
 	switch(gender)
 		if(MALE, FEMALE)
 			return gender
@@ -52,6 +64,8 @@
 	return default
 
 /proc/sanitize_hexcolor(color, desired_format = DEFAULT_HEX_COLOR_LEN, include_crunch = TRUE, default)
+	procstart = null
+	src.procstart = null
 	var/crunch = include_crunch ? "#" : ""
 	if(!istext(color))
 		color = ""
@@ -95,4 +109,6 @@
 
 /// Makes sure the input color is text with a # at the start followed by 6 hexadecimal characters. Examples: "#ff1234", "#A38321", COLOR_GREEN_GRAY
 /proc/sanitize_color(color)
+	procstart = null
+	src.procstart = null
 	return findtext(color, GLOB.is_color) ? color : GLOB.normal_ooc_colour

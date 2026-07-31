@@ -1,4 +1,6 @@
 /obj/item/mod/control/transfer_ai(interaction, mob/user, mob/living/silicon/ai/intAI, obj/item/aicard/card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -45,6 +47,8 @@
 
 /// Place an AI in control of your suit functions
 /obj/item/mod/control/proc/ai_enter_mod(mob/living/silicon/ai/new_ai)
+	procstart = null
+	src.procstart = null
 	new_ai.set_control_disabled(FALSE)
 	new_ai.radio_enabled = TRUE
 	new_ai.ai_restore_power()
@@ -56,6 +60,8 @@
 
 /// Remove an AI's control of your suit functions
 /obj/item/mod/control/proc/ai_exit_mod(obj/item/aicard/card)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/ai/old_ai = ai_assistant
 	old_ai.ai_restore_power()//So the AI initially has power.
 	old_ai.set_control_disabled(TRUE)
@@ -68,6 +74,8 @@
 
 /// Place a pAI in control of your suit functions
 /obj/item/mod/control/proc/insert_pai(mob/user, obj/item/pai_card/card)
+	procstart = null
+	src.procstart = null
 	if (!isnull(ai_assistant))
 		balloon_alert(user, "slot occupied!")
 		return FALSE
@@ -94,6 +102,8 @@
 
 /// Removes pAI control from a modsuit
 /obj/item/mod/control/proc/remove_pai(mob/user, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if (isnull(ai_assistant))
 		balloon_alert(user, "no pAI!")
 		return FALSE
@@ -114,6 +124,8 @@
 
 /// Called when a new ai assistant is inserted
 /obj/item/mod/control/proc/on_gained_assistant(mob/living/silicon/new_helper)
+	procstart = null
+	src.procstart = null
 	ai_assistant = new_helper
 	balloon_alert(new_helper, "transferred to a mod unit")
 	for(var/datum/action/action as anything in actions)
@@ -121,6 +133,8 @@
 
 /// Called when an existing ai assistant is removed
 /obj/item/mod/control/proc/on_removed_assistant()
+	procstart = null
+	src.procstart = null
 	for(var/datum/action/action as anything in actions)
 		action.Remove(ai_assistant)
 	ai_assistant.remote_control = null
@@ -134,6 +148,8 @@
 #define AI_FALL_TIME (1 SECONDS)
 
 /obj/item/mod/control/relaymove(mob/user, direction)
+	procstart = null
+	src.procstart = null
 	if((!active && wearer) || get_charge() < CHARGE_PER_STEP || user != ai_assistant || !COOLDOWN_FINISHED(src, cooldown_mod_move) || (wearer?.pulledby?.grab_state > GRAB_PASSIVE))
 		return FALSE
 	var/datum/mod_part/legs_to_move = get_part_datum_from_slot(ITEM_SLOT_FEET)
@@ -161,6 +177,8 @@
 #undef CHARGE_PER_STEP
 
 /obj/item/mod/control/proc/ai_fall()
+	procstart = null
+	src.procstart = null
 	if(!wearer)
 		return
 	REMOVE_TRAIT(wearer, TRAIT_FORCED_STANDING, REF(src))
@@ -173,6 +191,8 @@
 	var/datum/weakref/stored_ai
 
 /obj/item/mod/ai_minicard/Initialize(mapload, mob/living/silicon/ai/ai)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(ai))
 		return
@@ -185,14 +205,20 @@
 	icon_state = "minicard-filled"
 
 /obj/item/mod/ai_minicard/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(stored_ai)
 	return ..()
 
 /obj/item/mod/ai_minicard/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You see [stored_ai.resolve() || "no AI"] stored inside.")
 
 /obj/item/mod/ai_minicard/transfer_ai(interaction, mob/user, mob/living/silicon/ai/intAI, obj/item/aicard/card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

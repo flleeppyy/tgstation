@@ -72,27 +72,37 @@
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(on_owner_moved))
 
 /datum/component/leash/Destroy()
+	procstart = null
+	src.procstart = null
 	owner = null
 	return ..()
 
 /datum/component/leash/proc/set_distance(distance)
+	procstart = null
+	src.procstart = null
 	ASSERT(isnum(distance))
 	src.distance = distance
 	check_distance()
 
 /datum/component/leash/proc/on_owner_qdel()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	PRIVATE_PROC(TRUE)
 
 	qdel(src)
 
 /datum/component/leash/proc/on_owner_moved(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	PRIVATE_PROC(TRUE)
 
 	check_distance()
 
 /datum/component/leash/proc/on_parent_pre_move(atom/movable/source, atom/new_location)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	PRIVATE_PROC(TRUE)
 
@@ -109,6 +119,8 @@
 	return COMPONENT_MOVABLE_BLOCK_PRE_MOVE
 
 /datum/component/leash/proc/check_distance()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	PRIVATE_PROC(TRUE)
 
@@ -138,6 +150,8 @@
 	commit_path(path)
 
 /datum/component/leash/proc/commit_path(list/turf/path)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 	PRIVATE_PROC(TRUE)
 
@@ -162,6 +176,8 @@
 	SEND_SIGNAL(parent, COMSIG_LEASH_PATH_COMPLETE)
 
 /datum/component/leash/proc/force_teleport_back(reason)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if (snap_on_teleport)
@@ -189,6 +205,8 @@
 /obj/effect/spawner/debug_leash
 
 /obj/effect/spawner/debug_leash/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/obj/item/bikehorn/bike_horn = new(loc)

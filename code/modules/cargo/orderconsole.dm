@@ -46,6 +46,8 @@
 	requestonly = TRUE
 
 /obj/machinery/computer/cargo/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/trade_chip))
 		return NONE
 	var/obj/item/trade_chip/contract = tool
@@ -53,6 +55,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/computer/cargo/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	if(user)
@@ -71,10 +75,14 @@
 	return TRUE
 
 /obj/machinery/computer/cargo/on_construction(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	circuit.configure_machine(src)
 
 /obj/machinery/computer/cargo/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -82,6 +90,8 @@
 		ui.open()
 
 /obj/machinery/computer/cargo/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["department"] = "Cargo" // Hardcoded here, for customization in budgetordering.dm AKA NT IRN
 	data["location"] = SSshuttle.supply.getStatusText()
@@ -146,6 +156,8 @@
 	return data
 
 /obj/machinery/computer/cargo/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["max_order"] = CARGO_MAX_ORDER
 	data["supplies"] = list()
@@ -169,6 +181,8 @@
  * returns a list of supply pack ui data by group
  */
 /obj/machinery/computer/cargo/proc/get_packs_data_by_group()
+	procstart = null
+	src.procstart = null
 	var/list/packs_by_group = list()
 	for(var/pack_id in SSshuttle.supply_packs)
 		var/datum/supply_pack/pack = SSshuttle.supply_packs[pack_id]
@@ -213,6 +227,8 @@
  * the discount is calculated as follows: pack_cost * get_discount()
  */
 /obj/machinery/computer/cargo/proc/get_discount()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /**
@@ -222,6 +238,8 @@
  * * amount - the amount to order. You may not order more then 10 things at once
  */
 /obj/machinery/computer/cargo/proc/add_item(mob/user, id, amount = 1)
+	procstart = null
+	src.procstart = null
 	if(is_express)
 		return
 	id = text2path(id) || id
@@ -353,6 +371,8 @@
  * * id - the id of the cart item to remove
  */
 /obj/machinery/computer/cargo/proc/remove_item(id)
+	procstart = null
+	src.procstart = null
 	for(var/datum/supply_order/order in SSshuttle.shopping_list)
 		if(order.id != id)
 			continue
@@ -371,6 +391,8 @@
  * * order_name - the name of the order
  */
 /obj/machinery/computer/cargo/proc/name_to_id(order_name)
+	procstart = null
+	src.procstart = null
 	for(var/pack in SSshuttle.supply_packs)
 		var/datum/supply_pack/supply = SSshuttle.supply_packs[pack]
 		if(order_name == supply.name)
@@ -378,6 +400,8 @@
 	return null
 
 /obj/machinery/computer/cargo/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -511,6 +535,8 @@
 		post_signal(cargo_shuttle)
 
 /obj/machinery/computer/cargo/proc/post_signal(command)
+	procstart = null
+	src.procstart = null
 
 	var/datum/radio_frequency/frequency = SSradio.return_frequency(FREQ_STATUS_DISPLAYS)
 

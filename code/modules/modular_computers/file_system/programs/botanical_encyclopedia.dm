@@ -13,6 +13,8 @@
 	var/static/list/all_seed_data = null
 
 /datum/computer_file/program/botanical_encyclopedia/proc/generate_all_seed_data()
+	procstart = null
+	src.procstart = null
 	all_seed_data = list()
 
 	for(var/obj/item/seeds/seed_type as anything in valid_subtypesof(/obj/item/seeds))
@@ -32,6 +34,8 @@
 		qdel(seeds)
 
 /datum/computer_file/program/botanical_encyclopedia/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(all_seed_data))
 		generate_all_seed_data()
 

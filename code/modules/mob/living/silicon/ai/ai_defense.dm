@@ -1,10 +1,14 @@
 /mob/living/silicon/ai/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if (stat != DEAD)
 		adjust_brute_loss(60)
 		return TRUE
 	return FALSE
 
 /mob/living/silicon/ai/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -17,6 +21,8 @@
 				SSshuttle.requestEvac(src,"ALERT: Energy surge detected in AI core! Station integrity may be compromised! Initiati--%m091#ar-BZZT")
 
 /mob/living/silicon/ai/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
 			investigate_log("has been gibbed by an explosion.", INVESTIGATE_DEATHS)
@@ -32,9 +38,13 @@
 	return TRUE
 
 /mob/living/silicon/ai/flash_act(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0, type = /atom/movable/screen/fullscreen/flash, length = 25)
+	procstart = null
+	src.procstart = null
 	return // no eyes, no flashing
 
-/mob/living/silicon/ai/emag_act(mob/user, obj/item/card/emag/emag_card) ///emags access panel lock, so you can crowbar it without robotics access or consent
+/mob/living/silicon/ai/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null ///emags access panel lock, so you can crowbar it without robotics access or consent
 	. = ..()
 	if(emagged)
 		balloon_alert(user, "access panel lock already shorted!")
@@ -47,6 +57,8 @@
 	return TRUE
 
 /mob/living/silicon/ai/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!incapacitated && (client || deployed_shell?.client))
 		// alive and well AIs control their floor bolts
 		balloon_alert(user, "the AI's bolt motors resist!")
@@ -61,6 +73,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /mob/living/silicon/ai/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user.combat_mode)
 		return
@@ -114,6 +128,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /mob/living/silicon/ai/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user.combat_mode)
 		return
@@ -138,6 +154,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /mob/living/silicon/ai/attack_effects(damage_done, hit_zone, armor_block, obj/item/attacking_item, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	if(damage_done > 0 && attacking_item.damtype != STAMINA && stat != DEAD)
 		spark_system.start()
 		. = TRUE

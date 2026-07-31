@@ -5,6 +5,8 @@
  * * typepath The typepath of the organ to get
  */
 /mob/proc/get_organ_by_type(typepath)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/obj/item/organ)
 	return
 
@@ -17,6 +19,8 @@
  * * zone [a BODY_ZONE_X define](https://github.com/tgstation/tgstation/blob/master/code/__DEFINES/combat.dm#L187-L200)
  */
 /mob/proc/get_organs_for_zone(zone)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -26,12 +30,18 @@
  * * slot Slot to get the organs from
  */
 /mob/proc/get_organ_slot(slot)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/get_organ_by_type(typepath)
+	procstart = null
+	src.procstart = null
 	return (locate(typepath) in organs)
 
 /mob/living/carbon/get_organs_for_zone(zone, include_children = FALSE)
+	procstart = null
+	src.procstart = null
 	var/valid_organs = list()
 	for(var/obj/item/organ/organ as anything in organs)
 		if(zone == organ.zone)
@@ -41,6 +51,8 @@
 	return valid_organs
 
 /mob/living/carbon/get_organ_slot(slot)
+	procstart = null
+	src.procstart = null
 	. = organs_slot[slot]
 
 /**
@@ -49,6 +61,8 @@
  * list [key] is the ORGAN_SLOT missing an organ, list value is the text name of the slot organ
  */
 /mob/living/carbon/human/proc/get_missing_organs(include_appendix = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/missing_organs = list()
 
 	if(!get_organ_slot(ORGAN_SLOT_BRAIN))

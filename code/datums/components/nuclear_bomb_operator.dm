@@ -19,6 +19,8 @@
 	var/datum/callback/add_disk_overlays
 
 /datum/component/nuclear_bomb_operator/Initialize(datum/callback/on_disk_collected, datum/callback/add_disk_overlays)
+	procstart = null
+	src.procstart = null
 	if (!ismob(parent))
 		return COMPONENT_INCOMPATIBLE
 	if (iscarbon(parent)) // Redundant
@@ -28,6 +30,8 @@
 	src.add_disk_overlays = add_disk_overlays
 
 /datum/component/nuclear_bomb_operator/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 	RegisterSignals(parent, list(COMSIG_LIVING_DEATH, COMSIG_QDELETING), PROC_REF(on_death))
@@ -37,6 +41,8 @@
 	parent.add_traits(list(TRAIT_DISK_VERIFIER, TRAIT_CAN_STRIP, TRAIT_CAN_USE_NUKE), NUKE_OP_MINION_TRAIT)
 
 /datum/component/nuclear_bomb_operator/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, list(
 		COMSIG_ATOM_EXAMINE,
@@ -49,6 +55,8 @@
 	parent.remove_traits(list(TRAIT_DISK_VERIFIER, TRAIT_CAN_STRIP, TRAIT_CAN_USE_NUKE), NUKE_OP_MINION_TRAIT)
 
 /datum/component/nuclear_bomb_operator/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(disky)
 	on_disk_collected = null
 	add_disk_overlays = null
@@ -56,6 +64,8 @@
 
 /// Drop the disk on the floor, if we have it
 /datum/component/nuclear_bomb_operator/proc/drop_disky()
+	procstart = null
+	src.procstart = null
 	var/obj/item/disk/nuclear/held_disk = disky?.resolve()
 	if (!held_disk)
 		return
@@ -67,6 +77,8 @@
 
 /// Add details about carrying the nuke disc to examination.
 /datum/component/nuclear_bomb_operator/proc/on_examine(atom/parent_atom, mob/examiner, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/item/disk/nuclear/held_disk = disky?.resolve()
 	if (!held_disk)
@@ -76,11 +88,15 @@
 
 /// Drop the disk when we are killed
 /datum/component/nuclear_bomb_operator/proc/on_death(atom/parent_atom)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	drop_disky()
 
 /// Try to pick up the disk, put it down, or open the nuke panel
 /datum/component/nuclear_bomb_operator/proc/owner_attacked_atom(atom/parent_atom, atom/attacked_target, proximity, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!proximity)
 		return
@@ -99,6 +115,8 @@
 
 /// Picks up the nuke disk, if it can be picked up
 /datum/component/nuclear_bomb_operator/proc/try_pick_up_disk(obj/item/disk/nuclear/potential_disky)
+	procstart = null
+	src.procstart = null
 	if(potential_disky.anchored)
 		return
 	var/mob/mob_parent = parent
@@ -110,6 +128,8 @@
 
 /// Uses the disk on clicked atom, or places it on the ground
 /datum/component/nuclear_bomb_operator/proc/try_put_down_disk(obj/item/disk/nuclear/held_disk, atom/attacked_target)
+	procstart = null
+	src.procstart = null
 	var/mob/mob_parent = parent
 	if(!isopenturf(attacked_target))
 		INVOKE_ASYNC(held_disk, TYPE_PROC_REF(/obj/item, melee_attack_chain), mob_parent, attacked_target)
@@ -124,6 +144,8 @@
 
 /// Don't hold onto the reference if we lose the disk somehow
 /datum/component/nuclear_bomb_operator/proc/atom_exited_owner(atom/parent_atom, atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/item/disk/nuclear/held_disk = disky?.resolve()
 	if (held_disk != gone)
@@ -134,6 +156,8 @@
 
 /// Display any disk-related overlays which need displaying
 /datum/component/nuclear_bomb_operator/proc/on_update_overlays(atom/parent_atom, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!disky?.resolve())
 		return

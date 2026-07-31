@@ -3,6 +3,8 @@ GLOBAL_DATUM(tower_of_babel, /datum/tower_of_babel)
 /datum/tower_of_babel
 
 /datum/tower_of_babel/New(mob/badmin)
+	procstart = null
+	src.procstart = null
 	if(badmin)
 		message_admins("[ADMIN_LOOKUPFLW(badmin)] has stricken the station with the Tower of Babel!")
 		log_admin("[key_name(badmin)] used the Tower of Babel.")
@@ -30,6 +32,8 @@ GLOBAL_DATUM(tower_of_babel, /datum/tower_of_babel)
 		curse_of_babel(target)
 
 /datum/tower_of_babel/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(SSdcs, COMSIG_GLOB_CREWMEMBER_JOINED)
 
@@ -38,11 +42,15 @@ GLOBAL_DATUM(tower_of_babel, /datum/tower_of_babel)
 		cure_curse_of_babel(target)
 
 /datum/tower_of_babel/proc/handle_new_player(datum/source, mob/living/new_crewmember, rank)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	curse_of_babel(new_crewmember)
 
 /proc/curse_of_babel(mob/living/carbon/to_curse)
+	procstart = null
+	src.procstart = null
 	// silicon mobs are immune
 	if(!iscarbon(to_curse))
 		return
@@ -58,6 +66,8 @@ GLOBAL_DATUM(tower_of_babel, /datum/tower_of_babel)
 
 /// Mainly so admin triggered tower of babel can be undone
 /proc/cure_curse_of_babel(mob/living/carbon/to_cure)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(to_cure))
 		return
 	if(!to_cure.mind)
@@ -70,6 +80,8 @@ GLOBAL_DATUM(tower_of_babel, /datum/tower_of_babel)
 	to_cure.remove_status_effect(/datum/status_effect/tower_of_babel/magical)
 
 /client/proc/tower_of_babel()
+	procstart = null
+	src.procstart = null
 	if(!SSticker.HasRoundStarted())
 		tgui_alert(usr,"The game hasn't started yet!")
 		return
@@ -77,6 +89,8 @@ GLOBAL_DATUM(tower_of_babel, /datum/tower_of_babel)
 	GLOB.tower_of_babel = new /datum/tower_of_babel(usr)
 
 /client/proc/tower_of_babel_undo()
+	procstart = null
+	src.procstart = null
 	if(GLOB.tower_of_babel)
 		message_admins("[ADMIN_LOOKUPFLW(usr)] has cured the station from the effects of Tower of Babel!")
 		log_admin("[key_name(usr)] has cured the station from the effects of Tower of Babel.")

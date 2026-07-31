@@ -57,6 +57,8 @@
  * Returns TRUE if the knowledge can be researched, FALSE otherwise.
  */
 /datum/heretic_knowledge/proc/pre_research(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	// consider moving this check to a type instead
 	if(is_final_knowledge && !our_heretic.unlimited_blades)
 		var/choice = tgui_alert(user, "THIS WILL DISABLE BLADE BREAKING, Are you ready to research this? The blade cap will also be removed.", "Get Final Spell?", list("Yes", "No"))
@@ -72,6 +74,8 @@
  * * our_heretic - The antag datum of who researched us. This should never be null.
  */
 /datum/heretic_knowledge/proc/on_research(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(gain_text)
@@ -91,6 +95,8 @@
  * * our_heretic - The antag datum of who gained us. This should never be null.
  */
 /datum/heretic_knowledge/proc/on_gain(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -102,6 +108,8 @@
  * * our_heretic - The antag datum of who is losing us. This should never be null.
  */
 /datum/heretic_knowledge/proc/on_lose(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -111,6 +119,8 @@
  * Return TRUE to have the ritual show up in the rituals list, FALSE otherwise.
  */
 /datum/heretic_knowledge/proc/can_be_invoked(datum/antagonist/heretic/invoker)
+	procstart = null
+	src.procstart = null
 	return !!LAZYLEN(required_atoms)
 
 /**
@@ -131,10 +141,14 @@
  * Returns: TRUE, if the ritual will continue, or FALSE, if the ritual is skipped / cancelled
  */
 /datum/heretic_knowledge/proc/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Used in unit testing to prepare the components for the test
 /datum/heretic_knowledge/proc/prepare_atom_for_ritual_test(atom/what)
+	procstart = null
+	src.procstart = null
 	if(isitem(what))
 		var/obj/item/item = what
 		item.item_flags &= ~ABSTRACT
@@ -144,6 +158,8 @@
  * Can be overriden by knoweldge subtypes.
  */
 /datum/heretic_knowledge/proc/parse_required_item(atom/item_path, number_of_things)
+	procstart = null
+	src.procstart = null
 	// If we need a human, there is a high likelihood we actually need a (dead) body
 	if(ispath(item_path, /mob/living/carbon/human))
 		return "[number_of_things] bod[number_of_things > 1 ? "ies" : "y"]"
@@ -166,6 +182,8 @@
  * Returns: TRUE, if the ritual should cleanup afterwards, or FALSE, to avoid calling cleanup after.
  */
 /datum/heretic_knowledge/proc/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	if(!length(result_atoms))
 		return FALSE
 
@@ -190,6 +208,8 @@
  * * selected_atoms - a list of all atoms we intend on destroying.
  */
 /datum/heretic_knowledge/proc/cleanup_atoms(list/selected_atoms)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	for(var/atom/sacrificed as anything in selected_atoms)
@@ -226,16 +246,22 @@
 	var/path_recharge_can_surpass_cap = FALSE
 
 /datum/heretic_knowledge/spell/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	charges = max_charges
 	if(max_charges != INFINITY)
 		desc += "<br>Has [max_charges] charge\s[transmute_text ? ", after which you must recharge the spell" : ""]."
 
 /datum/heretic_knowledge/spell/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(created_action_ref)
 	return ..()
 
 /datum/heretic_knowledge/spell/on_gain(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	// Added spells are tracked on the body, and not the mind,
 	// because we handle heretic mind transfers
 	// via the antag datum (on_gain and on_lose).
@@ -257,6 +283,8 @@
 	update_charge_counter()
 
 /datum/heretic_knowledge/spell/on_lose(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	if(created_action_ref?.owner == user)
 		created_action_ref.Remove(user)
 
@@ -270,6 +298,8 @@
 	))
 
 /datum/heretic_knowledge/spell/can_be_invoked(datum/antagonist/heretic/invoker)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(required_atoms))
 		return FALSE
 	if(created_action_ref?.owner != invoker.owner?.current)
@@ -279,10 +309,14 @@
 	return TRUE
 
 /datum/heretic_knowledge/spell/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	add_charges(ceil(max_charges * recharge_amount))
 	return TRUE
 
 /datum/heretic_knowledge/spell/proc/action_update(datum/action/source, atom/movable/screen/movable/action_button/button, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(charge_maptext)
@@ -302,10 +336,14 @@
 	button.add_overlay(charge_maptext)
 
 /datum/heretic_knowledge/spell/proc/action_delete(datum/action/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	created_action_ref = null // shouldn't happen...
 
 /datum/heretic_knowledge/spell/proc/spell_check(datum/action/the_spell, feedback)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(the_spell != created_action_ref || isnull(the_spell.owner))
@@ -321,6 +359,8 @@
 	return SPELL_CANCEL_CAST
 
 /datum/heretic_knowledge/spell/proc/check_charges(mob/living/source, datum/action/cooldown/the_spell)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(the_spell != created_action_ref)
@@ -335,6 +375,8 @@
 	return SPELL_CANCEL_CAST
 
 /datum/heretic_knowledge/spell/proc/deduct_charge(mob/living/source, datum/action/cooldown/the_spell)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(the_spell != created_action_ref)
@@ -347,6 +389,8 @@
 
 /// Add a number of charges, optionally bypassing the cap
 /datum/heretic_knowledge/spell/proc/add_charges(num, uncapped = FALSE)
+	procstart = null
+	src.procstart = null
 	if(num <= 0)
 		return FALSE
 
@@ -360,6 +404,8 @@
 
 /// Remove a number of charges (down to 0)
 /datum/heretic_knowledge/spell/proc/remove_charges(num)
+	procstart = null
+	src.procstart = null
 	if(num <= 0)
 		return FALSE
 
@@ -371,9 +417,13 @@
 	return charges != pre_charge_value
 
 /datum/heretic_knowledge/spell/proc/update_charge_counter()
+	procstart = null
+	src.procstart = null
 	created_action_ref?.build_all_button_icons(UPDATE_BUTTON_STATUS)
 
 /datum/heretic_knowledge/spell/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(var_name == NAMEOF(src, charges) || var_name == NAMEOF(src, max_charges))
 		update_charge_counter()
@@ -391,10 +441,14 @@
 	var/list/datum/weakref/created_items
 
 /datum/heretic_knowledge/limited_amount/Destroy(force)
+	procstart = null
+	src.procstart = null
 	LAZYCLEARLIST(created_items)
 	return ..()
 
 /datum/heretic_knowledge/limited_amount/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/heretic/our_heretic = GET_HERETIC(user)
 	if(our_heretic && our_heretic.unlimited_blades)
 		if(length(result_atoms & typesof(/obj/item/melee/sickly_blade)))
@@ -412,6 +466,8 @@
 	return TRUE
 
 /datum/heretic_knowledge/limited_amount/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	for(var/result in result_atoms)
 		var/atom/created_thing = new result(loc)
 		LAZYADD(created_items, WEAKREF(created_thing))
@@ -436,6 +492,8 @@
 	var/datum/status_effect/heretic_passive/eldritch_passive = /datum/status_effect/heretic_passive
 
 /datum/heretic_knowledge/limited_amount/starting/on_research(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/heretic_knowledge_tree_column/column_path as anything in subtypesof(/datum/heretic_knowledge_tree_column))
 		if(column_path::route != our_heretic.researched_knowledge[type][HKT_ROUTE])
@@ -461,6 +519,8 @@
 		our_heretic.owner.announce_objectives()
 
 /datum/heretic_knowledge/limited_amount/starting/on_gain(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	RegisterSignals(user, list(COMSIG_HERETIC_MANSUS_GRASP_ATTACK, COMSIG_LIONHUNTER_ON_HIT), PROC_REF(on_mansus_grasp))
 	RegisterSignal(user, COMSIG_HERETIC_BLADE_ATTACK, PROC_REF(on_eldritch_blade))
 	if(isliving(user))
@@ -468,6 +528,8 @@
 		living_user.apply_status_effect(eldritch_passive)
 
 /datum/heretic_knowledge/limited_amount/starting/on_lose(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(user, list(COMSIG_HERETIC_MANSUS_GRASP_ATTACK, COMSIG_HERETIC_BLADE_ATTACK))
 	if(isliving(user))
 		var/mob/living/living_user = user
@@ -479,6 +541,8 @@
  * Whenever we cast mansus grasp on someone, apply our mark.
  */
 /datum/heretic_knowledge/limited_amount/starting/proc/on_mansus_grasp(mob/living/source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SHOULD_CALL_PARENT(TRUE)
 
@@ -490,6 +554,8 @@
  * Whenever we attack someone with our blade, attempt to trigger any marks on them.
  */
 /datum/heretic_knowledge/limited_amount/starting/proc/on_eldritch_blade(mob/living/source, mob/living/target, obj/item/melee/sickly_blade/blade)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(target))
@@ -504,6 +570,8 @@
  * Can be overriden to set or pass in additional vars of the status effect.
  */
 /datum/heretic_knowledge/limited_amount/starting/proc/create_mark(mob/living/source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(target.stat == DEAD)
 		return
 	return target.apply_status_effect(mark_type)
@@ -514,6 +582,8 @@
  * If there is no mark, returns FALSE. Returns TRUE if a mark was triggered.
  */
 /datum/heretic_knowledge/limited_amount/starting/proc/trigger_mark(mob/living/source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	var/datum/status_effect/eldritch/mark = target.has_status_effect(/datum/status_effect/eldritch)
 	if(!istype(mark))
 		return FALSE
@@ -532,10 +602,14 @@
 	cost = 1
 
 /datum/heretic_knowledge/blade_upgrade/on_gain(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(user, COMSIG_HERETIC_BLADE_ATTACK, PROC_REF(on_eldritch_blade))
 	RegisterSignal(user, COMSIG_HERETIC_RANGED_BLADE_ATTACK, PROC_REF(on_ranged_eldritch_blade))
 
 /datum/heretic_knowledge/blade_upgrade/on_lose(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(user, list(COMSIG_HERETIC_BLADE_ATTACK, COMSIG_HERETIC_RANGED_BLADE_ATTACK))
 
 
@@ -545,6 +619,8 @@
  * Apply any melee effects from hitting someone with our blade.
  */
 /datum/heretic_knowledge/blade_upgrade/proc/on_eldritch_blade(mob/living/source, mob/living/target, obj/item/melee/sickly_blade/blade)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	do_melee_effects(source, target, blade)
@@ -555,6 +631,8 @@
  * Apply any ranged effects from hitting someone with our blade.
  */
 /datum/heretic_knowledge/blade_upgrade/proc/on_ranged_eldritch_blade(mob/living/source, mob/living/target, obj/item/melee/sickly_blade/blade)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	do_ranged_effects(source, target, blade)
@@ -564,6 +642,8 @@
  * whenever the heretic attacks someone in melee with their heretic blade.
  */
 /datum/heretic_knowledge/blade_upgrade/proc/do_melee_effects(mob/living/source, mob/living/target, obj/item/melee/sickly_blade/blade)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -571,6 +651,8 @@
  * whenever the heretic clicks on someone at range with their heretic blade.
  */
 /datum/heretic_knowledge/blade_upgrade/proc/do_ranged_effects(mob/living/source, atom/target, obj/item/melee/sickly_blade/blade)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -582,6 +664,8 @@
 	var/mob/living/mob_to_summon
 
 /datum/heretic_knowledge/summon/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	return summon_ritual_mob(user, loc, mob_to_summon)
 
 /**
@@ -592,6 +676,8 @@
  * * mob_to_summon - either a mob instance or a mob typepath
  */
 /datum/heretic_knowledge/proc/summon_ritual_mob(mob/living/user, turf/loc, mob/living/mob_to_summon)
+	procstart = null
+	src.procstart = null
 	var/mob/living/summoned
 	if(isliving(mob_to_summon))
 		summoned = mob_to_summon
@@ -655,6 +741,8 @@
 	var/was_completed = FALSE
 
 /datum/heretic_knowledge/knowledge_ritual/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/potential_organs = list(
 		/obj/item/organ/appendix,
@@ -695,6 +783,8 @@
 	required_atoms[pick(potential_uncommoner_items)] += 1
 
 /datum/heretic_knowledge/knowledge_ritual/on_research(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/list/requirements_string = list()
@@ -711,12 +801,18 @@
 	desc = "Rewards you with [KNOWLEDGE_RITUAL_POINTS] bonus knowledge points."
 
 /datum/heretic_knowledge/knowledge_ritual/can_be_invoked(datum/antagonist/heretic/invoker)
+	procstart = null
+	src.procstart = null
 	return !was_completed
 
 /datum/heretic_knowledge/knowledge_ritual/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	return !was_completed
 
 /datum/heretic_knowledge/knowledge_ritual/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/heretic/our_heretic = GET_HERETIC(user)
 	our_heretic.adjust_knowledge_points(KNOWLEDGE_RITUAL_POINTS)
 	was_completed = TRUE
@@ -749,6 +845,8 @@
 	var/announcement_sound
 
 /datum/heretic_knowledge/ultimate/on_research(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/total_points = 0
 	for(var/datum/heretic_knowledge/knowledge as anything in our_heretic.researched_knowledge)
@@ -760,6 +858,8 @@
 		and have sacrificed [our_heretic.total_sacrifices] people ([our_heretic.high_value_sacrifices] of which were high value)")
 
 /datum/heretic_knowledge/ultimate/can_be_invoked(datum/antagonist/heretic/invoker)
+	procstart = null
+	src.procstart = null
 	if(invoker.ascended)
 		return FALSE
 
@@ -769,6 +869,8 @@
 	return TRUE
 
 /datum/heretic_knowledge/ultimate/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/heretic/heretic_datum = GET_HERETIC(user)
 	if(!can_be_invoked(heretic_datum))
 		return FALSE
@@ -787,9 +889,13 @@
  * Checks if the passed human is a valid sacrifice for our ritual.
  */
 /datum/heretic_knowledge/ultimate/proc/is_valid_sacrifice(mob/living/carbon/human/sacrifice)
+	procstart = null
+	src.procstart = null
 	return (sacrifice.stat == DEAD) && !ismonkey(sacrifice)
 
 /datum/heretic_knowledge/ultimate/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 
 	var/datum/antagonist/heretic/heretic_datum = GET_HERETIC(user)
 	heretic_datum.ascended = TRUE
@@ -829,6 +935,8 @@
 	return TRUE
 
 /datum/heretic_knowledge/ultimate/cleanup_atoms(list/selected_atoms)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/human/sacrifice in selected_atoms)
 		selected_atoms -= sacrifice
 		sacrifice.gib(DROP_ALL_REMAINS)

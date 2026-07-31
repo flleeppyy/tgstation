@@ -29,6 +29,8 @@
 	var/status = INTERVIEW_PENDING
 
 /datum/interview/New(client/interviewee)
+	procstart = null
+	src.procstart = null
 	if(!interviewee)
 		qdel(src)
 		return
@@ -48,6 +50,8 @@
  * * approved_by - The user who approved the interview, used for logging
  */
 /datum/interview/proc/approve(client/approved_by)
+	procstart = null
+	src.procstart = null
 	status = INTERVIEW_APPROVED
 	read_only = TRUE
 	GLOB.interviews.approved_ckeys |= owner_ckey
@@ -67,6 +71,8 @@
  * * denied_by - The user who denied the interview, used for logging
  */
 /datum/interview/proc/deny(client/denied_by)
+	procstart = null
+	src.procstart = null
 	status = INTERVIEW_DENIED
 	read_only = TRUE
 	GLOB.interviews.close_interview(src)
@@ -84,6 +90,8 @@
  * Forces client to reconnect, used in the callback from approval
  */
 /datum/interview/proc/reconnect_owner()
+	procstart = null
+	src.procstart = null
 	if (!owner)
 		return
 	winset(owner, null, "command=.reconnect")
@@ -102,17 +110,23 @@ GAME_VERB_PROC(/mob/dead/new_player, open_interview, "Open Interview", "Intervie
 				+ " wait at least 3 minutes before starting a new questionnaire.</span>", confidential = TRUE)
 
 /datum/interview/ui_interact(mob/user, datum/tgui/ui = null)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		ui = new(user, src, "Interview")
 		ui.open()
 
 /datum/interview/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	if(check_rights_for(user.client, R_ADMIN))
 		return GLOB.always_state
 	return GLOB.new_player_state
 
 /datum/interview/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if (..())
 		return
 	switch(action)
@@ -141,6 +155,8 @@ GAME_VERB_PROC(/mob/dead/new_player, open_interview, "Open Interview", "Intervie
 				usr.client?.holder.open_centcom_bans(owner_ckey)
 
 /datum/interview/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list(
 		"welcome_message" = welcome_message,
 		"questions" = list(),
@@ -172,4 +188,6 @@ GAME_VERB_PROC(/mob/dead/new_player, open_interview, "Open Interview", "Intervie
  * Generates a clickable link to open this interview
  */
 /datum/interview/proc/link_self()
+	procstart = null
+	src.procstart = null
 	return "<a href='byond://?_src_=holder;[HrefToken(forceGlobal = TRUE)];interview=[REF(src)]'>Interview #[id]</a>"

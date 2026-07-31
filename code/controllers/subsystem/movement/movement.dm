@@ -20,6 +20,8 @@ SUBSYSTEM_DEF(movement)
 	var/visual_delay = 1
 
 /datum/controller/subsystem/movement/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	var/total_len = 0
 	for(var/list/bucket as anything in sorted_buckets)
 		total_len += length(bucket[MOVEMENT_BUCKET_LIST])
@@ -27,6 +29,8 @@ SUBSYSTEM_DEF(movement)
 	return ..()
 
 /datum/controller/subsystem/movement/Recover()
+	procstart = null
+	src.procstart = null
 	//Get ready this is gonna be horrible
 	//We need to do this to support subtypes by the by
 	var/list/typenames = return_typenames(src.type)
@@ -37,6 +41,8 @@ SUBSYSTEM_DEF(movement)
 	sorted_buckets = old_version.sorted_buckets
 
 /datum/controller/subsystem/movement/fire(resumed)
+	procstart = null
+	src.procstart = null
 	if(!resumed)
 		canonical_time = world.time
 
@@ -48,6 +54,8 @@ SUBSYSTEM_DEF(movement)
 
 /// Processes a bucket of movement loops (This should only ever be called by fire(), it exists to prevent runtime fuckery)
 /datum/controller/subsystem/movement/proc/pour_bucket(list/bucket_info)
+	procstart = null
+	src.procstart = null
 	var/list/processing = bucket_info[MOVEMENT_BUCKET_LIST] // Cache for lookup speed
 	while(processing.len)
 		var/datum/move_loop/loop = processing[processing.len]
@@ -70,6 +78,8 @@ SUBSYSTEM_DEF(movement)
 
 /// Removes a bucket from our system. You only need to pass in the time, but if you pass in the index of the list you save us some work
 /datum/controller/subsystem/movement/proc/smash_bucket(index, bucket_time)
+	procstart = null
+	src.procstart = null
 	var/sorted_length = length(sorted_buckets)
 	if(!index)
 		index = sorted_length + 1 // let's setup the failure condition
@@ -89,6 +99,8 @@ SUBSYSTEM_DEF(movement)
 	buckets -= "[bucket_time]"
 
 /datum/controller/subsystem/movement/proc/queue_loop(datum/move_loop/loop)
+	procstart = null
+	src.procstart = null
 	if(loop.status & MOVELOOP_STATUS_QUEUED)
 		stack_trace("A move loop attempted to queue while already queued")
 		return
@@ -107,6 +119,8 @@ SUBSYSTEM_DEF(movement)
 	our_bucket += loop
 
 /datum/controller/subsystem/movement/proc/dequeue_loop(datum/move_loop/loop)
+	procstart = null
+	src.procstart = null
 	// Go home, you're not here anyway
 	if(!(loop.status & MOVELOOP_STATUS_QUEUED))
 		return
@@ -121,6 +135,8 @@ SUBSYSTEM_DEF(movement)
 	loop.status &= ~MOVELOOP_STATUS_QUEUED
 
 /datum/controller/subsystem/movement/proc/add_loop(datum/move_loop/add)
+	procstart = null
+	src.procstart = null
 	if(add.status & MOVELOOP_STATUS_QUEUED)
 		CRASH("Loop being added that is already queued.")
 	add.loop_started()
@@ -129,6 +145,8 @@ SUBSYSTEM_DEF(movement)
 	queue_loop(add)
 
 /datum/controller/subsystem/movement/proc/remove_loop(datum/move_loop/remove)
+	procstart = null
+	src.procstart = null
 	dequeue_loop(remove)
 	remove.loop_stopped()
 

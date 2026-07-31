@@ -15,13 +15,19 @@
 	merge_type = /obj/item/stack/light_w
 
 /obj/item/stack/light_w/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/silicon = 20, /datum/reagent/copper = 5)
 
 /obj/item/stack/light_w/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_warning("\The [src] looks unfinished, add <b>iron</b> to complete it.")
 
 /obj/item/stack/light_w/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stack/sheet/iron))
 		return ..()
 	var/obj/item/stack/sheet/iron/steel = tool
@@ -37,6 +43,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/stack/light_w/wirecutter_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/Tsec = user.drop_location()
 	var/obj/item/stack/cable_coil/CC = new (Tsec, 5)

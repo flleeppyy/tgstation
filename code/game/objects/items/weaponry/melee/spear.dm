@@ -51,6 +51,8 @@
 	acid = 30
 
 /obj/item/spear/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	force = force_unwielded
 	//decent in a pinch, but pretty bad.
@@ -76,6 +78,8 @@
 
 // I dunno man
 /obj/item/spear/proc/add_headpike_component()
+	procstart = null
+	src.procstart = null
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/headpike)
 
 	AddElement(
@@ -84,6 +88,8 @@
 	)
 
 /obj/item/spear/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[icon_prefix]0"
 	if (icon_prefix == SPEAR_CUSTOM_TIP_PREFIX)
 		worn_icon_state = "spearglass0"
@@ -92,6 +98,8 @@
 	return ..()
 
 /obj/item/spear/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins to sword-swallow \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	if (!do_after(user, 4 SECONDS, target = src))
 		return SHAME
@@ -109,6 +117,8 @@
 	return BRUTELOSS // Just in case they survived losing the head
 
 /obj/item/spear/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/rods/rod = locate() in components
 	if (rod)
 		spear_leftovers = rod.type
@@ -123,6 +133,8 @@
 	return ..()
 
 /obj/item/spear/set_material_slot(slot_type, new_material)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (slot_type != /datum/material_slot/weapon_head/speartip)
 		return
@@ -149,10 +161,14 @@
 	update_appearance()
 
 /obj/item/spear/finalize_material_effects(list/materials)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/item/spear/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (icon_prefix != SPEAR_CUSTOM_TIP_PREFIX)
 		return
@@ -162,6 +178,8 @@
 	. += tip_overlay
 
 /obj/item/spear/separate_worn_overlays(mutable_appearance/standing, mutable_appearance/draw_target, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (icon_prefix != SPEAR_CUSTOM_TIP_PREFIX || !isinhands)
 		return
@@ -171,16 +189,22 @@
 	. += tip_overlay
 
 /obj/item/spear/get_master_material()
+	procstart = null
+	src.procstart = null
 	var/datum/material/tip_material = get_material_from_slot(/datum/material_slot/weapon_head/speartip)
 	if (!tip_material)
 		return ..()
 	return custom_materials[tip_material] ? tip_material : ..()
 
 /obj/item/spear/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(improvised_construction && !QDELETED(src))
 		take_damage(force / 2, sound_effect = FALSE)
 
 /obj/item/spear/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.) //spear was caught
 		return
@@ -188,6 +212,8 @@
 		take_damage(throwforce / 2, sound_effect = FALSE)
 
 /obj/item/spear/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/grillehit.ogg', 50)
 	new spear_leftovers(get_turf(src))
 	if(isliving(loc))
@@ -195,14 +221,20 @@
 	return ..()
 
 /obj/item/spear/get_material_prefixes(list/materials)
+	procstart = null
+	src.procstart = null
 	var/datum/material/material = get_material_from_slot(/datum/material_slot/weapon_head/speartip)
 	return material?.name
 
 /obj/item/spear/proc/on_wield(obj/item/source, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	reach = 1
 	armour_penetration *= 2
 
 /obj/item/spear/proc/on_unwield(obj/item/source, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	reach = 2
 	armour_penetration /= 2
 
@@ -211,6 +243,8 @@
 	material_amount = 1.75
 
 /datum/material_slot/weapon_head/speartip/on_applied(obj/item/spear/target, datum/material/material, amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!(target.material_flags & MATERIAL_AFFECT_STATISTICS))
 		return FALSE
@@ -226,6 +260,8 @@
 	return FALSE
 
 /datum/material_slot/weapon_head/spearhead/on_removed(obj/item/spear/target, datum/material/material, amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!(target.material_flags & MATERIAL_AFFECT_STATISTICS))
 		return FALSE
@@ -241,6 +277,8 @@
 /datum/material_slot/handle/spear
 
 /datum/material_slot/handle/spear/on_applied(obj/item/target, datum/material/material, amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!(target.material_flags & MATERIAL_AFFECT_STATISTICS))
 		return FALSE
@@ -252,6 +290,8 @@
 	return FALSE
 
 /datum/material_slot/handle/spear/on_removed(obj/item/target, datum/material/material, amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!(target.material_flags & MATERIAL_AFFECT_STATISTICS))
 		return FALSE
@@ -279,6 +319,8 @@
 	material_flags = MATERIAL_EFFECTS | MATERIAL_AFFECT_STATISTICS
 
 /obj/item/wireprod/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/datum/material/shard_mat = null
 	if (istype(tool, /obj/item/shard))
 		shard_mat = tool.get_master_material()
@@ -321,10 +363,14 @@
 	var/war_cry = "AAAAARGH!!!"
 
 /obj/item/spear/explosive/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_explosive(new /obj/item/grenade/iedcasing/spawned()) //For admin-spawned explosive lances
 
 /obj/item/spear/explosive/proc/set_explosive(obj/item/grenade/G)
+	procstart = null
+	src.procstart = null
 	if(explosive)
 		QDEL_NULL(explosive)
 	G.forceMove(src)
@@ -332,6 +378,8 @@
 	desc = "A makeshift spear with [G] attached to it"
 
 /obj/item/spear/explosive/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	var/obj/item/grenade/nade = locate() in components
 	if(nade)
 		var/obj/item/spear/lancePart = locate() in components
@@ -341,6 +389,8 @@
 	return ..()
 
 /obj/item/spear/explosive/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins to sword-swallow \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	user.say("[war_cry]", forced="spear warcry")
 	explosive.forceMove(user)
@@ -350,10 +400,14 @@
 	return BRUTELOSS
 
 /obj/item/spear/explosive/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Alt-click to set your war cry.")
 
 /obj/item/spear/explosive/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	var/input = tgui_input_text(user, "What do you want your war cry to be? You will shout it when you hit someone in melee.", "War Cry", max_length = 50)
 	if(input)
 		war_cry = input
@@ -361,6 +415,8 @@
 
 
 /obj/item/spear/explosive/afterattack(atom/movable/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_WIELDED) || !istype(target))
 		return
 	if(target.resistance_flags & INDESTRUCTIBLE) //due to the lich incident of 2021, embedding grenades inside of indestructible structures is forbidden
@@ -391,6 +447,8 @@
 	improvised_construction = FALSE
 
 /obj/item/spear/grey_tide/afterattack(atom/movable/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	user.add_ally("greytide([REF(user)])")
 	if(!isliving(target))
 		return
@@ -421,6 +479,8 @@
 	pike_type = /obj/structure/headpike/military
 
 /obj/item/spear/military/add_headpike_component()
+	procstart = null
+	src.procstart = null
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/headpikemilitary)
 
 	AddElement(
@@ -462,6 +522,8 @@
 	material_slots = list(/datum/material_slot/weapon_head/speartip = /datum/material/titanium, /datum/material_slot/handle/spear = /datum/material/alloy/plasteel)
 
 /obj/item/spear/dragonator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/bane, affected_biotypes = MOB_MINING, added_damage = 80) //For killing really big monsters.
 
@@ -490,6 +552,8 @@
 	material_slots = list(/datum/material_slot/weapon_head/speartip = /datum/material/titanium, /datum/material_slot/handle/spear = /datum/material/alloy/plasteel)
 
 /obj/item/spear/dragonator_untreated/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	var/obj/item/spear/dragonator/dragonator = new(loc)
 	dragonator.set_material_slots(material_slots)
 	dragonator.set_custom_materials(custom_materials.Copy())
@@ -515,6 +579,8 @@
 	pike_type = /obj/structure/headpike/bone
 
 /obj/item/spear/bonespear/add_headpike_component()
+	procstart = null
+	src.procstart = null
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/headpikebone)
 
 	AddElement(
@@ -539,6 +605,8 @@
 	pike_type = /obj/structure/headpike/bamboo
 
 /obj/item/spear/bamboospear/add_headpike_component()
+	procstart = null
+	src.procstart = null
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/headpikebamboo)
 
 	AddElement(
@@ -588,6 +656,8 @@
 	var/gave_pass_flags = FALSE
 
 /datum/action/item_action/skybulge/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(target, TRAIT_WIELDED))
 		owner.balloon_alert(owner, "not dual-wielded!")
 		return
@@ -605,6 +675,8 @@
 
 ///Sends the owner up in the air and calls them back down, calling land() for aftereffects.
 /datum/action/item_action/skybulge/proc/jump_up()
+	procstart = null
+	src.procstart = null
 	if(!do_after(owner, 2 SECONDS, target = owner, timed_action_flags = IGNORE_USER_LOC_CHANGE))
 		REMOVE_TRAIT(target, TRAIT_NEEDS_TWO_HANDS, ACTION_TRAIT)
 		return
@@ -631,6 +703,8 @@
 	jump_timer = addtimer(CALLBACK(src, PROC_REF(land), /*do_effects = */TRUE, /*mob_override = */owner), 3 SECONDS, TIMER_STOPPABLE)
 
 /datum/action/item_action/skybulge/update_status_on_signal(datum/source, new_stat, old_stat)
+	procstart = null
+	src.procstart = null
 	if(!isnull(jump_timer) && !IsAvailable())
 		INVOKE_ASYNC(src, PROC_REF(land), /*do_effects = */FALSE, /*mob_override = */source)
 		deltimer(jump_timer)
@@ -647,6 +721,8 @@
  * ourselves.
  */
 /datum/action/item_action/skybulge/proc/land(do_effects = TRUE, mob/living/mob_doing_effects)
+	procstart = null
+	src.procstart = null
 	if(!mob_doing_effects)
 		mob_doing_effects = owner
 	var/turf/landed_on = get_turf(mob_doing_effects)
@@ -683,5 +759,7 @@
 ///Called when the person holding us is trying to attack something mid-jump.
 ///You're technically in mid-air, so block any attempts at getting extra hits in.
 /datum/action/item_action/skybulge/proc/on_attack_during_jump(atom/source, mob/living/target_mob, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return COMPONENT_CANCEL_ATTACK_CHAIN

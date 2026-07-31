@@ -15,6 +15,8 @@
 	blacklist = list(/datum/station_trait/strong_supply_lines)
 
 /datum/station_trait/distant_supply_lines/on_round_start()
+	procstart = null
+	src.procstart = null
 	SSeconomy.pack_price_modifier *= 1.2
 
 ///A negative trait that stops mail from arriving (or the inverse if on holiday). It also enables a specific shuttle loan situation.
@@ -26,6 +28,8 @@
 	report_message = "Due to an ongoing strike announced by the postal workers union, mail won't be delivered this shift."
 
 /datum/station_trait/mail_blocked/on_round_start()
+	procstart = null
+	src.procstart = null
 	//This is either a holiday or Sunday... well then, let's flip the situation.
 	if(SSeconomy.mail_blocked)
 		name = "Postal system overtime"
@@ -36,6 +40,8 @@
 	SSeconomy.mail_blocked = !SSeconomy.mail_blocked
 
 /datum/station_trait/mail_blocked/hangover/revert()
+	procstart = null
+	src.procstart = null
 	var/datum/round_event_control/shuttle_loan/our_event = locate() in SSevents.control
 	our_event.unavailable_situations |= /datum/shuttle_loan_situation/mail_strike
 	SSeconomy.mail_blocked = !SSeconomy.mail_blocked
@@ -69,16 +75,22 @@
 	blacklist = list(/datum/station_trait/late_arrivals, /datum/station_trait/random_spawns)
 
 /datum/station_trait/hangover/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSdcs, COMSIG_GLOB_JOB_AFTER_LATEJOIN_SPAWN, PROC_REF(on_job_after_spawn))
 
 /datum/station_trait/hangover/revert()
+	procstart = null
+	src.procstart = null
 	for (var/obj/effect/landmark/start/hangover/hangover_spot in GLOB.start_landmarks_list)
 		QDEL_LIST(hangover_spot.hangover_debris)
 
 	return ..()
 
 /datum/station_trait/hangover/proc/on_job_after_spawn(datum/source, datum/job/job, mob/living/spawned_mob)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!prob(35))
@@ -104,6 +116,8 @@
 	report_message = "Station lights seem to be damaged, be safe when starting your shift today."
 
 /datum/station_trait/blackout/on_round_start()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/machinery/power/apc/apc as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/power/apc))
 		if(is_station_level(apc.z) && prob(60))
@@ -130,13 +144,19 @@
 	var/chosen_job_name
 
 /datum/station_trait/overflow_job_bureaucracy/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSjob, COMSIG_SUBSYSTEM_POST_INITIALIZE, PROC_REF(set_overflow_job_override))
 
 /datum/station_trait/overflow_job_bureaucracy/get_report()
+	procstart = null
+	src.procstart = null
 	return "[name] - It seems for some reason we put out the wrong job-listing for the overflow role this shift...I hope you like [chosen_job_name]s."
 
 /datum/station_trait/overflow_job_bureaucracy/proc/set_overflow_job_override(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/datum/job/picked_job = pick(SSjob.get_valid_overflow_jobs())
 	chosen_job_name = LOWER_TEXT(picked_job.title) // like Chief Engineers vs like chief engineers
@@ -152,10 +172,14 @@
 	blacklist = list(/datum/station_trait/quick_shuttle)
 
 /datum/station_trait/slow_shuttle/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSshuttle, COMSIG_SUBSYSTEM_POST_INITIALIZE, PROC_REF(slow_the_shuttle))
 
 /datum/station_trait/slow_shuttle/proc/slow_the_shuttle(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SSshuttle.supply.callTime *= 1.5
 	UnregisterSignal(SSshuttle, COMSIG_SUBSYSTEM_POST_INITIALIZE)
@@ -170,12 +194,16 @@
 	trait_to_give = STATION_TRAIT_BOTS_GLITCHED
 
 /datum/station_trait/bot_languages/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// What "caused" our robots to go haywire (fluff)
 	var/event_source = pick("an ion storm", "a syndicate hacking attempt", "a malfunction", "issues with your onboard AI", "an intern's mistakes", "budget cuts")
 	report_message = "Your station's friendly bots have had their language matrix fried due to [event_source], resulting in some strange and unfamiliar speech patterns."
 
 /datum/station_trait/bot_languages/on_round_start()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// All bots that exist round start on station Z OR on the escape shuttle have their set language randomized.
 	for(var/mob/living/found_bot as anything in GLOB.bots_list)
@@ -192,6 +220,8 @@
 	trait_to_give = STATION_TRAIT_MACHINES_GLITCHED
 
 /datum/station_trait/machine_languages/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// What "caused" our machines to go haywire (fluff)
 	var/event_source = pick("an ion storm", "a malfunction", "a software update", "a power surge", "a computer virus", "a subdued machine uprising", "a clown's prank")
@@ -211,6 +241,8 @@
 	var/static/list/weapon_types
 
 /datum/station_trait/revenge_of_pun_pun/New()
+	procstart = null
+	src.procstart = null
 	if(!weapon_types)
 		weapon_types = list(
 			/obj/item/chair = 20,
@@ -228,6 +260,8 @@
 	RegisterSignal(SSatoms, COMSIG_SUBSYSTEM_POST_INITIALIZE, PROC_REF(arm_monke))
 
 /datum/station_trait/revenge_of_pun_pun/proc/arm_monke()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/punpun = GLOB.the_one_and_only_punpun
 	if(!punpun)
@@ -307,6 +341,8 @@
 	var/max_occurrences_modifier = 0
 
 /datum/station_trait/random_event_weight_modifier/on_round_start()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/round_event_control/modified_event = locate(event_control_path) in SSevents.control
 	if(!modified_event)
@@ -324,6 +360,8 @@
 	weight_multiplier = 2
 
 /datum/station_trait/random_event_weight_modifier/ion_storms/get_pulsar_message()
+	procstart = null
+	src.procstart = null
 	var/advisory_string = "Advisory Level: <b>ERROR</b></center><BR>"
 	advisory_string += scramble_message_replace_chars("Your sector's advisory level is ERROR. An electromagnetic field has stormed through nearby surveillance equipment, causing major data loss. Partial data was recovered and showed no credible threats to Nanotrasen assets within the Spinward Sector; however, the Department of Intelligence advises maintaining high alert against potential threats due to the lack of complete data.", 35)
 	return advisory_string
@@ -389,6 +427,8 @@
 	)
 
 /datum/station_trait/revolutionary_trashing/on_round_start()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	INVOKE_ASYNC(src, PROC_REF(trash_this_place)) //Must be called asynchronously
@@ -401,6 +441,8 @@
  */
 
 /datum/station_trait/revolutionary_trashing/proc/trash_this_place()
+	procstart = null
+	src.procstart = null
 	for(var/area/station/command/area_to_trash in GLOB.areas)
 		for (var/list/zlevel_turfs as anything in area_to_trash.get_zlevel_turf_lists())
 			for (var/turf/current_turf as anything in zlevel_turfs)
@@ -480,6 +522,8 @@
 	var/carp_color_override
 
 /datum/station_trait/nebula/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	SSparallax.swap_out_random_parallax_layer(nebula_layer)
@@ -503,25 +547,35 @@
 	var/list/shielding = list()
 
 /datum/station_trait/nebula/hostile/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	calculate_nebula_strength()
 
 	apply_nebula_effect(nebula_intensity - get_shielding_level())
 
 /datum/station_trait/nebula/hostile/on_round_start()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	addtimer(CALLBACK(src, PROC_REF(send_instructions)), 30 SECONDS)
 
 ///Announce to the station what's going on and what they need to do
 /datum/station_trait/nebula/hostile/proc/send_instructions()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Calculate how strong we currently are
 /datum/station_trait/nebula/hostile/proc/calculate_nebula_strength()
+	procstart = null
+	src.procstart = null
 	nebula_intensity = min(STATION_TIME_PASSED(), maximum_nebula_intensity) / intensity_increment_time
 
 ///Check how strong the stations shielding is
 /datum/station_trait/nebula/hostile/proc/get_shielding_level()
+	procstart = null
+	src.procstart = null
 	var/shield_strength = 0
 	for(var/atom/movable/shielder as anything in shielding)
 		if(!is_station_level(shielder.z))
@@ -533,21 +587,29 @@
 
 ///Add a shielding unit to ask for shielding
 /datum/station_trait/nebula/hostile/proc/add_shielder(atom/movable/shielder, shielding_proc)
+	procstart = null
+	src.procstart = null
 	shielding[shielder] = CALLBACK(shielder, shielding_proc)
 
 	RegisterSignal(shielder, COMSIG_QDELETING, PROC_REF(remove_shielder))
 
 ///Remove a shielding unit from our tracking
 /datum/station_trait/nebula/hostile/proc/remove_shielder(atom/movable/shielder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	shielding.Remove(shielder)
 
 ///The station did not set up shielding, start creating effects
 /datum/station_trait/nebula/hostile/proc/apply_nebula_effect(effect_strength = 0)
+	procstart = null
+	src.procstart = null
 	return
 
 /proc/add_to_nebula_shielding(atom/movable/shielder, nebula_type, shielding_proc)
+	procstart = null
+	src.procstart = null
 	var/datum/station_trait/nebula/hostile/nebula = locate(nebula_type) in SSstation.station_traits
 	if(!nebula)
 		return FALSE
@@ -587,6 +649,8 @@
 	var/radioactive_areas = /area/space
 
 /datum/station_trait/nebula/hostile/radiation/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	RegisterSignal(SSdcs, COMSIG_RULESET_BODY_GENERATED_FROM_GHOSTS, PROC_REF(on_spawned_mob))
@@ -596,6 +660,8 @@
 		RegisterSignal(target, COMSIG_AREA_EXITED, PROC_REF(on_exited))
 
 /datum/station_trait/nebula/hostile/radiation/on_round_start()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	//Let people order more nebula shielding
@@ -628,6 +694,8 @@
 
 ///They entered space? START BOMBING WITH RADS HAHAHAHA. old_area can be null for new objects
 /datum/station_trait/nebula/hostile/radiation/proc/on_entered(area/space, atom/movable/enterer, area/old_area)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Old area was radioactive, so what's the point. nothing changes. nothing ever does. also make sure the subsystem is alive before we give it food
@@ -638,6 +706,8 @@
 
 ///Called when an atom leaves space, so we can remove the radiation effect
 /datum/station_trait/nebula/hostile/radiation/proc/on_exited(area/space, atom/movable/exiter, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	SSradioactive_nebula.fake_unirradiate(exiter)
@@ -646,6 +716,8 @@
 
 /// When a mob is spawned by dynamic, intercept and give it a little radiation shield. Only works for dynamic mobs!
 /datum/station_trait/nebula/hostile/radiation/proc/on_spawned_mob(datum/source, mob/spawned_mob)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(get_area(spawned_mob), radioactive_areas)) //only if you're spawned in the radioactive areas
@@ -658,6 +730,8 @@
 	spawnee.apply_status_effect(/datum/status_effect/radiation_immunity/radnebula)
 
 /datum/station_trait/nebula/hostile/radiation/apply_nebula_effect(effect_strength = 0)
+	procstart = null
+	src.procstart = null
 	//big bombad now
 	if(effect_strength > 0 && !SSmapping.is_planetary()) //admins can force this
 		if(!SSweather.get_weather_by_type(/datum/weather/rad_storm/nebula))
@@ -686,9 +760,13 @@
 
 ///Send a care package because it is not going well
 /datum/station_trait/nebula/hostile/radiation/proc/send_care_package()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/pod_landingzone (get_safe_random_station_turf_equal_weight(), new /obj/structure/closet/supplypod/centcompod (), new /obj/machinery/nebula_shielding/emergency/radiation ())
 
 /datum/station_trait/nebula/hostile/radiation/send_instructions()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/nebula_shielding/shielder = /obj/machinery/nebula_shielding/radiation
 	var/obj/machinery/gravity_generator/main/innate_shielding = /obj/machinery/gravity_generator/main
 	//How long do we have until the first shielding unit needs to be up?
@@ -723,6 +801,8 @@
 	frequency.post_signal(virtual_speaker, signal)
 
 /datum/station_trait/nebula/hostile/radiation/get_decal_color(atom/thing_to_color, pattern)
+	procstart = null
+	src.procstart = null
 	if(istype(get_area(thing_to_color), /area/station/hallway)) //color hallways green
 		return COLOR_GREEN
 
@@ -732,6 +812,8 @@
 	var/datum/weather/storm_type
 
 /datum/station_trait/storm/on_round_start()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	SSweather.run_weather(storm_type)
@@ -747,6 +829,8 @@
 	storm_type = /datum/weather/snow_storm/forever_storm
 
 /datum/station_trait/storm/foreverstorm/get_pulsar_message()
+	procstart = null
+	src.procstart = null
 	var/advisory_string = "Advisory Level: <b>Ice Giant</b></center><BR>"
 	advisory_string += "The ongoing blizzard has interfered with our surveillance equipment, and we cannot provide an accurate threat summary at this time. We advise you to stay safe and avoid traversing the area around the station."
 	return advisory_string

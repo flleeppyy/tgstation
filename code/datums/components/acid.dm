@@ -33,6 +33,8 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 	var/datum/callback/process_effect
 
 /datum/component/acid/Initialize(acid_power = ACID_POWER_MELT_TURF, acid_volume = 50, acid_overlay = GLOB.acid_overlay, acid_particles = /particles/acid, turf_acid_ignores_mobs = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -80,6 +82,8 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 	START_PROCESSING(SSacid, src)
 
 /datum/component/acid/Destroy(force)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSacid, src)
 	if(sizzle)
 		QDEL_NULL(sizzle)
@@ -92,6 +96,8 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 	return ..()
 
 /datum/component/acid/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_ATTACK_HAND, PROC_REF(on_attack_hand))
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 	RegisterSignal(parent, COMSIG_ATOM_EXPOSE_REAGENT, PROC_REF(on_expose_reagent))
@@ -103,6 +109,8 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 	atom_parent.update_appearance()
 
 /datum/component/acid/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ATOM_ATTACK_HAND,
 		COMSIG_ATOM_EXAMINE,
@@ -118,6 +126,8 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 
 /// Averages corrosive power and sums volume.
 /datum/component/acid/InheritComponent(datum/component/new_comp, i_am_original, acid_power, acid_volume)
+	procstart = null
+	src.procstart = null
 	if(!i_am_original)
 		return
 	acid_power = ((src.acid_power * src.acid_volume) + (acid_power * acid_volume)) / (src.acid_volume + acid_volume)
@@ -125,12 +135,16 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 
 /// Sets the acid volume to a new value. Limits the acid volume by the amount allowed to exist on the parent atom.
 /datum/component/acid/proc/set_volume(new_volume)
+	procstart = null
+	src.procstart = null
 	acid_volume = clamp(new_volume, 0, max_volume)
 	if(!acid_volume)
 		qdel(src)
 
 /// Handles the slow corrosion of the parent [/atom].
 /datum/component/acid/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	// If we somehow got unacidable, we need to bail out
 	var/atom/parent_atom = parent
 	if(parent_atom.resistance_flags & UNACIDABLE)
@@ -143,18 +157,24 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 
 /// Handles processing on an [/atom/movable] (that uses atom_integrity).
 /datum/component/acid/proc/process_movable(atom/movable/target, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(target.resistance_flags & ACID_PROOF)
 		return
 	target.take_damage(min(1 + round(sqrt(acid_power * acid_volume)*0.3), MOVABLE_ACID_DAMAGE_MAX) * seconds_per_tick, BURN, ACID, 0)
 
 /// Handles processing on a [/mob/living].
 /datum/component/acid/proc/process_mob(mob/living/target, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(target.resistance_flags & ACID_PROOF)
 		return
 	target.acid_act(acid_power, acid_volume * seconds_per_tick)
 
 /// Handles processing on a [/turf].
 /datum/component/acid/proc/process_turf(turf/target_turf, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/acid_used = min(acid_volume * 0.05, 20) * seconds_per_tick
 	var/applied_targets = 0
 	for(var/atom/movable/target_movable as anything in target_turf)
@@ -205,6 +225,8 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 
 /// Used to maintain the acid overlay on the parent [/atom].
 /datum/component/acid/proc/on_update_overlays(atom/parent_atom, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(acid_overlay)
@@ -212,12 +234,16 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 
 /// Alerts any examiners to the acid on the parent atom.
 /datum/component/acid/proc/on_examine(atom/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += span_danger("[source.p_Theyre()] covered in a corrosive liquid!")
 
 /// Makes it possible to clean acid off of objects.
 /datum/component/acid/proc/on_clean(atom/source, clean_types)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(clean_types & CLEAN_TYPE_ACID))
@@ -227,6 +253,8 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 
 /// Handles water diluting the acid on the object.
 /datum/component/acid/proc/on_expose_reagent(atom/parent_atom, datum/reagent/exposing_reagent, reac_volume, methods)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(exposing_reagent, /datum/reagent/water))
@@ -238,6 +266,8 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 
 /// Handles searing the hand of anyone who tries to touch parent without protection.
 /datum/component/acid/proc/on_attack_hand(atom/source, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!iscarbon(user) || user.can_touch_acid(source, acid_power, acid_volume))
@@ -251,6 +281,8 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 
 /// Handles searing the feet of whoever walks over this without protection. Only active if the parent is a turf.
 /datum/component/acid/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(turf_acid_ignores_mobs)

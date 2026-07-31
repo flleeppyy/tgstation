@@ -26,9 +26,13 @@
 	distill_reagent = /datum/reagent/consumable/enzyme
 
 /obj/item/food/grown/tomato/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/ketchup = 0)
 
 /obj/item/food/grown/tomato/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/tomatojuice
 
 // Blood Tomato
@@ -54,6 +58,8 @@
 	distill_reagent = /datum/reagent/consumable/ethanol/bloody_mary
 
 /obj/item/food/grown/tomato/blood/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/ketchup = 0, /datum/reagent/blood = 0)
 
 // Blue Tomato

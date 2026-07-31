@@ -25,6 +25,8 @@
 	custom_materials = list(/datum/material/meat = MEATSLAB_MATERIAL_AMOUNT * 3)
 
 /mob/living/basic/pet/cat/cak/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/regenerator,\
 		regeneration_delay = 1 SECONDS,\
@@ -38,9 +40,13 @@
 	AddElement(/datum/element/consumable_mob, reagents_list = on_consume)
 
 /mob/living/basic/pet/cat/cak/add_cell_sample()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/basic/pet/cat/cak/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/organ/brain/candidate = locate(/obj/item/organ/brain) in contents
 	if(isnull(candidate?.brainmob?.mind))
@@ -58,6 +64,8 @@
 		name = new_name
 
 /mob/living/basic/pet/cat/cak/spin(spintime, speed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/food/donut/target in oview(1, src))
 		if(!target.is_decorated)

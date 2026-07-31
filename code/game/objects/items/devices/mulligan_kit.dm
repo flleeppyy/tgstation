@@ -9,11 +9,15 @@
 	var/assigned_job = JOB_ASSISTANT
 
 /obj/item/fake_identity_kit/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info("Using this kit after exposure to Mulligan serum will create a fake identity for your new appearance.")
 	. += span_info("This will add you to various station manifests, create an Assistant-level ID card, and announce your arrival over the radio.")
 
 /obj/item/fake_identity_kit/attack_self(mob/living/carbon/human/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!ishuman(user))
 		balloon_alert(user, "can't pass as employee!")
@@ -100,6 +104,8 @@
 	interaction_flags_click = NEED_DEXTERITY|NEED_HANDS|ALLOW_RESTING
 
 /obj/item/arrival_announcer/attack_self(mob/living/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(user))
 		return

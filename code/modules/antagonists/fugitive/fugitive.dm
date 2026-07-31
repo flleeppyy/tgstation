@@ -15,6 +15,8 @@
 	var/backstory = "error"
 
 /datum/antagonist/fugitive/get_preview_icon()
+	procstart = null
+	src.procstart = null
 	//start with prisoner at the front
 	var/datum/universal_icon/final_icon = render_preview_outfit(preview_outfit)
 
@@ -28,6 +30,8 @@
 	return finish_preview_icon(final_icon)
 
 /datum/antagonist/fugitive/proc/make_background_fugitive_icon(datum/outfit/fugitive_fit)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy/consistent/fugitive = new
 
 	var/datum/universal_icon/fugitive_icon = render_preview_outfit(fugitive_fit, fugitive)
@@ -37,21 +41,29 @@
 	return fugitive_icon
 
 /datum/antagonist/fugitive/on_gain()
+	procstart = null
+	src.procstart = null
 	forge_objectives()
 	. = ..()
 	owner.set_assigned_role(SSjob.get_job_type(/datum/job/fugitive))
 
 /datum/antagonist/fugitive/on_removal()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner?.set_assigned_role(SSjob.get_job_type(/datum/job/unassigned))
 
-/datum/antagonist/fugitive/forge_objectives() //this isn't the actual survive objective because it's about who in the team survives
+/datum/antagonist/fugitive/forge_objectives()
+	procstart = null
+	src.procstart = null //this isn't the actual survive objective because it's about who in the team survives
 	var/datum/objective/survive = new /datum/objective
 	survive.owner = owner
 	survive.explanation_text = "Avoid capture from the fugitive hunters."
 	objectives += survive
 
 /datum/antagonist/fugitive/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/message = "<span class='warningplain'>"
 	switch(backstory)
@@ -84,6 +96,8 @@
 	owner.announce_objectives()
 
 /datum/antagonist/fugitive/create_team(datum/team/fugitive/new_team)
+	procstart = null
+	src.procstart = null
 	if(!new_team)
 		for(var/datum/antagonist/fugitive/H in GLOB.antagonists)
 			if(!H.owner)
@@ -98,12 +112,18 @@
 	fugitive_team = new_team
 
 /datum/antagonist/fugitive/get_team()
+	procstart = null
+	src.procstart = null
 	return fugitive_team
 
 /datum/antagonist/fugitive/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	add_team_hud(mob_override || owner.current)
 
-/datum/team/fugitive/roundend_report() //shows the number of fugitives, but not if they won in case there is no security
+/datum/team/fugitive/roundend_report()
+	procstart = null
+	src.procstart = null //shows the number of fugitives, but not if they won in case there is no security
 	var/list/fugitives = list()
 	for(var/datum/antagonist/fugitive/fugitive_antag in GLOB.antagonists)
 		if(!fugitive_antag.owner)

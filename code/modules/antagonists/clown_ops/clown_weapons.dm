@@ -28,6 +28,8 @@
 	COOLDOWN_DECLARE(next_trombone_allowed)
 
 /obj/item/melee/energy/sword/bananium/make_transformable()
+	procstart = null
+	src.procstart = null
 	AddComponent( \
 		/datum/component/transforming, \
 		throw_speed_on = 4, \
@@ -38,6 +40,8 @@
 	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
 /obj/item/melee/energy/sword/bananium/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	adjust_slipperiness()
 
@@ -45,24 +49,32 @@
  * Adds or removes a slippery component, depending on whether the sword is active or not.
  */
 /obj/item/melee/energy/sword/bananium/proc/adjust_slipperiness()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		AddComponent(/datum/component/slippery, 60, GALOSHES_DONT_HELP)
 	else
 		qdel(GetComponent(/datum/component/slippery))
 
 /obj/item/melee/energy/sword/bananium/attack(mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		var/datum/component/slippery/slipper = GetComponent(/datum/component/slippery)
 		slipper.Slip(src, M)
 
 /obj/item/melee/energy/sword/bananium/throw_impact(atom/hit_atom, throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		var/datum/component/slippery/slipper = GetComponent(/datum/component/slippery)
 		slipper.Slip(src, hit_atom)
 
 /obj/item/melee/energy/sword/bananium/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/melee/energy/sword/bananium))
 		return ..()
 
@@ -75,6 +87,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/melee/energy/sword/bananium/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		attack_self(user)
 	user.visible_message(span_suicide("[user] is [pick("slitting [user.p_their()] stomach open with", "falling on")] [src]! It looks like [user.p_theyre()] trying to commit seppuku, but the blade slips off of [user.p_them()] harmlessly!"))
@@ -100,6 +114,8 @@
 	can_clumsy_use = TRUE
 
 /obj/item/shield/energy/bananium/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	adjust_comedy()
 
@@ -107,6 +123,8 @@
  * Adds or removes a slippery and boomerang component, depending on whether the shield is active or not.
  */
 /obj/item/shield/energy/bananium/proc/adjust_comedy()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		AddComponent(/datum/component/slippery, 60, GALOSHES_DONT_HELP)
 		AddComponent(/datum/component/boomerang, throw_range+2, TRUE)
@@ -115,6 +133,8 @@
 		qdel(GetComponent(/datum/component/boomerang))
 
 /obj/item/shield/energy/bananium/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		var/caught = hit_atom.hitby(src, FALSE, FALSE, throwingdatum=throwingdatum)
 		if(iscarbon(hit_atom) && !caught)//if they are a carbon and they didn't catch it
@@ -139,11 +159,15 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment/vitamin = 1)
 
 /obj/item/food/grown/banana/bombanana/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_FOOD_CONSUMED, PROC_REF(on_consumed))
 
 /// Log whenever someone eats this with an explicit message since it willspawn a live bomb.
 /obj/item/food/grown/banana/bombanana/proc/on_consumed(datum/source, mob/living/eater, mob/feeder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/list/concatable = list("[key_name_and_tag(eater)] has eaten a bombanana!")
 	if(feeder != eater)
@@ -164,6 +188,8 @@
 	var/obj/item/grenade/syndieminibomb/bomb
 
 /obj/item/grown/bananapeel/bombanana/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/slippery, det_time)
 	bomb = new /obj/item/grenade/syndieminibomb(src)
@@ -178,10 +204,14 @@
 	bomb.arm_grenade(potential_user, msg = FALSE)
 
 /obj/item/grown/bananapeel/bombanana/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(bomb)
 
 /obj/item/grown/bananapeel/bombanana/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is deliberately slipping on \the [src]! It looks like \he's trying to commit suicide."))
 	playsound(loc, 'sound/misc/slip.ogg', 50, TRUE, -1)
 	bomb.arm_grenade(user, 0, FALSE)
@@ -196,6 +226,8 @@
 	clumsy_check = GRENADE_NONCLUMSY_FUMBLE
 
 /obj/item/grenade/chem_grenade/teargas/moustache/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	var/myloc = get_turf(src)
 	. = ..()
 	if(!.)
@@ -211,9 +243,13 @@
 	var/unstick_time = 600
 
 /obj/item/clothing/mask/fakemoustache/sticky/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, STICKY_MOUSTACHE_TRAIT)
 	addtimer(CALLBACK(src, PROC_REF(unstick)), unstick_time)
 
 /obj/item/clothing/mask/fakemoustache/sticky/proc/unstick()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(src, TRAIT_NODROP, STICKY_MOUSTACHE_TRAIT)

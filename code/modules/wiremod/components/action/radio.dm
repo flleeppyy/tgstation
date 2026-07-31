@@ -35,20 +35,28 @@
 	var/signal_cooldown_time = 1 SECONDS
 
 /obj/item/circuit_component/radio/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(signal_cooldown_time > 0)
 		desc = "[desc] It has a [signal_cooldown_time * 0.1] second cooldown between sending signals."
 
 /obj/item/circuit_component/radio/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	parent_shell = shell
 	var/potential_fingerprints = shell.fingerprintslast
 	if(!isnull(potential_fingerprints))
 		owner_ckey = potential_fingerprints
 
 /obj/item/circuit_component/radio/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	parent_shell = null
 
 /obj/item/circuit_component/radio/populate_options()
+	procstart = null
+	src.procstart = null
 	var/static/component_options = list(
 		COMP_RADIO_PUBLIC,
 		COMP_RADIO_PRIVATE,
@@ -56,6 +64,8 @@
 	public_options = add_option_port("Encryption Options", component_options)
 
 /obj/item/circuit_component/radio/populate_ports()
+	procstart = null
+	src.procstart = null
 	freq = add_input_port("Frequency", PORT_TYPE_NUMBER, default = FREQ_SIGNALER)
 	code = add_input_port("Code", PORT_TYPE_NUMBER, default = DEFAULT_SIGNALER_CODE)
 	trigger_component()
@@ -64,16 +74,24 @@
 	trigger_output = add_output_port("Received", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/radio/Destroy()
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, current_freq)
 	return ..()
 
 /obj/item/circuit_component/radio/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	freq.set_value(sanitize_frequency(freq.value, TRUE))
 
 /obj/item/circuit_component/radio/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	INVOKE_ASYNC(src, PROC_REF(handle_radio_input), port)
 
 /obj/item/circuit_component/radio/proc/handle_radio_input(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(TIMER_COOLDOWN_RUNNING(parent, COOLDOWN_SIGNALLER_SEND))
 		return
 
@@ -102,6 +120,8 @@
 		radio_connection.post_signal(src, signal)
 
 /obj/item/circuit_component/radio/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(!signal)
 		return

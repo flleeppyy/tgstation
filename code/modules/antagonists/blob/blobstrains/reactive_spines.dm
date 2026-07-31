@@ -13,6 +13,8 @@
 	COOLDOWN_DECLARE(retaliate_cooldown)
 
 /datum/blobstrain/reagent/reactive_spines/damage_reaction(obj/structure/blob/B, damage, damage_type, damage_flag)
+	procstart = null
+	src.procstart = null
 	if(damage && ((damage_type == BRUTE) || (damage_type == BURN)) && B.get_integrity() - damage > 0 && COOLDOWN_FINISHED(src, retaliate_cooldown)) // Is there any damage, is it burn or brute, will we be alive, and has the cooldown finished?
 		COOLDOWN_START(src, retaliate_cooldown, 2.5 SECONDS) // 2.5 seconds before auto-retaliate can whack everything within 1 tile again
 		B.visible_message(span_boldwarning("The blob retaliates, lashing out!"))
@@ -35,11 +37,15 @@
 	color = "#9ACD32"
 
 /datum/reagent/blob/reactive_spines/return_mob_expose_reac_volume(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message, touch_protection, mob/eye/blob/overmind)
+	procstart = null
+	src.procstart = null
 	if(exposed_mob.stat == DEAD || HAS_TRAIT(exposed_mob, TRAIT_BLOB_ALLY))
 		return 0 //the dead, and blob mobs, don't cause reactions
 	return reac_volume
 
 /datum/reagent/blob/reactive_spines/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message, touch_protection, mob/eye/blob/overmind)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reac_volume = return_mob_expose_reac_volume(exposed_mob, methods, reac_volume, show_message, touch_protection, overmind)
 	exposed_mob.adjust_brute_loss(reac_volume)

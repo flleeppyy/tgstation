@@ -13,6 +13,8 @@
 	var/list/imported_themes
 
 /datum/computer_file/program/themeify/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	if(computer.obj_flags & EMAGGED)
@@ -26,6 +28,8 @@
 	return data
 
 /datum/computer_file/program/themeify/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(action)
 		if("PRG_change_theme")

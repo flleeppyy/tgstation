@@ -9,6 +9,8 @@
 
 ///Generate a sample from a specific weighted list, and a specific amount of cell line with a chance for a virus
 /datum/biological_sample/proc/GenerateSample(cell_line_define, virus_define, cell_line_amount, virus_chance)
+	procstart = null
+	src.procstart = null
 	sample_color = pick(GLOB.xeno_sample_colors)
 
 	var/list/temp_weight_list = GLOB.cell_line_tables[cell_line_define].Copy() //Temp list to prevent double picking
@@ -24,6 +26,8 @@
 
 ///Takes another sample and merges it into use. This can cause one very big sample but we limit it to 3 layers.
 /datum/biological_sample/proc/Merge(datum/biological_sample/other_sample)
+	procstart = null
+	src.procstart = null
 	if(sample_layers >= 3)//No more than 3 layers, at that point you're entering danger zone.
 		return FALSE
 	micro_organisms += other_sample.micro_organisms
@@ -32,10 +36,14 @@
 
 ///Call handle_growth on all our microorganisms.
 /datum/biological_sample/proc/handle_growth(obj/machinery/vatgrower/vat)
+	procstart = null
+	src.procstart = null
 	for(var/datum/micro_organism/cell_line/organism in micro_organisms) //Types because we don't grow viruses.
 		organism.handle_growth(vat)
 
 ///resets the progress of all cell ines
 /datum/biological_sample/proc/reset_sample()
+	procstart = null
+	src.procstart = null
 	for(var/datum/micro_organism/cell_line/organism in micro_organisms) //Types because we don't grow viruses.
 		organism.growth = 0

@@ -18,6 +18,8 @@
 	var/sound_to_play
 
 /datum/element/processable/Attach(datum/target, tool_behaviour, result_atom_type, amount_created = 3, time_to_process = 2 SECONDS, table_required = FALSE, screentip_verb = "Process", sound_to_play = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
@@ -54,10 +56,14 @@
 	qdel(result)
 
 /datum/element/processable/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, list(COMSIG_ATOM_TOOL_ACT(tool_behaviour), COMSIG_ATOM_EXAMINE, COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM))
 
 /datum/element/processable/proc/try_process(datum/source, mob/living/user, obj/item/I, list/mutable_recipes)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(table_required)
@@ -74,6 +80,8 @@
 
 ///So people know what the frick they're doing without reading from a wiki page (I mean they will inevitably but i'm trying to help, ok?)
 /datum/element/processable/proc/OnExamine(atom/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/result_name = initial(result_atom_type.name)
@@ -103,6 +111,8 @@
  * * user - refers to user who will see the screentip when the proper context and tool are there
  */
 /datum/element/processable/proc/on_requesting_context_from_item(datum/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (isnull(held_item))

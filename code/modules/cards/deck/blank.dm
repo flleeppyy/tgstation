@@ -13,6 +13,8 @@
 	deckstyle = "black"
 
 /obj/item/toy/cards/deck/blank/initialize_cards()
+	procstart = null
+	src.procstart = null
 	for(var/_ in 1 to decksize)
 		initial_cards += /datum/deck_card/blank
 
@@ -20,4 +22,6 @@
 	name = "blank card"
 
 /datum/deck_card/blank/update_card(obj/item/toy/singlecard/card)
+	procstart = null
+	src.procstart = null
 	card.blank = TRUE

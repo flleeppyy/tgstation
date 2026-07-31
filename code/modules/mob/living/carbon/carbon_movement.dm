@@ -1,4 +1,6 @@
 /mob/living/carbon/slip(knockdown_amount, obj/slipped_on, lube_flags, paralyze, daze, force_drop = FALSE)
+	procstart = null
+	src.procstart = null
 	if(movement_type & MOVETYPES_NOT_TOUCHING_GROUND)
 		return FALSE
 	if(!(loc.handle_slip(src, knockdown_amount, slipped_on, lube_flags, paralyze, daze, force_drop)))
@@ -9,6 +11,8 @@
 	return TRUE
 
 /mob/living/carbon/Move(NewLoc, direct)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || (movement_type & FLOATING)) //floating is easy
 		return
@@ -20,6 +24,8 @@
 	adjust_nutrition(-1 * hunger_loss)
 
 /mob/living/carbon/set_usable_legs(new_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.))
 		return
@@ -34,6 +40,8 @@
 
 
 /mob/living/carbon/set_usable_hands(new_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.))
 		return
@@ -47,12 +55,16 @@
 			ADD_TRAIT(src, TRAIT_IMMOBILIZED, LACKING_LOCOMOTION_APPENDAGES_TRAIT)
 
 /mob/living/carbon/on_movement_type_flag_enabled(datum/source, flag, old_movement_type)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(movement_type & (FLYING | FLOATING) && !(old_movement_type & (FLYING | FLOATING)))
 		remove_movespeed_modifier(/datum/movespeed_modifier/limbless)
 		remove_traits(list(TRAIT_FLOORED, TRAIT_IMMOBILIZED), LACKING_LOCOMOTION_APPENDAGES_TRAIT)
 
 /mob/living/carbon/on_movement_type_flag_disabled(datum/source, flag, old_movement_type)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(old_movement_type & (FLYING | FLOATING) && !(movement_type & (FLYING | FLOATING)))
 		var/limbless_slowdown = 0

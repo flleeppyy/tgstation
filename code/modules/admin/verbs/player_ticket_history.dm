@@ -29,6 +29,8 @@ ADMIN_VERB(player_ticket_history, R_ADMIN, "Player Ticket History", "Allows you 
 	var/list/user_selections = list()
 
 /datum/ticket_history_holder/proc/cache_history_for_ckey(ckey, entries = 5)
+	procstart = null
+	src.procstart = null
 	ckey = LOWER_TEXT(ckey)
 
 	if(!isnum(entries) || entries <= 0)
@@ -115,9 +117,13 @@ ADMIN_VERB(player_ticket_history, R_ADMIN, "Player Ticket History", "Allows you 
 	to_chat(usr, span_adminnotice("Finished caching ticket history for [ckey]!"))
 
 /datum/ticket_history_holder/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_ADMIN)
 
 /datum/ticket_history_holder/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!check_rights_for(CLIENT_FROM_VAR(user), R_ADMIN))
 		return list()
 
@@ -159,6 +165,8 @@ ADMIN_VERB(player_ticket_history, R_ADMIN, "Player Ticket History", "Allows you 
 	return data
 
 /datum/ticket_history_holder/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -183,6 +191,8 @@ ADMIN_VERB(player_ticket_history, R_ADMIN, "Player Ticket History", "Allows you 
 			stack_trace("[type]/ui_act: unknown action type [action]")
 
 /datum/ticket_history_holder/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!isnull(ui))
 		ui.send_full_update()

@@ -2,6 +2,8 @@
 
 /// Gives all current occupants a notification that the server is going down
 /obj/machinery/quantum_server/proc/begin_shutdown(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(generated_domain))
 		return
 
@@ -29,6 +31,8 @@
 
 /// Links all the loading processes together - does validation for booting a map
 /obj/machinery/quantum_server/proc/cold_boot_map(map_key, was_random_selection)
+	procstart = null
+	src.procstart = null
 	if(!is_ready)
 		return FALSE
 
@@ -95,6 +99,8 @@
 
 /// Initializes a new domain if the given key is valid and the user has enough points
 /obj/machinery/quantum_server/proc/load_domain(map_key)
+	procstart = null
+	src.procstart = null
 	for(var/datum/lazy_template/virtual_domain/available in SSbitrunning.all_domains)
 		if(map_key == available.key && points >= available.cost)
 			generated_domain = available
@@ -135,6 +141,8 @@
 
 /// Loads in necessary map items like hololadder spawns, caches, etc
 /obj/machinery/quantum_server/proc/load_map_items()
+	procstart = null
+	src.procstart = null
 	var/turf/goal_turfs = list()
 	var/turf/cache_turfs = list()
 	var/turf/curiosity_turfs = list()
@@ -198,6 +206,8 @@
 
 /// Stops the current virtual domain and disconnects all users
 /obj/machinery/quantum_server/proc/reset(fast = FALSE)
+	procstart = null
+	src.procstart = null
 	is_ready = FALSE
 	domain_complete = FALSE
 
@@ -221,6 +231,8 @@
 
 /// Tries to clean up everything in the domain
 /obj/machinery/quantum_server/proc/scrub_vdom()
+	procstart = null
+	src.procstart = null
 	sever_connections() /// just in case someone's connected
 	SEND_SIGNAL(src, COMSIG_BITRUNNER_DOMAIN_SCRUBBED) // avatar cleanup just in case
 

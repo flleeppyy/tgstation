@@ -7,6 +7,8 @@ GLOBAL_LIST_INIT(total_ui_len_by_block, populate_total_ui_len_by_block())
 GLOBAL_LIST_INIT(standard_mutation_sources, list(MUTATION_SOURCE_ACTIVATED, MUTATION_SOURCE_MUTATOR))
 
 /proc/populate_total_ui_len_by_block()
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/total_block_len = 1
 	for(var/block_path in GLOB.dna_identity_blocks)
@@ -18,6 +20,8 @@ GLOBAL_LIST_INIT(standard_mutation_sources, list(MUTATION_SOURCE_ACTIVATED, MUTA
 GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 /proc/populate_total_uf_len_by_block()
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/total_block_len = 1
 	for(var/block_path in GLOB.dna_feature_blocks)
@@ -58,6 +62,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	var/static/list/fatal_meltdowns = list()
 
 /datum/dna/New(mob/living/new_holder, datum/species/mob_species)
+	procstart = null
+	src.procstart = null
 	if(istype(new_holder))
 		holder = new_holder
 	if(mob_species)
@@ -65,6 +71,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	species = new species
 
 /datum/dna/Destroy()
+	procstart = null
+	src.procstart = null
 	if (iscarbon(holder))
 		var/mob/living/carbon/as_carbon = holder
 		for(var/datum/mutation/mutation as anything in mutations)
@@ -81,6 +89,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 ///Copies the variables of a dna datum onto another.
 /datum/dna/proc/copy_dna(datum/dna/new_dna, transfer_flags = COPY_DNA_SE|COPY_DNA_SPECIES)
+	procstart = null
+	src.procstart = null
 	new_dna.unique_enzymes = unique_enzymes
 	new_dna.unique_identity = unique_identity
 	new_dna.unique_features = unique_features
@@ -111,6 +121,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 ///Adds a mutation to the dna if possible. See defines/dna.dm for all sources.
 /datum/dna/proc/add_mutation(mutation_to_add, list/sources)
+	procstart = null
+	src.procstart = null
 	if(!islist(sources))
 		if(!sources)
 			CRASH("add_mutation() called without set source(s)")
@@ -145,6 +157,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	update_instability()
 
 /datum/dna/proc/remove_mutation(mutation_to_remove, list/sources)
+	procstart = null
+	src.procstart = null
 	if(!islist(sources))
 		if(!sources)
 			CRASH("remove_mutation() called without set source(s)")
@@ -170,25 +184,35 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	return TRUE
 
 /datum/dna/proc/check_mutation(mutation_type)
+	procstart = null
+	src.procstart = null
 	return get_mutation(mutation_type)
 
 /datum/dna/proc/remove_all_mutations(sources = GLOB.standard_mutation_sources)
+	procstart = null
+	src.procstart = null
 	remove_mutation_group(mutations, sources)
 	scrambled = FALSE
 
 /datum/dna/proc/remove_mutation_group(list/group, sources = GLOB.standard_mutation_sources)
+	procstart = null
+	src.procstart = null
 	if(!group)
 		return
 	for(var/mutation in group)
 		remove_mutation(mutation, sources)
 
 /datum/dna/proc/generate_unique_identity()
+	procstart = null
+	src.procstart = null
 	. = ""
 	for(var/block_type in GLOB.dna_identity_blocks)
 		var/datum/dna_block/identity/block = GLOB.dna_identity_blocks[block_type]
 		. += block.unique_block(holder)
 
 /datum/dna/proc/generate_unique_features()
+	procstart = null
+	src.procstart = null
 	. = ""
 	for(var/block_type in GLOB.dna_feature_blocks)
 		var/datum/dna_block/feature/block = GLOB.dna_feature_blocks[block_type]
@@ -203,6 +227,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
  * * mutation_blacklist - Optional list of mutation typepaths to exclude from generation.
  */
 /datum/dna/proc/generate_dna_blocks(list/mutation_blacklist)
+	procstart = null
+	src.procstart = null
 	var/list/mutations_temp = list() + GLOB.good_mutations + GLOB.bad_mutations + GLOB.not_good_mutations
 	if(species?.inert_mutation)
 		mutations_temp |= GET_INITIALIZED_MUTATION(species.inert_mutation)
@@ -223,6 +249,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 //Used to generate original gene sequences for every mutation
 /proc/generate_gene_sequence(length=4)
+	procstart = null
+	src.procstart = null
 	var/static/list/active_sequences = list("AT","TA","GC","CG")
 	var/sequence
 	for(var/i in 1 to length*DNA_SEQUENCE_LENGTH)
@@ -231,6 +259,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 //Used to create a chipped gene sequence
 /proc/create_sequence(mutation, active, difficulty)
+	procstart = null
+	src.procstart = null
 	if(!difficulty)
 		var/datum/mutation/A = GET_INITIALIZED_MUTATION(mutation) //leaves the possibility to change difficulty mid-round
 		if(!A)
@@ -247,6 +277,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	return sequence
 
 /datum/dna/proc/generate_unique_enzymes()
+	procstart = null
+	src.procstart = null
 	. = ""
 	if(istype(holder))
 		real_name = holder.real_name
@@ -257,11 +289,15 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 ///Setter macro used to modify unique features blocks.
 /datum/dna/proc/set_uni_feature_block(blocknum, input)
+	procstart = null
+	src.procstart = null
 	var/precesing_blocks = copytext(unique_features, 1, GLOB.total_uf_len_by_block[blocknum])
 	var/succeeding_blocks = blocknum < GLOB.total_uf_len_by_block.len ? copytext(unique_features, GLOB.total_uf_len_by_block[blocknum+1]) : ""
 	unique_features = precesing_blocks + input + succeeding_blocks
 
 /datum/dna/proc/update_ui_block(blocktype)
+	procstart = null
+	src.procstart = null
 	if(isnull(blocktype))
 		CRASH("UI block type is null")
 	if(!ishuman(holder))
@@ -270,6 +306,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	unique_identity = block.modified_hash(unique_identity, block.unique_block(holder))
 
 /datum/dna/proc/update_uf_block(blocktype)
+	procstart = null
+	src.procstart = null
 	if(!blocktype)
 		CRASH("UF block type is null")
 	if(!ishuman(holder))
@@ -284,6 +322,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
  * * target_dna The DNA that we are comparing to
  */
 /datum/dna/proc/is_same_as(datum/dna/target_dna)
+	procstart = null
+	src.procstart = null
 	if( \
 		unique_identity == target_dna.unique_identity \
 		&& mutation_index == target_dna.mutation_index \
@@ -297,6 +337,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	return FALSE
 
 /datum/dna/proc/update_instability(alert=TRUE)
+	procstart = null
+	src.procstart = null
 	var/old_stability = stability
 	stability = 100
 	for(var/datum/mutation/mutation in mutations)
@@ -325,6 +367,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 /// Updates the UI, UE, and UF of the DNA according to the features, appearance, name, etc. of the DNA / holder.
 /datum/dna/proc/update_dna_identity()
+	procstart = null
+	src.procstart = null
 	if(!holder.has_dna())
 		return
 	unique_identity = generate_unique_identity()
@@ -339,6 +383,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
  * * randomize_features - If true, all entries in the features list will be randomized.
  */
 /datum/dna/proc/initialize_dna(newblood_type = random_human_blood_type(), create_mutation_blocks = TRUE, randomize_features = TRUE)
+	procstart = null
+	src.procstart = null
 	if(newblood_type)
 		blood_type = newblood_type
 	if(create_mutation_blocks) //I hate this
@@ -355,28 +401,42 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 /datum/dna/stored //subtype used by brain mob's stored_dna and the crew manifest
 
-/datum/dna/stored/add_mutation(mutation_name, list/sources) //no mutation changes on stored dna.
+/datum/dna/stored/add_mutation(mutation_name, list/sources)
+	procstart = null
+	src.procstart = null //no mutation changes on stored dna.
 	return
 
 /datum/dna/stored/remove_mutation(mutation_name, list/sources)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/dna/stored/check_mutation(mutation_name)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/dna/stored/remove_all_mutations(list/classes, list/sources)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/dna/stored/remove_mutation_group(list/group)
+	procstart = null
+	src.procstart = null
 	return
 
 /////////////////////////// DNA MOB-PROCS //////////////////////
 
 /mob/proc/set_species(datum/species/mrace, icon_update = 1)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 	return
 
 /mob/living/brain/set_species(datum/species/mrace, icon_update = 1)
+	procstart = null
+	src.procstart = null
 	if(mrace)
 		if(ispath(mrace))
 			stored_dna.species = new mrace()
@@ -385,6 +445,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 
 /mob/living/carbon/set_species(datum/species/mrace, icon_update = TRUE, pref_load = FALSE, replace_missing = TRUE)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		CRASH("You're trying to change your species post deletion, this is a recipe for madness")
 	if(isnull(mrace))
@@ -414,22 +476,32 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	log_mob_tag("TAG: [tag] SPECIES: [key_name(src)] \[[mrace]\]")
 
 /mob/living/carbon/human/set_species(datum/species/mrace, icon_update = TRUE, pref_load = FALSE, replace_missing = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(icon_update)
 		update_body(is_creating = TRUE)
 
 /mob/proc/has_dna()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/has_dna()
+	procstart = null
+	src.procstart = null
 	return dna
 
 /// Returns TRUE if the mob is allowed to mutate via its DNA, or FALSE if otherwise.
 /// Only an organic Carbon with valid DNA may mutate; not robots, AIs, aliens, Ians, or other mobs.
 /mob/proc/can_mutate()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/carbon/can_mutate()
+	procstart = null
+	src.procstart = null
 	if(!(mob_biotypes & MOB_ORGANIC))
 		return FALSE
 	if(has_dna() && !HAS_TRAIT(src, TRAIT_GENELESS) && !HAS_TRAIT(src, TRAIT_BADDNA))
@@ -437,6 +509,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 /// Sets the DNA of the mob to the given DNA.
 /mob/living/carbon/human/proc/hardset_dna(unique_identity, list/mutation_index, list/default_mutation_genes, newreal_name, newblood_type, datum/species/mrace, newfeatures, list/mutations, force_transfer_mutations)
+	procstart = null
+	src.procstart = null
 	if(newfeatures)
 		dna.features = newfeatures
 		dna.generate_unique_features()
@@ -475,16 +549,22 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 				dna.add_mutation(mutation, allowed_sources)
 
 /mob/living/carbon/proc/create_dna(datum/species/species)
+	procstart = null
+	src.procstart = null
 	dna = new /datum/dna(src, species)
 
 //proc used to update the mob's appearance after its dna UI has been changed
 //2025: Im unsure if dna is meant to be living, carbon, or human level.. there's contradicting stuff and bugfixes going back 8 years
 //If youre reading this, and you know for sure, update this, or maybe remove the carbon part entirely
 /mob/living/carbon/proc/updateappearance(icon_update = TRUE, mutcolor_update = FALSE, mutations_overlay_update = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!has_dna())
 		return
 
 /mob/living/carbon/human/updateappearance(icon_update = TRUE, mutcolor_update = FALSE, mutations_overlay_update = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/block_type in GLOB.dna_identity_blocks)
 		var/datum/dna_block/identity/block_to_apply = GLOB.dna_identity_blocks[block_type]
@@ -504,9 +584,13 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		update_appearance(UPDATE_OVERLAYS)
 
 /mob/proc/domutcheck()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/domutcheck()
+	procstart = null
+	src.procstart = null
 	if(!has_dna())
 		return
 
@@ -516,6 +600,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	update_appearance(UPDATE_OVERLAYS)
 
 /datum/dna/proc/check_block(mutation_path)
+	procstart = null
+	src.procstart = null
 	var/datum/mutation/mutation = get_mutation(mutation_path)
 	if(check_block_string(mutation_path))
 		if(!mutation)
@@ -526,6 +612,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 //Return the active mutation of a type if there is one
 /datum/dna/proc/get_mutation(mutation_path)
+	procstart = null
+	src.procstart = null
 	if(istype(mutation_path, /datum/mutation))
 		var/datum/mutation/mutation = mutation_path
 		mutation_path = mutation.type
@@ -535,14 +623,20 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	return null
 
 /datum/dna/proc/check_block_string(mutation)
+	procstart = null
+	src.procstart = null
 	if((LAZYLEN(mutation_index) > DNA_MUTATION_BLOCKS) || !(mutation in mutation_index))
 		return FALSE
 	return is_gene_active(mutation)
 
 /datum/dna/proc/is_gene_active(mutation)
+	procstart = null
+	src.procstart = null
 	return (mutation_index[mutation] == GET_SEQUENCE(mutation))
 
 /datum/dna/proc/set_se(on=TRUE, datum/mutation/HM)
+	procstart = null
+	src.procstart = null
 	if(!HM || !(HM.type in mutation_index) || (LAZYLEN(mutation_index) < DNA_MUTATION_BLOCKS))
 		return
 	. = TRUE
@@ -554,7 +648,9 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		default_mutation_genes[HM.type] = mutation_index[HM.type]
 
 
-/datum/dna/proc/activate_mutation(mutation) //note that this returns a boolean and not a new mob
+/datum/dna/proc/activate_mutation(mutation)
+	procstart = null
+	src.procstart = null //note that this returns a boolean and not a new mob
 	if(!mutation)
 		return FALSE
 	var/mutation_type = mutation
@@ -569,6 +665,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 /////////////////////////// DNA HELPER-PROCS //////////////////////////////
 
 /datum/dna/proc/mutation_in_sequence(mutation)
+	procstart = null
+	src.procstart = null
 	if(!mutation)
 		return
 	if(istype(mutation, /datum/mutation))
@@ -580,6 +678,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 
 /mob/living/carbon/proc/random_mutate(list/candidates)
+	procstart = null
+	src.procstart = null
 	if(!has_dna())
 		CRASH("[src] does not have DNA")
 	var/mutation = pick(candidates)
@@ -587,6 +687,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 ///Returns a random mutation typepath based on the given arguments. By default, all available mutations in the dna sequence but the monkey one.
 /mob/living/carbon/proc/get_random_mutation_path(quality = POSITIVE|NEGATIVE|MINOR_NEGATIVE, scrambled = TRUE, sequence = TRUE, list/excluded_mutations = list(/datum/mutation/race))
+	procstart = null
+	src.procstart = null
 	if(!has_dna())
 		return null
 	var/list/mutations = list()
@@ -605,6 +707,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 ///Gives the mob a random mutation based on the given arguments.
 /mob/living/carbon/proc/easy_random_mutate(quality = POSITIVE|NEGATIVE|MINOR_NEGATIVE, scrambled = TRUE, sequence = TRUE, list/excluded_mutations = list(/datum/mutation/race))
+	procstart = null
+	src.procstart = null
 	var/mutation_path = get_random_mutation_path(quality, scrambled, sequence, excluded_mutations)
 	if(!mutation_path)
 		return
@@ -616,6 +720,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		mutation.scrambled = FALSE	//set to FALSE to allow easy_random_mutate obtained genes to be saved in DNA consoles
 
 /mob/living/carbon/proc/random_mutate_unique_identity()
+	procstart = null
+	src.procstart = null
 	if(!has_dna())
 		CRASH("[src] does not have DNA")
 	var/mutblock_path = pick(GLOB.dna_identity_blocks)
@@ -624,6 +730,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	updateappearance(mutations_overlay_update = TRUE)
 
 /mob/living/carbon/proc/random_mutate_unique_features()
+	procstart = null
+	src.procstart = null
 	if(!has_dna())
 		CRASH("[src] does not have DNA")
 	var/mutblock_path = pick(GLOB.dna_feature_blocks)
@@ -632,15 +740,21 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	updateappearance(mutcolor_update = TRUE, mutations_overlay_update = TRUE)
 
 /mob/living/carbon/proc/clean_dna()
+	procstart = null
+	src.procstart = null
 	if(!has_dna())
 		CRASH("[src] does not have DNA")
 	dna.remove_all_mutations()
 
 /mob/living/carbon/proc/clean_random_mutate(list/candidates, difficulty = 2)
+	procstart = null
+	src.procstart = null
 	clean_dna()
 	random_mutate(candidates, difficulty)
 
 /proc/scramble_dna(mob/living/carbon/M, ui = FALSE, se = FALSE, uf = FALSE, probability = 100)
+	procstart = null
+	src.procstart = null
 	if(!M.has_dna())
 		CRASH("[M] does not have DNA")
 	if(HAS_TRAIT(M, TRAIT_NO_DNA_SCRAMBLE))
@@ -666,6 +780,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 //value in range 1 to values. values must be greater than 0
 //all arguments assumed to be positive integers
 /proc/construct_block(value, values, blocksize=DNA_BLOCK_SIZE)
+	procstart = null
+	src.procstart = null
 	var/width = round((16**blocksize)/values)
 	if(value < 1)
 		value = 1
@@ -674,6 +790,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 //value is hex
 /proc/deconstruct_block(value, values, blocksize=DNA_BLOCK_SIZE)
+	procstart = null
+	src.procstart = null
 	var/width = round((16**blocksize)/values)
 	value = round(hex2num(value) / width) + 1
 	if(value > values)
@@ -683,6 +801,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 /////////////////////////// DNA HELPER-PROCS
 
 /mob/living/carbon/human/proc/something_horrible(ignore_stability)
+	procstart = null
+	src.procstart = null
 	if(!has_dna()) //shouldn't ever happen anyway so it's just in really weird cases
 		return
 	if(!ignore_stability && (dna.stability > 0))
@@ -709,6 +829,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	meltdown.meltdown(src)
 
 /mob/living/carbon/human/proc/something_horrible_mindmelt()
+	procstart = null
+	src.procstart = null
 	if(!is_blind())
 		var/obj/item/organ/eyes/eyes = locate(/obj/item/organ/eyes) in organs
 		if(!eyes)

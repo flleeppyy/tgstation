@@ -4,6 +4,8 @@
 	maximum = 100
 
 /datum/preference/numeric/volume/create_default_value()
+	procstart = null
+	src.procstart = null
 	return maximum
 
 /// Controls ambience volume
@@ -13,6 +15,8 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/numeric/volume/sound_ambience_volume/apply_to_client(client/client, value)
+	procstart = null
+	src.procstart = null
 	client.update_ambience_pref(value)
 
 /datum/preference/toggle/sound_breathing
@@ -21,6 +25,8 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/toggle/sound_breathing/apply_to_client_updated(client/client, value)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/carbon_mob = client.mob
 	if(istype(carbon_mob) && !value)
 		carbon_mob.breathing_loop.stop()
@@ -50,6 +56,8 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/numeric/volume/sound_jukebox/apply_to_client_updated(client/client, value)
+	procstart = null
+	src.procstart = null
 	var/mob/client_mob = client.mob
 	if(!isnull(client_mob))
 		SEND_SIGNAL(client_mob, COMSIG_MOB_JUKEBOX_PREFERENCE_APPLIED)
@@ -60,9 +68,13 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/choiced/sound_tts/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list(TTS_SOUND_ENABLED, TTS_SOUND_BLIPS, TTS_SOUND_OFF)
 
 /datum/preference/choiced/sound_tts/create_default_value()
+	procstart = null
+	src.procstart = null
 	return TTS_SOUND_ENABLED
 
 /datum/preference/choiced/sound_tts_radio
@@ -71,9 +83,13 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/choiced/sound_tts_radio/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list(TTS_SOUND_ALL_RADIO, TTS_SOUND_DEPARTMENTAL_RADIO, TTS_SOUND_NO_RADIO)
 
 /datum/preference/choiced/sound_tts_radio/create_default_value()
+	procstart = null
+	src.procstart = null
 	return TTS_SOUND_ALL_RADIO
 
 /datum/preference/toggle/sound_tts_hear_self_radio
@@ -88,6 +104,8 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/numeric/volume/sound_tts_volume/apply_to_client_updated(client/client, value)
+	procstart = null
+	src.procstart = null
 	var/mob/client_mob = client.mob
 	if(!isnull(client_mob))
 		SEND_SIGNAL(client_mob, COMSIG_MOB_TTS_VOLUME_PREFERENCE_APPLIED)
@@ -98,11 +116,15 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/numeric/volume/sound_tts_radio_volume/apply_to_client_updated(client/client, value)
+	procstart = null
+	src.procstart = null
 	var/mob/client_mob = client.mob
 	if(!isnull(client_mob))
 		SEND_SIGNAL(client_mob, COMSIG_MOB_TTS_RADIO_VOLUME_PREFERENCE_APPLIED)
 
 /datum/preference/numeric/volume/sound_tts_radio_volume/create_default_value()
+	procstart = null
+	src.procstart = null
 	return 75
 
 /datum/preference/choiced/sound_achievement
@@ -111,12 +133,18 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/choiced/sound_achievement/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list(CHEEVO_SOUND_PING, CHEEVO_SOUND_JINGLE, CHEEVO_SOUND_TADA, CHEEVO_SOUND_OFF)
 
 /datum/preference/choiced/sound_achievement/create_default_value()
+	procstart = null
+	src.procstart = null
 	return CHEEVO_SOUND_PING
 
 /datum/preference/choiced/sound_achievement/apply_to_client_updated(client/client, value)
+	procstart = null
+	src.procstart = null
 	var/sound/sound_to_send = LAZYACCESS(GLOB.achievement_sounds, value)
 	if(sound_to_send)
 		SEND_SOUND(client.mob, sound_to_send)
@@ -128,6 +156,8 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/numeric/volume/sound_lobby_volume/apply_to_client_updated(client/client, value)
+	procstart = null
+	src.procstart = null
 	if (value && isnewplayer(client.mob))
 		client.playtitlemusic()
 	else
@@ -146,6 +176,8 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/numeric/volume/sound_ship_ambience_volume/apply_to_client_updated(client/client, value)
+	procstart = null
+	src.procstart = null
 	client.mob.refresh_looping_ambience()
 
 /// Controls radio noise volume
@@ -167,9 +199,13 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/choiced/sound_ghost_poll_prompt/create_default_value()
+	procstart = null
+	src.procstart = null
 	return GHOST_POLL_PROMPT_1
 
 /datum/preference/choiced/sound_ghost_poll_prompt/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list(GHOST_POLL_PROMPT_DISABLED, GHOST_POLL_PROMPT_1, GHOST_POLL_PROMPT_2)
 
 /// Volume which ghost poll prompts are played at
@@ -183,4 +219,6 @@
 
 /// default value is max/2 because 100 1x modifier, while 200 is 2x
 /datum/preference/numeric/sound_ghost_poll_prompt_volume/create_default_value()
+	procstart = null
+	src.procstart = null
 	return maximum/2

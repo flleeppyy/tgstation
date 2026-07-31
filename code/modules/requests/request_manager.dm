@@ -26,6 +26,8 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
 	var/list/requests_by_id = list()
 
 /datum/request_manager/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(requests)
 	return ..()
 
@@ -37,6 +39,8 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
  * * C - The client who is logging in
  */
 /datum/request_manager/proc/client_login(client/C)
+	procstart = null
+	src.procstart = null
 	if (!requests[C.ckey])
 		return
 	for (var/datum/request/request as anything in requests[C.ckey])
@@ -50,6 +54,8 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
  * * C - The client who is logging out
  */
 /datum/request_manager/proc/client_logout(client/C)
+	procstart = null
+	src.procstart = null
 	if (!requests[C.ckey])
 		return
 	for (var/datum/request/request as anything in requests[C.ckey])
@@ -64,6 +70,8 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
  * * is_chaplain - Boolean operator describing if the prayer is from a chaplain
  */
 /datum/request_manager/proc/pray(client/C, message, is_chaplain)
+	procstart = null
+	src.procstart = null
 	request_for_client(C, REQUEST_PRAYER, message)
 	for(var/client/admin in GLOB.admins)
 		if(is_chaplain && get_chat_toggles(admin) & CHAT_PRAYER && admin.prefs.toggles & SOUND_PRAYERS)
@@ -77,6 +85,8 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
  * * message - The message
  */
 /datum/request_manager/proc/message_centcom(client/C, message)
+	procstart = null
+	src.procstart = null
 	request_for_client(C, REQUEST_CENTCOM, message)
 
 /**
@@ -87,6 +97,8 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
  * * message - The message
  */
 /datum/request_manager/proc/message_syndicate(client/C, message)
+	procstart = null
+	src.procstart = null
 	request_for_client(C, REQUEST_SYNDICATE, message)
 
 /**
@@ -97,6 +109,8 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
  * * message - The message
  */
 /datum/request_manager/proc/nuke_request(client/C, message)
+	procstart = null
+	src.procstart = null
 	request_for_client(C, REQUEST_NUKE, message)
 
 /**
@@ -107,6 +121,8 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
  * * message - Paper with text.. some stamps.. and another things.
  */
 /datum/request_manager/proc/fax_request(client/requester, message, additional_info)
+	procstart = null
+	src.procstart = null
 	request_for_client(requester, REQUEST_FAX, message, additional_info)
 
 /**
@@ -118,6 +134,8 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
  */
 
 /datum/request_manager/proc/music_request(client/requester, message)
+	procstart = null
+	src.procstart = null
 	request_for_client(requester, REQUEST_INTERNET_SOUND, message)
 
 /**
@@ -129,6 +147,8 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
  * * message - The message
  */
 /datum/request_manager/proc/request_for_client(client/C, type, message, additional_info)
+	procstart = null
+	src.procstart = null
 	var/datum/request/request = new(C, type, message, additional_info)
 	if (!requests[C.ckey])
 		requests[C.ckey] = list()
@@ -137,15 +157,21 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
 	requests_by_id[request.id] = request
 
 /datum/request_manager/ui_interact(mob/user, datum/tgui/ui = null)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		ui = new(user, src, "RequestManager")
 		ui.open()
 
 /datum/request_manager/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_ADMIN)
 
 /datum/request_manager/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if (..())
 		return
 
@@ -258,6 +284,8 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
 			return TRUE
 
 /datum/request_manager/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	for (var/ckey in requests)
 		for (var/datum/request/request as anything in requests[ckey])

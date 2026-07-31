@@ -47,6 +47,8 @@
 	var/page_link = ""
 
 /obj/item/book/manual/wiki/display_content(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/wiki_url = CONFIG_GET(string/wikiurl)
 	if(!wiki_url)
 		user.balloon_alert(user, "this book is empty!")
@@ -89,6 +91,8 @@
 	page_link = "Space_Law"
 
 /obj/item/book/manual/wiki/security_space_law/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] pretends to read \the [src] intently... then promptly dies of laughter!"))
 	return OXYLOSS
 
@@ -199,6 +203,8 @@
 	page_link = "Guide_to_toxins"
 
 /obj/item/book/manual/wiki/ordnance/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = user
 	user.visible_message(span_suicide("[user] starts dancing to the Rhumba Beat! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(loc, 'sound/effects/spray.ogg', 10, TRUE, -3)

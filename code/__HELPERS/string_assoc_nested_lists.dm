@@ -4,6 +4,8 @@ GLOBAL_LIST_EMPTY(string_assoc_nested_lists)
  * Caches associative nested lists with non-numeric stringify-able index keys and stringify-able values (text/typepath -> text/path/number).
  */
 /datum/proc/string_assoc_nested_list(list/list)
+	procstart = null
+	src.procstart = null
 	var/list/string_id = list()
 	for(var/key in list)
 		var/assoc = list[key]

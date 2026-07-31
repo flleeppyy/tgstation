@@ -11,6 +11,8 @@
 	var/maximum_pads = 4
 
 /obj/machinery/computer/launchpad/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	launchpads = list()
 	. = ..()
 	AddComponent(/datum/component/usb_port, typecacheof(list(/obj/item/circuit_component/bluespace_launchpad/console), only_root_path = TRUE))
@@ -24,19 +26,27 @@
 	var/obj/machinery/computer/launchpad/attached_console
 
 /obj/item/circuit_component/bluespace_launchpad/console/populate_ports()
+	procstart = null
+	src.procstart = null
 	launchpad_id = add_input_port("Launchpad ID", PORT_TYPE_NUMBER, trigger = null, default = 1)
 	..()
 
 /obj/item/circuit_component/bluespace_launchpad/console/register_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/machinery/computer/launchpad))
 		attached_console = shell
 
 /obj/item/circuit_component/bluespace_launchpad/console/unregister_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	attached_console = null
 	return ..()
 
 /obj/item/circuit_component/bluespace_launchpad/console/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!attached_console || length(attached_console.launchpads) == 0)
 		why_fail.set_output("No launchpads connected!")
 		on_fail.set_output(COMPONENT_SIGNAL)
@@ -54,10 +64,14 @@
 	..()
 
 /obj/machinery/computer/launchpad/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("You are too primitive to use this computer!"))
 	return
 
 /obj/machinery/computer/launchpad/multitool_act(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(!istype(tool.buffer, /obj/machinery/launchpad))
 		return
@@ -69,16 +83,22 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/computer/launchpad/proc/pad_exists(number)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/launchpad/pad = launchpads[number]
 	if(QDELETED(pad))
 		return FALSE
 	return TRUE
 
 /obj/machinery/computer/launchpad/proc/get_pad(number)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/launchpad/pad = launchpads[number]
 	return pad
 
 /obj/machinery/computer/launchpad/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -86,6 +106,8 @@
 		ui.open()
 
 /obj/machinery/computer/launchpad/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/pad_list = list()
 	for(var/i in 1 to LAZYLEN(launchpads))
@@ -116,6 +138,8 @@
 	return data
 
 /obj/machinery/computer/launchpad/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

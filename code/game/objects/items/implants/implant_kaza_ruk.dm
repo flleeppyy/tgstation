@@ -13,14 +13,20 @@
 		martial arts of Kaza Ruk, regardless of the host's previous martial arts skills or a distinct lack thereof."
 
 /obj/item/implant/kaza_ruk/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	style = new(src)
 
 /obj/item/implant/kaza_ruk/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(style)
 	return ..()
 
 /obj/item/implant/kaza_ruk/activate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(imp_in.mind))
 		return

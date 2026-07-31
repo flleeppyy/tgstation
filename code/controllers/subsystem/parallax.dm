@@ -21,6 +21,8 @@ SUBSYSTEM_DEF(parallax)
 
 //These are cached per client so needs to be done asap so people joining at roundstart do not miss these.
 /datum/controller/subsystem/parallax/PreInit()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	set_random_parallax_layer(pick_weight(random_parallax_weights))
@@ -29,6 +31,8 @@ SUBSYSTEM_DEF(parallax)
 	planet_x_offset = rand(100, 160)
 
 /datum/controller/subsystem/parallax/fire(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!resumed)
 		src.currentrun = GLOB.clients.Copy()
 
@@ -68,6 +72,8 @@ SUBSYSTEM_DEF(parallax)
 
 /// Generate a random layer for parallax
 /datum/controller/subsystem/parallax/proc/set_random_parallax_layer(picked_parallax)
+	procstart = null
+	src.procstart = null
 	if(picked_parallax == PARALLAX_NONE)
 		return
 
@@ -77,6 +83,8 @@ SUBSYSTEM_DEF(parallax)
 
 /// Change the random parallax layer after it's already been set. update_player_huds = TRUE will also replace them in the players client images, if it was set
 /datum/controller/subsystem/parallax/proc/swap_out_random_parallax_layer(atom/movable/screen/parallax_layer/new_type, update_player_huds = TRUE)
+	procstart = null
+	src.procstart = null
 	set_random_parallax_layer(new_type)
 
 	if(!update_player_huds)
@@ -90,16 +98,22 @@ SUBSYSTEM_DEF(parallax)
 		client.mob?.hud_used?.update_parallax_pref()
 
 /datum/controller/subsystem/parallax/proc/clear_references()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	random_layer = null
 
 /// Called at the end of SSstation setup, in-case we want to run some code that would otherwise be too early to run (like GLOB. stuff)
 /datum/controller/subsystem/parallax/proc/post_station_setup()
+	procstart = null
+	src.procstart = null
 	random_layer?.apply_global_effects()
 
 /// Return the most dominant color, if we have a colored background (mostly nebula gas)
 /datum/controller/subsystem/parallax/proc/get_parallax_color()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/screen/parallax_layer/random/space_gas/gas = random_layer
 	if(!istype(gas))
 		return

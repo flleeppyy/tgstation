@@ -8,10 +8,14 @@
 	pref_flag = ROLE_PYROCLASTIC_SLIME
 
 /datum/antagonist/pyro_slime/on_gain()
+	procstart = null
+	src.procstart = null
 	forge_objectives()
 	. = ..()
 
 /datum/antagonist/pyro_slime/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.announce_objectives()
 
@@ -19,9 +23,13 @@
 	explanation_text = "I am fire. I am hunger. The cold is agony. The living pulse with energy; their warmth fuels me. The dead are husks, their embers long faded. Water is death. Fire... fire is freedom."
 
 /datum/objective/pyro_slime/check_completion()
+	procstart = null
+	src.procstart = null
 	return owner.current && owner.current.stat != DEAD
 
 /datum/antagonist/pyro_slime/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/pyro_slime/objective = new
 	objective.owner = owner
 	objectives += objective

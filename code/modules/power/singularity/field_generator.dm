@@ -64,6 +64,8 @@ no power level overlay is currently in the overlays list.
 	bomb = 100 //Explosive resistance only protects the turfs behind itself from the epicenter.
 
 /obj/machinery/field/generator/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(warming_up)
 		. += "+a[warming_up]"
@@ -74,20 +76,28 @@ no power level overlay is currently in the overlays list.
 
 
 /obj/machinery/field/generator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/blocks_explosives)
 	. = ..()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_SELF | EMP_PROTECT_WIRES)
 	RegisterSignal(src, COMSIG_ATOM_SINGULARITY_TRY_MOVE, PROC_REF(block_singularity_if_active))
 
 /obj/machinery/field/generator/anchored/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_anchored(TRUE)
 
 /obj/machinery/field/generator/process()
+	procstart = null
+	src.procstart = null
 	if(active == FG_ONLINE)
 		calc_power()
 
 /obj/machinery/field/generator/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(state != FG_WELDED)
 		to_chat(user, span_warning("[src] needs to be firmly secured to the floor first!"))
 		return
@@ -107,6 +117,8 @@ no power level overlay is currently in the overlays list.
 	add_fingerprint(user)
 
 /obj/machinery/field/generator/set_anchored(anchorvalue)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.))
 		return
@@ -115,6 +127,8 @@ no power level overlay is currently in the overlays list.
 	state = anchorvalue ? FG_SECURED : FG_UNSECURED
 
 /obj/machinery/field/generator/can_be_unfasten_wrench(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	if(active)
 		if(!silent)
 			to_chat(user, span_warning("Turn \the [src] off first!"))
@@ -128,11 +142,15 @@ no power level overlay is currently in the overlays list.
 	return ..()
 
 /obj/machinery/field/generator/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/field/generator/welder_act(mob/living/user, obj/item/welder)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		to_chat(user, span_warning("[src] needs to be off!"))
@@ -168,6 +186,8 @@ no power level overlay is currently in the overlays list.
 
 
 /obj/machinery/field/generator/attack_animal(mob/living/simple_animal/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.environment_smash == ENVIRONMENT_SMASH_RWALLS && active == FG_OFFLINE && state != FG_UNSECURED)
 		set_anchored(FALSE)
 		user.visible_message(span_warning("[user] rips [src] free from its moorings!"))
@@ -177,12 +197,16 @@ no power level overlay is currently in the overlays list.
 		step(src, get_dir(user, src))
 
 /obj/machinery/field/generator/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if(active)
 		return FALSE
 	else
 		return ..()
 
 /obj/machinery/field/generator/bullet_act(obj/projectile/considered_bullet)
+	procstart = null
+	src.procstart = null
 	if(considered_bullet.armor_flag != BULLET)
 		power = min(power + considered_bullet.damage, field_generator_max_power)
 		check_power_level()
@@ -190,6 +214,8 @@ no power level overlay is currently in the overlays list.
 
 
 /obj/machinery/field/generator/Destroy()
+	procstart = null
+	src.procstart = null
 	cleanup()
 	return ..()
 
@@ -199,12 +225,16 @@ no power level overlay is currently in the overlays list.
  *no power level overlay is currently in the overlays list.
  */
 /obj/machinery/field/generator/proc/check_power_level()
+	procstart = null
+	src.procstart = null
 	var/new_level = round(6 * power / field_generator_max_power)
 	if(new_level != power_level)
 		power_level = new_level
 		update_appearance()
 
 /obj/machinery/field/generator/proc/turn_off()
+	procstart = null
+	src.procstart = null
 	active = FG_OFFLINE
 	can_atmos_pass = ATMOS_PASS_YES
 	air_update_turf(TRUE, FALSE)
@@ -216,6 +246,8 @@ no power level overlay is currently in the overlays list.
 	addtimer(CALLBACK(src, PROC_REF(cool_down)), 5 SECONDS)
 
 /obj/machinery/field/generator/proc/cool_down()
+	procstart = null
+	src.procstart = null
 	if(active || warming_up <= 0)
 		return
 	warming_up--
@@ -224,6 +256,8 @@ no power level overlay is currently in the overlays list.
 		addtimer(CALLBACK(src, PROC_REF(cool_down)), 5 SECONDS)
 
 /obj/machinery/field/generator/proc/turn_on()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/give_turf_traits, string_list(list(TRAIT_CONTAINMENT_FIELD)))
 	if(instantenous)
 		active = FG_ONLINE
@@ -234,6 +268,8 @@ no power level overlay is currently in the overlays list.
 	addtimer(CALLBACK(src, PROC_REF(warm_up)), 5 SECONDS)
 
 /obj/machinery/field/generator/proc/warm_up()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return
 	warming_up++
@@ -244,6 +280,8 @@ no power level overlay is currently in the overlays list.
 		addtimer(CALLBACK(src, PROC_REF(warm_up)), 5 SECONDS)
 
 /obj/machinery/field/generator/proc/calc_power(set_power_draw)
+	procstart = null
+	src.procstart = null
 	var/power_draw = 2 + fields.len
 	if(set_power_draw)
 		power_draw = set_power_draw
@@ -261,6 +299,8 @@ no power level overlay is currently in the overlays list.
 
 //This could likely be better, it tends to start loopin if you have a complex generator loop setup.  Still works well enough to run the engine fields will likely recode the field gens and fields sometime -Mport
 /obj/machinery/field/generator/proc/draw_power(draw = 0, failsafe = FALSE, obj/machinery/field/generator/other_generator = null, obj/machinery/field/generator/last = null)
+	procstart = null
+	src.procstart = null
 	if((other_generator && (other_generator == src)) || (failsafe >= 8))//Loopin, set fail
 		return FALSE
 	else
@@ -288,6 +328,8 @@ no power level overlay is currently in the overlays list.
 
 
 /obj/machinery/field/generator/proc/start_fields()
+	procstart = null
+	src.procstart = null
 	if(state != FG_WELDED || !anchored)
 		turn_off()
 		return
@@ -302,6 +344,8 @@ no power level overlay is currently in the overlays list.
 	addtimer(VARSET_CALLBACK(src, active, FG_ONLINE), 0.5 SECONDS)
 
 /obj/machinery/field/generator/proc/setup_field(NSEW)
+	procstart = null
+	src.procstart = null
 	var/turf/current_turf = loc
 	if(!istype(current_turf))
 		return FALSE
@@ -354,6 +398,8 @@ no power level overlay is currently in the overlays list.
 
 
 /obj/machinery/field/generator/proc/cleanup()
+	procstart = null
+	src.procstart = null
 	clean_up = TRUE
 	for (var/field in fields)
 		qdel(field)
@@ -373,6 +419,8 @@ no power level overlay is currently in the overlays list.
 	set_explosion_block(0)
 
 /obj/machinery/field/generator/proc/shield_floor(create)
+	procstart = null
+	src.procstart = null
 	if(connected_gens.len < 2)
 		return
 	var/connected_gen_counter
@@ -404,6 +452,8 @@ no power level overlay is currently in the overlays list.
 
 
 /obj/machinery/field/generator/proc/place_floor(Location,create)
+	procstart = null
+	src.procstart = null
 	if(create && !locate(/obj/effect/shield) in Location)
 		new/obj/effect/shield(Location)
 	else if(!create)
@@ -412,16 +462,22 @@ no power level overlay is currently in the overlays list.
 			qdel(created_shield)
 
 /obj/machinery/field/generator/proc/block_singularity_if_active()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (active)
 		return SINGULARITY_TRY_MOVE_BLOCK
 
 /obj/machinery/field/generator/yeet_shock(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(fields.len)
 		..()
 
 /obj/machinery/field/generator/bump_field(atom/movable/AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	if(fields.len)
 		..()
 
@@ -430,10 +486,14 @@ no power level overlay is currently in the overlays list.
 	state = FG_WELDED
 
 /obj/machinery/field/generator/starts_on/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/field/generator/starts_on/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	turn_on()
 
@@ -442,6 +502,8 @@ no power level overlay is currently in the overlays list.
 	instantenous = TRUE
 
 /obj/machinery/field/generator/starts_on/magic/process()
+	procstart = null
+	src.procstart = null
 	return PROCESS_KILL // this is the only place calc_power is called, and doing it here avoids one unnecessary proc call
 
 #undef FG_UNSECURED

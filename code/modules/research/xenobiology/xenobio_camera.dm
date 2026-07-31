@@ -4,17 +4,23 @@
 	var/allowed_area = null
 
 /mob/eye/camera/remote/xenobio/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	var/area/our_area = get_area(loc)
 	allowed_area = our_area.name
 	. = ..()
 
 /mob/eye/camera/remote/xenobio/setLoc(turf/destination, force_update = FALSE)
+	procstart = null
+	src.procstart = null
 	var/area/new_area = get_area(destination)
 
 	if(new_area && new_area.name == allowed_area || new_area && (new_area.area_flags & XENOBIOLOGY_COMPATIBLE))
 		return ..()
 
 /mob/eye/camera/remote/xenobio/can_z_move(direction, turf/start, turf/destination, z_move_flags = NONE, mob/living/rider)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -49,6 +55,8 @@
 	var/stored_monkeys = 0
 
 /obj/machinery/computer/camera_advanced/xenobio/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	actions += new /datum/action/innate/slime_place(src)
 	actions += new /datum/action/innate/slime_pick_up(src)
@@ -62,6 +70,8 @@
 	register_context()
 
 /obj/machinery/computer/camera_advanced/xenobio/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/machinery/monkey_recycler/recycler in GLOB.monkey_recyclers)
 		if(get_area(recycler) == get_area(src))
@@ -69,6 +79,8 @@
 			break
 
 /obj/machinery/computer/camera_advanced/xenobio/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(current_potion)
 	for(var/thing in stored_slimes)
 		var/mob/living/basic/slime/stored_slime = thing
@@ -77,6 +89,8 @@
 	return ..()
 
 /obj/machinery/computer/camera_advanced/xenobio/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(istype(held_item, /obj/item/slimepotion/slime))
@@ -93,6 +107,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/computer/camera_advanced/xenobio/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == current_potion)
 		current_potion = null
@@ -100,11 +116,15 @@
 		stored_slimes -= gone
 
 /obj/machinery/computer/camera_advanced/xenobio/CreateEye()
+	procstart = null
+	src.procstart = null
 	eyeobj = new /mob/eye/camera/remote/xenobio(get_turf(src), src)
 
 	return TRUE
 
 /obj/machinery/computer/camera_advanced/xenobio/GrantActions(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(user, COMSIG_MOB_CTRL_CLICKED, PROC_REF(user_ctrl_click))
 	RegisterSignal(user, COMSIG_MOB_ALTCLICKON, PROC_REF(user_alt_click))
@@ -115,6 +135,8 @@
 	xeno_hud.on_update_hud(LAZYLEN(stored_slimes), stored_monkeys, max_slimes)
 
 /obj/machinery/computer/camera_advanced/xenobio/remove_eye_control(mob/living/user)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(user, list(
 		COMSIG_MOB_CTRL_CLICKED,
 		COMSIG_MOB_ALTCLICKON,
@@ -124,6 +146,8 @@
 	return ..()
 
 /obj/machinery/computer/camera_advanced/xenobio/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -138,6 +162,8 @@
 
 /// Handles inserting a slime potion into the console, potentially swapping out an existing one.
 /obj/machinery/computer/camera_advanced/xenobio/proc/slimepotion_act(mob/living/user, obj/item/slimepotion/slime/used_potion)
+	procstart = null
+	src.procstart = null
 	if(!user.transferItemToLoc(used_potion, src))
 		balloon_alert(user, "can't insert!")
 		return ITEM_INTERACT_BLOCKING
@@ -156,6 +182,8 @@
 
 /// Handles inserting a monkey cube into the console.
 /obj/machinery/computer/camera_advanced/xenobio/proc/monkeycube_act(mob/living/user, obj/item/food/monkeycube/used_cube)
+	procstart = null
+	src.procstart = null
 	stored_monkeys += 1
 	balloon_alert(user, "[stored_monkeys] cube\s stored")
 	var/atom/movable/screen/xenobio_console/xeno_hud = user.hud_used?.screen_objects[HUD_XENOBIO_CONSOLE]
@@ -166,6 +194,8 @@
 
 /// Handles inserting any monkey cubes stored in the tool into the console.
 /obj/machinery/computer/camera_advanced/xenobio/proc/storage_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	var/loaded_any = FALSE
 	for(var/obj/storage_item in tool.contents)
 		if(istype(storage_item, /obj/item/food/monkeycube))
@@ -183,6 +213,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/computer/camera_advanced/xenobio/multitool_act(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool)) // Needed as long as this uses a var on the multitool.
 		return NONE
 	if(QDELETED(tool.buffer))
@@ -198,6 +230,8 @@
 
 /// Validates whether the target turf can be interacted with.
 /obj/machinery/computer/camera_advanced/xenobio/proc/validate_turf(mob/living/user, turf/open/target_turf)
+	procstart = null
+	src.procstart = null
 	if(!SScameras.is_visible_by_cameras(target_turf))
 		target_turf.balloon_alert(user, "outside of view!")
 		return FALSE
@@ -212,6 +246,8 @@
 
 ///Places every slime in storage on target turf
 /obj/machinery/computer/camera_advanced/xenobio/proc/slime_place(turf/open/target_turf, mob/living/user)
+	procstart = null
+	src.procstart = null
 	spit_out(stored_slimes, target_turf)
 	if(stored_slimes.len <= 0)
 		return
@@ -233,6 +269,8 @@
 ///Places every slime not controlled by a player into the internal storage, respecting its limits
 ///Returns TRUE to signal it hitting the limit, in case its being called from a loop and we want it to stop
 /obj/machinery/computer/camera_advanced/xenobio/proc/slime_pickup(mob/living/user, mob/living/basic/slime/target_slime)
+	procstart = null
+	src.procstart = null
 	if(target_slime in stored_slimes)
 		// It's possible for this proc to be called on a slime that's already being picked up,
 		// so we need to check whether we already have to avoid duplicate entries.
@@ -262,6 +300,8 @@
 
 ///Places one monkey, if possible
 /obj/machinery/computer/camera_advanced/xenobio/proc/feed_slime(mob/living/user, turf/open/target_turf)
+	procstart = null
+	src.procstart = null
 	if(stored_monkeys < 1)
 		to_chat(user, span_warning("[src] needs to have at least 1 monkey stored. Currently has [stored_monkeys] monkeys stored."))
 		target_turf.balloon_alert(user, "not enough monkeys")
@@ -288,6 +328,8 @@
 
 /// Check whether we can recycle monkeys at all. Optionally, displays a balloon alert over a target atom for feedback.
 /obj/machinery/computer/camera_advanced/xenobio/proc/can_recycle_monkeys(mob/living/user, atom/target_atom)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	var/obj/machinery/monkey_recycler/connected_recycler = connected_recycler_ref?.resolve()
 	if(isnull(connected_recycler))
@@ -299,6 +341,8 @@
 
 /// Check whether we can recycle the target monkey. Optionally takes in a user to display errors to.
 /obj/machinery/computer/camera_advanced/xenobio/proc/can_recycle_target_monkey(mob/living/carbon/human/target_human, mob/living/user)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	if(!ismonkey(target_human))
 		if(user)
@@ -312,6 +356,8 @@
 
 /// Attempts to recycle any monkeys on the targeted turf.
 /obj/machinery/computer/camera_advanced/xenobio/proc/try_recycle_monkeys_on_turf(mob/living/user, turf/target_turf)
+	procstart = null
+	src.procstart = null
 	if(!can_recycle_monkeys(user, target_turf))
 		return FALSE
 
@@ -326,6 +372,8 @@
 
 /// Attempts to recycle the targeted human.
 /obj/machinery/computer/camera_advanced/xenobio/proc/try_recycle_target_monkey(mob/living/user, mob/living/carbon/human/target_human, silence_errors = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!can_recycle_target_monkey(target_human, user))
 		return FALSE
 	if(!can_recycle_monkeys(user, target_human))
@@ -336,6 +384,8 @@
 
 /// Recycles a given monkey.
 /obj/machinery/computer/camera_advanced/xenobio/proc/recycle_monkey(mob/living/carbon/human/target_monkey, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/monkey_recycler/connected_recycler = connected_recycler_ref?.resolve()
 	if(isnull(connected_recycler))
 		return
@@ -356,6 +406,8 @@
 	button_icon_state = "slime_down"
 
 /datum/action/innate/slime_place/Activate()
+	procstart = null
+	src.procstart = null
 	if(!target || !isliving(owner))
 		return
 	var/mob/living/living_owner = owner
@@ -373,6 +425,8 @@
 	button_icon_state = "slime_up"
 
 /datum/action/innate/slime_pick_up/Activate()
+	procstart = null
+	src.procstart = null
 	if(!target || !isliving(owner))
 		return
 	var/mob/living/living_owner = owner
@@ -392,6 +446,8 @@
 	button_icon_state = "monkey_down"
 
 /datum/action/innate/feed_slime/Activate()
+	procstart = null
+	src.procstart = null
 	if(!target || !isliving(owner))
 		return
 	var/mob/living/living_owner = owner
@@ -410,6 +466,8 @@
 	button_icon_state = "monkey_up"
 
 /datum/action/innate/monkey_recycle/Activate()
+	procstart = null
+	src.procstart = null
 	if(!target || !isliving(owner))
 		return
 	var/mob/living/living_owner = owner
@@ -427,6 +485,8 @@
 	button_icon_state = "slime_scan"
 
 /datum/action/innate/slime_scan/Activate()
+	procstart = null
+	src.procstart = null
 	if(!target || !isliving(owner))
 		return
 	var/mob/living/living_owner = owner
@@ -445,6 +505,8 @@
 	button_icon_state = "slime_potion"
 
 /datum/action/innate/feed_potion/Activate()
+	procstart = null
+	src.procstart = null
 	if(!target || !isliving(owner))
 		return
 
@@ -473,6 +535,8 @@
 	button_icon_state = "hotkey_help"
 
 /datum/action/innate/hotkey_help/Activate()
+	procstart = null
+	src.procstart = null
 	if(!target || !isliving(owner))
 		return
 
@@ -487,6 +551,8 @@
 
 /// Handles console user alt-clicking, forwards to other procs based on target type.
 /obj/machinery/computer/camera_advanced/xenobio/proc/user_alt_click(mob/living/user, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isslime(target))
@@ -496,6 +562,8 @@
 
 ///Feeds a stored potion to a slime
 /obj/machinery/computer/camera_advanced/xenobio/proc/alt_click_slime(mob/living/user, mob/living/basic/slime/target_slime)
+	procstart = null
+	src.procstart = null
 	var/turf/slime_turf = get_turf(target_slime)
 	if(!validate_turf(user, slime_turf))
 		return
@@ -512,6 +580,8 @@
 
 /// Handles console user shift-clicking, forwards to other procs based on target type.
 /obj/machinery/computer/camera_advanced/xenobio/proc/user_shift_click(mob/living/user, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isslime(target))
@@ -524,6 +594,8 @@
 
 /// Picks up a slime, and places them in the internal storage.
 /obj/machinery/computer/camera_advanced/xenobio/proc/shift_click_slime(mob/living/user, mob/living/basic/slime/target_slime)
+	procstart = null
+	src.procstart = null
 	if(!validate_turf(user, get_turf(target_slime)))
 		return
 
@@ -531,6 +603,8 @@
 
 /// Places all slimes from the internal storage.
 /obj/machinery/computer/camera_advanced/xenobio/proc/shift_click_turf(mob/living/user, turf/open/target_turf)
+	procstart = null
+	src.procstart = null
 	if(!validate_turf(user, target_turf))
 		return
 
@@ -538,6 +612,8 @@
 
 /// Handles console user ctrl-clicking, forwards to other procs based on target type.
 /obj/machinery/computer/camera_advanced/xenobio/proc/user_ctrl_click(mob/living/user, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isopenturf(target))
@@ -553,6 +629,8 @@
 
 /// Attempts to recycle all monkeys on the turf, otherwise places a monkey from the internal storage.
 /obj/machinery/computer/camera_advanced/xenobio/proc/ctrl_click_turf(mob/living/user, turf/open/target_turf)
+	procstart = null
+	src.procstart = null
 	if(!validate_turf(user, target_turf))
 		return
 
@@ -564,6 +642,8 @@
 
 /// Picks up a dead monkey for recycling.
 /obj/machinery/computer/camera_advanced/xenobio/proc/ctrl_click_monkey(mob/living/user, mob/living/carbon/human/target_human)
+	procstart = null
+	src.procstart = null
 	if(!validate_turf(user, get_turf(target_human)))
 		return
 
@@ -571,6 +651,8 @@
 
 /// Scans the target slime.
 /obj/machinery/computer/camera_advanced/xenobio/proc/ctrl_click_slime(mob/living/user, mob/living/basic/slime/target_slime)
+	procstart = null
+	src.procstart = null
 	if(!validate_turf(user, get_turf(target_slime)))
 		return
 
@@ -578,6 +660,8 @@
 
 /// Sucks the target mob up into the console.
 /obj/machinery/computer/camera_advanced/xenobio/proc/suck_up(mob/living/target_mob)
+	procstart = null
+	src.procstart = null
 	if(!isliving(target_mob))
 		return
 	var/mobturf = get_turf(target_mob)
@@ -591,6 +675,8 @@
 
 /// Shoots the target mob(s) out of the console
 /obj/machinery/computer/camera_advanced/xenobio/proc/spit_out(list/mobs_to_spit, turf/open/target_turf)
+	procstart = null
+	src.procstart = null
 	if(isnull(mobs_to_spit) || isnull(target_turf))
 		return
 	if(!islist(mobs_to_spit))
@@ -606,6 +692,8 @@
 
 /// Shoots the target atom out of the tube. Used for anything that isn't a mob (I.e. potions)
 /obj/machinery/computer/camera_advanced/xenobio/proc/spit_atom(atom/movable/target_atom, turf/open/target_turf)
+	procstart = null
+	src.procstart = null
 	if(isnull(target_atom))
 		return
 	if(isnull(target_turf))
@@ -619,6 +707,8 @@
 
 ///Plays the sound in the given location. Easier to call w/ addtimer()
 /obj/machinery/computer/camera_advanced/xenobio/proc/handle_xeno_sounds(turf/open/target_turf, spitting)
+	procstart = null
+	src.procstart = null
 	var/tubesound = 'sound/effects/compressed_air/air_suck.ogg'
 	if(spitting)
 		tubesound = 'sound/effects/compressed_air/air_shoot.ogg'
@@ -626,6 +716,8 @@
 
 ///The sound that plays when a potion shatters. Easier to call w/ addtimer()
 /obj/machinery/computer/camera_advanced/xenobio/proc/handle_shatter_sound(turf/open/target_turf)
+	procstart = null
+	src.procstart = null
 	playsound(target_turf, SFX_SHATTER, 35, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE)
 
 /// An abstract effect to simulate sucking the atom up or spitting it out
@@ -636,6 +728,8 @@
 	var/mob_initial_alpha = 255
 
 /obj/effect/abstract/sucked_atom/Initialize(mapload, atom/movable/copying, sucking = FALSE, shatter = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(copying))
 		return
@@ -651,12 +745,16 @@
 
 /// Shoots the mob visual upwards into the pipe then deletes it
 /obj/effect/abstract/sucked_atom/proc/suck_up()
+	procstart = null
+	src.procstart = null
 	QDEL_IN(src, SUCTION_DELAY + SUCTION_TIME)
 	animate(src, time = SUCTION_DELAY)
 	animate(time = SUCTION_TIME, easing = CUBIC_EASING | EASE_IN, pixel_y = 64, alpha = 0)
 
 /// Shoots the mob visual out then deletes it
 /obj/effect/abstract/sucked_atom/proc/shoot_out(shatter)
+	procstart = null
+	src.procstart = null
 	QDEL_IN(src, SUCTION_DELAY + SUCTION_TIME)
 	animate(src, time = SUCTION_DELAY, flags = ANIMATION_PARALLEL)
 	animate(time = SUCTION_TIME, easing = (shatter ? LINEAR_EASING : BOUNCE_EASING), pixel_y = 0, flags = ANIMATION_PARALLEL)
@@ -676,6 +774,8 @@
 	alpha = 0
 
 /obj/effect/abstract/xenosuction/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_overlay(mutable_appearance(icon, "xenotube_fore", layer = ABOVE_MOB_LAYER))
 	QDEL_IN(src, SUCTION_DELAY*2 + SUCTION_TIME)

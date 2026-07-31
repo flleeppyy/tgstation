@@ -21,6 +21,8 @@
 	var/datum/light_middleman/middleman
 
 /obj/item/flashlight/lantern/heretic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_OVERLAY_LIGHT_SYSTEM(light_system))
 		middleman = new(src, "lantern")
@@ -28,9 +30,13 @@
 		middleman.being_overriding_light()
 
 /obj/item/flashlight/lantern/heretic/init_slapcrafting()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/flashlight/lantern/heretic/set_light_on(new_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.))
 		return
@@ -54,6 +60,8 @@
 		)
 
 /obj/item/flashlight/lantern/heretic/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!light_on)
 		return
@@ -61,6 +69,8 @@
 	apply_wibbly_filters(src)
 
 /obj/item/flashlight/lantern/heretic/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!light_on)
 		return
@@ -68,15 +78,21 @@
 	apply_wibbly_filters(src)
 
 /obj/item/flashlight/lantern/heretic/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	QDEL_NULL(middleman)
 	return ..()
 
 /obj/item/flashlight/lantern/heretic/proc/light_updated(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	fire_flicker_middleman(middleman)
 
 /obj/item/flashlight/lantern/heretic/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!isturf(loc) && !ismob(loc))
 		return
 
@@ -84,6 +100,8 @@
 	effect_pulse(isturf(loc) ? src : loc, seconds_per_tick)
 
 /obj/item/flashlight/lantern/heretic/proc/effect_pulse(atom/center = src, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/list/affected_refs = list()
 	for(var/mob/living/seer in viewers(light_range - 1, center))
 		try_effect_pulse(seer, center)
@@ -95,6 +113,8 @@
 			LAZYREMOVE(tick_counts, tick_ref)
 
 /obj/item/flashlight/lantern/heretic/proc/try_effect_pulse(mob/living/seer, atom/center)
+	procstart = null
+	src.procstart = null
 	if(prob(33))
 		return // tiny bit of variance
 	if(LAZYACCESS(effect_cds, REF(seer)) >= world.time)

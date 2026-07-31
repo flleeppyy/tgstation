@@ -21,11 +21,15 @@
 	RegisterSignals(target, list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_HOSTILE_PRE_ATTACKINGTARGET), PROC_REF(try_repair))
 
 /datum/element/structure_repair/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_HOSTILE_PRE_ATTACKINGTARGET))
 	return ..()
 
 /// If the target is of a valid type, interrupt the attack chain to repair it instead
 /datum/element/structure_repair/proc/try_repair(mob/living/fixer, atom/target, proximity)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!proximity || !is_type_in_typecache(target, structure_types_typecache))

@@ -40,6 +40,8 @@
 	datum/callback/start_experiment_callback = null,
 	list/experiment_signals
 )
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -73,6 +75,8 @@
 	GLOB.experiment_handlers += src
 
 /datum/component/experiment_handler/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.experiment_handlers -= src
 
@@ -80,6 +84,8 @@
  * Hooks on attack to try and run an experiment (When using a handheld handler)
  */
 /datum/component/experiment_handler/proc/try_run_handheld_experiment(datum/source, atom/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!should_run_handheld_experiment(source, target, user))
 		return
@@ -90,6 +96,8 @@
  * Provides feedback when an item isn't related to an experiment, and has fully passed the attack chain
  */
 /datum/component/experiment_handler/proc/ignored_handheld_experiment_attempt(datum/source, atom/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if ((isnull(selected_experiment) && !(config_flags & EXPERIMENT_CONFIG_ALWAYS_ACTIVE)) || (config_flags & EXPERIMENT_CONFIG_SILENT_FAIL))
 		return
@@ -100,6 +108,8 @@
  * Checks that an experiment can be run using the provided target, used for preventing the cancellation of the attack chain inappropriately
  */
 /datum/component/experiment_handler/proc/should_run_handheld_experiment(datum/source, atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	// Check that there is actually an experiment selected
 	if (selected_experiment == null && !(config_flags & EXPERIMENT_CONFIG_ALWAYS_ACTIVE))
 		return
@@ -120,6 +130,8 @@
  * This proc exists because Jared Fogle really likes async
  */
 /datum/component/experiment_handler/proc/try_run_handheld_experiment_async(datum/source, atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if (selected_experiment == null && !(config_flags & EXPERIMENT_CONFIG_ALWAYS_ACTIVE))
 		if(!(config_flags & EXPERIMENT_CONFIG_SILENT_FAIL))
 			to_chat(user, span_notice("You do not have an experiment selected!"))
@@ -137,6 +149,8 @@
  * Hooks on destructive scans to try and run an experiment (When using a handheld handler)
  */
 /datum/component/experiment_handler/proc/try_run_destructive_experiment(datum/source, list/scanned_atoms)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/movable/our_scanner = parent
 	if (selected_experiment == null)
@@ -157,6 +171,8 @@
 
 /// Hooks on a successful autopsy experiment
 /datum/component/experiment_handler/proc/try_run_autopsy_experiment(obj/source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (action_experiment(source, target))
@@ -170,6 +186,8 @@
  * * message - The message to announce
  */
 /datum/component/experiment_handler/proc/announce_message(message)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/experi_parent = parent
 	experi_parent.say(message)
 
@@ -177,6 +195,8 @@
  * Attempts to perform the selected experiment given some arguments
  */
 /datum/component/experiment_handler/proc/action_experiment(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	// Check if an experiment is selected
 	if (selected_experiment == null && !(config_flags & EXPERIMENT_CONFIG_ALWAYS_ACTIVE))
 		return FALSE
@@ -203,6 +223,8 @@
  * Hook for handling UI interaction via signals
  */
 /datum/component/experiment_handler/proc/ui_handle_experiment(datum/source, mob/user, action)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	switch(action)
 		if("open_experiments")
@@ -215,6 +237,8 @@
  * * user - The user to show the experiment configuration panel to
  */
 /datum/component/experiment_handler/proc/configure_experiment(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(ui_interact), user)
 	return CLICK_ACTION_SUCCESS
@@ -226,6 +250,8 @@
  * * user - The user to show the experiment configuration panel to
  */
 /datum/component/experiment_handler/proc/configure_experiment_click(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, TYPE_PROC_REF(/datum, ui_interact), user)
 
@@ -238,6 +264,8 @@
  * * new_web - The new techweb to link to
  */
 /datum/component/experiment_handler/proc/link_techweb(datum/techweb/new_web)
+	procstart = null
+	src.procstart = null
 	if (new_web == linked_web)
 		return
 	selected_experiment?.on_unselected(src)
@@ -248,6 +276,8 @@
  * Unlinks this handler from the selected techweb
  */
 /datum/component/experiment_handler/proc/unlink_techweb()
+	procstart = null
+	src.procstart = null
 	selected_experiment?.on_unselected(src)
 	selected_experiment = null
 	linked_web = null
@@ -259,6 +289,8 @@
  * * experiment - The experiment to attempt to link to
  */
 /datum/component/experiment_handler/proc/link_experiment(datum/experiment/experiment)
+	procstart = null
+	src.procstart = null
 	if (can_select_experiment(experiment))
 		unlink_experiment()
 		selected_experiment = experiment
@@ -268,6 +300,8 @@
  * Unlinks this handler from the selected experiment
  */
 /datum/component/experiment_handler/proc/unlink_experiment()
+	procstart = null
+	src.procstart = null
 	selected_experiment?.on_unselected(src)
 	selected_experiment = null
 
@@ -278,6 +312,8 @@
  * * experiment - The experiment to check
  */
 /datum/component/experiment_handler/proc/can_select_experiment(datum/experiment/experiment)
+	procstart = null
+	src.procstart = null
 	// Check that this experiment is visible currently
 	if (!(experiment in linked_web?.available_experiments))
 		return FALSE
@@ -289,6 +325,8 @@
  * Basically, it skips the available_experiments check, unlike can_select_experiment.
  */
 /datum/component/experiment_handler/proc/is_compatible_experiment(datum/experiment/experiment)
+	procstart = null
+	src.procstart = null
 	// Check that this experiments has no disallowed traits
 	if (experiment.traits & disallowed_traits)
 		return FALSE
@@ -305,6 +343,8 @@
 	return is_type_in_list(experiment, allowed_experiments)
 
 /datum/component/experiment_handler/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		var/atom/parent_atom = parent
@@ -312,6 +352,8 @@
 		ui.open()
 
 /datum/component/experiment_handler/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list(
 		"always_active" = (config_flags & EXPERIMENT_CONFIG_ALWAYS_ACTIVE),
 		"has_start_callback" = !isnull(start_experiment_callback),
@@ -340,6 +382,8 @@
 			.["experiments"] += list(list("selected" = selected_experiment == experiment) + experiment.to_ui_data())
 
 /datum/component/experiment_handler/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return

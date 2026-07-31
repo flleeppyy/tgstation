@@ -6,5 +6,7 @@
 	var/value
 
 /datum/bt_node/ai_behavior/set_bb_key/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.set_blackboard_key(target_key, value)
 	return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_SUCCEEDED

@@ -24,6 +24,8 @@ ADMIN_VERB(dynamic_tester, R_DEBUG, "Dynamic Tester", "See dynamic probabilities
 	var/num_players = 10
 
 /datum/dynamic_tester/New()
+	procstart = null
+	src.procstart = null
 	for(var/datum/dynamic_ruleset/rtype as anything in subtypesof(/datum/dynamic_ruleset/roundstart))
 		if(!initial(rtype.config_tag))
 			continue
@@ -43,18 +45,26 @@ ADMIN_VERB(dynamic_tester, R_DEBUG, "Dynamic Tester", "See dynamic probabilities
 	update_reports()
 
 /datum/dynamic_tester/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_DEBUG)
 
 /datum/dynamic_tester/ui_close()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /datum/dynamic_tester/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "DynamicTester")
 		ui.open()
 
 /datum/dynamic_tester/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["tier"] = tier
@@ -66,6 +76,8 @@ ADMIN_VERB(dynamic_tester, R_DEBUG, "Dynamic Tester", "See dynamic probabilities
 	return data
 
 /datum/dynamic_tester/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -86,6 +98,8 @@ ADMIN_VERB(dynamic_tester, R_DEBUG, "Dynamic Tester", "See dynamic probabilities
 			return TRUE
 
 /datum/dynamic_tester/proc/update_reports()
+	procstart = null
+	src.procstart = null
 	roundstart_ruleset_report.Cut()
 	for(var/datum/dynamic_ruleset/roundstart/ruleset as anything in roundstart_rulesets)
 		var/comment = ""

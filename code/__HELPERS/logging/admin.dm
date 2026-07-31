@@ -5,30 +5,40 @@
 
 /// General logging for admin actions
 /proc/log_admin(text, list/data)
+	procstart = null
+	src.procstart = null
 	GLOB.admin_activities.Add(text)
 	logger.Log(LOG_CATEGORY_ADMIN, text, data)
 	logger.Log(LOG_CATEGORY_COMPAT_GAME, "ADMIN: [text]")
 
 /// Logging for admin actions on or with circuits
 /proc/log_admin_circuit(text, list/data)
+	procstart = null
+	src.procstart = null
 	GLOB.admin_activities.Add(text)
 	logger.Log(LOG_CATEGORY_ADMIN_CIRCUIT, text, data)
 	logger.Log(LOG_CATEGORY_COMPAT_GAME, "ADMIN: CIRCUIT: [text]")
 
 /// General logging for admin actions
 /proc/log_admin_private(text, list/data)
+	procstart = null
+	src.procstart = null
 	GLOB.admin_activities.Add(text)
 	logger.Log(LOG_CATEGORY_ADMIN_PRIVATE, text, data)
 	logger.Log(LOG_CATEGORY_COMPAT_GAME, "ADMINPRIVATE: [text]")
 
 /// Logging for AdminSay (ASAY) messages
 /proc/log_adminsay(text, list/data)
+	procstart = null
+	src.procstart = null
 	GLOB.admin_activities.Add(text)
 	logger.Log(LOG_CATEGORY_ADMIN_PRIVATE_ASAY, text, data)
 	logger.Log(LOG_CATEGORY_COMPAT_GAME, "ADMINPRIVATE: ASAY: [text]")
 
 /// Logging for DeachatSay (DSAY) messages
 /proc/log_dsay(text, list/data)
+	procstart = null
+	src.procstart = null
 	logger.Log(LOG_CATEGORY_ADMIN_DSAY, text, data)
 	logger.Log(LOG_CATEGORY_COMPAT_GAME, "ADMIN: DSAY: [text]")
 
@@ -40,6 +50,8 @@
  * doesn't need to be used alongside log_access and can replace it where appropriate.
  */
 /proc/log_suspicious_login(text, list/data, access_log_mirror = TRUE)
+	procstart = null
+	src.procstart = null
 	logger.Log(LOG_CATEGORY_SUSPICIOUS_LOGIN, text)
 	if(access_log_mirror)
 		log_access(text)

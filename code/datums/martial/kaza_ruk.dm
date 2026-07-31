@@ -8,20 +8,28 @@
 	VAR_PRIVATE/datum/action/lung_punch/lungpunch
 
 /datum/martial_art/kaza_ruk/activate_style(mob/living/new_holder)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(new_holder, COMSIG_HUMAN_PUNCHED, PROC_REF(blow_followup))
 
 /datum/martial_art/kaza_ruk/deactivate_style(mob/living/old_holder)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(old_holder, COMSIG_HUMAN_PUNCHED)
 
 /datum/martial_art/kaza_ruk/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	neckchop = new(src)
 	lowsweep = new(src)
 	lungpunch = new(src)
 
 /datum/martial_art/kaza_ruk/Destroy()
+	procstart = null
+	src.procstart = null
 	neckchop = null
 	lowsweep = null
 	lungpunch = null
@@ -35,6 +43,8 @@
 	check_flags = AB_CHECK_INCAPACITATED|AB_CHECK_HANDS_BLOCKED|AB_CHECK_CONSCIOUS
 
 /datum/action/neck_chop/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -56,6 +66,8 @@
 	check_flags = AB_CHECK_INCAPACITATED|AB_CHECK_HANDS_BLOCKED|AB_CHECK_CONSCIOUS
 
 /datum/action/low_sweep/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -77,6 +89,8 @@
 	check_flags = AB_CHECK_INCAPACITATED|AB_CHECK_HANDS_BLOCKED|AB_CHECK_CONSCIOUS
 
 /datum/action/lung_punch/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -91,6 +105,8 @@
 		source.streak = "quick_choke"//internal name for lung punch
 
 /datum/martial_art/kaza_ruk/activate_style(mob/living/new_holder)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(new_holder, span_userdanger("You know the arts of [name]!"))
 	to_chat(new_holder, span_danger("Place your cursor over a move at the top of the screen to see what it does."))
@@ -99,6 +115,8 @@
 	lungpunch.Grant(new_holder)
 
 /datum/martial_art/kaza_ruk/deactivate_style(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	to_chat(remove_from, span_userdanger("You suddenly forget the arts of [name]..."))
 	neckchop?.Remove(remove_from)
 	lowsweep?.Remove(remove_from)
@@ -106,6 +124,8 @@
 	return ..()
 
 /datum/martial_art/kaza_ruk/proc/check_streak(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	switch(streak)
 		if("neck_chop")
 			streak = ""
@@ -122,6 +142,8 @@
 	return FALSE
 
 /datum/martial_art/kaza_ruk/proc/low_sweep(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(defender) || defender.IsParalyzed())
 		return MARTIAL_ATTACK_INVALID
 	if(HAS_TRAIT(attacker, TRAIT_PACIFISM))
@@ -154,7 +176,9 @@
 	log_combat(attacker, defender, "leg sweeped")
 	return MARTIAL_ATTACK_SUCCESS
 
-/datum/martial_art/kaza_ruk/proc/quick_choke(mob/living/attacker, mob/living/defender)//is actually lung punch
+/datum/martial_art/kaza_ruk/proc/quick_choke(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null//is actually lung punch
 	attacker.do_attack_animation(defender)
 	defender.visible_message(
 		span_warning("[attacker] pounds [defender] on the chest!"),
@@ -172,6 +196,8 @@
 	return MARTIAL_ATTACK_SUCCESS
 
 /datum/martial_art/kaza_ruk/proc/neck_chop(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(attacker, TRAIT_PACIFISM))
 		return MARTIAL_ATTACK_INVALID // Does 10 damage, so we can't let pacifists neck chop.
 	attacker.do_attack_animation(defender)
@@ -190,6 +216,8 @@
 	return MARTIAL_ATTACK_SUCCESS
 
 /datum/martial_art/kaza_ruk/harm_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(defender.check_block(attacker, 10, attacker.name, UNARMED_ATTACK))
 		return MARTIAL_ATTACK_FAIL
 
@@ -199,6 +227,8 @@
 	return MARTIAL_ATTACK_INVALID
 
 /datum/martial_art/kaza_ruk/disarm_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(defender.check_block(attacker, 0, attacker.name, UNARMED_ATTACK))
 		return MARTIAL_ATTACK_FAIL
 	if(check_streak(attacker, defender))
@@ -221,6 +251,8 @@
 /// First, determine if we're going to execute our followup attack
 
 /datum/martial_art/kaza_ruk/proc/blow_followup(mob/living/source, mob/living/target, damage, attack_type, obj/item/bodypart/affecting, final_armor_block, kicking, limb_sharpness)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!prob(50))
@@ -231,6 +263,8 @@
 /// After our delay, do the followup.
 
 /datum/martial_art/kaza_ruk/proc/execute_followup(mob/living/source, mob/living/target, damage, attack_type, obj/item/bodypart/affecting, final_armor_block, kicking, limb_sharpness)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(source) || QDELETED(target))
 		return
 
@@ -267,6 +301,8 @@
 	clothing_traits = list(TRAIT_FAST_CUFFING)
 
 /obj/item/clothing/gloves/kaza_ruk/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/martial_art_giver, /datum/martial_art/kaza_ruk)
 
@@ -277,16 +313,22 @@
 	var/reskin_color
 
 /datum/atom_skin/kaza_ruk/apply(atom/apply_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(reskin_color)
 		apply_to.add_atom_colour(color_matrix_filter(reskin_color), FIXED_COLOUR_PRIORITY)
 
 /datum/atom_skin/kaza_ruk/clear_skin(atom/clear_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(reskin_color)
 		clear_from.remove_atom_colour(FIXED_COLOUR_PRIORITY, reskin_color)
 
 /datum/atom_skin/kaza_ruk/get_preview_icon(atom/for_atom)
+	procstart = null
+	src.procstart = null
 	var/image/generated = ..()
 	if(reskin_color)
 		generated.add_filter("preview_filter", 1, color_matrix_filter(reskin_color))
@@ -312,6 +354,8 @@
 	resistance_flags = NONE
 
 /obj/item/clothing/gloves/kaza_ruk/sec/setup_reskins()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/reskinable_item, /datum/atom_skin/kaza_ruk, infinite = TRUE)
 
 /obj/item/clothing/gloves/kaza_ruk/combatglovesplus

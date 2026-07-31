@@ -11,16 +11,22 @@
 	var/mutable_appearance/byteforge_particles
 
 /obj/machinery/byteforge/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	register_context()
 
 /obj/machinery/byteforge/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	setup_particles()
 
 /obj/machinery/byteforge/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(isnull(held_item))
 		return
@@ -33,6 +39,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/byteforge/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	. += span_notice("Must be within 4 tiles of the quantum server.")
@@ -42,22 +50,32 @@
 		. += span_notice("It can be [EXAMINE_HINT("pried")] apart.")
 
 /obj/machinery/byteforge/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	setup_particles()
 
 /obj/machinery/byteforge/screwdriver_act(mob/living/user, obj/item/screwdriver)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, screwdriver)
 
 /obj/machinery/byteforge/crowbar_act(mob/living/user, obj/item/crowbar)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, crowbar)
 
 /obj/machinery/byteforge/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]_panel" : base_icon_state
 
 /// Does some sparks after it's done
 /obj/machinery/byteforge/proc/flash(atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/magic/blink.ogg', 50, TRUE)
 
 	do_sparks(5, TRUE, loc, spark_type = /datum/effect_system/basic/spark_spread/quantum)
@@ -65,6 +83,8 @@
 
 /// Forge begins to process
 /obj/machinery/byteforge/proc/flicker(angry = FALSE)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/lighting = mutable_appearance(initial(icon), "on_overlay[angry ? "_angry" : ""]")
 	flick_overlay_view(lighting, 1 SECONDS)
 
@@ -72,6 +92,8 @@
 
 /// Adds the particle overlays to the byteforge
 /obj/machinery/byteforge/proc/setup_particles(angry = FALSE)
+	procstart = null
+	src.procstart = null
 	cut_overlay(byteforge_particles)
 
 	byteforge_particles = mutable_appearance(initial(icon), "on_particles[angry ? "_angry" : ""]", ABOVE_MOB_LAYER)
@@ -81,6 +103,8 @@
 
 /// Forge is done processing
 /obj/machinery/byteforge/proc/spawn_cache(obj/cache)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(cache))
 		return
 
@@ -90,6 +114,8 @@
 
 /// Timed flash
 /obj/machinery/byteforge/proc/start_to_spawn(obj/cache)
+	procstart = null
+	src.procstart = null
 	flicker()
 
 	addtimer(CALLBACK(src, PROC_REF(spawn_cache), cache), 1 SECONDS)

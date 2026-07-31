@@ -25,6 +25,8 @@
 	// Again, this isn't stable
 
 /datum/visual_data/proc/shadow(mob/mirror_off)
+	procstart = null
+	src.procstart = null
 	do_updates = FALSE
 	mirroring_off_ref = WEAKREF(mirror_off)
 	RegisterSignal(mirror_off, COMSIG_MOB_SIGHT_CHANGE, PROC_REF(sight_changed))
@@ -38,6 +40,8 @@
 	do_updates = TRUE
 
 /datum/visual_data/proc/paint_onto(mob/paint_to)
+	procstart = null
+	src.procstart = null
 	// Note: we explicitly do NOT use setters here, since it would break the behavior
 	paint_to.sight = sight
 	paint_to.see_invisible = see_invis
@@ -53,19 +57,27 @@
 			paint_to.client.screen = mirroring_off.client.screen
 
 /datum/visual_data/proc/on_update()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/visual_data/proc/sight_changed(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	sight = source.sight
 	on_update()
 
 /datum/visual_data/proc/invis_changed(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	see_invis = source.see_invisible
 	on_update()
 
 /datum/visual_data/proc/on_login(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// visual data can be created off login, so conflicts here are inevitable
 	// Best to just override
@@ -73,16 +85,22 @@
 	set_eye(source.client.eye)
 
 /datum/visual_data/proc/on_logout(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Canon here because it'll be gone come the logout signal
 	UnregisterSignal(source.canon_client, COMSIG_CLIENT_SET_EYE)
 	// We do NOT unset the eye, because it's still valid even if the mob ain't logged in
 
 /datum/visual_data/proc/eye_change(client/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_eye(source.eye)
 
 /datum/visual_data/proc/set_eye(atom/new_eye)
+	procstart = null
+	src.procstart = null
 	var/atom/old_eye = client_eye?.resolve()
 	if(old_eye)
 		UnregisterSignal(old_eye, COMSIG_QDELETING)
@@ -93,6 +111,8 @@
 	on_update()
 
 /datum/visual_data/proc/eye_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_eye(null)
 
@@ -103,6 +123,8 @@
 	var/datum/weakref/default_to_ref
 
 /datum/visual_data/tracking/Destroy()
+	procstart = null
+	src.procstart = null
 	var/mob/our_lad = mirroring_off_ref?.resolve()
 	if(our_lad)
 		// Reset our mob to his proper visuals
@@ -110,15 +132,21 @@
 	return ..()
 
 /datum/visual_data/tracking/proc/set_truth(datum/visual_data/truth)
+	procstart = null
+	src.procstart = null
 	default_to_ref = WEAKREF(truth)
 	on_update()
 
 /datum/visual_data/tracking/paint_onto(mob/paint_onto)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Rebuild the passed in mob's screen, since we can't track it currently
 	paint_onto.hud_used?.show_hud(paint_onto.hud_used.hud_version)
 
 /datum/visual_data/tracking/on_update()
+	procstart = null
+	src.procstart = null
 	var/mob/updated = mirroring_off_ref?.resolve()
 	var/datum/visual_data/mirror = default_to_ref?.resolve()
 	if(!updated || !mirror)
@@ -131,6 +159,8 @@
 	var/datum/weakref/mirror_onto_ref
 
 /datum/visual_data/mirroring/proc/set_mirror_target(mob/target)
+	procstart = null
+	src.procstart = null
 	var/mob/old_target = mirror_onto_ref?.resolve()
 	if(old_target)
 		UnregisterSignal(old_target, COMSIG_MOB_HUD_REFRESHED)
@@ -139,12 +169,16 @@
 		RegisterSignal(target, COMSIG_MOB_HUD_REFRESHED, PROC_REF(push_ontod_hud_refreshed))
 
 /datum/visual_data/mirroring/proc/push_ontod_hud_refreshed(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Our mob refreshed its hud, so we're gonna reset it to our screen
 	// I hate that I don't have a signal for this, hhhh
 	paint_onto(source)
 
 /datum/visual_data/mirroring/on_update()
+	procstart = null
+	src.procstart = null
 	var/mob/draw_onto = mirror_onto_ref?.resolve()
 	if(!draw_onto)
 		return

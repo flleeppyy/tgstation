@@ -1,5 +1,7 @@
 
 /mob/living/basic/slime/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -7,6 +9,8 @@
 
 ///If a slime is attack with an empty hand, shoves included, try to wrestle them off the mob they are on
 /mob/living/basic/slime/proc/on_attack_hand(mob/living/basic/slime/defender_slime, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(buckled))
@@ -24,6 +28,8 @@
 	defender_slime.discipline_slime()
 
 /mob/living/basic/slime/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	//Lets you feed slimes plasma. Checks before the passthrough force check
 	if(istype(tool, /obj/item/stack/sheet/mineral/plasma) && !IS_UNCONSCIOUS_OR_CRIT(src))
 		use_sheet(tool, user)
@@ -44,6 +50,8 @@
 
 ///Checks if an item harmlessly passes through the slime
 /mob/living/basic/slime/proc/check_item_passthrough(obj/item/attacking_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(attacking_item.force <= 0)
 		return FALSE
 
@@ -57,6 +65,8 @@
 
 ///Attempts to use the item to discipline the unruly slime
 /mob/living/basic/slime/proc/try_discipline_slime(obj/item/attacking_item)
+	procstart = null
+	src.procstart = null
 	if(attacking_item.force < 3)
 		return
 
@@ -66,6 +76,8 @@
 
 ///Handles feeding a sheet of plasma to a slime
 /mob/living/basic/slime/proc/use_sheet(obj/item/stack/sheet/mineral/plasma/delicious_sheet, mob/living/user)
+	procstart = null
+	src.procstart = null
 	befriend(user)
 	to_chat(user, span_notice("You feed the slime the plasma. It chirps happily."))
 	delicious_sheet.use(1)
@@ -74,6 +86,8 @@
 
 ///Handles feeding a slim with a bag full of extracts
 /mob/living/basic/slime/proc/use_xeno_bag(obj/item/storage/bag/xeno/xeno_bag, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!crossbreed_modification)
 		to_chat(user, span_warning("The slime is not currently being mutated."))
 		return
@@ -103,11 +117,15 @@
 
 ///Handles the adverse effects of water on slimes
 /mob/living/basic/slime/proc/apply_water()
+	procstart = null
+	src.procstart = null
 	adjust_brute_loss(rand(15,20))
 	discipline_slime()
 
 ///Stops the slime from feeding, and might remove rabidity and targets
 /mob/living/basic/slime/proc/discipline_slime()
+	procstart = null
+	src.procstart = null
 	stop_feeding(silent = TRUE)
 	if(life_stage == SLIME_LIFE_STAGE_BABY && prob(80))
 		ai_controller?.clear_blackboard_key(BB_CURRENT_TARGET)

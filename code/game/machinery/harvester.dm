@@ -18,11 +18,15 @@
 	var/allow_living = FALSE
 
 /obj/machinery/harvester/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(1))
 		name = "auto-autopsy"
 
 /obj/machinery/harvester/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	interval = 0
 	var/max_time = 40
@@ -31,6 +35,8 @@
 	interval = max(max_time,1)
 
 /obj/machinery/harvester/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		icon_state = "[base_icon_state]-o"
 		return ..()
@@ -47,6 +53,8 @@
 	return ..()
 
 /obj/machinery/harvester/open_machine(drop = TRUE, density_to_set = FALSE)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		return
 	. = ..()
@@ -54,6 +62,8 @@
 	harvesting = FALSE
 
 /obj/machinery/harvester/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(state_open)
 		close_machine()
@@ -61,6 +71,8 @@
 		open_machine()
 
 /obj/machinery/harvester/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		output_dir = turn(output_dir, -90)
 		to_chat(user, span_notice("You change [src]'s output settings, setting the output to [dir2text(output_dir)]."))
@@ -72,6 +84,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/harvester/proc/can_harvest()
+	procstart = null
+	src.procstart = null
 	if(!powered() || state_open || !occupant || !iscarbon(occupant))
 		return
 	var/mob/living/carbon/carbon_occupant = occupant
@@ -92,6 +106,8 @@
 	return TRUE
 
 /obj/machinery/harvester/proc/start_harvest()
+	procstart = null
+	src.procstart = null
 	if(!occupant || !iscarbon(occupant))
 		return
 
@@ -113,6 +129,8 @@
 	addtimer(CALLBACK(src, PROC_REF(harvest)), interval)
 
 /obj/machinery/harvester/proc/harvest()
+	procstart = null
+	src.procstart = null
 	warming_up = FALSE
 	update_appearance()
 	if(!harvesting || state_open || !powered() || !occupant || !iscarbon(occupant))
@@ -139,6 +157,8 @@
 	addtimer(CALLBACK(src, PROC_REF(harvest)), interval)
 
 /obj/machinery/harvester/proc/end_harvesting(success = TRUE)
+	procstart = null
+	src.procstart = null
 	warming_up = FALSE
 	harvesting = FALSE
 	open_machine()
@@ -150,6 +170,8 @@
 		playsound(src, 'sound/machines/microwave/microwave-end.ogg', 100, FALSE)
 
 /obj/machinery/harvester/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(occupant)
 		to_chat(user, span_warning("[src] is currently occupied!"))
 		return ITEM_INTERACT_BLOCKING
@@ -159,12 +181,18 @@
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/harvester/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_pry_open(user, tool, deconstruct_on_fail = TRUE)
 
 /obj/machinery/harvester/can_crowbar_pry_open()
+	procstart = null
+	src.procstart = null
 	return !state_open && !panel_open
 
 /obj/machinery/harvester/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -174,6 +202,8 @@
 	return TRUE
 
 /obj/machinery/harvester/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!harvesting)
 		visible_message(span_notice("[occupant] emerges from [src]!"),
 			span_notice("You climb out of [src]!"))
@@ -182,15 +212,21 @@
 		to_chat(user,span_warning("[src] is active and can't be opened!")) //rip
 
 /obj/machinery/harvester/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if (!state_open && gone == occupant)
 		container_resist_act(gone)
 	return ..()
 
 /obj/machinery/harvester/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if (!state_open)
 		container_resist_act(user)
 
 /obj/machinery/harvester/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & BROKEN)
 		return

@@ -21,16 +21,22 @@ Passive gate is similar to the regular pump except:
 	var/target_pressure = ONE_ATMOSPHERE
 
 /obj/machinery/atmospherics/components/binary/passive_gate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/machinery/atmospherics/components/binary/passive_gate/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	context[SCREENTIP_CONTEXT_CTRL_LMB] = "Turn [on ? "off" : "on"]"
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "Maximize target pressure"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/atmospherics/components/binary/passive_gate/click_ctrl(mob/user)
+	procstart = null
+	src.procstart = null
 	if(is_operational)
 		set_on(!on)
 		balloon_alert(user, "turned [on ? "on" : "off"]")
@@ -39,6 +45,8 @@ Passive gate is similar to the regular pump except:
 	return CLICK_ACTION_BLOCKING
 
 /obj/machinery/atmospherics/components/binary/passive_gate/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(target_pressure == MAX_OUTPUT_PRESSURE)
 		return CLICK_ACTION_BLOCKING
 
@@ -49,12 +57,16 @@ Passive gate is similar to the regular pump except:
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/atmospherics/components/binary/passive_gate/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	icon_state = "passgate_off-[set_overlay_offset(piping_layer)]"
 	if(on)
 		add_overlay(get_pipe_image(icon, "passgate_on-[set_overlay_offset(piping_layer)]"))
 
 /obj/machinery/atmospherics/components/binary/passive_gate/process_atmos()
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return
 
@@ -66,17 +78,23 @@ Passive gate is similar to the regular pump except:
 		update_parents()
 
 /obj/machinery/atmospherics/components/binary/passive_gate/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(!on || direction != dir)
 		return
 	. = ..()
 
 /obj/machinery/atmospherics/components/binary/passive_gate/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AtmosPump", name)
 		ui.open()
 
 /obj/machinery/atmospherics/components/binary/passive_gate/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["on"] = on
 	data["pressure"] = round(target_pressure)
@@ -84,6 +102,8 @@ Passive gate is similar to the regular pump except:
 	return data
 
 /obj/machinery/atmospherics/components/binary/passive_gate/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -106,6 +126,8 @@ Passive gate is similar to the regular pump except:
 	update_appearance(UPDATE_ICON)
 
 /obj/machinery/atmospherics/components/binary/passive_gate/can_unwrench(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && on)
 		to_chat(user, span_warning("You cannot unwrench [src], turn it off first!"))

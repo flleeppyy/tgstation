@@ -30,9 +30,13 @@
 	acid = 10
 
 /obj/machinery/electrolyzer/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/machinery/electrolyzer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ispath(cell))
 		cell = new cell(src)
@@ -41,6 +45,8 @@
 	register_context()
 
 /obj/machinery/electrolyzer/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "Turn [on ? "off" : "on"]"
 	if(!held_item)
@@ -53,17 +59,23 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/electrolyzer/Destroy()
+	procstart = null
+	src.procstart = null
 	if(cell)
 		QDEL_NULL(cell)
 	return ..()
 
 /obj/machinery/electrolyzer/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	if(cell)
 		LAZYADD(component_parts, cell)
 		cell = null
 	return ..()
 
 /obj/machinery/electrolyzer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "\The [src] is [on ? "on" : "off"], and the panel is [panel_open ? "open" : "closed"]."
 
@@ -78,15 +90,21 @@
 
 
 /obj/machinery/electrolyzer/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "electrolyzer-[on ? "[mode]" : "off"]"
 	return ..()
 
 /obj/machinery/electrolyzer/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(panel_open)
 		. += "electrolyzer-open"
 
 /obj/machinery/electrolyzer/process_atmos()
+	procstart = null
+	src.procstart = null
 
 	if(!is_operational && on)
 		on = FALSE
@@ -130,9 +148,13 @@
 		cell.use(power_to_use)
 
 /obj/machinery/electrolyzer/proc/call_reactions(datum/gas_mixture/env)
+	procstart = null
+	src.procstart = null
 	env.electrolyze(working_power = working_power)
 
 /obj/machinery/electrolyzer/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/power = 0
 	var/cap = 0
@@ -146,6 +168,8 @@
 	efficiency = (cap + 1) * 0.5 //used in the amount of charge in power cell uses
 
 /obj/machinery/electrolyzer/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(src, 50)
 	toggle_panel_open()
 	balloon_alert(user, "[panel_open ? "opened" : "closed"] panel")
@@ -153,14 +177,20 @@
 	return TRUE
 
 /obj/machinery/electrolyzer/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/electrolyzer/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/electrolyzer/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(!istype(tool, /obj/item/stock_parts/power_store/cell))
 		return NONE
@@ -183,6 +213,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/electrolyzer/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		balloon_alert(user, "close panel!")
 		return CLICK_ACTION_BLOCKING
@@ -190,6 +222,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/electrolyzer/proc/toggle_power(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!anchored && !cell)
 		balloon_alert(user, "insert cell or anchor!")
 		return
@@ -201,15 +235,21 @@
 		SSair.start_processing_machine(src)
 
 /obj/machinery/electrolyzer/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.physical_state
 
 /obj/machinery/electrolyzer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Electrolyzer", name)
 		ui.open()
 
 /obj/machinery/electrolyzer/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["open"] = panel_open
 	data["on"] = on
@@ -220,6 +260,8 @@
 	return data
 
 /obj/machinery/electrolyzer/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

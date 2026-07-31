@@ -56,23 +56,33 @@
 		time_to_finish = world.time + timer
 
 /datum/component/puzzgrid/Destroy(force)
+	procstart = null
+	src.procstart = null
 	puzzgrid = null
 	on_victory_callback = null
 	on_fail_callback = null
 	return ..()
 
 /datum/component/puzzgrid/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_ATTACK_HAND, PROC_REF(on_attack_hand))
 
 /datum/component/puzzgrid/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_ATOM_ATTACK_HAND)
 
 /datum/component/puzzgrid/proc/on_attack_hand(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(ui_interact), user)
 
 /datum/component/puzzgrid/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -80,6 +90,8 @@
 		ui.open()
 
 /datum/component/puzzgrid/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return .
@@ -93,6 +105,8 @@
 	return TRUE
 
 /datum/component/puzzgrid/proc/try_select(answer)
+	procstart = null
+	src.procstart = null
 	if (!(answer in all_answers))
 		return FALSE
 
@@ -134,15 +148,21 @@
 	return TRUE
 
 /datum/component/puzzgrid/proc/try_unselect(answer)
+	procstart = null
+	src.procstart = null
 	selected_answers -= answer
 	return TRUE
 
 /datum/component/puzzgrid/proc/on_victory()
+	procstart = null
+	src.procstart = null
 	report_answers()
 	on_victory_callback?.InvokeAsync()
 	qdel(src)
 
 /datum/component/puzzgrid/proc/out_of_lives()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/movable_parent = parent
 	if (istype(movable_parent))
 		movable_parent.say("Ran out of lives!", forced = "puzzgrid component")
@@ -150,6 +170,8 @@
 	fail()
 
 /datum/component/puzzgrid/proc/out_of_time()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/movable_parent = parent
 	if (istype(movable_parent))
 		movable_parent.say("Ran out of time!", forced = "puzzgrid component")
@@ -157,11 +179,15 @@
 	fail()
 
 /datum/component/puzzgrid/proc/fail()
+	procstart = null
+	src.procstart = null
 	report_answers()
 	on_fail_callback?.InvokeAsync()
 	qdel(src)
 
 /datum/component/puzzgrid/proc/report_answers()
+	procstart = null
+	src.procstart = null
 	var/list/answers = list()
 	for (var/datum/puzzgrid_group/puzzgrid_group as anything in puzzgrid.groups)
 		var/list/answers_encoded = list()
@@ -176,6 +202,8 @@
 		to_chat(mob, message)
 
 /datum/component/puzzgrid/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		"selected_answers" = selected_answers,
 		"time_left" = time_to_finish && (max(0, (time_to_finish - world.time) / (1 SECONDS))),
@@ -184,6 +212,8 @@
 	)
 
 /datum/component/puzzgrid/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["answers"] = puzzgrid.answers
@@ -204,6 +234,8 @@
 /// Returns a random puzzgrid from config.
 /// If config is empty, or no valid puzzgrids can be found in time, will return null.
 /proc/create_random_puzzgrid()
+	procstart = null
+	src.procstart = null
 	var/static/total_lines
 
 	if (isnull(total_lines))
@@ -246,6 +278,8 @@
 /// Will populate a puzzgrid with the information from the JSON.
 /// Will return TRUE if the populate succeeded, or a string denoting the error otherwise.
 /datum/puzzgrid/proc/populate(list/from_json)
+	procstart = null
+	src.procstart = null
 	if (!islist(from_json))
 		return "Puzzgrid was not a list"
 

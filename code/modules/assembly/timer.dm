@@ -14,29 +14,41 @@
 	var/hearing_range = 3
 
 /obj/item/assembly/timer/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] looks at the timer and decides [user.p_their()] fate! It looks like [user.p_theyre()] going to commit suicide!"))
 	activate()//doesnt rely on timer_end to prevent weird metas where one person can control the timer and therefore someone's life. (maybe that should be how it works...)
 	addtimer(CALLBACK(src, PROC_REF(manual_suicide), user), time SECONDS)//kill yourself once the time runs out
 	return MANUAL_SUICIDE
 
 /obj/item/assembly/timer/proc/manual_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user]'s time is up!"))
 	user.adjust_oxy_loss(200)
 	user.death(FALSE)
 
 /obj/item/assembly/timer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/assembly/timer/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
 /obj/item/assembly/timer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("The timer is [timing ? "counting down from [time]":"set for [time] seconds"].")
 
 /obj/item/assembly/timer/activate()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE//Cooldown check
 	timing = !timing
@@ -44,6 +56,8 @@
 	return TRUE
 
 /obj/item/assembly/timer/toggle_secure()
+	procstart = null
+	src.procstart = null
 	secured = !secured
 	if(secured)
 		START_PROCESSING(SSobj, src)
@@ -54,6 +68,8 @@
 	return secured
 
 /obj/item/assembly/timer/proc/timer_end()
+	procstart = null
+	src.procstart = null
 	if(secured && next_activate <= world.time)
 		pulse()
 		audible_message(span_infoplain("[icon2html(src, hearers(src))] *beep* *beep* *beep*"), null, hearing_range)
@@ -64,6 +80,8 @@
 	update_appearance()
 
 /obj/item/assembly/timer/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!timing)
 		return
 	time -= seconds_per_tick
@@ -76,10 +94,14 @@
 		time = saved_time
 
 /obj/item/assembly/timer/update_appearance()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	holder?.update_appearance()
 
 /obj/item/assembly/timer/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	attached_overlays = list()
 	if(!timing)
@@ -92,17 +114,23 @@
 		. += timer_light
 
 /obj/item/assembly/timer/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(is_secured(user))
 		return ..()
 	return UI_CLOSE
 
 /obj/item/assembly/timer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Timer", name)
 		ui.open()
 
 /obj/item/assembly/timer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["seconds"] = round(time % 60)
 	data["minutes"] = round((time - data["seconds"]) / 60)
@@ -111,6 +139,8 @@
 	return data
 
 /obj/item/assembly/timer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

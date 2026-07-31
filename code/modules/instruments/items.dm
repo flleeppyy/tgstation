@@ -16,15 +16,21 @@
 	var/instrument_range = 15
 
 /obj/item/instrument/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	song = new(src, allowed_instrument_ids, instrument_range)
 	allowed_instrument_ids = null //We don't need this clogging memory after its used.
 
 /obj/item/instrument/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(song)
 	return ..()
 
 /obj/item/instrument/proc/can_play(atom/music_player)
+	procstart = null
+	src.procstart = null
 	if(!ismob(music_player))
 		return FALSE
 	var/mob/user = music_player
@@ -35,10 +41,14 @@
 	return TRUE
 
 /obj/item/instrument/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins to play 'Gloomy Sunday'! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 
 /obj/item/instrument/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	return song.ui_interact(user)
 
 /obj/item/instrument/violin
@@ -121,10 +131,14 @@
 	var/single_use = FALSE
 
 /obj/item/instrument/trumpet/spectral/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/spooky, too_spooky = !single_use, single_use = single_use)
 
 /obj/item/instrument/trumpet/spectral/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/runtime/instruments/trombone/En4.mid', 1000, 1, -1)
 	return ..()
 
@@ -149,10 +163,14 @@
 	var/single_use = FALSE
 
 /obj/item/instrument/saxophone/spectral/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/spooky, too_spooky = !single_use, single_use = single_use)
 
 /obj/item/instrument/saxophone/spectral/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/runtime/instruments/trombone/En4.mid', 1000, 1, -1)
 	return ..()
 
@@ -177,6 +195,8 @@
 	var/single_use = FALSE
 
 /obj/item/instrument/trombone/spectral/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/spooky, too_spooky = !single_use, single_use = single_use)
 
@@ -184,6 +204,8 @@
 	single_use = TRUE
 
 /obj/item/instrument/trombone/spectral/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/runtime/instruments/trombone/Cn4.mid', 1000, 1, -1)
 	return ..()
 
@@ -208,16 +230,22 @@
 	action_slots = ALL
 
 /obj/item/instrument/harmonica/equipped(mob/user, slot, initial = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(slot & slot_flags))
 		return
 	RegisterSignal(user, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 
 /obj/item/instrument/harmonica/dropped(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, COMSIG_MOB_SAY)
 
 /obj/item/instrument/harmonica/proc/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!song.playing)
 		return
@@ -231,6 +259,8 @@
 	desc = "Use the instrument specified"
 
 /datum/action/item_action/instrument/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	if(!istype(target, /obj/item/instrument))
 		return FALSE
 	var/obj/item/instrument/instrument = target

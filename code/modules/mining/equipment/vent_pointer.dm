@@ -7,6 +7,8 @@
 	medium_range = 20
 
 /obj/item/pinpointer/vent/scan_for_target()
+	procstart = null
+	src.procstart = null
 	var/closest_dist = INFINITY
 
 	for(var/obj/structure/ore_vent/vent in SSore_generation.possible_vents)

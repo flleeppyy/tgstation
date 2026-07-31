@@ -9,6 +9,8 @@
 	var/object_launch_prob = 20
 
 /obj/effect/anomaly/grav/Initialize(mapload, new_lifespan)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
@@ -17,6 +19,8 @@
 	apply_wibbly_filters(src)
 
 /obj/effect/anomaly/grav/anomalyEffect(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	..()
 	boing = 1
 	for(var/obj/O in orange(4, src))
@@ -36,16 +40,24 @@
 			O.throw_at(target, 5, 10)
 
 /obj/effect/anomaly/grav/proc/on_entered(datum/source, atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	gravShock(AM)
 
 /obj/effect/anomaly/grav/Bump(atom/A)
+	procstart = null
+	src.procstart = null
 	gravShock(A)
 
 /obj/effect/anomaly/grav/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	gravShock(AM)
 
 /obj/effect/anomaly/grav/proc/gravShock(mob/living/living_debris)
+	procstart = null
+	src.procstart = null
 	if(boing && isliving(living_debris) && !IS_UNCONSCIOUS_OR_CRIT(living_debris) && !living_debris.mob_negates_gravity())
 		living_debris.Knockdown(4 SECONDS)
 		var/atom/target = get_edge_target_turf(living_debris, get_dir(src, get_step_away(living_debris, src)))
@@ -53,6 +65,8 @@
 		boing = 0
 
 /obj/effect/anomaly/grav/detonate()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/circle_wave/gravity(get_turf(src))
 	playsound(src, 'sound/effects/magic/cosmic_energy.ogg', vol = 50)
 
@@ -60,19 +74,27 @@
 	var/datum/proximity_monitor/advanced/gravity/grav_field
 
 /obj/effect/anomaly/grav/high/Initialize(mapload, new_lifespan)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	INVOKE_ASYNC(src, PROC_REF(setup_grav_field))
 
 /obj/effect/anomaly/grav/high/proc/setup_grav_field()
+	procstart = null
+	src.procstart = null
 	grav_field = new(src, 7, TRUE, rand(0, 3))
 
 /obj/effect/anomaly/grav/high/detonate()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/obj/machinery/gravity_generator/main/the_generator as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/gravity_generator/main))
 		if(is_station_level(the_generator.z))
 			the_generator.blackout()
 
 /obj/effect/anomaly/grav/high/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(grav_field)
 	. = ..()
 
@@ -83,6 +105,8 @@
 	move_force = MOVE_FORCE_OVERPOWERING
 
 /obj/effect/anomaly/grav/high/big/Initialize(mapload, new_lifespan)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	transform *= 3

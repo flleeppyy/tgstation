@@ -65,6 +65,8 @@
 	var/obj/item/emitter_disk/diskie
 
 /obj/machinery/power/emitter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//Add to the early process queue to prioritize power draw
 	SSmachines.processing_early += src
@@ -81,10 +83,14 @@
 	AddComponent(/datum/component/usb_port, typecacheof(list(/obj/item/circuit_component/emitter), only_root_path = TRUE))
 
 /obj/machinery/power/emitter/welded/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	welded = TRUE
 	. = ..()
 
 /obj/machinery/power/emitter/cable_layer_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		return NONE
 	if(welded)
@@ -93,11 +99,15 @@
 	return ..()
 
 /obj/machinery/power/emitter/set_anchored(anchorvalue)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!anchored && welded) //make sure they're keep in sync in case it was forcibly unanchored by badmins or by a megafauna.
 		welded = FALSE
 
 /obj/machinery/power/emitter/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/max_fire_delay = 12 SECONDS
 	var/fire_shoot_delay = 12 SECONDS
@@ -115,6 +125,8 @@
 	update_mode_power_usage(ACTIVE_POWER_USE, power_usage)
 
 /obj/machinery/power/emitter/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(welded)
 		. += span_info("It's moored firmly to the floor. You can unsecure its moorings with a <b>welder</b>.")
@@ -135,9 +147,13 @@
 		. += span_notice("Power consumption at <b>[display_power(active_power_usage, convert = FALSE)]</b>.")
 
 /obj/machinery/power/emitter/should_have_node()
+	procstart = null
+	src.procstart = null
 	return welded
 
 /obj/machinery/power/emitter/Destroy()
+	procstart = null
+	src.procstart = null
 	if(SSticker.IsRoundInProgress())
 		var/turf/T = get_turf(src)
 		message_admins("[src] deleted at [ADMIN_VERBOSEJMP(T)].")
@@ -147,6 +163,8 @@
 	return ..()
 
 /obj/machinery/power/emitter/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!active)
 		return
@@ -161,6 +179,8 @@
 	. += emissive_appearance(icon, "emitter_overlay", src, alpha = src.alpha)
 
 /obj/machinery/power/emitter/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		icon_state = "[base_icon_state]_open"
 	else
@@ -168,6 +188,8 @@
 	return ..()
 
 /obj/machinery/power/emitter/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(!welded)
 		to_chat(user, span_warning("[src] needs to be firmly secured to the floor first!"))
@@ -194,6 +216,8 @@
 	SEND_SIGNAL(src, COMSIG_EMITTER_MACHINE_SET_ON, active ? TRUE : FALSE)
 
 /obj/machinery/power/emitter/attack_animal(mob/living/simple_animal/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(ismegafauna(user) && anchored)
 		set_anchored(FALSE)
 		user.visible_message(span_warning("[user] rips [src] free from its moorings!"))
@@ -203,10 +227,14 @@
 		step(src, get_dir(user, src))
 
 /obj/machinery/power/emitter/attack_ai_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	togglelock(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/power/emitter/process_early(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/power_usage = active_power_usage * seconds_per_tick
 	if(machine_stat & (BROKEN))
 		return
@@ -236,11 +264,15 @@
 	fire_beam()
 
 /obj/machinery/power/emitter/proc/check_delay()
+	procstart = null
+	src.procstart = null
 	if((last_shot + fire_delay) <= world.time)
 		return TRUE
 	return FALSE
 
 /obj/machinery/power/emitter/proc/fire_beam_pulse()
+	procstart = null
+	src.procstart = null
 	if(!check_delay())
 		return FALSE
 	if(!welded)
@@ -250,6 +282,8 @@
 		fire_beam()
 
 /obj/machinery/power/emitter/proc/fire_beam(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/projectile/projectile = new projectile_type(get_turf(src))
 	playsound(src, projectile_sound, 50, TRUE)
 	if(prob(35))
@@ -274,6 +308,8 @@
 	return projectile
 
 /obj/machinery/power/emitter/can_be_unfasten_wrench(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	if(active)
 		if(!silent)
 			to_chat(user, span_warning("Turn \the [src] off first!"))
@@ -287,11 +323,15 @@
 	return ..()
 
 /obj/machinery/power/emitter/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/emitter/welder_act(mob/living/user, obj/item/item)
+	procstart = null
+	src.procstart = null
 	..()
 	if(active)
 		to_chat(user, span_warning("Turn [src] off first!"))
@@ -328,6 +368,8 @@
 	return TRUE
 
 /obj/machinery/power/emitter/crowbar_act(mob/living/user, obj/item/item)
+	procstart = null
+	src.procstart = null
 	if(panel_open && gun)
 		return remove_gun(user)
 	if(panel_open && diskie)
@@ -335,10 +377,14 @@
 	return default_deconstruction_crowbar(user, item)
 
 /obj/machinery/power/emitter/screwdriver_act(mob/living/user, obj/item/item)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, item)
 
 /// Attempt to toggle the controls lock of the emitter
 /obj/machinery/power/emitter/proc/togglelock(mob/user)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		to_chat(user, span_warning("The lock seems to be broken!"))
 		return
@@ -352,6 +398,8 @@
 	to_chat(user, span_notice("You [src.locked ? "lock" : "unlock"] the controls."))
 
 /obj/machinery/power/emitter/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(tool.GetID())
 		togglelock(user)
 		return ITEM_INTERACT_SUCCESS
@@ -400,6 +448,8 @@
 
 
 /obj/machinery/power/emitter/proc/integrate(obj/item/gun/energy/energy_gun, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(energy_gun, /obj/item/gun/energy))
 		return
 	if(!user.transferItemToLoc(energy_gun, src))
@@ -413,6 +463,8 @@
 	return TRUE
 
 /obj/machinery/power/emitter/proc/remove_gun(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!gun)
 		return
 	user.put_in_hands(gun)
@@ -423,6 +475,8 @@
 	return TRUE
 
 /obj/machinery/power/emitter/proc/remove_disk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!diskie)
 		return
 	if(diskie.consumed_on_removal)
@@ -437,6 +491,8 @@
 
 
 /obj/machinery/power/emitter/proc/set_projectile()
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(gun_properties))
 		if(mode || !gun_properties["lethal_projectile"])
 			projectile_type = gun_properties["stun_projectile"]
@@ -451,6 +507,8 @@
 	no_shot_counter = initial(no_shot_counter)
 
 /obj/machinery/power/emitter/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	locked = FALSE
@@ -476,6 +534,8 @@
 //BUCKLE HOOKS
 
 /obj/machinery/power/emitter/prototype/unbuckle_mob(mob/living/buckled_mob, force = FALSE, can_fall = TRUE)
+	procstart = null
+	src.procstart = null
 	playsound(src,'sound/vehicles/mecha/mechmove01.ogg', 50, TRUE)
 	manual = FALSE
 	for(var/obj/item/item in buckled_mob.held_items)
@@ -490,6 +550,8 @@
 	. = ..()
 
 /obj/machinery/power/emitter/prototype/user_buckle_mob(mob/living/buckled_mob, mob/user, check_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated || !istype(user))
 		return
 	for(var/atom/movable/atom in get_turf(src))
@@ -514,11 +576,15 @@
 	var/mob/living/carbon/buckled_mob
 
 /datum/action/innate/proto_emitter/Destroy()
+	procstart = null
+	src.procstart = null
 	proto_emitter = null
 	buckled_mob = null
 	return ..()
 
 /datum/action/innate/proto_emitter/Grant(mob/living/carbon/user, obj/machinery/power/emitter/prototype/proto)
+	procstart = null
+	src.procstart = null
 	proto_emitter = proto
 	buckled_mob = user
 	. = ..()
@@ -529,6 +595,8 @@
 	button_icon_state = "mech_zoom_on"
 
 /datum/action/innate/proto_emitter/firing/Activate()
+	procstart = null
+	src.procstart = null
 	if(proto_emitter.manual)
 		playsound(proto_emitter,'sound/vehicles/mecha/mechmove01.ogg', 50, TRUE)
 		proto_emitter.manual = FALSE
@@ -569,15 +637,21 @@
 	var/delay = 0
 
 /obj/item/turret_control/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, ABSTRACT_ITEM_TRAIT)
 
 /obj/item/turret_control/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(interacting_with, TRAIT_COMBAT_MODE_SKIP_INTERACTION))
 		return NONE
 	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/turret_control/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/power/emitter/emitter = user.buckled
 	emitter.setDir(get_dir(emitter, interacting_with))
 	user.setDir(emitter.dir)

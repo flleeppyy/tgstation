@@ -22,15 +22,21 @@
 	var/obj/item/physical_object_reference
 
 /datum/stock_part/New()
+	procstart = null
+	src.procstart = null
 	physical_object_reference = new physical_object_type
 
 /datum/stock_part/Destroy()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	stack_trace("[type] is trying to Destroy. It is a singleton, this should not be happening")
 	return QDEL_HINT_LETMELIVE
 
 /// Returns the name of the physical object
 /datum/stock_part/proc/name()
+	procstart = null
+	src.procstart = null
 	return initial(physical_object_type.name)
 
 /// Map of physical stock part types to their /datum/stock_part
@@ -40,6 +46,8 @@ GLOBAL_LIST_EMPTY_TYPED(stock_part_datums_per_object, /datum/stock_part)
 GLOBAL_LIST_INIT(stock_part_datums, generate_stock_part_datums())
 
 /proc/generate_stock_part_datums()
+	procstart = null
+	src.procstart = null
 	var/list/stock_part_datums = list()
 
 	for (var/datum/stock_part/stock_part_type as anything in subtypesof(/datum/stock_part))
@@ -55,6 +63,8 @@ GLOBAL_LIST_INIT(stock_part_datums, generate_stock_part_datums())
 /// Returns the energy rating of the stock part given a level.
 /// The higher this is, the more power machines with these parts will consume.
 /datum/stock_part/proc/energy_rating()
+	procstart = null
+	src.procstart = null
 	switch (tier)
 		if (1)
 			return 1

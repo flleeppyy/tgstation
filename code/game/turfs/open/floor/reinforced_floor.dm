@@ -18,6 +18,8 @@
 	var/floor_tile_amount = 2
 
 /turf/open/floor/engine/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. += ..()
 	. += span_notice("The reinforcement rods are <b>wrenched</b> firmly in place.")
 
@@ -25,23 +27,35 @@
 	initial_gas_mix = AIRLESS_ATMOS
 
 /turf/open/floor/engine/break_tile()
+	procstart = null
+	src.procstart = null
 	return //unbreakable
 
 /turf/open/floor/engine/burn_tile()
+	procstart = null
+	src.procstart = null
 	return //unburnable
 
 /turf/open/floor/engine/make_plating(force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(force)
 		return ..()
 	return //unplateable
 
 /turf/open/floor/engine/try_replace_tile(obj/item/stack/tile/T, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/floor/engine/crowbar_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/floor/engine/wrench_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, span_notice("You begin removing rods..."))
 	if(I.use_tool(src, user, 30, volume=80))
@@ -53,6 +67,8 @@
 	return TRUE
 
 /turf/open/floor/engine/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(target == src)
 		ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
 		return TRUE
@@ -78,9 +94,13 @@
 
 // Contents *under* the reinforced flooring is protected from explosions (unless it's devastate level)
 /turf/open/floor/engine/can_propagate_explosion(atom/movable/some_thing, severity)
+	procstart = null
+	src.procstart = null
 	return severity == EXPLODE_DEVASTATE || !HAS_TRAIT(some_thing, TRAIT_UNDERFLOOR)
 
 /turf/open/floor/engine/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_size >= STAGE_FIVE)
 		if(floor_tile)
@@ -91,6 +111,8 @@
 			attempt_lattice_replacement()
 
 /turf/open/floor/engine/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 //air filled floors; used in atmos pressure chambers
@@ -196,6 +218,8 @@
 
 
 /turf/open/floor/engine/cult/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "plating" //we're redefining the base icon_state here so that the Conceal/Reveal Presence spell works for cultists
 
@@ -206,15 +230,21 @@
 	realappearance.linked = src
 
 /turf/open/floor/engine/cult/Destroy()
+	procstart = null
+	src.procstart = null
 	be_removed()
 	return ..()
 
 /turf/open/floor/engine/cult/ChangeTurf(path, new_baseturfs, flags)
+	procstart = null
+	src.procstart = null
 	if(path != type)
 		be_removed()
 	return ..()
 
 /turf/open/floor/engine/cult/proc/be_removed()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(realappearance)
 
 /turf/open/floor/engine/cult/airless

@@ -5,6 +5,8 @@
 	var/max_decay_time = 40 MINUTES
 
 /datum/corpse_damage/post_mortem/organ_decay/apply_to_body(mob/living/carbon/human/body, severity, list/sorage, list/datum/callback/on_revive_and_player_occupancy)
+	procstart = null
+	src.procstart = null
 	if(!body.organs)
 		return FALSE
 

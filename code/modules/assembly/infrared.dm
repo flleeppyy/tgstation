@@ -27,21 +27,29 @@
 	VAR_FINAL/turf/buffer_turf
 
 /obj/item/assembly/infra/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_rotation)
 
 /obj/item/assembly/infra/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(active_beam)
 	buffer_turf = null
 	return ..()
 
 
 /obj/item/assembly/infra/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("The infrared trigger is [on ? "on" : "off"].")
 
 /// Checks if the passed movable can block the beam.
 /obj/item/assembly/infra/proc/atom_blocks_beam(atom/movable/beam_atom)
+	procstart = null
+	src.procstart = null
 	if(isnull(beam_atom))
 		return FALSE
 	if(beam_atom == src || beam_atom == holder)
@@ -67,6 +75,8 @@
 
 /// Checks if the passed turf (or something on it) can block the beam.
 /obj/item/assembly/infra/proc/turf_blocks_beam(turf/beam_turf)
+	procstart = null
+	src.procstart = null
 	if(beam_turf.density)
 		return TRUE
 	for(var/atom/movable/blocker as anything in beam_turf)
@@ -78,6 +88,8 @@
 /// glide_seed/glide_time (from a predecessor beam's get_last_geometry) make the rebuilt beam glide
 /// from the old position instead of snapping; left as defaults for non-movement refreshes.
 /obj/item/assembly/infra/proc/make_beam(list/glide_seed = null, glide_time = 0)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 
 	if(!isnull(buffer_turf))
@@ -130,6 +142,8 @@
 		RegisterSignal(buffer_turf, COMSIG_TURF_CHANGE, PROC_REF(buffer_changed))
 
 /obj/item/assembly/infra/proc/beam_entered(datum/beam/source, obj/effect/ebeam/hit, atom/movable/entered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// First doesn't count
@@ -141,11 +155,15 @@
 	beam_trigger(hit, entered)
 
 /obj/item/assembly/infra/proc/beam_turfs_changed(datum/beam/source, list/datum/callback/post_change_callbacks)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// If the turfs changed it's possible something is now blocking it, remake when done
 	post_change_callbacks += CALLBACK(src, PROC_REF(make_beam))
 
 /obj/item/assembly/infra/proc/buffer_exited(turf/source, atom/movable/exited, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!atom_blocks_beam(exited))
@@ -154,11 +172,15 @@
 	make_beam()
 
 /obj/item/assembly/infra/proc/buffer_changed(turf/source, path, list/new_baseturfs, flags, list/datum/callback/post_change_callbacks)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	post_change_callbacks += CALLBACK(src, PROC_REF(make_beam))
 
 /obj/item/assembly/infra/proc/beam_trigger(obj/effect/ebeam/hit, atom/movable/entered)
+	procstart = null
+	src.procstart = null
 	make_beam()
 	if(!COOLDOWN_FINISHED(src, next_activate))
 		return
@@ -172,6 +194,8 @@
 	COOLDOWN_START(src, next_activate, 3 SECONDS)
 
 /obj/item/assembly/infra/activate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -179,23 +203,31 @@
 	toggle_on()
 
 /obj/item/assembly/infra/toggle_secure()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	make_beam()
 
 /// Toggles the beam on or off.
 /obj/item/assembly/infra/proc/toggle_on()
+	procstart = null
+	src.procstart = null
 	on = !on
 	make_beam()
 	update_appearance()
 
 /// Toggles the visibility of the beam.
 /obj/item/assembly/infra/proc/toggle_visible()
+	procstart = null
+	src.procstart = null
 	visible = !visible
 	update_visible()
 	update_appearance()
 
 /// Updates the visibility of the beam (if active).
 /obj/item/assembly/infra/proc/update_visible()
+	procstart = null
+	src.procstart = null
 	if(visible)
 		for(var/obj/effect/ebeam/beam as anything in active_beam?.elements)
 			beam.RemoveInvisibility(REF(src))
@@ -204,6 +236,8 @@
 			beam.SetInvisibility(INVISIBILITY_ABSTRACT, REF(src))
 
 /obj/item/assembly/infra/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -217,10 +251,14 @@
 			update_appearance()
 
 /obj/item/assembly/infra/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	holder?.update_appearance(updates)
 
 /obj/item/assembly/infra/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	attached_overlays = list()
 	if(on)
@@ -229,6 +267,8 @@
 	. += attached_overlays
 
 /obj/item/assembly/infra/dropped()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(holder)
 		holder_movement() //sync the dir of the device as well if it's contained in a TTV or an assembly holder
@@ -236,11 +276,15 @@
 		make_beam()
 
 /obj/item/assembly/infra/on_attach()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	make_beam()
 	holder.set_dir_on_move = set_dir_on_move
 
 /obj/item/assembly/infra/on_detach()
+	procstart = null
+	src.procstart = null
 	holder.set_dir_on_move = initial(holder.set_dir_on_move)
 	. = ..()
 	if(!.)
@@ -248,6 +292,8 @@
 	make_beam()
 
 /obj/item/assembly/infra/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	var/list/glide_seed = active_beam?.get_last_geometry()
 	. = ..()
 	if(loc == old_loc)
@@ -259,6 +305,8 @@
 	make_beam(glide_seed, glide_time)
 
 /obj/item/assembly/infra/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	var/prev_dir = dir
 	. = ..()
 	if(dir == prev_dir)
@@ -266,21 +314,29 @@
 	make_beam()
 
 /obj/item/assembly/infra/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	return is_secured(user) ? ..() : UI_CLOSE
 
 /obj/item/assembly/infra/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "InfraredEmitter", name)
 		ui.open()
 
 /obj/item/assembly/infra/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["on"] = on
 	data["visible"] = visible
 	return data
 
 /obj/item/assembly/infra/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .

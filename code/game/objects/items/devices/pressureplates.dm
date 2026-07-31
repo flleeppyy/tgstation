@@ -29,6 +29,8 @@
 	var/undertile_pressureplate = TRUE
 
 /obj/item/pressure_plate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tile_overlay = image(icon = 'icons/turf/floors.dmi', icon_state = "pp_overlay")
 	if(roundstart_signaller)
@@ -46,6 +48,8 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/item/pressure_plate/proc/on_entered(datum/source, atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!can_trigger || !active)
 		return
@@ -60,11 +64,15 @@
 	addtimer(CALLBACK(src, PROC_REF(trigger)), trigger_delay)
 
 /obj/item/pressure_plate/proc/trigger()
+	procstart = null
+	src.procstart = null
 	can_trigger = TRUE
 	if(istype(assembly))
 		assembly.activate()
 
 /obj/item/pressure_plate/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isassembly(tool) || assembly || !removable_assembly)
 		return NONE
 	var/obj/item/assembly/new_assembly = tool
@@ -79,6 +87,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/pressure_plate/attack_self(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(removable_assembly && istype(assembly))
 		to_chat(L, span_notice("You remove [assembly] from [src]."))
 		SEND_SIGNAL(assembly, COMSIG_ASSEMBLY_REMOVED_FROM_PRESSURE_PLATE, src, L)
@@ -88,6 +98,8 @@
 	return ..()
 
 /obj/item/pressure_plate/item_ctrl_click(mob/user)
+	procstart = null
+	src.procstart = null
 	if(protected)
 		to_chat(user, span_warning("You can't quite seem to turn this pressure plate off..."))
 		return CLICK_ACTION_BLOCKING
@@ -100,6 +112,8 @@
 
 ///Called from COMSIG_OBJ_HIDE to toggle the active part, because yeah im not making a special exception on the element to support it
 /obj/item/pressure_plate/proc/ToggleActive(datum/source, underfloor_accessibility)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	active = underfloor_accessibility < UNDERFLOOR_VISIBLE
@@ -115,10 +129,14 @@
 	var/queue_size = 2
 
 /obj/item/pressure_plate/puzzle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(puzzle_id))
 		SSqueuelinks.add_to_queue(src, puzzle_id, queue_size)
 
 /obj/item/pressure_plate/puzzle/trigger()
+	procstart = null
+	src.procstart = null
 	can_trigger = FALSE
 	SEND_SIGNAL(src, COMSIG_PUZZLE_COMPLETED)

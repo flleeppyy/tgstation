@@ -23,10 +23,14 @@
 	var/mob/living/second_target
 
 /datum/action/cooldown/spell/pointed/swap/Destroy()
+	procstart = null
+	src.procstart = null
 	second_target = null
 	return ..()
 
 /datum/action/cooldown/spell/pointed/swap/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -36,6 +40,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/pointed/swap/InterceptClickOn(mob/living/clicker, params, atom/target)
+	procstart = null
+	src.procstart = null
 	if(!LAZYACCESS(params2list(params), RIGHT_CLICK))
 		return ..()
 
@@ -61,6 +67,8 @@
 	return FALSE
 
 /datum/action/cooldown/spell/pointed/swap/cast(mob/living/carbon/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cast_on.can_block_magic(antimagic_flags))
 		to_chat(owner, span_warning("The spell had no effect!"))

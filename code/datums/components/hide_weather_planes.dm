@@ -10,6 +10,8 @@
 	var/list/atom/movable/screen/plane_master/plane_masters = list()
 
 /datum/component/hide_weather_planes/Initialize(atom/movable/screen/plane_master/care_about)
+	procstart = null
+	src.procstart = null
 	if(!istype(parent, /datum/plane_master_group))
 		return COMPONENT_INCOMPATIBLE
 	var/datum/plane_master_group/home = parent
@@ -31,12 +33,16 @@
 		RegisterSignal(home, COMSIG_GROUP_HUD_CHANGED, PROC_REF(new_hud_attached))
 
 /datum/component/hide_weather_planes/Destroy(force)
+	procstart = null
+	src.procstart = null
 	hide_planes()
 	active_weather = null
 	plane_masters = null
 	return ..()
 
 /datum/component/hide_weather_planes/InheritComponent(datum/component/new_comp, i_am_original, atom/movable/screen/plane_master/care_about)
+	procstart = null
+	src.procstart = null
 	if(!i_am_original)
 		return
 	var/datum/plane_master_group/home = parent
@@ -56,16 +62,22 @@
 		care_about.hide_plane(our_lad)
 
 /datum/component/hide_weather_planes/proc/new_hud_attached(datum/source, datum/hud/old_hud, datum/hud/new_hud)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	attach_hud(new_hud)
 
 /datum/component/hide_weather_planes/proc/attach_hud(datum/hud/new_hud)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(new_hud, COMSIG_HUD_Z_CHANGED, PROC_REF(z_changed))
 	var/mob/eye = new_hud?.mymob?.client?.eye
 	var/turf/eye_location = get_turf(eye)
 	z_changed(new_hud, eye_location?.z)
 
 /datum/component/hide_weather_planes/proc/plane_master_deleted(atom/movable/screen/plane_master/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	plane_masters -= source
 
@@ -74,6 +86,8 @@
  * Also updates the alpha of the planes so enabled planes are either fully opaque or fully transparent
  */
 /datum/component/hide_weather_planes/proc/display_planes()
+	procstart = null
+	src.procstart = null
 	var/datum/plane_master_group/home = parent
 	var/mob/our_lad = home.our_hud?.mymob
 	var/our_offset = GET_TURF_PLANE_OFFSET(our_lad)
@@ -90,12 +104,16 @@
 
 ///Hides the planes from the mob when no weather is occuring
 /datum/component/hide_weather_planes/proc/hide_planes()
+	procstart = null
+	src.procstart = null
 	var/datum/plane_master_group/home = parent
 	var/mob/our_lad = home.our_hud?.mymob
 	for(var/atom/movable/screen/plane_master/weather_conscious as anything in plane_masters)
 		weather_conscious.hide_plane(our_lad)
 
 /datum/component/hide_weather_planes/proc/z_changed(datum/source, new_z)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	active_weather = list()
 	if(!SSmapping.initialized)
@@ -112,6 +130,8 @@
 		hide_planes()
 
 /datum/component/hide_weather_planes/proc/weather_started(datum/source, datum/weather/starting)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/datum/plane_master_group/home = parent
 	var/mob/eye = home.our_hud?.mymob?.client?.eye
@@ -128,6 +148,8 @@
 	display_planes()
 
 /datum/component/hide_weather_planes/proc/weather_finished(datum/source, datum/weather/stopping)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	active_weather -= WEAKREF(stopping)
 

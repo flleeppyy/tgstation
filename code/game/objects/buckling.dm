@@ -18,6 +18,8 @@
 
 //Interaction
 /atom/movable/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -34,6 +36,8 @@
 
 //literally just the above extension of attack_hand(), but for silicons instead (with an adjacency check, since attack_robot() being called doesn't mean that you're adjacent to something)
 /atom/movable/attack_robot(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -47,6 +51,8 @@
 			return user_unbuckle_mob(buckled_mobs[1], user)
 
 /atom/movable/mouse_drop_receive(mob/living/M, mob/user, params)
+	procstart = null
+	src.procstart = null
 	return mouse_buckle_handling(M, user)
 
 /**
@@ -57,6 +63,8 @@
  * user - The mob buckling M to src
  */
 /atom/movable/proc/mouse_buckle_handling(mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(can_buckle && istype(M) && istype(user))
 		return user_buckle_mob(M, user, check_loc = FALSE)
 
@@ -64,6 +72,8 @@
  * Returns TRUE if there are mobs buckled to this atom and FALSE otherwise
  */
 /atom/movable/proc/has_buckled_mobs()
+	procstart = null
+	src.procstart = null
 	if(length(buckled_mobs))
 		return TRUE
 	return FALSE
@@ -80,6 +90,8 @@
  * ignore_self - If set to TRUE, this will not do a check to see if the user can move into the turf of the mob and will just automatically mount them.
  */
 /atom/movable/proc/buckle_mob(mob/living/M, force = FALSE, check_loc = TRUE, buckle_mob_flags= NONE)
+	procstart = null
+	src.procstart = null
 	if(!buckled_mobs)
 		buckled_mobs = list()
 
@@ -133,6 +145,8 @@
 	return TRUE
 
 /obj/buckle_mob(mob/living/M, force = FALSE, check_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		if(resistance_flags & ON_FIRE) //Sets the mob on fire if you buckle them to a burning atom/movableect
@@ -142,6 +156,8 @@
 			playsound(src, buckle_sound, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, pressure_affected = TRUE, ignore_walls = FALSE)
 
 /obj/unbuckle_mob(mob/living/buckled_mob, force, can_fall)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && unbuckle_sound)
 		playsound(src, unbuckle_sound, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, pressure_affected = TRUE, ignore_walls = FALSE)
@@ -155,6 +171,8 @@
  * force - TRUE if we should ignore buckled_mob.can_buckle_to
  */
 /atom/movable/proc/unbuckle_mob(mob/living/buckled_mob, force = FALSE, can_fall = TRUE)
+	procstart = null
+	src.procstart = null
 
 	if(!isliving(buckled_mob))
 		CRASH("Non-living [buckled_mob] thing called unbuckle_mob() for source.")
@@ -187,6 +205,8 @@
 		pitfall?.zFall(buckled_mob)
 
 /atom/movable/proc/on_set_anchored(atom/movable/source, anchorvalue)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/_buckled_mob in buckled_mobs)
 		if(!_buckled_mob)
@@ -201,6 +221,8 @@
  * Call [/atom/movable/proc/unbuckle_mob] for all buckled mobs
  */
 /atom/movable/proc/unbuckle_all_mobs(force=FALSE)
+	procstart = null
+	src.procstart = null
 	if(!has_buckled_mobs())
 		return
 	for(var/m in buckled_mobs)
@@ -209,9 +231,13 @@
 //Handle any extras after buckling
 //Called on buckle_mob()
 /atom/movable/proc/post_buckle_mob(mob/living/buckled_mob)
+	procstart = null
+	src.procstart = null
 
 //same but for unbuckle
 /atom/movable/proc/post_unbuckle_mob(mob/living/unbuckled_mob)
+	procstart = null
+	src.procstart = null
 
 /**
  * Simple helper proc that runs a suite of checks to test whether it is possible or not to buckle the target mob to src.
@@ -224,6 +250,8 @@
  * * check_loc - TRUE if target and src have to be on the same tile, FALSE if they are allowed to just be adjacent
  */
 /atom/movable/proc/is_buckle_possible(mob/living/target, force = FALSE, check_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	// Make sure target is mob/living
 	if(!istype(target))
 		return FALSE
@@ -284,6 +312,8 @@
  * * check_loc - TRUE if target and src have to be on the same tile, FALSE if buckling is allowed from adjacent tiles
  */
 /atom/movable/proc/is_user_buckle_possible(mob/living/target, mob/user, check_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	// Standard adjacency and other checks.
 	if(!Adjacent(user) || !Adjacent(target) || !isturf(user.loc) || user.incapacitated || target.anchored)
 		return FALSE
@@ -312,6 +342,8 @@
  * * check_loc - TRUE if src and M have to be on the same turf, false otherwise
  */
 /atom/movable/proc/user_buckle_mob(mob/living/M, mob/user, check_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	// Is buckling even possible? Do a full suite of checks.
 	if(!is_user_buckle_possible(M, user, check_loc))
 		return FALSE
@@ -338,6 +370,8 @@
 
 /// Feedback displayed to nearby players after a mob is buckled to src.
 /atom/movable/proc/buckle_feedback(mob/living/being_buckled, mob/buckler)
+	procstart = null
+	src.procstart = null
 	if(being_buckled == buckler)
 		being_buckled.visible_message(
 			span_notice("[buckler] buckles [buckler.p_them()]self to [src]."),
@@ -361,6 +395,8 @@
  * user - The mob unbuckling buckled_mob
  */
 /atom/movable/proc/user_unbuckle_mob(mob/living/buckled_mob, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!(buckled_mob in buckled_mobs) || !buckled_mob.IsReachableBy(user))
 		return
 	var/mob/living/M = unbuckle_mob(buckled_mob)
@@ -374,6 +410,8 @@
 
 /// Feedback displayed to nearby players after a mob is unbuckled from src.
 /atom/movable/proc/unbuckle_feedback(mob/living/unbuckled_mob, mob/unbuckler)
+	procstart = null
+	src.procstart = null
 	if(unbuckled_mob == unbuckler)
 		unbuckled_mob.visible_message(
 			span_notice("[unbuckler] unbuckles [unbuckler.p_them()]self from [src]."),

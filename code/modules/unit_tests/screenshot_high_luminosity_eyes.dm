@@ -7,6 +7,8 @@
 	var/obj/item/organ/eyes/robotic/glow/test_eyes
 
 /datum/unit_test/screenshot_high_luminosity_eyes/Run()
+	procstart = null
+	src.procstart = null
 	// Create a mob with red and blue eyes. This is to test that high luminosity eyes properly default to the old eye color.
 	test_subject = allocate(/mob/living/carbon/human/consistent)
 	test_subject.equipOutfit(/datum/outfit/job/assistant/consistent)
@@ -53,6 +55,8 @@
 
 /// Create the mob icon with light cone underlay
 /datum/unit_test/screenshot_high_luminosity_eyes/proc/create_icon()
+	procstart = null
+	src.procstart = null
 	var/icon/final_icon = get_flat_icon_for_all_directions(test_subject, no_anim = FALSE)
 	for(var/mutable_appearance/light_underlay as anything in test_subject.underlays)
 		if(light_underlay.icon == 'icons/effects/light_overlays/light_cone.dmi')

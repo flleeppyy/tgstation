@@ -37,6 +37,8 @@
 	var/obj/item/bodypart/current_bodypart
 
 /mob/living/basic/living_limb_flesh/Initialize(mapload, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/swarming, max_x = 8, max_y = 8)
 	AddElement(/datum/element/death_drops, /obj/effect/gibspawner/generic)
@@ -44,9 +46,13 @@
 		register_to_limb(limb)
 
 /mob/living/basic/living_limb_flesh/apply_target_randomisation()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/attack_zone_randomiser, GLOB.limb_zones)
 
 /mob/living/basic/living_limb_flesh/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(current_bodypart)
 		var/obj/item/bodypart/bodypart = current_bodypart
@@ -55,6 +61,8 @@
 			qdel(bodypart)
 
 /mob/living/basic/living_limb_flesh/Life(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat == DEAD)
 		return
@@ -104,6 +112,8 @@
 		victim.swap_hand(active_hand, TRUE)
 
 /mob/living/basic/living_limb_flesh/melee_attack(mob/living/carbon/human/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!ishuman(target) || target.stat == DEAD || HAS_TRAIT(target, TRAIT_NODISMEMBER))
 		return
@@ -152,6 +162,8 @@
 	register_to_limb(new_bodypart)
 
 /mob/living/basic/living_limb_flesh/proc/owner_shocked(datum/source, shock_damage, shock_source, siemens_coeff, flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(shock_damage < 10)
 		return
@@ -162,23 +174,31 @@
 	our_location.visible_message(span_warning("[part_owner][part_owner.p_s()] [current_bodypart.plaintext_zone] begins to convulse wildly!"))
 
 /mob/living/basic/living_limb_flesh/proc/owner_died(datum/source, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(gibbed)
 		return
 	addtimer(CALLBACK(src, PROC_REF(detach_self)), 1 SECONDS) //we need new hosts, dead people suck!
 
 /mob/living/basic/living_limb_flesh/proc/detach_self()
+	procstart = null
+	src.procstart = null
 	if(isnull(current_bodypart))
 		return FALSE
 	current_bodypart.dismember()
 	return TRUE//on_limb_lost should be called after that
 
 /mob/living/basic/living_limb_flesh/proc/on_limb_lost(atom/movable/source, mob/living/carbon/old_owner, special, dismembered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	unregister_from_limb(old_owner)
 	addtimer(CALLBACK(src, PROC_REF(wake_up), source), 2 SECONDS, TIMER_STOPPABLE | TIMER_DELETE_ME)
 
 /mob/living/basic/living_limb_flesh/proc/register_to_limb(obj/item/bodypart/part)
+	procstart = null
+	src.procstart = null
 	current_bodypart = part
 	ai_controller.force_ai_off()
 	RegisterSignal(current_bodypart, COMSIG_BODYPART_REMOVED, PROC_REF(on_limb_lost))
@@ -187,6 +207,8 @@
 		RegisterSignal(current_bodypart.owner, COMSIG_LIVING_ELECTROCUTE_ACT, PROC_REF(owner_shocked)) //detach if we are shocked, not beneficial for the host but hey its a sideeffect
 
 /mob/living/basic/living_limb_flesh/proc/unregister_from_limb(mob/living/carbon/removing_owner)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(current_bodypart, COMSIG_BODYPART_REMOVED)
 	if(removing_owner)
 		UnregisterSignal(removing_owner, COMSIG_LIVING_ELECTROCUTE_ACT)
@@ -194,6 +216,8 @@
 	current_bodypart = null
 
 /mob/living/basic/living_limb_flesh/proc/wake_up(atom/limb)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	visible_message(span_warning("[src] begins flailing around!"))

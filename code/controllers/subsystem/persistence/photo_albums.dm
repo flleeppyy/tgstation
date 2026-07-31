@@ -1,5 +1,7 @@
 /// Removes the identifier of a persistent photo frame from the json.
 /datum/controller/subsystem/persistence/proc/remove_photo_frames(identifier)
+	procstart = null
+	src.procstart = null
 	var/frame_path = file("data/photo_frames.json")
 	if(!fexists(frame_path))
 		return
@@ -13,6 +15,8 @@
 
 ///Loads photo albums, and populates them; also loads and applies frames to picture frames.
 /datum/controller/subsystem/persistence/proc/load_photo_persistence()
+	procstart = null
+	src.procstart = null
 	photo_albums_database = new("data/photo_albums.json")
 	for (var/obj/item/storage/photo_album/album as anything in queued_photo_albums)
 		if (isnull(album.persistence_id))

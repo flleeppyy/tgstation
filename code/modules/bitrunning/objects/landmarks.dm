@@ -39,6 +39,8 @@
 	icon_state = "crate"
 
 /obj/effect/landmark/bitrunning/crate_replacer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 #ifdef UNIT_TESTS

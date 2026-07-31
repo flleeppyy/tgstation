@@ -16,10 +16,14 @@
 
 
 /obj/machinery/computer/prisoner/gulag_teleporter_computer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	scan_machinery()
 
 /obj/machinery/computer/prisoner/gulag_teleporter_computer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -27,6 +31,8 @@
 		ui.open()
 
 /obj/machinery/computer/prisoner/gulag_teleporter_computer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/list/prisoner_list = list()
@@ -68,6 +74,8 @@
 	return data
 
 /obj/machinery/computer/prisoner/gulag_teleporter_computer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -118,10 +126,14 @@
 			return TRUE
 
 /obj/machinery/computer/prisoner/gulag_teleporter_computer/proc/scan_machinery()
+	procstart = null
+	src.procstart = null
 	teleporter = findteleporter()
 	beacon = findbeacon()
 
 /obj/machinery/computer/prisoner/gulag_teleporter_computer/proc/findteleporter()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/gulag_teleporter/teleporterf = null
 
 	for(var/direction in GLOB.cardinals)
@@ -130,9 +142,13 @@
 			return teleporterf
 
 /obj/machinery/computer/prisoner/gulag_teleporter_computer/proc/findbeacon()
+	procstart = null
+	src.procstart = null
 	return locate(/obj/structure/gulag_beacon)
 
 /obj/machinery/computer/prisoner/gulag_teleporter_computer/proc/teleport(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!contained_id) //incase the ID was removed after the transfer timer was set.
 		say("Warning: Unable to transfer prisoner without a valid Prisoner ID inserted!")
 		return

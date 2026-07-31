@@ -28,6 +28,8 @@
 	distill_reagent = /datum/reagent/consumable/soysauce
 
 /obj/item/food/grown/soybeans/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/soymilk
 
 // Koibean
@@ -54,6 +56,8 @@
 
 //Now squeezable for imitation carpmeat
 /obj/item/food/grown/koibeans/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_notice("[user] crushes [src] into a slab of carplike meat."), span_notice("You crush [src] into something that resembles a slab of carplike meat."))
 	playsound(user, 'sound/effects/blob/blobattack.ogg', 50, TRUE)
 	var/obj/item/food/fishmeat/carp/imitation/fishie = new(null)
@@ -86,6 +90,8 @@
 	distill_reagent = /datum/reagent/consumable/yoghurt
 
 /obj/item/food/grown/butterbeans/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_notice("[user] crushes [src] into a pat of butter."), span_notice("You crush [src] into something that resembles butter."))
 	playsound(user, 'sound/effects/blob/blobattack.ogg', 50, TRUE)
 	var/obj/item/food/butterslice/butties = new(null)

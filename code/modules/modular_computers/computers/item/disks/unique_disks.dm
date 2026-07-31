@@ -5,6 +5,8 @@
 	custom_materials = list(/datum/material/gold = SMALL_MATERIAL_AMOUNT)
 
 /obj/item/disk/computer/syndicate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_overlay("o_syndicate")
 
@@ -18,10 +20,14 @@
 	desc = "Removable disk used to store data. This one has a smudged piece of paper glued to it, reading \"PC softwarez\"."
 
 /obj/item/disk/computer/black_market/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_overlay("o_code")
 
 /obj/item/disk/computer/black_market/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	icon_state = "datadisk[rand(0, 10)]"
 	//Populated with programs not found in the verified downloader app or that require access to download (but not to run).
 	var/list/potential_programs = list(

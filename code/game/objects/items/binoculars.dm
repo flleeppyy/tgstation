@@ -11,11 +11,15 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/binoculars/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/two_handed, force_unwielded=8, force_wielded=12, wield_callback = CALLBACK(src, PROC_REF(on_wield)), unwield_callback = CALLBACK(src, PROC_REF(on_unwield)))
 	AddComponent(/datum/component/scope, range_modifier = 4, zoom_method = ZOOM_METHOD_WIELD)
 
 /obj/item/binoculars/proc/on_wield(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_notice("[user] holds [src] up to [user.p_their()] eyes."), span_notice("You hold [src] up to your eyes."))
 	inhand_icon_state = "binoculars_wielded"
 	user.regenerate_icons()
@@ -23,6 +27,8 @@
 	user.add_movespeed_modifier(/datum/movespeed_modifier/binocs_wielded)
 
 /obj/item/binoculars/proc/on_unwield(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_notice("[user] lowers [src]."), span_notice("You lower [src]."))
 	inhand_icon_state = "binoculars"
 	user.regenerate_icons()

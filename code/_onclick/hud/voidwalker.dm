@@ -3,6 +3,8 @@
 	give_generic_combat = FALSE //we give our own version below, here.
 
 /datum/hud/dextrous/voidwalker/initialize_screen_objects()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/movable/screen/floor_change = screen_objects[HUD_MOB_FLOOR_CHANGER]
 	floor_change.icon = ui_style

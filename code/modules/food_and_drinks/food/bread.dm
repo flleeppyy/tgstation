@@ -16,11 +16,15 @@
 	var/yield = 5
 
 /obj/item/food/bread/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/dunkable, 10)
 	AddComponent(/datum/component/food_storage)
 
 /obj/item/food/bread/make_processable()
+	procstart = null
+	src.procstart = null
 	if (slice_type)
 		AddElement(/datum/element/processable, TOOL_KNIFE, slice_type, yield, 3 SECONDS, table_required = TRUE, screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 		AddElement(/datum/element/processable, TOOL_SAW, slice_type, yield, 4 SECONDS, table_required = TRUE, screentip_verb = "Slice")
@@ -38,6 +42,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/breadslice/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/dunkable, 10)
 
@@ -53,6 +59,8 @@
 	slice_type = /obj/item/food/breadslice/plain
 	crafting_complexity = FOOD_COMPLEXITY_1
 /obj/item/food/bread/plain/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ingredients_holder, /obj/item/food/bread/empty, CUSTOM_INGREDIENT_ICON_FILL, max_ingredients = 8)
 
@@ -67,10 +75,14 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/breadslice/plain/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ingredients_holder, null, CUSTOM_INGREDIENT_ICON_STACK)
 
 /obj/item/food/breadslice/plain/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/griddle_toast, rand(15 SECONDS, 25 SECONDS), TRUE, TRUE)
 
 /obj/item/food/breadslice/moldy
@@ -92,6 +104,8 @@
 		It lurchs about when unattended. You might want to locate a priest if you see this. Or maybe a flamethrower."
 
 /obj/item/food/breadslice/moldy/bacteria/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MOLD, CELL_VIRUS_TABLE_GENERIC, rand(2, 4), 25)
 
@@ -335,6 +349,8 @@
 	desc = "It's a slice of bread, customized to your wildest dreams."
 
 /obj/item/food/breadslice/empty/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ingredients_holder, null, CUSTOM_INGREDIENT_ICON_FILL, max_ingredients = 8)
 
@@ -362,21 +378,29 @@
 	var/fake_swordplay = FALSE
 
 /obj/item/food/baguette/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/item/food/baguette/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_MIND_TRAIT(user, TRAIT_MIMING) && held_item == src)
 		context[SCREENTIP_CONTEXT_LMB] = "Toggle Swordplay"
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/food/baguette/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_MIND_TRAIT(user, TRAIT_MIMING))
 		. += span_notice("You can wield this like a sword by using it in your hand.")
 
 /obj/item/food/baguette/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_MIND_TRAIT(user, TRAIT_MIMING))
 		return
@@ -386,6 +410,8 @@
 		begin_swordplay(user)
 
 /obj/item/food/baguette/proc/begin_swordplay(mob/user)
+	procstart = null
+	src.procstart = null
 	visible_message(
 		span_notice("[user] begins wielding [src] like a sword!"),
 		span_notice("You begin wielding [src] like a sword, with a firm grip on the bottom as an imaginary handle.")
@@ -400,6 +426,8 @@
 	RegisterSignal(src, COMSIG_ITEM_DROPPED, PROC_REF(on_sword_dropped))
 
 /obj/item/food/baguette/proc/end_swordplay(mob/user)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(src, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED))
 
 	REMOVE_TRAIT(src, TRAIT_CUSTOM_TAP_SOUND, SWORDPLAY_TRAIT)
@@ -415,11 +443,15 @@
 		)
 
 /obj/item/food/baguette/proc/on_sword_dropped(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	end_swordplay()
 
 /obj/item/food/baguette/proc/on_sword_equipped(datum/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(slot & ITEM_SLOT_HANDS))
@@ -436,11 +468,15 @@
 	var/active_block = 50
 
 /obj/item/food/baguette/combat/begin_swordplay(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	force = active_force
 	block_chance = active_block
 
 /obj/item/food/baguette/combat/end_swordplay(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	force = initial(force)
 	block_chance = initial(block_chance)
@@ -494,6 +530,8 @@
 	custom_price = PAYCHECK_CREW
 
 /obj/item/food/butterdog/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/slippery, 8 SECONDS)
 
@@ -513,6 +551,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/raw_frenchtoast/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/frenchtoast, rand(20 SECONDS, 30 SECONDS), TRUE)
 
 /obj/item/food/frenchtoast
@@ -544,6 +584,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/raw_breadstick/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/breadstick, rand(15 SECONDS, 20 SECONDS), TRUE, TRUE)
 
 /obj/item/food/breadstick
@@ -572,6 +614,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/raw_croissant/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/croissant, rand(15 SECONDS, 20 SECONDS), TRUE, TRUE)
 
 /obj/item/food/croissant
@@ -592,5 +636,7 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 4, /datum/reagent/consumable/nutriment/vitamin = 2, /datum/reagent/iron = 1)
 
 /obj/item/food/croissant/throwing/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/boomerang, throw_range, TRUE)

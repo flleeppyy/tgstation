@@ -35,6 +35,8 @@
 	var/edible_food_types = MEAT
 
 /mob/living/simple_animal/hostile/ooze/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(300)
 	add_cell_sample()
@@ -44,17 +46,23 @@
 	grant_actions_by_list(get_innate_actions())
 
 /mob/living/simple_animal/hostile/ooze/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(eat_atom(tool, TRUE))
 		return ITEM_INTERACT_SUCCESS
 	return ..()
 
 /mob/living/simple_animal/hostile/ooze/resolve_unarmed_attack(atom/attack_target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(eat_atom(attack_target))
 		return ITEM_INTERACT_SUCCESS
 	return ..()
 
 ///Handles nutrition gain/loss of mob and also makes it take damage if it's too low on nutrition, only happens for sentient mobs.
 /mob/living/simple_animal/hostile/ooze/Life(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.) //dead or deleted
@@ -80,10 +88,14 @@
 
 /// Returns an applicable list of actions to grant to the mob. Will return a list or null.
 /mob/living/simple_animal/hostile/ooze/proc/get_innate_actions()
+	procstart = null
+	src.procstart = null
 	return null
 
 ///Does ooze_nutrition + supplied amount and clamps it within 0 and 500
 /mob/living/simple_animal/hostile/ooze/proc/adjust_ooze_nutrition(amount)
+	procstart = null
+	src.procstart = null
 	ooze_nutrition = clamp(ooze_nutrition + amount, 0, 500)
 	hud_used?.screen_objects[HUD_OOZE_NUTRITION_DISPLAY]?.maptext = MAPTEXT( \
 		"<div align='center' valign='middle' style='position:relative; top:0px; left:6px'><font color='green'>[round(ooze_nutrition)]</font></div>" \
@@ -91,6 +103,8 @@
 
 ///Tries to transfer the atoms reagents then delete it
 /mob/living/simple_animal/hostile/ooze/proc/eat_atom(atom/eat_target, silent)
+	procstart = null
+	src.procstart = null
 	if(isnull(eat_target))
 		return FALSE
 	if(SEND_SIGNAL(eat_target, COMSIG_OOZE_EAT_ATOM, src, edible_food_types) & COMPONENT_ATOM_EATEN)
@@ -119,11 +133,15 @@
 
 ///Initializes the mobs abilities and gives them to the mob
 /mob/living/simple_animal/hostile/ooze/gelatinous/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	consume = new
 	consume.Grant(src)
 
 /mob/living/simple_animal/hostile/ooze/gelatinous/get_innate_actions()
+	procstart = null
+	src.procstart = null
 	var/static/list/innate_actions = list(
 		/datum/action/cooldown/metabolicboost,
 	)
@@ -131,12 +149,16 @@
 
 ///If this mob gets resisted by something, its trying to escape consumption.
 /mob/living/simple_animal/hostile/ooze/gelatinous/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!do_after(user, 6 SECONDS)) //6 second struggle
 		return FALSE
 	consume.stop_consuming()
 
 /mob/living/simple_animal/hostile/ooze/gelatinous/add_cell_sample()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_GELATINOUS, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 ///This ability lets the gelatinious ooze speed up for a little bit
@@ -155,6 +177,8 @@
 
 ///Mob needs to have enough nutrition
 /datum/action/cooldown/metabolicboost/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/simple_animal/hostile/ooze/ooze = owner
 	if(!.)
@@ -163,6 +187,8 @@
 
 ///Give the mob a speed boost, heat it up every second, and end the ability in 6 seconds
 /datum/action/cooldown/metabolicboost/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	StartCooldown(10 SECONDS)
 	trigger_boost()
 	StartCooldown()
@@ -172,6 +198,8 @@
  * Actually trigger the boost.
  */
 /datum/action/cooldown/metabolicboost/proc/trigger_boost()
+	procstart = null
+	src.procstart = null
 	var/mob/living/simple_animal/hostile/ooze/ooze = owner
 	ooze.add_movespeed_modifier(/datum/movespeed_modifier/metabolicboost)
 	var/timerid = addtimer(CALLBACK(src, PROC_REF(HeatUp)), 1 SECONDS, TIMER_STOPPABLE | TIMER_LOOP) //Heat up every second
@@ -182,11 +210,15 @@
 
 ///Heat up the mob a little
 /datum/action/cooldown/metabolicboost/proc/HeatUp()
+	procstart = null
+	src.procstart = null
 	var/mob/living/simple_animal/hostile/ooze/ooze = owner
 	ooze.adjust_bodytemperature(50)
 
 ///Remove the speed modifier and delete the timer for heating up
 /datum/action/cooldown/metabolicboost/proc/FinishSpeedup(timerid)
+	procstart = null
+	src.procstart = null
 	var/mob/living/simple_animal/hostile/ooze/ooze = owner
 	ooze.remove_movespeed_modifier(/datum/movespeed_modifier/metabolicboost)
 	to_chat(ooze, span_notice("You start slowing down again."))
@@ -213,11 +245,15 @@
 
 ///Register for owner death
 /datum/action/consume/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_LIVING_DEATH, PROC_REF(stop_consuming))
 
 ///Try to consume the pulled mob
 /datum/action/consume/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -240,6 +276,8 @@
 
 ///Start allowing this datum to process to handle the damage done to  this mob.
 /datum/action/consume/proc/start_consuming(mob/living/target)
+	procstart = null
+	src.procstart = null
 	vored_mob = target
 	vored_mob.forceMove(owner) ///AAAAAAAAAAAAAAAAAAAAAAHHH!!!
 	RegisterSignal(vored_mob, COMSIG_QDELETING, PROC_REF(stop_consuming))
@@ -250,6 +288,8 @@
 
 ///Stop consuming the mob; dump them on the floor
 /datum/action/consume/proc/stop_consuming()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	STOP_PROCESSING(SSprocessing, src)
 	if (isnull(vored_mob))
@@ -263,6 +303,8 @@
 
 ///Gain health for the consumption and dump some brute loss on the target.
 /datum/action/consume/process()
+	procstart = null
+	src.procstart = null
 	var/mob/living/simple_animal/hostile/ooze/gelatinous/ooze = owner
 	vored_mob.adjust_brute_loss(5)
 	ooze.heal_ordered_damage((ooze.maxHealth * 0.03), list(BRUTE, BURN, OXY)) ///Heal 6% of these specific damage types each process
@@ -274,10 +316,14 @@
 		stop_consuming()
 
 /datum/action/consume/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	stop_consuming()
 	return ..()
 
 /datum/action/consume/update_button_name(atom/movable/screen/movable/action_button/button, force)
+	procstart = null
+	src.procstart = null
 	if(vored_mob)
 		name = "Eject Mob"
 		desc = "Eject the mob you're currently consuming."
@@ -287,6 +333,8 @@
 	return ..()
 
 /datum/action/consume/apply_button_icon(atom/movable/screen/movable/action_button/current_button, force)
+	procstart = null
+	src.procstart = null
 	button_icon_state = vored_mob ? "eject" : "consume"
 	return ..()
 
@@ -310,6 +358,8 @@
 	edible_food_types = MEAT | VEGETABLES
 
 /mob/living/simple_animal/hostile/ooze/grapes/get_innate_actions()
+	procstart = null
+	src.procstart = null
 	var/static/list/innate_actions = list(
 		/datum/action/cooldown/globules,
 		/datum/action/cooldown/gel_cocoon,
@@ -317,6 +367,8 @@
 	return innate_actions
 
 /mob/living/simple_animal/hostile/ooze/grapes/add_cell_sample()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_GRAPE, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 ///Ability that allows the owner to fire healing globules at mobs, targeting specific limbs.
@@ -332,6 +384,8 @@
 	click_to_activate = TRUE
 
 /datum/action/cooldown/globules/set_click_ability(mob/on_who)
+	procstart = null
+	src.procstart = null
 	var/mob/living/simple_animal/hostile/ooze/oozy_owner = owner
 	if(istype(oozy_owner))
 		if(oozy_owner.ooze_nutrition < 5)
@@ -345,6 +399,8 @@
 	to_chat(on_who, span_notice("You prepare to launch a mending globule. <B>Left-click to fire at a target!</B>"))
 
 /datum/action/cooldown/globules/unset_click_ability(mob/on_who, refund_cooldown = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -355,6 +411,8 @@
 		to_chat(on_who, span_notice("You stop preparing your mending globules."))
 
 /datum/action/cooldown/globules/InterceptClickOn(mob/living/clicker, params, atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -384,6 +442,8 @@
 
 // Needs to return TRUE otherwise PreActivate() will fail, see above
 /datum/action/cooldown/globules/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 ///This projectile embeds into mobs and heals them over time.
@@ -411,6 +471,8 @@
 
 // This already processes, zero logic to add additional tracking to the item
 /datum/embedding/mending_globule/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/mending_globule/globule = parent
 	owner_limb.heal_damage(0.5 * seconds_per_tick, 0.5 * seconds_per_tick)
@@ -430,12 +492,16 @@
 	cooldown_time = 10 SECONDS
 
 /datum/action/cooldown/gel_cocoon/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	StartCooldown(10 SECONDS)
 	gel_cocoon()
 	StartCooldown()
 
 ///Try to put the pulled mob in a cocoon
 /datum/action/cooldown/gel_cocoon/proc/gel_cocoon()
+	procstart = null
+	src.procstart = null
 	var/mob/living/simple_animal/hostile/ooze/grapes/ooze = owner
 	if(!iscarbon(ooze.pulling))
 		to_chat(src, span_warning("You need to be pulling an intelligent enough creature to assist it with a cocoon!"))
@@ -449,6 +515,8 @@
 
 ///Mob needs to have enough nutrition
 /datum/action/cooldown/gel_cocoon/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -457,6 +525,8 @@
 
 ///Puts the mob in the new cocoon
 /datum/action/cooldown/gel_cocoon/proc/put_in_cocoon(mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/gel_cocoon/cocoon = new /obj/structure/gel_cocoon(get_turf(target))
 	cocoon.insert_target(target)
 	owner.visible_message(span_nicegreen("[owner] has put [target] into a gel cocoon!"), span_notice("You put [target] into a gel cocoon."))
@@ -470,11 +540,15 @@
 	var/mob/living/carbon/inhabitant
 
 /obj/structure/gel_cocoon/Destroy()
+	procstart = null
+	src.procstart = null
 	if(inhabitant)
 		dump_inhabitant(FALSE)
 	return ..()
 
 /obj/structure/gel_cocoon/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.visible_message(span_notice("You see [user] breaking out of [src]!"), \
 		span_notice("You start tearing the soft tissue of the gel cocoon"))
@@ -484,12 +558,16 @@
 
 ///This proc handles the insertion of a person into the cocoon
 /obj/structure/gel_cocoon/proc/insert_target(target)
+	procstart = null
+	src.procstart = null
 	inhabitant = target
 	inhabitant.forceMove(src)
 	START_PROCESSING(SSobj, src)
 
 ///This proc dumps the mob and handles associated audiovisual feedback
 /obj/structure/gel_cocoon/proc/dump_inhabitant(destroy_after = TRUE)
+	procstart = null
+	src.procstart = null
 	inhabitant.forceMove(get_turf(src))
 	playsound(get_turf(inhabitant), 'sound/effects/splat.ogg', 50, TRUE)
 	inhabitant.Paralyze(10)
@@ -499,6 +577,8 @@
 
 
 /obj/structure/gel_cocoon/process()
+	procstart = null
+	src.procstart = null
 	if(inhabitant.reagents.get_reagent_amount(/datum/reagent/medicine/atropine) < 5)
 		inhabitant.reagents.add_reagent(/datum/reagent/medicine/atropine, 0.5)
 

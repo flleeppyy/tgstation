@@ -22,6 +22,8 @@
 	return ..()
 
 /mob/living/carbon/human/get_default_say_verb()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(isnull(tongue))
 		if(HAS_TRAIT(src, TRAIT_SIGN_LANG))
@@ -30,6 +32,8 @@
 	return  tongue.temp_say_mod || tongue.say_mod || ..()
 
 /mob/living/carbon/human/get_voice(add_id_name = FALSE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_UNKNOWN_VOICE))
 		return "Unknown"
 	var/id_name = get_id_name("")
@@ -42,11 +46,15 @@
 	return real_name
 
 /mob/living/carbon/human/get_message_voice(visible_name)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. != name)
 		. += " (as [get_id_name("Unknown", honorifics = TRUE)])"
 
 /mob/living/carbon/human/binarycheck()
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(src))
 		return FALSE
 	var/area/our_area = get_area(src)
@@ -60,7 +68,9 @@
 		return FALSE
 	return dongle.special_channels & RADIO_SPECIAL_BINARY
 
-/mob/living/carbon/human/radio(message, list/message_mods = list(), list/spans, language) //Poly has a copy of this, lazy bastard
+/mob/living/carbon/human/radio(message, list/message_mods = list(), list/spans, language)
+	procstart = null
+	src.procstart = null //Poly has a copy of this, lazy bastard
 	. = ..()
 	if(.)
 		return

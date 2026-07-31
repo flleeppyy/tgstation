@@ -3,9 +3,13 @@
 #define CARBON_EXAMINE_EMBEDDING_MAX_DIST 4
 
 /mob/living/carbon/human/get_examine_icon(mob/user)
+	procstart = null
+	src.procstart = null
 	return null
 
 /mob/living/carbon/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_UNKNOWN_APPEARANCE) && !isobserver(user))
 		return list(span_warning("You're struggling to make out any details..."))
 
@@ -290,6 +294,8 @@
 	return .
 
 /mob/living/carbon/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(src, TRAIT_INVISIBLE_MAN))
 		return
@@ -301,6 +307,8 @@
  * Shows any and all examine text related to any status effects the user has.
  */
 /mob/living/proc/get_status_effect_examinations()
+	procstart = null
+	src.procstart = null
 	var/list/examine_list = list()
 
 	for(var/datum/status_effect/effect as anything in status_effects)
@@ -317,6 +325,8 @@
 
 /// Returns death message for mob examine text
 /mob/living/carbon/proc/generate_death_examine_text()
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/ghost = get_ghost(TRUE, TRUE)
 	var/t_He = p_They()
 	var/t_his = p_their()
@@ -334,6 +344,8 @@
 
 /// Returns a list of "damtype" => damage description based off of which bodypart description is most common
 /mob/living/carbon/proc/get_majority_bodypart_damage_desc()
+	procstart = null
+	src.procstart = null
 	var/list/seen_damage = list() // This looks like: ({Damage type} = list({Damage description for that damage type} = {number of times it has appeared}, ...), ...)
 	var/list/most_seen_damage = list() // This looks like: ({Damage type} = {Frequency of the most common description}, ...)
 	var/list/final_descriptions = list() // This looks like: ({Damage type} = {Most common damage description for that type}, ...)
@@ -355,6 +367,8 @@
 
 /// Coolects examine information about the mob's clothing and equipment
 /mob/living/carbon/proc/get_clothing_examine_info(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/t_He = p_They()
 	var/t_His = p_Their()
@@ -384,6 +398,8 @@
 
 // Yes there's a lot of copypasta here, we can improve this later when carbons are less dumb in general
 /mob/living/carbon/human/get_clothing_examine_info(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/t_He = p_They()
 	var/t_His = p_Their()
@@ -475,9 +491,13 @@
 
 /// Collects info displayed about any HUDs the user has when examining src
 /mob/living/carbon/proc/get_hud_examine_info(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/get_hud_examine_info(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	var/perpname = get_face_name(get_id_name(""))
@@ -507,6 +527,8 @@
 
 /// Collects information displayed about src when examined by a user with a medical HUD.
 /mob/living/carbon/proc/get_medhud_examine_info(mob/living/user, datum/record/crew/target_record)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	var/list/cybers = list()
@@ -527,6 +549,8 @@
 
 /// Collects information displayed about src when examined by a user with a security HUD.
 /mob/living/carbon/proc/get_sechud_examine_info(mob/living/user, datum/record/crew/target_record)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	var/wanted_status = WANTED_NONE
@@ -548,6 +572,8 @@
 			<a href='byond://?src=[REF(src)];hud=s;add_note=1;examine_time=[world.time]'>\[Add note\]</a>"
 
 /mob/living/carbon/human/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(istype(w_uniform, /obj/item/clothing/under) && !(obscured_slots & HIDEJUMPSUIT) && !HAS_TRAIT(w_uniform, TRAIT_EXAMINE_SKIP))
@@ -568,6 +594,8 @@
 
 /// Reports all body parts which are mismatched with the user's species
 /mob/living/carbon/human/proc/get_mismatched_limb_text()
+	procstart = null
+	src.procstart = null
 	var/list/covered = get_covered_body_zones()
 	var/list/texts = list()
 	for(var/obj/item/bodypart/part as anything in get_bodyparts())
@@ -588,6 +616,8 @@
 
 /// Reports how old the mob appears to be
 /mob/living/carbon/human/proc/get_age_text()
+	procstart = null
+	src.procstart = null
 	if(obscured_slots & HIDEFACE)
 		return
 

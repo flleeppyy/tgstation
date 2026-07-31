@@ -1,6 +1,8 @@
 /datum/unit_test/aas_configs
 
 /datum/unit_test/aas_configs/Run()
+	procstart = null
+	src.procstart = null
 	var/expected_max_length = MAX_AAS_LENGTH
 
 	for(var/config_type in valid_subtypesof(/datum/aas_config_entry))

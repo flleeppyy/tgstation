@@ -45,6 +45,8 @@
 	var/paydays_to_skip = 0
 
 /datum/bank_account/New(newname, job, modifier = 1, player_account = TRUE)
+	procstart = null
+	src.procstart = null
 	account_holder = newname
 	account_job = job
 	payday_modifier = modifier
@@ -54,6 +56,8 @@
 	pay_token = uppertext("[copytext(newname, 1, 2)][copytext(newname, -1)]-[random_capital_letter()]-[rand(1111,9999)]")
 
 /datum/bank_account/Destroy()
+	procstart = null
+	src.procstart = null
 	if(add_to_accounts)
 		SSeconomy.bank_accounts_by_id -= "[account_id]"
 		SSeconomy.bank_accounts_by_job[account_job.type] -= src
@@ -66,6 +70,8 @@
  * It then adds it to the `SSeconomy.bank_accounts_by_id` global list.
  */
 /datum/bank_account/proc/setup_unique_account_id()
+	procstart = null
+	src.procstart = null
 	if (!add_to_accounts)
 		return
 	if(account_id && !SSeconomy.bank_accounts_by_id["[account_id]"])
@@ -84,6 +90,8 @@
  * If an old job is given, it removes it from its previous place first.
  */
 /datum/bank_account/proc/update_account_job_lists(datum/job/new_job, datum/job/old_job)
+	procstart = null
+	src.procstart = null
 	if(!add_to_accounts)
 		return
 
@@ -92,7 +100,9 @@
 	if(new_job)
 		LAZYADD(SSeconomy.bank_accounts_by_job[new_job.type], src)
 
-/datum/bank_account/vv_edit_var(var_name, var_value) // just so you don't have to do it manually
+/datum/bank_account/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null // just so you don't have to do it manually
 	var/old_id = account_id
 	var/datum/job/old_job = account_job
 	var/old_balance = account_balance
@@ -118,6 +128,8 @@
  * Sets the bank_account to behave as though a CRAB-17 event is happening.
  */
 /datum/bank_account/proc/dumpeet(obj/structure/checkoutmachine/dump_machine)
+	procstart = null
+	src.procstart = null
 	LAZYADD(being_dumped, dump_machine)
 	money_crabbed = 0
 
@@ -125,6 +137,8 @@
  * Stops the dumping of the bank account.
  */
 /datum/bank_account/proc/stop_dump(obj/structure/checkoutmachine/dump_machine)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(being_dumped, dump_machine)
 	if(money_crabbed < NO_MY_MONEY)
 		return
@@ -142,6 +156,8 @@
  * * amount - the quantity of credits that will be reconciled with the account balance.
  */
 /datum/bank_account/proc/has_money(amount)
+	procstart = null
+	src.procstart = null
 	return account_balance >= amount
 
 /**
@@ -151,6 +167,8 @@
  * * reason - the reason for the appearance or loss of money
  */
 /datum/bank_account/proc/adjust_money(amount, reason)
+	procstart = null
+	src.procstart = null
 	if((amount < 0 && has_money(-amount)) || amount > 0)
 		var/debt_collected = 0
 		if(account_debt > 0 && amount > 0)
@@ -165,6 +183,8 @@
 
 ///Called when a portion of a debt is to be paid. It'll return the amount of credits put forwards to extinguish the debt.
 /datum/bank_account/proc/pay_debt(amount, is_payment = TRUE)
+	procstart = null
+	src.procstart = null
 	var/amount_to_pay = min(amount, account_debt)
 	if(is_payment)
 		if(!adjust_money(-amount, "Other: Debt Payment"))
@@ -184,6 +204,8 @@
  * * transfer_reason - override for adjust_money reason. Use if no default reason(Transfer to/from Name Surname).
  */
 /datum/bank_account/proc/transfer_money(datum/bank_account/from, amount, transfer_reason)
+	procstart = null
+	src.procstart = null
 	if(from.has_money(amount))
 		var/reason_to = "Transfer: From [from.account_holder]"
 		var/reason_from = "Transfer: To [account_holder]"
@@ -213,6 +235,8 @@
  * * event - the name of the event that is being processed, used for bank card messages.
  */
 /datum/bank_account/proc/payday(amount_of_paychecks, free = FALSE, skippable = FALSE, event = "Payday")
+	procstart = null
+	src.procstart = null
 	if(!account_job)
 		return FALSE
 
@@ -251,6 +275,8 @@
  * * force - if TRUE ignore checks on client and client prefernces.
  */
 /datum/bank_account/proc/bank_card_talk(message, force)
+	procstart = null
+	src.procstart = null
 	if(!message || !LAZYLEN(bank_cards))
 		return
 	for(var/obj/card in bank_cards)
@@ -289,6 +315,8 @@
  * Returns a string with the civilian bounty's description on it.
  */
 /datum/bank_account/proc/bounty_text()
+	procstart = null
+	src.procstart = null
 	if(!civilian_bounty)
 		return FALSE
 	return civilian_bounty.description
@@ -298,15 +326,21 @@
  * Returns the required item count, or required chemical units required to submit a bounty.
  */
 /datum/bank_account/proc/bounty_num()
+	procstart = null
+	src.procstart = null
 	return civilian_bounty?.print_required() || "N/A"
 
 /**
  * Produces the value of the account's civilian bounty reward, if able.
  */
 /datum/bank_account/proc/bounty_value()
+	procstart = null
+	src.procstart = null
 	return civilian_bounty?.get_bounty_reward() || 0
 
 /datum/bank_account/proc/set_bounty(datum/bounty/new_bounty, obj/item/id_card)
+	procstart = null
+	src.procstart = null
 	if(civilian_bounty)
 		reset_bounty(id_card)
 
@@ -317,6 +351,8 @@
  * Performs house-cleaning on variables when a civilian bounty is replaced, or, when a bounty is claimed.
  */
 /datum/bank_account/proc/reset_bounty(obj/item/id_card)
+	procstart = null
+	src.procstart = null
 	if(civilian_bounty)
 		civilian_bounty.on_reset(id_card)
 		civilian_bounty = null
@@ -329,12 +365,16 @@
 	add_to_accounts = FALSE
 
 /datum/bank_account/department/New(dep_id, budget, player_account = FALSE)
+	procstart = null
+	src.procstart = null
 	department_id = dep_id
 	account_balance = budget
 	account_holder = SSeconomy.department_accounts[dep_id]
 	SSeconomy.departmental_accounts += src
 
 /datum/bank_account/department/adjust_money(amount, reason)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	SSblackbox.record_feedback("amount", "[department_id]_balance", account_balance, world.time) //Provides the cargo balance alongside a timestamp for comparison afterwards.
@@ -362,6 +402,8 @@
  * * reason - The reason of interact with balance, for example, "Bought chips" or "Payday".
  */
 /datum/bank_account/proc/add_log_to_history(adjusted_money, reason)
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(transaction_history) >= 20)
 		transaction_history.Cut(1,2)
 

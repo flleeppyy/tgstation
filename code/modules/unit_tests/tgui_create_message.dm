@@ -2,6 +2,8 @@
 /datum/unit_test/tgui_create_message
 
 /datum/unit_test/tgui_create_message/Run()
+	procstart = null
+	src.procstart = null
 	var/type = "something/here"
 	var/list/payload = list(
 		"name" = "Terry McTider",

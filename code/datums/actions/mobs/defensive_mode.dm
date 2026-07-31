@@ -12,6 +12,8 @@
 	var/datum/movespeed_modifier/modifier_type = /datum/movespeed_modifier/viper_defensive
 
 /datum/action/cooldown/mob_cooldown/defensive_mode/Remove(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/owner_mob = owner
 	if(defense_active && istype(owner_mob))
 		offence(owner_mob)
@@ -19,6 +21,8 @@
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/defensive_mode/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	disable_cooldown_actions()
 	activate_defence(owner)
 	StartCooldown()
@@ -26,6 +30,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/defensive_mode/proc/activate_defence(mob/living/basic/owner_mob)
+	procstart = null
+	src.procstart = null
 	if(!istype(owner_mob))
 		return
 	if(defense_active)
@@ -34,6 +40,8 @@
 	defence(owner_mob)
 
 /datum/action/cooldown/mob_cooldown/defensive_mode/proc/offence(mob/living/basic/owner_mob)
+	procstart = null
+	src.procstart = null
 	owner_mob.damage_coeff = string_assoc_list(list(BRUTE = 1, BURN = 1.25, TOX = 1, STAMINA = 1, OXY = 1))
 	owner_mob.icon_state = initial(owner_mob.icon_state)
 	owner_mob.icon_living = initial(owner_mob.icon_living)
@@ -42,6 +50,8 @@
 	defense_active = FALSE
 
 /datum/action/cooldown/mob_cooldown/defensive_mode/proc/defence(mob/living/basic/owner_mob)
+	procstart = null
+	src.procstart = null
 	owner_mob.damage_coeff = string_assoc_list(list(BRUTE = 0.4, BURN = 0.5, TOX = 1, STAMINA = 1, OXY = 1))
 	owner_mob.icon_dead = "[owner_mob.icon_state]_d_dead"
 	owner_mob.icon_state = "[owner_mob.icon_state]_d"

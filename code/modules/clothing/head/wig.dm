@@ -12,20 +12,28 @@
 	var/adjustablecolor = TRUE //can color be changed manually?
 
 /obj/item/clothing/head/wig/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 	AddComponent(/datum/component/hat_stabilizer, loose_hat = FALSE)
 
 /obj/item/clothing/head/wig/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ishuman(user) && (slot & ITEM_SLOT_HEAD))
 		ADD_TRAIT(src, TRAIT_EXAMINE_SKIP, CLOTHING_TRAIT)
 
 /obj/item/clothing/head/wig/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(src, TRAIT_EXAMINE_SKIP, CLOTHING_TRAIT)
 
 /obj/item/clothing/head/wig/update_icon_state()
+	procstart = null
+	src.procstart = null
 	var/datum/sprite_accessory/hair/hair_style = SSaccessories.hairstyles_list[hairstyle]
 	if(hair_style)
 		icon = hair_style.icon
@@ -33,6 +41,8 @@
 	return ..()
 
 /obj/item/clothing/head/wig/worn_overlays(mutable_appearance/standing, isinhands = FALSE, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isinhands)
 		return
@@ -50,6 +60,8 @@
 	hair_overlay.overlays += emissive_blocker(hair_overlay.icon, hair_overlay.icon_state, src, alpha = hair_overlay.alpha)
 
 /obj/item/clothing/head/wig/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/new_style = tgui_input_list(user, "Select a hairstyle", "Wig Styling", SSaccessories.hairstyles_list - "Bald")
 	var/newcolor = adjustablecolor ? tgui_color_picker(usr,"","Choose Color",color) : null
 	if(!user.can_perform_action(src))
@@ -62,9 +74,13 @@
 	update_appearance()
 
 /obj/item/clothing/head/wig/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/clothing/head/wig/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(interacting_with) || interacting_with == user)
 		return NONE
 	var/mob/living/carbon/human/target = interacting_with
@@ -96,6 +112,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/clothing/head/wig/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	hairstyle = pick(SSaccessories.hairstyles_list - "Bald") //Don't want invisible wig
 	add_atom_colour("#[random_short_color()]", FIXED_COLOUR_PRIORITY)
 	. = ..()
@@ -108,10 +126,14 @@
 	custom_price = PAYCHECK_COMMAND
 
 /obj/item/clothing/head/wig/natural/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	hairstyle = pick(SSaccessories.hairstyles_list - "Bald")
 	. = ..()
 
 /obj/item/clothing/head/wig/natural/visual_equipped(mob/living/carbon/human/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ishuman(user) && (slot & ITEM_SLOT_HEAD))
 		if(color != user.hair_color) // only update if necessary

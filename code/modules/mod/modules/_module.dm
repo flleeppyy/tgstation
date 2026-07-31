@@ -63,6 +63,8 @@
 	COOLDOWN_DECLARE(cooldown_timer)
 
 /obj/item/mod/module/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(module_type != MODULE_ACTIVE)
 		return
@@ -73,6 +75,8 @@
 		RegisterSignal(src, COMSIG_ATOM_EXITED, PROC_REF(on_exit))
 
 /obj/item/mod/module/Destroy()
+	procstart = null
+	src.procstart = null
 	mod?.uninstall(src)
 	if(device)
 		UnregisterSignal(device, COMSIG_QDELETING)
@@ -80,6 +84,8 @@
 	return ..()
 
 /obj/item/mod/module/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(length(required_slots))
 		var/list/slot_strings = list()
@@ -92,6 +98,8 @@
 
 /// Looks through the MODsuit's parts to see if it has the parts required to support this module
 /obj/item/mod/module/proc/has_required_parts(list/parts, need_active = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!length(required_slots))
 		return TRUE
 	var/total_slot_flags = NONE
@@ -110,10 +118,14 @@
 
 /// Additional checks for whenever a module can be installed into a suit or not
 /obj/item/mod/module/proc/can_install(obj/item/mod/control/mod)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Called when the module is selected from the TGUI, radial or the action button
 /obj/item/mod/module/proc/on_select(mob/activator)
+	procstart = null
+	src.procstart = null
 	if(!mod.wearer && !(allow_flags & MODULE_ALLOW_UNWORN)) //No wearer and cannot be used unworn
 		balloon_alert(activator, "not equipped!")
 		return
@@ -140,6 +152,8 @@
 
 /// Apply a cooldown until this item can be used again
 /obj/item/mod/module/proc/start_cooldown(applied_cooldown)
+	procstart = null
+	src.procstart = null
 	if (isnull(applied_cooldown))
 		applied_cooldown = cooldown_time
 	COOLDOWN_START(src, cooldown_timer, applied_cooldown)
@@ -147,6 +161,8 @@
 
 /// Called when the module is activated
 /obj/item/mod/module/proc/activate(mob/activator)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, cooldown_timer))
 		balloon_alert(activator, "on cooldown!")
 		return FALSE
@@ -185,6 +201,8 @@
 
 /// Called when the module is deactivated
 /obj/item/mod/module/proc/deactivate(mob/activator, display_message = TRUE, deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	active = FALSE
 	if(module_type == MODULE_ACTIVE)
 		mod.selected_module = null
@@ -205,6 +223,8 @@
 
 /// Call to update all slots visually affected by this module
 /obj/item/mod/module/proc/update_clothing_slots()
+	procstart = null
+	src.procstart = null
 	if(!mod.wearer)
 		return
 
@@ -219,6 +239,8 @@
 
 /// Called when the module is used
 /obj/item/mod/module/proc/used(mob/activator)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, cooldown_timer))
 		balloon_alert(activator, "on cooldown!")
 		return FALSE
@@ -241,6 +263,8 @@
 
 /// Called when an activated module without a device is used
 /obj/item/mod/module/proc/on_select_use(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!(allow_flags & MODULE_ALLOW_INCAPACITATED) && INCAPACITATED_IGNORING(mod.wearer, INCAPABLE_GRAB))
 		return FALSE
 	mod.wearer.face_atom(target)
@@ -250,12 +274,16 @@
 
 /// Called when an activated module without a device is active and the user alt/middle-clicks
 /obj/item/mod/module/proc/on_special_click(mob/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	on_select_use(target)
 	return COMSIG_MOB_CANCEL_CLICKON
 
 /// Called on the MODsuit's process
 /obj/item/mod/module/proc/on_process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(part_process && !part_activated)
 		return FALSE
 	if(active)
@@ -269,22 +297,32 @@
 
 /// Called from the module's activate()
 /obj/item/mod/module/proc/on_activation(mob/activator)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called from the module's deactivate()
 /obj/item/mod/module/proc/on_deactivation(mob/activator, display_message = TRUE, deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called from the module's used()
 /obj/item/mod/module/proc/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called on the MODsuit's process if it is an active module
 /obj/item/mod/module/proc/on_active_process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called from MODsuit's install() proc, so when the module is installed
 /obj/item/mod/module/proc/on_install()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if (mask_worn_overlay)
@@ -301,6 +339,8 @@
 
 /// Called from MODsuit's uninstall() proc, so when the module is uninstalled
 /obj/item/mod/module/proc/on_uninstall(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if (mask_worn_overlay)
@@ -317,22 +357,32 @@
 
 /// Called when the MODsuit is activated
 /obj/item/mod/module/proc/on_part_activation()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called when the MODsuit is deactivated
 /obj/item/mod/module/proc/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called when the MODsuit is equipped
 /obj/item/mod/module/proc/on_equip()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called when the MODsuit is unequipped
 /obj/item/mod/module/proc/on_unequip()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Drains power from the suit charge
 /obj/item/mod/module/proc/drain_power(amount)
+	procstart = null
+	src.procstart = null
 	if(!check_power(amount))
 		return FALSE
 	mod.subtract_charge(amount)
@@ -340,26 +390,38 @@
 
 /// Checks if there is enough power in the suit
 /obj/item/mod/module/proc/check_power(amount)
+	procstart = null
+	src.procstart = null
 	return mod.check_charge(amount)
 
 /// Adds additional things to the MODsuit ui_data()
 /obj/item/mod/module/proc/add_ui_data()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /// Creates a list of configuring options for this module, possible configs include number, bool, color, list, button.
 /obj/item/mod/module/proc/get_configuration(mob/user)
+	procstart = null
+	src.procstart = null
 	return list()
 
 /// Generates an element of the get_configuration list with a display name, type and value
 /obj/item/mod/module/proc/add_ui_configuration(display_name, type, value, list/values)
+	procstart = null
+	src.procstart = null
 	return list("display_name" = display_name, "type" = type, "value" = value, "values" = values)
 
 /// Receives configure edits from the TGUI and edits the vars
 /obj/item/mod/module/proc/configure_edit(key, value)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called when the device moves to a different place on active modules
 /obj/item/mod/module/proc/on_exit(datum/source, atom/movable/part, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!active)
@@ -373,6 +435,8 @@
 
 /// Called when the device gets deleted on active modules
 /obj/item/mod/module/proc/on_device_deletion(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source == device)
@@ -382,6 +446,8 @@
 
 /// Adds the worn overlays to the suit.
 /obj/item/mod/module/proc/add_module_overlay(obj/item/source, list/overlays, mutable_appearance/standing, mutable_appearance/draw_target, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (isinhands)
@@ -401,6 +467,8 @@
 
 /// Generates an icon to be used for the suit's worn overlays
 /obj/item/mod/module/proc/generate_worn_overlay(obj/item/source, mutable_appearance/standing)
+	procstart = null
+	src.procstart = null
 	if(!mask_worn_overlay)
 		if(!has_required_parts(mod.mod_parts, need_active = TRUE))
 			return
@@ -424,6 +492,8 @@
 	SEND_SIGNAL(src, COMSIG_MODULE_GENERATE_WORN_OVERLAY, ., standing)
 
 /obj/item/mod/module/proc/get_current_overlay_state()
+	procstart = null
+	src.procstart = null
 	if(overlay_state_use && !COOLDOWN_FINISHED(src, cooldown_timer))
 		return overlay_state_use
 	if(overlay_state_active && active)
@@ -434,6 +504,8 @@
 
 /// Updates the signal used by active modules to be activated
 /obj/item/mod/module/proc/update_signal(value)
+	procstart = null
+	src.procstart = null
 	switch(value)
 		if(MIDDLE_CLICK)
 			mod.selected_module.used_signal = COMSIG_MOB_MIDDLECLICKON
@@ -443,6 +515,8 @@
 
 /// Pins the module to the user's action buttons
 /obj/item/mod/module/proc/pin(mob/user)
+	procstart = null
+	src.procstart = null
 	if(module_type == MODULE_PASSIVE)
 		return
 
@@ -456,6 +530,8 @@
 
 /// On drop key, concels a device item.
 /obj/item/mod/module/proc/dropkey(mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(user.get_active_held_item() != device)
@@ -475,5 +551,7 @@
 	var/core_removable = TRUE
 
 /obj/item/mod/module/anomaly_locked/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/anomaly_locked_module, accepted_anomalies, prebuilt, core_removable)

@@ -20,15 +20,21 @@
 	var/bar_material = METAL
 
 /obj/structure/barricade/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	make_debris()
 
 /// Spawn debris & stuff upon deconstruction
 /obj/structure/barricade/proc/make_debris()
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	return
 
 /obj/structure/barricade/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 
@@ -48,7 +54,9 @@
 	repair_damage(20)
 	return ITEM_INTERACT_SUCCESS
 
-/obj/structure/barricade/CanAllowThrough(atom/movable/mover, border_dir)//So bullets will fly over and stuff.
+/obj/structure/barricade/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null//So bullets will fly over and stuff.
 	. = ..()
 	if(locate(/obj/structure/barricade) in get_turf(mover))
 		return TRUE
@@ -75,6 +83,8 @@
 	var/drop_amount = 3
 
 /obj/structure/barricade/wooden/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/static/list/tool_behaviors = list(TOOL_CROWBAR = list(SCREENTIP_CONTEXT_LMB = "Deconstruct"))
@@ -84,6 +94,8 @@
 	AddElement(/datum/element/uses_girder_wall_recipes)
 
 /obj/structure/barricade/wooden/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	balloon_alert(user, "deconstructing barricade...")
 	if(!tool.use_tool(src, user, 2 SECONDS, volume=50))
 		return
@@ -108,6 +120,8 @@
 	max_integrity = 75
 
 /obj/structure/barricade/wooden/make_debris()
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/mineral/wood(get_turf(src), drop_amount)
 
 /obj/structure/barricade/sandbags
@@ -125,6 +139,8 @@
 	canSmoothWith = SMOOTH_GROUP_SANDBAGS + SMOOTH_GROUP_SECURITY_BARRICADE + SMOOTH_GROUP_WALLS
 
 /obj/structure/barricade/sandbags/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/climbable)
 	AddElement(/datum/element/elevation, pixel_shift = 12)
@@ -156,14 +172,20 @@
 	var/mode = SINGLE
 
 /obj/item/grenade/barrier/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Alt-click to toggle modes.")
 
 /obj/item/grenade/barrier/click_alt(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	toggle_mode(user)
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/grenade/barrier/proc/toggle_mode(mob/user)
+	procstart = null
+	src.procstart = null
 	switch(mode)
 		if(SINGLE)
 			mode = VERTICAL
@@ -175,6 +197,8 @@
 	to_chat(user, span_notice("[src] is now in [mode] mode."))
 
 /obj/item/grenade/barrier/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -200,6 +224,8 @@
 	qdel(src)
 
 /obj/item/grenade/barrier/ui_action_click(mob/user)
+	procstart = null
+	src.procstart = null
 	toggle_mode(user)
 
 /obj/item/deployable_turret_folded
@@ -213,6 +239,8 @@
 	slot_flags = ITEM_SLOT_BACK
 
 /obj/item/deployable_turret_folded/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/deployable, 5 SECONDS, /obj/machinery/deployable_turret/hmg)
 

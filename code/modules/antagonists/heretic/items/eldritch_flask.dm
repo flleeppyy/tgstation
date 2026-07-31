@@ -22,6 +22,8 @@
 	COOLDOWN_DECLARE(drain_cooldown)
 
 /obj/item/reagent_containers/cup/phylactery/interact_with_atom_secondary(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, drain_cooldown))
 		user.balloon_alert(user, "can't steal so fast!")
 		return NONE
@@ -50,11 +52,15 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/cup/phylactery/ranged_interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(get_dist(user, interacting_with) <= 30)
 		return interact_with_atom_secondary(interacting_with, user, modifiers)
 	return ..()
 
 /obj/item/reagent_containers/cup/phylactery/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(reagents.total_volume)
 		if(0)
@@ -72,6 +78,8 @@
 	icon_state = "poison_flask"
 
 /obj/item/ether/attack_self(mob/living/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.revive(HEAL_ALL)
 	for(var/obj/item/implant/to_remove in user.implants)
@@ -92,11 +100,15 @@
 	var/list/sleeping_traits = list(TRAIT_NOBREATH, TRAIT_RESISTLOWPRESSURE, TRAIT_RESISTLOWPRESSURE, TRAIT_RESISTCOLD, TRAIT_RESISTHEAT)
 
 /datum/status_effect/eldritch_sleep/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.add_traits(sleeping_traits, TRAIT_STATUS_EFFECT(id))
 	owner.apply_status_effect(/datum/status_effect/grouped/stasis, STASIS_ELDRITCH_ETHER)
 
 /datum/status_effect/eldritch_sleep/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.SetSleeping(0) // Wake up bookworm, we have some heathens to burn
 	owner.remove_traits(sleeping_traits, TRAIT_STATUS_EFFECT(id))
 	owner.reagents?.remove_all(100) // If someone gives you over 100 units of poison while you sleep then you deserve this L

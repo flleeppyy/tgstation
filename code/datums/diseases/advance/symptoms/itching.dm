@@ -28,6 +28,8 @@
 	var/off_cooldown_scratched = FALSE
 
 /datum/symptom/itching/Start(datum/disease/advance/active_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -37,6 +39,8 @@
 		scratch = TRUE
 
 /datum/symptom/itching/Activate(datum/disease/advance/active_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

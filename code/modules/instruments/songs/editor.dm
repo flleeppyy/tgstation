@@ -1,18 +1,26 @@
 /datum/song/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		ui = new(user, src, "InstrumentEditor", parent.name)
 		ui.open()
 
 /datum/song/ui_host(mob/user)
+	procstart = null
+	src.procstart = null
 	return parent
 
 /datum/song/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ispAI(user))
 		return GLOB.always_state
 	return ..()
 
 /datum/song/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 	data["id"] = id
 	data["using_instrument"] = using_instrument?.name || "No instrument loaded!"
@@ -48,6 +56,8 @@
 	return data
 
 /datum/song/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 	data["can_switch_instrument"] = (length(allowed_instrument_ids) > 1)
 	data["possible_instruments"] = list()
@@ -64,6 +74,8 @@
 	return data
 
 /datum/song/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/user = ui.user
 	if(!istype(user))
@@ -196,6 +208,8 @@
  * Parses a song the user has input into lines and stores them.
  */
 /datum/song/proc/ParseSong(mob/user, new_song)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	//split into lines
 	lines = islist(new_song) ? new_song : splittext(new_song, "\n")

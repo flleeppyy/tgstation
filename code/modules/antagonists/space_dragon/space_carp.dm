@@ -9,14 +9,20 @@
 	var/datum/weakref/rift
 
 /datum/antagonist/space_carp/New(obj/structure/carp_rift/rift)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.rift = WEAKREF(rift)
 
 /datum/antagonist/space_carp/on_gain()
+	procstart = null
+	src.procstart = null
 	forge_objectives()
 	. = ..()
 
 /datum/antagonist/space_carp/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.announce_objectives()
 
@@ -25,11 +31,15 @@
 	var/datum/weakref/rift
 
 /datum/objective/space_carp/check_completion()
+	procstart = null
+	src.procstart = null
 	if(!rift.resolve())
 		return FALSE
 	return TRUE
 
 /datum/antagonist/space_carp/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/space_carp/objective = new
 	objective.owner = owner
 	objective.rift = rift

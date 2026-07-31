@@ -19,12 +19,16 @@
 	var/mob/living/silicon/ai/AI
 
 /obj/item/aicard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload && HAS_TRAIT(SSstation, STATION_TRAIT_HUMAN_AI))
 		return INITIALIZE_HINT_QDEL
 	ADD_TRAIT(src, TRAIT_CASTABLE_LOC, INNATE_TRAIT)
 
 /obj/item/aicard/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(AI)
 		AI.ghostize(can_reenter_corpse = FALSE)
 		QDEL_NULL(AI)
@@ -45,10 +49,14 @@
 	custom_materials = list(/datum/material/glass = SMALL_MATERIAL_AMOUNT * 5.5, /datum/material/gold = SMALL_MATERIAL_AMOUNT * 2, /datum/material/iron = SMALL_MATERIAL_AMOUNT * 0.5)
 
 /obj/item/aicard/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is trying to upload [user.p_them()]self into [src]! That's not going to work out well!"))
 	return BRUTELOSS
 
 /obj/item/aicard/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(AI)
 		if(upload_ai(interacting_with, user))
 			return ITEM_INTERACT_SUCCESS
@@ -59,6 +67,8 @@
 
 /// Tries to get an AI from the atom clicked
 /obj/item/aicard/proc/capture_ai(atom/from_what, mob/living/user)
+	procstart = null
+	src.procstart = null
 	from_what.transfer_ai(AI_TRANS_TO_CARD, user, null, src)
 	if(isnull(AI))
 		return FALSE
@@ -71,6 +81,8 @@
 
 /// Tries to upload the AI we have captured to the atom clicked
 /obj/item/aicard/proc/upload_ai(atom/to_what, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/ai/old_ai = AI
 	to_what.transfer_ai(AI_TRANS_FROM_CARD, user, AI, src)
 	if(!isnull(AI))
@@ -83,15 +95,21 @@
 	return TRUE
 
 /obj/item/aicard/proc/on_ai_stat_change(datum/source, new_stat, old_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(new_stat == DEAD || old_stat == DEAD)
 		update_appearance()
 
 /obj/item/aicard/proc/on_ai_icon_update(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_appearance()
 
 /obj/item/aicard/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!AI)
@@ -101,6 +119,8 @@
 	set_light(0.5, 0.5, LIGHT_COLOR_FAINT_CYAN)
 
 /obj/item/aicard/update_name(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(AI)
 		name = "[initial(name)] - [AI.name]"
@@ -108,11 +128,15 @@
 		name = initial(name)
 
 /obj/item/aicard/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = base_icon_state
 	return ..()
 
 //Support for different displays
 /obj/item/aicard/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!AI)
 		return
@@ -142,15 +166,21 @@
 		. += emissive_appearance(icon, indicator_state, src, alpha = src.alpha)
 
 /obj/item/aicard/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.hands_state
 
 /obj/item/aicard/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Intellicard", name)
 		ui.open()
 
 /obj/item/aicard/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	if(AI)
 		data["name"] = AI.name
@@ -164,6 +194,8 @@
 	return data
 
 /obj/item/aicard/ui_act(action,params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -188,6 +220,8 @@
 	update_appearance()
 
 /obj/item/aicard/proc/wipe_ai()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(AI && AI.loc == src)
 		to_chat(AI, span_userdanger("YOUR SYSTEM FILES ARE BEING WIPED!"))
@@ -198,6 +232,8 @@
 		flush = FALSE
 
 /obj/item/aicard/used_in_craft(atom/result, datum/crafting_recipe/current_recipe)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!AI || !istype(result, /obj/item/aicard))
 		return
@@ -210,10 +246,14 @@
 // Special Cards
 
 /obj/item/aicard/aitater/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = base_icon_state
 	return ..()
 
 /obj/item/aicard/aitater/update_overlays()
+	procstart = null
+	src.procstart = null
 	..()
 	. = list()
 
@@ -230,10 +270,14 @@
 
 
 /obj/item/aicard/aispook/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = base_icon_state
 	return ..()
 
 /obj/item/aicard/aispook/update_overlays()
+	procstart = null
+	src.procstart = null
 	..()
 	. = list()
 

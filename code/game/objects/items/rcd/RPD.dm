@@ -79,6 +79,8 @@
 	acid = 50
 
 /obj/item/pipe_dispenser/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spark_system = new(src, 5, FALSE)
 	spark_system.attach(src)
@@ -93,15 +95,21 @@
 	register_item_context()
 
 /obj/item/pipe_dispenser/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(spark_system)
 	return ..()
 
 /obj/item/pipe_dispenser/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You can scroll your <b>mouse wheel</b> to change the piping layer.")
 	. += span_notice("You can <b>right click</b> a pipe to set the RPD to its color and layer.")
 
 /obj/item/pipe_dispenser/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 
 	if(istype(target, /obj/machinery/atmospherics))
@@ -111,6 +119,8 @@
 			return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/pipe_dispenser/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot & ITEM_SLOT_HANDS)
 		RegisterSignal(user, COMSIG_MOUSE_SCROLL_ON, PROC_REF(mouse_wheeled))
@@ -118,13 +128,19 @@
 		UnregisterSignal(user,COMSIG_MOUSE_SCROLL_ON)
 
 /obj/item/pipe_dispenser/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(user, COMSIG_MOUSE_SCROLL_ON)
 	return ..()
 
 /obj/item/pipe_dispenser/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	ui_interact(user)
 
 /obj/item/pipe_dispenser/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] points the end of the RPD down [user.p_their()] throat and presses a button! It looks like [user.p_theyre()] trying to commit suicide..."))
 	playsound(get_turf(user), SFX_TOOL_SWITCH, 20, TRUE)
 	playsound(get_turf(user), RPD_USE_SOUND, 50, TRUE)
@@ -132,6 +148,8 @@
 
 ///Converts pipe_layers bitflag into its corresponding list of actual pipe layers
 /obj/item/pipe_dispenser/proc/get_active_pipe_layers()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	RETURN_TYPE(/list)
 
@@ -142,23 +160,31 @@
 	return layer_nums
 
 /obj/item/pipe_dispenser/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/pipes),
 	)
 
 /obj/item/pipe_dispenser/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "RapidPipeDispenser", name)
 		ui.open()
 
 /obj/item/pipe_dispenser/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		"paint_colors" = GLOB.pipe_paint_colors,
 		"max_pipe_layers" = MAX_PIPE_LAYERS,
 	)
 
 /obj/item/pipe_dispenser/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list(
 		"category" = category,
 		"multi_layer" = multi_layer,
@@ -203,6 +229,8 @@
 	return data
 
 /obj/item/pipe_dispenser/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -286,6 +314,8 @@
 	return TRUE
 
 /obj/item/pipe_dispenser/interact_with_atom(atom/attack_target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 
 	if(!ISADVANCEDTOOLUSER(user) || HAS_TRAIT(attack_target, TRAIT_COMBAT_MODE_SKIP_INTERACTION) || istype(attack_target, /turf/open/space/transit))
@@ -479,6 +509,8 @@
 				return ITEM_INTERACT_SUCCESS
 
 /obj/item/pipe_dispenser/interact_with_atom_secondary(obj/machinery/atmospherics/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 
 	if(!istype(target))
@@ -497,6 +529,8 @@
  * * atom/target_of_attack - the target we are trying to build a pipe on
  */
 /obj/item/pipe_dispenser/proc/check_can_make_pipe(atom/target_of_attack)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	SHOULD_BE_PURE(TRUE)
 
@@ -523,6 +557,8 @@
  * * mob/user - mob performing the action
  */
 /obj/item/pipe_dispenser/proc/do_pipe_build(atom/atom_to_target, mob/user)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(!check_can_make_pipe(atom_to_target))
@@ -575,6 +611,8 @@
 
 ///Changes the piping layer when the mousewheel is scrolled up or down.
 /obj/item/pipe_dispenser/proc/mouse_wheeled(mob/source_mob, atom/A, delta_x, delta_y, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(multi_layer)
 		balloon_alert(source_mob, "turn off multi layer!")

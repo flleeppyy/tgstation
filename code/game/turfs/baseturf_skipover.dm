@@ -4,6 +4,8 @@
 	desc = "This shouldn't exist"
 
 /turf/baseturf_skipover/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	stack_trace("[src]([type]) was instanced which should never happen. Changing into the next baseturf down...")
 	ScrapeAway()

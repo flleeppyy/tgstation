@@ -26,9 +26,13 @@
 	distill_reagent = /datum/reagent/consumable/ethanol/kortara
 
 /obj/item/food/grown/korta_nut/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/korta_flour = 0)
 
 /obj/item/food/grown/korta_nut/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/korta_milk
 
 //Sweet Korta Nut
@@ -54,7 +58,11 @@
 	distill_reagent = /datum/reagent/consumable/ethanol/kortara
 
 /obj/item/food/grown/korta_nut/sweet/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/korta_flour = 0)
 
 /obj/item/food/grown/korta_nut/sweet/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/korta_nectar

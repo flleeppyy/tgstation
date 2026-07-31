@@ -21,17 +21,23 @@
 	var/dispense_volume = 1
 
 /obj/machinery/chem_heater/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(200, NO_REACT)
 	register_context()
 
 /obj/machinery/chem_heater/Destroy()
+	procstart = null
+	src.procstart = null
 	if(beaker)
 		UnregisterSignal(beaker.reagents, COMSIG_REAGENTS_REACTION_STEP)
 		QDEL_NULL(beaker)
 	return ..()
 
 /obj/machinery/chem_heater/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == beaker)
 		UnregisterSignal(beaker.reagents, COMSIG_REAGENTS_REACTION_STEP)
@@ -39,6 +45,8 @@
 		update_appearance()
 
 /obj/machinery/chem_heater/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item) || (held_item.item_flags & ABSTRACT) || (held_item.flags_1 & HOLOGRAM_1))
 		return NONE
 
@@ -63,6 +71,8 @@
 	return NONE
 
 /obj/machinery/chem_heater/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
 		. += span_notice("The status display reads: Heating reagents at <b>[heater_coefficient * 1000]%</b> speed.")
@@ -80,16 +90,22 @@
 			. += span_notice("Its panel can be [EXAMINE_HINT("pried")] open")
 
 /obj/machinery/chem_heater/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][(beaker && !panel_open) ? 1 : 0]b"
 	return ..()
 
 /obj/machinery/chem_heater/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	heater_coefficient = 0.1
 	for(var/datum/stock_part/micro_laser/micro_laser in component_parts)
 		heater_coefficient *= micro_laser.tier
 
 /obj/machinery/chem_heater/item_interaction(mob/living/user, obj/item/held_item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(beaker))
 		if(istype(held_item, /obj/item/reagent_containers/dropper) || istype(held_item, /obj/item/reagent_containers/syringe))
 			var/obj/item/reagent_containers/injector = held_item
@@ -108,17 +124,25 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/chem_heater/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(default_unfasten_wrench(user, tool) == SUCCESSFUL_UNFASTEN)
 		return ITEM_INTERACT_SUCCESS
 	return ITEM_INTERACT_BLOCKING
 
 /obj/machinery/chem_heater/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/chem_heater/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/chem_heater/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -128,9 +152,13 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/chem_heater/attack_robot_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand_secondary(user, modifiers)
 
 /obj/machinery/chem_heater/attack_ai_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand_secondary(user, modifiers)
 
 /**
@@ -140,6 +168,8 @@
  * * obj/item/reagent_containers/new_beaker - the new beaker to replace the current one if not null else it will just eject
  */
 /obj/machinery/chem_heater/proc/replace_beaker(mob/living/user, obj/item/reagent_containers/new_beaker)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(!QDELETED(beaker))
@@ -162,6 +192,8 @@
  * * seconds_per_tick - passed from process() or from reaction_step()
  */
 /obj/machinery/chem_heater/proc/heat_reagents(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	//must be on and beaker must have something inside to heat
@@ -175,6 +207,8 @@
 	return TRUE
 
 /obj/machinery/chem_heater/proc/on_reaction_step(datum/reagents/holder, num_reactions, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	//adjust temp
@@ -185,6 +219,8 @@
 		ui.send_update()
 
 /obj/machinery/chem_heater/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	//is_reacting is handled in reaction_step()
 	if(QDELETED(beaker) || beaker.reagents.is_reacting)
 		return
@@ -198,12 +234,16 @@
 		ui.send_update()
 
 /obj/machinery/chem_heater/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ChemHeater", name)
 		ui.open()
 
 /obj/machinery/chem_heater/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["targetTemp"] = target_temperature
 	.["isActive"] = on
@@ -286,6 +326,8 @@
 	.["dispenseVolume"] = dispense_volume
 
 /obj/machinery/chem_heater/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -357,6 +399,8 @@
  * * volume - how much to volume to inject -ve values means withdraw
  */
 /obj/machinery/chem_heater/proc/move_buffer(datum/reagent/buffer_type, volume)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	//no beaker
@@ -383,6 +427,8 @@
 	desc = "Now with even more buffers!"
 
 /obj/machinery/chem_heater/debug/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.maximum_volume = 2000
 	reagents.add_reagent(/datum/reagent/reaction_agent/basic_buffer, 1000)
@@ -394,6 +440,8 @@
 	desc = "This Reaction Chamber comes with a bit of buffer to help get you started."
 
 /obj/machinery/chem_heater/withbuffer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent(/datum/reagent/reaction_agent/basic_buffer, 20)
 	reagents.add_reagent(/datum/reagent/reaction_agent/acidic_buffer, 20)

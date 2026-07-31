@@ -31,6 +31,8 @@ SUBSYSTEM_DEF(traitor)
 	var/regex/syndicate_code_response_regex
 
 /datum/controller/subsystem/traitor/Initialize()
+	procstart = null
+	src.procstart = null
 	current_progression_scaling = 1 MINUTES * CONFIG_GET(number/traitor_scaling_multiplier)
 	for(var/theft_item in subtypesof(/datum/objective_item/steal))
 		new theft_item
@@ -42,6 +44,8 @@ SUBSYSTEM_DEF(traitor)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/traitor/fire(resumed)
+	procstart = null
+	src.procstart = null
 	var/previous_progression = current_global_progression
 	current_global_progression = (STATION_TIME_PASSED()) * CONFIG_GET(number/traitor_scaling_multiplier)
 	var/progression_increment = current_global_progression - previous_progression
@@ -58,6 +62,8 @@ SUBSYSTEM_DEF(traitor)
 		handler.on_update()
 
 /datum/controller/subsystem/traitor/proc/register_uplink_handler(datum/uplink_handler/uplink_handler)
+	procstart = null
+	src.procstart = null
 	if(!uplink_handler.has_progression)
 		return
 	uplink_handlers |= uplink_handler
@@ -66,5 +72,7 @@ SUBSYSTEM_DEF(traitor)
 	RegisterSignal(uplink_handler, COMSIG_QDELETING, PROC_REF(uplink_handler_deleted), override = TRUE)
 
 /datum/controller/subsystem/traitor/proc/uplink_handler_deleted(datum/uplink_handler/uplink_handler)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	uplink_handlers -= uplink_handler

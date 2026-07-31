@@ -18,6 +18,8 @@
 	var/balanced = 1
 
 /obj/item/melee/supermatter_sword/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	shard = new /obj/machinery/power/supermatter_crystal(src)
 	qdel(shard.countdown)
@@ -27,6 +29,8 @@
 	RegisterSignal(src, COMSIG_ATOM_PRE_BULLET_ACT, PROC_REF(eat_bullets))
 
 /obj/item/melee/supermatter_sword/process()
+	procstart = null
+	src.procstart = null
 	if(balanced || throwing || ismob(src.loc) || isnull(src.loc))
 		return
 	if(!isturf(src.loc))
@@ -39,6 +43,8 @@
 			consume_turf(turf)
 
 /obj/item/melee/supermatter_sword/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -51,6 +57,8 @@
 	return TRUE
 
 /obj/item/melee/supermatter_sword/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ismob(hit_atom))
 		var/mob/mob = hit_atom
@@ -59,12 +67,16 @@
 	consume_everything(hit_atom)
 
 /obj/item/melee/supermatter_sword/pickup(user)
+	procstart = null
+	src.procstart = null
 	..()
 	balanced = 0
 	icon_state = "supermatter_sword"
 	icon_angle = -45
 
 /obj/item/melee/supermatter_sword/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	visible_message(
 		span_danger("The blast wave smacks into [src] and rapidly flashes to ash."),
 		span_hear("You hear a loud crack as you are washed with a wave of heat.")
@@ -73,12 +85,16 @@
 	return TRUE
 
 /obj/item/melee/supermatter_sword/acid_act()
+	procstart = null
+	src.procstart = null
 	visible_message(span_danger("The acid smacks into [src] and rapidly flashes to ash."),\
 	span_hear("You hear a loud crack as you are washed with a wave of heat."))
 	consume_everything()
 	return TRUE
 
 /obj/item/melee/supermatter_sword/proc/eat_bullets(datum/source, obj/projectile/hitting_projectile)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	visible_message(
@@ -90,11 +106,15 @@
 	return COMPONENT_BULLET_BLOCKED
 
 /obj/item/melee/supermatter_sword/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] touches [src]'s blade. It looks like [user.p_theyre()] tired of waiting for the radiation to kill [user.p_them()]!"))
 	user.dropItemToGround(src, TRUE)
 	shard.Bumped(user)
 
 /obj/item/melee/supermatter_sword/proc/consume_everything(target)
+	procstart = null
+	src.procstart = null
 	if(isnull(target))
 		shard.Bump(target)
 	else if(!isturf(target))
@@ -103,6 +123,8 @@
 		consume_turf(target)
 
 /obj/item/melee/supermatter_sword/proc/consume_turf(turf/turf)
+	procstart = null
+	src.procstart = null
 	var/oldtype = turf.type
 	var/turf/newT = turf.ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
 	if(newT.type == oldtype)

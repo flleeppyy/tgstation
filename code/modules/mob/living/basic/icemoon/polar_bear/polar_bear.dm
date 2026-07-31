@@ -40,6 +40,8 @@
 	ai_controller = /datum/ai_controller/basic_controller/polar
 
 /mob/living/basic/mining/polarbear/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	add_traits(list(TRAIT_SPACEWALK, TRAIT_SWIMMER, TRAIT_FENCE_CLIMBER, TRAIT_SNOWSTORM_IMMUNE), INNATE_TRAIT)

@@ -42,9 +42,13 @@
 	human_authority = JOB_AUTHORITY_NON_HUMANS_ALLOWED //we can safely assume NT doesn't care what species AIs are made of, much less if they can't even afford an AI.
 
 /datum/job/human_ai/get_roundstart_spawn_point()
+	procstart = null
+	src.procstart = null
 	return get_latejoin_spawn_point()
 
 /datum/job/human_ai/get_latejoin_spawn_point()
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/ai_core/latejoin_inactive/inactive_core as anything in GLOB.latejoin_ai_cores)
 		if(!inactive_core.is_available())
 			continue
@@ -74,17 +78,23 @@
 	return chosen_spawn_point
 
 /datum/job/human_ai/special_check_latejoin(client/latejoin_client)
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/ai_core/latejoin_inactive/latejoin_core as anything in GLOB.latejoin_ai_cores)
 		if(latejoin_core.is_available())
 			return TRUE
 	return FALSE
 
 /datum/job/human_ai/announce_job(mob/living/joining_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(SSticker.HasRoundStarted())
 		minor_announce("Due to a research mishap, [joining_mob] has been sent to be your replacement AI at [AREACOORD(joining_mob)]. Please treat them with respect.")
 
 /datum/job/human_ai/get_radio_information()
+	procstart = null
+	src.procstart = null
 	return "<b>Prefix your message with :b to speak with cyborgs.</b>"
 
 /datum/outfit/job/human_ai
@@ -111,6 +121,8 @@
 	l_hand = /obj/item/paper/default_lawset_list
 
 /datum/outfit/job/human_ai/pre_equip(mob/living/carbon/human/equipped, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(visuals_only)
 		return
@@ -123,6 +135,8 @@
 	head = /obj/item/clothing/head/helmet/space/nasavoid
 
 /datum/outfit/job/human_ai/post_equip(mob/living/carbon/human/equipped, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(visuals_only)
 		return
@@ -138,10 +152,14 @@
 	desc = "A note explaining the lawset, quickly written yet everso important."
 
 /obj/item/paper/default_lawset_list/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/item/paper/default_lawset_list/LateInitialize()
+	procstart = null
+	src.procstart = null
 	var/datum/ai_laws/reported
 	for(var/obj/machinery/ai_law_rack/base/core/rack as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/ai_law_rack/base/core))
 		reported = rack.combined_lawset
@@ -168,6 +186,8 @@
 	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
 
 /obj/item/secure_camera_console_pod/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/area/current_area = get_area(user)
 	var/static/list/allowed_areas = typecacheof(list(/area/station/ai/satellite/chamber))

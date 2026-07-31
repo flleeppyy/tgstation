@@ -2,17 +2,23 @@
 /datum/element/floor_loving
 
 /datum/element/floor_loving/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(target))
 		return ELEMENT_INCOMPATIBLE
 	RegisterSignal(target, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(attempting_move))
 
 /datum/element/floor_loving/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, COMSIG_MOVABLE_PRE_MOVE)
 	return ..()
 
 /// Block movement to any non-floor location
 /datum/element/floor_loving/proc/attempting_move(atom/movable/parent, newloc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!isopenturf(newloc) || is_space_or_openspace(newloc))
 		return COMPONENT_MOVABLE_BLOCK_PRE_MOVE

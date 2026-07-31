@@ -99,6 +99,8 @@
 	echolocator.update_sight()
 
 /datum/component/echolocation/Destroy(force)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	var/mob/living/echolocator = parent
 
@@ -126,6 +128,8 @@
 
 /// Add or remove SIGHT_BYPASS depending on if we are deaf or not
 /datum/component/echolocation/proc/deafness_check(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT(parent, TRAIT_DEAF))
@@ -135,6 +139,8 @@
 
 /// If the mob had no hud when they gained echolocation we need to apply the effect now
 /datum/component/echolocation/proc/hud_created(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/echolocator = parent
@@ -144,6 +150,8 @@
 			game_plane.add_filter("[ECHOLOCATION_TRAIT]_outline", 1, outline_filter(size = 1, color = COLOR_WHITE))
 
 /datum/component/echolocation/process()
+	procstart = null
+	src.procstart = null
 	var/mob/living/echolocator = parent
 	if(echolocator.stat == DEAD)
 		return
@@ -151,6 +159,8 @@
 	echolocate()
 
 /datum/component/echolocation/proc/echolocate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/echolocator = parent
 	var/list/filtered = list()
 
@@ -247,6 +257,8 @@
 	addtimer(CALLBACK(src, PROC_REF(fade_images), current_time), image_expiry_time)
 
 /datum/component/echolocation/proc/fade_images(from_time)
+	procstart = null
+	src.procstart = null
 	if(fade_out_time <= 0)
 		cleanup_images(from_time)
 		return
@@ -257,6 +269,8 @@
 	addtimer(CALLBACK(src, PROC_REF(cleanup_images), from_time), fade_out_time + 0.5 SECONDS)
 
 /datum/component/echolocation/proc/cleanup_images(from_time)
+	procstart = null
+	src.procstart = null
 	var/mob/living/echolocator = parent
 	for(var/atom_ref, echo_image in active_images[from_time])
 		echolocator.client?.images -= echo_image
@@ -269,10 +283,14 @@
 	show_when_dead = TRUE
 
 /atom/movable/screen/fullscreen/echo/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	particles = new /particles/echo()
 
 /atom/movable/screen/fullscreen/echo/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(particles)
 	return ..()
 
@@ -287,6 +305,8 @@
 	var/list/selected_options
 
 /datum/action/echolocation_focus/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!options)
 		var/list/all_floor_objects = list(/obj/machinery/atmospherics/components)
@@ -303,12 +323,16 @@
 	update_echocomp()
 
 /datum/action/echolocation_focus/proc/update_echocomp()
+	procstart = null
+	src.procstart = null
 	var/datum/component/echolocation/echo_comp = target
 	echo_comp.highlighted_paths.Cut()
 	for(var/option_name in selected_options)
 		echo_comp.highlighted_paths |= options[option_name]
 
 /datum/action/echolocation_focus/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -316,15 +340,21 @@
 	ui_interact(clicker)
 
 /datum/action/echolocation_focus/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	return IsAvailable() ? UI_INTERACTIVE : UI_CLOSE
 
 /datum/action/echolocation_focus/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(isnull(ui))
 		ui = new(user, src, "EcholocationFocus")
 		ui.open()
 
 /datum/action/echolocation_focus/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["selected_options"] = selected_options
@@ -333,6 +363,8 @@
 	return data
 
 /datum/action/echolocation_focus/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

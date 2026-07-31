@@ -16,30 +16,42 @@
 	var/datum/bodypart_overlay/augment/bodypart_aug = null
 
 /obj/item/organ/cyberimp/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (aug_overlay)
 		visual = TRUE
 		bodypart_aug = new(src)
 
 /obj/item/organ/cyberimp/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(bodypart_aug) // Do this after Remove() has done its thing, otherwise on_bodypart_remove() will not properly remove the overlay
 
 /obj/item/organ/cyberimp/proc/get_overlay_state()
+	procstart = null
+	src.procstart = null
 	return aug_overlay
 
 /obj/item/organ/cyberimp/proc/get_overlay(image_layer, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = list()
 	. += image(icon = aug_icon, icon_state = get_overlay_state(), layer = image_layer)
 	if (emissive_overlay)
 		. += emissive_appearance(aug_icon, "[get_overlay_state()]_e", limb.owner || limb, image_layer)
 
 /obj/item/organ/cyberimp/on_bodypart_insert(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (bodypart_aug)
 		limb.add_bodypart_overlay(bodypart_aug)
 
 /obj/item/organ/cyberimp/on_bodypart_remove(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (bodypart_aug)
 		limb.remove_bodypart_overlay(bodypart_aug)
@@ -52,18 +64,26 @@
 	var/obj/item/organ/cyberimp/implant
 
 /datum/bodypart_overlay/augment/New(obj/item/organ/cyberimp/implant)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.implant = implant
 
 /datum/bodypart_overlay/augment/Destroy(force)
+	procstart = null
+	src.procstart = null
 	implant = null
 	return ..()
 
 /datum/bodypart_overlay/augment/icon_render_key(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += implant.get_overlay_state()
 
 /datum/bodypart_overlay/augment/get_overlay(obj/item/bodypart/limb, layer_index, layer_real)
+	procstart = null
+	src.procstart = null
 	var/list/imageset = implant.get_overlay(layer_real, limb)
 	if(blocks_emissive == EMISSIVE_BLOCK_NONE || !limb)
 		return imageset
@@ -76,6 +96,8 @@
 	return all_images
 
 /obj/item/organ/cyberimp/feel_for_damage(self_aware)
+	procstart = null
+	src.procstart = null
 	// No feeling in implants (yet?)
 	return ""
 
@@ -92,6 +114,8 @@
 	var/emp_immobilize_duration = 0 SECONDS
 
 /obj/item/organ/cyberimp/brain/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(owner) || (. & EMP_PROTECT_SELF))
 		return
@@ -112,6 +136,8 @@
 	actions_types = list(/datum/action/item_action/organ_action/toggle)
 
 /obj/item/organ/cyberimp/brain/anti_drop/ui_action_click()
+	procstart = null
+	src.procstart = null
 	active = !active
 	if(active)
 		var/list/hold_list = owner.get_empty_held_indexes()
@@ -132,6 +158,8 @@
 
 
 /obj/item/organ/cyberimp/brain/anti_drop/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!owner || . & EMP_PROTECT_SELF)
 		return
@@ -147,6 +175,8 @@
 
 
 /obj/item/organ/cyberimp/brain/anti_drop/proc/release_items()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/stored_item as anything in stored_items)
 		REMOVE_TRAIT(stored_item, TRAIT_NODROP, IMPLANT_TRAIT)
 		UnregisterSignal(stored_item, COMSIG_ITEM_DROPPED)
@@ -154,11 +184,15 @@
 
 
 /obj/item/organ/cyberimp/brain/anti_drop/Remove(mob/living/carbon/implant_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	if(active)
 		ui_action_click()
 	..()
 
 /obj/item/organ/cyberimp/brain/anti_drop/proc/on_held_item_dropped(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	REMOVE_TRAIT(source, TRAIT_NODROP, IMPLANT_TRAIT)
 	UnregisterSignal(source, COMSIG_ITEM_DROPPED)
@@ -184,27 +218,37 @@
 	COOLDOWN_DECLARE(implant_cooldown)
 
 /obj/item/organ/cyberimp/brain/anti_stun/on_mob_remove(mob/living/carbon/implant_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(implant_owner, signalCache)
 	UnregisterSignal(implant_owner, COMSIG_LIVING_ENTER_STAMCRIT)
 	remove_stun_buffs(implant_owner)
 
 /obj/item/organ/cyberimp/brain/anti_stun/on_mob_insert(mob/living/carbon/receiver)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignals(receiver, signalCache, PROC_REF(on_signal))
 	RegisterSignal(receiver, COMSIG_LIVING_ENTER_STAMCRIT, PROC_REF(on_stamcrit))
 
 /obj/item/organ/cyberimp/brain/anti_stun/proc/on_signal(datum/source, amount)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!(organ_flags & ORGAN_FAILING) && amount > 0)
 		addtimer(CALLBACK(src, PROC_REF(clear_stuns)), stun_cap_amount, TIMER_UNIQUE|TIMER_OVERRIDE)
 
 /obj/item/organ/cyberimp/brain/anti_stun/proc/on_stamcrit(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!(organ_flags & ORGAN_FAILING))
 		addtimer(CALLBACK(src, PROC_REF(clear_stuns)), stun_cap_amount, TIMER_UNIQUE|TIMER_OVERRIDE)
 
 /obj/item/organ/cyberimp/brain/anti_stun/proc/clear_stuns()
+	procstart = null
+	src.procstart = null
 	if(isnull(owner) || (organ_flags & ORGAN_FAILING) || !COOLDOWN_FINISHED(src, implant_cooldown))
 		return
 
@@ -224,18 +268,26 @@
 	addtimer(CALLBACK(src, PROC_REF(implant_ready)),60 SECONDS)
 
 /obj/item/organ/cyberimp/brain/anti_stun/proc/implant_ready()
+	procstart = null
+	src.procstart = null
 	if(owner)
 		to_chat(owner, span_purple("Your rebooter implant is ready."))
 
 /obj/item/organ/cyberimp/brain/anti_stun/proc/give_stun_buffs(mob/living/give_to = owner)
+	procstart = null
+	src.procstart = null
 	give_to.add_traits(list(TRAIT_STUNIMMUNE, TRAIT_BATON_RESISTANCE), REF(src))
 	give_to.add_movespeed_mod_immunities(REF(src), /datum/movespeed_modifier/damage_slowdown)
 
 /obj/item/organ/cyberimp/brain/anti_stun/proc/remove_stun_buffs(mob/living/remove_from = owner)
+	procstart = null
+	src.procstart = null
 	remove_from.remove_traits(list(TRAIT_STUNIMMUNE, TRAIT_BATON_RESISTANCE), REF(src))
 	remove_from.remove_movespeed_mod_immunities(REF(src), /datum/movespeed_modifier/damage_slowdown)
 
 /obj/item/organ/cyberimp/brain/anti_stun/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((organ_flags & ORGAN_FAILING) || . & EMP_PROTECT_SELF)
 		return
@@ -243,6 +295,8 @@
 	addtimer(CALLBACK(src, PROC_REF(reboot)), 90 / severity)
 
 /obj/item/organ/cyberimp/brain/anti_stun/proc/reboot()
+	procstart = null
+	src.procstart = null
 	organ_flags &= ~ORGAN_FAILING
 	implant_ready()
 
@@ -255,6 +309,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 0.6, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 0.6, /datum/material/titanium = SMALL_MATERIAL_AMOUNT * 3)
 
 /obj/item/organ/cyberimp/brain/connector/ui_action_click()
+	procstart = null
+	src.procstart = null
 
 	to_chat(owner, span_warning("You start fiddling around with [src]..."))
 	playsound(owner, 'sound/items/taperecorder/tape_flip.ogg', 20, vary = TRUE) // asmr
@@ -282,6 +338,8 @@
 		remove_skillchip(chippy_brain)
 
 /obj/item/organ/cyberimp/brain/connector/proc/insert_skillchip(obj/item/skillchip/skillchip)
+	procstart = null
+	src.procstart = null
 	var/fail_string = owner.implant_skillchip(skillchip, force = FALSE)
 	if(fail_string)
 		to_chat(owner, span_warning(fail_string))
@@ -298,6 +356,8 @@
 	playsound(owner, 'sound/machines/chime.ogg', 10, vary = TRUE)
 
 /obj/item/organ/cyberimp/brain/connector/proc/remove_skillchip(obj/item/organ/brain/chippy_brain)
+	procstart = null
+	src.procstart = null
 	var/obj/item/skillchip/skillchip = show_radial_menu(owner, owner, chippy_brain.skillchips)
 	if(skillchip)
 		owner.remove_skillchip(skillchip, silent = FALSE)
@@ -310,6 +370,8 @@
 	to_chat(owner, span_warning("Your brain is empty!")) // heh
 
 /obj/item/organ/cyberimp/brain/connector/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((organ_flags & ORGAN_FAILING) || . & EMP_PROTECT_SELF)
 		return
@@ -332,6 +394,8 @@
 	addtimer(CALLBACK(src, PROC_REF(reboot)), 90 / severity)
 
 /obj/item/organ/cyberimp/brain/connector/proc/remove_brain(obj/item/organ/brain/chippy_brain, severity = 1)
+	procstart = null
+	src.procstart = null
 	playsound(owner, 'sound/effects/meatslap.ogg', 25, TRUE)
 	if(!chippy_brain)
 		return
@@ -349,6 +413,8 @@
 	return FALSE
 
 /obj/item/organ/cyberimp/brain/connector/proc/reboot()
+	procstart = null
+	src.procstart = null
 	organ_flags &= ~ORGAN_FAILING
 
 /obj/item/organ/cyberimp/brain/surgical_processor
@@ -363,6 +429,8 @@
 	var/list/loaded_surgeries
 
 /obj/item/organ/cyberimp/brain/surgical_processor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(length(loaded_surgeries))
 		. += span_info("Load surgeries from an operating compuer or a disk containing surgery data. Loaded surgeries:")
@@ -379,6 +447,8 @@
 		. += span_info("No surgeries loaded. Surgeries must be loaded <i>before</i> installation.")
 
 /obj/item/organ/cyberimp/brain/surgical_processor/proc/load_surgeries(mob/living/user, obj/design_holder)
+	procstart = null
+	src.procstart = null
 	balloon_alert(user, "copying designs...")
 	playsound(src, 'sound/machines/terminal/terminal_processing.ogg', 25, TRUE)
 	if(do_after(user, 1 SECONDS, target = design_holder))
@@ -393,24 +463,34 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/organ/cyberimp/brain/surgical_processor/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(interacting_with, /obj/item/disk/surgery) || istype(interacting_with, /obj/machinery/computer/operating))
 		return load_surgeries(user, interacting_with)
 	return NONE
 
 /obj/item/organ/cyberimp/brain/surgical_processor/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/disk/surgery))
 		return load_surgeries(user, tool)
 	return NONE
 
 /obj/item/organ/cyberimp/brain/surgical_processor/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(organ_owner, COMSIG_LIVING_OPERATING_ON, PROC_REF(check_surgery))
 
 /obj/item/organ/cyberimp/brain/surgical_processor/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(organ_owner, COMSIG_LIVING_OPERATING_ON)
 
 /obj/item/organ/cyberimp/brain/surgical_processor/proc/check_surgery(datum/source, atom/movable/operating_on, list/operations)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(organ_flags & (ORGAN_FAILING|ORGAN_EMP))
@@ -419,6 +499,8 @@
 	operations |= loaded_surgeries
 
 /obj/item/organ/cyberimp/brain/surgical_processor/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(owner) || (. & EMP_PROTECT_SELF))
 		return
@@ -489,6 +571,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 0.6, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 2.5)
 
 /obj/item/organ/cyberimp/mouth/breathing_tube/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!owner || . & EMP_PROTECT_SELF)
 		return

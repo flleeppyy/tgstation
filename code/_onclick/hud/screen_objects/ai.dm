@@ -3,6 +3,8 @@
 	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/ai/Click()
+	procstart = null
+	src.procstart = null
 	if(isobserver(usr) || usr.incapacitated)
 		return TRUE
 
@@ -12,6 +14,8 @@
 	screen_loc = ui_ai_core
 
 /atom/movable/screen/ai/aicore/Click()
+	procstart = null
+	src.procstart = null
 	if(!isAI(usr))
 		return
 
@@ -24,6 +28,8 @@
 	screen_loc = ui_ai_camera_list
 
 /atom/movable/screen/ai/camera_list/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -35,6 +41,8 @@
 	screen_loc = ui_ai_track_with_camera
 
 /atom/movable/screen/ai/camera_track/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -46,6 +54,8 @@
 	screen_loc = ui_ai_camera_light
 
 /atom/movable/screen/ai/camera_light/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -57,6 +67,8 @@
 	screen_loc = ui_ai_mod_int
 
 /atom/movable/screen/ai/modpc/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -68,6 +80,8 @@
 	screen_loc = ui_ai_crew_monitor
 
 /atom/movable/screen/ai/crew_monitor/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -79,6 +93,8 @@
 	screen_loc = ui_ai_crew_manifest
 
 /atom/movable/screen/ai/crew_manifest/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -90,6 +106,8 @@
 	screen_loc = ui_ai_alerts
 
 /atom/movable/screen/ai/alerts/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -101,6 +119,8 @@
 	screen_loc = ui_ai_announcement
 
 /atom/movable/screen/ai/announcement/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -112,6 +132,8 @@
 	screen_loc = ui_ai_shuttle
 
 /atom/movable/screen/ai/call_shuttle/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -123,6 +145,8 @@
 	screen_loc = ui_ai_state_laws
 
 /atom/movable/screen/ai/state_laws/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -134,6 +158,8 @@
 	screen_loc = ui_ai_take_picture
 
 /atom/movable/screen/ai/image_take/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(isAI(usr))
@@ -149,6 +175,8 @@
 	screen_loc = ui_ai_view_images
 
 /atom/movable/screen/ai/image_view/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(isAI(usr))
@@ -161,6 +189,8 @@
 	screen_loc = ui_ai_sensor
 
 /atom/movable/screen/ai/sensors/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/S = usr
@@ -172,6 +202,8 @@
 	screen_loc = ui_ai_multicam
 
 /atom/movable/screen/ai/multicam/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -183,6 +215,8 @@
 	screen_loc = ui_ai_add_multicam
 
 /atom/movable/screen/ai/add_multicam/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -193,12 +227,16 @@
 	screen_loc = ui_ai_floor_indicator
 
 /atom/movable/screen/ai/floor_indicator/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(hud_owner))
 		RegisterSignal(hud_owner, COMSIG_HUD_OFFSET_CHANGED, PROC_REF(update_z))
 		update_z()
 
 /atom/movable/screen/ai/floor_indicator/proc/update_z(datum/hud/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/silicon/ai/ai = get_mob() //if you use this for anyone else i will find you
 	if(isnull(ai))
@@ -218,15 +256,21 @@
 	screen_loc = ui_ai_godownup
 
 /atom/movable/screen/ai/go_up/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /atom/movable/screen/ai/go_up/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	context[SCREENTIP_CONTEXT_LMB] = "Go up a floor"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /atom/movable/screen/ai/go_up/Click(location,control,params)
+	procstart = null
+	src.procstart = null
 	var/mob/ai = get_mob() //the core
 	flick("uppressed",src)
 	if(!isturf(ai.loc) || usr != ai) //aicard and stuff
@@ -238,11 +282,15 @@
 	icon_state = "down"
 
 /atom/movable/screen/ai/go_up/down/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	context[SCREENTIP_CONTEXT_LMB] = "Go down a floor"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /atom/movable/screen/ai/go_up/down/Click(location,control,params)
+	procstart = null
+	src.procstart = null
 	var/mob/ai = get_mob() //the core
 	flick("downpressed",src)
 	if(!isturf(ai.loc) || usr != ai) //aicard and stuff

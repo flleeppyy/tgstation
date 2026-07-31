@@ -8,6 +8,8 @@
 
 //lets monkeys randomly mash buttons to toggle the generators
 /obj/machinery/computer/modular_shield/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	balloon_alert(user, "mashing buttons")
 	if(!do_after(user, 4 SECONDS, target = src))
 		return
@@ -16,6 +18,8 @@
 			generator.toggle_shields()
 
 /obj/machinery/computer/modular_shield/multitool_act(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(!istype(tool.buffer, /obj/machinery/modular_shield_generator))
 		return
@@ -28,10 +32,14 @@
 
 ///checks if all connected generators exist
 /obj/machinery/computer/modular_shield/proc/generator_deleted(obj/machinery/modular_shield_generator/generator)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	generators -= generator
 
 /obj/machinery/computer/modular_shield/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -39,6 +47,8 @@
 		ui.open()
 
 /obj/machinery/computer/modular_shield/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/generator_list = list()
 	for(var/i in 1 to LAZYLEN(generators))
@@ -59,6 +69,8 @@
 	return data
 
 /obj/machinery/computer/modular_shield/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

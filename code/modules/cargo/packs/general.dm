@@ -160,6 +160,8 @@
 	special_pod = /obj/structure/closet/supplypod/bluespacepod
 
 /datum/supply_pack/misc/empty/generate(atom/A, datum/bank_account/paying_account, crate_override)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/supply_pack/misc/religious_supplies
@@ -222,6 +224,8 @@
 
 ///Generate assorted uplink items, taking into account the same surplus modifiers used for surplus crates
 /datum/supply_pack/misc/syndicate/fill(obj/container)
+	procstart = null
+	src.procstart = null
 	var/list/uplink_items = list()
 	for(var/datum/uplink_item/item as anything in SStraitor.uplink_items)
 		if(item.purchasable_from & contents_uplink_type && item.item)
@@ -242,6 +246,8 @@
 /datum/supply_pack/misc/syndicate/custom_value
 
 /datum/supply_pack/misc/syndicate/custom_value/proc/setup_contents(value, uplink)
+	procstart = null
+	src.procstart = null
 	crate_value = value
 	contents_uplink_type = uplink
 

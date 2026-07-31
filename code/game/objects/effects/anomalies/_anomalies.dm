@@ -25,6 +25,8 @@
 	var/move_chance = ANOMALY_MOVECHANCE
 
 /obj/effect/anomaly/Initialize(mapload, new_lifespan, drops_core = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!mapload)
@@ -57,6 +59,8 @@
 	countdown.start()
 
 /obj/effect/anomaly/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vname == NAMEOF(src, immortal))
 		if(vval)
@@ -65,6 +69,8 @@
 			countdown.start()
 
 /obj/effect/anomaly/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	anomalyEffect(seconds_per_tick)
 	if(death_time < world.time && !immortal)
 		if(loc)
@@ -72,12 +78,16 @@
 		qdel(src)
 
 /obj/effect/anomaly/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	QDEL_NULL(countdown)
 	QDEL_NULL(anomaly_core)
 	return ..()
 
 /obj/effect/anomaly/proc/anomalyEffect(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 #ifndef UNIT_TESTS // These might move away during a CI run and cause a flaky mapping nearstation errors
 	if(SPT_PROB(move_chance, seconds_per_tick))
 		move_anomaly()
@@ -85,12 +95,18 @@
 
 /// Move in a direction
 /obj/effect/anomaly/proc/move_anomaly()
+	procstart = null
+	src.procstart = null
 	step(src, pick(GLOB.alldirs))
 
 /obj/effect/anomaly/proc/detonate()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/anomaly/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(severity >= EXPLODE_DEVASTATE)
 		qdel(src)
 		return TRUE
@@ -98,6 +114,8 @@
 	return FALSE
 
 /obj/effect/anomaly/proc/anomalyNeutralize()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/particle_effect/fluid/smoke/bad(loc)
 	SSblackbox.record_feedback(
 		"nested tally",
@@ -124,6 +142,8 @@
 	qdel(src)
 
 /obj/effect/anomaly/analyzer_act(mob/living/user, obj/item/analyzer/tool)
+	procstart = null
+	src.procstart = null
 	if(!isnull(anomaly_core))
 		to_chat(user, span_notice("Analyzing... [src]'s unstable field is fluctuating along frequency [format_frequency(anomaly_core.frequency)], code [anomaly_core.code]."))
 		return ITEM_INTERACT_SUCCESS
@@ -132,6 +152,8 @@
 
 ///Stabilize an anomaly, letting it stay around forever or untill destabilizes by a player. An anomaly without a core can't be signalled, but can be destabilized
 /obj/effect/anomaly/proc/stabilize(anchor = FALSE, has_core = TRUE)
+	procstart = null
+	src.procstart = null
 	immortal = TRUE
 	name = (has_core ? "stable " : "hollow ") + name
 	if(!has_core)

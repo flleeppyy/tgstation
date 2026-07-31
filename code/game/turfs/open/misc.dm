@@ -22,6 +22,8 @@
 	tiled_turf = TRUE
 
 /turf/open/misc/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ITEM_INTERACT_ANY_BLOCKER & .)
 		return .
@@ -35,9 +37,13 @@
 		return ITEM_INTERACT_SUCCESS
 
 /turf/open/misc/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /turf/open/misc/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(target == src)
@@ -70,6 +76,8 @@
 	return TRUE
 
 /turf/open/misc/is_explosion_shielded(severity)
+	procstart = null
+	src.procstart = null
 	if(severity >= EXPLODE_DEVASTATE)
 		return FALSE
 	for(var/obj/blocker in src)
@@ -78,9 +86,13 @@
 	return FALSE
 
 /turf/open/misc/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/misc/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	if(the_rcd.mode == RCD_TURF)
 		if(the_rcd.rcd_design_path != /turf/open/floor/plating/rcd)
 			return FALSE
@@ -89,6 +101,8 @@
 	return FALSE
 
 /turf/open/misc/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	procstart = null
+	src.procstart = null
 	if(rcd_data[RCD_DESIGN_MODE] == RCD_TURF)
 		if(rcd_data[RCD_DESIGN_PATH] != /turf/open/floor/plating/rcd)
 			return FALSE

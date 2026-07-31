@@ -30,6 +30,8 @@
 	return .
 
 /mob/living/carbon/human/get_damage_mod(damage_type)
+	procstart = null
+	src.procstart = null
 	if (!dna?.species?.damage_modifier)
 		return ..()
 	var/species_mod = (100 - dna.species.damage_modifier) / 100
@@ -83,12 +85,16 @@
 
 //These procs fetch a cumulative total damage from all bodyparts
 /mob/living/carbon/get_brute_loss()
+	procstart = null
+	src.procstart = null
 	var/amount = 0
 	for(var/obj/item/bodypart/bodypart as anything in get_bodyparts())
 		amount += bodypart.brute_dam
 	return round(amount, DAMAGE_PRECISION)
 
 /mob/living/carbon/get_fire_loss()
+	procstart = null
+	src.procstart = null
 	var/amount = 0
 	for(var/obj/item/bodypart/bodypart as anything in get_bodyparts())
 		amount += bodypart.burn_dam
@@ -103,6 +109,8 @@
  * *  required_bodytype - The bodytype(s) to match against.
  */
 /mob/living/carbon/proc/get_brute_loss_for_type(required_bodytype = ALL)
+	procstart = null
+	src.procstart = null
 	var/amount = 0
 	for(var/obj/item/bodypart/bodypart as anything in get_bodyparts())
 		if(!(bodypart.bodytype & required_bodytype))
@@ -118,6 +126,8 @@
  * *  required_bodytype - The bodytype(s) to match against.
  */
 /mob/living/carbon/proc/get_fire_loss_for_type(required_bodytype = ALL)
+	procstart = null
+	src.procstart = null
 	var/amount = 0
 	for(var/obj/item/bodypart/bodypart as anything in get_bodyparts())
 		if(!(bodypart.bodytype & required_bodytype))
@@ -126,6 +136,8 @@
 	return round(amount, DAMAGE_PRECISION)
 
 /mob/living/carbon/adjust_brute_loss(amount, updating_health = TRUE, forced = FALSE, required_bodytype)
+	procstart = null
+	src.procstart = null
 	if(!can_adjust_brute_loss(amount, forced, required_bodytype))
 		return 0
 	if(amount > 0)
@@ -134,6 +146,8 @@
 		. = heal_overall_damage(brute = abs(amount), required_bodytype = required_bodytype, updating_health = updating_health, forced = forced)
 
 /mob/living/carbon/set_brute_loss(amount, updating_health = TRUE, forced = FALSE, required_bodytype)
+	procstart = null
+	src.procstart = null
 	if(!forced && HAS_TRAIT(src, TRAIT_GODMODE))
 		return FALSE
 	var/current = get_brute_loss()
@@ -143,6 +157,8 @@
 	return adjust_brute_loss(diff, updating_health, forced, required_bodytype)
 
 /mob/living/carbon/adjust_fire_loss(amount, updating_health = TRUE, forced = FALSE, required_bodytype)
+	procstart = null
+	src.procstart = null
 	if(!can_adjust_fire_loss(amount, forced, required_bodytype))
 		return 0
 	if(amount > 0)
@@ -151,6 +167,8 @@
 		. = heal_overall_damage(burn = abs(amount), required_bodytype = required_bodytype, updating_health = updating_health, forced = forced)
 
 /mob/living/carbon/set_fire_loss(amount, updating_health = TRUE, forced = FALSE, required_bodytype)
+	procstart = null
+	src.procstart = null
 	if(!forced && HAS_TRAIT(src, TRAIT_GODMODE))
 		return FALSE
 	var/current = get_fire_loss()
@@ -160,6 +178,8 @@
 	return adjust_fire_loss(diff, updating_health, forced, required_bodytype)
 
 /mob/living/carbon/human/adjust_tox_loss(amount, updating_health = TRUE, forced = FALSE, required_biotype = ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. >= 0) // 0 = no damage, + values = healed damage
 		return .
@@ -168,6 +188,8 @@
 		apply_status_effect(/datum/status_effect/tox_vomit)
 
 /mob/living/carbon/human/set_tox_loss(amount, updating_health, forced, required_biotype)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. >= 0)
 		return .
@@ -176,6 +198,8 @@
 		apply_status_effect(/datum/status_effect/tox_vomit)
 
 /mob/living/carbon/received_stamina_damage(current_level, amount_actual, amount)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((maxHealth - current_level) <= crit_threshold && stat != DEAD)
 		apply_status_effect(/datum/status_effect/incapacitating/stamcrit)
@@ -192,6 +216,8 @@
  * Returns: The net change in damage from apply_organ_damage()
  */
 /mob/living/carbon/adjust_organ_loss(slot, amount, maximum, required_organ_flag = NONE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/affected_organ = get_organ_slot(slot)
 	if(!affected_organ || HAS_TRAIT(src, TRAIT_GODMODE))
 		return FALSE
@@ -211,6 +237,8 @@
  * Returns: The net change in damage from set_organ_damage()
  */
 /mob/living/carbon/set_organ_loss(slot, amount, required_organ_flag = NONE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/affected_organ = get_organ_slot(slot)
 	if(!affected_organ || HAS_TRAIT(src, TRAIT_GODMODE))
 		return FALSE
@@ -228,6 +256,8 @@
  * * required_organ_flag - if you only want to check the damage of organs with the specified organ_flag(s) then you can use this.
  */
 /mob/living/carbon/get_organ_loss(slot, required_organ_flag = NONE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/affected_organ = get_organ_slot(slot)
 	if(affected_organ)
 		if(required_organ_flag && !(affected_organ.organ_flags & required_organ_flag))
@@ -238,6 +268,8 @@
 
 ///Returns a list of damaged bodyparts
 /mob/living/carbon/proc/get_damaged_bodyparts(brute = FALSE, burn = FALSE, required_bodytype = NONE, target_zone = null)
+	procstart = null
+	src.procstart = null
 	var/list/obj/item/bodypart/parts = list()
 	for(var/obj/item/bodypart/BP as anything in get_bodyparts())
 		if(required_bodytype && !(BP.bodytype & required_bodytype))
@@ -250,6 +282,8 @@
 
 ///Returns a list of damageable bodyparts
 /mob/living/carbon/proc/get_damageable_bodyparts(required_bodytype)
+	procstart = null
+	src.procstart = null
 	var/list/obj/item/bodypart/parts = list()
 	for(var/obj/item/bodypart/BP as anything in get_bodyparts())
 		if(required_bodytype && !(BP.bodytype & required_bodytype))
@@ -261,6 +295,8 @@
 
 ///Returns a list of bodyparts with wounds (in case someone has a wound on an otherwise fully healed limb)
 /mob/living/carbon/proc/get_wounded_bodyparts(required_bodytype)
+	procstart = null
+	src.procstart = null
 	var/list/obj/item/bodypart/parts = list()
 	for(var/obj/item/bodypart/BP as anything in get_bodyparts())
 		if(required_bodytype && !(BP.bodytype & required_bodytype))
@@ -277,6 +313,8 @@
  * It automatically updates health status
  */
 /mob/living/carbon/heal_bodypart_damage(brute = 0, burn = 0, updating_health = TRUE, required_bodytype = NONE, target_zone = null)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	var/list/obj/item/bodypart/parts = get_damaged_bodyparts(brute, burn, required_bodytype, target_zone)
 	if(!parts.len)
@@ -297,6 +335,8 @@
  * It automatically updates health status
  */
 /mob/living/carbon/take_bodypart_damage(brute = 0, burn = 0, updating_health = TRUE, required_bodytype, check_armor = FALSE, wound_bonus = 0, exposed_wound_bonus = 0, sharpness = NONE)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(HAS_TRAIT(src, TRAIT_GODMODE))
 		return
@@ -311,6 +351,8 @@
 	return (damage_calculator - picked.get_damage())
 
 /mob/living/carbon/heal_overall_damage(brute = 0, burn = 0, stamina = 0, required_bodytype, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	// treat negative args as positive
 	brute = abs(brute)
@@ -344,6 +386,8 @@
 		update_damage_overlays()
 
 /mob/living/carbon/take_overall_damage(brute = 0, burn = 0, stamina = 0, updating_health = TRUE, forced = FALSE, required_bodytype)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(!forced && HAS_TRAIT(src, TRAIT_GODMODE))
 		return

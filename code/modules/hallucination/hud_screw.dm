@@ -8,11 +8,15 @@
 	var/screwy_hud_type = SCREWYHUD_NONE
 
 /datum/hallucination/screwy_hud/start()
+	procstart = null
+	src.procstart = null
 	hallucinator.apply_status_effect(screwy_hud_type, type)
 	QDEL_IN(src, rand(10 SECONDS, 25 SECONDS))
 	return TRUE
 
 /datum/hallucination/screwy_hud/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(hallucinator))
 		hallucinator.remove_status_effect(screwy_hud_type, type)
 	return ..()

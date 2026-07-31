@@ -3,6 +3,8 @@
 	proper_name = "Big_Manipulator"
 
 /datum/wires/big_manipulator/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(
 		WIRE_ON,
 		WIRE_DROP,
@@ -14,11 +16,15 @@
 	return ..()
 
 /datum/wires/big_manipulator/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/big_manipulator/holder_manipulator = holder
 
 	return holder_manipulator.panel_open ? ..() : FALSE
 
 /datum/wires/big_manipulator/get_status()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/big_manipulator/holder_manipulator = holder
 	var/list/status = list()
 	status += "The big light bulb [holder_manipulator.power_access_wire_cut ? "is off" : "is glowing [holder_manipulator.on ? "green" : "red"]"]."
@@ -27,6 +33,8 @@
 	return status
 
 /datum/wires/big_manipulator/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/big_manipulator/holder_manipulator = holder
 	switch(wire)
 		if(WIRE_ON)
@@ -35,6 +43,8 @@
 			holder_manipulator.drop_held_atom()
 
 /datum/wires/big_manipulator/on_cut(wire, mend, source)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/big_manipulator/holder_manipulator = holder
 	if(wire == WIRE_ON)
 		if(mend)

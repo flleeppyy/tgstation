@@ -1,4 +1,6 @@
 /proc/empulse(turf/epicenter, heavy_range, light_range, emp_source)
+	procstart = null
+	src.procstart = null
 	if(!epicenter)
 		return
 

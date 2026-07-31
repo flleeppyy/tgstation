@@ -6,10 +6,14 @@
 	var/storage_key
 
 /datum/bt_node/ai_behavior/pick_up_item_virtual/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/item/target = controller.blackboard[target_key]
 	return isitem(target) && isturf(target.loc) && !target.anchored
 
 /datum/bt_node/ai_behavior/pick_up_item_virtual/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/item/target = controller.blackboard[target_key]
 	if(QDELETED(target) || !isturf(target.loc))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
@@ -19,10 +23,14 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/pick_up_item_virtual/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(target_key)
 
 /datum/bt_node/ai_behavior/pick_up_item_virtual/proc/_pickup(datum/ai_controller/controller, obj/item/target, storage_key)
+	procstart = null
+	src.procstart = null
 	var/atom/pawn = controller.pawn
 	var/obj/item/held = controller.blackboard[storage_key]
 	if(held?.loc == pawn)
@@ -41,10 +49,14 @@
 	var/storage_key
 
 /datum/bt_node/ai_behavior/pass_item_virtual/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[delivery_key]
 	return !QDELETED(target)
 
 /datum/bt_node/ai_behavior/pass_item_virtual/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[delivery_key]
 	if(QDELETED(target))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED

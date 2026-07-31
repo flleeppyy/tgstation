@@ -11,6 +11,8 @@
 /datum/element/tool_renaming
 
 /datum/element/tool_renaming/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -18,10 +20,14 @@
 	RegisterSignal(target, COMSIG_ITEM_INTERACTING_WITH_ATOM, PROC_REF(attempt_rename))
 
 /datum/element/tool_renaming/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_ITEM_INTERACTING_WITH_ATOM)
 
 /datum/element/tool_renaming/proc/attempt_rename(datum/source, mob/living/user, atom/interacting_with, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isobj(interacting_with))
@@ -36,6 +42,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /datum/element/tool_renaming/proc/async_rename(mob/living/user, obj/renamed_obj, description_option)
+	procstart = null
+	src.procstart = null
 	if(!renamed_obj.rename_checks(user))
 		return
 	var/custom_choice = tgui_input_list(user, "What would you like to edit?", "Customization", list(OPTION_RENAME, description_option? OPTION_DESCRIPTION : null, OPTION_RESET))

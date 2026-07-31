@@ -12,10 +12,14 @@
 	mail_goodies = list(/obj/item/storage/pill_bottle/happinesspsych)
 
 /datum/quirk/depression/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	// 0.416% is 15 successes / 3600 seconds. Calculated with 2 minute
 	// mood runtime, so 50% average uptime across the hour.
 	if(SPT_PROB(0.416, seconds_per_tick))
 		quirk_holder.add_mood_event("depression", /datum/mood_event/depression)
 
 /datum/quirk/depression/remove()
+	procstart = null
+	src.procstart = null
 	quirk_holder.clear_mood_event("depression")

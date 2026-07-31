@@ -11,6 +11,8 @@
 
 ///We REALLY do not want un-addressed merge conflicts in maps for an inexhaustible list of reasons. This should help ensure that this will not be missed in case linters fail to catch it for any reason what-so-ever.
 /obj/merge_conflict_marker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/msg = "HEY, LISTEN!!! Merge Conflict Marker detected at [AREACOORD(src)]! Please manually address all potential merge conflicts!!!"
 	log_mapping(msg)

@@ -16,25 +16,35 @@
 	var/datum/weakref/ghost_poll
 
 /obj/item/organ/zombie_infection/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(loc))
 		Insert(loc)
 	GLOB.zombie_infection_list += src
 
 /obj/item/organ/zombie_infection/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.zombie_infection_list -= src
 	. = ..()
 
 /obj/item/organ/zombie_infection/feel_for_damage(self_aware)
+	procstart = null
+	src.procstart = null
 	// keep stealthy for now, revisit later
 	return ""
 
 /obj/item/organ/zombie_infection/on_mob_insert(mob/living/carbon/new_owner, special = FALSE, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(new_owner, COMSIG_LIVING_DEATH, PROC_REF(organ_owner_died))
 	START_PROCESSING(SSobj, src)
 
 /obj/item/organ/zombie_infection/on_mob_remove(mob/living/carbon/new_owner, special = FALSE, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
 	if(iszombie(new_owner) && old_species && !special)
@@ -47,16 +57,22 @@
 	QDEL_NULL(ghost_poll)
 
 /obj/item/organ/zombie_infection/proc/organ_owner_died(mob/living/carbon/source, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(iszombie(source))
 		qdel(src) // Congrats you somehow died so hard you stopped being a zombie
 
 /obj/item/organ/zombie_infection/on_find(mob/living/finder)
+	procstart = null
+	src.procstart = null
 	to_chat(finder, span_warning("Inside the head is a disgusting black \
 		web of pus and viscera, bound tightly around the brain like some \
 		biological harness."))
 
 /obj/item/organ/zombie_infection/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return
 	if(!(src in owner.organs))
@@ -80,6 +96,8 @@
 	timer_id = addtimer(CALLBACK(src, PROC_REF(zombify), owner), revive_time, flags)
 
 /obj/item/organ/zombie_infection/proc/zombify(mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	timer_id = null
 
 	if(!converts_living && owner.stat != DEAD)
@@ -115,6 +133,8 @@
 	SSshuttle.shuttle_purchase_requirements_met[SHUTTLE_UNLOCK_TOMBSTONE] = TRUE
 
 /obj/item/organ/zombie_infection/proc/check_ghost_control_eligibility(mob/candidate)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || QDELETED(owner))
 		return FALSE
 	if(!iszombie(owner) || owner.stat == DEAD)
@@ -122,11 +142,15 @@
 	return TRUE
 
 /obj/item/organ/zombie_infection/proc/after_ghost_control(mob/candidate)
+	procstart = null
+	src.procstart = null
 	owner.Knockdown(living_transformation_time)
 	zombie_welcome(owner)
 	ghost_poll = null
 
 /obj/item/organ/zombie_infection/proc/zombie_welcome(mob/living/carbon/new_zombie)
+	procstart = null
+	src.procstart = null
 	if(new_zombie.client)
 		to_chat(new_zombie, span_alien("You HUNGER!"))
 		to_chat(new_zombie, span_alertalien("You are now a zombie! Do not seek to be cured, do not help any non-zombies in any way, do not harm your zombie brethren and spread the disease by killing others. You are a creature of hunger and violence."))

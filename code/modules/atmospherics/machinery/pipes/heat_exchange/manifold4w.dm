@@ -18,12 +18,18 @@
 	has_gas_visuals = FALSE
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/manifold4w/set_init_directions()
+	procstart = null
+	src.procstart = null
 	initialize_directions = initial(initialize_directions)
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/manifold4w/update_pipe_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state]-[piping_layer]"
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/manifold4w/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/center = mutable_appearance(icon, "manifold4w_center")
 	PIPING_LAYER_DOUBLE_SHIFT(center, piping_layer)

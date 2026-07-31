@@ -19,6 +19,8 @@
 	COOLDOWN_DECLARE(charge_sound_cooldown)
 
 /datum/component/crank_recharge/Initialize(charging_cell, spin_to_win = FALSE, charge_amount = 500, cooldown_time = 2 SECONDS, charge_sound = 'sound/items/weapons/laser_crank.ogg', charge_sound_cooldown_time = 1.8 SECONDS, charge_move = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -32,20 +34,28 @@
 	src.charge_sound_cooldown_time = charge_sound_cooldown_time
 	src.charge_move = charge_move
 /datum/component/crank_recharge/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, PROC_REF(on_attack_self))
 
 /datum/component/crank_recharge/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, COMSIG_ITEM_ATTACK_SELF)
 
 /datum/component/crank_recharge/proc/on_attack_self(obj/source, mob/living/user as mob)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(crank), source, user) //game doesnt like signal handler and do afters mingling
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/component/crank_recharge/proc/crank(obj/source, mob/user)
+	procstart = null
+	src.procstart = null
 	if(charging_cell.charge >= charging_cell.maxcharge)
 		source.balloon_alert(user, "already charged!")
 		return

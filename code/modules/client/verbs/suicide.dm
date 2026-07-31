@@ -7,6 +7,8 @@ GAME_VERB_HIDDEN(/mob/living, suicide, "suicide")
 /// Actually handles the bare basics of the suicide process. Message type is the message we want to dispatch in the world regarding the suicide, using the defines in this file.
 /// The order of operations here is important, if you want to make specific behaviour for a kind of mob killing itself you likely want to override perform_basic_suicide()
 /mob/living/proc/handle_suicide()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if(!suicide_alert())
 		return
@@ -25,6 +27,8 @@ GAME_VERB_HIDDEN(/mob/living, suicide, "suicide")
 
 /// Kill yourself without any items
 /mob/living/proc/perform_basic_suicide()
+	procstart = null
+	src.procstart = null
 	send_applicable_messages()
 	final_checkout()
 
@@ -32,6 +36,8 @@ GAME_VERB_HIDDEN(/mob/living, suicide, "suicide")
 /// suicide_state is a boolean, and we handle adding/removing the trait in question. Have the trait function reference this mob as the source if we want to do in-depth tracking of where a suicided trait comes from.
 /// For example, the /mob/dead/observer that will inevitably come from the suicidee will inherit the suicided trait upon creation, and keep this reference. Handy for doing checking should we need it.
 /mob/living/proc/set_suicide(suicide_state)
+	procstart = null
+	src.procstart = null
 	if(suicide_state)
 		ADD_TRAIT(src, TRAIT_SUICIDED, REF(src))
 		add_to_mob_suicide_list()
@@ -41,6 +47,8 @@ GAME_VERB_HIDDEN(/mob/living, suicide, "suicide")
 
 /// Sends a TGUI Alert to the person attempting to commit suicide. Returns TRUE if they confirm they want to die, FALSE otherwise. Check can_suicide here as well.
 /mob/living/proc/suicide_alert()
+	procstart = null
+	src.procstart = null
 	// Save this for later to ensure that if we change ckeys somehow, we exit out of the suicide.
 	var/oldkey = ckey
 	if(!can_suicide())
@@ -60,6 +68,8 @@ GAME_VERB_HIDDEN(/mob/living, suicide, "suicide")
 
 /// Checks if we are in a valid state to suicide (not already suiciding, capable of actually killing ourselves, area checks, etc.) Returns TRUE if we can suicide, FALSE if we can not.
 /mob/living/proc/can_suicide()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT_FROM_ONLY(src, TRAIT_SUICIDED, REF(src)))
 		to_chat(src, span_warning("You are already commiting suicide!"))
 		return FALSE
@@ -87,6 +97,8 @@ GAME_VERB_HIDDEN(/mob/living, suicide, "suicide")
 /// The suicide_tool variable is used in order to allow suicide log to properly put stuff in investigate log.
 /// Set apply_damage to FALSE in order to not do damage (in case it's handled elsewhere in the verb or another proc that the suicide tree calls). Will dissociate client from mind and ghost the player regardless.
 /mob/living/proc/final_checkout(obj/item/suicide_tool, apply_damage = TRUE)
+	procstart = null
+	src.procstart = null
 	if(apply_damage) // enough to really drive home the point that they are DEAD.
 		apply_suicide_damage()
 
@@ -96,26 +108,36 @@ GAME_VERB_HIDDEN(/mob/living, suicide, "suicide")
 
 /// Send all suicide-related messages out to the world. message_type can be used to change out the dispatched suicide message depending on the suicide context.
 /mob/living/proc/send_applicable_messages(message_type)
+	procstart = null
+	src.procstart = null
 	visible_message(span_danger(get_visible_suicide_message()), span_userdanger(get_visible_suicide_message()), span_hear(get_blind_suicide_message()))
 
 /// Returns a subtype-specific flavorful string pertaining to this exact living mob's ending their own life to those who can see it (visible message).
 /// If you don't want a message, prefer to override send_applicable_messages() on your subtype instead.
 /mob/living/proc/get_visible_suicide_message()
+	procstart = null
+	src.procstart = null
 	return "[src] begins to fall down. It looks like [p_theyve()] lost the will to live."
 
 /// Returns an appropriate string for what people who lack visibility hear when this mob kills itself.
 /// If you don't want a message, prefer to override send_applicable_messages() on your subtype instead.
 /mob/living/proc/get_blind_suicide_message()
+	procstart = null
+	src.procstart = null
 	return "You hear something hitting the floor."
 
 /// Inserts logging in both the mob's logs and the investigate log pertaining to their death. Suicide tool is the object we used to commit suicide, if one was held and used (presently only humans use this arg).
 /mob/living/proc/suicide_log(obj/item/suicide_tool)
+	procstart = null
+	src.procstart = null
 	investigate_log("has died from committing suicide.", INVESTIGATE_DEATHS)
 	log_message("committed suicide as [src.type]", LOG_ATTACK)
 
 /// The actual proc that will apply the damage to the suiciding mob. damage_type is the actual type of damage we want to deal, if that matters.
 /// Return TRUE if we actually apply any real damage, FALSE otherwise.
 /mob/living/proc/apply_suicide_damage(obj/item/suicide_tool, damage_type = NONE)
+	procstart = null
+	src.procstart = null
 	if (damage_type == NONE)
 		adjust_oxy_loss(max(maxHealth * 2 - get_tox_loss() - get_fire_loss() - get_brute_loss() - get_oxy_loss(), 0))
 		return TRUE
@@ -145,6 +167,8 @@ GAME_VERB_HIDDEN(/mob/living, suicide, "suicide")
 /// If we want to apply multiple types of damage to a carbon mob based on the way they suicide, this is the proc that handles that.
 /// Currently only compatible with Brute, Burn, Toxin, and Suffocation Damage. damage_type is the bitflag that carries the information.
 /mob/living/proc/handle_suicide_damage_spread(damage_type)
+	procstart = null
+	src.procstart = null
 	// We split up double the total health the mob has, then spread it out.
 	var/damage_to_apply = (maxHealth * 2) // For humans, this value comes out to 200.
 	// The multiplier that we divide damage_to_apply by.

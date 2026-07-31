@@ -4,6 +4,8 @@
 /datum/unit_test/mutant_organs
 
 /datum/unit_test/mutant_organs/Run()
+	procstart = null
+	src.procstart = null
 	var/list/ignore = list(
 		/datum/species/dullahan,
 	)

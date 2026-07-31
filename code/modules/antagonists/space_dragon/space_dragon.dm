@@ -32,6 +32,8 @@
 	var/list/chosen_rift_areas = list()
 
 /datum/antagonist/space_dragon/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(owner, "<b>Through endless time and space we have moved. We do not remember from where we came, we do not know where we will go.  All of space belongs to us.\n\
 					It is an empty void, of which our kind was the apex predator, and there was little to rival our claim to this title.\n\
@@ -42,6 +44,8 @@
 	owner.current.playsound_local(get_turf(owner.current), 'sound/effects/magic/demon_attack1.ogg', 80)
 
 /datum/antagonist/space_dragon/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/static/list/area/allowed_areas
 	if(!allowed_areas)
 		// Areas that will prove a challeng for the dragon and are provocative to the crew.
@@ -66,6 +70,8 @@
 	summon.update_explanation_text()
 
 /datum/antagonist/space_dragon/on_gain()
+	procstart = null
+	src.procstart = null
 	forge_objectives()
 	rift_ability = new()
 	locate_rift_ability = new()
@@ -73,10 +79,14 @@
 	return ..()
 
 /datum/antagonist/space_dragon/on_removal()
+	procstart = null
+	src.procstart = null
 	owner.set_assigned_role(SSjob.get_job_type(/datum/job/unassigned))
 	return ..()
 
 /datum/antagonist/space_dragon/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/antag = mob_override || owner.current
 	RegisterSignal(antag, COMSIG_LIVING_LIFE, PROC_REF(rift_checks))
 	RegisterSignal(antag, COMSIG_LIVING_DEATH, PROC_REF(destroy_rifts))
@@ -95,6 +105,8 @@
 	RegisterSignal(wavespeak, COMSIG_QDELETING, PROC_REF(clear_wavespeak))
 
 /datum/antagonist/space_dragon/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/antag = mob_override || owner.current
 	UnregisterSignal(antag, COMSIG_LIVING_LIFE)
 	UnregisterSignal(antag, COMSIG_LIVING_DEATH)
@@ -104,6 +116,8 @@
 	QDEL_NULL(wavespeak)
 
 /datum/antagonist/space_dragon/Destroy()
+	procstart = null
+	src.procstart = null
 	rift_list = null
 	carp = null
 	QDEL_NULL(rift_ability)
@@ -113,6 +127,8 @@
 	return ..()
 
 /datum/antagonist/space_dragon/get_preview_icon()
+	procstart = null
+	src.procstart = null
 	var/datum/universal_icon/icon = uni_icon('icons/mob/nonhuman-player/spacedragon.dmi', "spacedragon")
 
 	icon.blend_color(COLOR_STRONG_VIOLET, ICON_MULTIPLY)
@@ -124,6 +140,8 @@
 	return icon
 
 /datum/antagonist/space_dragon/proc/clear_wavespeak()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	wavespeak = null
 
@@ -134,6 +152,8 @@
  *
  */
 /datum/antagonist/space_dragon/proc/rift_checks()
+	procstart = null
+	src.procstart = null
 	if((rifts_charged == 3 || (SSshuttle.emergency.mode == SHUTTLE_DOCKED && rifts_charged > 0)) && !objective_complete)
 		victory()
 		return
@@ -158,6 +178,8 @@
  * Currently used when Space Dragon dies or one of his rifts is destroyed.
  */
 /datum/antagonist/space_dragon/proc/destroy_rifts()
+	procstart = null
+	src.procstart = null
 	if(objective_complete)
 		return
 	rifts_charged = 0
@@ -180,6 +202,8 @@
  * Also plays appropriate sounds and CENTCOM messages.
  */
 /datum/antagonist/space_dragon/proc/victory()
+	procstart = null
+	src.procstart = null
 	objective_complete = TRUE
 	permanant_empower()
 	var/datum/objective/summon_carp/main_objective = locate() in objectives
@@ -199,6 +223,8 @@
  * Also gives them a full heal.
  */
 /datum/antagonist/space_dragon/proc/permanant_empower()
+	procstart = null
+	src.procstart = null
 	owner.current.fully_heal()
 	owner.current.add_filter("anger_glow", 3, list("type" = "outline", "color" = COLOR_CARP_RIFT_RED, "size" = 5))
 	owner.current.add_movespeed_modifier(/datum/movespeed_modifier/dragon_rage)
@@ -210,6 +236,8 @@
  * Empowered, Space Dragon regains all his health and becomes temporarily faster for 30 seconds, along with being tinted red.
  */
 /datum/antagonist/space_dragon/proc/rift_empower()
+	procstart = null
+	src.procstart = null
 	owner.current.fully_heal()
 	owner.current.add_filter("anger_glow", 3, list("type" = "outline", "color" = COLOR_CARP_RIFT_RED, "size" = 5))
 	owner.current.add_movespeed_modifier(/datum/movespeed_modifier/dragon_rage)
@@ -223,6 +251,8 @@
  * removes the red glow from Space Dragon which is synonymous with the speed buff.
  */
 /datum/antagonist/space_dragon/proc/rift_depower()
+	procstart = null
+	src.procstart = null
 	owner.current.remove_filter("anger_glow")
 	owner.current.remove_movespeed_modifier(/datum/movespeed_modifier/dragon_rage)
 
@@ -230,6 +260,8 @@
 	explanation_text = "Summon 3 rifts in order to flood the station with carp."
 
 /datum/objective/summon_carp/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/space_dragon/dragon_owner = owner.has_antag_datum(/datum/antagonist/space_dragon)
 	if(isnull(dragon_owner))
 		return
@@ -242,6 +274,8 @@
 	explanation_text += " Your possible rift locations are: [english_list(converted_names)]"
 
 /datum/antagonist/space_dragon/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 	var/datum/objective/summon_carp/S = locate() in objectives
 	if(S.check_completion())

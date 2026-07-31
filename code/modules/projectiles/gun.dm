@@ -117,6 +117,8 @@
 	COOLDOWN_DECLARE(flip_cooldown)
 
 /obj/item/gun/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ispath(pin))
 		pin = new pin
@@ -128,18 +130,24 @@
 	RegisterSignal(src, COMSIG_ITEM_IN_UNWRAPPED_TRAITOR_MAIL, PROC_REF(on_mail_unwrap))
 
 /obj/item/gun/Destroy()
+	procstart = null
+	src.procstart = null
 	if(isobj(pin)) //Can still be the initial path, then we skip
 		QDEL_NULL(pin)
 	QDEL_NULL(chambered)
 	return ..()
 
 /obj/item/gun/apply_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	fire_delay = modify_fantasy_variable("fire_delay", fire_delay, -bonus, 0)
 	burst_delay = modify_fantasy_variable("burst_delay", burst_delay, -bonus, 0)
 	projectile_damage_multiplier = modify_fantasy_variable("projectile_damage_multiplier", projectile_damage_multiplier, bonus/10, 0.1)
 
 /obj/item/gun/remove_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	fire_delay = reset_fantasy_variable("fire_delay", fire_delay)
 	burst_delay = reset_fantasy_variable("burst_delay", burst_delay)
 	projectile_damage_multiplier = reset_fantasy_variable("projectile_damage_multiplier", projectile_damage_multiplier)
@@ -149,17 +157,25 @@
 /// If the gun shouldn't have a seclight mount, override this with a return.
 /// Or, if a child of a gun with a seclite mount has slightly different behavior or icons, extend this.
 /obj/item/gun/proc/add_seclight_point()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Similarly to add_seclight_point(), handles [the bayonet attachment component][/datum/component/bayonet_attachable]
 /obj/item/gun/proc/add_bayonet_point()
+	procstart = null
+	src.procstart = null
 	return
 
 /// For when you want to add the lore element to a gun, this is the proc to use.
 /obj/item/gun/proc/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == pin)
 		pin = null
@@ -169,12 +185,16 @@
 
 /// Clears var and updates icon.
 /obj/item/gun/proc/clear_suppressor()
+	procstart = null
+	src.procstart = null
 	if(!can_unsuppress)
 		return
 	suppressed = SUPPRESSED_NONE
 	update_appearance()
 
 /obj/item/gun/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(hit_atom))
 		var/mob/living/thrower = throwingdatum?.get_thrower()
@@ -182,7 +202,9 @@
 			return
 		toss_gun_hard(thrower, hit_atom)
 
-/obj/item/gun/proc/toss_gun_hard(mob/living/thrower, mob/living/target) //throw a gun at them. They don't expect it.
+/obj/item/gun/proc/toss_gun_hard(mob/living/thrower, mob/living/target)
+	procstart = null
+	src.procstart = null //throw a gun at them. They don't expect it.
 	if(isnull(thrower))
 		return FALSE
 	if(!HAS_TRAIT(thrower, TRAIT_TOSS_GUN_HARD))
@@ -192,6 +214,8 @@
 	return TRUE
 
 /obj/item/gun/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!pinless)
 		if(pin)
@@ -214,31 +238,45 @@
 
 //called after the gun has successfully fired its chambered ammo.
 /obj/item/gun/proc/process_chamber(empty_chamber = TRUE, from_firing = TRUE, chamber_next_round = TRUE)
+	procstart = null
+	src.procstart = null
 	handle_chamber(empty_chamber, from_firing, chamber_next_round)
 	SEND_SIGNAL(src, COMSIG_GUN_CHAMBER_PROCESSED)
 
 /obj/item/gun/proc/handle_chamber(empty_chamber = TRUE, from_firing = TRUE, chamber_next_round = TRUE)
+	procstart = null
+	src.procstart = null
 	return
 
 //check if there's enough ammo/energy/whatever to shoot one time
 //i.e if clicking would make it shoot
 /obj/item/gun/proc/can_shoot()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/item/gun/proc/tk_firing(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return !user.contains(src)
 
 /obj/item/gun/proc/shoot_with_empty_chamber(mob/living/user as mob|obj)
+	procstart = null
+	src.procstart = null
 	balloon_alert_to_hearers("*click*")
 	playsound(src, dry_fire_sound, dry_fire_sound_volume, TRUE)
 
 /obj/item/gun/proc/fire_sounds()
+	procstart = null
+	src.procstart = null
 	if(suppressed)
 		playsound(src, suppressed_sound, suppressed_volume, vary_fire_sound, ignore_walls = FALSE, extrarange = SILENCED_SOUND_EXTRARANGE, falloff_distance = 0)
 	else
 		playsound(src, fire_sound, fire_sound_volume, vary_fire_sound)
 
 /obj/item/gun/proc/muzzle_flash_on()
+	procstart = null
+	src.procstart = null
 	if (can_muzzle_flash)
 		set_light_on(TRUE)
 		addtimer(CALLBACK(src, PROC_REF(muzzle_flash_off)), light_time, TIMER_UNIQUE | TIMER_OVERRIDE)
@@ -246,9 +284,13 @@
 		muzzle_flash_off()
 
 /obj/item/gun/proc/muzzle_flash_off()
+	procstart = null
+	src.procstart = null
 	set_light_on(FALSE)
 
 /obj/item/gun/proc/shoot_live_shot(mob/living/user, pointblank = FALSE, atom/pbtarget = null, message = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!tk_firing(user))
 		var/actual_angle = get_angle((user || get_turf(src)), pbtarget)
 		simulate_recoil(user, recoil, actual_angle)
@@ -300,6 +342,8 @@
 	return TRUE
 
 /obj/item/gun/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!isliving(loc))
 		return ..()
 	var/mob/living/holder = loc
@@ -309,12 +353,16 @@
 	return ..()
 
 /obj/item/gun/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(. & EMP_PROTECT_CONTENTS))
 		for(var/obj/inside in contents)
 			inside.emp_act(severity)
 
 /obj/item/gun/attack_self_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -349,12 +397,16 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/gun/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/fired = try_fire_gun(interacting_with, user, list2params(modifiers))
 	if(!fired && chambered_attack_block == TRUE && can_shoot() && isliving(interacting_with))
 		return ITEM_INTERACT_BLOCKING
 	return fired
 
 /obj/item/gun/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode && isliving(interacting_with))
 		return ITEM_INTERACT_SKIP_TO_ATTACK // Gun bash / bayonet attack
 
@@ -374,17 +426,25 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/gun/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return try_fire_gun(interacting_with, user, list2params(modifiers))
 
 /obj/item/gun/ranged_interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(IN_GIVEN_RANGE(user, interacting_with, GUNPOINT_SHOOTER_STRAY_RANGE))
 		return interact_with_atom_secondary(interacting_with, user, modifiers)
 	return ..()
 
 /obj/item/gun/proc/try_fire_gun(atom/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	return fire_gun(target, user, user.Adjacent(target), params)
 
 /obj/item/gun/proc/fire_gun(atom/target, mob/living/user, flag, params)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target))
 		return NONE
 	if(firing_burst)
@@ -437,6 +497,8 @@
 	return process_fire(target, user, TRUE, params, null, bonus_spread)
 
 /obj/item/gun/proc/check_botched(mob/living/user, atom/target)
+	procstart = null
+	src.procstart = null
 	if(clumsy_check)
 		if(istype(user))
 			if(HAS_TRAIT(user, TRAIT_CLUMSY) && prob(40))
@@ -451,11 +513,15 @@
 				return TRUE
 
 /obj/item/gun/can_trigger_gun(mob/living/user, akimbo_usage)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!handle_pins(user))
 		return FALSE
 
 /obj/item/gun/proc/handle_pins(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(pinless)
 		return TRUE
 	if(pin)
@@ -471,9 +537,13 @@
 
 /// Called to put ammo back in a gun which recharges itself, should call super if successful
 /obj/item/gun/proc/recharge_newshot()
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_GUN_REPLENISHED_CHARGE)
 
 /obj/item/gun/proc/process_burst(mob/living/user, atom/target, message = TRUE, params=null, zone_override = "", random_spread = 0, burst_spread_mult = 0, iteration = 0)
+	procstart = null
+	src.procstart = null
 	if(!user || !firing_burst)
 		firing_burst = FALSE
 		return FALSE
@@ -520,6 +590,8 @@
  * The clamped recoil value after applying all modifiers.
  */
 /obj/item/gun/proc/calculate_recoil(mob/living/user, recoil_amount = 0)
+	procstart = null
+	src.procstart = null
 	var/used_min_recoil = min_recoil
 	if(user.client)
 		used_min_recoil *= (user.client.prefs.read_preference(/datum/preference/numeric/min_recoil_multiplier) / 100)
@@ -534,6 +606,8 @@
  * * firing_angle - The firing direction used to determine camera kick direction.
  */
 /obj/item/gun/proc/simulate_recoil(mob/living/user, recoil_amount = 0, firing_angle)
+	procstart = null
+	src.procstart = null
 	var/total_recoil = calculate_recoil(user, recoil_amount)
 
 	var/actual_angle = firing_angle + rand(-recoil_deviation, recoil_deviation) + 180
@@ -544,6 +618,8 @@
 
 ///returns true if the gun successfully fires
 /obj/item/gun/proc/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+	procstart = null
+	src.procstart = null
 	var/base_bonus_spread = 0
 	if(user)
 		var/list/bonus_spread_values = list(base_bonus_spread, bonus_spread)
@@ -603,9 +679,13 @@
 	return TRUE
 
 /obj/item/gun/proc/reset_fire_cd()
+	procstart = null
+	src.procstart = null
 	fire_cd = FALSE
 
 /obj/item/gun/screwdriver_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -623,6 +703,8 @@
 			return ITEM_INTERACT_SUCCESS
 
 /obj/item/gun/welder_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -640,6 +722,8 @@
 			return TRUE
 
 /obj/item/gun/wirecutter_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -657,9 +741,13 @@
 			return TRUE
 
 /obj/item/gun/animate_atom_living(mob/living/owner)
+	procstart = null
+	src.procstart = null
 	return new /mob/living/basic/mimic/copy/ranged(drop_location(), src, owner)
 
 /obj/item/gun/proc/handle_suicide(mob/living/carbon/human/user, mob/living/carbon/human/target, params, bypass_timer)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user) || !ishuman(target))
 		return NONE
 
@@ -704,7 +792,9 @@
 		return NONE
 	return ITEM_INTERACT_SUCCESS
 
-/obj/item/gun/proc/unlock() //used in summon guns and as a convience for admins
+/obj/item/gun/proc/unlock()
+	procstart = null
+	src.procstart = null //used in summon guns and as a convience for admins
 	if(pin)
 		qdel(pin)
 	var/obj/item/firing_pin/new_pin = new
@@ -712,14 +802,20 @@
 
 //Happens before the actual projectile creation
 /obj/item/gun/proc/before_firing(atom/target,mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/proc/on_mail_unwrap(atom/source, mob/user, obj/item/mail/traitor/letter)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(fire_at_opener), user, letter)
 	return COMPONENT_TRAITOR_MAIL_HANDLED
 
 /obj/item/gun/proc/fire_at_opener(mob/user, obj/item/mail/traitor/letter)
+	procstart = null
+	src.procstart = null
 	if(!user.put_in_hands(src)) //this won't ever fail under normal circumstances, but will happen with the admin versions
 		forceMove(user.loc)
 	to_chat(user, span_danger("As you open [letter], you see [src] inside! [about_to_shoot_inside_mail_text]"))

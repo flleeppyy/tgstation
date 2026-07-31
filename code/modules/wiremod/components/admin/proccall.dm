@@ -35,10 +35,14 @@
 	)
 
 /obj/item/circuit_component/proccall/ui_perform_action(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(action == "configure")
 		interact(user)
 
 /obj/item/circuit_component/proccall/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ProcCallMenu", "ProcCall Configuration Menu")
@@ -46,6 +50,8 @@
 		ui.set_autoupdate(FALSE)
 
 /obj/item/circuit_component/proccall/populate_options()
+	procstart = null
+	src.procstart = null
 	var/static/list/component_options = list(
 		COMP_PROC_OBJECT,
 		COMP_PROC_GLOBAL,
@@ -54,12 +60,16 @@
 	proccall_options = add_option_port("Proccall Options", component_options)
 
 /obj/item/circuit_component/proccall/populate_ports()
+	procstart = null
+	src.procstart = null
 	entity = add_input_port("Target", PORT_TYPE_DATUM, order = 0.5)
 	proc_name = add_input_port("Proc Name", PORT_TYPE_STRING)
 
 	output_value = add_output_port("Output Value", PORT_TYPE_ANY)
 
 /obj/item/circuit_component/proccall/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(proccall_options.value == COMP_PROC_GLOBAL)
 		if(entity)
 			remove_input_port(entity)
@@ -69,6 +79,8 @@
 			entity = add_input_port("Target", PORT_TYPE_DATUM, order = 0.5)
 
 /obj/item/circuit_component/proccall/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/list/input_ports = list()
 	for(var/datum/port/input/port as anything in arguments)
@@ -85,15 +97,21 @@
 	.["resolve_weakref"] = resolve_weakref
 
 /obj/item/circuit_component/proccall/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["possible_types"] = GLOB.wiremod_fundamental_types
 
 /obj/item/circuit_component/proccall/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(!check_rights_for(user.client, R_VAREDIT))
 		return UI_CLOSE
 	return UI_INTERACTIVE
 
 /obj/item/circuit_component/proccall/save_data_to_list(list/component_data)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/input_ports = list()
 	for(var/datum/port/input/port as anything in arguments)
@@ -106,6 +124,8 @@
 	component_data["resolve_weakref"] = resolve_weakref
 
 /obj/item/circuit_component/proccall/load_data_from_list(list/component_data)
+	procstart = null
+	src.procstart = null
 	if(component_data["resolve_weakref"] != null)
 		resolve_weakref = component_data["resolve_weakref"]
 	if(component_data["expected_output_type"])
@@ -115,6 +135,8 @@
 	return ..()
 
 /obj/item/circuit_component/proccall/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -156,6 +178,8 @@
 
 
 /obj/item/circuit_component/proccall/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	var/called_on
 	if(proccall_options.value == COMP_PROC_OBJECT)
 		called_on = entity.value
@@ -183,6 +207,8 @@
 	INVOKE_ASYNC(src, PROC_REF(do_proccall), called_on, to_invoke, params)
 
 /obj/item/circuit_component/proccall/proc/do_proccall(called_on, to_invoke, params)
+	procstart = null
+	src.procstart = null
 	var/result = HandleUserlessProcCall(parent.get_creator(), called_on, to_invoke, params)
 	output_value.set_output(result)
 

@@ -10,10 +10,14 @@
 	var/total_damage = 0
 
 /datum/status_effect/crusher_damage/on_apply()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(owner, COMSIG_MOB_AFTER_APPLY_DAMAGE, PROC_REF(damage_taken))
 	return TRUE
 
 /datum/status_effect/crusher_damage/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_MOB_AFTER_APPLY_DAMAGE)
 
 /datum/status_effect/crusher_damage/proc/damage_taken(
@@ -42,25 +46,35 @@
 	var/obj/item/borg/upgrade/modkit/bounty/reward_target
 
 /datum/status_effect/syphon_mark/on_creation(mob/living/new_owner, obj/item/borg/upgrade/modkit/bounty/new_reward_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		reward_target = new_reward_target
 
 /datum/status_effect/syphon_mark/on_apply()
+	procstart = null
+	src.procstart = null
 	if(owner.stat == DEAD)
 		return FALSE
 	return ..()
 
 /datum/status_effect/syphon_mark/proc/get_kill()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(reward_target))
 		reward_target.get_kill(owner)
 
 /datum/status_effect/syphon_mark/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(owner.stat == DEAD)
 		get_kill()
 		qdel(src)
 
 /datum/status_effect/syphon_mark/on_remove()
+	procstart = null
+	src.procstart = null
 	get_kill()
 	. = ..()
 
@@ -78,6 +92,8 @@
 	var/hearts
 
 /datum/status_effect/in_love/on_creation(mob/living/new_owner, mob/living/date)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -92,6 +108,8 @@
 	))
 
 /datum/status_effect/in_love/on_remove()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(hearts)
 
 /datum/status_effect/throat_soothed
@@ -101,10 +119,14 @@
 	alert_type = null
 
 /datum/status_effect/throat_soothed/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(owner, TRAIT_SOOTHED_THROAT, TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/throat_soothed/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(owner, TRAIT_SOOTHED_THROAT, TRAIT_STATUS_EFFECT(id))
 
@@ -115,10 +137,14 @@
 	alert_type = null
 
 /datum/status_effect/headache_soothed/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(owner, TRAIT_SOOTHED_HEADACHE, TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/headache_soothed/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(owner, TRAIT_SOOTHED_HEADACHE, TRAIT_STATUS_EFFECT(id))
 
@@ -129,21 +155,29 @@
 	var/mob/living/rewarded
 
 /datum/status_effect/bounty/on_creation(mob/living/new_owner, mob/living/caster)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		rewarded = caster
 
 /datum/status_effect/bounty/on_apply()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_boldnotice("You hear something behind you talking... \"You have been marked for death by [rewarded]. If you die, they will be rewarded.\""))
 	playsound(owner, 'sound/items/weapons/gun/shotgun/rack.ogg', 75, FALSE)
 	return ..()
 
 /datum/status_effect/bounty/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(owner.stat == DEAD)
 		rewards()
 		qdel(src)
 
 /datum/status_effect/bounty/proc/rewards()
+	procstart = null
+	src.procstart = null
 	if(rewarded && rewarded.mind && rewarded.stat != DEAD)
 		to_chat(owner, span_boldnotice("You hear something behind you talking... \"Bounty claimed.\""))
 		playsound(owner, 'sound/items/weapons/gun/shotgun/shot.ogg', 75, FALSE)
@@ -174,10 +208,14 @@
 	overlay_state = "aimed"
 
 /datum/status_effect/grouped/heldup/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.apply_status_effect(/datum/status_effect/grouped/surrender, REF(src))
 	return ..()
 
 /datum/status_effect/grouped/heldup/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_status_effect(/datum/status_effect/grouped/surrender, REF(src))
 	return ..()
 
@@ -197,6 +235,8 @@
 	clickable_glow = TRUE
 
 /atom/movable/screen/alert/status_effect/holdup/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -220,6 +260,8 @@
 	var/give_alert_type = /atom/movable/screen/alert/give
 
 /datum/status_effect/offering/on_creation(mob/living/new_owner, obj/item/offer, give_alert_override, mob/living/offered)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -244,6 +286,8 @@
 	RegisterSignals(offered_item, list(COMSIG_QDELETING, COMSIG_ITEM_DROPPED), PROC_REF(dropped_item))
 
 /datum/status_effect/offering/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/removed_taker as anything in possible_takers)
 		remove_candidate(removed_taker)
 	LAZYCLEARLIST(possible_takers)
@@ -252,6 +296,8 @@
 
 /// Hook up the specified living mob to be offered the item in question, give them the alert and signals and all
 /datum/status_effect/offering/proc/register_candidate(mob/living/possible_candidate)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/screen/alert/give/G = possible_candidate.throw_alert("[owner]", give_alert_type)
 	if(!G)
 		return
@@ -261,6 +307,8 @@
 
 /// Remove the alert and signals for the specified living mob. Automatically removes the status effect when we lost the last taker
 /datum/status_effect/offering/proc/remove_candidate(mob/living/removed_candidate)
+	procstart = null
+	src.procstart = null
 	removed_candidate.clear_alert("[owner]")
 	LAZYREMOVE(possible_takers, removed_candidate)
 	UnregisterSignal(removed_candidate, COMSIG_MOVABLE_MOVED)
@@ -269,6 +317,8 @@
 
 /// One of our possible takers moved, see if they left us hanging
 /datum/status_effect/offering/proc/check_taker_in_range(mob/living/taker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(taker.IsReachableBy(owner) || ((owner.pulling == taker) || (taker.pulling == owner)) && !taker.incapacitated)
 		return
@@ -278,6 +328,8 @@
 
 /// The offerer moved, see if anyone is out of range now
 /datum/status_effect/offering/proc/check_owner_in_range(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/mob/living/checking_taker as anything in possible_takers)
@@ -286,6 +338,8 @@
 
 /// We lost the item, give it up
 /datum/status_effect/offering/proc/dropped_item(obj/item/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
@@ -296,6 +350,8 @@
  * Returns `TRUE` if the taker is valid as a target for the offering.
  */
 /datum/status_effect/offering/proc/is_taker_elligible(mob/living/taker)
+	procstart = null
+	src.procstart = null
 	return taker.IsReachableBy(owner) && !taker.incapacitated && additional_taker_check(taker)
 
 /**
@@ -307,6 +363,8 @@
  * additional checks.
  */
 /datum/status_effect/offering/proc/additional_taker_check(mob/living/taker)
+	procstart = null
+	src.procstart = null
 	return taker.can_hold_items()
 
 /**
@@ -316,6 +374,8 @@
 /datum/status_effect/offering/no_item_received
 
 /datum/status_effect/offering/no_item_received/additional_taker_check(mob/living/taker)
+	procstart = null
+	src.procstart = null
 	return taker.usable_hands > 0
 
 /**
@@ -327,22 +387,32 @@
 /datum/status_effect/offering/no_item_received/needs_resting
 
 /datum/status_effect/offering/no_item_received/needs_resting/additional_taker_check(mob/living/taker)
+	procstart = null
+	src.procstart = null
 	return taker.body_position == LYING_DOWN
 
 /datum/status_effect/offering/no_item_received/needs_resting/on_creation(mob/living/new_owner, obj/item/offer, give_alert_override, mob/living/offered)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_LIVING_SET_BODY_POSITION, PROC_REF(check_owner_standing))
 
 /datum/status_effect/offering/no_item_received/needs_resting/register_candidate(mob/living/possible_candidate)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(possible_candidate, COMSIG_LIVING_SET_BODY_POSITION, PROC_REF(check_candidate_resting))
 
 /datum/status_effect/offering/no_item_received/needs_resting/remove_candidate(mob/living/removed_candidate)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(removed_candidate, COMSIG_LIVING_SET_BODY_POSITION)
 	return ..()
 
 /// Simple signal handler that ensures that, if the owner stops standing, the offer no longer stands either!
 /datum/status_effect/offering/no_item_received/needs_resting/proc/check_owner_standing(mob/living/owner)
+	procstart = null
+	src.procstart = null
 	if(src.owner.body_position == STANDING_UP)
 		return
 
@@ -351,6 +421,8 @@
 
 /// Simple signal handler that ensures that, should a candidate now be standing up, the offer won't be standing for them anymore!
 /datum/status_effect/offering/no_item_received/needs_resting/proc/check_candidate_resting(mob/living/candidate)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(candidate.body_position == LYING_DOWN)
@@ -364,6 +436,8 @@
 	id = "offer_high_five"
 
 /datum/status_effect/offering/no_item_received/high_five/dropped_item(obj/item/source)
+	procstart = null
+	src.procstart = null
 	// Lets us "too slow" people, instead of qdeling we just handle the ref
 	offered_item = null
 
@@ -383,6 +457,8 @@
 	clickable_glow = TRUE
 
 /atom/movable/screen/alert/status_effect/surrender/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -397,10 +473,14 @@
 	alert_type = null
 
 /datum/status_effect/surrender_timed/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.apply_status_effect(/datum/status_effect/grouped/surrender, REF(src))
 	return ..()
 
 /datum/status_effect/surrender_timed/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_status_effect(/datum/status_effect/grouped/surrender, REF(src))
 	return ..()
 
@@ -443,12 +523,16 @@
 	var/stable_message = FALSE
 
 /datum/status_effect/eigenstasium/Destroy()
+	procstart = null
+	src.procstart = null
 	if(alt_clone)
 		UnregisterSignal(alt_clone, COMSIG_QDELETING)
 		QDEL_NULL(alt_clone)
 	return ..()
 
 /datum/status_effect/eigenstasium/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//This stuff runs every cycle
 	if(prob(5))
@@ -580,10 +664,14 @@
 			owner.remove_status_effect(/datum/status_effect/eigenstasium)
 
 /datum/status_effect/eigenstasium/proc/remove_clone_from_var()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(alt_clone, COMSIG_QDELETING)
 
 /datum/status_effect/eigenstasium/on_remove()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(alt_clone))//catch any stragilers
 		do_sparks(5, FALSE, alt_clone)
 		owner.visible_message("One of the [owner]s suddenly phases out of reality in front of you!")
@@ -606,15 +694,21 @@
 	var/obj/effect/dummy/lighting_obj/moblight/mob_light_obj
 
 /datum/status_effect/tinlux_light/on_creation(mob/living/new_owner, duration)
+	procstart = null
+	src.procstart = null
 	if(duration)
 		src.duration = duration
 	return ..()
 
 /datum/status_effect/tinlux_light/on_apply()
+	procstart = null
+	src.procstart = null
 	mob_light_obj = owner.mob_light(2, 1.5, "#ccff33")
 	return TRUE
 
 /datum/status_effect/tinlux_light/on_remove()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(mob_light_obj)
 
 ///Makes the mob glow blue and rarely emit nuclear particles
@@ -626,19 +720,27 @@
 	var/obj/effect/dummy/lighting_obj/moblight/mob_light_obj
 
 /datum/status_effect/cherenkov_radiation/on_creation(mob/living/new_owner, duration)
+	procstart = null
+	src.procstart = null
 	if(duration)
 		src.duration = duration
 	return ..()
 
 /datum/status_effect/cherenkov_radiation/on_apply()
+	procstart = null
+	src.procstart = null
 	mob_light_obj = owner.mob_light(2, 4, "#33ddff")
 	return TRUE
 
 /datum/status_effect/cherenkov_radiation/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(prob(3))
 		owner.fire_nuclear_particle()
 
 /datum/status_effect/cherenkov_radiation/on_remove()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(mob_light_obj)
 
 /datum/status_effect/gutted
@@ -648,13 +750,19 @@
 	tick_interval = STATUS_EFFECT_NO_TICK
 
 /datum/status_effect/gutted/on_apply()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(owner, COMSIG_MOB_STATCHANGE, PROC_REF(stop_gutting))
 	return TRUE
 
 /datum/status_effect/gutted/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_MOB_STATCHANGE)
 
 /datum/status_effect/gutted/proc/stop_gutting()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
@@ -671,11 +779,15 @@
 	var/datum/reagent/shower_reagent
 
 /datum/status_effect/washing_regen/on_creation(mob/living/new_owner, shower_reagent)
+	procstart = null
+	src.procstart = null
 	if(!src.shower_reagent)
 		src.shower_reagent = shower_reagent
 	return ..()
 
 /datum/status_effect/washing_regen/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shower_reagent, /datum/reagent/blood))
 		if(HAS_TRAIT(owner, TRAIT_MORBID) || HAS_TRAIT(owner, TRAIT_EVIL) || (owner.mob_biotypes & MOB_UNDEAD))
@@ -691,6 +803,8 @@
 		alert_type  = /atom/movable/screen/alert/status_effect/washing_regen/dislike
 
 /datum/status_effect/washing_regen/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/is_disgusted = FALSE
@@ -753,11 +867,15 @@
 	shower_reagent = /datum/reagent/water
 
 /datum/status_effect/washing_regen/hot_spring/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(owner, TRAIT_WATER_HATER) && !HAS_TRAIT(owner, TRAIT_WATER_ADAPTATION))
 		alert_type = /atom/movable/screen/alert/status_effect/washing_regen/hotspring/hater
 
 /datum/status_effect/washing_regen/hot_spring/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.adjust_bodytemperature(10 * seconds_between_ticks, 0, T0C + 45)
 
@@ -790,6 +908,8 @@
 	var/image/additional_overlay
 
 /datum/status_effect/spotlight_light/on_creation(mob/living/new_owner, duration, additional_overlay)
+	procstart = null
+	src.procstart = null
 	if(duration)
 		src.duration = duration
 	if(additional_overlay)
@@ -797,6 +917,8 @@
 	return ..()
 
 /datum/status_effect/spotlight_light/on_apply()
+	procstart = null
+	src.procstart = null
 	mob_light_obj = owner.mob_light(2, 1.5, spotlight_color)
 
 	var/turf/owner_turf = get_turf(owner)
@@ -823,6 +945,8 @@
 	return TRUE
 
 /datum/status_effect/spotlight_light/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.vis_contents -= beam_from_above_a
 	owner.vis_contents -= beam_from_above_b
 	QDEL_NULL(beam_from_above_a)
@@ -835,6 +959,8 @@
 	UnregisterSignal(owner, COMSIG_MOVABLE_Z_CHANGED)
 
 /datum/status_effect/spotlight_light/proc/on_z_change(mob/living/source, turf/old_turf, turf/new_turf, same_z_layer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SET_PLANE(beam_from_above_a, PLANE_TO_TRUE(beam_from_above_a.plane), new_turf)
 	SET_PLANE(beam_from_above_b, PLANE_TO_TRUE(beam_from_above_b.plane), new_turf)
@@ -858,15 +984,21 @@
 	VAR_PRIVATE/datum/callback/special_check
 
 /datum/status_effect/moodlet_in_area/on_creation(mob/living/new_owner, moodlet_type, list/allowed_areas, datum/callback/special_check)
+	procstart = null
+	src.procstart = null
 	src.moodlet_type = moodlet_type
 	src.allowed_areas = typecacheof(allowed_areas)
 	src.special_check = special_check
 	return ..()
 
 /datum/status_effect/moodlet_in_area/before_remove(moodlet_type, ...)
+	procstart = null
+	src.procstart = null
 	return moodlet_type == src.moodlet_type
 
 /datum/status_effect/moodlet_in_area/on_apply()
+	procstart = null
+	src.procstart = null
 	if(!length(allowed_areas))
 		return FALSE
 
@@ -879,11 +1011,15 @@
 	return TRUE
 
 /datum/status_effect/moodlet_in_area/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_ENTER_AREA)
 	owner.lose_area_sensitivity("[id]_[moodlet_type]")
 	owner.clear_mood_event("[id]_[moodlet_type]")
 
 /datum/status_effect/moodlet_in_area/proc/check_area(datum/source, area/new_area)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(special_check && !special_check.Invoke(owner, new_area))
@@ -904,17 +1040,23 @@
 	VAR_PRIVATE/real_invis_see
 
 /datum/status_effect/admin_esp/on_apply()
+	procstart = null
+	src.procstart = null
 	real_invis_see = owner.see_invisible
 	owner.set_invis_see(SEE_INVISIBLE_ADMIN)
 	RegisterSignal(owner, COMSIG_MOB_SEE_INVIS_CHANGE, PROC_REF(on_invis_changed))
 	return TRUE
 
 /datum/status_effect/admin_esp/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_MOB_SEE_INVIS_CHANGE)
 	owner.set_invis_see(real_invis_see) // restore our 'real' invis_see
 
 /// Whenever our invis_see updates from some other source, keep real_invis_see up to date
 /datum/status_effect/admin_esp/proc/on_invis_changed(datum/source, see_invis, old_invis)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	real_invis_see = see_invis

@@ -19,10 +19,14 @@
 	immunity_proof = TRUE
 
 /datum/symptom/undead_adaptation/OnAdd(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	A.process_dead = TRUE
 	A.infectable_biotypes |= MOB_UNDEAD
 
 /datum/symptom/undead_adaptation/OnRemove(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	A.process_dead = FALSE
 	A.infectable_biotypes &= ~MOB_UNDEAD
 
@@ -47,8 +51,12 @@
 	immunity_proof = TRUE
 
 /datum/symptom/inorganic_adaptation/OnAdd(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	A.infectable_biotypes |= MOB_MINERAL | MOB_ROBOTIC // Plasmamen, golems, and androids.
 
 /datum/symptom/inorganic_adaptation/OnRemove(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	A.infectable_biotypes &= ~(MOB_MINERAL | MOB_ROBOTIC)
 

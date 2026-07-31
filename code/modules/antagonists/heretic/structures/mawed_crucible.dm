@@ -20,11 +20,15 @@
 	COOLDOWN_DECLARE(refill_cooldown)
 
 /obj/structure/destructible/eldritch_crucible/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	break_message = span_warning("[src] falls apart with a thud!")
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/destructible/eldritch_crucible/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(COOLDOWN_TIMELEFT(src, refill_cooldown))
 		return
 	if(current_mass >= max_mass)
@@ -35,6 +39,8 @@
 	update_appearance(UPDATE_ICON_STATE)
 
 /obj/structure/destructible/eldritch_crucible/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	// Create a spillage if we were destroyed with leftover mass
 	if(current_mass)
 		break_message = span_warning("[src] falls apart with a thud, spilling shining extract everywhere!")
@@ -49,6 +55,8 @@
 	return ..()
 
 /obj/structure/destructible/eldritch_crucible/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!IS_HERETIC_OR_MONSTER(user) && !isobserver(user))
 		return
@@ -69,15 +77,21 @@
 		. += potion_string
 
 /obj/structure/destructible/eldritch_crucible/examine_status(mob/user)
+	procstart = null
+	src.procstart = null
 	if(IS_HERETIC_OR_MONSTER(user) || isobserver(user))
 		return span_notice("It's at <b>[round(atom_integrity * 100 / max_integrity)]%</b> stability.")
 	return ..()
 
 // no breaky herety thingy
 /obj/structure/destructible/eldritch_crucible/rust_heretic_act()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/structure/destructible/eldritch_crucible/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/codex_cicatrix) || istype(tool, /obj/item/melee/touch_attack/mansus_fist))
 		playsound(src, 'sound/items/deconstruct.ogg', 30, TRUE, ignore_walls = FALSE)
 		set_anchored(!anchored)
@@ -129,6 +143,8 @@
 	return NONE
 
 /obj/structure/destructible/eldritch_crucible/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -156,6 +172,8 @@
  * Wrapper for show_radial() to ensure in_use is enabled and disabled correctly.
  */
 /obj/structure/destructible/eldritch_crucible/proc/show_radial(mob/living/user)
+	procstart = null
+	src.procstart = null
 	in_use = TRUE
 	create_potion(user)
 	in_use = FALSE
@@ -165,6 +183,8 @@
  * and create the potion they chose.
  */
 /obj/structure/destructible/eldritch_crucible/proc/create_potion(mob/living/user)
+	procstart = null
+	src.procstart = null
 
 	// Assoc list of [name] to [image] for the radial
 	var/static/list/choices = list()
@@ -205,6 +225,8 @@
  * causing them to lose their active hand to it.
  */
 /obj/structure/destructible/eldritch_crucible/proc/bite_the_hand(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(user, TRAIT_NODISMEMBER))
 		return
 
@@ -221,6 +243,8 @@
  * If feeder is supplied, gives some feedback.
  */
 /obj/structure/destructible/eldritch_crucible/proc/consume_fuel(mob/living/feeder, obj/item/consumed)
+	procstart = null
+	src.procstart = null
 	if(current_mass >= max_mass)
 		if(feeder)
 			balloon_alert(feeder, "crucible full!")
@@ -237,6 +261,8 @@
 	update_appearance(UPDATE_ICON_STATE)
 
 /obj/structure/destructible/eldritch_crucible/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][(current_mass == max_mass) ? null : "_empty"]"
 	return ..()
 
@@ -256,6 +282,8 @@
 	var/can_refresh = TRUE
 
 /obj/item/eldritch_potion/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!IS_HERETIC_OR_MONSTER(user) && !isobserver(user))
 		return
@@ -263,6 +291,8 @@
 	. += span_notice(crucible_tip)
 
 /obj/item/eldritch_potion/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -293,6 +323,8 @@
  * and utilize the status_effect var to make custom effects.
  */
 /obj/item/eldritch_potion/proc/potion_effect(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/carbon_user = user
 	carbon_user.apply_status_effect(status_effect)
 
@@ -305,6 +337,8 @@
 	can_refresh = FALSE
 
 /obj/item/eldritch_potion/crucible_soul/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.has_status_effect(/datum/status_effect/crucible_soul_cooldown))
 		balloon_alert(user, "on cooldown!")
 		return TRUE

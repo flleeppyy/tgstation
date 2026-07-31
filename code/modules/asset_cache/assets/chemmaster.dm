@@ -3,6 +3,8 @@
 	name = "chemmaster"
 
 /datum/asset/spritesheet_batched/chemmaster/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	var/list/ids = list()
 	for(var/category in GLOB.reagent_containers)
 		for(var/obj/item/reagent_containers/container as anything in GLOB.reagent_containers[category])

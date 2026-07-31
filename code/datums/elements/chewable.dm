@@ -15,6 +15,8 @@
 	var/list/processing = list()
 
 /datum/element/chewable/Attach(datum/target, metabolization_amount, slots_to_check)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -34,11 +36,15 @@
 	RegisterSignal(target, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equipped))
 
 /datum/element/chewable/Detach(datum/source, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	processing -= source
 	UnregisterSignal(source, list(COMSIG_ITEM_DROPPED, COMSIG_ITEM_EQUIPPED))
 
 /datum/element/chewable/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if (processing.len == 0)
 		return PROCESS_KILL
 
@@ -52,6 +58,8 @@
 		handle_reagents(item, seconds_per_tick)
 
 /datum/element/chewable/proc/handle_reagents(obj/item/item, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/datum/reagents/reagents = item.reagents
 
 	var/metabolism_amount = metabolization_amount * seconds_per_tick
@@ -59,10 +67,14 @@
 		reagents.remove_all(metabolism_amount)
 
 /datum/element/chewable/proc/on_dropped(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	processing -= source
 
 /datum/element/chewable/proc/on_equipped(datum/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (slot & slots_to_check)

@@ -18,21 +18,29 @@
 	var/breakout_time = 450
 
 /obj/machinery/abductor/experiment/Destroy()
+	procstart = null
+	src.procstart = null
 	if(console)
 		console.experiment = null
 		console = null
 	return ..()
 
 /obj/machinery/abductor/experiment/mouse_drop_receive(mob/target, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(target) || isabductor(target))
 		return
 	close_machine(target)
 
 /obj/machinery/abductor/experiment/open_machine(drop = TRUE, density_to_set = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!state_open && !panel_open)
 		..()
 
 /obj/machinery/abductor/experiment/close_machine(mob/target, density_to_set = TRUE)
+	procstart = null
+	src.procstart = null
 	for(var/A in loc)
 		if(isabductor(A))
 			return
@@ -40,6 +48,8 @@
 		..(target)
 
 /obj/machinery/abductor/experiment/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(user))
 		return
 	if(message_cooldown <= world.time)
@@ -47,6 +57,8 @@
 		to_chat(user, span_warning("[src]'s door won't budge!"))
 
 /obj/machinery/abductor/experiment/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_BREAKOUT)
 	user.last_special = world.time + CLICK_CD_BREAKOUT
 	user.visible_message(span_notice("You see [user] kicking against the door of [src]!"), \
@@ -60,20 +72,28 @@
 		open_machine()
 
 /obj/machinery/abductor/experiment/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(user == occupant)
 		return UI_CLOSE
 	return ..()
 
 /obj/machinery/abductor/experiment/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.physical_state
 
 /obj/machinery/abductor/experiment/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ProbingConsole", name)
 		ui.open()
 
 /obj/machinery/abductor/experiment/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["open"] = state_open
 	data["feedback"] = flash
@@ -87,6 +107,8 @@
 	return data
 
 /obj/machinery/abductor/experiment/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -117,6 +139,8 @@
  * * user The mob starting the experiment
  */
 /obj/machinery/abductor/experiment/proc/experiment(mob/living/carbon/human/occupant, type, mob/user)
+	procstart = null
+	src.procstart = null
 	LAZYINITLIST(history)
 
 	if(!istype(occupant))
@@ -184,6 +208,8 @@
  * * H The human mob to be sent back
  */
 /obj/machinery/abductor/experiment/proc/send_back(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	H.Sleeping(160)
 	H.uncuff()
 	if(console && console.pad && console.pad.teleport_target)
@@ -194,5 +220,7 @@
 	return
 
 /obj/machinery/abductor/experiment/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "experiment[state_open ? "-open" : null]"
 	return ..()

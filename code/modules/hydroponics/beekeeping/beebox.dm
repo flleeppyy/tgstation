@@ -8,11 +8,15 @@
 
 
 /mob/proc/bee_friendly()
+	procstart = null
+	src.procstart = null
 	return 0
 
 
 
 /mob/living/carbon/human/bee_friendly()
+	procstart = null
+	src.procstart = null
 	if(ispodperson(src)) //bees pollinate plants, duh.
 		return 1
 	if (wear_suit && head && isclothing(wear_suit) && isclothing(head))
@@ -39,11 +43,15 @@
 
 
 /obj/structure/beebox/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 
 /obj/structure/beebox/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	queen_bee = null
 	QDEL_LIST(bees)
@@ -58,6 +66,8 @@
 
 
 /obj/structure/beebox/premade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	icon_state = "beebox"
@@ -88,6 +98,8 @@
 
 
 /obj/structure/beebox/process()
+	procstart = null
+	src.procstart = null
 	if(queen_bee)
 		if(bee_resources >= BEE_RESOURCE_HONEYCOMB_COST)
 			if(honeycombs.len < get_max_honeycomb())
@@ -111,16 +123,22 @@
 
 
 /obj/structure/beebox/proc/get_max_honeycomb()
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/obj/item/honey_frame/frame as anything in honey_frames)
 		. += frame.honeycomb_capacity
 
 
 /obj/structure/beebox/proc/get_max_bees()
+	procstart = null
+	src.procstart = null
 	. = get_max_honeycomb() * BEES_RATIO
 
 
 /obj/structure/beebox/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!queen_bee)
@@ -142,11 +160,15 @@
 		. += span_warning("There's no room for more honeycomb!")
 
 /obj/structure/beebox/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/beebox/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/honey_frame))
 		var/obj/item/honey_frame/frame = tool
 		if(honey_frames.len == BEEBOX_MAX_FRAMES)
@@ -193,6 +215,8 @@
 	return NONE
 
 /obj/structure/beebox/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!user.bee_friendly())
 		//Time to get stung!
@@ -250,6 +274,8 @@
 				queen_bee = null
 
 /obj/structure/beebox/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/mineral/wood (loc, 20)
 	for(var/mob/living/basic/bee/worker as anything in bees)
 		if(worker.loc == src)
@@ -265,6 +291,8 @@
 	anchored = FALSE
 
 /obj/structure/beebox/proc/habitable(mob/living/basic/target)
+	procstart = null
+	src.procstart = null
 	if(!istype(target, /mob/living/basic/bee))
 		return FALSE
 	var/mob/living/basic/bee/citizen = target

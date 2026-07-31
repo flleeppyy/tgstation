@@ -12,6 +12,8 @@
 	var/list/scan_data = list("raptor_scan" = FALSE)
 
 /datum/computer_file/program/raptordex/tap(atom/tapped_atom, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tapped_atom, /mob/living/basic/raptor))
 		return FALSE
 
@@ -60,21 +62,31 @@
 	return TRUE
 
 /datum/computer_file/program/raptordex/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return scan_data
 
 /datum/computer_file/program/raptordex/on_made_active_program(mob/user)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(computer, COMSIG_ITEM_REQUESTING_CONTEXT_FOR_TARGET, PROC_REF(add_item_context))
 	computer.item_flags |= ITEM_HAS_CONTEXTUAL_SCREENTIPS
 
 /datum/computer_file/program/raptordex/background_program(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(computer, COMSIG_ITEM_REQUESTING_CONTEXT_FOR_TARGET)
 
 /datum/computer_file/program/raptordex/kill_program(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(computer, COMSIG_ITEM_REQUESTING_CONTEXT_FOR_TARGET)
 
 /datum/computer_file/program/raptordex/proc/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(target, /mob/living/basic/raptor))
 		return NONE

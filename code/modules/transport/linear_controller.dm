@@ -40,6 +40,8 @@
 	var/throw_chance = 17.5
 
 /datum/transport_controller/linear/New(obj/structure/transport/linear/transport_module)
+	procstart = null
+	src.procstart = null
 	transport_id = transport_module.transport_id
 	create_modular_set = transport_module.create_modular_set
 
@@ -52,6 +54,8 @@
 		lift.add_initial_contents()
 
 /datum/transport_controller/linear/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/transport/linear/transport_module as anything in transport_modules)
 		transport_module.transport_controller_datum = null
 	transport_modules = null
@@ -63,6 +67,8 @@
 	return ..()
 
 /datum/transport_controller/linear/proc/add_transport_modules(obj/structure/transport/linear/new_transport_module)
+	procstart = null
+	src.procstart = null
 	if(new_transport_module in transport_modules)
 		return
 	for(var/obj/structure/transport/linear/other_module in new_transport_module.loc)
@@ -80,6 +86,8 @@
 		order_platforms_by_z_level()
 
 /datum/transport_controller/linear/proc/remove_transport_modules(obj/structure/transport/linear/old_transport_module)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(old_transport_module in transport_modules))
@@ -93,6 +101,8 @@
 
 ///Collect all bordered platforms via a simple floodfill algorithm. allows multiz trams because its funny
 /datum/transport_controller/linear/proc/link_transport_modules(obj/structure/transport/linear/base_transport_module)
+	procstart = null
+	src.procstart = null
 	add_transport_modules(base_transport_module)
 	var/list/possible_expansions = list(base_transport_module)
 
@@ -111,6 +121,8 @@
 
 ///check for any landmarks placed inside the locs of the given transport_module
 /datum/transport_controller/linear/proc/check_for_landmarks(obj/structure/transport/linear/new_transport_module)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	for(var/turf/platform_loc as anything in new_transport_module.locs)
@@ -121,6 +133,8 @@
 
 ///set vars and such given an overriding transport_id landmark
 /datum/transport_controller/linear/proc/set_info_from_id_landmark(obj/effect/landmark/transport/transport_id/landmark)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(!istype(landmark, /obj/effect/landmark/transport/transport_id))//transport_controller subtypes can want differnet id's than the base type wants
@@ -133,6 +147,8 @@
 
 ///orders the lift platforms in order of lowest z level to highest z level.
 /datum/transport_controller/linear/proc/order_platforms_by_z_level()
+	procstart = null
+	src.procstart = null
 	//contains nested lists for every z level in the world. why? because its really easy to sort
 	var/list/platforms_by_z = list()
 	platforms_by_z.len = world.maxz
@@ -165,6 +181,8 @@
 
 ///goes through all platforms in the given list and finds the one in the lower left corner
 /datum/transport_controller/linear/proc/create_modular_set_for_z_level(list/obj/structure/transport/linear/platforms_in_z)
+	procstart = null
+	src.procstart = null
 	var/min_x = INFINITY
 	var/max_x = 0
 
@@ -209,6 +227,8 @@
 
 ///returns the closest transport to the specified atom, prioritizing transports on the same z level. used for comparing distance
 /datum/transport_controller/linear/proc/return_closest_platform_to(atom/comparison, allow_multiple_answers = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(comparison) || !comparison.z)
 		return FALSE
 
@@ -243,6 +263,8 @@
 
 /// Returns a platform on the z-level which is vertically closest to the passed target_z
 /datum/transport_controller/linear/proc/return_closest_platform_to_z(target_z)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/transport/linear/found_platform
 	for(var/obj/structure/transport/linear/lift as anything in transport_modules)
 		// Already at the same Z-level, we can stop
@@ -272,6 +294,8 @@
 
 /// Returns a list of all the z-levels our transport is currently on.
 /datum/transport_controller/linear/proc/get_zs_we_are_on()
+	procstart = null
+	src.procstart = null
 	var/list/zs_we_are_present_on = list()
 	for(var/obj/structure/transport/linear/lift as anything in transport_modules)
 		zs_we_are_present_on |= lift.z
@@ -279,6 +303,8 @@
 
 ///returns all transport modules associated with this transport on the given z level or given atoms z level
 /datum/transport_controller/linear/proc/get_platforms_on_level(atom/atom_reference_OR_z_level_number)
+	procstart = null
+	src.procstart = null
 	var/z = atom_reference_OR_z_level_number
 	if(isatom(atom_reference_OR_z_level_number))
 		z = atom_reference_OR_z_level_number.z
@@ -303,6 +329,8 @@
  * user - Whomever made the movement.
  */
 /datum/transport_controller/linear/proc/move_lift_vertically(going, mob/user)
+	procstart = null
+	src.procstart = null
 	//transport_modules are sorted in order of lowest z to highest z, so going upwards we need to move them in reverse order to not collide
 	if(going == UP)
 		var/obj/structure/transport/linear/platform_to_move
@@ -335,6 +363,8 @@
  * user - optional, who is moving the lift?
  */
 /datum/transport_controller/linear/proc/move_after_delay(lift_move_duration, door_duration, direction, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isnum(lift_move_duration))
 		CRASH("[type] move_after_delay called with invalid duration ([lift_move_duration]).")
 	if(lift_move_duration <= 0 SECONDS)
@@ -386,6 +416,8 @@
  * user - optional, who moved it?
  */
 /datum/transport_controller/linear/proc/simple_move_wrapper(direction, lift_move_duration, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!Check_lift_move(direction))
 		return FALSE
 
@@ -420,6 +452,8 @@
  * Wrap everything up from simple_move_wrapper finishing its movement
  */
 /datum/transport_controller/linear/proc/finish_simple_move_wrapper()
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_LIFT_SET_DIRECTION, 0)
 	controls_lock(FALSE)
 
@@ -438,6 +472,8 @@
  * user - optional, who started the move
  */
 /datum/transport_controller/linear/proc/move_to_zlevel(target_z, datum/callback/loop_callback, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isnum(target_z) || target_z <= 0)
 		CRASH("[type] move_to_zlevel was passed an invalid target_z ([target_z]).")
 
@@ -495,6 +531,8 @@
  * action - how do we update the doors? CYCLE_OPEN to make them open, CYCLE_CLOSED to make them shut
  */
 /datum/transport_controller/linear/proc/update_lift_doors(on_z_level, action)
+	procstart = null
+	src.procstart = null
 
 	if(!isnull(on_z_level) && !islist(on_z_level))
 		on_z_level = list(on_z_level)
@@ -520,6 +558,8 @@
 
 /// Helper used in callbacks to open all the doors our platform is on
 /datum/transport_controller/linear/proc/open_lift_doors_callback()
+	procstart = null
+	src.procstart = null
 	update_lift_doors(get_zs_we_are_on(), action = CYCLE_OPEN)
 
 /**
@@ -528,6 +568,8 @@
  * It also locks controls for the (miniscule) duration of the movement, so the elevator cannot be broken by spamming.
  */
 /datum/transport_controller/linear/proc/move_transport_horizontally(going)
+	procstart = null
+	src.procstart = null
 	if(modular_set)
 		controls_lock(TRUE)
 		for(var/obj/structure/transport/linear/module_to_move as anything in transport_modules)
@@ -600,6 +642,8 @@
 
 ///Check destination turfs
 /datum/transport_controller/linear/proc/Check_lift_move(check_dir)
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/transport/linear/transport_module as anything in transport_modules)
 		for(var/turf/bound_turf in transport_module.locs)
 			var/turf/T = get_step_multiz(transport_module, check_dir)
@@ -615,6 +659,8 @@
  * Sets transport controls_locked state. Used to prevent moving mid movement, or cooldowns.
  */
 /datum/transport_controller/linear/proc/controls_lock(state)
+	procstart = null
+	src.procstart = null
 	switch(state)
 		if(FALSE)
 			controller_status &= ~CONTROLS_LOCKED
@@ -632,6 +678,8 @@
  * * consider_player_mobs - bool. if true our platforms consider player mobs to be foreign. only works if foreign_non_player_mobs is true as well
  */
 /datum/transport_controller/linear/proc/reset_lift_contents(consider_anything_past = 0, foreign_objects = TRUE, foreign_non_player_mobs = TRUE, consider_player_mobs = FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/transport/linear/lift_to_reset in transport_modules)
 		lift_to_reset.reset_contents(consider_anything_past, foreign_objects, foreign_non_player_mobs, consider_player_mobs)
 

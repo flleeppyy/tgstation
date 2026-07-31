@@ -56,6 +56,8 @@ SUBSYSTEM_DEF(verb_manager)
  * returns TRUE if the queuing was successful, FALSE otherwise.
  */
 /proc/_queue_verb(datum/callback/verb_callback/incoming_callback, tick_check, datum/controller/subsystem/verb_manager/subsystem_to_use = SSverb_manager, ...)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(incoming_callback))
 		var/destroyed_string
 		if(!incoming_callback)
@@ -116,6 +118,8 @@ SUBSYSTEM_DEF(verb_manager)
  * in TRY_QUEUE_VERB() and co.
  */
 /datum/controller/subsystem/verb_manager/proc/can_queue_verb(datum/callback/verb_callback/incoming_callback)
+	procstart = null
+	src.procstart = null
 	if(always_queue && !FOR_ADMINS_IF_VERBS_FUCKED_immediately_execute_all_verbs)
 		return TRUE
 
@@ -134,6 +138,8 @@ SUBSYSTEM_DEF(verb_manager)
  * returns TRUE if the queuing was successful, FALSE otherwise.
  */
 /datum/controller/subsystem/verb_manager/proc/queue_verb(datum/callback/verb_callback/incoming_callback)
+	procstart = null
+	src.procstart = null
 	. = FALSE //errored
 	if(message_admins_on_queue)
 		message_admins("[name] verb queuing: tick usage: [TICK_USAGE]%, proc: [incoming_callback.delegate], object: [incoming_callback.object], usr: [usr]")
@@ -141,12 +147,16 @@ SUBSYSTEM_DEF(verb_manager)
 	return TRUE
 
 /datum/controller/subsystem/verb_manager/fire(resumed)
+	procstart = null
+	src.procstart = null
 	run_verb_queue()
 
 /// runs through all of this subsystems queue of verb callbacks.
 /// goes through the entire verb queue without yielding.
 /// used so you can flush the queue outside of fire() without interfering with anything else subtype subsystems might do in fire().
 /datum/controller/subsystem/verb_manager/proc/run_verb_queue()
+	procstart = null
+	src.procstart = null
 	var/executed_verbs = 0
 
 	for(var/datum/callback/verb_callback/verb_callback as anything in verb_queue)
@@ -162,6 +172,8 @@ SUBSYSTEM_DEF(verb_manager)
 	//note that wait SECONDS is incorrect if this is called outside of fire() but because byond is garbage i need to add a timer to rustg to find a valid solution
 
 /datum/controller/subsystem/verb_manager/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(use_default_stats)
 		. += "V/S: [round(verbs_executed_per_second, 0.01)]"

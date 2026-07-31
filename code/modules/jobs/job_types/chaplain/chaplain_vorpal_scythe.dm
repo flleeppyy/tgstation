@@ -12,11 +12,15 @@ If the scythe isn't empowered when you sheath it, you take a heap of damage and 
 	organ_traits = list(TRAIT_MORBID)
 
 /obj/item/organ/cyberimp/arm/toolkit/shard/scythe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for (var/obj/item/scythe as anything in items_list)
 		ADD_TRAIT(scythe, TRAIT_NULLROD_ITEM, INNATE_TRAIT)
 
 /obj/item/organ/cyberimp/arm/toolkit/shard/scythe/Retract()
+	procstart = null
+	src.procstart = null
 	var/obj/item/vorpalscythe/scythe = active_item
 	if(!scythe)
 		return FALSE
@@ -63,6 +67,8 @@ If the scythe isn't empowered when you sheath it, you take a heap of damage and 
 	var/bonus_force_multiplier = 2
 
 /obj/item/vorpalscythe/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You can perform a death knell using [src] on a human with Right-Click. If they were sentient (whether currently or at some point), [src] is empowered on a successful death knell.")
 	. += span_notice("[src] seems to have quite a bit of reach. You might be able to hit things from further away.")
@@ -77,6 +83,8 @@ If the scythe isn't empowered when you sheath it, you take a heap of damage and 
 			. += span_notice("[src] is still. Anticipating the strike. Best not anger it by denying it the opportuntiy to taste blood.")
 
 /obj/item/vorpalscythe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/nullrod_core, chaplain_spawnable = FALSE, rune_remove_line = "TO DUST WITH YE!! AWAY!!") // The implant is the actual item the chappie can select
 	AddComponent(/datum/component/bane, affected_biotypes = MOB_PLANT, damage_multiplier = 1.5) //also good at killing plants
@@ -84,6 +92,8 @@ If the scythe isn't empowered when you sheath it, you take a heap of damage and 
 	AddComponent(/datum/component/walking_aid)
 
 /obj/item/vorpalscythe/attack(mob/living/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(ismonkey(target) && !target.mind) //Don't empower from hitting monkeys. Hit a corgi or something, I don't know.
 		return ..()
 
@@ -93,6 +103,8 @@ If the scythe isn't empowered when you sheath it, you take a heap of damage and 
 	return ..()
 
 /obj/item/vorpalscythe/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(empowerment == SCYTHE_EMPOWERED)
 		MODIFY_ATTACK_FORCE_MULTIPLIER(attack_modifiers, bonus_force_multiplier)
 
@@ -100,6 +112,8 @@ If the scythe isn't empowered when you sheath it, you take a heap of damage and 
 
 //Borrows some amputation shear code, but much more specific
 /obj/item/vorpalscythe/attack_secondary(mob/living/victim, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(victim) || user.combat_mode)
 		return SECONDARY_ATTACK_CALL_NORMAL
 
@@ -170,6 +184,8 @@ If the scythe isn't empowered when you sheath it, you take a heap of damage and 
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/vorpalscythe/proc/scythe_empowerment(potential_empowerment = SCYTHE_WEAK)
+	procstart = null
+	src.procstart = null
 	//Determines if we are entitled to setting/resetting our timer.
 	//Only reset SCYTHE_EMPOWERED with an empowerment that would grant that.
 	//Only reset SCTHE_SATED if hitting at least simple mobs or nonmonkey carbons.
@@ -182,6 +198,8 @@ If the scythe isn't empowered when you sheath it, you take a heap of damage and 
 		addtimer(CALLBACK(src, PROC_REF(scythe_empowerment_end)), (4 MINUTES / empowerment), TIMER_UNIQUE | TIMER_OVERRIDE)
 
 /obj/item/vorpalscythe/proc/scythe_empowerment_end()
+	procstart = null
+	src.procstart = null
 	empowerment = SCYTHE_WEAK
 
 #undef SCYTHE_WEAK

@@ -9,6 +9,8 @@
 	var/strength
 
 /datum/status_effect/food/on_creation(mob/living/new_owner, timeout_mod = 1, strength = 1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.strength = strength
 	if(isnum(timeout_mod))

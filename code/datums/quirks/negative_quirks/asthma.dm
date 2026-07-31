@@ -61,6 +61,8 @@
 	)
 
 /datum/quirk/item_quirk/asthma/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(quirk_holder, COMSIG_CARBON_EXPOSED_TO_SMOKE, PROC_REF(holder_exposed_to_smoke))
 	RegisterSignal(quirk_holder, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(organ_removed))
 	RegisterSignal(quirk_holder, COMSIG_ATOM_EXPOSE_REAGENTS, PROC_REF(exposed_to_reagents))
@@ -68,6 +70,8 @@
 	RegisterSignal(quirk_holder, COMSIG_LIVING_LIFE, PROC_REF(on_life))
 
 /datum/quirk/item_quirk/asthma/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/obj/item/inhaler/albuterol/asthma/rescue_inhaler = new(get_turf(quirk_holder))
@@ -76,12 +80,16 @@
 	COOLDOWN_START(src, next_attack_cooldown, time_first_attack_can_happen)
 
 /datum/quirk/item_quirk/asthma/remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	current_attack?.cure()
 	UnregisterSignal(quirk_holder, COMSIG_CARBON_EXPOSED_TO_SMOKE, COMSIG_CARBON_LOSE_ORGAN, COMSIG_ATOM_EXPOSE_REAGENTS, COMSIG_LIVING_POST_FULLY_HEAL, COMSIG_LIVING_LIFE)
 
 /datum/quirk/item_quirk/asthma/proc/on_life(mob/living/source, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (quirk_holder.stat == DEAD || HAS_TRAIT(quirk_holder, TRAIT_STASIS))
@@ -119,6 +127,8 @@
 
 /// Causes an asthma attack via infecting our owner with the attack disease. Notifies ghosts.
 /datum/quirk/item_quirk/asthma/proc/do_asthma_attack()
+	procstart = null
+	src.procstart = null
 	var/datum/disease/asthma_attack/typepath = pick_weight(asthma_attack_rarities)
 
 	current_attack = new typepath
@@ -130,6 +140,8 @@
 
 /// Setter proc for [inflammation]. Adjusts the amount by lung health, adjusts pressure mult, gives feedback messages if silent is FALSE.
 /datum/quirk/item_quirk/asthma/proc/adjust_inflammation(amount, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	var/old_inflammation = inflammation
 
 	var/obj/item/organ/lungs/holder_lungs = quirk_holder.get_organ_slot(ORGAN_SLOT_LUNGS)
@@ -153,6 +165,8 @@
 
 /// Setter proc for [inhaled_albuterol]. Adjusts inflammation immediately.
 /datum/quirk/item_quirk/asthma/proc/adjust_albuterol_levels(adjustment)
+	procstart = null
+	src.procstart = null
 	if (adjustment > 0)
 		var/obj/item/organ/lungs/holder_lungs = quirk_holder.get_organ_slot(ORGAN_SLOT_LUNGS)
 
@@ -165,12 +179,16 @@
 
 /// Returns the pressure mult to be applied to our lungs.
 /datum/quirk/item_quirk/asthma/proc/get_pressure_mult()
+	procstart = null
+	src.procstart = null
 	var/virtual_max = (max_inflammation * hit_max_mult_at_inflammation_percent)
 
 	return (1 - (min(inflammation/virtual_max, 1)))
 
 /// Sends feedback to our owner of which direction our asthma is intensifying/recovering.
 /datum/quirk/item_quirk/asthma/proc/do_inflammation_change_feedback(difference)
+	procstart = null
+	src.procstart = null
 	var/change_mult = 1 + (difference / 300) // 300 is arbitrary
 	if (difference > 0) // it decreased
 		if (prob(1 * change_mult))
@@ -186,6 +204,8 @@
 
 /// Returns the % of health our lungs have, from 1-0. Used in reducing recovery and intensifying inflammation.
 /datum/quirk/item_quirk/asthma/proc/get_lung_health_mult()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/carbon_quirk_holder = quirk_holder
 	var/obj/item/organ/lungs/holder_lungs = carbon_quirk_holder.get_organ_slot(ORGAN_SLOT_LUNGS)
 	if (isnull(holder_lungs))
@@ -196,12 +216,16 @@
 
 /// Signal proc for when we are exposed to smoke. Increases inflammation.
 /datum/quirk/item_quirk/asthma/proc/holder_exposed_to_smoke(datum/signal_source, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	adjust_inflammation(inflammation_on_smoke * seconds_per_tick)
 
 /// Signal proc for when our lungs are removed. Resets all our variables.
 /datum/quirk/item_quirk/asthma/proc/organ_removed(datum/signal_source, obj/item/organ/removed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (istype(removed, /obj/item/organ/lungs))
@@ -209,6 +233,8 @@
 
 /// Signal proc for when our owner receives reagents. If we receive albuterol via inhalation, we adjust inhaled albuterol by that amount. If we are smoking, we increase inflammation.
 /datum/quirk/item_quirk/asthma/proc/exposed_to_reagents(atom/source, list/reagents, datum/reagents/source_reagents, methods, show_message)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/final_total = 0
@@ -226,6 +252,8 @@
 
 /// Signal proc for when our asthma attack qdels. Unsets our refs to it and resets [next_attack_cooldown].
 /datum/quirk/item_quirk/asthma/proc/attack_deleting(datum/signal_source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(current_attack, COMSIG_QDELETING)
@@ -235,6 +263,8 @@
 
 /// Signal handler for COMSIG_LIVING_POST_FULLY_HEAL. Heals our asthma.
 /datum/quirk/item_quirk/asthma/proc/on_full_heal(datum/signal_source, heal_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (heal_flags & HEAL_ORGANS)
@@ -242,6 +272,8 @@
 
 /// Resets our asthma to normal. No inflammation, no pressure mult.
 /datum/quirk/item_quirk/asthma/proc/reset_asthma()
+	procstart = null
+	src.procstart = null
 	inflammation = 0
 	var/obj/item/organ/lungs/holder_lungs = quirk_holder.get_organ_slot(ORGAN_SLOT_LUNGS)
 	holder_lungs?.set_received_pressure_mult(holder_lungs::received_pressure_mult)

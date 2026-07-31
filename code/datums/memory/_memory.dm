@@ -72,10 +72,14 @@
 	generate_memory_name()
 
 /datum/memory/Destroy(force)
+	procstart = null
+	src.procstart = null
 	memorizer_mind = null
 	return ..()
 
 /datum/memory/serialize_list(list/options, list/semvers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	.["name"] = name
@@ -95,6 +99,8 @@
  * Generates a name for the memory.
  */
 /datum/memory/proc/generate_memory_name()
+	procstart = null
+	src.procstart = null
 	var/list/potential_names = get_names()
 	if(!length(potential_names))
 		// Someone forgot to implement get_names - it will stack trace, so we just need to return
@@ -112,6 +118,8 @@
  * * story_mood - What mood level should we use to select a verb from?
  */
 /datum/memory/proc/select_mood_verb(story_mood)
+	procstart = null
+	src.procstart = null
 	if(story_mood == MOODLESS_MEMORY)
 		// The protagonist didn't end up having a mood, so just continue on
 		memory_flags |= MEMORY_FLAG_NOMOOD
@@ -143,6 +151,8 @@
  * Your names should be puncuated.
  */
 /datum/memory/proc/get_names()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	stack_trace("[type] didn't have any names setup, these are necessary for all memories!")
 	return list()
@@ -158,6 +168,8 @@
  * They should also be in the present tense.
  */
 /datum/memory/proc/get_starts()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	stack_trace("[type] didn't have any starts setup, these are necessary if the MEMORY_FLAG_NOSTORY is not set!")
 	return list()
@@ -174,6 +186,8 @@
  * Mood phrases should always include the [mood_verb] var, as well.
  */
 /datum/memory/proc/get_moods()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	stack_trace("[type] didn't have any mood phrases, these are necessary if the MEMORY_FLAG_NOMOOD is not set!")
 	return list()
@@ -182,6 +196,8 @@
  * Used to select a mood verb if the protagonist is happy for memories that do not have [MEMORY_FLAG_NOMOOD] set.
  */
 /datum/memory/proc/get_happy_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"chuckles",
 		"has a huge grin",
@@ -197,6 +213,8 @@
  * Used to select a mood verb if the protagonist is neither happy or sad for memories that do not have [MEMORY_FLAG_NOMOOD] set.
  */
 /datum/memory/proc/get_neutral_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"appears clueless",
 		"is darting their eyes around",
@@ -213,6 +231,8 @@
  * Used to select a mood verb if the protagonist is sad for memories that do not have [MEMORY_FLAG_NOMOOD] set.
  */
 /datum/memory/proc/get_sad_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"appears crushed",
 		"has dried tears on their face",
@@ -227,6 +247,8 @@
  * Returns a list of locations for use in stories which do not have [MEMORY_FLAG_NOLOCATION] set.
  */
 /datum/memory/proc/get_locations()
+	procstart = null
+	src.procstart = null
 	return list(
 		"in [where].",
 		"while in [where]."
@@ -240,6 +262,8 @@
  * * story_flags - any additional flags involving the story
  */
 /datum/memory/proc/generate_story(story_type, story_flags)
+	procstart = null
+	src.procstart = null
 
 	//entirely independent vars (not related to the action or story type)
 
@@ -376,6 +400,8 @@
  * If the character has no mind or no assigned role, it'll just return their name.
  */
 /datum/memory/proc/build_story_character(character)
+	procstart = null
+	src.procstart = null
 	if(isnull(character))
 		return
 	if(istext(character))
@@ -405,6 +431,8 @@
  * They should generally only be used to give a new mind an idea of another mind's memories.
  */
 /datum/memory/proc/quick_copy_memory(datum/mind/new_memorizer)
+	procstart = null
+	src.procstart = null
 	var/datum/memory/copy/new_copy = new(new_memorizer, protagonist_name, deuteragonist_name, antagonist_name, where, memory_flags)
 	new_copy.name = name
 	new_copy.story_value = story_value
@@ -415,10 +443,14 @@
 	memory_flags = MEMORY_NO_STORY
 
 /datum/memory/copy/New(datum/mind/memorizer_mind, atom/protagonist, atom/deuteragonist, atom/antagonist, where, new_memory_flags)
+	procstart = null
+	src.procstart = null
 	src.where = where
 	src.memory_flags |= new_memory_flags
 	return ..()
 
 /datum/memory/copy/generate_memory_name()
+	procstart = null
+	src.procstart = null
 	// We just copy the original memory's name anyways
 	return

@@ -19,6 +19,8 @@
 	var/broken = FALSE
 
 /obj/item/suit_sensor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(broken)
 		. += span_warning("It's currently broken. You can use a piece of [EXAMINE_HINT("cable")] to fix it.")
@@ -26,6 +28,8 @@
 		. += span_notice("It's currently set on '[GLOB.suit_sensor_mode_to_defines.Find(sensor_mode + 1)]'.")
 
 /obj/item/suit_sensor/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(broken)
 		return
@@ -38,6 +42,8 @@
 			. += "suit_sensor_tracking"
 
 /obj/item/suit_sensor/proc/set_mode(new_mode)
+	procstart = null
+	src.procstart = null
 	if(sensor_mode == new_mode)
 		return FALSE
 	sensor_mode = new_mode
@@ -45,6 +51,8 @@
 	return TRUE
 
 /obj/item/suit_sensor/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(user.mobility_flags & MOBILITY_USE) || !IsReachableBy(user))
 		return FALSE
@@ -60,6 +68,8 @@
 	balloon_alert(user, "sensor set to '[LOWER_TEXT(new_mode)]'")
 
 /obj/item/suit_sensor/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF || broken)
 		return
@@ -71,6 +81,8 @@
 	playsound(source = src, soundin = 'sound/effects/sparks/sparks3.ogg', vol = 75, vary = TRUE, extrarange = SHORT_RANGE_SOUND_EXTRARANGE, ignore_walls = FALSE)
 
 /obj/item/suit_sensor/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stack/cable_coil))
 		return ..()
 	if(!broken)

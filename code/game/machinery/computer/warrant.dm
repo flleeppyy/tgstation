@@ -10,6 +10,8 @@
 	var/printing = FALSE
 
 /obj/machinery/computer/warrant/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -18,6 +20,8 @@
 		ui.open()
 
 /obj/machinery/computer/warrant/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/list/records = list()
@@ -58,6 +62,8 @@
 	return data
 
 /obj/machinery/computer/warrant/ui_act(action, list/params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return FALSE
@@ -79,6 +85,8 @@
 
 /// Pays towards a listed fine.
 /obj/machinery/computer/warrant/proc/pay_fine(mob/user, list/params)
+	procstart = null
+	src.procstart = null
 	var/datum/record/crew/target = locate(params["crew_ref"]) in GLOB.manifest.general
 	if(!target)
 		return FALSE
@@ -140,6 +148,8 @@
 
 /// Finishes printing, resets the printer.
 /obj/machinery/computer/warrant/proc/print_finish(obj/item/paper/bounty)
+	procstart = null
+	src.procstart = null
 	printing = FALSE
 	playsound(src, 'sound/machines/terminal/terminal_eject.ogg', 100, TRUE)
 	bounty.forceMove(loc)
@@ -148,6 +158,8 @@
 
 /// Prints a bounty for a listed fine.
 /obj/machinery/computer/warrant/proc/print_bounty(mob/user, list/params)
+	procstart = null
+	src.procstart = null
 	if(printing)
 		balloon_alert(user, "printer busy")
 		playsound(src, 'sound/machines/terminal/terminal_error.ogg', 100, TRUE)

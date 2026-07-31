@@ -12,6 +12,8 @@
 	viable_zones = list(BODY_ZONE_HEAD)
 
 /datum/wound_pregen_data/cranial_fissure/get_weight(obj/item/bodypart/limb, woundtype, damage, attack_direction, damage_source)
+	procstart = null
+	src.procstart = null
 	if (isnull(limb.owner))
 		return ..()
 
@@ -47,6 +49,8 @@
 #define CRANIAL_FISSURE_FILTER_DISPLACEMENT "cranial_fissure_displacement"
 
 /datum/wound/cranial_fissure/wound_injury(datum/wound/old_wound = null, attack_direction = null)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(limb, TRAIT_IMMUNE_TO_CRANIAL_FISSURE, type)
 	ADD_TRAIT(victim, TRAIT_HAS_CRANIAL_FISSURE, type)
 
@@ -55,6 +59,8 @@
 	RegisterSignal(victim, COMSIG_MOB_SLIPPED, PROC_REF(on_owner_slipped))
 
 /datum/wound/cranial_fissure/remove_wound(ignore_limb, replaced, destroying)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(limb, TRAIT_IMMUNE_TO_CRANIAL_FISSURE, type)
 	if (!isnull(victim))
 		REMOVE_TRAIT(victim, TRAIT_HAS_CRANIAL_FISSURE, type)
@@ -63,6 +69,8 @@
 	return ..()
 
 /datum/wound/cranial_fissure/proc/on_owner_slipped(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (source.stat == DEAD)
@@ -84,6 +92,8 @@
 	)
 
 /datum/wound/cranial_fissure/try_handling(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (user.usable_hands <= 0 || user.combat_mode)
 		return FALSE
 
@@ -134,6 +144,8 @@
 	return TRUE
 
 /datum/wound/cranial_fissure/proc/still_has_eyes(obj/item/organ/eyes/eyes)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	return victim?.get_organ_by_type(/obj/item/organ/eyes) == eyes

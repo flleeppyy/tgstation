@@ -26,6 +26,8 @@
 	var/pressure_checks = ATMOS_EXTERNAL_BOUND
 
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(underfloor_state)
 		var/image/cap = get_pipe_image(icon, "dpvent_cap", dir, pipe_color, piping_layer = piping_layer)
@@ -38,6 +40,8 @@
 		icon_state = pump_direction ? "vent_out" : "vent_in"
 
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/process_atmos()
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return
 
@@ -103,6 +107,8 @@
 	name = "large dual-port air vent"
 
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/high_volume/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/gas_mixture/air1 = airs[1]
 	var/datum/gas_mixture/air2 = airs[2]

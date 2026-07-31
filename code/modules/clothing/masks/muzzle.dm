@@ -10,10 +10,14 @@
 	equip_delay_other = 2 SECONDS
 
 /obj/item/clothing/mask/muzzle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/muffles_speech)
 
 /obj/item/clothing/mask/muzzle/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.get_item_by_slot(ITEM_SLOT_MASK) == src)
 		to_chat(user, span_warning("You need help taking this off!"))
 		return
@@ -40,10 +44,14 @@
 	var/stripping_damage = 0
 
 /obj/item/clothing/mask/muzzle/tape/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "[span_notice("Use it on someone while not in combat mode to tape their mouth closed!")]"
 
 /obj/item/clothing/mask/muzzle/tape/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user.get_item_by_slot(ITEM_SLOT_MASK) != src)
 		return
@@ -54,6 +62,8 @@
 		to_chat(user, span_userdanger("You feel a massive pain as hundreds of tiny spikes tear free from your face!"))
 
 /obj/item/clothing/mask/muzzle/tape/attack(mob/living/carbon/victim, mob/living/carbon/attacker, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(attacker.combat_mode)
 		return ..()
 	if(victim.is_mouth_covered(ITEM_SLOT_HEAD))

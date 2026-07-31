@@ -19,14 +19,20 @@
 	spell_requirements = NONE
 
 /datum/action/cooldown/spell/realignment/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return isliving(cast_on)
 
 /datum/action/cooldown/spell/realignment/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cast_on.apply_status_effect(/datum/status_effect/realignment)
 	to_chat(cast_on, span_notice("We begin to realign ourselves."))
 
 /datum/action/cooldown/spell/realignment/after_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// With every cast, our spell level increases for a short time, which goes back down after a period
 	// and with every spell level, the cooldown duration of the spell goes up
@@ -35,6 +41,8 @@
 		addtimer(CALLBACK(src, PROC_REF(delevel_spell)), reduction_timer)
 
 /datum/action/cooldown/spell/realignment/get_spell_title()
+	procstart = null
+	src.procstart = null
 	switch(spell_level)
 		if(1, 2)
 			return "Hasty " // Hasty Realignment
@@ -58,9 +66,13 @@
 	var/list/realignment_traits = list(TRAIT_BATON_RESISTANCE, TRAIT_PACIFISM)
 
 /datum/status_effect/realignment/get_examine_text()
+	procstart = null
+	src.procstart = null
 	return span_notice("[owner.p_Theyre()] glowing a soft white.")
 
 /datum/status_effect/realignment/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.add_traits(realignment_traits, TRAIT_STATUS_EFFECT(id))
 	owner.add_filter(id, 2, list("type" = "outline", "color" = "#d6e3e7", "size" = 2))
 	var/filter = owner.get_filter(id)
@@ -69,10 +81,14 @@
 	return TRUE
 
 /datum/status_effect/realignment/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_traits(realignment_traits, TRAIT_STATUS_EFFECT(id))
 	owner.remove_filter(id)
 
 /datum/status_effect/realignment/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	owner.adjust_stamina_loss(-10)
 	owner.AdjustAllImmobility(-1 SECONDS)
 

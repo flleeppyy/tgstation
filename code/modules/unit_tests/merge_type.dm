@@ -1,4 +1,6 @@
 /datum/unit_test/merge_type/Run()
+	procstart = null
+	src.procstart = null
 	var/list/blacklist = list(/obj/item/stack/sheet,
 							  /obj/item/stack/sheet/mineral,
 							  /obj/item/stack/ore,

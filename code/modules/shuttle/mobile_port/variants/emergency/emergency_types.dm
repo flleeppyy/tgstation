@@ -5,6 +5,8 @@
 	dir = EAST
 
 /obj/docking_port/mobile/emergency/backup/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	// We want to be a valid emergency shuttle
 	// but not be the main one, keep whatever's set
 	// valid.
@@ -15,6 +17,8 @@
 	SSshuttle.backup_shuttle = src
 
 /obj/docking_port/mobile/emergency/backup/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(SSshuttle.backup_shuttle == src)
 		SSshuttle.backup_shuttle = null
 	return ..()
@@ -26,6 +30,8 @@
 	launch_status = UNLAUNCHED //required for it to launch as a pod.
 
 /obj/docking_port/mobile/monastery/on_emergency_dock()
+	procstart = null
+	src.procstart = null
 	if(launch_status == ENDGAME_LAUNCHED)
 		initiate_docking(SSshuttle.getDock("pod_away")) //docks our shuttle as any pod would
 		mode = SHUTTLE_ENDGAME
@@ -34,6 +40,8 @@
 /obj/docking_port/mobile/emergency/shuttle_build
 
 /obj/docking_port/mobile/emergency/shuttle_build/postregister()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	initiate_docking(SSshuttle.getDock("emergency_home"))
 

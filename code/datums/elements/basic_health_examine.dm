@@ -10,6 +10,8 @@
 	var/heavy_threshold
 
 /datum/element/basic_health_examine/Attach(datum/target, light_damage_message, heavy_damage_message, heavy_threshold)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isbasicmob(target))
 		return ELEMENT_INCOMPATIBLE
@@ -21,10 +23,14 @@
 	RegisterSignal(target, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/element/basic_health_examine/Detach(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, COMSIG_ATOM_EXAMINE)
 	return ..()
 
 /datum/element/basic_health_examine/proc/on_examine(mob/living/basic/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source.health == source.maxHealth)

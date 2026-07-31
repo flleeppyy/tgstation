@@ -31,6 +31,8 @@
  * @param _mat The material that this event will affect.
  */
 /datum/stock_market_event/proc/start_event(datum/material/mat)
+	procstart = null
+	src.procstart = null
 	if(istype(mat, /datum/material))
 		return FALSE
 	src.mat = mat
@@ -44,6 +46,8 @@
  * This proc is called every tick while the event is ongoing by SSstock_market.
  */
 /datum/stock_market_event/proc/handle()
+	procstart = null
+	src.procstart = null
 	trend_duration--
 	if(trend_duration <= 0)
 		end_event()
@@ -53,6 +57,8 @@
  * When a stock_market_event is ended, this proc is called to apply any final effects and clean up anything that needs to be cleaned up.
  */
 /datum/stock_market_event/proc/end_event()
+	procstart = null
+	src.procstart = null
 	SSstock_market.active_events -= src
 	qdel(src)
 
@@ -60,6 +66,8 @@
  * This proc is called to create a news string for the event, which is passed along to SSstock_market to be appended to the automatic newscaster messages.
  */
 /datum/stock_market_event/proc/create_news()
+	procstart = null
+	src.procstart = null
 	var/temp_company = pick(company_name)
 	var/temp_circumstance = pick(circumstance)
 	SSstock_market.news_string += "<b>[name] [temp_company]</b> [temp_circumstance]<b>[mat.name].</b><br>"
@@ -76,6 +84,8 @@
 	)
 
 /datum/stock_market_event/market_reset/start_event()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSstock_market.materials_prices[mat] = (initial(mat.value_per_unit)) * SHEET_MATERIAL_AMOUNT
 	create_news()
@@ -91,6 +101,8 @@
 	)
 
 /datum/stock_market_event/large_boost/start_event()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/price_units = SSstock_market.materials_prices[mat]
 	SSstock_market.materials_prices[mat] += round(gaussian(price_units, price_units * 0.15))
@@ -108,6 +120,8 @@
 	)
 
 /datum/stock_market_event/large_drop/start_event()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/price_units = SSstock_market.materials_prices[mat]
 	SSstock_market.materials_prices[mat] -= round(gaussian(price_units * 1.5, price_units * 0.15))
@@ -125,6 +139,8 @@
 	)
 
 /datum/stock_market_event/hotcakes/start_event()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSstock_market.materials_prices[mat] = round(price_maximum * mat.value_per_unit)
 	create_news()
@@ -139,10 +155,14 @@
 	)
 
 /datum/stock_market_event/lockdown/handle()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSstock_market.materials_quantity[mat] = 0 //Force the material to be unavailable.
 
 /datum/stock_market_event/lockdown/end_event()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSstock_market.materials_quantity[mat] = initial(mat.tradable_base_quantity) //Force the material to be available again.
 	SSstock_market.materials_prices[mat] = initial(mat.value_per_unit) * SHEET_MATERIAL_AMOUNT //Force the price to be reset once the lockdown is over.

@@ -10,6 +10,8 @@
  * * ritual_location - Central turf of the ritual rune.
  */
 /datum/grand_side_effect/proc/can_trigger(turf/ritual_location)
+	procstart = null
+	src.procstart = null
 	return !abstract
 
 /**
@@ -20,6 +22,8 @@
  * * invoker - Mob who cast the spell.
  */
 /datum/grand_side_effect/proc/trigger(potency, turf/ritual_location, mob/invoker)
+	procstart = null
+	src.procstart = null
 	return // Do something cool in the override
 
 /**
@@ -38,6 +42,8 @@
 	abstract = FALSE
 
 /datum/grand_side_effect/scramble_turfs/trigger(potency, turf/ritual_location, mob/invoker)
+	procstart = null
+	src.procstart = null
 	playsound(ritual_location, 'sound/effects/magic/timeparadox2.ogg', 60, TRUE)
 	var/datum/action/cooldown/spell/spell = new /datum/action/cooldown/spell/spacetime_dist()
 	spell.cast(ritual_location)
@@ -50,6 +56,8 @@
 	abstract = FALSE
 
 /datum/grand_side_effect/transmogrify_area/trigger(potency, turf/ritual_location, mob/invoker)
+	procstart = null
+	src.procstart = null
 	var/new_theme_path = pick(subtypesof(/datum/dimension_theme))
 	var/datum/dimension_theme/theme = new new_theme_path()
 	var/range = round(LERP(2, 4, potency/GRAND_RITUAL_FINALE_COUNT))
@@ -74,6 +82,8 @@
 		addtimer(CALLBACK(src, PROC_REF(staggered_transform), theme, range_turfs), (0.5 SECONDS) * iterator)
 
 /datum/grand_side_effect/transmogrify_area/proc/staggered_transform(datum/dimension_theme/theme, list/transform_turfs)
+	procstart = null
+	src.procstart = null
 	theme.apply_theme_to_list_of_turfs(transform_turfs)
 
 /// Minimum number of anomalies to create
@@ -93,6 +103,8 @@
 	)
 
 /datum/grand_side_effect/create_anomalies/trigger(potency, turf/ritual_location, mob/invoker)
+	procstart = null
+	src.procstart = null
 	var/to_create = rand(MIN_ANOMALIES_CREATED, MAX_ANOMALIES_CREATED)
 	var/potency_add = LERP(-1, 1, potency/GRAND_RITUAL_FINALE_COUNT)
 	to_create = clamp(round(to_create + potency_add), MIN_ANOMALIES_CREATED, MAX_ANOMALIES_CREATED)
@@ -121,6 +133,8 @@
 	abstract = FALSE
 
 /datum/grand_side_effect/emp/trigger(potency, turf/ritual_location, mob/invoker)
+	procstart = null
+	src.procstart = null
 	var/heavy = LERP(0, 3, potency/GRAND_RITUAL_FINALE_COUNT)
 	var/light = LERP(3, 6, potency/GRAND_RITUAL_FINALE_COUNT)
 	empulse(ritual_location, heavy, light, emp_source = src)
@@ -131,6 +145,8 @@
 
 /// Don't run if there's nobody to swap
 /datum/grand_side_effect/translocate/can_trigger(turf/ritual_location)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -143,6 +159,8 @@
 	return TRUE
 
 /datum/grand_side_effect/translocate/trigger(potency, turf/ritual_location, mob/invoker)
+	procstart = null
+	src.procstart = null
 	var/list/mobs = list()
 	var/list/mob_locations = list()
 
@@ -169,6 +187,8 @@
 	abstract = FALSE
 
 /datum/grand_side_effect/slippery/trigger(potency, turf/ritual_location, mob/invoker)
+	procstart = null
+	src.procstart = null
 	var/range = LERP(2, 4, potency/GRAND_RITUAL_FINALE_COUNT)
 	var/datum/reagents/lube = new(1000)
 	lube.add_reagent(/datum/reagent/lube, 100)
@@ -184,6 +204,8 @@
 
 /// Don't run if there's nobody to summon
 /datum/grand_side_effect/summon_crewmate/can_trigger(turf/ritual_location)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -194,6 +216,8 @@
 	return FALSE
 
 /datum/grand_side_effect/summon_crewmate/proc/is_valid_crewmate(mob/living/carbon/human/crewmate, area/our_area)
+	procstart = null
+	src.procstart = null
 	if (!crewmate.mind || IS_HUMAN_INVADER(crewmate))
 		return FALSE
 	return get_area(crewmate) != our_area
@@ -201,6 +225,8 @@
 #define CREWMATE_SUMMON_TELEPORT_DELAY 9 SECONDS
 
 /datum/grand_side_effect/summon_crewmate/trigger(potency, turf/ritual_location, mob/invoker)
+	procstart = null
+	src.procstart = null
 	playsound(ritual_location, 'sound/effects/magic/lightning_chargeup.ogg', 65, TRUE)
 	var/list/potential_victims = list()
 	var/area/our_area = get_area(ritual_location)
@@ -229,6 +255,8 @@
 #undef CREWMATE_SUMMON_TELEPORT_DELAY
 
 /datum/grand_side_effect/summon_crewmate/proc/summon_crewmate(mob/victim, turf/destination)
+	procstart = null
+	src.procstart = null
 	var/turf/was_position = victim.loc
 	victim.RemoveElement(/datum/element/forced_gravity, 0)
 	victim.remove_filter("teleport_glow")
@@ -245,6 +273,8 @@
 	abstract = FALSE
 
 /datum/grand_side_effect/smoke/trigger(potency, turf/ritual_location, mob/invoker)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/magic/smoke.ogg', 50, TRUE)
 	var/range = LERP(2, 4, potency/GRAND_RITUAL_FINALE_COUNT)
 	do_smoke(round(range), ritual_location, ritual_location, smoke_type = /datum/effect_system/fluid_spread/smoke/colourful)
@@ -271,6 +301,8 @@
 	)
 
 /obj/effect/particle_effect/fluid/smoke/colourful/Initialize(mapload, datum/fluid_group/group, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	color = pick(colours)
 
@@ -279,6 +311,8 @@
 	abstract = FALSE
 
 /datum/grand_side_effect/gore/trigger(potency, turf/ritual_location, mob/invoker)
+	procstart = null
+	src.procstart = null
 	var/list/nearby_turfs = list()
 	for (var/turf/potential_turf in range(2, ritual_location))
 		if (potential_turf.is_blocked_turf(exclude_mobs = TRUE))
@@ -293,6 +327,8 @@
 	abstract = FALSE
 
 /datum/grand_side_effect/create_food/trigger(potency, turf/ritual_location, mob/invoker)
+	procstart = null
+	src.procstart = null
 	var/duration = LERP((10 SECONDS), (30 SECONDS), potency/GRAND_RITUAL_FINALE_COUNT)
 	new /obj/effect/abstract/local_food_rain(ritual_location, duration)
 
@@ -302,6 +338,8 @@
 	var/range = 3
 
 /obj/effect/abstract/local_food_rain/Initialize(mapload, duration, max_foods_per_second = 3, range = 3)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.max_foods_per_second = max_foods_per_second
 	src.range = range
@@ -310,13 +348,19 @@
 	START_PROCESSING(SSprocessing, src)
 
 /obj/effect/abstract/local_food_rain/Destroy(force)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSprocessing, src)
 	return ..()
 
 /obj/effect/abstract/local_food_rain/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	create_food(seconds_per_tick)
 
 /obj/effect/abstract/local_food_rain/proc/create_food(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/to_create = rand(0, max_foods_per_second * seconds_per_tick)
 	if (to_create == 0)
 		return
@@ -332,6 +376,8 @@
 		addtimer(CALLBACK(src, PROC_REF(drop_food), pick_n_take(valid_turfs)), rand(0, (1 SECONDS) * seconds_per_tick))
 
 /obj/effect/abstract/local_food_rain/proc/drop_food(turf/landing_zone)
+	procstart = null
+	src.procstart = null
 	podspawn(list(
 			"target" = landing_zone,
 			"style" = /datum/pod_style/seethrough,
@@ -343,6 +389,8 @@
 	)
 
 /obj/effect/abstract/local_food_rain/proc/end_rain()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /// Spawn some mobs after a delay
@@ -359,6 +407,8 @@
 	)
 
 /datum/grand_side_effect/spawn_delayed_mobs/trigger(potency, turf/ritual_location, mob/invoker)
+	procstart = null
+	src.procstart = null
 	var/count = LERP(1, 4, potency/GRAND_RITUAL_FINALE_COUNT)
 	var/list/valid_turfs = list()
 	for (var/turf/turf in range(3, ritual_location))
@@ -373,11 +423,15 @@
 		addtimer(CALLBACK(src, PROC_REF(create_portal), mob_type, spawn_loc), rand(0, 1 SECONDS))
 
 /datum/grand_side_effect/spawn_delayed_mobs/proc/create_portal(mob_type, turf/spawn_loc)
+	procstart = null
+	src.procstart = null
 	var/spawn_delay = rand(10 SECONDS, 15 SECONDS)
 	new /obj/effect/temp_visual/delayed_mob_portal(spawn_loc, spawn_delay)
 	addtimer(CALLBACK(src, PROC_REF(create_mob), mob_type, spawn_loc), spawn_delay)
 
 /datum/grand_side_effect/spawn_delayed_mobs/proc/create_mob(mob_path, loc)
+	procstart = null
+	src.procstart = null
 	if (!loc)
 		return
 	if (!mob_path)
@@ -391,6 +445,8 @@
 	icon_state = "rift"
 
 /obj/effect/temp_visual/delayed_mob_portal/Initialize(mapload, duration = 15 SECONDS)
+	procstart = null
+	src.procstart = null
 	src.duration = duration
 	animate(src, transform = matrix()*0, time = 0)
 	animate(transform = matrix(), time = 2)
@@ -405,6 +461,8 @@
 	abstract = FALSE
 
 /datum/grand_side_effect/orchestra/trigger(potency, turf/ritual_location, mob/invoker)
+	procstart = null
+	src.procstart = null
 	var/count = LERP(1, 4, potency/GRAND_RITUAL_FINALE_COUNT)
 	var/list/valid_turfs = list()
 	for (var/turf/turf in range(2, ritual_location))

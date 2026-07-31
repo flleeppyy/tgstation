@@ -9,10 +9,14 @@
 	VAR_PRIVATE/mutable_appearance/halo_overlay
 
 /datum/status_effect/cult_halo/on_creation(mob/living/new_owner, initial_delay = 20 SECONDS)
+	procstart = null
+	src.procstart = null
 	COOLDOWN_START(src, halo_start, initial_delay)
 	return ..()
 
 /datum/status_effect/cult_halo/on_apply()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(owner, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(add_halo))
 	if(COOLDOWN_FINISHED(src, halo_start))
 		refresh_halo()
@@ -21,6 +25,8 @@
 	return TRUE
 
 /datum/status_effect/cult_halo/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_ATOM_UPDATE_OVERLAYS)
 	owner.update_appearance(UPDATE_OVERLAYS)
 	REMOVE_TRAIT(owner, TRAIT_CULT_HALO, TRAIT_STATUS_EFFECT(id))
@@ -28,12 +34,16 @@
 	return TRUE
 
 /datum/status_effect/cult_halo/proc/refresh_halo()
+	procstart = null
+	src.procstart = null
 	COOLDOWN_RESET(src, halo_start)
 	ADD_TRAIT(owner, TRAIT_CULT_HALO, TRAIT_STATUS_EFFECT(id))
 	owner.update_appearance(UPDATE_OVERLAYS)
 	new /obj/effect/temp_visual/cult/sparks(get_turf(owner), owner.dir)
 
 /datum/status_effect/cult_halo/proc/add_halo(datum/source, list/overlay_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!COOLDOWN_FINISHED(src, halo_start))

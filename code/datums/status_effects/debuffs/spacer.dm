@@ -9,9 +9,13 @@
 	VAR_FINAL/nerfed_effects_because_planetary = FALSE
 
 /datum/status_effect/spacer/on_apply()
+	procstart = null
+	src.procstart = null
 	return iscarbon(owner)
 
 /datum/status_effect/spacer/on_creation(mob/living/new_owner, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	nerfed_effects_because_planetary = SSmapping.is_planetary()
 
@@ -33,6 +37,8 @@
 	VAR_FINAL/knockdown_mod_applied = FALSE
 
 /datum/status_effect/spacer/gravity_wellness/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	var/in_nograv = !owner.has_gravity()
 	var/nograv_mod = in_nograv ? 2 : 0.5
 	owner.adjust_disgust(-1 * nograv_mod * disgust_healing_per_second * seconds_between_ticks)
@@ -54,10 +60,14 @@
 			apply_knockdown_mod()
 
 /datum/status_effect/spacer/gravity_wellness/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	remove_knockdown_mod()
 
 /datum/status_effect/spacer/gravity_wellness/proc/apply_knockdown_mod()
+	procstart = null
+	src.procstart = null
 	if(knockdown_mod_applied || !ishuman(owner))
 		return
 	var/mob/living/carbon/human/the_spacer = owner
@@ -65,6 +75,8 @@
 	knockdown_mod_applied = TRUE
 
 /datum/status_effect/spacer/gravity_wellness/proc/remove_knockdown_mod()
+	procstart = null
+	src.procstart = null
 	if(!knockdown_mod_applied || !ishuman(owner))
 		return
 	var/mob/living/carbon/human/the_spacer = owner
@@ -83,6 +95,8 @@
 	VAR_FINAL/seconds_active = 0 SECONDS
 
 /datum/status_effect/spacer/gravity_sickness/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(owner.mob_negates_gravity())
 		// Might seem redundant but we can totally be on a planet but have an anti-gravity effect like gravitum
 		return
@@ -135,10 +149,14 @@
 	mood_change = 3
 
 /datum/mood_event/spacer/on_planet/low_grav/add_effects(...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(lower_mood_bonus)), 5 MINUTES, TIMER_DELETE_ME)
 
 /datum/mood_event/spacer/on_planet/low_grav/proc/lower_mood_bonus()
+	procstart = null
+	src.procstart = null
 	mood_change -= 1
 	owner.mob_mood.update_mood()
 	if(mood_change > 1)

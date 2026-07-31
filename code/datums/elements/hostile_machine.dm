@@ -3,6 +3,8 @@
 	element_flags = ELEMENT_DETACH_ON_HOST_DESTROY
 
 /datum/element/hostile_machine/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (!isatom(target))
@@ -19,11 +21,15 @@
 	add_to_z(target)
 
 /datum/element/hostile_machine/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, COMSIG_MOVABLE_Z_CHANGED)
 	remove_from_z(source)
 	return ..()
 
 /datum/element/hostile_machine/proc/on_z_change(atom/movable/source, turf/old_turf, turf/new_turf, same_z_layer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(same_z_layer)
@@ -32,6 +38,8 @@
 	add_to_z(source, new_turf.z)
 
 /datum/element/hostile_machine/proc/add_to_z(atom/target, z)
+	procstart = null
+	src.procstart = null
 	if(isnull(z))
 		var/turf/target_turf = get_turf(target)
 		z = target_turf?.z
@@ -42,6 +50,8 @@
 	GLOB.hostile_machines_by_z[z] |= target
 
 /datum/element/hostile_machine/proc/remove_from_z(atom/target, z)
+	procstart = null
+	src.procstart = null
 	if(isnull(z))
 		var/turf/target_turf = get_turf(target)
 		z = target_turf?.z

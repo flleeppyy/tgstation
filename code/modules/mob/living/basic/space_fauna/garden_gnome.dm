@@ -100,6 +100,8 @@
 	)
 
 /mob/living/basic/garden_gnome/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/callback/retaliate_callback = CALLBACK(src, PROC_REF(ai_retaliate_behaviour))
 	chosen_hat_colour = pick_weight(gnome_hat_colours)
@@ -113,11 +115,15 @@
 	add_traits(list(TRAIT_SPACEWALK, TRAIT_VENTCRAWLER_ALWAYS), INNATE_TRAIT)
 
 /mob/living/basic/garden_gnome/proc/apply_colour()
+	procstart = null
+	src.procstart = null
 	if(!greyscale_config)
 		return
 	set_greyscale(colors = list(chosen_hat_colour, pick_weight(gnome_body_colours), pick_weight(gnome_pants_colours), pick_weight(gnome_beard_colours)))
 
 /mob/living/basic/garden_gnome/proc/ai_retaliate_behaviour(mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	if (!istype(attacker))
 		return
 	for (var/mob/living/basic/garden_gnome/potential_gnome in oview(src, 7))

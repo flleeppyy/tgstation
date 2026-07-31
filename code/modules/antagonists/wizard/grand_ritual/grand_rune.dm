@@ -70,6 +70,8 @@
 
 /// Prepare magic words and hide from silicons
 /obj/effect/grand_rune/Initialize(mapload, potency = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.potency = potency
 	invoke_time = get_invoke_time()
@@ -83,6 +85,8 @@
 
 /// I cast Summon Security
 /obj/effect/grand_rune/proc/announce_rune()
+	procstart = null
+	src.procstart = null
 	var/area/created_area = get_area(src)
 	if (potency >= GRAND_RITUAL_IMMINENT_FINALE_POTENCY)
 		priority_announce("Major anomalous fluctuations to local spacetime detected in: [created_area.name].", "Anomaly Alert")
@@ -92,6 +96,8 @@
 		return
 
 /obj/effect/grand_rune/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (times_invoked >= GRAND_RUNE_INVOKES_TO_COMPLETE)
 		. += span_notice("Its power seems to have been expended.")
@@ -101,6 +107,8 @@
 	. += span_notice("Invoke this rune [GRAND_RUNE_INVOKES_TO_COMPLETE - times_invoked] more times to complete the ritual.")
 
 /obj/effect/grand_rune/can_interact(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -113,12 +121,16 @@
 	return TRUE
 
 /obj/effect/grand_rune/interact(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	INVOKE_ASYNC(src, PROC_REF(invoke_rune), user)
 	return TRUE
 
 /// Actually does the whole invoking thing
 /obj/effect/grand_rune/proc/invoke_rune(mob/living/user)
+	procstart = null
+	src.procstart = null
 	is_in_use = TRUE
 	add_channel_effect(user)
 	user.balloon_alert(user, "invoking rune...")
@@ -169,19 +181,27 @@
 
 /// Add special effects for casting a spell, basically you glow and hover in the air.
 /obj/effect/grand_rune/proc/add_channel_effect(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.AddElement(/datum/element/forced_gravity, 0)
 	user.add_filter("channeling_glow", 2, list("type" = "outline", "color" = spell_colour, "size" = 2))
 
 /// Remove special effects for casting a spell
 /obj/effect/grand_rune/proc/remove_channel_effect(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.RemoveElement(/datum/element/forced_gravity, 0)
 	user.remove_filter("channeling_glow")
 
 /obj/effect/grand_rune/proc/get_invoke_time()
+	procstart = null
+	src.procstart = null
 	return  (BASE_INVOKE_TIME) + (potency * (ADD_INVOKE_TIME))
 
 /// Called when you actually finish the damn thing
 /obj/effect/grand_rune/proc/on_invocation_complete(mob/living/user)
+	procstart = null
+	src.procstart = null
 	is_in_use = FALSE
 	playsound(src,'sound/effects/magic/staff_change.ogg', 75, TRUE)
 	INVOKE_ASYNC(src, PROC_REF(summon_round_event), user) // Running the event sleeps
@@ -193,11 +213,15 @@
 	SSblackbox.record_feedback("amount", "grand_runes_invoked", 1)
 
 /obj/effect/grand_rune/proc/remove_rune()
+	procstart = null
+	src.procstart = null
 	new remains_typepath(get_turf(src))
 	qdel(src)
 
 /// Triggers some form of event somewhere on the station
 /obj/effect/grand_rune/proc/summon_round_event(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/list/possible_events = list()
 
 	var/player_count = get_active_player_count(alive_check = TRUE, afk_check = TRUE, human_check = TRUE)
@@ -220,6 +244,8 @@
 
 /// Applies some local side effects to the area
 /obj/effect/grand_rune/proc/trigger_side_effects(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (potency == 0) // Not on the first one
 		return
 	var/list/possible_effects = list()
@@ -237,6 +263,8 @@
  * Each of these has a 50% chance to spawn already expended.
  */
 /obj/effect/grand_rune/proc/tear_reality()
+	procstart = null
+	src.procstart = null
 	var/max_tears = 0
 	switch(potency)
 		if(0 to 2)
@@ -285,6 +313,8 @@
 	var/dire_warnings_given = 0
 
 /obj/effect/grand_rune/finale/invoke_rune(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!finale_effect)
 		return ..()
 	if (!finale_effect.dire_warning)
@@ -306,6 +336,8 @@
 	return ..()
 
 /obj/effect/grand_rune/finale/interact(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (!chosen_effect)
 		select_finale(user)
 		return
@@ -320,6 +352,8 @@
 
 /// Make a selection from a radial menu.
 /obj/effect/grand_rune/finale/proc/select_finale(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/list/options = list()
 	var/list/picks_to_instances = list()
 	for (var/typepath in subtypesof(/datum/grand_finale))
@@ -357,6 +391,8 @@
 	add_filter("finale_picked_glow", 2, list("type" = "outline", "color" = spell_colour, "size" = 2))
 
 /obj/effect/grand_rune/finale/summon_round_event(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.client?.give_award(/datum/award/achievement/misc/grand_ritual_finale, user)
 	if (!finale_effect)
 		return ..()
@@ -364,6 +400,8 @@
 	finale_effect.trigger(user)
 
 /obj/effect/grand_rune/finale/get_invoke_time()
+	procstart = null
+	src.procstart = null
 	if (!finale_effect)
 		return ..()
 	return finale_effect.ritual_invoke_time
@@ -382,6 +420,8 @@
 	remains_typepath = /obj/effect/decal/cleanable/grand_remains/cheese
 
 /obj/effect/grand_rune/finale/cheesy/Initialize(mapload, potency)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	finale_effect = new /datum/grand_finale/cheese()
 	chosen_effect = TRUE

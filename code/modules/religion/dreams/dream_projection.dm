@@ -9,6 +9,8 @@
 	ritual_length = 15 SECONDS
 
 /datum/religion_rites/dream_projection/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ritual_invocations = list(
 		"A member of our flock has gone astray, lost in the waking world...",
@@ -17,6 +19,8 @@
 	)
 
 /datum/religion_rites/dream_projection/perform_rite(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	var/list/followers = list()
 	for(var/mob/living/follower as anything in GLOB.mob_living_list)
 		if(follower.mind?.holy_role && user != follower)
@@ -29,6 +33,8 @@
 	return ..()
 
 /datum/religion_rites/dream_projection/post_invoke_effects(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/followers = list()
 	for(var/mob/living/follower as anything in GLOB.mob_living_list)
@@ -61,6 +67,8 @@
 	VAR_PRIVATE/mob/eye/imaginary_friend/dream_projection/projection
 
 /datum/status_effect/dream_projection/on_creation(mob/living/new_owner, mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	if(isnull(target))
 		stack_trace("Dream projection created without a target!")
 		qdel(src)
@@ -70,9 +78,13 @@
 	return ..()
 
 /datum/status_effect/dream_projection/get_examine_text()
+	procstart = null
+	src.procstart = null
 	return "[owner.p_They()] [owner.p_are()] in a deep slumber, yet [owner.p_their()] eyes show a distant look, as if [owner.p_they()] [owner.p_are()] somewhere far away..."
 
 /datum/status_effect/dream_projection/on_apply()
+	procstart = null
+	src.procstart = null
 	if(!owner.SetSleeping(20 SECONDS))
 		to_chat(owner, span_warning("You fail to fall asleep."))
 		return FALSE
@@ -103,6 +115,8 @@
 	animate(alpha = 0, time = 2 SECONDS, easing = SINE_EASING|EASE_OUT)
 
 /datum/status_effect/dream_projection/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_QDELETING)
 	UnregisterSignal(target, COMSIG_LIVING_DEATH)
@@ -126,6 +140,8 @@
 		QDEL_NULL(projection)
 
 /datum/status_effect/dream_projection/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(isnull(owner.mind?.holy_role))
 		end_projection()
 		return
@@ -133,12 +149,16 @@
 	owner.SetSleeping(20 SECONDS) // keep the owner asleep
 
 /datum/status_effect/dream_projection/proc/end_projection()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	to_chat(owner, span_warning("Your dream projection ends as your target is no longer valid."))
 	owner.SetSleeping(10 SECONDS)
 	qdel(src)
 
 /datum/status_effect/dream_projection/proc/interrupt_projection()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	to_chat(owner, span_warning("Your dream projection is interrupted!"))
 	INVOKE_ASYNC(src, TYPE_PROC_REF(/mob, emote), "gasp")
@@ -146,6 +166,8 @@
 	qdel(src)
 
 /datum/status_effect/dream_projection/proc/stop_projection()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	to_chat(owner, span_warning("You end your dream projection and return to your body."))
 	owner.SetSleeping(10 SECONDS)
@@ -155,16 +177,22 @@
 	name = "dream projection"
 
 /mob/eye/imaginary_friend/dream_projection/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/action/innate/stop_projection/exit_action = new(src)
 	exit_action.Grant(src)
 	overlay_fullscreen("curse", /atom/movable/screen/fullscreen/curse, 1) // todo something more fitting?
 
 /mob/eye/imaginary_friend/dream_projection/Login()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	client.eye = owner || src
 
 /mob/eye/imaginary_friend/dream_projection/greet()
+	procstart = null
+	src.procstart = null
 	return
 
 // The IC tab was removed recently as of commenting. This should probably be adjusted.
@@ -173,6 +201,8 @@ GAME_VERB_DESC(/mob/eye/imaginary_friend/dream_projection, stop_projection, "Sto
 	qdel(src)
 
 /mob/eye/imaginary_friend/dream_projection/attach_to_owner(mob/living/imaginary_friend_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	client?.eye = owner
 
@@ -181,4 +211,6 @@ GAME_VERB_DESC(/mob/eye/imaginary_friend/dream_projection, stop_projection, "Sto
 	desc = "Stop astrally projecting and return to your body."
 
 /datum/action/innate/stop_projection/Activate()
+	procstart = null
+	src.procstart = null
 	qdel(owner)

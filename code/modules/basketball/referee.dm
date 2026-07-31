@@ -16,6 +16,8 @@
 	COOLDOWN_DECLARE(whistle_cooldown_minigame)
 
 /datum/action/innate/timeout/InterceptClickOn(mob/living/clicker, params, atom/clicked_on)
+	procstart = null
+	src.procstart = null
 	var/turf/clicker_turf = get_turf(clicker)
 	if(!isturf(clicker_turf))
 		return FALSE
@@ -34,6 +36,8 @@
 	return ..()
 
 /datum/action/innate/timeout/do_ability(mob/living/clicker, mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	clicker.say("FOUL BY [target]!", forced = "whistle")
 	playsound(clicker, 'sound/items/whistle/whistle.ogg', 30, FALSE, 4)
 

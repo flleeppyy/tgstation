@@ -2,6 +2,8 @@
 	abstract_type = /datum/unit_test/lootpanel
 
 /datum/unit_test/lootpanel/contents/Run()
+	procstart = null
+	src.procstart = null
 	var/datum/client_interface/mock_client = allocate(/datum/client_interface)
 	var/datum/lootpanel/panel = allocate(/datum/lootpanel, mock_client)
 	var/mob/living/carbon/human/labrat = allocate(/mob/living/carbon/human/consistent)

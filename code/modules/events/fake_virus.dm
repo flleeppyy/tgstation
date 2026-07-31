@@ -6,6 +6,8 @@
 	description = "Some crewmembers suffer from temporary hypochondria."
 
 /datum/round_event/fake_virus/start()
+	procstart = null
+	src.procstart = null
 	var/list/fake_virus_victims = list()
 	for(var/mob/living/carbon/human/victim in GLOB.player_list)
 		if(IS_UNCONSCIOUS_OR_CRIT(victim) || HAS_TRAIT(victim, TRAIT_VIRUSIMMUNE))

@@ -3,6 +3,8 @@
 	proper_name = "Mecha Control"
 
 /datum/wires/mecha/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(WIRE_IDSCAN, WIRE_DISARM, WIRE_ZAP, WIRE_OVERCLOCK, WIRE_LAUNCH)
 	var/obj/vehicle/sealed/mecha/mecha = holder
 	if(mecha.mecha_flags & HAS_LIGHTS)
@@ -11,12 +13,16 @@
 	..()
 
 /datum/wires/mecha/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/obj/vehicle/sealed/mecha/mecha = holder
 	return mecha.mecha_flags & PANEL_OPEN
 
 /datum/wires/mecha/get_status()
+	procstart = null
+	src.procstart = null
 	var/obj/vehicle/sealed/mecha/mecha = holder
 	var/list/status = list()
 	status += "The orange light is [mecha.internal_damage & MECHA_INT_SHORT_CIRCUIT ? "on" : "off"]."
@@ -28,6 +34,8 @@
 	return status
 
 /datum/wires/mecha/on_pulse(wire, user)
+	procstart = null
+	src.procstart = null
 	var/obj/vehicle/sealed/mecha/mecha = holder
 	switch(wire)
 		if(WIRE_IDSCAN)
@@ -46,6 +54,8 @@
 			try_attack(user)
 
 /datum/wires/mecha/on_cut(wire, mend, source)
+	procstart = null
+	src.procstart = null
 	var/obj/vehicle/sealed/mecha/mecha = holder
 	switch(wire)
 		if(WIRE_IDSCAN)
@@ -72,6 +82,8 @@
 				try_attack(source)
 
 /datum/wires/mecha/proc/try_attack(mob/living/target)
+	procstart = null
+	src.procstart = null
 	var/obj/vehicle/sealed/mecha/mecha = holder
 	if(mecha.occupant_amount()) //no powergamers sorry
 		return
@@ -96,6 +108,8 @@
 		TIMER_COOLDOWN_START(mecha, COOLDOWN_MECHA_MELEE_ATTACK, mecha.melee_cooldown)
 
 /datum/wires/mecha/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -105,6 +119,8 @@
 		return FALSE
 
 /datum/wires/mecha/can_reveal_wires(mob/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(user, TRAIT_KNOW_ROBO_WIRES))
 		return TRUE
 	return ..()

@@ -13,6 +13,8 @@
 
 /// Brimdemon's beam only fires when the target is lined up on a cardinal direction.
 /datum/bt_node/ai_behavior/targeted_mob_ability/brimbeam/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = controller.blackboard[target_key]
 	if(QDELETED(target) || !(get_dir(controller.pawn, target) in GLOB.cardinals))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED

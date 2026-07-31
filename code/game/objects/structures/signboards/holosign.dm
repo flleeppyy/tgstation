@@ -19,6 +19,8 @@
 	var/current_color
 
 /obj/structure/signboard/holosign/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(current_color)
 		INVOKE_ASYNC(src, PROC_REF(set_color), current_color)
@@ -27,6 +29,8 @@
 	))
 
 /obj/structure/signboard/holosign/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/locked = is_locked(user)
 	if(istype(held_item, /obj/item/card/emag))
@@ -42,12 +46,16 @@
 		. = CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/signboard/holosign/update_icon_state()
+	procstart = null
+	src.procstart = null
 	base_icon_state = current_color ? "[initial(base_icon_state)]_greyscale" : initial(base_icon_state)
 	. = ..()
 	if(obj_flags & EMAGGED)
 		icon_state += "_emag"
 
 /obj/structure/signboard/holosign/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(obj_flags & EMAGGED)
 		. += span_warning("<br>Its locking mechanisms appear to be shorted out!")
@@ -55,11 +63,15 @@
 		. += span_info("<br>It is locked to the ID of [span_name(registered_owner)].")
 
 /obj/structure/signboard/holosign/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(sign_text)
 		. += emissive_appearance(icon, "holographic_sign_e", src)
 
 /obj/structure/signboard/holosign/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	if(var_name == NAMEOF(src, color) || var_name == NAMEOF(src, current_color))
 		INVOKE_ASYNC(src, PROC_REF(set_color), var_value)
 		datum_flags |= DF_VAR_EDITED
@@ -67,6 +79,8 @@
 	return ..()
 
 /obj/structure/signboard/holosign/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/obj/item/item = astype(tool, /obj/item)
 	var/obj/item/card/id/id = item?.GetID()
 	if(!istype(id) || !can_interact(user) || !user.can_perform_action(src, NEED_DEXTERITY))
@@ -92,6 +106,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/signboard/holosign/is_locked(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -102,10 +118,14 @@
 		return !cmptext(trimtext(id.registered_name), registered_owner)
 
 /obj/structure/signboard/holosign/set_text(new_text, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light(l_on = !!sign_text)
 
 /obj/structure/signboard/holosign/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -113,6 +133,8 @@
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/structure/signboard/holosign/proc/try_set_color(mob/user)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	if(!can_interact(user) || !user.can_perform_action(src, NEED_DEXTERITY))
 		return FALSE
@@ -133,6 +155,8 @@
 		investigate_log("([key_name(user)]) cleared the color", INVESTIGATE_SIGNBOARD)
 
 /obj/structure/signboard/holosign/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	playsound(src, SFX_SPARKS, vol = 100, vary = TRUE, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
@@ -144,11 +168,15 @@
 	update_appearance()
 
 /obj/structure/signboard/holosign/proc/sanitize_color(color)
+	procstart = null
+	src.procstart = null
 	. = sanitize_hexcolor(color)
 	if(!. || . == COLOR_BLACK)
 		return null
 
 /obj/structure/signboard/holosign/proc/set_color(new_color)
+	procstart = null
+	src.procstart = null
 	new_color = sanitize_color(new_color)
 	if(!new_color)
 		current_color = null
@@ -178,6 +206,8 @@
 	var/obj/structure/signboard/holosign/connected_display
 
 /obj/item/circuit_component/holo_signboard/populate_ports()
+	procstart = null
+	src.procstart = null
 	message = add_input_port("Message", PORT_TYPE_STRING)
 	clear = add_input_port("Clear", PORT_TYPE_SIGNAL, trigger = PROC_REF(clear_received))
 
@@ -190,11 +220,15 @@
 	set_color = add_input_port("Set Color", PORT_TYPE_SIGNAL, trigger = PROC_REF(color_received))
 
 /obj/item/circuit_component/holo_signboard/register_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/structure/signboard/holosign))
 		connected_display = shell
 
 /obj/item/circuit_component/holo_signboard/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!connected_display)
 		return
 	if(length(message.value) > connected_display.max_length) //5000 is a hell of a lot longer than 144.
@@ -216,11 +250,15 @@
 		on_fail.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/holo_signboard/proc/clear_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!connected_display.set_text(null))
 		fail_reason.set_output("Connection refused by external endpoint.")
 		on_fail.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/holo_signboard/proc/color_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	red.set_value(clamp(red.value, 0, 255))
 	blue.set_value(clamp(blue.value, 0, 255))
 	green.set_value(clamp(green.value, 0, 255))
@@ -235,5 +273,7 @@
 /// Given a color in the format of "#RRGGBB", will return if the color
 /// is dark. Value is mixed with Saturation and Brightness from HSV.
 /proc/is_color_dark_with_saturation(color, threshold = 25)
+	procstart = null
+	src.procstart = null
 	var/hsl = rgb2num(color, COLORSPACE_HSL)
 	return hsl[3] < threshold

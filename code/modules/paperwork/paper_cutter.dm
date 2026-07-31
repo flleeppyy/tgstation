@@ -22,6 +22,8 @@
 	var/cut_self_chance = 5
 
 /obj/item/papercutter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	stored_blade = new /obj/item/hatchet/cutterblade(src)
 	register_context()
@@ -29,6 +31,8 @@
 	AddElement(/datum/element/drag_pickup)
 
 /obj/item/papercutter/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(!isnull(stored_paper))
 		QDEL_NULL(stored_paper)
 	if(!isnull(stored_blade))
@@ -36,6 +40,8 @@
 	return ..()
 
 /obj/item/papercutter/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isnull(held_item))
@@ -63,6 +69,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/papercutter/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	if(!disassembled)
 		return
 
@@ -72,6 +80,8 @@
 		stored_blade.forceMove(drop_location())
 
 /obj/item/papercutter/Exited(atom/movable/leaving, atom/new_loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(leaving == stored_paper)
 		stored_paper = null
@@ -79,6 +89,8 @@
 		stored_blade = null
 
 /obj/item/papercutter/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(user) && stored_blade)
 		var/mob/living/carbon/carbon_user = user
 		var/obj/item/bodypart/user_head = carbon_user.get_bodypart(BODY_ZONE_HEAD)
@@ -95,6 +107,8 @@
 	return BRUTELOSS
 
 /obj/item/papercutter/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(stored_paper))
 		. += "paper"
@@ -102,6 +116,8 @@
 		. += "cutter_overlay"
 
 /obj/item/papercutter/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!stored_blade && !blade_secured)
 		balloon_alert(user, "no blade!")
 		return ITEM_INTERACT_BLOCKING
@@ -112,6 +128,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/papercutter/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/paper))
 		if(is_type_in_list(tool, list(/obj/item/paper/holy_writ, /obj/item/paper/pamphlet, /obj/item/paper/paperslip)))
 			balloon_alert(user, "won't fit!")
@@ -142,6 +160,8 @@
 	return NONE
 
 /obj/item/papercutter/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	// can only remove one at a time; paper goes first, as its most likely what players will want to be taking out
 	if(!isnull(stored_paper))
 		user.put_in_hands(stored_paper)
@@ -151,6 +171,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/papercutter/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!stored_blade)
 		balloon_alert(user, "no blade!")
 	else if(!blade_secured)
@@ -163,6 +185,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/papercutter/proc/cut_paper(mob/user)
+	procstart = null
+	src.procstart = null
 	playsound(src.loc, 'sound/items/weapons/slash.ogg', 50, TRUE)
 	var/clumsy = (iscarbon(user) && HAS_TRAIT(user, TRAIT_CLUMSY) && prob(cut_self_chance))
 	to_chat(user, span_userdanger("You neatly cut [stored_paper][clumsy ? "... and your finger in the process!" : "."]"))
@@ -186,12 +210,16 @@
 	righthand_file = 'icons/mob/inhands/equipment/idcards_righthand.dmi'
 
 /obj/item/paper/paperslip/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/cellulose = 1.5)
 
 /obj/item/paper/paperslip/fortune
 	name = "fortune slip"
 
 /obj/item/paper/paperslip/fortune/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	default_raw_text = pick(GLOB.wisdoms)
 	return ..()
 
@@ -208,6 +236,8 @@
 	throw_speed = 2
 
 /obj/item/paper/paperslip/corporate/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/plastic_polymers = 1.5)
 
 /obj/item/hatchet/cutterblade

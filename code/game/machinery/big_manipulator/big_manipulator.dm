@@ -54,6 +54,8 @@
 
 /// Attempts to find a suitable turf near the manipulator for creating a cargo task.
 /obj/machinery/big_manipulator/proc/find_suitable_turf()
+	procstart = null
+	src.procstart = null
 	var/turf/base = get_turf(src)
 	for(var/turf/checked_turf in orange(base, 1))
 		if(!isclosedturf(checked_turf))
@@ -62,6 +64,8 @@
 
 /// Attempts to create a new task and assign it to the list.
 /obj/machinery/big_manipulator/proc/create_new_task(mob/user, task_type, turf/new_turf)
+	procstart = null
+	src.procstart = null
 	if(length(tasks) >= interaction_point_limit)
 		balloon_alert(user, "task limit reached!")
 		return FALSE
@@ -109,6 +113,8 @@
 	return new_task
 
 /obj/machinery/big_manipulator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_manipulator_arm()
 	process_upgrades()
@@ -121,6 +127,8 @@
 
 /// Checks the component tiers, adjusting the properties of the manipulator.
 /obj/machinery/big_manipulator/proc/process_upgrades()
+	procstart = null
+	src.procstart = null
 	var/datum/stock_part/servo/locate_servo = locate() in component_parts
 	if(!locate_servo)
 		return
@@ -158,20 +166,28 @@
 		cargo_task.interaction_priorities = cargo_task.fill_priority_list(manipulator_tier)
 
 /obj/machinery/big_manipulator/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/monkey_resolve = monkey_worker?.resolve()
 	if(!isnull(monkey_resolve))
 		. += "You can see a poor [monkey_resolve.name] buckled to [src]. You wonder if it's getting paid enough."
 
 /obj/machinery/big_manipulator/attack_hand_secondary(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	try_press_on(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/big_manipulator/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	eject_task_disk(user)
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/big_manipulator/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	context[SCREENTIP_CONTEXT_RMB] = "Toggle"
@@ -196,6 +212,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/big_manipulator/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	if(task_disk)
 		task_disk.forceMove(drop_location())
 		task_disk = null
@@ -206,6 +224,8 @@
 	return ..()
 
 /obj/machinery/big_manipulator/Destroy(force)
+	procstart = null
+	src.procstart = null
 	unregister_task_turf_signals()
 	QDEL_NULL(task_disk)
 	QDEL_NULL(manipulator_arm)
@@ -214,6 +234,8 @@
 	return ..()
 
 /obj/machinery/big_manipulator/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(monkey_worker))
 		return
@@ -229,12 +251,16 @@
 
 /// Removes an invalid task from the list.
 /obj/machinery/big_manipulator/proc/remove_invalid_task(datum/manipulator_task/task)
+	procstart = null
+	src.procstart = null
 	if(!task)
 		return
 	tasks -= task
 	qdel(task)
 
 /obj/machinery/big_manipulator/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(obj_flags & EMAGGED)
 		return FALSE
@@ -248,29 +274,41 @@
 	return TRUE
 
 /obj/machinery/big_manipulator/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool, time = 1 SECONDS)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/big_manipulator/can_be_unfasten_wrench(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	if(on || stopping)
 		to_chat(user, span_warning("[src] is activated!"))
 		return FAILED_UNFASTEN
 	return ..()
 
 /obj/machinery/big_manipulator/default_unfasten_wrench(mob/user, obj/item/wrench, time)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SUCCESSFUL_UNFASTEN)
 		if(anchored)
 			validate_all_tasks()
 
 /obj/machinery/big_manipulator/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/big_manipulator/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/big_manipulator/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 
@@ -306,10 +344,14 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/big_manipulator/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	process_upgrades()
 
 /obj/machinery/big_manipulator/mouse_drop_dragged(atom/drop_point, mob/user, src_location, over_location, params)
+	procstart = null
+	src.procstart = null
 	if(on || stopping)
 		balloon_alert(user, "turn it off first!")
 		return
@@ -328,6 +370,8 @@
 	poor_monkey.forceMove(drop_point)
 
 /obj/machinery/big_manipulator/mouse_drop_receive(atom/monkey, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(on || stopping)
 		balloon_alert(user, "turn it off first!")
 		return
@@ -363,11 +407,15 @@
 
 /// Attaching the arm effect to the core.
 /obj/machinery/big_manipulator/proc/create_manipulator_arm()
+	procstart = null
+	src.procstart = null
 	manipulator_arm = new /obj/effect/big_manipulator_arm(src)
 	manipulator_arm.dir = NORTH
 	vis_contents += manipulator_arm
 
 /obj/machinery/big_manipulator/proc/toggle_power_state(mob/user)
+	procstart = null
+	src.procstart = null
 	var/newly_on = !on
 
 	if(!user)
@@ -404,6 +452,8 @@
 
 /// Validates all cargo tasks, removing those on closed turfs.
 /obj/machinery/big_manipulator/proc/validate_all_tasks()
+	procstart = null
+	src.procstart = null
 	for(var/datum/manipulator_task/cargo/cargo_task in tasks)
 		if(!cargo_task.is_valid())
 			tasks -= cargo_task
@@ -411,6 +461,8 @@
 
 /// Attempts to press the power button.
 /obj/machinery/big_manipulator/proc/try_press_on(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(power_access_wire_cut)
 		balloon_alert(user, "unresponsive!")
 		return
@@ -426,6 +478,8 @@
 		balloon_alert(user, "deactivated")
 
 /obj/machinery/big_manipulator/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(id_lock)
 		to_chat(user, span_warning("[src] is locked behind ID authentication!"))
 		ui?.close()
@@ -440,6 +494,8 @@
 		ui.open()
 
 /obj/machinery/big_manipulator/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["active"] = on
 	data["stopping"] = stopping
@@ -527,12 +583,16 @@
 	return data
 
 /obj/machinery/big_manipulator/proc/_collect_filter_names(list/filters)
+	procstart = null
+	src.procstart = null
 	var/list/names = list()
 	for(var/atom/f as anything in filters)
 		names += initial(f.name)
 	return names
 
 /obj/machinery/big_manipulator/proc/_collect_priorities(list/priorities)
+	procstart = null
+	src.procstart = null
 	var/list/out = list()
 	for(var/datum/manipulator_priority/pr in priorities)
 		var/list/entry = list()
@@ -542,6 +602,8 @@
 	return out
 
 /obj/machinery/big_manipulator/ui_act(action, params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -611,6 +673,8 @@
 
 
 /obj/machinery/big_manipulator/proc/eject_task_disk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(on || stopping)
 		balloon_alert(user, "turn it off first!")
 		return FALSE
@@ -627,6 +691,8 @@
 	return TRUE
 
 /obj/machinery/big_manipulator/proc/clear_disk_tasks(mob/user)
+	procstart = null
+	src.procstart = null
 	if(on || stopping)
 		balloon_alert(user, "turn it off first!")
 		return FALSE
@@ -641,6 +707,8 @@
 	return TRUE
 
 /obj/machinery/big_manipulator/proc/write_disk_tasks(mob/user)
+	procstart = null
+	src.procstart = null
 	if(on || stopping)
 		balloon_alert(user, "turn it off first!")
 		return FALSE
@@ -660,6 +728,8 @@
 	return TRUE
 
 /obj/machinery/big_manipulator/proc/read_disk_tasks(mob/user)
+	procstart = null
+	src.procstart = null
 	if(on || stopping)
 		balloon_alert(user, "turn it off first!")
 		return FALSE
@@ -718,6 +788,8 @@
 	return TRUE
 
 /obj/machinery/big_manipulator/proc/adjust_param_for_task(task_ref, param, value, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!param)
 		return FALSE
 
@@ -910,6 +982,8 @@
 
 /// Cycles the given value in the given list.
 /obj/machinery/big_manipulator/proc/cycle_value(current_value, list/possible_values)
+	procstart = null
+	src.procstart = null
 	var/current_index = possible_values.Find(current_value)
 	if(current_index == 0)
 		return possible_values[1]
@@ -917,13 +991,19 @@
 
 /// Retries the task loop if we're waiting for a signal and the machine is on.
 /obj/machinery/big_manipulator/proc/maybe_wake()
+	procstart = null
+	src.procstart = null
 	if(on && !stopping && waiting_for_signal)
 		something_happened()
 
 /obj/machinery/big_manipulator/proc/update_strategies()
+	procstart = null
+	src.procstart = null
 	master_tasking = create_strategy(tasking_strategy)
 
 /obj/machinery/big_manipulator/proc/create_strategy(strategy_mode)
+	procstart = null
+	src.procstart = null
 	switch(strategy_mode)
 		if(TASKING_SEQUENTIAL)
 			return new /datum/tasking_strategy/sequential()

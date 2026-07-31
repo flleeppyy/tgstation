@@ -8,6 +8,8 @@
 //Making the station dirty, one tile at a time. Called by master controller's setup_objects
 
 /turf/open/floor/proc/MakeDirty()
+	procstart = null
+	src.procstart = null
 	// We start with a 1/3 chance of having this proc called by Initialize()
 
 	if(!(flags_1 & CAN_BE_DIRTY_1))

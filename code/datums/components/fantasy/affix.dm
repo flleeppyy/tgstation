@@ -7,9 +7,15 @@
 
 // For those occasional affixes which only make sense in certain circumstances
 /datum/fantasy_affix/proc/validate(obj/item/attached)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/fantasy_affix/proc/apply(datum/component/fantasy/comp, newName)
+	procstart = null
+	src.procstart = null
 	return newName
 
 /datum/fantasy_affix/proc/remove(datum/component/fantasy/comp)
+	procstart = null
+	src.procstart = null

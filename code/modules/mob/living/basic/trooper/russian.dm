@@ -29,6 +29,8 @@
 	var/projectilesound = 'sound/items/weapons/gun/revolver/shot.ogg'
 
 /mob/living/basic/trooper/russian/ranged/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ranged_attacks, casing_type = casingtype, projectile_sound = projectilesound, cooldown_time = 1 SECONDS)
 

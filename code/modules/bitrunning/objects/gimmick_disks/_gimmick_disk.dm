@@ -10,15 +10,21 @@
 	var/list/datum/bitrunning_gimmick/selectable_loadouts
 
 /obj/item/disk/bitrunning/gimmick/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(granted_loadout)
 	return ..()
 
 /obj/item/disk/bitrunning/gimmick/load_onto_avatar(mob/living/carbon/human/neo, mob/living/carbon/human/avatar, domain_flags)
+	procstart = null
+	src.procstart = null
 	if(isnull(granted_loadout))
 		return BITRUNNER_GEAR_LOAD_FAILED
 	return granted_loadout.grant_loadout(neo, avatar, domain_flags)
 
 /obj/item/disk/bitrunning/gimmick/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(granted_loadout)
@@ -58,12 +64,16 @@
 
 /// Grants out loadout.
 /datum/bitrunning_gimmick/proc/grant_loadout(mob/living/carbon/human/neo, mob/living/carbon/human/avatar, domain_flags)
+	procstart = null
+	src.procstart = null
 	var/return_flags = NONE
 	return_flags |= grant_items(neo, avatar, domain_flags)
 	return_flags |= grant_abilities(neo, avatar, domain_flags)
 	return return_flags
 
 /datum/bitrunning_gimmick/proc/grant_items(mob/living/carbon/human/neo, mob/living/carbon/human/avatar, domain_flags)
+	procstart = null
+	src.procstart = null
 	if(!length(granted_items))
 		return NONE
 
@@ -82,6 +92,8 @@
 	return NONE
 
 /datum/bitrunning_gimmick/proc/grant_abilities(mob/living/carbon/human/neo, mob/living/carbon/human/avatar, domain_flags)
+	procstart = null
+	src.procstart = null
 	if(!length(granted_actions))
 		return NONE
 

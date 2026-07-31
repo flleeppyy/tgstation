@@ -1,6 +1,8 @@
 // update the APC icon to show the three base states
 // also add overlays for indicator lights
 /obj/machinery/power/apc/update_appearance(updates=check_updates())
+	procstart = null
+	src.procstart = null
 	icon_update_needed = FALSE
 	if(!updates)
 		return
@@ -21,6 +23,8 @@
 	set_light(0)
 
 /obj/machinery/power/apc/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!update_state)
 		icon_state = "apc0"
 		return ..()
@@ -42,6 +46,8 @@
 	return ..()
 
 /obj/machinery/power/apc/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((machine_stat & (BROKEN|MAINT)) || update_state)
 		return
@@ -62,6 +68,8 @@
 
 /// Checks for what icon updates we will need to handle
 /obj/machinery/power/apc/proc/check_updates()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	. = NONE
 
@@ -105,10 +113,14 @@
 
 // Used in process so it doesn't update the icon too much
 /obj/machinery/power/apc/proc/queue_icon_update()
+	procstart = null
+	src.procstart = null
 	icon_update_needed = TRUE
 
 // Shows a dark-blue interface for a moment. Shouldn't appear on cameras.
 /obj/machinery/power/apc/proc/flicker_hacked_icon()
+	procstart = null
+	src.procstart = null
 	if(opened != APC_COVER_CLOSED)
 		return
 	var/image/hacker_image = image(icon = 'icons/obj/machines/wallmounts.dmi', loc = src, icon_state = "apcemag", layer = FLOAT_LAYER)

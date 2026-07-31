@@ -13,6 +13,8 @@
 	var/extra_genes
 
 /datum/element/plant_backfire/Attach(datum/target, cancel_action = FALSE, extra_traits, extra_genes)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -26,6 +28,8 @@
 	RegisterSignal(target, COMSIG_MOVABLE_PRE_THROW, PROC_REF(throw_safety_check))
 
 /datum/element/plant_backfire/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, list(COMSIG_ITEM_PRE_ATTACK, COMSIG_ITEM_PICKUP, COMSIG_MOVABLE_PRE_THROW))
 
@@ -36,6 +40,8 @@
  * user - the mob wielding our [source]
  */
 /datum/element/plant_backfire/proc/attack_safety_check(obj/item/source, atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Covers stuff like tk, since we aren't actually touching the plant.
@@ -53,6 +59,8 @@
  * user - the mob picking our [source]
  */
 /datum/element/plant_backfire/proc/pickup_safety_check(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	backfire(source, user)
@@ -64,6 +72,8 @@
  * thrower - the mob throwing our [source]
  */
 /datum/element/plant_backfire/proc/throw_safety_check(obj/item/source, list/arguments)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/thrower = arguments[4] // the 4th arg = the mob throwing our item
@@ -83,6 +93,8 @@
  * Returns TRUE if the user was not safe and a backfire actually happened.
  */
 /datum/element/plant_backfire/proc/backfire(obj/item/plant, mob/user)
+	procstart = null
+	src.procstart = null
 	if(plant_safety_check(plant, user))
 		return FALSE
 
@@ -102,6 +114,8 @@
  * returns FALSE if none of the checks are successful.
  */
 /datum/element/plant_backfire/proc/plant_safety_check(obj/item/plant, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return TRUE
 

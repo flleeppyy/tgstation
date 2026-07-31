@@ -16,6 +16,8 @@
 	var/fishing_modifier = -3
 
 /obj/item/clothing/shoes/galoshes/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, fishing_modifier)
 
@@ -31,10 +33,14 @@
 	acid = 75
 
 /obj/item/clothing/shoes/galoshes/dry/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_SHOES_STEP_ACTION, PROC_REF(on_step))
 
 /obj/item/clothing/shoes/galoshes/dry/proc/on_step()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/turf/open/t_loc = get_turf(src)

@@ -15,11 +15,15 @@
 	var/on = FALSE
 
 /obj/machinery/igniter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 	register_context()
 
 /obj/machinery/igniter/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item))
 		return NONE
 
@@ -37,11 +41,15 @@
 	return NONE
 
 /obj/machinery/igniter/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Use a [EXAMINE_HINT("multitool")] to set its ID to match your ignition controller's ID.")
 	. += span_notice("It could be [EXAMINE_HINT("welded")] apart.")
 
 /obj/machinery/igniter/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(on)
 		return
 
@@ -58,10 +66,14 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/igniter/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/iron(loc, 5)
 	new /obj/item/assembly/igniter(loc)
 
 /obj/machinery/igniter/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	var/change_id = tgui_input_number(user, "Set the igniter controller's ID", "Igniter ID", id, 100)
 	if(!change_id || QDELETED(user) || QDELETED(src) || !user.can_perform_action(src, FORBID_TELEKINESIS_REACH))
 		return
@@ -94,6 +106,8 @@
 
 /// turns the igniter on/off
 /obj/machinery/igniter/proc/toggle()
+	procstart = null
+	src.procstart = null
 	on = !( on )
 	if(on)
 		begin_processing()
@@ -102,6 +116,8 @@
 	update_appearance()
 
 /obj/machinery/igniter/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -110,6 +126,8 @@
 
 /// Have to process to ignite any gas that comes in the turf
 /obj/machinery/igniter/process()
+	procstart = null
+	src.procstart = null
 	var/turf/location = loc
 	if(!isturf(location) || !isopenturf(location)) //don't ignite stuff inside walls
 		on = FALSE
@@ -124,10 +142,14 @@
 	location.hotspot_expose(1000, 500, 1)
 
 /obj/machinery/igniter/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][on]"
 	return ..()
 
 /obj/machinery/igniter/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
+	procstart = null
+	src.procstart = null
 	id = "[port.shuttle_id]_[id]"
 
 // Wall mounted remote-control igniter.
@@ -159,6 +181,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/sparker, 26)
 	id = INCINERATOR_ORDMIX_IGNITER
 
 /obj/machinery/sparker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spark_system = new(2, TRUE, src)
 	spark_system.attach(src)
@@ -167,10 +191,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/sparker, 26)
 		find_and_mount_on_atom()
 
 /obj/machinery/sparker/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(spark_system)
 	return ..()
 
 /obj/machinery/sparker/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item))
 		return NONE
 
@@ -185,11 +213,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/sparker, 26)
 	return NONE
 
 /obj/machinery/sparker/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Use a [EXAMINE_HINT("multitool")] to set its ID to match your ignition controller's ID.")
 	. += span_notice("It could be [EXAMINE_HINT("welded")] apart.")
 
 /obj/machinery/sparker/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!tool.tool_start_check(user, amount = 1))
 		balloon_alert(user, "not enough fuel!")
 		return TRUE
@@ -203,9 +235,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/sparker, 26)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/sparker/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	new /obj/item/wallframe/sparker(loc)
 
 /obj/machinery/sparker/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	var/change_id = tgui_input_number(user, "Set the sparker controller's ID", "Sparker ID", id, 100)
 	if(!change_id || QDELETED(user) || QDELETED(src) || !user.can_perform_action(src, FORBID_TELEKINESIS_REACH))
 		return
@@ -215,6 +251,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/sparker, 26)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/sparker/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(disable)
 		icon_state = "[base_icon_state]-d"
 		return ..()
@@ -222,11 +260,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/sparker, 26)
 	return ..()
 
 /obj/machinery/sparker/powered()
+	procstart = null
+	src.procstart = null
 	if(disable)
 		return FALSE
 	return ..()
 
 /obj/machinery/sparker/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	tool.play_tool_sound(src, 50)
 	disable = !disable
@@ -238,12 +280,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/sparker, 26)
 	return TRUE
 
 /obj/machinery/sparker/attack_ai()
+	procstart = null
+	src.procstart = null
 	if (anchored)
 		return ignite()
 	else
 		return
 
 /obj/machinery/sparker/proc/ignite()
+	procstart = null
+	src.procstart = null
 	if(!(powered()))
 		return FALSE
 
@@ -265,6 +311,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/sparker, 26)
 	return TRUE
 
 /obj/machinery/sparker/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. & EMP_PROTECT_SELF)
 		return

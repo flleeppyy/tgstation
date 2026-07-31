@@ -1,4 +1,6 @@
 /obj/vehicle/sealed/mecha/mob_try_enter(mob/M)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(M)) // no silicons or drones in mechas.
 		return
 	if(HAS_TRAIT(M, TRAIT_PRIMITIVE)) //no lavalizards either.
@@ -20,6 +22,8 @@
 		moved_inside(M)
 
 /obj/vehicle/sealed/mecha/enter_checks(mob/M)
+	procstart = null
+	src.procstart = null
 	if(M.incapacitated)
 		return FALSE
 	if(atom_integrity <= 0)
@@ -43,6 +47,8 @@
 
 ///proc called when a new non-mmi mob enters this mech
 /obj/vehicle/sealed/mecha/proc/moved_inside(mob/living/newoccupant)
+	procstart = null
+	src.procstart = null
 	if(!(newoccupant?.client))
 		return FALSE
 	if(ishuman(newoccupant) && !Adjacent(newoccupant))
@@ -61,6 +67,8 @@
 
 ///proc called when a new mmi mob tries to enter this mech
 /obj/vehicle/sealed/mecha/proc/mmi_move_inside(obj/item/mmi/brain_obj, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!(mecha_flags & MMI_COMPATIBLE))
 		to_chat(user, span_warning("This mecha is not compatible with MMIs!"))
 		return FALSE
@@ -86,6 +94,8 @@
 
 ///proc called when a new mmi mob enters this mech
 /obj/vehicle/sealed/mecha/proc/mmi_moved_inside(obj/item/mmi/brain_obj, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!(Adjacent(brain_obj) && Adjacent(user)))
 		return FALSE
 	if(!brain_obj.brain_check(user))
@@ -113,6 +123,8 @@
 	return TRUE
 
 /obj/vehicle/sealed/mecha/mob_exit(mob/M, silent = FALSE, randomstep = FALSE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	// FIXME: this code is really bad (shocker). Needs a refactor
 	var/atom/movable/mob_container
 	var/turf/newloc = get_turf(src)
@@ -178,6 +190,8 @@
 	return ..()
 
 /obj/vehicle/sealed/mecha/add_occupant(mob/driver, control_flags)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(driver, COMSIG_MOB_CLICKON, PROC_REF(on_mouseclick), TRUE)
 	RegisterSignal(driver, COMSIG_MOB_SAY, PROC_REF(display_speech_bubble), TRUE)
 	RegisterSignal(driver, COMSIG_MOVABLE_KEYBIND_FACE_DIR, PROC_REF(on_turn), TRUE)
@@ -186,6 +200,8 @@
 	update_appearance()
 
 /obj/vehicle/sealed/mecha/remove_occupant(mob/driver)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(driver, list(
 		COMSIG_MOB_CLICKON,
 		COMSIG_MOB_SAY,
@@ -201,6 +217,8 @@
 	update_appearance()
 
 /obj/vehicle/sealed/mecha/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isAI(user))
 		var/mob/living/silicon/ai/AI = user
 		if(!AI.linked_core)

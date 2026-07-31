@@ -13,6 +13,8 @@
 	)
 
 /datum/status_effect/basilisk_overheat/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!. || !istype(owner, /mob/living/basic/mining/basilisk) || IS_UNCONSCIOUS_OR_CRIT(owner))
 		return FALSE
@@ -30,6 +32,8 @@
 	RegisterSignal(hot_stuff, COMSIG_ATOM_BULLET_ACT, PROC_REF(on_shot))
 
 /datum/status_effect/basilisk_overheat/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/basic/mining/basilisk/hot_stuff = owner
 	hot_stuff.icon_living = "basilisk"
@@ -48,11 +52,15 @@
 
 /// Cool down if we die
 /datum/status_effect/basilisk_overheat/proc/on_death()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /// Cool down if splashed with water
 /datum/status_effect/basilisk_overheat/proc/on_splashed(atom/source, list/reagents, datum/reagents/source_reagents, methods, show_message)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!(methods & (TOUCH|VAPOR)))
 		return
@@ -64,6 +72,8 @@
 
 /// Cool down if shot with a cryo beam
 /datum/status_effect/basilisk_overheat/proc/on_shot(datum/source, obj/projectile/temp/cryo_shot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!istype(cryo_shot) || cryo_shot.temperature > 0)
 		return

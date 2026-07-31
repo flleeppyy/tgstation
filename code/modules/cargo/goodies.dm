@@ -258,6 +258,8 @@
 	contains = list(/obj/item/toy/beach_ball/branded)
 
 /datum/supply_pack/goody/beach_ball/New()
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/toy/beach_ball/branded/beachball_type = /obj/item/toy/beach_ball/branded
 	desc = initial(beachball_type.desc)

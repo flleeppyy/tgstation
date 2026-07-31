@@ -6,11 +6,15 @@
 	var/obj/effect/abstract/particle_holder/spooky_particles
 
 /obj/structure/window/fulltile/voidwalker/Initialize(mapload, direct)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spooky_particles = new(src, /particles/void_window)
 	add_atom_colour("#642a949d", FIXED_COLOUR_PRIORITY)
 
 /obj/structure/window/fulltile/voidwalker/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(spooky_particles)
 

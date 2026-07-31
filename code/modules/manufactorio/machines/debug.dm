@@ -10,9 +10,13 @@
 	var/subsystem_to_process_us = /datum/controller/subsystem/processing/obj
 
 /obj/loop_spawner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/controller/subsystem/processing/subsystem = locate(subsystem_to_process_us) in Master.subsystems
 	START_PROCESSING(subsystem, src)
 
 /obj/loop_spawner/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	new to_spawn(get_step(src, dir))

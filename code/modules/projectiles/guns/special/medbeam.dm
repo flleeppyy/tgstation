@@ -19,14 +19,20 @@
 	weapon_weight = WEAPON_MEDIUM
 
 /obj/item/gun/medbeam/Destroy(mob/user)
+	procstart = null
+	src.procstart = null
 	LoseTarget()
 	return ..()
 
 /obj/item/gun/medbeam/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	LoseTarget()
 
 /obj/item/gun/medbeam/equipped(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	LoseTarget()
 
@@ -34,6 +40,8 @@
  * Proc that always is called when we want to end the beam and makes sure things are cleaned up, see beam_died()
  */
 /obj/item/gun/medbeam/proc/LoseTarget()
+	procstart = null
+	src.procstart = null
 	if(active)
 		QDEL_NULL(current_beam)
 		active = FALSE
@@ -47,6 +55,8 @@
  * automatic disconnection = beam_died, so we can give a warning message first
  */
 /obj/item/gun/medbeam/proc/beam_died()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	current_beam = null
 	active = FALSE //skip qdelling the beam again if we're doing this proc, because
@@ -55,6 +65,8 @@
 	LoseTarget()
 
 /obj/item/gun/medbeam/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+	procstart = null
+	src.procstart = null
 	if(isliving(user))
 		add_fingerprint(user)
 
@@ -73,6 +85,8 @@
 	return TRUE
 
 /obj/item/gun/medbeam/process()
+	procstart = null
+	src.procstart = null
 	if(!mounted && !isliving(loc))
 		LoseTarget()
 		return
@@ -94,9 +108,13 @@
 		on_beam_tick(current_target)
 
 /obj/item/gun/medbeam/on_mail_unwrap(mob/user, obj/item/mail/traitor/letter)
+	procstart = null
+	src.procstart = null
 	return NONE
 
 /obj/item/gun/medbeam/proc/mid_los_check(atom/movable/user, mob/target, pass_args = PASSTABLE|PASSGLASS|PASSGRILLE, turf/next_step, obj/dummy)
+	procstart = null
+	src.procstart = null
 	for(var/obj/effect/ebeam/medical/B in next_step)// Don't cross the str-beams!
 		if(QDELETED(current_beam))
 			break //We shouldn't be processing anymore.
@@ -112,9 +130,13 @@
 	return TRUE
 
 /obj/item/gun/medbeam/proc/on_beam_hit(mob/living/target)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/medbeam/proc/on_beam_tick(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(target.health != target.maxHealth)
 		new /obj/effect/temp_visual/heal(get_turf(target), COLOR_HEALING_CYAN)
 	var/need_mob_update
@@ -127,6 +149,8 @@
 	return
 
 /obj/item/gun/medbeam/proc/on_beam_release(mob/living/target)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/ebeam/medical
@@ -137,5 +161,7 @@
 	mounted = TRUE
 
 /obj/item/gun/medbeam/mech/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	STOP_PROCESSING(SSobj, src) //Mech mediguns do not process until installed, and are controlled by the holder obj

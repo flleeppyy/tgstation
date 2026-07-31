@@ -2,6 +2,8 @@
 /datum/unit_test/silicon_interacting
 
 /datum/unit_test/silicon_interacting/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/attacker = EASY_ALLOCATE()
 	var/mob/living/silicon/robot/borgo = EASY_ALLOCATE()
 	var/obj/item/card/id/advanced/gold/captains_spare/id = EASY_ALLOCATE()
@@ -29,6 +31,8 @@
 /datum/unit_test/silicon_punch
 
 /datum/unit_test/silicon_punch/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/attacker = EASY_ALLOCATE()
 	var/mob/living/silicon/robot/borgo = EASY_ALLOCATE()
 	borgo.forceMove(locate(attacker.x + 1, attacker.y, attacker.z))

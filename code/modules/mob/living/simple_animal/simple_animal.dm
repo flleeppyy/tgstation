@@ -160,6 +160,8 @@
 
 
 /mob/living/simple_animal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.simple_animals[AIStatus] += src
 	if(gender == PLURAL)
@@ -197,11 +199,15 @@
 	init_atmos_temp_requirement(mapload)
 
 /mob/living/simple_animal/proc/on_ssair_init(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(SSair, COMSIG_SUBSYSTEM_POST_INITIALIZE)
 	init_atmos_temp_requirement(TRUE)
 
 /mob/living/simple_animal/proc/init_atmos_temp_requirement(mapload)
+	procstart = null
+	src.procstart = null
 	if(atmos_requirements && unsuitable_atmos_damage)
 		atmos_requirements = string_assoc_list(atmos_requirements)
 		AddElement(/datum/element/atmos_requirements, atmos_requirements, unsuitable_atmos_damage, mapload)
@@ -209,17 +215,23 @@
 		AddElement(/datum/element/body_temp_sensitive, minbodytemp, maxbodytemp, unsuitable_cold_damage, unsuitable_heat_damage, mapload)
 
 /mob/living/simple_animal/Life(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(staminaloss > 0)
 		adjust_stamina_loss(-stamina_recovery * seconds_per_tick, FALSE, TRUE)
 
 /mob/living/simple_animal/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.simple_animals[AIStatus] -= src
 	SSnpcpool.currentrun -= src
 
 	return ..()
 
 /mob/living/simple_animal/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat == DEAD)
 		if(HAS_MIND_TRAIT(user, TRAIT_NAIVE))
@@ -228,6 +240,8 @@
 			. += span_deadsay("Upon closer examination, [p_they()] appear[p_s()] to be dead.")
 
 /mob/living/simple_animal/update_stat()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_GODMODE))
 		return
 	if(stat != DEAD)
@@ -244,15 +258,21 @@
  * Reduces the stamina loss by stamina_recovery
  */
 /mob/living/simple_animal/update_stamina()
+	procstart = null
+	src.procstart = null
 	if(damage_coeff[STAMINA] <= 0) //we shouldn't reset our speed to its initial value if we don't need to, as that can mess with things like mulebot motor wires
 		return
 	set_varspeed(initial(speed) + (staminaloss * 0.06))
 
 /mob/living/simple_animal/proc/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	return
 
 /mob/living/simple_animal/proc/handle_automated_movement()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(stop_automated_movement || !wander)
 		return
@@ -273,6 +293,8 @@
 	return TRUE
 
 /mob/living/simple_animal/proc/handle_automated_speech(override)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(speak_chance)
 		if(prob(speak_chance) || override)
@@ -308,6 +330,8 @@
 						manual_emote(pick(emote_hear))
 
 /mob/living/simple_animal/handle_environment(datum/gas_mixture/environment, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/atom/A = loc
 	if(isturf(A))
 		var/areatemp = get_temperature(environment)
@@ -320,6 +344,8 @@
 				adjust_bodytemperature(clamp(temp_delta * seconds_per_tick / temperature_normalization_speed, 0, temp_delta))
 
 /mob/living/simple_animal/gib()
+	procstart = null
+	src.procstart = null
 	if(butcher_results || guaranteed_butcher_results)
 		var/list/butcher = list()
 		if(butcher_results)
@@ -333,28 +359,40 @@
 	..()
 
 /mob/living/simple_animal/gib_animation()
+	procstart = null
+	src.procstart = null
 	if(icon_gib)
 		new /obj/effect/temp_visual/gib_animation/animal(loc, icon_gib)
 
 
 /mob/living/simple_animal/get_default_say_verb()
+	procstart = null
+	src.procstart = null
 	return length(speak_emote) ? pick(speak_emote) : ..()
 
 /mob/living/simple_animal/proc/set_varspeed(var_value)
+	procstart = null
+	src.procstart = null
 	speed = var_value
 	update_simplemob_varspeed()
 
 /mob/living/simple_animal/proc/update_simplemob_varspeed()
+	procstart = null
+	src.procstart = null
 	if(speed == 0)
 		remove_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed)
 	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed, multiplicative_slowdown = speed)
 
 /mob/living/simple_animal/get_status_tab_items()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "Health: [round((health / maxHealth) * 100)]%"
 	. += "Combat Mode: [combat_mode ? "On" : "Off"]"
 
 /mob/living/simple_animal/proc/drop_loot(drop_loc)
+	procstart = null
+	src.procstart = null
 	if (!length(loot))
 		return
 	for(var/i in loot)
@@ -362,6 +400,8 @@
 	loot.Cut()
 
 /mob/living/simple_animal/death(gibbed)
+	procstart = null
+	src.procstart = null
 	var/drop_loc = drop_location()
 	if(del_on_death)
 		..()
@@ -381,6 +421,8 @@
 	drop_loot(drop_loc)
 
 /mob/living/simple_animal/proc/CanAttack(atom/the_target)
+	procstart = null
+	src.procstart = null
 	if(!isatom(the_target)) // no
 		stack_trace("Invalid target in CanAttack(): [the_target]")
 		return FALSE
@@ -401,13 +443,17 @@
 	return TRUE
 
 /mob/living/simple_animal/revive(full_heal_flags = NONE, excess_healing = 0, force_grab_ghost = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	icon_state = icon_living
 	REMOVE_TRAIT(src, TRAIT_UNDENSE, BASIC_MOB_DEATH_TRAIT)
 
-/mob/living/simple_animal/proc/make_babies() // <3 <3 <3
+/mob/living/simple_animal/proc/make_babies()
+	procstart = null
+	src.procstart = null // <3 <3 <3
 	if(gender != FEMALE || IS_UNCONSCIOUS_OR_CRIT(src) || next_scan_time > world.time || !childtype || !animal_species || !SSticker.IsRoundInProgress())
 		return
 	next_scan_time = world.time + 400
@@ -436,17 +482,23 @@
 			return new childspawn(target)
 
 /mob/living/simple_animal/update_resting()
+	procstart = null
+	src.procstart = null
 	if(resting)
 		ADD_TRAIT(src, TRAIT_IMMOBILIZED, RESTING_TRAIT)
 	else
 		REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, RESTING_TRAIT)
 	return ..()
 
-/mob/living/simple_animal/proc/sentience_act() //Called when a simple animal gains sentience via gold slime potion
+/mob/living/simple_animal/proc/sentience_act()
+	procstart = null
+	src.procstart = null //Called when a simple animal gains sentience via gold slime potion
 	toggle_ai(AI_OFF) // To prevent any weirdness.
 	can_have_ai = FALSE
 
 /mob/living/simple_animal/update_sight()
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return
 	if(stat == DEAD)
@@ -472,12 +524,16 @@
 	return ..()
 
 /mob/living/simple_animal/put_in_hands(obj/item/I, del_on_fail = FALSE, merge_stacks = TRUE, ignore_animation = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_held_items()
 
 //ANIMAL RIDING
 
 /mob/living/simple_animal/user_buckle_mob(mob/living/M, mob/user, check_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated)
 		return
 	for(var/atom/movable/A in get_turf(src))
@@ -487,6 +543,8 @@
 	return ..()
 
 /mob/living/simple_animal/proc/toggle_ai(togglestatus)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	if(!can_have_ai && (togglestatus != AI_OFF))
@@ -501,14 +559,20 @@
 
 ///This proc is used for adding the swabbale element to mobs so that they are able to be biopsied and making sure holographic and butter-based creatures don't yield viable cells samples.
 /mob/living/simple_animal/proc/add_cell_sample()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/simple_animal/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated)
 		return
 	return relaydrive(user, direction)
 
 /mob/living/simple_animal/deadchat_plays(mode = ANARCHY_MODE, cooldown = 12 SECONDS)
+	procstart = null
+	src.procstart = null
 	. = AddComponent(/datum/component/deadchat_control/cardinal_movement, mode, list(), cooldown, CALLBACK(src, PROC_REF(stop_deadchat_plays)))
 
 	if(. == COMPONENT_INCOMPATIBLE)
@@ -517,9 +581,13 @@
 	stop_automated_movement = TRUE
 
 /mob/living/simple_animal/proc/stop_deadchat_plays()
+	procstart = null
+	src.procstart = null
 	stop_automated_movement = FALSE
 
 /mob/living/simple_animal/proc/Goto(target, delay, minimum_distance)
+	procstart = null
+	src.procstart = null
 	if(prevent_goto_movement)
 		return FALSE
 	GLOB.move_manager.move_to(src, target, minimum_distance, delay)
@@ -527,6 +595,8 @@
 
 //Makes this mob hunt the prey, be it living or an object. Will kill living creatures, and delete objects.
 /mob/living/simple_animal/proc/hunt(hunted)
+	procstart = null
+	src.procstart = null
 	if(src == hunted) //Make sure it doesn't eat itself. While not likely to ever happen, might as well check just in case.
 		return
 	stop_automated_movement = FALSE
@@ -562,4 +632,6 @@
 		return
 
 /mob/living/simple_animal/compare_sentience_type(compare_type)
+	procstart = null
+	src.procstart = null
 	return sentience_type == compare_type

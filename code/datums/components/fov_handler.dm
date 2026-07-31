@@ -12,6 +12,8 @@
 	var/atom/movable/screen/fov_blocker/blocker_mask
 
 /datum/component/fov_handler/Initialize(fov_type = FOV_180_DEGREES)
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 	var/mob/living/mob_parent = parent
@@ -29,6 +31,8 @@
 	update_mask()
 
 /datum/component/fov_handler/Destroy()
+	procstart = null
+	src.procstart = null
 	var/mob/living/mob_parent = parent
 
 	REMOVE_TRAIT(mob_parent, TRAIT_FOV_APPLIED, REF(src))
@@ -39,11 +43,15 @@
 	return ..()
 
 /datum/component/fov_handler/proc/set_fov_angle(new_angle)
+	procstart = null
+	src.procstart = null
 	fov_angle = new_angle
 	blocker_mask.icon_state = "[fov_angle > 0 ? fov_angle : (360 + fov_angle)]"
 
 /// Updates the size of the FOV masks by comparing them to client view size.
 /datum/component/fov_handler/proc/update_fov_size()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/parent_mob = parent
 	var/client/parent_client = parent_mob.client
@@ -69,6 +77,8 @@
 
 /// Updates the mask application to client by checking `stat` and `eye`
 /datum/component/fov_handler/proc/update_mask()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/parent_mob = parent
 	var/client/parent_client = parent_mob.client
@@ -88,6 +98,8 @@
 		remove_mask()
 
 /datum/component/fov_handler/proc/remove_mask()
+	procstart = null
+	src.procstart = null
 	var/mob/parent_mob = parent
 	var/client/parent_client = parent_mob.client
 	if(!parent_client) //Love client volatility!!
@@ -96,6 +108,8 @@
 	parent_client.screen -= blocker_mask
 
 /datum/component/fov_handler/proc/add_mask()
+	procstart = null
+	src.procstart = null
 	var/mob/parent_mob = parent
 	var/client/parent_client = parent_mob.client
 	if(!parent_client) //Love client volatility!!
@@ -105,15 +119,21 @@
 
 /// When a direction of the user changes, so do the masks
 /datum/component/fov_handler/proc/on_dir_change(mob/source, old_dir, new_dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	blocker_mask.dir = new_dir
 
 /// When a mob logs out, delete the component
 /datum/component/fov_handler/proc/mob_logout(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /datum/component/fov_handler/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_ATOM_DIR_CHANGE, PROC_REF(on_dir_change))
 	RegisterSignal(parent, COMSIG_LIVING_DEATH, PROC_REF(update_mask))
@@ -123,5 +143,7 @@
 	RegisterSignal(parent, COMSIG_MOB_LOGOUT, PROC_REF(mob_logout))
 
 /datum/component/fov_handler/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, list(COMSIG_MOB_RESET_PERSPECTIVE, COMSIG_ATOM_DIR_CHANGE, COMSIG_LIVING_DEATH, COMSIG_LIVING_REVIVE, COMSIG_MOB_LOGOUT))

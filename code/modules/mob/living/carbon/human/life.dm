@@ -19,6 +19,8 @@
 #define THERMAL_PROTECTION_HAND_RIGHT 0.025
 
 /mob/living/carbon/human/Life(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
 
@@ -50,6 +52,8 @@
 	return stat != DEAD
 
 /mob/living/carbon/human/calculate_affecting_pressure(pressure)
+	procstart = null
+	src.procstart = null
 	var/chest_covered = !get_bodypart(BODY_ZONE_CHEST)
 	var/head_covered = !get_bodypart(BODY_ZONE_HEAD)
 	var/hands_covered = !get_bodypart(BODY_ZONE_L_ARM) && !get_bodypart(BODY_ZONE_R_ARM)
@@ -73,10 +77,14 @@
 	return pressure
 
 /mob/living/carbon/human/breathe()
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_NOBREATH))
 		return ..()
 
 /mob/living/carbon/human/check_breath(datum/gas_mixture/breath)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/lungs/human_lungs = get_organ_slot(ORGAN_SLOT_LUNGS)
 	if(human_lungs)
 		return human_lungs.check_breath(breath, src)
@@ -105,6 +113,8 @@
 
 /// Environment handlers for species
 /mob/living/carbon/human/handle_environment(datum/gas_mixture/environment, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	// If we are in a cryo bed do not process life functions
 	if(istype(loc, /obj/machinery/cryo_cell))
 		return
@@ -120,9 +130,13 @@
  * * max_temp (optional) The maximum body temperature after adjustment
  */
 /mob/living/carbon/human/proc/adjust_coretemperature(amount, min_temp=0, max_temp=INFINITY)
+	procstart = null
+	src.procstart = null
 	set_coretemperature(clamp(coretemperature + amount, min_temp, max_temp))
 
 /mob/living/carbon/human/proc/set_coretemperature(value)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_HUMAN_CORETEMP_CHANGE, coretemperature, value)
 	coretemperature = value
 
@@ -136,17 +150,25 @@
  * * apply_change (optional) Default True This applies the changes to body temperature normal
  */
 /mob/living/carbon/human/get_body_temp_normal(apply_change=TRUE)
+	procstart = null
+	src.procstart = null
 	if(!apply_change)
 		return dna.species.bodytemp_normal
 	return dna.species.bodytemp_normal + get_body_temp_normal_change()
 
 /mob/living/carbon/human/get_body_temp_heat_damage_limit()
+	procstart = null
+	src.procstart = null
 	return dna.species.bodytemp_heat_damage_limit
 
 /mob/living/carbon/human/get_body_temp_cold_damage_limit()
+	procstart = null
+	src.procstart = null
 	return dna.species.bodytemp_cold_damage_limit
 
 /mob/living/carbon/human/proc/get_thermal_protection()
+	procstart = null
+	src.procstart = null
 	var/thermal_protection = 0 //Simple check to estimate how protected we are against multiple temperatures
 	if(wear_suit)
 		if((wear_suit.heat_protection & CHEST) && (wear_suit.max_heat_protection_temperature >= FIRE_SUIT_MAX_TEMP_PROTECT))
@@ -160,7 +182,9 @@
 //END FIRE CODE
 
 //This proc returns a number made up of the flags for body parts which you are protected on. (such as HEAD, CHEST, GROIN, etc. See setup.dm for the full list)
-/mob/living/carbon/human/proc/get_heat_protection_flags(temperature) //Temperature is the temperature you're being exposed to.
+/mob/living/carbon/human/proc/get_heat_protection_flags(temperature)
+	procstart = null
+	src.procstart = null //Temperature is the temperature you're being exposed to.
 	var/thermal_protection_flags = 0
 	//Handle normal clothing
 	if(head)
@@ -185,6 +209,8 @@
 	return thermal_protection_flags
 
 /mob/living/carbon/human/get_heat_protection(temperature)
+	procstart = null
+	src.procstart = null
 	var/thermal_protection_flags = get_heat_protection_flags(temperature)
 	var/thermal_protection = heat_protection
 
@@ -217,6 +243,8 @@
 
 //See proc/get_heat_protection_flags(temperature) for the description of this proc.
 /mob/living/carbon/human/proc/get_cold_protection_flags(temperature)
+	procstart = null
+	src.procstart = null
 	var/thermal_protection_flags = 0
 	//Handle normal clothing
 
@@ -242,6 +270,8 @@
 	return thermal_protection_flags
 
 /mob/living/carbon/human/get_cold_protection(temperature)
+	procstart = null
+	src.procstart = null
 	// There is an occasional bug where the temperature is miscalculated in areas with small amounts of gas.
 	// This is necessary to ensure that does not affect this calculation.
 	// Space's temperature is 2.7K and most suits that are intended to protect against any cold, protect down to 2.0K.
@@ -277,12 +307,16 @@
 	return min(1, round(thermal_protection, 0.001))
 
 /mob/living/carbon/human/has_smoke_protection()
+	procstart = null
+	src.procstart = null
 	for (var/obj/item/clothing/equip in get_equipped_items())
 		if(equip.clothing_flags & BLOCK_GAS_SMOKE_EFFECT)
 			return TRUE
 	return ..()
 
 /mob/living/carbon/human/proc/handle_heart(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/we_breath = !HAS_TRAIT_FROM(src, TRAIT_NOBREATH, SPECIES_TRAIT)
 
 	if(!undergoing_cardiac_arrest())

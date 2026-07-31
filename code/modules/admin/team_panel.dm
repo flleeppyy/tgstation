@@ -1,5 +1,7 @@
 //Split into Team List -> Team Details ?
 /datum/admins/proc/team_listing()
+	procstart = null
+	src.procstart = null
 	var/list/content = list()
 	for(var/datum/team/T in GLOB.antagonist_teams)
 		content += "<h3>[T.name] - [T.type]</h3>"
@@ -23,6 +25,8 @@
 
 
 /datum/admins/proc/check_teams()
+	procstart = null
+	src.procstart = null
 	if(!SSticker.HasRoundStarted())
 		tgui_alert(usr,"The game hasn't started yet!")
 		return
@@ -32,6 +36,8 @@
 	popup.open()
 
 /datum/admins/proc/admin_create_team(mob/user)
+	procstart = null
+	src.procstart = null
 	var/team_name = stripped_input(user,"Team name ?")
 	if(!team_name)
 		return
@@ -42,6 +48,8 @@
 	log_admin("[key_name(usr)] created new [name] antagonist team.")
 
 /datum/team/proc/admin_rename(mob/user)
+	procstart = null
+	src.procstart = null
 	var/old_name = name
 	var/team_name = stripped_input(user,"new team name ?","Team rename",old_name)
 	if(!team_name)
@@ -51,6 +59,8 @@
 	log_admin("[key_name(usr)] renamed [old_name] team to [name]")
 
 /datum/team/proc/admin_communicate(mob/user)
+	procstart = null
+	src.procstart = null
 	var/message = input(user,"Message for the team ?","Team Message") as text|null
 	if(!message)
 		return
@@ -61,6 +71,8 @@
 	log_admin("Team Message: [key_name(usr)] -> [name] team : [message]")
 
 /datum/team/proc/admin_add_objective(mob/user)
+	procstart = null
+	src.procstart = null
 	//any antag with get_team == src => add objective to that antag
 	//otherwise create new custom antag
 	if(!GLOB.admin_objective_list)
@@ -97,6 +109,8 @@
 	log_admin("[key_name(usr)] added objective \"[O.explanation_text]\" to [name]")
 
 /datum/team/proc/admin_remove_objective(mob/user,datum/objective/O)
+	procstart = null
+	src.procstart = null
 	for(var/datum/mind/M in members)
 		for(var/datum/antagonist/A in M.antag_datums)
 			A.objectives -= O
@@ -107,6 +121,8 @@
 	//qdel maybe
 
 /datum/team/proc/admin_add_member(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/minds = list()
 	for(var/mob/M in GLOB.mob_list)
 		if(M.mind)
@@ -121,18 +137,24 @@
 	add_member(value)
 
 /datum/team/proc/admin_remove_member(mob/user,datum/mind/M)
+	procstart = null
+	src.procstart = null
 	message_admins("[key_name_admin(usr)] removed [key_name_admin(M)] from [name] team")
 	log_admin("[key_name(usr)] removed [key_name(M)] from [name] team")
 	remove_member(M)
 
 //After a bit of consideration i block team deletion if there's any members left until unified objective handling is in.
 /datum/team/proc/admin_delete(mob/user)
+	procstart = null
+	src.procstart = null
 	if(members.len > 0)
 		to_chat(user,"Team has members left, remove them first and make sure you know what you're doing.", confidential = TRUE)
 		return
 	qdel(src)
 
 /datum/team/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_ADMIN))
 		return
 
@@ -144,4 +166,6 @@
 			return
 
 /datum/team/proc/get_admin_commands()
+	procstart = null
+	src.procstart = null
 	return list()

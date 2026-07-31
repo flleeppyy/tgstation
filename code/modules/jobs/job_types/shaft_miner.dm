@@ -99,6 +99,8 @@
 	pda_slot = ITEM_SLOT_LPOCKET
 
 /datum/outfit/job/miner/equipped/combat/post_equip(mob/living/carbon/human/miner, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(visuals_only)
 		return

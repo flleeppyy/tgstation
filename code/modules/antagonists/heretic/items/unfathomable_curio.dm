@@ -18,6 +18,8 @@
 	var/charge_recovery = 1
 
 /obj/item/storage/belt/unfathomable_curio/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddComponent(/datum/component/shielded, max_charges = max_charges, recharge_start_delay = recharge_start_delay, charge_increment_delay = charge_increment_delay, \
@@ -25,6 +27,8 @@
 
 
 /obj/item/storage/belt/unfathomable_curio/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(slot & slot_flags))
 		return
@@ -35,6 +39,8 @@
 		to_chat(user, span_warning("The curio wraps around you, and you feel the beating of something dark inside it..."))
 
 /obj/item/storage/belt/unfathomable_curio/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, COMSIG_LIVING_CHECK_BLOCK)
 
@@ -55,6 +61,8 @@
 
 // Our on hit effect
 /obj/item/storage/belt/unfathomable_curio/proc/shield_damaged(mob/living/carbon/wearer, attack_text, new_current_charges)
+	procstart = null
+	src.procstart = null
 	var/list/brain_traumas = list(
 		/datum/brain_trauma/severe/mute,
 		/datum/brain_trauma/severe/paralysis,
@@ -70,6 +78,8 @@
 	wearer.gain_trauma(pick(brain_traumas), TRAUMA_RESILIENCE_MAGIC)
 
 /obj/item/storage/belt/unfathomable_curio/examine(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_HERETIC(user))
 		return

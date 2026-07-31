@@ -2,6 +2,8 @@
 /datum/unit_test/mob_spawn
 
 /datum/unit_test/mob_spawn/Run()
+	procstart = null
+	src.procstart = null
 	// The ghost role that we're going to iterate over. defined all the way up here for easy/cleaner static analysis
 	var/obj/effect/mob_spawn/ghost_role/ghost_role
 

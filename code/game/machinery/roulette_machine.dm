@@ -56,20 +56,28 @@
 	acid = 30
 
 /obj/machinery/roulette/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	jackpot_loop = new(src, FALSE)
 	set_wires(new /datum/wires/roulette(src))
 
 /obj/machinery/roulette/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(jackpot_loop)
 	my_card = null
 	. = ..()
 
 /obj/machinery/roulette/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	prize_theft(0.05)
 	. = ..()
 
 /obj/machinery/roulette/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & MAINT)
 		return
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -78,6 +86,8 @@
 		ui.open()
 
 /obj/machinery/roulette/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["IsAnchored"] = anchored
 	data["BetAmount"] = chosen_bet_amount
@@ -99,6 +109,8 @@
 	return data
 
 /obj/machinery/roulette/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -117,6 +129,8 @@
 
 ///Handles setting ownership and the betting itself.
 /obj/machinery/roulette/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & MAINT && is_wire_tool(tool))
 		wires.interact(user)
 		return ITEM_INTERACT_SUCCESS
@@ -203,11 +217,15 @@
 
 ///deletes the my_card ref to prevent harddels
 /obj/machinery/roulette/proc/on_my_card_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	my_card = null
 
 ///Proc called when player is going to try and play
 /obj/machinery/roulette/proc/play(mob/user, obj/item/card/id/player_id, bet_type, bet_amount, potential_payout)
+	procstart = null
+	src.procstart = null
 	if(!my_card?.registered_account) // Something happened to my_card during the 0.4 seconds delay of the timed callback.
 		icon_state = "idle"
 		flick("flick_down", src)
@@ -235,12 +253,16 @@
 	use_energy(active_power_usage)
 
 /obj/machinery/roulette/proc/finish_play_animation()
+	procstart = null
+	src.procstart = null
 	icon_state = "idle"
 	flick("flick_down", src)
 	playsound(src, 'sound/machines/piston/piston_lower.ogg', 70)
 
 ///Ran after a while to check if the player won or not.
 /obj/machinery/roulette/proc/finish_play(obj/item/card/id/player_id, bet_type, bet_amount, potential_payout, rolled_number, mob/user)
+	procstart = null
+	src.procstart = null
 	last_spin = rolled_number
 
 	var/is_winner = check_win(bet_type, bet_amount, rolled_number) //Predetermine if we won
@@ -274,6 +296,8 @@
 
 ///Fills a list of coins that should be dropped.
 /obj/machinery/roulette/proc/dispense_prize(payout)
+	procstart = null
+	src.procstart = null
 	if(!payout)
 		return
 
@@ -298,6 +322,8 @@
 
 ///Recursive function that runs until it runs out of coins to drop.
 /obj/machinery/roulette/proc/drop_coin()
+	procstart = null
+	src.procstart = null
 	var/coin_to_drop
 
 	for(var/i in coins_to_dispense) //Find which coin to drop
@@ -328,6 +354,8 @@
 
 ///Fills a list of coins that should be dropped.
 /obj/machinery/roulette/proc/prize_theft(percentage)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		return
 	locked = TRUE
@@ -337,6 +365,8 @@
 
 ///Returns TRUE if the player bet correctly.
 /obj/machinery/roulette/proc/check_win(bet_type, bet_amount, rolled_number)
+	procstart = null
+	src.procstart = null
 	var/actual_bet_number = text2num(bet_type) //Only returns the numeric bet types, AKA singles.
 	if(!isnull(actual_bet_number)) //This means we're playing singles
 		return rolled_number == actual_bet_number
@@ -377,6 +407,8 @@
 
 ///Returns TRUE if the owner has enough funds to payout
 /obj/machinery/roulette/proc/check_owner_funds(payout)
+	procstart = null
+	src.procstart = null
 	if(my_card.registered_account.account_balance >= payout)
 		return TRUE //We got the betting amount
 	say("The bank account of [my_card.registered_account.account_holder] does not have enough funds to pay out the potential prize, contact them to fill up their account or lower your bet!")
@@ -384,6 +416,8 @@
 	return FALSE
 
 /obj/machinery/roulette/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & MAINT)
 		return
@@ -392,6 +426,8 @@
 		. += "random_numbers"
 
 /obj/machinery/roulette/update_icon(updates=ALL, payout, color, rolled_number, is_winner = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & MAINT)
 		return
@@ -422,6 +458,8 @@
 	add_overlay(number2)
 
 /obj/machinery/roulette/proc/handle_color_light(color)
+	procstart = null
+	src.procstart = null
 	switch(color)
 		if("green")
 			set_light(2,2, LIGHT_COLOR_GREEN)
@@ -429,6 +467,8 @@
 			set_light(2,2, COLOR_SOFT_RED)
 
 /obj/machinery/roulette/welder_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & MAINT)
 		to_chat(user, span_notice("You start re-attaching the top section of [src]..."))
@@ -444,6 +484,8 @@
 			icon_state = "open"
 
 /obj/machinery/roulette/shock(mob/living/shocking, chance, shock_source, siemens_coeff)
+	procstart = null
+	src.procstart = null
 	if(!on) // unpowered, no shock
 		return FALSE
 	return ..()
@@ -456,6 +498,8 @@
 	var/used
 
 /obj/item/roulette_wheel_beacon/attack_self()
+	procstart = null
+	src.procstart = null
 	if(used)
 		return
 	loc.visible_message(span_warning("\The [src] begins to beep loudly!"))
@@ -463,6 +507,8 @@
 	addtimer(CALLBACK(src, PROC_REF(launch_payload)), 4 SECONDS)
 
 /obj/item/roulette_wheel_beacon/proc/launch_payload()
+	procstart = null
+	src.procstart = null
 	podspawn(list(
 		"target" = drop_location(),
 		"path" = /obj/structure/closet/supplypod/centcompod,

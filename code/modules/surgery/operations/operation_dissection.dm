@@ -15,17 +15,25 @@
 	any_surgery_states_required = ALL_SURGERY_SKIN_STATES
 
 /datum/surgery_operation/basic/dissection/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(/obj/item/paper)
 
 /datum/surgery_operation/basic/dissection/all_required_strings()
+	procstart = null
+	src.procstart = null
 	. += ..()
 	. += "the patient must be deceased"
 	. += "the patient must not have been dissected prior"
 
 /datum/surgery_operation/basic/dissection/state_check(mob/living/patient)
+	procstart = null
+	src.procstart = null
 	return !HAS_TRAIT_FROM(patient, TRAIT_DISSECTED, EXPERIMENTAL_SURGERY_TRAIT) && patient.stat == DEAD
 
 /datum/surgery_operation/basic/dissection/on_preop(mob/living/patient, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		patient,
@@ -35,6 +43,8 @@
 	)
 
 /datum/surgery_operation/basic/dissection/on_failure(mob/living/patient, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	var/points_earned = round(check_value(patient) * 0.01)
 	display_results(
 		surgeon,
@@ -48,6 +58,8 @@
 	ADD_TRAIT(patient, TRAIT_DISSECTED, EXPERIMENTAL_SURGERY_TRAIT)
 
 /datum/surgery_operation/basic/dissection/on_success(mob/living/patient, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	var/points_earned = check_value(patient)
 	display_results(
 		surgeon,
@@ -61,6 +73,8 @@
 	ADD_TRAIT(patient, TRAIT_DISSECTED, EXPERIMENTAL_SURGERY_TRAIT)
 
 /datum/surgery_operation/basic/dissection/proc/give_paper(mob/living/surgeon, points)
+	procstart = null
+	src.procstart = null
 	var/obj/item/research_notes/the_dossier = new /obj/item/research_notes(surgeon.loc, points, "biology")
 	if(!surgeon.put_in_hands(the_dossier) && istype(surgeon.get_inactive_held_item(), /obj/item/research_notes))
 		var/obj/item/research_notes/hand_dossier = surgeon.get_inactive_held_item()
@@ -68,6 +82,8 @@
 
 ///Calculates how many research points dissecting 'target' is worth.
 /datum/surgery_operation/basic/dissection/proc/check_value(mob/living/target)
+	procstart = null
+	src.procstart = null
 	var/reward = 10
 
 	if(ishuman(target))
@@ -104,6 +120,8 @@
 	var/mixed = FALSE
 
 /obj/item/research_notes/Initialize(mapload, value, origin_type)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(value)
 		src.value = value
@@ -112,10 +130,14 @@
 	change_vol()
 
 /obj/item/research_notes/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It is worth [value] research points.")
 
 /obj/item/research_notes/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/research_notes))
 		return NONE
 	var/obj/item/research_notes/notes = tool
@@ -126,6 +148,8 @@
 
 /// proc that changes name and icon depending on value
 /obj/item/research_notes/proc/change_vol()
+	procstart = null
+	src.procstart = null
 	if(value >= TECHWEB_TIER_5_POINTS)
 		name = "revolutionary discovery in the field of [origin_type]"
 		icon_state = "docs_verified"
@@ -141,6 +165,8 @@
 
 ///proc when you slap research notes into another one, it applies a bonus if they are of different origin (only applied once)
 /obj/item/research_notes/proc/merge(obj/item/research_notes/new_paper)
+	procstart = null
+	src.procstart = null
 	var/bonus = min(value , new_paper.value)
 	value = value + new_paper.value
 	if(origin_type != new_paper.origin_type && !mixed)

@@ -241,6 +241,8 @@ GLOBAL_VAR_INIT(all_autodrobe_items, (autodrobe_costumes_items +\
 	light_mask = "theater-light-mask"
 
 /obj/machinery/vending/autodrobe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	product_categories = list(
 		list(
 			"name" = "Costumes",

@@ -15,6 +15,8 @@
 	allow_custom_character = GHOSTROLE_TAKE_PREFS_APPEARANCE
 
 /obj/effect/mob_spawn/ghost_role/human/prisoner_transport/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/crimes = list("murder", "larceny", "embezzlement", "unionization", "dereliction of duty", "kidnapping", "gross incompetence", "grand theft", "collaboration with the Syndicate", \
 	"worship of a forbidden deity", "interspecies relations", "mutiny")
@@ -22,10 +24,14 @@
 	to lose this opportunity. Find a way to get out of this mess and back to where you rightfully belong - your [pick("house", "apartment", "spaceship", "station")]."
 
 /obj/effect/mob_spawn/ghost_role/human/prisoner_transport/Destroy()
+	procstart = null
+	src.procstart = null
 	new /obj/structure/fluff/empty_sleeper/syndicate(get_turf(src))
 	return ..()
 
 /obj/effect/mob_spawn/ghost_role/human/prisoner_transport/special(mob/living/carbon/human/spawned_human, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spawned_human.fully_replace_character_name(null, "NTP #LL-0[rand(111,999)]") //Nanotrasen Prisoner #Lavaland-(numbers)
 
@@ -84,6 +90,8 @@
 	shoes = /obj/item/clothing/shoes/jackboots
 
 /obj/effect/mob_spawn/ghost_role/human/hotel_staff/Destroy()
+	procstart = null
+	src.procstart = null
 	new/obj/structure/fluff/empty_sleeper/syndicate(get_turf(src))
 	return ..()
 
@@ -111,6 +119,8 @@
 	implants = list(/obj/item/implant/weapons_auth)
 
 /datum/outfit/syndicate_empty/post_equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	H.add_faction(ROLE_SYNDICATE)
 
 //For ghost bar.
@@ -125,6 +135,8 @@
 	allow_custom_character = ALL
 
 /obj/effect/mob_spawn/ghost_role/human/space_bar_patron/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/despawn = tgui_alert(usr, "Return to cryosleep? (Warning, Your mob will be deleted!)", null, list("Yes", "No"))
 	if(despawn == "No" || !loc || !Adjacent(user))
 		return
@@ -154,10 +166,14 @@
 	spawner_job_path = /datum/job/exile
 
 /obj/effect/mob_spawn/ghost_role/human/exile/Destroy()
+	procstart = null
+	src.procstart = null
 	new/obj/structure/fluff/empty_sleeper(get_turf(src))
 	return ..()
 
 /obj/effect/mob_spawn/ghost_role/human/exile/special(mob/living/new_spawn, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new_spawn.fully_replace_character_name(null,"Wish Granter's Victim ([rand(1,999)])")
 	var/wish = rand(1,4)
@@ -208,6 +224,8 @@
 	allow_custom_character = ALL
 
 /obj/effect/mob_spawn/ghost_role/human/doctor/alive/equip(mob/living/carbon/human/doctor)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Remove radio and PDA so they wouldn't annoy station crew.
 	var/list/del_types = list(/obj/item/modular_computer/pda, /obj/item/radio/headset)
@@ -235,6 +253,8 @@
 	icon_state = "sleeper"
 
 /obj/effect/mob_spawn/cow/special(mob/living/spawned_mob, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	gender = FEMALE
 
@@ -280,6 +300,8 @@
 	allow_custom_character = ALL
 
 /obj/effect/mob_spawn/ghost_role/human/syndicatespace/special(mob/living/new_spawn, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new_spawn.grant_language(/datum/language/codespeak, source = LANGUAGE_MIND)
 	var/datum/job/spawn_job = SSjob.get_job_type(spawner_job_path)
@@ -298,6 +320,8 @@
 	allow_custom_character = ALL
 
 /obj/effect/mob_spawn/ghost_role/human/syndicatespace/captain/Destroy()
+	procstart = null
+	src.procstart = null
 	new /obj/structure/fluff/empty_sleeper/syndicate/captain(get_turf(src))
 	return ..()
 
@@ -314,6 +338,8 @@
 	implants = list(/obj/item/implant/weapons_auth)
 
 /datum/outfit/syndicatespace/post_equip(mob/living/carbon/human/syndie_scum)
+	procstart = null
+	src.procstart = null
 	syndie_scum.add_faction(ROLE_SYNDICATE)
 
 /datum/outfit/syndicatespace/syndicrew

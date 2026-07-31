@@ -3,6 +3,8 @@
 	name = "Gib"
 
 /datum/smite/gib/effect(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	target.gib(DROP_ORGANS|DROP_BODYPARTS)
 

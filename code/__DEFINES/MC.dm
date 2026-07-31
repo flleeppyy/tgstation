@@ -91,6 +91,8 @@
 
 #define SUBSYSTEM_DEF(X) GLOBAL_REAL(SS##X, /datum/controller/subsystem/##X);\
 /datum/controller/subsystem/##X/New(){\
+	procstart = null;\
+	src.procstart = null;\
 	NEW_SS_GLOBAL(SS##X);\
 	PreInit();\
 }\
@@ -98,49 +100,85 @@
 
 #define TIMER_SUBSYSTEM_DEF(X) GLOBAL_REAL(SS##X, /datum/controller/subsystem/timer/##X);\
 /datum/controller/subsystem/timer/##X/New(){\
+	procstart = null;\
+	src.procstart = null;\
 	NEW_SS_GLOBAL(SS##X);\
 	PreInit();\
 }\
-/datum/controller/subsystem/timer/##X/fire() {..() /*just so it shows up on the profiler*/} \
+/datum/controller/subsystem/timer/##X/fire() { \
+	procstart = null;\
+	src.procstart = null;\
+	..();\
+} \
 /datum/controller/subsystem/timer/##X
 
 #define MOVEMENT_SUBSYSTEM_DEF(X) GLOBAL_REAL(SS##X, /datum/controller/subsystem/movement/##X);\
 /datum/controller/subsystem/movement/##X/New(){\
+	procstart = null;\
+	src.procstart = null;\
 	NEW_SS_GLOBAL(SS##X);\
 	PreInit();\
 }\
-/datum/controller/subsystem/movement/##X/fire() {..() /*just so it shows up on the profiler*/} \
+/datum/controller/subsystem/movement/##X/fire() { \
+	procstart = null; \
+	src.procstart = null;\
+	..();\
+} \
 /datum/controller/subsystem/movement/##X
 
 #define PROCESSING_SUBSYSTEM_DEF(X) GLOBAL_REAL(SS##X, /datum/controller/subsystem/processing/##X);\
 /datum/controller/subsystem/processing/##X/New(){\
+	procstart = null;\
+	src.procstart = null;\
 	NEW_SS_GLOBAL(SS##X);\
 	PreInit();\
 }\
-/datum/controller/subsystem/processing/##X/fire() {..() /*just so it shows up on the profiler*/} \
+/datum/controller/subsystem/processing/##X/fire() { \
+	procstart = null;\
+	src.procstart = null;\
+	..();\
+} \
 /datum/controller/subsystem/processing/##X
 
 #define FLUID_SUBSYSTEM_DEF(X) GLOBAL_REAL(SS##X, /datum/controller/subsystem/fluids/##X);\
 /datum/controller/subsystem/fluids/##X/New(){\
+	procstart = null;\
+	src.procstart = null;\
 	NEW_SS_GLOBAL(SS##X);\
 	PreInit();\
 }\
-/datum/controller/subsystem/fluids/##X/fire() {..() /*just so it shows up on the profiler*/} \
+/datum/controller/subsystem/fluids/##X/fire() {\
+	procstart = null;\
+	src.procstart = null;\
+	..();\
+} \
 /datum/controller/subsystem/fluids/##X
 
 #define VERB_MANAGER_SUBSYSTEM_DEF(X) GLOBAL_REAL(SS##X, /datum/controller/subsystem/verb_manager/##X);\
 /datum/controller/subsystem/verb_manager/##X/New(){\
+	procstart = null;\
+	src.procstart = null;\
 	NEW_SS_GLOBAL(SS##X);\
 	PreInit();\
 }\
-/datum/controller/subsystem/verb_manager/##X/fire() {..() /*just so it shows up on the profiler*/} \
+/datum/controller/subsystem/verb_manager/##X/fire() {\
+	procstart = null;\
+	src.procstart = null;\
+	..();\
+} \
 /datum/controller/subsystem/verb_manager/##X
 
 #define AI_CONTROLLER_SUBSYSTEM_DEF(X) GLOBAL_REAL(SS##X, /datum/controller/subsystem/ai_controllers/##X);\
 /datum/controller/subsystem/ai_controllers/##X/New(){\
+	procstart = null;\
+	src.procstart = null;\
 	NEW_SS_GLOBAL(SS##X);\
 	PreInit();\
 }\
-/datum/controller/subsystem/ai_controllers/##X/fire() {..() /*just so it shows up on the profiler*/} \
+/datum/controller/subsystem/ai_controllers/##X/fire() {\
+	procstart = null;\
+	src.procstart = null;\
+	..();\
+} \
 /datum/controller/subsystem/ai_controllers/##X
 

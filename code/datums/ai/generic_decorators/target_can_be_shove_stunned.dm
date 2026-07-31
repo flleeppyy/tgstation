@@ -4,6 +4,8 @@
 	var/target_key
 
 /datum/bt_node/decorator/target_can_be_shove_stunned/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	var/mob/living/living_target = controller.blackboard[target_key]
 
@@ -25,6 +27,8 @@
 
 /// Whether the target has nowhere to be pushed, which is what turns a shove into a knockdown. (and thus succesful)
 /datum/bt_node/decorator/target_can_be_shove_stunned/proc/shove_will_knockdown(mob/living/living_pawn, mob/living/living_target)
+	procstart = null
+	src.procstart = null
 	var/shove_dir = get_dir(living_pawn.loc, living_target.loc)
 	var/turf/target_turf = get_turf(living_target)
 	var/turf/shove_turf = get_step(target_turf, shove_dir)

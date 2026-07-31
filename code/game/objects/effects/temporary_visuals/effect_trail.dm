@@ -22,6 +22,8 @@
 	var/datum/move_loop/movement
 
 /obj/effect/temp_visual/effect_trail/Initialize(mapload, atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!target)
 		return INITIALIZE_HINT_QDEL
@@ -36,14 +38,20 @@
 		RegisterSignal(target, COMSIG_LIVING_DEATH, PROC_REF(on_target_invalid))
 
 /obj/effect/temp_visual/effect_trail/proc/add_spawner()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/spawner, spawn_types = list(spawned_effect), max_spawned = max_spawned, spawn_time = spawn_interval)
 
 /// Destroy ourselves if the target is no longer valid
 /obj/effect/temp_visual/effect_trail/proc/on_target_invalid()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	target = null
 	qdel(src)
 
 /obj/effect/temp_visual/effect_trail/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(movement)
 	return ..()

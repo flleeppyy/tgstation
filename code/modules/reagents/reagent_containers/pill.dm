@@ -12,6 +12,8 @@
 	var/layers_remaining = 3
 
 /obj/item/reagent_containers/applicator/pill/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!icon_state)
 		icon_state = "pill[rand(1,20)]"
@@ -20,6 +22,8 @@
 	RegisterSignal(src, COMSIG_ATOM_REAGENT_EXAMINE, PROC_REF(reagent_special_examine))
 
 /obj/item/reagent_containers/applicator/pill/proc/reagent_special_examine(datum/source, mob/user, list/examine_list, can_see_insides = FALSE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (layers_remaining)
 		examine_list += span_notice("Its sugary shell will last approximately [layers_remaining] seconds in a human stomach.")
@@ -28,6 +32,8 @@
 
 ///Runs the consumption code, can be overriden for special effects
 /obj/item/reagent_containers/applicator/pill/on_consumption(mob/living/consumer, mob/giver, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(icon_state == "pill4" && prob(5)) //you take the red pill - you stay in Wonderland, and I show you how deep the rabbit hole goes
 		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), consumer, span_notice("[pick(strings(REDPILL_FILE, "redpill_questions"))]")), 5 SECONDS)
 	SEND_SIGNAL(consumer, COMSIG_LIVING_PILL_CONSUMED, src, giver)
@@ -50,6 +56,8 @@
 	return
 
 /obj/item/reagent_containers/applicator/pill/interact_with_atom(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -71,6 +79,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/applicator/pill/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -116,6 +126,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/applicator/pill/proc/on_digestion(datum/source, obj/item/organ/stomach/stomach, mob/living/carbon/owner, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	layers_remaining -= seconds_per_tick
 	if (layers_remaining >= seconds_per_tick)
@@ -135,6 +147,8 @@
 	return COMPONENT_CANCEL_DIGESTION
 
 /obj/item/reagent_containers/applicator/pill/proc/finish_digesting(datum/weakref/stomach_ref, datum/weakref/owner_ref)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/stomach/stomach = stomach_ref.resolve()
 	var/mob/living/carbon/owner = owner_ref.resolve()
 	if (!owner || !stomach)
@@ -153,6 +167,8 @@
  * On accidental consumption, consume the pill
  */
 /obj/item/reagent_containers/applicator/pill/on_accidental_consumption(mob/living/carbon/victim, mob/living/carbon/user, obj/item/source_item, discover_after = FALSE)
+	procstart = null
+	src.procstart = null
 	if(victim.get_food_taste_reaction(source_item) != FOOD_LIKED) // If you don't like the food then you notice the pill you just swallowed
 		to_chat(victim, span_warning("You swallow something small. [source_item ? "Was that in [source_item]?" : ""]"))
 	on_consumption(victim, user)
@@ -380,6 +396,8 @@
 	)
 
 /obj/item/reagent_containers/applicator/pill/maintenance/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	list_reagents = list(get_random_reagent_id(random_reagent_flag) = rand(10,50)) //list_reagents is called before init, because init generates the reagents using list_reagents
 	. = ..()
 	name = pick(names)
@@ -392,16 +410,22 @@
 	var/count_towards_achievement = TRUE
 
 /obj/item/reagent_containers/applicator/pill/maintenance/achievement/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ON_REAGENT_SCAN, PROC_REF(on_chemical_scan))
 
 /obj/item/reagent_containers/applicator/pill/maintenance/achievement/on_consumption(mob/consumer, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(count_towards_achievement)
 		consumer.client?.give_award(/datum/award/score/maintenance_pill, consumer)
 
 ///called when we are chemically scanned, we no longer grant an achievement.
 /obj/item/reagent_containers/applicator/pill/maintenance/achievement/proc/on_chemical_scan(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	count_towards_achievement = FALSE
 

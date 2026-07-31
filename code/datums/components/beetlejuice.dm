@@ -10,6 +10,8 @@
 	var/regex/R
 
 /datum/component/beetlejuice/Initialize()
+	procstart = null
+	src.procstart = null
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -26,14 +28,20 @@
 	RegisterSignal(SSdcs, COMSIG_GLOB_LIVING_SAY_SPECIAL, PROC_REF(say_react))
 
 /datum/component/beetlejuice/proc/update_regex()
+	procstart = null
+	src.procstart = null
 	R = regex("[REGEX_QUOTE(keyword)]","g[case_sensitive ? "" : "i"]")
 
 /datum/component/beetlejuice/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (var_name == NAMEOF(src, keyword) || var_name == NAMEOF(src, case_sensitive))
 		update_regex()
 
 /datum/component/beetlejuice/proc/say_react(datum/source, mob/speaker, message)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!speaker || speaker == parent || !message || !active)
@@ -56,6 +64,8 @@
 
 
 /datum/component/beetlejuice/proc/apport(atom/target)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = parent
 	do_teleport(AM,get_turf(target))
 	active = FALSE

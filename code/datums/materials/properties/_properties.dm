@@ -9,14 +9,20 @@
 
 /// Returns a string to display to sci glasses wearers when the material is examined
 /datum/material_property/proc/get_descriptor(value)
+	procstart = null
+	src.procstart = null
 	return null
 
 /// Returns the contents of the tooltip under our descriptor
 /datum/material_property/proc/get_tooltip(value)
+	procstart = null
+	src.procstart = null
 	return "[value < 0 ? "-" : ""]\Roman[round(abs(value), 1)]"
 
 /// Called whenever a material with this property initializes. Mostly used for behavior tracking on optional properties
 /datum/material_property/proc/attach_to(datum/material/material)
+	procstart = null
+	src.procstart = null
 	return
 
 /// How dense a material is
@@ -25,6 +31,8 @@
 	id = MATERIAL_DENSITY
 
 /datum/material_property/density/get_descriptor(value)
+	procstart = null
+	src.procstart = null
 	// Just for reference, IRL density of ABS plastic and water is ~1g/cm3, glass is 2.5, iron is 7.5 and lead is 11
 	// So 0 ~ 1 would be paper/cardboard, then wood at 2, plastic at 3, glass at 4, iron at 6 and lead at 8 ~ 9
 	switch(value)
@@ -49,6 +57,8 @@
 	id = MATERIAL_HARDNESS
 
 /datum/material_property/hardness/get_descriptor(value)
+	procstart = null
+	src.procstart = null
 	switch(value)
 		if (0 to 1)
 			return "extremely soft"
@@ -71,6 +81,8 @@
 	id = MATERIAL_FLEXIBILITY
 
 /datum/material_property/flexibility/get_descriptor(value)
+	procstart = null
+	src.procstart = null
 	switch(value)
 		if (0 to 1)
 			return "extremely rigid"
@@ -93,6 +105,8 @@
 	id = MATERIAL_REFLECTIVITY
 
 /datum/material_property/reflectivity/get_descriptor(value)
+	procstart = null
+	src.procstart = null
 	switch(value)
 		if (0 to 1)
 			return "extremely dull"
@@ -115,6 +129,8 @@
 	id = MATERIAL_ELECTRICAL
 
 /datum/material_property/electric_conductivity/get_descriptor(value)
+	procstart = null
+	src.procstart = null
 	switch(value)
 		if (0)
 			return "perfectly insulating"
@@ -139,6 +155,8 @@
 	id = MATERIAL_THERMAL
 
 /datum/material_property/thermal_conductivity/get_descriptor(value)
+	procstart = null
+	src.procstart = null
 	switch(value)
 		if (0 to 1)
 			return "extremely temperature-resistant"
@@ -161,6 +179,8 @@
 	id = MATERIAL_CHEMICAL
 
 /datum/material_property/chemical_resistance/get_descriptor(value)
+	procstart = null
+	src.procstart = null
 	switch(value)
 		if (0 to 1)
 			return "extremely reactive"

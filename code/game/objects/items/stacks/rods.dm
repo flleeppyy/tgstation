@@ -48,10 +48,14 @@ GLOBAL_LIST_INIT(rod_recipes, list ( \
 	embed_chance = 50
 
 /obj/item/stack/rods/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins to stuff \the [src] down [user.p_their()] throat! It looks like [user.p_theyre()] trying to commit suicide!"))//it looks like theyre ur mum
 	return BRUTELOSS
 
 /obj/item/stack/rods/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 	AddElement(/datum/element/openspace_item_click_handler)
@@ -71,13 +75,19 @@ GLOBAL_LIST_INIT(rod_recipes, list ( \
 	)
 
 /obj/item/stack/rods/handle_openspace_click(turf/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	target.base_item_interaction(user, src, list2params(modifiers))
 
 /obj/item/stack/rods/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.rod_recipes
 
 /obj/item/stack/rods/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/amount = get_amount()
 	if(amount <= 5)
@@ -86,6 +96,8 @@ GLOBAL_LIST_INIT(rod_recipes, list ( \
 		icon_state = initial(icon_state)
 
 /obj/item/stack/rods/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(get_amount() < 2)
 		balloon_alert(user, "not enough rods!")
 		return
@@ -102,6 +114,8 @@ GLOBAL_LIST_INIT(rod_recipes, list ( \
 		return ITEM_INTERACT_SUCCESS
 
 /obj/item/stack/rods/welder_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(tool.use_tool(src, user, delay = 0, volume = 40))
 		var/obj/item/stack/tile/iron/two/new_item = new(user.loc)
 		user.visible_message(
@@ -115,6 +129,8 @@ GLOBAL_LIST_INIT(rod_recipes, list ( \
 		return ITEM_INTERACT_SUCCESS
 
 /obj/item/stack/rods/cyborg/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/update_icon_blocker)
 	return ..()
 

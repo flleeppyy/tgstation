@@ -4,6 +4,8 @@
 	element_flags = ELEMENT_DETACH_ON_HOST_DESTROY
 
 /datum/element/blocks_explosives/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(target))
 		return
 	. = ..()
@@ -20,6 +22,8 @@
 		block_loc(moving_target.loc, moving_target.explosion_block)
 
 /datum/element/blocks_explosives/Detach(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(length(source.locs) > 1)
 		for(var/atom/location as anything in source.locs)
@@ -30,6 +34,8 @@
 
 /// Call this when our blocking well, changes. we'll update our turf(s) with the details
 /datum/element/blocks_explosives/proc/blocking_changed(atom/movable/target, old_block, new_block)
+	procstart = null
+	src.procstart = null
 	if(length(target.locs) > 1)
 		for(var/atom/location as anything in target.locs)
 			unblock_loc(location, old_block)
@@ -40,14 +46,20 @@
 
 /// Applies a block amount to a turf. proc for convenince
 /datum/element/blocks_explosives/proc/block_loc(atom/location, block_amount)
+	procstart = null
+	src.procstart = null
 	location.explosive_resistance += block_amount
 
 /// Removes a block amount from a turf. proc for convenince
 /datum/element/blocks_explosives/proc/unblock_loc(atom/location, block_amount)
+	procstart = null
+	src.procstart = null
 	location.explosive_resistance -= block_amount
 
 /// Essentially just blocking_changed except we remove from the old loc, and add to the new one
 /datum/element/blocks_explosives/proc/blocker_moved(atom/movable/target, atom/old_loc, dir, forced, list/old_locs)
+	procstart = null
+	src.procstart = null
 	if(length(old_locs) > 1)
 		for(var/atom/location as anything in old_locs)
 			unblock_loc(location, target.explosion_block)

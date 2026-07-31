@@ -27,6 +27,8 @@
 
 /// Activates the functionality defined by the element on the given target datum
 /datum/element/proc/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(type == /datum/element)
 		return ELEMENT_INCOMPATIBLE
@@ -35,11 +37,15 @@
 		RegisterSignal(target, COMSIG_QDELETING, PROC_REF(OnTargetDelete), override = TRUE)
 
 /datum/element/proc/OnTargetDelete(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	Detach(source)
 
 /// Deactivates the functionality defines by the element on the given datum
 /datum/element/proc/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SHOULD_CALL_PARENT(TRUE)
 
@@ -47,6 +53,8 @@
 	UnregisterSignal(source, COMSIG_QDELETING)
 
 /datum/element/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(!force)
 		return QDEL_HINT_LETMELIVE
 	SSdcs.elements_by_type -= type
@@ -56,6 +64,8 @@
 
 /// Finds the singleton for the element type given and attaches it to src
 /datum/proc/_AddElement(list/arguments)
+	procstart = null
+	src.procstart = null
 	if(QDELING(src))
 		var/datum/element/element_type = arguments[1]
 		stack_trace("We just tried to add the element [element_type] to a qdeleted datum, something is fucked")
@@ -73,6 +83,8 @@
  * You only need additional arguments beyond the type if you're using [ELEMENT_BESPOKE]
  */
 /datum/proc/_RemoveElement(list/arguments)
+	procstart = null
+	src.procstart = null
 	var/datum/element/ele = SSdcs.GetElement(arguments, FALSE)
 	if(!ele) // We couldn't fetch the element, likely because it didn't exist.
 		return
@@ -89,6 +101,8 @@
  * "RemoveElementTrait" counterpart.
  */
 /datum/proc/AddElementTrait(trait, source, datum/element/eletype, ...)
+	procstart = null
+	src.procstart = null
 	if(!ispath(eletype, /datum/element))
 		CRASH("AddElementTrait called, but [eletype] is not of a /datum/element path")
 	ADD_TRAIT(src, trait, source)
@@ -104,6 +118,8 @@
 	ele.RegisterSignal(src, SIGNAL_REMOVETRAIT(trait), TYPE_PROC_REF(/datum/element, _detach_on_trait_removed))
 
 /datum/element/proc/_detach_on_trait_removed(datum/source, trait)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	Detach(source)
 	UnregisterSignal(source, SIGNAL_REMOVETRAIT(trait))

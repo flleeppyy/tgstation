@@ -5,6 +5,8 @@
 	name = "Magic Disk of Smithing"
 
 /obj/item/disk/design_disk/knight_gear/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	blueprints += new /datum/design/knight_armour
 	blueprints += new /datum/design/knight_helmet
@@ -17,6 +19,8 @@
 	icon_state = "datadisk1"
 
 /obj/item/disk/design_disk/golem_shell/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	blueprints += new /datum/design/golem_shell
 
@@ -42,6 +46,8 @@
 	var/shell_type = /obj/effect/mob_spawn/ghost_role/human/golem
 
 /obj/item/golem_shell/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isstack(tool))
 		return NONE
 
@@ -67,6 +73,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/golem_shell/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	to_chat(user, span_notice("You begin dislodging structurally integral chunks."))

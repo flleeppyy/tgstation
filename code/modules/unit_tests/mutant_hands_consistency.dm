@@ -7,6 +7,8 @@
 /datum/unit_test/mutant_hands
 
 /datum/unit_test/mutant_hands/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/incredible_hulk = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/item_to_hold = allocate(/obj/item/storage/toolbox)
 	incredible_hulk.put_in_hands(item_to_hold)
@@ -34,6 +36,8 @@
 /datum/unit_test/mutant_hands_with_nodrop
 
 /datum/unit_test/mutant_hands_with_nodrop/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/incredible_hulk = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/item_to_hold = allocate(/obj/item/storage/toolbox)
 	ADD_TRAIT(item_to_hold, TRAIT_NODROP, TRAIT_SOURCE_UNIT_TESTS)
@@ -60,6 +64,8 @@
 /datum/unit_test/mutant_hands_carry
 
 /datum/unit_test/mutant_hands_carry/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/incredible_hulk = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/carried = allocate(/mob/living/carbon/human/consistent)
 	incredible_hulk.AddComponent(/datum/component/mutant_hands)

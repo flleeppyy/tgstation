@@ -2,6 +2,8 @@
 /datum/unit_test/hydroponics_self_mutation
 
 /datum/unit_test/hydroponics_self_mutation/Run()
+	procstart = null
+	src.procstart = null
 	var/list/all_seeds = subtypesof(/obj/item/seeds)
 
 	for(var/seed in all_seeds)

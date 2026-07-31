@@ -10,6 +10,8 @@
  * * fade_time - The time for RCD holograms to fade
  */
 /proc/rcd_scan(atom/source, scan_range = RCD_DESTRUCTIVE_SCAN_RANGE, fade_time = RCD_HOLOGRAM_FADE_TIME)
+	procstart = null
+	src.procstart = null
 	playsound(source, 'sound/items/tools/rcdscan.ogg', 50, vary = TRUE, pressure_affected = FALSE)
 
 	var/turf/source_turf = get_turf(source)

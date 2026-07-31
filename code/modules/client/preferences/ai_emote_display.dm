@@ -7,11 +7,15 @@
 	should_update_preview = FALSE
 
 /datum/preference/choiced/ai_emote_display/init_possible_values()
+	procstart = null
+	src.procstart = null
 	if(!length(GLOB.ai_status_display_all_options))
 		init_ai_status_display_options()
 	return assoc_to_keys(GLOB.ai_status_display_all_options)
 
 /datum/preference/choiced/ai_emote_display/icon_for(value)
+	procstart = null
+	src.procstart = null
 	if (value == "Random")
 		return uni_icon('icons/mob/silicon/ai.dmi', "questionmark")
 	else
@@ -20,10 +24,14 @@
 		return uni_icon('icons/obj/machines/status_display.dmi', GLOB.ai_status_display_all_options[value])
 
 /datum/preference/choiced/ai_emote_display/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if (!..(preferences))
 		return FALSE
 
 	return istype(preferences.get_highest_priority_job(), /datum/job/ai)
 
 /datum/preference/choiced/ai_emote_display/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return

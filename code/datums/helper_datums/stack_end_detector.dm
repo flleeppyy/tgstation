@@ -8,6 +8,8 @@
 	var/datum/stack_canary/_canary
 
 /datum/stack_end_detector/New()
+	procstart = null
+	src.procstart = null
 	_canary = new()
 	_WF = WEAKREF(_canary)
 
@@ -16,6 +18,8 @@
 	Can only be called once.
 **/
 /datum/stack_end_detector/proc/prime_canary()
+	procstart = null
+	src.procstart = null
 	if (!_canary)
 		CRASH("Prime_canary called twice")
 	. = _canary
@@ -23,6 +27,8 @@
 
 /// Returns true if the stack is still going. Calling before the canary has been primed also returns true
 /datum/stack_end_detector/proc/check()
+	procstart = null
+	src.procstart = null
 	return !!_WF.resolve()
 
 /// Stack canary. Will go away if the stack it was primed by is ended by byond for return or stack overflow reasons.
@@ -30,3 +36,5 @@
 
 /// empty proc to avoid warnings about unused variables. Call this proc on your canary in the stack it's watching.
 /datum/stack_canary/proc/use_variable()
+	procstart = null
+	src.procstart = null

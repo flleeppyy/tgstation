@@ -9,6 +9,8 @@ INITIALIZE_IMMEDIATE(/mob/dead)
 	throwforce = 0
 
 /mob/dead/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	if(flags_1 & INITIALIZED_1)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
@@ -29,6 +31,8 @@ INITIALIZE_IMMEDIATE(/mob/dead)
 	return INITIALIZE_HINT_NORMAL
 
 /mob/dead/canUseStorage()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 #define SERVER_HOPPER_TRAIT "server_hopper"
@@ -79,6 +83,8 @@ GAME_VERB_PROC_DESC(/mob/dead, server_hop, "Server Hop", "Jump to the other serv
  * If they don't have a new z, we'll keep the old one, preventing bugs from ghosting and re-entering, among others
  */
 /mob/dead/proc/update_z(new_z)
+	procstart = null
+	src.procstart = null
 	if(registered_z == new_z)
 		return
 	if(registered_z)
@@ -90,6 +96,8 @@ GAME_VERB_PROC_DESC(/mob/dead, server_hop, "Server Hop", "Jump to the other serv
 	SSmobs.dead_players_by_zlevel[new_z] += src
 
 /mob/dead/Login()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !client)
 		return FALSE
@@ -98,12 +106,18 @@ GAME_VERB_PROC_DESC(/mob/dead, server_hop, "Server Hop", "Jump to the other serv
 		update_z(T.z)
 
 /mob/dead/auto_deadmin_on_login()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/dead/Logout()
+	procstart = null
+	src.procstart = null
 	update_z(null)
 	return ..()
 
 /mob/dead/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	..()
 	update_z(new_turf?.z)

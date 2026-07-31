@@ -35,6 +35,8 @@
 	var/teleport_beam = "sm_arc_supercharged"
 
 /obj/machinery/launchpad/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	prepare_huds()
 	var/datum/atom_hud/data/diagnostic/diag_hud = GLOB.huds[DATA_HUD_DIAGNOSTIC]
@@ -43,6 +45,8 @@
 	update_hud()
 
 /obj/machinery/launchpad/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/max_range_multiplier = 0
 	for(var/datum/stock_part/servo/servo in component_parts)
@@ -51,21 +55,29 @@
 	range *= max_range_multiplier
 
 /obj/machinery/launchpad/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	if(same_z_layer && !QDELETED(src))
 		update_hud()
 	return ..()
 
 /obj/machinery/launchpad/Destroy()
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/data/diagnostic/diag_hud = GLOB.huds[DATA_HUD_DIAGNOSTIC]
 	diag_hud.remove_atom_from_hud(src)
 	return ..()
 
 /obj/machinery/launchpad/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
 		. += span_notice("The status display reads: Maximum range: <b>[range]</b> units.")
 
 /obj/machinery/launchpad/multitool_act(mob/living/user, obj/item/multitool/multi)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(!panel_open)
 		return
@@ -75,21 +87,33 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/launchpad/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return stationary ? default_deconstruction_screwdriver(user, tool) : NONE
 
 /obj/machinery/launchpad/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/launchpad/can_crowbar_deconstruct()
+	procstart = null
+	src.procstart = null
 	return ..() && stationary
 
 /obj/machinery/launchpad/on_set_is_operational(old_value)
+	procstart = null
+	src.procstart = null
 	update_indicator()
 
 /obj/machinery/launchpad/on_set_panel_open(old_value)
+	procstart = null
+	src.procstart = null
 	update_indicator()
 
 /obj/machinery/launchpad/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & (BROKEN|NOPOWER))
 		icon_state = "[base_icon_state]-off"
@@ -99,6 +123,8 @@
 		icon_state = "[base_icon_state]-idle"
 
 /obj/machinery/launchpad/attack_ghost(mob/dead/observer/ghost)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -109,6 +135,8 @@
 
 /// Updates diagnostic huds
 /obj/machinery/launchpad/proc/update_hud()
+	procstart = null
+	src.procstart = null
 	var/image/holder = hud_list[DIAG_LAUNCHPAD_HUD]
 	var/mutable_appearance/target = mutable_appearance('icons/effects/effects.dmi', "launchpad_target", ABOVE_NORMAL_TURF_LAYER, src, GAME_PLANE)
 	holder.appearance = target
@@ -120,12 +148,16 @@
 
 /// Whether this launchpad can send or receive.
 /obj/machinery/launchpad/proc/is_available()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || !is_operational || panel_open)
 		return FALSE
 	return TRUE
 
 /// Updates the indicator icon.
 /obj/machinery/launchpad/proc/update_indicator()
+	procstart = null
+	src.procstart = null
 	var/image/holder = hud_list[DIAG_LAUNCHPAD_HUD]
 	var/turf/target_turf
 	if(is_available())
@@ -138,6 +170,8 @@
 
 /// Sets the offset of the launchpad.
 /obj/machinery/launchpad/proc/set_offset(x, y)
+	procstart = null
+	src.procstart = null
 	if(teleporting)
 		return
 	if(!isnull(x) && !isnull(y))
@@ -153,11 +187,15 @@
 	update_indicator()
 
 /obj/effect/ebeam/launchpad/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, alpha = 0, flags = ANIMATION_PARALLEL, time = BEAM_FADE_TIME)
 
 /// Checks if the launchpad can teleport.
 /obj/machinery/launchpad/proc/teleport_checks()
+	procstart = null
+	src.procstart = null
 	if(!is_available())
 		return "ERROR: Launchpad not operative. Make sure the launchpad is ready and powered."
 
@@ -174,6 +212,8 @@
 /// sending - TRUE/FALSE depending on if the launch pad is teleporting *to* or *from* the target.
 /// alternate_log_name - An alternative name to use in logs, if `user` is not present..
 /obj/machinery/launchpad/proc/doteleport(mob/user, sending, alternate_log_name = null)
+	procstart = null
+	src.procstart = null
 
 	var/turf/dest = get_turf(src)
 
@@ -290,6 +330,8 @@
 	var/obj/item/storage/briefcase/launchpad/briefcase
 
 /obj/machinery/launchpad/briefcase/Initialize(mapload, _briefcase)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!_briefcase)
 		stack_trace("[src] spawned without a briefcase.")
@@ -297,12 +339,16 @@
 	briefcase = _briefcase
 
 /obj/machinery/launchpad/briefcase/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(briefcase))
 		qdel(briefcase)
 	briefcase = null
 	return ..()
 
 /obj/machinery/launchpad/briefcase/is_available()
+	procstart = null
+	src.procstart = null
 	if(closed)
 		return FALSE
 	if(panel_open)
@@ -310,6 +356,8 @@
 	return TRUE
 
 /obj/machinery/launchpad/briefcase/mouse_drop_dragged(atom/over_object, mob/user, src_location, over_location, params)
+	procstart = null
+	src.procstart = null
 	if(over_object == user)
 		if(!briefcase)
 			return
@@ -321,6 +369,8 @@
 			update_indicator()
 
 /obj/machinery/launchpad/briefcase/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/launchpad_remote))
 		return NONE
 	var/obj/item/launchpad_remote/remote = tool
@@ -341,20 +391,28 @@
 	//A weakref to our linked pad
 	var/datum/weakref/pad
 
-/obj/item/launchpad_remote/Initialize(mapload, pad) //remote spawns linked to the briefcase pad
+/obj/item/launchpad_remote/Initialize(mapload, pad)
+	procstart = null
+	src.procstart = null //remote spawns linked to the briefcase pad
 	. = ..()
 	src.pad = WEAKREF(pad)
 
 /obj/item/launchpad_remote/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui_interact(user)
 	to_chat(user, span_notice("[src] projects a display onto your retina."))
 
 
 /obj/item/launchpad_remote/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.inventory_state
 
 /obj/item/launchpad_remote/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "LaunchpadRemote")
@@ -362,6 +420,8 @@
 	ui.set_autoupdate(TRUE)
 
 /obj/item/launchpad_remote/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/obj/machinery/launchpad/briefcase/our_pad = pad?.resolve()
 	data["has_pad"] = our_pad ? TRUE : FALSE
@@ -377,6 +437,8 @@
 	return data
 
 /obj/item/launchpad_remote/proc/teleport(mob/user, obj/machinery/launchpad/pad)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(pad))
 		to_chat(user, span_warning("ERROR: Launchpad not responding. Check launchpad integrity."))
 		return
@@ -387,6 +449,8 @@
 	pad.doteleport(user, sending)
 
 /obj/item/launchpad_remote/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -456,6 +520,8 @@
 	var/obj/machinery/launchpad/attached_launchpad
 
 /obj/item/circuit_component/bluespace_launchpad/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isnull(attached_launchpad))
@@ -465,6 +531,8 @@
 	. += create_ui_notice("Maximum Range: [attached_launchpad.range]", "orange", "plus")
 
 /obj/item/circuit_component/bluespace_launchpad/populate_ports()
+	procstart = null
+	src.procstart = null
 	x_pos = add_input_port("X offset", PORT_TYPE_NUMBER)
 	y_pos = add_input_port("Y offset", PORT_TYPE_NUMBER)
 	send_trigger = add_input_port("Send", PORT_TYPE_SIGNAL)
@@ -476,15 +544,21 @@
 	on_fail = add_output_port("Failed", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/bluespace_launchpad/register_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/machinery/launchpad))
 		attached_launchpad = shell
 
 /obj/item/circuit_component/bluespace_launchpad/unregister_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	attached_launchpad = null
 	return ..()
 
 /obj/item/circuit_component/bluespace_launchpad/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!attached_launchpad)
 		why_fail.set_output("Not connected!")
 		on_fail.set_output(COMPONENT_SIGNAL)

@@ -85,11 +85,15 @@
 	acid = 5
 
 /obj/item/clothing/head/beanie/black/dboy/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(user) && !beanie_owner)
 		beanie_owner = WEAKREF(user)
 
 /obj/item/clothing/head/beanie/black/dboy/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_WEAKREF_OF(user, beanie_owner))
 		. += span_purple("It's covered in otherworldly debris only your eyes have been ruined enough to see.")

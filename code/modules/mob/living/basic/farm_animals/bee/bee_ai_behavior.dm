@@ -4,6 +4,8 @@
 /datum/targeting_strategy/basic/bee
 
 /datum/targeting_strategy/basic/bee/is_valid_target(mob/living/owner, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	if(!isliving(target))
 		return FALSE
 	. = ..()
@@ -39,6 +41,8 @@
 	var/key_to_swarm = BB_SWARM_TARGET
 
 /datum/pet_command/attack/swirl/try_activate_command(mob/living/commander, radial_command)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = weak_parent.resolve()
 	if(isnull(living_pawn))
 		return
@@ -50,6 +54,8 @@
 	return ..()
 
 /datum/pet_command/attack/swirl/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(controller.blackboard_key_exists(BB_CURRENT_PET_TARGET))
 		return ..()
 	controller.set_behavior_tree_override(SUBPLAN_ID_PET_COMMAND, /datum/bt_node/subtree/pet_command/swirl)
@@ -60,6 +66,8 @@
 	radial_icon_state = "beebox"
 
 /datum/pet_command/beehive/try_activate_command(mob/living/commander, radial_command)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = weak_parent.resolve()
 	if(isnull(living_pawn))
 		return
@@ -74,9 +82,13 @@
 	return ..()
 
 /datum/pet_command/beehive/proc/check_beehive_conditions(obj/structure/hive)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/pet_command/beehive/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.set_behavior_tree_override(SUBPLAN_ID_PET_COMMAND, /datum/bt_node/subtree/pet_command/beehive)
 
 /datum/pet_command/beehive/enter
@@ -85,6 +97,8 @@
 	speech_commands = list("enter", "home", "in")
 
 /datum/pet_command/beehive/enter/check_beehive_conditions(mob/living/living_pawn, obj/structure/hive)
+	procstart = null
+	src.procstart = null
 	if(living_pawn in hive) //already in hive
 		return FALSE
 	return can_see(living_pawn, hive, 9)
@@ -95,6 +109,8 @@
 	speech_commands = list("exit", "leave", "out")
 
 /datum/pet_command/beehive/exit/check_beehive_conditions(mob/living/living_pawn, obj/structure/hive)
+	procstart = null
+	src.procstart = null
 	return (living_pawn in hive)
 
 /datum/pet_command/scatter
@@ -103,10 +119,14 @@
 	speech_commands = list("disperse", "spread", "scatter")
 
 /datum/pet_command/scatter/set_command_active(mob/living/parent, mob/living/commander)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_command_target(parent, commander)
 
 /datum/pet_command/scatter/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.set_behavior_tree_override(SUBPLAN_ID_PET_COMMAND, /datum/bt_node/subtree/pet_command/scatter)
 
 

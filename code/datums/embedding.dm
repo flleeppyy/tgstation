@@ -48,12 +48,16 @@
 	VAR_FINAL/obj/item/bodypart/owner_limb
 
 /datum/embedding/New(obj/item/creator)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (creator)
 		register_on(creator)
 
 /// Registers ourselves with an item
 /datum/embedding/proc/register_on(obj/item/new_parent)
+	procstart = null
+	src.procstart = null
 	if(!isitem(new_parent))
 		CRASH("Embedding datum attempted to register on a non-item object [new_parent] ([new_parent?.type])")
 
@@ -64,6 +68,8 @@
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE_TAGS, PROC_REF(examined_tags))
 
 /datum/embedding/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if (!parent)
 		return ..()
 	parent.set_embed(null)
@@ -76,6 +82,8 @@
 /// Creates a copy and sets all of its *relevant* variables
 /// Children should override this with new variables if they add any "generic" ones
 /datum/embedding/proc/create_copy(atom/movable/new_owner)
+	procstart = null
+	src.procstart = null
 	var/datum/embedding/brother = new type(new_owner)
 	brother.embed_chance = embed_chance
 	brother.fall_chance = fall_chance
@@ -94,6 +102,8 @@
 
 ///Someone inspected our embeddable item
 /datum/embedding/proc/examined_tags(obj/item/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(is_harmless())
@@ -103,6 +113,8 @@
 
 /// Is passed victim a valid target for us to embed into?
 /datum/embedding/proc/can_embed(atom/movable/source, mob/living/carbon/victim, hit_zone, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if (!istype(victim))
 		return FALSE
 
@@ -123,6 +135,8 @@
 
 /// Attempts to embed an object
 /datum/embedding/proc/try_embed(obj/item/weapon, mob/living/carbon/victim, hit_zone, blocked, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (blocked || !can_embed(parent, victim, hit_zone, throwingdatum))
@@ -139,6 +153,8 @@
 
 /// Attempts to embed shrapnel from a projectile
 /datum/embedding/proc/try_embed_projectile(obj/projectile/source, atom/hit, hit_zone, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	if (pierce_hit)
 		return
 
@@ -159,6 +175,8 @@
 
 /// Used for custom logic while setting up shrapnel payload
 /datum/embedding/proc/setup_shrapnel(obj/projectile/source, mob/living/carbon/victim)
+	procstart = null
+	src.procstart = null
 	var/shrapnel_type = source.shrapnel_type
 	var/obj/item/payload = new shrapnel_type(get_turf(victim))
 	// Detach from parent, we don't want em to delete us
@@ -172,6 +190,8 @@
 
 /// Calculates the actual chance to embed based on armour penetration and throwing speed, then returns true if we pass that probability check
 /datum/embedding/proc/roll_embed_chance(mob/living/carbon/victim, hit_zone, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	var/chance = embed_chance
 
 	// Something threw us really, really fast
@@ -201,6 +221,8 @@
 /// We've tried to embed into something and failed
 /// Random being TRUE means we've lost the roulette, FALSE means we've either been blocked or the target is invalid
 /datum/embedding/proc/failed_embed(mob/living/carbon/victim, hit_zone, random = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!istype(parent))
 		return
 	SEND_SIGNAL(parent, COMSIG_ITEM_FAILED_EMBED, victim, hit_zone)
@@ -209,10 +231,14 @@
 
 /// Does this item deal any damage when embedding or jostling inside of someone?
 /datum/embedding/proc/is_harmless(consider_stamina = FALSE)
+	procstart = null
+	src.procstart = null
 	return pain_mult == 0 && jostle_pain_mult == 0 && (consider_stamina || pain_stam_pct < 1)
 
 //Handles actual embedding logic.
 /datum/embedding/proc/embed_into(mob/living/carbon/victim, obj/item/bodypart/target_limb)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	set_owner(victim, target_limb)
@@ -266,11 +292,15 @@
 
 /// Proc which is called upon successfully embedding into someone/something, for children to override
 /datum/embedding/proc/on_successful_embed(mob/living/carbon/victim, obj/item/bodypart/target_limb)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Registers signals that our owner should have
 /// Handles jostling, tweezing embedded items out and grenade chain reactions
 /datum/embedding/proc/set_owner(mob/living/carbon/victim, obj/item/bodypart/target_limb)
+	procstart = null
+	src.procstart = null
 	owner = victim
 	owner_limb = target_limb
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(owner_moved))
@@ -281,6 +311,8 @@
 /// Avoid calling this directly as this doesn't move the object from its owner's contents
 /// Returns TRUE if the item got deleted due to DROPDEL flag
 /datum/embedding/proc/stop_embedding()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSprocessing, src)
 	if (owner_limb)
 		UnregisterSignal(owner_limb, COMSIG_BODYPART_REMOVED)
@@ -300,6 +332,8 @@
 	return FALSE
 
 /datum/embedding/proc/on_qdel(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (owner_limb)
 		weapon_disappeared()
@@ -307,12 +341,16 @@
 
 /// Move self to owner's turf when our limb gets removed
 /datum/embedding/proc/on_removed(datum/source, mob/living/carbon/old_owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!stop_embedding()) // Dropdel?
 		parent.forceMove(old_owner.drop_location())
 
 /// Someone attempted to pull us out! Either the owner by inspecting themselves, or someone else by examining the owner and clicking the link.
 /datum/embedding/proc/rip_out(mob/living/jack_the_ripper)
+	procstart = null
+	src.procstart = null
 	if (!owner.IsReachableBy(jack_the_ripper))
 		return
 
@@ -351,6 +389,8 @@
 
 /// Handles damage effects upon forceful removal
 /datum/embedding/proc/damaging_removal_effect(ouchies_multiplier)
+	procstart = null
+	src.procstart = null
 	var/damage = parent.w_class * remove_pain_mult * ouchies_multiplier
 	owner.apply_damage(
 		damage = (1 - pain_stam_pct) * damage,
@@ -370,6 +410,8 @@
 
 /// The proper proc to call when you want to remove something. If a mob is passed, the item will be put in its hands - otherwise it's just dumped onto the ground
 /datum/embedding/proc/remove_embedding(mob/living/to_hands)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/stored_owner = owner
 	if (stop_embedding()) // Dropdel?
 		return
@@ -379,6 +421,8 @@
 
 /// When owner moves around, attempt to jostle the item
 /datum/embedding/proc/owner_moved(mob/living/carbon/source, atom/old_loc, dir, forced, list/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/chance = jostle_chance
@@ -411,10 +455,14 @@
 
 /// Effects which should occur when the owner moves, sometimes
 /datum/embedding/proc/jostle_effects()
+	procstart = null
+	src.procstart = null
 	return
 
 /// When someone attempts to pluck us with tweezers or wirecutters
 /datum/embedding/proc/on_item_interaction(mob/living/carbon/victim, mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (user.zone_selected != owner_limb.body_zone || (tool.tool_behaviour != TOOL_HEMOSTAT && tool.tool_behaviour != TOOL_WIRECUTTER))
@@ -431,6 +479,8 @@
 	return COMPONENT_NO_AFTERATTACK
 
 /datum/embedding/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if (!owner || !owner_limb || owner_limb.owner != owner)
 		stack_trace("Attempted to process embedding on [parent] ([parent.type]) without an owner, owner_limb or owner-less limb!")
 		parent.forceMove(get_turf(parent))
@@ -481,10 +531,14 @@
 
 /// Called every process, return TRUE in order to abort further processing - if it falls out, etc
 /datum/embedding/proc/process_effect(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Attempt to pluck out the embedded item using tweezers of some kind
 /datum/embedding/proc/try_pluck(obj/item/tool, mob/user)
+	procstart = null
+	src.procstart = null
 	var/pluck_time = rip_time * (parent.w_class * 0.3) * tool.toolspeed
 	var/self_pluck = (user == owner)
 	var/safe_pluck = tool.tool_behaviour != TOOL_HEMOSTAT
@@ -523,6 +577,8 @@
 
 /// Called when then item randomly falls out of a carbon. This handles the damage and descriptors, then calls remove_embedding()
 /datum/embedding/proc/fall_out()
+	procstart = null
+	src.procstart = null
 	if(is_harmless())
 		owner.visible_message(span_warning("[parent] falls off of [owner.name]'s [owner_limb.plaintext_zone]!"),
 			span_warning("[parent] falls off of your [owner_limb.plaintext_zone]!"))
@@ -550,6 +606,8 @@
 
 /// Whenever the parent item is forcefully moved by some weird means
 /datum/embedding/proc/weapon_disappeared(atom/old_loc, dir, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// If something moved it to their limb, its not really *disappearing*, is it?
 	if (owner && parent.loc != owner_limb)
@@ -558,6 +616,8 @@
 
 /// So the sticky grenades chain-detonate, because mobs are very careful with which of their contents they blow up
 /datum/embedding/proc/on_ex_act(atom/source, severity)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// In the process of owner's ex_act
 	if (QDELETED(parent))
@@ -572,6 +632,8 @@
 
 /// Called when an object is ripped out of someone's body by magic or other abnormal means
 /datum/embedding/proc/magic_pull(obj/item/weapon, mob/living/caster)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(is_harmless())
@@ -607,6 +669,8 @@
 	owner.visible_message(span_alert("[owner] is sent flying towards [caster] as the [parent] tears out of them!"), span_alert("You are launched at [caster] as the [parent] tears from your body and towards their hand!"))
 
 /datum/embedding/proc/still_in()
+	procstart = null
+	src.procstart = null
 	if (parent.loc != owner)
 		return FALSE
 	if (!(parent in owner_limb?.embedded_objects))

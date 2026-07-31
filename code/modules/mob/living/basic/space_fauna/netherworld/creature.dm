@@ -32,6 +32,8 @@
 	var/health_scaling = TRUE
 
 /mob/living/basic/creature/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_NETHER, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 0)
 	if(health_scaling)
@@ -45,6 +47,8 @@
 	GRANT_ACTION(/datum/action/cooldown/spell/jaunt/creature_teleport)
 
 /mob/living/basic/creature/proc/can_be_seen(turf/location)
+	procstart = null
+	src.procstart = null
 	// Check for darkness
 	if(location?.lighting_object)
 		if(location.get_lumcount() < 0.1) // No one can see us in the darkness, right?
@@ -79,16 +83,22 @@
 	var/datum/component/unobserved_actor/observed_blocker
 
 /datum/action/cooldown/spell/jaunt/creature_teleport/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!owner)
 		return
 	observed_blocker = owner.AddComponent(/datum/component/unobserved_actor, unobserved_flags = NO_OBSERVED_ACTIONS, affected_actions = list(type))
 
 /datum/action/cooldown/spell/jaunt/creature_teleport/Remove(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(observed_blocker)
 	return ..()
 
 /datum/action/cooldown/spell/jaunt/creature_teleport/before_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	if (!owner)
 		return SPELL_CANCEL_CAST
 	if (!do_after(owner, 6 SECONDS, target = owner.loc))
@@ -97,6 +107,8 @@
 	return ..()
 
 /datum/action/cooldown/spell/jaunt/creature_teleport/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(get_turf(owner), 'sound/effects/podwoosh.ogg', 50, TRUE, -1)
 	if(is_jaunting(cast_on))

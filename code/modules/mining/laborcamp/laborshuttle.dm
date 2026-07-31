@@ -14,6 +14,8 @@
 	req_access = list( )
 
 /obj/machinery/computer/shuttle/labor/one_way/launch_check(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

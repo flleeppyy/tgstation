@@ -37,6 +37,8 @@ GLOBAL_LIST_EMPTY(all_ongoing_hallucinations)
 
 /// Unless you need this for an explicit reason, use the cause_hallucination wrapper.
 /mob/living/proc/_cause_hallucination(list/raw_args)
+	procstart = null
+	src.procstart = null
 	if(!length(raw_args))
 		CRASH("cause_hallucination called with no arguments.")
 
@@ -82,6 +84,8 @@ GLOBAL_LIST_EMPTY(all_ongoing_hallucinations)
  * optional_messages - optional list of messages passed. Those affected by pulses will be given one of the messages in said list.
  */
 /proc/visible_hallucination_pulse(atom/center, radius = 7, hallucination_duration = 50 SECONDS, hallucination_max_duration, list/optional_messages)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/nearby_living in view(center, radius))
 		if(HAS_MIND_TRAIT(nearby_living, TRAIT_MADNESS_IMMUNE))
 			continue
@@ -109,6 +113,8 @@ GLOBAL_LIST_EMPTY(all_ongoing_hallucinations)
  * optional_messages - optional list of messages passed. Those affected by pulses will be given one of the messages in said list.
  */
 /proc/hallucination_pulse(atom/center, radius = 7, hallucination_duration = 50 SECONDS, hallucination_max_duration, list/optional_messages)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/nearby_living in range(center, radius))
 		if(HAS_MIND_TRAIT(nearby_living, TRAIT_MADNESS_IMMUNE))
 			continue
@@ -127,6 +133,8 @@ GLOBAL_LIST_INIT_TYPED(random_hallucination_weighted_list, /list, generate_hallu
 
 /// Generates the global weighted list of random hallucinations.
 /proc/generate_hallucination_weighted_list()
+	procstart = null
+	src.procstart = null
 	var/list/weighted_list = list()
 
 	for(var/datum/hallucination/hallucination_type as anything in typesof(/datum/hallucination))
@@ -145,6 +153,8 @@ GLOBAL_LIST_INIT_TYPED(random_hallucination_weighted_list, /list, generate_hallu
 /// * tier - the tier of hallucination to select from
 /// * strict - if true, only select from the passed tier. If false, select from the passed tier and all tiers below it.
 /proc/get_random_hallucination(tier = HALLUCINATION_TIER_COMMON, strict = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!GLOB.random_hallucination_weighted_list[tier])
 		CRASH("get_random_hallucination - No hallucinations in tier \[[tier]\].")
 
@@ -159,6 +169,8 @@ GLOBAL_LIST_INIT_TYPED(random_hallucination_weighted_list, /list, generate_hallu
 
 /// Debug proc for getting the total weight of the random_hallucination_weighted_list
 /proc/debug_hallucination_weighted_list()
+	procstart = null
+	src.procstart = null
 	var/total_weight = 0
 	for(var/tier in GLOB.random_hallucination_weighted_list)
 		for(var/datum/hallucination/hallucination_type as anything in GLOB.random_hallucination_weighted_list[tier])
@@ -212,6 +224,8 @@ ADMIN_VERB(debug_hallucination_weighted_list_per_type, R_DEBUG, "Show Hallucinat
 /// If no subtype is passed, it will get any random hallucination subtype that is not abstract and has weight > 0.
 /// This can be used instead of picking from the global weighted list to just get a random valid hallucination.
 /proc/get_random_valid_hallucination_subtype(passed_type = /datum/hallucination)
+	procstart = null
+	src.procstart = null
 	if(!ispath(passed_type, /datum/hallucination))
 		CRASH("get_random_valid_hallucination_subtype - get_random_valid_hallucination_subtype passed not a hallucination subtype.")
 
@@ -227,6 +241,8 @@ ADMIN_VERB(debug_hallucination_weighted_list_per_type, R_DEBUG, "Show Hallucinat
 
 /// Helper to give the passed mob the ability to select a hallucination from the list of all hallucination subtypes.
 /proc/select_hallucination_type(mob/user, message = "Select a hallucination subtype", title = "Choose Hallucination")
+	procstart = null
+	src.procstart = null
 	var/static/list/hallucinations
 	if(!hallucinations)
 		hallucinations = typesof(/datum/hallucination)
@@ -243,6 +259,8 @@ ADMIN_VERB(debug_hallucination_weighted_list_per_type, R_DEBUG, "Show Hallucinat
 /// Helper to give the passed mob the ability to create a delusion hallucination (even a custom one).
 /// Returns a list of arguments - pass these to _cause_hallucination to cause the desired hallucination
 /proc/create_delusion(mob/user)
+	procstart = null
+	src.procstart = null
 	var/static/list/delusions
 	if(!delusions)
 		delusions = typesof(/datum/hallucination/delusion)

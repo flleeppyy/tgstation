@@ -39,6 +39,8 @@
 	src.faction = faction
 
 /datum/component/summoning/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	if(ismachinery(parent) || isstructure(parent) || isgun(parent) || isprojectilespell(parent)) // turrets, etc
 		RegisterSignal(parent, COMSIG_PROJECTILE_ON_HIT, PROC_REF(projectile_hit))
 	else if(isitem(parent))
@@ -47,14 +49,20 @@
 		RegisterSignal(parent, COMSIG_HOSTILE_POST_ATTACKINGTARGET, PROC_REF(hostile_attackingtarget))
 
 /datum/component/summoning/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ITEM_AFTERATTACK, COMSIG_HOSTILE_POST_ATTACKINGTARGET, COMSIG_PROJECTILE_ON_HIT))
 
 /datum/component/summoning/proc/item_afterattack(obj/item/source, atom/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	do_spawn_mob(get_turf(target), user)
 
 /datum/component/summoning/proc/hostile_attackingtarget(mob/living/simple_animal/hostile/attacker, atom/target, success)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!success)
@@ -62,11 +70,15 @@
 	do_spawn_mob(get_turf(target), attacker)
 
 /datum/component/summoning/proc/projectile_hit(datum/fired_from, atom/movable/firer, atom/target, Angle)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	do_spawn_mob(get_turf(target), firer)
 
 /datum/component/summoning/proc/do_spawn_mob(atom/spawn_location, summoner)
+	procstart = null
+	src.procstart = null
 	if(length(spawned_mobs) >= max_mobs || !COOLDOWN_FINISHED(src, summon_cooldown) || !prob(spawn_chance))
 		return
 	COOLDOWN_START(src, summon_cooldown, spawn_delay)
@@ -83,6 +95,8 @@
 
 /// When a spawned thing dies, remove it from our list
 /datum/component/summoning/proc/on_spawned_death(mob/killed, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(killed, list(COMSIG_LIVING_DEATH, COMSIG_QDELETING))
 	spawned_mobs -= killed

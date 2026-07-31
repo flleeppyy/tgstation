@@ -10,16 +10,22 @@
 	var/max_uses = 5
 
 /obj/item/tattoo_kit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/item/tattoo_kit/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(held_item, /obj/item/toner))
 		context[SCREENTIP_CONTEXT_LMB] = "Refill"
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/tattoo_kit/examine(mob/tattoo_artist)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!uses)
 		. += span_warning("This kit has no uses left!")
@@ -28,6 +34,8 @@
 	. += span_boldnotice("You can use a toner cartridge to refill this.")
 
 /obj/item/tattoo_kit/item_interaction(mob/living/user, obj/item/toner/ink_cart, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(ink_cart))
 		return NONE
 	var/added_amount = round(ink_cart.charges / 5)
@@ -45,6 +53,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/tattoo_kit/attack(mob/living/tattoo_holder, mob/living/tattoo_artist, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE

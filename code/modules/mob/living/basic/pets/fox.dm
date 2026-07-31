@@ -49,6 +49,8 @@
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 
 /mob/living/basic/pet/fox/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/obeys_commands, pet_commands)
 	AddElement(/datum/element/cultist_pet)

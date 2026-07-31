@@ -9,6 +9,8 @@
 	synchronizer_coeff = 1
 
 /datum/mutation/void/setup()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/action/cooldown/spell/void/cursed/to_modify = .
 	if(!istype(to_modify)) // null or invalid
@@ -32,9 +34,13 @@
 	antimagic_flags = NONE
 
 /datum/action/cooldown/spell/void/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return isturf(cast_on.loc)
 
 /datum/action/cooldown/spell/void/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/immortality_talisman/void(get_turf(cast_on), cast_on)
 
@@ -46,6 +52,8 @@
 	var/curse_probability_modifier = 1
 
 /datum/action/cooldown/spell/void/cursed/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!owner)
 		return
@@ -53,11 +61,15 @@
 	RegisterSignal(grant_to, COMSIG_LIVING_LIFE, PROC_REF(on_life))
 
 /datum/action/cooldown/spell/void/cursed/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(remove_from, COMSIG_LIVING_LIFE)
 	return ..()
 
 /// Signal proc for [COMSIG_LIVING_LIFE]. Has a chance of casting itself randomly.
 /datum/action/cooldown/spell/void/cursed/proc/on_life(mob/living/source, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT(source, TRAIT_STASIS) || source.stat == DEAD)

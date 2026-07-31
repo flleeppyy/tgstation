@@ -5,10 +5,16 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/choiced/scaling_method/create_default_value()
+	procstart = null
+	src.procstart = null
 	return SCALING_METHOD_DISTORT
 
 /datum/preference/choiced/scaling_method/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list(SCALING_METHOD_DISTORT, SCALING_METHOD_BLUR, SCALING_METHOD_NORMAL)
 
 /datum/preference/choiced/scaling_method/apply_to_client(client/client, value)
+	procstart = null
+	src.procstart = null
 	client?.view_size?.setZoomMode()

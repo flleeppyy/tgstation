@@ -30,6 +30,8 @@
 	var/attachment_slot = CHEST
 
 /obj/item/clothing/accessory/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
@@ -37,6 +39,8 @@
  * Can we be attached to the passed clothing article?
  */
 /obj/item/clothing/accessory/proc/can_attach_accessory(obj/item/clothing/under/attach_to, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(attach_to))
 		CRASH("[type] - can_attach_accessory called with an invalid item to attach to. (got: [attach_to])")
 
@@ -59,6 +63,8 @@
 
 // If accessory is being worn, make sure it updates on the player
 /obj/item/clothing/accessory/update_greyscale()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/clothing/under/attached_to = loc
 	if(!istype(attached_to))
@@ -73,6 +79,8 @@
  * The accessory is not yet within the clothing's loc at this point, this hapens after success.
  */
 /obj/item/clothing/accessory/proc/try_attach(obj/item/clothing/under/attach_to, mob/living/attacher)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(atom_storage)
@@ -99,6 +107,8 @@
 
 /// Called after try_attach returns TRUE and thus the accessory can be finally be moved into its target
 /obj/item/clothing/accessory/proc/attach(obj/item/clothing/under/attached_to)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	LAZYADD(attached_to.attached_accessories, src)
@@ -113,6 +123,8 @@
 	SEND_SIGNAL(attached_to, COMSIG_CLOTHING_ACCESSORY_ATTACHED, src)
 
 /obj/item/clothing/accessory/proc/generate_accessory_overlay(obj/item/clothing/under/attached_to)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	var/mutable_appearance/appearance = mutable_appearance(worn_icon, (icon_state_is_worn ? icon_state : worn_icon_state))
 	appearance.overlays += worn_overlays(appearance, FALSE, worn_icon) // we're assuming it's being worn.
@@ -126,6 +138,8 @@
  * We may have exited the clothing's loc at this point
  */
 /obj/item/clothing/accessory/proc/detach(obj/item/clothing/under/detach_from, update = TRUE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(detach_from.atom_storage?.real_location == src)
@@ -157,6 +171,8 @@
 
 /// Signal proc for [COMSIG_ITEM_EQUIPPED] on the uniform we're pinned to
 /obj/item/clothing/accessory/proc/on_uniform_equipped(obj/item/clothing/under/source, mob/living/user, slot, update = FALSE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(slot & source.slot_flags))
@@ -167,6 +183,8 @@
 
 /// Signal proc for [COMSIG_ITEM_DROPPED] on the uniform we're pinned to
 /obj/item/clothing/accessory/proc/on_uniform_dropped(obj/item/clothing/under/source, mob/living/user, update = FALSE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	accessory_dropped(source, user)
@@ -175,17 +193,23 @@
 
 /// Called when the uniform this accessory is pinned to is equipped in a valid slot
 /obj/item/clothing/accessory/proc/accessory_equipped(obj/item/clothing/under/clothes, mob/living/user)
+	procstart = null
+	src.procstart = null
 	equipped(user, user.get_slot_by_item(clothes)) // so we get any actions, item_flags get set, etc
 	for(var/trait in clothing_traits) // Accessory don't have slot flags by def, but they still apply clothing traits when the suit is equipped in the right slot.
 		ADD_CLOTHING_TRAIT(user, trait)
 
 /// Called when the uniform this accessory is pinned to is dropped
 /obj/item/clothing/accessory/proc/accessory_dropped(obj/item/clothing/under/clothes, mob/living/user)
+	procstart = null
+	src.procstart = null
 	dropped(user) //This handles removing clothing traits from the user by default everytime.
 
 /// Signal proc for [COMSIG_CLOTHING_UNDER_ADJUSTED] on the uniform we're pinned to
 /// Checks if we can no longer be attached to the uniform, and if so, drops us
 /obj/item/clothing/accessory/proc/on_uniform_adjusted(obj/item/clothing/under/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(can_attach_accessory(source))
@@ -196,10 +220,14 @@
 
 /// Signal proc for [COMSIG_ATOM_UPDATE_OVERLAYS] on the uniform we're pinned to to add our overlays to the inventory icon
 /obj/item/clothing/accessory/proc/on_uniform_update(obj/item/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	overlays += appearance
 
 /obj/item/clothing/accessory/attack_self_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -209,11 +237,15 @@
 		return TRUE
 
 /obj/item/clothing/accessory/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "It can be attached to a uniform."
 	. += "It can be worn above or below your suit. Right-click to toggle."
 
 /obj/item/clothing/accessory/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(held_item != source)
 		return .

@@ -46,10 +46,14 @@
 	purity_min = 0.3
 
 /datum/chemical_reaction/medicine/oculine/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, vol_added)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	explode_flash(holder, equilibrium, round(equilibrium.reacted_vol / 10), 10)
 
 /datum/chemical_reaction/medicine/oculine/overly_impure(datum/reagents/holder, datum/equilibrium/equilibrium, vol_added)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	explode_flash(holder, equilibrium, 3, 30)
 
@@ -75,10 +79,14 @@
 
 ///Calls it over and over
 /datum/chemical_reaction/medicine/inacusiate/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, vol_added)
+	procstart = null
+	src.procstart = null
 	holder.my_atom.audible_message(span_notice("[icon2html(holder.my_atom, viewers(DEFAULT_MESSAGE_RANGE, src))]The [holder.my_atom] suddenly gives out a loud bang!"))
 	explode_deafen(holder, equilibrium, 0.5, 10, 3)
 
 /datum/chemical_reaction/medicine/inacusiate/overly_impure(datum/reagents/holder, datum/equilibrium/equilibrium, vol_added)
+	procstart = null
+	src.procstart = null
 	var/power = equilibrium.reacted_vol/10
 	holder.my_atom.audible_message(span_notice("[icon2html(holder.my_atom, viewers(DEFAULT_MESSAGE_RANGE, src))]The [holder.my_atom] suddenly gives out an ear-crushingly loud bang!"))
 	explode_deafen(holder, equilibrium, power/2, power*2, max(power/2, 3))
@@ -200,6 +208,8 @@
 	mix_message = "The solution rapidly breaks apart, turning a mix of colors."
 
 /datum/chemical_reaction/medicine/albuterol_to_convermol/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added, impure = FALSE)
+	procstart = null
+	src.procstart = null
 	var/bonus = impure ? 2 : 1
 	explode_smoke(holder, equilibrium, 7.5 * bonus, TRUE, TRUE)
 
@@ -223,9 +233,13 @@
 	purity_min = 0.32
 
 /datum/chemical_reaction/medicine/ephedrine/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, vol_added)
+	procstart = null
+	src.procstart = null
 	reagent_explode(holder, equilibrium.reacted_vol, 0, 25)
 
 /datum/chemical_reaction/medicine/ephedrine/overly_impure(datum/reagents/holder, datum/equilibrium/equilibrium, vol_added)
+	procstart = null
+	src.procstart = null
 	reagent_explode(holder, equilibrium.reacted_vol, 0, 20)
 
 /datum/chemical_reaction/medicine/diphenhydramine
@@ -284,11 +298,15 @@
 	purity_min = 0.4
 
 /datum/chemical_reaction/medicine/mannitol/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, vol_added)
+	procstart = null
+	src.procstart = null
 	if(off_cooldown(holder, equilibrium, 10, "mannitol"))
 		explode_attack_chem(holder, equilibrium, /datum/reagent/impurity/mannitol, 5)
 		explode_invert_smoke(holder, equilibrium)
 
 /datum/chemical_reaction/medicine/mannitol/overly_impure(datum/reagents/holder, datum/equilibrium/equilibrium, vol_added)
+	procstart = null
+	src.procstart = null
 	overheated(holder, equilibrium, vol_added)
 
 /datum/chemical_reaction/medicine/neurine
@@ -310,12 +328,16 @@
 	purity_min = 0.4
 
 /datum/chemical_reaction/medicine/neurine/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, vol_added)
+	procstart = null
+	src.procstart = null
 	if(off_cooldown(holder, equilibrium, 10, "neurine"))
 		explode_invert_smoke(holder, equilibrium, clear_products = FALSE, clear_reactants = FALSE)
 		explode_attack_chem(holder, equilibrium, /datum/reagent/inverse/neurine, 10)
 		clear_products(holder, 5)
 
 /datum/chemical_reaction/medicine/neurine/overly_impure(datum/reagents/holder, datum/equilibrium/equilibrium, vol_added)
+	procstart = null
+	src.procstart = null
 	overheated(holder, equilibrium, vol_added)
 
 /datum/chemical_reaction/medicine/mutadone
@@ -343,9 +365,13 @@
 	reaction_flags = REACTION_CLEAR_INVERSE
 
 /datum/chemical_reaction/medicine/antihol/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, vol_added)
+	procstart = null
+	src.procstart = null
 	explode_smoke(holder, equilibrium)
 
 /datum/chemical_reaction/medicine/antihol/overly_impure(datum/reagents/holder, datum/equilibrium/equilibrium, vol_added)
+	procstart = null
+	src.procstart = null
 	explode_smoke(holder, equilibrium)
 
 
@@ -405,6 +431,8 @@
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_BRUTE | REACTION_TAG_ACTIVE
 
 /datum/chemical_reaction/medicine/medsuture/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/medical/suture/medicated(get_turf(holder.my_atom), round(created_volume * 4))
 
 /datum/chemical_reaction/medicine/medmesh
@@ -413,6 +441,8 @@
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_BURN | REACTION_TAG_ACTIVE
 
 /datum/chemical_reaction/medicine/medmesh/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/medical/mesh/advanced(get_turf(holder.my_atom), round(created_volume * 3))
 
 /datum/chemical_reaction/medicine/poultice
@@ -421,6 +451,8 @@
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_BRUTE | REACTION_TAG_BURN | REACTION_TAG_ACTIVE
 
 /datum/chemical_reaction/medicine/poultice/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/medical/poultice(get_turf(holder.my_atom), round(created_volume * 3))
 
 /datum/chemical_reaction/medicine/seraka_destroy //seraka extract is destroyed by sodium hydroxide

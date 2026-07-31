@@ -13,6 +13,8 @@
 	multiz_scaled = FALSE
 
 /atom/movable/screen/plane_master/field_of_vision_blocker/show_to(mob/mymob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !mymob)
 		return .
@@ -24,12 +26,16 @@
 		fov_disabled(mymob)
 
 /atom/movable/screen/plane_master/field_of_vision_blocker/proc/fov_enabled(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(force_hidden == FALSE)
 		return
 	unhide_plane(source)
 
 /atom/movable/screen/plane_master/field_of_vision_blocker/proc/fov_disabled(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	hide_plane(source)
 
@@ -43,11 +49,15 @@
 	critical = PLANE_CRITICAL_DISPLAY
 
 /atom/movable/screen/plane_master/clickcatcher/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSmapping, COMSIG_PLANE_OFFSET_INCREASE, PROC_REF(offset_increased))
 	offset_increased(SSmapping, 0, SSmapping.max_plane_offset)
 
 /atom/movable/screen/plane_master/clickcatcher/proc/offset_increased(datum/source, old_off, new_off)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// We only want need the lowest level
 	// If my system better supported changing PM plane values mid op I'd do that, but I do NOT so
@@ -64,16 +74,22 @@
 	critical = PLANE_CRITICAL_FUCKO_PARALLAX // goes funny when touched. no idea why I don't trust byond
 
 /atom/movable/screen/plane_master/parallax_white/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_relay_to(GET_NEW_PLANE(RENDER_PLANE_EMISSIVE, offset), relay_layer = EMISSIVE_SPACE_LAYER)
 
 /atom/movable/screen/plane_master/parallax_white/set_home(datum/plane_master_group/home)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(home)
 		RegisterSignal(home, COMSIG_GROUP_HUD_CHANGED, PROC_REF(hud_changed))
 		hud_changed(null, null, home.our_hud)
 
 /atom/movable/screen/plane_master/parallax_white/proc/hud_changed(datum/source, datum/hud/old_hud, datum/hud/new_hud)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(old_hud)
 		UnregisterSignal(old_hud, list(SIGNAL_ADDTRAIT(TRAIT_PARALLAX_DISPLAYED), SIGNAL_REMOVETRAIT(TRAIT_PARALLAX_DISPLAYED)), PROC_REF(parallax_updated))
@@ -82,6 +98,8 @@
 		parallax_updated(new_hud)
 
 /atom/movable/screen/plane_master/parallax_white/proc/parallax_updated(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isnull(home.our_hud?.mymob))
 		return
@@ -111,6 +129,8 @@
 	multiz_scaled = FALSE
 
 /atom/movable/screen/plane_master/parallax/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(offset != 0)
 		// You aren't the source? don't change yourself
@@ -123,12 +143,16 @@
 	offset_increase(0, SSmapping.max_plane_offset)
 
 /atom/movable/screen/plane_master/parallax/set_home(datum/plane_master_group/home)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(home)
 		RegisterSignal(home, COMSIG_GROUP_HUD_CHANGED, PROC_REF(hud_changed))
 		hud_changed(null, null, home.our_hud)
 
 /atom/movable/screen/plane_master/parallax/proc/hud_changed(datum/source, datum/hud/old_hud, datum/hud/new_hud)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(old_hud)
 		UnregisterSignal(old_hud, list(SIGNAL_ADDTRAIT(TRAIT_PARALLAX_DISPLAYED), SIGNAL_REMOVETRAIT(TRAIT_PARALLAX_DISPLAYED)), PROC_REF(parallax_updated))
@@ -137,6 +161,8 @@
 		parallax_updated(new_hud)
 
 /atom/movable/screen/plane_master/parallax/proc/parallax_updated(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isnull(home.our_hud?.mymob))
 		return
@@ -146,10 +172,14 @@
 		hide_from(home.our_hud.mymob)
 
 /atom/movable/screen/plane_master/parallax/proc/on_offset_increase(datum/source, old_offset, new_offset)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	offset_increase(old_offset, new_offset)
 
 /atom/movable/screen/plane_master/parallax/proc/offset_increase(old_offset, new_offset)
+	procstart = null
+	src.procstart = null
 	// Parallax will be mirrored down to any new planes that are added, so it will properly render across mirage borders
 	for(var/offset in old_offset to new_offset)
 		if(offset != 0)
@@ -158,6 +188,8 @@
 
 // Hacky shit to ensure parallax works in perf mode
 /atom/movable/screen/plane_master/parallax/outside_bounds(mob/relevant)
+	procstart = null
+	src.procstart = null
 	if(offset == 0)
 		remove_relay_from(GET_NEW_PLANE(RENDER_PLANE_UNLIT_GAME, 0))
 		is_outside_bounds = TRUE // I'm sorry :(
@@ -173,6 +205,8 @@
 	return ..()
 
 /atom/movable/screen/plane_master/parallax/inside_bounds(mob/relevant)
+	procstart = null
+	src.procstart = null
 	if(offset == 0)
 		add_relay_to(GET_NEW_PLANE(RENDER_PLANE_UNLIT_GAME, 0))
 		is_outside_bounds = FALSE
@@ -184,16 +218,22 @@
 
 // Needs to handle rejoining on a lower z level, so we NEED to readd old planes
 /atom/movable/screen/plane_master/parallax/check_outside_bounds()
+	procstart = null
+	src.procstart = null
 	// If we're outside bounds AND we're the 0th plane, we need to show cause parallax is hacked to hell
 	return offset != 0 && is_outside_bounds
 
 /// Starts the narsie animation midway, so we can catch up to everyone else quickly
 /atom/movable/screen/plane_master/parallax/proc/narsie_start_midway(start_time)
+	procstart = null
+	src.procstart = null
 	var/time_elapsed = world.time - start_time
 	narsie_summoned_effect(max(16 SECONDS - time_elapsed, 0))
 
 /// Starts the narsie animation, make us grey, then red
 /atom/movable/screen/plane_master/parallax/proc/narsie_modified(datum/source, new_count)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(new_count >= 1)
 		narsie_summoned_effect(16 SECONDS)
@@ -201,6 +241,8 @@
 		narsie_unsummoned()
 
 /atom/movable/screen/plane_master/parallax/proc/narsie_summoned_effect(animate_time)
+	procstart = null
+	src.procstart = null
 	if(GLOB.narsie_summon_count >= 2)
 		var/static/list/nightmare_parallax = list(255,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,1, -130,0,0,0)
 		animate(src, color = nightmare_parallax, time = animate_time)
@@ -212,6 +254,8 @@
 	animate(src, color = grey_parallax, time = animate_time)
 
 /atom/movable/screen/plane_master/parallax/proc/narsie_unsummoned()
+	procstart = null
+	src.procstart = null
 	animate(src, color = null, time = 8 SECONDS)
 
 /atom/movable/screen/plane_master/displacement
@@ -229,6 +273,8 @@
 	start_hidden = TRUE
 
 /atom/movable/screen/plane_master/displacement/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(GLOB, SIGNAL_ADDTRAIT(TRAIT_DISTORTION_IN_USE(offset)), PROC_REF(distortion_enabled))
 	RegisterSignal(GLOB, SIGNAL_REMOVETRAIT(TRAIT_DISTORTION_IN_USE(offset)), PROC_REF(distortion_disabled))
@@ -236,11 +282,15 @@
 		distortion_enabled()
 
 /atom/movable/screen/plane_master/displacement/proc/distortion_enabled(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/our_mob = home?.our_hud?.mymob
 	unhide_plane(our_mob)
 
 /atom/movable/screen/plane_master/displacement/proc/distortion_disabled(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	hide_plane()
 
@@ -261,6 +311,8 @@
 	critical = PLANE_CRITICAL_DISPLAY|PLANE_CRITICAL_NO_RELAY
 
 /atom/movable/screen/plane_master/floor/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_relay_to(GET_NEW_PLANE(RENDER_PLANE_EMISSIVE, offset), relay_layer = EMISSIVE_FLOOR_LAYER, relay_color = GLOB.em_block_color)
 
@@ -271,6 +323,8 @@
 	render_relay_planes = list(RENDER_PLANE_GAME_WORLD, RENDER_PLANE_LIGHT_MASK)
 
 /atom/movable/screen/plane_master/wall/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_relay_to(GET_NEW_PLANE(RENDER_PLANE_EMISSIVE, offset), relay_layer = EMISSIVE_WALL_LAYER, relay_color = GLOB.em_block_color)
 
@@ -325,6 +379,8 @@
 	var/particle_weather = FALSE
 
 /atom/movable/screen/plane_master/weather/set_home(datum/plane_master_group/home)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -333,10 +389,14 @@
 	update_state(home.our_hud?.mymob)
 
 /atom/movable/screen/plane_master/weather/proc/hud_changed(datum/source, datum/hud/old_hud, datum/hud/new_hud)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_state(new_hud?.mymob)
 
 /atom/movable/screen/plane_master/weather/proc/update_state(mob/mymob)
+	procstart = null
+	src.procstart = null
 	if(!istype(mymob))
 		return
 
@@ -363,6 +423,8 @@
 	critical = PLANE_CRITICAL_DISPLAY
 
 /atom/movable/screen/plane_master/weather_mask/set_home(datum/plane_master_group/home)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -419,6 +481,8 @@
 	render_relay_planes = list(RENDER_PLANE_GAME)
 
 /atom/movable/screen/plane_master/weather_glow/set_home(datum/plane_master_group/home)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -439,6 +503,8 @@
 	critical = PLANE_CRITICAL_DISPLAY
 
 /atom/movable/screen/plane_master/emissive/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	/// Okay, so what we're doing here is making all emissives convert to white for actual emissive masking (i.e. adding light so objects glow)
 	add_relay_to(GET_NEW_PLANE(RENDER_PLANE_EMISSIVE, offset), relay_color = list(1,1,1,0, 1,1,1,0, 0,0,0,0, 0,0,0,1, 0,0,0,0))
@@ -459,6 +525,8 @@
 	render_relay_planes = list(RENDER_PLANE_GAME)
 
 /atom/movable/screen/plane_master/pipecrawl/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Makes everything on this plane slightly brighter
 	// Has a nice effect, makes thing stand out
@@ -475,12 +543,16 @@
 	render_relay_planes = list(RENDER_PLANE_GAME)
 
 /atom/movable/screen/plane_master/camera_static/set_home(datum/plane_master_group/home)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(home)
 		RegisterSignal(home, COMSIG_GROUP_HUD_CHANGED, PROC_REF(hud_changed))
 		hud_changed(null, null, home.our_hud)
 
 /atom/movable/screen/plane_master/camera_static/proc/hud_changed(datum/source, datum/hud/old_hud, datum/hud/new_hud)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(old_hud)
 		UnregisterSignal(old_hud, COMSIG_HUD_EYE_CHANGED, PROC_REF(eye_changed))
@@ -489,6 +561,8 @@
 		eye_changed(new_hud, null, new_hud.mymob?.canon_client?.eye)
 
 /atom/movable/screen/plane_master/camera_static/proc/eye_changed(datum/hud/source, atom/old_eye, atom/new_eye)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(new_eye, /obj/effect/landmark/ai_multicam_room))
@@ -536,6 +610,8 @@
 	render_relay_planes = list(RENDER_PLANE_NON_GAME)
 
 /atom/movable/screen/plane_master/runechat/show_to(mob/mymob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -585,6 +661,8 @@
 	offsetting_flags = BLOCKS_PLANE_OFFSETTING|OFFSET_RELAYS_MATCH_HIGHEST
 
 /atom/movable/screen/plane_master/escape_menu/show_to(mob/mymob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -599,11 +677,15 @@
 		escape_closed()
 
 /atom/movable/screen/plane_master/escape_menu/proc/escape_opened(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/our_mob = home?.our_hud?.mymob
 	unhide_plane(our_mob)
 
 /atom/movable/screen/plane_master/escape_menu/proc/escape_closed(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/our_mob = home?.our_hud?.mymob
 	hide_plane(our_mob)

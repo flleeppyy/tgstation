@@ -5,6 +5,8 @@
 	show_in_antagpanel = TRUE
 
 /datum/antagonist/bitrunning_glitch/cyber_tac/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!ishuman(owner.current))
@@ -25,6 +27,8 @@
 	)
 
 /datum/outfit/cyber_police/tactical/post_equip(mob/living/carbon/human/user, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/obj/item/implant/weapons_auth/auth = new(user)

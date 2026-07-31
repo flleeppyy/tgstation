@@ -1,10 +1,14 @@
 /proc/setup_junkie_addictions(list/possible_addictions)
+	procstart = null
+	src.procstart = null
 	. = possible_addictions
 	for(var/datum/reagent/addiction as anything in .)
 		. -= addiction
 		.[addiction::name] = addiction
 
 /proc/setup_smoker_addictions(list/possible_addictions)
+	procstart = null
+	src.procstart = null
 	. = possible_addictions
 	for(var/obj/item/storage/addiction as anything in .)
 		. -= addiction
@@ -17,17 +21,25 @@
 	should_update_preview = FALSE
 
 /datum/preference/choiced/junkie/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list("Random") + assoc_to_keys(GLOB.possible_junkie_addictions)
 
 /datum/preference/choiced/junkie/create_default_value()
+	procstart = null
+	src.procstart = null
 	return "Random"
 
 /datum/preference/choiced/junkie/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if (!..())
 		return FALSE
 	return /datum/quirk/item_quirk/addict/junkie::name in preferences.all_quirks
 
 /datum/preference/choiced/junkie/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/preference/choiced/smoker
@@ -37,17 +49,25 @@
 	should_update_preview = FALSE
 
 /datum/preference/choiced/smoker/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list("Random") + assoc_to_keys(GLOB.possible_smoker_addictions)
 
 /datum/preference/choiced/smoker/create_default_value()
+	procstart = null
+	src.procstart = null
 	return "Random"
 
 /datum/preference/choiced/smoker/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if (!..())
 		return FALSE
 	return /datum/quirk/item_quirk/addict/smoker::name in preferences.all_quirks
 
 /datum/preference/choiced/smoker/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/preference/choiced/alcoholic
@@ -57,15 +77,23 @@
 	should_update_preview = FALSE
 
 /datum/preference/choiced/alcoholic/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list("Random") + assoc_to_keys(GLOB.possible_alcoholic_addictions)
 
 /datum/preference/choiced/alcoholic/create_default_value()
+	procstart = null
+	src.procstart = null
 	return "Random"
 
 /datum/preference/choiced/alcoholic/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if (!..())
 		return FALSE
 	return /datum/quirk/item_quirk/addict/alcoholic::name in preferences.all_quirks
 
 /datum/preference/choiced/alcoholic/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return

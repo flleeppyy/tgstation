@@ -33,6 +33,8 @@
 	var/operated = FALSE //whether the liver's been repaired with surgery and can be fixed again or not
 
 /obj/item/organ/liver/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// If the liver handles foods like a clown, it honks like a bike horn
 	// Don't think about it too much.
@@ -40,6 +42,8 @@
 	RegisterSignal(src, SIGNAL_REMOVETRAIT(TRAIT_COMEDY_METABOLISM), PROC_REF(on_remove_comedy_metabolism))
 
 /obj/item/organ/liver/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/nutriment/peptides = 5)
 
 /* Signal handler for the liver gaining the TRAIT_COMEDY_METABOLISM trait
@@ -52,6 +56,8 @@
  * by the component itself.
  */
 /obj/item/organ/liver/proc/on_add_comedy_metabolism()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Are clown "bike" horns made from the livers of ex-clowns?
@@ -63,16 +69,22 @@
  * Basically just removes squeak component
  */
 /obj/item/organ/liver/proc/on_remove_comedy_metabolism()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(GetComponent(/datum/component/squeak))
 
 /obj/item/organ/liver/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(organ_owner, COMSIG_MOB_REAGENT_TICK, PROC_REF(handle_chemical))
 	RegisterSignal(organ_owner, COMSIG_ATOM_EXAMINE, PROC_REF(on_owner_examine))
 
 /obj/item/organ/liver/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(organ_owner, list(COMSIG_MOB_REAGENT_TICK, COMSIG_ATOM_EXAMINE))
 
@@ -84,9 +96,13 @@
  * NOTE: If you return COMSIG_MOB_STOP_REAGENT_TICK, that reagent will not be removed like normal! You must handle it manually.
  **/
 /obj/item/organ/liver/proc/handle_chemical(mob/living/carbon/organ_owner, datum/reagent/chem, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 /obj/item/organ/liver/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(HAS_MIND_TRAIT(user, TRAIT_ENTRAILS_READER) || isobserver(user))
@@ -118,6 +134,8 @@
 			. += span_info("A diet of imitation caviar, and signs of insomnia, implies that this is the liver of <em>someone who wants to be a head of staff</em>.")
 
 /obj/item/organ/liver/before_organ_replacement(obj/item/organ/replacement)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(replacement, type))
 		return
@@ -133,6 +151,8 @@
 		ADD_TRAIT(replacement, readded_trait, JOB_TRAIT)
 
 /obj/item/organ/liver/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//If your liver is failing, then we use the liverless version of metabolize
 	if((organ_flags & ORGAN_FAILING) || HAS_TRAIT(owner, TRAIT_LIVERLESS_METABOLISM))
@@ -143,11 +163,15 @@
 	owner.reagents?.metabolize(owner, seconds_per_tick, can_overdose = TRUE)
 
 /obj/item/organ/liver/handle_failing_organs(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(owner, TRAIT_STABLELIVER) || HAS_TRAIT(owner, TRAIT_LIVERLESS_METABOLISM))
 		return
 	return ..()
 
 /obj/item/organ/liver/organ_failure(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	switch(failure_time/LIVER_FAILURE_STAGE_SECONDS)
 		if(1)
 			to_chat(owner, span_userdanger("You feel stabbing pain in your abdomen!"))
@@ -198,6 +222,8 @@
 				owner.emote("drool")
 
 /obj/item/organ/liver/proc/on_owner_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(owner) || !(organ_flags & ORGAN_FAILING))
 		return
 
@@ -213,9 +239,13 @@
 			examine_list += span_danger("[owner]'s eyes are completely yellow and swelling with pus. [owner.p_They()] [owner.p_do()]n't look like [owner.p_they()] will be alive for much longer.")
 
 /obj/item/organ/liver/get_availability(datum/species/owner_species, mob/living/owner_mob)
+	procstart = null
+	src.procstart = null
 	return owner_species.mutantliver
 
 /obj/item/organ/liver/feel_for_damage(self_aware)
+	procstart = null
+	src.procstart = null
 	if(damage < low_threshold)
 		return
 	if(damage < high_threshold)
@@ -250,6 +280,8 @@
 	var/emp_vulnerability = 80 //Chance of permanent effects if emp-ed.
 
 /obj/item/organ/liver/cybernetic/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -294,6 +326,8 @@
 
 //surplus organs are so awful that they explode when removed, unless failing
 /obj/item/organ/liver/cybernetic/surplus/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/dangerous_organ_removal, /*surgical = */ TRUE)
 
@@ -304,6 +338,8 @@
 	color = COLOR_LIME
 
 /obj/item/organ/liver/pod/handle_chemical(mob/living/carbon/organ_owner, datum/reagent/chem, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((. & COMSIG_MOB_STOP_REAGENT_TICK) || (organ_flags & ORGAN_FAILING))
 		return
@@ -321,16 +357,22 @@
 	var/snail_speed_mod = 6
 
 /obj/item/organ/liver/snail/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	organ_owner.AddElement(/datum/element/lube_walking, require_resting = TRUE)
 	organ_owner.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/snail, multiplicative_slowdown = snail_speed_mod)
 
 /obj/item/organ/liver/snail/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	organ_owner.remove_movespeed_modifier(/datum/movespeed_modifier/snail)
 	organ_owner.RemoveElement(/datum/element/lube_walking, require_resting = TRUE)
 
 /obj/item/organ/liver/snail/handle_chemical(mob/living/carbon/organ_owner, datum/reagent/chem, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((. & COMSIG_MOB_STOP_REAGENT_TICK) || (organ_flags & ORGAN_FAILING))
 		return
@@ -363,6 +405,8 @@
 	liver_resistance = 1.1 * LIVER_DEFAULT_TOX_RESISTANCE
 
 /obj/item/organ/liver/bloody/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	owner.adjust_blood_volume(4 * seconds_per_tick, maximum = BLOOD_VOLUME_NORMAL)
@@ -384,6 +428,8 @@
 	var/convert_into = /datum/reagent/consumable/ethanol
 
 /obj/item/organ/liver/distillery/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	for(var/datum/reagent/reagent as anything in owner.reagents.reagent_list)

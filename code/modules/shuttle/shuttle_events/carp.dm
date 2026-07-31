@@ -12,6 +12,8 @@
 	self_destruct_when_empty = TRUE
 
 /datum/shuttle_event/simple_spawner/carp/post_spawn(mob/living/basic/carp/carpee)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//Give the carp the goal to migrate in a straight line so they dont just idle in hyperspace
 	carpee.migrate_to(list(WEAKREF(get_edge_target_turf(carpee.loc, angle2dir(dir2angle(port.preferred_direction) - 180)))))
@@ -33,6 +35,8 @@
 	var/hit_the_shuttle_chance = 1
 
 /datum/shuttle_event/simple_spawner/carp/friendly/get_spawn_turf()
+	procstart = null
+	src.procstart = null
 	return prob(hit_the_shuttle_chance) ? pick(spawning_turfs_hit) : pick(spawning_turfs_miss)
 
 ///Same as /friendly, but we only go through the shuttle, MUHAHAHAHAHAHA!! They dont actually harm anyone, but itll be a clusterfuck of confusion

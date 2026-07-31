@@ -241,6 +241,8 @@
 	var/stump_typepath
 
 /obj/item/bodypart/apply_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	unarmed_damage_low = modify_fantasy_variable("unarmed_damage_low", unarmed_damage_low, bonus, minimum = 1)
 	unarmed_damage_high = modify_fantasy_variable("unarmed_damage_high", unarmed_damage_high, bonus, minimum = 1)
@@ -249,6 +251,8 @@
 	wound_resistance = modify_fantasy_variable("wound_resistance", wound_resistance, bonus)
 
 /obj/item/bodypart/remove_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	unarmed_damage_low = reset_fantasy_variable("unarmed_damage_low", unarmed_damage_low)
 	unarmed_damage_high = reset_fantasy_variable("unarmed_damage_high", unarmed_damage_high)
 	brute_modifier = reset_fantasy_variable("brute_modifier", brute_modifier)
@@ -257,6 +261,8 @@
 	return ..()
 
 /obj/item/bodypart/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(can_be_disabled)
 		RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_PARALYSIS), PROC_REF(on_paralysis_trait_gain))
@@ -294,6 +300,8 @@
 	refresh_bleed_rate()
 
 /obj/item/bodypart/Destroy()
+	procstart = null
+	src.procstart = null
 	if(owner && !QDELETED(owner))
 		forced_removal(special = FALSE, dismembered = TRUE, move_to_floor = FALSE)
 		update_owner(null)
@@ -325,9 +333,13 @@
 	return ..()
 
 /obj/item/bodypart/grind_results()
+	procstart = null
+	src.procstart = null
 	return IS_ORGANIC_LIMB(src) ? list() : list(/datum/reagent/bone_dust = 10, /datum/reagent/consumable/liquidgibs = 5)
 
 /obj/item/bodypart/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(owner) //trust me bro you dont want this
 		return FALSE
 	return  ..()
@@ -335,6 +347,8 @@
 /// Returns an assoc list of items dropped when the limb is butchered
 /// force - Force an update of drops ignoring the cache
 /obj/item/bodypart/proc/get_butcher_drops(force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!isnull(butcher_drops) && !force)
 		return butcher_drops
 	if (butcher_drop_cache[type] && !force)
@@ -345,17 +359,23 @@
 	return list(species.meat = base_meat_amount)
 
 /obj/item/bodypart/proc/on_forced_removal(atom/old_loc, dir, forced, list/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	forced_removal(special = FALSE, dismembered = TRUE, move_to_floor = FALSE)
 
 /// In-case someone, somehow only teleports someones limb
 /obj/item/bodypart/proc/forced_removal(special, dismembered, move_to_floor)
+	procstart = null
+	src.procstart = null
 	drop_limb(special, dismembered, move_to_floor)
 
 	update_icon_dropped()
 
 /obj/item/bodypart/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	. = ..()
@@ -377,6 +397,8 @@
  * Called when a bodypart is checked for injuries.
  */
 /obj/item/bodypart/proc/check_for_injuries(mob/living/carbon/human/examiner)
+	procstart = null
+	src.procstart = null
 
 	var/list/check_list = list()
 	var/list/limb_damage = list(BRUTE = brute_dam, BURN = burn_dam)
@@ -490,6 +512,8 @@
 
 /// Returns all surgical states, filtering out stuff which should not be reported
 /obj/item/bodypart/proc/get_reported_surgery_state()
+	procstart = null
+	src.procstart = null
 	var/reported_state = surgery_state
 	if(!LIMB_HAS_SKIN(src))
 		reported_state &= ~SKINLESS_SURGERY_STATES
@@ -507,6 +531,8 @@
 
 /// Returns surgery self-check information for this bodypart
 /obj/item/bodypart/proc/get_surgery_self_check()
+	procstart = null
+	src.procstart = null
 	var/list/surgery_message = list()
 	var/reported_state = get_reported_surgery_state()
 
@@ -543,6 +569,8 @@
 
 /// Returns surgery examine information for this bodypart
 /obj/item/bodypart/proc/get_surgery_examine()
+	procstart = null
+	src.procstart = null
 	var/lowercase_zone = owner ? "[owner.p_their()] [plaintext_zone]" : "[src]"
 	var/capital_zone = owner ? "[owner.p_Their()] [plaintext_zone]" : capitalize("[src]")
 	var/single_message = ""
@@ -592,9 +620,13 @@
 	return ""
 
 /obj/item/bodypart/blob_act()
+	procstart = null
+	src.procstart = null
 	receive_damage(max_damage, wound_bonus = CANT_WOUND)
 
 /obj/item/bodypart/attack(mob/living/carbon/victim, mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(ishuman(victim))
@@ -618,6 +650,8 @@
 	return ..()
 
 /obj/item/bodypart/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	. = ..()
@@ -627,6 +661,8 @@
 	pixel_y = rand(-3, 3)
 
 /obj/item/bodypart/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 
@@ -636,6 +672,8 @@
 	return user.perform_surgery(src, tool, LAZYACCESS(modifiers, RIGHT_CLICK), operation_zone)
 
 /obj/item/bodypart/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/operations = GLOB.operations.get_instances_from(GLOB.operations.unlocked)
 	var/operation_zone = user.zone_selected
@@ -647,6 +685,8 @@
 
 //empties the bodypart from its organs and other things inside it
 /obj/item/bodypart/proc/drop_organs(mob/user, violent_removal)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	var/atom/drop_loc = drop_location()
@@ -698,6 +738,8 @@
  * damage_source - The source of damage, typically a weapon.
  */
 /obj/item/bodypart/proc/receive_damage(brute = 0, burn = 0, blocked = 0, updating_health = TRUE, forced = FALSE, required_bodytype = null, wound_bonus = 0, exposed_wound_bonus = 0, sharpness = NONE, attack_direction = null, damage_source, wound_clothing = TRUE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	var/hit_percent = forced ? 1 : (100-blocked)/100
@@ -799,6 +841,8 @@
 
 /// Assigns our bio_status to ANATOMY_EXTERIOR or/and ANATOMY_INTERIOR. Used to determine if we as a whole have a interior or exterior biostate, or both.
 /obj/item/bodypart/proc/set_bio_state_status()
+	procstart = null
+	src.procstart = null
 	if (bio_status)
 		CRASH("set_bio_state_status() called on [src] ([type]) bodypart with bio_status already set! Most likely bio_status was set on the type itself")
 
@@ -818,6 +862,8 @@
 
 /// Returns if our current mangling status allows us to be dismembered. Requires both no exterior/mangled exterior and no interior/mangled interior.
 /obj/item/bodypart/proc/dismemberable_by_wound()
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 
 	var/has_exterior = (bio_status & ANATOMY_EXTERIOR)
@@ -830,6 +876,8 @@
 
 /// Returns TRUE if our total percent damage is more or equal to our dismemberable percentage, but FALSE if a wound can cause us to be dismembered.
 /obj/item/bodypart/proc/dismemberable_by_total_damage()
+	procstart = null
+	src.procstart = null
 	update_wound_theory()
 
 	var/has_interior = (bio_status & ANATOMY_INTERIOR)
@@ -844,6 +892,8 @@
 
 /// Updates our "can be theoretically dismembered by wounds" variables by iterating through all wound static data.
 /obj/item/bodypart/proc/update_wound_theory()
+	procstart = null
+	src.procstart = null
 	// We put this here so we dont increase init time by doing this all at once on initialization
 	// Effectively, we "lazy load"
 	if (!isnull(any_existing_wound_can_mangle_our_interior) && !isnull(any_existing_wound_can_mangle_our_exterior))
@@ -869,6 +919,8 @@
 
 /// Check if a bodypart can be wounded
 /obj/item/bodypart/proc/is_woundable()
+	procstart = null
+	src.procstart = null
 	if (!owner)
 		return FALSE
 	if (HAS_TRAIT(owner, TRAIT_NEVER_WOUNDED) || HAS_TRAIT(owner, TRAIT_GODMODE))
@@ -879,6 +931,8 @@
 //Damage cannot go below zero.
 //Cannot remove negative damage (i.e. apply damage)
 /obj/item/bodypart/proc/heal_damage(brute, burn, updating_health = TRUE, forced = FALSE, required_bodytype)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(!forced && required_bodytype && !(bodytype & required_bodytype)) //So we can only heal certain kinds of limbs, ie robotic vs organic.
@@ -898,11 +952,15 @@
 
 ///Sets the damage of a bodypart when it is created.
 /obj/item/bodypart/proc/set_initial_damage(brute_damage, burn_damage)
+	procstart = null
+	src.procstart = null
 	set_brute_dam(brute_damage)
 	set_burn_dam(burn_damage)
 
 ///Proc to hook behavior associated to the change of the brute_dam variable's value.
 /obj/item/bodypart/proc/set_brute_dam(new_value)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	if(brute_dam == new_value)
@@ -912,6 +970,8 @@
 
 ///Proc to hook behavior associated to the change of the burn_dam variable's value.
 /obj/item/bodypart/proc/set_burn_dam(new_value)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	if(burn_dam == new_value)
@@ -921,10 +981,14 @@
 
 //Returns total damage.
 /obj/item/bodypart/proc/get_damage()
+	procstart = null
+	src.procstart = null
 	return brute_dam + burn_dam
 
 //Checks disabled status thresholds
 /obj/item/bodypart/proc/update_disabled(update_limbs = TRUE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(!owner)
@@ -966,6 +1030,8 @@
 
 ///Proc to change the value of the `disabled` variable and react to the event of its change.
 /obj/item/bodypart/proc/set_disabled(new_disabled, update_limbs = TRUE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	PROTECTED_PROC(TRUE)
 
@@ -981,6 +1047,8 @@
 
 /// Proc to change the value of the `owner` variable and react to the event of its change.
 /obj/item/bodypart/proc/update_owner(new_owner)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(owner == new_owner)
@@ -999,6 +1067,8 @@
 
 /// Run all necessary procs to remove a limbs ownership and remove the appropriate signals and traits
 /obj/item/bodypart/proc/clear_ownership(mob/living/carbon/old_owner)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	owner = null
@@ -1020,6 +1090,8 @@
 
 /// Apply ownership of a limb to someone, giving the appropriate traits, updates and signals
 /obj/item/bodypart/proc/apply_ownership(mob/living/carbon/new_owner)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	owner = new_owner
@@ -1054,6 +1126,8 @@
 
 /// Called on addition of a bodypart
 /obj/item/bodypart/proc/on_adding(mob/living/carbon/new_owner)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	item_flags |= ABSTRACT
@@ -1061,6 +1135,8 @@
 
 /// Called on removal of a bodypart.
 /obj/item/bodypart/proc/on_removal(mob/living/carbon/old_owner)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	UnregisterSignal(src, COMSIG_MOVABLE_MOVED)
@@ -1075,6 +1151,8 @@
 
 ///Proc to change the value of the `can_be_disabled` variable and react to the event of its change.
 /obj/item/bodypart/proc/set_can_be_disabled(new_can_be_disabled)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 
@@ -1099,6 +1177,8 @@
 
 ///Called when TRAIT_PARALYSIS is added to the limb.
 /obj/item/bodypart/proc/on_paralysis_trait_gain(obj/item/bodypart/source)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	SIGNAL_HANDLER
 
@@ -1107,6 +1187,8 @@
 
 ///Called when TRAIT_PARALYSIS is removed from the limb.
 /obj/item/bodypart/proc/on_paralysis_trait_loss(obj/item/bodypart/source)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	SIGNAL_HANDLER
 
@@ -1115,6 +1197,8 @@
 
 ///Called when TRAIT_NOLIMBDISABLE is added to the owner.
 /obj/item/bodypart/proc/on_owner_nolimbdisable_trait_gain(mob/living/carbon/source)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	SIGNAL_HANDLER
 
@@ -1122,6 +1206,8 @@
 
 ///Called when TRAIT_NOLIMBDISABLE is removed from the owner.
 /obj/item/bodypart/proc/on_owner_nolimbdisable_trait_loss(mob/living/carbon/source)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	SIGNAL_HANDLER
 
@@ -1130,6 +1216,8 @@
 //Updates an organ's brute/burn states for use by update_damage_overlays()
 //Returns 1 if we need to update overlays. 0 otherwise.
 /obj/item/bodypart/proc/update_bodypart_damage_state()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	var/tbrute = round( (brute_dam/max_damage)*3, 1 )
@@ -1143,6 +1231,8 @@
 //we inform the bodypart of the changes that happened to the owner, or give it the informations from a source mob.
 //set is_creating to true if you want to change the appearance of the limb outside of mutation changes or forced changes.
 /obj/item/bodypart/proc/update_limb(dropping_limb = FALSE, is_creating = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	SEND_SIGNAL(src, COMSIG_BODYPART_UPDATED, dropping_limb, is_creating)
@@ -1202,6 +1292,8 @@
 	return TRUE
 
 /obj/item/bodypart/proc/update_draw_color()
+	procstart = null
+	src.procstart = null
 	draw_color = null
 	if(LAZYLEN(color_overrides))
 		var/priority
@@ -1214,13 +1306,19 @@
 		draw_color = species_color || (skin_tone ? skintone2hex(skin_tone) : null)
 
 /obj/item/bodypart/proc/add_color_override(new_color, color_priority)
+	procstart = null
+	src.procstart = null
 	LAZYSET(color_overrides, "[color_priority]", new_color)
 
 /obj/item/bodypart/proc/remove_color_override(color_priority)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(color_overrides, "[color_priority]")
 
 /// Called when limb's current owner gets washed
 /obj/item/bodypart/proc/on_owner_clean(mob/living/carbon/source, clean_types)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	. = NONE
@@ -1229,6 +1327,8 @@
 		. |= COMPONENT_CLEANED
 
 /obj/item/bodypart/wash(clean_types)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.) // Already clean. Nothing to do here.
 		return
@@ -1238,6 +1338,8 @@
 
 /// To update the bodypart's icon when not attached to a mob
 /obj/item/bodypart/proc/update_icon_dropped()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	cut_overlays()
@@ -1251,6 +1353,8 @@
 	add_overlay(standing)
 
 /obj/item/bodypart/update_atom_colour()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in 1 to COLOUR_PRIORITY_AMOUNT)
 		var/list/checked_color = atom_colours[i]
@@ -1274,6 +1378,8 @@
 
 ///Generates an /image for the limb to be used as an overlay
 /obj/item/bodypart/proc/get_limb_icon(dropped)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	RETURN_TYPE(/list)
 
@@ -1408,6 +1514,8 @@
 	return .
 
 /obj/item/bodypart/proc/huskify_image(image/thing_to_husk)
+	procstart = null
+	src.procstart = null
 	var/icon/husk_icon = new(thing_to_husk.icon)
 	husk_icon.ColorTone(HUSK_COLOR_TONE)
 	thing_to_husk.icon = husk_icon
@@ -1430,6 +1538,8 @@
  * Returns the overlay that was added, or null if it was not added.
  */
 /obj/item/bodypart/proc/add_bodypart_overlay(datum/bodypart_overlay/overlay, update = TRUE)
+	procstart = null
+	src.procstart = null
 	if(ispath(overlay, /datum/bodypart_overlay))
 		if(locate(overlay) in bodypart_overlays)
 			return null
@@ -1454,6 +1564,8 @@
  * Set this to FALSE if you are removing multiple overlays at once.
  */
 /obj/item/bodypart/proc/remove_bodypart_overlay(datum/bodypart_overlay/overlay, update = TRUE)
+	procstart = null
+	src.procstart = null
 	if(ispath(overlay, /datum/bodypart_overlay))
 		overlay = locate(overlay) in bodypart_overlays
 		if(isnull(overlay))
@@ -1477,6 +1589,8 @@
  * Set this to FALSE if you are adding multiple textures at once.
  */
 /obj/item/bodypart/proc/add_bodypart_texture(datum/bodypart_texture/texture, update = TRUE)
+	procstart = null
+	src.procstart = null
 	if(ispath(texture, /datum/bodypart_texture))
 		if(locate(texture) in bodypart_textures)
 			return
@@ -1499,6 +1613,8 @@
  * Set this to FALSE if you are removing multiple textures at once.
  */
 /obj/item/bodypart/proc/remove_bodypart_texture(datum/bodypart_texture/texture, update = TRUE)
+	procstart = null
+	src.procstart = null
 	if(ispath(texture, /datum/bodypart_texture))
 		texture = locate(texture) in bodypart_textures
 		if(isnull(texture))
@@ -1513,6 +1629,8 @@
 		owner.update_body_parts()
 
 /obj/item/bodypart/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	drop_organs()
@@ -1522,6 +1640,8 @@
 /// INTERNAL PROC, DO NOT USE
 /// Properly sets us up to manage an inserted embeded object
 /obj/item/bodypart/proc/_embed_object(obj/item/embed)
+	procstart = null
+	src.procstart = null
 	if(embed in embedded_objects) // go away
 		return
 	// We don't need to do anything with projectile embedding, because it will never reach this point
@@ -1532,23 +1652,31 @@
 /// INTERNAL PROC, DO NOT USE
 /// Cleans up any attachment we have to the embedded object, removes it from our list
 /obj/item/bodypart/proc/_unembed_object(obj/item/unembed)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(embedded_objects, unembed)
 	UnregisterSignal(unembed, COMSIG_ITEM_EMBEDDING_UPDATE)
 	refresh_bleed_rate()
 
 /obj/item/bodypart/proc/embedded_object_changed(obj/item/embedded_source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	/// Embedded objects effect bleed rate, gotta refresh lads
 	refresh_bleed_rate()
 
 /// Sets our generic bleedstacks
 /obj/item/bodypart/proc/setBleedStacks(set_to)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	adjustBleedStacks(set_to - generic_bleedstacks)
 
 /// Modifies our generic bleedstacks. You must use this to change the variable
 /// Takes the amount to adjust by, and the lowest amount we're allowed to have post adjust
 /obj/item/bodypart/proc/adjustBleedStacks(adjust_by, minimum = -INFINITY)
+	procstart = null
+	src.procstart = null
 	if(!adjust_by)
 		return
 	var/old_bleedstacks = generic_bleedstacks
@@ -1560,16 +1688,22 @@
 		refresh_bleed_rate()
 
 /obj/item/bodypart/proc/on_owner_nobleed_loss(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	refresh_bleed_rate()
 
 /obj/item/bodypart/proc/on_owner_nobleed_gain(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	refresh_bleed_rate()
 
 /// Refresh the cache of our rate of bleeding sans any modifiers
 /// ANYTHING ADDED TO THIS PROC NEEDS TO CALL IT WHEN ITS EFFECT CHANGES
 /obj/item/bodypart/proc/refresh_bleed_rate()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SHOULD_NOT_OVERRIDE(TRUE)
 
@@ -1637,6 +1771,8 @@
 	return cached_bleed_rate
 
 /obj/item/bodypart/proc/update_part_wound_overlay()
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return FALSE
 	if(!can_bleed())
@@ -1672,6 +1808,8 @@
 		owner.update_wound_overlays()
 
 /obj/item/bodypart/proc/can_bleed()
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 
 	return ((biological_state & BIO_BLOODED) && (!owner || owner.can_bleed()))
@@ -1690,6 +1828,8 @@
  * Returns FALSE if the item was not applied (e.g. an item of the same category is already applied and override is FALSE)
  */
 /obj/item/bodypart/proc/apply_item(obj/item/applying_item, category, override = FALSE)
+	procstart = null
+	src.procstart = null
 	if(isnull(category))
 		category = REF(applying_item)
 
@@ -1702,6 +1842,8 @@
 	return TRUE
 
 /obj/item/bodypart/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/category, item in applied_items)
 		if(item != gone)
@@ -1715,6 +1857,8 @@
  * Multiplier applied to maluses, so lower = better
  */
 /obj/item/bodypart/proc/get_splint_factor()
+	procstart = null
+	src.procstart = null
 	var/factor = 1
 	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(applied_items, LIMB_ITEM_GAUZE)
 	if(current_gauze)
@@ -1732,6 +1876,8 @@
  * Return FALSE if we had no gauze to use up
  */
 /obj/item/bodypart/proc/seep_gauze(seep_amt = 0)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(applied_items, LIMB_ITEM_GAUZE)
 	if(!current_gauze || !current_gauze.absorption_capacity)
 		return FALSE
@@ -1743,6 +1889,8 @@
 
 ///A multi-purpose setter for all things immediately important to the icon and iconstate of the limb.
 /obj/item/bodypart/proc/change_appearance(icon, id, greyscale, dimorphic)
+	procstart = null
+	src.procstart = null
 	var/icon_holder
 	if(greyscale)
 		icon_greyscale = icon
@@ -1771,6 +1919,8 @@
 
 ///Resets the base appearance of a limb to it's default values.
 /obj/item/bodypart/proc/reset_appearance()
+	procstart = null
+	src.procstart = null
 	icon_static = initial(icon_static)
 	icon_greyscale = initial(icon_greyscale)
 	limb_id = initial(limb_id)
@@ -1784,6 +1934,8 @@
 
 // Note: For effects on subtypes, use the emp_effect() proc instead
 /obj/item/bodypart/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	var/protection = ..()
 	// If the limb doesn't protect contents, strike them first
 	if(!(protection & EMP_PROTECT_CONTENTS))
@@ -1798,6 +1950,8 @@
 
 /// The actual effect of EMPs on the limb. Allows children to override it however they want
 /obj/item/bodypart/proc/emp_effect(severity, protection)
+	procstart = null
+	src.procstart = null
 	if(!IS_ROBOTIC_LIMB(src))
 		return FALSE
 	// with defines at the time of writing, this is 2 brute and 1.5 burn
@@ -1825,6 +1979,8 @@
 
 /// Returns the generic description of our BIO_EXTERNAL feature(s), prioritizing certain ones over others. Returns error on failure.
 /obj/item/bodypart/proc/get_external_description()
+	procstart = null
+	src.procstart = null
 	if (biological_state & BIO_FLESH)
 		return "flesh"
 	if (biological_state & BIO_WIRED)
@@ -1836,6 +1992,8 @@
 
 /// Returns the generic description of our BIO_INTERNAL feature(s), prioritizing certain ones over others. Returns error on failure.
 /obj/item/bodypart/proc/get_internal_description()
+	procstart = null
+	src.procstart = null
 	if (biological_state & BIO_BONE)
 		return "bone"
 	if (biological_state & BIO_METAL)
@@ -1851,6 +2009,8 @@
 
 /// Add a trait to the bodypart traits list, then applies the trait if necessary
 /obj/item/bodypart/proc/add_bodypart_trait(new_trait)
+	procstart = null
+	src.procstart = null
 	LAZYOR(bodypart_traits, new_trait)
 	if(isnull(owner))
 		return
@@ -1858,6 +2018,8 @@
 
 /// Remove a trait from the bodypart traits list, then removes the trait if necessary
 /obj/item/bodypart/proc/remove_bodypart_trait(old_trait)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(bodypart_traits, old_trait)
 	if(isnull(owner))
 		return
@@ -1865,6 +2027,8 @@
 
 /// Add a bodyshape to the bodypart, then synchronize with the owner if necessary
 /obj/item/bodypart/proc/add_bodyshape(new_shape)
+	procstart = null
+	src.procstart = null
 	if(bodyshape & new_shape)
 		return
 
@@ -1873,6 +2037,8 @@
 
 /// Remove a bodyshape from the bodypart, then synchronize with the owner if necessary
 /obj/item/bodypart/proc/remove_bodyshape(old_shape)
+	procstart = null
+	src.procstart = null
 	if(!(bodyshape & old_shape))
 		return
 
@@ -1881,6 +2047,8 @@
 
 /// Add one or multiple surgical states to the bodypart
 /obj/item/bodypart/proc/add_surgical_state(new_states)
+	procstart = null
+	src.procstart = null
 	if(!new_states)
 		CRASH("add_surgical_state called with no new states to add")
 	var/old_states = surgery_state
@@ -1889,6 +2057,8 @@
 
 /// Remove one or multiple surgical states from the bodypart
 /obj/item/bodypart/proc/remove_surgical_state(removing_states)
+	procstart = null
+	src.procstart = null
 	if(!removing_states)
 		CRASH("remove_surgical_state called with no states to remove")
 	if(!(surgery_state & removing_states))
@@ -1910,6 +2080,8 @@
 
 /// Called when surgical state changes so we can react to it
 /obj/item/bodypart/proc/update_surgical_state(old_state, changed_states)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_BODYPART_UPDATING_SURGERY_STATE, old_state, surgery_state, changed_states)
 	if((surgery_state & changed_states) == changed_states)
 		return
@@ -1927,6 +2099,8 @@
 		qdel(owner.GetComponent(/datum/component/fishing_spot))
 
 /obj/item/bodypart/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	if(vname != NAMEOF(src, surgery_state))
 		return ..()
 
@@ -1936,6 +2110,8 @@
 
 /// Adds biostate to the limb and ensures surgical states are updated accordingly
 /obj/item/bodypart/proc/add_biostate(new_biostate)
+	procstart = null
+	src.procstart = null
 	if(biological_state & new_biostate)
 		return
 
@@ -1954,6 +2130,8 @@
 
 /// Removes biostate from the limb and ensures surgical states are updated accordingly
 /obj/item/bodypart/proc/remove_biostate(old_biostate)
+	procstart = null
+	src.procstart = null
 	if(!(biological_state & old_biostate))
 		return
 

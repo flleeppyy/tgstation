@@ -12,6 +12,8 @@
 	processing_flags = START_PROCESSING_MANUALLY
 
 /obj/machinery/mineral/unloading_machine/pickup_item(datum/source, atom/movable/target, direction)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target))
 		return
 	if(istype(target, /obj/structure/ore_box))

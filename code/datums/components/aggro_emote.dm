@@ -35,15 +35,21 @@
 	src.subtract_chance = subtract_chance
 
 /datum/component/aggro_emote/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_AI_BLACKBOARD_KEY_SET(target_key), PROC_REF(on_target_changed))
 
 /datum/component/aggro_emote/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_AI_BLACKBOARD_KEY_SET(target_key))
 	return ..()
 
 /// When we get a new target, see if we want to bark at it
 /datum/component/aggro_emote/proc/on_target_changed(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/new_target = source.ai_controller.blackboard[target_key]
 	if (isnull(new_target) || !prob(emote_chance))

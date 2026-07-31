@@ -4,6 +4,8 @@
 	hallucination_tier = HALLUCINATION_TIER_UNCOMMON
 
 /datum/hallucination/stray_bullet/start()
+	procstart = null
+	src.procstart = null
 	var/list/turf/starting_locations = list()
 	for(var/turf/open/open_out_of_view in view(world.view + 1, hallucinator) - view(world.view, hallucinator))
 		starting_locations += open_out_of_view
@@ -52,6 +54,8 @@
 	var/hit_duration_wall
 
 /obj/projectile/hallucination/Initialize(mapload, datum/hallucination/parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!parent)
 		stack_trace("[type] was created without a parent hallucination.")
@@ -62,6 +66,8 @@
 
 
 /obj/projectile/hallucination/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(parent.hallucinator))
 		parent.hallucinator.client?.images -= fake_bullet
 	fake_bullet = null
@@ -72,11 +78,15 @@
 
 /// Signal proc for [COMSIG_QDELETING], if our associated hallucination deletes, we need to clean up
 /obj/projectile/hallucination/proc/parent_deleting(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(src)
 
 /obj/projectile/hallucination/fire()
+	procstart = null
+	src.procstart = null
 	if(hal_fire_sound)
 		parent.hallucinator.playsound_local(get_turf(src), hal_fire_sound, 60, TRUE)
 
@@ -85,6 +95,8 @@
 	return ..()
 
 /obj/projectile/hallucination/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. != BULLET_ACT_HIT)
 		return
@@ -104,6 +116,8 @@
 
 /// Called when a mob is hit by the fake projectile
 /obj/projectile/hallucination/proc/on_mob_hit(mob/living/hit_mob)
+	procstart = null
+	src.procstart = null
 	if(hit_mob == parent.hallucinator)
 		to_chat(parent.hallucinator, span_userdanger("[hit_mob] is hit by \a [src] in the chest!"))
 		apply_effect_to_hallucinator(parent.hallucinator)
@@ -122,10 +136,14 @@
 
 /// Called when the hallucinator themselves are hit by the fake projectile
 /obj/projectile/hallucination/proc/apply_effect_to_hallucinator(mob/living/afflicted)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called after a mob is hit by the fake projectile, and our fake projectile is of brute type, to create fake blood
 /obj/projectile/hallucination/proc/spawn_blood(mob/living/bleeding, set_dir)
+	procstart = null
+	src.procstart = null
 	if(!parent.hallucinator.client) // Purely visual, don't need to do this for clientless mobs
 		return
 
@@ -168,10 +186,14 @@
 	addtimer(CALLBACK(src, PROC_REF(clean_up_blood), blood), 0.5 SECONDS)
 
 /obj/projectile/hallucination/proc/clean_up_blood(image/blood)
+	procstart = null
+	src.procstart = null
 	parent.hallucinator.client?.images -= blood
 
 /// Called with a non-mob atom was hit by our fake projectile, or a mob was hit and our damge type is not brute
 /obj/projectile/hallucination/proc/spawn_hit(atom/hit_atom, is_wall)
+	procstart = null
+	src.procstart = null
 	if(!parent.hallucinator.client) // Purely visual, don't need to do this for clientless mobs
 		return
 
@@ -182,6 +204,8 @@
 	addtimer(CALLBACK(src, PROC_REF(clean_up_hit), hit_effect), is_wall ? hit_duration_wall : hit_duration)
 
 /obj/projectile/hallucination/proc/clean_up_hit(image/hit_effect)
+	procstart = null
+	src.procstart = null
 	parent.hallucinator.client?.images -= hit_effect
 
 /obj/projectile/hallucination/bullet
@@ -196,6 +220,8 @@
 	hit_duration_wall = 5
 
 /obj/projectile/hallucination/bullet/apply_effect_to_hallucinator(mob/living/afflicted)
+	procstart = null
+	src.procstart = null
 	afflicted.adjust_stamina_loss(60)
 
 /obj/projectile/hallucination/laser
@@ -216,6 +242,8 @@
 	reflectable = TRUE
 
 /obj/projectile/hallucination/laser/apply_effect_to_hallucinator(mob/living/afflicted)
+	procstart = null
+	src.procstart = null
 	afflicted.adjust_stamina_loss(20)
 	afflicted.adjust_eye_blur(4 SECONDS)
 
@@ -236,6 +264,8 @@
 	reflectable = TRUE
 
 /obj/projectile/hallucination/disabler/apply_effect_to_hallucinator(mob/living/afflicted)
+	procstart = null
+	src.procstart = null
 	afflicted.adjust_stamina_loss(30)
 
 /obj/projectile/hallucination/ebow
@@ -249,6 +279,8 @@
 	hal_impact_effect_wall = null
 
 /obj/projectile/hallucination/ebow/apply_effect_to_hallucinator(mob/living/afflicted)
+	procstart = null
+	src.procstart = null
 	afflicted.adjust_slurring(10 SECONDS)
 	afflicted.Knockdown(1 SECONDS)
 	afflicted.adjust_stamina_loss(75) // 60 stam + 15 tox
@@ -265,6 +297,8 @@
 	hal_impact_effect_wall = null
 
 /obj/projectile/hallucination/change/apply_effect_to_hallucinator(mob/living/afflicted)
+	procstart = null
+	src.procstart = null
 	// Future idea: Make it so any other mob hit appear to be polymorphed to the hallucinator
 	afflicted.cause_hallucination( \
 		get_random_valid_hallucination_subtype(/datum/hallucination/delusion/preset), \
@@ -287,4 +321,6 @@
 	hal_impact_effect_wall = null
 
 /obj/projectile/hallucination/death/apply_effect_to_hallucinator(mob/living/afflicted)
+	procstart = null
+	src.procstart = null
 	afflicted.cause_hallucination(/datum/hallucination/death, "fake [name]")

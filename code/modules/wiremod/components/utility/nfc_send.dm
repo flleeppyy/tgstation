@@ -25,24 +25,34 @@
 	var/datum/port/input/enc_key
 
 /obj/item/circuit_component/nfc_send/populate_options()
+	procstart = null
+	src.procstart = null
 	list_options = add_option_port("List Type", GLOB.wiremod_basic_types)
 
 /obj/item/circuit_component/nfc_send/populate_ports()
+	procstart = null
+	src.procstart = null
 	data_package = add_input_port("Data Package", PORT_TYPE_LIST(PORT_TYPE_ANY))
 	enc_key = add_input_port("Encryption Key", PORT_TYPE_STRING)
 	target = add_input_port("Target", PORT_TYPE_ATOM)
 
 /obj/item/circuit_component/nfc_send/should_receive_input(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
 
 /obj/item/circuit_component/nfc_send/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(port == list_options)
 		var/new_datatype = list_options.value
 		data_package.set_datatype(PORT_TYPE_LIST(new_datatype))
 
 /obj/item/circuit_component/nfc_send/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(isatom(target.value))
 		var/atom/target_enty = target.value
 		SEND_SIGNAL(target_enty, COMSIG_CIRCUIT_NFC_DATA_SENT, parent, list("data" = data_package.value, "enc_key" = enc_key.value, "port" = WEAKREF(data_package)))

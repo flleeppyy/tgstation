@@ -12,6 +12,8 @@
 
 //A flashy ability, good for crowd control and sowing chaos.
 /datum/action/changeling/resonant_shriek/sting_action(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(user.movement_type & VENTCRAWLING)
 		user.balloon_alert(user, "can't shriek in pipes!")
@@ -42,6 +44,8 @@
 	disabled_by_fire = FALSE
 
 /datum/action/changeling/dissonant_shriek/sting_action(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(user.movement_type & VENTCRAWLING)
 		user.balloon_alert(user, "can't shriek in pipes!")

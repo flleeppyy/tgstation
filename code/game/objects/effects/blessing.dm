@@ -10,6 +10,8 @@
 	var/invisible
 
 /obj/effect/blessing/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	RegisterSignal(loc, COMSIG_ATOM_INTERCEPT_TELEPORTING, PROC_REF(block_cult_teleport))
@@ -23,11 +25,15 @@
 	add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/blessed_aware, "blessing", blessing_icon)
 
 /obj/effect/blessing/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(loc, COMSIG_ATOM_INTERCEPT_TELEPORTING)
 	return ..()
 
 ///Called from intercept teleport signal, blocks cult teleporting from being able to teleport on us.
 /obj/effect/blessing/proc/block_cult_teleport(datum/source, channel, turf/origin)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(channel == TELEPORT_CHANNEL_CULT)

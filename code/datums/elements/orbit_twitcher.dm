@@ -7,6 +7,8 @@
 	var/list/twitchers = list()
 
 /datum/element/orbit_twitcher/Attach(datum/target, twitch_chance)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -17,12 +19,16 @@
 	RegisterSignal(target, COMSIG_ATOM_ORBIT_STOP, PROC_REF(orbit_stop))
 
 /datum/element/orbit_twitcher/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	twitchers.Remove(source)
 	UnregisterSignal(source, list(COMSIG_ATOM_ORBIT_BEGIN, COMSIG_ATOM_ORBIT_STOP))
 
 /datum/element/orbit_twitcher/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/living as anything in twitchers)
 		if(SPT_PROB(twitch_chance, seconds_per_tick))
 			if(prob(60))
@@ -36,6 +42,8 @@
 				container.Shake(2, 1, 0.3 SECONDS, 0.1 SECONDS)
 
 /datum/element/orbit_twitcher/proc/orbit_begin(atom/source, atom/orbiter)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	twitchers.Add(source)
@@ -43,6 +51,8 @@
 	START_PROCESSING(SSdcs, src)
 
 /datum/element/orbit_twitcher/proc/orbit_stop(atom/source, atom/orbiter)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	twitchers.Remove(source)
@@ -51,5 +61,7 @@
 		STOP_PROCESSING(SSdcs, src)
 
 /datum/element/orbit_twitcher/OnTargetDelete(datum/source)
+	procstart = null
+	src.procstart = null
 	twitchers.Remove(source)
 	return ..()

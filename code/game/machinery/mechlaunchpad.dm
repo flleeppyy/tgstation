@@ -13,25 +13,37 @@
 	var/mech_only = FALSE
 
 /obj/machinery/mechpad/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	display_name = "Orbital Pad - [get_area_name(src)]"
 
 /obj/machinery/mechpad/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Use a multitool with the panel open to save id to buffer.")
 	. += span_notice("Use wirecutters with the panel open to [mech_only ? "cut" : "mend"] the lifeform restriction wire.")
 
 /obj/machinery/mechpad/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]-open" : base_icon_state
 
 /obj/machinery/mechpad/screwdriver_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/mechpad/crowbar_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/mechpad/multitool_act(mob/living/user, obj/item/multitool/multitool)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		return NONE
 
@@ -40,6 +52,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/mechpad/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		return NONE
 	mech_only = !mech_only
@@ -52,6 +66,8 @@
  * * where - where the supply pod will land after grabbing the mech
  */
 /obj/machinery/mechpad/proc/launch(obj/machinery/mechpad/where)
+	procstart = null
+	src.procstart = null
 	var/turf/reverse_turf = get_turf(where)
 	podspawn(list(
 		"target" = get_turf(src),
@@ -76,5 +92,7 @@
 	pod_flags = FIRST_SOUNDS
 
 /obj/structure/closet/supplypod/mechpod/handleReturnAfterDeparting(atom/movable/holder = src)
+	procstart = null
+	src.procstart = null
 	effectGib = TRUE
 	return ..()

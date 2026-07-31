@@ -11,7 +11,9 @@
 	/// How much we slow chemical regeneration while active, in chems per second
 	var/recharge_slowdown = 0.15
 
-/datum/action/changeling/darkness_adaptation/sting_action(mob/living/carbon/human/cling) //SHOULD always be human, because req_human = TRUE
+/datum/action/changeling/darkness_adaptation/sting_action(mob/living/carbon/human/cling)
+	procstart = null
+	src.procstart = null //SHOULD always be human, because req_human = TRUE
 	if(cling.has_status_effect(/datum/status_effect/darkness_adapted))
 		disable_ability(cling)
 		cling.changeNext_move(CLICK_CD_MELEE * 0.5)
@@ -24,10 +26,14 @@
 	return TRUE
 
 /datum/action/changeling/darkness_adaptation/Remove(mob/living/carbon/human/cling)
+	procstart = null
+	src.procstart = null
 	disable_ability(cling)
 	return ..()
 
 /datum/action/changeling/darkness_adaptation/proc/enable_ability(mob/living/carbon/human/cling)
+	procstart = null
+	src.procstart = null
 	if(!cling.apply_status_effect(/datum/status_effect/darkness_adapted))
 		return
 
@@ -39,6 +45,8 @@
 	changeling_data?.chem_recharge_slowdown -= recharge_slowdown //Slows down chem regeneration
 
 /datum/action/changeling/darkness_adaptation/proc/disable_ability(mob/living/carbon/human/cling)
+	procstart = null
+	src.procstart = null
 	if(!cling.remove_status_effect(/datum/status_effect/darkness_adapted))
 		return
 
@@ -64,6 +72,8 @@
 	COOLDOWN_DECLARE(skip_tick_update)
 
 /datum/status_effect/darkness_adapted/on_apply()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
 	RegisterSignal(owner, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(eye_implanted))
 	RegisterSignal(owner, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(eye_removed))
@@ -73,6 +83,8 @@
 	return TRUE
 
 /datum/status_effect/darkness_adapted/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, list(
 		COMSIG_CARBON_GAIN_ORGAN,
 		COMSIG_CARBON_LOSE_ORGAN,
@@ -85,22 +97,32 @@
 		nerf_invis()
 
 /datum/status_effect/darkness_adapted/proc/examine_mob(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(last_alpha > dark_color_threshold)
 		examine_list += span_warning("[owner.p_Their()] skin is shimmering unnaturally in the light.")
 
 /datum/status_effect/darkness_adapted/proc/get_darkness()
+	procstart = null
+	src.procstart = null
 	var/turf/owner_turf = get_turf(owner)
 	return istype(owner_turf) ? owner_turf.get_lumcount() : 1
 
 /datum/status_effect/darkness_adapted/proc/get_alpha()
+	procstart = null
+	src.procstart = null
 	return clamp(65 + ((get_darkness() - LIGHTING_TILE_IS_DARK) * 255), 65, 255)
 
 /datum/status_effect/darkness_adapted/proc/get_eye_strength()
+	procstart = null
+	src.procstart = null
 	return clamp(LIGHTING_CUTOFF_MEDIUM - ((get_darkness() - LIGHTING_TILE_IS_DARK) * LIGHTING_CUTOFF_MEDIUM + 5), LIGHTING_CUTOFF_REAL_LOW, LIGHTING_CUTOFF_MEDIUM + 5)
 
 /datum/status_effect/darkness_adapted/proc/update_eye_status(obj/item/organ/eyes/eyes = owner.get_organ_by_type(/obj/item/organ/eyes))
+	procstart = null
+	src.procstart = null
 	if(!istype(eyes))
 		last_eye_strength = 0
 		return
@@ -111,6 +133,8 @@
 	last_eye_strength = new_eye_strength
 
 /datum/status_effect/darkness_adapted/proc/buff_eyes(obj/item/organ/eyes/eyes, new_strength = get_eye_strength())
+	procstart = null
+	src.procstart = null
 	eyes.lighting_cutoff = new_strength
 	if(new_strength >= LIGHTING_CUTOFF_MEDIUM)
 		eyes.flash_protect = max(eyes.flash_protect += 1, FLASH_PROTECTION_WELDER)
@@ -119,12 +143,16 @@
 	owner.update_sight()
 
 /datum/status_effect/darkness_adapted/proc/nerf_eyes(obj/item/organ/eyes/eyes)
+	procstart = null
+	src.procstart = null
 	eyes.lighting_cutoff = initial(eyes.lighting_cutoff)
 	if(last_eye_strength >= LIGHTING_CUTOFF_MEDIUM)
 		eyes.flash_protect = max(eyes.flash_protect -= 1, FLASH_PROTECTION_HYPER_SENSITIVE)
 	owner.update_sight()
 
 /datum/status_effect/darkness_adapted/proc/update_invis()
+	procstart = null
+	src.procstart = null
 	var/new_alpha = get_alpha()
 	if(last_alpha == new_alpha)
 		return
@@ -136,10 +164,14 @@
 	last_alpha = new_alpha
 
 /datum/status_effect/darkness_adapted/proc/nerf_invis()
+	procstart = null
+	src.procstart = null
 	animate(owner, alpha = 255, time = 1 SECONDS)
 	owner.remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, COLOR_DARK)
 
 /datum/status_effect/darkness_adapted/proc/on_move(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	update_invis()
@@ -147,12 +179,16 @@
 	COOLDOWN_START(src, skip_tick_update, 0.5 SECONDS)
 
 /datum/status_effect/darkness_adapted/proc/eye_implanted(mob/living/source, obj/item/organ/gained, special)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(gained, /obj/item/organ/eyes))
 		update_eye_status(gained)
 
 /datum/status_effect/darkness_adapted/proc/eye_removed(mob/living/source, obj/item/organ/removed, special)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(removed, /obj/item/organ/eyes) && last_eye_strength > 0)
@@ -160,6 +196,8 @@
 		last_eye_strength = 0
 
 /datum/status_effect/darkness_adapted/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, skip_tick_update))
 		return
 	update_eye_status()

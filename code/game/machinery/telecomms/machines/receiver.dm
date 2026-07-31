@@ -15,6 +15,8 @@
 	circuit = /obj/item/circuitboard/machine/telecomms/receiver
 
 /obj/machinery/telecomms/receiver/receive_signal(datum/signal/subspace/signal)
+	procstart = null
+	src.procstart = null
 	if(!on || !istype(signal) || !check_receive_level(signal) || signal.transmission_method != TRANSMISSION_SUBSPACE)
 		return
 	if(!is_freq_listening(signal))
@@ -40,6 +42,8 @@
  * Returns `TRUE` if it can receive the signal, `FALSE` if not.
  */
 /obj/machinery/telecomms/receiver/proc/check_receive_level(datum/signal/subspace/signal)
+	procstart = null
+	src.procstart = null
 	if (z in signal.levels)
 		return TRUE
 
@@ -68,6 +72,8 @@
 	freq_listening = list(FREQ_COMMAND, FREQ_ENGINEERING, FREQ_SECURITY)
 
 /obj/machinery/telecomms/receiver/preset_right/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Also add common and other freely-available radio frequencies for people
 	// to have access to.

@@ -22,6 +22,8 @@ GLOBAL_DATUM_INIT(lost_crew_manager, /datum/lost_crew_manager, new)
  * * body_data - Debug data we can use to get a readout of what has been done
  */
 /datum/lost_crew_manager/proc/create_lost_crew(revivable = TRUE, datum/corpse_damage_class/forced_class, list/recovered_items, list/protected_items, list/body_data = list())
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/new_body = new()
 	new_body.death()
 
@@ -80,6 +82,8 @@ GLOBAL_DATUM_INIT(lost_crew_manager, /datum/lost_crew_manager, new)
 
 /// Set a timer for awarding succes and drop some awesome deathlore
 /datum/lost_crew_manager/proc/on_successful_revive(obj/item/organ/brain/brain, list/death_lore, list/datum/callback/on_revive_and_player_occupancy)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/owner = brain.owner
 
 	owner.mind.add_antag_datum(/datum/antagonist/recovered_crew) //for tracking mostly
@@ -107,6 +111,8 @@ GLOBAL_DATUM_INIT(lost_crew_manager, /datum/lost_crew_manager, new)
 
 /// Give medbay a happy announcement and put some money into their budget
 /datum/lost_crew_manager/proc/award_succes(datum/mind/revived_mind, list/death_lore)
+	procstart = null
+	src.procstart = null
 	// I am incredibly disappointed in you
 	if(revived_mind.current.stat == DEAD)
 		aas_config_announce(/datum/aas_config_entry/medical_lost_crew_reward, list("PERSON" = revived_mind.name, "AWARD" = 0), null, list(RADIO_CHANNEL_MEDICAL), "Deceased")
@@ -127,6 +133,8 @@ GLOBAL_DATUM_INIT(lost_crew_manager, /datum/lost_crew_manager, new)
 	var/datum/mind/mind
 
 /obj/item/storage/lockbox/mind/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!(src in user.held_items))
 		return ..()
 	if(atom_storage.locked && can_unlock(user, silent = TRUE))
@@ -135,12 +143,16 @@ GLOBAL_DATUM_INIT(lost_crew_manager, /datum/lost_crew_manager, new)
 	return ..()
 
 /obj/item/storage/lockbox/mind/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	if (atom_storage.locked && can_unlock(user))
 		toggle_locked(user)
 		return
 	return ..()
 
 /obj/item/storage/lockbox/mind/can_unlock(mob/living/user, obj/item/card/id/id_card, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if (user.mind == mind)
 		return TRUE
 	if (!silent)
@@ -148,6 +160,8 @@ GLOBAL_DATUM_INIT(lost_crew_manager, /datum/lost_crew_manager, new)
 	return FALSE
 
 /obj/item/storage/lockbox/mind/toggle_locked(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!atom_storage.locked)
 		return
 
@@ -155,6 +169,8 @@ GLOBAL_DATUM_INIT(lost_crew_manager, /datum/lost_crew_manager, new)
 	balloon_alert(user, "unlocked")
 
 /obj/item/storage/lockbox/mind/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(broken || user.mind != mind)
 		return NONE
 	context[SCREENTIP_CONTEXT_LMB] = "Use in-hand to unlock"

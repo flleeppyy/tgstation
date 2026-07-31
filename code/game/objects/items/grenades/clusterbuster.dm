@@ -18,14 +18,20 @@
 	var/segment_chance = 35
 
 /obj/item/grenade/clusterbuster/apply_grenade_fantasy_bonuses(quality)
+	procstart = null
+	src.procstart = null
 	min_spawned = modify_fantasy_variable("min_spawned", min_spawned, round(quality/2))
 	max_spawned = modify_fantasy_variable("max_spawned", max_spawned, round(quality/2))
 
 /obj/item/grenade/clusterbuster/remove_grenade_fantasy_bonuses(quality)
+	procstart = null
+	src.procstart = null
 	min_spawned = reset_fantasy_variable("min_spawned", min_spawned)
 	max_spawned = reset_fantasy_variable("max_spawned", max_spawned)
 
 /obj/item/grenade/clusterbuster/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -57,6 +63,8 @@
 	base_state = "clusterbang_segment"
 
 /obj/item/grenade/clusterbuster/segment/Initialize(mapload, obj/item/grenade/clusterbuster/base)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(base)
@@ -76,6 +84,8 @@
 	addtimer(CALLBACK(src, PROC_REF(detonate)), rand(RANDOM_DETONATE_MIN_TIME, RANDOM_DETONATE_MAX_TIME))
 
 /obj/item/grenade/clusterbuster/segment/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	new payload_spawner(drop_location(), payload, rand(min_spawned, max_spawned))
 	playsound(src, grenade_arm_sound, 75, TRUE, -3)
 	qdel(src)
@@ -84,12 +94,16 @@
 //The payload spawner effect
 /////////////////////////////////
 /obj/effect/payload_spawner/Initialize(mapload, type, numspawned)
+	procstart = null
+	src.procstart = null
 	..()
 	if(type && isnum(numspawned))
 		spawn_payload(type, numspawned)
 	return INITIALIZE_HINT_QDEL
 
 /obj/effect/payload_spawner/proc/spawn_payload(type, numspawned)
+	procstart = null
+	src.procstart = null
 	for(var/_ in 1 to numspawned)
 		var/obj/item/grenade/grenade = new type(loc)
 		if(istype(grenade))
@@ -107,6 +121,8 @@
 	volatile = TRUE
 
 /obj/effect/payload_spawner/random_slime/spawn_payload(type, numspawned)
+	procstart = null
+	src.procstart = null
 	for(var/_ in 1 to numspawned)
 		var/chosen = pick(subtypesof(/obj/item/slime_extract))
 		var/obj/item/slime_extract/slime_extract = new chosen(loc)
@@ -182,6 +198,8 @@
 	icon_state = "random_clusterbang"
 
 /obj/item/grenade/clusterbuster/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	var/real_type = pick(subtypesof(/obj/item/grenade/clusterbuster))
 	new real_type(loc)

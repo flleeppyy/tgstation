@@ -1,10 +1,14 @@
 #define MAP_EDGE_PAD 5
 
 /proc/spawn_meteors(number = 10, list/meteor_types, direction)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to number)
 		spawn_meteor(meteor_types, direction)
 
 /proc/spawn_meteor(list/meteor_types, direction, atom/target, distance_from_edge = 0)
+	procstart = null
+	src.procstart = null
 	if (SSmapping.is_planetary())
 		stack_trace("Tried to spawn meteors in a map which isn't in space.")
 		return // We're not going to find any space turfs here
@@ -32,6 +36,8 @@
 	new new_meteor(picked_start, picked_goal)
 
 /proc/spaceDebrisStartLoc(start_side, Z, distance_from_edge = 0)
+	procstart = null
+	src.procstart = null
 	var/starty
 	var/startx
 	switch(start_side)
@@ -50,6 +56,8 @@
 	. = locate(startx, starty, Z)
 
 /proc/spaceDebrisFinishLoc(startSide, Z)
+	procstart = null
+	src.procstart = null
 	var/endy
 	var/endx
 	switch(startSide)
@@ -78,6 +86,8 @@
  * * candidate - The mob (player) to be transformed into a changeling and meteored.
  */
 /proc/generate_changeling_meteor(datum/mind/player_mind)
+	procstart = null
+	src.procstart = null
 	var/turf/picked_start
 
 	if (SSmapping.is_planetary())

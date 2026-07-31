@@ -37,6 +37,8 @@
 	crate_name = "food crate"
 
 /datum/supply_pack/organic/randomized/fill(obj/container)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 15)
 		var/item = pick(contains)
 		new item(container)
@@ -207,6 +209,8 @@
 	)
 
 /datum/supply_pack/organic/pizza/fill(obj/structure/closet/crate/new_crate)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/rng_pizza_list = pizza_types.Copy()
 	var/add_romerol = prob(romerol_chance)
@@ -224,6 +228,8 @@
 
 /// adds the chance for an infinite pizza box
 /datum/supply_pack/organic/pizza/proc/add_anomalous(obj/structure/closet/crate/new_crate)
+	procstart = null
+	src.procstart = null
 	if(anomalous_box_provided)
 		return FALSE
 	if(!prob(infinite_pizza_chance))
@@ -240,6 +246,8 @@
 
 /// adds a chance of a pizza bomb replacing a pizza
 /datum/supply_pack/organic/pizza/proc/add_boombox(obj/structure/closet/crate/new_crate)
+	procstart = null
+	src.procstart = null
 	if(boombox_provided)
 		return FALSE
 	if(!prob(bomb_pizza_chance))
@@ -253,6 +261,8 @@
 
 /// adds a randomized pizza from the pizza list
 /datum/supply_pack/organic/pizza/proc/add_normal_pizza(obj/structure/closet/crate/new_crate, list/rng_pizza_list)
+	procstart = null
+	src.procstart = null
 	var/randomize_pizza = pick_weight(rng_pizza_list)
 	rng_pizza_list -= randomize_pizza
 	var/obj/item/pizzabox/new_pizza_box = new(new_crate)
@@ -265,6 +275,8 @@
 
 /// tells crew that an infinite pizza box exists, half of the time, based on a roll in the anamolous box proc
 /datum/supply_pack/organic/pizza/proc/anomalous_pizza_report()
+	procstart = null
+	src.procstart = null
 	print_command_report("[station_name()], our anomalous materials divison has reported a missing object that is highly likely to have been sent to your station during a routine cargo \
 	delivery. Please search all crates and manifests provided with the delivery and return the object if is located. The object resembles a standard <b>\[DATA EXPUNGED\]</b> and is to be \
 	considered <b>\[REDACTED\]</b> and returned at your leisure. Note that objects the anomaly produces are specifically attuned exactly to the individual opening the anomaly; regardless \

@@ -12,10 +12,14 @@
 	var/static/list/hallucination_lines = BUBBLEGUM_HALLUCINATION_LINES
 
 /datum/hallucination/oh_yeah/New(mob/living/hallucinator, source = "an external source", haunt_them = FALSE)
+	procstart = null
+	src.procstart = null
 	src.haunt_them = haunt_them
 	return ..()
 
 /datum/hallucination/oh_yeah/Destroy()
+	procstart = null
+	src.procstart = null
 	if(fake_broken_wall)
 		hallucinator.client?.images -= fake_broken_wall
 		fake_broken_wall = null
@@ -26,6 +30,8 @@
 	return ..()
 
 /datum/hallucination/oh_yeah/start()
+	procstart = null
+	src.procstart = null
 	var/turf/closed/wall/wall_source = locate() in range(7, hallucinator)
 	if(!wall_source)
 		return FALSE
@@ -59,6 +65,8 @@
  * Recursive function that operates as a "fake charge" of our effect towards the target turf.
  */
 /datum/hallucination/oh_yeah/proc/charge_loop(obj/effect/client_image_holder/hallucination/bubblegum/fake_bubbles, turf/landing_turf)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 

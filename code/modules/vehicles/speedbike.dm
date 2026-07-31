@@ -6,23 +6,33 @@
 	var/cover_iconstate = "cover_blue"
 
 /obj/vehicle/ridden/speedbike/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/speedbike)
 
 /obj/vehicle/ridden/speedbike/post_buckle_mob(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/vehicle/ridden/speedbike/post_unbuckle_mob()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/vehicle/ridden/speedbike/Move(newloc,move_dir)
+	procstart = null
+	src.procstart = null
 	if(has_buckled_mobs())
 		new /obj/effect/temp_visual/dir_setting/speedbike_trail(loc,move_dir)
 	return ..()
 
 /obj/vehicle/ridden/speedbike/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(has_buckled_mobs())
 		var/mutable_appearance/cover_overlay = mutable_appearance(icon, cover_iconstate, ABOVE_MOB_LAYER, src, appearance_flags = KEEP_APART)

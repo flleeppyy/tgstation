@@ -99,10 +99,14 @@ other types of metals and chemistry for reagents).
 	desc = "This usually means something in the database has corrupted. If this doesn't go away automatically, inform Central Command so their techs can fix this ASAP(tm)"
 
 /datum/design/Destroy()
+	procstart = null
+	src.procstart = null
 	SSresearch.techweb_designs -= id
 	return ..()
 
 /datum/design/proc/InitializeMaterials()
+	procstart = null
+	src.procstart = null
 	var/list/temp_list = list()
 	// Go through all of our materials, get the subsystem instance, and then replace the list.
 	for(var/mat_type, amount in materials)
@@ -125,18 +129,24 @@ other types of metals and chemistry for reagents).
 		transfered_materials[object] = temp_list
 
 /datum/design/proc/icon_html(client/user)
+	procstart = null
+	src.procstart = null
 	var/datum/asset/spritesheet_batched/sheet = get_asset_datum(/datum/asset/spritesheet_batched/research_designs)
 	sheet.send(user)
 	return sheet.icon_tag(id)
 
 /// Returns the description of the design
 /datum/design/proc/get_description()
+	procstart = null
+	src.procstart = null
 	var/obj/object_build_item_path = build_path
 
 	return isnull(desc) ? initial(object_build_item_path.desc) : desc
 
 /// Produce the resulting item, optionally with a specfic amount if we're a stack design
 /datum/design/proc/create_result(atom/drop_loc, list/custom_materials, amount)
+	procstart = null
+	src.procstart = null
 	if (!ispath(build_path, /obj/item/stack) && amount > 1)
 		CRASH("[src] create_result was passed an amount higher than 1, despite not being a stack design!")
 
@@ -149,6 +159,8 @@ other types of metals and chemistry for reagents).
 
 ///A proc that handles transfering the materials to the target object and anything it contains that isn't abstract. You can check the doc for var/list/transfered_materials for how it works.
 /datum/design/proc/transfer_materials(list/custom_materials, multiplier, atom/target_object)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	ASSERT(islist(custom_materials), "design/transfer_materials() called with invalid 'custom_materials' arg value")
@@ -171,6 +183,8 @@ other types of metals and chemistry for reagents).
 
 ///Called by [proc/transfer_materials] in two places and it's basically the meat and bone of the function. Having it as a separate proc reduces copypaste a little.
 /datum/design/proc/simple_transfer_materials(list/custom_materials, multiplier, atom/target_object)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	PRIVATE_PROC(TRUE)
 
@@ -195,6 +209,8 @@ other types of metals and chemistry for reagents).
 	var/list/blueprints = list()
 
 /obj/item/disk/design_disk/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		pixel_x = base_pixel_x + rand(-5, 5)
@@ -206,6 +222,8 @@ other types of metals and chemistry for reagents).
  * - stored_research - The techweb that's storing us.
  */
 /obj/item/disk/design_disk/proc/on_upload(datum/techweb/stored_research, atom/research_source)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/disk/design_disk/bepis
@@ -217,6 +235,8 @@ other types of metals and chemistry for reagents).
 	var/datum/techweb_node/bepis_node
 
 /obj/item/disk/design_disk/bepis/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/bepis_id = pick(SSresearch.techweb_nodes_experimental)
 	bepis_node = (SSresearch.techweb_node_by_id(bepis_id))
@@ -227,6 +247,8 @@ other types of metals and chemistry for reagents).
 
 ///Unhide and research our node so we show up in the R&D console.
 /obj/item/disk/design_disk/bepis/on_upload(datum/techweb/stored_research, atom/research_source)
+	procstart = null
+	src.procstart = null
 	stored_research.hidden_nodes -= bepis_node.id
 	stored_research.research_node(bepis_node, force = TRUE, auto_adjust_cost = FALSE, research_source = research_source)
 
@@ -239,6 +261,8 @@ other types of metals and chemistry for reagents).
 	desc = "A disk containing a new, completed tech from the B.E.P.I.S. Upload the disk to an R&D Console to redeem the tech."
 
 /obj/item/disk/design_disk/bepis/remove_tech/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSresearch.techweb_nodes_experimental -= bepis_node.id
 	log_research("[bepis_node.display_name] has been removed from experimental nodes through the BEPIS techweb's \"remove tech\" feature.")

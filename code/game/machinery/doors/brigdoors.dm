@@ -35,6 +35,8 @@
 	var/broadcast_channel = RADIO_CHANNEL_SECURITY
 
 /obj/machinery/status_display/door_timer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(id != null)
@@ -63,6 +65,8 @@
 // if it's less than 0, open door, reset timer
 // update the door_timer window and the icon
 /obj/machinery/status_display/door_timer/process()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (NOPOWER|BROKEN))
 		// No power, no processing.
 		update_appearance()
@@ -79,6 +83,8 @@
  * Update the display content.
  */
 /obj/machinery/status_display/door_timer/proc/update_content()
+	procstart = null
+	src.procstart = null
 	var/time_left = time_left(seconds = TRUE)
 
 	if(time_left == 0)
@@ -94,6 +100,8 @@
  * The timer is expected to have already been set by set_timer()
  */
 /obj/machinery/status_display/door_timer/proc/timer_start()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (NOPOWER|BROKEN))
 		return 0
 
@@ -129,6 +137,8 @@
  * * forced - TRUE if it was forced to stop rather than timing out. Will skip radioing, etc.
  */
 /obj/machinery/status_display/door_timer/proc/timer_end(forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (NOPOWER|BROKEN))
 		return 0
 
@@ -169,6 +179,8 @@
  * * seconds - Return the time in seconds if TRUE, else deciseconds.
  */
 /obj/machinery/status_display/door_timer/proc/time_left(seconds = FALSE)
+	procstart = null
+	src.procstart = null
 	. = max(0, timer_duration + (activation_time ? activation_time - world.time : 0))
 	if(seconds)
 		. /= (1 SECONDS)
@@ -182,18 +194,24 @@
  * value - time in deciseconds to set the timer for.
  */
 /obj/machinery/status_display/door_timer/proc/set_timer(value)
+	procstart = null
+	src.procstart = null
 	var/new_time = clamp(value, 0, MAX_TIMER)
 	. = new_time != timer_duration //return 1 on change
 	timer_duration = new_time
 	update_content()
 
 /obj/machinery/status_display/door_timer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "BrigTimer", name)
 		ui.open()
 
 /obj/machinery/status_display/door_timer/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/time_left = time_left(seconds = TRUE)
 	data["seconds"] = round(time_left % 60)
@@ -211,6 +229,8 @@
 	return data
 
 /obj/machinery/status_display/door_timer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -266,6 +286,8 @@
 			. = FALSE
 
 /obj/machinery/status_display/door_timer/proc/grey_tide(datum/source, list/grey_tide_areas)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!is_station_level(z))

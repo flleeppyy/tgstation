@@ -14,6 +14,8 @@
 
 //Gets the turf where the tile with given id should be
 /obj/effect/sliding_puzzle/proc/get_turf_for_id(id)
+	procstart = null
+	src.procstart = null
 	var/turf/center = get_turf(src)
 	switch(id)
 		if(1)
@@ -36,14 +38,20 @@
 			return get_step(center,SOUTHEAST)
 
 /obj/effect/sliding_puzzle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/sliding_puzzle/LateInitialize()
+	procstart = null
+	src.procstart = null
 	if(auto_setup)
 		setup()
 
 /obj/effect/sliding_puzzle/proc/check_setup_location()
+	procstart = null
+	src.procstart = null
 	for(var/id in 1 to 9)
 		var/turf/T = get_turf_for_id(id)
 		if(!T)
@@ -54,6 +62,8 @@
 
 
 /obj/effect/sliding_puzzle/proc/validate()
+	procstart = null
+	src.procstart = null
 	if(finished)
 		return
 
@@ -72,6 +82,8 @@
 	finish()
 
 /obj/effect/sliding_puzzle/Destroy()
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(elements))
 		for(var/obj/structure/puzzle_element/E in elements)
 			E.source = null
@@ -81,6 +93,8 @@
 #define COLLAPSE_DURATION 7
 
 /obj/effect/sliding_puzzle/proc/finish()
+	procstart = null
+	src.procstart = null
 	finished = TRUE
 	for(var/mob/M in range(7,src))
 		shake_camera(M, COLLAPSE_DURATION , 1)
@@ -90,9 +104,13 @@
 	dispense_reward()
 
 /obj/effect/sliding_puzzle/proc/dispense_reward()
+	procstart = null
+	src.procstart = null
 	new reward_type(get_turf(src))
 
 /obj/effect/sliding_puzzle/proc/is_solvable()
+	procstart = null
+	src.procstart = null
 	var/list/current_ordering = list()
 	for(var/obj/structure/puzzle_element/E in elements_in_order())
 		current_ordering += E.id
@@ -108,6 +126,8 @@
 
 //swap two tiles in same row
 /obj/effect/sliding_puzzle/proc/make_solvable()
+	procstart = null
+	src.procstart = null
 	var/first_tile_id = 1
 	var/other_tile_id = 2
 	if(empty_tile_id == 1 || empty_tile_id == 2) //Can't swap with empty one so just grab some in second row
@@ -124,6 +144,8 @@
 	E2.forceMove(T1)
 
 /proc/cmp_xy_desc(atom/movable/A,atom/movable/B)
+	procstart = null
+	src.procstart = null
 	if(A.y > B.y)
 		return -1
 	if(A.y < B.y)
@@ -135,9 +157,13 @@
 	return 0
 
 /obj/effect/sliding_puzzle/proc/elements_in_order()
+	procstart = null
+	src.procstart = null
 	return sortTim(elements,cmp=/proc/cmp_xy_desc)
 
 /obj/effect/sliding_puzzle/proc/get_base_icon()
+	procstart = null
+	src.procstart = null
 	var/icon/I = new('icons/obj/fluff/puzzle.dmi')
 	var/list/puzzles = icon_states(I)
 	var/puzzle_state = pick(puzzles)
@@ -145,6 +171,8 @@
 	return P
 
 /obj/effect/sliding_puzzle/proc/setup()
+	procstart = null
+	src.procstart = null
 	//First we slice the 96x96 icon into 32x32 pieces
 	var/list/puzzle_pieces = list() //id -> icon list
 
@@ -206,12 +234,16 @@
 	var/icon/puzzle_icon
 
 /obj/structure/puzzle_element/Move(nloc, dir)
+	procstart = null
+	src.procstart = null
 	if(!isturf(nloc) || moving_diagonally || get_dist(get_step(src,dir),get_turf(source)) > 1)
 		return 0
 	else
 		return ..()
 
 /obj/structure/puzzle_element/proc/set_puzzle_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(puzzle_icon)
 		//Need to scale it down a bit to fit the static border
@@ -223,11 +255,15 @@
 		puzzle_small.pixel_z = 7
 		add_overlay(puzzle_small)
 
-/obj/structure/puzzle_element/update_icon(updates=ALL) // to prevent update_appearance calls from cutting the overlays and not adding them back
+/obj/structure/puzzle_element/update_icon(updates=ALL)
+	procstart = null
+	src.procstart = null // to prevent update_appearance calls from cutting the overlays and not adding them back
 	. = ..()
 	set_puzzle_icon()
 
 /obj/structure/puzzle_element/Destroy()
+	procstart = null
+	src.procstart = null
 	if(source)
 		source.elements -= src
 		source.validate()
@@ -235,6 +271,8 @@
 
 //Set the full image on the turf and delete yourself
 /obj/structure/puzzle_element/proc/collapse()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	var/mutable_appearance/MA = new(puzzle_icon)
 	MA.layer = T.layer + 0.1
@@ -245,6 +283,8 @@
 	QDEL_IN(src,COLLAPSE_DURATION)
 
 /obj/structure/puzzle_element/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(source)
 		source.validate()
@@ -256,6 +296,8 @@
 	var/puzzle_state
 
 /obj/effect/sliding_puzzle/admin/get_base_icon()
+	procstart = null
+	src.procstart = null
 	var/icon/I = new(puzzle_icon,puzzle_state)
 	return I
 
@@ -264,6 +306,8 @@
 	reward_type = /obj/structure/closet/crate/necropolis/puzzle
 
 /obj/effect/sliding_puzzle/lavaland/dispense_reward()
+	procstart = null
+	src.procstart = null
 	if(prob(25))
 		//If it's not roaming somewhere else already.
 		var/mob/living/simple_animal/hostile/megafauna/bubblegum/B = locate() in GLOB.mob_list
@@ -278,6 +322,8 @@
 	element_type = /obj/structure/puzzle_element/prison
 
 /obj/effect/sliding_puzzle/prison/get_base_icon()
+	procstart = null
+	src.procstart = null
 	if(!prisoner)
 		CRASH("Prison cube without prisoner")
 	prisoner.setDir(SOUTH)
@@ -286,6 +332,8 @@
 	return I
 
 /obj/effect/sliding_puzzle/prison/Destroy()
+	procstart = null
+	src.procstart = null
 	if(prisoner)
 		to_chat(prisoner,span_userdanger("With the cube broken by force, you can feel your body falling apart."))
 		prisoner.investigate_log("has died from their prison puzzle being destroyed.", INVESTIGATE_DEATHS)
@@ -294,6 +342,8 @@
 	. = ..()
 
 /obj/effect/sliding_puzzle/prison/dispense_reward()
+	procstart = null
+	src.procstart = null
 	prisoner.forceMove(get_turf(src))
 	REMOVE_TRAIT(prisoner, TRAIT_NO_TRANSFORM, element_type)
 	prisoner = null
@@ -312,6 +362,8 @@
 	acid = 50
 
 /obj/structure/puzzle_element/prison/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/prisoncube
@@ -321,6 +373,8 @@
 	icon_state = "prison_cube"
 
 /obj/item/prisoncube/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isliving(interacting_with))
 		return NONE
 
@@ -339,6 +393,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /proc/puzzle_imprison(mob/living/prisoner)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(prisoner)
 	var/obj/effect/sliding_puzzle/prison/cube = new(T)
 	if(!cube.check_setup_location())

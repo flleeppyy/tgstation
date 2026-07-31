@@ -5,6 +5,8 @@
 	inhand_icon_state = "emp"
 
 /obj/item/grenade/empgrenade/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

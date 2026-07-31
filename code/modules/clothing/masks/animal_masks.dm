@@ -29,11 +29,15 @@ GLOBAL_LIST_INIT(cursed_animal_masks, list(
 	var/curse_spawn_sound ///sound to play when the cursed mask variant is spawned.
 
 /obj/item/clothing/mask/animal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cursed)
 		make_cursed()
 
 /obj/item/clothing/mask/animal/equipped(mob/M, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if ((slot & ITEM_SLOT_MASK) && modifies_speech)
 		RegisterSignal(M, COMSIG_MOB_SAY, PROC_REF(handle_speech))
@@ -41,10 +45,14 @@ GLOBAL_LIST_INIT(cursed_animal_masks, list(
 		UnregisterSignal(M, COMSIG_MOB_SAY)
 
 /obj/item/clothing/mask/animal/dropped(mob/M)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(M, COMSIG_MOB_SAY)
 
 /obj/item/clothing/mask/animal/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	if(vname == NAMEOF(src, cursed))
 		if(vval)
 			if(!cursed)
@@ -62,18 +70,24 @@ GLOBAL_LIST_INIT(cursed_animal_masks, list(
 	return ..()
 
 /obj/item/clothing/mask/animal/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(clothing_flags & VOICEBOX_TOGGLABLE)
 		. += span_notice("Its voicebox is currently [clothing_flags & VOICEBOX_DISABLED ? "disabled" : "enabled"]. <b>Alt-click</b> to toggle it.")
 
 /obj/item/clothing/mask/animal/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!(clothing_flags & VOICEBOX_TOGGLABLE))
 		return NONE
 	clothing_flags ^= VOICEBOX_DISABLED
 	to_chat(user, span_notice("You [clothing_flags & VOICEBOX_DISABLED ? "disabled" : "enabled"] [src]'s voicebox."))
 	return CLICK_ACTION_SUCCESS
 
-/obj/item/clothing/mask/animal/proc/make_cursed() //apply cursed effects.
+/obj/item/clothing/mask/animal/proc/make_cursed()
+	procstart = null
+	src.procstart = null //apply cursed effects.
 	ADD_TRAIT(src, TRAIT_NODROP, CURSED_MASK_TRAIT)
 	clothing_flags = NONE //force animal sounds to always on.
 	if(flags_inv == initial(flags_inv))
@@ -95,6 +109,8 @@ GLOBAL_LIST_INIT(cursed_animal_masks, list(
 			M.refresh_obscured()
 
 /obj/item/clothing/mask/animal/proc/clear_curse()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(src, TRAIT_NODROP, CURSED_MASK_TRAIT)
 	clothing_flags = initial(clothing_flags)
 	flags_inv = initial(flags_inv)
@@ -112,6 +128,8 @@ GLOBAL_LIST_INIT(cursed_animal_masks, list(
 			M.update_worn_mask()
 
 /obj/item/clothing/mask/animal/proc/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(clothing_flags & VOICEBOX_DISABLED)
@@ -121,6 +139,8 @@ GLOBAL_LIST_INIT(cursed_animal_masks, list(
 	speech_args[SPEECH_MESSAGE] = pick((prob(animal_sounds_alt_probability) && LAZYLEN(animal_sounds_alt)) ? animal_sounds_alt : animal_sounds)
 
 /obj/item/clothing/mask/animal/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user))
 		return ..()
 	if((slot & ITEM_SLOT_MASK) && HAS_TRAIT_FROM(src, TRAIT_NODROP, CURSED_MASK_TRAIT))
@@ -153,15 +173,21 @@ GLOBAL_LIST_INIT(cursed_animal_masks, list(
 	flags_inv = HIDEFACE|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
 
 /obj/item/clothing/mask/animal/frog/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, cursed ? 4 : -4)
 
 /obj/item/clothing/mask/animal/frog/make_cursed()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RemoveElement(/datum/element/adjust_fishing_difficulty, -4)
 	AddElement(/datum/element/adjust_fishing_difficulty, 4)
 
 /obj/item/clothing/mask/animal/frog/clear_curse()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RemoveElement(/datum/element/adjust_fishing_difficulty, 4)
 	AddElement(/datum/element/adjust_fishing_difficulty, -4)
@@ -200,6 +226,8 @@ GLOBAL_LIST_INIT(cursed_animal_masks, list(
 	flags_inv = HIDEFACE|HIDESNOUT
 
 /obj/item/clothing/mask/animal/small/make_cursed()
+	procstart = null
+	src.procstart = null
 	flags_inv = NONE
 	return ..()
 
@@ -245,15 +273,21 @@ GLOBAL_LIST_INIT(cursed_animal_masks, list(
 	animal_sounds = list("RAWR!","Rawr!","GRR!","Growl!")
 
 /obj/item/clothing/mask/animal/small/bear/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, cursed ? 4 : -4)
 
 /obj/item/clothing/mask/animal/small/bear/make_cursed()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RemoveElement(/datum/element/adjust_fishing_difficulty, -4)
 	AddElement(/datum/element/adjust_fishing_difficulty, 4)
 
 /obj/item/clothing/mask/animal/small/bear/clear_curse()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RemoveElement(/datum/element/adjust_fishing_difficulty, 4)
 	AddElement(/datum/element/adjust_fishing_difficulty, -4)
@@ -307,15 +341,21 @@ GLOBAL_LIST_INIT(cursed_animal_masks, list(
 	animal_sounds_alt_probability = 5
 
 /obj/item/clothing/mask/animal/small/tribal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, cursed ? 5 : -5)
 
 /obj/item/clothing/mask/animal/small/tribal/make_cursed()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RemoveElement(/datum/element/adjust_fishing_difficulty, -5)
 	AddElement(/datum/element/adjust_fishing_difficulty, 5)
 
 /obj/item/clothing/mask/animal/small/tribal/clear_curse()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RemoveElement(/datum/element/adjust_fishing_difficulty, 5)
 	AddElement(/datum/element/adjust_fishing_difficulty, -5)

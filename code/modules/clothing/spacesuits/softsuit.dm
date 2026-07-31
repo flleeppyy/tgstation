@@ -50,10 +50,14 @@
 	acid = 65
 
 /obj/item/clothing/head/helmet/space/eva/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You can start constructing a critter sized mecha with a [span_bold("cyborg leg")].")
 
 /obj/item/clothing/head/helmet/space/eva/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/bodypart/leg/left/robot) && !istype(tool, /obj/item/bodypart/leg/right/robot))
 		return ..()
 
@@ -90,6 +94,8 @@
 	melee = 5
 
 /obj/item/clothing/suit/space/fragile/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(!torn && prob(50))
 		to_chat(owner, span_warning("[src] tears from the damage, breaking the airtight seal!"))
 		clothing_flags &= ~STOPSPRESSUREDAMAGE

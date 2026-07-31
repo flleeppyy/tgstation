@@ -4,6 +4,8 @@
 	var/list/screeches
 
 /datum/bt_node/ai_behavior/battle_screech/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	INVOKE_ASYNC(living_pawn, TYPE_PROC_REF(/mob, emote), pick(screeches))
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED

@@ -7,6 +7,8 @@
 	var/list/zlevels
 
 /datum/component/houlihan_teleport/Initialize(question, zlevels)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isstructure(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -22,11 +24,15 @@
 	src.zlevels = zlevels || SSmapping.levels_by_trait(ZTRAIT_STATION)
 
 /datum/component/houlihan_teleport/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignals(parent, list(COMSIG_ATOM_ATTACK_ROBOT, COMSIG_ATOM_ATTACK_PAW, COMSIG_ATOM_ATTACK_ANIMAL, COMSIG_ATOM_ATTACK_LARVA), PROC_REF(handle_generic_attack))
 	RegisterSignal(parent, COMSIG_ATOM_ATTACK_HAND, PROC_REF(handle_attack_hand))
 	RegisterSignal(parent, COMSIG_ATOM_ATTACKBY, PROC_REF(handle_attackby))
 
 /datum/component/houlihan_teleport/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ATOM_ATTACK_ROBOT, COMSIG_ATOM_ATTACK_PAW, COMSIG_ATOM_ATTACK_ANIMAL, COMSIG_ATOM_ATTACK_LARVA, //handle_generic_attack
 		COMSIG_ATOM_ATTACK_HAND, //handle_attack_hand
@@ -34,6 +40,8 @@
 	))
 
 /datum/component/houlihan_teleport/proc/get_me_outta_here(obj/structure/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/said_yes = (tgui_alert(user, question, source.name, list("Yes", "No")) == "Yes")
 	if(!said_yes || !source.Adjacent(user))
 		return
@@ -59,6 +67,8 @@
 	astype(dragged, /mob)?.emote("blink") // shhhhh just let it happen
 
 /datum/component/houlihan_teleport/proc/handle_generic_attack(obj/structure/source, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(user.combat_mode)
@@ -71,6 +81,8 @@
 	return COMPONENT_NO_AFTERATTACK
 
 /datum/component/houlihan_teleport/proc/handle_attack_hand(obj/structure/source, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(user))
@@ -84,6 +96,8 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/component/houlihan_teleport/proc/handle_attackby(obj/structure/source, obj/item/item, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(user.combat_mode)

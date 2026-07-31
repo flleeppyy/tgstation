@@ -17,6 +17,8 @@
 /datum/element/kneecapping
 
 /datum/element/kneecapping/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	if(!isitem(target))
 		stack_trace("Kneecapping element added to non-item object: \[[target]\]")
 		return ELEMENT_INCOMPATIBLE
@@ -35,6 +37,8 @@
 	RegisterSignal(target, COMSIG_ITEM_ATTACK_SECONDARY , PROC_REF(try_kneecap_target))
 
 /datum/element/kneecapping/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, COMSIG_ITEM_ATTACK_SECONDARY)
 
 	return ..()
@@ -45,6 +49,8 @@
  * the attack can be started.
  */
 /datum/element/kneecapping/proc/try_kneecap_target(obj/item/source, mob/living/carbon/target, mob/attacker, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if((attacker.zone_selected != BODY_ZONE_L_LEG) && (attacker.zone_selected != BODY_ZONE_R_LEG))
@@ -72,6 +78,8 @@
  * After a short do_after, attacker applies damage to the given leg with a significant wounding bonus, applying the weapon's force as damage.
  */
 /datum/element/kneecapping/proc/do_kneecap_target(obj/item/weapon, obj/item/bodypart/leg, mob/living/carbon/target, mob/attacker)
+	procstart = null
+	src.procstart = null
 	if(LAZYACCESS(attacker.do_afters, weapon))
 		return
 

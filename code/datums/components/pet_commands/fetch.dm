@@ -17,24 +17,34 @@
 	var/will_eat_targets = TRUE
 
 /datum/pet_command/fetch/New(mob/living/parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(parent))
 		return
 	parent.AddElement(/datum/element/ai_held_item) // We don't remove this on destroy because they might still be holding something
 
 /datum/pet_command/fetch/add_new_friend(mob/living/tamer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(tamer, COMSIG_MOB_THROW, PROC_REF(listened_throw))
 
 /datum/pet_command/fetch/remove_friend(mob/living/unfriended)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(unfriended, COMSIG_MOB_THROW)
 
 /datum/pet_command/fetch/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return isnull(target) ? null : "signals [living_pet] to fetch [target]!"
 
 /// A friend has thrown something, if we're listening or at least not busy then go get it
 /datum/pet_command/fetch/proc/listened_throw(mob/living/carbon/thrower)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/parent = weak_parent.resolve()
@@ -61,6 +71,8 @@
 
 /// A throw we were listening to has finished, see if it's in range for us to try grabbing it
 /datum/pet_command/fetch/proc/listen_throw_land(obj/item/thrown_thing, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(thrown_thing, COMSIG_MOVABLE_THROW_LANDED)
@@ -81,6 +93,8 @@
 
 // Don't try and fetch turfs or anchored objects if someone points at them
 /datum/pet_command/fetch/look_for_target(mob/living/pointing_friend, obj/item/pointed_atom)
+	procstart = null
+	src.procstart = null
 	if (!istype(pointed_atom))
 		return FALSE
 	if (pointed_atom.anchored)
@@ -94,4 +108,6 @@
 
 // Install the fetch BT subtree. The subtree itself handles all phases (seek > pick up > deliver).
 /datum/pet_command/fetch/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.set_behavior_tree_override(SUBPLAN_ID_PET_COMMAND, /datum/bt_node/subtree/pet_command/fetch)

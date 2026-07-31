@@ -4,10 +4,14 @@
 	holder_type = /obj/machinery/atmos_shield_gen
 
 /datum/wires/atmosshieldgen/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(WIRE_ACTIVATE)
 	return ..()
 
 /datum/wires/atmosshieldgen/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/atmos_shield_gen/generator = holder
 	if(!generator.anchored)
 		return

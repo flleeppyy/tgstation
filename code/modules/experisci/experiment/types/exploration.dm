@@ -11,6 +11,8 @@
 	var/required_scan_type = EXOSCAN_POINT
 
 /datum/experiment/exploration_scan/is_complete()
+	procstart = null
+	src.procstart = null
 	for(var/datum/exploration_site/site in GLOB.exploration_sites)
 		switch(required_scan_type)
 			if(EXOSCAN_DEEP)
@@ -27,9 +29,13 @@
 	return FALSE
 
 /datum/experiment/exploration_scan/perform_experiment_actions(datum/component/experiment_handler/experiment_handler)
+	procstart = null
+	src.procstart = null
 	return is_complete()
 
 /datum/experiment/exploration_scan/actionable(datum/component/experiment_handler/experiment_handler)
+	procstart = null
+	src.procstart = null
 	return !is_complete()
 
 /datum/experiment/exploration_scan/asteroid_belt
@@ -53,6 +59,8 @@
 	var/list/possible_random_site_types
 
 /datum/experiment/exploration_scan/random/New(datum/techweb/techweb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(length(possible_random_site_types))
 		required_site_type = pick(possible_random_site_types)

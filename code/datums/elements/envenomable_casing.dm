@@ -11,6 +11,8 @@
 	var/amount_allowed
 
 /datum/element/envenomable_casing/Attach(datum/target, amount_allowed = 5)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isammocasing(target))
 		return ELEMENT_INCOMPATIBLE
@@ -19,11 +21,15 @@
 	RegisterSignal(target, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine_before_dip))
 
 /datum/element/envenomable_casing/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, list(COMSIG_ITEM_INTERACTING_WITH_ATOM, COMSIG_ATOM_EXAMINE))
 
 ///signal called on the parent attacking an item
 /datum/element/envenomable_casing/proc/handle_interaction(obj/item/ammo_casing/casing, mob/user, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!target.is_open_container())
@@ -47,10 +53,14 @@
 
 ///signal called on parent being examined while not coated
 /datum/element/envenomable_casing/proc/on_examine_before_dip(obj/item/ammo_casing/casing, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_list += span_notice("You can dip it in a chemical to deliver a poisonous kick.")
 
 ///ditto, but after it's been coated
 /datum/element/envenomable_casing/proc/on_examine_after_dip(obj/item/ammo_casing/casing, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_list += span_warning("It's coated in some kind of chemical...")

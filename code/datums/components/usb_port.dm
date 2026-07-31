@@ -26,6 +26,8 @@
 	var/extra_unregistration_callback
 
 /datum/component/usb_port/Initialize(list/circuit_component_types, extra_registration_callback, extra_unregistration_callback)
+	procstart = null
+	src.procstart = null
 	if (!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -34,6 +36,8 @@
 	src.extra_unregistration_callback = extra_unregistration_callback
 
 /datum/component/usb_port/proc/set_circuit_components(list/components)
+	procstart = null
+	src.procstart = null
 	var/should_register = FALSE
 	if(length(circuit_components))
 		UnregisterFromParent()
@@ -53,6 +57,8 @@
 		RegisterWithParent()
 
 /datum/component/usb_port/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_USB_CABLE_TRY_ATTACH, PROC_REF(on_atom_usb_cable_try_attach))
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 	RegisterSignal(parent, COMSIG_MOVABLE_CIRCUIT_LOADED, PROC_REF(on_load))
@@ -69,6 +75,8 @@
 			call(parent, extra_registration_callback)(src)
 
 /datum/component/usb_port/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ATOM_USB_CABLE_TRY_ATTACH,
 		COMSIG_ATOM_EXAMINE,
@@ -91,10 +99,14 @@
 	attached_circuit = null
 
 /datum/component/usb_port/proc/save_component(datum/source, list/objects)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	objects += parent
 
 /datum/component/usb_port/proc/on_load(datum/source, obj/item/integrated_circuit/circuit, list/components)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/list/components_in_list = list()
 	for(var/obj/item/circuit_component/component as anything in components)
@@ -111,6 +123,8 @@
 	on_atom_usb_cable_try_attach(src, cable, null)
 
 /datum/component/usb_port/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LAZYLIST(circuit_components)
 	QDEL_NULL(usb_cable_beam)
 
@@ -120,6 +134,8 @@
 	return ..()
 
 /datum/component/usb_port/proc/unregister_circuit_signals()
+	procstart = null
+	src.procstart = null
 	if (isnull(attached_circuit))
 		return
 
@@ -130,6 +146,8 @@
 	))
 
 /datum/component/usb_port/proc/unregister_physical_signals()
+	procstart = null
+	src.procstart = null
 	if (isnull(physical_object))
 		return
 
@@ -138,11 +156,15 @@
 	RemoveComponentSource(REF(physical_object), /datum/component/shuttle_move_deferred_checks)
 
 /datum/component/usb_port/proc/attach_circuit_components(obj/item/integrated_circuit/circuitboard)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/circuit_component/component as anything in circuit_components)
 		circuitboard.add_component(component)
 		RegisterSignal(component, COMSIG_CIRCUIT_COMPONENT_REMOVED, PROC_REF(on_circuit_component_removed))
 
 /datum/component/usb_port/proc/on_examine(datum/source, mob/user, list/examine_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (isnull(attached_circuit))
@@ -151,11 +173,15 @@
 		examine_text += span_notice("[attached_circuit.shell || attached_circuit] is connected to [parent.p_them()] by a USB port.")
 
 /datum/component/usb_port/proc/on_examine_shell(datum/source, mob/user, list/examine_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_text += span_notice("[source.p_They()] [source.p_are()] attached to [parent] with a USB cable.")
 
 /datum/component/usb_port/proc/on_atom_usb_cable_try_attach(datum/source, obj/item/usb_cable/connecting_cable, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!LAZYLEN(circuit_components))
@@ -202,6 +228,8 @@
 	return COMSIG_USB_CABLE_ATTACHED
 
 /datum/component/usb_port/proc/set_physical_object(atom/movable/new_physical_object)
+	procstart = null
+	src.procstart = null
 	if(physical_object)
 		unregister_physical_signals()
 	if(usb_cable_beam)
@@ -217,10 +245,14 @@
 
 // Adds support for loading circuits without shells but with usb cables, or loading circuits with shells because the shells might not load first.
 /datum/component/usb_port/proc/on_set_shell(datum/source, atom/movable/new_shell)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_physical_object(new_shell)
 
 /datum/component/usb_port/proc/on_moved()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (isnull(attached_circuit))
@@ -232,19 +264,27 @@
 	detach()
 
 /datum/component/usb_port/proc/on_circuit_deleting()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	detach()
 	qdel(usb_cable_ref)
 
 /datum/component/usb_port/proc/on_circuit_component_removed(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	detach()
 
 /datum/component/usb_port/proc/on_circuit_shell_removed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	detach()
 
 /datum/component/usb_port/proc/detach()
+	procstart = null
+	src.procstart = null
 	var/obj/item/usb_cable/usb_cable = usb_cable_ref?.resolve()
 	if (isnull(usb_cable))
 		return

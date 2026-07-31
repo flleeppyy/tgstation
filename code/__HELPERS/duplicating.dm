@@ -60,6 +60,8 @@ GLOBAL_PROTECT(duplicate_forbidden_vars)
  * spawning_location - Turf where the duplicated atom will be spawned at.
  */
 /proc/duplicate_object(atom/original, turf/spawning_location)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(original.type)
 	if(!original)
 		return

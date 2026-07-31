@@ -53,6 +53,8 @@
 	availability_prob = 30
 
 /datum/market_item/clothing/full_spacesuit_set/spawn_item(loc)
+	procstart = null
+	src.procstart = null
 	var/obj/item/storage/box/B = ..()
 	B.name = "Spacesuit Box"
 	B.desc = "It has an NT logo on it."

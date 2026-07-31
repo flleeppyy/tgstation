@@ -57,6 +57,8 @@
 // There's more sanity checking here than normal because this is designed for spriters to work with
 // Sensible error messages that tell you exactly what's wrong is the best way to make this easy to use
 /datum/greyscale_config/New()
+	procstart = null
+	src.procstart = null
 	if(!json_config)
 		stack_trace("Greyscale config object [DebugName()] is missing a json configuration, make sure `json_config` has been assigned a value.")
 	string_json_config = "[json_config]"
@@ -69,11 +71,15 @@
 		stack_trace("Greyscale config object [DebugName()] is missing a name, make sure `name` has been assigned a value.")
 
 /datum/greyscale_config/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(!force)
 		return QDEL_HINT_LETMELIVE
 	return ..()
 
 /datum/greyscale_config/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!Refresh(loadFromDisk=TRUE))
 		return
 	if(!live_edit_types)
@@ -83,6 +89,8 @@
 			thing.update_greyscale()
 
 /datum/greyscale_config/proc/EnableAutoRefresh(live_type)
+	procstart = null
+	src.procstart = null
 	message_admins("Config auto refresh has been enabled for '[live_type]' with configuration [DebugName()]. Expect heavy lag.")
 	if(live_type)
 		if(!live_edit_types)
@@ -91,6 +99,8 @@
 	START_PROCESSING(SSgreyscale, src)
 
 /datum/greyscale_config/proc/DisableAutoRefresh(live_type, remove_all=FALSE)
+	procstart = null
+	src.procstart = null
 	if(!remove_all && !(live_type in live_edit_types))
 		return
 	message_admins("Config auto refresh has been disabled for '[live_type]' with configuration [DebugName()]")
@@ -104,6 +114,8 @@
 
 /// Call this proc to handle all the data extraction from the json configuration. Can be forced to load values from disk instead of memory.
 /datum/greyscale_config/proc/Refresh(loadFromDisk=FALSE)
+	procstart = null
+	src.procstart = null
 	if(loadFromDisk)
 		var/changed = FALSE
 
@@ -143,6 +155,8 @@
 
 /// Called after every config has refreshed, this proc handles data verification that depends on multiple entwined configurations.
 /datum/greyscale_config/proc/CrossVerify()
+	procstart = null
+	src.procstart = null
 	for(var/icon_state in icon_states)
 		var/list/verification_targets = icon_states[icon_state]
 		verification_targets = verification_targets.Copy()
@@ -156,11 +170,15 @@
 
 /// Gets the name used for debug purposes
 /datum/greyscale_config/proc/DebugName()
+	procstart = null
+	src.procstart = null
 	var/display_name = name || "MISSING_NAME"
 	return "[display_name] ([icon_file]|[json_config])"
 
 /// Takes the json icon state configuration and puts it into a more processed format.
 /datum/greyscale_config/proc/ReadIconStateConfiguration(list/data)
+	procstart = null
+	src.procstart = null
 	icon_states = list()
 	for(var/state in data)
 		var/list/raw_layers = data[state]
@@ -173,10 +191,14 @@
 
 /// Takes the json layers configuration and puts it into a more processed format
 /datum/greyscale_config/proc/ReadLayersFromJson(list/data)
+	procstart = null
+	src.procstart = null
 	var/list/output = ReadLayerGroup(data)
 	return output[1]
 
 /datum/greyscale_config/proc/ReadLayerGroup(list/data)
+	procstart = null
+	src.procstart = null
 	if(!islist(data[1]))
 		var/layer_type = SSgreyscale.layer_types[data["type"]]
 		if(!layer_type)
@@ -191,6 +213,8 @@
 
 /// Reads layer configurations to take out some useful overall information
 /datum/greyscale_config/proc/ReadMetadata()
+	procstart = null
+	src.procstart = null
 	var/list/icon_dimensions = get_icon_dimensions(icon_file)
 	height = icon_dimensions["width"]
 	width = icon_dimensions["height"]
@@ -233,11 +257,15 @@
 
 /// For saving a dmi to disk, useful for debug mainly
 /datum/greyscale_config/proc/SaveOutput(color_string)
+	procstart = null
+	src.procstart = null
 	var/icon/icon_output = GenerateBundle(color_string)
 	fcopy(icon_output, "tmp/gags_debug_output.dmi")
 
 /// Actually create the icon and color it in, handles caching
 /datum/greyscale_config/proc/Generate(color_string, icon/last_external_icon)
+	procstart = null
+	src.procstart = null
 	var/key = color_string
 	var/icon/new_icon = icon_cache[key]
 	if(new_icon)
@@ -251,6 +279,8 @@
 
 /// Handles the actual icon manipulation to create the spritesheet
 /datum/greyscale_config/proc/GenerateBundle(list/colors, list/render_steps, icon/last_external_icon)
+	procstart = null
+	src.procstart = null
 	if(!istype(colors))
 		colors = SSgreyscale.ParseColorString(colors)
 	if(length(colors) < expected_colors)
@@ -278,6 +308,8 @@
 
 /// Internal recursive proc to handle nested layer groups
 /datum/greyscale_config/proc/GenerateLayerGroup(list/colors, list/group, list/render_steps, icon/last_external_icon)
+	procstart = null
+	src.procstart = null
 	var/icon/new_icon
 	for(var/datum/greyscale_layer/layer as anything in group)
 		var/icon/layer_icon
@@ -303,6 +335,8 @@
 	return new_icon
 
 /datum/greyscale_config/proc/GenerateDebug(colors)
+	procstart = null
+	src.procstart = null
 	var/list/output = list()
 	var/list/debug_steps = list()
 	output["steps"] = debug_steps
@@ -315,10 +349,14 @@
 // ===============
 
 /datum/greyscale_config/proc/GenerateUniversalIcon(color_string, target_bundle_state, datum/universal_icon/last_external_icon)
+	procstart = null
+	src.procstart = null
 	return GenerateBundleUniversalIcon(color_string, target_bundle_state, last_external_icon=last_external_icon)
 
 /// Handles the actual icon manipulation to create the spritesheet
 /datum/greyscale_config/proc/GenerateBundleUniversalIcon(list/colors, target_bundle_state, datum/universal_icon/last_external_icon)
+	procstart = null
+	src.procstart = null
 	if(!istype(colors))
 		colors = SSgreyscale.ParseColorString(colors)
 	if(length(colors) != expected_colors)
@@ -333,6 +371,8 @@
 
 /// Internal recursive proc to handle nested layer groups
 /datum/greyscale_config/proc/GenerateLayerGroupUniversalIcon(list/colors, list/group, datum/universal_icon/last_external_icon)
+	procstart = null
+	src.procstart = null
 	var/datum/universal_icon/new_icon
 	for(var/datum/greyscale_layer/layer as anything in group)
 		var/datum/universal_icon/layer_icon

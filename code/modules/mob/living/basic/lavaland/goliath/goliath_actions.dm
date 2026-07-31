@@ -14,12 +14,16 @@
 	var/max_range = 7
 
 /datum/action/cooldown/mob_cooldown/goliath_tentacles/PreActivate(atom/target)
+	procstart = null
+	src.procstart = null
 	target = get_turf(target)
 	if (get_dist(owner, target) > max_range)
 		return FALSE
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/goliath_tentacles/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/goliath_tentacle(target, owner)
 	for(var/spawndir in GLOB.cardinals)
 		var/turf/adjacent_target = get_step(target, spawndir)
@@ -47,6 +51,8 @@
 	click_to_activate = FALSE
 
 /datum/action/cooldown/mob_cooldown/tentacle_burst/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	var/list/directions = GLOB.alldirs.Copy()
 	for (var/dir in directions)
 		var/turf/adjacent_target = get_step(target, dir)
@@ -70,6 +76,8 @@
 	shared_cooldown = NONE
 
 /datum/action/cooldown/mob_cooldown/tentacle_grasp/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/effect_trail/burrowed_tentacle(owner.loc, target, owner)
 	if (isliving(target))
 		owner.visible_message(span_warning("[owner] reaches for [target] with its tentacles!"))
@@ -88,15 +96,23 @@
 	var/mob/living/owner = null
 
 /obj/effect/temp_visual/effect_trail/burrowed_tentacle/Initialize(mapload, atom/target, mob/living/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.owner = owner
 
 /obj/effect/temp_visual/effect_trail/burrowed_tentacle/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner = null
 
 /obj/effect/temp_visual/effect_trail/burrowed_tentacle/add_spawner()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/spawner, spawn_types = list(spawned_effect), max_spawned = max_spawned, spawn_time = spawn_interval, spawn_callback = CALLBACK(src, PROC_REF(on_tentacle_spawned)))
 
 /obj/effect/temp_visual/effect_trail/burrowed_tentacle/proc/on_tentacle_spawned(obj/effect/goliath_tentacle/tentacle)
+	procstart = null
+	src.procstart = null
 	tentacle.set_owner(owner)

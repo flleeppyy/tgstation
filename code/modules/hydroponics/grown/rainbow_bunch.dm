@@ -40,6 +40,8 @@
 	greyscale_config_worn = /datum/greyscale_config/flower_simple_worn
 
 /obj/item/food/grown/flower/rainbow_flower/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(greyscale_colors != initial(greyscale_colors))
 		return

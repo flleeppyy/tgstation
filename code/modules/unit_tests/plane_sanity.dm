@@ -3,6 +3,8 @@
 	priority = TEST_LONGER
 
 /datum/unit_test/plane_layer_sanity/Run()
+	procstart = null
+	src.procstart = null
 	// This fucker's gonna be slow, I'm sorry
 	for(var/mutable_appearance/appearance)
 		check_topdown_validity(appearance)

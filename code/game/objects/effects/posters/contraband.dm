@@ -5,6 +5,8 @@
 	icon_state = "rolled_poster"
 
 /obj/item/poster/random_contraband/Initialize(mapload, obj/structure/sign/poster/new_poster_structure)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CONTRABAND, INNATE_TRAIT)
 
@@ -20,6 +22,8 @@
 	)
 
 /obj/item/poster/random_contraband/pinup/Initialize(mapload, obj/structure/sign/poster/new_poster_structure)
+	procstart = null
+	src.procstart = null
 	poster_type = pick(pinup_posters)
 	return ..()
 
@@ -388,6 +392,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/contraband/moffuchis_pizz
 	icon_state = "donk_co"
 
 /obj/structure/sign/poster/contraband/donk_co/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("<i>You browse some of the poster's information...</i>")
 	. += "\t[span_info("DONK CO. BRAND DONK POCKETS: IRRESISTABLY DONK!")]"
@@ -473,6 +479,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/contraband/blasto_deterge
 	icon_state = "eistee"
 
 /obj/structure/sign/poster/contraband/eistee/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("<i>You browse some of the poster's information...</i>")
 	. += "\t[span_info("Get a taste of the tropics with Amethyst Sunrise, one of the many new flavours of EisT Energy now available from EisT.")]"
@@ -488,6 +496,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/contraband/eistee, 32)
 	icon_state = "little_fruits"
 
 /obj/structure/sign/poster/contraband/little_fruits/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("<i>You browse some of the poster's information...</i>")
 	. += "\t[span_info("Oh no, there's been a terrible accident at the Little Fruits factory! We shrunk the fruits!")]"
@@ -525,6 +535,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/contraband/triumphal_arch
 	icon_state = "mothic_rations"
 
 /obj/structure/sign/poster/contraband/mothic_rations/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("<i>You browse some of the poster's information...</i>")
 	. += "\t[span_info("Va Lümla Commissary Menu (Spring 335)")]"
@@ -574,6 +586,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/contraband/thunderdrome, 
 	icon_state = "rush_propaganda"
 
 /obj/structure/sign/poster/contraband/rush_propaganda/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("<i>You browse some of the poster's information...</i>")
 	. += "\t[span_info("TerraGov needs you!")]"
@@ -597,6 +611,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/contraband/tipper_cream_s
 	icon_state = "tea_over_tizira"
 
 /obj/structure/sign/poster/contraband/tea_over_tizira/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("<i>You browse some of the poster's information...</i>")
 	. += "\t[span_info("At the climax of the Human-Lizard war, the human crew of a bomber rescue two enemy soldiers from the vacuum of space. Seeing the souls behind the propaganda, they begin to question their orders, and imprisonment turns to hospitality.")]"
@@ -608,7 +624,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/contraband/tipper_cream_s
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/contraband/tea_over_tizira, 32)
 
-/obj/structure/sign/poster/contraband/syndiemoth //Original PR at https://github.com/BeeStation/BeeStation-Hornet/pull/1747 (Also pull/1982); original art credit to AspEv
+/obj/structure/sign/poster/contraband/syndiemoth
 	name = "Syndie Moth - Nuclear Operation"
 	desc = "A Syndicate-commissioned poster that uses Syndie Moth™ to tell the viewer to keep the nuclear authentication disk unsecured. \"Peace was never an option!\" No good employee would listen to this nonsense."
 	icon_state = "aspev_syndie"
@@ -628,6 +644,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/contraband/microwave, 32)
 	icon_state = "blood_geometer"
 
 /obj/structure/sign/poster/contraband/blood_geometer/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("<i>You browse some of the poster's information...</i>")
 	. += "\t[span_info("THE BLOOD GEOMETER. This name strikes fear into all who know the truth behind the blood-stained moniker of the blood goddess, her true name lost to time.")]"
@@ -660,20 +678,28 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/contraband/roroco, 32)
 	never_random = TRUE
 
 /obj/structure/sign/poster/contraband/fake_bombable/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/our_wall = get_turf_pixel(src)
 	name = our_wall.name
 
 /obj/structure/sign/poster/contraband/fake_bombable/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/our_wall = get_turf_pixel(src)
 	. = our_wall.examine(user)
 	. += span_notice("It seems to be slightly cracked...")
 
 /obj/structure/sign/poster/contraband/fake_bombable/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	addtimer(CALLBACK(src, PROC_REF(fall_off_wall)), 2.5 SECONDS)
 	return FALSE
 
 /obj/structure/sign/poster/contraband/fake_bombable/proc/fall_off_wall()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || !isturf(loc))
 		return
 	var/turf/our_wall = get_turf_pixel(src)

@@ -5,10 +5,14 @@
 	remove_on_fullheal = TRUE
 
 /datum/status_effect/jitter/on_creation(mob/living/new_owner, duration = 10 SECONDS)
+	procstart = null
+	src.procstart = null
 	src.duration = duration
 	return ..()
 
 /datum/status_effect/jitter/on_apply()
+	procstart = null
+	src.procstart = null
 	// If we're being applied to a dead person, don't make the status effect.
 	// Just do a bit of jitter animation and be done.
 	if(owner.stat == DEAD)
@@ -20,11 +24,15 @@
 	return TRUE
 
 /datum/status_effect/jitter/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_LIVING_DEATH)
 	owner.clear_mood_event(id)
 	owner.update_offsets()
 
 /datum/status_effect/jitter/get_examine_text()
+	procstart = null
+	src.procstart = null
 	switch(duration)
 		if(5 MINUTES to INFINITY)
 			return span_boldwarning("[owner.p_They()] [owner.p_are()] convulsing violently!")
@@ -37,11 +45,15 @@
 
 /// Removes all of our jitteriness on a signal
 /datum/status_effect/jitter/proc/remove_jitter(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(src)
 
 /datum/status_effect/jitter/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	// Resting helps against jitter
 	// While resting, we lose 8 seconds of duration (4 additional ticks) per tick
 	if(owner.resting && remove_duration(4 * seconds_between_ticks))
@@ -53,6 +65,8 @@
 /// Helper proc that causes the mob to do a jittering animation by jitter_amount.
 /// jitter_amount will only apply up to 300 (maximum jitter effect).
 /mob/living/proc/do_jitter_animation(jitter_amount = 100)
+	procstart = null
+	src.procstart = null
 	var/amplitude = min(4, (jitter_amount / 100) + 1)
 	var/pixel_w_diff = rand(-amplitude, amplitude)
 	var/pixel_z_diff = rand(-amplitude / 3, amplitude / 3)

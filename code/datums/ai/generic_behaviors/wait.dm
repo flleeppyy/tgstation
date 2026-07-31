@@ -6,14 +6,20 @@
 	var/duration = 0
 
 /datum/bt_node/ai_behavior/wait/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	end_time = duration > 0 ? world.time + duration : 0
 	return TRUE
 
 /datum/bt_node/ai_behavior/wait/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(!end_time || world.time < end_time)
 		return AI_BEHAVIOR_INSTANT
 	return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/wait/reset_tick_state()
+	procstart = null
+	src.procstart = null
 	end_time = 0
 	..()

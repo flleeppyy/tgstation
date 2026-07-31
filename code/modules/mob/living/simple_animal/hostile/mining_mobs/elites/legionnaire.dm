@@ -78,6 +78,8 @@
 	chosen_attack_num = SPEW_SMOKE
 
 /mob/living/simple_animal/hostile/asteroid/elite/legionnaire/OpenFire()
+	procstart = null
+	src.procstart = null
 	if(client)
 		switch(chosen_attack)
 			if(LEGIONNAIRE_CHARGE)
@@ -101,11 +103,15 @@
 			spew_smoke()
 
 /mob/living/simple_animal/hostile/asteroid/elite/legionnaire/Move()
+	procstart = null
+	src.procstart = null
 	if(charging)
 		return FALSE
 	return ..()
 
 /mob/living/simple_animal/hostile/asteroid/elite/legionnaire/MiddleClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!myhead)
 		return
@@ -115,6 +121,8 @@
 		myhead.Goto(T, myhead.move_to_delay)
 
 /mob/living/simple_animal/hostile/asteroid/elite/legionnaire/proc/legionnaire_charge(target)
+	procstart = null
+	src.procstart = null
 	ranged_cooldown = world.time + 4.0 SECONDS
 	charging = TRUE
 	var/dir_to_target = get_dir(get_turf(src), get_turf(target))
@@ -127,6 +135,8 @@
 	addtimer(CALLBACK(src, PROC_REF(legionnaire_charge_2), dir_to_target, 0), 0.4 SECONDS)
 
 /mob/living/simple_animal/hostile/asteroid/elite/legionnaire/proc/legionnaire_charge_2(move_dir, times_ran)
+	procstart = null
+	src.procstart = null
 	if(times_ran >= 6)
 		charging = FALSE
 		return
@@ -160,6 +170,8 @@
 	addtimer(CALLBACK(src, PROC_REF(legionnaire_charge_2), move_dir, (times_ran + 1)), 0.7)
 
 /mob/living/simple_animal/hostile/asteroid/elite/legionnaire/proc/head_detach(target)
+	procstart = null
+	src.procstart = null
 	ranged_cooldown = world.time + 1 SECONDS
 	if(myhead != null)
 		myhead.adjust_brute_loss(600)
@@ -183,10 +195,14 @@
 			myhead.melee_damage_upper = 30
 
 /mob/living/simple_animal/hostile/asteroid/elite/legionnaire/proc/onHeadDeath()
+	procstart = null
+	src.procstart = null
 	myhead = null
 	addtimer(CALLBACK(src, PROC_REF(regain_head)), 5 SECONDS)
 
 /mob/living/simple_animal/hostile/asteroid/elite/legionnaire/proc/regain_head()
+	procstart = null
+	src.procstart = null
 	has_head = TRUE
 	if(stat == DEAD)
 		return
@@ -196,6 +212,8 @@
 	visible_message(span_boldwarning("The top of [src]'s spine leaks a black liquid, forming into a skull!"))
 
 /mob/living/simple_animal/hostile/asteroid/elite/legionnaire/proc/bonfire_teleport()
+	procstart = null
+	src.procstart = null
 	ranged_cooldown = world.time + 5
 	if(mypile == null)
 		var/obj/structure/legionnaire_bonfire/newpile = new /obj/structure/legionnaire_bonfire(loc)
@@ -219,6 +237,8 @@
 		mypile.forceMove(legionturf)
 
 /mob/living/simple_animal/hostile/asteroid/elite/legionnaire/proc/spew_smoke()
+	procstart = null
+	src.procstart = null
 	ranged_cooldown = world.time + 4 SECONDS
 	var/turf/smoke_location = null
 	if(myhead != null)
@@ -260,6 +280,8 @@
 	var/mob/living/simple_animal/hostile/asteroid/elite/legionnaire/body = null
 
 /mob/living/simple_animal/hostile/asteroid/elite/legionnairehead/death()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(body)
 		body.onHeadDeath()
@@ -279,6 +301,8 @@
 	var/mob/living/simple_animal/hostile/asteroid/elite/legionnaire/myowner = null
 
 /obj/structure/legionnaire_bonfire/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
@@ -286,6 +310,8 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/structure/legionnaire_bonfire/proc/on_entered(datum/source, atom/movable/mover)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isobj(mover))
 		var/obj/object = mover
@@ -296,6 +322,8 @@
 		fire_walker.ignite_mob()
 
 /obj/structure/legionnaire_bonfire/Destroy()
+	procstart = null
+	src.procstart = null
 	if(myowner != null)
 		myowner.mypile = null
 	. = ..()
@@ -306,6 +334,8 @@
 	color = rgb(0,0,0)
 
 /obj/effect/temp_visual/dragon_swoop/legionnaire/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transform *= 0.33
 

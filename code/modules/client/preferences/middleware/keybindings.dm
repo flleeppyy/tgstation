@@ -9,6 +9,8 @@
 	)
 
 /datum/preference_middleware/keybindings/get_ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	if (preferences.current_window == PREFERENCE_TAB_CHARACTER_PREFERENCES)
 		return list()
 
@@ -19,11 +21,15 @@
 	)
 
 /datum/preference_middleware/keybindings/get_ui_assets()
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/json/keybindings)
 	)
 
 /datum/preference_middleware/keybindings/proc/reset_all_keybinds(list/params, mob/user)
+	procstart = null
+	src.procstart = null
 	preferences.key_bindings = deep_copy_list(GLOB.default_hotkeys)
 	preferences.key_bindings_by_key = preferences.get_key_bindings_by_key(preferences.key_bindings)
 	preferences.update_static_data(user)
@@ -32,6 +38,8 @@
 	return TRUE
 
 /datum/preference_middleware/keybindings/proc/reset_keybinds_to_defaults(list/params, mob/user)
+	procstart = null
+	src.procstart = null
 	var/keybind_name = params["keybind_name"]
 	var/datum/keybinding/keybinding = GLOB.keybindings_by_name[keybind_name]
 
@@ -47,6 +55,8 @@
 	return TRUE
 
 /datum/preference_middleware/keybindings/proc/set_keybindings(list/params, mob/user)
+	procstart = null
+	src.procstart = null
 	var/keybind_name = params["keybind_name"]
 
 	if (isnull(GLOB.keybindings_by_name[keybind_name]))
@@ -83,6 +93,8 @@
 	name = "keybindings"
 
 /datum/asset/json/keybindings/generate()
+	procstart = null
+	src.procstart = null
 	var/list/keybindings = list()
 
 	for (var/name in GLOB.keybindings_by_name)

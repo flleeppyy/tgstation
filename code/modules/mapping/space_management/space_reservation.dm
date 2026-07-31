@@ -39,6 +39,8 @@
 	pre_cordon_distance = 7
 
 /datum/turf_reservation/proc/Release()
+	procstart = null
+	src.procstart = null
 	bottom_left_turfs.Cut()
 	top_right_turfs.Cut()
 
@@ -64,6 +66,8 @@
 
 /// Attempts to calaculate and store a list of turfs around the reservation for cordoning. Returns whether a valid cordon was calculated
 /datum/turf_reservation/proc/calculate_cordon_turfs(turf/bottom_left, turf/top_right)
+	procstart = null
+	src.procstart = null
 	if(bottom_left.x < 2 || bottom_left.y < 2 || top_right.x > (world.maxx - 2) || top_right.y > (world.maxy - 2))
 		return FALSE // no space for a cordon here
 
@@ -85,6 +89,8 @@
 
 /// Actually generates the cordon around the reservation, and marking the cordon turfs as reserved
 /datum/turf_reservation/proc/generate_cordon()
+	procstart = null
+	src.procstart = null
 	for(var/turf/cordon_turf as anything in cordon_turfs)
 		var/area/misc/cordon/cordon_area = GLOB.areas_by_type[/area/misc/cordon] || new
 		var/area/old_area = cordon_turf.loc
@@ -108,12 +114,16 @@
 
 ///Register signals in the cordon "danger zone" to do something with whoever trespasses
 /datum/turf_reservation/proc/make_repel(turf/pre_cordon_turf)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	//Okay so hear me out. If we place a special turf IN the reserved area, it will be overwritten, so we can't do that
 	//But signals are preserved even between turf changes, so even if we register a signal now it will stay even if that turf is overriden by the template
 	RegisterSignals(pre_cordon_turf, list(COMSIG_QDELETING, COMSIG_TURF_RESERVATION_RELEASED), PROC_REF(on_stop_repel))
 
 /datum/turf_reservation/proc/on_stop_repel(turf/pre_cordon_turf)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SIGNAL_HANDLER
 
@@ -121,25 +131,35 @@
 
 ///Unregister all the signals we added in RegisterRepelSignals
 /datum/turf_reservation/proc/stop_repel(turf/pre_cordon_turf)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(pre_cordon_turf, list(COMSIG_QDELETING, COMSIG_TURF_RESERVATION_RELEASED))
 
 /datum/turf_reservation/transit/make_repel(turf/pre_cordon_turf)
+	procstart = null
+	src.procstart = null
 	..()
 
 	RegisterSignal(pre_cordon_turf, COMSIG_ATOM_ENTERED, PROC_REF(space_dump_soft))
 
 /datum/turf_reservation/transit/stop_repel(turf/pre_cordon_turf)
+	procstart = null
+	src.procstart = null
 	..()
 
 	UnregisterSignal(pre_cordon_turf, COMSIG_ATOM_ENTERED)
 
 /datum/turf_reservation/transit/proc/space_dump(atom/source, atom/movable/enterer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	dump_in_space(enterer)
 
 ///Only dump if we don't have the hyperspace cordon movement exemption trait
 /datum/turf_reservation/transit/proc/space_dump_soft(atom/source, atom/movable/enterer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!HAS_TRAIT(enterer, TRAIT_FREE_HYPERSPACE_SOFTCORDON_MOVEMENT))
@@ -150,6 +170,8 @@
 
 /// Internal proc which handles reserving the area for the reservation.
 /datum/turf_reservation/proc/_reserve_area(width, height, zlevel)
+	procstart = null
+	src.procstart = null
 	src.width = width
 	src.height = height
 	if(width > world.maxx || height > world.maxy || width < 1 || height < 1)
@@ -198,6 +220,8 @@
 	return TRUE
 
 /datum/turf_reservation/proc/reserve(width, height, z_size, z_reservation)
+	procstart = null
+	src.procstart = null
 	src.z_size = z_size
 	var/failed_reservation = FALSE
 	for(var/_ in 1 to z_size)
@@ -214,6 +238,8 @@
 
 /// Calculates the effective bounds information for the given turf. Returns a list of the information, or null if not applicable.
 /datum/turf_reservation/proc/calculate_turf_bounds_information(turf/target)
+	procstart = null
+	src.procstart = null
 	for(var/z_idx in 1 to z_size)
 		var/turf/bottom_left = bottom_left_turfs[z_idx]
 		var/turf/top_right = top_right_turfs[z_idx]
@@ -243,6 +269,8 @@
 
 /// Gets the turf below the given target. Returns null if there is no turf below the target
 /datum/turf_reservation/proc/get_turf_below(turf/target)
+	procstart = null
+	src.procstart = null
 	var/list/bounds_info = calculate_turf_bounds_information(target)
 	if(isnull(bounds_info))
 		return null
@@ -259,6 +287,8 @@
 
 /// Gets the turf above the given target. Returns null if there is no turf above the target
 /datum/turf_reservation/proc/get_turf_above(turf/target)
+	procstart = null
+	src.procstart = null
 	var/list/bounds_info = calculate_turf_bounds_information(target)
 	if(isnull(bounds_info))
 		return null
@@ -274,9 +304,13 @@
 	return locate(bottom_left.x + offset_x, bottom_left.y + offset_y, bottom_left.z)
 
 /datum/turf_reservation/New()
+	procstart = null
+	src.procstart = null
 	LAZYADD(SSmapping.turf_reservations, src)
 
 /datum/turf_reservation/Destroy()
+	procstart = null
+	src.procstart = null
 	Release()
 	LAZYREMOVE(SSmapping.turf_reservations, src)
 	return ..()

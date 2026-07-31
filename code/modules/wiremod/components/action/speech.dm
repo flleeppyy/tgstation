@@ -18,14 +18,20 @@
 	var/speech_cooldown = 1 SECONDS
 
 /obj/item/circuit_component/speech/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("Speech Cooldown: [DisplayTimeText(speech_cooldown)]", "orange", "stopwatch")
 
 /obj/item/circuit_component/speech/populate_ports()
+	procstart = null
+	src.procstart = null
 	message = add_input_port("Message", PORT_TYPE_STRING, trigger = null)
 	quietmode = add_input_port("Quiet Mode", PORT_TYPE_BOOLEAN, default = FALSE)
 
 /obj/item/circuit_component/speech/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!parent.shell)
 		return
 

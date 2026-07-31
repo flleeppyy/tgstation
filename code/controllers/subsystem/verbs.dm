@@ -5,16 +5,22 @@ SUBSYSTEM_DEF(verbs)
 	var/list/datum/verb_metadata/verbs_by_type = list()
 
 /datum/controller/subsystem/verbs/Initialize()
+	procstart = null
+	src.procstart = null
 	if (!length(verbs_by_type))
 		initialize_verb_types()
 	initialized = TRUE
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/verbs/proc/initialize_verb_types()
+	procstart = null
+	src.procstart = null
 	for(var/datum/verb_metadata/verb_type as anything in subtypesof(/datum/verb_metadata))
 		verbs_by_type[verb_type] = new verb_type
 
 /datum/controller/subsystem/verbs/proc/invoke(target, datum/verb_metadata/verb_type, ...)
+	procstart = null
+	src.procstart = null
 	var/datum/verb_metadata/meta = verbs_by_type[verb_type]
 	if(isnull(meta))
 		CRASH("Attempted to invoke unknown verb '[verb_type]'.")
@@ -22,6 +28,8 @@ SUBSYSTEM_DEF(verbs)
 	call(target, meta.body_path)(arglist(invoke_args))
 
 /datum/controller/subsystem/verbs/proc/assign_verb(target, datum/verb_metadata/verb_type)
+	procstart = null
+	src.procstart = null
 	// When launching via dreamseeker and not dreamdaemon, client is created first before any of the subsystems init
 	// This can only happen in dev environments so its not a big deal
 	if (!initialized)
@@ -32,6 +40,8 @@ SUBSYSTEM_DEF(verbs)
 	meta.assign_to(target)
 
 /datum/controller/subsystem/verbs/proc/unassign_verb(target, datum/verb_metadata/verb_type)
+	procstart = null
+	src.procstart = null
 	var/datum/verb_metadata/meta = verbs_by_type[verb_type]
 	if(isnull(meta))
 		CRASH("Attempted to unassign unknown verb '[verb_type]'.")

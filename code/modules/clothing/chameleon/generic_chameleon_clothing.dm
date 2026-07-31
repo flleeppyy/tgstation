@@ -39,6 +39,8 @@ do { \
 /obj/item/clothing/under/chameleon/broken
 
 /obj/item/clothing/under/chameleon/broken/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	BREAK_CHAMELEON_ACTION(src)
 
@@ -65,12 +67,16 @@ do { \
 	action_slots = ALL
 
 /obj/item/clothing/suit/chameleon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed = GLOB.security_vest_allowed //should at least act like a vest
 
 /obj/item/clothing/suit/chameleon/broken
 
 /obj/item/clothing/suit/chameleon/broken/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	BREAK_CHAMELEON_ACTION(src)
 
@@ -97,6 +103,8 @@ do { \
 /obj/item/clothing/glasses/chameleon/broken
 
 /obj/item/clothing/glasses/chameleon/broken/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	BREAK_CHAMELEON_ACTION(src)
 
@@ -126,6 +134,8 @@ do { \
 /obj/item/clothing/gloves/chameleon/broken
 
 /obj/item/clothing/gloves/chameleon/broken/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	BREAK_CHAMELEON_ACTION(src)
 
@@ -152,6 +162,8 @@ do { \
 /obj/item/clothing/head/chameleon/broken
 
 /obj/item/clothing/head/chameleon/broken/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	BREAK_CHAMELEON_ACTION(src)
 
@@ -163,6 +175,8 @@ do { \
 	// which means it offers no protection, it's just air and light
 
 /obj/item/clothing/head/chameleon/drone/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, ABSTRACT_ITEM_TRAIT)
 	var/datum/action/item_action/chameleon/change/hat/hat = locate() in actions
@@ -193,11 +207,15 @@ do { \
 	clothing_traits = list(TRAIT_VOICE_MATCHES_ID)
 
 /obj/item/clothing/mask/chameleon/proc/after_input_check(mob/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(user) || QDELETED(src) || !user.client || !user.can_perform_action(src, NEED_DEXTERITY|FORBID_TELEKINESIS_REACH))
 		return FALSE
 	return TRUE
 
 /obj/item/clothing/mask/chameleon/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/on = (TRAIT_VOICE_MATCHES_ID in clothing_traits)
 	if(on)
 		voice_override = null
@@ -243,6 +261,8 @@ do { \
 /obj/item/clothing/mask/chameleon/broken
 
 /obj/item/clothing/mask/chameleon/broken/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	BREAK_CHAMELEON_ACTION(src)
 
@@ -254,12 +274,16 @@ do { \
 	clothing_traits = null
 
 /obj/item/clothing/mask/chameleon/drone/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, ABSTRACT_ITEM_TRAIT)
 	var/datum/action/item_action/chameleon/change/mask/mask = locate() in actions
 	mask?.random_look()
 
 /obj/item/clothing/mask/chameleon/drone/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("[src] does not have a voice changer."))
 
 // Cham shoes, including chameleon noslips
@@ -291,6 +315,8 @@ do { \
 	action_slots = ALL
 
 /obj/item/clothing/shoes/chameleon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_storage(storage_type = /datum/storage/pockets/shoes)
 
@@ -298,6 +324,8 @@ do { \
 	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/item/clothing/shoes/chameleon/broken/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	BREAK_CHAMELEON_ACTION(src)
 
@@ -309,6 +337,8 @@ do { \
 /obj/item/clothing/shoes/chameleon/noslip/broken
 
 /obj/item/clothing/shoes/chameleon/noslip/broken/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	BREAK_CHAMELEON_ACTION(src)
 
@@ -318,6 +348,8 @@ do { \
 	actions_types = list(/datum/action/item_action/chameleon/change/backpack)
 
 /obj/item/storage/backpack/chameleon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CONTRABAND_BLOCKER, INNATE_TRAIT)
 
@@ -325,6 +357,8 @@ do { \
 	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/item/storage/backpack/chameleon/broken/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	BREAK_CHAMELEON_ACTION(src)
 
@@ -335,12 +369,16 @@ do { \
 	actions_types = list(/datum/action/item_action/chameleon/change/belt)
 
 /obj/item/storage/belt/chameleon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	atom_storage.silent = TRUE
 
 /obj/item/storage/belt/chameleon/broken
 
 /obj/item/storage/belt/chameleon/broken/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	BREAK_CHAMELEON_ACTION(src)
 
@@ -353,6 +391,8 @@ do { \
 /obj/item/radio/headset/chameleon/broken
 
 /obj/item/radio/headset/chameleon/broken/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	BREAK_CHAMELEON_ACTION(src)
 
@@ -366,6 +406,8 @@ do { \
 	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/item/modular_computer/pda/chameleon/broken/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	BREAK_CHAMELEON_ACTION(src)
 
@@ -378,6 +420,8 @@ do { \
 /obj/item/stamp/chameleon/broken
 
 /obj/item/stamp/chameleon/broken/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	BREAK_CHAMELEON_ACTION(src)
 
@@ -399,6 +443,8 @@ do { \
 /obj/item/clothing/neck/chameleon/broken
 
 /obj/item/clothing/neck/chameleon/broken/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	BREAK_CHAMELEON_ACTION(src)
 

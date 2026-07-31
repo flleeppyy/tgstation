@@ -14,6 +14,8 @@
 	)
 
 /obj/item/implant/tacmap/implant(mob/living/target, mob/user, silent, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		configure_minimap_action()
@@ -21,20 +23,28 @@
 		addtimer(CALLBACK(src, PROC_REF(update_minimap_icon), target), 0.1 SECONDS) // Mobs are spawned inside nullspace sometimes so this avoids that hijinks.
 
 /obj/item/implant/tacmap/removed(mob/living/source, silent, special)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, minimap_refresh_signals)
 	remove_minimap(source)
 	return ..()
 
 ///Remove all action of type minimap from the wearer, and make him disappear from the minimap
 /obj/item/implant/tacmap/proc/remove_minimap(mob/user)
+	procstart = null
+	src.procstart = null
 	remove_minimap_blip(MINIMAP_NUKEOP_BLIP, user)
 
 /obj/item/implant/tacmap/proc/refresh_minimap_icon()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(imp_in)
 		update_minimap_icon(imp_in)
 
 /obj/item/implant/tacmap/proc/resolve_fixed_minimap_z_level()
+	procstart = null
+	src.procstart = null
 	if(!isnull(minimap_fixed_z_trait))
 		var/list/trait_levels = SSmapping.levels_by_trait(minimap_fixed_z_trait)
 		if(length(trait_levels))
@@ -42,6 +52,8 @@
 	return null
 
 /obj/item/implant/tacmap/proc/configure_minimap_action()
+	procstart = null
+	src.procstart = null
 	var/datum/action/minimap/minimap_action = locate(/datum/action/minimap) in actions
 	if(isnull(minimap_action))
 		return
@@ -49,10 +61,14 @@
 	minimap_action.can_draw = can_draw_on_personal_minimap
 
 /obj/item/implant/tacmap/proc/get_minimap_icon_state(mob/living/wearer)
+	procstart = null
+	src.procstart = null
 	return wearer_icon_state
 
 ///Updates the wearer's minimap icon
 /obj/item/implant/tacmap/proc/update_minimap_icon(mob/wearer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	remove_minimap_blip(MINIMAP_NUKEOP_BLIP, wearer)
 	add_minimap_blip(wearer, MINIMAP_NUKEOP_BLIP, get_minimap_icon_state(wearer))
@@ -62,20 +78,28 @@
 	wearer_icon_state = "syndicate"
 
 /obj/item/implant/tacmap/nuclear/implant(mob/living/target, mob/user, silent, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		RegisterSignal(target, COMSIG_MINIMAP_ACTION_TRIGGER, PROC_REF(deny_nukie_base_open))
 
 /obj/item/implant/tacmap/nuclear/get_minimap_icon_state(mob/living/wearer)
+	procstart = null
+	src.procstart = null
 	if(wearer.stat != DEAD && istype(wearer, /mob/living/basic/carp/pet/cayenne))
 		return "cayenne"
 	. = ..()
 
 /obj/item/implant/tacmap/nuclear/removed(mob/living/source, silent, special)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, COMSIG_MINIMAP_ACTION_TRIGGER)
 	return ..()
 
 /obj/item/implant/tacmap/nuclear/proc/deny_nukie_base_open(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/turf/user_turf = get_turf(user)
 	if(user_turf.onSyndieBase())
 		user.balloon_alert(user, "can't use implant in the base, go to the holotable!")
@@ -90,11 +114,15 @@
 	wearer_icon_state = "syndicate_leader"
 
 /obj/item/implant/tacmap/nuclear/leader/implant(mob/living/target, mob/user, silent, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		ADD_TRAIT(target, TRAIT_MINIMAP_TABLE_DRAW, REF(src))
 
 /obj/item/implant/tacmap/nuclear/leader/removed(mob/living/source, silent, special)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(source, TRAIT_MINIMAP_TABLE_DRAW, REF(src))
 	return ..()
 
@@ -104,6 +132,8 @@
 	can_draw_on_personal_minimap = TRUE
 
 /obj/item/implant/tacmap/nuclear/offbase/deny_nukie_base_open(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/implanter/tacmap

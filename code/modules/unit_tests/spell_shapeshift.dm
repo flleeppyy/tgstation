@@ -4,6 +4,8 @@
 /datum/unit_test/shapeshift_spell_validity
 
 /datum/unit_test/shapeshift_spell_validity/Run()
+	procstart = null
+	src.procstart = null
 
 	var/list/types_to_test = subtypesof(/datum/action/cooldown/spell/shapeshift)
 
@@ -26,6 +28,8 @@
 /datum/unit_test/shapeshift_spell
 
 /datum/unit_test/shapeshift_spell/Run()
+	procstart = null
+	src.procstart = null
 
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent, run_loc_floor_bottom_left)
 	dummy.mind_initialize()
@@ -56,6 +60,8 @@
 		qdel(mindbound_shift)
 
 /datum/unit_test/shapeshift_spell/proc/test_spell(mob/living/carbon/human/dummy, datum/action/cooldown/spell/shapeshift/shift, forced_shape)
+	procstart = null
+	src.procstart = null
 	if(forced_shape)
 		shift.shapeshift_type = forced_shape
 
@@ -80,6 +86,8 @@
 /datum/unit_test/shapeshift_holoparasites
 
 /datum/unit_test/shapeshift_holoparasites/Run()
+	procstart = null
+	src.procstart = null
 
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent, run_loc_floor_bottom_left)
 
@@ -111,6 +119,8 @@
 /datum/unit_test/shapeshift_health
 
 /datum/unit_test/shapeshift_health/Run()
+	procstart = null
+	src.procstart = null
 	for(var/spell_type in subtypesof(/datum/action/cooldown/spell/shapeshift))
 		var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent, run_loc_floor_bottom_left)
 		var/datum/action/cooldown/spell/shapeshift/shift_spell = new spell_type(dummy)

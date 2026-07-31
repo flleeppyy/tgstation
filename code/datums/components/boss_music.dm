@@ -17,6 +17,8 @@
 	var/signal = null
 
 /datum/component/boss_music/Initialize(boss_track, signal)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismob(parent) || isnull(signal))
 		return COMPONENT_INCOMPATIBLE
@@ -25,6 +27,8 @@
 	track_duration = SSsounds.get_sound_length(boss_track)
 
 /datum/component/boss_music/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/callback in music_callbacks)
 		deltimer(callback)
@@ -35,6 +39,8 @@
 	players_listening_refs = null
 
 /datum/component/boss_music/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isbasicmob(parent))
 		RegisterSignal(parent, signal, PROC_REF(basic_target_found))
@@ -42,11 +48,15 @@
 		RegisterSignal(parent, signal, PROC_REF(on_target_found))
 
 /datum/component/boss_music/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, signal)
 	return ..()
 
 /// Handler wrapper for basic mobs getting a target. The signal we pass to basic mobs passes along the blackboard key which we can access off parent.
 /datum/component/boss_music/proc/basic_target_found(mob/source, key)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/new_target = source.ai_controller.blackboard[key]
 	on_target_found(source, new_target)
@@ -54,6 +64,8 @@
 ///Handles giving the boss music to a new target the fauna has received.
 ///Keeps track of them to not repeatedly overwrite its own track.
 /datum/component/boss_music/proc/on_target_found(mob/source, mob/new_target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(QDELETED(source) || !istype(new_target))
@@ -70,6 +82,8 @@
 
 ///Called when a mob listening to boss music dies- ends their music early.
 /datum/component/boss_music/proc/on_mob_death(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/datum/weakref/player_ref = WEAKREF(source)
 	clear_target(player_ref)
@@ -77,6 +91,8 @@
 ///Removes `old_target` from the list of players listening, and stops their music if it is still playing.
 ///This allows them to have music played again if they re-enter combat with this fauna.
 /datum/component/boss_music/proc/clear_target(datum/weakref/old_ref)
+	procstart = null
+	src.procstart = null
 	players_listening_refs -= old_ref
 
 	var/mob/old_target = old_ref?.resolve()

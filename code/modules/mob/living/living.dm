@@ -1,4 +1,6 @@
 /mob/living/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(initial_size != RESIZE_DEFAULT_SIZE)
 		update_transform(initial_size)
@@ -24,18 +26,26 @@
 		GLOB.unconscious_appearances += unconscious_appearance
 
 /mob/living/prepare_huds()
+	procstart = null
+	src.procstart = null
 	..()
 	prepare_data_huds()
 
 /mob/living/proc/prepare_data_huds()
+	procstart = null
+	src.procstart = null
 	med_hud_set_health()
 	med_hud_set_status()
 
 /// Returns the appearance other mobs see instead of us while unconscious
 /mob/living/proc/get_unconscious_appearance()
+	procstart = null
+	src.procstart = null
 	return null
 
 /mob/living/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/datum/status_effect/effect as anything in status_effects)
 		// The status effect calls on_remove when its mob is deleted
 		if(effect.on_remove_on_mob_delete)
@@ -66,6 +76,8 @@
 	return ..()
 
 /mob/living/onZImpact(turf/impacted_turf, levels, impact_flags = NONE)
+	procstart = null
+	src.procstart = null
 	if(!isgroundlessturf(impacted_turf))
 		impact_flags |= ZImpactDamage(impacted_turf, levels)
 
@@ -78,6 +90,8 @@
  * * levels - the number of levels we are falling
  */
 /mob/living/proc/ZImpactDamage(turf/impacted_turf, levels)
+	procstart = null
+	src.procstart = null
 	. = SEND_SIGNAL(src, COMSIG_LIVING_Z_IMPACT, levels, impacted_turf)
 	if(. & ZIMPACT_CANCEL_DAMAGE)
 		return .
@@ -150,6 +164,8 @@
 
 //Generic Bump(). Override MobBump() and ObjBump() instead of this.
 /mob/living/Bump(atom/A)
+	procstart = null
+	src.procstart = null
 	if(..()) //we are thrown onto something
 		return
 	if(buckled || now_pushing)
@@ -168,11 +184,15 @@
 			return
 
 /mob/living/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	..()
 	last_bumped = world.time
 
 //Called when we bump onto a mob
 /mob/living/proc/MobBump(mob/M)
+	procstart = null
+	src.procstart = null
 	//No bumping/swapping/pushing others if you are on walk intent
 	if(move_intent == MOVE_INTENT_WALK)
 		return TRUE
@@ -273,6 +293,8 @@
 				return
 
 /mob/living/proc/can_mobswap_with(mob/other)
+	procstart = null
+	src.procstart = null
 	if (HAS_TRAIT(other, TRAIT_NOMOBSWAP) || HAS_TRAIT(src, TRAIT_NOMOBSWAP))
 		return FALSE
 
@@ -313,6 +335,8 @@
 	return TRUE
 
 /mob/living/get_photo_description(obj/item/camera/camera)
+	procstart = null
+	src.procstart = null
 	var/list/holding = list()
 	var/len = length(held_items)
 	if(len)
@@ -327,10 +351,14 @@
 
 //Called when we bump onto an obj
 /mob/living/proc/ObjBump(obj/O)
+	procstart = null
+	src.procstart = null
 	return
 
 //Called when we want to push an atom/movable
 /mob/living/proc/PushAM(atom/movable/AM, force = move_force)
+	procstart = null
+	src.procstart = null
 	if(now_pushing)
 		return TRUE
 	if(moving_diagonally)// no pushing during diagonal moves.
@@ -389,6 +417,8 @@
 	now_pushing = FALSE
 
 /mob/living/start_pulling(atom/movable/AM, state, force = pull_force, supress_message = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!src)
 		return FALSE
 	ASSERT(ismovable(AM), "[src] attempted to pull [AM ? "[AM], a nonmovable atom" : "a null object"]")
@@ -484,6 +514,8 @@
  * * animate - whether or not to animate the offsets
  */
 /mob/living/proc/set_pull_offsets(mob/living/mob_to_set, grab_state = GRAB_PASSIVE, animate = TRUE)
+	procstart = null
+	src.procstart = null
 	if(mob_to_set.buckled)
 		return //don't make them change direction or offset them if they're buckled into something.
 	var/offset = 0
@@ -522,6 +554,8 @@
  * otherwise we won't remove the offsets if the mob is buckled
  */
 /mob/living/proc/reset_pull_offsets(mob/living/M, override)
+	procstart = null
+	src.procstart = null
 	if(!override && M.buckled)
 		return
 	M.remove_offsets(GRABBING_TRAIT)
@@ -533,6 +567,8 @@ GAME_VERB(/mob/living, pulled, "Pull", null, atom/movable/thing_pulled as mob|ob
 		start_pulling(thing_pulled)
 
 /mob/living/stop_pulling()
+	procstart = null
+	src.procstart = null
 	if(ismob(pulling))
 		reset_pull_offsets(pulling)
 	..()
@@ -541,12 +577,16 @@ GAME_VERB(/mob/living, pulled, "Pull", null, atom/movable/thing_pulled as mob|ob
 
 //same as above
 /mob/living/pointed(atom/A)
+	procstart = null
+	src.procstart = null
 	if(INCAPACITATED_IGNORING(src, INCAPABLE_RESTRAINTS))
 		return FALSE
 
 	return ..()
 
 /mob/living/_pointed(atom/pointing_at)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	log_message("points at [pointing_at]", LOG_EMOTE)
@@ -572,6 +612,8 @@ GAME_VERB_HIDDEN(/mob/living, succumb, "succumb", whispered as num|null)
 // Remember, anything that influences this needs to call update_incapacitated somehow when it changes
 // Most often best done in [code/modules/mob/living/init_signals.dm]
 /mob/living/build_incapacitated(flags)
+	procstart = null
+	src.procstart = null
 	// Holds a set of flags that describe how we are currently incapacitated
 	var/incap_status = NONE
 	if(HAS_TRAIT(src, TRAIT_INCAPACITATED))
@@ -586,6 +628,8 @@ GAME_VERB_HIDDEN(/mob/living, succumb, "succumb", whispered as num|null)
 	return incap_status
 
 /mob/living/canUseStorage()
+	procstart = null
+	src.procstart = null
 	if (usable_hands <= 0)
 		return FALSE
 	return TRUE
@@ -594,18 +638,26 @@ GAME_VERB_HIDDEN(/mob/living, succumb, "succumb", whispered as num|null)
 //This proc is used for mobs which are affected by pressure to calculate the amount of pressure that actually
 //affects them once clothing is factored in. ~Errorage
 /mob/living/proc/calculate_affecting_pressure(pressure)
+	procstart = null
+	src.procstart = null
 	return pressure
 
 /mob/living/proc/getMaxHealth()
+	procstart = null
+	src.procstart = null
 	return maxHealth
 
 /mob/living/proc/setMaxHealth(newMaxHealth)
+	procstart = null
+	src.procstart = null
 	maxHealth = newMaxHealth
 
 /// Returns the health of the mob while ignoring damage of non-organic (prosthetic) limbs
 /// Used by cryo cells to not permanently imprison those with damage from prosthetics,
 /// as they cannot be healed through chemicals.
 /mob/living/proc/get_organic_health()
+	procstart = null
+	src.procstart = null
 	return health
 
 // MOB PROCS //END
@@ -621,6 +673,8 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 
 
 /mob/proc/get_contents()
+	procstart = null
+	src.procstart = null
 
 
 /**
@@ -629,6 +683,8 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
  * * hand_firsts - boolean that checks the hands of the mob first if TRUE.
  */
 /mob/living/proc/get_idcard(hand_first)
+	procstart = null
+	src.procstart = null
 	if(!length(held_items)) //Early return for mobs without hands.
 		return
 	//Check hands
@@ -644,11 +700,15 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
  * Returns the access list for this mob
  */
 /mob/living/get_access()
+	procstart = null
+	src.procstart = null
 	var/list/access_list = list()
 	SEND_SIGNAL(src, COMSIG_MOB_RETRIEVE_ACCESS, access_list)
 	return access_list
 
 /mob/living/proc/get_id_in_hand()
+	procstart = null
+	src.procstart = null
 	var/obj/item/held_item = get_active_held_item()
 	if(!held_item)
 		return
@@ -656,6 +716,8 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 
 //Returns the bank account of an ID the user may be holding.
 /mob/living/proc/get_bank_account()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/bank_account)
 	var/datum/bank_account/account
 	var/obj/item/card/id/I = get_idcard()
@@ -665,11 +727,15 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 		return account
 
 /mob/living/proc/toggle_resting()
+	procstart = null
+	src.procstart = null
 	set_resting(!resting, FALSE)
 
 
 ///Proc to hook behavior to the change of value in the resting variable.
 /mob/living/proc/set_resting(new_resting, silent = TRUE, instant = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!(mobility_flags & MOBILITY_REST))
 		return
 	if(new_resting == resting)
@@ -706,10 +772,14 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 
 /// Proc to append and redefine behavior to the change of the [/mob/living/var/resting] variable.
 /mob/living/proc/update_resting()
+	procstart = null
+	src.procstart = null
 	update_rest_hud_icon()
 
 
 /mob/living/proc/get_up(instant = FALSE)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	var/get_up_time = 1 SECONDS
@@ -727,6 +797,8 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 
 
 /mob/living/proc/rest_checks_callback()
+	procstart = null
+	src.procstart = null
 	if(resting || body_position == STANDING_UP || HAS_TRAIT(src, TRAIT_FLOORED))
 		return FALSE
 	return TRUE
@@ -734,10 +806,14 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 
 /// Change the [body_position] to [LYING_DOWN] and update associated behavior.
 /mob/living/proc/set_lying_down(new_lying_angle)
+	procstart = null
+	src.procstart = null
 	set_body_position(LYING_DOWN)
 
 /// Proc to append behavior related to lying down.
 /mob/living/proc/on_lying_down(new_lying_angle)
+	procstart = null
+	src.procstart = null
 	if(layer == initial(layer)) //to avoid things like hiding larvas.
 		layer = LYING_MOB_LAYER //so mob lying always appear behind standing mobs
 	add_traits(list(TRAIT_UI_BLOCKED, TRAIT_PULL_BLOCKED, TRAIT_UNDENSE), LYING_DOWN_TRAIT)
@@ -748,18 +824,24 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 
 /// Proc to append behavior related to lying down.
 /mob/living/proc/on_standing_up()
+	procstart = null
+	src.procstart = null
 	if(layer == LYING_MOB_LAYER)
 		layer = initial(layer)
 	remove_traits(list(TRAIT_UI_BLOCKED, TRAIT_PULL_BLOCKED, TRAIT_UNDENSE), LYING_DOWN_TRAIT)
 	remove_offsets(LYING_DOWN_TRAIT)
 
 /mob/living/proc/update_density()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_UNDENSE))
 		set_density(FALSE)
 	else
 		set_density(TRUE)
 
 /mob/living/update_rest_hud_icon()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !hud_used)
 		return FALSE
@@ -776,6 +858,8 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 
 //Recursive function to find everything a mob is holding. Really shitty proc tbh.
 /mob/living/get_contents()
+	procstart = null
+	src.procstart = null
 	var/list/ret = list()
 	ret |= contents //add our contents
 	for(var/atom/iter_atom as anything in ret) //iterate storage objects
@@ -794,6 +878,8 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
  *   Check __DEFINES/injection.dm for more details, specifically the ones prefixed INJECT_CHECK_*.
  */
 /mob/living/proc/can_inject(mob/user, target_zone, injection_flags)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /**
@@ -806,22 +892,32 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
  *   Check __DEFINES/injection.dm for more details. Unlike can_inject, the INJECT_TRY_* defines will behave differently.
  */
 /mob/living/proc/try_inject(mob/user, target_zone, injection_flags)
+	procstart = null
+	src.procstart = null
 	return can_inject(user, target_zone, injection_flags)
 
 /mob/living/is_injectable(mob/user, allowmobs = TRUE)
+	procstart = null
+	src.procstart = null
 	return (allowmobs && reagents && can_inject(user))
 
 /mob/living/is_drawable(mob/user, allowmobs = TRUE)
+	procstart = null
+	src.procstart = null
 	return (allowmobs && reagents && can_inject(user))
 
 
 ///Sets the current mob's health value. Do not call directly if you don't know what you are doing, use the damage procs, instead.
 /mob/living/proc/set_health(new_value)
+	procstart = null
+	src.procstart = null
 	. = health
 	health = new_value
 
 
 /mob/living/proc/updatehealth()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_GODMODE))
 		return
 	set_health(maxHealth - get_oxy_loss() - get_tox_loss() - get_fire_loss() - get_brute_loss())
@@ -833,6 +929,8 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 	SEND_SIGNAL(src, COMSIG_LIVING_HEALTH_UPDATE)
 
 /mob/living/update_health_hud()
+	procstart = null
+	src.procstart = null
 	var/severity = 0
 	var/healthpercent = (health/maxHealth) * 100
 	var/atom/movable/screen/healthdoll/living/livingdoll = hud_used?.screen_objects[HUD_MOB_HEALTHDOLL]
@@ -880,6 +978,8 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
  *
  */
 /mob/living/proc/revive(full_heal_flags = NONE, excess_healing = 0, force_grab_ghost = FALSE)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		// Bro just like, don't ok
 		return FALSE
@@ -928,6 +1028,8 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
  * Returns TRUE if the mob is alive afterwards, or FALSE if they're still dead (revive failed).
  */
 /mob/living/proc/heal_and_revive(heal_to = 50, revive_message)
+	procstart = null
+	src.procstart = null
 
 	// Heal their brute and burn up to the threshold we're looking for
 	var/brute_to_heal = heal_to - get_brute_loss()
@@ -969,6 +1071,8 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
  * consider handling it via signal instead of implementing it in this proc
  */
 /mob/living/proc/fully_heal(heal_flags = HEAL_ALL)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(heal_flags & HEAL_TOX)
@@ -1012,6 +1116,8 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
  * It uses the healing amount on brute/fire damage, and then uses the excess healing for revive
  */
 /mob/living/proc/do_strange_reagent_revival(healing_amount)
+	procstart = null
+	src.procstart = null
 	var/brute_loss = get_brute_loss()
 	if(brute_loss)
 		var/brute_healing = min(healing_amount * 0.5, brute_loss) // 50% of the healing goes to brute
@@ -1029,6 +1135,8 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 /// Checks if we are actually able to ressuscitate this mob.
 /// (We don't want to revive then to have them instantly die again)
 /mob/living/proc/can_be_revived()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NODEATH))
 		return TRUE
 	if(health > HEALTH_THRESHOLD_DEAD)
@@ -1036,9 +1144,13 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 	return FALSE
 
 /mob/living/proc/update_damage_overlays()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/Move(atom/newloc, direct, glide_size_override)
+	procstart = null
+	src.procstart = null
 	if(lying_angle != 0)
 		lying_angle_on_movement(direct)
 	if (buckled && buckled.loc != newloc) //not updating position
@@ -1076,6 +1188,8 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 
 ///Called by mob Move() when the lying_angle is different than zero, to better visually simulate crawling.
 /mob/living/proc/lying_angle_on_movement(direct)
+	procstart = null
+	src.procstart = null
 	if(buckled && buckled.buckle_lying != NO_BUCKLE_LYING)
 		set_lying_angle(buckled.buckle_lying)
 		return
@@ -1086,10 +1200,14 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 		set_lying_angle(LYING_ANGLE_WEST)
 
 /mob/living/carbon/alien/adult/lying_angle_on_movement(direct)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Print a message about an annoying sensation you are feeling. Returns TRUE if successful.
 /mob/living/proc/itch(obj/item/bodypart/target_part = null, damage = 0.5, can_scratch = TRUE, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if ((mob_biotypes & (MOB_ROBOTIC | MOB_SPIRIT)))
 		return FALSE
 	var/will_scratch = can_scratch && !incapacitated
@@ -1103,6 +1221,8 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 	return TRUE
 
 /mob/living/experience_pressure_difference(pressure_difference, direction, pressure_resistance_prob_delta = 0)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/space_wind.ogg', 50, TRUE)
 	if(buckled || mob_negates_gravity())
 		return
@@ -1133,6 +1253,8 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 	..(pressure_difference, direction, pressure_resistance_prob_delta)
 
 /mob/living/can_resist()
+	procstart = null
+	src.procstart = null
 	if(next_move > world.time)
 		return FALSE
 	if(HAS_TRAIT(src, TRAIT_INCAPACITATED))
@@ -1140,10 +1262,14 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 	return TRUE
 
 /mob/living/proc/resist()
+	procstart = null
+	src.procstart = null
 	DEFAULT_QUEUE_OR_CALL_VERB(VERB_CALLBACK(src, PROC_REF(execute_resist)))
 
 ///proc extender of [/mob/living/verb/resist] meant to make the process queable if the server is overloaded when the verb is called
 /mob/living/proc/execute_resist()
+	procstart = null
+	src.procstart = null
 	if(!can_resist())
 		return
 	changeNext_move(CLICK_CD_RESIST)
@@ -1172,9 +1298,13 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 			resist_restraints() //trying to remove cuffs.
 
 /mob/proc/resist_grab(moving_resist)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/resist_grab(moving_resist)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_INCAPACITATED))
 		return FALSE
 
@@ -1244,15 +1374,23 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 	return TRUE
 
 /mob/living/proc/resist_buckle()
+	procstart = null
+	src.procstart = null
 	buckled.user_unbuckle_mob(src,src)
 
 /mob/living/proc/resist_fire()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/proc/resist_restraints()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/proc/update_gravity(gravity)
+	procstart = null
+	src.procstart = null
 	// Handle movespeed stuff
 	var/speed_change = max(0, gravity - STANDARD_GRAVITY)
 	if(speed_change)
@@ -1299,6 +1437,8 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 		remove_offsets(NEGATIVE_GRAVITY_TRAIT)
 
 /mob/living/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(move_resist == INFINITY)
 		return
@@ -1308,6 +1448,8 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 		step_towards(src, singularity)
 
 /mob/living/proc/get_temperature(datum/gas_mixture/environment)
+	procstart = null
+	src.procstart = null
 	var/loc_temp = environment ? environment.temperature : T0C
 	if(isobj(loc))
 		var/obj/oloc = loc
@@ -1325,6 +1467,8 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 /// Checks if this mob can be actively tracked by cameras / AI.
 /// Can optionally be passed a user, which is the mob who is tracking src.
 /mob/living/proc/can_track(mob/living/user)
+	procstart = null
+	src.procstart = null
 	//basic fast checks go first. When overriding this proc, I recommend calling ..() at the end.
 	if(SEND_SIGNAL(src, COMSIG_LIVING_CAN_TRACK, user) & COMPONENT_CANT_TRACK)
 		return FALSE
@@ -1346,13 +1490,19 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 		return FALSE
 	return TRUE
 
-/mob/living/proc/harvest(mob/living/user) //used for extra objects etc. in butchering
+/mob/living/proc/harvest(mob/living/user)
+	procstart = null
+	src.procstart = null //used for extra objects etc. in butchering
 	return
 
 /mob/living/can_hold_items(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return ..() && HAS_TRAIT(src, TRAIT_CAN_HOLD_ITEMS) && usable_hands
 
 /mob/living/can_perform_action(atom/target, action_bitflags)
+	procstart = null
+	src.procstart = null
 	if(!istype(target))
 		CRASH("Missing target arg for can_perform_action")
 
@@ -1427,7 +1577,9 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 
 	return TRUE
 
-/mob/living/proc/can_use_guns(obj/item/G)//actually used for more than guns!
+/mob/living/proc/can_use_guns(obj/item/G)
+	procstart = null
+	src.procstart = null//actually used for more than guns!
 	if(G.trigger_guard == TRIGGER_GUARD_NONE)
 		to_chat(src, span_warning("You are unable to fire this!"))
 		return FALSE
@@ -1437,10 +1589,14 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 	return TRUE
 
 /mob/living/proc/update_stamina()
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_LIVING_STAMINA_UPDATE)
 	update_stamina_hud()
 
 /mob/living/update_stamina_hud(shown_stamina_loss)
+	procstart = null
+	src.procstart = null
 	if(!client || !hud_used)
 		return
 
@@ -1464,9 +1620,13 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 		stamina.icon_state = "stamina_full"
 
 /mob/living/carbon/alien/update_stamina()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback, force, gentle = FALSE, quickstart = TRUE, throw_type_path = /datum/thrownthing)
+	procstart = null
+	src.procstart = null
 	stop_pulling()
 	. = ..()
 
@@ -1481,6 +1641,8 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
  * Returns a mob (what our mob turned into) or null (if we failed).
  */
 /mob/living/proc/wabbajack(what_to_randomize, change_flags = WABBAJACK)
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD || HAS_TRAIT(src, TRAIT_GODMODE) || HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
 
@@ -1749,6 +1911,8 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 // Called when we are hit by a bolt of polymorph and changed
 // Generally the mob we are currently in is about to be deleted
 /mob/living/proc/on_wabbajacked(mob/living/new_mob)
+	procstart = null
+	src.procstart = null
 	log_message("became [new_mob.name] ([new_mob.type])", LOG_ATTACK, color = "orange")
 	SEND_SIGNAL(src, COMSIG_LIVING_ON_WABBAJACKED, new_mob)
 	new_mob.name = real_name
@@ -1762,7 +1926,9 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 	else if(key)
 		new_mob.PossessByPlayer(key)
 
-/mob/living/proc/unfry_mob() //Callback proc to tone down spam from multiple sizzling frying oil dipping.
+/mob/living/proc/unfry_mob()
+	procstart = null
+	src.procstart = null //Callback proc to tone down spam from multiple sizzling frying oil dipping.
 	REMOVE_TRAIT(src, TRAIT_OIL_FRIED, "cooking_oil_react")
 
 //Mobs on Fire
@@ -1771,6 +1937,8 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 GLOBAL_LIST_EMPTY(fire_appearances)
 
 /mob/living/proc/ignite_mob(silent)
+	procstart = null
+	src.procstart = null
 	if(fire_stacks <= 0)
 		return FALSE
 
@@ -1787,6 +1955,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
  * Signals the extinguishing.
  */
 /mob/living/proc/extinguish_mob()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NO_EXTINGUISH)) //The everlasting flames will not be extinguished
 		return
 	var/datum/status_effect/fire_handler/fire_stacks/fire_status = has_status_effect(/datum/status_effect/fire_handler/fire_stacks)
@@ -1805,6 +1975,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
  */
 
 /mob/living/proc/adjust_fire_stacks(stacks, fire_type = /datum/status_effect/fire_handler/fire_stacks)
+	procstart = null
+	src.procstart = null
 	if(stacks < 0)
 		if(HAS_TRAIT(src, TRAIT_NO_EXTINGUISH)) //You can't reduce fire stacks of the everlasting flames
 			return
@@ -1812,6 +1984,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	apply_status_effect(fire_type, stacks)
 
 /mob/living/proc/adjust_wet_stacks(stacks, wet_type = /datum/status_effect/fire_handler/wet_stacks)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NO_EXTINGUISH)) //The everlasting flames will not be extinguished
 		return
 	if(stacks < 0)
@@ -1831,6 +2005,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
  */
 
 /mob/living/proc/set_fire_stacks(stacks, fire_type = /datum/status_effect/fire_handler/fire_stacks, remove_wet_stacks = TRUE)
+	procstart = null
+	src.procstart = null
 	if(stacks < 0) //Shouldn't happen, ever
 		CRASH("set_fire_stacks received negative [stacks] fire stacks")
 
@@ -1844,6 +2020,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	apply_status_effect(fire_type, stacks, TRUE)
 
 /mob/living/proc/set_wet_stacks(stacks, wet_type = /datum/status_effect/fire_handler/wet_stacks, remove_fire_stacks = TRUE)
+	procstart = null
+	src.procstart = null
 	if(stacks < 0)
 		CRASH("set_wet_stacks received negative [stacks] wet stacks")
 
@@ -1859,6 +2037,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 //Share fire evenly between the two mobs
 //Called in MobBump() and Crossed()
 /mob/living/proc/spreadFire(mob/living/spread_to)
+	procstart = null
+	src.procstart = null
 	if(!istype(spread_to))
 		return
 
@@ -1900,11 +2080,15 @@ GLOBAL_LIST_EMPTY(fire_appearances)
  */
 
 /mob/living/proc/get_fire_overlay(stacks, on_fire)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/mutable_appearance)
 	return null
 
 /// Create a fire overlay using the generic fire sprites
 /mob/living/proc/make_generic_fire_overlay()
+	procstart = null
+	src.procstart = null
 	var/fire_key = "[base_pixel_x]_[base_pixel_y]_fire"
 	if(!GLOB.fire_appearances[fire_key])
 		var/mutable_appearance/fire = mutable_appearance(
@@ -1921,6 +2105,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /// Takes a fire overlay and generates an emissive appearance for it
 /mob/living/proc/make_fire_emissive(mutable_appearance/fire_overlay)
+	procstart = null
+	src.procstart = null
 	return emissive_appearance(fire_overlay.icon, fire_overlay.icon_state, src, fire_overlay.layer)
 
 /**
@@ -1933,12 +2119,16 @@ GLOBAL_LIST_EMPTY(fire_appearances)
  */
 
 /mob/living/proc/on_fire_stack(seconds_per_tick, datum/status_effect/fire_handler/fire_stacks/fire_handler)
+	procstart = null
+	src.procstart = null
 	return
 
 //Mobs on Fire end
 
 // used by secbot and monkeys Crossed
 /mob/living/proc/knockOver(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	if(C.key) //save us from monkey hordes
 		C.visible_message(span_warning(pick( \
 						"[C] dives out of [src]'s way!", \
@@ -1950,16 +2140,22 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	C.Paralyze(40)
 
 /mob/living/can_be_pulled(user, force)
+	procstart = null
+	src.procstart = null
 	return ..() && !(buckled?.buckle_prevents_pull)
 
 
 /// Called when mob changes from a standing position into a prone while lacking the ability to stand up at the moment.
 /mob/living/proc/on_fall()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_LIVING_THUD)
 	return
 
 /mob/living/forceMove(atom/destination)
+	procstart = null
+	src.procstart = null
 	if(!currently_z_moving)
 		stop_pulling()
 		if(buckled && !HAS_TRAIT(src, TRAIT_CANNOT_BE_UNBUCKLED))
@@ -1972,7 +2168,9 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		reset_perspective()
 
 
-/mob/living/proc/update_z(new_z) // 1+ to register, null to unregister
+/mob/living/proc/update_z(new_z)
+	procstart = null
+	src.procstart = null // 1+ to register, null to unregister
 	if(registered_z == new_z)
 		return
 	if(registered_z)
@@ -2005,22 +2203,30 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	registered_z = new_z
 
 /mob/living/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	..()
 	update_z(new_turf?.z)
 
 /mob/living/proc/set_name()
+	procstart = null
+	src.procstart = null
 	if(identifier == 0)
 		identifier = rand(1, 999)
 	name = "[name] ([identifier])"
 	real_name = name
 
 /mob/living/proc/mob_pickup(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/mob_holder/holder = new inhand_holder_type(get_turf(src), src, held_state, head_icon, held_lh, held_rh, worn_slot_flags)
 	SEND_SIGNAL(src, COMSIG_LIVING_SCOOPED_UP, user, holder)
 	user.visible_message(span_warning("[user] scoops up [src]!"))
 	user.put_in_hands(holder)
 
 /mob/living/proc/mob_try_pickup(mob/living/user, instant=FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user) && (user.mob_size <= mob_size || user.num_hands == 0))
 		if (!user.num_hands)
 			return
@@ -2042,7 +2248,9 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	mob_pickup(user)
 	return TRUE
 
-/mob/living/proc/get_static_viruses() //used when creating blood and other infective objects
+/mob/living/proc/get_static_viruses()
+	procstart = null
+	src.procstart = null //used when creating blood and other infective objects
 	if(!LAZYLEN(diseases))
 		return
 	var/list/datum/disease/result = list()
@@ -2052,6 +2260,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	return result
 
 /mob/living/reset_perspective(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	update_sight()
@@ -2060,6 +2270,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /// Proc used to handle the fullscreen overlay updates, realistically meant for the reset_perspective() proc.
 /mob/living/proc/update_fullscreen()
+	procstart = null
+	src.procstart = null
 	if(client.eye && client.eye != src)
 		var/atom/client_eye = client.eye
 		client_eye.get_remote_view_fullscreens(src)
@@ -2067,6 +2279,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		clear_fullscreen("remote_view", 0)
 
 /mob/living/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	switch(var_name)
 		if (NAMEOF(src, maxHealth))
 			if (!isnum(var_value) || var_value <= 0)
@@ -2121,6 +2335,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 
 /mob/living/vv_get_header()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/refid = REF(src)
 	. += {"
@@ -2136,6 +2352,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	"}
 
 /mob/living/vv_get_dropdown()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	VV_DROPDOWN_OPTION("", "--- /living ---")
 	VV_DROPDOWN_OPTION(VV_HK_GIVE_SPEECH_IMPEDIMENT, "Impede Speech (Slurring, stuttering, etc)")
@@ -2147,6 +2365,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	VV_DROPDOWN_OPTION(VV_HK_ADMIN_RENAME, "Force Change Name")
 
 /mob/living/vv_do_topic(list/href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)
@@ -2194,6 +2414,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		message_admins("[key_name_admin(usr)] has forcibly changed the real name of [key_name(src)] from '[old_name]' to '[real_name]'[(replace_preferences ? " and their preferences" : "")]")
 
 /mob/living/proc/move_to_error_room()
+	procstart = null
+	src.procstart = null
 	var/obj/effect/landmark/error/error_landmark = locate(/obj/effect/landmark/error) in GLOB.landmarks_list
 	if(error_landmark)
 		forceMove(error_landmark.loc)
@@ -2214,6 +2436,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
  * The return of this proc is the previous value of the modified lying_angle if a change was successful (might include zero), or null if no change was made.
  */
 /mob/living/proc/set_lying_angle(new_lying)
+	procstart = null
+	src.procstart = null
 	if(new_lying == lying_angle)
 		return
 	. = lying_angle
@@ -2234,6 +2458,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
  * * amount (int) The amount of change from the base body temperature
  */
 /mob/living/proc/add_body_temperature_change(key_name, amount)
+	procstart = null
+	src.procstart = null
 	body_temp_changes["[key_name]"] = amount
 
 /**
@@ -2245,6 +2471,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
  * * key_name (str) The unique key for this change that will be removed
  */
 /mob/living/proc/remove_body_temperature_change(key_name)
+	procstart = null
+	src.procstart = null
 	body_temp_changes -= key_name
 
 /**
@@ -2253,6 +2481,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
  * This aggregates all the changes in the body_temp_changes list and returns the result
  */
 /mob/living/proc/get_body_temp_normal_change()
+	procstart = null
+	src.procstart = null
 	var/total_change = 0
 	if(body_temp_changes.len)
 		for(var/change in body_temp_changes)
@@ -2268,16 +2498,22 @@ GLOBAL_LIST_EMPTY(fire_appearances)
  * * apply_change (optional) Default True This applies the changes to body temperature normal
  */
 /mob/living/proc/get_body_temp_normal(apply_change=TRUE)
+	procstart = null
+	src.procstart = null
 	if(!apply_change)
 		return BODYTEMP_NORMAL
 	return BODYTEMP_NORMAL + get_body_temp_normal_change()
 
 ///Returns the body temperature at which this mob will start taking heat damage.
 /mob/living/proc/get_body_temp_heat_damage_limit()
+	procstart = null
+	src.procstart = null
 	return BODYTEMP_HEAT_DAMAGE_LIMIT
 
 ///Returns the body temperature at which this mob will start taking cold damage.
 /mob/living/proc/get_body_temp_cold_damage_limit()
+	procstart = null
+	src.procstart = null
 	return BODYTEMP_COLD_DAMAGE_LIMIT
 
 /atom/movable/looking_holder
@@ -2290,16 +2526,22 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	var/mob/living/owner
 
 /atom/movable/looking_holder/Initialize(mapload, mob/living/owner, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	look_direction = direction
 	src.owner = owner
 	update_container()
 
 /atom/movable/looking_holder/Destroy()
+	procstart = null
+	src.procstart = null
 	owner = null
 	return ..()
 
 /atom/movable/looking_holder/proc/update_container()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/new_container = get_atom_on_turf(owner)
 	if(new_container == container)
@@ -2316,6 +2558,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(update_container))
 
 /atom/movable/looking_holder/proc/mirror_move(mob/living/source, atom/oldloc, direction, Forced, old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isturf(owner.loc))
 		update_container()
@@ -2328,6 +2572,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 ///Checks if the user is incapacitated or on cooldown.
 /mob/living/proc/can_look_up()
+	procstart = null
+	src.procstart = null
 	if(next_move > world.time)
 		return FALSE
 	if(INCAPACITATED_IGNORING(src, INCAPABLE_RESTRAINTS))
@@ -2335,6 +2581,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	return TRUE
 
 /mob/living/proc/end_look()
+	procstart = null
+	src.procstart = null
 	reset_perspective()
 	looking_vertically = NONE
 	if(!looking_holder)
@@ -2343,6 +2591,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	QDEL_NULL(looking_holder)
 
 /mob/living/proc/on_looking_z_level_change(turf/old_loc, turf/new_loc)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_LIVING_LOOK_Z_CHANGE, old_loc, new_loc)
 
 /**
@@ -2352,6 +2602,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
  *
  */
 /mob/living/proc/look_up()
+	procstart = null
+	src.procstart = null
 	if(looking_vertically == UP)
 		return
 	if(looking_vertically == DOWN)
@@ -2369,6 +2621,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	on_looking_z_level_change(get_turf(src), above_turf)
 
 /mob/living/proc/get_looking_turf(direction)
+	procstart = null
+	src.procstart = null
 	//down needs to check this floor
 	var/turf/check_turf = get_step_multiz(src, direction == DOWN ? NONE : direction)
 	if(!get_step_multiz(src, direction)) //We are at the edge z-level.
@@ -2395,6 +2649,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
  *
  */
 /mob/living/proc/look_down()
+	procstart = null
+	src.procstart = null
 	if(looking_vertically == UP)
 		end_look()
 		return
@@ -2411,6 +2667,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	reset_perspective(looking_holder)
 
 /mob/living/set_stat(new_stat)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.) || . == stat)
 		return
@@ -2474,6 +2732,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 ///Reports the event of the change in value of the buckled variable.
 /mob/living/proc/set_buckled(new_buckled)
+	procstart = null
+	src.procstart = null
 	if(new_buckled == buckled)
 		return
 	SEND_SIGNAL(src, COMSIG_LIVING_SET_BUCKLED, new_buckled)
@@ -2501,11 +2761,15 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 				set_lying_down() // We want to rest or are otherwise floored, so let's drop on the ground.
 
 /mob/living/set_pulledby(new_pulledby)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_incapacitated()
 
 /// Updates the grab state of the mob and updates movespeed
 /mob/living/setGrabState(newstate)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(grab_state)
 		if(GRAB_PASSIVE)
@@ -2519,10 +2783,14 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /// Sprite to show for photocopying mob butts
 /mob/living/proc/get_butt_sprite()
+	procstart = null
+	src.procstart = null
 	return null
 
 ///Proc to modify the value of num_legs and hook behavior associated to this event.
 /mob/living/proc/set_num_legs(new_value)
+	procstart = null
+	src.procstart = null
 	if(num_legs == new_value)
 		return
 	. = num_legs
@@ -2531,6 +2799,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 ///Proc to modify the value of usable_legs and hook behavior associated to this event.
 /mob/living/proc/set_usable_legs(new_value)
+	procstart = null
+	src.procstart = null
 	if(usable_legs == new_value)
 		return
 	if(new_value < 0) // Sanity check
@@ -2545,6 +2815,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
  * Proc that updates the status of the mob's legs without setting its leg value to something else.
  */
 /mob/living/proc/update_usable_leg_status()
+	procstart = null
+	src.procstart = null
 
 	if(usable_legs > 0) // Gained leg usage.
 		REMOVE_TRAIT(src, TRAIT_FLOORED, LACKING_LOCOMOTION_APPENDAGES_TRAIT)
@@ -2573,6 +2845,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 ///Proc to modify the value of num_hands and hook behavior associated to this event.
 /mob/living/proc/set_num_hands(new_value)
+	procstart = null
+	src.procstart = null
 	if(num_hands == new_value)
 		return
 	. = num_hands
@@ -2581,6 +2855,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 ///Proc to modify the value of usable_hands and hook behavior associated to this event.
 /mob/living/proc/set_usable_hands(new_value)
+	procstart = null
+	src.procstart = null
 	if(usable_hands == new_value)
 		return
 	if(new_value < 0) // Sanity check
@@ -2595,6 +2871,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		ADD_TRAIT(src, TRAIT_IMMOBILIZED, LACKING_LOCOMOTION_APPENDAGES_TRAIT)
 
 /mob/living/perform_hand_swap(held_index)
+	procstart = null
+	src.procstart = null
 	//safeguard for one-handed mobs lol
 	if(length(held_items) == 1)
 		held_index = 1
@@ -2603,14 +2881,20 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /// Whether or not this mob will escape from storages while being picked up/held.
 /mob/living/proc/will_escape_storage()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 //Used specifically for the clown box suicide act
 /mob/living/carbon/human/will_escape_storage()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Changes the value of the [living/body_position] variable. Call this before set_lying_angle()
 /mob/living/proc/set_body_position(new_value)
+	procstart = null
+	src.procstart = null
 	if(body_position == new_value)
 		return
 	if((new_value == LYING_DOWN) && !(mobility_flags & MOBILITY_LIEDOWN))
@@ -2627,6 +2911,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /// Proc to append behavior to the condition of being floored. Called when the condition starts.
 /mob/living/proc/on_floored_start()
+	procstart = null
+	src.procstart = null
 	on_fall()
 	if(body_position == STANDING_UP) //force them on the ground
 		set_body_position(LYING_DOWN)
@@ -2634,12 +2920,16 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /// Proc to append behavior to the condition of being floored. Called when the condition ends.
 /mob/living/proc/on_floored_end()
+	procstart = null
+	src.procstart = null
 	if(!resting)
 		get_up()
 
 
 /// Proc to append behavior to the condition of being handsblocked. Called when the condition starts.
 /mob/living/proc/on_handsblocked_start()
+	procstart = null
+	src.procstart = null
 	if(active_storage)
 		active_storage.hide_contents(src)
 	drop_all_held_items()
@@ -2648,11 +2938,15 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /// Proc to append behavior to the condition of being handsblocked. Called when the condition ends.
 /mob/living/proc/on_handsblocked_end()
+	procstart = null
+	src.procstart = null
 	remove_traits(list(TRAIT_UI_BLOCKED, TRAIT_PULL_BLOCKED), TRAIT_HANDS_BLOCKED)
 
 
 /// Returns the attack damage type of a living mob such as [BRUTE].
 /mob/living/proc/get_attack_type()
+	procstart = null
+	src.procstart = null
 	return BRUTE
 
 /**
@@ -2662,6 +2956,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
  * * minutes - The number of minutes to allocate to each valid role.
  */
 /mob/living/proc/get_exp_list(minutes)
+	procstart = null
+	src.procstart = null
 	var/list/exp_list = list()
 
 	if(!(mind.datum_flags & DF_VAR_EDITED))
@@ -2682,6 +2978,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
  * extra damage, so jokers can't use half a stack of iron rods to make getting hit by the tram immediately lethal.
  */
 /mob/living/proc/tram_slam_land()
+	procstart = null
+	src.procstart = null
 	if(!istype(loc, /turf/open/openspace) && !isplatingturf(loc))
 		return
 
@@ -2700,6 +2998,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /// Prints an ominous message if something bad is going to happen to you
 /mob/living/proc/ominous_nosebleed()
+	procstart = null
+	src.procstart = null
 	to_chat(src, span_warning("You feel a bit nauseous for just a moment."))
 
 /**
@@ -2708,6 +3008,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
  * Specific behavior is defined on subtypes that use it.
  */
 /mob/living/proc/Write_Memory(dead, gibbed)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(HAS_TRAIT(src, TRAIT_DONT_WRITE_MEMORY)) //always prevent data from being written.
 		return FALSE
@@ -2718,6 +3020,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /// Admin only proc for giving a certain speech impediment to this mob
 /mob/living/proc/admin_give_speech_impediment(mob/admin)
+	procstart = null
+	src.procstart = null
 	if(!admin || !check_rights(NONE))
 		return
 
@@ -2739,6 +3043,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	adjust_timed_status_effect(duration * 1 SECONDS, impediments[chosen])
 
 /mob/living/proc/admin_add_mood_event(mob/admin)
+	procstart = null
+	src.procstart = null
 	if (!admin || !check_rights(NONE))
 		return
 
@@ -2751,6 +3057,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	mob_mood.add_mood_event("[rand(1, 50)]", chosen)
 
 /mob/living/proc/admin_remove_mood_event(mob/admin)
+	procstart = null
+	src.procstart = null
 	if (!admin || !check_rights(NONE))
 		return
 
@@ -2768,6 +3076,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /// Adds a mood event to the mob
 /mob/living/proc/add_mood_event(category, type, ...)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(mob_mood))
 		return
 
@@ -2778,22 +3088,30 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /// Clears a mood event from the mob
 /mob/living/proc/clear_mood_event(category)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(mob_mood))
 		return
 	mob_mood.clear_mood_event(category)
 
 /// This should be called by games when the gamer reaches a winning state, just sends a signal
 /mob/living/proc/won_game()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_MOB_WON_VIDEOGAME)
 
 /// This should be called by games when the gamer reaches a losing state, just sends a signal
 /mob/living/proc/lost_game()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_MOB_LOST_VIDEOGAME)
 
 /// This should be called by games whenever the gamer interacts with the device, sends a signal and grants us a moodlet
 /mob/living/proc/played_game()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_MOB_PLAYED_VIDEOGAME)
 	add_mood_event("gaming", /datum/mood_event/gaming)
@@ -2803,10 +3121,14 @@ GLOBAL_LIST_EMPTY(fire_appearances)
  * Living doesn't have a sentience type though so it always returns false if not a basic or simple mob
  */
 /mob/living/proc/compare_sentience_type(compare_type)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// Proc called when TARGETED by a lazarus injector
 /mob/living/proc/lazarus_revive(mob/living/reviver, malfunctioning)
+	procstart = null
+	src.procstart = null
 	revive(HEAL_ALL)
 	add_faction(FACTION_NEUTRAL)
 	if (!malfunctioning)
@@ -2822,6 +3144,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /// Proc for giving a mob a new 'friend', generally used for AI control and targeting. Returns false if already friends or null if qdeleted.
 /mob/living/proc/befriend(mob/living/new_friend)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(new_friend, COMSIG_LIVING_MADE_NEW_FRIEND, src)
 	if(QDELETED(new_friend))
@@ -2837,6 +3161,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /// Proc for removing a friend you added with the proc 'befriend'. Returns true if you removed a friend.
 /mob/living/proc/unfriend(mob/living/old_friend)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	var/friend_ref = REF(old_friend)
 	if (!has_ally(friend_ref))
@@ -2852,6 +3178,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
  * Returns the black market item, for extra stuff like signals that need to be registered.
  */
 /mob/living/proc/process_capture(ransom_price, black_market_price)
+	procstart = null
+	src.procstart = null
 	if(ransom_price > 0)
 		var/datum/bank_account/cargo_account = SSeconomy.get_dep_account(ACCOUNT_CAR)
 
@@ -2869,6 +3197,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /// Admin only proc for making the mob hallucinate a certain thing
 /mob/living/proc/admin_give_hallucination(mob/admin)
+	procstart = null
+	src.procstart = null
 	if(!admin || !check_rights(NONE))
 		return
 
@@ -2885,6 +3215,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /// Admin only proc for giving the mob a delusion hallucination with specific arguments
 /mob/living/proc/admin_give_delusion(mob/admin)
+	procstart = null
+	src.procstart = null
 	if(!admin || !check_rights(NONE))
 		return
 
@@ -2899,6 +3231,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	_cause_hallucination(delusion_args)
 
 /mob/living/proc/admin_give_guardian(mob/admin)
+	procstart = null
+	src.procstart = null
 	if(!admin || !check_rights(NONE))
 		return
 	var/del_mob = FALSE
@@ -2941,6 +3275,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	BLACKBOX_LOG_ADMIN_VERB("Give Guardian Spirit")
 
 /mob/living/proc/lookup()
+	procstart = null
+	src.procstart = null
 	if(looking_vertically)
 		to_chat(src, "You set your head straight again.")
 		end_look()
@@ -2958,6 +3294,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	look_up()
 
 /mob/living/proc/lookdown()
+	procstart = null
+	src.procstart = null
 	if(looking_vertically)
 		to_chat(src, "You set your head straight again.")
 		end_look()
@@ -2978,6 +3316,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
  * Totals the physical cash on the mob and returns the total.
  */
 /mob/living/proc/tally_physical_credits()
+	procstart = null
+	src.procstart = null
 	//Here is all the possible non-ID payment methods.
 	var/list/counted_money = list()
 	var/physical_cash_total = 0
@@ -2993,6 +3333,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /// Returns an arbitrary number which very roughly correlates with how buff you look
 /mob/living/proc/calculate_fitness()
+	procstart = null
+	src.procstart = null
 	var/athletics_level = mind?.get_skill_level(/datum/skill/athletics) || 1
 	var/damage = (melee_damage_lower + melee_damage_upper) / 2
 
@@ -3000,6 +3342,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /// Create a report string about how strong this person looks, generated in a somewhat arbitrary fashion
 /mob/living/proc/compare_fitness(mob/living/scouter)
+	procstart = null
+	src.procstart = null
 	if (HAS_TRAIT(src, TRAIT_UNKNOWN_APPEARANCE))
 		return span_warning("It's impossible to tell whether this person lifts.")
 
@@ -3016,6 +3360,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 ///Performs the aftereffects of blocking a projectile.
 /mob/living/proc/block_projectile_effects()
+	procstart = null
+	src.procstart = null
 	var/static/list/icon/blocking_overlay
 	if(isnull(blocking_overlay))
 		blocking_overlay = list(
@@ -3032,27 +3378,37 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 ///Remoevs the effects of blocking a projectile and allows the user to block another.
 /mob/living/proc/end_block_effects(selected_overlay)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(src, TRAIT_BLOCKING_PROJECTILES, BLOCKING_TRAIT)
 	cut_overlay(selected_overlay)
 	update_transform(0.8)
 
 /// Returns the string form of the def_zone we have hit.
 /mob/living/proc/check_hit_limb_zone_name(hit_zone)
+	procstart = null
+	src.procstart = null
 	if(has_limbs)
 		return hit_zone
 
 /mob/living/proc/painful_scream(force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_ANALGESIA) && !force)
 		return
 	INVOKE_ASYNC(src, PROC_REF(emote), "scream")
 
 /mob/living/proc/set_pull_force(new_pull_force)
+	procstart = null
+	src.procstart = null
 	if(pull_force == new_pull_force)
 		return
 	pull_force = new_pull_force
 	pull_force_change()
 
 /mob/living/proc/pull_force_change()
+	procstart = null
+	src.procstart = null
 	if(!pull_force || HAS_TRAIT(src, TRAIT_PULL_BLOCKED))
 		remove_verb(src, /mob/living/verb/pulled)
 	else
@@ -3060,6 +3416,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /// Generic helper to return a static-y humanoid appearance shown to other mobs when unconscious
 /mob/living/proc/get_generic_humanoid_static_appearance()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	var/image/static_image = image('icons/effects/effects.dmi', src, "static")

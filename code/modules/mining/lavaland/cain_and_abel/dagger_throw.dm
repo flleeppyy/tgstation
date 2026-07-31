@@ -2,6 +2,8 @@
 #define THROW_LAUNCH_COOLDOWN 7 SECONDS
 
 /obj/item/cain_and_abel/on_thrown(mob/living/carbon/user, atom/target)
+	procstart = null
+	src.procstart = null
 	. = null
 	if(!COOLDOWN_FINISHED(src, throw_cooldown))
 		user.balloon_alert(user, "on cooldown!")
@@ -42,6 +44,8 @@
 	RegisterSignal(dagger, COMSIG_PROJECTILE_SELF_ON_HIT, PROC_REF(on_dagger_hit))
 
 /obj/item/cain_and_abel/proc/on_dagger_hit(obj/projectile/dagger/source, atom/movable/firer, atom/target, Angle)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(source, list(COMSIG_QDELETING, COMSIG_PROJECTILE_SELF_ON_HIT))
@@ -56,11 +60,15 @@
 	set_dagger_icon(thrown = FALSE)
 
 /obj/item/cain_and_abel/proc/set_dagger_icon(thrown = FALSE)
+	procstart = null
+	src.procstart = null
 	dagger_thrown = thrown
 	update_dagger_icon()
 	update_inhand_icon()
 
 /obj/item/cain_and_abel/proc/reset_dagger_icon(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_dagger_icon(thrown = FALSE)
 

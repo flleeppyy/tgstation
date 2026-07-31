@@ -2,6 +2,8 @@
 	name = "bibles"
 
 /datum/asset/spritesheet_batched/bibles/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	var/obj/item/book/bible/holy_template = /obj/item/book/bible
 	var/target_icon = initial(holy_template.icon)
 	var/datum/icon_transformer/transform = new()

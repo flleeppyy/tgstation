@@ -10,20 +10,28 @@
 	var/list/req_component_names
 
 /obj/structure/frame/machine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/structure/frame/machine/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(components)
 	return ..()
 
 /obj/structure/frame/machine/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(state >= FRAME_STATE_WIRED)
 		new /obj/item/stack/cable_coil(drop_location(), 5)
 	dump_contents()
 	return ..()
 
 /obj/structure/frame/machine/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(isnull(held_item))
 		return
@@ -79,6 +87,8 @@
 						return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/frame/machine/examine(user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!circuit?.needs_anchored)
 		. += span_notice("It can be [EXAMINE_HINT("anchored")] [anchored ? "loose." : "into place."]")
@@ -108,6 +118,8 @@
 		. += span_info("The frame should be [EXAMINE_HINT("screwed")] to complete it.")
 
 /obj/structure/frame/machine/dump_contents()
+	procstart = null
+	src.procstart = null
 	var/atom/drop_loc = drop_location()
 
 	// We need a snowflake check for stack items since they don't exist anymore
@@ -138,6 +150,8 @@
 	req_component_names = null
 
 /obj/structure/frame/machine/install_board(mob/living/user, obj/item/circuitboard/machine/board, by_hand = TRUE)
+	procstart = null
+	src.procstart = null
 	if(state == FRAME_STATE_EMPTY)
 		balloon_alert(user, "needs wiring!")
 		return FALSE
@@ -151,6 +165,8 @@
 	return ..()
 
 /obj/structure/frame/machine/circuit_added(obj/item/circuitboard/machine/added)
+	procstart = null
+	src.procstart = null
 	state = FRAME_STATE_BOARD_INSTALLED
 	update_appearance(UPDATE_ICON_STATE)
 
@@ -195,6 +211,8 @@
 			req_component_names[component_path] = "[component_path] (this is a bug)"
 
 /obj/structure/frame/machine/circuit_removed(obj/item/circuitboard/machine/removed)
+	procstart = null
+	src.procstart = null
 	components -= removed
 	state = FRAME_STATE_WIRED
 	update_appearance(UPDATE_ICON_STATE)
@@ -208,11 +226,15 @@
  * * path2 - the second path to search for, if path1 is not found
  */
 /obj/structure/frame/machine/proc/look_for(list/parts, path1, path2)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	return (locate(path1) in parts) || (path2 ? (locate(path2) in parts) : null)
 
 /obj/structure/frame/machine/install_parts_from_part_replacer(mob/living/user, obj/item/storage/part_replacer/replacer, no_sound = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!length(replacer.contents))
 		return FALSE
 	var/amt = 0
@@ -263,6 +285,8 @@
 	return TRUE
 
 /obj/structure/frame/machine/can_be_unfasten_wrench(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. != SUCCESSFUL_UNFASTEN)
 		return .
@@ -274,6 +298,8 @@
 	return .
 
 /obj/structure/frame/machine/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -285,6 +311,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/structure/frame/machine/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 	if(state != FRAME_STATE_WIRED)
@@ -300,6 +328,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/frame/machine/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 	if(state != FRAME_STATE_BOARD_INSTALLED)
@@ -322,6 +352,8 @@
  * * tool - the part to add
  */
 /obj/structure/frame/machine/proc/add_part(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	for(var/stock_part_base in req_components)
@@ -388,6 +420,8 @@
 	return FALSE
 
 /obj/structure/frame/machine/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -418,6 +452,8 @@
 
 // Override of base_item_interaction so we only try to add parts to the frame AFTER running item_interaction and all the tool_acts
 /obj/structure/frame/machine/base_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -437,6 +473,8 @@
  * * tool - the tool used to finalize the construction
  */
 /obj/structure/frame/machine/finalize_construction(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(locate(circuit.build_path) in loc)
 		balloon_alert(user, "identical machine present!")
 		return FALSE

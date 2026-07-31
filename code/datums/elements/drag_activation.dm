@@ -7,16 +7,22 @@
 /datum/element/drag_to_activate
 
 /datum/element/drag_to_activate/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(target))
 		return ELEMENT_INCOMPATIBLE
 	RegisterSignal(target, COMSIG_MOUSEDROP_ONTO, PROC_REF(activate))
 	return ..()
 
 /datum/element/drag_to_activate/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, COMSIG_MOUSEDROP_ONTO)
 	return ..()
 
 /datum/element/drag_to_activate/proc/activate(atom/movable/source, atom/over, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!user.can_perform_action(source, FORBID_TELEKINESIS_REACH))

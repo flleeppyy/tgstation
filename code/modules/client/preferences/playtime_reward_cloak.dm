@@ -7,14 +7,20 @@
 	savefile_key = "playtime_reward_cloak"
 
 /datum/preference/toggle/playtime_reward_cloak/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if (!..(preferences))
 		return FALSE
 
 	return preferences.parent?.is_veteran()
 
 /datum/preference/toggle/playtime_reward_cloak/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Returns whether the client should receive the gamer cloak
 /client/proc/is_veteran()
+	procstart = null
+	src.procstart = null
 	return get_exp_living(pure_numeric = TRUE) >= PLAYTIME_VETERAN

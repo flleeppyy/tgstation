@@ -26,6 +26,8 @@
 	var/sight_blocker_distance = 1
 
 /obj/structure/necropolis_gate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	setDir(SOUTH)
 	var/turf/sight_blocker_turf = get_turf(src)
@@ -55,18 +57,26 @@
 	AddComponent(/datum/component/seethrough, SEE_THROUGH_MAP_DEFAULT_TWO_TALL, clickthrough = FALSE)
 
 /obj/structure/necropolis_gate/Destroy(force)
+	procstart = null
+	src.procstart = null
 	qdel(sight_blocker)
 	return ..()
 
 /obj/structure/necropolis_gate/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/structure/necropolis_gate/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(border_dir != dir)
 		return TRUE
 
 /obj/structure/necropolis_gate/proc/on_exit(datum/source, atom/movable/leaving, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(leaving.movement_type & PHASING)
@@ -90,10 +100,14 @@
 	anchored = TRUE
 
 /obj/structure/opacity_blocker/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/structure/necropolis_gate/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		to_chat(user, span_bolddanger("It's [open ? "stuck open":"locked"]."))
 		return
@@ -101,6 +115,8 @@
 	return ..()
 
 /obj/structure/necropolis_gate/proc/toggle_the_gate(mob/user, legion_damaged)
+	procstart = null
+	src.procstart = null
 	if(changing_openness)
 		return
 	changing_openness = TRUE
@@ -150,16 +166,22 @@ GLOBAL_DATUM(necropolis_gate, /obj/structure/necropolis_gate/legion_gate)
 	sight_blocker_distance = 2
 
 /obj/structure/necropolis_gate/legion_gate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.necropolis_gate = src
 
 /obj/structure/necropolis_gate/legion_gate/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(GLOB.necropolis_gate == src)
 		GLOB.necropolis_gate = null
 	return ..()
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/structure/necropolis_gate/legion_gate/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!open && !changing_openness)
 		var/safety = tgui_alert(user, "You think this might be a bad idea...", "Knock on the door?", list("Proceed", "Abort"))
 		if(safety == "Abort" || !in_range(src, user) || !src || open || changing_openness || user.incapacitated)
@@ -170,6 +192,8 @@ GLOBAL_DATUM(necropolis_gate, /obj/structure/necropolis_gate/legion_gate)
 	return ..()
 
 /obj/structure/necropolis_gate/legion_gate/toggle_the_gate(mob/user, legion_damaged)
+	procstart = null
+	src.procstart = null
 	if(open)
 		return
 	. = ..()
@@ -235,6 +259,8 @@ GLOBAL_DATUM(necropolis_gate, /obj/structure/necropolis_gate/legion_gate)
 	var/static/mutable_appearance/top_overlay
 
 /obj/structure/necropolis_arch/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "arch_bottom"
 	top_overlay = mutable_appearance('icons/effects/160x160.dmi', "arch_top")
@@ -244,6 +270,8 @@ GLOBAL_DATUM(necropolis_gate, /obj/structure/necropolis_gate/legion_gate)
 	AddComponent(/datum/component/seethrough, SEE_THROUGH_MAP_DEFAULT_TWO_TALL)
 
 /obj/structure/necropolis_arch/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return 0
 
 //stone tiles for boss arenas
@@ -260,6 +288,8 @@ GLOBAL_DATUM(necropolis_gate, /obj/structure/necropolis_gate/legion_gate)
 	var/tile_random_sprite_max = 24
 
 /obj/structure/stone_tile/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[tile_key][rand(1, tile_random_sprite_max)]"
 
@@ -269,6 +299,8 @@ GLOBAL_DATUM(necropolis_gate, /obj/structure/necropolis_gate/legion_gate)
 	AddElement(/datum/element/give_turf_traits, give_turf_traits)
 
 /obj/structure/stone_tile/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/stone_tile/block

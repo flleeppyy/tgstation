@@ -16,6 +16,8 @@
 	var/heat_damage = 1
 
 /datum/element/body_temp_sensitive/Attach(datum/target, min_body_temp, max_body_temp, cold_damage, heat_damage, mapload = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -39,11 +41,15 @@
 	check_safe_environment(target)
 
 /datum/element/body_temp_sensitive/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	if(source)
 		UnregisterSignal(source, COMSIG_LIVING_LIFE)
 	return ..()
 
 /datum/element/body_temp_sensitive/proc/on_life(datum/target, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/living_mob = target
@@ -77,6 +83,8 @@
 
 ///Ensures that maploaded mobs are in a safe environment. Unit test stuff.
 /datum/element/body_temp_sensitive/proc/check_safe_environment(mob/living/living_mob)
+	procstart = null
+	src.procstart = null
 	if(living_mob.stat == DEAD)
 		return
 	var/atom/location = living_mob.loc

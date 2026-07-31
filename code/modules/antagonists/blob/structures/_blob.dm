@@ -38,6 +38,8 @@
 	laser = 50
 
 /obj/structure/blob/Initialize(mapload, owner_overmind)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CHASM_DESTROYED, INNATE_TRAIT)
 	register_context()
@@ -54,6 +56,8 @@
 		AddElement(/datum/element/swabable, CELL_LINE_TABLE_BLOB, CELL_VIRUS_TABLE_GENERIC, 2, 2)
 
 /obj/structure/blob/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (!isovermind(user))
@@ -69,10 +73,14 @@
 
 	return CONTEXTUAL_SCREENTIP_SET
 
-/obj/structure/blob/proc/creation_action() //When it's created by the overmind, do this.
+/obj/structure/blob/proc/creation_action()
+	procstart = null
+	src.procstart = null //When it's created by the overmind, do this.
 	return
 
 /obj/structure/blob/Destroy()
+	procstart = null
+	src.procstart = null
 	if(atmosblock)
 		atmosblock = FALSE
 		air_update_turf(TRUE, FALSE)
@@ -85,9 +93,13 @@
 	return ..()
 
 /obj/structure/blob/blob_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/blob/Adjacent(atom/neighbour)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		var/result = 0
@@ -102,12 +114,18 @@
 		. -= result - 1
 
 /obj/structure/blob/block_superconductivity()
+	procstart = null
+	src.procstart = null
 	return atmosblock
 
 /obj/structure/blob/can_atmos_pass(turf/T, vertical = FALSE)
+	procstart = null
+	src.procstart = null
 	return !atmosblock
 
-/obj/structure/blob/update_icon() //Updates color based on overmind color if we have an overmind.
+/obj/structure/blob/update_icon()
+	procstart = null
+	src.procstart = null //Updates color based on overmind color if we have an overmind.
 	. = ..()
 	if(overmind)
 		add_atom_colour(overmind.blobstrain.color, FIXED_COLOUR_PRIORITY)
@@ -118,6 +136,8 @@
 		remove_atom_colour(FIXED_COLOUR_PRIORITY)
 
 /obj/structure/blob/proc/Be_Pulsed()
+	procstart = null
+	src.procstart = null
 	if(COOLDOWN_FINISHED(src, pulse_timestamp))
 		ConsumeTile()
 		if(COOLDOWN_FINISHED(src, heal_timestamp))
@@ -129,6 +149,8 @@
 	return FALSE //oh no we failed
 
 /obj/structure/blob/proc/ConsumeTile()
+	procstart = null
+	src.procstart = null
 	for(var/atom/thing in loc)
 		if(!thing.can_blob_attack())
 			continue
@@ -139,7 +161,9 @@
 	if(iswallturf(loc))
 		loc.blob_act(src) //don't ask how a wall got on top of the core, just eat it
 
-/obj/structure/blob/proc/blob_attack_animation(atom/A = null, controller) //visually attacks an atom
+/obj/structure/blob/proc/blob_attack_animation(atom/A = null, controller)
+	procstart = null
+	src.procstart = null //visually attacks an atom
 	var/obj/effect/temp_visual/blob/O = new /obj/effect/temp_visual/blob(src.loc)
 	O.setDir(dir)
 	var/area/my_area = get_area(src)
@@ -159,6 +183,8 @@
 
 /// Can this blob structure make further blobs? For special cases (e.g. blobs not going past crit mass count if not ending the round)
 /obj/structure/blob/proc/can_make_blob(mob/eye/blob/controller = null)
+	procstart = null
+	src.procstart = null
 	// If it's not being done with a controller, it's being done automatically. Because it's not player-controlled, it's not worth worrying about.
 	if(!controller)
 		return TRUE
@@ -170,6 +196,8 @@
 	return TRUE
 
 /obj/structure/blob/proc/expand(turf/T = null, mob/eye/blob/controller = null, expand_reaction = 1)
+	procstart = null
+	src.procstart = null
 	if(!T)
 		var/list/dirs = list(1,2,4,8)
 		for(var/i = 1 to 4)
@@ -231,6 +259,8 @@
 	return
 
 /obj/structure/blob/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -241,6 +271,8 @@
 			new /obj/effect/temp_visual/emp(get_turf(src))
 
 /obj/structure/blob/zap_act(power, zap_flags)
+	procstart = null
+	src.procstart = null
 	if(overmind)
 		if(overmind.blobstrain.tesla_reaction(src, power))
 			take_damage(power * 1.25e-3, BURN, ENERGY)
@@ -250,14 +282,20 @@
 	return ..() //You don't get to do it for free
 
 /obj/structure/blob/extinguish()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(overmind)
 		overmind.blobstrain.extinguish_reaction(src)
 
 /obj/structure/blob/hulk_damage()
+	procstart = null
+	src.procstart = null
 	return 15
 
 /obj/structure/blob/analyzer_act(mob/living/user, obj/item/analyzer/tool)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE)
 	to_chat(user, "<b>The analyzer beeps once, then reports:</b><br>")
 	SEND_SOUND(user, sound('sound/machines/ping.ogg'))
@@ -270,6 +308,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/blob/proc/chemeffectreport(mob/user)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 	. = list()
 	if(overmind)
@@ -280,6 +320,8 @@
 		. += "<b>No Material Detected!</b>"
 
 /obj/structure/blob/proc/typereport(mob/user)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 	return list("<b>Blob Type:</b> [span_notice("[uppertext(initial(name))]")]",
 							"<b>Health:</b> [span_notice("[atom_integrity]/[max_integrity]")]",
@@ -287,11 +329,15 @@
 
 
 /obj/structure/blob/attack_animal(mob/living/simple_animal/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.has_faction(ROLE_BLOB)) //sorry, but you can't kill the blob as a blobbernaut
 		return
 	..()
 
 /obj/structure/blob/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(damage_amount)
@@ -302,6 +348,8 @@
 			playsound(src.loc, 'sound/items/tools/welder.ogg', 100, TRUE)
 
 /obj/structure/blob/run_atom_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			damage_amount *= brute_resist
@@ -318,16 +366,22 @@
 	return damage_amount
 
 /obj/structure/blob/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && atom_integrity > 0)
 		update_appearance()
 
 /obj/structure/blob/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(overmind)
 		overmind.blobstrain.death_reaction(src, damage_flag)
 	..()
 
 /obj/structure/blob/proc/change_to(type, controller)
+	procstart = null
+	src.procstart = null
 	if(!ispath(type))
 		CRASH("change_to(): invalid type for blob")
 	var/obj/structure/blob/B = new type(src.loc, controller)
@@ -338,6 +392,8 @@
 	return B
 
 /obj/structure/blob/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/atom_hud/hud_to_check = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
 	if(HAS_TRAIT(user, TRAIT_RESEARCH_SCANNER) || hud_to_check.hud_users[user])
@@ -354,9 +410,13 @@
 		. += "It seems to be made of [get_chem_name()]."
 
 /obj/structure/blob/proc/scannerreport()
+	procstart = null
+	src.procstart = null
 	return "A generic blob. Looks like someone forgot to override this proc, adminhelp this."
 
 /obj/structure/blob/proc/get_chem_name()
+	procstart = null
+	src.procstart = null
 	if(overmind)
 		return overmind.blobstrain.name
 	return "some kind of organic tissue"
@@ -371,19 +431,27 @@
 	brute_resist = BLOB_BRUTE_RESIST * 0.5
 
 /obj/structure/blob/normal/Initialize(mapload, owner_overmind)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_integrity(initial_integrity)
 
 /obj/structure/blob/normal/scannerreport()
+	procstart = null
+	src.procstart = null
 	if(atom_integrity <= 15)
 		return "Currently weak to brute damage."
 	return "N/A"
 
 /obj/structure/blob/normal/update_name()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[(atom_integrity <= 15) ? "fragile " : (overmind ? null : "dead ")][initial(name)]"
 
 /obj/structure/blob/normal/update_desc()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(atom_integrity <= 15)
 		desc = "A thin lattice of slightly twitching tendrils."
@@ -393,6 +461,8 @@
 		desc = "A thick wall of lifeless tendrils."
 
 /obj/structure/blob/normal/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "blob[(atom_integrity <= 15) ? "_damaged" : null]"
 
 	/// - [] TODO: Move this elsewhere
@@ -419,7 +489,9 @@
 	/// Range this blob free upgrades to reflector blobs at: for the core, and for strains
 	var/reflector_reinforce_range = 0
 
-/obj/structure/blob/special/proc/reinforce_area(seconds_per_tick) // Used by cores and nodes to upgrade their surroundings
+/obj/structure/blob/special/proc/reinforce_area(seconds_per_tick)
+	procstart = null
+	src.procstart = null // Used by cores and nodes to upgrade their surroundings
 	if(strong_reinforce_range)
 		for(var/obj/structure/blob/normal/B in range(strong_reinforce_range, src))
 			if(SPT_PROB(BLOB_REINFORCE_CHANCE, seconds_per_tick))
@@ -430,6 +502,8 @@
 				B.change_to(/obj/structure/blob/shield/reflective/core, overmind)
 
 /obj/structure/blob/special/proc/pulse_area(mob/eye/blob/pulsing_overmind, claim_range = 10, pulse_range = 3, expand_range = 2)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(pulsing_overmind))
 		pulsing_overmind = overmind
 	Be_Pulsed()

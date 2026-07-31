@@ -1965,6 +1965,8 @@
 	research_icon_state = "standard-plating"
 
 /datum/design/mod_plating/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/mod/construction/plating/armor_type = build_path
 	var/datum/mod_theme/theme = GLOB.mod_themes[initial(armor_type.theme)]
@@ -2092,6 +2094,8 @@
 	)
 
 /datum/design/module/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/mod/module/module = build_path
 	desc = "[initial(module.desc)] It uses [initial(module.complexity)] complexity."

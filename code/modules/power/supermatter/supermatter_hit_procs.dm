@@ -1,11 +1,15 @@
 /// Consume things that run into the supermatter from the tram. The tram calls forceMove (doesn't call Bump/ed) and not Move, and I'm afraid changing it will do something chaotic
 /obj/machinery/power/supermatter_crystal/proc/tram_contents_consume(datum/source, list/tram_contents)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/atom/thing_to_consume as anything in tram_contents)
 		Bumped(thing_to_consume)
 
 /obj/machinery/power/supermatter_crystal/proc/eat_bullets(datum/source, obj/projectile/projectile)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/turf/local_turf = loc
@@ -49,6 +53,8 @@
 	return COMPONENT_BULLET_BLOCKED
 
 /obj/machinery/power/supermatter_crystal/singularity_act()
+	procstart = null
+	src.procstart = null
 	var/gain = 100
 	investigate_log("was consumed by a singularity.", INVESTIGATE_ENGINE)
 	message_admins("Singularity has consumed a supermatter shard and can now become stage six.")
@@ -63,6 +69,8 @@
 	return gain
 
 /obj/machinery/power/supermatter_crystal/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user))
 		return
 	var/mob/living/carbon/jedi = user
@@ -76,6 +84,8 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/power/supermatter_crystal/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/scalpel/supermatter))
 		var/obj/item/scalpel/supermatter/scalpel = tool
 		to_chat(user, span_notice("You carefully begin to scrape \the [src] with \the [scalpel]..."))
@@ -128,12 +138,18 @@
 
 //Do not blow up our internal radio
 /obj/machinery/power/supermatter_crystal/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/power/supermatter_crystal/proc/wrench_act_callback(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(moveable)
 		default_unfasten_wrench(user, tool)
 
 /obj/machinery/power/supermatter_crystal/proc/consume_callback(matter_increase, damage_increase)
+	procstart = null
+	src.procstart = null
 	external_power_trickle += matter_increase
 	external_damage_immediate += damage_increase

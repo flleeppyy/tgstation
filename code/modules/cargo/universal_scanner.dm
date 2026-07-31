@@ -34,6 +34,8 @@
 	var/cut_min = 0.01
 
 /obj/item/universal_scanner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	scale_mode = sort_list(list(
 		"export scanner" = image(icon = src.icon, icon_state = "export scanner"),
@@ -43,6 +45,8 @@
 	register_context()
 
 /obj/item/universal_scanner/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/choice = show_radial_menu(user, src, scale_mode, custom_check = CALLBACK(src, PROC_REF(check_menu), user), radius = 36, require_near = TRUE)
 	if(!choice)
@@ -60,6 +64,8 @@
 	playsound(src, 'sound/machines/click.ogg', 40, TRUE)
 
 /obj/item/universal_scanner/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isobj(interacting_with))
 		return NONE
 	if(scanning_mode == SCAN_EXPORTS)
@@ -71,6 +77,8 @@
 	return NONE
 
 /obj/item/universal_scanner/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(scanning_mode == SCAN_SALES_TAG && isidcard(tool))
 		var/obj/item/card/id/potential_acc = tool
 		if(!potential_acc.registered_account)
@@ -104,6 +112,8 @@
 	return NONE
 
 /obj/item/universal_scanner/attack_self_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(scanning_mode == SCAN_SALES_TAG)
 		if(paper_count <= 0)
@@ -130,6 +140,8 @@
 		to_chat(user, span_notice("[src] will now give things a [new_custom_price] [MONEY_SYMBOL] tag."))
 
 /obj/item/universal_scanner/item_ctrl_click(mob/user)
+	procstart = null
+	src.procstart = null
 	. = CLICK_ACTION_BLOCKING
 	if(scanning_mode == SCAN_SALES_TAG)
 		payments_acc = null
@@ -137,6 +149,8 @@
 		return CLICK_ACTION_SUCCESS
 
 /obj/item/universal_scanner/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!scanning_mode == SCAN_SALES_TAG)
 		return CLICK_ACTION_BLOCKING
 	var/potential_cut = input("How much would you like to pay out to the registered card?","Percentage Profit ([round(cut_min*100)]% - [round(cut_max*100)]%)") as num|null
@@ -147,6 +161,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/universal_scanner/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It has [paper_count]/[max_paper_count] available barcodes. Refill with paper.")
 
@@ -159,6 +175,8 @@
 		. += span_notice("The current custom price is set to [new_custom_price] [MONEY_SYMBOL]. <b>Right-click</b> to change.")
 
 /obj/item/universal_scanner/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	switch(scanning_mode)
 		if(SCAN_SALES_TAG)
 			context[SCREENTIP_CONTEXT_LMB] = "Tag package"
@@ -175,6 +193,8 @@
  * Scans an object, target, and provides its export value based on selling to the cargo shuttle, to mob/user.
  */
 /obj/item/universal_scanner/proc/export_scan(obj/target, mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/export_report/report = export_item_and_contents(target, dry_run = TRUE)
 	var/price = 0
 	for(var/exported_datum in report.total_amount)
@@ -251,6 +271,8 @@
  * Scans an object, target, and sets its custom_price variable to new_custom_price, presenting it to the user.
  */
 /obj/item/universal_scanner/proc/price_tag(obj/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(isitem(target))
 		var/obj/item/selected_target = target
 		selected_target.custom_price = new_custom_price
@@ -263,6 +285,8 @@
  * * user The mob interacting with a menu
  */
 /obj/item/universal_scanner/proc/check_menu(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated)

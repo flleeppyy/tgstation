@@ -19,10 +19,14 @@
 	var/overlay_limit = 10
 
 /obj/item/circuit_component/object_overlay/bar/populate_ports()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	bar_number = add_input_port("Number", PORT_TYPE_NUMBER)
 
 /obj/item/circuit_component/object_overlay/bar/populate_options()
+	procstart = null
+	src.procstart = null
 	var/static/component_options_bar = list(
 		COMP_BAR_OVERLAY_VERTICAL = "barvert",
 		COMP_BAR_OVERLAY_HORIZONTAL = "barhoriz"
@@ -31,6 +35,8 @@
 	options_map = component_options_bar
 
 /obj/item/circuit_component/object_overlay/bar/show_to_owner(atom/target_atom, mob/living/owner)
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(active_overlays) >= overlay_limit)
 		return
 

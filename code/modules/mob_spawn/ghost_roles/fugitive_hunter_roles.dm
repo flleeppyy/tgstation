@@ -9,6 +9,8 @@
 	allow_custom_character = GHOSTROLE_TAKE_PREFS_APPEARANCE
 
 /obj/effect/mob_spawn/ghost_role/human/fugitive/special(mob/living/carbon/human/spawned_human, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/antagonist/fugitive_hunter/fughunter = new
 	fughunter.backstory = back_story
@@ -57,6 +59,8 @@
 	icon_state = "sleeper"
 
 /obj/effect/mob_spawn/ghost_role/human/fugitive/bounty/Destroy()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/fluff/empty_sleeper/S = new(drop_location())
 	S.setDir(dir)
 	return ..()

@@ -19,25 +19,35 @@
 	var/random_spawn = TRUE
 
 /obj/item/lipstick/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 	update_appearance(UPDATE_ICON)
 
 /obj/item/lipstick/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vname == NAMEOF(src, open))
 		update_appearance(UPDATE_ICON)
 
 /obj/item/lipstick/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "Alt-click to change the style."
 
 /obj/item/lipstick/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][open ? "_uncap" : null]"
 	inhand_icon_state = "[base_icon_state][open ? "open" : null]"
 	return ..()
 
 /obj/item/lipstick/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!open)
 		return
@@ -46,10 +56,14 @@
 	. += colored_overlay
 
 /obj/item/lipstick/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	display_radial_menu(user)
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/lipstick/proc/display_radial_menu(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	var/style_options = list(
 		UPPER_LIP = icon('icons/hud/radial.dmi', UPPER_LIP),
 		MIDDLE_LIP = icon('icons/hud/radial.dmi', MIDDLE_LIP),
@@ -69,6 +83,8 @@
 	return TRUE
 
 /obj/item/lipstick/proc/check_menu(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated || !user.is_holding(src))
@@ -119,6 +135,8 @@
 	icon_state = "random_lipstick"
 
 /obj/item/lipstick/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "lipstick"
 	var/static/list/possible_colors
@@ -133,11 +151,15 @@
 	update_appearance()
 
 /obj/item/lipstick/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You twist [src] [open ? "closed" : "open"]."))
 	open = !open
 	update_appearance(UPDATE_ICON)
 
 /obj/item/lipstick/attack(mob/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!open || !ismob(M))
 		return
 
@@ -169,6 +191,8 @@
 
 //you can wipe off lipstick with paper!
 /obj/item/paper/attack(mob/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.zone_selected != BODY_ZONE_PRECISE_MOUTH || !ishuman(M))
 		return ..()
 
@@ -200,6 +224,8 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 0.7)
 
 /obj/item/razor/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins shaving [user.p_them()]self without the razor guard! It looks like [user.p_theyre()] trying to commit suicide!"))
 	if (ishuman(user))
 		shave(user, BODY_ZONE_PRECISE_MOUTH)
@@ -207,6 +233,8 @@
 	return BRUTELOSS
 
 /obj/item/razor/proc/shave(mob/living/carbon/human/skinhead, location = BODY_ZONE_PRECISE_MOUTH)
+	procstart = null
+	src.procstart = null
 	if(location == BODY_ZONE_PRECISE_MOUTH)
 		skinhead.set_facial_hairstyle("Shaved", update = TRUE)
 	else
@@ -214,6 +242,8 @@
 	playsound(loc, 'sound/items/hair-clippers.ogg', 20, TRUE)
 
 /obj/item/razor/attack(mob/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(target_mob))
 		return ..()
 	var/mob/living/carbon/human/human_target = target_mob
@@ -345,4 +375,6 @@
 	icon_state = "medrazor"
 
 /obj/item/razor/surgery/get_surgery_tool_overlay(tray_extended)
+	procstart = null
+	src.procstart = null
 	return "razor"

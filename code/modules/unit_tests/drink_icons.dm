@@ -6,6 +6,8 @@
 	var/generic_mixed_drink_loc = 'icons/obj/drinks/mixed_drinks.dmi'
 
 /datum/unit_test/glass_style_icons/Run()
+	procstart = null
+	src.procstart = null
 	for(var/container_type in GLOB.glass_style_singletons)
 		for(var/reagent_type in GLOB.glass_style_singletons[container_type])
 			var/datum/glass_style/style = GLOB.glass_style_singletons[container_type][reagent_type]
@@ -37,6 +39,8 @@
 /datum/unit_test/glass_style_functionality
 
 /datum/unit_test/glass_style_functionality/Run()
+	procstart = null
+	src.procstart = null
 	// The tested drink
 	// Should ideally have multiple drinking glass datums associated (to check the correct one is seletced)
 	// As well as a value set from every var (name, description, icon, and icon state)
@@ -62,6 +66,8 @@
 /datum/unit_test/drink_icons
 
 /datum/unit_test/drink_icons/Run()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/reagent_containers/cup/glass/glass_subtypes as anything in subtypesof(/obj/item/reagent_containers/cup))
 		var/glass_icon
 		var/glass_icon_state

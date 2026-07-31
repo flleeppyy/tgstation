@@ -18,6 +18,8 @@ This component is used in vat growing to swab for microbiological samples which 
 	var/datum/callback/update_overlays
 
 /datum/component/swabbing/Initialize(can_swab_objs = TRUE, can_swab_turfs = TRUE, can_swab_mobs = FALSE, datum/callback/update_icons, datum/callback/update_overlays, swab_time = 1 SECONDS, max_items = 3)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -33,6 +35,8 @@ This component is used in vat growing to swab for microbiological samples which 
 	src.update_overlays = update_overlays
 
 /datum/component/swabbing/Destroy(force)
+	procstart = null
+	src.procstart = null
 	for(var/swabbed in swabbed_items)
 		qdel(swabbed)
 	update_icons = null
@@ -42,6 +46,8 @@ This component is used in vat growing to swab for microbiological samples which 
 
 ///Changes examine based on your sample
 /datum/component/swabbing/proc/examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(LAZYLEN(swabbed_items))
 		examine_list += span_nicegreen("There is a microbiological sample on [parent]!")
@@ -54,6 +60,8 @@ This component is used in vat growing to swab for microbiological samples which 
 
 ///Ran when you attack an object, tries to get a swab of the object. if a swabbable surface is found it will run behavior and hopefully
 /datum/component/swabbing/proc/try_to_swab(datum/source, atom/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(target, /obj/structure/table))//help how do i do this less shitty
@@ -100,6 +108,8 @@ This component is used in vat growing to swab for microbiological samples which 
 	INVOKE_ASYNC(src, PROC_REF(async_try_to_swab), target, user)
 
 /datum/component/swabbing/proc/async_try_to_swab(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!do_after(user, 3 SECONDS, target)) // Start swabbing boi
 		return
 
@@ -116,6 +126,8 @@ This component is used in vat growing to swab for microbiological samples which 
 
 ///Checks if the swabbing component can swab the specific object or nots
 /datum/component/swabbing/proc/can_swab(atom/target)
+	procstart = null
+	src.procstart = null
 	if(isobj(target))
 		return can_swab_objs
 	if(isturf(target))
@@ -125,10 +137,14 @@ This component is used in vat growing to swab for microbiological samples which 
 
 ///Handle any special overlay cases on the item itself
 /datum/component/swabbing/proc/handle_overlays(datum/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_overlays?.Invoke(overlays, swabbed_items)
 
 ///Handle any special icon cases on the item itself
 /datum/component/swabbing/proc/handle_icon(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_icons?.Invoke(swabbed_items)

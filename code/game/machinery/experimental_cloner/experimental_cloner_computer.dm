@@ -18,16 +18,22 @@
 	var/find_connections = FALSE
 
 /obj/machinery/computer/experimental_cloner/Initialize(mapload, obj/item/circuitboard/circuit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	find_connections = mapload
 
 /obj/machinery/computer/experimental_cloner/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (find_connections)
 		connect_nearby_machines()
 
 /// Find nearby associated machinery and link up
 /obj/machinery/computer/experimental_cloner/proc/connect_nearby_machines()
+	procstart = null
+	src.procstart = null
 	var/list/stuff_in_range = range(5, src)
 
 	var/obj/machinery/experimental_cloner_scanner/scanner = locate() in stuff_in_range
@@ -38,6 +44,8 @@
 		link_pod(pod)
 
 /obj/machinery/computer/experimental_cloner/multitool_act(mob/living/user, obj/item/multitool/multi_tool)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if (machine_stat & BROKEN || isnull(multi_tool.buffer))
 		return
@@ -56,6 +64,8 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/computer/experimental_cloner/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -64,17 +74,23 @@
 
 /// Link up with a scanner to scan people
 /obj/machinery/computer/experimental_cloner/proc/link_scanner(obj/machinery/experimental_cloner_scanner/scanner)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(scanner, COMSIG_QDELETING, PROC_REF(unlink_scanner))
 	RegisterSignal(scanner, COMSIG_CLONER_SCAN_SUCCESSFUL, PROC_REF(on_scan_complete))
 	input = scanner
 
 /// Store the record made by scanning someone
 /obj/machinery/computer/experimental_cloner/proc/on_scan_complete(obj/machinery/experimental_cloner_scanner/scanner, datum/experimental_cloning_record/record)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	stored_record = record
 
 /// Release held references on deletion
 /obj/machinery/computer/experimental_cloner/proc/unlink_scanner()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!input)
 		return
@@ -83,11 +99,15 @@
 
 /// Link up with a pod to print people
 /obj/machinery/computer/experimental_cloner/proc/link_pod(obj/machinery/experimental_cloner/pod)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(pod, COMSIG_QDELETING, PROC_REF(unlink_pod))
 	output = pod
 
 /// Release held references on deletion
 /obj/machinery/computer/experimental_cloner/proc/unlink_pod()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!output)
 		return
@@ -95,6 +115,8 @@
 	output = null
 
 /obj/machinery/computer/experimental_cloner/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/mob/living/carbon/human/scanner_occupant = input?.occupant
@@ -115,6 +137,8 @@
 	return data
 
 /obj/machinery/computer/experimental_cloner/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

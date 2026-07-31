@@ -19,6 +19,8 @@
 	var/datum/effect_system/basic/spark_spread/spark_system
 
 /obj/structure/trap/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	flare_message = span_warning("[src] flares brightly!")
 	spark_system = new(src, 4, TRUE)
@@ -35,10 +37,14 @@
 		))
 
 /obj/structure/trap/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(spark_system)
 	return ..()
 
 /obj/structure/trap/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(user))
 		return
@@ -49,6 +55,8 @@
 		flare()
 
 /obj/structure/trap/proc/flare()
+	procstart = null
+	src.procstart = null
 	// Makes the trap visible, and starts the cooldown until it's
 	// able to be triggered again.
 	visible_message(flare_message)
@@ -64,6 +72,8 @@
 		animate(src, alpha = initial(alpha), time = time_between_triggers)
 
 /obj/structure/trap/proc/on_entered(datum/source, atom/movable/victim)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(last_trigger + time_between_triggers > world.time)
 		return
@@ -84,6 +94,8 @@
 		trap_effect(victim)
 
 /obj/structure/trap/proc/trap_effect(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/trap/stun
@@ -93,6 +105,8 @@
 	var/stun_time = 10 SECONDS
 
 /obj/structure/trap/stun/trap_effect(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	victim.electrocute_act(30, src, flags = SHOCK_NOGLOVES) // electrocute act does a message.
 	victim.Paralyze(stun_time)
 
@@ -108,17 +122,23 @@
 	var/caught = FALSE
 
 /obj/structure/trap/stun/hunter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	time_between_triggers = 1 SECONDS
 	flare_message = span_warning("[src] snaps shut!")
 
 /obj/structure/trap/stun/hunter/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(stored_item))
 		qdel(stored_item)
 	stored_item = null
 	return ..()
 
 /obj/structure/trap/stun/hunter/on_entered(datum/source, atom/movable/victim)
+	procstart = null
+	src.procstart = null
 	if(isliving(victim))
 		var/mob/living/living_victim = victim
 		if(!living_victim.mind?.has_antag_datum(/datum/antagonist/fugitive))
@@ -127,6 +147,8 @@
 	. = ..()
 
 /obj/structure/trap/stun/hunter/flare()
+	procstart = null
+	src.procstart = null
 	..()
 	var/turf/our_turf = get_turf(src)
 	if(!our_turf)
@@ -147,6 +169,8 @@
 	var/datum/effect_system/basic/spark_spread/spark_system
 
 /obj/item/bountytrap/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	radio = new(src)
 	radio.subspace_transmission = TRUE
@@ -160,11 +184,15 @@
 	stored_trap.stored_item = src
 
 /obj/item/bountytrap/proc/announce_fugitive()
+	procstart = null
+	src.procstart = null
 	spark_system.start()
 	playsound(src, 'sound/machines/ding.ogg', 50, TRUE)
 	radio.talk_into(src, "Fugitive has triggered this trap in the [get_area_name(src)]!", RADIO_CHANNEL_COMMON)
 
 /obj/item/bountytrap/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(src)
 	if(!user || !user.transferItemToLoc(src, target_turf))//visibly unequips
 		return
@@ -173,6 +201,8 @@
 	forceMove(stored_trap)//moves item into trap
 
 /obj/item/bountytrap/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(stored_trap))
 		qdel(stored_trap)
 	stored_trap = null
@@ -186,6 +216,8 @@
 	icon_state = "trap-fire"
 
 /obj/structure/trap/fire/trap_effect(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	to_chat(victim, span_danger("<B>Spontaneous combustion!</B>"))
 	victim.Paralyze(2 SECONDS)
 	new /obj/effect/hotspot(get_turf(src))
@@ -196,6 +228,8 @@
 	icon_state = "trap-frost"
 
 /obj/structure/trap/chill/trap_effect(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(victim, TRAIT_RESISTCOLD))
 		return
 	to_chat(victim, span_bolddanger("You're frozen solid!"))
@@ -211,6 +245,8 @@
 
 
 /obj/structure/trap/damage/trap_effect(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	to_chat(victim, span_bolddanger("The ground quakes beneath your feet!"))
 	victim.Paralyze(10 SECONDS)
 	victim.adjust_brute_loss(35)
@@ -226,6 +262,8 @@
 	time_between_triggers = 2 MINUTES
 
 /obj/structure/trap/ward/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_IN(src, time_between_triggers)
 
@@ -235,6 +273,8 @@
 	icon_state = "trap-cult"
 
 /obj/structure/trap/cult/trap_effect(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	to_chat(victim, span_bolddanger("With a crack, the hostile constructs come out of hiding, stunning you!"))
 	victim.electrocute_act(10, src, flags = SHOCK_NOGLOVES) // electrocute act does a message.
 	victim.Paralyze(2 SECONDS)

@@ -2,16 +2,22 @@
 /datum/element/reagents_item_heatable
 
 /datum/element/reagents_item_heatable/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
 	RegisterSignal(target, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(on_item_interact))
 
 /datum/element/reagents_item_heatable/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, COMSIG_ATOM_ITEM_INTERACTION)
 	return ..()
 
 /datum/element/reagents_item_heatable/proc/on_item_interact(atom/source, mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(source.reagents) || source.reagents.total_volume <= 0)

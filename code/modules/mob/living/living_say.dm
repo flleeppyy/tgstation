@@ -75,6 +75,8 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 ))
 
 /mob/living/proc/Ellipsis(original_msg, chance = 50, keep_words)
+	procstart = null
+	src.procstart = null
 	if(chance <= 0)
 		return "..."
 	if(chance >= 100)
@@ -275,6 +277,8 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 
 
 /mob/living/Hear(atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, radio_freq_name, radio_freq_color, list/spans, list/message_mods = list(), message_range=0)
+	procstart = null
+	src.procstart = null
 	if((SEND_SIGNAL(src, COMSIG_MOVABLE_PRE_HEAR, args) & COMSIG_MOVABLE_CANCEL_HEARING) || !GET_CLIENT(src))
 		return FALSE
 
@@ -408,6 +412,8 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	return hearflags
 
 /mob/living/send_speech(message_raw, message_range = 6, obj/source = src, bubble_type = bubble_icon, list/spans, datum/language/message_language = null, list/message_mods = list(), forced = null, tts_message, list/tts_filter)
+	procstart = null
+	src.procstart = null
 	var/whisper_range = 0
 	var/is_speaker_whispering = FALSE
 	if(message_mods[WHISPER_MODE]) //If we're whispering
@@ -477,6 +483,8 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	addtimer(CALLBACK(src, PROC_REF(clear_saypopup), say_popup), 3.5 SECONDS)
 
 /mob/living/get_tts_voice(list/filter, list/special_filter)
+	procstart = null
+	src.procstart = null
 	. = voice
 	var/obj/item/clothing/mask/mask = get_item_by_slot(ITEM_SLOT_MASK)
 	if(!istype(mask) || mask.up)
@@ -489,13 +497,19 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		special_filter |= TTS_FILTER_RADIO
 
 /mob/living/silicon/get_tts_voice(list/filter, list/special_filter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	special_filter |= TTS_FILTER_SILICON
 
 /mob/living/proc/clear_saypopup(image/say_popup)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(update_on_z, say_popup)
 
 /mob/proc/binarycheck()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /**
@@ -508,6 +522,8 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
  * contains the new message, as well as text-to-speech information.
  */
 /mob/living/proc/treat_message(message, tts_message, tts_filter, capitalize_message = TRUE)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 
 	if(HAS_TRAIT(src, TRAIT_UNINTELLIGIBLE_SPEECH))
@@ -531,6 +547,8 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	return list("message" = message, "tts_message" = tts_message, "tts_filter" = tts_filter)
 
 /mob/living/proc/radio(message, list/message_mods = list(), list/spans, language)
+	procstart = null
+	src.procstart = null
 	var/obj/item/implant/radio/imp = locate() in src
 	if(imp?.radio.is_on())
 		if(message_mods[MODE_HEADSET])
@@ -559,6 +577,8 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	return NONE
 
 /mob/living/say_mod(input, list/message_mods = list())
+	procstart = null
+	src.procstart = null
 	if(message_mods[WHISPER_MODE] == MODE_WHISPER)
 		. = verb_whisper
 	else if(message_mods[WHISPER_MODE] == MODE_WHISPER_CRIT && !HAS_TRAIT(src, TRAIT_SUCCUMB_OVERRIDE))
@@ -599,6 +619,8 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
  * filterproof - whether we ignore the word filter
  */
 /mob/living/whisper(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language, ignore_spam = FALSE, forced, filterproof)
+	procstart = null
+	src.procstart = null
 	if(!message)
 		return
 	say("#[message]", bubble_type, spans, sanitize, language, ignore_spam, forced, filterproof)

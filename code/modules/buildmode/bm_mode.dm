@@ -15,11 +15,15 @@
 	var/turf/cornerB
 
 /datum/buildmode_mode/New(datum/buildmode/BM)
+	procstart = null
+	src.procstart = null
 	src.BM = BM
 	preview = list()
 	return ..()
 
 /datum/buildmode_mode/Destroy()
+	procstart = null
+	src.procstart = null
 	cornerA = null
 	cornerB = null
 	QDEL_LIST(preview)
@@ -27,25 +31,39 @@
 	return ..()
 
 /datum/buildmode_mode/proc/enter_mode(datum/buildmode/BM)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/buildmode_mode/proc/exit_mode(datum/buildmode/BM)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/buildmode_mode/proc/get_button_iconstate()
+	procstart = null
+	src.procstart = null
 	return "buildmode_[key]"
 
 /datum/buildmode_mode/proc/show_help(client/c)
+	procstart = null
+	src.procstart = null
 	CRASH("No help defined, yell at a coder")
 
 /datum/buildmode_mode/proc/change_settings(client/c)
+	procstart = null
+	src.procstart = null
 	to_chat(c, span_warning("There is no configuration available for this mode"))
 	return
 
 /datum/buildmode_mode/proc/Reset()
+	procstart = null
+	src.procstart = null
 	deselect_region()
 
 /datum/buildmode_mode/proc/select_tile(turf/T, corner_to_select)
+	procstart = null
+	src.procstart = null
 	var/overlaystate
 	BM.holder.images -= preview
 	switch(corner_to_select)
@@ -61,6 +79,8 @@
 	return T
 
 /datum/buildmode_mode/proc/highlight_region(region)
+	procstart = null
+	src.procstart = null
 	BM.holder.images -= preview
 	for(var/turf/member as anything in region)
 		var/image/I = image('icons/turf/overlays.dmi', member, "redOverlay")
@@ -69,12 +89,16 @@
 	BM.holder.images += preview
 
 /datum/buildmode_mode/proc/deselect_region()
+	procstart = null
+	src.procstart = null
 	BM.holder.images -= preview
 	preview.Cut()
 	cornerA = null
 	cornerB = null
 
 /datum/buildmode_mode/proc/handle_click(client/c, params, object)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 	if(use_corner_selection)
 		if(LAZYACCESS(modifiers, LEFT_CLICK))
@@ -93,6 +117,8 @@
 	return
 
 /datum/buildmode_mode/proc/handle_selected_area(client/c, params)
+	procstart = null
+	src.procstart = null
 
 #undef AREASELECT_CORNERA
 #undef AREASELECT_CORNERB

@@ -23,6 +23,8 @@
 	var/datum/bodypart_overlay/mutant/tail_spines/tail_spines_overlay
 
 /obj/item/organ/tail/on_mob_insert(mob/living/carbon/receiver, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	receiver.clear_mood_event("tail_lost")
 	receiver.clear_mood_event("tail_balance_lost")
@@ -41,17 +43,23 @@
 			receiver.add_mood_event("tail_regained", /datum/mood_event/tail_regained_wrong)
 
 /obj/item/organ/tail/on_bodypart_insert(obj/item/bodypart/bodypart)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/spines/our_spines = bodypart.owner.get_organ_slot(ORGAN_SLOT_EXTERNAL_SPINES)
 	if(our_spines)
 		try_insert_tail_spines(bodypart)
 	return ..()
 
 /obj/item/organ/tail/on_bodypart_remove(obj/item/bodypart/bodypart)
+	procstart = null
+	src.procstart = null
 	remove_tail_spines(bodypart)
 	return ..()
 
 /// If the owner has spines and an appropriate overlay exists, add a tail spines overlay.
 /obj/item/organ/tail/proc/try_insert_tail_spines(obj/item/bodypart/bodypart)
+	procstart = null
+	src.procstart = null
 	// Don't insert another overlay if there already is one.
 	if(tail_spines_overlay)
 		return
@@ -71,12 +79,16 @@
 
 /// If we have a tail spines overlay, delete it
 /obj/item/organ/tail/proc/remove_tail_spines(obj/item/bodypart/bodypart)
+	procstart = null
+	src.procstart = null
 	if(!tail_spines_overlay)
 		return
 	bodypart.remove_bodypart_overlay(tail_spines_overlay)
 	QDEL_NULL(tail_spines_overlay)
 
 /obj/item/organ/tail/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(wag_flags & WAG_WAGGING)
@@ -92,6 +104,8 @@
 ///Accepts an optional timeout after which we remove the tail wagging
 ///Returns false if the wag worked, true otherwise
 /obj/item/organ/tail/proc/start_wag(mob/living/carbon/organ_owner, stop_after = INFINITY)
+	procstart = null
+	src.procstart = null
 	if(wag_flags & WAG_WAGGING || !(wag_flags & WAG_ABLE)) // we are already wagging
 		return FALSE
 	if(organ_owner.stat == DEAD || organ_owner != owner) // no wagging when owner is dead or tail has been disembodied
@@ -109,13 +123,17 @@
 	RegisterSignal(organ_owner, COMSIG_LIVING_DEATH, PROC_REF(owner_died))
 	return TRUE
 
-/obj/item/organ/tail/proc/owner_died(mob/living/carbon/organ_owner) // Resisting the urge to replace owner with daddy
+/obj/item/organ/tail/proc/owner_died(mob/living/carbon/organ_owner)
+	procstart = null
+	src.procstart = null // Resisting the urge to replace owner with daddy
 	SIGNAL_HANDLER
 	stop_wag(organ_owner)
 
 ///We need some special behaviour for accessories, wrapped here so we can easily add more interactions later
 ///Returns false if the wag stopping worked, true otherwise
 /obj/item/organ/tail/proc/stop_wag(mob/living/carbon/organ_owner)
+	procstart = null
+	src.procstart = null
 	if(!(wag_flags & WAG_ABLE))
 		return FALSE
 
@@ -136,6 +154,8 @@
 	return succeeded
 
 /obj/item/organ/tail/proc/get_butt_sprite()
+	procstart = null
+	src.procstart = null
 	return null
 
 ///Tail parent type, with wagging functionality
@@ -149,9 +169,13 @@
 	var/wagging = FALSE
 
 /datum/bodypart_overlay/mutant/tail/get_base_icon_state()
+	procstart = null
+	src.procstart = null
 	return "[wagging ? "wagging_" : ""][sprite_datum.icon_state]" //add the wagging tag if we be wagging
 
 /datum/bodypart_overlay/mutant/tail/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner, mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	return ..() && !(bodypart_owner.owner?.obscured_slots & HIDEJUMPSUIT)
 
 /obj/item/organ/tail/cat
@@ -163,6 +187,8 @@
 	wag_flags = WAG_ABLE
 
 /obj/item/organ/tail/cat/get_butt_sprite()
+	procstart = null
+	src.procstart = null
 	return icon('icons/mob/butts.dmi', BUTT_SPRITE_CAT)
 
 ///Cat tail bodypart overlay
@@ -203,15 +229,21 @@
 	var/datum/action/cooldown/spell/aoe/repulse/xeno/tail_whip
 
 /obj/item/organ/tail/xeno_queen/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tail_whip = new(src)
 
 /obj/item/organ/tail/xeno_queen/on_mob_insert(mob/living/carbon/receiver, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tail_whip.Grant(receiver)
 	receiver.add_movespeed_modifier(/datum/movespeed_modifier/tail_dragger)
 
 /obj/item/organ/tail/xeno_queen/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tail_whip.Remove(organ_owner)
 	organ_owner.remove_movespeed_modifier(/datum/movespeed_modifier/tail_dragger)
@@ -226,10 +258,14 @@
 	var/default_appearance = "Xeno"
 
 /datum/bodypart_overlay/mutant/tail/xeno/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_appearance_from_name(default_appearance)
 
 /datum/bodypart_overlay/mutant/tail/xeno/randomize_appearance()
+	procstart = null
+	src.procstart = null
 	set_appearance_from_name(default_appearance)
 
 /datum/bodypart_overlay/mutant/tail/xeno/queen
@@ -268,10 +304,16 @@
 	var/tail_spine_key = NONE
 
 /datum/bodypart_overlay/mutant/tail_spines/get_base_icon_state()
+	procstart = null
+	src.procstart = null
 	return (!isnull(tail_spine_key) ? "[tail_spine_key]_" : "") + (wagging ? "wagging_" : "") + sprite_datum.icon_state // Select the wagging state if appropriate
 
 /datum/bodypart_overlay/mutant/tail_spines/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner, mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	return ..() && !(bodypart_owner.owner?.obscured_slots & HIDEJUMPSUIT)
 
 /datum/bodypart_overlay/mutant/tail_spines/set_dye_color(new_color, obj/item/organ/organ)
+	procstart = null
+	src.procstart = null
 	dye_color = new_color //no update_body_parts() call, tail/set_dye_color will do it.

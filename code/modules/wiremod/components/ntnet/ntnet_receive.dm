@@ -20,20 +20,28 @@
 	var/datum/port/input/enc_key
 
 /obj/item/circuit_component/ntnet_receive/populate_options()
+	procstart = null
+	src.procstart = null
 	list_options = add_option_port("List Type", GLOB.wiremod_basic_types)
 
 /obj/item/circuit_component/ntnet_receive/populate_ports()
+	procstart = null
+	src.procstart = null
 	data_package = add_output_port("Data Package", PORT_TYPE_LIST(PORT_TYPE_ANY))
 	enc_key = add_input_port("Encryption Key", PORT_TYPE_STRING)
 	RegisterSignal(SSdcs, COMSIG_GLOB_CIRCUIT_NTNET_DATA_SENT, PROC_REF(ntnet_receive))
 
 /obj/item/circuit_component/ntnet_receive/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(port == list_options)
 		var/new_datatype = list_options.value
 		data_package.set_datatype(PORT_TYPE_LIST(new_datatype))
 
 
 /obj/item/circuit_component/ntnet_receive/proc/ntnet_receive(obj/item/circuit_component/ntnet_send/source, list/data)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!find_functional_ntnet_relay())

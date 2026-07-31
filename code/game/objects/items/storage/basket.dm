@@ -8,5 +8,7 @@
 	storage_type = /datum/storage/basket
 
 /obj/item/storage/basket/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/cuffable_item)

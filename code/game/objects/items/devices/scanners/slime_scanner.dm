@@ -14,6 +14,8 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 3, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 2)
 
 /obj/item/slime_scanner/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isliving(interacting_with))
 		return NONE
 	if(!user.can_read(src) || user.is_blind())
@@ -27,6 +29,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /proc/slime_scan(mob/living/basic/slime/scanned_slime, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/to_render = "<b>Slime scan results:</b>\
 					\n[span_notice("[scanned_slime.slime_type.colour] [scanned_slime.life_stage] slime")]\
 					\nNutrition: [scanned_slime.nutrition]/[SLIME_MAX_NUTRITION]"

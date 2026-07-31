@@ -4,6 +4,8 @@
 	var/sight_mode = null
 
 /obj/item/borg/sight/equipped(mob/living/silicon/robot/user, slot, initial = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscyborg(user))
 		return .
@@ -11,6 +13,8 @@
 	user.update_sight()
 
 /obj/item/borg/sight/dropped(mob/living/silicon/robot/user, silent)
+	procstart = null
+	src.procstart = null
 	if(!iscyborg(user))
 		return ..()
 	user.sight_mode &= ~sight_mode
@@ -32,6 +36,8 @@
 	var/obj/item/clothing/glasses/hud/hud = null
 
 /obj/item/borg/sight/hud/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if (!isnull(hud))
 		hud = new hud(src)
 	return ..()

@@ -19,10 +19,14 @@
 	var/turf_reservation_type = /datum/turf_reservation
 
 /datum/lazy_template/New()
+	procstart = null
+	src.procstart = null
 	reservations = list()
 	..()
 
 /datum/lazy_template/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(!force)
 		stack_trace("Something is trying to delete [type]")
 		return QDEL_HINT_LETMELIVE
@@ -35,6 +39,8 @@
  * Does the grunt work of loading the template.
  */
 /datum/lazy_template/proc/lazy_load()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/turf)
 	// This is a static assosciative list that is used to ensure maps that have variations are correctly varied when spawned
 	// I want to make it to where you can make a range and it'll randomly pick'n'take from the available versions at random

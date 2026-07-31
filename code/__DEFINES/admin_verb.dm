@@ -1,4 +1,6 @@
 /client/CanProcCall(procname)
+	procstart = null
+	src.procstart = null
 	if(findtext(procname, "__avd_") == 1)
 		message_admins("[key_name_admin(usr)] attempted to directly call admin verb '[procname]'.")
 		log_admin("[key_name(usr)] attempted to directly call admin verb '[procname]'.")
@@ -25,6 +27,8 @@
 }; \
 /client/proc/__avd_##verb_path_name(##verb_args) \
 { \
+	procstart = null; \
+	src.procstart = null; \
 	set name = ##verb_name; \
 	set desc = ##verb_desc; \
 	set hidden = FALSE; /* this is explicitly needed as the proc begins with an underscore */ \
@@ -35,6 +39,8 @@
 	SSadmin_verbs.dynamic_invoke_verb(arglist(_verb_args)); \
 }; \
 /datum/admin_verb/##verb_path_name/__avd_do_verb(client/user, ##verb_args)
+	procstart = null;
+	src.procstart;
 
 #define ADMIN_VERB(verb_path_name, verb_permissions, verb_name, verb_desc, verb_category, verb_args...) \
 _ADMIN_VERB(verb_path_name, verb_permissions, verb_name, verb_desc, verb_category, FALSE, ##verb_args)
@@ -47,17 +53,24 @@ _ADMIN_VERB(verb_path_name, verb_permissions, verb_name, verb_desc, verb_categor
 
 /// Used to define a special check to determine if the admin verb should exist at all. Useful for verbs such as play sound which require configuration.
 #define ADMIN_VERB_CUSTOM_EXIST_CHECK(verb_path_name) \
-/datum/admin_verb/##verb_path_name/__avd_check_should_exist()
+/datum/admin_verb/##verb_path_name/__avd_check_should_exist() \
+	{procstart = null; src.procstart = null;}
 
 /// Used to define the visibility flag of the verb. If the admin does not have this flag enabled they will not see the verb.
 #define ADMIN_VERB_VISIBILITY(verb_path_name, verb_visibility) /datum/admin_verb/##verb_path_name/visibility_flag = ##verb_visibility
 
 // These are put here to prevent the "procedure override precedes definition" error.
 /datum/admin_verb/proc/__avd_get_verb_path()
+	procstart = null
+	src.procstart = null
 	CRASH("__avd_get_verb_path not defined. use the macro")
 /datum/admin_verb/proc/__avd_do_verb(...)
+	procstart = null
+	src.procstart = null
 	CRASH("__avd_do_verb not defined. use the macro")
 /datum/admin_verb/proc/__avd_check_should_exist()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /*

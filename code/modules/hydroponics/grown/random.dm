@@ -14,6 +14,8 @@
 	custom_premium_price = PAYCHECK_CREW * 2
 
 /obj/item/seeds/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	randomize_stats()
 	if(prob(60))
@@ -29,6 +31,8 @@
 	icon_state = "crunchy"
 
 /obj/item/food/grown/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	wine_power = rand(10,150)
 	if(prob(1))

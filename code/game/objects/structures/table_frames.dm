@@ -23,10 +23,14 @@
 	var/framestackamount = 2
 
 /obj/structure/table_frame/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/structure/table_frame/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item))
 		return NONE
 
@@ -40,6 +44,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/table_frame/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	balloon_alert(user, "deconstructing...")
 	tool.play_tool_sound(src)
 	if(!tool.use_tool(src, user, 3 SECONDS))
@@ -49,9 +55,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/table_frame/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return wrench_act(user, tool)
 
 /obj/structure/table_frame/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isstack(tool))
 		return NONE
 	var/obj/item/stack/our_stack = tool
@@ -92,12 +102,18 @@
 
 /// Gets the table type we make with our given stack.
 /obj/structure/table_frame/proc/get_table_type(obj/item/stack/our_stack)
+	procstart = null
+	src.procstart = null
 	return our_stack.get_table_type()
 
 /obj/structure/table_frame/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new framestack(get_turf(src), framestackamount)
 
 /obj/structure/table_frame/narsie_act()
+	procstart = null
+	src.procstart = null
 	new /obj/structure/table_frame/wood(src.loc)
 	qdel(src)
 
@@ -115,6 +131,8 @@
 	custom_materials = list(/datum/material/wood = SHEET_MATERIAL_AMOUNT * 2)
 
 /obj/structure/table_frame/wood/get_table_type(obj/item/stack/our_stack)
+	procstart = null
+	src.procstart = null
 	if(istype(our_stack, /obj/item/stack/sheet/mineral/wood))
 		return /obj/structure/table/wood
 	if(istype(our_stack, /obj/item/stack/tile/carpet))

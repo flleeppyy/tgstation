@@ -13,6 +13,8 @@
 	circuit = /obj/item/circuitboard/computer/white_ship/bridge
 
 /obj/machinery/computer/shuttle/white_ship/bridge/Initialize(mapload, obj/item/circuitboard/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/gps, SPACE_SIGNAL_GPSTAG_WHITE_SHIP)
 
@@ -29,9 +31,13 @@
 	designate_time = 100
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/whiteship/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.jam_on_wardec += src
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/whiteship/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.jam_on_wardec -= src
 	return ..()

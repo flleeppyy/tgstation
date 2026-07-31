@@ -273,6 +273,8 @@
 	var/can_hit_turfs = FALSE
 
 /obj/projectile/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	maximum_range = range
 	if (embed_type)
@@ -280,6 +282,8 @@
 	add_traits(list(TRAIT_FREE_HYPERSPACE_MOVEMENT, TRAIT_FREE_HYPERSPACE_SOFTCORDON_MOVEMENT), INNATE_TRAIT)
 
 /obj/projectile/Destroy()
+	procstart = null
+	src.procstart = null
 	if (hitscan)
 		generate_hitscan_tracers()
 	STOP_PROCESSING(SSprojectiles, src)
@@ -296,6 +300,8 @@
 
 /// Called every time a projectile passes one tile worth of movement
 /obj/projectile/proc/reduce_range()
+	procstart = null
+	src.procstart = null
 	range--
 	pixels_moved_last_tile -= ICON_SIZE_ALL
 	if(wound_falloff_tile && wound_bonus != CANT_WOUND)
@@ -323,6 +329,8 @@
 
 /// Called next tick after the projectile reaches its maximum range so the animation has time to fully play out
 /obj/projectile/proc/on_range()
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_PROJECTILE_RANGE_OUT)
 	qdel(src)
 
@@ -343,6 +351,8 @@
  * * Returns [BULLET_ACT_FORCE_PIERCE] to have the projectile keep going instead of "hitting", as if we were not hit at all.
  */
 /obj/projectile/proc/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	// i know that this is probably more with wands and gun mods in mind, but it's a bit silly that the projectile on_hit signal doesn't ping the projectile itself.
@@ -414,6 +424,8 @@
 	return BULLET_ACT_HIT
 
 /obj/projectile/proc/vol_by_damage()
+	procstart = null
+	src.procstart = null
 	if (suppressed)
 		return 5
 	if (!damage)
@@ -421,6 +433,8 @@
 	return clamp(damage * 0.67, 30, 100) // Multiply projectile damage by 0.67, then CLAMP the value between 30 and 1
 
 /obj/projectile/proc/firer_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Shooting yourself point-blank
 	if (firer == original)
@@ -430,14 +444,20 @@
 	firer = null
 
 /obj/projectile/proc/original_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	original = null
 
 /obj/projectile/proc/fired_from_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	fired_from = null
 
 /obj/projectile/proc/on_ricochet(atom/target)
+	procstart = null
+	src.procstart = null
 	ricochets++
 	if(!ricochet_auto_aim_angle || !ricochet_auto_aim_range)
 		return
@@ -459,6 +479,8 @@
 		original = unlucky_sob
 
 /obj/projectile/Bump(atom/bumped_atom)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_MOVABLE_BUMP, bumped_atom)
 	if (can_hit_target(bumped_atom, bumped_atom == original, TRUE, TRUE))
 		impact(bumped_atom)
@@ -475,6 +497,8 @@
  * Also, we select_target to find what to process_hit first.
  */
 /obj/projectile/proc/impact(atom/target)
+	procstart = null
+	src.procstart = null
 	// Don't impact anything if we've been queued for deletion
 	if (deletion_queued)
 		return
@@ -517,6 +541,8 @@
  * If you need to call this directly, you should reconsider the choices that led you to this point
  */
 /obj/projectile/proc/process_hit_loop(atom/target)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 	PRIVATE_PROC(TRUE)
 
@@ -593,6 +619,8 @@
  * 6. Nothing
  */
 /obj/projectile/proc/select_target(turf/our_turf, atom/bumped)
+	procstart = null
+	src.procstart = null
 	// 1. special bumped border object check
 	if((bumped?.flags_1 & ON_BORDER_1) && can_hit_target(bumped, original == bumped, TRUE, TRUE))
 		return bumped
@@ -621,6 +649,8 @@
 /// Returns true if the target atom is on our current turf and above the right layer
 /// If direct target is true it's the originally clicked target.
 /obj/projectile/proc/can_hit_target(atom/target, direct_target = FALSE, ignore_loc = FALSE, cross_failed = FALSE)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target) || impacted[target.weak_reference])
 		return FALSE
 	if(!ignore_loc && (loc != target.loc) && !(can_hit_turfs && direct_target && loc == target))
@@ -682,6 +712,8 @@
  * This proc is a little high in overhead but allows us to not snowflake CanPass in living and other things.
  */
 /obj/projectile/proc/scan_moved_turf()
+	procstart = null
+	src.procstart = null
 	// Optimally, we scan: mobs --> objs --> turf for impact
 	// but, overhead is a thing and 2 for loops every time it moves is a no-go.
 	// realistically, since we already do select_target in impact, we can not do that
@@ -702,6 +734,8 @@
  * Projectile crossed: When something enters a projectile's tile, make sure the projectile hits it if it should be hitting it.
  */
 /obj/projectile/proc/on_entered(datum/source, atom/movable/entered_atom)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(can_hit_target(entered_atom, direct_target = (entered_atom == original)))
 		impact(entered_atom)
@@ -711,6 +745,8 @@
  * Used to not even attempt to Bump() or fail to Cross() anything we already hit.
  */
 /obj/projectile/CanPassThrough(atom/blocker, movement_dir, blocker_opinion)
+	procstart = null
+	src.procstart = null
 	return impacted[blocker.weak_reference] || ..()
 
 /**
@@ -723,6 +759,8 @@
  * directly clicks on, as well as for PHASING projectiles to be able to hit things at all as they don't ever Bump().
  */
 /obj/projectile/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!fired)
 		return
@@ -739,6 +777,8 @@
  * Return PROJECTILE_DELETE_WITHOUT_HITTING to delete projectile without hitting at all!
  */
 /obj/projectile/proc/prehit_pierce(atom/target)
+	procstart = null
+	src.procstart = null
 	if((projectile_phasing & target.pass_flags_self) && (phasing_ignore_direct_target || original != target))
 		return PROJECTILE_PIERCE_PHASE
 	if(projectile_piercing & target.pass_flags_self)
@@ -750,6 +790,8 @@
 	return PROJECTILE_PIERCE_NONE
 
 /obj/projectile/proc/check_ricochet(atom/target)
+	procstart = null
+	src.procstart = null
 	var/chance = ricochet_chance * target.receive_ricochet_chance_mod
 	if(firer && HAS_TRAIT(firer, TRAIT_NICE_SHOT))
 		chance += NICE_SHOT_RICOCHET_BONUS
@@ -758,6 +800,8 @@
 	return FALSE
 
 /obj/projectile/proc/check_ricochet_flag(atom/target)
+	procstart = null
+	src.procstart = null
 	if((armor_flag in list(ENERGY, LASER)) && (target.flags_ricochet & RICOCHET_SHINY))
 		return TRUE
 	if((armor_flag in list(BOMB, BULLET)) && (target.flags_ricochet & RICOCHET_HARD))
@@ -765,9 +809,13 @@
 	return FALSE
 
 /obj/projectile/Process_Spacemove(movement_dir = 0, continuous_move = FALSE)
+	procstart = null
+	src.procstart = null
 	return TRUE //Bullets don't drift in space
 
 /obj/projectile/proc/fire(fire_angle, atom/direct_target)
+	procstart = null
+	src.procstart = null
 	LAZYINITLIST(impacted)
 	if (firer)
 		RegisterSignal(firer, COMSIG_QDELETING, PROC_REF(firer_deleted))
@@ -821,6 +869,8 @@
 
 /// Makes projectile home onto the passed target with minor inaccuracy
 /obj/projectile/proc/set_homing_target(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!target || (!isturf(target) && !isturf(target.loc)))
 		return FALSE
 	homing = TRUE
@@ -833,6 +883,8 @@
 		homing_offset_y = -homing_offset_y
 
 /obj/projectile/proc/set_angle(new_angle)
+	procstart = null
+	src.procstart = null
 	if (angle == new_angle)
 		return
 	if(!nondirectional_sprite)
@@ -845,6 +897,8 @@
 
 /// Same as set_angle, but the reflection continues from the center of the object that reflects it instead of the side
 /obj/projectile/proc/set_angle_centered(center_turf, new_angle)
+	procstart = null
+	src.procstart = null
 	if (angle == new_angle)
 		return
 	if(!nondirectional_sprite)
@@ -860,6 +914,8 @@
 		create_hitscan_point(tile_center = TRUE)
 
 /obj/projectile/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	if(var_name == NAMEOF(src, angle))
 		set_angle(var_value)
 		return TRUE
@@ -872,6 +928,8 @@
  */
 
 /obj/projectile/process()
+	procstart = null
+	src.procstart = null
 	last_process = world.time
 	if(!loc || !fired || !movement_vector)
 		fired = FALSE
@@ -932,6 +990,8 @@
  * tile_limit prevents any movements past the first tile change
  */
 /obj/projectile/proc/process_movement(pixels_to_move, hitscan = FALSE, tile_limit = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!isturf(loc) || !movement_vector)
 		return 0
 	var/total_move_distance = pixels_to_move
@@ -1082,10 +1142,14 @@
 /// Called every time projectile animates its movement, in case child wants to have custom animations.
 /// Returning TRUE cancels normal animation
 /obj/projectile/proc/move_animate(animate_x, animate_y, animate_time = world.tick_lag, deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// Called every projectile loop for homing or alternatively, custom trajectory changes.
 /obj/projectile/proc/process_homing()
+	procstart = null
+	src.procstart = null
 	if(!homing_target)
 		return
 	var/datum/point/new_point = RETURN_PRECISE_POINT(homing_target)
@@ -1096,6 +1160,8 @@
 
 /// Attempts to force the projectile to move until the subsystem runs out of processing time, the projectile impacts something or gets frozen by timestop
 /obj/projectile/proc/process_hitscan()
+	procstart = null
+	src.procstart = null
 	if (isnull(movement_vector))
 		qdel(src)
 		return
@@ -1117,6 +1183,8 @@
 
 /// Creates (or wipes clean) list of tracer keypoints and creates a first point.
 /obj/projectile/proc/record_hitscan_start(offset = TRUE)
+	procstart = null
+	src.procstart = null
 	if (isnull(beam_points))
 		beam_points = list()
 	else
@@ -1130,6 +1198,8 @@
 
 /// Creates a new keypoint in which the tracer will split
 /obj/projectile/proc/create_hitscan_point(impact = FALSE, tile_center = FALSE, broken_segment = FALSE)
+	procstart = null
+	src.procstart = null
 	var/atom/handle_atom = last_impact_turf || src
 	var/atom/used_point = tile_center ? loc : src
 	var/datum/point/new_point = impact ? new /datum/point(handle_atom.x, handle_atom.y, handle_atom.z, impact_x, impact_y) : RETURN_PRECISE_POINT(used_point)
@@ -1139,6 +1209,8 @@
 	last_point = new_point
 
 /obj/projectile/forceMove(atom/target)
+	procstart = null
+	src.procstart = null
 	if (!hitscan || isnull(beam_points))
 		return ..()
 	create_hitscan_point()
@@ -1154,6 +1226,8 @@
 	record_hitscan_start(offset = FALSE)
 
 /obj/projectile/proc/generate_hitscan_tracers(impact_point = TRUE, impact_visual = TRUE)
+	procstart = null
+	src.procstart = null
 	if (!length(beam_points))
 		return
 
@@ -1190,6 +1264,8 @@
 		QDEL_IN(impact_effect, PROJECTILE_TRACER_DURATION)
 
 /obj/projectile/proc/generate_tracer(datum/point/start_point, list/passed_turfs)
+	procstart = null
+	src.procstart = null
 	if (isnull(beam_points[start_point]))
 		return
 
@@ -1231,6 +1307,8 @@
  *   - //Spread is FORCED!
  */
 /obj/projectile/proc/aim_projectile(atom/target, atom/source, list/modifiers = null, deviation = 0)
+	procstart = null
+	src.procstart = null
 	if(!(isnull(modifiers) || islist(modifiers)))
 		stack_trace("WARNING: Projectile [type] fired with non-list modifiers, likely was passed click params. Modifiers were the following: [modifiers]")
 		modifiers = null
@@ -1304,6 +1382,8 @@
  * - [modifiers][/list]: A list of click parameters used to modify the shot angle.
  */
 /proc/calculate_projectile_angle_and_pixel_offsets(atom/source, atom/target, modifiers)
+	procstart = null
+	src.procstart = null
 	var/angle = 0
 	var/p_x = LAZYACCESS(modifiers, ICON_X) ? text2num(LAZYACCESS(modifiers, ICON_X)) : ICON_SIZE_X / 2 // ICON_(X|Y) are measured from the bottom left corner of the icon.
 	var/p_y = LAZYACCESS(modifiers, ICON_Y) ? text2num(LAZYACCESS(modifiers, ICON_Y)) : ICON_SIZE_Y / 2 // This centers the target if modifiers aren't passed.
@@ -1343,6 +1423,8 @@
 	return list(angle, p_x, p_y)
 
 /obj/projectile/experience_pressure_difference()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -1354,6 +1436,8 @@
  * This is used in places such as AI responses to determine if they're being threatened or not (among other places)
  */
 /obj/projectile/proc/is_hostile_projectile()
+	procstart = null
+	src.procstart = null
 	if(damage > 0 || stamina > 0)
 		return TRUE
 
@@ -1364,10 +1448,14 @@
 
 ///Checks if the projectile can embed into someone
 /obj/projectile/proc/can_embed_into(atom/hit)
+	procstart = null
+	src.procstart = null
 	return shrapnel_type && get_embed()?.can_embed(src, hit)
 
 /// Reflects the projectile off of something
 /obj/projectile/proc/reflect(atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	if(!starting)
 		return
 	var/new_x = starting.x + pick(0, 0, 0, 0, 0, -1, 1, -2, 2)
@@ -1387,6 +1475,8 @@
 
 /// Fire a projectile from this atom at another atom
 /atom/proc/fire_projectile(projectile_type, atom/target, sound, firer, list/ignore_targets = list())
+	procstart = null
+	src.procstart = null
 	if (!isnull(sound))
 		playsound(src, sound, vol = 100, vary = TRUE)
 
@@ -1409,6 +1499,8 @@
 
 /// Fetches, or lazyloads, our embedding datum
 /obj/projectile/proc/get_embed()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/embedding)
 	if (embed_data)
 		return embed_data
@@ -1418,6 +1510,8 @@
 
 /// Sets our embedding datum to a different one. Can also take types
 /obj/projectile/proc/set_embed(datum/embedding/new_embed, dont_delete = FALSE)
+	procstart = null
+	src.procstart = null
 	if (new_embed == embed_data)
 		return
 

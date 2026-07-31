@@ -12,9 +12,13 @@
 	var/lit = FALSE
 
 /obj/item/sparkler/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	light()
 
 /obj/item/sparkler/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/ignition_msg = tool.ignition_effect(src, user)
 	if(!ignition_msg)
 		return NONE
@@ -22,6 +26,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/sparkler/proc/light(mob/user, message)
+	procstart = null
+	src.procstart = null
 	if(lit)
 		return
 	if(user && message)
@@ -40,6 +46,8 @@
 	update_appearance()
 
 /obj/item/sparkler/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	burntime -= seconds_per_tick
 	if(burntime <= 0)
 		new /obj/item/stack/rods(drop_location())
@@ -48,13 +56,19 @@
 		open_flame(heat)
 
 /obj/item/sparkler/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/sparkler/ignition_effect(atom/atom, mob/user)
+	procstart = null
+	src.procstart = null
 	. = span_notice("[user] gracefully lights [atom] with [src].")
 
 /obj/item/sparkler/get_temperature()
+	procstart = null
+	src.procstart = null
 	return lit * heat
 
 //~*~*~*~*FIRECRACKER*~*~*~*~*~*~
@@ -72,10 +86,14 @@
 	throw_range = 7
 	det_time = 30
 
-/obj/item/grenade/firecracker/attack_self(mob/user) // You need to light it manually.
+/obj/item/grenade/firecracker/attack_self(mob/user)
+	procstart = null
+	src.procstart = null // You need to light it manually.
 	return
 
 /obj/item/grenade/firecracker/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(active)
 		return NONE
 	var/ignition_msg = tool.ignition_effect(src, user)
@@ -86,9 +104,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/grenade/firecracker/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	detonate()
 
 /obj/item/grenade/firecracker/wirecutter_act(mob/living/user, obj/item/item)
+	procstart = null
+	src.procstart = null
 	if(active)
 		return
 	if(det_time)
@@ -101,6 +123,8 @@
 		to_chat(user, span_danger("You've already removed all of the fuse!"))
 
 /obj/item/grenade/firecracker/arm_grenade(mob/user, delayoverride, msg = TRUE, volume = 80)
+	procstart = null
+	src.procstart = null
 	log_grenade(user)
 	if(user)
 		add_fingerprint(user)
@@ -112,6 +136,8 @@
 	addtimer(CALLBACK(src, PROC_REF(detonate)), isnull(delayoverride)? det_time : delayoverride)
 
 /obj/item/grenade/firecracker/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

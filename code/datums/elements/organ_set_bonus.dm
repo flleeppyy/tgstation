@@ -10,6 +10,8 @@
 	var/datum/status_effect/organ_set_bonus/bonus_type
 
 /datum/element/organ_set_bonus/Attach(datum/target, bonus_type)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isorgan(target))
@@ -19,12 +21,16 @@
 	RegisterSignal(target, COMSIG_ORGAN_REMOVED, PROC_REF(on_removed))
 
 /datum/element/organ_set_bonus/Detach(obj/item/organ/target)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, list(COMSIG_ORGAN_IMPLANTED, COMSIG_ORGAN_REMOVED))
 	if(target.owner)
 		UnregisterSignal(target.owner, COMSIG_ATOM_EXAMINE)
 	return ..()
 
 /datum/element/organ_set_bonus/proc/on_implanted(obj/item/organ/target, mob/living/carbon/receiver)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/status_effect/organ_set_bonus/set_bonus = receiver.has_status_effect(bonus_type)
@@ -33,6 +39,8 @@
 	set_bonus.set_organs(set_bonus.organs + 1, target)
 
 /datum/element/organ_set_bonus/proc/on_removed(obj/item/organ/target, mob/living/carbon/loser)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	//get status effect or remove it
@@ -67,6 +75,8 @@
 	var/color_overlay_priority
 
 /datum/status_effect/organ_set_bonus/proc/set_organs(new_value, obj/item/organ/organ)
+	procstart = null
+	src.procstart = null
 	organs = new_value
 	if(!organs) //initial value but won't kick in without calling the setter
 		qdel(src)
@@ -77,6 +87,8 @@
 		INVOKE_ASYNC(src, PROC_REF(disable_bonus), organ)
 
 /datum/status_effect/organ_set_bonus/proc/enable_bonus(obj/item/organ/inserted_organ)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(required_biotype)
 		if(!(owner.mob_biotypes & required_biotype))
@@ -115,6 +127,8 @@
 	return TRUE
 
 /datum/status_effect/organ_set_bonus/proc/disable_bonus(obj/item/organ/removed_organ)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	bonus_active = FALSE
 
@@ -145,6 +159,8 @@
 	owner.update_body()
 
 /datum/status_effect/organ_set_bonus/proc/texture_limb(atom/source, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!(limb.bodytype & BODYTYPE_ORGANIC))
@@ -156,6 +172,8 @@
 		limb.add_color_override(COLOR_WHITE, color_overlay_priority)
 
 /datum/status_effect/organ_set_bonus/proc/untexture_limb(atom/source, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	limb.remove_bodypart_texture(limb_texture, update = FALSE)

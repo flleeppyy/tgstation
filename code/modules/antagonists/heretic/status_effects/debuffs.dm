@@ -9,11 +9,15 @@
 	var/num_attacks = INFINITY
 
 /datum/status_effect/forced_combat/on_creation(mob/living/new_owner, duration = 10 SECONDS, num_attacks = INFINITY)
+	procstart = null
+	src.procstart = null
 	src.duration = duration
 	src.num_attacks = num_attacks
 	return ..()
 
 /datum/status_effect/forced_combat/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	var/prev_combat_mode = owner.combat_mode
 	owner.set_combat_mode(TRUE)
 
@@ -38,6 +42,8 @@
 		qdel(src)
 
 /datum/status_effect/forced_combat/proc/will_attack(mob/living/friendly)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/status_effect/forced_combat/amok
@@ -46,6 +52,8 @@
 	alert_type = null
 
 /datum/status_effect/forced_combat/amok/will_attack(mob/living/friendly)
+	procstart = null
+	src.procstart = null
 	return !IS_HERETIC_OR_MONSTER(friendly)
 
 /datum/status_effect/cloudstruck
@@ -59,17 +67,23 @@
 	var/static/mutable_appearance/mob_overlay
 
 /datum/status_effect/cloudstruck/on_creation(mob/living/new_owner, duration = 10 SECONDS)
+	procstart = null
+	src.procstart = null
 	src.duration = duration
 	if(!mob_overlay)
 		mob_overlay = mutable_appearance('icons/effects/eldritch.dmi', "cloud_swirl", ABOVE_MOB_LAYER)
 	return ..()
 
 /datum/status_effect/cloudstruck/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.add_overlay(mob_overlay)
 	owner.become_blind(id)
 	return TRUE
 
 /datum/status_effect/cloudstruck/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.cure_blind(id)
 	owner.cut_overlay(mob_overlay)
 
@@ -80,10 +94,14 @@
 	tick_interval = 1 SECONDS
 
 /datum/status_effect/corrosion_curse/on_apply()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_userdanger("Your body starts to break apart!"))
 	return TRUE
 
 /datum/status_effect/corrosion_curse/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(owner))
 		return
@@ -140,16 +158,22 @@
 	icon_state = "star_mark"
 
 /datum/status_effect/star_mark/on_creation(mob/living/new_owner, mob/living/new_spell_caster)
+	procstart = null
+	src.procstart = null
 	cosmic_overlay = mutable_appearance(effect_icon, effect_icon_state, BELOW_MOB_LAYER)
 	if(new_spell_caster)
 		spell_caster = WEAKREF(new_spell_caster)
 	return ..()
 
 /datum/status_effect/star_mark/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(cosmic_overlay)
 	return ..()
 
 /datum/status_effect/star_mark/on_apply()
+	procstart = null
+	src.procstart = null
 	if(isstargazer(owner))
 		return FALSE
 	var/mob/living/spell_caster_resolved = spell_caster?.resolve()
@@ -163,11 +187,15 @@
 
 /// Updates the overlay of the owner
 /datum/status_effect/star_mark/proc/update_owner_overlay(atom/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	overlays += cosmic_overlay
 
 /datum/status_effect/star_mark/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_ATOM_UPDATE_OVERLAYS)
 	owner.update_appearance(UPDATE_OVERLAYS)
 	return ..()
@@ -198,14 +226,20 @@
 	icon_state = "lastresort"
 
 /datum/status_effect/moon_converted/on_creation()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	moon_insanity_overlay = mutable_appearance(effect_icon, effect_icon_state, ABOVE_MOB_LAYER)
 
 /datum/status_effect/moon_converted/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(moon_insanity_overlay)
 	return ..()
 
 /datum/status_effect/moon_converted/on_apply()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(owner, COMSIG_MOB_APPLY_DAMAGE, PROC_REF(on_damaged))
 	// Heals them so people who are in crit can have this affect applied on them and still be of some use for the heretic
 	owner.adjust_brute_loss(-150 + owner.mob_mood.sanity)
@@ -221,6 +255,8 @@
 	return TRUE
 
 /datum/status_effect/moon_converted/proc/on_damaged(datum/source, damage, damagetype)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Stamina damage is funky so we will ignore it
@@ -235,10 +271,14 @@
 	qdel(src)
 
 /datum/status_effect/moon_converted/proc/update_owner_overlay(atom/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	overlays += moon_insanity_overlay
 
 /datum/status_effect/moon_converted/on_remove()
+	procstart = null
+	src.procstart = null
 	// Span warning and unconscious so they realize they aren't evil anymore
 	to_chat(owner, span_warning("Your mind is cleared from the effect of the mansus, your alligiences are as they were before"))
 	REMOVE_TRAIT(owner, TRAIT_MUTE, TRAIT_STATUS_EFFECT(id))
@@ -258,6 +298,8 @@
 	alert_type = null
 
 /datum/status_effect/moon_slept/on_apply()
+	procstart = null
+	src.procstart = null
 	. = owner.SetUnconscious(duration * 0.5, ignore_canstun = FALSE)
 	if(!.)
 		owner.balloon_alert(owner, "sleep resisted!")
@@ -279,6 +321,8 @@
 	remove_on_fullheal = TRUE
 
 /datum/status_effect/eldritch_painting/on_apply()
+	procstart = null
+	src.procstart = null
 	if(IS_HERETIC_OR_MONSTER(owner))
 		return FALSE
 	if(!ishuman(owner))
@@ -288,6 +332,8 @@
 	return TRUE
 
 /datum/status_effect/eldritch_painting/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	// having holy water in you halts the effect + makes it expire faster
 	// holy watter currently has 0.2 metab rate so 0.2u/s -> 3 seconds is removed per 0.2 units -> 30s per 2 units -> 300s per 20 units -> 40u will cure you
 	if(owner.reagents.has_reagent(/datum/reagent/water/holywater))
@@ -298,6 +344,8 @@
 	on_tick(seconds_between_ticks)
 
 /datum/status_effect/eldritch_painting/proc/on_tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/movable/screen/alert/status_effect/eldritch_painting
@@ -312,6 +360,8 @@
 	tick_interval = 10 SECONDS
 
 /datum/status_effect/eldritch_painting/weeping/on_tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS(owner))
 		return
 
@@ -331,6 +381,8 @@
 	var/hunger_rate = 15
 
 /datum/status_effect/eldritch_painting/desire/on_apply()
+	procstart = null
+	src.procstart = null
 	if(IS_HERETIC_OR_MONSTER(owner))
 		return FALSE
 	if(!ishuman(owner))
@@ -344,6 +396,8 @@
 	return TRUE
 
 /datum/status_effect/eldritch_painting/desire/on_tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	// Causes them to need to eat at 10x the normal rate
 	owner.adjust_nutrition(-hunger_rate * HUNGER_FACTOR)
 	if(SPT_PROB(10, seconds_between_ticks))
@@ -351,6 +405,8 @@
 	owner.overeatduration = max(owner.overeatduration - 200 SECONDS, 0)
 
 /datum/status_effect/eldritch_painting/desire/on_remove()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_VORACIOUS, TRAIT_STATUS_EFFECT(id))
 	REMOVE_TRAIT(owner, TRAIT_FLESH_DESIRE, TRAIT_STATUS_EFFECT(id))
 	return ..()
@@ -372,6 +428,8 @@
 	var/scratch_damage = 3
 
 /datum/status_effect/eldritch_painting/beauty/on_tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(owner.incapacitated)
 		return
 
@@ -399,6 +457,8 @@
 	tick_interval = 3 SECONDS
 
 /datum/status_effect/eldritch_painting/rusting/on_tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	var/atom/tile = get_turf(owner)
 	if(isnull(tile))
 		return
@@ -433,10 +493,14 @@
 	var/damage_received = 0
 
 /datum/status_effect/moon_parade/on_creation(mob/living/new_owner, atom/leashed_by)
+	procstart = null
+	src.procstart = null
 	leashed_to = leashed_by
 	. = ..()
 
 /datum/status_effect/moon_parade/on_apply()
+	procstart = null
+	src.procstart = null
 	if(!istype(leashed_to))
 		return FALSE
 	owner.balloon_alert(owner, "you feel unable to move away from the [leashed_to]!")
@@ -447,6 +511,8 @@
 	return TRUE
 
 /datum/status_effect/moon_parade/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(leash_component)
 	UnregisterSignal(owner, list(COMSIG_MOB_CLIENT_PRE_LIVING_MOVE, COMSIG_MOB_APPLY_DAMAGE))
@@ -454,10 +520,14 @@
 		UnregisterSignal(leashed_to, COMSIG_QDELETING)
 
 /datum/status_effect/moon_parade/proc/delete_self(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /datum/status_effect/moon_parade/proc/on_damage_received(mob/attacked, damage_amount, damagetype)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(damagetype == STAMINA)
 		return
@@ -469,5 +539,7 @@
 // Blocks movement in order to make it appear like the character is transfixed to the projectile and wandering after it
 // Coded this way because its a simple way to hold the illusion compared to other methods
 /datum/status_effect/moon_parade/proc/block_move(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return COMSIG_MOB_CLIENT_BLOCK_PRE_LIVING_MOVE

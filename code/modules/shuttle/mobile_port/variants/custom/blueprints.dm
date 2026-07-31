@@ -13,15 +13,21 @@
 	var/obj/item/shuttle_blueprints/parent
 
 /datum/proximity_monitor/advanced/shuttle_construction_visualizer/New(atom/_host, range, _ignore_if_not_on_turf)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	parent = _host
 
 /datum/proximity_monitor/advanced/shuttle_construction_visualizer/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	parent = null
 	QDEL_LIST_ASSOC_VAL(image_holders)
 
 /datum/proximity_monitor/advanced/shuttle_construction_visualizer/proc/set_user(mob/new_user)
+	procstart = null
+	src.procstart = null
 	if(user)
 		for(var/turf in image_holders)
 			var/obj/effect/client_image_holder/holder = image_holders[turf]
@@ -44,6 +50,8 @@
 		unregister_client()
 
 /datum/proximity_monitor/advanced/shuttle_construction_visualizer/proc/register_client(client/client)
+	procstart = null
+	src.procstart = null
 	var/atom/eye = client.eye
 	if(eye)
 		set_host(client.eye)
@@ -53,24 +61,34 @@
 	RegisterSignal(client, COMSIG_CLIENT_SET_EYE, PROC_REF(on_set_eye))
 
 /datum/proximity_monitor/advanced/shuttle_construction_visualizer/proc/unregister_client()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_host(parent)
 	set_range(0)
 
 /datum/proximity_monitor/advanced/shuttle_construction_visualizer/proc/on_user_login(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	register_client(source.client)
 
 /datum/proximity_monitor/advanced/shuttle_construction_visualizer/proc/on_view_set(datum/source, new_view)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/list/view_size = getviewsize(new_view)
 	set_range(CEILING(max(view_size[1], view_size[2])/2, 1)+1)
 
 /datum/proximity_monitor/advanced/shuttle_construction_visualizer/proc/on_set_eye(datum/source, atom/old_eye, atom/new_eye)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_host(new_eye)
 
 /datum/proximity_monitor/advanced/shuttle_construction_visualizer/setup_field_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/client_image_holder/shuttle_construction_visualization/holder = new(target, list())
 	image_holders[target] = holder
 	evaluate_turf_overlay(holder, target)
@@ -84,6 +102,8 @@
 		holder.add_seer(user)
 
 /datum/proximity_monitor/advanced/shuttle_construction_visualizer/cleanup_field_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	qdel(image_holders[target])
 	image_holders -= target
 	UnregisterSignal(target, list(
@@ -94,10 +114,14 @@
 	))
 
 /datum/proximity_monitor/advanced/shuttle_construction_visualizer/proc/on_turf_updated(turf/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	evaluate_turf_overlay(image_holders[source], source)
 
 /datum/proximity_monitor/advanced/shuttle_construction_visualizer/proc/evaluate_turf_overlay(obj/effect/client_image_holder/holder, turf/target)
+	procstart = null
+	src.procstart = null
 	var/area/turf_area = target.loc
 	if(HAS_TRAIT(target, TRAIT_SHUTTLE_CONSTRUCTION_TURF))
 		holder.image_state = "green"
@@ -146,26 +170,36 @@
 	var/datum/proximity_monitor/advanced/shuttle_construction_visualizer/prox_monitor
 
 /obj/item/shuttle_blueprints/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	prox_monitor = new(src, 0, FALSE)
 	update_appearance()
 
 /obj/item/shuttle_blueprints/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(prox_monitor)
 	return ..()
 
 /obj/item/shuttle_blueprints/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/connections = list(COMSIG_ITEM_PRE_ATTACK = PROC_REF(christen_check))
 	if(slot == ITEM_SLOT_HANDS)
 		AddComponent(/datum/component/connect_inventory, user, connections, allowed_slots = ITEM_SLOT_HANDS)
 
 /obj/item/shuttle_blueprints/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	stop_visualizing(user)
 	qdel(GetComponent(/datum/component/connect_inventory))
 
 /obj/item/shuttle_blueprints/proc/christen_check(obj/item/reagent_containers/cup/glass/bottle/source, atom/attacked, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/docking_port/mobile/custom/shuttle = shuttle_ref?.resolve()
 	if(!istype(shuttle))
@@ -195,6 +229,8 @@
 	INVOKE_ASYNC(src, PROC_REF(christen), user, shuttle, attacked, user.active_hand_index)
 
 /obj/item/shuttle_blueprints/proc/christen(mob/living/user, obj/docking_port/mobile/custom/shuttle, atom/attacked, hand)
+	procstart = null
+	src.procstart = null
 	var/trait_source = REF(shuttle)
 	ADD_TRAIT(user, TRAIT_ATTEMPTING_CHRISTENING, trait_source)
 	var/new_name = reject_bad_name(tgui_input_text(user, "What would you like to rechristen \the [shuttle] as?", "Shuttle Rechristening", max_length = 128), allow_numbers = TRUE, strict = TRUE, cap_after_symbols = FALSE)
@@ -292,18 +328,24 @@
 		rename_area(shuttle.default_area, new_name)
 
 /obj/item/shuttle_blueprints/proc/start_visualizing(mob/user)
+	procstart = null
+	src.procstart = null
 	visualize_frame_turfs = TRUE
 	RegisterSignal(user, SIGNAL_ADDTRAIT(TRAIT_USER_SCOPED), PROC_REF(stop_visualizing))
 	prox_monitor.set_user(user)
 	prox_monitor.recalculate_field()
 
 /obj/item/shuttle_blueprints/proc/stop_visualizing(mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	visualize_frame_turfs = FALSE
 	UnregisterSignal(user, SIGNAL_ADDTRAIT(TRAIT_USER_SCOPED))
 	prox_monitor.set_user(null)
 
 /obj/item/shuttle_blueprints/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ShuttleBlueprints", name)
@@ -311,18 +353,26 @@
 		RegisterSignal(user, COMSIG_ENTER_AREA, PROC_REF(on_user_enter_area))
 
 /obj/item/shuttle_blueprints/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, COMSIG_ENTER_AREA)
 
 /obj/item/shuttle_blueprints/proc/on_user_enter_area(mob/source, area/new_area)
+	procstart = null
+	src.procstart = null
 	var/obj/docking_port/mobile/custom/shuttle = shuttle_ref?.resolve()
 	if(shuttle && shuttle.default_area == new_area)
 		update_static_data(source)
 
 /obj/item/shuttle_blueprints/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.hands_state
 
 /obj/item/shuttle_blueprints/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/obj/docking_port/mobile/custom/shuttle = shuttle_ref?.resolve()
 	if(get_area(user) == shuttle?.default_area && length(shuttle?.shuttle_areas) > 1)
@@ -337,6 +387,8 @@
 	return data
 
 /obj/item/shuttle_blueprints/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	var/turf/current_turf = get_turf(user)
 	var/obj/docking_port/mobile/custom/linked_shuttle = shuttle_ref?.resolve()
@@ -379,6 +431,8 @@
 	return data
 
 /obj/item/shuttle_blueprints/proc/link_to_shuttle(obj/docking_port/mobile/custom/shuttle, is_master = FALSE)
+	procstart = null
+	src.procstart = null
 	shuttle_ref = WEAKREF(shuttle)
 	if(is_master)
 		shuttle.master_blueprint = WEAKREF(src)
@@ -386,10 +440,14 @@
 	update_appearance()
 
 /obj/item/shuttle_blueprints/proc/on_shuttle_deleted()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	unlink(removing = TRUE)
 
 /obj/item/shuttle_blueprints/proc/unlink(removing = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/docking_port/mobile/custom/shuttle = shuttle_ref.resolve()
 	if(!QDELETED(shuttle))
 		UnregisterSignal(shuttle, COMSIG_QDELETING)
@@ -397,6 +455,8 @@
 	update_appearance()
 
 /obj/item/shuttle_blueprints/update_name(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/docking_port/mobile/shuttle = shuttle_ref?.resolve()
 	if(shuttle)
@@ -405,17 +465,25 @@
 		name = initial(name)
 
 /obj/item/shuttle_blueprints/proc/get_linked_name(obj/docking_port/mobile/shuttle)
+	procstart = null
+	src.procstart = null
 	return "\improper [shuttle.name] blueprints"
 
 /obj/item/shuttle_blueprints/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = shuttle_ref?.resolve() ? linked_desc : base_desc
 
 /obj/item/shuttle_blueprints/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state][!!shuttle_ref]"
 
 /obj/item/shuttle_blueprints/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -427,10 +495,14 @@
 		update_desc()
 
 /obj/item/shuttle_blueprints/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += get_shuttle_tip()
 
 /obj/item/shuttle_blueprints/proc/get_shuttle_tip()
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(!shuttle_ref)
 		. += span_notice("It can be used to construct a custom shuttle.")
@@ -444,6 +516,8 @@
 			. += span_notice("This is the master blueprint for \the [shuttle]. You can copy it to a blank set of blueprints, or to an engineering cyborg with a shuttle database module installed.")
 
 /obj/item/shuttle_blueprints/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/docking_port/mobile/custom/shuttle = shuttle_ref?.resolve()
 	if(!istype(shuttle))
@@ -480,6 +554,8 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/item/shuttle_blueprints/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -721,6 +797,8 @@
 	var/list/shuttles = list()
 
 /obj/item/shuttle_blueprints/borg/get_shuttle_tip()
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(!shuttle_ref)
 		if(!length(shuttles))
@@ -738,11 +816,15 @@
 			. += span_notice("This is the master blueprint for \the [shuttle]. You can copy it to a blank set of blueprints, or to another engineering cyborg with a shuttle database module installed.")
 
 /obj/item/shuttle_blueprints/borg/unlink(removing)
+	procstart = null
+	src.procstart = null
 	if(removing)
 		shuttles -= shuttle_ref
 	..()
 
 /obj/item/shuttle_blueprints/borg/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 	var/list/shuttle_data = list()
 	var/list/shuttle_name_count = list()
@@ -762,6 +844,8 @@
 	return data
 
 /obj/item/shuttle_blueprints/borg/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -779,8 +863,12 @@
 			return TRUE
 
 /obj/item/shuttle_blueprints/borg/link_to_shuttle(obj/docking_port/mobile/custom/shuttle, is_master)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	shuttles |= WEAKREF(shuttle)
 
 /obj/item/shuttle_blueprints/borg/get_linked_name(obj/docking_port/mobile/shuttle)
+	procstart = null
+	src.procstart = null
 	name = "shuttle blueprint database ([shuttle.name])"

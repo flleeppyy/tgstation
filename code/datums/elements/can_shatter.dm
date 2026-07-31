@@ -34,18 +34,24 @@
 		RegisterSignal(target, COMSIG_ITEM_AFTERATTACK, PROC_REF(on_post_attack_atom))
 
 /datum/element/can_shatter/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	UnregisterSignal(target, list(COMSIG_MOVABLE_IMPACT, COMSIG_ATOM_ON_Z_IMPACT))
 
 /// Tells the parent to shatter if we impact a lower zlevel
 /datum/element/can_shatter/proc/on_z_impact(datum/source, turf/impacted_turf, levels)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	shatter(source, impacted_turf)
 
 /// Tells the parent to shatter if we are thrown and impact something
 /datum/element/can_shatter/proc/on_throw_impact(datum/source, atom/hit_atom, datum/thrownthing/throwing_datum, caught)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(caught)
 		return
@@ -53,6 +59,8 @@
 
 /// Handles the actual shattering part, throwing shards of whatever is defined on the component everywhere
 /datum/element/can_shatter/proc/shatter(atom/movable/source, atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	var/turf/scatter_turf = get_turf(hit_atom)
 	if(!hit_atom.CanPass(source, get_dir(source, hit_atom))) //Object is too dense to fall apart on
 		scatter_turf = get_turf(source)
@@ -77,5 +85,7 @@
 		qdel(source)
 
 /datum/element/can_shatter/proc/on_post_attack_atom(obj/item/source, atom/attacked_atom, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	shatter(source, attacked_atom)

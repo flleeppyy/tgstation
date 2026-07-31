@@ -6,19 +6,29 @@
 	var/direction = SOUTH
 
 /turf/open/floor/holofloor/attackby(obj/item/I, mob/living/user)
+	procstart = null
+	src.procstart = null
 	return // HOLOFLOOR DOES NOT GIVE A FUCK
 
 /turf/open/floor/holofloor/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return ITEM_INTERACT_BLOCKING // Fuck you
 
 /turf/open/floor/holofloor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/tool_blocker, TOOL_CROWBAR, TOOL_ACT_PRIMARY)
 
 /turf/open/floor/holofloor/burn_tile()
+	procstart = null
+	src.procstart = null
 	return //you can't burn a hologram!
 
 /turf/open/floor/holofloor/break_tile()
+	procstart = null
+	src.procstart = null
 	return //you can't break a hologram!
 
 /turf/open/floor/holofloor/plating
@@ -41,6 +51,8 @@
 	direction = NORTH
 
 /turf/open/floor/holofloor/chapel/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (direction != SOUTH)
 		setDir(direction)
@@ -67,6 +79,8 @@
 	tiled_turf = FALSE
 
 /turf/open/floor/holofloor/grass/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "grass[rand(0,3)]"
 
@@ -96,6 +110,8 @@
 	bullet_sizzle = TRUE
 
 /turf/open/floor/holofloor/beach/water/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/fishing_spot, /datum/fish_source/holographic)
 
@@ -107,6 +123,8 @@
 	tiled_turf = FALSE
 
 /turf/open/floor/holofloor/asteroid/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	icon_state = "asteroid[rand(0, 12)]"
 	. = ..()
 
@@ -118,6 +136,8 @@
 	tiled_turf = FALSE
 
 /turf/open/floor/holofloor/basalt/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(15))
 		icon_state = "basalt[rand(0, 12)]"
@@ -144,10 +164,14 @@
 	tiled_turf = FALSE
 
 /turf/open/floor/holofloor/hyperspace/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	icon_state = "speedspace_ns_[(x + 5*y + (y%2+1)*7)%15+1]"
 	. = ..()
 
 /turf/open/floor/holofloor/hyperspace/ns/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "speedspace_ns_[(x + 5*y + (y%2+1)*7)%15+1]"
 
@@ -165,10 +189,14 @@
 	tiled_turf = FALSE
 
 /turf/open/floor/holofloor/carpet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom/, update_appearance)), 0.1 SECONDS)
 
 /turf/open/floor/holofloor/carpet/update_icon(updates=ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((updates & UPDATE_SMOOTHING) && overfloor_placed && smoothing_flags & USES_SMOOTHING)
 		QUEUE_SMOOTH(src)

@@ -32,6 +32,8 @@
 	COOLDOWN_DECLARE(groom_cooldown)
 
 /datum/component/happiness/Initialize(maximum_happiness = 400, blackboard_key = BB_BASIC_HAPPINESS, on_groom_change = 200, on_eat_change = 300, on_petted_change = 30, callback_percentages = list(0, 25, 50, 75, 100), happiness_callback)
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -46,6 +48,8 @@
 	ADD_TRAIT(parent, TRAIT_SUBTREE_REQUIRED_OPERATIONAL_DATUM, type)
 
 /datum/component/happiness/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 
 	if(on_petted_change)
 		RegisterSignal(parent, COMSIG_ATOM_ATTACK_HAND, PROC_REF(on_petted))
@@ -56,15 +60,21 @@
 	RegisterSignal(parent, COMSIG_SHIFT_CLICKED_ON, PROC_REF(view_happiness))
 
 /datum/component/happiness/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_HOSTILE_PRE_ATTACKINGTARGET, COMSIG_COMPONENT_CLEAN_ACT, COMSIG_MOB_ATE))
 	happiness_callback = null
 
 /datum/component/happiness/proc/on_eat(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	change_happiness_level(on_eat_change)
 
 /datum/component/happiness/proc/on_clean(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!COOLDOWN_FINISHED(src, groom_cooldown))
 		return
@@ -78,6 +88,8 @@
 	return COMPONENT_CLEANED|COMPONENT_CLEANED_GAIN_XP
 
 /datum/component/happiness/proc/on_petted(datum/source, mob/living/petter, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!LAZYACCESS(modifiers, LEFT_CLICK) || petter.combat_mode)
 		return
@@ -89,6 +101,8 @@
 	pet_animal()
 
 /datum/component/happiness/proc/pet_animal()
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, pet_cooldown))
 		return
 	change_happiness_level(on_petted_change)
@@ -96,6 +110,8 @@
 
 
 /datum/component/happiness/proc/change_happiness_level(amount)
+	procstart = null
+	src.procstart = null
 	var/old_happiness = happiness_level
 	happiness_level = clamp(happiness_level + amount, 0, maximum_happiness)
 	var/happiness_percentage = happiness_level / maximum_happiness
@@ -124,6 +140,8 @@
 		START_PROCESSING(SSprocessing, src)
 
 /datum/component/happiness/proc/view_happiness(mob/living/source, mob/living/clicker)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(source, TRAIT_MOB_HIDE_HAPPINESS) || !istype(clicker) || !COOLDOWN_FINISHED(src, happiness_inspect) || !source.IsReachableBy(clicker))
 		return
 	var/y_position = source.get_cached_height() + 1
@@ -135,6 +153,8 @@
 	COOLDOWN_START(src, happiness_inspect, INSPECT_TIMER)
 
 /datum/component/happiness/process()
+	procstart = null
+	src.procstart = null
 	if(happiness_level <= 0)
 		return PROCESS_KILL
 	var/mob/living/living_parent = parent
@@ -152,14 +172,20 @@
 	var/heart_icon = 'icons/effects/effects.dmi'
 
 /obj/effect/overlay/happiness_overlay/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_IN(src, 5 SECONDS)
 
 /obj/effect/overlay/happiness_overlay/proc/set_hearts(happiness_percentage)
+	procstart = null
+	src.procstart = null
 	hearts_percentage = happiness_percentage
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/effect/overlay/happiness_overlay/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/heart_positions = list(-13, -5, 3, 11)
 	var/display_amount = round(length(heart_positions) * hearts_percentage, 1)

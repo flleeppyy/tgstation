@@ -1,4 +1,6 @@
 /datum/preferences/proc/try_savefile_type_migration()
+	procstart = null
+	src.procstart = null
 	load_path(parent.ckey, "preferences.sav") // old save file
 	var/old_path = path
 	load_path(parent.ckey)

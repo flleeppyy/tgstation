@@ -17,11 +17,15 @@
 	var/scan_mode = BARCODE_SCANNER_CHECKIN
 
 /obj/item/barcodescanner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_item_context()
 	register_context()
 
 /obj/item/barcodescanner/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(target, /obj/item/book))
 		return NONE
 
@@ -35,17 +39,23 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/barcodescanner/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(held_item == src)
 		context[SCREENTIP_CONTEXT_LMB] = "Toggle scanning mode"
 		return CONTEXTUAL_SCREENTIP_SET
 	return NONE
 
 /obj/item/barcodescanner/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(interacting_with, /obj/item/book))
 		return interact_with_book(interacting_with, user)
 	return NONE
 
 /obj/item/barcodescanner/proc/interact_with_book(obj/item/book/target_book, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/computer/libraryconsole/bookmanagement/linked_computer = computer_ref?.resolve()
 	if(isnull(linked_computer))
 		user.balloon_alert(user, "not connected to computer!")
@@ -95,6 +105,8 @@
 	return NONE
 
 /obj/item/barcodescanner/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

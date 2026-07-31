@@ -13,16 +13,22 @@ GLOBAL_LIST_EMPTY(map_reports)
 	var/static/tag_number = 0
 
 /datum/map_report/New(datum/parsed_map/map)
+	procstart = null
+	src.procstart = null
 	original_path = map.original_path || "Untitled"
 	GLOB.map_reports += src
 
 /datum/map_report/Destroy(force)
+	procstart = null
+	src.procstart = null
 	GLOB.map_reports -= src
 	return ..()
 
 
 /// Show a rendered version of this report to a client.
 /datum/map_report/proc/show_to(client/C)
+	procstart = null
+	src.procstart = null
 	var/list/html = list()
 	if(crashed)
 		html += "<p><b>Validation crashed</b>: check the runtime logs.</p>"
@@ -52,6 +58,8 @@ GLOBAL_LIST_EMPTY(map_reports)
 	browser.open()
 
 /datum/map_report/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !check_rights(R_ADMIN, FALSE) || !usr.client.holder.CheckAdminHref(href, href_list))
 		return
@@ -64,6 +72,8 @@ GLOBAL_LIST_EMPTY(map_reports)
 ///
 /// Returns a [/datum/map_report] if there are errors or `FALSE` otherwise.
 /datum/parsed_map/proc/check_for_errors()
+	procstart = null
+	src.procstart = null
 	var/datum/map_report/report = new(src)
 	. = report
 

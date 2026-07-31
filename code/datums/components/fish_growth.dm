@@ -15,6 +15,8 @@
 	var/inherit_name
 
 /datum/component/fish_growth/Initialize(result_type, growth_time, use_drop_loc = TRUE, del_on_grow = TRUE, inherit_name = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isfish(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -38,6 +40,8 @@
 	return FALSE
 
 /datum/component/fish_growth/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	var/evo_growth = ispath(result_type, /datum/fish_evolution)
 	RegisterSignal(parent, COMSIG_FISH_LIFE, PROC_REF(on_fish_life))
 	if(!evo_growth)
@@ -46,9 +50,13 @@
 	evolution.RegisterSignal(parent, COMSIG_FISH_BEFORE_GROWING, TYPE_PROC_REF(/datum/fish_evolution, growth_checks))
 
 /datum/component/fish_growth/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_FISH_LIFE, COMSIG_FISH_BEFORE_GROWING))
 
 /datum/component/fish_growth/proc/on_fish_life(obj/item/fish/source, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(source.status == FISH_DEAD) //It died just now.
 		return
@@ -63,6 +71,8 @@
 		finish_growing(source)
 
 /datum/component/fish_growth/proc/finish_growing(obj/item/fish/source)
+	procstart = null
+	src.procstart = null
 	var/atom/location = use_drop_loc ? source.drop_location() : source.loc
 	var/is_evo = ispath(result_type, /datum/fish_evolution)
 	var/atom/movable/result

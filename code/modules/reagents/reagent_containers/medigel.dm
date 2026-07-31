@@ -54,14 +54,20 @@
 	custom_price = PAYCHECK_CREW * 2
 
 /obj/item/reagent_containers/medigel/setup_reskins()
+	procstart = null
+	src.procstart = null
 	if(icon_state == "medigel") // oh yeah baby raw icon state check to make sure we can't reskin preset gels
 		AddComponent(/datum/component/reskinable_item, /datum/atom_skin/med_gel)
 
 /obj/item/reagent_containers/medigel/mode_change_message(mob/user)
+	procstart = null
+	src.procstart = null
 	var/squirt_mode = amount_per_transfer_from_this == initial(amount_per_transfer_from_this)
 	to_chat(user, span_notice("You will now apply the medigel's contents in [squirt_mode ? "extended sprays":"short bursts"]. You'll now use [amount_per_transfer_from_this] units per use."))
 
 /obj/item/reagent_containers/medigel/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isliving(interacting_with))
 		return NONE
 	if(!reagents || !reagents.total_volume)
@@ -121,11 +127,15 @@
 	custom_price = PAYCHECK_CREW * 5
 
 /obj/item/reagent_containers/medigel/synthflesh/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(reagents.total_volume >= 60)
 		. += span_info("One full bottle can restore a corpse husked by burns.")
 
 /obj/item/reagent_containers/medigel/synthflesh/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(interacting_with) && reagents?.total_volume)
 		var/mob/living/carbon/carbies = interacting_with
 		if(HAS_TRAIT_FROM(carbies, TRAIT_HUSK, BURN) && carbies.get_fire_loss() > UNHUSK_DAMAGE_THRESHOLD * 2.5)

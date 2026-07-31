@@ -1,5 +1,7 @@
 
 /mob/living/carbon/human/canBeHandcuffed()
+	procstart = null
+	src.procstart = null
 	if(num_hands < 2)
 		return FALSE
 	return TRUE
@@ -7,6 +9,8 @@
 //gets assignment from ID or ID inside PDA or PDA itself
 //Useful when player do something with computers
 /mob/living/carbon/human/proc/get_assignment(if_no_id = "No id", if_no_job = "No job", hand_first = TRUE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/id/id = get_idcard(hand_first)
 	if(HAS_TRAIT(src, TRAIT_UNKNOWN_APPEARANCE))
 		return if_no_id
@@ -24,6 +28,8 @@
 //gets name from ID or ID inside PDA or PDA itself
 //Useful when player do something with computers
 /mob/living/carbon/human/proc/get_authentification_name(if_no_id = "Unknown")
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/id/id = get_idcard(FALSE)
 	if(HAS_TRAIT(src, TRAIT_UNKNOWN_APPEARANCE))
 		return if_no_id
@@ -36,11 +42,15 @@
 
 /// Used to update our name based on whether our face is obscured/disfigured
 /mob/living/carbon/human/proc/update_visible_name()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	name = get_visible_name()
 
 /// Combines get_id_name() and get_face_name() to determine a mob's name variable. Made into a separate proc as it'll be useful elsewhere
 /mob/living/carbon/human/get_visible_name(add_id_name = TRUE, force_real_name = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/identity = list(null, null, null)
 	SEND_SIGNAL(src, COMSIG_HUMAN_GET_VISIBLE_NAME, identity)
 	var/signal_face = LAZYACCESS(identity, VISIBLE_NAME_FACE)
@@ -78,14 +88,20 @@
  * * if_no_face - What to return if we have no face or our face is obscured/disfigured
  */
 /mob/living/carbon/proc/get_face_name(if_no_face = "Unknown")
+	procstart = null
+	src.procstart = null
 	return real_name
 
 /mob/living/carbon/human/get_face_name(if_no_face = "Unknown")
+	procstart = null
+	src.procstart = null
 	if(!real_name || is_face_obscured())
 		return if_no_face
 	return real_name
 
 /mob/living/carbon/human/proc/is_face_obscured()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_UNKNOWN_APPEARANCE))
 		return TRUE //We're Unknown, no face information for you
 	if(obscured_slots & HIDEFACE)
@@ -102,9 +118,13 @@
  * * honorifics - Whether to include honorifics in the returned name (if the found ID has any set)
  */
 /mob/living/carbon/proc/get_id_name(if_no_id = "Unknown", honorifics = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/get_id_name(if_no_id = "Unknown", honorifics = FALSE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_UNKNOWN_APPEARANCE))
 		var/list/identity = list(null, null, null)
 		SEND_SIGNAL(src, COMSIG_HUMAN_GET_FORCED_NAME, identity)
@@ -115,6 +135,8 @@
 	return id?.get_displayed_name(honorifics) || if_no_id
 
 /mob/living/carbon/human/get_idcard(hand_first = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && hand_first)
 		return
@@ -122,6 +144,8 @@
 	return (wear_id?.GetID() || belt?.GetID())
 
 /mob/living/carbon/human/can_use_guns(obj/item/G)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(G.trigger_guard == TRIGGER_GUARD_NORMAL)
 		if(check_chunky_fingers())
@@ -132,21 +156,29 @@
 		return FALSE
 
 /mob/living/carbon/human/proc/check_chunky_fingers()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT_NOT_FROM(src, TRAIT_CHUNKYFINGERS, RIGHT_ARM_TRAIT) && HAS_TRAIT_NOT_FROM(src, TRAIT_CHUNKYFINGERS, LEFT_ARM_TRAIT))
 		return TRUE
 	return IS_LEFT_INDEX(active_hand_index) ? HAS_TRAIT_FROM(src, TRAIT_CHUNKYFINGERS, LEFT_ARM_TRAIT) : HAS_TRAIT_FROM(src, TRAIT_CHUNKYFINGERS, RIGHT_ARM_TRAIT)
 
 /mob/living/carbon/human/get_policy_keywords()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "[dna.species.type]"
 
 /mob/living/carbon/human/proc/get_eye_scars()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/eyes/eyes = get_organ_slot(ORGAN_SLOT_EYES)
 	if (!isnull(eyes))
 		return eyes.scarring
 
 /// When we're joining the game in [/mob/dead/new_player/proc/create_character], we increment our scar slot then store the slot in our mind datum.
 /mob/living/carbon/human/proc/increment_scar_slot()
+	procstart = null
+	src.procstart = null
 	var/check_ckey = ckey || client?.ckey
 	if(!check_ckey || !mind || !client?.prefs.read_preference(/datum/preference/toggle/persistent_scars))
 		return
@@ -164,6 +196,8 @@
 
 /// For use formatting all of the scars this human has for saving for persistent scarring, returns a string with all current scars/missing limb amputation scars for saving or loading purposes
 /mob/living/carbon/human/proc/format_scars()
+	procstart = null
+	src.procstart = null
 	var/list/missing_bodyparts = get_missing_limbs()
 	if(!all_scars && !length(missing_bodyparts))
 		return
@@ -178,6 +212,8 @@
 
 /// Takes a single scar from the persistent scar loader and recreates it from the saved data
 /mob/living/carbon/human/proc/load_scar(scar_line, specified_char_index)
+	procstart = null
+	src.procstart = null
 	var/list/scar_data = splittext(scar_line, "|")
 	if(LAZYLEN(scar_data) != SCAR_SAVE_LENGTH)
 		return // invalid, should delete
@@ -194,6 +230,8 @@
 
 /// Read all the scars we have for the designated character/scar slots, verify they're good/dump them if they're old/wrong format, create them on the user, and write the scars that passed muster back to the file
 /mob/living/carbon/human/proc/load_persistent_scars()
+	procstart = null
+	src.procstart = null
 	if(!ckey || !mind?.original_character_slot_index || !client?.prefs.read_preference(/datum/preference/toggle/persistent_scars))
 		return
 
@@ -220,6 +258,8 @@
 
 /// Save any scars we have to our designated slot, then write our current slot so that the next time we call [/mob/living/carbon/human/proc/increment_scar_slot] (the next round we join), we'll be there
 /mob/living/carbon/human/proc/save_persistent_scars(nuke = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ckey || !mind?.original_character_slot_index || !client?.prefs.read_preference(/datum/preference/toggle/persistent_scars))
 		return
 
@@ -242,6 +282,8 @@
 
 ///copies over clothing preferences like underwear to another human
 /mob/living/carbon/human/proc/copy_clothing_prefs(mob/living/carbon/human/destination)
+	procstart = null
+	src.procstart = null
 	destination.underwear = underwear
 	destination.underwear_color = underwear_color
 	destination.undershirt = undershirt
@@ -251,6 +293,8 @@
 
 /// Fully randomizes everything according to the given flags.
 /mob/living/carbon/human/proc/randomize_human_appearance(randomize_flags = ALL)
+	procstart = null
+	src.procstart = null
 	var/datum/preferences/preferences = new(new /datum/client_interface)
 
 	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
@@ -269,6 +313,8 @@
  * * update_dna - if TRUE (default), updates the mob's DNA with the new height value
  */
 /mob/living/carbon/human/proc/set_mob_height(new_height = HUMAN_HEIGHT_MEDIUM, update_dna = TRUE)
+	procstart = null
+	src.procstart = null
 	base_mob_height = new_height
 	update_mob_height()
 	if(update_dna)
@@ -282,6 +328,8 @@
  * Returns a mob height num
  */
 /mob/living/carbon/human/proc/update_mob_height()
+	procstart = null
+	src.procstart = null
 	var/old_height = mob_height
 	var/obj/item/bodypart/chest/chest = get_bodypart(BODY_ZONE_CHEST)
 	mob_height = chest?.update_mob_heights(src) || base_mob_height
@@ -295,6 +343,8 @@
  * Necessary due to VAR_PRIVATE (it's not used in hot code anyways)
  */
 /mob/living/carbon/human/proc/get_base_mob_height()
+	procstart = null
+	src.procstart = null
 	return base_mob_height
 
 /**
@@ -306,6 +356,8 @@
  * location - The turf the human will be spawned on.
  */
 /mob/living/carbon/human/proc/make_full_human_copy(turf/location, client/quirk_client)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/mob/living/carbon/human)
 
 	var/mob/living/carbon/human/clone = new(location)
@@ -330,6 +382,8 @@
 	return clone
 
 /mob/living/carbon/human/calculate_fitness()
+	procstart = null
+	src.procstart = null
 	var/fitness_modifier = 1
 	if (HAS_TRAIT(src, TRAIT_HULK))
 		fitness_modifier *= 2
@@ -360,6 +414,8 @@
 	return ceil(damage * (ceil(athletics_level / 2)) * fitness_modifier * maxHealth)
 
 /mob/living/carbon/human/proc/item_heal(mob/user, brute_heal, burn_heal, heal_message_brute, heal_message_burn, required_bodytype)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/affecting = src.get_bodypart(check_zone(user.zone_selected))
 	if (!affecting || !(affecting.bodytype & required_bodytype))
 		to_chat(user, span_warning("[affecting] is already in good condition!"))
@@ -389,6 +445,8 @@
 /// Sets both mob's and eye organ's eye color values
 /// If color_right is not passed, its assumed to be the same as color_left
 /mob/living/carbon/human/proc/set_eye_color(color_left, color_right)
+	procstart = null
+	src.procstart = null
 	if (!color_right)
 		color_right = color_left
 	eye_color_left = color_left

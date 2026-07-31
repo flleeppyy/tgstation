@@ -11,28 +11,40 @@ GLOBAL_DATUM_INIT(bt_viewer, /datum/bt_viewer, new())
 	var/mob/awaiting_pick_user = null
 
 /datum/bt_viewer/Destroy()
+	procstart = null
+	src.procstart = null
 	_clear_target()
 	_end_pick()
 	return ..()
 
 /datum/bt_viewer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "BehaviorTreeViewer", "Behavior Tree Viewer")
 		ui.open()
 
 /datum/bt_viewer/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(awaiting_pick_user == user)
 		_end_pick()
 
 /datum/bt_viewer/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_DEBUG)
 
 /datum/bt_viewer/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(get_asset_datum(/datum/asset/simple/plane_background))
 
 /datum/bt_viewer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["mob_name"] = viewing_mob ? viewing_mob.name : null
 	data["controller_type"] = viewing_controller ? "[viewing_controller.type]" : null
@@ -69,6 +81,8 @@ GLOBAL_DATUM_INIT(bt_viewer, /datum/bt_viewer, new())
 	return data
 
 /datum/bt_viewer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -85,6 +99,8 @@ GLOBAL_DATUM_INIT(bt_viewer, /datum/bt_viewer, new())
 			return TRUE
 
 /datum/bt_viewer/proc/on_pick_click(mob/source, atom/clicked, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	_end_pick()
 
@@ -95,6 +111,8 @@ GLOBAL_DATUM_INIT(bt_viewer, /datum/bt_viewer, new())
 	return NONE
 
 /datum/bt_viewer/proc/set_target(mob/target)
+	procstart = null
+	src.procstart = null
 	_clear_target()
 	viewing_mob = target
 	viewing_controller = target.ai_controller
@@ -102,10 +120,14 @@ GLOBAL_DATUM_INIT(bt_viewer, /datum/bt_viewer, new())
 	RegisterSignal(viewing_mob, COMSIG_PREQDELETED, PROC_REF(on_mob_deleted))
 
 /datum/bt_viewer/proc/on_mob_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	_clear_target()
 
 /datum/bt_viewer/proc/_clear_target()
+	procstart = null
+	src.procstart = null
 	if(viewing_mob)
 		UnregisterSignal(viewing_mob, COMSIG_PREQDELETED)
 	if(viewing_controller)
@@ -114,12 +136,16 @@ GLOBAL_DATUM_INIT(bt_viewer, /datum/bt_viewer, new())
 	viewing_controller = null
 
 /datum/bt_viewer/proc/_end_pick()
+	procstart = null
+	src.procstart = null
 	awaiting_pick = FALSE
 	if(awaiting_pick_user)
 		UnregisterSignal(awaiting_pick_user, COMSIG_MOB_CLICKON)
 		awaiting_pick_user = null
 
 /datum/bt_viewer/proc/collect_nodes(list/root_indices, list/node_list)
+	procstart = null
+	src.procstart = null
 	var/priority = 1
 	for(var/datum/bt_node/root as anything in viewing_controller.behavior_nodes)
 		root_indices += root.execution_index
@@ -128,6 +154,8 @@ GLOBAL_DATUM_INIT(bt_viewer, /datum/bt_viewer, new())
 // Recursively adds node and all descendants to node_list as flat entries.
 // Each entry has exec_index as its unique key, with children as a flat list of child exec_indices.
 /datum/bt_viewer/proc/_collect_node(datum/bt_node/node, list/node_list, priority_index)
+	procstart = null
+	src.procstart = null
 	var/exec = node.execution_index || 0
 	var/last = node.last_execution_index || 0
 

@@ -26,6 +26,8 @@
 	VAR_PRIVATE/search_range
 
 /datum/bt_node/ai_behavior/acquire_target/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/async_flags = handle_async()
 	if(async_flags)
 		return async_flags
@@ -51,16 +53,22 @@
 	return start_async()
 
 /datum/bt_node/ai_behavior/acquire_target/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	search_strategy = null
 	search_range = null
 
 /// Returns TRUE to abort the search before it starts (e.g. a detection field is already active).
 /datum/bt_node/ai_behavior/acquire_target/proc/can_search(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Returns TRUE if the current target is still good and we should skip the search.
 /datum/bt_node/ai_behavior/acquire_target/proc/should_keep_target(datum/ai_controller/controller, datum/targeting_strategy/strategy, atom/current_target)
+	procstart = null
+	src.procstart = null
 	switch(revalidation_mode)
 		if(TARGET_KEEP_IF_SET)
 			return !isnull(current_target)
@@ -70,6 +78,8 @@
 
 ///Resolves the targeting strategy for this behavior
 /datum/bt_node/ai_behavior/acquire_target/proc/get_targeting_strategy(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(!targeting_strategy)
 		return GET_TARGETING_STRATEGY(/datum/targeting_strategy/anything)
 	if(ispath(targeting_strategy))
@@ -82,6 +92,8 @@
 
 ///Actual behavior for collecting and filtering targets
 /datum/bt_node/ai_behavior/acquire_target/proc/find_and_set_target(datum/ai_controller/controller, datum/targeting_strategy/targeting_strategy, range)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_mob = controller.pawn
 	var/datum/target_source/source = GET_TARGET_SOURCE(target_source)
 	if(!source)
@@ -122,12 +134,16 @@
 
 /// Clears the target key when revalidating and the search turned up nothing, so a stale target doesn't linger.
 /datum/bt_node/ai_behavior/acquire_target/proc/clear_stale_target(datum/ai_controller/controller, atom/current_target)
+	procstart = null
+	src.procstart = null
 	if(revalidation_mode != TARGET_REVALIDATE || isnull(current_target))
 		return
 	controller.clear_blackboard_key(target_key)
 
 ///Fallback for no targets found.
 /datum/bt_node/ai_behavior/acquire_target/proc/on_no_candidates(datum/ai_controller/controller, atom/current_target, datum/targeting_strategy/strategy, range)
+	procstart = null
+	src.procstart = null
 	if(!target_loss_distance || !current_target)
 		return list()
 	if(strategy.can_keep_target(controller.pawn, current_target, target_loss_distance, controller))
@@ -136,6 +152,8 @@
 
 /// Filters the candidate list to valid targets. Override to add priority filtering or other per-candidate criteria.
 /datum/bt_node/ai_behavior/acquire_target/proc/filter_candidates(datum/ai_controller/controller, list/candidates, datum/targeting_strategy/strategy, atom/current_target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/pawn = controller.pawn
 	var/list/ignore_list = ignore_list_key ? controller.blackboard[ignore_list_key] : null
 	var/list/filtered = list()
@@ -149,18 +167,26 @@
 
 /// Called when filter_candidates produces nothing. Override to trigger side effects (e.g. spawning a detection field).
 /datum/bt_node/ai_behavior/acquire_target/proc/on_no_valid_candidates(datum/ai_controller/controller, atom/current_target)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called after a target is selected and written to the blackboard. Override for post-selection side effects.
 /datum/bt_node/ai_behavior/acquire_target/proc/on_target_found(datum/ai_controller/controller, atom/target, datum/targeting_strategy/strategy)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Picks the final target from filtered candidates. Only valid for the non-reachable path; the reachable path goes async.
 /datum/bt_node/ai_behavior/acquire_target/proc/pick_final_target(datum/ai_controller/controller, list/filtered_targets)
+	procstart = null
+	src.procstart = null
 	return pick(filtered_targets)
 
 /// perform_async(): walks filtered candidates checking reachability (may sleep), then commits the result via finish_async().
 /datum/bt_node/ai_behavior/acquire_target/perform_async(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/datum/targeting_strategy/strategy = search_strategy
 	var/range = search_range
 	var/mob/living/living_mob = controller.pawn

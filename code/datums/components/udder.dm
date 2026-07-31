@@ -11,6 +11,8 @@
 
 //udder_type and reagent_produced_typepath are typepaths, not reference
 /datum/component/udder/Initialize(udder_type = /obj/item/udder, datum/callback/on_milk_callback, datum/callback/on_generate_callback, reagent_produced_override)
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent)) //technically is possible to drop this on carbons... but you wouldn't do that to me, would you?
 		return COMPONENT_INCOMPATIBLE
 	udder = new udder_type(null)
@@ -18,16 +20,22 @@
 	src.on_milk_callback = on_milk_callback
 
 /datum/component/udder/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 	RegisterSignal(parent, COMSIG_ATOM_ATTACKBY, PROC_REF(on_attackby))
 
 /datum/component/udder/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(udder)
 	on_milk_callback = null
 	UnregisterSignal(parent, list(COMSIG_ATOM_EXAMINE, COMSIG_ATOM_ATTACKBY))
 
 ///signal called on parent being examined
 /datum/component/udder/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/milked = parent
@@ -46,6 +54,8 @@
 
 ///signal called on parent being attacked with an item
 /datum/component/udder/proc/on_attackby(datum/source, obj/item/milking_tool, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/milked = parent
@@ -81,6 +91,8 @@
 	var/hunger_key = BB_CHECK_HUNGRY
 
 /obj/item/udder/proc/add_features(parent, callback, reagent_override)
+	procstart = null
+	src.procstart = null
 	udder_mob = parent
 	on_generate_callback = callback
 	create_reagents(size, REAGENT_HOLDER_ALIVE)
@@ -94,6 +106,8 @@
 	udder_mob.ai_controller?.set_blackboard_key(BB_CHECK_HUNGRY, TRUE)
 
 /obj/item/udder/proc/on_mob_consume(datum/source, atom/feed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(feed, require_consume_type))
@@ -102,6 +116,8 @@
 	return COMPONENT_HOSTILE_NO_ATTACK
 
 /obj/item/udder/proc/on_mob_feed(datum/source, atom/used_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(used_item, require_consume_type))
@@ -110,6 +126,8 @@
 	return COMPONENT_NO_AFTERATTACK
 
 /obj/item/udder/proc/handle_consumption(atom/movable/food, mob/user)
+	procstart = null
+	src.procstart = null
 	if(locate(food.type) in src)
 		if(user)
 			user.balloon_alert(user, "already full!")
@@ -123,6 +141,8 @@
 	final_food.forceMove(src)
 
 /obj/item/udder/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	if(!istype(arrived, require_consume_type))
 		return ..()
 
@@ -131,6 +151,8 @@
 	return ..()
 
 /obj/item/udder/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(gone, require_consume_type))
 		return
@@ -138,12 +160,16 @@
 
 
 /obj/item/udder/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
 	udder_mob = null
 	on_generate_callback = null
 
 /obj/item/udder/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(udder_mob.stat != DEAD)
 		generate() //callback is on generate() itself as sometimes generate does not add new reagents, or is not called via process
 
@@ -152,6 +178,8 @@
  * also useful for changing initial amounts in reagent holder (cows start with milk, gutlunches start empty)
  */
 /obj/item/udder/proc/initial_conditions()
+	procstart = null
+	src.procstart = null
 	reagents.add_reagent(reagent_produced_typepath, 20, added_purity = 1)
 	START_PROCESSING(SSobj, src)
 
@@ -159,6 +187,8 @@
  * Proc called every 2 seconds from SSMobs to add whatever reagent the udder is generating.
  */
 /obj/item/udder/proc/generate()
+	procstart = null
+	src.procstart = null
 	if(!isnull(require_consume_type) && !(locate(require_consume_type) in src))
 		return FALSE
 	if(!prob(production_probability))
@@ -176,6 +206,8 @@
  * * mob/user - who is trying to do this
  */
 /obj/item/udder/proc/milk(obj/item/reagent_containers/cup/milk_holder, mob/user)
+	procstart = null
+	src.procstart = null
 	if(milk_holder.reagents.total_volume >= milk_holder.volume)
 		to_chat(user, span_warning("[milk_holder] is full."))
 		return
@@ -195,6 +227,8 @@
 	reagent_produced_typepath = /datum/reagent/medicine/mine_salve
 
 /obj/item/udder/gutlunch/generate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -209,6 +243,8 @@
 	name = "bird udder"
 
 /obj/item/udder/raptor/generate()
+	procstart = null
+	src.procstart = null
 	if(!prob(production_probability))
 		return FALSE
 	var/happiness_percentage = udder_mob.ai_controller?.blackboard[BB_BASIC_HAPPINESS]

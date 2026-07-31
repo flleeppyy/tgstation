@@ -2,6 +2,8 @@
  * Ctrl click
  */
 /mob/proc/CtrlClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	base_click_ctrl(A)
 
 /**
@@ -10,6 +12,8 @@
  * If you wish to add custom `click_ctrl` behavior for a single type, use that proc.
  */
 /mob/proc/base_click_ctrl(atom/target)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	// Check if they've hooked in to prevent src from ctrl clicking anything
@@ -31,6 +35,8 @@
  * For most objects, pull
  */
 /mob/living/base_click_ctrl(atom/target)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	. = ..()
@@ -48,6 +54,8 @@
  * Except for tagging datumns same as control click
  */
 /mob/proc/CtrlMiddleClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	if(check_rights_for(client, R_ADMIN))
 		client.toggle_tag_datum(A)
 		return
@@ -66,6 +74,8 @@
  * Returning any value besides NONE will stop the attack chain and thus stop the object from getting pulled/grabbed
  **/
 /atom/proc/click_ctrl(mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	return NONE
 
@@ -75,6 +85,8 @@
  * Unused except for AI
  */
 /mob/proc/CtrlShiftClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	base_click_ctrl_shift(A)
 
 /**
@@ -83,6 +95,8 @@
  * If you wish to add custom `click_ctrl_shift` behavior for a single type, use that proc.
  */
 /mob/proc/base_click_ctrl_shift(atom/target)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	// Check if they've hooked in to prevent src from ctrl clicking anything
@@ -104,5 +118,7 @@
  * Consider adding `interaction_flags_click` before adding unique guard clauses.
  **/
 /atom/proc/click_ctrl_shift(mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	return NONE

@@ -3,6 +3,8 @@
 	var/atom/movable/container
 
 /datum/component/soulstoned/Initialize(atom/movable/container)
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 	var/mob/living/stoned = parent
@@ -16,6 +18,8 @@
 	RegisterSignal(stoned, COMSIG_MOVABLE_MOVED, PROC_REF(free_prisoner))
 
 /datum/component/soulstoned/proc/free_prisoner()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/stoned = parent
@@ -23,5 +27,7 @@
 		qdel(src)
 
 /datum/component/soulstoned/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	var/mob/living/stoned = parent
 	stoned.remove_traits(list(TRAIT_GODMODE, TRAIT_IMMOBILIZED, TRAIT_HANDS_BLOCKED), SOULSTONE_TRAIT)

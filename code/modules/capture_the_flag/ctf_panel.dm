@@ -3,15 +3,21 @@ GLOBAL_DATUM_INIT(ctf_panel, /datum/ctf_panel, new())
 /datum/ctf_panel
 
 /datum/ctf_panel/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.observer_state
 
 /datum/ctf_panel/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "CTFPanel")
 		ui.open()
 
 /datum/ctf_panel/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/teams = list()
 
@@ -44,6 +50,8 @@ GLOBAL_DATUM_INIT(ctf_panel, /datum/ctf_panel, new())
 
 
 /datum/ctf_panel/ui_act(action, params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	.= ..()
 	if(.)
 		return
@@ -82,6 +90,8 @@ GLOBAL_DATUM_INIT(ctf_panel, /datum/ctf_panel, new())
 			return TRUE
 
 /datum/ctf_panel/proc/ctf_enabled()
+	procstart = null
+	src.procstart = null
 	var/datum/ctf_controller/ctf_enabled_check = GLOB.ctf_games[CTF_GHOST_CTF_GAME_ID]
 	if(ctf_enabled_check.ctf_enabled)
 		return TRUE

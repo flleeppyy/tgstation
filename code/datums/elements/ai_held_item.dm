@@ -6,6 +6,8 @@
 /datum/element/ai_held_item
 
 /datum/element/ai_held_item/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -20,10 +22,14 @@
 
 /// Returns the item held in a mob's blackboard, if it has one
 /datum/element/ai_held_item/proc/get_held_item(mob/living/source)
+	procstart = null
+	src.procstart = null
 	return source.ai_controller.blackboard[BB_SIMPLE_CARRY_ITEM]
 
 /// Someone's interacting with us by hand, if we have an item and like them we'll hand it over
 /datum/element/ai_held_item/proc/on_click(mob/living/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (user.combat_mode)
@@ -41,6 +47,8 @@
 
 /// If our held item is removed from our atom then take it off the blackboard
 /datum/element/ai_held_item/proc/atom_exited(mob/living/source, atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/carried_item = get_held_item(source)
@@ -49,6 +57,8 @@
 
 /// Report that we're holding an item.
 /datum/element/ai_held_item/proc/on_examined(mob/living/source, mob/user, list/examine_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/carried_item = get_held_item(source)
@@ -58,6 +68,8 @@
 
 /// If we died, drop anything we were carrying
 /datum/element/ai_held_item/proc/on_death(mob/living/ol_yeller)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/carried_item = get_held_item(ol_yeller)

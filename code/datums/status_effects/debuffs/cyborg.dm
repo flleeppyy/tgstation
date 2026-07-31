@@ -10,17 +10,25 @@
 	var/slowdown = 1
 
 /datum/status_effect/borg_slow/on_creation(mob/living/new_owner, slowdown = 1)
+	procstart = null
+	src.procstart = null
 	src.slowdown = slowdown
 	return ..()
 
 /datum/status_effect/borg_slow/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/borg_slowdown, multiplicative_slowdown = slowdown)
 	return TRUE
 
 /datum/status_effect/borg_slow/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/borg_slowdown)
 
 /datum/status_effect/borg_slow/refresh(effect, slowdown = 1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(src.slowdown <= slowdown)
 		return

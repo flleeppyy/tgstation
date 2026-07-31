@@ -8,6 +8,8 @@
 	var/list/diseases
 
 /datum/component/bloody_spreader/Initialize(blood_left = INFINITY, list/blood_dna = list(get_blood_type(BLOOD_TYPE_MEAT).dna_string = get_blood_type(BLOOD_TYPE_MEAT)), list/diseases = null)
+	procstart = null
+	src.procstart = null
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -42,6 +44,8 @@
 	src.diseases = diseases
 
 /datum/component/bloody_spreader/InheritComponent(/datum/component/new_comp, i_am_original, blood_left = 0, list/blood_dna = null, list/diseases = null)
+	procstart = null
+	src.procstart = null
 	src.blood_dna |= blood_dna
 	src.diseases |= diseases
 	if(src.blood_left >= INFINITY)
@@ -50,6 +54,8 @@
 
 /// Apply blood to the mob who interacted with us
 /datum/component/bloody_spreader/proc/spread_to_hands(atom/parent, mob/bloody_fool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(ishuman(bloody_fool))
@@ -65,6 +71,8 @@
 
 /// Apply blood to the atom that interacted with us, ignoring that they may be human
 /datum/component/bloody_spreader/proc/spread_to_atom(atom/parent, atom/bloody_fool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	bloody_fool.add_blood_DNA(blood_dna, diseases)
@@ -75,6 +83,8 @@
 
 /// Apply blood to both the item put into us, and the mob who put it there
 /datum/component/bloody_spreader/proc/spread_on_stored(atom/parent, obj/item/stored, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	spread_to_atom(parent, stored)
@@ -83,6 +93,8 @@
 
 /// Apply blood to the slots that our item covers when equipped
 /datum/component/bloody_spreader/proc/spread_on_equip(obj/item/parent, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!ishuman(equipper))

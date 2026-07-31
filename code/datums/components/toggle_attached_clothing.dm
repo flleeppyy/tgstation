@@ -79,6 +79,8 @@
 		create_deployable()
 
 /datum/component/toggle_attached_clothing/Destroy(force)
+	procstart = null
+	src.procstart = null
 	unequip_deployable()
 	QDEL_NULL(deployable)
 	QDEL_NULL(toggle_action)
@@ -91,6 +93,8 @@
 
 /// Toggle deployable when the UI button is clicked
 /datum/component/toggle_attached_clothing/proc/on_toggle_pressed(obj/item/source, mob/user, datum/action)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (action != toggle_action)
 		return
@@ -99,6 +103,8 @@
 
 /// Called when action attempts to check what slot the item is worn in
 /datum/component/toggle_attached_clothing/proc/on_action_slot_checked(obj/item/clothing/source, mob/user, datum/action, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (action != toggle_action)
 		return
@@ -107,6 +113,8 @@
 
 /// Apply an overlay while the item is not deployed
 /datum/component/toggle_attached_clothing/proc/on_checked_overlays(obj/item/source, list/overlays, mutable_appearance/standing, isinhands, icon_file, bodyshape)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (isinhands || currently_deployed)
 		return
@@ -114,6 +122,8 @@
 
 /// Deploys gear if it is hidden, hides it if it is deployed
 /datum/component/toggle_attached_clothing/proc/toggle_deployable()
+	procstart = null
+	src.procstart = null
 	if (currently_deployed)
 		remove_deployable()
 		return
@@ -144,6 +154,8 @@
 
 /// Undeploy gear if it moves slots somehow
 /datum/component/toggle_attached_clothing/proc/on_parent_equipped(obj/item/clothing/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (slot & equipped_slot)
 		return
@@ -151,12 +163,16 @@
 
 /// Display deployed if worn in an outfit
 /datum/component/toggle_attached_clothing/proc/on_parent_equipped_outfit(obj/item/clothing/source, mob/equipper, visuals_only, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	create_deployable()
 	toggle_deployable()
 
 /// Create our gear, returns true if we actually made anything
 /datum/component/toggle_attached_clothing/proc/create_deployable()
+	procstart = null
+	src.procstart = null
 	if (deployable)
 		return FALSE
 	if (pre_creation_check && !pre_creation_check.Invoke())
@@ -172,11 +188,15 @@
 
 /// Undeploy gear if you drop it
 /datum/component/toggle_attached_clothing/proc/on_deployed_dropped()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	remove_deployable()
 
 /// Undeploy gear if it moves slots somehow
 /datum/component/toggle_attached_clothing/proc/on_deployed_equipped(obj/item/clothing/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (source.slot_flags & slot)
 		return
@@ -184,12 +204,16 @@
 
 /// Undeploy gear if it is deleted
 /datum/component/toggle_attached_clothing/proc/on_deployed_destroyed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	remove_deployable()
 	deployable = null
 
 /// Removes our deployed equipment from the wearer
 /datum/component/toggle_attached_clothing/proc/remove_deployable()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	unequip_deployable()
 	if (!currently_deployed)
@@ -208,6 +232,8 @@
 
 /// Removes an equipped deployable atom upon its retraction or destruction
 /datum/component/toggle_attached_clothing/proc/unequip_deployable()
+	procstart = null
+	src.procstart = null
 	if (!deployable)
 		return
 	if (!ishuman(deployable.loc))

@@ -26,6 +26,8 @@
 
 /// Zaps a target, the bolt originating from origin.
 /datum/action/cooldown/spell/charged/beam/tesla/send_beam(atom/origin, mob/living/carbon/to_beam, bolt_energy = 30, bounces = 5)
+	procstart = null
+	src.procstart = null
 	origin.Beam(to_beam, icon_state = "lightning[rand(1,12)]", time = 0.5 SECONDS)
 	playsound(get_turf(to_beam), 'sound/effects/magic/lightningshock.ogg', 50, TRUE, -1)
 
@@ -47,6 +49,8 @@
 	send_beam(to_beam, to_beam_next, max(bolt_energy - energy_lost_per_bounce, energy_lost_per_bounce), bounces - 1)
 
 /datum/action/cooldown/spell/charged/beam/tesla/get_target(atom/center)
+	procstart = null
+	src.procstart = null
 	var/list/possibles = list()
 	for(var/mob/living/carbon/to_check in view(target_radius, center))
 		if(to_check == center || to_check == owner)

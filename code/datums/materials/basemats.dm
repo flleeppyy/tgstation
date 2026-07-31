@@ -26,6 +26,8 @@
 	tradable_base_quantity = MATERIAL_QUANTITY_COMMON
 
 /datum/material/iron/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(victim, TRAIT_ROCK_EATER))
 		victim.apply_damage(10, BRUTE, BODY_ZONE_HEAD, wound_bonus = 5)
@@ -62,17 +64,23 @@
 	texture_layer_icon_state = "shine"
 
 /datum/material/glass/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(victim, TRAIT_ROCK_EATER))
 		victim.apply_damage(10, BRUTE, BODY_ZONE_HEAD, wound_bonus = 5, sharpness = TRUE) //cronch
 		return TRUE
 
 /datum/material/glass/on_main_applied(atom/source, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isobj(source) && !isstack(source) && (source.material_flags & MATERIAL_AFFECT_STATISTICS))
 		source.AddElement(/datum/element/can_shatter, shard_type, round(mat_amount / SHEET_MATERIAL_AMOUNT * multiplier), SFX_SHATTER)
 
 /datum/material/glass/on_main_removed(atom/source, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isobj(source) && !isstack(source) && (source.material_flags & MATERIAL_AFFECT_STATISTICS))
 		source.RemoveElement(/datum/element/can_shatter, shard_type, round(mat_amount / SHEET_MATERIAL_AMOUNT * multiplier), SFX_SHATTER)
@@ -105,6 +113,8 @@
 	texture_layer_icon_state = "shine"
 
 /datum/material/silver/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(victim, TRAIT_ROCK_EATER))
 		victim.apply_damage(10, BRUTE, BODY_ZONE_HEAD, wound_bonus = 5)
@@ -137,6 +147,8 @@
 	texture_layer_icon_state = "shine"
 
 /datum/material/gold/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(victim, TRAIT_ROCK_EATER))
 		victim.apply_damage(10, BRUTE, BODY_ZONE_HEAD, wound_bonus = 5)
@@ -170,6 +182,8 @@
 	points_per_boulder_unit = 10 / SHEET_MATERIAL_AMOUNT
 
 /datum/material/diamond/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(victim, TRAIT_ROCK_EATER))
 		victim.apply_damage(15, BRUTE, BODY_ZONE_HEAD, wound_bonus = 7)
@@ -228,12 +242,16 @@
 	points_per_boulder_unit = 2 / SHEET_MATERIAL_AMOUNT
 
 /datum/material/plasma/on_applied(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	source.AddComponent(/datum/component/combustible_flooder, GAS_PLASMA, mat_amount * 0.05 * multiplier) //Empty temp arg, fully dependent on whatever ignited it.
 	if(istype(source, /obj/item/fishing_rod))
 		ADD_TRAIT(source, TRAIT_ROD_LAVA_USABLE, REF(src))
 
 /datum/material/plasma/on_removed(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(source.GetComponent(/datum/component/combustible_flooder))
 	if(istype(source, /obj/item/fishing_rod))
@@ -270,11 +288,15 @@
 	texture_layer_icon_state = "shine"
 
 /datum/material/bluespace/on_main_applied(atom/source, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(source, /obj/item/fishing_rod))
 		RegisterSignal(source, COMSIG_ROD_BEGIN_FISHING, PROC_REF(on_begin_fishing))
 
 /datum/material/bluespace/proc/on_begin_fishing(obj/item/fishing_rod/rod, datum/fishing_challenge/challenge)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(prob(67))
 		return
@@ -286,6 +308,8 @@
 	challenge.register_reward_signals(new_source)
 
 /datum/material/bluespace/on_main_removed(atom/source, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(source, /obj/item/fishing_rod))
 		UnregisterSignal(source, COMSIG_ROD_BEGIN_FISHING)
@@ -316,21 +340,29 @@
 	points_per_boulder_unit = 15 / SHEET_MATERIAL_AMOUNT
 
 /datum/material/bananium/on_applied(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	source.LoadComponent(/datum/component/squeak, list('sound/items/bikehorn.ogg'=1), 50 * multiplier, falloff_exponent = 20)
 	source.AddComponent(/datum/component/slippery, min(mat_amount / 10 * multiplier, 80 * multiplier))
 
 /datum/material/bananium/on_main_applied(atom/source, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(source, /obj/item/fishing_rod))
 		RegisterSignal(source, COMSIG_ROD_BEGIN_FISHING, PROC_REF(on_begin_fishing))
 
 /datum/material/bananium/proc/on_begin_fishing(obj/item/fishing_rod/rod, datum/fishing_challenge/challenge)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(prob(40))
 		RegisterSignal(challenge, COMSIG_FISHING_CHALLENGE_ROLL_REWARD, PROC_REF(roll_funny_fish))
 
 /datum/material/bananium/proc/roll_funny_fish(datum/source, obj/item/fishing_rod/rod, mob/fisherman, atom/location, list/rewards)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/static/list/funny_fish = list(
 		/obj/item/fish/clownfish = 5,
@@ -342,11 +374,15 @@
 	rewards += pick_weight(funny_fish)
 
 /datum/material/bananium/on_removed(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(source.GetComponent(/datum/component/slippery))
 	qdel(source.GetComponent(/datum/component/squeak))
 
 /datum/material/bananium/on_main_removed(atom/source, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(source, /obj/item/fishing_rod))
 		UnregisterSignal(source, COMSIG_ROD_BEGIN_FISHING)
@@ -377,6 +413,8 @@
 	texture_layer_icon_state = "shine"
 
 /datum/material/titanium/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(victim, TRAIT_ROCK_EATER))
 		victim.apply_damage(15, BRUTE, BODY_ZONE_HEAD, wound_bonus = 7)
@@ -403,16 +441,22 @@
 	points_per_boulder_unit = 20 / SHEET_MATERIAL_AMOUNT
 
 /datum/material/runite/on_applied(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(source, /obj/item/fishing_rod))
 		ADD_TRAIT(source, TRAIT_ROD_REMOVE_FISHING_DUD, REF(src)) //light-absorbing, environment-cancelling fishing rod.
 
 /datum/material/runite/on_removed(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(source, /obj/item/fishing_rod))
 		REMOVE_TRAIT(source, TRAIT_ROD_REMOVE_FISHING_DUD, REF(src)) //light-absorbing, environment-cancelling fishing rod.
 
 /datum/material/runite/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(victim, TRAIT_ROCK_EATER))
 		victim.apply_damage(20, BRUTE, BODY_ZONE_HEAD, wound_bonus = 10)
@@ -471,6 +515,8 @@
 	texture_layer_icon_state = "woodgrain"
 
 /datum/material/wood/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(victim, TRAIT_ROCK_EATER))
 		victim.apply_damage(5, BRUTE, BODY_ZONE_HEAD)
@@ -498,16 +544,22 @@
 	points_per_boulder_unit = 20 / SHEET_MATERIAL_AMOUNT // If it ever needs it, we'll give it
 
 /datum/material/adamantine/on_applied(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(source, /obj/item/fishing_rod))
 		ADD_TRAIT(source, TRAIT_ROD_REMOVE_FISHING_DUD, REF(src)) // light-absorbing, environment-cancelling fishing rod.
 
 /datum/material/adamantine/on_removed(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(source, /obj/item/fishing_rod))
 		REMOVE_TRAIT(source, TRAIT_ROD_REMOVE_FISHING_DUD, REF(src)) // light-absorbing, environment-cancelling fishing rod.
 
 /datum/material/adamantine/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(victim, TRAIT_ROCK_EATER))
 		victim.apply_damage(20, BRUTE, BODY_ZONE_HEAD, wound_bonus = 10)
@@ -537,18 +589,24 @@
 	points_per_boulder_unit = 20 / SHEET_MATERIAL_AMOUNT
 
 /datum/material/mythril/on_applied(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isitem(source))
 		source.AddComponent(/datum/component/fantasy)
 		ADD_TRAIT(source, TRAIT_INNATELY_FANTASTICAL_ITEM, REF(src)) // DO THIS LAST OR WE WILL NEVER GET OUR BONUSES!!!
 
 /datum/material/mythril/on_removed(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isitem(source))
 		REMOVE_TRAIT(source, TRAIT_INNATELY_FANTASTICAL_ITEM, REF(src)) // DO THIS FIRST OR WE WILL NEVER GET OUR BONUSES DELETED!!!
 		qdel(source.GetComponent(/datum/component/fantasy))
 
 /datum/material/mythril/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(victim, TRAIT_ROCK_EATER))
 		victim.apply_damage(20, BRUTE, BODY_ZONE_HEAD, wound_bonus = 10)
@@ -578,10 +636,14 @@
 	value_per_unit = 400 / SHEET_MATERIAL_AMOUNT
 
 /datum/material/hot_ice/on_applied(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	source.AddComponent(/datum/component/combustible_flooder, GAS_PLASMA, mat_amount * 1.5 * multiplier, (mat_amount * 0.2 + 300) * multiplier)
 
 /datum/material/hot_ice/on_removed(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(source.GetComponent(/datum/component/combustible_flooder))
 
@@ -606,6 +668,8 @@
 	value_per_unit = 700 / SHEET_MATERIAL_AMOUNT
 
 /datum/material/metalhydrogen/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(victim, TRAIT_ROCK_EATER))
 		victim.apply_damage(15, BRUTE, BODY_ZONE_HEAD, wound_bonus = 7)
@@ -634,6 +698,8 @@
 	mat_rust_resistance = RUST_RESISTANCE_BASIC
 
 /datum/material/sand/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	victim.adjust_disgust(17)
 	return TRUE
@@ -700,6 +766,8 @@
 	texture_layer_icon_state = "runed"
 
 /datum/material/runedmetal/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(victim, TRAIT_ROCK_EATER))
 		victim.apply_damage(10, BRUTE, BODY_ZONE_HEAD, wound_bonus = 5)
@@ -746,6 +814,8 @@
 	texture_layer_icon_state = "paper"
 
 /datum/material/paper/on_main_applied(atom/source, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isobj(source) || !(source.material_flags & MATERIAL_AFFECT_STATISTICS))
 		return
@@ -755,15 +825,21 @@
 		RegisterSignal(paper, COMSIG_ROD_BEGIN_FISHING, PROC_REF(on_begin_fishing))
 
 /datum/material/paper/proc/on_begin_fishing(obj/item/fishing_rod/rod, datum/fishing_challenge/challenge)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(prob(40)) //consider the default reward and it's 15%
 		RegisterSignal(challenge, COMSIG_FISHING_CHALLENGE_ROLL_REWARD, PROC_REF(roll_stickman))
 
 /datum/material/paper/proc/roll_stickman(datum/source, obj/item/fishing_rod/rod, mob/fisherman, atom/location, list/rewards)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	rewards += pick(/mob/living/basic/stickman, /mob/living/basic/stickman/dog, /mob/living/basic/stickman/ranged)
 
 /datum/material/paper/on_main_removed(atom/source, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(source, /obj/item/fishing_rod) && (source.material_flags & MATERIAL_AFFECT_STATISTICS))
 		UnregisterSignal(source, COMSIG_ROD_BEGIN_FISHING)
@@ -788,6 +864,8 @@
 	value_per_unit = 6 / SHEET_MATERIAL_AMOUNT
 
 /datum/material/cardboard/on_main_applied(atom/source, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isobj(source) && source.material_flags & MATERIAL_AFFECT_STATISTICS)
 		var/obj/cardboard = source
@@ -812,6 +890,8 @@
 	value_per_unit = 100 / SHEET_MATERIAL_AMOUNT
 
 /datum/material/bone/on_main_applied(atom/source, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(source, /obj/item/fishing_rod))
 		RegisterSignal(source, COMSIG_ROD_BEGIN_FISHING, PROC_REF(on_begin_fishing))
@@ -819,11 +899,15 @@
 		ADD_TRAIT(source, TRAIT_FISH_MADE_OF_BONE, REF(src))
 
 /datum/material/bone/proc/on_begin_fishing(obj/item/fishing_rod/rod, datum/fishing_challenge/challenge)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(prob(40))
 		RegisterSignal(challenge, COMSIG_FISHING_CHALLENGE_ROLL_REWARD, PROC_REF(roll_bones))
 
 /datum/material/bone/proc/roll_bones(datum/source, obj/item/fishing_rod/rod, mob/fisherman, atom/location, list/rewards)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/static/list/bones = list(
 		/obj/item/fish/boned = 65,
@@ -838,6 +922,8 @@
 	rewards += pick_weight(bones)
 
 /datum/material/bone/on_main_removed(atom/source, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(source, /obj/item/fishing_rod))
 		UnregisterSignal(source, COMSIG_ROD_BEGIN_FISHING)
@@ -885,16 +971,22 @@
 	value_per_unit = 900 / SHEET_MATERIAL_AMOUNT
 
 /datum/material/zaukerite/on_applied(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(source, /obj/item/fishing_rod))
 		ADD_TRAIT(source, TRAIT_ROD_IGNORE_ENVIRONMENT, REF(src)) //light-absorbing, environment-cancelling fishing rod.
 
 /datum/material/zaukerite/on_removed(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(source, /obj/item/fishing_rod))
 		REMOVE_TRAIT(source, TRAIT_ROD_IGNORE_ENVIRONMENT, REF(src)) //light-absorbing, environment-cancelling fishing rod.
 
 /datum/material/zaukerite/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(victim, TRAIT_ROCK_EATER))
 		victim.apply_damage(30, BURN, BODY_ZONE_HEAD, wound_bonus = 5)
@@ -926,16 +1018,22 @@
 	texture_layer_icon_state = "shine"
 
 /datum/material/telecrystal/on_main_applied(atom/source, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(source, /obj/item/fishing_rod))
 		RegisterSignal(source, COMSIG_ROD_BEGIN_FISHING, PROC_REF(on_begin_fishing))
 
 /datum/material/telecrystal/on_main_removed(atom/source, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(source, /obj/item/fishing_rod))
 		UnregisterSignal(source, COMSIG_ROD_BEGIN_FISHING)
 
 /datum/material/telecrystal/proc/on_begin_fishing(obj/item/fishing_rod/rod, datum/fishing_challenge/challenge)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Oops, all chainsawfish!
 	challenge.register_reward_signals(GLOB.preset_fish_sources[/datum/fish_source/portal/syndicate])

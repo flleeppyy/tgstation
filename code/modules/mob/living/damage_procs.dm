@@ -123,6 +123,8 @@
  * when you don't know what damage type you're healing exactly.
  */
 /mob/living/proc/heal_damage_type(heal_amount = 0, damagetype = BRUTE, update_health = TRUE)
+	procstart = null
+	src.procstart = null
 	heal_amount = abs(heal_amount) * -1
 
 	switch(damagetype)
@@ -143,6 +145,8 @@
  * when you don't know what damage type you're getting exactly.
  */
 /mob/living/proc/get_current_damage_of_type(damagetype = BRUTE)
+	procstart = null
+	src.procstart = null
 	switch(damagetype)
 		if(BRUTE)
 			return get_brute_loss()
@@ -157,6 +161,8 @@
 
 /// return the total damage of all types which update your health
 /mob/living/proc/get_total_damage(precision = DAMAGE_PRECISION)
+	procstart = null
+	src.procstart = null
 	return round(get_brute_loss() + get_fire_loss() + get_tox_loss() + get_oxy_loss(), precision)
 
 /// Applies multiple damages at once via [apply_damage][/mob/living/proc/apply_damage]
@@ -187,6 +193,8 @@
 
 /// applies various common status effects or common hardcoded mob effects
 /mob/living/proc/apply_effect(effect = 0,effecttype = EFFECT_STUN, blocked = 0)
+	procstart = null
+	src.procstart = null
 	var/hit_percent = (100-blocked)/100
 	if(!effect || (hit_percent <= 0))
 		return FALSE
@@ -257,6 +265,8 @@
 
 /// Returns a multiplier to apply to a specific kind of damage
 /mob/living/proc/get_damage_mod(damage_type)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if (OXY)
 			return HAS_TRAIT(src, TRAIT_NOBREATH) ? 0 : 1
@@ -267,9 +277,13 @@
 	return 1
 
 /mob/living/proc/get_brute_loss()
+	procstart = null
+	src.procstart = null
 	return bruteloss
 
 /mob/living/proc/can_adjust_brute_loss(amount, forced, required_bodytype)
+	procstart = null
+	src.procstart = null
 	if(!forced && HAS_TRAIT(src, TRAIT_GODMODE))
 		return FALSE
 	if(SEND_SIGNAL(src, COMSIG_LIVING_ADJUST_BRUTE_DAMAGE, BRUTE, amount, forced) & COMPONENT_IGNORE_CHANGE)
@@ -277,6 +291,8 @@
 	return TRUE
 
 /mob/living/proc/adjust_brute_loss(amount, updating_health = TRUE, forced = FALSE, required_bodytype = ALL)
+	procstart = null
+	src.procstart = null
 	if (!can_adjust_brute_loss(amount, forced, required_bodytype))
 		return 0
 	. = bruteloss
@@ -289,6 +305,8 @@
 
 
 /mob/living/proc/set_brute_loss(amount, updating_health = TRUE, forced = FALSE, required_bodytype = ALL)
+	procstart = null
+	src.procstart = null
 	if(!forced && HAS_TRAIT(src, TRAIT_GODMODE))
 		return FALSE
 	. = bruteloss
@@ -301,9 +319,13 @@
 	. -= bruteloss
 
 /mob/living/proc/get_oxy_loss()
+	procstart = null
+	src.procstart = null
 	return oxyloss
 
 /mob/living/proc/can_adjust_oxy_loss(amount, forced, required_biotype)
+	procstart = null
+	src.procstart = null
 	if(!forced && HAS_TRAIT(src, TRAIT_GODMODE))
 		return FALSE
 	if(SEND_SIGNAL(src, COMSIG_LIVING_ADJUST_OXY_DAMAGE, OXY, amount, forced) & COMPONENT_IGNORE_CHANGE)
@@ -311,6 +333,8 @@
 	return TRUE
 
 /mob/living/proc/adjust_oxy_loss(amount, updating_health = TRUE, forced = FALSE, required_biotype = ALL)
+	procstart = null
+	src.procstart = null
 	if(!can_adjust_oxy_loss(amount, forced, required_biotype))
 		return 0
 	. = oxyloss
@@ -322,6 +346,8 @@
 		updatehealth()
 
 /mob/living/proc/set_oxy_loss(amount, updating_health = TRUE, forced = FALSE, required_biotype = ALL)
+	procstart = null
+	src.procstart = null
 	if(!forced && HAS_TRAIT(src, TRAIT_GODMODE))
 		return FALSE
 
@@ -334,9 +360,13 @@
 		updatehealth()
 
 /mob/living/proc/get_tox_loss()
+	procstart = null
+	src.procstart = null
 	return toxloss
 
 /mob/living/proc/can_adjust_tox_loss(amount, forced, required_biotype = ALL)
+	procstart = null
+	src.procstart = null
 	if(!forced && (HAS_TRAIT(src, TRAIT_GODMODE) || !(mob_biotypes & required_biotype)))
 		return FALSE
 	if(SEND_SIGNAL(src, COMSIG_LIVING_ADJUST_TOX_DAMAGE, TOX, amount, forced) & COMPONENT_IGNORE_CHANGE)
@@ -344,6 +374,8 @@
 	return TRUE
 
 /mob/living/proc/adjust_tox_loss(amount, updating_health = TRUE, forced = FALSE, required_biotype = ALL)
+	procstart = null
+	src.procstart = null
 	if(!can_adjust_tox_loss(amount, forced, required_biotype))
 		return 0
 
@@ -371,6 +403,8 @@
 
 
 /mob/living/proc/set_tox_loss(amount, updating_health = TRUE, forced = FALSE, required_biotype = ALL)
+	procstart = null
+	src.procstart = null
 	if(!forced && HAS_TRAIT(src, TRAIT_GODMODE))
 		return FALSE
 	if(!forced && !(mob_biotypes & required_biotype))
@@ -384,9 +418,13 @@
 		updatehealth()
 
 /mob/living/proc/get_fire_loss()
+	procstart = null
+	src.procstart = null
 	return fireloss
 
 /mob/living/proc/can_adjust_fire_loss(amount, forced, required_bodytype)
+	procstart = null
+	src.procstart = null
 	if(!forced && HAS_TRAIT(src, TRAIT_GODMODE))
 		return FALSE
 	if(SEND_SIGNAL(src, COMSIG_LIVING_ADJUST_BURN_DAMAGE, BURN, amount, forced) & COMPONENT_IGNORE_CHANGE)
@@ -394,6 +432,8 @@
 	return TRUE
 
 /mob/living/proc/adjust_fire_loss(amount, updating_health = TRUE, forced = FALSE, required_bodytype = ALL)
+	procstart = null
+	src.procstart = null
 	if(!can_adjust_fire_loss(amount, forced, required_bodytype))
 		return 0
 	. = fireloss
@@ -405,6 +445,8 @@
 		updatehealth()
 
 /mob/living/proc/set_fire_loss(amount, updating_health = TRUE, forced = FALSE, required_bodytype = ALL)
+	procstart = null
+	src.procstart = null
 	if(!forced && HAS_TRAIT(src, TRAIT_GODMODE))
 		return 0
 	. = fireloss
@@ -416,18 +458,28 @@
 		updatehealth()
 
 /mob/living/proc/adjust_organ_loss(slot, amount, maximum, required_organ_flag)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/proc/set_organ_loss(slot, amount, maximum, required_organ_flag)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/proc/get_organ_loss(slot, required_organ_flag)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/proc/get_stamina_loss()
+	procstart = null
+	src.procstart = null
 	return staminaloss
 
 /mob/living/proc/can_adjust_stamina_loss(amount, forced, required_biotype = ALL)
+	procstart = null
+	src.procstart = null
 	if(!forced && (!(mob_biotypes & required_biotype) || HAS_TRAIT(src, TRAIT_GODMODE)))
 		return FALSE
 	if(SEND_SIGNAL(src, COMSIG_LIVING_ADJUST_STAMINA_DAMAGE, STAMINA, amount, forced) & COMPONENT_IGNORE_CHANGE)
@@ -435,6 +487,8 @@
 	return TRUE
 
 /mob/living/proc/adjust_stamina_loss(amount, updating_stamina = TRUE, forced = FALSE, required_biotype = ALL)
+	procstart = null
+	src.procstart = null
 	if(!can_adjust_stamina_loss(amount, forced, required_biotype))
 		return 0
 	var/old_amount = staminaloss
@@ -450,6 +504,8 @@
 	return delta
 
 /mob/living/proc/set_stamina_loss(amount, updating_stamina = TRUE, forced = FALSE, required_biotype = ALL)
+	procstart = null
+	src.procstart = null
 	if(!forced && HAS_TRAIT(src, TRAIT_GODMODE))
 		return 0
 	if(!forced && !(mob_biotypes & required_biotype))
@@ -472,6 +528,8 @@
 /// For example, if you are taking 50 stamina damage but are at 90, you would actually only receive 30 stamina damage (due to the cap)
 /// - amount: The amount of stamina damage received, raw
 /mob/living/proc/received_stamina_damage(current_level, amount_actual, amount)
+	procstart = null
+	src.procstart = null
 	addtimer(CALLBACK(src, PROC_REF(set_stamina_loss), 0, TRUE, TRUE), stamina_regen_time, TIMER_UNIQUE|TIMER_OVERRIDE)
 
 /**
@@ -480,6 +538,8 @@
  * returns the net change in damage
  */
 /mob/living/proc/heal_bodypart_damage(brute = 0, burn = 0, updating_health = TRUE, required_bodytype = NONE, target_zone = null)
+	procstart = null
+	src.procstart = null
 	. = (adjust_brute_loss(-abs(brute), updating_health = FALSE) + adjust_fire_loss(-abs(burn), updating_health = FALSE))
 	if(!.) // no change, no need to update
 		return FALSE
@@ -488,6 +548,8 @@
 
 /// damage ONE external organ, organ gets randomly selected from damaged ones.
 /mob/living/proc/take_bodypart_damage(brute = 0, burn = 0, updating_health = TRUE, required_bodytype, check_armor = FALSE, wound_bonus = 0, exposed_wound_bonus = 0, sharpness = NONE)
+	procstart = null
+	src.procstart = null
 	. = (adjust_brute_loss(abs(brute), updating_health = FALSE) + adjust_fire_loss(abs(burn), updating_health = FALSE))
 	if(!.) // no change, no need to update
 		return FALSE
@@ -496,6 +558,8 @@
 
 /// heal MANY bodyparts, in random order. note: stamina arg nonfunctional for carbon mobs
 /mob/living/proc/heal_overall_damage(brute = 0, burn = 0, stamina = 0, required_bodytype, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = (adjust_brute_loss(-abs(brute), updating_health = FALSE, forced = forced) + \
 			adjust_fire_loss(-abs(burn), updating_health = FALSE, forced = forced) + \
 			adjust_stamina_loss(-abs(stamina), updating_stamina = FALSE, forced = forced))
@@ -506,6 +570,8 @@
 
 /// damage MANY bodyparts, in random order. note: stamina arg nonfunctional for carbon mobs
 /mob/living/proc/take_overall_damage(brute = 0, burn = 0, stamina = 0, updating_health = TRUE, forced = FALSE, required_bodytype)
+	procstart = null
+	src.procstart = null
 	. = (adjust_brute_loss(abs(brute), updating_health = FALSE, forced = forced) + \
 			adjust_fire_loss(abs(burn), updating_health = FALSE, forced = forced) + \
 			adjust_stamina_loss(abs(stamina), updating_stamina = FALSE, forced = forced))
@@ -516,6 +582,8 @@
 
 ///heal up to amount damage, in a given order
 /mob/living/proc/heal_ordered_damage(amount, list/damage_types, update_health = TRUE)
+	procstart = null
+	src.procstart = null
 	. = 0 //we'll return the amount of damage healed
 	for(var/damagetype in damage_types)
 		var/amount_to_heal = min(abs(amount), get_current_damage_of_type(damagetype)) //heal only up to the amount of damage we have

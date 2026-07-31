@@ -1,4 +1,6 @@
-/mob/living/basic/bot/mulebot/MobBump(mob/bumped_mob) // called when the bot bumps into a mob
+/mob/living/basic/bot/mulebot/MobBump(mob/bumped_mob)
+	procstart = null
+	src.procstart = null // called when the bot bumps into a mob
 	if(mind || !isliving(bumped_mob)) //if there's a sentience controlling the bot, they aren't allowed to harm folks.
 		return ..()
 	var/mob/living/bumped_living = bumped_mob
@@ -11,6 +13,8 @@
 	return ..()
 
 /mob/living/basic/bot/mulebot/on_bot_movement(atom/movable/source, atom/oldloc, dir, forced)
+	procstart = null
+	src.procstart = null
 	cell?.use(cell_move_power_usage)
 	set_cell_hud()
 
@@ -23,6 +27,8 @@
 
 ///Checks if the bot is on or if it has charge
 /mob/living/basic/bot/mulebot/proc/on_pre_move()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(bot_mode_flags & BOT_MODE_ON))
@@ -34,6 +40,8 @@
 
 // when mulebot is in the same loc
 /mob/living/basic/bot/mulebot/proc/run_over(mob/living/carbon/human/crushed)
+	procstart = null
+	src.procstart = null
 	if (!(bot_access_flags & BOT_COVER_EMAGGED) && !wires.is_cut(WIRE_AVOIDANCE))
 		if (!has_status_effect(/datum/status_effect/careful_driving))
 			crushed.visible_message(span_notice("[src] slows down to avoid crushing [crushed]."))

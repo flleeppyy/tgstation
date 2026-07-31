@@ -12,14 +12,20 @@
 	var/datum/action/cooldown/spell/pointed/scan/scan_ability
 
 /obj/item/clothing/glasses/godeye/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	scan_ability = new(src)
 
 /obj/item/clothing/glasses/godeye/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(scan_ability)
 	return ..()
 
 /obj/item/clothing/glasses/godeye/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ishuman(user) && (slot & ITEM_SLOT_EYES))
 		ADD_TRAIT(src, TRAIT_NODROP, EYE_OF_GOD_TRAIT)
@@ -27,6 +33,8 @@
 		scan_ability.Grant(user)
 
 /obj/item/clothing/glasses/godeye/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Behead someone, their "glasses" drop on the floor
 	// and thus, the god eye should no longer be sticky
@@ -36,6 +44,8 @@
 	scan_ability?.Remove(user)
 
 /obj/item/clothing/glasses/godeye/proc/pain(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	to_chat(victim, span_userdanger("You experience blinding pain, as [src] burrows into your skull."))
 	victim.emote("scream")
 	victim.flash_act()
@@ -55,6 +65,8 @@
 	ranged_mousepointer = 'icons/effects/mouse_pointers/scan_target.dmi'
 
 /datum/action/cooldown/spell/pointed/scan/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	if(!isliving(cast_on))
 		owner.balloon_alert(owner, "not a valid target!")
 		return FALSE
@@ -66,6 +78,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/pointed/scan/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(cast_on.can_block_magic(MAGIC_RESISTANCE_MIND, charge_cost = 0))
@@ -94,6 +108,8 @@
 	addtimer(CALLBACK(src, PROC_REF(send_cooldown_end_message), cooldown_time))
 
 /datum/action/cooldown/spell/pointed/scan/proc/send_cooldown_end_message()
+	procstart = null
+	src.procstart = null
 	owner?.balloon_alert(owner, "scan recharged")
 
 /datum/status_effect/agent_pinpointer/scan
@@ -106,6 +122,8 @@
 	range_far = 15
 
 /datum/status_effect/agent_pinpointer/scan/scan_for_target()
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/movable/screen/alert/status_effect/agent_pinpointer/scan

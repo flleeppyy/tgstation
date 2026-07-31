@@ -12,10 +12,14 @@
 	max_charges = 20
 
 /obj/item/gun/magic/wand/pizza/zap_self(mob/living/user, suicide = FALSE)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You can't bring yourself to commit to a permanent transformation into pizza right now."))
 	return
 
 /obj/item/gun/magic/wand/pizza/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	charges--
 	playsound(user, fire_sound, 50, TRUE)
 	var/turf/user_loc = get_turf(user)
@@ -43,6 +47,8 @@
 	icon_state = "pizzamargherita"
 
 /obj/projectile/magic/pizza/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/hit_turf = get_turf(target)
 	var/datum/dimension_theme/pizza/converter = new()

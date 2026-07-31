@@ -12,6 +12,8 @@
 	var/active = FALSE
 
 /obj/item/clothing/shoes/kindle_kicks/ui_action_click(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(active)
 		return
 	active = TRUE
@@ -20,6 +22,8 @@
 	addtimer(CALLBACK(src, PROC_REF(lightUp)), 0.5 SECONDS)
 
 /obj/item/clothing/shoes/kindle_kicks/proc/lightUp(mob/user)
+	procstart = null
+	src.procstart = null
 	if(lightCycle < 15)
 		set_light_color(rgb(rand(0, 255), rand(0, 255), rand(0, 255)))
 		lightCycle++

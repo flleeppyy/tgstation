@@ -99,6 +99,8 @@
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
 
 /obj/item/clothing/head/costume/lobsterhat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/speechmod, replacements = strings("crustacean_replacement.json", "crustacean"))
 
@@ -129,6 +131,8 @@
 	dog_fashion = /datum/dog_fashion/head/cardborg
 
 /obj/item/clothing/head/costume/cardborg/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ishuman(user) && (slot & ITEM_SLOT_HEAD))
 		var/mob/living/carbon/human/human_user = user

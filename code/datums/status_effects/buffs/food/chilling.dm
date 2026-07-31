@@ -3,6 +3,8 @@
 	alert_type = /atom/movable/screen/alert/status_effect/icecream_chilling //different path, so we sprite one state and not five.
 
 /datum/status_effect/food/chilling/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	var/minimum_temp = (BODYTEMP_HEAT_DAMAGE_LIMIT - 12 * strength)
 	if(owner.bodytemperature >= minimum_temp)
 		owner.adjust_bodytemperature(-2.75 * strength * seconds_between_ticks, min_temp = minimum_temp)

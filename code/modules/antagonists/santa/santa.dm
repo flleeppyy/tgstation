@@ -7,6 +7,8 @@
 	var/datum/component/listen_prayers/santa_prayers
 
 /datum/antagonist/santa/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	give_equipment()
 	give_objective()
@@ -16,6 +18,8 @@
 	santa_prayers = owner.AddComponent(/datum/component/listen_prayers, CALLBACK(src, PROC_REF(check_if_santa_prayer)), "Santa Claus", "Allows you to listen for prayers that mention you or Christmas.")
 
 /datum/antagonist/santa/proc/check_if_santa_prayer(list/arguments)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/message = arguments[ARG_PRAYER_MSG]
 	var/mob/boy_girl = arguments[ARG_PRAYING_MOB]
@@ -28,6 +32,8 @@
 	return TRUE
 
 /datum/antagonist/santa/on_removal()
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return ..()
 	owner.remove_traits(list(TRAIT_CANNOT_OPEN_PRESENTS, TRAIT_PRESENT_VISION), TRAIT_SANTA)
@@ -38,10 +44,14 @@
 	return ..()
 
 /datum/antagonist/santa/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(owner, span_bolddanger("Your objective is to bring joy to the people on this station. You have a magical bag, which generates presents as long as you have it! You can examine the presents to take a peek inside, to make sure that you give the right gift to the right person."))
 
 /datum/antagonist/santa/proc/give_equipment()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = owner.current
 	if(istype(H))
 		H.equipOutfit(/datum/outfit/santa)
@@ -51,6 +61,8 @@
 	teleport.Grant(H)
 
 /datum/antagonist/santa/proc/give_objective()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/santa_objective = new()
 	santa_objective.explanation_text = "Bring joy and presents to the station!"
 	santa_objective.completed = TRUE //lets cut our santas some slack.

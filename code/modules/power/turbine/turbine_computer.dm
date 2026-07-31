@@ -11,6 +11,8 @@
 	var/mapping_id
 
 /obj/machinery/computer/turbine_computer/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!mapping_id)
@@ -22,6 +24,8 @@
 		break
 
 /obj/machinery/computer/turbine_computer/multitool_act(mob/living/user, obj/item/multitool/multitool)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_FAILURE
 	if(!istype(multitool.buffer, /obj/machinery/power/turbine/core_rotor))
 		to_chat(user, span_notice("Wrong machine type in [multitool] buffer..."))
@@ -43,11 +47,15 @@
  * * obj/machinery/power/turbine/core_rotor/machine - the machine to link
  */
 /obj/machinery/computer/turbine_computer/proc/register_machine(obj/machinery/power/turbine/core_rotor/machine)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	turbine_core = WEAKREF(machine)
 
 /obj/machinery/computer/turbine_computer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -55,6 +63,8 @@
 		ui.open()
 
 /obj/machinery/computer/turbine_computer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	//do we have the main rotor with all parts connected
@@ -78,6 +88,8 @@
 	.["regulator"] = main_control.compressor.intake_regulator
 
 /obj/machinery/computer/turbine_computer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

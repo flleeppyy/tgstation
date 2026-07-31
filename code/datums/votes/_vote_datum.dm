@@ -46,12 +46,16 @@
  * meaning no one will be able to hold this vote.
  */
 /datum/vote/proc/is_accessible_vote()
+	procstart = null
+	src.procstart = null
 	return !!length(default_choices)
 
 /**
  * Resets our vote to its default state.
  */
 /datum/vote/proc/reset()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	choices.Cut()
@@ -63,6 +67,8 @@
  * If this vote has a config associated, toggles it between enabled and disabled.
  */
 /datum/vote/proc/toggle_votable()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -70,6 +76,8 @@
  * If it has no config, returns -1.
  */
 /datum/vote/proc/is_config_enabled()
+	procstart = null
+	src.procstart = null
 	return -1
 
 /**
@@ -81,6 +89,8 @@
  * Return a string with the reason why the mob can't initiate the vote.
  */
 /datum/vote/proc/can_be_initiated(forced = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(!forced && !is_config_enabled())
@@ -94,6 +104,8 @@
  * Return FALSE to prevent the vote from being initiated.
  */
 /datum/vote/proc/create_vote(mob/vote_creator)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	for(var/key in default_choices)
@@ -107,6 +119,8 @@
  * Return a string - the text displayed to the world when the vote is initiated.
  */
 /datum/vote/proc/initiate_vote(initiator, duration)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	started_time = world.time
@@ -125,6 +139,8 @@
  * If there was a tie, the list will be length > 1.
  */
 /datum/vote/proc/get_vote_result(list/non_voters)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 	SHOULD_CALL_PARENT(TRUE)
 
@@ -141,6 +157,8 @@
 
 /// Gets the winner of the vote, selecting the choice with the most votes.
 /datum/vote/proc/get_simple_winner()
+	procstart = null
+	src.procstart = null
 	var/highest_vote = 0
 	var/list/current_winners = list()
 
@@ -159,6 +177,8 @@
 
 /// Gets the winner of the vote, selecting a random choice from all choices based on their vote count.
 /datum/vote/proc/get_random_winner()
+	procstart = null
+	src.procstart = null
 	var/winner = pick_weight(choices)
 	return winner ? list(winner) : list()
 
@@ -172,6 +192,8 @@
  * Return a formatted string of text to be displayed to everyone.
  */
 /datum/vote/proc/get_result_text(list/all_winners, real_winner, list/non_voters)
+	procstart = null
+	src.procstart = null
 	var/title_text = ""
 	var/returned_text = ""
 	if(override_question)
@@ -230,6 +252,8 @@
  * Return a formatted string of text to be displayed to everyone.
  */
 /datum/vote/proc/get_winner_text(list/all_winners, real_winner, list/non_voters)
+	procstart = null
+	src.procstart = null
 	var/returned_text = ""
 	if(length(all_winners) > 1)
 		returned_text += "\n[span_bold("Vote Tied Between:")]"
@@ -243,6 +267,8 @@
  * How this vote handles a tiebreaker between multiple winners.
  */
 /datum/vote/proc/tiebreaker(list/winners)
+	procstart = null
+	src.procstart = null
 	return pick(winners)
 
 /**
@@ -250,4 +276,6 @@
  * Apply actual vote effects here.
  */
 /datum/vote/proc/finalize_vote(winning_option)
+	procstart = null
+	src.procstart = null
 	return

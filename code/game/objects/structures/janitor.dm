@@ -11,11 +11,15 @@
 	var/water_icon = "mopbucket_water"
 
 /obj/structure/mop_bucket/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(100, OPENCONTAINER)
 	register_context()
 
 /obj/structure/mop_bucket/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(istype(held_item, /obj/item/mop))
@@ -29,6 +33,8 @@
 	return .
 
 /obj/structure/mop_bucket/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/mop))
 		if(tool.reagents.total_volume >= tool.reagents.maximum_volume)
 			balloon_alert(user, "already soaked!")
@@ -46,6 +52,8 @@
 	return NONE
 
 /obj/structure/mop_bucket/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(reagents.total_volume > 0)
 		. += water_icon
@@ -64,11 +72,15 @@
 	var/max_signs = 4
 
 /obj/structure/mop_bucket/janitorialcart/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.maximum_volume *= 2.5
 	GLOB.janitor_devices += src
 
 /obj/structure/mop_bucket/janitorialcart/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.janitor_devices -= src
 	QDEL_NULL(myreplacer)
 	QDEL_NULL(myspray)
@@ -79,6 +91,8 @@
 	return ..()
 
 /obj/structure/mop_bucket/janitorialcart/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	if(istype(arrived, /obj/item/storage/bag/trash))
 		mybag = arrived
 	else if(istype(arrived, /obj/item/mop))
@@ -95,6 +109,8 @@
 	return ..()
 
 /obj/structure/mop_bucket/janitorialcart/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if(gone == mybag)
 		mybag = null
 	else if(gone == mymop)
@@ -112,6 +128,8 @@
 	return ..()
 
 /obj/structure/mop_bucket/janitorialcart/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(contents.len)
 		. += span_bold(span_info("\nIt is carrying:"))
@@ -135,6 +153,8 @@
 		. += span_info("<b>Crowbar</b> it to dump its mop bucket onto [get_turf(src)].")
 
 /obj/structure/mop_bucket/janitorialcart/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isnull(held_item) && contents.len)
@@ -175,6 +195,8 @@
 	return . || NONE
 
 /obj/structure/mop_bucket/janitorialcart/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/mop))
 		if(mymop)
 			balloon_alert(user, "already has \a [mymop]!")
@@ -249,6 +271,8 @@
 	return ..()
 
 /obj/structure/mop_bucket/janitorialcart/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!CART_HAS_MINIMUM_REAGENT_VOLUME)
 		balloon_alert(user, "mop bucket is empty!")
 		return ITEM_INTERACT_SUCCESS
@@ -263,6 +287,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/mop_bucket/janitorialcart/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ITEM_INTERACT_ANY_BLOCKER & .)
 		return .
@@ -273,6 +299,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/mop_bucket/janitorialcart/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -341,6 +369,8 @@
 			return
 
 /obj/structure/mop_bucket/janitorialcart/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!mymop)
 		return SECONDARY_ATTACK_CONTINUE_CHAIN
 	balloon_alert(user, "removed [mymop]")
@@ -354,9 +384,13 @@
  * * user The mob interacting with a menu
  */
 /obj/structure/mop_bucket/janitorialcart/proc/check_menu(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return istype(user) && !user.incapacitated
 
 /obj/structure/mop_bucket/janitorialcart/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mybag)
 		. += istype(mybag, /obj/item/storage/bag/trash/bluespace) ? "cart_bluespace_garbage" : "cart_garbage"

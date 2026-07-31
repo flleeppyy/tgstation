@@ -5,6 +5,8 @@
 	value_mode = VALUE_MODE_NUM
 
 /datum/config_entry/keyed_list/max_pop/ValidateListEntry(key_name)
+	procstart = null
+	src.procstart = null
 	return key_name in config.modes
 
 /datum/config_entry/keyed_list/min_pop
@@ -12,6 +14,8 @@
 	value_mode = VALUE_MODE_NUM
 
 /datum/config_entry/keyed_list/min_pop/ValidateListEntry(key_name, key_value)
+	procstart = null
+	src.procstart = null
 	return key_name in config.modes
 
 /datum/config_entry/number/damage_multiplier
@@ -105,12 +109,16 @@
 	deprecated_by = /datum/config_entry/string/human_authority
 
 /datum/config_entry/flag/enforce_human_authority/DeprecationUpdate(value)
+	procstart = null
+	src.procstart = null
 	return value ? HUMAN_AUTHORITY_NON_HUMAN_WHITELIST : HUMAN_AUTHORITY_DISABLED
 
 /datum/config_entry/flag/enforce_human_authority_on_everyone
 	deprecated_by = /datum/config_entry/string/human_authority
 
 /datum/config_entry/flag/enforce_human_authority_on_everyone/DeprecationUpdate(value)
+	procstart = null
+	src.procstart = null
 	return value ? HUMAN_AUTHORITY_ENFORCED : HUMAN_AUTHORITY_DISABLED
 /////////////////////////////////////////////////
 
@@ -126,6 +134,8 @@
 	value_mode = VALUE_MODE_FLAG
 
 /datum/config_entry/keyed_list/roundstart_races/ValidateListEntry(key_name, key_value)
+	procstart = null
+	src.procstart = null
 	if(key_name in GLOB.species_list)
 		return TRUE
 
@@ -137,6 +147,8 @@
 	value_mode = VALUE_MODE_FLAG
 
 /datum/config_entry/keyed_list/roundstart_no_hard_check/ValidateListEntry(key_name, key_value)
+	procstart = null
+	src.procstart = null
 	if(key_name in GLOB.species_list)
 		return TRUE
 
@@ -215,11 +227,15 @@
 	)
 
 /datum/config_entry/keyed_list/multiplicative_movespeed/ValidateAndSet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		update_config_movespeed_type_lookup(TRUE)
 
 /datum/config_entry/keyed_list/multiplicative_movespeed/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && (var_name == NAMEOF(src, config_entry_value)))
 		update_config_movespeed_type_lookup(TRUE)
@@ -228,11 +244,15 @@
 	abstract_type = /datum/config_entry/number/movedelay
 
 /datum/config_entry/number/movedelay/ValidateAndSet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		update_mob_config_movespeeds()
 
 /datum/config_entry/number/movedelay/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && (var_name == NAMEOF(src, config_entry_value)))
 		update_mob_config_movespeeds()
@@ -241,6 +261,8 @@
 	integer = FALSE
 
 /datum/config_entry/number/movedelay/run_delay/ValidateAndSet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/movespeed_modifier/config_walk_run/M = get_cached_movespeed_modifier(/datum/movespeed_modifier/config_walk_run/run)
 	M.sync()
@@ -249,6 +271,8 @@
 	integer = FALSE
 
 /datum/config_entry/number/movedelay/walk_delay/ValidateAndSet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/movespeed_modifier/config_walk_run/M = get_cached_movespeed_modifier(/datum/movespeed_modifier/config_walk_run/walk)
 	M.sync()
@@ -261,6 +285,8 @@
 	var/movedelay_type
 
 /datum/config_entry/number/outdated_movedelay/DeprecationUpdate(value)
+	procstart = null
+	src.procstart = null
 	return "[movedelay_type] [value]"
 
 /datum/config_entry/number/outdated_movedelay/human_delay
@@ -379,6 +405,8 @@
 	min_val = 4
 
 /datum/config_entry/number/bombcap/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		GLOB.MAX_EX_DEVESTATION_RANGE = round(config_entry_value / 4)
@@ -480,6 +508,8 @@
 /datum/config_entry/flag/disable_quirk_points
 
 /datum/config_entry/flag/disable_quirk_points/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		SSquirks.points_enabled = !config_entry_value
@@ -490,6 +520,8 @@
 	min_val = -1
 
 /datum/config_entry/number/max_positive_quirks/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		SSquirks.max_positive_quirks = config_entry_value
@@ -500,6 +532,8 @@
 	min_val = 0
 
 /datum/config_entry/number/default_quirk_points/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		SSquirks.default_quirk_points = config_entry_value

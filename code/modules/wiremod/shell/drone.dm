@@ -15,6 +15,8 @@
 	light_on = FALSE
 
 /mob/living/circuit_drone/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/shell, list(
 		new /obj/item/circuit_component/bot_circuit(),
@@ -22,6 +24,8 @@
 	), SHELL_CAPACITY_LARGE)
 
 /mob/living/circuit_drone/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(health < maxHealth)
 		if(health > maxHealth/3)
@@ -32,11 +36,15 @@
 		. += "[src] is in pristine condition."
 
 /mob/living/circuit_drone/updatehealth()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(health < 0)
 		gib()
 
 /mob/living/circuit_drone/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(health == maxHealth)
 		balloon_alert(user, "already at maximum integrity!")
@@ -65,27 +73,37 @@
 	var/move_delay = 0.2 SECONDS
 
 /obj/item/circuit_component/bot_circuit/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ismob(shell))
 		RegisterSignal(shell, COMSIG_PROCESS_BORGCHARGER_OCCUPANT, PROC_REF(on_borg_charge))
 
 /obj/item/circuit_component/bot_circuit/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(shell, COMSIG_PROCESS_BORGCHARGER_OCCUPANT)
 	return ..()
 
 /obj/item/circuit_component/bot_circuit/proc/on_borg_charge(datum/source, datum/callback/charge_cell, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (isnull(parent.cell))
 		return
 	charge_cell.Invoke(parent.cell, seconds_per_tick)
 
 /obj/item/circuit_component/bot_circuit/populate_ports()
+	procstart = null
+	src.procstart = null
 	north = add_input_port("Move North", PORT_TYPE_SIGNAL)
 	east = add_input_port("Move East", PORT_TYPE_SIGNAL)
 	south = add_input_port("Move South", PORT_TYPE_SIGNAL)
 	west = add_input_port("Move West", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/bot_circuit/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 
 	var/mob/living/shell = parent.shell
 	if(!istype(shell) || IS_UNCONSCIOUS_OR_CRIT(shell))

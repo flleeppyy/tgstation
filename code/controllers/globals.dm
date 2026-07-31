@@ -9,6 +9,8 @@ GLOBAL_REAL(GLOB, /datum/controller/global_vars)
 	var/list/gvars_datum_init_order
 
 /datum/controller/global_vars/New()
+	procstart = null
+	src.procstart = null
 	if(GLOB)
 		CRASH("Multiple instances of global variable controller created")
 	GLOB = src
@@ -26,26 +28,36 @@ GLOBAL_REAL(GLOB, /datum/controller/global_vars)
 	Initialize()
 
 /datum/controller/global_vars/Destroy(force)
+	procstart = null
+	src.procstart = null
 	// This is done to prevent an exploit where admins can get around protected vars
 	SHOULD_CALL_PARENT(FALSE)
 	return QDEL_HINT_IWILLGC
 
 /datum/controller/global_vars/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg = "Edit"
 	return msg
 
 /datum/controller/global_vars/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	if(gvars_datum_protected_varlist[var_name])
 		return FALSE
 	return ..()
 
 /datum/controller/global_vars/vv_get_var(var_name)
+	procstart = null
+	src.procstart = null
 	switch(var_name)
 		if (NAMEOF(src, vars))
 			return debug_variable(var_name, list(), 0, src)
 	return debug_variable(var_name, vars[var_name], 0, src, display_flags = VV_ALWAYS_CONTRACT_LIST)
 
 /datum/controller/global_vars/Initialize()
+	procstart = null
+	src.procstart = null
 	gvars_datum_init_order = list()
 	gvars_datum_protected_varlist = list(NAMEOF(src, gvars_datum_protected_varlist) = TRUE)
 	var/list/global_procs = typesof(/datum/controller/global_vars/proc)

@@ -12,6 +12,8 @@
 	admin_setup = list(/datum/event_admin_setup/carp_migration)
 
 /datum/round_event_control/carp_migration/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(SSstation, STATION_TRAIT_CARP_INFESTATION))
 		return
@@ -34,12 +36,18 @@
 	var/list/z_migration_paths = list()
 
 /datum/round_event/carp_migration/setup()
+	procstart = null
+	src.procstart = null
 	start_when = rand(40, 60)
 
 /datum/round_event/carp_migration/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("[fluff_signal] have been detected near [station_name()], please stand-by.", "Lifesign Alert")
 
 /datum/round_event/carp_migration/start()
+	procstart = null
+	src.procstart = null
 	// Stores the most recent fish we spawn
 	var/mob/living/basic/carp/fish
 
@@ -60,6 +68,8 @@
 
 /// Generate two locations for carp to travel to, one in the station and one off in space
 /datum/round_event/carp_migration/proc/pick_carp_migration_points(z_level_key)
+	procstart = null
+	src.procstart = null
 	var/list/valid_areas = list()
 	var/list/station_areas = GLOB.the_station_areas
 	for (var/area/potential_area as anything in SSmapping.areas_in_z[z_level_key])
@@ -74,6 +84,8 @@
 	return list(WEAKREF(station_turf), WEAKREF(exit_turf))
 
 /datum/round_event/carp_migration/proc/fishannounce(atom/fish)
+	procstart = null
+	src.procstart = null
 	if (!hasAnnounced)
 		announce_to_ghosts(fish) //Only anounce the first fish
 		hasAnnounced = TRUE
@@ -83,6 +95,8 @@
 	var/list/targets_per_z = list()
 
 /datum/event_admin_setup/carp_migration/prompt_admins()
+	procstart = null
+	src.procstart = null
 	targets_per_z = list()
 	if (tgui_alert(usr, "Direct carp to your current location? Only applies to your current Z level.", "Carp Direction", list("Yes", "No")) != "Yes")
 		return
@@ -92,6 +106,8 @@
 
 /// Stores the admin's current location corresponding to the z level of that location
 /datum/event_admin_setup/carp_migration/proc/record_admin_location()
+	procstart = null
+	src.procstart = null
 	var/turf/aimed_turf = get_turf(usr)
 	var/z_level_key = "[aimed_turf.z]"
 	if (!targets_per_z[z_level_key])
@@ -99,4 +115,6 @@
 	targets_per_z[z_level_key] += WEAKREF(aimed_turf)
 
 /datum/event_admin_setup/carp_migration/apply_to_event(datum/round_event/carp_migration/event)
+	procstart = null
+	src.procstart = null
 	event.z_migration_paths = targets_per_z

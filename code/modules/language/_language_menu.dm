@@ -2,16 +2,24 @@
 	var/datum/language_holder/language_holder
 
 /datum/language_menu/New(_language_holder)
+	procstart = null
+	src.procstart = null
 	language_holder = _language_holder
 
 /datum/language_menu/Destroy()
+	procstart = null
+	src.procstart = null
 	language_holder = null
 	. = ..()
 
 /datum/language_menu/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.language_menu_state
 
 /datum/language_menu/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(isnull(language_holder.selected_language))
 		language_holder.get_selected_language()
 
@@ -21,6 +29,8 @@
 		ui.open()
 
 /datum/language_menu/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/atom/movable/speaker = language_holder.owner
@@ -50,6 +60,8 @@
 	return data
 
 /datum/language_menu/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

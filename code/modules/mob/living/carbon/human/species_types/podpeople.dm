@@ -40,18 +40,26 @@
 	)
 
 /datum/species/pod/prepare_human_for_preview(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	human.dna.features[FEATURE_MUTANT_COLOR] = "#886600"
 	human.dna.features[FEATURE_POD_HAIR] = "Rose"
 	human.update_body(is_creating = TRUE)
 
 /datum/species/pod/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "Podpeople are in many ways the inverse of shadows, healing in light and starving with the dark. \
 		Their bodies are like tinder and easy to char."
 
 /datum/species/pod/get_species_description()
+	procstart = null
+	src.procstart = null
 	return "Podpeople are largely peaceful plant based lifeforms, resembling a humanoid figure made of leaves, flowers, and vines."
 
 /datum/species/pod/get_species_lore()
+	procstart = null
+	src.procstart = null
 	return list(
 		"Not much is known about the origins of the Podpeople. \
 		Many assume them to be the result of a long forgotten botanical experiment, slowly mutating for years on years until they became the beings they are today. \
@@ -60,6 +68,8 @@
 	)
 
 /datum/species/pod/create_pref_unique_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 
 	to_add += list(list(

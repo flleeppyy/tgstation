@@ -1,4 +1,6 @@
 /datum/tgs_version/New(raw_parameter)
+	procstart = null
+	src.procstart = null
 	..()
 	src.raw_parameter = raw_parameter
 	deprefixed_parameter = replacetext(raw_parameter, "/tg/station 13 Server v", "")
@@ -13,6 +15,8 @@
 				deprecated_patch = text2num(version_bits[4])
 
 /datum/tgs_version/proc/Valid(allow_wildcards = FALSE)
+	procstart = null
+	src.procstart = null
 	if(suite == null)
 		return FALSE
 	if(allow_wildcards)
@@ -20,9 +24,13 @@
 	return !Wildcard()
 
 /datum/tgs_version/Wildcard()
+	procstart = null
+	src.procstart = null
 	return minor == null || patch == null
 
 /datum/tgs_version/Equals(datum/tgs_version/other_version)
+	procstart = null
+	src.procstart = null
 	if(!istype(other_version))
 		return FALSE
 

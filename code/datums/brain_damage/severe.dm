@@ -15,10 +15,14 @@
 	lose_text = span_notice("You suddenly remember how to speak.")
 
 /datum/brain_trauma/severe/mute/on_gain()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(owner, TRAIT_MUTE, TRAUMA_TRAIT)
 	. = ..()
 
 /datum/brain_trauma/severe/mute/on_lose()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_MUTE, TRAUMA_TRAIT)
 	..()
 
@@ -31,11 +35,15 @@
 	lose_text = span_notice("You suddenly remember how languages work.")
 
 /datum/brain_trauma/severe/aphasia/on_gain()
+	procstart = null
+	src.procstart = null
 	owner.add_blocked_language(subtypesof(/datum/language) - /datum/language/aphasia, source = LANGUAGE_APHASIA)
 	owner.grant_language(/datum/language/aphasia, source = LANGUAGE_APHASIA)
 	. = ..()
 
 /datum/brain_trauma/severe/aphasia/on_lose()
+	procstart = null
+	src.procstart = null
 	if(!QDELING(owner))
 		owner.remove_blocked_language(subtypesof(/datum/language), source = LANGUAGE_APHASIA)
 		owner.remove_language(/datum/language/aphasia, source = LANGUAGE_APHASIA)
@@ -51,10 +59,14 @@
 	lose_text = span_notice("Your vision returns.")
 
 /datum/brain_trauma/severe/blindness/on_gain()
+	procstart = null
+	src.procstart = null
 	owner.become_blind(TRAUMA_TRAIT)
 	. = ..()
 
 /datum/brain_trauma/severe/blindness/on_lose()
+	procstart = null
+	src.procstart = null
 	owner.cure_blind(TRAUMA_TRAIT)
 	..()
 
@@ -70,6 +82,8 @@
 	//for descriptions
 
 /datum/brain_trauma/severe/paralysis/New(specific_type)
+	procstart = null
+	src.procstart = null
 	if(specific_type)
 		paralysis_type = specific_type
 	if(!paralysis_type)
@@ -108,12 +122,16 @@
 	lose_text = span_notice("You can feel [subject] again!")
 
 /datum/brain_trauma/severe/paralysis/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/X in paralysis_traits)
 		ADD_TRAIT(owner, X, TRAUMA_TRAIT)
 
 
 /datum/brain_trauma/severe/paralysis/on_lose()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/X in paralysis_traits)
 		REMOVE_TRAIT(owner, X, TRAUMA_TRAIT)
@@ -157,6 +175,8 @@
 	var/sleep_time_maximum = 6 SECONDS
 
 /datum/brain_trauma/severe/narcolepsy/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(owner.IsSleeping())
 		return
 
@@ -216,10 +236,14 @@
 	lose_text = span_notice("You feel like you could be safe on your own.")
 
 /datum/brain_trauma/severe/monophobia/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.AddComponentFrom(REF(src), /datum/component/fearful, list(/datum/terror_handler/vomiting, /datum/terror_handler/simple_source/monophobia))
 
 /datum/brain_trauma/severe/monophobia/on_lose(silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.RemoveComponentSource(REF(src), /datum/component/fearful)
 
@@ -232,10 +256,14 @@
 	lose_text = span_notice("You feel in control of your hands again.")
 
 /datum/brain_trauma/severe/discoordination/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.apply_status_effect(/datum/status_effect/discoordinated)
 
 /datum/brain_trauma/severe/discoordination/on_lose()
+	procstart = null
+	src.procstart = null
 	owner.remove_status_effect(/datum/status_effect/discoordinated)
 	return ..()
 
@@ -249,10 +277,14 @@
 	lose_text = span_notice("You no longer feel compelled to not harm.")
 
 /datum/brain_trauma/severe/pacifism/on_gain()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(owner, TRAIT_PACIFISM, TRAUMA_TRAIT)
 	. = ..()
 
 /datum/brain_trauma/severe/pacifism/on_lose()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_PACIFISM, TRAUMA_TRAIT)
 	..()
 
@@ -265,11 +297,15 @@
 	gain_text = span_warning("You feel somewhat dazed.")
 	lose_text = span_notice("You feel like a fog was lifted from your mind.")
 
-/datum/brain_trauma/severe/hypnotic_stupor/on_lose() //hypnosis must be cleared separately, but brain surgery should get rid of both anyway
+/datum/brain_trauma/severe/hypnotic_stupor/on_lose()
+	procstart = null
+	src.procstart = null //hypnosis must be cleared separately, but brain surgery should get rid of both anyway
 	..()
 	owner.remove_status_effect(/datum/status_effect/trance)
 
 /datum/brain_trauma/severe/hypnotic_stupor/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	..()
 	if(SPT_PROB(0.5, seconds_per_tick) && !owner.has_status_effect(/datum/status_effect/trance))
 		owner.apply_status_effect(/datum/status_effect/trance, rand(100,300), FALSE)
@@ -285,15 +321,21 @@
 	var/trigger_phrase = "Nanotrasen"
 
 /datum/brain_trauma/severe/hypnotic_trigger/New(phrase)
+	procstart = null
+	src.procstart = null
 	..()
 	if(phrase)
 		trigger_phrase = phrase
 
-/datum/brain_trauma/severe/hypnotic_trigger/on_lose() //hypnosis must be cleared separately, but brain surgery should get rid of both anyway
+/datum/brain_trauma/severe/hypnotic_trigger/on_lose()
+	procstart = null
+	src.procstart = null //hypnosis must be cleared separately, but brain surgery should get rid of both anyway
 	..()
 	owner.remove_status_effect(/datum/status_effect/trance)
 
 /datum/brain_trauma/severe/hypnotic_trigger/handle_hearing(datum/source, list/hearing_args)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(owner, TRAIT_DEAF) || owner == hearing_args[HEARING_SPEAKER])
 		return
 
@@ -304,6 +346,8 @@
 		hearing_args[HEARING_RAW_MESSAGE] = reg.Replace(hearing_args[HEARING_RAW_MESSAGE], span_hypnophrase("*********"))
 
 /datum/brain_trauma/severe/hypnotic_trigger/proc/hypnotrigger()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_warning("The words trigger something deep within you, and you feel your consciousness slipping away..."))
 	owner.apply_status_effect(/datum/status_effect/trance, rand(100,300), FALSE)
 
@@ -317,10 +361,14 @@
 	lose_text = span_notice("You suddenly remember how to read and write.")
 
 /datum/brain_trauma/severe/dyslexia/on_gain()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(owner, TRAIT_ILLITERATE, TRAUMA_TRAIT)
 	. = ..()
 
 /datum/brain_trauma/severe/dyslexia/on_lose()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_ILLITERATE, TRAUMA_TRAIT)
 	..()
 
@@ -336,20 +384,28 @@
 	COOLDOWN_DECLARE(steal_cd)
 
 /datum/brain_trauma/severe/kleptomaniac/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_MOB_APPLY_DAMAGE, PROC_REF(damage_taken))
 
 /datum/brain_trauma/severe/kleptomaniac/on_lose()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(owner, COMSIG_MOB_APPLY_DAMAGE)
 
 /datum/brain_trauma/severe/kleptomaniac/proc/damage_taken(datum/source, damage_amount, damage_type, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// While you're fighting someone (or dying horribly) your mind has more important things to focus on than pocketing stuff
 	if(damage_amount >= 5 && (damage_type == BRUTE || damage_type == BURN || damage_type == STAMINA))
 		COOLDOWN_START(src, steal_cd, 12 SECONDS)
 
 /datum/brain_trauma/severe/kleptomaniac/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(owner.usable_hands <= 0)
 		return
 	if(!SPT_PROB(5, seconds_per_tick))

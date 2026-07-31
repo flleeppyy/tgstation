@@ -1,4 +1,6 @@
 /obj/item/ai_module/law/zeroth/apply_to_combined_lawset(datum/ai_laws/combined_lawset)
+	procstart = null
+	src.procstart = null
 	combined_lawset.set_zeroth_law(laws[1])
 
 /obj/item/ai_module/law/zeroth/onehuman
@@ -8,6 +10,8 @@
 	custom_materials = list(/datum/material/diamond = SHEET_MATERIAL_AMOUNT * 3, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/bluespace = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/ai_module/law/zeroth/onehuman/configure(mob/user)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	var/targName = tgui_input_text(user, "Enter the subject who is the only human.", "One Human", user.real_name, max_length = MAX_NAME_LEN)
 	if(!targName || !user.is_holding(src))
@@ -16,6 +20,8 @@
 	laws[1] = "Only [targetName] is human"
 
 /obj/item/ai_module/law/zeroth/onehuman/can_install_to_rack(mob/living/user, obj/machinery/ai_law_rack/rack)
+	procstart = null
+	src.procstart = null
 	if(!targetName)
 		to_chat(user, span_warning("No name detected on module, please enter one."))
 		return FALSE

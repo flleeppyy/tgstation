@@ -8,6 +8,8 @@
 	var/slot_equip
 
 /datum/component/onwear_mood/Initialize(datum/mood_event/saved_event_type, examine_string, slot_equip = ITEM_SLOT_ON_BODY)
+	procstart = null
+	src.procstart = null
 
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -20,14 +22,20 @@
 	src.slot_equip = slot_equip
 
 /datum/component/onwear_mood/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(affect_wearer))
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/component/onwear_mood/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ITEM_EQUIPPED, COMSIG_ATOM_EXAMINE))
 	clear_effects()
 
 /datum/component/onwear_mood/proc/affect_wearer(datum/source, mob/living/target, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!(slot & slot_equip))
 		return  // only affects "worn" slots by default
@@ -37,11 +45,15 @@
 	RegisterSignal(target, COMSIG_MOB_UNEQUIPPED_ITEM, PROC_REF(clear_effects))
 
 /datum/component/onwear_mood/proc/on_examine(datum/source, mob/user, list/examine_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_text += span_notice(examine_string)
 
 /// clears the effects on the wearer
 /datum/component/onwear_mood/proc/clear_effects(mob/living/source, obj/item/dropped_item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/item/clothing = parent
 	// if called from a signal, check clothing

@@ -12,6 +12,8 @@
  */
 
 /proc/message_to_html(message)
+	procstart = null
+	src.procstart = null
 	// Here it is possible to add a switch statement
 	// to custom-handle various message types.
 	return message["html"] || message["text"]

@@ -24,6 +24,8 @@
 	var/datum/callback/egg_laid_callback
 
 /datum/component/egg_layer/Initialize(egg_type, food_types, feed_messages, lay_messages, eggs_left, eggs_added_from_eating, max_eggs_held, egg_laid_callback)
+	procstart = null
+	src.procstart = null
 	if(!isatom(parent)) //yes, you could make a tameable toolbox.
 		return COMPONENT_INCOMPATIBLE
 
@@ -40,19 +42,27 @@
 	START_PROCESSING(SSobj, src)
 
 /datum/component/egg_layer/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_ATOM_ATTACKBY, PROC_REF(feed_food))
 
 /datum/component/egg_layer/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, COMSIG_ATOM_ATTACKBY)
 
 /datum/component/egg_layer/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
 	egg_laid_callback = null
 
 /datum/component/egg_layer/proc/feed_food(datum/source, obj/item/food, mob/living/attacker, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/at_least_atom = parent
@@ -73,6 +83,8 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/component/egg_layer/process(seconds_per_tick = SSOBJ_DT)
+	procstart = null
+	src.procstart = null
 
 	var/atom/at_least_atom = parent
 	if(isliving(at_least_atom))

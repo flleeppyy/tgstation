@@ -1,4 +1,6 @@
 /datum/round_event/wizard/shuffle/start()
+	procstart = null
+	src.procstart = null
 
 
 /datum/round_event_control/wizard/shuffleloc //Somewhere an AI is crying
@@ -12,6 +14,8 @@
 	max_wizard_trigger_potency = 7
 
 /datum/round_event/wizard/shuffleloc/start()
+	procstart = null
+	src.procstart = null
 	var/list/moblocs = list()
 	var/list/mobs = list()
 
@@ -47,6 +51,8 @@
 	description = "Shuffles the names of everyone around the station."
 
 /datum/round_event/wizard/shufflenames/start()
+	procstart = null
+	src.procstart = null
 	var/list/mobnames = list()
 	var/list/mobs = list()
 
@@ -80,6 +86,8 @@
 	description = "Shuffles the minds of everyone around the station, except for the wizard."
 
 /datum/round_event/wizard/shuffleminds/start()
+	procstart = null
+	src.procstart = null
 	var/list/mobs_to_swap = list()
 
 	for(var/mob/living/carbon/human/alive_human in GLOB.alive_mob_list)

@@ -2,6 +2,8 @@
 /datum/cinematic/cult_arm // Colloquially known as "the arm"
 
 /datum/cinematic/cult_arm/play_cinematic()
+	procstart = null
+	src.procstart = null
 	screen.icon_state = null
 	flick("intro_cult", screen)
 	stoplag(2.5 SECONDS)
@@ -18,6 +20,8 @@
 /datum/cinematic/cult_fail
 
 /datum/cinematic/cult_fail/play_cinematic()
+	procstart = null
+	src.procstart = null
 	screen.icon_state = "station_intact"
 	stoplag(2 SECONDS)
 	play_cinematic_sound(sound('sound/music/antag/bloodcult/narsie_rises.ogg'))

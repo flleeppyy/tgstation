@@ -24,6 +24,8 @@
 	var/regenerate_blood = FALSE
 
 /datum/symptom/oxygen/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -31,6 +33,8 @@
 		regenerate_blood = TRUE
 
 /datum/symptom/oxygen/Activate(datum/disease/advance/advanced_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -50,6 +54,8 @@
 	return
 
 /datum/symptom/oxygen/on_stage_change(datum/disease/advance/advanced_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -65,6 +71,8 @@
 	return TRUE
 
 /datum/symptom/oxygen/End(datum/disease/advance/advanced_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

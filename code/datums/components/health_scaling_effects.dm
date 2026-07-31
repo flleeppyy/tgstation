@@ -50,15 +50,21 @@
 	RegisterSignal(parent, COMSIG_LIVING_HEALTH_UPDATE, PROC_REF(on_health_changed))
 
 /datum/component/health_scaling_effects/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_LIVING_HEALTH_UPDATE)
 	return ..()
 
 /datum/component/health_scaling_effects/Destroy(force)
+	procstart = null
+	src.procstart = null
 	additional_status_callback = null
 	return ..()
 
 /// Called when mob health changes, recalculates the ratio between maximum and minimum
 /datum/component/health_scaling_effects/proc/on_health_changed(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/current_health_percentage = source.health / source.maxHealth
 	var/max_min_ratio = clamp(INVERSE_LERP(min_health_threshold, max_health_threshold, current_health_percentage), 0, 1)
@@ -67,6 +73,8 @@
 
 /// Update statistics based on provided interpolator between maximum and minimum values
 /datum/component/health_scaling_effects/proc/update_stats(mob/living/source, max_min_ratio)
+	procstart = null
+	src.procstart = null
 	if (max_health_attack_modifier_lower != 0 || min_health_attack_modifier_lower != 0)
 		var/lower_modifier = LERP(min_health_attack_modifier_lower, max_health_attack_modifier_lower, max_min_ratio)
 		source.melee_damage_lower = initial(source.melee_damage_lower) + lower_modifier

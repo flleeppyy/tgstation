@@ -8,6 +8,8 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/grab_target/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/async_flags = handle_async()
 	if(async_flags)
 		return async_flags
@@ -23,6 +25,8 @@
 	return start_async()
 
 /datum/bt_node/ai_behavior/grab_target/perform_async(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/our_mob = controller.pawn
 	var/atom/movable/target = controller.blackboard[target_key]
 	var/result = our_mob.start_pulling(target)

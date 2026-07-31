@@ -60,6 +60,8 @@ SUBSYSTEM_DEF(dynamic)
 	var/antag_events_enabled = TRUE
 
 /datum/controller/subsystem/dynamic/fire(resumed)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, midround_cooldown) || EMERGENCY_PAST_POINT_OF_NO_RETURN)
 		return
 
@@ -72,6 +74,8 @@ SUBSYSTEM_DEF(dynamic)
 			return
 
 /datum/controller/subsystem/dynamic/proc/get_config()
+	procstart = null
+	src.procstart = null
 	if(!length(dynamic_config))
 		load_config()
 	return dynamic_config
@@ -79,6 +83,8 @@ SUBSYSTEM_DEF(dynamic)
 /// Used to get a config entry for some variable on some typepath
 /// Can be passed a default value.
 /datum/controller/subsystem/dynamic/proc/get_config_value(datum/some_typepath, var_name, default_value)
+	procstart = null
+	src.procstart = null
 	var/config_tag
 	if(ispath(some_typepath, /datum/dynamic_ruleset))
 		var/datum/dynamic_ruleset/ruleset_type = some_typepath
@@ -105,6 +111,8 @@ SUBSYSTEM_DEF(dynamic)
  * Note: This proc can sleep (due to lazyloading of templates)!
  */
 /datum/controller/subsystem/dynamic/proc/select_roundstart_antagonists()
+	procstart = null
+	src.procstart = null
 	load_config()
 	SEND_SIGNAL(src, COMSIG_DYNAMIC_PRE_ROUNDSTART, dynamic_config)
 	// we start by doing a dry run of the job selection process to detect antag rollers
@@ -168,6 +176,8 @@ SUBSYSTEM_DEF(dynamic)
 	return TRUE
 
 /datum/controller/subsystem/dynamic/proc/load_config()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(!CONFIG_GET(flag/dynamic_config_enabled))
@@ -183,6 +193,8 @@ SUBSYSTEM_DEF(dynamic)
 
 /// Sets the tier to the typepath passed in
 /datum/controller/subsystem/dynamic/proc/set_tier(picked_tier, population = length(GLOB.player_list))
+	procstart = null
+	src.procstart = null
 	current_tier = new picked_tier(dynamic_config)
 
 	for(var/category in current_tier.ruleset_type_settings)
@@ -200,6 +212,8 @@ SUBSYSTEM_DEF(dynamic)
 
 /// Picks what tier we are going to use for this round and sets up all the corresponding variables and ranges
 /datum/controller/subsystem/dynamic/proc/pick_tier(roundstart_population = 0)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/list/tier_weighted = list()
@@ -244,6 +258,8 @@ SUBSYSTEM_DEF(dynamic)
 
 /// Gets a weighted list of roundstart rulesets
 /datum/controller/subsystem/dynamic/proc/get_roundstart_rulesets(list/antag_candidates)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/list/datum/dynamic_ruleset/roundstart/rulesets = list()
@@ -255,6 +271,8 @@ SUBSYSTEM_DEF(dynamic)
 
 /// Picks as many roundstart rulesets as we are allowed to spawn, returns them
 /datum/controller/subsystem/dynamic/proc/pick_roundstart_rulesets(list/antag_candidates)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(rulesets_to_spawn[ROUNDSTART] <= 0)
@@ -303,6 +321,8 @@ SUBSYSTEM_DEF(dynamic)
 	return picked_rulesets
 
 /datum/controller/subsystem/dynamic/proc/get_advisory_report()
+	procstart = null
+	src.procstart = null
 	var/shown_tier = current_tier.tier
 	if(prob(10))
 		shown_tier = pick(list(DYNAMIC_TIER_LOW, DYNAMIC_TIER_LOWMEDIUM, DYNAMIC_TIER_MEDIUMHIGH, DYNAMIC_TIER_HIGH) - current_tier.tier)
@@ -325,6 +345,8 @@ SUBSYSTEM_DEF(dynamic)
  * Returns TRUE if a ruleset was spawned, FALSE otherwise
  */
 /datum/controller/subsystem/dynamic/proc/try_spawn_midround(range)
+	procstart = null
+	src.procstart = null
 	if(rulesets_to_spawn[range] <= 0)
 		return FALSE
 	var/midround_chance = get_midround_chance(range)
@@ -393,6 +415,8 @@ SUBSYSTEM_DEF(dynamic)
 
 /// Gets a weighted list of midround rulesets
 /datum/controller/subsystem/dynamic/proc/get_midround_rulesets(player_count, midround_type)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/list/datum/dynamic_ruleset/midround/rulesets = list()
@@ -415,6 +439,8 @@ SUBSYSTEM_DEF(dynamic)
  * * mob/admin - The admin who is forcing the ruleset, used for configuring the ruleset if possible
  */
 /datum/controller/subsystem/dynamic/proc/force_run_midround(midround_typepath, forced_max_cap, alert_admins_on_fail = FALSE, mob/admin)
+	procstart = null
+	src.procstart = null
 	if(!ispath(midround_typepath, /datum/dynamic_ruleset/midround))
 		CRASH("force_run_midround() was called with an invalid midround type: [midround_typepath]")
 
@@ -450,6 +476,8 @@ SUBSYSTEM_DEF(dynamic)
  * (This could be a signal in the future)
  */
 /datum/controller/subsystem/dynamic/proc/on_latejoin(mob/living/carbon/human/latejoiner)
+	procstart = null
+	src.procstart = null
 	// First check queued rulesets - queued rulesets by pass cooldowns and probability checks,
 	// because they're generally forced by events or admins (and thus have higher priority)
 	for(var/datum/dynamic_ruleset/latejoin/queued in queued_rulesets)
@@ -476,6 +504,8 @@ SUBSYSTEM_DEF(dynamic)
  * Returns TRUE if a ruleset was spawned, FALSE otherwise
  */
 /datum/controller/subsystem/dynamic/proc/try_spawn_latejoin(mob/living/carbon/human/latejoiner)
+	procstart = null
+	src.procstart = null
 
 	if(rulesets_to_spawn[LATEJOIN] <= 0)
 		return FALSE
@@ -517,6 +547,8 @@ SUBSYSTEM_DEF(dynamic)
 
 /// Gets a weighted list of latejoin rulesets
 /datum/controller/subsystem/dynamic/proc/get_latejoin_rulesets(player_count)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/list/datum/dynamic_ruleset/latejoin/rulesets = list()
@@ -535,6 +567,8 @@ SUBSYSTEM_DEF(dynamic)
  * * latejoin_type - The type of latejoin ruleset to force
  */
 /datum/controller/subsystem/dynamic/proc/queue_ruleset(ruleset_typepath)
+	procstart = null
+	src.procstart = null
 	if(!ispath(ruleset_typepath, /datum/dynamic_ruleset/latejoin) && !ispath(ruleset_typepath, /datum/dynamic_ruleset/roundstart))
 		CRASH("queue_ruleset() was called with an invalid type: [ruleset_typepath]")
 
@@ -544,6 +578,8 @@ SUBSYSTEM_DEF(dynamic)
  * Unqueues a ruleset because it has executed
  */
 /datum/controller/subsystem/dynamic/proc/unqueue_ruleset(datum/dynamic_ruleset/ruleset)
+	procstart = null
+	src.procstart = null
 	if(!istype(ruleset, /datum/dynamic_ruleset/latejoin) && !istype(ruleset, /datum/dynamic_ruleset/roundstart))
 		CRASH("queue_ruleset() was called with an invalid type: [ruleset.type]")
 
@@ -553,6 +589,8 @@ SUBSYSTEM_DEF(dynamic)
  * Get the cooldown between attempts to spawn a ruleset of the given type
  */
 /datum/controller/subsystem/dynamic/proc/get_ruleset_cooldown(range)
+	procstart = null
+	src.procstart = null
 	if(range == ROUNDSTART)
 		stack_trace("Attempting to get cooldown for roundstart rulesets - this is redundant and is likely an error")
 		return 0
@@ -565,6 +603,8 @@ SUBSYSTEM_DEF(dynamic)
  * Gets the chance of a midround ruleset being selected
  */
 /datum/controller/subsystem/dynamic/proc/get_midround_chance(range)
+	procstart = null
+	src.procstart = null
 	if(admin_forcing_next_light && range == LIGHT_MIDROUND)
 		return 100
 	if(admin_forcing_next_heavy && range == HEAVY_MIDROUND)
@@ -587,6 +627,8 @@ SUBSYSTEM_DEF(dynamic)
  * Gets the chance of a latejoin ruleset being selected
  */
 /datum/controller/subsystem/dynamic/proc/get_latejoin_chance()
+	procstart = null
+	src.procstart = null
 	if(admin_forcing_next_latejoin)
 		return 100
 
@@ -608,6 +650,8 @@ SUBSYSTEM_DEF(dynamic)
 	return chance
 
 /datum/controller/subsystem/dynamic/proc/set_round_result()
+	procstart = null
+	src.procstart = null
 	// If it got to this part, just pick one high impact ruleset if it exists
 	for(var/datum/dynamic_ruleset/rule as anything in executed_rulesets)
 		if(rule.round_result())
@@ -636,11 +680,15 @@ SUBSYSTEM_DEF(dynamic)
 
 /// Helper to clear all queued rulesets and stop any other rulesets from naturally spawning
 /datum/controller/subsystem/dynamic/proc/force_extended()
+	procstart = null
+	src.procstart = null
 	for(var/category in rulesets_to_spawn)
 		rulesets_to_spawn[category] = 0
 	QDEL_LIST(queued_rulesets)
 
 /datum/controller/subsystem/dynamic/Topic(href, list/href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(href_list["admin_dequeue"])
 		if(!check_rights(R_ADMIN))
@@ -679,6 +727,8 @@ SUBSYSTEM_DEF(dynamic)
 #ifdef TESTING
 /// Puts all repo defaults into a dynamic.toml file
 /datum/controller/subsystem/dynamic/proc/build_dynamic_toml()
+	procstart = null
+	src.procstart = null
 	var/data = ""
 	for(var/tier_type in subtypesof(/datum/dynamic_tier))
 		var/datum/dynamic_tier/tier = new tier_type()

@@ -14,6 +14,8 @@
 	var/target_key
 
 /datum/element/ai_swap_combat_mode/Attach(datum/target, target_key, list/battle_start_barks = null, list/battle_end_barks = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -34,6 +36,8 @@
 	RegisterSignal(target, COMSIG_AI_BLACKBOARD_KEY_CLEARED(target_key), PROC_REF(on_target_cleared))
 
 /datum/element/ai_swap_combat_mode/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, list(
 		COMSIG_AI_BLACKBOARD_KEY_SET(target_key),
@@ -42,6 +46,8 @@
 
 /// When the mob gains a target, and it was not already in combat mode, enter it
 /datum/element/ai_swap_combat_mode/proc/on_target_gained(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(swap_mode(source, TRUE))
@@ -49,6 +55,8 @@
 
 /// When the mob loses its target, and it was not already out of combat mode, exit it
 /datum/element/ai_swap_combat_mode/proc/on_target_cleared(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(swap_mode(source, FALSE))
@@ -56,10 +64,14 @@
 
 ///Says a quip, if the RNG allows it
 /datum/element/ai_swap_combat_mode/proc/speak_bark(mob/living/source, line)
+	procstart = null
+	src.procstart = null
 	source.say(pick(line))
 
 ///If the combat mode would be changed into a different state, updates it and returns TRUE, otherwise returns FALSE
 /datum/element/ai_swap_combat_mode/proc/swap_mode(mob/living/source, new_mode)
+	procstart = null
+	src.procstart = null
 	if(source.combat_mode == new_mode)
 		return FALSE
 	source.set_combat_mode(new_mode)

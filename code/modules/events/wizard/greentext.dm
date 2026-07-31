@@ -9,6 +9,8 @@
 	max_wizard_trigger_potency = 7
 
 /datum/round_event/wizard/greentext/start()
+	procstart = null
+	src.procstart = null
 
 	var/list/holder_canadates = GLOB.player_list.Copy()
 	for(var/mob/M in holder_canadates)
@@ -42,12 +44,16 @@
 	quiet = TRUE
 
 /obj/item/greentext/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSpoints_of_interest.make_point_of_interest(src)
 	roundend_callback = CALLBACK(src, PROC_REF(check_winner))
 	SSticker.OnRoundend(roundend_callback)
 
 /obj/item/greentext/equipped(mob/user, slot, initial = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(user, span_green("So long as you leave this place with greentext in hand you know will be happy..."))
 	if(user.mind && length(user.mind.get_all_objectives()) > 0)
@@ -59,6 +65,8 @@
 	user.add_atom_colour("#00ff00", ADMIN_COLOUR_PRIORITY)
 
 /obj/item/greentext/dropped(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(user, TRAIT_GREENTEXT_CURSED))
 		to_chat(user, span_warning("A sudden wave of failure washes over you..."))
 		user.add_atom_colour("#ff0000", ADMIN_COLOUR_PRIORITY) //ya blew it
@@ -66,6 +74,8 @@
 	return ..()
 
 /obj/item/greentext/Destroy(force)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(SSticker.round_end_events, roundend_callback)
 	roundend_callback = null //This ought to free the callback datum, and prevent us from harddeling
 	if(LAZYLEN(color_altered_mobs))
@@ -73,6 +83,8 @@
 	return ..()
 
 /obj/item/greentext/proc/release_victims()
+	procstart = null
+	src.procstart = null
 	var/list/victims = list()
 	for (var/datum/weakref/player_ref as anything in color_altered_mobs)
 		var/mob/player_mob = player_ref.resolve()
@@ -93,6 +105,8 @@
 
 
 /obj/item/greentext/proc/check_winner()
+	procstart = null
+	src.procstart = null
 	if(!holder)
 		return
 	if(!is_centcom_level(holder.z)) //you're winner!

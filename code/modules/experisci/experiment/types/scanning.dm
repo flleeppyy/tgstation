@@ -26,6 +26,8 @@
  * Initializes the internal scanned atoms list to keep track of which atoms have already been scanned
  */
 /datum/experiment/scanning/New(datum/techweb/techweb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for (var/req_atom in required_atoms)
 		scanned[req_atom] = (traits & EXPERIMENT_TRAIT_DESTRUCTIVE && !(traits & EXPERIMENT_TRAIT_TYPECACHE)) ? 0 : list()
@@ -36,6 +38,8 @@
  * Returns TRUE/FALSE as to if the necessary number of atoms have been scanned.
  */
 /datum/experiment/scanning/is_complete()
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	var/destructive = traits & EXPERIMENT_TRAIT_DESTRUCTIVE
 	var/typecache = traits & EXPERIMENT_TRAIT_TYPECACHE
@@ -56,6 +60,8 @@
  * have been scanned as well as the target number of atoms.
  */
 /datum/experiment/scanning/check_progress()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for (var/atom_type in required_atoms)
 		var/atom/required_atom = atom_type
@@ -70,6 +76,8 @@
  * * seen_instances - The number of instances seen of this atom
  */
 /datum/experiment/scanning/proc/serialize_progress_stage(atom/target, list/seen_instances)
+	procstart = null
+	src.procstart = null
 	var/scanned_total = (traits & EXPERIMENT_TRAIT_DESTRUCTIVE && !(traits & EXPERIMENT_TRAIT_TYPECACHE)) ? scanned[target] : seen_instances.len
 	var/message = scan_message || "Scan samples of \a [initial(target.name)]"
 	return EXPERIMENT_PROG_INT(message, scanned_total, required_atoms[target])
@@ -83,6 +91,8 @@
  * * target - The atom to attempt to scan
  */
 /datum/experiment/scanning/perform_experiment_actions(datum/component/experiment_handler/experiment_handler, atom/target)
+	procstart = null
+	src.procstart = null
 	var/contributing_index_value = experiment_requirements(experiment_handler, target)
 	if (!isnull(contributing_index_value))
 		if(traits & EXPERIMENT_TRAIT_TYPECACHE)
@@ -95,6 +105,8 @@
 		return TRUE
 
 /datum/experiment/scanning/actionable(datum/component/experiment_handler/experiment_handler, atom/target)
+	procstart = null
+	src.procstart = null
 	return ..() && !isnull(experiment_requirements(experiment_handler, target))
 
 /**
@@ -106,6 +118,8 @@
  * * target - The atom to attempt to scan
  */
 /datum/experiment/scanning/proc/experiment_requirements(datum/component/experiment_handler/experiment_handler, atom/target)
+	procstart = null
+	src.procstart = null
 	var/destructive = (traits & EXPERIMENT_TRAIT_DESTRUCTIVE)
 	for (var/req_atom in required_atoms)
 		if (!istype(target, req_atom))
@@ -131,6 +145,8 @@
  * * typepath - The typepath (selected index) of the target atom
  */
 /datum/experiment/scanning/proc/final_contributing_index_checks(datum/component/experiment_handler/experiment_handler, atom/target, typepath)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /**
@@ -144,4 +160,6 @@
  * * typepath - The typepath (selected index) of the target atom
  */
 /datum/experiment/scanning/proc/do_after_experiment(atom/target, typepath)
+	procstart = null
+	src.procstart = null
 	return TRUE

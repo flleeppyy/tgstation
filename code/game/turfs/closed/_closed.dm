@@ -12,13 +12,19 @@
 	tacmap_color = TACMAP_BLACK
 
 /turf/closed/AfterChange()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSair.high_pressure_delta -= src
 
 /turf/closed/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/closed/examine_descriptor(mob/user)
+	procstart = null
+	src.procstart = null
 	return "wall"
 
 /**
@@ -29,6 +35,8 @@
  * I am so sorry
  */
 /turf/closed/proc/add_large_wall_overlay(wall_icon, wall_state)
+	procstart = null
+	src.procstart = null
 	var/static/list/mutable_appearance/wall_overlays = list()
 	var/mutable_appearance/wall_overlay = wall_overlays["[wall_icon]-[wall_state]"]
 	if (!wall_overlay)

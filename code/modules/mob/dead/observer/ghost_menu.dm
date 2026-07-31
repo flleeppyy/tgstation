@@ -3,15 +3,21 @@ GLOBAL_DATUM_INIT(ghost_menu, /datum/ghost_menu, new)
 /datum/ghost_menu
 
 /datum/ghost_menu/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.observer_state
 
 /datum/ghost_menu/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		ui = new(user, src, "GhostMenu")
 		ui.open()
 
 /datum/ghost_menu/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -87,6 +93,8 @@ GLOBAL_DATUM_INIT(ghost_menu, /datum/ghost_menu, new)
 	return FALSE
 
 /datum/ghost_menu/ui_data(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["can_boo"] = COOLDOWN_FINISHED(user, bootime)
@@ -142,6 +150,8 @@ GLOBAL_DATUM_INIT(ghost_menu, /datum/ghost_menu, new)
 	return data
 
 /datum/ghost_menu/ui_static_data(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["max_extra_view"] = (user.client.prefs.unlock_content ? GHOST_MAX_VIEW_RANGE_MEMBER : GHOST_MAX_VIEW_RANGE_DEFAULT) - GHOST_MIN_VIEW_RANGE
 	data["darkness_levels"] = list()
@@ -151,20 +161,28 @@ GLOBAL_DATUM_INIT(ghost_menu, /datum/ghost_menu, new)
 	return data
 
 /datum/ghost_menu/proc/tray_view(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	if(SSlag_switch.measures[DISABLE_GHOST_ZOOM_TRAY] && !user.client?.holder)
 		to_chat(user, span_notice("That verb is currently globally disabled."))
 		return
 	t_ray_scan(user)
 
 /datum/ghost_menu/proc/toggle_darkness(mob/dead/observer/user, darkness_type)
+	procstart = null
+	src.procstart = null
 	user.client.prefs.write_preference(GLOB.preference_entries[/datum/preference/choiced/ghost_lighting], darkness_type)
 	user.lighting_cutoff = user.default_lighting_cutoff()
 	user.update_sight()
 
 /datum/ghost_menu/proc/toggle_hud_type(mob/dead/observer/user, hud_type)
+	procstart = null
+	src.procstart = null
 	user.toggle_ghost_hud_flag(hud_type)
 
 /datum/ghost_menu/proc/restore_ghost_appearance(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	user.set_ghost_appearance()
 	if(!user.client?.prefs)
 		return
@@ -175,6 +193,8 @@ GLOBAL_DATUM_INIT(ghost_menu, /datum/ghost_menu, new)
 	user.name = real_name_pref
 
 /datum/ghost_menu/proc/set_view(mob/dead/observer/user, new_view)
+	procstart = null
+	src.procstart = null
 	if(SSlag_switch.measures[DISABLE_GHOST_ZOOM_TRAY] && !user.client?.holder)
 		to_chat(user, span_notice("That verb is currently globally disabled."))
 		return TRUE

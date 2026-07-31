@@ -44,6 +44,8 @@
 	var/ammo_band_icon_empty
 
 /obj/item/ammo_box/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!start_empty)
 		top_off(starting=TRUE)
@@ -58,6 +60,8 @@
 	update_icon_state()
 
 /obj/item/ammo_box/Destroy(force)
+	procstart = null
+	src.procstart = null
 	for (var/obj/item/ammo_casing/casing as anything in stored_ammo)
 		if (!ispath(casing))
 			qdel(casing)
@@ -65,11 +69,15 @@
 	return ..()
 
 /obj/item/ammo_box/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone in stored_ammo)
 		remove_from_stored_ammo(gone)
 
 /obj/item/ammo_box/proc/remove_from_stored_ammo(atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	stored_ammo -= gone
 	if(gone.custom_materials && custom_materials && !(item_flags & ABSTRACT))
 		var/list/new_materials = custom_materials?.Copy()
@@ -79,9 +87,13 @@
 	update_appearance()
 
 /obj/item/ammo_box/add_weapon_description()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/weapon_description, attached_proc = PROC_REF(add_notes_box))
 
 /obj/item/ammo_box/proc/add_notes_box()
+	procstart = null
+	src.procstart = null
 	var/list/readout = list()
 
 	if(caliber && max_ammo) // Text references a 'magazine' as only magazines generally have the caliber variable initialized
@@ -98,6 +110,8 @@
 ///list of every bullet in the box
 ///forces all bullets to lazyload
 /obj/item/ammo_box/proc/ammo_list()
+	procstart = null
+	src.procstart = null
 	for (var/i in 1 to length(stored_ammo))
 		if (ispath(stored_ammo[i]))
 			var/casing_type = stored_ammo[i]
@@ -112,6 +126,8 @@
  * * starting - Relevant for revolver cylinders, if FALSE then we mind the nulls that represent the empty cylinders (since those nulls don't exist yet if we haven't initialized when this is TRUE)
  */
 /obj/item/ammo_box/proc/top_off(load_type, starting=FALSE)
+	procstart = null
+	src.procstart = null
 	if(!load_type) //this check comes first so not defining an argument means we just go with default ammo
 		load_type = ammo_type
 
@@ -139,6 +155,8 @@
 
 ///gets a round from the magazine
 /obj/item/ammo_box/proc/get_round()
+	procstart = null
+	src.procstart = null
 	var/ammo_len = length(stored_ammo)
 	if (!ammo_len)
 		return null
@@ -150,6 +168,8 @@
 
 /// Gets a round from the magazine and puts it back at the bottom of the ammo list
 /obj/item/ammo_box/proc/get_and_shuffle_round()
+	procstart = null
+	src.procstart = null
 	var/casing = get_round()
 	if (!casing)
 		return null
@@ -159,6 +179,8 @@
 
 ///puts a round into the magazine
 /obj/item/ammo_box/proc/give_round(obj/item/ammo_casing/new_round, replace_spent = 0)
+	procstart = null
+	src.procstart = null
 	// Boxes don't have a caliber type, magazines do. Not sure if it's intended or not, but if we fail to find a caliber, then we fall back to ammo_type.
 	if(!is_compatible_round(new_round))
 		return FALSE
@@ -190,15 +212,21 @@
 	return FALSE
 
 /obj/item/ammo_box/proc/is_compatible_round(obj/item/ammo_casing/new_round)
+	procstart = null
+	src.procstart = null
 	if(!new_round || !(caliber ? (caliber == new_round.caliber) : (ammo_type == new_round.type)))
 		return FALSE
 	return TRUE
 
 ///Whether or not the box can be loaded, used in overrides
 /obj/item/ammo_box/proc/can_load(mob/user)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/item/ammo_box/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(IS_WRITING_UTENSIL(tool))
 		if(!ammo_band_icon)
 			balloon_alert(user, "no indicator support!")
@@ -213,6 +241,8 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/item/ammo_box/proc/try_load(mob/living/user, obj/item/tool, silent = FALSE, replace_spent = FALSE)
+	procstart = null
+	src.procstart = null
 	var/num_loaded = 0
 	if(!can_load(user))
 		return
@@ -256,6 +286,8 @@
 	return num_loaded
 
 /obj/item/ammo_box/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/ammo_casing/A = get_round()
 	if(!A)
 		return
@@ -268,6 +300,8 @@
 	update_appearance()
 
 /obj/item/ammo_box/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/shells_left = LAZYLEN(stored_ammo)
 	var/obj/item/ammo_casing/top_round = get_round()
@@ -279,6 +313,8 @@
 	. += span_notice("\A <b>[top_round]</b> is ready.")
 
 /obj/item/ammo_box/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/shells_left = LAZYLEN(stored_ammo)
 	switch(multiple_sprites)
@@ -288,11 +324,15 @@
 			icon_state = "[multiple_sprite_use_base ? base_icon_state : initial(icon_state)]-[shells_left ? "full" : "empty"]"
 
 /obj/item/ammo_box/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ammo_band_color && ammo_band_icon)
 		. += update_ammo_band()
 
 /obj/item/ammo_box/proc/update_ammo_band()
+	procstart = null
+	src.procstart = null
 	var/band_icon = ammo_band_icon
 	if(!(length(stored_ammo)) && ammo_band_icon_empty)
 		band_icon = ammo_band_icon_empty
@@ -311,6 +351,8 @@
 
 ///Count of number of bullets in the magazine
 /obj/item/ammo_box/magazine/proc/ammo_count(countempties = TRUE)
+	procstart = null
+	src.procstart = null
 	var/boolets = 0
 	for(var/obj/item/ammo_casing/bullet as anything in stored_ammo)
 		if(ispath(bullet) || bullet && (bullet.loaded_projectile || countempties))
@@ -319,6 +361,8 @@
 
 ///drops the entire contents of the magazine on the floor
 /obj/item/ammo_box/magazine/proc/empty_magazine()
+	procstart = null
+	src.procstart = null
 	var/turf/turf_mag = get_turf(src)
 	var/obj/item/ammo_casing/casing = get_round()
 	while (casing)

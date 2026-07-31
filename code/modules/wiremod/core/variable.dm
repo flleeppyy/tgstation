@@ -23,6 +23,8 @@
 	var/list/obj/item/circuit_component/listeners
 
 /datum/circuit_variable/New(name, datatype)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.name = name
 	src.datatype = datatype
@@ -34,20 +36,28 @@
 
 /// Sets the value of the circuit component and triggers the appropriate listeners
 /datum/circuit_variable/proc/set_value(new_value)
+	procstart = null
+	src.procstart = null
 	value = new_value
 	for(var/obj/item/circuit_component/component as anything in listeners)
 		component.trigger_component()
 
 /datum/circuit_variable/proc/on_listener_qdel(datum/listener)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	listeners -= listener
 
 /// Adds a listener to receive inputs when the variable has a value that is set.
 /datum/circuit_variable/proc/add_listener(obj/item/circuit_component/to_add)
+	procstart = null
+	src.procstart = null
 	listeners += to_add
 	RegisterSignal(to_add, COMSIG_QDELETING, PROC_REF(on_listener_qdel))
 
 /// Removes a listener to receive inputs when the variable has a value that is set. Listener will usually clean themselves up
 /datum/circuit_variable/proc/remove_listener(obj/item/circuit_component/to_remove)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(to_remove, COMSIG_QDELETING)
 	listeners -= to_remove

@@ -1,6 +1,8 @@
 GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 
 /proc/init_canvas_dimensions()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/obj/item/canvas/canvas_type as anything in typesof(/obj/item/canvas))
 		var/width = canvas_type::width
@@ -24,6 +26,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 
 //Adding canvases
 /obj/structure/easel/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/canvas))
 		var/obj/item/canvas/canvas = tool
 		user.transfer_item_to_turf(canvas, get_turf(src), silent = FALSE)
@@ -35,6 +39,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 
 //Stick to the easel like glue
 /obj/structure/easel/Move()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	. = ..()
 	if(painting && painting.loc == T) //Only move if it's near us.
@@ -84,6 +90,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 	custom_price = PAYCHECK_CREW
 
 /obj/item/canvas/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	workspace = new(width,
 		height,
@@ -101,6 +109,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 	ADD_KEEP_TOGETHER(src, INNATE_TRAIT)
 
 /obj/item/canvas/Destroy()
+	procstart = null
+	src.procstart = null
 	last_patron = null
 	if(istype(loc,/obj/structure/sign/painting))
 		var/obj/structure/sign/painting/frame = loc
@@ -109,34 +119,48 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 	return ..()
 
 /obj/item/canvas/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui_interact(user)
 
 /obj/item/canvas/ui_host(mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(loc,/obj/structure/sign/painting))
 		return loc
 	return ..()
 
 /obj/item/canvas/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	if(finalized)
 		return GLOB.hold_or_view_state
 	return GLOB.default_state
 
 /obj/item/canvas/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Canvas", name)
 		ui.open()
 
 /obj/item/canvas/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	ui_interact(user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/canvas/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["year_offset"] = STATION_YEAR_OFFSET
 
 /obj/item/canvas/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/metadata = list(
 		"title" = painting_metadata.title,
@@ -173,10 +197,14 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 	)
 
 /obj/item/canvas/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui_interact(user)
 
 /obj/item/canvas/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -226,6 +254,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 			patron(user)
 
 /obj/item/canvas/proc/validate_color(_source, paint_color)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	paint_color = copytext(paint_color, 1, 8)
 	var/obj/item/implement = usr.get_active_held_item()
@@ -233,6 +263,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 		return COLOR_IS_INVALID
 
 /obj/item/canvas/proc/finalize(mob/user)
+	procstart = null
+	src.procstart = null
 	if(finalized || painting_metadata.loaded_from_json)
 		return
 	if(!in_range(src, user))
@@ -254,6 +286,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 #define SERVICE_PERCENTILE_CUT 0.125
 
 /obj/item/canvas/proc/patron(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!finalized || !isliving(user))
 		return
 	if(!painting_metadata.loaded_from_json)
@@ -323,6 +357,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 #undef SERVICE_PERCENTILE_CUT
 
 /obj/item/canvas/proc/select_new_frame(mob/user, list/candidates)
+	procstart = null
+	src.procstart = null
 	var/possible_frames = candidates || SSpersistent_paintings.get_available_frames(painting_metadata.credit_value)
 	var/list/radial_options = list()
 	for(var/frame_name in possible_frames)
@@ -336,6 +372,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 	our_frame.update_appearance()
 
 /obj/item/canvas/proc/can_select_frame(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(loc, /obj/structure/sign/painting))
 		return FALSE
 	if(!loc.IsReachableBy(user) || user.incapacitated)
@@ -345,6 +383,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 	return TRUE
 
 /obj/item/canvas/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(icon_generated)
 		var/mutable_appearance/detail = mutable_appearance(generated_icon)
@@ -361,6 +401,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 	. += detail
 
 /obj/item/canvas/proc/generate_proper_overlay()
+	procstart = null
+	src.procstart = null
 	if(icon_generated)
 		return
 	var/png_filename = "data/paintings/temp_painting.png"
@@ -374,6 +416,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 	update_appearance()
 
 /obj/item/canvas/proc/get_data_string()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/grid = workspace.layers[1]["data"]["[SOUTH]"]
 	for(var/y in 1 to height)
@@ -383,6 +427,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 
 //Todo make this element ?
 /obj/item/canvas/proc/get_paint_tool_color(obj/item/painting_implement)
+	procstart = null
+	src.procstart = null
 	if(!painting_implement)
 		return
 	if(istype(painting_implement, /obj/item/paint_palette))
@@ -401,6 +447,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 		return LOWER_TEXT(canvas_color)
 
 /obj/item/canvas/proc/get_paint_tool_palette(obj/item/painting_implement)
+	procstart = null
+	src.procstart = null
 	if(!painting_implement)
 		return list()
 	var/datum/component/palette/palette_comp = painting_implement.GetComponent(/datum/component/palette)
@@ -410,6 +458,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 	return palette_comp.colors
 
 /obj/item/canvas/proc/get_paint_tool_palette_capacity(obj/item/painting_implement)
+	procstart = null
+	src.procstart = null
 	if(!painting_implement)
 		return
 	var/datum/component/palette/palette_comp = painting_implement.GetComponent(/datum/component/palette)
@@ -418,6 +468,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 	return palette_comp.max_colors
 
 /obj/item/canvas/proc/can_change_paint_tool_color(obj/item/painting_implement)
+	procstart = null
+	src.procstart = null
 	if(!painting_implement)
 		return
 	if(istype(painting_metadata, /obj/item/paint_palette) || istype(painting_implement, /obj/item/airlock_painter/decal))
@@ -428,6 +480,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 
 /// Generates medium description
 /obj/item/canvas/proc/get_paint_tool_medium(obj/item/painting_implement)
+	procstart = null
+	src.procstart = null
 	if(!painting_implement)
 		return
 	if(istype(painting_implement, /obj/item/paint_palette))
@@ -444,6 +498,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 		return "Unknown medium"
 
 /obj/item/canvas/proc/try_rename(mob/user)
+	procstart = null
+	src.procstart = null
 	if(painting_metadata.loaded_from_json) // No renaming old paintings
 		return TRUE
 	var/new_name = tgui_input_text(user, "What do you want to name the painting?", "Title Your Masterpiece", max_length = MAX_NAME_LEN)
@@ -516,6 +572,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 	custom_price = PAYCHECK_CREW * 1.25
 
 /obj/item/canvas/thirtysix_twentyfour/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/item_scaling, 1, 0.8)
 	icon = 'icons/obj/art/artstuff_64x64.dmi'
@@ -536,6 +594,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 	custom_price = PAYCHECK_CREW * 1.75
 
 /obj/item/canvas/fortyfive_twentyseven/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/item_scaling, 1, 0.7)
 	icon = 'icons/obj/art/artstuff_64x64.dmi'
@@ -578,17 +638,25 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 	var/wallframe_type = /obj/item/wallframe/painting
 
 /obj/structure/sign/painting/get_save_vars()
+	procstart = null
+	src.procstart = null
 	return ..() - NAMEOF(src, icon)
 
 /obj/structure/sign/painting/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSpersistent_paintings.painting_frames += src
 
 /obj/structure/sign/painting/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSpersistent_paintings.painting_frames -= src
 
 /obj/structure/sign/painting/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!current_canvas && istype(tool, /obj/item/canvas))
 		frame_canvas(user, tool)
 		return ITEM_INTERACT_SUCCESS
@@ -598,12 +666,16 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 		return ITEM_INTERACT_SUCCESS
 
 /obj/structure/sign/painting/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	var/turf/drop_turf = drop_location()
 	current_canvas?.forceMove(drop_turf)
 	var/obj/item/wallframe/frame = new wallframe_type(drop_turf)
 	frame.update_integrity(get_integrity()) //Transfer how damaged it is.
 
 /obj/structure/sign/painting/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(persistence_id)
 		. += span_notice("Any painting placed here will be archived at the end of the shift.")
@@ -614,6 +686,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 			. += span_notice("<b>Alt-Click</b> to change select a new appearance for the frame of this painting.")
 
 /obj/structure/sign/painting/wirecutter_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(current_canvas)
 		current_canvas.forceMove(drop_location())
@@ -621,6 +695,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 		return TRUE
 
 /obj/structure/sign/painting/Exited(atom/movable/movable, atom/newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(movable == current_canvas)
 		if(!QDELETED(current_canvas))
@@ -629,6 +705,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 		update_appearance()
 
 /obj/structure/sign/painting/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!current_canvas?.can_select_frame(user))
 		return CLICK_ACTION_BLOCKING
 
@@ -636,6 +714,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 	return CLICK_ACTION_SUCCESS
 
 /obj/structure/sign/painting/proc/frame_canvas(mob/living/user, obj/item/canvas/new_canvas)
+	procstart = null
+	src.procstart = null
 	if(!(new_canvas.type in accepted_canvas_types))
 		to_chat(user, span_warning("[new_canvas] won't fit in this frame."))
 		return FALSE
@@ -654,6 +734,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 	return FALSE
 
 /obj/structure/sign/painting/proc/try_rename(mob/user)
+	procstart = null
+	src.procstart = null
 	if(current_canvas.painting_metadata.title != initial(current_canvas.painting_metadata.title))
 		return
 	if(!current_canvas.try_rename(user))
@@ -661,19 +743,27 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 	SStgui.update_uis(current_canvas)
 
 /obj/structure/sign/painting/update_icon_state(updates=ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Stops the frame icon_state from poking out behind the paintings. we have proper frame overlays in artstuff.dmi.
 	icon = current_canvas?.generated_icon ? null : initial(icon)
 
 /obj/structure/sign/painting/update_name(updates)
+	procstart = null
+	src.procstart = null
 	name = current_canvas ? "painting - [current_canvas.painting_metadata.title]" : initial(name)
 	return ..()
 
 /obj/structure/sign/painting/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	desc = current_canvas ? desc_with_canvas : initial(desc)
 	return ..()
 
 /obj/structure/sign/painting/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!current_canvas?.generated_icon)
 		return
@@ -691,6 +781,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
  * Deleting paintings leaves their json, so this proc will remove the json and try again if it finds one of those.
  */
 /obj/structure/sign/painting/proc/load_persistent()
+	procstart = null
+	src.procstart = null
 	if(!persistence_id)
 		return FALSE
 	var/list/valid_paintings = SSpersistent_paintings.get_paintings_with_tag(persistence_id)
@@ -724,16 +816,22 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 	return TRUE
 
 /obj/structure/sign/painting/proc/add_art_element()
+	procstart = null
+	src.procstart = null
 	var/artistic_value = get_art_value(current_canvas.painting_metadata.credit_value)
 	if(artistic_value)
 		AddElement(/datum/element/art, artistic_value)
 
 /obj/structure/sign/painting/proc/remove_art_element(patronage)
+	procstart = null
+	src.procstart = null
 	var/artistic_value = get_art_value(patronage)
 	if(artistic_value)
 		RemoveElement(/datum/element/art, artistic_value)
 
 /obj/structure/sign/painting/proc/get_art_value(patronage)
+	procstart = null
+	src.procstart = null
 	switch(patronage)
 		if(PATRONAGE_SUPERB_FRAME to INFINITY)
 			return GREAT_ART
@@ -744,6 +842,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 	return 0
 
 /obj/structure/sign/painting/proc/save_persistent()
+	procstart = null
+	src.procstart = null
 	if(!persistence_id || !current_canvas || current_canvas.no_save || current_canvas.painting_metadata.loaded_from_json)
 		return
 	if(SANITIZE_FILENAME(persistence_id) != persistence_id)
@@ -770,6 +870,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 	SSpersistent_paintings.paintings += current_canvas.painting_metadata
 
 /obj/item/canvas/proc/fill_grid_from_icon(icon/I)
+	procstart = null
+	src.procstart = null
 	var/list/grid = workspace.layers[1]["data"]["[SOUTH]"]
 	var/h = I.Height() + 1
 	for(var/x in 1 to width)
@@ -786,6 +888,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 	custom_price = PAYCHECK_CREW * 1.25
 
 /obj/item/wallframe/painting/large/try_build(turf/on_wall, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -800,6 +904,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 		return FALSE
 
 /obj/item/wallframe/painting/large/after_attach(obj/object)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/structure/sign/painting/large/our_frame = object
 	our_frame.finalize_size()
@@ -814,6 +920,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 	wallframe_type = /obj/item/wallframe/painting/large
 
 /obj/structure/sign/painting/large/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	// Necessary so that the painting is framed correctly by the frame overlay when flipped.
 	ADD_KEEP_TOGETHER(src, INNATE_TRAIT)
 	if(mapload)
@@ -827,6 +935,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
  * that wall turf.
  */
 /obj/structure/sign/painting/large/proc/finalize_size()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(SOUTH)
 			pixel_y = -32
@@ -842,19 +952,27 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 			bound_height = 64
 
 /obj/structure/sign/painting/large/get_turfs_to_mount_on()
+	procstart = null
+	src.procstart = null
 	return (!pixel_x && !pixel_y) ? list(get_step(src, dir)) : ..()
 
 /obj/structure/sign/painting/large/frame_canvas(mob/living/user, obj/item/canvas/new_canvas)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		set_painting_offsets()
 
 /obj/structure/sign/painting/large/load_persistent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		set_painting_offsets()
 
 /obj/structure/sign/painting/large/proc/set_painting_offsets()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(EAST)
 			transform = transform.Turn(90)
@@ -866,6 +984,8 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 			pixel_y += 29
 
 /obj/structure/sign/painting/large/Exited(atom/movable/movable, atom/newloc)
+	procstart = null
+	src.procstart = null
 	if(movable == current_canvas)
 		switch(dir)
 			if(EAST)
@@ -925,14 +1045,20 @@ GLOBAL_LIST_INIT(canvas_dimensions, init_canvas_dimensions())
 	var/current_color = COLOR_BLACK
 
 /obj/item/paint_palette/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/palette, AVAILABLE_PALETTE_SPACE, current_color)
 
 /obj/item/paint_palette/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pick_painting_tool_color(user, current_color)
 
 /obj/item/paint_palette/set_painting_tool_color(chosen_color)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	current_color = chosen_color
 

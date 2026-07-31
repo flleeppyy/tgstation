@@ -28,6 +28,8 @@
 	circuit_flags = CIRCUIT_FLAG_INPUT_SIGNAL|CIRCUIT_FLAG_OUTPUT_SIGNAL
 
 /obj/item/circuit_component/trigonometry/populate_options()
+	procstart = null
+	src.procstart = null
 	var/static/component_functions = list(
 		COMP_TRIGONOMETRY_SINE,
 		COMP_TRIGONOMETRY_COSINE,
@@ -39,10 +41,14 @@
 	trigonometric_function = add_option_port("Trigonometric Function", component_functions)
 
 /obj/item/circuit_component/trigonometry/populate_ports()
+	procstart = null
+	src.procstart = null
 	input_port = add_input_port("Input", PORT_TYPE_NUMBER)
 	output = add_output_port("Output", PORT_TYPE_NUMBER)
 
 /obj/item/circuit_component/trigonometry/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 
 	var/result = input_port.value
 

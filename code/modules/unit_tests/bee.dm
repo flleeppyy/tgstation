@@ -2,6 +2,8 @@
 /datum/unit_test/beegent
 
 /datum/unit_test/beegent/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bee/bee = allocate(__IMPLIED_TYPE__)
 	var/turf/bee_turf = get_turf(bee)
 	var/datum/reagent/picked = GLOB.chemical_reagents_list[/datum/reagent/toxin/fentanyl]

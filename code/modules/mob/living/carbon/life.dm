@@ -1,4 +1,6 @@
 /mob/living/carbon/Life(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
 
@@ -43,6 +45,8 @@
 
 // Start of a breath chain, calls [carbon/proc/breathe()]
 /mob/living/carbon/handle_breathing(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/next_breath = 4
 	var/obj/item/organ/lungs/L = get_organ_slot(ORGAN_SLOT_LUNGS)
 	var/obj/item/organ/heart/H = get_organ_slot(ORGAN_SLOT_HEART)
@@ -66,6 +70,8 @@
 
 // Second link in a breath chain, calls [carbon/proc/check_breath()]
 /mob/living/carbon/proc/breathe(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/lungs = get_organ_slot(ORGAN_SLOT_LUNGS)
 	var/is_on_internals = FALSE
 
@@ -128,6 +134,8 @@
 		loc.assume_air(breath)
 
 /mob/living/carbon/proc/has_smoke_protection()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NOBREATH))
 		return TRUE
 	return FALSE
@@ -143,6 +151,8 @@
  * * breath: A gas mixture to test, or null.
  */
 /mob/living/carbon/proc/check_breath(datum/gas_mixture/breath)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 
 	if(HAS_TRAIT(src, TRAIT_GODMODE))
@@ -399,6 +409,8 @@
 /// Applies suffocation side-effects to a given Human, scaling based on ratio of required pressure VS "true" pressure.
 /// If pressure is greater than 0, the return value will represent the amount of gas successfully breathed.
 /mob/living/carbon/proc/handle_suffocation(breath_pp = 0, safe_breath_min = 0, true_pp = 0)
+	procstart = null
+	src.procstart = null
 	. = 0
 	// Can't suffocate without minimum breath pressure.
 	if(!safe_breath_min)
@@ -429,11 +441,15 @@
 
 /// Fourth and final link in a breath chain
 /mob/living/carbon/proc/handle_breath_temperature(datum/gas_mixture/breath)
+	procstart = null
+	src.procstart = null
 	// The air you breathe out should match your body temperature
 	breath.temperature = bodytemperature
 
 /// Attempts to take a breath from the external or internal air tank.
 /mob/living/carbon/proc/get_breath_from_internal(volume_needed)
+	procstart = null
+	src.procstart = null
 	if(invalid_internals())
 		// Unexpectely lost breathing apparatus and ability to breathe from the internal air tank.
 		cutoff_internals()
@@ -449,9 +465,13 @@
 	return . || FALSE
 
 /mob/living/carbon/proc/handle_blood(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/reagent_tick(datum/reagent/chem, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & COMSIG_MOB_STOP_REAGENT_TICK)
 		return
@@ -467,6 +487,8 @@
 		return COMSIG_MOB_STOP_REAGENT_TICK
 
 /mob/living/carbon/reagent_expose(datum/reagent/chem, methods = TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(. & COMPONENT_NO_EXPOSE_REAGENTS)
@@ -501,6 +523,8 @@
 	return COMPONENT_NO_EXPOSE_REAGENTS
 
 /mob/living/carbon/proc/handle_organs(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		if(reagents && (reagents.has_reagent(/datum/reagent/toxin/formaldehyde, 1) || reagents.has_reagent(/datum/reagent/cryostylane))) // No organ decay if the body contains formaldehyde.
 			return
@@ -528,6 +552,8 @@
  * Mobs that do not require a heart always return 1, as their blood regeneration is unaffected by heart status.
  */
 /mob/living/carbon/proc/get_heart_blood_regeneration_multiplier()
+	procstart = null
+	src.procstart = null
 	if(!needs_heart())
 		return 1
 	var/obj/item/organ/heart/heart = get_organ_slot(ORGAN_SLOT_HEART)
@@ -545,12 +571,16 @@
  * - times_fired: The number of times SSmobs has ticked.
  */
 /mob/living/carbon/proc/handle_dead_metabolization(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(stat != DEAD)
 		return
 	reagents?.metabolize(src, seconds_per_tick, can_overdose = TRUE, liverless = TRUE, dead = TRUE) // Your liver doesn't work while you're dead.
 
 /// Base carbon environment handler, adds natural stabilization
 /mob/living/carbon/handle_environment(datum/gas_mixture/environment, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/areatemp = get_temperature(environment)
 
 	if(stat != DEAD) // If you are dead your body does not stabilize naturally
@@ -571,6 +601,8 @@
  * - times_fired: The number of times SSmobs has ticked
  */
 /mob/living/carbon/proc/natural_bodytemperature_stabilization(datum/gas_mixture/environment, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/areatemp = get_temperature(environment)
 	var/body_temperature_difference = get_body_temp_normal() - bodytemperature
 	var/natural_change = 0
@@ -627,16 +659,22 @@
  * return the percentage of protection as a value from 0 - 1
 **/
 /mob/living/carbon/proc/get_insulation_protection(temperature)
+	procstart = null
+	src.procstart = null
 	return (temperature > bodytemperature) ? get_heat_protection(temperature) : get_cold_protection(temperature)
 
 /// This returns the percentage of protection from heat as a value from 0 - 1
 /// temperature is the temperature you're being exposed to
 /mob/living/carbon/proc/get_heat_protection(temperature)
+	procstart = null
+	src.procstart = null
 	return heat_protection
 
 /// This returns the percentage of protection from cold as a value from 0 - 1
 /// temperature is the temperature you're being exposed to
 /mob/living/carbon/proc/get_cold_protection(temperature)
+	procstart = null
+	src.procstart = null
 	return cold_protection
 
 /**
@@ -647,6 +685,8 @@
  * * M The mob/living/carbon that is sharing body heat
  */
 /mob/living/carbon/proc/share_bodytemperature(mob/living/carbon/M)
+	procstart = null
+	src.procstart = null
 	var/temp_diff = bodytemperature - M.bodytemperature
 	if(temp_diff > 0) // you are warm share the heat of life
 		M.adjust_bodytemperature((temp_diff * 0.5), use_insulation=TRUE, use_steps=TRUE) // warm up the giver
@@ -669,6 +709,8 @@
  * * capped (optional) default True used to cap step mode
  */
 /mob/living/carbon/adjust_bodytemperature(amount, min_temp=0, max_temp=INFINITY, use_insulation=FALSE, use_steps=FALSE, capped=TRUE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_HYPOTHERMIC) && amount > 0) //Prevent warming up
 		return
 	// apply insulation to the amount of change
@@ -691,6 +733,8 @@
 ///////////
 
 /mob/living/carbon/get_fullness(only_consumable)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/obj/item/organ/stomach/belly = get_organ_slot(ORGAN_SLOT_STOMACH)
@@ -715,6 +759,8 @@
 	return .
 
 /mob/living/carbon/has_reagent(reagent, amount = -1, needs_metabolizing = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -730,6 +776,8 @@
 ///Check to see if we have the liver, if not automatically gives you last-stage effects of lacking a liver.
 
 /mob/living/carbon/proc/handle_liver(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(isnull(has_dna()))
 		return
 
@@ -747,6 +795,8 @@
 	adjust_organ_loss(pick(ORGAN_SLOT_HEART, ORGAN_SLOT_LUNGS, ORGAN_SLOT_STOMACH, ORGAN_SLOT_EYES, ORGAN_SLOT_EARS), 0.5* seconds_per_tick)
 
 /mob/living/carbon/proc/undergoing_liver_failure()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/liver/liver = get_organ_slot(ORGAN_SLOT_LIVER)
 	if(liver?.organ_flags & ORGAN_FAILING)
 		return TRUE
@@ -756,6 +806,8 @@
 ////////////////
 
 /mob/living/carbon/proc/handle_brain_damage(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	for(var/T in get_traumas())
 		var/datum/brain_trauma/BT = T
 		BT.on_life(seconds_per_tick)
@@ -765,6 +817,8 @@
 /////////////////////////////////////
 
 /mob/living/carbon/proc/can_heartattack()
+	procstart = null
+	src.procstart = null
 	if(!needs_heart())
 		return FALSE
 	var/obj/item/organ/heart/heart = get_organ_slot(ORGAN_SLOT_HEART)
@@ -773,6 +827,8 @@
 	return TRUE
 
 /mob/living/carbon/proc/needs_heart()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_STABLEHEART))
 		return FALSE
 	if(dna && dna.species && (!CAN_HAVE_BLOOD(src) || isnull(dna.species.mutantheart))) //not all carbons have species!
@@ -787,6 +843,8 @@
  * related situations (i.e not just cardiac arrest)
  */
 /mob/living/carbon/proc/undergoing_cardiac_arrest()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/heart/heart = get_organ_slot(ORGAN_SLOT_HEART)
 	if(istype(heart) && heart.is_beating())
 		return FALSE
@@ -802,6 +860,8 @@
  * Returns TRUE if heart status was changed (heart attack -> no heart attack, or visa versa)
  */
 /mob/living/carbon/proc/set_heartattack(status)
+	procstart = null
+	src.procstart = null
 	if(status && !can_heartattack())
 		return FALSE
 

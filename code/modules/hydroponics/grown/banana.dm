@@ -28,24 +28,34 @@
 	distill_reagent = /datum/reagent/consumable/ethanol/bananahonk
 
 /obj/item/food/grown/banana/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/banana
 
 /obj/item/food/grown/banana/make_edible()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponentFrom(SOURCE_EDIBLE_INNATE, /datum/component/edible, check_liked = CALLBACK(src, PROC_REF(check_liked)))
 
 /obj/item/food/grown/banana/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(1))
 		AddComponent(/datum/component/boomerang, boomerang_throw_range = throw_range + 4, thrower_easy_catch_enabled = TRUE, examine_message = span_green("The curve on this one looks particularly acute."))
 
 ///Clowns will always like bananas.
 /obj/item/food/grown/banana/proc/check_liked(mob/living/carbon/human/consumer)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/liver/liver = consumer.get_organ_slot(ORGAN_SLOT_LIVER)
 	if (!HAS_TRAIT(consumer, TRAIT_AGEUSIA) && liver && HAS_TRAIT(liver, TRAIT_COMEDY_METABOLISM))
 		return FOOD_LIKED
 
 /obj/item/food/grown/banana/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is aiming [src] at [user.p_them()]self! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(loc, 'sound/items/bikehorn.ogg', 50, TRUE, -1)
 	sleep(2.5 SECONDS)
@@ -73,6 +83,8 @@
 	throw_range = 7
 
 /obj/item/grown/bananapeel/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(40))
 		if(prob(60))
@@ -81,9 +93,13 @@
 			icon_state = "[icon_state]_3"
 
 /obj/item/grown/bananapeel/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/medicine/coagulant/banana_peel = seed.potency * 0.2)
 
 /obj/item/grown/bananapeel/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is deliberately slipping on [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(loc, 'sound/misc/slip.ogg', 50, TRUE, -1)
 	return BRUTELOSS
@@ -155,6 +171,8 @@
 	desc = "A synthetic banana peel."
 
 /obj/item/grown/bananapeel/specialpeel/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/slippery, 40)
 
@@ -166,6 +184,8 @@
 	var/is_ripening = FALSE
 
 /obj/item/food/grown/banana/bunch/Initialize(mapload, obj/item/seeds/new_seed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.clear_reagents()
 	reagents.add_reagent(/datum/reagent/consumable/monkey_energy, 10)
@@ -173,6 +193,8 @@
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CLOWNANA, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /obj/item/food/grown/banana/bunch/proc/start_ripening()
+	procstart = null
+	src.procstart = null
 	if(is_ripening)
 		return
 	playsound(src, 'sound/effects/fuse.ogg', 80)
@@ -184,6 +206,8 @@
 		animate(color = (i % 2) ? "#ffffff": "#ff6739", time = 1, easing = QUAD_EASING)
 
 /obj/item/food/grown/banana/bunch/proc/explosive_ripening()
+	procstart = null
+	src.procstart = null
 	honkerblast(src, light_range = 3, medium_range = 1)
 	for(var/mob/shook_boi in range(6, loc))
 		shake_camera(shook_boi, 3, 5)
@@ -195,6 +219,8 @@
 	desc = "Am exquisite bunch of bananas. Their otherwordly plumpness seems to be hiding something."
 
 /obj/item/food/grown/banana/bunch/monkeybomb/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!is_simian(user))
 		. += span_notice("There's a banana label on one of the 'nanas you can't quite make out the details of.")
@@ -202,6 +228,8 @@
 	. += span_notice("The banana label on this bunch indicates that monkeys can use this as a sonic grenade with a 3 second timer!")
 
 /obj/item/food/grown/banana/bunch/monkeybomb/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	if(!is_simian(user))
 		return to_chat(user, span_notice("You don't really know what to do with this."))
 	else start_ripening()
@@ -212,6 +240,8 @@
 	desc = "A peel from a species of banana that's hyper-vulnerable to contamination."
 
 /obj/item/grown/bananapeel/gros_michel/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/germ_sensitive, mapload)
 	transform *= 1.25

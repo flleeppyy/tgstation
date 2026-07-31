@@ -25,6 +25,8 @@
 	var/summon_offset_y = 1
 
 /obj/machinery/trading_card_holder/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/tcgcard) || current_summon)
 		return NONE
 	current_card = tool
@@ -50,6 +52,8 @@
 GLOBAL_LIST_EMPTY(tcgcard_machine_radial_choices)
 
 /obj/machinery/trading_card_holder/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(current_summon)
 		var/list/choices = GLOB.tcgcard_machine_radial_choices
 		if(!length(choices))
@@ -90,6 +94,8 @@ GLOBAL_LIST_EMPTY(tcgcard_machine_radial_choices)
 	return ..()
 
 /obj/machinery/trading_card_holder/attack_hand_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(current_summon))
 		var/card_name = tgui_input_text(user, "Insert card name", "Blank Card Naming", "blank card", max_length = MAX_NAME_LEN)
 		if(isnull(card_name) || !user.can_perform_action(src))
@@ -104,6 +110,8 @@ GLOBAL_LIST_EMPTY(tcgcard_machine_radial_choices)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/trading_card_holder/proc/check_menu(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated || !user.Adjacent(src))
@@ -111,11 +119,15 @@ GLOBAL_LIST_EMPTY(tcgcard_machine_radial_choices)
 	return TRUE
 
 /obj/machinery/trading_card_holder/Destroy()
+	procstart = null
+	src.procstart = null
 	if(current_summon)
 		qdel(current_summon)
 	. = ..()
 
 /obj/machinery/trading_card_holder/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(card_template)
 		. += span_notice("There is currently a [card_template.name] card inserted.")
@@ -165,6 +177,8 @@ GLOBAL_LIST_EMPTY(tcgcard_machine_radial_choices)
 	var/team_color = "#77abff"
 
 /obj/structure/trading_card_summon/proc/load_model()
+	procstart = null
+	src.procstart = null
 
 	hologram = new(loc)
 
@@ -180,6 +194,8 @@ GLOBAL_LIST_EMPTY(tcgcard_machine_radial_choices)
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/trading_card_summon/get_name_chaser(mob/user, list/name_chaser = list())
+	procstart = null
+	src.procstart = null
 	name_chaser += "Faction: [template.faction]"
 	name_chaser += "Cost: [template.summoncost]"
 	name_chaser += "Type: [template.cardtype] - [template.cardsubtype]"
@@ -190,6 +206,8 @@ GLOBAL_LIST_EMPTY(tcgcard_machine_radial_choices)
 	return name_chaser
 
 /obj/structure/trading_card_summon/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/overlay = update_stats(power_overlay, STAT_Y, summon_power, power_color, x_offset = POWER_X)
 
@@ -206,6 +224,8 @@ GLOBAL_LIST_EMPTY(tcgcard_machine_radial_choices)
 		. += mark_overlay
 
 /obj/structure/trading_card_summon/proc/update_stats(obj/effect/overlay/status_display_text/overlay, pos_y, stats, text_color, x_offset)
+	procstart = null
+	src.procstart = null
 	if(overlay && stats == overlay.message)
 		return null
 
@@ -220,6 +240,8 @@ GLOBAL_LIST_EMPTY(tcgcard_machine_radial_choices)
 	return stats_display
 
 /obj/structure/trading_card_summon/proc/update_tapped()
+	procstart = null
+	src.procstart = null
 	if(tapped)
 		hologram.transform = turn(hologram.transform, 90)
 	else
@@ -227,10 +249,14 @@ GLOBAL_LIST_EMPTY(tcgcard_machine_radial_choices)
 	tapped = !tapped
 
 /obj/structure/trading_card_summon/proc/update_marked()
+	procstart = null
+	src.procstart = null
 	marked = !marked
 	update_icon(UPDATE_OVERLAYS)
 
 /obj/structure/trading_card_summon/proc/modify_stats(mob/living/user)
+	procstart = null
+	src.procstart = null
 	summon_power = num2text(tgui_input_number(user, "Please input power value", "Stat Modification", text2num(template.power), 25))
 	if(summon_power == template.power)
 		power_color = DEFAULT_POWER_COLOR
@@ -244,6 +270,8 @@ GLOBAL_LIST_EMPTY(tcgcard_machine_radial_choices)
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/trading_card_summon/Destroy()
+	procstart = null
+	src.procstart = null
 	if(hologram)
 		qdel(hologram)
 	return ..()
@@ -257,6 +285,8 @@ GLOBAL_LIST_EMPTY(tcgcard_machine_radial_choices)
 	resolve_color = DEFAULT_MODIFIED_COLOR
 
 /obj/structure/trading_card_summon/blank/load_model()
+	procstart = null
+	src.procstart = null
 	hologram = new(loc)
 
 	hologram.icon = 'icons/obj/toys/tcgmisc.dmi'
@@ -267,10 +297,14 @@ GLOBAL_LIST_EMPTY(tcgcard_machine_radial_choices)
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/trading_card_summon/blank/get_name_chaser(mob/user, list/name_chaser)
+	procstart = null
+	src.procstart = null
 	name_chaser += "Power/Resolve: [summon_power]/[summon_resolve]"
 	return name_chaser
 
 /obj/structure/trading_card_summon/blank/modify_stats(mob/living/user)
+	procstart = null
+	src.procstart = null
 	summon_power = num2text(tgui_input_number(user, "Please input power value", "Stat Modification", text2num(summon_power), 25))
 	summon_resolve = num2text(tgui_input_number(user, "Please input resolve value", "Stat Modification", text2num(summon_resolve), 25))
 	update_appearance(UPDATE_OVERLAYS)
@@ -306,14 +340,20 @@ GLOBAL_LIST_EMPTY(tcgcard_machine_radial_choices)
 GLOBAL_LIST_EMPTY(tcgcard_mana_bar_radial_choices)
 
 /obj/machinery/trading_card_button/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	display_panel_ref = new display_panel_type(locate(x + panel_offset_x, y + panel_offset_y, z))
 
 /obj/machinery/trading_card_button/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(display_panel_ref)
 	return ..()
 
 /obj/machinery/trading_card_button/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/choices = setup_global()
 	if(!length(choices))
 		choices = setup_radial()
@@ -327,9 +367,13 @@ GLOBAL_LIST_EMPTY(tcgcard_mana_bar_radial_choices)
 
 ///Proc that determines which global list of radial choices is used.
 /obj/machinery/trading_card_button/proc/setup_global()
+	procstart = null
+	src.procstart = null
 	return GLOB.tcgcard_mana_bar_radial_choices
 
 /obj/machinery/trading_card_button/proc/setup_radial()
+	procstart = null
+	src.procstart = null
 	var/radial_choices
 	radial_choices = GLOB.tcgcard_mana_bar_radial_choices = list(
 	"Set Mana" = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_set_mana"),
@@ -339,6 +383,8 @@ GLOBAL_LIST_EMPTY(tcgcard_mana_bar_radial_choices)
 	return radial_choices
 
 /obj/machinery/trading_card_button/proc/handle_choice(choice, mob/user)
+	procstart = null
+	src.procstart = null
 	var/input_value
 	switch(choice)
 		if("Set Mana")
@@ -355,6 +401,8 @@ GLOBAL_LIST_EMPTY(tcgcard_mana_bar_radial_choices)
 			display_panel_ref.gems = display_panel_ref.gem_slots
 
 /obj/machinery/trading_card_button/proc/check_menu(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated || !user.Adjacent(src))
@@ -372,9 +420,13 @@ GLOBAL_LIST_EMPTY(tcgcard_mana_bar_radial_choices)
 GLOBAL_LIST_EMPTY(tcgcard_health_bar_radial_choices)
 
 /obj/machinery/trading_card_button/health/setup_global()
+	procstart = null
+	src.procstart = null
 	return GLOB.tcgcard_health_bar_radial_choices
 
 /obj/machinery/trading_card_button/health/setup_radial()
+	procstart = null
+	src.procstart = null
 	var/radial_choices
 	radial_choices = GLOB.tcgcard_health_bar_radial_choices = list(
 	"Set Life" = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_set_life"),
@@ -383,6 +435,8 @@ GLOBAL_LIST_EMPTY(tcgcard_health_bar_radial_choices)
 	return radial_choices
 
 /obj/machinery/trading_card_button/health/handle_choice(choice, mob/user)
+	procstart = null
+	src.procstart = null
 	var/input_value
 	switch(choice)
 		if("Set Life")
@@ -428,10 +482,14 @@ GLOBAL_LIST_EMPTY(tcgcard_health_bar_radial_choices)
 	var/gem_title = "mana"
 
 /obj/effect/trading_card_panel/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon(UPDATE_OVERLAYS)
 
 /obj/effect/trading_card_panel/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!gem_slots)
 		return
@@ -447,6 +505,8 @@ GLOBAL_LIST_EMPTY(tcgcard_health_bar_radial_choices)
 				. += gem_overlay
 
 /obj/effect/trading_card_panel/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It is currently showing [gems] out of [gem_slots] [gem_title].")
 

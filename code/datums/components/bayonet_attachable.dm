@@ -51,11 +51,15 @@
 		add_bayonet(starting_bayonet)
 
 /datum/component/bayonet_attachable/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(bayonet)
 		remove_bayonet()
 	return ..()
 
 /datum/component/bayonet_attachable/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_OBJ_DECONSTRUCT, PROC_REF(on_parent_deconstructed))
 	RegisterSignal(parent, COMSIG_ATOM_EXITED, PROC_REF(on_item_exit))
 	RegisterSignal(parent, COMSIG_ATOM_TOOL_ACT(TOOL_SCREWDRIVER), PROC_REF(on_screwdriver))
@@ -69,6 +73,8 @@
 	RegisterSignal(parent, COMSIG_GUN_SAWN_OFF, PROC_REF(on_sawn_off))
 
 /datum/component/bayonet_attachable/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_OBJ_DECONSTRUCT,
 		COMSIG_ATOM_EXITED,
@@ -84,6 +90,8 @@
 	))
 
 /datum/component/bayonet_attachable/proc/on_examine(obj/item/source, mob/examiner, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(bayonet))
@@ -95,6 +103,8 @@
 		examine_list += span_info("[bayonet] looks like it can be <b>unscrewed</b> from [bayonet].")
 
 /datum/component/bayonet_attachable/proc/on_pre_attack(obj/item/source, atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (isnull(bayonet) || !user.combat_mode)
@@ -105,6 +115,8 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/component/bayonet_attachable/proc/on_attackby(obj/item/source, obj/item/attacking_item, mob/attacker, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!is_type_in_typecache(attacking_item, valid_bayonets))
@@ -122,6 +134,8 @@
 	return COMPONENT_NO_AFTERATTACK
 
 /datum/component/bayonet_attachable/proc/add_bayonet(obj/item/new_bayonet, mob/attacher)
+	procstart = null
+	src.procstart = null
 	if(bayonet)
 		CRASH("[type] tried to add a new bayonet when it already had one.")
 
@@ -132,17 +146,23 @@
 	item_parent.update_appearance()
 
 /datum/component/bayonet_attachable/proc/remove_bayonet()
+	procstart = null
+	src.procstart = null
 	bayonet = null
 	var/obj/item/item_parent = parent
 	item_parent.update_appearance()
 
 /datum/component/bayonet_attachable/proc/on_item_exit(obj/item/source, atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(gone == bayonet)
 		remove_bayonet()
 
 /datum/component/bayonet_attachable/proc/on_parent_deconstructed(obj/item/source, disassembled)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(QDELETED(bayonet) || !removable)
@@ -152,6 +172,8 @@
 	bayonet.forceMove(source.drop_location())
 
 /datum/component/bayonet_attachable/proc/on_screwdriver(obj/item/source, mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!bayonet || !removable)
@@ -161,6 +183,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /datum/component/bayonet_attachable/proc/unscrew_bayonet(obj/item/source, mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool?.play_tool_sound(source)
 	source.balloon_alert(user, "unscrewed [bayonet]")
 
@@ -170,6 +194,8 @@
 		user.put_in_hands(to_remove)
 
 /datum/component/bayonet_attachable/proc/on_update_overlays(obj/item/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!bayonet_overlay || !bayonet_overlay_icon)
@@ -184,6 +210,8 @@
 	overlays += bayonet_appearance
 
 /datum/component/bayonet_attachable/proc/on_update_icon_state(obj/item/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!bayonet_icon_state)
@@ -196,10 +224,14 @@
 		source.icon_state = base_state
 
 /datum/component/bayonet_attachable/proc/on_parent_deleted(obj/item/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	QDEL_NULL(bayonet)
 
 /datum/component/bayonet_attachable/proc/on_being_sawnoff(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!bayonet || allow_sawnoff)
@@ -208,6 +240,8 @@
 	return COMPONENT_CANCEL_SAWING_OFF
 
 /datum/component/bayonet_attachable/proc/on_sawn_off(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!allow_sawnoff)
 		qdel(src)

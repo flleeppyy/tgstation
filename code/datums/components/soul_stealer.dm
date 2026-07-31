@@ -10,25 +10,35 @@
 	var/list/obj/item/soulstone/soulstones = list()
 
 /datum/component/soul_stealer/Initialize(soulstone_type = /obj/item/soulstone/anybody/purified)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 
 	src.soulstone_type = soulstone_type
 
 /datum/component/soul_stealer/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(soulstones) // We own these, so we'll also just get rid of them. Any souls inside will die, this is fine.
 	return ..()
 
 /datum/component/soul_stealer/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 	RegisterSignal(parent, COMSIG_ITEM_AFTERATTACK, PROC_REF(on_afterattack))
 	RegisterSignal(parent, COMSIG_ITEM_INTERACTING_WITH_ATOM, PROC_REF(try_transfer_soul))
 
 /datum/component/soul_stealer/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ATOM_EXAMINE, COMSIG_ITEM_AFTERATTACK, COMSIG_ITEM_INTERACTING_WITH_ATOM))
 
 ///signal called on parent being examined
 /datum/component/soul_stealer/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += span_notice("It will steal the soul of anyone it defeats in battle.")
@@ -43,12 +53,16 @@
 			examine_list += span_notice("A staggering <b>[num_souls]</b> souls have been claimed by it! And it hungers for more!")
 
 /datum/component/soul_stealer/proc/on_afterattack(obj/item/source, atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(ishuman(target))
 		INVOKE_ASYNC(src, PROC_REF(try_capture), target, user)
 
 /datum/component/soul_stealer/proc/try_transfer_soul(obj/item/source, mob/user, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(target, /obj/structure/constructshell) && length(soulstones))
@@ -62,6 +76,8 @@
 		return ITEM_INTERACT_SUCCESS
 
 /datum/component/soul_stealer/proc/try_capture(mob/living/carbon/human/victim, mob/living/captor)
+	procstart = null
+	src.procstart = null
 	if(!IS_UNCONSCIOUS_OR_CRIT(victim))
 		return
 	var/obj/item/soulstone/soulstone = new soulstone_type(parent)

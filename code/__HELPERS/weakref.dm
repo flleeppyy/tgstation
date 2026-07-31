@@ -3,6 +3,8 @@
 
 //For these two procs refs MUST be ref = TRUE format like typecaches!
 /proc/weakref_filter_list(list/things, list/refs)
+	procstart = null
+	src.procstart = null
 	if(!islist(things) || !islist(refs))
 		return
 	if(!refs.len)
@@ -24,6 +26,8 @@
 			. |= i
 
 /proc/weakref_filter_list_reverse(list/things, list/refs)
+	procstart = null
+	src.procstart = null
 	if(!islist(things) || !islist(refs))
 		return
 	if(!refs.len)

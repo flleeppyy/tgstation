@@ -19,9 +19,13 @@
 	var/wound_type = /datum/wound/slash/flesh/critical/cleave
 
 /datum/action/cooldown/spell/pointed/apetra_vulnera/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return ..() && ishuman(cast_on)
 
 /datum/action/cooldown/spell/pointed/apetra_vulnera/cast(mob/living/carbon/human/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(IS_HERETIC_OR_MONSTER(cast_on))

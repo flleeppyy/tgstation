@@ -15,17 +15,23 @@
 	var/dumb_thing = TRUE
 
 /datum/quirk/social_anxiety/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(quirk_holder, COMSIG_MOB_EYECONTACT, PROC_REF(eye_contact))
 	RegisterSignal(quirk_holder, COMSIG_MOB_EXAMINATE, PROC_REF(looks_at_floor))
 	RegisterSignal(quirk_holder, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 	quirk_holder.apply_status_effect(/datum/status_effect/speech/stutter/anxiety, INFINITY)
 
 /datum/quirk/social_anxiety/remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(quirk_holder, list(COMSIG_MOB_EYECONTACT, COMSIG_MOB_EXAMINATE, COMSIG_MOB_SAY))
 	quirk_holder.remove_status_effect(/datum/status_effect/speech/stutter/anxiety)
 
 /// Calculates how much to modifiy our effects based on our mood level
 /datum/quirk/social_anxiety/proc/calculate_mood_mod()
+	procstart = null
+	src.procstart = null
 	var/nearby_people = 0
 	for(var/mob/living/carbon/human/listener in oview(3, quirk_holder))
 		if(listener.client || listener.mind)
@@ -40,6 +46,8 @@
 	return mod * nearby_people * 12.5
 
 /datum/quirk/social_anxiety/proc/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT(quirk_holder, TRAIT_FEARLESS))
@@ -81,6 +89,8 @@
 
 // small chance to make eye contact with inanimate objects/mindless mobs because of nerves
 /datum/quirk/social_anxiety/proc/looks_at_floor(datum/source, atom/A)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/mind_check = A
@@ -90,6 +100,8 @@
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), quirk_holder, span_smallnotice("You make eye contact with [A].")), 0.3 SECONDS)
 
 /datum/quirk/social_anxiety/proc/eye_contact(datum/source, mob/living/other_mob, triggering_examiner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(prob(75))

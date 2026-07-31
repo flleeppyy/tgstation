@@ -1,6 +1,8 @@
 GLOBAL_LIST_INIT(guardian_radial_images, setup_guardian_radial())
 
 /proc/setup_guardian_radial()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/mob/living/basic/guardian/guardian_path as anything in subtypesof(/mob/living/basic/guardian))
 		var/datum/radial_menu_choice/option = new()
@@ -61,12 +63,16 @@ GLOBAL_LIST_INIT(guardian_radial_images, setup_guardian_radial())
 	var/was_refunded = FALSE
 
 /obj/item/guardian_creator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/guardian_fluff/using_theme = GLOB.guardian_themes[theme]
 	mob_name = using_theme.name
 	RegisterSignal(src, COMSIG_ITEM_TC_REIMBURSED, PROC_REF(on_reimbursed))
 
 /obj/item/guardian_creator/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isguardian(user) && !allow_guardian)
 		balloon_alert(user, "can't do that!")
 		return
@@ -118,6 +124,8 @@ GLOBAL_LIST_INIT(guardian_radial_images, setup_guardian_radial())
 		used = FALSE
 
 /obj/item/guardian_creator/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(used)
 		. += span_holoparasite(used_description)
@@ -125,11 +133,15 @@ GLOBAL_LIST_INIT(guardian_radial_images, setup_guardian_radial())
 		. += span_holoparasite(unused_description)
 
 /obj/item/guardian_creator/proc/on_reimbursed(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	was_refunded = TRUE
 
 /// Actually create our guy
 /obj/item/guardian_creator/proc/spawn_guardian(mob/living/user, mob/dead/candidate, guardian_path)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(user) || user.stat == DEAD)
 		return
 	var/list/guardians = user.get_all_linked_holoparasites()
@@ -151,6 +163,8 @@ GLOBAL_LIST_INIT(guardian_radial_images, setup_guardian_radial())
 
 /// Checks to ensure we're still capable of using the radial selector
 /obj/item/guardian_creator/proc/check_menu(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated || !user.is_holding(src) || used)
@@ -174,6 +188,8 @@ GLOBAL_LIST_INIT(guardian_radial_images, setup_guardian_radial())
 	)
 
 /obj/item/guardian_creator/wizard/spawn_guardian(mob/living/user, mob/dead/candidate)
+	procstart = null
+	src.procstart = null
 	var/mob/guardian = ..()
 	if(isnull(guardian))
 		return null
@@ -243,6 +259,8 @@ GLOBAL_LIST_INIT(guardian_radial_images, setup_guardian_radial())
 	)
 
 /obj/item/guardian_creator/miner/spawn_guardian(mob/living/user, mob/dead/candidate, guardian_path)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/guardian/guardian = ..()
 	if (!guardian)
 		return

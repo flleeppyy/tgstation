@@ -6,6 +6,8 @@
  * This item is then created and tossed out in front of us with a visible message
  */
 /obj/machinery/vending/proc/throw_item()
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = locate() in view(7,src)
 	if(!target)
 		return FALSE
@@ -39,16 +41,22 @@
  * * thrown_item - obj/item being thrown
  */
 /obj/machinery/vending/proc/pre_throw(obj/item/thrown_item)
+	procstart = null
+	src.procstart = null
 	return
 
 
 ///Crush the mob that the vending machine got thrown at
 /obj/machinery/vending/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(isliving(hit_atom))
 		tilt(fatty=hit_atom)
 	return ..()
 
 /obj/machinery/vending/hitby(atom/movable/hitting_atom, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/living_mob = hitting_atom
 	if(tilted || !istype(living_mob) || !prob(20 * (throwingdatum.speed - living_mob.throw_speed))) // hulk throw = +20%, neckgrab throw = +20%

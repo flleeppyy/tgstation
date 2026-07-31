@@ -18,9 +18,13 @@
 // DOES NOT EFFECT THE BASE 1 DECISECOND DELAY OF NEXT_CLICK
 
 /mob/proc/changeNext_move(num)
+	procstart = null
+	src.procstart = null
 	next_move = world.time + ((num+next_move_adjust)*next_move_modifier)
 
 /mob/living/changeNext_move(num)
+	procstart = null
+	src.procstart = null
 	var/mod = next_move_modifier
 	var/adj = next_move_adjust
 	for(var/datum/status_effect/effect as anything in status_effects)
@@ -39,16 +43,22 @@
  * Note that this proc can be overridden, and is in the case of screen objects.
  */
 /atom/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(flags_1 & INITIALIZED_1)
 		SEND_SIGNAL(src, COMSIG_CLICK, location, control, params, usr)
 
 		usr.ClickOn(src, params)
 
 /atom/DblClick(location,control,params)
+	procstart = null
+	src.procstart = null
 	if(flags_1 & INITIALIZED_1)
 		usr.DblClickOn(src,params)
 
 /atom/MouseWheel(delta_x,delta_y,location,control,params)
+	procstart = null
+	src.procstart = null
 	if(flags_1 & INITIALIZED_1)
 		usr.MouseWheelOn(src, delta_x, delta_y, params)
 
@@ -65,6 +75,8 @@
  * * [mob/proc/RangedAttack] (atom,modifiers) - used only ranged, only used for tk and laser eyes but could be changed
  */
 /mob/proc/ClickOn( atom/A, params )
+	procstart = null
+	src.procstart = null
 	if(world.time <= next_click)
 		return
 	next_click = world.time + 1
@@ -182,6 +194,8 @@
 
 /// Is the atom obscured by a PREVENT_CLICK_UNDER_1 object above it
 /atom/proc/IsObscured()
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 	if(!isturf(loc)) //This only makes sense for things directly on turfs for now
 		return FALSE
@@ -194,6 +208,8 @@
 	return FALSE
 
 /turf/IsObscured()
+	procstart = null
+	src.procstart = null
 	for(var/item in src)
 		var/atom/movable/AM = item
 		if(AM.flags_1 & PREVENT_CLICK_UNDER_1)
@@ -210,6 +226,8 @@
  * * direct_access: Do not override. Used for recursion.
  */
 /atom/proc/IsReachableBy(atom/movable/user, reacher_range = 1, depth = INFINITY, direct_access = user.DirectAccess())
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(isnull(user))
@@ -236,6 +254,8 @@
 	return loc.IsReachableBy(user, reacher_range, depth, direct_access)
 
 /atom/proc/CheckReachableAdjacency(atom/movable/reacher, reacher_range)
+	procstart = null
+	src.procstart = null
 	if(reacher.Adjacent(src))
 		return TRUE
 
@@ -248,6 +268,8 @@
 
 /// Called by IsReachableBy() to check for ranged reaches.
 /proc/RangedReachCheck(atom/movable/here, atom/movable/there, reach)
+	procstart = null
+	src.procstart = null
 	if(!here || !there)
 		return FALSE
 
@@ -272,27 +294,43 @@
 
 /// Returns TRUE if an atom contained within our contents is reachable.
 /atom/proc/IsContainedAtomAccessible(atom/contained, atom/movable/user)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /atom/movable/IsContainedAtomAccessible(atom/contained, atom/movable/user)
+	procstart = null
+	src.procstart = null
 	return !!atom_storage
 
 /atom/proc/DirectAccess()
+	procstart = null
+	src.procstart = null
 	return list(src, loc)
 
 /mob/DirectAccess(atom/target)
+	procstart = null
+	src.procstart = null
 	return ..() + contents
 
 /mob/living/DirectAccess(atom/target)
+	procstart = null
+	src.procstart = null
 	return ..() + get_all_contents()
 
 /atom/proc/AllowClick()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/AllowClick()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /proc/CheckToolReach(atom/movable/here, atom/movable/there, reach)
+	procstart = null
+	src.procstart = null
 	if(!here || !there)
 		return
 	var/turf/turf = get_turf(here)
@@ -319,6 +357,8 @@
 
 /// Default behavior: ignore double clicks (the second click that makes the doubleclick call already calls for a normal click)
 /mob/proc/DblClickOn(atom/A, params)
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -340,6 +380,8 @@
  */
 
 /mob/proc/UnarmedAttack(atom/A, proximity_flag, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(ismob(A))
 		changeNext_move(CLICK_CD_MELEE)
 	return
@@ -353,6 +395,8 @@
  * animals lunging, etc.
  */
 /mob/proc/RangedAttack(atom/A, modifiers)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_MOB_ATTACK_RANGED, A, modifiers) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return TRUE
 	A.RangedAttackOn(src, modifiers)
@@ -361,6 +405,8 @@
  * Atom's version of RangedAttack, for when you want to do something when a mob clicks on this with more sanity than just Click()
  */
 /atom/proc/RangedAttackOn(mob/attacker, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return null
 
 /**
@@ -371,6 +417,8 @@
  * Useful for mobs that have their abilities mapped to right click.
  */
 /mob/proc/ranged_secondary_attack(atom/target, modifiers)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_MOB_ATTACK_RANGED_SECONDARY, target, modifiers) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return TRUE
 
@@ -379,6 +427,8 @@
  * Mainly used for swapping hands
  */
 /mob/proc/MiddleClickOn(atom/A, params)
+	procstart = null
+	src.procstart = null
 	. = SEND_SIGNAL(src, COMSIG_MOB_MIDDLECLICKON, A, params)
 	if(. & COMSIG_MOB_CANCEL_CLICKON)
 		return
@@ -390,10 +440,14 @@
  * This is overridden in ai.dm
  */
 /mob/proc/ShiftClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	A.ShiftClick(src)
 	return
 
 /atom/proc/ShiftClick(mob/user)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_SHIFT_CLICKED_ON, user)
 	var/shiftclick_flags = SEND_SIGNAL(user, COMSIG_CLICK_SHIFT, src)
 	if(shiftclick_flags & COMSIG_MOB_CANCEL_CLICKON)
@@ -402,9 +456,13 @@
 		user.examinate(src)
 
 /mob/proc/TurfAdjacent(turf/tile)
+	procstart = null
+	src.procstart = null
 	return tile.Adjacent(src)
 
 /mob/proc/ShiftMiddleClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	src.pointed(A)
 	return
 
@@ -415,6 +473,8 @@
 
 /// Simple helper to face what you clicked on, in case it should be needed in more than one place
 /mob/proc/face_atom(atom/atom_to_face)
+	procstart = null
+	src.procstart = null
 	if( buckled || IS_UNCONSCIOUS_OR_CRIT(src) || !atom_to_face || !x || !y || !atom_to_face.x || !atom_to_face.y )
 		return
 	var/dx = atom_to_face.x - x
@@ -443,6 +503,8 @@
 
 //debug
 /atom/movable/screen/proc/scale_to(x1,y1)
+	procstart = null
+	src.procstart = null
 	if(!y1)
 		y1 = x1
 	var/matrix/M = new
@@ -460,6 +522,8 @@
 #define MAX_SAFE_BYOND_ICON_SCALE_PX (33 * 32) //Not using world.icon_size on purpose. //Ok well I trust you
 
 /atom/movable/screen/click_catcher/proc/UpdateGreed(view_size_x = 15, view_size_y = 15)
+	procstart = null
+	src.procstart = null
 	var/icon/newicon = icon('icons/hud/screen_gen.dmi', "catcher")
 	var/ox = min(MAX_SAFE_BYOND_ICON_SCALE_TILES, view_size_x)
 	var/oy = min(MAX_SAFE_BYOND_ICON_SCALE_TILES, view_size_y)
@@ -475,16 +539,22 @@
 	transform = M
 
 /atom/movable/screen/click_catcher/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSmapping, COMSIG_PLANE_OFFSET_INCREASE, PROC_REF(offset_increased))
 	offset_increased(SSmapping, 0, SSmapping.max_plane_offset)
 
 // Draw to the lowest plane level offered
 /atom/movable/screen/click_catcher/proc/offset_increased(datum/source, old_offset, new_offset)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SET_PLANE_W_SCALAR(src, initial(plane), new_offset)
 
 /atom/movable/screen/click_catcher/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 	if(LAZYACCESS(modifiers, MIDDLE_CLICK) && iscarbon(usr))
 		var/mob/living/carbon/C = usr
@@ -498,9 +568,13 @@
 
 /// MouseWheelOn
 /mob/proc/MouseWheelOn(atom/A, delta_x, delta_y, params)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_MOUSE_SCROLL_ON, A, delta_x, delta_y, params)
 
 /mob/dead/observer/MouseWheelOn(atom/A, delta_x, delta_y, params)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 	if(LAZYACCESS(modifiers, SHIFT_CLICK))
 		var/view = 0
@@ -511,6 +585,8 @@
 		add_view_range(view)
 
 /mob/proc/check_click_intercept(params,A)
+	procstart = null
+	src.procstart = null
 	//Client level intercept
 	if(client?.click_intercept)
 		if(call(client.click_intercept, "InterceptClickOn")(src, params, A))

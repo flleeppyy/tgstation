@@ -1,6 +1,8 @@
 
 /// Process asset cache client topic calls for `"asset_cache_confirm_arrival=[INT]"`
 /client/proc/asset_cache_confirm_arrival(job_id)
+	procstart = null
+	src.procstart = null
 	var/asset_cache_job = round(text2num(job_id))
 		//because we skip the limiter, we have to make sure this is a valid arrival and not somebody tricking us into letting them append to a list without limit.
 	if (asset_cache_job > 0 && asset_cache_job <= last_asset_job && !(completed_asset_jobs["[asset_cache_job]"]))
@@ -12,6 +14,8 @@
 
 /// Process asset cache client topic calls for `"asset_cache_preload_data=[HTML+JSON_STRING]"`
 /client/proc/asset_cache_preload_data(data)
+	procstart = null
+	src.procstart = null
 	var/json = data
 	var/list/preloaded_assets = json_decode(json)
 
@@ -24,6 +28,8 @@
 
 /// Updates the client side stored json file used to keep track of what assets the client has between restarts/reconnects.
 /client/proc/asset_cache_update_json()
+	procstart = null
+	src.procstart = null
 	if (world.time - connection_time < 10 SECONDS) //don't override the existing data file on a new connection
 		return
 
@@ -33,6 +39,8 @@
 /// Due to byond limitations, this proc will sleep for 1 client round trip even if the client has no pending asset sends.
 /// This proc will return an untrue value if it had to return before confirming the send, such as timeout or the client going away.
 /client/proc/browse_queue_flush(timeout = 50)
+	procstart = null
+	src.procstart = null
 	var/job = ++last_asset_job
 	var/t = 0
 	var/timeout_time = timeout

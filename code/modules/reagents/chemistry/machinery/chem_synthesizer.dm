@@ -14,15 +14,21 @@
 	var/purity = 100
 
 /obj/machinery/chem_dispenser/chem_synthesizer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/tool_blocker, TOOL_SCREWDRIVER, TOOL_ACT_PRIMARY)
 	AddElement(/datum/element/tool_blocker, TOOL_CROWBAR, TOOL_ACT_PRIMARY)
 
 /obj/machinery/chem_dispenser/chem_synthesizer/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(beaker)
 	return ..()
 
 /obj/machinery/chem_dispenser/chem_synthesizer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ChemDebugSynthesizer", name)
@@ -30,11 +36,15 @@
 
 
 /obj/machinery/chem_dispenser/chem_synthesizer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["purity"] = purity
 	.["temp"] = temperature
 
 /obj/machinery/chem_dispenser/chem_synthesizer/handle_ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	switch(action)
 		if("input")
 			if(QDELETED(beaker))

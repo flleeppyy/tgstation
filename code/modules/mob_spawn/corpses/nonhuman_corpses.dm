@@ -9,6 +9,8 @@
 	var/slime_species = /datum/slime_type/grey
 
 /obj/effect/mob_spawn/corpse/slime/special(mob/living/basic/slime/spawned_slime, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spawned_slime.set_slime_type(slime_species)
 
@@ -18,6 +20,8 @@
 	mob_type = /obj/item/clothing/mask/facehugger
 
 /obj/effect/mob_spawn/corpse/facehugger/create(mob/user, newname, apply_prefs)
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/mask/facehugger/spawned_facehugger = new mob_type(loc)
 	spawned_facehugger.die()
 	qdel(src)

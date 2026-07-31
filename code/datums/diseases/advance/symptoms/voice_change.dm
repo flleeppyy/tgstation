@@ -30,6 +30,8 @@
 	var/datum/language/current_language
 
 /datum/symptom/voice_change/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -43,6 +45,8 @@
 		scramble_language = TRUE
 
 /datum/symptom/voice_change/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -61,6 +65,8 @@
 					H.grant_language(current_language, source = LANGUAGE_VOICECHANGE)
 
 /datum/symptom/voice_change/End(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ishuman(A.affected_mob))
 		var/mob/living/carbon/human/H = A.affected_mob

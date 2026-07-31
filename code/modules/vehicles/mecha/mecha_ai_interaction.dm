@@ -1,4 +1,6 @@
 /obj/vehicle/sealed/mecha/attack_ai(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	if(!isAI(user))
 		return
 
@@ -38,6 +40,8 @@
 	to_chat(user, boxed_message(jointext(output, "\n")))
 
 /obj/vehicle/sealed/mecha/transfer_ai(interaction, mob/user, mob/living/silicon/ai/AI, obj/item/aicard/card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -109,6 +113,8 @@
 
 ///Hack and From Card interactions share some code, so leave that here for both to use.
 /obj/vehicle/sealed/mecha/proc/ai_enter_mech(mob/living/silicon/ai/AI)
+	procstart = null
+	src.procstart = null
 	AI.ai_restore_power()
 	mecha_flags |= SILICON_PILOT
 	moved_inside(AI)

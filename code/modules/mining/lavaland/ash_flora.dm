@@ -22,20 +22,28 @@
 	var/number_of_variants = 4
 
 /obj/structure/flora/ash/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	base_icon_state = "[base_icon_state][rand(1, number_of_variants)]"
 	icon_state = base_icon_state
 
 /obj/structure/flora/ash/get_potential_products()
+	procstart = null
+	src.procstart = null
 	return list(/obj/item/food/grown/ash_flora/shavings = 1)
 
 /obj/structure/flora/ash/harvest(user, product_amount_multiplier)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	icon_state = "[base_icon_state]p"
 	return TRUE
 
 /obj/structure/flora/ash/regrow()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = base_icon_state
 
@@ -58,6 +66,8 @@
 	regrowth_time_high = 10 MINUTES
 
 /obj/structure/flora/ash/leaf_shroom/get_potential_products()
+	procstart = null
+	src.procstart = null
 	return list(/obj/item/food/grown/ash_flora/mushroom_leaf = 1)
 
 /obj/structure/flora/ash/cap_shroom
@@ -76,6 +86,8 @@
 	regrowth_time_high = 9 MINUTES
 
 /obj/structure/flora/ash/cap_shroom/get_potential_products()
+	procstart = null
+	src.procstart = null
 	return list(/obj/item/food/grown/ash_flora/mushroom_cap = 1)
 
 /obj/structure/flora/ash/stem_shroom
@@ -96,6 +108,8 @@
 	regrowth_time_high = 10 MINUTES
 
 /obj/structure/flora/ash/stem_shroom/get_potential_products()
+	procstart = null
+	src.procstart = null
 	return list(/obj/item/food/grown/ash_flora/mushroom_stem = 1)
 
 /obj/structure/flora/ash/cacti
@@ -115,10 +129,14 @@
 	can_uproot = FALSE //Don't want 50 in one tile to decimate whoever dare step on the mass of cacti
 
 /obj/structure/flora/ash/cacti/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/caltrop, min_damage = 3, max_damage = 6, probability = 70)
 
 /obj/structure/flora/ash/cacti/get_potential_products()
+	procstart = null
+	src.procstart = null
 	return list(/obj/item/food/grown/ash_flora/cactus_fruit = 20, /obj/item/seeds/lavaland/cactus = 1)
 
 /obj/structure/flora/ash/seraka
@@ -139,6 +157,8 @@
 	harvest_message_true_thresholds = FALSE
 
 /obj/structure/flora/ash/seraka/get_potential_products()
+	procstart = null
+	src.procstart = null
 	return list(/obj/item/food/grown/ash_flora/seraka = 1)
 
 /obj/structure/flora/ash/fireblossom
@@ -160,15 +180,21 @@
 	number_of_variants = 2
 
 /obj/structure/flora/ash/fireblossom/get_potential_products()
+	procstart = null
+	src.procstart = null
 	return list(/obj/item/food/grown/ash_flora/fireblossom = 1)
 
 /obj/structure/flora/ash/fireblossom/after_harvest()
+	procstart = null
+	src.procstart = null
 	set_light_power(LIGHT_RANGE_FIRE_BLOSSOM_HARVESTED)
 	set_light_range(LIGHT_POWER_FIRE_BLOSSOM_HARVESTED)
 	update_light()
 	return ..()
 
 /obj/structure/flora/ash/fireblossom/regrow()
+	procstart = null
+	src.procstart = null
 	set_light_power(initial(light_power))
 	set_light_range(initial(light_range))
 	update_light()
@@ -195,25 +221,35 @@
 	number_of_variants = 3
 
 /obj/structure/flora/ash/glowgrowth/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/structure/flora/ash/glowgrowth/get_potential_products()
+	procstart = null
+	src.procstart = null
 	return list(/obj/item/food/grown/ash_flora/glowgrowth = 1)
 
 /obj/structure/flora/ash/glowgrowth/after_harvest()
+	procstart = null
+	src.procstart = null
 	set_light_on(FALSE)
 	update_light()
 	update_appearance()
 	return ..()
 
 /obj/structure/flora/ash/glowgrowth/regrow()
+	procstart = null
+	src.procstart = null
 	set_light_on(TRUE)
 	update_light()
 	update_appearance()
 	return ..()
 
 /obj/structure/flora/ash/glowgrowth/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!harvested)
 		. += emissive_appearance(icon, "[icon_state]e", src, alpha = 120)
@@ -236,6 +272,8 @@
 	number_of_variants = 2
 
 /obj/structure/flora/ash/chilly/get_potential_products()
+	procstart = null
+	src.procstart = null
 	return list(/obj/item/food/grown/icepepper = 1)
 
 //SNACKS
@@ -252,6 +290,8 @@
 	foodtypes = VEGETABLES
 
 /obj/item/food/grown/ash_flora/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = base_pixel_x + rand(-4, 4)
 	pixel_y = base_pixel_y + rand(-4, 4)
@@ -263,6 +303,8 @@
 	wine_power = 20
 
 /obj/item/food/grown/ash_flora/shavings/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/toxin/mushroom_powder = 5)
 
 /obj/item/food/grown/ash_flora/mushroom_leaf
@@ -295,6 +337,8 @@
 	foodtypes = FRUIT
 
 /obj/item/food/grown/ash_flora/cactus_fruit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/raptor_food, growth_modifier = 0.1, ability_modifier = -0.05)
 
@@ -306,6 +350,8 @@
 	wine_power = 40
 
 /obj/item/food/grown/ash_flora/seraka/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/raptor_food, ability_modifier = 0.1)
 
@@ -318,6 +364,8 @@
 	wine_power = 40
 
 /obj/item/food/grown/ash_flora/fireblossom/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Fire flowers make fireproof raptors
 	AddElement(/datum/element/raptor_food, color_chances = string_list(list(/datum/raptor_color/blue = 5)))

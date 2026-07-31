@@ -8,6 +8,8 @@
 	var/list/connections
 
 /datum/element/connect_loc/Attach(atom/movable/listener, list/connections)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!istype(listener))
 		return ELEMENT_INCOMPATIBLE
@@ -18,11 +20,15 @@
 	update_signals(listener)
 
 /datum/element/connect_loc/Detach(atom/movable/listener)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	unregister_signals(listener, listener.loc)
 	UnregisterSignal(listener, COMSIG_MOVABLE_MOVED)
 
 /datum/element/connect_loc/proc/update_signals(atom/movable/listener)
+	procstart = null
+	src.procstart = null
 	var/atom/listener_loc = listener.loc
 	if(QDELETED(listener) || QDELETED(listener_loc))
 		return
@@ -32,12 +38,16 @@
 		listener.RegisterSignal(listener_loc, signal, connections[signal], override=TRUE)
 
 /datum/element/connect_loc/proc/unregister_signals(datum/listener, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	if(isnull(old_loc))
 		return
 
 	listener.UnregisterSignal(old_loc, connections)
 
 /datum/element/connect_loc/proc/on_moved(atom/movable/listener, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	unregister_signals(listener, old_loc)
 	update_signals(listener)

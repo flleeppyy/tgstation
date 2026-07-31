@@ -16,6 +16,8 @@
 	var/should_display_overlay = TRUE
 
 /datum/component/wet_floor/InheritComponent(datum/newcomp, orig, strength, duration_minimum, duration_add, duration_maximum, _permanent, _should_display_overlay)
+	procstart = null
+	src.procstart = null
 	if(!newcomp) //We are getting passed the arguments of a would-be new component, but not a new component
 		add_wet(arglist(args.Copy(3)))
 	else //We are being passed in a full blown component
@@ -26,6 +28,8 @@
 			add_wet(text2num(i), WF.time_left_list[i])
 
 /datum/component/wet_floor/Initialize(strength, duration_minimum, duration_add, duration_maximum, _permanent = FALSE, _should_display_overlay = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!isopenturf(parent))
 		return COMPONENT_INCOMPATIBLE
 	should_display_overlay = _should_display_overlay
@@ -37,13 +41,19 @@
 	last_process = world.time
 
 /datum/component/wet_floor/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_TURF_IS_WET, PROC_REF(is_wet))
 	RegisterSignal(parent, COMSIG_TURF_MAKE_DRY, PROC_REF(dry))
 
 /datum/component/wet_floor/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_TURF_IS_WET, COMSIG_TURF_MAKE_DRY))
 
 /datum/component/wet_floor/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSwet_floors, src)
 	var/turf/T = parent
 	qdel(T.GetComponent(/datum/component/slippery))
@@ -54,6 +64,8 @@
 	return ..()
 
 /datum/component/wet_floor/proc/update_overlay()
+	procstart = null
+	src.procstart = null
 	var/turf/parent_turf = parent
 	if(!should_display_overlay)
 		if(!current_overlay)
@@ -78,12 +90,16 @@
 		current_overlay = intended
 
 /datum/component/wet_floor/proc/AfterSlip(mob/living/slipped)
+	procstart = null
+	src.procstart = null
 	if(highest_strength != TURF_WET_LUBE)
 		return
 
 	slipped.set_confusion_if_lower(8 SECONDS)
 
 /datum/component/wet_floor/proc/update_flags()
+	procstart = null
+	src.procstart = null
 	var/intensity
 	lube_flags = SLIPPERY_TURF
 	switch(highest_strength)
@@ -109,6 +125,8 @@
 	parent.LoadComponent(/datum/component/slippery, intensity, lube_flags, CALLBACK(src, PROC_REF(AfterSlip)))
 
 /datum/component/wet_floor/proc/dry(datum/source, strength = TURF_WET_WATER, immediate = FALSE, duration_decrease = INFINITY)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/i in time_left_list)
@@ -118,11 +136,15 @@
 		check()
 
 /datum/component/wet_floor/proc/max_time_left()
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/i in time_left_list)
 		. = max(., time_left_list[i])
 
 /datum/component/wet_floor/process()
+	procstart = null
+	src.procstart = null
 	var/turf/open/T = parent
 	var/diff = world.time - last_process
 	var/decrease = 0
@@ -145,11 +167,15 @@
 	last_process = world.time
 
 /datum/component/wet_floor/proc/update_strength()
+	procstart = null
+	src.procstart = null
 	highest_strength = 0 //Not bitflag.
 	for(var/i in time_left_list)
 		highest_strength = max(highest_strength, text2num(i))
 
 /datum/component/wet_floor/proc/is_wet()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	. = 0
@@ -157,6 +183,8 @@
 		. |= text2num(i)
 
 /datum/component/wet_floor/PreTransfer(datum/new_parent)
+	procstart = null
+	src.procstart = null
 	var/turf/O = parent
 	O.cut_overlay(current_overlay)
 	//That turf is no longer slippery, we're out of here
@@ -164,6 +192,8 @@
 	qdel(O.GetComponent(/datum/component/slippery))
 
 /datum/component/wet_floor/PostTransfer(datum/new_parent)
+	procstart = null
+	src.procstart = null
 	if(!isopenturf(parent))
 		return COMPONENT_INCOMPATIBLE
 	var/turf/T = parent
@@ -174,6 +204,8 @@
 	//NB it's possible we get deleted after this, due to inherit
 
 /datum/component/wet_floor/proc/add_wet(type, duration_minimum = 0, duration_add = 0, duration_maximum = MAXIMUM_WET_TIME, _permanent = FALSE, _should_display_overlay = TRUE)
+	procstart = null
+	src.procstart = null
 	var/static/list/allowed_types = list(TURF_WET_WATER, TURF_WET_LUBE, TURF_WET_ICE, TURF_WET_PERMAFROST, TURF_WET_SUPERLUBE)
 	if(duration_minimum <= 0 || !type)
 		return FALSE
@@ -192,6 +224,8 @@
 	should_display_overlay = _should_display_overlay
 
 /datum/component/wet_floor/proc/_do_add_wet(type, duration_minimum, duration_add, duration_maximum)
+	procstart = null
+	src.procstart = null
 	var/time = 0
 	if(LAZYACCESS(time_left_list, "[type]"))
 		time = clamp(LAZYACCESS(time_left_list, "[type]") + duration_add, duration_minimum, duration_maximum)
@@ -202,6 +236,8 @@
 	return TRUE
 
 /datum/component/wet_floor/proc/gc(on_init = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(time_left_list))
 		if(on_init)
 			var/turf/T = parent
@@ -211,6 +247,8 @@
 	return FALSE
 
 /datum/component/wet_floor/proc/check(force_update = FALSE)
+	procstart = null
+	src.procstart = null
 	var/changed = FALSE
 	for(var/i in time_left_list)
 		if(time_left_list[i] <= 0)

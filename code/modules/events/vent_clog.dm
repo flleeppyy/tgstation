@@ -9,6 +9,8 @@
 	description = "Harmless mobs climb out of a vent."
 
 /datum/round_event_control/vent_clog/can_spawn_event(players_amt, allow_magic = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -38,10 +40,14 @@
 	var/list/filth_spawn_types = list()
 
 /datum/round_event/vent_clog/announce(fake)
+	procstart = null
+	src.procstart = null
 	var/area/event_area = fake ? pick(GLOB.teleportlocs) : get_area_name(vent)
 	priority_announce("Minor biological obstruction detected in the ventilation network. Blockage is believed to be in the [event_area].", "Custodial Notification")
 
 /datum/round_event/vent_clog/setup()
+	procstart = null
+	src.procstart = null
 	vent = get_vent()
 	spawned_mob = get_mob()
 	end_when = rand(300, 600)
@@ -54,16 +60,22 @@
 	)
 
 /datum/round_event/vent_clog/start()
+	procstart = null
+	src.procstart = null
 	clog_vent()
 	announce_to_ghosts(vent)
 
-/datum/round_event/vent_clog/tick() //Checks if spawn_interval is met, then sends signal to vent to produce a mob.
+/datum/round_event/vent_clog/tick()
+	procstart = null
+	src.procstart = null //Checks if spawn_interval is met, then sends signal to vent to produce a mob.
 	if(activeFor % spawn_delay == 0)
 		life_check()
 		if(living_mobs.len < maximum_spawns)
 			produce_mob()
 
-/datum/round_event/vent_clog/end() //No end announcement. If you want to take the easy way out and just leave the vent welded, you must open it at your own peril.
+/datum/round_event/vent_clog/end()
+	procstart = null
+	src.procstart = null //No end announcement. If you want to take the easy way out and just leave the vent welded, you must open it at your own peril.
 	vent = null
 	living_mobs.Cut()
 
@@ -74,6 +86,8 @@
  */
 
 /datum/round_event/vent_clog/proc/get_mob()
+	procstart = null
+	src.procstart = null
 	var/static/list/mob_list = list(
 		/mob/living/basic/butterfly,
 		/mob/living/basic/cockroach,
@@ -92,6 +106,8 @@
  */
 
 /datum/round_event/vent_clog/proc/get_vent()
+	procstart = null
+	src.procstart = null
 	var/list/vent_list = list()
 	for(var/obj/machinery/atmospherics/components/unary/vent_pump/vent as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/atmospherics/components/unary/vent_pump))
 		var/turf/vent_turf = get_turf(vent)
@@ -113,6 +129,8 @@
  */
 
 /datum/round_event/vent_clog/proc/life_check()
+	procstart = null
+	src.procstart = null
 	for(var/datum/weakref/mob_ref as anything in living_mobs)
 		var/mob/living/real_mob = mob_ref.resolve()
 		if(QDELETED(real_mob) || real_mob.stat == DEAD)
@@ -126,6 +144,8 @@
  */
 
 /datum/round_event/vent_clog/proc/vent_move(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	vent = null //If by some great calamity, the last valid vent is destroyed, the ref is cleared.
 	vent = get_vent()
@@ -144,6 +164,8 @@
  */
 
 /datum/round_event/vent_clog/proc/produce_mob()
+	procstart = null
+	src.procstart = null
 	var/turf/vent_loc = get_turf(vent)
 	if (isnull(vent_loc))
 		CRASH("[vent] has no loc, aborting mobspawn")
@@ -171,12 +193,16 @@
 
 ///Signal catcher for plunger_act()
 /datum/round_event/vent_clog/proc/plunger_unclog(datum/source, obj/item/plunger/attacking_plunger, mob/user, reinforced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(attempt_unclog), user)
 	return COMPONENT_NO_AFTERATTACK
 
 ///Handles the actual unclogging action and ends the event on completion.
 /datum/round_event/vent_clog/proc/attempt_unclog(mob/user)
+	procstart = null
+	src.procstart = null
 	if(vent.welded)
 		to_chat(user, span_notice("You cannot pump [vent] if it's welded shut!"))
 		return
@@ -189,6 +215,8 @@
 
 ///Handles the initial steps of clogging a vent, either at event start or when the vent moves.
 /datum/round_event/vent_clog/proc/clog_vent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(vent, COMSIG_QDELETING, PROC_REF(vent_move))
 	RegisterSignal(vent, COMSIG_PLUNGER_ACT, PROC_REF(plunger_unclog))
 
@@ -200,6 +228,8 @@
 
 ///Clears the signals related to the event, before we wrap things up.
 /datum/round_event/vent_clog/proc/clear_signals()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(vent, list(COMSIG_QDELETING, COMSIG_PLUNGER_ACT))
 
 /datum/round_event_control/vent_clog/major
@@ -213,6 +243,8 @@
 	max_wizard_trigger_potency = 4
 
 /datum/round_event/vent_clog/major/setup()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	maximum_spawns = rand(MOB_SPAWN_MINIMUM, 5)
 	spawn_delay = rand(15,20)
@@ -224,6 +256,8 @@
 	)
 
 /datum/round_event/vent_clog/major/get_mob()
+	procstart = null
+	src.procstart = null
 	var/static/list/mob_list = list(
 		/mob/living/basic/bee,
 		/mob/living/basic/cockroach/hauberoach,
@@ -233,6 +267,8 @@
 	return pick(mob_list)
 
 /datum/round_event/vent_clog/major/announce(fake)
+	procstart = null
+	src.procstart = null
 	var/area/event_area = fake ? pick(GLOB.teleportlocs) : get_area_name(vent)
 	priority_announce("Major biological obstruction detected in the ventilation network. Blockage is believed to be in the [event_area] area.", "Infestation Alert")
 
@@ -248,6 +284,8 @@
 	max_wizard_trigger_potency = 6
 
 /datum/round_event/vent_clog/critical/setup()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spawn_delay = rand(15,25)
 	maximum_spawns = rand(MOB_SPAWN_MINIMUM, 6)
@@ -257,10 +295,14 @@
 	)
 
 /datum/round_event/vent_clog/critical/announce(fake)
+	procstart = null
+	src.procstart = null
 	var/area/event_area = fake ? pick(GLOB.teleportlocs) : get_area_name(vent)
 	priority_announce("Potentially hazardous lifesigns detected in the [event_area] ventilation network.", "Security Alert")
 
 /datum/round_event/vent_clog/critical/get_mob()
+	procstart = null
+	src.procstart = null
 	var/static/list/mob_list = list(
 		/mob/living/basic/bee/toxin,
 		/mob/living/basic/carp,
@@ -278,6 +320,8 @@
 	max_wizard_trigger_potency = 7
 
 /datum/round_event/vent_clog/strange/setup()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	end_when = rand(600, 900)
 	spawn_delay = rand(6, 25)
@@ -290,10 +334,14 @@
 	)
 
 /datum/round_event/vent_clog/strange/announce(fake)
+	procstart = null
+	src.procstart = null
 	var/area/event_area = fake ? pick(GLOB.teleportlocs) : get_area_name(vent)
 	priority_announce("Unusual lifesign readings detected in the [event_area] ventilation network.", "Lifesign Alert", ANNOUNCER_ALIENS)
 
 /datum/round_event/vent_clog/strange/get_mob()
+	procstart = null
+	src.procstart = null
 	var/static/list/mob_list = list(
 		/mob/living/basic/bear,
 		/mob/living/basic/cockroach/glockroach/mobroach,

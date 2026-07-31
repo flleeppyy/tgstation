@@ -44,6 +44,8 @@
 	desc = "A bag for storing extra clothes and shoes. This one belongs to the emergency medical team."
 
 /obj/item/storage/bag/garment/captain/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/rank/captain(src)
 	new /obj/item/clothing/under/rank/captain/skirt(src)
 	new /obj/item/clothing/under/rank/captain/parade(src)
@@ -66,6 +68,8 @@
 	new /obj/item/storage/backpack/messenger/cap(src)
 
 /obj/item/storage/bag/garment/hop/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/rank/civilian/head_of_personnel(src)
 	new /obj/item/clothing/under/rank/civilian/head_of_personnel/skirt(src)
 	new /obj/item/clothing/suit/armor/vest/hop(src)
@@ -76,6 +80,8 @@
 	new /obj/item/clothing/shoes/laceup(src)
 
 /obj/item/storage/bag/garment/hos/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/rank/security/head_of_security(src)
 	new /obj/item/clothing/under/rank/security/head_of_security/skirt(src)
 	new /obj/item/clothing/under/rank/security/head_of_security/alt(src)
@@ -96,6 +102,8 @@
 	new /obj/item/clothing/neck/cloak/hos(src)
 
 /obj/item/storage/bag/garment/warden/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/suit/armor/vest/warden(src)
 	new /obj/item/clothing/head/hats/warden(src)
 	new /obj/item/clothing/head/hats/warden/drill(src)
@@ -109,6 +117,8 @@
 	new /obj/item/clothing/mask/gas/sechailer(src)
 
 /obj/item/storage/bag/garment/research_director/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/rank/rnd/research_director(src)
 	new /obj/item/clothing/under/rank/rnd/research_director/skirt(src)
 	new /obj/item/clothing/under/rank/rnd/research_director/alt(src)
@@ -122,6 +132,8 @@
 	new /obj/item/clothing/shoes/jackboots(src)
 
 /obj/item/storage/bag/garment/chief_medical/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/rank/medical/chief_medical_officer(src)
 	new /obj/item/clothing/under/rank/medical/chief_medical_officer/skirt(src)
 	new /obj/item/clothing/under/rank/medical/chief_medical_officer/scrubs(src)
@@ -140,6 +152,8 @@
 	new /obj/item/storage/backpack/messenger/chief_medic(src)
 
 /obj/item/storage/bag/garment/engineering_chief/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/rank/engineering/chief_engineer(src)
 	new /obj/item/clothing/under/rank/engineering/chief_engineer/skirt(src)
 	new /obj/item/clothing/under/rank/engineering/chief_engineer/turtleneck(src)
@@ -153,6 +167,8 @@
 	new /obj/item/clothing/shoes/workboots(src)
 
 /obj/item/storage/bag/garment/quartermaster/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/rank/cargo/qm(src)
 	new /obj/item/clothing/under/rank/cargo/qm/skirt(src)
 	new /obj/item/clothing/suit/hooded/wintercoat/cargo/qm(src)
@@ -165,6 +181,8 @@
 	new /obj/item/clothing/shoes/sneakers/brown(src)
 
 /obj/item/storage/bag/garment/paramedic/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/rank/medical/paramedic(src)
 	new /obj/item/clothing/under/rank/medical/paramedic/skirt(src)
 	new /obj/item/clothing/gloves/latex/nitrile(src)

@@ -4,16 +4,22 @@
 	var/atom/movable/throw_atom = null
 
 /datum/buildmode_mode/throwing/Destroy()
+	procstart = null
+	src.procstart = null
 	throw_atom = null
 	return ..()
 
 /datum/buildmode_mode/throwing/show_help(client/builder)
+	procstart = null
+	src.procstart = null
 	to_chat(builder, span_purple(boxed_message(
 		"[span_bold("Select")] -> Left Mouse Button on turf/obj/mob\n\
 		[span_bold("Throw")] -> Right Mouse Button on turf/obj/mob"))
 	)
 
 /datum/buildmode_mode/throwing/handle_click(client/c, params, obj/object)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 
 	if(LAZYACCESS(modifiers, LEFT_CLICK))

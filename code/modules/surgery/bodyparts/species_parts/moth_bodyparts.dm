@@ -20,6 +20,8 @@
 	bodypart_traits = list(TRAIT_TACKLING_WINGED_ATTACKER)
 
 /obj/item/bodypart/chest/moth/get_butt_sprite()
+	procstart = null
+	src.procstart = null
 	return icon('icons/mob/butts.dmi', BUTT_SPRITE_FUZZY)
 
 /obj/item/bodypart/arm/left/moth

@@ -9,6 +9,8 @@
 	use_flags = CAN_USE_ON_OTHERS|CAN_USE_ON_DEAD
 
 /datum/mafia_ability/autopsy/perform_action_target(datum/mafia_controller/game, datum/mafia_role/day_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

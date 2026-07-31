@@ -16,9 +16,13 @@
 
 // This may look like it's doing nothing but it's necessary, we do this to have kwargs work in New (for passing into Initialize)
 /obj/item/grown/New(loc, obj/item/seeds/new_seed)
+	procstart = null
+	src.procstart = null
 	return ..()
 
 /obj/item/grown/Initialize(mapload, obj/item/seeds/new_seed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(100)
 
@@ -46,11 +50,15 @@
 	ADD_TRAIT(src, TRAIT_VALID_DNA_INFUSION, INNATE_TRAIT)
 
 /obj/item/grown/Destroy()
+	procstart = null
+	src.procstart = null
 	if(isatom(seed))
 		QDEL_NULL(seed)
 	return ..()
 
 /obj/item/grown/proc/add_juice()
+	procstart = null
+	src.procstart = null
 	if(reagents)
 		return TRUE
 	return FALSE

@@ -19,6 +19,8 @@
 	var/list/occupied_turfs = list()
 
 /datum/element/footstep_override/Attach(atom/movable/target, clawfootstep = FOOTSTEP_HARD_CLAW, barefootstep = FOOTSTEP_HARD_BAREFOOT, heavyfootstep = FOOTSTEP_GENERIC_HEAVY, footstep = FOOTSTEP_FLOOR, priority = STEP_SOUND_NO_PRIORITY)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(target))
 		return ELEMENT_INCOMPATIBLE
@@ -34,12 +36,16 @@
 		occupy_turf(target, target.loc)
 
 /datum/element/footstep_override/Detach(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, COMSIG_MOVABLE_MOVED)
 	if(isturf(source.loc))
 		vacate_turf(source, source.loc)
 	return ..()
 
 /datum/element/footstep_override/proc/on_moved(atom/movable/source, atom/oldloc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isturf(oldloc))
 		vacate_turf(source, oldloc)
@@ -52,6 +58,8 @@
  * to it.
  */
 /datum/element/footstep_override/proc/occupy_turf(atom/movable/movable, turf/location)
+	procstart = null
+	src.procstart = null
 	if(occupied_turfs[location])
 		occupied_turfs[location] |= movable
 		return
@@ -64,6 +72,8 @@
  * unregistered from it
  */
 /datum/element/footstep_override/proc/vacate_turf(atom/movable/movable, turf/location)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(occupied_turfs[location], movable)
 	if(!occupied_turfs[location])
 		occupied_turfs -= location
@@ -71,6 +81,8 @@
 
 ///Changes the sound types to be played if the element priority is higher than the one in the steps list.
 /datum/element/footstep_override/proc/prepare_steps(turf/source, list/steps)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(steps[STEP_SOUND_PRIORITY] > priority)
 		return

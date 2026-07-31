@@ -15,10 +15,14 @@
 	var/optional_severity
 
 /datum/hallucination/fake_alert/New(mob/living/hallucinator, duration = 15 SECONDS)
+	procstart = null
+	src.procstart = null
 	src.duration = duration
 	return ..()
 
 /datum/hallucination/fake_alert/Destroy()
+	procstart = null
+	src.procstart = null
 	if(del_timer_id)
 		deltimer(del_timer_id)
 	if(!QDELETED(hallucinator))
@@ -26,6 +30,8 @@
 	return ..()
 
 /datum/hallucination/fake_alert/start()
+	procstart = null
+	src.procstart = null
 	var/picked_type = islist(alert_type) ? pick(alert_type) : alert_type
 
 	feedback_details += "Alert type: [alert_category], Actual type: [alert_type]"

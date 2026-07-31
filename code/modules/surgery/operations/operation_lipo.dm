@@ -23,22 +23,32 @@
 	any_surgery_states_blocked = SURGERY_VESSELS_UNCLAMPED
 
 /datum/surgery_operation/limb/lipoplasty/get_any_tool()
+	procstart = null
+	src.procstart = null
 	return "Any sharp edged item"
 
 /datum/surgery_operation/limb/lipoplasty/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(/obj/item/food/meat/slab/human)
 
 /datum/surgery_operation/limb/lipoplasty/all_required_strings()
+	procstart = null
+	src.procstart = null
 	. = list()
 	. += "operate on chest (target chest)"
 	. += ..()
 	. += "the patient must have excess fat to remove"
 
 /datum/surgery_operation/limb/lipoplasty/tool_check(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	// Require edged sharpness OR a tool behavior match
 	return ((tool.get_sharpness() & SHARP_EDGED) || implements[tool.tool_behaviour])
 
 /datum/surgery_operation/limb/lipoplasty/state_check(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	if(limb.body_zone != BODY_ZONE_CHEST)
 		return FALSE
 	if(HAS_TRAIT(limb.owner, TRAIT_NOHUNGER))
@@ -48,6 +58,8 @@
 	return TRUE
 
 /datum/surgery_operation/limb/lipoplasty/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -58,6 +70,8 @@
 	display_pain(limb.owner, "You feel a stabbing in your [limb.plaintext_zone]!")
 
 /datum/surgery_operation/limb/lipoplasty/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,

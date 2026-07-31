@@ -86,6 +86,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 	COOLDOWN_DECLARE(forced_speech_cooldown)
 
 /mob/living/basic/parrot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	setup_headset()
 	update_speech_blackboards()
@@ -106,12 +108,16 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 	ADD_TRAIT(src, TRAIT_CAN_MOUNT_HUMANS, INNATE_TRAIT)
 
 /mob/living/basic/parrot/Destroy()
+	procstart = null
+	src.procstart = null
 	// should have cleaned these up on death, but let's be super safe in case that didn't happen
 	if(!QDELETED(ears))
 		QDEL_NULL(ears)
 	return ..()
 
 /mob/living/basic/parrot/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(ears)
 		ears.forceMove(drop_location())
 		ears = null
@@ -125,6 +131,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 	return ..()
 
 /mob/living/basic/parrot/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/held_item = get_active_held_item()
 	. += "It appears to [isnull(held_item) ? "not be holding anything." : "be holding \a [held_item]."]"
@@ -146,9 +154,13 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 		))
 
 /mob/living/basic/parrot/say_dead(message)
+	procstart = null
+	src.procstart = null
 	return // this is so flarped
 
 /mob/living/basic/parrot/radio(message, list/message_mods = list(), list/spans, language) //literally copied from human/radio(), but there's no other way to do this. at least it's better than it used to be.
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. != NONE)
 		return
@@ -169,6 +181,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 	return NONE
 
 /mob/living/basic/parrot/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat == DEAD)
 		return
@@ -176,6 +190,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 
 /// Proc that we just use to see if we're dragging onto stomething something for perch behavior or dropping the item we currently have
 /mob/living/basic/parrot/mouse_drop_dragged(atom/over, mob/user, src_location, over_location, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!start_perching(over))
 		balloon_alert(user, "not a perching spot!")
@@ -183,6 +199,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 /// Proc that handles sending the signal and returning a valid phrase to say. Will not do anything if we don't have a stat or if we're cliented.
 /// Will return either a string or null.
 /mob/living/basic/parrot/proc/get_phrase()
+	procstart = null
+	src.procstart = null
 	if(!isnull(client) || IS_UNCONSCIOUS_OR_CRIT(src))
 		return null
 
@@ -198,6 +216,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 
 /// Proc that listens for when a parrot is pet so we can dispatch a voice line.
 /mob/living/basic/parrot/proc/on_pet(mob/living/basic/source, mob/living/petter, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/return_value = get_phrase()
 	if(isnull(return_value))
@@ -208,6 +228,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 /// Proc that ascertains the type of perch we're dealing with and starts the perching process.
 /// Returns TRUE if we started perching, FALSE otherwise.
 /mob/living/basic/parrot/proc/start_perching(atom/target)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_PARROT_PERCHED))
 		balloon_alert(src, "already perched!")
 		return FALSE
@@ -225,6 +247,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 	return TRUE
 
 /mob/living/basic/parrot/proc/after_move(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(src, COMSIG_MOVABLE_MOVED)
@@ -232,6 +256,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 
 /// Proc that will perch us on a human. Returns TRUE if we perched, FALSE otherwise.
 /mob/living/basic/parrot/proc/perch_on_human(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(target.buckled_mobs) >= target.max_buckled_mobs)
 		balloon_alert(src, "can't perch on them!")
 		return FALSE
@@ -246,6 +272,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 	return TRUE
 
 /mob/living/basic/parrot/proc/on_unbuckle(mob/living/source, atom/movable/new_buckled)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(new_buckled)
@@ -256,6 +284,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 #define PERCH_SOURCE "perched"
 
 /mob/living/basic/parrot/proc/toggle_perched(perched)
+	procstart = null
+	src.procstart = null
 	if(!perched)
 		REMOVE_TRAIT(src, TRAIT_PARROT_PERCHED, PERCH_SOURCE)
 		remove_offsets(PERCH_SOURCE)
@@ -269,6 +299,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 /// Master proc which will determine the intent of OUR attacks on an object and summon the relevant procs accordingly.
 /// This is pretty much meant for players, AI will use the task-specific procs instead.
 /mob/living/basic/parrot/early_melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -278,6 +310,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 
 /// Picks up an item from the ground and puts it in our claws. Returns TRUE if we picked it up, FALSE otherwise.
 /mob/living/basic/parrot/put_in_hand_check(obj/item/item_to_pick_up)
+	procstart = null
+	src.procstart = null
 	if(item_to_pick_up.w_class > WEIGHT_CLASS_SMALL)
 		balloon_alert(src, "too big to pick up!")
 		return FALSE
@@ -285,6 +319,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 	return ..()
 
 /mob/living/basic/parrot/put_in_hand(obj/item/target, hand_index, forced = FALSE, ignore_anim = TRUE, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(istype(target, /obj/item/food/cracker))
 		consume_cracker(target)
 		qdel(target)
@@ -300,6 +336,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 
 /// Looks for an item that we can snatch and puts it in our claws. Returns TRUE if we picked it up, FALSE otherwise.
 /mob/living/basic/parrot/proc/steal_from_mob(mob/living/carbon/victim)
+	procstart = null
+	src.procstart = null
 	if(!isnull(get_active_held_item()))
 		balloon_alert(src, "already holding something!")
 		return FALSE
@@ -323,6 +361,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 
 /// If we're right-clicked on with a cracker, we eat the cracker.
 /mob/living/basic/parrot/proc/on_attacked(mob/living/basic/source, obj/item/thing, mob/living/attacker, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(thing, /obj/item/food/cracker)) // Poly wants a cracker
 		return
@@ -334,6 +374,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 /// We don't qdel the item here, we assume the invoking proc will have handled that somehow.
 /// Returns TRUE if we ate the thing.
 /mob/living/basic/parrot/proc/consume_cracker(obj/item/thing)
+	procstart = null
+	src.procstart = null
 	to_chat(src, span_notice("[src] eagerly devours \the [thing]."))
 	if(!istype(thing, /obj/item/food/cracker))
 		return TRUE // we still ate it
@@ -347,6 +389,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 
 /// Handles special behavior whenever we are injured.
 /mob/living/basic/parrot/proc/on_injured(mob/living/basic/source, mob/living/attacker, attack_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isnull(client) || !IS_UNCONSCIOUS_OR_CRIT(src))
 		return
@@ -361,6 +405,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 
 /// Handles dropping items we're holding. Gently is a special modifier we can use for special interactions.
 /mob/living/basic/parrot/proc/drop_held_item(gently = TRUE)
+	procstart = null
+	src.procstart = null
 	if(get_num_held_items() == 0)
 		balloon_alert(src, "nothing to drop!")
 		return
@@ -379,6 +425,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 	drop_all_held_items(drop_location())
 
 /mob/living/basic/parrot/vv_edit_var(var_name, vval)
+	procstart = null
+	src.procstart = null
 	. = ..() // give admins an easier time when it comes to fucking with poly
 	switch(var_name)
 		if(NAMEOF(src, speech_probability_rate))
@@ -388,15 +436,21 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 
 /// Updates our speech blackboards mob-side to reflect the current speech on the controller to ensure everything is synchronized.
 /mob/living/basic/parrot/proc/update_speech_blackboards()
+	procstart = null
+	src.procstart = null
 	ai_controller.set_blackboard_key(BB_PARROT_REPEAT_PROBABILITY, speech_probability_rate)
 	ai_controller.set_blackboard_key(BB_PARROT_PHRASE_CHANGE_PROBABILITY, speech_shuffle_rate)
 
 /// Will simply set up the headset for the parrot to use. Stub, implemented on subtypes.
 /mob/living/basic/parrot/proc/setup_headset()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Gets a static list of phrases we wish to pass to the element.
 /mob/living/basic/parrot/proc/get_static_list_of_phrases()
+	procstart = null
+	src.procstart = null
 	var/static/list/default_phrases = list(
 		"BAWWWWK george mellons griffing me!",
 		"Cracker?",
@@ -408,6 +462,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 
 /// Gets the available channels that this parrot has access to. Returns a list of the channels we can use.
 /mob/living/basic/parrot/proc/get_available_channels()
+	procstart = null
+	src.procstart = null
 	var/list/returnable_list = list()
 	if(isnull(ears))
 		return returnable_list
@@ -419,10 +475,14 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 	return returnable_list
 
 /mob/living/basic/parrot/tamed(mob/living/tamer, atom/food)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/temp_visual/heart(drop_location())
 
 /mob/living/basic/parrot/proc/drop_item_on_signal(mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	drop_held_item()

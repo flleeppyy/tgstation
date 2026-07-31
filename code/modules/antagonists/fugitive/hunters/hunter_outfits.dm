@@ -15,6 +15,8 @@
 	id_trim = /datum/id_trim/bounty_hunter/police
 
 /datum/outfit/spacepol/post_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visuals_only)
 		return
 	var/obj/item/card/id/W = H.wear_id
@@ -47,6 +49,8 @@
 	id = /obj/item/card/id/advanced/bountyhunter
 
 /datum/outfit/russian_hunter/pre_equip(mob/living/carbon/human/equip_to)
+	procstart = null
+	src.procstart = null
 
 	// Let's give the Russians a bit of randomization for style.
 	var/static/list/alt_uniforms = list(
@@ -73,6 +77,8 @@
 		head = pick(alt_helmets)
 
 /datum/outfit/russian_hunter/post_equip(mob/living/carbon/human/equip_to, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visuals_only)
 		return
 
@@ -94,6 +100,8 @@
 	shoes = /obj/item/clothing/shoes/combat
 
 /datum/outfit/russian_hunter/leader/pre_equip(mob/living/carbon/human/equip_to)
+	procstart = null
+	src.procstart = null
 	return // None of the RNG russian equipment stuff.
 
 /datum/outfit/bountyarmor
@@ -119,6 +127,8 @@
 	)
 
 /datum/outfit/bountyarmor/post_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visuals_only)
 		return
 	var/obj/item/card/id/W = H.wear_id
@@ -144,6 +154,8 @@
 		)
 
 /datum/outfit/bountyhook/post_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visuals_only)
 		return
 	var/obj/item/card/id/W = H.wear_id
@@ -205,6 +217,8 @@
 	id_trim = /datum/id_trim/bounty_hunter/psykers
 
 /datum/outfit/psyker/post_equip(mob/living/carbon/human/equipped)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	equipped.psykerize()
 	var/obj/item/card/id/wearing = equipped.wear_id
@@ -228,6 +242,8 @@
 	id_trim = /datum/id_trim/bounty_hunter/psykers/seer
 
 /datum/outfit/psyker_seer/post_equip(mob/living/carbon/human/equipped)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/card/id/wearing = equipped.wear_id
 	wearing.registered_name = equipped.real_name
@@ -251,6 +267,8 @@
 	implants = list(/obj/item/implant/explosive)
 
 /datum/outfit/mi13_hunter/pre_equip(mob/living/carbon/human/agent, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	backpack_contents = list()
 	backpack_contents += pick_weight(list(/obj/item/ammo_box/magazine/m9mm = 80,
 	/obj/item/ammo_box/magazine/m9mm/hp = 10,
@@ -273,6 +291,8 @@
 	))
 
 /datum/outfit/mi13_hunter/post_equip(mob/living/carbon/human/agent, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visuals_only)
 		return
 	var/obj/item/card/id/wearing = agent.wear_id

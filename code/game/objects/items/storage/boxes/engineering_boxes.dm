@@ -6,6 +6,8 @@
 	illustration = "grenade"
 
 /obj/item/storage/box/metalfoam/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/grenade/chem_grenade/metalfoam(src)
 
@@ -15,6 +17,8 @@
 	illustration = "grenade"
 
 /obj/item/storage/box/smart_metal_foam/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new/obj/item/grenade/chem_grenade/smart_metal_foam(src)
 
@@ -24,6 +28,8 @@
 	storage_type = /datum/storage/box/debug
 
 /obj/item/storage/box/debugtools/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/card/emag=1,
 		/obj/item/construction/rcd/combat/admin=1,
@@ -59,6 +65,8 @@
 	illustration = "emergencytank"
 
 /obj/item/storage/box/emergencytank/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 7)
 		new /obj/item/tank/internals/emergency_oxygen(src) //in case anyone ever wants to do anything with spawning them, apart from crafting the box
@@ -69,6 +77,8 @@
 	illustration = "extendedtank"
 
 /obj/item/storage/box/engitank/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 7)
 		new /obj/item/tank/internals/emergency_oxygen/engi(src) //in case anyone ever wants to do anything with spawning them, apart from crafting the box
@@ -79,5 +89,7 @@
 	illustration = "label_ce"
 
 /obj/item/storage/box/stickers/chief_engineer/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/sticker/chief_engineer(src)

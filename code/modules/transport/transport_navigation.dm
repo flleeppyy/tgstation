@@ -17,11 +17,15 @@
 	var/list/tgui_icons = list()
 
 /obj/effect/landmark/transport/nav_beacon/tram/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tram_loop = new(src)
 	LAZYADDASSOCLIST(SStransport.nav_beacons, specific_transport_id, src)
 
 /obj/effect/landmark/transport/nav_beacon/tram/Destroy()
+	procstart = null
+	src.procstart = null
 	LAZYREMOVEASSOC(SStransport.nav_beacons, specific_transport_id, src)
 	QDEL_NULL(tram_loop)
 	return ..()

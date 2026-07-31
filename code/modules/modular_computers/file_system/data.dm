@@ -18,12 +18,16 @@
 	var/stored_text = ""
 
 /datum/computer_file/data/text/clone()
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/data/text/temp = ..()
 	temp.stored_text = stored_text
 	return temp
 
 // Calculates file size from amount of characters in saved string
 /datum/computer_file/data/text/proc/calculate_size()
+	procstart = null
+	src.procstart = null
 	size = max(1, round(length(stored_text) / BLOCK_SIZE))
 
 /**
@@ -45,9 +49,13 @@
 	var/list/possible_experiments
 
 /datum/computer_file/data/ordnance/proc/return_data()
+	procstart = null
+	src.procstart = null
 	return null
 
 /datum/computer_file/data/ordnance/clone()
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/data/ordnance/temp = ..()
 	temp.possible_experiments = possible_experiments
 	return temp
@@ -62,9 +70,13 @@
 	var/datum/data/tachyon_record/explosion_record
 
 /datum/computer_file/data/ordnance/explosive/return_data()
+	procstart = null
+	src.procstart = null
 	return explosion_record
 
 /datum/computer_file/data/ordnance/explosive/clone()
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/data/ordnance/explosive/temp = ..()
 	temp.explosion_record = explosion_record
 	return temp
@@ -79,9 +91,13 @@
 	var/datum/data/compressor_record/gas_record
 
 /datum/computer_file/data/ordnance/gaseous/return_data()
+	procstart = null
+	src.procstart = null
 	return gas_record
 
 /datum/computer_file/data/ordnance/gaseous/clone()
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/data/ordnance/gaseous/temp = ..()
 	temp.gas_record = gas_record
 	return temp
@@ -94,15 +110,21 @@
 	var/source_photo_or_painting
 
 /datum/computer_file/data/paint_project/New(datum/sprite_editor_workspace/workspace, source_photo_or_painting)
+	procstart = null
+	src.procstart = null
 	..()
 	src.workspace = workspace
 	src.source_photo_or_painting = source_photo_or_painting
 
 /datum/computer_file/data/paint_project/Destroy(force)
+	procstart = null
+	src.procstart = null
 	source_photo_or_painting = null
 	return ..()
 
 /datum/computer_file/data/paint_project/clone(rename)
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/data/paint_project/temp = ..()
 	temp.workspace = workspace.copy()
 	temp.source_photo_or_painting = source_photo_or_painting
@@ -110,6 +132,8 @@
 
 /// Assign this file's backing datum
 /datum/computer_file/data/paint_project/proc/set_source(new_source)
+	procstart = null
+	src.procstart = null
 	source_photo_or_painting = new_source
 
 #undef BLOCK_SIZE

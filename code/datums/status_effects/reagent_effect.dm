@@ -10,6 +10,8 @@
 	var/subtypes_allowed
 
 /datum/status_effect/reagent_effect/on_creation(mob/living/new_owner, reagent_typepath, subtypes_allowed = TRUE)
+	procstart = null
+	src.procstart = null
 	if(isnull(src.reagent_typepath))
 		if(isnull(reagent_typepath))
 			stack_trace("Reagent effect [src] created without a reagent typepath!")
@@ -19,6 +21,8 @@
 	return ..()
 
 /datum/status_effect/reagent_effect/on_apply()
+	procstart = null
+	src.procstart = null
 	if(isnull(owner.reagents) || isnull(reagent_typepath) || !can_effect())
 		return FALSE
 
@@ -27,10 +31,14 @@
 	return TRUE
 
 /datum/status_effect/reagent_effect/on_remove()
+	procstart = null
+	src.procstart = null
 	remove_effect()
 	UnregisterSignal(owner.reagents, COMSIG_REAGENTS_HOLDER_UPDATED)
 
 /datum/status_effect/reagent_effect/proc/check_reagents(datum/reagents/updated_reagents)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(owner.reagents?.has_reagent(reagent_typepath, check_subtypes = subtypes_allowed))
@@ -39,42 +47,60 @@
 
 /// Can we add this effect to the owner?
 /datum/status_effect/reagent_effect/proc/can_effect()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Add the side effect to the owner
 /datum/status_effect/reagent_effect/proc/add_effect()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Remove the side effect from the owner
 /datum/status_effect/reagent_effect/proc/remove_effect()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/status_effect/reagent_effect/fakedeath
 	id = "reagent_fake_death"
 
 /datum/status_effect/reagent_effect/fakedeath/add_effect()
+	procstart = null
+	src.procstart = null
 	owner.fakedeath(type)
 
 /datum/status_effect/reagent_effect/fakedeath/remove_effect()
+	procstart = null
+	src.procstart = null
 	owner.cure_fakedeath(type)
 
 /datum/status_effect/reagent_effect/freeze
 	id = "reagent_freeze"
 
 /datum/status_effect/reagent_effect/freeze/can_effect()
+	procstart = null
+	src.procstart = null
 	return !HAS_TRAIT(owner, TRAIT_RESISTCOLD)
 
 /datum/status_effect/reagent_effect/freeze/add_effect()
+	procstart = null
+	src.procstart = null
 	owner.apply_status_effect(/datum/status_effect/frozenstasis/irresistable)
 	owner.apply_status_effect(/datum/status_effect/grouped/stasis, type)
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(escape_prison))
 
 /datum/status_effect/reagent_effect/freeze/remove_effect()
+	procstart = null
+	src.procstart = null
 	owner.remove_status_effect(/datum/status_effect/frozenstasis/irresistable)
 	owner.remove_status_effect(/datum/status_effect/grouped/stasis, type)
 	UnregisterSignal(owner, COMSIG_MOVABLE_MOVED)
 
 /datum/status_effect/reagent_effect/freeze/proc/escape_prison(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isturf(owner.loc)) // we escaped ice prison

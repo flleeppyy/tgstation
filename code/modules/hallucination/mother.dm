@@ -6,6 +6,8 @@
 	var/obj/effect/client_image_holder/hallucination/your_mother/mother
 
 /datum/hallucination/your_mother/start()
+	procstart = null
+	src.procstart = null
 	if(!hallucinator.client || IS_UNCONSCIOUS(hallucinator))
 		return FALSE
 
@@ -35,6 +37,8 @@
 	return TRUE
 
 /datum/hallucination/your_mother/proc/point_at(atom/target)
+	procstart = null
+	src.procstart = null
 	var/turf/tile = get_turf(target)
 	if(!tile)
 		return
@@ -45,6 +49,8 @@
 	animate(visual, pixel_x = (tile.x - mother.x) * ICON_SIZE_X, pixel_y = (tile.y - mother.y) * ICON_SIZE_Y, time = 1.7, easing = QUAD_EASING|EASE_OUT)
 
 /datum/hallucination/your_mother/proc/talk(text)
+	procstart = null
+	src.procstart = null
 	var/plus_runechat = hallucinator.client?.prefs.read_preference(/datum/preference/toggle/enable_runechat)
 	var/datum/language/understood_language = hallucinator.get_random_understood_language()
 	var/spans = list(mother.speech_span)
@@ -59,6 +65,8 @@
 	to_chat(hallucinator, message)
 
 /datum/hallucination/your_mother/proc/exit()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /datum/outfit/yourmother
@@ -69,6 +77,8 @@
 	shoes = /obj/item/clothing/shoes/sandal
 
 /datum/outfit/yourmother/post_equip(mob/living/carbon/human/user, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.set_hairstyle("Braided", update = TRUE) //get_dynamic_human_appearance uses bald dummies
 
@@ -80,6 +90,8 @@
 	image_state = ""
 
 /obj/effect/client_image_holder/hallucination/your_mother/Initialize(mapload, list/mobs_which_see_us, datum/hallucination/parent)
+	procstart = null
+	src.procstart = null
 	var/mob/living/hallucinator = parent.hallucinator
 	if (ishuman(hallucinator) && !isplasmaman(hallucinator)) //Plasmapeople don't have parents in a traditional sense, so their mother is different.
 		var/mob/living/carbon/dna_haver = hallucinator

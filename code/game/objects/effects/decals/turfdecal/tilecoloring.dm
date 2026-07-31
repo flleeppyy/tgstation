@@ -143,6 +143,8 @@ TILE_DECAL_SUBTYPE_HELPER(/obj/effect/turf_decal/tile/dark)
 	color = COLOR_RED
 
 /obj/effect/turf_decal/tile/holiday/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	color = request_decoration_colors(src, pattern, skip_station_trait = TRUE)
 	alpha = DECAL_ALPHA
 	return ..()
@@ -175,6 +177,8 @@ TILE_DECAL_SUBTYPE_HELPER(/obj/effect/turf_decal/tile/holiday/random)
 	pattern = PATTERN_VERTICAL_STRIPE
 
 /obj/effect/turf_decal/trimline/tram/filled/corner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(use_holiday_colors)
 		var/current_holiday_color = request_decoration_colors(src, pattern)
 		if(current_holiday_color)
@@ -185,6 +189,8 @@ TILE_DECAL_SUBTYPE_HELPER(/obj/effect/turf_decal/tile/holiday/random)
 	return ..()
 
 /obj/effect/turf_decal/trimline/tram/filled/line/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(use_holiday_colors)
 		var/current_holiday_color = request_decoration_colors(src, pattern)
 		if(current_holiday_color)

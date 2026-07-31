@@ -1,5 +1,7 @@
 /// This test is used to make sure a flesh-and-bone base human can suffer all the types of wounds, and that suffering more severe wounds removes and replaces the lesser wound. Also tests that [/mob/living/carbon/proc/fully_heal] removes all wounds
 /datum/unit_test/test_human_base/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/victim = allocate(/mob/living/carbon/human/consistent)
 
 	/// the limbs have no wound resistance like the chest and head do, so let's go with the r_arm
@@ -40,6 +42,8 @@
 
 /// This test is used for making sure species with bones but no flesh (skeletons, plasmamen) can only suffer BONE_WOUNDS, and nothing tagged with FLESH_WOUND (it's possible to require both)
 /datum/unit_test/test_human_bone/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/victim = allocate(/mob/living/carbon/human/consistent)
 
 	/// the limbs have no wound resistance like the chest and head do, so let's go with the r_arm

@@ -12,11 +12,15 @@
 	VAR_PRIVATE/atom/movable/screen/tutorial_skip/skip_button
 
 /datum/tutorial/New(mob/user)
+	procstart = null
+	src.procstart = null
 	src.user = user
 
 	RegisterSignals(user, list(COMSIG_QDELETING, COMSIG_MOB_LOGOUT), PROC_REF(destroy_self))
 
 /datum/tutorial/Destroy(force)
+	procstart = null
+	src.procstart = null
 	user.client?.screen -= instruction_screen
 	user.client?.screen -= skip_button
 	QDEL_NULL(instruction_screen)
@@ -27,24 +31,32 @@
 
 /// Gets the [`/datum/tutorial_manager`] that owns this tutorial.
 /datum/tutorial/proc/manager()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/tutorial_manager)
 	return SStutorials.tutorial_managers[type]
 
 /// The actual steps of the tutorial. Is given any excess arguments of suggest_tutorial.
 /// Must be overridden.
 /datum/tutorial/proc/perform()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("[type] does not override perform()")
 
 /// Returns TRUE/FALSE if this tutorial should be given.
 /// If FALSE, does not mean it won't come back later.
 /datum/tutorial/proc/should_perform()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	return TRUE
 
 /// Called by the tutorial when the user has successfully completed it.
 /// Will mark it as completed in the datbaase and kick off destruction of the tutorial.
 /datum/tutorial/proc/complete()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	PROTECTED_PROC(TRUE)
 	SHOULD_NOT_OVERRIDE(TRUE)
@@ -56,6 +68,8 @@
 /// This should be used when the user doesn't need the tutorial anymore, but didn't
 /// actually properly finish it.
 /datum/tutorial/proc/dismiss()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	PROTECTED_PROC(TRUE)
 	SHOULD_NOT_OVERRIDE(TRUE)
@@ -66,6 +80,8 @@
 #define INSTRUCTION_SCREEN_DELAY (1 SECONDS)
 
 /datum/tutorial/proc/perform_base_completion_effects()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	var/delay = perform_completion_effects_with_delay()
@@ -81,6 +97,8 @@
 /// You should unregister signals and fade out any of your creations in here.
 /// Returns how long extra to delay the deletion.
 /datum/tutorial/proc/perform_completion_effects_with_delay()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	PROTECTED_PROC(TRUE)
 
@@ -89,6 +107,8 @@
 #undef INSTRUCTION_SCREEN_DELAY
 
 /datum/tutorial/proc/destroy_self()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	PRIVATE_PROC(TRUE)
 	SHOULD_NOT_OVERRIDE(TRUE)
@@ -99,6 +119,8 @@
 /// Shows a large piece of text on the user's screen with the given message.
 /// If a message already exists, will fade it out and replace it.
 /datum/tutorial/proc/show_instruction(message)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	if(isnull(skip_button))
 		skip_button = new
@@ -114,6 +136,8 @@
 /// Given a keybind and a message, will replace %KEY% in `message` with the first keybind they have.
 /// As a fallback, will return the third parameter, `message_without_keybinds`, if none are set.
 /datum/tutorial/proc/keybinding_message(datum/keybinding/keybinding_type, message, message_without_keybinds)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	var/list/keybinds = user.client?.prefs.key_bindings[initial(keybinding_type.name)]
@@ -122,6 +146,8 @@
 /// Creates a UI element with the given `icon_state`, starts it at `initial_screen_loc`, and animates it to `target_screen_loc`.
 /// Waits `animate_start_time` before moving.
 /datum/tutorial/proc/animate_ui_element(icon_state, initial_screen_loc, target_screen_loc, animate_start_time)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	var/atom/movable/screen/preview = new
@@ -166,10 +192,14 @@
 	VAR_PRIVATE/list/performing_ckeys = list()
 
 /datum/tutorial_manager/New(tutorial_type)
+	procstart = null
+	src.procstart = null
 	ASSERT(ispath(tutorial_type, /datum/tutorial))
 	src.tutorial_type = tutorial_type
 
 /datum/tutorial_manager/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if (!force)
 		stack_trace("Something is trying to destroy [type], which is a singleton")
 		return QDEL_HINT_LETMELIVE
@@ -178,6 +208,8 @@
 /// Checks if we should perform the tutorial for the given user, and performs if so.
 /// Use `SStutorials.suggest_tutorial` instead of calling this directly.
 /datum/tutorial_manager/proc/try_perform(mob/user, list/arguments)
+	procstart = null
+	src.procstart = null
 	var/datum/tutorial/tutorial = new tutorial_type(user)
 	if (!tutorial.should_perform(user))
 		qdel(tutorial)
@@ -189,6 +221,8 @@
 
 /// Checks if the user should be given this tutorial
 /datum/tutorial_manager/proc/should_run(mob/user)
+	procstart = null
+	src.procstart = null
 	var/ckey = user.ckey
 
 	if (isnull(ckey))
@@ -217,6 +251,8 @@
 /// Marks the tutorial as completed.
 /// Call `/datum/tutorial/proc/complete()` instead.
 /datum/tutorial_manager/proc/complete(mob/user)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	ASSERT(!isnull(user.ckey))
@@ -231,6 +267,8 @@
 		INVOKE_ASYNC(src, PROC_REF(log_completion_to_database), user.ckey)
 
 /datum/tutorial_manager/proc/log_completion_to_database(ckey)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/datum/db_query/insert_tutorial_query = SSdbcore.NewQuery(
@@ -247,6 +285,8 @@
 /// Dismisses the tutorial, not marking it as completed in the database.
 /// Call `/datum/tutorial/proc/dismiss()` instead.
 /datum/tutorial_manager/proc/dismiss(mob/user)
+	procstart = null
+	src.procstart = null
 	// this can be null in some disconnect/mob logout cases so we use some fallbacks
 	var/user_ckey = user.ckey
 	if(!user_ckey && user.canon_client)
@@ -258,11 +298,15 @@
 /// Given a ckey, will mark them as being completed without affecting the database.
 /// Call `/datum/tutorial/proc/complete()` instead.
 /datum/tutorial_manager/proc/mark_as_completed(ckey)
+	procstart = null
+	src.procstart = null
 	finished_ckeys[ckey] = TRUE
 	performing_ckeys -= ckey
 
 /// Gives the key that will be saved in the database.
 /// Must be 64 characters or less.
 /datum/tutorial_manager/proc/get_key()
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 	return copytext("[tutorial_type]", length("[/datum/tutorial]") + 2)

@@ -23,6 +23,8 @@
 	var/datum/callback/register_family
 
 /mob/living/basic/pet/cat/runtime/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_family = CALLBACK(src, PROC_REF(Write_Memory))
 	SSticker.OnRoundend(register_family)
@@ -39,11 +41,15 @@
 	post_birth_callback = CALLBACK(src, PROC_REF(after_birth))
 
 /mob/living/basic/pet/cat/runtime/proc/after_birth(mob/living/baby)
+	procstart = null
+	src.procstart = null
 	if(isnull(baby))
 		return
 	LAZYADD(children, baby)
 
 /mob/living/basic/pet/cat/runtime/proc/read_memory()
+	procstart = null
+	src.procstart = null
 	if(fexists(RUNTIME_SAVE_DATA))
 		var/savefile/save_data = new(RUNTIME_SAVE_DATA)
 		save_data["family"] >> family
@@ -56,12 +62,16 @@
 	family = json_list["family"]
 
 /mob/living/basic/pet/cat/runtime/Destroy()
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(SSticker.round_end_events, register_family)
 	register_family = null
 	post_birth_callback = null
 	return ..()
 
 /mob/living/basic/pet/cat/runtime/Write_Memory(dead, gibbed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -80,6 +90,8 @@
 	WRITE_FILE(json_file, json_encode(file_data, JSON_PRETTY_PRINT))
 
 /mob/living/basic/pet/cat/runtime/proc/deploy_the_cats()
+	procstart = null
+	src.procstart = null
 	cats_deployed = TRUE
 	for(var/cat_type in family)
 		if(isnull(family[cat_type]))

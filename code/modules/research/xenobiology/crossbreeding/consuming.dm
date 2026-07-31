@@ -16,6 +16,8 @@ Consuming extracts:
 	var/cookietype = /obj/item/slime_cookie
 
 /obj/item/slimecross/consuming/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!IS_EDIBLE(tool))
 		return NONE
 
@@ -47,6 +49,8 @@ Consuming extracts:
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/slimecross/consuming/proc/spawncookie()
+	procstart = null
+	src.procstart = null
 	return new cookietype(get_turf(src))
 
 /obj/item/slime_cookie //While this technically acts like food, it's so removed from it that I made it its own type.
@@ -63,9 +67,13 @@ Consuming extracts:
 	throw_range = 6
 
 /obj/item/slime_cookie/proc/do_effect(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/slime_cookie/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isliving(interacting_with))
 		return NONE
 	var/mob/living/living_mob = interacting_with
@@ -113,6 +121,8 @@ Consuming extracts:
 	taste = "cinnamon and burning"
 
 /obj/item/slime_cookie/orange/do_effect(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	M.apply_status_effect(/datum/status_effect/firecookie)
 
 /obj/item/slimecross/consuming/purple
@@ -127,6 +137,8 @@ Consuming extracts:
 	taste = "fruit jam and cough medicine"
 
 /obj/item/slime_cookie/purple/do_effect(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	var/need_mob_update = FALSE
 	need_mob_update += M.adjust_brute_loss(-5, updating_health = FALSE)
 	need_mob_update += M.adjust_fire_loss(-5, updating_health = FALSE)
@@ -148,6 +160,8 @@ Consuming extracts:
 	taste = "water"
 
 /obj/item/slime_cookie/blue/do_effect(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	M.apply_status_effect(/datum/status_effect/watercookie)
 
 /obj/item/slimecross/consuming/metal
@@ -162,6 +176,8 @@ Consuming extracts:
 	taste = "copper"
 
 /obj/item/slime_cookie/metal/do_effect(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	M.apply_status_effect(/datum/status_effect/metalcookie)
 
 /obj/item/slimecross/consuming/yellow
@@ -176,6 +192,8 @@ Consuming extracts:
 	taste = "lemon cake and rubber gloves"
 
 /obj/item/slime_cookie/yellow/do_effect(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	M.apply_status_effect(/datum/status_effect/sparkcookie)
 
 /obj/item/slimecross/consuming/darkpurple
@@ -190,6 +208,8 @@ Consuming extracts:
 	taste = "slime jelly and toxins"
 
 /obj/item/slime_cookie/darkpurple/do_effect(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	M.apply_status_effect(/datum/status_effect/toxincookie)
 
 /obj/item/slimecross/consuming/darkblue
@@ -204,6 +224,8 @@ Consuming extracts:
 	taste = "mint and bitter cold"
 
 /obj/item/slime_cookie/darkblue/do_effect(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	M.adjust_bodytemperature(-110)
 	M.extinguish_mob()
 
@@ -220,6 +242,8 @@ Consuming extracts:
 	nutrition = 0 //We don't want normal nutriment
 
 /obj/item/slime_cookie/silver/do_effect(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	M.reagents.add_reagent(/datum/reagent/consumable/nutriment/stabilized,10)
 
 /obj/item/slimecross/consuming/bluespace
@@ -234,6 +258,8 @@ Consuming extracts:
 	taste = "sugar and starlight"
 
 /obj/item/slime_cookie/bluespace/do_effect(mob/living/eater, mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/area_turfs = get_area_turfs(get_area(get_turf(eater)))
 	var/turf/target
 
@@ -256,6 +282,8 @@ Consuming extracts:
 	playsound(target, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 
 /obj/item/slime_cookie/bluespace/proc/fail_effect(mob/living/eater)
+	procstart = null
+	src.procstart = null
 	eater.visible_message(
 		message = span_warning("[eater] briefly vanishes... then slams forcefully into the ground"),
 		self_message = span_warning("You briefly vanish... and are returned forcefully to the ground.")
@@ -275,6 +303,8 @@ Consuming extracts:
 	taste = "brown sugar and a metronome"
 
 /obj/item/slime_cookie/sepia/do_effect(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	M.apply_status_effect(/datum/status_effect/timecookie)
 
 /obj/item/slimecross/consuming/cerulean
@@ -290,6 +320,8 @@ Consuming extracts:
 	taste = "a sugar cookie"
 
 /obj/item/slime_cookie/cerulean/do_effect(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(prob(50))
 		to_chat(M, span_notice("A piece of [src] breaks off while you chew, and falls to the ground."))
 		var/obj/item/slime_cookie/cerulean/C = new(get_turf(M))
@@ -308,6 +340,8 @@ Consuming extracts:
 	var/colour = COLOR_WHITE
 
 /obj/item/slime_cookie/pyrite/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/tastemessage = "paint remover"
 	switch(rand(1,7))
@@ -335,6 +369,8 @@ Consuming extracts:
 	taste += tastemessage
 
 /obj/item/slime_cookie/pyrite/do_effect(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	M.add_atom_colour(colour,WASHABLE_COLOUR_PRIORITY)
 
 /obj/item/slimecross/consuming/red
@@ -349,6 +385,8 @@ Consuming extracts:
 	taste = "red velvet and iron"
 
 /obj/item/slime_cookie/red/do_effect(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/decal/cleanable/blood(get_turf(M))
 	playsound(get_turf(M), 'sound/effects/splat.ogg', 10, TRUE)
 	if(iscarbon(M))
@@ -367,6 +405,8 @@ Consuming extracts:
 	taste = "the contents of your stomach"
 
 /obj/item/slime_cookie/green/do_effect(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		H.vomit(VOMIT_CATEGORY_DEFAULT, lost_nutrition = 25)
@@ -384,6 +424,8 @@ Consuming extracts:
 	taste = "love and hugs"
 
 /obj/item/slime_cookie/pink/do_effect(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	M.apply_status_effect(/datum/status_effect/lovecookie)
 
 /obj/item/slimecross/consuming/gold
@@ -398,6 +440,8 @@ Consuming extracts:
 	taste = "sweet cornbread and wealth"
 
 /obj/item/slime_cookie/gold/do_effect(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/held = M.get_active_held_item() //This should be itself, but just in case...
 	M.dropItemToGround(held)
 	var/newcoin = /obj/item/coin/gold
@@ -417,6 +461,8 @@ Consuming extracts:
 	taste = "rich molten chocolate and tar"
 
 /obj/item/slime_cookie/oil/do_effect(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	M.apply_status_effect(/datum/status_effect/tarcookie)
 
 /obj/item/slimecross/consuming/black
@@ -431,6 +477,8 @@ Consuming extracts:
 	taste = "ghosts and stuff"
 
 /obj/item/slime_cookie/black/do_effect(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	M.apply_status_effect(/datum/status_effect/spookcookie)
 
 /obj/item/slimecross/consuming/lightpink
@@ -445,6 +493,8 @@ Consuming extracts:
 	taste = "strawberry icing and P.L.U.R" //Literal candy raver.
 
 /obj/item/slime_cookie/lightpink/do_effect(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	M.apply_status_effect(/datum/status_effect/peacecookie)
 
 /obj/item/slimecross/consuming/adamantine
@@ -459,6 +509,8 @@ Consuming extracts:
 	taste = "crystalline sugar and metal"
 
 /obj/item/slime_cookie/adamantine/do_effect(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	M.apply_status_effect(/datum/status_effect/adamantinecookie)
 
 /obj/item/slimecross/consuming/rainbow
@@ -466,6 +518,8 @@ Consuming extracts:
 	effect_desc = "Creates a slime cookie that has the effect of a random cookie."
 
 /obj/item/slimecross/consuming/rainbow/spawncookie()
+	procstart = null
+	src.procstart = null
 	var/cookie_type = pick(subtypesof(/obj/item/slime_cookie))
 	var/obj/item/slime_cookie/S = new cookie_type(get_turf(src))
 	S.name = "rainbow cookie"

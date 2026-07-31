@@ -12,12 +12,16 @@
 	max_charges = 10
 
 /obj/item/gun/magic/wand/prank/zap_self(mob/living/user, suicide = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/food/pie/cream/magical/pie = new(src)
 	pie.stun_and_blur(user)
 	charges--
 
 /obj/item/gun/magic/wand/prank/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	charges--
 	playsound(user, fire_sound, 50, TRUE)
 	user.visible_message("[user] covers [user.p_themselves()] with magical lube!")
@@ -39,6 +43,8 @@
 	icon_state = "pie"
 
 /obj/projectile/magic/prank/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/food/pie/cream/magical/pie = new()
 	pie.stun_and_blur(target)
@@ -47,6 +53,8 @@
 /obj/item/food/pie/cream/magical
 
 /obj/item/food/pie/cream/magical/stun_and_blur(mob/living/victim, can_splat_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/reagents/lube = new /datum/reagents(40)
 	lube.add_reagent(/datum/reagent/lube, 40)
@@ -65,6 +73,8 @@
 	var/direction
 
 /datum/status_effect/slippery_death/on_creation(mob/living/new_owner, set_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	direction = pick(GLOB.cardinals)
 	new_owner.setDir(direction)
@@ -73,6 +83,8 @@
 	RegisterSignals(new_owner, list(COMSIG_MOVABLE_Z_CHANGED, COMSIG_LIVING_DEATH, COMSIG_LIVING_MOB_BUMP, COMSIG_LIVING_MOB_BUMPED), PROC_REF(die))
 
 /datum/status_effect/slippery_death/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	var/turf/turf = get_step(owner, direction)
 	if(!turf || turf.is_blocked_turf())
 		die()
@@ -81,6 +93,8 @@
 
 /// When we hit anything, die, or change z level we burst
 /datum/status_effect/slippery_death/proc/die()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	owner.gib(DROP_ALL_REMAINS)
 	qdel(src)

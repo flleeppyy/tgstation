@@ -14,6 +14,8 @@
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/clothing/glasses/changeling/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(loc == user && IS_CHANGELING(user))
 		to_chat(user, span_notice("You reabsorb [src] into your body."))
 		qdel(src)
@@ -21,6 +23,8 @@
 	. = ..()
 
 /obj/item/clothing/glasses/changeling/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	attack_hand(user, modifiers)
 
 /obj/item/clothing/under/changeling
@@ -30,6 +34,8 @@
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/clothing/under/changeling/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(loc == user && IS_CHANGELING(user))
 		to_chat(user, span_notice("You reabsorb [src] into your body."))
 		qdel(src)
@@ -37,6 +43,8 @@
 	. = ..()
 
 /obj/item/clothing/under/changeling/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	attack_hand(user, modifiers)
 
 /obj/item/clothing/suit/changeling
@@ -47,6 +55,8 @@
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/clothing/suit/changeling/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(loc == user && IS_CHANGELING(user))
 		to_chat(user, span_notice("You reabsorb [src] into your body."))
 		qdel(src)
@@ -54,6 +64,8 @@
 	. = ..()
 
 /obj/item/clothing/suit/changeling/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	attack_hand(user, modifiers)
 
 /obj/item/clothing/head/changeling
@@ -64,6 +76,8 @@
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/clothing/head/changeling/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(loc == user && IS_CHANGELING(user))
 		to_chat(user, span_notice("You reabsorb [src] into your body."))
 		qdel(src)
@@ -71,6 +85,8 @@
 	. = ..()
 
 /obj/item/clothing/head/changeling/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	attack_hand(user, modifiers)
 
 /obj/item/clothing/shoes/changeling
@@ -80,6 +96,8 @@
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/clothing/shoes/changeling/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(loc == user && IS_CHANGELING(user))
 		to_chat(user, span_notice("You reabsorb [src] into your body."))
 		qdel(src)
@@ -87,6 +105,8 @@
 	. = ..()
 
 /obj/item/clothing/shoes/changeling/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	attack_hand(user, modifiers)
 
 /obj/item/clothing/gloves/changeling
@@ -96,6 +116,8 @@
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/clothing/gloves/changeling/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(loc == user && IS_CHANGELING(user))
 		to_chat(user, span_notice("You reabsorb [src] into your body."))
 		qdel(src)
@@ -103,6 +125,8 @@
 	. = ..()
 
 /obj/item/clothing/gloves/changeling/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	attack_hand(user, modifiers)
 
 /obj/item/clothing/mask/changeling
@@ -112,6 +136,8 @@
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/clothing/mask/changeling/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(loc == user && IS_CHANGELING(user))
 		to_chat(user, span_notice("You reabsorb [src] into your body."))
 		qdel(src)
@@ -119,6 +145,8 @@
 	. = ..()
 
 /obj/item/clothing/mask/changeling/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	attack_hand(user, modifiers)
 
 /obj/item/changeling
@@ -129,6 +157,8 @@
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/changeling/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(loc == user && IS_CHANGELING(user))
 		to_chat(user, span_notice("You reabsorb [src] into your body."))
 		qdel(src)
@@ -136,6 +166,8 @@
 	. = ..()
 
 /obj/item/changeling/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	attack_hand(user, modifiers)
 
 /obj/item/changeling/id
@@ -146,6 +178,8 @@
 	var/hud_icon
 
 /obj/item/changeling/id/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!hud_icon)
 		return
@@ -155,20 +189,28 @@
  * Returns cached flat icon of the ID, creates one if there is not one already cached
  */
 /obj/item/changeling/id/proc/get_cached_flat_icon()
+	procstart = null
+	src.procstart = null
 	if(!cached_flat_icon)
 		cached_flat_icon = getFlatIcon(src)
 		cached_flat_icon.Crop(ID_ICON_BORDERS)
 	return cached_flat_icon
 
 /obj/item/changeling/id/get_id_examine_strings(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += list("[icon2html(get_cached_flat_icon(), user, extra_classes = "hugeicon")]")
 
 /obj/item/changeling/id/get_examine_icon(mob/user)
+	procstart = null
+	src.procstart = null
 	return icon2html(get_cached_flat_icon(), user)
 
 //Change our DNA to that of somebody we've absorbed.
 /datum/action/changeling/transform/sting_action(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/changeling/changeling = IS_CHANGELING(user)
 	var/datum/changeling_profile/chosen_prof = changeling.select_dna()
 
@@ -183,6 +225,8 @@
  * Gives a changeling a list of all possible dnas in their profiles to choose from and returns profile containing their chosen dna
  */
 /datum/antagonist/changeling/proc/select_dna()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/user = owner.current
 	if(!istype(user))
 		return
@@ -218,6 +262,8 @@
  * * user The carbon mob interacting with the menu
  */
 /datum/antagonist/changeling/proc/check_menu(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	var/datum/antagonist/changeling/changeling_datum = IS_CHANGELING(user)

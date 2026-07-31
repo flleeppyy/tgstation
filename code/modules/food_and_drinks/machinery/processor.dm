@@ -27,6 +27,8 @@
 	var/static/list/processor_inputs
 
 /obj/machinery/processor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(processor_inputs)
 		return
@@ -45,6 +47,8 @@
 			LAZYADD(processor_inputs[machine_type], typecache)
 
 /obj/machinery/processor/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/stock_part/matter_bin/matter_bin in component_parts)
 		rating_amount = matter_bin.tier
@@ -52,11 +56,15 @@
 		rating_speed = servo.tier
 
 /obj/machinery/processor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
 		. += span_notice("The status display reads: Outputting <b>[rating_amount]</b> item(s) at <b>[rating_speed*100]%</b> speed.")
 
 /obj/machinery/processor/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	..()
 	LAZYREMOVE(processor_contents, gone)
 
@@ -65,6 +73,8 @@
 *	If the input was a mob, gibs them, otherwise, deletes the item
 */
 /obj/machinery/processor/proc/process_food(datum/food_processor_process/recipe, atom/movable/what)
+	procstart = null
+	src.procstart = null
 	if(recipe.output && loc && !QDELETED(src))
 		var/list/cached_mats = recipe.preserve_materials && what.custom_materials
 		var/cached_multiplier = (recipe.food_multiplier * rating_amount)
@@ -85,6 +95,8 @@
 	LAZYREMOVE(processor_contents, what)
 
 /obj/machinery/processor/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(processing)
 		to_chat(user, span_warning("[src] is in the process of processing!"))
 		return ITEM_INTERACT_BLOCKING
@@ -93,6 +105,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/processor/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(processing)
 		to_chat(user, span_warning("[src] is in the process of processing!"))
 		return ITEM_INTERACT_BLOCKING
@@ -100,6 +114,8 @@
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/processor/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(processing)
 		to_chat(user, span_warning("[src] is in the process of processing!"))
 		return ITEM_INTERACT_BLOCKING
@@ -107,6 +123,8 @@
 	return default_pry_open(user, tool, close_after_pry = TRUE, deconstruct_on_fail = TRUE)
 
 /obj/machinery/processor/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 
@@ -142,10 +160,14 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/machinery/processor/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]_open" : base_icon_state
 
 /obj/machinery/processor/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(processing)
 		to_chat(user, span_warning("[src] is in the process of processing!"))
 		return TRUE
@@ -169,6 +191,8 @@
 
 
 /obj/machinery/processor/proc/processing()
+	procstart = null
+	src.procstart = null
 	processing = TRUE
 	playsound(src.loc, 'sound/machines/blender.ogg', 50, TRUE)
 	use_energy(active_power_usage)
@@ -189,6 +213,8 @@
 	addtimer(CALLBACK(src, PROC_REF(complete_processing)), duration)
 
 /obj/machinery/processor/proc/complete_processing()
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/content_item in processor_contents)
 		var/datum/food_processor_process/recipe = PROCESSOR_SELECT_RECIPE(content_item)
 		if (!recipe)
@@ -212,6 +238,8 @@ GAME_VERB_SRC(/obj/machinery/processor, eject, oview(1), "Eject Contents", null)
 	add_fingerprint(usr)
 
 /obj/machinery/processor/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.forceMove(drop_location())
 	user.visible_message(span_notice("[user] crawls free of the processor!"))
 
@@ -227,10 +255,14 @@ GAME_VERB_SRC(/obj/machinery/processor, eject, oview(1), "Eject Contents", null)
 	circuit = /obj/item/circuitboard/machine/processor/slime/fullupgrade
 
 /obj/machinery/processor/slime/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/usb_port, typecacheof(list(/obj/item/circuit_component/slime_processor), only_root_path = TRUE))
 
 /obj/machinery/processor/slime/adjust_item_drop_location(atom/movable/atom_to_drop)
+	procstart = null
+	src.procstart = null
 	var/static/list/slimecores = subtypesof(/obj/item/slime_extract)
 	var/i = 0
 	if(!(i = slimecores.Find(atom_to_drop.type))) // If the item is not found
@@ -245,6 +277,8 @@ GAME_VERB_SRC(/obj/machinery/processor, eject, oview(1), "Eject Contents", null)
 	return i
 
 /obj/machinery/processor/slime/process()
+	procstart = null
+	src.procstart = null
 	if(processing)
 		return
 	var/list/mob/living/basic/slime/picked_slimes
@@ -269,6 +303,8 @@ GAME_VERB_SRC(/obj/machinery/processor, eject, oview(1), "Eject Contents", null)
 		slime_to_add.forceMove(src)
 
 /obj/machinery/processor/slime/process_food(datum/food_processor_process/recipe, atom/movable/what)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/slime/processed_slime = what
 	if (!istype(processed_slime))
 		return
@@ -299,19 +335,27 @@ GAME_VERB_SRC(/obj/machinery/processor, eject, oview(1), "Eject Contents", null)
 	var/obj/machinery/processor/slime/attached_processor
 
 /obj/item/circuit_component/slime_processor/populate_ports()
+	procstart = null
+	src.procstart = null
 	active = add_input_port("Activate", PORT_TYPE_SIGNAL, trigger = PROC_REF(activate))
 	amount = add_output_port("Amount", PORT_TYPE_NUMBER)
 
 /obj/item/circuit_component/slime_processor/register_usb_parent(atom/movable/parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(parent, /obj/machinery/processor/slime))
 		attached_processor = parent
 
 /obj/item/circuit_component/slime_processor/unregister_usb_parent(atom/movable/parent)
+	procstart = null
+	src.procstart = null
 	attached_processor = null
 	return ..()
 
 /obj/item/circuit_component/slime_processor/proc/activate()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	input_received()
 	if(attached_processor.processing)
@@ -321,6 +365,8 @@ GAME_VERB_SRC(/obj/machinery/processor, eject, oview(1), "Eject Contents", null)
 	attached_processor.processing()
 
 /obj/item/circuit_component/slime_processor/input_received()
+	procstart = null
+	src.procstart = null
 	var/list/contents = attached_processor.processor_contents
 	amount.set_output(LAZYLEN(contents))
 

@@ -42,10 +42,14 @@
 	var/backdoor_sacrifice_attempts = 0
 
 /datum/heretic_knowledge/hunt_and_sacrifice/Destroy(force)
+	procstart = null
+	src.procstart = null
 	heretic_mind = null
 	return ..()
 
 /datum/heretic_knowledge/hunt_and_sacrifice/on_research(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	obtain_targets(user, silent = TRUE, heretic_datum = our_heretic)
 	heretic_mind = our_heretic.owner
@@ -59,6 +63,8 @@
 
 /// Generate the sacrifice z-level.
 /datum/heretic_knowledge/hunt_and_sacrifice/proc/generate_heretic_z_level()
+	procstart = null
+	src.procstart = null
 	if(!SSmapping.lazy_load_template(LAZY_TEMPLATE_KEY_HERETIC_SACRIFICE))
 		log_game("The heretic sacrifice template failed to load.")
 		message_admins("The heretic sacrifice lazy template failed to load. Heretic sacrifices won't be teleported to the shadow realm. \
@@ -66,6 +72,8 @@
 		CRASH("Failed to lazy load heretic sacrifice template!")
 
 /datum/heretic_knowledge/hunt_and_sacrifice/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/heretic/heretic_datum = GET_HERETIC(user)
 	// First we have to check if the heretic has a Living Heart.
 	// You may wonder why we don't straight up prevent them from invoking the ritual if they don't have one -
@@ -123,6 +131,8 @@
 	return FALSE
 
 /datum/heretic_knowledge/hunt_and_sacrifice/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/heretic/heretic_datum = GET_HERETIC(user)
 	// Force it to work if the sacrifice is a cultist, even if there's no targets.
 	var/mob/living/carbon/human/sac = selected_atoms[1]
@@ -143,6 +153,8 @@
  * Returns FALSE if no targets are found, TRUE if the targets list was populated.
  */
 /datum/heretic_knowledge/hunt_and_sacrifice/proc/obtain_targets(mob/living/user, silent = FALSE, datum/antagonist/heretic/heretic_datum)
+	procstart = null
+	src.procstart = null
 
 	// First construct a list of minds that are valid objective targets.
 	var/list/datum/mind/valid_targets = list()
@@ -216,6 +228,8 @@
  * * loc - the turf the sacrifice is occurring on
  */
 /datum/heretic_knowledge/hunt_and_sacrifice/proc/sacrifice_process(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 
 	var/datum/antagonist/heretic/heretic_datum = GET_HERETIC(user)
 	var/mob/living/carbon/human/sacrifice = locate() in selected_atoms
@@ -270,6 +284,8 @@
 
 
 /datum/heretic_knowledge/hunt_and_sacrifice/proc/grant_reward(mob/living/user, mob/living/sacrifice, turf/loc)
+	procstart = null
+	src.procstart = null
 
 	// Visible and audible encouragement!
 	to_chat(user, span_big(span_hypnophrase("A servant of the Sanguine Apostate!")))
@@ -302,6 +318,8 @@
 
 
 /datum/heretic_knowledge/hunt_and_sacrifice/proc/deposit_reward(mob/user, turf/loc, loop = 0, obj/rune)
+	procstart = null
+	src.procstart = null
 	if(loop > 5) // Max limit for retrying a reward
 		return
 	// Remove the outline, we don't need it anymore.
@@ -342,6 +360,8 @@
  * * sac_target - the mob being sacrificed.
  */
 /datum/heretic_knowledge/hunt_and_sacrifice/proc/begin_sacrifice(mob/living/carbon/human/sac_target)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 
 	var/datum/antagonist/heretic/our_heretic = heretic_mind?.has_antag_datum(/datum/antagonist/heretic)
@@ -397,6 +417,8 @@
  * * destination - the spot they're being teleported to.
  */
 /datum/heretic_knowledge/hunt_and_sacrifice/proc/after_target_sleeps(mob/living/carbon/human/sac_target, turf/destination)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(sac_target))
 		return
 
@@ -432,6 +454,8 @@
 
 /// Apply a sinister curse to some of the target's organs as an incentive to leave us alone
 /datum/heretic_knowledge/hunt_and_sacrifice/proc/curse_organs(mob/living/carbon/human/sac_target)
+	procstart = null
+	src.procstart = null
 	var/usable_organs = grantable_organs.Copy()
 	if (isplasmaman(sac_target))
 		usable_organs -= /obj/item/organ/lungs/corrupt // Their lungs are already more cursed than anything I could give them
@@ -458,6 +482,8 @@
  * Then applies some miscellaneous effects.
  */
 /datum/heretic_knowledge/hunt_and_sacrifice/proc/after_target_wakes(mob/living/carbon/human/sac_target)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(sac_target))
 		return
 
@@ -490,6 +516,8 @@
  * It gives them a message letting them know it's getting easier and they're almost free.
  */
 /datum/heretic_knowledge/hunt_and_sacrifice/proc/after_helgrasp_ends(mob/living/carbon/human/sac_target)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(sac_target) || sac_target.stat == DEAD)
 		return
 
@@ -507,6 +535,8 @@
  * * heretic - the heretic who originally did the sacrifice.
  */
 /datum/heretic_knowledge/hunt_and_sacrifice/proc/return_target(mob/living/carbon/human/sac_target)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(sac_target))
 		return
 
@@ -570,6 +600,8 @@
  * If they die in the shadow realm, they lost. Send them back.
  */
 /datum/heretic_knowledge/hunt_and_sacrifice/proc/on_target_death(mob/living/carbon/human/sac_target, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(gibbed) // Nothing to return
@@ -581,6 +613,8 @@
  * If they somehow cheese the shadow realm by teleporting out, they are disemboweled and killed.
  */
 /datum/heretic_knowledge/hunt_and_sacrifice/proc/on_target_escape(mob/living/carbon/human/sac_target, old_z, new_z)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	to_chat(sac_target, span_boldwarning("Your attempt to escape the Mansus is not taken kindly!"))
@@ -593,6 +627,8 @@
  * Gives the sacrifice target some after effects upon ariving back to reality.
  */
 /datum/heretic_knowledge/hunt_and_sacrifice/proc/after_return_live_target(mob/living/carbon/human/sac_target)
+	procstart = null
+	src.procstart = null
 	to_chat(sac_target, span_hypnophrase("The fight is over, but at great cost. You have been returned to the station in one piece."))
 	if(IS_HERETIC(sac_target))
 		to_chat(sac_target, span_big(span_hypnophrase("You don't remember anything leading up to the experience, but you feel your connection with the Mansus weakened - Knowledge once known, forgotten...")))
@@ -626,6 +662,8 @@
  * it spawns a special red broken illusion on their spot, for style.
  */
 /datum/heretic_knowledge/hunt_and_sacrifice/proc/after_return_dead_target(mob/living/carbon/human/sac_target)
+	procstart = null
+	src.procstart = null
 	to_chat(sac_target, span_hypnophrase("You failed to resist the horrors of the Mansus! Your ruined body has been returned to the station."))
 	to_chat(sac_target, span_big(span_hypnophrase("The experience leaves your mind torn and memories tattered. You will not remember anything leading up to the experience if revived.")))
 
@@ -639,6 +677,8 @@
  * Disembowels the [sac_target] and brutilizes their body. Throws some gibs around for good measure.
  */
 /datum/heretic_knowledge/hunt_and_sacrifice/proc/disembowel_target(mob/living/carbon/human/sac_target)
+	procstart = null
+	src.procstart = null
 	if(heretic_mind)
 		log_combat(heretic_mind.current, sac_target, "disemboweled via sacrifice")
 	sac_target.spill_organs(DROP_ALL_REMAINS)

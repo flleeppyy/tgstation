@@ -22,10 +22,14 @@
 	var/static/list/mutable_appearance/center_cache = list()
 
 /obj/machinery/atmospherics/pipe/color_adapter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	icon_state = ""
 	. = ..()
 
 /obj/machinery/atmospherics/pipe/color_adapter/set_init_directions()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH, SOUTH)
 			initialize_directions = SOUTH|NORTH
@@ -33,6 +37,8 @@
 			initialize_directions = EAST|WEST
 
 /obj/machinery/atmospherics/pipe/color_adapter/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/center = center_cache["[piping_layer]"]
 	if(!center)

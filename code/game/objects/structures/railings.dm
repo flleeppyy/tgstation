@@ -50,6 +50,8 @@
 	resistance_flags = INDESTRUCTIBLE
 
 /obj/structure/railing/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(climbable)
 		AddElement(/datum/element/climbable)
@@ -76,6 +78,8 @@
 	AddElement(/datum/element/simple_rotation, ROTATION_NEEDS_ROOM)
 
 /obj/structure/railing/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(anchored == TRUE)
 		. += span_notice("The railing is <b>bolted</b> to the floor.")
@@ -83,10 +87,14 @@
 		. += span_notice("The railing is <i>unbolted</i> from the floor and can be deconstructed with <b>wirecutters</b>.")
 
 /obj/structure/railing/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	return ..()
 
 /obj/structure/railing/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 
@@ -108,6 +116,8 @@
 
 
 /obj/structure/railing/wirecutter_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(resistance_flags & INDESTRUCTIBLE)
 		to_chat(user, span_warning("You try to cut apart the railing, but it's too hard!"))
 		I.play_tool_sound(src, 100)
@@ -118,12 +128,16 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/railing/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	var/rods_to_make = istype(src,/obj/structure/railing/corner) ? 1 : 2
 	var/obj/rod = new item_deconstruct(drop_location(), rods_to_make)
 	transfer_fingerprints_to(rod)
 
 ///Implements behaviour that makes it possible to unanchor the railing.
 /obj/structure/railing/wrench_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(user, span_notice("You begin to [anchored ? "unfasten the railing from":"fasten the railing to"] the floor..."))
 	if(I.use_tool(src, user, volume = 75, extra_checks = CALLBACK(src, PROC_REF(check_anchored), anchored)))
@@ -132,17 +146,23 @@
 	return TRUE
 
 /obj/structure/railing/CanPass(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(border_dir & dir)
 		return . || mover.throwing || (mover.movement_type & MOVETYPES_NOT_TOUCHING_GROUND)
 	return TRUE
 
 /obj/structure/railing/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	procstart = null
+	src.procstart = null
 	if(!(to_dir & dir))
 		return TRUE
 	return ..()
 
 /obj/structure/railing/proc/on_exit(datum/source, atom/movable/leaving, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(leaving == src)
@@ -167,6 +187,8 @@
 	return COMPONENT_ATOM_BLOCK_EXIT
 
 /obj/structure/railing/proc/check_anchored(checked_anchored)
+	procstart = null
+	src.procstart = null
 	if(anchored == checked_anchored)
 		return TRUE
 
@@ -182,15 +204,21 @@
 	custom_materials = list(/datum/material/wood = SHEET_MATERIAL_AMOUNT * 2)
 
 /obj/structure/railing/wooden_fence/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ATOM_DIR_CHANGE, PROC_REF(on_change_layer))
 	adjust_dir_layer(dir)
 
 /obj/structure/railing/wooden_fence/proc/on_change_layer(datum/source, old_dir, new_dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	adjust_dir_layer(new_dir)
 
 /obj/structure/railing/wooden_fence/proc/adjust_dir_layer(direction)
+	procstart = null
+	src.procstart = null
 	layer = (direction & NORTH) ? MOB_LAYER : initial(layer)
 
 

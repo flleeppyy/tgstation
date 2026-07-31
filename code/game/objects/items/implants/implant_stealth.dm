@@ -27,24 +27,36 @@
 	enable_door_overlay = FALSE
 
 /obj/structure/closet/cardboard/agent/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	go_invisible()
 
 /obj/structure/closet/cardboard/agent/proc/go_invisible()
+	procstart = null
+	src.procstart = null
 	animate(src, alpha = 0, time = 20)
 
 /obj/structure/closet/cardboard/agent/after_open(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(src)
 
 /obj/structure/closet/cardboard/agent/process()
+	procstart = null
+	src.procstart = null
 	alpha = max(0, alpha - 50)
 
 /obj/structure/closet/cardboard/agent/proc/reveal()
+	procstart = null
+	src.procstart = null
 	alpha = 255
 	addtimer(CALLBACK(src, PROC_REF(go_invisible)), 10, TIMER_OVERRIDE|TIMER_UNIQUE)
 
 /obj/structure/closet/cardboard/agent/Bump(atom/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(A, /obj/machinery/door))
 		for(var/mob/mob_in_box in contents)
@@ -53,6 +65,8 @@
 		reveal()
 
 /obj/structure/closet/cardboard/agent/Bumped(atom/movable/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(A))
 		reveal()

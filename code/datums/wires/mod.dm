@@ -3,17 +3,23 @@
 	proper_name = "MOD control unit"
 
 /datum/wires/mod/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(WIRE_HACK, WIRE_DISABLE, WIRE_SHOCK, WIRE_INTERFACE)
 	add_duds(2)
 	..()
 
 /datum/wires/mod/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/obj/item/mod/control/mod = holder
 	return mod.open
 
 /datum/wires/mod/get_status()
+	procstart = null
+	src.procstart = null
 	var/obj/item/mod/control/mod = holder
 	var/list/status = list()
 	status += "The orange light is [mod.seconds_electrified ? "on" : "off"]."
@@ -23,6 +29,8 @@
 	return status
 
 /datum/wires/mod/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	var/obj/item/mod/control/mod = holder
 	switch(wire)
 		if(WIRE_HACK)
@@ -35,6 +43,8 @@
 			mod.interface_break = !mod.interface_break
 
 /datum/wires/mod/on_cut(wire, mend, source)
+	procstart = null
+	src.procstart = null
 	var/obj/item/mod/control/mod = holder
 	switch(wire)
 		if(WIRE_HACK)
@@ -51,6 +61,8 @@
 			mod.interface_break = !mend
 
 /datum/wires/mod/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	var/obj/item/mod/control/mod = holder
 	var/mob/user = ui.user
 	if(!HAS_SILICON_ACCESS(user) && mod.seconds_electrified && mod.shock(user, 100))
@@ -58,6 +70,8 @@
 	return ..()
 
 /datum/wires/mod/can_reveal_wires(mob/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(user, TRAIT_KNOW_ROBO_WIRES))
 		return TRUE
 	return ..()

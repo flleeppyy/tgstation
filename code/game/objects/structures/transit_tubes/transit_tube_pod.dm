@@ -13,20 +13,28 @@
 	var/obj/structure/transit_tube/current_tube = null
 
 /obj/structure/transit_tube_pod/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/new_gases = list(/datum/gas/oxygen = MOLES_O2STANDARD, /datum/gas/nitrogen = MOLES_N2STANDARD)
 	air_contents.adjust_multiple_gases(new_gases)
 	air_contents.temperature = T20C
 
 /obj/structure/transit_tube_pod/Destroy()
+	procstart = null
+	src.procstart = null
 	empty_pod()
 	return ..()
 
 /obj/structure/transit_tube_pod/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = contents.len ? occupied_icon_state : initial(icon_state)
 	return ..()
 
 /obj/structure/transit_tube_pod/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(moving)		// can you even click on one of these while they're in a tube?
 		return NONE	// for that matter can you click them when they're outside of a tube?
 
@@ -40,6 +48,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/transit_tube_pod/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/atom/location = get_turf(src)
 	var/obj/structure/c_transit_tube_pod/tube_pod = new/obj/structure/c_transit_tube_pod(location)
 	transfer_fingerprints_to(tube_pod)
@@ -47,6 +57,8 @@
 	empty_pod(location)
 
 /obj/structure/transit_tube_pod/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(src))
 		return TRUE
@@ -55,6 +67,8 @@
 	return TRUE
 
 /obj/structure/transit_tube_pod/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
 			SSexplosions.high_mov_atom += contents
@@ -64,11 +78,15 @@
 			SSexplosions.low_mov_atom += contents
 
 /obj/structure/transit_tube_pod/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_size >= STAGE_FIVE)
 		deconstruct(FALSE)
 
 /obj/structure/transit_tube_pod/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user.incapacitated)
 		empty_pod()
 		return
@@ -81,6 +99,8 @@
 			empty_pod()
 
 /obj/structure/transit_tube_pod/proc/empty_pod(atom/location)
+	procstart = null
+	src.procstart = null
 	if(!location)
 		location = get_turf(src)
 	for(var/atom/movable/M in contents)
@@ -88,6 +108,8 @@
 	update_appearance()
 
 /obj/structure/transit_tube_pod/proc/follow_tube(obj/structure/transit_tube/tube)
+	procstart = null
+	src.procstart = null
 	if(moving || !tube.has_exit(dir))
 		return
 
@@ -101,10 +123,14 @@
 	calibrate_engine(engine)
 
 /obj/structure/transit_tube_pod/proc/before_pipe_transfer(datum/move_loop/move/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	setDir(source.direction)
 
 /obj/structure/transit_tube_pod/proc/after_pipe_transfer(datum/move_loop/move/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	set_density(current_tube.density)
@@ -116,6 +142,8 @@
 	calibrate_engine(source)
 
 /obj/structure/transit_tube_pod/proc/calibrate_engine(datum/move_loop/move/engine)
+	procstart = null
+	src.procstart = null
 	var/next_dir = current_tube.get_exit(dir)
 
 	if(!next_dir)
@@ -143,6 +171,8 @@
 	engine.set_delay(enter_delay + exit_delay)
 
 /obj/structure/transit_tube_pod/proc/engine_finish()
+	procstart = null
+	src.procstart = null
 	set_density(TRUE)
 	moving = FALSE
 
@@ -152,6 +182,8 @@
 		outside_tube()
 
 /obj/structure/transit_tube_pod/proc/outside_tube()
+	procstart = null
+	src.procstart = null
 	var/list/savedcontents = contents.Copy()
 	var/saveddir = dir
 	var/turf/destination = get_edge_target_turf(src,saveddir)
@@ -162,19 +194,29 @@
 		AM.throw_at(destination,rand(1,3),5)
 
 /obj/structure/transit_tube_pod/return_air()
+	procstart = null
+	src.procstart = null
 	return air_contents
 
 /obj/structure/transit_tube_pod/return_analyzable_air()
+	procstart = null
+	src.procstart = null
 	return air_contents
 
 /obj/structure/transit_tube_pod/assume_air(datum/gas_mixture/giver)
+	procstart = null
+	src.procstart = null
 	return air_contents.merge(giver)
 
 /obj/structure/transit_tube_pod/remove_air(amount)
+	procstart = null
+	src.procstart = null
 	return air_contents.remove(amount)
 
 
 /obj/structure/transit_tube_pod/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(!user.client || moving)
 		return
 
@@ -202,6 +244,8 @@
 
 
 /obj/structure/transit_tube_pod/return_temperature()
+	procstart = null
+	src.procstart = null
 	return air_contents.temperature
 
 //special pod made by the dispenser, it fizzles away when reaching a station.
@@ -213,6 +257,8 @@
 	occupied_icon_state = "temppod_occupied"
 
 /obj/structure/transit_tube_pod/dispensed/outside_tube()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(src))
 		qdel(src)
 

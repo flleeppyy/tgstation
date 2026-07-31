@@ -25,14 +25,20 @@
 	var/empowered_cast = FALSE
 
 /datum/action/cooldown/spell/charged/beam/fire_blast/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(grant_to, COMSIG_FIRE_STACKS_UPDATED, PROC_REF(update_status_on_signal))
 
 /datum/action/cooldown/spell/charged/beam/fire_blast/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(remove_from, COMSIG_FIRE_STACKS_UPDATED)
 
 /datum/action/cooldown/spell/charged/beam/fire_blast/apply_button_overlay(atom/movable/screen/movable/action_button/current_button, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Put an active border whenever our spell is able to be casted empowered
 	if(!ishuman(owner))
@@ -48,6 +54,8 @@
 	current_button.add_overlay(current_button.button_overlay)
 
 /datum/action/cooldown/spell/charged/beam/fire_blast/before_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	empowered_cast = FALSE
 	channel_time = initial(channel_time)
 	// Wearing Ash heretic armor empowers your spells if you have over 3 fire stacks
@@ -64,6 +72,8 @@
 	return ..()
 
 /datum/action/cooldown/spell/charged/beam/fire_blast/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	var/mob/living/caster = get_caster_from_target(cast_on)
 	if(istype(caster))
 		// Caster becomes fireblasted, but in a good way - heals damage over time
@@ -71,6 +81,8 @@
 	return ..()
 
 /datum/action/cooldown/spell/charged/beam/fire_blast/send_beam(atom/origin, mob/living/carbon/to_beam, bounces = max_beam_bounces)
+	procstart = null
+	src.procstart = null
 	// Send a beam from the origin to the hit mob
 	origin.Beam(to_beam, icon_state = "solar_beam", time = beam_duration, beam_type = /obj/effect/ebeam/reacting/fire)
 
@@ -112,6 +124,8 @@
 
 /// Timer callback to continue the chain, calling send_fire_bream recursively.
 /datum/action/cooldown/spell/charged/beam/fire_blast/proc/continue_beam(mob/living/carbon/beamed, bounces)
+	procstart = null
+	src.procstart = null
 	// We will only continue the chain if we exist, are still on fire, and still have the status effect
 	if(QDELETED(beamed) || !beamed.on_fire || !beamed.has_status_effect(/datum/status_effect/fire_blasted))
 		return
@@ -127,6 +141,8 @@
 /// Mobs on fire will have priority and be targeted over others.
 /// Returns null or a carbon mob.
 /datum/action/cooldown/spell/charged/beam/fire_blast/get_target(atom/center)
+	procstart = null
+	src.procstart = null
 	var/list/possibles = list()
 	var/list/priority_possibles = list()
 	for(var/mob/living/carbon/to_check in view(target_radius, center))
@@ -164,11 +180,15 @@
 	var/animate_duration = 0.75 SECONDS
 
 /datum/status_effect/fire_blasted/on_creation(mob/living/new_owner, animate_duration = -1, tick_damage = 1)
+	procstart = null
+	src.procstart = null
 	src.animate_duration = animate_duration
 	src.tick_damage = tick_damage
 	return ..()
 
 /datum/status_effect/fire_blasted/on_apply()
+	procstart = null
+	src.procstart = null
 	if(owner.on_fire && animate_duration > 0 SECONDS)
 		var/mutable_appearance/warning_sign = mutable_appearance('icons/effects/effects.dmi', "blessed", BELOW_MOB_LAYER)
 		var/atom/movable/flick_visual/warning = owner.flick_overlay_view(warning_sign, initial(duration))
@@ -178,6 +198,8 @@
 	return TRUE
 
 /datum/status_effect/fire_blasted/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	owner.adjust_fire_loss(tick_damage * seconds_between_ticks)
 	owner.adjust_stamina_loss(2 * tick_damage * seconds_between_ticks)
 
@@ -186,6 +208,8 @@
 	name = "fire beam"
 
 /obj/effect/ebeam/reacting/fire/beam_entered(atom/movable/entered)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(entered))
 		return

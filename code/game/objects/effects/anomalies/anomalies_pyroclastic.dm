@@ -14,14 +14,20 @@
 	var/poll_time = 10 SECONDS
 
 /obj/effect/anomaly/pyro/Initialize(mapload, new_lifespan)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	apply_wibbly_filters(src)
 
 /obj/effect/anomaly/pyro/Destroy()
+	procstart = null
+	src.procstart = null
 	chosen_one = null
 	return ..()
 
 /obj/effect/anomaly/pyro/anomalyEffect(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!immortal && !already_polling && death_time < (world.time - poll_time))
 		start_poll()
@@ -36,13 +42,19 @@
 	return TRUE
 
 /obj/effect/anomaly/pyro/detonate()
+	procstart = null
+	src.procstart = null
 	INVOKE_ASYNC(src, PROC_REF(makepyroslime))
 
 /obj/effect/anomaly/pyro/proc/start_poll()
+	procstart = null
+	src.procstart = null
 	already_polling = TRUE
 	chosen_one = SSpolling.poll_ghosts_for_target(check_jobban = ROLE_SENTIENCE, poll_time = poll_time, checked_target = src, ignore_category = POLL_IGNORE_PYROSLIME, alert_pic = src, role_name_text = "pyroclastic anomaly slime")
 
 /obj/effect/anomaly/pyro/proc/makepyroslime()
+	procstart = null
+	src.procstart = null
 	var/turf/open/tile = get_turf(src)
 	if(istype(tile))
 		tile.atmos_spawn_air("[GAS_O2]=500;[GAS_PLASMA]=500;[TURF_TEMPERATURE(1000)]") //Make it hot and burny for the new slime
@@ -66,11 +78,15 @@
 	move_force = MOVE_FORCE_OVERPOWERING
 
 /obj/effect/anomaly/pyro/big/Initialize(mapload, new_lifespan)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	transform *= 3
 
 /obj/effect/anomaly/pyro/big/Bumped(atom/movable/bumpee)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isliving(bumpee))
@@ -78,6 +94,8 @@
 		living.dust()
 
 /obj/effect/anomaly/pyro/big/anomalyEffect(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)

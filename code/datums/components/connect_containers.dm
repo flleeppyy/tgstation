@@ -11,6 +11,8 @@
 	var/atom/movable/tracked
 
 /datum/component/connect_containers/Initialize(atom/movable/tracked, list/connections)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!ismovable(tracked))
 		return COMPONENT_INCOMPATIBLE
@@ -19,10 +21,14 @@
 	set_tracked(tracked)
 
 /datum/component/connect_containers/Destroy()
+	procstart = null
+	src.procstart = null
 	set_tracked(null)
 	return ..()
 
 /datum/component/connect_containers/CheckDupeComponent(datum/component/connect_containers/new_component, atom/movable/tracked, list/connections)
+	procstart = null
+	src.procstart = null
 	// Not equivalent. Checks if they are not the same list via shallow comparison.
 	if(!compare_list(src.connections, connections))
 		return FALSE // Different set of connections.
@@ -31,6 +37,8 @@
 	return TRUE // No new component.
 
 /datum/component/connect_containers/proc/set_tracked(atom/movable/new_tracked)
+	procstart = null
+	src.procstart = null
 	if(tracked)
 		UnregisterSignal(tracked, list(COMSIG_MOVABLE_MOVED, COMSIG_QDELETING))
 		unregister_signals(tracked)
@@ -42,10 +50,14 @@
 	update_signals(tracked)
 
 /datum/component/connect_containers/proc/handle_tracked_qdel()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /datum/component/connect_containers/proc/update_signals(atom/movable/listener)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(listener.loc))
 		return
 
@@ -55,6 +67,8 @@
 			parent.RegisterSignal(container, signal, connections[signal])
 
 /datum/component/connect_containers/proc/unregister_signals(atom/movable/location)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(location))
 		return
 
@@ -63,6 +77,8 @@
 		parent.UnregisterSignal(target, connections)
 
 /datum/component/connect_containers/proc/on_moved(atom/movable/listener, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	unregister_signals(old_loc)
 	update_signals(listener)

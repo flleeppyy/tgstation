@@ -15,6 +15,8 @@
 	var/repeatable = FALSE
 
 /datum/surgery_operation/organ/repair/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(operation_flags & OPERATION_LOOPING)
 		repeatable = TRUE // if it's looping it would necessitate being repeatable
@@ -22,26 +24,36 @@
 		desc += " This procedure can only be performed once per organ."
 
 /datum/surgery_operation/organ/repair/state_check(obj/item/organ/organ)
+	procstart = null
+	src.procstart = null
 	if(organ.damage < (organ.maxHealth * heal_to_percent) || (!repeatable && HAS_TRAIT(organ, TRAIT_ORGAN_OPERATED_ON)))
 		return FALSE // conditionally available so we don't spam the radial with useless options, alas
 	return TRUE
 
 /datum/surgery_operation/organ/repair/all_required_strings()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!repeatable)
 		. += "the organ must be moderately damaged"
 
 /datum/surgery_operation/organ/repair/all_blocked_strings()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!repeatable)
 		. += "the organ must not have been surgically repaired prior"
 
 /datum/surgery_operation/organ/repair/on_success(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	organ.set_organ_damage(organ.maxHealth * heal_to_percent)
 	organ.organ_flags &= ~ORGAN_EMP
 	ADD_TRAIT(organ, TRAIT_ORGAN_OPERATED_ON, TRAIT_GENERIC)
 
 /datum/surgery_operation/organ/repair/on_failure(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	organ.apply_organ_damage(organ.maxHealth * failure_damage_percent)
 
 /datum/surgery_operation/organ/repair/lobectomy
@@ -62,6 +74,8 @@
 	failure_damage_percent = 0.1
 
 /datum/surgery_operation/organ/repair/lobectomy/on_preop(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		organ.owner,
@@ -72,6 +86,8 @@
 	display_pain(organ.owner, "You feel a stabbing pain in your chest!")
 
 /datum/surgery_operation/organ/repair/lobectomy/on_success(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	display_results(
 		surgeon,
@@ -82,6 +98,8 @@
 	)
 
 /datum/surgery_operation/organ/repair/lobectomy/on_failure(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	organ.owner?.losebreath += 4
 	display_results(
@@ -127,6 +145,8 @@
 	failure_damage_percent = 0.15
 
 /datum/surgery_operation/organ/repair/hepatectomy/on_preop(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		organ.owner,
@@ -137,6 +157,8 @@
 	display_pain(organ.owner, "Your abdomen burns in horrific stabbing pain!")
 
 /datum/surgery_operation/organ/repair/hepatectomy/on_success(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	display_results(
 		surgeon,
@@ -148,6 +170,8 @@
 	display_pain(organ.owner, "The pain receeds slightly!")
 
 /datum/surgery_operation/organ/repair/hepatectomy/on_failure(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	display_results(
 		surgeon,
@@ -190,6 +214,8 @@
 	target_type = /obj/item/organ/heart
 
 /datum/surgery_operation/organ/repair/coronary_bypass/on_preop(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		organ.owner,
@@ -200,6 +226,8 @@
 	display_pain(organ.owner, "The pain in your chest is unbearable! You can barely take it anymore!")
 
 /datum/surgery_operation/organ/repair/coronary_bypass/on_success(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	display_results(
 		surgeon,
@@ -211,6 +239,8 @@
 	display_pain(organ.owner, "The pain in your chest throbs, but your heart feels better than ever!")
 
 /datum/surgery_operation/organ/repair/coronary_bypass/on_failure(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	organ.bodypart_owner?.adjustBleedStacks(30)
 	var/blood_name = LOWER_TEXT(organ.owner?.get_bloodtype()?.get_blood_name()) || "blood"
@@ -258,13 +288,19 @@
 	failure_damage_percent = 0.15
 
 /datum/surgery_operation/organ/repair/gastrectomy/get_any_tool()
+	procstart = null
+	src.procstart = null
 	return "Any sharp edged item"
 
 /datum/surgery_operation/organ/repair/gastrectomy/tool_check(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	// Require edged sharpness OR a tool behavior match
 	return ((tool.get_sharpness() & SHARP_EDGED) || implements[tool.tool_behaviour])
 
 /datum/surgery_operation/organ/repair/gastrectomy/on_preop(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		organ.owner,
@@ -275,6 +311,8 @@
 	display_pain(organ.owner, "You feel a horrible stab in your gut!")
 
 /datum/surgery_operation/organ/repair/gastrectomy/on_success(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	display_results(
 		surgeon,
@@ -286,6 +324,8 @@
 	display_pain(organ.owner, "The pain in your gut receeds slightly!")
 
 /datum/surgery_operation/organ/repair/gastrectomy/on_failure(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	display_results(
 		surgeon,
@@ -330,15 +370,21 @@
 	any_surgery_states_blocked = SURGERY_VESSELS_UNCLAMPED
 
 /datum/surgery_operation/organ/repair/ears/all_blocked_strings()
+	procstart = null
+	src.procstart = null
 	return ..() + list("if the limb has bones, they must be intact")
 
 /datum/surgery_operation/organ/repair/ears/state_check(obj/item/organ/ears/organ)
+	procstart = null
+	src.procstart = null
 	// If bones are sawed, prevent the operation (unless we're operating on a limb with no bones)
 	if(LIMB_HAS_ANY_SURGERY_STATE(organ.bodypart_owner, SURGERY_BONE_SAWED|SURGERY_BONE_DRILLED) && LIMB_HAS_BONES(organ.bodypart_owner))
 		return FALSE
 	return TRUE // always available so you can intentionally fail it
 
 /datum/surgery_operation/organ/repair/ears/on_preop(obj/item/organ/ears/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		organ.owner,
@@ -349,6 +395,8 @@
 	display_pain(organ.owner, "You feel a dizzying pain in your head!")
 
 /datum/surgery_operation/organ/repair/ears/on_success(obj/item/organ/ears/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/deaf_change = 40 SECONDS - organ.temporary_deafness
 	organ.adjust_temporary_deafness(deaf_change)
@@ -362,6 +410,8 @@
 	display_pain(organ.owner, "Your head swims, but it seems like you can feel your hearing coming back!")
 
 /datum/surgery_operation/organ/repair/ears/on_failure(obj/item/organ/ears/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/brain = locate() in organ.bodypart_owner
 	if(isnull(brain))
 		display_results(
@@ -401,18 +451,26 @@
 	any_surgery_states_blocked = SURGERY_VESSELS_UNCLAMPED
 
 /datum/surgery_operation/organ/repair/eyes/all_blocked_strings()
+	procstart = null
+	src.procstart = null
 	return ..() + list("if the limb has bones, they must be intact")
 
 /datum/surgery_operation/organ/repair/eyes/state_check(obj/item/organ/organ)
+	procstart = null
+	src.procstart = null
 	// If bones are sawed, prevent the operation (unless we're operating on a limb with no bones)
 	if(LIMB_HAS_ANY_SURGERY_STATE(organ.bodypart_owner, SURGERY_BONE_SAWED|SURGERY_BONE_DRILLED) && LIMB_HAS_BONES(organ.bodypart_owner))
 		return FALSE
 	return TRUE // always available so you can intentionally fail it
 
 /datum/surgery_operation/organ/repair/eyes/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(icon = 'icons/obj/medical/surgery_ui.dmi', icon_state = "surgery_eyes")
 
 /datum/surgery_operation/organ/repair/eyes/on_preop(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		organ.owner,
@@ -423,6 +481,8 @@
 	display_pain(organ.owner, "You feel a stabbing pain in your eyes!")
 
 /datum/surgery_operation/organ/repair/eyes/on_success(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	organ.owner?.remove_status_effect(/datum/status_effect/temporary_blindness)
 	organ.owner?.set_eye_blur_if_lower(70 SECONDS) //this will fix itself slowly.
@@ -436,6 +496,8 @@
 	display_pain(organ.owner, "Your vision blurs, but it seems like you can see a little better now!")
 
 /datum/surgery_operation/organ/repair/eyes/on_failure(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/brain = locate() in organ.bodypart_owner
 	if(isnull(brain))
 		display_results(
@@ -479,9 +541,13 @@
 	any_surgery_states_blocked = SURGERY_VESSELS_UNCLAMPED
 
 /datum/surgery_operation/organ/repair/brain/state_check(obj/item/organ/brain/organ)
+	procstart = null
+	src.procstart = null
 	return TRUE // always available so you can intentionally fail it
 
 /datum/surgery_operation/organ/repair/brain/on_preop(obj/item/organ/brain/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		organ.owner,
@@ -492,6 +558,8 @@
 	display_pain(organ.owner, "Your head pounds with unimaginable pain!")
 
 /datum/surgery_operation/organ/repair/brain/on_success(obj/item/organ/brain/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	organ.apply_organ_damage(-organ.maxHealth * heal_to_percent) // no parent call, special healing for this one
 	display_results(
 		surgeon,
@@ -510,6 +578,8 @@
 		to_chat(surgeon, "[FORMAT_ORGAN_OWNER(organ)]'s brain looks like it could be fixed further.")
 
 /datum/surgery_operation/organ/repair/brain/on_failure(obj/item/organ/brain/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	display_results(
 		surgeon,

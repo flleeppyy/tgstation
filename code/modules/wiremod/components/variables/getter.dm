@@ -14,9 +14,13 @@
 	circuit_size = 0
 
 /obj/item/circuit_component/variable/getter/populate_ports()
+	procstart = null
+	src.procstart = null
 	value = add_output_port("Value", PORT_TYPE_ANY)
 
 /obj/item/circuit_component/variable/getter/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(current_variable)
 		value.set_datatype(current_variable.datatype)

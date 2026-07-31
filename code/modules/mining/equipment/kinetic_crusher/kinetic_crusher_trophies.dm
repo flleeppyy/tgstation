@@ -17,16 +17,22 @@
 	var/list/wildhunter_drops = null
 
 /obj/item/crusher_trophy/examine(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Causes [effect_desc()] when attached to a kinetic crusher.")
 
 /// Returns a string to get added to the examine
 /obj/item/crusher_trophy/proc/effect_desc()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	return "errors"
 
 /// Tries to add the trophy to our crusher
 /obj/item/crusher_trophy/proc/add_to(obj/item/kinetic_crusher/crusher, mob/living/user)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/crusher_trophy/trophy as anything in crusher.trophies)
 		if(istype(trophy, denied_type) || istype(src, trophy.denied_type))
 			to_chat(user, span_warning("You can't seem to attach [src] to [crusher]. Maybe remove a few trophies?"))
@@ -39,31 +45,45 @@
 
 /// Removes the trophy from our crusher
 /obj/item/crusher_trophy/proc/remove_from(obj/item/kinetic_crusher/crusher, mob/living/user)
+	procstart = null
+	src.procstart = null
 	forceMove(get_turf(crusher))
 	return TRUE
 
 /// Does an effect when you hit a mob with a crusher
-/obj/item/crusher_trophy/proc/on_melee_hit(mob/living/target, mob/living/user) //the target and the user
+/obj/item/crusher_trophy/proc/on_melee_hit(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null //the target and the user
 	return
 
-/obj/item/crusher_trophy/proc/on_projectile_fire(obj/projectile/destabilizer/marker, mob/living/user) //the projectile fired and the user
+/obj/item/crusher_trophy/proc/on_projectile_fire(obj/projectile/destabilizer/marker, mob/living/user)
+	procstart = null
+	src.procstart = null //the projectile fired and the user
 	return
 
 /// Does an effect when you hit a mob with the projectile
-/obj/item/crusher_trophy/proc/on_projectile_hit_mob(mob/living/target, mob/living/user) //the target and the user
+/obj/item/crusher_trophy/proc/on_projectile_hit_mob(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null //the target and the user
 	return
 
 /// Does an effect when you hit a mineral turf with the projectile
-/obj/item/crusher_trophy/proc/on_projectile_hit_mineral(turf/closed/mineral, mob/living/user) //the target and the user
+/obj/item/crusher_trophy/proc/on_projectile_hit_mineral(turf/closed/mineral, mob/living/user)
+	procstart = null
+	src.procstart = null //the target and the user
 	return
 
 /// Does an effect when a mark is applied
 /obj/item/crusher_trophy/proc/on_mark_applied(mob/living/target, mob/living/user, datum/status_effect/crusher_mark)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Does an effect when you hit a mob that is marked via the projectile
 /// Returns additional damage for detonation
-/obj/item/crusher_trophy/proc/on_mark_detonation(mob/living/target, mob/living/user, obj/item/kinetic_crusher/pkc) //the target and the user
+/obj/item/crusher_trophy/proc/on_mark_detonation(mob/living/target, mob/living/user, obj/item/kinetic_crusher/pkc)
+	procstart = null
+	src.procstart = null //the target and the user
 	SHOULD_CALL_PARENT(TRUE)
 	//if we dont have a set id, use the typepath as identifier
 	SEND_SIGNAL(target, COMSIG_MOB_TROPHY_ACTIVATED(trophy_id || type), src, user)

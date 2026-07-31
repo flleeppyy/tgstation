@@ -13,14 +13,20 @@
 	var/on = FALSE
 
 /obj/item/reagent_containers/cup/maunamug/Initialize(mapload, vol)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/cuffable_item)
 	cell = new /obj/item/stock_parts/power_store/cell(src)
 
 /obj/item/reagent_containers/cup/maunamug/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/item/reagent_containers/cup/maunamug/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("The status display reads: Current temperature: <b>[reagents.chem_temp]K</b> Current Charge:[cell ? "[cell.charge / cell.maxcharge * 100]%" : "No cell found"].")
 	if(open)
@@ -29,6 +35,8 @@
 		. += span_notice("<b>Ctrl+Click</b> to toggle the power.")
 
 /obj/item/reagent_containers/cup/maunamug/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	..()
 	if(on && (!cell || cell.charge <= 0)) //Check if we ran out of power
 		change_power_status(FALSE)
@@ -46,12 +54,16 @@
 		playsound(src, 'sound/machines/chime.ogg', 50)
 
 /obj/item/reagent_containers/cup/maunamug/Destroy()
+	procstart = null
+	src.procstart = null
 	if(cell)
 		QDEL_NULL(cell)
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
 /obj/item/reagent_containers/cup/maunamug/item_ctrl_click(mob/user)
+	procstart = null
+	src.procstart = null
 	if(on)
 		change_power_status(FALSE)
 	else
@@ -61,6 +73,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/reagent_containers/cup/maunamug/proc/change_power_status(status)
+	procstart = null
+	src.procstart = null
 	on = status
 	if(on)
 		START_PROCESSING(SSobj, src)
@@ -69,12 +83,16 @@
 	update_appearance()
 
 /obj/item/reagent_containers/cup/maunamug/screwdriver_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	open = !open
 	to_chat(user, span_notice("You screw the battery case on [src] [open ? "open" : "closed"] ."))
 	update_appearance()
 
 /obj/item/reagent_containers/cup/maunamug/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stock_parts/power_store/cell))
 		return ..()
 	if(!open)
@@ -91,6 +109,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/cup/maunamug/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(cell && open)
 		user.put_in_hands(cell)
 		cell = null
@@ -101,6 +121,8 @@
 	return ..()
 
 /obj/item/reagent_containers/cup/maunamug/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(open)
 		icon_state = "[base_icon_state][cell ? null : "_no"]_bat"
 		return ..()
@@ -108,6 +130,8 @@
 	return ..()
 
 /obj/item/reagent_containers/cup/maunamug/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!reagents.total_volume || reagents.chem_temp < 400)
 		return

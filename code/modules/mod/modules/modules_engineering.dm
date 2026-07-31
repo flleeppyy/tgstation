@@ -14,12 +14,16 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 5, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 5)
 
 /obj/item/mod/module/welding/on_part_activation()
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/head_cover = mod.get_part_from_slot(ITEM_SLOT_HEAD) || mod.get_part_from_slot(ITEM_SLOT_MASK) || mod.get_part_from_slot(ITEM_SLOT_EYES)
 	if(istype(head_cover))
 		//this is a screen that displays an image, so flash sensitives can use this to protect against flashes.
 		head_cover.flash_protect = FLASH_PROTECTION_WELDER_HYPER_SENSITIVE
 
 /obj/item/mod/module/welding/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	if(deleting)
 		return
 	var/obj/item/clothing/head_cover = mod.get_part_from_slot(ITEM_SLOT_HEAD) || mod.get_part_from_slot(ITEM_SLOT_MASK) || mod.get_part_from_slot(ITEM_SLOT_EYES)
@@ -36,6 +40,8 @@
 	mask_worn_overlay = TRUE
 
 /obj/item/mod/module/welding/syndicate/generate_worn_overlay(obj/item/source, mutable_appearance/standing)
+	procstart = null
+	src.procstart = null
 	if(!mod.wearer || !mod.wearer.combat_mode)
 		overlay_state_inactive = "[initial(overlay_state_inactive)]-[mod.skin]"
 	else
@@ -44,15 +50,21 @@
 
 
 /obj/item/mod/module/welding/syndicate/on_part_activation()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(mod.wearer, COMSIG_COMBAT_MODE_TOGGLED, PROC_REF(on_combat_mode_toggle))
 
 /obj/item/mod/module/welding/syndicate/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(mod.wearer, COMSIG_COMBAT_MODE_TOGGLED)
 
 /// Changes which overlay state we're using depending on combat mode status.
 /obj/item/mod/module/welding/syndicate/proc/on_combat_mode_toggle(mob/living/carbon/human/toggler)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	playsound(src, 'sound/vehicles/mecha/mechmove03.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	update_clothing_slots()
@@ -74,6 +86,8 @@
 	var/range = 4
 
 /obj/item/mod/module/t_ray/on_active_process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	t_ray_scan(mod.wearer, 0.8 SECONDS, range)
 
 ///Magnetic Stability - Gives the user a slowdown but makes them negate gravity and be immune to slips.
@@ -96,22 +110,32 @@
 	var/list/active_traits = list(TRAIT_NO_SLIP_WATER, TRAIT_NO_SLIP_ICE, TRAIT_NO_SLIP_SLIDE, TRAIT_NEGATES_GRAVITY)
 
 /obj/item/mod/module/magboot/on_install()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(mod, COMSIG_MOD_UPDATE_SPEED, PROC_REF(on_update_speed))
 
 /obj/item/mod/module/magboot/on_uninstall(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(mod, COMSIG_MOD_UPDATE_SPEED)
 
 /obj/item/mod/module/magboot/on_activation(mob/activator)
+	procstart = null
+	src.procstart = null
 	mod.wearer.add_traits(active_traits, REF(src))
 	mod.update_speed()
 
 /obj/item/mod/module/magboot/on_deactivation(mob/activator, display_message = TRUE, deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	mod.wearer.remove_traits(active_traits, REF(src))
 	mod.update_speed()
 
 /obj/item/mod/module/magboot/proc/on_update_speed(datum/source, list/module_slowdowns, prevent_slowdown)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!prevent_slowdown && active)
 		module_slowdowns += slowdown_active
@@ -138,6 +162,8 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 5, /datum/material/silver = SMALL_MATERIAL_AMOUNT * 5)
 
 /obj/item/mod/module/tether/used()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT_FROM(mod.wearer, TRAIT_TETHER_ATTACHED, REF(src)))
 		balloon_alert(mod.wearer, "already tethered!")
 		playsound(src, 'sound/items/weapons/gun/general/dry_fire.ogg', 25, TRUE)
@@ -145,6 +171,8 @@
 	return ..()
 
 /obj/item/mod/module/tether/on_select_use(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -156,14 +184,20 @@
 	drain_power(use_energy_cost)
 
 /obj/item/mod/module/tether/get_configuration()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["cut_tethers"] = add_ui_configuration("Cut Tethers", "button", "scissors")
 
 /obj/item/mod/module/tether/configure_edit(key, value)
+	procstart = null
+	src.procstart = null
 	if (key == "cut_tethers")
 		SEND_SIGNAL(src, COMSIG_MOD_TETHER_SNAP)
 
 /obj/item/mod/module/tether/on_deactivation(mob/activator, display_message = TRUE, deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_MOD_TETHER_SNAP)
 
 /obj/projectile/tether
@@ -186,12 +220,16 @@
 	var/obj/item/mod/module/tether/parent_module
 
 /obj/projectile/tether/Initialize(mapload, module)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_PROJECTILE_ON_EMBEDDED, PROC_REF(on_embedded))
 	if (!isnull(module))
 		parent_module = module
 
 /obj/projectile/tether/proc/on_embedded(datum/source, obj/item/payload, atom/hit)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (HAS_TRAIT_FROM(hit, TRAIT_TETHER_ATTACHED, REF(parent_module)))
@@ -200,16 +238,22 @@
 	firer.AddComponent(/datum/component/tether, hit, 7, "MODtether", payload, parent_module = parent_module, tether_trait_source = REF(parent_module))
 
 /obj/projectile/tether/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isopenturf(loc))
 		last_turf = loc
 
 /obj/projectile/tether/fire(setAngle)
+	procstart = null
+	src.procstart = null
 	if(firer)
 		line = firer.Beam(src, "line", 'icons/obj/clothing/modsuit/mod_modules.dmi', emissive = FALSE)
 	return ..()
 
 /obj/projectile/tether/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!firer)
 		return
@@ -250,6 +294,8 @@
 	firer.AddComponent(/datum/component/tether, anchor, 7, "MODtether", parent_module = parent_module, tether_trait_source = REF(parent_module))
 
 /obj/projectile/tether/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(line)
 	return ..()
 
@@ -267,20 +313,28 @@
 	var/reset_pixel_pos = FALSE
 
 /obj/item/tether_anchor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ATOM_TETHER_SNAPPED, PROC_REF(tether_snapped))
 
 /obj/item/tether_anchor/Destroy(force)
+	procstart = null
+	src.procstart = null
 	// We don't need to worry about hanging refs in case our parent gets destroyed because then it snaps all tethers, which in turn destroys us
 	parent_module = null
 	return ..()
 
 /obj/item/tether_anchor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info("It can be secured by using a wrench on it. Use right-click to tether yourself to [src].")
 	. += span_info("LMB shortens the tether while RMB lengthens it. Ctrl-click to cut the tether.")
 
 /obj/item/tether_anchor/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (default_unfasten_wrench(user, tool))
 		pixel_x = 0
@@ -290,6 +344,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/tether_anchor/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!can_interact(user) || !IsReachableBy(user) || !isturf(loc))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
@@ -306,6 +362,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/tether_anchor/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (reset_pixel_pos)
 		pixel_x = 0
@@ -313,6 +371,8 @@
 		reset_pixel_pos = FALSE
 
 /obj/item/tether_anchor/mouse_drop_receive(atom/target, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (!can_interact(user) || !IsReachableBy(user) || !isturf(loc))
 		return
 
@@ -350,6 +410,8 @@
 	target.AddComponent(/datum/component/tether, src, 7, "tether", tether_trait_source = REF(src), no_target_trait = TRUE)
 
 /obj/item/tether_anchor/proc/tether_snapped(datum/component/tether/tether, tether_source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!parent_module || tether_source != REF(parent_module))
@@ -385,6 +447,8 @@
 	var/perceived_threat_level
 
 /obj/item/mod/module/rad_protection/on_part_activation()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/geiger_sound)
 	ADD_TRAIT(mod.wearer, TRAIT_BYPASS_EARLY_IRRADIATED_CHECK, REF(src))
 	RegisterSignal(mod.wearer, COMSIG_IN_RANGE_OF_IRRADIATION, PROC_REF(on_pre_potential_irradiation))
@@ -392,6 +456,8 @@
 		ADD_TRAIT(part, TRAIT_RADIATION_PROTECTED_CLOTHING, MOD_TRAIT)
 
 /obj/item/mod/module/rad_protection/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	qdel(GetComponent(/datum/component/geiger_sound))
 	REMOVE_TRAIT(mod.wearer, TRAIT_BYPASS_EARLY_IRRADIATED_CHECK, REF(src))
 	UnregisterSignal(mod.wearer, COMSIG_IN_RANGE_OF_IRRADIATION)
@@ -399,6 +465,8 @@
 		REMOVE_TRAIT(part, TRAIT_RADIATION_PROTECTED_CLOTHING, MOD_TRAIT)
 
 /obj/item/mod/module/rad_protection/add_ui_data()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["is_user_irradiated"] = mod.wearer ? HAS_TRAIT(mod.wearer, TRAIT_IRRADIATED) : FALSE
 	.["background_radiation_level"] = perceived_threat_level
@@ -406,6 +474,8 @@
 	.["loss_tox"] = mod.wearer?.get_tox_loss() || 0
 
 /obj/item/mod/module/rad_protection/proc/on_pre_potential_irradiation(datum/source, datum/radiation_pulse_information/pulse_information, insulation_to_target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	perceived_threat_level = get_perceived_radiation_danger(pulse_information, insulation_to_target)
@@ -429,12 +499,18 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 5, /datum/material/titanium = SMALL_MATERIAL_AMOUNT * 5)
 
 /obj/item/mod/module/constructor/on_part_activation()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(mod.wearer, TRAIT_QUICK_BUILD, REF(src))
 
 /obj/item/mod/module/constructor/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(mod.wearer, TRAIT_QUICK_BUILD, REF(src))
 
 /obj/item/mod/module/constructor/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	rcd_scan(src, fade_time = 10 SECONDS)
 	drain_power(use_energy_cost)
 
@@ -453,9 +529,13 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 5, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 5)
 
 /obj/item/mod/module/headprotector/on_part_activation()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(mod.wearer, TRAIT_HEAD_INJURY_BLOCKED, REF(src))
 
 /obj/item/mod/module/headprotector/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(mod.wearer, TRAIT_HEAD_INJURY_BLOCKED, REF(src))
 
 ///Mister - Sprays water over an area.
@@ -474,6 +554,8 @@
 	var/volume = 500
 
 /obj/item/mod/module/mister/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	create_reagents(volume, OPENCONTAINER)
 	return ..()
 
@@ -486,6 +568,8 @@
 	custom_materials = list(/datum/material/titanium = SHEET_MATERIAL_AMOUNT * 0.75, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/mod/module/mister/atmos/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent(/datum/reagent/water, volume)
 

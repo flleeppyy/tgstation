@@ -9,6 +9,8 @@ SUBSYSTEM_DEF(security_level)
 	var/list/alert_level_icons = list()
 
 /datum/controller/subsystem/security_level/Initialize()
+	procstart = null
+	src.procstart = null
 	for(var/iterating_security_level_type in subtypesof(/datum/security_level))
 		var/datum/security_level/new_security_level = new iterating_security_level_type
 		available_levels[new_security_level.name] = new_security_level
@@ -17,6 +19,8 @@ SUBSYSTEM_DEF(security_level)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/security_level/fire(resumed)
+	procstart = null
+	src.procstart = null
 	if(!current_security_level.looping_sound) // No sound? No play.
 		can_fire = FALSE
 		return
@@ -33,6 +37,8 @@ SUBSYSTEM_DEF(security_level)
  * * announce - Play the announcement, set FALSE if you're doing your own custom announcement to prevent duplicates
  */
 /datum/controller/subsystem/security_level/proc/set_level(new_level, announce = TRUE)
+	procstart = null
+	src.procstart = null
 	new_level = istext(new_level) ? new_level : number_level_to_text(new_level)
 	if(new_level == current_security_level.name) // If we are already at the desired level, do nothing
 		return
@@ -63,12 +69,16 @@ SUBSYSTEM_DEF(security_level)
  * Returns the current security level as a number
  */
 /datum/controller/subsystem/security_level/proc/get_current_level_as_number()
+	procstart = null
+	src.procstart = null
 	return ((!initialized || !current_security_level) ? SEC_LEVEL_GREEN : current_security_level.number_level) //Send the default security level in case the subsystem hasn't finished initializing yet
 
 /**
  * Returns the current security level as text
  */
 /datum/controller/subsystem/security_level/proc/get_current_level_as_text()
+	procstart = null
+	src.procstart = null
 	return ((!initialized || !current_security_level) ? "green" : current_security_level.name)
 
 /**
@@ -78,6 +88,8 @@ SUBSYSTEM_DEF(security_level)
  * * level - The text security level to convert
  */
 /datum/controller/subsystem/security_level/proc/text_level_to_number(text_level)
+	procstart = null
+	src.procstart = null
 	var/datum/security_level/selected_level = available_levels[text_level]
 	return selected_level?.number_level
 
@@ -88,6 +100,8 @@ SUBSYSTEM_DEF(security_level)
  * * level - The number security level to convert
  */
 /datum/controller/subsystem/security_level/proc/number_level_to_text(number_level)
+	procstart = null
+	src.procstart = null
 	for(var/iterating_level_text in available_levels)
 		var/datum/security_level/iterating_security_level = available_levels[iterating_level_text]
 		if(iterating_security_level.number_level == number_level)

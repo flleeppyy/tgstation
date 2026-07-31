@@ -31,6 +31,8 @@
 	alpha = 100
 
 /obj/machinery/smoke_machine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	create_reagents(REAGENTS_BASE_VOLUME, INJECTABLE)
 
 	. = ..()
@@ -41,10 +43,14 @@
 	register_context()
 
 /obj/machinery/smoke_machine/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	reagents.expose(loc, TOUCH)
 	reagents.clear_reagents()
 
 /obj/machinery/smoke_machine/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(isnull(held_item))
 		return
@@ -64,6 +70,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/smoke_machine/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	. += span_notice("Reagent capacity <b>[reagents.total_volume]/[reagents.maximum_volume]</b>.")
@@ -79,6 +87,8 @@
 		. += span_warning("It needs to be [EXAMINE_HINT("anchored")] in place to work.")
 
 /obj/machinery/smoke_machine/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!is_operational || !on || !reagents.total_volume)
 		icon_state = "[base_icon_state]0[panel_open ? "-o" : ""]"
 		return ..()
@@ -87,6 +97,8 @@
 	return ..()
 
 /obj/machinery/smoke_machine/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	//new capacity to store reagents from matter bins
@@ -107,6 +119,8 @@
 	max_range = max(3, max_range)
 
 /obj/machinery/smoke_machine/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(user.combat_mode || tool.item_flags & ABSTRACT || tool.flags_1 & HOLOGRAM_1 || !user.can_perform_action(src, ALLOW_SILICON_REACH))
 		return ITEM_INTERACT_SKIP_TO_ATTACK
@@ -121,6 +135,8 @@
 		return ITEM_INTERACT_BLOCKING
 
 /obj/machinery/smoke_machine/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(on)
 		balloon_alert(user, "turn off first!")
 		return ITEM_INTERACT_BLOCKING
@@ -131,6 +147,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/machinery/smoke_machine/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(on)
 		balloon_alert(user, "turn off first!")
 		return ITEM_INTERACT_BLOCKING
@@ -138,6 +156,8 @@
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/smoke_machine/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(on)
 		balloon_alert(user, "turn off first!")
 		return ITEM_INTERACT_BLOCKING
@@ -145,6 +165,8 @@
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/smoke_machine/process()
+	procstart = null
+	src.procstart = null
 	if(!reagents.total_volume || !anchored || !on || !is_operational)
 		on = FALSE
 		update_appearance(UPDATE_ICON_STATE)
@@ -161,12 +183,16 @@
 	update_appearance(UPDATE_ICON_STATE)
 
 /obj/machinery/smoke_machine/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SmokeMachine", name)
 		ui.open()
 
 /obj/machinery/smoke_machine/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	var/list/tank_data = list()
@@ -183,6 +209,8 @@
 	.["maxSetting"] = max_range
 
 /obj/machinery/smoke_machine/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

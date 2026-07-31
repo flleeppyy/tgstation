@@ -39,6 +39,8 @@
 	var/has_emissive = TRUE
 
 /mob/living/basic/mining/legion_brood/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_PERMANENTLY_MORTAL, INNATE_TRAIT)
 	AddElement(/datum/element/simple_flying)
@@ -55,14 +57,20 @@
 	update_appearance()
 
 /mob/living/basic/mining/legion_brood/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if (!gibbed)
 		new /obj/effect/temp_visual/despawn_effect(get_turf(src), /* copy_from = */ src)
 	return ..()
 
 /mob/living/basic/mining/legion_brood/add_ranged_armour(list/vulnerable_projectiles)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/basic/mining/legion_brood/melee_attack(mob/living/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	if (ishuman(target) && IS_UNCONSCIOUS(target))
 		infest(target)
 		return
@@ -81,6 +89,8 @@
 
 /// Turn the targeted mob into one of us
 /mob/living/basic/mining/legion_brood/proc/infest(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	visible_message(span_warning("[name] burrows into the flesh of [target]!"))
 	var/spawn_type = get_legion_type(target)
 	var/mob/living/basic/mining/legion/new_legion = new spawn_type(loc)
@@ -90,6 +100,8 @@
 
 /// Returns the kind of legion we make out of the target
 /mob/living/basic/mining/legion_brood/proc/get_legion_type(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	if (ismonkey(target))
 		return /mob/living/basic/mining/legion/monkey
 	if (HAS_TRAIT(target, TRAIT_DWARF))
@@ -98,6 +110,8 @@
 
 /// Sets someone as our creator, mostly so you can't use skulls to heal yourself
 /mob/living/basic/mining/legion_brood/proc/assign_creator(mob/living/creator, copy_full_faction = TRUE)
+	procstart = null
+	src.procstart = null
 	if (copy_full_faction)
 		set_faction(creator.get_faction())
 	else
@@ -117,10 +131,14 @@
 
 /// Reference handling
 /mob/living/basic/mining/legion_brood/proc/creator_destroyed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	created_by = null
 
 /mob/living/basic/mining/legion_brood/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (has_emissive)
 		. += emissive_appearance(icon, "[icon_living]_e", src, effect_type = EMISSIVE_NO_BLOOM)
@@ -136,6 +154,8 @@
 	has_emissive = FALSE
 
 /mob/living/basic/mining/legion_brood/snow/get_legion_type(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if (ismonkey(target))
 		return /mob/living/basic/mining/legion/monkey/snow
 	return /mob/living/basic/mining/legion/snow

@@ -26,16 +26,22 @@
 	var/obj/item/circuit_component/module/attached_module
 
 /obj/item/integrated_circuit/module/ui_host(mob/user)
+	procstart = null
+	src.procstart = null
 	if(attached_module)
 		return attached_module.ui_host()
 	return ..()
 
 /obj/item/integrated_circuit/module/set_display_name(new_name)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	attached_module.display_name = new_name
 	attached_module.name = "module ([new_name])"
 
 /obj/item/integrated_circuit/module/load_component(type)
+	procstart = null
+	src.procstart = null
 	if(!attached_module)
 		return ..()
 
@@ -48,6 +54,8 @@
 	return ..()
 
 /obj/item/integrated_circuit/module/add_component(obj/item/circuit_component/to_add, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(to_add.circuit_flags & CIRCUIT_FLAG_REFUSE_MODULE)
 		balloon_alert(user, "doesn't fit into module!")
 		return
@@ -56,11 +64,15 @@
 		attached_module.circuit_size += to_add.circuit_size
 
 /obj/item/integrated_circuit/module/remove_component(obj/item/circuit_component/to_remove)
+	procstart = null
+	src.procstart = null
 	if(attached_module)
 		attached_module.circuit_size -= to_remove.circuit_size
 	return ..()
 
 /obj/item/integrated_circuit/module/Destroy()
+	procstart = null
+	src.procstart = null
 	attached_module = null
 	return ..()
 
@@ -74,6 +86,8 @@
 	var/obj/item/circuit_component/module/attached_module
 
 /obj/item/circuit_component/module_input/Destroy()
+	procstart = null
+	src.procstart = null
 	attached_module = null
 	return ..()
 
@@ -87,6 +101,8 @@
 	var/obj/item/circuit_component/module/attached_module
 
 /obj/item/circuit_component/module_output/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!port)
 		return
 	// We don't check the parent here because frankly, we don't care. We only sync our input with the module's output
@@ -97,6 +113,8 @@
 	port_to_update.set_output(port.value)
 
 /obj/item/circuit_component/module/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!port)
 		return
 	var/datum/port/output/port_to_update = linked_ports[port]
@@ -106,10 +124,14 @@
 	port_to_update.set_output(port.value)
 
 /obj/item/circuit_component/module_output/Destroy()
+	procstart = null
+	src.procstart = null
 	attached_module = null
 	return ..()
 
 /obj/item/circuit_component/module/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	internal_circuit = new(src)
 	internal_circuit.attached_module = src
@@ -127,6 +149,8 @@
 	output_component.rel_y = 200
 
 /obj/item/circuit_component/module/save_data_to_list(list/component_data)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	component_data["integrated_circuit"] = internal_circuit.convert_to_json()
 
@@ -148,6 +172,8 @@
 	component_data["output_ports"] = output_data
 
 /obj/item/circuit_component/module/load_data_from_list(list/component_data)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/list/input_ports = component_data["input_ports"]
@@ -162,14 +188,20 @@
 		internal_circuit.load_circuit_data(component_data["integrated_circuit"])
 
 /obj/item/circuit_component/module/proc/add_and_link_input_port(name, type)
+	procstart = null
+	src.procstart = null
 	var/datum/port/new_port = add_input_port(name, type)
 	linked_ports[new_port] = input_component.add_output_port(name, type)
 
 /obj/item/circuit_component/module/proc/add_and_link_output_port(name, type)
+	procstart = null
+	src.procstart = null
 	var/datum/port/new_port = output_component.add_input_port(name, type)
 	linked_ports[new_port] = add_output_port(name, type)
 
 /obj/item/circuit_component/module/add_to(obj/item/integrated_circuit/added_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(added_to, COMSIG_CIRCUIT_SET_CELL, PROC_REF(handle_set_cell))
 	RegisterSignal(added_to, COMSIG_CIRCUIT_SET_ON, PROC_REF(handle_set_on))
@@ -180,6 +212,8 @@
 
 
 /obj/item/circuit_component/module/removed_from(obj/item/integrated_circuit/removed_from)
+	procstart = null
+	src.procstart = null
 	internal_circuit.set_cell(null)
 	internal_circuit.set_on(FALSE)
 	internal_circuit.remove_current_shell()
@@ -191,18 +225,26 @@
 	return ..()
 
 /obj/item/circuit_component/module/proc/handle_set_cell(datum/source, obj/item/stock_parts/power_store/cell/cell)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	internal_circuit.set_cell(cell)
 
 /obj/item/circuit_component/module/proc/handle_set_on(datum/source, new_value)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	internal_circuit.set_on(new_value)
 
 /obj/item/circuit_component/module/proc/handle_set_shell(datum/source, atom/movable/new_shell)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	internal_circuit.set_shell(new_shell)
 
 /obj/item/circuit_component/module/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(input_component)
 	QDEL_NULL(output_component)
 	QDEL_NULL(internal_circuit)
@@ -210,6 +252,8 @@
 	return ..()
 
 /obj/item/circuit_component/module/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["input_ports"] = list()
 	for(var/datum/port/input/input_port as anything in input_ports)
@@ -226,10 +270,14 @@
 		))
 
 /obj/item/circuit_component/module/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["global_port_types"] = GLOB.wiremod_basic_types
 
 /obj/item/circuit_component/module/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/circuit_component))
 		return NONE
 	internal_circuit.item_interaction(user, tool, modifiers)
@@ -238,6 +286,8 @@
 #define WITHIN_RANGE(id, table) (id >= 1 && id <= length(table))
 
 /obj/item/circuit_component/module/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -315,9 +365,13 @@
 #undef WITHIN_RANGE
 
 /obj/item/circuit_component/module/ui_perform_action(mob/user, action)
+	procstart = null
+	src.procstart = null
 	interact(user)
 
 /obj/item/circuit_component/module/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "CircuitModule", name)

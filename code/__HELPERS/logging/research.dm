@@ -1,5 +1,7 @@
 /// Puts the text into the research html file, not log. See [INVESTIGATE_RESEARCH] for [/atom/proc/investigate_log]
 /proc/log_research(text)
+	procstart = null
+	src.procstart = null
 	if(!text)
 		return
 	var/html_file = file("[GLOB.log_directory]/[INVESTIGATE_RESEARCH].html")

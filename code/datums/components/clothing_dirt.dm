@@ -11,11 +11,15 @@
 	VAR_FINAL/tint_applied = FALSE
 
 /datum/component/clothing_dirt/Initialize(dirt_state = null)
+	procstart = null
+	src.procstart = null
 	if(!isclothing(parent))
 		return COMPONENT_INCOMPATIBLE
 	src.dirt_state = dirt_state
 
 /datum/component/clothing_dirt/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equip))
 	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(on_drop))
@@ -26,6 +30,8 @@
 	RegisterSignal(parent, COMSIG_CLOTHING_VISOR_TOGGLE, PROC_REF(on_visor_move))
 
 /datum/component/clothing_dirt/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/clothing = parent
 	clothing.tint -= dirtiness
 	if(iscarbon(clothing.loc))
@@ -46,6 +52,8 @@
 	return ..()
 
 /datum/component/clothing_dirt/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!dirtiness)
 		return PROCESS_KILL
 	if(!SPT_PROB(1, seconds_per_tick))
@@ -59,6 +67,8 @@
 	to_chat(wearer, span_warning("It's hard to see with all the stuff covering your [clothing.name]..."))
 
 /datum/component/clothing_dirt/proc/on_equip(datum/source, mob/user, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/item/clothing/clothing = parent
 	if (!(slot & clothing.slot_flags))
@@ -68,18 +78,24 @@
 	RegisterSignal(user, COMSIG_CARBON_SPRAYPAINTED, PROC_REF(on_spraypaint), TRUE)
 
 /datum/component/clothing_dirt/proc/on_drop(datum/source, mob/holder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(holder, list(COMSIG_ATOM_EXPOSE_REAGENTS, COMSIG_CARBON_SPRAYPAINTED))
 	RegisterSignal(parent, COMSIG_ATOM_EXPOSE_REAGENTS, PROC_REF(on_expose), TRUE)
 	RegisterSignal(parent, COMSIG_CARBON_SPRAYPAINTED, PROC_REF(on_spraypaint), TRUE)
 
 /datum/component/clothing_dirt/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/item/clothing/clothing = parent
 	if (dirtiness > 0)
 		examine_list += span_warning("It appears to be covered in something. [clothing.tint >= TINT_MILD ? "Won't see much while wearing it until you wash it off." : "Any more and you might struggle to see through it."]")
 
 /datum/component/clothing_dirt/proc/on_overlays_updated(obj/item/clothing/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!dirtiness || !dirt_state && !(source.flags_cover & PEPPERPROOF))
@@ -90,6 +106,8 @@
 	overlays += dirt_overlay
 
 /datum/component/clothing_dirt/proc/on_separate_worn_overlays(obj/item/source, list/overlays, mutable_appearance/standing, mutable_appearance/draw_target, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (isinhands || !dirtiness || !dirt_state || !(source.flags_cover & PEPPERPROOF))
@@ -100,6 +118,8 @@
 	overlays += dirt_overlay
 
 /datum/component/clothing_dirt/proc/on_expose(atom/target, list/reagents, datum/reagents/source, methods)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/clothing/clothing = parent
@@ -127,10 +147,14 @@
 	apply_tint(TRUE)
 
 /datum/component/clothing_dirt/proc/is_protected(mob/living/carbon/wearer)
+	procstart = null
+	src.procstart = null
 	var/obj/item/head_cover = wearer.get_item_by_slot(ITEM_SLOT_HEAD)
 	return istype(head_cover) && head_cover != parent && (head_cover.flags_cover & PEPPERPROOF)
 
 /datum/component/clothing_dirt/proc/remove_tint(updates = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!tint_applied)
 		return
 
@@ -146,6 +170,8 @@
 		wearer.update_tint()
 
 /datum/component/clothing_dirt/proc/apply_tint(updates = TRUE)
+	procstart = null
+	src.procstart = null
 	if(tint_applied || !dirtiness)
 		return
 
@@ -161,6 +187,8 @@
 		wearer.update_tint()
 
 /datum/component/clothing_dirt/proc/on_spraypaint(mob/living/carbon/wearer, mob/user, obj/item/toy/crayon/spraycan/spraycan)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(is_protected(wearer))
@@ -182,6 +210,8 @@
 	return COMPONENT_CANCEL_SPRAYPAINT
 
 /datum/component/clothing_dirt/proc/on_clean(obj/item/clothing/source, clean_types)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!dirtiness || !(clean_types & (CLEAN_WASH|CLEAN_SCRUB)))
@@ -193,6 +223,8 @@
 	return COMPONENT_CLEANED|COMPONENT_CLEANED_GAIN_XP
 
 /datum/component/clothing_dirt/proc/on_visor_move(obj/item/clothing/source, up)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(dirtiness <= 0)
 		return

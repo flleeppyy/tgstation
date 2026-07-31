@@ -7,10 +7,14 @@
 	var/drop_held = TRUE
 
 /datum/bt_node/ai_behavior/pick_up/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[target_key]
 	return !QDELETED(target)
 
 /datum/bt_node/ai_behavior/pick_up/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	var/obj/item/target = controller.blackboard[target_key]
 	if(QDELETED(target))

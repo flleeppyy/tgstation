@@ -38,15 +38,21 @@
 	personality_trait = TRAIT_BADTOUCH
 
 /datum/personality/aloof/apply_to_mob(mob/living/who)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignals(who, list(COMSIG_LIVING_GET_PULLED, COMSIG_CARBON_HELP_ACT), PROC_REF(uncomfortable_touch))
 
 /datum/personality/aloof/remove_from_mob(mob/living/who)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(who, list(COMSIG_LIVING_GET_PULLED, COMSIG_CARBON_HELP_ACT))
 
 /// Causes a negative moodlet to our quirk holder on signal
 /datum/personality/aloof/proc/uncomfortable_touch(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source.stat == DEAD)

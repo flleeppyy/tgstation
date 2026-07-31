@@ -53,6 +53,8 @@
 	job_flags = STATION_JOB_FLAGS
 
 /datum/job/cook/award_service(client/winner, award)
+	procstart = null
+	src.procstart = null
 	winner.give_award(award, winner.mob)
 
 	var/datum/venue/restaurant = SSrestaurant.all_venues[/datum/venue/restaurant]
@@ -82,6 +84,8 @@
 	skillchips = list(/obj/item/skillchip/job/chef)
 
 /datum/outfit/job/cook/pre_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	var/datum/job/cook/other_chefs = SSjob.get_job_type(jobtype)
 	if(other_chefs) // If there's other Chefs, you're a Cook
@@ -93,6 +97,8 @@
 			other_chefs.cooks++
 
 /datum/outfit/job/cook/post_equip(mob/living/carbon/human/user, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Update PDA to match possible new trim.
 	var/obj/item/card/id/worn_id = user.wear_id
@@ -104,6 +110,8 @@
 		pda.imprint_id(user.real_name, assignment)
 
 /datum/outfit/job/cook/get_types_to_preload()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += /obj/item/clothing/suit/apron/chef
 	. += /obj/item/clothing/head/soft/mime

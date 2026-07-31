@@ -20,6 +20,8 @@
 
 /// The available_commands parameter should be passed as a list of typepaths
 /datum/component/obeys_commands/Initialize(list/command_typepaths = list(), list/radial_menu_offset = list(0, 0), radial_menu_lifetime = 7 SECONDS, radial_relative_to_user = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -36,19 +38,27 @@
 		available_commands[new_command.command_name] = new_command
 
 /datum/component/obeys_commands/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_LIST_ASSOC_VAL(available_commands)
 	return ..()
 
 /datum/component/obeys_commands/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_LIVING_BEFRIENDED, PROC_REF(add_friend))
 	RegisterSignal(parent, COMSIG_LIVING_UNFRIENDED, PROC_REF(remove_friend))
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/component/obeys_commands/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_LIVING_BEFRIENDED, COMSIG_LIVING_UNFRIENDED, COMSIG_ATOM_EXAMINE, COMSIG_CLICK_ALT))
 
 /// Add someone to our friends list
 /datum/component/obeys_commands/proc/add_friend(datum/source, mob/living/new_friend)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	RegisterSignal(new_friend, COMSIG_KB_LIVING_VIEW_PET_COMMANDS, PROC_REF(on_key_pressed))
 	RegisterSignal(new_friend, DEACTIVATE_KEYBIND(COMSIG_KB_LIVING_VIEW_PET_COMMANDS), PROC_REF(on_key_unpressed))
@@ -57,15 +67,21 @@
 		INVOKE_ASYNC(command, TYPE_PROC_REF(/datum/pet_command, add_new_friend), new_friend)
 
 /datum/component/obeys_commands/proc/on_key_unpressed(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(source, COMSIG_ATOM_MOUSE_ENTERED)
 	remove_from_viewers(source)
 
 /datum/component/obeys_commands/proc/remove_from_viewers(mob/living/source)
+	procstart = null
+	src.procstart = null
 	radial_viewers -= REF(source)
 
 /// Remove someone from our friends list
 /datum/component/obeys_commands/proc/remove_friend(datum/source, mob/living/old_friend)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(old_friend, list(
 		COMSIG_KB_LIVING_VIEW_PET_COMMANDS,
@@ -77,6 +93,8 @@
 
 /// Add a note about whether they will follow the instructions of the inspecting mob
 /datum/component/obeys_commands/proc/on_examine(mob/living/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (source.incapacitated)
@@ -86,10 +104,14 @@
 	examine_list += span_notice("[source.p_They()] seem[source.p_s()] happy to see you!")
 
 /datum/component/obeys_commands/proc/on_key_pressed(mob/living/friend)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	RegisterSignal(friend, COMSIG_ATOM_MOUSE_ENTERED, PROC_REF(on_mouse_hover))
 
 /datum/component/obeys_commands/proc/on_mouse_hover(mob/living/friend, atom/mouse_hovered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(mouse_hovered == parent)
 		display_menu(friend)
@@ -101,6 +123,8 @@
 
 /// Displays a radial menu of commands
 /datum/component/obeys_commands/proc/display_menu(mob/living/friend)
+	procstart = null
+	src.procstart = null
 
 	var/mob/living/living_parent = parent
 	if (living_parent.incapacitated || IS_UNCONSCIOUS_OR_CRIT(friend))
@@ -115,6 +139,8 @@
 
 /// Actually display the radial menu and then do something with the result
 /datum/component/obeys_commands/proc/display_radial_menu(mob/living/friend)
+	procstart = null
+	src.procstart = null
 	var/list/radial_options = list()
 	for (var/command_name in available_commands)
 		var/datum/pet_command/command = available_commands[command_name]
@@ -131,6 +157,8 @@
 	picked_command.try_activate_command(friend, radial_command = TRUE)
 
 /datum/component/obeys_commands/proc/check_menu_viewer(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(user) || !radial_viewers[REF(user)])
 		return FALSE
 	if(world.time > radial_viewers[REF(user)])

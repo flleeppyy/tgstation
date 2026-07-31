@@ -11,6 +11,8 @@
 	var/datum/callback/destruction_proc
 
 /datum/component/meteor_combat/Initialize(datum/callback/redirection_callback, datum/callback/destruction_callback, achievement_on = FALSE)
+	procstart = null
+	src.procstart = null
 	redirection_proc = redirection_callback
 	destruction_proc = destruction_callback
 	achievement_enabled = achievement_on
@@ -18,10 +20,14 @@
 	RegisterSignal(parent, COMSIG_ATOM_ATTACK_HAND, PROC_REF(on_punched))
 
 /datum/component/meteor_combat/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_ATOM_ATTACKBY)
 	UnregisterSignal(parent, COMSIG_ATOM_ATTACK_HAND)
 
 /datum/component/meteor_combat/proc/on_attacked(atom/owner, obj/item/attacking_item, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(attacking_item.tool_behaviour == TOOL_MINING)
 		destruction_proc?.Invoke()
@@ -53,6 +59,8 @@
 	return FALSE
 
 /datum/component/meteor_combat/proc/on_punched(atom/owner, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isliving(user))
 		return FALSE
@@ -67,5 +75,7 @@
 	return FALSE
 
 /datum/component/meteor_combat/proc/check_punch_award(mob/user)
+	procstart = null
+	src.procstart = null
 	if(achievement_enabled && !(astype(parent, /atom).flags_1 & ADMIN_SPAWNED_1) && isliving(user))
 		user.client.give_award(/datum/award/achievement/misc/meteor_punch, user)

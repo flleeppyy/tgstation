@@ -22,15 +22,21 @@
 	var/owner_is_immune_to_self_timestop = TRUE
 
 /datum/action/cooldown/spell/timestop/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(owner) && owner_is_immune_to_all_timestop)
 		ADD_TRAIT(owner, TRAIT_TIME_STOP_IMMUNE, REF(src))
 
 /datum/action/cooldown/spell/timestop/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(remove_from, TRAIT_TIME_STOP_IMMUNE, REF(src))
 	return ..()
 
 /datum/action/cooldown/spell/timestop/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/default_immune_atoms = list()
 	if(owner_is_immune_to_self_timestop)
@@ -38,6 +44,8 @@
 	new /obj/effect/timestop/magic(get_turf(cast_on), timestop_range, timestop_duration, default_immune_atoms)
 
 /datum/action/cooldown/spell/timestop/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(var_name != NAMEOF(src, owner_is_immune_to_all_timestop) || isnull(owner))
 		return

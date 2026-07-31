@@ -17,6 +17,8 @@
 	var/datum/weakref/default_link_ref
 
 /obj/structure/ai_core/Initialize(mapload, state = src.state, obj/item/mmi/core_mmi = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(core_mmi && state < CORE_STATE_CABLED)
 		stack_trace("supplied a core_mmi as constructor argument, but core state wouldn't have accepted it!")
@@ -39,6 +41,8 @@
 	update_appearance(UPDATE_ICON_STATE)
 
 /obj/structure/ai_core/update_icon_state()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 
 	if(state != CORE_STATE_FINISHED)
@@ -62,6 +66,8 @@
 	return ..()
 
 /obj/structure/ai_core/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == circuit)
 		circuit = null
@@ -73,6 +79,8 @@
 		update_appearance()
 
 /obj/structure/ai_core/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(state >= CORE_STATE_GLASSED)
 		new /obj/item/stack/sheet/rglass(drop_location(), 2)
 	if(state >= CORE_STATE_CABLED)
@@ -82,11 +90,15 @@
 	new /obj/item/stack/sheet/plasteel(drop_location(), 4)
 
 /obj/structure/ai_core/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(circuit)
 	QDEL_NULL(core_mmi)
 	return ..()
 
 /obj/structure/ai_core/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It has some <b>bolts</b> that look [anchored ? "tightened" : "loosened"].")
 	. += span_notice("Save this core to a multitool's buffer and upload it to a module rack to automatically link it on first boot. \
@@ -110,6 +122,8 @@
 			. += span_notice("The monitor's connection can be <b>cut</b>[(core_mmi?.brainmob?.mind && !suicide_check()) ? " the neural interface can be <b>screwed</b> in." : "."]")
 
 /obj/structure/ai_core/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(state < CORE_STATE_FINISHED)
 		return construction_item_interaction(user, tool, modifiers)
 
@@ -117,6 +131,8 @@
 
 /// Exists to be used for callbacks.
 /obj/structure/ai_core/proc/check_state(state_to_check)
+	procstart = null
+	src.procstart = null
 	return (state == state_to_check)
 
 /obj/structure/ai_core/latejoin_inactive
@@ -129,19 +145,27 @@
 	var/active = TRUE
 
 /obj/structure/ai_core/latejoin_inactive/Initialize(mapload, state, posibrain)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.latejoin_ai_cores += src
 
 /obj/structure/ai_core/latejoin_inactive/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.latejoin_ai_cores -= src
 	return ..()
 
 /obj/structure/ai_core/latejoin_inactive/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info("Its transmitter seems to be <b>[active? "on" : "off"]</b>.")
 	. += span_notice("You could [active ? "deactivate" : "activate"] it by [EXAMINE_HINT("right clicking")] with a multitool.")
 
-/obj/structure/ai_core/latejoin_inactive/proc/is_available() //If people still manage to use this feature to spawn-kill AI latejoins ahelp them.
+/obj/structure/ai_core/latejoin_inactive/proc/is_available()
+	procstart = null
+	src.procstart = null //If people still manage to use this feature to spawn-kill AI latejoins ahelp them.
 	if(!available)
 		return FALSE
 	if(!safety_checks)
@@ -161,6 +185,8 @@
 	return TRUE
 
 /obj/structure/ai_core/latejoin_inactive/multitool_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!tool.use_tool(src, user, 0 SECONDS, 0, 50))
 		return ITEM_INTERACT_BLOCKING
 
@@ -169,12 +195,16 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/ai_core/multitool_act(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(src, 50)
 	tool.set_buffer(src)
 	balloon_alert(user, "core saved to buffer")
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/ai_core/proc/ai_structure_to_mob()
+	procstart = null
+	src.procstart = null
 	var/mob/living/brain/the_brainmob = core_mmi.brainmob
 	if(!the_brainmob.mind || suicide_check())
 		return FALSE
@@ -193,6 +223,8 @@
 
 /// Quick proc to call to see if the brainmob inside of us has suicided. Returns TRUE if we have, FALSE in any other scenario.
 /obj/structure/ai_core/proc/suicide_check()
+	procstart = null
+	src.procstart = null
 	if(isnull(core_mmi) || isnull(core_mmi.brainmob))
 		return FALSE
 	return HAS_TRAIT(core_mmi.brainmob, TRAIT_SUICIDED)
@@ -206,6 +238,8 @@ That prevents a few funky behaviors.
 
 
 /atom/proc/transfer_ai(interaction, mob/user, mob/living/silicon/ai/AI, obj/item/aicard/card)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(istype(card))
 		if(card.flush)
@@ -214,6 +248,8 @@ That prevents a few funky behaviors.
 	return TRUE
 
 /obj/structure/ai_core/transfer_ai(interaction, mob/user, mob/living/silicon/ai/AI, obj/item/aicard/card)
+	procstart = null
+	src.procstart = null
 	if(state != CORE_STATE_FINISHED || !..())
 		return
 	if(core_mmi && core_mmi.brainmob)
@@ -243,6 +279,8 @@ That prevents a few funky behaviors.
 	var/battery = 200 //backup battery for when the AI loses power. Copied to/from AI mobs when carding, and placed here to avoid recharge via deconning the core
 
 /obj/item/circuitboard/aicore/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload && HAS_TRAIT(SSstation, STATION_TRAIT_HUMAN_AI))
 		return INITIALIZE_HINT_QDEL

@@ -15,6 +15,8 @@
 	var/datum/callback/on_lost_callback
 
 /datum/status_effect/ghoul/Destroy()
+	procstart = null
+	src.procstart = null
 	master_mind = null
 	on_made_callback = null
 	on_lost_callback = null
@@ -44,6 +46,8 @@
 			linked_alert.desc += " You are more fragile in this form."
 
 /datum/status_effect/ghoul/on_apply()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(owner))
 		return FALSE
 
@@ -74,11 +78,15 @@
 	return TRUE
 
 /datum/status_effect/ghoul/on_remove()
+	procstart = null
+	src.procstart = null
 	remove_ghoul_status()
 	return ..()
 
 /// Removes the ghoul effects from our owner and returns them to normal.
 /datum/status_effect/ghoul/proc/remove_ghoul_status(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!ishuman(owner))

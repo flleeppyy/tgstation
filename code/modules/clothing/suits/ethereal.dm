@@ -13,16 +13,22 @@
 	hoodtype = /obj/item/clothing/head/hooded/ethereal_rainhood
 
 /obj/item/clothing/suit/hooded/ethereal_raincoat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon(UPDATE_OVERLAYS)
 	AddElement(/datum/element/adjust_fishing_difficulty, -5)
 
 /obj/item/clothing/suit/hooded/ethereal_raincoat/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance('icons/mob/clothing/suits/ethereal.dmi', "eth_raincoat_glow_worn", offset_spokesman = src, alpha = src.alpha)
 
 /obj/item/clothing/suit/hooded/ethereal_raincoat/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance('icons/obj/clothing/suits/ethereal.dmi', "eth_raincoat_glow", offset_spokesman = src, alpha = src.alpha)
 
@@ -34,10 +40,14 @@
 	hoodtype = /obj/item/clothing/head/hooded/ethereal_rainhood/trailwarden
 
 /obj/item/clothing/suit/hooded/ethereal_raincoat/trailwarden/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -7)
 
 /obj/item/clothing/suit/hooded/ethereal_raincoat/trailwarden/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isethereal(user) && (slot & ITEM_SLOT_OCLOTHING))
 		var/mob/living/carbon/human/ethereal = user
@@ -57,5 +67,7 @@
 /obj/item/clothing/head/hooded/ethereal_rainhood/trailwarden
 
 /obj/item/clothing/head/hooded/ethereal_rainhood/trailwarden/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -6)

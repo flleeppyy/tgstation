@@ -11,6 +11,8 @@
 	var/alert_message
 
 /datum/element/prevent_attacking_of_types/Attach(datum/target, list/typecache, alert_message)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (!isanimal_or_basicmob(target))
@@ -22,10 +24,14 @@
 	RegisterSignal(target, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(on_pre_attacking_target))
 
 /datum/element/prevent_attacking_of_types/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, COMSIG_HOSTILE_PRE_ATTACKINGTARGET)
 	return ..()
 
 /datum/element/prevent_attacking_of_types/proc/on_pre_attacking_target(mob/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!typecache[target.type])

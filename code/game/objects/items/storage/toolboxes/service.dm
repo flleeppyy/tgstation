@@ -5,6 +5,8 @@
 	material_flags = NONE
 
 /obj/item/storage/toolbox/electrical/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/pickedcolor = pick(GLOB.cable_colors)
 	new /obj/item/screwdriver(src)
 	new /obj/item/wirecutters(src)

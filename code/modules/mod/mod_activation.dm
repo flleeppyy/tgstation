@@ -2,6 +2,8 @@
 
 /// Creates a radial menu from which the user chooses parts of the suit to deploy/retract. Repeats until all parts are extended or retracted.
 /obj/item/mod/control/proc/choose_deploy(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!length(mod_parts))
 		return
 	var/list/display_names = list()
@@ -46,6 +48,8 @@
 
 /// Quickly deploys all parts (or retracts if all are on the wearer)
 /obj/item/mod/control/proc/quick_deploy(mob/user)
+	procstart = null
+	src.procstart = null
 	if(activating)
 		balloon_alert(user, "currently [active ? "unsealing" : "sealing"]!")
 		playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
@@ -68,6 +72,8 @@
 
 /// Deploys a part of the suit onto the user.
 /obj/item/mod/control/proc/deploy(mob/user, obj/item/part, instant = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/mod_part/part_datum = get_part_datum(part)
 	if(!wearer)
 		playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
@@ -113,6 +119,8 @@
 	return FALSE
 
 /obj/item/mod/control/proc/can_preserve_suit_storage(obj/item/new_suit, obj/item/stored_item)
+	procstart = null
+	src.procstart = null
 	if(!isclothing(new_suit) || !stored_item)
 		return FALSE
 	if(HAS_TRAIT(stored_item, TRAIT_NODROP))
@@ -126,6 +134,8 @@
 
 /// Moves a MOD part between the wearer and the suit without forcing valid suit-storage contents to drop.
 /obj/item/mod/control/proc/transfer_part_to_loc(obj/item/part, atom/newloc, force = FALSE, preserve_suit_storage = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!preserve_suit_storage)
 		return wearer.transferItemToLoc(part, newloc, force = force)
 	if(!wearer.temporarilyRemoveItemFromInventory(part, force, idrop = FALSE, newloc = newloc))
@@ -135,6 +145,8 @@
 
 /// Retract a part of the suit from the user.
 /obj/item/mod/control/proc/retract(mob/user, obj/item/part, instant = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/mod_part/part_datum = get_part_datum(part)
 	if(part.loc == src)
 		if(!user)
@@ -172,6 +184,8 @@
 
 /// Starts the activation sequence, where parts of the suit activate one by one until the whole suit is on.
 /obj/item/mod/control/proc/toggle_activate(mob/user, force_deactivate = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!wearer)
 		if(!force_deactivate)
 			balloon_alert(user, "not equipped!")
@@ -251,6 +265,8 @@
 	return TRUE
 
 /obj/item/mod/control/proc/delayed_seal_part(obj/item/clothing/part)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	var/datum/mod_part/part_datum = get_part_datum(part)
 	if(do_after(wearer, activation_step_time, wearer, MOD_ACTIVATION_STEP_FLAGS, extra_checks = CALLBACK(src, PROC_REF(get_wearer)), cog_icon = null))
@@ -260,6 +276,8 @@
 		return TRUE
 
 /obj/item/mod/control/proc/delayed_activation()
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(do_after(wearer, activation_step_time, wearer, MOD_ACTIVATION_STEP_FLAGS, extra_checks = CALLBACK(src, PROC_REF(get_wearer)), cog_icon = null))
 		control_activation(is_on = !active)
@@ -267,6 +285,8 @@
 
 ///Seals or unseals the given part.
 /obj/item/mod/control/proc/seal_part(obj/item/clothing/part, is_sealed)
+	procstart = null
+	src.procstart = null
 	var/datum/mod_part/part_datum = get_part_datum(part)
 	part_datum.sealed = is_sealed
 	if(part_datum.sealed)
@@ -316,6 +336,8 @@
 
 /// Finishes the suit's activation
 /obj/item/mod/control/proc/control_activation(is_on)
+	procstart = null
+	src.procstart = null
 	var/datum/mod_part/part_datum = get_part_datum(src)
 	part_datum.sealed = is_on
 	active = is_on
@@ -339,12 +361,16 @@
 
 /// Quickly deploys all the suit parts and if successful, seals them and turns on the suit. Intended mostly for outfits.
 /obj/item/mod/control/proc/quick_activation()
+	procstart = null
+	src.procstart = null
 	control_activation(is_on = TRUE)
 	for(var/obj/item/part as anything in get_parts())
 		deploy(null, part, instant = TRUE)
 
 /// Checks if the suit is fully retracted, with no parts outside
 /obj/item/mod/control/proc/check_retracted()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/part as anything in get_parts())
 		if(part.loc != src)
 			return FALSE

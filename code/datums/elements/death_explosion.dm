@@ -14,6 +14,8 @@
 	var/light_impact
 
 /datum/element/death_explosion/Attach(datum/target, devastation = -1, heavy_impact = -1, light_impact = -1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -23,11 +25,15 @@
 	RegisterSignal(target, COMSIG_LIVING_DEATH, PROC_REF(on_death))
 
 /datum/element/death_explosion/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_LIVING_DEATH)
 
 /// Triggered when target dies, make an explosion.
 /datum/element/death_explosion/proc/on_death(mob/living/target, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	explosion(
 		get_turf(target),

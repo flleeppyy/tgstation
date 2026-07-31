@@ -32,12 +32,16 @@
 	)
 
 /obj/machinery/portable_atmospherics/pipe_scrubber/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	internal_tank = new(src)
 	RegisterSignal(internal_tank, COMSIG_ATOM_BREAK, PROC_REF(deconstruct))
 	RegisterSignal(internal_tank, COMSIG_QDELETING, PROC_REF(deconstruct))
 
 /obj/machinery/portable_atmospherics/pipe_scrubber/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/my_turf = get_turf(src)
 	my_turf.assume_air(air_contents)
@@ -46,26 +50,38 @@
 	qdel(internal_tank)
 
 /obj/machinery/portable_atmospherics/pipe_scrubber/return_analyzable_air()
+	procstart = null
+	src.procstart = null
 	return list(
 		air_contents,
 		internal_tank.air_contents
 	)
 
 /obj/machinery/portable_atmospherics/pipe_scrubber/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	internal_tank.welder_act(user, tool)
 	return ..()
 
 /obj/machinery/portable_atmospherics/pipe_scrubber/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return CLICK_ACTION_BLOCKING
 
 /obj/machinery/portable_atmospherics/pipe_scrubber/replace_tank(mob/living/user, close_valve, obj/item/tank/new_tank)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/portable_atmospherics/pipe_scrubber/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = on ? "[initial(icon_state)]_active" : initial(icon_state)
 	return ..()
 
 /obj/machinery/portable_atmospherics/pipe_scrubber/process_atmos()
+	procstart = null
+	src.procstart = null
 	if(take_atmos_damage())
 		excited = TRUE
 		return ..()
@@ -80,6 +96,8 @@
 
 /// Scrub gasses from own air_contents into internal_tank.air_contents
 /obj/machinery/portable_atmospherics/pipe_scrubber/proc/scrub()
+	procstart = null
+	src.procstart = null
 	if(internal_tank.air_contents.return_pressure() >= PUMP_MAX_PRESSURE)
 		return
 
@@ -102,12 +120,16 @@
 	air_contents.merge(filtering) // Returned the cleaned gas.
 
 /obj/machinery/portable_atmospherics/pipe_scrubber/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PipeScrubber", name)
 		ui.open()
 
 /obj/machinery/portable_atmospherics/pipe_scrubber/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["on"] = on
 	data["direction"] = direction
@@ -129,12 +151,16 @@
 	return data
 
 /obj/machinery/portable_atmospherics/pipe_scrubber/ui_static_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["pressureLimitPump"] = pressure_limit
 	data["pressureLimitTank"] = internal_tank.pressure_limit
 	return data
 
 /obj/machinery/portable_atmospherics/pipe_scrubber/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -163,10 +189,14 @@
 	update_appearance()
 
 /obj/machinery/portable_atmospherics/pipe_scrubber/insert_nob_crystal()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	internal_tank.nob_crystal_inserted = TRUE
 
 /obj/machinery/portable_atmospherics/pipe_scrubber/proc/toggle_reaction_suppression()
+	procstart = null
+	src.procstart = null
 	var/new_value = !suppress_reactions
 	suppress_reactions = new_value
 	internal_tank.suppress_reactions = new_value

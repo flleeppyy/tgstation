@@ -4,6 +4,8 @@
 	var/turf/target_turf
 
 /datum/unit_test/tile_replacement/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/interior_designer = EASY_ALLOCATE()
 	var/obj/item/crowbar/ripper = EASY_ALLOCATE()
 	var/obj/item/screwdriver/screwer = EASY_ALLOCATE()
@@ -37,5 +39,7 @@
 	TEST_ASSERT_NOTNULL(locate(/obj/item/stack/tile/wood) in target_turf, "Replacing wooden floor tiling using a screwdriver did not drop the tile")
 
 /datum/unit_test/tile_replacement/Destroy()
+	procstart = null
+	src.procstart = null
 	target_turf.ChangeTurf(old_turf_type)
 	return ..()

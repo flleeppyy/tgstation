@@ -32,11 +32,15 @@
 	var/worm_chance = 30
 
 /turf/open/misc/asteroid/broken_states()
+	procstart = null
+	src.procstart = null
 	if(initial(dug))
 		return list(icon_state)
 	return list("[base_icon_state]_dug")
 
 /turf/open/misc/asteroid/break_tile()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -44,9 +48,13 @@
 	return TRUE
 
 /turf/open/misc/asteroid/burn_tile()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/misc/asteroid/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	var/proper_name = name
 	. = ..()
 	name = proper_name
@@ -54,15 +62,23 @@
 		icon_state = "[base_icon_state][rand(0,12)]"
 
 /turf/open/misc/asteroid/MakeSlippery(wet_setting, min_wet_time, wet_time_to_add, max_wet_time, permanent)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/misc/asteroid/MakeDry()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/misc/asteroid/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/open/misc/asteroid/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ITEM_INTERACT_ANY_BLOCKER & .)
 		return .
@@ -95,6 +111,8 @@
 
 /// Drops itemstack when dug and changes icon
 /turf/open/misc/asteroid/proc/getDug()
+	procstart = null
+	src.procstart = null
 	if(!break_tile())
 		return FALSE
 	new dig_result(src, DIG_SHEET_AMOUNT)
@@ -104,6 +122,8 @@
 
 /// If the user can dig the turf
 /turf/open/misc/asteroid/proc/can_dig(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!dug && !broken)
 		return TRUE
 	if(user)
@@ -112,6 +132,8 @@
 
 ///Refills the previously dug tile
 /turf/open/misc/asteroid/proc/refill_dug()
+	procstart = null
+	src.procstart = null
 	dug = FALSE
 	broken = FALSE
 	icon_state = base_icon_state
@@ -129,6 +151,8 @@
 	icon_state = "asteroid_dug"
 
 /turf/open/misc/asteroid/dug/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("asteroid_dug")
 
 /turf/open/misc/asteroid/lavaland_atmos
@@ -150,6 +174,8 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 	smoothing_groups = SMOOTH_GROUP_FLOOR_BASALT
 
 /turf/open/misc/asteroid/basalt/getDug()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -157,10 +183,14 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 	GLOB.dug_up_basalt |= src
 
 /turf/open/misc/asteroid/basalt/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.dug_up_basalt -= src
 	return ..()
 
 /turf/open/misc/asteroid/basalt/refill_dug()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.dug_up_basalt -= src
 	set_basalt_light()
@@ -173,10 +203,14 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 	worm_chance = 0
 
 /turf/open/misc/asteroid/basalt/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_basalt_light()
 
 /turf/open/misc/asteroid/basalt/proc/set_basalt_light()
+	procstart = null
+	src.procstart = null
 	switch(icon_state)
 		if("basalt1", "basalt2", "basalt3")
 			set_light(BASALT_LIGHT_RANGE_BRIGHT, BASALT_LIGHT_POWER, LIGHT_COLOR_LAVA) //more light
@@ -204,6 +238,8 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 	var/default_area = /area/lavaland/surface/outdoors/unexplored/danger
 
 /turf/open/misc/asteroid/basalt/lava_land_surface/biome_replace/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Just spawn a normal lavaland rock if we fail to get a mapgen, such as being spawned over lava
 	var/supposed_type = /turf/open/misc/asteroid/basalt/lava_land_surface
@@ -252,6 +288,8 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 	var/variant_num = 8
 
 /turf/open/misc/asteroid/basalt/smooth/set_smoothed_icon_state(new_junction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (new_junction == 255 && variant_dmi)
 		icon = variant_dmi
@@ -260,11 +298,15 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 		icon = initial(icon)
 
 /turf/open/misc/asteroid/basalt/smooth/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (smoothing_junction != 255 && variant_dmi)
 		. = list(mutable_appearance(variant_dmi, "[base_icon_state][rand(1, variant_num)]")) + .
 
 /turf/open/misc/asteroid/basalt/smooth/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -273,6 +315,8 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 	underlay_appearance.transform = transform
 
 /turf/open/misc/asteroid/basalt/smooth/refill_dug()
+	procstart = null
+	src.procstart = null
 	dug = FALSE
 	broken = FALSE
 	set_smoothed_icon_state(smoothing_junction)
@@ -337,6 +381,8 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 	leave_footprints = TRUE
 
 /turf/open/misc/asteroid/snow/burn_tile()
+	procstart = null
+	src.procstart = null
 	if(!burnt)
 		visible_message(span_danger("[src] melts away!."))
 		slowdown = 0
@@ -346,9 +392,13 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 	return FALSE
 
 /turf/open/misc/asteroid/snow/burnt_states()
+	procstart = null
+	src.procstart = null
 	return list("snow_dug")
 
 /turf/open/misc/asteroid/snow/add_footprint(mob/living/carbon/human/walker, movement_direction)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(walker, TRAIT_NO_SNOWPRINTS))
 		return
 	// skip the special logic if the level doesn't naturally have snowstorms
@@ -369,6 +419,8 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 		RegisterSignal(SSdcs, COMSIG_WEATHER_START(snow_type), PROC_REF(snow_clear_footprints), override = TRUE)
 
 /turf/open/misc/asteroid/snow/proc/snow_clear_footprints(datum/source, datum/weather/storm)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(loc in storm.impacted_areas))
@@ -379,6 +431,8 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 		UnregisterSignal(SSdcs, COMSIG_WEATHER_START(snow_type))
 
 /turf/open/misc/asteroid/snow/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stack/sheet/mineral/snow))
 		return ..()
 
@@ -445,9 +499,13 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 	leave_footprints = FALSE
 
 /turf/open/misc/asteroid/snow/ice/break_tile()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/open/misc/asteroid/snow/ice/burn_tile()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/open/misc/asteroid/snow/ice/icemoon

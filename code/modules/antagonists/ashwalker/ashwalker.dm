@@ -9,6 +9,8 @@
 	var/datum/team/ashwalkers/ashie_team
 
 /datum/antagonist/ashwalker/create_team(datum/team/ashwalkers/ashwalker_team)
+	procstart = null
+	src.procstart = null
 	if(ashwalker_team)
 		ashie_team = ashwalker_team
 		objectives |= ashie_team.objectives
@@ -16,20 +18,28 @@
 		ashie_team = new
 
 /datum/antagonist/ashwalker/get_team()
+	procstart = null
+	src.procstart = null
 	return ashie_team
 
 /datum/antagonist/ashwalker/on_body_transfer(mob/living/old_body, mob/living/new_body)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(old_body, COMSIG_MOB_EXAMINATE)
 	RegisterSignal(new_body, COMSIG_MOB_EXAMINATE, PROC_REF(on_examinate))
 
 /datum/antagonist/ashwalker/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner.current, COMSIG_MOB_EXAMINATE, PROC_REF(on_examinate))
 	owner.teach_crafting_recipe(/datum/crafting_recipe/skeleton_key)
 	owner.current.remove_faction(FACTION_NEUTRAL) // ashwalkers aren't neutral; they're ashwalker-aligned
 
 /datum/antagonist/ashwalker/on_removal()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!owner.current)
 		return
@@ -37,6 +47,8 @@
 	owner.current.add_faction(FACTION_NEUTRAL)
 
 /datum/antagonist/ashwalker/proc/on_examinate(datum/source, atom/A)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(A, /obj/structure/headpike))
@@ -51,6 +63,8 @@
 	var/eggs_created = 0
 
 /datum/team/ashwalkers/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/report = list()
 
 	report += span_header("An Ash Walker Tribe inhabited the wastes...</span><br>")

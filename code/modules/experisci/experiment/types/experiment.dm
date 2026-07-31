@@ -32,6 +32,8 @@
  * Performs any necessary initialization of tags and other variables
  */
 /datum/experiment/New(datum/techweb/techweb)
+	procstart = null
+	src.procstart = null
 	if (traits & EXPERIMENT_TRAIT_DESTRUCTIVE)
 		exp_tag = "Destructive [exp_tag]"
 
@@ -42,6 +44,8 @@
  * state if the experiment is complete or not.
  */
 /datum/experiment/proc/is_complete()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -53,6 +57,8 @@
  * one of several available macros in that file.
  */
 /datum/experiment/proc/check_progress()
+	procstart = null
+	src.procstart = null
 	. = list()
 
 /**
@@ -63,20 +69,28 @@
  * the provided arguments.
  */
 /datum/experiment/proc/actionable(...)
+	procstart = null
+	src.procstart = null
 	return !is_complete()
 
 ///Called when the experiment is selected by an experiment handler, for specific signals and the such.
 /datum/experiment/proc/on_selected(datum/component/experiment_handler/experiment_handler)
+	procstart = null
+	src.procstart = null
 	return
 
 ///Called when the opposite happens.
 /datum/experiment/proc/on_unselected(datum/component/experiment_handler/experiment_handler)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
  * Proc that tries to perform the experiment, and then checks if its completed.
  */
 /datum/experiment/proc/perform_experiment(datum/component/experiment_handler/experiment_handler, ...)
+	procstart = null
+	src.procstart = null
 	var/action_successful = perform_experiment_actions(arglist(args))
 	playsound(src, SFX_INDUSTRIAL_SCAN, 20, TRUE, -2, TRUE, FALSE)
 	if(is_complete())
@@ -90,12 +104,16 @@
  * with some defined arguments
  */
 /datum/experiment/proc/perform_experiment_actions(datum/component/experiment_handler/experiment_handler, ...)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
  * Called when you complete an experiment, makes sure the techwebs knows the experiment was finished, and tells everyone it happend, yay!
  */
 /datum/experiment/proc/finish_experiment(datum/component/experiment_handler/experiment_handler, datum/techweb/linked_web_override)
+	procstart = null
+	src.procstart = null
 	completed = TRUE
 	if(!experiment_handler && !linked_web_override)
 		CRASH("finish_experiment() called without either experiment_handler or linked_web_override being set")
@@ -112,6 +130,8 @@
  * * linked_web - the linked techweb we want to target. Prevent experiment handlers not linked to said techweb from receiving the message
  */
 /datum/experiment/proc/announce_message_to_all(message, datum/techweb/linked_web)
+	procstart = null
+	src.procstart = null
 	for(var/datum/component/experiment_handler/experi_handler as anything in GLOB.experiment_handlers)
 		if(experi_handler.linked_web != linked_web)
 			continue
@@ -121,12 +141,16 @@
 		experi_parent.say(message)
 
 /datum/experiment/proc/get_points_reward_text()
+	procstart = null
+	src.procstart = null
 	var/list/english_list_keys = list()
 	for(var/points_type in points_reward)
 		english_list_keys += "[points_reward[points_type]] [points_type]"
 	return "[english_list(english_list_keys)] points"
 
 /datum/experiment/proc/to_ui_data()
+	procstart = null
+	src.procstart = null
 	return list(
 		"name" = name,
 		"description" = description,

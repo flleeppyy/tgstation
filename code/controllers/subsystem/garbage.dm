@@ -57,9 +57,13 @@ SUBSYSTEM_DEF(garbage)
 
 
 /datum/controller/subsystem/garbage/PreInit()
+	procstart = null
+	src.procstart = null
 	InitQueues()
 
 /datum/controller/subsystem/garbage/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	var/list/counts = list()
 	for (var/list/L in queues)
 		counts += length(L)
@@ -80,6 +84,8 @@ SUBSYSTEM_DEF(garbage)
 	return ..()
 
 /datum/controller/subsystem/garbage/Shutdown()
+	procstart = null
+	src.procstart = null
 	//Adds the del() log to the qdel log file
 	var/list/del_log = list()
 
@@ -115,6 +121,8 @@ SUBSYSTEM_DEF(garbage)
 	log_qdel("", del_log)
 
 /datum/controller/subsystem/garbage/fire()
+	procstart = null
+	src.procstart = null
 	//the fact that this resets its processing each fire (rather then resume where it left off) is intentional.
 	var/queue = GC_QUEUE_FILTER
 
@@ -135,6 +143,8 @@ SUBSYSTEM_DEF(garbage)
 
 
 /datum/controller/subsystem/garbage/proc/InitQueues()
+	procstart = null
+	src.procstart = null
 	if (isnull(queues)) // Only init the queues if they don't already exist, prevents overriding of recovered lists
 		queues = new(GC_QUEUE_COUNT)
 		pass_counts = new(GC_QUEUE_COUNT)
@@ -146,6 +156,8 @@ SUBSYSTEM_DEF(garbage)
 
 
 /datum/controller/subsystem/garbage/proc/HandleQueue(level = GC_QUEUE_FILTER)
+	procstart = null
+	src.procstart = null
 	if (level == GC_QUEUE_FILTER)
 		delslasttick = 0
 		gcedlasttick = 0
@@ -264,6 +276,8 @@ SUBSYSTEM_DEF(garbage)
 #undef REFS_WE_EXPECT
 
 /datum/controller/subsystem/garbage/proc/Queue(datum/D, level = GC_QUEUE_FILTER)
+	procstart = null
+	src.procstart = null
 	if (isnull(D))
 		return
 	if (level > GC_QUEUE_COUNT)
@@ -279,6 +293,8 @@ SUBSYSTEM_DEF(garbage)
 
 //this is mainly to separate things profile wise.
 /datum/controller/subsystem/garbage/proc/HardDelete(datum/D)
+	procstart = null
+	src.procstart = null
 	++delslasttick
 	++totaldels
 	var/type = D.type
@@ -316,6 +332,8 @@ SUBSYSTEM_DEF(garbage)
 			type_info.qdel_flags |= QDEL_ITEM_SUSPENDED_FOR_LAG
 
 /datum/controller/subsystem/garbage/Recover()
+	procstart = null
+	src.procstart = null
 	InitQueues() //We first need to create the queues before recovering data
 	if (istype(SSgarbage.queues))
 		for (var/i in 1 to SSgarbage.queues.len)
@@ -338,12 +356,16 @@ SUBSYSTEM_DEF(garbage)
 	var/list/extra_details //!Lazylist of string metadata about the deleted objects
 
 /datum/qdel_item/New(mytype)
+	procstart = null
+	src.procstart = null
 	name = "[mytype]"
 
 /// Should be treated as a replacement for the 'del' keyword.
 ///
 /// Datums passed to this will be given a chance to clean up references to allow the GC to collect them.
 /proc/qdel(datum/to_delete, force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(to_delete))
 		if(isnull(to_delete))
 			return

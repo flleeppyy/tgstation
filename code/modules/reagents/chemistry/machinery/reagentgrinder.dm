@@ -21,6 +21,8 @@
 	var/speed = 1
 
 /obj/machinery/reagentgrinder/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(mapload)
@@ -32,10 +34,14 @@
 	RegisterSignal(src, COMSIG_STORAGE_DUMP_CONTENT, PROC_REF(on_storage_dump))
 
 /obj/machinery/reagentgrinder/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(beaker)
 	return ..()
 
 /obj/machinery/reagentgrinder/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(beaker))
 		return
 
@@ -48,6 +54,8 @@
 			SSexplosions.low_mov_atom += beaker
 
 /obj/machinery/reagentgrinder/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	var/result = NONE
 	if(isnull(held_item))
 		if(!QDELETED(beaker) && !operating)
@@ -79,6 +87,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/reagentgrinder/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!in_range(user, src) && !issilicon(user) && !isobserver(user))
 		. += span_warning("You're too far away to examine [src]'s contents and display!")
@@ -122,6 +132,8 @@
 		. += span_notice("It can be [EXAMINE_HINT("pried")] apart.")
 
 /obj/machinery/reagentgrinder/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!QDELETED(beaker))
@@ -131,12 +143,16 @@
 		. += "[base_icon_state]-on"
 
 /obj/machinery/reagentgrinder/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == beaker)
 		beaker = null
 		update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/reagentgrinder/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	for(var/datum/stock_part/part in component_parts)
@@ -152,6 +168,8 @@
  * * obj/item/reagent_containers/new_beaker - the new beaker to replace the old, null to do nothing
  */
 /obj/machinery/reagentgrinder/proc/replace_beaker(mob/living/user, obj/item/reagent_containers/new_beaker)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(!QDELETED(beaker))
@@ -172,6 +190,8 @@
  * * list/obj/item/to_add - list of items to add
  */
 /obj/machinery/reagentgrinder/proc/load_items(mob/user, list/obj/item/to_add)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	//surface level checks to filter out items that can be grinded/juice
@@ -220,6 +240,8 @@
 	return items_transfered
 
 /obj/machinery/reagentgrinder/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode && !is_reagent_container(tool)  && !tool.is_open_container() || (tool.item_flags & ABSTRACT) || (tool.flags_1 & HOLOGRAM_1))
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 
@@ -273,6 +295,8 @@
 	return NONE
 
 /obj/machinery/reagentgrinder/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(operating)
 		balloon_alert(user, "still operating!")
 		return ITEM_INTERACT_BLOCKING
@@ -284,6 +308,8 @@
 	return NONE
 
 /obj/machinery/reagentgrinder/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(operating)
 		balloon_alert(user, "still operating!")
 		return ITEM_INTERACT_BLOCKING
@@ -291,6 +317,8 @@
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/reagentgrinder/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(operating)
 		balloon_alert(user, "still operating!")
 		return ITEM_INTERACT_BLOCKING
@@ -298,6 +326,8 @@
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/reagentgrinder/proc/on_storage_dump(datum/source, datum/storage/storage, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/list/obj/item/contents_to_dump = list()
@@ -311,6 +341,8 @@
 	return STORAGE_DUMP_HANDLED
 
 /obj/machinery/reagentgrinder/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN || !check_interactable(user))
 		return
@@ -318,12 +350,18 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/reagentgrinder/attack_robot_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand_secondary(user, modifiers)
 
 /obj/machinery/reagentgrinder/attack_ai_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand_secondary(user, modifiers)
 
 /obj/machinery/reagentgrinder/ui_interact(mob/user)
+	procstart = null
+	src.procstart = null
 	//sanity check
 	if(!user.can_perform_action(src, ALLOW_SILICON_REACH | FORBID_TELEKINESIS_REACH))
 		return
@@ -390,6 +428,8 @@
  * * mob/user - the player interacting with this machine
  */
 /obj/machinery/reagentgrinder/proc/check_interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	return !operating && user.can_perform_action(src, ALLOW_SILICON_REACH | FORBID_TELEKINESIS_REACH)
@@ -403,6 +443,8 @@
  * * mob/user - the player who initiated this process
  */
 /obj/machinery/reagentgrinder/proc/operate_for(time, juicing = FALSE, mob/user)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(!anchored || !is_operational || QDELETED(beaker) || beaker.reagents.holder_full())
@@ -453,6 +495,8 @@
 
 ///Reset the operating status of the machine
 /obj/machinery/reagentgrinder/proc/stop_operating()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	operating = FALSE
@@ -465,6 +509,8 @@
  * * mob/user - the player who started the mixing process
  */
 /obj/machinery/reagentgrinder/proc/mix(time, mob/user)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(!anchored || !is_operational || QDELETED(beaker) || !beaker.reagents.total_volume)
@@ -487,6 +533,8 @@
  * * duration - the time spent in mixing
  */
 /obj/machinery/reagentgrinder/proc/mix_complete(duration)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(QDELETED(src) || !is_operational)

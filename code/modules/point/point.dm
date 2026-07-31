@@ -8,6 +8,8 @@
  * Not intended as a replacement for the mob verb
  */
 /atom/movable/proc/point_at(atom/pointed_atom, intentional = FALSE, pointer_type = /obj/effect/temp_visual/point)
+	procstart = null
+	src.procstart = null
 	if(!isturf(loc))
 		return FALSE
 
@@ -28,11 +30,15 @@
 	return visual
 
 /mob/point_at(atom/pointed_atom, intentional = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		face_atom(pointed_atom)
 
 /atom/movable/proc/create_point_bubble(atom/pointed_atom)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/thought_bubble = mutable_appearance(
 		'icons/effects/effects.dmi',
 		"thought_bubble",
@@ -66,6 +72,8 @@
 	addtimer(CALLBACK(src, PROC_REF(clear_point_bubble), thought_bubble), POINT_TIME)
 
 /atom/movable/proc/clear_point_bubble(mutable_appearance/thought_bubble)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(update_overlays_on_z, thought_bubble)
 	cut_overlay(thought_bubble)
 
@@ -77,6 +85,8 @@
 	duration = POINT_TIME
 
 /obj/effect/temp_visual/point/Initialize(mapload, set_invis = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/old_loc = loc
 	abstract_move(get_turf(src))
@@ -88,6 +98,8 @@
 	icon_state = "arrow_large_white"
 
 /obj/effect/temp_visual/point/holo/Initialize(mapload, set_invis = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	makeHologram()
 
@@ -115,6 +127,8 @@ GAME_VERB(/mob, pointed, "Point To", null, atom/A as mob|obj|turf)
 /// possibly delayed verb that finishes the pointing process starting in [/mob/verb/pointed()].
 /// either called immediately or in the tick after pointed() was called, as per the [DEFAULT_QUEUE_OR_CALL_VERB()] macro
 /mob/proc/_pointed(atom/pointing_at)
+	procstart = null
+	src.procstart = null
 	if(client) //Clientless mobs can just go ahead and point
 		var/atom/atom_to_view_verify = pointing_at
 		if(ismovable(pointing_at))

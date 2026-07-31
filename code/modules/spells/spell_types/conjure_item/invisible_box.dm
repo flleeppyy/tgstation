@@ -26,6 +26,8 @@
 	var/box_lifespan = 50 SECONDS
 
 /datum/action/cooldown/spell/conjure_item/invisible_box/make_item(atom/caster)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/made_box = .
 	made_box.alpha = 255
@@ -33,6 +35,8 @@
 
 /// Callback that gets rid out of box and removes the weakref from our list
 /datum/action/cooldown/spell/conjure_item/invisible_box/proc/cleanup_box(obj/item/storage/box/box)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(box) || !istype(box))
 		return
 

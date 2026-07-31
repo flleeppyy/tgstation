@@ -18,6 +18,8 @@
 	var/datum/callback/should_modify_speech = null
 
 /datum/component/speechmod/Initialize(replacements = list(), end_string = "", end_string_chance = 100, slots, uppercase = FALSE, should_modify_speech)
+	procstart = null
+	src.procstart = null
 	if (!ismob(parent) && !isitem(parent) && !istype(parent, /datum/mutation))
 		return COMPONENT_INCOMPATIBLE
 
@@ -59,6 +61,8 @@
 
 
 /datum/component/speechmod/proc/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/message = speech_args[SPEECH_MESSAGE]
@@ -85,6 +89,8 @@
 		return COMPONENT_UPPERCASE_SPEECH
 
 /datum/component/speechmod/proc/on_equipped(datum/source, mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!isnull(slots) && !(slot & slots))
@@ -100,6 +106,8 @@
 	RegisterSignal(targeted, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 
 /datum/component/speechmod/proc/on_unequipped(datum/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (isnull(targeted))
@@ -108,6 +116,8 @@
 	targeted = null
 
 /datum/component/speechmod/proc/on_implanted(datum/source, mob/living/carbon/receiver)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (targeted == receiver)
@@ -117,6 +127,8 @@
 	RegisterSignal(targeted, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 
 /datum/component/speechmod/proc/on_removed(datum/source, mob/living/carbon/former_owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (isnull(targeted))
@@ -125,6 +137,8 @@
 	targeted = null
 
 /datum/component/speechmod/proc/on_mutation_gained(datum/source, mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (targeted == owner)
@@ -134,6 +148,8 @@
 	RegisterSignal(targeted, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 
 /datum/component/speechmod/proc/on_mutation_lost(datum/source, mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (isnull(targeted))
@@ -142,5 +158,7 @@
 	targeted = null
 
 /datum/component/speechmod/Destroy()
+	procstart = null
+	src.procstart = null
 	should_modify_speech = null
 	return ..()

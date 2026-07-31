@@ -13,6 +13,8 @@
 	var/unsuitable_atmos_damage
 
 /datum/element/atmos_requirements/Attach(datum/target, list/atmos_requirements, unsuitable_atmos_damage = 5, mapload = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -30,11 +32,15 @@
 	check_safe_environment(target)
 
 /datum/element/atmos_requirements/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_LIVING_HANDLE_BREATHING)
 
 ///signal called by the living mob's life() while non stasis
 /datum/element/atmos_requirements/proc/on_non_stasis_life(mob/living/target, seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(is_breathable_atmos(target))
 		target.clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
@@ -43,6 +49,8 @@
 	target.throw_alert(ALERT_NOT_ENOUGH_OXYGEN, /atom/movable/screen/alert/not_enough_oxy)
 
 /datum/element/atmos_requirements/proc/is_breathable_atmos(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(target.pulledby && target.pulledby.grab_state >= GRAB_KILL && atmos_requirements["min_oxy"])
 		return FALSE
 
@@ -77,6 +85,8 @@
 	return TRUE
 
 /datum/element/atmos_requirements/proc/get_atmos_req_list(turf/open/open_turf)
+	procstart = null
+	src.procstart = null
 	var/open_turf_moles = open_turf.air.moles
 	open_turf.air.assert_gases(/datum/gas/oxygen, /datum/gas/pluoxium, /datum/gas/nitrogen, /datum/gas/carbon_dioxide, /datum/gas/plasma)
 
@@ -92,6 +102,8 @@
 
 ///Ensures that maploaded mobs are in a safe environment. Unit test stuff.
 /datum/element/atmos_requirements/proc/check_safe_environment(mob/living/living_mob)
+	procstart = null
+	src.procstart = null
 	if(living_mob.stat == DEAD || is_breathable_atmos(living_mob))
 		return
 	var/turf/open/open_turf = living_mob.loc

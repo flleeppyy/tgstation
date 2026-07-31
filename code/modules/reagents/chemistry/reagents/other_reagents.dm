@@ -20,9 +20,13 @@
 
 // FEED ME
 /datum/reagent/blood/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 	mytray.adjust_pestlevel(rand(2, 3))
 
 /datum/reagent/blood/on_new(list/data)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// If we were artificially created without blood data, we still want to have the blood_reagent element for exposure effects
 	if(!istype(data) || !data["blood_type"])
@@ -38,6 +42,8 @@
 		color = initial(color)
 
 /datum/reagent/blood/get_taste_description(mob/living/taster)
+	procstart = null
+	src.procstart = null
 	if(isnull(taster))
 		return ..()
 	if(!HAS_TRAIT(taster, TRAIT_DETECTIVES_TASTE))
@@ -76,6 +82,8 @@
 	penetrates_skin = NONE
 
 /datum/reagent/vaccine/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!islist(data) || !(methods & (INGEST|INJECT)))
 		return
@@ -87,6 +95,8 @@
 	LAZYOR(exposed_mob.disease_resistances, data)
 
 /datum/reagent/vaccine/on_merge(list/mix_data, amount)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mix_data)
 		data |= mix_data
@@ -95,6 +105,8 @@
 	name = "Vaccine (Fungal Tuberculosis)"
 
 /datum/reagent/vaccine/fungal_tb/New(data)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/cached_data
 	if(!data)
@@ -129,6 +141,8 @@
  */
 
 /datum/reagent/water/expose_turf(turf/open/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!istype(exposed_turf))
@@ -159,6 +173,8 @@
  */
 
 /datum/reagent/water/expose_obj(obj/exposed_obj, reac_volume, methods=TOUCH, show_message=TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	exposed_obj.extinguish()
 	exposed_obj.wash(CLEAN_TYPE_ACID)
@@ -187,7 +203,9 @@
 /**
  * Water reaction to a mob
  */
-/datum/reagent/water/expose_mob(mob/living/exposed_mob, methods = TOUCH, reac_volume)//Splashing people with water can help put them out!
+/datum/reagent/water/expose_mob(mob/living/exposed_mob, methods = TOUCH, reac_volume)
+	procstart = null
+	src.procstart = null//Splashing people with water can help put them out!
 	. = ..()
 	if(methods & TOUCH)
 		exposed_mob.extinguish_mob() // extinguish removes all fire stacks
@@ -220,6 +238,8 @@
 
 
 /datum/reagent/water/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/obj/item/organ/liver/liver = affected_mob.get_organ_slot(ORGAN_SLOT_LIVER)
@@ -241,6 +261,8 @@
 
 // For weird backwards situations where water manages to get added to trays nutrients, as opposed to being snowflaked away like usual.
 /datum/reagent/water/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 	mytray.adjust_waterlevel(round(volume))
 	//You don't belong in this world, monster!
 	mytray.reagents.remove_reagent(type, volume)
@@ -251,6 +273,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/water/mineral/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.adjust_tox_loss(-0.05 * metabolization_ratio * seconds_per_tick, updating_health = FALSE)
 	return UPDATE_MOB_HEALTH
@@ -276,6 +300,8 @@
 	icon_state = "glass_clear"
 
 /datum/reagent/water/salt/expose_mob(mob/living/exposed_mob, methods, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(exposed_mob))
 		return
@@ -287,17 +313,25 @@
 
 // Mixed salt with water! All the help of salt with none of the irritation. Plus increased volume.
 /datum/wound/proc/on_saltwater(reac_volume, mob/living/carbon/carbies)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/wound/pierce/bleed/on_saltwater(reac_volume, mob/living/carbon/carbies)
+	procstart = null
+	src.procstart = null
 	adjust_blood_flow(-0.06 * reac_volume, initial_flow * 0.6)
 	to_chat(carbies, span_notice("The salt water splashes over [LOWER_TEXT(src)], soaking up the blood."))
 
 /datum/wound/slash/flesh/on_saltwater(reac_volume, mob/living/carbon/carbies)
+	procstart = null
+	src.procstart = null
 	adjust_blood_flow(-0.1 * reac_volume, initial_flow * 0.5)
 	to_chat(carbies, span_notice("The salt water splashes over [LOWER_TEXT(src)], soaking up the blood."))
 
 /datum/wound/burn/flesh/on_saltwater(reac_volume)
+	procstart = null
+	src.procstart = null
 	// Similar but better stats from normal salt.
 	sanitization += VALUE_PER(0.6, 30) * reac_volume
 	infection -= max(VALUE_PER(0.5, 30) * reac_volume, 0)
@@ -324,6 +358,8 @@
 	icon_state = "glass_clear"
 
 /datum/reagent/water/holywater/on_new(list/data)
+	procstart = null
+	src.procstart = null
 	// Tracks the total amount of deciseconds that the reagent has been metab'd for, for the purpose of deconversion
 	if(isnull(data))
 		data = list("deciseconds_metabolized" = 0)
@@ -334,16 +370,22 @@
 
 // Holy water. Unlike water, which is nuked, stays in and heals the plant a little with the power of the spirits. Also ALSO increases instability.
 /datum/reagent/water/holywater/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 	mytray.adjust_waterlevel(round(volume))
 	mytray.adjust_plant_health(round(volume * 0.1))
 	mytray.myseed?.adjust_instability(round(volume * 0.15))
 
 /datum/reagent/water/holywater/on_mob_add(mob/living/affected_mob, amount)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_CULTIST(affected_mob))
 		to_chat(affected_mob, span_userdanger("A vile holiness begins to spread its shining tendrils through your mind, purging the Geometer of Blood's influence!"))
 
 /datum/reagent/water/holywater/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Microdosing holy water is less effective than just gulping it down
 	data["deciseconds_metabolized"] += seconds_per_tick * 1 SECONDS * metabolization_ratio
@@ -403,6 +445,8 @@
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/water/holywater/expose_turf(turf/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(exposed_turf))
 		return
@@ -443,6 +487,8 @@
  */
 
 /datum/reagent/hydrogen_peroxide/expose_turf(turf/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (reac_volume < 1.5)
 		return
@@ -454,7 +500,9 @@
  * Water reaction to a mob
  */
 
-/datum/reagent/hydrogen_peroxide/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0) //Exposing people to h2o2 can burn them !
+/datum/reagent/hydrogen_peroxide/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null //Exposing people to h2o2 can burn them !
 	. = ..()
 	if(!(methods & (VAPOR|TOUCH)))
 		return
@@ -476,11 +524,15 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/fuel/unholywater/on_mob_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_CULTIST(affected_mob))
 		ADD_TRAIT(affected_mob, TRAIT_COAGULATING, type)
 
 /datum/reagent/fuel/unholywater/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/need_mob_update = FALSE
@@ -505,6 +557,8 @@
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/fuel/unholywater/on_mob_end_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(affected_mob, TRAIT_COAGULATING, type) //We don't cult check here because potentially our imbiber may no longer be a cultist for whatever reason! It doesn't purge holy water, after all!
 
@@ -517,6 +571,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/hellwater/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.set_fire_stacks(min(affected_mob.fire_stacks + (1.5 * seconds_per_tick), 5))
 	affected_mob.ignite_mob() //Only problem with igniting people is currently the commonly available fire suits make you immune to being on fire
@@ -547,11 +603,15 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/lube/expose_turf(turf/open/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isopenturf(exposed_turf) && reac_volume >= 1)
 		exposed_turf.MakeSlippery(lube_kind, 15 SECONDS, min(reac_volume * 2 SECONDS, 12 SECONDS))
 
 /datum/reagent/lube/expose_obj(obj/exposed_obj, reac_volume, methods, show_message)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isitem(exposed_obj) && reac_volume >= 1)
 		exposed_obj.AddComponent( \
@@ -564,6 +624,8 @@
 		)
 
 /datum/reagent/lube/used_on_fish(obj/item/fish/fish)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(fish, TRAIT_FISH_FED_LUBE, type) //required for the lubefish mutation
 	addtimer(TRAIT_CALLBACK_REMOVE(fish, TRAIT_FISH_FED_LUBE, type), fish.feeding_frequency, TIMER_UNIQUE|TIMER_OVERRIDE)
 	return TRUE
@@ -591,6 +653,8 @@
 	glass_price = DRINK_PRICE_HIGH
 
 /datum/reagent/spraytan/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ishuman(exposed_mob))
 		if(methods & (PATCH|VAPOR) && touch_protection < 1)
@@ -646,6 +710,8 @@
 			to_chat(exposed_mob, span_notice("That tasted horrible."))
 
 /datum/reagent/spraytan/overdose_process(mob/living/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	metabolization_rate = REAGENTS_METABOLISM
 
@@ -699,6 +765,8 @@
 									"You feel as though you're about to change at any moment!" = MUT_MSG_ABOUT2TURN)
 
 /datum/reagent/mutationtoxin/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(affected_mob))
 		return
@@ -799,6 +867,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/mutationtoxin/jelly/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(affected_mob))
 		return ..()
 	var/mob/living/carbon/affected_human = affected_mob
@@ -918,6 +988,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/mulligan/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(affected_mob))
 		return
@@ -936,6 +1008,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/aslimetoxin/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((methods & (PATCH|INGEST|INJECT|INHALE)) || ((methods & (VAPOR|TOUCH)) && prob(min(reac_volume,100)*(1 - touch_protection))))
 		exposed_mob.ForceContractDisease(new /datum/disease/transformation/slime(), FALSE, TRUE)
@@ -948,6 +1022,8 @@
 	penetrates_skin = NONE
 
 /datum/reagent/gluttonytoxin/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(reac_volume <= 1)//This prevents microdosing from infecting masses of people
 		return
@@ -966,6 +1042,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/serotrotium/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(SPT_PROB(3.5, seconds_per_tick))
 		affected_mob.emote(pick("twitch","drool","moan","gasp"))
@@ -981,6 +1059,8 @@
 
 
 /datum/reagent/oxygen/expose_turf(turf/open/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(exposed_turf))
 		exposed_turf.atmos_spawn_air("[GAS_O2]=[reac_volume/20];[TURF_TEMPERATURE(holder ? holder.chem_temp : T20C)]")
@@ -996,6 +1076,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/copper/expose_obj(obj/exposed_obj, reac_volume, methods=TOUCH, show_message=TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(exposed_obj, /obj/item/stack/sheet/iron))
 		return
@@ -1014,6 +1096,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/nitrogen/expose_turf(turf/open/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	if(istype(exposed_turf))
 		exposed_turf.atmos_spawn_air("[GAS_N2]=[reac_volume/20];[TURF_TEMPERATURE(holder ? holder.chem_temp : T20C)]")
 	return ..()
@@ -1044,6 +1128,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/mercury/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(src, TRAIT_IMMOBILIZED) && isturf(affected_mob.loc) && !isgroundlessturf(affected_mob.loc))
 		step(affected_mob, pick(GLOB.cardinals))
@@ -1071,6 +1157,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/carbon/expose_turf(turf/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isspaceturf(exposed_turf))
 		return
@@ -1089,6 +1177,8 @@
 
 // You're an idiot for thinking that one of the most corrosive and deadly gasses would be beneficial
 /datum/reagent/chlorine/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 	mytray.adjust_plant_health(-round(volume))
 	mytray.adjust_toxic(round(volume * 1.5))
 	mytray.adjust_waterlevel(-round(volume * 0.5))
@@ -1097,6 +1187,8 @@
 
 
 /datum/reagent/chlorine/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(affected_mob.take_bodypart_damage(0.25 * metabolization_ratio * seconds_per_tick, 0))
 		return UPDATE_MOB_HEALTH
@@ -1112,12 +1204,16 @@
 
 // You're an idiot for thinking that one of the most corrosive and deadly gasses would be beneficial
 /datum/reagent/fluorine/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 	mytray.adjust_plant_health(-round(volume * 2))
 	mytray.adjust_toxic(round(volume * 2.5))
 	mytray.adjust_waterlevel(-round(volume * 0.5))
 	mytray.adjust_weedlevel(-rand(1, 4))
 
 /datum/reagent/fluorine/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(affected_mob.adjust_tox_loss(0.25 * metabolization_ratio * seconds_per_tick, updating_health = FALSE))
 		return UPDATE_MOB_HEALTH
@@ -1142,6 +1238,8 @@
 
 // Phosphoric salts are beneficial though. And even if the plant suffers, in the long run the tray gets some nutrients. The benefit isn't worth that much.
 /datum/reagent/phosphorus/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 	mytray.adjust_plant_health(-round(volume * 0.75))
 	mytray.adjust_waterlevel(-round(volume * 0.5))
 	mytray.adjust_weedlevel(-rand(1, 2))
@@ -1156,6 +1254,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/lithium/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(affected_mob, TRAIT_IMMOBILIZED) && isturf(affected_mob.loc) && !isgroundlessturf(affected_mob.loc))
 		step(affected_mob, pick(GLOB.cardinals))
@@ -1181,6 +1281,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/space_cleaner/sterilizine/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(methods & (TOUCH|VAPOR|PATCH)))
 		return
@@ -1188,6 +1290,8 @@
 	exposed_mob.add_surgery_speed_mod(type, 0.8, min(reac_volume * 1 MINUTES, 5 MINUTES))
 
 /datum/reagent/space_cleaner/sterilizine/on_burn_wound_processing(datum/wound/burn/flesh/burn_wound)
+	procstart = null
+	src.procstart = null
 	burn_wound.sanitization += 0.9
 
 /datum/reagent/iron
@@ -1234,6 +1338,8 @@
 	var/rad_power = 1
 
 /datum/reagent/uranium/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(affected_mob, TRAIT_IRRADIATED) && SSradiation.can_irradiate_basic(affected_mob))
 		var/chance = min(volume / (20 - rad_power * 5), rad_power)
@@ -1244,6 +1350,8 @@
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/uranium/expose_obj(obj/exposed_obj, reac_volume, methods=TOUCH, show_message=TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!SSradiation.can_irradiate_basic(exposed_obj))
@@ -1257,6 +1365,8 @@
 	)
 
 /datum/reagent/uranium/expose_mob(mob/living/exposed_mob, methods, reac_volume, show_message = TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!SSradiation.can_irradiate_basic(exposed_mob))
@@ -1281,6 +1391,8 @@
 	)
 
 /datum/reagent/uranium/expose_turf(turf/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((reac_volume < 3) || isspaceturf(exposed_turf))
 		return
@@ -1298,6 +1410,8 @@
 
 //Mutagenic chem side-effects.
 /datum/reagent/uranium/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 	mytray.radioactive_exposure(modifier = volume * 0.1)
 	mytray.myseed?.adjust_instability(round(volume * 0.1))
 	mytray.adjust_toxic(round(0.5 * volume * tox_damage))
@@ -1325,6 +1439,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/bluespace/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(methods & (VAPOR|TOUCH)))
 		return
@@ -1332,6 +1448,8 @@
 	do_teleport(exposed_mob, get_turf(exposed_mob), (reac_volume / 5), asoundin = 'sound/effects/phasein.ogg', channel = TELEPORT_CHANNEL_BLUESPACE) //4 tiles per crystal
 
 /datum/reagent/bluespace/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(current_cycle > 10 && SPT_PROB(7.5, seconds_per_tick))
 		to_chat(affected_mob, span_warning("You feel unstable..."))
@@ -1340,6 +1458,8 @@
 		addtimer(CALLBACK(affected_mob, TYPE_PROC_REF(/mob/living, bluespace_shuffle)), 3 SECONDS)
 
 /mob/living/proc/bluespace_shuffle()
+	procstart = null
+	src.procstart = null
 	do_teleport(src, get_turf(src), 5, asoundin = 'sound/effects/phasein.ogg', channel = TELEPORT_CHANNEL_BLUESPACE)
 
 /datum/reagent/aluminium
@@ -1379,7 +1499,9 @@
 	desc = "Unless you're an industrial tool, this is probably not safe for consumption."
 	icon_state = "dr_gibb_glass"
 
-/datum/reagent/fuel/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)//Splashing people with welding fuel to make them easy to ignite!
+/datum/reagent/fuel/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
+	procstart = null
+	src.procstart = null//Splashing people with welding fuel to make them easy to ignite!
 	. = ..()
 	if(!(methods & (VAPOR|TOUCH)))
 		return
@@ -1387,6 +1509,8 @@
 	exposed_mob.adjust_fire_stacks(reac_volume / 10)
 
 /datum/reagent/fuel/on_mob_life(mob/living/carbon/victim, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/organ/liver/liver = victim.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(liver && HAS_TRAIT(liver, TRAIT_HUMAN_AI_METABOLISM))
@@ -1395,6 +1519,8 @@
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/fuel/expose_turf(turf/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(exposed_turf) || isspaceturf(exposed_turf))
 		return
@@ -1407,6 +1533,8 @@
 		pool.burn_amount = max(min(round(reac_volume / 5), 10), 1)
 
 /datum/reagent/fuel/on_spark_act(power_charge, spark_flags)
+	procstart = null
+	src.procstart = null
 	// Doesn't go boom in open air unless we pass a REALLY high current or if we're hot enough
 	if (!(spark_flags & SPARK_ACT_ENCLOSED) && power_charge < STANDARD_BATTERY_VALUE && holder.chem_temp < 474)
 		var/turf/our_turf = get_turf(holder.my_atom)
@@ -1433,10 +1561,14 @@
 	var/clean_types = CLEAN_WASH
 
 /datum/reagent/space_cleaner/expose_obj(obj/exposed_obj, reac_volume, methods=TOUCH, show_message=TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	exposed_obj?.wash(clean_types)
 
 /datum/reagent/space_cleaner/expose_turf(turf/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(reac_volume < 1)
 		return
@@ -1447,6 +1579,8 @@
 		exposed_slime.adjust_tox_loss(rand(5,10))
 
 /datum/reagent/space_cleaner/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(methods & (VAPOR|TOUCH)))
 		return
@@ -1454,6 +1588,8 @@
 	exposed_mob.wash(clean_types)
 
 /datum/reagent/space_cleaner/on_burn_wound_processing(datum/wound/burn/flesh/burn_wound)
+	procstart = null
+	src.procstart = null
 	burn_wound.sanitization += 0.3
 	if(prob(5))
 		to_chat(burn_wound.victim, span_notice("Your [burn_wound] stings and burns from [src] covering it! It <i>does</i> look pretty clean though."))
@@ -1471,6 +1607,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/space_cleaner/ez_clean/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/heal = 1.1 * metabolization_ratio * seconds_per_tick
 	var/need_mob_update
@@ -1481,6 +1619,8 @@
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/space_cleaner/ez_clean/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(methods & (TOUCH|VAPOR)) || issilicon(exposed_mob))
 		return
@@ -1502,6 +1642,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/cryptobiolin/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.set_dizzy_if_lower(2 SECONDS)
 
@@ -1525,6 +1667,8 @@
 	addiction_types = list(/datum/addiction/opioids = 120)
 
 /datum/reagent/impedrezene/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.adjust_jitter(-5 SECONDS * seconds_per_tick)
 	if(SPT_PROB(55, seconds_per_tick))
@@ -1544,6 +1688,8 @@
 	randomized_spawns = REAGENT_SPAWN_MAINTENANCE_PILL
 
 /datum/reagent/cyborg_mutation_nanomachines/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/organ/liver/liver = exposed_mob.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(liver && HAS_TRAIT(liver, TRAIT_HUMAN_AI_METABOLISM))
@@ -1560,6 +1706,8 @@
 	randomized_spawns = REAGENT_SPAWN_MAINTENANCE_PILL
 
 /datum/reagent/xenomicrobes/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((methods & (PATCH|INGEST|INJECT|INHALE)) || ((methods & (VAPOR|TOUCH)) && prob(min(reac_volume,100)*(1 - touch_protection))))
 		exposed_mob.ForceContractDisease(new /datum/disease/transformation/xeno(), FALSE, TRUE)
@@ -1573,6 +1721,8 @@
 	ph = 11
 
 /datum/reagent/fungalspores/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((methods & (PATCH|INGEST|INJECT|INHALE)) || ((methods & (VAPOR|TOUCH)) && prob(min(reac_volume,100)*(1 - touch_protection))))
 		exposed_mob.ForceContractDisease(new /datum/disease/tuberculosis(), FALSE, TRUE)
@@ -1586,6 +1736,8 @@
 	ph = 11
 
 /datum/reagent/snail/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((methods & (PATCH|INGEST|INJECT|INHALE)) || ((methods & (VAPOR|TOUCH)) && prob(min(reac_volume,100)*(1 - touch_protection))))
 		exposed_mob.ForceContractDisease(new /datum/disease/gastrolosis(), FALSE, TRUE)
@@ -1627,6 +1779,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/ammonia/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 	// Ammonia is bad ass.
 	mytray.adjust_plant_health(round(volume * 0.12))
 
@@ -1646,6 +1800,8 @@
 
 // This is more bad ass, and pests get hurt by the corrosive nature of it, not the plant. The new trade off is it culls stability.
 /datum/reagent/diethylamine/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 	mytray.adjust_plant_health(round(volume))
 	mytray.adjust_pestlevel(-rand(1,2))
 	var/obj/item/seeds/myseed = mytray.myseed
@@ -1663,6 +1819,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/carbondioxide/expose_turf(turf/open/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	if(istype(exposed_turf))
 		exposed_turf.atmos_spawn_air("[GAS_CO2]=[reac_volume/20];[TURF_TEMPERATURE(holder ? holder.chem_temp : T20C)]")
 	return ..()
@@ -1679,11 +1837,15 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/nitrous_oxide/expose_turf(turf/open/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(exposed_turf))
 		exposed_turf.atmos_spawn_air("[GAS_N2O]=[reac_volume/20];[TURF_TEMPERATURE(holder ? holder.chem_temp : T20C)]")
 
 /datum/reagent/nitrous_oxide/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(methods & (VAPOR|INHALE))
 		// apply 2 seconds of drowsiness per unit applied, with a min duration of 4 seconds
@@ -1694,15 +1856,21 @@
 		exposed_mob.adjust_hallucinations(10 SECONDS * reac_volume)
 
 /datum/reagent/nitrous_oxide/on_mob_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(affected_mob, TRAIT_COAGULATING)) //IF the mob does not have a coagulant in them, we add the blood mess trait to make the bleed quicker
 		ADD_TRAIT(affected_mob, TRAIT_BLOOD_FOUNTAIN, type)
 
 /datum/reagent/nitrous_oxide/on_mob_end_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(affected_mob, TRAIT_BLOOD_FOUNTAIN, type)
 
 /datum/reagent/nitrous_oxide/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.adjust_drowsiness(1.34 SECONDS * metabolization_ratio * seconds_per_tick)
 
@@ -1728,6 +1896,8 @@
 	var/colorname = "none"
 
 /datum/reagent/colorful_reagent/powder/New()
+	procstart = null
+	src.procstart = null
 	if(colorname == "none")
 		description = "A rather mundane-looking powder. It doesn't look like it'd color much of anything..."
 	else if(colorname == "invisible")
@@ -1875,6 +2045,8 @@
 	var/tox_prob = 0
 
 /datum/reagent/plantnutriment/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(SPT_PROB(tox_prob, seconds_per_tick))
@@ -1891,6 +2063,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/plantnutriment/eznutriment/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/seeds/myseed = mytray.myseed
 	if(!isnull(myseed))
 		myseed.adjust_instability(0.2)
@@ -1906,6 +2080,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/plantnutriment/left4zednutriment/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 	mytray.adjust_plant_health(round(volume * 0.1))
 	mytray.myseed?.adjust_instability(round(volume * 0.2))
 
@@ -1918,6 +2094,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/plantnutriment/robustharvestnutriment/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/seeds/myseed = mytray.myseed
 	if(!isnull(myseed))
 		myseed.adjust_instability(-0.25)
@@ -1933,6 +2111,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/plantnutriment/endurogrow/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/seeds/myseed = mytray.myseed
 	if(!isnull(myseed))
 		myseed.adjust_potency(-round(volume * 0.1))
@@ -1948,6 +2128,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/plantnutriment/liquidearthquake/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 
 	var/obj/item/seeds/myseed = mytray.myseed
 	if(!isnull(myseed))
@@ -1982,6 +2164,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/stable_plasma/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.adjustPlasma(5 * metabolization_ratio * seconds_per_tick)
 
@@ -2004,6 +2188,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/carpet/expose_turf(turf/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	if(isopenturf(exposed_turf) && exposed_turf.turf_flags & IS_SOLID && !istype(exposed_turf, /turf/open/floor/carpet))
 		exposed_turf.place_on_top(carpet_type, flags = CHANGETURF_INHERIT_AIR)
 	..()
@@ -2076,6 +2262,8 @@
 	description = "For those that break the game and need to make an issue report."
 
 /datum/reagent/carpet/royal/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/organ/liver/liver = affected_mob.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(liver)
@@ -2269,7 +2457,9 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
-/datum/reagent/acetone_oxide/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)//Splashing people kills people!
+/datum/reagent/acetone_oxide/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null//Splashing people kills people!
 	. = ..()
 	if(!(methods & TOUCH))
 		return
@@ -2302,6 +2492,8 @@
 
 // Ash is also used IRL in gardening, as a fertilizer enhancer and weed killer
 /datum/reagent/ash/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 	mytray.adjust_plant_health(round(volume))
 	mytray.adjust_weedlevel(-1)
 
@@ -2332,20 +2524,28 @@
 	var/datum/callback/color_callback
 
 /datum/reagent/colorful_reagent/New()
+	procstart = null
+	src.procstart = null
 	color_callback = CALLBACK(src, PROC_REF(UpdateColor))
 	SSticker.OnRoundstart(color_callback)
 	return ..()
 
 /datum/reagent/colorful_reagent/Destroy()
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(SSticker.round_end_events, color_callback) //Prevents harddels during roundstart
 	color_callback = null //Fly free little callback
 	return ..()
 
 /datum/reagent/colorful_reagent/proc/UpdateColor()
+	procstart = null
+	src.procstart = null
 	color_callback = null
 	color = pick(random_color_list)
 
 /datum/reagent/colorful_reagent/expose_mob(mob/living/exposed_mob, methods, reac_volume, show_message, touch_protection)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/picked_color = pick(random_color_list)
 	var/color_filter = color_transition_filter(picked_color, SATURATION_OVERRIDE)
@@ -2378,6 +2578,8 @@
 		part.add_atom_colour(color_filter, WASHABLE_COLOUR_PRIORITY)
 
 /datum/reagent/colorful_reagent/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (!iscarbon(affected_mob))
@@ -2398,6 +2600,8 @@
 
 /// Colors anything it touches a random color.
 /datum/reagent/colorful_reagent/expose_atom(atom/exposed_atom, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(exposed_atom))
 		exposed_atom.add_atom_colour(color_transition_filter(pick(random_color_list), SATURATION_OVERRIDE), WASHABLE_COLOUR_PRIORITY)
@@ -2413,13 +2617,19 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/hair_dye/New()
+	procstart = null
+	src.procstart = null
 	SSticker.OnRoundstart(CALLBACK(src, PROC_REF(UpdateColor)))
 	return ..()
 
 /datum/reagent/hair_dye/proc/UpdateColor()
+	procstart = null
+	src.procstart = null
 	color = pick(potential_colors)
 
 /datum/reagent/hair_dye/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(methods & (TOUCH|VAPOR|INHALE)) || !ishuman(exposed_mob))
 		return
@@ -2442,6 +2652,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/barbers_aid/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(methods & (TOUCH|VAPOR)) || !ishuman(exposed_mob) || (HAS_TRAIT(exposed_mob, TRAIT_BALD) && HAS_TRAIT(exposed_mob, TRAIT_SHAVED)))
 		return
@@ -2469,6 +2681,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/concentrated_barbers_aid/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(methods & (TOUCH|VAPOR)) || !ishuman(exposed_mob) || (HAS_TRAIT(exposed_mob, TRAIT_BALD) && HAS_TRAIT(exposed_mob, TRAIT_SHAVED)))
 		return
@@ -2485,6 +2699,8 @@
 	to_chat(exposed_human, span_notice("Your[HAS_TRAIT(exposed_human, TRAIT_BALD) ? " facial" : ""] hair starts growing at an incredible speed!"))
 
 /datum/reagent/concentrated_barbers_aid/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(current_cycle > 21 / creation_purity)
 		if(!ishuman(affected_mob))
@@ -2514,6 +2730,8 @@
 	inverse_chem = /datum/reagent/inverse/baldium
 
 /datum/reagent/baldium/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(methods & (TOUCH|VAPOR)) || !ishuman(exposed_mob))
 		return
@@ -2538,6 +2756,8 @@
 
 // Saltpetre is used for gardening IRL, to simplify highly, it speeds up growth and strengthens plants
 /datum/reagent/saltpetre/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 	mytray.adjust_plant_health(round(volume * 0.18))
 	mytray.myseed?.adjust_production(-round(volume / 10)-prob(volume % 10))
 	mytray.myseed?.adjust_potency(round(volume))
@@ -2561,6 +2781,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/drying_agent/expose_turf(turf/open/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(exposed_turf))
 		return
@@ -2568,6 +2790,8 @@
 	exposed_turf.MakeDry(ALL, TRUE, reac_volume * 10 SECONDS)
 
 /datum/reagent/drying_agent/expose_obj(obj/exposed_obj, reac_volume, methods=TOUCH, show_message=TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(exposed_obj.type != /obj/item/clothing/shoes/galoshes)
 		return
@@ -2647,6 +2871,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/royal_bee_jelly/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(SPT_PROB(1, seconds_per_tick))
 		affected_mob.say(pick("Bzzz...","BZZ BZZ","Bzzzzzzzzzzz..."), forced = "royal bee jelly")
@@ -2667,6 +2893,8 @@
 	ph = 0.5
 
 /datum/reagent/romerol/expose_mob(mob/living/carbon/human/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Silently add the zombie infection organ to be activated upon death
 	if(can_infect(exposed_mob, reac_volume, methods))
@@ -2674,6 +2902,8 @@
 		zombie_infection.Insert(exposed_mob)
 
 /datum/reagent/romerol/proc/can_infect(mob/living/carbon/human/exposed_mob, reac_volume = 5, methods = INGEST)
+	procstart = null
+	src.procstart = null
 	if(exposed_mob.get_organ_slot(ORGAN_SLOT_ZOMBIE))
 		return FALSE
 	if(methods & (PATCH|INGEST|INJECT|INHALE))
@@ -2690,6 +2920,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/magillitis/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((ishuman(affected_mob)) && current_cycle > 10)
 		var/mob/living/basic/gorilla/new_gorilla = affected_mob.gorillize()
@@ -2705,6 +2937,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/growthserum/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/newsize = current_size
 	switch(volume)
@@ -2723,11 +2957,15 @@
 	current_size = newsize
 
 /datum/reagent/growthserum/on_mob_end_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.update_transform(RESIZE_DEFAULT_SIZE/current_size)
 	current_size = RESIZE_DEFAULT_SIZE
 
 /datum/reagent/growthserum/used_on_fish(obj/item/fish/fish)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(fish, TRAIT_FISH_QUICK_GROWTH, type)
 	addtimer(TRAIT_CALLBACK_REMOVE(fish, TRAIT_FISH_QUICK_GROWTH, type), fish.feeding_frequency * 0.8, TIMER_UNIQUE|TIMER_OVERRIDE)
 	return TRUE
@@ -2751,12 +2989,16 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/glitter/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(SPT_PROB(25, seconds_per_tick))
 		affected_mob.emote("cough")
 		expose_turf(get_turf(affected_mob), 0)
 
 /datum/reagent/glitter/expose_turf(turf/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!istype(exposed_turf))
@@ -2764,6 +3006,8 @@
 	exposed_turf.spawn_glitter(data["colors"])
 
 /datum/reagent/glitter/on_new(data)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(src.data["colors"])
@@ -2772,6 +3016,8 @@
 		color = COLOR_WHITE
 
 /datum/reagent/glitter/on_merge(list/mix_data, amount)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/prop_current = (volume-amount)/(volume)
@@ -2797,6 +3043,8 @@
 	)
 
 /datum/reagent/glitter/random/on_new(data)
+	procstart = null
+	src.procstart = null
 	src.data["colors"] = possible_colors
 	return ..()
 
@@ -2808,6 +3056,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/confetti/expose_turf(turf/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(exposed_turf))
 		return
@@ -2834,6 +3084,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/bz_metabolites/on_mob_life(mob/living/carbon/target, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	target.adjust_hallucinations(12.5 SECONDS * metabolization_ratio * seconds_per_tick)
 	var/datum/antagonist/changeling/changeling = IS_CHANGELING(target)
@@ -2849,17 +3101,23 @@
 	metabolized_traits = null
 
 /datum/reagent/pax/peaceborg/on_mob_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(affected_mob, TRAIT_SYNTHPAX_IMMUNE))
 		ADD_TRAIT(affected_mob, TRAIT_PACIFISM, METABOLIZATION_TRAIT(type))
 	RegisterSignal(affected_mob, COMSIG_MOB_AFTER_APPLY_DAMAGE, PROC_REF(on_metabolizer_damaged))
 
 /datum/reagent/pax/peaceborg/on_mob_end_metabolize(mob/living/affected_mob, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(affected_mob, COMSIG_MOB_AFTER_APPLY_DAMAGE)
 	REMOVE_TRAIT(affected_mob, TRAIT_PACIFISM, METABOLIZATION_TRAIT(type))
 
 /datum/reagent/pax/peaceborg/proc/on_metabolizer_damaged(mob/living/source, amount)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	source.adjust_timed_status_effect(amount * 1 SECONDS, /datum/status_effect/synthpax_immunity, max_duration = 5 SECONDS)
 
@@ -2872,6 +3130,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/peaceborg/confuse/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.adjust_confusion_up_to(1 SECONDS * metabolization_ratio * seconds_per_tick, 5 SECONDS)
 	affected_mob.adjust_dizzy_up_to(2 SECONDS * metabolization_ratio * seconds_per_tick, 12 SECONDS)
@@ -2888,6 +3148,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/peaceborg/tire/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/healthcomp = (100 - affected_mob.health) //DOES NOT ACCOUNT FOR ADMINBUS THINGS THAT MAKE YOU HAVE MORE THAN 200/210 HEALTH, OR SOMETHING OTHER THAN A HUMAN PROCESSING THIS.
 	. = FALSE
@@ -2906,6 +3168,8 @@
 	var/datum/disease/transformation/gondola_disease = /datum/disease/transformation/gondola
 
 /datum/reagent/gondola_mutation_toxin/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((methods & (PATCH|INGEST|INJECT|INHALE)) || ((methods & (VAPOR|TOUCH)) && prob(min(reac_volume,100)*(1 - touch_protection))))
 		exposed_mob.ForceContractDisease(new gondola_disease, FALSE, TRUE)
@@ -2934,6 +3198,8 @@
 	desc = "It smells like a carcass, and doesn't look much better."
 
 /datum/reagent/yuck/on_mob_add(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(affected_mob, TRAIT_NOHUNGER)) //they can't puke
 		holder.del_reagent(type)
 	return ..()
@@ -2941,6 +3207,8 @@
 #define YUCK_PUKE_CYCLES 3 // every X cycle is a puke
 #define YUCK_PUKES_TO_STUN 3 // hit this amount of pukes in a row to start stunning
 /datum/reagent/yuck/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!yuck_cycle)
 		if(SPT_PROB(4, seconds_per_tick))
@@ -2964,10 +3232,14 @@
 #undef YUCK_PUKES_TO_STUN
 
 /datum/reagent/yuck/on_mob_end_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	yuck_cycle = 0 // reset vomiting
 
 /datum/reagent/yuck/expose_mob(mob/living/carbon/exposed_mob, methods, expose_volume, show_message, touch_protection)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(methods & INGEST) || !iscarbon(exposed_mob))
 		return
@@ -3019,12 +3291,16 @@
 	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/metalgen/expose_obj(obj/exposed_obj, reac_volume, methods=TOUCH, show_message=TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Don't morph holographic or abstract objects
 	if (!(exposed_obj.flags_1 & HOLOGRAM_1) && exposed_obj.invisibility < INVISIBILITY_ABSTRACT)
 		metal_morph(exposed_obj)
 
 /datum/reagent/metalgen/expose_turf(turf/exposed_turf, volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Or non-real turfs
 	if (isclosedturf(exposed_turf) || isopenturf(exposed_turf))
@@ -3032,6 +3308,8 @@
 
 ///turn an object into a special material
 /datum/reagent/metalgen/proc/metal_morph(atom/target)
+	procstart = null
+	src.procstart = null
 	var/metal_ref = data["material"]
 	if(!metal_ref)
 		return
@@ -3040,6 +3318,8 @@
 
 /// Change the material type of an object or turf, but with visuals and effects related to the material
 /proc/metal_transmute(atom/target, metal_type, default_material_amount = 100, applied_material_flags = MATERIAL_METALGEN)
+	procstart = null
+	src.procstart = null
 	if(is_type_in_typecache(target, GLOB.blacklisted_metalgen_types)) //some stuff can lead to exploits if transmuted
 		return
 
@@ -3078,15 +3358,21 @@
 	self_consuming = TRUE //this works on objects, so it should work on skeletons and robots too
 
 /datum/reagent/gravitum/expose_obj(obj/exposed_obj, reac_volume, methods=TOUCH, show_message=TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	exposed_obj.AddElement(/datum/element/forced_gravity, 0)
 	addtimer(CALLBACK(exposed_obj, PROC_REF(_RemoveElement), list(/datum/element/forced_gravity, 0)), volume * time_multiplier, TIMER_UNIQUE|TIMER_OVERRIDE)
 
 /datum/reagent/gravitum/on_mob_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.AddElement(/datum/element/forced_gravity, 0) //0 is the gravity, and in this case weightless
 
 /datum/reagent/gravitum/on_mob_end_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.RemoveElement(/datum/element/forced_gravity, 0)
 
@@ -3112,6 +3398,8 @@
 	var/significant = FALSE
 
 /datum/reagent/determination/on_mob_end_metabolize(mob/living/carbon/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(significant)
 		var/stam_crash = 0
@@ -3122,6 +3410,8 @@
 	affected_mob.remove_status_effect(/datum/status_effect/determined)
 
 /datum/reagent/determination/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!significant && volume >= WOUND_DETERMINATION_SEVERE)
 		significant = TRUE
@@ -3154,6 +3444,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/eldritch/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/common = 0.4 * metabolization_ratio * seconds_per_tick
 	var/need_mob_update = FALSE
@@ -3181,6 +3473,8 @@
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/eldritch/expose_turf(turf/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if ((reac_volume >= 1.5 || isplatingturf(exposed_turf)))
 		exposed_turf.rust_heretic_act(RUST_RESISTANCE_TITANIUM)
@@ -3195,6 +3489,8 @@
 
 //Colours things by their pH
 /datum/reagent/universal_indicator/expose_atom(atom/exposed_atom, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(exposed_atom.reagents)
 		var/color
@@ -3235,6 +3531,8 @@
 	desc = "Bottoms up...?"
 
 /datum/reagent/ants/on_mob_life(mob/living/carbon/victim, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	victim.adjust_brute_loss(0.2 * max(0.1, round((ant_ticks * ant_damage),0.1)) * metabolization_ratio * seconds_per_tick) //Scales with time. Roughly 32 brute with 100u.
 	ant_ticks++
@@ -3251,11 +3549,15 @@
 		victim.vomit(VOMIT_CATEGORY_DEFAULT, lost_nutrition = rand(5,10), purge_ratio = 1)
 
 /datum/reagent/ants/on_mob_end_metabolize(mob/living/living_anthill)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ant_ticks = 0
 	to_chat(living_anthill, span_notice("You feel like the last of \the [src] are out of your system."))
 
 /datum/reagent/ants/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(exposed_mob))
 		return
@@ -3269,6 +3571,8 @@
 		exposed_mob.apply_status_effect(status_effect, amount_left)
 
 /datum/reagent/ants/expose_obj(obj/exposed_obj, reac_volume, methods=TOUCH, show_message=TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/open/my_turf = exposed_obj.loc // No dumping ants on an object in a storage slot
 	if(!istype(my_turf)) //Are we actually in an open turf?
@@ -3279,6 +3583,8 @@
 	expose_turf(my_turf, reac_volume)
 
 /datum/reagent/ants/expose_turf(turf/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(exposed_turf)) // Is the turf valid
 		return
@@ -3320,6 +3626,8 @@
 	metabolization_rate = 0.4 * REAGENTS_METABOLISM
 
 /datum/reagent/lead/on_mob_life(mob/living/carbon/victim, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(victim.adjust_organ_loss(ORGAN_SLOT_BRAIN, 0.5))
 		return UPDATE_MOB_HEALTH
@@ -3336,6 +3644,8 @@
 	addiction_types = list(/datum/addiction/stimulants = 120)
 
 /datum/reagent/kronkus_extract/on_mob_life(mob/living/carbon/kronkus_enjoyer, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/need_mob_update
 	need_mob_update = kronkus_enjoyer.adjust_organ_loss(ORGAN_SLOT_HEART, 0.2 * metabolization_ratio * seconds_per_tick, required_organ_flag = affected_organ_flags)
@@ -3352,11 +3662,15 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/brimdust/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(affected_mob.adjust_fire_loss((ispodperson(affected_mob) ? -1 : 1 * seconds_per_tick), updating_health = FALSE))
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/brimdust/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 	mytray.adjust_weedlevel(-1)
 	mytray.adjust_pestlevel(-1)
 	mytray.adjust_plant_health(round(volume))
@@ -3373,16 +3687,22 @@
 	overdose_threshold = 50 // too much love is a bad thing
 
 /datum/reagent/love/expose_mob(mob/living/exposed_mob, methods, reac_volume, show_message, touch_protection)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// A syringe is not grandma's cooking
 	if(methods & ~INGEST)
 		exposed_mob.reagents.del_reagent(type)
 
 /datum/reagent/love/on_mob_metabolize(mob/living/metabolizer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	metabolizer.add_mood_event(name, /datum/mood_event/love_reagent)
 
 /datum/reagent/love/on_mob_delete(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// When we exit the system we'll leave the moodlet based on the amount we had
 	var/duration_of_moodlet = current_cycle * 20 SECONDS
@@ -3390,6 +3710,8 @@
 	affected_mob.add_mood_event(name, /datum/mood_event/love_reagent, duration_of_moodlet)
 
 /datum/reagent/love/overdose_process(mob/living/metabolizer, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/carbon/carbon_metabolizer = metabolizer
 	if(!istype(carbon_metabolizer) || !carbon_metabolizer.can_heartattack() || carbon_metabolizer.undergoing_cardiac_arrest())
@@ -3412,6 +3734,8 @@
 
 //gives 20 seconds of haunting effect for every unit of it that touches an item
 /datum/reagent/hauntium/expose_obj(obj/exposed_obj, reac_volume, methods=TOUCH, show_message=TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(exposed_obj))
 		return
@@ -3422,6 +3746,8 @@
 	addtimer(CALLBACK(exposed_item, TYPE_PROC_REF(/obj/item/, remove_haunted), HAUNTIUM_REAGENT_TRAIT), reac_volume * 20 SECONDS)
 
 /datum/reagent/hauntium/on_mob_metabolize(mob/living/carbon/affected_mob, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(affected_mob, span_userdanger("You feel an evil presence inside you!"))
 	if(affected_mob.mob_biotypes & MOB_UNDEAD || HAS_MIND_TRAIT(affected_mob, TRAIT_MORBID))
@@ -3430,6 +3756,8 @@
 		affected_mob.add_mood_event("hauntium_spirits", /datum/mood_event/hauntium_spirits, name) //8 minutes of mood debuff
 
 /datum/reagent/hauntium/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(affected_mob.mob_biotypes & MOB_UNDEAD || HAS_MIND_TRAIT(affected_mob, TRAIT_MORBID)) //if morbid or undead,acts like an addiction-less drug
 		var/common = -3.34 SECONDS * metabolization_ratio * seconds_per_tick
@@ -3470,6 +3798,8 @@
 	var/added_light = FALSE
 
 /datum/reagent/luminescent_fluid/on_mob_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (volume > 20) // Even if you don't have eyes, your eyeholes still glow :)
 		glowing = new(affected_mob)
@@ -3489,6 +3819,8 @@
 		ADD_TRAIT(affected_human, TRAIT_LUMINESCENT_EYES, REF(src))
 
 /datum/reagent/luminescent_fluid/on_mob_end_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(glowing)
 	if (!ishuman(affected_mob))
@@ -3501,6 +3833,8 @@
 		REMOVE_TRAIT(affected_human, TRAIT_LUMINESCENT_EYES, REF(src))
 
 /datum/reagent/luminescent_fluid/on_mob_life(mob/living/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (isnull(glowing) && !added_light && volume > 20)
@@ -3514,18 +3848,24 @@
 			return UPDATE_MOB_HEALTH
 
 /datum/reagent/luminescent_fluid/proc/on_organ_added(mob/living/source, obj/item/organ/eyes/new_eyes)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (istype(new_eyes) && !IS_ROBOTIC_ORGAN(new_eyes))
 		ADD_TRAIT(source, TRAIT_LUMINESCENT_EYES, REF(src))
 
 /datum/reagent/luminescent_fluid/proc/on_organ_removed(mob/living/source, obj/item/organ/eyes/old_eyes)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (istype(old_eyes) && !IS_ROBOTIC_ORGAN(old_eyes) && !overdosed)
 		REMOVE_TRAIT(source, TRAIT_LUMINESCENT_EYES, REF(src))
 
 /datum/reagent/luminescent_fluid/overdose_start(mob/living/affected_mob, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!ishuman(affected_mob))
 		return
@@ -3543,6 +3883,8 @@
 	metabolized_traits = list(TRAIT_NIGHT_VISION, TRAIT_UNNATURAL_RED_GLOWY_EYES)
 
 /datum/reagent/luminescent_fluid/red/overdose_start(mob/living/affected_mob, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!ishuman(affected_mob))
 		return
@@ -3582,6 +3924,8 @@
 	var/polymorph_cycle = 10
 
 /datum/reagent/polyjuice/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(current_cycle > polymorph_cycle)
@@ -3605,6 +3949,8 @@
 	var/reagent_to_time_conversion = 5 SECONDS
 
 /datum/reagent/metalgen/gorgium/expose_mob(mob/living/exposed_mob, methods, reac_volume, show_message, touch_protection)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(reac_volume < min_volume_to_pretrify)
@@ -3625,12 +3971,16 @@
 	var/units_per_aggregate = 5
 
 /datum/reagent/cement/expose_mob(mob/living/exposed_mob, methods, reac_volume, show_message, touch_protection)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!(methods & INGEST))
 		return
 	exposed_mob.add_mood_event("cement", /datum/mood_event/cement)
 
 /datum/reagent/cement/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/rate = potency * seconds_per_tick * metabolization_ratio
 	var/need_mob_update = 0
@@ -3672,6 +4022,8 @@
 	var/turf/open/floor/concrete/floor_type = /turf/open/floor/concrete
 
 /datum/reagent/concrete/expose_atom(atom/exposed_atom, reac_volume, methods)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// VAPOR (foam, spray), TOUCH (splashing) allowed, SMOKE_MACHINE (TOUCH|INHALE) not allowed
 	if(!((methods & (TOUCH|INHALE)) == TOUCH) && !(methods & VAPOR))
@@ -3684,6 +4036,8 @@
 	return
 
 /datum/reagent/concrete/proc/pour_amount(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(target, initial(wall_type.girder_type)))
 		return units_per_wall
 	else if(istype(target, /turf/open/floor/catwalk_floor))
@@ -3691,6 +4045,8 @@
 	return 0
 
 /datum/reagent/concrete/proc/concify_girder(obj/exposed_obj, volume)
+	procstart = null
+	src.procstart = null
 	if(volume < units_per_wall)
 		return FALSE
 	var/turf/open/wall_turf = get_turf(exposed_obj)
@@ -3704,6 +4060,8 @@
 	return TRUE
 
 /datum/reagent/concrete/proc/concify_catwalk(turf/open/floor/catwalk_floor/catwalk, volume)
+	procstart = null
+	src.procstart = null
 	if(volume < units_per_floor)
 		return FALSE
 	var/turf/open/floor/plating = catwalk.make_plating()

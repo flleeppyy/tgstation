@@ -8,6 +8,8 @@
 	admin_setup = list(/datum/event_admin_setup/warn_admin/shuttle_catastrophe, /datum/event_admin_setup/listed_options/shuttle_catastrophe)
 
 /datum/round_event_control/shuttle_catastrophe/can_spawn_event(players, allow_magic = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -24,6 +26,8 @@
 	var/datum/map_template/shuttle/new_shuttle
 
 /datum/round_event/shuttle_catastrophe/announce(fake)
+	procstart = null
+	src.procstart = null
 	var/cause = pick("was attacked by [syndicate_name()] Operatives", "mysteriously teleported away", "had its refuelling crew mutiny",
 		"was found with its engines stolen", "\[REDACTED\]", "flew into the sunset, and melted", "learned something from a very wise cow, and left on its own",
 		"had cloning devices on it", "had its shuttle inspector put the shuttle in reverse instead of park, causing the shuttle to crash into the hangar")
@@ -38,6 +42,8 @@
 	priority_announce(message, "[command_name()] Spacecraft Engineering")
 
 /datum/round_event/shuttle_catastrophe/setup()
+	procstart = null
+	src.procstart = null
 	if(SSshuttle.shuttle_insurance || !isnull(new_shuttle)) //If an admin has overridden it don't re-roll it
 		return
 	var/list/valid_shuttle_templates = list()
@@ -48,6 +54,8 @@
 	new_shuttle = pick(valid_shuttle_templates)
 
 /datum/round_event/shuttle_catastrophe/start()
+	procstart = null
+	src.procstart = null
 	if(SSshuttle.shuttle_insurance)
 		var/datum/bank_account/station_balance = SSeconomy.get_dep_account(ACCOUNT_CAR)
 		station_balance?.adjust_money(8000)
@@ -70,6 +78,8 @@
 	snitch_text = "has forced a shuttle catastrophe while a shuttle was already docked."
 
 /datum/event_admin_setup/warn_admin/shuttle_catastrophe/should_warn()
+	procstart = null
+	src.procstart = null
 	return EMERGENCY_AT_LEAST_DOCKED || istype(SSshuttle.emergency, /obj/docking_port/mobile/emergency/shuttle_build)
 
 /datum/event_admin_setup/listed_options/shuttle_catastrophe
@@ -77,6 +87,8 @@
 	normal_run_option = "Random shuttle"
 
 /datum/event_admin_setup/listed_options/shuttle_catastrophe/get_list()
+	procstart = null
+	src.procstart = null
 	var/list/valid_shuttle_templates = list()
 	for(var/shuttle_id in SSmapping.shuttle_templates)
 		var/datum/map_template/shuttle/template = SSmapping.shuttle_templates[shuttle_id]
@@ -85,4 +97,6 @@
 	return valid_shuttle_templates
 
 /datum/event_admin_setup/listed_options/shuttle_catastrophe/apply_to_event(datum/round_event/shuttle_catastrophe/event)
+	procstart = null
+	src.procstart = null
 	event.new_shuttle = chosen

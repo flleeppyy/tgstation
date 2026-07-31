@@ -133,6 +133,8 @@ ADMIN_VERB(shuttle_panel, R_ADMIN, "Shuttle Manipulator", "Opens the shuttle man
 	SSshuttle.ui_interact(user.mob)
 
 /obj/docking_port/mobile/proc/admin_fly_shuttle(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/options = list()
 
 	for(var/port in SSshuttle.stationary_docking_ports)
@@ -172,9 +174,13 @@ ADMIN_VERB(shuttle_panel, R_ADMIN, "Shuttle Manipulator", "Opens the shuttle man
 				request(options[selection])
 
 /obj/docking_port/mobile/emergency/admin_fly_shuttle(mob/user)
+	procstart = null
+	src.procstart = null
 	return  // use the existing verbs for this
 
 /obj/docking_port/mobile/arrivals/admin_fly_shuttle(mob/user)
+	procstart = null
+	src.procstart = null
 	switch(tgui_alert(user, "Would you like to fly the arrivals shuttle once or change its destination?", "Fly Shuttle", list("Fly", "Retarget", "Cancel")))
 		if("Cancel")
 			return

@@ -16,11 +16,15 @@
 	var/particle_path
 
 /obj/item/clothing/head/helmet/monkey_sentience/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	light_colors = rand(1,3)
 	update_appearance()
 
 /obj/item/clothing/head/helmet/monkey_sentience/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_boldwarning("---WARNING: REMOVAL OF HELMET ON SUBJECT, OR REPEATED SENTIENCE GENERATION FAILURES MAY LEAD TO:---")
 	. += span_warning("BLOOD RAGE")
@@ -31,10 +35,14 @@
 	. += span_boldnotice("Ask your CMO if mind magnification is right for you!")
 
 /obj/item/clothing/head/helmet/monkey_sentience/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[initial(icon_state)][light_colors][magnification ? "up" : null]"
 
 /obj/item/clothing/head/helmet/monkey_sentience/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(slot & ITEM_SLOT_HEAD))
 		return
@@ -103,10 +111,14 @@
 	icon_state = "[icon_state]up"
 
 /obj/item/clothing/head/helmet/monkey_sentience/Destroy()
+	procstart = null
+	src.procstart = null
 	disconnect()
 	return ..()
 
 /obj/item/clothing/head/helmet/monkey_sentience/proc/disconnect()
+	procstart = null
+	src.procstart = null
 	if(!magnification) //not put on a viable head
 		return
 	if(!polling)//put on a viable head, but taken off after polling finished.
@@ -124,6 +136,8 @@
 	new /obj/effect/decal/cleanable/ash(drop_location()) //just in case they're in a locker or other containers it needs to use crematorium ash, see the path itself for an explanation
 
 /obj/item/clothing/head/helmet/monkey_sentience/proc/malfunction(mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	switch(rand(1,4))
 		if(1) //blood rage
 			var/datum/ai_controller/monkey/monky_controller = target.ai_controller
@@ -137,11 +151,15 @@
 			target.gib(DROP_ALL_REMAINS)
 
 /obj/item/clothing/head/helmet/monkey_sentience/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(magnification || polling)
 		qdel(src)//runs disconnect code
 
 /obj/item/clothing/head/helmet/monkey_sentience/proc/make_fall_off()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(magnification)
 		visible_message(span_warning("[src] falls off of [magnification]'s head as it changes shape!"))

@@ -15,6 +15,8 @@
 /// Does extra checks to make sure target is valid before calling the internal
 /// `create_unique_block`, don't override this.
 /datum/dna_block/proc/unique_block(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if(!ishuman(target))
 		CRASH("Non-human mobs shouldn't have DNA")
@@ -25,17 +27,23 @@
 ///
 /// Children should always override this.
 /datum/dna_block/proc/create_unique_block(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	return null
 
 /// The position of this block's string in its hash type
 /datum/dna_block/proc/position_in_hash()
+	procstart = null
+	src.procstart = null
 	return null
 
 /// Takes in the old hash and a string value to change this block to inside the hash.
 ///
 /// Returns a new hash with block's value updated
 /datum/dna_block/proc/modified_hash(old_hash, value)
+	procstart = null
+	src.procstart = null
 	var/block_pos = position_in_hash()
 	if(isnull(block_pos))
 		return old_hash
@@ -45,6 +53,8 @@
 
 /// Gets the block string from the hash inserted
 /datum/dna_block/proc/get_block(from_hash)
+	procstart = null
+	src.procstart = null
 	if(isnull(from_hash))
 		CRASH("Null hash provided for getting dna block string")
 	var/block_pos = position_in_hash()
@@ -52,6 +62,8 @@
 
 /// Applies the DNA effects/appearance that this block's string encodes
 /datum/dna_block/proc/apply_to_mob(mob/living/carbon/human/target, dna_hash)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Blocks for unique identities (skin tones, hair style, and gender)
@@ -59,6 +71,8 @@
 	abstract_type = /datum/dna_block/identity
 
 /datum/dna_block/identity/position_in_hash()
+	procstart = null
+	src.procstart = null
 	return GLOB.total_ui_len_by_block[type]
 
 /// Blocks for unique features (mutant color, mutant bodyparts)
@@ -68,4 +82,6 @@
 	var/feature_key = null
 
 /datum/dna_block/feature/position_in_hash()
+	procstart = null
+	src.procstart = null
 	return GLOB.total_uf_len_by_block[type]

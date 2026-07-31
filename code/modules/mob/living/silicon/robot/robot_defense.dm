@@ -5,6 +5,8 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 	)))
 
 /mob/living/silicon/robot/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(is_wire_tool(tool, check_secured = TRUE))
 		if(wiresexposed)
 			wires.interact(user)
@@ -187,6 +189,8 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 
 //Checks blockchance of any items in any module slots
 /mob/living/silicon/robot/check_block(atom/hit_by, damage, attack_text = "the attack", attack_type = MELEE_ATTACK, armour_penetration = 0, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SUCCESSFUL_BLOCK)
 		return SUCCESSFUL_BLOCK
@@ -199,6 +203,8 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 
 // This has to go at the very end of interaction so we don't block every interaction with ID-like items
 /mob/living/silicon/robot/base_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !tool.GetID())
 		return
@@ -218,6 +224,8 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 #define MODERATE_DAMAGE_UPPER_BOUND 2/3
 
 /mob/living/silicon/robot/proc/update_damage_particles()
+	procstart = null
+	src.procstart = null
 	var/brute_percent = bruteloss / maxHealth
 	var/burn_percent = fireloss / maxHealth
 
@@ -254,6 +262,8 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 #undef MODERATE_DAMAGE_UPPER_BOUND
 
 /mob/living/silicon/robot/attack_alien(mob/living/carbon/alien/adult/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!LAZYACCESS(modifiers, RIGHT_CLICK))
 		return ..()
 	if(body_position != STANDING_UP)
@@ -274,6 +284,8 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 	playsound(loc, 'sound/items/weapons/pierce.ogg', 50, TRUE, -1)
 
 /mob/living/silicon/robot/attack_hand(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(!opened)
 		return ..()
@@ -287,6 +299,8 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 		diag_hud_set_borgcell()
 
 /mob/living/silicon/robot/attack_hulk(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -295,11 +309,15 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_step_away), src, get_turf(user), 15), 0.3 SECONDS)
 
 /mob/living/silicon/robot/get_shove_flags(mob/living/shover, obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(weapon) || IS_UNCONSCIOUS_OR_CRIT(src))
 		. &= ~(SHOVE_CAN_MOVE|SHOVE_CAN_HIT_SOMETHING)
 
 /mob/living/silicon/robot/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode && user != src)
 		return NONE
 
@@ -328,6 +346,8 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 	return ITEM_INTERACT_SUCCESS
 
 /mob/living/silicon/robot/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(opened)
 		balloon_alert(user, "chassis cover closed")
 		opened = FALSE
@@ -343,6 +363,8 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 	return ITEM_INTERACT_SUCCESS
 
 /mob/living/silicon/robot/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!opened)
 		return NONE
 	if(!cell) // haxing
@@ -360,6 +382,8 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 	return ITEM_INTERACT_SUCCESS
 
 /mob/living/silicon/robot/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!(opened && !cell))	// Deconstruction. The flashes break from the fall, to prevent this from being a ghetto reset module.
 		return NONE
 	if(!lockcharge)
@@ -379,10 +403,14 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 	return ITEM_INTERACT_SUCCESS
 
 /mob/living/silicon/robot/fire_act()
+	procstart = null
+	src.procstart = null
 	if(!on_fire) //Silicons don't gain stacks from hotspots, but hotspots can ignite them
 		ignite_mob()
 
 /mob/living/silicon/robot/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -393,6 +421,8 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 			Unconscious(6 SECONDS)
 
 /mob/living/silicon/robot/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(user == src)//To prevent syndieborgs from emagging themselves
 		return FALSE
 	if(!opened)//Cover is closed
@@ -444,6 +474,8 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 
 /// A async proc called from [emag_act] that gives the borg a lot of flavortext, and applies the syndicate lawset after a delay.
 /mob/living/silicon/robot/proc/borg_emag_end(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(src, span_danger("ALERT: Foreign software detected."))
 	logevent("ALERT: Foreign software detected.")
 	sleep(0.5 SECONDS)
@@ -469,6 +501,8 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 	update_icons()
 
 /mob/living/silicon/robot/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if(stat != DEAD)
 		adjust_brute_loss(30)
 	else
@@ -477,6 +511,8 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 	return TRUE
 
 /mob/living/silicon/robot/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
 			investigate_log("has been gibbed by an explosion.", INVESTIGATE_DEATHS)
@@ -493,6 +529,8 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 	return TRUE
 
 /mob/living/silicon/robot/bullet_act(obj/projectile/hitting_projectile, def_zone, piercing_hit = FALSE)
+	procstart = null
+	src.procstart = null
 	if(check_block(hitting_projectile, hitting_projectile.damage, "\the [hitting_projectile]", PROJECTILE_ATTACK, hitting_projectile.armour_penetration, hitting_projectile.damage_type))
 		return ..(hitting_projectile, def_zone, piercing_hit, 100)
 	. = ..()
@@ -505,12 +543,16 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 	spark_system.start()
 
 /mob/living/silicon/robot/attack_effects(damage_done, hit_zone, armor_block, obj/item/attacking_item, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	if(damage_done > 0 && attacking_item.damtype != STAMINA && stat != DEAD)
 		spark_system.start()
 		. = TRUE
 	return ..() || .
 
 /mob/living/silicon/robot/apply_damage(damage, damagetype, def_zone, blocked, forced, spread_damage, wound_bonus, exposed_wound_bonus, sharpness, attack_direction, attacking_item, wound_clothing)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/borg = src
 	var/obj/item/shield_module/shield = locate() in borg
 	if(!shield)

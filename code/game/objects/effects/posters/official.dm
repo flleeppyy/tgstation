@@ -259,6 +259,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/official/the_owl, 32)
 	VAR_PRIVATE/corrupted = FALSE
 
 /obj/structure/sign/poster/official/no_erp/tear_poster(mob/user)
+	procstart = null
+	src.procstart = null
 	if(prob(99) && !check_holidays(APRIL_FOOLS))
 		return ..()
 
@@ -312,6 +314,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/official/periodic_table, 
 	icon_state = "plasma_effects"
 
 /obj/structure/sign/poster/official/plasma_effects/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("<i>You browse some of the poster's information...</i>")
 	. += "\t[span_info("Plasma (scientific name Amenthium) is classified by TerraGov as a Grade 1 Health Hazard, and has significant risks to health associated with chronic exposure.")]"
@@ -345,6 +349,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/official/corporate_perks_
 	icon_state = "jim_nortons"
 
 /obj/structure/sign/poster/official/jim_nortons/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("<i>You browse some of the poster's information...</i>")
 	. += "\t[span_info("From our roots in Trois-Rivières, we've worked to bring you the best coffee money can buy since 1965.")]"

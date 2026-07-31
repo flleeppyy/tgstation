@@ -16,11 +16,15 @@
 	circuit_flags = CIRCUIT_FLAG_INPUT_SIGNAL|CIRCUIT_FLAG_OUTPUT_SIGNAL
 
 /obj/item/circuit_component/gps/populate_ports()
+	procstart = null
+	src.procstart = null
 	x_pos = add_output_port("X", PORT_TYPE_NUMBER)
 	y_pos = add_output_port("Y", PORT_TYPE_NUMBER)
 	z_pos = add_output_port("Z", PORT_TYPE_NUMBER)
 
 /obj/item/circuit_component/gps/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 
 	var/turf/location = get_location()
 

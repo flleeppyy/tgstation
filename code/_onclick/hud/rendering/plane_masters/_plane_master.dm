@@ -65,6 +65,8 @@
 	var/offset_already_updated = FALSE
 
 /atom/movable/screen/plane_master/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.offset = offset
 	true_alpha = alpha
@@ -80,6 +82,8 @@
 	generate_render_relays()
 
 /atom/movable/screen/plane_master/Destroy()
+	procstart = null
+	src.procstart = null
 	if(home)
 		// NOTE! We do not clear ourselves from client screens
 		// We relay on whoever qdel'd us to reset our hud, and properly purge us
@@ -91,6 +95,8 @@
 /// Sets the plane group that owns us, it also determines what screen we render to
 /// Returns FALSE if the set_home fails, TRUE otherwise
 /atom/movable/screen/plane_master/proc/set_home(datum/plane_master_group/home)
+	procstart = null
+	src.procstart = null
 	if(!istype(home, /datum/plane_master_group))
 		return FALSE
 	src.home = home
@@ -103,6 +109,8 @@
 /// Top is 0, goes up as you go down
 /// It's taken into account by render targets and relays, so we gotta make sure they're on the same page
 /atom/movable/screen/plane_master/proc/update_offset()
+	procstart = null
+	src.procstart = null
 	name = "[initial(name)] #[offset]"
 	SET_PLANE_W_SCALAR(src, real_plane, offset)
 	for(var/i in 1 to length(render_relay_planes))
@@ -112,16 +120,22 @@
 	offset_already_updated = TRUE
 
 /atom/movable/screen/plane_master/proc/set_alpha(new_alpha)
+	procstart = null
+	src.procstart = null
 	true_alpha = new_alpha
 	if(!alpha_enabled)
 		return
 	alpha = new_alpha
 
 /atom/movable/screen/plane_master/proc/disable_alpha()
+	procstart = null
+	src.procstart = null
 	alpha_enabled = FALSE
 	alpha = 0
 
 /atom/movable/screen/plane_master/proc/enable_alpha()
+	procstart = null
+	src.procstart = null
 	alpha_enabled = TRUE
 	alpha = true_alpha
 
@@ -129,6 +143,8 @@
 /// Override this to apply unique effects and such
 /// Returns TRUE if the call is allowed, FALSE otherwise
 /atom/movable/screen/plane_master/proc/show_to(mob/mymob)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(force_hidden)
 		return FALSE
@@ -159,11 +175,15 @@
 /// Hook to allow planes to work around is_outside_bounds
 /// Return false to allow a show, true otherwise
 /atom/movable/screen/plane_master/proc/check_outside_bounds()
+	procstart = null
+	src.procstart = null
 	return is_outside_bounds
 
 /// Hides a plane master from the passeed in mob
 /// Do your effect cleanup here
 /atom/movable/screen/plane_master/proc/hide_from(mob/oldmob)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	var/client/their_client = oldmob?.client
 	if(!their_client)
@@ -175,17 +195,23 @@
 /// Forces this plane master to hide, until unhide_plane is called
 /// This allows us to disable unused PMs without breaking anything else
 /atom/movable/screen/plane_master/proc/hide_plane(mob/cast_away)
+	procstart = null
+	src.procstart = null
 	force_hidden = TRUE
 	hide_from(cast_away)
 
 /// Disables any forced hiding, allows the plane master to be used as normal
 /atom/movable/screen/plane_master/proc/unhide_plane(mob/enfold)
+	procstart = null
+	src.procstart = null
 	force_hidden = FALSE
 	show_to(enfold)
 
 /// Mirrors our force hidden state to the hidden state of the plane that came before, assuming it's valid
 /// This allows us to mirror any hidden sets from before we were created, no matter how low that chance is
 /atom/movable/screen/plane_master/proc/mirror_parent_hidden()
+	procstart = null
+	src.procstart = null
 	var/mob/our_mob = home?.our_hud?.mymob
 	var/atom/movable/screen/plane_master/true_plane = our_mob?.hud_used?.get_plane_master(plane)
 	if(true_plane == src || !true_plane)
@@ -201,6 +227,8 @@
 		unhide_plane(our_mob)
 
 /atom/movable/screen/plane_master/proc/outside_bounds(mob/relevant)
+	procstart = null
+	src.procstart = null
 	if(force_hidden || is_outside_bounds)
 		return
 	is_outside_bounds = TRUE
@@ -220,6 +248,8 @@
 	hide_from(relevant)
 
 /atom/movable/screen/plane_master/proc/inside_bounds(mob/relevant)
+	procstart = null
+	src.procstart = null
 	is_outside_bounds = FALSE
 	if(critical & PLANE_CRITICAL_DISPLAY)
 		// We here assume that your render target starts with *

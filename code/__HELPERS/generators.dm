@@ -5,12 +5,16 @@
  * * Note: this means things like "list(1,2,3)" will need to be processed
  */
 /proc/return_generator_args(generator/target)
+	procstart = null
+	src.procstart = null
 	var/string_repr = "[target]" //the name of the generator is the string representation of its _binobj, which also contains its args
 	string_repr = copytext(string_repr, 11, length(string_repr)) // strips extraneous data
 	string_repr = replacetext(string_repr, "\"", "") // removes the " around the type
 	return splittext(string_repr, ", ")
 
 /generator/proc/RandList()
+	procstart = null
+	src.procstart = null
 	var/possible_vector = Rand()
 	var/vector_length = length(possible_vector)
 	if(vector_length == 0)

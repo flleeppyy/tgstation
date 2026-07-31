@@ -2,6 +2,8 @@
 /datum/unit_test/machine_disassembly
 
 /datum/unit_test/machine_disassembly/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/freezer = allocate(/obj/machinery/atmospherics/components/unary/thermomachine/freezer)
 
 	var/turf/freezer_location = freezer.loc
@@ -20,6 +22,8 @@
 /datum/unit_test/computer_disassembly
 
 /datum/unit_test/computer_disassembly/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/computer/pc = allocate(/obj/machinery/computer/crew)
 	var/pc_circuit = pc.circuit
 	var/turf/pc_location = pc.loc

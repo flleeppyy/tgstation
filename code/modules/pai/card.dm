@@ -26,6 +26,8 @@
 	var/request_spam = FALSE
 
 /obj/item/pai_card/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	update_appearance()
@@ -33,6 +35,8 @@
 	ADD_TRAIT(src, TRAIT_CASTABLE_LOC, INNATE_TRAIT)
 
 /obj/item/pai_card/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!pai || !istype(tool, /obj/item/encryptionkey))
 		return NONE
 
@@ -45,11 +49,15 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/pai_card/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!in_range(src, user))
 		return
 	ui_interact(user)
 
 /obj/item/pai_card/Destroy()
+	procstart = null
+	src.procstart = null
 	//Will stop people throwing friend pAIs into the singularity so they can respawn
 	SSpai.pai_card_list.Remove(src)
 	if(!QDELETED(pai))
@@ -57,11 +65,15 @@
 	return ..()
 
 /obj/item/pai_card/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(pai)
 		return pai.handle_emag(user)
 	return FALSE
 
 /obj/item/pai_card/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. & EMP_PROTECT_SELF)
 		return
@@ -69,6 +81,8 @@
 		pai.emp_act(severity)
 
 /obj/item/pai_card/proc/on_pai_del(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(QDELETED(src))
 		return
@@ -77,26 +91,36 @@
 	update_appearance()
 
 /obj/item/pai_card/on_saboteur(datum/source, disrupt_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(pai)
 		return pai.on_saboteur(source, disrupt_duration)
 
 /obj/item/pai_card/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is staring sadly at [src]! [user.p_They()] can't keep living without real human intimacy!"))
 	return OXYLOSS
 
 /obj/item/pai_card/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += image(icon = screen_image.icon, icon_state = screen_image.icon_state)
 	if(pai?.hacking_cable)
 		. += "[initial(icon_state)]-connector"
 
 /obj/item/pai_card/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vname == NAMEOF(src, screen_image))
 		update_appearance()
 
 /obj/item/pai_card/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -104,16 +128,22 @@
 		ui.open()
 
 /obj/item/pai_card/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(user in get_nested_locs(src))
 		return UI_INTERACTIVE
 	return ..()
 
 /obj/item/pai_card/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["range_max"] = HOLOFORM_MAX_RANGE
 	.["range_min"] = HOLOFORM_MIN_RANGE
 
 /obj/item/pai_card/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/data = list()
 	if(!pai)
@@ -134,6 +164,8 @@
 	return data
 
 /obj/item/pai_card/ui_act(action, list/params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -183,6 +215,8 @@
 
 /** Flashes the pai card screen */
 /obj/item/pai_card/proc/add_alert()
+	procstart = null
+	src.procstart = null
 	if(pai)
 		return
 	add_overlay(
@@ -191,12 +225,16 @@
 
 /** Removes any overlays */
 /obj/item/pai_card/proc/remove_alert()
+	procstart = null
+	src.procstart = null
 	if(pai)
 		return
 	cut_overlays()
 
 /** Alerts pAI cards that someone has submitted candidacy */
 /obj/item/pai_card/proc/alert_update()
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, alert_cooldown))
 		return
 	COOLDOWN_START(src, alert_cooldown, 5 SECONDS)
@@ -213,6 +251,8 @@
  * @returns {boolean} - TRUE if the candidate was downloaded, FALSE if not
  */
 /obj/item/pai_card/proc/download_candidate(mob/user, ckey)
+	procstart = null
+	src.procstart = null
 	if(pai)
 		return FALSE
 	var/datum/pai_candidate/candidate = SSpai.candidates[ckey]
@@ -235,6 +275,8 @@
  * @returns {boolean} - TRUE if the pAI was requested, FALSE if not
  */
 /obj/item/pai_card/proc/find_pai(mob/user)
+	procstart = null
+	src.procstart = null
 	if(pai)
 		return FALSE
 	if(!(GLOB.ghost_role_flags & GHOSTROLE_SILICONS))
@@ -268,6 +310,8 @@
  * @returns - An array of candidate objects.
  */
 /obj/item/pai_card/proc/pool_candidates()
+	procstart = null
+	src.procstart = null
 	var/list/candidates = list()
 	if(pai || !length(SSpai?.candidates))
 		return candidates
@@ -289,6 +333,8 @@
  * @param {silicon/pai} downloaded - The new pAI to load into the card.
  */
 /obj/item/pai_card/proc/set_personality(mob/living/silicon/pai/downloaded)
+	procstart = null
+	src.procstart = null
 	if(pai)
 		return FALSE
 	pai = downloaded

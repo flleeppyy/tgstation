@@ -20,12 +20,16 @@ Slimecrossing Items
 	var/burn_dam
 
 /datum/saved_bodypart/New(obj/item/bodypart/part)
+	procstart = null
+	src.procstart = null
 	old_part = part
 	bodypart_type = part.type
 	brute_dam = part.brute_dam
 	burn_dam = part.burn_dam
 
 /mob/living/carbon/proc/apply_saved_bodyparts(list/datum/saved_bodypart/parts)
+	procstart = null
+	src.procstart = null
 	var/list/dont_chop = list()
 	for(var/zone in parts)
 		var/datum/saved_bodypart/saved_part = parts[zone]
@@ -39,6 +43,8 @@ Slimecrossing Items
 		dont_chop[zone] = TRUE
 
 /mob/living/carbon/proc/save_bodyparts()
+	procstart = null
+	src.procstart = null
 	var/list/datum/saved_bodypart/ret = list()
 	for(var/obj/item/bodypart/part as anything in get_bodyparts(include_stumps = TRUE))
 		var/datum/saved_bodypart/saved_part = new(part)
@@ -46,6 +52,8 @@ Slimecrossing Items
 	return ret
 
 /obj/item/camera/rewind/on_flash(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user == target)
 		to_chat(user, span_notice("You take a selfie!"))
@@ -64,6 +72,8 @@ Slimecrossing Items
 	pictures_max = 1
 
 /obj/item/camera/timefreeze/on_flash(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/timestop(get_turf(target), 2, 50, list(user))
 
@@ -89,6 +99,8 @@ Slimecrossing Items
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/barriercube/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/structure/barricade/slime) in get_turf(loc))
 		to_chat(user, span_warning("You can't fit more than one barrier in the same space!"))
 		return
@@ -141,10 +153,14 @@ Slimecrossing Items
 	acid = 30
 
 /obj/structure/ice_stasis/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(src, 'sound/effects/magic/ethereal_exit.ogg', 50, TRUE)
 
 /obj/structure/ice_stasis/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/M in contents)
 		M.forceMove(loc)
 	playsound(src, 'sound/effects/glass/glassbr3.ogg', 50, TRUE)
@@ -165,6 +181,8 @@ Slimecrossing Items
 	)
 
 /obj/item/capturedevice/attack(mob/living/pokemon, mob/user)
+	procstart = null
+	src.procstart = null
 	if(length(contents))
 		to_chat(user, span_warning("The device already has something inside."))
 		return
@@ -191,6 +209,8 @@ Slimecrossing Items
 	store(pokemon)
 
 /obj/item/capturedevice/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(contents.len)
 		to_chat(user, span_notice("You open the capture device!"))
 		release()
@@ -198,11 +218,15 @@ Slimecrossing Items
 		to_chat(user, span_warning("The device is empty..."))
 
 /obj/item/capturedevice/proc/store(mob/living/pokemon)
+	procstart = null
+	src.procstart = null
 	pokemon.forceMove(src)
 	pokemon.add_traits(traits_on_transfer, ABSTRACT_ITEM_TRAIT)
 	pokemon.cancel_camera()
 
 /obj/item/capturedevice/proc/release()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/pokemon in contents)
 		pokemon.forceMove(get_turf(loc))
 		pokemon.remove_traits(traits_on_transfer, ABSTRACT_ITEM_TRAIT)

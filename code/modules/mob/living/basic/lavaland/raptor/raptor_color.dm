@@ -1,6 +1,8 @@
 GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 
 /proc/init_raptor_colors()
+	procstart = null
+	src.procstart = null
 	var/list/colors = list()
 	for (var/datum/raptor_color/color_type as anything in subtypesof(/datum/raptor_color))
 		colors[color_type] = new color_type()
@@ -31,11 +33,15 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 
 /// Shared proc, only called once on raptor init for color-specific traits and properties
 /datum/raptor_color/proc/setup_raptor(mob/living/basic/raptor/raptor)
+	procstart = null
+	src.procstart = null
 	if (raptor.ai_controller)
 		CRASH("setup_raptor called on a raptor ([raptor]) with a present AI controller! This is most likely a result of a second call to setup_raptor.")
 	raptor.ai_controller = new ai_controller(raptor)
 
 /datum/raptor_color/proc/setup_adult(mob/living/basic/raptor/raptor)
+	procstart = null
+	src.procstart = null
 	var/datum/raptor_inheritance/stats = raptor.inherited_stats
 	var/real_health = health + stats.health_modifier
 	// If we grow up while damaged, keep the damage percentage the same
@@ -51,6 +57,8 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 	setup_appearance(raptor)
 
 /datum/raptor_color/proc/setup_young(mob/living/basic/raptor/raptor)
+	procstart = null
+	src.procstart = null
 	var/datum/raptor_inheritance/stats = raptor.inherited_stats
 	var/real_health = health + stats.health_modifier
 	raptor.health *= real_health / 2 / raptor.maxHealth
@@ -62,6 +70,8 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 	setup_appearance(raptor)
 
 /datum/raptor_color/proc/setup_baby(mob/living/basic/raptor/raptor)
+	procstart = null
+	src.procstart = null
 	var/datum/raptor_inheritance/stats = raptor.inherited_stats
 	var/real_health = health + stats.health_modifier
 	raptor.health *= real_health / 8 / raptor.maxHealth
@@ -73,6 +83,8 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 	setup_appearance(raptor)
 
 /datum/raptor_color/proc/setup_appearance(mob/living/basic/raptor/raptor)
+	procstart = null
+	src.procstart = null
 	raptor.name = "[color] [raptor.name]"
 	raptor.icon_state = "[raptor.base_icon_state]_[color]"
 	raptor.held_state = "[raptor.base_icon_state]_[color]"
@@ -97,6 +109,8 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 	ai_controller = /datum/ai_controller/basic_controller/raptor/aggressive
 
 /datum/raptor_color/red/setup_raptor(mob/living/basic/raptor/raptor)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(raptor, TRAIT_MINING_AGGRO, INNATE_TRAIT)
 
@@ -111,11 +125,15 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 	)
 
 /datum/raptor_color/purple/setup_raptor(mob/living/basic/raptor/raptor)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(raptor, COMSIG_MOVABLE_PREBUCKLE, PROC_REF(on_pre_buckle))
 	raptor.inhand_holder_type = /obj/item/mob_holder/purple_raptor
 
 /datum/raptor_color/purple/proc/on_pre_buckle(mob/living/basic/raptor/source, mob/living/potential_rider, force = FALSE, ride_check_flags = NONE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!ishuman(potential_rider))
@@ -128,6 +146,8 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 
 // Purple raptors never "fully" grow up, and remain usable as backpacks
 /datum/raptor_color/purple/setup_adult(mob/living/basic/raptor/raptor)
+	procstart = null
+	src.procstart = null
 	raptor.update_holdability(TRUE)
 	raptor.density = FALSE
 	raptor.move_resist = MOVE_RESIST_DEFAULT
@@ -146,6 +166,8 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 	)
 
 /datum/raptor_color/purple/setup_young(mob/living/basic/raptor/raptor)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (raptor.atom_storage)
 		return
@@ -168,6 +190,8 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 	var/drift_force = 2 NEWTONS
 
 /obj/item/mob_holder/purple_raptor/Initialize(mapload, mob/living/held_mob, worn_state, head_icon, lh_icon, rh_icon, worn_slot_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/mob/living/basic/raptor/raptor = held_mob
@@ -200,12 +224,16 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 	)
 
 /obj/item/mob_holder/purple_raptor/Destroy()
+	procstart = null
+	src.procstart = null
 	if (ishuman(loc) && wings_open)
 		toggle_wings(loc)
 	QDEL_NULL(flight_action)
 	return ..()
 
 /obj/item/mob_holder/purple_raptor/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if ((slot & ITEM_SLOT_BACK) && ishuman(user) && flight_action)
 		flight_action.Grant(held_mob)
@@ -213,6 +241,8 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 		RegisterSignal(user, COMSIG_MOVABLE_CHASM_DROPPED, PROC_REF(chasm_react))
 
 /obj/item/mob_holder/purple_raptor/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, COMSIG_MOVABLE_CHASM_DROPPED)
 	if (wings_open)
@@ -223,6 +253,8 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 		flight_action.HideFrom(user)
 
 /obj/item/mob_holder/purple_raptor/proc/on_weight_updated(mob/living/carbon/human/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (source.mob_height <= HUMAN_HEIGHT_SHORTEST && !HAS_TRAIT(source, TRAIT_FAT))
@@ -233,6 +265,8 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 		source.add_movespeed_modifier(/datum/movespeed_modifier/jetpack/raptor/slow)
 
 /obj/item/mob_holder/purple_raptor/proc/can_fly(silent = FALSE)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/user = loc
 	if (!istype(user) || IS_UNCONSCIOUS_OR_CRIT(user) || user.body_position == LYING_DOWN || isnull(user.client))
 		return FALSE
@@ -250,9 +284,13 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 	return FALSE
 
 /obj/item/mob_holder/purple_raptor/proc/check_flight()
+	procstart = null
+	src.procstart = null
 	return can_fly(silent = TRUE)
 
 /obj/item/mob_holder/purple_raptor/proc/toggle_wings(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	// In case something goes wrong
 	if (!istype(user))
 		wings_open = FALSE
@@ -305,6 +343,8 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 	SEND_SIGNAL(src, COMSIG_RAPTOR_WINGS_CLOSED, user)
 
 /obj/item/mob_holder/purple_raptor/proc/chasm_react(mob/living/user, turf/chasm)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (wings_open || !can_fly())
@@ -315,6 +355,8 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 		return COMPONENT_NO_CHASM_DROP
 
 /obj/item/mob_holder/purple_raptor/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if (!can_fly(silent = TRUE))
 		toggle_wings(loc)
 		return PROCESS_KILL
@@ -324,6 +366,8 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 	insert_on_attack = FALSE // should flip when worn on the back
 
 /datum/storage/raptor_storage/on_mousedropped_onto(datum/source, obj/item/dropping, mob/user)
+	procstart = null
+	src.procstart = null
 	return NONE
 
 /datum/action/innate/raptor_wings
@@ -335,6 +379,8 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 	overlay_icon_state = "bg_default_border"
 
 /datum/action/innate/raptor_wings/Activate()
+	procstart = null
+	src.procstart = null
 	var/obj/item/mob_holder/purple_raptor/holder = target
 	var/mob/living/carbon/human/user = holder.loc
 	if (!istype(user) || user.get_item_by_slot(ITEM_SLOT_BACK) != holder)
@@ -355,6 +401,8 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 	)
 
 /datum/raptor_color/green/setup_adult(mob/living/basic/raptor/raptor)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/ability_scale = 1 - INVERSE_LERP(RAPTOR_INHERIT_MIN_MODIFIER, RAPTOR_INHERIT_MAX_MODIFIER, raptor.inherited_stats.ability_modifier)
 	var/mining_mod = round(ability_scale * 0.1, 0.025)
@@ -372,6 +420,8 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 	)
 
 /datum/raptor_color/white/setup_young(mob/living/basic/raptor/raptor)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	raptor.AddComponent( \
 		/datum/component/healing_touch, \
@@ -382,6 +432,8 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 	)
 
 /datum/raptor_color/white/setup_adult(mob/living/basic/raptor/raptor)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(raptor.GetComponent(/datum/component/healing_touch))
 	raptor.AddComponent( \
@@ -395,6 +447,8 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 	)
 
 /datum/raptor_color/white/proc/heal_checks(mob/living/healer, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if (istype(target, /mob/living/basic/raptor))
 		return TRUE
 	// Only heal raptors, or critted rider
@@ -403,6 +457,8 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 	return target.buckled == healer
 
 /datum/raptor_color/white/proc/heal_multiplier(mob/living/healer, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if (istype(target, /mob/living/basic/raptor))
 		return 1
 	// The healing is slow so this is fine
@@ -428,6 +484,8 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 	)
 
 /datum/raptor_color/blue/setup_raptor(mob/living/basic/raptor/raptor)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	raptor.add_traits(list(TRAIT_LAVA_IMMUNE, TRAIT_NOFIRE_SPREAD), INNATE_TRAIT)
 
@@ -444,10 +502,14 @@ GLOBAL_LIST_INIT(raptor_colors, init_raptor_colors())
 	spawn_chance = 1 // 1 in 150 chance without modifiers
 
 /datum/raptor_color/black/setup_raptor(mob/living/basic/raptor/raptor)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	raptor.add_traits(list(TRAIT_LAVA_IMMUNE, TRAIT_NOFIRE_SPREAD, TRAIT_MINING_AGGRO), INNATE_TRAIT)
 
 /datum/raptor_color/black/setup_adult(mob/living/basic/raptor/raptor)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Slightly worse than greens at this
 	var/ability_scale = 1 - INVERSE_LERP(RAPTOR_INHERIT_MIN_MODIFIER, RAPTOR_INHERIT_MAX_MODIFIER, raptor.inherited_stats.ability_modifier)

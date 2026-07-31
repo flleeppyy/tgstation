@@ -36,6 +36,8 @@ ADMIN_VERB(log_viewer_new, R_ADMIN, "View Round Logs", "View the rounds logs.", 
 	logger.ui_interact(user.mob)
 
 /datum/log_holder/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(isnull(ui))
 		ui = new(user, src, "LogViewer")
@@ -43,9 +45,13 @@ ADMIN_VERB(log_viewer_new, R_ADMIN, "View Round Logs", "View the rounds logs.", 
 		ui.open()
 
 /datum/log_holder/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_ADMIN)
 
 /datum/log_holder/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list(
 		"round_id" = GLOB.round_id,
 		"logging_start_timestamp" = logging_start_timestamp,
@@ -66,11 +72,15 @@ ADMIN_VERB(log_viewer_new, R_ADMIN, "View Round Logs", "View the rounds logs.", 
 	return data
 
 /datum/log_holder/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!last_data_update || (world.time - last_data_update) > LOG_UPDATE_TIMEOUT)
 		cache_ui_data()
 	return data_cache
 
 /datum/log_holder/proc/cache_ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/category_map = list()
 	for(var/datum/log_category/category as anything in log_categories)
 		category = log_categories[category]
@@ -97,6 +107,8 @@ ADMIN_VERB(log_viewer_new, R_ADMIN, "View Round Logs", "View the rounds logs.", 
 	data_cache["last_data_update"] = last_data_update
 
 /datum/log_holder/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -111,6 +123,8 @@ ADMIN_VERB(log_viewer_new, R_ADMIN, "View Round Logs", "View the rounds logs.", 
 
 /// Assembles basic information for logging, creating the log category datums and checking for config flags as required
 /datum/log_holder/proc/init_logging()
+	procstart = null
+	src.procstart = null
 	if(initialized)
 		CRASH("Attempted to call init_logging twice!")
 
@@ -156,12 +170,16 @@ ADMIN_VERB(log_viewer_new, R_ADMIN, "View Round Logs", "View the rounds logs.", 
 
 /// Tells the log_holder to not allow any more logging to be done, and dumps all categories to their json file
 /datum/log_holder/proc/shutdown_logging()
+	procstart = null
+	src.procstart = null
 	if(shutdown)
 		CRASH("Attempted to call shutdown_logging twice!")
 	shutdown = TRUE
 
 /// Iterates over all log category types to assemble them into a tree of main category -> (sub category)[] while also checking for loops and sanity errors
 /datum/log_holder/proc/assemble_log_category_tree()
+	procstart = null
+	src.procstart = null
 	var/static/list/category_tree
 	if(category_tree)
 		return category_tree
@@ -205,6 +223,8 @@ ADMIN_VERB(log_viewer_new, R_ADMIN, "View Round Logs", "View the rounds logs.", 
 #define LOG_CATEGORY_RESET_FILE_MARKER_READABLE "LOG FILE RESET -- THIS IS AN ERROR"
 /// Gets a recovery file for the given path. Caches the last known recovery path for each path.
 /datum/log_holder/proc/get_recovery_file_for(path)
+	procstart = null
+	src.procstart = null
 	var/static/cache
 	if(isnull(cache))
 		cache = list()
@@ -218,6 +238,8 @@ ADMIN_VERB(log_viewer_new, R_ADMIN, "View Round Logs", "View the rounds logs.", 
 
 /// Sets up the given category's file and header.
 /datum/log_holder/proc/init_category_file(datum/log_category/category)
+	procstart = null
+	src.procstart = null
 	var/file_path = category.get_output_file(null)
 	if(fexists(file_path)) // already exists? implant a reset marker
 		rustg_file_append(LOG_CATEGORY_RESET_FILE_MARKER, file_path)
@@ -238,6 +260,8 @@ ADMIN_VERB(log_viewer_new, R_ADMIN, "View Round Logs", "View the rounds logs.", 
 
 /// Initializes the given log category and populates the list of contained categories based on the sub category list
 /datum/log_holder/proc/init_log_category(datum/log_category/category_type, list/datum/log_category/sub_categories)
+	procstart = null
+	src.procstart = null
 	var/datum/log_category/category_instance = new category_type
 
 	var/list/contained_categories = list()
@@ -273,12 +297,16 @@ ADMIN_VERB(log_viewer_new, R_ADMIN, "View Round Logs", "View the rounds logs.", 
 	init_category_file(category_instance, category_header)
 
 /datum/log_holder/proc/human_readable_timestamp()
+	procstart = null
+	src.procstart = null
 	return rustg_formatted_timestamp("%Y-%m-%d %H:%M:%S%.3f")
 
 /// Adds an entry to the given category, if the category is disabled it will not be logged.
 /// If the category does not exist, we will CRASH and log to the error category.
 /// the data list is optional and will be recursively json serialized.
 /datum/log_holder/proc/Log(category, message, list/data)
+	procstart = null
+	src.procstart = null
 	// This is Log because log is a byond internal proc
 
 	// do not include the message because these go into the runtime log and we might be secret!
@@ -314,6 +342,8 @@ ADMIN_VERB(log_viewer_new, R_ADMIN, "View Round Logs", "View the rounds logs.", 
 
 /// Recursively converts an associative list of datums into their jsonified(list) form
 /datum/log_holder/proc/recursive_jsonify(list/data_list, list/semvers)
+	procstart = null
+	src.procstart = null
 	if(isnull(data_list))
 		return null
 

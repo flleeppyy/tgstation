@@ -9,11 +9,15 @@
 	var/datum/callback/post_honk_callback
 
 /datum/action/cooldown/mob_cooldown/bot/honk/Activate()
+	procstart = null
+	src.procstart = null
 	playsound(owner, 'sound/items/bikehorn.ogg', 50, TRUE, -1)
 	post_honk_callback?.Invoke()
 	StartCooldown()
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/bot/honk/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	post_honk_callback = null

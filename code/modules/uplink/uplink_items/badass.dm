@@ -17,6 +17,8 @@
 	uplink_item_flags = SYNDIE_TRIPS_CONTRABAND
 
 /datum/uplink_item/badass/balloon/spawn_item(spawn_path, mob/user, datum/uplink_handler/uplink_handler, atom/movable/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)

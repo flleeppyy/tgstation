@@ -68,16 +68,22 @@
 	eldritch_passive = /datum/status_effect/heretic_passive/rust
 
 /datum/heretic_knowledge/limited_amount/starting/base_rust/on_gain(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK_SECONDARY, PROC_REF(on_secondary_mansus_grasp))
 	user.RemoveElement(/datum/element/rust_healing, FALSE, 1.5, 5)
 
 /datum/heretic_knowledge/limited_amount/starting/base_rust/on_lose(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK_SECONDARY)
 	user.AddElement(/datum/element/rust_healing, FALSE, 1.5, 5)
 
 /datum/heretic_knowledge/limited_amount/starting/base_rust/on_mansus_grasp(mob/living/source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(iscarbon(target))
@@ -92,6 +98,8 @@
 	source.do_rust_heretic_act(target)
 
 /datum/heretic_knowledge/limited_amount/starting/base_rust/proc/on_secondary_mansus_grasp(mob/living/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Rusting an airlock causes it to lose power, mostly to prevent the airlock from shocking you.
@@ -167,11 +175,15 @@
 	research_tree_icon_state = "blade_upgrade_rust"
 
 /datum/heretic_knowledge/blade_upgrade/rust/do_melee_effects(mob/living/source, mob/living/target, obj/item/melee/sickly_blade/blade)
+	procstart = null
+	src.procstart = null
 	if(source == target || !isliving(target))
 		return
 	target.adjust_disgust(50)
 
 /datum/heretic_knowledge/spell/area_conversion/on_gain(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 /datum/heretic_knowledge/spell/entropic_plume
@@ -227,6 +239,8 @@
 	)
 
 /datum/heretic_knowledge/ultimate/rust_final/on_research(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// This map doesn't have a Bridge, for some reason??
 	// Let them complete the ritual anywhere
@@ -234,6 +248,8 @@
 		ritual_location = null
 
 /datum/heretic_knowledge/ultimate/rust_final/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	if(ritual_location)
 		var/area/our_area = get_area(loc)
 		if(!istype(our_area, ritual_location))
@@ -243,6 +259,8 @@
 	return ..()
 
 /datum/heretic_knowledge/ultimate/rust_final/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	trigger(loc)
 	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
@@ -253,6 +271,8 @@
 
 // I sure hope this doesn't have performance implications
 /datum/heretic_knowledge/ultimate/rust_final/proc/trigger(turf/center)
+	procstart = null
+	src.procstart = null
 	var/greatest_dist = 0
 	var/list/turfs_to_transform = list()
 	for (var/turf/transform_turf as anything in GLOB.station_turfs)
@@ -271,6 +291,8 @@
 		addtimer(CALLBACK(src, PROC_REF(transform_area), turfs_to_transform["[iterator]"]), (2 SECONDS) * iterator)
 
 /datum/heretic_knowledge/ultimate/rust_final/proc/transform_area(list/turfs)
+	procstart = null
+	src.procstart = null
 	turfs = shuffle(turfs)
 	var/numturfs = length(turfs)
 	var/first_third = turfs.Copy(1, round(numturfs * 0.33))
@@ -281,6 +303,8 @@
 	addtimer(CALLBACK(src, PROC_REF(delay_transform_turfs), third_third), 5 SECONDS * 0.66)
 
 /datum/heretic_knowledge/ultimate/rust_final/proc/delay_transform_turfs(list/turfs)
+	procstart = null
+	src.procstart = null
 	for(var/turf/turf as anything in turfs)
 		turf.rust_heretic_act(RUST_RESISTANCE_ORGANIC)
 		CHECK_TICK
@@ -291,6 +315,8 @@
  * Gives our heretic ([source]) buffs if they stand on rust.
  */
 /datum/heretic_knowledge/ultimate/rust_final/proc/on_move(mob/living/source, atom/old_loc, dir, forced, list/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source.is_touching_rust())
@@ -310,6 +336,8 @@
  * Gradually heals the heretic ([source]) on rust.
  */
 /datum/heretic_knowledge/ultimate/rust_final/proc/on_life(mob/living/source, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!source.is_touching_rust())

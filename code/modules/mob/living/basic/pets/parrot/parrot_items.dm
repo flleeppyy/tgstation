@@ -2,10 +2,14 @@
 	key = STRIPPABLE_ITEM_PARROT_HEADSET
 
 /datum/strippable_item/parrot_headset/get_item(atom/source)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/parrot/parrot_source = source
 	return istype(parrot_source) ? parrot_source.ears : null
 
 /datum/strippable_item/parrot_headset/try_equip(atom/source, obj/item/equipping, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -18,9 +22,13 @@
 
 // There is no delay for putting a headset on a parrot.
 /datum/strippable_item/parrot_headset/start_equip(atom/source, obj/item/equipping, mob/user)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/strippable_item/parrot_headset/finish_equip(atom/source, obj/item/equipping, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/radio/headset/radio = equipping
 	if (!istype(radio))
 		return
@@ -37,6 +45,8 @@
 	to_chat(user, span_notice("You fit [radio] onto [source]."))
 
 /datum/strippable_item/parrot_headset/start_unequip(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -52,6 +62,8 @@
 	return TRUE
 
 /datum/strippable_item/parrot_headset/finish_unequip(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/parrot/parrot_source = source
 	if (!istype(parrot_source))
 		return

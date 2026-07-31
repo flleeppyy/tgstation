@@ -3,6 +3,8 @@
 	name = "Fully Immerse"
 
 /datum/smite/immerse/effect(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	immerse_player(target)
 	SEND_SOUND(target, sound('sound/misc/roleplay.ogg'))

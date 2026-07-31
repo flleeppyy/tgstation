@@ -13,6 +13,8 @@
 	var/atom/last_target
 
 /datum/component/focused_attacker/Initialize(gain_per_attack = 5, maximum_gain = 25)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(parent) && !isitem(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -20,21 +22,29 @@
 	src.gain_per_attack = gain_per_attack
 
 /datum/component/focused_attacker/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if (!isnull(last_target))
 		UnregisterSignal(last_target, COMSIG_QDELETING)
 	return ..()
 
 /datum/component/focused_attacker/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	if (isliving(parent))
 		RegisterSignal(parent, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(pre_mob_attack))
 	else
 		RegisterSignal(parent, COMSIG_ITEM_PRE_ATTACK, PROC_REF(pre_item_attack))
 
 /datum/component/focused_attacker/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_ITEM_PRE_ATTACK))
 
 /// Before a mob attacks, try increasing its attack power
 /datum/component/focused_attacker/proc/pre_mob_attack(mob/living/attacker, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (isnull(target) || isturf(target))
 		return
@@ -51,6 +61,8 @@
 
 /// Before an item attacks, try increasing its attack power
 /datum/component/focused_attacker/proc/pre_item_attack(obj/item/weapon, atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (target == last_target)
 		current_gain += gain_per_attack
@@ -62,6 +74,8 @@
 
 /// Register a new target
 /datum/component/focused_attacker/proc/register_new_target(atom/target)
+	procstart = null
+	src.procstart = null
 	if (!isnull(last_target))
 		UnregisterSignal(last_target, COMSIG_QDELETING)
 	last_target = target
@@ -69,5 +83,7 @@
 
 /// Drop our target ref on deletion
 /datum/component/focused_attacker/proc/on_target_deleted(target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	last_target = null

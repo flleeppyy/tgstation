@@ -3,6 +3,8 @@
 #define SERVICE_JSON_PARAM_REQUIREDPARAMETERS "required_parameters"
 
 /datum/tgs_api/v3210/proc/ListServiceCustomCommands(warnings_only)
+	procstart = null
+	src.procstart = null
 	if(!warnings_only)
 		. = list()
 	var/list/command_name_types = list()
@@ -33,6 +35,8 @@
 			.[command_name] = list(SERVICE_JSON_PARAM_HELPTEXT = initial(stc.help_text), SERVICE_JSON_PARAM_ADMINONLY = initial(stc.admin_only), SERVICE_JSON_PARAM_REQUIREDPARAMETERS = 0)
 
 /datum/tgs_api/v3210/proc/HandleServiceCustomCommand(command, sender, params)
+	procstart = null
+	src.procstart = null
 	if(!cached_custom_tgs_chat_commands)
 		cached_custom_tgs_chat_commands = list()
 		for(var/I in typesof(/datum/tgs_chat_command) - /datum/tgs_chat_command)

@@ -18,6 +18,8 @@
 	var/only_attacks = FALSE
 
 /datum/component/hitsplat/Initialize(hitsplat_type, only_attacks)
+	procstart = null
+	src.procstart = null
 	if(!ismob(parent))
 		return COMPONENT_INCOMPATIBLE
 	if(hitsplat_type)
@@ -25,6 +27,8 @@
 	src.only_attacks = only_attacks
 
 /datum/component/hitsplat/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	if(only_attacks)
 		RegisterSignal(parent, COMSIG_MOB_APPLY_DAMAGE, PROC_REF(on_attacked))
 		RegisterSignal(parent, COMSIG_ATOM_AFTER_ATTACKEDBY, PROC_REF(after_attackby))
@@ -33,6 +37,8 @@
 		RegisterSignal(parent, COMSIG_CARBON_LIMB_DAMAGED, PROC_REF(on_limb_damage))
 
 /datum/component/hitsplat/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	if(only_attacks)
 		UnregisterSignal(parent, list(COMSIG_MOB_APPLY_DAMAGE, COMSIG_ATOM_AFTER_ATTACKEDBY))
 	else
@@ -40,12 +46,16 @@
 
 
 /datum/component/hitsplat/proc/after_attackby(atom/target, obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(weapon.force) //will be handled by on_attacked
 		return NONE
 	spawn_hitsplat(0)
 
 /datum/component/hitsplat/proc/on_attacked(mob/source, damage_amount, damagetype, def_zone, blocked)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(damagetype == STAMINA || damage_amount < 0)
@@ -53,6 +63,8 @@
 	spawn_hitsplat(damage_amount, damagetype)
 
 /datum/component/hitsplat/proc/on_damage_adjusted(mob/source, type, amount)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(type == STAMINA)
@@ -60,6 +72,8 @@
 	spawn_hitsplat(amount, type)
 
 /datum/component/hitsplat/proc/on_limb_damage(mob/living/our_mob, limb, brute, burn)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(brute)
@@ -68,11 +82,15 @@
 		spawn_hitsplat(burn, BURN)
 
 /datum/component/hitsplat/proc/spawn_hitsplat(amount, type)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/overlay/vis/hitsplat/new_hitsplat = new hitsplat_type()
 	new_hitsplat.set_damage_amount(amount, type)
 	add_hitsplat(new_hitsplat)
 
 /datum/component/hitsplat/proc/add_hitsplat(obj/effect/new_hitsplat)
+	procstart = null
+	src.procstart = null
 
 	RegisterSignal(new_hitsplat, COMSIG_QDELETING, PROC_REF(on_hitsplat_delete))
 	var/mob/living_parent = parent
@@ -93,6 +111,8 @@
 	new_hitsplat.pixel_z = first_hitsplat[2]
 
 /datum/component/hitsplat/proc/on_hitsplat_delete(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/list/hitsplat in hitsplat_positions)
@@ -118,10 +138,14 @@
 	var/text_color
 
 /obj/effect/overlay/vis/hitsplat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_IN(src, 2 SECONDS)
 
 /obj/effect/overlay/vis/hitsplat/proc/set_damage_amount(damage_number, damage_type)
+	procstart = null
+	src.procstart = null
 	damage_amount = damage_number
 
 	if(lore_accurate)
@@ -152,6 +176,8 @@
 /obj/effect/overlay/vis/hitsplat/lore_accurate
 
 /obj/effect/overlay/vis/hitsplat/lore_accurate/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/hitsplat_num = CEILING(abs(damage_amount), rounding)
 	var/image/hitsplat_text = image(loc = src, layer = layer + 0.1)
@@ -168,6 +194,8 @@
 	lore_accurate = FALSE
 
 /obj/effect/overlay/vis/hitsplat/debugging/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/hitsplat_num = CEILING(damage_amount, rounding)
 	var/image/hitsplat_text = image(loc = src, layer = layer + 0.1)

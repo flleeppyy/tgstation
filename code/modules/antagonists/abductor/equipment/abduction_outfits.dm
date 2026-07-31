@@ -6,6 +6,8 @@
 	ears = /obj/item/radio/headset/abductor
 
 /datum/outfit/abductor/proc/link_to_console(mob/living/carbon/human/H, team_number)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/abductor/A = H.mind.has_antag_datum(/datum/antagonist/abductor)
 	if(!team_number && A)
 		team_number = A.team.team_number
@@ -25,6 +27,8 @@
 				console.AddGizmo(G)
 
 /datum/outfit/abductor/post_equip(mob/living/carbon/human/user, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(visuals_only)
 		return
@@ -65,6 +69,8 @@
 		)
 
 /datum/outfit/abductor/scientist/post_equip(mob/living/carbon/human/user, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!visuals_only && !isnull(user.mind))
 		var/obj/item/implant/abductor/beamplant = new /obj/item/implant/abductor(user)

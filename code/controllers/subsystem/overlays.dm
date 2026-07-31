@@ -4,18 +4,26 @@ SUBSYSTEM_DEF(overlays)
 	var/list/stats
 
 /datum/controller/subsystem/overlays/PreInit()
+	procstart = null
+	src.procstart = null
 	stats = list()
 
 /datum/controller/subsystem/overlays/Shutdown()
+	procstart = null
+	src.procstart = null
 	text2file(render_stats(stats), "[GLOB.log_directory]/overlay.log")
 
 /datum/controller/subsystem/overlays/Recover()
+	procstart = null
+	src.procstart = null
 	stats = SSoverlays.stats
 
 /// Converts an overlay list into text for debug printing
 /// Of note: overlays aren't actually mutable appearances, they're just appearances
 /// Don't have access to that type tho, so this is the best you're gonna get
 /proc/overlays2text(list/overlays)
+	procstart = null
+	src.procstart = null
 	var/list/unique_overlays = list()
 	// As anything because we're basically doing type coercion, rather then actually filtering for mutable appearances
 	for(var/mutable_appearance/overlay as anything in overlays)
@@ -27,17 +35,23 @@ SUBSYSTEM_DEF(overlays)
 	return output_text.Join("\n")
 
 /proc/iconstate2appearance(icon, iconstate)
+	procstart = null
+	src.procstart = null
 	var/static/image/stringbro = new()
 	stringbro.icon = icon
 	stringbro.icon_state = iconstate
 	return stringbro.appearance
 
 /proc/icon2appearance(icon)
+	procstart = null
+	src.procstart = null
 	var/static/image/iconbro = new()
 	iconbro.icon = icon
 	return iconbro.appearance
 
 /atom/proc/build_appearance_list(list/build_overlays)
+	procstart = null
+	src.procstart = null
 	if (!islist(build_overlays))
 		build_overlays = list(build_overlays)
 	for (var/overlay in build_overlays)
@@ -60,6 +74,8 @@ SUBSYSTEM_DEF(overlays)
 	return build_overlays
 
 /atom/proc/cut_overlays()
+	procstart = null
+	src.procstart = null
 	STAT_START_STOPWATCH
 	overlays = null
 	POST_OVERLAY_CHANGE(src)
@@ -67,6 +83,8 @@ SUBSYSTEM_DEF(overlays)
 	STAT_LOG_ENTRY(SSoverlays.stats, type)
 
 /atom/proc/cut_overlay(list/remove_overlays)
+	procstart = null
+	src.procstart = null
 	if(!overlays)
 		return
 	STAT_START_STOPWATCH
@@ -76,6 +94,8 @@ SUBSYSTEM_DEF(overlays)
 	STAT_LOG_ENTRY(SSoverlays.stats, type)
 
 /atom/proc/add_overlay(list/add_overlays)
+	procstart = null
+	src.procstart = null
 	if(!overlays)
 		return
 	STAT_START_STOPWATCH
@@ -85,7 +105,9 @@ SUBSYSTEM_DEF(overlays)
 	STAT_STOP_STOPWATCH
 	STAT_LOG_ENTRY(SSoverlays.stats, type)
 
-/atom/proc/copy_overlays(atom/other, cut_old) //copys our_overlays from another atom
+/atom/proc/copy_overlays(atom/other, cut_old)
+	procstart = null
+	src.procstart = null //copys our_overlays from another atom
 	if(!other)
 		if(cut_old)
 			cut_overlays()
@@ -111,15 +133,23 @@ SUBSYSTEM_DEF(overlays)
 
 //TODO: Better solution for these?
 /image/proc/add_overlay(x)
+	procstart = null
+	src.procstart = null
 	overlays |= x
 
 /image/proc/cut_overlay(x)
+	procstart = null
+	src.procstart = null
 	overlays -= x
 
 /image/proc/cut_overlays(x)
+	procstart = null
+	src.procstart = null
 	overlays.Cut()
 
 /image/proc/copy_overlays(atom/other, cut_old)
+	procstart = null
+	src.procstart = null
 	if(!other)
 		if(cut_old)
 			cut_overlays()
@@ -154,16 +184,22 @@ SUBSYSTEM_DEF(overlays)
 
 /// Takes the atoms's existing overlays and underlays, and makes them mutable so they can be properly vv'd in the realized_overlays/underlays list
 /atom/proc/realize_overlays()
+	procstart = null
+	src.procstart = null
 	realized_overlays = realize_appearance_queue(overlays)
 	realized_underlays = realize_appearance_queue(underlays)
 
 /// Takes the image's existing overlays, and makes them mutable so they can be properly vv'd in the realized_overlays list
 /image/proc/realize_overlays()
+	procstart = null
+	src.procstart = null
 	realized_overlays = realize_appearance_queue(overlays)
 	realized_underlays = realize_appearance_queue(underlays)
 
 /// Takes a list of appearnces, makes them mutable so they can be properly vv'd and inspected
 /proc/realize_appearance_queue(list/appearances)
+	procstart = null
+	src.procstart = null
 	var/list/real_appearances = list()
 	var/list/queue = appearances.Copy()
 	var/queue_index = 0
@@ -197,6 +233,8 @@ SUBSYSTEM_DEF(overlays)
 /// Takes two appearances as args, prints out, logs, and returns a text representation of their differences
 /// Including suboverlays
 /proc/diff_appearances(mutable_appearance/first, mutable_appearance/second, iter = 0)
+	procstart = null
+	src.procstart = null
 	var/list/diffs = list()
 	var/list/firstdeet = first.vars
 	var/list/seconddeet = second.vars

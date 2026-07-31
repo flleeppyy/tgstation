@@ -8,6 +8,8 @@
 	var/radius = 6
 
 /datum/action/cooldown/mob_cooldown/teleport/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	disable_cooldown_actions()
 	teleport_to(target_atom)
 	StartCooldown()
@@ -16,6 +18,8 @@
 
 /// Handles randomly teleporting the owner around the target in view
 /datum/action/cooldown/mob_cooldown/teleport/proc/teleport_to(atom/teleport_target)
+	procstart = null
+	src.procstart = null
 	var/list/possible_ends = view(radius, teleport_target.loc) - view(radius - 1, teleport_target.loc)
 	for(var/turf/closed/cant_teleport_turf in possible_ends)
 		possible_ends -= cant_teleport_turf

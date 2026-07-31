@@ -90,16 +90,22 @@
 	var/lose_patience_timeout = 30 SECONDS
 
 /mob/living/simple_animal/hostile/Destroy()
+	procstart = null
+	src.procstart = null
 	//We can't use losetarget here because fucking cursed blobs override it to do nothing the motherfuckers
 	GiveTarget(null)
 	return ..()
 
 /mob/living/simple_animal/hostile/Life(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.) //dead
 		GLOB.move_manager.stop_looping(src)
 
 /mob/living/simple_animal/hostile/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	if(AIStatus == AI_OFF || QDELETED(src))
 		return FALSE
 	var/list/possible_targets = ListTargets() //we look around for potential targets and make it a list for later use.
@@ -117,6 +123,8 @@
 	return 1
 
 /mob/living/simple_animal/hostile/handle_automated_movement()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(dodging && target && in_melee && isturf(loc) && isturf(target.loc))
 		var/datum/cb = CALLBACK(src, PROC_REF(sidestep))
@@ -128,10 +136,14 @@
 			addtimer(cb,rand(1,SSnpcpool.wait))
 
 /mob/living/simple_animal/hostile/update_stamina()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	move_to_delay = (initial(move_to_delay) + (staminaloss * 0.06))
 
 /mob/living/simple_animal/hostile/proc/sidestep()
+	procstart = null
+	src.procstart = null
 	if(!target || !isturf(target.loc) || !isturf(loc) || stat == DEAD)
 		return
 	var/target_dir = get_dir(src,target)
@@ -149,16 +161,22 @@
 		face_atom(target) //Looks better if they keep looking at you when dodging
 
 /mob/living/simple_animal/hostile/attacked_by(obj/item/I, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!IS_UNCONSCIOUS_OR_CRIT(src) && !target && AIStatus != AI_OFF && !client && user)
 		FindTarget(list(user))
 	return ..()
 
 /mob/living/simple_animal/hostile/electrocute_act(shock_damage, source, siemens_coeff, flags)
+	procstart = null
+	src.procstart = null
 	if(!IS_UNCONSCIOUS_OR_CRIT(src) && !target && AIStatus != AI_OFF && !client && isatom(source)) // strings are sometimes used in electrocute_act()
 		FindTarget(list(source))
 	return ..()
 
 /mob/living/simple_animal/hostile/bullet_act(obj/projectile/proj)
+	procstart = null
+	src.procstart = null
 	if(!IS_UNCONSCIOUS_OR_CRIT(src) && !target && AIStatus != AI_OFF && !client)
 		if(proj.firer && get_dist(src, proj.firer) <= aggro_vision_range)
 			FindTarget(list(proj.firer))
@@ -167,7 +185,9 @@
 
 //////////////HOSTILE MOB TARGETING AND AGGRESSION////////////
 
-/mob/living/simple_animal/hostile/proc/ListTargets() //Step 1, find out what we can see
+/mob/living/simple_animal/hostile/proc/ListTargets()
+	procstart = null
+	src.procstart = null //Step 1, find out what we can see
 	var/atom/target_from = GET_TARGETS_FROM(src)
 	if(!search_objects)
 		. = hearers(vision_range, target_from) - src //Remove self, so we don't suicide
@@ -180,7 +200,9 @@
 	else
 		. = oview(vision_range, target_from)
 
-/mob/living/simple_animal/hostile/proc/FindTarget(list/possible_targets)//Step 2, filter down possible targets to things we actually care about
+/mob/living/simple_animal/hostile/proc/FindTarget(list/possible_targets)
+	procstart = null
+	src.procstart = null//Step 2, filter down possible targets to things we actually care about
 	if(QDELETED(src))
 		return
 	var/list/all_potential_targets = list()
@@ -206,6 +228,8 @@
 
 
 /mob/living/simple_animal/hostile/proc/PossibleThreats()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/pos_targ in ListTargets())
 		var/atom/A = pos_targ
@@ -218,12 +242,16 @@
 
 
 
-/mob/living/simple_animal/hostile/proc/Found(atom/A)//This is here as a potential override to pick a specific target if available
+/mob/living/simple_animal/hostile/proc/Found(atom/A)
+	procstart = null
+	src.procstart = null//This is here as a potential override to pick a specific target if available
 	if(QDELETED(A))
 		return FALSE
 	return
 
-/mob/living/simple_animal/hostile/proc/PickTarget(list/Targets)//Step 3, pick amongst the possible, attackable targets
+/mob/living/simple_animal/hostile/proc/PickTarget(list/Targets)
+	procstart = null
+	src.procstart = null//Step 3, pick amongst the possible, attackable targets
 	if(target != null)//If we already have a target, but are told to pick again, calculate the lowest distance between all possible, and pick from the lowest distance targets
 		var/atom/target_from = GET_TARGETS_FROM(src)
 		for(var/pos_targ in Targets)
@@ -238,7 +266,9 @@
 	return chosen_target
 
 // Please do not add one-off mob AIs here, but override this function for your mob
-/mob/living/simple_animal/hostile/CanAttack(atom/the_target)//Can we actually attack a possible target?
+/mob/living/simple_animal/hostile/CanAttack(atom/the_target)
+	procstart = null
+	src.procstart = null//Can we actually attack a possible target?
 	if(!isatom(the_target))
 		stack_trace("Invalid target in CanAttack(): [the_target]")
 		return FALSE
@@ -289,7 +319,9 @@
 
 	return FALSE
 
-/mob/living/simple_animal/hostile/proc/GiveTarget(new_target)//Step 4, give us our selected target
+/mob/living/simple_animal/hostile/proc/GiveTarget(new_target)
+	procstart = null
+	src.procstart = null//Step 4, give us our selected target
 	add_target(new_target)
 	LosePatience()
 	if(!QDELETED(target))
@@ -299,6 +331,8 @@
 
 //What we do after closing in
 /mob/living/simple_animal/hostile/proc/MeleeAction(patience = TRUE)
+	procstart = null
+	src.procstart = null
 	if(rapid_melee > 1)
 		var/datum/callback/cb = CALLBACK(src, PROC_REF(CheckAndAttack))
 		var/delay = SSnpcpool.wait / rapid_melee
@@ -310,11 +344,15 @@
 		GainPatience()
 
 /mob/living/simple_animal/hostile/proc/CheckAndAttack()
+	procstart = null
+	src.procstart = null
 	var/atom/target_from = GET_TARGETS_FROM(src)
 	if(target && isturf(target_from.loc) && target.Adjacent(target_from) && !incapacitated)
 		AttackingTarget(target)
 
-/mob/living/simple_animal/hostile/proc/MoveToTarget(list/possible_targets)//Step 5, handle movement between us and our target
+/mob/living/simple_animal/hostile/proc/MoveToTarget(list/possible_targets)
+	procstart = null
+	src.procstart = null//Step 5, handle movement between us and our target
 	stop_automated_movement = 1
 	if(!target || !CanAttack(target))
 		LoseTarget()
@@ -363,6 +401,8 @@
 	return 0
 
 /mob/living/simple_animal/hostile/Goto(target, delay, minimum_distance)
+	procstart = null
+	src.procstart = null
 	if(prevent_goto_movement)
 		return FALSE
 	if(target == src.target)
@@ -373,6 +413,8 @@
 	return TRUE
 
 /mob/living/simple_animal/hostile/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ckey && !IS_UNCONSCIOUS_OR_CRIT(src) && search_objects < 3 && . > 0)//Not unconscious, and we don't ignore mobs
 		if(search_objects)//Turn off item searching and ignore whatever item we were looking at, we're more concerned with fight or flight
@@ -386,6 +428,8 @@
 
 
 /mob/living/simple_animal/hostile/proc/AttackingTarget(atom/attacked_target)
+	procstart = null
+	src.procstart = null
 	in_melee = TRUE
 	if(SEND_SIGNAL(src, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, attacked_target) & COMPONENT_HOSTILE_NO_ATTACK)
 		return FALSE //but more importantly return before attack_animal called
@@ -394,6 +438,8 @@
 	return result
 
 /mob/living/simple_animal/hostile/proc/Aggro()
+	procstart = null
+	src.procstart = null
 	vision_range = aggro_vision_range
 	if(target && emote_taunt.len && prob(taunt_chance))
 		manual_emote("[pick(emote_taunt)] at [target].")
@@ -401,11 +447,15 @@
 
 
 /mob/living/simple_animal/hostile/proc/LoseAggro()
+	procstart = null
+	src.procstart = null
 	stop_automated_movement = 0
 	vision_range = initial(vision_range)
 	taunt_chance = initial(taunt_chance)
 
 /mob/living/simple_animal/hostile/proc/LoseTarget()
+	procstart = null
+	src.procstart = null
 	GiveTarget(null)
 	approaching_target = FALSE
 	in_melee = FALSE
@@ -415,10 +465,14 @@
 //////////////END HOSTILE MOB TARGETING AND AGGRESSION////////////
 
 /mob/living/simple_animal/hostile/death(gibbed)
+	procstart = null
+	src.procstart = null
 	LoseTarget()
 	..(gibbed)
 
 /mob/living/simple_animal/hostile/proc/summon_backup(distance, exact_faction_match)
+	procstart = null
+	src.procstart = null
 	do_alert_animation()
 	playsound(loc, 'sound/machines/chime.ogg', 50, TRUE, -1)
 	var/atom/target_from = GET_TARGETS_FROM(src)
@@ -430,6 +484,8 @@
 				M.Goto(src,M.move_to_delay,M.minimum_distance)
 
 /mob/living/simple_animal/hostile/proc/CheckFriendlyFire(atom/A)
+	procstart = null
+	src.procstart = null
 	if(check_friendly_fire)
 		for(var/turf/T in get_line(src,A)) // Not 100% reliable but this is faster than simulating actual trajectory
 			for(var/mob/living/L in T)
@@ -439,6 +495,8 @@
 					return TRUE
 
 /mob/living/simple_animal/hostile/proc/OpenFire(atom/A)
+	procstart = null
+	src.procstart = null
 	if(CheckFriendlyFire(A))
 		return
 	if(!(simple_mob_flags & SILENCE_RANGED_MESSAGE))
@@ -455,6 +513,8 @@
 
 
 /mob/living/simple_animal/hostile/proc/Shoot(atom/targeted_atom)
+	procstart = null
+	src.procstart = null
 	var/atom/target_from = GET_TARGETS_FROM(src)
 	if(QDELETED(targeted_atom) || targeted_atom == target_from.loc || targeted_atom == target_from )
 		return
@@ -478,16 +538,22 @@
 
 
 /mob/living/simple_animal/hostile/proc/CanSmashTurfs(turf/T)
+	procstart = null
+	src.procstart = null
 	return iswallturf(T) || ismineralturf(T)
 
 
 /mob/living/simple_animal/hostile/Move(atom/newloc, dir , step_x , step_y)
+	procstart = null
+	src.procstart = null
 	if(dodging && approaching_target && prob(dodge_prob) && moving_diagonally == 0 && isturf(loc) && isturf(newloc))
 		return dodge(newloc,dir)
 	else
 		return ..()
 
 /mob/living/simple_animal/hostile/proc/dodge(moving_to,move_direction)
+	procstart = null
+	src.procstart = null
 	//Assuming we move towards the target we want to swerve toward them to get closer
 	var/cdir = turn(move_direction,45)
 	var/ccdir = turn(move_direction,-45)
@@ -498,6 +564,8 @@
 	dodging = TRUE
 
 /mob/living/simple_animal/hostile/proc/DestroyObjectsInDirection(direction)
+	procstart = null
+	src.procstart = null
 	var/atom/target_from = GET_TARGETS_FROM(src)
 	var/turf/T = get_step(target_from, direction)
 	if(QDELETED(T))
@@ -514,6 +582,8 @@
 			return
 
 /mob/living/simple_animal/hostile/proc/DestroyPathToTarget()
+	procstart = null
+	src.procstart = null
 	if(environment_smash)
 		EscapeConfinement()
 		var/atom/target_from = GET_TARGETS_FROM(src)
@@ -529,7 +599,9 @@
 			DestroyObjectsInDirection(direction)
 
 
-/mob/living/simple_animal/hostile/proc/DestroySurroundings() // for use with megafauna destroying everything around them
+/mob/living/simple_animal/hostile/proc/DestroySurroundings()
+	procstart = null
+	src.procstart = null // for use with megafauna destroying everything around them
 	if(environment_smash)
 		EscapeConfinement()
 		for(var/dir in GLOB.cardinals)
@@ -537,6 +609,8 @@
 
 
 /mob/living/simple_animal/hostile/proc/EscapeConfinement()
+	procstart = null
+	src.procstart = null
 	var/atom/target_from = GET_TARGETS_FROM(src)
 	if(buckled)
 		buckled.attack_animal(src)
@@ -545,6 +619,8 @@
 		A.attack_animal(src)//Bang on it till we get out
 
 /mob/living/simple_animal/hostile/proc/FindHidden()
+	procstart = null
+	src.procstart = null
 	if(isnull(target))
 		return FALSE
 	if(istype(target.loc, /obj/structure/closet) || istype(target.loc, /obj/machinery/disposal) || istype(target.loc, /obj/machinery/sleeper))
@@ -556,7 +632,9 @@
 		return 1
 
 
-/mob/living/simple_animal/hostile/RangedAttack(atom/A, modifiers) //Player firing
+/mob/living/simple_animal/hostile/RangedAttack(atom/A, modifiers)
+	procstart = null
+	src.procstart = null //Player firing
 	if(ranged && ranged_cooldown <= world.time)
 		GiveTarget(A)
 		OpenFire(A)
@@ -565,6 +643,8 @@
 
 ////// AI Status ///////
 /mob/living/simple_animal/hostile/proc/AICanContinue(list/possible_targets)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return FALSE
 	switch(AIStatus)
@@ -578,12 +658,16 @@
 				return FALSE
 
 /mob/living/simple_animal/hostile/proc/AIShouldSleep(list/possible_targets)
+	procstart = null
+	src.procstart = null
 	return !FindTarget(possible_targets)
 
 
 //These two procs handle losing our target if we've failed to attack them for
 //more than lose_patience_timeout deciseconds, which probably means we're stuck
 /mob/living/simple_animal/hostile/proc/GainPatience()
+	procstart = null
+	src.procstart = null
 	if(lose_patience_timeout)
 		LosePatience()
 		if(!QDELETED(src))
@@ -591,22 +675,30 @@
 
 
 /mob/living/simple_animal/hostile/proc/LosePatience()
+	procstart = null
+	src.procstart = null
 	deltimer(lose_patience_timer_id)
 
 
 //These two procs handle losing and regaining search_objects when attacked by a mob
 /mob/living/simple_animal/hostile/proc/LoseSearchObjects()
+	procstart = null
+	src.procstart = null
 	search_objects = 0
 	deltimer(search_objects_timer_id)
 	search_objects_timer_id = addtimer(CALLBACK(src, PROC_REF(RegainSearchObjects)), search_objects_regain_time, TIMER_STOPPABLE)
 
 
 /mob/living/simple_animal/hostile/proc/RegainSearchObjects(value)
+	procstart = null
+	src.procstart = null
 	if(!value)
 		value = initial(search_objects)
 	search_objects = value
 
-/mob/living/simple_animal/hostile/proc/ListTargetsLazy(_Z)//Step 1, find out what we can see
+/mob/living/simple_animal/hostile/proc/ListTargetsLazy(_Z)
+	procstart = null
+	src.procstart = null//Step 1, find out what we can see
 	var/static/hostile_machines = typecacheof(list(/obj/machinery/porta_turret, /obj/vehicle/sealed/mecha))
 	. = list()
 	for (var/I in SSmobs.clients_by_zlevel[_Z])
@@ -618,6 +710,8 @@
 				. += M.loc
 
 /mob/living/simple_animal/hostile/proc/get_targets_from()
+	procstart = null
+	src.procstart = null
 	var/atom/target_from = targets_from.resolve()
 	if(!target_from)
 		targets_from = null
@@ -625,17 +719,23 @@
 	return target_from
 
 /mob/living/simple_animal/hostile/proc/handle_target_del(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(target, COMSIG_QDELETING)
 	target = null
 	LoseTarget()
 
 /mob/living/simple_animal/hostile/proc/handle_friend_del(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(source, COMSIG_QDELETING)
 	friends -= source
 
 /mob/living/simple_animal/hostile/proc/add_target(new_target)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_HOSTILE_FOUND_TARGET, new_target)
 	if(target)
 		UnregisterSignal(target, COMSIG_QDELETING)
@@ -644,6 +744,8 @@
 		RegisterSignal(target, COMSIG_QDELETING, PROC_REF(handle_target_del))
 
 /mob/living/simple_animal/hostile/befriend(mob/living/new_friend)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -652,6 +754,8 @@
 	SET_FACTION_AND_ALLIES_FROM(src, new_friend)
 
 /mob/living/simple_animal/hostile/lazarus_revive(mob/living/reviver, malfunctioning)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (malfunctioning)
 		robust_searching = TRUE // enables friends list check

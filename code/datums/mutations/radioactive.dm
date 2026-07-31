@@ -12,6 +12,8 @@
 	var/datum/weakref/radioactivity_source_ref
 
 /datum/mutation/radioactive/on_acquiring(mob/living/carbon/human/acquirer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -19,6 +21,8 @@
 	radioactivity_source_ref = WEAKREF(radioactivity_source)
 
 /datum/mutation/radioactive/setup()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!QDELETED(owner))
 		make_radioactive(owner)
@@ -28,6 +32,8 @@
  * update their radioactivity to the newly set values
  */
 /datum/mutation/radioactive/proc/make_radioactive(mob/living/carbon/human/who)
+	procstart = null
+	src.procstart = null
 	return who.AddComponent(
 		/datum/component/radioactive_emitter, \
 		cooldown_time = 5 SECONDS, \
@@ -36,5 +42,7 @@
 	)
 
 /datum/mutation/radioactive/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(radioactivity_source_ref)
 	return ..()

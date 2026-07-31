@@ -61,6 +61,8 @@
 	var/attack_delay = 0.25 SECONDS
 
 /mob/living/simple_animal/hostile/megafauna/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(\
 		/datum/component/basic_mob_attack_telegraph,\
@@ -93,32 +95,44 @@
 	grant_actions_by_list(attack_action_types)
 
 /mob/living/simple_animal/hostile/megafauna/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	//Safety check
 	if(!loc)
 		return ..()
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(health > 0 && !gibbed) // prevents instakills
 		return
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/gib()
+	procstart = null
+	src.procstart = null
 	if(health > 0)
 		return
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/singularity_act()
+	procstart = null
+	src.procstart = null
 	set_health(0)
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/dust(just_ash, drop_items, give_moodlet, force)
+	procstart = null
+	src.procstart = null
 	if(!force && health > 0)
 		return
 	loot.Cut()
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/AttackingTarget(atom/attacked_target)
+	procstart = null
+	src.procstart = null
 	if(recovery_time >= world.time)
 		return
 	. = ..()
@@ -136,6 +150,8 @@
 
 /// Devours a target and restores health to the megafauna
 /mob/living/simple_animal/hostile/megafauna/proc/devour(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	if(isnull(victim) || victim.has_status_effect(/datum/status_effect/gutted))
 		LoseTarget()
 		return FALSE
@@ -154,11 +170,15 @@
 	return TRUE
 
 /mob/living/simple_animal/hostile/megafauna/proc/celebrate_kill(mob/living/L)
+	procstart = null
+	src.procstart = null
 	visible_message(
 		span_danger("[src] disembowels [L]!"),
 		span_userdanger("You feast on [L]'s organs, restoring your health!"))
 
 /mob/living/simple_animal/hostile/megafauna/CanAttack(atom/the_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -168,6 +188,8 @@
 	return !living_target.has_status_effect(/datum/status_effect/gutted)
 
 /mob/living/simple_animal/hostile/megafauna/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	switch (severity)
 		if (EXPLODE_DEVASTATE)
 			adjust_brute_loss(250)
@@ -182,6 +204,8 @@
 
 /// Sets/adds the next time the megafauna can use a melee or ranged attack, in deciseconds. It is a list to allow using named args. Use the ignore_staggered var if youre setting the cooldown to ranged_cooldown_time.
 /mob/living/simple_animal/hostile/megafauna/proc/update_cooldowns(list/cooldown_updates, ignore_staggered = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ignore_staggered && has_status_effect(/datum/status_effect/rebuked))
 		for(var/update in cooldown_updates)
 			cooldown_updates[update] *= 2
@@ -202,11 +226,15 @@
 	var/chosen_attack_num = 0
 
 /datum/action/innate/megafauna_attack/Grant(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(!ismegafauna(L))
 		return FALSE
 	return ..()
 
 /datum/action/innate/megafauna_attack/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/simple_animal/hostile/megafauna/fauna = owner
 	fauna.chosen_attack = chosen_attack_num
 	to_chat(fauna, chosen_message)

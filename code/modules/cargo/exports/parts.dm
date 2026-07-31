@@ -40,6 +40,8 @@
 	export_types = list(/obj/item/vending_refill)
 
 /datum/export/refill_canister/total_printout(datum/export_report/ex, notes = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && notes)
 		. += " Thank you for restocking the station!"

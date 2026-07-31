@@ -15,15 +15,21 @@
 /obj/effect/spawner/random/maintenance/no_decals
 
 /obj/effect/spawner/random/maintenance/no_decals/can_spawn(loot)
+	procstart = null
+	src.procstart = null
 	if(ispath(loot, /obj/effect/decal))
 		return FALSE
 	return ..()
 
 /obj/effect/spawner/random/maintenance/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info("This spawner has an effective loot count of [get_effective_lootcount()].")
 
 /obj/effect/spawner/random/maintenance/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	switch(loot_table)
 		if(MAINT_LOOT)
 			loot = GLOB.maintenance_loot
@@ -32,6 +38,8 @@
 	return ..()
 
 /obj/effect/spawner/random/maintenance/skew_loot_weights(list/loot_list, exponent)
+	procstart = null
+	src.procstart = null
 	///We only need to skew the weights once, since it's a global list used by all maint spawners.
 	var/static/already_done = FALSE
 	if(already_done)
@@ -47,10 +55,14 @@
 	return ..()
 
 /obj/effect/spawner/random/maintenance/proc/hide()
+	procstart = null
+	src.procstart = null
 	SetInvisibility(INVISIBILITY_OBSERVER)
 	alpha = 100
 
 /obj/effect/spawner/random/maintenance/proc/get_effective_lootcount()
+	procstart = null
+	src.procstart = null
 	var/effective_lootcount = spawn_loot_count
 
 	if(HAS_TRAIT(SSstation, STATION_TRAIT_FILLED_MAINT))
@@ -62,6 +74,8 @@
 	return effective_lootcount
 
 /obj/effect/spawner/random/maintenance/spawn_loot(lootcount_override)
+	procstart = null
+	src.procstart = null
 	if(isnull(lootcount_override))
 		lootcount_override = get_effective_lootcount()
 	. = ..()

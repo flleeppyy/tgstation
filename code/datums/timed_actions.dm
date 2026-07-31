@@ -22,6 +22,8 @@
 	var/status = ACTION_WORKING
 
 /datum/timed_action/New(atom/movable/user, list/targets, delay, show_progress = TRUE, timed_action_flags = NONE, datum/callback/extra_checks = null, cog_icon = null, cog_iconstate = null, mob/bar_override = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.user = user
 	src.timed_action_flags = timed_action_flags
@@ -55,6 +57,8 @@
 	register_signals()
 
 /datum/timed_action/Destroy(force)
+	procstart = null
+	src.procstart = null
 	user = null
 	targets = null
 	// Only qdel these two in case of an await() runtime/early deletion/whatever, otherwise let them play out their animation and self-delete
@@ -69,6 +73,8 @@
 	return ..()
 
 /datum/timed_action/proc/register_signals()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(user, COMSIG_QDELETING, PROC_REF(on_user_deleted))
 
 	if (!(timed_action_flags & IGNORE_USER_LOC_CHANGE))
@@ -93,6 +99,8 @@
 			RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(on_target_moved))
 
 /datum/timed_action/proc/cancel()
+	procstart = null
+	src.procstart = null
 	if (status != ACTION_WORKING)
 		return FALSE
 
@@ -101,6 +109,8 @@
 	return TRUE
 
 /datum/timed_action/proc/await(delay = world.tick_lag)
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SStimed_actions, src)
 	status = ACTION_WORKING
 
@@ -120,6 +130,8 @@
 	qdel(src)
 
 /datum/timed_action/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if (extra_checks && !extra_checks.InvokeAsync())
 		cancel()
 		return
@@ -132,41 +144,57 @@
 		progressbar.update(world.time - start_time)
 
 /datum/timed_action/proc/on_user_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	user = null
 	cancel()
 
 /datum/timed_action/proc/on_target_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	targets -= source
 	cancel()
 
 /datum/timed_action/proc/on_user_incapacitated(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	cancel()
 
 /datum/timed_action/proc/on_changenext_move(datum/source, next_move, delay)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (next_move > world.time)
 		cancel()
 
 /datum/timed_action/proc/on_item_equipped(mob/source, obj/item/item, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// We picked up an item
 	if (item == source.get_active_held_item())
 		cancel()
 
 /datum/timed_action/proc/on_hands_swapped(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	cancel()
 
 /datum/timed_action/proc/on_item_dropped(mob/source, obj/item/item_dropping, force, atom/newloc, no_move, invdrop, silent, hand_index)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Dropped held item
 	if (source.active_hand_index == hand_index)
 		cancel()
 
 /datum/timed_action/proc/on_user_moved(datum/source, atom/old_loc, dir, forced, list/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (user.loc == old_loc)
@@ -182,6 +210,8 @@
 			return
 
 /datum/timed_action/proc/on_target_moved(atom/movable/source, atom/old_loc, dir, forced, list/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (source.loc == old_loc)
@@ -209,6 +239,8 @@
  * - bar_override - Mob which should see the bar instead of the user
  */
 /proc/do_after(atom/movable/user, delay, atom/target, timed_action_flags = NONE, show_progress = TRUE, datum/callback/extra_checks, interaction_key, max_interact_count = 1, cog_icon = 'icons/effects/progressbar.dmi', cog_iconstate = "cog", mob/bar_override = null)
+	procstart = null
+	src.procstart = null
 	if (!user)
 		return FALSE
 

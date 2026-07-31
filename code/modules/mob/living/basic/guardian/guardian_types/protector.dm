@@ -14,25 +14,37 @@
 	var/datum/action/cooldown/mob_cooldown/protector_shield/shield
 
 /mob/living/basic/guardian/protector/Initialize(mapload, datum/guardian_fluff/theme)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	shield = new(src)
 	shield.Grant(src)
 
 /mob/living/basic/guardian/protector/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(shield)
 	return ..()
 
 // Invert the order
 /mob/living/basic/guardian/protector/leash_to(atom/movable/leashed, atom/movable/leashed_to)
+	procstart = null
+	src.procstart = null
 	return ..(leashed_to, leashed)
 
 /mob/living/basic/guardian/protector/unleash()
+	procstart = null
+	src.procstart = null
 	qdel(summoner?.GetComponent(/datum/component/leash))
 
 /mob/living/basic/guardian/protector/toggle_modes()
+	procstart = null
+	src.procstart = null
 	shield.Trigger()
 
 /mob/living/basic/guardian/protector/ex_act(severity)
+	procstart = null
+	src.procstart = null
 	if(severity >= EXPLODE_DEVASTATE)
 		adjust_brute_loss(400) //if in protector mode, will do 20 damage and not actually necessarily kill the summoner
 		return TRUE
@@ -51,6 +63,8 @@
 	owner_has_control = FALSE // Hide it from the user, it's integrated with guardian UI
 
 /datum/action/cooldown/mob_cooldown/protector_shield/Activate(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if (!isliving(target))
 		return FALSE
 	if (target.has_status_effect(/datum/status_effect/protector_shield))
@@ -76,6 +90,8 @@
 	var/list/original_damage_coeff
 
 /datum/status_effect/protector_shield/on_apply()
+	procstart = null
+	src.procstart = null
 	if (isguardian(owner))
 		var/mob/living/basic/guardian/guardian_owner = owner
 		overlay_colour = guardian_owner.guardian_colour
@@ -98,6 +114,8 @@
 	return TRUE
 
 /datum/status_effect/protector_shield/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.melee_damage_lower += damage_penalty
 	owner.melee_damage_upper += damage_penalty
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/guardian_shield)
@@ -112,11 +130,15 @@
 
 /// Show an extra overlay when we're in shield mode
 /datum/status_effect/protector_shield/proc/on_update_overlays(atom/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	overlays += shield_overlay
 
 /// Flash an animation when someone tries to hurt us
 /datum/status_effect/protector_shield/proc/on_health_changed(mob/living/our_mob, type, amount, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (amount <= 0 && !QDELETED(our_mob))
 		return

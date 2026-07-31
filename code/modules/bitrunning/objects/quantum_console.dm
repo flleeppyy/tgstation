@@ -11,19 +11,27 @@
 	keyboard_change_icon = FALSE
 
 /obj/machinery/computer/quantum_console/Initialize(mapload, obj/item/circuitboard/circuit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = "Even in the distant year [CURRENT_STATION_YEAR], Nanotrasen is still using REST APIs. How grim."
 
 /obj/machinery/computer/quantum_console/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	find_server()
 
 /obj/machinery/computer/quantum_console/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!server_ref)
 		. += span_warning("Please install an quantum server in any tile next to this console.")
 
 /obj/machinery/computer/quantum_console/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!is_operational)
@@ -35,6 +43,8 @@
 		ui.open()
 
 /obj/machinery/computer/quantum_console/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/obj/machinery/quantum_server/server = find_server()
@@ -56,6 +66,8 @@
 	return data
 
 /obj/machinery/computer/quantum_console/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/obj/machinery/quantum_server/server = find_server()
@@ -68,6 +80,8 @@
 	return data
 
 /obj/machinery/computer/quantum_console/ui_act(action, list/params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -97,6 +111,8 @@
 
 /// Attempts to find a quantum server.
 /obj/machinery/computer/quantum_console/proc/find_server()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/quantum_server/server = server_ref?.resolve()
 	if(server)
 		return server

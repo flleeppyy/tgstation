@@ -4,6 +4,8 @@
 	datum_var_name = "required_character_age"
 
 /datum/job_config_type/required_character_age/get_current_value(datum/job/occupation)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isnum(.))
@@ -12,11 +14,15 @@
 	return 0
 
 /datum/job_config_type/required_character_age/validate_value(value)
+	procstart = null
+	src.procstart = null
 	if(isnum(value))
 		return TRUE
 	return FALSE
 
 /datum/job_config_type/required_character_age/set_current_value(datum/job/occupation, value)
+	procstart = null
+	src.procstart = null
 	if(!validate_value(value))
 		return FALSE
 

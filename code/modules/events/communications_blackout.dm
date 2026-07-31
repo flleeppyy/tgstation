@@ -11,6 +11,8 @@
 	announce_when = 1
 
 /datum/round_event/communications_blackout/announce(fake)
+	procstart = null
+	src.procstart = null
 	var/alert = pick( "Ionospheric anomalies detected. Temporary telecommunication failure imminent. Please contact you*%fj00)`5vc-BZZT",
 		"Ionospheric anomalies detected. Temporary telecommunication failu*3mga;b4;'1v¬-BZZZT",
 		"Ionospheric anomalies detected. Temporary telec#MCi46:5.;@63-BZZZZT",
@@ -28,6 +30,8 @@
 
 
 /datum/round_event/communications_blackout/start()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/telecomms/shhh as anything in GLOB.telecomm_machines)
 		shhh.emp_act(EMP_HEAVY)
 	for(var/datum/transport_controller/linear/tram/transport as anything in SStransport.transports_by_type[TRANSPORT_TYPE_TRAM])

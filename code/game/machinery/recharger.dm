@@ -22,11 +22,15 @@
 	))
 
 /obj/machinery/recharger/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/stock_part/capacitor/capacitor in component_parts)
 		recharge_coeff = capacitor.tier
 
 /obj/machinery/recharger/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!in_range(user, src) && !issilicon(user) && !isobserver(user))
 		. += span_warning("You're too far away to examine [src]'s contents and display!")
@@ -65,6 +69,8 @@
 	. += span_notice("- \The [charging] is not reporting a power level.")
 
 /obj/machinery/recharger/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	if(is_type_in_typecache(arrived, allowed_devices))
 		charging = arrived
 		START_PROCESSING(SSmachines, src)
@@ -74,6 +80,8 @@
 	return ..()
 
 /obj/machinery/recharger/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if(gone == charging)
 		if(!QDELING(charging))
 			charging.update_appearance()
@@ -84,6 +92,8 @@
 	return ..()
 
 /obj/machinery/recharger/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!is_type_in_typecache(tool, allowed_devices))
 		return NONE
 
@@ -107,6 +117,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/recharger/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(charging)
 		to_chat(user, span_notice("Remove the charging item first!"))
 		return ITEM_INTERACT_BLOCKING
@@ -117,15 +129,23 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/recharger/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return (!anchored || charging) ? ITEM_INTERACT_BLOCKING : default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/recharger/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/recharger/can_crowbar_deconstruct()
+	procstart = null
+	src.procstart = null
 	return ..() && anchored && !charging
 
 /obj/machinery/recharger/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -136,12 +156,16 @@
 	charging.forceMove(drop_location())
 
 /obj/machinery/recharger/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(charging))
 		return
 	charging.forceMove(drop_location())
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/recharger/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (NOPOWER|BROKEN) || !anchored)
 		return PROCESS_KILL
 
@@ -194,6 +218,8 @@
 		return
 
 /obj/machinery/recharger/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. & EMP_PROTECT_CONTENTS)
 		return
@@ -210,6 +236,8 @@
 			batong.cell.charge = 0
 
 /obj/machinery/recharger/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & (NOPOWER|BROKEN) || !anchored)
 		return

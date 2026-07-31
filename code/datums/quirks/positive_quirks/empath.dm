@@ -9,7 +9,11 @@
 	mail_goodies = list(/obj/item/toy/foamfinger)
 
 /datum/quirk/empath/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	quirk_holder.AddComponentFrom(REF(src), /datum/component/empathy)
 
 /datum/quirk/empath/remove(client/client_source)
+	procstart = null
+	src.procstart = null
 	quirk_holder.RemoveComponentSource(REF(src), /datum/component/empathy)

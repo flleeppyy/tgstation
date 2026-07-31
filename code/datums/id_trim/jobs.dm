@@ -23,6 +23,8 @@
 	var/datum/job/job = /datum/job/unassigned
 
 /datum/id_trim/job/New()
+	procstart = null
+	src.procstart = null
 	if(ispath(job))
 		job = SSjob.get_job_type(job)
 		if (isnull(job))
@@ -59,6 +61,8 @@
  * Returns TRUE if the config is loaded, FALSE otherwise.
  */
 /datum/id_trim/job/proc/refresh_trim_access()
+	procstart = null
+	src.procstart = null
 	// If there's no config loaded then assume minimal access.
 	if(!config)
 		access = minimal_access.Copy()
@@ -80,6 +84,8 @@
 	return TRUE
 
 /datum/id_trim/job/find_job()
+	procstart = null
+	src.procstart = null
 	return job
 
 /datum/id_trim/job/assistant
@@ -99,6 +105,8 @@
 	job = /datum/job/assistant
 
 /datum/id_trim/job/assistant/refresh_trim_access()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)
@@ -280,6 +288,8 @@
 
 /// Captain gets all station accesses hardcoded in because it's the Captain.
 /datum/id_trim/job/captain/New()
+	procstart = null
+	src.procstart = null
 	extra_access |= (SSid_access.get_flag_access_list(ACCESS_FLAG_COMMON) + SSid_access.get_flag_access_list(ACCESS_FLAG_COMMAND))
 	extra_wildcard_access |= (SSid_access.get_flag_access_list(ACCESS_FLAG_PRV_COMMAND) + SSid_access.get_flag_access_list(ACCESS_FLAG_CAPTAIN))
 	minimal_access |= (SSid_access.get_flag_access_list(ACCESS_FLAG_COMMON) + SSid_access.get_flag_access_list(ACCESS_FLAG_COMMAND))
@@ -589,6 +599,8 @@
 	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL | HONORIFIC_POSITION_NONE
 
 /datum/id_trim/job/detective/refresh_trim_access()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)
@@ -737,6 +749,8 @@
 	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL | HONORIFIC_POSITION_NONE
 
 /datum/id_trim/job/head_of_security/refresh_trim_access()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)
@@ -1140,6 +1154,8 @@
 	var/patrol_type
 
 /datum/id_trim/job/security_officer/refresh_trim_access()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)
@@ -1172,6 +1188,8 @@
 		access |= elevated_access
 
 /datum/id_trim/job/security_officer/get_random_bounty_type(input_bounty_type)
+	procstart = null
+	src.procstart = null
 	if(input_bounty_type != CIV_JOB_SEC || prob(33) || isnull(patrol_type))
 		return ..()
 
@@ -1333,6 +1351,8 @@
 	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL | HONORIFIC_POSITION_NONE
 
 /datum/id_trim/job/veteran_advisor/refresh_trim_access()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)
@@ -1374,6 +1394,8 @@
 	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL | HONORIFIC_POSITION_NONE
 
 /datum/id_trim/job/warden/refresh_trim_access()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)

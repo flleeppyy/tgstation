@@ -6,6 +6,8 @@
 	var/associated_skill
 
 /datum/element/skill_reward/Attach(datum/target, associated_skill)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -16,10 +18,14 @@
 	RegisterSignal(target, COMSIG_ITEM_POST_EQUIPPED, PROC_REF(drop_if_unworthy))
 
 /datum/element/skill_reward/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_list += span_notice("You notice a powerful aura about this item, suggesting that only the truly experienced may wield it.")
 
 /datum/element/skill_reward/proc/on_attack_hand(datum/source, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!LAZYACCESS(modifiers, CTRL_CLICK) && !check_equippable(user)) //Allows other players to drag it around at least.
 		to_chat(user, span_warning("You feel completely and utterly unworthy to even touch \the [source]."))
@@ -28,6 +34,8 @@
 
 ///We check if the item can be equipped, otherwise we drop it.
 /datum/element/skill_reward/proc/drop_if_unworthy(datum/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(check_equippable(user) || !(source in user.get_equipped_items(INCLUDE_POCKETS | INCLUDE_ACCESSORIES)))
 		return NONE
@@ -36,6 +44,8 @@
 	return COMPONENT_EQUIPPED_FAILED
 
 /datum/element/skill_reward/proc/check_equippable(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return user.mind?.get_skill_level(associated_skill) >= SKILL_LEVEL_LEGENDARY
 
 /**
@@ -46,4 +56,6 @@
 	element_flags = NONE
 
 /datum/element/skill_reward/veteran/check_equippable(mob/user)
+	procstart = null
+	src.procstart = null
 	return user.client?.is_veteran()

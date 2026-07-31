@@ -21,6 +21,8 @@
 	var/has_armrest = FALSE
 
 /obj/structure/chair/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(0.2))
 		name = "tactical [name]"
@@ -30,6 +32,8 @@
 		AddElement(/datum/element/adjust_fishing_difficulty, fishing_modifier)
 
 /obj/structure/chair/buckle_feedback(mob/living/being_buckled, mob/buckler)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(being_buckled, TRAIT_RESTRAINED))
 		return ..()
 
@@ -47,6 +51,8 @@
 		)
 
 /obj/structure/chair/unbuckle_feedback(mob/living/being_unbuckled, mob/unbuckler)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(being_unbuckled, TRAIT_RESTRAINED))
 		return ..()
 
@@ -64,6 +70,8 @@
 		)
 
 /obj/structure/chair/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It's held together by a couple of <b>bolts</b>.")
 	if(!has_buckled_mobs() && can_buckle)
@@ -71,13 +79,19 @@
 
 ///This proc adds the rotate component, overwrite this if you for some reason want to change some specific args.
 /obj/structure/chair/proc/MakeRotate()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/simple_rotation, ROTATION_IGNORE_ANCHORED|ROTATION_GHOSTS_ALLOWED)
 
 /obj/structure/chair/Destroy()
+	procstart = null
+	src.procstart = null
 	SSjob.latejoin_trackers -= src //These may be here due to the arrivals shuttle
 	return ..()
 
 /obj/structure/chair/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	if(buildstacktype)
 		new buildstacktype(loc,buildstackamount)
 	else
@@ -85,20 +99,28 @@
 			new mat.sheet_type(loc, FLOOR(custom_materials[mat] / SHEET_MATERIAL_AMOUNT, 1))
 
 /obj/structure/chair/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/structure/chair/narsie_act()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/chair/wood/W = new/obj/structure/chair/wood(get_turf(src))
 	W.setDir(dir)
 	qdel(src)
 
 /obj/structure/chair/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/assembly/shock_kit) && !HAS_TRAIT(src, TRAIT_ELECTRIFIED_BUCKLE))
 		electrify_self(W, user)
 		return
 	. = ..()
 
 /obj/structure/chair/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!has_buckled_mobs())
 		return
@@ -111,6 +133,8 @@
 
 ///allows each chair to request the electrified_buckle component with overlays that dont look ridiculous
 /obj/structure/chair/proc/electrify_self(obj/item/assembly/shock_kit/input_shock_kit, mob/user, list/overlays_from_child_procs)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(!user.temporarilyRemoveItemFromInventory(input_shock_kit))
 		return
@@ -128,12 +152,16 @@
 
 
 /obj/structure/chair/wrench_act_secondary(mob/living/user, obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	..()
 	weapon.play_tool_sound(src)
 	deconstruct(disassembled = TRUE)
 	return TRUE
 
 /obj/structure/chair/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!anchored || has_buckled_mobs() || !isturf(user.loc))
 		return ..()
 	setDir(turn(dir,-90))
@@ -141,6 +169,8 @@
 
 
 /obj/structure/chair/proc/handle_rotation(direction)
+	procstart = null
+	src.procstart = null
 	handle_layer()
 	if(has_buckled_mobs())
 		for(var/m in buckled_mobs)
@@ -148,24 +178,32 @@
 			buckled_mob.setDir(direction)
 
 /obj/structure/chair/proc/handle_layer()
+	procstart = null
+	src.procstart = null
 	if(has_buckled_mobs() && dir == NORTH)
 		layer = ABOVE_MOB_LAYER
 	else
 		layer = OBJ_LAYER
 
 /obj/structure/chair/post_buckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	handle_layer()
 	if (has_armrest)
 		update_appearance()
 
 /obj/structure/chair/post_unbuckle_mob()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	handle_layer()
 	if (has_armrest)
 		update_appearance()
 
 /obj/structure/chair/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	..()
 	handle_rotation(newdir)
 
@@ -191,6 +229,8 @@
 	custom_materials = list(/datum/material/wood = SHEET_MATERIAL_AMOUNT * 3)
 
 /obj/structure/chair/wood/narsie_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/chair/wood/wings
@@ -237,10 +277,14 @@
 	custom_materials = list(/datum/material/titanium = SHEET_MATERIAL_AMOUNT * 2)
 
 /obj/structure/chair/comfy/shuttle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/structure/chair/comfy/shuttle/electrify_self(obj/item/assembly/shock_kit/input_shock_kit, mob/user, list/overlays_from_child_procs)
+	procstart = null
+	src.procstart = null
 	if(!overlays_from_child_procs)
 		var/mutable_appearance/echair_overlay = mutable_appearance('icons/obj/chairs.dmi', "echair_over", OBJ_LAYER, src, appearance_flags = KEEP_APART)
 		echair_overlay.pixel_x = -1
@@ -248,6 +292,8 @@
 	. = ..()
 
 /obj/structure/chair/comfy/shuttle/buckle_feedback(mob/living/being_buckled, mob/buckler)
+	procstart = null
+	src.procstart = null
 	if(being_buckled == buckler)
 		being_buckled.visible_message(
 			span_notice("[buckler] sits down on [src], pulling the overhead restraint down to secure [buckler.p_them()]self."),
@@ -262,6 +308,8 @@
 		)
 
 /obj/structure/chair/comfy/shuttle/unbuckle_feedback(mob/living/being_unbuckled, mob/unbuckler)
+	procstart = null
+	src.procstart = null
 	if(being_unbuckled == unbuckler)
 		being_unbuckled.visible_message(
 			span_notice("[unbuckler] flips the overhead restraint up, standing up from [src]."),
@@ -276,6 +324,8 @@
 		)
 
 /obj/structure/chair/comfy/shuttle/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(has_buckled_mobs())
 		. += mutable_appearance(icon, "[icon_state]_down_front", ABOVE_MOB_LAYER + 0.01)
@@ -304,10 +354,14 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5)
 
 /obj/structure/chair/office/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/noisy_movement)
 
 /obj/structure/chair/office/electrify_self(obj/item/assembly/shock_kit/input_shock_kit, mob/user, list/overlays_from_child_procs)
+	procstart = null
+	src.procstart = null
 	if(!overlays_from_child_procs)
 		var/mutable_appearance/echair_overlay = mutable_appearance('icons/obj/chairs.dmi', "echair_over", OBJ_LAYER, src, appearance_flags = KEEP_APART)
 		echair_overlay.pixel_x = -1
@@ -333,18 +387,26 @@
 	max_integrity = 300
 
 /obj/structure/chair/stool/post_buckle_mob(mob/living/Mob)
+	procstart = null
+	src.procstart = null
 	Mob.add_offsets(type, z_add = 4)
 	. = ..()
 
 /obj/structure/chair/stool/post_unbuckle_mob(mob/living/Mob)
+	procstart = null
+	src.procstart = null
 	Mob.remove_offsets(type)
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool, 0)
 
 /obj/structure/chair/stool/narsie_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/chair/mouse_drop_dragged(atom/over_object, mob/user, src_location, over_location, params)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user) || over_object != user)
 		return
 	if(!item_chair || has_buckled_mobs())
@@ -363,6 +425,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool, 0)
 	qdel(src)
 
 /obj/structure/chair/user_buckle_mob(mob/living/M, mob/user, check_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	return ..()
 
 /obj/structure/chair/stool/bar
@@ -372,6 +436,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool, 0)
 	item_chair = /obj/item/chair/stool/bar
 
 /obj/structure/chair/stool/bar/post_buckle_mob(mob/living/Mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	Mob.add_offsets(type, z_add = 7)
 
@@ -415,23 +481,33 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	var/obj/structure/chair/origin_type = /obj/structure/chair
 
 /obj/item/chair/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/cuffable_item)
 
 /obj/item/chair/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins hitting [user.p_them()]self with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(src,hitsound,50,TRUE)
 	return BRUTELOSS
 
 /obj/item/chair/narsie_act()
+	procstart = null
+	src.procstart = null
 	var/obj/item/chair/wood/W = new/obj/item/chair/wood(get_turf(src))
 	W.setDir(dir)
 	qdel(src)
 
 /obj/item/chair/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	plant(user)
 
 /obj/item/chair/proc/plant(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/turf = user.loc
 	if(!istype(turf) || isgroundlessturf(turf))
 		to_chat(user, span_warning("You need ground to plant this on!"))
@@ -461,6 +537,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	qdel(src)
 
 /obj/item/chair/proc/smash(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/stack_type = initial(origin_type.buildstacktype)
 	if(!stack_type)
 		return
@@ -474,6 +552,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	qdel(src)
 
 /obj/item/chair/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(attack_type == UNARMED_ATTACK && prob(hit_reaction_chance) || attack_type == LEAP_ATTACK && prob(hit_reaction_chance))
 		owner.visible_message(span_danger("[owner] fends off [attack_text] with [src]!"))
 		if(take_chair_damage(damage, damage_type, MELEE)) // Our chair takes our incoming damage for us, which can result in it smashing.
@@ -482,6 +562,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	return FALSE
 
 /obj/item/chair/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(target))
 		return
 
@@ -506,6 +588,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	smash(user)
 
 /obj/item/chair/proc/take_chair_damage(damage_to_inflict, damage_type, armor_flag)
+	procstart = null
+	src.procstart = null
 	if(damage_to_inflict >= atom_integrity)
 		return TRUE
 	take_damage(damage_to_inflict, damage_type, armor_flag)
@@ -539,6 +623,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	custom_materials = list(/datum/material/bamboo = SHEET_MATERIAL_AMOUNT * 2)
 
 /obj/item/chair/stool/narsie_act()
+	procstart = null
+	src.procstart = null
 	return //sturdy enough to ignore a god
 
 /obj/item/chair/wood
@@ -554,6 +640,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	custom_materials = list(/datum/material/wood = SHEET_MATERIAL_AMOUNT * 3)
 
 /obj/item/chair/wood/narsie_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/chair/wood/wings
@@ -582,14 +670,20 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	var/turns = 0
 
 /obj/structure/chair/bronze/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/noisy_movement, 'sound/machines/clockcult/integration_cog_install.ogg', 50)
 
 /obj/structure/chair/bronze/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	. = ..()
 
 /obj/structure/chair/bronze/process()
+	procstart = null
+	src.procstart = null
 	setDir(turn(dir,-90))
 	playsound(src, 'sound/effects/servostep.ogg', 50, FALSE)
 	turns++
@@ -597,9 +691,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 		STOP_PROCESSING(SSfastprocess, src)
 
 /obj/structure/chair/bronze/MakeRotate()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/chair/bronze/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	turns = 0
 	if(!(datum_flags & DF_ISPROCESSING))
 		user.visible_message(span_notice("[user] spins [src] around, and the last vestiges of Ratvarian technology keeps it spinning FOREVER."), \
@@ -624,13 +722,19 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	custom_materials = null
 
 /obj/structure/chair/mime/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/tool_blocker, TOOL_WRENCH, TOOL_ACT_SECONDARY)
 
 /obj/structure/chair/mime/post_buckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.add_offsets(type, z_add = 5)
 
 /obj/structure/chair/mime/post_unbuckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.remove_offsets(type)
 
 /obj/structure/chair/plastic
@@ -646,15 +750,21 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	fishing_modifier = -10
 
 /obj/structure/chair/plastic/post_buckle_mob(mob/living/Mob)
+	procstart = null
+	src.procstart = null
 	Mob.add_offsets(type, z_add = 2)
 	. = ..()
 	if(iscarbon(Mob))
 		INVOKE_ASYNC(src, PROC_REF(snap_check), Mob)
 
 /obj/structure/chair/plastic/post_unbuckle_mob(mob/living/Mob)
+	procstart = null
+	src.procstart = null
 	Mob.remove_offsets(type)
 
 /obj/structure/chair/plastic/proc/snap_check(mob/living/carbon/Mob)
+	procstart = null
+	src.procstart = null
 	if (Mob.nutrition >= NUTRITION_LEVEL_FAT)
 		to_chat(Mob, span_warning("The chair begins to pop and crack, you're too heavy!"))
 		if(do_after(Mob, 6 SECONDS, show_progress = FALSE))
@@ -704,12 +814,18 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	layer = OBJ_LAYER
 
 /obj/structure/handrail/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return ..() || mouse_buckle_handling(user, user)
 
 /obj/structure/handrail/is_user_buckle_possible(mob/living/target, mob/user, check_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	return ..() && user == target && !HAS_TRAIT(target, TRAIT_HANDS_BLOCKED)
 
 /obj/structure/handrail/post_buckle_mob(mob/living/buckled_mob)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(buckled_mob, SIGNAL_ADDTRAIT(TRAIT_HANDS_BLOCKED), PROC_REF(stop_buckle))
 
 	var/z_offset = 0
@@ -726,10 +842,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	buckled_mob.add_offsets(type, z_add = z_offset, w_add = w_offset)
 
 /obj/structure/handrail/post_unbuckle_mob(mob/living/unbuckled_mob)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(unbuckled_mob, SIGNAL_ADDTRAIT(TRAIT_HANDS_BLOCKED))
 	unbuckled_mob.remove_offsets(type)
 
 /obj/structure/handrail/proc/stop_buckle(mob/living/source, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	source.visible_message(
 		span_warning("[source] loses [source.p_their()] grip on [src]!"),
@@ -740,6 +860,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	unbuckle_mob(source, TRUE, TRUE)
 
 /obj/structure/handrail/buckle_feedback(mob/living/being_buckled, mob/buckler)
+	procstart = null
+	src.procstart = null
 	buckler.visible_message(
 		span_notice("[buckler] grabs [src] tight, keeping [buckler.p_them()]self upright."),
 		span_notice("You grab [src] tight, keeping yourself upright."),
@@ -748,6 +870,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	)
 
 /obj/structure/handrail/unbuckle_feedback(mob/living/being_unbuckled, mob/unbuckler)
+	procstart = null
+	src.procstart = null
 	if(being_unbuckled == unbuckler)
 		being_unbuckled.visible_message(
 			span_notice("[unbuckler] lets go of [src]."),

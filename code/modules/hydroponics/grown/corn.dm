@@ -28,15 +28,23 @@
 	distill_reagent = /datum/reagent/consumable/ethanol/whiskey
 
 /obj/item/food/grown/corn/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/cornmeal = 0, /datum/reagent/consumable/nutriment/fat/oil/corn = 0)
 
 /obj/item/food/grown/corn/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/corn_starch
 
 /obj/item/food/grown/corn/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/oven_baked_corn, rand(15 SECONDS, 25 SECONDS), TRUE, TRUE)
 
 /obj/item/food/grown/corn/make_microwaveable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/microwavable, /obj/item/food/popcorn)
 
 /obj/item/grown/corncob
@@ -51,9 +59,13 @@
 	throw_range = 7
 
 /obj/item/grown/corncob/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/cellulose = 10)
 
 /obj/item/grown/corncob/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!tool.get_sharpness())
 		return NONE
 
@@ -86,10 +98,14 @@
 	var/snap_pops = 1
 
 /obj/item/grown/snapcorn/add_juice()
+	procstart = null
+	src.procstart = null
 	..()
 	snap_pops = max(round(seed.potency/8), 1)
 
 /obj/item/grown/snapcorn/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, span_notice("You pick a snap pop from the cob."))
 	var/obj/item/toy/snappop/S = new /obj/item/toy/snappop(user.loc)
@@ -126,6 +142,8 @@
 	tastes = list("pepper" = 1, "sneezing" = 1)
 
 /obj/item/food/grown/peppercorn/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/blackpepper = 0)
 
 /obj/item/grown/corncob/pepper

@@ -32,6 +32,8 @@
 	/// Note: As of time of writing (5/9/23) it takes 4 seconds to manually remove handcuffs. Anything above that value is a waste of time.
 
 /datum/element/cuffsnapping/Attach(datum/target, snap_time_weak = 0 SECONDS, snap_time_strong = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isitem(target))
@@ -46,10 +48,14 @@
 	RegisterSignal(target, COMSIG_ITEM_REQUESTING_CONTEXT_FOR_TARGET, PROC_REF(add_item_context))
 
 /datum/element/cuffsnapping/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, list(COMSIG_ITEM_ATTACK_SECONDARY, COMSIG_ATOM_EXAMINE, COMSIG_ITEM_REQUESTING_CONTEXT_FOR_TARGET))
 	return ..()
 
 /datum/element/cuffsnapping/proc/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isliving(target)) //Removing restraints takes precedence
 		return NONE
@@ -66,6 +72,8 @@
 
 ///signal called on parent being examined
 /datum/element/cuffsnapping/proc/on_examine(datum/target, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/examine_string
@@ -82,6 +90,8 @@
 
 ///Signal called on parent when it right-clicks another mob.
 /datum/element/cuffsnapping/proc/try_cuffsnap_target(obj/item/cutter, mob/living/target, mob/living/cutter_user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(LAZYACCESS(cutter_user.do_afters, cutter))
@@ -107,6 +117,8 @@
 
 ///Check that the type of restraints can be cut by this element.
 /datum/element/cuffsnapping/proc/check_cuffs_strength(obj/item/cutter, mob/living/target, mob/living/cutter_user, obj/item/restraints/handcuffs/cuffs, message)
+	procstart = null
+	src.procstart = null
 	var/snap_time = cuffs.restraint_strength ? snap_time_strong : snap_time_weak
 	if(!isnull(snap_time))
 		return TRUE
@@ -116,6 +128,8 @@
 
 ///Called when a player tries to remove the cuffs restraining another mob.
 /datum/element/cuffsnapping/proc/do_cuffsnap_target(obj/item/cutter, mob/living/carbon/target, mob/cutter_user, obj/item/restraints/handcuffs/cuffs)
+	procstart = null
+	src.procstart = null
 	if(LAZYACCESS(cutter_user.do_afters, cutter))
 		return
 	log_combat(cutter_user, target, "cut or tried to cut [target]'s cuffs", cutter)
@@ -124,6 +138,8 @@
 
 ///Called when a player tries to remove the cuffs binding an item to their owner
 /datum/element/cuffsnapping/proc/try_cuffsnap_item(obj/item/cutter, mob/living/target, mob/living/cutter_user, obj/item/cuffed, obj/item/restraints/handcuffs/cuffs)
+	procstart = null
+	src.procstart = null
 	if(check_cuffs_strength(cutter, target, cutter_user, cuffs, span_notice("[cutter_user] tries to cut through the restraints binding [cuffed] to [target], but fails!")))
 		return
 
@@ -133,6 +149,8 @@
 
 ///The proc responsible for the very timed action that deletes the cuffs
 /datum/element/cuffsnapping/proc/do_snip_snap(obj/item/cutter, mob/living/target, mob/cutter_user, obj/item/restraints/handcuffs/cuffs, message)
+	procstart = null
+	src.procstart = null
 	var/snap_time = cuffs.restraint_strength ? snap_time_strong : snap_time_weak
 
 	var/target_was_restrained = FALSE

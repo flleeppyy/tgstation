@@ -32,6 +32,8 @@
 
 // Takes as an argument the coords to use as the bottom left (south west) of our corner
 /datum/lighting_corner/New(x, y, z)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	src.x = x + 0.5
@@ -75,19 +77,27 @@
 		process_next.lighting_corner_NW = src
 
 /datum/lighting_corner/proc/self_destruct_if_idle()
+	procstart = null
+	src.procstart = null
 	if (!LAZYLEN(affecting))
 		qdel(src, force = TRUE)
 
 /datum/lighting_corner/proc/vis_update()
+	procstart = null
+	src.procstart = null
 	for (var/datum/light_source/light_source as anything in affecting)
 		light_source.vis_update()
 
 /datum/lighting_corner/proc/full_update()
+	procstart = null
+	src.procstart = null
 	for (var/datum/light_source/light_source as anything in affecting)
 		light_source.recalc_corner(src)
 
 // God that was a mess, now to do the rest of the corner code! Hooray!
 /datum/lighting_corner/proc/update_lumcount(delta_r, delta_g, delta_b)
+	procstart = null
+	src.procstart = null
 
 #ifdef VISUALIZE_LIGHT_UPDATES
 	if (!SSlighting.allow_duped_values && !(delta_r || delta_g || delta_b)) // 0 is falsey ok
@@ -106,6 +116,8 @@
 		SSlighting.corners_queue += src
 
 /datum/lighting_corner/proc/update_objects()
+	procstart = null
+	src.procstart = null
 	// Cache these values ahead of time so 4 individual lighting objects don't all calculate them individually.
 	var/lum_r = src.lum_r
 	var/lum_g = src.lum_g
@@ -164,6 +176,8 @@
 	self_destruct_if_idle()
 
 /datum/lighting_corner/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if (!force)
 		return QDEL_HINT_LETMELIVE
 
@@ -191,6 +205,8 @@
 
 /// Debug proc to aid in understanding how corners work
 /datum/lighting_corner/proc/display(max_lum)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 
@@ -210,10 +226,14 @@
 	draw_to.add_overlay(display)
 
 /datum/lighting_corner/dummy/display()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Makes all lighting corners visible, debug to aid in understanding
 /proc/display_corners()
+	procstart = null
+	src.procstart = null
 	var/list/corners = list()
 	var/max_lum = 0
 	for(var/datum/lighting_corner/corner) // I am so sorry

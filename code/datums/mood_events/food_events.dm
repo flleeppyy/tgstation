@@ -33,11 +33,15 @@
 	event_flags = MOOD_EVENT_FOOD
 
 /datum/mood_event/food/add_effects(quality = FOOD_QUALITY_NORMAL, timeout_mod = 1)
+	procstart = null
+	src.procstart = null
 	mood_change = calculate_mood_change(quality)
 	timeout *= timeout_mod
 	description = "That food was [GLOB.food_quality_description[quality]]."
 
 /datum/mood_event/food/be_refreshed(datum/mood/home, quality, timeout_mod)
+	procstart = null
+	src.procstart = null
 	var/old_mood = mood_change
 	// updates timeout (which is handled in parent call) and mood
 	timeout = max(timeout, initial(timeout) * timeout_mod)
@@ -48,6 +52,8 @@
 	return ..()
 
 /datum/mood_event/food/proc/calculate_mood_change(base_quality)
+	procstart = null
+	src.procstart = null
 	var/quality = 1 + 1.5 * base_quality
 	if(HAS_PERSONALITY(owner, /datum/personality/ascetic))
 		quality *= 0.5

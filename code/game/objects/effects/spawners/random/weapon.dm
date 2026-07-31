@@ -5,6 +5,8 @@
 	loot_subtype_path = /obj/item/gun
 
 /obj/effect/spawner/random/weapon/full_gun/make_item(spawn_loc, type_path_to_make)
+	procstart = null
+	src.procstart = null
 	var/obj/item/gun/spawned_gun = new type_path_to_make(spawn_loc)
 	spawned_gun.unlock()
 	return spawned_gun

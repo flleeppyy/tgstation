@@ -20,6 +20,8 @@
 	var/sound_falloff_distance = SOUND_DEFAULT_FALLOFF_DISTANCE
 
 /datum/component/item_equipped_movement_rustle/Initialize(custom_sounds, move_delay_override, volume_override, extrarange, falloff_exponent, falloff_distance)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -40,6 +42,8 @@
 		sound_falloff_distance = falloff_distance
 
 /datum/component/item_equipped_movement_rustle/proc/on_equip(datum/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/item/our_item = parent
 	if(!(slot & our_item.slot_flags))
@@ -47,11 +51,15 @@
 	RegisterSignal(equipper, COMSIG_MOVABLE_MOVED, PROC_REF(try_step))
 
 /datum/component/item_equipped_movement_rustle/proc/on_unequip(datum/source, mob/dropped)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	move_counter = 0
 	UnregisterSignal(dropped, COMSIG_MOVABLE_MOVED)
 
 /datum/component/item_equipped_movement_rustle/proc/try_step(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (source.moving_diagonally == FIRST_DIAG_STEP)
 		return
@@ -61,4 +69,6 @@
 		move_counter = 0
 
 /datum/component/item_equipped_movement_rustle/proc/play_rustle_sound(mob/source)
+	procstart = null
+	src.procstart = null
 	playsound(source, rustle_sounds, volume, sound_vary, sound_extra_range, sound_falloff_exponent, falloff_distance = sound_falloff_distance)

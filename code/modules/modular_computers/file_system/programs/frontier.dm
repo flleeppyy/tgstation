@@ -19,16 +19,22 @@
 	var/datum/computer_file/data/ordnance/selected_file
 
 /datum/computer_file/program/scipaper_program/on_install(datum/computer_file/source, obj/item/modular_computer/computer_installing, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	paper_to_be = new
 	if(!CONFIG_GET(flag/no_default_techweb_link) && !linked_techweb)
 		CONNECT_TO_RND_SERVER_ROUNDSTART(linked_techweb, computer)
 
 /datum/computer_file/program/scipaper_program/application_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/multitool))
 		return multitool_act(user, tool)
 
 /datum/computer_file/program/scipaper_program/proc/multitool_act(mob/living/user, obj/item/multitool/used_multitool)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(used_multitool.buffer) || !istype(used_multitool.buffer, /datum/techweb))
 		return ITEM_INTERACT_BLOCKING
 	linked_techweb = used_multitool.buffer
@@ -36,6 +42,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /datum/computer_file/program/scipaper_program/proc/recheck_file_presence()
+	procstart = null
+	src.procstart = null
 	if(selected_file in computer.get_files(include_disk_files = TRUE))
 		return FALSE
 	UnregisterSignal(selected_file, COMSIG_COMPUTER_FILE_DELETE)
@@ -43,6 +51,8 @@
 	paper_to_be.set_experiment()
 
 /datum/computer_file/program/scipaper_program/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/parsed_experiments = list()
 	for (var/datum/experiment/ordnance/experiment in SSresearch.ordnance_experiments)
@@ -82,6 +92,8 @@
 	return data
 
 /datum/computer_file/program/scipaper_program/ui_data()
+	procstart = null
+	src.procstart = null
 	// Program Headers:
 	var/list/data = list()
 	data["currentTab"] = current_tab
@@ -166,6 +178,8 @@
 	return data
 
 /datum/computer_file/program/scipaper_program/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(action)
 		if("et_alia")
@@ -229,6 +243,8 @@
 
 /// Publication and adding points.
 /datum/computer_file/program/scipaper_program/proc/publish()
+	procstart = null
+	src.procstart = null
 	if(linked_techweb.add_scientific_paper(paper_to_be))
 		computer.say("\"[paper_to_be.title]\" has been published!")
 		paper_to_be = new

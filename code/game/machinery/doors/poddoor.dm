@@ -28,11 +28,15 @@
 	var/datum/weakref/owner
 
 /obj/machinery/door/poddoor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(show_nav_computer_icon)
 		AddElement(/datum/element/nav_computer_icon, 'icons/effects/nav_computer_indicators.dmi', "airlock", TRUE)
 
 /obj/machinery/door/poddoor/Destroy()
+	procstart = null
+	src.procstart = null
 	owner = null
 	return ..()
 
@@ -46,9 +50,13 @@
 	acid = 70
 
 /obj/machinery/door/poddoor/get_save_vars()
+	procstart = null
+	src.procstart = null
 	return ..() + NAMEOF(src, id)
 
 /obj/machinery/door/poddoor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(panel_open)
 		if(deconstruction == BLASTDOOR_FINISHED)
@@ -60,6 +68,8 @@
 			. += span_notice("The <i>wires</i> have been removed and it's ready to be <b>sliced apart</b>.")
 
 /obj/machinery/door/poddoor/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(held_item))
 		return NONE
@@ -89,10 +99,14 @@
 			return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/door/poddoor/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner = WEAKREF(crafter)
 
 /obj/machinery/door/poddoor/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(deconstruction == BLASTDOOR_NEEDS_WIRES && istype(tool, /obj/item/stack/cable_coil))
 		var/obj/item/stack/cable_coil/coil = tool
 		var/datum/crafting_recipe/recipe = locate(recipe_type) in GLOB.crafting_recipes
@@ -146,6 +160,8 @@
 	return NONE
 
 /obj/machinery/door/poddoor/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if (density)
 		balloon_alert(user, "open the door first!")
 		return ITEM_INTERACT_SUCCESS
@@ -153,6 +169,8 @@
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/door/poddoor/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & NOPOWER)
 		open(TRUE)
 		return ITEM_INTERACT_SUCCESS
@@ -174,6 +192,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/door/poddoor/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if (density)
 		balloon_alert(user, "open the door first!")
 		return ITEM_INTERACT_BLOCKING
@@ -192,6 +212,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/door/poddoor/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (density)
 		balloon_alert(user, "open the door first!")
@@ -211,15 +233,21 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/door/poddoor/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
+	procstart = null
+	src.procstart = null
 	id = "[port.shuttle_id]_[id]"
 
 //"BLAST" doors are obviously stronger than regular doors when it comes to BLASTS.
 /obj/machinery/door/poddoor/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(severity <= EXPLODE_LIGHT)
 		return FALSE
 	return ..()
 
 /obj/machinery/door/poddoor/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(animation)
 		if(DOOR_OPENING_ANIMATION)
@@ -232,6 +260,8 @@
 			icon_state = density ? "closed" : "open"
 
 /obj/machinery/door/poddoor/animation_length(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if(DOOR_OPENING_ANIMATION)
 			return 1.1 SECONDS
@@ -239,6 +269,8 @@
 			return 1.1 SECONDS
 
 /obj/machinery/door/poddoor/animation_segment_delay(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if(DOOR_OPENING_PASSABLE)
 			return 0.5 SECONDS
@@ -250,6 +282,8 @@
 			return 1.1 SECONDS
 
 /obj/machinery/door/poddoor/animation_effects(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if(DOOR_OPENING_ANIMATION)
 			playsound(src, animation_sound, 50, TRUE)
@@ -257,6 +291,8 @@
 			playsound(src, animation_sound, 50, TRUE)
 
 /obj/machinery/door/poddoor/attack_alien(mob/living/carbon/alien/adult/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(density & !(resistance_flags & INDESTRUCTIBLE))
 		add_fingerprint(user)
 		user.visible_message(span_warning("[user] begins prying open [src]."),\
@@ -291,6 +327,8 @@
 	var/turftype = /turf/open/space
 
 /obj/machinery/door/poddoor/shuttledock/proc/check()
+	procstart = null
+	src.procstart = null
 	var/turf/turf = get_step(src, checkdir)
 	if(!istype(turf, turftype))
 		INVOKE_ASYNC(src, PROC_REF(open))

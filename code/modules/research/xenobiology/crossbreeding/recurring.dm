@@ -15,6 +15,8 @@ Recurring extracts:
 	var/max_cooldown = 10 // In seconds
 
 /obj/item/slimecross/recurring/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	extract = new extract_type(src.loc)
 	visible_message(span_notice("[src] wraps a layer of goo around itself!"))
@@ -28,6 +30,8 @@ Recurring extracts:
 	START_PROCESSING(SSobj,src)
 
 /obj/item/slimecross/recurring/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(cooldown > 0)
 		cooldown -= seconds_per_tick
 	else if(extract.extract_uses < 10 && extract.extract_uses > 0)
@@ -40,6 +44,8 @@ Recurring extracts:
 		qdel(src)
 
 /obj/item/slimecross/recurring/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	STOP_PROCESSING(SSobj,src)
 

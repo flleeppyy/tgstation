@@ -3,6 +3,8 @@
 	name = "Clownify blood"
 
 /datum/smite/clownify_blood/effect(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (!iscarbon(target))

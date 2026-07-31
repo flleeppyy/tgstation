@@ -5,6 +5,8 @@
 	icon_state = "cap"
 
 /obj/structure/closet/secure_closet/ert_com/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/storage/medkit/regular(src)
 	new /obj/item/storage/box/handcuffs(src)
@@ -19,6 +21,8 @@
 		new /obj/item/gun/ballistic/revolver/mateba(src)
 
 /obj/structure/closet/secure_closet/ert_com/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Traitor steal objective
@@ -31,6 +35,8 @@
 	icon_state = "hos"
 
 /obj/structure/closet/secure_closet/ert_sec/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/storage/box/flashbangs(src)
 	new /obj/item/storage/box/teargas(src)
@@ -45,6 +51,8 @@
 	icon_state = "cmo"
 
 /obj/structure/closet/secure_closet/ert_med/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /mob/living/basic/bot/medbot(src)
 	new /obj/item/storage/medkit/o2(src)
@@ -61,6 +69,8 @@
 	icon_state = "ce"
 
 /obj/structure/closet/secure_closet/ert_engi/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/stack/sheet/plasteel(src, 50)
 	new /obj/item/stack/sheet/iron(src, 50)

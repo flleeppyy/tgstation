@@ -8,6 +8,8 @@
 	var/max_hits = 12
 
 /datum/corpse_damage/cause_of_death/projectile/apply_to_body(mob/living/carbon/human/body, severity, list/storage)
+	procstart = null
+	src.procstart = null
 	projectile = new projectile()
 
 	var/hits = ((max_hits - min_hits) * severity + min_hits)

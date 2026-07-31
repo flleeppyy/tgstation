@@ -22,6 +22,8 @@
 	var/list/datum/mind/tracked_heretics = list()
 
 /datum/reality_smash_tracker/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(GLOB.reality_smash_track == src)
 		stack_trace("[type] was deleted. Heretics may no longer access any influences. Fix it, or call coder support.")
 		message_admins("The [type] was deleted. Heretics may no longer access any influences. Fix it, or call coder support.")
@@ -35,6 +37,8 @@
  * and the number of minds we're tracking.
  */
 /datum/reality_smash_tracker/proc/generate_new_influences()
+	procstart = null
+	src.procstart = null
 	var/how_many_can_we_make = 0
 	for(var/heretic_number in 1 to length(tracked_heretics))
 		how_many_can_we_make += max(NUM_INFLUENCES_PER_HERETIC - heretic_number + 1, 1)
@@ -59,6 +63,8 @@
  * Use this whenever you want to add someone to the list
  */
 /datum/reality_smash_tracker/proc/add_tracked_mind(datum/mind/heretic)
+	procstart = null
+	src.procstart = null
 	tracked_heretics |= heretic
 
 	// If our heretic's on station, generate some new influences
@@ -71,6 +77,8 @@
  * Use this whenever you want to remove someone from the list
  */
 /datum/reality_smash_tracker/proc/remove_tracked_mind(datum/mind/heretic)
+	procstart = null
+	src.procstart = null
 	tracked_heretics -= heretic
 
 /obj/effect/visible_heretic_influence
@@ -83,6 +91,8 @@
 	alpha = 0
 
 /obj/effect/visible_heretic_influence/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(show_presence)), 15 SECONDS)
 	AddComponent(/datum/component/fishing_spot, GLOB.preset_fish_sources[/datum/fish_source/dimensional_rift])
@@ -95,9 +105,13 @@
  * Makes the influence fade in after 15 seconds.
  */
 /obj/effect/visible_heretic_influence/proc/show_presence()
+	procstart = null
+	src.procstart = null
 	animate(src, alpha = 255, time = 15 SECONDS)
 
 /obj/effect/visible_heretic_influence/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -122,6 +136,8 @@
 	return TRUE
 
 /obj/effect/visible_heretic_influence/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return
 
@@ -150,6 +166,8 @@
 	dyn_explosion(get_turf(human_user), 1, flash_range = 1, flame_range = 1)
 
 /obj/effect/visible_heretic_influence/examine(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_hypnophrase(pick_list(HERETIC_INFLUENCE_FILE, "examine"))
 	if(IS_HERETIC(user) || !ishuman(user))
@@ -174,6 +192,8 @@
 	var/datum/proximity_monitor/influence_monitor/monitor
 
 /obj/effect/heretic_influence/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.reality_smash_track.smashes += src
 	generate_name()
@@ -187,14 +207,20 @@
 	monitor = new(src, 7)
 
 /obj/effect/heretic_influence/proc/verify_user_can_see(mob/user)
+	procstart = null
+	src.procstart = null
 	return (user.mind in GLOB.reality_smash_track.tracked_heretics)
 
 /obj/effect/heretic_influence/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.reality_smash_track.smashes -= src
 	QDEL_NULL(monitor)
 	return ..()
 
 /obj/effect/heretic_influence/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!IS_HERETIC(user)) // Shouldn't be able to do this, but just in case
 		return SECONDARY_ATTACK_CALL_NORMAL
 
@@ -206,6 +232,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/effect/heretic_influence/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// Using a codex will give you two knowledge points for draining.
 	if(drain_influence_with_codex(user, tool))
 		return ITEM_INTERACT_SUCCESS
@@ -213,6 +241,8 @@
 	return ..()
 
 /obj/effect/heretic_influence/proc/drain_influence_with_codex(mob/user, obj/item/codex_cicatrix/codex)
+	procstart = null
+	src.procstart = null
 	if(!istype(codex) || being_drained)
 		return FALSE
 	if(!codex.book_open)
@@ -227,6 +257,8 @@
  * If successful, the influence is drained and deleted.
  */
 /obj/effect/heretic_influence/proc/drain_influence(mob/living/user, knowledge_to_gain, drain_speed = HERETIC_RIFT_DEFAULT_DRAIN_SPEED)
+	procstart = null
+	src.procstart = null
 
 	being_drained = TRUE
 	loc.balloon_alert(user, "draining influence...")
@@ -258,6 +290,8 @@
  * Handle the effects of the drain.
  */
 /obj/effect/heretic_influence/proc/after_drain(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user)
 		to_chat(user, span_hypnophrase(pick_list(HERETIC_INFLUENCE_FILE, "drain_message")))
 		to_chat(user, span_warning("[src] begins to fade into reality!"))
@@ -272,6 +306,8 @@
  * Generates a random name for the influence.
  */
 /obj/effect/heretic_influence/proc/generate_name()
+	procstart = null
+	src.procstart = null
 	name = "\improper" + pick_list(HERETIC_INFLUENCE_FILE, "prefix") + " " + pick_list(HERETIC_INFLUENCE_FILE, "postfix")
 
 #undef NUM_INFLUENCES_PER_HERETIC
@@ -286,6 +322,8 @@
 	COOLDOWN_DECLARE(xray_cooldown)
 
 /datum/proximity_monitor/influence_monitor/on_entered(atom/source, atom/movable/arrived, turf/old_loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(arrived))
 		return

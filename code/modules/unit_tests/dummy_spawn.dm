@@ -6,6 +6,8 @@
 /datum/unit_test/dummy_spawn_species
 
 /datum/unit_test/dummy_spawn_species/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy/lad = allocate(/mob/living/carbon/human/dummy)
 	for(var/datum/species/testing_testing as anything in subtypesof(/datum/species))
 		lad.set_species(testing_testing, icon_update = FALSE, pref_load = TRUE) //I wonder if I should somehow hook into the species pref here
@@ -14,6 +16,8 @@
 /datum/unit_test/dummy_spawn_outfit
 
 /datum/unit_test/dummy_spawn_outfit/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy/lad = allocate(/mob/living/carbon/human/dummy)
 	for(var/datum/job/one_two_three as anything in subtypesof(/datum/job))
 		var/datum/job/can_you_hear_this = SSjob.get_job_type(one_two_three)

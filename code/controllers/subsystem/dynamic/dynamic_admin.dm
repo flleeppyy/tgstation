@@ -2,6 +2,8 @@ ADMIN_VERB(dynamic_panel, R_ADMIN, "Dynamic Panel", "Mess with dynamic.", ADMIN_
 	dynamic_panel(user.mob)
 
 /proc/dynamic_panel(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_ADMIN))
 		return
 	var/datum/dynamic_panel/tgui = new()
@@ -15,18 +17,26 @@ ADMIN_VERB(dynamic_panel, R_ADMIN, "Dynamic Panel", "Mess with dynamic.", ADMIN_
 /datum/dynamic_panel
 
 /datum/dynamic_panel/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_ADMIN)
 
 /datum/dynamic_panel/ui_close()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /datum/dynamic_panel/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "DynamicAdmin")
 		ui.open()
 
 /datum/dynamic_panel/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	if(SSdynamic.current_tier)
@@ -89,6 +99,8 @@ ADMIN_VERB(dynamic_panel, R_ADMIN, "Dynamic Panel", "Mess with dynamic.", ADMIN_
 
 /// Pass a ruleset typepath or a ruleset instance
 /datum/dynamic_panel/proc/ruleset_to_data(datum/dynamic_ruleset/ruleset)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/ruleset_path = isdatum(ruleset) ? ruleset.type : ruleset
 	data["name"] = initial(ruleset.name)
@@ -105,6 +117,8 @@ ADMIN_VERB(dynamic_panel, R_ADMIN, "Dynamic Panel", "Mess with dynamic.", ADMIN_
 	return data
 
 /datum/dynamic_panel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

@@ -17,6 +17,8 @@
 	var/target_wounded_key
 
 /datum/targeting_strategy/basic/is_valid_target(mob/living/living_mob, atom/the_target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	// checks are ordered cheapest first so invalid targets are rejected before the expensive sight check
 	if(isturf(the_target) || isnull(the_target)) // bail out on invalids
 		return FALSE
@@ -90,17 +92,23 @@
 	return TRUE
 
 /datum/targeting_strategy/basic/find_hidden_mobs(mob/living/living_mob, atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(target.loc, /obj/structure/closet) || istype(target.loc, /obj/machinery/disposal) || istype(target.loc, /obj/machinery/sleeper))
 		return target.loc
 	return null
 
 /datum/targeting_strategy/basic/can_keep_target(mob/living/living_mob, atom/target, range)
+	procstart = null
+	src.procstart = null
 	return can_see(living_mob, target, range)
 
 /// Returns true if the mob and target share factions.
 /// Slow path for subtypes with custom_faction_check set; everything else uses TARGETING_FACTION_CHECK directly
 /datum/targeting_strategy/basic/proc/faction_check(datum/ai_controller/controller, mob/living/living_mob, mob/living/the_target)
+	procstart = null
+	src.procstart = null
 	return TARGETING_FACTION_CHECK(src, controller, living_mob, the_target)
 
 /// Subtype more forgiving for items.
@@ -108,6 +116,8 @@
 /datum/targeting_strategy/basic/allow_items
 
 /datum/targeting_strategy/basic/allow_items/is_valid_target(mob/living/living_mob, atom/the_target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isitem(the_target))
 		// trust fall exercise
@@ -116,6 +126,8 @@
 /datum/targeting_strategy/basic/require_traits
 
 /datum/targeting_strategy/basic/require_traits/is_valid_target(mob/living/living_mob, atom/the_target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -136,6 +148,8 @@
 	var/inclusive = TRUE
 
 /datum/targeting_strategy/basic/of_size/is_valid_target(mob/living/owner, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	if(!isliving(target))
 		return FALSE
 	. = ..()
@@ -167,6 +181,8 @@
 /datum/targeting_strategy/basic/allow_turfs
 
 /datum/targeting_strategy/basic/allow_turfs/is_valid_target(mob/living/living_mob, atom/the_target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	if(isturf(the_target))
 		return TRUE
 	return ..()
@@ -175,6 +191,8 @@
 /datum/targeting_strategy/basic/no_gutted_mobs
 
 /datum/targeting_strategy/basic/no_gutted_mobs/is_valid_target(mob/living/owner, mob/living/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	if(!istype(target) || target.has_status_effect(/datum/status_effect/gutted))
 		return FALSE
 	return ..()
@@ -185,6 +203,8 @@
 /datum/targeting_strategy/basic/exact_match/ignore_friends
 
 /datum/targeting_strategy/basic/exact_match/ignore_friends/is_valid_target(mob/living/living_mob, atom/the_target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE

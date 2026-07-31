@@ -7,6 +7,8 @@ SUBSYSTEM_DEF(greyscale_previews)
 	)
 
 /datum/controller/subsystem/greyscale_previews/Initialize()
+	procstart = null
+	src.procstart = null
 #ifndef UNIT_TESTS // We want this to run during unit tests regardless of the config
 	if(!CONFIG_GET(flag/generate_assets_in_init))
 		return SS_INIT_SUCCESS
@@ -16,6 +18,8 @@ SUBSYSTEM_DEF(greyscale_previews)
 
 /// Sets up the list of types to process for organizing icons into their respective .dmi.
 /datum/controller/subsystem/greyscale_previews/proc/build_type_category_map(list/types_that_get_their_own_file)
+	procstart = null
+	src.procstart = null
 	var/list/type_to_filename = list()
 
 	for (var/filename in types_that_get_their_own_file)
@@ -30,6 +34,8 @@ SUBSYSTEM_DEF(greyscale_previews)
 
 /// Builds a worklist of all the item types to try making a GAGS preview icon for.
 /datum/controller/subsystem/greyscale_previews/proc/build_preview_worklists(list/types_that_get_their_own_file)
+	procstart = null
+	src.procstart = null
 	var/list/type_to_filename = build_type_category_map(types_that_get_their_own_file)
 
 	/// filename => list(entries)
@@ -79,6 +85,8 @@ SUBSYSTEM_DEF(greyscale_previews)
 
 /// Goes through all the valid GAGS item types in subtypes that fall under the types specified in types_that_get_their_own_file, creating a .dmi for each.
 /datum/controller/subsystem/greyscale_previews/proc/ExportMapPreviews()
+	procstart = null
+	src.procstart = null
 	// Put subtypes before their parent or the parent file will take all the generated icons
 	var/list/types_that_get_their_own_file = list(
 		"turfs" = /turf, // None of these yet but it's harmless to be prepared
@@ -112,6 +120,8 @@ SUBSYSTEM_DEF(greyscale_previews)
 
 /// Checks that we do not have any parent types coming before subtypes in the types_that_get_their_own_file list (which is an assoc list (filepath, typepath))
 /datum/controller/subsystem/greyscale_previews/proc/check_map_previews_filepath_order(list/our_list)
+	procstart = null
+	src.procstart = null
 	var/list/type_paths_to_check = list()
 	for (var/filepath in our_list)
 		type_paths_to_check += our_list[filepath]
@@ -129,6 +139,8 @@ SUBSYSTEM_DEF(greyscale_previews)
 	return TRUE
 
 /datum/controller/subsystem/greyscale_previews/proc/ExportMapPreviewsForType(filename, list/entries)
+	procstart = null
+	src.procstart = null
 	var/list/icons = list()
 	#ifdef USE_RUSTG_ICONFORGE_GAGS
 	// make sure the error icon exists as a default

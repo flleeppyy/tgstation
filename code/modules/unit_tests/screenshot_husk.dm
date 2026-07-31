@@ -2,6 +2,8 @@
 /datum/unit_test/screenshot_husk
 
 /datum/unit_test/screenshot_husk/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human = allocate(/mob/living/carbon/human/dummy/consistent) //we don't use a dummy as they have no organs
 	human.become_husk(BURN)
 	// test with no clothes, the full husk experience

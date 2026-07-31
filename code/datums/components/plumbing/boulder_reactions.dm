@@ -4,11 +4,15 @@
 	supply_connects = EAST
 
 /datum/component/plumbing/boulder_reactions/Initialize(ducting_layer)
+	procstart = null
+	src.procstart = null
 	if(!istype(parent, /obj/machinery/bouldertech/refinery))
 		return COMPONENT_INCOMPATIBLE
 	return ..()
 
 /datum/component/plumbing/boulder_reactions/send_request(dir)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/bouldertech/refinery/the_refinery = parent
 	var/list/datum/reagents/boosters = the_refinery.get_booster_reagents()
 
@@ -16,6 +20,8 @@
 		process_request(MACHINE_REAGENT_TRANSFER, booster, dir, TRUE)
 
 /datum/component/plumbing/boulder_reactions/can_give(amount, reagent, datum/ductnet/net)
+	procstart = null
+	src.procstart = null
 	if(!reagents.total_volume || amount <= 0)
 		return FALSE
 
@@ -27,6 +33,8 @@
 	return !!reagents.has_reagent(the_refinery.waste_chemical)
 
 /datum/component/plumbing/boulder_reactions/transfer_to(datum/component/plumbing/target, amount, reagent, datum/ductnet/net, round_robin)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/bouldertech/refinery/the_refinery = parent
 
 	reagents.trans_to(target.recipient_reagents_holder(), amount, target_id = the_refinery.waste_chemical, methods = round_robin ? LINEAR : NONE)

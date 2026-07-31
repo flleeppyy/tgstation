@@ -7,9 +7,13 @@
 	interaction_flags_machine = NONE //borgs can't play, but the illiterate can.
 
 /obj/machinery/computer/arcade/amputation/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	return //that's a pretty damn big guillotine
 
 /obj/machinery/computer/arcade/amputation/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(user))
 		return
@@ -34,6 +38,8 @@
 
 ///Makes sure the user still has their starting hand, preventing the user from pulling the arm out and still getting prizes.
 /obj/machinery/computer/arcade/amputation/proc/do_they_still_have_that_hand(mob/user, obj/item/bodypart/chopchop)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(chopchop) || chopchop.owner != user)
 		return FALSE
 	return TRUE

@@ -17,14 +17,20 @@
 	var/datum/action/cooldown/spell/shapeshift/polymorph_belt/transform_action
 
 /obj/item/polymorph_belt/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 
 /obj/item/polymorph_belt/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(transform_action)
 	return ..()
 
 /obj/item/polymorph_belt/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (stored_mob_type)
 		var/mob/living/will_become = stored_mob_type
@@ -33,11 +39,15 @@
 		. += span_warning("It requires a Bioscrambler Anomaly Core in order to function.")
 
 /obj/item/polymorph_belt/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = base_icon_state + (active ? "" : "_inactive")
 	worn_icon_state = base_icon_state + (active ? "" : "_inactive")
 	return ..()
 
 /obj/item/polymorph_belt/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!istype(tool, /obj/item/assembly/signaler/anomaly/bioscrambler))
 		return NONE
 
@@ -63,6 +73,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/polymorph_belt/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -95,6 +107,8 @@
 
 /// Make sure we can transform into the scanned target
 /obj/item/polymorph_belt/proc/update_transform_action()
+	procstart = null
+	src.procstart = null
 	if (isnull(stored_mob_type) || !active)
 		return
 	if (isnull(transform_action))
@@ -121,16 +135,22 @@
 	var/channel_time = 3 SECONDS
 
 /datum/action/cooldown/spell/shapeshift/polymorph_belt/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	cast_on = owner //make sure this is only affecting the wearer of the belt
 	return ..()
 
 /datum/action/cooldown/spell/shapeshift/polymorph_belt/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	var/datum/status_effect/shapechange_mob/shapechange = remove_from.has_status_effect(/datum/status_effect/shapechange_mob/from_spell)
 	var/atom/changer = shapechange?.caster_mob || remove_from
 	changer?.transform = matrix()
 	return ..()
 
 /datum/action/cooldown/spell/shapeshift/polymorph_belt/before_cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	cast_on = owner
 	. = ..()
 	if (. & SPELL_CANCEL_CAST)
@@ -160,6 +180,8 @@
 	playsound(cast_on, 'sound/effects/magic/demon_consume.ogg', 50, TRUE)
 
 /datum/action/cooldown/spell/shapeshift/polymorph_belt/after_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (QDELETED(owner))
 		return
@@ -168,6 +190,8 @@
 
 /// Update what you are transforming to or from
 /datum/action/cooldown/spell/shapeshift/polymorph_belt/proc/update_type(transform_type)
+	procstart = null
+	src.procstart = null
 	unshift_owner()
 	shapeshift_type = transform_type
 	possible_shapes = list(transform_type)
@@ -179,14 +203,20 @@
 /datum/status_effect/shapechange_mob/from_spell/polymorph_belt
 
 /datum/status_effect/shapechange_mob/from_spell/polymorph_belt/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_MOB_CHANGED_TYPE, PROC_REF(on_type_change))
 
 /datum/status_effect/shapechange_mob/from_spell/polymorph_belt/on_pre_type_change(mob/living/source)
+	procstart = null
+	src.procstart = null
 	return // Stub out base effect because we don't want to cancel if they transform
 
 /// If our mob transforms (via aging usually) then move the status effect across to the new mob
 /datum/status_effect/shapechange_mob/from_spell/polymorph_belt/proc/on_type_change(mob/living/source, mob/living/new_mob)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/caster = caster_mob // Will be unset when the mob is unshifted
 	var/datum/action/cooldown/spell/shapeshift/transform_action = source_weakref?.resolve()

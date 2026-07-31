@@ -29,6 +29,8 @@
 	var/production
 
 /datum/round_event/spacevine/start()
+	procstart = null
+	src.procstart = null
 	var/list/final_turf_candidates = list() // final list of eligible empty floor turfs in the hallway areas that can be chosen
 
 	if(override_turf)
@@ -76,6 +78,8 @@
 	input_text = "Spawn vines at current location?"
 
 /datum/event_admin_setup/set_location/spacevine/apply_to_event(datum/round_event/spacevine/event)
+	procstart = null
+	src.procstart = null
 	event.override_turf = chosen_turf
 
 /datum/event_admin_setup/multiple_choice/spacevine
@@ -83,6 +87,8 @@
 	min_choices = 0
 
 /datum/event_admin_setup/multiple_choice/spacevine/prompt_admins()
+	procstart = null
+	src.procstart = null
 	var/customize_mutations = tgui_alert(usr, "Select mutations?", event_control.name, list("Custom", "Random", "Cancel"))
 	switch(customize_mutations)
 		if("Custom")
@@ -93,9 +99,13 @@
 			return ADMIN_CANCEL_EVENT
 
 /datum/event_admin_setup/multiple_choice/spacevine/get_options()
+	procstart = null
+	src.procstart = null
 	return valid_subtypesof(/datum/spacevine_mutation)
 
 /datum/event_admin_setup/multiple_choice/spacevine/apply_to_event(datum/round_event/spacevine/event)
+	procstart = null
+	src.procstart = null
 	var/list/type_choices = list()
 	for(var/list/choice in choices)
 		type_choices += text2path(choice[1])
@@ -107,10 +117,14 @@
 	max_value = 100
 
 /datum/event_admin_setup/input_number/spacevine_potency/prompt_admins()
+	procstart = null
+	src.procstart = null
 	default_value = rand(50, 100)
 	return ..()
 
 /datum/event_admin_setup/input_number/spacevine_potency/apply_to_event(datum/round_event/spacevine/event)
+	procstart = null
+	src.procstart = null
 	event.potency = chosen_value
 
 /datum/event_admin_setup/input_number/spacevine_production
@@ -119,8 +133,12 @@
 	max_value = 10
 
 /datum/event_admin_setup/input_number/spacevine_production/prompt_admins()
+	procstart = null
+	src.procstart = null
 	default_value = rand(1, 4)
 	return ..()
 
 /datum/event_admin_setup/input_number/spacevine_production/apply_to_event(datum/round_event/spacevine/event)
+	procstart = null
+	src.procstart = null
 	event.production = chosen_value

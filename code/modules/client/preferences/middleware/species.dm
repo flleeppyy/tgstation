@@ -2,6 +2,8 @@
 /datum/preference_middleware/species
 
 /datum/preference_middleware/species/get_ui_assets()
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/species),
 	)
@@ -11,6 +13,8 @@
 	early = TRUE
 
 /datum/asset/spritesheet_batched/species/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	for (var/species_id in get_selectable_species())
 		var/datum/species/species_type = GLOB.species_list[species_id]
 

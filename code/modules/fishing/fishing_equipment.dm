@@ -30,15 +30,21 @@
 	resistance_flags = FIRE_PROOF | LAVA_PROOF
 
 /obj/item/fishing_line/reinforced/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ITEM_FISHING_ROD_SLOTTED, PROC_REF(on_fishing_rod_slotted))
 	RegisterSignal(src, COMSIG_ITEM_FISHING_ROD_UNSLOTTED, PROC_REF(on_fishing_rod_unslotted))
 
 /obj/item/fishing_line/reinforced/proc/on_fishing_rod_slotted(datum/source, obj/item/fishing_rod/rod, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	ADD_TRAIT(rod, TRAIT_ROD_LAVA_USABLE, REF(src))
 
 /obj/item/fishing_line/reinforced/proc/on_fishing_rod_unslotted(datum/source, obj/item/fishing_rod/rod, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	REMOVE_TRAIT(rod, TRAIT_ROD_LAVA_USABLE, REF(src))
 
@@ -69,15 +75,21 @@
 	resistance_flags = FIRE_PROOF | LAVA_PROOF
 
 /obj/item/fishing_line/sinew/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ITEM_FISHING_ROD_SLOTTED, PROC_REF(on_fishing_rod_slotted))
 	RegisterSignal(src, COMSIG_ITEM_FISHING_ROD_UNSLOTTED, PROC_REF(on_fishing_rod_unslotted))
 
 /obj/item/fishing_line/sinew/proc/on_fishing_rod_slotted(datum/source, obj/item/fishing_rod/rod, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	ADD_TRAIT(rod, TRAIT_ROD_LAVA_USABLE, REF(src))
 
 /obj/item/fishing_line/sinew/proc/on_fishing_rod_unslotted(datum/source, obj/item/fishing_rod/rod, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	REMOVE_TRAIT(rod, TRAIT_ROD_LAVA_USABLE, REF(src))
 
@@ -98,19 +110,27 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 4, /datum/material/gold = SMALL_MATERIAL_AMOUNT * 3, /datum/material/silver = SMALL_MATERIAL_AMOUNT * 3)
 
 /obj/item/fishing_line/auto_reel/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ITEM_FISHING_ROD_SLOTTED, PROC_REF(on_fishing_rod_slotted))
 	RegisterSignal(src, COMSIG_ITEM_FISHING_ROD_UNSLOTTED, PROC_REF(on_fishing_rod_unslotted))
 
 /obj/item/fishing_line/auto_reel/proc/on_fishing_rod_slotted(datum/source, obj/item/fishing_rod/rod, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	RegisterSignal(rod, COMSIG_FISHING_ROD_HOOKED_ITEM, PROC_REF(on_hooked_item))
 
 /obj/item/fishing_line/auto_reel/proc/on_fishing_rod_unslotted(datum/source, obj/item/fishing_rod/rod, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(rod, COMSIG_FISHING_ROD_HOOKED_ITEM)
 
 /obj/item/fishing_line/auto_reel/proc/on_hooked_item(obj/item/fishing_rod/source, atom/movable/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(target) || target.anchored || target.move_resist >= MOVE_FORCE_STRONG)
@@ -132,6 +152,8 @@
 		playsound(src, 'sound/items/weapons/batonextend.ogg', 50, TRUE)
 
 /obj/item/fishing_line/auto_reel/proc/catch_it_chucklenut(obj/item/source, atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/user = throwingdatum.initial_target.resolve()
@@ -142,6 +164,8 @@
 	return COMPONENT_MOVABLE_IMPACT_NEVERMIND
 
 /obj/item/fishing_line/auto_reel/proc/clear_hitby_signal(obj/item/item)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(item, COMSIG_MOVABLE_PRE_IMPACT)
 
 /obj/item/fishing_line/bluespace
@@ -181,6 +205,8 @@
  * `get_hook_bonus_multiplicative()`.
  */
 /obj/item/fishing_hook/proc/get_hook_bonus_additive(fish_type)
+	procstart = null
+	src.procstart = null
 	return FISHING_DEFAULT_HOOK_BONUS_ADDITIVE
 
 /**
@@ -189,10 +215,14 @@
  * `get_hook_bonus_additive()`.
  */
 /obj/item/fishing_hook/proc/get_hook_bonus_multiplicative(fish_type)
+	procstart = null
+	src.procstart = null
 	return FISHING_DEFAULT_HOOK_BONUS_MULTIPLICATIVE
 
 ///Check if tha target can be caught by the hook
 /obj/item/fishing_hook/proc/can_be_hooked(atom/target)
+	procstart = null
+	src.procstart = null
 	if(isliving(target))
 		var/mob/living/mob = target
 		return (mob.mob_biotypes & MOB_AQUATIC)
@@ -200,6 +230,8 @@
 
 ///Any special effect when hooking a target that's not managed by the fishing rod.
 /obj/item/fishing_hook/proc/hook_attached(atom/target, obj/item/fishing_rod/rod)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -210,6 +242,8 @@
  * * target_fish_source - The /datum/fish_source we're trying to fish in.
  */
 /obj/item/fishing_hook/proc/reason_we_cant_fish(datum/fish_source/target_fish_source)
+	procstart = null
+	src.procstart = null
 	return null
 
 
@@ -222,19 +256,27 @@
 	wiki_desc = "It vastly improves the chances of catching things other than fish."
 
 /obj/item/fishing_hook/magnet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ITEM_FISHING_ROD_SLOTTED, PROC_REF(on_fishing_rod_slotted))
 	RegisterSignal(src, COMSIG_ITEM_FISHING_ROD_UNSLOTTED, PROC_REF(on_fishing_rod_unslotted))
 
 /obj/item/fishing_hook/magnet/proc/on_fishing_rod_slotted(datum/source, obj/item/fishing_rod/rod, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	ADD_TRAIT(rod, TRAIT_ROD_REMOVE_FISHING_DUD, REF(src))
 
 /obj/item/fishing_hook/magnet/proc/on_fishing_rod_unslotted(datum/source, obj/item/fishing_rod/rod, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	REMOVE_TRAIT(rod, TRAIT_ROD_REMOVE_FISHING_DUD, REF(src))
 
 /obj/item/fishing_hook/magnet/get_hook_bonus_multiplicative(fish_type)
+	procstart = null
+	src.procstart = null
 	if(fish_type == FISHING_DUD || ispath(fish_type, /obj/item/fish) || isfish(fish_type))
 		return ..()
 
@@ -248,15 +290,21 @@
 	wiki_desc = "It's used to attract shiny-loving fish and make them easier to catch."
 
 /obj/item/fishing_hook/shiny/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ITEM_FISHING_ROD_SLOTTED, PROC_REF(on_fishing_rod_slotted))
 	RegisterSignal(src, COMSIG_ITEM_FISHING_ROD_UNSLOTTED, PROC_REF(on_fishing_rod_unslotted))
 
 /obj/item/fishing_hook/shiny/proc/on_fishing_rod_slotted(datum/source, obj/item/fishing_rod/rod, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	ADD_TRAIT(rod, TRAIT_ROD_ATTRACT_SHINY_LOVERS, REF(src))
 
 /obj/item/fishing_hook/shiny/proc/on_fishing_rod_unslotted(datum/source, obj/item/fishing_rod/rod, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	REMOVE_TRAIT(rod, TRAIT_ROD_ATTRACT_SHINY_LOVERS, REF(src))
 
@@ -269,16 +317,22 @@
 	var/obj/item/assembly/signaler/anomaly/core
 
 /obj/item/fishing_hook/anomaly/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ITEM_FISHING_ROD_SLOTTED, PROC_REF(on_fishing_rod_slotted))
 	RegisterSignal(src, COMSIG_ITEM_FISHING_ROD_UNSLOTTED, PROC_REF(on_fishing_rod_unslotted))
 
 /obj/item/fishing_hook/anomaly/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(core))
 		. += span_info("There's \a [core] slotted into it.")
 
 /obj/item/fishing_hook/anomaly/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "&bull; A [/obj/item/assembly/signaler/anomaly/dimensional::name] adds a chance for your catch to have its materials altered."
 	. += "&bull; A [/obj/item/assembly/signaler/anomaly/bioscrambler::name] adds a chance for your catch to have its traits or stats altered."
@@ -290,6 +344,8 @@
 	. += "&bull; Unmentioned cores likely have no unique effect when applied."
 
 /obj/item/fishing_hook/anomaly/proc/on_fishing_rod_slotted(datum/source, obj/item/fishing_rod/rod, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	switch(core?.type)
@@ -311,6 +367,8 @@
 			rod.balloon_alert_to_viewers("no core effect!", vision_distance = 2)
 
 /obj/item/fishing_hook/anomaly/proc/on_fishing_rod_unslotted(datum/source, obj/item/fishing_rod/rod, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	switch(core?.type)
@@ -322,6 +380,8 @@
 	UnregisterSignal(rod, COMSIG_FISHING_ROD_CAUGHT_FISH)
 
 /obj/item/fishing_hook/anomaly/proc/get_probability_bonuses(obj/item/fishing_rod/rod, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/skill_modifier = user.mind?.get_skill_level(/datum/skill/fishing) * 1.5
 	var/bait_modifier = 0
 	if(!isnull(rod.bait))
@@ -336,6 +396,8 @@
 	return skill_modifier + bait_modifier
 
 /obj/item/fishing_hook/anomaly/proc/dimensional_catch_bonus(obj/item/fishing_rod/rod, obj/item/caught, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isfish(caught) || !HAS_TRAIT(caught, TRAIT_FISH_JUST_SPAWNED))
@@ -374,6 +436,8 @@
 	caught_fish.set_custom_materials(material_setup)
 
 /obj/item/fishing_hook/anomaly/proc/bioscrambler_catch_bonus(obj/item/fishing_rod/rod, obj/item/caught, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isfish(caught) || !HAS_TRAIT(caught, TRAIT_FISH_JUST_SPAWNED) || !prob(25 + get_probability_bonuses(rod, user)))
@@ -391,6 +455,8 @@
 	random_trait.apply_to_fish(caught_fish)
 
 /obj/item/fishing_hook/anomaly/proc/pyro_catch_effect(obj/item/fishing_rod/rod, obj/item/caught, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isfish(caught) || !HAS_TRAIT(caught, TRAIT_FISH_JUST_SPAWNED) || !prob(85 + get_probability_bonuses(rod, user)))
@@ -405,6 +471,8 @@
 	caught.AddElement(/datum/element/fried_item, pick_weight(fry_times))
 
 /obj/item/fishing_hook/anomaly/proc/ectoplasm_catch_effect(obj/item/fishing_rod/rod, obj/item/caught, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isfish(caught) || !HAS_TRAIT(caught, TRAIT_FISH_JUST_SPAWNED) || !prob(50 + get_probability_bonuses(rod, user)))
@@ -418,6 +486,8 @@
 	)
 
 /obj/item/fishing_hook/anomaly/proc/hallucination_catch_effect(obj/item/fishing_rod/rod, obj/item/caught, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isfish(caught) || !HAS_TRAIT(caught, TRAIT_FISH_JUST_SPAWNED) || !prob(50 + get_probability_bonuses(rod, user)))
@@ -426,6 +496,8 @@
 	caught.transform = caught.transform.Scale(pick(0.5, 0.75, 1, 1.25, 1.5))
 
 /obj/item/fishing_hook/anomaly/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/assembly/signaler/anomaly))
 		return NONE
 	if(!isnull(core))
@@ -444,6 +516,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/fishing_hook/anomaly/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -462,6 +536,8 @@
 	return TRUE
 
 /obj/item/fishing_hook/anomaly/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(core))
 		return
@@ -493,15 +569,21 @@
 		You won't catch fish with it, nor it can't be used for fishing outside of chasms, though it can still be used to reel in people and items from unreachable locations.."
 
 /obj/item/fishing_hook/rescue/can_be_hooked(atom/target)
+	procstart = null
+	src.procstart = null
 	return ..() || isliving(target)
 
 /obj/item/fishing_hook/rescue/hook_attached(atom/target, obj/item/fishing_rod/rod)
+	procstart = null
+	src.procstart = null
 	if(isliving(target))
 		var/mob/living/living_target = target
 		living_target.apply_status_effect(/datum/status_effect/grouped/hooked, rod.fishing_line)
 
 // This hook can only fish in chasms.
 /obj/item/fishing_hook/rescue/reason_we_cant_fish(datum/fish_source/target_fish_source)
+	procstart = null
+	src.procstart = null
 	if(istype(target_fish_source, /datum/fish_source/chasm))
 		return ..()
 
@@ -509,6 +591,8 @@
 
 
 /obj/item/fishing_hook/rescue/get_hook_bonus_multiplicative(fish_type)
+	procstart = null
+	src.procstart = null
 	// Sorry, you won't catch fish with this.
 	if(ispath(fish_type, /obj/item/fish) || isfish(fish_type))
 		return RESCUE_HOOK_FISH_MULTIPLIER
@@ -534,6 +618,8 @@
 	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/gold = SMALL_MATERIAL_AMOUNT * 3, /datum/material/titanium = SMALL_MATERIAL_AMOUNT * 2)
 
 /obj/item/fishing_hook/stabilized/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("While fishing, you can hold the <b>Right</b> Mouse Button to move the bait down, rather than up.")
 
@@ -549,9 +635,13 @@
 		<b>It has to be bought from the black market uplink.</b>"
 
 /obj/item/fishing_hook/jaws/can_be_hooked(atom/target)
+	procstart = null
+	src.procstart = null
 	return ..() || isliving(target)
 
 /obj/item/fishing_hook/jaws/hook_attached(atom/target, obj/item/fishing_rod/rod)
+	procstart = null
+	src.procstart = null
 	if(isliving(target))
 		var/mob/living/living_target = target
 		living_target.apply_status_effect(/datum/status_effect/grouped/hooked/jaws, rod.fishing_line)
@@ -562,6 +652,8 @@
 	desc = "A slip of paper containing a pearl of wisdom about fishing within it, though you wish it were an actual pearl."
 
 /obj/item/paper/paperslip/fishing_tip/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	default_raw_text = pick(GLOB.fishing_tips)
 	return ..()
 
@@ -598,25 +690,35 @@
 	yeet_back = FALSE
 
 /obj/item/survivalcapsule/fishing/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CONTRABAND, INNATE_TRAIT)
 	register_context()
 	voice = SStts.random_tts_voice()
 
 /obj/item/survivalcapsule/fishing/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!held_item || held_item == src)
 		context[SCREENTIP_CONTEXT_RMB] = "Change fishing spot"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/survivalcapsule/fishing/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info("[EXAMINE_HINT("Right-Click")] to change the selected fishing spot when held.")
 
 /obj/item/survivalcapsule/fishing/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_tinynotice("A tiny print on the side reads: \"Use a cryptographic sequencer to disable safeties\".")
 
 /obj/item/survivalcapsule/fishing/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -625,6 +727,8 @@
 	return TRUE
 
 /obj/item/survivalcapsule/fishing/attack_self_secondary(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -648,11 +752,15 @@
 	return
 
 /obj/item/survivalcapsule/fishing/get_ignore_flags()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(obj_flags & EMAGGED)
 		. += CAPSULE_IGNORE_ANCHORED_OBJECTS|CAPSULE_IGNORE_BANNED_OBJECTS
 
 /obj/item/survivalcapsule/fishing/fail_feedback(status)
+	procstart = null
+	src.procstart = null
 	switch(status)
 		if(SHELTER_DEPLOY_BAD_AREA)
 			say("I refuse to deploy in this area.")
@@ -666,6 +774,8 @@
 			say("For fucks sake, deploy me somewhere less far fatched!")
 
 /obj/item/survivalcapsule/fishing/trigger_admin_alert(mob/triggerer, turf/trigger_loc)
+	procstart = null
+	src.procstart = null
 	var/datum/map_template/shelter/fishing/spot = template
 	if(spot.safe) //Don't log if the fishing spot is safe
 		return
@@ -696,6 +806,8 @@
 	var/fishing_modifier = -2
 
 /obj/item/storage/bag/fishing/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddElement(/datum/element/adjust_fishing_difficulty, fishing_modifier, ITEM_SLOT_HANDS)
@@ -731,10 +843,14 @@
 	var/obj/item/loaded_injector
 
 /obj/item/fish_genegun/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/eyestab)
 
 /obj/item/fish_genegun/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!loaded_injector)
@@ -748,6 +864,8 @@
 	. += info
 
 /obj/item/fish_genegun/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = base_icon_state
 	if(!loaded_injector)
@@ -755,6 +873,8 @@
 	icon_state += istype(loaded_injector, /obj/item/reagent_containers/syringe) ? "_extract" : "_inject"
 
 /obj/item/fish_genegun/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!loaded_injector)
 		balloon_alert(user, "gene-gun is empty!")
 		return
@@ -766,12 +886,16 @@
 	playsound(src, 'sound/items/weapons/gun/general/magazine_remove_full.ogg', 30, TRUE)
 
 /obj/item/fish_genegun/Exited(atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == loaded_injector)
 		loaded_injector = null
 		update_appearance(UPDATE_ICON)
 
 /obj/item/fish_genegun/item_interaction(mob/living/user, obj/item/item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/is_syringe = istype(item, /obj/item/reagent_containers/syringe)
 	if(!is_syringe && !istype(item, /obj/item/fish_gene))
 		return NONE
@@ -791,6 +915,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/fish_genegun/interact_with_atom(obj/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isfish(interacting_with))
 		return NONE
 	if(!loaded_injector)
@@ -859,6 +985,8 @@
 	var/datum/fish_trait/trait_type
 
 /obj/item/fish_gene/Initialize(mapload, datum/fish_trait/trait_type)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(trait_type)
 		src.trait_type = trait_type
@@ -866,10 +994,14 @@
 		update_appearance(UPDATE_NAME)
 
 /obj/item/fish_gene/update_name()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "fish trait injector ([trait_type::name])"
 
 /obj/item/fish_gene/interact_with_atom(obj/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isfish(interacting_with))
 		return NONE
 	if(interacting_with.flags_1 & HOLOGRAM_1)
@@ -882,6 +1014,8 @@
 	return inject_into_fish(fish, user, src)
 
 /obj/item/fish_gene/proc/inject_into_fish(obj/item/fish/fish, mob/living/user, obj/item/tool = src)
+	procstart = null
+	src.procstart = null
 	var/datum/fish_trait/trait = GLOB.fish_traits[trait_type]
 	if(!trait.apply_to_fish(fish, initial = FALSE))
 		to_chat(user, span_warning("You can't inject the \"[trait_type::name]\" trait into [fish]. [fish.p_They()] either [fish.p_have()] it or [fish.p_are()] incompatible with it."))

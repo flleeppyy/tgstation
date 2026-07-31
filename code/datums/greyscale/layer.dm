@@ -6,6 +6,8 @@
 	var/static/list/json_readers
 
 /datum/greyscale_layer/New(icon_file, list/json_data)
+	procstart = null
+	src.procstart = null
 	if(!json_readers)
 		json_readers = list()
 		for(var/path in subtypesof(/datum/json_reader))
@@ -18,15 +20,21 @@
 
 /// Override this to do initial set up
 /datum/greyscale_layer/proc/Initialize(icon_file)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Override this if you need to do something during a full config refresh from disk, return TRUE if something was changed
 /datum/greyscale_layer/proc/DiskRefresh()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// Handles the processing of the json data and conversion to correct value types.
 /// Will error on incorrect, missing, or unexpected values.
 /datum/greyscale_layer/proc/ReadJsonData(list/json_data)
+	procstart = null
+	src.procstart = null
 	var/list/required_values = list()
 	var/list/optional_values = list()
 	GetExpectedValues(required_values, optional_values)
@@ -57,16 +65,22 @@
 /// The lists are formatted like keyname:keytype_define.
 /// The key name is assigned to the var named the same on the layer type.
 /datum/greyscale_layer/proc/GetExpectedValues(list/required_values, list/optional_values)
+	procstart = null
+	src.procstart = null
 	optional_values[NAMEOF(src, color_ids)] = /datum/json_reader/number_color_list
 	required_values[NAMEOF(src, blend_mode)] = /datum/json_reader/blend_mode
 
 /// Use this proc for extra verification needed by a particular layer, gets run after all greyscale configs have finished reading their json files.
 /datum/greyscale_layer/proc/CrossVerify()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Used to actually create the layer using the given colors
 /// Do not override, use InternalGenerate instead
 /datum/greyscale_layer/proc/Generate(list/colors, list/render_steps, icon/new_icon)
+	procstart = null
+	src.procstart = null
 	var/list/processed_colors = list()
 	for(var/i in color_ids)
 		if(isnum(i))
@@ -79,6 +93,8 @@
 /// Used to actualy create the layer using the given colors
 /// Do not override, use InternalGenerate instead
 /datum/greyscale_layer/proc/GenerateUniversalIcon(list/colors, datum/universal_icon/new_icon)
+	procstart = null
+	src.procstart = null
 	var/list/processed_colors = list()
 	for(var/i in color_ids)
 		if(isnum(i))
@@ -91,10 +107,14 @@
 /// Override this to implement layers.
 /// The colors var will only contain colors that this layer is configured to use.
 /datum/greyscale_layer/proc/InternalGenerate(list/colors, list/render_steps, icon/new_icon)
+	procstart = null
+	src.procstart = null
 
 /// Override this to implement layers.
 /// The colors var will only contain colors that this layer is configured to use.
 /datum/greyscale_layer/proc/InternalGenerateUniversalIcon(list/colors, datum/universal_icon/new_icon)
+	procstart = null
+	src.procstart = null
 	return new_icon
 
 ////////////////////////////////////////////////////////
@@ -109,6 +129,8 @@
 	var/color_id
 
 /datum/greyscale_layer/icon_state/Initialize(icon_file)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!icon_exists(icon_file, icon_state))
 		CRASH("Configured icon state \[[icon_state]\] was not found in [icon_file]. Double check your json configuration.")
@@ -119,10 +141,14 @@
 		CRASH("Icon state layers can not have more than one color id")
 
 /datum/greyscale_layer/icon_state/GetExpectedValues(list/required_values, list/optional_values)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	required_values[NAMEOF(src, icon_state)] = /datum/json_reader/text
 
 /datum/greyscale_layer/icon_state/InternalGenerate(list/colors, list/render_steps, icon/new_icon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/icon/generated_icon = icon(icon)
 	if(length(colors))
@@ -130,6 +156,8 @@
 	return generated_icon
 
 /datum/greyscale_layer/icon_state/InternalGenerateUniversalIcon(list/colors, datum/universal_icon/new_icon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/universal_icon/generated_icon = uni_icon(icon_file, icon_state)
 	if(length(colors))
@@ -142,10 +170,14 @@
 	var/list/color_matrix
 
 /datum/greyscale_layer/color_matrix/GetExpectedValues(list/required_values, list/optional_values)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	required_values[NAMEOF(src, color_matrix)] = /datum/json_reader/color_matrix
 
 /datum/greyscale_layer/color_matrix/InternalGenerate(list/colors, list/render_steps, icon/new_icon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new_icon.MapColors(arglist(color_matrix))
 	return new_icon
@@ -157,20 +189,28 @@
 	var/datum/greyscale_config/reference_type
 
 /datum/greyscale_layer/reference/GetExpectedValues(list/required_values, list/optional_values)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	optional_values[NAMEOF(src, icon_state)] = /datum/json_reader/text
 	required_values[NAMEOF(src, reference_type)] = /datum/json_reader/greyscale_config
 
 /datum/greyscale_layer/reference/DiskRefresh()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return reference_type.Refresh(loadFromDisk=TRUE)
 
 /datum/greyscale_layer/reference/CrossVerify()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!reference_type.icon_states[icon_state])
 		CRASH("[src] expects icon_state '[icon_state]' but referenced configuration '[reference_type]' does not have it.")
 
 /datum/greyscale_layer/reference/InternalGenerate(list/colors, list/render_steps, icon/new_icon)
+	procstart = null
+	src.procstart = null
 	var/icon/generated_icon
 	if(render_steps)
 		var/list/reference_data = list()
@@ -181,6 +221,8 @@
 	return icon(generated_icon, icon_state)
 
 /datum/greyscale_layer/reference/InternalGenerateUniversalIcon(list/colors, datum/universal_icon/new_icon)
+	procstart = null
+	src.procstart = null
 	var/datum/universal_icon/generated_icon = reference_type.GenerateUniversalIcon(colors.Join(), icon_state, new_icon)
 	generated_icon = generated_icon.copy()
 	return generated_icon

@@ -26,6 +26,8 @@
 	VAR_FINAL/witnessed_death = FALSE
 
 /datum/brain_trauma/special/obsessed/on_gain()
+	procstart = null
+	src.procstart = null
 	//setup, linking, etc//
 	if(!obsession)//admins didn't set one
 		obsession = find_obsession()
@@ -52,6 +54,8 @@
 	owner.apply_status_effect(/datum/status_effect/speech/stutter/obsession, INFINITY)
 
 /datum/brain_trauma/special/obsessed/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(isnull(obsession))
 		viewing = FALSE
 		return
@@ -85,6 +89,8 @@
 		objective.timer -= seconds_per_tick SECONDS
 
 /datum/brain_trauma/special/obsessed/on_lose()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	antagonist?.trauma = null
 	antagonist = null
@@ -110,15 +116,21 @@
 	owner.remove_status_effect(/datum/status_effect/speech/stutter/obsession)
 
 /datum/brain_trauma/special/obsessed/proc/obession_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	obsession = null
 
 /datum/brain_trauma/special/obsessed/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	if(viewing && !witnessed_death && prob(12 * max(1 - (time_spend_creeping / (40 SECONDS)), 0.02) ))
 		addtimer(CALLBACK(src, PROC_REF(do_something_nervous)), rand(1 SECONDS, 3 SECONDS))
 
 /// Singal proc for [COMSIG_CARBON_HELPED], when our obsessed helps (hugs) our obsession, increases hug count
 /datum/brain_trauma/special/obsessed/proc/on_hug(datum/source, mob/living/hugged)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(hugged != obsession)
@@ -129,6 +141,8 @@
 
 /// Signal proc for [COMSIG_MOVABLE_GRABBED_RESISTING] to improve the obsessed's grabs
 /datum/brain_trauma/special/obsessed/proc/grab_resisting(datum/source, mob/living/grabbed, list/grab_stats)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT(owner, TRAIT_FEARLESS))
@@ -152,6 +166,8 @@
 
 /// Signal proc for [COMSIG_MOB_APPLY_DAMAGE_MODIFIERS], take less stamina damage when near our obsession
 /datum/brain_trauma/special/obsessed/proc/on_damage_mod(datum/source, list/damage_mods, damage, damage_type, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT(owner, TRAIT_FEARLESS))
@@ -162,6 +178,8 @@
 
 /// Checks if if we're being defensive over our obsession
 /datum/brain_trauma/special/obsessed/proc/is_defensive()
+	procstart = null
+	src.procstart = null
 	if(time_spend_creeping >= 20 SECONDS)
 		return TRUE
 	if(IS_UNCONSCIOUS(obsession))
@@ -169,6 +187,8 @@
 	return FALSE
 
 /datum/brain_trauma/special/obsessed/proc/do_something_nervous()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(owner) || IS_UNCONSCIOUS(owner) || HAS_TRAIT(owner, TRAIT_FEARLESS))
 		return
 
@@ -190,6 +210,8 @@
 
 // if the creep examines first, then the obsession examines them, have a 50% chance to possibly blow their cover. wearing a mask avoids this risk
 /datum/brain_trauma/special/obsessed/proc/stare(datum/source, mob/living/examining_mob, triggering_examiner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(examining_mob != owner || !triggering_examiner || prob(50))
@@ -199,16 +221,22 @@
 	return COMSIG_BLOCK_EYECONTACT
 
 /datum/brain_trauma/special/obsessed/proc/on_mind_lost(datum/source, mob/new_body, datum/mind/the_mind)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(antagonist, TYPE_PROC_REF(/datum/antagonist, store_datum))
 
 /datum/brain_trauma/special/obsessed/proc/on_mind_gain(datum/source, mob/new_body, datum/mind/the_mind)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(antagonist, TYPE_PROC_REF(/datum/antagonist, restore_datum), the_mind)
 
 /datum/brain_trauma/special/obsessed/proc/find_obsession()
+	procstart = null
+	src.procstart = null
 	var/list/generic_pool = list()
 	var/list/special_pool = list()
 

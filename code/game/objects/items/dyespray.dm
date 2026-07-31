@@ -6,9 +6,13 @@
 	icon_state = "dyespray"
 
 /obj/item/dyespray/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	dye(user, user)
 
 /obj/item/dyespray/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	dye(target, user)
 	return ..()
 
@@ -20,6 +24,8 @@
  */
 
 /obj/item/dyespray/proc/dye(mob/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(target))
 		return
 	var/mob/living/carbon/human/human_target = target
@@ -74,6 +80,8 @@
 	playsound(src, 'sound/effects/spray.ogg', 10, vary = TRUE)
 
 /obj/item/dyespray/proc/dye_organ(mob/living/carbon/human/target, mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/dyables = list()
 	var/list/choices = list()
 	for(var/obj/item/organ/organ as anything in target.organs)

@@ -2,6 +2,8 @@
 /datum/unit_test/moth_food
 
 /datum/unit_test/moth_food/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/suit/armor/bulletproof/light_snack = allocate(/obj/item/clothing/suit/armor/bulletproof)
 	light_snack.create_moth_snack()
 	var/datum/component/edible/eatability = light_snack.moth_snack.GetComponent(/datum/component/edible)
@@ -23,6 +25,8 @@
 /datum/unit_test/golem_food
 
 /datum/unit_test/golem_food/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/sheet/mineral/uranium/five/dinner = allocate(/obj/item/stack/sheet/mineral/uranium/five)
 	var/datum/component/golem_food/golem_food_data = dinner.GetComponent(/datum/component/golem_food)
 	golem_food_data.create_golem_snack(dinner)

@@ -61,10 +61,14 @@
 	custom_materials = null
 
 /obj/effect/rcd_hologram/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_IN(src, RCD_HOLOGRAM_FADE_TIME)
 
 /obj/item/construction/rcd/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	airlock_electronics = new(src)
 	airlock_electronics.name = "Access Control"
@@ -83,6 +87,8 @@
 	AddElement(/datum/element/openspace_item_click_handler)
 
 /obj/item/construction/rcd/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(construction_upgrades)
 		. += "It has the following upgrades installed:"
@@ -100,11 +106,15 @@
 			. += /obj/item/rcd_upgrade/cooling::name
 
 /obj/item/construction/rcd/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(airlock_electronics)
 	GLOB.rcd_list -= src
 	. = ..()
 
 /obj/item/construction/rcd/ui_action_click(mob/user, actiontype)
+	procstart = null
+	src.procstart = null
 	if (!COOLDOWN_FINISHED(src, destructive_scan_cooldown))
 		to_chat(user, span_warning("[src] lets out a low buzz."))
 		return
@@ -113,6 +123,8 @@
 	rcd_scan(src)
 
 /obj/item/construction/rcd/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(user)
 
 	if(!isopenturf(T)) // Oh fuck
@@ -144,6 +156,8 @@
  * * [mob][user]- the user
  */
 /obj/item/construction/rcd/proc/can_place(atom/target, list/rcd_results, mob/user)
+	procstart = null
+	src.procstart = null
 	var/rcd_mode = rcd_results[RCD_DESIGN_MODE]
 	var/atom/movable/rcd_structure = rcd_results[RCD_DESIGN_PATH]
 	/**
@@ -231,6 +245,8 @@
 	return TRUE
 
 /obj/item/construction/rcd/build_delay(mob/user, delay, atom/target)
+	procstart = null
+	src.procstart = null
 	//unaffected by ui changes
 	if(mode == RCD_DECONSTRUCT)
 		if(delay <= 0)
@@ -249,6 +265,8 @@
  * * [mob][user]- the user building this structure
  */
 /obj/item/construction/rcd/proc/rcd_create(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(isopenturf(target))
 		var/turf/open/open = target
 		if(!open.CanBuildHere())
@@ -296,6 +314,8 @@
  * * rcd_results- list of params which contains the cost & build mode to create the structure
  */
 /obj/item/construction/rcd/proc/_rcd_create_effect(atom/target, mob/user, delay, list/rcd_results)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/obj/effect/constructing_effect/rcd_effect = new(get_turf(target), delay, rcd_results[RCD_DESIGN_MODE], construction_upgrades)
@@ -328,20 +348,28 @@
 	return TRUE
 
 /obj/item/construction/rcd/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/rcd),
 	)
 
 /obj/item/construction/rcd/ui_host(mob/user)
+	procstart = null
+	src.procstart = null
 	return owner || ..()
 
 /obj/item/construction/rcd/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "RapidConstructionDevice", name)
 		ui.open()
 
 /obj/item/construction/rcd/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 
 	var/list/electronics_data = airlock_electronics.ui_static_data(user)
@@ -377,6 +405,8 @@
 	return data
 
 /obj/item/construction/rcd/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 
 	//main categories
@@ -391,6 +421,8 @@
 	return data
 
 /obj/item/construction/rcd/handle_ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	playsound(src, SFX_TOOL_SWITCH, 20, TRUE)
 
 	switch(action)
@@ -439,10 +471,14 @@
 	return TRUE
 
 /obj/item/construction/rcd/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui_interact(user)
 
 /obj/item/construction/rcd/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -451,6 +487,8 @@
 	return rcd_create(interacting_with, user)
 
 /obj/item/construction/rcd/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!ranged || !range_check(interacting_with, user))
 		return ITEM_INTERACT_BLOCKING
 
@@ -458,10 +496,14 @@
 	return rcd_create(interacting_with, user)
 
 /obj/item/construction/rcd/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	mode = RCD_DECONSTRUCT
 	return rcd_create(interacting_with, user)
 
 /obj/item/construction/rcd/ranged_interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!ranged || !range_check(interacting_with, user))
 		return ITEM_INTERACT_BLOCKING
 
@@ -469,15 +511,21 @@
 	return rcd_create(interacting_with, user)
 
 /obj/item/construction/rcd/handle_openspace_click(turf/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	interact_with_atom(target, user, modifiers)
 
 /obj/item/construction/rcd/proc/detonate_pulse()
+	procstart = null
+	src.procstart = null
 	audible_message(span_danger("<b>[src] begins to vibrate and buzz loudly!</b>"), \
 	span_danger("<b>[src] begins vibrating violently!</b>"))
 	// 5 seconds to get rid of it
 	addtimer(CALLBACK(src, PROC_REF(detonate_pulse_explode)), 5 SECONDS)
 
 /obj/item/construction/rcd/proc/detonate_pulse_explode()
+	procstart = null
+	src.procstart = null
 	explosion(src, light_impact_range = 3, flame_range = 1, flash_range = 1)
 	qdel(src)
 
@@ -488,6 +536,8 @@
 	var/energyfactor = 0.072 * STANDARD_CELL_CHARGE
 
 /obj/item/construction/rcd/borg/get_matter(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!iscyborg(user))
 		return 0
 	var/mob/living/silicon/robot/borgy = user
@@ -497,6 +547,8 @@
 	return borgy.cell.charge
 
 /obj/item/construction/rcd/borg/useResource(amount, mob/user, dry_run)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/borgy = user
 	if(!iscyborg(borgy))
 		return FALSE
@@ -581,11 +633,15 @@
 	custom_materials = null
 
 /obj/item/construction/rcd/exosuit/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(ismecha(owner))
 		return owner.ui_status(user)
 	return UI_CLOSE
 
 /obj/item/construction/rcd/exosuit/build_delay(mob/user, delay, atom/target)
+	procstart = null
+	src.procstart = null
 	if(delay <= 0)
 		return TRUE
 
@@ -598,6 +654,8 @@
 	return module.do_after_mecha(target, user, delay)
 
 /obj/item/construction/rcd/exosuit/get_matter(mob/user)
+	procstart = null
+	src.procstart = null
 	if(silo_link)
 		return ..()
 	if(!ismecha(owner))
@@ -606,6 +664,8 @@
 	return round(gundam.get_charge() / MASS_TO_ENERGY)
 
 /obj/item/construction/rcd/exosuit/useResource(amount, mob/user, dry_run)
+	procstart = null
+	src.procstart = null
 	if(silo_link)
 		return ..()
 	if(!ismecha(owner))
@@ -620,6 +680,8 @@
 	return TRUE
 
 /obj/item/construction/rcd/exosuit/detonate_pulse()
+	procstart = null
+	src.procstart = null
 	var/obj/item/mecha_parts/mecha_equipment/rcd/ourshell = loc
 	if(!istype(ourshell))
 		return
@@ -629,6 +691,8 @@
 	addtimer(CALLBACK(src, PROC_REF(detonate_pulse_explode)), 5 SECONDS)
 
 /obj/item/construction/rcd/exosuit/detonate_pulse_explode()
+	procstart = null
+	src.procstart = null
 	var/obj/item/mecha_parts/mecha_equipment/rcd/ourshell = loc
 	explosion(ourshell, light_impact_range = 3, flame_range = 1, flash_range = 1)
 	if(owner)

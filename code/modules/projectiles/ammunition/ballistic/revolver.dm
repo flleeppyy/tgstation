@@ -24,6 +24,8 @@
 	projectile_type = /obj/projectile/bullet/c357/heartseeker
 
 /obj/item/ammo_casing/c357/heartseeker/ready_proj(atom/target, mob/living/user, quiet, zone_override, atom/fired_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isturf(target))
 		loaded_projectile.set_homing_target(target)
@@ -101,16 +103,22 @@
 	var/damage = 15 //max potency, is set
 
 /obj/item/ammo_casing/pea/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(60, SEALED_CONTAINER)
 
 /obj/item/ammo_casing/pea/ready_proj(atom/target, mob/living/user, quiet, zone_override, atom/fired_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(loaded_projectile))
 		return
 	loaded_projectile.damage = damage
 
 /obj/item/ammo_casing/pea/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(loaded_projectile))
 		return

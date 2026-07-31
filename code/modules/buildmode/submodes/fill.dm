@@ -7,6 +7,8 @@
 	var/atom/objholder = null
 
 /datum/buildmode_mode/fill/show_help(client/builder)
+	procstart = null
+	src.procstart = null
 	to_chat(builder, span_purple(boxed_message(
 		"[span_bold("Select corner")] -> Left Mouse Button on turf/obj/mob\n\
 		[span_bold("Delete region")] -> Left Mouse Button + Alt on turf/obj/mob\n\
@@ -14,6 +16,8 @@
 	)
 
 /datum/buildmode_mode/fill/change_settings(client/c)
+	procstart = null
+	src.procstart = null
 	var/target_path = input(c, "Enter typepath:" ,"Typepath","/obj/structure/closet")
 	objholder = text2path(target_path)
 	if(!ispath(objholder))
@@ -29,6 +33,8 @@
 	deselect_region()
 
 /datum/buildmode_mode/fill/handle_click(client/c, params, obj/object)
+	procstart = null
+	src.procstart = null
 	if(isnull(objholder))
 		to_chat(c, span_warning("Select an object type first."))
 		deselect_region()
@@ -36,6 +42,8 @@
 	..()
 
 /datum/buildmode_mode/fill/handle_selected_area(client/c, params)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 
 	if(LAZYACCESS(modifiers, LEFT_CLICK)) //rectangular

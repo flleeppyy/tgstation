@@ -23,17 +23,25 @@
 	var/emitter_range = SOUND_EMITTER_ZLEVEL //The range this emitter's sound is heard at; this isn't a number, but a string (see the defines above)
 
 /obj/effect/sound_emitter/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(!force)
 		return QDEL_HINT_LETMELIVE
 	. = ..()
 
 /obj/effect/sound_emitter/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/sound_emitter/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/sound_emitter/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isobserver(user))
 		return
@@ -46,12 +54,16 @@
 
 //ATTACK GHOST IGNORING PARENT RETURN VALUE
 /obj/effect/sound_emitter/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!check_rights_for(user.client, R_SOUND))
 		user.examinate(src)
 		return
 	edit_emitter(user)
 
 /obj/effect/sound_emitter/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!check_rights_for(user.client, R_SOUND))
 		return CLICK_ACTION_BLOCKING
 
@@ -60,6 +72,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/effect/sound_emitter/proc/edit_emitter(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat = ""
 	dat += "<b>Label:</b> <a href='byond://?src=[text_ref(src)];edit_label=1'>[maptext ? maptext : "No label set!"]</a><br>"
 	dat += "<br>"
@@ -76,6 +90,8 @@
 	popup.open()
 
 /obj/effect/sound_emitter/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!ismob(usr) || !usr.client || !check_rights_for(usr.client, R_SOUND))
 		return
@@ -125,6 +141,8 @@
 	edit_emitter(user) //Refresh the UI to see our changes
 
 /obj/effect/sound_emitter/proc/activate(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/hearing_mobs = list()
 	if(motus_operandi == SOUND_EMITTER_LOCAL)
 		playsound(src, sound_file, sound_volume, FALSE)

@@ -14,6 +14,8 @@
 	var/worm_chance
 
 /datum/element/diggable/Attach(datum/target, to_spawn, amount = 1, worm_chance = 30, action_text = "dig up", action_text_third_person = "digs up")
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isturf(target))
 		return ELEMENT_INCOMPATIBLE
@@ -30,11 +32,15 @@
 	RegisterSignal(target, COMSIG_ATOM_TOOL_ACT(TOOL_SHOVEL), PROC_REF(on_shovel))
 
 /datum/element/diggable/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_ATOM_TOOL_ACT(TOOL_SHOVEL))
 
 /// Signal proc for [COMSIG_ATOM_TOOL_ACT] via [TOOL_SHOVEL].
 /datum/element/diggable/proc/on_shovel(turf/source, mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/i in 1 to amount)

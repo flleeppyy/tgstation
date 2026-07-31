@@ -5,17 +5,23 @@
 	var/atom/target_atom
 
 /datum/bt_node/ai_behavior/break_out_of_object/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if (!should_attack_target(controller, target_atom))
 		return FALSE
 	return TRUE
 
 /datum/bt_node/ai_behavior/break_out_of_object/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if (!should_attack_target(controller, target_atom))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED
 	INVOKE_ASYNC(controller, TYPE_PROC_REF(/datum/ai_controller, ai_interact), target_atom, TRUE)
 	return AI_BEHAVIOR_DELAY
 
 /datum/bt_node/ai_behavior/break_out_of_object/proc/should_attack_target(datum/ai_controller/controller, atom/target)
+	procstart = null
+	src.procstart = null
 	if (QDELETED(target))
 		return FALSE
 	var/mob/living/pawn = controller.pawn
@@ -29,10 +35,14 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/break_out_of_object/from_bb/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[target_key]
 	return should_attack_target(controller, target)
 
 /datum/bt_node/ai_behavior/break_out_of_object/from_bb/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[target_key]
 	if(!should_attack_target(controller, target))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED

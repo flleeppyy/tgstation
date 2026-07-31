@@ -13,6 +13,8 @@
 	fish_source_flags = FISH_SOURCE_FLAG_EXPLOSIVE_NONE
 
 /datum/fish_source/surgery/spawn_reward(reward_path, atom/spawn_location, atom/fishing_spot, obj/item/fishing_rod/used_rod)
+	procstart = null
+	src.procstart = null
 	if(reward_path != FISHING_RANDOM_ORGAN)
 		return ..()
 
@@ -41,6 +43,8 @@
 	return chosen
 
 /datum/fish_source/surgery/generate_wiki_contents(datum/autowiki/fish_sources/wiki)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data += LIST_VALUE_WRAP_LISTS(list(

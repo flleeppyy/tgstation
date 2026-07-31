@@ -133,6 +133,8 @@
 	)
 
 /mob/living/basic/bot/cleanbot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	generate_ai_keys()
@@ -161,6 +163,8 @@
 	update_appearance(UPDATE_ICON)
 
 /mob/living/basic/bot/cleanbot/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(arrived, /obj/item/reagent_containers/cup/bucket))
 		QDEL_NULL(build_bucket)
@@ -175,6 +179,8 @@
 		update_appearance()
 
 /mob/living/basic/bot/cleanbot/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == build_bucket)
 		build_bucket = null
@@ -185,6 +191,8 @@
 	update_appearance()
 
 /mob/living/basic/bot/cleanbot/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ascended && !IS_UNCONSCIOUS_OR_CRIT(user) && user.client)
 		user.client.give_award(/datum/award/achievement/misc/cleanboss, user)
@@ -193,21 +201,29 @@
 	. += span_warning("Is that \a [weapon] taped to it...?")
 
 /mob/living/basic/bot/cleanbot/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = (mode == BOT_CLEANING) ? "[base_icon]-c" : "[base_icon][!!(bot_mode_flags & BOT_MODE_ON)]"
 
 /mob/living/basic/bot/cleanbot/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(var_name == NAMEOF(src, base_icon))
 		update_appearance(UPDATE_ICON)
 
 /mob/living/basic/bot/cleanbot/emag_effects(mob/user)
+	procstart = null
+	src.procstart = null
 	if(weapon)
 		weapon.force = initial(weapon.force)
 	balloon_alert(user, "safeties disabled")
 	audible_message(span_danger("[src] buzzes oddly!"))
 
 /mob/living/basic/bot/cleanbot/explode()
+	procstart = null
+	src.procstart = null
 	var/atom/drop_loc = drop_location()
 	build_bucket?.forceMove(drop_loc)
 	new /obj/item/assembly/prox_sensor(drop_loc)
@@ -217,6 +233,8 @@
 	return ..()
 
 /mob/living/basic/bot/cleanbot/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(weapon))
 		return
@@ -225,6 +243,8 @@
 
 // Variables sent to TGUI
 /mob/living/basic/bot/cleanbot/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 	if((bot_access_flags & BOT_COVER_LOCKED) && !HAS_SILICON_ACCESS(user))
 		return data
@@ -236,6 +256,8 @@
 
 // Actions received from TGUI
 /mob/living/basic/bot/cleanbot/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/user = ui.user
 	if(. || (bot_access_flags & BOT_COVER_LOCKED) && !HAS_SILICON_ACCESS(user))
@@ -252,12 +274,16 @@
 			janitor_mode_flags ^= CLEANBOT_CLEAN_DRAWINGS
 
 /mob/living/basic/bot/cleanbot/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(build_bucket)
 	QDEL_NULL(our_mop)
 	GLOB.janitor_devices -= src
 	return ..()
 
 /mob/living/basic/bot/cleanbot/proc/on_attack_by(datum/source, obj/item/used_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(used_item, /obj/item/knife) || user.combat_mode)
 		return
@@ -265,12 +291,16 @@
 	return COMPONENT_NO_AFTERATTACK
 
 /mob/living/basic/bot/cleanbot/proc/attach_knife(mob/living/user, obj/item/used_item)
+	procstart = null
+	src.procstart = null
 	balloon_alert(user, "attaching knife...")
 	if(!do_after(user, 2.5 SECONDS, target = src))
 		return
 	deputize(used_item, user)
 
 /mob/living/basic/bot/cleanbot/proc/deputize(obj/item/knife, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!in_range(src, user) || !user.transferItemToLoc(knife, src))
 		balloon_alert(user, "couldn't attach!")
 		return FALSE
@@ -284,6 +314,8 @@
 	return TRUE
 
 /mob/living/basic/bot/cleanbot/proc/update_title(new_job_title)
+	procstart = null
+	src.procstart = null
 	if(isnull(job_titles[new_job_title]) || (new_job_title in stolen_valor))
 		return
 
@@ -298,6 +330,8 @@
 		ascended = TRUE
 
 /mob/living/basic/bot/cleanbot/proc/on_entered(datum/source, atom/movable/shanked_victim)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!weapon || !has_gravity() || !iscarbon(shanked_victim))
 		return
@@ -317,6 +351,8 @@
 	stabbed_carbon.Knockdown(2 SECONDS)
 
 /mob/living/basic/bot/cleanbot/proc/pre_attack(mob/living/source, atom/target, proximity, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!proximity || !can_unarmed_attack())
@@ -335,6 +371,8 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /mob/living/basic/bot/cleanbot/proc/generate_ai_keys()
+	procstart = null
+	src.procstart = null
 	ai_controller.set_blackboard_key(BB_CLEANABLE_DECALS, cleanable_decals)
 	ai_controller.set_blackboard_key(BB_CLEANABLE_BLOOD, cleanable_blood)
 	ai_controller.set_blackboard_key(BB_HUNTABLE_PESTS, huntable_pests)

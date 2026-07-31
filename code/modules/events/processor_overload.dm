@@ -10,6 +10,8 @@
 	announce_when = 1
 
 /datum/round_event/processor_overload/announce(fake)
+	procstart = null
+	src.procstart = null
 	var/alert = pick("Exospheric bubble inbound. Processor overload is likely. Please contact you*%xp25)`6cq-BZZT",
 		"Exospheric bubble inbound. Processor overload is likel*1eta;c5;'1v¬-BZZZT",
 		"Exospheric bubble inbound. Processor ov#MCi46:5.;@63-BZZZZT",
@@ -29,6 +31,8 @@
 		priority_announce(alert, "Anomaly Alert")
 
 /datum/round_event/processor_overload/start()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/telecomms/processor/spinny_thing in GLOB.telecomm_machines)
 		if(!prob(10))
 			spinny_thing.emp_act(EMP_HEAVY)

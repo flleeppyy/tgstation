@@ -2,12 +2,16 @@
 /datum/corpse_flavor
 
 /datum/corpse_flavor/proc/apply_flavor(mob/living/carbon/human/working_dead, list/job_gear, list/datum/callback/on_revive_and_player_occupancy)
+	procstart = null
+	src.procstart = null
 
 /// Applies a quirk when selected
 /datum/corpse_flavor/quirk
 	var/datum/quirk/quirk
 
 /datum/corpse_flavor/quirk/apply_flavor(mob/living/carbon/human/working_dead, list/job_gear, list/datum/callback/on_revive_and_player_occupancy)
+	procstart = null
+	src.procstart = null
 	working_dead.add_quirk(quirk, announce = FALSE)
 
 /datum/corpse_flavor/quirk/prosthetic_limb

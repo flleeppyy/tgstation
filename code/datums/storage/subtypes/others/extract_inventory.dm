@@ -25,12 +25,16 @@
 		qdel(src)
 
 /datum/storage/extract_inventory/proc/processCubes(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/slimecross/reproductive/parentSlimeExtract = parent
 	if(real_location.contents.len >= max_slots)
 		QDEL_LIST(parentSlimeExtract.contents)
 		createExtracts(user)
 
 /datum/storage/extract_inventory/proc/createExtracts(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/slimecross/reproductive/parentSlimeExtract = parent
 
 	var/cores = rand(1,4)

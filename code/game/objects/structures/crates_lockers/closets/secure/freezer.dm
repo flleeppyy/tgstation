@@ -17,6 +17,8 @@
 	var/minimum_temperature = T0C - 60
 
 /obj/structure/closet/secure_closet/freezer/process_internal_air(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(opened)
 		var/datum/gas_mixture/current_exposed_air = loc.return_air()
 		if(!current_exposed_air)
@@ -31,6 +33,8 @@
 		internal_air.temperature -= temperature_decrease_this_tick
 
 /obj/structure/closet/secure_closet/freezer/ex_act()
+	procstart = null
+	src.procstart = null
 	if(jones)
 		return ..()
 	jones = TRUE
@@ -38,6 +42,8 @@
 	return FALSE
 
 /obj/structure/closet/secure_closet/freezer/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	new /obj/item/assembly/igniter/condenser(drop_location())
 
 /obj/structure/closet/secure_closet/freezer/empty
@@ -52,6 +58,8 @@
 	req_access = list(ACCESS_KITCHEN)
 
 /obj/structure/closet/secure_closet/freezer/kitchen/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 3)
 		new /obj/item/reagent_containers/condiment/flour(src)
@@ -68,6 +76,8 @@
 	req_access = null
 
 /obj/structure/closet/secure_closet/freezer/kitchen/maintenance/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 5)
 		new /obj/item/reagent_containers/condiment/milk(src)
@@ -84,10 +94,14 @@
 	req_access = list(ACCESS_KITCHEN)
 
 /obj/structure/closet/secure_closet/freezer/meat/update_name()
+	procstart = null
+	src.procstart = null
 	name = check_holidays(VEGAN_DAY) ? "vegan fridge" : "meat fridge"
 	return ..()
 
 /obj/structure/closet/secure_closet/freezer/meat/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!check_holidays(VEGAN_DAY))
 		for(var/i in 1 to 4)
@@ -105,6 +119,8 @@
 	name = "refrigerator"
 
 /obj/structure/closet/secure_closet/freezer/gulag_fridge/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 3)
 		new /obj/item/reagent_containers/cup/glass/bottle/beer/light(src)
@@ -114,6 +130,8 @@
 	req_access = list(ACCESS_KITCHEN)
 
 /obj/structure/closet/secure_closet/freezer/fridge/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 5)
 		new /obj/item/reagent_containers/condiment/milk(src)
@@ -140,6 +158,8 @@
 	req_access = list(ACCESS_VAULT)
 
 /obj/structure/closet/secure_closet/freezer/money/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 3)
 		new /obj/item/stack/spacecash/c1000(src)
@@ -154,5 +174,7 @@
 	req_access = list(ACCESS_THEATRE)
 
 /obj/structure/closet/secure_closet/freezer/cream_pie/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/food/pie/cream(src)

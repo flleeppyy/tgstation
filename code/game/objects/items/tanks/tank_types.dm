@@ -13,10 +13,14 @@
 
 /// Allows carbon to toggle internals via AltClick of the equipped tank.
 /obj/item/tank/internals/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	toggle_internals(user)
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/tank/internals/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Alt-click the tank to toggle the valve.")
 
@@ -35,6 +39,8 @@
 
 
 /obj/item/tank/internals/oxygen/populate_gas()
+	procstart = null
+	src.procstart = null
 	air_contents.set_gas(/datum/gas/oxygen, (6*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C))
 
 
@@ -53,6 +59,8 @@
 	dog_fashion = null
 
 /obj/item/tank/internals/oxygen/empty/populate_gas()
+	procstart = null
+	src.procstart = null
 	return
 
 /*
@@ -67,11 +75,15 @@
 	force = 10
 
 /obj/item/tank/internals/anesthetic/populate_gas()
+	procstart = null
+	src.procstart = null
 	air_contents.set_gas(/datum/gas/oxygen, (3*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C) * O2STANDARD)
 	air_contents.set_gas(/datum/gas/nitrous_oxide, (3*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C) * N2STANDARD)
 
 
 /obj/item/tank/internals/anesthetic/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("A warning is etched into [src]...")
 	. += span_warning("There is no process in the body that uses N2O, so patients will exhale the N2O... exposing you to it. Make sure to work in a well-ventilated space to avoid sleepy mishaps.")
@@ -81,6 +93,8 @@
 	icon_state = "anesthetic_warning"
 
 /obj/item/tank/internals/anesthetic/pure/populate_gas()
+	procstart = null
+	src.procstart = null
 	air_contents.adjust_gas(/datum/gas/nitrous_oxide, (10*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C))
 
 /*
@@ -99,9 +113,13 @@
 
 
 /obj/item/tank/internals/plasma/populate_gas()
+	procstart = null
+	src.procstart = null
 	air_contents.set_gas(/datum/gas/plasma, (3*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C))
 
 /obj/item/tank/internals/plasma/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/flamethrower))
 		return ..()
 	var/obj/item/flamethrower/spewer = tool
@@ -115,9 +133,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/tank/internals/plasma/full/populate_gas()
+	procstart = null
+	src.procstart = null
 	air_contents.set_gas(/datum/gas/plasma, (10*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C))
 
 /obj/item/tank/internals/plasma/empty/populate_gas()
+	procstart = null
+	src.procstart = null
 	return
 
 /*
@@ -134,9 +156,13 @@
 	distribute_pressure = TANK_PLASMAMAN_RELEASE_PRESSURE
 
 /obj/item/tank/internals/plasmaman/populate_gas()
+	procstart = null
+	src.procstart = null
 	air_contents.set_gas(/datum/gas/plasma, (3*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C))
 
 /obj/item/tank/internals/plasmaman/full/populate_gas()
+	procstart = null
+	src.procstart = null
 	air_contents.set_gas(/datum/gas/plasma, (10*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C))
 
 
@@ -153,9 +179,13 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 0.8)
 
 /obj/item/tank/internals/plasmaman/belt/full/populate_gas()
+	procstart = null
+	src.procstart = null
 	air_contents.set_gas(/datum/gas/plasma, (10*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C))
 
 /obj/item/tank/internals/plasmaman/belt/empty/populate_gas()
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -180,10 +210,14 @@
 	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/tank/internals/emergency_oxygen/populate_gas()
+	procstart = null
+	src.procstart = null
 	air_contents.set_gas(/datum/gas/oxygen, (10*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C))
 
 
 /obj/item/tank/internals/emergency_oxygen/empty/populate_gas()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/tank/internals/emergency_oxygen/engi
@@ -197,6 +231,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 0.75)
 
 /obj/item/tank/internals/emergency_oxygen/engi/empty/populate_gas()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/tank/internals/emergency_oxygen/double
@@ -208,6 +244,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT)
 
 /obj/item/tank/internals/emergency_oxygen/double/empty/populate_gas()
+	procstart = null
+	src.procstart = null
 	return
 
 // *
@@ -225,6 +263,8 @@
 	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/tank/internals/generic/populate_gas()
+	procstart = null
+	src.procstart = null
 	return
 
 /*
@@ -242,12 +282,16 @@
 /obj/item/tank/internals/emergency_oxygen/engi/clown/n2o
 
 /obj/item/tank/internals/emergency_oxygen/engi/clown/n2o/populate_gas()
+	procstart = null
+	src.procstart = null
 	air_contents.set_gas(/datum/gas/oxygen, (10*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C) * 0.95)
 	air_contents.set_gas(/datum/gas/nitrous_oxide, (10*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C) * 0.05)
 
 /obj/item/tank/internals/emergency_oxygen/engi/clown/bz
 
 /obj/item/tank/internals/emergency_oxygen/engi/clown/bz/populate_gas()
+	procstart = null
+	src.procstart = null
 	air_contents.set_gas(/datum/gas/oxygen,(10*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C) * 0.9)
 	air_contents.set_gas(/datum/gas/bz,(10*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C) * 0.1)
 
@@ -255,5 +299,7 @@
 	distribute_pressure = TANK_CLOWN_RELEASE_PRESSURE + 2
 
 /obj/item/tank/internals/emergency_oxygen/engi/clown/helium/populate_gas()
+	procstart = null
+	src.procstart = null
 	air_contents.set_gas(/datum/gas/oxygen, (10*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C) * 0.75)
 	air_contents.set_gas(/datum/gas/helium, (10*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C) * 0.25)

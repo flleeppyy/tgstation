@@ -7,6 +7,8 @@
 	var/disposal_target_key
 
 /datum/bt_node/ai_behavior/stuff_in_disposal/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/async_flags = handle_async()
 	if(async_flags)
 		return async_flags
@@ -21,6 +23,8 @@
 	return start_async()
 
 /datum/bt_node/ai_behavior/stuff_in_disposal/perform_async(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = controller.blackboard[attack_target_key]
 	var/obj/machinery/disposal/disposal = controller.blackboard[disposal_target_key]
 	var/mob/living/living_pawn = controller.pawn
@@ -32,6 +36,8 @@
 	finish_async(AI_BEHAVIOR_SUCCEEDED)
 
 /datum/bt_node/ai_behavior/stuff_in_disposal/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(attack_target_key)
 	controller.clear_blackboard_key(disposal_target_key)

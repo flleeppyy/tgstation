@@ -16,6 +16,8 @@
 	var/mob/living/basic/shade/bound_spirit
 
 /datum/component/spirit_holding/Initialize(datum/mind/soul_to_bind, mob/awakener, allow_renaming = TRUE, allow_channeling = TRUE, allow_exorcism = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(parent)) //you may apply this to mobs, i take no responsibility for how that works out
 		return COMPONENT_INCOMPATIBLE
 	src.allow_renaming = allow_renaming
@@ -25,20 +27,28 @@
 		bind_the_soule(soul_to_bind, awakener, soul_to_bind.name)
 
 /datum/component/spirit_holding/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(bound_spirit)
 		QDEL_NULL(bound_spirit)
 
 /datum/component/spirit_holding/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, PROC_REF(on_attack_self))
 	RegisterSignal(parent, COMSIG_QDELETING, PROC_REF(on_destroy))
 
 /datum/component/spirit_holding/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ATOM_EXAMINE, COMSIG_ITEM_ATTACK_SELF, COMSIG_QDELETING))
 
 ///signal fired on examining the parent
 /datum/component/spirit_holding/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!bound_spirit)
 		examine_list += span_notice("[parent] sleeps.[allow_channeling ? " Use [parent] in your hands to attempt to awaken it." : ""]")
@@ -47,10 +57,14 @@
 
 ///signal fired on self attacking parent
 /datum/component/spirit_holding/proc/on_attack_self(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(get_ghost), user)
 
 /datum/component/spirit_holding/proc/get_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	var/atom/thing = parent
 	if(attempting_awakening)
 		thing.balloon_alert(user, "already channeling!")
@@ -78,6 +92,8 @@
 
 /// On conclusion of the ghost poll
 /datum/component/spirit_holding/proc/affix_spirit(mob/awakener, mob/dead/observer/ghost)
+	procstart = null
+	src.procstart = null
 
 	var/atom/thing = parent
 
@@ -104,6 +120,8 @@
 		bound_spirit.fully_replace_character_name(null, "The spirit of [valid_input_name]", log_new_name = TRUE)
 
 /datum/component/spirit_holding/proc/bind_the_soule(datum/mind/chosen_spirit, mob/awakener, name_override)
+	procstart = null
+	src.procstart = null
 	bound_spirit = new(parent)
 	chosen_spirit.transfer_to(bound_spirit)
 	bound_spirit.fully_replace_character_name(null, "The spirit of [name_override || parent]")
@@ -120,6 +138,8 @@
  * * awakener: user who interacted with the blade
  */
 /datum/component/spirit_holding/proc/custom_name(mob/awakener, iteration = 1)
+	procstart = null
+	src.procstart = null
 	if(iteration > 5)
 		return "indecision" // The spirit of indecision
 	var/chosen_name = sanitize_name(tgui_input_text(bound_spirit, "What are you named?", "Spectral Nomenclature", max_length = MAX_NAME_LEN))
@@ -130,10 +150,14 @@
 
 ///signal fired from a mob moving inside the parent
 /datum/component/spirit_holding/proc/block_buckle_message(datum/source, mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return COMSIG_BLOCK_RELAYMOVE
 
 /datum/component/spirit_holding/proc/on_bible_smacked(datum/source, mob/living/user, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(attempt_exorcism), user)
 
@@ -145,6 +169,8 @@
  * * exorcist: user who is attempting to remove the spirit
  */
 /datum/component/spirit_holding/proc/attempt_exorcism(mob/exorcist)
+	procstart = null
+	src.procstart = null
 	if(!allow_exorcism)
 		return // just in case
 	var/atom/movable/exorcised_movable = parent
@@ -164,6 +190,8 @@
 
 ///signal fired from parent being destroyed
 /datum/component/spirit_holding/proc/on_destroy(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	to_chat(bound_spirit, span_userdanger("You were destroyed!"))
 	QDEL_NULL(bound_spirit)

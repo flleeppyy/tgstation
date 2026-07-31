@@ -19,6 +19,8 @@
 	start_empty = TRUE
 
 /obj/item/ammo_box/magazine/internal/cylinder/rus357/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for (var/i in 1 to max_ammo - 1)
 		stored_ammo += new /obj/item/ammo_casing/c357/spent(src)

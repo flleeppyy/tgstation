@@ -43,14 +43,20 @@
 	acid = 100
 
 /obj/vehicle/sealed/mecha/marauder/Initialize(mapload, built_manually)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	smoke_system = new(src, 3, holder = src)
 
 /obj/vehicle/sealed/mecha/marauder/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(smoke_system)
 	return ..()
 
 /obj/vehicle/sealed/mecha/marauder/generate_actions()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	initialize_passenger_action_type(/datum/action/vehicle/sealed/mecha/mech_smoke)
 	initialize_passenger_action_type(/datum/action/vehicle/sealed/mecha/mech_zoom)
@@ -65,6 +71,8 @@
 	)
 
 /obj/vehicle/sealed/mecha/marauder/loaded/populate_parts()
+	procstart = null
+	src.procstart = null
 	cell = new /obj/item/stock_parts/power_store/cell/bluespace(src)
 	scanmod = new /obj/item/stock_parts/scanning_module/triphasic(src)
 	capacitor = new /obj/item/stock_parts/capacitor/quadratic(src)
@@ -72,10 +80,14 @@
 	update_part_values()
 
 /obj/vehicle/sealed/mecha/marauder/remove_occupant(mob/driver)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	zoom_mode = FALSE
 
 /obj/vehicle/sealed/mecha/marauder/can_move(direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !zoom_mode)
 		return
@@ -90,6 +102,8 @@
 	button_icon_state = "mech_smoke"
 
 /datum/action/vehicle/sealed/mecha/mech_smoke/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -106,6 +120,8 @@
 		return FALSE
 
 /datum/action/vehicle/sealed/mecha/mech_smoke/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -122,6 +138,8 @@
 	button_icon_state = "mech_zoom_off"
 
 /datum/action/vehicle/sealed/mecha/mech_zoom/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -211,6 +229,8 @@
 	acid = 100
 
 /obj/vehicle/sealed/mecha/marauder/mauler/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_minimap_blip(src, MINIMAP_SYNDICATE_MECH_BLIP, "syndiemech")
 
@@ -224,10 +244,14 @@
 	)
 
 /obj/vehicle/sealed/mecha/marauder/mauler/loaded/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	max_ammo()
 
 /obj/vehicle/sealed/mecha/marauder/mauler/loaded/populate_parts()
+	procstart = null
+	src.procstart = null
 	cell = new /obj/item/stock_parts/power_store/cell/bluespace(src)
 	scanmod = new /obj/item/stock_parts/scanning_module/triphasic(src)
 	capacitor = new /obj/item/stock_parts/capacitor/quadratic(src)

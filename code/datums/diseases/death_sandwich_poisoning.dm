@@ -17,6 +17,8 @@
 	required_organ = ORGAN_SLOT_STOMACH
 
 /datum/disease/death_sandwich_poisoning/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

@@ -18,6 +18,8 @@
 
 
 /datum/ai_controller/basic_controller/bot/ed209/TryPossessPawn(atom/new_pawn)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & AI_CONTROLLER_INCOMPATIBLE)
 		return
@@ -25,6 +27,8 @@
 
 
 /datum/ai_controller/basic_controller/bot/ed209/proc/on_target_set()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/datum/action/cooldown/bot_announcement/announcement = blackboard[BB_ANNOUNCE_ABILITY]
 	var/static/list/lines_to_pick = list(

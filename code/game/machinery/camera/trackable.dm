@@ -22,11 +22,15 @@
 	VAR_PRIVATE/static/list/others = list()
 
 /datum/trackable/New(atom/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tracking_holder = source
 	RegisterSignal(tracking_holder, COMSIG_MOB_RESET_PERSPECTIVE, PROC_REF(perspective_reset))
 
 /datum/trackable/Destroy(force)
+	procstart = null
+	src.procstart = null
 	tracking_holder = null
 	tracked_mob = null
 	STOP_PROCESSING(SSprocessing, src)
@@ -34,6 +38,8 @@
 
 ///Generates a list of trackable people by name, returning a list of Humans + Non-Humans that can be tracked.
 /datum/trackable/proc/find_trackable_mobs()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 
 	names.Cut()
@@ -64,6 +70,8 @@
 /// Takes a mob to track, resets our state and begins trying to follow it
 /// Best we can at least
 /datum/trackable/proc/set_tracked_mob(mob/living/track)
+	procstart = null
+	src.procstart = null
 	set_rechecking(FALSE)
 	if(tracked_mob)
 		UnregisterSignal(tracked_mob, list(COMSIG_QDELETING, COMSIG_MOVABLE_MOVED, COMSIG_MOVABLE_UPDATE_GLIDE_SIZE))
@@ -79,14 +87,20 @@
 		attempt_track()
 
 /datum/trackable/proc/target_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	reset_tracking()
 
 /datum/trackable/proc/perspective_reset(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	reset_tracking()
 
 /datum/trackable/proc/target_moved(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(attempt_track())
 		return
@@ -94,6 +108,8 @@
 
 /// Controls if we're processing to recheck the conditions that prevent tracking or not
 /datum/trackable/proc/set_rechecking(should_check)
+	procstart = null
+	src.procstart = null
 	if(should_check)
 		START_PROCESSING(SSprocessing, src)
 		cameraticks = initial(cameraticks)
@@ -103,6 +119,8 @@
 		rechecking = FALSE
 
 /datum/trackable/process()
+	procstart = null
+	src.procstart = null
 	if(!rechecking)
 		return PROCESS_KILL
 
@@ -121,6 +139,8 @@
 
 /// Tries to track onto our target mob. Returns true if it succeeds, false otherwise
 /datum/trackable/proc/attempt_track()
+	procstart = null
+	src.procstart = null
 	if(!tracked_mob)
 		reset_tracking()
 		return FALSE
@@ -133,6 +153,8 @@
 	return TRUE
 
 /datum/trackable/proc/glide_size_changed(datum/source, new_glide_size)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SEND_SIGNAL(src, COMSIG_TRACKABLE_GLIDE_CHANGED, tracked_mob, new_glide_size)
 
@@ -142,6 +164,8 @@
  * Resets our tracking
  */
 /datum/trackable/proc/reset_tracking()
+	procstart = null
+	src.procstart = null
 	set_tracked_mob(null)
 
 /**
@@ -152,6 +176,8 @@
  *  tracker - The person trying to track, used for feedback messages. This is not the same as tracking_holder
  */
 /datum/trackable/proc/track_input(mob/living/tracker)
+	procstart = null
+	src.procstart = null
 	if(!tracker || tracker.stat == DEAD)
 		return
 
@@ -173,6 +199,8 @@
  *  tracked_mob_name - The person being tracked.
  */
 /datum/trackable/proc/track_name(mob/living/tracker, tracked_mob_name)
+	procstart = null
+	src.procstart = null
 	if(!tracker || tracker.stat == DEAD)
 		return
 
@@ -193,6 +221,8 @@
  *  tracked - The person being tracked.
  */
 /datum/trackable/proc/track_mob(mob/living/tracker, mob/living/tracked)
+	procstart = null
+	src.procstart = null
 	if(!tracker || tracker.stat == DEAD)
 		return
 	// Need to make sure the tracked mob is in our list

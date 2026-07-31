@@ -21,6 +21,8 @@
 	var/datum/weakref/target_ref
 
 /obj/machinery/computer/teleporter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	id = "[rand(1000, 9999)]"
 	link_power_station()
@@ -28,12 +30,16 @@
 	AddComponent(/datum/component/usb_port, typecacheof(list(/obj/item/circuit_component/teleporter_control_console), only_root_path = TRUE))
 
 /obj/machinery/computer/teleporter/Destroy()
+	procstart = null
+	src.procstart = null
 	if (power_station)
 		power_station.teleporter_console = null
 		power_station = null
 	return ..()
 
 /obj/machinery/computer/teleporter/proc/check_for_disabled_beacon(datum/target)
+	procstart = null
+	src.procstart = null
 	if (!target)
 		return
 	if (target.weak_reference != target_ref)
@@ -42,6 +48,8 @@
 	set_teleport_target(null)
 
 /obj/machinery/computer/teleporter/proc/link_power_station()
+	procstart = null
+	src.procstart = null
 	if(power_station)
 		return
 	for(var/direction in GLOB.cardinals)
@@ -52,6 +60,8 @@
 	return power_station
 
 /obj/machinery/computer/teleporter/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -59,6 +69,8 @@
 		ui.open()
 
 /obj/machinery/computer/teleporter/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/atom/target
 	if(target_ref)
 		target = target_ref.resolve()
@@ -79,11 +91,15 @@
 	return data
 
 /obj/machinery/computer/teleporter/proc/turn_off()
+	procstart = null
+	src.procstart = null
 	power_station.engaged = FALSE
 	power_station.teleporter_hub.update_appearance()
 	power_station.teleporter_hub.calibrated = FALSE
 
 /obj/machinery/computer/teleporter/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -119,6 +135,8 @@
 			return TRUE
 
 /obj/machinery/computer/teleporter/proc/set_teleport_target(new_target)
+	procstart = null
+	src.procstart = null
 	var/datum/old_target
 	var/datum/weakref/new_target_ref = WEAKREF(new_target)
 	if (target_ref == new_target_ref)
@@ -133,6 +151,8 @@
 		RegisterSignal(new_target, COMSIG_BEACON_DISABLED, PROC_REF(check_for_disabled_beacon))
 
 /obj/machinery/computer/teleporter/proc/finish_calibration()
+	procstart = null
+	src.procstart = null
 	calibrating = FALSE
 	if(check_hub_connection())
 		power_station.teleporter_hub.calibrated = TRUE
@@ -142,6 +162,8 @@
 	power_station.update_appearance()
 
 /obj/machinery/computer/teleporter/proc/check_hub_connection()
+	procstart = null
+	src.procstart = null
 	if(!power_station)
 		return FALSE
 	if(!power_station.teleporter_hub)
@@ -149,6 +171,8 @@
 	return TRUE
 
 /obj/machinery/computer/teleporter/proc/reset_regime()
+	procstart = null
+	src.procstart = null
 	set_teleport_target(null)
 	if(regime_set == REGIME_TELEPORTER)
 		regime_set = REGIME_GATE
@@ -158,6 +182,8 @@
 /// Gets a list of targets to teleport to.
 /// List is an assoc list of descriptors to locations.
 /obj/machinery/computer/teleporter/proc/get_targets()
+	procstart = null
+	src.procstart = null
 	var/list/targets = list()
 	var/list/area_index = list()
 
@@ -192,6 +218,8 @@
 
 /// Given a target station, will power and link it.
 /obj/machinery/computer/teleporter/proc/lock_in_station(obj/machinery/teleport/station/target_station)
+	procstart = null
+	src.procstart = null
 	target_station.linked_stations |= power_station
 	target_station.set_machine_stat(target_station.machine_stat & ~NOPOWER)
 	if(target_station.teleporter_hub)
@@ -202,6 +230,8 @@
 		target_station.teleporter_console.update_appearance()
 
 /obj/machinery/computer/teleporter/proc/set_target(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/targets = get_targets()
 
 	if (regime_set == REGIME_TELEPORTER)
@@ -227,6 +257,8 @@
 		lock_in_station(target_station)
 
 /obj/machinery/computer/teleporter/proc/is_eligible(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(AM)
 	if(!T)
 		return FALSE
@@ -256,6 +288,8 @@
 	var/obj/machinery/computer/teleporter/attached_console
 
 /obj/item/circuit_component/teleporter_control_console/populate_ports()
+	procstart = null
+	src.procstart = null
 
 	new_target = add_input_port("New Target", PORT_TYPE_STRING)
 	set_target_trigger = add_input_port("Set Target", PORT_TYPE_SIGNAL)
@@ -266,6 +300,8 @@
 	on_fail = add_output_port("Failed", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/teleporter_control_console/register_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (istype(shell, /obj/machinery/computer/teleporter))
@@ -275,11 +311,15 @@
 		update_targets()
 
 /obj/item/circuit_component/teleporter_control_console/unregister_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(attached_console, COMSIG_TELEPORTER_NEW_TARGET)
 	attached_console = null
 	return attached_console
 
 /obj/item/circuit_component/teleporter_control_console/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	var/list/targets = attached_console.get_targets()
 
 	if (COMPONENT_TRIGGERED_BY(set_target_trigger, port))
@@ -303,6 +343,8 @@
 		update_targets()
 
 /obj/item/circuit_component/teleporter_control_console/proc/on_teleporter_new_target(datum/source, atom/new_target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (isnull(new_target))
@@ -319,6 +361,8 @@
 	current_target.set_output(new_target.name)
 
 /obj/item/circuit_component/teleporter_control_console/proc/update_targets()
+	procstart = null
+	src.procstart = null
 	var/list/target_names = list()
 	for (var/target in attached_console.get_targets())
 		target_names |= target

@@ -7,15 +7,21 @@ GLOBAL_DATUM_INIT(orbit_menu, /datum/orbit_menu, new)
 	var/static/list/mob_allowed_typecache
 
 /datum/orbit_menu/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.observer_state
 
 /datum/orbit_menu/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		ui = new(user, src, "Orbit")
 		ui.open()
 
 /datum/orbit_menu/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(.)
@@ -49,6 +55,8 @@ GLOBAL_DATUM_INIT(orbit_menu, /datum/orbit_menu, new)
 
 
 /datum/orbit_menu/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	if(isobserver(user))
@@ -58,6 +66,8 @@ GLOBAL_DATUM_INIT(orbit_menu, /datum/orbit_menu, new)
 
 
 /datum/orbit_menu/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/new_mob_pois = SSpoints_of_interest.get_mob_pois(CALLBACK(src, PROC_REF(validate_mob_poi)), append_dead_role = FALSE)
 	var/list/new_other_pois = SSpoints_of_interest.get_other_pois()
 	var/is_admin = user?.client?.holder
@@ -153,11 +163,15 @@ GLOBAL_DATUM_INIT(orbit_menu, /datum/orbit_menu, new)
 
 /// Shows the UI to the specified user.
 /datum/orbit_menu/proc/show(mob/user)
+	procstart = null
+	src.procstart = null
 	ui_interact(user)
 
 
 /// Helper function to get threat type, group, overrides for job and icon
-/datum/orbit_menu/proc/get_antag_data(datum/mind/poi_mind, is_admin) as /list
+/datum/orbit_menu/proc/get_antag_data(datum/mind/poi_mind, is_admin)
+	procstart = null
+	src.procstart = null
 	var/list/serialized = list()
 
 	for(var/datum/antagonist/antag as anything in poi_mind.antag_datums)
@@ -173,6 +187,8 @@ GLOBAL_DATUM_INIT(orbit_menu, /datum/orbit_menu, new)
 
 /// Helper to get the current thing we're orbiting (if any)
 /datum/orbit_menu/proc/get_currently_orbiting(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(user.orbiting_ref))
 		return
 
@@ -209,7 +225,9 @@ GLOBAL_DATUM_INIT(orbit_menu, /datum/orbit_menu, new)
 
 
 /// Helper function to get job / icon / health data for a living mob
-/datum/orbit_menu/proc/get_living_data(mob/living/player) as /list
+/datum/orbit_menu/proc/get_living_data(mob/living/player)
+	procstart = null
+	src.procstart = null
 	var/list/serialized = list()
 
 	serialized["health"] = FLOOR((player.health / player.maxHealth * 100), 1)
@@ -237,7 +255,9 @@ GLOBAL_DATUM_INIT(orbit_menu, /datum/orbit_menu, new)
 	return serialized
 
 /// Gets a list: Misc data and whether it's critical. Handles all snowflakey type cases
-/datum/orbit_menu/proc/get_misc_data(atom/movable/atom_poi) as /list
+/datum/orbit_menu/proc/get_misc_data(atom/movable/atom_poi)
+	procstart = null
+	src.procstart = null
 	var/list/misc = list()
 	var/critical = FALSE
 
@@ -295,6 +315,8 @@ GLOBAL_DATUM_INIT(orbit_menu, /datum/orbit_menu, new)
  * If they satisfy that requirement, falls back to default validation for the POI.
  */
 /datum/orbit_menu/proc/validate_mob_poi(datum/point_of_interest/mob_poi/potential_poi)
+	procstart = null
+	src.procstart = null
 	var/mob/potential_mob_poi = potential_poi.target
 	if(!potential_mob_poi.mind && !potential_mob_poi.ckey)
 		if(!mob_allowed_typecache)

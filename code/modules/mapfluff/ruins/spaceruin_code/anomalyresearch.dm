@@ -24,6 +24,8 @@
 	var/anchor_anomaly = FALSE
 
 /obj/effect/spawner/random/environmentally_safe_anomaly/make_item(spawn_loc, type_path_to_make)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/obj/effect/anomaly/anomaly = .

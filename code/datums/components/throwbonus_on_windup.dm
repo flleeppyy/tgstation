@@ -21,6 +21,8 @@
 	var/throw_text
 
 /datum/component/throwbonus_on_windup/Initialize(maximum_bonus = 20, windup_increment_speed = 1, pass_maximum_callback, apply_bonus_callback, sound_on_success, effect_on_success, throw_text)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -34,6 +36,8 @@
 	src.throw_text = throw_text
 
 /datum/component/throwbonus_on_windup/proc/on_equip(datum/source, mob/living/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(slot & ITEM_SLOT_HANDS) || holder?.resolve())
@@ -45,6 +49,8 @@
 		start_windup()
 
 /datum/component/throwbonus_on_windup/proc/start_windup()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(our_bar))
 		CRASH("throwbonus_on_windup component attempted to start windup while already winding up a throw!")
 
@@ -64,23 +70,31 @@
 	START_PROCESSING(SSfastprocess, src)
 
 /datum/component/throwbonus_on_windup/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equip))
 	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
 	RegisterSignal(parent, COMSIG_MOVABLE_PRE_IMPACT, PROC_REF(on_thrown))
 
 /datum/component/throwbonus_on_windup/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ITEM_EQUIPPED, COMSIG_MOVABLE_MOVED, COMSIG_MOVABLE_PRE_IMPACT))
 	var/atom/our_holder = holder?.resolve()
 	if(!isnull(our_holder))
 		UnregisterSignal(our_holder, list(COMSIG_LIVING_THROW_MODE_TOGGLE, COMSIG_MOB_SWAP_HANDS))
 
 /datum/component/throwbonus_on_windup/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	QDEL_NULL(our_bar)
 	holder = null
 	return ..()
 
 /datum/component/throwbonus_on_windup/proc/throw_change(mob/living/source, throw_mode)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (source.get_active_held_item() != parent)
@@ -92,6 +106,8 @@
 		end_windup()
 
 /datum/component/throwbonus_on_windup/proc/on_hands_swap(mob/living/source, obj/item/swapped_to, obj/item/swapped_from)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source.get_active_held_item() != parent)
@@ -102,6 +118,8 @@
 		start_windup()
 
 /datum/component/throwbonus_on_windup/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(throwforce_bonus > maximum_bonus)
 		var/mob/living/our_holder = holder?.resolve()
 		pass_maximum_callback?.Invoke(our_holder)
@@ -112,6 +130,8 @@
 	throwforce_bonus += windup_increment_speed
 
 /datum/component/throwbonus_on_windup/proc/on_move(obj/item/source, atom/entering_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	end_windup()
 	var/mob/living/our_holder = holder?.resolve()
@@ -121,10 +141,14 @@
 	UnregisterSignal(our_holder, list(COMSIG_LIVING_THROW_MODE_TOGGLE, COMSIG_MOB_SWAP_HANDS))
 
 /datum/component/throwbonus_on_windup/proc/end_windup()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(our_bar)
 	STOP_PROCESSING(SSfastprocess, src)
 
 /datum/component/throwbonus_on_windup/proc/on_thrown(datum/source, atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/damage_to_apply = throwforce_bonus
@@ -156,10 +180,14 @@
 	var/current_count = 0
 
 /obj/effect/overlay/windup_bar/proc/recalculate_position(input_count)
+	procstart = null
+	src.procstart = null
 	current_count = input_count
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/effect/overlay/windup_bar/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/bar_positions = list(0, 2, 4, 6, 8)
 	var/current_percentage = current_count / maximum_count

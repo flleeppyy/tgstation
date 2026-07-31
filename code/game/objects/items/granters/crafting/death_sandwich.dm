@@ -13,5 +13,7 @@
 	)
 
 /obj/item/book/granter/crafting_recipe/death_sandwich/recoil(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("The book comically explodes in your hands, leaving no trace."))
 	qdel(src)

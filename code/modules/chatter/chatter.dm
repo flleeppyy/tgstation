@@ -1,4 +1,6 @@
 /proc/chatter(message, phomeme, atom/speaker)
+	procstart = null
+	src.procstart = null
 	// We want to transform any message into a list of numbers
 	// and punctuation marks
 	// For example:
@@ -20,6 +22,8 @@
 /// Then say() that fragment at that pace
 /// You can pass in a starting delay to wait before speaking the next sound
 /proc/chatter_speak(atom/speaker, list/letter_count, phomeme, extra_delay = 0)
+	procstart = null
+	src.procstart = null
 	var/static/list/punctuation = list(",",":",";",".","?","!","\'","-")
 	var/delay = extra_delay
 	for(var/i in 1 to length(letter_count))
@@ -50,6 +54,8 @@
 		break //We use the loop as a handy way of dealing with punctuation, the actual looping operation here happens in timers that call timers
 
 /proc/chatter_speak_word(atom/speaker, list/letter_count, phomeme, length)
+	procstart = null
+	src.procstart = null
 	var/path = "sound/runtime/chatter/[phomeme]_[length].ogg"
 	var/loc = speaker.loc
 	playsound(loc, path,
@@ -59,6 +65,8 @@
 	chatter_speak(speaker, letter_count, phomeme, delay)
 
 /proc/chatter_get_delay_multiplier(phomeme)
+	procstart = null
+	src.procstart = null
 	. = 0.1 SECONDS
 	switch(phomeme)
 		if("papyrus")

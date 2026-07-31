@@ -8,9 +8,13 @@
 	maximum = MAXIMUM_EMISSIVE_BLOOM_SIZE
 
 /datum/preference/numeric/emissive_bloom/create_default_value()
+	procstart = null
+	src.procstart = null
 	return DEFAULT_EMISSIVE_BLOOM_SIZE
 
 /datum/preference/numeric/emissive_bloom/apply_to_client(client/client, value)
+	procstart = null
+	src.procstart = null
 	// Update the plane master filter
 	var/datum/hud/my_hud = client.mob?.hud_used
 	if(!my_hud)

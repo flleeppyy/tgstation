@@ -2,6 +2,8 @@
 /datum/unit_test/structure_table_bash
 
 /datum/unit_test/structure_table_bash/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/attacker = EASY_ALLOCATE()
 	var/obj/item/storage/toolbox/toolbox = EASY_ALLOCATE()
 	var/obj/structure/table/to_smack = EASY_ALLOCATE()
@@ -20,6 +22,8 @@
 /datum/unit_test/structure_generic_bash
 
 /datum/unit_test/structure_generic_bash/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/attacker = EASY_ALLOCATE()
 	var/obj/item/storage/toolbox/toolbox = EASY_ALLOCATE()
 	var/obj/structure/barricade/to_smack = EASY_ALLOCATE()
@@ -31,6 +35,8 @@
 /datum/unit_test/machinery_tool_interaction
 
 /datum/unit_test/machinery_tool_interaction/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/attacker = EASY_ALLOCATE()
 	var/obj/item/screwdriver/screwdriver = EASY_ALLOCATE()
 	var/obj/machinery/rnd/production/to_smack = EASY_ALLOCATE()

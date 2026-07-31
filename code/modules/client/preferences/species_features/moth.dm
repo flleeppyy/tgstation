@@ -7,6 +7,8 @@
 	relevant_organ = /obj/item/organ/antennae
 
 /datum/preference/choiced/species_feature/moth_antennae/icon_for(value)
+	procstart = null
+	src.procstart = null
 	var/static/datum/universal_icon/moth_head
 
 	if (isnull(moth_head))
@@ -32,6 +34,8 @@
 	relevant_body_markings = /datum/bodypart_overlay/simple/body_marking/moth
 
 /datum/preference/choiced/species_feature/moth_markings/icon_for(value)
+	procstart = null
+	src.procstart = null
 	var/static/list/body_parts = list(
 		/obj/item/bodypart/head/moth,
 		/obj/item/bodypart/chest/moth,
@@ -76,5 +80,7 @@
 	relevant_organ = /obj/item/organ/wings/moth
 
 /datum/preference/choiced/species_feature/moth_wings/icon_for(value)
+	procstart = null
+	src.procstart = null
 	var/datum/sprite_accessory/moth_wings = get_accessory_for_value(value)
 	return uni_icon(moth_wings.icon, "m_moth_wings_[moth_wings.icon_state]_BEHIND")

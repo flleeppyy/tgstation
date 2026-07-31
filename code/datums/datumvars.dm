@@ -1,4 +1,6 @@
 /datum/proc/CanProcCall(procname)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Items in this list will not show up in VV
@@ -6,6 +8,8 @@ GLOBAL_LIST_INIT(vv_var_blacklist, list(
 	"faction" = TRUE,
 ))
 /datum/proc/can_vv_get(var_name)
+	procstart = null
+	src.procstart = null
 	if(var_name == NAMEOF(src, vars))
 		return FALSE
 	if(var_name in GLOB.vv_var_blacklist)
@@ -14,6 +18,8 @@ GLOBAL_LIST_INIT(vv_var_blacklist, list(
 
 /// Called when a var is edited with the new value to change to
 /datum/proc/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	if(var_name == NAMEOF(src, vars))
 		return FALSE
 	vars[var_name] = var_value
@@ -21,12 +27,16 @@ GLOBAL_LIST_INIT(vv_var_blacklist, list(
 	return TRUE
 
 /datum/proc/vv_get_var(var_name)
+	procstart = null
+	src.procstart = null
 	switch(var_name)
 		if (NAMEOF(src, vars))
 			return debug_variable(var_name, list(), 0, src)
 	return debug_variable(var_name, vars[var_name], 0, src)
 
 /datum/proc/can_vv_mark()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /**
@@ -35,6 +45,8 @@ GLOBAL_LIST_INIT(vv_var_blacklist, list(
  * Add separators by doing VV_DROPDOWN_OPTION("", "---")
  */
 /datum/proc/vv_get_dropdown()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	. = list()
@@ -54,6 +66,8 @@ GLOBAL_LIST_INIT(vv_var_blacklist, list(
  * This proc is for "high level" actions like admin heal/set species/etc/etc. The low level debugging things should go in admin/view_variables/topic_basic.dm in case this runtimes.
  */
 /datum/proc/vv_do_topic(list/href_list)
+	procstart = null
+	src.procstart = null
 	if(!usr || !usr.client || !usr.client.holder || !check_rights(R_VAREDIT))
 		return FALSE //This is VV, not to be called by anything else.
 	if(SEND_SIGNAL(src, COMSIG_VV_TOPIC, usr, href_list) & COMPONENT_VV_HANDLED)
@@ -66,6 +80,8 @@ GLOBAL_LIST_INIT(vv_var_blacklist, list(
 	return TRUE
 
 /datum/proc/vv_get_header()
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(("name" in vars) && !isatom(src))
 		. += "<b>[vars["name"]]</b><br>"

@@ -29,16 +29,22 @@
 	var/name_endings = "generic_endings"
 
 /obj/effect/mob_spawn/ghost_role/human/pirate/special(mob/living/spawned_mob, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spawned_mob.fully_replace_character_name(spawned_mob.real_name, generate_pirate_name(spawned_mob.gender))
 	spawned_mob.mind.add_antag_datum(/datum/antagonist/pirate)
 
 /obj/effect/mob_spawn/ghost_role/human/pirate/proc/generate_pirate_name(spawn_gender)
+	procstart = null
+	src.procstart = null
 	var/beggings = strings(PIRATE_NAMES_FILE, name_beginnings)
 	var/endings = strings(PIRATE_NAMES_FILE, name_endings)
 	return "[rank ? rank + " " : ""][pick(beggings)][pick(endings)]"
 
 /obj/effect/mob_spawn/ghost_role/human/pirate/create(mob/mob_possessor, newname, apply_prefs)
+	procstart = null
+	src.procstart = null
 	if(fluff_spawn)
 		new fluff_spawn(drop_location())
 	return ..()
@@ -84,6 +90,8 @@
 	allow_custom_character = NONE
 
 /obj/effect/mob_spawn/ghost_role/human/pirate/silverscale/generate_pirate_name(spawn_gender)
+	procstart = null
+	src.procstart = null
 	var/first_name
 	switch(spawn_gender)
 		if(MALE)
@@ -116,6 +124,8 @@
 	rank = "Pharmacist"
 
 /obj/effect/mob_spawn/ghost_role/human/pirate/interdyne/generate_pirate_name(spawn_gender)
+	procstart = null
+	src.procstart = null
 	var/first_name
 	switch(spawn_gender)
 		if(MALE)
@@ -164,6 +174,8 @@
 	rank = "Agent"
 
 /obj/effect/mob_spawn/ghost_role/human/pirate/irs/generate_pirate_name(spawn_gender)
+	procstart = null
+	src.procstart = null
 	var/first_name
 	switch(spawn_gender)
 		if(MALE)
@@ -218,6 +230,8 @@
 	rank = "Footsoldier"
 
 /obj/effect/mob_spawn/ghost_role/human/pirate/medieval/special(mob/living/carbon/spawned_mob, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(rank == "Footsoldier")
 		spawned_mob.add_traits(list(TRAIT_NOGUNS, TRAIT_TOSS_GUN_HARD), INNATE_TRAIT)
@@ -231,6 +245,8 @@
 	is_leader = TRUE
 
 /obj/effect/mob_spawn/ghost_role/human/pirate/medieval/warlord/special(mob/living/carbon/spawned_mob, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spawned_mob.dna.add_mutation(/datum/mutation/hulk/superhuman, MUTATION_SOURCE_GHOST_ROLE)
 	spawned_mob.dna.add_mutation(/datum/mutation/gigantism, MUTATION_SOURCE_GHOST_ROLE)

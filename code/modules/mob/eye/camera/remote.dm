@@ -30,6 +30,8 @@
 
 
 /mob/eye/camera/remote/Initialize(mapload, obj/machinery/creator)
+	procstart = null
+	src.procstart = null
 	if(!creator)
 		return INITIALIZE_HINT_QDEL
 
@@ -40,6 +42,8 @@
 		set_user_icon(icon, icon_state)
 
 /mob/eye/camera/remote/Destroy()
+	procstart = null
+	src.procstart = null
 	var/mob/living/user = user_ref?.resolve()
 	var/obj/machinery/origin = origin_ref?.resolve()
 	if(origin && user)
@@ -50,6 +54,8 @@
 	return ..()
 
 /mob/eye/camera/remote/proc/assign_user(mob/living/new_user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/old_user = user_ref?.resolve()
 	SEND_SIGNAL(src, COMSIG_REMOTE_CAMERA_ASSIGN_USER, new_user, old_user)
 	if(old_user)
@@ -80,6 +86,8 @@
  * If chosen_icon is null, the user image will be removed.
  */
 /mob/eye/camera/remote/proc/set_user_icon(icon/chosen_icon, icon_state)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	var/client/user_client = GetViewerClient()
@@ -98,11 +106,15 @@
 		QDEL_NULL(user_image)
 
 /mob/eye/camera/remote/update_remote_sight(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.set_invis_see(SEE_INVISIBLE_LIVING) //can't see ghosts through cameras
 	user.set_sight(SEE_TURFS)
 	return TRUE
 
 /mob/eye/camera/remote/GetViewerClient()
+	procstart = null
+	src.procstart = null
 	var/mob/living/user = user_ref?.resolve()
 
 	if(user)
@@ -110,6 +122,8 @@
 	return null
 
 /mob/eye/camera/remote/setLoc(turf/destination, force_update = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/client/user_client = GetViewerClient()
@@ -117,6 +131,8 @@
 		SET_PLANE(user_image, ABOVE_GAME_PLANE, destination) //incase we move a z-level
 
 /mob/eye/camera/remote/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	var/initial = initial(src.sprint)
 
 	if(last_moved < world.timeofday) // It's been too long since we last moved, reset sprint
@@ -137,6 +153,8 @@
 		sprint = initial
 
 /mob/eye/camera/remote/proc/transition_step(turf/destination, direction)
+	procstart = null
+	src.procstart = null
 	var/datum/space_level/from = SSmapping.get_level(destination.z)
 	var/datum/space_level/into = from.neigbours["[direction]"]
 	if(into && allow_z_transition(from, into))
@@ -157,8 +175,12 @@
 		setLoc(destination)
 
 /mob/eye/camera/remote/proc/allow_z_transition(datum/space_level/from, datum/space_level/into)
+	procstart = null
+	src.procstart = null
 	return from == into
 
 /mob/eye/camera/remote/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	astype(user_ref?.resolve(), /mob/living)?.on_looking_z_level_change(old_turf, new_turf)

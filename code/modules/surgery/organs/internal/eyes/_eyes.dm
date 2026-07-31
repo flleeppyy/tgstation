@@ -69,17 +69,23 @@
 	var/light_reactive = TRUE
 
 /obj/item/organ/eyes/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (blink_animation)
 		eyelid_left = new(src, "[eye_icon_state]_l")
 		eyelid_right = new(src, "[eye_icon_state]_r")
 
 /obj/item/organ/eyes/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(eyelid_left)
 	QDEL_NULL(eyelid_right)
 	return ..()
 
 /obj/item/organ/eyes/on_mob_insert(mob/living/carbon/receiver, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(organ_flags & ORGAN_FAILING)
 		receiver.become_blind(EYE_DAMAGE)
@@ -112,6 +118,8 @@
 /// Refreshes the visuals of the eyes
 /// If call_update is TRUE, we also will call update_body
 /obj/item/organ/eyes/proc/refresh(mob/living/carbon/eye_owner = owner, call_update = TRUE)
+	procstart = null
+	src.procstart = null
 	if(isnull(eye_owner))
 		return
 
@@ -135,6 +143,8 @@
 		affected_human.update_eyes()
 
 /obj/item/organ/eyes/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(ishuman(organ_owner))
@@ -175,6 +185,8 @@
 	))
 
 /obj/item/organ/eyes/on_bodypart_insert(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ishuman(limb.owner))
 		limb.owner.update_eyes(refresh = FALSE)
@@ -182,6 +194,8 @@
 		limb.update_icon_dropped()
 
 /obj/item/organ/eyes/on_bodypart_remove(obj/item/bodypart/limb, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ishuman(limb.owner))
 		limb.owner.update_eyes(refresh = FALSE)
@@ -190,10 +204,14 @@
 
 ///Called whenever the luminescent and/or reflective eyes traits are added or removed
 /obj/item/organ/eyes/proc/on_shiny_eyes_trait_update(mob/living/carbon/human/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	source.update_eyes()
 
 /obj/item/organ/eyes/update_atom_colour()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (ishuman(owner))
 		refresh_atom_color_overrides()
@@ -201,6 +219,8 @@
 
 /// Adds eye color overrides to our owner from our atom color
 /obj/item/organ/eyes/proc/refresh_atom_color_overrides()
+	procstart = null
+	src.procstart = null
 	if (!atom_colours)
 		return
 
@@ -232,6 +252,8 @@
 		human_owner.add_eye_color_right(right_color, EYE_COLOR_ATOM_COLOR_PRIORITY + i, update_body = FALSE)
 
 /obj/item/organ/eyes/proc/on_bullet_act(mob/living/carbon/source, obj/projectile/proj, def_zone, piercing_hit, blocked)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Once-a-dozen-rounds level of rare
@@ -260,6 +282,8 @@
 
 /// When our owner washes their face. The idea that spessmen wash their eyeballs is highly disturbing but this is the easiest way to get rid of cursed crayon eye coloring
 /obj/item/organ/eyes/proc/on_face_wash()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	wash(CLEAN_WASH)
 
@@ -268,6 +292,8 @@
 
 /// Similar to get_status_text, but appends the text after the damage report, for additional status info
 /obj/item/organ/eyes/get_status_appendix(scanpower, add_tooltips)
+	procstart = null
+	src.procstart = null
 	if(owner.stat == DEAD || IS_UNCONSCIOUS(owner))
 		return // you're blind when dead or unconscious so it's redundant to show it
 
@@ -298,11 +324,15 @@
 	return ""
 
 /obj/item/organ/eyes/show_on_condensed_scans()
+	procstart = null
+	src.procstart = null
 	// Always show if we have an appendix
 	return ..() || (owner.stat != DEAD && !IS_UNCONSCIOUS(owner) && (owner.is_blind() || owner.is_nearsighted()))
 
 /// This proc generates a list of overlays that the eye displays on the given head
 /obj/item/organ/eyes/proc/generate_body_overlay(obj/item/bodypart/head/my_head)
+	procstart = null
+	src.procstart = null
 	if(!eye_icon_state || isnull(my_head))
 		return list()
 
@@ -342,6 +372,8 @@
 
 ///Returns the two emissive overlays built for the left and right eyes, in order.
 /obj/item/organ/eyes/proc/get_emissive_overlays(mutable_appearance/eye_left, mutable_appearance/eye_right, atom/spokesman)
+	procstart = null
+	src.procstart = null
 	var/list/return_list = list()
 	var/emissive_effect
 	if((owner && HAS_TRAIT(owner, TRAIT_LUMINESCENT_EYES)) || (TRAIT_LUMINESCENT_EYES in organ_traits))
@@ -359,6 +391,8 @@
 	return return_list
 
 /obj/item/organ/eyes/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (scarring & RIGHT_EYE_SCAR)
 		var/mutable_appearance/right_scar = mutable_appearance('icons/obj/medical/organs/organs.dmi', "eye_scar_right")
@@ -386,6 +420,8 @@
 		. += right_iris
 
 /obj/item/organ/eyes/proc/apply_scar(side)
+	procstart = null
+	src.procstart = null
 	if (scarring & side)
 		return
 	scarring |= side
@@ -394,6 +430,8 @@
 	apply_scarring_effects()
 
 /obj/item/organ/eyes/proc/apply_scarring_effects()
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return
 	// Even if eyes have enough health, our owner still becomes nearsighted
@@ -406,6 +444,8 @@
 	owner.update_eyes()
 
 /obj/item/organ/eyes/proc/fix_scar(side)
+	procstart = null
+	src.procstart = null
 	if (!(scarring & side))
 		return
 	scarring &= ~side
@@ -422,6 +462,8 @@
 
 //Gotta reset the eye color, because that persists
 /obj/item/organ/eyes/enter_wardrobe()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	eye_color_left = initial(eye_color_left)
 	eye_color_right = initial(eye_color_right)
@@ -429,29 +471,43 @@
 	fix_scar(RIGHT_EYE_SCAR)
 
 /obj/item/organ/eyes/on_low_damage_received()
+	procstart = null
+	src.procstart = null
 	if(damage >= high_threshold)
 		return
 	owner?.assign_nearsightedness(EYE_DAMAGE, 2, TRUE)
 
 /obj/item/organ/eyes/on_high_damage_received()
+	procstart = null
+	src.procstart = null
 	owner?.assign_nearsightedness(EYE_DAMAGE, 3, TRUE)
 
 /obj/item/organ/eyes/on_begin_failure()
+	procstart = null
+	src.procstart = null
 	owner?.become_blind(EYE_DAMAGE)
 
 /obj/item/organ/eyes/on_failure_recovery()
+	procstart = null
+	src.procstart = null
 	owner?.cure_blind(EYE_DAMAGE)
 
 /obj/item/organ/eyes/on_high_damage_healed()
+	procstart = null
+	src.procstart = null
 	if(damage <= low_threshold)
 		return
 	owner?.assign_nearsightedness(EYE_DAMAGE, 2, TRUE)
 
 /obj/item/organ/eyes/on_low_damage_healed()
+	procstart = null
+	src.procstart = null
 	// clear nearsightedness from damage
 	owner?.cure_nearsighted(EYE_DAMAGE)
 
 /obj/item/organ/eyes/feel_for_damage(self_aware)
+	procstart = null
+	src.procstart = null
 	// Eye damage has visual effects, so we don't really need to "feel" it when self-examining
 	return ""
 
@@ -462,6 +518,8 @@
 
 /// Modifies eye overlays to also act as eyelids, both for blinking and for when you're knocked out cold
 /obj/item/organ/eyes/proc/get_eyelid_overlays(mutable_appearance/eye_left, mutable_appearance/eye_right, obj/item/bodypart/head/my_head)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/parent = my_head.owner
 	// Robotic eyes or colorless heads don't get the privelege of having eyelids
 	if (isnull(parent) || IS_ROBOTIC_ORGAN(src) || !my_head.draw_color || HAS_TRAIT(parent, TRAIT_NO_EYELIDS))
@@ -495,6 +553,8 @@
 
 /// Animates one eyelid at a time, thanks BYOND and thanks animation chains
 /obj/item/organ/eyes/proc/animate_eyelid(obj/effect/abstract/eyelid_effect/eyelid, mob/living/carbon/human/parent, sync_blinking = TRUE, list/anim_times = null)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(isnull(eyelid)) // Can't blink if we don't have an eyelid
 		return
@@ -531,6 +591,8 @@
 			animate(time = wait_time)
 
 /obj/item/organ/eyes/proc/blink(duration = BLINK_DURATION, restart_animation = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!blink_animation)
 		return
 	var/left_delayed = prob(50)
@@ -553,6 +615,8 @@
 		addtimer(CALLBACK(src, PROC_REF(animate_eyelids), owner), blink_delay + duration)
 
 /obj/item/organ/eyes/proc/animate_eyelids(mob/living/carbon/human/parent)
+	procstart = null
+	src.procstart = null
 	var/sync_blinking = synchronized_blinking && (parent.get_organ_loss(ORGAN_SLOT_BRAIN) < BRAIN_DAMAGE_ASYNC_BLINKING)
 	// Randomize order for unsynched animations
 	if (sync_blinking || prob(50))
@@ -569,6 +633,8 @@
 	vis_flags = VIS_INHERIT_DIR | VIS_INHERIT_PLANE | VIS_INHERIT_ID
 
 /obj/effect/abstract/eyelid_effect/Initialize(mapload, new_state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = new_state
 
@@ -579,6 +645,8 @@
 
 /// by default, returns the eyes' penlight_message var as a notice span. May do other things when overridden, such as eldritch insanity, or eye damage, or whatnot. Whatever you want, really.
 /obj/item/organ/eyes/proc/penlight_examine(mob/living/viewer)
+	procstart = null
+	src.procstart = null
 	return span_notice("[owner.p_Their()] eyes [penlight_message].")
 
 #define NIGHTVISION_LIGHT_OFF 0
@@ -598,6 +666,8 @@
 	var/light_level = NIGHTVISION_LIGHT_OFF
 
 /obj/item/organ/eyes/night_vision/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (PERFORM_ALL_TESTS(focus_only/nightvision_color_cutoffs) && type != /obj/item/organ/eyes/night_vision)
 		if(length(low_light_cutoff) != 3 || length(medium_light_cutoff) != 3 || length(high_light_cutoff) != 3)
@@ -607,6 +677,8 @@
 	light_level = NIGHTVISION_LIGHT_LOW
 
 /obj/item/organ/eyes/night_vision/ui_action_click()
+	procstart = null
+	src.procstart = null
 	sight_flags = initial(sight_flags)
 	switch(light_level)
 		if (NIGHTVISION_LIGHT_OFF)

@@ -5,6 +5,8 @@
 	var/insertion_time = 0 SECONDS
 
 /datum/element/hand_organ_insertion/Attach(datum/target, insertion_time = 5 SECONDS)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!iscarbon(target))
 		return ELEMENT_INCOMPATIBLE
@@ -14,11 +16,15 @@
 	RegisterSignal(target, COMSIG_USER_ITEM_INTERACTION_SECONDARY, PROC_REF(on_item_interaction_secondary))
 
 /datum/element/hand_organ_insertion/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	UnregisterSignal(source, COMSIG_USER_ITEM_INTERACTION_SECONDARY)
 
 /datum/element/hand_organ_insertion/proc/on_item_interaction_secondary(mob/living/carbon/parent, atom/target, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (target != parent)
 		return FALSE
@@ -29,6 +35,8 @@
 	return TRUE
 
 /datum/element/hand_organ_insertion/proc/attempt_to_insert_organ(mob/living/carbon/user, obj/item/organ/organ)
+	procstart = null
+	src.procstart = null
 	if (!can_insert_organ(user, organ, feedback = TRUE))
 		return
 
@@ -65,6 +73,8 @@
 	organ.on_surgical_insertion(user, user.get_bodypart(deprecise_zone(organ.zone)))
 
 /datum/element/hand_organ_insertion/proc/can_insert_organ(mob/living/carbon/user, obj/item/organ/organ, feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!user.get_bodypart(deprecise_zone(organ.zone)))
 		user.balloon_alert(user, "you don't have a [parse_zone(organ.zone)]!")
 		return FALSE

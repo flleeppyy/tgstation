@@ -15,6 +15,8 @@
 	var/alt_inhands_file = 'icons/mob/nonhuman-player/alienqueen.dmi'
 
 /mob/living/carbon/alien/adult/royal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// as a wise man once wrote: "pull over that ass too fat"
 	REMOVE_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
@@ -25,17 +27,25 @@
 	AddComponent(/datum/component/seethrough_mob)
 
 /mob/living/carbon/alien/adult/royal/on_lying_down(new_lying_angle)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	layer = LYING_MOB_LAYER
 
 /mob/living/carbon/alien/adult/royal/on_standing_up(new_lying_angle)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	layer = initial(layer)
 
 /mob/living/carbon/alien/adult/royal/can_inject(mob/user, target_zone, injection_flags)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/carbon/alien/adult/royal/get_fire_overlay(stacks, on_fire)
+	procstart = null
+	src.procstart = null
 	var/fire_key = "royal_fire"
 
 	if(!GLOB.fire_appearances[fire_key])
@@ -79,6 +89,8 @@
 	)
 
 /mob/living/carbon/alien/adult/royal/queen/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	var/static/list/innate_actions = list(
 		/datum/action/cooldown/alien/promote,
 	)
@@ -87,6 +99,8 @@
 	return ..()
 
 /mob/living/carbon/alien/adult/royal/queen/set_name()
+	procstart = null
+	src.procstart = null
 	if(get_alien_type(/mob/living/carbon/alien/adult/royal/queen, ignored = src))
 		name = "alien princess"
 	return ..()
@@ -100,6 +114,8 @@
 	made_structure_type = /obj/structure/alien/egg
 
 /datum/action/cooldown/alien/make_structure/lay_egg/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.visible_message(span_alertalien("[owner] lays an egg!"))
 
@@ -112,12 +128,16 @@
 	var/promotion_plasma_cost = 500
 
 /datum/action/cooldown/alien/promote/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//not free
 	if(promotion_plasma_cost != 0)
 		name = "[initial(name)] ([promotion_plasma_cost]P)"
 
 /datum/action/cooldown/alien/promote/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -132,6 +152,8 @@
 	return TRUE
 
 /datum/action/cooldown/alien/promote/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	var/obj/item/queen_promotion/existing_promotion = locate() in owner.held_items
 	if(existing_promotion)
 		to_chat(owner, span_noticealien("You discard [existing_promotion]."))
@@ -159,6 +181,8 @@
 	icon = 'icons/mob/nonhuman-player/alien.dmi'
 
 /obj/item/queen_promotion/attack(mob/living/to_promote, mob/living/carbon/alien/adult/queen)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -193,10 +217,14 @@
 	return TRUE
 
 /obj/item/queen_promotion/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_noticealien("You discard [src]."))
 	qdel(src)
 
 /obj/item/queen_promotion/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	if(!silent)
 		to_chat(user, span_noticealien("You discard [src]."))
 	return ..()

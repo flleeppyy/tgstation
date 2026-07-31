@@ -10,6 +10,8 @@
 	var/list/attached_atoms = list()
 
 /datum/element/movetype_handler/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(target))
 		return ELEMENT_INCOMPATIBLE
@@ -27,6 +29,8 @@
 		DO_FLOATING_ANIM(movable_target)
 
 /datum/element/movetype_handler/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	var/list/signals_to_remove = list(
 		SIGNAL_ADDTRAIT(TRAIT_NO_FLOATING_ANIM),
 		SIGNAL_REMOVETRAIT(TRAIT_NO_FLOATING_ANIM),
@@ -41,6 +45,8 @@
 
 /// Called when a movement type trait is added to the movable. Enables the relative bitflag.
 /datum/element/movetype_handler/proc/on_movement_type_trait_gain(atom/movable/source, trait)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/flag = GLOB.movement_type_trait_to_flag[trait]
 	if(source.movement_type & flag)
@@ -55,6 +61,8 @@
 
 /// Called when a movement type trait is removed from the movable. Disables the relative bitflag if it wasn't there in the compile-time bitfield.
 /datum/element/movetype_handler/proc/on_movement_type_trait_loss(atom/movable/source, trait)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/flag = GLOB.movement_type_trait_to_flag[trait]
 	if(initial(source.movement_type) & flag)
@@ -72,12 +80,16 @@
 
 /// Called when the TRAIT_NO_FLOATING_ANIM trait is added to the movable. Stops it from bobbing up and down.
 /datum/element/movetype_handler/proc/on_no_floating_anim_trait_gain(atom/movable/source, trait)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(source.movement_type & (FLOATING|FLYING))
 		STOP_FLOATING_ANIM(source)
 
 /// Called when the TRAIT_NO_FLOATING_ANIM trait is removed from the mob. Restarts the bobbing animation.
 /datum/element/movetype_handler/proc/on_no_floating_anim_trait_loss(atom/movable/source, trait)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(source.movement_type & (FLOATING|FLYING))
 		DO_FLOATING_ANIM(source)

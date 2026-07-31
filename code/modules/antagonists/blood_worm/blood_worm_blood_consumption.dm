@@ -2,6 +2,8 @@
 // There are quite a few of them, and some of them are lengthy.
 
 /mob/living/basic/blood_worm/proc/consume_blood(blood_amount, synth_content = 0, should_heal = TRUE)
+	procstart = null
+	src.procstart = null
 	if (blood_amount <= 0)
 		return
 
@@ -31,8 +33,12 @@
 	SEND_SIGNAL(src, COMSIG_BLOOD_WORM_CONSUMED_BLOOD, added_normal_blood, added_synth_blood, added_total_blood)
 
 /mob/living/basic/blood_worm/proc/reset_consumed_blood()
+	procstart = null
+	src.procstart = null
 	consumed_normal_blood = 0
 	consumed_synth_blood = 0
 
 /mob/living/basic/blood_worm/proc/get_consumed_blood()
+	procstart = null
+	src.procstart = null
 	return consumed_normal_blood + consumed_synth_blood

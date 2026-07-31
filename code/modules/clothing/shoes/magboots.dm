@@ -27,6 +27,8 @@
 	var/fishing_modifier = 4
 
 /obj/item/clothing/shoes/magboots/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 	RegisterSignal(src, COMSIG_SPEED_POTION_APPLIED, PROC_REF(on_speed_potioned))
@@ -35,6 +37,8 @@
 
 /// Signal handler for [COMSIG_SPEED_POTION_APPLIED]. Speed potion removes the active slowdown
 /obj/item/clothing/shoes/magboots/proc/on_speed_potioned(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Don't need to touch the actual slowdown here, since the speed potion does it for us
@@ -53,6 +57,8 @@ GAME_VERB_SRC(/obj/item/clothing/shoes/magboots, toggle, usr, "Toggle Magboots",
 	attack_self(usr)
 
 /obj/item/clothing/shoes/magboots/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	magpulse = !magpulse
 	if(magpulse)
 		attach_clothing_traits(active_traits)
@@ -75,10 +81,14 @@ GAME_VERB_SRC(/obj/item/clothing/shoes/magboots, toggle, usr, "Toggle Magboots",
 	user.update_equipment_speed_mods()
 
 /obj/item/clothing/shoes/magboots/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "Its mag-pulse traction system appears to be [magpulse ? "enabled" : "disabled"]."
 
 /obj/item/clothing/shoes/magboots/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state][magpulse]"
 

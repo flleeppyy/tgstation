@@ -6,6 +6,8 @@
 /datum/unit_test/cargo_crate_sanity
 
 /datum/unit_test/cargo_crate_sanity/Run()
+	procstart = null
+	src.procstart = null
 
 	for(var/crate in subtypesof(/datum/supply_pack))
 		var/datum/supply_pack/new_crate = allocate(crate)

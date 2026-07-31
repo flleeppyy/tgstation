@@ -14,6 +14,8 @@
 	toggle_button_type = /datum/action/cooldown/mob_cooldown/charge/basic_charge/guardian
 
 /mob/living/basic/guardian/charger/Initialize(mapload, datum/guardian_fluff/theme)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/guardian)
 
@@ -35,6 +37,8 @@
 	destroy_objects = FALSE
 
 /datum/action/cooldown/mob_cooldown/charge/basic_charge/guardian/PreActivate(atom/target)
+	procstart = null
+	src.procstart = null
 	if (!isguardian(owner))
 		return ..()
 	var/mob/living/basic/guardian/guardian_owner = owner
@@ -43,11 +47,15 @@
 	return FALSE
 
 /datum/action/cooldown/mob_cooldown/charge/basic_charge/guardian/do_charge_indicator(atom/charger, atom/charge_target)
+	procstart = null
+	src.procstart = null
 	playsound(charger, 'sound/items/modsuit/loader_launch.ogg', 75, TRUE)
 	var/obj/effect/temp_visual/decoy/decoy_flash = new /obj/effect/temp_visual/decoy(charger.loc, charger)
 	animate(decoy_flash, alpha = 0, color = COLOR_RED, transform = matrix() * 2, time = 3)
 
 /datum/action/cooldown/mob_cooldown/charge/basic_charge/guardian/can_hit_target(atom/movable/source, atom/target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_target = target
 	if (!istype(living_target))
 		return FALSE
@@ -59,6 +67,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/charge/basic_charge/guardian/hit_target(atom/movable/source, mob/living/target, damage_dealt)
+	procstart = null
+	src.procstart = null
 	if(ishuman(target))
 		var/mob/living/carbon/human/hit_human = target
 		if(hit_human.check_block(src, charge_damage, name, attack_type = LEAP_ATTACK))

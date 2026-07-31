@@ -16,10 +16,14 @@
 	var/icon = ""
 
 /datum/computer_file/program/maintenance/theme/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	filename = "[theme_name] Theme"
 
 /datum/computer_file/program/maintenance/theme/can_store_file(obj/item/modular_computer/potential_host)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -34,6 +38,8 @@
 
 ///Called post-installation of an application in a computer, after 'computer' var is set.
 /datum/computer_file/program/maintenance/theme/on_install(datum/computer_file/source, obj/item/modular_computer/computer_installing, mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	//add the theme to the computer and increase its size to match
 	var/datum/computer_file/program/themeify/theme_app = locate() in computer.stored_files

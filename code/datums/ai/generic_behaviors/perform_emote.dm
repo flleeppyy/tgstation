@@ -4,6 +4,8 @@
 	var/emote
 
 /datum/bt_node/ai_behavior/perform_emote/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	if(!istype(living_pawn))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED

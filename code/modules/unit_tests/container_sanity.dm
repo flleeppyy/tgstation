@@ -3,6 +3,8 @@
 /datum/unit_test/reagent_container_sanity
 
 /datum/unit_test/reagent_container_sanity/Run()
+	procstart = null
+	src.procstart = null
 	for(var/entry in subtypesof(/obj/item/reagent_containers))
 		var/obj/item/reagent_containers/container = allocate(entry)
 		var/initialized_volume = 0

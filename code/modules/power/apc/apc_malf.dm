@@ -1,4 +1,6 @@
 /obj/machinery/power/apc/proc/get_malf_status(mob/living/silicon/ai/malf)
+	procstart = null
+	src.procstart = null
 	if(!istype(malf) || !malf.malf_picker)
 		return APC_AI_NO_MALF
 	if(malfai != malf)
@@ -10,6 +12,8 @@
 	return APC_AI_HACK_NO_SHUNT
 
 /obj/machinery/power/apc/proc/malfhack(mob/living/silicon/ai/malf)
+	procstart = null
+	src.procstart = null
 	if(!istype(malf))
 		return
 	if(get_malf_status(malf) != APC_AI_NO_HACK)
@@ -26,6 +30,8 @@
 	hacking_apc.target = src
 
 /obj/machinery/power/apc/proc/malfoccupy(mob/living/silicon/ai/malf)
+	procstart = null
+	src.procstart = null
 	if(!istype(malf))
 		return
 	if(istype(malf.loc, /obj/machinery/power/apc)) // Already in an APC
@@ -39,6 +45,8 @@
 	INVOKE_ASYNC(src, PROC_REF(malfshunt), malf)
 
 /obj/machinery/power/apc/proc/malfshunt(mob/living/silicon/ai/malf)
+	procstart = null
+	src.procstart = null
 	var/confirm = tgui_alert(malf, "Are you sure that you want to shunt? This will take you out of your core!", "Shunt to [name]?", list("Yes", "No"))
 	if(confirm != "Yes")
 		return
@@ -59,6 +67,8 @@
 	occupier.cancel_camera()
 
 /obj/machinery/power/apc/proc/malfvacate(forced)
+	procstart = null
+	src.procstart = null
 	if(!occupier)
 		return
 	SEND_SIGNAL(occupier, COMSIG_SILICON_AI_VACATE_APC, occupier)
@@ -84,6 +94,8 @@
 
 
 /obj/machinery/power/apc/transfer_ai(interaction, mob/user, mob/living/silicon/ai/AI, obj/item/aicard/card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

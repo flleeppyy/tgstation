@@ -14,6 +14,8 @@
 	var/company_message = span_bold("Item request received. Your package is inbound, please stand back from the landing site.")
 
 /obj/item/choice_beacon/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!can_use_beacon(user))
 		return
@@ -23,10 +25,14 @@
 /// Return the list that will be used in the choice selection.
 /// Entries should be in (type.name = type) fashion.
 /obj/item/choice_beacon/proc/generate_display_names()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /// Checks if this mob can use the beacon, returns TRUE if so or FALSE otherwise.
 /obj/item/choice_beacon/proc/can_use_beacon(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.can_perform_action(src, FORBID_TELEKINESIS_REACH))
 		return TRUE
 
@@ -35,6 +41,8 @@
 
 /// Opens a menu and allows the mob to pick an option from the list
 /obj/item/choice_beacon/proc/open_options_menu(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/list/display_names = generate_display_names()
 	if(!length(display_names))
 		return
@@ -48,6 +56,8 @@
 
 /// Consumes a use of the beacon, sending the user a message and creating their item in the process
 /obj/item/choice_beacon/proc/consume_use(obj/choice_path, mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_hear("You hear something crackle from the beacon for a moment before a voice speaks. \
 		\"Please stand by for a message from [company_source]. Message as follows: [company_message] Message ends.\""))
 
@@ -62,6 +72,8 @@
 
 /// Actually spawns the item selected by the user
 /obj/item/choice_beacon/proc/spawn_option(obj/choice_path, mob/living/user)
+	procstart = null
+	src.procstart = null
 	podspawn(list(
 		"target" = get_turf(src),
 		"style" = /datum/pod_style/advanced,
@@ -78,6 +90,8 @@
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/choice_beacon/music/generate_display_names()
+	procstart = null
+	src.procstart = null
 	var/static/list/instruments
 	if(!instruments)
 		instruments = list()
@@ -109,6 +123,8 @@
 	company_message = span_bold("Please enjoy your Sophronia Broadcasting's 'Plasteel Chef' Ingredients Box, exactly as shown in the hit show!")
 
 /obj/item/choice_beacon/ingredient/generate_display_names()
+	procstart = null
+	src.procstart = null
 	var/static/list/ingredient_options
 	if(!ingredient_options)
 		ingredient_options = list()
@@ -125,6 +141,8 @@
 	company_message = span_bold("Please enjoy your Sophronia Broadcasting's 'History Comes Alive branded' Costume Set, exactly as shown in the hit show!")
 
 /obj/item/choice_beacon/hero/generate_display_names()
+	procstart = null
+	src.procstart = null
 	var/static/list/hero_item_list
 	if(!hero_item_list)
 		hero_item_list = list()
@@ -142,6 +160,8 @@
 	company_message = span_bold("Request status: Received. Package status: Delivered. Notes: To assure optimal value, use supplied Interdyne-brand autosurgeons to change implantment status.")
 
 /obj/item/choice_beacon/augments/generate_display_names()
+	procstart = null
+	src.procstart = null
 	var/static/list/augment_list
 	if(!augment_list)
 		augment_list = list()
@@ -161,6 +181,8 @@
 
 // just drops the box at their feet, "quiet" and "sneaky"
 /obj/item/choice_beacon/augments/spawn_option(obj/choice_path, mob/living/user)
+	procstart = null
+	src.procstart = null
 	new choice_path(get_turf(user))
 	playsound(src, 'sound/items/weapons/emitter2.ogg', 50, extrarange = SILENCED_SOUND_EXTRARANGE)
 
@@ -173,6 +195,8 @@
 	company_message = span_bold("A choice has already been made.")
 
 /obj/item/choice_beacon/holy/can_use_beacon(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.mind?.holy_role)
 		return ..()
 
@@ -181,6 +205,8 @@
 
 // Overrides generate options so that we can show a neat radial instead
 /obj/item/choice_beacon/holy/open_options_menu(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(GLOB.holy_armor_type)
 		consume_use(GLOB.holy_armor_type, user)
 		return
@@ -210,6 +236,8 @@
 	consume_use(chosen_type, user)
 
 /obj/item/choice_beacon/holy/spawn_option(obj/choice_path, mob/living/user)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/pray_chaplain.ogg', 40, TRUE)
 	SSblackbox.record_feedback("tally", "chaplain_armor", 1, "[choice_path]")
 	GLOB.holy_armor_type = choice_path

@@ -3,6 +3,8 @@
 /// `add_context()` will *not* be called unless this is run.
 /// This is not necessary for Type-B interactions, as you can just apply the flag and register to the signal yourself.
 /atom/proc/register_context()
+	procstart = null
+	src.procstart = null
 	flags_1 |= HAS_CONTEXTUAL_SCREENTIPS_1
 	RegisterSignal(src, COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM, PROC_REF(add_context))
 

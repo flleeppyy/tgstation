@@ -18,6 +18,8 @@
 	var/plant_count
 
 /datum/station_goal/dna_vault/New()
+	procstart = null
+	src.procstart = null
 	..()
 	animal_count = rand(16, 20) //might be too few given ~15 roundstart stationside ones
 	human_count = rand(round(0.75 * SSticker.totalPlayersReady) , SSticker.totalPlayersReady) // 75%+ roundstart population.
@@ -25,6 +27,8 @@
 	plant_count = rand(round(0.15 * non_standard_plants), round(0.3 * non_standard_plants))
 
 /datum/station_goal/dna_vault/proc/non_standard_plants_count()
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/T in subtypesof(/obj/item/seeds)) //put a cache if it's used anywhere else
 		var/obj/item/seeds/S = T
@@ -32,6 +36,8 @@
 			.++
 
 /datum/station_goal/dna_vault/get_report()
+	procstart = null
+	src.procstart = null
 	return list(
 		"Our long term prediction systems indicate a 99% chance of system-wide cataclysm in the near future.",
 		"We need you to construct a DNA Vault aboard your station.",
@@ -46,6 +52,8 @@
 
 
 /datum/station_goal/dna_vault/on_report()
+	procstart = null
+	src.procstart = null
 	var/datum/supply_pack/P = SSshuttle.supply_packs[/datum/supply_pack/engineering/dna_vault]
 	P.order_flags |= ORDER_SPECIAL_ENABLED
 
@@ -53,6 +61,8 @@
 	P.order_flags |= ORDER_SPECIAL_ENABLED
 
 /datum/station_goal/dna_vault/check_completion()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 	for(var/obj/machinery/dna_vault/V as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/dna_vault))
@@ -89,6 +99,8 @@
 	var/list/obj/structure/fillers = list()
 
 /obj/machinery/dna_vault/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	//TODO: Replace this,bsa and gravgen with some big machinery datum
 	var/list/occupied = list()
 	for(var/direct in list(EAST,WEST,SOUTHEAST,SOUTHWEST))
@@ -110,12 +122,16 @@
 	return ..()
 
 /obj/machinery/dna_vault/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/filler/filler as anything in fillers)
 		filler.parent = null
 		qdel(filler)
 	return ..()
 
 /obj/machinery/dna_vault/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		roll_powers(user)
@@ -124,6 +140,8 @@
 
 //Generate a unique set of mutation for each person
 /obj/machinery/dna_vault/proc/roll_powers(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/weakref/user_weakref = WEAKREF(user)
 	if((user_weakref in power_lottery) || isdead(user))
 		return
@@ -143,6 +161,8 @@
 	power_lottery[user_weakref] = gained_mutation
 
 /obj/machinery/dna_vault/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["plants"] = plant_dna.len
 	data["plants_max"] = plants_max
@@ -165,6 +185,8 @@
 	return data
 
 /obj/machinery/dna_vault/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -175,10 +197,14 @@
 			. = TRUE
 
 /obj/machinery/dna_vault/proc/check_goal()
+	procstart = null
+	src.procstart = null
 	if(plant_dna.len >= plants_max && animal_dna.len >= animals_max && human_dna.len >= dna_max)
 		completed = TRUE
 
 /obj/machinery/dna_vault/proc/upgrade(mob/living/carbon/human/target, upgrade_type)
+	procstart = null
+	src.procstart = null
 	var/datum/weakref/human_weakref = WEAKREF(target)
 	var/static/list/associated_mutation = list(
 		"Breathless" = /datum/mutation/breathless,

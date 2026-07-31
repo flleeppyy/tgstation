@@ -5,6 +5,8 @@
 	wire_behavior = WIRES_FUNCTIONAL_OUTPUT
 
 /datum/wires/scanner_gate/on_pulse(wire, user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/machinery/scanner_gate/scan_gate = holder
 	switch(wire)
@@ -16,6 +18,8 @@
 			scan_gate.ignore_signals = !scan_gate.ignore_signals
 
 /datum/wires/scanner_gate/get_status()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/scanner_gate/scanner = holder
 	. = list()
 	. += "The Green light is [scanner.light_pass ? "on" : "off"]."

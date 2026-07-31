@@ -2,10 +2,14 @@
 	spawning_list = list(/obj/effect/meteor)
 
 /datum/shuttle_event/simple_spawner/meteor/post_spawn(atom/movable/spawnee)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(spawnee, TRAIT_FREE_HYPERSPACE_MOVEMENT, INNATE_TRAIT)
 
 /datum/shuttle_event/simple_spawner/meteor/spawn_movable(spawn_type)
+	procstart = null
+	src.procstart = null
 	var/turf/spawn_turf = get_spawn_turf()
 	//invert the dir cause we shoot in the opposite direction we're flying
 	if(ispath(spawn_type, /obj/effect/meteor))
@@ -27,6 +31,8 @@
 	var/hit_the_shuttle_chance = 1
 
 /datum/shuttle_event/simple_spawner/meteor/dust/get_spawn_turf()
+	procstart = null
+	src.procstart = null
 	return prob(hit_the_shuttle_chance) ? pick(spawning_turfs_hit) : pick(spawning_turfs_miss)
 
 ///Okay this spawns a lot of really bad meteors, but they never hit the shuttle so it's perfectly safe (unless you go outside lol)

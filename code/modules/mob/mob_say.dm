@@ -28,6 +28,8 @@ GAME_VERB(/mob, whisper_verb, VERB_WHISPER, null, message as text)
  * Basic level implementation just speaks the message, nothing else.
  */
 /mob/proc/whisper(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language, ignore_spam = FALSE, forced, filterproof)
+	procstart = null
+	src.procstart = null
 	if(!message)
 		return
 	say(message, language = language)
@@ -44,6 +46,8 @@ GAME_VERB(/mob, me_verb, VERB_ME, null, message as text)
 	QUEUE_OR_CALL_VERB_FOR(VERB_CALLBACK(src, TYPE_PROC_REF(/mob, emote), "me", NONE, message, TRUE), SSspeech_controller)
 
 /mob/try_speak(message, ignore_spam = FALSE, forced = null, filterproof = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/filter_result
 	var/list/soft_filter_result
 	if(client && !forced && !filterproof)
@@ -94,6 +98,8 @@ GAME_VERB(/mob, me_verb, VERB_ME, null, message as text)
 	return TRUE
 
 /mob/can_speak(allow_mimes = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!allow_mimes && HAS_MIND_TRAIT(src, TRAIT_MIMING))
 		return FALSE
 
@@ -107,6 +113,8 @@ GAME_VERB(/mob, me_verb, VERB_ME, null, message as text)
  * - mannequin_controller: If someone else is forcing you to speak, this is the mob doing it.
  */
 /mob/proc/say_dead(message, mob/mannequin_controller)
+	procstart = null
+	src.procstart = null
 	var/name = real_name
 	var/alt_name = ""
 
@@ -160,18 +168,24 @@ GAME_VERB(/mob, me_verb, VERB_ME, null, message as text)
 
 ///Check if this message is an emote
 /mob/proc/check_emote(message, forced)
+	procstart = null
+	src.procstart = null
 	if(message[1] == "*")
 		emote(copytext(message, length(message[1]) + 1), intentional = !forced)
 		return TRUE
 
 ///Check if the mob has a hivemind channel
 /mob/proc/hivecheck()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 ///The amount of items we are looking for in the message
 #define MESSAGE_MODS_LENGTH 7
 
 /mob/proc/check_for_custom_say_emote(message, list/mods)
+	procstart = null
+	src.procstart = null
 	var/customsaypos = findtext(message, "*")
 	if(!customsaypos)
 		return message
@@ -197,6 +211,8 @@ GAME_VERB(/mob, me_verb, VERB_ME, null, message as text)
  * * LANGUAGE_EXTENSION the language we're trying to use (lots of values here)
  */
 /mob/proc/get_message_mods(message, list/mods)
+	procstart = null
+	src.procstart = null
 	for(var/I in 1 to MESSAGE_MODS_LENGTH)
 		// Prevents "...text" from being read as a radio message
 		if (length(message) > 1 && message[2] == message[1])

@@ -73,6 +73,8 @@
 	src.despawn_message = despawn_message
 
 /datum/component/haunted_item/Destroy(force)
+	procstart = null
+	src.procstart = null
 	var/obj/item/haunted_item = parent
 	// Handle these two specifically in Destroy() instead of clear_haunting(),
 	// because we want to make sure they always get dealt with no matter how the component is removed
@@ -82,13 +84,19 @@
 	return ..()
 
 /datum/component/haunted_item/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_ATTACKBY, PROC_REF(on_hit_by_holy_tool))
 
 /datum/component/haunted_item/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_ATOM_ATTACKBY)
 
 /// Removes the haunting, showing any despawn message we have and qdeling our component
 /datum/component/haunted_item/proc/clear_haunting()
+	procstart = null
+	src.procstart = null
 	var/obj/item/haunted_item = parent
 
 	if(!isnull(despawn_message))
@@ -98,6 +106,8 @@
 
 /// Signal proc for [COMSIG_ATOM_ATTACKBY], when we get smacked by holy stuff we should stop being ghostly.
 /datum/component/haunted_item/proc/on_hit_by_holy_tool(obj/item/source, obj/item/attacking_item, mob/living/attacker, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!is_type_in_list(attacking_item, types_which_dispell_us))
@@ -127,6 +137,8 @@
  */
 
 /proc/haunt_outburst(epicenter, range, haunt_chance, duration = 1 MINUTES)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/object_to_possess in range(range, epicenter))
 		if(!prob(haunt_chance))
 			continue

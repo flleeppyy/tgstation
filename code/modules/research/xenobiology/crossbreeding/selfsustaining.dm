@@ -16,6 +16,8 @@ Self-sustaining extracts:
 
 //Just divides into the actual item.
 /obj/item/slimecross/selfsustaining/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	visible_message(span_warning("The [src] shudders, and splits into four smaller extracts."))
 	for(var/i in 1 to 4)
@@ -29,9 +31,13 @@ Self-sustaining extracts:
 	return INITIALIZE_HINT_QDEL
 
 /obj/item/autoslime/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	return ..()
 
 /obj/item/autoslime/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/slime_reactions = GLOB.slime_extract_auto_activate_reactions[extract.type]
 	if(isnull(slime_reactions))
 		return
@@ -62,6 +68,8 @@ Self-sustaining extracts:
 	extract.auto_activate_reaction(recipeselect)
 
 /obj/item/autoslime/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(effect_desc)
 		. += span_notice("[effect_desc]")

@@ -19,6 +19,8 @@
 	limb_integrity = 0 // disabled for most exo-suits
 
 /obj/item/clothing/suit/worn_overlays(mutable_appearance/standing, isinhands = FALSE, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isinhands)
 		return
@@ -37,6 +39,8 @@
 			. += accessory.generate_accessory_overlay(undershirt)
 
 /obj/item/clothing/suit/separate_worn_overlays(mutable_appearance/standing, mutable_appearance/draw_target, isinhands = FALSE, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isinhands)
 		return
@@ -45,11 +49,15 @@
 		. += blood_overlay
 
 /obj/item/clothing/suit/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ismob(loc))
 		var/mob/M = loc
 		M.update_worn_oversuit()
 
 /obj/item/clothing/suit/generate_digitigrade_icons(icon/base_icon, greyscale_colors)
+	procstart = null
+	src.procstart = null
 	var/icon/legs = icon(SSgreyscale.GetColoredIconByType(/datum/greyscale_config/digitigrade, greyscale_colors), "oversuit_worn")
 	return replace_icon_legs(base_icon, legs)

@@ -36,6 +36,8 @@
 	bomb = 40
 
 /obj/machinery/power/portagrav/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ispath(cell))
 		cell = new cell(src)
@@ -55,10 +57,14 @@
 	AddElement(/datum/element/contextual_screentip_tools, tool_behaviors)
 
 /obj/machinery/power/portagrav/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cell = null
 
 /obj/machinery/power/portagrav/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(anchored)
 		. += "portagrav_anchors"
@@ -67,6 +73,8 @@
 		. += "activated"
 
 /obj/machinery/power/portagrav/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "It is [on ? "on" : "off"]."
 	. += "The charge meter reads: [!isnull(cell) ? "[round(cell.percent(), 1)]%" : "NO CELL"]."
@@ -75,6 +83,8 @@
 		. += span_notice("<b>Right-click</b> to toggle [on ? "off" : "on"].")
 
 /obj/machinery/power/portagrav/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/power_usage = initial(draw_per_range)
 	for(var/datum/stock_part/micro_laser/laser in component_parts)
@@ -87,16 +97,24 @@
 	update_field()
 
 /obj/machinery/power/portagrav/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]_o" : base_icon_state
 
 /obj/machinery/power/portagrav/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/power/portagrav/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/power/portagrav/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stock_parts/power_store/cell))
 		return NONE
 	if(!panel_open)
@@ -111,14 +129,20 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/portagrav/should_have_node()
+	procstart = null
+	src.procstart = null
 	return anchored
 
 /obj/machinery/power/portagrav/connect_to_network()
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		return FALSE
 	. = ..()
 
 /obj/machinery/power/portagrav/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(on)
 		balloon_alert(user, "turn off first!")
@@ -132,9 +156,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/portagrav/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/machinery/power/portagrav/attack_hand(mob/living/carbon/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!panel_open || isnull(cell) || !istype(user) || user.combat_mode)
 		return
@@ -142,12 +170,16 @@
 		cell = null
 
 /obj/machinery/power/portagrav/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!can_interact(user))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	toggle_on(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/power/portagrav/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -159,12 +191,16 @@
 	return TRUE
 
 /obj/machinery/power/portagrav/proc/toggle_on(mob/user)
+	procstart = null
+	src.procstart = null
 	if(on)
 		turn_off(user)
 	else
 		turn_on(user)
 
 /obj/machinery/power/portagrav/proc/turn_on(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		if(!isnull(user))
 			balloon_alert(user, "not anchored!")
@@ -181,6 +217,8 @@
 	update_appearance()
 
 /obj/machinery/power/portagrav/proc/turn_off(mob/user)
+	procstart = null
+	src.procstart = null
 	on = FALSE
 	if(!isnull(user))
 		balloon_alert(user, "turned off")
@@ -189,6 +227,8 @@
 	update_appearance()
 
 /obj/machinery/power/portagrav/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!on || !anchored)
 		return PROCESS_KILL
 	if(wire_mode)
@@ -201,6 +241,8 @@
 			turn_off()
 
 /obj/machinery/power/portagrav/proc/update_field()
+	procstart = null
+	src.procstart = null
 	if(isnull(gravity_field))
 		return
 	gravity_field.set_range(range)
@@ -208,12 +250,16 @@
 	gravity_field.recalculate_field(full_recalc = TRUE)
 
 /obj/machinery/power/portagrav/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Portagrav", name)
 		ui.open()
 
 /obj/machinery/power/portagrav/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(!isnull(cell))
 		.["percentage"] = (cell.charge / cell.maxcharge) * 100
@@ -225,6 +271,8 @@
 	.["draw"] = display_power(draw_per_range * range)
 
 /obj/machinery/power/portagrav/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

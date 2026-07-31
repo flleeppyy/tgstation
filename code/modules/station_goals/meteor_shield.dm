@@ -19,6 +19,8 @@
 	VAR_PRIVATE/cached_coverage_length
 
 /datum/station_goal/station_shield/get_report()
+	procstart = null
+	src.procstart = null
 	return list(
 		"The station is located in a zone full of space debris.",
 		"We have a prototype shielding system you must deploy to reduce collision-related accidents.",
@@ -28,6 +30,8 @@
 
 
 /datum/station_goal/station_shield/on_report()
+	procstart = null
+	src.procstart = null
 	//Unlock
 	var/datum/supply_pack/P = SSshuttle.supply_packs[/datum/supply_pack/engineering/shield_sat]
 	P.order_flags |= ORDER_SPECIAL_ENABLED
@@ -36,6 +40,8 @@
 	P.order_flags |= ORDER_SPECIAL_ENABLED
 
 /datum/station_goal/station_shield/check_completion()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 	update_coverage()
@@ -44,11 +50,15 @@
 	return FALSE
 
 /datum/station_goal/station_shield/proc/get_coverage()
+	procstart = null
+	src.procstart = null
 	return cached_coverage_length
 
 /// Gets the coverage of all active meteor shield satellites
 /// Can be expensive, ensure you need this before calling it
 /datum/station_goal/station_shield/proc/update_coverage()
+	procstart = null
+	src.procstart = null
 	var/list/coverage = list()
 	for(var/obj/machinery/satellite/meteor_shield/shield_satt as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/satellite/meteor_shield))
 		if(!shield_satt.active || !is_station_level(shield_satt.z))
@@ -77,6 +87,8 @@
 	STATIC_COOLDOWN_DECLARE(shared_emag_cooldown)
 
 /obj/machinery/satellite/meteor_shield/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		. += span_notice("It is currently active. You can interact with it to shut it down.")
@@ -90,16 +102,22 @@
 			. += span_warning("But something seems off about it...?")
 
 /obj/machinery/satellite/meteor_shield/proc/space_los(meteor)
+	procstart = null
+	src.procstart = null
 	for(var/turf/T in get_line(src,meteor))
 		if(!isspaceturf(T))
 			return FALSE
 	return TRUE
 
 /obj/machinery/satellite/meteor_shield/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	proximity_monitor = new(src, /* range = */ 0)
 
 /obj/machinery/satellite/meteor_shield/HasProximity(atom/movable/proximity_check_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(proximity_check_mob, /obj/effect/meteor))
 		return
@@ -111,6 +129,8 @@
 			qdel(meteor_to_destroy)
 
 /obj/machinery/satellite/meteor_shield/toggle(user)
+	procstart = null
+	src.procstart = null
 	if(user)
 		balloon_alert(user, "looking for [active ? "off" : "on"] button")
 	if(user && !do_after(user, 2 SECONDS, src, IGNORE_HELD_ITEM))
@@ -130,6 +150,8 @@
 	goal?.update_coverage()
 
 /obj/machinery/satellite/meteor_shield/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(proximity_monitor)
 	if(obj_flags & EMAGGED)
@@ -137,6 +159,8 @@
 		update_emagged_meteor_sat()
 
 /obj/machinery/satellite/meteor_shield/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		balloon_alert(user, "already emagged!")
 		return FALSE
@@ -155,6 +179,8 @@
 	return TRUE
 
 /obj/machinery/satellite/meteor_shield/proc/update_emagged_meteor_sat(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!active)
 		change_meteor_chance(0.5)
 		emagged_active_meteor_shields--
@@ -170,6 +196,8 @@
 		handle_new_emagged_shield_threshold()
 
 /obj/machinery/satellite/meteor_shield/proc/handle_new_emagged_shield_threshold()
+	procstart = null
+	src.procstart = null
 	switch(highest_emagged_threshold_reached)
 		if(EMAGGED_METEOR_SHIELD_THRESHOLD_ONE)
 			say("Warning. Meteor strike probability entering dangerous ranges for more exotic meteors.")
@@ -183,6 +211,8 @@
 			force_event_async(/datum/round_event_control/dark_matteor, "an array of tampered meteor satellites")
 
 /obj/machinery/satellite/meteor_shield/proc/change_meteor_chance(mod)
+	procstart = null
+	src.procstart = null
 	// Update the weight of all meteor events
 	for(var/datum/round_event_control/meteor_wave/meteors in SSevents.control)
 		meteors.weight *= mod

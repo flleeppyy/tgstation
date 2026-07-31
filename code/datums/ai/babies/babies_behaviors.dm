@@ -10,6 +10,8 @@
 	var/max_nearby_pop = 3
 
 /datum/bt_node/ai_behavior/find_partner/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	if(living_pawn.gender == FEMALE)
 		return FALSE
@@ -18,6 +20,8 @@
 	return TRUE
 
 /datum/bt_node/ai_behavior/find_partner/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/pawn_mob = controller.pawn
 	var/mob/living/living_pawn = controller.pawn
 	var/maximum_pop = controller.blackboard[BB_MAX_CHILDREN] || max_nearby_pop
@@ -57,10 +61,14 @@
 	var/child_types_key
 
 /datum/bt_node/ai_behavior/make_babies/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/target = controller.blackboard[target_key]
 	return !QDELETED(target) && !IS_UNCONSCIOUS_OR_CRIT(target)
 
 /datum/bt_node/ai_behavior/make_babies/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/target = controller.blackboard[target_key]
 	if(QDELETED(target) || IS_UNCONSCIOUS_OR_CRIT(target))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
@@ -68,6 +76,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/make_babies/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(target_key)
 

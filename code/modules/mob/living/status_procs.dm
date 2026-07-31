@@ -8,6 +8,8 @@
  * returns TRUE if stun immune, FALSE otherwise
  */
 /mob/living/proc/check_stun_immunity(check_flags = CANSTUN, force_stun = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(HAS_TRAIT(src, TRAIT_GODMODE))
@@ -30,16 +32,22 @@
 	return TRUE
 
 /* STUN */
-/mob/living/proc/IsStun() //If we're stunned
+/mob/living/proc/IsStun()
+	procstart = null
+	src.procstart = null //If we're stunned
 	return has_status_effect(/datum/status_effect/incapacitating/stun)
 
-/mob/living/proc/AmountStun() //How many deciseconds remain in our stun
+/mob/living/proc/AmountStun()
+	procstart = null
+	src.procstart = null //How many deciseconds remain in our stun
 	var/datum/status_effect/incapacitating/stun/S = IsStun()
 	if(S)
 		return S.duration
 	return 0
 
-/mob/living/proc/Stun(amount, ignore_canstun = FALSE) //Can't go below remaining duration
+/mob/living/proc/Stun(amount, ignore_canstun = FALSE)
+	procstart = null
+	src.procstart = null //Can't go below remaining duration
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_STUN, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(check_stun_immunity(CANSTUN, ignore_canstun))
@@ -51,7 +59,9 @@
 		S = apply_status_effect(/datum/status_effect/incapacitating/stun, amount)
 	return S
 
-/mob/living/proc/SetStun(amount, ignore_canstun = FALSE) //Sets remaining duration
+/mob/living/proc/SetStun(amount, ignore_canstun = FALSE)
+	procstart = null
+	src.procstart = null //Sets remaining duration
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_STUN, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(check_stun_immunity(CANSTUN, ignore_canstun))
@@ -67,7 +77,9 @@
 			S = apply_status_effect(/datum/status_effect/incapacitating/stun, amount)
 	return S
 
-/mob/living/proc/AdjustStun(amount, ignore_canstun = FALSE) //Adds to remaining duration
+/mob/living/proc/AdjustStun(amount, ignore_canstun = FALSE)
+	procstart = null
+	src.procstart = null //Adds to remaining duration
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_STUN, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(check_stun_immunity(CANSTUN, ignore_canstun))
@@ -80,16 +92,22 @@
 	return S
 
 /* KNOCKDOWN */
-/mob/living/proc/IsKnockdown() //If we're knocked down
+/mob/living/proc/IsKnockdown()
+	procstart = null
+	src.procstart = null //If we're knocked down
 	return has_status_effect(/datum/status_effect/incapacitating/knockdown)
 
-/mob/living/proc/AmountKnockdown() //How many deciseconds remain in our knockdown
+/mob/living/proc/AmountKnockdown()
+	procstart = null
+	src.procstart = null //How many deciseconds remain in our knockdown
 	var/datum/status_effect/incapacitating/knockdown/K = IsKnockdown()
 	if(K)
 		return K.duration
 	return 0
 
-/mob/living/proc/Knockdown(amount, daze_amount = 0, ignore_canstun = FALSE) //Can't go below remaining duration
+/mob/living/proc/Knockdown(amount, daze_amount = 0, ignore_canstun = FALSE)
+	procstart = null
+	src.procstart = null //Can't go below remaining duration
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_KNOCKDOWN, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(check_stun_immunity(CANKNOCKDOWN, ignore_canstun))
@@ -103,7 +121,9 @@
 		apply_status_effect(/datum/status_effect/dazed, daze_amount)
 	return K
 
-/mob/living/proc/SetKnockdown(amount, ignore_canstun = FALSE) //Sets remaining duration
+/mob/living/proc/SetKnockdown(amount, ignore_canstun = FALSE)
+	procstart = null
+	src.procstart = null //Sets remaining duration
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_KNOCKDOWN, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(check_stun_immunity(CANKNOCKDOWN, ignore_canstun))
@@ -119,7 +139,9 @@
 			K = apply_status_effect(/datum/status_effect/incapacitating/knockdown, amount)
 	return K
 
-/mob/living/proc/AdjustKnockdown(amount, daze_amount = 0, ignore_canstun = FALSE) //Adds to remaining duration
+/mob/living/proc/AdjustKnockdown(amount, daze_amount = 0, ignore_canstun = FALSE)
+	procstart = null
+	src.procstart = null //Adds to remaining duration
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_KNOCKDOWN, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(check_stun_immunity(CANKNOCKDOWN, ignore_canstun))
@@ -134,16 +156,22 @@
 	return K
 
 /* IMMOBILIZED */
-/mob/living/proc/IsImmobilized() //If we're immobilized
+/mob/living/proc/IsImmobilized()
+	procstart = null
+	src.procstart = null //If we're immobilized
 	return has_status_effect(/datum/status_effect/incapacitating/immobilized)
 
-/mob/living/proc/AmountImmobilized() //How many deciseconds remain in our Immobilized status effect
+/mob/living/proc/AmountImmobilized()
+	procstart = null
+	src.procstart = null //How many deciseconds remain in our Immobilized status effect
 	var/datum/status_effect/incapacitating/immobilized/I = IsImmobilized()
 	if(I)
 		return I.duration
 	return 0
 
-/mob/living/proc/Immobilize(amount, ignore_canstun = FALSE) //Can't go below remaining duration
+/mob/living/proc/Immobilize(amount, ignore_canstun = FALSE)
+	procstart = null
+	src.procstart = null //Can't go below remaining duration
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_IMMOBILIZE, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(check_stun_immunity(CANSTUN, ignore_canstun))
@@ -155,7 +183,9 @@
 		I = apply_status_effect(/datum/status_effect/incapacitating/immobilized, amount)
 	return I
 
-/mob/living/proc/SetImmobilized(amount, ignore_canstun = FALSE) //Sets remaining duration
+/mob/living/proc/SetImmobilized(amount, ignore_canstun = FALSE)
+	procstart = null
+	src.procstart = null //Sets remaining duration
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_IMMOBILIZE, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(check_stun_immunity(CANSTUN, ignore_canstun))
@@ -171,7 +201,9 @@
 			I = apply_status_effect(/datum/status_effect/incapacitating/immobilized, amount)
 	return I
 
-/mob/living/proc/AdjustImmobilized(amount, ignore_canstun = FALSE) //Adds to remaining duration
+/mob/living/proc/AdjustImmobilized(amount, ignore_canstun = FALSE)
+	procstart = null
+	src.procstart = null //Adds to remaining duration
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_IMMOBILIZE, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(check_stun_immunity(CANSTUN, ignore_canstun))
@@ -184,16 +216,22 @@
 	return I
 
 /* PARALYZED */
-/mob/living/proc/IsParalyzed() //If we're paralyzed
+/mob/living/proc/IsParalyzed()
+	procstart = null
+	src.procstart = null //If we're paralyzed
 	return has_status_effect(/datum/status_effect/incapacitating/paralyzed)
 
-/mob/living/proc/AmountParalyzed() //How many deciseconds remain in our Paralyzed status effect
+/mob/living/proc/AmountParalyzed()
+	procstart = null
+	src.procstart = null //How many deciseconds remain in our Paralyzed status effect
 	var/datum/status_effect/incapacitating/paralyzed/P = IsParalyzed(FALSE)
 	if(P)
 		return P.duration
 	return 0
 
-/mob/living/proc/Paralyze(amount, ignore_canstun = FALSE) //Can't go below remaining duration
+/mob/living/proc/Paralyze(amount, ignore_canstun = FALSE)
+	procstart = null
+	src.procstart = null //Can't go below remaining duration
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_PARALYZE, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(check_stun_immunity(CANSTUN|CANKNOCKDOWN, ignore_canstun)) // this requires both can stun and can knockdown
@@ -205,7 +243,9 @@
 		P = apply_status_effect(/datum/status_effect/incapacitating/paralyzed, amount)
 	return P
 
-/mob/living/proc/SetParalyzed(amount, ignore_canstun = FALSE) //Sets remaining duration
+/mob/living/proc/SetParalyzed(amount, ignore_canstun = FALSE)
+	procstart = null
+	src.procstart = null //Sets remaining duration
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_PARALYZE, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(check_stun_immunity(CANSTUN|CANKNOCKDOWN, ignore_canstun))
@@ -221,7 +261,9 @@
 			P = apply_status_effect(/datum/status_effect/incapacitating/paralyzed, amount)
 	return P
 
-/mob/living/proc/AdjustParalyzed(amount, ignore_canstun = FALSE) //Adds to remaining duration
+/mob/living/proc/AdjustParalyzed(amount, ignore_canstun = FALSE)
+	procstart = null
+	src.procstart = null //Adds to remaining duration
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_PARALYZE, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(check_stun_immunity(CANSTUN|CANKNOCKDOWN, ignore_canstun))
@@ -238,6 +280,8 @@
 
 /// Proc that returns the remaining duration of the status efect in deciseconds.
 /mob/living/proc/amount_incapacitated()
+	procstart = null
+	src.procstart = null
 	var/datum/status_effect/incapacitating/incapacitated/incapacitated_status_effect = has_status_effect(/datum/status_effect/incapacitating/incapacitated)
 	if (incapacitated_status_effect)
 		return incapacitated_status_effect.duration
@@ -250,6 +294,8 @@
  * * ignore_canstun - If TRUE, the mob's resistance to stuns is ignored.
  */
 /mob/living/proc/incapacitate(amount, ignore_canstun = FALSE)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_INCAPACITATE, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(check_stun_immunity(CANSTUN, ignore_canstun))
@@ -268,6 +314,8 @@
  * * ignore_canstun - If TRUE, the mob's resistance to stuns is ignored.
  */
 /mob/living/proc/set_incapacitated(amount, ignore_canstun = FALSE)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_INCAPACITATE, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(check_stun_immunity(CANSTUN, ignore_canstun))
@@ -289,7 +337,9 @@
  * * amount - Amount of time the status effect should be set to, in deciseconds.
  * * ignore_canstun - If TRUE, the mob's resistance to stuns is ignored.
  */
-/mob/living/proc/adjust_incapacitated(amount, ignore_canstun = FALSE) //Adds to remaining duration
+/mob/living/proc/adjust_incapacitated(amount, ignore_canstun = FALSE)
+	procstart = null
+	src.procstart = null //Adds to remaining duration
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_INCAPACITATE, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(check_stun_immunity(CANSTUN, ignore_canstun))
@@ -303,6 +353,8 @@
 
 //Blanket
 /mob/living/proc/AllImmobility(amount)
+	procstart = null
+	src.procstart = null
 	Paralyze(amount)
 	Knockdown(amount)
 	Stun(amount)
@@ -311,6 +363,8 @@
 
 
 /mob/living/proc/SetAllImmobility(amount)
+	procstart = null
+	src.procstart = null
 	SetParalyzed(amount)
 	SetKnockdown(amount)
 	SetStun(amount)
@@ -319,6 +373,8 @@
 
 
 /mob/living/proc/AdjustAllImmobility(amount)
+	procstart = null
+	src.procstart = null
 	AdjustParalyzed(amount)
 	AdjustKnockdown(amount)
 	AdjustStun(amount)
@@ -327,16 +383,22 @@
 
 
 /* UNCONSCIOUS */
-/mob/living/proc/IsUnconscious() //If we're unconscious
+/mob/living/proc/IsUnconscious()
+	procstart = null
+	src.procstart = null //If we're unconscious
 	return has_status_effect(/datum/status_effect/incapacitating/unconscious)
 
-/mob/living/proc/AmountUnconscious() //How many deciseconds remain in our unconsciousness
+/mob/living/proc/AmountUnconscious()
+	procstart = null
+	src.procstart = null //How many deciseconds remain in our unconsciousness
 	var/datum/status_effect/incapacitating/unconscious/U = IsUnconscious()
 	if(U)
 		return U.duration
 	return 0
 
-/mob/living/proc/Unconscious(amount, ignore_canstun = FALSE) //Can't go below remaining duration
+/mob/living/proc/Unconscious(amount, ignore_canstun = FALSE)
+	procstart = null
+	src.procstart = null //Can't go below remaining duration
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_UNCONSCIOUS, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(check_stun_immunity(CANUNCONSCIOUS, ignore_canstun))
@@ -348,7 +410,9 @@
 		U = apply_status_effect(/datum/status_effect/incapacitating/unconscious, amount)
 	return U
 
-/mob/living/proc/SetUnconscious(amount, ignore_canstun = FALSE) //Sets remaining duration
+/mob/living/proc/SetUnconscious(amount, ignore_canstun = FALSE)
+	procstart = null
+	src.procstart = null //Sets remaining duration
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_UNCONSCIOUS, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(check_stun_immunity(CANUNCONSCIOUS, ignore_canstun))
@@ -363,7 +427,9 @@
 		U = apply_status_effect(/datum/status_effect/incapacitating/unconscious, amount)
 	return U
 
-/mob/living/proc/AdjustUnconscious(amount, ignore_canstun = FALSE) //Adds to remaining duration
+/mob/living/proc/AdjustUnconscious(amount, ignore_canstun = FALSE)
+	procstart = null
+	src.procstart = null //Adds to remaining duration
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_UNCONSCIOUS, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(check_stun_immunity(CANUNCONSCIOUS, ignore_canstun))
@@ -376,17 +442,23 @@
 	return U
 
 /* SLEEPING */
-/mob/living/proc/IsSleeping() //If we're asleep
+/mob/living/proc/IsSleeping()
+	procstart = null
+	src.procstart = null //If we're asleep
 	if(!HAS_TRAIT(src, TRAIT_SLEEPIMMUNE))
 		return has_status_effect(/datum/status_effect/incapacitating/sleeping)
 
-/mob/living/proc/AmountSleeping() //How many deciseconds remain in our sleep
+/mob/living/proc/AmountSleeping()
+	procstart = null
+	src.procstart = null //How many deciseconds remain in our sleep
 	var/datum/status_effect/incapacitating/sleeping/S = IsSleeping()
 	if(S)
 		return S.duration
 	return 0
 
-/mob/living/proc/Sleeping(amount) //Can't go below remaining duration
+/mob/living/proc/Sleeping(amount)
+	procstart = null
+	src.procstart = null //Can't go below remaining duration
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_SLEEP, amount) & COMPONENT_NO_STUN)
 		return
 	if(HAS_TRAIT(src, TRAIT_GODMODE))
@@ -398,7 +470,9 @@
 		S = apply_status_effect(/datum/status_effect/incapacitating/sleeping, amount)
 	return S
 
-/mob/living/proc/SetSleeping(amount) //Sets remaining duration
+/mob/living/proc/SetSleeping(amount)
+	procstart = null
+	src.procstart = null //Sets remaining duration
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_SLEEP, amount) & COMPONENT_NO_STUN)
 		return
 	if(HAS_TRAIT(src, TRAIT_GODMODE))
@@ -413,7 +487,9 @@
 		S = apply_status_effect(/datum/status_effect/incapacitating/sleeping, amount)
 	return S
 
-/mob/living/proc/AdjustSleeping(amount) //Adds to remaining duration
+/mob/living/proc/AdjustSleeping(amount)
+	procstart = null
+	src.procstart = null //Adds to remaining duration
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_SLEEP, amount) & COMPONENT_NO_STUN)
 		return
 	if(HAS_TRAIT(src, TRAIT_GODMODE))
@@ -428,6 +504,8 @@
 ///////////////////////// CLEAR STATUS /////////////////////////
 
 /mob/living/proc/adjust_status_effects_on_shake_up()
+	procstart = null
+	src.procstart = null
 	AdjustStun(-6 SECONDS)
 	AdjustKnockdown(-6 SECONDS)
 	AdjustUnconscious(-6 SECONDS)
@@ -439,6 +517,8 @@
 
 /* FROZEN */
 /mob/living/proc/IsFrozen()
+	procstart = null
+	src.procstart = null
 	return has_status_effect(/datum/status_effect/freon)
 
 /**
@@ -451,6 +531,8 @@
  * Returns TRUE on success, FALSE on failure (already has the quirk, etc)
  */
 /mob/living/proc/add_quirk(datum/quirk/quirktype, client/override_client, add_unique = TRUE, announce = TRUE)
+	procstart = null
+	src.procstart = null
 	if(has_quirk(quirktype))
 		return FALSE
 	var/qname = initial(quirktype.name)
@@ -463,6 +545,8 @@
 	return FALSE
 
 /mob/living/proc/remove_quirk(quirktype)
+	procstart = null
+	src.procstart = null
 	for(var/datum/quirk/quirk in quirks)
 		if(quirk.type == quirktype)
 			qdel(quirk)
@@ -470,6 +554,8 @@
 	return FALSE
 
 /mob/living/proc/has_quirk(quirktype)
+	procstart = null
+	src.procstart = null
 	for(var/datum/quirk/quirk in quirks)
 		if(quirk.type == quirktype)
 			return TRUE
@@ -484,6 +570,8 @@
  * Returns the mob's quirk datum if the mob this is called on has the quirk, null on failure
  */
 /mob/living/proc/get_quirk(quirktype)
+	procstart = null
+	src.procstart = null
 	for(var/datum/quirk/quirk in quirks)
 		if(quirk.type == quirktype)
 			return quirk
@@ -498,6 +586,8 @@
  * * from_scan- If the source of this call is like a health analyzer or HUD, in which case QUIRK_HIDE_FROM_MEDICAL hides the quirk.
  */
 /mob/living/proc/get_quirk_string(medical = FALSE, category = CAT_QUIRK_ALL, from_scan = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/dat = list()
 	for(var/datum/quirk/candidate as anything in quirks)
 		if(from_scan && (candidate.quirk_flags & QUIRK_HIDE_FROM_SCAN))
@@ -518,10 +608,14 @@
 		return medical ? "No issues have been declared." : "None"
 	return medical ?  dat.Join("<br>") : dat.Join(", ")
 
-/mob/living/proc/cleanse_quirk_datums() //removes all trait datums
+/mob/living/proc/cleanse_quirk_datums()
+	procstart = null
+	src.procstart = null //removes all trait datums
 	QDEL_LAZYLIST(quirks)
 
 /mob/living/proc/transfer_quirk_datums(mob/living/to_mob)
+	procstart = null
+	src.procstart = null
 	// We could be done before the client was moved or after the client was moved
 	var/datum/preferences/to_pass = client || to_mob.client
 
@@ -534,26 +628,36 @@
 
 /// Helper to easily add a personality by a typepath
 /mob/living/proc/add_personality(personality_type)
+	procstart = null
+	src.procstart = null
 	var/datum/personality/personality = SSpersonalities.personalities_by_type[personality_type]
 	personality.apply_to_mob(src)
 
 /// Helper to easily add multiple personalities by a list of typepaths
 /mob/living/proc/add_personalities(list/new_personalities)
+	procstart = null
+	src.procstart = null
 	for(var/personality_type in new_personalities)
 		add_personality(personality_type)
 
 /// Helper to easily remove a personality by a typepath
 /mob/living/proc/remove_personality(personality_type)
+	procstart = null
+	src.procstart = null
 	var/datum/personality/personality = SSpersonalities.personalities_by_type[personality_type]
 	personality.remove_from_mob(src)
 
 /// Helper to clear all personalities from a mob
 /mob/living/proc/clear_personalities()
+	procstart = null
+	src.procstart = null
 	for(var/personality_type in personalities)
 		remove_personality(personality_type)
 
 /// Returns a string with the names of the personalities of this mob, and their description as tooltip
 /mob/living/proc/get_parsonality_string()
+	procstart = null
+	src.procstart = null
 	var/list/return_list = list()
 	for(var/personality_type in personalities)
 		var/datum/personality/personality = SSpersonalities.personalities_by_type[personality_type]
@@ -561,6 +665,8 @@
 	return english_list(return_list)
 
 /mob/living/proc/cure_husk(source)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(src, TRAIT_HUSK, source)
 	if(HAS_TRAIT(src, TRAIT_HUSK))
 		return FALSE
@@ -568,6 +674,8 @@
 	return TRUE
 
 /mob/living/proc/become_husk(source)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_UNHUSKABLE))
 		return FALSE
 	var/was_husk = HAS_TRAIT(src, TRAIT_HUSK)
@@ -578,16 +686,22 @@
 
 /// Called when we become unhuskable while already husked
 /mob/living/proc/became_unhuskable()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	cure_husk()
 
 /mob/living/proc/cure_fakedeath(source)
+	procstart = null
+	src.procstart = null
 	remove_traits(list(TRAIT_FAKEDEATH, TRAIT_DEATHCOMA), source)
 	if(stat != DEAD)
 		station_timestamp_timeofdeath = null
 
 /// Induces fake death on a living mob.
 /mob/living/proc/fakedeath(source, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(stat != DEAD)
 		if(!silent)
 			emote("deathgasp")
@@ -599,16 +713,22 @@
 
 ///Unignores all slowdowns that lack the IGNORE_NOSLOW flag.
 /mob/living/proc/unignore_slowdown(source)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(src, TRAIT_IGNORESLOWDOWN, source)
 	update_movespeed()
 
 ///Ignores all slowdowns that lack the IGNORE_NOSLOW flag.
 /mob/living/proc/ignore_slowdown(source)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(src, TRAIT_IGNORESLOWDOWN, source)
 	update_movespeed()
 
 ///Ignores specific slowdowns. Accepts a list of slowdowns.
 /mob/living/proc/add_movespeed_mod_immunities(source, slowdown_type, update = TRUE)
+	procstart = null
+	src.procstart = null
 	if(islist(slowdown_type))
 		for(var/listed_type in slowdown_type)
 			if(ispath(listed_type))
@@ -623,6 +743,8 @@
 
 ///Unignores specific slowdowns. Accepts a list of slowdowns.
 /mob/living/proc/remove_movespeed_mod_immunities(source, slowdown_type, update = TRUE)
+	procstart = null
+	src.procstart = null
 	if(islist(slowdown_type))
 		for(var/listed_type in slowdown_type)
 			if(ispath(listed_type))
@@ -650,6 +772,8 @@
  * max_duration - optional - if set, positive durations will only be added UP TO the passed max duration
  */
 /mob/living/proc/adjust_timed_status_effect(duration, effect, max_duration)
+	procstart = null
+	src.procstart = null
 	if(!isnum(duration))
 		CRASH("adjust_timed_status_effect: called with an invalid duration. (Got: [duration])")
 
@@ -698,6 +822,8 @@
  * only_if_higher - if TRUE, we will only set the effect to the new duration if the new duration is longer than any existing duration
  */
 /mob/living/proc/set_timed_status_effect(duration, effect, only_if_higher = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!isnum(duration))
 		CRASH("set_timed_status_effect: called with an invalid duration. (Got: [duration])")
 
@@ -731,6 +857,8 @@
  * If the mob is unaffected by the passed effect, returns 0.
  */
 /mob/living/proc/get_timed_status_effect_duration(effect)
+	procstart = null
+	src.procstart = null
 	if(!ispath(effect, /datum/status_effect))
 		CRASH("get_timed_status_effect_duration: called with an invalid effect type. (Got: [effect])")
 
@@ -759,6 +887,8 @@
  * up_to - the upper end of the clamp, when adding the value
  */
 /mob/living/proc/adjust_drunk_effect(amount, down_to = 0, up_to = INFINITY)
+	procstart = null
+	src.procstart = null
 	if(!isnum(amount))
 		CRASH("adjust_drunk_effect: called with an invalid amount. (Got: [amount])")
 
@@ -776,6 +906,8 @@
  * set_to - the amount of "drunkness" to set on the mob.
  */
 /mob/living/proc/set_drunk_effect(set_to)
+	procstart = null
+	src.procstart = null
 	if(!isnum(set_to) || set_to < 0)
 		CRASH("set_drunk_effect: called with an invalid value. (Got: [set_to])")
 
@@ -787,5 +919,7 @@
 
 /// Helper to get the amount of drunkness the mob's currently experiencing.
 /mob/living/proc/get_drunk_amount()
+	procstart = null
+	src.procstart = null
 	var/datum/status_effect/inebriated/inebriation = has_status_effect(/datum/status_effect/inebriated)
 	return inebriation?.drunk_value || 0

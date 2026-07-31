@@ -9,6 +9,8 @@
 	should_update_preview = FALSE
 
 /datum/preference/toggle/nuke_ops_species/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -21,4 +23,6 @@
 	return FALSE
 
 /datum/preference/toggle/nuke_ops_species/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return

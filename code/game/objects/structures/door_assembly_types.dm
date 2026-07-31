@@ -288,6 +288,8 @@
 	custom_materials = list(/datum/material/titanium = SHEET_MATERIAL_AMOUNT * 8)
 
 /obj/structure/door_assembly/door_assembly_material/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(src)
 	for(var/datum/material/material_datum as anything in custom_materials)
 		var/material_count = FLOOR(custom_materials[material_datum] / SHEET_MATERIAL_AMOUNT, 1)
@@ -304,6 +306,8 @@
 			new /obj/item/shard(target_turf)
 
 /obj/structure/door_assembly/door_assembly_material/finish_door()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/door/airlock/door = ..()
 	door.set_custom_materials(custom_materials)
 	door.update_appearance()

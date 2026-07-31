@@ -14,6 +14,8 @@
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/noticeboard, 32)
 
 /obj/structure/noticeboard/on_object_saved()
+	procstart = null
+	src.procstart = null
 	var/data
 
 	for(var/obj/item/paper/paper in contents)
@@ -23,6 +25,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/noticeboard, 32)
 	return data
 
 /obj/structure/noticeboard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!mapload)
@@ -40,6 +44,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/noticeboard, 32)
 
 //attaching papers!!
 /obj/structure/noticeboard/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/paper) && !istype(tool, /obj/item/photo))
 		return NONE
 
@@ -61,15 +67,21 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/noticeboard, 32)
 
 
 /obj/structure/noticeboard/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.physical_state
 
 /obj/structure/noticeboard/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "NoticeBoard", name)
 		ui.open()
 
 /obj/structure/noticeboard/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["allowed"] = allowed(user)
 	data["items"] = list()
@@ -82,6 +94,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/noticeboard, 32)
 	return data
 
 /obj/structure/noticeboard/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -106,6 +120,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/noticeboard, 32)
 			return TRUE
 
 /obj/structure/noticeboard/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(notices)
 		. += "notices_[notices]"
@@ -118,6 +134,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/noticeboard, 32)
  * * user - The mob that is trying to get the item removed, if there is one
  */
 /obj/structure/noticeboard/proc/remove_item(obj/item/item, mob/user)
+	procstart = null
+	src.procstart = null
 	item.forceMove(drop_location())
 	if(user)
 		user.put_in_hands(item)
@@ -126,6 +144,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/noticeboard, 32)
 	update_appearance(UPDATE_ICON)
 
 /obj/structure/noticeboard/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!disassembled)
 		new /obj/item/stack/sheet/mineral/wood(loc)
 	else

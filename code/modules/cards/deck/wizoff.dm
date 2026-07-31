@@ -7,6 +7,8 @@
 	deckstyle = "wizoff"
 
 /obj/item/toy/cards/deck/wizoff/initialize_cards()
+	procstart = null
+	src.procstart = null
 	var/card_list = strings("wizoff.json", "wizard")
 	initial_cards += new /datum/deck_card/of_type(/obj/item/toy/singlecard/wizoff_ruleset) // ruleset should be the top card
 	for(var/card in card_list)
@@ -20,6 +22,8 @@
 	icon_state = "singlecard_down_black"
 
 /obj/item/toy/singlecard/wizoff_ruleset/examine(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Remember the rules of Wiz-Off!")
 	. += span_info("Each player draws 5 cards.")

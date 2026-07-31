@@ -18,9 +18,13 @@
 	var/initial_z = -1
 
 /obj/docking_port/stationary/get_save_vars()
+	procstart = null
+	src.procstart = null
 	return ..() + NAMEOF(src, roundstart_template)
 
 /obj/docking_port/stationary/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register()
 	if(!area_type)
@@ -39,6 +43,8 @@
 		return INITIALIZE_HINT_LATELOAD
 
 /obj/docking_port/stationary/LateInitialize()
+	procstart = null
+	src.procstart = null
 	INVOKE_ASYNC(SSshuttle, TYPE_PROC_REF(/datum/controller/subsystem/shuttle, setup_shuttles), list(src))
 
 #ifdef TESTING
@@ -46,11 +52,15 @@
 #endif
 
 /obj/docking_port/stationary/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(force)
 		unregister()
 	return ..()
 
 /obj/docking_port/stationary/register(replace = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!shuttle_id)
 		shuttle_id = "dock"
@@ -76,10 +86,14 @@
 	SSshuttle.stationary_docking_ports += src
 
 /obj/docking_port/stationary/unregister()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSshuttle.stationary_docking_ports -= src
 
 /obj/docking_port/stationary/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(area_type) // We already have one
 		return
@@ -87,6 +101,8 @@
 	area_type = newarea?.type
 
 /obj/docking_port/stationary/proc/load_roundstart()
+	procstart = null
+	src.procstart = null
 	if(json_key)
 		var/sid = SSmapping.current_map.shuttles[json_key]
 		shuttle_template_id = SSmapping.shuttle_templates[sid]
@@ -104,4 +120,6 @@
 
 //returns first-found touching shuttleport
 /obj/docking_port/stationary/get_docked()
+	procstart = null
+	src.procstart = null
 	. = locate(/obj/docking_port/mobile) in loc

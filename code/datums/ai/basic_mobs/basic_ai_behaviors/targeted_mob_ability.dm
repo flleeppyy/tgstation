@@ -8,6 +8,8 @@
 	var/require_adjacency = FALSE
 
 /datum/bt_node/ai_behavior/targeted_mob_ability/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/async_flags = handle_async()
 	if(async_flags)
 		return async_flags
@@ -28,6 +30,8 @@
 	return start_async()
 
 /datum/bt_node/ai_behavior/targeted_mob_ability/perform_async(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/datum/action/cooldown/ability = controller.blackboard[ability_key]
 	var/atom/target = controller.blackboard[target_key]
 	var/result = ability.Trigger(target = target)
@@ -43,12 +47,16 @@
 /datum/bt_node/ai_behavior/targeted_mob_ability/and_plan_execute
 
 /datum/bt_node/ai_behavior/targeted_mob_ability/and_plan_execute/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	controller.set_blackboard_key(BB_BASIC_MOB_EXECUTION_TARGET, controller.blackboard[target_key])
 	return ..()
 
 /datum/bt_node/ai_behavior/targeted_mob_ability/and_clear_target
 
 /datum/bt_node/ai_behavior/targeted_mob_ability/and_clear_target/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(target_key)
 

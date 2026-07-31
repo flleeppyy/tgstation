@@ -10,15 +10,21 @@
 	alert_type = /atom/movable/screen/alert/status_effect/terrified
 
 /datum/status_effect/terrified/on_apply()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_alert("The darkness closes in around you, shadows dance around the corners of your vision... It feels like something is watching you!"))
 	owner.emote("scream")
 	owner.AddComponentFrom("terrified", /datum/component/fearful, list(/datum/terror_handler/simple_source/nyctophobia/terrified), TERROR_INITIAL_AMOUNT)
 	return TRUE
 
 /datum/status_effect/terrified/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.RemoveComponentSource("terrified", /datum/component/fearful)
 
 /datum/status_effect/terrified/refresh(effect, ...)
+	procstart = null
+	src.procstart = null
 	// Jank way of adding terror to the existing component
 	owner.AddComponentFrom("terrified", /datum/component/fearful, null, STACK_TERROR_AMOUNT)
 

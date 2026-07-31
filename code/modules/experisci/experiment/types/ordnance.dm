@@ -19,13 +19,19 @@
 	var/list/target_amount
 
 /datum/experiment/ordnance/is_complete()
+	procstart = null
+	src.procstart = null
 	return completed 
 		
 /datum/experiment/ordnance/check_progress()
+	procstart = null
+	src.procstart = null
 	var/status_message = "You must publish a paper on [name] using the NT Frontier app"
 	. += EXPERIMENT_PROG_BOOL(status_message, is_complete())
 
 /datum/experiment/ordnance/actionable(datum/component/experiment_handler/experiment_handler)
+	procstart = null
+	src.procstart = null
 	return !is_complete()
 
 /datum/experiment/ordnance/explosive

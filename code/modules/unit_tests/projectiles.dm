@@ -2,6 +2,8 @@
 /datum/unit_test/projectile_movetypes
 
 /datum/unit_test/projectile_movetypes/Run()
+	procstart = null
+	src.procstart = null
 	for(var/obj/projectile/projectile as anything in typesof(/obj/projectile))
 		if(initial(projectile.movement_type) & PHASING)
 			TEST_FAIL("[projectile] has default movement type PHASING. Piercing projectiles should be done using the projectile piercing system, not movement_types!")
@@ -10,6 +12,8 @@
 /datum/unit_test/gun_go_bang
 
 /datum/unit_test/gun_go_bang/Run()
+	procstart = null
+	src.procstart = null
 	// test is for a ballistic gun that starts loaded + chambered
 	var/obj/item/gun/ballistic/test_gun = allocate(/obj/item/gun/ballistic/automatic/pistol)
 	var/mob/living/carbon/human/victim = allocate(/mob/living/carbon/human/consistent)

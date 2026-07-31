@@ -62,6 +62,8 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 	var/static/obj/item/exodrone/_regex_context
 
 /obj/item/exodrone/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(name == /obj/item/exodrone::name)
 		name = pick(strings(EXODRONE_FILE,"probe_names"))
@@ -77,16 +79,22 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 	create_storage(max_slots = EXODRONE_CARGO_SLOTS, canthold = GLOB.blacklisted_cargo_types)
 
 /obj/item/exodrone/handle_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	explosion(src, 0, 0, 1, 1)
 	do_sparks(5, FALSE, src)
 
 /obj/item/exodrone/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.exodrones -= src
 	. = ..()
 
 /// Description for drone listing, describes location and current status
 /obj/item/exodrone/proc/ui_description()
+	procstart = null
+	src.procstart = null
 	switch(drone_status)
 		if(EXODRONE_TRAVEL)
 			return travel_target ? "Traveling to [travel_target.display_name()]." : "Traveling back to station."
@@ -97,6 +105,8 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 
 // Searches for blacklisted items hidden inside containers
 /obj/item/exodrone/proc/check_blacklist()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/contained_item in contents)
 		if(contained_item.contents)
 			for(var/subcontained_object in contained_item.get_all_contents())
@@ -106,6 +116,8 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 
 /// Starts travel for site, does not validate if it's possible
 /obj/item/exodrone/proc/launch_for(datum/exploration_site/target_site)
+	procstart = null
+	src.procstart = null
 	if(!location) //We're launching from station, fuel up
 		var/obj/machinery/exodrone_launcher/pad = locate() in loc
 		pad.fuel_up(src)
@@ -125,6 +137,8 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 
 /// Travel cleanup
 /obj/item/exodrone/proc/finish_travel()
+	procstart = null
+	src.procstart = null
 	location = travel_target
 	travel_timer_id = null
 	travel_time = null
@@ -142,30 +156,42 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 		set_status(EXODRONE_IDLE)
 
 /obj/item/exodrone/proc/set_status(new_status)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src,COMSIG_EXODRONE_STATUS_CHANGED)
 	drone_status = new_status
 
 /// Cargo space left
 /obj/item/exodrone/proc/space_left()
+	procstart = null
+	src.procstart = null
 	return EXODRONE_CARGO_SLOTS - length(contents) - length(tools)
 
 /// Adds drone tool and resizes storage.
 /obj/item/exodrone/proc/add_tool(tool_type)
+	procstart = null
+	src.procstart = null
 	if(space_left() > 0 && (tool_type in GLOB.exodrone_tool_metadata))
 		tools += tool_type
 		update_storage_size()
 
 /// Removes drone tool and resizes storage.
 /obj/item/exodrone/proc/remove_tool(tool_type)
+	procstart = null
+	src.procstart = null
 	tools -= tool_type
 	update_storage_size()
 
 /// Resizes storage component depending on slots used by tools.
 /obj/item/exodrone/proc/update_storage_size()
+	procstart = null
+	src.procstart = null
 	atom_storage.max_slots = EXODRONE_CARGO_SLOTS - length(tools)
 
 /// Builds ui data for drone storage.
 /obj/item/exodrone/proc/get_cargo_data()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/tool in tools)
 		. += list(list("type"="tool","name"=tool))
@@ -176,6 +202,8 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 
 /// Tries to add loot to drone cargo while respecting space left
 /obj/item/exodrone/proc/try_transfer(obj/loot, delete_on_failure=TRUE)
+	procstart = null
+	src.procstart = null
 	if(space_left())
 		loot.forceMove(src)
 		drone_log("Acquired [loot.name].")
@@ -186,6 +214,8 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 
 /// Crashes the drone somewhere random if there's no launchpad to be found.
 /obj/item/exodrone/proc/drop_somewhere_on_station()
+	procstart = null
+	src.procstart = null
 	var/turf/random_spot = get_safe_random_station_turf_equal_weight()
 
 	var/obj/structure/closet/supplypod/pod = podspawn(list(
@@ -196,6 +226,8 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 
 /// Tries to find landing pad, starting with the one we launched from.
 /obj/item/exodrone/proc/find_landing_pad()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/exodrone_launcher/landing_pad = last_pad?.resolve()
 	if(landing_pad)
 		return landing_pad
@@ -204,6 +236,8 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 
 /// encounters random or specificed event for the current site.
 /obj/item/exodrone/proc/explore_site(datum/exploration_event/specific_event)
+	procstart = null
+	src.procstart = null
 	if(!specific_event) //encounter random event
 		var/list/events_to_encounter = list()
 		for(var/datum/exploration_event/event in location.events)
@@ -219,6 +253,8 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 		specific_event.encounter(src)
 
 /obj/item/exodrone/proc/get_adventure_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = current_adventure?.ui_data()
 	data["description"] = updateKeywords(data["description"])
 	var/list/choices = data["choices"]
@@ -228,6 +264,8 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 
 ///Replaces $$SITE_NAME with site name and $$QualityName with quality values
 /obj/item/exodrone/proc/updateKeywords(text)
+	procstart = null
+	src.procstart = null
 	_regex_context = src
 	var/static/regex/keywordRegex = regex(@"\$\$(\S*)","g")
 	. = keywordRegex.Replace(text, /obj/item/exodrone/proc/replace_keyword)
@@ -235,6 +273,8 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 
 /// This is called with src = regex datum, so don't try to access any instance variables directly here.
 /obj/item/exodrone/proc/replace_keyword(match,g1)
+	procstart = null
+	src.procstart = null
 	REGEX_REPLACE_HANDLER
 	switch(g1)
 		if("SITE_NAME")
@@ -246,6 +286,8 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 				return ""
 
 /obj/item/exodrone/proc/start_adventure(datum/adventure/adventure)
+	procstart = null
+	src.procstart = null
 	current_adventure = adventure
 	RegisterSignal(current_adventure,COMSIG_ADVENTURE_FINISHED, PROC_REF(resolve_adventure))
 	RegisterSignal(current_adventure,COMSIG_ADVENTURE_QUALITY_INIT, PROC_REF(add_tool_qualities))
@@ -256,6 +298,8 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 
 /// Handles finishing adventure
 /obj/item/exodrone/proc/resolve_adventure(datum/source,result)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	switch(result)
 		if(ADVENTURE_RESULT_SUCCESS)
@@ -276,6 +320,8 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 
 /// Adds loot from current adventure to the drone
 /obj/item/exodrone/proc/award_adventure_loot()
+	procstart = null
+	src.procstart = null
 	if(length(current_adventure.loot_categories))
 		var/generator_type = GLOB.adventure_loot_generator_index[pick(current_adventure.loot_categories)]
 		if(!generator_type)
@@ -285,20 +331,28 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 
 /// Applies adventure qualities based on our tools
 /obj/item/exodrone/proc/add_tool_qualities(datum/source,list/quality_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/tool in tools)
 		quality_list[tool] = 1
 
 /obj/item/exodrone/proc/adventure_delay_start(datum/source, delay_time,delay_message)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_busy(delay_message,delay_time)
 
 /obj/item/exodrone/proc/adventure_delay_end(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	unset_busy(EXODRONE_ADVENTURE)
 
 /// Enters busy mode for a given duration.
 /obj/item/exodrone/proc/set_busy(message,duration)
+	procstart = null
+	src.procstart = null
 	if(message)
 		busy_message = message
 	busy_start_time = world.time
@@ -307,16 +361,22 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 
 /// Resets busy status
 /obj/item/exodrone/proc/unset_busy(new_status)
+	procstart = null
+	src.procstart = null
 	busy_message = initial(busy_message)
 	busy_start_time = null
 	busy_duration = null
 	set_status(new_status)
 
 /obj/item/exodrone/proc/busy_time_left()
+	procstart = null
+	src.procstart = null
 	return busy_duration - (world.time - busy_start_time)
 
 /// Returns failure message or FALSE if we're ready to travel
 /obj/item/exodrone/proc/travel_error()
+	procstart = null
+	src.procstart = null
 	/// We're home and on ready pad or exploring and out of any events/adventures
 	switch(drone_status)
 		if(EXODRONE_IDLE)
@@ -337,15 +397,21 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 
 /// Deals damage in adventures/events.
 /obj/item/exodrone/proc/damage(amount)
+	procstart = null
+	src.procstart = null
 	take_damage(amount)
 	drone_log("Sustained [amount] damage.")
 
 /obj/item/exodrone/proc/drone_log(message)
+	procstart = null
+	src.procstart = null
 	if(length(drone_log) > EXODRONE_LOG_SIZE)
 		drone_log.Remove()
 	drone_log.Insert(1,message)
 
 /obj/item/exodrone/proc/has_tool(tool_type)
+	procstart = null
+	src.procstart = null
 	return tools.Find(tool_type)
 
 /// Exploration drone launcher
@@ -358,15 +424,21 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 	var/obj/item/fuel_pellet/fuel_canister
 
 /obj/machinery/exodrone_launcher/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.exodrone_launchers += src
 
 /obj/machinery/exodrone_launcher/examine(user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(fuel_canister)
 		. += span_notice("You can remove the [fuel_canister] with a <b>prying tool</b>.")
 
 /obj/machinery/exodrone_launcher/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/fuel_pellet))
 		if(fuel_canister)
 			to_chat(user, span_warning("There's already fuel loaded inside [src]!"))
@@ -388,6 +460,8 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 	return ..()
 
 /obj/machinery/exodrone_launcher/crowbar_act(mob/living/user, obj/item/crowbar)
+	procstart = null
+	src.procstart = null
 	if(!fuel_canister)
 		return
 
@@ -398,11 +472,15 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 	return TRUE
 
 /obj/machinery/exodrone_launcher/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.exodrone_launchers -= src
 	QDEL_NULL(fuel_canister)
 	return ..()
 
 /obj/machinery/exodrone_launcher/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(fuel_canister && fuel_canister.uses > 0)
 		switch(fuel_canister.fuel_type)
@@ -417,6 +495,8 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
  * Gets the fuel travel coefficient for what type of fuel is within the launcher.
  */
 /obj/machinery/exodrone_launcher/proc/get_fuel_coefficent()
+	procstart = null
+	src.procstart = null
 	if(!fuel_canister)
 		return
 	switch(fuel_canister.fuel_type)
@@ -433,6 +513,8 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
  * drone - the drone that's being fuelled by our launcher.
  */
 /obj/machinery/exodrone_launcher/proc/fuel_up(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	drone.travel_cost_coeff = get_fuel_coefficent()
 	fuel_canister.use()
 	update_icon()
@@ -441,16 +523,22 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
  * Plays an effect on the pad, with a sound effect to boot.
  */
 /obj/machinery/exodrone_launcher/proc/launch_effect()
+	procstart = null
+	src.procstart = null
 	playsound(src,'sound/effects/podwoosh.ogg',50, FALSE)
 	do_smoke(1, src, get_turf(src))
 
 /obj/machinery/exodrone_launcher/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == fuel_canister)
 		fuel_canister = null
 		update_icon()
 
 /obj/item/exodrone/proc/get_travel_coeff()
+	procstart = null
+	src.procstart = null
 	switch(drone_status)
 		if(EXODRONE_IDLE)
 			var/obj/machinery/exodrone_launcher/pad = locate() in loc
@@ -472,6 +560,8 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 	var/uses = 5
 
 /obj/item/fuel_pellet/use(used)
+	procstart = null
+	src.procstart = null
 	uses--
 	if(uses <= 0)
 		qdel(src)

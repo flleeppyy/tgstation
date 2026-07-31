@@ -5,6 +5,8 @@ GLOBAL_LIST_INIT(gas_recipe_meta, gas_recipes_list())
  * Global proc to build the gas recipe global list
  */
 /proc/gas_recipes_list()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/recipe_path in subtypesof(/datum/gas_recipe))
 		var/datum/gas_recipe/recipe = new recipe_path()

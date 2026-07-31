@@ -32,6 +32,8 @@
 	COOLDOWN_DECLARE(ring_cd)
 
 /obj/item/circuit_component/mod_program/messenger/populate_ports()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	received_message = add_output_port("Message", PORT_TYPE_STRING)
 	sender_name = add_output_port("Sender Name", PORT_TYPE_STRING)
@@ -46,6 +48,8 @@
 	set_ring = add_input_port("Set Ringtone", PORT_TYPE_STRING, trigger = PROC_REF(set_ringtone))
 
 /obj/item/circuit_component/mod_program/messenger/input_received(datum/port/port)
+	procstart = null
+	src.procstart = null
 	var/list/messenger_targets = list()
 	for(var/datum/weakref/ref as anything in targets.value)
 		var/obj/item/modular_computer/modpc = ref?.resolve() //entity ports are hardrefs, entity list ports are weakref. :thonking:
@@ -63,21 +67,29 @@
 	INVOKE_ASYNC(messenger, TYPE_PROC_REF(/datum/computer_file/program/messenger, send_message), src, filterd_message, messenger_targets)
 
 /obj/item/circuit_component/mod_program/messenger/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(associated_program.computer, COMSIG_MODULAR_PDA_MESSAGE_RECEIVED, PROC_REF(message_received))
 	RegisterSignal(associated_program.computer, COMSIG_MODULAR_PDA_MESSAGE_SENT, PROC_REF(message_sent))
 
 /obj/item/circuit_component/mod_program/messenger/unregister_shell()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(associated_program.computer, list(COMSIG_MODULAR_PDA_MESSAGE_RECEIVED, COMSIG_MODULAR_PDA_MESSAGE_SENT))
 	return ..()
 
 /obj/item/circuit_component/mod_program/messenger/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("Cooldown per recipient: [DisplayTimeText(MESSENGER_CIRCUIT_CD_PER_RECIPIENT)]", "orange", "stopwatch")
 	. += create_ui_notice("Minimum cooldown: [DisplayTimeText(MESSENGER_CIRCUIT_MIN_COOLDOWN)]", "orange", "stopwatch")
 	. += create_ui_notice("Maximum cooldown: [DisplayTimeText(MESSENGER_CIRCUIT_MAX_COOLDOWN)]", "orange", "stopwatch")
 
 /obj/item/circuit_component/mod_program/messenger/proc/message_received(datum/source, datum/signal/subspace/messaging/tablet_message/signal, message_job, message_name)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	received_message.set_value(signal.data["message"])
 	sender_name.set_output(message_name)
@@ -95,6 +107,8 @@
 
 ///Set the cooldown after the message was sent (by us)
 /obj/item/circuit_component/mod_program/messenger/proc/message_sent(datum/source, atom/origin, datum/signal/subspace/messaging/tablet_message/signal)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(origin != src)
 		return
@@ -104,10 +118,14 @@
 	COOLDOWN_START(messenger, last_text, cool)
 
 /obj/item/circuit_component/mod_program/messenger/proc/set_ringtone(datum/port/port)
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/program/messenger/messenger = associated_program
 	messenger.set_ringtone(set_ring.value)
 
 /obj/item/circuit_component/mod_program/messenger/proc/play_ringtone(datum/port/port)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, ring_cd))
 		return
 	COOLDOWN_START(src, ring_cd, MESSENGER_CIRCUIT_RINGTONE_CD)

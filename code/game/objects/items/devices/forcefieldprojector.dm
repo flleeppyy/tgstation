@@ -22,9 +22,13 @@
 	var/force_proj_busy = FALSE
 
 /obj/item/forcefield_projector/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/forcefield_projector/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!check_allowed_items(interacting_with, not_inside = TRUE))
 		return NONE
 	if(istype(interacting_with, /obj/structure/projected_forcefield))
@@ -67,25 +71,35 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/forcefield_projector/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(current_fields))
 		to_chat(user, span_notice("You deactivate [src], disabling all active forcefields."))
 		for(var/obj/structure/projected_forcefield/F in current_fields)
 			qdel(F)
 
 /obj/item/forcefield_projector/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It is currently sustaining [LAZYLEN(current_fields)]/[max_fields] fields, and it's [round((shield_integrity/max_shield_integrity)*100)]% charged.")
 
 /obj/item/forcefield_projector/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	current_fields = list()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/forcefield_projector/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/forcefield_projector/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(current_fields))
 		shield_integrity = min(shield_integrity + seconds_per_tick * 2, max_shield_integrity)
 	else
@@ -119,10 +133,14 @@
 	acid = 100
 
 /obj/structure/projected_forcefield/Initialize(mapload, obj/item/forcefield_projector/origin)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	generator = origin
 
 /obj/structure/projected_forcefield/Destroy()
+	procstart = null
+	src.procstart = null
 	visible_message(span_warning("[src] flickers and disappears!"))
 	playsound(src,'sound/items/weapons/resonator_blast.ogg',25,TRUE)
 	if(generator)
@@ -131,9 +149,13 @@
 	return ..()
 
 /obj/structure/projected_forcefield/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	playsound(loc, 'sound/items/weapons/egloves.ogg', 80, TRUE)
 
 /obj/structure/projected_forcefield/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	if(sound_effect)
 		play_attack_sound(damage_amount, damage_type, damage_flag)
 	if(generator)

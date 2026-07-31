@@ -1,10 +1,14 @@
 /datum/tgs_api/v5/proc/TopicResponse(error_message = null)
+	procstart = null
+	src.procstart = null
 	var/list/response = list()
 	if(error_message)
 		response[DMAPI5_RESPONSE_ERROR_MESSAGE] = error_message
 	return response
 
 /datum/tgs_api/v5/proc/ProcessTopicJson(json, check_access_identifier)
+	procstart = null
+	src.procstart = null
 	TGS_DEBUG_LOG("ProcessTopicJson(..., [check_access_identifier])")
 	var/list/result = ProcessRawTopic(json, check_access_identifier)
 	if(!result)
@@ -26,6 +30,8 @@
 	return response_json
 
 /datum/tgs_api/v5/proc/ProcessRawTopic(json, check_access_identifier)
+	procstart = null
+	src.procstart = null
 	TGS_DEBUG_LOG("ProcessRawTopic(..., [check_access_identifier])")
 	var/list/topic_parameters = json_decode(json)
 	if(!topic_parameters)
@@ -45,9 +51,13 @@
 	return ProcessTopicCommand(command, topic_parameters)
 
 /datum/tgs_api/v5/proc/ResponseTopicChunkCacheKey(payload_id)
+	procstart = null
+	src.procstart = null
 	return "response[payload_id]"
 
 /datum/tgs_api/v5/proc/ProcessTopicCommand(command, list/topic_parameters)
+	procstart = null
+	src.procstart = null
 	TGS_DEBUG_LOG("ProcessTopicCommand([command], ...)")
 	switch(command)
 
@@ -294,5 +304,7 @@
 	return TopicResponse("Unknown command: [command]")
 
 /datum/tgs_api/v5/proc/WorldBroadcast(message)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	TGS_WORLD_ANNOUNCE(message)

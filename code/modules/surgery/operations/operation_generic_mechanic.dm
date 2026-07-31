@@ -19,16 +19,24 @@
 	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/mechanical_incision/get_any_tool()
+	procstart = null
+	src.procstart = null
 	return "Any sharp item"
 
 /datum/surgery_operation/limb/mechanical_incision/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/hud/surgery_radial.dmi', "unscrew_shell")
 
 /datum/surgery_operation/limb/mechanical_incision/tool_check(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	// Require any sharpness OR a tool behavior match
 	return (tool.get_sharpness() || implements[tool.tool_behaviour])
 
 /datum/surgery_operation/limb/mechanical_incision/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -39,6 +47,8 @@
 	display_pain(limb.owner, "You feel your [limb.plaintext_zone] grow numb as the shell is unscrewed.", TRUE)
 
 /datum/surgery_operation/limb/mechanical_incision/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	limb.add_surgical_state(SURGERY_SKIN_CUT)
 
@@ -60,9 +70,13 @@
 	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/mechanical_open/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/hud/surgery_radial.dmi', "open_hatch")
 
 /datum/surgery_operation/limb/mechanical_open/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -73,6 +87,8 @@
 	display_pain(limb.owner, "The last faint pricks of tactile sensation fade from your [limb.plaintext_zone] as the hatch is opened.", TRUE)
 
 /datum/surgery_operation/limb/mechanical_open/on_success(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// We get both vessels and skin done at the same time wowee
 	limb.add_surgical_state(SURGERY_SKIN_OPEN|SURGERY_VESSELS_CLAMPED)
@@ -98,19 +114,29 @@
 	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/mechanical_close/get_any_tool()
+	procstart = null
+	src.procstart = null
 	return "Any sharp item"
 
 /datum/surgery_operation/limb/mechanical_close/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/hud/surgery_radial.dmi', "screw_shell")
 
 /datum/surgery_operation/limb/mechanical_close/tool_check(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	// Require any sharpness OR a tool behavior match
 	return (tool.get_sharpness() || implements[tool.tool_behaviour])
 
 /datum/surgery_operation/limb/mechanical_close/state_check(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	return LIMB_HAS_SKIN(limb)
 
 /datum/surgery_operation/limb/mechanical_close/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -121,6 +147,8 @@
 	display_pain(limb.owner, "You feel the faint pricks of sensation return as your [limb.plaintext_zone]'s shell is screwed in.", TRUE)
 
 /datum/surgery_operation/limb/mechanical_close/on_success(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	limb.remove_surgical_state(ALL_SURGERY_STATES_UNSET_ON_CLOSE)
 
@@ -143,9 +171,13 @@
 	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/prepare_electronics/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/hud/surgery_radial.dmi', "prepare_electronics")
 
 /datum/surgery_operation/limb/prepare_electronics/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -156,6 +188,8 @@
 	display_pain(limb.owner, "You can feel a faint buzz in your [limb.plaintext_zone] as the electronics reboot.", TRUE)
 
 /datum/surgery_operation/limb/prepare_electronics/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	limb.add_surgical_state(SURGERY_ORGANS_CUT)
 
@@ -177,9 +211,13 @@
 	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/mechanic_unwrench/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/hud/surgery_radial.dmi', "unwrench_endoskeleton")
 
 /datum/surgery_operation/limb/mechanic_unwrench/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -190,6 +228,8 @@
 	display_pain(limb.owner, "You feel a jostle in your [limb.plaintext_zone] as the bolts begin to loosen.", TRUE)
 
 /datum/surgery_operation/limb/mechanic_unwrench/on_success(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	limb.add_surgical_state(SURGERY_BONE_SAWED)
 
@@ -210,15 +250,23 @@
 	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/mechanic_wrench/state_check(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	return LIMB_HAS_BONES(limb)
 
 /datum/surgery_operation/limb/mechanic_wrench/all_required_strings()
+	procstart = null
+	src.procstart = null
 	return ..() + list("the limb must have bones")
 
 /datum/surgery_operation/limb/mechanic_wrench/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/hud/surgery_radial.dmi', "wrench_endoskeleton")
 
 /datum/surgery_operation/limb/mechanic_wrench/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -229,5 +277,7 @@
 	display_pain(limb.owner, "You feel a jostle in your [limb.plaintext_zone] as the bolts begin to tighten.", TRUE)
 
 /datum/surgery_operation/limb/mechanic_wrench/on_success(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	limb.remove_surgical_state(SURGERY_BONE_SAWED)

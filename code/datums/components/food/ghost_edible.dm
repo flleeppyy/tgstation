@@ -13,6 +13,8 @@
 	var/initial_reagent_volume = 0
 
 /datum/component/ghost_edible/Initialize(bite_consumption = 3, bite_chance = 20, minimum_scale = 0.6)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -36,16 +38,24 @@
 	)
 
 /datum/component/ghost_edible/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSdcs, src)
 
 /datum/component/ghost_edible/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSdcs, src)
 
 /datum/component/ghost_edible/Destroy(force)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSdcs, src)
 	return ..()
 
 /datum/component/ghost_edible/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/atom/atom_parent = parent
 	// Ghosts can eat this burger
 	var/munch_chance = 0

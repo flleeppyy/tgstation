@@ -6,15 +6,21 @@
 	should_update_preview = FALSE
 
 /datum/preference/choiced/language/create_default_value()
+	procstart = null
+	src.procstart = null
 	return "Random"
 
 /datum/preference/choiced/language/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if (!..())
 		return FALSE
 
 	return /datum/quirk/bilingual::name in preferences.all_quirks
 
 /datum/preference/choiced/language/icon_for(value)
+	procstart = null
+	src.procstart = null
 	var/datum/language/lang = GLOB.language_types_by_name[value]
 	if(lang)
 		var/datum/universal_icon/lang_icon = uni_icon(lang.icon, lang.icon_state)
@@ -26,6 +32,8 @@
 	return unknown
 
 /datum/preference/choiced/language/init_possible_values()
+	procstart = null
+	src.procstart = null
 	var/list/values = list()
 
 	if(!GLOB.uncommon_roundstart_languages.len)
@@ -43,6 +51,8 @@
 	return values
 
 /datum/preference/choiced/language/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/preference/toggle/language_speakable
@@ -54,12 +64,16 @@
 	should_update_preview = FALSE
 
 /datum/preference/toggle/language_speakable/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 
 	return /datum/quirk/bilingual::name in preferences.all_quirks
 
 /datum/preference/toggle/language_speakable/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/preference/choiced/language_skill
@@ -70,9 +84,13 @@
 	should_update_preview = FALSE
 
 /datum/preference/choiced/language_skill/create_default_value()
+	procstart = null
+	src.procstart = null
 	return "100%"
 
 /datum/preference/choiced/language_skill/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	if(preferences.read_preference(/datum/preference/toggle/language_speakable))
@@ -81,9 +99,13 @@
 	return /datum/quirk/bilingual::name in preferences.all_quirks
 
 /datum/preference/choiced/language_skill/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list("100%", "75%", "50%", "33%", "25%", "10%")
 
 /datum/preference/choiced/language_skill/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/preference/choiced/csl_strength
@@ -94,13 +116,21 @@
 	should_update_preview = FALSE
 
 /datum/preference/choiced/csl_strength/create_default_value()
+	procstart = null
+	src.procstart = null
 	return init_possible_values()[1]
 
 /datum/preference/choiced/csl_strength/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	return ..() && (/datum/quirk/csl::name in preferences.all_quirks)
 
 /datum/preference/choiced/csl_strength/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list("75%", "50%", "25%")
 
 /datum/preference/choiced/csl_strength/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return

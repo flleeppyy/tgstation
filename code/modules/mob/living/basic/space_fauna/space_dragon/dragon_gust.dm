@@ -36,10 +36,14 @@
 	)
 
 /datum/action/cooldown/mob_cooldown/wing_buffet/Grant(mob/granted_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(granted_to, COMSIG_LIVING_LIFE, PROC_REF(on_life))
 
 /datum/action/cooldown/mob_cooldown/wing_buffet/Remove(mob/removed_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	deltimer(active_timer)
 	UnregisterSignal(removed_from, COMSIG_LIVING_LIFE)
@@ -47,18 +51,24 @@
 
 /// Decay our accumulated additional tiredness
 /datum/action/cooldown/mob_cooldown/wing_buffet/proc/on_life(mob/living/liver, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (liver.stat == DEAD)
 		return // not so life now buddy
 	additional_endlag = max(0, additional_endlag - (endlag_decay_per_second * seconds_per_tick))
 
 /datum/action/cooldown/mob_cooldown/wing_buffet/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	begin_sequence()
 	StartCooldown()
 	return TRUE
 
 /// Rise up into the air
 /datum/action/cooldown/mob_cooldown/wing_buffet/proc/begin_sequence()
+	procstart = null
+	src.procstart = null
 	owner.add_traits(applied_traits, REF(src)) // No moving till we're done
 	owner.update_appearance(UPDATE_ICON)
 	animate(owner, pixel_y = 20, time = windup_time)
@@ -66,6 +76,8 @@
 
 /// Slam into the ground
 /datum/action/cooldown/mob_cooldown/wing_buffet/proc/ground_pound()
+	procstart = null
+	src.procstart = null
 	if (QDELETED(owner))
 		return
 	owner.pixel_y = 0
@@ -88,6 +100,8 @@
 	active_timer = addtimer(CALLBACK(src, PROC_REF(complete_ability)), stun_time, TIMER_DELETE_ME | TIMER_STOPPABLE)
 
 /datum/action/cooldown/mob_cooldown/wing_buffet/proc/complete_ability()
+	procstart = null
+	src.procstart = null
 	owner.remove_traits(applied_traits + TRAIT_WING_BUFFET_TIRED, REF(src))
 	owner.update_appearance(UPDATE_ICON)
 

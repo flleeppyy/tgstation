@@ -22,6 +22,8 @@
 	var/victim_message
 
 /datum/element/chemical_transfer/Attach(datum/target, attacker_message = DEFAULT_ATTACKER_MESSAGE, victim_message = DEFAULT_VICTIM_MESSAGE, transfer_prob = 100)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -32,11 +34,15 @@
 	RegisterSignal(target, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/element/chemical_transfer/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, list(COMSIG_ITEM_ATTACK, COMSIG_ATOM_EXAMINE))
 
 ///signal called on parent being examined
 /datum/element/chemical_transfer/proc/on_examine(datum/target, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/probability_description
 	switch(transfer_prob)
@@ -52,6 +58,8 @@
 
 ///signal called on parent being used to attack a victim
 /datum/element/chemical_transfer/proc/on_attack(datum/target, mob/living/transfer_victim, mob/living/transfer_attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(transfer_attacker) || !prob(transfer_prob))

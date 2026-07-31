@@ -5,6 +5,8 @@
 	abstract_type = /datum/unit_test/liver
 
 /datum/unit_test/liver/skeleton/Run()
+	procstart = null
+	src.procstart = null
 	// Pause natural mob life so it can be handled entirely by the test
 	SSmobs.pause()
 
@@ -53,11 +55,15 @@
 		"Milk did not heal the expected amount of damage (expected at least [expected_remaining_damage], got [damaged_parts[1].brute_dam])")
 
 /datum/unit_test/liver/skeleton/Destroy()
+	procstart = null
+	src.procstart = null
 	SSmobs.ignite()
 	return ..()
 
 // Plasmamen
 /datum/unit_test/liver/plasmaman/Run()
+	procstart = null
+	src.procstart = null
 	// Pause natural mob life so it can be handled entirely by the test
 	SSmobs.pause()
 
@@ -109,6 +115,8 @@
 	TEST_ASSERT(mrbones.has_status_effect(/datum/status_effect/hallucination), "Plasmaman did not get hallucinating status after consuming gunpowder")
 
 /datum/unit_test/liver/plasmaman/Destroy()
+	procstart = null
+	src.procstart = null
 	SSmobs.ignite()
 	return ..()
 

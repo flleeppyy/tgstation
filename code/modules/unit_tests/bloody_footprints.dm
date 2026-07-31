@@ -3,6 +3,8 @@
 /datum/unit_test/bloody_footprints
 
 /datum/unit_test/bloody_footprints/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/blood_master = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/clothing/shoes/holds_blood = allocate(/obj/item/clothing/shoes)
 

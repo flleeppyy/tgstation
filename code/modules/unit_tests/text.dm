@@ -2,6 +2,8 @@
 /datum/unit_test/strip_outer_punctuation
 
 /datum/unit_test/strip_outer_punctuation/Run()
+	procstart = null
+	src.procstart = null
 	var/list/sample_to_expected = list(
 		"Hello, world!" = "Hello, world",
 		"|Who are you?|" = "Who are you",
@@ -18,6 +20,8 @@
 /datum/unit_test/find_last_punctuation
 
 /datum/unit_test/find_last_punctuation/Run()
+	procstart = null
+	src.procstart = null
 	var/list/sample_to_expected = list(
 		"Hello, world!" = "!",
 		"|Who are you?|" = "?",

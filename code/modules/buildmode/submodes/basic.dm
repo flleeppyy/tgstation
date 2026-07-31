@@ -2,6 +2,8 @@
 	key = "basic"
 
 /datum/buildmode_mode/basic/show_help(client/builder)
+	procstart = null
+	src.procstart = null
 	to_chat(builder, span_purple(boxed_message(
 		"[span_bold("Construct / Upgrade")] -> Left Mouse Button\n\
 		[span_bold("Deconstruct / Delete / Downgrade")] -> Right Mouse Button\n\
@@ -12,6 +14,8 @@
 	)
 
 /datum/buildmode_mode/basic/handle_click(client/c, params, obj/object)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 
 	var/left_click = LAZYACCESS(modifiers, LEFT_CLICK)

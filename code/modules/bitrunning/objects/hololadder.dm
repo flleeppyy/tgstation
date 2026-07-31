@@ -13,6 +13,8 @@
 
 
 /obj/structure/hololadder/Initialize(mapload, obj/machinery/quantum_server/origin)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	RegisterSignal(loc, COMSIG_ATOM_ENTERED, PROC_REF(on_enter))
@@ -21,12 +23,16 @@
 
 
 /obj/structure/hololadder/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	context[SCREENTIP_CONTEXT_LMB] = "Disconnect"
 
 
 /obj/structure/hololadder/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isnull(server_ref.resolve()))
@@ -41,6 +47,8 @@
 
 
 /obj/structure/hololadder/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -52,6 +60,8 @@
 
 
 /obj/structure/hololadder/attack_ghost(mob/dead/observer/ghostie)
+	procstart = null
+	src.procstart = null
 	var/our_server = server_ref?.resolve()
 	if(isnull(our_server))
 		return ..()
@@ -61,6 +71,8 @@
 
 /// If there's a pilot ref- send the disconnect signal
 /obj/structure/hololadder/proc/disconnect(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(user.mind))
 		return
 
@@ -83,6 +95,8 @@
 
 /// Helper for times when you dont have hands (gondola??)
 /obj/structure/hololadder/proc/on_enter(datum/source, atom/movable/arrived, turf/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(arrived))

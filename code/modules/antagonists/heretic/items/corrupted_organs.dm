@@ -13,11 +13,15 @@
 	var/list/hallucinations
 
 /obj/item/organ/eyes/corrupt/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/corrupted_organ, FALSE)
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_Their eyes have wide dilated pupils, and no iris. Something is moving in the darkness.", BODY_ZONE_PRECISE_EYES)
 
 /obj/item/organ/eyes/corrupt/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!organ_owner.client)
 		return
@@ -35,6 +39,8 @@
 		organ_owner.client.images |= hallucinations
 
 /obj/item/organ/eyes/corrupt/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!LAZYLEN(hallucinations))
 		return
@@ -42,6 +48,8 @@
 	LAZYNULL(hallucinations)
 
 /obj/item/organ/eyes/corrupt/penlight_examine(mob/living/viewer, obj/item/examtool)
+	procstart = null
+	src.procstart = null
 	viewer.playsound_local(src, 'sound/effects/magic/magic_block_mind.ogg', 75, FALSE)
 	if(!viewer.is_blind() && !IS_HERETIC_OR_MONSTER(viewer))
 		to_chat(viewer, span_danger("Your eyes sizzle in their sockets as eldritch energies assault them!"))
@@ -60,20 +68,28 @@
 	organ_flags = parent_type::organ_flags | ORGAN_HAZARDOUS
 
 /obj/item/organ/tongue/corrupt/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/corrupted_organ)
 	AddElement(/datum/element/noticable_organ, "The inside of %PRONOUN_their mouth is full of stars.", BODY_ZONE_PRECISE_MOUTH)
 
 /obj/item/organ/tongue/corrupt/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(organ_owner, COMSIG_MOB_SAY, PROC_REF(on_spoken))
 
 /obj/item/organ/tongue/corrupt/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(organ_owner, COMSIG_MOB_SAY)
 
 /// When the mob speaks, sometimes put it in a different language
 /obj/item/organ/tongue/corrupt/proc/on_spoken(mob/living/organ_owner, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (organ_owner.has_reagent(/datum/reagent/water/holywater) || prob(60))
 		return
@@ -101,19 +117,27 @@
 	)
 
 /obj/item/organ/liver/corrupt/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/corrupted_organ)
 
 /obj/item/organ/liver/corrupt/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(organ_owner, COMSIG_ATOM_EXPOSE_REAGENTS, PROC_REF(on_drank))
 
 /obj/item/organ/liver/corrupt/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(organ_owner, COMSIG_ATOM_EXPOSE_REAGENTS)
 
 /// If we drank something, add a little extra
 /obj/item/organ/liver/corrupt/proc/on_drank(mob/living/carbon/human, list/reagents, datum/reagents/source_reagents, methods)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!(methods & INGEST))
 		return
@@ -139,20 +163,28 @@
 	COOLDOWN_DECLARE(message_cooldown)
 
 /obj/item/organ/stomach/corrupt/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/corrupted_organ)
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_They %PRONOUN_have an unhealthy pallor.")
 
 /obj/item/organ/stomach/corrupt/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(organ_owner, COMSIG_ATOM_EXPOSE_REAGENTS, PROC_REF(on_drank))
 
 /obj/item/organ/stomach/corrupt/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(organ_owner, COMSIG_ATOM_EXPOSE_REAGENTS)
 
 /// Check if we drank a little blood
 /obj/item/organ/stomach/corrupt/proc/on_drank(atom/source, list/reagents, datum/reagents/source_reagents, methods)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!(methods & INGEST))
 		return
@@ -168,6 +200,8 @@
 	thirst_timer = addtimer(VARSET_CALLBACK(src, thirst_satiated, FALSE), 3 MINUTES, TIMER_STOPPABLE | TIMER_DELETE_ME)
 
 /obj/item/organ/stomach/corrupt/handle_hunger(mob/living/carbon/human/human, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if (thirst_satiated || human.has_reagent(/datum/reagent/water/holywater))
 		return ..()
 
@@ -203,10 +237,14 @@
 	COOLDOWN_DECLARE(hand_cooldown)
 
 /obj/item/organ/heart/corrupt/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/corrupted_organ)
 
 /obj/item/organ/heart/corrupt/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!COOLDOWN_FINISHED(src, hand_cooldown) || IS_IN_MANSUS(owner) || !owner.needs_heart() || !is_beating() || owner.has_reagent(/datum/reagent/water/holywater))
 		return
@@ -214,6 +252,8 @@
 	COOLDOWN_START(src, hand_cooldown, rand(6 SECONDS, 45 SECONDS)) // Wide variance to put you off guard
 
 /obj/item/organ/heart/corrupt/hear_beat_noise(mob/living/hearer)
+	procstart = null
+	src.procstart = null
 	hearer.playsound_local(src, 'sound/effects/magic/hereticknock.ogg', 75, FALSE)
 	if(!IS_HERETIC_OR_MONSTER(hearer))
 		hearer.emote("scream")
@@ -241,10 +281,14 @@
 	)
 
 /obj/item/organ/lungs/corrupt/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/corrupted_organ)
 
 /obj/item/organ/lungs/corrupt/check_breath(datum/gas_mixture/breath, mob/living/carbon/human/breather)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!. || IS_IN_MANSUS(owner) || breather.has_reagent(/datum/reagent/water/holywater) || !prob(cough_chance))
 		return
@@ -258,6 +302,8 @@
 	our_turf.assume_air(mix_to_spawn)
 
 /obj/item/organ/lungs/corrupt/hear_breath_noise(mob/living/hearer)
+	procstart = null
+	src.procstart = null
 	hearer.playsound_local(src, 'sound/effects/magic/voidblink.ogg', 75, FALSE)
 	if(!IS_HERETIC_OR_MONSTER(hearer))
 		hearer.adjust_timed_status_effect(15 SECONDS, /datum/status_effect/speech/slurring/heretic)
@@ -275,11 +321,15 @@
 	var/worm_chance = 2
 
 /obj/item/organ/appendix/corrupt/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/corrupted_organ)
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_Their abdomen is distended... and wiggling.", BODY_ZONE_PRECISE_GROIN)
 
 /obj/item/organ/appendix/corrupt/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (IS_UNCONSCIOUS_OR_CRIT(owner) || owner.has_reagent(/datum/reagent/water/holywater) || IS_IN_MANSUS(owner) || !SPT_PROB(worm_chance, seconds_per_tick))
 		return

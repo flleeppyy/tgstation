@@ -11,6 +11,8 @@ GLOBAL_LIST_EMPTY(pillars_by_z)
 
 /// Returns a z pillar to insert turfs into
 /proc/request_z_pillar(x, y, z)
+	procstart = null
+	src.procstart = null
 	var/list/pillars_by_z = GLOB.pillars_by_z
 	if(length(pillars_by_z) < z)
 		pillars_by_z.len = z
@@ -50,6 +52,8 @@ GLOBAL_LIST_EMPTY(pillars_by_z)
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /obj/effect/abstract/z_holder/Destroy()
+	procstart = null
+	src.procstart = null
 	if(pillar)
 		pillar.drawing_object -= show_for
 		pillar = null
@@ -57,6 +61,8 @@ GLOBAL_LIST_EMPTY(pillars_by_z)
 	return ..()
 
 /obj/effect/abstract/z_holder/proc/display(turf/display, datum/z_pillar/behalf_of)
+	procstart = null
+	src.procstart = null
 	if(pillar)
 		CRASH("We attempted to use a z holder to display when it was already in use, what'd you do")
 
@@ -77,12 +83,16 @@ GLOBAL_LIST_EMPTY(pillars_by_z)
 	var/list/drawing_object = list()
 
 /datum/z_pillar/New(x_pos, y_pos, z_pos)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.x_pos = x_pos
 	src.y_pos = y_pos
 	src.z_pos = z_pos
 
 /datum/z_pillar/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.pillars_by_z[z_pos][x_pos][y_pos] = null
 	// Just to be totally clear, this is code that exists to
 	// A: make sure cleanup is actually possible for this datum, just in case someone goes insane
@@ -95,6 +105,8 @@ GLOBAL_LIST_EMPTY(pillars_by_z)
 
 /// Displays a turf from the z level below us on our level
 /datum/z_pillar/proc/display_turf(turf/to_display, turf/source)
+	procstart = null
+	src.procstart = null
 	var/list/sources = turf_sources[to_display]
 
 	if(sources) // If we aren't the first to request this turf, return
@@ -129,6 +141,8 @@ GLOBAL_LIST_EMPTY(pillars_by_z)
 
 /// Hides an existing turf from our vis_contents, or the vis_contents of the source if applicable
 /datum/z_pillar/proc/hide_turf(turf/to_hide, turf/source)
+	procstart = null
+	src.procstart = null
 	var/list/sources = turf_sources[to_hide]
 	if(!sources)
 		return
@@ -153,11 +167,15 @@ GLOBAL_LIST_EMPTY(pillars_by_z)
 /// We do not need to do this for non transparent holders, because they will have their abstract object cleared
 /// When a transparent holder comes back.
 /datum/z_pillar/proc/parent_cleared(turf/visual, turf/current_holder)
+	procstart = null
+	src.procstart = null
 	addtimer(CALLBACK(src, PROC_REF(refresh_orphan), visual, current_holder))
 
 /// Runs the actual refresh of some formerly orphaned via vis_loc deletiong turf
 /// We'll only reup if we either have no souece, or if the source is a transparent turf
 /datum/z_pillar/proc/refresh_orphan(turf/orphan, turf/parent)
+	procstart = null
+	src.procstart = null
 	var/list/sources = turf_sources[orphan]
 	if(!length(sources))
 		return
@@ -177,6 +195,8 @@ GLOBAL_LIST_EMPTY(pillars_by_z)
 
 ///This proc sets up the signals to handle updating viscontents when turfs above/below update. Handle plane and layer here too so that they don't cover other obs/turfs in Dream Maker
 /datum/element/turf_z_transparency/Attach(datum/target, mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isturf(target))
 		return ELEMENT_INCOMPATIBLE
@@ -190,6 +210,8 @@ GLOBAL_LIST_EMPTY(pillars_by_z)
 		update_multi_z(our_turf)
 
 /datum/element/turf_z_transparency/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/our_turf = source
 	clear_multiz(our_turf)
@@ -198,6 +220,8 @@ GLOBAL_LIST_EMPTY(pillars_by_z)
 
 ///Updates the viscontents or underlays below this tile.
 /datum/element/turf_z_transparency/proc/update_multi_z(turf/our_turf)
+	procstart = null
+	src.procstart = null
 	var/turf/below_turf = GET_TURF_BELOW(our_turf)
 	if(below_turf) // If we actually have something below us, display it.
 		for(var/turf/partner in range(1, below_turf))
@@ -225,6 +249,8 @@ GLOBAL_LIST_EMPTY(pillars_by_z)
 	return TRUE
 
 /datum/element/turf_z_transparency/proc/clear_multiz(turf/our_turf)
+	procstart = null
+	src.procstart = null
 	var/turf/below_turf = GET_TURF_BELOW(our_turf)
 	if(below_turf) // If we actually have something below us, we need to clear ourselves from it
 		for(var/turf/partner in range(1, below_turf))
@@ -245,6 +271,8 @@ GLOBAL_LIST_EMPTY(pillars_by_z)
 		our_turf.underlays -= plating_underlay
 
 /datum/element/turf_z_transparency/proc/on_multiz_turf_del(turf/our_turf, turf/below_turf, dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(dir != DOWN)
@@ -253,6 +281,8 @@ GLOBAL_LIST_EMPTY(pillars_by_z)
 	update_multi_z(our_turf)
 
 /datum/element/turf_z_transparency/proc/on_multiz_turf_new(turf/our_turf, turf/below_turf, dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(dir != DOWN)
@@ -262,6 +292,8 @@ GLOBAL_LIST_EMPTY(pillars_by_z)
 
 ///Called when there is no real turf below this turf
 /datum/element/turf_z_transparency/proc/get_baseturf_underlay(turf/our_turf)
+	procstart = null
+	src.procstart = null
 	var/turf/path = SSmapping.level_trait(our_turf.z, ZTRAIT_BASETURF) || /turf/open/space
 	if(!ispath(path))
 		path = text2path(path)

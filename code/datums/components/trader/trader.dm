@@ -68,6 +68,8 @@
 Can accept both a type path, and an instance of a datum. Type path has priority.
 */
 /datum/component/trader/Initialize(trader_data_path = null, trader_data = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -95,13 +97,19 @@ Can accept both a type path, and an instance of a datum. Type path has priority.
 	renew_item_demands()
 
 /datum/component/trader/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_ATTACK_HAND, PROC_REF(on_attack_hand))
 
 /datum/component/trader/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_ATOM_ATTACK_HAND)
 
 ///If our trader is alive, and the customer left clicks them with an empty hand without combat mode
 /datum/component/trader/proc/on_attack_hand(atom/source, mob/living/carbon/customer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!can_trade(customer) || customer.combat_mode)
 		return
@@ -129,6 +137,8 @@ Can accept both a type path, and an instance of a datum. Type path has priority.
  * * customer - (Mob REF) The mob trying to buy something
  */
 /datum/component/trader/proc/open_npc_options(mob/living/carbon/customer, list/npc_options)
+	procstart = null
+	src.procstart = null
 	if(!can_trade(customer))
 		return
 	var/npc_result = show_radial_menu(customer, parent, npc_options, custom_check = CALLBACK(src, PROC_REF(check_menu), customer), require_near = TRUE, tooltips = TRUE)
@@ -148,6 +158,8 @@ Can accept both a type path, and an instance of a datum. Type path has priority.
  * * customer - (Mob REF) The mob checking the menu
  */
 /datum/component/trader/proc/check_menu(mob/customer)
+	procstart = null
+	src.procstart = null
 	if(!istype(customer))
 		return FALSE
 	if(customer.incapacitated || !customer.Adjacent(parent))
@@ -160,6 +172,8 @@ Can accept both a type path, and an instance of a datum. Type path has priority.
  * * customer - (Mob REF) The mob trying to buy something
  */
 /datum/component/trader/proc/buy_item(mob/customer)
+	procstart = null
+	src.procstart = null
 	if(!can_trade(customer))
 		return
 
@@ -222,6 +236,8 @@ Can accept both a type path, and an instance of a datum. Type path has priority.
 
 ///Calculates the value of money in the hand of the buyer and spends it if it's sufficient
 /datum/component/trader/proc/spend_buyer_offhand_money(mob/customer, the_cost)
+	procstart = null
+	src.procstart = null
 	var/value = 0
 	var/obj/item/holochip/cash = customer.is_holding_item_of_type(/obj/item/holochip)
 	if(cash)
@@ -238,6 +254,8 @@ Can accept both a type path, and an instance of a datum. Type path has priority.
  * * customer - (Mob REF) The mob trying to sell something
  */
 /datum/component/trader/proc/try_sell(mob/customer)
+	procstart = null
+	src.procstart = null
 	if(!can_trade(customer))
 		return
 	var/sold_item = FALSE
@@ -257,6 +275,8 @@ Can accept both a type path, and an instance of a datum. Type path has priority.
  * * selling - (Item REF) The item being sold
  */
 /datum/component/trader/proc/sell_item(mob/customer, obj/item/selling)
+	procstart = null
+	src.procstart = null
 	if(isnull(selling))
 		return FALSE
 	var/list/product_info
@@ -321,6 +341,8 @@ Can accept both a type path, and an instance of a datum. Type path has priority.
  * * Original cost; the original cost of the item, to be manipulated depending on the variables of the item, one example is using item.amount if it's a stack
  */
 /datum/component/trader/proc/apply_sell_price_mods(obj/item/selling, original_cost)
+	procstart = null
+	src.procstart = null
 	if(isstack(selling))
 		var/obj/item/stack/stackoverflow = selling
 		original_cost *= stackoverflow.amount
@@ -335,6 +357,8 @@ Can accept both a type path, and an instance of a datum. Type path has priority.
  * * original_typepath - (Typepath) For scenarios where a children of a parent is being sold but we want to modify the parent's product information
  */
 /datum/component/trader/proc/exchange_sold_items(obj/item/selling, value_exchanged_for, original_typepath)
+	procstart = null
+	src.procstart = null
 	var/list/product_info = wanted_items[original_typepath]
 	if(isstack(selling))
 		var/obj/item/stack/the_stack = selling
@@ -352,11 +376,15 @@ Can accept both a type path, and an instance of a datum. Type path has priority.
  * * customer - Reference to a mob; The mob we put the holochip in hands of
  */
 /datum/component/trader/proc/generate_cash(value, mob/customer)
+	procstart = null
+	src.procstart = null
 	var/obj/item/holochip/chip = new /obj/item/holochip(get_turf(customer), value)
 	customer.put_in_hands(chip)
 
 ///Talk about what items are being sold/wanted by the trader and in what quantity or lore
 /datum/component/trader/proc/discuss(mob/customer)
+	procstart = null
+	src.procstart = null
 	var/list/npc_options = list(
 		TRADER_OPTION_LORE = radial_icons_cache[TRADER_RADIAL_LORE],
 		TRADER_OPTION_SELLING = radial_icons_cache[TRADER_RADIAL_DISCUSS_SELL],
@@ -376,6 +404,8 @@ Can accept both a type path, and an instance of a datum. Type path has priority.
 
 ///Displays to the customer what the trader is willing to buy and how much until a restock happens
 /datum/component/trader/proc/trader_buys_what(mob/customer)
+	procstart = null
+	src.procstart = null
 	if(!can_trade(customer))
 		return
 	if(!length(wanted_items))
@@ -398,6 +428,8 @@ Can accept both a type path, and an instance of a datum. Type path has priority.
 
 ///Displays to the customer what the trader is selling and how much is in stock
 /datum/component/trader/proc/trader_sells_what(mob/customer)
+	procstart = null
+	src.procstart = null
 	if(!can_trade(customer))
 		return
 	var/mob/living/trader = parent
@@ -417,14 +449,20 @@ Can accept both a type path, and an instance of a datum. Type path has priority.
 
 ///Sets quantity of all products to initial(quanity); this proc is currently called during initialize
 /datum/component/trader/proc/restock_products()
+	procstart = null
+	src.procstart = null
 	products = trader_data.initial_products.Copy()
 
 ///Sets quantity of all wanted_items to initial(quanity);  this proc is currently called during initialize
 /datum/component/trader/proc/renew_item_demands()
+	procstart = null
+	src.procstart = null
 	wanted_items = trader_data.initial_wanteds.Copy()
 
 ///Returns if the trader is conscious and its combat mode is disabled.
 /datum/component/trader/proc/can_trade(mob/customer)
+	procstart = null
+	src.procstart = null
 	var/mob/living/trader = parent
 	if(trader.combat_mode)
 		trader.balloon_alert(customer, "in combat!")

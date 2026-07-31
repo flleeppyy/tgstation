@@ -35,6 +35,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/fireaxecabinet, 32)
 	acid = 50
 
 /obj/structure/fireaxecabinet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(populate_contents)
 		held_item = new item_path(src)
@@ -43,11 +45,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/fireaxecabinet, 32)
 		find_and_mount_on_atom()
 
 /obj/structure/fireaxecabinet/Destroy()
+	procstart = null
+	src.procstart = null
 	if(held_item)
 		QDEL_NULL(held_item)
 	return ..()
 
 /obj/structure/fireaxecabinet/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(user) || tool.tool_behaviour == unlocking_tool_behavior)
 		toggle_lock(user)
 		return ITEM_INTERACT_SUCCESS
@@ -88,6 +94,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/fireaxecabinet, 32)
 	return NONE
 
 /obj/structure/fireaxecabinet/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode || broken)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 
@@ -109,12 +117,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/fireaxecabinet, 32)
 
 
 /obj/structure/fireaxecabinet/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if(gone == held_item)
 		held_item = null
 		update_appearance()
 	return ..()
 
 /obj/structure/fireaxecabinet/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(broken)
@@ -125,6 +137,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/fireaxecabinet, 32)
 			playsound(src.loc, 'sound/items/tools/welder.ogg', 100, TRUE)
 
 /obj/structure/fireaxecabinet/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = TRUE, attack_dir)
+	procstart = null
+	src.procstart = null
 	if(open)
 		return
 	. = ..()
@@ -132,6 +146,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/fireaxecabinet, 32)
 		update_appearance()
 
 /obj/structure/fireaxecabinet/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!broken)
 		update_appearance()
@@ -141,16 +157,22 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/fireaxecabinet, 32)
 		new /obj/item/shard(loc)
 
 /obj/structure/fireaxecabinet/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(held_item && loc)
 		held_item.forceMove(loc)
 	new /obj/item/wallframe/fireaxecabinet(loc)
 
 /obj/structure/fireaxecabinet/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if(held_item)
 		held_item.forceMove(loc)
 	qdel(src)
 
 /obj/structure/fireaxecabinet/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -162,21 +184,31 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/fireaxecabinet, 32)
 	toggle_open(user)
 
 /obj/structure/fireaxecabinet/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	toggle_open(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/structure/fireaxecabinet/attack_paw(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/structure/fireaxecabinet/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	toggle_lock(user)
 	return
 
 /obj/structure/fireaxecabinet/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	. = COMPONENT_CANCEL_ATTACK_CHAIN
 	toggle_open(user)
 
 /obj/structure/fireaxecabinet/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(held_item)
 		. += item_overlay
@@ -214,6 +246,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/fireaxecabinet, 32)
 	. += locked ? "locked" : "unlocked"
 
 /obj/structure/fireaxecabinet/proc/toggle_lock(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("Resetting circuitry..."))
 	playsound(src, 'sound/machines/locktoggle.ogg', 50, TRUE)
 	if(do_after(user, 2 SECONDS, target = src))
@@ -222,6 +256,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/fireaxecabinet, 32)
 		update_appearance()
 
 /obj/structure/fireaxecabinet/proc/toggle_open(mob/user)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		balloon_alert(user, "won't budge!")
 		return
@@ -255,6 +291,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/fireaxecabinet/empty, 32)
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/fireaxecabinet/mechremoval, 32)
 
 /obj/structure/fireaxecabinet/mechremoval/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(held_item && loc)
 		held_item.forceMove(loc)
 	new /obj/item/wallframe/fireaxecabinet/mechremoval(loc)
@@ -282,6 +320,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/fireaxecabinet/mechremoval/empty, 32)
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/fireaxecabinet/jawsofrecovery, 32)
 
 /obj/structure/fireaxecabinet/jawsofrecovery/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(held_item && loc)
 		held_item.forceMove(loc)
 	new /obj/item/wallframe/fireaxecabinet/jawsofrecovery(loc)

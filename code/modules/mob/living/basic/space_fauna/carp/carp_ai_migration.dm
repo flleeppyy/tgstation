@@ -12,6 +12,8 @@
 	var/target_key = BB_CARP_MIGRATION_TARGET
 
 /datum/bt_node/ai_behavior/find_next_carp_migration_step/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/list/blackboard_points = controller.blackboard[path_key]
 	for(var/turf/migration_point as anything in blackboard_points)
 		// By the end of this loop we will either have a valid migration point set, or an empty list in our blackboard
@@ -30,6 +32,8 @@
 	var/target_key = BB_CARP_MIGRATION_TARGET
 
 /datum/bt_node/ai_behavior/clear_arrived_migration_target/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/turf/moving_to = controller.blackboard[target_key]
 	if(QDELETED(moving_to) || get_dist(controller.pawn, moving_to) <= CARP_DESTINATION_SEARCH_RANGE)
 		controller.clear_blackboard_key(target_key)
@@ -41,6 +45,8 @@
 	var/target_key = BB_CARP_MIGRATION_TARGET
 
 /datum/bt_node/decorator/carp_path_blocked/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[target_key]
 	if(QDELETED(target))
 		return FALSE

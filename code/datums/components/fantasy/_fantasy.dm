@@ -14,6 +14,8 @@
 
 ///affixes expects an initialized list
 /datum/component/fantasy/Initialize(quality, list/affixes = list(), canFail=FALSE, announce=FALSE)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent) || HAS_TRAIT(parent, TRAIT_INNATELY_FANTASTICAL_ITEM))
 		return COMPONENT_INCOMPATIBLE
 
@@ -31,24 +33,34 @@
 		random_affixes()
 
 /datum/component/fantasy/Destroy()
+	procstart = null
+	src.procstart = null
 	unmodify()
 	affixes = null
 	return ..()
 
 /datum/component/fantasy/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	var/obj/item/master = parent
 	originalName = master.name
 	modify()
 	RegisterSignal(parent, COMSIG_STACK_CAN_MERGE, PROC_REF(try_merge_stack))
 
 /datum/component/fantasy/proc/try_merge_stack(obj/item/stack/to_merge, in_hand)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return CANCEL_STACK_MERGE
 
 /datum/component/fantasy/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	unmodify()
 
 /datum/component/fantasy/InheritComponent(datum/component/fantasy/newComp, original, quality, list/affixes, canFail, announce)
+	procstart = null
+	src.procstart = null
 	unmodify()
 	if(newComp)
 		src.quality += newComp.quality
@@ -61,6 +73,8 @@
 	modify()
 
 /datum/component/fantasy/proc/random_quality()
+	procstart = null
+	src.procstart = null
 	var/quality = pick(1;15, 2;14, 2;13, 2;12, 3;11, 3;10, 3;9, 4;8, 4;7, 4;6, 5;5, 5;4, 5;3, 6;2, 6;1, 6;0)
 	if(prob(50))
 		quality = -quality
@@ -68,6 +82,8 @@
 
 ///proc on creation for random affixes
 /datum/component/fantasy/proc/random_affixes(force)
+	procstart = null
+	src.procstart = null
 	var/alignment
 	if(quality >= 0)
 		alignment |= AFFIX_GOOD
@@ -99,6 +115,8 @@
 
 ///proc on creation for specific affixes given to the fantasy component
 /datum/component/fantasy/proc/set_affixes(force)
+	procstart = null
+	src.procstart = null
 	var/usedSlots = NONE
 	for(var/datum/fantasy_affix/affix in affixes) // We want at least 1 affix applied
 		if((affix.placement & usedSlots) || (!affix.validate(parent)))
@@ -107,6 +125,8 @@
 		usedSlots |= affix.placement
 
 /datum/component/fantasy/proc/modify()
+	procstart = null
+	src.procstart = null
 	var/obj/item/master = parent
 	master.apply_fantasy_bonuses(quality)
 
@@ -129,6 +149,8 @@
 		announce()
 
 /datum/component/fantasy/proc/unmodify()
+	procstart = null
+	src.procstart = null
 	var/obj/item/master = parent
 
 	for(var/i in affixes)
@@ -140,6 +162,8 @@
 	master.name = originalName
 
 /datum/component/fantasy/proc/announce()
+	procstart = null
+	src.procstart = null
 	var/turf/location = get_turf(parent)
 	var/span
 	var/effect_description

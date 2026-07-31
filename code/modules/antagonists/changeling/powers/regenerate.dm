@@ -8,6 +8,8 @@
 	req_stat = HARD_CRIT
 
 /datum/action/changeling/regenerate/sting_action(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user))
 		user.balloon_alert(user, "nothing missing!")
 		return FALSE

@@ -14,6 +14,8 @@
 	show_nav_computer_icon = FALSE
 
 /obj/machinery/door/poddoor/shutters/animation_length(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if(DOOR_OPENING_ANIMATION)
 			return 1.388 SECONDS
@@ -21,6 +23,8 @@
 			return 1.388 SECONDS
 
 /obj/machinery/door/poddoor/shutters/animation_segment_delay(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if(DOOR_OPENING_PASSABLE)
 			return 0.76 SECONDS
@@ -72,10 +76,14 @@
 	acid = 70
 
 /obj/machinery/door/poddoor/shutters/radiation/open()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	rad_insulation = RAD_NO_INSULATION
 
 /obj/machinery/door/poddoor/shutters/radiation/close()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	rad_insulation = RAD_EXTREME_INSULATION
 

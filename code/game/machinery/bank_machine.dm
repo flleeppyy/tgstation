@@ -28,6 +28,8 @@
 	var/datum/bank_account/synced_bank_account
 
 /obj/machinery/computer/bank_machine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	radio = new(src)
 	radio.subspace_transmission = TRUE
@@ -40,11 +42,15 @@
 		AddComponent(/datum/component/gps, "Forbidden Cash Signal")
 
 /obj/machinery/computer/bank_machine/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(radio)
 	synced_bank_account = null
 	return ..()
 
 /obj/machinery/computer/bank_machine/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/value = 0
 	if(istype(tool, /obj/item/stack/spacecash))
 		var/obj/item/stack/spacecash/inserted_cash = tool
@@ -68,6 +74,8 @@
 
 
 /obj/machinery/computer/bank_machine/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!siphoning || !synced_bank_account)
 		return
@@ -91,6 +99,8 @@
 		next_warning = world.time + minimum_time_between_warnings
 
 /obj/machinery/computer/bank_machine/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -98,6 +108,8 @@
 		ui.open()
 
 /obj/machinery/computer/bank_machine/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["current_balance"] = synced_bank_account?.account_balance || 0
@@ -107,6 +119,8 @@
 	return data
 
 /obj/machinery/computer/bank_machine/ui_act(action, params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -125,12 +139,16 @@
 			. = TRUE
 
 /obj/machinery/computer/bank_machine/on_changed_z_level()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(siphoning && !(is_station_level(src.z) || is_centcom_level(src.z)))
 		say("Error: Console not in reach of station. Siphon halted.")
 		end_siphon()
 
 /obj/machinery/computer/bank_machine/proc/end_siphon()
+	procstart = null
+	src.procstart = null
 	siphoning = FALSE
 	unauthorized = FALSE
 	var/atom/droploc = drop_location()
@@ -139,6 +157,8 @@
 	syphoning_credits = 0
 
 /obj/machinery/computer/bank_machine/proc/start_siphon(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/id/card = user.get_idcard(hand_first = TRUE)
 	if(!istype(card) || !check_access(card))
 		unauthorized = TRUE

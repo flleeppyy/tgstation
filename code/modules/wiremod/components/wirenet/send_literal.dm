@@ -20,6 +20,8 @@
 	var/datum/port/input/enc_key
 
 /obj/item/circuit_component/list_literal/wirenet_send/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(\
 		/datum/component/circuit_component_wirenet_connection,\
@@ -29,26 +31,40 @@
 	)
 
 /obj/item/circuit_component/list_literal/wirenet_send/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	connected_powernet = null
 
 /obj/item/circuit_component/list_literal/wirenet_send/proc/on_powernet_connection(datum/powernet/new_powernet)
+	procstart = null
+	src.procstart = null
 	connected_powernet = new_powernet
 
 /obj/item/circuit_component/list_literal/wirenet_send/proc/on_powernet_disconnection(datum/powernet/old_powernet)
+	procstart = null
+	src.procstart = null
 	connected_powernet = null
 
 /obj/item/circuit_component/list_literal/wirenet_send/proc/on_set_cable_layer(new_layer)
+	procstart = null
+	src.procstart = null
 	cable_layer = new_layer
 
 /obj/item/circuit_component/list_literal/wirenet_send/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("Set the cable layer to connect to with the \"1\", \"2\", and \"3\" buttons.", "green", "info")
 	. += create_ui_notice("Currently connected to: [GLOB.cable_layer_to_name["[cable_layer]"]]", "green", "info")
 
 /obj/item/circuit_component/list_literal/wirenet_send/populate_ports()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	enc_key = add_input_port("Encryption Key", PORT_TYPE_STRING)
 
 /obj/item/circuit_component/list_literal/wirenet_send/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	connected_powernet?.data_transmission(list_output.value, enc_key.value, WEAKREF(list_output))

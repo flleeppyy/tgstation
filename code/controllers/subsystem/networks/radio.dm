@@ -6,6 +6,8 @@ SUBSYSTEM_DEF(radio)
 	var/list/saymodes = list()
 
 /datum/controller/subsystem/radio/PreInit()
+	procstart = null
+	src.procstart = null
 	for(var/_SM in subtypesof(/datum/saymode))
 		var/datum/saymode/SM = new _SM()
 		saymodes[SM.key] = SM
@@ -13,6 +15,8 @@ SUBSYSTEM_DEF(radio)
 
 /// Gets the say mode associated with the given key, if available to the given user.
 /datum/controller/subsystem/radio/proc/get_available_say_mode(mob/living/user, key)
+	procstart = null
+	src.procstart = null
 	var/datum/saymode/selected_saymode = SSradio.saymodes[key]
 	if(isnull(selected_saymode))
 		return
@@ -21,6 +25,8 @@ SUBSYSTEM_DEF(radio)
 	return selected_saymode
 
 /datum/controller/subsystem/radio/proc/add_object(obj/device, new_frequency as num, filter = null as text|null)
+	procstart = null
+	src.procstart = null
 	var/f_text = num2text(new_frequency)
 	var/datum/radio_frequency/frequency = frequencies[f_text]
 	if(!frequency)
@@ -29,6 +35,8 @@ SUBSYSTEM_DEF(radio)
 	return frequency
 
 /datum/controller/subsystem/radio/proc/remove_object(obj/device, old_frequency)
+	procstart = null
+	src.procstart = null
 	var/f_text = num2text(old_frequency)
 	var/datum/radio_frequency/frequency = frequencies[f_text]
 	if(frequency)
@@ -37,6 +45,8 @@ SUBSYSTEM_DEF(radio)
 	return 1
 
 /datum/controller/subsystem/radio/proc/return_frequency(new_frequency as num)
+	procstart = null
+	src.procstart = null
 	var/f_text = num2text(new_frequency)
 	var/datum/radio_frequency/frequency = frequencies[f_text]
 	if(!frequency)

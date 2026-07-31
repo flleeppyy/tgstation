@@ -18,6 +18,8 @@
 	)
 
 /datum/preference/choiced/silicon_gender/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list(
 		use_character_gender,
 		SILICON_MALE,
@@ -27,9 +29,13 @@
 	)
 
 /datum/preference/choiced/silicon_gender/create_default_value()
+	procstart = null
+	src.procstart = null
 	return SILICON_NEUTER
 
 /datum/preference/choiced/silicon_gender/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return
 
 #undef SILICON_MALE

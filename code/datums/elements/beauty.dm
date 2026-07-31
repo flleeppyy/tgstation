@@ -14,6 +14,8 @@
 	var/beauty_counter
 
 /datum/element/beauty/Attach(datum/target, beauty)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(target) || isarea(target))
 		return ELEMENT_INCOMPATIBLE
@@ -42,6 +44,8 @@
 		current_area.update_beauty()
 
 /datum/element/beauty/proc/enter_area(datum/source, area/new_area)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(new_area.outdoors || HAS_TRAIT(source, TRAIT_BEAUTY_APPLIED))
@@ -51,6 +55,8 @@
 	ADD_TRAIT(source, TRAIT_BEAUTY_APPLIED, INNATE_TRAIT)
 
 /datum/element/beauty/proc/exit_area(datum/source, area/old_area)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(old_area.outdoors || !HAS_TRAIT(source, TRAIT_BEAUTY_APPLIED))
@@ -61,6 +67,8 @@
 
 ///Items only contribute to beauty while not inside other objects or mobs (e.g on the floor, on a table etc.).
 /datum/element/beauty/proc/on_item_moved(obj/item/source, atom/old_loc, direction, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/is_old_turf = isturf(old_loc)
@@ -75,6 +83,8 @@
 		exit_area(source, get_area(old_loc))
 
 /datum/element/beauty/Detach(atom/source)
+	procstart = null
+	src.procstart = null
 	if(!beauty_counter[source])
 		return ..()
 

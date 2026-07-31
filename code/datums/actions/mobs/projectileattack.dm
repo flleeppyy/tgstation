@@ -20,6 +20,8 @@
 	var/can_move = TRUE
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	disable_cooldown_actions()
 	RegisterSignal(owner, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(on_move), override = TRUE)
 	attack_sequence(owner, target_atom)
@@ -29,14 +31,20 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/proc/on_move(atom/source, atom/new_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!can_move)
 		return COMPONENT_MOVABLE_BLOCK_PRE_MOVE
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/proc/attack_sequence(mob/living/firer, atom/target)
+	procstart = null
+	src.procstart = null
 	shoot_projectile(firer, target, null, firer, rand(-default_projectile_spread, default_projectile_spread), null)
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/proc/shoot_projectile(atom/origin, atom/target, set_angle, mob/firer, projectile_spread, speed_multiplier, override_projectile_type, override_homing)
+	procstart = null
+	src.procstart = null
 	var/turf/startloc = get_turf(origin)
 	var/turf/endloc = get_turf(target)
 	if(!startloc || !endloc)
@@ -76,6 +84,8 @@
 	var/shot_delay = 0.1 SECONDS
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/attack_sequence(mob/living/firer, atom/target)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to shot_count)
 		shoot_projectile(firer, target, null, firer, rand(-default_projectile_spread, default_projectile_spread), null)
 		SLEEP_CHECK_DEATH(shot_delay, firer)
@@ -101,12 +111,16 @@
 	var/break_time = 2 SECONDS
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/shrapnel/attack_sequence(mob/living/firer, atom/target)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to shot_count)
 		var/obj/projectile/to_explode = shoot_projectile(firer, target, null, firer, rand(-default_projectile_spread, default_projectile_spread), null)
 		addtimer(CALLBACK(src, PROC_REF(explode_into_shrapnel), firer, target, to_explode), break_time)
 		SLEEP_CHECK_DEATH(shot_delay, src)
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/shrapnel/proc/explode_into_shrapnel(mob/living/firer, atom/target, obj/projectile/to_explode)
+	procstart = null
+	src.procstart = null
 	if(!to_explode)
 		return
 	for(var/angle in shrapnel_angles)
@@ -131,6 +145,8 @@
 	var/enraged = FALSE
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/spiral_shots/attack_sequence(mob/living/firer, atom/target)
+	procstart = null
+	src.procstart = null
 	if(enraged)
 		SLEEP_CHECK_DEATH(1 SECONDS, firer)
 		INVOKE_ASYNC(src, PROC_REF(create_spiral_attack), firer, target, TRUE)
@@ -139,6 +155,8 @@
 	create_spiral_attack(firer, target)
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/spiral_shots/proc/create_spiral_attack(mob/living/firer, atom/target, negative = pick(TRUE, FALSE))
+	procstart = null
+	src.procstart = null
 	var/counter = 8
 	for(var/i in 1 to 80)
 		if(negative)
@@ -157,6 +175,8 @@
 	cooldown_time = 1.5 SECONDS
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/spiral_shots/colossus/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	SLEEP_CHECK_DEATH(1.5 SECONDS, owner)
 	return ..()
 
@@ -166,6 +186,8 @@
 	can_move = FALSE
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/spiral_shots/wendigo/create_spiral_attack(mob/living/firer, atom/target, negative = pick(TRUE, FALSE))
+	procstart = null
+	src.procstart = null
 	wendigo_scream(firer)
 	var/shots_spiral = 40
 	var/angle_to_target = get_angle(firer, target)
@@ -189,6 +211,8 @@
 	projectile_sound = 'sound/effects/magic/clockwork/invoke_general.ogg'
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/random_aoe/attack_sequence(mob/living/firer, atom/target)
+	procstart = null
+	src.procstart = null
 	var/turf/U = get_turf(firer)
 	playsound(U, projectile_sound, 300, TRUE, 5)
 	for(var/i in 1 to 32)
@@ -198,6 +222,8 @@
 	cooldown_time = 1.5 SECONDS
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/random_aoe/colossus/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	SLEEP_CHECK_DEATH(1.5 SECONDS, owner)
 	return ..()
 
@@ -212,9 +238,13 @@
 	var/list/shot_angles = list(12.5, 7.5, 2.5, -2.5, -7.5, -12.5)
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/shotgun_blast/attack_sequence(mob/living/firer, atom/target)
+	procstart = null
+	src.procstart = null
 	fire_shotgun(firer, target, shot_angles)
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/shotgun_blast/proc/fire_shotgun(mob/living/firer, atom/target, list/chosen_angles)
+	procstart = null
+	src.procstart = null
 	playsound(firer, projectile_sound, 200, TRUE, 2)
 	for(var/spread in chosen_angles)
 		shoot_projectile(firer, target, null, firer, spread, null)
@@ -231,6 +261,8 @@
 	cooldown_time = 0.5 SECONDS
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/shotgun_blast/colossus/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	SLEEP_CHECK_DEATH(1.5 SECONDS, owner)
 	return ..()
 
@@ -243,6 +275,8 @@
 	var/shot_count = 5
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/shotgun_blast/pattern/attack_sequence(mob/living/firer, atom/target)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to shot_count)
 		var/list/pattern = shot_angles[i % length(shot_angles) + 1] // changing patterns
 		fire_shotgun(firer, target, pattern)
@@ -267,14 +301,20 @@
 	var/list/firing_directions
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/dir_shots/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!firing_directions)
 		firing_directions = GLOB.alldirs.Copy()
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/dir_shots/attack_sequence(mob/living/firer, atom/target)
+	procstart = null
+	src.procstart = null
 	fire_in_directions(firer, target, firing_directions)
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/dir_shots/proc/fire_in_directions(mob/living/firer, atom/target, list/dirs)
+	procstart = null
+	src.procstart = null
 	if(!islist(dirs))
 		dirs = GLOB.alldirs.Copy()
 	playsound(firer, projectile_sound, 200, TRUE, 2)
@@ -286,6 +326,8 @@
 	desc = "Fires projectiles in alternating directions."
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/dir_shots/alternating/attack_sequence(mob/living/firer, atom/target)
+	procstart = null
+	src.procstart = null
 	fire_in_directions(firer, target, GLOB.diagonals)
 	SLEEP_CHECK_DEATH(1 SECONDS, firer)
 	fire_in_directions(firer, target, GLOB.cardinals)
@@ -298,6 +340,8 @@
 	cooldown_time = 2.5 SECONDS
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/dir_shots/alternating/colossus/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	SLEEP_CHECK_DEATH(1.5 SECONDS, owner)
 	return ..()
 
@@ -311,6 +355,8 @@
 	projectile_sound = 'sound/items/weapons/kinetic_accel.ogg'
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/kinetic_accelerator/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(owner, projectile_sound, 200, TRUE, 2)
 	owner.visible_message(span_danger("[owner] fires the proto-kinetic accelerator!"))
@@ -324,10 +370,14 @@
 	projectile_type = /obj/projectile/colossus
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/colossus_final/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	Remove(owner)
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/colossus_final/attack_sequence(mob/living/firer, atom/target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/simple_animal/hostile/megafauna/colossus/colossus
 	if(istype(firer, /mob/living/simple_animal/hostile/megafauna/colossus))
 		colossus = firer
@@ -374,6 +424,8 @@
 	var/enraged = FALSE
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/alternating_circle/attack_sequence(mob/living/firer, atom/target)
+	procstart = null
+	src.procstart = null
 	wendigo_scream(firer)
 	if(enraged)
 		projectile_speed_multiplier = 1
@@ -398,6 +450,8 @@
 	can_move = FALSE
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/wave/attack_sequence(mob/living/firer, atom/target)
+	procstart = null
+	src.procstart = null
 	wendigo_scream(firer)
 	var/shots_per = 6
 	var/difference = 360 / shots_per

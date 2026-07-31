@@ -21,6 +21,8 @@
 	var/smoke_path = null
 
 /datum/status_effect/slot_machine_curse/on_apply()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(owner, COMSIG_MOB_STATCHANGE, PROC_REF(on_stat_changed))
 	RegisterSignal(owner, COMSIG_LIVING_DEATH, PROC_REF(on_death))
 	RegisterSignal(owner, COMSIG_CURSED_SLOT_MACHINE_USE, PROC_REF(check_curses))
@@ -29,6 +31,8 @@
 	return ..()
 
 /datum/status_effect/slot_machine_curse/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(SSdcs, COMSIG_GLOB_CURSED_SLOT_MACHINE_WON)
 	branded_hand = null
 	if (smoke_path)
@@ -37,6 +41,8 @@
 
 /// Checks the number of curses we have and returns information back to the slot machine. `max_curse_amount` is set by the slot machine itself.
 /datum/status_effect/slot_machine_curse/proc/check_curses(mob/user, max_curse_amount)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(curse_count >= max_curse_amount)
 		return SLOT_MACHINE_USE_CANCEL
@@ -47,6 +53,8 @@
 
 /// Handles the debuffs of this status effect and incrementing the number of curses we have.
 /datum/status_effect/slot_machine_curse/proc/update_curse_count()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	curse_count++
 
@@ -56,6 +64,8 @@
 
 /// Makes a nice lorey message about the curse level we're at. I think it's nice
 /datum/status_effect/slot_machine_curse/proc/handle_after_effects()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 
@@ -115,6 +125,8 @@
 
 /// Cleans ourselves up and removes our curses. Meant to be done in a "positive" way, when the curse is broken. Directly use qdel otherwise.
 /datum/status_effect/slot_machine_curse/proc/clear_curses()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isnull(branded_hand))
@@ -129,6 +141,8 @@
 
 /// If our owner's stat changes, rapidly surge the damage chance.
 /datum/status_effect/slot_machine_curse/proc/on_stat_changed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!IS_UNCONSCIOUS_OR_CRIT(owner) || owner.stat == DEAD) // reset on these two states
 		damage_chance = initial(damage_chance)
@@ -139,12 +153,16 @@
 
 /// If our owner dies without getting gibbed (as in of other causes), stop smoking because we've "expended all the life energy".
 /datum/status_effect/slot_machine_curse/proc/on_death(mob/living/source, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!gibbed && smoke_path)
 		owner.remove_shared_particles(smoke_path)
 
 /datum/status_effect/slot_machine_curse/update_particles()
+	procstart = null
+	src.procstart = null
 	var/particle_path = /particles/smoke/steam/mild
 	switch(curse_count)
 		if(2 to 3)
@@ -161,6 +179,8 @@
 	smoke_path = particle_path
 
 /datum/status_effect/slot_machine_curse/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(curse_count <= 1)
 		return // you get one "freebie" (single damage) to nudge you into thinking this is a bad idea before the house begins to win.
 
@@ -182,6 +202,8 @@
 	overlay_state = "cursed_by_slots"
 
 /atom/movable/screen/alert/status_effect/cursed/update_desc()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/status_effect/slot_machine_curse/linked_effect = attached_effect
 	var/curses = linked_effect?.curse_count

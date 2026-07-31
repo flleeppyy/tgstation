@@ -24,6 +24,8 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 )))
 
 /mob/living/carbon/human/proc/should_strip(mob/user)
+	procstart = null
+	src.procstart = null
 	if (user.pulling != src || user.grab_state != GRAB_AGGRESSIVE)
 		return TRUE
 
@@ -46,6 +48,8 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	item_slot = ITEM_SLOT_ICLOTHING
 
 /datum/strippable_item/mob_item_slot/jumpsuit/get_alternate_actions(atom/source, mob/user, obj/item/item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/clothing/under/jumpsuit = item
 	if (!istype(jumpsuit))
@@ -59,6 +63,8 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 		. += "strip_accessory"
 
 /datum/strippable_item/mob_item_slot/jumpsuit/perform_alternate_action(atom/source, mob/user, action_key, obj/item/item)
+	procstart = null
+	src.procstart = null
 	if (!..())
 		return
 	var/obj/item/clothing/under/jumpsuit = item
@@ -76,6 +82,8 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 			stack_trace("Unknown action key: [action_key] for [type]")
 
 /datum/strippable_item/mob_item_slot/jumpsuit/proc/do_adjust_jumpsuit(atom/source, mob/user, obj/item/clothing/under/jumpsuit)
+	procstart = null
+	src.procstart = null
 	to_chat(source, span_notice("[user] is trying to adjust your [jumpsuit]."))
 	if (!do_after(user, (jumpsuit.strip_delay * 0.5), source))
 		return
@@ -90,6 +98,8 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	mob_source.update_body()
 
 /datum/strippable_item/mob_item_slot/jumpsuit/proc/do_adjust_sensor(atom/source, mob/user, obj/item/clothing/under/jumpsuit)
+	procstart = null
+	src.procstart = null
 	if(jumpsuit.has_sensor != HAS_SENSORS)
 		return
 
@@ -125,6 +135,8 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	source.log_message("suit sensors changed to [new_mode_str] by [key_name(user)]", LOG_VICTIM, color="orange", log_globally=FALSE)
 
 /datum/strippable_item/mob_item_slot/jumpsuit/proc/do_strip_accessory(atom/source, mob/user, obj/item/clothing/under/jumpsuit)
+	procstart = null
+	src.procstart = null
 	var/list/accessory_choices = list()
 	for(var/obj/item/clothing/accessory/jumpsuit_accessory as anything in jumpsuit.attached_accessories)
 		if(!istype(jumpsuit_accessory))
@@ -169,6 +181,8 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	item_slot = ITEM_SLOT_FEET
 
 /datum/strippable_item/mob_item_slot/feet/get_alternate_actions(atom/source, mob/user, obj/item/item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/clothing/shoes/shoes = item
 	if (!istype(shoes) || shoes.fastening_type == SHOES_SLIPON)
@@ -183,6 +197,8 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 			. += "unknot"
 
 /datum/strippable_item/mob_item_slot/feet/perform_alternate_action(atom/source, mob/user, action_key, obj/item/item)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 
@@ -200,10 +216,14 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	item_slot = ITEM_SLOT_SUITSTORE
 
 /datum/strippable_item/mob_item_slot/suit_storage/get_alternate_actions(atom/source, mob/user, obj/item/item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += get_strippable_alternate_action_internals(item, source)
 
 /datum/strippable_item/mob_item_slot/suit_storage/perform_alternate_action(atom/source, mob/user, action_key, obj/item/item)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(action_key in get_strippable_alternate_action_internals(item, source))
@@ -218,10 +238,14 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	item_slot = ITEM_SLOT_BELT
 
 /datum/strippable_item/mob_item_slot/belt/get_alternate_actions(atom/source, mob/user, obj/item/item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += get_strippable_alternate_action_internals(item, source)
 
 /datum/strippable_item/mob_item_slot/belt/perform_alternate_action(atom/source, mob/user, action_key, obj/item/item)
+	procstart = null
+	src.procstart = null
 	if (!..())
 		return
 	if(action_key in get_strippable_alternate_action_internals(item, source))
@@ -232,19 +256,27 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	var/pocket_side
 
 /datum/strippable_item/mob_item_slot/pocket/get_obscuring(atom/source)
+	procstart = null
+	src.procstart = null
 	return isnull(get_item(source)) \
 		? STRIPPABLE_OBSCURING_NONE \
 		: STRIPPABLE_OBSCURING_HIDDEN
 
 /datum/strippable_item/mob_item_slot/pocket/get_equip_delay(obj/item/equipping)
+	procstart = null
+	src.procstart = null
 	return POCKET_EQUIP_DELAY
 
 /datum/strippable_item/mob_item_slot/pocket/start_equip(atom/source, obj/item/equipping, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		warn_owner(source)
 
 /datum/strippable_item/mob_item_slot/pocket/start_unequip(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/item = get_item(source)
 	if (isnull(item))
 		return FALSE
@@ -263,6 +295,8 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	return result
 
 /datum/strippable_item/mob_item_slot/pocket/proc/warn_owner(atom/owner)
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_warning("You feel your [pocket_side] pocket being fumbled with!"))
 
 /datum/strippable_item/mob_item_slot/pocket/left
@@ -276,6 +310,8 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	pocket_side = "right"
 
 /proc/get_strippable_alternate_action_internals(obj/item/item, atom/source)
+	procstart = null
+	src.procstart = null
 	if (!iscarbon(source))
 		return
 
@@ -287,6 +323,8 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 			return list("disable_internals")
 
 /proc/strippable_alternate_action_internals(obj/item/item, atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/tank/tank = item
 	if (!istype(tank))
 		return

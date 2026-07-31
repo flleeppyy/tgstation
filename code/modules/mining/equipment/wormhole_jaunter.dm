@@ -15,11 +15,15 @@
 	slot_flags = ITEM_SLOT_BELT
 
 /obj/item/wormhole_jaunter/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_notice("[user.name] activates \the [src]!"))
 	SSblackbox.record_feedback("tally", "jaunter", 1, "User") // user activated
 	activate(user, TRUE)
 
 /obj/item/wormhole_jaunter/proc/turf_check(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/device_turf = get_turf(src)
 	if(!device_turf || is_centcom_level(device_turf.z) || is_reserved_level(device_turf.z))
 		if(user)
@@ -28,6 +32,8 @@
 	return TRUE
 
 /obj/item/wormhole_jaunter/proc/get_destinations()
+	procstart = null
+	src.procstart = null
 	var/list/destinations = list()
 
 	for(var/obj/item/beacon/B in GLOB.teleportbeacons)
@@ -38,10 +44,14 @@
 	return destinations
 
 /obj/item/wormhole_jaunter/proc/can_jaunter_teleport()
+	procstart = null
+	src.procstart = null
 	var/list/destinations = get_destinations()
 	return destinations.len > 0
 
 /obj/item/wormhole_jaunter/proc/activate(mob/user, adjacent, teleport)
+	procstart = null
+	src.procstart = null
 	if(!turf_check(user))
 		return FALSE
 
@@ -65,6 +75,8 @@
 	return TRUE
 
 /obj/item/wormhole_jaunter/emp_act(power)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -85,15 +97,21 @@
 		activate()
 
 /obj/item/wormhole_jaunter/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (slot & ITEM_SLOT_BELT)
 		RegisterSignal(user, COMSIG_MOVABLE_CHASM_DROPPED, PROC_REF(chasm_react))
 
 /obj/item/wormhole_jaunter/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, COMSIG_MOVABLE_CHASM_DROPPED)
 
 /obj/item/wormhole_jaunter/proc/chasm_react(mob/living/user, turf/chasm)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!activate(user, FALSE, TRUE))
@@ -116,6 +134,8 @@
 	wibbles = FALSE
 
 /obj/effect/portal/jaunt_tunnel/teleport(atom/movable/M, force = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		// KERPLUNK

@@ -13,6 +13,8 @@
  * * ignored_stealthed_admins - If TRUE, don't count admins who are stealthmoded and orbiting this
  */
 /atom/proc/get_all_orbiters(list/processed, source = TRUE, ignore_stealthed_admins = TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/output = list()
 	if(!processed)
 		processed = list()
@@ -28,6 +30,8 @@
 	return output
 
 /mob/get_all_orbiters(list/processed, source = TRUE, ignore_stealthed_admins = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!source && ignore_stealthed_admins && client?.holder?.fakekey)
 		return list()
 	return ..()

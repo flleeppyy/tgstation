@@ -26,6 +26,8 @@
 	var/heat_coefficient = 0.033
 
 /datum/component/stove/Initialize(container_x = 0, container_y = 8, obj/item/spawn_container)
+	procstart = null
+	src.procstart = null
 	if(!ismachinery(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -40,10 +42,14 @@
 	soup_sound = new(parent)
 
 /datum/component/stove/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(soup_sound)
 	return ..()
 
 /datum/component/stove/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_ATTACKBY, PROC_REF(on_attackby))
 	RegisterSignal(parent, COMSIG_ATOM_ATTACK_HAND_SECONDARY, PROC_REF(on_attack_hand_secondary))
 	RegisterSignal(parent, COMSIG_ATOM_ATTACK_ROBOT_SECONDARY, PROC_REF(on_attack_robot_secondary))
@@ -58,6 +64,8 @@
 	real_parent.flags_1 |= HAS_CONTEXTUAL_SCREENTIPS_1
 
 /datum/component/stove/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/real_parent = parent
 	if(!QDELING(parent))
 		container.forceMove(real_parent.drop_location())
@@ -77,6 +85,8 @@
 	))
 
 /datum/component/stove/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/real_parent = parent
 	if(real_parent.machine_stat & NOPOWER)
 		turn_off()
@@ -90,6 +100,8 @@
 		stove_spot.hotspot_expose(SOUP_BURN_TEMP + 80, 100)
 
 /datum/component/stove/proc/turn_on()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/real_parent = parent
 	if(real_parent.machine_stat & (BROKEN|NOPOWER))
 		return
@@ -98,12 +110,16 @@
 	real_parent.update_appearance(UPDATE_OVERLAYS)
 
 /datum/component/stove/proc/turn_off()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/real_parent = parent
 	STOP_PROCESSING(SSmachines, src)
 	on = FALSE
 	real_parent.update_appearance(UPDATE_OVERLAYS)
 
 /datum/component/stove/proc/on_attack_hand_secondary(obj/machinery/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	toggle_mode()
@@ -111,6 +127,8 @@
 	return COMPONENT_SECONDARY_CANCEL_ATTACK_CHAIN
 
 /datum/component/stove/proc/on_attack_robot_secondary(obj/machinery/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	toggle_mode()
@@ -118,6 +136,8 @@
 	return COMPONENT_SECONDARY_CANCEL_ATTACK_CHAIN
 
 /datum/component/stove/proc/toggle_mode()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/real_parent = parent
 	if(on)
 		turn_off()
@@ -134,6 +154,8 @@
 	playsound(real_parent, on ? 'sound/items/tools/welderactivate.ogg' : 'sound/items/tools/welderdeactivate.ogg', 15, TRUE)
 
 /datum/component/stove/proc/on_attackby(obj/machinery/source, obj/item/attacking_item, mob/user, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(source, /obj/machinery/oven/range) && istype(attacking_item, /obj/item/storage/bag/tray) && container)
@@ -157,17 +179,23 @@
 	return COMPONENT_NO_AFTERATTACK
 
 /datum/component/stove/proc/on_exited(obj/machinery/source, atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(gone == container)
 		remove_container()
 
 /datum/component/stove/proc/on_deconstructed(obj/machinery/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	container.forceMove(source.drop_location())
 
 /datum/component/stove/proc/on_overlay_update(obj/machinery/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	update_smoke()
@@ -190,6 +218,8 @@
 	overlays += emissive_appearance(real_parent.icon, "[real_parent.base_icon_state]_on_overlay", real_parent, alpha = real_parent.alpha)
 
 /datum/component/stove/proc/on_requesting_context(obj/machinery/source, list/context, obj/item/held_item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(held_item))
@@ -201,11 +231,15 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /datum/component/stove/proc/on_examine(obj/machinery/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += span_notice("You can turn the stovetop burners [on ? "off" : "on"] with <i>right click</i>.")
 
 /datum/component/stove/proc/on_refresh_parts(obj/machinery/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/new_multiplier = 0
@@ -215,6 +249,8 @@
 	heat_coefficient = initial(heat_coefficient) * max(round(new_multiplier), 1)
 
 /datum/component/stove/proc/add_container(obj/item/new_container, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/real_parent = parent
 	real_parent.vis_contents += new_container
 	ADD_TRAIT(new_container, TRAIT_SKIP_BASIC_REACH_CHECK, REF(src))
@@ -229,6 +265,8 @@
 	real_parent.update_appearance(UPDATE_OVERLAYS)
 
 /datum/component/stove/proc/remove_container()
+	procstart = null
+	src.procstart = null
 	var/obj/real_parent = parent
 	REMOVE_TRAIT(container, TRAIT_SKIP_BASIC_REACH_CHECK, REF(src))
 	container.vis_flags &= ~VIS_INHERIT_PLANE
@@ -244,6 +282,8 @@
 	real_parent.update_appearance(UPDATE_OVERLAYS)
 
 /datum/component/stove/proc/update_smoke_type(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/existing_temp = container?.reagents.chem_temp || 0
@@ -258,6 +298,8 @@
 	update_smoke(old_type)
 
 /datum/component/stove/proc/update_smoke(old_type = null)
+	procstart = null
+	src.procstart = null
 	var/obj/obj_parent = parent
 
 	if (old_type)

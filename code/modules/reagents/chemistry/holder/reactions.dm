@@ -3,6 +3,8 @@
  * Also UPDATES the reaction list
 */
 /datum/reagents/proc/handle_reactions()
+	procstart = null
+	src.procstart = null
 	if(QDELING(src))
 		CRASH("[my_atom] is trying to handle reactions while being flagged for deletion. It presently has [length(reagent_list)] number of reactants in it. If that is over 0 then something terrible happened.")
 
@@ -116,6 +118,8 @@
 * * seconds_per_tick - the time between each time step
 */
 /datum/reagents/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!is_reacting)
 		force_stop_reacting()
 		stack_trace("[src] | [my_atom] was forced to stop reacting. This might be unintentional.")
@@ -155,6 +159,8 @@
 * * mix_message - the associated mix message of a reaction
 */
 /datum/reagents/proc/end_reaction(datum/equilibrium/equilibrium)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	equilibrium.reaction.reaction_finish(src, equilibrium, equilibrium.reacted_vol)
@@ -183,6 +189,8 @@
 * Also resets reaction variables to be null/empty/FALSE so that it can restart correctly in the future
 */
 /datum/reagents/proc/finish_reacting()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	STOP_PROCESSING(SSreagents, src)
@@ -195,6 +203,8 @@
 * Usually only called when a datum is transferred into a NO_REACT container
 */
 /datum/reagents/proc/force_stop_reacting()
+	procstart = null
+	src.procstart = null
 	var/list/mix_message = list()
 	for(var/datum/equilibrium/equilibrium as anything in reaction_list)
 		mix_message += end_reaction(equilibrium)
@@ -210,6 +220,8 @@
  * * [selected_reaction][datum/chemical_reaction] - the chemical reaction to finish instantly
  */
 /datum/reagents/proc/instant_react(datum/chemical_reaction/selected_reaction)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/list/cached_required_reagents = selected_reaction.required_reagents

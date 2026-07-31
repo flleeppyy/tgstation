@@ -7,11 +7,15 @@
 	board_type = /obj/item/circuitboard/computer
 
 /obj/structure/frame/computer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_rotation)
 	register_context()
 
 /obj/structure/frame/computer/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/atom/drop_loc = drop_location()
 	if(state == FRAME_COMPUTER_STATE_GLASSED)
 		if(disassembled)
@@ -24,6 +28,8 @@
 	return ..()
 
 /obj/structure/frame/computer/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(isnull(held_item))
 		return
@@ -72,6 +78,8 @@
 				return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/frame/computer/examine(user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	switch(state)
@@ -95,14 +103,20 @@
 			. += span_info("The monitor should be [EXAMINE_HINT("screwed")] on to complete it.")
 
 /obj/structure/frame/computer/circuit_added(obj/item/circuitboard/added)
+	procstart = null
+	src.procstart = null
 	state = FRAME_COMPUTER_STATE_BOARD_INSTALLED
 	update_appearance(UPDATE_ICON_STATE)
 
 /obj/structure/frame/computer/circuit_removed(obj/item/circuitboard/removed)
+	procstart = null
+	src.procstart = null
 	state = FRAME_COMPUTER_STATE_EMPTY
 	update_appearance(UPDATE_ICON_STATE)
 
 /obj/structure/frame/computer/install_board(mob/living/user, obj/item/circuitboard/computer/board, by_hand)
+	procstart = null
+	src.procstart = null
 	if(state != FRAME_COMPUTER_STATE_EMPTY)
 		balloon_alert(user, "circuit already installed!")
 		return FALSE
@@ -113,6 +127,8 @@
 	return .
 
 /obj/structure/frame/computer/install_parts_from_part_replacer(mob/living/user, obj/item/storage/part_replacer/replacer, no_sound = FALSE)
+	procstart = null
+	src.procstart = null
 	switch(state)
 		if(FRAME_COMPUTER_STATE_BOARD_SECURED)
 			var/obj/item/stack/cable_coil/cable = locate() in replacer
@@ -140,6 +156,8 @@
 			return FALSE
 
 /obj/structure/frame/computer/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -164,6 +182,8 @@
 				return install_parts_from_part_replacer(user, tool) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 
 /obj/structure/frame/computer/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -194,6 +214,8 @@
 			return ITEM_INTERACT_BLOCKING
 
 /obj/structure/frame/computer/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 
@@ -224,6 +246,8 @@
 			return ITEM_INTERACT_SUCCESS
 
 /obj/structure/frame/computer/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 
@@ -249,6 +273,8 @@
  * * time - time taken to complete the operation
  */
 /obj/structure/frame/computer/proc/add_cabling(mob/living/user, obj/item/stack/cable_coil/cable, time = 2 SECONDS)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(state != FRAME_COMPUTER_STATE_BOARD_SECURED)
@@ -273,6 +299,8 @@
  * * time - time taken to complete the operation
  */
 /obj/structure/frame/computer/proc/add_glass(mob/living/user, obj/item/stack/sheet/glass/glass, time = 2 SECONDS)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(state != FRAME_COMPUTER_STATE_WIRED)
@@ -290,6 +318,8 @@
 	return TRUE
 
 /obj/structure/frame/computer/finalize_construction(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		balloon_alert(user, "frame must be anchored!")
 		return FALSE
@@ -330,6 +360,8 @@
 	anchored = TRUE
 
 /obj/structure/frame/computer/rcd/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	// yeah...
 	name = "computer frame"
 	icon = 'icons/obj/devices/stock_parts.dmi'

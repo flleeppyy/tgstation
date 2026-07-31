@@ -12,6 +12,8 @@ Slimecrossing Weapons
 	force_string = "painful"
 
 /obj/item/melee/arm_blade/slime/attack(mob/living/L, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(20))
 		user.emote("scream")
@@ -28,6 +30,8 @@ Slimecrossing Weapons
 	damtype = BRUTE
 
 /obj/item/knife/rainbowknife/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(isliving(target))
 		damtype = pick(BRUTE, BURN, TOX, OXY)
 	switch(damtype)
@@ -77,6 +81,8 @@ Slimecrossing Weapons
 	acid = 70
 
 /obj/item/shield/adamantineshield/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/two_handed, require_twohands=TRUE, force_wielded=15)
 
@@ -101,10 +107,14 @@ Slimecrossing Weapons
 	fire_sound = 'sound/effects/blob/attackblob.ogg'
 
 /obj/item/gun/magic/bloodchill/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, HAND_REPLACEMENT_TRAIT)
 
 /obj/item/gun/magic/bloodchill/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	charge_timer += seconds_per_tick
 	if(charge_timer < recharge_rate || charges >= max_charges)
 		return FALSE
@@ -130,6 +140,8 @@ Slimecrossing Weapons
 	hitsound = 'sound/effects/splat.ogg'
 
 /obj/projectile/magic/bloodchill/on_hit(mob/living/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(target))
 		target.apply_status_effect(/datum/status_effect/bloodchill)

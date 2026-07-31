@@ -28,6 +28,8 @@
 	var/causes_illiteracy = FALSE
 
 /datum/symptom/confusion/Start(datum/disease/advance/advanced_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -41,10 +43,14 @@
 		suppress_warning = TRUE
 
 /datum/symptom/confusion/End(datum/disease/advance/advanced_disease)
+	procstart = null
+	src.procstart = null
 	advanced_disease.affected_mob.remove_status_effect(/datum/status_effect/confusion)
 	return ..()
 
 /datum/symptom/confusion/Activate(datum/disease/advance/advanced_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

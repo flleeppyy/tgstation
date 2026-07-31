@@ -13,19 +13,29 @@
 	var/obj/machinery/newscaster/newscaster_ui
 
 /datum/computer_file/program/newscaster/New()
+	procstart = null
+	src.procstart = null
 	newscaster_ui = new()
 	return ..()
 
 /datum/computer_file/program/newscaster/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(newscaster_ui)
 	return ..()
 
 /datum/computer_file/program/newscaster/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return newscaster_ui.ui_data(user)
 
 /datum/computer_file/program/newscaster/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return newscaster_ui.ui_static_data(user)
 
 /datum/computer_file/program/newscaster/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return newscaster_ui.ui_act(action, params, ui, state)

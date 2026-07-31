@@ -18,9 +18,13 @@
 
 /// Get the accessory list from SSaccessories. Used in species.dm to get the right sprite
 /datum/bodypart_overlay/simple/body_marking/proc/get_accessory(name)
+	procstart = null
+	src.procstart = null
 	CRASH("get_accessories() not overriden on [type] !")
 
 /datum/bodypart_overlay/simple/body_marking/set_appearance(name, set_color)
+	procstart = null
+	src.procstart = null
 	var/datum/sprite_accessory/accessory = get_accessory(name)
 	if(isnull(accessory))
 		return
@@ -31,18 +35,26 @@
 	draw_color = accessory.color_src ? set_color : null
 
 /datum/bodypart_overlay/simple/body_marking/icon_render_key(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += use_gender
 	. += draw_color
 
 /datum/bodypart_overlay/simple/body_marking/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner, mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	return ..() && icon_state != SPRITE_ACCESSORY_NONE
 
 /datum/bodypart_overlay/simple/body_marking/get_image(obj/item/bodypart/limb, layer_index, layer_real)
+	procstart = null
+	src.procstart = null
 	var/gender_string = (use_gender && limb.is_dimorphic) ? (limb.gender == MALE ? MALE : FEMALE + "_") : "" //we only got male and female sprites
 	return mutable_appearance(icon, gender_string + icon_state + "_" + limb.body_zone, layer = layer_real)
 
 /datum/bodypart_overlay/simple/body_marking/get_accessory(name)
+	procstart = null
+	src.procstart = null
 	return SSaccessories.feature_list[dna_feature_key][name]
 
 /datum/bodypart_overlay/simple/body_marking/moth

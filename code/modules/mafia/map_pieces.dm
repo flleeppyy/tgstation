@@ -16,6 +16,8 @@
 	var/datum/mafia_controller/MF
 
 /obj/mafia_game_board/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!MF)
 		MF = GLOB.mafia_game
@@ -33,6 +35,8 @@
 	var/custom_outfit
 
 /datum/map_template/mafia/New(path = null, rename = null, cache = FALSE)
+	procstart = null
+	src.procstart = null
 	path = "_maps/minigame/mafia/" + map_suffix
 	return ..()
 

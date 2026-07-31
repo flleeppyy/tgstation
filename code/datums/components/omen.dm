@@ -24,6 +24,8 @@
 	VAR_FINAL/list/tracked_lights = list()
 
 /datum/component/omen/Initialize(obj/vessel, incidents_left = INFINITY, luck_mod = 1, damage_mod = 1, bless_fixable = TRUE, datum/callback/on_death)
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -43,6 +45,8 @@
  * This is a omen eat omen world! The stronger omen survives.
  */
 /datum/component/omen/InheritComponent(obj/vessel, incidents_left, luck_mod, damage_mod)
+	procstart = null
+	src.procstart = null
 	// If we have more incidents left the new one gets deleted.
 	if(src.incidents_left > incidents_left)
 		return // make slimes get nurtiton from plasmer
@@ -57,6 +61,8 @@
 	// Feature!
 
 /datum/component/omen/Destroy(force)
+	procstart = null
+	src.procstart = null
 	var/mob/living/person = parent
 	REMOVE_TRAIT(person, TRAIT_CURSED, REF(src))
 	REMOVE_TRAIT(person, TRAIT_NO_MIRROR_REFLECTION, REF(src))
@@ -74,6 +80,8 @@
 	return ..()
 
 /datum/component/omen/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(check_accident))
 	RegisterSignal(parent, COMSIG_ON_CARBON_SLIP, PROC_REF(check_slip))
 	RegisterSignal(parent, COMSIG_LIVING_BLESSED, PROC_REF(check_bless))
@@ -83,6 +91,8 @@
 	RegisterSignal(parent, COMSIG_LIVING_LIFE, PROC_REF(on_life))
 
 /datum/component/omen/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ON_CARBON_SLIP,
 		COMSIG_MOVABLE_MOVED,
@@ -94,6 +104,8 @@
 	))
 
 /datum/component/omen/proc/consume_omen()
+	procstart = null
+	src.procstart = null
 	if(incidents_left == INFINITY)
 		return
 
@@ -103,6 +115,8 @@
 
 /// Roll an accident happening, factoring in a few things, based on some base change.
 /datum/component/omen/proc/roll_for_accident(base_chance = 4)
+	procstart = null
+	src.procstart = null
 	var/chance = base_chance * luck_mod
 	for(var/mob/viewer in viewers(parent))
 		if(!viewer.client?.is_afk())
@@ -113,6 +127,8 @@
 
 /// When we obstruct an airlock, there's a chance it will crush us instead of stopping like it should
 /datum/component/omen/proc/check_airlock_crush(mob/living/source, obj/machinery/door/airlock/darth_airlock, forced, force_crush)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(force_crush || !roll_for_accident(25))
@@ -124,6 +140,8 @@
 
 /// When we vend an item from a vending machine, there's a chance the machine will tip
 /datum/component/omen/proc/check_vending(mob/living/source, obj/machinery/vending/darth_vendor, obj/item/vended_item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!source.Adjacent(darth_vendor) || !roll_for_accident(10))
@@ -136,6 +154,8 @@
 
 /// On life tick, run a few generic checks for accidents, and track nearby lights
 /datum/component/omen/proc/on_life(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source.stat == DEAD || HAS_TRAIT(source, TRAIT_STASIS))
@@ -161,6 +181,8 @@
 
 /// Start tracking a light, because it's near us and could be a threat
 /datum/component/omen/proc/track_light(obj/machinery/light/evil_light)
+	procstart = null
+	src.procstart = null
 	tracked_lights += evil_light
 	RegisterSignal(evil_light, COMSIG_LIGHT_FIXTURE_BROKEN, PROC_REF(check_break_zap))
 	RegisterSignal(evil_light, COMSIG_LIGHT_FIXTURE_TOGGLED, PROC_REF(check_toggle_zap))
@@ -168,6 +190,8 @@
 
 /// Stop tracking a light, either because it broke or we moved away from it
 /datum/component/omen/proc/untrack_light(obj/machinery/light/evil_light)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	tracked_lights -= evil_light
@@ -175,6 +199,8 @@
 
 /// When a light we track breaks, there's a chance of zapping us
 /datum/component/omen/proc/check_break_zap(obj/machinery/light/evil_light, was_ok)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(was_ok && !HAS_TRAIT(parent, TRAIT_SHOCKIMMUNE) && roll_for_accident(25))
@@ -186,6 +212,8 @@
 
 /// When a light we track is toggled on or off, there's a chance of zapping us
 /datum/component/omen/proc/check_toggle_zap(obj/machinery/light/evil_light, new_status)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT(parent, TRAIT_SHOCKIMMUNE) || !roll_for_accident(10))
@@ -201,6 +229,8 @@
 
 /// Zap the target with electricity from a light fixture
 /datum/component/omen/proc/light_zap(obj/machinery/light/evil_light)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/mob/living/target = parent
@@ -211,6 +241,8 @@
 
 /// Randomly burst into flames
 /datum/component/omen/proc/spontaneous_combustion()
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = parent
 	target.adjust_fire_stacks(20)
 	if(!target.ignite_mob(silent = TRUE))
@@ -226,6 +258,8 @@
 
 /// Every time we move we need to check a few things for potential incidents
 /datum/component/omen/proc/check_accident(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(mirror_interaction())
@@ -236,6 +270,8 @@
 
 /// Attempts to throw us down a nearby open space
 /datum/component/omen/proc/fall_down()
+	procstart = null
+	src.procstart = null
 	var/mob/living/our_guy = parent
 	var/turf/open/mob_turf = get_turf(our_guy)
 	if(isgroundlessturf(mob_turf) || istype(mob_turf, /turf/open/floor/glass/reinforced/tram)) // snowflake check is to increase likelihood of being hit with the tram
@@ -257,6 +293,8 @@
 
 /// Gaze into a mirror and see if something bad happens
 /datum/component/omen/proc/mirror_interaction()
+	procstart = null
+	src.procstart = null
 	var/mob/living/our_guy = parent
 	var/obj/structure/mirror/evil_mirror = locate() in get_turf(our_guy)
 	if(isnull(evil_mirror) || !roll_for_accident(10))
@@ -304,6 +342,8 @@
 
 /// If we get knocked down, see if we have a really bad slip and bash our head hard
 /datum/component/omen/proc/check_slip(mob/living/our_guy, amount)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!our_guy.get_bodypart(BODY_ZONE_HEAD) || !roll_for_accident(15)) // Bonk!
@@ -320,6 +360,8 @@
 
 /// Hijack the mood system to see if we get the blessing mood event to cancel the omen
 /datum/component/omen/proc/check_bless(mob/living/our_guy, mob/living/priest, obj/item/book/bible/bible, bless_result)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(incidents_left == INFINITY || bless_result != BLESSING_SUCCESS || !bless_fixable)
@@ -331,6 +373,8 @@
 
 /// Severe deaths. Normally lifts the curse.
 /datum/component/omen/proc/check_death(mob/living/our_guy)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	on_death?.Invoke(src)
@@ -341,6 +385,8 @@
 
 /// Creates a localized explosion that shakes the camera
 /datum/component/omen/proc/death_explode(mob/living/our_guy)
+	procstart = null
+	src.procstart = null
 	explosion(our_guy, explosion_cause = src)
 
 	for(var/mob/witness in view(2, our_guy))
@@ -348,6 +394,8 @@
 
 /// Vessel got deleted, set it to null
 /datum/component/omen/proc/vessel_qdeleting(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(vessel, COMSIG_QDELETING)
@@ -361,6 +409,8 @@
 	incidents_left = 1
 
 /datum/component/omen/bible/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/living_parent = parent
 	living_parent.add_filter("omen", 2, list("type" = "drop_shadow", "color" = COLOR_DARK_RED, "alpha" = 0, "size" = 2))
@@ -369,6 +419,8 @@
 	animate(alpha = 0, time = 2 SECONDS)
 
 /datum/component/omen/bible/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/living_parent = parent
 	living_parent.remove_filter("omen")

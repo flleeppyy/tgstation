@@ -118,6 +118,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 
 /turf/vv_edit_var(var_name, new_value)
+	procstart = null
+	src.procstart = null
 	var/static/list/banned_edits = list(NAMEOF_STATIC(src, x), NAMEOF_STATIC(src, y), NAMEOF_STATIC(src, z))
 	if(var_name in banned_edits)
 		return FALSE
@@ -133,6 +135,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
  * [/turf/open/space/Initialize]
  */
 /turf/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	if(flags_1 & INITIALIZED_1)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
@@ -191,9 +195,13 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 /// Initializes our adjacent turfs. If you want to avoid this, do not override it, instead set init_air to FALSE
 /turf/proc/Initalize_Atmos(time)
+	procstart = null
+	src.procstart = null
 	CALCULATE_ADJACENT_TURFS(src, NORMAL_TURF)
 
 /turf/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = QDEL_HINT_IWILLGC
 	if(!changing_turf)
 		stack_trace("Incorrect turf deletion")
@@ -228,9 +236,13 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /// It's possible because turfs are fucked, and if you have one in a list and it's replaced with another one, the list ref points to the new turf
 /// We do it because moving signals over was needlessly expensive, and bloated a very commonly used bit of code
 /turf/_clear_signal_refs()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -238,6 +250,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 /// Call to move a turf from its current area to a new one
 /turf/proc/change_area(area/old_area, area/new_area)
+	procstart = null
+	src.procstart = null
 	//don't waste our time
 	if(old_area == new_area)
 		return
@@ -257,12 +271,18 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 /// Allows for reactions to an area change without inherently requiring change_area() be called (I hate maploading)
 /turf/proc/on_change_area(area/old_area, area/new_area)
+	procstart = null
+	src.procstart = null
 	transfer_area_lighting(old_area, new_area)
 
 /turf/proc/multiz_turf_del(turf/T, dir)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_TURF_MULTIZ_DEL, T, dir)
 
 /turf/proc/multiz_turf_new(turf/T, dir)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_TURF_MULTIZ_NEW, T, dir)
 
 /**
@@ -280,6 +300,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
  * * type_list - are we checking for types of atoms to ignore and not physical atoms
  */
 /turf/proc/is_blocked_turf(exclude_mobs = FALSE, source_atom = null, list/ignore_atoms, type_list = FALSE)
+	procstart = null
+	src.procstart = null
 	if(density)
 		return TRUE
 
@@ -308,6 +330,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
  * Works similar to is_blocked_turf(), but ignores climbables and has less options. Primarily added for jaunting checks
  */
 /turf/proc/is_blocked_turf_ignore_climbable()
+	procstart = null
+	src.procstart = null
 	if(density)
 		return TRUE
 
@@ -320,22 +344,32 @@ GLOBAL_LIST_EMPTY(station_turfs)
 //use can_z_pass for that
 ///If we'd allow anything to travel into us
 /turf/proc/zPassIn(direction)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 ///If we'd allow anything to travel out of us
 /turf/proc/zPassOut(direction)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 //direction is direction of travel of air
 /turf/proc/zAirIn(direction, turf/source)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 //direction is direction of travel
 /turf/proc/zAirOut(direction, turf/source)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// Precipitates a movable (plus whatever buckled to it) to lower z levels if possible and then calls zImpact()
 /turf/proc/zFall(atom/movable/falling, levels = 1, force = FALSE, falling_from_move = FALSE)
+	procstart = null
+	src.procstart = null
 	var/direction = DOWN
 	if(falling.has_gravity() <= NEGATIVE_GRAVITY)
 		direction = UP
@@ -365,6 +399,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 ///Called each time the target falls down a z level possibly making their trajectory come to a halt. see __DEFINES/movement.dm.
 /turf/proc/zImpact(atom/movable/falling, levels = 1, turf/prev_turf, flags = NONE)
+	procstart = null
+	src.procstart = null
 	var/list/falling_movables = falling.get_z_move_affected()
 	var/list/falling_mov_names
 	for(var/atom/movable/falling_mov as anything in falling_movables)
@@ -389,6 +425,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	return TRUE
 
 /turf/proc/handleRCL(obj/item/rcl/rapid_layer, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!rapid_layer.loaded)
 		return
 	lay_pipe_cleaner(rapid_layer.loaded, user)
@@ -397,6 +435,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	rapid_layer.is_empty(user)
 
 /turf/proc/lay_pipe_cleaner(obj/item/stack/pipe_cleaner_coil/coil, user)
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/pipe_cleaner/lain_cable in src)
 		if(!lain_cable.d1 || !lain_cable.d2)
 			lain_cable.item_interaction(user, coil)
@@ -404,6 +444,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	coil.place_turf(src, user)
 
 /turf/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(can_lay_cable() && istype(tool, /obj/item/stack/cable_coil))
 		var/obj/item/stack/cable_coil/coil = tool
 		coil.place_turf(src, user)
@@ -421,6 +463,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 //There's a lot of QDELETED() calls here if someone can figure out how to optimize this but not runtime when something gets deleted by a Bump/CanPass/Cross call, lemme know or go ahead and fix this mess - kevinz000
 /turf/Enter(atom/movable/mover)
+	procstart = null
+	src.procstart = null
 	// Do not call ..()
 	// Byond's default turf/Enter() doesn't have the behaviour we want with Bump()
 	// By default byond will call Bump() on the first dense object in contents
@@ -456,6 +500,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 // A proc in case it needs to be recreated or badmins want to change the baseturfs
 /turf/proc/assemble_baseturfs(turf/fake_baseturf_type)
+	procstart = null
+	src.procstart = null
 	var/static/list/created_baseturf_lists = list()
 	var/turf/current_target
 	if(fake_baseturf_type)
@@ -504,21 +550,29 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	return new_baseturfs
 
 /turf/proc/levelupdate()
+	procstart = null
+	src.procstart = null
 	for(var/obj/O in src)
 		if(O.flags_1 & INITIALIZED_1)
 			SEND_SIGNAL(O, COMSIG_OBJ_HIDE, underfloor_accessibility)
 
 // override for space turfs, since they should never hide anything
 /turf/open/space/levelupdate()
+	procstart = null
+	src.procstart = null
 	return
 
 // Removes all signs of lattice on the pos of the turf -Donkieyo
 /turf/proc/RemoveLattice()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
 	if(L && (L.flags_1 & INITIALIZED_1))
 		qdel(L)
 
 /turf/proc/Bless()
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/effect/blessing) in src)
 		return
 	new /obj/effect/blessing(src)
@@ -529,12 +583,16 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 //Distance associates with all directions movement
 /turf/proc/Distance(turf/T)
+	procstart = null
+	src.procstart = null
 	return get_dist(src,T)
 
 //  This Distance proc assumes that only cardinal movement is
 //  possible. It results in more efficient (CPU-wise) pathing
 //  for bots and anything else that only moves in cardinal dirs.
 /turf/proc/Distance_cardinal(turf/T)
+	procstart = null
+	src.procstart = null
 	if(!src || !T)
 		return FALSE
 	return abs(x - T.x) + abs(y - T.y)
@@ -542,6 +600,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 ////////////////////////////////////////////////////
 
 /turf/singularity_act()
+	procstart = null
+	src.procstart = null
 	if(underfloor_accessibility < UNDERFLOOR_INTERACTABLE)
 		for(var/obj/on_top in contents) //this is for deleting things like wires contained in the turf
 			if(HAS_TRAIT(on_top, TRAIT_UNDERFLOOR))
@@ -550,23 +610,35 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	return(2)
 
 /turf/proc/can_have_cabling()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /turf/proc/can_lay_cable()
+	procstart = null
+	src.procstart = null
 	return can_have_cabling() && underfloor_accessibility >= UNDERFLOOR_INTERACTABLE
 
 /turf/proc/burn_tile()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/proc/break_tile()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Checks if this turf is protected from an explosion by something
 /// Return TRUE to stop the explosion from affecting this turf
 /turf/proc/is_explosion_shielded(severity)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/movable_thing as anything in src)
 		if(QDELETED(movable_thing) || !can_propagate_explosion(movable_thing, severity))
 			continue
@@ -581,9 +653,13 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /// Called when propagating an explosion through contents,.
 /// Return FALSE to prevent the passed object from being exploded.
 /turf/proc/can_propagate_explosion(atom/movable/some_thing, severity)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /turf/narsie_act(force, ignore_mobs, probability = 20)
+	procstart = null
+	src.procstart = null
 	. = (prob(probability) || force)
 	for(var/I in src)
 		var/atom/A = I
@@ -593,12 +669,16 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			A.narsie_act()
 
 /turf/proc/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	underlay_appearance.icon = icon
 	underlay_appearance.icon_state = icon_state
 	underlay_appearance.dir = adjacency_dir
 	return TRUE
 
 /turf/proc/add_blueprints(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	var/image/I = new
 	SET_PLANE(I, GAME_PLANE, src)
 	I.layer = OBJ_LAYER
@@ -610,6 +690,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	LAZYADD(blueprint_data, I)
 
 /turf/proc/add_blueprints_preround(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(!SSicon_smooth.initialized)
 		if(AM.layer == WIRE_LAYER) //wires connect to adjacent positions after its parent init, meaning we need to wait (in this case, until smoothing) to take its image
 			SSicon_smooth.blueprint_queue += AM
@@ -617,9 +699,13 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			add_blueprints(AM)
 
 /turf/proc/is_transition_turf()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/acid_act(acidpwr, acid_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((acidpwr <= 0) || (acid_volume <= 0))
 		return FALSE
@@ -629,10 +715,14 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	return . || TRUE
 
 /turf/proc/acid_melt()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Check if the heretic is strong enough to rust this turf, and if so, rusts the turf with an added visual effect.
 /turf/rust_heretic_act(rust_strength = RUST_RESISTANCE_BASIC)
+	procstart = null
+	src.procstart = null
 	if((rust_strength < rust_resistance))
 		return FALSE
 
@@ -643,17 +733,23 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 /// Override this to change behaviour when being rusted
 /turf/proc/rust_turf(magic = FALSE)
+	procstart = null
+	src.procstart = null
 	if ((turf_flags & NO_RUST) || HAS_TRAIT(src, TRAIT_RUSTIMMUNE) || HAS_TRAIT(src, TRAIT_RUSTY))
 		return FALSE
 	AddElement(magic ? /datum/element/rust/heretic : /datum/element/rust)
 	return TRUE
 
 /turf/handle_fall(mob/faller)
+	procstart = null
+	src.procstart = null
 	if(has_gravity(src))
 		playsound(src, SFX_BODYFALL, 50, TRUE)
 	faller.drop_all_held_items()
 
 /turf/proc/photograph(limit=20)
+	procstart = null
+	src.procstart = null
 	var/image/I = new()
 	I.add_overlay(src)
 	for(var/V in contents)
@@ -668,9 +764,13 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	return I
 
 /turf/AllowDrop()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /turf/proc/add_vomit_floor(mob/living/vomiter, vomit_type = /obj/effect/decal/cleanable/vomit, vomit_flags, purge_ratio = 0.1)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/decal/cleanable/vomit/throw_up = new vomit_type(src, vomiter?.get_static_viruses())
 
 	// if the vomit combined, apply toxicity and reagents to the old vomit
@@ -686,6 +786,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	clear_reagents_to_vomit_pool(vomiter, throw_up, purge_ratio)
 
 /proc/clear_reagents_to_vomit_pool(mob/living/carbon/owner, obj/effect/decal/cleanable/vomit/vomit, purge_ratio = 0.1)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/stomach/belly = owner.get_organ_slot(ORGAN_SLOT_STOMACH)
 	if(!belly?.reagents.total_volume)
 		return
@@ -711,10 +813,14 @@ GLOBAL_LIST_EMPTY(station_turfs)
 //Whatever happens after high temperature fire dies out or thermite reaction works.
 //Should return new turf
 /turf/proc/Melt()
+	procstart = null
+	src.procstart = null
 	return ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
 
 /// Handles exposing a turf to reagents.
 /turf/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & COMPONENT_NO_EXPOSE_REAGENTS)
 		return
@@ -728,12 +834,16 @@ GLOBAL_LIST_EMPTY(station_turfs)
 // By default we will only wash mopable things (like blood or vomit)
 // but you may optionally pass in all_contents = TRUE to wash everything
 /turf/wash(clean_types, all_contents = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/atom/movable/to_clean as anything in src)
 		if(all_contents || HAS_TRAIT(to_clean, TRAIT_MOPABLE))
 			. |= to_clean.wash(clean_types)
 
 /turf/set_density(new_value)
+	procstart = null
+	src.procstart = null
 	var/old_density = density
 	. = ..()
 	if(old_density == density)
@@ -747,6 +857,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /// Wrapper around inherent_explosive_resistance
 /// We assume this proc is cold, so we can move the "what is our block" into it
 /turf/proc/get_explosive_block()
+	procstart = null
+	src.procstart = null
 	if(inherent_explosive_resistance != -1)
 		return inherent_explosive_resistance
 	if(explosive_resistance)
@@ -763,6 +875,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
  * * no_id: When true, doors with public access will count as impassible
 */
 /turf/proc/reachableAdjacentTurfs(atom/movable/requester, list/access, simulated_only, no_id = FALSE)
+	procstart = null
+	src.procstart = null
 	var/static/space_type_cache = typecacheof(/turf/open/space)
 	. = list()
 
@@ -776,21 +890,31 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		. += turf_to_check
 
 /turf/proc/GetHeatCapacity()
+	procstart = null
+	src.procstart = null
 	. = heat_capacity
 
 /turf/proc/GetTemperature()
+	procstart = null
+	src.procstart = null
 	. = temperature
 
 /turf/proc/TakeTemperature(temp)
+	procstart = null
+	src.procstart = null
 	temperature += temp
 
 // I'm sorry, this is the only way that both makes sense and is cheap
 /turf/set_explosion_block(explosion_block)
+	procstart = null
+	src.procstart = null
 	explosive_resistance -= get_explosive_block()
 	inherent_explosive_resistance = explosion_block
 	explosive_resistance += get_explosive_block()
 
 /turf/apply_main_material_effects(datum/material/main_material, amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(alpha < 255)
 		ADD_TURF_TRANSPARENCY(src, MATERIAL_SOURCE(main_material))
@@ -798,6 +922,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	rust_resistance = main_material.mat_rust_resistance
 
 /turf/remove_main_material_effects(datum/material/custom_material, amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	rust_resistance = initial(rust_resistance)
 	if(alpha == 255)
@@ -809,6 +935,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 /// Returns whether it is safe for an atom to move across this turf
 /turf/proc/can_cross_safely(atom/movable/crossing)
+	procstart = null
+	src.procstart = null
 	return !HAS_TRAIT(src, TRAIT_AI_AVOID_TURF)
 
 /**
@@ -817,6 +945,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
  * hackier code, because we've hundreds of turfs like lava, water etc every round,
  */
 /turf/proc/add_lazy_fishing(fish_source_path)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(src, COMSIG_FISHING_ROD_CAST, PROC_REF(add_fishing_spot_comp))
 	RegisterSignal(src, COMSIG_NPC_FISHING, PROC_REF(on_npc_fishing))
 	RegisterSignal(src, COMSIG_FISH_RELEASED_INTO, PROC_REF(on_fish_release_into))
@@ -825,6 +955,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	fish_source = fish_source_path
 
 /turf/proc/remove_lazy_fishing()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(src, list(
 		COMSIG_FISHING_ROD_CAST,
@@ -837,20 +969,28 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	fish_source = null
 
 /turf/proc/add_fishing_spot_comp(datum/source, obj/item/fishing_rod/rod, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/datum/component/fishing_spot/spot = source.AddComponent(/datum/component/fishing_spot, GLOB.preset_fish_sources[fish_source])
 	remove_lazy_fishing()
 	return spot.handle_cast(arglist(args))
 
 /turf/proc/on_npc_fishing(datum/source, list/fish_spot_container)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	fish_spot_container[NPC_FISHING_SPOT] = GLOB.preset_fish_sources[fish_source]
 
 /turf/proc/on_fish_release_into(datum/source, obj/item/fish/fish, mob/living/releaser)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	GLOB.preset_fish_sources[fish_source].readd_fish(src, fish, releaser)
 
 /turf/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!fish_source || !HAS_MIND_TRAIT(user, TRAIT_EXAMINE_FISHING_SPOT))
 		return
@@ -859,18 +999,24 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	. += span_tinynoticeital("This is a fishing spot. You can look again to list its fishes...")
 
 /turf/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_MIND_TRAIT(user, TRAIT_EXAMINE_FISHING_SPOT) || !fish_source)
 		return
 	GLOB.preset_fish_sources[fish_source].get_catchable_fish_names(user, src, .)
 
 /turf/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!fish_source)
 		return
 	GLOB.preset_fish_sources[fish_source].spawn_reward_from_explosion(src, severity)
 
 /turf/multitool_act(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	if(!fish_source || !istype(tool.buffer, /obj/machinery/fishing_portal_generator))
 		return ..()
 	var/obj/machinery/fishing_portal_generator/portal = tool.buffer

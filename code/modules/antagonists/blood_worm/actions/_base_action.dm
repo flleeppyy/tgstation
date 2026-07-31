@@ -13,9 +13,13 @@
 	ranged_mousepointer = 'icons/effects/mouse_pointers/weapon_pointer.dmi'
 
 /datum/action/cooldown/mob_cooldown/blood_worm/set_click_ability(mob/on_who)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	build_all_button_icons(UPDATE_BUTTON_OVERLAY)
 
 /datum/action/cooldown/mob_cooldown/blood_worm/unset_click_ability(mob/on_who, refund_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	build_all_button_icons(UPDATE_BUTTON_OVERLAY)

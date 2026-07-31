@@ -23,12 +23,16 @@
 
 /// Fills the tray with items it should contain on creation
 /obj/item/surgery_tray/proc/populate_contents()
+	procstart = null
+	src.procstart = null
 	for(var/obj in starting_items)
 		new obj(src)
 	update_appearance(UPDATE_ICON)
 	return
 
 /obj/item/surgery_tray/Initialize(mapload, effect_spawner = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/drag_pickup)
 	create_storage(storage_type = /datum/storage/surgery_tray)
@@ -37,16 +41,22 @@
 	set_tray_mode(is_portable)
 
 /obj/item/surgery_tray/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	context[SCREENTIP_CONTEXT_LMB] = "Take a random tool"
 	context[SCREENTIP_CONTEXT_RMB] = "Take a specific tool"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/surgery_tray/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = is_portable ? "tray" : "medicart"
 
 /obj/item/surgery_tray/update_desc()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_portable)
 		desc = "The wheels and bottom storage of this medical cart have been stowed away, \
@@ -55,6 +65,8 @@
 		desc = initial(desc)
 
 /obj/item/surgery_tray/examine(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += is_portable \
 		? span_notice("You can click and drag it to yourself to pick it up, then use it in your hand to make it a cart!") \
@@ -62,6 +74,8 @@
 	. += span_notice("The top is <b>screwed</b> on.")
 
 /obj/item/surgery_tray/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// assoc list of all overlays, key = the item generating the overlay, value = the overlay string
 	var/list/surgery_overlays = list()
@@ -98,6 +112,8 @@
 
 ///Sets the surgery tray's deployment state. Silent if user is null.
 /obj/item/surgery_tray/proc/set_tray_mode(new_mode, mob/user)
+	procstart = null
+	src.procstart = null
 	is_portable = new_mode
 	density = !is_portable
 	if(user)
@@ -115,11 +131,15 @@
 	update_appearance()
 
 /obj/item/surgery_tray/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!is_portable)
 		set_tray_mode(TRUE, user)
 
 /obj/item/surgery_tray/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -134,6 +154,8 @@
 	return
 
 /obj/item/surgery_tray/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user.can_perform_action(src, NEED_HANDS))
 		return ..()
 	if(!length(contents))
@@ -145,6 +167,8 @@
 	return TRUE
 
 /obj/item/surgery_tray/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tool.play_tool_sound(src)
 	to_chat(user, span_notice("You begin taking apart [src]."))
@@ -154,11 +178,15 @@
 	to_chat(user, span_notice("[src] has been taken apart."))
 
 /obj/item/surgery_tray/dump_contents()
+	procstart = null
+	src.procstart = null
 	var/atom/drop_point = drop_location()
 	for(var/atom/movable/tool as anything in contents)
 		tool.forceMove(drop_point)
 
 /obj/item/surgery_tray/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	dump_contents()
 	new /obj/item/stack/rods(drop_location(), 2)
 	new /obj/item/stack/sheet/mineral/silver(drop_location())
@@ -237,6 +265,8 @@
 	var/toolbox_chance = 1
 
 /obj/effect/spawner/surgery_tray/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(toolbox_chance))
 		new rare_toolbox_replacement(loc)

@@ -12,6 +12,8 @@
 	max_wizard_trigger_potency = 7
 
 /datum/round_event/wizard/robelesscasting/start()
+	procstart = null
+	src.procstart = null
 
 	// Hey, if a corgi has magic missle, he should get the same benefit as anyone
 	for(var/mob/living/caster as anything in GLOB.mob_living_list)
@@ -40,6 +42,8 @@
 	max_wizard_trigger_potency = 7
 
 /datum/round_event/wizard/improvedcasting/start()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/caster as anything in GLOB.mob_living_list)
 		if(!length(caster.actions))
 			continue

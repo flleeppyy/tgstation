@@ -15,6 +15,8 @@
 	)
 
 /datum/ai_controller/cursed/TryPossessPawn(atom/new_pawn)
+	procstart = null
+	src.procstart = null
 	if(!isitem(new_pawn))
 		return AI_CONTROLLER_INCOMPATIBLE
 	RegisterSignal(new_pawn, COMSIG_MOVABLE_IMPACT, PROC_REF(on_throw_hit))
@@ -22,11 +24,15 @@
 	return ..() //Run parent at end
 
 /datum/ai_controller/cursed/UnpossessPawn()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(pawn, list(COMSIG_MOVABLE_IMPACT, COMSIG_ITEM_EQUIPPED))
 	return ..() //Run parent at end
 
 ///signal called by the pawn hitting something after a throw
 /datum/ai_controller/cursed/proc/on_throw_hit(datum/source, atom/hit_atom, datum/thrownthing/throwing_datum, caught)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(caught || !iscarbon(hit_atom))
 		return
@@ -35,6 +41,8 @@
 
 ///signal called by picking up the pawn, will try to equip to where it should actually be and start the curse
 /datum/ai_controller/cursed/proc/on_equip(datum/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(try_equipping_to_target_slot), equipper, slot)
 
@@ -47,6 +55,8 @@
  * * slot_already_in: the slot the item is already in before this was called, possibly null but at least in hands if picked up
  */
 /datum/ai_controller/cursed/proc/try_equipping_to_target_slot(mob/living/carbon/curse_victim, slot_already_in)
+	procstart = null
+	src.procstart = null
 	var/obj/item/item_pawn = pawn
 	var/attempted_slot = blackboard[BB_TARGET_SLOT]
 	if(slot_already_in && (attempted_slot & slot_already_in)) //thanks for making it easy
@@ -67,5 +77,7 @@
 
 ///proc called when the cursed object successfully attaches itself to someone, removing the cursed element and by extension the ai itself
 /datum/ai_controller/cursed/proc/what_a_horrible_night_to_have_a_curse()
+	procstart = null
+	src.procstart = null
 	var/obj/item/item_pawn = pawn
 	item_pawn.RemoveElement(/datum/element/cursed)

@@ -3,6 +3,8 @@
 /datum/component/netpod_healing
 
 /datum/component/netpod_healing/Initialize(obj/machinery/netpod/pod)
+	procstart = null
+	src.procstart = null
 	if (!iscarbon(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -20,6 +22,8 @@
 	START_PROCESSING(SSmachines, src)
 
 /datum/component/netpod_healing/Destroy(force)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSmachines, src)
 
 	var/mob/living/carbon/player = parent
@@ -28,6 +32,8 @@
 	return ..()
 
 /datum/component/netpod_healing/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/owner = parent
 	if(isnull(owner))
 		qdel(src)
@@ -45,6 +51,8 @@
 
 /// Deletes itself when the machine was opened
 /datum/component/netpod_healing/proc/on_remove()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(src)
@@ -54,10 +62,14 @@
 	alert_type = /atom/movable/screen/alert/status_effect/embryonic
 
 /datum/status_effect/embryonic/on_apply()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(owner, TRAIT_STASIS, TRAIT_STATUS_EFFECT(id))
 	return TRUE
 
 /datum/status_effect/embryonic/on_remove()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_STASIS, TRAIT_STATUS_EFFECT(id))
 
 /atom/movable/screen/alert/status_effect/embryonic

@@ -9,6 +9,8 @@
 	var/non_holiday_spawn
 
 /obj/effect/spawner/holiday/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/found_holiday = FALSE
 	for(var/holiday in holidays_to_spawn)

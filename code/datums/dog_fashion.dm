@@ -24,6 +24,8 @@
 	var/obj_color
 
 /datum/dog_fashion/New(mob/fashionable_mob)
+	procstart = null
+	src.procstart = null
 	//replace the placeholder for the real unmodified name in the name of the dog
 	name = replacetext(name, "%REAL_NAME%", fashionable_mob.real_name)
 	//replace the placeholder for the capitalized real unmodified name in the name of the dog
@@ -37,6 +39,8 @@
 
 ///Applies the name, description and speak emote modifiers to the dog
 /datum/dog_fashion/proc/apply(mob/living/basic/pet/dog/dressup_doggy)
+	procstart = null
+	src.procstart = null
 	if(name)
 		dressup_doggy.name = name
 	if(desc)
@@ -46,6 +50,8 @@
 
 ///Applies random speech modifiers to the dog
 /datum/dog_fashion/proc/apply_to_speech(list/speech_data)
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(emote_see))
 		speech_data[BB_EMOTE_SEE] = string_list(emote_see)
 	if(LAZYLEN(emote_hear))
@@ -58,6 +64,8 @@
  * dir: passed direction for the sprite, e.g. to apply to a dead dog, we use the EAST dir and just flip it 180.
  */
 /datum/dog_fashion/proc/get_overlay(dir)
+	procstart = null
+	src.procstart = null
 	if(icon_file && obj_icon_state)
 		var/image/corgI = image(icon_file, icon_state = obj_icon_state, dir = dir)
 		corgI.alpha = obj_alpha
@@ -129,6 +137,8 @@
 	speak = list("Arrrrgh!!","Grrrrrr!")
 
 /datum/dog_fashion/head/pirate/New(mob/M)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[pick("Ol'","Scurvy","Black","Rum","Gammy","Bloody","Gangrene","Death","Long-John")] [pick("kibble","leg","beard","tooth","poop-deck","Threepwood","Le Chuck","corsair","Silver","Crusoe")]"
 
@@ -138,6 +148,8 @@
 	emote_see = list("contemplates the failings of the capitalist economic model.", "ponders the pros and cons of vanguardism.")
 
 /datum/dog_fashion/head/ushanka/New(mob/M)
+	procstart = null
+	src.procstart = null
 	name = "[pick("Comrade","Commissar","Glorious Leader")] %REAL_NAME%"
 	return ..()
 

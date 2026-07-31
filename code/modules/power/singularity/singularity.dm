@@ -56,6 +56,8 @@
 	obj_flags = CAN_BE_HIT | DANGEROUS_POSSESSION
 
 /obj/singularity/Initialize(mapload, starting_energy)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	energy = starting_energy || energy
@@ -88,10 +90,14 @@
 		)
 
 /obj/singularity/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSsinguloprocess, src)
 	return ..()
 
 /obj/singularity/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user))
 		return
 	. = COMPONENT_CANCEL_ATTACK_CHAIN
@@ -115,6 +121,8 @@
 	addtimer(CALLBACK(src, PROC_REF(carbon_tk_part_two), jedi), 0.1 SECONDS)
 
 /obj/singularity/proc/carbon_tk_part_two(mob/living/carbon/jedi)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(jedi))
 		return
 	new /obj/effect/gibspawner/generic(get_turf(jedi), jedi)
@@ -131,6 +139,8 @@
 	addtimer(CALLBACK(src, PROC_REF(carbon_tk_part_three), jedi), 0.1 SECONDS)
 
 /obj/singularity/proc/carbon_tk_part_three(mob/living/carbon/jedi)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(jedi))
 		return
 	new /obj/effect/gibspawner/generic(get_turf(jedi), jedi)
@@ -144,6 +154,8 @@
 		qdel(rip_u)
 
 /obj/singularity/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
 			if(current_size <= STAGE_TWO)
@@ -160,6 +172,8 @@
 	return TRUE
 
 /obj/singularity/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	time_since_act += seconds_per_tick
 	if(time_since_act < 2)
 		return
@@ -171,6 +185,8 @@
 	check_energy()
 
 /obj/singularity/proc/dissipate(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if (!dissipate)
 		return
 
@@ -182,6 +198,8 @@
 		time_since_last_dissipiation -= dissipate_delay
 
 /obj/singularity/proc/expand(force_size)
+	procstart = null
+	src.procstart = null
 	var/temp_allowed_size = allowed_size
 
 	if(force_size)
@@ -289,6 +307,8 @@
 		return FALSE
 
 /obj/singularity/proc/check_energy()
+	procstart = null
+	src.procstart = null
 	if(energy <= 0)
 		investigate_log("collapsed.", INVESTIGATE_ENGINE)
 		qdel(src)
@@ -312,6 +332,8 @@
 	return TRUE
 
 /obj/singularity/proc/consume(atom/thing)
+	procstart = null
+	src.procstart = null
 	if(istype(thing, /obj/item/storage/backpack/holding) && !consumed_supermatter && !collapsing)
 		consume_boh(thing)
 		return
@@ -322,12 +344,16 @@
 		supermatter_upgrade()
 
 /obj/singularity/proc/supermatter_upgrade()
+	procstart = null
+	src.procstart = null
 	name = "supermatter-charged [initial(name)]"
 	desc = "[initial(desc)] It glows fiercely with inner fire."
 	consumed_supermatter = TRUE
 	set_light(10)
 
 /obj/singularity/proc/consume_boh(obj/boh)
+	procstart = null
+	src.procstart = null
 	collapsing = TRUE
 	name = "unstable [initial(name)]"
 	desc = "[initial(desc)] It seems to be collapsing in on itself."
@@ -344,9 +370,13 @@
 	qdel(boh)
 
 /obj/singularity/proc/consume_boh_sfx()
+	procstart = null
+	src.procstart = null
 	playsound(loc, 'sound/effects/supermatter.ogg', 200, vary = TRUE, extrarange = 3, falloff_exponent = 1, frequency = 0.5, pressure_affected = FALSE, ignore_walls = TRUE, falloff_distance = 7)
 
 /obj/singularity/proc/check_cardinals_range(steps, retry_with_move = FALSE)
+	procstart = null
+	src.procstart = null
 	. = length(GLOB.cardinals) //Should be 4.
 	for(var/i in GLOB.cardinals)
 		. -= check_turfs_in(i, steps) //-1 for each working direction
@@ -358,6 +388,8 @@
 	return !.
 
 /obj/singularity/proc/check_turfs_in(direction = 0, step = 0)
+	procstart = null
+	src.procstart = null
 	if(!direction)
 		return FALSE
 	var/steps = 0
@@ -410,6 +442,8 @@
 	return TRUE
 
 /obj/singularity/proc/can_move(turf/considered_turf)
+	procstart = null
+	src.procstart = null
 	if(!considered_turf)
 		return FALSE
 	if (HAS_TRAIT(considered_turf, TRAIT_CONTAINMENT_FIELD))
@@ -417,6 +451,8 @@
 	return TRUE
 
 /obj/singularity/proc/event()
+	procstart = null
+	src.procstart = null
 	var/numb = rand(1,4)
 	switch(numb)
 		if(1)//EMP
@@ -432,6 +468,8 @@
 	return TRUE
 
 /obj/singularity/proc/combust_mobs()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/burned_mob in urange(20, src, 1))
 		burned_mob.visible_message(
 			span_warning("[burned_mob]'s skin bursts into flame!"),
@@ -442,6 +480,8 @@
 	return
 
 /obj/singularity/proc/mezzer()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/stunned_mob in oviewers(8, src))
 		if(stunned_mob.stat == DEAD || stunned_mob.is_blind())
 			continue
@@ -460,6 +500,8 @@
 		apply_stun(stunned_mob)
 
 /obj/singularity/proc/apply_stun(mob/living/carbon/stunned_mob)
+	procstart = null
+	src.procstart = null
 	stunned_mob.apply_effect(60, EFFECT_STUN)
 	stunned_mob.visible_message(
 		span_danger("[stunned_mob] stares blankly at \the [src]!"),
@@ -467,9 +509,13 @@
 	)
 
 /obj/singularity/proc/emp_area()
+	procstart = null
+	src.procstart = null
 	empulse(src, 8, 10)
 
 /obj/singularity/singularity_act()
+	procstart = null
+	src.procstart = null
 	var/gain = (energy/2)
 	var/dist = max((current_size - 2),1)
 	investigate_log("has been destroyed by another singularity.", INVESTIGATE_ENGINE)
@@ -483,6 +529,8 @@
 	return gain
 
 /obj/singularity/deadchat_plays(mode = DEMOCRACY_MODE, cooldown = 12 SECONDS)
+	procstart = null
+	src.procstart = null
 	. = AddComponent(/datum/component/deadchat_control/cardinal_movement, mode, list(), cooldown, CALLBACK(src, PROC_REF(stop_deadchat_plays)))
 
 	if(. == COMPONENT_INCOMPATIBLE)
@@ -491,9 +539,13 @@
 	move_self = FALSE
 
 /obj/singularity/proc/stop_deadchat_plays()
+	procstart = null
+	src.procstart = null
 	move_self = TRUE
 
 /obj/singularity/deadchat_controlled/Initialize(mapload, starting_energy)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	deadchat_plays(mode = DEMOCRACY_MODE)
 
@@ -502,11 +554,15 @@
 	move_self = FALSE
 
 /obj/singularity/orion/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/component/singularity/singularity = singularity_component.resolve()
 	singularity?.grav_pull = 1
 
 /obj/singularity/orion/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(SPT_PROB(0.5, seconds_per_tick))
 		mezzer()
 

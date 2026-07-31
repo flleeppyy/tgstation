@@ -11,18 +11,24 @@
 	var/list/moving_targets
 
 /datum/component/shuttle_move_deferred_checks/Initialize(check)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!check)
 		return COMPONENT_INCOMPATIBLE
 	src.check = check
 
 /datum/component/shuttle_move_deferred_checks/Destroy(force)
+	procstart = null
+	src.procstart = null
 	targets = null
 	check = null
 	moving_targets = null
 	return ..()
 
 /datum/component/shuttle_move_deferred_checks/on_source_add(source, check)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/movable/movable = locate(source)
 	if(!istype(movable) || (check != src.check))
@@ -34,6 +40,8 @@
 	RegisterSignal(movable, COMSIG_QDELETING, PROC_REF(on_target_deleted))
 
 /datum/component/shuttle_move_deferred_checks/on_source_remove(source)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/movable = locate(source)
 	if(!istype(movable))
 		return
@@ -43,6 +51,8 @@
 	return ..()
 
 /datum/component/shuttle_move_deferred_checks/proc/call_check()
+	procstart = null
+	src.procstart = null
 	if(istype(check, /datum/callback))
 		var/datum/callback/callback_check = check
 		callback_check.Invoke()
@@ -50,21 +60,29 @@
 		call(parent, check)()
 
 /datum/component/shuttle_move_deferred_checks/proc/on_target_moved(atom/movable/source, atom/old_loc, dir, forced, list/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(LAZYLEN(moving_targets))
 		return
 	call_check()
 
 /datum/component/shuttle_move_deferred_checks/proc/before_target_shuttle_move(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	LAZYOR(moving_targets, source)
 
 /datum/component/shuttle_move_deferred_checks/proc/after_target_shuttle_move(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	LAZYOR(moving_targets, source)
 	if(!LAZYLEN(moving_targets))
 		call_check()
 
 /datum/component/shuttle_move_deferred_checks/proc/on_target_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	on_source_remove(REF(source))

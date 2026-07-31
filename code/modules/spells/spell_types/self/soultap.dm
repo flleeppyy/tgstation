@@ -23,6 +23,8 @@
 	var/tap_health_taken = 20
 
 /datum/action/cooldown/spell/tap/can_cast_spell(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -36,9 +38,13 @@
 	return TRUE
 
 /datum/action/cooldown/spell/tap/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return isliving(cast_on) && !HAS_TRAIT(cast_on, TRAIT_NO_SOUL)
 
 /datum/action/cooldown/spell/tap/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cast_on.maxHealth -= tap_health_taken
 	cast_on.health = min(cast_on.health, cast_on.maxHealth)

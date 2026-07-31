@@ -8,6 +8,8 @@ SUBSYSTEM_DEF(vis_overlays)
 	var/list/currentrun
 
 /datum/controller/subsystem/vis_overlays/fire(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!resumed)
 		currentrun = vis_overlay_cache.Copy()
 	var/list/current_run = currentrun
@@ -26,6 +28,8 @@ SUBSYSTEM_DEF(vis_overlays)
 
 //the "thing" var can be anything with vis_contents which includes images - in the future someone should totally allow vis overlays to be passed in as an arg instead of all this bullshit
 /datum/controller/subsystem/vis_overlays/proc/add_vis_overlay(atom/movable/thing, icon, iconstate, layer, plane, dir, alpha = 255, add_appearance_flags = NONE, unique = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/overlay/vis/overlay
 	if(!unique)
 		. = "[icon]|[iconstate]|[layer]|[plane]|[dir]|[alpha]|[add_appearance_flags]"
@@ -53,6 +57,8 @@ SUBSYSTEM_DEF(vis_overlays)
 	return overlay
 
 /datum/controller/subsystem/vis_overlays/proc/_create_new_vis_overlay(icon, iconstate, layer, plane, dir, alpha, add_appearance_flags)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/overlay/vis/overlay = new
 	overlay.icon = icon
 	overlay.icon_state = iconstate
@@ -65,6 +71,8 @@ SUBSYSTEM_DEF(vis_overlays)
 
 
 /datum/controller/subsystem/vis_overlays/proc/remove_vis_overlay(atom/movable/thing, list/overlays)
+	procstart = null
+	src.procstart = null
 	thing.vis_contents -= overlays
 	if(!isatom(thing))
 		return

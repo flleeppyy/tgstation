@@ -16,12 +16,16 @@
 	var/battlecry = "AT"
 
 /mob/living/basic/guardian/standard/Initialize(mapload, datum/guardian_fluff/theme)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/wall_tearer, allow_reinforced = FALSE, tear_time = 1.5 SECONDS)
 	var/datum/action/select_guardian_battlecry/cry = new(src)
 	cry.Grant(src)
 
 /mob/living/basic/guardian/standard/do_attack_animation(atom/attacked_atom, visual_effect_icon, used_item, no_effect)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(attacked_atom) && !isclosedturf(attacked_atom))
 		return
@@ -34,6 +38,8 @@
 
 /// Echo our punching sounds
 /mob/living/basic/guardian/standard/proc/do_attack_sound(atom/playing_from)
+	procstart = null
+	src.procstart = null
 	if (QDELETED(playing_from))
 		return
 	playsound(playing_from, attack_sound, 50, TRUE, TRUE)
@@ -50,11 +56,15 @@
 	var/max_length = 6
 
 /datum/action/select_guardian_battlecry/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	if (!istype(owner, /mob/living/basic/guardian/standard))
 		return FALSE
 	return ..()
 
 /datum/action/select_guardian_battlecry/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return

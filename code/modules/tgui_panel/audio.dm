@@ -20,6 +20,8 @@
  * optional extra_data list Optional settings.
  */
 /datum/tgui_panel/proc/play_music(url, extra_data)
+	procstart = null
+	src.procstart = null
 	if(!is_ready())
 		return
 	if(!findtext(url, GLOB.is_http_protocol))
@@ -37,6 +39,8 @@
  * Stops playing music through the browser.
  */
 /datum/tgui_panel/proc/stop_music()
+	procstart = null
+	src.procstart = null
 	if(!is_ready())
 		return
 	window.send_message("audio/stopMusic")

@@ -17,6 +17,8 @@
 	var/datum/material_container/bananium
 
 /obj/item/clothing/shoes/clown_shoes/banana_shoes/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(always_noslip)
 		LAZYOR(clothing_traits, TRAIT_NO_SLIP_WATER)
 	. = ..()
@@ -32,10 +34,14 @@
 	RegisterSignal(src, COMSIG_SHOES_STEP_ACTION, PROC_REF(on_step))
 
 /obj/item/clothing/shoes/clown_shoes/banana_shoes/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(bananium)
 	return ..()
 
 /obj/item/clothing/shoes/clown_shoes/banana_shoes/proc/toggle_clowning_action()
+	procstart = null
+	src.procstart = null
 	on = !on
 	update_appearance()
 	if(always_noslip)
@@ -47,6 +53,8 @@
 		detach_clothing_traits(TRAIT_NO_SLIP_WATER)
 
 /obj/item/clothing/shoes/clown_shoes/banana_shoes/proc/on_step()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/wearer = loc
@@ -61,6 +69,8 @@
 	to_chat(wearer, span_warning("You ran out of bananium!"))
 
 /obj/item/clothing/shoes/clown_shoes/banana_shoes/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/sheet_amount = bananium.retrieve_all()
 	if(sheet_amount)
 		to_chat(user, span_notice("You retrieve [sheet_amount] sheets of bananium from the prototype shoes."))
@@ -68,10 +78,14 @@
 		to_chat(user, span_warning("You cannot retrieve any bananium from the prototype shoes!"))
 
 /obj/item/clothing/shoes/clown_shoes/banana_shoes/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("The shoes are [on ? "enabled" : "disabled"].")
 
 /obj/item/clothing/shoes/clown_shoes/banana_shoes/ui_action_click(mob/user)
+	procstart = null
+	src.procstart = null
 	if(bananium.get_material_amount(/datum/material/bananium) >= material_per_banana)
 		toggle_clowning_action()
 		to_chat(user, span_notice("You [on ? "activate" : "deactivate"] the prototype shoes."))
@@ -79,5 +93,7 @@
 		to_chat(user, span_warning("You need bananium to turn the prototype shoes on!"))
 
 /obj/item/clothing/shoes/clown_shoes/banana_shoes/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "clown_prototype_[on ? "on" : "off"]"
 	return ..()

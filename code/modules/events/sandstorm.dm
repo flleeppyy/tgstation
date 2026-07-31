@@ -28,10 +28,14 @@
 	var/start_side
 
 /datum/round_event/sandstorm/setup()
+	procstart = null
+	src.procstart = null
 	start_when = rand(70, 90)
 	end_when = rand(110, 140)
 
 /datum/round_event/sandstorm/announce(fake)
+	procstart = null
+	src.procstart = null
 	if(!start_side)
 		start_side = pick(GLOB.cardinals)
 
@@ -54,6 +58,8 @@
 		Impact is expected in the next two minutes. All employees are encouraged to assist in repairs and damage mitigation if possible.", "Collision Emergency Alert")
 
 /datum/round_event/sandstorm/tick()
+	procstart = null
+	src.procstart = null
 	spawn_meteors(15, GLOB.meteors_sandstorm, start_side)
 
 /**
@@ -81,6 +87,8 @@
 	fakeable = FALSE
 
 /datum/round_event/sandstorm_classic/tick()
+	procstart = null
+	src.procstart = null
 	spawn_meteors(10, GLOB.meteors_dust)
 
 /datum/event_admin_setup/listed_options/sandstorm
@@ -88,9 +96,13 @@
 	normal_run_option = "Random Sandstorm Direction"
 
 /datum/event_admin_setup/listed_options/sandstorm/get_list()
+	procstart = null
+	src.procstart = null
 	return list("Up", "Down", "Right", "Left")
 
 /datum/event_admin_setup/listed_options/sandstorm/apply_to_event(datum/round_event/sandstorm/event)
+	procstart = null
+	src.procstart = null
 	switch(chosen)
 		if("Up")
 			event.start_side = NORTH

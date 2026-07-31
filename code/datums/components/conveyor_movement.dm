@@ -7,6 +7,8 @@
 	var/speed
 
 /datum/component/convey/Initialize(direction, speed, start_delay)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -20,6 +22,8 @@
 	RegisterSignal(loop, COMSIG_QDELETING, PROC_REF(loop_ended))
 
 /datum/component/convey/proc/should_move(datum/move_loop/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	source.delay = speed //We use the default delay
 	if(living_parent)
@@ -31,6 +35,8 @@
 		return MOVELOOP_SKIP_STEP
 
 /datum/component/convey/proc/loop_ended(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(QDELETED(src))
 		return

@@ -23,11 +23,15 @@
 	var/info_text = "You are a <span class='danger'>Vampire</span>. You will slowly but constantly lose blood if outside of a coffin. If inside a coffin, you will slowly heal. You may gain more blood by grabbing a live victim and using your drain ability."
 
 /datum/species/human/vampire/check_roundstart_eligible()
+	procstart = null
+	src.procstart = null
 	if(check_holidays(HALLOWEEN))
 		return TRUE
 	return ..()
 
 /datum/species/human/vampire/on_species_gain(mob/living/carbon/human/new_vampire, datum/species/old_species, pref_load, regenerate_icons)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(new_vampire, "[info_text]")
 	new_vampire.skin_tone = "albino"
@@ -37,6 +41,8 @@
 		on_hud_created(new_vampire)
 
 /datum/species/human/vampire/on_species_loss(mob/living/carbon/human/old_vampire, datum/species/new_species, pref_load)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(old_vampire, list(
 		COMSIG_MOB_HUD_CREATED,
@@ -45,6 +51,8 @@
 	old_vampire.hud_used?.remove_screen_object(HUD_MOB_BLOOD_LEVEL)
 
 /datum/species/human/vampire/proc/on_life(mob/living/carbon/human/vampire, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(istype(vampire.loc, /obj/structure/closet/crate/coffin))
 		var/need_mob_update = FALSE
@@ -68,17 +76,25 @@
 
 ///Gives the blood HUD to the vampire so they always know how much blood they have.
 /datum/species/human/vampire/proc/on_hud_created(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	source.hud_used.add_screen_object(/atom/movable/screen/blood_level, HUD_MOB_BLOOD_LEVEL, HUD_GROUP_INFO, update_screen = TRUE)
 
 /datum/species/human/vampire/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "Vampires are afflicted with the Thirst, needing to sate it by draining the blood out of another living creature. However, they do not need to breathe or eat normally. \
 		They will instantly turn into dust if they run out of blood or enter a holy area. However, coffins stabilize and heal them, and they can transform into bats!"
 
 /datum/species/human/vampire/get_species_description()
+	procstart = null
+	src.procstart = null
 	return "A classy Vampire! They descend upon Space Station Thirteen Every year to spook the crew! \"Bleeg!!\""
 
 /datum/species/human/vampire/get_species_lore()
+	procstart = null
+	src.procstart = null
 	return list(
 		"Vampires are unholy beings blessed and cursed with The Thirst. \
 		The Thirst requires them to feast on blood to stay alive, and in return it gives them many bonuses. \
@@ -86,6 +102,8 @@
 	)
 
 /datum/species/human/vampire/create_pref_unique_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 
 	to_add += list(
@@ -115,6 +133,8 @@
 
 // Vampire blood is special, so it needs to be handled with its own entry.
 /datum/species/human/vampire/create_pref_blood_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 
 	to_add += list(list(
@@ -132,6 +152,8 @@
 
 // There isn't a "Minor Undead" biotype, so we have to explain it in an override (see: dullahans)
 /datum/species/human/vampire/create_pref_biotypes_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 
 	to_add += list(list(
@@ -160,14 +182,20 @@
 	COOLDOWN_DECLARE(drain_cooldown)
 
 /obj/item/organ/tongue/vampire/on_mob_insert(mob/living/carbon/receiver, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(receiver, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(stab_bloodbag))
 
 /obj/item/organ/tongue/vampire/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(organ_owner, COMSIG_ATOM_ITEM_INTERACTION)
 
 /obj/item/organ/tongue/vampire/proc/stab_bloodbag(mob/living/source, mob/living/user,  obj/item/used_item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(user != source)
@@ -188,6 +216,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/organ/tongue/vampire/proc/async_stab_bloodbag(mob/living/carbon/user, obj/item/reagent_containers/blood/bloodbag, time = 0.5 SECONDS)
+	procstart = null
+	src.procstart = null
 	if(!do_after(user, time, bloodbag))
 		return
 
@@ -205,6 +235,8 @@
 	background_icon_state = "bg_vampire"
 
 /datum/action/item_action/organ_action/vampire/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(owner))
 		return FALSE
 

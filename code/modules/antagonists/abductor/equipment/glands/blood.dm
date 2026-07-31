@@ -10,6 +10,8 @@
 	mind_control_duration = 1500
 
 /obj/item/organ/heart/gland/blood/activate()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(owner) || !owner.dna.species)
 		return
 	var/mob/living/carbon/human/owner_mob = owner

@@ -34,10 +34,14 @@
 	var/datum/bank_account/bounty_handler_account
 
 /obj/item/bounty_cube/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_BARCODES, INNATE_TRAIT) // Don't allow anyone to override our pricetag component with a barcode
 
 /obj/item/bounty_cube/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(speed_bonus)
 		. += span_notice("<b>[time2text(next_nag_time - world.time,"mm:ss", NO_TIMEZONE)]</b> remains until <b>[bounty_value * speed_bonus]</b> [MONEY_NAME_SINGULAR] speedy delivery bonus lost.")
@@ -45,6 +49,8 @@
 		. += span_notice("Scan this in the cargo shuttle with an export scanner to register your bank account for the <b>[bounty_value * handler_tip]</b> [MONEY_NAME_SINGULAR] handling tip.")
 
 /obj/item/bounty_cube/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	//if our nag cooldown has finished and we aren't on Centcom or in transit, then nag
 	if(COOLDOWN_FINISHED(src, next_nag_time) && !is_centcom_level(z) && !is_reserved_level(z))
 		//set up our fallback message, in case of AAS being broken it will be sent to card holders
@@ -75,6 +81,8 @@
  * Configures the bounty cube's name, value, and annouces to the crew
  */
 /obj/item/bounty_cube/proc/set_up(datum/bounty/my_bounty, obj/item/card/id/holder_id)
+	procstart = null
+	src.procstart = null
 	bounty_value = my_bounty.get_bounty_reward()
 	bounty_name = my_bounty.name
 	bounty_holder = holder_id.registered_name
@@ -104,6 +112,8 @@
 	var/set_up = FALSE
 
 /obj/item/bounty_cube/debug_cube/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		to_chat(user, span_warning("You aren't eligible to use this!"))
 		return ..()

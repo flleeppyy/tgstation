@@ -9,6 +9,8 @@
 	var/list/datum/deathmatch_modifier/modifiers
 
 /datum/deathmatch_controller/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (GLOB.deathmatch_game)
 		qdel(src)
@@ -23,30 +25,42 @@
 	modifiers = sortTim(init_subtypes_w_path_keys(/datum/deathmatch_modifier), GLOBAL_PROC_REF(cmp_deathmatch_mods), associative = TRUE)
 
 /datum/deathmatch_controller/proc/create_new_lobby(mob/host)
+	procstart = null
+	src.procstart = null
 	lobbies[host.ckey] = new /datum/deathmatch_lobby(host)
 	deadchat_broadcast(" has opened a new deathmatch lobby. <a href=byond://?src=[REF(lobbies[host.ckey])];join=1>(Join)</a>", "<B>[host]</B>")
 
 /datum/deathmatch_controller/proc/remove_lobby(ckey)
+	procstart = null
+	src.procstart = null
 	var/lobby = lobbies[ckey]
 	lobbies[ckey] = null
 	lobbies.Remove(ckey)
 	qdel(lobby)
 
 /datum/deathmatch_controller/proc/passoff_lobby(host, new_host)
+	procstart = null
+	src.procstart = null
 	lobbies[new_host] = lobbies[host]
 	lobbies[host] = null
 	lobbies.Remove(host)
 
 /datum/deathmatch_controller/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.observer_state
 
 /datum/deathmatch_controller/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, null)
 	if(!ui)
 		ui = new(user, src, "DeathmatchPanel")
 		ui.open()
 
 /datum/deathmatch_controller/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["lobbies"] = list()
 	.["hosting"] = FALSE
@@ -66,12 +80,16 @@
 		))
 
 /datum/deathmatch_controller/proc/find_lobby_by_user(ckey)
+	procstart = null
+	src.procstart = null
 	for(var/lobbykey in lobbies)
 		var/datum/deathmatch_lobby/lobby = lobbies[lobbykey]
 		if(ckey in (lobby.players+lobby.observers))
 			return lobby
 
 /datum/deathmatch_controller/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !isobserver(usr))
 		return

@@ -9,6 +9,8 @@
 	difficulty = 12
 
 /datum/mutation/aoe_moodlet/on_acquiring(mob/living/carbon/human/acquirer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -16,6 +18,8 @@
 	RegisterSignal(acquirer, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved))
 
 /datum/mutation/aoe_moodlet/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -23,6 +27,8 @@
 	UnregisterSignal(owner, COMSIG_MOVABLE_MOVED)
 
 /datum/mutation/aoe_moodlet/proc/on_examined(datum/source, mob/examiner, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(examiner == owner || !isliving(examiner) || HAS_TRAIT(owner, TRAIT_FACE_COVERED))
@@ -30,6 +36,8 @@
 	apply_other_moodlet(examiner)
 
 /datum/mutation/aoe_moodlet/proc/on_moved(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/structure/mirror/mirror = locate() in owner.loc
@@ -38,6 +46,8 @@
 	apply_own_moodlet()
 
 /datum/mutation/aoe_moodlet/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(owner, TRAIT_FACE_COVERED))
 		return // this is applied by newspapers, and i think it would be funny if newspapers specifically blocked 100% of the effect.
 
@@ -47,12 +57,18 @@
 		apply_other_moodlet(nearby)
 
 /datum/mutation/aoe_moodlet/proc/apply_own_moodlet()
+	procstart = null
+	src.procstart = null
 	owner.add_mood_event(type, /datum/mood_event/seen_ugly_mutation/self, owner)
 
 /datum/mutation/aoe_moodlet/proc/apply_other_moodlet(mob/living/other)
+	procstart = null
+	src.procstart = null
 	other.add_mood_event(type, get_moodlet(), owner)
 
 /datum/mutation/aoe_moodlet/proc/get_moodlet()
+	procstart = null
+	src.procstart = null
 	return (owner.obscured_slots & HIDEFACE) ? /datum/mood_event/seen_ugly_mutation/weak : /datum/mood_event/seen_ugly_mutation
 
 /datum/mutation/aoe_moodlet/positive
@@ -66,9 +82,13 @@
 	difficulty = 12
 
 /datum/mutation/aoe_moodlet/positive/apply_own_moodlet()
+	procstart = null
+	src.procstart = null
 	owner.add_mood_event(type, /datum/mood_event/seen_pretty_mutation/self, owner)
 
 /datum/mutation/aoe_moodlet/positive/get_moodlet()
+	procstart = null
+	src.procstart = null
 	return (owner.obscured_slots & HIDEFACE) ? /datum/mood_event/seen_pretty_mutation/weak : /datum/mood_event/seen_pretty_mutation
 
 // Negative version
@@ -78,12 +98,16 @@
 	timeout = 2 MINUTES
 
 /datum/mood_event/seen_ugly_mutation/can_effect_mob(datum/mood/home, mob/living/who, ...)
+	procstart = null
+	src.procstart = null
 	if(HAS_PERSONALITY(who, /datum/personality/compassionate) || HAS_PERSONALITY(who, /datum/personality/empathetic))
 		return FALSE
 
 	return ..()
 
 /datum/mood_event/seen_ugly_mutation/add_effects(mob/mutant)
+	procstart = null
+	src.procstart = null
 	description = "Something is seriously wrong with [mutant || "that guy"]!"
 
 /datum/mood_event/seen_ugly_mutation/weak
@@ -91,6 +115,8 @@
 	mood_change = -1
 
 /datum/mood_event/seen_ugly_mutation/weak/add_effects(mob/mutant)
+	procstart = null
+	src.procstart = null
 	description = "Something looks wrong about [mutant || "that guy"]."
 
 /datum/mood_event/seen_ugly_mutation/self
@@ -105,12 +131,16 @@
 	timeout = 2 MINUTES
 
 /datum/mood_event/seen_pretty_mutation/can_effect_mob(datum/mood/home, mob/living/who, ...)
+	procstart = null
+	src.procstart = null
 	if(HAS_PERSONALITY(who, /datum/personality/misanthropic) || HAS_PERSONALITY(who, /datum/personality/callous))
 		return FALSE
 
 	return ..()
 
 /datum/mood_event/seen_pretty_mutation/add_effects(mob/mutant)
+	procstart = null
+	src.procstart = null
 	description = "[mutant || "That person"] looks pretty good - must be a new haircut or something."
 
 /datum/mood_event/seen_pretty_mutation/weak
@@ -118,6 +148,8 @@
 	mood_change = 1
 
 /datum/mood_event/seen_pretty_mutation/weak/add_effects(mob/mutant)
+	procstart = null
+	src.procstart = null
 	description = "[mutant || "That person"] looks alright - it must be the lighting in here."
 
 /datum/mood_event/seen_pretty_mutation/self

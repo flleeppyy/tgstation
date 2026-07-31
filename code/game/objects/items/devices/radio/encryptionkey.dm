@@ -15,6 +15,8 @@
 	var/list/language_data
 
 /obj/item/encryptionkey/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!LAZYLEN(channels) && !(special_channels & RADIO_SPECIAL_BINARY) && !LAZYLEN(language_data))
 		. += span_warning("Has no special codes in it. You should probably tell a coder!")

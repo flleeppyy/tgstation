@@ -13,6 +13,8 @@
 	var/datum/storage/storage_type = /datum/storage
 
 /obj/item/storage/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	create_storage(storage_type = storage_type)
@@ -33,9 +35,13 @@
 
 ///Use this to populate the contents of the storage
 /obj/item/storage/proc/PopulateContents()
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 /obj/item/storage/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
 			SSexplosions.high_mov_atom += contents
@@ -45,24 +51,34 @@
 			SSexplosions.low_mov_atom += contents
 
 /obj/item/storage/canStrip(mob/who)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/item/storage/doStrip(mob/who)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NODROP))
 		atom_storage.remove_all()
 		return TRUE
 	return ..()
 
 /obj/item/storage/AllowDrop()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 ///Drops all contents of this storage on the turf of its parent
 /obj/item/storage/proc/emptyStorage()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	atom_storage.remove_all()
 
 /obj/item/storage/apply_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(atom_storage)) // some abstract types of storage (yes i know) don't get a datum
 		return
@@ -80,6 +96,8 @@
 		atom_storage.max_specific_storage = WEIGHT_CLASS_TINY
 
 /obj/item/storage/remove_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(atom_storage)) // some abstract types of storage (yes i know) don't get a datum
 		return
@@ -95,9 +113,13 @@
 /// I'll say it again, be very careful with this. We only need it for a few things
 /// Don't do anything stupid, please
 /obj/item/storage/proc/get_types_to_preload()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/storage/used_in_craft(atom/result, datum/crafting_recipe/current_recipe)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// If we consumed in crafting, we should dump contents out before qdeling them.
 	if(!is_type_in_list(src, current_recipe.parts))
@@ -105,6 +127,8 @@
 
 /// Removes an item or puts it in mouth from the contents, if any
 /obj/item/storage/proc/quick_remove_item(obj/item/grabbies, mob/user, equip_to_mouth =  FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/finger = locate(grabbies) in contents
 	if(!finger)
 		return

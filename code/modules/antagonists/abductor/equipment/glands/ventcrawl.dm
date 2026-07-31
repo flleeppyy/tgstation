@@ -8,5 +8,7 @@
 	mind_control_duration = 1800
 
 /obj/item/organ/heart/gland/ventcrawling/activate()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_notice("You feel very stretchy."))
 	ADD_TRAIT(owner, TRAIT_VENTCRAWLER_ALWAYS, type)

@@ -10,14 +10,20 @@
 	var/static/image/storm_overlay = image('icons/effects/weather_effects.dmi', "snow_storm")
 
 /datum/proximity_monitor/advanced/void_storm/New(atom/_host, range, _ignore_if_not_on_turf)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	recalculate_field(full_recalc = TRUE)
 
 /datum/proximity_monitor/advanced/void_storm/recalculate_field(full_recalc)
+	procstart = null
+	src.procstart = null
 	full_recalc = TRUE // We always perform a full recalc because we need to update ALL the sprites
 	return ..()
 
 /datum/proximity_monitor/advanced/void_storm/cleanup_field_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/effect/abstract/effect = LAZYACCESS(turf_effects, target)
 	LAZYREMOVE(turf_effects, target)
@@ -25,6 +31,8 @@
 		qdel(effect)
 
 /datum/proximity_monitor/advanced/void_storm/setup_field_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/effect/abstract/effect = new(target) // Makes the field visible to players.
 	effect.alpha = 255 - get_dist(target, host.loc) * 23

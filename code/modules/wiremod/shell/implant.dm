@@ -11,6 +11,8 @@
 	capacity and support for various neural interfacing capabilities."
 
 /obj/item/implant/circuit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/shell, list(/obj/item/circuit_component/implant_core), SHELL_CAPACITY_TINY)
 	RegisterSignal(src, COMSIG_CIRCUIT_ACTION_COMPONENT_REGISTERED, PROC_REF(action_comp_registered))
@@ -18,10 +20,14 @@
 	RegisterSignal(src, COMSIG_IMPLANT_OTHER, PROC_REF(on_new_implant))
 
 /obj/item/implant/circuit/proc/action_comp_registered(datum/source, obj/item/circuit_component/equipment_action/action_comp)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	LAZYADD(actions, new/datum/action/innate/circuit_equipment_action(src, action_comp))
 
 /obj/item/implant/circuit/proc/action_comp_unregistered(datum/source, obj/item/circuit_component/equipment_action/action_comp)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/datum/action/innate/circuit_equipment_action/action = action_comp.granted_to[REF(src)]
 	if(!istype(action))
@@ -30,6 +36,8 @@
 	QDEL_LIST_ASSOC_VAL(action_comp.granted_to)
 
 /obj/item/implant/circuit/proc/on_new_implant(obj/item/implant/source, list/arguments, obj/item/implant/other_implant)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(other_implant, /obj/item/implant/circuit))
 		return
@@ -40,6 +48,8 @@
 		return COMPONENT_STOP_IMPLANTING
 
 /obj/item/implant/circuit/ui_host(mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(loc, /obj/item/implantcase))
 		return loc
 	return ..()
@@ -60,6 +70,8 @@
 	var/obj/item/implant/implant
 
 /obj/item/circuit_component/implant_core/populate_ports()
+	procstart = null
+	src.procstart = null
 
 	message = add_input_port("Message", PORT_TYPE_STRING, trigger = null)
 	send_message_signal = add_input_port("Send Message", PORT_TYPE_SIGNAL)
@@ -68,10 +80,14 @@
 	user_port = add_output_port("User", PORT_TYPE_USER)
 
 /obj/item/circuit_component/implant_core/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(charge_action)
 	return ..()
 
 /obj/item/circuit_component/implant_core/proc/update_charge_action()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if (show_charge_meter.value)
 		if (charge_action)
@@ -89,6 +105,8 @@
 		QDEL_NULL(charge_action)
 
 /obj/item/circuit_component/implant_core/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	implant = shell
 
 	show_charge_meter.set_value(TRUE)
@@ -97,6 +115,8 @@
 	RegisterSignal(shell, COMSIG_IMPLANT_REMOVED, PROC_REF(on_removed))
 
 /obj/item/circuit_component/implant_core/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	implant = null
 
 	if (charge_action)
@@ -111,6 +131,8 @@
 	))
 
 /obj/item/circuit_component/implant_core/proc/on_implanted(datum/source, mob/living/owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	update_charge_action()
@@ -122,6 +144,8 @@
 	RegisterSignal(owner, COMSIG_LIVING_ELECTROCUTE_ACT, PROC_REF(on_electrocute))
 
 /obj/item/circuit_component/implant_core/proc/on_removed(datum/source, mob/living/owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	user_port.set_output(null)
@@ -133,6 +157,8 @@
 	))
 
 /obj/item/circuit_component/implant_core/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if (!COMPONENT_TRIGGERED_BY(send_message_signal, port))
 		return
 
@@ -149,6 +175,8 @@
 	to_chat(implant.imp_in, "<i>You hear a strange, robotic voice in your head...</i> \"[span_robot("[html_encode(sent_message)]")]\"")
 
 /obj/item/circuit_component/implant_core/proc/on_borg_charge(datum/source, datum/callback/charge_cell, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (isnull(parent.cell))
@@ -157,6 +185,8 @@
 	charge_cell.Invoke(parent.cell, seconds_per_tick)
 
 /obj/item/circuit_component/implant_core/proc/on_electrocute(datum/source, shock_damage, shock_source, siemens_coefficient, flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (isnull(parent.cell))
@@ -169,12 +199,16 @@
 	to_chat(source, span_notice("You absorb some of the shock into your [parent.name]!"))
 
 /obj/item/circuit_component/implant_core/proc/on_examine(datum/source, mob/mob, list/examine_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (isobserver(mob))
 		examine_text += span_notice("[source.p_They()] [source.p_have()] <a href='byond://?src=[REF(src)];open_implant=1'>\a [parent] implanted in [source.p_them()]</a>.")
 
 /obj/item/circuit_component/implant_core/Topic(href, list/href_list)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if (!isobserver(usr))
@@ -192,6 +226,8 @@
 	var/obj/item/circuit_component/implant_core/circuit_component
 
 /datum/action/innate/implant_charge_action/New(obj/item/circuit_component/implant_core/circuit_component)
+	procstart = null
+	src.procstart = null
 	..()
 
 	src.circuit_component = circuit_component
@@ -201,12 +237,16 @@
 	START_PROCESSING(SSobj, src)
 
 /datum/action/innate/implant_charge_action/create_button(mob/viewer)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/screen/movable/action_button/button = ..()
 	button.maptext_x = 2
 	button.maptext_y = 0
 	return button
 
 /datum/action/innate/implant_charge_action/Destroy()
+	procstart = null
+	src.procstart = null
 	circuit_component.charge_action = null
 	circuit_component = null
 
@@ -215,6 +255,8 @@
 	return ..()
 
 /datum/action/innate/implant_charge_action/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/obj/item/stock_parts/power_store/cell/cell = circuit_component.parent.cell
@@ -226,9 +268,13 @@
 		to_chat(owner, span_info("You can recharge it by using a cyborg recharging station."))
 
 /datum/action/innate/implant_charge_action/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	build_all_button_icons(UPDATE_BUTTON_STATUS)
 
 /datum/action/innate/implant_charge_action/update_button_status(atom/movable/screen/movable/action_button/button, force = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/stock_parts/power_store/cell/cell = circuit_component.parent.cell
 	button.maptext = cell ? MAPTEXT("[cell.percent()]%") : ""

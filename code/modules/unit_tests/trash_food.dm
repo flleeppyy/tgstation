@@ -2,6 +2,8 @@
 /datum/unit_test/trash_food
 
 /datum/unit_test/trash_food/Run()
+	procstart = null
+	src.procstart = null
 	var/list/food_trash = /obj/effect/spawner/random/trash/food_packaging::loot
 	// list of pieces of trash we never want to include because they are special or rare (usually mutated botany plants)
 	var/list/food_trash_blacklist = list(

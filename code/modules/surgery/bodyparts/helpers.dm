@@ -9,9 +9,13 @@
  * Returns a bodypart, or null.
  */
 /mob/living/proc/get_bodypart(zone = BODY_ZONE_CHEST, include_stumps = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/get_bodypart(zone = BODY_ZONE_CHEST, include_stumps = FALSE)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/obj/item/bodypart)
 	if (!include_stumps)
 		return real_bodypart_cache[zone]
@@ -29,6 +33,8 @@
  * Returns a list of bodyparts, which may be empty.
  */
 /mob/living/proc/get_bodyparts(include_stumps = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 	for(var/zone in get_all_limbs())
 		var/obj/item/bodypart/bodypart = get_bodypart(zone, include_stumps)
@@ -37,6 +43,8 @@
 	return parts
 
 /mob/living/carbon/get_bodyparts(include_stumps = FALSE)
+	procstart = null
+	src.procstart = null
 	if (include_stumps)
 		return bodyparts.Copy()
 	var/list/parts = list()
@@ -51,7 +59,9 @@
  *
  * Returns a list of bodyparts indexed by their body zone
  */
-/mob/living/proc/get_bodyparts_by_zones() as /list
+/mob/living/proc/get_bodyparts_by_zones()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 	for(var/zone in get_all_limbs())
 		parts[zone] = get_bodypart(zone)
@@ -59,6 +69,8 @@
 
 /// Replaces a single limb and deletes the old one if there was one
 /mob/living/carbon/proc/del_and_replace_bodypart(obj/item/bodypart/new_limb, special)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/old_limb = get_bodypart(new_limb.body_zone)
 	if(old_limb)
 		old_limb.drop_limb(special = TRUE)
@@ -67,6 +79,8 @@
 
 /// Replaces a single limb and returns the old one if there was one
 /mob/living/carbon/proc/return_and_replace_bodypart(obj/item/bodypart/new_limb, special)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/old_limb = get_bodypart(new_limb.body_zone)
 	if(!isnull(old_limb))
 		old_limb.drop_limb(special = special)
@@ -77,6 +91,8 @@
 
 /// Replaces the chosen limb(zone) to the original one
 /mob/living/carbon/proc/reset_to_original_bodypart(limb_zone)
+	procstart = null
+	src.procstart = null
 	if (!(limb_zone in GLOB.all_body_zones))
 		stack_trace("Invalid zone [limb_zone] provided to reset_to_original_bodypart()")
 		return
@@ -94,6 +110,8 @@
 	regenerate_icons()
 
 /mob/living/carbon/has_hand_for_held_index(i)
+	procstart = null
+	src.procstart = null
 	if(!i)
 		return FALSE
 	var/obj/item/bodypart/hand_instance = hand_bodyparts[i]
@@ -103,10 +121,14 @@
 
 
 ///Get the bodypart for whatever hand we have active, Only relevant for carbons
-/mob/proc/get_active_hand() as /obj/item/bodypart
+/mob/proc/get_active_hand()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/carbon/get_active_hand()
+	procstart = null
+	src.procstart = null
 	var/which_hand = BODY_ZONE_PRECISE_L_HAND
 	if(IS_RIGHT_INDEX(active_hand_index))
 		which_hand = BODY_ZONE_PRECISE_R_HAND
@@ -114,19 +136,27 @@
 
 /// Gets the inactive hand of the mob. Returns FALSE on non-carbons, otherwise returns the /obj/item/bodypart.
 /mob/proc/get_inactive_hand()
+	procstart = null
+	src.procstart = null
 	return null
 
 /mob/living/carbon/get_inactive_hand()
+	procstart = null
+	src.procstart = null
 	var/which_hand = BODY_ZONE_PRECISE_R_HAND
 	if(IS_RIGHT_INDEX(active_hand_index))
 		which_hand = BODY_ZONE_PRECISE_L_HAND
 	return get_bodypart(check_zone(which_hand))
 
 /mob/proc/has_left_hand(check_disabled = TRUE)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 
 /mob/living/carbon/has_left_hand(check_disabled = TRUE)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/bodypart/hand_instance in hand_bodyparts)
 		if(IS_RIGHT_INDEX(hand_instance.held_index) || (check_disabled && hand_instance.bodypart_disabled))
 			continue
@@ -135,14 +165,20 @@
 
 
 /mob/living/carbon/alien/larva/has_left_hand(check_disabled = TRUE)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 
 /mob/proc/has_right_hand(check_disabled = TRUE)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 
 /mob/living/carbon/has_right_hand(check_disabled = TRUE)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/bodypart/hand_instance in hand_bodyparts)
 		if(IS_LEFT_INDEX(hand_instance.held_index) || (check_disabled && hand_instance.bodypart_disabled))
 			continue
@@ -151,19 +187,27 @@
 
 
 /mob/living/carbon/alien/larva/has_right_hand(check_disabled = TRUE)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Returns the bodypart holding the passed item
 /mob/living/carbon/proc/get_hand_of_item(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return get_bodypart(get_hand_zone_of_item(I))
 
 ///Returns a list of all limbs this mob should have.
-/mob/living/proc/get_all_limbs() as /list
+/mob/living/proc/get_all_limbs()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 	return GLOB.all_body_zones.Copy()
 
 ///Returns a list of all limbs this mob should have.
 /mob/living/carbon/get_all_limbs()
+	procstart = null
+	src.procstart = null
 	// gets the "normal list", ie chest-head-legs-arms. order matters for human rendering!
 	. = dna?.species?.bodypart_overrides.Copy() || ..()
 	// includes any additional adminbussed hands
@@ -171,7 +215,9 @@
 		. |= hand.body_zone
 
 ///Returns a list of all missing limbs this mob should have on them, but don't.
-/mob/living/carbon/proc/get_missing_limbs() as /list
+/mob/living/carbon/proc/get_missing_limbs()
+	procstart = null
+	src.procstart = null
 	var/list/full = get_all_limbs()
 	for(var/zone in full)
 		if(get_bodypart(zone))
@@ -179,6 +225,8 @@
 	return full
 
 /mob/living/carbon/alien/larva/get_missing_limbs()
+	procstart = null
+	src.procstart = null
 	var/list/full = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST)
 	for(var/zone in full)
 		if(get_bodypart(zone))
@@ -186,9 +234,13 @@
 	return full
 
 /mob/living/proc/get_disabled_limbs()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /mob/living/carbon/get_disabled_limbs()
+	procstart = null
+	src.procstart = null
 	var/list/full = get_all_limbs()
 	var/list/disabled = list()
 	for(var/zone in full)
@@ -198,6 +250,8 @@
 	return disabled
 
 /mob/living/carbon/alien/larva/get_disabled_limbs()
+	procstart = null
+	src.procstart = null
 	var/list/full = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST)
 	var/list/disabled = list()
 	for(var/zone in full)
@@ -208,17 +262,23 @@
 
 ///Remove a specific embedded item from the carbon mob
 /mob/living/carbon/proc/remove_embedded_object(obj/item/embedded)
+	procstart = null
+	src.procstart = null
 	if (embedded.get_embed()?.owner != src)
 		return
 	embedded.get_embed().remove_embedding()
 
 ///Remove all embedded objects from all limbs on the carbon mob
 /mob/living/carbon/proc/remove_all_embedded_objects()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/bodypart/bodypart as anything in get_bodyparts(include_stumps = TRUE))
 		for(var/obj/item/embedded as anything in bodypart.embedded_objects)
 			remove_embedded_object(embedded)
 
 /mob/living/carbon/proc/has_embedded_objects(include_harmless = FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/bodypart/bodypart as anything in get_bodyparts(include_stumps = TRUE))
 		for(var/obj/item/embedded as anything in bodypart.embedded_objects)
 			if(!include_harmless && embedded.get_embed().is_harmless(consider_stamina = TRUE))
@@ -229,6 +289,8 @@
 //
 // FUCK YOU AUGMENT CODE - With love, Kapu
 /mob/living/carbon/proc/newBodyPart(zone)
+	procstart = null
+	src.procstart = null
 	var/path = dna.species.bodypart_overrides[zone]
 	if(isnull(path))
 		return null
@@ -236,6 +298,8 @@
 	return new_bodypart
 
 /mob/living/carbon/alien/larva/newBodyPart(zone)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/new_bodypart
 	switch(zone)
 		if(BODY_ZONE_HEAD)
@@ -245,6 +309,8 @@
 	. = new_bodypart
 
 /mob/living/carbon/alien/adult/newBodyPart(zone)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/new_bodypart
 	switch(zone)
 		if(BODY_ZONE_L_ARM)
@@ -264,6 +330,8 @@
 
 /// Makes sure that the owner's bodytype flags match the flags of all of its parts and organs
 /mob/living/carbon/proc/synchronize_bodytypes()
+	procstart = null
+	src.procstart = null
 	var/all_limb_flags = NONE
 	for(var/obj/item/bodypart/limb as anything in get_bodyparts(include_stumps = TRUE))
 		for(var/obj/item/organ/organ in limb)
@@ -274,6 +342,8 @@
 
 /// Makes sure that the owner's bodyshape flags match the flags of all of its parts and organs
 /mob/living/carbon/proc/synchronize_bodyshapes()
+	procstart = null
+	src.procstart = null
 	var/all_limb_flags = NONE
 	for(var/obj/item/bodypart/limb as anything in get_bodyparts(include_stumps = TRUE))
 		for(var/obj/item/organ/organ in limb)
@@ -286,6 +356,8 @@
 	bodyshape = all_limb_flags
 
 /proc/skintone2hex(skin_tone)
+	procstart = null
+	src.procstart = null
 	. = 0
 	switch(skin_tone)
 		if("caucasian1")

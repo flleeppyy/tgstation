@@ -2,6 +2,8 @@
 /datum/element/cliff_walking
 
 /datum/element/cliff_walking/Attach(datum/target, climb_time, climb_stun)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isliving(target))
@@ -13,12 +15,16 @@
 	update_cliff_walking(target)
 
 /datum/element/cliff_walking/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	UnregisterSignal(source, list(COMSIG_LIVING_DEATH, COMSIG_LIVING_REVIVE))
 
 /// Do some checks to see if we should walk the cliffs
 /datum/element/cliff_walking/proc/update_cliff_walking(mob/living/climber)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(climber.stat != DEAD)

@@ -28,16 +28,22 @@
 	announcement_line = "A shaft miner has ordered equipment which will arrive on the cargo shuttle! Please make sure it gets to them as soon as possible!"
 
 /obj/machinery/computer/order_console/mining/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/voucher_redeemer, /obj/item/mining_voucher, /datum/voucher_set/mining)
 
 /obj/machinery/computer/order_console/mining/subtract_points(final_cost, obj/item/card/id/card)
+	procstart = null
+	src.procstart = null
 	if(final_cost <= card.registered_account.mining_points)
 		card.registered_account.mining_points -= final_cost
 		return TRUE
 	return FALSE
 
 /obj/machinery/computer/order_console/mining/order_groceries(mob/living/purchaser, obj/item/card/id/card, list/groceries)
+	procstart = null
+	src.procstart = null
 	var/list/things_to_order = list()
 	for(var/datum/orderable_item/item as anything in groceries)
 		things_to_order[item.purchase_path] = groceries[item]
@@ -66,14 +72,20 @@
 	SSshuttle.shopping_list += new_order
 
 /obj/machinery/computer/order_console/mining/retrieve_points(obj/item/card/id/id_card)
+	procstart = null
+	src.procstart = null
 	return round(id_card.registered_account.mining_points)
 
 /obj/machinery/computer/order_console/mining/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		flick("mining-deny", src)
 
 /obj/machinery/computer/order_console/mining/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)][powered() ? null : "-off"]"
 	return ..()
 
@@ -100,10 +112,14 @@
 	var/points = 0
 
 /obj/item/card/mining_point_card/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("There's [points] point\s on the card.")
 
 /obj/item/card/mining_point_card/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isidcard(tool))
 		return NONE
 	var/obj/item/card/id/attacking_id = tool

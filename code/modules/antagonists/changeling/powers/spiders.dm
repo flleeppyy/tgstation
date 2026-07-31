@@ -10,6 +10,8 @@
 
 // Ensures that you cannot horrifically cheese the game by spawning spiders while in the vents
 /datum/action/changeling/spiders/can_be_used_by(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (!isopenturf(user.loc))
 		var/turf/user_turf = get_turf(user)
 		user_turf.balloon_alert(user, "not enough space!")
@@ -18,6 +20,8 @@
 
 //Makes a spider egg cluster. Allows you enable further general havok by introducing spiders to the station.
 /datum/action/changeling/spiders/sting_action(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/effect/mob_spawn/ghost_role/spider/bloody(user.loc)
 	return TRUE

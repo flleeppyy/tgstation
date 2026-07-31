@@ -45,6 +45,8 @@
 	)
 
 /mob/living/basic/snake/Initialize(mapload, special_reagent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 
@@ -67,6 +69,8 @@
 	AddElement(/datum/element/venomous, special_reagent, venom_dose)
 
 /mob/living/basic/snake/befriend(mob/living/new_friend)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

@@ -7,6 +7,8 @@
 	illustration = "drinkglass"
 
 /obj/item/storage/box/drinkingglasses/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		new /obj/item/reagent_containers/cup/glass/drinkingglass(src)
 /obj/item/storage/box/cups
@@ -15,6 +17,8 @@
 	illustration = "cup"
 
 /obj/item/storage/box/cups/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/cup/glass/sillycup(src)
 
@@ -25,6 +29,8 @@
 	illustration = "pda"
 
 /obj/item/storage/box/pdas/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 4)
 		new /obj/item/modular_computer/pda(src)
 
@@ -34,6 +40,8 @@
 	illustration = "id"
 
 /obj/item/storage/box/ids/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/card/id/advanced(src)
 /obj/item/storage/box/silver_ids
@@ -42,6 +50,8 @@
 	illustration = "id"
 
 /obj/item/storage/box/silver_ids/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/card/id/advanced/silver(src)
 
@@ -51,6 +61,8 @@
 	illustration = "mousetrap"
 
 /obj/item/storage/box/mousetraps/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		new /obj/item/assembly/mousetrap(src)
 
@@ -63,6 +75,8 @@
 	storage_type = /datum/storage/box/snappops
 
 /obj/item/storage/box/snappops/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 8)
 		new /obj/item/toy/snappop(src)
 
@@ -85,14 +99,20 @@
 	storage_type = /datum/storage/box/match
 
 /obj/item/storage/box/matches/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/ignites_matches)
 
 /obj/item/storage/box/matches/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 10)
 		new /obj/item/match(src)
 
 /obj/item/storage/box/matches/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(length(contents))
 		if(10)
@@ -115,6 +135,8 @@
 	storage_type = /datum/storage/box/lights
 
 /obj/item/storage/box/lights/bulbs/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 21)
 		new /obj/item/light/bulb(src)
 
@@ -123,6 +145,8 @@
 	illustration = "lighttube"
 
 /obj/item/storage/box/lights/tubes/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 21)
 		new /obj/item/light/tube(src)
 
@@ -131,6 +155,8 @@
 	illustration = "lightmixed"
 
 /obj/item/storage/box/lights/mixed/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 14)
 		new /obj/item/light/tube(src)
 	for(var/i in 1 to 7)
@@ -141,6 +167,8 @@
 	illustration = "fpen"
 
 /obj/item/storage/box/fountainpens/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/pen/fountain(src)
 
@@ -150,6 +178,8 @@
 	custom_premium_price = PAYCHECK_CREW * 3
 
 /obj/item/storage/box/dishdrive/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/circuitboard/machine/dish_drive = 1,
 		/obj/item/screwdriver = 1,
@@ -168,6 +198,8 @@
 	icon_state = "box"
 
 /obj/item/storage/box/actionfigure/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 4)
 		var/random_figure = pick(subtypesof(/obj/item/toy/figure))
 		new random_figure(src)
@@ -178,6 +210,8 @@
 	custom_price = PAYCHECK_COMMAND * 1.25
 
 /obj/item/storage/box/tail_pin/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/poster/tail_board(src)
 		new /obj/item/tail_pin(src)
@@ -187,6 +221,8 @@
 	desc = "Turn any event into a celebration and ensure the janitor stays busy."
 
 /obj/item/storage/box/party_poppers/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 5)
 		new /obj/item/reagent_containers/spray/chemsprayer/party(src)
 
@@ -197,6 +233,8 @@
 	storage_type = /datum/storage/box/balloon
 
 /obj/item/storage/box/balloons/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 24)
 		new /obj/item/toy/balloon/long(src)
 
@@ -219,12 +257,16 @@
 	)
 
 /obj/item/storage/box/stickers/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(illustration))
 		illustration = pick(pack_labels)
 		update_appearance()
 
 /obj/item/storage/box/stickers/proc/generate_non_contraband_stickers_list()
+	procstart = null
+	src.procstart = null
 	var/list/allowed_stickers = list()
 
 	for(var/obj/item/sticker/sticker_type as anything in subtypesof(/obj/item/sticker))
@@ -234,6 +276,8 @@
 	return allowed_stickers
 
 /obj/item/storage/box/stickers/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/static/list/non_contraband
 
 	if(isnull(non_contraband))
@@ -249,6 +293,8 @@
 	illustration = "googly-alt"
 
 /obj/item/storage/box/stickers/googly/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		new /obj/item/sticker/googly(src)
 
@@ -262,6 +308,8 @@
 	storage_type = /datum/storage/box/skub
 
 /obj/item/storage/box/stickers/skub/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/skub(src)
 	new /obj/item/sticker/skub(src)
 	new /obj/item/sticker/skub(src)
@@ -274,6 +322,8 @@
 	storage_type = /datum/storage/box/anti_skub
 
 /obj/item/storage/box/stickers/anti_skub/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 4)
 		new /obj/item/sticker/anti_skub(src)
 
@@ -281,6 +331,8 @@
 	name = "pinpointer pair box"
 
 /obj/item/storage/box/pinpointer_pairs/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/obj/item/pinpointer/pair/A = new(src)
 	var/obj/item/pinpointer/pair/B = new(src)
 
@@ -292,6 +344,8 @@
 	desc = "A box containing toys resembling pierced realities."
 
 /obj/item/storage/box/heretic_box/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to rand(1,4))
 		new /obj/item/toy/reality_pierce(src)
 
@@ -301,6 +355,8 @@
 	desc = "A box containing several blessed purity seals."
 
 /obj/item/storage/box/purity_seal_box/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 4)
 		new /obj/item/sticker/purity_seal(src)
 		new /obj/item/sticker/purity_seal/purity_seal_2(src)
@@ -312,6 +368,8 @@
 	custom_price = PAYCHECK_CREW
 
 /obj/item/storage/box/stamps/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/static/items_inside = list(
 		/obj/item/stamp/granted = 1,
 		/obj/item/stamp/denied = 1,

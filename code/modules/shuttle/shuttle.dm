@@ -36,6 +36,8 @@
 
 ///register to SSshuttles
 /obj/docking_port/proc/register()
+	procstart = null
+	src.procstart = null
 	if(registered)
 		WARNING("docking_port registered multiple times")
 		unregister()
@@ -44,16 +46,22 @@
 
 ///unregister from SSshuttles
 /obj/docking_port/proc/unregister()
+	procstart = null
+	src.procstart = null
 	if(!registered)
 		WARNING("docking_port unregistered multiple times")
 	registered = FALSE
 	return
 
 /obj/docking_port/proc/Check_id()
+	procstart = null
+	src.procstart = null
 	return
 
 //these objects are indestructible
 /obj/docking_port/Destroy(force)
+	procstart = null
+	src.procstart = null
 	// unless you assert that you know what you're doing. Horrible things
 	// may result.
 	if(force)
@@ -63,22 +71,34 @@
 		return QDEL_HINT_LETMELIVE
 
 /obj/docking_port/has_gravity(turf/current_turf)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/docking_port/take_damage(damage_amount, damage_type = BRUTE, damage_flag = "", sound_effect = TRUE, attack_dir, armour_penetration = 0)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/docking_port/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/docking_port/singularity_act()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/docking_port/shuttleRotate(rotation, params)
+	procstart = null
+	src.procstart = null
 	return //we don't rotate with shuttles via this code.
 
 ///returns a list(x0,y0, x1,y1) where points 0 and 1 are bounding corners of the projected rectangle
 /obj/docking_port/proc/return_coords(_x, _y, _dir)
+	procstart = null
+	src.procstart = null
 	if(_dir == null)
 		_dir = dir
 	if(_x == null)
@@ -109,6 +129,8 @@
 
 ///returns turfs within our projected rectangle in no particular order
 /obj/docking_port/proc/return_turfs()
+	procstart = null
+	src.procstart = null
 	var/list/coords = return_coords()
 	return block(
 		coords[1], coords[2], z,
@@ -117,6 +139,8 @@
 
 ///returns turfs within our projected rectangle in a specific order.this ensures that turfs are copied over in the same order, regardless of any rotation
 /obj/docking_port/proc/return_ordered_turfs(_x, _y, _z, _dir)
+	procstart = null
+	src.procstart = null
 	var/cos = 1
 	var/sin = 0
 	switch(_dir)
@@ -146,6 +170,8 @@
 
 //Debug proc used to highlight bounding area
 /obj/docking_port/proc/highlight(_color = "#f00")
+	procstart = null
+	src.procstart = null
 	SetInvisibility(INVISIBILITY_NONE)
 	SET_PLANE_IMPLICIT(src, GHOST_PLANE)
 	var/list/coords = return_coords()
@@ -163,16 +189,22 @@
 
 //return first-found touching dockingport
 /obj/docking_port/proc/get_docked()
+	procstart = null
+	src.procstart = null
 	return locate(/obj/docking_port/stationary) in loc
 
 // Return id of the docked docking_port
 /obj/docking_port/proc/getDockedId()
+	procstart = null
+	src.procstart = null
 	var/obj/docking_port/P = get_docked()
 	if(P)
 		return P.shuttle_id
 
 // Say that A in the absolute (rectangular) bounds of this shuttle or no.
 /obj/docking_port/proc/is_in_shuttle_bounds(atom/A)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(A)
 	if(T.z != z)
 		return FALSE

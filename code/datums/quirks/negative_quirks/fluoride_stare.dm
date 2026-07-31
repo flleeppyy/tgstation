@@ -11,11 +11,15 @@
 	mail_goodies = list(/obj/item/reagent_containers/cup/bottle/salglu_solution, /obj/item/light/bulb)
 
 /datum/quirk/item_quirk/fluoride_stare/is_species_appropriate(datum/species/mob_species)
+	procstart = null
+	src.procstart = null
 	if(ispath(mob_species, /datum/species/dullahan))
 		return FALSE
 	return ..()
 
 /datum/quirk/item_quirk/fluoride_stare/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/obj/item/reagent_containers/cup/bottle/salglu_solution/saline = new(get_turf(quirk_holder))
 	give_item_to_holder(saline, list(
 		LOCATION_LPOCKET,
@@ -32,10 +36,14 @@
 	))
 
 /datum/quirk/item_quirk/fluoride_stare/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(quirk_holder, TRAIT_NO_EYELIDS, QUIRK_TRAIT)
 	quirk_holder.AddComponent(/datum/component/manual_blinking, 0.5, 3 MINUTES, 30 SECONDS, FALSE)
 
 /datum/quirk/item_quirk/fluoride_stare/remove()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(quirk_holder, TRAIT_NO_EYELIDS, QUIRK_TRAIT)
 	if (!HAS_TRAIT(quirk_holder, TRAIT_NO_EYELIDS))
 		qdel(quirk_holder.GetComponent(/datum/component/manual_blinking))

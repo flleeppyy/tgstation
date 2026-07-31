@@ -23,12 +23,16 @@
 
 
 /obj/item/circuit_component/set_variable/populate_ports()
+	procstart = null
+	src.procstart = null
 	resolve_weakrefs = add_input_port("Resolve Weakrefs", PORT_TYPE_NUMBER, default = TRUE)
 	entity = add_input_port("Target", PORT_TYPE_DATUM)
 	variable_name = add_input_port("Variable Name", PORT_TYPE_STRING)
 	new_value = add_input_port("New Value", PORT_TYPE_ANY)
 
 /obj/item/circuit_component/set_variable/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	var/atom/object = entity.value
 	var/var_name = variable_name.value
 	if(!var_name || !object)

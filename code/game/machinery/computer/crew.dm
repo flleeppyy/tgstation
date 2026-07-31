@@ -13,6 +13,8 @@
 	light_color = LIGHT_COLOR_BLUE
 
 /obj/machinery/computer/crew/Initialize(mapload, obj/item/circuitboard/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/usb_port, typecacheof(list(/obj/item/circuit_component/medical_console_data), only_root_path = TRUE))
 
@@ -27,18 +29,26 @@
 	var/obj/machinery/computer/crew/attached_console
 
 /obj/item/circuit_component/medical_console_data/populate_ports()
+	procstart = null
+	src.procstart = null
 	records = add_output_port("Crew Monitoring Data", PORT_TYPE_TABLE)
 
 /obj/item/circuit_component/medical_console_data/register_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/machinery/computer/crew))
 		attached_console = shell
 
 /obj/item/circuit_component/medical_console_data/unregister_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	attached_console = null
 	return ..()
 
 /obj/item/circuit_component/medical_console_data/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_table_notices(list(
 		"name",
@@ -54,6 +64,8 @@
 
 
 /obj/item/circuit_component/medical_console_data/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 
 	if(!attached_console || !GLOB.crewmonitor)
 		return
@@ -79,6 +91,8 @@
 	icon_keyboard = "syndie_key"
 
 /obj/machinery/computer/crew/ui_interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.crewmonitor.show(user,src)
 
@@ -162,20 +176,28 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 	)
 
 /datum/crewmonitor/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		ui = new(user, src, "CrewConsole")
 		ui.open()
 
 /datum/crewmonitor/proc/show(mob/M, source)
+	procstart = null
+	src.procstart = null
 	ui_sources[WEAKREF(M)] = WEAKREF(source)
 	ui_interact(M)
 
 /datum/crewmonitor/ui_host(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/weakref/host_ref = ui_sources[WEAKREF(user)]
 	return host_ref?.resolve()
 
 /datum/crewmonitor/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/z = user.z
 	if(!z)
 		var/turf/T = get_turf(user)
@@ -186,6 +208,8 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 	)
 
 /datum/crewmonitor/proc/update_data(z)
+	procstart = null
+	src.procstart = null
 	if(data_by_z["[z]"] && last_update["[z]"] && world.time <= last_update["[z]"] + SENSORS_UPDATE_PERIOD)
 		return data_by_z["[z]"]
 
@@ -287,6 +311,8 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 	return results
 
 /datum/crewmonitor/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

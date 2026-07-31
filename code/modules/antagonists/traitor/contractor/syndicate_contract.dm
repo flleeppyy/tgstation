@@ -19,6 +19,8 @@
 	var/victim_timerid
 
 /datum/syndicate_contract/New(contract_owner, blacklist, type=CONTRACT_PAYOUT_SMALL)
+	procstart = null
+	src.procstart = null
 	contract = new(src)
 	contract.owner = contract_owner
 	payout_type = type
@@ -26,6 +28,8 @@
 	generate(blacklist)
 
 /datum/syndicate_contract/proc/generate(blacklist)
+	procstart = null
+	src.procstart = null
 	contract.find_target(null, blacklist)
 
 	var/datum/record/crew/record
@@ -56,6 +60,8 @@
 	wanted_message = "[base] [verb_string] [noun] [location]."
 
 /datum/syndicate_contract/proc/handle_extraction(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (contract.target && contract.dropoff_check(user, contract.target.current))
 
 		var/turf/free_location = find_obstruction_free_location(3, user, contract.dropoff)
@@ -69,6 +75,8 @@
 
 // Launch the pod to collect our victim.
 /datum/syndicate_contract/proc/launch_extraction_pod(turf/empty_pod_turf)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/closet/supplypod/extractionpod/empty_pod = new()
 
 	RegisterSignal(empty_pod, COMSIG_ATOM_ENTERED, PROC_REF(enter_check))
@@ -81,6 +89,8 @@
 	new /obj/effect/pod_landingzone(empty_pod_turf, empty_pod)
 
 /datum/syndicate_contract/proc/enter_check(datum/source, sent_mob)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(source, /obj/structure/closet/supplypod/extractionpod))
@@ -133,6 +143,8 @@
 	addtimer(CALLBACK(src, PROC_REF(finish_enter)), 3 SECONDS)
 
 /datum/syndicate_contract/proc/finish_enter()
+	procstart = null
+	src.procstart = null
 	// Pay contractor their portion of ransom
 	if(status != CONTRACT_STATUS_COMPLETE)
 		return
@@ -159,6 +171,8 @@
  * level - The current stage of harassement they are facing. This increases by itself, looping until finished.
  */
 /datum/syndicate_contract/proc/handle_victim_experience(mob/living/victim, level = VICTIM_EXPERIENCE_START)
+	procstart = null
+	src.procstart = null
 	// Ship 'em back - dead or alive
 	// Even if they weren't the target, we're still treating them the same.
 	if(!level)
@@ -212,6 +226,8 @@
 
 /// We're returning the victim to the station
 /datum/syndicate_contract/proc/return_victim(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	var/list/possible_drop_loc = list()
 	for(var/turf/possible_drop in shuffle(contract.dropoff.contents))
 		if(!isspaceturf(possible_drop) && !isclosedturf(possible_drop))
@@ -228,12 +244,16 @@
 
 ///Called if the victim is being returned to the station early, when from the black market.
 /datum/syndicate_contract/proc/on_victim_shipped(datum/market_item/source, obj/item/market_uplink/uplink, shipping_method, turf/shipping_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	deltimer(victim_timerid)
 	returnal_side_effects(shipping_loc, source.item)
 
 ///The annoying negative effects applied to the victim when returned to the station.
 /datum/syndicate_contract/proc/returnal_side_effects(atom/dropoff_location, mob/living/victim)
+	procstart = null
+	src.procstart = null
 	for(var/datum/weakref/belonging_ref in victim_belongings)
 		var/obj/item/belonging = belonging_ref.resolve()
 		if(!belonging)

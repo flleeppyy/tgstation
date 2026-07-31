@@ -8,6 +8,8 @@
 	var/slots
 
 /datum/element/adjust_fishing_difficulty/Attach(datum/target, modifier, slots = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(target) || !modifier)
 		return COMPONENT_INCOMPATIBLE
@@ -32,6 +34,8 @@
 	update_check(target)
 
 /datum/element/adjust_fishing_difficulty/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, list(
 		COMSIG_ATOM_EXAMINE,
@@ -44,6 +48,8 @@
 	update_check(source, TRUE)
 
 /datum/element/adjust_fishing_difficulty/proc/update_check(atom/movable/movable_source, removing = FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/buckled_mob as anything in movable_source.buckled_mobs)
 		update_user(buckled_mob, movable_source, removing)
 	if(!isitem(movable_source) || !isliving(movable_source.loc))
@@ -54,6 +60,8 @@
 		update_user(holder, movable_source, removing)
 
 /datum/element/adjust_fishing_difficulty/proc/on_item_examine(obj/item/item, mob/user, list/examine_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!HAS_MIND_TRAIT(user, TRAIT_EXAMINE_FISH))
 		return
@@ -61,12 +69,16 @@
 	add_examine_line(user, examine_text, method)
 
 /datum/element/adjust_fishing_difficulty/proc/on_buckle_examine(atom/movable/source, mob/user, list/examine_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!HAS_MIND_TRAIT(user, TRAIT_EXAMINE_FISH))
 		return
 	add_examine_line(user, examine_text, "Buckling to [source.p_them()]")
 
 /datum/element/adjust_fishing_difficulty/proc/add_examine_line(mob/user, list/examine_text, method)
+	procstart = null
+	src.procstart = null
 	var/percent = HAS_MIND_TRAIT(user, TRAIT_EXAMINE_DEEPER_FISH) ? "[abs(modifier)]% " : ""
 	var/text = "[method] will make fishing [percent][modifier < 0 ? "easier" : "harder"]."
 	if(modifier < 0)
@@ -75,24 +87,34 @@
 		examine_text += span_danger(text)
 
 /datum/element/adjust_fishing_difficulty/proc/on_buckle(atom/movable/source, mob/living/buckled_mob, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_user(buckled_mob, source)
 
 /datum/element/adjust_fishing_difficulty/proc/on_unbuckle(atom/movable/source, mob/living/buckled_mob, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_user(buckled_mob, source, TRUE)
 
 /datum/element/adjust_fishing_difficulty/proc/on_equipped(obj/item/source, mob/living/wearer, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(slot & (slots || source.slot_flags))
 		update_user(wearer, source)
 
 /datum/element/adjust_fishing_difficulty/proc/on_dropped(obj/item/source, mob/living/dropper)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_user(dropper, source, TRUE)
 
 /// Updates the user's tracked current fishing modifiers
 /datum/element/adjust_fishing_difficulty/proc/update_user(mob/living/user, obj/source_item, removing = FALSE)
+	procstart = null
+	src.procstart = null
 	if(removing)
 		LAZYREMOVE(user.fishing_difficulty_mods_by_source, source_item.type)
 	else

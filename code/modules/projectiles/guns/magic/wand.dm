@@ -16,6 +16,8 @@
 	var/variable_charges = TRUE
 
 /obj/item/gun/magic/wand/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if (!variable_charges || prob(25))
 		return ..()
 
@@ -26,19 +28,27 @@
 	return ..()
 
 /obj/item/gun/magic/wand/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "Has [charges] charge\s remaining."
 
 /obj/item/gun/magic/wand/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][charges ? null : "-drained"]"
 	return ..()
 
 /obj/item/gun/magic/wand/attack(atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(target == user)
 		return
 	return ..()
 
 /obj/item/gun/magic/wand/try_fire_gun(atom/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(!charges)
 		shoot_with_empty_chamber(user)
 		return FALSE
@@ -58,11 +68,15 @@
 
 /// Called if we poke ourselves with the wand
 /obj/item/gun/magic/wand/proc/zap_self(mob/living/user, suicide = FALSE)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_danger("[user] zaps [user.p_them()]self with [src]."))
 	playsound(user, fire_sound, 50, TRUE)
 	user.log_message("zapped [user.p_them()]self with a <b>[src]</b>", LOG_ATTACK)
 
 /obj/item/gun/magic/wand/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	zap_self(user, suicide = TRUE)
 	return FIRELOSS
 
@@ -78,6 +92,8 @@
 	max_charges = 3 //3, 2, 2, 1
 
 /obj/item/gun/magic/wand/death/zap_self(mob/living/user, suicide = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	charges--
 	if(user.can_block_magic())
@@ -94,6 +110,8 @@
 	user.death(FALSE)
 
 /obj/item/gun/magic/wand/death/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (user.stat == DEAD)
 		return MANUAL_SUICIDE
@@ -120,6 +138,8 @@
 	max_charges = 10 //10, 5, 5, 4
 
 /obj/item/gun/magic/wand/resurrection/zap_self(mob/living/user, suicide = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	charges--
 	if(user.can_block_magic())
@@ -138,6 +158,8 @@
 		to_chat(user, span_notice("You feel great!"))
 
 /obj/item/gun/magic/wand/resurrection/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (user.stat == DEAD)
 		return MANUAL_SUICIDE
@@ -163,11 +185,15 @@
 	max_charges = 10 //10, 5, 5, 4
 
 /obj/item/gun/magic/wand/polymorph/zap_self(mob/living/user, suicide = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..() //because the user mob ceases to exists by the time wabbajack fully resolves
 	user.wabbajack()
 	charges--
 
 /obj/item/gun/magic/wand/polymorph/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/static/list/corpse_types = list(
 		/obj/effect/decal/cleanable/insectguts,
 		/obj/item/food/deadmouse,
@@ -195,12 +221,16 @@
 	no_den_usage = TRUE
 
 /obj/item/gun/magic/wand/teleport/zap_self(mob/living/user, suicide = FALSE)
+	procstart = null
+	src.procstart = null
 	if(do_teleport(user, user, 10, channel = TELEPORT_CHANNEL_MAGIC))
 		do_smoke(3, src, user.loc)
 		charges--
 	return ..()
 
 /obj/item/gun/magic/wand/teleport/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	playsound(loc, fire_sound, 50, TRUE, -1)
 	do_smoke(3, src, user.loc)
 	if (!iscarbon(user))
@@ -241,6 +271,8 @@
 	no_den_usage = FALSE
 
 /obj/item/gun/magic/wand/safety/zap_self(mob/living/user, suicide = FALSE)
+	procstart = null
+	src.procstart = null
 	var/turf/origin = get_turf(user)
 	var/turf/destination = find_safe_turf(extended_safety_checks = TRUE)
 
@@ -252,6 +284,8 @@
 	return ..()
 
 /obj/item/gun/magic/wand/safety/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return SHAME // It's a safety wand sorry
 
@@ -276,11 +310,15 @@
 	no_den_usage = TRUE
 
 /obj/item/gun/magic/wand/door/zap_self(mob/living/user, suicide = FALSE)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You feel vaguely more open with your feelings."))
 	charges--
 	return ..()
 
 /obj/item/gun/magic/wand/door/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (!iscarbon(user))
 		. = ..()
 		var/static/list/shared_feelings = list(
@@ -313,6 +351,8 @@
 	max_charges = 8 //8, 4, 4, 3
 
 /obj/item/gun/magic/wand/fireball/zap_self(mob/living/user, suicide = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	explosion(user, devastation_range = -1, light_impact_range = 2, flame_range = 2, flash_range = 3, adminlog = FALSE, explosion_cause = src)
 	charges--
@@ -354,11 +394,15 @@
 	self_charging = TRUE
 
 /obj/item/gun/magic/wand/nothing/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return SHAME
 
 // Animating a nothing wand makes it into an animating wand (and also animates it)
 /obj/item/gun/magic/wand/nothing/animate_atom_living(mob/living/owner)
+	procstart = null
+	src.procstart = null
 	var/obj/item/gun/magic/wand/animate/animated_wand = new(loc)
 	animated_wand.charges = charges
 	animated_wand.name = name + "?"
@@ -376,6 +420,8 @@
 	ammo_type = /obj/item/ammo_casing/magic
 
 /obj/item/gun/magic/wand/nothing/fake_resurrection/animate_atom_living(mob/living/owner)
+	procstart = null
+	src.procstart = null
 	return new /mob/living/basic/mimic/copy/ranged(drop_location(), src, owner)
 
 /// Wand of making things small
@@ -391,12 +437,16 @@
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/gun/magic/wand/shrink/zap_self(mob/living/user, suicide = FALSE)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("The world grows large..."))
 	charges--
 	user.AddComponent(/datum/component/shrink, -1) // small forever
 	return ..()
 
 /obj/item/gun/magic/wand/shrink/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	playsound(user, fire_sound, 50, TRUE)
 	user.unequip_everything()
 	user.visible_message(span_suicide("[user] shrinks into nothing!"), span_suicide("You shrink into nothing!"))
@@ -422,6 +472,8 @@
 	max_charges = 99999
 
 /obj/item/gun/magic/wand/antag/zap_self(mob/living/user, suicide = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/ammo_casing/magic/antag/casing = new ammo_type()
 	var/obj/projectile/magic/magic_proj = casing.projectile_type
@@ -439,6 +491,8 @@
 	var/antag = /datum/antagonist/traitor
 
 /obj/projectile/magic/antag/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isliving(target))

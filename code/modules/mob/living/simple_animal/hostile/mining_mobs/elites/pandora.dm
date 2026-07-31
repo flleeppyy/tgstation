@@ -74,6 +74,8 @@
 	chosen_attack_num = AOE_SQUARES
 
 /mob/living/simple_animal/hostile/asteroid/elite/pandora/OpenFire()
+	procstart = null
+	src.procstart = null
 	if(client)
 		switch(chosen_attack)
 			if(SINGULAR_SHOT)
@@ -97,6 +99,8 @@
 			aoe_squares(target)
 
 /mob/living/simple_animal/hostile/asteroid/elite/pandora/Life(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(health >= maxHealth * 0.5)
 		cooldown_time = 2 SECONDS
@@ -108,12 +112,16 @@
 		cooldown_time = 1 SECONDS
 
 /mob/living/simple_animal/hostile/asteroid/elite/pandora/proc/singular_shot(target)
+	procstart = null
+	src.procstart = null
 	ranged_cooldown = world.time + (cooldown_time * 0.5)
 	var/dir_to_target = get_dir(get_turf(src), get_turf(target))
 	var/turf/T = get_step(get_turf(src), dir_to_target)
 	singular_shot_line(sing_shot_length, dir_to_target, T)
 
 /mob/living/simple_animal/hostile/asteroid/elite/pandora/proc/singular_shot_line(procsleft, angleused, turf/T)
+	procstart = null
+	src.procstart = null
 	if(procsleft <= 0)
 		return
 	new /obj/effect/temp_visual/hierophant/blast/damaging/pandora(T, src)
@@ -122,6 +130,8 @@
 	addtimer(CALLBACK(src, PROC_REF(singular_shot_line), procsleft, angleused, T), cooldown_time * 0.1)
 
 /mob/living/simple_animal/hostile/asteroid/elite/pandora/proc/magic_box(target)
+	procstart = null
+	src.procstart = null
 	ranged_cooldown = world.time + cooldown_time
 	var/turf/T = get_turf(target)
 	for(var/t in spiral_range_turfs(3, T))
@@ -129,6 +139,8 @@
 			new /obj/effect/temp_visual/hierophant/blast/damaging/pandora(t, src)
 
 /mob/living/simple_animal/hostile/asteroid/elite/pandora/proc/pandora_teleport(target)
+	procstart = null
+	src.procstart = null
 	var/turf/turf_target = get_turf(target)
 	if(!(turf_target in view(12, src)))
 		return
@@ -140,6 +152,8 @@
 	addtimer(CALLBACK(src, PROC_REF(pandora_teleport_2), turf_target, source), 0.2 SECONDS)
 
 /mob/living/simple_animal/hostile/asteroid/elite/pandora/proc/pandora_teleport_2(turf/T, turf/source)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/hierophant/telegraph/teleport(T, src)
 	new /obj/effect/temp_visual/hierophant/telegraph/teleport(source, src)
 	for(var/t in RANGE_TURFS(1, T))
@@ -152,12 +166,16 @@
 	addtimer(CALLBACK(src, PROC_REF(pandora_teleport_3), T), 0.2 SECONDS)
 
 /mob/living/simple_animal/hostile/asteroid/elite/pandora/proc/pandora_teleport_3(turf/T)
+	procstart = null
+	src.procstart = null
 	forceMove(T)
 	animate(src, alpha = 255, time = 2, easing = CIRCULAR_EASING|EASE_IN) //fade IN
 	REMOVE_TRAIT(src, TRAIT_UNDENSE, VANISHING_TRAIT)
 	visible_message(span_hierophant_warning("[src] fades in!"))
 
 /mob/living/simple_animal/hostile/asteroid/elite/pandora/proc/aoe_squares(target)
+	procstart = null
+	src.procstart = null
 	ranged_cooldown = world.time + cooldown_time
 	var/turf/T = get_turf(target)
 	new /obj/effect/temp_visual/hierophant/blast/damaging/pandora(T, src)
@@ -165,6 +183,8 @@
 	addtimer(CALLBACK(src, PROC_REF(aoe_squares_2), T, 0, max_size), 0.2 SECONDS)
 
 /mob/living/simple_animal/hostile/asteroid/elite/pandora/proc/aoe_squares_2(turf/T, ring, max_size)
+	procstart = null
+	src.procstart = null
 	if(ring > max_size)
 		return
 	for(var/t in spiral_range_turfs(ring, T))
@@ -186,9 +206,13 @@
 	resistance_flags = FIRE_PROOF
 
 /obj/item/clothing/accessory/pandora_hope/accessory_equipped(obj/item/clothing/under/clothes, mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.add_mood_event("hope_lavaland", /datum/mood_event/hope_lavaland)
 
 /obj/item/clothing/accessory/pandora_hope/accessory_dropped(obj/item/clothing/under/clothes, mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.clear_mood_event("hope_lavaland")
 
 #undef SINGULAR_SHOT

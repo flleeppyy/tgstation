@@ -39,6 +39,8 @@
 	payment_department = ACCOUNT_SEC
 
 /obj/machinery/vending/security/pre_throw(obj/item/thrown_item)
+	procstart = null
+	src.procstart = null
 	if(isgrenade(thrown_item))
 		var/obj/item/grenade/thrown_grenade = thrown_item
 		thrown_grenade.arm_grenade()

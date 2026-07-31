@@ -2,6 +2,8 @@
 /datum/element/human_biter
 
 /datum/element/human_biter/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(target))
 		return ELEMENT_INCOMPATIBLE
@@ -9,10 +11,14 @@
 	RegisterSignal(target, COMSIG_LIVING_EARLY_UNARMED_ATTACK, PROC_REF(try_bite))
 
 /datum/element/human_biter/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_LIVING_EARLY_UNARMED_ATTACK)
 
 /datum/element/human_biter/proc/try_bite(mob/living/carbon/human/source, atom/target, proximity_flag, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!proximity_flag || !source.combat_mode || LAZYACCESS(modifiers, RIGHT_CLICK) || !isliving(target))

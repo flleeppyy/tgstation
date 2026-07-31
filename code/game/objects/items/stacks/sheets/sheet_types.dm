@@ -180,6 +180,8 @@ GLOBAL_LIST_INIT(metal_recipes, list ( \
 	sniffable = TRUE
 
 /obj/item/stack/sheet/iron/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/tool_behaviors = list(
 		TOOL_WELDER = list(
@@ -190,6 +192,8 @@ GLOBAL_LIST_INIT(metal_recipes, list ( \
 	AddElement(/datum/element/contextual_screentip_tools, tool_behaviors)
 
 /obj/item/stack/sheet/iron/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Right click on floor to build:")
 	. += span_notice("- Unanchored wall girder")
@@ -208,14 +212,20 @@ GLOBAL_LIST_INIT(metal_recipes, list ( \
 	amount = 5
 
 /obj/item/stack/sheet/iron/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.metal_recipes
 
 /obj/item/stack/sheet/iron/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins whacking [user.p_them()]self over the head with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 
 /obj/item/stack/sheet/iron/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(tool.use_tool(src, user, delay = 0, volume = 40))
 		var/obj/item/stack/rods/two/new_item = new(user.loc)
 		user.visible_message(
@@ -229,6 +239,8 @@ GLOBAL_LIST_INIT(metal_recipes, list ( \
 		return ITEM_INTERACT_SUCCESS
 
 /obj/item/stack/sheet/iron/welder_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(tool.use_tool(src, user, delay = 0, volume = 40))
 		var/obj/item/stack/tile/iron/four/new_item = new(user.loc)
 		user.visible_message(
@@ -242,6 +254,8 @@ GLOBAL_LIST_INIT(metal_recipes, list ( \
 		return ITEM_INTERACT_SUCCESS
 
 /obj/item/stack/sheet/iron/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isopenturf(interacting_with))
 		return NONE
 	var/turf/open/build_on = interacting_with
@@ -329,6 +343,8 @@ GLOBAL_LIST_INIT(plasteel_recipes, list ( \
 	acid = 80
 
 /obj/item/stack/sheet/plasteel/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.plasteel_recipes
 
@@ -428,6 +444,8 @@ GLOBAL_LIST_INIT(wood_recipes, list ( \
 	fire = 50
 
 /obj/item/stack/sheet/mineral/wood/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.wood_recipes
 
@@ -435,6 +453,8 @@ GLOBAL_LIST_INIT(wood_recipes, list ( \
 	amount = 50
 
 /obj/item/stack/sheet/mineral/wood/interact_with_atom(mob/living/carbon/human/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(target))
 		return NONE
 
@@ -493,6 +513,8 @@ GLOBAL_LIST_INIT(bamboo_recipes, list ( \
 	fire = 50
 
 /obj/item/stack/sheet/mineral/bamboo/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.bamboo_recipes
 
@@ -557,9 +579,13 @@ GLOBAL_LIST_INIT(cloth_recipes, list ( \
 	drop_sound = SFX_CLOTH_DROP
 
 /obj/item/stack/sheet/cloth/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/cellulose = 20)
 
 /obj/item/stack/sheet/cloth/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.cloth_recipes
 
@@ -590,6 +616,8 @@ GLOBAL_LIST_INIT(durathread_recipes, list ( \
 	pickup_sound = 'sound/items/handling/cloth/cloth_pickup1.ogg'
 
 /obj/item/stack/sheet/durathread/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/durathread_helmet, /datum/crafting_recipe/durathread_vest)
 
@@ -599,10 +627,14 @@ GLOBAL_LIST_INIT(durathread_recipes, list ( \
 	)
 
 /obj/item/stack/sheet/durathread/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.durathread_recipes
 
 /obj/item/stack/sheet/durathread/used_in_craft(atom/created, datum/crafting_recipe/recipe)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	created.set_armor_rating(CONSUME, max(50, created.get_armor_rating(CONSUME)))
 
@@ -622,10 +654,14 @@ GLOBAL_LIST_INIT(durathread_recipes, list ( \
 	var/loom_time = 1 SECONDS
 
 /obj/item/stack/sheet/cotton/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/loomable, resulting_atom = loom_result, loom_time = loom_time)
 
 /obj/item/stack/sheet/cotton/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/cellulose = 20)
 
 /obj/item/stack/sheet/cotton/durathread
@@ -734,6 +770,8 @@ GLOBAL_LIST_INIT(cardboard_recipes, list ( \
 	drop_sound = 'sound/items/handling/materials/cardboard_drop.ogg'
 
 /obj/item/stack/sheet/cardboard/Initialize(mapload, new_amount, merge, list/mat_override, mat_amt)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/cardboard_id)
 
@@ -743,6 +781,8 @@ GLOBAL_LIST_INIT(cardboard_recipes, list ( \
 	)
 
 /obj/item/stack/sheet/cardboard/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.cardboard_recipes
 
@@ -750,6 +790,8 @@ GLOBAL_LIST_INIT(cardboard_recipes, list ( \
 	amount = 50
 
 /obj/item/stack/sheet/cardboard/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/stamp/clown) && !istype(loc, /obj/item/storage))
 		var/atom/droploc = drop_location()
 		if(!use(1))
@@ -815,6 +857,8 @@ GLOBAL_LIST_INIT(bronze_recipes, list ( \
 	has_unique_girder = TRUE
 
 /obj/item/stack/sheet/bronze/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.bronze_recipes
 
@@ -866,6 +910,8 @@ GLOBAL_LIST_INIT(bronze_recipes, list ( \
 	resistance_flags = FIRE_PROOF | LAVA_PROOF
 
 /obj/item/stack/sheet/bone/Initialize(mapload, new_amount, merge, list/mat_override, mat_amt)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// As bone and sinew have just a little too many recipes for this, we'll just split them up.
@@ -922,6 +968,8 @@ GLOBAL_LIST_INIT(plastic_recipes, list(
 	amount = 5
 
 /obj/item/stack/sheet/plastic/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.plastic_recipes
 
@@ -946,6 +994,8 @@ GLOBAL_LIST_INIT(paperframe_recipes, list(
 	pickup_sound = null
 
 /obj/item/stack/sheet/paperframes/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.paperframe_recipes
 /obj/item/stack/sheet/paperframes/five
@@ -992,6 +1042,8 @@ GLOBAL_LIST_INIT(pizza_sheet_recipes, list(
 	pickup_sound = null
 
 /obj/item/stack/sheet/pizza/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.pizza_sheet_recipes
 

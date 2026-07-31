@@ -18,6 +18,8 @@
 
 ///see_through_map is a define pointing to a specific map. It's basically defining the area which is considered behind. See see_through_maps.dm for a list of maps
 /datum/component/seethrough/Initialize(see_through_map = SEE_THROUGH_MAP_DEFAULT, target_alpha = 100, animation_time = 0.5 SECONDS, perimeter_reset_timer = 2 SECONDS, clickthrough = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	//GLOB.see_through_maps[see_through_map is a list of lists that represent relative coordinates to the source atom
@@ -36,6 +38,8 @@
 
 ///Loop through a list with relative coordinate lists to mark those tiles and hide our parent when someone enters those tiles
 /datum/component/seethrough/proc/setup_perimeter(atom/parent)
+	procstart = null
+	src.procstart = null
 	watched_turfs = list()
 
 	for(var/list/coordinates as anything in GLOB.see_through_maps[see_through_map])
@@ -51,6 +55,8 @@
 
 ///Someone entered one of our tiles, so sent an override overlay and a cute animation to make us fade out a bit
 /datum/component/seethrough/proc/on_entered(atom/source, atom/movable/entered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!ismob(entered))
@@ -69,6 +75,8 @@
 
 ///Remove the screen object and make us appear solid to the client again
 /datum/component/seethrough/proc/on_exited(atom/source, atom/movable/exited, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!ismob(exited))
@@ -96,6 +104,8 @@
 
 ///Apply the trickery image and animation
 /datum/component/seethrough/proc/trick_mob(mob/fool)
+	procstart = null
+	src.procstart = null
 	var/datum/hud/our_hud = fool.hud_used
 	for(var/atom/movable/screen/plane_master/seethrough in our_hud.get_true_plane_masters(SEETHROUGH_PLANE))
 		seethrough.unhide_plane(fool)
@@ -123,6 +133,8 @@
 
 ///Unrout ourselves after we somehow moved, and start a timer so we can re-restablish our behind area after standing still for a bit
 /datum/component/seethrough/proc/dismantle_perimeter()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/turf in watched_turfs)
@@ -136,9 +148,13 @@
 
 ///Remove a screen image from a client
 /datum/component/seethrough/proc/clear_image(image/removee, client/remove_from)
+	procstart = null
+	src.procstart = null
 	remove_from?.images -= removee //player could've logged out during the animation, so check just in case
 
 /datum/component/seethrough/proc/clear_all_images()
+	procstart = null
+	src.procstart = null
 	for(var/mob/fool in tricked_mobs)
 		var/image/trickery_image = tricked_mobs[fool]
 		fool.client?.images -= trickery_image
@@ -152,6 +168,8 @@
 
 ///Image is removed when they log out because client gets deleted, so drop the mob reference
 /datum/component/seethrough/proc/on_client_disconnect(mob/fool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	LAZYREMOVE(tricked_mobs, fool)

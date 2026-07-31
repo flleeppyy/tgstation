@@ -23,20 +23,28 @@
 	var/datum/status_effect/shadow_cloak/active_cloak
 
 /datum/action/cooldown/spell/shadow_cloak/Remove(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	if(active_cloak)
 		uncloak_mob(remove_from, show_message = FALSE)
 	return ..()
 
 /datum/action/cooldown/spell/shadow_cloak/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(cast_on, TRAIT_HULK)) // Hulks are not stealthy. Need not apply
 		cast_on.balloon_alert(cast_on, "cannot cast while hulk!")
 		return FALSE
 	return isliving(cast_on)
 
 /datum/action/cooldown/spell/shadow_cloak/is_action_active(atom/movable/screen/movable/action_button/current_button)
+	procstart = null
+	src.procstart = null
 	return !!active_cloak
 
 /datum/action/cooldown/spell/shadow_cloak/before_cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	sound = pick(
 		'sound/effects/curse/curse1.ogg',
@@ -50,6 +58,8 @@
 	return . | SPELL_NO_IMMEDIATE_COOLDOWN
 
 /datum/action/cooldown/spell/shadow_cloak/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active_cloak)
 		var/new_cd = max((uncloak_time - timeleft(uncloak_timer)), cooldown_time)
@@ -62,6 +72,8 @@
 		StartCooldown()
 
 /datum/action/cooldown/spell/shadow_cloak/proc/timed_uncloak(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || QDELETED(cast_on))
 		return
 
@@ -69,6 +81,8 @@
 	StartCooldown(uncloak_timer)
 
 /datum/action/cooldown/spell/shadow_cloak/proc/cloak_mob(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	playsound(cast_on, 'sound/effects/chemistry/ahaha.ogg', 50, TRUE, -1, extrarange = SILENCED_SOUND_EXTRARANGE, frequency = 0.5)
 	cast_on.visible_message(
 		span_warning("[cast_on] disappears into the shadows!"),
@@ -79,6 +93,8 @@
 	RegisterSignal(active_cloak, COMSIG_QDELETING, PROC_REF(on_early_cloak_loss))
 
 /datum/action/cooldown/spell/shadow_cloak/proc/uncloak_mob(mob/living/cast_on, show_message = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(active_cloak))
 		UnregisterSignal(active_cloak, COMSIG_QDELETING)
 		qdel(active_cloak)
@@ -97,6 +113,8 @@
 
 /// Signal proc for [COMSIG_QDELETING], if our cloak is deleted early, impart negative effects
 /datum/action/cooldown/spell/shadow_cloak/proc/on_early_cloak_loss(datum/status_effect/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/removed = source.owner
@@ -125,6 +143,8 @@
 	var/image/cloak_image
 
 /datum/status_effect/shadow_cloak/on_apply()
+	procstart = null
+	src.procstart = null
 	cloak_image = image('icons/effects/effects.dmi', owner, "curse", dir = owner.dir)
 	cloak_image.override = TRUE
 	cloak_image.alpha = 0
@@ -143,6 +163,8 @@
 	return TRUE
 
 /datum/status_effect/shadow_cloak/on_remove()
+	procstart = null
+	src.procstart = null
 	// Remove image
 	owner.remove_alt_appearance(id)
 	QDEL_NULL(cloak_image)
@@ -161,12 +183,16 @@
 
 /// Signal proc for [COMSIG_ATOM_DIR_CHANGE], handles turning the effect as we turn
 /datum/status_effect/shadow_cloak/proc/on_dir_change(datum/source, old_dir, new_dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	cloak_image.dir = new_dir
 
 /// Signal proc for [COMSIG_LIVING_SET_BODY_POSITION], handles rotating the effect when we're downed
 /datum/status_effect/shadow_cloak/proc/on_body_position_change(datum/source, new_value, old_value)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(new_value == LYING_DOWN)
@@ -176,6 +202,8 @@
 
 /// Signal proc for [SIGNAL_ADDTRAIT(TRAIT_KNOCKEDOUT], falling unconscious (from hard crit or otherwise) will stop the effect
 /datum/status_effect/shadow_cloak/proc/on_stat_change(datum/source, new_stat, old_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Going above unconscious will self-delete
@@ -183,6 +211,8 @@
 
 /// Signal proc for [COMSIG_MOB_APPLY_DAMAGE], being damaged past a threshold will roll a chance to stop the effect
 /datum/status_effect/shadow_cloak/proc/on_damaged(datum/source, damage, damagetype, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Stam damage is generally bursty, so we'll half it
@@ -201,6 +231,8 @@
 
 /// Signal proc for [COMSIG_MOVABLE_MOVED], leaves a cool looking trail behind us as we walk
 /datum/status_effect/shadow_cloak/proc/on_move(datum/source, old_loc, movement_dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(owner.loc == old_loc)
@@ -217,6 +249,8 @@
 	icon_state = "curse"
 
 /obj/effect/temp_visual/dir_setting/cloak_walk/Initialize(mapload, set_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, alpha = 0, time = duration - 1)
 

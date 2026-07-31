@@ -1,4 +1,6 @@
 /client/proc/cmd_show_hiddenprints(atom/victim)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_ADMIN))
 		return
 
@@ -25,6 +27,8 @@
 	hiddenprint_view.open()
 
 /proc/cmp_hiddenprint_lasttime_dsc(a, b)
+	procstart = null
+	src.procstart = null
 	var/last_a = copytext(a, findtext(a, "\nLast: "))
 	var/last_b = copytext(b, findtext(b, "\nLast: "))
 	return cmp_text_dsc(last_a, last_b)

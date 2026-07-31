@@ -20,11 +20,15 @@ SUBSYSTEM_DEF(trading_card_game)
 
 //Let's load the cards before the map fires, so we can load cards on the map safely
 /datum/controller/subsystem/trading_card_game/Initialize()
+	procstart = null
+	src.procstart = null
 	reloadAllCardFiles()
 	return SS_INIT_SUCCESS
 
 ///Loads all the card files
 /datum/controller/subsystem/trading_card_game/proc/loadAllCardFiles()
+	procstart = null
+	src.procstart = null
 	for(var/keyword_file in keyword_files)
 		loadKeywordFile(keyword_file, card_directory)
 	styleKeywords()
@@ -33,18 +37,24 @@ SUBSYSTEM_DEF(trading_card_game)
 
 ///Empty the rarity cache so we can safely add new cards
 /datum/controller/subsystem/trading_card_game/proc/clearCards()
+	procstart = null
+	src.procstart = null
 	loaded = FALSE
 	cached_cards = list()
 	keywords = list()
 
 ///Reloads all card files
 /datum/controller/subsystem/trading_card_game/proc/reloadAllCardFiles()
+	procstart = null
+	src.procstart = null
 	clearCards()
 	loadAllCardFiles()
 	loaded = TRUE
 
 ///Loads the contents of a json file into our global card list
 /datum/controller/subsystem/trading_card_game/proc/loadKeywordFile(filename, directory = "strings/tcg")
+	procstart = null
+	src.procstart = null
 	var/list/keyword_data = json_decode(file2text("[directory]/[filename]"))
 	for(var/keyword in keyword_data)
 		if(keywords[keyword])
@@ -54,6 +64,8 @@ SUBSYSTEM_DEF(trading_card_game)
 
 ///Styles our keywords, converting them from just the raw text to the output we want
 /datum/controller/subsystem/trading_card_game/proc/styleKeywords()
+	procstart = null
+	src.procstart = null
 	// Add the tooltip component to our text, make it pretty
 	for(var/keyword in keywords)
 		var/tooltip_text = keywords[keyword]
@@ -61,6 +73,8 @@ SUBSYSTEM_DEF(trading_card_game)
 
 ///Takes a string as input. Searches it for keywords in the pattern {$keyword}, and replaces them with their expanded form, generated above
 /datum/controller/subsystem/trading_card_game/proc/resolve_keywords(search_through)
+	procstart = null
+	src.procstart = null
 	var/starting_text = search_through
 	while(TRUE)
 		var/fragment_start = findtext(search_through, "{$")
@@ -81,6 +95,8 @@ SUBSYSTEM_DEF(trading_card_game)
 
 ///Loads the contents of a json file into our global card list
 /datum/controller/subsystem/trading_card_game/proc/loadCardFile(filename, directory = "strings/tcg")
+	procstart = null
+	src.procstart = null
 	var/list/json = json_decode(file2text("[directory]/[filename]"))
 	var/list/cards = json["cards"]
 	var/list/templates = list()
@@ -101,6 +117,8 @@ SUBSYSTEM_DEF(trading_card_game)
 ///Because old me wanted to keep memory costs down, each cardpack type shares a rarity list
 ///We do the spooky stuff in here to ensure we don't have too many lists lying around
 /datum/controller/subsystem/trading_card_game/proc/get_rarity_table(type, list/sample_table)
+	procstart = null
+	src.procstart = null
 	//Pass by refrance moment
 	//This lets us only have one rarity table per pack, badmins beware
 	//Yes this is horribly overengineered. No I am not sorry
@@ -110,12 +128,16 @@ SUBSYSTEM_DEF(trading_card_game)
 
 ///See above
 /datum/controller/subsystem/trading_card_game/proc/get_guarenteed_rarity_table(type, list/sample_table)
+	procstart = null
+	src.procstart = null
 	if(!cached_guar_rarity[type])
 		cached_guar_rarity[type] = sample_table
 	return cached_guar_rarity[type]
 
 ///Prints all the cards names
 /datum/controller/subsystem/trading_card_game/proc/printAllCards()
+	procstart = null
+	src.procstart = null
 	for(var/card_set in cached_cards)
 		message_admins("Printing the [card_set] set")
 		for(var/card in cached_cards[card_set]["ALL"])
@@ -124,6 +146,8 @@ SUBSYSTEM_DEF(trading_card_game)
 
 ///Checks the passed type list for missing raritys, or raritys out of bounds
 /datum/controller/subsystem/trading_card_game/proc/check_cardpacks(card_pack_list)
+	procstart = null
+	src.procstart = null
 	var/toReturn = ""
 	for(var/cardPack in card_pack_list)
 		var/obj/item/cardpack/pack = new cardPack()
@@ -149,6 +173,8 @@ SUBSYSTEM_DEF(trading_card_game)
 
 ///Checks the global card list for cards that don't override all the default values of the card datum
 /datum/controller/subsystem/trading_card_game/proc/check_card_datums()
+	procstart = null
+	src.procstart = null
 	var/toReturn = ""
 	var/datum/thing = new()
 	for(var/series in cached_cards)
@@ -171,6 +197,8 @@ SUBSYSTEM_DEF(trading_card_game)
 
 ///Used to test open a large amount of cardpacks
 /datum/controller/subsystem/trading_card_game/proc/check_card_distribution(cardPack, batchSize, batchCount, guaranteed)
+	procstart = null
+	src.procstart = null
 	var/totalCards = 0
 	//Gotta make this look like an associated list so the implicit "does this exist" checks work proper later
 	var/list/cardsByCount = list("" = 0)

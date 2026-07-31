@@ -7,6 +7,8 @@
 	ui_name = "InfuserBook"
 
 /obj/item/tgui_book/manual/infuser/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	// Collect all info from each intry.
 	var/list/entry_data = list()

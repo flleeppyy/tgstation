@@ -10,6 +10,8 @@
 	max_charges = 6
 
 /obj/item/gun/magic/wand/plague/zap_self(mob/living/user, suicide)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/projectile/magic/plague/germ = new(user.drop_location())
 	germ.firer = user
@@ -18,6 +20,8 @@
 	charges--
 
 /obj/item/gun/magic/wand/plague/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	new /obj/effect/temp_visual/circle_wave/bioscrambler(get_turf(src))
@@ -38,6 +42,8 @@
 	damage_type = TOX
 
 /obj/projectile/magic/plague/on_hit(mob/living/carbon/human/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. == BULLET_ACT_BLOCK || !istype(target) || blocked >= 100)
 		return

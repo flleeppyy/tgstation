@@ -81,6 +81,8 @@ GLOBAL_LIST_INIT(bibleitemstates, list(
 	var/deity_name = "Space Jesus"
 
 /obj/item/book/bible/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/anti_magic, MAGIC_RESISTANCE_HOLY)
 	AddComponent(\
@@ -93,6 +95,8 @@ GLOBAL_LIST_INIT(bibleitemstates, list(
 
 /// Destroy the bible when it's shot by a bullet
 /obj/item/book/bible/proc/on_intercepted_bullet(mob/living/victim, obj/projectile/bullet)
+	procstart = null
+	src.procstart = null
 	victim.add_mood_event("blessing", /datum/mood_event/blessing)
 	playsound(victim, 'sound/effects/magic/magic_block_holy.ogg', 50, TRUE)
 	victim.visible_message(span_warning("[src] takes [bullet] in [victim]'s place!"))
@@ -107,6 +111,8 @@ GLOBAL_LIST_INIT(bibleitemstates, list(
 	QDEL_NULL(atom_storage)
 
 /obj/item/book/bible/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(deity_name)
 		. += span_notice("This bible has been approved by [deity_name].")
@@ -117,10 +123,14 @@ GLOBAL_LIST_INIT(bibleitemstates, list(
 			. += span_notice("[src] can be unpacked by hitting the floor of a holy area with it.")
 
 /obj/item/book/bible/get_attack_self_context(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(can_set_bible_skin(user))
 		return "Select bible skin"
 
 /obj/item/book/bible/proc/curse_heathen(datum/source, mob/living/user, obj/item/burning_tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// no deity to cast a curse upon thee
@@ -138,10 +148,14 @@ GLOBAL_LIST_INIT(bibleitemstates, list(
 		user.AddComponent(/datum/component/omen/bible)
 
 /obj/item/book/bible/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is offering [user.p_them()]self to [deity_name]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 
 /obj/item/book/bible/proc/can_set_bible_skin(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(GLOB.bible_icon_state)
 		return FALSE
 	if(user?.mind?.holy_role != HOLY_ROLE_HIGHPRIEST)
@@ -149,6 +163,8 @@ GLOBAL_LIST_INIT(bibleitemstates, list(
 	return TRUE
 
 /obj/item/book/bible/attack_self(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!can_set_bible_skin(user))
 		return FALSE
 
@@ -190,6 +206,8 @@ GLOBAL_LIST_INIT(bibleitemstates, list(
  * * user The mob interacting with the menu
  */
 /obj/item/book/bible/proc/check_menu(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) || !user.is_holding(src))
 		return FALSE
 	if(user.incapacitated)
@@ -199,6 +217,8 @@ GLOBAL_LIST_INIT(bibleitemstates, list(
 	return TRUE
 
 /obj/item/book/bible/proc/make_new_altar(atom/bible_smacked, mob/user)
+	procstart = null
+	src.procstart = null
 	var/new_altar_area = get_turf(bible_smacked)
 
 	balloon_alert(user, "unpacking bible...")
@@ -208,6 +228,8 @@ GLOBAL_LIST_INIT(bibleitemstates, list(
 	qdel(src)
 
 /obj/item/book/bible/proc/bless(mob/living/blessed, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(GLOB.religious_sect)
 		return GLOB.religious_sect.sect_bless(blessed,user)
 
@@ -236,6 +258,8 @@ GLOBAL_LIST_INIT(bibleitemstates, list(
 	return BLESSING_SUCCESS
 
 /obj/item/book/bible/attack(mob/living/target_mob, mob/living/carbon/human/user, list/modifiers, list/attack_modifiers, heal_mode = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!ISADVANCEDTOOLUSER(user))
 		balloon_alert(user, "not dextrous enough!")
 		return
@@ -285,6 +309,8 @@ GLOBAL_LIST_INIT(bibleitemstates, list(
 	log_combat(user, target_mob, "attacked", src)
 
 /obj/item/book/bible/interact_with_atom(atom/bible_smacked, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!user.mind?.holy_role)
 		return
 	if(SEND_SIGNAL(bible_smacked, COMSIG_BIBLE_SMACKED, user) & COMSIG_END_BIBLE_CHAIN)
@@ -341,6 +367,8 @@ GLOBAL_LIST_INIT(bibleitemstates, list(
 	desc = "To be applied to the head repeatedly."
 
 /obj/item/book/bible/booze/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	carve_out()
 	new /obj/item/reagent_containers/cup/glass/bottle/whiskey(src)
@@ -363,6 +391,8 @@ GLOBAL_LIST_INIT(bibleitemstates, list(
 	var/owner_name
 
 /obj/item/book/bible/syndicate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/anti_magic, MAGIC_RESISTANCE|MAGIC_RESISTANCE_HOLY)
 	AddComponent(/datum/component/bane, affected_biotypes = MOB_SPIRIT, added_damage = 25)
@@ -374,6 +404,8 @@ GLOBAL_LIST_INIT(bibleitemstates, list(
 	)
 
 /obj/item/book/bible/syndicate/attack_self(mob/living/carbon/human/user, modifiers)
+	procstart = null
+	src.procstart = null
 	if(!uses || !istype(user))
 		return
 	user.mind.set_holy_role(HOLY_ROLE_PRIEST)
@@ -385,15 +417,21 @@ GLOBAL_LIST_INIT(bibleitemstates, list(
 	owner_name = user.real_name
 
 /obj/item/book/bible/syndicate/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(owner_name)
 		. += span_warning("The name [owner_name] is written in blood inside the cover.")
 
 /obj/item/book/bible/syndicate/get_attack_self_context(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(uses)
 		return "Read"
 
 /obj/item/book/bible/syndicate/attack(mob/living/target_mob, mob/living/carbon/human/user,  list/modifiers, list/attack_modifiers, heal_mode = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!user.combat_mode)
 		return ..()
 	return ..(target_mob, user, modifiers, attack_modifiers, heal_mode = FALSE)

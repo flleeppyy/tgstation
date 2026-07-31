@@ -2,6 +2,8 @@
 
 ///Helper proc to fetch a list of styles a player might want to restyle their features into during the round : returns list("Cabbage" = /datum/sprite_accessory/cabbage)
 /obj/item/organ/proc/get_valid_restyles()
+	procstart = null
+	src.procstart = null
 	var/list/valid_restyles
 
 	valid_restyles = list()
@@ -16,6 +18,8 @@
 
 ///Someone used a restyling thingymajigga on our limb owner
 /obj/item/bodypart/proc/on_attempt_feature_restyle_mob(atom/source, mob/living/trimmer, atom/movable/original_target, body_zone, restyle_type, style_speed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	//Check what body zone we are against the targeted zone, so we're sure we are the targeted limb
@@ -24,12 +28,16 @@
 
 ///Invoke async so we don't break signals
 /obj/item/bodypart/proc/on_attempt_feature_restyle(atom/source, mob/living/trimmer, atom/movable/original_target, body_zone, restyle_type, style_speed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(attempt_feature_restyle), source, trimmer, original_target, body_zone, restyle_type, style_speed)
 
 ///Asks the external organs inside the limb if they can restyle
 /obj/item/bodypart/proc/attempt_feature_restyle(atom/source, mob/living/trimmer, atom/movable/original_target, body_zone, restyle_type, style_speed)
+	procstart = null
+	src.procstart = null
 	var/list/valid_features = list()
 	for(var/obj/item/organ/feature in contents)
 		if(feature.restyle_flags & restyle_type)
@@ -58,6 +66,8 @@
 
 ///Invoke async so we don't break signals
 /obj/item/organ/proc/on_attempt_feature_restyle(atom/source, mob/living/trimmer, atom/movable/original_target, body_zone, restyle_type, style_speed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(restyle_flags & restyle_type)
@@ -67,6 +77,8 @@
 
 ///Restyles the external organ from a list of valid options
 /obj/item/organ/proc/attempt_feature_restyle(atom/source, mob/living/trimmer, atom/movable/original_target, body_zone, restyle_type, style_speed)
+	procstart = null
+	src.procstart = null
 	var/list/restyles = get_valid_restyles()
 	var/new_style = tgui_input_list(trimmer, "Select a new style", "Grooming", restyles)
 
@@ -112,6 +124,8 @@
 
 ///Catch right clicks so we can stylize!
 /obj/item/flesh_shears/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode || !iscarbon(interacting_with))
 		return NONE
 
@@ -120,6 +134,8 @@
 
 ///Send a signal to whatever we clicked and start RESTYLING
 /obj/item/flesh_shears/proc/restyle(atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(target, COMSIG_ATOM_RESTYLE, user, target, user.zone_selected, EXTERNAL_RESTYLE_ALL, restyle_speed)
 
 /obj/item/flesh_shears/medical

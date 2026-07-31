@@ -8,14 +8,20 @@
 
 /// Can we actually mutate this thing?
 /datum/experimental_cloner_fuckup/proc/is_valid(species_type)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// What do we do to it
 /datum/experimental_cloner_fuckup/proc/apply_to_mob(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	return
 
 /// What do we do after someone has taken over the mob
 /datum/experimental_cloner_fuckup/proc/post_emerged(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Become cat
@@ -23,9 +29,13 @@
 	weight = CLONER_FAILURE_COMMON
 
 /datum/experimental_cloner_fuckup/felinise/is_valid(species_type)
+	procstart = null
+	src.procstart = null
 	return !ispath(species_type, /datum/species/human/felinid)
 
 /datum/experimental_cloner_fuckup/felinise/apply_to_mob(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	if (is_species(victim, /datum/species/human))
 		victim.set_species(/datum/species/human/felinid)
 	else // I think this is funnier
@@ -42,10 +52,14 @@
 	weight = CLONER_FAILURE_COMMON
 
 /datum/experimental_cloner_fuckup/bald/apply_to_mob(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	victim.set_facial_hairstyle("Shaved", update = FALSE)
 	victim.set_hairstyle("Bald", update = TRUE)
 
 /datum/experimental_cloner_fuckup/bald/is_valid(species_type)
+	procstart = null
+	src.procstart = null
 	return !is_path_in_list(/datum/species/human, /datum/species/ethereal)
 
 /// Give a brain trauma or two
@@ -53,6 +67,8 @@
 	weight = CLONER_FAILURE_COMMON
 
 /datum/experimental_cloner_fuckup/brain_trauma/apply_to_mob(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	victim.gain_trauma_type()
 	if (prob(50))
 		return
@@ -63,6 +79,8 @@
 	weight = CLONER_FAILURE_COMMON
 
 /datum/experimental_cloner_fuckup/scramble/apply_to_mob(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	victim.bioscramble("your fucked up genes")
 	if (prob(50))
 		return
@@ -76,6 +94,8 @@
 	weight = CLONER_FAILURE_COMMON
 
 /datum/experimental_cloner_fuckup/mutate/apply_to_mob(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	victim.easy_random_mutate(NEGATIVE + MINOR_NEGATIVE)
 	if (prob(50))
 		return
@@ -89,6 +109,8 @@
 	weight = CLONER_FAILURE_COMMON
 
 /datum/experimental_cloner_fuckup/lively_flesh/apply_to_mob(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	var/list/valid_zones = GLOB.limb_zones.Copy()
 	for (var/i in 1 to (rand(1, 3)))
 		var/target_zone = pick_n_take(valid_zones)
@@ -114,6 +136,8 @@
 	weight = CLONER_FAILURE_COMMON
 
 /datum/experimental_cloner_fuckup/fly_mishap/apply_to_mob(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	victim.set_species(/datum/species/fly)
 
 /// Return to monkey
@@ -121,6 +145,8 @@
 	weight = CLONER_FAILURE_RARE
 
 /datum/experimental_cloner_fuckup/monkey/post_emerged(mob/living/carbon/victim)
+	procstart = null
+	src.procstart = null
 	victim.visible_message(\
 		span_boldwarning("[victim]'s hair begins to grow rapidly!"),\
 		span_boldwarning("As you emerge from the pod, all the hair on your body starts to grow!"))
@@ -131,6 +157,8 @@
 	weight = CLONER_FAILURE_RARE
 
 /datum/experimental_cloner_fuckup/skeletised/post_emerged(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	victim.emote("scream")
 	victim.visible_message(\
 		span_boldwarning("[victim]'s flesh slithers off in a disgusting heap!"),\
@@ -143,6 +171,8 @@
 	weight = CLONER_FAILURE_RARE
 
 /datum/experimental_cloner_fuckup/total_failure/post_emerged(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	victim.slow_psykerize()
 
 /// Just fuck me up
@@ -150,6 +180,8 @@
 	weight = CLONER_FAILURE_RARE
 
 /datum/experimental_cloner_fuckup/total_failure/post_emerged(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	victim.emote("scream")
 	victim.visible_message(\
 		span_boldwarning("[victim] collapses bonelessly into a writhing heap of flesh!"),\

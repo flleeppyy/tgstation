@@ -11,6 +11,8 @@
  * user - The person whose UI we're updating. Only necessary if we're opening the UI for the first time.
  */
 /obj/item/modular_computer/proc/update_tablet_open_uis(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user)
 		var/datum/tgui/active_ui = SStgui.get_open_ui(user, src)
 		if(!active_ui)
@@ -33,11 +35,15 @@
 
 
 /obj/item/modular_computer/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	if(inserted_pai && (user == inserted_pai.pai))
 		return GLOB.contained_state
 	return ..()
 
 /obj/item/modular_computer/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(enabled)
 		ui_interact(user)
 	else
@@ -45,6 +51,8 @@
 
 // Operates TGUI
 /obj/item/modular_computer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(!enabled || !user.can_read(src, READING_CHECK_LITERACY))
 		ui?.close()
 		return
@@ -65,6 +73,8 @@
 		active_program.ui_interact(user, ui)
 
 /obj/item/modular_computer/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data += get_asset_datum(/datum/asset/simple/headers)
 	if(active_program)
@@ -72,6 +82,8 @@
 	return data
 
 /obj/item/modular_computer/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	if(active_program)
 		data += active_program.ui_static_data(user)
@@ -81,6 +93,8 @@
 	return data
 
 /obj/item/modular_computer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = get_header_data()
 	if(active_program)
 		data += active_program.ui_data(user)
@@ -128,6 +142,8 @@
 
 // Handles user's GUI input
 /obj/item/modular_computer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -234,11 +250,15 @@
 		return active_program.ui_act(action, params, ui, state)
 
 /obj/item/modular_computer/ui_host()
+	procstart = null
+	src.procstart = null
 	if(physical)
 		return physical
 	return src
 
 /obj/item/modular_computer/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active_program)
 		active_program.ui_close(user)

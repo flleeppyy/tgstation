@@ -49,6 +49,8 @@
 
 
 /datum/job/research_director/get_captaincy_announcement(mob/living/captain)
+	procstart = null
+	src.procstart = null
 	return "Due to staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"
 
 

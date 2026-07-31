@@ -15,14 +15,20 @@
 	var/atom/attached_to
 
 /obj/effect/countdown/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	attach(loc)
 
 /obj/effect/countdown/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "This countdown is displaying: [displayed_text]."
 
 /obj/effect/countdown/proc/attach(atom/A)
+	procstart = null
+	src.procstart = null
 	attached_to = A
 	var/turf/loc_turf = get_turf(A)
 	if(!loc_turf)
@@ -31,6 +37,8 @@
 		forceMove(loc_turf)
 
 /obj/effect/countdown/proc/retry_attach()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/turf/loc_turf = get_turf(attached_to)
@@ -40,21 +48,29 @@
 	UnregisterSignal(attached_to, COMSIG_MOVABLE_MOVED)
 
 /obj/effect/countdown/proc/start()
+	procstart = null
+	src.procstart = null
 	if(!started)
 		START_PROCESSING(SSfastprocess, src)
 		started = TRUE
 
 /obj/effect/countdown/proc/stop()
+	procstart = null
+	src.procstart = null
 	if(started)
 		maptext = null
 		STOP_PROCESSING(SSfastprocess, src)
 		started = FALSE
 
 /obj/effect/countdown/proc/get_value()
+	procstart = null
+	src.procstart = null
 	// Get the value from our atom
 	return
 
 /obj/effect/countdown/process()
+	procstart = null
+	src.procstart = null
 	if(!attached_to || QDELETED(attached_to))
 		qdel(src)
 	forceMove(get_turf(attached_to))
@@ -69,20 +85,28 @@
 		maptext = null
 
 /obj/effect/countdown/Destroy()
+	procstart = null
+	src.procstart = null
 	attached_to = null
 	STOP_PROCESSING(SSfastprocess, src)
 	. = ..()
 
 /obj/effect/countdown/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/countdown/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/countdown/syndicatebomb
 	name = "syndicate bomb countdown"
 
 /obj/effect/countdown/syndicatebomb/get_value()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/syndicatebomb/S = attached_to
 	if(!istype(S))
 		return
@@ -94,6 +118,8 @@
 	color = "#81FF14"
 
 /obj/effect/countdown/nuclearbomb/get_value()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/nuclearbomb/N = attached_to
 	if(!istype(N))
 		return
@@ -106,11 +132,15 @@
 	pixel_y = 8
 
 /obj/effect/countdown/supermatter/attach(atom/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(A, /obj/machinery/power/supermatter_crystal/shard))
 		pixel_y = -12
 
 /obj/effect/countdown/supermatter/get_value()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/power/supermatter_crystal/S = attached_to
 	if(!istype(S))
 		return
@@ -121,6 +151,8 @@
 	color = "#4C5866"
 
 /obj/effect/countdown/transformer/get_value()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/transformer/T = attached_to
 	if(!istype(T))
 		return
@@ -132,6 +164,8 @@
 	name = "doomsday countdown"
 
 /obj/effect/countdown/doomsday/get_value()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/doomsday_device/DD = attached_to
 	if(!istype(DD))
 		return
@@ -142,6 +176,8 @@
 	name = "anomaly countdown"
 
 /obj/effect/countdown/anomaly/get_value()
+	procstart = null
+	src.procstart = null
 	var/obj/effect/anomaly/A = attached_to
 	if(!istype(A))
 		return
@@ -155,6 +191,8 @@
 	name = "hourglass countdown"
 
 /obj/effect/countdown/hourglass/get_value()
+	procstart = null
+	src.procstart = null
 	var/obj/item/hourglass/H = attached_to
 	if(!istype(H))
 		return
@@ -166,6 +204,8 @@
 	name = "flower bud countdown"
 
 /obj/effect/countdown/flower_bud/get_value()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/alien/resin/flower_bud/bud = attached_to
 	if(!istype(bud))
 		return

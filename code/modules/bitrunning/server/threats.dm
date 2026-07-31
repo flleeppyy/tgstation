@@ -1,5 +1,7 @@
 /// Adds threats to the list and notifies players
 /obj/machinery/quantum_server/proc/add_threats(mob/living/threat)
+	procstart = null
+	src.procstart = null
 	spawned_threat_refs.Add(WEAKREF(threat))
 	SEND_SIGNAL(src, COMSIG_BITRUNNER_THREAT_CREATED)
 	threat.AddComponent(/datum/component/virtual_entity, src)
@@ -7,6 +9,8 @@
 
 /// Choses which antagonist role is spawned based on threat
 /obj/machinery/quantum_server/proc/get_antagonist_role()
+	procstart = null
+	src.procstart = null
 	var/list/available = list()
 
 	for(var/datum/antagonist/bitrunning_glitch/subtype as anything in subtypesof(/datum/antagonist/bitrunning_glitch))
@@ -23,6 +27,8 @@
 
 /// Selects a target to mutate. Gives two attempts, then crashes if it fails.
 /obj/machinery/quantum_server/proc/get_mutation_target()
+	procstart = null
+	src.procstart = null
 	var/datum/weakref/target_ref = pick(mutation_candidate_refs)
 	var/mob/living/resolved = target_ref.resolve()
 
@@ -40,6 +46,8 @@
 
 /// Finds any mobs with minds in the zones and gives them the bad news
 /obj/machinery/quantum_server/proc/notify_spawned_threats()
+	procstart = null
+	src.procstart = null
 	for(var/datum/weakref/baddie_ref as anything in spawned_threat_refs)
 		var/mob/living/baddie = baddie_ref.resolve()
 		if(isnull(baddie?.mind) || IS_UNCONSCIOUS(baddie))
@@ -58,11 +66,15 @@
 
 /// Removes a specific threat - used when station spawning
 /obj/machinery/quantum_server/proc/remove_threat(mob/living/threat)
+	procstart = null
+	src.procstart = null
 	spawned_threat_refs.Remove(WEAKREF(threat))
 
 
 /// Selects the role and waits for a ghost orbiter
 /obj/machinery/quantum_server/proc/setup_glitch(datum/antagonist/bitrunning_glitch/forced_role)
+	procstart = null
+	src.procstart = null
 	if(!validate_mutation_candidates())
 		return
 
@@ -91,6 +103,8 @@
 
 /// Orbit poll has concluded - spawn the antag
 /obj/machinery/quantum_server/proc/spawn_glitch(datum/antagonist/bitrunning_glitch/chosen_role, mob/living/mutation_target, mob/dead/observer/ghost)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(mutation_target))
 		return
 
@@ -129,6 +143,8 @@
 
 /// Oh boy - transports the antag station side
 /obj/machinery/quantum_server/proc/station_spawn(mob/living/antag, obj/machinery/byteforge/chosen_forge)
+	procstart = null
+	src.procstart = null
 	antag.balloon_alert(antag, "scanning...")
 	chosen_forge.setup_particles(angry = TRUE)
 	var/obj/machinery/announcement_system/aas = get_announcement_system(null, src, list(RADIO_CHANNEL_SUPPLY))
@@ -193,6 +209,8 @@
 
 /// Removes any invalid candidates from the list
 /obj/machinery/quantum_server/proc/validate_mutation_candidates()
+	procstart = null
+	src.procstart = null
 	for(var/datum/weakref/creature_ref as anything in mutation_candidate_refs)
 		var/mob/living/creature = creature_ref?.resolve()
 		if(isnull(creature) || creature.mind)

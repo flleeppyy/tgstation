@@ -2,6 +2,8 @@
 /datum/unit_test/slips
 
 /datum/unit_test/slips/Run()
+	procstart = null
+	src.procstart = null
 	// Test just forced slipping, which calls turf slip code as well.
 	var/mob/living/carbon/human/mso = allocate(/mob/living/carbon/human/consistent)
 

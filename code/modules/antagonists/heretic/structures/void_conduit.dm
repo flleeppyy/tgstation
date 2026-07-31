@@ -18,6 +18,8 @@
 	var/datum/looping_sound/void_conduit/soundloop
 
 /obj/structure/void_conduit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	soundloop = new(src, start_immediately = TRUE)
 	timerid = QDEL_IN_STOPPABLE(src, 1 MINUTES)
@@ -25,6 +27,8 @@
 	build_view_turfs()
 
 /obj/structure/void_conduit/proc/build_view_turfs()
+	procstart = null
+	src.procstart = null
 	for(var/turf/affected_turf as anything in overlayed_turfs)
 		affected_turf.cut_overlay(void_overlay)
 	for(var/turf/affected_turf in view(effect_range, src))
@@ -36,6 +40,8 @@
 		void_overlay.alpha = 180
 
 /obj/structure/void_conduit/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(soundloop)
 	deltimer(timerid)
 	STOP_PROCESSING(SSobj, src)
@@ -44,11 +50,15 @@
 	return ..()
 
 /obj/structure/void_conduit/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	build_view_turfs()
 	do_conduit_pulse()
 
 ///Sends out a pulse
 /obj/structure/void_conduit/proc/do_conduit_pulse()
+	procstart = null
+	src.procstart = null
 	var/list/turfs_to_affect = list()
 	for(var/turf/affected_turf in view(effect_range, loc))
 		var/distance = get_dist(loc, affected_turf)
@@ -65,6 +75,8 @@
 
 ///Applies the effects of the pulse "hitting" something. Freezes non-heretic, destroys airlocks/windows
 /obj/structure/void_conduit/proc/handle_effects(list/turfs)
+	procstart = null
+	src.procstart = null
 	for(var/turf/affected_turf as anything in turfs)
 		for(var/atom/thing_to_affect as anything in affected_turf.contents)
 
@@ -96,10 +108,14 @@
 	alert_type = null
 
 /datum/status_effect/void_conduit/on_apply()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(owner, TRAIT_RESISTLOWPRESSURE, TRAIT_STATUS_EFFECT(id))
 	return TRUE
 
 /datum/status_effect/void_conduit/on_remove()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_RESISTLOWPRESSURE, TRAIT_STATUS_EFFECT(id))
 
 /obj/effect/temp_visual/void_conduit_opening
@@ -108,6 +124,8 @@
 	duration = 5 SECONDS
 
 /obj/effect/temp_visual/void_conduit_opening/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transform = transform.Scale(0.1)
 	alpha = 0

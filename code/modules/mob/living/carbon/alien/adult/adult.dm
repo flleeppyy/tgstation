@@ -43,15 +43,21 @@ GLOBAL_LIST_INIT(strippable_alien_humanoid_items, create_strippable_list(list(
 )))
 
 /mob/living/carbon/alien/adult/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/footstep, FOOTSTEP_MOB_CLAW, 0.5, -11)
 	AddElement(/datum/element/strippable, GLOB.strippable_alien_humanoid_items)
 
 /mob/living/carbon/alien/adult/cuff_resist(obj/item/I)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/mobs/non-humanoids/hiss/hiss5.ogg', 40, TRUE, TRUE)  //Alien roars when starting to break free
 	..(I, cuff_break = INSTANT_CUFFBREAK)
 
 /mob/living/carbon/alien/adult/resist_grab(moving_resist)
+	procstart = null
+	src.procstart = null
 	if(pulledby.grab_state)
 		visible_message(
 			span_danger("[src] breaks free of [pulledby]'s grip!"),
@@ -61,11 +67,15 @@ GLOBAL_LIST_INIT(strippable_alien_humanoid_items, create_strippable_list(list(
 	return TRUE
 
 /mob/living/carbon/alien/adult/alien_evolve(mob/living/carbon/alien/adult/new_xeno)
+	procstart = null
+	src.procstart = null
 	drop_all_held_items()
 	..()
 
 //For alien evolution/promotion/queen finder procs. Checks for an active alien of that type
 /proc/get_alien_type(alien_path, mob/ignored)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/alien/alien in GLOB.carbon_list)
 		if(alien == ignored)
 			continue
@@ -77,11 +87,15 @@ GLOBAL_LIST_INIT(strippable_alien_humanoid_items, create_strippable_list(list(
 	return null
 
 /mob/living/carbon/alien/adult/check_breath(datum/gas_mixture/breath)
+	procstart = null
+	src.procstart = null
 	if(breath?.total_moles() > 0 && !HAS_TRAIT(src, TRAIT_SNEAK))
 		playsound(get_turf(src), SFX_LOW_HISS, 50, FALSE, -5)
 	return ..()
 
 /mob/living/carbon/alien/adult/setGrabState(newstate)
+	procstart = null
+	src.procstart = null
 	if(newstate == grab_state)
 		return
 	if(newstate > GRAB_AGGRESSIVE)
@@ -105,12 +119,16 @@ GLOBAL_LIST_INIT(strippable_alien_humanoid_items, create_strippable_list(list(
 				ADD_TRAIT(pulling, TRAIT_FLOORED, CHOKEHOLD_TRAIT)
 
 /mob/living/carbon/alien/adult/mouse_drop_receive(atom/dropping, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(devour_lad(dropping))
 		return
 	return ..()
 
 /// Returns FALSE if we're not allowed to eat it, true otherwise
 /mob/living/carbon/alien/adult/proc/can_consume(atom/movable/poor_soul)
+	procstart = null
+	src.procstart = null
 	if(!isliving(poor_soul) || pulling != poor_soul)
 		return FALSE
 	if(incapacitated || grab_state < GRAB_AGGRESSIVE)
@@ -123,6 +141,8 @@ GLOBAL_LIST_INIT(strippable_alien_humanoid_items, create_strippable_list(list(
 /// The mob needs to be consumable, as decided by [/mob/living/carbon/alien/adult/proc/can_consume]
 /// Returns FALSE if the attempt never even started, TRUE otherwise
 /mob/living/carbon/alien/adult/proc/devour_lad(atom/movable/candidate, devour_time = 13.5 SECONDS)
+	procstart = null
+	src.procstart = null
 	setDir(get_dir(src, candidate))
 	if(!can_consume(candidate))
 		return FALSE
@@ -152,8 +172,12 @@ GLOBAL_LIST_INIT(strippable_alien_humanoid_items, create_strippable_list(list(
 	return TRUE
 
 /mob/living/carbon/alien/adult/get_butt_sprite()
+	procstart = null
+	src.procstart = null
 	return icon('icons/mob/butts.dmi', BUTT_SPRITE_XENOMORPH)
 
 // Aliens can touch acid
 /mob/living/carbon/alien/can_touch_acid(atom/acided_atom, acid_power, acid_volume)
+	procstart = null
+	src.procstart = null
 	return TRUE

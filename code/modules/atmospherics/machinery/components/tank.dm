@@ -72,6 +72,8 @@
 	var/obj/effect/abstract/tank_glass/window_glass = null
 
 /obj/machinery/atmospherics/components/tank/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!knob_overlays)
@@ -121,16 +123,22 @@
 // We late initialize here so all stationary tanks have time to set up their
 // initial gas mixes and signal registrations.
 /obj/machinery/atmospherics/components/tank/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GetMergeGroup(merger_id, merger_typecache)
 
 /obj/machinery/atmospherics/components/tank/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(window_glass)
 	QDEL_NULL(gas_holder)
 	QUEUE_SMOOTH_NEIGHBORS(src)
 	return ..()
 
 /obj/machinery/atmospherics/components/tank/examine(mob/user, thats)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/wrench_hint = EXAMINE_HINT("wrench")
 	if(!initialize_directions)
@@ -140,17 +148,23 @@
 	. += span_notice("A holographic sticker on it says that its maximum safe pressure is: [siunit_pressure(max_pressure, 0)].")
 
 /obj/machinery/atmospherics/components/tank/finalize_material_effects(list/materials)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	refresh_pressure_limit()
 
 /// Recalculates pressure based on the current max integrity compared to original
 /obj/machinery/atmospherics/components/tank/proc/refresh_pressure_limit()
+	procstart = null
+	src.procstart = null
 	var/max_pressure_multiplier = max_integrity / initial(max_integrity)
 	max_pressure = max_pressure_multiplier * initial(max_pressure)
 
 /// Fills the tank to the maximum safe pressure.
 /// Safety margin is a multiplier for the cap for the purpose of this proc so it doesn't have to be filled completely.
 /obj/machinery/atmospherics/components/tank/proc/fill_to_pressure(gastype, safety_margin = 0.5)
+	procstart = null
+	src.procstart = null
 	var/pressure_limit = max_pressure * safety_margin
 
 	var/moles_to_add = (pressure_limit * air_contents.volume) / (R_IDEAL_GAS_EQUATION * air_contents.temperature)
@@ -159,6 +173,8 @@
 	air_contents.archive()
 
 /obj/machinery/atmospherics/components/tank/process_atmos()
+	procstart = null
+	src.procstart = null
 	if(air_contents.react(src))
 		update_parents()
 
@@ -178,6 +194,8 @@
  * This system exists because tanks not having all initialize_directions set correctly breaks shuttle rotations
  */
 /obj/machinery/atmospherics/components/tank/proc/set_portdir_relative(relative_port_dir, enable)
+	procstart = null
+	src.procstart = null
 	ASSERT(!isnull(enable), "Did not receive argument enable")
 
 	// Rotate the given dir so that it's relative to north
@@ -199,10 +217,14 @@
  * This system exists because tanks not having all initialize_directions set correctly breaks shuttle rotations
  */
 /obj/machinery/atmospherics/components/tank/proc/toggle_portdir_relative(relative_port_dir)
+	procstart = null
+	src.procstart = null
 	var/toggle = ((initialize_directions & relative_port_dir) ? FALSE : TRUE)
 	set_portdir_relative(relative_port_dir, toggle)
 
 /obj/machinery/atmospherics/components/tank/set_init_directions()
+	procstart = null
+	src.procstart = null
 	if(!open_ports)
 		initialize_directions = NONE
 		return
@@ -222,6 +244,8 @@
 	initialize_directions = relative_port_dirs
 
 /obj/machinery/atmospherics/components/tank/proc/toggle_side_port(port_dir)
+	procstart = null
+	src.procstart = null
 	toggle_portdir_relative(port_dir)
 	set_init_directions()
 
@@ -250,15 +274,21 @@
 // Pipenet stuff
 
 /obj/machinery/atmospherics/components/tank/return_analyzable_air()
+	procstart = null
+	src.procstart = null
 	return air_contents
 
 /obj/machinery/atmospherics/components/tank/return_airs_for_reconcilation(datum/pipeline/requester)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!air_contents)
 		return
 	. += air_contents
 
 /obj/machinery/atmospherics/components/tank/return_pipenets_for_reconcilation(datum/pipeline/requester)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/merger/merge_group = GetMergeGroup(merger_id, merger_typecache)
 	for(var/obj/machinery/atmospherics/components/tank/tank as anything in merge_group.members)
@@ -268,12 +298,16 @@
 // Merger handling
 
 /obj/machinery/atmospherics/components/tank/proc/merger_adding(obj/machinery/atmospherics/components/tank/us, datum/merger/new_merger)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(new_merger.id != merger_id)
 		return
 	RegisterSignal(new_merger, COMSIG_MERGER_REFRESH_COMPLETE, PROC_REF(merger_refresh_complete))
 
 /obj/machinery/atmospherics/components/tank/proc/merger_removing(obj/machinery/atmospherics/components/tank/us, datum/merger/old_merger)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(old_merger.id != merger_id)
 		return
@@ -281,6 +315,8 @@
 
 /// Handles the combined gas tank for the entire merger group, only the origin tank actualy runs this.
 /obj/machinery/atmospherics/components/tank/proc/merger_refresh_complete(datum/merger/merger, list/leaving_members, list/joining_members)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(merger.origin != src)
 		return
@@ -309,14 +345,20 @@
 // Appearance stuff
 
 /obj/machinery/atmospherics/components/tank/proc/smoothed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	refresh_window()
 
 /obj/machinery/atmospherics/components/tank/update_appearance()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	refresh_window()
 
 /obj/machinery/atmospherics/components/tank/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += mutable_appearance(greyscaled_icon, "window-bg")
 	if(!initialize_directions)
@@ -326,11 +368,15 @@
 			. += knob_overlays["[dir]"]
 
 /obj/machinery/atmospherics/components/tank/update_greyscale()
+	procstart = null
+	src.procstart = null
 	greyscaled_icon = SSgreyscale.GetColoredIconByType(overlay_greyscale_config, greyscale_colors)
 	window_glass?.icon = greyscaled_icon
 	return ..()
 
 /obj/machinery/atmospherics/components/tank/proc/refresh_window()
+	procstart = null
+	src.procstart = null
 	if(!gas_holder) // Not created in init yet
 		return
 
@@ -361,6 +407,8 @@
 	vis_flags = VIS_INHERIT_PLANE | VIS_INHERIT_LAYER | VIS_INHERIT_ID
 
 /obj/effect/abstract/tank_glass/Initialize(mapload, obj/machinery/atmospherics/components/tank/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (owner)
 		icon = owner.greyscaled_icon
@@ -370,6 +418,8 @@
 	vis_flags = VIS_INHERIT_LAYER | VIS_INHERIT_PLANE | VIS_INHERIT_ID
 
 /obj/effect/abstract/tank_gas_holder/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_filter("tank_gas_holder", 1, alpha_mask_filter(icon = icon('icons/obj/pipes_n_cables/stationary_canisters_misc.dmi', "window-bg")))
 
@@ -377,6 +427,8 @@
 // Tool interactions
 
 /obj/machinery/atmospherics/components/tank/wrench_act(mob/living/user, obj/item/item)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	var/new_dir = get_dir(src, user)
 
@@ -392,6 +444,8 @@
 	item.play_tool_sound(src, 50)
 
 /obj/machinery/atmospherics/components/tank/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. = TRUE
 	if(atom_integrity >= max_integrity)
@@ -407,6 +461,8 @@
 	to_chat(user, span_notice("The gas tank has been fully repaired and all cracks sealed."))
 
 /obj/machinery/atmospherics/components/tank/welder_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. = TRUE
 	to_chat(user, span_notice("You begin cutting open the gas tank..."))
@@ -431,6 +487,8 @@
 	to_chat(user, span_notice("You finish cutting open the sealed gas tank, revealing the innards."))
 
 /obj/machinery/atmospherics/components/tank/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	var/turf/location = drop_location()
 	. = ..()
 	location.assume_air(air_contents)
@@ -469,6 +527,8 @@
 	piping_layer = 5
 
 /obj/machinery/atmospherics/components/tank/air/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(starting_pressure_percent > 0)
 		fill_to_pressure(/datum/gas/oxygen, safety_margin = (O2STANDARD * starting_pressure_percent))
@@ -567,6 +627,8 @@
 	var/datum/material/material_end_product
 
 /obj/structure/tank_frame/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/wrenched_hint = EXAMINE_HINT("wrenched")
 
@@ -586,11 +648,15 @@
 			. += span_notice("The plating has been firmly attached and would need a [crowbar_hint] to detach, but still needs to be sealed by a [welder_hint].")
 
 /obj/structure/tank_frame/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	if(disassembled)
 		for(var/datum/material/mat as anything in custom_materials)
 			new mat.sheet_type(drop_location(), custom_materials[mat] / SHEET_MATERIAL_AMOUNT)
 
 /obj/structure/tank_frame/update_icon(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(construction_state)
 		if(TANK_FRAME)
@@ -599,6 +665,8 @@
 			icon_state = "plated_frame"
 
 /obj/structure/tank_frame/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(construction_state != TANK_FRAME || !isstack(tool))
 		return ..()
 
@@ -608,11 +676,15 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/tank_frame/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool, time = 0.5 SECONDS)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/tank_frame/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(construction_state != TANK_FRAME)
 		return
@@ -624,6 +696,8 @@
 	to_chat(user, span_notice("[src] has been taken apart."))
 
 /obj/structure/tank_frame/proc/add_plating(mob/living/user, obj/item/stack/stack)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(!stack.material_type)
 		balloon_alert(user, "invalid material!")
@@ -660,6 +734,8 @@
 	to_chat(user, span_notice("You finish attaching [stack] to [src]."))
 
 /obj/structure/tank_frame/crowbar_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(construction_state != TANK_PLATING_UNSECURED)
 		return
@@ -673,6 +749,8 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/structure/tank_frame/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(construction_state != TANK_PLATING_UNSECURED)
 		return

@@ -22,6 +22,8 @@
 	var/static/list/options_map
 
 /obj/item/circuit_component/air_alarm_general/populate_options()
+	procstart = null
+	src.procstart = null
 	if(!options_map)
 		options_map = list()
 		for(var/mode_path in GLOB.air_alarm_modes)
@@ -30,6 +32,8 @@
 				options_map[mode.name] = mode.type
 
 /obj/item/circuit_component/air_alarm_general/populate_ports()
+	procstart = null
+	src.procstart = null
 	mode = add_option_port("Mode", options_map, order = 1)
 	set_mode = add_input_port("Set Mode", PORT_TYPE_SIGNAL, trigger = PROC_REF(set_mode))
 	enable_fire_alarm = add_input_port("Enable Alarm", PORT_TYPE_SIGNAL, trigger = PROC_REF(trigger_alarm))
@@ -39,6 +43,8 @@
 	current_mode = add_output_port("Current Mode", PORT_TYPE_STRING)
 
 /obj/item/circuit_component/air_alarm_general/register_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/machinery/airalarm))
 		connected_alarm = shell
@@ -48,6 +54,8 @@
 		current_mode.set_value(connected_alarm.selected_mode.name)
 
 /obj/item/circuit_component/air_alarm_general/unregister_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	if(connected_alarm)
 		UnregisterSignal(connected_alarm.alarm_manager, list(
 			COMSIG_ALARM_TRIGGERED,
@@ -61,21 +69,29 @@
 	return ..()
 
 /obj/item/circuit_component/air_alarm_general/proc/on_mode_updated(obj/machinery/airalarm/alarm, datum/signal_source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	current_mode.set_value(alarm.selected_mode.name)
 
 /obj/item/circuit_component/air_alarm_general/proc/on_alarm_triggered(datum/source, alarm_type, area/location)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(alarm_type == ALARM_ATMOS)
 		fire_alarm_enabled.set_output(TRUE)
 
 /obj/item/circuit_component/air_alarm_general/proc/on_alarm_cleared(datum/source, alarm_type, area/location)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(alarm_type == ALARM_ATMOS)
 		fire_alarm_enabled.set_output(FALSE)
 
 
 /obj/item/circuit_component/air_alarm_general/proc/trigger_alarm(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!connected_alarm || connected_alarm.locked)
 		return
@@ -88,6 +104,8 @@
 			connected_alarm.danger_level = AIR_ALARM_ALERT_NONE
 
 /obj/item/circuit_component/air_alarm_general/proc/set_mode(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!connected_alarm || connected_alarm.locked)
 		return
@@ -128,6 +146,8 @@
 	var/max_alarm_duplicates = 20
 
 /obj/item/circuit_component/air_alarm/ui_perform_action(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(length(alarm_duplicates) >= max_alarm_duplicates)
 		return
 
@@ -139,10 +159,14 @@
 		alarm_duplicates += component
 
 /obj/item/circuit_component/air_alarm/proc/on_duplicate_removed(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	alarm_duplicates -= source
 
 /obj/item/circuit_component/air_alarm/populate_ports()
+	procstart = null
+	src.procstart = null
 	min_2 = add_input_port("Hazard Minimum", PORT_TYPE_NUMBER, trigger = null)
 	min_1 = add_input_port("Warning Minimum", PORT_TYPE_NUMBER, trigger = null)
 	max_1 = add_input_port("Warning Maximum", PORT_TYPE_NUMBER, trigger = null)
@@ -156,6 +180,8 @@
 	update_received = add_output_port("Update Received", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/air_alarm/populate_options()
+	procstart = null
+	src.procstart = null
 	var/static/list/component_options
 
 	if(!component_options)
@@ -178,30 +204,42 @@
 	ui_buttons = list()
 
 /obj/item/circuit_component/air_alarm/duplicate/removed_from(obj/item/integrated_circuit/removed_from)
+	procstart = null
+	src.procstart = null
 	if(!QDELING(src))
 		qdel(src)
 	return ..()
 
 /obj/item/circuit_component/air_alarm/duplicate/Destroy()
+	procstart = null
+	src.procstart = null
 	connected_alarm = null
 	return ..()
 
 /obj/item/circuit_component/air_alarm/removed_from(obj/item/integrated_circuit/removed_from)
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(alarm_duplicates)
 	return ..()
 
 /obj/item/circuit_component/air_alarm/register_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/machinery/airalarm))
 		connected_alarm = shell
 
 /obj/item/circuit_component/air_alarm/unregister_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	connected_alarm = null
 	for(var/obj/item/circuit_component/air_alarm/alarm as anything in alarm_duplicates)
 		alarm.connected_alarm = null
 	return ..()
 
 /obj/item/circuit_component/air_alarm/proc/set_limits()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!connected_alarm || connected_alarm.locked)
 		return
@@ -222,6 +260,8 @@
 		settings.hazard_max = max_2.value
 
 /obj/item/circuit_component/air_alarm/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!connected_alarm || connected_alarm.locked)
 		return
 
@@ -283,6 +323,8 @@
 	var/list/scrubber_duplicates = list()
 
 /obj/item/circuit_component/air_alarm_scrubbers/ui_perform_action(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(length(scrubber_duplicates) >= max_scrubber_duplicates)
 		return
 
@@ -295,13 +337,19 @@
 		scrubber_duplicates += component
 
 /obj/item/circuit_component/air_alarm_scrubbers/proc/on_duplicate_removed(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	scrubber_duplicates -= source
 
 /obj/item/circuit_component/air_alarm_scrubbers/populate_options()
+	procstart = null
+	src.procstart = null
 	scrubbers = add_option_port("Scrubber", null)
 
 /obj/item/circuit_component/air_alarm_scrubbers/populate_ports()
+	procstart = null
+	src.procstart = null
 	gas_filter = add_input_port("Gas To Filter", PORT_TYPE_LIST(PORT_TYPE_STRING), trigger = null)
 	set_gas_filter = add_input_port("Set Filter", PORT_TYPE_SIGNAL, trigger = PROC_REF(set_gas_to_filter))
 	enable_extended_range = add_input_port("Enable Extra Range", PORT_TYPE_SIGNAL, trigger = PROC_REF(toggle_range))
@@ -323,25 +371,35 @@
 	ui_buttons = list()
 
 /obj/item/circuit_component/air_alarm_scrubbers/duplicate/Destroy()
+	procstart = null
+	src.procstart = null
 	connected_alarm = null
 	return ..()
 
 /obj/item/circuit_component/air_alarm_scrubbers/duplicate/removed_from(obj/item/integrated_circuit/removed_from)
+	procstart = null
+	src.procstart = null
 	if(!QDELING(src))
 		qdel(src)
 	return ..()
 
 /obj/item/circuit_component/air_alarm_scrubbers/removed_from(obj/item/integrated_circuit/removed_from)
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(scrubber_duplicates)
 	return ..()
 
 /obj/item/circuit_component/air_alarm_scrubbers/register_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/machinery/airalarm))
 		connected_alarm = shell
 		scrubbers.possible_options = extract_id_tags(connected_alarm.my_area.air_scrubbers)
 
 /obj/item/circuit_component/air_alarm_scrubbers/unregister_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	connected_alarm = null
 	scrubbers.possible_options = null
 	for(var/obj/item/circuit_component/air_alarm_scrubbers/scrubber as anything in scrubber_duplicates)
@@ -349,6 +407,8 @@
 	return ..()
 
 /obj/item/circuit_component/air_alarm_scrubbers/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/meta_data = list()
 	if(length(meta_data) == 0)
@@ -358,10 +418,14 @@
 	. += create_table_notices(meta_data, column_name = "Gas", column_name_plural = "Gases")
 
 /obj/item/circuit_component/air_alarm_scrubbers/proc/set_gas_to_filter(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	INVOKE_ASYNC(src, PROC_REF(set_gas_filter_async), port)
 
 /obj/item/circuit_component/air_alarm_scrubbers/proc/set_gas_filter_async(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!connected_alarm || connected_alarm.locked)
 		return
 
@@ -379,10 +443,14 @@
 	scrubber.filter_types = valid_filters
 
 /obj/item/circuit_component/air_alarm_scrubbers/proc/toggle_scrubber(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	INVOKE_ASYNC(src, PROC_REF(toggle_scrubber_async), port)
 
 /obj/item/circuit_component/air_alarm_scrubbers/proc/toggle_scrubber_async(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!connected_alarm || connected_alarm.locked)
 		return
 
@@ -395,10 +463,14 @@
 	scrubber.update_appearance(UPDATE_ICON)
 
 /obj/item/circuit_component/air_alarm_scrubbers/proc/toggle_range(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	INVOKE_ASYNC(src, PROC_REF(toggle_range_async), port)
 
 /obj/item/circuit_component/air_alarm_scrubbers/proc/toggle_range_async(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!connected_alarm || connected_alarm.locked)
 		return
 
@@ -410,10 +482,14 @@
 	scrubber.update_appearance(UPDATE_ICON)
 
 /obj/item/circuit_component/air_alarm_scrubbers/proc/toggle_siphon(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	INVOKE_ASYNC(src, PROC_REF(toggle_siphon_async), port)
 
 /obj/item/circuit_component/air_alarm_scrubbers/proc/toggle_siphon_async(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!connected_alarm || connected_alarm.locked)
 		return
 
@@ -425,6 +501,8 @@
 	scrubber.update_appearance(UPDATE_ICON)
 
 /obj/item/circuit_component/air_alarm_scrubbers/proc/update_data()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!connected_alarm || connected_alarm.locked)
 		return
@@ -503,6 +581,8 @@
 	var/list/vent_duplicates = list()
 
 /obj/item/circuit_component/air_alarm_vents/ui_perform_action(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(length(vent_duplicates) >= max_vent_duplicates)
 		return
 
@@ -515,13 +595,19 @@
 		component.vents.possible_options = extract_id_tags(connected_alarm.my_area.air_vents)
 
 /obj/item/circuit_component/air_alarm_vents/proc/on_duplicate_removed(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	vent_duplicates -= source
 
 /obj/item/circuit_component/air_alarm_vents/populate_options()
+	procstart = null
+	src.procstart = null
 	vents = add_option_port("Vent", null)
 
 /obj/item/circuit_component/air_alarm_vents/populate_ports()
+	procstart = null
+	src.procstart = null
 	external_pressure = add_input_port("External Pressure", PORT_TYPE_NUMBER, trigger = PROC_REF(set_external_pressure))
 	internal_pressure = add_input_port("Internal Pressure", PORT_TYPE_NUMBER, trigger = PROC_REF(set_internal_pressure))
 
@@ -551,25 +637,35 @@
 	ui_buttons = list()
 
 /obj/item/circuit_component/air_alarm_vents/duplicate/removed_from(obj/item/integrated_circuit/removed_from)
+	procstart = null
+	src.procstart = null
 	if(!QDELING(src))
 		qdel(src)
 	return ..()
 
 /obj/item/circuit_component/air_alarm_vents/duplicate/Destroy()
+	procstart = null
+	src.procstart = null
 	connected_alarm = null
 	return ..()
 
 /obj/item/circuit_component/air_alarm_vents/removed_from(obj/item/integrated_circuit/removed_from)
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(vent_duplicates)
 	return ..()
 
 /obj/item/circuit_component/air_alarm_vents/register_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/machinery/airalarm))
 		connected_alarm = shell
 		vents.possible_options = extract_id_tags(connected_alarm.my_area.air_vents)
 
 /obj/item/circuit_component/air_alarm_vents/unregister_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	connected_alarm = null
 	vents.possible_options = null
 	for(var/obj/item/circuit_component/air_alarm_vents/vent as anything in vent_duplicates)
@@ -577,10 +673,14 @@
 	return ..()
 
 /obj/item/circuit_component/air_alarm_vents/proc/toggle_vent(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	INVOKE_ASYNC(src, PROC_REF(toggle_vent_async), port)
 
 /obj/item/circuit_component/air_alarm_vents/proc/toggle_vent_async(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!connected_alarm || connected_alarm.locked)
 		return
 
@@ -592,10 +692,14 @@
 	vent.update_appearance(UPDATE_ICON)
 
 /obj/item/circuit_component/air_alarm_vents/proc/toggle_external(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	INVOKE_ASYNC(src, PROC_REF(toggle_external_async), port)
 
 /obj/item/circuit_component/air_alarm_vents/proc/toggle_external_async(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!connected_alarm || connected_alarm.locked)
 		return
 
@@ -609,10 +713,14 @@
 		vent.pressure_checks &= ~ATMOS_EXTERNAL_BOUND
 
 /obj/item/circuit_component/air_alarm_vents/proc/toggle_internal(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	INVOKE_ASYNC(src, PROC_REF(toggle_internal_async), port)
 
 /obj/item/circuit_component/air_alarm_vents/proc/toggle_internal_async(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!connected_alarm || connected_alarm.locked)
 		return
 
@@ -626,10 +734,14 @@
 		vent.pressure_checks &= ~ATMOS_INTERNAL_BOUND
 
 /obj/item/circuit_component/air_alarm_vents/proc/set_internal_pressure(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	INVOKE_ASYNC(src, PROC_REF(set_internal_pressure_async), port)
 
 /obj/item/circuit_component/air_alarm_vents/proc/set_internal_pressure_async(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!connected_alarm || connected_alarm.locked)
 		return
 
@@ -640,10 +752,14 @@
 	vent.internal_pressure_bound = clamp(internal_pressure.value, 0, ATMOS_PUMP_MAX_PRESSURE)
 
 /obj/item/circuit_component/air_alarm_vents/proc/set_external_pressure(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	INVOKE_ASYNC(src, PROC_REF(set_external_pressure_async), port)
 
 /obj/item/circuit_component/air_alarm_vents/proc/set_external_pressure_async(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!connected_alarm || connected_alarm.locked)
 		return
 
@@ -654,10 +770,14 @@
 	vent.internal_pressure_bound = clamp(external_pressure.value, 0, ATMOS_PUMP_MAX_PRESSURE)
 
 /obj/item/circuit_component/air_alarm_vents/proc/toggle_siphon(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	INVOKE_ASYNC(src, PROC_REF(toggle_siphon_async), port)
 
 /obj/item/circuit_component/air_alarm_vents/proc/toggle_siphon_async(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!connected_alarm || connected_alarm.locked)
 		return
 
@@ -668,6 +788,8 @@
 	vent.pump_direction = (port == enable_siphon) ? ATMOS_DIRECTION_SIPHONING : ATMOS_DIRECTION_RELEASING
 
 /obj/item/circuit_component/air_alarm_vents/proc/update_data()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!connected_alarm || connected_alarm.locked)
 		return

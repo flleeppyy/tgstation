@@ -31,6 +31,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 	var/pipeline_cycle = -1
 
 /datum/gas_mixture/New(volume)
+	procstart = null
+	src.procstart = null
 	moles = list()
 	moles_archive = list()
 	if(!isnull(volume))
@@ -45,11 +47,15 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 ///assert_gas(gas_id) - used to guarantee that the gas list for this id exists in gas_mixture.gases.
 ///Must be used before adding to a gas. May be used before reading from a gas.
 /datum/gas_mixture/proc/assert_gas(gas_id)
+	procstart = null
+	src.procstart = null
 	moles[gas_id] += 0
 	moles_archive[gas_id] += 0
 
 ///assert_gases(args) - shorthand for calling assert_gas(gas_id) once for each gas type.
 /datum/gas_mixture/proc/assert_gases(...)
+	procstart = null
+	src.procstart = null
 	var/cached_moles = moles
 	var/cached_moles_archive = moles_archive
 	for(var/gas_id in args)
@@ -59,11 +65,15 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 ///add_gas(gas_id) - similar to assert_gas(), but does not check for an existing gas list for this id. This can clobber existing gases.
 ///Used instead of assert_gas() when you know the gas does not exist. Faster than assert_gas().
 /datum/gas_mixture/proc/add_gas(gas_id)
+	procstart = null
+	src.procstart = null
 	moles[gas_id] = 0
 	moles_archive[gas_id] = 0
 
 ///add_gases(args) - shorthand for calling add_gas() once for each gas_type.
 /datum/gas_mixture/proc/add_gases(...)
+	procstart = null
+	src.procstart = null
 	var/cached_moles = moles
 	var/cached_moles_archive = moles_archive
 	for(var/gas_id in args)
@@ -76,6 +86,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 ///if assert_gas() was called only to read from the gas.
 ///By removing empty gases, processing speed is increased.
 /datum/gas_mixture/proc/garbage_collect()
+	procstart = null
+	src.procstart = null
 	values_cut_under(moles, MOLAR_ACCURACY, TRUE)
 	values_cut_under(moles_archive, MOLAR_ACCURACY, TRUE)
 
@@ -83,58 +95,82 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 
 ///joules per kelvin
 /datum/gas_mixture/proc/heat_capacity()
+	procstart = null
+	src.procstart = null
 	return values_dot(moles, GAS_META[META_GAS_SPECIFIC_HEAT])
 
 ///joules per kelvin. Same as heat_capacity() for moles_archive.
 // Separate function to reduce branches in a hot function
 /datum/gas_mixture/proc/heat_capacity_archive()
+	procstart = null
+	src.procstart = null
 	return values_dot(moles_archive, GAS_META[META_GAS_SPECIFIC_HEAT])
 
 /// Same as above except vacuums return HEAT_CAPACITY_VACUUM
 /datum/gas_mixture/turf/heat_capacity()
+	procstart = null
+	src.procstart = null
 	return values_dot(moles, GAS_META[META_GAS_SPECIFIC_HEAT]) || HEAT_CAPACITY_VACUUM
 
 /// Same as above except vacuums return HEAT_CAPACITY_VACUUM
 // Separate function to reduce branches in a hot function
 /datum/gas_mixture/turf/heat_capacity_archive()
+	procstart = null
+	src.procstart = null
 	return values_dot(moles_archive, GAS_META[META_GAS_SPECIFIC_HEAT]) || HEAT_CAPACITY_VACUUM
 
 /// Calculate moles
 /datum/gas_mixture/proc/total_moles()
+	procstart = null
+	src.procstart = null
 	return values_sum(moles)
 
 /// Checks to see if gas amount exists in mixture.
 /// Do NOT use this in code where performance matters!
 /// It's better to batch calls to garbage_collect(), especially in places where you're checking many gastypes
 /datum/gas_mixture/proc/has_gas(gas_id, amount=0)
+	procstart = null
+	src.procstart = null
 	return amount < moles[gas_id]
 
 /// Calculate pressure in kilopascals
 /datum/gas_mixture/proc/return_pressure()
+	procstart = null
+	src.procstart = null
 	if(volume) // to prevent division by zero
 		return values_sum(moles) * R_IDEAL_GAS_EQUATION * temperature / volume
 	return 0
 
 /// Calculate temperature in kelvins
 /datum/gas_mixture/proc/return_temperature()
+	procstart = null
+	src.procstart = null
 	return temperature
 
 /// Calculate volume in liters
 /datum/gas_mixture/proc/return_volume()
+	procstart = null
+	src.procstart = null
 	return max(0, volume)
 
 /// Gets the gas visuals for everything in this mixture
 /datum/gas_mixture/proc/return_visuals(turf/z_context)
+	procstart = null
+	src.procstart = null
 	var/list/output
 	GAS_OVERLAYS(moles, output, z_context)
 	return output
 
 /// Calculate thermal energy in joules
 /datum/gas_mixture/proc/thermal_energy()
+	procstart = null
+	src.procstart = null
 	return THERMAL_ENERGY(src) //see code/__DEFINES/atmospherics.dm; use the define in performance critical areas
 
 ///Update archived versions of variables. Returns: 1 in all cases
 /datum/gas_mixture/proc/archive()
+	procstart = null
+	src.procstart = null
 	var/list/cached_moles = moles
 	var/list/cached_moles_archive = moles_archive
 
@@ -146,6 +182,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 
 ///Merges all air from giver into self. Deletes giver. Returns: 1 if we are mutable, 0 otherwise
 /datum/gas_mixture/proc/merge(datum/gas_mixture/giver)
+	procstart = null
+	src.procstart = null
 	if(!giver)
 		return FALSE
 
@@ -168,21 +206,29 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 
 // Set the gas specie within the gas mix to a set amount, if there is none it will be created at the target temp
 /datum/gas_mixture/proc/set_gas(gas_specie, amount)
+	procstart = null
+	src.procstart = null
 	moles[gas_specie] = amount
 	garbage_collect()
 
 /datum/gas_mixture/proc/set_temperature(target_temp)
+	procstart = null
+	src.procstart = null
 	temperature = target_temp
 
 /// Add a specific amount of moles to specified gas or add a new gas to the mix
 /// amount is added so make it negative to remove
 /datum/gas_mixture/proc/adjust_gas(gas, amount)
+	procstart = null
+	src.procstart = null
 	moles[gas] += QUANTIZE(amount)
 	garbage_collect()
 
 /// Add a specific amount of moles to all the gasses present or add a new gas to the mix
 ///gases_moles is an associative list of gas species to their amount to be added
 /datum/gas_mixture/proc/adjust_multiple_gases(list/gases_moles)
+	procstart = null
+	src.procstart = null
 	var/cached_moles = moles
 	for(var/gas_id, value in gases_moles)
 		cached_moles[gas_id] += value
@@ -192,6 +238,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 /// Modify the gas list as to convert moles of gas species A to gas species B
 /// reactant and product are the gas species to convert and conversion_amount is the amount to be converted
 /datum/gas_mixture/proc/convert_gas(datum/gas/reactant, datum/gas/product, conversion_amount)
+	procstart = null
+	src.procstart = null
 	var/list/cached_moles = moles
 	assert_gases(reactant, product)
 	cached_moles[reactant] -= QUANTIZE(conversion_amount)
@@ -201,6 +249,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 ///Proportionally removes amount of gas from the gas_mixture.
 ///Returns: gas_mixture with the gases removed
 /datum/gas_mixture/proc/remove(amount)
+	procstart = null
+	src.procstart = null
 
 	var/list/cached_moles = moles
 	var/total_moles = values_sum(cached_moles)
@@ -225,6 +275,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 ///Proportionally removes amount of gas from the gas_mixture.
 ///Returns: gas_mixture with the gases removed
 /datum/gas_mixture/proc/remove_ratio(ratio)
+	procstart = null
+	src.procstart = null
 	if(ratio <= 0)
 		var/datum/gas_mixture/removed = new(volume)
 		return removed
@@ -247,6 +299,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 ///Removes an amount of a specific gas from the gas_mixture.
 ///Returns: gas_mixture with the gas removed
 /datum/gas_mixture/proc/remove_specific(gas_id, amount)
+	procstart = null
+	src.procstart = null
 	var/list/cached_moles = moles
 	amount = min(amount, cached_moles[gas_id])
 	if(amount <= 0)
@@ -261,6 +315,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 	return removed
 
 /datum/gas_mixture/proc/remove_specific_ratio(gas_id, ratio)
+	procstart = null
+	src.procstart = null
 	if(ratio <= 0)
 		return null
 	ratio = min(ratio, 1)
@@ -280,6 +336,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 ///Distributes the contents of two mixes equally between themselves
 //Returns: bool indicating whether gases moved between the two mixes
 /datum/gas_mixture/proc/equalize(datum/gas_mixture/other)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(abs(return_temperature() - other.return_temperature()) > MINIMUM_TEMPERATURE_DELTA_TO_SUSPEND)
 		. = TRUE
@@ -309,6 +367,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 ///Creates new, identical gas mixture
 ///Returns: duplicate gas mixture
 /datum/gas_mixture/proc/copy()
+	procstart = null
+	src.procstart = null
 	var/list/cached_moles = moles
 	var/datum/gas_mixture/copy = new type
 	var/list/copy_cached_moles = copy.moles
@@ -325,6 +385,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 ///Copies variables from sample
 ///Returns: TRUE if we are mutable, FALSE otherwise
 /datum/gas_mixture/proc/copy_from(datum/gas_mixture/sample)
+	procstart = null
+	src.procstart = null
 	var/list/cached_moles = moles //accessing datum vars is slower than proc vars
 	var/list/cached_moles_archive = moles_archive
 	var/list/sample_cached_moles = sample.moles
@@ -343,6 +405,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 ///Copies variables from sample, moles multiplicated by partial
 ///Returns: TRUE if we are mutable, FALSE otherwise
 /datum/gas_mixture/proc/copy_from_ratio(datum/gas_mixture/sample, partial = 1)
+	procstart = null
+	src.procstart = null
 	var/list/cached_moles = moles //accessing datum vars is slower than proc vars
 	var/list/sample_cached_moles = sample.moles
 	// Remove all gases (sample overrides our values anyways)
@@ -357,6 +421,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 /// If we don't retain this, we will get negative moles. Don't do it
 /// Returns: amount of gas exchanged (+ if sharer received)
 /datum/gas_mixture/proc/share(datum/gas_mixture/sharer, our_coeff, sharer_coeff)
+	procstart = null
+	src.procstart = null
 	var/list/cached_moles = moles
 	var/list/cached_moles_archive = moles_archive
 	var/list/sharer_cached_moles = sharer.moles
@@ -449,6 +515,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 ///Performs temperature sharing calculations (via conduction) between two gas_mixtures assuming only 1 boundary length
 ///Returns: new temperature of the sharer
 /datum/gas_mixture/proc/temperature_share(datum/gas_mixture/sharer, conduction_coefficient, sharer_temperature, sharer_heat_capacity)
+	procstart = null
+	src.procstart = null
 	//transfer of thermal energy (via conduction) between self and sharer
 	if(sharer)
 		sharer_temperature = sharer.temperature_archived
@@ -474,6 +542,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 ///Takes the bool as a second arg to read to read archived values for moles and temperature
 ///Returns: a string indicating what check failed, or "" if check passes
 /datum/gas_mixture/proc/compare(datum/gas_mixture/sample, cmp_archive)
+	procstart = null
+	src.procstart = null
 	var/list/cached_moles = (cmp_archive) ? moles_archive : moles
 	var/list/sample_cached_moles = (cmp_archive) ? sample.moles_archive : sample.moles  //accessing datum vars is slower than proc vars
 
@@ -497,6 +567,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 ///Performs various reactions such as combustion and fabrication
 ///Returns: 1 if any reaction took place; 0 otherwise
 /datum/gas_mixture/proc/react(datum/holder)
+	procstart = null
+	src.procstart = null
 	. = NO_REACTION
 	var/list/cached_moles = moles
 	if(!length(cached_moles))
@@ -562,6 +634,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
  */
 
 /datum/gas_mixture/proc/get_breath_partial_pressure(gas_mole_count)
+	procstart = null
+	src.procstart = null
 	return (gas_mole_count * R_IDEAL_GAS_EQUATION * temperature) / BREATH_VOLUME
 
 /**
@@ -572,6 +646,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
  * - output_air (gasmix).
  */
 /datum/gas_mixture/proc/gas_pressure_minimum_transfer(datum/gas_mixture/output_air)
+	procstart = null
+	src.procstart = null
 	var/resulting_energy = output_air.thermal_energy() + (MOLAR_ACCURACY / total_moles() * thermal_energy())
 	var/resulting_capacity = output_air.heat_capacity() + (MOLAR_ACCURACY / total_moles() * heat_capacity())
 	return (output_air.total_moles() + MOLAR_ACCURACY) * R_IDEAL_GAS_EQUATION * (resulting_energy / resulting_capacity) / output_air.volume
@@ -584,6 +660,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
  * - ignore_temperature. Returns a cheaper form of gas calculation, useful if the temperature difference between the two gasmixes is low or nonexistent.
  */
 /datum/gas_mixture/proc/gas_pressure_calculate(datum/gas_mixture/output_air, target_pressure, ignore_temperature = FALSE)
+	procstart = null
+	src.procstart = null
 	// So we don't need to iterate the gaslist multiple times.
 	var/our_moles = total_moles()
 	var/output_moles = output_air.total_moles()
@@ -670,6 +748,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 /// Actually tries to solve the quadratic equation.
 /// Do mind that the numbers can get very big and might hit BYOND's single point float limit.
 /datum/gas_mixture/proc/gas_pressure_quadratic(a, b, c, lower_limit, upper_limit)
+	procstart = null
+	src.procstart = null
 	var/solution
 	if(IS_FINITE(a) && IS_FINITE(b) && IS_FINITE(c))
 		solution = max(SolveQuadratic(a, b, c))
@@ -681,6 +761,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 /// Approximation of the quadratic equation using Newton-Raphson's Method.
 /// We use the slope of an approximate value to get closer to the root of a given equation.
 /datum/gas_mixture/proc/gas_pressure_approximate(a, b, c, lower_limit, upper_limit)
+	procstart = null
+	src.procstart = null
 	var/solution
 	if(IS_FINITE(a) && IS_FINITE(b) && IS_FINITE(c))
 		// We start at the extrema of the equation, added by a number.
@@ -696,6 +778,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 
 /// Pumps gas from src to output_air. Amount depends on target_pressure
 /datum/gas_mixture/proc/pump_gas_to(datum/gas_mixture/output_air, target_pressure, specific_gas = null, datum/gas_mixture/output_pipenet_air = null)
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/input_air = specific_gas ? remove_specific_ratio(specific_gas, 1) : src
 	var/temperature_delta = abs(input_air.temperature - output_air.temperature)
 	var/datum/gas_mixture/removed
@@ -718,6 +802,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 
 /// Releases gas from src to output air. This means that it can not transfer air to gas mixture with higher pressure.
 /datum/gas_mixture/proc/release_gas_to(datum/gas_mixture/output_air, target_pressure, rate=1, datum/gas_mixture/output_pipenet_air = null)
+	procstart = null
+	src.procstart = null
 	var/output_starting_pressure = output_air.return_pressure()
 	var/input_starting_pressure = return_pressure()
 
@@ -748,6 +834,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
  * * electrolyzer_args - electrolysis arguments to use for the electrolyzer_reaction reactions.
  */
 /datum/gas_mixture/proc/electrolyze(working_power = 0, electrolyzer_args = list())
+	procstart = null
+	src.procstart = null
 	for(var/reaction in GLOB.electrolyzer_reactions)
 		var/datum/electrolyzer_reaction/current_reaction = GLOB.electrolyzer_reactions[reaction]
 
@@ -761,6 +849,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 /// Convert a gas mixture to a string (ie. "o2=22;n2=82;TEMP=180")
 /// Rounds all temperature and gases to 0.01 and skips any gases less than that amount
 /datum/gas_mixture/proc/to_string()
+	procstart = null
+	src.procstart = null
 	var/list/cached_moles = moles
 	var/rounded_temp = round(temperature, 0.01)
 
@@ -790,6 +880,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
  * Returns TRUE if the list of gases is acceptable, FALSE otherwise.
  */
 /datum/gas_mixture/proc/check_gases(list/acceptable_gas_bounds, extraneous_gas_limit = 0.1)
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 
 	var/list/gases_to_check = acceptable_gas_bounds.Copy() // thank you spaceman

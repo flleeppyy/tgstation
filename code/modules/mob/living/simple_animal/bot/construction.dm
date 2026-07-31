@@ -12,10 +12,14 @@
 	var/robot_arm = /obj/item/bodypart/arm/right/robot
 
 /obj/item/bot_assembly/nameformat(input, user)
+	procstart = null
+	src.procstart = null
 	created_name = input
 	return input
 
 /obj/item/bot_assembly/rename_reset()
+	procstart = null
+	src.procstart = null
 	created_name = initial(created_name)
 
 /**
@@ -27,6 +31,8 @@
  * * drop_item - Whether or no the item should be dropped; defaults to 1. Should be set to 0 if the item is a tool, stack, or otherwise doesn't need to be dropped. If not set to 0, item must be deleted afterwards.
  */
 /obj/item/bot_assembly/proc/can_finish_build(obj/item/tool, mob/user, drop_item = 1)
+	procstart = null
+	src.procstart = null
 	if(istype(loc, /obj/item/storage/backpack))
 		to_chat(user, span_warning("You must take [src] out of [loc] first!"))
 		return FALSE
@@ -44,12 +50,16 @@
 	var/obj/item/reagent_containers/cup/bucket/bucket_obj
 
 /obj/item/bot_assembly/cleanbot/Initialize(mapload, obj/item/reagent_containers/cup/bucket/new_bucket)
+	procstart = null
+	src.procstart = null
 	if(!new_bucket)
 		new_bucket = new()
 	new_bucket.forceMove(src)
 	return ..()
 
 /obj/item/bot_assembly/cleanbot/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	if(istype(arrived, /obj/item/reagent_containers/cup/bucket))
 		if(bucket_obj && bucket_obj != arrived)
 			qdel(bucket_obj)
@@ -57,17 +67,23 @@
 	return ..()
 
 /obj/item/bot_assembly/cleanbot/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if(gone == bucket_obj)
 		bucket_obj = null
 	return ..()
 
 
 /obj/item/bot_assembly/cleanbot/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(bucket_obj)
 	return ..()
 
 
 /obj/item/bot_assembly/cleanbot/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/bodypart/arm/left/robot) && !istype(tool, /obj/item/bodypart/arm/right/robot))
 		return NONE
 
@@ -94,6 +110,8 @@
 	var/vest_type = /obj/item/clothing/suit/armor/vest
 
 /obj/item/bot_assembly/ed209/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	switch(build_step)
 		if(ASSEMBLY_FIRST_STEP, ASSEMBLY_SECOND_STEP)
 			if(!istype(tool, /obj/item/bodypart/leg/left/robot) && !istype(tool, /obj/item/bodypart/leg/right/robot))
@@ -217,14 +235,20 @@
 	var/toolbox_color = ""
 
 /obj/item/bot_assembly/repairbot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/item/bot_assembly/repairbot/proc/set_color(new_color)
+	procstart = null
+	src.procstart = null
 	add_atom_colour(new_color, FIXED_COLOUR_PRIORITY)
 	toolbox_color = new_color
 
 /obj/item/bot_assembly/repairbot/update_desc()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(build_step)
 		if(ASSEMBLY_FIRST_STEP)
@@ -233,6 +257,8 @@
 			desc = initial(desc)
 
 /obj/item/bot_assembly/repairbot/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(build_step >= ASSEMBLY_FIRST_STEP)
 		. += mutable_appearance(icon, "repairbot_base_sensor", appearance_flags = RESET_COLOR|KEEP_APART)
@@ -240,6 +266,8 @@
 		. += mutable_appearance(icon, "repairbot_base_arms", appearance_flags = RESET_COLOR|KEEP_APART)
 
 /obj/item/bot_assembly/repairbot/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	switch(build_step)
 		if(ASSEMBLY_FIRST_STEP)
 			if(!istype(tool, /obj/item/bodypart/arm/left/robot) && !istype(tool, /obj/item/bodypart/arm/right/robot))
@@ -279,11 +307,15 @@
 	var/medkit_type = /obj/item/storage/medkit
 
 /obj/item/bot_assembly/medbot/proc/set_skin(skin)
+	procstart = null
+	src.procstart = null
 	src.skin = skin
 	if(skin)
 		icon_state = "[base_icon_state]_[skin]"
 
 /obj/item/bot_assembly/medbot/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	switch(build_step)
 		if(ASSEMBLY_FIRST_STEP)
 			if(!istype(tool, /obj/item/healthanalyzer))
@@ -324,6 +356,8 @@
 	created_name = "Honkbot"
 
 /obj/item/bot_assembly/honkbot/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	switch(build_step)
 		if(ASSEMBLY_FIRST_STEP)
 			if(!isprox(tool))
@@ -365,6 +399,8 @@
 	var/toyswordamt = 0
 
 /obj/item/bot_assembly/secbot/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/atom/drop_loc = drop_location()
 	switch(build_step)
 		if(ASSEMBLY_FIRST_STEP)
@@ -528,6 +564,8 @@
 	created_name = "Firebot"
 
 /obj/item/bot_assembly/firebot/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	switch(build_step)
 		if(ASSEMBLY_FIRST_STEP)
 			if(!istype(tool, /obj/item/clothing/head/utility/hardhat/red))
@@ -562,6 +600,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2)
 
 /obj/item/bot_assembly/hygienebot/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/atom/drop_loc = drop_location()
 	switch(build_step)
 		if(ASSEMBLY_FIRST_STEP)
@@ -635,6 +675,8 @@
 	created_name = "\improper Vim"
 
 /obj/item/bot_assembly/vim/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	switch(build_step)
 		if(ASSEMBLY_FIRST_STEP)
 			if(!istype(tool, /obj/item/bodypart/leg/left/robot) && !istype(tool, /obj/item/bodypart/leg/right/robot))

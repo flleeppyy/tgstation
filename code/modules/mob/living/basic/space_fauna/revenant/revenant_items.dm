@@ -9,6 +9,8 @@
 	var/inert = FALSE
 
 /obj/item/ectoplasm/revenant/Initialize(mapload, revenant)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	inert = !revenant
 	if(revenant)
@@ -16,9 +18,13 @@
 		addtimer(CALLBACK(src, PROC_REF(reform)), 1 MINUTES)
 
 /obj/item/ectoplasm/revenant/Destroy()
+	procstart = null
+	src.procstart = null
 	return ..()
 
 /obj/item/ectoplasm/revenant/proc/check_for_mirrors(turf/location, radius)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	for(var/obj/structure/mirror/mirror in view(radius, location))
 		if(mirror.cursable && !mirror.GetComponent(/datum/component/revenant_prison))
@@ -26,6 +32,8 @@
 	return null
 
 /obj/item/ectoplasm/revenant/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(inert)
 		return ..()
 	user.visible_message(
@@ -39,6 +47,8 @@
 	qdel(src)
 
 /obj/item/ectoplasm/revenant/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(inert)
 		return
@@ -50,6 +60,8 @@
 	qdel(src)
 
 /obj/item/ectoplasm/revenant/proc/transfer_to_mirror(obj/structure/mirror/nearby_mirror)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	nearby_mirror.TakeComponent(GetComponent(/datum/component/revenant_prison))
 	nearby_mirror.visible_message(span_revenwarning("A dismal moan echoes as particles of [src] fall onto [nearby_mirror]!"))
@@ -57,6 +69,8 @@
 	message_admins("A revenant was trapped inside [nearby_mirror] [ADMIN_JMP(nearby_mirror)]")
 
 /obj/item/ectoplasm/revenant/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(inert)
 		. += span_revennotice("It seems inert.")
@@ -64,12 +78,16 @@
 		. += span_revenwarning("It is shifting and distorted. It would be wise to destroy this.")
 
 /obj/item/ectoplasm/revenant/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is inhaling [src]! It looks like [user.p_theyre()] trying to visit the shadow realm!"))
 	qdel(src)
 	return OXYLOSS
 
 /// Actually moves the revenant out of ourself
 /obj/item/ectoplasm/revenant/proc/reform()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || inert)
 		return
 	if(!GetComponent(/datum/component/revenant_prison))

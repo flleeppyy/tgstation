@@ -27,6 +27,8 @@ Notes:
 
 
 /datum/tooltip/New(client/C)
+	procstart = null
+	src.procstart = null
 	if (C)
 		owner = C
 		var/datum/asset/stuff = get_asset_datum(/datum/asset/simple/jquery)
@@ -37,6 +39,8 @@ Notes:
 
 
 /datum/tooltip/proc/show(atom/movable/thing, params = null, title = null, content = null, theme = "default", special = "none")
+	procstart = null
+	src.procstart = null
 	if (!thing || !params || (!title && !content) || !owner || !isnum(ICON_SIZE_ALL))
 		return FALSE
 
@@ -82,6 +86,8 @@ Notes:
 
 
 /datum/tooltip/proc/hide()
+	procstart = null
+	src.procstart = null
 	queueHide = showing ? TRUE : FALSE
 
 	if (queueHide)
@@ -92,15 +98,21 @@ Notes:
 	return TRUE
 
 /datum/tooltip/proc/on_target_qdel()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(hide))
 	last_target = null
 
 /datum/tooltip/proc/do_hide()
+	procstart = null
+	src.procstart = null
 	winshow(owner, control, FALSE)
 
 /datum/tooltip/Destroy(force)
+	procstart = null
+	src.procstart = null
 	last_target = null
 	return ..()
 
@@ -108,6 +120,8 @@ Notes:
 //Theme is a CSS class in tooltip.html, by default this wrapper chooses a CSS class based on the user's UI_style (Midnight, Plasmafire, Retro, etc)
 //Includes sanity.checks
 /proc/openToolTip(mob/user = null, atom/movable/tip_src = null, params = null, title = "", content = "", theme = "")
+	procstart = null
+	src.procstart = null
 	if(!istype(user) || !user.client?.tooltips)
 		return
 	var/ui_style = user.client?.prefs?.read_preference(/datum/preference/choiced/ui_style)
@@ -121,6 +135,8 @@ Notes:
 //Arbitrarily close a user's tooltip
 //Includes sanity checks.
 /proc/closeToolTip(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) || !user.client?.tooltips)
 		return
 	user.client.tooltips.hide()

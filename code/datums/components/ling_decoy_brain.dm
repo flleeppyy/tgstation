@@ -6,6 +6,8 @@
 	VAR_FINAL/datum/action/changeling/mmi_talk/talk_action
 
 /datum/component/ling_decoy_brain/Initialize(datum/antagonist/changeling/ling)
+	procstart = null
+	src.procstart = null
 	if(!istype(parent, /obj/item/organ/brain))
 		return COMPONENT_INCOMPATIBLE
 	if(isnull(ling))
@@ -16,18 +18,24 @@
 	RegisterSignal(parent_ling, COMSIG_QDELETING, PROC_REF(clear_decoy))
 
 /datum/component/ling_decoy_brain/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent_ling, COMSIG_QDELETING)
 	parent_ling = null
 	QDEL_NULL(talk_action)
 	return ..()
 
 /datum/component/ling_decoy_brain/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/ling_brain = parent
 	ling_brain.organ_flags &= ~ORGAN_VITAL
 	ling_brain.decoy_override = TRUE
 	RegisterSignal(ling_brain, COMSIG_ATOM_ENTERING, PROC_REF(entered_mmi))
 
 /datum/component/ling_decoy_brain/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/ling_brain = parent
 	ling_brain.organ_flags |= ORGAN_VITAL
 	ling_brain.decoy_override = FALSE
@@ -39,6 +47,8 @@
  * Unfortunately this is hooked on Entering rather than its own dedicated MMI signal becuase MMI code is a fuck
  */
 /datum/component/ling_decoy_brain/proc/entered_mmi(obj/item/organ/brain/source, atom/entering, atom/old_loc, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/the_real_ling = parent_ling.owner.current
@@ -63,6 +73,8 @@
 
 /// Clear up the decoy if the ling is de-linged
 /datum/component/ling_decoy_brain/proc/clear_decoy(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(src)

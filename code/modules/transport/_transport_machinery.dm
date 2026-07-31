@@ -29,11 +29,15 @@
 	acid = 100
 
 /obj/machinery/transport/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!id_tag)
 		id_tag = assign_random_name()
 
 /obj/machinery/transport/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(held_item?.tool_behaviour == TOOL_SCREWDRIVER)
 		context[SCREENTIP_CONTEXT_RMB] = panel_open ? "close panel" : "open panel"
 
@@ -54,6 +58,8 @@
  * Locates tram parts in the lift global list after everything is done.
  */
 /obj/machinery/transport/proc/link_tram()
+	procstart = null
+	src.procstart = null
 	for(var/datum/transport_controller/linear/tram/tram as anything in SStransport.transports_by_type[TRANSPORT_TYPE_TRAM])
 		if(tram.specific_transport_id != configured_transport_id)
 			continue
@@ -65,6 +71,8 @@
 		log_transport("[id_tag]: Tried to find a transport with ID [configured_transport_id], but failed!")
 
 /obj/machinery/transport/proc/local_fault()
+	procstart = null
+	src.procstart = null
 	if(malfunctioning || !isnull(repair_signals))
 		return
 
@@ -79,6 +87,8 @@
  * and the value is what tool they actually need to use on the thing to fix it
  */
 /obj/machinery/transport/proc/generate_repair_signals()
+	procstart = null
+	src.procstart = null
 
 	// Select a few methods of how to fix it
 	var/list/fix_it_keys = assoc_to_keys(how_do_we_fix_it)
@@ -94,10 +104,14 @@
 		RegisterSignals(src, repair_signals, PROC_REF(on_machine_tooled))
 
 /obj/machinery/transport/proc/clear_repair_signals()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(src, repair_signals)
 	LAZYNULL(repair_signals)
 
 /obj/machinery/transport/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(methods_to_fix)
 		for(var/tool_method in methods_to_fix)
@@ -111,6 +125,8 @@
  * We allow for someone to stop the event early by using the proper tools, hinted at in examine, on the machine
  */
 /obj/machinery/transport/proc/on_machine_tooled(obj/machinery/source, mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(try_fix_machine), source, user, tool)
@@ -118,6 +134,8 @@
 
 /// Attempts a do_after, and if successful, stops the event
 /obj/machinery/transport/proc/try_fix_machine(obj/machinery/transport/machine, mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	machine.balloon_alert(user, "percussive maintenance...")
@@ -137,6 +155,8 @@
 	return TRUE
 
 /obj/machinery/transport/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return
 	if(atom_integrity >= max_integrity)

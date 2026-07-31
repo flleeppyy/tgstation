@@ -30,6 +30,8 @@
 
 //Gives player-controlled variants the ability to swap attacks
 /mob/living/simple_animal/hostile/asteroid/elite/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/seethrough_mob)
 	grant_actions_by_list(attack_action_types)
@@ -37,6 +39,8 @@
 
 //Prevents elites from attacking members of their faction (can't hurt themselves either) and lets them mine rock with an attack despite not being able to smash walls.
 /mob/living/simple_animal/hostile/asteroid/elite/AttackingTarget(atom/attacked_target)
+	procstart = null
+	src.procstart = null
 	if(ishostile(target))
 		var/mob/living/simple_animal/hostile/M = target
 		if(faction_check_atom(M))
@@ -62,6 +66,8 @@
 
 //Elites can't talk (normally)!
 /mob/living/simple_animal/hostile/asteroid/elite/can_speak(allow_mimes)
+	procstart = null
+	src.procstart = null
 	return can_talk && ..()
 
 /*Basic setup for elite attacks, based on Whoneedspace's megafauna attack setup.
@@ -79,6 +85,8 @@ While using this makes the system rely on OnFire, it still gives options for tim
 	var/chosen_attack_num = 0
 
 /datum/action/innate/elite_attack/create_button(mob/viewer)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/screen/movable/action_button/button = ..()
 	button.maptext = ""
 	button.maptext_x = 6
@@ -88,6 +96,8 @@ While using this makes the system rely on OnFire, it still gives options for tim
 	return button
 
 /datum/action/innate/elite_attack/process()
+	procstart = null
+	src.procstart = null
 	if(isnull(owner))
 		STOP_PROCESSING(SSfastprocess, src)
 		qdel(src)
@@ -96,6 +106,8 @@ While using this makes the system rely on OnFire, it still gives options for tim
 	build_all_button_icons(UPDATE_BUTTON_STATUS)
 
 /datum/action/innate/elite_attack/update_button_status(atom/movable/screen/movable/action_button/button, force = FALSE)
+	procstart = null
+	src.procstart = null
 	var/mob/living/simple_animal/hostile/asteroid/elite/elite_owner = owner
 	if(!istype(owner))
 		button.maptext = ""
@@ -108,12 +120,16 @@ While using this makes the system rely on OnFire, it still gives options for tim
 		button.maptext = MAPTEXT("<b>[round(timeleft/10, 0.1)]</b>")
 
 /datum/action/innate/elite_attack/Grant(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(istype(L, /mob/living/simple_animal/hostile/asteroid/elite))
 		START_PROCESSING(SSfastprocess, src)
 		return ..()
 	return FALSE
 
 /datum/action/innate/elite_attack/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/simple_animal/hostile/asteroid/elite/elite_owner = owner
 	elite_owner.chosen_attack = chosen_attack_num
 	to_chat(elite_owner, chosen_message)
@@ -157,6 +173,8 @@ While using this makes the system rely on OnFire, it still gives options for tim
 	acid = 100
 
 /obj/structure/elite_tumor/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(user))
 		return
@@ -206,6 +224,8 @@ While using this makes the system rely on OnFire, it still gives options for tim
 				clear_activator(user)
 
 /obj/structure/elite_tumor/proc/spawn_elite(mob/dead/observer/elitemind)
+	procstart = null
+	src.procstart = null
 	var/selectedspawn = pick(potentialspawns)
 	mychild = new selectedspawn(loc)
 	visible_message(span_boldwarning("[mychild] emerges from [src]!"))
@@ -225,6 +245,8 @@ While using this makes the system rely on OnFire, it still gives options for tim
 	INVOKE_ASYNC(src, PROC_REF(arena_checks))
 
 /obj/structure/elite_tumor/proc/return_elite()
+	procstart = null
+	src.procstart = null
 	mychild.forceMove(loc)
 	visible_message(span_boldwarning("[mychild] emerges from [src]!"))
 	playsound(loc,'sound/effects/phasein.ogg', 200, 0, 50, TRUE, TRUE)
@@ -242,17 +264,23 @@ While using this makes the system rely on OnFire, it still gives options for tim
 	ADD_TRAIT(mychild, TRAIT_UNCONVERTABLE, INNATE_TRAIT)
 
 /obj/structure/elite_tumor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/gps, "Menacing Signal")
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/elite_tumor/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	mychild = null
 	clear_activator(activator)
 	return ..()
 
 /obj/structure/elite_tumor/proc/make_activator(mob/user)
+	procstart = null
+	src.procstart = null
 	if(activator)
 		return
 	activator = user
@@ -261,6 +289,8 @@ While using this makes the system rely on OnFire, it still gives options for tim
 	user.log_message("has activated an elite tumor!", LOG_GAME, color="#960000")
 
 /obj/structure/elite_tumor/proc/clear_activator(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!activator)
 		return
@@ -269,6 +299,8 @@ While using this makes the system rely on OnFire, it still gives options for tim
 	UnregisterSignal(source, COMSIG_QDELETING)
 
 /obj/structure/elite_tumor/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!isturf(loc))
 		return
 
@@ -279,6 +311,8 @@ While using this makes the system rely on OnFire, it still gives options for tim
 			H.color = COLOR_RED
 
 /obj/structure/elite_tumor/item_interaction(mob/living/user, obj/item/attacking_item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(istype(attacking_item, /obj/item/organ/monster_core/regenerative_core) && activity == TUMOR_INACTIVE && !boosted)
 		var/obj/item/organ/monster_core/regenerative_core/core = attacking_item
@@ -291,6 +325,8 @@ While using this makes the system rely on OnFire, it still gives options for tim
 		return ITEM_INTERACT_SUCCESS
 
 /obj/structure/elite_tumor/proc/arena_checks()
+	procstart = null
+	src.procstart = null
 	if(activity != TUMOR_ACTIVE || QDELETED(src))
 		return
 	INVOKE_ASYNC(src, PROC_REF(fighters_check))  //Checks to see if our fighters died.
@@ -300,6 +336,8 @@ While using this makes the system rely on OnFire, it still gives options for tim
 		addtimer(CALLBACK(src, PROC_REF(arena_checks)), 5 SECONDS)
 
 /obj/structure/elite_tumor/proc/fighters_check()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(mychild) || mychild.stat == DEAD)
 		onEliteLoss()
 		return
@@ -309,6 +347,8 @@ While using this makes the system rely on OnFire, it still gives options for tim
 		onEliteWon()
 
 /obj/structure/elite_tumor/proc/arena_trap()
+	procstart = null
+	src.procstart = null
 	var/turf/tumor_turf = get_turf(src)
 	if(loc == null)
 		return
@@ -322,6 +362,8 @@ While using this makes the system rely on OnFire, it still gives options for tim
 			newwall.ourelite_ref = mychild_ref
 
 /obj/structure/elite_tumor/proc/border_check()
+	procstart = null
+	src.procstart = null
 	if(activator != null && get_dist(src, activator) >= 12)
 		activator.forceMove(loc)
 		visible_message(span_boldwarning("[activator] suddenly reappears above [src]!"))
@@ -332,6 +374,8 @@ While using this makes the system rely on OnFire, it still gives options for tim
 		playsound(loc,'sound/effects/phasein.ogg', 200, 0, 50, TRUE, TRUE)
 
 /obj/structure/elite_tumor/proc/onEliteLoss()
+	procstart = null
+	src.procstart = null
 	playsound(loc,'sound/effects/tendril_destroyed.ogg', 200, 0, 50, TRUE, TRUE)
 	visible_message(span_boldwarning("[src] begins to convulse violently before beginning to dissipate."))
 	visible_message(span_boldwarning("As [src] closes, something is forced up from down below."))
@@ -344,6 +388,8 @@ While using this makes the system rely on OnFire, it still gives options for tim
 	qdel(src)
 
 /obj/structure/elite_tumor/proc/onEliteWon()
+	procstart = null
+	src.procstart = null
 	activity = TUMOR_PASSIVE
 	clear_activator(activator)
 	mychild.revive(HEAL_ALL)
@@ -377,6 +423,8 @@ While using this makes the system rely on OnFire, it still gives options for tim
 	throw_range = 5
 
 /obj/item/tumor_shard/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(interacting_with, /mob/living/simple_animal/hostile/asteroid/elite))
 		return NONE
 
@@ -417,17 +465,23 @@ While using this makes the system rely on OnFire, it still gives options for tim
 	var/datum/weakref/ourelite_ref
 
 /obj/effect/temp_visual/elite_tumor_wall/Initialize(mapload, new_caster)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(smoothing_flags & USES_SMOOTHING)
 		QUEUE_SMOOTH_NEIGHBORS(src)
 		QUEUE_SMOOTH(src)
 
 /obj/effect/temp_visual/elite_tumor_wall/Destroy()
+	procstart = null
+	src.procstart = null
 	if(smoothing_flags & USES_SMOOTHING)
 		QUEUE_SMOOTH_NEIGHBORS(src)
 	return ..()
 
 /obj/effect/temp_visual/elite_tumor_wall/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mover == ourelite_ref.resolve() || mover == activator_ref.resolve())
 		return FALSE

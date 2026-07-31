@@ -12,6 +12,8 @@
 	var/datum/callback/on_linked_death
 
 /datum/component/life_link/Initialize(mob/living/host, datum/callback/on_passed_damage, datum/callback/on_linked_death)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -22,6 +24,8 @@
 	src.on_linked_death = on_linked_death
 
 /datum/component/life_link/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_CARBON_LIMB_DAMAGED, PROC_REF(on_limb_damage))
 	RegisterSignals(parent, COMSIG_LIVING_ADJUST_STANDARD_DAMAGE_TYPES, PROC_REF(on_damage_adjusted))
 	RegisterSignal(parent, COMSIG_LIVING_HEALTH_UPDATE, PROC_REF(on_health_updated))
@@ -30,14 +34,20 @@
 		living_parent.updatehealth()
 
 /datum/component/life_link/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	unregister_host()
 	UnregisterSignal(parent, list(COMSIG_CARBON_LIMB_DAMAGED, COMSIG_LIVING_HEALTH_UPDATE) + COMSIG_LIVING_ADJUST_STANDARD_DAMAGE_TYPES)
 
 /datum/component/life_link/InheritComponent(datum/component/new_comp, i_am_original, mob/living/host, datum/callback/on_passed_damage, datum/callback/on_linked_death)
+	procstart = null
+	src.procstart = null
 	register_host(host)
 
 /// Set someone up as our new host
 /datum/component/life_link/proc/register_host(mob/living/new_host)
+	procstart = null
+	src.procstart = null
 	unregister_host()
 	if (isnull(new_host))
 		return
@@ -51,6 +61,8 @@
 
 /// Drop someone from being our host
 /datum/component/life_link/proc/unregister_host()
+	procstart = null
+	src.procstart = null
 	if (isnull(host))
 		return
 	UnregisterSignal(host, list(COMSIG_LIVING_DEATH, COMSIG_LIVING_HEALTH_UPDATE, COMSIG_LIVING_REVIVE, COMSIG_QDELETING))
@@ -58,6 +70,8 @@
 
 /// Called when your damage goes up or down
 /datum/component/life_link/proc/on_damage_adjusted(mob/living/our_mob, type, amount, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (forced)
 		return
@@ -77,6 +91,8 @@
 
 /// Called when someone hurts one of our limbs, bypassing normal damage adjustment
 /datum/component/life_link/proc/on_limb_damage(mob/living/our_mob, limb, brute, burn)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (brute != 0)
 		host.adjust_brute_loss(brute, updating_health = FALSE)
@@ -89,6 +105,8 @@
 
 /// Called when either the host or parent's health tries to update, update our displayed health
 /datum/component/life_link/proc/on_health_updated()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_health_hud(parent)
 	update_med_hud_health(parent)
@@ -96,6 +114,8 @@
 
 /// Update our parent's health display based on how harmed our host is
 /datum/component/life_link/proc/update_health_hud(mob/living/mob_parent)
+	procstart = null
+	src.procstart = null
 	var/severity = 0
 	var/healthpercent = health_percentage(host)
 	switch(healthpercent)
@@ -123,10 +143,14 @@
 
 /// Update our health on the medical hud
 /datum/component/life_link/proc/update_med_hud_health(mob/living/mob_parent)
+	procstart = null
+	src.procstart = null
 	mob_parent.set_hud_image_state(HEALTH_HUD, "hud[RoundHealth(host)]")
 
 /// Update our vital status on the medical hud
 /datum/component/life_link/proc/update_med_hud_status(mob/living/mob_parent)
+	procstart = null
+	src.procstart = null
 	if(IS_DEAD_OR_FAKING(host))
 		mob_parent.set_hud_image_state(STATUS_HUD, "huddead")
 	else
@@ -134,6 +158,8 @@
 
 /// Called when our host dies, we should die too
 /datum/component/life_link/proc/on_host_died(mob/living/source, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	on_linked_death?.Invoke(parent, host, gibbed)
 	var/mob/living/living_parent = parent
@@ -141,11 +167,15 @@
 
 /// Called when our host undies, we should undie too
 /datum/component/life_link/proc/on_host_revived(mob/living/source, full_heal_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/living_parent = parent
 	living_parent.revive(full_heal_flags)
 
 /// Called when
 /datum/component/life_link/proc/on_host_deleted()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)

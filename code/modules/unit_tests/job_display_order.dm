@@ -2,6 +2,8 @@
 /datum/unit_test/job_display_order
 
 /datum/unit_test/job_display_order/Run()
+	procstart = null
+	src.procstart = null
 	var/alist/unique_indexes = alist()
 	// joinable_occupations instead of all_occupations because human_ai and ai have the same index otherwise... Is this a source of flaky fails..? Unsure
 	for(var/datum/job/job in SSjob.joinable_occupations)
@@ -17,6 +19,8 @@
 /datum/unit_test/department_display_order
 
 /datum/unit_test/department_display_order/Run()
+	procstart = null
+	src.procstart = null
 	var/alist/unique_indexes = alist()
 	for(var/datum/job_department/department in SSjob.joinable_departments)
 		var/departments_display_order = department.display_order

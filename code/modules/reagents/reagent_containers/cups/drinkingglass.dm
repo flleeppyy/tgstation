@@ -24,6 +24,8 @@
 	var/base_container_type = null
 
 /obj/item/reagent_containers/cup/glass/drinkingglass/Initialize(mapload, vol)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/takes_reagent_appearance, \
@@ -34,6 +36,8 @@
 	RegisterSignal(src, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(on_cleaned))
 
 /obj/item/reagent_containers/cup/glass/drinkingglass/on_reagent_change(datum/reagents/holder, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!length(reagents.reagent_list))
 		qdel(GetComponent(/datum/component/rename))
@@ -41,20 +45,28 @@
 
 // Having our icon state change removes fill thresholds
 /obj/item/reagent_containers/cup/glass/drinkingglass/on_cup_change(datum/glass_style/style)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	fill_icon_thresholds = null
 
 // And having our icon reset restores our fill thresholds
 /obj/item/reagent_containers/cup/glass/drinkingglass/on_cup_reset()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	fill_icon_thresholds ||= list(0)
 
 /obj/item/reagent_containers/cup/glass/drinkingglass/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(src, TRAIT_WAS_RENAMED))
 		. += span_notice("This glass has been given a custom name. It can be removed by washing it.")
 
 /obj/item/reagent_containers/cup/glass/drinkingglass/proc/on_cleaned(obj/source_component, obj/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!HAS_TRAIT(src, TRAIT_WAS_RENAMED))
 		return NONE
@@ -88,12 +100,16 @@
 	custom_price = PAYCHECK_CREW * 0.4
 
 /obj/item/reagent_containers/cup/glass/drinkingglass/shotglass/update_name(updates)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_WAS_RENAMED))
 		return
 	. = ..()
 	name = "[length(reagents.reagent_list) ? "filled " : ""]shot glass"
 
 /obj/item/reagent_containers/cup/glass/drinkingglass/shotglass/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_WAS_RENAMED))
 		return
 	. = ..()
@@ -106,6 +122,8 @@
 	base_container_type = /obj/item/reagent_containers/cup/glass/drinkingglass
 
 /obj/item/reagent_containers/cup/glass/drinkingglass/filled/Initialize(mapload, vol)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
@@ -131,6 +149,8 @@
 	list_reagents = list(/datum/reagent/water = 25)
 
 /obj/item/reagent_containers/cup/glass/drinkingglass/filled/half_full/Initialize(mapload, vol)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[pick("half full", "half empty")] glass of water"
 

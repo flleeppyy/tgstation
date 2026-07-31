@@ -3,10 +3,14 @@
 	var/list/attached_mobs = list()
 
 /datum/element/digitalcamo/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSdcs, src)
 
 /datum/element/digitalcamo/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target) || (target in attached_mobs))
 		return ELEMENT_INCOMPATIBLE
@@ -18,6 +22,8 @@
 	HideFromAIHuds(target)
 
 /datum/element/digitalcamo/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, list(COMSIG_ATOM_EXAMINE, COMSIG_LIVING_CAN_TRACK))
 	for(var/mob/living/silicon/ai/AI in GLOB.player_list)
@@ -26,28 +32,38 @@
 	UnhideFromAIHuds(target)
 
 /datum/element/digitalcamo/proc/HideFromAIHuds(mob/living/target)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/silicon/ai/AI in GLOB.ai_list)
 		for (var/hud_trait in AI.silicon_huds)
 			var/datum/atom_hud/silicon_hud = GLOB.huds[GLOB.trait_to_hud[hud_trait]]
 			silicon_hud.hide_single_atomhud_from(AI,target)
 
 /datum/element/digitalcamo/proc/UnhideFromAIHuds(mob/living/target)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/silicon/ai/AI in GLOB.ai_list)
 		for (var/hud_trait in AI.silicon_huds)
 			var/datum/atom_hud/silicon_hud = GLOB.huds[GLOB.trait_to_hud[hud_trait]]
 			silicon_hud.unhide_single_atomhud_from(AI,target)
 
 /datum/element/digitalcamo/proc/on_examine(datum/source, mob/M, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += span_warning("[source.p_their()] skin seems to be shifting like something is moving below it.")
 
 /datum/element/digitalcamo/proc/can_track(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return COMPONENT_CANT_TRACK
 
 /datum/element/digitalcamo/process()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/silicon/ai/AI in GLOB.player_list)
 		for(var/mob in attached_mobs)
 			AI.client.images |= attached_mobs[mob]

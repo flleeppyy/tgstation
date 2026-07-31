@@ -4,7 +4,11 @@
 	datatype_flags = DATATYPE_FLAG_ALLOW_MANUAL_INPUT
 
 /datum/circuit_datatype/boolean/can_receive_from_datatype(datatype_to_check)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/circuit_datatype/boolean/convert_value(datum/port/port, value_to_convert, force)
+	procstart = null
+	src.procstart = null
 	return !!value_to_convert

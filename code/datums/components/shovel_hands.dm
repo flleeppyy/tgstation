@@ -5,6 +5,8 @@
 	var/obj/item/shovel/internal_shovel
 
 /datum/component/shovel_hands/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -13,14 +15,20 @@
 	RegisterSignal(internal_shovel, COMSIG_QDELETING, PROC_REF(shovel_destroyed))
 
 /datum/component/shovel_hands/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignals(parent, list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_HOSTILE_PRE_ATTACKINGTARGET), PROC_REF(dig))
 
 /datum/component/shovel_hands/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_HOSTILE_PRE_ATTACKINGTARGET))
 	return ..()
 
 /datum/component/shovel_hands/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if (internal_shovel)
 		UnregisterSignal(internal_shovel, COMSIG_QDELETING)
 	QDEL_NULL(internal_shovel)
@@ -28,6 +36,8 @@
 
 /// Called when you click on literally anything with your hands
 /datum/component/shovel_hands/proc/dig(mob/living/mole, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!isopenturf(target))
 		return
@@ -37,6 +47,8 @@
 
 /// Don't know how the fuck this happened but I guess you can't dig any more
 /datum/component/shovel_hands/proc/shovel_destroyed(atom/shovel)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(shovel, COMSIG_QDELETING)
 	qdel(src)

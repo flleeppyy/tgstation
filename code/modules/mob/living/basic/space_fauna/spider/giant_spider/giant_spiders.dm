@@ -25,6 +25,8 @@
 	var/list/innate_actions = null
 
 /mob/living/basic/spider/giant/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	grant_actions_by_list(innate_actions)
 
@@ -53,6 +55,8 @@
 	innate_actions = list(/datum/action/cooldown/mob_cooldown/sneak/spider)
 
 /mob/living/basic/spider/giant/ambush/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_STRONG_GRABBER, INNATE_TRAIT)
 
@@ -82,6 +86,8 @@
 	innate_actions = list(/datum/action/cooldown/mob_cooldown/web_effigy)
 
 /mob/living/basic/spider/giant/guard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/web_walker, /datum/movespeed_modifier/average_web)
 
@@ -107,6 +113,8 @@
 	menu_description = "Fast spider with toxin injection, but has less health and damage."
 
 /mob/living/basic/spider/giant/hunter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/web_walker, /datum/movespeed_modifier/fast_web)
 
@@ -136,6 +144,8 @@
 	innate_actions = list(/datum/action/cooldown/mob_cooldown/command_spiders/communication_spiders)
 
 /mob/living/basic/spider/giant/scout/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 
@@ -166,6 +176,8 @@
 	menu_description = "Avarage speed spider able to heal other spiders and itself together with a fast web laying capability, has low damage and health."
 
 /mob/living/basic/spider/giant/nurse/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_MEDICAL_HUD, INNATE_TRAIT)
 
@@ -217,6 +229,8 @@
 	)
 
 /mob/living/basic/spider/giant/tangle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddElement(/datum/element/web_walker, /datum/movespeed_modifier/average_web)
@@ -235,6 +249,8 @@
 
 /// Prevent you from healing other tangle spiders, or healing when on fire
 /mob/living/basic/spider/giant/tangle/proc/can_mend(mob/living/source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if (on_fire)
 		balloon_alert(src, "on fire!")
 		return FALSE
@@ -262,6 +278,8 @@
 	menu_description = "Extremely tanky with very poor offence. Able to self heal and lay reflective silk screens."
 
 /mob/living/basic/spider/giant/tank/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/action/cooldown/mob_cooldown/lay_web/web_reflector/reflector_web = new(src)
 	reflector_web.Grant(src)
@@ -285,6 +303,8 @@
 
 /// Prevent you from healing when on fire
 /mob/living/basic/spider/giant/tank/proc/can_mend(mob/living/source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if (on_fire)
 		balloon_alert(src, "on fire!")
 		return FALSE
@@ -321,6 +341,8 @@
 	menu_description = "Has the ability to destroy walls and limbs, and to send warnings to the nest."
 
 /mob/living/basic/spider/giant/breacher/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/action/cooldown/mob_cooldown/lay_web/solid_web/web_solid = new(src)
 	web_solid.Grant(src)
@@ -366,6 +388,8 @@
 	var/datum/action/cooldown/mob_cooldown/charge/basic_charge/charge
 
 /mob/living/basic/spider/giant/tarantula/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	charge = new /datum/action/cooldown/mob_cooldown/charge/basic_charge()
 	charge.Grant(src)
@@ -373,11 +397,15 @@
 	AddElement(/datum/element/web_walker, /datum/movespeed_modifier/slow_web)
 
 /mob/living/basic/spider/giant/tarantula/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(charge)
 	return ..()
 
 /// Lunge if you click something at range
 /mob/living/basic/spider/giant/tarantula/ranged_secondary_attack(atom/atom_target, modifiers)
+	procstart = null
+	src.procstart = null
 	charge.Trigger(target = atom_target)
 
 /**
@@ -408,6 +436,8 @@
 	)
 
 /mob/living/basic/spider/giant/viper/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/bonus_damage)
 
@@ -451,6 +481,8 @@
 	)
 
 /mob/living/basic/spider/giant/midwife/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddElement(/datum/element/web_walker, /datum/movespeed_modifier/average_web)
@@ -571,6 +603,8 @@
 	)
 
 /mob/living/basic/spider/giant/viper/wizard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 
@@ -592,6 +626,8 @@
 	ai_controller = /datum/ai_controller/basic_controller/giant_spider/retaliate
 
 /mob/living/basic/spider/giant/sgt_araneus/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/pet_bonus, "chitter")
 	AddElement(/datum/element/ai_retaliate)

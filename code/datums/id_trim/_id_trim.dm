@@ -34,10 +34,14 @@
 	var/honorific_positions = NONE
 
 /datum/id_trim/proc/find_job()
+	procstart = null
+	src.procstart = null
 	return null
 
 /// Returns the SecHUD job icon state for whatever this object's ID card is, if it has one.
 /obj/item/proc/get_sechud_job_icon_state()
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/id/id_card = GetID()
 
 	return id_card?.get_trim_sechud_icon_state() || SECHUD_NO_ID

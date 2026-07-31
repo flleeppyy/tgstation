@@ -3,6 +3,8 @@
 	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/ghost/MouseEntered(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	flick(icon_state + "_anim", src)
 
@@ -12,6 +14,8 @@
 	screen_loc = ui_ghost_spawners_menu
 
 /atom/movable/screen/ghost/spawners_menu/Click()
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/observer = usr
 	observer.open_spawners_menu()
 
@@ -21,6 +25,8 @@
 	screen_loc = ui_ghost_orbit
 
 /atom/movable/screen/ghost/orbit/Click()
+	procstart = null
+	src.procstart = null
 	GLOB.orbit_menu.show(usr)
 
 /atom/movable/screen/ghost/reenter_corpse
@@ -29,6 +35,8 @@
 	screen_loc = ui_ghost_reenter_corpse
 
 /atom/movable/screen/ghost/reenter_corpse/Click()
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/G = usr
 	G.reenter_corpse()
 
@@ -38,6 +46,8 @@
 	screen_loc = ui_ghost_dnr
 
 /atom/movable/screen/ghost/dnr/Click()
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/dnring = usr
 	dnring.do_not_resuscitate()
 
@@ -47,6 +57,8 @@
 	screen_loc = ui_ghost_teleport
 
 /atom/movable/screen/ghost/teleport/Click()
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/G = usr
 	G.dead_tele()
 
@@ -56,10 +68,14 @@
 	screen_loc = ui_ghost_settings
 
 /atom/movable/screen/ghost/settings/MouseEntered(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	flick(icon_state + "_anim", src)
 
 /atom/movable/screen/ghost/settings/Click()
+	procstart = null
+	src.procstart = null
 	GLOB.ghost_menu.ui_interact(usr)
 
 /atom/movable/screen/ghost/minigames_menu
@@ -68,6 +84,8 @@
 	screen_loc = ui_ghost_minigames
 
 /atom/movable/screen/ghost/minigames_menu/Click()
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/observer = usr
 	observer.open_minigames_menu()
 
@@ -80,10 +98,14 @@
 	var/relevant_flag
 
 /atom/movable/screen/ghost/hudbox/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += hud_icon_state
 
 /atom/movable/screen/ghost/hudbox/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/dead/observer/observer = hud?.mymob
 	if(!istype(observer))
@@ -92,9 +114,13 @@
 	icon_state = "smallbox[is_active(observer) ? "_active" : ""]"
 
 /atom/movable/screen/ghost/hudbox/proc/is_active(mob/dead/observer/observer)
+	procstart = null
+	src.procstart = null
 	return (observer.ghost_hud_flags & relevant_flag)
 
 /atom/movable/screen/ghost/hudbox/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/observer = usr
 	switch(relevant_flag)
 		if(GHOST_DARKNESS_LEVEL)

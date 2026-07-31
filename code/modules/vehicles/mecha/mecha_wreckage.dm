@@ -18,6 +18,8 @@
 	var/list/parts
 
 /obj/structure/mecha_wreckage/Initialize(mapload, mob/living/silicon/ai/AI_pilot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(parts)
 		for(var/i in 1 to 2)
@@ -39,6 +41,8 @@
 	AI.remote_control = null
 
 /obj/structure/mecha_wreckage/Destroy()
+	procstart = null
+	src.procstart = null
 	if(AI)
 		QDEL_NULL(AI)
 	QDEL_LIST(crowbar_salvage)
@@ -50,12 +54,16 @@
 	return ..()
 
 /obj/structure/mecha_wreckage/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!AI)
 		return
 	. += span_notice("The AI recovery beacon is active.")
 
 /obj/structure/mecha_wreckage/welder_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	..()
 	. = TRUE
 	if(salvage_num <= 0 || !length(welder_salvage))
@@ -74,6 +82,8 @@
 	salvage_num--
 
 /obj/structure/mecha_wreckage/wirecutter_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	..()
 	. = TRUE
 	if(wires_removed)
@@ -84,6 +94,8 @@
 	wires_removed = TRUE
 
 /obj/structure/mecha_wreckage/crowbar_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	..()
 	. = TRUE
 	if(crowbar_salvage.len)
@@ -95,6 +107,8 @@
 	to_chat(user, span_notice("You don't see anything that can be pried with [I]!"))
 
 /obj/structure/mecha_wreckage/transfer_ai(interaction, mob/user, mob/living/silicon/ai/ai_mob, obj/item/aicard/card)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 

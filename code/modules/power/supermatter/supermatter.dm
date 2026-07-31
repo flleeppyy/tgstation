@@ -190,6 +190,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	COOLDOWN_DECLARE(common_radio_cooldown)
 
 /obj/machinery/power/supermatter_crystal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	current_gas_behavior = init_sm_gas()
 	gas_percentage = list()
@@ -232,6 +234,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	powerloss_linear_offset = -1 * powerloss_linear_threshold * POWERLOSS_LINEAR_RATE + (powerloss_linear_threshold / POWERLOSS_CUBIC_DIVISOR) ** 3
 
 /obj/machinery/power/supermatter_crystal/Destroy()
+	procstart = null
+	src.procstart = null
 	if(warp)
 		vis_contents -= warp
 		QDEL_NULL(warp)
@@ -246,6 +250,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	return ..()
 
 /obj/machinery/power/supermatter_crystal/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(same_z_layer)
 		return
@@ -253,6 +259,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 		SET_PLANE_EXPLICIT(warp, PLANE_TO_TRUE(warp.plane), src)
 
 /obj/machinery/power/supermatter_crystal/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/immune = HAS_MIND_TRAIT(user, TRAIT_MADNESS_IMMUNE)
 	if(isliving(user))
@@ -271,6 +279,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	return .
 
 /obj/machinery/power/supermatter_crystal/process_atmos()
+	procstart = null
+	src.procstart = null
 	// PART 1: PRELIMINARIES
 	if(disable_process != SM_PROCESS_ENABLED)
 		return
@@ -371,6 +381,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 
 // SupermatterMonitor UI for ghosts only. Inherited attack_ghost will call this.
 /obj/machinery/power/supermatter_crystal/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(!isobserver(user))
 		return FALSE
 	. = ..()
@@ -380,12 +392,16 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 		ui.open()
 
 /obj/machinery/power/supermatter_crystal/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["gas_metadata"] = sm_gas_data()
 	return data
 
 /// Returns data that are exclusively about this sm.
 /obj/machinery/power/supermatter_crystal/proc/sm_ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["uid"] = uid
 	data["area_name"] = get_area_name(src)
@@ -479,12 +495,16 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	return data
 
 /obj/machinery/power/supermatter_crystal/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["sm_data"] = list(sm_ui_data())
 	return data
 
 /// Encodes the current state of the supermatter.
 /obj/machinery/power/supermatter_crystal/proc/get_status()
+	procstart = null
+	src.procstart = null
 	if(!absorbed_gasmix)
 		return SUPERMATTER_ERROR
 	if(final_countdown)
@@ -503,12 +523,16 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 
 /// Returns the integrity percent of the Supermatter. No rounding made yet, round it yourself.
 /obj/machinery/power/supermatter_crystal/proc/get_integrity_percent()
+	procstart = null
+	src.procstart = null
 	var/integrity = damage / explosion_point
 	integrity = 100 - integrity * 100
 	integrity = integrity < 0 ? 0 : integrity
 	return integrity
 
 /obj/machinery/power/supermatter_crystal/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(psy_coeff > 0)
 		. += mutable_appearance(icon = icon, icon_state = "[base_icon_state]-psy", layer = FLOAT_LAYER - 1, alpha = psy_coeff * 255)
@@ -524,6 +548,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	return .
 
 /obj/machinery/power/supermatter_crystal/update_icon(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gas_heat_power_generation > 0.8)
 		icon_state = "[base_icon_state]-glow"
@@ -531,6 +557,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 		icon_state = base_icon_state
 
 /obj/machinery/power/supermatter_crystal/proc/time_frozen()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(disable_process != SM_PROCESS_ENABLED)
 		return
@@ -538,6 +566,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	disable_process = SM_PROCESS_TIMESTOP
 
 /obj/machinery/power/supermatter_crystal/proc/time_unfrozen()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(disable_process != SM_PROCESS_TIMESTOP)
 		return
@@ -545,6 +575,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	disable_process = SM_PROCESS_ENABLED
 
 /obj/machinery/power/supermatter_crystal/proc/force_delam()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	investigate_log("was forcefully delaminated", INVESTIGATE_ENGINE)
 	INVOKE_ASYNC(delamination_strategy, TYPE_PROC_REF(/datum/sm_delam, delaminate), src)
@@ -558,6 +590,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
  * Even after countdown is already in progress.
  */
 /obj/machinery/power/supermatter_crystal/proc/count_down()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	if(final_countdown) // We're already doing it go away
@@ -646,6 +680,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
  * Returns: null
  */
 /obj/machinery/power/supermatter_crystal/proc/calculate_gases()
+	procstart = null
+	src.procstart = null
 	if(disable_gas)
 		return
 
@@ -687,6 +723,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
  * Returns: The factors that have influenced the calculation. list[FACTOR_DEFINE] = number
  */
 /obj/machinery/power/supermatter_crystal/proc/calculate_internal_energy()
+	procstart = null
+	src.procstart = null
 	if(disable_power_change)
 		return
 	var/list/additive_power = list()
@@ -733,6 +771,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
  * * how - A datum. How they powered it. Optional.
  */
 /obj/machinery/power/supermatter_crystal/proc/log_activation(who, how)
+	procstart = null
+	src.procstart = null
 	if(activation_logged || disable_power_change)
 		return
 	if(!who)
@@ -756,6 +796,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
  * Returns: The factors that have influenced the calculation. list[FACTOR_DEFINE] = number
  */
 /obj/machinery/power/supermatter_crystal/proc/calculate_zap_transmission_rate()
+	procstart = null
+	src.procstart = null
 	var/list/additive_transmission_rate = list()
 	additive_transmission_rate[SM_ZAP_BASE] = BASE_POWER_TRANSMISSION_RATE
 	additive_transmission_rate[SM_ZAP_GAS] = BASE_POWER_TRANSMISSION_RATE * gas_power_transmission_rate
@@ -779,6 +821,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
  * Returns: The factors that have influenced the calculation. list[FACTOR_DEFINE] = number
  */
 /obj/machinery/power/supermatter_crystal/proc/calculate_waste_multiplier()
+	procstart = null
+	src.procstart = null
 	waste_multiplier = 0
 	if(disable_gas)
 		return
@@ -805,6 +849,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
  * Returns: The factors that have influenced the calculation. list[FACTOR_DEFINE] = number
  */
 /obj/machinery/power/supermatter_crystal/proc/calculate_temp_limit()
+	procstart = null
+	src.procstart = null
 	var/list/additive_temp_limit = list()
 	additive_temp_limit[SM_TEMP_LIMIT_BASE] = T0C + HEAT_PENALTY_THRESHOLD
 	additive_temp_limit[SM_TEMP_LIMIT_GAS] = gas_heat_resistance *  (T0C + HEAT_PENALTY_THRESHOLD)
@@ -828,6 +874,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
  * Returns: The factors that have influenced the calculation. list[FACTOR_DEFINE] = number
  */
 /obj/machinery/power/supermatter_crystal/proc/calculate_damage()
+	procstart = null
+	src.procstart = null
 	if(disable_damage)
 		return
 
@@ -873,6 +921,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
  * Returns: Not used for anything, just returns true on successful set, manual and automatic. Helps admins check stuffs.
  */
 /obj/machinery/power/supermatter_crystal/proc/set_delam(priority = SM_DELAM_PRIO_NONE, manual_delam_path = SM_DELAM_STRATEGY_PURGE)
+	procstart = null
+	src.procstart = null
 	if(priority < delam_priority)
 		return FALSE
 	var/datum/sm_delam/new_delam = null
@@ -906,6 +956,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
  * Returns: The accumulated energy for that key.
  */
 /obj/machinery/power/supermatter_crystal/proc/accumulate_energy(key, energy)
+	procstart = null
+	src.procstart = null
 	. = (zap_energy_accumulation[key] ? zap_energy_accumulation[key] : 0) + energy
 	zap_energy_accumulation[key] = .
 
@@ -917,10 +969,14 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
  * Returns: The discharged energy for that key.
  */
 /obj/machinery/power/supermatter_crystal/proc/discharge_energy(key, portion = ZAP_ENERGY_DISCHARGE_PORTION)
+	procstart = null
+	src.procstart = null
 	. = portion * zap_energy_accumulation[key]
 	zap_energy_accumulation[key] -= .
 
 /obj/machinery/proc/supermatter_zap(atom/zapstart = src, range = 5, zap_str = 3.2 MEGA JOULES, zap_flags = ZAP_SUPERMATTER_FLAGS, list/targets_hit = list(), zap_cutoff = 1.2 MEGA JOULES, power_level = 0, zap_icon = DEFAULT_ZAP_ICON_STATE, color = null)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(zapstart))
 		return
 	if(zap_cutoff <= 0)
@@ -1070,6 +1126,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 
 // For /datum/sm_delam to check if it should be sending an alert on common radio channel
 /obj/machinery/power/supermatter_crystal/proc/should_alert_common()
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, common_radio_cooldown))
 		return FALSE
 
@@ -1077,12 +1135,16 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	return TRUE
 
 /obj/machinery/power/supermatter_crystal/proc/holiday_lights()
+	procstart = null
+	src.procstart = null
 	holiday_lights = TRUE
 	RegisterSignal(src, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(holiday_item_interaction))
 	update_appearance()
 
 /// Consume the santa hat and add it as an overlay
 /obj/machinery/power/supermatter_crystal/proc/holiday_item_interaction(source, mob/living/user, obj/item/item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(istype(item, /obj/item/clothing/head/costume/santa))
 		QDEL_NULL(item)
@@ -1096,6 +1158,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 
 /// Adds the hat flavor text when examined
 /obj/machinery/power/supermatter_crystal/proc/holiday_hat_examine(atom/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_list += span_info("There's a santa hat placed atop it. How it got there without being dusted is a mystery.")
 
@@ -1110,6 +1174,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	pixel_y = -176
 
 /atom/movable/warp_effect/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/new_turf = get_turf(src)
 	if(new_turf)
@@ -1117,12 +1183,16 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 		ADD_TRAIT(GLOB, TRAIT_DISTORTION_IN_USE(new_offset), ref(src))
 
 /atom/movable/warp_effect/Destroy(force)
+	procstart = null
+	src.procstart = null
 	// Just in case I've forgotten how the movement api works
 	var/offset = GET_TURF_PLANE_OFFSET(loc)
 	REMOVE_TRAIT(GLOB, TRAIT_DISTORTION_IN_USE(offset), ref(src))
 	return ..()
 
 /atom/movable/warp_effect/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/new_turf = get_turf(src)
 	var/turf/old_turf = get_turf(old_loc)
@@ -1137,6 +1207,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	ADD_TRAIT(GLOB, TRAIT_DISTORTION_IN_USE(new_offset), ref(src))
 
 /atom/movable/warp_effect/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(same_z_layer)
 		return

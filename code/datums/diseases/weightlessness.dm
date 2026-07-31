@@ -16,6 +16,8 @@
 
 
 /datum/disease/weightlessness/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -38,6 +40,8 @@
 				affected_mob.reagents.add_reagent(/datum/reagent/gravitum, 5)
 
 /datum/disease/weightlessness/cure(add_resistance)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.vomit(VOMIT_CATEGORY_DEFAULT, lost_nutrition = 95, purge_ratio = 0.4)
 	to_chat(affected_mob, span_danger("You fall to the floor as your body stops rejecting gravity."))

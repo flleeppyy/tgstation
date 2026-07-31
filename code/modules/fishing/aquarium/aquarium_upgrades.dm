@@ -12,6 +12,8 @@
 	var/upgrade_to_type = /obj/structure/aquarium
 
 /obj/item/aquarium_upgrade/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(interacting_with, TRAIT_IS_AQUARIUM))
 		return NONE
 	if(upgrade_from_type != interacting_with.type)
@@ -45,16 +47,22 @@
 	default_beauty = 0
 
 /obj/structure/aquarium/bioelec_gen/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_BIOELECTRIC_GENERATOR, INNATE_TRAIT)
 
 /obj/structure/aquarium/bioelec_gen/zap_act(power, zap_flags)
+	procstart = null
+	src.procstart = null
 	var/explosive = zap_flags & ZAP_MACHINE_EXPLOSIVE
 	if(!explosive)
 		return //immune to all other shocks to make sure power can be generated without breaking the generator itself
 	return ..()
 
 /obj/structure/aquarium/bioelec_gen/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_boldwarning("WARNING! WARNING! WARNING!")
 	. += span_warning("The bioelectric potential of the fish inside is magnified to dangerous levels by the generator.")

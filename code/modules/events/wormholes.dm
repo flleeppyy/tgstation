@@ -21,10 +21,14 @@ GLOBAL_LIST_EMPTY(all_wormholes) // So we can pick wormholes to teleport to
 	var/number_of_wormholes = 400
 
 /datum/round_event/wormholes/setup()
+	procstart = null
+	src.procstart = null
 	announce_when = rand(0, 20)
 	end_when = rand(40, 80)
 
 /datum/round_event/wormholes/start()
+	procstart = null
+	src.procstart = null
 	for(var/turf/open/floor/valid in GLOB.station_turfs)
 		pick_turfs += valid
 
@@ -34,9 +38,13 @@ GLOBAL_LIST_EMPTY(all_wormholes) // So we can pick wormholes to teleport to
 		playsound(T, SFX_PORTAL_CREATED, 20, TRUE, SILENCED_SOUND_EXTRARANGE) // much much quieter
 
 /datum/round_event/wormholes/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("Space-time anomalies detected on the station. There is no additional data.", "Anomaly Alert", ANNOUNCER_SPANOMALIES)
 
 /datum/round_event/wormholes/tick()
+	procstart = null
+	src.procstart = null
 	if(activeFor % shift_frequency == 0)
 		for(var/obj/effect/portal/wormhole/O as anything in wormholes)
 			var/turf/T = pick(pick_turfs)
@@ -45,6 +53,8 @@ GLOBAL_LIST_EMPTY(all_wormholes) // So we can pick wormholes to teleport to
 				playsound(T, SFX_PORTAL_CREATED, 20, TRUE, SILENCED_SOUND_EXTRARANGE)
 
 /datum/round_event/wormholes/end()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(wormholes)
 	wormholes = null
 
@@ -58,14 +68,20 @@ GLOBAL_LIST_EMPTY(all_wormholes) // So we can pick wormholes to teleport to
 	wibbles = FALSE
 
 /obj/effect/portal/wormhole/Initialize(mapload, _creator, _lifespan = 0, obj/effect/portal/_linked, automatic_link = FALSE, turf/hard_target_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.all_wormholes += src
 
 /obj/effect/portal/wormhole/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.all_wormholes -= src
 
 /obj/effect/portal/wormhole/teleport(atom/movable/M, force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(iseffect(M)) //sparks don't teleport
 		return
 	if(M.anchored)

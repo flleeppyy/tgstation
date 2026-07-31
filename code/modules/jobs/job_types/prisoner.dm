@@ -25,10 +25,14 @@
 	job_flags = STATION_JOB_FLAGS | JOB_CANNOT_OPEN_SLOTS | JOB_ANTAG_PROTECTED & ~JOB_REOPEN_ON_ROUNDSTART_LOSS
 
 /datum/job/prisoner/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSdcs, COMSIG_GLOB_CREWMEMBER_JOINED, PROC_REF(handle_prisoner_joining))
 
 /datum/job/prisoner/proc/handle_prisoner_joining(datum/source, mob/living/crewmember, rank)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(rank != title)
 		return //not a prisoner
@@ -62,11 +66,15 @@
 	pda_slot = null
 
 /datum/outfit/job/prisoner/pre_equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	..()
 	if(prob(1)) // D BOYYYYSSSSS
 		head = /obj/item/clothing/head/beanie/black/dboy
 
 /datum/outfit/job/prisoner/post_equip(mob/living/carbon/human/new_prisoner, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/crime_name = new_prisoner.client?.prefs?.read_preference(/datum/preference/choiced/prisoner_crime)

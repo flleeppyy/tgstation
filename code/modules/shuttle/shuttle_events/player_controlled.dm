@@ -10,6 +10,8 @@
 	var/role_type = ROLE_SENTIENCE
 
 /datum/shuttle_event/simple_spawner/player_controlled/spawn_movable(spawn_type)
+	procstart = null
+	src.procstart = null
 	if(ispath(spawn_type, /mob/living))
 		INVOKE_ASYNC(src, PROC_REF(try_grant_ghost_control), spawn_type)
 	else
@@ -17,6 +19,8 @@
 
 /// Attempt to grant control of a mob to ghosts before spawning it in. if spawn_anyway_if_no_player = TRUE, we spawn the mob even if there's no ghosts
 /datum/shuttle_event/simple_spawner/player_controlled/proc/try_grant_ghost_control(spawn_type)
+	procstart = null
+	src.procstart = null
 	var/mob/living/new_mob = new spawn_type (null)
 	ADD_TRAIT(new_mob, TRAIT_STASIS, type)
 	post_spawn(new_mob)
@@ -66,6 +70,8 @@
 	var/max_carp_spawns = 3
 
 /datum/shuttle_event/simple_spawner/player_controlled/carp/New(obj/docking_port/mobile/port)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/list/spawning_list_copy = spawning_list.Copy()

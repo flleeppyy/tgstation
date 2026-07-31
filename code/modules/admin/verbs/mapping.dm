@@ -228,6 +228,8 @@ ADMIN_VERB(debug_z_levels, R_DEBUG, "Debug Z-Levels", "Displays a list of all z-
 
 /// Returns all necessary z-level information. Argument `append_grid` allows the user to see a table showing all of the z-level linkages, which is only visible and useful in-game.
 /proc/gather_z_level_information(append_grid = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/messages = list()
 
 	var/list/z_list = SSmapping.z_list

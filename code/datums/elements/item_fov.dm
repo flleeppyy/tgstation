@@ -6,6 +6,8 @@
 	var/fov_angle
 
 /datum/element/item_fov/Attach(datum/target, fov_angle)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -15,17 +17,23 @@
 	RegisterSignal(target, COMSIG_ITEM_DROPPED, PROC_REF(on_drop))
 
 /datum/element/item_fov/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED))
 	return ..()
 
 /// On dropping the item, remove the FoV trait.
 /datum/element/item_fov/proc/on_drop(datum/source, mob/living/dropper)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	dropper.remove_fov_trait(source.type, fov_angle)
 	dropper.update_fov()
 
 /// On equipping the item, add the FoV trait.
 /datum/element/item_fov/proc/on_equip(obj/item/source, mob/living/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!(source.slot_flags & slot)) //If EQUIPPED TO HANDS FOR EXAMPLE
 		return

@@ -31,6 +31,8 @@ GLOBAL_LIST_INIT(exp_specialmap, list(
 GLOBAL_PROTECT(exp_specialmap)
 
 /proc/get_full_job_name(job)
+	procstart = null
+	src.procstart = null
 	var/static/regex/cap_expand = new("cap(?!tain)")
 	var/static/regex/cmo_expand = new("cmo")
 	var/static/regex/hos_expand = new("hos")

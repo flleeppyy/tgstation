@@ -30,6 +30,8 @@
 	var/loopy_rod = FALSE
 
 /obj/effect/immovablerod/Initialize(mapload, atom/target_atom, atom/specific_target, force_looping = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSaugury.register_doom(src, 2000)
 
@@ -50,6 +52,8 @@
 		GLOB.move_manager.move_towards(src, real_destination)
 
 /obj/effect/immovablerod/Destroy(force)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(src, COMSIG_ATOM_ENTERING)
 	SSaugury.unregister_doom(src)
 	destination_turf = null
@@ -57,6 +61,8 @@
 	return ..()
 
 /obj/effect/immovablerod/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isobserver(user))
 		return
@@ -71,17 +77,23 @@
 		\t\t[num_sentient_people_hit] of which were sentient people</span>"
 
 /obj/effect/immovablerod/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(href_list["orbit"])
 		var/mob/dead/observer/ghost = usr
 		if(istype(ghost))
 			ghost.ManualFollow(src)
 
 /obj/effect/immovablerod/proc/on_entering_atom(datum/source, atom/destination, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(destination.density && isturf(destination))
 		Bump(destination)
 
 /obj/effect/immovablerod/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!loc)
 		return ..()
 
@@ -139,20 +151,30 @@
 	return ..()
 
 /obj/effect/immovablerod/proc/complete_trajectory()
+	procstart = null
+	src.procstart = null
 	// We hit what we wanted to hit, time to go.
 	special_target = null
 	walk_in_direction(dir)
 
 /obj/effect/immovablerod/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/immovablerod/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/immovablerod/Process_Spacemove(movement_dir = 0, continuous_move = FALSE)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/effect/immovablerod/Bump(atom/clong)
+	procstart = null
+	src.procstart = null
 	if(prob(10))
 		playsound(src, 'sound/effects/bang.ogg', 50, TRUE)
 		audible_message(span_danger("You hear a CLANG!"))
@@ -199,6 +221,8 @@
 	CRASH("[src] Bump()ed into non-atom thing [clong] ([clong.type])")
 
 /obj/effect/immovablerod/proc/penetrate(mob/living/smeared_mob)
+	procstart = null
+	src.procstart = null
 	smeared_mob.visible_message(span_danger("[smeared_mob] is penetrated by an immovable rod!") , span_userdanger("The rod penetrates you!") , span_danger("You hear a CLANG!"))
 
 	if(smeared_mob.stat != DEAD)
@@ -218,6 +242,8 @@
 		EX_ACT(smeared_mob, EXPLODE_HEAVY)
 
 /obj/effect/immovablerod/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -240,6 +266,8 @@
  * * strongman - the suplexer of the rod.
  */
 /obj/effect/immovablerod/proc/suplex_rod(mob/living/strongman)
+	procstart = null
+	src.procstart = null
 	strongman.client?.give_award(/datum/award/achievement/jobs/feat_of_strength, strongman)
 	strongman.visible_message(
 		span_boldwarning("[strongman] suplexes [src] into the ground!"),
@@ -262,6 +290,8 @@
  * Stops your rod's automated movement. Sit... Stay... Good rod!
  */
 /obj/effect/immovablerod/proc/sit_stay_good_rod()
+	procstart = null
+	src.procstart = null
 	GLOB.move_manager.stop_looping(src)
 
 /**
@@ -274,6 +304,8 @@
  * * walkies_location - Any atom that the immovable rod will now chase down as a special target.
  */
 /obj/effect/immovablerod/proc/go_for_a_walk(walkies_location = null)
+	procstart = null
+	src.procstart = null
 	if(walkies_location)
 		special_target = walkies_location
 		GLOB.move_manager.home_onto(src, special_target)
@@ -282,6 +314,8 @@
 	complete_trajectory()
 
 /obj/effect/immovablerod/deadchat_plays(mode = DEMOCRACY_MODE, cooldown = 6 SECONDS)
+	procstart = null
+	src.procstart = null
 	return AddComponent(/datum/component/deadchat_control/immovable_rod, mode, list(), cooldown)
 
 /**
@@ -291,6 +325,8 @@
  * * direction - The direction to walk the rod towards: NORTH, SOUTH, EAST, WEST.
  */
 /obj/effect/immovablerod/proc/walk_in_direction(direction)
+	procstart = null
+	src.procstart = null
 	destination_turf = get_edge_target_turf(src, direction)
 	GLOB.move_manager.move_towards(src, destination_turf)
 
@@ -299,6 +335,8 @@
  * while flying parallel.
  */
 /obj/effect/immovablerod/proc/rod_vs_tram_battle()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/transport/linear/tram/transport_module = locate() in src.loc
 
 	if(isnull(transport_module))

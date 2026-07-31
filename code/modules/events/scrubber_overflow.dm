@@ -59,15 +59,21 @@
 	//needs to be chemid unit checked at some point
 
 /datum/round_event/scrubber_overflow/announce_deadchat(random, cause)
+	procstart = null
+	src.procstart = null
 	if(!forced_reagent_type)
 		//nothing out of the ordinary, so default announcement
 		return ..()
 	deadchat_broadcast(" has just been[random ? " randomly" : ""] triggered[cause ? " by [cause]" : ""]!", "<b>Scrubber Overflow: [initial(forced_reagent_type.name)]</b>", message_type=DEADCHAT_ANNOUNCEMENT)
 
 /datum/round_event/scrubber_overflow/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("The scrubbers network is experiencing a backpressure surge. Some ejection of contents may occur.", "[command_name()] Engineering Division")
 
 /datum/round_event/scrubber_overflow/setup()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/atmospherics/components/unary/vent_scrubber/temp_vent as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/atmospherics/components/unary/vent_scrubber))
 		var/turf/scrubber_turf = get_turf(temp_vent)
 		if(!scrubber_turf)
@@ -84,6 +90,8 @@
 		return kill()
 
 /datum/round_event_control/scrubber_overflow/can_spawn_event(players_amt, allow_magic = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -100,9 +108,13 @@
 
 /// proc that will run the prob check of the event and return a safe or dangerous reagent based off of that.
 /datum/round_event/scrubber_overflow/proc/get_overflowing_reagent(dangerous)
+	procstart = null
+	src.procstart = null
 	return dangerous ? get_random_reagent_id() : pick(safer_chems)
 
 /datum/round_event/scrubber_overflow/start()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/atmospherics/components/unary/vent_scrubber/vent as anything in scrubbers)
 		if(!vent.loc)
 			CRASH("SCRUBBER SURGE: [vent] has no loc somehow?")
@@ -168,9 +180,13 @@
 	special_run_option = "Random Single Reagent"
 
 /datum/event_admin_setup/listed_options/scrubber_overflow/get_list()
+	procstart = null
+	src.procstart = null
 	return sort_list(subtypesof(/datum/reagent), /proc/cmp_typepaths_asc)
 
 /datum/event_admin_setup/listed_options/scrubber_overflow/apply_to_event(datum/round_event/scrubber_overflow/event)
+	procstart = null
+	src.procstart = null
 	if(chosen == special_run_option)
 		chosen = event.get_overflowing_reagent(dangerous = prob(event.danger_chance))
 	event.forced_reagent_type = chosen

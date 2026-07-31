@@ -13,6 +13,8 @@
 	var/warning_interval = 2 SECONDS
 
 /datum/shuttle_event/turbulence/activate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	minor_announce("Please note, we are entering an area of subspace turbulence. For your own safety, \
 		please fasten your belts and remain seated until the vehicle comes to a complete stop.",
@@ -20,6 +22,8 @@
 	COOLDOWN_START(src, turbulence_cooldown, rand(5 SECONDS, 20 SECONDS)) // Reduced interval after the announcement
 
 /datum/shuttle_event/turbulence/event_process()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -31,6 +35,8 @@
 
 /// Warn players to get buckled
 /datum/shuttle_event/turbulence/proc/shake()
+	procstart = null
+	src.procstart = null
 	var/list/mobs = mobs_in_area_type(list(/area/shuttle/escape))
 	for(var/mob/living/mob as anything in mobs)
 		var/shake_intensity = mob.buckled ? 0.25 : 1
@@ -39,6 +45,8 @@
 
 /// Knock them down
 /datum/shuttle_event/turbulence/proc/knock_down()
+	procstart = null
+	src.procstart = null
 	if (SSshuttle.emergency.mode != SHUTTLE_ESCAPE)
 		return // They docked
 	var/list/mobs = mobs_in_area_type(list(/area/shuttle/escape)) // Not very efficient but check again in case someone was outdoors

@@ -9,6 +9,8 @@
 	var/flavour_text = "suddenly your mind is filled with codewords and responses"
 
 /obj/item/language_manual/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		return
 
@@ -25,6 +27,8 @@
 	use_charge(user)
 
 /obj/item/language_manual/attack(mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(M) || !istype(user))
 		return
 	if(M == user)
@@ -43,6 +47,8 @@
 		use_charge(user)
 
 /obj/item/language_manual/proc/use_charge(mob/user)
+	procstart = null
+	src.procstart = null
 	charges--
 	if(!charges)
 		user.visible_message(span_notice("The cover of [user]'s book start shifting and changing! It falls out of [user.p_their()] hands!"),
@@ -64,6 +70,8 @@
 	name = "roundstart species language manual"
 
 /obj/item/language_manual/roundstart_species/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!language) //if a language is already set, use it instead.
 		var/list/available_languages = length(GLOB.uncommon_roundstart_languages) ? GLOB.uncommon_roundstart_languages : list(/datum/language/common)
@@ -76,6 +84,8 @@
 	charges = INFINITY
 
 /obj/item/language_manual/roundstart_species/unlimited/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "deluxe [initial(language.name)] manual"
 
@@ -83,6 +93,8 @@
 	charges = 5
 
 /obj/item/language_manual/roundstart_species/five/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "extended [initial(language.name)] manual"
 
@@ -106,6 +118,8 @@
 	charges = INFINITY
 
 /obj/item/language_manual/dronespeak_manual/attack(mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	// If they are not drone or silicon, we don't want them to learn this language.
 	if(!(isdrone(M) || issilicon(M)))
 		M.visible_message(span_danger("[user] beats [M] over the head with [src]!"), span_userdanger("[user] beats you over the head with [src]!"), span_hear("You hear smacking."))
@@ -114,6 +128,8 @@
 	return ..()
 
 /obj/item/language_manual/dronespeak_manual/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!(isdrone(user) || issilicon(user)))
 		to_chat(user, span_danger("You beat yourself over the head with [src]!"))
 		return

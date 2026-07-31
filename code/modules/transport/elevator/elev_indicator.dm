@@ -37,6 +37,8 @@
 	var/current_lift_floor = 1
 
 /obj/machinery/lift_indicator/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	for(var/datum/transport_controller/linear/possible_match as anything in SStransport.transports_by_type[TRANSPORT_TYPE_ELEVATOR])
@@ -47,6 +49,8 @@
 		RegisterSignal(possible_match, COMSIG_LIFT_SET_DIRECTION, PROC_REF(on_lift_direction))
 
 /obj/machinery/lift_indicator/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!is_operational)
@@ -68,6 +72,8 @@
  * Update state, and only process if elevator is moving.
  */
 /obj/machinery/lift_indicator/proc/on_lift_direction(datum/source, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/transport_controller/linear/lift = lift_ref?.resolve()
@@ -78,6 +84,8 @@
 	update_operating()
 
 /obj/machinery/lift_indicator/on_set_is_operational()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	update_operating()
@@ -88,6 +96,8 @@
  * Returns whether we are still processing.
  */
 /obj/machinery/lift_indicator/proc/update_operating()
+	procstart = null
+	src.procstart = null
 	// Let process() figure it out to have the logic in one place.
 	var/should_process = process() != PROCESS_KILL
 	if(should_process)
@@ -97,6 +107,8 @@
 	return FALSE
 
 /obj/machinery/lift_indicator/process()
+	procstart = null
+	src.procstart = null
 	var/datum/transport_controller/linear/lift = lift_ref?.resolve()
 
 	// Check for stopped states.
@@ -129,6 +141,8 @@
  * force_update - force appearance to update even if state didn't change.
  */
 /obj/machinery/lift_indicator/proc/set_lift_state(new_direction, new_floor, force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(new_direction == current_lift_direction && new_floor == current_lift_floor && !force)
 		return
 
@@ -137,6 +151,8 @@
 	update_appearance()
 
 /obj/machinery/lift_indicator/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!is_operational)
@@ -148,6 +164,8 @@
 	maptext = "<div style='font-family: TinyUnicode; font-size: 12pt; color: [COLOR_DISPLAY_BLUE]'>[current_lift_floor]</div>"
 
 /obj/machinery/lift_indicator/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!is_operational)

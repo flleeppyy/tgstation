@@ -2,16 +2,22 @@ GLOBAL_LIST_EMPTY(custom_outfits) //Admin created outfits
 
 
 /datum/admins/proc/save_outfit(mob/admin, datum/outfit/O)
+	procstart = null
+	src.procstart = null
 	O.save_to_file(admin)
 	SStgui.update_user_uis(admin)
 
 /datum/admins/proc/delete_outfit(mob/admin, datum/outfit/O)
+	procstart = null
+	src.procstart = null
 	GLOB.custom_outfits -= O
 	qdel(O)
 	to_chat(admin,span_notice("Outfit deleted."))
 	SStgui.update_user_uis(admin)
 
 /datum/admins/proc/load_outfit(mob/admin)
+	procstart = null
+	src.procstart = null
 	var/outfit_file = input("Pick outfit json file:", "File") as null|file
 	if(!outfit_file)
 		return

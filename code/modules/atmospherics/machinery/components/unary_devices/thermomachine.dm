@@ -41,6 +41,8 @@
 	acid = 30
 
 /obj/machinery/atmospherics/components/unary/thermomachine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_ICON)
 	if(interactive)
@@ -48,6 +50,8 @@
 	register_context()
 
 /obj/machinery/atmospherics/components/unary/thermomachine/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	context[SCREENTIP_CONTEXT_CTRL_LMB] = "Turn [on ? "off" : "on"]"
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "Cycle temperature"
@@ -65,11 +69,15 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/atmospherics/components/unary/thermomachine/is_connectable()
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		return FALSE
 	. = ..()
 
 /obj/machinery/atmospherics/components/unary/thermomachine/on_construction(mob/user, obj_color, set_layer)
+	procstart = null
+	src.procstart = null
 	var/obj/item/circuitboard/machine/thermomachine/board = circuit
 	if(board)
 		piping_layer = board.pipe_layer
@@ -83,6 +91,8 @@
 		balloon_alert(user, "the port is already in use!")
 
 /obj/machinery/atmospherics/components/unary/thermomachine/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/calculated_bin_rating = 0
 	for(var/datum/stock_part/matter_bin/bin in component_parts)
@@ -96,6 +106,8 @@
 	max_temperature = T20C + (base_heating * calculated_laser_rating) //573.15K with T1 stock parts
 
 /obj/machinery/atmospherics/components/unary/thermomachine/update_icon_state()
+	procstart = null
+	src.procstart = null
 	var/colors_to_use = ""
 	switch(target_temperature)
 		if(BODYTEMP_HEAT_WARNING_3 to INFINITY)
@@ -126,12 +138,16 @@
 	return ..()
 
 /obj/machinery/atmospherics/components/unary/thermomachine/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/image/pipe = get_pipe_image('icons/obj/machines/atmospherics/thermomachine.dmi', "pipe", dir, pipe_color, piping_layer)
 	pipe.appearance_flags |= RESET_COLOR | KEEP_APART
 	. += pipe
 
 /obj/machinery/atmospherics/components/unary/thermomachine/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("With the panel open:")
 	. += span_notice(" -Use a wrench with left-click to rotate [src] and right-click to unanchor it.")
@@ -145,6 +161,8 @@
 		. += span_notice("Temperature range <b>[min_temperature]K - [max_temperature]K ([(T0C-min_temperature)*-1]C - [(T0C-max_temperature)*-1]C)</b>.")
 
 /obj/machinery/atmospherics/components/unary/thermomachine/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		balloon_alert(user, "close panel!")
 		return CLICK_ACTION_BLOCKING
@@ -164,6 +182,8 @@
 /// Performs heat calculation for the freezer.
 /// We just equalize the gasmix with an object at temp = var/target_temperature and heat cap = var/heat_capacity
 /obj/machinery/atmospherics/components/unary/thermomachine/process_atmos()
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return
 
@@ -198,6 +218,8 @@
 	update_parents()
 
 /obj/machinery/atmospherics/components/unary/thermomachine/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(on)
 		balloon_alert(user, "turn off!")
 		return ITEM_INTERACT_SUCCESS
@@ -208,12 +230,18 @@
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/atmospherics/components/unary/thermomachine/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_change_direction_wrench(user, tool)
 
 /obj/machinery/atmospherics/components/unary/thermomachine/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return crowbar_deconstruction_act(user, tool)
 
 /obj/machinery/atmospherics/components/unary/thermomachine/multitool_act(mob/living/user, obj/item/multitool/multitool)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		balloon_alert(user, "open panel!")
 		return ITEM_INTERACT_SUCCESS
@@ -225,6 +253,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/atmospherics/components/unary/thermomachine/multitool_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		balloon_alert(user, "open panel!")
 		return ITEM_INTERACT_SUCCESS
@@ -238,6 +268,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/atmospherics/components/unary/thermomachine/proc/check_pipe_on_turf()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/atmospherics/device in get_turf(src))
 		if(device == src)
 			continue
@@ -246,6 +278,8 @@
 	return FALSE
 
 /obj/machinery/atmospherics/components/unary/thermomachine/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		balloon_alert(user, "open panel!")
 		return ITEM_INTERACT_SUCCESS
@@ -258,11 +292,15 @@
 	return
 
 /obj/machinery/atmospherics/components/unary/thermomachine/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(interactive)
 		return ..()
 	return UI_CLOSE
 
 /obj/machinery/atmospherics/components/unary/thermomachine/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		return
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -271,6 +309,8 @@
 		ui.open()
 
 /obj/machinery/atmospherics/components/unary/thermomachine/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["on"] = on
 
@@ -285,6 +325,8 @@
 	return data
 
 /obj/machinery/atmospherics/components/unary/thermomachine/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -315,6 +357,8 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/machinery/atmospherics/components/unary/thermomachine/click_ctrl(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		return NONE
 	if(panel_open)
@@ -329,6 +373,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/atmospherics/components/unary/thermomachine/update_layer()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/atmospherics/components/unary/thermomachine/freezer
@@ -353,6 +399,8 @@
 	on = TRUE
 
 /obj/machinery/atmospherics/components/unary/thermomachine/freezer/on/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(target_temperature == initial(target_temperature))
 		target_temperature = min_temperature
@@ -363,6 +411,8 @@
 	greyscale_colors = COLOR_CYAN
 
 /obj/machinery/atmospherics/components/unary/thermomachine/freezer/on/coldroom/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	target_temperature = COLD_ROOM_TEMP
 

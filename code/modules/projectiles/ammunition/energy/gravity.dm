@@ -8,11 +8,15 @@
 	newtonian_force = 1
 
 /obj/item/ammo_casing/energy/gravity/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(istype(loc,/obj/item/gun/energy/gravity_gun))
 		gun = loc
 	. = ..()
 
 /obj/item/ammo_casing/energy/gravity/Destroy()
+	procstart = null
+	src.procstart = null
 	gun = null
 	. = ..()
 

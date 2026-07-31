@@ -45,11 +45,15 @@
 	var/obj/item/organ/brain/holding_brain
 
 /obj/item/skillchip/Initialize(mapload, is_removable = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	removable = is_removable
 
 ///We don't grant actions outside of being activated when implanted
 /obj/item/skillchip/item_action_slot_check(slot, mob/user, datum/action/action)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /**
@@ -61,6 +65,8 @@
  * * force - Boolean. Whether or not to just force de-activation if it would be prevented for any reason.
  */
 /obj/item/skillchip/proc/try_activate_skillchip(silent = FALSE, force = FALSE)
+	procstart = null
+	src.procstart = null
 	// Should not happen. Holding brain is destroyed and the chip hasn't had its state set appropriately.
 	if(QDELETED(holding_brain))
 		stack_trace("Skillchip's owner is null or qdeleted brain.")
@@ -100,6 +106,8 @@
  * * brain_owner - the owner var of the brain is set to null on organ/on_mob_remove(), so we need this if owner is null.
  */
 /obj/item/skillchip/proc/try_deactivate_skillchip(silent = FALSE, force = FALSE, mob/living/brain_owner)
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return "Skillchip is not active."
 
@@ -135,6 +143,8 @@
  * * owner_brain - The brain that this skillchip was implanted in to.
  */
 /obj/item/skillchip/proc/on_implant(obj/item/organ/brain/owner_brain)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(holding_brain)
 		CRASH("Skillchip is trying to be implanted into [owner_brain], but it's already implanted in [holding_brain]")
@@ -150,6 +160,8 @@
  * * silent - Boolean. Whether or not an activation message should be shown to the user.
  */
 /obj/item/skillchip/proc/on_activate(mob/living/carbon/user, silent=FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(!silent && activate_message)
 		to_chat(user, activate_message)
@@ -173,6 +185,8 @@
  * * silent - Boolean. Whether or not a deactivation message should be shown to the user.
  */
 /obj/item/skillchip/proc/on_removal(silent=FALSE)
+	procstart = null
+	src.procstart = null
 	if(active)
 		try_deactivate_skillchip(silent, TRUE)
 
@@ -188,6 +202,8 @@
  * * silent - Boolean. Whether or not a deactivation message should be shown to the user.
  */
 /obj/item/skillchip/proc/on_deactivate(mob/living/carbon/user, silent=FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(!silent && deactivate_message)
 		to_chat(user, deactivate_message)
@@ -211,6 +227,8 @@
  * * skillchip - The skillchip you're intending to activate. Does not activate the chip.
  */
 /obj/item/skillchip/proc/has_activate_incompatibility(obj/item/organ/brain/brain)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(brain))
 		return "No brain detected."
 
@@ -234,6 +252,8 @@
  * * skillchip - The skillchip to test for incompatability.
  */
 /obj/item/skillchip/proc/has_skillchip_incompatibility(obj/item/skillchip/skillchip)
+	procstart = null
+	src.procstart = null
 	// Only allow multiple copies of a type if SKILLCHIP_ALLOWS_MULTIPLE flag is set
 	if(!(skillchip_flags & SKILLCHIP_ALLOWS_MULTIPLE) && (skillchip.type == type))
 		return "Duplicate chip detected: [skillchip.name]"
@@ -255,6 +275,8 @@
  * * target - The mob to check for implantability with.
  */
 /obj/item/skillchip/proc/has_mob_incompatibility(mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	// No carbon/carbon of incorrect type
 	if(!istype(target))
 		return "Incompatible lifeform detected."
@@ -280,6 +302,8 @@
  * * brain - The brain to check for implantability with.
  */
 /obj/item/skillchip/proc/has_brain_incompatibility(obj/item/organ/brain/brain)
+	procstart = null
+	src.procstart = null
 	if(!istype(brain))
 		stack_trace("Attempted to check incompatibility with invalid brain object [brain].")
 		return "Incompatible brain."
@@ -310,6 +334,8 @@
  * Returns TRUE if the chip's extraction cooldown hasn't yet passed.
  */
 /obj/item/skillchip/proc/is_on_cooldown()
+	procstart = null
+	src.procstart = null
 	return !COOLDOWN_FINISHED(src, chip_cooldown)
 
 /**
@@ -319,6 +345,8 @@
  * Returns TRUE if the chip is active.
  */
 /obj/item/skillchip/proc/is_active()
+	procstart = null
+	src.procstart = null
 	return active
 
 /**
@@ -327,12 +355,16 @@
  * Intended to be overriden.
  */
 /obj/item/skillchip/proc/get_complexity()
+	procstart = null
+	src.procstart = null
 	return complexity
 
 /**
  * Returns a list of basic chip info. Used by the skill station.
  */
 /obj/item/skillchip/proc/get_chip_data()
+	procstart = null
+	src.procstart = null
 	return list(
 		"name" = skill_name,
 		"icon" = skill_icon,
@@ -354,6 +386,8 @@
  * Does not copy over any owner or brain status. Handle that externally.
  */
 /obj/item/skillchip/proc/get_metadata()
+	procstart = null
+	src.procstart = null
 	var/list/metadata = list()
 	metadata["type"] = type
 	metadata["chip_cooldown"] = chip_cooldown
@@ -373,6 +407,8 @@
  * metadata - Ideally the output of another chip's get_metadata proc. Assoc list of metadata.
  */
 /obj/item/skillchip/proc/set_metadata(list/metadata)
+	procstart = null
+	src.procstart = null
 	var/active_msg
 	// Start by trying to activate.
 	active = metadata["active"]

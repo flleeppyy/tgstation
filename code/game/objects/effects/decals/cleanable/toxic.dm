@@ -18,6 +18,8 @@
 	var/dissolve_timer
 
 /obj/effect/decal/cleanable/greenglow/waste/Initialize(mapload, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, alpha = 255, time = 0.5 SECONDS)
 
@@ -26,6 +28,8 @@
 	flick_overlay_view(splash_animation, 1.1 SECONDS)
 
 /obj/effect/decal/cleanable/greenglow/waste/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(bubbling_audio)
 	QDEL_NULL(particles)
 	return ..()
@@ -34,6 +38,8 @@
  * Sets up our waste to perform dissolve_floor after the timer goes off.
  */
 /obj/effect/decal/cleanable/greenglow/waste/proc/pre_dissolve(display_message = TRUE, dissolve_clock = DISSOLVE_DURATION)
+	procstart = null
+	src.procstart = null
 	if(display_message)
 		visible_message(span_warning("\The [src] begins corroding \the [get_turf(src)]!"))
 	color = "#ffffffff"
@@ -46,6 +52,8 @@
 	particles =  new /particles/acid/toxic()
 
 /obj/effect/decal/cleanable/greenglow/waste/proc/dissolve_floor()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	var/atom/splashed_turf = get_turf(src)

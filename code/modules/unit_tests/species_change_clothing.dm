@@ -3,6 +3,8 @@
 /datum/unit_test/species_change_clothing
 
 /datum/unit_test/species_change_clothing/Run()
+	procstart = null
+	src.procstart = null
 	// Test lizards as their own thing so we can get more coverage on their features
 	var/mob/living/carbon/human/morphing_human = allocate(/mob/living/carbon/human/dummy/consistent)
 
@@ -32,6 +34,8 @@
 /datum/unit_test/species_change_held_items
 
 /datum/unit_test/species_change_held_items/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/morphing_human = allocate(/mob/living/carbon/human/dummy/consistent)
 	var/obj/item/item_a = allocate(/obj/item/storage/toolbox)
 	var/obj/item/item_b = allocate(/obj/item/melee/baton/security/loaded)

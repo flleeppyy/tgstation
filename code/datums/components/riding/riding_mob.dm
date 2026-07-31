@@ -17,6 +17,8 @@
 	var/ai_behavior_while_ridden = RIDING_PAUSE_AI_PLANNING | RIDING_PAUSE_AI_MOVEMENT
 
 /datum/component/riding/creature/Initialize(mob/living/riding_mob, force = FALSE, ride_check_flags = NONE)
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -35,6 +37,8 @@
 		simple_parent.stop_automated_movement = TRUE
 
 /datum/component/riding/creature/Destroy(force)
+	procstart = null
+	src.procstart = null
 	unequip_buckle_inhands(parent)
 	if(isanimal(parent))
 		var/mob/living/simple_animal/simple_parent = parent
@@ -43,6 +47,8 @@
 	return ..()
 
 /datum/component/riding/creature/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_MOB_EMOTE, PROC_REF(check_emote))
 	if(can_be_driven)
@@ -50,6 +56,8 @@
 
 /// Creatures need to be logged when being mounted
 /datum/component/riding/creature/proc/log_riding(mob/living/living_parent, mob/living/rider)
+	procstart = null
+	src.procstart = null
 	if(!istype(living_parent) || !istype(rider))
 		return
 
@@ -58,6 +66,8 @@
 
 // this applies to humans and most creatures, but is replaced again for cyborgs
 /datum/component/riding/creature/ride_check(mob/living/rider, consequences = TRUE)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	var/mob/living/living_parent = parent
 
@@ -82,6 +92,8 @@
 	living_parent.unbuckle_mob(rider)
 
 /datum/component/riding/creature/vehicle_mob_buckle(mob/living/ridden, mob/living/rider, force = FALSE)
+	procstart = null
+	src.procstart = null
 	// Ensure that the /mob/post_buckle_mob(mob/living/M) does not mess us up with layers
 	// If we do not do this override we'll be stuck with the above proc (+ 0.1)-ing our rider's layer incorrectly
 	rider.layer = initial(rider.layer)
@@ -94,6 +106,8 @@
 	return ..()
 
 /datum/component/riding/creature/vehicle_mob_unbuckle(mob/living/formerly_ridden, mob/living/former_rider, force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(istype(formerly_ridden) && istype(former_rider))
 		formerly_ridden.log_message("is no longer being ridden by [former_rider].", LOG_GAME, color="pink")
 		former_rider.log_message("is no longer riding [formerly_ridden].", LOG_GAME, color="pink")
@@ -106,10 +120,14 @@
 	return ..()
 
 /datum/component/riding/creature/Process_Spacemove(direction, continuous_move)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_parent = parent
 	return override_allow_spacemove || living_parent.Process_Spacemove(direction, continuous_move)
 
 /datum/component/riding/creature/driver_move(atom/movable/movable_parent, mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, vehicle_move_cooldown) || !Process_Spacemove(direction))
 		return COMPONENT_DRIVER_BLOCK_MOVE
 	if(!keycheck(user))
@@ -127,12 +145,16 @@
 
 /// Calculates and returns movement delay for a certain direction
 /datum/component/riding/creature/proc/get_move_delay(mob/living/living_parent, mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	var/modified_move_delay = uses_native_speed ? living_parent.cached_multiplicative_slowdown : vehicle_move_delay
 	if(HAS_TRAIT(user, TRAIT_ROUGHRIDER)) // YEEHAW!
 		modified_move_delay *= get_roughrider_mult(user)
 	return modified_move_delay
 
 /datum/component/riding/creature/proc/get_roughrider_mult(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (HAS_TRAIT(user, TRAIT_PRIMITIVE))
 		return 0.8
 	switch(user.mob_mood?.sanity_level)
@@ -150,6 +172,8 @@
 
 /// Yeets the rider off, used for animals and cyborgs, redefined for humans who shove their piggyback rider off
 /datum/component/riding/creature/proc/force_dismount(mob/living/rider, throw_range = 8, throw_speed = 3, gentle = FALSE)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/movable_parent = parent
 	movable_parent.unbuckle_mob(rider)
 	rider.Knockdown(3 SECONDS)
@@ -164,6 +188,8 @@
 
 /// If we're a cyborg or animal and we spin, we yeet whoever's on us off us
 /datum/component/riding/creature/proc/check_emote(mob/living/user, datum/emote/emote)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if((!iscyborg(user) && !isanimal_or_basicmob(user)) || !istype(emote, /datum/emote/spin))
 		return
@@ -174,6 +200,8 @@
 
 /// If the ridden creature has abilities, and some var yet to be made is set to TRUE, the rider will be able to control those abilities
 /datum/component/riding/creature/proc/setup_abilities(mob/living/rider)
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return
 
@@ -188,6 +216,8 @@
 
 /// Takes away the riding parent's abilities from the rider
 /datum/component/riding/creature/proc/remove_abilities(mob/living/rider)
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return
 
@@ -200,6 +230,8 @@
 		action.HideFrom(rider)
 
 /datum/component/riding/creature/riding_can_z_move(atom/movable/movable_parent, direction, turf/start, turf/destination, z_move_flags, mob/living/rider)
+	procstart = null
+	src.procstart = null
 	if(!(z_move_flags & ZMOVE_CAN_FLY_CHECKS))
 		return COMPONENT_RIDDEN_ALLOW_Z_MOVE
 	if(!can_be_driven)
@@ -218,6 +250,8 @@
 	can_be_driven = FALSE
 
 /datum/component/riding/creature/human/Initialize(mob/living/riding_mob, force = FALSE, ride_check_flags = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/carbon/human/human_parent = parent
 	human_parent.add_movespeed_modifier(/datum/movespeed_modifier/human_carry)
@@ -231,6 +265,8 @@
 		human_parent.buckle_lying = 90
 
 /datum/component/riding/creature/handle_buckle(mob/living/rider)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/ridden = parent
 	if(!require_minigame || ridden.has_ally(rider))
@@ -241,11 +277,15 @@
 	new /datum/riding_minigame(ridden, rider)
 
 /datum/component/riding/creature/human/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(on_host_unarmed_melee))
 	RegisterSignal(parent, COMSIG_LIVING_SET_BODY_POSITION, PROC_REF(check_carrier_fall_over))
 
 /datum/component/riding/creature/human/log_riding(mob/living/living_parent, mob/living/rider)
+	procstart = null
+	src.procstart = null
 	if(!istype(living_parent) || !istype(rider))
 		return
 
@@ -257,6 +297,8 @@
 		rider.log_message("was fireman carried by [living_parent].", LOG_GAME, color="pink")
 
 /datum/component/riding/creature/human/vehicle_mob_unbuckle(datum/source, mob/living/former_rider, force = FALSE)
+	procstart = null
+	src.procstart = null
 	unequip_buckle_inhands(parent)
 	var/mob/living/carbon/human/H = parent
 	H.remove_movespeed_modifier(/datum/movespeed_modifier/human_carry)
@@ -265,6 +307,8 @@
 
 /// If the carrier shoves the person they're carrying, force the carried mob off
 /datum/component/riding/creature/human/proc/on_host_unarmed_melee(mob/living/source, atom/target, proximity, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(LAZYACCESS(modifiers, RIGHT_CLICK) && (target in source.buckled_mobs))
@@ -274,6 +318,8 @@
 
 /// If the carrier gets knocked over, force the rider(s) off and see if someone got hurt
 /datum/component/riding/creature/human/proc/check_carrier_fall_over(mob/living/carbon/human/human_parent)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/mob/living/rider as anything in human_parent.buckled_mobs)
@@ -291,6 +337,8 @@
 		to_chat(rider, span_danger("[human_parent] falls to the ground, bringing you with [human_parent.p_them()]!"))
 
 /datum/component/riding/creature/human/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/seat = parent
 	// fireman carry
 	if(seat.buckle_lying)
@@ -309,6 +357,8 @@
 	)
 
 /datum/component/riding/creature/human/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 0),
 		TEXT_SOUTH = list(0, 0),
@@ -317,6 +367,8 @@
 	)
 
 /datum/component/riding/creature/human/force_dismount(mob/living/rider, throw_range = 8, throw_speed = 3, gentle = FALSE)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/seat = parent
 	seat.unbuckle_mob(rider)
 	rider.Paralyze(1 SECONDS)
@@ -332,6 +384,8 @@
 	can_be_driven = FALSE
 
 /datum/component/riding/creature/cyborg/ride_check(mob/living/user, consequences = TRUE)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/robot_parent = parent
 	if(!iscarbon(user))
 		return TRUE
@@ -341,10 +395,14 @@
 		to_chat(user, span_warning("You can't grab onto [robot_parent] with no hands!"))
 
 /datum/component/riding/creature/cyborg/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/robot_parent = parent
 	return robot_parent.model?.ride_offsets || DEFAULT_ROBOT_RIDING_OFFSETS
 
 /datum/component/riding/creature/cyborg/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 0, MOB_BELOW_PIGGYBACK_LAYER),
 		TEXT_SOUTH = list(0, 0, MOB_ABOVE_PIGGYBACK_LAYER),
@@ -356,6 +414,8 @@
 /datum/component/riding/creature/mulebot
 
 /datum/component/riding/creature/mulebot/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 12, MOB_BELOW_PIGGYBACK_LAYER),
 		TEXT_SOUTH = list(0, 12, MOB_BELOW_PIGGYBACK_LAYER),
@@ -364,11 +424,15 @@
 	)
 
 /datum/component/riding/creature/mulebot/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return null
 
 /datum/component/riding/creature/cow
 
 /datum/component/riding/creature/cow/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list( 0, 8),
 		TEXT_SOUTH = list( 0, 8),
@@ -377,6 +441,8 @@
 	)
 
 /datum/component/riding/creature/cow/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 0, MOB_BELOW_PIGGYBACK_LAYER),
 		TEXT_SOUTH = list(0, 0, MOB_ABOVE_PIGGYBACK_LAYER),
@@ -387,6 +453,8 @@
 /datum/component/riding/creature/pig
 
 /datum/component/riding/creature/pig/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list( 0, 8),
 		TEXT_SOUTH = list( 0, 8),
@@ -395,6 +463,8 @@
 	)
 
 /datum/component/riding/creature/pig/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 0, MOB_BELOW_PIGGYBACK_LAYER),
 		TEXT_SOUTH = list(0, 0, MOB_ABOVE_PIGGYBACK_LAYER),
@@ -408,6 +478,8 @@
 	COOLDOWN_DECLARE(pony_trot_cooldown)
 
 /datum/component/riding/creature/pony/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list( 0, 9),
 		TEXT_SOUTH = list( 0, 9),
@@ -416,6 +488,8 @@
 	)
 
 /datum/component/riding/creature/pony/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 0, MOB_BELOW_PIGGYBACK_LAYER),
 		TEXT_SOUTH = list(0, 0, MOB_ABOVE_PIGGYBACK_LAYER),
@@ -424,6 +498,8 @@
 	)
 
 /datum/component/riding/creature/pony/driver_move(atom/movable/movable_parent, mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (. == COMPONENT_DRIVER_BLOCK_MOVE || !COOLDOWN_FINISHED(src, pony_trot_cooldown))
@@ -440,6 +516,8 @@
 	vehicle_move_delay = 1.5
 
 /datum/component/riding/creature/bear/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list( 1, 8),
 		TEXT_SOUTH = list( 1, 8),
@@ -448,6 +526,8 @@
 	)
 
 /datum/component/riding/creature/bear/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 0, MOB_BELOW_PIGGYBACK_LAYER),
 		TEXT_SOUTH = list(0, 0, MOB_ABOVE_PIGGYBACK_LAYER),
@@ -459,6 +539,8 @@
 	override_allow_spacemove = TRUE
 
 /datum/component/riding/creature/carp/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 13),
 		TEXT_SOUTH = list(0, 15),
@@ -467,6 +549,8 @@
 	)
 
 /datum/component/riding/creature/carp/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 0, MOB_BELOW_PIGGYBACK_LAYER),
 		TEXT_SOUTH = list(0, 0, MOB_ABOVE_PIGGYBACK_LAYER),
@@ -478,6 +562,8 @@
 	override_allow_spacemove = TRUE
 
 /datum/component/riding/creature/megacarp/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(1, 8),
 		TEXT_SOUTH = list(1, 8),
@@ -486,6 +572,8 @@
 	)
 
 /datum/component/riding/creature/megacarp/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 0, MOB_BELOW_PIGGYBACK_LAYER),
 		TEXT_SOUTH = list(0, 0, MOB_ABOVE_PIGGYBACK_LAYER),
@@ -498,6 +586,8 @@
 	can_use_abilities = TRUE
 
 /datum/component/riding/creature/vatbeast/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 15),
 		TEXT_SOUTH = list(0, 15),
@@ -506,6 +596,8 @@
 	)
 
 /datum/component/riding/creature/vatbeast/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 0, MOB_BELOW_PIGGYBACK_LAYER),
 		TEXT_SOUTH = list(0, 0, MOB_ABOVE_PIGGYBACK_LAYER),
@@ -535,6 +627,8 @@
 	keytype = null
 
 /datum/component/riding/creature/goliath/driver_move(atom/movable/movable_parent, mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if (speed_boost != maximum_boost)
 		return ..()
 	// At maximum acceleration, start spawning afterimages
@@ -547,6 +641,8 @@
 	spawned_last_move = !spawned_last_move
 
 /datum/component/riding/creature/goliath/get_move_delay(mob/living/living_parent, mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	var/move_delay = living_parent.cached_multiplicative_slowdown + flat_speed_mod
 	// We give grace of 2 ticks of stopped movement, or 0.1 seconds, in case of SSinput not being able to process all inputs in a single tick
 	if (last_move_dir != direction || vehicle_move_cooldown + 0.1 SECONDS < world.time)
@@ -566,6 +662,8 @@
 	return modified_move_delay
 
 /datum/component/riding/creature/goliath/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list( 0, 12),
 		TEXT_SOUTH = list( 0, 12),
@@ -574,6 +672,8 @@
 	)
 
 /datum/component/riding/creature/goliath/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 0, MOB_BELOW_PIGGYBACK_LAYER),
 		TEXT_SOUTH = list(0, 0, MOB_ABOVE_PIGGYBACK_LAYER),
@@ -584,6 +684,8 @@
 /datum/component/riding/creature/glutton
 
 /datum/component/riding/creature/glutton/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list( 0, 24),
 		TEXT_SOUTH = list( 0, 24),
@@ -592,6 +694,8 @@
 	)
 
 /datum/component/riding/creature/glutton/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 0, MOB_BELOW_PIGGYBACK_LAYER),
 		TEXT_SOUTH = list(0, 0, MOB_ABOVE_PIGGYBACK_LAYER),
@@ -603,6 +707,8 @@
 	can_be_driven = FALSE
 
 /datum/component/riding/creature/guardian/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list( 0, 4),
 		TEXT_SOUTH = list( 0, 4),
@@ -611,6 +717,8 @@
 	)
 
 /datum/component/riding/creature/guardian/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 0, MOB_BELOW_PIGGYBACK_LAYER),
 		TEXT_SOUTH = list(0, 0, MOB_ABOVE_PIGGYBACK_LAYER),
@@ -619,6 +727,8 @@
 	)
 
 /datum/component/riding/creature/guardian/ride_check(mob/living/user, consequences = TRUE)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/guardian/charger = parent
 	if(!istype(charger))
 		return ..()
@@ -628,22 +738,30 @@
 	uses_native_speed = TRUE
 
 /datum/component/riding/creature/goldgrub/Initialize(mob/living/riding_mob, force, ride_check_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/basic/mining/goldgrub/goldgrub = parent
 	goldgrub.add_movespeed_modifier(/datum/movespeed_modifier/goldgrub_mount)
 	RegisterSignal(goldgrub, COMSIG_PROFICIENT_MINER_MINED, PROC_REF(on_mined))
 
 /datum/component/riding/creature/goldgrub/Destroy(force)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/mining/goldgrub/goldgrub = parent
 	goldgrub.remove_movespeed_modifier(/datum/movespeed_modifier/goldgrub_mount)
 	return ..()
 
 /datum/component/riding/creature/goldgrub/proc/on_mined(datum/source, turf/closed/wall/mineral/rock, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Reset movement cooldown once you've dug a tile
 	COOLDOWN_RESET(src, vehicle_move_cooldown)
 
 /datum/component/riding/creature/goldgrub/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 3),
 		TEXT_SOUTH = list(1, 7),
@@ -652,6 +770,8 @@
 	)
 
 /datum/component/riding/creature/goldgrub/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 0, MOB_BELOW_PIGGYBACK_LAYER),
 		TEXT_SOUTH = list(0, 0, MOB_ABOVE_PIGGYBACK_LAYER),
@@ -665,6 +785,8 @@
 	ride_check_flags = JUST_FRIEND_RIDERS
 
 /datum/component/riding/creature/leaper/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 46),
 		TEXT_SOUTH = list(0, 51),
@@ -673,6 +795,8 @@
 	)
 
 /datum/component/riding/creature/leaper/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 0, MOB_BELOW_PIGGYBACK_LAYER),
 		TEXT_SOUTH = list(0, 0, MOB_ABOVE_PIGGYBACK_LAYER),
@@ -680,10 +804,14 @@
 		TEXT_WEST =  list(0, 0, MOB_ABOVE_PIGGYBACK_LAYER),
 	)
 /datum/component/riding/creature/leaper/Initialize(mob/living/riding_mob, force = FALSE, ride_check_flags = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(riding_mob, COMSIG_MOVABLE_POINTED, PROC_REF(attack_pointed))
 
 /datum/component/riding/creature/leaper/proc/attack_pointed(mob/living/rider, atom/pointed, obj/effect/temp_visual/point/point)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isclosedturf(pointed))
 		return
@@ -693,6 +821,8 @@
 	basic_parent.melee_attack(pointed)
 
 /datum/component/riding/leaper/handle_unbuckle(mob/living/rider)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(rider,  COMSIG_MOVABLE_POINTED)
 
@@ -702,23 +832,31 @@
 	ride_check_flags = RIDER_NEEDS_ARM | UNBUCKLE_DISABLED_RIDER
 
 /datum/component/riding/creature/raptor/Initialize(mob/living/riding_mob, force, ride_check_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_PROJECTILE_PREHIT, PROC_REF(on_bullet_hit))
 	RegisterSignal(parent, COMSIG_MOB_AFTER_APPLY_DAMAGE, PROC_REF(on_attacked))
 
 /datum/component/riding/creature/raptor/proc/on_bullet_hit(atom/target, obj/projectile/hit_projectile)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(hit_projectile.armor_flag == ENERGY)
 		freak_out()
 
 /datum/component/riding/creature/raptor/proc/on_attacked(mob/living/source, damage_dealt, damagetype, def_zone, blocked, wound_bonus, exposed_wound_bonus, sharpness, attack_direction, obj/item/attacking_item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(damagetype == STAMINA)
 		freak_out()
 
 /datum/component/riding/creature/raptor/proc/freak_out()
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_parent = parent
 	if(lavaland_equipment_pressure_check(get_turf(living_parent)) || !length(living_parent.buckled_mobs))
 		return
@@ -728,6 +866,8 @@
 		force_dismount(buckled_mob, throw_range = 2, gentle = TRUE)
 
 /datum/component/riding/creature/raptor/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(-1, 7),
 		TEXT_SOUTH = list(2, 10),
@@ -736,6 +876,8 @@
 	)
 
 /datum/component/riding/creature/raptor/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 0, MOB_BELOW_PIGGYBACK_LAYER),
 		TEXT_SOUTH = list(0, 0, MOB_ABOVE_PIGGYBACK_LAYER),
@@ -747,14 +889,20 @@
 	ai_behavior_while_ridden = RIDING_PAUSE_AI_MOVEMENT
 
 /datum/component/riding/creature/raptor/healer/vehicle_mob_buckle(mob/living/ridden, mob/living/rider, force)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(rider, COMSIG_MOB_STATCHANGE, PROC_REF(on_buckled_stat_change))
 	return ..()
 
 /datum/component/riding/creature/raptor/healer/vehicle_mob_unbuckle(mob/living/formerly_ridden, mob/living/former_rider, force)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(former_rider, COMSIG_MOB_STATCHANGE)
 	return ..()
 
 /datum/component/riding/creature/raptor/healer/proc/on_buckled_stat_change(mob/living/source, new_stat, old_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/basic/raptor/raptor = source.buckled
@@ -779,6 +927,8 @@
 		break
 
 /datum/component/riding/creature/raptor/small/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(-1, 5),
 		TEXT_SOUTH = list(2, 8),
@@ -791,6 +941,8 @@
 	ride_check_flags = RIDER_NEEDS_ARM | UNBUCKLE_DISABLED_RIDER
 
 /datum/component/riding/creature/spider/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list( 0, 10),
 		TEXT_SOUTH = list( 0, 10),
@@ -799,6 +951,8 @@
 	)
 
 /datum/component/riding/creature/spider/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 0, MOB_BELOW_PIGGYBACK_LAYER),
 		TEXT_SOUTH = list(0, 0, MOB_ABOVE_PIGGYBACK_LAYER),
@@ -813,6 +967,8 @@
 	uses_native_speed = TRUE
 
 /datum/component/riding/creature/ed_bot/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 7),
 		TEXT_SOUTH = list(0, 7),
@@ -821,6 +977,8 @@
 	)
 
 /datum/component/riding/creature/ed_bot/get_parent_offsets_and_layers()
+	procstart = null
+	src.procstart = null
 	return list(
 		TEXT_NORTH = list(0, 0, MOB_BELOW_PIGGYBACK_LAYER),
 		TEXT_SOUTH = list(0, 0, MOB_ABOVE_PIGGYBACK_LAYER),
@@ -829,6 +987,8 @@
 	)
 
 /datum/component/riding/creature/ed_bot/ride_check(mob/living/rider, consequences = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -840,5 +1000,7 @@
 /datum/component/riding/creature/ed_bot/nukie
 
 /datum/component/riding/creature/ed_bot/nukie/ride_check(mob/living/rider, consequences = TRUE)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bot/secbot/my_bot = parent
 	return my_bot.faction_check_atom(rider)

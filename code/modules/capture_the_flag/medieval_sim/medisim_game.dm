@@ -10,14 +10,20 @@
 	player_traits = list()
 
 /obj/machinery/ctf/spawner/medisim/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ctf_game.setup_rules(victory_rejoin_text = "Teams have been cleared. The next game is starting automatically. Rejoin a team if you wish!", auto_restart = TRUE)
 
 /obj/machinery/ctf/spawner/medisim/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ctf_game.start_ctf()
 
 /obj/machinery/ctf/spawner/medisim/spawn_team_member(client/new_team_member)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

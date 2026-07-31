@@ -6,9 +6,13 @@
 	anchored = TRUE //stops it being moved
 
 /obj/machinery/nuclearbomb/selfdestruct/set_anchor()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/nuclearbomb/selfdestruct/toggle_nuke_safety()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(timing)
 		SSmapping.add_nuke_threat(src)
@@ -16,6 +20,8 @@
 		SSmapping.remove_nuke_threat(src)
 
 /obj/machinery/nuclearbomb/selfdestruct/toggle_nuke_armed()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(timing)
 		SSmapping.add_nuke_threat(src)

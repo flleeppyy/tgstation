@@ -23,12 +23,16 @@
 	)
 
 /obj/machinery/medipen_refiller/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/plumbing/simple_demand)
 	AddElement(/datum/element/simple_rotation)
 	register_context()
 
 /obj/machinery/medipen_refiller/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!held_item)
 		return NONE
@@ -53,6 +57,8 @@
 		. = CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/medipen_refiller/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/new_volume = 100
 	for(var/datum/stock_part/matter_bin/matter_bin in component_parts)
@@ -63,6 +69,8 @@
 	return TRUE
 
 /obj/machinery/medipen_refiller/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user.combat_mode)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
@@ -110,6 +118,8 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/medipen_refiller/plunger_act(obj/item/plunger/attacking_plunger, mob/living/user, reinforced)
+	procstart = null
+	src.procstart = null
 	user.balloon_alert_to_viewers("furiously plunging...", "plunging medipen refiller...")
 	if(!do_after(user, 3 SECONDS, target = src))
 		return TRUE
@@ -119,14 +129,22 @@
 	return TRUE
 
 /obj/machinery/medipen_refiller/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_unfasten_wrench(user, tool)
 
 /obj/machinery/medipen_refiller/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/medipen_refiller/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/medipen_refiller/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]_open" : base_icon_state

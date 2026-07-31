@@ -50,9 +50,13 @@
 	src.damage_res_sinked = damage_res_sinked
 
 /datum/component/ground_sinking/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved))
 
 /datum/component/ground_sinking/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	if(sinked || is_sinking)
 		unsink()
 	if(ground_sinking_start_timer)
@@ -60,6 +64,8 @@
 	UnregisterSignal(parent, COMSIG_MOVABLE_MOVED)
 
 /datum/component/ground_sinking/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(sinked || is_sinking)
 		unsink()
 	. = ..()
@@ -68,6 +74,8 @@
 
 /// When you move, reset the cooldown and start processing
 /datum/component/ground_sinking/proc/on_moved(mob/living/basic/living_target, atom/OldLoc, Dir, Forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(sinked || is_sinking)
 		unsink()
@@ -77,12 +85,16 @@
 
 /// Start processing health regeneration, and show animation if provided
 /datum/component/ground_sinking/proc/start_sinking(mob/living/basic/living_target)
+	procstart = null
+	src.procstart = null
 	if(!sinked || is_sinking)
 		is_sinking = TRUE
 		INVOKE_ASYNC(src, PROC_REF(sinking_progress), living_target)
 
 /// Makes the mob try to sink three times. Unsinks if interrupted.
 /datum/component/ground_sinking/proc/sinking_progress(mob/living/basic/living_target)
+	procstart = null
+	src.procstart = null
 	living_target.visible_message(span_notice("[living_target] starts sinking into the ground!"))
 	for(var/i in 1 to 3)
 		if(QDELETED(living_target))
@@ -97,6 +109,8 @@
 
 /// The mob has fully sunk, updates its regeneration, damage resistance and density
 /datum/component/ground_sinking/proc/finish_sinking(mob/living/basic/living_target)
+	procstart = null
+	src.procstart = null
 	sinked = TRUE
 	is_sinking = FALSE
 	living_target.set_density(FALSE)
@@ -106,6 +120,8 @@
 
 /// The mob pops out of the ground
 /datum/component/ground_sinking/proc/unsink()
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/living_target = parent
 	if(QDELETED(parent))
 		return
@@ -118,6 +134,8 @@
 
 /// The mop starts regaining health
 /datum/component/ground_sinking/proc/start_regenerating()
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/living_parent = parent
 	if (living_parent.stat == DEAD)
 		return
@@ -134,6 +152,8 @@
 
 /// Stops regaining health
 /datum/component/ground_sinking/proc/stop_regenerating()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	var/mob/living/basic/living_parent = parent
 	var/filter = living_parent.get_filter(REGENERATION_FILTER)
@@ -141,6 +161,8 @@
 	living_parent.remove_filter(REGENERATION_FILTER)
 
 /datum/component/ground_sinking/process(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/living_parent = parent
 	if (living_parent.stat == DEAD)
 		stop_regenerating()

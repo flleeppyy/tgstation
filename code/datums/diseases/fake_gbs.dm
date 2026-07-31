@@ -12,6 +12,8 @@
 	visibility_flags = HIDDEN_BOOK
 
 /datum/disease/fake_gbs/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

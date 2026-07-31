@@ -14,12 +14,16 @@
 	COOLDOWN_DECLARE(change_mood)
 
 /datum/action/cooldown/mob_cooldown/bot/vibe/Grant(mob/granted_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(granted_to))
 		return
 	RegisterSignal(granted_to, COMSIG_BOT_RESET, PROC_REF(remove_colors))
 
 /datum/action/cooldown/mob_cooldown/bot/vibe/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	if(target == owner)
 		remove_colors()
 		return TRUE
@@ -29,6 +33,8 @@
 
 ///Gives a random color
 /datum/action/cooldown/mob_cooldown/bot/vibe/proc/vibe()
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bot/bot_owner = owner
 	var/final_color = (bot_owner.bot_access_flags & BOT_COVER_EMAGGED) ? COLOR_GRAY : "#[random_color()]"
 	owner.remove_atom_colour(TEMPORARY_COLOUR_PRIORITY)
@@ -43,6 +49,8 @@
 
 ///Removes all colors
 /datum/action/cooldown/mob_cooldown/bot/vibe/proc/remove_colors()
+	procstart = null
+	src.procstart = null
 	owner.remove_atom_colour(TEMPORARY_COLOUR_PRIORITY)
 	owner.set_light_color(null)
 

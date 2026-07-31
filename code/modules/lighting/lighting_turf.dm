@@ -1,16 +1,22 @@
 // Causes any affecting light sources to be queued for a visibility update, for example a door got opened.
 /turf/proc/reconsider_lights()
+	procstart = null
+	src.procstart = null
 	lighting_corner_NE?.vis_update()
 	lighting_corner_SE?.vis_update()
 	lighting_corner_SW?.vis_update()
 	lighting_corner_NW?.vis_update()
 
 /turf/proc/lighting_clear_overlay()
+	procstart = null
+	src.procstart = null
 	if (lighting_object)
 		qdel(lighting_object, force=TRUE)
 
 // Builds a lighting object for us, but only if our area is dynamic.
 /turf/proc/lighting_build_overlay()
+	procstart = null
+	src.procstart = null
 	if (lighting_object)
 		qdel(lighting_object, force=TRUE) //Shitty fix for lighting objects persisting after death
 
@@ -18,6 +24,8 @@
 
 // Used to get a scaled lumcount.
 /turf/proc/get_lumcount(minlum = 0, maxlum = 1)
+	procstart = null
+	src.procstart = null
 	if (!lighting_object)
 		return 1
 
@@ -50,6 +58,8 @@
 // itself as too dark to allow sight and see_in_dark becomes useful.
 // So basically if this returns true the tile is unlit black.
 /turf/proc/is_softly_lit()
+	procstart = null
+	src.procstart = null
 	if (!lighting_object)
 		return FALSE
 
@@ -58,6 +68,8 @@
 
 ///Proc to add movable sources of opacity on the turf and let it handle lighting code.
 /turf/proc/add_opacity_source(atom/movable/new_source)
+	procstart = null
+	src.procstart = null
 	LAZYADD(opacity_sources, new_source)
 	if(opacity)
 		return
@@ -66,6 +78,8 @@
 
 ///Proc to remove movable sources of opacity on the turf and let it handle lighting code.
 /turf/proc/remove_opacity_source(atom/movable/old_source)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(opacity_sources, old_source)
 	if(opacity) //Still opaque, no need to worry on updating.
 		return
@@ -74,6 +88,8 @@
 
 ///Calculate on which directions this turfs block view.
 /turf/proc/recalculate_directional_opacity()
+	procstart = null
+	src.procstart = null
 	. = directional_opacity
 	if(opacity)
 		directional_opacity = ALL_CARDINALS
@@ -96,6 +112,8 @@
 
 ///Transfer the lighting of one area to another
 /turf/proc/transfer_area_lighting(area/old_area, area/new_area)
+	procstart = null
+	src.procstart = null
 	if(SSlighting.initialized && !space_lit)
 		if (new_area.static_lighting != old_area.static_lighting)
 			if (new_area.static_lighting)

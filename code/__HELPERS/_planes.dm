@@ -96,6 +96,8 @@ GLOBAL_LIST_INIT(topdown_planes, list(
 
 /// Checks if a passed in MA or atom is allowed to have its current plane/layer matchup
 /proc/check_topdown_validity(mutable_appearance/thing_to_check)
+	procstart = null
+	src.procstart = null
 	if(istype(thing_to_check, /atom/movable/screen/plane_master))
 		return
 	if(IS_TOPDOWN_PLANE(thing_to_check.plane))

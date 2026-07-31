@@ -113,6 +113,8 @@
 	var/edges_are_alive = TRUE
 
 /datum/map_generator/cave_generator/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!weighted_mob_spawn_list)
 		weighted_mob_spawn_list = list(
@@ -146,6 +148,8 @@
 	closed_turf_types = expand_weights(weighted_closed_turf_types)
 
 /datum/map_generator/cave_generator/generate_terrain(list/turfs, area/generate_in)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(generate_in.area_flags_mapping & CAVES_ALLOWED))
 		return
@@ -181,6 +185,8 @@
  * you're probably doing something wrong.
  */
 /datum/map_generator/cave_generator/proc/generate_terrain_with_biomes(list/turf/turfs, area/generate_in)
+	procstart = null
+	src.procstart = null
 	if(!(generate_in.area_flags_mapping & CAVES_ALLOWED))
 		return
 
@@ -265,6 +271,8 @@
 /// Returns a biome datum that the turf was initialized with, or would be if it is present on our Z level and we use a consistent shared seed
 /// Not consistent between calls by itself due to using RNG in perlin zoom, needs a static coordinate-based formula
 /datum/map_generator/cave_generator/proc/get_biome_for_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	for (var/biome in generated_turfs_per_biome)
 		var/list/generated_turfs = generated_turfs_per_biome[biome]
 		if (generated_turfs[target])
@@ -286,6 +294,8 @@
 	return possible_biomes[heat_level][humidity_level]
 
 /datum/map_generator/cave_generator/populate_terrain(list/turfs, area/generate_in)
+	procstart = null
+	src.procstart = null
 	if (biome_population && length(possible_biomes))
 		return populate_terrain_with_biomes(turfs, generate_in)
 
@@ -397,6 +407,8 @@
  * have `FLORA_ALLOWED` or `MOB_SPAWN_ALLOWED` in its `area_flags`.
  */
 /datum/map_generator/cave_generator/proc/populate_terrain_with_biomes(list/turfs, area/generate_in)
+	procstart = null
+	src.procstart = null
 	// Area var pullouts to make accessing in the loop faster
 	var/flora_allowed = (generate_in.area_flags_mapping & FLORA_ALLOWED)
 	var/features_allowed = (generate_in.area_flags_mapping & FLORA_ALLOWED)
@@ -425,6 +437,8 @@
 
 ///Generates the cave shape using Rust-G
 /datum/map_generator/cave_generator/proc/generate_cave(area/generate_in)
+	procstart = null
+	src.procstart = null
 
 	///Loop through all the active ruins for this z-level and make a json format out of it so we can send it to the generator
 	var/list/active_ruins_list = list()

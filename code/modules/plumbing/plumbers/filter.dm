@@ -12,10 +12,14 @@
 	var/list/right = list()
 
 /obj/machinery/plumbing/filter/Initialize(mapload, layer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/plumbing/multidirectional/filter, layer)
 
 /obj/machinery/plumbing/filter/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ChemFilter", name)
@@ -23,6 +27,8 @@
 		ui.open()
 
 /obj/machinery/plumbing/filter/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	.["left"] = list()
@@ -34,6 +40,8 @@
 		.["right"] += id::name
 
 /obj/machinery/plumbing/filter/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

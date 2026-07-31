@@ -12,6 +12,8 @@
  * Default behaviour is to send [COMSIG_ATOM_FIRE_ACT] and return
  */
 /atom/proc/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_ATOM_FIRE_ACT, exposed_temperature, exposed_volume)
 	return FALSE
 
@@ -21,6 +23,8 @@
  * Default behaviour is to send [COMSIG_ATOM_ACID_ACT] and return
  */
 /atom/proc/extinguish()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	return SEND_SIGNAL(src, COMSIG_ATOM_EXTINGUISH)
 
@@ -38,11 +42,15 @@
  *
  */
 /atom/proc/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	return TRUE
 
 /// Handle what happens when your contents are exploded by a bomb
 /atom/proc/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	return //For handling the effects of explosions on contents that would not normally be effected
 
 /**
@@ -51,6 +59,8 @@
  * default behaviour is to send the [COMSIG_ATOM_BLOB_ACT] signal
  */
 /atom/proc/blob_act(obj/structure/blob/attacking_blob)
+	procstart = null
+	src.procstart = null
 	var/blob_act_result = SEND_SIGNAL(src, COMSIG_ATOM_BLOB_ACT, attacking_blob)
 	if (blob_act_result & COMPONENT_CANCEL_BLOB_ACT)
 		return FALSE
@@ -67,6 +77,8 @@
  * We then return the protection value
  */
 /atom/proc/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	var/protection = SEND_SIGNAL(src, COMSIG_ATOM_PRE_EMP_ACT, severity)
 	if(!(protection & EMP_PROTECT_WIRES) && istype(wires))
@@ -93,6 +105,8 @@
  */
 
 /atom/proc/projectile_hit(obj/projectile/hitting_projectile, def_zone, piercing_hit = FALSE, blocked = null)
+	procstart = null
+	src.procstart = null
 	var/sigreturn = SEND_SIGNAL(src, COMSIG_ATOM_PRE_BULLET_ACT, hitting_projectile, def_zone, piercing_hit)
 
 	if(sigreturn & COMPONENT_BULLET_PIERCED)
@@ -117,6 +131,8 @@
  * * blocked - total armor value to apply to this hit
  */
 /atom/proc/bullet_act(obj/projectile/hitting_projectile, def_zone, piercing_hit = FALSE, blocked = 0)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_ATOM_BULLET_ACT, hitting_projectile, def_zone, piercing_hit, blocked)
 	if(QDELETED(hitting_projectile)) // Signal deleted it?
@@ -144,6 +160,8 @@
  * So far, this is only possible for living mobs and carbons, who can hold shields and catch thrown items.
  */
 /atom/proc/hitby(atom/movable/hitting_atom, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_ATOM_HITBY, hitting_atom, skipcatch, hitpush, blocked, throwingdatum)
 	if(density && !has_gravity(hitting_atom)) //thrown stuff bounces off dense stuff in no grav, unless the thrown stuff ends up inside what it hit(embedding, bola, etc...).
 		addtimer(CALLBACK(src, PROC_REF(hitby_react), hitting_atom), 0.2 SECONDS)
@@ -155,19 +173,27 @@
  * Default behaviour is to move back from the item that hit us
  */
 /atom/proc/hitby_react(atom/movable/harmed_atom)
+	procstart = null
+	src.procstart = null
 	if(harmed_atom && isturf(harmed_atom.loc))
 		step(harmed_atom, REVERSE_DIR(harmed_atom.dir))
 
 ///Handle the atom being slipped over
 /atom/proc/handle_slip(mob/living/carbon/slipped_carbon, knockdown_amount, obj/slipping_object, lube, paralyze, daze, force_drop)
+	procstart = null
+	src.procstart = null
 	return
 
 ///Used for making a sound when a mob involuntarily falls into the ground.
 /atom/proc/handle_fall(mob/faller)
+	procstart = null
+	src.procstart = null
 	return
 
 ///Respond to the singularity eating this atom
 /atom/proc/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -176,6 +202,8 @@
  * Default behaviour is to send [COMSIG_ATOM_SING_PULL] and return
  */
 /atom/proc/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_ATOM_SING_PULL, singularity, current_size)
 
 /**
@@ -184,6 +212,8 @@
  * Default behaviour is to send [COMSIG_ATOM_ACID_ACT] and return
  */
 /atom/proc/acid_act(acidpwr, acid_volume)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_ATOM_ACID_ACT, acidpwr, acid_volume)
 	return FALSE
 
@@ -198,6 +228,8 @@
  * TRUE if the emag had any effect, falsey otherwise.
  */
 /atom/proc/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	return (SEND_SIGNAL(src, COMSIG_ATOM_EMAG_ACT, user, emag_card))
 
 /**
@@ -206,6 +238,8 @@
  * Default behaviour is to send [COMSIG_ATOM_NARSIE_ACT] and return
  */
 /atom/proc/narsie_act()
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_ATOM_NARSIE_ACT)
 
 /**
@@ -214,6 +248,8 @@
  * Default behaviour is to return, we define here to allow for cleaner code later on
  */
 /atom/proc/zap_act(power, zap_flags)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -222,6 +258,8 @@
  * Default behaviour is to call on_log on the location this atom is in
  */
 /atom/proc/on_log(login)
+	procstart = null
+	src.procstart = null
 	if(loc)
 		loc.on_log(login)
 
@@ -233,16 +271,22 @@
  * rust_strength (optional) - if you want to vary the effect based on the users' strength
  */
 /atom/proc/rust_heretic_act(rust_strength)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 ///wrapper proc that passes our mob's rust_strength to the target we are rusting
 /mob/living/proc/do_rust_heretic_act(atom/target)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/heretic/heretic_data = GET_HERETIC(src)
 	var/result = target.rust_heretic_act(heretic_data?.rust_strength)
 	SEND_SIGNAL(src, COMSIG_MOB_RUST_HERETIC_ACT, target, result)
 
 ///Called when something resists while this atom is its loc
 /atom/proc/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -251,13 +295,19 @@
  * Default behaviour is to send [COMSIG_ATOM_RCD_ACT] and return FALSE
  */
 /atom/proc/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_ATOM_RCD_ACT, user, the_rcd, rcd_data[RCD_DESIGN_MODE])
 	return FALSE
 
 ///Return the values you get when an RCD eats you?
 /atom/proc/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 ///This atom has been hit by a hulkified mob in hulk mode (user)
 /atom/proc/attack_hulk(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_ATOM_HULK_ATTACK, user)

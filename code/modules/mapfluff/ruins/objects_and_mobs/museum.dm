@@ -20,6 +20,8 @@
 	var/obvious_replica = TRUE
 
 /obj/effect/replica_spawner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(target_path))
 		return INITIALIZE_HINT_QDEL //no use to make a replica of null
@@ -64,6 +66,8 @@
 	max_integrity = 5 //one tap
 
 /obj/structure/fluff/balloon_nuke/atom_destruction()
+	procstart = null
+	src.procstart = null
 	playsound(loc, 'sound/effects/cartoon_sfx/cartoon_pop.ogg', 75, vary = TRUE)
 	..()
 
@@ -103,6 +107,8 @@
 	var/target_turf_z
 
 /turf/open/mirage/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(range))
 		range = (maxviewdist() - 1) / 2
@@ -162,6 +168,8 @@
 	all_products_free = TRUE
 
 /obj/machinery/vending/hotdog/museum/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/tool_blocker, TOOL_SCREWDRIVER, TOOL_ACT_PRIMARY)
 	AddElement(/datum/element/tool_blocker, TOOL_CROWBAR, TOOL_ACT_PRIMARY)
@@ -172,6 +180,8 @@
 /obj/structure/toilet/museum
 
 /obj/structure/toilet/museum/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		SSqueuelinks.add_to_queue(src, CAFE_KEYCARD_TOILETS)
@@ -183,16 +193,22 @@
 	desc = "The key to the cafeteria, as the name implies."
 
 /obj/item/keycard/cafeteria/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		SSqueuelinks.add_to_queue(src, CAFE_KEYCARD_TOILETS)
 		return INITIALIZE_HINT_LATELOAD
 
 /obj/item/keycard/cafeteria/LateInitialize()
+	procstart = null
+	src.procstart = null
 	if(SSqueuelinks.queues[CAFE_KEYCARD_TOILETS])
 		SSqueuelinks.pop_link(CAFE_KEYCARD_TOILETS)
 
 /obj/item/keycard/cafeteria/MatchedLinks(id, partners)
+	procstart = null
+	src.procstart = null
 	if(id != CAFE_KEYCARD_TOILETS)
 		return ..()
 	var/obj/structure/toilet/destination = pick(partners)

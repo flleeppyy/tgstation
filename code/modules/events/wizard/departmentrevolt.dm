@@ -23,6 +23,8 @@
 	var/dangerous_nation = TRUE
 
 /datum/round_event/wizard/deprevolt/start()
+	procstart = null
+	src.procstart = null
 	// no setup needed, this proc handles empty values. God i'm good (i wrote all of this)
 	create_separatist_nation(picked_department, announce, dangerous_nation)
 
@@ -32,9 +34,13 @@
 	normal_run_option = "Random"
 
 /datum/event_admin_setup/listed_options/departmental_revolt/get_list()
+	procstart = null
+	src.procstart = null
 	return subtypesof(/datum/job_department)
 	
 /datum/event_admin_setup/listed_options/departmental_revolt/apply_to_event(datum/round_event/wizard/deprevolt/event)
+	procstart = null
+	src.procstart = null
 	event.picked_department = chosen
 
 /// Announce the separatist nation to the round?
@@ -42,6 +48,8 @@
 	input_text = "Announce This New Independent State?"
 
 /datum/event_admin_setup/question/departmental_revolt_annouce/apply_to_event(datum/round_event/wizard/deprevolt/event)
+	procstart = null
+	src.procstart = null
 	event.announce = chosen
 
 /// Is it going to try fighting other nations?
@@ -49,6 +57,8 @@
 	input_text = "Dangerous Nation? This means they will fight other nations."
 
 /datum/event_admin_setup/question/departmental_revolt_dangerous/apply_to_event(datum/round_event/wizard/deprevolt/event)
+	procstart = null
+	src.procstart = null
 	event.dangerous_nation = chosen
 
 #undef RANDOM_DEPARTMENT

@@ -32,6 +32,8 @@ at the cost of risking a vicious bite.**/
 
 
 /obj/structure/moisture_trap/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/fish_safe_storage)
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MOIST, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 20)
@@ -52,6 +54,8 @@ at the cost of risking a vicious bite.**/
 
 
 /obj/structure/moisture_trap/Destroy()
+	procstart = null
+	src.procstart = null
 	if(hidden_item)
 		QDEL_NULL(hidden_item)
 	drip_sfx?.stop(TRUE)
@@ -60,6 +64,8 @@ at the cost of risking a vicious bite.**/
 
 ///This proc checks if we are able to reach inside the trap to interact with it.
 /obj/structure/moisture_trap/proc/CanReachInside(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		return FALSE
 	var/mob/living/living_user = user
@@ -69,6 +75,8 @@ at the cost of risking a vicious bite.**/
 
 
 /obj/structure/moisture_trap/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscyborg(user) || isalien(user))
 		return
@@ -94,6 +102,8 @@ at the cost of risking a vicious bite.**/
 	to_chat(user, span_warning("You find nothing of value..."))
 
 /obj/structure/moisture_trap/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(user) || isalien(user) || !CanReachInside(user))
 		return NONE
 
@@ -145,12 +155,16 @@ at the cost of risking a vicious bite.**/
 	var/status = ALTAR_INACTIVE
 
 /obj/structure/destructible/cult/pants_altar/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/melee/cultblade/dagger) || !IS_CULTIST(user) || !status)
 		return NONE
 	to_chat(user, span_notice("[src] is creating something, you can't move it!"))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/destructible/cult/pants_altar/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -172,6 +186,8 @@ at the cost of risking a vicious bite.**/
 	return TRUE
 
 /obj/structure/destructible/cult/pants_altar/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!COOLDOWN_FINISHED(src, use_cooldown))
 		icon_state = "altar_off"
@@ -179,6 +195,8 @@ at the cost of risking a vicious bite.**/
 		icon_state = "altar"
 
 /obj/structure/destructible/cult/pants_altar/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/overlayicon
 	switch(status)
@@ -196,6 +214,8 @@ at the cost of risking a vicious bite.**/
 
 /// Starts creating the pants, plays the sound.
 /obj/structure/destructible/cult/pants_altar/proc/pants_stageone()
+	procstart = null
+	src.procstart = null
 	status = ALTAR_STAGEONE
 	update_icon()
 	visible_message(span_warning("[src] starts creating something..."))
@@ -204,6 +224,8 @@ at the cost of risking a vicious bite.**/
 
 /// Continues the creation, making every mob nearby nauseous.
 /obj/structure/destructible/cult/pants_altar/proc/pants_stagetwo()
+	procstart = null
+	src.procstart = null
 	status = ALTAR_STAGETWO
 	update_icon()
 	visible_message(span_warning("You start feeling nauseous..."))
@@ -214,6 +236,8 @@ at the cost of risking a vicious bite.**/
 
 /// Continues the creation, making every mob nearby dizzy
 /obj/structure/destructible/cult/pants_altar/proc/pants_stagethree()
+	procstart = null
+	src.procstart = null
 	status = ALTAR_STAGETHREE
 	update_icon()
 	visible_message(span_warning("You start feeling horrible..."))
@@ -223,6 +247,8 @@ at the cost of risking a vicious bite.**/
 
 /// Finishes the creation, creating the item itself, setting the cooldowns and flashing every mob nearby.
 /obj/structure/destructible/cult/pants_altar/proc/pants_create()
+	procstart = null
+	src.procstart = null
 	status = ALTAR_INACTIVE
 	update_icon()
 	visible_message(span_danger("[src] emits a flash of light and creates... pants?"))
@@ -235,6 +261,8 @@ at the cost of risking a vicious bite.**/
 	update_icon()
 
 /obj/structure/destructible/cult/pants_altar/proc/check_menu(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated || !user.Adjacent(src))
@@ -272,6 +300,8 @@ at the cost of risking a vicious bite.**/
 	COOLDOWN_DECLARE(steam_vent_interact)
 
 /obj/structure/steam_vent/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(75))
 		vent_active = FALSE
@@ -283,6 +313,8 @@ at the cost of risking a vicious bite.**/
 	update_icon_state()
 
 /obj/structure/steam_vent/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!COOLDOWN_FINISHED(src, steam_vent_interact))
 		balloon_alert(user, "not ready to adjust!")
@@ -297,6 +329,8 @@ at the cost of risking a vicious bite.**/
 	blow_steam()
 
 /obj/structure/steam_vent/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(held_item))
 		context[SCREENTIP_CONTEXT_LMB] = vent_active ? "Close valve" : "Open valve"
@@ -307,6 +341,8 @@ at the cost of risking a vicious bite.**/
 	return .
 
 /obj/structure/steam_vent/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vent_active)
 		balloon_alert(user, "must be off!")
@@ -317,6 +353,8 @@ at the cost of risking a vicious bite.**/
 		return TRUE
 
 /obj/structure/steam_vent/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/iron(loc)
 	new /obj/item/stock_parts/water_recycler(loc, 1)
 
@@ -324,6 +362,8 @@ at the cost of risking a vicious bite.**/
  * Creates "steam" smoke, and determines when the vent needs to block line of sight via reset_opacity.
  */
 /obj/structure/steam_vent/proc/blow_steam(datum/source, atom/movable/leaving, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!vent_active)
 		return
@@ -336,6 +376,8 @@ at the cost of risking a vicious bite.**/
 	COOLDOWN_START(src, steam_vent_interact, steam_speed)
 
 /obj/structure/steam_vent/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "steam_vent[vent_active ? "": "_off"]"
 

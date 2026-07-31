@@ -17,6 +17,8 @@ SUBSYSTEM_DEF(lag_switch)
 	var/slowmode_cooldown = 3 SECONDS
 
 /datum/controller/subsystem/lag_switch/Initialize()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to measures.len)
 		measures[i] = FALSE
 	var/auto_switch_pop = CONFIG_GET(number/auto_lag_switch_pop)
@@ -27,6 +29,8 @@ SUBSYSTEM_DEF(lag_switch)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/lag_switch/proc/client_connected(datum/source, client/connected)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(TGS_CLIENT_COUNT < trigger_pop)
 		return
@@ -39,6 +43,8 @@ SUBSYSTEM_DEF(lag_switch)
 
 /// (En/Dis)able automatic triggering of switches based on client count
 /datum/controller/subsystem/lag_switch/proc/toggle_auto_enable()
+	procstart = null
+	src.procstart = null
 	auto_switch = !auto_switch
 	if(auto_switch)
 		RegisterSignal(SSdcs, COMSIG_GLOB_CLIENT_CONNECT, PROC_REF(client_connected))
@@ -47,6 +53,8 @@ SUBSYSTEM_DEF(lag_switch)
 
 /// Called from an admin chat link
 /datum/controller/subsystem/lag_switch/proc/cancel_auto_enable_in_progress()
+	procstart = null
+	src.procstart = null
 	if(!veto_timer_id)
 		return FALSE
 
@@ -56,6 +64,8 @@ SUBSYSTEM_DEF(lag_switch)
 
 /// Update the slowmode timer length and clear existing ones if reduced
 /datum/controller/subsystem/lag_switch/proc/change_slowmode_cooldown(length)
+	procstart = null
+	src.procstart = null
 	if(!length)
 		return FALSE
 
@@ -74,6 +84,8 @@ SUBSYSTEM_DEF(lag_switch)
 
 /// Handle the state change for individual measures
 /datum/controller/subsystem/lag_switch/proc/set_measure(measure_key, state)
+	procstart = null
+	src.procstart = null
 	if(isnull(measure_key) || isnull(state))
 		stack_trace("SSlag_switch.set_measure() was called with a null arg")
 		return FALSE
@@ -131,6 +143,8 @@ SUBSYSTEM_DEF(lag_switch)
 
 /// Helper to loop over all measures for mass changes
 /datum/controller/subsystem/lag_switch/proc/set_all_measures(state, automatic = FALSE)
+	procstart = null
+	src.procstart = null
 	if(isnull(state))
 		stack_trace("SSlag_switch.set_all_measures() was called with a null state arg")
 		return FALSE

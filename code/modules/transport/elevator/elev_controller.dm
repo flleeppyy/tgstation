@@ -10,6 +10,8 @@
 	id = 1
 
 /obj/machinery/button/elevator/Initialize(mapload, ndir, built)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Kind of a cop-out
 	AddElement(/datum/element/contextual_screentip_bare_hands, lmb_text = "Call Elevator")
@@ -24,6 +26,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/button/elevator, 32)
 	COOLDOWN_DECLARE(elevator_cooldown)
 
 /obj/item/assembly/control/elevator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(mapload)
@@ -36,6 +40,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/button/elevator, 32)
 	lift_weakref = WEAKREF(lift)
 
 /obj/item/assembly/control/elevator/LateInitialize()
+	procstart = null
+	src.procstart = null
 	var/datum/transport_controller/linear/lift = get_lift()
 	if(!lift)
 		log_mapping("Elevator call button at [AREACOORD(src)] found no associated elevator to link with, this may be a mapping error.")
@@ -45,6 +51,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/button/elevator, 32)
 
 // Emagging elevator buttons will disable safeties
 /obj/item/assembly/control/elevator/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 
@@ -75,6 +83,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/button/elevator, 32)
 
 // Multitooling emagged elevator buttons will fix the safeties
 /obj/item/assembly/control/elevator/multitool_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!(obj_flags & EMAGGED))
 		return ..()
 
@@ -100,6 +110,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/button/elevator, 32)
 	obj_flags &= ~EMAGGED
 
 /obj/item/assembly/control/elevator/activate(mob/activator)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, elevator_cooldown))
 		return
 
@@ -115,6 +127,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/button/elevator, 32)
 /// Returns FALSE if we failed to setup the move.
 /// Returns TRUE if the move setup was a success, EVEN IF the move itself fails afterwards
 /obj/item/assembly/control/elevator/proc/call_elevator(mob/activator)
+	procstart = null
+	src.procstart = null
 	// We can't call an elevator that doesn't exist
 	var/datum/transport_controller/linear/lift = lift_weakref?.resolve()
 	if(!lift)
@@ -165,12 +179,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/button/elevator, 32)
 
 /// Callback for move_to_zlevel / general proc to check if we're still in a button
 /obj/item/assembly/control/elevator/proc/check_button()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || !istype(loc, /obj/machinery/button))
 		return FALSE
 	return TRUE
 
 /// Gets the elevator associated with our assembly / button
 /obj/item/assembly/control/elevator/proc/get_lift()
+	procstart = null
+	src.procstart = null
 	for(var/datum/transport_controller/linear/possible_match as anything in SStransport.transports_by_type[TRANSPORT_TYPE_ELEVATOR])
 		if(possible_match.specific_transport_id != id)
 			continue

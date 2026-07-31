@@ -7,6 +7,8 @@
 	var/list/badPrefixes
 
 /datum/fantasy_affix/cosmetic_prefixes/New()
+	procstart = null
+	src.procstart = null
 	goodPrefixes = list(
 		"greater",
 		"major",
@@ -34,6 +36,8 @@
 	weight = (length(goodPrefixes) + length(badPrefixes)) * 10
 
 /datum/fantasy_affix/cosmetic_prefixes/apply(datum/component/fantasy/comp, newName)
+	procstart = null
+	src.procstart = null
 	if(comp.quality > 0 || (comp.quality == 0 && prob(50)))
 		return "[pick(goodPrefixes)] [newName]"
 	else
@@ -46,6 +50,8 @@
 	weight = 1 // Very powerful, no one should have such power
 
 /datum/fantasy_affix/tactical/apply(datum/component/fantasy/comp, newName)
+	procstart = null
+	src.procstart = null
 	var/obj/item/master = comp.parent
 	comp.appliedComponents += master.AddComponent(/datum/component/tactical)
 	return "tactical [newName]"
@@ -56,6 +62,8 @@
 	alignment = AFFIX_GOOD
 
 /datum/fantasy_affix/pyromantic/apply(datum/component/fantasy/comp, newName)
+	procstart = null
+	src.procstart = null
 	var/obj/item/master = comp.parent
 	comp.appliedComponents += master.AddComponent(/datum/component/igniter, clamp(comp.quality, 1, 10))
 	return "pyromantic [newName]"
@@ -67,14 +75,20 @@
 	weight = 5
 
 /datum/fantasy_affix/vampiric/validate(obj/item/attached)
+	procstart = null
+	src.procstart = null
 	return attached.force //don't apply to things that just bap people
 
 /datum/fantasy_affix/vampiric/apply(datum/component/fantasy/comp, newName)
+	procstart = null
+	src.procstart = null
 	var/obj/item/master = comp.parent
 	master.AddElement(/datum/element/lifesteal, comp.quality)
 	return "vampiric [newName]"
 
 /datum/fantasy_affix/vampiric/remove(datum/component/fantasy/comp)
+	procstart = null
+	src.procstart = null
 	var/obj/item/master = comp.parent
 	master.RemoveElement(/datum/element/lifesteal, comp.quality)
 
@@ -84,11 +98,15 @@
 	alignment = AFFIX_GOOD
 
 /datum/fantasy_affix/beautiful/apply(datum/component/fantasy/comp, newName)
+	procstart = null
+	src.procstart = null
 	var/obj/item/master = comp.parent
 	master.AddElement(/datum/element/beauty, max(comp.quality, 1) * 250)
 	return "[pick("aesthetic", "beautiful", "gorgeous", "pretty")] [newName]"
 
 /datum/fantasy_affix/beautiful/remove(datum/component/fantasy/comp)
+	procstart = null
+	src.procstart = null
 	var/obj/item/master = comp.parent
 	master.RemoveElement(/datum/element/beauty, max(comp.quality, 1) * 250)
 
@@ -98,11 +116,15 @@
 	alignment = AFFIX_EVIL
 
 /datum/fantasy_affix/ugly/apply(datum/component/fantasy/comp, newName)
+	procstart = null
+	src.procstart = null
 	var/obj/item/master = comp.parent
 	master.AddElement(/datum/element/beauty, min(comp.quality, -1) * 250)
 	return "[pick("fugly", "ugly", "grotesque", "hideous")] [newName]"
 
 /datum/fantasy_affix/ugly/remove(datum/component/fantasy/comp)
+	procstart = null
+	src.procstart = null
 	var/obj/item/master = comp.parent
 	master.RemoveElement(/datum/element/beauty, min(comp.quality, -1) * 250)
 
@@ -112,9 +134,13 @@
 	alignment = AFFIX_GOOD
 
 /datum/fantasy_affix/venomous/validate(obj/item/attached)
+	procstart = null
+	src.procstart = null
 	return attached.force //don't apply to things that just bap people
 
 /datum/fantasy_affix/venomous/apply(datum/component/fantasy/comp, newName)
+	procstart = null
+	src.procstart = null
 	var/obj/item/master = comp.parent
 	var/picked_poison = pick(list(
 		/datum/reagent/toxin/plantbgone,
@@ -142,6 +168,8 @@
 	return "[poisonname]-[pick("poisoned", "envenomed", "laced")] [newName]"
 
 /datum/fantasy_affix/venomous/remove(datum/component/fantasy/comp)
+	procstart = null
+	src.procstart = null
 	var/obj/item/master = comp.parent
 	master.RemoveElement(/datum/element/venomous)
 
@@ -151,6 +179,8 @@
 	alignment = AFFIX_GOOD
 
 /datum/fantasy_affix/soul_stealer/validate(obj/item/attached)
+	procstart = null
+	src.procstart = null
 	if(attached.force)
 		return FALSE
 	if(attached.atom_storage)
@@ -158,6 +188,8 @@
 	return TRUE
 
 /datum/fantasy_affix/soul_stealer/apply(datum/component/fantasy/comp, newName)
+	procstart = null
+	src.procstart = null
 	var/obj/item/master = comp.parent
 	comp.appliedComponents += master.AddComponent(/datum/component/soul_stealer)
 	return "soul-[pick("stealing", "hungering", "devouring")] [newName]"
@@ -170,17 +202,27 @@
 	weight = 3
 
 /datum/fantasy_affix/thunderfury/apply(datum/component/fantasy/comp, newName)
+	procstart = null
+	src.procstart = null
 	comp.parent.AddElement(/datum/element/chain_lightning_attack, get_damage(comp), get_range(comp), get_limit(comp))
 	return "Thunderfury, Blessed [newName]"
 
 /datum/fantasy_affix/thunderfury/remove(datum/component/fantasy/comp)
+	procstart = null
+	src.procstart = null
 	comp.parent.RemoveElement(/datum/element/chain_lightning_attack, get_damage(comp), get_range(comp), get_limit(comp))
 
 /datum/fantasy_affix/thunderfury/proc/get_damage(datum/component/fantasy/comp)
+	procstart = null
+	src.procstart = null
 	return min(round(comp.quality, 2), 20)
 
 /datum/fantasy_affix/thunderfury/proc/get_range(datum/component/fantasy/comp)
+	procstart = null
+	src.procstart = null
 	return min(round(sqrt(comp.quality), 1), 3)
 
 /datum/fantasy_affix/thunderfury/proc/get_limit(datum/component/fantasy/comp)
+	procstart = null
+	src.procstart = null
 	return min(round(sqrt(comp.quality), 1), 3)

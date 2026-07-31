@@ -20,6 +20,8 @@
 	var/list/signals_to_add
 
 /datum/round_event/radiation_leak/setup()
+	procstart = null
+	src.procstart = null
 	// Pick a generic event spawn somewhere in the world.
 	// We will try to find a machine within a few turfs of it to start spewing rads from.
 	var/list/possible_locs = GLOB.generic_event_spawns.Copy()
@@ -49,6 +51,8 @@
 			return
 
 /datum/round_event/radiation_leak/announce(fake)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/the_source_of_our_problems = picked_machine_ref?.resolve()
 	var/area/station/location_descriptor
 
@@ -63,6 +67,8 @@
 		report that a machine within is causing it - repair it quickly to stop the leak.", "[command_name()] Engineering Division")
 
 /datum/round_event/radiation_leak/start()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/the_source_of_our_problems = picked_machine_ref?.resolve()
 	if(!the_source_of_our_problems)
 		return
@@ -111,6 +117,8 @@
 	announce_to_ghosts(the_source_of_our_problems)
 
 /datum/round_event/radiation_leak/tick()
+	procstart = null
+	src.procstart = null
 	// Puff some smoke into the air around our machine roughly 3 times before we stop
 	if(activeFor % (end_when / 3) != 0)
 		return
@@ -122,6 +130,8 @@
 	puff_some_smoke(impromptu_smoke_machine)
 
 /datum/round_event/radiation_leak/end()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/the_end_of_our_problems = picked_machine_ref?.resolve()
 	if(!the_end_of_our_problems)
 		return
@@ -135,6 +145,8 @@
 
 /// Helper to shoot some smoke into the air around the passed atom
 /datum/round_event/radiation_leak/proc/puff_some_smoke(atom/where)
+	procstart = null
+	src.procstart = null
 	// Causes radioation and mutations
 	var/turf/below_where = get_turf(where)
 	do_chem_smoke(2, where, below_where, list(/datum/reagent/toxin/polonium = 10, /datum/reagent/toxin/mutagen = 10))
@@ -146,6 +158,8 @@
  * We allow for someone to stop the event early by using the proper tools, hinted at in examine, on the machine
  */
 /datum/round_event/radiation_leak/proc/on_machine_tooled(obj/machinery/source, mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(try_remove_radiation), source, user, tool)
@@ -153,6 +167,8 @@
 
 /// Attempts a do_after, and if successful, stops the event
 /datum/round_event/radiation_leak/proc/try_remove_radiation(obj/machinery/source, mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	source.balloon_alert(user, "fixing leak...")
 	// Fairly long do after. It shouldn't be SUPER easy to just run in and stop it.
 	// A tider can fix it if they want to soak a bunch of rads and inhale noxious fumes,

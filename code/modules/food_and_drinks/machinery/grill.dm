@@ -24,17 +24,23 @@
 	var/datum/looping_sound/grill/grill_loop
 
 /obj/machinery/grill/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(30, NO_REACT)
 	grill_loop = new(src, FALSE)
 	register_context()
 
 /obj/machinery/grill/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(grilled_item)
 	QDEL_NULL(grill_loop)
 	return ..()
 
 /obj/machinery/grill/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(grilled_item))
 		grilled_item.forceMove(drop_location())
 
@@ -46,6 +52,8 @@
 		do_smoke(1, src, loc, smoke_type = /datum/effect_system/fluid_spread/smoke/bad)
 
 /obj/machinery/grill/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(isnull(held_item) || (held_item.item_flags & ABSTRACT) || (held_item.flags_1 & HOLOGRAM_1) || (held_item.resistance_flags & INDESTRUCTIBLE))
 		return
@@ -67,6 +75,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/grill/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	. += span_notice("Add fuel via wood/coal stacks or any open container having a good fuel source")
@@ -81,6 +91,8 @@
 		. += span_warning("It needs to be [EXAMINE_HINT("anchored")] to work.")
 
 /obj/machinery/grill/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(grilled_item))
 		icon_state = "grill"
 		return ..()
@@ -91,6 +103,8 @@
 	return ..()
 
 /obj/machinery/grill/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == grilled_item)
 		grill_time = 0
@@ -98,6 +112,8 @@
 		grilled_item = null
 
 /obj/machinery/grill/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(grilled_item))
 		balloon_alert(user, "item removed")
 		grilled_item.forceMove(drop_location())
@@ -107,11 +123,15 @@
 	return ..()
 
 /obj/machinery/grill/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return //the ai can't physically flip the lid for the grill
 
 
 /// Makes grill fuel from a unit of stack
 /obj/machinery/grill/proc/burn_stack()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	//compute boost from wood or coal
@@ -125,6 +145,8 @@
 	update_appearance(UPDATE_ICON_STATE)
 
 /obj/machinery/grill/item_interaction(mob/living/user, obj/item/weapon, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode || (weapon.item_flags & ABSTRACT) || (weapon.flags_1 & HOLOGRAM_1) || (weapon.resistance_flags & INDESTRUCTIBLE))
 		return NONE
 
@@ -238,11 +260,15 @@
 	return NONE
 
 /obj/machinery/grill/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_BLOCKING
 	if(default_unfasten_wrench(user, tool) == SUCCESSFUL_UNFASTEN)
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/grill/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(anchored)
 		balloon_alert(user, "unanchor first!")
 		return ITEM_INTERACT_BLOCKING
@@ -250,9 +276,13 @@
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/grill/can_crowbar_deconstruct()
+	procstart = null
+	src.procstart = null
 	return !anchored
 
 /obj/machinery/grill/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		return PROCESS_KILL
 

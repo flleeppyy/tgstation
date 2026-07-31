@@ -17,6 +17,8 @@
 	var/maximum_pads = 3
 
 /obj/machinery/computer/mechpad/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		connect_launchpad(find_pad())
@@ -25,6 +27,8 @@
 		id = "handmade[REF(src)]"
 
 /obj/machinery/computer/mechpad/proc/connect_launchpad(obj/machinery/mechpad/pad)
+	procstart = null
+	src.procstart = null
 	if(connected_mechpad)
 		return
 	connected_mechpad = pad
@@ -32,10 +36,14 @@
 	RegisterSignal(connected_mechpad, COMSIG_QDELETING, PROC_REF(unconnect_launchpad))
 
 /obj/machinery/computer/mechpad/proc/unconnect_launchpad(obj/machinery/mechpad/pad)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	connected_mechpad = null
 
 /obj/machinery/computer/mechpad/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/machinery/mechpad/pad as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/mechpad))
 		if(pad == connected_mechpad)
@@ -49,6 +57,8 @@
 #define MECH_LAUNCH_TIME (5 SECONDS)
 
 /obj/machinery/computer/mechpad/mech_melee_attack(obj/vehicle/sealed/mecha/mecha_attacker, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode || machine_stat & (NOPOWER|BROKEN) || DOING_INTERACTION_WITH_TARGET(user, src))
 		return ..()
 	var/mech_dir = mecha_attacker.dir
@@ -63,10 +73,14 @@
 #undef MECH_LAUNCH_TIME
 
 /obj/machinery/computer/mechpad/proc/do_after_checks(obj/vehicle/sealed/mecha/mech, mech_dir)
+	procstart = null
+	src.procstart = null
 	return mech.dir == mech_dir && !(machine_stat & (NOPOWER|BROKEN))
 
 /// A proc that makes random beeping sounds for a set amount of time, the sounds are separated by a random amount of time.
 /obj/machinery/computer/mechpad/proc/random_beeps(mob/user, time = 0, mintime = 0, maxtime = 1)
+	procstart = null
+	src.procstart = null
 	var/static/list/beep_sounds = list('sound/machines/terminal/terminal_prompt_confirm.ogg', 'sound/machines/terminal/terminal_prompt_deny.ogg', 'sound/machines/terminal/terminal_error.ogg', 'sound/machines/terminal/terminal_select.ogg', 'sound/machines/terminal/terminal_success.ogg')
 	var/time_to_spend = 0
 	var/orig_time = time
@@ -80,6 +94,8 @@
 
 ///Tries to locate a pad in the cardinal directions, if it finds one it returns it
 /obj/machinery/computer/mechpad/proc/find_pad()
+	procstart = null
+	src.procstart = null
 	var/found_mechpad
 	for(var/direction in GLOB.cardinals)
 		found_mechpad = locate(/obj/machinery/mechpad, get_step(src, direction))
@@ -88,6 +104,8 @@
 		return found_mechpad
 
 /obj/machinery/computer/mechpad/multitool_act(mob/living/user, obj/item/multitool/multitool)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(!istype(multitool.buffer, /obj/machinery/mechpad))
 		return
@@ -115,10 +133,14 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/computer/mechpad/proc/add_pad(obj/machinery/mechpad/pad)
+	procstart = null
+	src.procstart = null
 	mechpads += pad
 	RegisterSignal(pad, COMSIG_QDELETING, PROC_REF(remove_pad))
 
 /obj/machinery/computer/mechpad/proc/remove_pad(obj/machinery/mechpad/pad)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	mechpads -= pad
 	UnregisterSignal(pad, COMSIG_QDELETING)
@@ -130,6 +152,8 @@
  * * where - The mechpad that the connected mechpad will try to send a supply pod to
  */
 /obj/machinery/computer/mechpad/proc/try_launch(mob/user, obj/machinery/mechpad/where)
+	procstart = null
+	src.procstart = null
 	if(!can_launch(user, where))
 		return
 	flick("mechpad-launch", connected_mechpad)
@@ -137,6 +161,8 @@
 	addtimer(CALLBACK(src, PROC_REF(start_launch), user, where), 1 SECONDS)
 
 /obj/machinery/computer/mechpad/proc/start_launch(mob/user, obj/machinery/mechpad/where)
+	procstart = null
+	src.procstart = null
 	if(!can_launch(user, where, silent = TRUE))
 		return
 	var/obj/vehicle/sealed/mecha/mech = locate() in get_turf(connected_mechpad)
@@ -144,6 +170,8 @@
 	connected_mechpad.launch(where)
 
 /obj/machinery/computer/mechpad/proc/can_launch(mob/user, obj/machinery/mechpad/where, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(where))
 		if(!silent)
 			to_chat(user, span_warning("No destination!"))
@@ -174,10 +202,14 @@
 
 ///Returns the pad of the value specified
 /obj/machinery/computer/mechpad/proc/get_pad(number)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/mechpad/pad = mechpads[number]
 	return pad
 
 /obj/machinery/computer/mechpad/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -185,6 +217,8 @@
 		ui.open()
 
 /obj/machinery/computer/mechpad/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/pad_list = list()
 	for(var/i in 1 to length(mechpads))
@@ -207,6 +241,8 @@
 	return data
 
 /obj/machinery/computer/mechpad/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

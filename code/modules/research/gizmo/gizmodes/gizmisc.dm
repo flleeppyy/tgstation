@@ -3,10 +3,14 @@
 	guaranteed_active_gizmodes = list(/datum/gizpulse/start_moving = 1, /datum/gizpulse/stop_moving = 1)
 
 /datum/gizpulse/start_moving/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	holder.AddElement(/datum/element/moving_randomly)
 	SEND_SIGNAL(holder, COMSIG_GIZMO_START_MOVING, src)
 
 /datum/gizpulse/stop_moving/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	holder.RemoveElement(/datum/element/moving_randomly)
 	SEND_SIGNAL(holder, COMSIG_GIZMO_STOP_MOVING, src)
 
@@ -19,6 +23,8 @@
 	)
 
 /datum/gizpulse/lights_on/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(holder, COMSIG_GIZMO_ON_STATE)
 
 	holder.set_light(
@@ -29,6 +35,8 @@
 	)
 
 /datum/gizpulse/lights_off/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(holder, COMSIG_GIZMO_OFF_STATE)
 	holder.set_light_on(FALSE)
 
@@ -42,10 +50,14 @@
 
 /// Spit out a hint for using the voice interface
 /datum/gizpulse/voice_hint/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	var/datum/component/gizmo_voice/voice = holder.GetComponent(/datum/component/gizmo_voice)
 
 	holder.say(voice.active_words.Join(" "))
 
 /// Pick a different language
 /datum/gizpulse/language_change/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	holder.grant_random_uncommon_language("gizmo")

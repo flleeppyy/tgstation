@@ -24,14 +24,20 @@
 	var/static/list/jaunting_traits = list(TRAIT_RESISTLOWPRESSURE, TRAIT_RESISTCOLD, TRAIT_NOBREATH)
 
 /datum/action/cooldown/spell/jaunt/space_crawl/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(grant_to, COMSIG_MOVABLE_MOVED, PROC_REF(update_status_on_signal))
 
 /datum/action/cooldown/spell/jaunt/space_crawl/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(remove_from, COMSIG_MOVABLE_MOVED)
 
 /datum/action/cooldown/spell/jaunt/space_crawl/can_cast_spell(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	// we may loose the focus during jaunt, so you need to be always able to exit on a valid turf
 	if(is_jaunting(owner) && is_valid_turf())
 		return TRUE
@@ -47,16 +53,22 @@
 
 // do not check if we have a focus if we're already jaunting
 /datum/action/cooldown/spell/jaunt/space_crawl/before_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	if(is_jaunting(owner) && is_valid_turf())
 		return NONE
 	. = ..()
 
 /datum/action/cooldown/spell/jaunt/space_crawl/proc/is_valid_turf()
+	procstart = null
+	src.procstart = null
 	var/turf/my_turf = get_turf(owner)
 	var/area/my_area = get_area(owner)
 	return isspaceturf(my_turf) || (isopenturf(my_turf) && my_area.outdoors && lavaland_equipment_pressure_check(my_turf))
 
 /datum/action/cooldown/spell/jaunt/space_crawl/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Should always return something because we checked that in can_cast_spell before arriving here
 	var/turf/our_turf = get_turf(cast_on)
@@ -67,6 +79,8 @@
  * Returns TRUE if we successfully entered or exited said turf, FALSE otherwise
  */
 /datum/action/cooldown/spell/jaunt/space_crawl/proc/do_spacecrawl(turf/our_turf, mob/living/jaunter)
+	procstart = null
+	src.procstart = null
 	if(is_jaunting(jaunter))
 		. = try_exit_jaunt(our_turf, jaunter)
 	else
@@ -80,6 +94,8 @@
  * Attempts to enter the passed space or misc turfs.
  */
 /datum/action/cooldown/spell/jaunt/space_crawl/proc/try_enter_jaunt(turf/our_turf, mob/living/jaunter)
+	procstart = null
+	src.procstart = null
 	// Begin the jaunt
 	ADD_TRAIT(jaunter, TRAIT_NO_TRANSFORM, REF(src))
 	var/obj/effect/dummy/phased_mob/holder = enter_jaunt(jaunter, our_turf)
@@ -111,6 +127,8 @@
  * Attempts to Exit the passed space or misc turf.
  */
 /datum/action/cooldown/spell/jaunt/space_crawl/proc/try_exit_jaunt(turf/our_turf, mob/living/jaunter, force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!force && HAS_TRAIT_FROM(jaunter, TRAIT_NO_TRANSFORM, REF(src)))
 		to_chat(jaunter, span_warning("You cannot exit yet!!"))
 		return FALSE
@@ -122,6 +140,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/jaunt/space_crawl/on_jaunt_exited(obj/effect/dummy/phased_mob/jaunt, mob/living/unjaunter)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(jaunt, COMSIG_MOVABLE_MOVED)
 	playsound(get_turf(unjaunter), 'sound/effects/magic/cosmic_energy.ogg', 50, TRUE, -1)
 	new /obj/effect/temp_visual/space_explosion(get_turf(unjaunter))
@@ -140,6 +160,8 @@
 	item_flags = ABSTRACT | DROPDEL
 
 /obj/item/space_crawl/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, ABSTRACT_ITEM_TRAIT)
 

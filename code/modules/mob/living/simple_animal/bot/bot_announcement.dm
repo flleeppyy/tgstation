@@ -16,10 +16,14 @@
 	var/list/buttons = list()
 
 /datum/action/cooldown/bot_announcement/New(Target, original, list/automated_announcements)
+	procstart = null
+	src.procstart = null
 	src.automated_announcements = automated_announcements
 	return ..()
 
 /datum/action/cooldown/bot_announcement/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -34,6 +38,8 @@
 	return TRUE
 
 /datum/action/cooldown/bot_announcement/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "BotAnnouncement", "Select announcement")
@@ -41,14 +47,20 @@
 		ui.open()
 
 /datum/action/cooldown/bot_announcement/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.conscious_state
 
 /datum/action/cooldown/bot_announcement/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user != owner)
 		return UI_CLOSE
 
 /datum/action/cooldown/bot_announcement/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/mob/living/basic/bot/bot_owner = owner
@@ -74,10 +86,14 @@
 	return data
 
 /datum/action/cooldown/bot_announcement/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(buttons)
 	return ..()
 
 /datum/action/cooldown/bot_announcement/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -111,6 +127,8 @@
 			return TRUE
 
 /datum/action/cooldown/bot_announcement/Activate(trigger_flags, atom/target)
+	procstart = null
+	src.procstart = null
 	if (length(automated_announcements) > 1)
 		ui_interact(owner)
 		return
@@ -119,6 +137,8 @@
 	return ..()
 
 /datum/action/cooldown/bot_announcement/proc/create_shortcut(line, channel)
+	procstart = null
+	src.procstart = null
 	var/datum/action/cooldown/bot_announcement_shortcut/shortcut = new(src)
 
 	shortcut.prefix = copytext(line, 1, 4)
@@ -134,21 +154,29 @@
 	buttons += shortcut
 
 /datum/action/cooldown/bot_announcement/proc/on_shortcut_deleted(datum/shortcut)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	buttons -= shortcut
 
 /datum/action/cooldown/bot_announcement/Grant(mob/granted_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/action/action as anything in buttons)
 		action.Grant(granted_to)
 
 /datum/action/cooldown/bot_announcement/Remove(mob/removed_from)
+	procstart = null
+	src.procstart = null
 	for(var/datum/action/action as anything in buttons)
 		action.Remove(removed_from)
 	return ..()
 
 /// Speak the provided line on the provided radio channel
 /datum/action/cooldown/bot_announcement/proc/announce(line, channel)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bot/bot_owner = owner
 	if (!(bot_owner.bot_mode_flags & BOT_MODE_ON))
 		return
@@ -164,6 +192,8 @@
 /datum/action/cooldown/bot_announcement/medbot
 
 /datum/action/cooldown/bot_announcement/medbot/announce(line, channel)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bot/medbot/bot_owner = owner
 	if(!(bot_owner.medical_mode_flags & MEDBOT_SPEAK_MODE))
 		return
@@ -191,10 +221,14 @@
 	var/datum/action/cooldown/bot_announcement/linked
 
 /datum/action/cooldown/bot_announcement_shortcut/Destroy()
+	procstart = null
+	src.procstart = null
 	linked = null
 	return ..()
 
 /datum/action/cooldown/bot_announcement_shortcut/apply_button_overlay(atom/movable/screen/movable/action_button/current_button, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prefix_icon)
 		current_button.cut_overlay(prefix_icon)
@@ -208,6 +242,8 @@
 	current_button.add_overlay(prefix_icon)
 
 /datum/action/cooldown/bot_announcement_shortcut/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!message || !linked)
 		return
 	cooldown_time = linked.cooldown_time

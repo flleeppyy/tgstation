@@ -29,6 +29,8 @@ SUBSYSTEM_DEF(map_vote)
 	var/tally_printout = span_red("Loading...")
 
 /datum/controller/subsystem/map_vote/Initialize()
+	procstart = null
+	src.procstart = null
 	if(rustg_file_exists(MAP_VOTE_CACHE_LOCATION))
 		map_vote_cache = json_decode(file2text(MAP_VOTE_CACHE_LOCATION))
 		var/carryover = CONFIG_GET(number/map_vote_tally_carryover_percentage)
@@ -41,9 +43,13 @@ SUBSYSTEM_DEF(map_vote)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/map_vote/proc/write_cache()
+	procstart = null
+	src.procstart = null
 	rustg_file_write(json_encode(map_vote_cache), MAP_VOTE_CACHE_LOCATION)
 
 /datum/controller/subsystem/map_vote/proc/sanitize_cache()
+	procstart = null
+	src.procstart = null
 	var/max = CONFIG_GET(number/map_vote_maximum_tallies)
 	for(var/map_id in map_vote_cache)
 		if(!(map_id in config.maplist))
@@ -53,6 +59,8 @@ SUBSYSTEM_DEF(map_vote)
 			map_vote_cache[map_id] = max
 
 /datum/controller/subsystem/map_vote/proc/send_map_vote_notice(...)
+	procstart = null
+	src.procstart = null
 	var/static/last_message_at
 	if(last_message_at == world.time)
 		message_admins("Call to send_map_vote_notice twice in one game tick. Yell at someone to condense messages.")
@@ -62,6 +70,8 @@ SUBSYSTEM_DEF(map_vote)
 	to_chat(world, span_purple(boxed_message("Map Vote<br><hr>[jointext(messages, "<br>")]")))
 
 /datum/controller/subsystem/map_vote/proc/finalize_map_vote(datum/vote/map_vote/map_vote)
+	procstart = null
+	src.procstart = null
 	if(already_voted)
 		message_admins("Attempted to finalize a map vote after a map vote has already been finalized.")
 		return
@@ -110,6 +120,8 @@ SUBSYSTEM_DEF(map_vote)
 
 /// Returns a list of all map options that are invalid for the current population.
 /datum/controller/subsystem/map_vote/proc/get_valid_map_vote_choices()
+	procstart = null
+	src.procstart = null
 	var/filter_threshold = 0
 	if(SSticker.HasRoundStarted())
 		filter_threshold = get_active_player_count(alive_check = FALSE, afk_check = TRUE, human_check = FALSE)
@@ -150,6 +162,8 @@ SUBSYSTEM_DEF(map_vote)
 	return freshened_valid_maps
 
 /datum/controller/subsystem/map_vote/proc/filter_cache_to_valid_maps()
+	procstart = null
+	src.procstart = null
 	var/connected_players = length(GLOB.player_list)
 	var/list/valid_maps = list()
 	for(var/map_id in map_vote_cache)
@@ -164,6 +178,8 @@ SUBSYSTEM_DEF(map_vote)
 	return valid_maps
 
 /datum/controller/subsystem/map_vote/proc/set_next_map(datum/map_config/change_to)
+	procstart = null
+	src.procstart = null
 	if(!change_to.MakeNextMap())
 		message_admins("Failed to set new map with next_map.json for [change_to.map_name]!")
 		return FALSE
@@ -172,6 +188,8 @@ SUBSYSTEM_DEF(map_vote)
 	return TRUE
 
 /datum/controller/subsystem/map_vote/proc/revert_next_map(client/user)
+	procstart = null
+	src.procstart = null
 	if(!next_map_config)
 		return
 	if(previous_cache)
@@ -190,6 +208,8 @@ SUBSYSTEM_DEF(map_vote)
 #undef MAP_VOTE_CACHE_LOCATION
 
 /datum/controller/subsystem/map_vote/proc/update_tally_printout()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	for(var/map_id in map_vote_cache)
 		var/datum/map_config/map = config.maplist[map_id]

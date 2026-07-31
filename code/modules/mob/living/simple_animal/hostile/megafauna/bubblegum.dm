@@ -86,6 +86,8 @@ Difficulty: Hard
 	var/datum/action/cooldown/mob_cooldown/blood_warp/blood_warp
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_FLOATING_ANIM, INNATE_TRAIT)
 	triple_charge = new(src)
@@ -107,6 +109,8 @@ Difficulty: Hard
 			sound_volume = 200)
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/Destroy()
+	procstart = null
+	src.procstart = null
 	triple_charge = null
 	hallucination_charge = null
 	hallucination_charge_surround = null
@@ -114,6 +118,8 @@ Difficulty: Hard
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/update_cooldowns(list/cooldown_updates, ignore_staggered = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cooldown_updates[COOLDOWN_UPDATE_SET_ENRAGE])
 		enrage_till = world.time + cooldown_updates[COOLDOWN_UPDATE_SET_ENRAGE]
@@ -121,6 +127,8 @@ Difficulty: Hard
 		enrage_till += cooldown_updates[COOLDOWN_UPDATE_ADD_ENRAGE]
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/OpenFire()
+	procstart = null
+	src.procstart = null
 	if(client)
 		return
 
@@ -135,6 +143,8 @@ Difficulty: Hard
 		hallucination_charge_surround.Trigger(target = target)
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/get_mobs_on_blood()
+	procstart = null
+	src.procstart = null
 	var/list/targets = ListTargets()
 	. = list()
 	for(var/mob/living/L in targets)
@@ -153,11 +163,15 @@ Difficulty: Hard
  * * params, extra parameters
  */
 /mob/living/simple_animal/hostile/megafauna/bubblegum/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(W, /obj/item/organ/tongue))
 		user.client?.give_award(/datum/award/achievement/jobs/frenching, user)
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/try_bloodattack()
+	procstart = null
+	src.procstart = null
 	var/list/targets = get_mobs_on_blood()
 	if(targets.len)
 		INVOKE_ASYNC(src, PROC_REF(bloodattack), targets, prob(50))
@@ -165,6 +179,8 @@ Difficulty: Hard
 	return FALSE
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/bloodattack(list/targets, handedness)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target_one = pick_n_take(targets)
 	var/turf/target_one_turf = get_turf(target_one)
 	var/mob/living/target_two
@@ -197,6 +213,8 @@ Difficulty: Hard
 					bloodsmack(target_one_turf, handedness)
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/bloodsmack(turf/T, handedness)
+	procstart = null
+	src.procstart = null
 	if(handedness)
 		new /obj/effect/temp_visual/bubblegum_hands/rightsmack(T)
 	else
@@ -211,6 +229,8 @@ Difficulty: Hard
 	SLEEP_CHECK_DEATH(3, src)
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/bloodgrab(turf/T, handedness)
+	procstart = null
+	src.procstart = null
 	if(handedness)
 		new /obj/effect/temp_visual/bubblegum_hands/rightpaw(T)
 		new /obj/effect/temp_visual/bubblegum_hands/rightthumb(T)
@@ -230,27 +250,39 @@ Difficulty: Hard
 	SLEEP_CHECK_DEATH(1, src)
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/devour(mob/living/yummy_food)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == TRUE) // a corpse was devoured
 		// bubblegum bubblegum in a dish, how many corpses do you wish?
 		new /obj/item/food/bubblegum/bubblegum(loc)
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/be_aggressive()
+	procstart = null
+	src.procstart = null
 	if(BUBBLEGUM_IS_ENRAGED)
 		return TRUE
 	return isliving(target) && HAS_TRAIT(target, TRAIT_INCAPACITATED)
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/get_retreat_distance()
+	procstart = null
+	src.procstart = null
 	return (be_aggressive() ? null : initial(retreat_distance))
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/get_minimum_distance()
+	procstart = null
+	src.procstart = null
 	return (be_aggressive() ? 1 : initial(minimum_distance))
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/update_approach()
+	procstart = null
+	src.procstart = null
 	retreat_distance = get_retreat_distance()
 	minimum_distance = get_minimum_distance()
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/blood_enrage()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!BUBBLEGUM_CAN_ENRAGE)
 		return FALSE
@@ -262,20 +294,28 @@ Difficulty: Hard
 	addtimer(cb, enrage_time)
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/after_charge()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	try_bloodattack()
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/blood_enrage_end()
+	procstart = null
+	src.procstart = null
 	update_approach()
 	change_move_delay()
 	remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, COLOR_BUBBLEGUM_RED)
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/change_move_delay(newmove = initial(move_to_delay))
+	procstart = null
+	src.procstart = null
 	move_to_delay = newmove
 	set_varspeed(move_to_delay)
 	handle_automated_action() // need to recheck movement otherwise move_to_delay won't update until the next checking aka will be wrong speed for a bit
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/adjust_brute_loss(amount, updating_health = TRUE, forced = FALSE, required_bodytype)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	anger_modifier = clamp(((maxHealth - health)/60),0,20)
 	enrage_time = initial(enrage_time) * clamp(anger_modifier / 20, 0.5, 1)
@@ -289,16 +329,22 @@ Difficulty: Hard
 			B.setDir(pick(GLOB.cardinals))
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/death(gibbed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!gibbed && health > 0 && true_spawn && !(flags_1 & ADMIN_SPAWNED_1))
 		SSshuttle.shuttle_purchase_requirements_met[SHUTTLE_UNLOCK_BUBBLEGUM] = TRUE
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/AttackingTarget(atom/attacked_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		recovery_time = world.time + 20 // can only attack melee once every 2 seconds but rapid_melee gives higher priority
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/projectile_hit(obj/projectile/hitting_projectile, def_zone, piercing_hit, blocked)
+	procstart = null
+	src.procstart = null
 	if(BUBBLEGUM_IS_ENRAGED)
 		visible_message(span_danger("[src] deflects the [hitting_projectile]! [p_They()] can't be hit with ranged weapons while enraged!"), span_userdanger("You deflect the projectile!"))
 		playsound(src, SFX_BULLET_MISS, 300, TRUE)
@@ -306,6 +352,8 @@ Difficulty: Hard
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(severity <= EXPLODE_LIGHT)
 		return FALSE
 
@@ -313,6 +361,8 @@ Difficulty: Hard
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/Move()
+	procstart = null
+	src.procstart = null
 	update_approach()
 	. = ..()
 
@@ -333,33 +383,49 @@ Difficulty: Hard
 	var/move_through_mob
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/hallucination/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	toggle_ai(AI_OFF)
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/hallucination/Destroy()
+	procstart = null
+	src.procstart = null
 	if(spawn_blood)
 		new /obj/effect/decal/cleanable/blood(get_turf(src))
 	. = ..()
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/hallucination/Life(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/hallucination/adjust_brute_loss(amount, updating_health = TRUE, forced = FALSE, required_bodytype)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/hallucination/OpenFire()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/hallucination/AttackingTarget(atom/attacked_target)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/hallucination/try_bloodattack()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/decal/cleanable/blood/bubblegum
 	bloodiness = 0
 
 /obj/effect/decal/cleanable/blood/bubblegum/can_bloodcrawl_in()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/effect/decal/cleanable/blood/gibs/bubblegum
@@ -369,6 +435,8 @@ Difficulty: Hard
 	bloodiness = 20
 
 /obj/effect/decal/cleanable/blood/gibs/bubblegum/can_bloodcrawl_in()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/effect/temp_visual/dragon_swoop/bubblegum

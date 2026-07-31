@@ -19,6 +19,8 @@
 	var/atom/source_atom
 
 /datum/alarm_handler/New(atom/source_atom)
+	procstart = null
+	src.procstart = null
 	if(istype(source_atom))
 		src.source_atom = source_atom
 	else
@@ -27,6 +29,8 @@
 	return ..()
 
 /datum/alarm_handler/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/alarm_type, sent_alarm in sent_alarms)
 		for(var/area/area_to_clear as anything in sent_alarm)
 			//Yeet all connected alarms
@@ -38,6 +42,8 @@
 ///Important to note is that source_atom is not held as a ref, we're used as a proxy to prevent hard deletes
 ///optional_camera should only be used when you have one camera you want to pass along to alarm listeners, most of the time you should have no use for it
 /datum/alarm_handler/proc/send_alarm(alarm_type, atom/use_as_source_atom, optional_camera)
+	procstart = null
+	src.procstart = null
 	if(!use_as_source_atom)
 		use_as_source_atom = source_atom
 	if(!use_as_source_atom)
@@ -65,6 +71,8 @@
 
 ///Clears an alarm from any interested listeners
 /datum/alarm_handler/proc/clear_alarm(alarm_type, use_as_source_atom)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!use_as_source_atom)
 		use_as_source_atom = source_atom
@@ -75,6 +83,8 @@
 
 ///Exists so we can request that the alarms from an area are cleared, even if our source atom is no longer in that area
 /datum/alarm_handler/proc/clear_alarm_from_area(alarm_type, area/our_area)
+	procstart = null
+	src.procstart = null
 
 	var/list/existing_alarms = LAZYACCESS(sent_alarms, alarm_type)
 	if(isnull(existing_alarms))
@@ -108,6 +118,8 @@
 
 ///Accepts a list of alarm types to pay attention to, a list of valid z levels, and a list of valid areas. areas and zlevels are ignored if null
 /datum/alarm_listener/New(alarms_to_listen_for, allowed_z_levels, allowed_areas)
+	procstart = null
+	src.procstart = null
 	src.allowed_z_levels = allowed_z_levels
 	src.allowed_areas = allowed_areas
 	for(var/alarm_type in alarms_to_listen_for)
@@ -119,6 +131,8 @@
 ///Adds an alarm to our alarms list, you shouldn't be calling this manually
 ///It should all be handled by the signal listening we do, unless you want to only send an alarm to one listener
 /datum/alarm_listener/proc/add_alarm(datum/source, datum/alarm_handler/handler, alarm_type, area/source_area, source_z, optional_camera)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!accepting_alarm_changes)
@@ -155,6 +169,8 @@
 ///Removes an alarm to our alarms list, you probably shouldn't be calling this manually
 ///It should all be handled by the signal listening we do, unless you want to only remove an alarm to one listener
 /datum/alarm_listener/proc/clear_alarm(datum/source, datum/alarm_handler/handler, alarm_type, area/source_area)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!accepting_alarm_changes)
@@ -184,16 +200,22 @@
 
 ///Does what it says on the tin, exists for signal hooking
 /datum/alarm_listener/proc/prevent_alarm_changes()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	accepting_alarm_changes = FALSE
 
 ///Does what it says on the tin, exists for signal hooking
 /datum/alarm_listener/proc/allow_alarm_changes()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	accepting_alarm_changes = TRUE
 
 ///Used to manually clear camera refs if one is ref'd directly
 /datum/alarm_listener/proc/clear_camera_ref(obj/machinery/camera/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/list/alarms_cache = alarms  //Cache for sonic speec
 	for(var/alarm_type in alarms_cache)

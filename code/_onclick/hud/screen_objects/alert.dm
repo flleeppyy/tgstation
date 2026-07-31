@@ -13,6 +13,8 @@
  *override makes it so the alert is not replaced until cleared by a clear_alert with clear_override, and it's used for hallucinations.
  */
 /mob/proc/throw_alert(category, type, severity, atom/new_master, override = FALSE, timeout_override, no_anim = FALSE)
+	procstart = null
+	src.procstart = null
 
 	if(!category || QDELETED(src))
 		return
@@ -72,11 +74,15 @@
 	return thealert
 
 /mob/proc/alert_timeout(atom/movable/screen/alert/alert, category)
+	procstart = null
+	src.procstart = null
 	if(alert.timeout && alerts[category] == alert && world.time >= alert.timeout)
 		clear_alert(category)
 
 // Proc to clear an existing alert.
 /mob/proc/clear_alert(category, clear_override = FALSE)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/screen/alert/alert = alerts[category]
 	if(!alert)
 		return 0
@@ -93,6 +99,8 @@
 
 // Proc to check for an alert
 /mob/proc/has_alert(category)
+	procstart = null
+	src.procstart = null
 	return !isnull(alerts[category])
 
 /atom/movable/screen/alert
@@ -120,6 +128,8 @@
 	var/overlay_icon = 'icons/hud/screen_alert.dmi'
 
 /atom/movable/screen/alert/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(PERFORM_ALL_TESTS(focus_only/screen_alert_overlay) && overlay_state && !icon_exists(overlay_icon, overlay_state))
 		stack_trace("overlay_state: \"[overlay_state || "null"]\" that couldn't be found overlay_icon: \"[overlay_icon || "null"]\"")
@@ -130,18 +140,26 @@
 		update_appearance()
 
 /atom/movable/screen/alert/MouseEntered(location,control,params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!QDELETED(src))
 		openToolTip(usr,src,params,title = name,content = desc,theme = alerttooltipstyle)
 
 /atom/movable/screen/alert/MouseExited()
+	procstart = null
+	src.procstart = null
 	closeToolTip(usr)
 
 /atom/movable/screen/alert/proc/on_master_update_appearance(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_appearance()
 
 /atom/movable/screen/alert/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/our_master = master_ref?.resolve()
 	if(istype(our_master) && !QDELETED(our_master))
@@ -151,6 +169,8 @@
 
 ///Returns a copy of the appearance of the atom, with its base pixel coordinates. Useful for overlays
 /atom/movable/screen/alert/proc/add_atom_icon(atom/atom)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/atom_appearance = new(atom)
 	atom_appearance.appearance_flags = KEEP_TOGETHER
 	atom_appearance.layer = FLOAT_LAYER
@@ -163,6 +183,8 @@
 	return strip_appearance_underlays(atom_appearance)
 
 /atom/movable/screen/alert/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	..()
@@ -181,6 +203,8 @@
 	return TRUE
 
 /atom/movable/screen/alert/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	severity = 0
 	master_ref = null
@@ -188,6 +212,8 @@
 	screen_loc = ""
 
 /atom/movable/screen/alert/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		span_boldnotice(name),
 		span_info(desc),
@@ -326,6 +352,8 @@
 	var/command
 
 /atom/movable/screen/alert/mind_control/Click()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -340,6 +368,8 @@
 	clickable_glow = TRUE
 
 /atom/movable/screen/alert/embeddedobject/Click()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -381,6 +411,8 @@
 	clickable_glow = TRUE
 
 /atom/movable/screen/alert/fire/Click()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -396,6 +428,8 @@
 	return handle_stop_drop_roll(owner)
 
 /atom/movable/screen/alert/fire/proc/handle_stop_drop_roll(mob/living/roller)
+	procstart = null
+	src.procstart = null
 	return roller.resist_fire()
 
 /atom/movable/screen/alert/give // information set when the give alert is made
@@ -414,14 +448,20 @@
 	var/bypass_active_hand = FALSE
 
 /atom/movable/screen/alert/give/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /atom/movable/screen/alert/give/Destroy()
+	procstart = null
+	src.procstart = null
 	offer = null
 	return ..()
 
 /atom/movable/screen/alert/give/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	context[SCREENTIP_CONTEXT_LMB] = screentip_override_text || "Take [offer.offered_item.name]"
 	context[SCREENTIP_CONTEXT_SHIFT_LMB] = "Examine"
 	return CONTEXTUAL_SCREENTIP_SET
@@ -436,6 +476,8 @@
  * * offer - The status effect connected to the offer being made
  */
 /atom/movable/screen/alert/give/proc/setup(mob/living/taker, datum/status_effect/offering/offer)
+	procstart = null
+	src.procstart = null
 	src.offer = offer
 
 	var/mob/living/offerer = offer.owner
@@ -463,9 +505,13 @@
  * by default.
  */
 /atom/movable/screen/alert/give/proc/get_receiving_name(mob/living/taker, mob/living/offerer, obj/item/receiving)
+	procstart = null
+	src.procstart = null
 	return receiving.name
 
 /atom/movable/screen/alert/give/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -476,6 +522,8 @@
 	handle_transfer()
 
 /atom/movable/screen/alert/give/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!examinable)
 		return ..()
 
@@ -487,6 +535,8 @@
 
 /// An overrideable proc used simply to hand over the item when claimed, this is a proc so that high-fives can override them since nothing is actually transferred
 /atom/movable/screen/alert/give/proc/handle_transfer()
+	procstart = null
+	src.procstart = null
 	var/mob/living/taker = owner
 	var/mob/living/offerer = offer.owner
 	var/obj/item/receiving = offer.offered_item
@@ -505,13 +555,19 @@
 	var/too_slowing_this_guy = FALSE
 
 /atom/movable/screen/alert/give/highfive/get_receiving_name(mob/living/taker, mob/living/offerer, obj/item/receiving)
+	procstart = null
+	src.procstart = null
 	return "a high-five"
 
 /atom/movable/screen/alert/give/highfive/setup(mob/living/taker, datum/status_effect/offering/offer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(offer.owner, COMSIG_ATOM_EXAMINE_MORE, PROC_REF(check_fake_out))
 
 /atom/movable/screen/alert/give/highfive/handle_transfer()
+	procstart = null
+	src.procstart = null
 	if(too_slowing_this_guy)
 		return
 
@@ -526,6 +582,8 @@
 
 /// If the person who offered the high five no longer has it when we try to accept it, we get pranked hard
 /atom/movable/screen/alert/give/highfive/proc/too_slow_p1()
+	procstart = null
+	src.procstart = null
 	var/mob/living/rube = owner
 	var/mob/living/offerer = offer?.owner
 	if(QDELETED(rube) || QDELETED(offerer))
@@ -539,6 +597,8 @@
 
 /// Part two of the ultimate prank
 /atom/movable/screen/alert/give/highfive/proc/too_slow_p2()
+	procstart = null
+	src.procstart = null
 	var/mob/living/rube = owner
 	var/mob/living/offerer = offer?.owner
 	if(!QDELETED(rube) && !QDELETED(offerer))
@@ -554,6 +614,8 @@
 
 /// If someone examine_more's the offerer while they're trying to pull a too-slow, it'll tip them off to the offerer's trickster ways
 /atom/movable/screen/alert/give/highfive/proc/check_fake_out(mob/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(QDELETED(offer.offered_item))
@@ -564,12 +626,16 @@
 	examinable = FALSE
 
 /atom/movable/screen/alert/give/hand/get_receiving_name(mob/living/taker, mob/living/offerer, obj/item/receiving)
+	procstart = null
+	src.procstart = null
 	additional_desc_text = "Click this alert to take it and let [offerer.p_them()] pull you around!"
 	return "[offerer.p_their()] [receiving.name]"
 
 /atom/movable/screen/alert/give/hand/helping
 
 /atom/movable/screen/alert/give/hand/helping/get_receiving_name(mob/living/taker, mob/living/offerer, obj/item/receiving)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	additional_desc_text = "Click this alert to let them help you up!"
 
@@ -593,6 +659,8 @@
 	)
 
 /atom/movable/screen/alert/succumb/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -651,16 +719,22 @@
 	var/mob/living/basic/construct/construct_owner
 
 /atom/movable/screen/alert/bloodsense/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	narnar = new('icons/hud/screen_alert.dmi', "mini_nar")
 	START_PROCESSING(SSprocessing, src)
 
 /atom/movable/screen/alert/bloodsense/Destroy()
+	procstart = null
+	src.procstart = null
 	construct_owner = null
 	STOP_PROCESSING(SSprocessing, src)
 	return ..()
 
 /atom/movable/screen/alert/bloodsense/process()
+	procstart = null
+	src.procstart = null
 	var/atom/blood_target
 
 	if(!owner.mind)
@@ -781,10 +855,14 @@
 	icon_state = "empty_cell"
 
 /atom/movable/screen/alert/emptycell/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(updates=UPDATE_DESC)
 
 /atom/movable/screen/alert/emptycell/update_desc()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = initial(desc)
 	if(length(GLOB.roundstart_station_borgcharger_areas))
@@ -796,10 +874,14 @@
 	icon_state = "low_cell"
 
 /atom/movable/screen/alert/lowcell/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(updates=UPDATE_DESC)
 
 /atom/movable/screen/alert/lowcell/update_desc()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = initial(desc)
 	if(length(GLOB.roundstart_station_borgcharger_areas))
@@ -808,12 +890,16 @@
 //MECH
 
 /atom/movable/screen/alert/lowcell/mech/update_desc()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = initial(desc)
 	if(length(GLOB.roundstart_station_mechcharger_areas))
 		desc += " Power ports are available in [english_list(GLOB.roundstart_station_mechcharger_areas)]."
 
 /atom/movable/screen/alert/emptycell/mech/update_desc()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = initial(desc)
 	if(length(GLOB.roundstart_station_mechcharger_areas))
@@ -846,6 +932,8 @@
 		Unit can be refilled through plasma fuel."
 
 /atom/movable/screen/alert/emptycell/plasma/update_desc()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = initial(desc)
 
@@ -854,6 +942,8 @@
 	desc = "Unit's plasma core is running low. Unit can be refilled through plasma fuel."
 
 /atom/movable/screen/alert/lowcell/plasma/update_desc()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = initial(desc)
 
@@ -887,6 +977,8 @@
 	var/atom/target = null
 
 /atom/movable/screen/alert/hackingapc/Click()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -914,6 +1006,8 @@
 	clickable_glow = TRUE
 
 /atom/movable/screen/alert/revival/Click()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -933,6 +1027,8 @@
 	var/click_interact = FALSE
 
 /atom/movable/screen/alert/notify_action/Click()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -971,11 +1067,15 @@
 	var/datum/candidate_poll/poll
 
 /atom/movable/screen/alert/poll_alert/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	signed_up_overlay = mutable_appearance('icons/hud/screen_gen.dmi', icon_state = "selector")
 	register_context()
 
 /atom/movable/screen/alert/poll_alert/proc/set_role_overlay()
+	procstart = null
+	src.procstart = null
 	var/role_or_only_question = poll.role || "?"
 	role_overlay = new
 	role_overlay.screen_loc = screen_loc
@@ -985,6 +1085,8 @@
 	add_overlay(role_overlay)
 
 /atom/movable/screen/alert/poll_alert/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(role_overlay)
 	QDEL_NULL(time_left_overlay)
 	QDEL_NULL(stacks_overlay)
@@ -996,6 +1098,8 @@
 	return ..()
 
 /atom/movable/screen/alert/poll_alert/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/left_click_text
 	if(poll)
@@ -1014,6 +1118,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /atom/movable/screen/alert/poll_alert/process()
+	procstart = null
+	src.procstart = null
 	if(show_time_left)
 		var/timeleft = timeout - world.time
 		if(timeleft <= 0)
@@ -1025,6 +1131,8 @@
 		add_overlay(time_left_overlay)
 
 /atom/movable/screen/alert/poll_alert/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || isnull(poll))
 		return
@@ -1038,6 +1146,8 @@
 	handle_sign_up()
 
 /atom/movable/screen/alert/poll_alert/proc/handle_sign_up()
+	procstart = null
+	src.procstart = null
 	if(owner in poll.signed_up)
 		poll.remove_candidate(owner)
 	else if(!(owner.ckey in GLOB.poll_ignore[poll.ignoring_category]))
@@ -1045,6 +1155,8 @@
 	update_signed_up_overlay()
 
 /atom/movable/screen/alert/poll_alert/proc/set_never_round()
+	procstart = null
+	src.procstart = null
 	if(!(owner.ckey in GLOB.poll_ignore[poll.ignoring_category]))
 		poll.do_never_for_this_round(owner)
 		color = "red"
@@ -1054,6 +1166,8 @@
 	color = initial(color)
 
 /atom/movable/screen/alert/poll_alert/proc/jump_to_jump_target()
+	procstart = null
+	src.procstart = null
 	if(!poll?.jump_to_me || !isobserver(owner))
 		return
 	var/turf/target_turf = get_turf(poll.jump_to_me)
@@ -1061,6 +1175,8 @@
 		owner.abstract_move(target_turf)
 
 /atom/movable/screen/alert/poll_alert/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(href_list["never"])
 		set_never_round()
 		return
@@ -1071,12 +1187,16 @@
 		return
 
 /atom/movable/screen/alert/poll_alert/proc/update_signed_up_overlay()
+	procstart = null
+	src.procstart = null
 	if(owner in poll.signed_up)
 		add_overlay(signed_up_overlay)
 	else
 		cut_overlay(signed_up_overlay)
 
 /atom/movable/screen/alert/poll_alert/proc/update_candidates_number_overlay()
+	procstart = null
+	src.procstart = null
 	cut_overlay(candidates_num_overlay)
 	if(!length(poll.signed_up))
 		return
@@ -1086,6 +1206,8 @@
 	add_overlay(candidates_num_overlay)
 
 /atom/movable/screen/alert/poll_alert/proc/update_stacks_overlay()
+	procstart = null
+	src.procstart = null
 	cut_overlay(stacks_overlay)
 	var/stack_number = 1
 	for(var/datum/candidate_poll/other_poll as anything in SSpolling.currently_polling)
@@ -1110,6 +1232,8 @@
 	clickable_glow = TRUE
 
 /atom/movable/screen/alert/buckled/Click()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -1138,6 +1262,8 @@
 	click_master = FALSE
 
 /atom/movable/screen/alert/restrained/Click()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -1158,6 +1284,8 @@
 	clickable_glow = TRUE
 
 /atom/movable/screen/alert/shoes/Click()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -1188,6 +1316,8 @@
 	clickable_glow = TRUE
 
 /atom/movable/screen/alert/unpossess_object/Click()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -1198,6 +1328,8 @@
 
 /// Gets the placement for the alert based on its index
 /datum/hud/proc/get_ui_alert_placement(index)
+	procstart = null
+	src.procstart = null
 	// Only has support for 5 slots currently
 	if(index > 5)
 		return ""
@@ -1206,6 +1338,8 @@
 
 // Re-render all alerts - also called in /datum/hud/show_hud() because it's needed there
 /datum/hud/proc/reorganize_alerts(mob/viewmob)
+	procstart = null
+	src.procstart = null
 	var/mob/screenmob = viewmob || mymob
 	if(!screenmob.client)
 		return FALSE

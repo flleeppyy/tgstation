@@ -32,16 +32,22 @@
 	wound = 10
 
 /obj/item/clothing/suit/hooded/cloak/godslayer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed = GLOB.mining_suit_allowed
 	AddComponent(/datum/component/item_equipped_movement_rustle, SFX_PLATE_ARMOR_RUSTLE, 8)
 
 /obj/item/clothing/suit/hooded/cloak/godslayer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(loc == user && !COOLDOWN_FINISHED(src, effect_cooldown))
 		. += "You feel like the revival effect will be able to occur again in [COOLDOWN_TIMELEFT(src, effect_cooldown) / 10] seconds."
 
 /obj/item/clothing/suit/hooded/cloak/godslayer/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot & ITEM_SLOT_OCLOTHING)
 		RegisterSignal(user, COMSIG_MOB_STATCHANGE, PROC_REF(resurrect))
@@ -49,10 +55,14 @@
 	UnregisterSignal(user, COMSIG_MOB_STATCHANGE)
 
 /obj/item/clothing/suit/hooded/cloak/godslayer/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	UnregisterSignal(user, COMSIG_MOB_STATCHANGE)
 
 /obj/item/clothing/suit/hooded/cloak/godslayer/proc/resurrect(mob/living/carbon/user, new_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(new_stat != STABLE && new_stat != DEAD && COOLDOWN_FINISHED(src, effect_cooldown))
 		COOLDOWN_START(src, effect_cooldown, effect_cooldown_time) //This needs to happen first, otherwise there's an infinite loop

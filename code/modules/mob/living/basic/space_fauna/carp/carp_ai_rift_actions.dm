@@ -11,11 +11,15 @@
 	VAR_PRIVATE/turf/rift_destination
 
 /datum/bt_node/ai_behavior/make_carp_rift/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!controller.blackboard[ability_key] || !controller.blackboard[target_key])
 		return FALSE
 
 /datum/bt_node/ai_behavior/make_carp_rift/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/async_flags = handle_async()
 	if(async_flags)
 		return async_flags
@@ -36,6 +40,8 @@
 	return start_async()
 
 /datum/bt_node/ai_behavior/make_carp_rift/perform_async(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/datum/action/cooldown/mob_cooldown/lesser_carp_rift/ability = controller.blackboard[ability_key]
 	var/result = ability.InterceptClickOn(controller.pawn, null, rift_destination)
 	if(!async_still_valid())
@@ -43,11 +49,15 @@
 	finish_async(result ? AI_BEHAVIOR_SUCCEEDED : AI_BEHAVIOR_FAILED)
 
 /datum/bt_node/ai_behavior/make_carp_rift/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	rift_destination = null
 
 /// Return true if your target is valid for the action
 /datum/bt_node/ai_behavior/make_carp_rift/proc/validate_target(datum/ai_controller/controller, atom/target, datum/action/cooldown/mob_cooldown/lesser_carp_rift/ability)
+	procstart = null
+	src.procstart = null
 	if(!ability)
 		return FALSE
 	if(!target)
@@ -56,6 +66,8 @@
 
 /// Return the turf to teleport to, implement this or the behaviour won't do anything
 /datum/bt_node/ai_behavior/make_carp_rift/proc/find_target_turf(datum/ai_controller/controller, atom/target, datum/action/cooldown/mob_cooldown/lesser_carp_rift/ability)
+	procstart = null
+	src.procstart = null
 	CRASH("Called unimplemented target finding proc on carp rift behaviour")
 
 /**
@@ -65,6 +77,8 @@
 /datum/bt_node/ai_behavior/make_carp_rift/away
 
 /datum/bt_node/ai_behavior/make_carp_rift/away/find_target_turf(datum/ai_controller/controller, atom/target, datum/action/cooldown/mob_cooldown/lesser_carp_rift/ability)
+	procstart = null
+	src.procstart = null
 	return get_ranged_target_turf_direct(controller.pawn, target, range = ability.max_range, offset = 180)
 
 /**
@@ -80,6 +94,8 @@
 	var/teleport_if_blocked = TRUE
 
 /datum/bt_node/ai_behavior/make_carp_rift/towards/validate_target(datum/ai_controller/controller, atom/target, datum/action/cooldown/mob_cooldown/lesser_carp_rift/ability)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -97,6 +113,8 @@
 	return FALSE
 
 /datum/bt_node/ai_behavior/make_carp_rift/towards/find_target_turf(datum/ai_controller/controller, atom/target, datum/action/cooldown/mob_cooldown/lesser_carp_rift/ability)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(target)
 	var/distance = get_dist(get_turf(controller.pawn), target_turf)
 
@@ -135,9 +153,13 @@
 /datum/bt_node/ai_behavior/make_carp_rift/towards/unvalidated
 
 /datum/bt_node/ai_behavior/make_carp_rift/towards/unvalidated/validate_target(datum/ai_controller/controller, atom/target, datum/action/cooldown/mob_cooldown/lesser_carp_rift/ability)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/bt_node/ai_behavior/make_carp_rift/towards/unvalidated/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(succeeded)
 		controller.cancel_current_plan()
@@ -157,6 +179,8 @@
 	var/minimum_distance = 2
 
 /datum/bt_node/ai_behavior/find_carp_rift_shortcut/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = controller.blackboard[target_key]
 	if(QDELETED(target) || (controller.blackboard[BB_CARPS_FEAR_FISHERMAN] && HAS_TRAIT(target, TRAIT_SCARY_FISHERMAN)))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED
@@ -186,6 +210,8 @@
 	minimum_distance = 0
 
 /datum/bt_node/ai_behavior/find_carp_rift_shortcut/nearby/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	for(var/obj/effect/temp_visual/lesser_carp_rift/entrance/rift in orange(controller.pawn, search_distance))
 		controller.set_blackboard_key(destination_key, get_turf(rift))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_SUCCEEDED

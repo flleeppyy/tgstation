@@ -1,16 +1,26 @@
 /proc/cmp_numeric_dsc(a,b)
+	procstart = null
+	src.procstart = null
 	return b - a
 
 /proc/cmp_numeric_asc(a,b)
+	procstart = null
+	src.procstart = null
 	return a - b
 
 /proc/cmp_text_asc(a,b)
+	procstart = null
+	src.procstart = null
 	return sorttext(b,a)
 
 /proc/cmp_text_dsc(a,b)
+	procstart = null
+	src.procstart = null
 	return sorttext(a,b)
 
 /proc/cmp_embed_text_asc(a,b)
+	procstart = null
+	src.procstart = null
 	if(isdatum(a))
 		a = REF(a)
 	if(isdatum(b))
@@ -18,6 +28,8 @@
 	return sorttext("[b]", "[a]")
 
 /proc/cmp_embed_text_dsc(a,b)
+	procstart = null
+	src.procstart = null
 	if(isdatum(a))
 		a = REF(a)
 	if(isdatum(b))
@@ -25,73 +37,119 @@
 	return sorttext("[a]", "[b]")
 
 /proc/cmp_list_len_asc(list/a, list/b)
+	procstart = null
+	src.procstart = null
 	return length(a) - length(b)
 
 /proc/cmp_list_len_dsc(list/a, list/b)
+	procstart = null
+	src.procstart = null
 	return length(b) - length(a)
 
 /proc/cmp_name_asc(atom/a, atom/b)
+	procstart = null
+	src.procstart = null
 	return sorttext(b.name, a.name)
 
 /proc/cmp_name_dsc(atom/a, atom/b)
+	procstart = null
+	src.procstart = null
 	return sorttext(a.name, b.name)
 
 /proc/cmp_init_name_asc(atom/a, atom/b)
+	procstart = null
+	src.procstart = null
 	return sorttext(initial(b.name), initial(a.name))
 
 /proc/cmp_records_asc(datum/record/a, datum/record/b)
+	procstart = null
+	src.procstart = null
 	return sorttext(b.name, a.name)
 
 /proc/cmp_records_dsc(datum/record/a, datum/record/b)
+	procstart = null
+	src.procstart = null
 	return sorttext(a.name, b.name)
 
 // Datum cmp with vars is always slower than a specialist cmp proc, use your judgement.
 /proc/cmp_datum_numeric_asc(datum/a, datum/b, variable)
+	procstart = null
+	src.procstart = null
 	return cmp_numeric_asc(a.vars[variable], b.vars[variable])
 
 /proc/cmp_datum_numeric_dsc(datum/a, datum/b, variable)
+	procstart = null
+	src.procstart = null
 	return cmp_numeric_dsc(a.vars[variable], b.vars[variable])
 
 /proc/cmp_datum_text_asc(datum/a, datum/b, variable)
+	procstart = null
+	src.procstart = null
 	return sorttext(b.vars[variable], a.vars[variable])
 
 /proc/cmp_datum_text_dsc(datum/a, datum/b, variable)
+	procstart = null
+	src.procstart = null
 	return sorttext(a.vars[variable], b.vars[variable])
 
 /proc/cmp_ckey_asc(client/a, client/b)
+	procstart = null
+	src.procstart = null
 	return sorttext(b.ckey, a.ckey)
 
 /proc/cmp_ckey_dsc(client/a, client/b)
+	procstart = null
+	src.procstart = null
 	return sorttext(a.ckey, b.ckey)
 
 /proc/cmp_playtime_asc(client/a, client/b)
+	procstart = null
+	src.procstart = null
 	return cmp_numeric_asc(a.get_exp_living(TRUE), b.get_exp_living(TRUE))
 
 /proc/cmp_playtime_dsc(client/a, client/b)
+	procstart = null
+	src.procstart = null
 	return cmp_numeric_asc(a.get_exp_living(TRUE), b.get_exp_living(TRUE))
 
 /proc/cmp_subsystem_init(datum/controller/subsystem/a, datum/controller/subsystem/b)
+	procstart = null
+	src.procstart = null
 	return a.init_order - b.init_order
 
 /proc/cmp_subsystem_init_stage(datum/controller/subsystem/a, datum/controller/subsystem/b)
+	procstart = null
+	src.procstart = null
 	return initial(a.init_stage) - initial(b.init_stage)
 
 /proc/cmp_subsystem_display(datum/controller/subsystem/a, datum/controller/subsystem/b)
+	procstart = null
+	src.procstart = null
 	return sorttext(b.name, a.name)
 
 /proc/cmp_subsystem_priority(datum/controller/subsystem/a, datum/controller/subsystem/b)
+	procstart = null
+	src.procstart = null
 	return a.priority - b.priority
 
 /proc/cmp_filter_data_priority(list/A, list/B)
+	procstart = null
+	src.procstart = null
 	return A["priority"] - B["priority"]
 
 /proc/cmp_timer(datum/timedevent/a, datum/timedevent/b)
+	procstart = null
+	src.procstart = null
 	return a.timeToRun - b.timeToRun
 
 /proc/cmp_ruincost_priority(datum/map_template/ruin/A, datum/map_template/ruin/B)
+	procstart = null
+	src.procstart = null
 	return initial(A.cost) - initial(B.cost)
 
 /proc/cmp_qdel_item_time(datum/qdel_item/A, datum/qdel_item/B)
+	procstart = null
+	src.procstart = null
 	. = B.hard_delete_time - A.hard_delete_time
 	if (!.)
 		. = B.destroy_time - A.destroy_time
@@ -101,29 +159,43 @@
 		. = B.qdels - A.qdels
 
 /proc/cmp_generic_stat_item_time(list/A, list/B)
+	procstart = null
+	src.procstart = null
 	. = B[STAT_ENTRY_TIME] - A[STAT_ENTRY_TIME]
 	if (!.)
 		. = B[STAT_ENTRY_COUNT] - A[STAT_ENTRY_COUNT]
 
 /proc/cmp_profile_avg_time_dsc(list/A, list/B)
+	procstart = null
+	src.procstart = null
 	return (B[PROFILE_ITEM_TIME]/(B[PROFILE_ITEM_COUNT] || 1)) - (A[PROFILE_ITEM_TIME]/(A[PROFILE_ITEM_COUNT] || 1))
 
 /proc/cmp_profile_time_dsc(list/A, list/B)
+	procstart = null
+	src.procstart = null
 	return B[PROFILE_ITEM_TIME] - A[PROFILE_ITEM_TIME]
 
 /proc/cmp_profile_count_dsc(list/A, list/B)
+	procstart = null
+	src.procstart = null
 	return B[PROFILE_ITEM_COUNT] - A[PROFILE_ITEM_COUNT]
 
 /proc/cmp_atom_layer_asc(atom/A,atom/B)
+	procstart = null
+	src.procstart = null
 	if(A.plane != B.plane)
 		return A.plane - B.plane
 	else
 		return A.layer - B.layer
 
 /proc/cmp_advdisease_resistance_asc(datum/disease/advance/A, datum/disease/advance/B)
+	procstart = null
+	src.procstart = null
 	return A.totalResistance() - B.totalResistance()
 
 /proc/cmp_quirk_asc(datum/quirk/A, datum/quirk/B)
+	procstart = null
+	src.procstart = null
 	var/a_sign = sign(initial(A.value) * -1)
 	var/b_sign = sign(initial(B.value) * -1)
 
@@ -142,33 +214,51 @@
 		return sorttext(b_name, a_name)
 
 /proc/cmp_job_display_with_departments_asc(datum/job/A, datum/job/B)
+	procstart = null
+	src.procstart = null
 	return A.display_order_with_department() - B.display_order_with_department()
 
 /proc/cmp_department_display_asc(datum/job_department/A, datum/job_department/B)
+	procstart = null
+	src.procstart = null
 	return A.display_order - B.display_order
 
 /proc/cmp_reagents_asc(datum/reagent/a, datum/reagent/b)
+	procstart = null
+	src.procstart = null
 	return sorttext(initial(b.name),initial(a.name))
 
 /proc/cmp_typepaths_asc(A, B)
+	procstart = null
+	src.procstart = null
 	return sorttext("[B]","[A]")
 
 /proc/cmp_num_string_asc(A, B)
+	procstart = null
+	src.procstart = null
 	return text2num(A) - text2num(B)
 
 /proc/cmp_mob_realname_dsc(mob/A,mob/B)
+	procstart = null
+	src.procstart = null
 	return sorttext(A.real_name,B.real_name)
 
 /// Orders bodyparts by their body_part value, ascending.
 /proc/cmp_bodypart_by_body_part_asc(obj/item/bodypart/limb_one, obj/item/bodypart/limb_two)
+	procstart = null
+	src.procstart = null
 	return limb_one::body_part - limb_two::body_part
 
 /// Orders by integrated circuit weight
 /proc/cmp_port_order_asc(datum/port/compare1, datum/port/compare2)
+	procstart = null
+	src.procstart = null
 	return compare1.order - compare2.order
 
 /// Orders by uplink category weight
 /proc/cmp_uplink_category_desc(datum/uplink_category/compare1, datum/uplink_category/compare2)
+	procstart = null
+	src.procstart = null
 	return initial(compare2.weight) - initial(compare1.weight)
 
 /**
@@ -179,6 +269,8 @@
  * lead to runtimes and item duplication when it happens.
  */
 /proc/cmp_crafting_req_priority(A, B)
+	procstart = null
+	src.procstart = null
 	var/lhs
 	var/rhs
 
@@ -189,17 +281,25 @@
 
 /// Orders heretic knowledge by priority
 /proc/cmp_heretic_knowledge(datum/heretic_knowledge/knowledge_a, datum/heretic_knowledge/knowledge_b)
+	procstart = null
+	src.procstart = null
 	return initial(knowledge_b.priority) - initial(knowledge_a.priority)
 
 /// Passed a list of assoc lists, sorts them by the list's "name" keys.
 /proc/cmp_assoc_list_name(list/A, list/B)
+	procstart = null
+	src.procstart = null
 	return sorttext(B["name"], A["name"])
 
 /// Orders mobs by health
 /proc/cmp_mob_health(mob/living/mob_a, mob/living/mob_b)
+	procstart = null
+	src.procstart = null
 	return mob_b.health - mob_a.health
 
 /proc/cmp_deathmatch_mods(datum/deathmatch_modifier/a, datum/deathmatch_modifier/b)
+	procstart = null
+	src.procstart = null
 	return sorttext(b.name, a.name)
 
 /**
@@ -207,6 +307,8 @@
  * If both share the same required fluid type, they'll be ordered by name instead.
  */
 /proc/cmp_fish_fluid(obj/item/fish/a, obj/item/fish/b)
+	procstart = null
+	src.procstart = null
 	var/static/list/fluids_priority = list(
 		AQUARIUM_FLUID_FRESHWATER,
 		AQUARIUM_FLUID_SALTWATER,
@@ -221,20 +323,30 @@
 
 /// Orders vending products by their price
 /proc/cmp_vending_prices(datum/data/vending_product/a, datum/data/vending_product/b)
+	procstart = null
+	src.procstart = null
 	return b.price - a.price
 
 /proc/cmp_item_vending_prices(obj/item/a, obj/item/b)
+	procstart = null
+	src.procstart = null
 	return b.custom_price - a.custom_price
 
 ///Sorts stock parts based on tier
 /proc/cmp_rped_sort(obj/item/first_item, obj/item/second_item)
+	procstart = null
+	src.procstart = null
 	///even though stacks aren't stock parts, get_part_rating() is defined on the item level (see /obj/item/proc/get_part_rating()) and defaults to returning 0.
 	return second_item.get_part_rating() - first_item.get_part_rating()
 
 /// Orders cameras by their `c_tag` ascending
 /proc/cmp_camera_ctag_asc(obj/machinery/camera/a, obj/machinery/camera/b)
+	procstart = null
+	src.procstart = null
 	return sorttext(b.c_tag, a.c_tag)
 
 /// Sorts client colors based on their priority
 /proc/cmp_client_colours(datum/client_colour/first_color, datum/client_colour/second_color)
+	procstart = null
+	src.procstart = null
 	return second_color.priority - first_color.priority

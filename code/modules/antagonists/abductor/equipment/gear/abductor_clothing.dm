@@ -57,6 +57,8 @@
 	acid = 70
 
 /obj/item/clothing/suit/armor/abductor/vest/proc/toggle_nodrop()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT_FROM(src, TRAIT_NODROP, ABDUCTOR_VEST_TRAIT))
 		REMOVE_TRAIT(src, TRAIT_NODROP, ABDUCTOR_VEST_TRAIT)
 	else
@@ -65,6 +67,8 @@
 		to_chat(loc, span_notice("Your vest is now [HAS_TRAIT_FROM(src, TRAIT_NODROP, ABDUCTOR_VEST_TRAIT) ? "locked" : "unlocked"]."))
 
 /obj/item/clothing/suit/armor/abductor/vest/proc/flip_mode()
+	procstart = null
+	src.procstart = null
 	switch(mode)
 		if(VEST_STEALTH)
 			mode = VEST_COMBAT
@@ -81,9 +85,13 @@
 	update_item_action_buttons()
 
 /obj/item/clothing/suit/armor/abductor/vest/proc/SetDisguise(datum/icon_snapshot/entry)
+	procstart = null
+	src.procstart = null
 	disguise = entry
 
 /obj/item/clothing/suit/armor/abductor/vest/proc/ActivateStealth()
+	procstart = null
+	src.procstart = null
 	if(disguise == null)
 		return
 	stealth_active = TRUE
@@ -102,6 +110,8 @@
 	wearer.update_visible_name()
 
 /obj/item/clothing/suit/armor/abductor/vest/proc/return_disguise_name(mob/living/carbon/human/source, list/identity)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(identity[VISIBLE_NAME_FORCED]) // name-forcing overrides disguise
 		return
@@ -109,6 +119,8 @@
 	identity[VISIBLE_NAME_ID] = ""
 
 /obj/item/clothing/suit/armor/abductor/vest/proc/DeactivateStealth()
+	procstart = null
+	src.procstart = null
 	if(!stealth_active)
 		return
 	stealth_active = FALSE
@@ -123,12 +135,16 @@
 
 /// After a z-level change, reapply the disguise overlays to override any rebuilt base overlays
 /obj/item/clothing/suit/armor/abductor/vest/proc/on_z_changed(datum/source, turf/old_turf, turf/new_turf, same_z_layer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!stealth_active || !ishuman(loc) || disguise == null)
 		return
 	addtimer(CALLBACK(src, PROC_REF(reassert_disguise)), 0)
 
 /obj/item/clothing/suit/armor/abductor/vest/proc/reassert_disguise()
+	procstart = null
+	src.procstart = null
 	if(!stealth_active || !ishuman(loc) || disguise == null)
 		return
 	var/mob/living/carbon/human/wearer = loc
@@ -139,12 +155,18 @@
 	wearer.update_visible_name()
 
 /obj/item/clothing/suit/armor/abductor/vest/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	DeactivateStealth()
 
 /obj/item/clothing/suit/armor/abductor/vest/IsReflect()
+	procstart = null
+	src.procstart = null
 	DeactivateStealth()
 
 /obj/item/clothing/suit/armor/abductor/vest/ui_action_click()
+	procstart = null
+	src.procstart = null
 	switch(mode)
 		if(VEST_COMBAT)
 			Adrenaline()
@@ -155,6 +177,8 @@
 				ActivateStealth()
 
 /obj/item/clothing/suit/armor/abductor/vest/proc/Adrenaline()
+	procstart = null
+	src.procstart = null
 	if(ishuman(loc))
 		if(combat_cooldown < initial(combat_cooldown))
 			to_chat(loc, span_warning("Combat injection is still recharging."))
@@ -170,11 +194,15 @@
 		START_PROCESSING(SSobj, src)
 
 /obj/item/clothing/suit/armor/abductor/vest/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	combat_cooldown += seconds_per_tick
 	if(combat_cooldown >= initial(combat_cooldown))
 		STOP_PROCESSING(SSobj, src)
 
 /obj/item/clothing/suit/armor/abductor/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	for(var/obj/machinery/abductor/console/mothership_console as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/abductor/console))
 		if(mothership_console.vest == src)

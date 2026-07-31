@@ -6,16 +6,24 @@
 /datum/status_effect/bioware/ligaments/hooked
 
 /datum/status_effect/bioware/ligaments/hooked/bioware_gained()
+	procstart = null
+	src.procstart = null
 	owner.add_traits(list(TRAIT_LIMBATTACHMENT, TRAIT_EASYDISMEMBER), TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/bioware/ligaments/hooked/bioware_lost()
+	procstart = null
+	src.procstart = null
 	owner.remove_traits(list(TRAIT_LIMBATTACHMENT, TRAIT_EASYDISMEMBER), TRAIT_STATUS_EFFECT(id))
 
 // Reinforced ligaments - Easier to break, but cannot be dismembered
 /datum/status_effect/bioware/ligaments/reinforced
 
 /datum/status_effect/bioware/ligaments/reinforced/bioware_gained()
+	procstart = null
+	src.procstart = null
 	owner.add_traits(list(TRAIT_NODISMEMBER, TRAIT_EASILY_WOUNDED), TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/bioware/ligaments/reinforced/bioware_lost()
+	procstart = null
+	src.procstart = null
 	owner.remove_traits(list(TRAIT_NODISMEMBER, TRAIT_EASILY_WOUNDED), TRAIT_STATUS_EFFECT(id))

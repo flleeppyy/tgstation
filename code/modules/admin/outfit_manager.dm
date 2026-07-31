@@ -5,15 +5,21 @@ ADMIN_VERB(outfit_manager, R_DEBUG|R_ADMIN, "Outfit Manager", "View and edit out
 /datum/outfit_manager
 
 /datum/outfit_manager/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_DEBUG | R_ADMIN)
 
 /datum/outfit_manager/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "OutfitManager")
 		ui.open()
 
 /datum/outfit_manager/proc/entry(datum/outfit/outfit)
+	procstart = null
+	src.procstart = null
 	var/vv = FALSE
 	var/datum/outfit/varedit/varoutfit = outfit
 	if(istype(varoutfit))
@@ -24,6 +30,8 @@ ADMIN_VERB(outfit_manager, R_DEBUG|R_ADMIN, "Outfit Manager", "View and edit out
 	)
 
 /datum/outfit_manager/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/list/outfits = list()
@@ -34,6 +42,8 @@ ADMIN_VERB(outfit_manager, R_DEBUG|R_ADMIN, "Outfit Manager", "View and edit out
 	return data
 
 /datum/outfit_manager/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	. = TRUE

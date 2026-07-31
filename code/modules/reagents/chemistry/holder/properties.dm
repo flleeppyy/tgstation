@@ -1,6 +1,8 @@
 //============================VOLUME======================================
 /// Is this holder full or not
 /datum/reagents/proc/holder_full()
+	procstart = null
+	src.procstart = null
 	return total_volume >= maximum_volume
 
 /**
@@ -10,6 +12,8 @@
  * * type_check - see defines under reagents.dm file
  */
 /datum/reagents/proc/get_reagent_amount(datum/reagent/reagent, type_check = REAGENT_STRICT_TYPE)
+	procstart = null
+	src.procstart = null
 	if(!ispath(reagent))
 		stack_trace("invalid path passed to get_reagent_amount [reagent]")
 		return 0
@@ -47,6 +51,8 @@
 * * value - How much to adjust the base pH by
 */
 /datum/reagents/proc/adjust_all_reagents_ph(value)
+	procstart = null
+	src.procstart = null
 	for(var/datum/reagent/reagent as anything in reagent_list)
 		reagent.ph = clamp(reagent.ph + value, CHEMICAL_MIN_PH, CHEMICAL_MAX_PH)
 
@@ -60,6 +66,8 @@
 * * value - How much to adjust the base pH by
 */
 /datum/reagents/proc/adjust_specific_reagent_ph(input_reagent, value)
+	procstart = null
+	src.procstart = null
 	var/datum/reagent/reagent = has_reagent(input_reagent)
 	if(!reagent) //We can call this with missing reagents.
 		return FALSE
@@ -69,6 +77,8 @@
 //==========================TEMPERATURE======================================
 /// Returns the total heat capacity for all of the reagents currently in this holder.
 /datum/reagents/proc/heat_capacity()
+	procstart = null
+	src.procstart = null
 	. = 0
 	var/list/cached_reagents = reagent_list //cache reagents
 	for(var/datum/reagent/reagent in cached_reagents)
@@ -82,6 +92,8 @@
  * - max_temp: The maximum temperature that can be reached.
  */
 /datum/reagents/proc/adjust_thermal_energy(delta_energy, min_temp = 2.7, max_temp = 1000)
+	procstart = null
+	src.procstart = null
 	var/heat_capacity = heat_capacity()
 	if(!heat_capacity)
 		return // no div/0 please
@@ -95,6 +107,8 @@
  * - _temperature: The new temperature value.
  */
 /datum/reagents/proc/set_temperature(_temperature)
+	procstart = null
+	src.procstart = null
 	if(_temperature == chem_temp)
 		return
 
@@ -109,6 +123,8 @@
  * * [reagent][datum/reagent] - the typepath of the specific reagent to get purity of
  */
 /datum/reagents/proc/get_reagent_purity(datum/reagent/reagent)
+	procstart = null
+	src.procstart = null
 	if(!ispath(reagent))
 		stack_trace("invalid reagent typepath passed to get_reagent_purity [reagent]")
 		return 0
@@ -126,6 +142,8 @@
  * * [parent_type][datum/reagent] - the typepath of specific reagents to look for
  */
 /datum/reagents/proc/get_average_purity(datum/reagent/parent_type = null)
+	procstart = null
+	src.procstart = null
 	if(!isnull(parent_type) && !ispath(parent_type))
 		stack_trace("illegal path passed to get_average_purity [parent_type]")
 		return FALSE
@@ -147,6 +165,8 @@
  * * new_purity - the new purity value
  */
 /datum/reagents/proc/set_all_reagents_purity(new_purity = 0)
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	for(var/datum/reagent/cached_reagent as anything in cached_reagents)
 		cached_reagent.purity = max(0, new_purity)
@@ -161,4 +181,6 @@
  * * minimum_percent - the lower the minimum percent, the more sensitive the message is.
  */
 /datum/reagents/proc/generate_taste_message(mob/living/taster, minimum_percent)
+	procstart = null
+	src.procstart = null
 	return generate_reagents_taste_message(reagent_list, taster, minimum_percent)

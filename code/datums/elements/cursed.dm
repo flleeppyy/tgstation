@@ -6,6 +6,8 @@
 /datum/element/cursed
 
 /datum/element/cursed/Attach(datum/target, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return COMPONENT_INCOMPATIBLE
@@ -17,6 +19,8 @@
 	ADD_TRAIT(master, TRAIT_MOVE_FLYING, ELEMENT_TRAIT(type))
 
 /datum/element/cursed/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/master = source
 	QDEL_NULL(master.ai_controller)

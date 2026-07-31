@@ -2,6 +2,8 @@
 /datum/unit_test/style_hotswapping
 
 /datum/unit_test/style_hotswapping/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/john_ultrakill = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/storage/backpack/bag = allocate(__IMPLIED_TYPE__, john_ultrakill.loc)
 	john_ultrakill.equip_to_slot(bag, ITEM_SLOT_BACK)
@@ -31,6 +33,8 @@
 	TEST_ASSERT_EQUAL(john_ultrakill.get_active_held_item(), coin_two, "Human wasn't able to hotswap with their storage!")
 
 /datum/unit_test/style_hotswapping/proc/try_stabilize(mob/living/carbon/human/john_ultrakill, core_loc, desc = null)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/monster_core/regenerative_core/legion/core = allocate(__IMPLIED_TYPE__, john_ultrakill.loc)
 	core.forceMove(core_loc)
 	TEST_ASSERT(core.decay_timer, "Legion core spawned without a decay timer!")

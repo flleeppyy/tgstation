@@ -7,6 +7,8 @@
 
 ///Returns a short description of the cell line
 /datum/micro_organism/proc/get_details(show_details)
+	procstart = null
+	src.procstart = null
 	return span_notice("[desc]")
 
 ///A "mob" cell. Can grow into a mob in a growing vat.
@@ -34,6 +36,8 @@
 
 ///Handles growth of the micro_organism. This only runs if the micro organism is in the growing vat. Reagents is the growing vats reagents
 /datum/micro_organism/cell_line/proc/handle_growth(obj/machinery/vatgrower/vat)
+	procstart = null
+	src.procstart = null
 	if(!try_eat(vat.reagents))
 		return FALSE
 	growth = max(growth, growth + calculate_growth(vat.reagents, vat.biological_sample)) //Prevent you from having minus growth.
@@ -43,6 +47,8 @@
 
 ///Tries to consume the required reagents. Can only do this if all of them are available. Reagents is the growing vats reagents
 /datum/micro_organism/cell_line/proc/try_eat(datum/reagents/reagents)
+	procstart = null
+	src.procstart = null
 	for(var/i in required_reagents)
 		if(!reagents.has_reagent(i))
 			return FALSE
@@ -52,6 +58,8 @@
 
 ///Apply modifiers on growth_rate based on supplementary and supressive reagents. Reagents is the growing vats reagents
 /datum/micro_organism/cell_line/proc/calculate_growth(datum/reagents/reagents, datum/biological_sample/biological_sample)
+	procstart = null
+	src.procstart = null
 	. = growth_rate
 
 	//Handle growth based on supplementary reagents here.
@@ -77,6 +85,8 @@
 
 ///Called once a cell line reaches 100 growth. Then we check if any cell_line is too far so we can perform an epic fail roll
 /datum/micro_organism/cell_line/proc/finish_growing(obj/machinery/vatgrower/vat)
+	procstart = null
+	src.procstart = null
 	playsound(vat, 'sound/effects/splat.ogg', 50, TRUE)
 	succeed_growing(vat)
 	SEND_SIGNAL(vat.biological_sample, COMSIG_SAMPLE_GROWTH_COMPLETED)
@@ -84,6 +94,8 @@
 	return TRUE
 
 /datum/micro_organism/cell_line/proc/succeed_growing(obj/machinery/vatgrower/vat)
+	procstart = null
+	src.procstart = null
 	do_smoke(0, vat, vat.loc)
 	for(var/x in 1 to resulting_atom_count)
 		var/atom/thing = new resulting_atom(get_turf(vat))
@@ -101,6 +113,8 @@
 
 ///Overriden to show more info like needs, supplementary and supressive reagents and also growth.
 /datum/micro_organism/cell_line/get_details(show_details)
+	procstart = null
+	src.procstart = null
 	. += "[span_notice("[desc] - growth progress: [growth]%")]"
 	if(show_details)
 		. += "\n- " + return_reagent_text("Requires:", required_reagents)
@@ -109,6 +123,8 @@
 
 ///Return a nice list of all the reagents in a specific category with a specific prefix. This needs to be reworked because the formatting sucks ass.
 /datum/micro_organism/cell_line/proc/return_reagent_text(prefix_text = "It requires:", list/reagentlist)
+	procstart = null
+	src.procstart = null
 	if(!reagentlist.len)
 		return
 	var/list/reagent_names = list()
@@ -119,6 +135,8 @@
 
 //Adds a hue shift filter and affix to an atom.
 /datum/micro_organism/cell_line/proc/mutate_color(atom/beautiful_mutant)
+	procstart = null
+	src.procstart = null
 	//This determines how much the hue of the atom is shifted, 0.5 is the most extreme, respresenting a 180° hue shift.
 	var/hue_shift = 1
 	//This affix is added to the name of the atom, to help players understand and converse about the different rarity levels.

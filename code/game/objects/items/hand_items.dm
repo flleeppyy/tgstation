@@ -7,10 +7,14 @@
 	item_flags = DROPDEL | ABSTRACT | HAND_ITEM
 
 /obj/item/hand_item/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_STORAGE_INSERT, TRAIT_GENERIC)
 
 /obj/item/hand_item/attack(mob/living/target_mob, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SEND_SIGNAL(user, COMSIG_LIVING_HAND_ITEM_ATTACK, target_mob)
 
@@ -22,6 +26,8 @@
 	attack_verb_simple = list("bop")
 
 /obj/item/hand_item/circlegame/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/owner = loc
 	if(!istype(owner))
@@ -29,18 +35,24 @@
 	RegisterSignal(owner, COMSIG_ATOM_EXAMINE, PROC_REF(ownerExamined))
 
 /obj/item/hand_item/circlegame/Destroy()
+	procstart = null
+	src.procstart = null
 	var/mob/owner = loc
 	if(istype(owner))
 		UnregisterSignal(owner, COMSIG_ATOM_EXAMINE)
 	return ..()
 
 /obj/item/hand_item/circlegame/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(user, COMSIG_ATOM_EXAMINE) //loc will have changed by the time this is called, so Destroy() can't catch it
 	// this is a dropdel item.
 	return ..()
 
 /// Stage 1: The mistake is made
 /obj/item/hand_item/circlegame/proc/ownerExamined(mob/living/owner, mob/living/sucker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(sucker) || !in_range(owner, sucker))
@@ -49,6 +61,8 @@
 
 /// Stage 2: Fear sets in
 /obj/item/hand_item/circlegame/proc/waitASecond(mob/living/owner, mob/living/sucker)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(sucker) || QDELETED(src) || QDELETED(owner))
 		return
 
@@ -61,6 +75,8 @@
 
 /// Stage 3A: We face our own failures
 /obj/item/hand_item/circlegame/proc/selfGottem(mob/living/owner)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || QDELETED(owner))
 		return
 
@@ -75,6 +91,8 @@
 
 /// Stage 3B: We face our reckoning (unless we moved away or they're incapacitated)
 /obj/item/hand_item/circlegame/proc/GOTTEM(mob/living/owner, mob/living/sucker)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(sucker))
 		return
 
@@ -120,6 +138,8 @@
 	inhand_icon_state = "nothing"
 
 /obj/item/hand_item/noogie/attack(mob/living/carbon/target, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(target))
 		to_chat(user, span_warning("You don't think you can give this a noogie!"))
 		return
@@ -171,6 +191,8 @@
 
 /// The actual meat and bones of the noogie'ing
 /obj/item/hand_item/noogie/proc/noogie_loop(mob/living/carbon/human/user, mob/living/carbon/target, iteration)
+	procstart = null
+	src.procstart = null
 	if(!(target?.get_bodypart(BODY_ZONE_HEAD)) || user.pulling != target)
 		return FALSE
 
@@ -217,10 +239,14 @@
 	var/table_smacks_left = 3
 
 /obj/item/hand_item/slapper/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/high_fiver)
 
 /obj/item/hand_item/slapper/attack(mob/living/slapped, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SEND_SIGNAL(user, COMSIG_LIVING_SLAP_MOB, slapped)
 	SEND_SIGNAL(slapped, COMSIG_LIVING_SLAPPED, user)
@@ -288,6 +314,8 @@
 	return
 
 /obj/item/hand_item/slapper/pre_attack_secondary(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!loc.Adjacent(target) || !istype(target, /obj/structure/table))
 		return ..()
 
@@ -295,6 +323,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/hand_item/slapper/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!loc.Adjacent(target) || !istype(target, /obj/structure/table))
 		return ..()
 
@@ -303,6 +333,8 @@
 
 /// Slap the table, get some attention
 /obj/item/hand_item/slapper/proc/slap_table(obj/structure/table/table, mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.do_attack_animation(table)
 	playsound(get_turf(table), 'sound/effects/tableslam.ogg', 40, TRUE)
 	user.visible_message(span_notice("[user] slaps [user.p_their()] hand on [table]."), span_notice("You slap your hand on [table]."), vision_distance=COMBAT_MESSAGE_RANGE)
@@ -313,6 +345,8 @@
 
 /// Slam the table, demand some attention
 /obj/item/hand_item/slapper/proc/slam_table(obj/structure/table/table, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(table_smacks_left < initial(table_smacks_left))
 		return slap_table(table, user)
 	user.do_attack_animation(table)
@@ -331,6 +365,8 @@
 
 // Successful takes will qdel our hand after
 /obj/item/hand_item/slapper/on_offer_taken(mob/living/carbon/offerer, mob/living/carbon/taker)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -344,6 +380,8 @@
 	inhand_icon_state = "nothing"
 
 /obj/item/hand_item/hand/pre_attack(mob/living/carbon/help_target, mob/living/carbon/helper, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!loc.Adjacent(help_target) || !istype(helper) || !istype(help_target))
 		return ..()
 
@@ -353,6 +391,8 @@
 
 
 /obj/item/hand_item/hand/pre_attack_secondary(mob/living/carbon/help_target, mob/living/carbon/helper, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!loc.Adjacent(help_target) || !istype(helper) || !istype(help_target))
 		return ..()
 
@@ -364,6 +404,8 @@
 
 
 /obj/item/hand_item/hand/attack(mob/living/carbon/target_mob, mob/living/carbon/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!loc.Adjacent(target_mob) || !istype(user) || !istype(target_mob))
 		return TRUE
 
@@ -372,6 +414,8 @@
 
 
 /obj/item/hand_item/hand/on_offered(mob/living/carbon/offerer, mob/living/carbon/offered)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 
 	if(!istype(offerer))
@@ -399,6 +443,8 @@
 
 
 /obj/item/hand_item/hand/on_offer_taken(mob/living/carbon/offerer, mob/living/carbon/taker)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!offerer || !taker)
 		return TRUE // this doesn't make sense unless both are carbons
@@ -450,6 +496,8 @@
 	attack_verb_simple = list("steal")
 
 /obj/item/hand_item/stealer/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!ishuman(target_mob))
 		return
@@ -486,9 +534,13 @@
 	var/cheek_kiss
 
 /obj/item/hand_item/kisser/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/hand_item/kisser/ranged_interact_with_atom(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/obj/projectile/blown_kiss = new kiss_type(get_turf(user))
 	user.visible_message("<b>[user]</b> blows \a [blown_kiss] at [target]!", span_notice("You blow \a [blown_kiss] at [target]!"))
 
@@ -503,6 +555,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/hand_item/kisser/on_offered(mob/living/carbon/offerer, mob/living/carbon/offered)
+	procstart = null
+	src.procstart = null
 	if(!(locate(/mob/living/carbon) in orange(1, offerer)))
 		return TRUE
 
@@ -513,6 +567,8 @@
 	return TRUE
 
 /obj/item/hand_item/kisser/on_offer_taken(mob/living/carbon/offerer, mob/living/carbon/taker)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -578,16 +634,22 @@
 	var/silent_blown = FALSE
 
 /obj/projectile/kiss/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/parriable_projectile)
 
 /obj/projectile/kiss/fire(angle, atom/direct_target)
+	procstart = null
+	src.procstart = null
 	if(firer && !silent_blown)
 		name = "[name] blown by [firer]"
 
 	return ..()
 
 /obj/projectile/kiss/impact(atom/A)
+	procstart = null
+	src.procstart = null
 	def_zone = BODY_ZONE_HEAD // let's keep it PG, people
 
 	if(damage > 0 || !isliving(A)) // if we do damage or we hit a nonliving thing, we don't have to worry about a harmless hit because we can't wrongly do damage anyway
@@ -603,6 +665,8 @@
  * This fake hit only happens if we can deal damage and if we hit a living thing. Otherwise, we just do normal on hit effects.
  */
 /obj/projectile/kiss/proc/harmless_on_hit(mob/living/living_target)
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(living_target), hitsound, 100, TRUE)
 	if(!suppressed)  // direct
 		living_target.visible_message(span_danger("[living_target] is hit by \a [src]."), span_userdanger("You're hit by \a [src]!"), vision_distance=COMBAT_MESSAGE_RANGE)
@@ -615,6 +679,8 @@
 	try_fluster(living_target)
 
 /obj/projectile/kiss/proc/try_fluster(mob/living/living_target)
+	procstart = null
+	src.procstart = null
 	// people with the social anxiety quirk can get flustered when hit by a kiss
 	if(!HAS_TRAIT(living_target, TRAIT_ANXIOUS) || IS_UNCONSCIOUS_OR_CRIT(living_target) || living_target.is_blind())
 		return
@@ -643,6 +709,8 @@
 	living_target.visible_message("<b>[living_target]</b> [other_msg]", span_userdanger("Whoa! [self_msg]"))
 
 /obj/projectile/kiss/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(target))
 		var/mob/living/living_target = target
@@ -657,6 +725,8 @@
 	color = COLOR_BLACK
 
 /obj/projectile/kiss/death/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(target))
 		return
@@ -676,6 +746,8 @@
 	hitsound_wall = /obj/projectile/ink_spit::hitsound_wall
 
 /obj/projectile/kiss/ink/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/projectile/ink_spit/ink_spit =  new (target)
 	ink_spit.on_hit(target)
@@ -700,6 +772,8 @@
 	color = "#f2e9d2" //Scientifically proven to be the colour of garlic
 
 /obj/projectile/kiss/french/harmless_on_hit(mob/living/living_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(living_target.reagents))
 		return
@@ -714,6 +788,8 @@
 
 // If our chef's kiss hits a food item, we will improve it with love.
 /obj/projectile/kiss/chef/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!IS_EDIBLE(target) || !target.reagents)
 		return

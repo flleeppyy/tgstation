@@ -19,6 +19,8 @@
 	research_tree_icon_frame = 1
 
 /datum/heretic_knowledge/armor/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/antagonist/heretic/heretic_datum = GET_HERETIC(user)
 	if(!heretic_datum)

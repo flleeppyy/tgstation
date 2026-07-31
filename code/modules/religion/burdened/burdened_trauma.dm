@@ -25,6 +25,8 @@
 	)
 
 /datum/brain_trauma/special/burdened/on_gain()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(owner, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(organ_added_burden))
 	RegisterSignal(owner, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(organ_removed_burden))
 
@@ -59,6 +61,8 @@
 	return ..()
 
 /datum/brain_trauma/special/burdened/on_lose()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, list(
 		COMSIG_CARBON_GAIN_ORGAN,
 		COMSIG_CARBON_LOSE_ORGAN,
@@ -86,6 +90,8 @@
  * * silent: if TRUE, this does not print out any to_chats
  */
 /datum/brain_trauma/special/burdened/proc/update_burden(increase, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/dna/dna = owner?.dna
 	if(!dna)
 		qdel(src)
@@ -171,6 +177,8 @@
 				INVOKE_ASYNC(knower, TYPE_PROC_REF(/mob/living/carbon/human, slow_psykerize))
 
 /datum/brain_trauma/special/burdened/proc/is_burdensome_organ(mob/burdened, organ_slot, obj/item/organ/organ, special)
+	procstart = null
+	src.procstart = null
 	if(special) //aheals
 		return
 	if(!ishuman(burdened))
@@ -204,6 +212,8 @@
 
 /// Signal to decrease burden_level (see update_burden proc) if an organ is added
 /datum/brain_trauma/special/burdened/proc/organ_added_burden(mob/burdened, obj/item/organ/new_organ, special)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(is_burdensome_organ(burdened, new_organ.slot, new_organ, special))
@@ -211,6 +221,8 @@
 
 /// Signal to increase burden_level (see update_burden proc) if an organ is removed
 /datum/brain_trauma/special/burdened/proc/organ_removed_burden(mob/burdened, obj/item/organ/old_organ, special)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(is_burdensome_organ(burdened, old_organ.slot, old_organ, special))
@@ -218,6 +230,8 @@
 
 /// Signal to decrease burden_level (see update_burden proc) if a limb is added
 /datum/brain_trauma/special/burdened/proc/limbs_added_burden(datum/source, obj/item/bodypart/new_limb, special)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(special) //something we don't wanna consider, like instaswapping limbs
@@ -226,6 +240,8 @@
 
 /// Signal to increase burden_level (see update_burden proc) if a limb is removed
 /datum/brain_trauma/special/burdened/proc/limbs_removed_burden(datum/source, obj/item/bodypart/old_limb, special, dismembered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(special) //something we don't wanna consider, like instaswapping limbs
@@ -234,18 +250,24 @@
 
 /// Signal to increase burden_level (see update_burden proc) if an addiction is added
 /datum/brain_trauma/special/burdened/proc/addict_added_burden(datum/addiction/new_addiction, datum/mind/addict_mind)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	update_burden(increase = TRUE)
 
 /// Signal to decrease burden_level (see update_burden proc) if an addiction is removed
 /datum/brain_trauma/special/burdened/proc/addict_removed_burden(datum/addiction/old_addiction, datum/mind/nonaddict_mind)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	update_burden(increase = FALSE)
 
 /// Signal to increase burden_level (see update_burden proc) if a mutation is added
 /datum/brain_trauma/special/burdened/proc/mutation_added_burden(mob/living/carbon/burdened, datum/mutation/mutation_type, class)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(initial(mutation_type.quality) == NEGATIVE)
@@ -253,6 +275,8 @@
 
 /// Signal to decrease burden_level (see update_burden proc) if a mutation is removed
 /datum/brain_trauma/special/burdened/proc/mutation_removed_burden(mob/living/carbon/burdened, datum/mutation/mutation_type)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(initial(mutation_type.quality) == NEGATIVE)
@@ -260,6 +284,8 @@
 
 /// Signal to increase burden_level (see update_burden proc) if a trauma is added
 /datum/brain_trauma/special/burdened/proc/trauma_added_burden(mob/living/carbon/burdened, datum/brain_trauma/trauma_added)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(trauma_added, /datum/brain_trauma/severe))
@@ -267,6 +293,8 @@
 
 /// Signal to decrease burden_level (see update_burden proc) if a trauma is removed
 /datum/brain_trauma/special/burdened/proc/trauma_removed_burden(mob/living/carbon/burdened, datum/brain_trauma/trauma_removed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(trauma_removed, /datum/brain_trauma/severe))

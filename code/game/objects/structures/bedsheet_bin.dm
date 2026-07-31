@@ -36,6 +36,8 @@ LINEN BINS
 	var/datum/weakref/signal_sleeper //this is our goldylocks
 
 /obj/item/bedsheet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/surgery_aid, "bedsheet")
 	AddElement(/datum/element/bed_tuckable, mapload, 0, 0, 0)
@@ -46,6 +48,8 @@ LINEN BINS
 	register_item_context()
 
 /obj/item/bedsheet/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(istype(held_item) && (held_item.tool_behaviour == TOOL_WIRECUTTER || held_item.get_sharpness()))
 		context[SCREENTIP_CONTEXT_LMB] = "Shred into cloth"
 
@@ -53,6 +57,8 @@ LINEN BINS
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/bedsheet/add_item_context(datum/source, list/context, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(isliving(target) && target.body_position == LYING_DOWN)
 		context[SCREENTIP_CONTEXT_RMB] = "Cover"
 		return CONTEXTUAL_SCREENTIP_SET
@@ -60,6 +66,8 @@ LINEN BINS
 	return NONE
 
 /obj/item/bedsheet/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isliving(interacting_with))
 		return NONE
 	var/mob/living/to_cover = interacting_with
@@ -75,6 +83,8 @@ LINEN BINS
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/bedsheet/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// Handle wirecutters here so we still tear it up in combat mode
 	if(tool.tool_behaviour != TOOL_WIRECUTTER && !tool.get_sharpness())
 		return NONE
@@ -92,6 +102,8 @@ LINEN BINS
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/bedsheet/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!IsReachableBy(user)) //No telekinetic grabbing.
 		return
 	if(user.body_position != LYING_DOWN)
@@ -103,10 +115,14 @@ LINEN BINS
 	add_fingerprint(user)
 
 /obj/item/bedsheet/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	setDir(REVERSE_DIR(dir))
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/bedsheet/proc/coverup(mob/living/sleeper)
+	procstart = null
+	src.procstart = null
 	layer = ABOVE_MOB_LAYER
 	pixel_x = 0
 	pixel_y = 0
@@ -122,6 +138,8 @@ LINEN BINS
 	RegisterSignal(sleeper, COMSIG_QDELETING, PROC_REF(smooth_sheets))
 
 /obj/item/bedsheet/proc/smooth_sheets(mob/living/sleeper)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(src, COMSIG_ITEM_PICKUP)
@@ -137,6 +155,8 @@ LINEN BINS
 // We need to do this in case someone picks up a bedsheet while a mob is covered up
 // otherwise the bedsheet will disappear while in our hands if the sleeper signals get activated by moving
 /obj/item/bedsheet/proc/on_pickup(datum/source, mob/grabber)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/sleeper = signal_sleeper?.resolve()
@@ -387,6 +407,8 @@ LINEN BINS
 	var/gondola_eyes
 
 /obj/item/bedsheet/gondola/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	gondola_mouth = "sheetgondola_mouth[rand(1, 4)]"
 	gondola_eyes = "sheetgondola_eyes[rand(1, 4)]"
@@ -394,6 +416,8 @@ LINEN BINS
 	add_overlay(gondola_eyes)
 
 /obj/item/bedsheet/gondola/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isinhands)
 		. += mutable_appearance(icon_file, gondola_mouth)
@@ -596,10 +620,14 @@ LINEN BINS
 
 
 /obj/structure/bedsheetbin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/structure/bedsheetbin/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(amount < 1)
 		. += "There are no bed sheets in the bin."
@@ -609,6 +637,8 @@ LINEN BINS
 		. += "There are [amount] bed sheets in the bin."
 
 /obj/structure/bedsheetbin/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item))
 		if(amount)
 			context[SCREENTIP_CONTEXT_LMB] = "Take bedsheet"
@@ -632,6 +662,8 @@ LINEN BINS
 	return .
 
 /obj/structure/bedsheetbin/update_icon_state()
+	procstart = null
+	src.procstart = null
 	switch(amount)
 		if(0)
 			icon_state = "[base_icon_state]-empty"
@@ -642,12 +674,16 @@ LINEN BINS
 	return ..()
 
 /obj/structure/bedsheetbin/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(amount)
 		amount = 0
 		update_appearance()
 	..()
 
 /obj/structure/bedsheetbin/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(amount)
 		to_chat(user, span_warning("The [src] must be empty first!"))
 		return ITEM_INTERACT_SUCCESS
@@ -658,11 +694,15 @@ LINEN BINS
 		return ITEM_INTERACT_SUCCESS
 
 /obj/structure/bedsheetbin/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool, time = 0.5 SECONDS)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/bedsheetbin/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/bedsheet))
 		return bedsheet_act(user, tool)
 
@@ -670,6 +710,8 @@ LINEN BINS
 	return hide_item_act(user, tool)
 
 /obj/structure/bedsheetbin/proc/bedsheet_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!user.transferItemToLoc(tool, src, silent = FALSE))
 		return ITEM_INTERACT_BLOCKING
 	sheets.Add(tool)
@@ -679,6 +721,8 @@ LINEN BINS
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/bedsheetbin/proc/hide_item_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 	if(tool.w_class >= WEIGHT_CLASS_BULKY)
@@ -698,9 +742,13 @@ LINEN BINS
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/bedsheetbin/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/structure/bedsheetbin/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -733,6 +781,8 @@ LINEN BINS
 
 
 /obj/structure/bedsheetbin/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(amount >= 1)
 		amount--
 

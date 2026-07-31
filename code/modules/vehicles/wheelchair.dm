@@ -1,4 +1,6 @@
 /obj/vehicle/ridden/wheelchair //ported from Hippiestation (by Jujumatic)
+	procstart = null
+	src.procstart = null
 	name = "wheelchair"
 	desc = "A chair with big wheels. It looks like you can move in this on your own."
 	icon = 'icons/mob/rideables/vehicles.dmi'
@@ -32,12 +34,16 @@
 	acid = 30
 
 /obj/vehicle/ridden/wheelchair/generate_actions()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!bell_attached)
 		return
 	initialize_controller_action_type(/datum/action/vehicle/ridden/wheelchair/bell, VEHICLE_CONTROL_DRIVE)
 
 /obj/vehicle/ridden/wheelchair/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	make_ridable()
 	ADD_TRAIT(src, TRAIT_NO_IMMOBILIZE, INNATE_TRAIT)
@@ -45,6 +51,8 @@
 	AddElement(/datum/element/noisy_movement, volume = 75)
 
 /obj/vehicle/ridden/wheelchair/handle_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	remove_bell()
 	remove_bomb()
 	new /obj/item/stack/rods(drop_location(), disassembled ? 6 : 1)
@@ -52,15 +60,21 @@
 	return ..()
 
 /obj/vehicle/ridden/wheelchair/post_buckle_mob(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/vehicle/ridden/wheelchair/post_unbuckle_mob()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /// When you ring your bell and are armed try to explode
 /obj/vehicle/ridden/wheelchair/proc/on_bell_rang(obj/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (prob(80))
 		return
@@ -68,7 +82,9 @@
 		bomb_attached.add_hiddenprint(user)
 	detonate_bomb()
 
-/obj/vehicle/ridden/wheelchair/wrench_act(mob/living/user, obj/item/tool) //Attackby should stop it attacking the wheelchair after moving away during decon
+/obj/vehicle/ridden/wheelchair/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null //Attackby should stop it attacking the wheelchair after moving away during decon
 	..()
 	balloon_alert(user, "disassembling")
 	if(!tool.use_tool(src, user, 4 SECONDS, volume=50))
@@ -79,6 +95,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/vehicle/ridden/wheelchair/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(has_buckled_mobs())
 		var/mutable_appearance/wheel_overlay = mutable_appearance(icon, overlay_icon, ABOVE_MOB_LAYER, src, appearance_flags = KEEP_APART)
@@ -91,13 +109,19 @@
 
 /// Detonate an armed explosive on this wheelchair
 /obj/vehicle/ridden/wheelchair/proc/detonate_bomb()
+	procstart = null
+	src.procstart = null
 	bomb_attached?.toggle_valve()
 
 /// I assign the ridable element in this so i don't have to fuss with hand wheelchairs and motor wheelchairs having different subtypes
 /obj/vehicle/ridden/wheelchair/proc/make_ridable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/wheelchair/hand)
 
-/obj/vehicle/ridden/wheelchair/mouse_drop_dragged(atom/over_object, mob/user)  //Lets you collapse wheelchair
+/obj/vehicle/ridden/wheelchair/mouse_drop_dragged(atom/over_object, mob/user)
+	procstart = null
+	src.procstart = null  //Lets you collapse wheelchair
 	if(over_object != user || !foldabletype || !ishuman(user))
 		return FALSE
 	if(has_buckled_mobs())
@@ -111,6 +135,8 @@
 
 /// Attaches bell to the wheelchair
 /obj/vehicle/ridden/wheelchair/proc/attach_bell(obj/structure/desk_bell/bell)
+	procstart = null
+	src.procstart = null
 	bell_attached = bell
 	bell.forceMove(src)
 	generate_actions()
@@ -118,6 +144,8 @@
 
 /// Attaches TTV to the wheelchair
 /obj/vehicle/ridden/wheelchair/proc/attach_bomb(obj/item/transfer_valve/bomb)
+	procstart = null
+	src.procstart = null
 	if (!(obj_flags & EMAGGED))
 		RegisterSignal(src, COMSIG_WHEELCHAIR_BELL_RANG, PROC_REF(on_bell_rang))
 	bomb_attached = bomb
@@ -125,6 +153,8 @@
 	update_appearance()
 
 /obj/vehicle/ridden/wheelchair/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. =..()
 	if(bell_attached)
 		. += span_notice("There is \a [bell_attached] attached to the handle.")
@@ -132,6 +162,8 @@
 		. += span_warning("There are a pair of gas tanks attached to the frame.")
 
 /obj/vehicle/ridden/wheelchair/proc/remove_bell()
+	procstart = null
+	src.procstart = null
 	if (!bell_attached)
 		return
 	bell_attached.forceMove(get_turf(src))
@@ -140,6 +172,8 @@
 	update_appearance()
 
 /obj/vehicle/ridden/wheelchair/proc/remove_bomb()
+	procstart = null
+	src.procstart = null
 	if (!bomb_attached)
 		return
 	bomb_attached.forceMove(get_turf(src))
@@ -175,15 +209,21 @@
 
 /// Deploys wheelchair vehicle on in-hand use
 /obj/item/wheelchair/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	deploy_wheelchair(user, user.loc)
 
 /obj/item/wheelchair/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isopenturf(interacting_with))
 		deploy_wheelchair(user, interacting_with)
 		return ITEM_INTERACT_SUCCESS
 	return NONE
 
 /obj/item/wheelchair/proc/deploy_wheelchair(mob/user, atom/location)
+	procstart = null
+	src.procstart = null
 	var/obj/vehicle/ridden/wheelchair/wheelchair_unfolded = new unfolded_type(location)
 	wheelchair_unfolded.add_fingerprint(user)
 	qdel(src)

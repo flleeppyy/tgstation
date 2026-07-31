@@ -46,6 +46,8 @@
 	chameleon_extras = /obj/item/stamp/law
 
 /datum/outfit/job/lawyer/pre_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visuals_only)
 		return ..()
 
@@ -58,6 +60,8 @@
 	..()
 
 /datum/outfit/job/lawyer/get_types_to_preload()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += /obj/item/clothing/under/rank/civilian/lawyer/purpsuit
 	. += /obj/item/clothing/suit/toggle/lawyer/purple

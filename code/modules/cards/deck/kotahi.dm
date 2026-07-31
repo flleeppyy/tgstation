@@ -6,6 +6,8 @@
 	deckstyle = "kotahi"
 
 /obj/item/toy/cards/deck/kotahi/initialize_cards()
+	procstart = null
+	src.procstart = null
 	for(var/colour in list("Red","Yellow","Green","Blue"))
 		initial_cards += "[colour] 0" //kotahi decks have only one colour of each 0, weird huh?
 		for(var/k in 0 to 1) //two of each colour of number

@@ -21,6 +21,8 @@
 	COOLDOWN_DECLARE(mess_cooldown)
 
 /datum/action/cooldown/mob_cooldown/domain/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -30,21 +32,29 @@
 		return FALSE
 
 /datum/action/cooldown/mob_cooldown/domain/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	StartCooldown(10 SECONDS)
 	set_domain_active(!is_active)
 	StartCooldown()
 
 /datum/action/cooldown/mob_cooldown/domain/Remove(mob/removed_from)
+	procstart = null
+	src.procstart = null
 	set_domain_active(FALSE)
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/domain/update_status_on_signal(datum/source, new_stat, old_stat)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!IsAvailable())
 		set_domain_active(FALSE)
 
 /// Enable or disable the ability
 /datum/action/cooldown/mob_cooldown/domain/proc/set_domain_active(should_active)
+	procstart = null
+	src.procstart = null
 	if (is_active == should_active || isnull(owner))
 		return
 	is_active = should_active
@@ -61,11 +71,15 @@
 
 /// Stop spreading shit when one of these events happens
 /datum/action/cooldown/mob_cooldown/domain/proc/cancel_on_signal()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_domain_active(FALSE)
 
 /// Create gas and spawn mess
 /datum/action/cooldown/mob_cooldown/domain/proc/spread_domain()
+	procstart = null
+	src.procstart = null
 	if (!is_active || !COOLDOWN_FINISHED(src, mess_cooldown) || !owner)
 		return
 
@@ -107,6 +121,8 @@
 	var/range = 5
 
 /datum/action/cooldown/mob_cooldown/riot/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -116,6 +132,8 @@
 		return FALSE
 
 /datum/action/cooldown/mob_cooldown/riot/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	StartCooldown(10 SECONDS)
 	riot()
 	StartCooldown()
@@ -127,6 +145,8 @@
  * * Convert nearby frogs into aggressive frogs.
  */
 /datum/action/cooldown/mob_cooldown/riot/proc/riot()
+	procstart = null
+	src.procstart = null
 	playsound(owner, 'sound/mobs/non-humanoids/mouse/mousesqueek.ogg', vol = 150, frequency = 10000)
 
 	new /obj/effect/temp_visual/circle_wave/brown(get_turf(owner))
@@ -165,12 +185,16 @@
 	overdose_threshold = 20
 
 /datum/reagent/rat_spit/on_mob_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(affected_mob, TRAIT_AGEUSIA))
 		return
 	to_chat(affected_mob, span_notice("This food has a funny taste!"))
 
 /datum/reagent/rat_spit/overdose_start(mob/living/affected_mob, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/carbon/victim = affected_mob
 	if (istype(victim) && !victim.has_faction(FACTION_RAT))
@@ -180,6 +204,8 @@
 	metabolization_rate = 10 * REAGENTS_METABOLISM
 
 /datum/reagent/rat_spit/on_mob_life(mob/living/carbon/affected_mob, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(15))
 		to_chat(affected_mob, span_notice("You feel queasy!"))

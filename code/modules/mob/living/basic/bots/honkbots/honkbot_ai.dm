@@ -12,6 +12,8 @@
 	)
 
 /datum/ai_controller/basic_controller/bot/honkbot/TryPossessPawn(atom/new_pawn)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & AI_CONTROLLER_INCOMPATIBLE)
 		return
@@ -20,6 +22,8 @@
 	RegisterSignal(new_pawn, COMSIG_ATOM_NO_LONGER_PULLING, PROC_REF(on_stop_pulling))
 
 /datum/ai_controller/basic_controller/bot/honkbot/proc/on_stop_pulling(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!blackboard_key_exists(BB_SLIP_TARGET))
@@ -39,6 +43,8 @@
 /datum/bt_node/ai_behavior/use_mob_ability/random_honk
 
 /datum/bt_node/ai_behavior/use_mob_ability/random_honk/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(!SPT_PROB(5, seconds_per_tick))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED
 	return ..()
@@ -47,6 +53,8 @@
 
 /// Valid if the target is a visible human who isn't buckled and has gravity  someone a slip can actually knock over.
 /datum/targeting_strategy/can_see/slip_victim/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -61,6 +69,8 @@
 	var/victim_key
 
 /datum/bt_node/ai_behavior/release_and_slip/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/victim = controller.blackboard[victim_key]
 	var/mob/living/our_mob = controller.pawn
 	if(QDELETED(victim) || our_mob.pulling != victim)
@@ -83,6 +93,8 @@
 /datum/target_source/honkbot_slippery
 
 /datum/target_source/honkbot_slippery/collect_candidates(mob/living/pawn, datum/ai_controller/controller, range)
+	procstart = null
+	src.procstart = null
 	var/list/slippery_items = controller.blackboard[BB_SLIPPERY_ITEMS]
 	if(!length(slippery_items))
 		return list()
@@ -90,6 +102,8 @@
 
 /// Valid only if the target is within line of sight (not just within range).
 /datum/targeting_strategy/can_see/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -97,6 +111,8 @@
 
 /// Valid if the target is a conscious clown (by trait, or a borg running the clown model).
 /datum/targeting_strategy/clown_friend/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -114,6 +130,8 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/play_with_clown/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/async_flags = handle_async()
 	if(async_flags)
 		return async_flags
@@ -129,6 +147,8 @@
 	return start_async()
 
 /datum/bt_node/ai_behavior/play_with_clown/perform_async(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/datum/action/honk_ability = controller.blackboard[BB_HONK_ABILITY]
 	var/result = honk_ability?.Trigger()
 	if(!async_still_valid())
@@ -136,6 +156,8 @@
 	finish_async(result ? AI_BEHAVIOR_SUCCEEDED : AI_BEHAVIOR_FAILED)
 
 /datum/bt_node/ai_behavior/play_with_clown/finish_action(datum/ai_controller/basic_controller/bot/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/living_target = controller.blackboard[target_key]
 	if(!isnull(living_target))

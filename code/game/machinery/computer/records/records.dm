@@ -6,6 +6,8 @@
 	var/atom/movable/screen/map_view/char_preview/character_preview_view
 
 /obj/machinery/computer/records/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/has_access = (authenticated && isliving(user)) || isAdminGhostAI(user)
@@ -19,12 +21,16 @@
 	return data
 
 /obj/machinery/computer/records/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.client?.screen_maps -= USER_PREVIEW_ASSIGNED_VIEW(user.ckey)
 	if((LAZYLEN(open_uis) <= 1) && character_preview_view) //only delete the preview if we're the last one to close the console.
 		QDEL_NULL(character_preview_view)
 
 /obj/machinery/computer/records/ui_act(action, list/params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -107,6 +113,8 @@
 
 /// Creates a character preview view for the UI.
 /obj/machinery/computer/records/proc/create_character_preview_view(mob/user, datum/tgui_window/window)
+	procstart = null
+	src.procstart = null
 	var/assigned_view = USER_PREVIEW_ASSIGNED_VIEW(user.ckey)
 	if(user.client?.screen_maps[assigned_view])
 		return
@@ -118,6 +126,8 @@
 
 /// Takes a record and updates the character preview view to match it.
 /obj/machinery/computer/records/proc/update_preview(mob/user, assigned_view, datum/record/crew/target, datum/tgui_window/window)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/preview = new(target.character_appearance)
 	preview.underlays += mutable_appearance('icons/effects/effects.dmi', "static_base", alpha = 20)
 	preview.add_overlay(mutable_appearance(generate_icon_alpha_mask('icons/effects/effects.dmi', "scanline"), alpha = 20))
@@ -131,10 +141,14 @@
 
 /// Expunges info from a record.
 /obj/machinery/computer/records/proc/expunge_record_info(datum/record/crew/target)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Inserts a new record into GLOB.manifest.general. Requires a photo to be taken.
 /obj/machinery/computer/records/proc/insert_new_record(mob/user, obj/item/photo/mugshot)
+	procstart = null
+	src.procstart = null
 	if(!mugshot || !is_operational || !user.can_perform_action(src, ALLOW_SILICON_REACH))
 		return FALSE
 
@@ -164,6 +178,8 @@
 
 /// Secure login
 /obj/machinery/computer/records/proc/secure_login(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.can_perform_action(src, ALLOW_SILICON_REACH) || !is_operational)
 		return FALSE
 

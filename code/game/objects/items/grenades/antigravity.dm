@@ -8,6 +8,8 @@
 	var/duration = 300
 
 /obj/item/grenade/antigravity/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

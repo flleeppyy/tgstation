@@ -6,6 +6,8 @@
 	illustration = "shipping"
 
 /obj/item/storage/box/shipping/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/dest_tagger = 1,
 		/obj/item/universal_scanner = 1,
@@ -19,6 +21,8 @@
 	desc = "Everything you need to make your own cargo department."
 
 /obj/item/storage/box/shipping/debug/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/universal_scanner = 1,
 		/obj/item/stack/package_wrap/small = 2,

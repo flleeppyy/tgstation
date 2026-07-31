@@ -11,6 +11,8 @@
  * returns TRUE if connection is valid, FALSE otherwise.
  */
 /proc/is_valid_z_level(turf/source_loc, turf/checking_loc)
+	procstart = null
+	src.procstart = null
 	// if we're both on "station", regardless of multi-z, we'll pass by.
 	if(is_station_level(source_loc.z) && is_station_level(checking_loc.z))
 		return TRUE
@@ -33,6 +35,8 @@
  * Returns FALSE if we are not in a planet, or otherwise, "in space".
  */
 /proc/is_on_a_planet(atom/what)
+	procstart = null
+	src.procstart = null
 	ASSERT(!isarea(what))
 
 	var/turf/open/what_turf = get_turf(what)
@@ -73,6 +77,8 @@
  * * end: The destination Z level. Can either be a numeric z-level, or a [/datum/space_level].
  */
 /proc/get_linked_z_angle(datum/space_level/start, datum/space_level/end)
+	procstart = null
+	src.procstart = null
 	if(isnum(start))
 		start = SSmapping.get_level(start)
 	if(isnum(end))
@@ -99,6 +105,8 @@
  * * dist: The maximum distance to search.
  */
 /proc/get_linked_z_levels_in_range(datum/space_level/center, dist)
+	procstart = null
+	src.procstart = null
 	if(isnum(center))
 		center = SSmapping.get_level(center)
 	var/list/to_check = list(center)

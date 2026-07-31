@@ -25,6 +25,8 @@
 	var/mob/living/silicon/ai/master_ai
 
 /obj/machinery/transformer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/machinery/conveyor/auto(locate(x - 1, y, z), WEST)
 	new /obj/machinery/conveyor/auto(loc, WEST)
@@ -33,15 +35,21 @@
 	countdown.start()
 
 /obj/machinery/transformer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cooldown && (issilicon(user) || isobserver(user)))
 		. += "It will be ready in [DisplayTimeText(cooldown_timer - world.time)]."
 
 /obj/machinery/transformer/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(countdown)
 	. = ..()
 
 /obj/machinery/transformer/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (BROKEN|NOPOWER) || cooldown == 1)
 		icon_state = "separator-AO0"
 	else
@@ -49,6 +57,8 @@
 	return ..()
 
 /obj/machinery/transformer/Bumped(atom/movable/entering_thing)
+	procstart = null
+	src.procstart = null
 	if(cooldown)
 		return
 
@@ -62,6 +72,8 @@
 			do_transform(entering_thing)
 
 /obj/machinery/transformer/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Allows items to go through to stop them from blocking the conveyor belt.
 	if(!ishuman(mover))
@@ -70,11 +82,15 @@
 	return FALSE
 
 /obj/machinery/transformer/process()
+	procstart = null
+	src.procstart = null
 	if(cooldown && (cooldown_timer <= world.time))
 		cooldown = FALSE
 		update_appearance()
 
 /obj/machinery/transformer/proc/do_transform(mob/living/carbon/human/victim)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (BROKEN|NOPOWER))
 		return
 
@@ -111,6 +127,8 @@
 	addtimer(CALLBACK(src, PROC_REF(unlock_new_robot), new_borg), 5 SECONDS)
 
 /obj/machinery/transformer/proc/unlock_new_robot(mob/living/silicon/robot/new_borg)
+	procstart = null
+	src.procstart = null
 	playsound(src.loc, 'sound/machines/ping.ogg', 50, FALSE)
 	sleep(3 SECONDS)
 	if(new_borg)

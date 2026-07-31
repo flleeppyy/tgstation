@@ -14,12 +14,16 @@
 	max_charges = 12
 
 /obj/item/gun/magic/wand/repulse/zap_self(mob/living/user, suicide = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.visible_message(span_warning("[user] blasts [user.p_themselves()] into the ground!"))
 	user.adjust_brute_loss(30)
 	user.Paralyze(10 SECONDS)
 
 /obj/item/gun/magic/wand/repulse/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (!iscarbon(user))
 		. = ..()
 		return BRUTELOSS
@@ -50,6 +54,8 @@
 	icon_state = "blastwave"
 
 /obj/projectile/magic/repulse/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/movable/victim = target
 	if (!istype(victim))

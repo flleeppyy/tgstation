@@ -17,6 +17,8 @@
 	var/time_delay = 0.5 SECONDS
 
 /datum/action/cooldown/mob_cooldown/ice_demon_teleport/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	if(isclosedturf(get_turf(target_atom)))
 		owner.balloon_alert(owner, "blocked!")
 		return FALSE
@@ -26,6 +28,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/ice_demon_teleport/proc/teleport_to_turf(atom/target)
+	procstart = null
+	src.procstart = null
 	animate(owner, transform = matrix(), time = 0.5 SECONDS, easing = SINE_EASING)
 	do_teleport(teleatom = owner, destination = target, channel = TELEPORT_CHANNEL_BLUESPACE, forced = TRUE)
 
@@ -42,6 +46,8 @@
 	var/spread_duration = 0.2 SECONDS
 
 /datum/action/cooldown/mob_cooldown/slippery_ice_floors/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	for(var/i in 0 to radius)
 		var/list/list_of_turfs = border_diamond_range_turfs(owner, i)
 		addtimer(CALLBACK(src, PROC_REF(spawn_icy_floors), list_of_turfs), i * spread_duration)
@@ -49,6 +55,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/slippery_ice_floors/proc/spawn_icy_floors(list/list_of_turfs)
+	procstart = null
+	src.procstart = null
 	if(!length(list_of_turfs))
 		return
 	for(var/turf/location in list_of_turfs)
@@ -71,12 +79,16 @@
 	var/phase_in_period = 2 SECONDS
 
 /obj/effect/temp_visual/slippery_ice/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, alpha = 160, time = phase_in_period)
 	animate(alpha = 0, time = duration - phase_in_period) /// slowly fade out of existence
 	addtimer(CALLBACK(src, PROC_REF(add_slippery_component), phase_in_period)) //only become slippery after we phased in
 
 /obj/effect/temp_visual/slippery_ice/proc/add_slippery_component()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/slippery, 2 SECONDS)
 
 /datum/action/cooldown/spell/conjure/limit_summons/create_afterimages
@@ -92,5 +104,7 @@
 	max_summons = 2
 
 /datum/action/cooldown/spell/conjure/limit_summons/create_afterimages/post_summon(atom/summoned_object, atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	summoned_object.AddComponent(/datum/component/joint_damage, overlord_mob = owner)

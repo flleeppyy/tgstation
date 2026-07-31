@@ -16,11 +16,15 @@
 	var/obj/docking_port/mobile/port
 
 /datum/shuttle_event/New(obj/docking_port/mobile/port)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	src.port = port
 
 /datum/shuttle_event/proc/start_up_event(evacuation_duration)
+	procstart = null
+	src.procstart = null
 	if(port.launch_status == ENDGAME_LAUNCHED)
 		active = TRUE //if added during endgame, instant activate
 		activate()
@@ -29,10 +33,14 @@
 
 ///We got activated
 /datum/shuttle_event/proc/activate()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Process with the SShutle subsystem. Return SHUTTLE_EVENT_CLEAR to self-destruct
 /datum/shuttle_event/proc/event_process()
+	procstart = null
+	src.procstart = null
 	. = TRUE
 
 	if(!active)
@@ -61,12 +69,16 @@
 	var/self_destruct_when_empty = FALSE
 
 /datum/shuttle_event/simple_spawner/start_up_event(evacuation_duration)
+	procstart = null
+	src.procstart = null
 	..()
 
 	generate_spawning_turfs(port.return_coords(), spawning_flags, port.preferred_direction)
 
 ///Bounding coords are list(x0, y0, x1, y1) where x0 and y0 are top-left
 /datum/shuttle_event/simple_spawner/proc/generate_spawning_turfs(list/bounding_coords, spawning_behaviour, direction)
+	procstart = null
+	src.procstart = null
 	spawning_turfs_hit = list() //turfs that will drift its contents to miss the shuttle
 	spawning_turfs_miss = list() //turfs that will drift its contents to hit the shuttle
 	var/list/step_dir //vector, either -1, 0 or 1. once we get a corner (lets say top right), in which direction do we 'walk' to get the full side? (this case to the right, so (1, 0)
@@ -111,6 +123,8 @@
 			spawning_turfs_miss.Add(locate(target_corner[1] + corner_delta[1] * step_dir[1] + step_dir[1] * i + spawn_offset[1], target_corner[2] + corner_delta[2] * step_dir[2] + step_dir[2] * i + spawn_offset[2], port.z))
 
 /datum/shuttle_event/simple_spawner/event_process()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)
@@ -127,15 +141,21 @@
 
 ///Pick a random turf from the valid turfs we got. Overwrite if you need some custom picking
 /datum/shuttle_event/simple_spawner/proc/get_spawn_turf()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/turf)
 	return pick(spawning_turfs_hit + spawning_turfs_miss)
 
 ///Spawn stuff! if you're not using this, don't use the simple_spawner subtype
 /datum/shuttle_event/simple_spawner/proc/spawn_movable(spawn_type)
+	procstart = null
+	src.procstart = null
 	post_spawn(new spawn_type (get_spawn_turf()))
 
 ///Not technically a getter if remove_from_list_when_spawned=TRUE. Otherwise, this returns the type we're going to spawn and throw at the shuttle
 /datum/shuttle_event/simple_spawner/proc/get_type_to_spawn()
+	procstart = null
+	src.procstart = null
 	. = pick_weight(spawning_list)
 	if(remove_from_list_when_spawned) //if we have this enabled, we decrease the pickweight by 1 till it runs out
 		spawning_list[.] -= 1
@@ -144,5 +164,7 @@
 
 ///Do any post-spawn edits you need to do
 /datum/shuttle_event/simple_spawner/proc/post_spawn(atom/movable/spawnee)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(spawnee, TRAIT_FREE_HYPERSPACE_SOFTCORDON_MOVEMENT, INNATE_TRAIT) //Lets us spawn and move further away from the shuttle without being teleported into space
 	ADD_TRAIT(spawnee, TRAIT_DEL_ON_SPACE_DUMP, INNATE_TRAIT) //if we hit the cordon, we get deleted. If the shuttle can make you, it can qdel you

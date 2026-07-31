@@ -9,6 +9,8 @@
 	description = "Gives everyone treats, and turns Ian and Poly into their festive versions."
 
 /datum/round_event/spooky/start()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in GLOB.human_list)
 		var/mob/living/carbon/human/H = i
@@ -23,6 +25,8 @@
 		qdel(bird)
 
 /datum/round_event/spooky/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce(pick("RATTLE ME BONES!","THE RIDE NEVER ENDS!", "A SKELETON POPS OUT!", "SPOOKY SCARY SKELETONS!", "CREWMEMBERS BEWARE, YOU'RE IN FOR A SCARE!") , "THE CALL IS COMING FROM INSIDE THE HOUSE")
 
 //spooky foods (you can't actually make these when it's not halloween)
@@ -34,6 +38,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/cookie/sugar/spookyskull/Initialize(mapload, seasonal_changes = FALSE)
+	procstart = null
+	src.procstart = null
 	// Changes default parameter of seasonal_changes to FALSE, pass to parent
 	return ..(mapload, seasonal_changes)
 
@@ -45,6 +51,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/cookie/sugar/spookycoffin/Initialize(mapload, seasonal_changes = FALSE)
+	procstart = null
+	src.procstart = null
 	// Changes default parameter of seasonal_changes to FALSE, pass to parent
 	return ..(mapload, seasonal_changes)
 
@@ -57,6 +65,8 @@
 	icon_state = "treatbag"
 
 /obj/item/storage/spooky/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/distrobuteinbag in 0 to 5)
 		var/type = pick(/obj/item/food/cookie/sugar/spookyskull,

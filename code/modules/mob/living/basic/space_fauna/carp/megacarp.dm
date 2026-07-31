@@ -27,6 +27,8 @@
 	ai_controller = /datum/ai_controller/basic_controller/carp/mega
 
 /mob/living/basic/carp/mega/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[pick(GLOB.megacarp_first_names)] [pick(GLOB.megacarp_last_names)]"
 	melee_damage_lower += rand(2, 10)
@@ -35,4 +37,6 @@
 	health = maxHealth
 
 /mob/living/basic/carp/mega/get_hud_x_offset()
+	procstart = null
+	src.procstart = null
 	return -5

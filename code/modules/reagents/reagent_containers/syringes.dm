@@ -24,6 +24,8 @@
 	var/dart_insert_projectile_icon_state = "overlay_syringe_proj"
 
 /obj/item/reagent_containers/syringe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 	AddComponent(/datum/component/dart_insert, \
@@ -36,6 +38,8 @@
 	RegisterSignal(src, COMSIG_ITEM_IN_UNWRAPPED_TRAITOR_MAIL, PROC_REF(on_mail_unwrap))
 
 /obj/item/reagent_containers/syringe/proc/try_syringe(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!target.reagents)
 		return FALSE
 
@@ -47,6 +51,8 @@
 	return TRUE
 
 /obj/item/reagent_containers/syringe/interact_with_atom(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!target.reagents)
 		return NONE
 	if(!try_syringe(target, user))
@@ -100,6 +106,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/reagent_containers/syringe/interact_with_atom_secondary(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!target.reagents)
 		return NONE
 	if (!try_syringe(target, user))
@@ -147,6 +155,8 @@
  * On accidental consumption, inject the eater with 2/3rd of the syringe and reveal it
  */
 /obj/item/reagent_containers/syringe/on_accidental_consumption(mob/living/carbon/victim, mob/living/carbon/user, obj/item/source_item,  discover_after = TRUE)
+	procstart = null
+	src.procstart = null
 	if(source_item)
 		to_chat(victim, span_boldwarning("There's \a [src] in [source_item]!!"))
 	else
@@ -158,11 +168,15 @@
 	return discover_after
 
 /obj/item/reagent_containers/syringe/update_icon_state()
+	procstart = null
+	src.procstart = null
 	var/rounded_vol = get_rounded_vol()
 	icon_state = inhand_icon_state = "[base_icon_state]_[rounded_vol]"
 	return ..()
 
 /obj/item/reagent_containers/syringe/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/reagent_overlays = update_reagent_overlay()
 	if(reagent_overlays)
@@ -170,6 +184,8 @@
 
 /// Returns a list of overlays to add that relate to the reagents inside the syringe
 /obj/item/reagent_containers/syringe/proc/update_reagent_overlay()
+	procstart = null
+	src.procstart = null
 	if(reagents?.total_volume)
 		var/mutable_appearance/filling_overlay = mutable_appearance('icons/obj/medical/reagent_fillings.dmi', "syringe[get_rounded_vol()]")
 		filling_overlay.color = mix_color_from_reagents(reagents.reagent_list)
@@ -177,11 +193,15 @@
 
 ///Used by update_appearance() and update_overlays()
 /obj/item/reagent_containers/syringe/proc/get_rounded_vol()
+	procstart = null
+	src.procstart = null
 	if(!reagents?.total_volume)
 		return 0
 	return clamp(round((reagents.total_volume / volume * 15), 5), 1, 15)
 
 /obj/item/reagent_containers/syringe/proc/get_dart_var_modifiers(obj/projectile/projectile)
+	procstart = null
+	src.procstart = null
 	var/datum/embedding/embed_data = get_embed().create_copy()
 	embed_data.rip_time += projectile.get_embed()?.rip_time
 	return list(
@@ -195,6 +215,8 @@
 	)
 
 /obj/item/reagent_containers/syringe/proc/on_mail_unwrap(atom/source, mob/living/user, obj/item/mail/traitor/letter)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!reagents.total_volume || !user.reagents || !user.try_inject(user, user.get_active_hand()))
 		return
@@ -215,6 +237,8 @@
 	var/transfer_per_second = 1.5
 
 /datum/embedding/syringe/process_effect(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/obj/item/reagent_containers/syringe = parent
 	if (!istype(syringe))
 		syringe = locate() in parent
@@ -235,6 +259,8 @@
 
 // For syringe guns, syringe itself becomes the shrapnel
 /datum/embedding/syringe/setup_shrapnel(obj/projectile/source, mob/living/carbon/victim)
+	procstart = null
+	src.procstart = null
 	if (!istype(source, /obj/projectile/bullet/dart/syringe))
 		return ..()
 	var/obj/projectile/bullet/dart/syringe/syringe_dart = source
@@ -247,6 +273,8 @@
 	syringe.set_embed(src)
 
 /datum/embedding/syringe/fall_out()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Nothing should modify this directly (hopefully), and this makes sure that ones fired from a syringe gun don't have 100% embedding later down the line
 	embed_chance = initial(embed_chance)
@@ -377,6 +405,8 @@
 	transfer_per_second = 0.5
 
 /obj/item/reagent_containers/syringe/crude/update_reagent_overlay()
+	procstart = null
+	src.procstart = null
 	return
 
 // Used by monkeys from the elemental plane of bananas. Reagents come from bungo pit, death berries, destroying angel, jupiter cups, and jumping beans.
@@ -385,6 +415,8 @@
 	desc = "A crudely made syringe. Smells like bananas."
 
 /obj/item/reagent_containers/syringe/crude/tribal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	var/toxin_to_get = pick(/datum/reagent/toxin/bungotoxin, /datum/reagent/toxin/coniine, /datum/reagent/toxin/amanitin, /datum/reagent/consumable/liquidelectricity/enriched, /datum/reagent/ants)
 	list_reagents = list((toxin_to_get) = 5)
 	return ..()
@@ -425,6 +457,8 @@
 	desc = "A syringe containing some sort of unknown chemical cocktail."
 
 /obj/item/reagent_containers/syringe/contraband/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CONTRABAND, INNATE_TRAIT)
 

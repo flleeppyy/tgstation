@@ -40,6 +40,8 @@
 	backpack_contents = list(/obj/item/cigarette/cigar/havana)
 
 /datum/unit_test/outfit_sanity/Run()
+	procstart = null
+	src.procstart = null
 	var/datum/outfit/prototype_outfit = /datum/outfit
 	var/prototype_name = initial(prototype_outfit.name)
 	var/mob/living/carbon/human/H = allocate(/mob/living/carbon/human/consistent)

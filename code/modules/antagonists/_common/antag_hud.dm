@@ -8,6 +8,8 @@ GLOBAL_LIST_EMPTY_TYPED(has_antagonist_huds, /datum/atom_hud/alternate_appearanc
 	var/datum/weakref/team_ref
 
 /datum/atom_hud/alternate_appearance/basic/has_antagonist/New(key, image/I, antag_datum_type, datum/weakref/team)
+	procstart = null
+	src.procstart = null
 	if(antag_datum_type)
 		src.antag_datum_type = antag_datum_type
 	src.team_ref = team
@@ -15,10 +17,14 @@ GLOBAL_LIST_EMPTY_TYPED(has_antagonist_huds, /datum/atom_hud/alternate_appearanc
 	return ..(key, I, NONE)
 
 /datum/atom_hud/alternate_appearance/basic/has_antagonist/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.has_antagonist_huds -= src
 	return ..()
 
 /datum/atom_hud/alternate_appearance/basic/has_antagonist/mobShouldSee(mob/M)
+	procstart = null
+	src.procstart = null
 	if(add_ghost_version && isobserver(M))
 		return FALSE // use the ghost version instead
 	var/datum/team/antag_team = team_ref?.resolve()
@@ -34,6 +40,8 @@ GLOBAL_LIST_EMPTY_TYPED(has_antagonist_huds, /datum/atom_hud/alternate_appearanc
 	var/datum/mind/mind
 
 /datum/atom_hud/alternate_appearance/basic/antagonist_hud/New(key, datum/mind/mind)
+	procstart = null
+	src.procstart = null
 	src.mind = mind
 
 	antag_hud_images = get_antag_hud_images(mind)
@@ -51,6 +59,8 @@ GLOBAL_LIST_EMPTY_TYPED(has_antagonist_huds, /datum/atom_hud/alternate_appearanc
 	return ..(key, first_antagonist, NONE)
 
 /datum/atom_hud/alternate_appearance/basic/antagonist_hud/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(antag_hud_images)
 	STOP_PROCESSING(SSantag_hud, src)
 	mind.antag_hud = null
@@ -59,24 +69,34 @@ GLOBAL_LIST_EMPTY_TYPED(has_antagonist_huds, /datum/atom_hud/alternate_appearanc
 	return ..()
 
 /datum/atom_hud/alternate_appearance/basic/antagonist_hud/mobShouldSee(mob/mob)
+	procstart = null
+	src.procstart = null
 	return Master.current_runlevel >= RUNLEVEL_POSTGAME || (mob.client?.combo_hud_enabled && !isnull(mob.client?.holder))
 
 /datum/atom_hud/alternate_appearance/basic/antagonist_hud/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	index += 1
 	update_icon()
 
 /datum/atom_hud/alternate_appearance/basic/antagonist_hud/proc/check_processing()
+	procstart = null
+	src.procstart = null
 	if (antag_hud_images.len > 1 && !(DF_ISPROCESSING in datum_flags))
 		START_PROCESSING(SSantag_hud, src)
 	else if (antag_hud_images.len <= 1)
 		STOP_PROCESSING(SSantag_hud, src)
 
 /datum/atom_hud/alternate_appearance/basic/antagonist_hud/proc/get_antag_image(index)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/image)
 	if (antag_hud_images.len)
 		return antag_hud_images[(index % antag_hud_images.len) + 1]
 
 /datum/atom_hud/alternate_appearance/basic/antagonist_hud/proc/get_antag_hud_images(datum/mind/mind)
+	procstart = null
+	src.procstart = null
 	var/list/final_antag_hud_images = list()
 
 	for (var/datum/antagonist/antagonist as anything in mind?.antag_datums)
@@ -87,12 +107,16 @@ GLOBAL_LIST_EMPTY_TYPED(has_antagonist_huds, /datum/atom_hud/alternate_appearanc
 	return final_antag_hud_images
 
 /datum/atom_hud/alternate_appearance/basic/antagonist_hud/proc/update_icon()
+	procstart = null
+	src.procstart = null
 	if (antag_hud_images.len == 0)
 		image.icon = icon('icons/blanks/32x32.dmi', "nothing")
 	else
 		image.icon = icon(get_antag_image(index).icon, get_antag_image(index).icon_state)
 
 /datum/atom_hud/alternate_appearance/basic/antagonist_hud/proc/update_antag_hud_images(datum/mind/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	antag_hud_images = get_antag_hud_images(source)

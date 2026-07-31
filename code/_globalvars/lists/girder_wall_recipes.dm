@@ -3,6 +3,8 @@ GLOBAL_LIST_INIT(material_girder_wall_recipes, init_material_girder_wall_recipes
 
 /// Initializes the main, false and tram wall types using three lists of wall types.
 /proc/init_main_girder_wall_recipes()
+	procstart = null
+	src.procstart = null
 	return create_girder_wall_recipes(
 		wall_types = list(
 			/turf/closed/wall,
@@ -75,6 +77,8 @@ GLOBAL_LIST_INIT(material_girder_wall_recipes, init_material_girder_wall_recipes
 
 /// Initializes the normal and false girder material wall recipes using two lists of material wall types.
 /proc/init_material_girder_wall_recipes()
+	procstart = null
+	src.procstart = null
 	return create_girder_wall_recipes(
 		wall_types = list(/turf/closed/wall/material),
 		falsewall_types = list(/obj/structure/falsewall/material)
@@ -82,6 +86,8 @@ GLOBAL_LIST_INIT(material_girder_wall_recipes, init_material_girder_wall_recipes
 
 /// Returns a list of newly created [/datum/girder_wall_recipe] instances from the given wall type lists.
 /proc/create_girder_wall_recipes(list/wall_types, list/falsewall_types, list/tram_types)
+	procstart = null
+	src.procstart = null
 	var/list/recipes = list()
 
 	for (var/turf/closed/wall/wall_type as anything in wall_types)
@@ -124,6 +130,8 @@ GLOBAL_LIST_INIT(material_girder_wall_recipes, init_material_girder_wall_recipes
 
 /// Adds a new [/datum/girder_wall_recipe] instance to the given recipe list from the given recipe arguments.
 /proc/add_girder_wall_recipe(list/recipes, wall_type, stack_type, stack_amount, girder_type, girder_state, make_delay, start_alert)
+	procstart = null
+	src.procstart = null
 	if (!ispath(stack_type, /obj/item/stack))
 		CRASH("Attempted to create a girder wall recipe for wall type ([wall_type]) with an invalid stack type ([stack_type])")
 

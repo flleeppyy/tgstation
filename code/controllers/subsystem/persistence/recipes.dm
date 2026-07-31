@@ -1,5 +1,7 @@
 ///Saves all randomized recipes.
 /datum/controller/subsystem/persistence/proc/save_randomized_recipes()
+	procstart = null
+	src.procstart = null
 	var/json_file = file("data/RandomizedChemRecipes.json")
 	var/list/file_data = list()
 

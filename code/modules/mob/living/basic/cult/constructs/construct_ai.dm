@@ -60,6 +60,8 @@
 	target_wounded_key = BB_TARGET_WOUNDED_ONLY
 
 /datum/targeting_strategy/basic/same_faction/construct/is_valid_target(mob/living/living_mob, atom/the_target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	if(isconstruct(the_target) || istype(the_target, /mob/living/basic/shade))
 		return ..()
 	return FALSE

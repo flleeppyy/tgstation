@@ -20,6 +20,8 @@
 	var/map_pad_link_id = "" as text //who's my friend
 
 /obj/machinery/quantumpad/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(map_pad_id)
 		mapped_quantum_pads[map_pad_id] = src
@@ -27,10 +29,14 @@
 	AddComponent(/datum/component/usb_port, typecacheof(list(/obj/item/circuit_component/quantumpad), only_root_path = TRUE))
 
 /obj/machinery/quantumpad/Destroy()
+	procstart = null
+	src.procstart = null
 	mapped_quantum_pads -= map_pad_id
 	return ..()
 
 /obj/machinery/quantumpad/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It is [ linked_pad ? "currently" : "not"] linked to another pad.")
 	if(!panel_open)
@@ -39,6 +45,8 @@
 		. += span_notice("The <i>linking</i> device is now able to be <i>scanned<i> with a multitool.")
 
 /obj/machinery/quantumpad/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/E = 0
 	for(var/datum/stock_part/capacitor/capacitor in component_parts)
@@ -53,6 +61,8 @@
 	teleport_cooldown -= (E * 100)
 
 /obj/machinery/quantumpad/multitool_act(mob/living/user, obj/item/multitool/multi_tool)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		multi_tool.set_buffer(src)
 		balloon_alert(user, "saved to multitool buffer")
@@ -71,12 +81,18 @@
 	return NONE
 
 /obj/machinery/quantumpad/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/quantumpad/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/quantumpad/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/quantum_keycard))
 		var/obj/item/quantum_keycard/card = tool
 		if(card.qpad)
@@ -93,6 +109,8 @@
 	return NONE
 
 /obj/machinery/quantumpad/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & (BROKEN|NOPOWER) || state_open)
 		icon_state = "[base_icon_state]-idle-open"
@@ -100,6 +118,8 @@
 		icon_state = "[base_icon_state]-idle"
 
 /obj/machinery/quantumpad/interact(mob/user, obj/machinery/quantumpad/target_pad = linked_pad)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target_pad))
 		if(map_pad_link_id && initMappedLink())
 			target_pad = linked_pad
@@ -126,9 +146,13 @@
 	doteleport(user, target_pad)
 
 /obj/machinery/quantumpad/proc/sparks()
+	procstart = null
+	src.procstart = null
 	do_sparks(5, TRUE, src, spark_type = /datum/effect_system/basic/spark_spread/quantum)
 
 /obj/machinery/quantumpad/attack_ghost(mob/dead/observer/ghost)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -138,6 +162,8 @@
 		ghost.forceMove(get_turf(linked_pad))
 
 /obj/machinery/quantumpad/proc/doteleport(mob/user = null, obj/machinery/quantumpad/target_pad = linked_pad)
+	procstart = null
+	src.procstart = null
 	if(!target_pad)
 		return
 	playsound(get_turf(src), 'sound/items/weapons/flash.ogg', 25, TRUE)
@@ -146,6 +172,8 @@
 	addtimer(CALLBACK(src, PROC_REF(teleport_contents), user, target_pad), teleport_speed)
 
 /obj/machinery/quantumpad/proc/teleport_contents(mob/user, obj/machinery/quantumpad/target_pad)
+	procstart = null
+	src.procstart = null
 	teleporting = FALSE
 	if(machine_stat & NOPOWER)
 		if(user)
@@ -185,6 +213,8 @@
 		CHECK_TICK
 
 /obj/machinery/quantumpad/proc/initMappedLink()
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	var/obj/machinery/quantumpad/link = mapped_quantum_pads[map_pad_link_id]
 	if(link)
@@ -206,19 +236,27 @@
 	var/obj/machinery/quantumpad/attached_pad
 
 /obj/item/circuit_component/quantumpad/populate_ports()
+	procstart = null
+	src.procstart = null
 	target_pad = add_input_port("Target Pad", PORT_TYPE_ATOM)
 	failed = add_output_port("On Fail", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/quantumpad/register_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/machinery/quantumpad))
 		attached_pad = shell
 
 /obj/item/circuit_component/quantumpad/unregister_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	attached_pad = null
 	return ..()
 
 /obj/item/circuit_component/quantumpad/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!attached_pad)
 		return
 

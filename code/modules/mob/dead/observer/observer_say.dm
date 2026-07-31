@@ -1,8 +1,12 @@
 /mob/dead/observer/check_emote(message, forced)
+	procstart = null
+	src.procstart = null
 	return emote(copytext(message, length(message[1]) + 1), intentional = !forced, force_silence = TRUE)
 
 //Modified version of get_message_mods, removes the trimming, the only thing we care about here is admin channels
 /mob/dead/observer/get_message_mods(message, list/mods)
+	procstart = null
+	src.procstart = null
 	var/key = message[1]
 	if((key in GLOB.department_radio_prefixes) && length(message) > length(key) + 1 && !mods[RADIO_EXTENSION])
 		mods[RADIO_KEY] = LOWER_TEXT(message[1 + length(key)])
@@ -59,6 +63,8 @@
 	. = say_dead(message)
 
 /mob/dead/observer/Hear(atom/movable/speaker, message_language, raw_message, radio_freq, radio_freq_name, radio_freq_color, list/spans, list/message_mods = list(), message_range)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/movable/to_follow = speaker
 	if(radio_freq)

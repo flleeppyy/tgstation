@@ -4,6 +4,8 @@
 /mob/living/basic/boss/blood_drunk_miner/guidance
 
 /mob/living/basic/boss/blood_drunk_miner/guidance/attack_override(mob/living/source, atom/target, proximity, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & COMPONENT_HOSTILE_NO_ATTACK)
 		adjust_health(-2 * rapid_melee_hits)
@@ -12,6 +14,8 @@
 /mob/living/basic/boss/blood_drunk_miner/hunter
 
 /mob/living/basic/boss/blood_drunk_miner/hunter/post_attack_effects(mob/living/victim, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!prob(HUNTER_DASH_PROBABILITY))
 		return
 
@@ -28,6 +32,8 @@
 	ai_controller = /datum/ai_controller/blood_drunk_miner/doom
 
 /mob/living/basic/boss/blood_drunk_miner/doom/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/action/cooldown/dash_ability = ai_controller.blackboard[BB_BDM_DASH_ABILITY]
 	if(!isnull(dash_ability))
@@ -38,6 +44,8 @@
 		dash_attack.cooldown_time = 4 SECONDS
 
 /mob/living/basic/boss/blood_drunk_miner/doom/get_innate_actions()
+	procstart = null
+	src.procstart = null
 	var/list/innate_abilities = list(
 		/datum/action/cooldown/mob_cooldown/charge/basic_charge/blood_drunk_miner = BB_BDM_DASH_ABILITY,
 		/datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/kinetic_accelerator/long_burst = BB_BDM_KINETIC_ACCELERATOR_ABILITY,

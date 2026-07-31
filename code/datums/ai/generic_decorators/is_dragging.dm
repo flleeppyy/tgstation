@@ -2,5 +2,7 @@
 /datum/bt_node/decorator/is_dragging
 
 /datum/bt_node/decorator/is_dragging/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	return !!living_pawn.pulling

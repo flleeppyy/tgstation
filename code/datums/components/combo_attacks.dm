@@ -19,6 +19,8 @@
 	var/datum/callback/can_attack_callback
 
 /datum/component/combo_attacks/Initialize(combos, examine_message, reset_message, max_combo_length, leniency_time = 5 SECONDS, can_attack_callback)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 	combo_list = combos
@@ -33,10 +35,14 @@
 	src.can_attack_callback = can_attack_callback
 
 /datum/component/combo_attacks/Destroy(force)
+	procstart = null
+	src.procstart = null
 	can_attack_callback = null
 	return ..()
 
 /datum/component/combo_attacks/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE_MORE, PROC_REF(on_examine_more))
 	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, PROC_REF(on_attack_self))
@@ -44,9 +50,13 @@
 	RegisterSignal(parent, COMSIG_ITEM_ATTACK, PROC_REF(on_attack))
 
 /datum/component/combo_attacks/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ATOM_EXAMINE, COMSIG_ATOM_EXAMINE_MORE, COMSIG_ITEM_ATTACK_SELF, COMSIG_ITEM_DROPPED, COMSIG_ITEM_ATTACK))
 
 /datum/component/combo_attacks/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!examine_message)
@@ -54,21 +64,29 @@
 	examine_list += examine_message
 
 /datum/component/combo_attacks/proc/on_examine_more(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += combo_strings
 
 /datum/component/combo_attacks/proc/on_attack_self(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	reset_inputs(user, deltimer = TRUE)
 
 /datum/component/combo_attacks/proc/on_drop(datum/source, mob/dropper)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	reset_inputs(user = null, deltimer = TRUE)
 
 /datum/component/combo_attacks/proc/check_input(mob/living/target, mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/combo in combo_list)
 		var/list/combo_specifics = combo_list[combo]
 		if(compare_list(input_list, combo_specifics[COMBO_STEPS]))
@@ -77,6 +95,8 @@
 	return FALSE
 
 /datum/component/combo_attacks/proc/reset_inputs(mob/user, deltimer)
+	procstart = null
+	src.procstart = null
 	var/atom/atom_parent = parent
 	input_list.Cut()
 	if(user)
@@ -85,6 +105,8 @@
 		deltimer(timerid)
 
 /datum/component/combo_attacks/proc/on_attack(datum/source, mob/living/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(can_attack_callback && !can_attack_callback.Invoke(user, target))

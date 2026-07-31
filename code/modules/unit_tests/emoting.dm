@@ -2,6 +2,8 @@
 	var/emotes_used = 0
 
 /datum/unit_test/emoting/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human = allocate(/mob/living/carbon/human/consistent)
 	human.key = "EmoteTestKey"
 	RegisterSignal(human, COMSIG_MOB_EMOTE, PROC_REF(on_emote_used))
@@ -25,5 +27,7 @@
 	human.key = null
 
 /datum/unit_test/emoting/proc/on_emote_used()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	emotes_used += 1

@@ -8,12 +8,18 @@
 	var/deliveryamt = 1 // amount of type to deliver
 
 /obj/item/grenade/spawnergrenade/apply_grenade_fantasy_bonuses(quality)
+	procstart = null
+	src.procstart = null
 	deliveryamt = modify_fantasy_variable("deliveryamt", deliveryamt, quality)
 
 /obj/item/grenade/spawnergrenade/remove_grenade_fantasy_bonuses(quality)
+	procstart = null
+	src.procstart = null
 	deliveryamt = reset_fantasy_variable("deliveryamt", deliveryamt)
 
-/obj/item/grenade/spawnergrenade/detonate(mob/living/lanced_by) // Prime now just handles the two loops that query for people in lockers and people who can see it.
+/obj/item/grenade/spawnergrenade/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null // Prime now just handles the two loops that query for people in lockers and people who can see it.
 	. = ..()
 	if(!.)
 		return
@@ -35,6 +41,8 @@
 	qdel(src)
 
 /obj/item/grenade/spawnergrenade/proc/afterspawn(list/mob/spawned)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/grenade/spawnergrenade/manhacks

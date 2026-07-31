@@ -1,10 +1,16 @@
 /datum/tgs_message_content/proc/_interop_serialize()
+	procstart = null
+	src.procstart = null
 	return list("text" = text, "embed" = embed ? embed._interop_serialize() : null)
 
 /datum/tgs_chat_embed/proc/_interop_serialize()
+	procstart = null
+	src.procstart = null
 	CRASH("Base /proc/interop_serialize called on [type]!")
 
 /datum/tgs_chat_embed/structure/_interop_serialize()
+	procstart = null
+	src.procstart = null
 	var/list/serialized_fields
 	if(istype(fields, /list))
 		serialized_fields = list()
@@ -26,6 +32,8 @@
 	)
 
 /datum/tgs_chat_embed/media/_interop_serialize()
+	procstart = null
+	src.procstart = null
 	return list(
 		"url" = url,
 		"width" = width,
@@ -34,17 +42,23 @@
 	)
 
 /datum/tgs_chat_embed/provider/_interop_serialize()
+	procstart = null
+	src.procstart = null
 	return list(
 		"url" = url,
 		"name" = name
 	)
 
 /datum/tgs_chat_embed/provider/author/_interop_serialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["iconUrl"] = icon_url
 	.["proxyIconUrl"] = proxy_icon_url
 
 /datum/tgs_chat_embed/footer/_interop_serialize()
+	procstart = null
+	src.procstart = null
 	return list(
 		"text" = text,
 		"iconUrl" = icon_url,
@@ -52,6 +66,8 @@
 	)
 
 /datum/tgs_chat_embed/field/_interop_serialize()
+	procstart = null
+	src.procstart = null
 	return list(
 		"name" = name,
 		"value" = value,

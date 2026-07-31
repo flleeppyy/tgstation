@@ -6,6 +6,8 @@
 	var/list/valid_attack_zones
 
 /datum/element/attack_zone_randomiser/Attach(datum/target, list/valid_attack_zones = GLOB.all_body_zones)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -13,11 +15,15 @@
 	src.valid_attack_zones = valid_attack_zones
 
 /datum/element/attack_zone_randomiser/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, list (COMSIG_HOSTILE_PRE_ATTACKINGTARGET, COMSIG_LIVING_UNARMED_ATTACK))
 	return ..()
 
 /// If we're attacking a carbon, pick a random defence zone
 /datum/element/attack_zone_randomiser/proc/randomise(mob/living/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!iscarbon(target))
 		return

@@ -11,6 +11,8 @@ SUBSYSTEM_DEF(assets)
 	var/datum/asset_transport/transport = new()
 
 /datum/controller/subsystem/assets/OnConfigLoad()
+	procstart = null
+	src.procstart = null
 	var/newtransporttype = /datum/asset_transport
 	switch (CONFIG_GET(string/asset_transport))
 		if ("webroot")
@@ -25,6 +27,8 @@ SUBSYSTEM_DEF(assets)
 	transport.Load()
 
 /datum/controller/subsystem/assets/Initialize()
+	procstart = null
+	src.procstart = null
 	for(var/datum/asset/asset_type as anything in valid_subtypesof(/datum/asset))
 		load_asset_datum(asset_type)
 
@@ -33,5 +37,7 @@ SUBSYSTEM_DEF(assets)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/assets/Recover()
+	procstart = null
+	src.procstart = null
 	cache = SSassets.cache
 	preload = SSassets.preload

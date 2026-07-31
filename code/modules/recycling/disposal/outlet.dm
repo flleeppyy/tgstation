@@ -30,6 +30,8 @@
 	var/eject_speed = EJECT_SPEED_SLOW
 
 /obj/structure/disposaloutlet/Initialize(mapload, obj/structure/disposalconstruct/make_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(make_from)
 		setDir(make_from.dir)
@@ -46,6 +48,8 @@
 		trunk = found_trunk
 
 /obj/structure/disposaloutlet/Destroy()
+	procstart = null
+	src.procstart = null
 	if(trunk)
 		// preemptively expel the contents from the trunk
 		// in case the outlet is deleted before expel_holder could be called.
@@ -60,6 +64,8 @@
 // expel the contents of the holder object, then delete it
 // called when the holder exits the outlet
 /obj/structure/disposaloutlet/proc/expel(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	H.active = FALSE
 	flick("outlet-open", src)
 	if((start_eject + 30) < world.time)
@@ -70,6 +76,8 @@
 		addtimer(CALLBACK(src, PROC_REF(expel_holder), H), 2 SECONDS)
 
 /obj/structure/disposaloutlet/proc/expel_holder(obj/structure/disposalholder/H, playsound=FALSE)
+	procstart = null
+	src.procstart = null
 	if(playsound)
 		playsound(src, 'sound/machines/hiss.ogg', 50, FALSE, FALSE)
 
@@ -82,6 +90,8 @@
 	qdel(H)
 
 /obj/structure/disposaloutlet/welder_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!I.tool_start_check(user, amount=1, heat_required = HIGH_TEMPERATURE_REQUIRED))
 		return TRUE
@@ -97,6 +107,8 @@
 	return TRUE
 
 /obj/structure/disposaloutlet/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(eject_speed)
 		if(EJECT_SPEED_SLOW)
@@ -109,6 +121,8 @@
 			. += span_info("An LED image of a grawlix is displayed on the side of the outlet.")
 
 /obj/structure/disposaloutlet/multitool_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 //if emagged it cant change the speed setting off max
 	if(obj_flags & EMAGGED)
@@ -128,6 +142,8 @@
 	return TRUE
 
 /obj/structure/disposaloutlet/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(obj_flags & EMAGGED)
 		return
@@ -138,6 +154,8 @@
 	return TRUE
 
 /obj/structure/disposaloutlet/force_pushed(atom/movable/pusher, force = MOVE_FORCE_DEFAULT, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(stored))
 		stored.forceMove(loc)
@@ -147,6 +165,8 @@
 		qdel(src)
 
 /obj/structure/disposaloutlet/move_crushed(atom/movable/pusher, force = MOVE_FORCE_DEFAULT, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(stored))
 		stored.forceMove(loc)

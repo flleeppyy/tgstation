@@ -2,6 +2,8 @@
 /datum/unit_test/egg_glands
 
 /datum/unit_test/egg_glands/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/item/food/egg/egg = allocate(/obj/item/food/egg)
 
 	for (var/datum/reagent/reagent_type as anything in subtypesof(/datum/reagent))

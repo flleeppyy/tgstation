@@ -5,12 +5,16 @@
 	icon_state = "omnilaser"
 
 /obj/projectile/beam/ctf/prehit_pierce(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!is_ctf_target(target))
 		damage = 0
 		return PROJECTILE_PIERCE_NONE /// hey uhhh don't hit anyone behind them
 	. = ..()
 
 /obj/projectile/beam/ctf/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_ctf_target(target) && blocked == FALSE)
 		if(iscarbon(target))
@@ -22,6 +26,8 @@
 	ammo_type = /obj/item/ammo_casing/laser/ctf
 
 /obj/item/ammo_box/magazine/recharge/ctf/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/delete_on_drop)
 
@@ -29,6 +35,8 @@
 	projectile_type = /obj/projectile/beam/ctf/
 
 /obj/item/ammo_casing/laser/ctf/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/delete_on_drop)
 
@@ -42,6 +50,8 @@
 	slot_flags = null
 
 /obj/item/gun/ballistic/automatic/laser/ctf/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/delete_on_drop)
 
@@ -73,6 +83,8 @@
 	tac_reloads = TRUE
 
 /obj/item/gun/ballistic/shotgun/ctf/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/delete_on_drop)
 
@@ -100,6 +112,8 @@
 	fire_delay = 1 SECONDS
 
 /obj/item/gun/ballistic/automatic/laser/ctf/marksman/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/scope, range_modifier = 1.7)
 
@@ -126,6 +140,8 @@
 	accepted_magazine_type = /obj/item/ammo_box/magazine/recharge/ctf/deagle
 
 /obj/item/gun/ballistic/automatic/pistol/deagle/ctf/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/delete_on_drop)
 
@@ -158,13 +174,19 @@
 	shaded_charge = FALSE
 
 /obj/item/gun/energy/laser/instakill/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/energy/laser/instakill/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_ALL)
 
 /obj/item/gun/energy/laser/instakill/ctf/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/delete_on_drop)
 
@@ -183,6 +205,8 @@
 	light_color = LIGHT_COLOR_PURPLE
 
 /obj/projectile/beam/instakill/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(target))
 		var/mob/living/carbon/target_mob = target
@@ -215,6 +239,8 @@
 	var/show_charge_as_alpha = TRUE
 
 /obj/item/clothing/suit/armor/vest/ctf/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/shielded, \

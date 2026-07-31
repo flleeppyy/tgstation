@@ -28,6 +28,8 @@
 	fire = 50
 
 /obj/structure/bookcase/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	obj_flags |= UNIQUE_RENAME | RENAME_NO_DESC
 	if(!mapload || QDELETED(src))
@@ -48,10 +50,14 @@
 
 ///proc for doing things after a bookcase is randomly populated
 /obj/structure/bookcase/proc/after_random_load()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Loads the shelf, both by allowing it to generate random items, and by adding its contents to a list used by library machines
 /obj/structure/bookcase/proc/load_shelf()
+	procstart = null
+	src.procstart = null
 	//Loads a random selection of books in from the db, adds a copy of their info to a global list
 	//To send to library consoles as a starting inventory
 	if(load_random_books)
@@ -94,6 +100,8 @@
 		books_in_area += info.return_copy()
 
 /obj/structure/bookcase/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!anchored)
 		. += span_notice("The <i>bolts</i> on the bottom are unsecured.")
@@ -108,6 +116,8 @@
 			. += span_notice("There's a <b>small crack</b> visible on the shelf.")
 
 /obj/structure/bookcase/set_anchored(anchorvalue)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.))
 		return
@@ -121,6 +131,8 @@
 	update_appearance()
 
 /obj/structure/bookcase/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(state == BOOKCASE_ANCHORED)
 		if(!istype(tool, /obj/item/stack/sheet/mineral/wood))
 			return NONE
@@ -162,6 +174,8 @@
 	return NONE
 
 /obj/structure/bookcase/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	switch(state)
 		if(BOOKCASE_UNANCHORED)
 			if(!tool.use_tool(src, user, 2 SECONDS, volume = 50))
@@ -186,6 +200,8 @@
 	return NONE
 
 /obj/structure/bookcase/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	switch(state)
 		if(BOOKCASE_UNANCHORED)
 			if(!tool.use_tool(src, user, 2 SECONDS, volume = 50))
@@ -204,6 +220,8 @@
 	return NONE
 
 /obj/structure/bookcase/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -224,6 +242,8 @@
 	update_appearance()
 
 /obj/structure/bookcase/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/atom/Tsec = drop_location()
 	new /obj/item/stack/sheet/mineral/wood(Tsec, 4)
 	for(var/obj/item/I in contents)
@@ -232,6 +252,8 @@
 		I.forceMove(Tsec)
 
 /obj/structure/bookcase/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(state == BOOKCASE_UNANCHORED || state == BOOKCASE_ANCHORED)
 		icon_state = "bookempty"
 		return ..()
@@ -240,12 +262,16 @@
 	return ..()
 
 /obj/structure/bookcase/nameformat(input, user)
+	procstart = null
+	src.procstart = null
 	return "bookcase[input? " ([input])" : null]"
 
 /obj/structure/bookcase/manuals/engineering
 	name = "engineering manuals bookcase"
 
 /obj/structure/bookcase/manuals/engineering/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/book/manual/wiki/engineering_construction(src)
 	new /obj/item/book/manual/wiki/engineering_hacking(src)
@@ -257,6 +283,8 @@
 	name = "\improper R&D manuals bookcase"
 
 /obj/structure/bookcase/manuals/research_and_development/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/book/manual/wiki/research_and_development(src)
 	update_appearance()

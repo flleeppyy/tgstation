@@ -29,6 +29,8 @@
 	var/list/ceiling_baseturfs = list()
 
 /datum/map_template/New(path = null, rename = null, cache = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	. = ..()
 	if(path)
@@ -40,6 +42,8 @@
 	ceiling_baseturfs.Insert(1, /turf/baseturf_bottom)
 
 /datum/map_template/proc/preload_size(path, cache = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/parsed_map/parsed = new(file(path))
 	var/bounds = parsed?.bounds
 	if(bounds)
@@ -50,6 +54,8 @@
 	return bounds
 
 /datum/map_template/proc/initTemplateBounds(list/bounds)
+	procstart = null
+	src.procstart = null
 	if (!bounds) //something went wrong
 		stack_trace("[name] template failed to initialize correctly!")
 		return
@@ -107,6 +113,8 @@
 		affected_turf.levelupdate()
 
 /datum/map_template/proc/load_new_z(secret = FALSE)
+	procstart = null
+	src.procstart = null
 	var/x = round((world.maxx - width) * 0.5) + 1
 	var/y = round((world.maxy - height) * 0.5) + 1
 
@@ -133,6 +141,8 @@
 	return level
 
 /datum/map_template/proc/load(turf/T, centered = FALSE)
+	procstart = null
+	src.procstart = null
 	if(centered)
 		T = locate(T.x - round(width/2) , T.y - round(height/2) , T.z)
 	if(!T)
@@ -189,6 +199,8 @@
 	return bounds
 
 /datum/map_template/proc/generate_ceiling(affected_turfs)
+	procstart = null
+	src.procstart = null
 	for (var/turf/turf in affected_turfs)
 		var/turf/ceiling = get_step_multiz(turf, UP)
 		if (ceiling)
@@ -196,12 +208,18 @@
 				ceiling.ChangeTurf(ceiling_turf, ceiling_baseturfs, CHANGETURF_INHERIT_AIR)
 
 /datum/map_template/proc/post_load()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/map_template/proc/update_blacklist(turf/T, list/input_blacklist)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/map_template/proc/get_affected_turfs(turf/T, centered = FALSE)
+	procstart = null
+	src.procstart = null
 	var/turf/placement = T
 	if(centered)
 		var/turf/corner = locate(placement.x - round(width/2), placement.y - round(height/2), placement.z)
@@ -211,6 +229,8 @@
 
 /// Takes in a type path, locates an instance of that type in the cached map, and calculates its offset from the origin of the map, returns this offset in the form list(x, y).
 /datum/map_template/proc/discover_offset(obj/marker)
+	procstart = null
+	src.procstart = null
 	var/key
 	var/list/models = cached_map.grid_models
 	for(key in models)
@@ -231,6 +251,8 @@
 //for your ever biggening badminnery kevinz000
 //❤ - Cyberboss
 /proc/load_new_z_level(file, name, secret)
+	procstart = null
+	src.procstart = null
 	var/datum/map_template/template = new(file, name, TRUE)
 	if(!template.cached_map || template.cached_map.check_for_errors())
 		return FALSE

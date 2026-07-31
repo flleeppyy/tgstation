@@ -1,5 +1,7 @@
 // Throwing stuff
 /mob/living/proc/toggle_throw_mode()
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(src))
 		return
 	if(!HAS_TRAIT(src, TRAIT_CAN_THROW_ITEMS))
@@ -11,6 +13,8 @@
 
 
 /mob/living/proc/throw_mode_off(method)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_CAN_THROW_ITEMS))
 		return
 	if(throw_mode > method) //A toggle doesnt affect a hold
@@ -22,6 +26,8 @@
 
 
 /mob/living/proc/throw_mode_on(mode = THROW_MODE_TOGGLE)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_CAN_THROW_ITEMS))
 		return
 	throw_mode = mode
@@ -30,12 +36,16 @@
 	SEND_SIGNAL(src, COMSIG_LIVING_THROW_MODE_TOGGLE, throw_mode)
 
 /mob/proc/throw_item(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_CAN_THROW_ITEMS))
 		return FALSE
 	SEND_SIGNAL(src, COMSIG_MOB_THROW, target)
 	return TRUE
 
 /mob/living/throw_item(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	throw_mode_off(THROW_MODE_TOGGLE)
 	if(!HAS_TRAIT(src, TRAIT_CAN_THROW_ITEMS))
@@ -128,6 +138,8 @@
  * * offered - The player being offered the item (optional, if null the offer is to everyone around)
  */
 /mob/living/proc/give(mob/living/offered, obj/item/item_bypass)
+	procstart = null
+	src.procstart = null
 	if(has_status_effect(/datum/status_effect/offering))
 		to_chat(src, span_warning("You're already offering something!"))
 		return
@@ -188,6 +200,8 @@
  * * offered_item - The item being given by the offerer
  */
 /mob/living/proc/take(mob/living/offerer, obj/item/offered_item, bypass)
+	procstart = null
+	src.procstart = null
 	clear_alert("[offerer]")
 	if(src.incapacitated)
 		to_chat(src, span_warning("You're unable to take anything in your current state!"))
@@ -215,6 +229,8 @@
 	put_in_hands(offered_item)
 
 /mob/living/click_ctrl_shift(mob/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_CAN_HOLD_ITEMS))
 		var/mob/living/living_user = user
 		living_user.give(src)

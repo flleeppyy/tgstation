@@ -23,6 +23,8 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/commence_trashtalk/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(!controller.blackboard_key_exists(target_key))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
 
@@ -38,6 +40,8 @@
 
 /// Valid if the target is a conscious human with bloodied clothing (or anyone, while emagged).
 /datum/targeting_strategy/capable_human/washable_human/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -54,6 +58,8 @@
 /datum/bt_node/ai_behavior/acquire_target/update_interaction_target/hygiene_wash
 
 /datum/bt_node/ai_behavior/acquire_target/update_interaction_target/hygiene_wash/on_target_found(datum/ai_controller/basic_controller/bot/controller, atom/target, datum/targeting_strategy/strategy)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bot/bot_pawn = controller.pawn
 	if(bot_pawn.bot_access_flags & BOT_COVER_EMAGGED)
 		controller.add_to_blacklist(target)
@@ -65,6 +71,8 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/wash_target/perform(seconds_per_tick, datum/ai_controller/basic_controller/bot/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/unclean_target = controller.blackboard[target_key]
 	var/mob/living/basic/living_pawn = controller.pawn
 	if(QDELETED(unclean_target))
@@ -75,6 +83,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/wash_target/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(target_key)
 	var/wash_frustration = controller.blackboard[BB_WASH_FRUSTRATION]

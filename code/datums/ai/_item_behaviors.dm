@@ -10,6 +10,8 @@
 	var/throw_count_key
 
 /datum/bt_node/ai_behavior/throw_attack/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/item/item_pawn = controller.pawn
 	var/atom/throw_target = controller.blackboard[target_key]
 	if(QDELETED(throw_target))
@@ -26,6 +28,8 @@
 
 /// Clears target and resets throw count. Override to add extra on-exhaust logic.
 /datum/bt_node/ai_behavior/throw_attack/proc/on_throws_exhausted(datum/ai_controller/controller, atom/throw_target, target_key, throw_count_key)
+	procstart = null
+	src.procstart = null
 	controller.clear_blackboard_key(target_key)
 	controller.set_blackboard_key(throw_count_key, 0)
 	return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED

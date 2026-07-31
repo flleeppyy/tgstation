@@ -13,6 +13,8 @@
 	var/slots_knockoffable = NONE
 
 /datum/component/knockoff/Initialize(knockoff_chance = 100, target_zones, slots_knockoffable = NONE)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -21,6 +23,8 @@
 	src.slots_knockoffable = slots_knockoffable
 
 /datum/component/knockoff/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equipped))
 	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(on_dropped))
 	var/atom/movable/atom_parent = parent
@@ -29,6 +33,8 @@
 		on_equipped(atom_parent, as_mob, as_mob.get_slot_by_item(atom_parent)) // lie a little
 
 /datum/component/knockoff/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED))
 
 	var/obj/item/item_parent = parent
@@ -38,6 +44,8 @@
 /// Signal proc for [COMSIG_LIVING_DISARM_HIT] on the mob who's equipped our parent
 /// Rolls a chance for knockoff whenever we're disarmed
 /datum/component/knockoff/proc/on_equipped_mob_disarm(mob/living/source, mob/living/attacker, zone, obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(source))
@@ -60,6 +68,8 @@
 /// Signal proc for [COMSIG_LIVING_STATUS_KNOCKDOWN] on the mob who's equipped our parent
 /// Rolls a chance for knockoff whenever we're knocked down
 /datum/component/knockoff/proc/on_equipped_mob_knockdown(mob/living/carbon/human/source, amount)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(source))
@@ -83,6 +93,8 @@
 /// Signal proc for [COMSIG_ITEM_EQUIPPED]
 /// Registers our signals which can cause a knockdown whenever we're equipped correctly
 /datum/component/knockoff/proc/on_equipped(datum/source, mob/living/carbon/human/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(equipper))
@@ -98,6 +110,8 @@
 /// Signal proc for [COMSIG_ITEM_DROPPED]
 /// Unregisters our signals which can cause a knockdown when we're unequipped (dropped)
 /datum/component/knockoff/proc/on_dropped(datum/source, mob/living/dropper)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(dropper, list(COMSIG_LIVING_DISARM_HIT, COMSIG_LIVING_STATUS_KNOCKDOWN))

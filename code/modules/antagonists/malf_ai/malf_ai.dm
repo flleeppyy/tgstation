@@ -22,10 +22,14 @@
 	var/malf_sound = 'sound/music/antag/malf.ogg'
 
 /datum/antagonist/malf_ai/New(give_objectives = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.give_objectives = give_objectives
 
 /datum/antagonist/malf_ai/on_gain()
+	procstart = null
+	src.procstart = null
 	if(owner.current && !isAI(owner.current))
 		stack_trace("Attempted to give malf AI antag datum to \[[owner]\], who did not meet the requirements.")
 		return ..()
@@ -48,6 +52,8 @@
 	return ..()
 
 /datum/antagonist/malf_ai/on_removal()
+	procstart = null
+	src.procstart = null
 	if(owner.current && isAI(owner.current))
 		var/mob/living/silicon/ai/malf_ai = owner.current
 		malf_ai.laws.clear_zeroth_law(force = TRUE)
@@ -58,6 +64,8 @@
 
 /// Generates a complete set of malf AI objectives up to the traitor objective limit.
 /datum/antagonist/malf_ai/proc/forge_ai_objectives()
+	procstart = null
+	src.procstart = null
 	if(prob(PROB_SPECIAL))
 		forge_special_objective()
 
@@ -78,6 +86,8 @@
 
 /// Generates a special objective and adds it to the objective list.
 /datum/antagonist/malf_ai/proc/forge_special_objective()
+	procstart = null
+	src.procstart = null
 	var/special_pick = rand(1,4)
 	switch(special_pick)
 		if(1)
@@ -104,11 +114,15 @@
 			objectives += yandere_two
 
 /datum/antagonist/malf_ai/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(should_give_codewords)
 		give_codewords()
 
 /datum/antagonist/malf_ai/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/mob/living/silicon/ai/datum_owner = mob_override || owner.current
@@ -120,6 +134,8 @@
 	datum_owner.AddComponent(/datum/component/codeword_hearing, SStraitor.syndicate_code_response_regex, "red", src)
 
 /datum/antagonist/malf_ai/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/ai/datum_owner = mob_override || owner.current
 
 	if(istype(datum_owner))
@@ -130,6 +146,8 @@
 
 /// Outputs this shift's codewords and responses to the antag's chat and copies them to their memory.
 /datum/antagonist/malf_ai/proc/give_codewords()
+	procstart = null
+	src.procstart = null
 	if(!owner.current)
 		return
 
@@ -140,6 +158,8 @@
 	antag_memory += "<b>Code Response</b>: [span_red("[responses]")]<br>"
 
 /datum/antagonist/malf_ai/proc/add_law_zero()
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/ai/malf_ai = owner.current
 
 	if(!malf_ai || !istype(malf_ai))
@@ -162,12 +182,16 @@
 
 
 /datum/antagonist/malf_ai/ui_data(mob/living/silicon/ai/malf_ai)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["processingTime"] = malf_ai.malf_picker.processing_time
 	data["hackedAPCs"] = malf_ai.hacked_apcs.len
 	return data
 
 /datum/antagonist/malf_ai/ui_static_data(mob/living/silicon/ai/malf_ai)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	//antag panel data
 	data["has_codewords"] = should_give_codewords
@@ -182,6 +206,8 @@
 	return data
 
 /datum/antagonist/malf_ai/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/result = list()
 
 	var/malf_ai_won = TRUE
@@ -211,6 +237,8 @@
 	return result.Join("<br>")
 
 /datum/antagonist/malf_ai/get_preview_icon()
+	procstart = null
+	src.procstart = null
 	var/datum/universal_icon/malf_ai_icon = uni_icon('icons/mob/silicon/ai.dmi', "ai-red")
 
 	// Crop out the borders of the AI, just the face
@@ -230,11 +258,15 @@
 	var/datum/mind/boss
 
 /datum/antagonist/malf_ai/infected/New(give_objectives = TRUE, datum/mind/new_boss)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(new_boss)
 		boss = new_boss
 
 /datum/antagonist/malf_ai/infected/forge_ai_objectives()
+	procstart = null
+	src.procstart = null
 	if(!boss)
 		return
 	var/datum/objective/protect/protection_objective = new
@@ -244,6 +276,8 @@
 	objectives += protection_objective
 
 /datum/antagonist/malf_ai/infected/add_law_zero()
+	procstart = null
+	src.procstart = null
 	if(!boss)
 		return
 	var/mob/living/silicon/ai/malf_ai = owner.current

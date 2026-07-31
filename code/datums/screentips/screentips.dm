@@ -4,6 +4,8 @@
 GLOBAL_LIST_INIT_TYPED(screentip_context_icons, /image, prepare_screentip_context_icons())
 
 /proc/prepare_screentip_context_icons()
+	procstart = null
+	src.procstart = null
 	var/list/output = list()
 	for(var/state in icon_states(HINT_ICON_FILE))
 		output[state] = image(HINT_ICON_FILE, icon_state = state)
@@ -18,6 +20,8 @@ GLOBAL_LIST_INIT_TYPED(screentip_context_icons, /image, prepare_screentip_contex
  * - allow_image = boolean (not required)
 */
 /proc/build_context(list/context, key, allow_image)
+	procstart = null
+	src.procstart = null
 	if(!length(context) || !context[key] || !key)
 		return ""
 	// Splits key combinations from mouse buttons. e.g. `Ctrl-Shift-LMB` goes in, `Ctrl-Shift-` goes out. Will be empty for single button actions.

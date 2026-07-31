@@ -22,6 +22,8 @@
 	var/list/beard_order = list("Beard (Jensen)", "Beard (Full)", "Beard (Dwarf)", "Beard (Very Long)")
 
 /datum/symptom/beard/Activate(datum/disease/advance/disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

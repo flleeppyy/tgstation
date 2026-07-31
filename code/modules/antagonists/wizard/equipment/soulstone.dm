@@ -26,6 +26,8 @@
 	var/required_role = /datum/antagonist/cult
 
 /obj/item/soulstone/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(theme != THEME_HOLY)
 		RegisterSignal(src, COMSIG_BIBLE_SMACKED, PROC_REF(on_bible_smacked))
@@ -39,9 +41,13 @@
 	)
 
 /obj/item/soulstone/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/hauntium = 25, /datum/reagent/silicon = 10) //can be ground into hauntium
 
 /obj/item/soulstone/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/mob/living/basic/shade/sharded_shade in src)
 		switch(theme)
@@ -53,6 +59,8 @@
 		sharded_shade.update_appearance(UPDATE_ICON_STATE)
 
 /obj/item/soulstone/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(theme)
 		if(THEME_HOLY)
@@ -66,6 +74,8 @@
 		icon_state = "[icon_state]2"
 
 /obj/item/soulstone/update_name(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = base_name
 	if(spent)
@@ -78,6 +88,8 @@
 		name = "[name]: [shade.real_name]"
 
 /obj/item/soulstone/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(spent)
 		desc = "A fragment of the legendary treasure known simply as \
@@ -86,6 +98,8 @@
 
 ///signal called whenever a soulstone is smacked by a bible
 /obj/item/soulstone/proc/on_bible_smacked(datum/source, mob/living/user, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(attempt_exorcism), user)
 
@@ -97,6 +111,8 @@
  * * exorcist: user who is attempting to remove the spirit
  */
 /obj/item/soulstone/proc/attempt_exorcism(mob/exorcist)
+	procstart = null
+	src.procstart = null
 	if(IS_CULTIST(exorcist) || theme == THEME_HOLY)
 		return
 	balloon_alert(exorcist, "exorcising...")
@@ -118,6 +134,8 @@
  * corrupt: turns the soulstone into a cult one and turns the occupant shade, if any, into a cultist
  */
 /obj/item/soulstone/proc/corrupt()
+	procstart = null
+	src.procstart = null
 	if(theme == THEME_CULT)
 		return FALSE
 
@@ -134,10 +152,14 @@
 
 /// Checks if the passed mob has the required antag datum set on the soulstone.
 /obj/item/soulstone/proc/role_check(mob/who)
+	procstart = null
+	src.procstart = null
 	return required_role ? (who.mind && who.mind.has_antag_datum(required_role, TRUE)) : TRUE
 
 /// Called whenever the soulstone releases a shade from it.
 /obj/item/soulstone/proc/on_release_spirits()
+	procstart = null
+	src.procstart = null
 	if(!one_use)
 		return
 
@@ -145,11 +167,15 @@
 	update_appearance()
 
 /obj/item/soulstone/pickup(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!role_check(user))
 		to_chat(user, span_danger("An overwhelming feeling of dread comes over you as you pick up [src]. It would be wise to be rid of this quickly."))
 
 /obj/item/soulstone/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(role_check(user) || isobserver(user))
 		if(!grab_sleeping)
@@ -161,16 +187,22 @@
 			. += span_cult("This shard is spent; it is now just a creepy rock.")
 
 /obj/item/soulstone/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(user) || isnull(user.mind))
 		return
 
-/obj/item/soulstone/Destroy() //Stops the shade from being qdel'd immediately and their ghost being sent back to the arrival shuttle.
+/obj/item/soulstone/Destroy()
+	procstart = null
+	src.procstart = null //Stops the shade from being qdel'd immediately and their ghost being sent back to the arrival shuttle.
 	for(var/mob/living/basic/shade/shade in src)
 		INVOKE_ASYNC(shade, TYPE_PROC_REF(/mob/living, death))
 	return ..()
 
 /obj/item/soulstone/proc/hot_potato(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_userdanger("Holy magics residing in [src] burn your hand!"))
 	user.apply_damage(10, BURN, user.get_active_hand())
 	user.emote("scream")
@@ -180,6 +212,8 @@
 //////////////////////////////Capturing////////////////////////////////////////////////////////
 
 /obj/item/soulstone/attack(mob/living/carbon/human/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!role_check(user))
 		user.Unconscious(10 SECONDS)
 		to_chat(user, span_userdanger("Your body is wracked with debilitating pain!"))
@@ -204,6 +238,8 @@
 	capture_soul(M, user)
 
 /obj/item/soulstone/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.visible_message(span_suicide("[user] is capturing [user.p_their()] own soul with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return capture_soul(user, null, TRUE) ? MANUAL_SUICIDE : BRUTELOSS
@@ -211,6 +247,8 @@
 ///////////////////Options for using captured souls///////////////////////////////////////
 
 /obj/item/soulstone/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!in_range(src, user))
 		return
 	if(!role_check(user))
@@ -223,6 +261,8 @@
 	release_shades(user)
 
 /obj/item/soulstone/proc/release_shades(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/basic/shade/captured_shade in src)
 		captured_shade.forceMove(get_turf(user))
 		captured_shade.cancel_camera()
@@ -242,6 +282,8 @@
 		on_release_spirits()
 
 /obj/item/soulstone/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/shade/occupant = locate() in src
 	var/obj/item/storage/toolbox/mechanical/target_toolbox = interacting_with
 	if(isnull(occupant) || !istype(target_toolbox) || target_toolbox.has_soul)
@@ -285,11 +327,15 @@
 		A <b>Juggernaut</b>, which is very hard to kill and can produce temporary walls, but is slow.")
 
 /obj/structure/constructshell/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_CULTIST(user) || HAS_MIND_TRAIT(user, TRAIT_MAGICALLY_GIFTED) || user.stat == DEAD)
 		. += extra_desc
 
 /obj/structure/constructshell/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/soulstone))
 		return NONE
 
@@ -311,6 +357,8 @@
 /// Transfer the mind of a carbon mob (which is then dusted) into a shade mob inside src.
 /// If forced, sacrificial and stat checks are skipped.
 /obj/item/soulstone/proc/capture_soul(mob/living/carbon/victim, mob/user, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(victim)) //TODO: Add sacrifice stoning for non-organics, just because you have no body doesn't mean you don't have a soul
 		return FALSE
 	if(contents.len)
@@ -351,6 +399,8 @@
 
 ///captures a shade that was previously released from a soulstone.
 /obj/item/soulstone/proc/capture_shade(mob/living/basic/shade/shade, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isliving(user) && !role_check(user))
 		user.Unconscious(10 SECONDS)
 		to_chat(user, span_userdanger("Your body is wracked with debilitating pain!"))
@@ -378,6 +428,8 @@
 
 ///transfer the mind of the shade to a construct mob selected by the user, then deletes both the shade and src.
 /obj/item/soulstone/proc/transfer_to_construct(obj/structure/constructshell/shell, mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/shade/shade = locate() in src
 	if(!shade)
 		to_chat(user, "[span_userdanger("Creation failed!")]: [src] is empty! Go kill someone!")
@@ -392,6 +444,8 @@
 	return TRUE
 
 /obj/item/soulstone/proc/check_menu(mob/user, obj/structure/constructshell/shell)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated || !user.is_holding(src) || !shell.IsReachableBy(user, reach))
@@ -407,6 +461,8 @@
  * shade_controller - the mob (usually, a ghost) that will take over control of the victim / new shade. Optional, if not passed the victim itself will take control.
  */
 /obj/item/soulstone/proc/init_shade(mob/living/carbon/human/victim, mob/user, message_user = FALSE, mob/shade_controller)
+	procstart = null
+	src.procstart = null
 	if(!shade_controller)
 		shade_controller = victim
 	victim.stop_sound_channel(CHANNEL_HEARTBEAT)
@@ -446,6 +502,8 @@
  * Assigns the bearer as the new master of a shade.
  */
 /obj/item/soulstone/proc/assign_master(mob/shade, mob/user)
+	procstart = null
+	src.procstart = null
 	if (!shade || !user || !shade.mind)
 		return
 
@@ -466,6 +524,8 @@
 
 /// Called when a ghost is chosen to become a shade.
 /obj/item/soulstone/proc/on_poll_concluded(mob/living/master, mob/living/victim, mob/dead/observer/ghost)
+	procstart = null
+	src.procstart = null
 	if(isnull(victim) || master.incapacitated || !master.is_holding(src) || !victim.IsReachableBy(master, reach))
 		return FALSE
 	if(isnull(ghost?.client))
@@ -480,6 +540,8 @@
 	return TRUE
 
 /proc/make_new_construct_from_class(construct_class, theme, mob/target, mob/creator, cultoverride, loc_override)
+	procstart = null
+	src.procstart = null
 	switch(construct_class)
 		if(CONSTRUCT_JUGGERNAUT)
 			if(IS_CULTIST(creator))
@@ -524,6 +586,8 @@
 				make_new_construct(/mob/living/basic/construct/harvester, target, creator, cultoverride, loc_override)
 
 /proc/make_new_construct(mob/living/basic/construct/ctype, mob/target, mob/stoner = null, cultoverride = FALSE, loc_override = null, ghost_activated = FALSE)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target))
 		return
 	var/mob/living/basic/construct/newstruct = new ctype(loc_override || get_turf(target))
@@ -597,9 +661,13 @@
 	icon_state = "ectoplasm"
 
 /obj/item/ectoplasm/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/hauntium = 25)
 
 /obj/item/ectoplasm/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is inhaling [src]! It looks like [user.p_theyre()] trying to visit the astral plane!"))
 	return OXYLOSS
 
@@ -635,6 +703,8 @@
 	theme = THEME_HOLY
 
 /obj/item/soulstone/anybody/chaplain/sparring/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[GLOB.deity]'s punishment"
 	base_name = name

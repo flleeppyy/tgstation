@@ -10,6 +10,8 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 /// Inits the global list of loadout category singletons
 /// Also inits loadout item singletons
 /proc/init_loadout_categories()
+	procstart = null
+	src.procstart = null
 	var/list/loadout_categories = list()
 	for(var/category_type in subtypesof(/datum/loadout_category))
 		loadout_categories += new category_type()
@@ -18,6 +20,8 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 	return loadout_categories
 
 /proc/cmp_loadout_categories(datum/loadout_category/A, datum/loadout_category/B)
+	procstart = null
+	src.procstart = null
 	var/a_order = A::tab_order
 	var/b_order = B::tab_order
 	if(a_order == b_order)
@@ -62,6 +66,8 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 	var/list/job_greyscale_palettes
 
 /datum/loadout_item/New(category)
+	procstart = null
+	src.procstart = null
 	src.category = category
 
 	if(!(loadout_flags & LOADOUT_FLAG_BLOCK_GREYSCALING) && is_greyscale_item())
@@ -85,6 +91,8 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 		ui_icon_state = item_path::icon_state_preview || item_path::icon_state
 
 /datum/loadout_item/Destroy(force, ...)
+	procstart = null
+	src.procstart = null
 	if(!force)
 		stack_trace("QDEL called on loadout item [type]. This shouldn't ever happen. (Use FORCE if necessary.)")
 		return QDEL_HINT_LETMELIVE
@@ -94,6 +102,8 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 
 /// Checks if the item is capable of being recolored / is a GAGS item.
 /datum/loadout_item/proc/is_greyscale_item()
+	procstart = null
+	src.procstart = null
 	if(!(item_path::flags_1 & IS_PLAYER_COLORABLE_1))
 		return FALSE
 	if(!item_path::greyscale_config || !item_path::greyscale_colors)
@@ -108,6 +118,8 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
  * Return TRUE to force an update to the UI / character preview
  */
 /datum/loadout_item/proc/handle_loadout_action(datum/preference_middleware/loadout/manager, mob/user, action, params)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	switch(action)
@@ -127,6 +139,8 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 
 /// Opens up the GAGS editing menu.
 /datum/loadout_item/proc/set_item_color(datum/preference_middleware/loadout/manager, mob/user)
+	procstart = null
+	src.procstart = null
 	if(manager.menu)
 		return FALSE
 
@@ -157,6 +171,8 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 
 /// Callback for GAGS menu to set this item's color.
 /datum/loadout_item/proc/set_slot_greyscale(datum/preference_middleware/loadout/manager, datum/greyscale_modify_menu/open_menu)
+	procstart = null
+	src.procstart = null
 	if(!istype(open_menu))
 		CRASH("set_slot_greyscale called without a greyscale menu!")
 
@@ -174,6 +190,8 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 
 /// Sets the name of the item.
 /datum/loadout_item/proc/set_name(datum/preference_middleware/loadout/manager, mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/loadout = manager.preferences.read_preference(/datum/preference/loadout)
 	var/input_name = tgui_input_text(
 		user = user,
@@ -199,6 +217,8 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 
 /// Used for reskinning an item to an alt skin.
 /datum/loadout_item/proc/set_skin(datum/preference_middleware/loadout/manager, mob/user, params)
+	procstart = null
+	src.procstart = null
 	var/reskin_to = params["skin"] // sanity checking isn't necessary because it's all checked when equipped anyways
 	var/list/loadout = manager.preferences.read_preference(/datum/preference/loadout)
 	if(!loadout?[item_path])
@@ -210,6 +230,8 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 
 /// When passed an outfit, attempts to select a job-appropriate color from job_greyscale_palettes
 /datum/loadout_item/proc/get_job_color(datum/outfit/base_outfit)
+	procstart = null
+	src.procstart = null
 	if(!istype(base_outfit, /datum/outfit/job))
 		return job_greyscale_palettes[/datum/job] // default color
 
@@ -239,6 +261,8 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
  * * visual - If TRUE, then our outfit is only for visual use (for example, a preview).
  */
 /datum/loadout_item/proc/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!visuals_only)
 		LAZYADD(outfit.backpack_contents, item_path)
 
@@ -257,6 +281,8 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
  * Return a bitflag of slot flags to update
  */
 /datum/loadout_item/proc/on_equip_item(obj/item/equipped_item, list/item_details, mob/living/carbon/human/equipper, datum/outfit/outfit, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(isnull(equipped_item))
 		return NONE
 
@@ -298,7 +324,9 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 /**
  * Returns a formatted list of data for this loadout item.
  */
-/datum/loadout_item/proc/to_ui_data() as /list
+/datum/loadout_item/proc/to_ui_data()  as /list
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	var/list/formatted_item = list()
@@ -324,12 +352,16 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
  * Checks if this item is disabled and cannot be selected or granted
  */
 /datum/loadout_item/proc/is_disabled()
+	procstart = null
+	src.procstart = null
 	return required_holiday && !check_holidays(required_holiday)
 
 /**
  * Checks if this item is disabled or unequippable for the given item details.
  */
 /datum/loadout_item/proc/is_equippable(mob/living/carbon/human/equipper, list/item_details)
+	procstart = null
+	src.procstart = null
 	return !is_disabled()
 
 /**
@@ -337,6 +369,8 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
  * Icon -> tooltip displayed when its hovered over
  */
 /datum/loadout_item/proc/get_item_information() as /list
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	// Mothblocks is hellbent on recolorable and reskinnable being only tooltips for items for visual clarity, so ask her before changing these
@@ -366,6 +400,8 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
  * - inactive_text: Optional, if provided, the button appears to be a checkbox and this text is shown when not 'active'
  */
 /datum/loadout_item/proc/get_ui_buttons() as /list
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	var/list/button_list = list()
@@ -391,7 +427,9 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 /**
  * Returns a list of options this item can be reskinned into.
  */
-/datum/loadout_item/proc/get_reskin_options() as /list
+/datum/loadout_item/proc/get_reskin_options()  as /list
+	procstart = null
+	src.procstart = null
 	if(!reskin_datum)
 		return null
 
@@ -416,6 +454,8 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 
 /// Default job gags colors for one color gags items
 /datum/loadout_item/proc/default_one_color_job_palette()
+	procstart = null
+	src.procstart = null
 	return list(
 		/datum/job/assistant = COLOR_JOB_ASSISTANT,
 		/datum/job/bitrunner = COLOR_JOB_DEFAULT,

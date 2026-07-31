@@ -48,6 +48,8 @@ GLOBAL_DATUM(cargo_sloth, /mob/living/basic/sloth)
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 
 /mob/living/basic/sloth/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/pet_bonus, "ssmile")
 	AddElement(/datum/element/footstep, footstep_type = FOOTSTEP_MOB_CLAW)
@@ -63,6 +65,8 @@ GLOBAL_DATUM(cargo_sloth, /mob/living/basic/sloth)
 	GLOB.gorilla_start += get_turf(src)
 
 /mob/living/basic/sloth/Destroy()
+	procstart = null
+	src.procstart = null
 	if(GLOB.cargo_sloth == src)
 		GLOB.cargo_sloth = null
 

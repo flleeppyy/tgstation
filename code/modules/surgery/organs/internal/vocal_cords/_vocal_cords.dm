@@ -9,13 +9,19 @@
 	visual = FALSE
 	var/list/spans = null
 
-/obj/item/organ/vocal_cords/proc/can_speak_with() //if there is any limitation to speaking with these cords
+/obj/item/organ/vocal_cords/proc/can_speak_with()
+	procstart = null
+	src.procstart = null //if there is any limitation to speaking with these cords
 	return TRUE
 
-/obj/item/organ/vocal_cords/proc/speak_with(message) //do what the organ does
+/obj/item/organ/vocal_cords/proc/speak_with(message)
+	procstart = null
+	src.procstart = null //do what the organ does
 	return
 
-/obj/item/organ/vocal_cords/proc/handle_speech(message) //actually say the message
+/obj/item/organ/vocal_cords/proc/handle_speech(message)
+	procstart = null
+	src.procstart = null //actually say the message
 	owner.say(message, spans = spans, sanitize = FALSE)
 
 /obj/item/organ/adamantine_resonator
@@ -32,6 +38,8 @@
 	icon_state = "adamantine_cords"
 
 /datum/action/item_action/organ_action/use/adamantine_vocal_cords/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	var/message = tgui_input_text(owner, "Resonate a message to all nearby golems", "Resonate", max_length = MAX_MESSAGE_LEN)
 	if(!message)
 		return FALSE
@@ -41,6 +49,8 @@
 	return TRUE
 
 /obj/item/organ/vocal_cords/adamantine/handle_speech(message)
+	procstart = null
+	src.procstart = null
 	var/msg = span_resonate("[span_name("[owner.real_name]")] resonates, \"[message]\"")
 	for(var/player in GLOB.player_list)
 		if(iscarbon(player))

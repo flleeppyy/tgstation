@@ -83,6 +83,8 @@
 	))
 
 /datum/action/cooldown/grand_ritual/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -94,6 +96,8 @@
 	return TRUE
 
 /datum/action/cooldown/grand_ritual/Activate(trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	validate_area()
 	if (istype(get_area(owner), target_area))
@@ -102,6 +106,8 @@
 		pinpoint_area()
 
 /datum/action/cooldown/grand_ritual/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!owner)
 		return
@@ -110,11 +116,15 @@
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(update_status_on_signal))
 
 /datum/action/cooldown/grand_ritual/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(remove_from, COMSIG_MOVABLE_MOVED)
 
 /// If the target area doesn't exist or has been invalidated somehow, pick another one
 /datum/action/cooldown/grand_ritual/proc/validate_area()
+	procstart = null
+	src.procstart = null
 	if (!target_area || !length(get_area_turfs(target_area)))
 		set_new_area()
 		return FALSE
@@ -122,6 +132,8 @@
 
 /// Finds a random station area to place our rune in
 /datum/action/cooldown/grand_ritual/proc/set_new_area()
+	procstart = null
+	src.procstart = null
 	var/list/possible_areas = GLOB.the_station_areas.Copy()
 	for (var/area/possible_area as anything in possible_areas)
 		if (initial(possible_area.outdoors) \
@@ -135,6 +147,8 @@
 
 /// Checks if you're actually able to draw a rune here
 /datum/action/cooldown/grand_ritual/proc/start_drawing_rune()
+	procstart = null
+	src.procstart = null
 	var/atom/existing_rune = rune?.resolve()
 	if (existing_rune)
 		owner.balloon_alert(owner, "rune already exists!")
@@ -159,6 +173,8 @@
 
 /// Draws the ritual rune
 /datum/action/cooldown/grand_ritual/proc/draw_rune(turf/target_turf)
+	procstart = null
+	src.procstart = null
 	drawing_rune = TRUE
 	var/next_rune_typepath = get_appropriate_rune_typepath()
 	target_turf.balloon_alert(owner, "conjuring rune...")
@@ -203,6 +219,8 @@
 
 /// The seventh rune we spawn is special
 /datum/action/cooldown/grand_ritual/proc/get_appropriate_rune_typepath()
+	procstart = null
+	src.procstart = null
 	if (times_completed < GRAND_RITUAL_FINALE_COUNT - 1)
 		return /obj/effect/grand_rune
 	if (drew_finale)
@@ -213,6 +231,8 @@
 
 /// Called when you finish invoking a rune you drew, get ready for another one.
 /datum/action/cooldown/grand_ritual/proc/on_rune_complete(atom/source, cheese_sacrificed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(source, COMSIG_GRAND_RUNE_COMPLETE)
 	total_cheese_sacrificed += cheese_sacrificed
@@ -243,6 +263,8 @@
 
 /// Pinpoints the ritual area
 /datum/action/cooldown/grand_ritual/proc/pinpoint_area()
+	procstart = null
+	src.procstart = null
 	var/area/area_turf = pick(get_area_turfs(target_area)) // Close enough probably
 	var/area/our_turf = get_turf(owner)
 	owner.balloon_alert(owner, get_pinpoint_text(area_turf, our_turf))
@@ -253,6 +275,8 @@
  * But simplified because we shouldn't be able to target locations on lavaland or the gateway anyway.
  */
 /datum/action/cooldown/grand_ritual/proc/get_pinpoint_text(area/area_turf, area/our_turf)
+	procstart = null
+	src.procstart = null
 	var/area_z = area_turf?.z
 	var/our_z = our_turf?.z
 	var/balloon_message = "something went wrong!"
@@ -303,6 +327,8 @@
 	duration = 0 SECONDS
 
 /obj/effect/temp_visual/wizard_rune/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/image/silicon_image = image(icon = 'icons/effects/eldritch.dmi', icon_state = null, loc = src)
 	silicon_image.override = TRUE

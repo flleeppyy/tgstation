@@ -81,6 +81,8 @@
 	)
 
 /obj/effect/spawner/random/decoration/statue/make_item(spawn_loc, type_path_to_make)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/statue/statue = ..()
 	if(istype(statue))
 		statue.set_anchored(TRUE)
@@ -128,6 +130,8 @@
 	)
 
 /obj/effect/spawner/random/decoration/glowstick/on/make_item(spawn_loc, type_path_to_make)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/obj/item/flashlight/glowstick = .

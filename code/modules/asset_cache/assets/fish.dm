@@ -2,6 +2,8 @@
 	name = "fish"
 
 /datum/asset/spritesheet_batched/fish/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	var/list/id_list = list()
 	for (var/obj/item/fish/fish_type as anything in subtypesof(/obj/item/fish))
 		var/fish_icon = initial(fish_type.icon)

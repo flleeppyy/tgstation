@@ -17,43 +17,59 @@
 	var/obj/item/paper/paperslip/contained_slip
 
 /obj/item/folder/biscuit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ispath(contained_slip, /obj/item/paper/paperslip))
 		contained_slip = new contained_slip(src)
 
 /obj/item/folder/biscuit/Destroy()
+	procstart = null
+	src.procstart = null
 	if(isdatum(contained_slip))
 		QDEL_NULL(contained_slip)
 	return ..()
 
 /obj/item/folder/biscuit/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(contained_slip == gone)
 		contained_slip = null
 
 /obj/item/folder/biscuit/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(contained_slip) && istype(arrived, /obj/item/paper/paperslip))
 		contained_slip = arrived
 
 /obj/item/folder/biscuit/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] tries to eat [src]! [user.p_theyre()] trying to commit suicide!"))
 	playsound(get_turf(user), 'sound/effects/wounds/crackandbleed.ogg', 40, TRUE) //Don't eat plastic cards kids, they get really sharp if you chew on them.
 	return BRUTELOSS
 
 /obj/item/folder/biscuit/get_paper_overlay()
+	procstart = null
+	src.procstart = null
 	if(!cracked)
 		return null
 	return ..()
 
 ///Checks if the biscuit has been already cracked.
 /obj/item/folder/biscuit/proc/crack_check(mob/user)
+	procstart = null
+	src.procstart = null
 	if (cracked)
 		return TRUE
 	balloon_alert(user, "open first!")
 	return FALSE
 
 /obj/item/folder/biscuit/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cracked)
 		. += span_notice("It's been cracked open.")
@@ -63,6 +79,8 @@
 			. += "This one contains [contained_slip.name]."
 
 /obj/item/folder/biscuit/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((held_item == src) && !cracked)
 		context[SCREENTIP_CONTEXT_LMB] = "Crack open"
@@ -70,28 +88,38 @@
 
 //The next few checks are done to prevent you from reaching the contents or putting anything inside when it's not cracked open
 /obj/item/folder/biscuit/remove_item(obj/item/item, mob/user)
+	procstart = null
+	src.procstart = null
 	if (!crack_check(user))
 		return
 
 	return ..()
 
 /obj/item/folder/biscuit/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (LAZYACCESS(modifiers, RIGHT_CLICK) && !crack_check(user))
 		return
 
 	return ..()
 
 /obj/item/folder/biscuit/insertables_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!crack_check(user))
 		return ITEM_INTERACT_BLOCKING
 	return ..()
 
 /obj/item/folder/biscuit/interact_with_insertables(atom/interacting_with, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!crack_check(user))
 		return ITEM_INTERACT_BLOCKING
 	return ..()
 
 /obj/item/folder/biscuit/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if (!cracked)
 		if (tgui_alert(user, "Do you want to crack it open?", "Biscuit Cracking", list("Yes", "No")) != "Yes")
@@ -134,11 +162,15 @@
 	var/sealed_icon = "paperbiscuit"
 
 /obj/item/folder/biscuit/unsealed/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!has_been_sealed)
 		. += span_notice("This one could be sealed <b>in hand</b>. Once sealed, the contents are inaccessible until cracked open again - but once opened this is irreversible.")
 
 /obj/item/folder/biscuit/unsealed/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((held_item == src) && !has_been_sealed)
 		context[SCREENTIP_CONTEXT_LMB] = "Seal"
@@ -146,6 +178,8 @@
 
 //Asks if you want to seal the biscuit, after you do that it behaves like a normal paper biscuit.
 /obj/item/folder/biscuit/unsealed/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(!cracked)
 		return ..()

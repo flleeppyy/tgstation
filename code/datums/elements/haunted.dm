@@ -2,6 +2,8 @@
 /datum/element/haunted
 
 /datum/element/haunted/Attach(datum/target, haunt_color = "#f8f8ff")
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -17,6 +19,8 @@
 	ADD_TRAIT(master, TRAIT_MOVE_FLYING, ELEMENT_TRAIT(type))
 
 /datum/element/haunted/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/movable/master = source
 	master.remove_filter("haunt_glow")
@@ -24,12 +28,16 @@
 	REMOVE_TRAIT(master, TRAIT_MOVE_FLYING, ELEMENT_TRAIT(type))
 	master.RemoveElement(/datum/element/movetype_handler)
 
-/obj/item/proc/make_haunted(source, color) //if not haunted, make haunted
+/obj/item/proc/make_haunted(source, color)
+	procstart = null
+	src.procstart = null //if not haunted, make haunted
 	if(!HAS_TRAIT(src, TRAIT_HAUNTED))
 		AddElement(/datum/element/haunted, color)
 	ADD_TRAIT(src, TRAIT_HAUNTED, source)
 
-/obj/item/proc/remove_haunted(source) //if haunted, make not haunted
+/obj/item/proc/remove_haunted(source)
+	procstart = null
+	src.procstart = null //if haunted, make not haunted
 	REMOVE_TRAIT(src, TRAIT_HAUNTED, source)
 	if(!HAS_TRAIT(src, TRAIT_HAUNTED))
 		RemoveElement(/datum/element/haunted)

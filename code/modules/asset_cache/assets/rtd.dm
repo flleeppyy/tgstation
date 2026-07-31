@@ -2,6 +2,8 @@
 	name = "rtd"
 
 /datum/asset/spritesheet_batched/rtd/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	var/list/registered = list()
 
 	for(var/main_root in GLOB.floor_designs)

@@ -31,10 +31,14 @@
 	var/obj/structure/cable/attached
 
 /obj/item/powersink/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "powersink[mode == OPERATING]"
 	return ..()
 
 /obj/item/powersink/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mode)
 		. += "\The [src] is bolted to the floor."
@@ -42,10 +46,14 @@
 		. += span_danger("[src] is warping the air above it. It must be very hot.")
 
 /obj/item/powersink/set_anchored(anchorvalue)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_density(anchorvalue)
 
 /obj/item/powersink/proc/set_mode(value)
+	procstart = null
+	src.procstart = null
 	if(value == mode)
 		return
 	switch(value)
@@ -75,6 +83,8 @@
 	set_light(0)
 
 /obj/item/powersink/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	if(mode == DISCONNECTED)
 		var/turf/T = loc
@@ -98,18 +108,26 @@
 			span_hear("You hear some wires being disconnected from something."))
 
 /obj/item/powersink/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	user.visible_message( \
 		"[user] messes with \the [src] for a bit.", \
 		span_notice("You can't fit the screwdriver into \the [src]'s bolts! Try using a wrench."))
 	return TRUE
 
 /obj/item/powersink/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/powersink/attack_ai()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/powersink/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -141,6 +159,8 @@
 
 /// Removes internal heat and shares it with the atmosphere.
 /obj/item/powersink/proc/release_heat()
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	var/temp_to_give = internal_heat / FRACTION_TO_RELEASE
 	internal_heat -= temp_to_give
@@ -158,6 +178,8 @@
 
 /// Drains power from the connected powernet, if any.
 /obj/item/powersink/proc/drain_power()
+	procstart = null
+	src.procstart = null
 	var/datum/powernet/powernet = attached.powernet
 	var/drained = 0
 	set_light(5)
@@ -175,6 +197,8 @@
 	internal_heat += drained
 
 /obj/item/powersink/process()
+	procstart = null
+	src.procstart = null
 	if(!attached)
 		set_mode(DISCONNECTED)
 

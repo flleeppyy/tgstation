@@ -15,11 +15,15 @@
 	attack_verb_simple = list("stamp")
 
 /obj/item/stamp/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] stamps 'VOID' on [user.p_their()] forehead, then promptly falls over, dead."))
 	playsound(src, 'sound/items/handling/standard_stamp.ogg', 50, vary = TRUE)
 	return OXYLOSS
 
 /obj/item/stamp/get_writing_implement_details()
+	procstart = null
+	src.procstart = null
 	var/datum/asset/spritesheet_batched/sheet = get_asset_datum(/datum/asset/spritesheet/simple/stamps)
 	return list(
 		interaction_mode = MODE_STAMPING,
@@ -37,6 +41,8 @@
 	abstract_type = /obj/item/stamp/head
 
 /obj/item/stamp/head/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// All maps should have at least 1 of each head of staff stamp
 	REGISTER_REQUIRED_MAP_ITEM(1, INFINITY)
@@ -96,6 +102,8 @@
 	dye_color = DYE_CLOWN
 
 /obj/item/stamp/clown/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CLOWN, CELL_VIRUS_TABLE_GENERIC, rand(2,3), 0)
@@ -121,4 +129,6 @@
 	dye_color = DYE_SYNDICATE
 
 /obj/item/stamp/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)

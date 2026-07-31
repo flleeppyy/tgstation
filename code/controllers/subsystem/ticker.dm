@@ -72,6 +72,8 @@ SUBSYSTEM_DEF(ticker)
 	var/reboot_timer = null
 
 /datum/controller/subsystem/ticker/Initialize()
+	procstart = null
+	src.procstart = null
 	var/list/provisional_title_music = flist("[global.config.directory]/title_music/sounds/")
 	var/list/music = list()
 	var/use_rare_music = prob(1)
@@ -116,6 +118,8 @@ SUBSYSTEM_DEF(ticker)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/ticker/fire()
+	procstart = null
+	src.procstart = null
 	switch(current_state)
 		if(GAME_STATE_STARTUP)
 			if(Master.initializations_finished_with_no_players_logged_in)
@@ -188,12 +192,16 @@ SUBSYSTEM_DEF(ticker)
 					reboot_hud.maptext = MAPTEXT_PIXELLARI("<center>Server rebooting in:\n\ [DisplayTimeText(timeleft(SSticker.reboot_timer), 1)]</center>")
 
 /datum/controller/subsystem/ticker/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	if(var_name == NAMEOF(src, login_music))
 		set_lobby_music(var_value, override = TRUE)
 	return ..()
 
 /// Checks if the round should be ending, called every ticker tick
 /datum/controller/subsystem/ticker/proc/check_finished()
+	procstart = null
+	src.procstart = null
 	if(!setup_done)
 		return FALSE
 	if(SSshuttle.emergency && (SSshuttle.emergency.mode == SHUTTLE_ENDGAME))
@@ -206,12 +214,16 @@ SUBSYSTEM_DEF(ticker)
 
 /// Gets a list of players with their readied state so we can post it as a log
 /datum/controller/subsystem/ticker/proc/get_player_ready_states()
+	procstart = null
+	src.procstart = null
 	var/list/player_states = list()
 	for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
 		player_states[player.ckey] = player.ready
 	return player_states
 
 /datum/controller/subsystem/ticker/proc/setup()
+	procstart = null
+	src.procstart = null
 	to_chat(world, span_boldannounce("Starting game..."))
 	var/init_start = world.timeofday
 
@@ -286,6 +298,8 @@ SUBSYSTEM_DEF(ticker)
 	return TRUE
 
 /datum/controller/subsystem/ticker/proc/PostSetup()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	// Spawn traitors and stuff
@@ -354,6 +368,8 @@ SUBSYSTEM_DEF(ticker)
 			to_chat(iter_human, span_notice("You will gain [round(iter_human.hardcore_survival_score)] hardcore random points if you survive this round!"))
 
 /datum/controller/subsystem/ticker/proc/display_roundstart_logout_report()
+	procstart = null
+	src.procstart = null
 	var/list/msg = list("[span_boldnotice("Roundstart logout report")]\n\n")
 
 	for(var/i in GLOB.mob_living_list)
@@ -406,6 +422,8 @@ SUBSYSTEM_DEF(ticker)
 	to_chat(GLOB.admins, concatenated_message)
 
 /datum/controller/subsystem/ticker/proc/reopen_roundstart_suicide_roles()
+	procstart = null
+	src.procstart = null
 	var/include_command = CONFIG_GET(flag/reopen_roundstart_suicide_roles_command_positions)
 	var/list/reopened_jobs = list()
 
@@ -444,6 +462,8 @@ SUBSYSTEM_DEF(ticker)
 
 //These callbacks will fire after roundstart key transfer
 /datum/controller/subsystem/ticker/proc/OnRoundstart(datum/callback/cb)
+	procstart = null
+	src.procstart = null
 	if(!HasRoundStarted())
 		LAZYADD(round_start_events, cb)
 	else
@@ -451,12 +471,16 @@ SUBSYSTEM_DEF(ticker)
 
 //These callbacks will fire before roundend report
 /datum/controller/subsystem/ticker/proc/OnRoundend(datum/callback/cb)
+	procstart = null
+	src.procstart = null
 	if(current_state >= GAME_STATE_FINISHED)
 		cb.InvokeAsync()
 	else
 		LAZYADD(round_end_events, cb)
 
 /datum/controller/subsystem/ticker/proc/create_characters()
+	procstart = null
+	src.procstart = null
 	for(var/i in GLOB.new_player_list)
 		var/mob/dead/new_player/player = i
 		if(player.ready == PLAYER_READY_TO_PLAY && player.mind)
@@ -468,6 +492,8 @@ SUBSYSTEM_DEF(ticker)
 		CHECK_TICK
 
 /datum/controller/subsystem/ticker/proc/collect_minds()
+	procstart = null
+	src.procstart = null
 	for(var/i in GLOB.new_player_list)
 		var/mob/dead/new_player/P = i
 		if(P.new_character && P.new_character.mind)
@@ -476,6 +502,8 @@ SUBSYSTEM_DEF(ticker)
 
 
 /datum/controller/subsystem/ticker/proc/equip_characters()
+	procstart = null
+	src.procstart = null
 	GLOB.security_officer_distribution = decide_security_officer_departments(
 		shuffle(GLOB.new_player_list),
 		shuffle(GLOB.available_depts),
@@ -577,6 +605,8 @@ SUBSYSTEM_DEF(ticker)
 	return output
 
 /datum/controller/subsystem/ticker/proc/transfer_characters()
+	procstart = null
+	src.procstart = null
 	var/list/livings = list()
 	for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
 		var/mob/living = player.transfer_character()
@@ -592,10 +622,14 @@ SUBSYSTEM_DEF(ticker)
 		addtimer(CALLBACK(src, PROC_REF(release_characters), livings), 3 SECONDS, TIMER_CLIENT_TIME)
 
 /datum/controller/subsystem/ticker/proc/release_characters(list/livings)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/living_mob as anything in livings)
 		REMOVE_TRAIT(living_mob, TRAIT_NO_TRANSFORM, SS_TICKER_TRAIT)
 
 /datum/controller/subsystem/ticker/proc/check_queue()
+	procstart = null
+	src.procstart = null
 	if(!queued_players.len)
 		return
 	var/hard_popcap = CONFIG_GET(number/hard_popcap)
@@ -630,17 +664,25 @@ SUBSYSTEM_DEF(ticker)
 
 ///Whether the game has started, including roundend.
 /datum/controller/subsystem/ticker/proc/HasRoundStarted()
+	procstart = null
+	src.procstart = null
 	return current_state >= GAME_STATE_PLAYING
 
 ///Whether the game is currently in progress, excluding roundend
 /datum/controller/subsystem/ticker/proc/IsRoundInProgress()
+	procstart = null
+	src.procstart = null
 	return current_state == GAME_STATE_PLAYING
 
 ///Whether the game is currently in progress, excluding roundend
 /datum/controller/subsystem/ticker/proc/IsPostgame()
+	procstart = null
+	src.procstart = null
 	return current_state == GAME_STATE_FINISHED
 
 /datum/controller/subsystem/ticker/Recover()
+	procstart = null
+	src.procstart = null
 	current_state = SSticker.current_state
 	force_ending = SSticker.force_ending
 
@@ -677,6 +719,8 @@ SUBSYSTEM_DEF(ticker)
 				Master.SetRunLevel(RUNLEVEL_POSTGAME)
 
 /datum/controller/subsystem/ticker/proc/send_news_report()
+	procstart = null
+	src.procstart = null
 	var/news_message
 	var/news_source = "Nanotrasen News Network"
 	var/decoded_station_name = html_decode(station_name()) //decode station_name to avoid minor_announce double encode
@@ -776,17 +820,23 @@ SUBSYSTEM_DEF(ticker)
 		send2otherserver(news_source, news_message, "News_Report")
 
 /datum/controller/subsystem/ticker/proc/GetTimeLeft()
+	procstart = null
+	src.procstart = null
 	if(isnull(SSticker.timeLeft))
 		return max(0, start_at - world.time)
 	return timeLeft
 
 /datum/controller/subsystem/ticker/proc/SetTimeLeft(newtime)
+	procstart = null
+	src.procstart = null
 	if(newtime >= 0 && isnull(timeLeft)) //remember, negative means delayed
 		start_at = world.time + newtime
 	else
 		timeLeft = newtime
 
 /datum/controller/subsystem/ticker/proc/SetRoundEndSound(the_sound)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	round_end_sound_sent = FALSE
 	round_end_sound = fcopy_rsc(the_sound)
@@ -798,6 +848,8 @@ SUBSYSTEM_DEF(ticker)
 	round_end_sound_sent = TRUE
 
 /datum/controller/subsystem/ticker/proc/Reboot(reason, end_string, delay)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(usr && !check_rights(R_SERVER, TRUE))
 		return
@@ -827,6 +879,8 @@ SUBSYSTEM_DEF(ticker)
 
 
 /datum/controller/subsystem/ticker/proc/reboot_callback(reason, end_string)
+	procstart = null
+	src.procstart = null
 	if(end_string)
 		end_state = end_string
 
@@ -841,6 +895,8 @@ SUBSYSTEM_DEF(ticker)
  * * user - the user that cancelled the reboot, may be null
  */
 /datum/controller/subsystem/ticker/proc/cancel_reboot(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!reboot_timer)
 		to_chat(user, span_warning("There is no pending reboot!"))
 		return FALSE
@@ -850,6 +906,8 @@ SUBSYSTEM_DEF(ticker)
 	return TRUE
 
 /datum/controller/subsystem/ticker/Shutdown()
+	procstart = null
+	src.procstart = null
 	gather_newscaster() //called here so we ensure the log is created even upon admin reboot
 	if(!round_end_sound)
 		round_end_sound = choose_round_end_song()
@@ -861,6 +919,8 @@ SUBSYSTEM_DEF(ticker)
 	text2file(login_music, "data/last_round_lobby_music.txt")
 
 /datum/controller/subsystem/ticker/proc/choose_round_end_song()
+	procstart = null
+	src.procstart = null
 	var/list/reboot_sounds = flist("[global.config.directory]/reboot_themes/")
 	var/list/possible_themes = list()
 
@@ -872,6 +932,8 @@ SUBSYSTEM_DEF(ticker)
 /// Updates the lobby music
 /// Does not update if override is FALSE and login_music is already set
 /datum/controller/subsystem/ticker/proc/set_lobby_music(new_music, override = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!override && login_music)
 		return
 

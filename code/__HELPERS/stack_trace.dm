@@ -1,6 +1,8 @@
 /// gives us the stack trace from CRASH() without ending the current proc.
 /// Do not call directly, use the [stack_trace] macro instead.
 /proc/_stack_trace(message, file, line)
+	procstart = null
+	src.procstart = null
 	CRASH("[message][WORKAROUND_IDENTIFIER][json_encode(list(file, line))][WORKAROUND_IDENTIFIER]")
 
 #define STACK_DEPTH_SEARCH_LIMIT 2000
@@ -8,6 +10,8 @@
 ///
 /// introspection like this is mostly useful for debugging, if you have another use I suspect you are just creating god's strongest footgun and should rethink things
 /proc/dump_stack(max_depth = STACK_DEPTH_SEARCH_LIMIT)
+	procstart = null
+	src.procstart = null
 	var/list/proc_paths = list()
 	var/crashed = FALSE
 	var/depth = 0

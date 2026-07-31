@@ -5,6 +5,8 @@
 	var/team_color = LASERTAG_TEAM_NEUTRAL
 
 /datum/component/lasertag/Initialize(team_color)
+	procstart = null
+	src.procstart = null
 	if (!ishuman(parent))
 		return COMPONENT_INCOMPATIBLE
 	register_lasertag_signals()
@@ -12,11 +14,15 @@
 
 ///For the sake of organization, put any new signals in here.
 /datum/component/lasertag/proc/register_lasertag_signals()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_LIVING_FIRING_PIN_CHECK, PROC_REF(team_color_match))
 	RegisterSignal(parent, COMSIG_ATOM_BULLET_ACT, PROC_REF(on_laser_hit))
 
 
 /datum/component/lasertag/proc/team_color_match(datum/source, firing_pin)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/item/firing_pin/tag/pin = firing_pin
 	if (pin.tagcolor == team_color)
@@ -24,6 +30,8 @@
 	return BLOCK_FIRE
 
 /datum/component/lasertag/proc/on_laser_hit(datum/source, projectile)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(projectile, /obj/projectile/beam/lasertag))
 		return

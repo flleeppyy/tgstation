@@ -17,6 +17,8 @@
 	var/list/obj/structure/tripwire/cable/tripwires = list()
 
 /obj/structure/tripwire/post/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
@@ -24,10 +26,14 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/structure/tripwire/post/Destroy(force)
+	procstart = null
+	src.procstart = null
 	clear_wire()
 	return ..()
 
 /obj/structure/tripwire/post/proc/clear_wire()
+	procstart = null
+	src.procstart = null
 	if(opposing_post)
 		opposing_post.opposing_post = null
 		opposing_post.clear_wire()
@@ -39,20 +45,28 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/structure/tripwire/post/proc/wire_qdeleted(datum/source)
+	procstart = null
+	src.procstart = null
 	tripwires -= source
 	UnregisterSignal(source, COMSIG_QDELETING)
 	clear_wire()
 
 /obj/structure/tripwire/post/proc/connect_to_post(obj/structure/tripwire/post/connected_post, new_direction)
+	procstart = null
+	src.procstart = null
 	dir = new_direction
 	opposing_post = connected_post
 	update_appearance(UPDATE_ICON)
 
 /obj/structure/tripwire/post/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "tripwire_post[opposing_post ? "_tied" : ""]"
 
 /obj/structure/tripwire/post/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!opposing_post)
 		return NONE
 
@@ -73,6 +87,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/tripwire/post/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/tripwire_cable))
 		return NONE
 
@@ -159,6 +175,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/structure/tripwire/post/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(opposing_post)
 		balloon_alert(user, "unwire first!")
 		return ITEM_INTERACT_BLOCKING
@@ -171,16 +189,22 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/tripwire/post/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	clear_wire()
 	return ..()
 
 /obj/structure/tripwire/post/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	if(!opposing_post)
 		return TRUE
 
 	return ..()
 
 /obj/structure/tripwire/post/on_entered(datum/source, atom/movable/entered)
+	procstart = null
+	src.procstart = null
 	if(!opposing_post)
 		return
 
@@ -192,15 +216,21 @@
 	icon_state = "tripwire_1"
 
 /obj/structure/tripwire/cable/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(get_turf(src), COMSIG_ATOM_ENTERED, PROC_REF(on_entered)) // No need for connect_loc, we won't be moving.
 
 /obj/structure/tripwire/cable/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(attacking_item.sharpness)
 		MODIFY_ATTACK_FORCE_MULTIPLIER(attack_modifiers, 10)
 	return ..()
 
 /obj/structure/tripwire/cable/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	visible_message(span_notice("[user] begins cutting through \the [src]..."), \
 					span_notice("You begin cutting through \the [src]..."), \
 					span_hear("You hear snipping."))
@@ -216,11 +246,15 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/tripwire/cable/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!QDELING(src))
 		qdel(src)
 
 /obj/structure/tripwire/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(.)
@@ -256,6 +290,8 @@
 
 
 /obj/structure/tripwire/proc/on_entered(datum/source, atom/movable/entered)
+	procstart = null
+	src.procstart = null
 	if(!ismecha(entered))
 		return
 
@@ -324,12 +360,16 @@
 	var/datum/weakref/connecting_post
 
 /obj/item/tripwire_cable/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	if(!connecting_post.resolve())
 		return
 	to_chat(user, span_notice("You recoil the length of cable until it's all back together again."))
 	connecting_post = null
 
 /obj/item/tripwire_cable/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You cut off the cable's excess bulk."))
 	new /obj/item/stack/cable_coil(drop_location(), 15)
 	qdel(src)

@@ -33,6 +33,8 @@
  * * worm_length - the length of the worm we're creating. Below 2 doesn't work very well.
  */
 /mob/living/basic/heretic_summon/armsy/Initialize(mapload, spawn_bodyparts = TRUE, worm_length = 6)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/wall_smasher, ENVIRONMENT_SMASH_RWALLS)
 	AddComponent(\
@@ -54,12 +56,18 @@
 
 // We are a vessel of otherworldly destruction, we bring our gravity with us
 /mob/living/basic/heretic_summon/armsy/has_gravity(turf/gravity_turf)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /mob/living/basic/heretic_summon/armsy/can_be_pulled(user, force)
+	procstart = null
+	src.procstart = null
 	return FALSE // The component does this but not on the head. We don't want the head to be pulled either.
 
 /mob/living/basic/heretic_summon/armsy/proc/build_tail(worm_length)
+	procstart = null
+	src.procstart = null
 	worm_length = max(worm_length, MINIMUM_ARMSY_LENGTH)
 	// Sets the hp of the head to be exactly the (length * hp), so the head is de facto the hardest to destroy.
 	maxHealth = worm_length * maxHealth
@@ -74,6 +82,8 @@
 
 /// Grows a new segment behind the passed mob
 /mob/living/basic/heretic_summon/armsy/proc/new_segment(mob/living/basic/heretic_summon/armsy/behind)
+	procstart = null
+	src.procstart = null
 	var/mob/living/segment = new type(drop_location(), FALSE)
 	ADD_TRAIT(segment, TRAIT_PERMANENTLY_MORTAL, INNATE_TRAIT)
 	segment.AddComponent(/datum/component/mob_chain, front = behind, vary_icon_state = TRUE)
@@ -82,6 +92,8 @@
 
 /// Record that we got another guy on our ass
 /mob/living/basic/heretic_summon/armsy/proc/register_behind(mob/living/tail)
+	procstart = null
+	src.procstart = null
 	if(!isnull(back)) // Shouldn't happen but just in case
 		UnregisterSignal(back, COMSIG_QDELETING)
 	back = tail
@@ -91,10 +103,14 @@
 
 /// When our tail is gone stop holding a reference to it
 /mob/living/basic/heretic_summon/armsy/proc/tail_deleted()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	register_behind(null)
 
 /mob/living/basic/heretic_summon/armsy/melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	if(!istype(target, /obj/item/bodypart/arm))
 		return ..()
 	visible_message(span_warning("[src] devours [target]!"))
@@ -107,6 +123,8 @@
  * Eating arms off the ground heals us, and if we eat enough arms while above a certain health threshold we get longer!
  */
 /mob/living/basic/heretic_summon/armsy/proc/on_arm_eaten()
+	procstart = null
+	src.procstart = null
 	if(!isnull(back))
 		back.on_arm_eaten()
 		return
@@ -129,6 +147,8 @@
  * Recursively get the length of our chain.
  */
 /mob/living/basic/heretic_summon/armsy/proc/get_length()
+	procstart = null
+	src.procstart = null
 	. = 1
 	if(isnull(back))
 		return

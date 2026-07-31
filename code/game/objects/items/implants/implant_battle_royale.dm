@@ -32,11 +32,15 @@
 		to compatible entertainment monitors, and a GPS-compatible tracking beacon for the sake of allowing contestants to locate each other more easily."
 
 /obj/item/implant/explosive/battle_royale/on_death(datum/source, gibbed)
+	procstart = null
+	src.procstart = null
 	if (!battle_started)
 		return
 	return ..()
 
 /obj/item/implant/explosive/battle_royale/implant(mob/living/target, mob/user, silent, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -56,6 +60,8 @@
 		limit_areas()
 
 /obj/item/implant/explosive/battle_royale/removed(mob/target, silent, special)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, list(COMSIG_LIVING_LIFE, COMSIG_ENTER_AREA))
 	QDEL_NULL(camera)
@@ -68,15 +74,21 @@
 	target?.mind?.remove_antag_datum(/datum/antagonist/survivalist/battle_royale)
 
 /obj/item/implant/explosive/battle_royale/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	removed_explode_chance = rand(0, 100)
 	return ..()
 
 /obj/item/implant/explosive/battle_royale/explode(atom/override_explode_target = null)
+	procstart = null
+	src.procstart = null
 	has_exploded = TRUE
 	return ..()
 
 /// Give a slight tell
 /obj/item/implant/explosive/battle_royale/proc/on_life(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (prob(98))
 		return
@@ -86,6 +98,8 @@
 
 /// Start the battle royale
 /obj/item/implant/explosive/battle_royale/proc/start_battle(target_area_name, list/limited_areas)
+	procstart = null
+	src.procstart = null
 	if (isnull(imp_in))
 		explode()
 		return
@@ -105,6 +119,8 @@
 
 /// Limit the owner to the specified area
 /obj/item/implant/explosive/battle_royale/proc/limit_areas()
+	procstart = null
+	src.procstart = null
 	if (isnull(imp_in))
 		explode()
 		return
@@ -114,6 +130,8 @@
 
 /// Called when our implantee moves somewhere
 /obj/item/implant/explosive/battle_royale/proc/check_area(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!length(limited_areas))
 		return
@@ -125,6 +143,8 @@
 
 /// After a grace period they're still out of bounds, killing time
 /obj/item/implant/explosive/battle_royale/proc/check_area_deadly()
+	procstart = null
+	src.procstart = null
 	if (isnull(imp_in) || has_exploded)
 		return
 	var/area/our_area = get_area(imp_in)
@@ -135,5 +155,7 @@
 
 /// Add the antag datum to our new contestant, also printing some flavour text
 /obj/item/implant/explosive/battle_royale/proc/announce()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/survivalist/battle_royale/royale = imp_in.mind?.add_antag_datum(/datum/antagonist/survivalist/battle_royale)
 	royale?.set_target_area(target_area_name)

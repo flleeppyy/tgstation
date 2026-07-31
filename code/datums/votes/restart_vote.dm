@@ -12,6 +12,8 @@
 
 /// This proc checks to see if any admins are online for the purposes of this vote to see if it can pass. Returns TRUE if there are valid admins online (Has +SERVER and is not AFK), FALSE otherwise.
 /datum/vote/restart_vote/proc/admins_present()
+	procstart = null
+	src.procstart = null
 	for(var/client/online_admin as anything in GLOB.admins)
 		if(online_admin.is_afk() || !check_rights_for(online_admin, R_SERVER))
 			continue
@@ -21,12 +23,18 @@
 	return FALSE
 
 /datum/vote/restart_vote/toggle_votable()
+	procstart = null
+	src.procstart = null
 	CONFIG_SET(flag/allow_vote_restart, !CONFIG_GET(flag/allow_vote_restart))
 
 /datum/vote/restart_vote/is_config_enabled()
+	procstart = null
+	src.procstart = null
 	return CONFIG_GET(flag/allow_vote_restart)
 
 /datum/vote/restart_vote/create_vote(mob/vote_creator)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -35,11 +43,15 @@
 	async_alert_about_admins(vote_creator)
 
 /datum/vote/restart_vote/proc/async_alert_about_admins(mob/vote_creator)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	tgui_alert(vote_creator, "Note: Regardless of the results of this vote, \
 		the round will not automatically restart because an active admin is online.")
 
 /datum/vote/restart_vote/get_vote_result(list/non_voters)
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(flag/default_no_vote))
 		// Default no votes will add non-voters to "Continue Playing"
 		choices[CHOICE_CONTINUE] += length(non_voters)
@@ -47,6 +59,8 @@
 	return ..()
 
 /datum/vote/restart_vote/finalize_vote(winning_option)
+	procstart = null
+	src.procstart = null
 	if(winning_option == CHOICE_CONTINUE)
 		return
 

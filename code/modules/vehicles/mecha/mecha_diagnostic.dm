@@ -13,14 +13,20 @@
 	var/obj/vehicle/sealed/mecha/mech_data
 
 /obj/item/mecha_diagnostic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light_on(TRUE)
 
 /obj/item/mecha_diagnostic/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	mech_data = null
 
 /obj/item/mecha_diagnostic/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mech_data)
 		. += "This holodata sheet consists of data from a <b>[initial(mech_data.name)]</b>."

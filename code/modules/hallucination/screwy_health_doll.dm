@@ -11,11 +11,15 @@
 	var/del_timer_id
 
 /datum/hallucination/fake_health_doll/New(mob/living/hallucinator, duration = 50 SECONDS)
+	procstart = null
+	src.procstart = null
 	src.duration = duration
 	return ..()
 
 // So that the associated addition proc cleans it up correctly
 /datum/hallucination/fake_health_doll/Destroy()
+	procstart = null
+	src.procstart = null
 	if(del_timer_id)
 		deltimer(del_timer_id)
 
@@ -26,6 +30,8 @@
 	return ..()
 
 /datum/hallucination/fake_health_doll/start()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(hallucinator))
 		return FALSE
 
@@ -35,6 +41,8 @@
 
 /// Increments the severity of the damage seen on all the limbs we are already tracking.
 /datum/hallucination/fake_health_doll/proc/increment_fake_damage()
+	procstart = null
+	src.procstart = null
 
 	for(var/obj/item/bodypart/limb as anything in bodyparts)
 		bodyparts[limb] = clamp(bodyparts[limb] + 1, 1, 5)
@@ -48,6 +56,8 @@
  * seveirty - optional, the specific severity level to apply the effect. Clamped from 1 to 5. If not passed, picks a random number.
  */
 /datum/hallucination/fake_health_doll/proc/add_fake_limb(obj/item/bodypart/specific_limb, severity)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_mob = hallucinator
 
 	var/obj/item/bodypart/picked = specific_limb || pick(human_mob.get_bodyparts())
@@ -61,6 +71,8 @@
 
 /// Remove a bodypart from our list, unregistering all associated signals and handling the reference
 /datum/hallucination/fake_health_doll/proc/remove_bodypart(obj/item/bodypart/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(source, list(COMSIG_QDELETING, COMSIG_BODYPART_REMOVED, COMSIG_BODYPART_UPDATING_HEALTH_HUD, COMSIG_BODYPART_CHECKED_FOR_INJURY))
@@ -68,6 +80,8 @@
 
 /// Whenever a bodypart we're tracking has their health hud updated, override it with our fake overlay
 /datum/hallucination/fake_health_doll/proc/on_bodypart_hud_update(obj/item/bodypart/source, mob/living/carbon/human/owner, list/overridable_key)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	overridable_key[1] = bodyparts[source]
@@ -75,6 +89,8 @@
 
 /// Signal proc for [COMSIG_BODYPART_CHECKED_FOR_INJURY]. Our bodyparts look a lot more wounded than they actually are.
 /datum/hallucination/fake_health_doll/proc/on_bodypart_checked(obj/item/bodypart/source, mob/living/carbon/examiner, list/check_list, list/limb_damage)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	limb_damage[BRUTE] = bodyparts[source] * 0.2 * source.max_damage

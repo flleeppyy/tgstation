@@ -18,6 +18,8 @@
 	var/datum/weakref/holder_ref
 
 /datum/light_middleman/New(atom/parent, unique_string)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!IS_OVERLAY_LIGHT_SYSTEM(parent.light_system))
 		stack_trace("Attempted to create a light middleman with a parent [parent.type] that does not use overlay lighting! This will not work.")
@@ -35,6 +37,8 @@
 		cone_intercept.render_target = "[primary_intercept.render_target]_cone" // made to mirror how overlay lights work
 
 /datum/light_middleman/Destroy(force)
+	procstart = null
+	src.procstart = null
 	stop_overriding_light()
 	QDEL_NULL(primary_intercept)
 	QDEL_NULL(cone_intercept)
@@ -43,6 +47,8 @@
 	return ..()
 
 /datum/light_middleman/proc/being_overriding_light(unique_string)
+	procstart = null
+	src.procstart = null
 	if(overriding)
 		return
 	overriding = TRUE
@@ -53,6 +59,8 @@
 	parent.set_light_render_source(primary_intercept.render_target)
 
 /datum/light_middleman/proc/stop_overriding_light()
+	procstart = null
+	src.procstart = null
 	if(!overriding)
 		return
 	overriding = FALSE
@@ -66,6 +74,8 @@
 	parent.set_light_render_source("")
 
 /datum/light_middleman/proc/light_applied(datum/source, image/visible_mask, image/cone, atom/movable/light_holder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/movable/old_holder = holder_ref?.resolve()
 	// If we were somewhere before, clean us out
@@ -113,6 +123,8 @@
 	SEND_SIGNAL(src, COMSIG_LIGHT_MIDDLEMAN_UPDATED)
 
 /datum/light_middleman/proc/light_removed(datum/source, atom/movable/light_holder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	light_holder.vis_contents -= primary_intercept
 	light_holder.vis_contents -= cone_intercept
@@ -123,6 +135,8 @@
 
 // Procs for reuse on multiple types
 /proc/fire_flicker_middleman(datum/light_middleman/middleman)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/abstract/main_light = middleman.primary_intercept
 	// Just in case a subtype is wildin
 	var/obj/effect/abstract/cone_light = middleman.cone_intercept

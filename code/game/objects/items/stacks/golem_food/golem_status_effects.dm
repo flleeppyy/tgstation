@@ -34,6 +34,8 @@
 
 /// Set up how the alert ACTUALLY looks, based on the effect applied
 /atom/movable/screen/alert/status_effect/golem_status/proc/update_details(buff_time)
+	procstart = null
+	src.procstart = null
 	var/datum/status_effect/golem/golem_effect = attached_effect
 	if (!istype(golem_effect))
 		CRASH("Golem status alert attached to invalid status effect.")
@@ -49,23 +51,33 @@
 
 /// Animate to indicate effect is expiring soon
 /atom/movable/screen/alert/status_effect/golem_status/proc/early_warning()
+	procstart = null
+	src.procstart = null
 	animate(src, alpha = 75, time = 1 SECONDS, loop = -1)
 	animate(alpha = 255, time = 1 SECONDS, loop = -1)
 
 /// Animate to indicate effect is expiring very soon
 /atom/movable/screen/alert/status_effect/golem_status/proc/imminent_warning()
+	procstart = null
+	src.procstart = null
 	animate(src, alpha = 25, time = 0.5 SECONDS, loop = -1)
 	animate(alpha = 200, time = 0.5 SECONDS, loop = -1)
 
 /atom/movable/screen/alert/status_effect/golem_status/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += mineral_overlay
 
 /atom/movable/screen/alert/status_effect/golem_status/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(mineral_overlay)
 	return ..()
 
 /datum/status_effect/golem/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!ishuman(owner))
 		return FALSE
@@ -95,6 +107,8 @@
 	return TRUE
 
 /datum/status_effect/golem/on_creation(mob/living/new_owner, multiplier = 1)
+	procstart = null
+	src.procstart = null
 	///instead of straight out multiplying the duration, we use exponents to flatten the duration so it doesn't become exceedingly long for golems
 	var/exponent = 0.2
 	if(!isgolem(new_owner))
@@ -112,12 +126,16 @@
 	status_alert?.update_details(buff_time = buff_duration)
 
 /datum/status_effect/golem/on_remove()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_warning("The effect of the [mineral_name] fades."))
 	QDEL_LIST(active_overlays)
 	owner.remove_filter("[id]_filter")
 	return ..()
 
 /datum/status_effect/golem/get_examine_text()
+	procstart = null
+	src.procstart = null
 	return span_notice("[owner.p_Their()] body has been augmented with veins of [mineral_name].")
 
 /// Body part overlays applied by golem status effects
@@ -133,11 +151,15 @@
 	var/datum/weakref/attached_bodypart
 
 /datum/bodypart_overlay/simple/golem_overlay/proc/add_to_bodypart(prefix, obj/item/bodypart/part)
+	procstart = null
+	src.procstart = null
 	icon_state = "[prefix]_[part.body_zone]"
 	attached_bodypart = WEAKREF(part)
 	part.add_bodypart_overlay(src, update = FALSE)
 
 /datum/bodypart_overlay/simple/golem_overlay/Destroy(force)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/referenced_bodypart = attached_bodypart?.resolve()
 	referenced_bodypart?.remove_bodypart_overlay(src)
 	return ..()
@@ -152,6 +174,8 @@
 	filter_color = LIGHT_COLOR_GREEN
 
 /datum/status_effect/golem/uranium/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -161,6 +185,8 @@
 	return TRUE
 
 /datum/status_effect/golem/uranium/on_remove()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_NOHUNGER, TRAIT_STATUS_EFFECT(id))
 	return ..()
 
@@ -174,6 +200,8 @@
 	filter_color = LIGHT_COLOR_FAINT_BLUE
 
 /datum/status_effect/golem/silver/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -181,6 +209,8 @@
 	return TRUE
 
 /datum/status_effect/golem/silver/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_traits(list(TRAIT_ANTIMAGIC, TRAIT_HOLY), TRAIT_STATUS_EFFECT(id))
 	return ..()
 
@@ -199,6 +229,8 @@
 	filter_color = LIGHT_COLOR_PINK
 
 /datum/status_effect/golem/plasma/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -209,6 +241,8 @@
 	return TRUE
 
 /datum/status_effect/golem/plasma/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_traits(list(TRAIT_RESISTHIGHPRESSURE, TRAIT_RESISTHEAT, TRAIT_ASHSTORM_IMMUNE), TRAIT_STATUS_EFFECT(id))
 	UnregisterSignal(owner, COMSIG_MOB_APPLY_DAMAGE)
 	var/mob/living/carbon/human/human_owner = owner
@@ -217,6 +251,8 @@
 
 /// When we take fire damage (or... technically also cold damage, we don't differentiate), zap a nearby APC
 /datum/status_effect/golem/plasma/proc/on_burned(datum/source, damage, damagetype, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(damagetype != BURN)
 		return
@@ -238,6 +274,8 @@
 
 /// Shoot a beam at the target atom
 /datum/status_effect/golem/plasma/proc/zap_effect(atom/target)
+	procstart = null
+	src.procstart = null
 	owner.Beam(target, icon_state = "lightning[rand(1,12)]", time = 0.5 SECONDS)
 	playsound(owner, 'sound/effects/magic/lightningshock.ogg', vol = 50, vary = TRUE)
 
@@ -251,6 +289,8 @@
 	filter_color = LIGHT_COLOR_DEFAULT
 
 /datum/status_effect/golem/plasteel/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -258,6 +298,8 @@
 	return TRUE
 
 /datum/status_effect/golem/plasteel/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_traits(list(TRAIT_RESISTLOWPRESSURE, TRAIT_RESISTCOLD), TRAIT_STATUS_EFFECT(id))
 	return ..()
 
@@ -271,6 +313,8 @@
 	filter_color = LIGHT_COLOR_DIM_YELLOW
 
 /datum/status_effect/golem/gold/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -278,6 +322,8 @@
 	return TRUE
 
 /datum/status_effect/golem/gold/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.flags_ricochet &= ~RICOCHET_SHINY
 	return ..()
 
@@ -302,6 +348,8 @@
 	var/list/initial_unarmed_verbs_past = list()
 
 /datum/status_effect/golem/diamond/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -315,15 +363,21 @@
 	return TRUE
 
 /datum/status_effect/golem/diamond/tick(delta_time)
+	procstart = null
+	src.procstart = null
 	owner.alpha = max(owner.alpha - alpha_per_tick, 0)
 
 /// Reset alpha to starting value
 /datum/status_effect/golem/diamond/proc/on_reveal()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	owner.alpha = moving_alpha
 
 /// Make our arm do slashing effects
 /datum/status_effect/golem/diamond/proc/set_arm_fluff(obj/item/bodypart/arm/arm)
+	procstart = null
+	src.procstart = null
 	initial_unarmed_verbs[arm] = arm.unarmed_attack_verbs
 	initial_unarmed_verbs_past[arm] = arm.unarmed_attack_verbs_continuous
 	arm.unarmed_attack_verbs = list("slash")
@@ -337,6 +391,8 @@
 	LAZYADD(modified_arms, arm)
 
 /datum/status_effect/golem/diamond/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.alpha = initial(owner.alpha)
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/light_speed)
 	UnregisterSignal(owner, list(COMSIG_MOVABLE_MOVED, COMSIG_MOB_THROW, COMSIG_MOB_ATTACK_HAND, COMSIG_MOB_ITEM_ATTACK))
@@ -349,6 +405,8 @@
 
 /// Make our arm do whatever it originally did
 /datum/status_effect/golem/diamond/proc/reset_arm_fluff(obj/item/bodypart/arm/arm)
+	procstart = null
+	src.procstart = null
 	if (!arm)
 		return
 	arm.unarmed_attack_verbs = initial_unarmed_verbs[arm]
@@ -362,6 +420,8 @@
 
 /// Remove references to deleted arms
 /datum/status_effect/golem/diamond/proc/on_arm_destroyed(obj/item/bodypart/arm/arm)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	modified_arms -= arm
 	initial_unarmed_verbs -= arm
@@ -385,6 +445,8 @@
 	var/list/modified_arms
 
 /datum/status_effect/golem/titanium/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -396,6 +458,8 @@
 
 /// Give mining mobs an extra slap
 /datum/status_effect/golem/titanium/proc/on_punched(mob/living/puncher, atom/punchee, proximity)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!proximity || !isliving(punchee))
 		return NONE
@@ -406,12 +470,16 @@
 
 /// Make the targeted arm big and strong
 /datum/status_effect/golem/titanium/proc/buff_arm(obj/item/bodypart/arm/arm)
+	procstart = null
+	src.procstart = null
 	arm.unarmed_damage_low += damage_increase
 	arm.unarmed_damage_high += damage_increase
 	RegisterSignal(arm, COMSIG_QDELETING, PROC_REF(on_arm_destroyed))
 	LAZYADD(modified_arms, arm)
 
 /datum/status_effect/golem/titanium/on_remove()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_owner = owner
 	UnregisterSignal(human_owner, COMSIG_LIVING_UNARMED_ATTACK)
 	human_owner.physiology.brute_mod /= brute_modifier
@@ -422,6 +490,8 @@
 
 /// Make the targeted arm small and weak
 /datum/status_effect/golem/titanium/proc/debuff_arm(obj/item/bodypart/arm/arm)
+	procstart = null
+	src.procstart = null
 	if (!arm)
 		return
 	arm.unarmed_damage_low -= damage_increase
@@ -430,6 +500,8 @@
 
 /// Remove references to deleted arms
 /datum/status_effect/golem/titanium/proc/on_arm_destroyed(obj/item/bodypart/arm/arm)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	modified_arms -= arm
 
@@ -445,6 +517,8 @@
 	var/datum/component/slippery/slipperiness
 
 /datum/status_effect/golem/bananium/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -459,9 +533,13 @@
 
 /// Only slip people when we're down on the ground
 /datum/status_effect/golem/bananium/proc/try_slip(mob/living/slipper, mob/living/slippee)
+	procstart = null
+	src.procstart = null
 	return owner.body_position == LYING_DOWN
 
 /datum/status_effect/golem/bananium/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_traits(list(TRAIT_WADDLING, TRAIT_NO_SLIP_WATER), TRAIT_STATUS_EFFECT(id))
 	QDEL_NULL(slipperiness)
 	return ..()
@@ -480,11 +558,15 @@
 	var/obj/effect/dummy/lighting_obj/moblight/lightbulb
 
 /datum/status_effect/golem_lightbulb/on_creation(mob/living/new_owner, ...)
+	procstart = null
+	src.procstart = null
 	if(!isgolem(new_owner))
 		duration *= 0.3
 	return ..()
 
 /datum/status_effect/golem_lightbulb/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -493,6 +575,8 @@
 	owner.add_filter(LIGHTBULB_FILTER, 2, list("type" = "outline", "color" = glow_color, "alpha" = 60, "size" = 1))
 
 /datum/status_effect/golem_lightbulb/on_remove()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(lightbulb)
 	owner.remove_filter(LIGHTBULB_FILTER)
 	to_chat(owner, span_warning("Your glow fades."))

@@ -21,21 +21,29 @@
 	var/is_on_station = TRUE
 
 /obj/machinery/computer/apc_control/Initialize(mapload, obj/item/circuitboard/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	is_on_station = is_station_level(z)
 
 /obj/machinery/computer/apc_control/on_set_machine_stat(old_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat && active_apc)
 		disconnect_apc()
 
 /obj/machinery/computer/apc_control/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isAdminGhostAI(user))
 		to_chat(user,span_warning("[src] does not support AI control.")) //You already have APC access, cheater!
 		return
 	return ..()
 
 /obj/machinery/computer/apc_control/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -47,12 +55,16 @@
 
 ///Creates a log entry in the console with a timestamp, current login ID data and the text provided in log_text
 /obj/machinery/computer/apc_control/proc/log_activity(log_text)
+	procstart = null
+	src.procstart = null
 	if(!should_log)
 		return
 	LAZYADD(logs, "([round_timestamp()]): [auth_id] [log_text]")
 
 ///Resets the console's emagged state and re-enables logging of activity
 /obj/machinery/computer/apc_control/proc/restore_comp(mob/user)
+	procstart = null
+	src.procstart = null
 	obj_flags &= ~EMAGGED
 	should_log = TRUE
 	user.log_message("restored the logs of [src].", LOG_GAME)
@@ -61,6 +73,8 @@
 
 ///Initiates remote access to the APC
 /obj/machinery/computer/apc_control/proc/connect_apc(obj/machinery/power/apc/apc, mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(apc))
 		return
 	if(apc.remote_control_user)
@@ -77,6 +91,8 @@
 
 ///Disconnects the computer from the accessed APC upon its destruction
 /obj/machinery/computer/apc_control/proc/on_apc_destroyed(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	disconnect_apc(TRUE) //to prevent the APC from trying to speak while being qdel'd
 
@@ -86,6 +102,8 @@
  * mute - whether the APC should announce the disconnection locally, passed into apc's disconnect_remote_access()
  */
 /obj/machinery/computer/apc_control/proc/disconnect_apc(mute = FALSE)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(active_apc, COMSIG_QDELETING)
 	if(active_apc.remote_control_user)
 		active_apc.disconnect_remote_access(mute)
@@ -103,9 +121,13 @@
 */
 
 /obj/machinery/computer/apc_control/proc/check_apc(obj/machinery/power/apc/checked_apc)
+	procstart = null
+	src.procstart = null
 	return (is_on_station ? is_station_level(checked_apc.z) : checked_apc.z == z) && !checked_apc.malfhack && !checked_apc.aidisabled && !(checked_apc.obj_flags & EMAGGED) && !checked_apc.machine_stat && !istype(checked_apc.area, /area/station/ai)
 
 /obj/machinery/computer/apc_control/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -113,6 +135,8 @@
 		ui.open()
 
 /obj/machinery/computer/apc_control/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["auth_id"] = auth_id
 	data["authenticated"] = authenticated
@@ -145,6 +169,8 @@
 	return data
 
 /obj/machinery/computer/apc_control/ui_act(action, params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -245,6 +271,8 @@
 			return TRUE
 
 /obj/machinery/computer/apc_control/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active_apc)
 		disconnect_apc()

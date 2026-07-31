@@ -1,5 +1,7 @@
 /// Called on [/mob/living/Initialize(mapload)], for the mob to register to relevant signals.
 /mob/living/proc/register_init_signals()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_KNOCKEDOUT), PROC_REF(on_knockedout_trait_gain))
 	RegisterSignal(src, SIGNAL_REMOVETRAIT(TRAIT_KNOCKEDOUT), PROC_REF(on_knockedout_trait_loss))
 
@@ -93,6 +95,8 @@
 
 /// Called when [TRAIT_KNOCKEDOUT] is added to the mob.
 /mob/living/proc/on_knockedout_trait_gain(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	apply_status_effect(/datum/status_effect/knocked_out)
@@ -102,6 +106,8 @@
 
 /// Called when [TRAIT_KNOCKEDOUT] is removed from the mob.
 /mob/living/proc/on_knockedout_trait_loss(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	remove_status_effect(/datum/status_effect/knocked_out)
@@ -111,22 +117,30 @@
 
 /// Called when [TRAIT_DEATHCOMA] is added to the mob.
 /mob/living/proc/on_deathcoma_trait_gain(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	ADD_TRAIT(src, TRAIT_KNOCKEDOUT, TRAIT_DEATHCOMA)
 
 /// Called when [TRAIT_DEATHCOMA] is removed from the mob.
 /mob/living/proc/on_deathcoma_trait_loss(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	REMOVE_TRAIT(src, TRAIT_KNOCKEDOUT, TRAIT_DEATHCOMA)
 
 /// Updates medhud when receiving relevant signals.
 /mob/living/proc/update_medhud_on_signal(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	med_hud_set_health()
 	med_hud_set_status()
 
 /// Called when [TRAIT_IMMOBILIZED] is added to the mob.
 /mob/living/proc/on_immobilized_trait_gain(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	mobility_flags &= ~MOBILITY_MOVE
 	if(living_flags & MOVES_ON_ITS_OWN)
@@ -134,12 +148,16 @@
 
 /// Called when [TRAIT_IMMOBILIZED] is removed from the mob.
 /mob/living/proc/on_immobilized_trait_loss(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	mobility_flags |= MOBILITY_MOVE
 
 
 /// Called when [TRAIT_FLOORED] is added to the mob.
 /mob/living/proc/on_floored_trait_gain(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(buckled && buckled.buckle_lying != NO_BUCKLE_LYING)
 		return // Handled by the buckle.
@@ -151,12 +169,16 @@
 
 /// Called when [TRAIT_FLOORED] is removed from the mob.
 /mob/living/proc/on_floored_trait_loss(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	mobility_flags |= MOBILITY_STAND
 	on_floored_end()
 
 /// Called when [TRAIT_FORCED_STANDING] is added to the mob.
 /mob/living/proc/on_forced_standing_trait_gain(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	set_body_position(STANDING_UP)
@@ -164,6 +186,8 @@
 
 /// Called when [TRAIT_FORCED_STANDING] is removed from the mob.
 /mob/living/proc/on_forced_standing_trait_loss(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT(src, TRAIT_FLOORED))
@@ -174,12 +198,16 @@
 
 /// Called when [TRAIT_HANDS_BLOCKED] is added to the mob.
 /mob/living/proc/on_handsblocked_trait_gain(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	mobility_flags &= ~(MOBILITY_USE | MOBILITY_PICKUP | MOBILITY_STORAGE)
 	on_handsblocked_start()
 
 /// Called when [TRAIT_HANDS_BLOCKED] is removed from the mob.
 /mob/living/proc/on_handsblocked_trait_loss(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	mobility_flags |= (MOBILITY_USE | MOBILITY_PICKUP | MOBILITY_STORAGE)
 	on_handsblocked_end()
@@ -187,12 +215,16 @@
 
 /// Called when [TRAIT_UI_BLOCKED] is added to the mob.
 /mob/living/proc/on_ui_blocked_trait_gain(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	mobility_flags &= ~(MOBILITY_UI)
 	update_mob_action_buttons()
 
 /// Called when [TRAIT_UI_BLOCKED] is removed from the mob.
 /mob/living/proc/on_ui_blocked_trait_loss(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	mobility_flags |= MOBILITY_UI
 	update_mob_action_buttons()
@@ -200,6 +232,8 @@
 
 /// Called when [TRAIT_PULL_BLOCKED] is added to the mob.
 /mob/living/proc/on_pull_blocked_trait_gain(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	mobility_flags &= ~(MOBILITY_PULL)
 	if(pulling)
@@ -208,6 +242,8 @@
 
 /// Called when [TRAIT_PULL_BLOCKED] is removed from the mob.
 /mob/living/proc/on_pull_blocked_trait_loss(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	mobility_flags |= MOBILITY_PULL
 	pull_force_change()
@@ -215,6 +251,8 @@
 
 /// Called when [TRAIT_INCAPACITATED] is added to the mob.
 /mob/living/proc/on_incapacitated_trait_gain(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	add_traits(list(TRAIT_UI_BLOCKED, TRAIT_PULL_BLOCKED), TRAIT_INCAPACITATED)
 	update_appearance()
@@ -222,6 +260,8 @@
 
 /// Called when [TRAIT_INCAPACITATED] is removed from the mob.
 /mob/living/proc/on_incapacitated_trait_loss(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	remove_traits(list(TRAIT_UI_BLOCKED, TRAIT_PULL_BLOCKED), TRAIT_INCAPACITATED)
 	update_appearance()
@@ -229,28 +269,38 @@
 
 /// Called when [TRAIT_RESTRAINED] is added to the mob.
 /mob/living/proc/on_restrained_trait_gain(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	ADD_TRAIT(src, TRAIT_HANDS_BLOCKED, TRAIT_RESTRAINED)
 	update_incapacitated()
 
 /// Called when [TRAIT_RESTRAINED] is removed from the mob.
 /mob/living/proc/on_restrained_trait_loss(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	REMOVE_TRAIT(src, TRAIT_HANDS_BLOCKED, TRAIT_RESTRAINED)
 	update_incapacitated()
 
 /// Called when [TRAIT_STASIS] is added to the mob
 /mob/living/proc/on_stasis_trait_gain(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_incapacitated()
 
 /// Called when [TRAIT_STASIS] is removed from the mob
 /mob/living/proc/on_stasis_trait_loss(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_incapacitated()
 
 /// Called when [TRAIT_NODEATH] is added or removed from the mob
 /mob/living/proc/on_nodeath()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_succumb_action()
 	update_stat()
@@ -261,6 +311,8 @@
  * Will show or hide the succumb alert prompt.
  */
 /mob/living/proc/update_succumb_action()
+	procstart = null
+	src.procstart = null
 	if (CAN_SUCCUMB(src) || HAS_TRAIT(src, TRAIT_SUCCUMB_OVERRIDE))
 		throw_alert(ALERT_SUCCUMB, /atom/movable/screen/alert/succumb)
 	else
@@ -268,27 +320,37 @@
 
 ///From [element/movetype_handler/on_movement_type_trait_gain()]
 /mob/living/proc/on_movement_type_flag_enabled(datum/source, flag, old_movement_type)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_movespeed(FALSE)
 
 ///From [element/movetype_handler/on_movement_type_trait_loss()]
 /mob/living/proc/on_movement_type_flag_disabled(datum/source, flag, old_movement_type)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_movespeed(FALSE)
 
 
 /// Called when [TRAIT_SKITTISH] is added to the mob.
 /mob/living/proc/on_skittish_trait_gain(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	AddElement(/datum/element/skittish)
 
 /// Called when [TRAIT_SKITTISH] is removed from the mob.
 /mob/living/proc/on_skittish_trait_loss(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	RemoveElement(/datum/element/skittish)
 
 /// Called when [TRAIT_NEGATES_GRAVITY] is gained or lost
 /mob/living/proc/on_negate_gravity(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isgroundlessturf(loc))
 		if(HAS_TRAIT(src, TRAIT_NEGATES_GRAVITY))
@@ -298,75 +360,103 @@
 
 /// Called when [TRAIT_IGNORING_GRAVITY] is gained or lost
 /mob/living/proc/on_ignore_gravity(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	refresh_gravity()
 
 /// Called when [TRAIT_FORCED_GRAVITY] is gained or lost
 /mob/living/proc/on_force_gravity(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	refresh_gravity()
 
 /// Called when our loc's [TRAIT_FORCED_GRAVITY] is gained or lost
 /mob/living/proc/on_loc_force_gravity(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	refresh_gravity()
 
 /mob/living/proc/edit_immerse_overlay(datum/source, atom/movable/immerse_mask/effect_relay)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	effect_relay.transform = effect_relay.transform.Scale(1 / current_size)
 	effect_relay.transform = effect_relay.transform.Turn(-lying_angle)
 
 /// Called when [TRAIT_UNDENSE] is gained or lost
 /mob/living/proc/undense_changed(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_density()
 
 ///Called when [TRAIT_DEAF] is added to the mob.
 /mob/living/proc/on_hearing_loss()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	refresh_looping_ambience()
 	stop_sound_channel(CHANNEL_AMBIENCE)
 
 ///Called when [TRAIT_DEAF] is added to the mob.
 /mob/living/proc/on_hearing_regain()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	refresh_looping_ambience()
 
 /// When gaining [TRAIT_BASIC_HEALTH_HUD_VISIBLE], add to the basic health hud
 /mob/living/proc/add_to_basic_health_hud(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/datum/atom_hud/data/human/medical/basic/hud = GLOB.huds[DATA_HUD_MEDICAL_BASIC]
 	hud.add_atom_to_hud(src)
 
 /// When losing [TRAIT_BASIC_HEALTH_HUD_VISIBLE], remove from the basic health hud
 /mob/living/proc/remove_from_basic_health_hud(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/datum/atom_hud/data/human/medical/basic/hud = GLOB.huds[DATA_HUD_MEDICAL_BASIC]
 	hud.remove_atom_from_hud(src)
 
 /// Called when [TRAIT_APATHETIC] is added to the mob.
 /mob/living/proc/on_apathetic_trait_gain(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	mob_mood?.update_mood()
 	mob_mood?.set_sanity(SANITY_NEUTRAL)
 
 /// Called when [TRAIT_APATHETIC] is removed from the mob.
 /mob/living/proc/on_apathetic_trait_loss(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	mob_mood?.update_mood()
 
 /// Called when [TRAIT_MIND_TEMPORARILY_GONE] is added to the mob.
 /mob/living/proc/on_mind_temporarily_gone_trait_gain(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	med_hud_set_status()
 
 /// Called when [TRAIT_MIND_TEMPORARILY_GONE] is removed from the mob.
 /mob/living/proc/on_mind_temporarily_gone_trait_loss(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	med_hud_set_status()
 
 /// Called when [TRAIT_PASSTABLE] is added/removed to/from the mob.
 /mob/living/proc/on_passtable_trait_toggled(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(HAS_TRAIT(src, TRAIT_PASSTABLE))
 		pass_flags |= PASSTABLE
@@ -375,6 +465,8 @@
 
 /// Called when [TRAIT_PASSWINDOW] is added/removed to/from the mob.
 /mob/living/proc/on_passwindow_trait_toggled(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(HAS_TRAIT(src, TRAIT_PASSWINDOW))
 		pass_flags |= PASSWINDOW

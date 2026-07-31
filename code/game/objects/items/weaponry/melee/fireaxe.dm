@@ -35,6 +35,8 @@ GLOBAL_DATUM(bridge_axe, /obj/item/fireaxe)
 	acid = 30
 
 /obj/item/fireaxe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!GLOB.bridge_axe && istype(get_area(src), /area/station/command))
 		GLOB.bridge_axe = src
@@ -49,22 +51,32 @@ GLOBAL_DATUM(bridge_axe, /obj/item/fireaxe)
 	AddComponent(/datum/component/two_handed, force_unwielded=force_unwielded, force_wielded=force_wielded, icon_wielded="[base_icon_state]1")
 
 /obj/item/fireaxe/Destroy()
+	procstart = null
+	src.procstart = null
 	if(GLOB.bridge_axe == src)
 		GLOB.bridge_axe = null
 	return ..()
 
 /obj/item/fireaxe/get_demolition_modifier(obj/target)
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(src, TRAIT_WIELDED) ? demolition_mod : 0.8
 
 /obj/item/fireaxe/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state]0"
 	return ..()
 
 /obj/item/fireaxe/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] axes [user.p_them()]self from head to toe! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 
 /obj/item/fireaxe/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_WIELDED)) //destroys windows and grilles in one hit
 		return
 	if(target.resistance_flags & INDESTRUCTIBLE)

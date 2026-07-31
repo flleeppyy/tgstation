@@ -33,15 +33,21 @@
 	)
 
 /obj/machinery/portable_atmospherics/scrubber/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	var/turf/local_turf = get_turf(src)
 	local_turf.assume_air(air_contents)
 	return ..()
 
 /obj/machinery/portable_atmospherics/scrubber/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)]_[on]"
 	return ..()
 
 /obj/machinery/portable_atmospherics/scrubber/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!use_overlays)
 		return
@@ -51,6 +57,8 @@
 		. += "scrubber-connector"
 
 /obj/machinery/portable_atmospherics/scrubber/process_atmos()
+	procstart = null
+	src.procstart = null
 	if(take_atmos_damage())
 		excited = TRUE
 		return ..()
@@ -80,6 +88,8 @@
  * Returns: TRUE if anything was scrubbed, FALSE otherwise
  */
 /obj/machinery/portable_atmospherics/scrubber/proc/scrub(datum/gas_mixture/environment)
+	procstart = null
+	src.procstart = null
 	if(air_contents.return_pressure() >= overpressure_m * ONE_ATMOSPHERE)
 		return FALSE
 
@@ -112,6 +122,8 @@
 	return TRUE
 
 /obj/machinery/portable_atmospherics/scrubber/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -123,12 +135,16 @@
 		update_appearance()
 
 /obj/machinery/portable_atmospherics/scrubber/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PortableScrubber", name)
 		ui.open()
 
 /obj/machinery/portable_atmospherics/scrubber/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["on"] = on
 	data["connected"] = connected_port ? 1 : 0
@@ -156,6 +172,8 @@
 	return data
 
 /obj/machinery/portable_atmospherics/scrubber/replace_tank(mob/living/user, close_valve)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -167,6 +185,8 @@
 		user.investigate_log("started a transfer into [holding].", INVESTIGATE_ATMOS)
 
 /obj/machinery/portable_atmospherics/scrubber/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -195,6 +215,8 @@
 	update_appearance()
 
 /obj/machinery/portable_atmospherics/scrubber/unregister_holding()
+	procstart = null
+	src.procstart = null
 	on = FALSE
 	return ..()
 
@@ -218,10 +240,14 @@
 	anchored = FALSE
 
 /obj/machinery/portable_atmospherics/scrubber/huge/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)]_[on]"
 	return ..()
 
 /obj/machinery/portable_atmospherics/scrubber/huge/process_atmos()
+	procstart = null
+	src.procstart = null
 	if((!anchored && !movable) || !is_operational)
 		on = FALSE
 		update_appearance()
@@ -240,6 +266,8 @@
 	return ..()
 
 /obj/machinery/portable_atmospherics/scrubber/huge/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(default_unfasten_wrench(user, tool))
 		if(!movable)

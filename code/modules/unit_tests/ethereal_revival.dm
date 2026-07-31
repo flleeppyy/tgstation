@@ -2,6 +2,8 @@
 /datum/unit_test/ethereal_revival
 
 /datum/unit_test/ethereal_revival/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/victim = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/organ/heart/ethereal/respawn_heart = new()
 	respawn_heart.Insert(victim, special = TRUE, movement_flags = DELETE_IF_REPLACED) // Pretend this guy is an ethereal
@@ -49,11 +51,15 @@
 	TEST_ASSERT_NULL(respawn_heart.current_crystal, "Crystal didn't despawn when player was revived by other means.")
 
 /datum/unit_test/ethereal_revival/proc/instant_crystallise(mob/living/carbon/victim, obj/item/organ/heart/ethereal/respawn_heart)
+	procstart = null
+	src.procstart = null
 	victim.death()
 	deltimer(respawn_heart.crystalize_timer_id)
 	respawn_heart.crystalize(victim)
 
 /datum/unit_test/ethereal_revival/proc/kill_and_revive(mob/living/carbon/victim, obj/item/organ/heart/ethereal/respawn_heart)
+	procstart = null
+	src.procstart = null
 	COOLDOWN_RESET(respawn_heart, crystalize_cooldown)
 	instant_crystallise(victim, respawn_heart)
 	var/obj/structure/ethereal_crystal/crystal = respawn_heart.current_crystal

@@ -1,5 +1,7 @@
 /// On contents change, either reset or update
 /datum/lootpanel/proc/on_searchable_deleted(datum/search_object/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	contents -= source

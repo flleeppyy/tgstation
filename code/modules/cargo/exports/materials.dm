@@ -19,6 +19,8 @@
 // But it has no material_id, so any applies_to check will return false, and these types reduce amount of copypasta a lot
 
 /datum/export/material/New()
+	procstart = null
+	src.procstart = null
 	var/temp_exports = export_types
 	export_types = null
 	. = ..()
@@ -34,6 +36,8 @@
  * * export_data - exports whos type cache we are trying to create
 */
 /datum/export/material/proc/init_export_types(export_data)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	if(!use_shared_exports)
@@ -46,9 +50,13 @@
 	return shared_exports[abstract_type]
 
 /datum/export/material/proc/generate_export_typecache(export_data)
+	procstart = null
+	src.procstart = null
 	return typecacheof(export_data, only_root_path = !include_subtypes)
 
 /datum/export/material/get_amount(obj/exported_item)
+	procstart = null
+	src.procstart = null
 	if(!isitem(exported_item))
 		return 0
 
@@ -116,12 +124,16 @@
 	cost = 1
 
 /datum/export/material/market/generate_export_typecache(export_data)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Always include the stock block for any market exports.
 	.[/obj/item/stock_block] = TRUE
 	return .
 
 /datum/export/material/market/get_base_cost(obj/exported_obj)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(exported_obj, /obj/item/stock_block))
 		return . * SSstock_market.materials_prices[material_id]
@@ -130,6 +142,8 @@
 	return . * (exported_block.fluid ? SSstock_market.materials_prices[exported_block.custom_materials[1].type] : exported_block.export_value)
 
 /datum/export/material/market/sell_object(obj/sold_item, datum/export_report/report, dry_run, apply_elastic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(dry_run)
 		return

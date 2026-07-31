@@ -1,4 +1,6 @@
 /mob/living/carbon/human/register_init_signals()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	RegisterSignals(src, list(SIGNAL_ADDTRAIT(TRAIT_UNKNOWN_APPEARANCE), SIGNAL_REMOVETRAIT(TRAIT_UNKNOWN_APPEARANCE)), PROC_REF(update_ID_card))
@@ -18,6 +20,8 @@
 
 /// Gaining or losing [TRAIT_DWARF] updates our height and grants passtable
 /mob/living/carbon/human/proc/on_dwarf_trait(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	update_mob_height()
@@ -29,10 +33,14 @@
 
 /// Gaining or losing [TRAIT_TOO_TALL] updates our height
 /mob/living/carbon/human/proc/on_tootall_trait(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_mob_height()
 
 /mob/living/carbon/human/proc/on_fat(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_nutrition()
 
@@ -42,6 +50,8 @@
 		remove_movespeed_modifier(/datum/movespeed_modifier/obesity)
 
 /mob/living/carbon/human/proc/on_nohunger(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// When gaining NOHUNGER, we restore nutrition to normal levels, since we no longer interact with the hunger system
 	if(HAS_TRAIT(src, TRAIT_NOHUNGER))
@@ -54,6 +64,8 @@
 
 /// Signal proc for [COMSIG_ATOM_CONTENTS_WEIGHT_CLASS_CHANGED] to check if an item is suddenly too heavy for our pockets
 /mob/living/carbon/human/proc/check_pocket_weght(datum/source, obj/item/changed, old_w_class, new_w_class)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(changed != r_store && changed != l_store)
 		return
@@ -69,12 +81,16 @@
 	playsound(src, SFX_RUSTLE, 50, TRUE, -5, frequency = 0.8)
 
 /mob/living/carbon/human/proc/husk_trait_toggle(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	refresh_obscured()
 	update_body()
 
 /// When [TRAIT_INVISIBLE_MAN] is added or removed we need to update a few things
 /mob/living/carbon/human/proc/invisible_man_toggle(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	refresh_obscured()
 	update_visible_name()
@@ -82,5 +98,7 @@
 
 /// When [TRAIT_NO_UNDERWEAR] is added or removed we need to update our body to hide or show underwear sprites
 /mob/living/carbon/human/proc/no_underwear_toggle(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_body()

@@ -11,11 +11,15 @@
 	health = 45
 
 /mob/living/basic/bot/secbot/beepsky/officer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Beepsky hates people scanning them
 	RegisterSignal(src, COMSIG_MOVABLE_SPY_STEALING, PROC_REF(on_spy_scan))
 
 /mob/living/basic/bot/secbot/beepsky/officer/proc/on_spy_scan(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	ai_controller?.insert_blackboard_key_lazylist(BB_BASIC_MOB_RETALIATE_LIST, user)
@@ -38,6 +42,8 @@
 	commissioned = FALSE
 
 /mob/living/basic/bot/secbot/beepsky/jr/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_transform(0.8)
 
@@ -58,6 +64,8 @@
 	bot_access_flags = BOT_COVER_LOCKED | BOT_COVER_EMAGGED
 
 /mob/living/basic/bot/secbot/beepsky/explode()
+	procstart = null
+	src.procstart = null
 	var/atom/current_location = drop_location()
 	new /obj/item/stock_parts/power_store/cell/potato(current_location)
 	var/obj/item/reagent_containers/cup/glass/drinkingglass/shotglass/drinking_oil = new(current_location)

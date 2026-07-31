@@ -6,6 +6,8 @@
 	illustration = "latex"
 
 /obj/item/storage/box/gloves/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/clothing/gloves/latex(src)
 
@@ -15,6 +17,8 @@
 	illustration = "sterile"
 
 /obj/item/storage/box/masks/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/clothing/mask/surgical(src)
 
@@ -24,6 +28,8 @@
 	illustration = "glasses"
 
 /obj/item/storage/box/rxglasses/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/clothing/glasses/regular(src)
 
@@ -33,6 +39,8 @@
 	desc = "this box contains <i>cool</i> nerd glasses; with built-in displays to view a linked camera."
 
 /obj/item/storage/box/rxglasses/spyglasskit/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/accessory/spy_bug/newbug = new(src)
 	var/obj/item/clothing/glasses/sunglasses/spy/newglasses = new(src)
 	newbug.linked_glasses = newglasses
@@ -44,6 +52,8 @@
 	desc = "A box containing the costume used by legendary entertainment icon 'Super Tape Wizard'. It got a little stuck on its way out."
 
 /obj/item/storage/box/tape_wizard/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/head/wizard/tape/fake(src)
 	new /obj/item/clothing/suit/wizrobe/tape/fake(src)
 	new /obj/item/staff/tape(src)
@@ -56,6 +66,8 @@
 	illustration = "syndiesuit"
 
 /obj/item/storage/box/fakesyndiesuit/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/head/syndicatefake(src)
 	new /obj/item/clothing/suit/syndicatefake(src)
 
@@ -64,6 +76,8 @@
 	desc = "Contains everything you need to host the galaxy's greatest show; Rumble Royale."
 
 /obj/item/storage/box/syndie_kit/battle_royale/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/obj/item/royale_implanter/implanter = new(src)
 	var/obj/item/royale_remote/remote = new(src)
 	remote.link_implanter(implanter)
@@ -75,6 +89,8 @@
 	illustration = "depband"
 
 /obj/item/storage/box/deputy/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/clothing/accessory/armband/deputy(src)
 
@@ -83,6 +99,8 @@
 	desc = "This legendary figure of still dubious historical accuracy is thought to have been a world-famous archeologist who embarked on countless adventures in far away lands, along with his trademark whip and fedora hat."
 
 /obj/item/storage/box/hero/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/head/fedora/curator(src)
 	new /obj/item/clothing/shoes/workboots/mining(src)
 	new /obj/item/clothing/suit/jacket/curator(src)
@@ -94,6 +112,8 @@
 	desc = "One small step for a man, one giant leap for mankind. Relive the beginnings of space exploration with this fully functional set of vintage EVA equipment."
 
 /obj/item/storage/box/hero/astronaut/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/suit/space/nasavoid(src)
 	new /obj/item/clothing/head/helmet/space/nasavoid(src)
 	new /obj/item/tank/internals/oxygen(src)
@@ -104,6 +124,8 @@
 	desc = "Seemingly a legendary figure in the battle for Scottish independence, this historical figure is closely associated with blue facepaint, big swords, strange man skirts, and his ever enduring catchphrase: 'FREEDOM!!'"
 
 /obj/item/storage/box/hero/scottish/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/claymore/weak/ceremonial(src)
 	new /obj/item/clothing/shoes/sandal(src)
 	new /obj/item/clothing/under/costume/kilt(src)
@@ -114,6 +136,8 @@
 	desc = "Despite his nickname, this wildlife expert was mainly known as a passionate environmentalist and conservationist, often coming in contact with dangerous wildlife to teach about the beauty of nature."
 
 /obj/item/storage/box/hero/carphunter/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/mask/gas/carp(src)
 	new /obj/item/clothing/suit/hooded/carp_costume/spaceproof/old(src)
 	new /obj/item/knife/hunting(src)
@@ -124,6 +148,8 @@
 	desc = "Some claim that the fleet engineers are directly responsible for most modern advancements in spacefaring designs. Although the exact details of their past contributions are somewhat fuzzy, their ingenuity remains unmatched and unquestioned to this day."
 
 /obj/item/storage/box/hero/mothpioneer/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/head/mothcap/original(src)
 	new /obj/item/clothing/suit/mothcoat/original(src)
 	new /obj/item/crowbar(src)
@@ -138,6 +164,8 @@
 	desc = "Many fantastical stories are told of valiant trail wardens, even by offworlders who, thanks to their guidance, avoided an untimely demise while traveling the sometimes treacherous roads of Sprout. In truth their job entails far more walking and fixing roads than slaying dragons, but it is no less important and well respected: keeping the roads and trails safe and well maintained is for many settlements a matter of survival."
 
 /obj/item/storage/box/hero/etherealwarden/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/suit/hooded/ethereal_raincoat/trailwarden(src)
 	new /obj/item/clothing/under/ethereal_tunic/trailwarden(src)
 	new /obj/item/storage/backpack/saddlepack(src)
@@ -147,6 +175,8 @@
 	desc = "Many courageous individuals risked their lives to report on events the government sought to keep hidden from the public, ensuring that the truth remained buried and unheard. These garments are replicas of the clothing worn by one such 'journalist,' a silent sentinel in the fight for truth."
 
 /obj/item/storage/box/hero/journalist/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/costume/buttondown/slacks(src)
 	new /obj/item/clothing/suit/toggle/suspenders(src)
 	new /obj/item/clothing/neck/tie/red(src)
@@ -167,6 +197,8 @@
 	var/obj/item/typepath_for_preview = /obj/item/clothing/suit/chaplainsuit/armor/templar
 
 /obj/item/storage/box/holy/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/head/helmet/chaplain(src)
 	new /obj/item/clothing/suit/chaplainsuit/armor/templar(src)
 
@@ -175,6 +207,8 @@
 	typepath_for_preview = /obj/item/clothing/suit/chaplainsuit/armor/clock
 
 /obj/item/storage/box/holy/clock/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/head/helmet/chaplain/clock(src)
 	new /obj/item/clothing/suit/chaplainsuit/armor/clock(src)
 
@@ -183,6 +217,8 @@
 	typepath_for_preview = /obj/item/clothing/suit/chaplainsuit/armor/studentuni
 
 /obj/item/storage/box/holy/student/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/suit/chaplainsuit/armor/studentuni(src)
 	new /obj/item/clothing/head/helmet/chaplain/cage(src)
 
@@ -191,6 +227,8 @@
 	typepath_for_preview = /obj/item/clothing/suit/chaplainsuit/armor/ancient
 
 /obj/item/storage/box/holy/sentinel/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/suit/chaplainsuit/armor/ancient(src)
 	new /obj/item/clothing/head/helmet/chaplain/ancient(src)
 
@@ -199,6 +237,8 @@
 	typepath_for_preview = /obj/item/clothing/suit/chaplainsuit/armor/witchhunter
 
 /obj/item/storage/box/holy/witchhunter/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/suit/chaplainsuit/armor/witchhunter(src)
 	new /obj/item/clothing/head/helmet/chaplain/witchunter_hat(src)
 
@@ -207,6 +247,8 @@
 	typepath_for_preview = /obj/item/clothing/suit/chaplainsuit/armor/adept
 
 /obj/item/storage/box/holy/adept/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/suit/chaplainsuit/armor/adept(src)
 	new /obj/item/clothing/head/helmet/chaplain/adept(src)
 	new /obj/item/clothing/gloves/bracer(src)
@@ -216,6 +258,8 @@
 	typepath_for_preview = /obj/item/clothing/suit/hooded/chaplain_hoodie/leader
 
 /obj/item/storage/box/holy/follower/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/suit/hooded/chaplain_hoodie(src)
 	new /obj/item/clothing/suit/hooded/chaplain_hoodie(src)
 	new /obj/item/clothing/suit/hooded/chaplain_hoodie(src)
@@ -227,6 +271,8 @@
 	typepath_for_preview = /obj/item/clothing/suit/hooded/chaplain_hoodie/divine_archer
 
 /obj/item/storage/box/holy/divine_archer/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/rank/civilian/chaplain/divine_archer(src)
 	new /obj/item/clothing/suit/hooded/chaplain_hoodie/divine_archer(src)
 	new /obj/item/clothing/gloves/divine_archer(src)
@@ -237,6 +283,8 @@
 	typepath_for_preview = /obj/item/clothing/suit/chaplainsuit/armor/heretic
 
 /obj/item/storage/box/holy/heretic/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/suit/chaplainsuit/armor/heretic(src)
 	new /obj/item/clothing/head/helmet/chaplain/heretic(src)
 
@@ -249,6 +297,8 @@
 		risky-espionage hallway operations. Enjoy our product!"
 
 /obj/item/storage/box/floor_camo/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/syndicate/floortilecamo(src)
 	new /obj/item/clothing/mask/floortilebalaclava(src)
 	new /obj/item/clothing/gloves/combat/floortile(src)
@@ -260,16 +310,22 @@
 	desc = "A small print on the back reads 'For research purposes only. Handle with care. In case of emergency, call the following number:'... the rest is scratched out with a marker..."
 
 /obj/item/storage/box/collar_bomb/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/obj/item/collar_bomb_button/button = new(src)
 	new /obj/item/clothing/neck/collar_bomb(src, button)
 
 /obj/item/storage/box/itemset/crusader/blue/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/suit/chaplainsuit/armor/crusader/blue(src)
 	new /obj/item/clothing/head/helmet/plate/crusader/blue(src)
 	new /obj/item/clothing/gloves/plate/blue(src)
 	new /obj/item/clothing/shoes/plate/blue(src)
 
 /obj/item/storage/box/itemset/crusader/red/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/suit/chaplainsuit/armor/crusader/red(src)
 	new /obj/item/clothing/head/helmet/plate/crusader/red(src)
 	new /obj/item/clothing/gloves/plate/red(src)
@@ -279,6 +335,8 @@
 	name = "Generic Wizard Cosplay Kit"
 
 /obj/item/storage/box/wizard_kit/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/head/wizard(src)
 	new /obj/item/clothing/suit/wizrobe(src)
 	new /obj/item/clothing/shoes/sandal(src)
@@ -287,6 +345,8 @@
 	name = "Evocation Wizard Cosplay Kit"
 
 /obj/item/storage/box/wizard_kit/red/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/head/wizard/red(src)
 	new /obj/item/clothing/suit/wizrobe/red(src)
 	new /obj/item/clothing/shoes/sandal(src)
@@ -295,6 +355,8 @@
 	name = "Translocation Wizard Cosplay Kit"
 
 /obj/item/storage/box/wizard_kit/yellow/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/head/wizard/yellow(src)
 	new /obj/item/clothing/suit/wizrobe/yellow(src)
 	new /obj/item/clothing/shoes/sandal(src)
@@ -303,6 +365,8 @@
 	name = "Conjuration Wizard Cosplay Kit"
 
 /obj/item/storage/box/wizard_kit/yellow/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/head/wizard/magus(src)
 	new /obj/item/clothing/suit/wizrobe/magusred(src)
 	new /obj/item/clothing/shoes/sandal(src)
@@ -311,6 +375,8 @@
 	name = "Transmutation Wizard Cosplay Kit"
 
 /obj/item/storage/box/wizard_kit/yellow/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/head/wizard/magus(src)
 	new /obj/item/clothing/suit/wizrobe/magusblue(src)
 	new /obj/item/clothing/shoes/sandal(src)
@@ -319,6 +385,8 @@
 	name = "Necromancy Wizard Cosplay Kit"
 
 /obj/item/storage/box/wizard_kit/black/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/head/wizard/black(src)
 	new /obj/item/clothing/suit/wizrobe/black(src)
 	new /obj/item/clothing/shoes/sandal(src)

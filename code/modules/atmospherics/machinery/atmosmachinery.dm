@@ -79,6 +79,8 @@
 	acid = 70
 
 /obj/machinery/atmospherics/Initialize(mapload, process = TRUE, setdir, init_dir = initialize_directions)
+	procstart = null
+	src.procstart = null
 	if(!isnull(setdir))
 		setDir(setdir)
 	if(pipe_flags & PIPING_CARDINAL_AUTONORMALIZE)
@@ -103,10 +105,14 @@
 	return ..()
 
 /obj/machinery/atmospherics/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_name()
 
 /obj/machinery/atmospherics/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to device_type)
 		nullify_node(i)
 
@@ -119,6 +125,8 @@
 	return ..()
 
 /obj/machinery/atmospherics/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("[src] is on layer [piping_layer].")
 	if((vent_movement & VENTCRAWL_ENTRANCE_ALLOWED) && isliving(user))
@@ -131,6 +139,8 @@
  * This lets subtypes implement their own hiding logic without needing to worry about conflicts with the parent hiding logic.
  */
 /obj/machinery/atmospherics/proc/setup_hiding()
+	procstart = null
+	src.procstart = null
 	// Register pipe cap updating when hidden/unhidden
 	RegisterSignal(src, COMSIG_OBJ_HIDE, PROC_REF(on_hide))
 
@@ -139,6 +149,8 @@
  * We update adjacent nodes as their pipe caps are based partially on our state, so they need updating as well.
  */
 /obj/machinery/atmospherics/proc/on_hide(datum/source)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SIGNAL_HANDLER
 
@@ -151,9 +163,13 @@
  * Run when you update the conditions in which an /atom might want to start reacting to its turf's air
  */
 /atom/proc/atmos_conditions_changed()
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/movable/atmos_conditions_changed()
+	procstart = null
+	src.procstart = null
 	var/turf/open/open_loc = loc
 	if(!isopenturf(open_loc))
 		return
@@ -163,6 +179,8 @@
 	check_atmos_process(open_loc, turf_gas, turf_gas.temperature)
 
 /turf/open/atmos_conditions_changed()
+	procstart = null
+	src.procstart = null
 	if(isnull(air))
 		return
 	check_atmos_process(src, air, air.temperature)
@@ -171,6 +189,8 @@
  * Called by the machinery disconnect(), custom for each type
  */
 /obj/machinery/atmospherics/proc/destroy_network()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -180,6 +200,8 @@
  * * active - the state of the machine
  */
 /obj/machinery/atmospherics/proc/set_on(active)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(active == on)
@@ -192,6 +214,8 @@
 /// This should only be called by SSair as part of the rebuild queue.
 /// Handles rebuilding pipelines after init or they've been changed.
 /obj/machinery/atmospherics/proc/rebuild_pipes()
+	procstart = null
+	src.procstart = null
 	var/list/targets = get_rebuild_targets()
 	rebuilding = FALSE
 	for(var/datum/pipeline/build_off as anything in targets)
@@ -201,6 +225,8 @@
  * Returns a list of new pipelines that need to be built up
  */
 /obj/machinery/atmospherics/proc/get_rebuild_targets()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -209,6 +235,8 @@
  * * i - is the current iteration of the node, based on the device_type (from 1 to 4)
  */
 /obj/machinery/atmospherics/proc/nullify_node(i)
+	procstart = null
+	src.procstart = null
 	if(!nodes[i])
 		return
 	var/obj/machinery/atmospherics/node_machine = nodes[i]
@@ -221,6 +249,8 @@
  * Set the direction to either SOUTH or WEST if the pipe_flag is set to PIPING_CARDINAL_AUTONORMALIZE, called in New(), used mostly by layer manifolds
  */
 /obj/machinery/atmospherics/proc/normalize_cardinal_directions()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(SOUTH)
 			setDir(NORTH)
@@ -235,10 +265,14 @@
  * * new_layer - the layer at which we want the piping_layer to be (1 to 5)
  */
 /obj/machinery/atmospherics/proc/set_piping_layer(new_layer)
+	procstart = null
+	src.procstart = null
 	piping_layer = (pipe_flags & PIPING_DEFAULT_LAYER_ONLY) ? PIPING_LAYER_DEFAULT : new_layer
 	update_appearance()
 
 /obj/machinery/atmospherics/update_icon()
+	procstart = null
+	src.procstart = null
 	update_layer()
 	update_cap_visuals()
 	return ..()
@@ -251,6 +285,8 @@
  * * prompted_layer - the piping_layer we are inside
  */
 /obj/machinery/atmospherics/proc/find_connecting(direction, prompted_layer)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/atmospherics/target in get_step_multiz(src, direction))
 		if(!(target.initialize_directions & get_dir(target,src)) && !istype(target, /obj/machinery/atmospherics/pipe/multiz))
 			continue
@@ -263,6 +299,8 @@
  * Return a list of the nodes that can connect to other machines, get called by atmos_init()
  */
 /obj/machinery/atmospherics/proc/get_node_connects()
+	procstart = null
+	src.procstart = null
 	var/list/node_connects[device_type] //empty list of size device_type
 
 	var/init_directions = get_init_directions()
@@ -285,6 +323,8 @@
  * * list/node_connects - a list of the nodes on the device that can make a connection to other machines
  */
 /obj/machinery/atmospherics/proc/atmos_init(list/node_connects)
+	procstart = null
+	src.procstart = null
 	if(!node_connects) //for pipes where order of nodes doesn't matter
 		node_connects = get_node_connects()
 
@@ -303,6 +343,8 @@
  * * obj/machinery/atmospherics/target - the machine we are connecting to
  */
 /obj/machinery/atmospherics/proc/can_be_node(obj/machinery/atmospherics/target)
+	procstart = null
+	src.procstart = null
 	return connection_check(target, piping_layer)
 
 /**
@@ -315,6 +357,8 @@
  * * given_layer - the piping_layer we are checking
  */
 /obj/machinery/atmospherics/proc/connection_check(obj/machinery/atmospherics/target, given_layer)
+	procstart = null
+	src.procstart = null
 	//if target is not multiz then we have to check if the target & src connect in the same direction
 	if(!istype(target, /obj/machinery/atmospherics/pipe/multiz) && !((initialize_directions & get_dir(src, target)) && (target.initialize_directions & get_dir(target, src))))
 		return FALSE
@@ -333,6 +377,8 @@
  * * given_layer - the piping_layer we are connecting to
  */
 /obj/machinery/atmospherics/proc/is_connectable(obj/machinery/atmospherics/target, given_layer)
+	procstart = null
+	src.procstart = null
 	if(isnull(given_layer))
 		given_layer = piping_layer
 
@@ -357,42 +403,56 @@
  * Called on construction and when expanding the datum_pipeline, returns the nodes of the device
  */
 /obj/machinery/atmospherics/proc/pipeline_expansion()
+	procstart = null
+	src.procstart = null
 	return nodes
 
 /**
  * Set the initial directions of the device (NORTH || SOUTH || EAST || WEST), called on New()
  */
 /obj/machinery/atmospherics/proc/set_init_directions(init_dir)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
  * Getter of initial directions
  */
 /obj/machinery/atmospherics/proc/get_init_directions()
+	procstart = null
+	src.procstart = null
 	return initialize_directions
 
 /**
  * Called by add_member() in datum_pipeline.dm, returns the parent network the device is connected to
  */
 /obj/machinery/atmospherics/proc/return_pipenet()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
  * Called by add_machinery_member() in datum_pipeline.dm, returns a list of gas_mixtures and assigns them into other_airs (by addMachineryMember) to allow pressure redistribution for the machineries.
  */
 /obj/machinery/atmospherics/proc/return_pipenet_airs()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
  * Called by build_pipeline() and add_member() in datum_pipeline.dm, set the network the device is connected to, to the datum pipeline it has reference
  */
 /obj/machinery/atmospherics/proc/set_pipenet()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
  * Replaces the connection to the old_pipenet with the new_pipenet
  */
 /obj/machinery/atmospherics/proc/replace_pipenet(datum/pipeline/old_pipenet, datum/pipeline/new_pipenet)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -403,6 +463,8 @@
  * * obj/machinery/atmospherics/reference - the machinery we are removing from the node connection
  */
 /obj/machinery/atmospherics/proc/disconnect(obj/machinery/atmospherics/reference)
+	procstart = null
+	src.procstart = null
 	if(istype(reference, /obj/machinery/atmospherics/pipe))
 		var/obj/machinery/atmospherics/pipe/P = reference
 		P.destroy_network()
@@ -410,6 +472,8 @@
 	update_appearance()
 
 /obj/machinery/atmospherics/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/pipe)) //lets you autodrop
 		return NONE
 
@@ -421,6 +485,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/atmospherics/wrench_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(!can_unwrench(user))
 		return ITEM_INTERACT_BLOCKING
 
@@ -476,6 +542,8 @@
  * * mob/user - the mob doing the act
  */
 /obj/machinery/atmospherics/proc/can_unwrench(mob/user)
+	procstart = null
+	src.procstart = null
 	return can_unwrench
 
 /**
@@ -488,6 +556,8 @@
  * * pressures - it can be passed on from wrench_act(), it's the pressure difference between the environment pressure and the pipe internal pressure
  */
 /obj/machinery/atmospherics/proc/unsafe_pressure_release(mob/user, pressures = null)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return
 	if(!pressures)
@@ -509,6 +579,8 @@
  * Called by wrench_act(), create a pipe fitting and remove the pipe
  */
 /obj/machinery/atmospherics/on_deconstruction(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!can_unwrench)
 		return
 
@@ -532,6 +604,8 @@
  * * trinary - if TRUE we also use PIPING_FORWARD_SHIFT on layer 1 and 5 for trinary devices (filters and mixers)
  */
 /obj/machinery/atmospherics/proc/get_pipe_image(iconfile, iconstate, direction, color = ATMOS_COLOR_OMNI, piping_layer = 3, trinary = FALSE)
+	procstart = null
+	src.procstart = null
 	var/image/pipe_overlay = image(iconfile, iconstate, dir = direction)
 	pipe_overlay.color = color
 	PIPING_LAYER_SHIFT(pipe_overlay, piping_layer)
@@ -540,6 +614,8 @@
 	return pipe_overlay
 
 /obj/machinery/atmospherics/on_construction(mob/user, obj_color, set_layer = PIPING_LAYER_DEFAULT)
+	procstart = null
+	src.procstart = null
 	if(can_unwrench)
 		add_atom_colour(obj_color, FIXED_COLOUR_PRIORITY)
 		set_pipe_color(obj_color)
@@ -552,22 +628,30 @@
 	SSair.add_to_rebuild_queue(src)
 
 /obj/machinery/atmospherics/update_name()
+	procstart = null
+	src.procstart = null
 	if(!override_naming && !HAS_TRAIT(src, TRAIT_WAS_RENAMED))
 		name = "[GLOB.pipe_color_name[pipe_color]] [initial(name)]"
 	return ..()
 
 /obj/machinery/atmospherics/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	if(vname == NAMEOF(src, name))
 		override_naming = TRUE
 	return ..()
 
 /obj/machinery/atmospherics/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	if(isliving(arrived))
 		var/mob/living/L = arrived
 		L.ventcrawl_layer = piping_layer
 	return ..()
 
 /obj/machinery/atmospherics/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	if(current_size >= STAGE_FIVE)
 		deconstruct(FALSE)
 	return ..()
@@ -576,6 +660,8 @@
 
 // Handles mob movement inside a pipenet
 /obj/machinery/atmospherics/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(!direction) //can't go this way.
 		return
 	if(user in buckled_mobs)// fixes buckle ventcrawl edgecase fuck bug
@@ -636,27 +722,37 @@
  * called in relaymove() to create the image for vent crawling
  */
 /obj/machinery/atmospherics/proc/return_pipenets()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /obj/machinery/atmospherics/update_remote_sight(mob/user)
+	procstart = null
+	src.procstart = null
 	user.add_sight(SEE_TURFS|BLIND)
 
 /**
  * Used for certain children of obj/machinery/atmospherics to not show pipe vision when mob is inside it.
  */
 /obj/machinery/atmospherics/proc/can_see_pipes()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /**
  * Update the layer in which the pipe/device is in, that way pipes have consistent layer depending on piping_layer
  */
 /obj/machinery/atmospherics/proc/update_layer()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
  * Handles cap overlay addition and removal, won't do anything if `has_cap_visuals` is set to `FALSE`
  */
 /obj/machinery/atmospherics/proc/update_cap_visuals()
+	procstart = null
+	src.procstart = null
 	if(!has_cap_visuals)
 		return
 
@@ -706,6 +802,8 @@
  * * paint_color - color that the pipe will be painted in (colors in hex like #4f4f4f)
  */
 /obj/machinery/atmospherics/proc/paint(paint_color)
+	procstart = null
+	src.procstart = null
 	if(paintable)
 		add_atom_colour(paint_color, FIXED_COLOUR_PRIORITY)
 		set_pipe_color(paint_color)
@@ -714,11 +812,15 @@
 
 /// Setter for pipe color, so we can ensure it's all uniform and save cpu time
 /obj/machinery/atmospherics/proc/set_pipe_color(pipe_colour)
+	procstart = null
+	src.procstart = null
 	src.pipe_color = uppertext(pipe_colour)
 	update_name()
 
 /// Return TRUE if there is device connected to portables_connector
 /obj/machinery/atmospherics/proc/portable_device_connected(node)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/atmospherics/components/unary/portables_connector/portable_devices_connector = nodes[node]
 	if(portable_devices_connector.connected_device)
 		return TRUE

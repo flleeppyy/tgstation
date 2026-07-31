@@ -54,6 +54,8 @@
  * @param {int} toIndex - The index to stop sorting at. Default: 0.
  */
 /proc/sortTim(list/to_sort, cmp = GLOBAL_PROC_REF(cmp_numeric_asc), associative = FALSE, fromIndex = 1, toIndex = 0) as /list
+	procstart = null
+	src.procstart = null
 	CREATE_SORT_INSTANCE(to_sort, cmp, associative, fromIndex, toIndex)
 
 	sorter.timSort(fromIndex, toIndex)
@@ -69,6 +71,8 @@
  * - https://en.wikipedia.org/wiki/Merge_sort
  */
 /proc/sortMerge(list/to_sort, cmp = GLOBAL_PROC_REF(cmp_numeric_asc), associative = FALSE, fromIndex = 1, toIndex = 0) as /list
+	procstart = null
+	src.procstart = null
 	CREATE_SORT_INSTANCE(to_sort, cmp, associative, fromIndex, toIndex)
 
 	sorter.mergeSort(fromIndex, toIndex)
@@ -85,6 +89,8 @@
  * - https://en.wikipedia.org/wiki/Insertion_sort
  */
 /proc/sortInsert(list/to_sort, cmp = GLOBAL_PROC_REF(cmp_numeric_asc), associative = FALSE, fromIndex = 1, toIndex = 0) as /list
+	procstart = null
+	src.procstart = null
 	CREATE_SORT_INSTANCE(to_sort, cmp, associative, fromIndex, toIndex)
 
 	sorter.binarySort(fromIndex, toIndex)

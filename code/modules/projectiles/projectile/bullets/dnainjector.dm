@@ -8,6 +8,8 @@
 	shrapnel_type = null
 
 /obj/projectile/bullet/dnainjector/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(target))
 		var/mob/living/carbon/M = target
 		if(blocked != 100)
@@ -22,5 +24,7 @@
 	return ..()
 
 /obj/projectile/bullet/dnainjector/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(injector)
 	return ..()

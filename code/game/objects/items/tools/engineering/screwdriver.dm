@@ -53,10 +53,14 @@
 	acid = 30
 
 /obj/item/screwdriver/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is stabbing [src] into [user.p_their()] [pick("temple", "heart")]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 
 /obj/item/screwdriver/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(random_color)
 		set_greyscale(colors = list(pick(screwdriver_colors)))
 	. = ..()
@@ -80,6 +84,8 @@
 	greyscale_colors = null
 
 /obj/item/screwdriver/abductor/get_belt_overlay()
+	procstart = null
+	src.procstart = null
 	return mutable_appearance('icons/obj/clothing/belt_overlays.dmi', "screwdriver_alien")
 
 /obj/item/screwdriver/power
@@ -112,9 +118,13 @@
 	greyscale_colors = null
 
 /obj/item/screwdriver/power/get_all_tool_behaviours()
+	procstart = null
+	src.procstart = null
 	return list(TOOL_SCREWDRIVER, TOOL_WRENCH)
 
 /obj/item/screwdriver/power/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/transforming, \
@@ -133,6 +143,8 @@
  * Toggles between crowbar and wirecutters and gives feedback to the user.
  */
 /obj/item/screwdriver/power/proc/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	tool_behaviour = (active ? TOOL_WRENCH : TOOL_SCREWDRIVER)
@@ -142,10 +154,14 @@
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
 /obj/item/screwdriver/power/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "It's fitted with a [tool_behaviour == TOOL_SCREWDRIVER ? "screw" : "bolt"] bit."
 
 /obj/item/screwdriver/power/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(tool_behaviour == TOOL_SCREWDRIVER)
 		user.visible_message(span_suicide("[user] is putting [src] to [user.p_their()] temple. It looks like [user.p_theyre()] trying to commit suicide!"))
 	else

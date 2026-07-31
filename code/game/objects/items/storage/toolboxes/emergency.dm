@@ -6,6 +6,8 @@
 	throw_speed = 3 // red ones go faster
 
 /obj/item/storage/toolbox/emergency/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/crowbar/red(src)
 	new /obj/item/weldingtool/mini(src)
 	new /obj/item/extinguisher/mini(src)

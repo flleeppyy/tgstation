@@ -54,6 +54,8 @@
 	name = "escape-menu-icons"
 
 /datum/asset/spritesheet/escape_menu_icons/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	var/icon/icons_small = 'icons/hud/escape_menu_icons.dmi'
 	for(var/state in icon_states(icons_small))
 		Insert(state, icons_small, icon_state = state)

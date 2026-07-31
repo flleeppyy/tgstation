@@ -8,6 +8,8 @@
 	VAR_PRIVATE/obj/item/give_held_item
 
 /datum/bt_node/ai_behavior/give/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/async_flags = handle_async()
 	if(async_flags)
 		return async_flags
@@ -38,6 +40,8 @@
 	return start_async()
 
 /datum/bt_node/ai_behavior/give/perform_async(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/pawn = controller.pawn
 	var/mob/living/living_target = give_target
 	var/obj/item/held_item = give_held_item
@@ -48,6 +52,8 @@
 
 /// Returns a list(has_left_pocket, has_right_pocket, has_valid_hand) if the item can be given, null otherwise.
 /datum/bt_node/ai_behavior/give/proc/can_give_item(mob/living/target, obj/item/held_item)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(held_item) || QDELETED(target))
 		return null
 
@@ -66,6 +72,8 @@
 	return list(has_left_pocket, has_right_pocket, has_valid_hand)
 
 /datum/bt_node/ai_behavior/give/proc/try_to_give_item(mob/living/target, obj/item/held_item)
+	procstart = null
+	src.procstart = null
 	var/list/give_slots = can_give_item(target, held_item)
 	if(!give_slots)
 		return AI_BEHAVIOR_FAILED
@@ -80,6 +88,8 @@
 	return AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/give/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	give_target = null
 	give_held_item = null

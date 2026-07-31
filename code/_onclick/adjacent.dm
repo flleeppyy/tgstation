@@ -10,11 +10,15 @@
 	Note that in all cases the neighbor is handled simply; this is usually the user's mob, in which case it is up to you
 	to check that the mob is not inside of something
 */
-/atom/proc/Adjacent(atom/neighbor, atom/target, atom/movable/mover) // basic inheritance, unused
+/atom/proc/Adjacent(atom/neighbor, atom/target, atom/movable/mover)
+	procstart = null
+	src.procstart = null // basic inheritance, unused
 	return
 
 // Not a sane use of the function and (for now) indicative of an error elsewhere
 /area/Adjacent(atom/neighbor, atom/target, atom/movable/mover)
+	procstart = null
+	src.procstart = null
 	CRASH("Call to /area/Adjacent(), unimplemented proc")
 
 
@@ -26,6 +30,8 @@
 		* Passing through in this case ignores anything with the LETPASSTHROW pass flag, such as tables, racks, and morgue trays.
 */
 /turf/Adjacent(atom/neighbor, atom/target, atom/movable/mover)
+	procstart = null
+	src.procstart = null
 	var/turf/T0 = get_turf(neighbor)
 
 	if(T0 == src) //same turf
@@ -66,6 +72,8 @@
 	* Must be on a turf
 */
 /atom/movable/Adjacent(atom/neighbor, atom/target, atom/movable/mover)
+	procstart = null
+	src.procstart = null
 	if(neighbor == loc)
 		return TRUE
 	if(neighbor?.loc == src)
@@ -79,6 +87,8 @@
 
 // This is necessary for storage items not on your person.
 /obj/item/Adjacent(atom/neighbor, atom/target, atom/movable/mover, recurse = 1)
+	procstart = null
+	src.procstart = null
 	if(neighbor == loc)
 		return TRUE
 	if(neighbor?.loc == src)
@@ -95,6 +105,8 @@ This is defined as any dense ON_BORDER_1 object, or any dense object without LET
 	The border_only flag allows you to not objects (for source and destination squares)
 */
 /turf/proc/ClickCross(target_dir, border_only, atom/target, atom/movable/mover)
+	procstart = null
+	src.procstart = null
 	for(var/obj/O in src)
 		if((mover && O.CanPass(mover, target_dir)) || (!mover && !O.density))
 			continue

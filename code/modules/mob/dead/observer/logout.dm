@@ -1,4 +1,6 @@
 /mob/dead/observer/Logout()
+	procstart = null
+	src.procstart = null
 	if (client)
 		client.images -= (GLOB.ghost_images_default+GLOB.ghost_images_simple)
 

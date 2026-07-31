@@ -52,6 +52,8 @@
 			ADD_TRAIT(tether_target, TRAIT_TETHER_ATTACHED, tether_trait_source)
 
 /datum/component/tether/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(check_tether))
 	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(check_snap))
 	RegisterSignal(tether_target, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(check_tether))
@@ -70,6 +72,8 @@
 		RegisterSignal(parent_module, COMSIG_MODULE_TRIGGERED, PROC_REF(on_parent_use))
 
 /datum/component/tether/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_MOVABLE_PRE_MOVE, COMSIG_MOVABLE_MOVED))
 	if (!isnull(tether_trait_source))
 		REMOVE_TRAIT(parent, TRAIT_TETHER_ATTACHED, tether_trait_source)
@@ -86,6 +90,8 @@
 	SEND_SIGNAL(parent, COMSIG_ATOM_TETHER_SNAPPED, tether_trait_source)
 
 /datum/component/tether/proc/check_tether(atom/source, new_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (check_snap(is_moving = TRUE))
@@ -127,6 +133,8 @@
 /// Try adjust the anchor's position to move closer to the target or regain LOS
 /// true_source is an optional argument in case we're looking for a LOS/closer turf to a new location rather than the actual owner, and need to ignore them
 /datum/component/tether/proc/try_adjust_position(atom/movable/anchor, atom/target, atom/true_source)
+	procstart = null
+	src.procstart = null
 	if (!istype(anchor) || anchor.anchored)
 		return FALSE
 
@@ -195,6 +203,8 @@
 /// turf_cache could be used to reduce the amount of calculations if multiple lines are cast and expected to have multiple shared turfs
 /// by sharing located results
 /datum/component/tether/proc/check_line(atom/start, atom/end, list/to_ignore, list/turf_cache = list())
+	procstart = null
+	src.procstart = null
 	var/turf/start_loc = get_turf(start)
 	var/turf/end_loc = get_turf(end)
 	var/start_dir = get_dir(start_loc, end_loc)
@@ -239,6 +249,8 @@
 		turf_cache[line_turf] = null
 
 /datum/component/tether/proc/check_snap(atom/movable/source, atom/old_loc, dir, forced, list/old_locs, is_moving = FALSE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/atom_target = parent
@@ -249,6 +261,8 @@
 		snap()
 
 /datum/component/tether/proc/snap()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/atom_target = parent
@@ -257,26 +271,36 @@
 	qdel(src)
 
 /datum/component/tether/proc/on_parent_use(obj/item/mod/module/module, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (get_turf(target) == get_turf(tether_target))
 		return MOD_ABORT_USE
 
 /datum/component/tether/proc/on_delete()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /datum/component/tether/proc/on_embedded_removed(atom/source, mob/living/victim)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	parent.AddComponent(/datum/component/tether, source, max_dist, tether_name, cur_dist)
 	qdel(src)
 
 /datum/component/tether/proc/beam_click(atom/source, atom/location, control, params, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(process_beam_click), source, location, params, user)
 
 /datum/component/tether/proc/process_beam_click(atom/source, atom/location, params, mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/nearest_turf
 	for (var/turf/line_turf in get_line(get_turf(parent), get_turf(tether_target)))
 		if (line_turf.IsReachableBy(user))

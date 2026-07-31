@@ -44,4 +44,6 @@
 	var/hunger_mod = 1 //% of hunger rate taken per tick.
 
 /datum/physiology/New()
+	procstart = null
+	src.procstart = null
 	armor = new

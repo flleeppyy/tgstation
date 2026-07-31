@@ -9,6 +9,8 @@
 /datum/unit_test/chat_filter_sanity
 
 /datum/unit_test/chat_filter_sanity/Run()
+	procstart = null
+	src.procstart = null
 	// Update the chat filters to only have test phrases, just in case the toml is different
 	config.shared_filter_reasons = list("blockedinshared" = BLOCKED_SHARED)
 	config.ic_filter_reasons = list("blockedinic" = BLOCKED_IC)

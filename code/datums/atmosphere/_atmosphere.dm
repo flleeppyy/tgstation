@@ -14,9 +14,13 @@
 	var/maximum_temp
 
 /datum/atmosphere/New()
+	procstart = null
+	src.procstart = null
 	generate_gas_string()
 
 /datum/atmosphere/proc/generate_gas_string()
+	procstart = null
+	src.procstart = null
 	var/list/spicy_gas = restricted_gases.Copy()
 	var/target_pressure = rand(minimum_pressure, maximum_pressure)
 	var/pressure_scalar = target_pressure / maximum_pressure

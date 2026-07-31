@@ -16,6 +16,8 @@
 	var/content = ""
 
 /datum/browser/New(mob/user, window_id, title = "", width = 0, height = 0, atom/source = null)
+	procstart = null
+	src.procstart = null
 	if(IS_CLIENT_OR_MOCK(user))
 		var/client/client_user = user
 		user = client_user.mob
@@ -32,19 +34,29 @@
 		src.source_ref = WEAKREF(source)
 
 /datum/browser/proc/user_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	user = null
 
 /datum/browser/proc/add_head_content(head_content)
+	procstart = null
+	src.procstart = null
 	src.head_content += head_content
 
 /datum/browser/proc/set_head_content(head_content)
+	procstart = null
+	src.procstart = null
 	src.head_content = head_content
 
 /datum/browser/proc/set_window_options(window_options)
+	procstart = null
+	src.procstart = null
 	src.window_options = window_options
 
 /datum/browser/proc/add_stylesheet(name, file)
+	procstart = null
+	src.procstart = null
 	if (istype(name, /datum/asset/spritesheet))
 		var/datum/asset/spritesheet/sheet = name
 		stylesheets["spritesheet_[sheet.name].css"] = "data/spritesheets/[sheet.name]"
@@ -60,16 +72,24 @@
 			SSassets.transport.register_asset(asset_name, file)
 
 /datum/browser/proc/add_script(name, file)
+	procstart = null
+	src.procstart = null
 	scripts["[ckey(name)].js"] = file
 	SSassets.transport.register_asset("[ckey(name)].js", file)
 
 /datum/browser/proc/set_content(content)
+	procstart = null
+	src.procstart = null
 	src.content = content
 
 /datum/browser/proc/add_content(content)
+	procstart = null
+	src.procstart = null
 	src.content += content
 
 /datum/browser/proc/get_header()
+	procstart = null
+	src.procstart = null
 	var/datum/asset/simple/namespaced/common/common_asset = get_asset_datum(/datum/asset/simple/namespaced/common)
 	var/list/new_head_content = list()
 	new_head_content += "<link rel='stylesheet' type='text/css' href='[common_asset.get_url_mappings()["common.css"]]'>"
@@ -104,6 +124,8 @@
 
 //" This is here because else the rest of the file looks like a string in notepad++.
 /datum/browser/proc/get_footer()
+	procstart = null
+	src.procstart = null
 	return {"
 			</div>
 		</div>
@@ -111,6 +133,8 @@
 </html>"}
 
 /datum/browser/proc/get_content()
+	procstart = null
+	src.procstart = null
 	return {"
 		[get_header()]
 		[content]
@@ -118,6 +142,8 @@
 	"}
 
 /datum/browser/proc/open(use_on_close = TRUE)
+	procstart = null
+	src.procstart = null
 	if(isnull(window_id)) //null check because this can potentially nuke goonchat
 		WARNING("Browser [title] tried to open with a null ID")
 		to_chat(user, span_userdanger("The [title] browser you tried to open failed a sanity check! Please report this on GitHub!"))
@@ -142,6 +168,8 @@
 		setup_onclose()
 
 /datum/browser/proc/setup_onclose()
+	procstart = null
+	src.procstart = null
 	set waitfor = 0 //winexists sleeps, so we don't need to.
 	for (var/i in 1 to 10)
 		if (!user?.client || !winexists(user, window_id))
@@ -154,12 +182,16 @@
 		onclose(user, window_id, send_ref)
 
 /datum/browser/proc/close()
+	procstart = null
+	src.procstart = null
 	if(!isnull(window_id))//null check because this can potentially nuke goonchat
 		user << browse(null, "window=[window_id]")
 	else
 		WARNING("Browser [title] tried to close with a null ID")
 
 /datum/browser/modal/alert/New(user, message, title, button_1 = "Ok", button_2, button_3, steal_focus = TRUE, timeout = 600 SECONDS)
+	procstart = null
+	src.procstart = null
 	if (!user)
 		return
 
@@ -180,6 +212,8 @@
 	set_content(display_list.Join())
 
 /datum/browser/modal/alert/Topic(href,href_list)
+	procstart = null
+	src.procstart = null
 	if (href_list["close"] || !user || !user.client)
 		open_time = 0
 		return
@@ -205,6 +239,8 @@
  * * timeout - The timeout of the window, after which no responses will be valid.
  */
 /proc/tg_alert(mob/user, message, title, button_1 = "Ok", button_2, button_3, steal_focus = TRUE, timeout = 600 SECONDS)
+	procstart = null
+	src.procstart = null
 	if (!user)
 		user = usr
 	if (!ismob(user))
@@ -232,6 +268,8 @@
 	var/steal_focus
 
 /datum/browser/modal/New(user, window_id, title = 0, width = 0, height = 0, atom/source = null, steal_focus = TRUE, timeout = 600 SECONDS)
+	procstart = null
+	src.procstart = null
 	..()
 	src.steal_focus = steal_focus
 	if (!src.steal_focus)
@@ -239,10 +277,14 @@
 	src.timeout = timeout
 
 /datum/browser/modal/close()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	open_time = 0
 
 /datum/browser/modal/open(use_on_close)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	open_time = world.time
 	use_on_close = TRUE
@@ -266,6 +308,8 @@
 		addtimer(CALLBACK(src, PROC_REF(close)), timeout)
 
 /datum/browser/modal/proc/wait()
+	procstart = null
+	src.procstart = null
 	while (open_time && selected_button <= 0 && (!timeout || open_time + timeout > world.time))
 		stoplag(1)
 
@@ -273,6 +317,8 @@
 	var/values_list = list()
 
 /datum/browser/modal/list_picker/New(user, message, title, button_1 = "Ok", button_2, button_3, steal_focus = TRUE, timeout = FALSE, list/values, input_type = "checkbox", width, height, slide_color)
+	procstart = null
+	src.procstart = null
 	if (!user)
 		return
 
@@ -308,6 +354,8 @@
 	set_content(display_list.Join())
 
 /datum/browser/modal/list_picker/Topic(href, list/href_list)
+	procstart = null
+	src.procstart = null
 	if (href_list["close"] || !user || !user.client)
 		open_time = 0
 		return
@@ -321,6 +369,8 @@
 	close()
 
 /proc/present_picker(mob/user, message, title, button_1 = "Ok", button_2, button_3, steal_focus = TRUE, timeout = 600 SECONDS, list/values, input_type = "checkbox", width, height, slide_color)
+	procstart = null
+	src.procstart = null
 	if (!ismob(user))
 		if (!istype(user, /client))
 			return
@@ -333,6 +383,8 @@
 		return list("button" = window.selected_button, "values" = window.values_list)
 
 /proc/input_bitfield(mob/user, title, bitfield, current_value, width = 350, height = 350, slide_color, allowed_edit_field = ALL)
+	procstart = null
+	src.procstart = null
 	var/list/bitflags = get_valid_bitflags(bitfield)
 	if (!user || !length(bitflags))
 		return
@@ -361,6 +413,8 @@
 	var/datum/callback/preview_update
 
 /datum/browser/modal/pref_like_picker/New(mob/user, message, title, steal_focus = TRUE, timeout = 600 SECONDS, list/settings, width, height)
+	procstart = null
+	src.procstart = null
 	if (!user)
 		return
 	src.settings = settings
@@ -369,6 +423,8 @@
 	set_content(show_choices(user))
 
 /datum/browser/modal/pref_like_picker/proc/show_choices(mob/user)
+	procstart = null
+	src.procstart = null
 	if (settings["preview_callback"])
 		var/datum/callback/callback = settings["preview_callback"]
 		preview_icon = callback.Invoke(settings)
@@ -398,6 +454,8 @@
 	return display_list.Join()
 
 /datum/browser/modal/pref_like_picker/Topic(href,href_list)
+	procstart = null
+	src.procstart = null
 	if (href_list["close"] || !user || !user.client)
 		open_time = 0
 		return
@@ -446,6 +504,8 @@
 	close()
 
 /proc/present_pref_like_picker(mob/user, message, title, steal_focus = TRUE, timeout = 600 SECONDS, list/settings, width, height)
+	procstart = null
+	src.procstart = null
 	if (!ismob(user))
 		if (!istype(user, /client))
 			return
@@ -472,6 +532,8 @@
 /// Otherwise, the user mob's machine var will be reset directly.
 ///
 /proc/onclose(mob/user, windowid, atom/source = null)
+	procstart = null
+	src.procstart = null
 	if(!user.client)
 		return
 	var/param = "null"

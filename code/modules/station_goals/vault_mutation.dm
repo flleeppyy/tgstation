@@ -7,10 +7,14 @@
 	locked = TRUE
 
 /datum/mutation/breathless/on_acquiring(mob/living/carbon/human/acquirer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(acquirer, TRAIT_NOBREATH, GENETIC_MUTATION)
 
-/datum/mutation/breathless/on_losing(mob/living/carbon/human/owner)//this shouldnt happen under normal condition but just to be sure
+/datum/mutation/breathless/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null//this shouldnt happen under normal condition but just to be sure
 	. = ..()
 	REMOVE_TRAIT(owner, TRAIT_NOBREATH, GENETIC_MUTATION)
 
@@ -22,10 +26,14 @@
 	locked = TRUE
 
 /datum/mutation/quick/on_acquiring(mob/living/carbon/human/acquirer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	acquirer.add_movespeed_modifier(/datum/movespeed_modifier/dna_vault_speedup)
 
 /datum/mutation/quick/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/dna_vault_speedup)
 
@@ -37,11 +45,15 @@
 	locked = TRUE
 
 /datum/mutation/tough/on_acquiring(mob/living/carbon/human/acquirer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	acquirer.physiology.brute_mod *= 0.7
 	ADD_TRAIT(acquirer, TRAIT_PIERCEIMMUNE, GENETIC_MUTATION)
 
 /datum/mutation/tough/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.physiology.brute_mod /= 0.7
 	REMOVE_TRAIT(owner, TRAIT_PIERCEIMMUNE, GENETIC_MUTATION)
@@ -54,10 +66,14 @@
 	locked = TRUE
 
 /datum/mutation/dextrous/on_acquiring(mob/living/carbon/human/acquirer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	acquirer.next_move_modifier *= 0.5
 
 /datum/mutation/dextrous/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.next_move_modifier /= 0.5
 
@@ -69,11 +85,15 @@
 	locked = TRUE
 
 /datum/mutation/fire_immunity/on_acquiring(mob/living/carbon/human/acquirer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	acquirer.physiology.burn_mod *= 0.5
 	acquirer.add_traits(list(TRAIT_RESISTHEAT, TRAIT_NOFIRE), GENETIC_MUTATION)
 
 /datum/mutation/fire_immunity/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.physiology.burn_mod /= 0.5
 	owner.remove_traits(list(TRAIT_RESISTHEAT, TRAIT_NOFIRE), GENETIC_MUTATION)
@@ -86,10 +106,14 @@
 	locked = TRUE
 
 /datum/mutation/quick_recovery/on_acquiring(mob/living/carbon/human/acquirer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	acquirer.physiology.stun_mod *= 0.5
 
 /datum/mutation/quick_recovery/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.physiology.stun_mod /= 0.5
 
@@ -101,6 +125,8 @@
 	locked = TRUE
 
 /datum/mutation/plasmocile/on_acquiring(mob/living/carbon/human/acquirer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/organ/lungs/improved_lungs = acquirer.get_organ_slot(ORGAN_SLOT_LUNGS)
 	ADD_TRAIT(owner, TRAIT_VIRUSIMMUNE, GENETIC_MUTATION)
@@ -110,6 +136,8 @@
 	RegisterSignal(acquirer, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(reapply_modification))
 
 /datum/mutation/plasmocile/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/organ/lungs/improved_lungs = owner.get_organ_slot(ORGAN_SLOT_LUNGS)
 	REMOVE_TRAIT(owner, TRAIT_VIRUSIMMUNE, GENETIC_MUTATION)
@@ -119,21 +147,29 @@
 		remove_buff(improved_lungs)
 
 /datum/mutation/plasmocile/proc/remove_modification(mob/source, obj/item/organ/old_organ)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(old_organ, /obj/item/organ/lungs))
 		remove_buff(old_organ)
 
 /datum/mutation/plasmocile/proc/reapply_modification(mob/source, obj/item/organ/new_organ)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(new_organ, /obj/item/organ/lungs))
 		apply_buff(new_organ)
 
 /datum/mutation/plasmocile/proc/apply_buff(obj/item/organ/lungs/our_lungs)
+	procstart = null
+	src.procstart = null
 	our_lungs.plas_breath_dam_min *= 0
 	our_lungs.plas_breath_dam_max *= 0
 
 /datum/mutation/plasmocile/proc/remove_buff(obj/item/organ/lungs/our_lungs)
+	procstart = null
+	src.procstart = null
 	our_lungs.plas_breath_dam_min = initial(our_lungs.plas_breath_dam_min)
 	our_lungs.plas_breath_dam_max = initial(our_lungs.plas_breath_dam_max)

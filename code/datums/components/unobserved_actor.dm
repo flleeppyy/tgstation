@@ -12,6 +12,8 @@
 	COOLDOWN_DECLARE(message_cooldown)
 
 /datum/component/unobserved_actor/Initialize(unobserved_flags = NONE, list/affected_actions = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(parent))
 		return ELEMENT_INCOMPATIBLE
@@ -21,6 +23,8 @@
 	src.affected_actions = affected_actions
 
 /datum/component/unobserved_actor/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	if (unobserved_flags & NO_OBSERVED_MOVEMENT)
 		RegisterSignal(parent, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(on_tried_move))
 		RegisterSignal(parent, COMSIG_ATOM_PRE_DIR_CHANGE, PROC_REF(on_tried_turn))
@@ -31,6 +35,8 @@
 		RegisterSignal(parent, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(on_tried_attack))
 
 /datum/component/unobserved_actor/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_MOVABLE_PRE_MOVE,
 		COMSIG_ATOM_PRE_DIR_CHANGE,
@@ -42,6 +48,8 @@
 
 /// Called when the mob tries to move
 /datum/component/unobserved_actor/proc/on_tried_move(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!check_if_seen(source))
 		return
@@ -49,6 +57,8 @@
 
 /// Called when the mob tries to change direction
 /datum/component/unobserved_actor/proc/on_tried_turn(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!check_if_seen(source))
 		return
@@ -56,6 +66,8 @@
 
 /// Called when the mob tries to use an ability
 /datum/component/unobserved_actor/proc/on_tried_ability(mob/living/source, datum/action)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!check_if_seen(source))
 		return
@@ -65,6 +77,8 @@
 
 /// Called when the mob tries to cast a spell
 /datum/component/unobserved_actor/proc/on_tried_spell(mob/living/source, datum/action)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!check_if_seen(source))
 		return
@@ -74,6 +88,8 @@
 
 /// Called when the mob tries to attack
 /datum/component/unobserved_actor/proc/on_tried_attack(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!check_if_seen(source))
 		return
@@ -81,6 +97,8 @@
 
 /// Checks if the mob is visible to something else, and provides a balloon alert of feedback if appropriate.
 /datum/component/unobserved_actor/proc/check_if_seen(mob/living/source)
+	procstart = null
+	src.procstart = null
 	var/observed = can_be_seen(source)
 	if (observed && COOLDOWN_FINISHED(src, message_cooldown))
 		source.balloon_alert(source, "something can see you!")
@@ -92,6 +110,8 @@
  * Not a very robust algorithm but it'll work in the majority of situations.
  */
 /datum/component/unobserved_actor/proc/can_be_seen(mob/living/source)
+	procstart = null
+	src.procstart = null
 	var/turf/my_turf = get_turf(source)
 	// Check for darkness
 	if(my_turf.lighting_object && my_turf.get_lumcount() < 0.1) // No one can see us in the darkness, right?

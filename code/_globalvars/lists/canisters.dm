@@ -3,6 +3,8 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 
 ///Returns a map of canister id to its type path
 /proc/init_gas_id_to_canister()
+	procstart = null
+	src.procstart = null
 	return sort_list(list(
 		GAS_N2 = /obj/machinery/portable_atmospherics/canister/nitrogen,
 		GAS_O2 = /obj/machinery/portable_atmospherics/canister/oxygen,

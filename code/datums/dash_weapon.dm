@@ -24,6 +24,8 @@
 	var/phaseout = /obj/effect/temp_visual/dir_setting/ninja/phase/out
 
 /datum/action/innate/dash/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -34,6 +36,8 @@
 	return TRUE
 
 /datum/action/innate/dash/Activate()
+	procstart = null
+	src.procstart = null
 	var/obj/item/dashing_item = target
 	if(!istype(dashing_item))
 		return
@@ -42,6 +46,8 @@
 
 /// Teleports user to target using do_teleport. Returns TRUE if teleport successful, FALSE otherwise.
 /datum/action/innate/dash/proc/teleport(mob/user, atom/target)
+	procstart = null
+	src.procstart = null
 	if(!IsAvailable(feedback = TRUE))
 		return FALSE
 
@@ -74,6 +80,8 @@
 
 /// Callback for [/proc/teleport] to increment our charges after  use.
 /datum/action/innate/dash/proc/charge()
+	procstart = null
+	src.procstart = null
 	current_charges = clamp(current_charges + 1, 0, max_charges)
 	SEND_SIGNAL(src, COMSIG_DASH_ACTION_CHARGED)
 

@@ -21,6 +21,8 @@
 
 
 /obj/item/implantcase/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(imp_type)
 		imp = new imp_type(src)
@@ -29,14 +31,20 @@
 		reagents = imp.reagents
 
 /obj/item/implantcase/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(imp)
 	return ..()
 
 /obj/item/implantcase/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "implantcase-[imp ? imp.implant_color : 0]"
 	return ..()
 
 /obj/item/implantcase/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/implanter))
 		var/obj/item/implanter/used_implanter = tool
 		if(used_implanter.imp && !imp)
@@ -61,6 +69,8 @@
 	return ..()
 
 /obj/item/implantcase/nameformat(input, user)
+	procstart = null
+	src.procstart = null
 	return "implant case[input?  " - '[input]'" : null]"
 
 ///An implant case that spawns with a tracking implant, as well as an appropriate name and description.

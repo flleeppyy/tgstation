@@ -15,6 +15,8 @@
 	var/zones_to_create = 3
 
 /datum/action/cooldown/mob_cooldown/spine_traps/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	playsound(owner, 'sound/effects/magic/demon_consume.ogg', vol = 100, falloff_exponent = 2, vary = TRUE, pressure_affected = FALSE)
@@ -34,10 +36,14 @@
 
 /// Returns true if we can place a trap at the specified location
 /datum/action/cooldown/mob_cooldown/spine_traps/proc/is_valid_turf(turf/target_turf)
+	procstart = null
+	src.procstart = null
 	return !target_turf.is_blocked_turf(exclude_mobs = TRUE) && !isspaceturf(target_turf) && !isopenspaceturf(target_turf)
 
 /// Places a 3x3 area of spike traps around a central provided point, returns the list of now occupied turfs
 /datum/action/cooldown/mob_cooldown/spine_traps/proc/place_zone(turf/target_turf)
+	procstart = null
+	src.procstart = null
 	var/list/used_turfs = list()
 	for (var/turf/zone_turf in range(1, target_turf))
 		if (!is_valid_turf(zone_turf))
@@ -65,6 +71,8 @@
 	)
 
 /obj/effect/temp_visual/thrusting_spines/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	flick("spikes_emerge", src)
 	addtimer(CALLBACK(src, PROC_REF(ready)), 1 SECONDS, TIMER_DELETE_ME)
@@ -77,15 +85,21 @@
 
 /// Called when we're ready to start impaling people
 /obj/effect/temp_visual/thrusting_spines/proc/ready()
+	procstart = null
+	src.procstart = null
 	active = TRUE
 
 /// Called when it is time to stop impaling people
 /obj/effect/temp_visual/thrusting_spines/proc/retract()
+	procstart = null
+	src.procstart = null
 	active = FALSE
 	icon_state = "spikes_submerge"
 
 /// Called when something enters our turf, if it is a non-flying mob then give it a stab
 /obj/effect/temp_visual/thrusting_spines/proc/on_entered(datum/source, atom/movable/arrived)
+	procstart = null
+	src.procstart = null
 	if (!active || !isliving(arrived) || (arrived.movement_type & MOVETYPES_NOT_TOUCHING_GROUND))
 		return
 	if (!COOLDOWN_FINISHED(src, thrust_delay))

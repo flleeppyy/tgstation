@@ -59,18 +59,24 @@
 	var/adjust_color_contrast = FALSE
 
 /obj/item/reagent_containers/apply_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(reagents)
 		reagents.maximum_volume = modify_fantasy_variable("maximum_volume", reagents.maximum_volume, bonus * 10, minimum = 5)
 	volume = modify_fantasy_variable("maximum_volume_beaker", volume, bonus * 10, minimum = 5)
 
 /obj/item/reagent_containers/remove_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	if(reagents)
 		reagents.maximum_volume = reset_fantasy_variable("maximum_volume", reagents.maximum_volume)
 	volume = reset_fantasy_variable("maximum_volume_beaker", volume)
 	return ..()
 
 /obj/item/reagent_containers/Initialize(mapload, vol)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnum(vol) && vol > 0)
 		volume = vol
@@ -85,6 +91,8 @@
 	AddElement(/datum/element/reagents_exposed_on_fire)
 
 /obj/item/reagent_containers/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(has_variable_transfer_amount)
 		if(possible_transfer_amounts.len > 1)
@@ -96,14 +104,20 @@
 		living_user.taste_container(reagents)
 
 /obj/item/reagent_containers/create_reagents(max_vol, flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(reagents, COMSIG_REAGENTS_HOLDER_UPDATED, PROC_REF(on_reagent_change))
 
 /obj/item/reagent_containers/proc/add_initial_reagents()
+	procstart = null
+	src.procstart = null
 	if(list_reagents)
 		reagents.add_reagent_list(list_reagents, added_purity = list_reagents_purity)
 
 /obj/item/reagent_containers/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(reagents.flags & SEALED_CONTAINER)
 		return TRUE
 	if(has_variable_transfer_amount)
@@ -111,13 +125,19 @@
 		return TRUE
 
 /obj/item/reagent_containers/attack_self_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	if(has_variable_transfer_amount)
 		change_transfer_amount(user, BACKWARD)
 
 /obj/item/reagent_containers/proc/mode_change_message(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/reagent_containers/proc/change_transfer_amount(mob/user, direction = FORWARD)
+	procstart = null
+	src.procstart = null
 	var/list_len = length(possible_transfer_amounts)
 	if(!list_len)
 		return
@@ -134,6 +154,8 @@
 	mode_change_message(user)
 
 /obj/item/reagent_containers/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!user.combat_mode)
 		return NONE // non-combat-mode-rmb allows for stuff like opening containers or attacking (bottle breaking)
 	if(try_splash(user, interacting_with))
@@ -142,6 +164,8 @@
 
 /// Tries to splash the target, called when right-clicking with a reagent container.
 /obj/item/reagent_containers/proc/try_splash(mob/user, atom/target)
+	procstart = null
+	src.procstart = null
 	if (!is_open_container() || (reagents.flags & NO_SPLASH))
 		return FALSE
 
@@ -180,6 +204,8 @@
 	return TRUE
 
 /obj/item/reagent_containers/proc/canconsume(mob/eater, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(eater))
 		return FALSE
 	if(!reagents || !reagents.total_volume)
@@ -199,20 +225,28 @@
 
 /// Sets reagent flags to the passed flags outright
 /obj/item/reagent_containers/proc/update_container_flags(new_flags)
+	procstart = null
+	src.procstart = null
 	reagents.flags = new_flags
 
 /// Adds the passed flags to the current reagent flags
 /obj/item/reagent_containers/proc/add_container_flags(new_flags)
+	procstart = null
+	src.procstart = null
 	reagents.flags |= new_flags
 
 /// Resets to base flags
 /obj/item/reagent_containers/proc/reset_container_flags()
+	procstart = null
+	src.procstart = null
 	reagents.flags = initial_reagent_flags
 
 /*
  * On accidental consumption, transfer a portion of the reagents to the eater and the item it's in, then continue to the base proc (to deal with shattering glass containers)
  */
 /obj/item/reagent_containers/on_accidental_consumption(mob/living/carbon/M, mob/living/carbon/user, obj/item/source_item,  discover_after = TRUE)
+	procstart = null
+	src.procstart = null
 	M.losebreath += 2
 	reagents?.trans_to(M, min(15, reagents.total_volume / rand(5,10)), transferred_by = user, methods = INGEST)
 	if(source_item?.reagents)
@@ -221,11 +255,15 @@
 	return ..()
 
 /obj/item/reagent_containers/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum, do_splash = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(do_splash)
 		splash_reagents(hit_atom, throwingdatum?.get_thrower(), was_thrown = TRUE, allow_closed_splash = FALSE)
 
 /obj/item/reagent_containers/proc/bartender_check(atom/target, mob/thrown_by)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(target.CanPass(src, get_dir(target, src)) && thrown_by && HAS_TRAIT(thrown_by, TRAIT_BOOZE_SLIDER))
 		. = TRUE
@@ -237,6 +275,8 @@
  * * throwingdatum - The throwingdatum behind the throw if the
  */
 /obj/item/reagent_containers/proc/splash_reagents(atom/target, mob/splasher, was_thrown = FALSE, allow_closed_splash = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!reagents || !reagents.total_volume || (!is_open_container() && !allow_closed_splash) || (reagents.flags & NO_SPLASH))
 		return
 
@@ -280,10 +320,14 @@
 
 /// Updates the icon of the container when the reagents change. Eats signal args
 /obj/item/reagent_containers/proc/on_reagent_change(datum/reagents/holder, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_appearance()
 
 /obj/item/reagent_containers/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!fill_icon_thresholds)
 		return
@@ -353,6 +397,8 @@
 	. += filling
 
 /obj/item/reagent_containers/proc/reagent_container_sound_chain(filled_sound, empty_sound, target, volume)
+	procstart = null
+	src.procstart = null
 	if(reagents.total_volume <= round((reagents.maximum_volume * 0.2), 1))
 		if(empty_sound)
 			playsound(target, empty_sound, volume, vary = sound_vary, ignore_walls = FALSE)
@@ -370,30 +416,46 @@
 	return FALSE
 
 /obj/item/reagent_containers/play_pickup_sound(volume = PICKUP_SOUND_VOLUME)
+	procstart = null
+	src.procstart = null
 	return reagent_container_sound_chain(filled_pickup_sound, pickup_sound, src, volume)
 
 /obj/item/reagent_containers/play_drop_sound(volume = DROP_SOUND_VOLUME)
+	procstart = null
+	src.procstart = null
 	return reagent_container_sound_chain(filled_drop_sound, drop_sound, src, volume)
 
 /obj/item/reagent_containers/play_throw_drop_sound(volume = YEET_SOUND_VOLUME)
+	procstart = null
+	src.procstart = null
 	return reagent_container_sound_chain(filled_throw_drop_sound, throw_drop_sound, src, volume)
 
 /obj/item/reagent_containers/play_mob_throw_hit_sound(target, volume = DROP_SOUND_VOLUME)
+	procstart = null
+	src.procstart = null
 	return reagent_container_sound_chain(filled_throw_hit_sound, mob_throw_hit_sound, target, volume)
 
 /obj/item/reagent_containers/play_hit_sound(target, volume = HALFWAY_SOUND_VOLUME)
+	procstart = null
+	src.procstart = null
 	return reagent_container_sound_chain(filled_hitsound, filled_hitsound, target, volume)
 
 /obj/item/reagent_containers/play_equip_sound(volume = EQUIP_SOUND_VOLUME)
+	procstart = null
+	src.procstart = null
 	return reagent_container_sound_chain(filled_equip_sound, equip_sound, src, volume)
 
 /obj/item/reagent_containers/used_in_craft(atom/result, datum/crafting_recipe/current_recipe)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// If consumed in crafting, we should dump contents out before qdeling them.
 	if(!is_type_in_list(src, current_recipe.parts))
 		reagents.expose(loc, TOUCH)
 
 /obj/item/reagent_containers/proc/try_refill(atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!reagents.total_volume)
 		to_chat(user, span_warning("[src] is empty!"))
 		return ITEM_INTERACT_BLOCKING
@@ -411,6 +473,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/proc/try_drain(atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!target.reagents.total_volume)
 		to_chat(user, span_warning("[target] is empty and can't be refilled!"))
 		return ITEM_INTERACT_BLOCKING
@@ -427,4 +491,6 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/is_chem_container()
+	procstart = null
+	src.procstart = null
 	return is_open_container() && !(item_flags & ABSTRACT) && !(flags_1 & HOLOGRAM_1)

@@ -15,6 +15,8 @@
 	spawnableAtoms = list()
 
 /datum/map_generator_module/rand_bushes/New()
+	procstart = null
+	src.procstart = null
 	..()
 	spawnableAtoms = typesof(/obj/structure/flora/bush) - typesof(/obj/structure/flora/bush/snow)
 	for(var/i in spawnableAtoms)

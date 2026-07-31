@@ -16,6 +16,8 @@
 	var/persistence_id
 
 /obj/item/storage/photo_album/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!SSpersistence.initialized)
 		LAZYADD(SSpersistence.queued_photo_albums, src)
@@ -24,10 +26,14 @@
 		persistence_load()
 
 /obj/item/storage/photo_album/Destroy()
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(SSpersistence.queued_photo_albums, src)
 	return ..()
 
 /obj/item/storage/photo_album/proc/get_picture_id_list()
+	procstart = null
+	src.procstart = null
 	var/list/L = list()
 	for(var/i in contents)
 		if(istype(i, /obj/item/photo))
@@ -43,11 +49,15 @@
 
 //Manual loading, DO NOT USE FOR HARDCODED/MAPPED IN ALBUMS. This is for if an album needs to be loaded mid-round from an ID.
 /obj/item/storage/photo_album/proc/persistence_load()
+	procstart = null
+	src.procstart = null
 	var/list/data = SSpersistence.photo_albums_database.get_key(persistence_id)
 	if (!isnull(data))
 		populate_from_id_list(data)
 
 /obj/item/storage/photo_album/proc/populate_from_id_list(list/ids)
+	procstart = null
+	src.procstart = null
 	var/list/current_ids = get_picture_id_list()
 	for(var/i in ids)
 		if(i in current_ids)
@@ -71,15 +81,21 @@
 	set_holdable(/obj/item/photo)
 
 /datum/storage/photo_album/proc/save_everything()
+	procstart = null
+	src.procstart = null
 	var/obj/item/storage/photo_album/album = parent
 	ASSERT(istype(album))
 	SSpersistence.photo_albums_database.set_key(album.persistence_id, album.get_picture_id_list())
 
 /datum/storage/photo_album/handle_enter(datum/source, obj/item/arrived)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	save_everything()
 
 /datum/storage/photo_album/handle_exit(datum/source, obj/item/gone)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	save_everything()
 
@@ -89,6 +105,8 @@
 	persistence_id = "HoS"
 
 /obj/item/storage/photo_album/hos/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REGISTER_REQUIRED_MAP_ITEM(1, 1)
 
@@ -98,6 +116,8 @@
 	persistence_id = "RD"
 
 /obj/item/storage/photo_album/rd/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REGISTER_REQUIRED_MAP_ITEM(1, 1)
 
@@ -107,6 +127,8 @@
 	persistence_id = "HoP"
 
 /obj/item/storage/photo_album/hop/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REGISTER_REQUIRED_MAP_ITEM(1, 1)
 
@@ -116,6 +138,8 @@
 	persistence_id = "Captain"
 
 /obj/item/storage/photo_album/captain/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REGISTER_REQUIRED_MAP_ITEM(1, 1)
 
@@ -125,6 +149,8 @@
 	persistence_id = "CMO"
 
 /obj/item/storage/photo_album/cmo/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REGISTER_REQUIRED_MAP_ITEM(1, 1)
 
@@ -134,6 +160,8 @@
 	persistence_id = "QM"
 
 /obj/item/storage/photo_album/qm/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REGISTER_REQUIRED_MAP_ITEM(1, 1)
 
@@ -143,6 +171,8 @@
 	persistence_id = "CE"
 
 /obj/item/storage/photo_album/ce/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REGISTER_REQUIRED_MAP_ITEM(1, 1)
 
@@ -152,6 +182,8 @@
 	persistence_id = "bar"
 
 /obj/item/storage/photo_album/bar/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REGISTER_REQUIRED_MAP_ITEM(1, 1)
 
@@ -166,6 +198,8 @@
 	persistence_id = "library"
 
 /obj/item/storage/photo_album/library/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REGISTER_REQUIRED_MAP_ITEM(1, 1)
 
@@ -175,6 +209,8 @@
 	persistence_id = "chapel"
 
 /obj/item/storage/photo_album/chapel/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REGISTER_REQUIRED_MAP_ITEM(1, 1)
 
@@ -194,6 +230,8 @@
 	persistence_id = "prison"
 
 /obj/item/storage/photo_album/prison/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REGISTER_REQUIRED_MAP_ITEM(1, 1)
 

@@ -9,10 +9,14 @@ MOVEMENT_SUBSYSTEM_DEF(newtonian_movement)
 	var/list/currentrun = list()
 
 /datum/controller/subsystem/movement/newtonian_movement/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg = "[stat_tag]:[length(processing)]"
 	return ..()
 
 /datum/controller/subsystem/movement/newtonian_movement/fire(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!resumed)
 		canonical_time = world.time
 		currentrun = processing.Copy()
@@ -38,6 +42,8 @@ MOVEMENT_SUBSYSTEM_DEF(newtonian_movement)
 		pour_bucket(bucket_info)
 
 /datum/controller/subsystem/movement/newtonian_movement/proc/fire_moveloop(datum/move_loop/loop)
+	procstart = null
+	src.procstart = null
 	// Loop isn't even running right now
 	if(!(loop.status & MOVELOOP_STATUS_QUEUED))
 		return

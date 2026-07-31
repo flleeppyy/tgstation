@@ -36,6 +36,8 @@ GLOBAL_LIST_INIT(animatable_blacklist, typecacheof(list(
 	var/knockdown_people = FALSE
 
 /mob/living/basic/mimic/melee_attack(mob/living/carbon/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !knockdown_people || !prob(15) || !istype(target))
 		return
@@ -78,6 +80,8 @@ GLOBAL_LIST_INIT(animatable_blacklist, typecacheof(list(
 
 // Pickup loot
 /mob/living/basic/mimic/crate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	lock = new
 	lock.Grant(src)
@@ -94,11 +98,15 @@ GLOBAL_LIST_INIT(animatable_blacklist, typecacheof(list(
 	icon_living = icon_state
 
 /mob/living/basic/mimic/crate/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(crate)
 	lock = null
 	return ..()
 
 /mob/living/basic/mimic/crate/attack_hand(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return ..()
 	if(trigger())
@@ -108,10 +116,14 @@ GLOBAL_LIST_INIT(animatable_blacklist, typecacheof(list(
 	return TRUE
 
 /mob/living/basic/mimic/crate/melee_attack(mob/living/carbon/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	toggle_open() // show our cool lid at the dumbass humans
 
 /mob/living/basic/mimic/crate/proc/trigger()
+	procstart = null
+	src.procstart = null
 	if(isnull(ai_controller) || client)
 		return FALSE
 	if(ai_controller.ai_status != AI_STATUS_OFF)
@@ -124,11 +136,15 @@ GLOBAL_LIST_INIT(animatable_blacklist, typecacheof(list(
 	return TRUE
 
 /mob/living/basic/mimic/crate/adjust_health(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(amount > 0)
 		trigger()
 	return ..()
 
 /mob/living/basic/mimic/crate/death()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/closet/crate/lootbox = new(get_turf(src))
 	// Put loot in crate
 	for(var/obj/loot in src)
@@ -136,17 +152,23 @@ GLOBAL_LIST_INIT(animatable_blacklist, typecacheof(list(
 	return ..()
 
 /mob/living/basic/mimic/crate/early_melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	if(target == src)
 		toggle_open()
 		return BASIC_MOB_END_ATTACK_CHAIN_COOLDOWN
 	return ..()
 
 /mob/living/basic/mimic/crate/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(mover, /obj/structure/closet))
 		return FALSE
 
 /mob/living/basic/mimic/crate/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ai_controller?.ai_status == AI_STATUS_OFF && !client)
 		return crate.examine(user)
 	return ..()
@@ -159,6 +181,8 @@ GLOBAL_LIST_INIT(animatable_blacklist, typecacheof(list(
 * Does nothing if the mimic locked itself
 */
 /mob/living/basic/mimic/crate/proc/toggle_open(mob/user)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		if(user)
 			balloon_alert(user, "too stiff!")
@@ -190,6 +214,8 @@ GLOBAL_LIST_INIT(animatable_blacklist, typecacheof(list(
 * * AM - item to be inserted
 */
 /mob/living/basic/mimic/crate/proc/insert(atom/movable/movable)
+	procstart = null
+	src.procstart = null
 	if(contents.len >= storage_capacity)
 		return CANT_INSERT_FULL
 	if(insertion_allowed(movable))
@@ -198,6 +224,8 @@ GLOBAL_LIST_INIT(animatable_blacklist, typecacheof(list(
 	return FALSE
 
 /mob/living/basic/mimic/crate/proc/insertion_allowed(atom/movable/movable)
+	procstart = null
+	src.procstart = null
 	if(movable.anchored)
 		return FALSE
 	if(ismob(movable))
@@ -244,6 +272,8 @@ GLOBAL_LIST_INIT(animatable_blacklist, typecacheof(list(
 	overlay_icon_state = "bg_default_border"
 
 /datum/action/innate/mimic/lock/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/mimic/crate/mimic = owner
 	mimic.locked = !mimic.locked
 	if(!mimic.locked)
@@ -272,6 +302,8 @@ GLOBAL_LIST_INIT(animatable_blacklist, typecacheof(list(
 	var/datum/weakref/copied_ref
 
 /mob/living/basic/mimic/copy/Initialize(mapload, obj/copy, mob/living/creator, destroy_original = FALSE, no_googlies = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_PERMANENTLY_MORTAL, INNATE_TRAIT) // They won't remember their original contents upon ressurection and would just be floating eyes
 	if (no_googlies)
@@ -279,11 +311,15 @@ GLOBAL_LIST_INIT(animatable_blacklist, typecacheof(list(
 	CopyObject(copy, creator, destroy_original)
 
 /mob/living/basic/mimic/copy/Destroy()
+	procstart = null
+	src.procstart = null
 	creator_ref = null
 	copied_ref = null
 	return ..()
 
 /mob/living/basic/mimic/copy/Life(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.) //dead or deleted
 		return
@@ -294,17 +330,25 @@ GLOBAL_LIST_INIT(animatable_blacklist, typecacheof(list(
 		return
 
 /mob/living/basic/mimic/copy/death()
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/movable as anything in src)
 		movable.forceMove(get_turf(src))
 	return ..()
 
 /mob/living/basic/mimic/copy/wabbajack(what_to_randomize, change_flags = WABBAJACK)
+	procstart = null
+	src.procstart = null
 	visible_message(span_warning("[src] resists polymorphing into a new creature!"))
 
 /mob/living/basic/mimic/copy/animate_atom_living(mob/living/owner)
+	procstart = null
+	src.procstart = null
 	change_owner(owner)
 
-/mob/living/basic/mimic/copy/Exited(atom/movable/gone, direction) // if our object gets deleted it calls Exited
+/mob/living/basic/mimic/copy/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null // if our object gets deleted it calls Exited
 	. = ..()
 	var/atom/movable/copied = copied_ref?.resolve()
 	if(!copied)
@@ -315,6 +359,8 @@ GLOBAL_LIST_INIT(animatable_blacklist, typecacheof(list(
 	death()
 
 /mob/living/basic/mimic/copy/proc/change_owner(mob/owner)
+	procstart = null
+	src.procstart = null
 	var/mob/creator_resolved = creator_ref?.resolve()
 	if(!creator_resolved)
 		creator_ref = null
@@ -327,9 +373,13 @@ GLOBAL_LIST_INIT(animatable_blacklist, typecacheof(list(
 
 /// Check whether this object can be copied. If destroy_original is true, this proc is ignored.
 /mob/living/basic/mimic/copy/proc/check_object(obj/target)
+	procstart = null
+	src.procstart = null
 	return ((isitem(target) || isstructure(target)) && !is_type_in_typecache(target, GLOB.animatable_blacklist))
 
 /mob/living/basic/mimic/copy/proc/CopyObject(obj/original, mob/living/user, destroy_original = FALSE)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(original) || !destroy_original && !check_object(original))
 		return FALSE
 	if(!destroy_original)
@@ -358,6 +408,8 @@ GLOBAL_LIST_INIT(animatable_blacklist, typecacheof(list(
 
 /// Copies the object visually including name and desc
 /mob/living/basic/mimic/copy/proc/CopyObjectVisuals(obj/original)
+	procstart = null
+	src.procstart = null
 	name = original.name
 	desc = original.desc
 	icon = original.icon
@@ -375,13 +427,19 @@ GLOBAL_LIST_INIT(animatable_blacklist, typecacheof(list(
 	ai_controller = /datum/ai_controller/basic_controller/mimic_copy/gun
 
 /mob/living/basic/mimic/copy/ranged/Destroy()
+	procstart = null
+	src.procstart = null
 	vis_contents.Cut()
 	return ..()
 
 /mob/living/basic/mimic/copy/ranged/RangedAttack(atom/atom_target, modifiers)
+	procstart = null
+	src.procstart = null
 	INVOKE_ASYNC(src, PROC_REF(fire_gun), atom_target, modifiers)
 
-/mob/living/basic/mimic/copy/ranged/proc/fire_gun(atom/target, modifiers) // i cant find any better way to do this
+/mob/living/basic/mimic/copy/ranged/proc/fire_gun(atom/target, modifiers)
+	procstart = null
+	src.procstart = null // i cant find any better way to do this
 	var/obj/item/gun/gun = locate() in contents
 	if(!gun.can_shoot())
 		if(istype(gun, /obj/item/gun/ballistic))
@@ -400,6 +458,8 @@ GLOBAL_LIST_INIT(animatable_blacklist, typecacheof(list(
 	gun.fire_gun(target, user = src, flag = FALSE, params = modifiers) //still make like a cool click click sound if trying to fire empty
 
 /mob/living/basic/mimic/copy/ranged/proc/magazine_useless(obj/item/gun/ballistic/ballistic)
+	procstart = null
+	src.procstart = null
 	if(isnull(ballistic.magazine) || !length(ballistic.magazine.stored_ammo))
 		return TRUE
 	// is there ATLEAST one unspent round (for the sake of revolvers or a magazine somehow having spent rounds in it)
@@ -411,6 +471,8 @@ GLOBAL_LIST_INIT(animatable_blacklist, typecacheof(list(
 	return TRUE
 
 /mob/living/basic/mimic/copy/ranged/CopyObject(obj/item/gun/original, mob/living/creator, destroy_original = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -420,15 +482,21 @@ GLOBAL_LIST_INIT(animatable_blacklist, typecacheof(list(
 	RegisterSignal(original, COMSIG_GUN_REPLENISHED_CHARGE, PROC_REF(on_regained_charge))
 
 /mob/living/basic/mimic/copy/ranged/CopyObjectVisuals(obj/original)
+	procstart = null
+	src.procstart = null
 	name = original.name
 	desc = original.desc
 	vis_contents += original
 
 /mob/living/basic/mimic/copy/ranged/can_use_guns(obj/item/gun)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// If our gun ran out of ammo but then regenerated it then we should go back to shooting
 /mob/living/basic/mimic/copy/ranged/proc/on_regained_charge()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	ai_controller?.set_blackboard_key(BB_GUNMIMIC_GUN_EMPTY, FALSE)
 

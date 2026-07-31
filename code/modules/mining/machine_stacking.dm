@@ -11,6 +11,8 @@
 	var/obj/machinery/mineral/stacking_machine/machine
 
 /obj/machinery/mineral/stacking_unit_console/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/area/our_area = get_area(src)
 	if(isnull(our_area))
@@ -26,23 +28,31 @@
 			break
 
 /obj/machinery/mineral/stacking_unit_console/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!isnull(machine))
 		machine.console = null
 		machine = null
 	return ..()
 
 /obj/machinery/mineral/stacking_unit_console/multitool_act(mob/living/user, obj/item/multitool/M)
+	procstart = null
+	src.procstart = null
 	M.set_buffer(src)
 	balloon_alert(user, "saved to multitool buffer")
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/mineral/stacking_unit_console/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "StackingConsole", name)
 		ui.open()
 
 /obj/machinery/mineral/stacking_unit_console/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["machine"] = machine ? TRUE : FALSE
 	data["stacking_amount"] = null
@@ -63,6 +73,8 @@
 	return data
 
 /obj/machinery/mineral/stacking_unit_console/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -110,6 +122,8 @@
 	))
 
 /obj/machinery/mineral/stacking_machine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	proximity_monitor = new(src, 1)
 	materials = new (
@@ -120,6 +134,8 @@
 	)
 
 /obj/machinery/mineral/stacking_machine/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!isnull(console))
 		console.machine = null
 		console = null
@@ -128,6 +144,8 @@
 	return ..()
 
 /obj/machinery/mineral/stacking_machine/HasProximity(atom/movable/entered)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(entered))
 		return
 	if(entered.loc != get_step(src, input_dir))
@@ -136,6 +154,8 @@
 		process_stack(entered)
 
 /obj/machinery/mineral/stacking_machine/multitool_act(mob/living/user, obj/item/multitool/multi_tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode || multi_tool.item_flags & ABSTRACT || multi_tool.flags_1 & HOLOGRAM_1)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 
@@ -148,6 +168,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/mineral/stacking_machine/proc/rotate(input)
+	procstart = null
+	src.procstart = null
 	if (input)
 		input_dir = turn(input_dir, 90)
 	else
@@ -156,6 +178,8 @@
 		rotate(input)
 
 /obj/machinery/mineral/stacking_machine/proc/process_stack(obj/item/stack/input)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(input))
 		return
 

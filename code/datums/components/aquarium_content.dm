@@ -23,6 +23,8 @@
 	var/list/animation_update_signals
 
 /datum/component/aquarium_content/Initialize(animation_update_signals)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -37,6 +39,8 @@
 		on_inserted(movable_parent.loc)
 
 /datum/component/aquarium_content/Destroy(force)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/movable = parent
 	if(movable.loc && HAS_TRAIT(movable.loc, TRAIT_IS_AQUARIUM))
 		remove_from_aquarium(movable.loc)
@@ -45,12 +49,16 @@
 	return ..()
 
 /datum/component/aquarium_content/proc/enter_aquarium(datum/source, OldLoc, Dir, Forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/movable/movable_parent = parent
 	if(HAS_TRAIT(movable_parent.loc, TRAIT_IS_AQUARIUM))
 		on_inserted(movable_parent.loc)
 
 /datum/component/aquarium_content/proc/on_inserted(atom/movable/aquarium)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(aquarium, COMSIG_ATOM_EXITED, PROC_REF(on_removed))
 	RegisterSignal(aquarium, COMSIG_AQUARIUM_FLUID_CHANGED, PROC_REF(on_fluid_changed))
 	RegisterSignals(aquarium, animation_update_signals, PROC_REF(animation_update_signal_proc))
@@ -70,21 +78,29 @@
 	aquarium.vis_contents |= vc_obj
 
 /datum/component/aquarium_content/proc/on_fluid_changed(datum/source, new_fluid_type)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	vc_obj.fluid_type = new_fluid_type
 	generate_animation()
 
 ///Called when one of the signals in the 'animation_update_signals' is sent
 /datum/component/aquarium_content/proc/animation_update_signal_proc(datum/source)
+	procstart = null
+	src.procstart = null
 	generate_animation()
 
 ///Sends a signal to the parent to get them to update the aquarium animation of the visual object
 /datum/component/aquarium_content/proc/generate_animation(reset = FALSE)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/movable = parent
 	SEND_SIGNAL(movable, COMSIG_AQUARIUM_CONTENT_DO_ANIMATION, reset ? null : current_animation, vc_obj)
 
 /// Generates common visual object, propeties that don't depend on aquarium surface
 /datum/component/aquarium_content/proc/generate_base_vc(atom/movable/aquarium)
+	procstart = null
+	src.procstart = null
 	vc_obj = new
 	vc_obj.vis_flags |= VIS_INHERIT_ID | VIS_INHERIT_PLANE //plane so it shows properly in containers on inventory ui for handheld cases
 	update_vc_color(parent)
@@ -92,6 +108,8 @@
 	SEND_SIGNAL(parent, COMSIG_AQUARIUM_CONTENT_GENERATE_APPEARANCE, vc_obj, aquarium)
 
 /datum/component/aquarium_content/proc/update_vc_color(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/color_to_use = source.color
 	if(!color_to_use && isfish(source)) //Small bit of snowflake code for those fish overlays that are greyscale.
@@ -100,17 +118,23 @@
 	vc_obj.color = color_to_use
 
 /datum/component/aquarium_content/proc/set_vc_base_position()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/movable = parent
 	SEND_SIGNAL(movable.loc, COMSIG_AQUARIUM_SET_VISUAL, vc_obj) //set the necessary layer as well as the pixel bounds first
 	SEND_SIGNAL(movable, COMSIG_AQUARIUM_CONTENT_RANDOMIZE_POSITION, movable.loc, vc_obj)
 
 /datum/component/aquarium_content/proc/on_removed(atom/movable/aquarium, atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(parent != gone)
 		return
 	remove_from_aquarium(aquarium)
 
 /datum/component/aquarium_content/proc/remove_from_aquarium(atom/movable/aquarium)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(aquarium, list(COMSIG_AQUARIUM_FLUID_CHANGED, COMSIG_ATOM_EXITED) + animation_update_signals)
 	SEND_SIGNAL(aquarium, COMSIG_AQUARIUM_REMOVE_VISUAL, vc_obj)
 

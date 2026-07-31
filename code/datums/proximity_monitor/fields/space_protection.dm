@@ -9,6 +9,8 @@
 	)
 
 /datum/proximity_monitor/advanced/bubble/space_protection/setup_effect_directions()
+	procstart = null
+	src.procstart = null
 	effect_direction_images = list(
 		"[SOUTH]" = image('icons/effects/fields.dmi', icon_state = "space_protection_south"),
 		"[NORTH]" = image('icons/effects/fields.dmi', icon_state = "space_protection_north"),
@@ -21,28 +23,40 @@
 	)
 
 /datum/proximity_monitor/advanced/bubble/space_protection/field_turf_crossed(atom/movable/movable, turf/old_location, turf/new_location)
+	procstart = null
+	src.procstart = null
 	if(!isliving(movable) || HAS_TRAIT_FROM(movable, traits_to_give[1], REF(src)))
 		return
 	give_space_immunity(movable)
 
 /datum/proximity_monitor/advanced/bubble/space_protection/field_turf_uncrossed(atom/movable/movable, turf/old_location, turf/new_location)
+	procstart = null
+	src.procstart = null
 	if(!isliving(movable) || get_dist(new_location, host) <= (edge_is_a_field ? current_range : current_range - 1))
 		return
 	remove_space_immunity(movable)
 
 /datum/proximity_monitor/advanced/bubble/space_protection/setup_field_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	for(var/mob/possible_mob in target)
 		give_space_immunity(possible_mob)
 
 /datum/proximity_monitor/advanced/bubble/space_protection/cleanup_field_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	for(var/mob/possible_mob in target)
 		if(HAS_TRAIT_FROM(possible_mob, traits_to_give[1], REF(src)))
 			remove_space_immunity(possible_mob)
 
 ///a mob has entered our field, apply the space protection to them.
 /datum/proximity_monitor/advanced/bubble/space_protection/proc/give_space_immunity(mob/living/new_immunne)
+	procstart = null
+	src.procstart = null
 	new_immunne.add_traits(traits_to_give, REF(src))
 
 ///removing the effects after the mob has exited our field.
 /datum/proximity_monitor/advanced/bubble/space_protection/proc/remove_space_immunity(mob/living/no_longer_immune)
+	procstart = null
+	src.procstart = null
 	no_longer_immune.remove_traits(traits_to_give, REF(src))

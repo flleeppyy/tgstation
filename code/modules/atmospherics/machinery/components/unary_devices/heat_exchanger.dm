@@ -24,10 +24,14 @@
 	icon_state = "he_map-4"
 
 /obj/machinery/atmospherics/components/unary/heat_exchanger/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "he[nodes[1] ? 1 : 0]"
 	return ..()
 
 /obj/machinery/atmospherics/components/unary/heat_exchanger/update_icon()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(nodes[1])
 		var/obj/machinery/atmospherics/node = nodes[1]
@@ -35,6 +39,8 @@
 	PIPING_LAYER_SHIFT(src, piping_layer)
 
 /obj/machinery/atmospherics/components/unary/heat_exchanger/atmos_init()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/atmospherics/components/unary/heat_exchanger/partner = partner_ref?.resolve()
 	if(!partner)
 		partner_ref = null
@@ -49,6 +55,8 @@
 	. = ..()
 
 /obj/machinery/atmospherics/components/unary/heat_exchanger/process_atmos()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/atmospherics/components/unary/heat_exchanger/partner = partner_ref?.resolve()
 	if(!partner)
 		partner_ref = null

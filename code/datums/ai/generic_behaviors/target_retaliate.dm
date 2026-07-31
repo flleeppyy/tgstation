@@ -11,6 +11,8 @@
 	var/check_faction = FALSE
 
 /datum/bt_node/ai_behavior/acquire_target/target_from_retaliate_list/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(!check_faction) // This is lame, but comeon man the polar bears kept killing each other
 		controller.set_blackboard_key(BB_TEMPORARILY_IGNORE_FACTION, TRUE)
 	. = ..()
@@ -18,6 +20,8 @@
 	controller.set_blackboard_key(BB_TEMPORARILY_IGNORE_FACTION, usually_ignores_faction)
 
 /datum/bt_node/ai_behavior/acquire_target/target_from_retaliate_list/filter_candidates(datum/ai_controller/controller, list/candidates, datum/targeting_strategy/strategy, atom/current_target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/pawn = controller.pawn
 	var/datum/target_priority_strategy/priority_strategy = GET_TARGET_PRIORITY_STRATEGY(controller.blackboard[BB_TARGET_PRIORITY_STRATEGY])
 	var/current_priority = priority_strategy ? priority_strategy.get_target_priority(controller, current_target) : 0
@@ -31,15 +35,21 @@
 	return filtered
 
 /datum/bt_node/ai_behavior/acquire_target/target_from_retaliate_list/on_target_found(datum/ai_controller/controller, atom/target, datum/targeting_strategy/strategy)
+	procstart = null
+	src.procstart = null
 	var/atom/hiding = strategy.find_hidden_mobs(controller.pawn, target)
 	if(hiding)
 		controller.set_blackboard_key(hiding_location_key, hiding)
 
 /datum/bt_node/ai_behavior/acquire_target/target_from_retaliate_list/on_no_valid_candidates(datum/ai_controller/controller, atom/current_target)
+	procstart = null
+	src.procstart = null
 	if(current_target)
 		controller.clear_blackboard_key(target_key)
 
 /datum/bt_node/ai_behavior/acquire_target/target_from_retaliate_list/pick_final_target(datum/ai_controller/controller, list/filtered_targets)
+	procstart = null
+	src.procstart = null
 	var/datum/target_priority_strategy/priority_strategy = GET_TARGET_PRIORITY_STRATEGY(controller.blackboard[BB_TARGET_PRIORITY_STRATEGY])
 	if(!priority_strategy)
 		return pick(filtered_targets)
@@ -49,5 +59,7 @@
 /datum/bt_node/ai_behavior/acquire_target/target_from_retaliate_list/nearest
 
 /datum/bt_node/ai_behavior/acquire_target/target_from_retaliate_list/nearest/pick_final_target(datum/ai_controller/controller, list/filtered_targets)
+	procstart = null
+	src.procstart = null
 	var/turf/our_position = get_turf(controller.pawn)
 	return get_closest_atom(/atom/, filtered_targets, our_position)

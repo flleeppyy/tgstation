@@ -14,6 +14,8 @@
 	var/core_color = COLOR_WHITE
 
 /obj/item/assembly/signaler/anomaly/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	if(!signal)
 		return FALSE
 	if(signal.data["code"] != code)
@@ -25,19 +27,27 @@
 	return TRUE
 
 /obj/item/assembly/signaler/anomaly/manual_suicide(datum/mind/suicidee)
+	procstart = null
+	src.procstart = null
 	var/mob/living/user = suicidee.current
 	user.visible_message(span_suicide("[user]'s [name] is reacting to the radio signal, warping [user.p_their()] body!"))
 	user.set_suicide(TRUE)
 	user.gib(DROP_ALL_REMAINS)
 
 /obj/item/assembly/signaler/anomaly/attack_self()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/assembly/signaler/anomaly/analyzer_act(mob/living/user, obj/item/analyzer/tool)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("Analyzing... [src]'s stabilized field is fluctuating along frequency [format_frequency(frequency)], code [code]."))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/assembly/signaler/anomaly/on_mail_unwrap(atom/source, mob/user, obj/item/mail/traitor/letter)
+	procstart = null
+	src.procstart = null
 	return NONE
 
 //Anomaly cores
@@ -49,6 +59,8 @@
 	core_color = COLOR_BRIGHT_ORANGE
 
 /obj/item/assembly/signaler/anomaly/pyro/signal()
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	if(!our_turf)
 		return
@@ -64,6 +76,8 @@
 	core_color = COLOR_LIME
 
 /obj/item/assembly/signaler/anomaly/grav/signal()
+	procstart = null
+	src.procstart = null
 	for(var/obj/object in orange(2, get_turf(src)))
 		if(!object.anchored)
 			step_towards(object,src)
@@ -79,6 +93,8 @@
 	core_color = COLOR_YELLOW
 
 /obj/item/assembly/signaler/anomaly/flux/signal()
+	procstart = null
+	src.procstart = null
 	tesla_zap(get_turf(src), 0, 10 KILO JOULES, 5 KILO JOULES, ZAP_MOB_DAMAGE | ZAP_OBJ_DAMAGE | ZAP_GENERATES_POWER)
 
 /obj/item/assembly/signaler/anomaly/bluespace
@@ -90,6 +106,8 @@
 	core_color = COLOR_DARK_CYAN
 
 /obj/item/assembly/signaler/anomaly/bluespace/signal()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/to_teleport = get_teleportable_container(src, container_flags = TELEPORT_CONTAINER_INCLUDE_SEALED_MODSUIT)
 	if(!to_teleport)
 		return
@@ -110,6 +128,8 @@
 
 // Causes a small vortex pulse
 /obj/item/assembly/signaler/anomaly/vortex/signal()
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	if(!our_turf)
 		return
@@ -149,6 +169,8 @@
 	core_color = COLOR_OLIVE_GREEN
 
 /obj/item/assembly/signaler/anomaly/bioscrambler/signal()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/circle_wave/bioscrambler(get_turf(src))
 	for(var/mob/living/carbon/nearby in hearers(1, get_turf(src)))
 		nearby.bioscramble(name)
@@ -162,6 +184,8 @@
 	core_color = COLOR_SOFT_RED
 
 /obj/item/assembly/signaler/anomaly/hallucination/signal()
+	procstart = null
+	src.procstart = null
 	visible_hallucination_pulse(get_turf(src), 2, 20 SECONDS, 1 MINUTES)
 
 /obj/item/assembly/signaler/anomaly/dimensional
@@ -173,6 +197,8 @@
 	core_color = COLOR_WHITE
 
 /obj/item/assembly/signaler/anomaly/dimensional/signal()
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	if(!our_turf)
 		return
@@ -182,6 +208,8 @@
 		theme.apply_theme(turf, show_effect = TRUE)
 
 /obj/item/assembly/signaler/anomaly/dimensional/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/recipes = list(/datum/crafting_recipe/dimensional_bombcore)
 	AddElement(/datum/element/slapcrafting, recipes)
@@ -195,6 +223,8 @@
 	core_color = COLOR_WHITE
 
 /obj/item/assembly/signaler/anomaly/ectoplasm/signal()
+	procstart = null
+	src.procstart = null
 	haunt_outburst(get_turf(src), 2, 33, 30 SECONDS)
 
 /obj/item/assembly/signaler/anomaly/weather
@@ -208,6 +238,8 @@
 	var/charges = 8
 
 /obj/item/assembly/signaler/anomaly/weather/signal()
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	if(!our_turf)
 		return
@@ -222,6 +254,8 @@
 	addtimer(CALLBACK(src, PROC_REF(strike), target), 1 SECONDS)
 
 /obj/item/assembly/signaler/anomaly/weather/proc/strike(turf/target)
+	procstart = null
+	src.procstart = null
 	playsound(target, 'sound/effects/magic/lightningbolt.ogg', 66, TRUE)
 	new /obj/effect/temp_visual/thunderbolt(target)
 

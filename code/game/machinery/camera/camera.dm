@@ -21,6 +21,8 @@
 	wall_external = TRUE
 
 /obj/item/wallframe/camera/find_support_structure(atom/structure)
+	procstart = null
+	src.procstart = null
 	return istype(structure, /obj/structure/window) ? structure : ..()
 
 /obj/machinery/camera
@@ -113,6 +115,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 	acid = 50
 
 /obj/machinery/camera/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	for(var/network_name in network)
@@ -139,9 +143,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 		find_and_mount_on_atom(mark_for_late_init = TRUE)
 
 /obj/machinery/camera/get_turfs_to_mount_on()
+	procstart = null
+	src.procstart = null
 	return list(get_step(src, dir))
 
 /obj/machinery/camera/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(can_use())
 		toggle_cam(null, 0) //kick anyone viewing out and remove from the camera chunks
 	SScameras.cameras -= src
@@ -157,11 +165,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 	return ..()
 
 /obj/machinery/camera/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
+	procstart = null
+	src.procstart = null
 	for(var/i in network)
 		network -= i
 		network += "[port.shuttle_id]_[i]"
 
 /obj/machinery/camera/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == xray_module)
 		xray_module = null
@@ -181,23 +193,33 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 		removeMotion()
 
 /obj/machinery/camera/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SScameras.camera_moved(src, get_turf(old_loc), get_turf(loc))
 
 /obj/machinery/camera/proc/create_prox_monitor()
+	procstart = null
+	src.procstart = null
 	if(!proximity_monitor)
 		proximity_monitor = new(src, 1)
 		RegisterSignal(proximity_monitor, COMSIG_QDELETING, PROC_REF(proximity_deleted))
 
 /obj/machinery/camera/proc/proximity_deleted()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	proximity_monitor = null
 
 /obj/machinery/camera/proc/set_area_motion(datum/motion_group/group)
+	procstart = null
+	src.procstart = null
 	area_motion = group
 	create_prox_monitor()
 
 /obj/machinery/camera/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isEmpProof(TRUE)) //don't reveal it's upgraded if was done via MALF AI Upgrade Camera Network ability
@@ -226,6 +248,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 			. += span_info("It can reactivated with <b>wirecutters</b>.")
 
 /obj/machinery/camera/emp_act(severity, reset_time = 90 SECONDS)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!camera_enabled)
 		return
@@ -247,12 +271,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 			to_chat(M, span_warning("The screen bursts into static!"))
 
 /obj/machinery/camera/on_saboteur(datum/source, disrupt_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//lasts twice as much so we don't have to constantly shoot cameras just to be S T E A L T H Y
 	emp_act(EMP_LIGHT, reset_time = disrupt_duration * 2)
 	return TRUE
 
 /obj/machinery/camera/proc/post_emp_reset(thisemp, previous_network)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	triggerCameraAlarm() //camera alarm triggers even if multiple EMPs are in effect.
@@ -268,6 +296,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 	calculate_active_power()
 
 /obj/machinery/camera/attack_ai(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	if (!istype(user))
 		return
 	if (!can_use())
@@ -275,6 +305,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 	user.switchCamera(src)
 
 /obj/machinery/camera/proc/setViewRange(num = 7)
+	procstart = null
+	src.procstart = null
 	if(num > MAX_CAMERA_RANGE)
 		CRASH("Attempted to set camera view range to something ([num]) greater then we support ([MAX_CAMERA_RANGE]).\
 			This would break chunk updating. If you really need to do this, update MAX_CAMERA_RANGE")
@@ -282,12 +314,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 	SScameras.update_visibility(src)
 
 /obj/machinery/camera/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	if (camera_enabled && current_size >= STAGE_FIVE) // If the singulo is strong enough to pull anchored objects and the camera is still active, turn off the camera as it gets ripped off the wall.
 		toggle_cam(null, 0)
 	return ..()
 
 ///Drops a specific upgrade and nulls it where necessary.
 /obj/machinery/camera/proc/drop_upgrade(obj/item/upgrade_dropped)
+	procstart = null
+	src.procstart = null
 	upgrade_dropped.forceMove(drop_location())
 	if(upgrade_dropped == xray_module)
 		xray_module = null
@@ -304,11 +340,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 		proximity_monitor = null
 
 /obj/machinery/camera/run_atom_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & BROKEN)
 		return damage_amount
 	. = ..()
 
 /obj/machinery/camera/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!camera_enabled)
 		return
 	. = ..()
@@ -317,6 +357,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 		toggle_cam(null, 0)
 
 /obj/machinery/camera/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	if(!disassembled)
 		if(camera_construction_state >= CAMERA_STATE_WIRED)
 			new /obj/item/stack/cable_coil(drop_location(), 2)
@@ -335,6 +377,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 		drop_upgrade(proximity_monitor)
 
 /obj/machinery/camera/update_icon_state()
+	procstart = null
+	src.procstart = null
 	var/xray_module = isXRay(TRUE) ? "xray" : ""
 	if(!camera_enabled || (machine_stat & EMPED))
 		icon_state = "[xray_module][base_icon_state]_off"
@@ -343,6 +387,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 	return ..()
 
 /obj/machinery/camera/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(panel_open)
 		. += "[base_icon_state]_panel"
@@ -357,6 +403,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 		. += emissive_appearance(icon, "[xray_module][base_icon_state]_[in_use_lights ? "in_use" : "on"]", src, alpha = src.alpha)
 
 /obj/machinery/camera/proc/toggle_cam(mob/user, displaymessage = TRUE)
+	procstart = null
+	src.procstart = null
 	camera_enabled = !camera_enabled
 	if(can_use())
 		SScameras.add_camera_to_chunk(src)
@@ -397,14 +445,20 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 			to_chat(O, span_warning("The screen bursts into static!"))
 
 /obj/machinery/camera/proc/triggerCameraAlarm()
+	procstart = null
+	src.procstart = null
 	alarm_on = TRUE
 	alarm_manager.send_alarm(ALARM_CAMERA, src, src)
 
 /obj/machinery/camera/proc/cancelCameraAlarm()
+	procstart = null
+	src.procstart = null
 	alarm_on = FALSE
 	alarm_manager.clear_alarm(ALARM_CAMERA)
 
 /obj/machinery/camera/proc/can_use()
+	procstart = null
+	src.procstart = null
 	if(!camera_enabled)
 		return FALSE
 	if(machine_stat & EMPED)
@@ -415,6 +469,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 /// Format is "alist[turf] = null", if you need to check individual objects use "length(can_see & list(turf))". Only "&" and "in" work for checking contents, but "in" is much slower.
 /// Always have the return value of can_see as the left-hand operand, otherwise it uses list checks instead of alist checks and your CPU time gets thrown in a blender.
 /obj/machinery/camera/proc/can_see()
+	procstart = null
+	src.procstart = null
 	var/alist/see = alist()
 	var/turf/pos = get_turf(src)
 	var/turf/directly_above = GET_TURF_ABOVE(pos)
@@ -447,6 +503,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 	return see
 
 /obj/machinery/camera/proc/Togglelight(on=0)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/silicon/ai/A in GLOB.ai_list)
 		for(var/obj/machinery/camera/cam in A.lit_cameras)
 			if(cam == src)
@@ -457,10 +515,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 		set_light(0)
 
 /obj/machinery/camera/get_remote_view_fullscreens(mob/user)
+	procstart = null
+	src.procstart = null
 	if(view_range == short_range) //unfocused
 		user.overlay_fullscreen("remote_view", /atom/movable/screen/fullscreen/impaired, 2)
 
 /obj/machinery/camera/update_remote_sight(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.set_invis_see(SEE_INVISIBLE_LIVING) //can't see ghosts through cameras
 	if(isXRay())
 		user.add_sight(SEE_TURFS|SEE_MOBS|SEE_OBJS)
@@ -470,13 +532,19 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 
 ///Called when the camera starts being watched on a camera console.
 /obj/machinery/camera/proc/on_start_watching()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Called when the camera stops being watched on a camera console.
 /obj/machinery/camera/proc/on_stop_watching()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/camera/proc/calculate_active_power()
+	procstart = null
+	src.procstart = null
 	if(!can_use())
 		active_power_usage = 0
 		return

@@ -96,6 +96,8 @@
 	ricochets_max = 0
 
 /obj/projectile/bullet/c38/trac/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/carbon/M = target
 	if(!istype(M))
@@ -114,6 +116,8 @@
 	ricochets_max = 0
 
 /obj/projectile/bullet/c38/hotshot/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(target))
 		var/mob/living/carbon/criminal_scum = target
@@ -127,6 +131,8 @@
 	ricochets_max = 0
 
 /obj/projectile/bullet/c38/iceblox/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(target))
 		var/mob/living/criminal_scum = target
@@ -172,10 +178,14 @@
 	icon_state = "pea"
 
 /obj/projectile/bullet/pea/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(100, NO_REACT) //same as the fruit itself, wont ever hit that much though i believe
 
 /obj/projectile/bullet/pea/on_hit(mob/living/carbon/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	if(istype(target) && blocked != 100)
 		if(iszombie(target)) // https://www.youtube.com/watch?v=ssZoq1eUK-s
 			target.adjust_brute_loss(15)

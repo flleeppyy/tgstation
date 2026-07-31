@@ -30,6 +30,8 @@ Bonus
 	var/pain = FALSE
 
 /datum/symptom/flesh_eating/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -39,6 +41,8 @@ Bonus
 		pain = TRUE
 
 /datum/symptom/flesh_eating/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -52,6 +56,8 @@ Bonus
 			Flesheat(M, A)
 
 /datum/symptom/flesh_eating/proc/Flesheat(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/get_damage = rand(15,25) * power
 	M.take_overall_damage(brute = get_damage, required_bodytype = BODYTYPE_ORGANIC)
 	if(pain)
@@ -102,6 +108,8 @@ Bonus
 	)
 
 /datum/symptom/flesh_death/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -111,6 +119,8 @@ Bonus
 		chems = TRUE
 
 /datum/symptom/flesh_death/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -125,6 +135,8 @@ Bonus
 			Flesh_death(M, A)
 
 /datum/symptom/flesh_death/proc/Flesh_death(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/get_damage = rand(6,10)
 	M.take_overall_damage(brute = get_damage, required_bodytype = BODYTYPE_ORGANIC)
 	if(chems)

@@ -2,6 +2,8 @@
 /datum/unit_test/language_key_conflicts
 
 /datum/unit_test/language_key_conflicts/Run()
+	procstart = null
+	src.procstart = null
 	var/list/used_keys = list()
 	for(var/datum/language/language as anything in subtypesof(/datum/language))
 		var/name = language::name

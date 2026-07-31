@@ -10,16 +10,22 @@
 	var/mob/living/monky_master
 
 /datum/antagonist/syndicate_monkey/on_gain()
+	procstart = null
+	src.procstart = null
 	monky_master = owner.enslaved_to?.resolve()
 	if(monky_master)
 		forge_objectives(monky_master)
 	return ..()
 
 /datum/antagonist/syndicate_monkey/Destroy()
+	procstart = null
+	src.procstart = null
 	monky_master = null
 	return ..()
 
 /datum/antagonist/syndicate_monkey/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.announce_objectives()
 
@@ -27,9 +33,13 @@
 	var/mob/living/monky_master
 
 /datum/objective/syndicate_monkey/check_completion()
+	procstart = null
+	src.procstart = null
 	return monky_master && monky_master.stat != DEAD
 
 /datum/antagonist/syndicate_monkey/forge_objectives(mob/monky_master)
+	procstart = null
+	src.procstart = null
 	var/datum/objective/syndicate_monkey/objective = new
 	objective.monky_master = monky_master
 	objective.explanation_text = "You are a badass monkey syndicate agent. Protect and obey all of your master [monky_master]'s orders!"

@@ -66,6 +66,8 @@
 	var/datum/status_effect/food/crafted_food_buff = null
 
 /obj/item/food/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(food_reagents)
 		food_reagents = string_assoc_list(food_reagents)
 
@@ -113,6 +115,8 @@
 	ADD_TRAIT(src, TRAIT_FISHING_BAIT, INNATE_TRAIT)
 
 /obj/item/food/apply_material_effects(list/materials)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_INGREDIENTS_HOLDER)) //ingredients holder handle prefixes and colors differently
 		var/datum/material/main_material = materials[1] //The list is sorted by amount so the first of the list is the main mat
 		if(!is_type_in_typecache(main_material, intrinsic_food_materials))
@@ -123,11 +127,15 @@
 	return ..()
 
 /obj/item/food/remove_material_effects(replace_mats = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	material_flags &= ~(MATERIAL_EFFECTS|MATERIAL_AFFECT_STATISTICS|MATERIAL_ADD_PREFIX|MATERIAL_COLOR)
 
 ///This proc adds the edible component, overwrite this if you for some reason want to change some specific args like callbacks.
 /obj/item/food/proc/make_edible()
+	procstart = null
+	src.procstart = null
 	AddComponentFrom(
 		SOURCE_EDIBLE_INNATE,\
 		/datum/component/edible,\
@@ -145,6 +153,8 @@
 	)
 
 /obj/item/food/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/item in components) // parent proc assumes machinery or structures in components are used, so we should be fine to assume only items from here
 		if(!istype(item, /obj/item/food))
@@ -176,6 +186,8 @@
 	AddComponentFrom(SOURCE_EDIBLE_INNATE, /datum/component/edible, foodtypes = final_foodtypes)
 
 /obj/item/food/OnCreatedFromProcessing(mob/living/user, obj/item/work_tool, list/chosen_option, atom/original_atom)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(original_atom, /obj/item/food))
 		return
@@ -190,29 +202,41 @@
 
 ///This proc handles processable elements, overwrite this if you want to add behavior such as slicing, forking, spooning, whatever, to turn the item into something else
 /obj/item/food/proc/make_processable()
+	procstart = null
+	src.procstart = null
 	return
 
 ///This proc handles grillable components, overwrite if you want different grill results etc.
 /obj/item/food/proc/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/badrecipe, rand(20 SECONDS, 30 SECONDS), FALSE)
 	return
 
 ///This proc handles bakeable components, overwrite if you want different bake results etc.
 /obj/item/food/proc/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/badrecipe, rand(25 SECONDS, 40 SECONDS), FALSE)
 	return
 
 /// This proc handles the microwavable element. Overwrite if you want special microwave results.
 /// By default, all food is microwavable. However, they will be microwaved into a bad recipe (burnt mess).
 /obj/item/food/proc/make_microwaveable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/microwavable, /obj/item/food/badrecipe, bad_recipe = TRUE)
 
 /// This proc handles the dryable element. Overwrite if you want special drying rack results.
 /obj/item/food/proc/make_dryable()
+	procstart = null
+	src.procstart = null
 	return
 
 ///This proc handles trash components, overwrite this if you want the object to spawn trash
 /obj/item/food/proc/make_leave_trash()
+	procstart = null
+	src.procstart = null
 	if(trash_type)
 		AddElement(/datum/element/food_trash, trash_type)
 	return
@@ -222,6 +246,8 @@
 ///Set decomp_req_handle to TRUE to only make it decompose when someone picks it up.
 ///Requires /datum/component/germ_sensitive to detect exposure
 /obj/item/food/proc/make_germ_sensitive(mapload)
+	procstart = null
+	src.procstart = null
 	if(!isnull(trash_type))
 		return // You don't eat the package and it protects from decomposing
 	AddComponent(/datum/component/germ_sensitive, mapload)
@@ -229,23 +255,33 @@
 		AddComponent(/datum/component/decomposition, mapload, decomp_req_handle, decomp_flags = foodtypes, decomp_result = decomp_type, ant_attracting = ant_attracting, custom_time = decomposition_time, stink_particles = decomposition_particles)
 
 /obj/item/food/proc/food_baked(datum/source, obj/item/food/baked_result)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	pass_down_foodtypes(baked_result)
 
 /obj/item/food/proc/food_microwaved(datum/source, obj/item/food/result)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	pass_down_foodtypes(result)
 
 /obj/item/food/proc/food_grilled(datum/source, obj/item/food/grill_result)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	pass_down_foodtypes(grill_result)
 
 /obj/item/food/proc/food_dried(datum/source, obj/item/food/result)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(src != result)
 		pass_down_foodtypes(result)
 
 /obj/item/food/proc/used_in_food_processor(datum/source, obj/item/food/result, datum/food_processor_process/recipe)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	pass_down_foodtypes(result, recipe.added_foodtypes, recipe.removed_foodtypes)
 
@@ -261,6 +297,8 @@
  *
  */
 /obj/item/food/proc/pass_down_foodtypes(obj/item/food/result, added_foodtypes = foodtypes_added_when_cooked, removed_foodtypes = foodtypes_removed_when_cooked)
+	procstart = null
+	src.procstart = null
 	if(!istype(result))
 		return
 

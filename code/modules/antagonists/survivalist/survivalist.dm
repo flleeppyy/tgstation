@@ -9,15 +9,21 @@
 	var/announce_objectives = TRUE
 
 /datum/antagonist/survivalist/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/survive/survive = new
 	survive.owner = owner
 	objectives += survive
 
 /datum/antagonist/survivalist/on_gain()
+	procstart = null
+	src.procstart = null
 	forge_objectives()
 	. = ..()
 
 /datum/antagonist/survivalist/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(owner, "<B>[greet_message]</B>")
 	if (announce_objectives)
@@ -28,6 +34,8 @@
 	hardcore_random_bonus = TRUE
 
 /datum/antagonist/survivalist/guns/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/steal_n_of_type/summon_guns/guns = new
 	guns.owner = owner
 	objectives += guns
@@ -39,22 +47,30 @@
 	hardcore_random_bonus = TRUE
 
 /datum/antagonist/survivalist/magic/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(owner, span_notice("As a wonderful magician, you should remember that spellbooks don't mean anything if they are used up."))
 
 /datum/antagonist/survivalist/magic/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/steal_n_of_type/summon_magic/magic = new
 	magic.owner = owner
 	objectives += magic
 	..()
 
 /datum/antagonist/survivalist/magic/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.add_traits(list(TRAIT_MAGICALLY_GIFTED, TRAIT_SEE_BLESSED_TILES), REF(src))
 	for(var/datum/atom_hud/alternate_appearance/basic/blessed_aware/blessed_hud in GLOB.active_alternate_appearances)
 		blessed_hud.check_hud(owner.current)
 
 /datum/antagonist/survivalist/magic/on_removal()
+	procstart = null
+	src.procstart = null
 	owner.remove_traits(list(TRAIT_MAGICALLY_GIFTED, TRAIT_SEE_BLESSED_TILES), REF(src))
 	return ..()
 
@@ -65,12 +81,16 @@
 	announce_objectives = FALSE
 
 /datum/antagonist/survivalist/battle_royale/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isnull(owner.current))
 		return
 	RegisterSignals(owner.current, list(COMSIG_LIVING_DEATH, COMSIG_QDELETING), PROC_REF(on_died))
 
 /datum/antagonist/survivalist/battle_royale/greet()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_warning("[span_bold("You hear a tinny voice in your ear: ")] \
 		Welcome contestant to Rumble Royale, the galaxy's greatest show! \n\
 		You may have already heard our announcement, but we're glad to tell you that you are on live TV! \n\
@@ -81,6 +101,8 @@
 	return ..()
 
 /datum/antagonist/survivalist/battle_royale/on_removal()
+	procstart = null
+	src.procstart = null
 	if (isnull(owner.current))
 		return ..()
 	UnregisterSignal(owner.current, list(COMSIG_LIVING_DEATH, COMSIG_QDELETING))
@@ -92,6 +114,8 @@
 
 /// Add an objective to go to a specific place.
 /datum/antagonist/survivalist/battle_royale/proc/set_target_area(target_area_name)
+	procstart = null
+	src.procstart = null
 	var/datum/objective/custom/travel = new
 	travel.owner = owner
 	travel.explanation_text = "Reach the [target_area_name] before time runs out."
@@ -100,6 +124,8 @@
 
 /// Called if you fail to survive.
 /datum/antagonist/survivalist/battle_royale/proc/on_died()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	owner.remove_antag_datum(type)
 

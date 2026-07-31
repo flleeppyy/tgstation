@@ -63,6 +63,8 @@
 	eldritch_passive = /datum/status_effect/heretic_passive/void
 
 /datum/heretic_knowledge/limited_amount/starting/base_void/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	if(!isopenturf(loc))
 		loc.balloon_alert(user, "ritual failed, invalid location!")
 		return FALSE
@@ -75,6 +77,8 @@
 	return ..()
 
 /datum/heretic_knowledge/limited_amount/starting/base_void/on_mansus_grasp(mob/living/source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!iscarbon(target))
@@ -127,12 +131,16 @@
 	)
 
 /datum/heretic_knowledge/void_prison/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/structure/closet/closet in atoms)
 		if(is_type_in_list(closet, closet_blacklist))
 			atoms -= closet
 
 /datum/heretic_knowledge/void_prison/cleanup_atoms(list/selected_atoms)
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/closet/closet in selected_atoms)
 		closet.dump_contents()
 
@@ -154,6 +162,8 @@
 	)
 
 /datum/heretic_knowledge/armor/void/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	if(!isopenturf(loc))
 		loc.balloon_alert(user, "ritual failed, invalid location!")
 		return FALSE
@@ -189,12 +199,16 @@
 	research_tree_icon_state = "blade_upgrade_void"
 
 /datum/heretic_knowledge/blade_upgrade/void/do_melee_effects(mob/living/source, mob/living/target, obj/item/melee/sickly_blade/blade)
+	procstart = null
+	src.procstart = null
 	if(source == target || !isliving(target))
 		return
 
 	target.apply_status_effect(/datum/status_effect/void_chill, 2)
 
 /datum/heretic_knowledge/blade_upgrade/void/do_ranged_effects(mob/living/user, atom/target, obj/item/melee/sickly_blade/blade)
+	procstart = null
+	src.procstart = null
 	if(!isliving(target))
 		return
 	var/mob/living/living_target = target
@@ -207,6 +221,8 @@
 	INVOKE_ASYNC(src, PROC_REF(follow_up_attack), user, target, blade)
 
 /datum/heretic_knowledge/blade_upgrade/void/proc/follow_up_attack(mob/living/user, mob/living/target, obj/item/melee/sickly_blade/blade)
+	procstart = null
+	src.procstart = null
 	blade.melee_attack_chain(user, target)
 
 /datum/heretic_knowledge/void_conduit
@@ -225,14 +241,20 @@
 	research_tree_icon_frame = 12
 
 /datum/heretic_knowledge/void_conduit/on_gain(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(user, COMSIG_HERETIC_BLADE_PREATTACK, PROC_REF(on_blade_preattack))
 
 /datum/heretic_knowledge/void_conduit/on_lose(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, COMSIG_HERETIC_BLADE_PREATTACK)
 
 /datum/heretic_knowledge/void_conduit/proc/is_valid_turf(turf/open/affected_turf)
+	procstart = null
+	src.procstart = null
 	// space is the obvious one, snow is for icebox
 	if(isspaceturf(affected_turf) || issnowturf(affected_turf))
 		return TRUE
@@ -243,6 +265,8 @@
 	return FALSE
 
 /datum/heretic_knowledge/void_conduit/proc/is_valid_turf_callback(turf/open/affected_turf, mob/living/source, obj/item/sword)
+	procstart = null
+	src.procstart = null
 	if(!source.is_holding(sword))
 		return FALSE
 	if(!is_valid_turf(affected_turf))
@@ -252,6 +276,8 @@
 	return TRUE
 
 /datum/heretic_knowledge/void_conduit/proc/on_blade_preattack(mob/living/source, atom/target, obj/item/sword)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isopenturf(target))
 		return NONE
@@ -268,6 +294,8 @@
 	return NONE
 
 /datum/heretic_knowledge/void_conduit/proc/create_conduit(turf/open/affected_turf, mob/living/source, obj/item/sword)
+	procstart = null
+	src.procstart = null
 	playsound(source, 'sound/effects/cloth_rip.ogg', 50, TRUE) // funny thing is, can't hear sound in a vacuum
 	to_chat(source, span_mansus("You plunge [sword] deep into [affected_turf], trying to rip open a conduit to the void!"))
 	source.visible_message(
@@ -312,6 +340,8 @@
 	var/datum/proximity_monitor/advanced/void_storm/heavy_storm
 
 /datum/heretic_knowledge/ultimate/void_final/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	if(!isopenturf(loc))
 		loc.balloon_alert(user, "ritual failed, invalid location!")
 		return FALSE
@@ -324,6 +354,8 @@
 	return ..()
 
 /datum/heretic_knowledge/ultimate/void_final/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.add_traits(list(TRAIT_RESISTLOWPRESSURE, TRAIT_NEGATES_GRAVITY, TRAIT_MOVE_FLYING, TRAIT_FREE_HYPERSPACE_MOVEMENT), type)
 
@@ -340,6 +372,8 @@
 		ascended_human.update_sight()
 
 /datum/heretic_knowledge/ultimate/void_final/on_lose(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	on_death() // Losing is pretty much dying. I think
 
 /**
@@ -351,6 +385,8 @@
  * Also starts storms in any area that doesn't have one.
  */
 /datum/heretic_knowledge/ultimate/void_final/proc/on_life(mob/living/source, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/atom/thing_in_range as anything in range(10, source))
@@ -391,6 +427,8 @@
  * Stop the storm when the heretic passes away.
  */
 /datum/heretic_knowledge/ultimate/void_final/proc/on_death(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(sound_loop)
@@ -404,6 +442,8 @@
 
 ///Few checks to determine if we can deflect bullets
 /datum/heretic_knowledge/ultimate/void_final/proc/can_deflect(mob/living/ascended_heretic)
+	procstart = null
+	src.procstart = null
 	if(!(ascended_heretic.mobility_flags & MOBILITY_USE))
 		return FALSE
 	if(!isturf(ascended_heretic.loc))
@@ -411,6 +451,8 @@
 	return TRUE
 
 /datum/heretic_knowledge/ultimate/void_final/proc/hit_by_projectile(mob/living/ascended_heretic, obj/projectile/hitting_projectile, def_zone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!can_deflect(ascended_heretic))

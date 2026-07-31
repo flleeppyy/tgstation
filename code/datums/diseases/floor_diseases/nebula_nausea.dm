@@ -14,6 +14,8 @@
 	max_stages = 5
 
 /datum/disease/advance/nebula_nausea/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

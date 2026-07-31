@@ -10,6 +10,8 @@
 	action_priority = COMSIG_MAFIA_NIGHT_PRE_ACTION_PHASE
 
 /datum/mafia_ability/roleblock/perform_action_target(datum/mafia_controller/game, datum/mafia_role/day_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -18,6 +20,8 @@
 	return TRUE
 
 /datum/mafia_ability/roleblock/clean_action_refs(datum/mafia_controller/game)
+	procstart = null
+	src.procstart = null
 	if(target_role)
 		target_role.role_flags &= ~ROLE_ROLEBLOCKED
 	return ..()

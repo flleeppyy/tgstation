@@ -1,4 +1,6 @@
 /datum/admins/proc/CheckAdminHref(href, href_list)
+	procstart = null
+	src.procstart = null
 	var/auth = href_list["admin_token"]
 	. = auth && (auth == href_token || auth == GLOB.href_token)
 	if(.)
@@ -12,6 +14,8 @@
 	log_admin_private("[key_name(usr)] clicked an href with [msg] authorization key! [href]")
 
 /datum/admins/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(usr.client != src.owner || !check_rights(0))

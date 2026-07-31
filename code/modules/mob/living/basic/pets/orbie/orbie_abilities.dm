@@ -7,6 +7,8 @@
 	click_to_activate = FALSE
 
 /datum/action/cooldown/mob_cooldown/lights/Activate()
+	procstart = null
+	src.procstart = null
 	owner.set_light_on(!owner.light_on)
 	return TRUE
 
@@ -22,6 +24,8 @@
 	var/obj/item/camera/internal_camera
 
 /datum/action/cooldown/mob_cooldown/capture_photo/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(owner))
 		return
@@ -31,6 +35,8 @@
 	RegisterSignal(internal_camera, COMSIG_PREQDELETED, PROC_REF(on_camera_delete))
 
 /datum/action/cooldown/mob_cooldown/capture_photo/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	if(isnull(internal_camera))
 		return FALSE
 	internal_camera.attempt_picture(target, owner)
@@ -38,10 +44,14 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/capture_photo/proc/on_camera_delete(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(internal_camera, COMSIG_PREQDELETED)
 	internal_camera = null
 
 /datum/action/cooldown/mob_cooldown/capture_photo/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(internal_camera)
 	return ..()

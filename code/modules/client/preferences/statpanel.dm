@@ -5,6 +5,8 @@
 	default_value = FALSE
 
 /datum/preference/toggle/fast_mc_refresh/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if (!..(preferences))
 		return FALSE
 

@@ -48,6 +48,8 @@ There are several things that need to be remembered:
 /* --------------------------------------- */
 //For legacy support.
 /mob/living/carbon/human/regenerate_icons()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_worn_undersuit()
 	update_worn_id()
@@ -73,6 +75,8 @@ There are several things that need to be remembered:
 //vvvvvv UPDATE_INV PROCS vvvvvv
 
 /mob/living/carbon/human/update_worn_undersuit()
+	procstart = null
+	src.procstart = null
 	remove_overlay(UNIFORM_LAYER)
 	hud_used?.update_inventory_slot(ITEM_SLOT_ICLOTHING)
 
@@ -131,6 +135,8 @@ There are several things that need to be remembered:
 	apply_overlay(UNIFORM_LAYER)
 
 /mob/living/carbon/human/update_worn_id()
+	procstart = null
+	src.procstart = null
 	remove_overlay(ID_LAYER)
 	hud_used?.update_inventory_slot(ITEM_SLOT_ID)
 
@@ -152,6 +158,8 @@ There are several things that need to be remembered:
 
 
 /mob/living/carbon/human/update_worn_gloves()
+	procstart = null
+	src.procstart = null
 	remove_overlay(GLOVES_LAYER)
 	hud_used?.update_inventory_slot(ITEM_SLOT_GLOVES)
 
@@ -209,6 +217,8 @@ There are several things that need to be remembered:
 	apply_overlay(GLOVES_LAYER)
 
 /mob/living/carbon/human/update_worn_glasses()
+	procstart = null
+	src.procstart = null
 	remove_overlay(GLASSES_LAYER)
 	hud_used?.update_inventory_slot(ITEM_SLOT_EYES)
 
@@ -231,6 +241,8 @@ There are several things that need to be remembered:
 
 
 /mob/living/carbon/human/update_worn_ears()
+	procstart = null
+	src.procstart = null
 	remove_overlay(EARS_LAYER)
 	hud_used?.update_inventory_slot(ITEM_SLOT_EARS)
 
@@ -252,6 +264,8 @@ There are several things that need to be remembered:
 	apply_overlay(EARS_LAYER)
 
 /mob/living/carbon/human/update_worn_neck()
+	procstart = null
+	src.procstart = null
 	remove_overlay(NECK_LAYER)
 	hud_used?.update_inventory_slot(ITEM_SLOT_NECK)
 
@@ -272,6 +286,8 @@ There are several things that need to be remembered:
 	apply_overlay(NECK_LAYER)
 
 /mob/living/carbon/human/update_worn_shoes()
+	procstart = null
+	src.procstart = null
 	remove_overlay(SHOES_LAYER)
 	hud_used?.update_inventory_slot(ITEM_SLOT_FEET)
 
@@ -299,6 +315,8 @@ There are several things that need to be remembered:
 	apply_overlay(SHOES_LAYER)
 
 /mob/living/carbon/human/update_suit_storage()
+	procstart = null
+	src.procstart = null
 	remove_overlay(SUIT_STORE_LAYER)
 	hud_used?.update_inventory_slot(ITEM_SLOT_SUITSTORE)
 
@@ -316,6 +334,8 @@ There are several things that need to be remembered:
 	apply_overlay(SUIT_STORE_LAYER)
 
 /mob/living/carbon/human/update_worn_head()
+	procstart = null
+	src.procstart = null
 	remove_overlay(HEAD_LAYER)
 	hud_used?.update_inventory_slot(ITEM_SLOT_HEAD)
 
@@ -335,6 +355,8 @@ There are several things that need to be remembered:
 	apply_overlay(HEAD_LAYER)
 
 /mob/living/carbon/human/update_worn_belt()
+	procstart = null
+	src.procstart = null
 	remove_overlay(BELT_LAYER)
 	hud_used?.update_inventory_slot(ITEM_SLOT_BELT)
 
@@ -354,6 +376,8 @@ There are several things that need to be remembered:
 	apply_overlay(BELT_LAYER)
 
 /mob/living/carbon/human/update_worn_oversuit()
+	procstart = null
+	src.procstart = null
 	remove_overlay(SUIT_LAYER)
 	hud_used?.update_inventory_slot(ITEM_SLOT_OCLOTHING)
 
@@ -374,11 +398,15 @@ There are several things that need to be remembered:
 	apply_overlay(SUIT_LAYER)
 
 /mob/living/carbon/human/update_pockets()
+	procstart = null
+	src.procstart = null
 	if (hud_used)
 		hud_used.update_inventory_slot(ITEM_SLOT_LPOCKET)
 		hud_used.update_inventory_slot(ITEM_SLOT_RPOCKET)
 
 /mob/living/carbon/human/update_worn_mask()
+	procstart = null
+	src.procstart = null
 	remove_overlay(FACEMASK_LAYER)
 	hud_used?.update_inventory_slot(ITEM_SLOT_MASK)
 
@@ -401,6 +429,8 @@ There are several things that need to be remembered:
 	apply_overlay(FACEMASK_LAYER)
 
 /mob/living/carbon/human/update_worn_back()
+	procstart = null
+	src.procstart = null
 	remove_overlay(BACK_LAYER)
 	hud_used?.update_inventory_slot(ITEM_SLOT_BACK)
 
@@ -418,6 +448,8 @@ There are several things that need to be remembered:
 	apply_overlay(BACK_LAYER)
 
 /mob/living/carbon/human/get_held_overlays()
+	procstart = null
+	src.procstart = null
 	hud_used?.update_inventory_slot(ITEM_SLOT_HANDS)
 	var/list/hands = list()
 	for(var/obj/item/worn_item in held_items)
@@ -438,6 +470,8 @@ There are several things that need to be remembered:
 
 /// Modifies a sprite slightly to conform to female body shapes
 /proc/wear_female_version(icon_state, icon_file_path, icon, type, greyscale_colors, bodyshape)
+	procstart = null
+	src.procstart = null
 	var/index = "[icon_file_path]-[icon_state]-[greyscale_colors]"
 	var/static/list/female_clothing_icons = list()
 	var/icon/female_clothing_icon = female_clothing_icons[index]
@@ -453,6 +487,8 @@ There are several things that need to be remembered:
 
 /// Modifies a sprite to conform to custom body shapes
 /obj/item/proc/get_bodyshape_icon(icon/base_icon, key, greyscale_colors, bodyshape)
+	procstart = null
+	src.procstart = null
 	ASSERT(istext(key), "get_bodyshape_icon: no key passed")
 	if((bodyshape & BODYSHAPE_DIGITIGRADE) && (supports_variations_flags & CLOTHING_DIGITIGRADE_MASK))
 		if(isnull(greyscale_colors) || length(SSgreyscale.ParseColorString(greyscale_colors)) > 1)
@@ -472,6 +508,8 @@ There are several things that need to be remembered:
 
 /// Modifies a sprite to replace the legs with a new version
 /proc/replace_icon_legs(icon/base_icon, icon/new_legs)
+	procstart = null
+	src.procstart = null
 	var/static/icon/leg_mask
 	if(!leg_mask)
 		leg_mask = icon('icons/mob/clothing/under/masking_helpers.dmi', "digi_leg_mask")
@@ -493,6 +531,8 @@ There are several things that need to be remembered:
  * Returns null if the item has no support for digitigrade variations via this method
  */
 /obj/item/proc/generate_digitigrade_icons(icon/base_icon, greyscale_colors)
+	procstart = null
+	src.procstart = null
 	return null
 
 /**
@@ -503,6 +543,8 @@ There are several things that need to be remembered:
  * * base_icon: The icon to get the color from
  */
 /obj/item/proc/get_general_color(icon/base_icon)
+	procstart = null
+	src.procstart = null
 	if(greyscale_colors && length(SSgreyscale.ParseColorString(greyscale_colors)) == 1)
 		return greyscale_colors
 	return color
@@ -514,6 +556,8 @@ There are several things that need to be remembered:
 #define LEG_SAMPLE_Y_UPPER 9
 
 /obj/item/clothing/get_general_color(icon/base_icon)
+	procstart = null
+	src.procstart = null
 	if(slot_flags & (ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING))
 		var/pant_color
 		// approximates the color of the pants by sampling a few pixels in the middle of the left leg
@@ -536,6 +580,8 @@ There are several things that need to be remembered:
 #define SHOE_SAMPLE_Y 2
 
 /obj/item/clothing/shoes/get_general_color(icon/base_icon)
+	procstart = null
+	src.procstart = null
 	// just grabs the color of the middle of the left foot
 	return base_icon.GetPixel(SHOE_SAMPLE_X, SHOE_SAMPLE_Y) || "#1d1d1d"
 
@@ -543,6 +589,8 @@ There are several things that need to be remembered:
 #undef SHOE_SAMPLE_Y
 
 /mob/living/carbon/human/proc/get_overlays_copy(list/unwantedLayers)
+	procstart = null
+	src.procstart = null
 	var/list/out = new
 	for(var/i in 1 to TOTAL_LAYERS)
 		if(overlays_standing[i])
@@ -647,6 +695,8 @@ generate/load female uniform sprites matching all previously decided variables
 
 /// Returns offsets used for equipped item overlays in list(px_offset,py_offset) form.
 /obj/item/proc/get_worn_offsets(isinhands)
+	procstart = null
+	src.procstart = null
 	. = list(0,0) //(px,py)
 	if(isinhands)
 		//Handle held offsets
@@ -661,6 +711,8 @@ generate/load female uniform sprites matching all previously decided variables
 
 //Can't think of a better way to do this, sadly
 /mob/proc/get_item_offsets_for_index(i)
+	procstart = null
+	src.procstart = null
 	switch(i)
 		if(3) //odd = left hands
 			return list("x" = 0, "y" = 16)
@@ -670,6 +722,8 @@ generate/load female uniform sprites matching all previously decided variables
 			return list("x" = 0, "y" = 0)//Handle held offsets
 
 /mob/living/carbon/human/update_body(is_creating = FALSE)
+	procstart = null
+	src.procstart = null
 	remove_overlay(BODY_LAYER)
 	var/list/clothing_overlays = get_underwear_overlays()
 	if(length(clothing_overlays))
@@ -682,6 +736,8 @@ generate/load female uniform sprites matching all previously decided variables
 
 /// Returns a list of all underclothing overlays to be applied to the mob
 /mob/living/carbon/human/proc/get_underwear_overlays()
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(HAS_TRAIT(src, TRAIT_HUSK) || HAS_TRAIT(src, TRAIT_INVISIBLE_MAN) || HAS_TRAIT(src, TRAIT_NO_UNDERWEAR))
 		return .
@@ -709,9 +765,13 @@ generate/load female uniform sprites matching all previously decided variables
 
 /// Updates eye sprites if relevant
 /mob/living/proc/update_eyes(refresh = TRUE)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/update_eyes(refresh = TRUE)
+	procstart = null
+	src.procstart = null
 	remove_overlay(EYES_LAYER)
 
 	var/obj/item/bodypart/head/noggin = get_bodypart(BODY_ZONE_HEAD)
@@ -731,9 +791,13 @@ generate/load female uniform sprites matching all previously decided variables
 
 /// Updates hair sprites if relevant
 /mob/living/proc/update_hair()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/update_hair()
+	procstart = null
+	src.procstart = null
 	remove_overlay(HAIR_LAYER)
 
 	var/obj/item/bodypart/head/head = get_bodypart(BODY_ZONE_HEAD)
@@ -746,6 +810,8 @@ generate/load female uniform sprites matching all previously decided variables
 
 /// Updates face (as of now, only eye) offsets
 /mob/living/carbon/human/update_face_offset()
+	procstart = null
+	src.procstart = null
 	var/list/eye_overlays = overlays_standing[EYES_LAYER]
 
 	if(HAS_TRAIT(src, TRAIT_INVISIBLE_MAN) || HAS_TRAIT(src, TRAIT_HUSK) || !length(eye_overlays))
@@ -766,6 +832,8 @@ generate/load female uniform sprites matching all previously decided variables
 
 /// Makes all aspects of the mob invisibile but the head and its associated sprites
 /mob/living/carbon/human/proc/render_only_head()
+	procstart = null
+	src.procstart = null
 	if(!dna?.species)
 		return
 
@@ -789,9 +857,13 @@ generate/load female uniform sprites matching all previously decided variables
  * * body_area - The body area this appearance is on, used to determine what offsets/filters to apply
  */
 /mob/living/carbon/proc/apply_height(image/appearance, body_area)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/apply_height(image/appearance, body_area)
+	procstart = null
+	src.procstart = null
 	if(mob_height == HUMAN_HEIGHT_MEDIUM)
 		return // default, no handling needed
 
@@ -811,6 +883,8 @@ generate/load female uniform sprites matching all previously decided variables
  * Applies a filter to an appearance according to mob height
  */
 /mob/living/carbon/human/proc/apply_height_filter(image/appearance)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/static/icon/cut_torso_mask = icon('icons/effects/cut.dmi', "Cut1")
@@ -950,22 +1024,32 @@ generate/load female uniform sprites matching all previously decided variables
 
 // Wide organs or bodyparts shouldn't offset human HUD directly
 /mob/living/carbon/human/get_hud_x_offset()
+	procstart = null
+	src.procstart = null
 	return 0
 
 // But they are affected by height
 /mob/living/carbon/human/get_hud_y_offset()
+	procstart = null
+	src.procstart = null
 	return GLOB.human_heights_to_offsets[mob_height]["[UPPER_BODY]"]
 
 /mob/living/carbon/human/get_cached_width()
+	procstart = null
+	src.procstart = null
 	return cached_body_width
 
 /mob/living/carbon/human/get_cached_height()
+	procstart = null
+	src.procstart = null
 	return cached_body_height
 
 #define SUB_OVERLAY_X_INDEX 1
 #define SUB_OVERLAY_Y_INDEX 1
 
 /mob/living/carbon/human/update_body_parts(update_limb_data)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return

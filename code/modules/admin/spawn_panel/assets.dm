@@ -2,6 +2,8 @@
 	name = "spawnpanel_atom_data"
 
 /datum/asset/json/spawnpanel/generate()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/static/list/mapping_objects = typecacheof(list(

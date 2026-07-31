@@ -36,15 +36,21 @@
 	acid = 100
 
 /obj/machinery/door/password/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(voice_activated)
 		become_hearing_sensitive()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_ALL)
 
 /obj/machinery/door/password/get_save_vars()
+	procstart = null
+	src.procstart = null
 	return ..() + NAMEOF(src, password)
 
 /obj/machinery/door/password/Hear(atom/movable/speaker, message_language, raw_message, radio_freq, radio_freq_name, radio_freq_color, list/spans, list/message_mods = list(), message_range)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!density || !voice_activated || radio_freq)
 		return
@@ -52,9 +58,13 @@
 		open()
 
 /obj/machinery/door/password/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	return !density && ..()
 
 /obj/machinery/door/password/try_to_activate_door(mob/user, access_bypass = FALSE, bumped = FALSE)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(operating)
 		return
@@ -65,6 +75,8 @@
 			run_animation(DOOR_DENY_ANIMATION)
 
 /obj/machinery/door/password/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//Deny animation would be nice to have.
 	switch(animation)
@@ -76,6 +88,8 @@
 			icon_state = density ? "closed" : "open"
 
 /obj/machinery/door/password/animation_length(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if(DOOR_OPENING_ANIMATION)
 			return 1.1 SECONDS
@@ -83,6 +97,8 @@
 			return 1.1 SECONDS
 
 /obj/machinery/door/password/animation_segment_delay(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if(DOOR_OPENING_PASSABLE)
 			return 0.5 SECONDS
@@ -94,6 +110,8 @@
 			return 1.1 SECONDS
 
 /obj/machinery/door/password/animation_effects(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if(DOOR_OPENING_ANIMATION)
 			playsound(src, door_open, 50, TRUE)
@@ -103,10 +121,14 @@
 			playsound(src, door_deny, 30, TRUE)
 
 /obj/machinery/door/password/proc/ask_for_pass(mob/user)
+	procstart = null
+	src.procstart = null
 	var/guess = tgui_input_text(user, "Enter the password", "Password", max_length = MAX_MESSAGE_LEN)
 	if(guess == password)
 		return TRUE
 	return FALSE
 
 /obj/machinery/door/password/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	return FALSE

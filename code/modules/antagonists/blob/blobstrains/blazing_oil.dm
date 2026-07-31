@@ -14,9 +14,13 @@
 	reagent = /datum/reagent/blob/blazing_oil
 
 /datum/blobstrain/reagent/blazing_oil/extinguish_reaction(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	B.take_damage(4.5, BURN, ENERGY)
 
 /datum/blobstrain/reagent/blazing_oil/damage_reaction(obj/structure/blob/B, damage, damage_type, damage_flag)
+	procstart = null
+	src.procstart = null
 	if(damage_type == BURN && damage_flag != ENERGY)
 		for(var/turf/open/T in range(1, B))
 			var/obj/structure/blob/C = locate() in T
@@ -32,6 +36,8 @@
 	color = "#B68D00"
 
 /datum/reagent/blob/blazing_oil/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message, touch_protection, mob/eye/blob/overmind)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reac_volume = return_mob_expose_reac_volume(exposed_mob, methods, reac_volume, show_message, touch_protection, overmind)
 	exposed_mob.adjust_fire_stacks(round(reac_volume/10))

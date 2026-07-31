@@ -16,13 +16,19 @@
 	leave_footprints = TRUE
 
 /turf/open/misc/snow/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/diggable, /obj/item/stack/sheet/mineral/snow, 2)
 
 /turf/open/misc/snow/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("snow_dug")
 
 /turf/open/misc/snow/add_footprint(mob/living/carbon/human/walker, movement_direction)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(walker, TRAIT_NO_SNOWPRINTS))
 		return
 	// skip the special logic if the level doesn't naturally have snowstorms
@@ -42,6 +48,8 @@
 		RegisterSignal(SSdcs, COMSIG_WEATHER_START(snow_type), PROC_REF(snow_clear_footprints), override = TRUE)
 
 /turf/open/misc/snow/proc/snow_clear_footprints(datum/source, datum/weather/storm)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(loc in storm.impacted_areas))

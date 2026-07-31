@@ -62,6 +62,8 @@ Difficulty: Extremely Hard
 	var/datum/action/cooldown/mob_cooldown/projectile_attack/shotgun_blast/pattern/circular/hard_ice_shotgun
 
 /mob/living/simple_animal/hostile/megafauna/demonic_frost_miner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	frost_orbs = new(src)
 	hard_frost_orbs = new(src)
@@ -84,6 +86,8 @@ Difficulty: Extremely Hard
 	AddComponent(/datum/component/boss_music, 'sound/music/boss/bdm_boss.ogg', COMSIG_HOSTILE_FOUND_TARGET) // change to COMSIG_AI_BLACKBOARD_KEY_SET(BB_CURRENT_TARGET) in basic conversion
 
 /mob/living/simple_animal/hostile/megafauna/demonic_frost_miner/Destroy()
+	procstart = null
+	src.procstart = null
 	frost_orbs = null
 	hard_frost_orbs = null
 	snowball_machine_gun = null
@@ -93,6 +97,8 @@ Difficulty: Extremely Hard
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/demonic_frost_miner/OpenFire()
+	procstart = null
+	src.procstart = null
 	if(client)
 		return
 	var/mob/living/living_target = target
@@ -120,6 +126,8 @@ Difficulty: Extremely Hard
 
 /// Pre-ability usage stuff
 /mob/living/simple_animal/hostile/megafauna/demonic_frost_miner/proc/start_attack(mob/living/owner, datum/action/cooldown/activated)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(enraging)
 		return COMPONENT_BLOCK_ABILITY_START
@@ -133,6 +141,8 @@ Difficulty: Extremely Hard
 
 /// Checks if the demonic frost miner is ready to be enraged
 /mob/living/simple_animal/hostile/megafauna/demonic_frost_miner/proc/check_enraged()
+	procstart = null
+	src.procstart = null
 	if(!FROST_MINER_SHOULD_ENRAGE)
 		return
 	update_cooldowns(list(COOLDOWN_UPDATE_SET_MELEE = 8 SECONDS, COOLDOWN_UPDATE_SET_RANGED = 8 SECONDS))
@@ -158,26 +168,36 @@ Difficulty: Extremely Hard
 	adjustHealth(-maxHealth)
 
 /mob/living/simple_animal/hostile/megafauna/demonic_frost_miner/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	adjust_brute_loss(-30 * severity)
 	visible_message(span_danger("[src] absorbs the explosion!"), span_userdanger("You absorb the explosion!"))
 	return TRUE
 
 /mob/living/simple_animal/hostile/megafauna/demonic_frost_miner/Goto(target, delay, minimum_distance)
+	procstart = null
+	src.procstart = null
 	if(enraging)
 		return
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/demonic_frost_miner/MoveToTarget(list/possible_targets)
+	procstart = null
+	src.procstart = null
 	if(enraging)
 		return
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/demonic_frost_miner/Move()
+	procstart = null
+	src.procstart = null
 	if(enraging)
 		return
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/demonic_frost_miner/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(health > 0)
 		return
 	var/turf/T = get_turf(src)
@@ -204,6 +224,8 @@ Difficulty: Extremely Hard
 	damage_type = BURN
 
 /obj/projectile/colossus/frost_orb/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isturf(target) || isobj(target))
 		EX_ACT(target, EXPLODE_HEAVY)
@@ -228,6 +250,8 @@ Difficulty: Extremely Hard
 	damage_type = BRUTE
 
 /obj/projectile/colossus/ice_blast/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isturf(target) || isobj(target))
 		EX_ACT(target, EXPLODE_HEAVY)
@@ -241,6 +265,8 @@ Difficulty: Extremely Hard
 	var/icon/cube
 
 /datum/status_effect/ice_block_talisman/on_creation(mob/living/new_owner, set_duration)
+	procstart = null
+	src.procstart = null
 	if(isnum(set_duration))
 		duration = set_duration
 	return ..()
@@ -251,6 +277,8 @@ Difficulty: Extremely Hard
 	icon_state = "frozen"
 
 /datum/status_effect/ice_block_talisman/on_apply()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(owner, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(owner_moved))
 	if(!IS_UNCONSCIOUS_OR_CRIT(owner))
 		to_chat(owner, span_userdanger("You become frozen in a cube!"))
@@ -262,15 +290,21 @@ Difficulty: Extremely Hard
 
 /// Blocks movement from the status effect owner
 /datum/status_effect/ice_block_talisman/proc/owner_moved()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return COMPONENT_MOVABLE_BLOCK_PRE_MOVE
 
 /datum/status_effect/ice_block_talisman/be_replaced()
+	procstart = null
+	src.procstart = null
 	owner.cut_overlay(cube)
 	UnregisterSignal(owner, COMSIG_MOVABLE_PRE_MOVE)
 	return ..()
 
 /datum/status_effect/ice_block_talisman/on_remove()
+	procstart = null
+	src.procstart = null
 	if(!IS_UNCONSCIOUS_OR_CRIT(owner))
 		to_chat(owner, span_notice("The cube melts!"))
 	owner.cut_overlay(cube)
@@ -286,15 +320,21 @@ Difficulty: Extremely Hard
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF | FREEZE_PROOF
 
 /obj/structure/frost_miner_prism/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.frost_miner_prisms |= src
 	set_prism_light(LIGHT_COLOR_BLUE, 5)
 
 /obj/structure/frost_miner_prism/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.frost_miner_prisms -= src
 	return ..()
 
 /obj/structure/frost_miner_prism/proc/set_prism_light(new_color, new_range)
+	procstart = null
+	src.procstart = null
 	color = new_color
 	set_light_color(new_color)
 	set_light(new_range)

@@ -2,6 +2,8 @@
 /datum/unit_test/paintings
 
 /datum/unit_test/paintings/Run()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/canvas/canvas as anything in typesof(/obj/item/canvas))
 		canvas = new canvas
 		var/canvas_icons = icon_states(canvas.icon)

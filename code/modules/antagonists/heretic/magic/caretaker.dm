@@ -17,14 +17,20 @@
 	spell_requirements = NONE
 
 /datum/action/cooldown/spell/caretaker/Remove(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	if(remove_from.has_status_effect(/datum/status_effect/caretaker_refuge))
 		remove_from.remove_status_effect(/datum/status_effect/caretaker_refuge)
 	return ..()
 
 /datum/action/cooldown/spell/caretaker/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return isliving(cast_on)
 
 /datum/action/cooldown/spell/caretaker/before_cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & SPELL_CANCEL_CAST)
 		return
@@ -38,6 +44,8 @@
 		return SPELL_NO_IMMEDIATE_COOLDOWN // cooldown only on exit
 
 /datum/action/cooldown/spell/caretaker/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/mob/living/carbon/carbon_user = owner

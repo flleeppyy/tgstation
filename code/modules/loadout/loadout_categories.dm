@@ -18,6 +18,8 @@
 	VAR_FINAL/list/datum/loadout_item/associated_items
 
 /datum/loadout_category/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	associated_items = get_items()
 	for(var/datum/loadout_item/item as anything in associated_items)
@@ -26,6 +28,8 @@
 		GLOB.all_loadout_datums[item.item_path] = item
 
 /datum/loadout_category/Destroy(force, ...)
+	procstart = null
+	src.procstart = null
 	if(!force)
 		stack_trace("QDEL called on loadout category [type]. This shouldn't ever happen. (Use FORCE if necessary.)")
 		return QDEL_HINT_LETMELIVE
@@ -35,6 +39,8 @@
 
 /// Return a list of all /datum/loadout_items in this category.
 /datum/loadout_category/proc/get_items() as /list
+	procstart = null
+	src.procstart = null
 	var/list/all_items = list()
 	for(var/datum/loadout_item/found_type as anything in typesof(type_to_generate))
 		if(found_type == initial(found_type.abstract_type))
@@ -51,6 +57,8 @@
 
 /// Returns a list of all /datum/loadout_items in this category, formatted for UI use. Only ran once.
 /datum/loadout_category/proc/items_to_ui_data() as /list
+	procstart = null
+	src.procstart = null
 	if(!length(associated_items))
 		return list()
 

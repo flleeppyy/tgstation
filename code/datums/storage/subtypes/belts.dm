@@ -3,6 +3,8 @@
 	max_total_storage = 21
 
 /datum/storage/utility_belt/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(GLOB.tool_items + list(
 		/obj/item/clothing/gloves,
@@ -16,6 +18,8 @@
 	max_total_storage = 21
 
 /datum/storage/medical_belt/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(can_hold_list = list(
 		/obj/item/bikehorn/rubberducky,
@@ -85,6 +89,8 @@
 	rustle_sound = null
 
 /datum/storage/security_belt/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/ammo_box,
@@ -115,6 +121,8 @@
 	max_total_storage = 20
 
 /datum/storage/mining_belt/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/analyzer,
@@ -167,6 +175,8 @@
 	max_slots = 6
 
 /datum/storage/soulstone_belt/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/soulstone)
 
@@ -175,6 +185,8 @@
 	max_slots = 1
 
 /datum/storage/champion_belt/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/clothing/mask/luchador)
 
@@ -187,6 +199,8 @@
 	max_slots = 6
 
 /datum/storage/military_belt/snack/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/food,
@@ -205,6 +219,8 @@
 	max_specific_storage = WEIGHT_CLASS_BULKY
 
 /datum/storage/grenade_belt/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/food/grown/cherry_bomb,
@@ -222,6 +238,8 @@
 	max_slots = 7
 
 /datum/storage/wands_belt/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/gun/magic/wand)
 
@@ -230,6 +248,8 @@
 	max_slots = 6
 
 /datum/storage/janitor_belt/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/access_key,
@@ -259,6 +279,8 @@
 	allow_quick_empty = TRUE
 
 /datum/storage/bandolier_belt/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/ammo_casing/strilka310,
@@ -282,6 +304,8 @@
 	click_alt_open = FALSE
 
 /datum/storage/sabre_belt/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/melee/sabre)
 
@@ -293,6 +317,8 @@
 	click_alt_open = FALSE
 
 /datum/storage/green_sabre_belt/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/melee/parsnip_sabre)
 
@@ -303,6 +329,8 @@
 	click_alt_open = FALSE
 
 /datum/storage/gladius_belt/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/claymore/gladius)
 
@@ -314,6 +342,8 @@
 	click_alt_open = FALSE
 
 /datum/storage/katana_sheath/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/katana)
 
@@ -325,6 +355,8 @@
 	click_alt_open = FALSE
 
 /datum/storage/ninja_sheath/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/energy_katana)
 
@@ -336,6 +368,8 @@
 	click_alt_open = FALSE
 
 /datum/storage/hanzo_sheath/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/nullrod/claymore/katana)
 
@@ -347,6 +381,8 @@
 	click_alt_open = FALSE
 
 /datum/storage/toy_sheath/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/toy/katana)
 
@@ -355,6 +391,8 @@
 	max_slots = 6
 
 /datum/storage/plant_belt/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/cultivator,
@@ -378,6 +416,8 @@
 	max_total_storage = 21
 
 /datum/storage/unfathomable_curio/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/ammo_box/speedloader/strilka310/lionhunter,

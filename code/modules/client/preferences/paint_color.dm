@@ -6,10 +6,14 @@
 	should_update_preview = FALSE
 
 /datum/preference/color/paint_color/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if (!..(preferences))
 		return FALSE
 
 	return /datum/quirk/item_quirk/tagger::name in preferences.all_quirks
 
 /datum/preference/color/paint_color/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return

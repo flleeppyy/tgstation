@@ -44,17 +44,23 @@
 	)
 
 /obj/item/toy/eightball/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(MakeHaunted())
 		return INITIALIZE_HINT_QDEL
 
 /obj/item/toy/eightball/proc/MakeHaunted()
+	procstart = null
+	src.procstart = null
 	if(prob(1))
 		new /obj/item/toy/eightball/haunted(loc)
 		return TRUE
 	return FALSE
 
 /obj/item/toy/eightball/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -82,15 +88,21 @@
 	shaking = FALSE
 
 /obj/item/toy/eightball/proc/start_shaking(mob/user)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Different from get_answer().
 /obj/item/toy/eightball/proc/pick_from_answer_list()
+	procstart = null
+	src.procstart = null
 	//! This is for grabbing an answer from the answer matrix.
 	var/key = pick(possible_answers)
 	return pick(possible_answers[key])
 
 /obj/item/toy/eightball/proc/get_answer()
+	procstart = null
+	src.procstart = null
 	return pick_from_answer_list()
 
 // A broken magic eightball, it only says "YOU SUCK" over and over again.
@@ -101,10 +113,14 @@
 	var/fixed_answer
 
 /obj/item/toy/eightball/broken/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	fixed_answer = pick_from_answer_list()
 
 /obj/item/toy/eightball/broken/get_answer()
+	procstart = null
+	src.procstart = null
 	return fixed_answer
 
 // Haunted eightball is identical in description and function to toy,
@@ -119,16 +135,22 @@
 	var/list/voted = list()
 
 /obj/item/toy/eightball/haunted/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for (var/answer in possible_answers)
 		votes[answer] = 0
 	SSpoints_of_interest.make_point_of_interest(src)
 
 /obj/item/toy/eightball/haunted/MakeHaunted()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 //ATTACK GHOST IGNORING PARENT RETURN VALUE
 /obj/item/toy/eightball/haunted/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!shaking)
 		to_chat(user, span_warning("[src] is not currently being shaken."))
 		return
@@ -136,6 +158,8 @@
 	return ..()
 
 /obj/item/toy/eightball/haunted/start_shaking(mob/user)
+	procstart = null
+	src.procstart = null
 	// notify ghosts that someone's shaking a haunted eightball
 	// and inform them of the message, (hopefully a yes/no question)
 	selected_message = tgui_input_text(user, "What is your question?", "Eightball", max_length = CHAT_MESSAGE_MAX_LENGTH) || initial(selected_message)
@@ -150,6 +174,8 @@
 	return TRUE
 
 /obj/item/toy/eightball/haunted/get_answer()
+	procstart = null
+	src.procstart = null
 	var/top_amount = 0
 	var/top_vote
 
@@ -176,12 +202,18 @@
 
 // Only ghosts can interact because only ghosts can open the ui
 /obj/item/toy/eightball/haunted/can_interact(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return isobserver(user)
 
 /obj/item/toy/eightball/haunted/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.observer_state
 
 /obj/item/toy/eightball/haunted/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(!isobserver(user))
 		return
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -190,6 +222,8 @@
 		ui.open()
 
 /obj/item/toy/eightball/haunted/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["shaking"] = shaking
 	data["question"] = selected_message
@@ -205,6 +239,8 @@
 	return data
 
 /obj/item/toy/eightball/haunted/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

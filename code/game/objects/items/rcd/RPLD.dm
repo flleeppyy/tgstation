@@ -70,6 +70,8 @@
 	)
 
 /obj/item/construction/plumbing/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isnull(plumbing_design_types))
@@ -83,6 +85,8 @@
 	blueprint = plumbing_design_types[selected_category][1]
 
 /obj/item/construction/plumbing/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot & ITEM_SLOT_HANDS)
 		RegisterSignal(user, COMSIG_MOUSE_SCROLL_ON, PROC_REF(mouse_wheeled))
@@ -90,30 +94,42 @@
 		UnregisterSignal(user, COMSIG_MOUSE_SCROLL_ON)
 
 /obj/item/construction/plumbing/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(user, COMSIG_MOUSE_SCROLL_ON)
 	return ..()
 
 /obj/item/construction/plumbing/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui_interact(user)
 
 /obj/item/construction/plumbing/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "You can scroll your mouse wheel to change the piping layer."
 	. += "You can right click a fluid duct to set the Plumbing RPD to its color and layer."
 
 /obj/item/construction/plumbing/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "RapidPlumbingDevice", name)
 		ui.open()
 
 /obj/item/construction/plumbing/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/plumbing),
 	)
 
 /obj/item/construction/plumbing/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 
 	data["paint_colors"] = GLOB.pipe_paint_colors
@@ -142,6 +158,8 @@
 	return data
 
 /obj/item/construction/plumbing/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 
 	data["piping_layer"] = name_to_number[current_layer] //maps layer name to layer number's 1,2,3,4,5
@@ -153,6 +171,8 @@
 	return data
 
 /obj/item/construction/plumbing/handle_ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	playsound(src, SFX_TOOL_SWITCH, 20, TRUE)
 
 	switch(action)
@@ -185,6 +205,8 @@
 
 ///pretty much rcd_create, but named differently to make myself feel less bad for copypasting from a sibling-type
 /obj/item/construction/plumbing/proc/create_machine(atom/destination, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isopenturf(destination))
 		return FALSE
 
@@ -218,6 +240,8 @@
 	return TRUE
 
 /obj/item/construction/plumbing/proc/canPlace(turf/destination)
+	procstart = null
+	src.procstart = null
 	if(!isopenturf(destination))
 		return FALSE
 	if(initial(blueprint.density) && destination.is_blocked_turf(exclude_mobs = FALSE, source_atom = null, ignore_atoms = null))
@@ -225,6 +249,8 @@
 	return isnull(ducting_layer_check(destination, (ispath(blueprint, /obj/machinery/duct) ? 1 : -1) * GLOB.plumbing_layers[current_layer]))
 
 /obj/item/construction/plumbing/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -259,6 +285,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/construction/plumbing/interact_with_atom_secondary(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(target, /obj/machinery/duct))
 		return NONE
 
@@ -271,10 +299,14 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/construction/plumbing/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	ui_interact(user)
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/construction/plumbing/proc/mouse_wheeled(mob/source, atom/A, delta_x, delta_y, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(INCAPACITATED_IGNORING(source, INCAPABLE_RESTRAINTS|INCAPABLE_STASIS))
 		return
@@ -333,6 +365,8 @@
 	)
 
 /obj/item/construction/plumbing/service/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	plumbing_design_types = service_design_types
 
 	. = ..()

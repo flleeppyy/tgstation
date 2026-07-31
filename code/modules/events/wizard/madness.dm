@@ -11,6 +11,8 @@
 	var/horrifying_truth
 
 /datum/round_event/wizard/madness/start()
+	procstart = null
+	src.procstart = null
 	if(!horrifying_truth)
 		horrifying_truth = pick(strings(REDPILL_FILE, "redpill_questions"))
 
@@ -20,7 +22,11 @@
 	input_text = "What horrifying truth will you reveal?"
 
 /datum/event_admin_setup/text_input/madness/get_text_suggestion()
+	procstart = null
+	src.procstart = null
 	return pick(strings(REDPILL_FILE, "redpill_questions"))
 
 /datum/event_admin_setup/text_input/madness/apply_to_event(datum/round_event/wizard/madness/event)
+	procstart = null
+	src.procstart = null
 	event.horrifying_truth = chosen

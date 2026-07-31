@@ -15,6 +15,8 @@ SUBSYSTEM_DEF(circuit_component)
 	var/list/instant_run_callbacks_to_run = list()
 
 /datum/controller/subsystem/circuit_component/fire(resumed)
+	procstart = null
+	src.procstart = null
 	if(!resumed)
 		currentrun = callbacks_to_invoke.Copy()
 		callbacks_to_invoke.Cut()
@@ -39,6 +41,8 @@ SUBSYSTEM_DEF(circuit_component)
  * Those that registered first will be executed first and those registered last will be executed last.
  */
 /datum/controller/subsystem/circuit_component/proc/add_callback(datum/port/input, datum/callback/to_call)
+	procstart = null
+	src.procstart = null
 	if(instant_run_tick == world.time && (TICK_USAGE - instant_run_start_cpu_usage) <= instant_run_max_cpu_usage)
 		instant_run_callbacks_to_run += to_call
 		return
@@ -47,6 +51,8 @@ SUBSYSTEM_DEF(circuit_component)
 
 /// Queues any callbacks to be executed instantly instead of using the subsystem.
 /datum/controller/subsystem/circuit_component/proc/queue_instant_run(start_cpu_time)
+	procstart = null
+	src.procstart = null
 	if(instant_run_tick)
 		instant_run_stack += list(instant_run_callbacks_to_run)
 		// If we're already instantly executing, don't change the start_cpu_time.
@@ -65,6 +71,8 @@ SUBSYSTEM_DEF(circuit_component)
  * Returns a list containing any values added by any input port.
  */
 /datum/controller/subsystem/circuit_component/proc/execute_instant_run()
+	procstart = null
+	src.procstart = null
 	var/list/received_inputs = list()
 	while(length(instant_run_callbacks_to_run))
 		var/list/instant_run_currentrun = instant_run_callbacks_to_run

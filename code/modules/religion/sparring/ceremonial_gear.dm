@@ -37,6 +37,8 @@
 	acid = 50
 
 /obj/item/ceremonial_blade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	alt_continuous = string_list(alt_continuous)
 	alt_simple = string_list(alt_simple)
@@ -48,6 +50,8 @@
 	RegisterSignal(src, COMSIG_ITEM_SHARPEN_ACT, PROC_REF(block_sharpening))
 
 /obj/item/ceremonial_blade/melee_attack_chain(mob/user, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(target, TRAIT_SPARRING))
 		return ..()
 	var/old_force = force
@@ -59,6 +63,8 @@
 	throwforce = old_throwforce
 
 /obj/item/ceremonial_blade/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(attack_type != MELEE_ATTACK || !ishuman(hitby.loc))
 		return ..()
 	if(HAS_TRAIT(hitby.loc, TRAIT_SPARRING))
@@ -67,6 +73,8 @@
 	. = ..()
 
 /obj/item/ceremonial_blade/proc/block_sharpening(datum/source, increment, max)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	//this breaks it
 	return COMPONENT_BLOCK_SHARPEN_BLOCKED

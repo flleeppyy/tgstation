@@ -30,6 +30,8 @@
 	var/blink_activated = TRUE
 
 /obj/item/hierophant_club/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 	blink = new(src)
@@ -38,10 +40,14 @@
 	RegisterSignals(blink, list(COMSIG_DASH_ACTION_CHARGED, COMSIG_DASH_ACTION_DASHED), PROC_REF(on_action_updated))
 
 /obj/item/hierophant_club/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(blink)
 	return ..()
 
 /obj/item/hierophant_club/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (beacon)
 		. += span_hierophant_warning("The beacon is currently detached.")
@@ -49,16 +55,22 @@
 		. += span_hierophant_warning("There is a beacon attached at the back end of the handle.")
 
 /obj/item/hierophant_club/equipped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	blink.Grant(user, src)
 	user.update_icons()
 
 /obj/item/hierophant_club/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	blink.Remove(user)
 	user.update_icons()
 
 /obj/item/hierophant_club/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	say("Xverwpsgexmrk...", forced = "hierophant club suicide")
 	user.visible_message(span_suicide("[user] holds [src] into the air! It looks like [user.p_theyre()] trying to commit suicide!"))
 	new/obj/effect/temp_visual/hierophant/telegraph(get_turf(user))
@@ -72,11 +84,15 @@
 	qdel(user)
 
 /obj/item/hierophant_club/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	blink_activated = !blink_activated
 	balloon_alert(user, "blinking [blink_activated ? "enabled" : "disabled"]")
 
 /obj/item/hierophant_club/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// If our target is the beacon and the hierostaff is next to the beacon, we're trying to pick it up.
 	if (interacting_with == beacon || !isturf(interacting_with.loc))
 		return NONE
@@ -89,6 +105,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/hierophant_club/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (blink_activated)
 		blink.teleport(user, interacting_with)
 		return ITEM_INTERACT_SUCCESS
@@ -96,10 +114,14 @@
 
 /// When dash action is used or recharges, update icon state
 /obj/item/hierophant_club/proc/on_action_updated()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/item/hierophant_club/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (QDELETED(beacon))
 		. += "hierophant_beacon"
@@ -107,12 +129,16 @@
 		. += "hierophant_ready"
 
 /obj/item/hierophant_club/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (blink?.current_charges)
 		. += "hierophant_ready"
 
 
 /obj/item/hierophant_club/ui_action_click(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if (teleporting)
 		balloon_alert(user, "already in use!")
 		return
@@ -184,6 +210,8 @@
 
 /// Just to cut down on copypasta
 /obj/item/hierophant_club/proc/stop_teleport(mob/user)
+	procstart = null
+	src.procstart = null
 	teleporting = FALSE
 	if (beacon)
 		beacon.icon_state = "hierophant_tele_off"
@@ -192,6 +220,8 @@
 
 /// Teleports mobs after a short animation
 /obj/item/hierophant_club/proc/teleport_mob(turf/user_turf, turf/beacon_turf, mob/victim, mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_step(beacon_turf, get_dir(user_turf, victim))
 	if (!target_turf || target_turf.is_blocked_turf(TRUE))
 		return
@@ -206,6 +236,8 @@
 
 /// Attempts to place a return beacon at user's feet
 /obj/item/hierophant_club/proc/deploy_beacon(mob/user)
+	procstart = null
+	src.procstart = null
 	if (!isopenturf(user.loc) && !isopenspaceturf(user.loc))
 		to_chat(user, span_warning("You need to be on solid ground to detach the beacon!"))
 		return
@@ -232,6 +264,8 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/item/hierophant_club/proc/beacon_destroyed(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	beacon = null
 	if (ismob(loc))
@@ -255,6 +289,8 @@
 	beam_effect = "plasmabeam"
 
 /datum/action/innate/dash/hierophant/teleport(mob/user, atom/target)
+	procstart = null
+	src.procstart = null
 	var/dist = get_dist(user, target)
 	if(dist > HIEROPHANT_BLINK_RANGE)
 		user.balloon_alert(user, "too far!")
@@ -263,6 +299,8 @@
 	return ..()
 
 /datum/action/innate/dash/hierophant/charge()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/hierophant_club/club = target
 	if(istype(club))

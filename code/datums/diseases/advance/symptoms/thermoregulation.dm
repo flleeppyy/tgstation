@@ -20,6 +20,8 @@
 	)
 
 /datum/symptom/thermoregulation/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -27,6 +29,8 @@
 		power = 1.75
 
 /datum/symptom/thermoregulation/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

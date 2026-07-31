@@ -14,6 +14,8 @@
 	custom_materials = list(/datum/material/plastic = SMALL_MATERIAL_AMOUNT)
 
 /obj/item/evidencebag/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_storage(
 		max_slots = 1,
@@ -27,6 +29,8 @@
 	RegisterSignal(atom_storage, COMSIG_STORAGE_REMOVED_ITEM, PROC_REF(on_remove))
 
 /obj/item/evidencebag/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!atom_storage.get_total_weight())
 		desc = src::desc
@@ -35,6 +39,8 @@
 	desc = "An evidence bag containing [inserted]. [inserted.desc]"
 
 /obj/item/evidencebag/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!atom_storage.get_total_weight())
 		icon_state = "evidenceobj"
@@ -42,6 +48,8 @@
 	icon_state = "evidence"
 
 /obj/item/evidencebag/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!atom_storage.get_total_weight())
 		return
@@ -55,17 +63,23 @@
 	. += "evidence"
 
 /obj/item/evidencebag/proc/on_insert(datum/storage/storage, obj/item/to_insert, mob/user, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	update_weight_class(to_insert.w_class)
 
 /obj/item/evidencebag/proc/on_remove(datum/storage/storage, obj/item/to_remove, atom/remove_to_loc, silent)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!atom_storage.get_total_weight())
 		update_weight_class(WEIGHT_CLASS_TINY)
 
 /obj/item/evidencebag/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!atom_storage.get_total_weight())
 		to_chat(user, span_notice("[src] is empty."))
 		return

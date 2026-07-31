@@ -10,6 +10,8 @@
 	var/end_weekday
 
 /datum/holiday/nth_week/shouldCelebrate(dd, mm, yy, ddd)
+	procstart = null
+	src.procstart = null
 	// Does not support holidays across multiple years..
 	if (!end_month)
 		end_month = begin_month
@@ -50,6 +52,8 @@
 	begin_weekday = SUNDAY
 
 /datum/holiday/nth_week/mother/greet()
+	procstart = null
+	src.procstart = null
 	return "Happy Mother's Day in most of the Americas, Asia, and Oceania!"
 
 /datum/holiday/nth_week/father
@@ -65,6 +69,8 @@
 	begin_weekday = FRIDAY
 
 /datum/holiday/beer/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Stout","Porter","Lager","Ale","Malt","Bock","Doppelbock","Hefeweizen","Pilsner","IPA","Lite") //I'm sorry for the last one
 
 /datum/holiday/nth_week/moth
@@ -77,12 +83,16 @@
 
 //National Moth Week falls on the last full week of July, including the saturday and sunday before. See http://nationalmothweek.org/ for precise tracking.
 /datum/holiday/nth_week/moth/shouldCelebrate(dd, mm, yyyy, ddd)
+	procstart = null
+	src.procstart = null
 	if(first_day_of_month(yyyy, mm) >= 5) //Friday or later start of the month means week 5 is a full week.
 		begin_week += 1
 		end_week += 1
 	return ..(dd, mm, yyyy, ddd)
 
 /datum/holiday/nth_week/moth/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Mothball","Lepidopteran","Lightbulb","Moth","Giant Atlas","Twin-spotted Sphynx","Madagascan Sunset","Luna","Death's Head","Emperor Gum","Polyphenus","Oleander Hawk","Io","Rosy Maple","Cecropia","Noctuidae","Giant Leopard","Dysphania Militaris","Garden Tiger")
 
 /datum/holiday/nth_week/ice_cream
@@ -92,4 +102,6 @@
 	begin_weekday = SUNDAY
 
 /datum/holiday/nth_week/ice_cream/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Ice Cream", "Gelato", "Semifreddo", "Cornuto", "Soft Serve", "Cone", "Ice", "Cream", "I Scream", "Parfait", "Straccciatella", "Sherbet", "Snow", "Affogato", "Mochi", "Tartufo", "Sundae", "Neapolitan")

@@ -12,6 +12,8 @@
 	var/impressiveness = 45
 
 /obj/item/statuebust/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/art, impressiveness)
 	AddElement(/datum/element/beauty, 1000)
@@ -32,6 +34,8 @@
 	reference_chance = 100
 
 /obj/item/statuebust/hippocratic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(reference_chance))
 		name = "Solemn Vow"
@@ -40,6 +44,8 @@
 		reference = TRUE
 
 /obj/item/statuebust/hippocratic/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(reference)
 		. += span_notice("You could activate the bust in-hand to swear or forswear a Hippocratic Oath... but it seems like somebody decided it was more of a Hippocratic Suggestion. This thing is caked with bits of blood and gore.")
@@ -47,18 +53,24 @@
 	. += span_notice("You can activate the bust in-hand to swear or forswear a Hippocratic Oath! This has no effects except pacifism or bragging rights. Does not remove other sources of pacifism. Do not eat.")
 
 /obj/item/statuebust/hippocratic/equipped(mob/living/carbon/human/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!(slot & ITEM_SLOT_HANDS))
 		return
 	ADD_TRAIT(user, TRAIT_MEDICAL_HUD, type)
 
 /obj/item/statuebust/hippocratic/dropped(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(HAS_TRAIT_NOT_FROM(user, TRAIT_MEDICAL_HUD, type))
 		return
 	REMOVE_TRAIT(user, TRAIT_MEDICAL_HUD, type)
 
 /obj/item/statuebust/hippocratic/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user))
 		to_chat(user, span_warning("You remember how the Hippocratic Oath specifies 'my fellow human beings' and realize that it's completely meaningless to you."))
 		return
@@ -108,6 +120,8 @@
 
 // Bully the guy for fucking up.
 /obj/item/statuebust/hippocratic/proc/fuck_it_up(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("You forget what comes next like a dumbass. The Hippocrates bust looks down on you, disappointed."))
 	user.adjust_organ_loss(ORGAN_SLOT_BRAIN, 2)
 	COOLDOWN_RESET(src, oath_cd)
@@ -126,6 +140,8 @@
 	attack_verb_simple = list("bash", "beckon", "hit")
 
 /obj/item/maneki_neko/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//Not compatible with greyscale configs because it's animated.
 	add_atom_colour(pick_weight(list(COLOR_WHITE = 3, COLOR_GOLD = 2, COLOR_DARK = 1)), FIXED_COLOUR_PRIORITY)

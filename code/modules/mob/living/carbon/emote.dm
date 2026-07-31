@@ -17,6 +17,8 @@
 	affected_by_pitch = FALSE
 
 /datum/emote/living/carbon/clap/get_sound(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user.get_bodypart(BODY_ZONE_L_ARM) || !user.get_bodypart(BODY_ZONE_R_ARM))
 		return
 	return pick(
@@ -35,6 +37,8 @@
 	cooldown = 6 SECONDS
 
 /datum/emote/living/carbon/crack/can_run_emote(mob/living/carbon/user, status_check = TRUE , intentional, params)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user) || user.usable_hands < 2)
 		return FALSE
 	return ..()
@@ -49,6 +53,8 @@
 	can_use_flags = EMOTE_CANUSE_SOFTCRIT
 
 /datum/emote/living/carbon/cry/run_emote(mob/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(user))
 		return
@@ -56,6 +62,8 @@
 	QDEL_IN(human_user.give_emote_overlay(/datum/bodypart_overlay/simple/emote/cry), 12.8 SECONDS)
 
 /datum/emote/living/carbon/cry/get_sound(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return
 	return user.dna.species.get_cry_sound(user)
@@ -66,6 +74,8 @@
 	can_use_flags = EMOTE_CANUSE_REQUIRE_HANDS
 
 /datum/emote/living/carbon/circle/run_emote(mob/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!length(user.get_empty_held_indexes()))
 		to_chat(user, span_warning("You don't have any free hands to make a circle with."))
@@ -84,6 +94,8 @@
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 
 /datum/emote/living/carbon/meow/can_run_emote(mob/living/carbon/user, status_check = TRUE , intentional, params)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user) || (!istype(user.get_organ_slot(ORGAN_SLOT_TONGUE), /obj/item/organ/tongue/cat)))
 		return FALSE
 	return ..()
@@ -97,6 +109,8 @@
 	emote_type = EMOTE_AUDIBLE
 
 /datum/emote/living/carbon/purr/can_run_emote(mob/living/carbon/user, status_check = TRUE , intentional, params)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user) || (!istype(user.get_organ_slot(ORGAN_SLOT_TONGUE), /obj/item/organ/tongue/cat)) || HAS_MIND_TRAIT(user, TRAIT_MIMING))
 		return FALSE
 	return ..()
@@ -110,6 +124,8 @@
 	emote_type = EMOTE_AUDIBLE | EMOTE_VISIBLE
 
 /datum/emote/living/carbon/mchitter/can_run_emote(mob/living/carbon/user, status_check, intentional, params)
+	procstart = null
+	src.procstart = null
 	if(!ismoth(user))
 		return FALSE
 	return ..()
@@ -130,6 +146,8 @@
 	emote_type = EMOTE_AUDIBLE | EMOTE_VISIBLE
 
 /datum/emote/living/carbon/msqueak/can_run_emote(mob/living/carbon/user, status_check, intentional, params)
+	procstart = null
+	src.procstart = null
 	if(!ismoth(user))
 		return FALSE
 	return ..()
@@ -140,6 +158,8 @@
 	can_use_flags = EMOTE_CANUSE_REQUIRE_HANDS
 
 /datum/emote/living/carbon/noogie/run_emote(mob/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/hand_item/noogie/noogie = new(user)
 	if(user.put_in_hands(noogie))
@@ -170,6 +190,8 @@
 	can_use_flags = EMOTE_CANUSE_REQUIRE_HANDS
 
 /datum/emote/living/carbon/sign/select_param(mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnum(text2num(params)))
 		return message
@@ -188,6 +210,8 @@
 	cooldown = 3 SECONDS // to prevent endless table slamming
 
 /datum/emote/living/carbon/slap/run_emote(mob/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/hand_item/slapper/N = new(user)
 	if(user.put_in_hands(N))
@@ -204,6 +228,8 @@
 
 
 /datum/emote/living/carbon/hand/run_emote(mob/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/hand_item/hand/hand = new(user)
 	if(user.put_in_hands(hand))
@@ -223,6 +249,8 @@
 	affected_by_pitch = FALSE
 
 /datum/emote/living/carbon/snap/get_sound(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(user))
 		return pick(
 			'sound/mobs/humanoids/human/snap/fingersnap1.ogg',
@@ -237,6 +265,8 @@
 	cooldown = 3 SECONDS
 
 /datum/emote/living/carbon/shoesteal/run_emote(mob/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/hand_item/stealer/stealing_hand = new(user)
 	if (user.put_in_hands(stealing_hand))
@@ -263,6 +293,8 @@
 	vary = TRUE
 
 /datum/emote/living/carbon/hiss/get_sound(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(user))
 		return

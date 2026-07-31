@@ -2,6 +2,8 @@
 /datum/element/shiny_bait
 
 /datum/element/shiny_bait/Attach(obj/item/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -13,6 +15,8 @@
 		ADD_TRAIT(target, TRAIT_ROD_ATTRACT_SHINY_LOVERS, "[REF(src)]_rod")
 
 /datum/element/shiny_bait/Detach(obj/item/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, list(
 		COMSIG_ITEM_FISHING_ROD_SLOTTED,
 		COMSIG_ITEM_FISHING_ROD_UNSLOTTED,
@@ -24,11 +28,15 @@
 	return ..()
 
 /datum/element/shiny_bait/proc/on_fishing_rod_slotted(datum/source, obj/item/fishing_rod/rod, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(slot == ROD_SLOT_BAIT)
 		ADD_TRAIT(rod, TRAIT_ROD_ATTRACT_SHINY_LOVERS, REF(source))
 
 /datum/element/shiny_bait/proc/on_fishing_rod_unslotted(datum/source, obj/item/fishing_rod/rod, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(slot == ROD_SLOT_BAIT)
 		REMOVE_TRAIT(rod, TRAIT_ROD_ATTRACT_SHINY_LOVERS, REF(source))

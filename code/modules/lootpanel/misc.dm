@@ -1,5 +1,7 @@
 /// Helper to open the panel
 /datum/lootpanel/proc/open(turf/tile)
+	procstart = null
+	src.procstart = null
 	if (tile != source_turf)
 		if (source_turf)
 			UnregisterSignal(source_turf, list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON))
@@ -32,6 +34,8 @@
  * Returns boolean - whether this proc has finished the queue or not.
  */
 /datum/lootpanel/proc/process_images()
+	procstart = null
+	src.procstart = null
 	for(var/datum/search_object/index as anything in to_image)
 		to_image -= index
 

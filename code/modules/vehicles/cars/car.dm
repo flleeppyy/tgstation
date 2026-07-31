@@ -18,6 +18,8 @@
 	COOLDOWN_DECLARE(enginesound_cooldown)
 
 /obj/vehicle/sealed/car/generate_actions()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(key_type))
 		initialize_controller_action_type(/datum/action/vehicle/sealed/remove_key, VEHICLE_CONTROL_DRIVE)
@@ -25,6 +27,8 @@
 		initialize_controller_action_type(/datum/action/vehicle/sealed/dump_kidnapped_mobs, VEHICLE_CONTROL_DRIVE)
 
 /obj/vehicle/sealed/car/mouse_drop_receive(atom/dropping, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user) || (HAS_TRAIT(user, TRAIT_HANDS_BLOCKED) && !is_driver(user)))
 		return
 	if((car_traits & CAN_KIDNAP) && isliving(dropping) && user != dropping)
@@ -34,6 +38,8 @@
 	return ..()
 
 /obj/vehicle/sealed/car/mob_try_exit(mob/future_pedestrian, mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(future_pedestrian != user || !(LAZYACCESS(occupants, future_pedestrian) & VEHICLE_CONTROL_KIDNAPPED))
 		mob_exit(future_pedestrian, silent)
 		return TRUE
@@ -46,6 +52,8 @@
 	return TRUE
 
 /obj/vehicle/sealed/car/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(car_traits & CAN_KIDNAP))
 		return
@@ -60,6 +68,8 @@
 
 ///attempts to force a mob into the car
 /obj/vehicle/sealed/car/proc/mob_try_forced_enter(mob/forcer, mob/kidnapped, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(occupant_amount() >= max_occupants)
 		return FALSE
 	var/atom/old_loc = loc
@@ -71,10 +81,14 @@
 
 ///Callback proc to check for
 /obj/vehicle/sealed/car/proc/is_car_stationary(atom/old_loc)
+	procstart = null
+	src.procstart = null
 	return (old_loc == loc)
 
 ///Proc called when someone is forcefully stuffedd into a car
 /obj/vehicle/sealed/car/proc/mob_forced_enter(mob/kidnapped, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!silent)
 		kidnapped.visible_message(span_warning("[kidnapped] is forced into \the [src]!"))
 		if(forced_enter_sound)
@@ -83,16 +97,22 @@
 	add_occupant(kidnapped, VEHICLE_CONTROL_KIDNAPPED, TRUE)
 
 /obj/vehicle/sealed/car/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	explosion(src, heavy_impact_range = 1, light_impact_range = 2, flash_range = 3, adminlog = FALSE)
 	log_message("[src] exploded due to destruction", LOG_ATTACK)
 	return ..()
 
 /obj/vehicle/sealed/car/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(is_driver(user) && canmove && (!key_type || istype(inserted_key, key_type)))
 		vehicle_move(direction)
 	return TRUE
 
 /obj/vehicle/sealed/car/vehicle_move(direction)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, cooldown_vehicle_move))
 		return FALSE
 	COOLDOWN_START(src, cooldown_vehicle_move, vehicle_move_delay)

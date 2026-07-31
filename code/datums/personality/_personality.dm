@@ -36,12 +36,16 @@
 	var/processes = FALSE
 
 /datum/personality/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(processes)
 		SSpersonalities.processing_personalities[src] = list()
 		START_PROCESSING(SSpersonalities, src)
 
 /datum/personality/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(force)
 		STOP_PROCESSING(SSpersonalities, src)
 		SSpersonalities.processing_personalities -= src
@@ -59,6 +63,8 @@
  * This mob is asserted to have `mob_mood`.
  */
 /datum/personality/proc/apply_to_mob(mob/living/who)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(personality_trait)
 		ADD_TRAIT(who, personality_trait, PERSONALITY_TRAIT)
@@ -75,6 +81,8 @@
  * This mob is asserted to have `mob_mood`.
  */
 /datum/personality/proc/remove_from_mob(mob/living/who)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(personality_trait)
 		REMOVE_TRAIT(who, personality_trait, PERSONALITY_TRAIT)
@@ -83,6 +91,8 @@
 		SSpersonalities.processing_personalities[src] -= who
 
 /datum/personality/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/subject as anything in SSpersonalities.processing_personalities[src])
 		if(IS_UNCONSCIOUS(subject) || HAS_TRAIT(subject, TRAIT_NO_TRANSFORM))
 			continue
@@ -97,4 +107,6 @@
 /// Called every SSpersonality tick if `processes` is TRUE.
 /// Don't call parent if you override this, that's for error checking
 /datum/personality/proc/on_tick(mob/living/subject, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	return PROCESS_KILL

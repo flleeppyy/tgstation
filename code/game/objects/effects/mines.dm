@@ -19,6 +19,8 @@
 	var/datum/weakref/foot_on_mine
 
 /obj/effect/mine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(arm_delay)
 		armed = FALSE
@@ -32,6 +34,8 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/effect/mine/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!armed)
 		. += span_info("It appears to be inactive...")
@@ -43,6 +47,8 @@
 		. += span_danger("The pressure plate is depressed by [unlucky_sod]. Any move they make'll set it off now.")
 
 /obj/effect/mine/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(armed)
 		icon_state = base_icon_state
@@ -51,10 +57,14 @@
 
 /// The effect of the mine
 /obj/effect/mine/proc/mineEffect(mob/victim)
+	procstart = null
+	src.procstart = null
 	return
 
 /// If the landmine was previously inactive, this beeps and displays a message marking it active
 /obj/effect/mine/proc/now_armed()
+	procstart = null
+	src.procstart = null
 	armed = TRUE
 	update_appearance(UPDATE_ICON_STATE)
 	playsound(src, 'sound/machines/nuke/angry_beep.ogg', 40, FALSE, -2)
@@ -62,6 +72,8 @@
 
 /// Can this mine trigger on the passed movable?
 /obj/effect/mine/proc/can_trigger(atom/movable/on_who)
+	procstart = null
+	src.procstart = null
 	if(triggered || !isturf(loc) || iseffect(on_who) || !armed)
 		return FALSE
 
@@ -80,6 +92,8 @@
 	return TRUE
 
 /obj/effect/mine/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!can_trigger(arrived))
@@ -105,6 +119,8 @@
 
 
 /obj/effect/mine/proc/on_exited(datum/source, atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!can_trigger(gone))
@@ -125,11 +141,15 @@
 	foot_on_mine = null
 
 /obj/effect/mine/take_damage(damage_amount, damage_type, damage_flag, sound_effect, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	triggermine()
 
 /// When something sets off a mine
 /obj/effect/mine/proc/triggermine(atom/movable/triggerer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(triggered) //too busy detonating to detonate again
 		return
@@ -158,6 +178,8 @@
 	var/range_flash = 3
 
 /obj/effect/mine/explosive/mineEffect(mob/victim)
+	procstart = null
+	src.procstart = null
 	explosion(src, range_devastation, range_heavy, range_light, range_flame, range_flash)
 
 /obj/effect/mine/explosive/light
@@ -183,6 +205,8 @@
 	var/stun_time = 80
 
 /obj/effect/mine/stun/mineEffect(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	if(isliving(victim) && Adjacent(victim))
 		victim.Paralyze(stun_time)
 
@@ -190,6 +214,8 @@
 	name = "kick mine"
 
 /obj/effect/mine/kickmine/mineEffect(mob/victim)
+	procstart = null
+	src.procstart = null
 	if(isliving(victim) && victim.client && Adjacent(victim))
 		to_chat(victim, span_userdanger("You have been kicked FOR NO REISIN!"))
 		qdel(victim.client)
@@ -200,6 +226,8 @@
 	var/gas_type = GAS_O2
 
 /obj/effect/mine/gas/mineEffect(mob/victim)
+	procstart = null
+	src.procstart = null
 	atmos_spawn_air("[gas_type]=[gas_amount]")
 
 /obj/effect/mine/gas/plasma
@@ -220,6 +248,8 @@
 	var/sound = 'sound/items/bikehorn.ogg'
 
 /obj/effect/mine/sound/mineEffect(mob/victim)
+	procstart = null
+	src.procstart = null
 	playsound(loc, sound, 100, TRUE)
 
 /obj/effect/mine/sound/bwoink
@@ -237,9 +267,13 @@
 	var/shred_triggerer = FALSE
 
 /obj/effect/mine/shrapnel/mineEffect(mob/victim)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/mine/shrapnel/triggermine(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/pellet_cloud, projectile_type=shrapnel_type, magnitude=shrapnel_magnitude)
 	return ..()
 
@@ -259,6 +293,8 @@
 	light_color = COLOR_VIVID_RED
 
 /obj/effect/mine/shrapnel/capspawn/now_armed()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light_on(TRUE)
 
@@ -272,6 +308,8 @@
 	var/active = FALSE
 
 /obj/item/minespawner/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		return
@@ -283,6 +321,8 @@
 
 /// Deploys the mine and deletes itself
 /obj/item/minespawner/proc/deploy_mine()
+	procstart = null
+	src.procstart = null
 	do_alert_animation()
 	playsound(loc, 'sound/machines/chime.ogg', 30, FALSE, -3)
 	var/obj/effect/mine/new_mine = new mine_type(get_turf(src))

@@ -25,6 +25,8 @@
 	var/step_delay = 10
 
 /obj/item/clothing/head/costume/whoopee/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(check_holidays(APRIL_FOOLS))
 		step_delay = 1

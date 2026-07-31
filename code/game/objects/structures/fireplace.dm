@@ -24,21 +24,29 @@
 	var/datum/looping_sound/burning/burning_loop
 
 /obj/structure/fireplace/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	burning_loop = new(src)
 
 /obj/structure/fireplace/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	QDEL_NULL(burning_loop)
 	remove_shared_particles(/particles/smoke/burning)
 	. = ..()
 
 /obj/structure/fireplace/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light(l_dir = dir)
 
 /// We're offset back into the wall, account for that
 /obj/structure/fireplace/get_light_offset()
+	procstart = null
+	src.procstart = null
 	var/list/hand_back = ..()
 	var/list/dir_offset = dir2offset(REVERSE_DIR(dir))
 	hand_back[1] += dir_offset[1] * 0.5
@@ -46,6 +54,8 @@
 	return hand_back
 
 /obj/structure/fireplace/proc/try_light(obj/item/O, mob/user)
+	procstart = null
+	src.procstart = null
 	if(lit)
 		to_chat(user, span_warning("It's already lit!"))
 		return FALSE
@@ -59,6 +69,8 @@
 		return TRUE
 
 /obj/structure/fireplace/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/stack/sheet/mineral/wood))
 		var/obj/item/stack/sheet/mineral/wood/wood = tool
 		var/space_remaining = MAXIMUM_BURN_TIMER - burn_time_remaining()
@@ -92,6 +104,8 @@
 	return NONE
 
 /obj/structure/fireplace/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!lit)
 		return
@@ -110,6 +124,8 @@
 	. += "fireplace_glow"
 
 /obj/structure/fireplace/proc/adjust_light()
+	procstart = null
+	src.procstart = null
 	if(!lit)
 		set_light(0)
 		return
@@ -127,6 +143,8 @@
 			set_light(6)
 
 /obj/structure/fireplace/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!lit)
 		return
 	if(world.time > flame_expiry_timer)
@@ -139,6 +157,8 @@
 	adjust_light()
 
 /obj/structure/fireplace/extinguish()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(lit)
 		var/fuel = burn_time_remaining()
@@ -147,6 +167,8 @@
 		adjust_fuel_timer(fuel)
 
 /obj/structure/fireplace/proc/adjust_fuel_timer(amount)
+	procstart = null
+	src.procstart = null
 	if(lit)
 		flame_expiry_timer += amount
 		if(burn_time_remaining() < MAXIMUM_BURN_TIMER)
@@ -155,12 +177,16 @@
 		fuel_added = clamp(fuel_added + amount, 0, MAXIMUM_BURN_TIMER)
 
 /obj/structure/fireplace/proc/burn_time_remaining()
+	procstart = null
+	src.procstart = null
 	if(lit)
 		return max(0, flame_expiry_timer - world.time)
 	else
 		return max(0, fuel_added)
 
 /obj/structure/fireplace/proc/ignite()
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSobj, src)
 	burning_loop.start()
 	lit = TRUE
@@ -185,6 +211,8 @@
 			remove_shared_particles(/particles/smoke/burning)
 
 /obj/structure/fireplace/proc/put_out()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	burning_loop.stop()
 	lit = FALSE

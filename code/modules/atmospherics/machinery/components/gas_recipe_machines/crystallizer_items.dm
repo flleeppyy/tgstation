@@ -6,6 +6,8 @@
 	var/uses = 1
 
 /obj/item/hypernoblium_crystal/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/portable_atmospherics/atmos_device = interacting_with
 	var/obj/item/clothing/worn_item = interacting_with
 	if(!istype(worn_item) && !istype(atmos_device))
@@ -47,6 +49,8 @@
 	var/cloud_size = 1
 
 /obj/item/nitrium_crystal/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	do_chem_smoke(cloud_size, src, get_turf(src), list(/datum/reagent/nitrium_low_metabolization = 3, /datum/reagent/nitrium_high_metabolization = 2))
 	qdel(src)

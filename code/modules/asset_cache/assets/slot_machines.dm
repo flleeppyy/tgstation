@@ -2,6 +2,8 @@
 	name = "slotmachines"
 
 /datum/asset/spritesheet_batched/slot_machines/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	// initialising the list of items we need
 	var/list/target_items = list()
 	for(var/obj/machinery/computer/slot_machine/slot_machine as anything in typesof(/obj/machinery/computer/slot_machine))

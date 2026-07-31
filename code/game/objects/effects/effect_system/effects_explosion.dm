@@ -6,6 +6,8 @@
 
 
 /obj/effect/particle_effect/expl_particles/proc/end_particle(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!QDELETED(src))
 		qdel(src)
@@ -17,9 +19,13 @@
 	delete_on_stop = TRUE
 
 /datum/effect_system/basic/expl_particles/get_step_count()
+	procstart = null
+	src.procstart = null
 	return pick(25;1, 50;2, 100;3, 200;4)
 
 /datum/effect_system/basic/expl_particles/loop_end(datum/move_loop/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/effect/explosion_particle = source.moving
 	if(QDELETED(explosion_particle))
@@ -39,12 +45,16 @@
 	pixel_y = -32
 
 /obj/effect/explosion/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_IN(src, 10)
 
 /datum/effect_system/explosion
 
 /datum/effect_system/explosion/start()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/explosion(location)
 	var/datum/effect_system/basic/expl_particles/boom_particles = new(location)
 	boom_particles.start()
@@ -52,9 +62,13 @@
 /datum/effect_system/explosion/smoke
 
 /datum/effect_system/explosion/smoke/proc/create_smoke()
+	procstart = null
+	src.procstart = null
 	var/datum/effect_system/fluid_spread/smoke/smoke_system = new(location, range = 2)
 	smoke_system.attach(holder).start()
 
 /datum/effect_system/explosion/smoke/start()
+	procstart = null
+	src.procstart = null
 	..()
 	addtimer(CALLBACK(src, PROC_REF(create_smoke)), 0.5 SECONDS)

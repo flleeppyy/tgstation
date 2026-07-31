@@ -11,16 +11,22 @@
 	has_gas_visuals = FALSE
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	add_atom_colour("#404040", FIXED_COLOUR_PRIORITY)
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/is_connectable(obj/machinery/atmospherics/pipe/heat_exchanging/target, given_layer, HE_type_check = TRUE)
+	procstart = null
+	src.procstart = null
 	if(istype(target, /obj/machinery/atmospherics/pipe/heat_exchanging) != HE_type_check)
 		return FALSE
 	. = ..()
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/process_atmos()
+	procstart = null
+	src.procstart = null
 	var/environment_temperature = 0
 	var/datum/gas_mixture/pipe_air = return_air()
 
@@ -50,6 +56,8 @@
 		pipe_air.temperature = avg_temp
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!parent)
 		return //machines subsystem fires before atmos is initialized so this prevents race condition runtimes
 
@@ -81,4 +89,6 @@
 			buckled_mob.apply_damage(seconds_per_tick * 2 * log(pipe_air.temperature - heat_limit), BURN, BODY_ZONE_CHEST)
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/update_pipe_icon()
+	procstart = null
+	src.procstart = null
 	return

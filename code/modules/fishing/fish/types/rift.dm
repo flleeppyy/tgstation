@@ -57,10 +57,14 @@
 	jostle_pain_mult = 1
 
 /datum/embedding/chrystarfish/jostle_effects()
+	procstart = null
+	src.procstart = null
 	do_teleport(owner, get_turf(owner), 3, asoundin = 'sound/effects/phasein.ogg', channel = TELEPORT_CHANNEL_BLUESPACE)
 	owner.visible_message(span_danger("[owner] teleports as [parent] jostles inside of [owner.p_them()]!"))
 
 /obj/item/fish/starfish/chrystarfish/set_status(new_status, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(new_status == FISH_DEAD)
 		if(fillet_type)
@@ -69,14 +73,20 @@
 		qdel(src)
 
 /obj/item/fish/starfish/chrystarfish/add_emissive()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/fish/starfish/chrystarfish/get_base_edible_reagents_to_add()
+	procstart = null
+	src.procstart = null
 	var/list/return_list = ..()
 	return_list[/datum/reagent/bluespace] = 5
 	return return_list
 
 /obj/item/fish/starfish/chrystarfish/flinch_on_eat(mob/living/eater, mob/living/feeder)
+	procstart = null
+	src.procstart = null
 	if(status != FISH_ALIVE)
 		return
 	to_chat(feeder, span_warning("[src] slips out of the spacetime in pain!"))
@@ -86,6 +96,8 @@
 	do_teleport(isturf(loc) ? src : loc, get_turf(feeder), tp_range, asoundin = 'sound/effects/phasein.ogg', channel = TELEPORT_CHANNEL_BLUESPACE)
 
 /obj/item/fish/starfish/chrystarfish/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	visible_message(span_suicide("[user] swallows [src] whole! It looks like they're trying to commit suicide!"))
 	forceMove(user)
 	// *everything*
@@ -166,6 +178,8 @@
 	var/last_effect
 
 /obj/item/fish/dolphish/get_force_rank()
+	procstart = null
+	src.procstart = null
 	var/multiplier = 1
 	switch(w_class)
 		if(WEIGHT_CLASS_TINY)
@@ -192,6 +206,8 @@
 	exposed_wound_bonus *= multiplier
 
 /obj/item/fish/dolphish/do_fish_process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(src))
 		return
@@ -254,6 +270,8 @@
 #undef PATIENCE_UNCOMFY
 
 /obj/item/fish/dolphish/pet_fish(mob/living/user, in_aquarium)
+	procstart = null
+	src.procstart = null
 	user.visible_message(
 		span_warning("[user] tries to pet [src], but it sinks its fangs into [user.p_their()] hand!"),
 		span_warning("You try to pet [src], but it sinks its fangs into your hand!"),
@@ -305,6 +323,8 @@
 	beauty = FISH_BEAUTY_UGLY
 
 /obj/item/fish/flumpulus/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	visible_message(span_suicide("[user] swallows [src] whole! It looks like they're trying to commit suicide!"))
 	forceMove(user)
 	. = MANUAL_SUICIDE
@@ -313,6 +333,8 @@
 		user.death()
 
 /obj/item/fish/flumpulus/proc/flump_attack(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/eyes/eyes = user.get_organ_slot(ORGAN_SLOT_EYES)
 	var/obj/item/organ/eyes/new_eyes = pick(list(/obj/item/organ/eyes/snail, /obj/item/organ/eyes/night_vision/mushroom))
 	new_eyes = new new_eyes(user)
@@ -328,12 +350,16 @@
 			eyes.dust()
 
 /obj/item/fish/flumpulus/get_base_edible_reagents_to_add()
+	procstart = null
+	src.procstart = null
 	var/list/return_list = ..()
 	//return_list[/datum/reagent/flumpulus_extract] = 10
 	return_list[/datum/reagent/medicine/oculine/flumpuline] = 10
 	return return_list
 
 /obj/item/fish/flumpulus/intercept_zImpact(list/falling_movables, levels)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(status == FISH_DEAD)
 		return .
@@ -393,6 +419,8 @@
 	max_pressure = WARNING_HIGH_PRESSURE
 
 /obj/item/fish/gullion/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	visible_message(span_suicide("[user] swallows [src] whole! It looks like they're trying to commit suicide!"))
 	forceMove(user)
 	var/datum/gas_mixture/environment = user.loc.return_air()
@@ -458,10 +486,14 @@
 	stable_population = 2
 
 /obj/item/fish/mossglob/Initialize(mapload, apply_qualities)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/haunted, COLOR_GREEN)
 
 /obj/item/fish/mossglob/set_status(new_status, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(new_status == FISH_DEAD)
 		RemoveElement(/datum/element/haunted, COLOR_GREEN)
@@ -469,6 +501,8 @@
 		AddElement(/datum/element/haunted, COLOR_GREEN)
 
 /obj/item/fish/mossglob/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	visible_message(span_suicide("[user] sticks [user.p_their()] arm deep into [src]! It looks like they're trying to offer themselves to it!"))
 	user.drop_everything()
 	set_status(FISH_ALIVE)
@@ -479,6 +513,8 @@
 	return MANUAL_SUICIDE_NONLETHAL
 
 /obj/item/fish/mossglob/get_force_rank()
+	procstart = null
+	src.procstart = null
 	var/multiplier = 1
 	switch(w_class)
 		if(WEIGHT_CLASS_TINY)
@@ -543,6 +579,8 @@
 // When someone refactors demoralizers to not be omega hardcoded for syndicate this fish should get it
 
 /obj/item/fish/babbelfish/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_smallnoticeital(
 		"“Sorry, you <i>speak Anglish</i>, how is that possible?\n\
@@ -566,6 +604,8 @@
  * the idiot uses the babbelfish as a vuvuzela and becomes a god for half a second before their brain is imploded.
  */
 /obj/item/fish/babbelfish/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(status == FISH_DEAD)
 		if(moron_inside)
 			visible_message(span_suicide("[user] puts [src] against their lips, but [src] is already full!"))
@@ -598,6 +638,8 @@
  * Consequently, when the fish is magically resuscitated the bound mob is revived as well.
  */
 /obj/item/fish/babbelfish/proc/fishes_die_twice()
+	procstart = null
+	src.procstart = null
 	if(isnull(moron_inside))
 		UnregisterSignal(src, COMSIG_FISH_STATUS_CHANGED)
 	if(status == FISH_DEAD)
@@ -609,12 +651,16 @@
  * If they somehow escaped null the variable.
  */
 /obj/item/fish/babbelfish/proc/check_loc()
+	procstart = null
+	src.procstart = null
 	if(locate(moron_inside) in src)
 		return
 	UnregisterSignal(moron_inside, COMSIG_MOVABLE_MOVED)
 	moron_inside = null
 
 /obj/item/fish/babbelfish/set_status(new_status, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Death message plays here
 	if(new_status != FISH_DEAD)
@@ -628,6 +674,8 @@
  * This is punishment for neglecting your catches.
  */
 /obj/item/fish/babbelfish/proc/psy_wail()
+	procstart = null
+	src.procstart = null
 	manual_emote("wails!")
 	playsound(src, 'sound/mobs/non-humanoids/fish/fish_psyblast.ogg', 100)
 	var/list/mob/living/mobs_in_range = get_hearers_in_range(7, src)
@@ -667,6 +715,8 @@
 		visible_message(span_bolddanger("[src]'s wail kills [affected] fish nearby!")) // m-m-m-m-m-MONSTER KILL
 
 /obj/item/fish/babbelfish/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 
 	if(!locate(src) in user)
 		return ..()
@@ -725,29 +775,41 @@
 	offset_location = UPPER_BODY
 
 /datum/bodypart_overlay/simple/babbearfish/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner, mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	return ..() && !(bodypart_owner.owner?.obscured_slots & HIDEEARS)
 
 /obj/item/organ/ears/babbelfish/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_They %PRONOUN_have weird, deep-rooted obsidian tubes sticking out of where their ears should be.")
 	babbel_overlay = new()
 	removal_holder = new(src)
 
 /obj/item/organ/ears/babbelfish/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(babbel_overlay)
 	QDEL_NULL(removal_holder)
 	QDEL_NULL(bound_component)
 	. = ..()
 
 /obj/item/organ/ears/babbelfish/on_bodypart_insert(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	limb.add_bodypart_overlay(babbel_overlay)
 
 /obj/item/organ/ears/babbelfish/on_bodypart_remove(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	limb.remove_bodypart_overlay(babbel_overlay)
 
 /obj/item/organ/ears/babbelfish/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/organ/ears/ears = target_mob.get_organ_slot(ORGAN_SLOT_EARS)
 	if(!ears)
@@ -766,6 +828,8 @@
 	Insert(user, special = TRUE, movement_flags = DELETE_IF_REPLACED)
 
 /obj/item/organ/ears/babbelfish/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	..()
 	bound_component = organ_owner.AddComponent(
 		/datum/component/anti_magic, \
@@ -807,6 +871,8 @@
 		ADD_TRAIT(organ_owner.mind, TRAIT_TOWER_OF_BABEL, MAGIC_TRAIT) // only one roll per mind
 
 /obj/item/organ/ears/babbelfish/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Reset
@@ -817,9 +883,13 @@
 	QDEL_NULL(bound_component)
 
 /obj/item/organ/ears/babbelfish/proc/on_drain_magic(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_noticealien("Your [src] pop as they protect your mind from psychic phenomena!"))
 	adjust_temporary_deafness(40 SECONDS)
 
 /obj/item/organ/ears/babbelfish/proc/on_expire(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_noticealien("Your [src] suddenly burst apart!"))
 	apply_organ_damage(maxHealth, maxHealth)

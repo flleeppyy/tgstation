@@ -13,9 +13,13 @@
 	var/mob/living/petrified_mob
 
 /obj/structure/statue/petrified/relaymove()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/statue/petrified/Initialize(mapload, mob/living/living, statue_timer, save_brain)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(statue_timer)
 		timer = statue_timer
@@ -35,6 +39,8 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/statue/petrified/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!petrified_mob)
 		STOP_PROCESSING(SSobj, src)
 	timer -= seconds_per_tick SECONDS
@@ -44,9 +50,13 @@
 		qdel(src)
 
 /obj/structure/statue/petrified/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/statue/petrified/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == petrified_mob)
 		petrified_mob.remove_traits(list(TRAIT_GODMODE, TRAIT_MUTE, TRAIT_NOBLOOD), STATUE_MUTE)
@@ -56,6 +66,8 @@
 		petrified_mob = null
 
 /obj/structure/statue/petrified/Destroy()
+	procstart = null
+	src.procstart = null
 	var/turf/dropoff_turf = drop_location()
 	if(istype(loc, /mob/living/basic/statue))
 		var/mob/living/basic/statue/statue_mob = loc
@@ -73,6 +85,8 @@
 	return ..()
 
 /obj/structure/statue/petrified/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/destruction_message = "[src] shatters!"
 	if(!disassembled)
 		if(petrified_mob)
@@ -90,6 +104,8 @@
 	visible_message(span_danger(destruction_message))
 
 /obj/structure/statue/petrified/animate_atom_living(mob/living/owner)
+	procstart = null
+	src.procstart = null
 	if(isnull(petrified_mob))
 		return ..()
 	var/mob/living/basic/statue/new_statue = new(drop_location())
@@ -108,9 +124,13 @@
 	return new_statue
 
 /mob/proc/petrify(statue_timer)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/petrify(statue_timer, save_brain, colorlist)
+	procstart = null
+	src.procstart = null
 	if(!isturf(loc))
 		return FALSE
 	var/obj/structure/statue/petrified/new_statue = new(loc, src, statue_timer, save_brain)
@@ -123,6 +143,8 @@
 	return TRUE
 
 /mob/living/basic/pet/dog/corgi/petrify(statue_timer)
+	procstart = null
+	src.procstart = null
 	if(!isturf(loc))
 		return FALSE
 	var/obj/structure/statue/petrified/new_statue = new (loc, src, statue_timer)

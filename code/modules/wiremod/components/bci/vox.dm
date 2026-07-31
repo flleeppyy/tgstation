@@ -22,25 +22,37 @@
 	var/obj/item/organ/cyberimp/bci/bci
 
 /obj/item/circuit_component/vox/populate_options()
+	procstart = null
+	src.procstart = null
 	type_option = add_option_port("VOX Type", list(PORT_TYPE_LIST(PORT_TYPE_STRING), PORT_TYPE_STRING))
 
 /obj/item/circuit_component/vox/populate_ports()
+	procstart = null
+	src.procstart = null
 	word_list = add_input_port("Word List", PORT_TYPE_LIST(PORT_TYPE_STRING))
 
 /obj/item/circuit_component/vox/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	if(istype(shell, /obj/item/organ/cyberimp/bci))
 		bci = shell
 
 /obj/item/circuit_component/vox/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	bci = null
 
 /obj/item/circuit_component/vox/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	var/current_option = type_option.value
 	if(current_type != current_option)
 		current_type = current_option
 		word_list.set_datatype(current_type)
 
 /obj/item/circuit_component/vox/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!bci)
 		return
 

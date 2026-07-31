@@ -13,6 +13,8 @@
 	var/healing_amount = 5
 
 /mob/living/basic/guardian/support/Initialize(mapload, datum/guardian_fluff/theme)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(\
 		/datum/component/healing_touch,\
@@ -34,11 +36,15 @@
 	teleport.Grant(src)
 
 /mob/living/basic/guardian/support/set_guardian_colour(colour)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/healing_touch, heal_color = guardian_colour)
 
 /// Called after we heal someone, show some visuals
 /mob/living/basic/guardian/support/proc/after_healed(mob/living/healed)
+	procstart = null
+	src.procstart = null
 	do_attack_animation(healed, ATTACK_EFFECT_PUNCH)
 	healed.visible_message(
 		message = span_notice("[src] heals [healed]!"),
@@ -68,14 +74,20 @@
 	var/teleport_time = 6 SECONDS
 
 /datum/action/cooldown/mob_cooldown/guardian_bluespace_beacon/Grant(mob/granted_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_MOB_ALTCLICKON, PROC_REF(try_teleporting))
 
 /datum/action/cooldown/mob_cooldown/guardian_bluespace_beacon/Remove(mob/removed_from)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_MOB_ALTCLICKON)
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/guardian_bluespace_beacon/Activate(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	var/turf/beacon_loc = owner.loc
 	if(!isfloorturf(beacon_loc))
 		owner.balloon_alert(owner, "no room!")
@@ -97,11 +109,15 @@
 
 /// Don't hold a reference to a deleted beacon
 /datum/action/cooldown/mob_cooldown/guardian_bluespace_beacon/proc/on_beacon_deleted()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	beacon = null
 
 /// Try and teleport something to our beacon
 /datum/action/cooldown/mob_cooldown/guardian_bluespace_beacon/proc/try_teleporting(mob/living/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!can_teleport(source, target))
@@ -112,6 +128,8 @@
 
 /// Validate whether we can teleport this object
 /datum/action/cooldown/mob_cooldown/guardian_bluespace_beacon/proc/can_teleport(mob/living/source, atom/movable/target)
+	procstart = null
+	src.procstart = null
 	if(!istype(target)) // Turfs
 		return FALSE
 	if (isnull(beacon))
@@ -135,6 +153,8 @@
 
 /// Start teleporting
 /datum/action/cooldown/mob_cooldown/guardian_bluespace_beacon/proc/perform_teleport(mob/living/source, atom/target)
+	procstart = null
+	src.procstart = null
 	source.do_attack_animation(target)
 	playsound(target, 'sound/items/weapons/punch1.ogg', 50, TRUE, TRUE, frequency = -1)
 	source.balloon_alert(source, "teleporting...")

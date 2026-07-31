@@ -24,26 +24,36 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 	COOLDOWN_DECLARE(access_grant_cooldown)
 
 /obj/machinery/keycard_auth/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	activated = GLOB.keycard_events.addEvent("triggerEvent", CALLBACK(src, PROC_REF(triggerEvent)))
 	if(mapload)
 		find_and_mount_on_atom()
 
 /obj/machinery/keycard_auth/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.keycard_events.clearEvent("triggerEvent", activated)
 	activated = null
 	return ..()
 
 /obj/machinery/keycard_auth/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.physical_state
 
 /obj/machinery/keycard_auth/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "KeycardAuth", name)
 		ui.open()
 
 /obj/machinery/keycard_auth/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["waiting"] = waiting
 	data["auth_required"] = event_source ? event_source.event : 0
@@ -53,6 +63,8 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 	return data
 
 /obj/machinery/keycard_auth/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(isdrone(user))
 		return UI_CLOSE
 	if(!isanimal_or_basicmob(user))
@@ -63,6 +75,8 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 	return ..()
 
 /obj/machinery/keycard_auth/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || waiting || !allowed(usr))
 		return
@@ -106,6 +120,8 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 				return
 
 /obj/machinery/keycard_auth/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(event_source && !(machine_stat & (NOPOWER|BROKEN)))
@@ -114,6 +130,8 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 		set_light(0)
 
 /obj/machinery/keycard_auth/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(event_source && !(machine_stat & (NOPOWER|BROKEN)))
@@ -121,6 +139,8 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 		. += emissive_appearance(icon, "auth_on", src, alpha = src.alpha)
 
 /obj/machinery/keycard_auth/proc/sendEvent(event_type)
+	procstart = null
+	src.procstart = null
 	triggerer = usr
 	event = event_type
 	waiting = TRUE
@@ -128,20 +148,28 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 	addtimer(CALLBACK(src, PROC_REF(eventSent)), 2 SECONDS)
 
 /obj/machinery/keycard_auth/proc/eventSent()
+	procstart = null
+	src.procstart = null
 	triggerer = null
 	event = ""
 	waiting = FALSE
 
 /obj/machinery/keycard_auth/proc/triggerEvent(source)
+	procstart = null
+	src.procstart = null
 	event_source = source
 	update_appearance()
 	addtimer(CALLBACK(src, PROC_REF(eventTriggered)), 2 SECONDS)
 
 /obj/machinery/keycard_auth/proc/eventTriggered()
+	procstart = null
+	src.procstart = null
 	event_source = null
 	update_appearance()
 
 /obj/machinery/keycard_auth/proc/trigger_event(confirmer)
+	procstart = null
+	src.procstart = null
 	triggerer.log_message("triggered and [key_name(confirmer)] confirmed event [event].", LOG_GAME)
 	message_admins("[ADMIN_LOOKUPFLW(triggerer)] triggered and [ADMIN_LOOKUPFLW(confirmer)] confirmed event [event]")
 
@@ -166,6 +194,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/keycard_auth/wall_mounted, 26)
 
 GLOBAL_VAR_INIT(emergency_access, FALSE)
 /proc/make_maint_all_access()
+	procstart = null
+	src.procstart = null
 	for(var/area/station/maintenance/area in GLOB.areas)
 		for (var/list/zlevel_turfs as anything in area.get_zlevel_turf_lists())
 			for(var/turf/area_turf as anything in zlevel_turfs)
@@ -178,6 +208,8 @@ GLOBAL_VAR_INIT(emergency_access, FALSE)
 	SSblackbox.record_feedback("nested tally", "keycard_auths", 1, list("emergency maintenance access", "enabled"))
 
 /proc/revoke_maint_all_access()
+	procstart = null
+	src.procstart = null
 	for(var/area/station/maintenance/area in GLOB.areas)
 		for (var/list/zlevel_turfs as anything in area.get_zlevel_turf_lists())
 			for(var/turf/area_turf as anything in zlevel_turfs)
@@ -190,6 +222,8 @@ GLOBAL_VAR_INIT(emergency_access, FALSE)
 	SSblackbox.record_feedback("nested tally", "keycard_auths", 1, list("emergency maintenance access", "disabled"))
 
 /proc/toggle_bluespace_artillery()
+	procstart = null
+	src.procstart = null
 	GLOB.bsa_unlock = !GLOB.bsa_unlock
 	minor_announce("Bluespace Artillery firing protocols have been [GLOB.bsa_unlock? "unlocked" : "locked"]", "Weapons Systems Update:")
 	SSblackbox.record_feedback("nested tally", "keycard_auths", 1, list("bluespace artillery", GLOB.bsa_unlock? "unlocked" : "locked"))

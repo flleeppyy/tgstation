@@ -7,10 +7,14 @@
 	var/inject_flags = null
 
 /obj/projectile/bullet/dart/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(50, NO_REACT)
 
 /obj/projectile/bullet/dart/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(target))
 		var/mob/living/carbon/M = target
 		if(blocked != 100) // not completely blocked
@@ -29,6 +33,8 @@
 	return BULLET_ACT_HIT
 
 /obj/projectile/bullet/dart/metalfoam/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent(/datum/reagent/aluminium, 15)
 	reagents.add_reagent(/datum/reagent/foaming_agent, 5)
@@ -41,6 +47,8 @@
 	var/obj/item/reagent_containers/syringe/inner_syringe
 
 /obj/projectile/bullet/dart/syringe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// This prevents the Ody from being used as a combat mech spamming RDX/Teslium syringes all over the place.
 	// Other syringe guns are loaded manually with pre-filled syringes which will react chems themselves.
@@ -48,11 +56,15 @@
 	reagents.flags &= ~NO_REACT
 
 /obj/projectile/bullet/dart/syringe/on_range()
+	procstart = null
+	src.procstart = null
 	if (inner_syringe)
 		inner_syringe.forceMove(drop_location())
 	return ..()
 
 /obj/projectile/bullet/dart/syringe/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (inner_syringe)
 		inner_syringe.forceMove(drop_location())

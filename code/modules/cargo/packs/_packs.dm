@@ -33,10 +33,14 @@
 	var/order_flags = NONE
 
 /datum/supply_pack/New()
+	procstart = null
+	src.procstart = null
 	id = type
 
 /// Returns data used for cargo purchasing UI
 /datum/supply_pack/proc/get_contents_ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	for(var/obj/item/item as anything in contains)
 		var/list/item_data = list(
@@ -57,6 +61,8 @@
  * @ crate_override: If defined, we will fill our supply pack with this object. This is used for when we need to spawn a random crate but the contents are goodies or we don't need a full crate.
  */
 /datum/supply_pack/proc/generate(atom/A, datum/bank_account/paying_account, crate_override)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/closet/crate/C
 	if(paying_account)
 		C = new /obj/structure/closet/crate/secure/owned(A, paying_account)
@@ -81,6 +87,8 @@
 	return C
 
 /datum/supply_pack/proc/get_cost()
+	procstart = null
+	src.procstart = null
 	. = cost
 	. *= SSeconomy.pack_price_modifier
 
@@ -89,6 +97,8 @@
  * @ container: The container holding the contents of the supply pack. Most typically a obj/structure/closet/crate, but can technically be anything.
  */
 /datum/supply_pack/proc/fill(obj/container)
+	procstart = null
+	src.procstart = null
 	for(var/item in contains)
 		if(!contains[item])
 			contains[item] = 1
@@ -101,10 +111,14 @@
 
 /// For generating supply packs at runtime. Returns a list of supply packs to use instead of this one.
 /datum/supply_pack/proc/generate_supply_packs()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Easily send a supplypod to an area
 /proc/send_supply_pod_to_area(contents, area_type, pod_type = /obj/structure/closet/supplypod)
+	procstart = null
+	src.procstart = null
 	var/list/areas = get_areas(area_type)
 	if(!LAZYLEN(areas))
 		return FALSE
@@ -131,6 +145,8 @@
 	test_ignored = TRUE
 
 /datum/supply_pack/custom/New(purchaser, cost, list/contains)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[purchaser]'s Mining Order"
 	src.cost = cost
@@ -143,6 +159,8 @@
 	crate_type = /obj/structure/closet/crate/cargo/mining
 
 /datum/supply_pack/custom/minerals/New(purchaser, cost, list/contains)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[purchaser]'s Materials Order"
 	src.cost = cost
@@ -150,6 +168,8 @@
 
 ///Alters material amrkey & adjust order quantities if they exceed whats on the market
 /datum/supply_pack/custom/minerals/proc/adjust_market()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/obj/item/stack/sheet/possible_stack as anything in contains)
 		var/material_type = possible_stack.material_type
@@ -179,6 +199,8 @@
 		SSstock_market.adjust_material_quantity(material_type, -available_quantity)
 
 /datum/supply_pack/custom/minerals/fill(obj/container)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/stack/sheet/possible_stack as anything in contains)
 		//spawn the ordered stack inside the crate
 		var/sheets_to_spawn = contains[possible_stack]

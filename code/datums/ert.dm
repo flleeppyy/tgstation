@@ -33,6 +33,8 @@
 	var/mob/living/carbon/human/mob_type
 
 /datum/ert/New()
+	procstart = null
+	src.procstart = null
 	if (!polldesc)
 		polldesc = "a Code [code] Nanotrasen Emergency Response Team"
 
@@ -75,6 +77,8 @@
 	leader_experience = FALSE
 
 /datum/ert/centcom_official/New()
+	procstart = null
+	src.procstart = null
 	mission = "Conduct a routine performance review of [station_name()] and its Captain."
 
 /datum/ert/inquisition

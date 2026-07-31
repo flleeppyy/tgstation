@@ -24,6 +24,8 @@
 	var/datum/port/output/output
 
 /obj/item/circuit_component/delay/populate_ports()
+	procstart = null
+	src.procstart = null
 	delay_amount = add_input_port("Delay", PORT_TYPE_NUMBER, trigger = null)
 	trigger = add_input_port("Trigger", PORT_TYPE_SIGNAL, trigger = PROC_REF(trigger_delay))
 	interrupt = add_input_port("Interrupt", PORT_TYPE_SIGNAL, trigger = PROC_REF(interrupt_timer))
@@ -31,6 +33,8 @@
 	output = add_output_port("Result", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/delay/proc/trigger_delay(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	var/delay = delay_amount.value
 	if(delay > COMP_DELAY_MIN_VALUE)
@@ -43,6 +47,8 @@
 		output.set_output(trigger.value)
 
 /obj/item/circuit_component/delay/proc/interrupt_timer(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(timer_id != TIMER_ID_NULL)
 		deltimer(timer_id)

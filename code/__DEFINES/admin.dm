@@ -81,10 +81,14 @@
 #define ADMIN_SEE_ZLEVEL_LAYOUT "(<A href='byond://?_src_=holder;[HrefToken(forceGlobal = TRUE)];debug_z_levels=1'>SEE Z-LEVEL LAYOUT</a>)"
 
 /atom/proc/Admin_Coordinates_Readable(area_name, admin_jump_ref)
+	procstart = null
+	src.procstart = null
 	var/turf/turf_at_coords = Safe_COORD_Location()
 	return turf_at_coords ? "[area_name ? "[get_area_name(turf_at_coords, TRUE)] " : ""]([turf_at_coords.x],[turf_at_coords.y],[turf_at_coords.z])[admin_jump_ref ? " [ADMIN_JMP(turf_at_coords)]" : ""]" : "nonexistent location"
 
 /atom/proc/Safe_COORD_Location()
+	procstart = null
+	src.procstart = null
 	var/atom/drop_atom = drop_location()
 	if(!drop_atom)
 		return //not a valid atom.
@@ -96,6 +100,8 @@
 	return drop_turf
 
 /turf/Safe_COORD_Location()
+	procstart = null
+	src.procstart = null
 	return src
 
 #define AHELP_ACTIVE 1

@@ -15,6 +15,8 @@ If you make a derivative work from this code, you must include this notification
 	VAR_PRIVATE/datum/action/drop/drop
 
 /datum/martial_art/wrestling/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	slam = new(src)
 	throw_wrassle = new(src)
@@ -23,6 +25,8 @@ If you make a derivative work from this code, you must include this notification
 	drop = new(src)
 
 /datum/martial_art/wrestling/Destroy()
+	procstart = null
+	src.procstart = null
 	slam = null
 	throw_wrassle = null
 	kick = null
@@ -31,6 +35,8 @@ If you make a derivative work from this code, you must include this notification
 	return ..()
 
 /datum/martial_art/wrestling/proc/check_streak(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(defender.check_block(attacker, 10, "[attacker]'s [streak]", UNARMED_ATTACK))
 		return FALSE
 
@@ -63,6 +69,8 @@ If you make a derivative work from this code, you must include this notification
 	check_flags = AB_CHECK_INCAPACITATED|AB_CHECK_HANDS_BLOCKED|AB_CHECK_CONSCIOUS
 
 /datum/action/slam/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -76,6 +84,8 @@ If you make a derivative work from this code, you must include this notification
 	check_flags = AB_CHECK_INCAPACITATED|AB_CHECK_HANDS_BLOCKED|AB_CHECK_CONSCIOUS
 
 /datum/action/throw_wrassle/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -89,6 +99,8 @@ If you make a derivative work from this code, you must include this notification
 	check_flags = AB_CHECK_INCAPACITATED|AB_CHECK_CONSCIOUS // This is supposed to be usable while cuffed but it probably isn't
 
 /datum/action/kick/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -102,6 +114,8 @@ If you make a derivative work from this code, you must include this notification
 	check_flags = AB_CHECK_INCAPACITATED|AB_CHECK_HANDS_BLOCKED|AB_CHECK_CONSCIOUS
 
 /datum/action/strike/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -115,6 +129,8 @@ If you make a derivative work from this code, you must include this notification
 	check_flags = AB_CHECK_INCAPACITATED|AB_CHECK_HANDS_BLOCKED
 
 /datum/action/drop/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -123,6 +139,8 @@ If you make a derivative work from this code, you must include this notification
 	source.streak = "drop"
 
 /datum/martial_art/wrestling/activate_style(mob/living/new_holder)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(new_holder, span_userdanger("SNAP INTO A THIN TIM!"))
 	to_chat(new_holder, span_danger("Place your cursor over a move at the top of the screen to see what it does."))
@@ -133,6 +151,8 @@ If you make a derivative work from this code, you must include this notification
 	strike.Grant(new_holder)
 
 /datum/martial_art/wrestling/deactivate_style(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	to_chat(remove_from, span_userdanger("You no longer feel that the tower of power is too sweet to be sour..."))
 	drop?.Remove(remove_from)
 	kick?.Remove(remove_from)
@@ -142,9 +162,13 @@ If you make a derivative work from this code, you must include this notification
 	return ..()
 
 /datum/martial_art/wrestling/harm_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	return check_streak(attacker, defender) ? MARTIAL_ATTACK_SUCCESS : MARTIAL_ATTACK_INVALID
 
 /datum/martial_art/wrestling/proc/throw_wrassle(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(!defender)
 		return
 	if(!attacker.pulling || attacker.pulling != defender)
@@ -221,6 +245,8 @@ If you make a derivative work from this code, you must include this notification
 	return
 
 /datum/martial_art/wrestling/proc/FlipAnimation(mob/living/defender)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if (defender)
 		animate(defender, transform = matrix(180, MATRIX_ROTATE), time = 1, loop = 0)
@@ -229,6 +255,8 @@ If you make a derivative work from this code, you must include this notification
 		animate(defender, transform = null, time = 1, loop = 0)
 
 /datum/martial_art/wrestling/proc/slam(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(!defender)
 		return
 	if(!attacker.pulling || attacker.pulling != defender)
@@ -341,10 +369,14 @@ If you make a derivative work from this code, you must include this notification
 	return
 
 /datum/martial_art/wrestling/proc/CheckStrikeTurf(mob/living/attacker, turf/T)
+	procstart = null
+	src.procstart = null
 	if (attacker && (T && isturf(T) && get_dist(attacker, T) <= 1))
 		attacker.forceMove(T)
 
 /datum/martial_art/wrestling/proc/strike(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(!defender)
 		return
 	var/turf/T = get_turf(attacker)
@@ -364,6 +396,8 @@ If you make a derivative work from this code, you must include this notification
 	log_combat(attacker, defender, "headbutted")
 
 /datum/martial_art/wrestling/proc/kick(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(!defender)
 		return
 	attacker.emote("scream")
@@ -383,6 +417,8 @@ If you make a derivative work from this code, you must include this notification
 	log_combat(attacker, defender, "roundhouse-kicked")
 
 /datum/martial_art/wrestling/proc/drop(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(!defender)
 		return
 	var/obj/surface = null
@@ -461,9 +497,13 @@ If you make a derivative work from this code, you must include this notification
 	return
 
 /datum/martial_art/wrestling/disarm_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	return check_streak(attacker, defender) ? MARTIAL_ATTACK_SUCCESS : MARTIAL_ATTACK_INVALID
 
 /datum/martial_art/wrestling/grab_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(check_streak(attacker, defender))
 		return MARTIAL_ATTACK_SUCCESS
 	if(defender.check_block(attacker, 0, "[attacker]'s grab", UNARMED_ATTACK))
@@ -487,5 +527,7 @@ If you make a derivative work from this code, you must include this notification
 	name = "Wrestling Belt"
 
 /obj/item/storage/belt/champion/wrestling/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/martial_art_giver, /datum/martial_art/wrestling)

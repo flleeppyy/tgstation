@@ -9,10 +9,14 @@
 	light_range = 1.6
 
 /obj/item/radio/weather_monitor/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance(icon, "small_emissive", src, alpha = src.alpha)
 
 /obj/item/radio/weather_monitor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/weather_announcer, \

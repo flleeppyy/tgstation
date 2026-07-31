@@ -17,6 +17,8 @@
 	SET_BASE_PIXEL(-8, 0)
 
 /obj/item/gun/ballistic/rifle/lionhunter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/scope, range_modifier = 3.2)
 
@@ -36,6 +38,8 @@
 	var/min_distance = 4
 
 /obj/item/ammo_casing/strilka310/lionhunter/fire_casing(atom/target, mob/living/user, params, distro, quiet, zone_override, spread, atom/fired_from)
+	procstart = null
+	src.procstart = null
 	if(!loaded_projectile)
 		return
 	if(!check_fire(target, user))
@@ -45,6 +49,8 @@
 
 /// Checks if we can successfully fire our projectile.
 /obj/item/ammo_casing/strilka310/lionhunter/proc/check_fire(atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	// In case someone puts this in turrets or something wacky, just fire like normal
 	if(!iscarbon(user) || !istype(loc, /obj/item/gun/ballistic/rifle/lionhunter))
 		return TRUE
@@ -99,12 +105,16 @@
 
 /// Callback for the do_after within the check_fire proc to see if something will prevent us from firing while aiming
 /obj/item/ammo_casing/strilka310/lionhunter/proc/check_fire_callback(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!isturf(target.loc))
 		return FALSE
 
 	return TRUE
 
 /obj/item/ammo_casing/strilka310/lionhunter/ready_proj(atom/target, mob/living/user, quiet, zone_override, atom/fired_from)
+	procstart = null
+	src.procstart = null
 	if(!loaded_projectile)
 		return
 
@@ -136,6 +146,8 @@
 	var/mob/stored_mob
 
 /obj/projectile/bullet/strilka310/lionhunter/fire(angle, atom/direct_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(src) || !isliving(firer) || !isliving(original))
 		return
@@ -146,15 +158,21 @@
 
 
 /obj/projectile/bullet/strilka310/lionhunter/Exited(atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	if(gone == stored_mob)
 		stored_mob = null
 	return ..()
 
 /obj/projectile/bullet/strilka310/lionhunter/on_range()
+	procstart = null
+	src.procstart = null
 	stored_mob?.forceMove(loc)
 	return ..()
 
 /obj/projectile/bullet/strilka310/lionhunter/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	stored_mob?.forceMove(loc) //Pretty important to get our mob out of the bullet
 	. = ..()
 	if(!isliving(target))
@@ -168,6 +186,8 @@
 	return BULLET_ACT_HIT
 
 /obj/projectile/bullet/strilka310/lionhunter/Destroy()
+	procstart = null
+	src.procstart = null
 	if(stored_mob)
 		stack_trace("Lionhunter bullet qdel'd with its firer still inside!")
 		stored_mob.forceMove(loc)

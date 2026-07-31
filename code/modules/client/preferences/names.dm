@@ -19,21 +19,29 @@
 
 
 /datum/preference/name/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	// Only real_name applies directly, everything else is applied by something else
 	return
 
 
 /datum/preference/name/deserialize(input, datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	return reject_bad_name("[input]", allow_numbers)
 
 
 /datum/preference/name/serialize(input)
+	procstart = null
+	src.procstart = null
 	// `is_valid` should always be run before `serialize`, so it should not
 	// be possible for this to return `null`.
 	return reject_bad_name(input, allow_numbers)
 
 
 /datum/preference/name/is_valid(value)
+	procstart = null
+	src.procstart = null
 	return istext(value) && !isnull(reject_bad_name(value, allow_numbers))
 
 
@@ -45,11 +53,15 @@
 	savefile_key = "real_name"
 
 /datum/preference/name/real_name/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	target.real_name = value
 	target.name = value
 	target.log_mob_tag("TAG: [target.tag] RENAMED: [key_name(target)]")
 
 /datum/preference/name/real_name/create_informed_default_value(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	return generate_random_name_species_based(
 		preferences.read_preference(/datum/preference/choiced/gender),
 		TRUE,
@@ -57,6 +69,8 @@
 	)
 
 /datum/preference/name/real_name/deserialize(input, datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	input = ..(input)
 	if (!input)
 		return input
@@ -77,6 +91,8 @@
 	savefile_key = "human_name"
 
 /datum/preference/name/backup_human/create_informed_default_value(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	return generate_random_name(preferences.read_preference(/datum/preference/choiced/gender))
 
 /datum/preference/name/clown
@@ -87,6 +103,8 @@
 	relevant_job = /datum/job/clown
 
 /datum/preference/name/clown/create_default_value()
+	procstart = null
+	src.procstart = null
 	return pick(GLOB.clown_names)
 
 /datum/preference/name/mime
@@ -97,6 +115,8 @@
 	relevant_job = /datum/job/mime
 
 /datum/preference/name/mime/create_default_value()
+	procstart = null
+	src.procstart = null
 	return pick(GLOB.mime_names)
 
 /datum/preference/name/cyborg
@@ -110,6 +130,8 @@
 	relevant_job = /datum/job/cyborg
 
 /datum/preference/name/cyborg/create_default_value()
+	procstart = null
+	src.procstart = null
 	return DEFAULT_CYBORG_NAME
 
 /datum/preference/name/ai
@@ -121,6 +143,8 @@
 	relevant_job = /datum/job/ai
 
 /datum/preference/name/ai/create_default_value()
+	procstart = null
+	src.procstart = null
 	return pick(GLOB.ai_names)
 
 /datum/preference/name/religion
@@ -132,6 +156,8 @@
 	group = "religion"
 
 /datum/preference/name/religion/create_default_value()
+	procstart = null
+	src.procstart = null
 	return pick(GLOB.religion_names)
 
 /datum/preference/name/deity
@@ -144,6 +170,8 @@
 	group = "religion"
 
 /datum/preference/name/deity/create_default_value()
+	procstart = null
+	src.procstart = null
 	return DEFAULT_DEITY
 
 /datum/preference/name/bible
@@ -156,6 +184,8 @@
 	group = "religion"
 
 /datum/preference/name/bible/create_default_value()
+	procstart = null
+	src.procstart = null
 	return DEFAULT_BIBLE
 
 /// The first name given to nuclear operative antagonists. The last name will be chosen by the team leader.
@@ -166,9 +196,13 @@
 	group = "antagonists"
 
 /datum/preference/name/operative_alias/create_default_value()
+	procstart = null
+	src.procstart = null
 	return pick(GLOB.operative_aliases)
 
 /datum/preference/name/operative_alias/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -190,17 +224,25 @@
 
 
 /datum/preference/name/hacker_alias/create_default_value()
+	procstart = null
+	src.procstart = null
 	return pick(GLOB.hacker_aliases)
 
 
 /datum/preference/name/hacker_alias/is_valid(value)
+	procstart = null
+	src.procstart = null
 	return !isnull(permissive_sanitize_name(value))
 
 
 /datum/preference/name/hacker_alias/deserialize(input, datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	return permissive_sanitize_name(input)
 
 
 /datum/preference/name/hacker_alias/serialize(input)
+	procstart = null
+	src.procstart = null
 	return permissive_sanitize_name(input)
 

@@ -1,4 +1,6 @@
 /mob/living/carbon/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (!isnull(held_item))

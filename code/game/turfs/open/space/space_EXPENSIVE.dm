@@ -11,6 +11,8 @@
  * intentionally ommitted from this implementation.
  */
 /turf/open/space/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	air = space_gas
 

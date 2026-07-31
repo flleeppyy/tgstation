@@ -25,6 +25,8 @@
 	var/datum/callback/on_removal
 
 /datum/component/deadchat_control/Initialize(_deadchat_mode, _inputs, _input_cooldown = 12 SECONDS, _on_removal)
+	procstart = null
+	src.procstart = null
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 	RegisterSignal(parent, COMSIG_ATOM_ORBIT_BEGIN, PROC_REF(orbit_begin))
@@ -54,6 +56,8 @@
 	)
 
 /datum/component/deadchat_control/Destroy(force)
+	procstart = null
+	src.procstart = null
 	on_removal?.Invoke()
 	inputs = null
 	orbiters = null
@@ -64,6 +68,8 @@
 	return ..()
 
 /datum/component/deadchat_control/proc/deadchat_react(mob/source, message)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	message = LOWER_TEXT(message)
@@ -90,6 +96,8 @@
 		return MOB_DEADSAY_SIGNAL_INTERCEPT
 
 /datum/component/deadchat_control/proc/democracy_loop()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(parent) || !(deadchat_mode & DEMOCRACY_MODE))
 		deltimer(timerid)
 		return
@@ -106,6 +114,8 @@
 			to_chat(M, message)
 
 /datum/component/deadchat_control/proc/count_democracy_votes()
+	procstart = null
+	src.procstart = null
 	if(!length(ckey_to_cooldown))
 		return
 	var/list/votes = list()
@@ -127,6 +137,8 @@
 		return result
 
 /datum/component/deadchat_control/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -139,6 +151,8 @@
 		deltimer(timerid)
 
 /datum/component/deadchat_control/proc/orbit_begin(atom/source, atom/orbiter)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	RegisterSignal(orbiter, COMSIG_MOB_DEADSAY, PROC_REF(deadchat_react))
@@ -147,6 +161,8 @@
 
 
 /datum/component/deadchat_control/proc/orbit_stop(atom/source, atom/orbiter)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(orbiter in orbiters)
@@ -166,6 +182,8 @@
  * - mute_type: Which type of mute the message counts towards.
  */
 /datum/component/deadchat_control/proc/waive_automute(mob/speaker, client/client, message, mute_type)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(mute_type == MUTE_DEADCHAT && inputs[LOWER_TEXT(message)])
 		return WAIVE_AUTOMUTE_CHECK
@@ -174,6 +192,8 @@
 
 /// Allows for this component to be removed via a dedicated VV dropdown entry.
 /datum/component/deadchat_control/proc/handle_vv_topic(datum/source, mob/user, list/href_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!href_list[VV_HK_DEADCHAT_PLAYS] || !check_rights(R_FUN))
 		return
@@ -182,6 +202,8 @@
 
 /// Async proc handling the alert input and associated logic for an admin removing this component via the VV dropdown.
 /datum/component/deadchat_control/proc/async_handle_vv_topic(mob/user, list/href_list)
+	procstart = null
+	src.procstart = null
 	if(tgui_alert(user, "Remove deadchat control from [parent]?", "Deadchat Plays [parent]", list("Remove", "Cancel")) == "Remove")
 		// Quick sanity check as this is an async call.
 		if(QDELETED(src))
@@ -195,6 +217,8 @@
 
 /// Informs any examiners to the inputs available as part of deadchat control, as well as the current operating mode and cooldowns.
 /datum/component/deadchat_control/proc/on_examine(atom/A, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isobserver(user))
@@ -218,6 +242,8 @@
 
 ///Removes the ghost from the ckey_to_cooldown list and lets them know they are free to submit a command for the parent again.
 /datum/component/deadchat_control/proc/end_cooldown(ghost_ckey)
+	procstart = null
+	src.procstart = null
 	ckey_to_cooldown -= ghost_ckey
 	var/mob/ghost = get_mob_by_ckey(ghost_ckey)
 	if(!ghost || isliving(ghost))
@@ -231,6 +257,8 @@
  * singularity or vomit goose.
  */
 /datum/component/deadchat_control/cardinal_movement/Initialize(_deadchat_mode, _inputs, _input_cooldown, _on_removal)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -248,6 +276,8 @@
  * immovable rod.
  */
 /datum/component/deadchat_control/immovable_rod/Initialize(_deadchat_mode, _inputs, _input_cooldown, _on_removal)
+	procstart = null
+	src.procstart = null
 	if(!istype(parent, /obj/effect/immovablerod))
 		return COMPONENT_INCOMPATIBLE
 

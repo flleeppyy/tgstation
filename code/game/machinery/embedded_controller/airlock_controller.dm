@@ -35,6 +35,8 @@
 	var/processing = FALSE
 
 /obj/machinery/airlock_controller/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/obj/machinery/door/interior_door = GLOB.objects_by_id_tag[interior_door_tag]
@@ -58,12 +60,16 @@
 	sensor_ref = WEAKREF(sensor)
 
 /obj/machinery/airlock_controller/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AirlockController", src)
 		ui.open()
 
 /obj/machinery/airlock_controller/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/process_again = TRUE
 	while(process_again)
 		process_again = FALSE
@@ -214,6 +220,8 @@
 	SStgui.update_uis(src)
 
 /obj/machinery/airlock_controller/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["airlockState"] = state
@@ -245,6 +253,8 @@
 	return data
 
 /obj/machinery/airlock_controller/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -263,6 +273,8 @@
 
 /// Starts an airlock cycle
 /obj/machinery/airlock_controller/proc/cycle()
+	procstart = null
+	src.procstart = null
 	if (state == AIRLOCK_STATE_INOPEN || state == AIRLOCK_STATE_PRESSURIZE)
 		target_state = AIRLOCK_STATE_OUTOPEN
 	else
@@ -270,6 +282,8 @@
 
 /// Returns the pressure over the pump, or null if it is deleted
 /obj/machinery/airlock_controller/proc/sensor_pressure()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/airlock_sensor/sensor = sensor_ref.resolve()
 	if (!isnull(sensor) && !sensor.on)
 		return last_pressure
@@ -306,6 +320,8 @@
 	sensor_tag = INCINERATOR_SYNDICATELAVA_AIRLOCK_SENSOR
 
 /obj/machinery/airlock_controller/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state]_[processing ? "process" : "standby"]"
 	return ..()
 

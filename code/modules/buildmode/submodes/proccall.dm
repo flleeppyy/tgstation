@@ -6,12 +6,16 @@
 	var/list/proc_args = null
 
 /datum/buildmode_mode/proccall/show_help(client/builder)
+	procstart = null
+	src.procstart = null
 	to_chat(builder, span_purple(boxed_message(
 		"[span_bold("Choose procedure and arguments")] -> Right Mouse Button on buildmode button\n\
 		[span_bold("Apply procedure on object")] -> Left Mouse Button on machinery"))
 	)
 
 /datum/buildmode_mode/proccall/change_settings(client/target_client)
+	procstart = null
+	src.procstart = null
 	if(!check_rights_for(target_client, R_DEBUG))
 		return
 
@@ -24,6 +28,8 @@
 		return
 
 /datum/buildmode_mode/proccall/handle_click(client/target_client, params, datum/object as null|area|mob|obj|turf)
+	procstart = null
+	src.procstart = null
 	if(!proc_name || !proc_args)
 		tgui_alert(target_client, "Undefined ProcCall or arguments.")
 		return

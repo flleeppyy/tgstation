@@ -43,6 +43,8 @@
 	var/restockable = TRUE
 
 /datum/market_item/New()
+	procstart = null
+	src.procstart = null
 	if(isnull(price))
 		price = rand(price_min, price_max)
 	if(isnull(stock))
@@ -51,6 +53,8 @@
 
 ///For 'dynamic' market items generated on runtime, this proc is to be used to properly sets the item, especially if it's a hardref.
 /datum/market_item/proc/set_item(path_or_ref)
+	procstart = null
+	src.procstart = null
 	//we're replacing the item to sell, and the old item is an instance!
 	if(ismovable(item))
 		UnregisterSignal(item, COMSIG_QDELETING)
@@ -63,15 +67,21 @@
 		identifier = "[REF(src)]"
 
 /datum/market_item/Destroy()
+	procstart = null
+	src.procstart = null
 	item = null
 	return ..()
 
 /datum/market_item/proc/on_item_del(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /// Used for spawning the wanted item, override if you need to do something special with the item.
 /datum/market_item/proc/spawn_item(loc, datum/market_purchase/purchase)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_MARKET_ITEM_SPAWNED, purchase.uplink, purchase.method, loc)
 	if(ismovable(item))
@@ -98,6 +108,8 @@
  * @param legal_status The legal status of the market. Determines if the item to be spawned is contraband.
  */
 /datum/market_item/proc/buy(obj/item/market_uplink/uplink, mob/buyer, shipping_method, legal_status)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	// Sanity
 	if(!istype(uplink) || !istype(buyer))
@@ -132,6 +144,8 @@
 	var/legallity
 
 /datum/market_purchase/New(datum/market_item/entry, obj/item/market_uplink/uplink, method, legal_status)
+	procstart = null
+	src.procstart = null
 	if(!uplink || !entry || !method)
 		CRASH("[type] created with a false value arg: (entry: [entry] - uplink: [uplink] - method: [method])")
 	src.entry = entry
@@ -145,12 +159,16 @@
 		RegisterSignal(entry.item, COMSIG_QDELETING, PROC_REF(on_instance_del))
 
 /datum/market_purchase/Destroy()
+	procstart = null
+	src.procstart = null
 	entry = null
 	uplink = null
 	SSmarket.queued_purchases -= src
 	return ..()
 
 /datum/market_purchase/proc/on_instance_del(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(QDELETED(src))
 		return
@@ -164,5 +182,7 @@
  * @param legal_status - Is this item considered legal? If illegal, will apply the contraband trait to the spawned item.
  */
 /datum/market_purchase/proc/post_purchase_effects(atom/spawned_item)
+	procstart = null
+	src.procstart = null
 	if(!legallity && isobj(spawned_item))
 		ADD_TRAIT(spawned_item, TRAIT_CONTRABAND, INNATE_TRAIT)

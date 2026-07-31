@@ -3,10 +3,14 @@
 	var/datum/outfit/dressuptime
 
 /datum/buildmode_mode/outfit/Destroy()
+	procstart = null
+	src.procstart = null
 	dressuptime = null
 	return ..()
 
 /datum/buildmode_mode/outfit/show_help(client/builder)
+	procstart = null
+	src.procstart = null
 	to_chat(builder, span_purple(boxed_message(
 		"[span_bold("Select outfit to equip")] -> Right Mouse Button on buildmode button\n\
 		[span_bold("Equip the selected outfit")] -> Left Mouse Button on mob/living/carbon/human\n\
@@ -14,13 +18,19 @@
 	)
 
 /datum/buildmode_mode/outfit/Reset()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	dressuptime = null
 
 /datum/buildmode_mode/outfit/change_settings(client/c)
+	procstart = null
+	src.procstart = null
 	dressuptime = c.robust_dress_shop()
 
 /datum/buildmode_mode/outfit/handle_click(client/c, params, object)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 
 	if(!ishuman(object))

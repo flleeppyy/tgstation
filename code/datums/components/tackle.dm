@@ -32,6 +32,8 @@
 	var/datum/weakref/tackle_ref
 
 /datum/component/tackler/Initialize(stamina_cost = 25, base_knockdown = 1 SECONDS, range = 4, speed = 1, skill_mod = 0, min_distance = min_distance, silent_gain = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -49,20 +51,28 @@
 	addtimer(CALLBACK(src, PROC_REF(resetTackle)), base_knockdown, TIMER_STOPPABLE)
 
 /datum/component/tackler/Destroy()
+	procstart = null
+	src.procstart = null
 	var/mob/P = parent
 	to_chat(P, span_notice("You can no longer tackle."))
 	return ..()
 
 /datum/component/tackler/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_MOB_CLICKON, PROC_REF(checkTackle))
 	RegisterSignal(parent, COMSIG_MOVABLE_PRE_IMPACT, PROC_REF(sack))
 	RegisterSignal(parent, COMSIG_MOVABLE_POST_THROW, PROC_REF(registerTackle))
 
 /datum/component/tackler/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_MOB_CLICKON, COMSIG_MOVABLE_PRE_IMPACT, COMSIG_MOVABLE_MOVED, COMSIG_MOVABLE_POST_THROW))
 
 ///Store the thrownthing datum for later use
 /datum/component/tackler/proc/registerTackle(mob/living/carbon/user, datum/thrownthing/tackle)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	tackle_ref = WEAKREF(tackle)
@@ -70,6 +80,8 @@
 
 ///See if we can tackle or not. If we can, leap!
 /datum/component/tackler/proc/checkTackle(mob/living/carbon/user, atom/clicked_atom, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!modifiers[RIGHT_CLICK] || modifiers[ALT_CLICK] || modifiers[SHIFT_CLICK] || modifiers[CTRL_CLICK] || modifiers[MIDDLE_CLICK])
@@ -139,6 +151,8 @@
  * Finally, we return a bitflag to [COMSIG_MOVABLE_IMPACT] that forces the hitpush to false so that we don't knock them away.
 */
 /datum/component/tackler/proc/sack(mob/living/carbon/user, atom/hit)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/thrownthing/tackle = tackle_ref?.resolve()
@@ -179,6 +193,8 @@
 
 /// Helper to do a grab and then adjust the grab state if necessary
 /datum/component/tackler/proc/do_grab(mob/living/carbon/tackler, mob/living/carbon/tackled, skip_to_state = GRAB_PASSIVE)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	if(tackler.grab(tackled) != GRAB_SUCCESS || tackler.pulling != tackled)
@@ -204,6 +220,8 @@
 */
 
 /datum/component/tackler/proc/positive_outcome(mob/living/carbon/user, mob/living/carbon/target, roll = 1, tackle_word = "tackle")
+	procstart = null
+	src.procstart = null
 	var/potential_outcome = (roll * 10)
 
 	if(ishuman(target))
@@ -271,6 +289,8 @@
 */
 
 /datum/component/tackler/proc/neutral_outcome(mob/living/carbon/user, mob/living/carbon/target, roll = 1, tackle_word = "tackle")
+	procstart = null
+	src.procstart = null
 
 
 	user.visible_message(span_warning("[user] lands a [tackle_word] on [target], briefly staggering them both!"), span_userdanger("You land a [tackle_word] on [target], briefly staggering [target.p_them()] and yourself!"), ignored_mobs = target)
@@ -298,6 +318,8 @@
 */
 
 /datum/component/tackler/proc/negative_outcome(mob/living/carbon/user, mob/living/carbon/target, roll = -1, tackle_word = "tackle")
+	procstart = null
+	src.procstart = null
 	var/potential_roll_outcome = (roll * -10)
 
 	if(ishuman(user))
@@ -350,6 +372,8 @@
  * are better at taking people down, like the bruiser and rocket gloves, while the dolphin gloves have a malus in exchange for better mobility.
 */
 /datum/component/tackler/proc/rollTackle(mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	var/defense_mod = 0
 	var/attack_mod = 0
 
@@ -502,6 +526,8 @@
  * * 99-Infinity: Break your spinal cord, get paralyzed, take a bunch of damage too. Very unlucky!
 */
 /datum/component/tackler/proc/splat(mob/living/carbon/user, atom/hit)
+	procstart = null
+	src.procstart = null
 	if(istype(hit, /obj/machinery/vending)) // before we do anything else-
 		var/obj/machinery/vending/darth_vendor = hit
 		darth_vendor.tilt(user, 100)
@@ -603,12 +629,16 @@
 
 
 /datum/component/tackler/proc/resetTackle()
+	procstart = null
+	src.procstart = null
 	tackling = FALSE
 	QDEL_NULL(tackle_ref)
 	UnregisterSignal(parent, COMSIG_MOVABLE_MOVED)
 
 ///A special case for splatting for handling windows
 /datum/component/tackler/proc/splatWindow(mob/living/carbon/user, obj/structure/window/windscreen_casualty)
+	procstart = null
+	src.procstart = null
 	playsound(user, 'sound/effects/glass/Glasshit.ogg', 140, TRUE)
 
 	if(windscreen_casualty.type in list(/obj/structure/window, /obj/structure/window/fulltile, /obj/structure/window/unanchored, /obj/structure/window/fulltile/unanchored)) // boring unreinforced windows
@@ -636,12 +666,16 @@
 		user.adjust_brute_loss(5 * speed)
 
 /datum/component/tackler/proc/delayedSmash(obj/structure/window/windscreen_casualty)
+	procstart = null
+	src.procstart = null
 	if(windscreen_casualty)
 		windscreen_casualty.atom_destruction()
 		playsound(windscreen_casualty, SFX_SHATTER, 70, TRUE)
 
 ///Check to see if we hit a table, and if so, make a big mess!
 /datum/component/tackler/proc/checkObstacle(mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!tackling)

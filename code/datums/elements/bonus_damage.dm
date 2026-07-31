@@ -8,6 +8,8 @@
 	var/brute_damage_amount
 
 /datum/element/bonus_damage/Attach(datum/target, damage_percentage = 20, brute_damage_amount = 15)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -17,11 +19,15 @@
 	RegisterSignal(target, COMSIG_HOSTILE_POST_ATTACKINGTARGET, PROC_REF(attack_target))
 
 /datum/element/bonus_damage/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, COMSIG_HOSTILE_POST_ATTACKINGTARGET)
 	return ..()
 
 /// Add potential bonus damage to the person we attacked
 /datum/element/bonus_damage/proc/attack_target(mob/living/attacker, atom/target, success)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!success)

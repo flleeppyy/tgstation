@@ -16,12 +16,16 @@
 	allow_custom = FALSE
 
 /obj/machinery/vending/subtype_vendor/Initialize(mapload, type_to_vend)
+	procstart = null
+	src.procstart = null
 	if(type_to_vend)
 		src.type_to_vend = type_to_vend
 	return ..()
 
 ///Adds the subtype to the product list
 /obj/machinery/vending/subtype_vendor/RefreshParts()
+	procstart = null
+	src.procstart = null
 	products.Cut()
 	for(var/type in get_sane_item_types(type_to_vend))
 		LAZYADDASSOC(products, type, 50)
@@ -30,6 +34,8 @@
 	build_inventories(start_empty = FALSE)
 
 /obj/machinery/vending/subtype_vendor/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return

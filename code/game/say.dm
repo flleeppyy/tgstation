@@ -68,6 +68,8 @@ GLOBAL_LIST_INIT(freqtospan, list(
 /// Called when this movable hears a message from a source.
 /// Returns TRUE if the message was received and understood.
 /atom/movable/proc/Hear(atom/movable/speaker, message_language, raw_message, radio_freq, radio_freq_name, radio_freq_color, list/spans, list/message_mods = list(), message_range=0)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_MOVABLE_HEAR, args)
 	return HEAR_HEARD | HEAR_UNDERSTOOD
 
@@ -90,6 +92,8 @@ GLOBAL_LIST_INIT(freqtospan, list(
  * 	TRUE of FASE depending on if our movable can speak
  */
 /atom/movable/proc/try_speak(message, ignore_spam = FALSE, forced = null, filterproof = FALSE)
+	procstart = null
+	src.procstart = null
 	return can_speak()
 
 /**
@@ -107,10 +111,14 @@ GLOBAL_LIST_INIT(freqtospan, list(
  * if TRUE, we will check if the movable can speak REGARDLESS of if they have an active mime vow.
  */
 /atom/movable/proc/can_speak(allow_mimes = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 	return !HAS_TRAIT(src, TRAIT_MUTE)
 
 /atom/movable/proc/do_tts_message(message, language, message_mods, list/tts_filter, list/hearers)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	if(!SStts.tts_enabled || !voice || HAS_TRAIT(src, TRAIT_SIGN_LANG) || HAS_TRAIT(src, TRAIT_UNKNOWN_VOICE) || message_mods[MODE_CUSTOM_SAY_ERASE_INPUT])
@@ -126,9 +134,13 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	INVOKE_ASYNC(SStts, TYPE_PROC_REF(/datum/controller/subsystem/tts, queue_tts_message), src, html_decode(message), language, get_tts_voice(filter, special_filter), filter.Join(","), hearers, message_range = 7, pitch = pitch, special_filters = special_filter.Join("|"), blip_base = blip_base, blip_number = blip_number, identifier = message_mods[MODE_TTS_IDENTIFIER])
 
 /atom/movable/proc/get_tts_voice(list/filter, list/special_filter)
+	procstart = null
+	src.procstart = null
 	. = voice
 
 /atom/movable/proc/send_speech(message, range = 7, obj/source = src, bubble_type, list/spans, datum/language/message_language, list/message_mods = list(), forced = FALSE, tts_message, list/tts_filter)
+	procstart = null
+	src.procstart = null
 	var/list/listeners = get_hearers_in_view(range, source)
 	var/list/listened = list()
 
@@ -156,6 +168,8 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	do_tts_message(tts_message_to_use, message_language, message_mods, tts_filter, listened)
 
 /atom/movable/proc/compose_message(atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, radio_freq_name, radio_freq_color, list/spans, list/message_mods = list(), visible_name = FALSE)
+	procstart = null
+	src.procstart = null
 	//This proc uses [] because it is faster than continually appending strings. Thanks BYOND.
 	//Basic span
 	var/freq_color = get_radio_color(radio_freq, radio_freq_color)
@@ -186,9 +200,13 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	return "[spanpart1][spanpart2][freqpart][languageicon][compose_track_href(speaker, namepart)][namepart][compose_job(speaker, message_language, raw_message, radio_freq)][endspanpart][messagepart]"
 
 /atom/movable/proc/compose_track_href(atom/movable/speaker, message_langs, raw_message, radio_freq)
+	procstart = null
+	src.procstart = null
 	return ""
 
 /atom/movable/proc/compose_job(atom/movable/speaker, message_langs, raw_message, radio_freq)
+	procstart = null
+	src.procstart = null
 	return ""
 
 /**
@@ -198,6 +216,8 @@ GLOBAL_LIST_INIT(freqtospan, list(
  * message_mods - A list of message modifiers, i.e. whispering/singing.
  */
 /atom/movable/proc/say_mod(input, list/message_mods = list())
+	procstart = null
+	src.procstart = null
 	var/ending = copytext_char(input, -1)
 	if(copytext_char(input, -2) == "!!")
 		return verb_yell
@@ -218,6 +238,8 @@ GLOBAL_LIST_INIT(freqtospan, list(
  * like human_say.dm's tongue-based verb_say changes.
  */
 /atom/movable/proc/get_default_say_verb()
+	procstart = null
+	src.procstart = null
 	return verb_say
 
 /**
@@ -230,6 +252,8 @@ GLOBAL_LIST_INIT(freqtospan, list(
  * message_mods - A list of message modifiers, i.e. whispering/singing
  */
 /atom/movable/proc/generate_messagepart(input, list/spans = list(speech_span), list/message_mods = list())
+	procstart = null
+	src.procstart = null
 	// If we only care about the emote part, early return.
 	if(message_mods[MODE_CUSTOM_SAY_ERASE_INPUT])
 		return apply_message_emphasis(message_mods[MODE_CUSTOM_SAY_EMOTE])
@@ -261,6 +285,8 @@ GLOBAL_LIST_INIT(freqtospan, list(
 
 /// Scans the input sentence for message emphasis modifiers, notably |italics|, +bold+, and _underline_ -mothblocks
 /atom/proc/apply_message_emphasis(input)
+	procstart = null
+	src.procstart = null
 	ENCODE_HTML_EMPHASIS(input, "\\|", "i", italics)
 	ENCODE_HTML_EMPHASIS(input, "\\+", "b", bold)
 	ENCODE_HTML_EMPHASIS(input, "\\_", "u", underline)
@@ -273,6 +299,8 @@ GLOBAL_LIST_INIT(freqtospan, list(
 
 /// Modifies the message by comparing the languages of the speaker with the languages of the hearer. Called on the hearer.
 /atom/movable/proc/translate_language(atom/movable/speaker, datum/language/language, raw_message, list/spans, list/message_mods)
+	procstart = null
+	src.procstart = null
 	if(!language)
 		return "makes a strange sound."
 
@@ -291,12 +319,16 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	return raw_message
 
 /proc/get_radio_span(freq)
+	procstart = null
+	src.procstart = null
 	var/returntext = GLOB.freqtospan["[freq]"]
 	if(returntext)
 		return returntext
 	return "radio"
 
 /proc/get_radio_name(freq, freq_name)
+	procstart = null
+	src.procstart = null
 	if(freq_name)
 		return freq_name
 	var/name = GLOB.reserved_radio_frequencies["[freq]"]
@@ -305,6 +337,8 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	return "[copytext_char("[freq]", 1, 4)].[copytext_char("[freq]", 4, 5)]"
 
 /proc/get_radio_color(freq, freq_color)
+	procstart = null
+	src.procstart = null
 	if(freq)
 		// No custom colors for channels with theme settings
 		if(GLOB.freqtospan["[freq]"])
@@ -321,9 +355,13 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	return ""
 
 /proc/attach_spans(input, list/spans)
+	procstart = null
+	src.procstart = null
 	return "[message_spans_start(spans)][input]</span>"
 
 /proc/message_spans_start(list/spans)
+	procstart = null
+	src.procstart = null
 	var/output = "<span class='"
 	for(var/S in spans)
 		output = "[output][S] "
@@ -331,6 +369,8 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	return output
 
 /proc/say_test(text)
+	procstart = null
+	src.procstart = null
 	var/ending = copytext_char(text, -1)
 	if (ending == "?")
 		return "1"
@@ -344,6 +384,8 @@ GLOBAL_LIST_INIT(freqtospan, list(
  * * add_id_name - If TRUE, ID information such as honorifics are added into the voice
  */
 /atom/proc/get_voice(add_id_name = FALSE)
+	procstart = null
+	src.procstart = null
 	return "[src]" //Returns the atom's name, prepended with 'The' if it's not a proper noun
 
 /**
@@ -352,16 +394,24 @@ GLOBAL_LIST_INIT(freqtospan, list(
  * * visible_name - If TRUE, returns the visible name rather than the voice
  */
 /atom/proc/get_message_voice(visible_name)
+	procstart = null
+	src.procstart = null
 	return visible_name ? get_visible_name(add_id_name = TRUE) : get_voice(add_id_name = TRUE)
 
 //HACKY VIRTUALSPEAKER STUFF BEYOND THIS POINT
 //these exist mostly to deal with the AIs hrefs and job stuff.
 
-/atom/movable/proc/GetJob() //Get a job, you lazy butte
+/atom/movable/proc/GetJob()
+	procstart = null
+	src.procstart = null //Get a job, you lazy butte
 
 /atom/movable/proc/GetSource()
+	procstart = null
+	src.procstart = null
 
 /atom/movable/proc/GetRadio()
+	procstart = null
+	src.procstart = null
 
 //VIRTUALSPEAKERS
 /atom/movable/virtualspeaker
@@ -371,6 +421,8 @@ GLOBAL_LIST_INIT(freqtospan, list(
 
 INITIALIZE_IMMEDIATE(/atom/movable/virtualspeaker)
 /atom/movable/virtualspeaker/Initialize(mapload, atom/movable/M, _radio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	radio = _radio
 	source = M
@@ -405,10 +457,16 @@ INITIALIZE_IMMEDIATE(/atom/movable/virtualspeaker)
 		job = "Unknown"
 
 /atom/movable/virtualspeaker/GetJob()
+	procstart = null
+	src.procstart = null
 	return job
 
 /atom/movable/virtualspeaker/GetSource()
+	procstart = null
+	src.procstart = null
 	return source
 
 /atom/movable/virtualspeaker/GetRadio()
+	procstart = null
+	src.procstart = null
 	return radio

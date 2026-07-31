@@ -32,6 +32,8 @@
 	var/can_breed = TRUE
 
 /mob/living/basic/mining/gutlunch/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.gutlunch_count++
 	if(greyscale_config)
@@ -40,10 +42,14 @@
 		add_breeding_component()
 
 /mob/living/basic/mining/gutlunch/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.gutlunch_count--
 	return ..()
 
 /mob/living/basic/mining/gutlunch/early_melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -57,6 +63,8 @@
 	return BASIC_MOB_END_ATTACK_CHAIN_COOLDOWN
 
 /mob/living/basic/mining/gutlunch/proc/after_birth(mob/living/basic/mining/gutlunch/grub/baby, mob/living/partner)
+	procstart = null
+	src.procstart = null
 	var/our_color = LAZYACCESS(atom_colours, FIXED_COLOUR_PRIORITY) || COLOR_GRAY
 	var/partner_color = LAZYACCESS(partner.atom_colours, FIXED_COLOUR_PRIORITY) || COLOR_GRAY
 	baby.add_atom_colour(BlendRGB(our_color, partner_color, 1), FIXED_COLOUR_PRIORITY)
@@ -64,6 +72,8 @@
 	baby.inherited_stats = new(male_parent)
 
 /mob/living/basic/mining/gutlunch/proc/roll_stats(input_attack, input_speed, input_health)
+	procstart = null
+	src.procstart = null
 	melee_damage_lower = rand(input_attack, min(MAX_LOWER_ATTACK, input_attack + MAX_ATTACK_DIFFERENCE))
 	melee_damage_upper = melee_damage_lower + MAX_ATTACK_DIFFERENCE
 	speed = rand(MINIMUM_POSSIBLE_SPEED, input_speed)
@@ -71,6 +81,8 @@
 	health = maxHealth
 
 /mob/living/basic/mining/gutlunch/proc/add_breeding_component()
+	procstart = null
+	src.procstart = null
 	var/static/list/partner_paths = typecacheof(list(/mob/living/basic/mining/gutlunch))
 	var/static/list/baby_paths = list(
 		/mob/living/basic/mining/gutlunch/grub = 1,
@@ -93,6 +105,8 @@
 	var/mutable_appearance/full_udder
 
 /mob/living/basic/mining/gutlunch/milk/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/callback/milking_callback = CALLBACK(src, TYPE_PROC_REF(/atom/movable, update_overlays))
 	AddComponent(\
@@ -127,12 +141,16 @@
 	)
 
 /mob/living/basic/mining/gutlunch/warrior/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	roll_stats(melee_damage_lower, speed, maxHealth)
 	AddComponent(/datum/component/obeys_commands, pet_commands)
 	AddElement(/datum/element/wall_tearer, allow_reinforced = FALSE)
 
 /mob/living/basic/mining/gutlunch/milk/update_overlays(new_udder_volume, max_udder_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(new_udder_volume != max_udder_volume)
 		return
@@ -149,6 +167,8 @@
 	var/datum/gutlunch_inherited_stats/inherited_stats
 
 /mob/living/basic/mining/gutlunch/grub/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(\
 		/datum/component/growth_and_differentiation,\
@@ -162,9 +182,13 @@
 	)
 
 /mob/living/basic/mining/gutlunch/grub/proc/ready_to_grow()
+	procstart = null
+	src.procstart = null
 	return (!IS_UNCONSCIOUS_OR_CRIT(src))
 
 /mob/living/basic/mining/gutlunch/grub/proc/determine_growth_path()
+	procstart = null
+	src.procstart = null
 	var/final_type = prob(50) ? /mob/living/basic/mining/gutlunch/warrior : /mob/living/basic/mining/gutlunch/milk
 	var/mob/living/basic/mining/gutlunch/grown_mob = new final_type(get_turf(src))
 	if(grown_mob.gender == MALE && inherited_stats)

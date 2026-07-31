@@ -17,6 +17,8 @@
 	var/list/guilty = list()
 
 /datum/brain_trauma/special/honorbound/on_gain()
+	procstart = null
+	src.procstart = null
 	//moodlet
 	owner.add_mood_event("honorbound", /datum/mood_event/honorbound)
 	//checking spells cast by honorbound
@@ -37,6 +39,8 @@
 	return ..()
 
 /datum/brain_trauma/special/honorbound/on_lose(silent)
+	procstart = null
+	src.procstart = null
 	owner.clear_mood_event("honorbound")
 	UnregisterSignal(owner, list(
 		COMSIG_LIVING_EARLY_UNARMED_ATTACK,
@@ -48,6 +52,8 @@
 	return ..()
 
 /datum/brain_trauma/special/honorbound/proc/unarmed_attack_honor(mob/living/carbon/human/honorbound, atom/target, proximity_flag, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(modifiers[ALT_CLICK] || modifiers[SHIFT_CLICK] || modifiers[CTRL_CLICK] || modifiers[MIDDLE_CLICK])
@@ -66,6 +72,8 @@
 
 /// Signal to see if the trauma allows us to attack a target with a weapon
 /datum/brain_trauma/special/honorbound/proc/attack_honor(mob/living/honorbound, atom/attacked, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(attacked))
@@ -85,6 +93,8 @@
 
 /// Signal to see if we're targeting a mob that is guilty or not.
 /datum/brain_trauma/special/honorbound/proc/fire_gun_honor(mob/living/honorbound, obj/item/gun/the_gun_in_question, atom/target, flag, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(the_gun_in_question, /obj/item/gun/magic))
@@ -103,6 +113,8 @@
 
 /// Checks a mob for any obvious signs of evil, and applies a guilty reason for each.
 /datum/brain_trauma/special/honorbound/proc/check_visible_guilt(mob/living/attacked_mob)
+	procstart = null
+	src.procstart = null
 	//will most likely just hit nuke ops but good catch-all. WON'T hit traitors
 	if(attacked_mob.has_faction(ROLE_SYNDICATE))
 		guilty(attacked_mob, "for their misaligned association with the Syndicate!")
@@ -134,6 +146,8 @@
  * * reason: why this person is now guilty (future pr idea: letting honorbound print a receipt for why someone is guilty? lol)
  */
 /datum/brain_trauma/special/honorbound/proc/guilty(mob/living/user, reason = "for no particular reason!")
+	procstart = null
+	src.procstart = null
 	if(user in guilty)
 		return
 	var/datum/mind/guilty_conscience = user.mind
@@ -147,6 +161,8 @@
 
 ///Signal sent by the relay_attackers element. It makes the attacker guilty unless the damage was stamina or it was a shove.
 /datum/brain_trauma/special/honorbound/proc/on_attacked(mob/source, mob/attacker, attack_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!(attack_flags & (ATTACKER_STAMINA_ATTACK|ATTACKER_SHOVING)))
 		guilty(attacker, "for attacking [source] first.")
@@ -159,6 +175,8 @@
  * * target_creature: person honorbound_human is attacking
  */
 /datum/brain_trauma/special/honorbound/proc/is_honorable(mob/living/carbon/human/honorbound_human, mob/living/target_creature)
+	procstart = null
+	src.procstart = null
 	var/is_guilty = (target_creature in guilty)
 	var/is_human = ishuman(target_creature)
 	//THE UNREADY (Applies over ANYTHING else!)
@@ -186,10 +204,14 @@
 
 //spell checking
 /datum/brain_trauma/special/honorbound/proc/spell_check(mob/user, datum/action/cooldown/spell/spell_cast)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	punishment(user, spell_cast.school)
 
 /datum/brain_trauma/special/honorbound/proc/staff_check(mob/user, obj/item/gun/gun_fired, target, params, zone_override, list/bonus_spread_values)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(gun_fired, /obj/item/gun/magic))
 		return
@@ -204,6 +226,8 @@
  * * school: school of magic casted from the staff/spell
  */
 /datum/brain_trauma/special/honorbound/proc/punishment(mob/living/carbon/human/user, school)
+	procstart = null
+	src.procstart = null
 	switch(school)
 		if(SCHOOL_HOLY, SCHOOL_MIME, SCHOOL_RESTORATION, SCHOOL_PSYCHIC)
 			return
@@ -243,10 +267,14 @@
 	var/declaration = "By the divine light of my deity, you are an evil of this world that must be wrought low!"
 
 /datum/action/cooldown/spell/pointed/declare_evil/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	declaration = "By the divine light of [GLOB.deity], you are an evil of this world that must be wrought low!"
 
 /datum/action/cooldown/spell/pointed/declare_evil/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(grant_to))
 		return FALSE
 
@@ -260,17 +288,23 @@
 	return ..()
 
 /datum/action/cooldown/spell/pointed/declare_evil/Remove(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(honor_trauma, COMSIG_QDELETING)
 	honor_trauma = null
 
 /// If we lose our honor trauma somehow, self-delete (and clear references)
 /datum/action/cooldown/spell/pointed/declare_evil/proc/on_honor_trauma_lost(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(src)
 
 /datum/action/cooldown/spell/pointed/declare_evil/can_cast_spell(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -288,6 +322,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/pointed/declare_evil/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -319,6 +355,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/pointed/declare_evil/before_cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & SPELL_CANCEL_CAST)
 		return
@@ -326,6 +364,8 @@
 	invocation = "[cast_on]! [declaration]"
 
 /datum/action/cooldown/spell/pointed/declare_evil/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.religious_sect.adjust_favor(-required_favor, owner)
 	honor_trauma.guilty(cast_on, GUILT_REASON_DECLARATION)

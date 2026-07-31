@@ -21,6 +21,8 @@
 	var/obj/machinery/field/generator/field_gen_2 = null
 
 /obj/machinery/field/containment/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/blocks_explosives)
 	. = ..()
 	air_update_turf(TRUE, TRUE)
@@ -32,6 +34,8 @@
 	AddElement(/datum/element/give_turf_traits, string_list(list(TRAIT_CONTAINMENT_FIELD)))
 
 /obj/machinery/field/containment/Destroy()
+	procstart = null
+	src.procstart = null
 	if(field_gen_1)
 		field_gen_1.fields -= src
 		field_gen_1 = null
@@ -44,6 +48,8 @@
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/machinery/field/containment/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(get_dist(src, user) > 1)
 		return FALSE
 	else
@@ -51,10 +57,14 @@
 		return TRUE
 
 /obj/machinery/field/containment/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	yeet_shock(user)
 	return TRUE
 
 /obj/machinery/field/containment/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BURN)
 			playsound(loc, 'sound/effects/empulse.ogg', 75, TRUE)
@@ -62,12 +72,18 @@
 			playsound(loc, 'sound/effects/empulse.ogg', 75, TRUE)
 
 /obj/machinery/field/containment/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/field/containment/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/field/containment/attack_animal(mob/living/simple_animal/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!field_gen_1 || !field_gen_2)
 		qdel(src)
 		return
@@ -79,6 +95,8 @@
 		return ..()
 
 /obj/machinery/field/containment/proc/on_entered(datum/source, atom/movable/considered_atom)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isliving(considered_atom))
 		var/mob/living/living_moving_through_field = considered_atom
@@ -89,6 +107,8 @@
 		bump_field(considered_atom)
 
 /obj/machinery/field/containment/proc/set_master(master1,master2)
+	procstart = null
+	src.procstart = null
 	if(!master1 || !master2)
 		return FALSE
 	field_gen_1 = master1
@@ -96,17 +116,23 @@
 	return TRUE
 
 /obj/machinery/field/containment/proc/block_singularity()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return SINGULARITY_TRY_MOVE_BLOCK
 
 /obj/machinery/field/containment/yeet_shock(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!field_gen_1 || !field_gen_2)
 		qdel(src)
 		return FALSE
 	..()
 
 /obj/machinery/field/containment/Move()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 	return FALSE
 
@@ -119,6 +145,8 @@
 	var/has_shocked = FALSE
 
 /obj/machinery/field/Bumped(atom/movable/mover)
+	procstart = null
+	src.procstart = null
 	if(has_shocked)
 		return
 	if(isliving(mover))
@@ -130,11 +158,15 @@
 
 
 /obj/machinery/field/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(has_shocked || isliving(mover) || ismachinery(mover) || isstructure(mover) || ismecha(mover))
 		return FALSE
 
 /obj/machinery/field/proc/yeet_shock(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/shock_damage = min(rand(30,40),rand(30,40))
 
 	if(iscarbon(user))
@@ -153,9 +185,13 @@
 	bump_field(user)
 
 /obj/machinery/field/proc/clear_shock()
+	procstart = null
+	src.procstart = null
 	has_shocked = FALSE
 
 /obj/machinery/field/proc/bump_field(atom/movable/considered_atom as mob|obj)
+	procstart = null
+	src.procstart = null
 	if(has_shocked)
 		return FALSE
 	has_shocked = TRUE

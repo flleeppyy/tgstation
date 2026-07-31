@@ -32,18 +32,26 @@
 	var/lob_type = /mob/living/basic/mining/lobstrosity/juvenile/lava
 
 /obj/item/fish/chasm_crab/Initialize(mapload, apply_qualities = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_FISH_BEFORE_GROWING, PROC_REF(growth_checks))
 	RegisterSignal(src, COMSIG_FISH_FINISH_GROWING, PROC_REF(on_growth))
 
 /obj/item/fish/chasm_crab/get_fish_taste()
+	procstart = null
+	src.procstart = null
 	return list("raw crab" = 2)
 
 /obj/item/fish/chasm_crab/get_fish_taste_cooked()
+	procstart = null
+	src.procstart = null
 	return list("cooked crab" = 2)
 
 ///A chasm crab growth speed is determined by its initial weight and size, ergo bigger crabs for faster lobstrosities
 /obj/item/fish/chasm_crab/update_size_and_weight(new_size = average_size, new_weight = average_weight, update_materials = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/multiplier = 1
 	switch(size)
@@ -64,11 +72,15 @@
 	AddComponent(/datum/component/fish_growth, lob_type, 10 MINUTES * multiplier)
 
 /obj/item/fish/chasm_crab/pet_fish(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		anger -= min(anger, 6.5)
 
 /obj/item/fish/chasm_crab/proc/growth_checks(datum/source, seconds_per_tick, growth, result_path)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/hunger = get_hunger()
 	if(get_health_percentage() <= 0.6 || hunger >= 0.6) //if too hurt or hungry, don't grow.
@@ -92,6 +104,8 @@
 		return COMPONENT_DONT_GROW
 
 /obj/item/fish/chasm_crab/proc/on_growth(datum/source, mob/living/basic/mining/lobstrosity/juvenile/result)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(/datum/fish_trait/territorial in fish_traits)
 		return
@@ -137,25 +151,37 @@
 	beauty = FISH_BEAUTY_UGLY
 
 /obj/item/fish/boned/Initialize(mapload, apply_qualities = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_FISH_MADE_OF_BONE, INNATE_TRAIT)
 
 /obj/item/fish/boned/fish_grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/bone_dust = 10)
 
 /obj/item/fish/boned/make_edible(weight_val)
+	procstart = null
+	src.procstart = null
 	return //it's all bones and no meat.
 
 /obj/item/fish/boned/get_health_warnings(mob/user, always_deep = FALSE)
+	procstart = null
+	src.procstart = null
 	return list(span_deadsay("It's bones."))
 
 /obj/item/fish/boned/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] swallows [src] whole! It looks like [user.p_theyre()] trying to commit suicide!"))
 	forceMove(user)
 	addtimer(CALLBACK(src, PROC_REF(skeleton_appears), user), 2 SECONDS)
 	return MANUAL_SUICIDE_NONLETHAL // chance not to die
 
 /obj/item/fish/boned/proc/skeleton_appears(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_warning("[user]'s skin melts off!"), span_boldwarning("Your skin melts off!"))
 	user.spawn_gibs()
 	user.drop_everything(del_on_drop = FALSE, force = FALSE, del_if_nodrop = FALSE)
@@ -195,6 +221,8 @@
 	var/maximum_bonus = 25
 
 /obj/item/fish/lavaloop/Initialize(mapload, apply_qualities = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_FISHING_BAIT, TRAIT_GOOD_QUALITY_BAIT, TRAIT_BYPASS_RANGED_ARMOR), INNATE_TRAIT)
 	AddComponent(/datum/component/boomerang, throw_range, TRUE)
@@ -211,12 +239,18 @@
 	AddElement(/datum/element/raptor_food, attack_modifier = 1.5, growth_modifier = -0.075)
 
 /obj/item/fish/lavaloop/get_fish_taste()
+	procstart = null
+	src.procstart = null
 	return list("chewy fish" = 2)
 
 /obj/item/fish/lavaloop/get_food_types()
+	procstart = null
+	src.procstart = null
 	return SEAFOOD|MEAT|GORE //Well-cooked in lava/plasma
 
 /obj/item/fish/lavaloop/proc/explode_on_user(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/arm/active_arm = user.get_active_hand()
 	active_arm?.dismember()
 	to_chat(user, span_warning("[src] explodes!"))
@@ -225,6 +259,8 @@
 	qdel(src)
 
 /obj/item/fish/lavaloop/proc/on_fish_land(mob/living/target, bonus_value)
+	procstart = null
+	src.procstart = null
 	if(!istype(target))
 		return FALSE
 	return (target.mob_size >= MOB_SIZE_LARGE)
@@ -242,12 +278,16 @@
 	maximum_bonus = 30
 
 /obj/item/fish/lavaloop/plasma_river/explode_on_user(mob/living/user)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/explosion/explosion1.ogg', 40, TRUE)
 	user.flash_act(1, 1)
 	user.apply_status_effect(/datum/status_effect/ice_block_talisman, 5 SECONDS)
 	qdel(src)
 
 /obj/item/fish/lavaloop/plasma_river/on_fish_land(mob/living/target, bonus_value)
+	procstart = null
+	src.procstart = null
 	if(!istype(target))
 		return FALSE
 	if(target.mob_size < MOB_SIZE_LARGE)

@@ -14,16 +14,22 @@
 		Upon dying (or pretending to die via convincing-enough death gasp), plays a sad trombone sound."
 
 /obj/item/implant/sad_trombone/implant(mob/living/target, mob/user, silent = FALSE, force = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		RegisterSignal(target, COMSIG_MOB_EMOTED("deathgasp"), PROC_REF(on_deathgasp))
 
 /obj/item/implant/sad_trombone/removed(mob/target, silent = FALSE, special = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		UnregisterSignal(target, COMSIG_MOB_EMOTED("deathgasp"))
 
 /obj/item/implant/sad_trombone/proc/on_deathgasp(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	playsound(loc, death_noise, 50, FALSE)
 

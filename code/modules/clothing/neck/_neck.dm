@@ -9,6 +9,8 @@
 	equip_delay_other = 4 SECONDS
 
 /obj/item/clothing/neck/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isinhands || !(body_parts_covered & HEAD))
 		return
@@ -16,6 +18,8 @@
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damagedmask")
 
 /obj/item/clothing/neck/separate_worn_overlays(mutable_appearance/standing, mutable_appearance/draw_target, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isinhands || !(body_parts_covered & HEAD))
 		return
@@ -69,12 +73,16 @@
 	var/clip_on = FALSE
 
 /obj/item/clothing/neck/tie/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!clip_on)
 		update_appearance(UPDATE_ICON)
 	register_context()
 
 /obj/item/clothing/neck/tie/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("The tie can be worn above or below your suit. Alt-Right-click to toggle.")
 	if(clip_on)
@@ -85,6 +93,8 @@
 		. += span_notice("The tie can be untied with Alt-Click.")
 
 /obj/item/clothing/neck/tie/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(clip_on)
 		return NONE
 	to_chat(user, span_notice("You concentrate as you begin [is_tied ? "untying" : "tying"] [src]..."))
@@ -114,11 +124,15 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/clothing/neck/tie/click_alt_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	alternate_worn_layer = (alternate_worn_layer == initial(alternate_worn_layer) ? NONE : initial(alternate_worn_layer))
 	user.update_clothing(ITEM_SLOT_NECK)
 	balloon_alert(user, "wearing [alternate_worn_layer == initial(alternate_worn_layer) ? "below" : "above"] suits")
 
 /obj/item/clothing/neck/tie/update_icon()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(clip_on)
 		return
@@ -135,6 +149,8 @@
 		equip_delay_self = 0 SECONDS
 
 /obj/item/clothing/neck/tie/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	context[SCREENTIP_CONTEXT_ALT_RMB] = "Wear [alternate_worn_layer == initial(alternate_worn_layer) ? "above" : "below"] suit"
 	if(clip_on)
@@ -146,6 +162,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/clothing/neck/tie/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/carbon/human/wearer = loc
 	if(!ishuman(wearer))
@@ -217,6 +235,8 @@
 	flags_1 = IS_PLAYER_COLORABLE_1
 
 /obj/item/clothing/neck/robe_cape/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/surgery_aid, "cape")
 
@@ -238,14 +258,20 @@
 	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/clothing/neck/stethoscope/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -3) //FISH DOCTOR?!
 
 /obj/item/clothing/neck/stethoscope/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] puts \the [src] to [user.p_their()] chest! It looks like [user.p_they()] won't hear much!"))
 	return OXYLOSS
 
 /obj/item/clothing/neck/stethoscope/attack(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(target) || !isliving(user))
 		return ..()
 	if(user.combat_mode)
@@ -504,6 +530,8 @@
 	acid = 40
 
 /obj/item/clothing/neck/petcollar/mob_can_equip(mob/M, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE, ignore_equipped = FALSE, indirect_action = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ismonkey(M) && !human_wearable)
 		return FALSE
 	return ..()
@@ -512,6 +540,8 @@
 	human_wearable = TRUE
 
 /obj/item/clothing/neck/petcollar/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	tagname = sanitize_name(tgui_input_text(user, "Would you like to change the name on the tag?", "Pet Naming", "Spot", MAX_NAME_LEN))
 	if (!tagname || !length(tagname))
 		name = initial(name)
@@ -541,11 +571,15 @@
 	var/selling = FALSE
 
 /obj/item/clothing/neck/necklace/dope/merchant/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	selling = !selling
 	to_chat(user, span_notice("[src] has been set to [selling ? "'Sell'" : "'Get Price'"] mode."))
 
 /obj/item/clothing/neck/necklace/dope/merchant/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/datum/export_report/ex = export_item_and_contents(interacting_with, delete_unsold = selling, dry_run = !selling)
 	var/price = 0
 	for(var/x in ex.total_amount)
@@ -572,6 +606,8 @@
 	custom_materials = (list(/datum/material/plastic = SMALL_MATERIAL_AMOUNT*5))
 
 /obj/item/clothing/neck/beads/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	color = color = pick("#ff0077","#d400ff","#2600ff","#00ccff","#00ff2a","#e5ff00","#ffae00","#ff0000", "#ffffff")
 
@@ -585,6 +621,8 @@
 	custom_materials = list(/datum/material/bone = SHEET_MATERIAL_AMOUNT * 2, /datum/material/diamond = SHEET_MATERIAL_AMOUNT * 2)
 
 /obj/item/clothing/neck/wreath/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "wreath_emissive", src, alpha = src.alpha)

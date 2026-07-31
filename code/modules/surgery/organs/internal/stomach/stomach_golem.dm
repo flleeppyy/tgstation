@@ -12,10 +12,14 @@
 	var/max_hunger_slowdown = 4
 
 /obj/item/organ/stomach/golem/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_CARBON_ATTEMPT_EAT, PROC_REF(try_eating))
 
 /obj/item/organ/stomach/golem/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(organ_owner, COMSIG_CARBON_ATTEMPT_EAT)
 	organ_owner.remove_movespeed_modifier(/datum/movespeed_modifier/golem_hunger)
@@ -23,6 +27,8 @@
 
 /// Reject food, rocks only
 /obj/item/organ/stomach/golem/proc/try_eating(mob/living/carbon/source, atom/eating)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(istype(eating, /obj/item/food/golem_food))
 		return
@@ -31,6 +37,8 @@
 
 /// Golem stomach cannot process nutriment except from minerals
 /obj/item/organ/stomach/golem/on_life(delta_time)
+	procstart = null
+	src.procstart = null
 	for(var/datum/reagent/consumable/food in reagents.reagent_list)
 		if (istype(food, /datum/reagent/consumable/nutriment/mineral))
 			continue
@@ -39,6 +47,8 @@
 
 /// Slow down based on how full you are
 /obj/item/organ/stomach/golem/handle_hunger(mob/living/carbon/human/human, delta_time)
+	procstart = null
+	src.procstart = null
 	// the effects are all negative, so just don't run them if you have the trait
 	. = ..()
 	if(HAS_TRAIT(human, TRAIT_NOHUNGER))
@@ -67,6 +77,8 @@
 	overlay_state = "golem_statued"
 
 /datum/status_effect/golem_statued/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -75,9 +87,13 @@
 	return TRUE
 
 /datum/status_effect/golem_statued/get_examine_text()
+	procstart = null
+	src.procstart = null
 	return span_warning("[owner.p_They()] [owner.p_are()] as still as a statue!")
 
 /datum/status_effect/golem_statued/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.visible_message(span_notice("[owner] slowly stirs back into motion!"), span_notice("You have gathered enough strength to move your body once more."))
 	owner.remove_traits(list(TRAIT_IMMOBILIZED, TRAIT_FORCED_STANDING, TRAIT_HANDS_BLOCKED, TRAIT_INCAPACITATED), TRAIT_STATUS_EFFECT(id))
 	return ..()

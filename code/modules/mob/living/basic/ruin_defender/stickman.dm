@@ -28,6 +28,8 @@
 	health = 25
 
 /mob/living/basic/stickman/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/temp_visual/paper_scatter(get_turf(src))
 
@@ -66,6 +68,8 @@
 	ai_controller = /datum/ai_controller/basic_controller/stickman/ranged
 
 /mob/living/basic/stickman/ranged/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/death_drops, /obj/item/gun/ballistic/automatic/pistol/stickman)
 	AddComponent(/datum/component/ranged_attacks, casing_type = /obj/item/ammo_casing/c9mm, projectile_sound = 'sound/misc/bang.ogg', cooldown_time = 5 SECONDS)

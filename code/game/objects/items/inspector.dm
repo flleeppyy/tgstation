@@ -33,6 +33,8 @@
 	var/scans_correctly = TRUE
 
 /obj/item/inspector/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ispath(cell))
 		cell = new cell(src)
@@ -41,20 +43,28 @@
 
 // Clean up the cell on destroy
 /obj/item/inspector/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == cell)
 		cell = null
 
 // support for items that interact with the cell
 /obj/item/inspector/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/item/inspector/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	cell_cover_open = !cell_cover_open
 	balloon_alert(user, "[cell_cover_open ? "opened" : "closed"] cell cover")
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/inspector/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(cell_cover_open && istype(tool, /obj/item/stock_parts/power_store/cell))
 		if(cell)
 			to_chat(user, span_warning("[src] already has a cell installed."))
@@ -67,6 +77,8 @@
 	return NONE
 
 /obj/item/inspector/item_ctrl_click(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!cell_cover_open || !cell)
 		return CLICK_ACTION_BLOCKING
 	user.visible_message(span_notice("[user] removes \the [cell] from [src]!"), \
@@ -77,6 +89,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/inspector/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info("Use on an item to scan if it contains, or is, contraband.")
 	if(!cell_cover_open)
@@ -89,6 +103,8 @@
 		. += span_notice("\The [cell] is firmly in place. Ctrl-click with an empty hand to remove it.")
 
 /obj/item/inspector/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!user.Adjacent(interacting_with))
 		return ITEM_INTERACT_BLOCKING
 	if(cell_cover_open)
@@ -111,6 +127,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/inspector/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	var/update_context = FALSE
 	if(cell_cover_open && cell)
 		context[SCREENTIP_CONTEXT_CTRL_LMB] = "Remove cell"
@@ -129,6 +147,8 @@
 	return NONE
 
 /obj/item/inspector/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(cell_cover_open || !cell)
 		return NONE
 	if(isitem(target))
@@ -144,6 +164,8 @@
  * - user - who is performing the scanning?
  */
 /obj/item/inspector/proc/contraband_scan(scanned, user)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(scanned))
 		var/mob/living/carbon/scanned_carbon = scanned
 		for(var/obj/item/content in scanned_carbon.get_all_contents_skipping_traits(TRAIT_CONTRABAND_BLOCKER))

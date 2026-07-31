@@ -49,21 +49,29 @@
 	energy_recharge = 5000
 
 /obj/item/borg/projectile_dampen/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSfastprocess, src)
 	host = loc
 	RegisterSignal(host, COMSIG_LIVING_DEATH, PROC_REF(on_death))
 	return ..()
 
 /obj/item/borg/projectile_dampen/proc/on_death(datum/source, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	deactivate_field()
 
 /obj/item/borg/projectile_dampen/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	return ..()
 
 /obj/item/borg/projectile_dampen/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if (!COOLDOWN_FINISHED(src, cycle_cooldown))
 		to_chat(user, span_boldwarning("[src] is still recycling its projectors!"))
 		return
@@ -79,10 +87,14 @@
 	to_chat(user, span_boldnotice("You [active ? "activate":"deactivate"] [src]."))
 
 /obj/item/borg/projectile_dampen/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][active]"
 	return ..()
 
 /obj/item/borg/projectile_dampen/proc/activate_field()
+	procstart = null
+	src.procstart = null
 	if(istype(dampening_field))
 		QDEL_NULL(dampening_field)
 	var/mob/living/silicon/robot/owner = get_host()
@@ -93,6 +105,8 @@
 	active = TRUE
 
 /obj/item/borg/projectile_dampen/proc/deactivate_field()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(dampening_field)
 	visible_message(span_warning("\The [src] shuts off!"))
 	tracked_bullet_cost.Cut()
@@ -103,6 +117,8 @@
 		owner.model.allow_riding = TRUE
 
 /obj/item/borg/projectile_dampen/proc/get_host()
+	procstart = null
+	src.procstart = null
 	if(istype(host))
 		return host
 	else
@@ -111,22 +127,32 @@
 	return null
 
 /obj/item/borg/projectile_dampen/equipped()
+	procstart = null
+	src.procstart = null
 	host = loc
 	return ..()
 
 /obj/item/borg/projectile_dampen/dropped()
+	procstart = null
+	src.procstart = null
 	host = loc
 	return ..()
 
 /obj/item/borg/projectile_dampen/cyborg_unequip(mob/user)
+	procstart = null
+	src.procstart = null
 	deactivate_field()
 	return ..()
 
 /obj/item/borg/projectile_dampen/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	process_recharge(seconds_per_tick)
 	process_usage(seconds_per_tick)
 
 /obj/item/borg/projectile_dampen/proc/process_usage(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/usage = 0
 	for(var/projectile in tracked_bullet_cost)
 		usage += projectile_tick_speed_ecost * seconds_per_tick
@@ -137,6 +163,8 @@
 		visible_message(span_warning("[src] blinks \"ENERGY DEPLETED\"."))
 
 /obj/item/borg/projectile_dampen/proc/process_recharge(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!istype(host))
 		if(iscyborg(host.loc))
 			host = host.loc
@@ -148,12 +176,16 @@
 		energy += energy_recharge * seconds_per_tick
 
 /obj/item/borg/projectile_dampen/proc/dampen_projectile(datum/source, obj/projectile/projectile)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(projectile.is_hostile_projectile())
 		tracked_bullet_cost[REF(projectile)] = projectile.damage
 
 /obj/item/borg/projectile_dampen/proc/restore_projectile(datum/source, obj/projectile/projectile)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	tracked_bullet_cost -= REF(projectile)
 
@@ -174,10 +206,14 @@
 	var/upgraded = FALSE
 
 /obj/item/borg/cyborg_omnitool/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/item/borg/cyborg_omnitool/Destroy(force)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/tool_path as anything in atoms)
 		var/obj/item/tool = atoms[tool_path]
 		if(!QDELETED(tool)) //if we are sharing tools from our other omnitool brothers we don't want to re delete them if they got deleted first
@@ -187,6 +223,8 @@
 	return ..()
 
 /obj/item/borg/cyborg_omnitool/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if (!issilicon(user))
 		return
@@ -201,6 +239,8 @@
  * * obj/item/ref - typepath for the new internal omnitool
  */
 /obj/item/borg/cyborg_omnitool/proc/set_internal_tool(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	for(var/obj/item/internal_tool as anything in omni_toolkit)
@@ -210,12 +250,16 @@
 			break
 
 /obj/item/borg/cyborg_omnitool/get_all_tool_behaviours()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/obj/item/tool as anything in omni_toolkit)
 		. += initial(tool.tool_behaviour)
 
 ///The omnitool interacts with real world objects based on the state it has assumed
 /obj/item/borg/cyborg_omnitool/get_proxy_attacker_for(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!reference)
 		return src
 
@@ -249,6 +293,8 @@
 	return tool
 
 /obj/item/borg/cyborg_omnitool/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	//build the radial menu options
 	var/list/radial_menu_options = list()
 	var/list/tool_map = list()
@@ -270,6 +316,8 @@
 	playsound(src, 'sound/items/tools/change_jaws.ogg', 50, TRUE)
 
 /obj/item/borg/cyborg_omnitool/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 	if(!LAZYACCESS(modifiers, RIGHT_CLICK) || !iscyborg(usr))
 		return ..()
@@ -278,6 +326,8 @@
 	return ..()
 
 /obj/item/borg/cyborg_omnitool/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if (reference)
 		icon_state = reference.icon_state
 	return ..()
@@ -289,6 +339,8 @@
  * * upgrade - TRUE/FALSE for upgraded
  */
 /obj/item/borg/cyborg_omnitool/proc/set_upgraded(upgrade)
+	procstart = null
+	src.procstart = null
 	upgraded = upgrade
 	for(var/obj/item/tool_path as anything in atoms)
 		var/obj/item/tool = atoms[tool_path]
@@ -324,6 +376,8 @@
 	)
 
 /obj/item/borg/cyborg_omnitool/engineering/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(tool_behaviour == TOOL_MULTITOOL)
 		var/obj/item/multitool/tool = atoms[/obj/item/multitool/cyborg]

@@ -52,10 +52,14 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 	movement_force = list("KNOCKDOWN" = 0, "THROW" = 0)
 
 /obj/docking_port/mobile/supply/register()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSshuttle.supply = src
 
 /obj/docking_port/mobile/supply/canMove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -63,6 +67,8 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 		return check_blacklist(shuttle_areas)
 
 /obj/docking_port/mobile/supply/proc/check_blacklist(areaInstances)
+	procstart = null
+	src.procstart = null
 	for(var/area/shuttle_area as anything in areaInstances)
 		for (var/list/zlevel_turfs as anything in shuttle_area.get_zlevel_turf_lists())
 			for(var/turf/shuttle_turf as anything in zlevel_turfs)
@@ -73,6 +79,8 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 
 /// Returns anything on the cargo blacklist found within areas_to_check back to the turf of the home docking port via Centcom branded supply pod.
 /obj/docking_port/mobile/supply/proc/return_blacklisted_things_home(list/area/areas_to_check, obj/docking_port/stationary/home)
+	procstart = null
+	src.procstart = null
 	var/list/stuff_to_send_home = list()
 	for(var/area/shuttle_area as anything in areas_to_check)
 		for (var/list/zlevel_turfs as anything in shuttle_area.get_zlevel_turf_lists())
@@ -93,11 +101,15 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 	return stuff_to_send_home
 
 /obj/docking_port/mobile/supply/request(obj/docking_port/stationary/S)
+	procstart = null
+	src.procstart = null
 	if(mode != SHUTTLE_IDLE)
 		return 2
 	return ..()
 
 /obj/docking_port/mobile/supply/check_dock(obj/docking_port/stationary/S, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)
@@ -121,6 +133,8 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 	SSshuttle.centcom_message = "Contraband found on Cargo Shuttle. This has been returned via drop pod."
 
 /obj/docking_port/mobile/supply/initiate_docking(obj/docking_port/stationary/new_dock, force=FALSE)
+	procstart = null
+	src.procstart = null
 	if(getDockedId() == "cargo_away") // Buy when we leave home.
 		buy()
 		create_mail()
@@ -136,6 +150,8 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 
 
 /obj/docking_port/mobile/supply/proc/buy()
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(SSshuttle, COMSIG_SUPPLY_SHUTTLE_BUY)
 	var/list/obj/miscboxes = list() //miscboxes are combo boxes that contain all goody orders grouped
 	var/list/misc_order_num = list() //list of strings of order numbers, so that the manifest can show all orders in a box
@@ -285,6 +301,8 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 
 /// Deletes and sells the items on the shuttle
 /obj/docking_port/mobile/supply/proc/sell()
+	procstart = null
+	src.procstart = null
 	var/datum/bank_account/cargo_budget = SSeconomy.get_dep_account(ACCOUNT_CAR)
 	var/presale_points = cargo_budget.account_balance
 
@@ -322,6 +340,8 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 	Then, fills the mail crate with mail, by picking applicable crew who can receive mail at the time to sending.
 */
 /obj/docking_port/mobile/supply/proc/create_mail()
+	procstart = null
+	src.procstart = null
 	//Early return if there's no mail waiting to prevent taking up a slot. We also don't send mails on sundays or holidays.
 	if(!SSeconomy.mail_waiting || SSeconomy.mail_blocked || SSsecurity_level.current_security_level.disables_mail)
 		return
@@ -338,6 +358,8 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 
 /// Takes a supply pack, returns the amount we currently have on order (or OVER_ORDER_LIMIT if we are over the hardcap on orders of this type)
 /obj/docking_port/mobile/supply/proc/get_order_count(datum/supply_pack/ordering)
+	procstart = null
+	src.procstart = null
 	var/similar_count = 0
 	for(var/datum/supply_order/order as anything in (SSshuttle.shopping_list | SSshuttle.request_list))
 		if(order.pack == ordering)
@@ -354,6 +376,8 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
  * Used by the shuttle air upgrade.
  */
 /obj/docking_port/mobile/supply/proc/refill_air()
+	procstart = null
+	src.procstart = null
 	for(var/area/shuttle/shuttle_area as anything in shuttle_areas)
 		for(var/turf/open/floor/shuttle_floor in shuttle_area.get_turfs_from_all_zlevels())
 			if(shuttle_floor.blocks_air)

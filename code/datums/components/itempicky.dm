@@ -9,6 +9,8 @@
 	var/datum/callback/tertiary_condition = null
 
 /datum/component/itempicky/Initialize(whitelist, message, tertiary_condition)
+	procstart = null
+	src.procstart = null
 	if(!ismob(parent))
 		return COMPONENT_INCOMPATIBLE
 	src.whitelist = whitelist
@@ -18,25 +20,37 @@
 		src.tertiary_condition = tertiary_condition
 
 /datum/component/itempicky/Destroy(force)
+	procstart = null
+	src.procstart = null
 	tertiary_condition = null
 	return ..()
 
 /datum/component/itempicky/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_LIVING_TRY_PUT_IN_HAND, PROC_REF(particularly))
 
 /datum/component/itempicky/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_LIVING_TRY_PUT_IN_HAND)
 
 /datum/component/itempicky/PostTransfer(datum/new_parent)
+	procstart = null
+	src.procstart = null
 	if(!ismob(new_parent))
 		return COMPONENT_INCOMPATIBLE
 
 /datum/component/itempicky/InheritComponent(datum/component/itempicky/friend, i_am_original, list/arguments)
+	procstart = null
+	src.procstart = null
 	if(i_am_original)
 		whitelist = friend.whitelist
 		message = friend.message
 
 /datum/component/itempicky/proc/particularly(datum/source, obj/item/pickingup)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// if we were passed the output of a callback, check against that
 	if(!tertiary_condition?.Invoke() && !is_type_in_typecache(pickingup, whitelist))

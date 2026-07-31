@@ -1,13 +1,19 @@
 
 /mob/living/silicon/robot/gib_animation()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/gib_animation(loc, "gibbed-r")
 
 /mob/living/silicon/robot/dust(just_ash, drop_items, give_moodlet, force)
+	procstart = null
+	src.procstart = null
 	// You do not get MMI'd if you are dusted
 	QDEL_NULL(mmi)
 	return ..()
 
 /mob/living/silicon/robot/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		return
 	if(gibbed)
@@ -30,6 +36,8 @@
 	SSblackbox.ReportDeath(src)
 
 /mob/living/silicon/robot/proc/flash_headlamp()
+	procstart = null
+	src.procstart = null
 	if(eye_lights)
 		eye_lights = null
 		regenerate_icons()

@@ -5,6 +5,8 @@
 /datum/element/dextrous
 
 /datum/element/dextrous/Attach(datum/target, hands_count = 2, hud_type = /datum/hud/dextrous, can_throw = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(target) || iscarbon(target))
 		return ELEMENT_INCOMPATIBLE // Incompatible with the carbon typepath because that already has its own hand handling and doesn't need hand holding
@@ -23,6 +25,8 @@
 	RegisterSignal(target, COMSIG_ATOM_EXAMINE, PROC_REF(on_examined))
 
 /datum/element/dextrous/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/mob_parent = source
 	set_available_hands(mob_parent, initial(mob_parent.default_num_hands))
@@ -40,6 +44,8 @@
 
 /// Set up how many hands we should have
 /datum/element/dextrous/proc/set_available_hands(mob/living/hand_owner, hands_count)
+	procstart = null
+	src.procstart = null
 	hand_owner.drop_all_held_items()
 	var/held_items = list()
 	for (var/i in 1 to hands_count)
@@ -50,11 +56,15 @@
 
 /// Drop our shit when we die
 /datum/element/dextrous/proc/on_death(mob/living/died, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	died.drop_all_held_items()
 
 /// Try picking up items
 /datum/element/dextrous/proc/on_hand_clicked(mob/living/hand_haver, atom/target, proximity, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!proximity && target.loc != hand_haver)
 		var/obj/item/obj_item = target
@@ -71,6 +81,8 @@
 
 /// Tell people what we are holding
 /datum/element/dextrous/proc/on_examined(mob/living/examined, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/obj/item/held_item in examined.held_items)
 		if((held_item.item_flags & (ABSTRACT|HAND_ITEM)) || HAS_TRAIT(held_item, TRAIT_EXAMINE_SKIP))

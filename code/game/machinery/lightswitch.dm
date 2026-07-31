@@ -23,6 +23,8 @@
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 
 /obj/machinery/light_switch/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddComponent(/datum/component/redirect_attack_hand_from_turf)
@@ -42,6 +44,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 	update_appearance()
 
 /obj/machinery/light_switch/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(held_item))
 		context[SCREENTIP_CONTEXT_LMB] = area.lightswitch ? "Flick off" : "Flick on"
@@ -52,10 +56,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 	return .
 
 /obj/machinery/light_switch/update_appearance(updates=ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	luminosity = (machine_stat & NOPOWER) ? 0 : 1
 
 /obj/machinery/light_switch/update_icon_state()
+	procstart = null
+	src.procstart = null
 	set_light(area.lightswitch ? 0 : light_on_range)
 	icon_state = "[base_icon_state]"
 	if(machine_stat & NOPOWER)
@@ -65,22 +73,30 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 	return ..()
 
 /obj/machinery/light_switch/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & NOPOWER)
 		return ..()
 	. += emissive_appearance(icon, "[base_icon_state]-emissive[area.lightswitch ? "-on" : "-off"]", src, alpha = src.alpha)
 
 /obj/machinery/light_switch/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "It is [(machine_stat & NOPOWER) ? "unpowered" : (area.lightswitch ? "on" : "off")]."
 	. += span_notice("It's <b>screwed</b> and secured to the wall.")
 
 /obj/machinery/light_switch/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(src, area.lightswitch ? sound_off : sound_on, 40, TRUE)
 	set_lights(!area.lightswitch)
 
 /obj/machinery/light_switch/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_notice("[user] starts unscrewing [src]..."), span_notice("You start unscrewing [src]..."))
 	if(!tool.use_tool(src, user, 40, volume = 50))
 		return ITEM_INTERACT_BLOCKING
@@ -90,6 +106,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/light_switch/proc/set_lights(status)
+	procstart = null
+	src.procstart = null
 	if(area.lightswitch == status)
 		return
 	area.lightswitch = status
@@ -104,11 +122,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 	area.power_change()
 
 /obj/machinery/light_switch/power_change()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	if(area == get_area(src))
 		return ..()
 
 /obj/machinery/light_switch/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. & EMP_PROTECT_SELF)
 		return
@@ -116,6 +138,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 		power_change()
 
 /obj/machinery/light_switch/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	new /obj/item/wallframe/light_switch(loc)
 
 /obj/item/wallframe/light_switch
@@ -140,23 +164,33 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 	var/obj/machinery/light_switch/attached_switch
 
 /obj/item/circuit_component/light_switch/populate_ports()
+	procstart = null
+	src.procstart = null
 	on_setting = add_input_port("On", PORT_TYPE_BOOLEAN)
 	is_on = add_output_port("Is On", PORT_TYPE_BOOLEAN)
 
 /obj/item/circuit_component/light_switch/register_usb_parent(atom/movable/parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(parent, /obj/machinery/light_switch))
 		attached_switch = parent
 		RegisterSignal(parent, COMSIG_LIGHT_SWITCH_SET, PROC_REF(on_light_switch_set))
 
 /obj/item/circuit_component/light_switch/unregister_usb_parent(atom/movable/parent)
+	procstart = null
+	src.procstart = null
 	attached_switch = null
 	UnregisterSignal(parent, COMSIG_LIGHT_SWITCH_SET)
 	return ..()
 
 /obj/item/circuit_component/light_switch/proc/on_light_switch_set(datum/source, status)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	is_on.set_output(status)
 
 /obj/item/circuit_component/light_switch/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	attached_switch?.set_lights(on_setting.value ? TRUE : FALSE)

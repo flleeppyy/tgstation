@@ -7,6 +7,8 @@
 	speech_span = SPAN_ROBOT
 
 /mob/living/brain/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_dna(src)
 	stored_dna.initialize_dna(random_human_blood_type())
@@ -19,18 +21,24 @@
 	ADD_TRAIT(src, TRAIT_SILICON_EMOTES_ALLOWED, INNATE_TRAIT)
 
 /mob/living/brain/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/brain_loc = loc
 	if(brain_loc && isnull(new_turf) && brain_loc.owner) //we're actively being put inside a new body.
 		return ..(old_turf, get_turf(brain_loc.owner), same_z_layer, notify_contents)
 	return ..()
 
 /mob/living/brain/proc/create_dna()
+	procstart = null
+	src.procstart = null
 	stored_dna = new /datum/dna/stored(src)
 	if(!stored_dna.species)
 		var/rando_race = pick(get_selectable_species())
 		stored_dna.species = new rando_race()
 
 /mob/living/brain/Destroy()
+	procstart = null
+	src.procstart = null
 	if(key) //If there is a mob connected to this thing. Have to check key twice to avoid false death reporting.
 		if(stat != DEAD)
 			death(TRUE)
@@ -43,35 +51,55 @@
 
 /// Override parent here because... the blind message doesn't really work given what's happen when a brain suicides. Can't hear a brain going grey. So, we omit the "blind" message.
 /mob/living/brain/send_applicable_messages()
+	procstart = null
+	src.procstart = null
 	visible_message(span_danger(get_visible_suicide_message()), span_userdanger(get_visible_suicide_message()))
 
 /mob/living/brain/get_visible_suicide_message()
+	procstart = null
+	src.procstart = null
 	return "[src]'s brain is growing dull and lifeless. [p_They()] look[p_s()] like [p_theyve()] lost the will to live."
 
-/mob/living/brain/apply_suicide_damage(obj/item/suicide_tool, damage_type = NONE) // we don't really care about applying damage to the brain mob and is just needless work.
+/mob/living/brain/apply_suicide_damage(obj/item/suicide_tool, damage_type = NONE)
+	procstart = null
+	src.procstart = null // we don't really care about applying damage to the brain mob and is just needless work.
 	return FALSE
 
 /mob/living/brain/ex_act() //you cant blow up brainmobs because it makes transfer_to() freak out when borgs blow up.
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/brain/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	return
 
-/mob/living/brain/get_eye_protection()//no eyes
+/mob/living/brain/get_eye_protection()
+	procstart = null
+	src.procstart = null//no eyes
 	return FLASH_PROTECTION_WELDER
 
 /mob/living/brain/get_ear_protection(ignore_deafness = FALSE)
+	procstart = null
+	src.procstart = null
 	return ..() + EAR_PROTECTION_HEAVY
 
 /mob/living/brain/flash_act(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0, type = /atom/movable/screen/fullscreen/flash, length = 25)
+	procstart = null
+	src.procstart = null
 	return // no eyes, no flashing
 
 /mob/living/brain/can_be_revived()
+	procstart = null
+	src.procstart = null
 	if(!container || health <= HEALTH_THRESHOLD_DEAD)
 		return FALSE
 	return TRUE
 
 /mob/living/brain/fully_replace_character_name(oldname, newname, log_new_name = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -79,6 +107,8 @@
 	stored_dna?.real_name = real_name
 
 /mob/living/brain/forceMove(atom/destination)
+	procstart = null
+	src.procstart = null
 	if(container)
 		return container.forceMove(destination)
 	else if (istype(loc, /obj/item/organ/brain))
@@ -92,6 +122,8 @@
 		CRASH("Brainmob without a container [src] attempted to move to [destination].")
 
 /mob/living/brain/update_mouse_pointer()
+	procstart = null
+	src.procstart = null
 	if (!client)
 		return
 	client.mouse_pointer_icon = initial(client.mouse_pointer_icon)
@@ -103,12 +135,16 @@
 			client.mouse_pointer_icon = M.mouse_pointer
 
 /mob/living/brain/proc/get_traumas()
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(istype(loc, /obj/item/organ/brain))
 		var/obj/item/organ/brain/B = loc
 		. = B.traumas
 
 /mob/living/brain/get_policy_keywords()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(container)

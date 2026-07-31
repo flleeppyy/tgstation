@@ -4,6 +4,8 @@
 	var/list/lattices_by_turf = list()
 
 /datum/element/shuttle_construction_lattice/Attach(obj/structure/lattice/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(target))
 		return ELEMENT_INCOMPATIBLE
@@ -18,6 +20,8 @@
 	RegisterSignal(target_turf, COMSIG_TURF_ADDED_TO_SHUTTLE, PROC_REF(on_turf_added_to_shuttle))
 
 /datum/element/shuttle_construction_lattice/Detach(obj/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/source_turf = source.loc
 	if(istype(source_turf))
@@ -27,10 +31,14 @@
 	UnregisterSignal(source, list(COMSIG_ATOM_EXAMINE, COMSIG_MOVABLE_MOVED, COMSIG_LATTICE_PRE_REPLACE_WITH_CATWALK))
 
 /datum/element/shuttle_construction_lattice/proc/on_examined(obj/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_list += span_notice("Cutting this [source.name] will <i>ruin the treatment that makes it suitable for shuttle construction</i>.")
 
 /datum/element/shuttle_construction_lattice/proc/on_moved(obj/source, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/trait_source = REF(source)
 	if(isturf(old_loc))
@@ -44,12 +52,18 @@
 		lattices_by_turf[new_turf] = source
 
 /datum/element/shuttle_construction_lattice/proc/on_replacing_with_catwalk(obj/source, list/callbacks)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	callbacks += CALLBACK(src, PROC_REF(register_catwalk))
 
 /datum/element/shuttle_construction_lattice/proc/register_catwalk(obj/structure/lattice/catwalk/new_catwalk)
+	procstart = null
+	src.procstart = null
 	new_catwalk.AddElement(/datum/element/shuttle_construction_lattice)
 
 /datum/element/shuttle_construction_lattice/proc/on_turf_added_to_shuttle(turf/source)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/lattice/turf_lattice = lattices_by_turf[source]
 	turf_lattice?.RemoveElement(/datum/element/shuttle_construction_lattice)

@@ -17,10 +17,14 @@
 	var/iron_liver = FALSE
 
 /datum/status_effect/inebriated/on_creation(mob/living/new_owner, drunk_value = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_drunk_value(drunk_value)
 
 /datum/status_effect/inebriated/get_examine_text()
+	procstart = null
+	src.procstart = null
 	// Dead people don't look drunk
 	if(IS_DEAD_OR_FAKING(owner))
 		return null
@@ -50,6 +54,8 @@
 
 /// Sets the drunk value to set_to, deleting if the value drops to 0 or lower
 /datum/status_effect/inebriated/proc/set_drunk_value(set_to)
+	procstart = null
+	src.procstart = null
 	if(!isnum(set_to))
 		CRASH("[type] - invalid value passed to set_drunk_value. (Got: [set_to])")
 	if(iron_liver)
@@ -59,6 +65,8 @@
 		qdel(src)
 
 /datum/status_effect/inebriated/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	// Drunk value does not decrease while dead or in stasis
 	if(owner.stat == DEAD || HAS_TRAIT(owner, TRAIT_STASIS))
 		return
@@ -74,6 +82,8 @@
 
 /// Side effects done by this level of drunkness on tick.
 /datum/status_effect/inebriated/proc/on_tick_effects()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -84,6 +94,8 @@
 	alert_type = null
 
 /datum/status_effect/inebriated/tipsy/set_drunk_value(set_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(src))
 		return
@@ -100,6 +112,8 @@
 	alert_type = /atom/movable/screen/alert/status_effect/drunk
 
 /datum/status_effect/inebriated/drunk/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.sound_environment_override = SOUND_ENVIRONMENT_PSYCHOTIC
 	owner.add_mood_event(id, /datum/mood_event/drunk, drunk_value)
@@ -108,16 +122,22 @@
 	RegisterSignal(owner, COMSIG_MOVABLE_GRABBED_RESISTING, PROC_REF(grabbed_resisting))
 
 /datum/status_effect/inebriated/drunk/on_remove()
+	procstart = null
+	src.procstart = null
 	clear_effects()
 	return ..()
 
 // Going from "drunk" to "tipsy" should remove effects like on_remove
 /datum/status_effect/inebriated/drunk/be_replaced()
+	procstart = null
+	src.procstart = null
 	clear_effects()
 	return ..()
 
 /// Clears any side effects we set due to being drunk.
 /datum/status_effect/inebriated/drunk/proc/clear_effects()
+	procstart = null
+	src.procstart = null
 	owner.clear_mood_event(id)
 	if(!QDELING(owner) && HAS_PERSONALITY(owner, /datum/personality/bibulous))
 		owner.add_mood_event("[id]_after", /datum/mood_event/drunk_after)
@@ -130,6 +150,8 @@
 	REMOVE_TRAIT(owner, TRAIT_FEARLESS, TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/inebriated/drunk/proc/drunk_gun_fired(datum/source, obj/item/gun/gun, atom/firing_at, params, zone, bonus_spread_values)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// excusing the bartender, because shotgun
@@ -141,6 +163,8 @@
 	bonus_spread_values[MAX_BONUS_SPREAD_INDEX] += (drunk_value * 0.5)
 
 /datum/status_effect/inebriated/drunk/proc/grabbed_resisting(datum/source, mob/living/grabbed, list/grab_stats)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!HAS_TRAIT(owner, TRAIT_DRUNKEN_BRAWLER))
@@ -150,6 +174,8 @@
 	grab_stats[GRAB_STAT_FAIL_DAMAGE] += clamp((owner.get_fire_loss() + owner.get_brute_loss()) / 10, 3, 20)
 
 /datum/status_effect/inebriated/drunk/set_drunk_value(set_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(src))
 		return
@@ -163,6 +189,8 @@
 		moodlet.update_change(drunk_value)
 
 /datum/status_effect/inebriated/drunk/on_tick_effects()
+	procstart = null
+	src.procstart = null
 	// Handle the Ballmer Peak.
 	// If our owner is a scientist (has the trait "TRAIT_SCIENTIST_LIVER"), there's a 5% chance
 	// that they'll say one of the special "ballmer message" lines, depending their drunk-ness level.
@@ -223,6 +251,8 @@
 		owner.adjust_tox_loss(2)
 
 /datum/status_effect/inebriated/drunk/proc/attempt_to_blackout()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/drunkard = owner
 	if(drunkard.has_trauma_type(/datum/brain_trauma/severe/split_personality/blackout))// prevent ping spamming
 		if(prob(10))

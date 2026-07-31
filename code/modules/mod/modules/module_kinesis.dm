@@ -37,14 +37,20 @@
 	COOLDOWN_DECLARE(hit_cooldown)
 
 /obj/item/mod/module/anomaly_locked/kinesis/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	soundloop = new(src)
 
 /obj/item/mod/module/anomaly_locked/kinesis/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(soundloop)
 	return ..()
 
 /obj/item/mod/module/anomaly_locked/kinesis/on_select_use(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -65,9 +71,13 @@
 	grab_atom(target)
 
 /obj/item/mod/module/anomaly_locked/kinesis/on_deactivation(mob/activator, display_message = TRUE, deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	clear_grab(playsound = !deleting)
 
 /obj/item/mod/module/anomaly_locked/kinesis/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!mod.wearer.client || INCAPACITATED_IGNORING(mod.wearer, INCAPABLE_GRAB))
 		clear_grab()
 		return
@@ -126,6 +136,8 @@
 	COOLDOWN_START(src, hit_cooldown, hit_cooldown_time)
 
 /obj/item/mod/module/anomaly_locked/kinesis/proc/can_grab(atom/target)
+	procstart = null
+	src.procstart = null
 	if(mod.wearer == target)
 		return FALSE
 	if(!ismovable(target))
@@ -156,6 +168,8 @@
 	return TRUE
 
 /obj/item/mod/module/anomaly_locked/kinesis/proc/grab_atom(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	grabbed_atom = target
 	if(isliving(grabbed_atom))
 		grabbed_atom.add_traits(list(TRAIT_IMMOBILIZED, TRAIT_HANDS_BLOCKED), REF(src))
@@ -174,6 +188,8 @@
 	START_PROCESSING(SSfastprocess, src)
 
 /obj/item/mod/module/anomaly_locked/kinesis/proc/clear_grab(playsound = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!grabbed_atom)
 		return
 	. = grabbed_atom
@@ -194,6 +210,8 @@
 	soundloop.stop()
 
 /obj/item/mod/module/anomaly_locked/kinesis/proc/range_check(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!isturf(mod.wearer.loc))
 		return FALSE
 	if(ismovable(target) && !isturf(target.loc))
@@ -204,6 +222,8 @@
 
 
 /obj/item/mod/module/anomaly_locked/kinesis/proc/on_catcher_click(atom/source, location, control, params, user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/list/modifiers = params2list(params)
@@ -211,24 +231,32 @@
 		clear_grab()
 
 /obj/item/mod/module/anomaly_locked/kinesis/proc/on_statchange(mob/grabbed_mob, new_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(new_stat < stat_required)
 		clear_grab()
 
 /obj/item/mod/module/anomaly_locked/kinesis/proc/on_setanchored(atom/movable/grabbed_atom, anchorvalue)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(grabbed_atom.anchored)
 		clear_grab()
 
 /obj/item/mod/module/anomaly_locked/kinesis/proc/launch(atom/movable/launched_object)
+	procstart = null
+	src.procstart = null
 	playsound(launched_object, 'sound/effects/magic/repulse.ogg', 100, TRUE)
 	RegisterSignal(launched_object, COMSIG_MOVABLE_IMPACT, PROC_REF(launch_impact))
 	var/turf/target_turf = get_turf_in_angle(get_angle(mod.wearer, launched_object), get_turf(src), 10)
 	launched_object.throw_at(target_turf, range = grab_range, speed = launched_object.density ? 3 : 4, thrower = mod.wearer, spin = isitem(launched_object))
 
 /obj/item/mod/module/anomaly_locked/kinesis/proc/launch_impact(atom/movable/source, atom/hit_atom, datum/thrownthing/thrownthing)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, COMSIG_MOVABLE_IMPACT)
 	if(!(isstructure(source) || ismachinery(source) || isvehicle(source)))
 		return
@@ -286,11 +314,15 @@
 	var/phasing = FALSE
 
 /obj/item/mod/module/anomaly_locked/kinesis/admin/grab_atom(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(phasing)
 		ADD_TRAIT(grabbed_atom, TRAIT_MOVE_PHASING, REF(src))
 
 /obj/item/mod/module/anomaly_locked/kinesis/admin/clear_grab(playsound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -299,6 +331,8 @@
 		REMOVE_TRAIT(previous_grab, TRAIT_MOVE_PHASING, REF(src))
 
 /obj/item/mod/module/anomaly_locked/kinesis/admin/can_grab(atom/target)
+	procstart = null
+	src.procstart = null
 	if(mod.wearer == target)
 		return FALSE
 	if(!ismovable(target))
@@ -309,6 +343,8 @@
 	return TRUE
 
 /obj/item/mod/module/anomaly_locked/kinesis/admin/range_check(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!isturf(mod.wearer.loc))
 		return FALSE
 	if(ismovable(target) && !isturf(target.loc))
@@ -318,13 +354,19 @@
 	return TRUE
 
 /obj/item/mod/module/anomaly_locked/kinesis/admin/on_setanchored(atom/movable/grabbed_atom, anchorvalue)
+	procstart = null
+	src.procstart = null
 	return //thog dont care
 
 /obj/item/mod/module/anomaly_locked/kinesis/admin/get_configuration()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["phasing"] = add_ui_configuration("Phasing", "bool", phasing)
 
 /obj/item/mod/module/anomaly_locked/kinesis/admin/configure_edit(key, value)
+	procstart = null
+	src.procstart = null
 	switch(key)
 		if("phasing")
 			phasing = value

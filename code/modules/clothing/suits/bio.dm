@@ -15,6 +15,8 @@
 	var/dirt_state = "bio_dirt"
 
 /obj/item/clothing/head/bio_hood/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (dirt_state)
 		AddComponent(/datum/component/clothing_dirt, dirt_state)
@@ -45,6 +47,8 @@
 	resistance_flags = ACID_PROOF
 
 /obj/item/clothing/suit/bio_suit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, 6)
 
@@ -97,6 +101,8 @@
 	acid = 100
 
 /obj/item/clothing/suit/bio_suit/security/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += GLOB.security_vest_allowed
 
@@ -108,6 +114,8 @@
 	icon_state = "bio_janitor"
 
 /obj/item/clothing/suit/bio_suit/janitor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += list(/obj/item/storage/bag/trash, /obj/item/reagent_containers/spray)
 
@@ -126,6 +134,8 @@
 	icon_state = "bio_cmo"
 
 /obj/item/clothing/suit/bio_suit/cmo/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += list(/obj/item/melee/baton/telescopic)
 
@@ -139,5 +149,7 @@
 	equip_delay_other = 2 SECONDS
 
 /obj/item/clothing/suit/bio_suit/plaguedoctorsuit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += list(/obj/item/book/bible, /obj/item/nullrod, /obj/item/cane)

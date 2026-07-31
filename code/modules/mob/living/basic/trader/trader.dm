@@ -42,6 +42,8 @@
 
 
 /mob/living/basic/trader/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	apply_dynamic_human_appearance(src, species_path = species_path, mob_spawn_path = spawner_path, r_hand = held_weapon_visual)
 
@@ -59,6 +61,8 @@
 	ai_controller.set_blackboard_key(BB_SETUP_SHOP, setup_shop)
 
 /mob/living/basic/trader/get_unconscious_appearance()
+	procstart = null
+	src.procstart = null
 	return get_generic_humanoid_static_appearance()
 
 /mob/living/basic/trader/mrbones

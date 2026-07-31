@@ -12,9 +12,13 @@
 	light_color = COLOR_PURPLE
 
 /obj/item/gun/energy/laser/musket/add_bayonet_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bayonet_attachable, offset_x = 22, offset_y = 11)
 
 /obj/item/gun/energy/laser/musket/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/crank_recharge, \
@@ -27,6 +31,8 @@
 	)
 
 /obj/item/gun/energy/laser/musket/update_icon_state()
+	procstart = null
+	src.procstart = null
 	inhand_icon_state = "[initial(inhand_icon_state)][(get_charge_ratio() == 4 ? "charged" : "")]"
 	return ..()
 
@@ -63,6 +69,8 @@
 	)
 
 /obj/item/gun/energy/disabler/smoothbore/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/crank_recharge, \
@@ -75,6 +83,8 @@
 	)
 
 /obj/item/gun/energy/disabler/smoothbore/add_seclight_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/seclite_attachable, \
 		light_overlay_icon = 'icons/obj/weapons/guns/flashlights.dmi', \
 		light_overlay = "flight", \
@@ -115,9 +125,13 @@
 	dual_wield_spread = 5 //as intended by the coders
 
 /obj/item/gun/energy/laser/thermal/add_bayonet_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bayonet_attachable, offset_x = 19, offset_y = 13)
 
 /obj/item/gun/energy/laser/thermal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_CONTENTS)
 	AddComponent( \
@@ -131,6 +145,8 @@
 	)
 
 /obj/item/gun/energy/laser/thermal/add_seclight_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/seclite_attachable, \
 		light_overlay_icon = 'icons/obj/weapons/guns/flashlights.dmi', \
 		light_overlay = "flight", \
@@ -175,6 +191,8 @@
 	)
 
 /obj/item/gun/energy/laser/musket/repeater/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/crank_recharge, \
@@ -187,6 +205,8 @@
 	AddComponent(/datum/component/automatic_fire, 0.5 SECONDS)
 
 /obj/item/gun/energy/laser/musket/repeater/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	return
 
 // The Deep Lore //
@@ -194,6 +214,8 @@
 // Laser Musket
 
 /obj/item/gun/energy/laser/musket/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/examine_lore, \
 		lore_hint = span_notice("You can [EXAMINE_HINT("think carefully")] to learn a little more about [src]."), \
 		lore = "The first examples of laser muskets emerged somewhat recently, even though improvised firearms have had \
@@ -212,6 +234,8 @@
 // Thermal Pistols
 
 /obj/item/gun/energy/laser/thermal/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/examine_lore, \
 		lore_hint = span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [src]."), \
 		lore = "A weapon with no name, more a pattern of design. Examples of thermal pistols vary heavily based on the \

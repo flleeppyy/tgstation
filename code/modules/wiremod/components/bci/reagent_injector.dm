@@ -19,15 +19,21 @@
 	var/obj/item/shell_item
 
 /obj/item/circuit_component/reagent_injector/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(15, OPENCONTAINER) //This is mostly used in the case of the shell still having reagents in it when the component is removed.
 
 /obj/item/circuit_component/reagent_injector/populate_ports()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	inject = add_input_port("Inject", PORT_TYPE_SIGNAL, trigger = PROC_REF(trigger_inject))
 	injected = add_output_port("Injected", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/reagent_injector/proc/get_mob()
+	procstart = null
+	src.procstart = null
 	if(istype(shell_item, /obj/item/organ/cyberimp/bci))
 		var/obj/item/organ/cyberimp/bci/shell_bci = shell_item
 		return shell_bci.owner
@@ -36,6 +42,8 @@
 		return shell_implant.imp_in
 
 /obj/item/circuit_component/reagent_injector/proc/trigger_inject()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	var/mob/living/mob_to_inject = get_mob()
 	if(!istype(mob_to_inject))
@@ -51,6 +59,8 @@
 		log_combat(mob_to_inject, mob_to_inject, "injected", shell_item, "which had [contained]")
 
 /obj/item/circuit_component/reagent_injector/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_type_in_list(shell, required_shells))
 		shell_item = shell
@@ -59,6 +69,8 @@
 			reagents.trans_to(shell_item, reagents.total_volume)
 
 /obj/item/circuit_component/reagent_injector/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(shell_item?.reagents)
 		if(shell_item.reagents.total_volume)

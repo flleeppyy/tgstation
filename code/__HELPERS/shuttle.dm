@@ -20,10 +20,14 @@ GLOBAL_LIST_EMPTY(shuttle_frames_by_turf)
 	var/list/shuttle_covered_turfs = list()
 
 /datum/shuttle_frame/New(list/initial_turfs)
+	procstart = null
+	src.procstart = null
 	if(initial_turfs)
 		add_turfs(initial_turfs)
 
 /datum/shuttle_frame/proc/start_tracking_turf_for_shuttles(turf/to_track, dir)
+	procstart = null
+	src.procstart = null
 	if(!shuttle_tracking_turfs[to_track])
 		var/obj/docking_port/mobile/custom/shuttle = SSshuttle.get_containing_shuttle(to_track)
 		if(istype(shuttle))
@@ -35,6 +39,8 @@ GLOBAL_LIST_EMPTY(shuttle_frames_by_turf)
 	shuttle_tracking_turfs[to_track] |= dir
 
 /datum/shuttle_frame/proc/stop_tracking_turf_for_shuttles(turf/to_stop_tracking)
+	procstart = null
+	src.procstart = null
 	for(var/obj/docking_port/mobile/custom/shuttle as anything in adjacent_shuttles)
 		var/list/turfs_tracking_shuttle = adjacent_shuttles[shuttle]
 		if(turfs_tracking_shuttle[to_stop_tracking])
@@ -45,6 +51,8 @@ GLOBAL_LIST_EMPTY(shuttle_frames_by_turf)
 	UnregisterSignal(to_stop_tracking, list(COMSIG_TURF_ON_SHUTTLE_MOVE, COMSIG_TURF_REMOVED_FROM_SHUTTLE, COMSIG_TURF_AFTER_SHUTTLE_MOVE, COMSIG_TURF_ADDED_TO_SHUTTLE))
 
 /datum/shuttle_frame/proc/shuttle_leave_react(turf/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/obj/docking_port/mobile/custom/shuttle as anything in adjacent_shuttles)
 		var/list/turfs_tracking_shuttle = adjacent_shuttles[shuttle]
@@ -55,6 +63,8 @@ GLOBAL_LIST_EMPTY(shuttle_frames_by_turf)
 			break
 
 /datum/shuttle_frame/proc/shuttle_arrive_react(turf/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/docking_port/mobile/custom/shuttle = SSshuttle.get_containing_shuttle(source)
 	if(istype(shuttle))
@@ -62,12 +72,18 @@ GLOBAL_LIST_EMPTY(shuttle_frames_by_turf)
 	adjacent_shuttles[shuttle][source] = TRUE
 
 /datum/shuttle_frame/proc/start_tracking_shuttle(obj/docking_port/mobile/custom/shuttle)
+	procstart = null
+	src.procstart = null
 	adjacent_shuttles[shuttle] = list()
 
 /datum/shuttle_frame/proc/stop_tracking_shuttle(obj/docking_port/mobile/custom/shuttle)
+	procstart = null
+	src.procstart = null
 	adjacent_shuttles -= shuttle
 
 /datum/shuttle_frame/proc/add_turf(turf/new_turf)
+	procstart = null
+	src.procstart = null
 	if(GLOB.shuttle_frames_by_turf[new_turf])
 		stack_trace("turf already assigned to shuttle frame")
 		return
@@ -86,16 +102,24 @@ GLOBAL_LIST_EMPTY(shuttle_frames_by_turf)
 		start_tracking_turf_for_shuttles(neighbor, REVERSE_DIR(dir))
 
 /datum/shuttle_frame/proc/shuttle_cover_react(turf/source)
+	procstart = null
+	src.procstart = null
 	shuttle_covered_turfs[source] = TRUE
 
 /datum/shuttle_frame/proc/shuttle_uncover_react(turf/source)
+	procstart = null
+	src.procstart = null
 	shuttle_covered_turfs -= source
 
 /datum/shuttle_frame/proc/add_turfs(list/turfs)
+	procstart = null
+	src.procstart = null
 	for(var/turf in turfs)
 		add_turf(turf)
 
 /datum/shuttle_frame/proc/remove_turf(turf/removed_turf)
+	procstart = null
+	src.procstart = null
 	if(possibly_valid_changing_turfs[removed_turf])
 		return
 	UnregisterSignal(removed_turf, list(COMSIG_TURF_ON_SHUTTLE_MOVE, COMSIG_TURF_AFTER_SHUTTLE_MOVE))
@@ -118,10 +142,14 @@ GLOBAL_LIST_EMPTY(shuttle_frames_by_turf)
 		addtimer(CALLBACK(src, PROC_REF(auto_propagate_turf_removal)), 0, TIMER_UNIQUE | TIMER_DELETE_ME)
 
 /datum/shuttle_frame/proc/remove_turfs(list/turfs)
+	procstart = null
+	src.procstart = null
 	for(var/turf in turfs)
 		remove_turf(turf)
 
 /datum/shuttle_frame/proc/auto_propagate_turf_removal()
+	procstart = null
+	src.procstart = null
 	var/list/islands = list()
 	var/list/island_queues = list()
 	for(var/deferred_update_turf in deferred_update_turfs)
@@ -179,6 +207,8 @@ GLOBAL_LIST_EMPTY(shuttle_frames_by_turf)
 		new /datum/shuttle_frame(other_island)
 
 /proc/assign_shuttle_construction_turf_to_frame(turf/new_turf)
+	procstart = null
+	src.procstart = null
 	var/list/adjacent_frames = list()
 	for(var/dir in GLOB.cardinals)
 		var/turf/neighbor = get_step(new_turf, dir)
@@ -205,6 +235,8 @@ GLOBAL_LIST_EMPTY(shuttle_frames_by_turf)
 /// Helper proc that tests to ensure all whiteship templates can spawn at their docking port, and logs their sizes
 /// This should be a unit test, but too much of our other code breaks during shuttle movement, so not yet, not yet.
 /proc/test_whiteship_sizes()
+	procstart = null
+	src.procstart = null
 	var/obj/docking_port/stationary/port_type = /obj/docking_port/stationary/picked/whiteship
 	var/datum/turf_reservation/docking_yard = SSmapping.request_turf_block_reservation(
 		initial(port_type.width),
@@ -256,6 +288,8 @@ GLOBAL_LIST_EMPTY(shuttle_frames_by_turf)
 		Max Combinded Height [width + dwidth]")
 
 /proc/custom_shuttle_room_check(obj/docking_port/mobile/custom/shuttle, list/neighboring_areas = list(), turf/check_turf)
+	procstart = null
+	src.procstart = null
 	if(SSshuttle.get_containing_shuttle(check_turf) != shuttle)
 		return EXTRA_ROOM_CHECK_SKIP
 	var/area/check_area = check_turf.loc
@@ -275,6 +309,8 @@ GLOBAL_LIST_EMPTY(shuttle_frames_by_turf)
 		return EXTRA_ROOM_CHECK_SKIP
 
 /proc/shuttle_build_check(turf/origin, list/turfs, list/areas)
+	procstart = null
+	src.procstart = null
 	var/z = origin.z
 	var/using_prepassed_turfs = !!length(turfs)
 	if(using_prepassed_turfs && !(turfs[origin]))
@@ -294,6 +330,8 @@ GLOBAL_LIST_EMPTY(shuttle_frames_by_turf)
 	. |= shuttle_area_check(turfs.Copy(), areas, z)
 
 /proc/shuttle_expand_check(turf/origin, obj/docking_port/mobile/shuttle, list/turfs, list/areas)
+	procstart = null
+	src.procstart = null
 	var/z = origin.z
 	var/using_prepassed_turfs = !!length(turfs)
 	if(using_prepassed_turfs && !(turfs[origin]))
@@ -321,6 +359,8 @@ GLOBAL_LIST_EMPTY(shuttle_frames_by_turf)
  * 3. If the region contains the APC of a custom area, it contains the entire area
  */
 /proc/shuttle_area_check(list/turfs, list/areas, z)
+	procstart = null
+	src.procstart = null
 	for(var/area/custom_area as anything in GLOB.custom_areas)
 		var/list/area_turfs = custom_area.get_turfs_by_zlevel(z)
 		var/turf_count = length(area_turfs)
@@ -351,6 +391,8 @@ GLOBAL_LIST_EMPTY(shuttle_frames_by_turf)
 		turfs -= area_turfs
 
 /proc/convert_areas_to_shuttle_areas(list/turfs, list/in_areas, list/out_areas, list/underlying_areas, area_type = /area/shuttle/custom)
+	procstart = null
+	src.procstart = null
 	for(var/area/area as anything in in_areas)
 		var/area/new_area = new area_type()
 		new_area.setup(area.name)
@@ -370,6 +412,8 @@ GLOBAL_LIST_EMPTY(shuttle_frames_by_turf)
 			qdel(area)
 
 /proc/create_shuttle(mob/user, turf/origin, list/turfs, list/areas, shuttle_dir, port_dir = NORTH, area_type = /area/shuttle/custom, docking_port_type = /obj/docking_port/mobile/custom, obj/docking_port/stationary/dock_at, name, id, replace, custom = TRUE, force)
+	procstart = null
+	src.procstart = null
 	if(!ispath(docking_port_type, /obj/docking_port/mobile))
 		CRASH("docking_port_type must be /obj/docking_port/mobile or a subpath")
 	if(!ispath(area_type, /area/shuttle))
@@ -441,6 +485,8 @@ GLOBAL_LIST_EMPTY(shuttle_frames_by_turf)
 	return mobile_port
 
 /proc/expand_shuttle(mob/user, obj/docking_port/mobile/shuttle, list/turfs, list/areas)
+	procstart = null
+	src.procstart = null
 	var/list/default_area_turfs = turfs.Copy()
 	// Convert each custom area into a shuttle area, then remove the affected turfs from the list of turfs to add to the default area
 	var/list/shuttle_areas = list()
@@ -500,6 +546,8 @@ GLOBAL_LIST_EMPTY(shuttle_frames_by_turf)
 	log_shuttle("[key_name(user)] expanded [shuttle] at [get_area(user)].")
 
 /proc/clear_empty_shuttle_turfs(obj/docking_port/mobile/shuttle)
+	procstart = null
+	src.procstart = null
 	var/shuttle_z = shuttle.z
 	var/bounds_need_recalculation
 	var/docking_port_needs_relocated

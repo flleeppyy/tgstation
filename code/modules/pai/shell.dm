@@ -1,19 +1,27 @@
 /mob/living/silicon/pai/mob_try_pickup(mob/living/user, instant=FALSE)
+	procstart = null
+	src.procstart = null
 	if(!possible_chassis[chassis])
 		to_chat(user, span_warning("[src]'s current form isn't able to be carried!"))
 		return FALSE
 	return ..()
 
 /mob/living/silicon/pai/start_pulling(atom/movable/thing, state, force = move_force, supress_message = FALSE)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/silicon/pai/update_resting()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_ICON_STATE)
 	if(loc != card)
 		visible_message(span_notice("[src] [resting? "lays down for a moment..." : "perks up from the ground."]"))
 
 /mob/living/silicon/pai/wabbajack(what_to_randomize, change_flags = WABBAJACK)
+	procstart = null
+	src.procstart = null
 	if(length(possible_chassis) < 2)
 		return FALSE
 	var/holochassis = pick(possible_chassis - chassis)
@@ -30,6 +38,8 @@
  * 	FALSE otherwise.
  */
 /mob/living/silicon/pai/proc/check_menu(atom/anchor)
+	procstart = null
+	src.procstart = null
 	if(incapacitated)
 		return FALSE
 	if(get_turf(src) != get_turf(anchor))
@@ -46,6 +56,8 @@
  * 	FALSE otherwise.
  */
 /mob/living/silicon/pai/proc/choose_chassis()
+	procstart = null
+	src.procstart = null
 	var/list/skins = list()
 	for(var/holochassis_option in possible_chassis)
 		var/image/item_image = image(icon = src.icon, icon_state = holochassis_option)
@@ -69,6 +81,8 @@
  * 	FALSE otherwise.
  */
 /mob/living/silicon/pai/proc/fold_in(force = FALSE)
+	procstart = null
+	src.procstart = null
 	holochassis_ready = FALSE
 	if(!force)
 		addtimer(VARSET_CALLBACK(src, holochassis_ready, TRUE), HOLOCHASSIS_COOLDOWN)
@@ -105,6 +119,8 @@
  * 	FALSE otherwise.
  */
 /mob/living/silicon/pai/proc/fold_out(force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(holochassis_health < 0)
 		balloon_alert(src, "emitter repair incomplete")
 		return FALSE
@@ -140,6 +156,8 @@
  * @returns {boolean} - TRUE if the skin was successfully set. FALSE otherwise.
  */
 /mob/living/silicon/pai/proc/set_holochassis(choice)
+	procstart = null
+	src.procstart = null
 	if(!choice)
 		return FALSE
 	chassis = choice
@@ -152,5 +170,7 @@
  * @returns {boolean} - TRUE if the light was toggled.
  */
 /mob/living/silicon/pai/proc/toggle_integrated_light()
+	procstart = null
+	src.procstart = null
 	set_light_on(!light_on)
 	return TRUE

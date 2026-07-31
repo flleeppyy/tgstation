@@ -14,6 +14,8 @@
 	disabled_by_fire = FALSE
 
 /datum/action/changeling/headcrab/can_be_used_by(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(user, TRAIT_TEMPORARY_BODY))
 		return FALSE
 	if(isanimal_or_basicmob(user) && !istype(user, /mob/living/basic/headslug) && !isconstruct(user) && !(user.mob_biotypes & MOB_SPIRIT))
@@ -21,6 +23,8 @@
 	return ..()
 
 /datum/action/changeling/headcrab/sting_action(mob/living/user)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	var/confirm = tgui_alert(user, "Are we sure we wish to destroy our body and create a headslug?", "Last Resort", list("Yes", "No"))
 	if(active || confirm != "Yes")
@@ -36,6 +40,8 @@
 	addtimer(CALLBACK(src, PROC_REF(gibbing), user), 1.1 SECONDS)
 
 /datum/action/changeling/headcrab/proc/gibbing(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(user))
 		active = FALSE
 		return
@@ -53,6 +59,8 @@
 
 /// Creates a light explosion, blinds and confuses mobs in range
 /datum/action/changeling/headcrab/proc/gore_explosion(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/list/user_DNA = user.get_blood_dna_list()
 	user.visible_message(span_boldwarning("[user]'s body ruptures in a violent explosion of biomass!"))
 	playsound(user, 'sound/effects/goresplat.ogg', 100, TRUE) //yuck!!
@@ -87,6 +95,8 @@
 
 /// Creates the headrab to occupy
 /datum/action/changeling/headcrab/proc/spawn_headcrab(datum/mind/stored_mind, turf/spawn_location, list/organs)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/headslug/crab = new(spawn_location)
 	for(var/obj/item/organ/I in organs)
 		I.forceMove(crab)
@@ -98,6 +108,8 @@
 
 /// Ruptures nearby walls using the torn_wall component. Also it destroys objects with density.
 /datum/action/changeling/headcrab/proc/escaping_prison(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_boldwarning("[user]'s expanding form begins crushing the surrounding obstacles!"))
 	var/list/walls_to_destroy = list()
 
@@ -121,6 +133,8 @@
 
 /// Completes the destruction of the walls after a 1-second delay for more drama
 /datum/action/changeling/headcrab/proc/finalize_destruction(list/affected_walls, mob/living/user, atom/user_prev_loc)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(user) || (user.loc != user_prev_loc))
 		active = FALSE
 		return
@@ -130,6 +144,8 @@
 		wall.AddComponent(/datum/component/torn_wall)
 
 /datum/action/changeling/headcrab/proc/is_walled(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/turf/ling_turf = get_turf(user)
 	if(!ling_turf)
 		return FALSE

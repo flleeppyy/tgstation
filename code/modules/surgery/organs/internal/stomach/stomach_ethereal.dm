@@ -9,25 +9,35 @@
 	var/drain_time = 0
 
 /obj/item/organ/stomach/ethereal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cell = new /obj/item/stock_parts/power_store/cell/ethereal(src)
 
 /obj/item/organ/stomach/ethereal/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(cell)
 	return ..()
 
 /obj/item/organ/stomach/ethereal/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	adjust_charge(-ETHEREAL_DISCHARGE_RATE * seconds_per_tick)
 	handle_charge(owner, seconds_per_tick)
 
 /obj/item/organ/stomach/ethereal/on_mob_insert(mob/living/carbon/stomach_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(stomach_owner, COMSIG_PROCESS_BORGCHARGER_OCCUPANT, PROC_REF(charge))
 	RegisterSignal(stomach_owner, COMSIG_LIVING_ELECTROCUTE_ACT, PROC_REF(on_electrocute))
 	RegisterSignal(stomach_owner, COMSIG_ATOM_TOOL_ACT(TOOL_MULTITOOL), PROC_REF(on_multitool_act))
 
 /obj/item/organ/stomach/ethereal/on_mob_remove(mob/living/carbon/stomach_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(stomach_owner, COMSIG_PROCESS_BORGCHARGER_OCCUPANT)
 	UnregisterSignal(stomach_owner, COMSIG_LIVING_ELECTROCUTE_ACT)
@@ -37,14 +47,20 @@
 	stomach_owner.clear_alert(ALERT_ETHEREAL_OVERCHARGE)
 
 /obj/item/organ/stomach/ethereal/handle_hunger_slowdown(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	human.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/hunger, multiplicative_slowdown = (1.5 * (1 - cell.charge() / 100)))
 
 /obj/item/organ/stomach/ethereal/proc/charge(datum/source, datum/callback/charge_cell, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	charge_cell.Invoke(cell, seconds_per_tick / 3.5) // Ethereals don't have NT designed charging ports, so they charge slower.
 
 /obj/item/organ/stomach/ethereal/proc/on_electrocute(datum/source, shock_damage, shock_source, siemens_coeff = 1, flags = NONE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(flags & SHOCK_ILLUSION)
 		return
@@ -52,11 +68,15 @@
 	to_chat(owner, span_notice("You absorb some of the shock into your body!"))
 
 /obj/item/organ/stomach/ethereal/proc/on_multitool_act(atom/source, mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return multitool_act(user, tool)
 
 /obj/item/organ/stomach/ethereal/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Intentionally formatted in the exact same way as multitooling a cable for comedic effect.
 	// It's as if the multitool is mistaking the ethereal/biological battery for a cable.
@@ -75,10 +95,14 @@
 * Returns: The amount of energy that actually got changed in joules.
 **/
 /obj/item/organ/stomach/ethereal/proc/adjust_charge(amount)
+	procstart = null
+	src.procstart = null
 	var/amount_changed = clamp(amount, ETHEREAL_CHARGE_NONE - cell.charge(), ETHEREAL_CHARGE_DANGEROUS - cell.charge())
 	return cell.change(amount_changed)
 
 /obj/item/organ/stomach/ethereal/proc/handle_charge(mob/living/carbon/carbon, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	switch(cell.charge())
 		if(-INFINITY to ETHEREAL_CHARGE_NONE)
 			carbon.add_mood_event("charge", /datum/mood_event/decharged)
@@ -111,6 +135,8 @@
 			carbon.clear_alert(ALERT_ETHEREAL_OVERCHARGE)
 
 /obj/item/organ/stomach/ethereal/proc/discharge_process(mob/living/carbon/carbon)
+	procstart = null
+	src.procstart = null
 	to_chat(carbon, span_warning("You begin to lose control over your charge!"))
 	carbon.visible_message(span_danger("[carbon] begins to spark violently!"))
 

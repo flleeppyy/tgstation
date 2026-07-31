@@ -13,6 +13,8 @@
 	var/block_usage = FALSE
 
 /datum/ai_controller/vending_machine/TryPossessPawn(atom/new_pawn)
+	procstart = null
+	src.procstart = null
 	if(!istype(new_pawn, /obj/machinery/vending))
 		return AI_CONTROLLER_INCOMPATIBLE
 	var/obj/machinery/vending/vendor_pawn = new_pawn
@@ -24,6 +26,8 @@
 	return ..() //Run parent at end
 
 /datum/ai_controller/vending_machine/UnpossessPawn(destroy)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/vending/vendor_pawn = pawn
 	vendor_pawn.tiltable = TRUE
 	REMOVE_TRAIT(vendor_pawn, TRAIT_WADDLING, REF(src))
@@ -33,6 +37,8 @@
 	return ..() //Run parent at end
 
 /datum/ai_controller/vending_machine/proc/deny_vending_interact(obj/machinery/vending/vending_machine, mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!block_usage)
 		return NONE

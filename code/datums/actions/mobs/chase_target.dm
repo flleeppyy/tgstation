@@ -8,6 +8,8 @@
 	var/size = 1
 
 /datum/action/cooldown/mob_cooldown/chase_target/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	disable_cooldown_actions()
 	charge(target_atom)
 	StartCooldown()
@@ -16,6 +18,8 @@
 
 /// Causes the mob to gain speed and charge at a target
 /datum/action/cooldown/mob_cooldown/chase_target/proc/charge(atom/target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_mob = target
 	if(istype(living_mob) && living_mob.stat == DEAD)
 		return
@@ -31,11 +35,15 @@
 
 /// This is the proc that actually does the throwing. Charge only adds a timer for this.
 /datum/action/cooldown/mob_cooldown/chase_target/proc/throw_thyself()
+	procstart = null
+	src.procstart = null
 	playsound(owner, 'sound/items/weapons/sonic_jackhammer.ogg', 50, TRUE)
 	owner.throw_at(target, 7, 1.1, owner, FALSE, FALSE, CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(playsound), owner, 'sound/effects/meteorimpact.ogg', 50 * size, TRUE, 2), INFINITY)
 
 /// Resets the charge buffs.
 /datum/action/cooldown/mob_cooldown/chase_target/proc/reset_charge()
+	procstart = null
+	src.procstart = null
 	var/mob/living/simple_animal/hostile/hostile_mob = owner
 	hostile_mob.retreat_distance = 5
 	hostile_mob.minimum_distance = 5

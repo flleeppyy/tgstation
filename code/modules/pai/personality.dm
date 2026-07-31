@@ -8,9 +8,13 @@
  */
 
 /datum/pai_candidate/proc/savefile_path(mob/user)
+	procstart = null
+	src.procstart = null
 	return "data/player_saves/[user.ckey[1]]/[user.ckey]/pai.sav"
 
 /datum/pai_candidate/proc/savefile_save(mob/user)
+	procstart = null
+	src.procstart = null
 	if(is_guest_key(user.key))
 		to_chat(usr, span_warning("You cannot save pAI information as a guest."))
 		return FALSE
@@ -28,6 +32,8 @@
 // returns FALSE if savefile did not exist
 
 /datum/pai_candidate/proc/savefile_load(mob/user, silent = TRUE)
+	procstart = null
+	src.procstart = null
 	if (is_guest_key(user.key))
 		return FALSE
 

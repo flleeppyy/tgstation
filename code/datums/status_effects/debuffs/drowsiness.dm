@@ -5,10 +5,14 @@
 	remove_on_fullheal = TRUE
 
 /datum/status_effect/drowsiness/on_creation(mob/living/new_owner, duration = 10 SECONDS)
+	procstart = null
+	src.procstart = null
 	src.duration = duration
 	return ..()
 
 /datum/status_effect/drowsiness/on_apply()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(owner, TRAIT_SLEEPIMMUNE) || !(owner.status_flags & CANUNCONSCIOUS))
 		return FALSE
 	// Do robots dream of electric sheep?
@@ -19,15 +23,21 @@
 	return TRUE
 
 /datum/status_effect/drowsiness/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_COMPONENT_CLEAN_FACE_ACT)
 
 /// Signal proc for [COMSIG_COMPONENT_CLEAN_FACE_ACT]. When we wash our face, reduce drowsiness by a bit.
 /datum/status_effect/drowsiness/proc/on_face_clean(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	remove_duration(rand(4 SECONDS, 6 SECONDS))
 
 /datum/status_effect/drowsiness/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	// You do not feel drowsy while unconscious or in stasis
 	if(IS_UNCONSCIOUS(owner) || HAS_TRAIT(owner, TRAIT_STASIS))
 		return

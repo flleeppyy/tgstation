@@ -21,6 +21,8 @@
 	var/casting_spell = FALSE
 
 /datum/component/chuunibyou/Initialize()
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 	if(!chuunibyou_invocations)
@@ -42,6 +44,8 @@
 		)
 
 /datum/component/chuunibyou/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_MOB_SPELL_PROJECTILE, PROC_REF(on_spell_projectile))
 	RegisterSignal(parent, COMSIG_MOB_PRE_INVOCATION, PROC_REF(on_pre_invocation))
@@ -50,6 +54,8 @@
 	ADD_TRAIT(parent, TRAIT_CHUUNIBYOU, REF(src))
 
 /datum/component/chuunibyou/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, list(
 		COMSIG_MOB_SPELL_PROJECTILE,
@@ -62,6 +68,8 @@
 /// signal sent when the parent tries to speak. we let speech pass if we are casting a spell so mimes still chuuni their spellcasts
 /// (this may end in the mime dying)
 /datum/component/chuunibyou/proc/on_try_speech(datum/source, message, ignore_spam, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(casting_spell && !HAS_TRAIT(src, TRAIT_MUTE))
@@ -69,6 +77,8 @@
 
 ///signal sent when the parent casts a spell that has a projectile
 /datum/component/chuunibyou/proc/on_spell_projectile(mob/living/source, datum/action/cooldown/spell/spell, atom/cast_on, obj/projectile/to_fire)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	playsound(to_fire,'sound/effects/magic/staff_change.ogg', 75, TRUE)
@@ -78,6 +88,8 @@
 
 ///signal sent before parent invokes a spell
 /datum/component/chuunibyou/proc/on_pre_invocation(mob/living/source, datum/action/cooldown/spell/spell, list/invocation_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// this makes it bypass speech checks (being a mime) until the spell is done casting
@@ -93,6 +105,8 @@
 
 ///signal sent after parent casts a spell
 /datum/component/chuunibyou/proc/on_after_spell_cast(mob/living/source, datum/action/cooldown/spell/spell, atom/cast_on)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	casting_spell = FALSE

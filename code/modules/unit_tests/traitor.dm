@@ -1,4 +1,6 @@
 /datum/unit_test/traitor/Run()
+	procstart = null
+	src.procstart = null
 	var/datum/dynamic_ruleset/roundstart/traitor/traitor_ruleset = allocate(/datum/dynamic_ruleset/roundstart/traitor)
 	var/list/possible_jobs = list()
 	var/list/restricted_roles = traitor_ruleset.get_blacklisted_roles()

@@ -25,4 +25,6 @@
 	tastes = list("cucumber" = 1)
 
 /obj/item/food/grown/cucumber/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/cucumberjuice

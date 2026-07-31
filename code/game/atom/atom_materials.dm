@@ -11,6 +11,8 @@
 
 /// Sets the custom materials for an atom. This is what you want to call, since most of the ones below are mainly internal.
 /atom/proc/set_custom_materials(list/materials, multiplier = 1)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	// Easy way to know no changes are being made.
 	if((custom_materials == materials) && multiplier == 1)
@@ -30,6 +32,8 @@
  * It is a separate proc because Initialize calls may make use of this since they should've no prior materials to remove.
  */
 /atom/proc/initialize_materials(list/materials, multiplier = 1)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if(multiplier != 1)
 		materials = materials.Copy() //avoid editing the original list since it may be cached somewhere (likely in the materials subsystem).
@@ -52,6 +56,8 @@
 
 ///proc responsible for applying material effects when setting materials.
 /atom/proc/apply_material_effects(list/materials)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(material_flags & MATERIAL_EFFECTS)
@@ -62,6 +68,8 @@
 
 /// Proc responsible for removing material effects when setting materials.
 /atom/proc/remove_material_effects(replace_mats = TRUE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	//Only runs if custom materials existed at first and affected src.
 	if(material_flags & MATERIAL_EFFECTS)
@@ -72,6 +80,8 @@
 		custom_materials = null
 
 /atom/proc/get_material_effects_list(list/materials)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	PRIVATE_PROC(TRUE)
 	var/list/material_effects = list()
@@ -91,6 +101,8 @@
 
 /// Add MATERIAL_LIST_SLOTS entries to material effects
 /atom/proc/configure_material_slots(list/datum/material/material_effects)
+	procstart = null
+	src.procstart = null
 	for (var/slot_index in 1 to length(material_slots))
 		var/slot_type = material_slots[slot_index]
 		var/datum/material/material = null
@@ -111,6 +123,8 @@
 		effects_slots[slot_type] = TRUE
 
 /atom/proc/set_material_slot(slot_type, new_material)
+	procstart = null
+	src.procstart = null
 	if (material_slots[slot_type])
 		var/datum/material_slot/slot = SSmaterials.material_slots[slot_type]
 		var/datum/material/material = SSmaterials.get_material(material_slots[slot_type])
@@ -145,6 +159,8 @@
 	slot.on_applied(src, material, custom_materials[material] * (slot_sum > 0 ? slot.material_amount / slot_sum : 1), get_material_multiplier(material, custom_materials, custom_materials.Find(material)))
 
 /atom/proc/set_material_slots(list/new_slots)
+	procstart = null
+	src.procstart = null
 	if (length(material_slots))
 		for (var/slot_type, material_id in material_slots)
 			var/datum/material_slot/slot = SSmaterials.material_slots[slot_type]
@@ -188,6 +204,8 @@
  * be 1 if below 1. Just don't return negative values.
  */
 /atom/proc/get_material_multiplier(datum/material/custom_material, list/materials, index)
+	procstart = null
+	src.procstart = null
 	if (!length(material_slots))
 		return 1 / length(materials)
 	// Slots usually account for multipliers in their own behaviors, so unless overriden it should just be 1
@@ -198,6 +216,8 @@
 
 ///Called by apply_material_effects(). It ACTUALLY handles applying effects common to all atoms (depending on material flags)
 /atom/proc/finalize_material_effects(list/materials)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	var/total_alpha = 0
 	var/list/colors = list()
@@ -278,6 +298,8 @@
  * that will later be applied to or removed from the atom
  */
 /atom/proc/gather_material_color(datum/material/material, list/colors, amount, multicolor = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(!material.color) //the material has no color. Nevermind
 		return
@@ -299,6 +321,8 @@
 
 /// Manages mixing, adding or removing the material colors from the atom in absence of the MATERIAL_GREYSCALE flag.
 /atom/proc/mix_material_colors(list/colors, remove = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	var/color_len = length(colors)
 	if(!color_len)
@@ -319,6 +343,8 @@
 
 ///Returns the prefixes to attach to the atom when setting materials, from a list argument.
 /atom/proc/get_material_prefixes(list/materials)
+	procstart = null
+	src.procstart = null
 	var/list/mat_names = list()
 	for(var/datum/material/material as anything in materials)
 		mat_names |= material.name
@@ -326,6 +352,8 @@
 
 ///Returns a string like "plasma, paper and glass" from a list of materials
 /atom/proc/get_material_english_list(list/materials)
+	procstart = null
+	src.procstart = null
 	var/list/mat_names = list()
 	for(var/datum/material/material as anything in materials)
 		mat_names += material.name
@@ -333,6 +361,8 @@
 
 ///Searches for a subtype of config_type that is to be used in its place for specific materials (like shimmering gold for cleric maces)
 /atom/proc/get_material_greyscale_config(mat_type, config_type)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if(!config_type)
 		return
@@ -342,6 +372,8 @@
 
 ///Apply material effects of a single material.
 /atom/proc/apply_single_mat_effect(datum/material/material, amount, multiplier)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_ATOM_SINGLE_MATERIAL_EFFECT_APPLY, material, amount, multiplier)
 
@@ -357,6 +389,8 @@
 
 ///A proc for material effects that only the main material (which the atom's primarly composed of) should apply.
 /atom/proc/apply_main_material_effects(datum/material/main_material, amount, multiplier)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(main_material.texture_layer_icon_state && (material_flags & MATERIAL_COLOR))
@@ -367,6 +401,8 @@
 
 ///Called by remove_material_effects(). It ACTUALLY handles removing effects common to all atoms (depending on material flags)
 /atom/proc/finalize_remove_material_effects(list/materials)
+	procstart = null
+	src.procstart = null
 	var/list/colors = list()
 	var/datum/material/main_material = get_master_material()
 	var/mat_length = length(materials)
@@ -432,6 +468,8 @@
 
 ///Remove material effects of a single material.
 /atom/proc/remove_single_mat_effect(datum/material/material, amount, multiplier)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_ATOM_SINGLE_MATERIAL_EFFECT_REMOVE, material, amount, multiplier)
 
@@ -446,6 +484,8 @@
 
 ///A proc to remove the material effects previously applied by the (ex-)main material
 /atom/proc/remove_main_material_effects(datum/material/main_material, amount, multipier)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(main_material.texture_layer_icon_state)
 		remove_filter("material_texture_[main_material.name]")
@@ -454,6 +494,8 @@
 
 ///Remove the old effects, change the material_modifier variable, and then reapply all the effects.
 /atom/proc/change_material_modifier(new_value)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	remove_material_effects()
 	material_modifier = new_value
@@ -461,6 +503,8 @@
 
 ///For enabling and disabling material effects from an item (mainly VV)
 /atom/proc/toggle_material_flags(new_flags)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if(material_flags & MATERIAL_EFFECTS && !(new_flags & MATERIAL_EFFECTS))
 		remove_material_effects()
@@ -470,6 +514,8 @@
 
 /// Applies changes to integrity and armor from a material
 /atom/proc/change_material_integrity(datum/material/material, amount, multiplier, removing = FALSE)
+	procstart = null
+	src.procstart = null
 	var/base_modifier = material.get_property(MATERIAL_INTEGRITY)
 	var/integrity_mod = GET_MATERIAL_MODIFIER(base_modifier, multiplier)
 	var/integrity_change = removing ? floor(max_integrity / integrity_mod) : ceil(max_integrity * integrity_mod)
@@ -484,20 +530,28 @@
 
 /// Tries to fetch a material matching a specific slot
 /atom/proc/get_material_from_slot(slot_type)
+	procstart = null
+	src.procstart = null
 	var/mat_type = material_slots?[slot_type]
 	if (mat_type)
 		return SSmaterials.get_material(mat_type)
 
 /// Fetches a copy of all material slots.
 /atom/proc/get_material_slots()
+	procstart = null
+	src.procstart = null
 	return material_slots?.Copy()
 
 /// Returns TRUE if this atom utilizes material slots
 /atom/proc/has_material_slots()
+	procstart = null
+	src.procstart = null
 	return !!length(material_slots)
 
 /// Lists all slots in which a material is present
 /atom/proc/get_slots_of_material(datum/material/material)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for (var/slot_type, material_id in material_slots)
 		if (material_id == istype(material) ? material.id : material)
@@ -516,6 +570,8 @@
  * - flags: A set of flags determining how exactly the materials are broken down.
  */
 /atom/proc/get_material_composition(flags)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	var/list/cached_materials = custom_materials
@@ -533,6 +589,8 @@
  * - mat_amount: The minimum required amount of material
  */
 /atom/proc/has_material_type(datum/material/required_material, mat_amount = 0)
+	procstart = null
+	src.procstart = null
 	var/list/cached_materials = custom_materials
 	if(!length(cached_materials))
 		return null
@@ -550,10 +608,14 @@
 
 /// Gets the most common material in the object.
 /atom/proc/get_master_material()
+	procstart = null
+	src.procstart = null
 	return length(custom_materials) ? SSmaterials.get_material(custom_materials[1]) : null //materials are sorted by amount, the first is always the main one
 
 /// Gets the total amount of materials in this atom.
 /atom/proc/get_custom_material_amount()
+	procstart = null
+	src.procstart = null
 	return isnull(custom_materials) ? 0 : counterlist_sum(custom_materials)
 
 /**
@@ -562,6 +624,8 @@
  * Any object that has any of the traits in skip_traits will also be skipped.
  */
 /atom/proc/get_contents_custom_materials(contents_type, list/skip_traits)
+	procstart = null
+	src.procstart = null
 	var/list/contained = ispath(contents_type) ? get_all_contents_type(contents_type) : get_all_contents()
 	if(skip_traits && !islist(skip_traits))
 		skip_traits = list(skip_traits)
@@ -583,6 +647,8 @@
 
 /// A simple proc that iterates through each material that the object is made of and spawns some stacks based on their amount and associated sheet/ore type.
 /atom/proc/drop_custom_materials(multiplier = 1)
+	procstart = null
+	src.procstart = null
 	for(var/datum/material/material as anything in custom_materials)
 		var/stack_type = material.sheet_type || material.ore_type
 		if(!stack_type)
@@ -605,6 +671,8 @@
 
 /// Compares the materials of two items to see if they're roughly the same. Primarily used in crafting and processing unit tests.
 /atom/proc/compare_materials(atom/target)
+	procstart = null
+	src.procstart = null
 	if(custom_materials == target.custom_materials) // SSmaterials caches the combinations so we don't have to run more complex checks
 		return TRUE
 	if(length(custom_materials) != length(target.custom_materials))
@@ -626,6 +694,8 @@
  * * as_sheets: returns the text in terms of sheets, e.g "[list(/datum/material/titanium = SHEET_MATERIAL_AMOUNT * 2)]"
  */
 /atom/proc/transcribe_materials_list(list/mats_list, as_sheets = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!mats_list)
 		if(!custom_materials)
 			return "null"
@@ -643,6 +713,8 @@
 	return text
 
 /proc/transcribe_mat_value_as_sheet(value)
+	procstart = null
+	src.procstart = null
 	var/amount = sheets_from_value(value)
 	switch(amount)
 		if(0 to 0.09)
@@ -661,6 +733,8 @@
 /// Convert a raw material amount into
 /// "SHEET_MATERIAL_AMOUNT", or "* N", with rounding rules.
 /proc/sheets_from_value(value, sheet_amount = SHEET_MATERIAL_AMOUNT)
+	procstart = null
+	src.procstart = null
 	if(!value)
 		return 0
 

@@ -7,6 +7,8 @@
 	max_slots = 6
 
 /datum/storage/donut_box/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/food/donut)
 
@@ -17,6 +19,8 @@
 	screen_max_columns = 6
 
 /datum/storage/egg_box/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/food/egg,
@@ -32,6 +36,8 @@
 	max_slots = 5
 
 /datum/storage/candle_box/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/flashlight/flare/candle)
 
@@ -43,6 +49,8 @@
 	remove_rustle_sound = SFX_CIG_PACK_RUSTLE
 
 /datum/storage/cigarette_box/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/cigarette,
@@ -55,6 +63,8 @@
 	screen_max_columns = 5
 
 /datum/storage/rolling_paper_pack/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/rollingpaper)
 
@@ -64,6 +74,8 @@
 	display_contents = FALSE
 
 /datum/storage/cigar_box/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/cigarette/cigar,
@@ -75,6 +87,8 @@
 	screen_max_columns = 4
 
 /datum/storage/heart_box/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/food/bonbon)
 
@@ -83,6 +97,8 @@
 	max_slots = 7
 
 /datum/storage/nugget_box/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/food/nugget,
@@ -94,6 +110,8 @@
 	max_slots = 5
 
 /datum/storage/wing_box/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/food/fried_chicken,
@@ -104,6 +122,8 @@
 	max_slots = 2
 
 /datum/storage/fry_box/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/food/fries,
@@ -118,6 +138,8 @@
 	screen_max_columns = 5
 
 /datum/storage/pickles_jar/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/food/pickle)
 
@@ -126,6 +148,8 @@
 	max_slots = 14
 
 /datum/storage/coffee_condi_display/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/reagent_containers/condiment/pack/sugar,
@@ -139,5 +163,7 @@
 	max_slots = 4
 
 /datum/storage/coffee_cart_rack/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/coffee_cartridge)

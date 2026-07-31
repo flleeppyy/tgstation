@@ -1,6 +1,8 @@
 /datum/unit_test/teleporter
 
 /datum/unit_test/teleporter/Run()
+	procstart = null
+	src.procstart = null
 	// Put down the teleporter machinery
 	var/obj/machinery/teleport/hub/hub = allocate(/obj/machinery/teleport/hub)
 	var/obj/machinery/teleport/station/station = allocate(/obj/machinery/teleport/station, locate(run_loc_floor_bottom_left.x + 1, run_loc_floor_bottom_left.y, run_loc_floor_bottom_left.z))
@@ -23,6 +25,8 @@
 /datum/unit_test/hand_teleporter
 
 /datum/unit_test/hand_teleporter/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/scientist = EASY_ALLOCATE()
 	var/obj/item/hand_tele/teleporter = EASY_ALLOCATE()
 	var/turf/turf_the_portal_will_be_on = get_step(run_loc_floor_bottom_left, EAST)

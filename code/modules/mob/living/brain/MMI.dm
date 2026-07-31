@@ -30,11 +30,15 @@
 	custom_materials = null
 
 /obj/item/mmi/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	radio = new(src) //Spawns a radio inside the MMI.
 	radio.set_broadcasting(FALSE) //researching radio mmis turned the robofabs into radios because this didnt start as 0.
 
 /obj/item/mmi/Destroy()
+	procstart = null
+	src.procstart = null
 	set_mecha(null)
 	QDEL_NULL(brainmob)
 	QDEL_NULL(brain)
@@ -43,6 +47,8 @@
 	return ..()
 
 /obj/item/mmi/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!brain)
 		icon_state = "[base_icon_state]_off"
 		return ..()
@@ -50,10 +56,14 @@
 	return ..()
 
 /obj/item/mmi/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += add_mmi_overlay()
 
 /obj/item/mmi/proc/add_mmi_overlay()
+	procstart = null
+	src.procstart = null
 	if(brainmob && brainmob.stat != DEAD)
 		. += "mmi_alive"
 		return
@@ -61,6 +71,8 @@
 		. += "mmi_dead"
 
 /obj/item/mmi/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE)
 	if(!istype(tool, /obj/item/organ/brain)) //Time to stick a brain in it --NEO
 		return NONE
@@ -128,6 +140,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/mmi/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!brainmob)
 		return ..()
 	attacking_item.attack(brainmob, user) //Oh noooeeeee
@@ -141,6 +155,8 @@
  * * new_brain - Brain to be force-inserted into the MMI. Any calling code should handle proper removal of the brain from the mob, as this proc only forceMoves.
  */
 /obj/item/mmi/proc/force_brain_into(obj/item/organ/brain/new_brain)
+	procstart = null
+	src.procstart = null
 	if(isnull(new_brain))
 		stack_trace("Proc called with null brain.")
 		return FALSE
@@ -189,6 +205,8 @@
 	return TRUE
 
 /obj/item/mmi/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!brain)
 		radio.set_on(!radio.is_on())
 		to_chat(user, span_notice("You toggle [src]'s radio system [radio.is_on() == TRUE ? "on" : "off"]."))
@@ -199,6 +217,8 @@
 		to_chat(user, span_notice("You unlock and upend [src], spilling the brain onto the floor."))
 
 /obj/item/mmi/proc/eject_brain(mob/user)
+	procstart = null
+	src.procstart = null
 	if(brainmob)
 		brainmob.container = null //Reset brainmob mmi var.
 		brainmob.forceMove(brain) //Throw mob into brain.
@@ -214,7 +234,9 @@
 	brain.organ_flags &= ~ORGAN_FROZEN
 	brain = null //No more brain in here
 
-/obj/item/mmi/proc/transfer_identity(mob/living/L) //Same deal as the regular brain proc. Used for human-->robot people.
+/obj/item/mmi/proc/transfer_identity(mob/living/L)
+	procstart = null
+	src.procstart = null //Same deal as the regular brain proc. Used for human-->robot people.
 	if(!brainmob)
 		set_brainmob(new /mob/living/brain(src))
 	brainmob.name = L.real_name
@@ -247,6 +269,8 @@
 
 /// Proc to hook behavior associated to the change in value of the [/obj/item/mmi/var/brainmob] variable.
 /obj/item/mmi/proc/set_brainmob(mob/living/brain/new_brainmob)
+	procstart = null
+	src.procstart = null
 	if(brainmob == new_brainmob)
 		return FALSE
 	. = brainmob
@@ -264,6 +288,8 @@
 
 /// Proc to hook behavior associated to the change in value of the [obj/vehicle/sealed/var/mecha] variable.
 /obj/item/mmi/proc/set_mecha(obj/vehicle/sealed/mecha/new_mecha)
+	procstart = null
+	src.procstart = null
 	if(mecha == new_mecha)
 		return FALSE
 	. = mecha
@@ -276,6 +302,8 @@
 
 
 /obj/item/mmi/proc/replacement_ai_name()
+	procstart = null
+	src.procstart = null
 	return brainmob.name
 
 GAME_VERB_SRC_DESC(/obj/item/mmi, Toggle_Listening, usr.loc, "Toggle Listening", "Toggle listening channel on or off.", "MMI")
@@ -290,6 +318,8 @@ GAME_VERB_SRC_DESC(/obj/item/mmi, Toggle_Listening, usr.loc, "Toggle Listening",
 	to_chat(brainmob, span_notice("Radio is [radio.get_listening() ? "now" : "no longer"] receiving broadcast."))
 
 /obj/item/mmi/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -306,10 +336,14 @@ GAME_VERB_SRC_DESC(/obj/item/mmi, Toggle_Listening, usr.loc, "Toggle Listening",
 		brainmob.emote("alarm")
 
 /obj/item/mmi/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(brain)
 		eject_brain()
 
 /obj/item/mmi/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(radio)
 		. += span_notice("There is a switch to toggle the radio system [radio.is_on() ? "off" : "on"].[brain ? " It is currently being covered by [brain]." : null]")
@@ -332,9 +366,13 @@ GAME_VERB_SRC_DESC(/obj/item/mmi, Toggle_Listening, usr.loc, "Toggle Listening",
 			. += span_warning("[src] indicates that the brain is completely unresponsive.")
 
 /obj/item/mmi/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	return //so that the MMI won't get a warning about not being able to move if it tries to move
 
 /obj/item/mmi/proc/brain_check(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/brain/B = brainmob
 	if(!B)
 		if(user)
@@ -372,11 +410,15 @@ GAME_VERB_SRC_DESC(/obj/item/mmi, Toggle_Listening, usr.loc, "Toggle Listening",
 		It enforces laws designed to help Syndicate agents achieve their goals upon cyborgs and AIs created with it."
 
 /obj/item/mmi/syndie/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	laws = new /datum/ai_laws/syndicate_override()
 	radio.set_on(FALSE)
 
 /obj/item/mmi/syndie/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("If used to create a cyborg, it will be unlinked from the station's AI. \
 		The lawset cannot be modified until it is synced to a module rack or an AI.")

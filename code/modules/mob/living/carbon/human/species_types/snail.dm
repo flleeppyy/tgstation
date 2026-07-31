@@ -28,23 +28,33 @@
 	)
 
 /datum/species/snail/prepare_human_for_preview(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	human.dna.features[FEATURE_MUTANT_COLOR] = COLOR_BEIGE
 	human.update_body(is_creating = TRUE)
 
 /datum/species/snail/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "Snailpeople emit a viscous, slippery ooze when crawling along the ground, which they are somewhat faster at than other species. \
 		They are almost purely made of water, making them extremely susceptible to shocks, and salt will scour them heavily."
 
 /datum/species/snail/get_species_description()
+	procstart = null
+	src.procstart = null
 	return "Snailpeople are viscous, slimy beings with a shell on their back."
 
 /datum/species/snail/get_species_lore()
+	procstart = null
+	src.procstart = null
 	return list(
 		"Normally, Snailpeople are a result of a genetic experiment gone wrong, but they have since become recognized species in their own right, \
 		similar to the Felinid.",
 	)
 
 /datum/species/snail/create_pref_unique_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
@@ -74,12 +84,16 @@
 	return to_add
 
 /datum/species/snail/on_species_gain(mob/living/carbon/new_snailperson, datum/species/old_species, pref_load, regenerate_icons)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/storage/backpack/bag = new_snailperson.get_item_by_slot(ITEM_SLOT_BACK)
 	if(!istype(bag, /obj/item/storage/backpack/snail))
 		new_snailperson.equip_to_slot_or_del(new /obj/item/storage/backpack/snail(new_snailperson), ITEM_SLOT_BACK)
 
 /datum/species/snail/on_species_loss(mob/living/carbon/former_snailperson, datum/species/new_species, pref_load)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/storage/backpack/bag = former_snailperson.get_item_by_slot(ITEM_SLOT_BACK)
 	if(istype(bag, /obj/item/storage/backpack/snail))
@@ -110,11 +124,15 @@
 	acid = 50
 
 /obj/item/storage/backpack/snail/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	emptyStorage()
 	if(!QDELETED(src))
 		qdel(src)
 
 /obj/item/storage/backpack/snail/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, INNATE_TRAIT)

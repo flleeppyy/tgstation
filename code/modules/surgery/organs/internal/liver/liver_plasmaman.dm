@@ -11,6 +11,8 @@
 	milk_burn_healing = 0
 
 /obj/item/organ/liver/bone/plasmaman/handle_chemical(mob/living/carbon/organ_owner, datum/reagent/chem, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// parent returned COMSIG_MOB_STOP_REAGENT_TICK or we are failing
 	if((. & COMSIG_MOB_STOP_REAGENT_TICK) || (organ_flags & ORGAN_FAILING))

@@ -11,10 +11,14 @@ Charged extracts:
 	icon_state = "charged"
 
 /obj/item/slimecross/charged/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(10, INJECTABLE | DRAWABLE)
 
 /obj/item/slimecross/charged/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!reagents.has_reagent(/datum/reagent/toxin/plasma, 10))
 		to_chat(user, span_warning("This extract needs to be full of plasma to activate!"))
 		return
@@ -25,6 +29,8 @@ Charged extracts:
 	do_effect(user)
 
 /obj/item/slimecross/charged/proc/do_effect(mob/user) //If, for whatever reason, you don't want to delete the extract, don't do ..()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 	return
 
@@ -33,6 +39,8 @@ Charged extracts:
 	effect_desc = "Produces a slime reviver potion, which revives dead slimes."
 
 /obj/item/slimecross/charged/grey/do_effect(mob/user)
+	procstart = null
+	src.procstart = null
 	new /obj/item/slimepotion/slime_reviver(get_turf(user))
 	user.visible_message(span_notice("[src] distills into a potion!"))
 	..()
@@ -42,6 +50,8 @@ Charged extracts:
 	effect_desc = "Instantly makes a large burst of flame for a moment."
 
 /obj/item/slimecross/charged/orange/do_effect(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/targetturf = get_turf(user)
 	for(var/turf/turf as anything in RANGE_TURFS(5,targetturf))
 		if(!locate(/obj/effect/hotspot) in turf)
@@ -53,6 +63,8 @@ Charged extracts:
 	effect_desc = "Creates a packet of omnizine."
 
 /obj/item/slimecross/charged/purple/do_effect(mob/user)
+	procstart = null
+	src.procstart = null
 	new /obj/item/slimecrossbeaker/omnizine(get_turf(user))
 	user.visible_message(span_notice("[src] sparks, and floods with a regenerative solution!"))
 	..()
@@ -62,6 +74,8 @@ Charged extracts:
 	effect_desc = "Creates a potion that neuters the mutation chance of a slime, which passes on to new generations."
 
 /obj/item/slimecross/charged/blue/do_effect(mob/user)
+	procstart = null
+	src.procstart = null
 	new /obj/item/slimepotion/slime/chargedstabilizer(get_turf(user))
 	user.visible_message(span_notice("[src] distills into a potion!"))
 	..()
@@ -71,6 +85,8 @@ Charged extracts:
 	effect_desc = "Produces a bunch of metal and plasteel."
 
 /obj/item/slimecross/charged/metal/do_effect(mob/user)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/iron(get_turf(user), 25)
 	new /obj/item/stack/sheet/plasteel(get_turf(user), 10)
 	user.visible_message(span_notice("[src] grows into a plethora of metals!"))
@@ -81,6 +97,8 @@ Charged extracts:
 	effect_desc = "Creates a hypercharged slime cell battery, which has high capacity but takes longer to recharge."
 
 /obj/item/slimecross/charged/yellow/do_effect(mob/user)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stock_parts/power_store/cell/high/slime_hypercharged(get_turf(user))
 	user.visible_message(span_notice("[src] sparks violently, and swells with electric power!"))
 	..()
@@ -90,6 +108,8 @@ Charged extracts:
 	effect_desc = "Creates several sheets of plasma."
 
 /obj/item/slimecross/charged/darkpurple/do_effect(mob/user)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/mineral/plasma(get_turf(user), 10)
 	user.visible_message(span_notice("[src] produces a large amount of plasma!"))
 	..()
@@ -99,6 +119,8 @@ Charged extracts:
 	effect_desc = "Produces a pressure proofing potion."
 
 /obj/item/slimecross/charged/darkblue/do_effect(mob/user)
+	procstart = null
+	src.procstart = null
 	new /obj/item/slimepotion/spaceproof(get_turf(user))
 	user.visible_message(span_notice("[src] distills into a potion!"))
 	..()
@@ -108,6 +130,8 @@ Charged extracts:
 	effect_desc = "Creates a slime cake and some drinks."
 
 /obj/item/slimecross/charged/silver/do_effect(mob/user)
+	procstart = null
+	src.procstart = null
 	new /obj/item/food/cake/slimecake(get_turf(user))
 	for(var/i in 1 to 10)
 		var/drink_type = get_random_drink()
@@ -120,6 +144,8 @@ Charged extracts:
 	effect_desc = "Makes a bluespace polycrystal."
 
 /obj/item/slimecross/charged/bluespace/do_effect(mob/user)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/bluespace_crystal(get_turf(user), 10)
 	user.visible_message(span_notice("[src] produces several sheets of polycrystal!"))
 	..()
@@ -129,6 +155,8 @@ Charged extracts:
 	effect_desc = "Creates a camera obscura."
 
 /obj/item/slimecross/charged/sepia/do_effect(mob/user)
+	procstart = null
+	src.procstart = null
 	new /obj/item/camera/spooky(get_turf(user))
 	user.visible_message(span_notice("[src] flickers in a strange, ethereal manner, and produces a camera!"))
 	..()
@@ -138,6 +166,8 @@ Charged extracts:
 	effect_desc = "Creates an extract enhancer, giving whatever it's used on five more uses."
 
 /obj/item/slimecross/charged/cerulean/do_effect(mob/user)
+	procstart = null
+	src.procstart = null
 	new /obj/item/slimepotion/enhancer/max(get_turf(user))
 	user.visible_message(span_notice("[src] distills into a potion!"))
 	..()
@@ -147,6 +177,8 @@ Charged extracts:
 	effect_desc = "Creates bananium. Oh no."
 
 /obj/item/slimecross/charged/pyrite/do_effect(mob/user)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/mineral/bananium(get_turf(user), 10)
 	user.visible_message(span_warning("[src] solidifies with a horrifying banana stench!"))
 	..()
@@ -156,6 +188,8 @@ Charged extracts:
 	effect_desc = "Produces a lavaproofing potion"
 
 /obj/item/slimecross/charged/red/do_effect(mob/user)
+	procstart = null
+	src.procstart = null
 	new /obj/item/slimepotion/lavaproof(get_turf(user))
 	user.visible_message(span_notice("[src] distills into a potion!"))
 	..()
@@ -165,6 +199,8 @@ Charged extracts:
 	effect_desc = "Lets you choose what slime species you want to be."
 
 /obj/item/slimecross/charged/green/do_effect(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_user = user
 	if(!istype(human_user))
 		to_chat(user, span_warning("You must be a humanoid to use this!"))
@@ -187,6 +223,8 @@ Charged extracts:
 	effect_desc = "Produces a... lovepotion... no ERP."
 
 /obj/item/slimecross/charged/pink/do_effect(mob/user)
+	procstart = null
+	src.procstart = null
 	new /obj/item/slimepotion/lovepotion(get_turf(user))
 	user.visible_message(span_notice("[src] distills into a potion!"))
 	..()
@@ -198,13 +236,19 @@ Charged extracts:
 	var/spawned = 0
 
 /obj/item/slimecross/charged/gold/do_effect(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_warning("[src] starts shuddering violently!"))
 	addtimer(CALLBACK(src, PROC_REF(startTimer)), 5 SECONDS)
 
 /obj/item/slimecross/charged/gold/proc/startTimer()
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSobj, src)
 
 /obj/item/slimecross/charged/gold/process()
+	procstart = null
+	src.procstart = null
 	visible_message(span_warning("[src] lets off a spark, and produces a living creature!"))
 	new /obj/effect/particle_effect/sparks(get_turf(src))
 	playsound(get_turf(src), SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
@@ -215,6 +259,8 @@ Charged extracts:
 		qdel(src)
 
 /obj/item/slimecross/charged/gold/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
@@ -223,10 +269,14 @@ Charged extracts:
 	effect_desc = "Creates an explosion after a few seconds."
 
 /obj/item/slimecross/charged/oil/do_effect(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_danger("[src] begins to shake with rapidly increasing force!"))
 	addtimer(CALLBACK(src, PROC_REF(boom)), 5 SECONDS)
 
 /obj/item/slimecross/charged/oil/proc/boom()
+	procstart = null
+	src.procstart = null
 	explosion(src, devastation_range = 2, heavy_impact_range = 3, light_impact_range = 4, explosion_cause = src) //Much smaller effect than normal oils, but devastatingly strong where it does hit.
 	qdel(src)
 
@@ -235,6 +285,8 @@ Charged extracts:
 	effect_desc = "Randomizes the user's species."
 
 /obj/item/slimecross/charged/black/do_effect(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/experiment_subject = user
 	if(!istype(experiment_subject))
 		balloon_alert(experiment_subject, "incompatible biology!")
@@ -258,6 +310,8 @@ Charged extracts:
 	effect_desc = "Produces a pacification potion, which works on monsters and humanoids."
 
 /obj/item/slimecross/charged/lightpink/do_effect(mob/user)
+	procstart = null
+	src.procstart = null
 	new /obj/item/slimepotion/peacepotion(get_turf(user))
 	user.visible_message(span_notice("[src] distills into a potion!"))
 	..()
@@ -267,6 +321,8 @@ Charged extracts:
 	effect_desc = "Creates a completed golem shell."
 
 /obj/item/slimecross/charged/adamantine/do_effect(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_notice("[src] produces a fully formed golem shell!"))
 	new /obj/effect/mob_spawn/ghost_role/human/golem/servant(get_turf(src), /datum/species/golem, user)
 	..()
@@ -276,6 +332,8 @@ Charged extracts:
 	effect_desc = "Produces three living slimes of random colors."
 
 /obj/item/slimecross/charged/rainbow/do_effect(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_warning("[src] swells and splits into three new slimes!"))
 	for(var/i in 1 to 3)
 		new /mob/living/basic/slime/random(get_turf(user))

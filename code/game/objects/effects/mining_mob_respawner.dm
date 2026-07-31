@@ -31,6 +31,8 @@
 	)
 
 /obj/effect/mining_mob_respawner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (mapload && length(valid_mobs))
@@ -49,6 +51,8 @@
 
 /// Let the map generator system pass us a list of mobs
 /obj/effect/mining_mob_respawner/proc/setup(list/valid_mobs, atom/initial_spawn)
+	procstart = null
+	src.procstart = null
 	src.valid_mobs = valid_mobs
 
 	if (istype(initial_spawn, /obj/effect/spawner/random))
@@ -59,6 +63,8 @@
 
 /// Record something as our spawn, so we don't need to spawn something else
 /obj/effect/mining_mob_respawner/proc/register_spawn(atom/source, atom/new_spawn)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!new_spawn)
 		return
@@ -67,6 +73,8 @@
 
 /// Make a guy and subscribe to see if they die
 /obj/effect/mining_mob_respawner/proc/make_mob()
+	procstart = null
+	src.procstart = null
 	if (!length(valid_mobs))
 		return
 	var/spawn_path = pick(valid_mobs)
@@ -93,6 +101,8 @@
 
 /// Intercept the next mob spawned on the turf, because we might have spawned an object which spawns a mob instead
 /obj/effect/mining_mob_respawner/proc/get_spawned_mob(datum/source, atom/new_spawn)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!isliving(new_spawn))
 		return
@@ -104,6 +114,8 @@
 
 /// When a storm hits & if our mob is dead, make a new one
 /obj/effect/mining_mob_respawner/proc/on_storm_event()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/resolved = our_mob?.resolve()
 	if (!resolved || resolved.stat == DEAD)
@@ -111,6 +123,8 @@
 
 /// Play an awesome animation
 /obj/effect/mining_mob_respawner/proc/play_spawn_animation(mob/living/spawned, turf/spawned_turf)
+	procstart = null
+	src.procstart = null
 	if (HAS_TRAIT(spawned, TRAIT_MOVE_FLYING))
 		new /obj/effect/fly_down(spawned_turf, spawned)
 	else
@@ -125,6 +139,8 @@
 	var/animate_time = 2 SECONDS
 
 /obj/effect/unburrow/Initialize(mapload, atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (QDELETED(thing))
 		return INITIALIZE_HINT_QDEL
@@ -132,6 +148,8 @@
 	setup(thing)
 
 /obj/effect/unburrow/proc/setup(atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	vis_contents += thing
 	thing.pixel_y -= 32
 	animate(thing, pixel_y = 32, time = animate_time, flags = ANIMATION_PARALLEL | ANIMATION_RELATIVE)
@@ -144,6 +162,8 @@
 	addtimer(CALLBACK(src, PROC_REF(release), thing), animate_time + 0.5 SECONDS, TIMER_DELETE_ME)
 
 /obj/effect/unburrow/proc/release(atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	if (!QDELETED(thing))
 		thing.forceMove(drop_location())
 	qdel(src)
@@ -156,6 +176,8 @@
 	var/animate_time = 0.6 SECONDS
 
 /obj/effect/fly_down/Initialize(mapload, atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!thing)
 		thing = new /mob/living/basic/mining/watcher(loc)
@@ -165,6 +187,8 @@
 	setup(thing)
 
 /obj/effect/fly_down/proc/setup(atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	vis_contents += thing
 	thing.pixel_y += 64
 	var/direction = pick(list(1, -1))
@@ -178,6 +202,8 @@
 	addtimer(CALLBACK(src, PROC_REF(release), thing), animate_time, TIMER_DELETE_ME)
 
 /obj/effect/fly_down/proc/release(atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	if (!QDELETED(thing))
 		thing.forceMove(drop_location())
 	qdel(src)

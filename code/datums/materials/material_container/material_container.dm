@@ -87,16 +87,22 @@
 	RegisterSignal(parent, COMSIG_OBJ_DECONSTRUCT, PROC_REF(drop_sheets))
 
 /datum/material_container/Destroy(force)
+	procstart = null
+	src.procstart = null
 	materials = null
 	allowed_materials = null
 	return ..()
 
 /datum/material_container/proc/drop_sheets()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	retrieve_all()
 
 /datum/material_container/proc/on_examine(datum/source, mob/user, list/examine_texts)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/I in materials)
@@ -106,6 +112,8 @@
 			examine_texts += span_notice("It has [amt] sheets of [LOWER_TEXT(M.name)] stored.")
 
 /datum/material_container/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	var/old_flags = mat_container_flags
 	. = ..()
 	if(var_name == NAMEOF(src, mat_container_flags) && parent)
@@ -147,6 +155,8 @@
  * - user_data: in the form rendered by ID_DATA(user), for material logging (and if this component is connected to a silo, also for permission checking)
  */
 /datum/material_container/proc/insert_item_materials(obj/item/source, multiplier = 1, atom/context = parent, alist/user_data)
+	procstart = null
+	src.procstart = null
 	var/primary_mat
 	var/max_mat_value = 0
 	var/material_amount = 0
@@ -179,6 +189,8 @@
  * - mat: the material type to insert
  */
 /datum/material_container/proc/insert_amount_mat(amt, datum/material/mat)
+	procstart = null
+	src.procstart = null
 	if(amt <= 0)
 		return 0
 	amt = OPTIMAL_COST(amt)
@@ -213,6 +225,8 @@
  * * - user_data - in the form rendered by ID_DATA(user), for material logging (and if this component is connected to a silo, also for permission checking)
  */
 /datum/material_container/proc/insert_item(obj/item/weapon, multiplier = 1, atom/context = parent, delete_item = TRUE, alist/user_data)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(weapon))
 		return MATERIAL_INSERT_ITEM_NO_MATS
 	multiplier = CEILING(multiplier, 0.01)
@@ -266,6 +280,8 @@
  * * context - the atom performing the operation, this is the last argument sent in COMSIG_MATCONTAINER_ITEM_CONSUMED and is used mostly for silo logging
  */
 /datum/material_container/proc/user_insert(obj/item/held_item, mob/living/user, atom/context = parent)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	. = 0
 
@@ -494,17 +510,23 @@
 			qdel(deleting)
 
 /datum/material_container/proc/on_item_insert(datum/source, mob/living/user, obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Don't insert material items with left click
 	if (isstack(weapon))
 		return attempt_insert(user, weapon)
 
 /datum/material_container/proc/on_secondary_insert(datum/source, mob/living/user, obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return attempt_insert(user, weapon)
 
 /// Proc that allows players to fill the parent with mats
 /datum/material_container/proc/attempt_insert(mob/living/user, obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	//Allows you to attack the machine with iron sheets for e.g.
 	if(!(mat_container_flags & MATCONTAINER_ANY_INTENT) && user.combat_mode)
 		return
@@ -529,6 +551,8 @@
  * * amt - can this container hold this much amount of materials
  */
 /datum/material_container/proc/has_space(amt = 0)
+	procstart = null
+	src.procstart = null
 	return (total_amount() + amt) <= max_amount
 
 /**
@@ -538,6 +562,8 @@
  * - [mat][/atom/material]: The material we are checking for insertability.
  */
 /datum/material_container/proc/can_hold_material(datum/material/mat)
+	procstart = null
+	src.procstart = null
 	if(mat in allowed_materials)
 		return TRUE
 	if(istype(mat) && ((mat.id in allowed_materials) || (mat.type in allowed_materials)))
@@ -561,6 +587,8 @@
  * c) If normal material proceeds as usual
  */
 /datum/material_container/proc/get_material_amount(datum/material/mat)
+	procstart = null
+	src.procstart = null
 	if(!istype(mat))
 		mat = SSmaterials.get_material(mat)
 	return materials[mat]
@@ -573,6 +601,8 @@
  * - [I][obj/item]: the item whos materials must be retrieved
  */
 /datum/material_container/proc/get_item_material_amount(obj/item/item)
+	procstart = null
+	src.procstart = null
 	if(!istype(item) || !item.custom_materials)
 		return 0
 	var/material_amount = 0
@@ -588,6 +618,8 @@
 //=========================================HIGH LEVEL==========================================
 /// returns the total amount of material in the container
 /datum/material_container/proc/total_amount()
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/i in materials)
 		. += get_material_amount(i)
@@ -600,6 +632,8 @@
  * - amount: how much material do we need
  */
 /datum/material_container/proc/has_enough_of_material(datum/material/req_mat, amount = 1)
+	procstart = null
+	src.procstart = null
 	return get_material_amount(req_mat) >= OPTIMAL_COST(amount)
 
 
@@ -613,6 +647,8 @@
  * - multiplier: how many units(after scaling) do we require
  */
 /datum/material_container/proc/has_materials(list/mats, coefficient = 1, multiplier = 1)
+	procstart = null
+	src.procstart = null
 	if(!length(mats))
 		return FALSE
 
@@ -636,6 +672,8 @@
  * - [mat][datum/material]: type of mat to use
  */
 /datum/material_container/proc/use_amount_mat(amt, datum/material/mat)
+	procstart = null
+	src.procstart = null
 	//round amount
 	amt = OPTIMAL_COST(amt)
 
@@ -662,6 +700,8 @@
  * - multiplier: how many units of material in the mats list(after each unit is multiplied and rounded with coefficient) must be consumed, This is usually your print quantity
  */
 /datum/material_container/proc/use_materials(list/mats, coefficient = 1, multiplier = 1)
+	procstart = null
+	src.procstart = null
 	if(!mats || !length(mats))
 		return FALSE
 
@@ -686,6 +726,8 @@
  * user_data - in the form rendered by ID_DATA(user), for material logging (and if this component is connected to a silo, also for permission checking)
  */
 /datum/material_container/proc/retrieve_stack(stack_amt, datum/material/material, atom/target = null, atom/context = parent, alist/user_data)
+	procstart = null
+	src.procstart = null
 	//do we support sheets of this material
 	var/type_to_retrieve = material.sheet_type || material.ore_type
 	if(!type_to_retrieve)
@@ -740,6 +782,8 @@
  * - context: the atom which is ejecting the sheets. Used mostly in silo logging
  */
 /datum/material_container/proc/retrieve_all(target = null, atom/context = parent)
+	procstart = null
+	src.procstart = null
 	var/result = 0
 	for(var/MAT in materials)
 		result += retrieve_stack(amount2sheet(materials[MAT]), MAT, target, context, user_data = ID_DATA(null))
@@ -748,12 +792,16 @@
 
 
 /datum/material_container/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["SHEET_MATERIAL_AMOUNT"] = SHEET_MATERIAL_AMOUNT
 	return data
 
 /// List format is list(material_name = list(amount = ..., ref = ..., etc.))
 /datum/material_container/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	for(var/datum/material/material as anything in materials)
@@ -777,6 +825,8 @@
  * * user - refers to user who will see the screentip when the proper context and tool are there
  */
 /datum/material_container/proc/on_requesting_context_from_item(datum/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(held_item))

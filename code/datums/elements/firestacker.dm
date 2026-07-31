@@ -8,6 +8,8 @@
 	var/amount
 
 /datum/element/firestacker/Attach(datum/target, amount)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!ismovable(target))
@@ -21,25 +23,35 @@
 		RegisterSignal(target, COMSIG_ITEM_ATTACK_SELF, PROC_REF(item_attack_self), override = TRUE)
 
 /datum/element/firestacker/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, list(COMSIG_MOVABLE_IMPACT, COMSIG_ITEM_ATTACK, COMSIG_ITEM_ATTACK_SELF))
 
 /datum/element/firestacker/proc/stack_on(datum/owner, mob/living/target)
+	procstart = null
+	src.procstart = null
 	target.adjust_fire_stacks(amount)
 
 /datum/element/firestacker/proc/impact(datum/source, atom/hit_atom, datum/thrownthing/throwing_datum, caught)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!caught && isliving(hit_atom))
 		stack_on(source, hit_atom)
 
 /datum/element/firestacker/proc/item_attack(datum/source, atom/movable/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isliving(target))
 		stack_on(source, target)
 
 /datum/element/firestacker/proc/item_attack_self(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isliving(user))

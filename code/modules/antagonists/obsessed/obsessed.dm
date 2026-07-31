@@ -25,6 +25,8 @@
 	var/datum/brain_trauma/special/obsessed/trauma
 
 /datum/antagonist/obsessed/can_be_owned(datum/mind/new_owner)
+	procstart = null
+	src.procstart = null
 	return ..() && new_owner.current?.get_organ_by_type(/obj/item/organ/brain) // gotta have a brain to be obsessed!
 
 /// Dummy antag datum that will show the cured obsessed to admins
@@ -40,6 +42,8 @@
 	ui_name = null
 
 /datum/antagonist/obsessed/admin_add(datum/mind/new_owner,mob/admin)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/C = new_owner.current
 	if(!istype(C))
 		to_chat(admin, "[roundend_category] come from a brain trauma, so they need to at least be a carbon!")
@@ -53,14 +57,20 @@
 	C.gain_trauma(/datum/brain_trauma/special/obsessed)//ZAP
 
 /datum/antagonist/obsessed/greet()
+	procstart = null
+	src.procstart = null
 	play_stinger()
 	owner.announce_objectives()
 
 /datum/antagonist/obsessed/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(trauma)
 	return ..()
 
 /datum/antagonist/obsessed/get_preview_icon()
+	procstart = null
+	src.procstart = null
 	var/datum/universal_icon/obsessed_icon = render_preview_outfit(preview_outfit)
 	var/datum/universal_icon/blood_icon = uni_icon('icons/effects/blood.dmi', "uniformblood")
 	blood_icon.blend_color(BLOOD_COLOR_RED, ICON_MULTIPLY)
@@ -88,11 +98,15 @@
 	shoes = /obj/item/clothing/shoes/sneakers/black
 
 /datum/outfit/obsessed/post_equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/carried_item in H.get_equipped_items(INCLUDE_POCKETS | INCLUDE_ACCESSORIES))
 		carried_item.add_mob_blood(H)//Oh yes, there will be blood...
 	H.regenerate_icons()
 
 /datum/antagonist/obsessed/forge_objectives(datum/mind/obsessionmind)
+	procstart = null
+	src.procstart = null
 	var/list/objectives_left = list(OBSESSED_OBJECTIVE_SPEND_TIME, OBSESSED_OBJECTIVE_POLAROID, OBSESSED_OBJECTIVE_HUG)
 	var/datum/objective/assassinate/obsessed/kill = new
 	kill.owner = owner
@@ -143,9 +157,13 @@
 		O.update_explanation_text()
 
 /datum/antagonist/obsessed/roundend_report_header()
+	procstart = null
+	src.procstart = null
 	return span_header("Someone became obsessed!<br>")
 
 /datum/antagonist/obsessed/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/report = list()
 
 	if(!owner)
@@ -182,6 +200,8 @@
 /datum/objective/assassinate/obsessed //just a creepy version of assassinate
 
 /datum/objective/assassinate/obsessed/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	if(target?.current)
 		explanation_text = "Murder [target.name], the [target_role_type ? english_list(target.get_special_roles()) : target.assigned_role.title]."
 	else
@@ -193,6 +213,8 @@
 	var/datum/mind/obsessed_target
 
 /datum/objective/assassinate/jealous/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	if(target?.current && obsessed_target)
 		explanation_text = "Murder [target.name], [obsessed_target]'s coworker."
 	else
@@ -200,6 +222,8 @@
 		completed = TRUE
 
 /datum/objective/assassinate/jealous/find_target(dupe_search_range, list/blacklist)
+	procstart = null
+	src.procstart = null
 	if(is_unassigned_job(obsessed_target.assigned_role))
 		return ..()
 
@@ -226,6 +250,8 @@
 	var/timer = 0
 
 /datum/objective/spendtime/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	if(!timer)
 		timer = 5 MINUTES + pick(-60 SECONDS, 0)
 
@@ -236,6 +262,8 @@
 		completed = TRUE
 
 /datum/objective/spendtime/check_completion()
+	procstart = null
+	src.procstart = null
 	return timer <= 0 || completed
 
 /datum/objective/hug//this objective isn't perfect. hugging the correct amount of times, then switching bodies, might fail the objective anyway. maybe i'll come back and fix this sometime.
@@ -243,6 +271,8 @@
 	var/hugs_needed = 0
 
 /datum/objective/hug/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	if(!hugs_needed)
 		hugs_needed = rand(4,6)
 
@@ -254,6 +284,8 @@
 		completed = TRUE
 
 /datum/objective/hug/check_completion()
+	procstart = null
+	src.procstart = null
 	return hugs_needed <= 0 || completed
 
 /datum/objective/polaroid //take a picture of the target with you in it.
@@ -262,6 +294,8 @@
 	var/datum/weakref/obsession_weakref
 
 /datum/objective/polaroid/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	if(target?.current)
 		explanation_text = "Take a photo of [target.name] while they're alive, and keep it in your bag."
 	else
@@ -269,6 +303,8 @@
 		completed = TRUE
 
 /datum/objective/polaroid/check_completion()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/photo/photo in owner.current?.get_all_contents())
 		if((obsession_weakref in photo.picture?.mobs_seen) && !(obsession_weakref in photo.picture?.dead_seen))
 			return TRUE
@@ -279,6 +315,8 @@
 	name = "heirloomthief"
 
 /datum/objective/steal/heirloom_thief/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	if(steal_target)
 		explanation_text = "Steal [target]'s family heirloom, [steal_target] they cherish."
 	else
@@ -286,6 +324,8 @@
 		completed = TRUE
 
 /datum/objective/steal/heirloom_thief/find_target(dupe_search_range, list/blacklist)
+	procstart = null
+	src.procstart = null
 	for(var/datum/quirk/item_quirk/family_heirloom/quirky in target?.current?.quirks)
 		steal_target = quirky.heirloom?.resolve()
 		RegisterSignal(steal_target, COMSIG_QDELETING, PROC_REF(steal_target_deleted))
@@ -295,9 +335,13 @@
 	return steal_target
 
 /datum/objective/steal/heirloom_thief/check_completion()
+	procstart = null
+	src.procstart = null
 	return (!isnull(steal_target) && (steal_target in owner.current?.get_all_contents())) || completed
 
 /datum/objective/steal/heirloom_thief/proc/steal_target_deleted()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	steal_target = null // it's gone, and so are our hopes and dreams
 

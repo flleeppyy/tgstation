@@ -8,6 +8,8 @@
 	var/list/reagents_list
 
 /datum/element/consumable_mob/Attach(datum/target, list/reagents_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -18,10 +20,14 @@
 	RegisterSignal(target, COMSIG_ATOM_ATTACK_HAND, PROC_REF(on_consume))
 
 /datum/element/consumable_mob/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_ATOM_ATTACK_HAND)
 
 /datum/element/consumable_mob/proc/on_consume(atom/movable/source, mob/living/consumer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!consumer.combat_mode || !consumer.reagents || HAS_TRAIT(consumer, TRAIT_PACIFISM))
 		return

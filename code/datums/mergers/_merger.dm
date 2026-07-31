@@ -19,6 +19,8 @@
 #endif
 
 /datum/merger/New(id, list/merged_typecache, atom/origin, attempt_merge_proc)
+	procstart = null
+	src.procstart = null
 #if MERGERS_DEBUG
 	debug_color = rgb(rand(0, 255), rand(0, 255), rand(0, 255))
 #endif
@@ -29,11 +31,15 @@
 	Refresh()
 
 /datum/merger/Destroy(force)
+	procstart = null
+	src.procstart = null
 	for(var/atom/thing as anything in members)
 		RemoveMember(thing)
 	return ..()
 
 /datum/merger/proc/RemoveMember(atom/thing, clean=TRUE)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(thing, COMSIG_MERGER_REMOVING, src)
 	UnregisterSignal(thing, COMSIG_MOVABLE_MOVED)
 	UnregisterSignal(thing, COMSIG_QDELETING)
@@ -47,7 +53,9 @@
 	if(origin == thing && length(members))
 		origin = pick(members)
 
-/datum/merger/proc/AddMember(atom/thing, connected_dir) // note that this fires for the origin of the merger as well
+/datum/merger/proc/AddMember(atom/thing, connected_dir)
+	procstart = null
+	src.procstart = null // note that this fires for the origin of the merger as well
 	SEND_SIGNAL(thing, COMSIG_MERGER_ADDING, src)
 	RegisterSignal(thing, COMSIG_MOVABLE_MOVED, PROC_REF(QueueRefresh))
 	RegisterSignal(thing, COMSIG_QDELETING, PROC_REF(HandleMemberDel))
@@ -71,15 +79,21 @@
 #endif
 
 /datum/merger/proc/HandleMemberDel(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	RemoveMember(source)
 	QueueRefresh()
 
 /datum/merger/proc/QueueRefresh()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	addtimer(CALLBACK(src, PROC_REF(Refresh)), 1, TIMER_UNIQUE)
 
 /datum/merger/proc/Refresh()
+	procstart = null
+	src.procstart = null
 	// List of turf -> list(interesting dir, found matching atoms)
 	var/list/found_turfs = list()
 	if(origin)
@@ -129,6 +143,8 @@
 // Checks to see if the passed in location contains something interesting to us. If it does, return TRUE, otherwise return false
 // If it is interesting, we add it to our processing list
 /datum/merger/proc/check_turf(turf/location, list/found_turfs, asking_from)
+	procstart = null
+	src.procstart = null
 	var/found_something = FALSE
 	// if asking_from is invalid (like if it's 0), we get a random output. that's bad, let's check for falsyness
 	var/us_to_them = asking_from && REVERSE_DIR(asking_from)

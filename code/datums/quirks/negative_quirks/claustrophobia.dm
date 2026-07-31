@@ -11,7 +11,11 @@
 	mail_goodies = list(/obj/item/reagent_containers/syringe/convermol) // to help breathing
 
 /datum/quirk/claustrophobia/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	quirk_holder.AddComponentFrom(type, /datum/component/fearful, list(/datum/terror_handler/simple_source/claustrophobia, /datum/terror_handler/simple_source/clausophobia))
 
 /datum/quirk/claustrophobia/remove()
+	procstart = null
+	src.procstart = null
 	quirk_holder.RemoveComponentSource(type, /datum/component/fearful)

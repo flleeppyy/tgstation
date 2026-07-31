@@ -20,15 +20,21 @@
 	var/datum/gas_mixture/air_contents = null
 
 /obj/item/latexballoon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/atmos_sensitive, mapload)
 	AddElement(/datum/element/update_icon_updates_onmob)
 
 /obj/item/latexballoon/proc/set_state(state_to_set)
+	procstart = null
+	src.procstart = null
 	state = state_to_set
 	update_appearance(UPDATE_ICON | UPDATE_DESC)
 
 /obj/item/latexballoon/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	switch(state)
@@ -44,6 +50,8 @@
 			righthand_file = initial(righthand_file)
 
 /obj/item/latexballoon/update_desc()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(state)
 		if(INFLATED)
@@ -52,6 +60,8 @@
 			desc = "The remains of a latex glove."
 
 /obj/item/latexballoon/proc/blow(obj/item/tank/tank, mob/user)
+	procstart = null
+	src.procstart = null
 	if(state == POPPED)
 		return
 
@@ -72,12 +82,18 @@
 	set_state(INFLATED)
 
 /obj/item/latexballoon/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return (exposed_temperature > T0C+100)
 
 /obj/item/latexballoon/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	burst()
 
 /obj/item/latexballoon/proc/burst()
+	procstart = null
+	src.procstart = null
 	if (!air_contents || state != INFLATED)
 		return
 
@@ -86,6 +102,8 @@
 	loc.assume_air(air_contents)
 
 /obj/item/latexballoon/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	burst()
 	switch(severity)
 		if (EXPLODE_DEVASTATE)
@@ -97,11 +115,15 @@
 	return TRUE
 
 /obj/item/latexballoon/bullet_act(obj/projectile/projectile)
+	procstart = null
+	src.procstart = null
 	if(projectile.damage > 0)
 		burst()
 	return ..()
 
 /obj/item/latexballoon/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/tank))
 		var/obj/item/tank/air_tank = tool
 		blow(air_tank, user)

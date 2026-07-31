@@ -2,6 +2,8 @@
 /datum/unit_test/high_five
 
 /datum/unit_test/high_five/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/offer_guy = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/take_guy = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/random_bystander = allocate(/mob/living/carbon/human/consistent) // this guy's just here for another valid taker
@@ -28,6 +30,8 @@
 /datum/unit_test/high_five_too_slow
 
 /datum/unit_test/high_five_too_slow/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/offer_guy = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/take_guy = allocate(/mob/living/carbon/human/consistent)
 	pass(take_guy) // This guy just needs to stand around
@@ -43,6 +47,8 @@
 /datum/unit_test/high_five_walk_away
 
 /datum/unit_test/high_five_walk_away/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/offer_guy = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/take_guy_A = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/take_guy_B = allocate(/mob/living/carbon/human/consistent)

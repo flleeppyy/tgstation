@@ -6,11 +6,15 @@
 	open_message = "The door opens with a loud creak."
 
 /obj/machinery/door/puzzle/keycard/library/animation_length(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if(DOOR_OPENING_ANIMATION)
 			return 1.2 SECONDS
 
 /obj/machinery/door/puzzle/keycard/library/animation_segment_delay(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if(DOOR_OPENING_PASSABLE)
 			return 1.0 SECONDS

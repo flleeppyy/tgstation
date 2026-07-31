@@ -15,12 +15,16 @@
 	var/master_name = "nobody?"
 
 /datum/antagonist/shade_minion/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["master_name"] = master_name
 	return data
 
 /// Apply a new master to the shade, will display the popup again also.
 /datum/antagonist/shade_minion/proc/update_master(master_name)
+	procstart = null
+	src.procstart = null
 	if (src.master_name == master_name)
 		return
 
@@ -30,5 +34,7 @@
 
 /// Shows the info panel, moved out into its own proc for signal handling reasons.
 /datum/antagonist/shade_minion/proc/display_panel()
+	procstart = null
+	src.procstart = null
 	var/datum/action/antag_info/info_button = info_button_ref?.resolve()
 	info_button?.Trigger()

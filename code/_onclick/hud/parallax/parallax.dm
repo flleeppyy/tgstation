@@ -1,5 +1,7 @@
 /// Decides if parallax should be rendered or not, and sets things up accordingly
 /datum/hud/proc/check_parallax()
+	procstart = null
+	src.procstart = null
 	var/client/displaying_client = mymob.client
 	if(isnull(displaying_client.parallax_rock))
 		displaying_client.parallax_rock = new(null, null, displaying_client)
@@ -17,6 +19,8 @@
 		displaying_client.screen -= rock
 
 /datum/hud/proc/apply_parallax_pref()
+	procstart = null
+	src.procstart = null
 	var/turf/screen_location = get_turf(mymob)
 	var/client/displaying_client = mymob.client
 	var/atom/movable/screen/parallax_home/rock = displaying_client.parallax_rock
@@ -58,6 +62,8 @@
 			return
 
 /datum/hud/proc/update_parallax_pref()
+	procstart = null
+	src.procstart = null
 	if(!mymob.client)
 		return
 	check_parallax()
@@ -65,6 +71,8 @@
 
 // This sets which way the current shuttle is moving (returns true if the shuttle has stopped moving so the caller can append their animation)
 /datum/hud/proc/set_parallax_movedir(new_parallax_movedir = NONE, skip_windups)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	var/client/displaying_client = mymob.client
 	if(new_parallax_movedir == displaying_client.parallax_movedir)
@@ -109,6 +117,8 @@
 	displaying_client.parallax_movedir = new_parallax_movedir
 
 /datum/hud/proc/update_parallax_motionblur(client/displaying_client, atom/movable/screen/parallax_layer/layer, new_parallax_movedir, matrix/new_transform)
+	procstart = null
+	src.procstart = null
 	if(!displaying_client)
 		return
 	displaying_client.parallax_animate_timers -= layer
@@ -124,6 +134,8 @@
 	animate(transform = matrix(), time = scaled_time)
 
 /datum/hud/proc/update_parallax()
+	procstart = null
+	src.procstart = null
 	var/client/displaying_client = mymob.client
 	var/turf/posobj = get_turf(displaying_client.eye)
 	if(!posobj)
@@ -191,11 +203,15 @@
 			parallax_layer.pixel_z = round(parallax_layer.offset_y, 1)
 
 /atom/movable/proc/update_parallax_contents()
+	procstart = null
+	src.procstart = null
 	for(var/mob/client_mob as anything in client_mobs_in_contents)
 		if(client_mob?.client?.parallax_rock?.displaying_layers && client_mob.hud_used)
 			client_mob.hud_used.update_parallax()
 
-/mob/proc/update_parallax_teleport() //used for arrivals shuttle
+/mob/proc/update_parallax_teleport()
+	procstart = null
+	src.procstart = null //used for arrivals shuttle
 	if(client?.eye && hud_used && client?.parallax_rock?.displaying_layers)
 		var/area/areaobj = get_area(client.eye)
 		hud_used.set_parallax_movedir(areaobj.parallax_movedir, TRUE)
@@ -224,15 +240,21 @@
 	var/client/owner
 
 /atom/movable/screen/parallax_home/Initialize(mapload, datum/hud/hud_owner, client/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.owner = owner
 
 /atom/movable/screen/parallax_home/Destroy()
+	procstart = null
+	src.procstart = null
 	clear_layers()
 	owner = null
 	return ..()
 
 /atom/movable/screen/parallax_home/proc/display_layers()
+	procstart = null
+	src.procstart = null
 	if(displaying_layers || length(parallax_layers_cached) == 0)
 		return
 	parallax_layers = parallax_layers_cached
@@ -240,6 +262,8 @@
 	displaying_layers = TRUE
 
 /atom/movable/screen/parallax_home/proc/hide_layers()
+	procstart = null
+	src.procstart = null
 	if(!displaying_layers)
 		return
 	parallax_layers = list()
@@ -247,6 +271,8 @@
 	displaying_layers = FALSE
 
 /atom/movable/screen/parallax_home/proc/set_layer_settings(layers_to_draw, draw_old_space, animate_parallax)
+	procstart = null
+	src.procstart = null
 	src.animate_parallax = animate_parallax
 	if(src.layers_to_draw == layers_to_draw && src.draw_old_space == draw_old_space)
 		return
@@ -255,6 +281,8 @@
 	regenerate_layers()
 
 /atom/movable/screen/parallax_home/proc/generate_space_layer(index)
+	procstart = null
+	src.procstart = null
 	switch(index)
 		if(1)
 			return new /atom/movable/screen/parallax_layer/layer_1(null, null, owner)
@@ -272,6 +300,8 @@
 				return new /atom/movable/screen/parallax_layer/layer_3(null, null, owner)
 
 /atom/movable/screen/parallax_home/proc/regenerate_layers()
+	procstart = null
+	src.procstart = null
 	clear_layers()
 	if(layers_to_draw == 0 && !draw_old_space)
 		return
@@ -288,6 +318,8 @@
 	display_layers()
 
 /atom/movable/screen/parallax_home/proc/clear_layers()
+	procstart = null
+	src.procstart = null
 	hide_layers()
 	QDEL_LIST(parallax_layers_cached)
 
@@ -306,6 +338,8 @@
 	var/working_view = ""
 
 /atom/movable/screen/parallax_layer/Initialize(mapload, datum/hud/hud_owner, client/owner, template = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Parallax layers are independent of hud, they care about client
 	// Not doing this will just create a bunch of hard deletes
@@ -323,16 +357,22 @@
 	RegisterSignal(owner, COMSIG_VIEW_SET, PROC_REF(on_view_change))
 
 /atom/movable/screen/parallax_layer/proc/on_view_change(datum/source, new_size)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_o(new_size)
 
 /atom/movable/screen/parallax_layer/proc/update_o(new_view)
+	procstart = null
+	src.procstart = null
 	if(working_view == new_view)
 		return
 	working_view = new_view
 	update_appearance()
 
 /atom/movable/screen/parallax_layer/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/overlay_view = working_view
 	if (!overlay_view)
@@ -355,6 +395,8 @@
 			. += texture_overlay
 
 /atom/movable/screen/parallax_layer/proc/tileable_appearance()
+	procstart = null
+	src.procstart = null
 	return mutable_appearance(icon, icon_state)
 
 /atom/movable/screen/parallax_layer/layer_1
@@ -379,6 +421,8 @@
 	layer = 1 // Draws on its own
 
 /atom/movable/screen/parallax_layer/old/tileable_appearance()
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/copy = mutable_appearance(null, "")
 	// We have to use render targets to draw one of these flat and reuse it for this because FOR SOME REASON
 	// 16 (tile count) * (14 (animated state count) * 4 (frame count) + 1 (1 is not animated)) 480x480 states
@@ -387,6 +431,8 @@
 	return copy
 
 /atom/movable/screen/parallax_layer/old/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/relayed_overlay = mutable_appearance('icons/effects/old_parallax.dmi', "1", appearance_flags = RESET_TRANSFORM|PIXEL_SCALE|KEEP_TOGETHER|KEEP_APART)
 	var/list/old_states = list("19", "21", "23", "24", "26", "29", "30", "31", "34", "35", "36", "37", "43", "46")
@@ -408,6 +454,8 @@
 	layer = 30
 
 /atom/movable/screen/parallax_layer/planet/Initialize(mapload, datum/hud/hud_owner, client/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!owner)
 		return
@@ -419,11 +467,15 @@
 	on_z_change(owner.mob)
 
 /atom/movable/screen/parallax_layer/planet/proc/on_mob_logout(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/client/boss = source.canon_client
 	on_z_change(boss.mob)
 
 /atom/movable/screen/parallax_layer/planet/proc/on_z_change(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/client/boss = source.client
 	var/turf/posobj = get_turf(boss?.eye)
@@ -432,4 +484,6 @@
 	SetInvisibility(is_station_level(posobj.z) ? INVISIBILITY_NONE : INVISIBILITY_ABSTRACT, id=type)
 
 /atom/movable/screen/parallax_layer/planet/update_o()
+	procstart = null
+	src.procstart = null
 	return //Shit won't move

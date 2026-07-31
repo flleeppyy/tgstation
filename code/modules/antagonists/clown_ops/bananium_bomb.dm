@@ -5,6 +5,8 @@
 	base_icon_state = "bananiumbomb"
 
 /obj/machinery/nuclearbomb/syndicate/bananium/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(deconstruction_state != NUKESTATE_INTACT)
 		icon_state = "[base_icon_state]_base"
@@ -19,6 +21,8 @@
 			icon_state = "[base_icon_state]_exploding"
 
 /obj/machinery/nuclearbomb/syndicate/bananium/get_cinematic_type(detonation_status)
+	procstart = null
+	src.procstart = null
 	switch(detonation_status)
 		if(DETONATION_HIT_STATION)
 			return /datum/cinematic/nuke/clown
@@ -31,12 +35,16 @@
 	return /datum/cinematic/nuke/fake
 
 /obj/machinery/nuclearbomb/syndicate/bananium/nuke_effects(list/affected_z_levels)
+	procstart = null
+	src.procstart = null
 	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(callback_on_everyone_on_z), affected_z_levels, CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(make_into_clown)), src)
 
 /**
  * Helper proc that handles making someone into a clown after a bananium nuke goes off.
  */
 /proc/make_into_clown(mob/living/carbon/human/clowned_on)
+	procstart = null
+	src.procstart = null
 	if(!istype(clowned_on))
 		return
 

@@ -63,7 +63,9 @@
  *
  * Returns a list of singleton datums
  */
-/proc/loadout_list_to_datums(list/loadout_list) as /list
+/proc/loadout_list_to_datums(list/loadout_list)
+	procstart = null
+	src.procstart = null
 	var/list/datums = list()
 
 	if(!length(GLOB.all_loadout_datums))

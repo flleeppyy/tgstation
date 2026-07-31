@@ -79,6 +79,8 @@
  * Proc that simply loads the default map config, which should always be functional.
  */
 /proc/load_default_map_config()
+	procstart = null
+	src.procstart = null
 	return new /datum/map_config
 
 
@@ -92,6 +94,8 @@
  * Returns the config for the map to load.
  */
 /proc/load_map_config(filename = null, directory = null, error_if_missing = TRUE)
+	procstart = null
+	src.procstart = null
 	var/datum/map_config/configuring_map = load_default_map_config()
 
 	if(filename) // If none is specified, then go to look for next_map.json, for map rotation purposes.
@@ -118,6 +122,8 @@
 #define CHECK_EXISTS(X) if(!istext(json[X])) { log_world("[##X] missing from json!"); return; }
 
 /datum/map_config/proc/LoadConfig(filename, error_if_missing)
+	procstart = null
+	src.procstart = null
 	if(!fexists(filename))
 		if(error_if_missing)
 			log_world("map_config not found: [filename]")
@@ -286,6 +292,8 @@
 #undef CHECK_EXISTS
 
 /datum/map_config/proc/GetFullMapPaths()
+	procstart = null
+	src.procstart = null
 	if (istext(map_file))
 		return list("_maps/[map_path]/[map_file]")
 	. = list()
@@ -293,4 +301,6 @@
 		. += "_maps/[map_path]/[file]"
 
 /datum/map_config/proc/MakeNextMap()
+	procstart = null
+	src.procstart = null
 	return config_filename == PATH_TO_NEXT_MAP_JSON || fcopy(config_filename, PATH_TO_NEXT_MAP_JSON)

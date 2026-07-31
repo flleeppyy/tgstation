@@ -9,6 +9,8 @@
 	ability_action = "psychologically evaluate"
 
 /datum/mafia_ability/reveal_role/perform_action_target(datum/mafia_controller/game, datum/mafia_role/day_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -18,6 +20,8 @@
 	return TRUE
 
 /datum/mafia_ability/reveal_role/clean_action_refs(datum/mafia_controller/game)
+	procstart = null
+	src.procstart = null
 	if(using_ability)
 		host_role.role_unique_actions -= src
 		qdel(src)

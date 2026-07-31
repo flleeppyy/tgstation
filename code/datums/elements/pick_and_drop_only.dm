@@ -3,6 +3,8 @@
 	element_flags = ELEMENT_DETACH_ON_HOST_DESTROY
 
 /datum/element/pick_and_drop_only/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isliving(target))
@@ -11,6 +13,8 @@
 	RegisterSignal(target, COMSIG_LIVING_PICKED_UP_ITEM, PROC_REF(on_picked_up))
 
 /datum/element/pick_and_drop_only/proc/on_picked_up(mob/living/liver, obj/item/item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	RegisterSignal(item, COMSIG_ITEM_DROPPED, PROC_REF(on_dropped))
@@ -26,6 +30,8 @@
 	PROC_REF(on_item_use))
 
 /datum/element/pick_and_drop_only/proc/on_dropped(obj/item/item, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(item, list(
@@ -40,6 +46,8 @@
 	))
 
 /datum/element/pick_and_drop_only/proc/on_item_use()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// CANCEL EVERYTHING, WAHAHAHA!!
 	return COMPONENT_CANCEL_ATTACK_CHAIN

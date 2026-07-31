@@ -13,6 +13,8 @@
 	program_icon = "terminal"
 
 /datum/computer_file/program/robotact/on_start(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(computer, /obj/item/modular_computer/pda/silicon))
 		to_chat(user, span_warning("A warning flashes across \the [computer]: Device Incompatible."))
 		return FALSE
@@ -31,6 +33,8 @@
  *  borgs except ones also slaved to the same AI.
  */
 /datum/computer_file/program/robotact/proc/evaluate_borg(mob/living/silicon/robot/this_borg, mob/living/silicon/robot/other_borg)
+	procstart = null
+	src.procstart = null
 	if(this_borg.connected_ai != other_borg.connected_ai)
 		return FALSE
 	if(this_borg.scrambledcodes && other_borg.scrambledcodes)
@@ -39,6 +43,8 @@
 		return TRUE
 
 /datum/computer_file/program/robotact/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	if(!iscyborg(user))
 		return data
@@ -116,6 +122,8 @@
 	return data
 
 /datum/computer_file/program/robotact/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	if(!iscyborg(user))
 		return data
@@ -129,6 +137,8 @@
 	return data
 
 /datum/computer_file/program/robotact/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//Implied type, memes
 	var/obj/item/modular_computer/pda/silicon/tablet = computer

@@ -9,6 +9,8 @@ SUBSYSTEM_DEF(radiation)
 	var/list/datum/radiation_pulse_information/processing = list()
 
 /datum/controller/subsystem/radiation/fire(resumed)
+	procstart = null
+	src.procstart = null
 	while (processing.len)
 		var/datum/radiation_pulse_information/pulse_information = processing[1]
 
@@ -26,10 +28,14 @@ SUBSYSTEM_DEF(radiation)
 		processing.Cut(1, 2)
 
 /datum/controller/subsystem/radiation/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg = "Pulses:[processing.len]"
 	return ..()
 
 /datum/controller/subsystem/radiation/proc/pulse(atom/source, datum/radiation_pulse_information/pulse_information)
+	procstart = null
+	src.procstart = null
 	var/list/cached_rad_insulations = list()
 	var/list/cached_turfs_to_process = pulse_information.turfs_to_process
 	var/turfs_iterated = 0
@@ -101,6 +107,8 @@ SUBSYSTEM_DEF(radiation)
 
 /// Will attempt to irradiate the given target, limited through IC means, such as radiation protected clothing.
 /datum/controller/subsystem/radiation/proc/irradiate(atom/target)
+	procstart = null
+	src.procstart = null
 	if (!can_irradiate_basic(target))
 		return FALSE
 
@@ -108,6 +116,8 @@ SUBSYSTEM_DEF(radiation)
 	return TRUE
 
 /datum/controller/subsystem/radiation/proc/irradiate_after_basic_checks(atom/target)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if (ishuman(target) && wearing_rad_protected_clothing(target))
@@ -119,6 +129,8 @@ SUBSYSTEM_DEF(radiation)
 /// Returns whether or not the target can be irradiated by any means.
 /// Does not check for clothing.
 /datum/controller/subsystem/radiation/proc/can_irradiate_basic(atom/target)
+	procstart = null
+	src.procstart = null
 	if (!CAN_IRRADIATE(target))
 		return FALSE
 
@@ -132,6 +144,8 @@ SUBSYSTEM_DEF(radiation)
 
 /// Returns whether or not the human is covered head to toe in rad-protected clothing.
 /datum/controller/subsystem/radiation/proc/wearing_rad_protected_clothing(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	for (var/obj/item/bodypart/limb as anything in human.get_bodyparts())
 		var/protected = FALSE
 

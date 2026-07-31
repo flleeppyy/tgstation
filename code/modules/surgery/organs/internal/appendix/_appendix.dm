@@ -20,17 +20,25 @@
 	var/inflamation_stage = 0
 
 /obj/item/organ/appendix/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/toxin/bad_food = 5)
 
 /obj/item/organ/appendix/update_name()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[inflamation_stage ? "inflamed " : null][initial(name)]"
 
 /obj/item/organ/appendix/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][inflamation_stage ? "inflamed" : ""]"
 	return ..()
 
 /obj/item/organ/appendix/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!owner)
 		return
@@ -44,6 +52,8 @@
 		become_inflamed()
 
 /obj/item/organ/appendix/proc/become_inflamed()
+	procstart = null
+	src.procstart = null
 	inflamation_stage = 1
 	update_appearance()
 	if(isnull(owner))
@@ -60,6 +70,8 @@
 	)
 
 /obj/item/organ/appendix/proc/inflamation(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/organ_owner = owner
 	if(inflamation_stage < 3 && SPT_PROB(INFLAMATION_ADVANCEMENT_PROB, seconds_per_tick))
 		inflamation_stage += 1
@@ -80,6 +92,8 @@
 				organ_owner.adjust_organ_loss(ORGAN_SLOT_APPENDIX, 15)
 
 /obj/item/organ/appendix/feel_for_damage(self_aware)
+	procstart = null
+	src.procstart = null
 	var/effective_stage = floor(inflamation_stage + (damage / maxHealth))
 	switch(effective_stage)
 		if(1)
@@ -90,15 +104,21 @@
 			return span_boldwarning("Your [self_aware ? "appendix" : "lower right abdomen"] feels like it's on fire!")
 
 /obj/item/organ/appendix/get_availability(datum/species/owner_species, mob/living/owner_mob)
+	procstart = null
+	src.procstart = null
 	return owner_species.mutantappendix
 
 /obj/item/organ/appendix/on_mob_remove(mob/living/carbon/organ_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(organ_owner, COMSIG_LIVING_POST_FULLY_HEAL)
 	REMOVE_TRAIT(organ_owner, TRAIT_DISEASELIKE_SEVERITY_MEDIUM, type)
 	organ_owner.med_hud_set_status()
 
 /obj/item/organ/appendix/on_mob_insert(mob/living/carbon/organ_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!inflamation_stage)
 		return
@@ -107,6 +127,8 @@
 	RegisterSignal(organ_owner, COMSIG_LIVING_POST_FULLY_HEAL, PROC_REF(on_fully_heal))
 
 /obj/item/organ/appendix/proc/on_fully_heal(datum/source, heal_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!(heal_flags & HEAL_ORGANS))
@@ -119,6 +141,8 @@
 	owner.med_hud_set_status()
 
 /obj/item/organ/appendix/get_status_text(scanpower, add_tooltips, colored)
+	procstart = null
+	src.procstart = null
 	if(!(organ_flags & ORGAN_FAILING) && inflamation_stage)
 		return conditional_tooltip("<font color='#ff9933'>Inflamed</font>", "Remove surgically.", add_tooltips)
 	return ..()
@@ -130,11 +154,15 @@
 	color = COLOR_LIME
 
 /obj/item/organ/appendix/pod/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// this could be anything... anything. still useless though
 	name = pick("pod endoplasmic reticulum", "pod golgi apparatus", "pod plastid", "pod vesicle")
 
 /obj/item/organ/appendix/pod/become_inflamed()
+	procstart = null
+	src.procstart = null
 	return
 
 #undef APPENDICITIS_PROB

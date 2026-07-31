@@ -28,6 +28,8 @@
 	departmental_flags = DEPARTMENT_BITFLAG_SCIENCE
 
 /datum/design/board/ai_law_rack/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/circuitboard/board = build_path
 	var/obj/machinery/ai_law_rack/rack = board::build_path

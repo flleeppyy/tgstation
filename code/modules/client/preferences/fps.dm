@@ -7,12 +7,18 @@
 	maximum = 240
 
 /datum/preference/numeric/fps/create_default_value()
+	procstart = null
+	src.procstart = null
 	return -1
 
 /datum/preference/numeric/fps/apply_to_client(client/client, value)
+	procstart = null
+	src.procstart = null
 	client.fps = (value < 0) ? RECOMMENDED_FPS : value
 
 /datum/preference/numeric/fps/compile_constant_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 
 	data["recommended_fps"] = RECOMMENDED_FPS

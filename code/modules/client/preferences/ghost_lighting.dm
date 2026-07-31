@@ -5,15 +5,21 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/choiced/ghost_lighting/create_default_value()
+	procstart = null
+	src.procstart = null
 	return "Darker"
 
 /datum/preference/choiced/ghost_lighting/init_possible_values()
+	procstart = null
+	src.procstart = null
 	var/list/values = list()
 	for(var/option_name in GLOB.ghost_lightings)
 		values += option_name
 	return values
 
 /datum/preference/choiced/ghost_lighting/apply_to_client(client/client, value)
+	procstart = null
+	src.procstart = null
 	var/mob/current_mob = client?.mob
 	if(!isobserver(current_mob))
 		return

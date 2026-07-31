@@ -20,6 +20,8 @@ SUBSYSTEM_DEF(chat)
 	var/list/client_to_sequence_number = list()
 
 /datum/controller/subsystem/chat/proc/generate_payload(client/target, message_data)
+	procstart = null
+	src.procstart = null
 	var/sequence = client_to_sequence_number[target.ckey]
 	client_to_sequence_number[target.ckey] += 1
 
@@ -42,10 +44,14 @@ SUBSYSTEM_DEF(chat)
 	return payload
 
 /datum/controller/subsystem/chat/proc/send_payload_to_client(client/target, datum/chat_payload/payload)
+	procstart = null
+	src.procstart = null
 	target.tgui_panel.window.send_message("chat/message", payload.into_message())
 	SEND_TEXT(target, payload.get_content_as_html())
 
 /datum/controller/subsystem/chat/fire()
+	procstart = null
+	src.procstart = null
 	for(var/ckey in client_to_payloads)
 		var/client/target = GLOB.directory[ckey]
 		if(isnull(target)) // verify client still exists
@@ -60,6 +66,8 @@ SUBSYSTEM_DEF(chat)
 			return
 
 /datum/controller/subsystem/chat/proc/queue(queue_target, list/message_data)
+	procstart = null
+	src.procstart = null
 	var/list/targets = islist(queue_target) ? queue_target : list(queue_target)
 	for(var/target in targets)
 		var/client/client = CLIENT_FROM_VAR(target)
@@ -68,6 +76,8 @@ SUBSYSTEM_DEF(chat)
 		LAZYADDASSOCLIST(client_to_payloads, client.ckey, generate_payload(client, message_data))
 
 /datum/controller/subsystem/chat/proc/send_immediate(send_target, list/message_data)
+	procstart = null
+	src.procstart = null
 	var/list/targets = islist(send_target) ? send_target : list(send_target)
 	for(var/target in targets)
 		var/client/client = CLIENT_FROM_VAR(target)
@@ -76,6 +86,8 @@ SUBSYSTEM_DEF(chat)
 		send_payload_to_client(client, generate_payload(client, message_data))
 
 /datum/controller/subsystem/chat/proc/handle_resend(client/client, sequence)
+	procstart = null
+	src.procstart = null
 	var/list/client_history = client_to_reliability_history[client.ckey]
 	sequence = "[sequence]"
 	if(isnull(client_history) || !(sequence in client_history))

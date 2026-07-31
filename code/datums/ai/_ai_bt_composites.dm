@@ -8,13 +8,19 @@
 	var/list/children = null
 
 /datum/bt_node/composite/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(children)
 	return ..()
 
 /datum/bt_node/composite/get_children()
+	procstart = null
+	src.procstart = null
 	return children
 
 /datum/bt_node/composite/has_active_descendants()
+	procstart = null
+	src.procstart = null
 	if(!children)
 		return FALSE
 	for(var/datum/bt_node/child as anything in children)
@@ -23,6 +29,8 @@
 	return FALSE
 
 /datum/bt_node/composite/finalize_node(datum/ai_controller/controller, list/to_visit)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!children)
 		return
@@ -31,6 +39,8 @@
 	to_visit += children
 
 /datum/bt_node/composite/set_descriptor_children(list/children_descs, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/list/resolved = list()
 	for(var/child_entry in children_descs)
 		var/datum/bt_node/child_node = controller.get_or_build_node(child_entry)
@@ -39,10 +49,14 @@
 	children = resolved
 
 /datum/bt_node/composite/collect_reset_children(list/to_visit)
+	procstart = null
+	src.procstart = null
 	if(children)
 		to_visit += children
 
 /datum/bt_node/composite/assign_execution_indices(counter)
+	procstart = null
+	src.procstart = null
 	execution_index = counter
 	counter++
 	for(var/datum/bt_node/c in children)
@@ -65,6 +79,8 @@
 	var/running_child_index = 0
 
 /datum/bt_node/composite/sequence/tick(datum/ai_controller/controller, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/result = BT_SUCCESS
 	var/start = running_child_index || 1
 	for(var/i in start to length(children))
@@ -84,10 +100,14 @@
 	return result
 
 /datum/bt_node/composite/sequence/reset_tick_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	running_child_index = 0
 
 /datum/bt_node/composite/sequence/append_active_nodes(list/lines, indent)
+	procstart = null
+	src.procstart = null
 	var/found_active = FALSE
 	for(var/datum/bt_node/child as anything in children)
 		if(found_active)
@@ -97,6 +117,8 @@
 			child.append_active_nodes(lines, indent)
 
 /datum/bt_node/composite/sequence/append_full_tree_state(list/lines, indent)
+	procstart = null
+	src.procstart = null
 	var/child_info = running_child_index ? " (child [running_child_index]/[length(children)])" : ""
 	lines += "[indent][get_status_marker()] SEQUENCE[child_info]"
 	for(var/datum/bt_node/child as anything in children)
@@ -117,6 +139,8 @@
 	var/running_child_index = 0
 
 /datum/bt_node/composite/selector/tick(datum/ai_controller/controller, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/result = BT_FAILURE
 	var/start = running_child_index || 1
 	for(var/i in start to length(children))
@@ -136,16 +160,22 @@
 	return result
 
 /datum/bt_node/composite/selector/reset_tick_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	running_child_index = 0
 
 /datum/bt_node/composite/selector/append_active_nodes(list/lines, indent)
+	procstart = null
+	src.procstart = null
 	for(var/datum/bt_node/child as anything in children)
 		if(child.has_active_descendants())
 			child.append_active_nodes(lines, indent)
 			return
 
 /datum/bt_node/composite/selector/append_full_tree_state(list/lines, indent)
+	procstart = null
+	src.procstart = null
 	var/child_info = running_child_index ? " (child [running_child_index]/[length(children)])" : ""
 	lines += "[indent][get_status_marker()] SELECTOR[child_info]"
 	for(var/datum/bt_node/child as anything in children)
@@ -177,6 +207,8 @@
 	var/next_loop_time = 0
 
 /datum/bt_node/composite/subplan/tick(datum/ai_controller/controller, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(loop_delay > 0 && next_loop_time > world.time)
 		return BT_RUNNING
 
@@ -210,10 +242,14 @@
 	return BT_SUCCESS
 
 /datum/bt_node/composite/subplan/reset_tick_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	next_loop_time = 0
 
 /datum/bt_node/composite/subplan/set_descriptor_children(list/children_descs, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	..()
 	if(length(children) > 1)
 		var/datum/bt_node/composite/sequence/legacy_subplan_sequence = new
@@ -245,6 +281,8 @@
 	var/finish_on_primary = FALSE
 
 /datum/bt_node/composite/parallel/tick(datum/ai_controller/controller, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/succeeded = 0
 	var/failed = 0
 	var/primary_result
@@ -293,15 +331,21 @@
 	return BT_RUNNING
 
 /datum/bt_node/composite/parallel/reset_tick_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	secondary_ready_at = null
 
 /datum/bt_node/composite/parallel/append_active_nodes(list/lines, indent)
+	procstart = null
+	src.procstart = null
 	for(var/datum/bt_node/child as anything in children)
 		if(child.has_active_descendants())
 			child.append_active_nodes(lines, indent)
 
 /datum/bt_node/composite/parallel/append_full_tree_state(list/lines, indent)
+	procstart = null
+	src.procstart = null
 	lines += "[indent][get_status_marker()] PARALLEL"
 	for(var/datum/bt_node/child as anything in children)
 		child.append_full_tree_state(lines, "[indent]  ")

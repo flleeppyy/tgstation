@@ -8,6 +8,8 @@
 
 /// Checks whether this saymode can be used by the given user. May send feedback.
 /datum/saymode/proc/can_be_used_by(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /**
@@ -35,6 +37,8 @@
 	mode = MODE_CHANGELING
 
 /datum/saymode/changeling/can_be_used_by(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.mind?.has_antag_datum(/datum/antagonist/fallen_changeling))
 		// special message for you
 		to_chat(user, span_changeling("<b>We're cut off from the hivemind! We've lost everything! EVERYTHING!!</b>"))
@@ -47,9 +51,13 @@
 	return TRUE
 
 /datum/saymode/changeling/proc/is_muted(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return user.reagents?.has_reagent(/datum/reagent/bz_metabolites, needs_metabolizing = TRUE)
 
 /datum/saymode/changeling/proc/get_lings()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/mob/ling_mob as anything in GLOB.mob_list)
 		//removes types that override the presence of being changeling (for example, borged lings still can't hivemind chat)
@@ -89,6 +97,8 @@
 	allows_custom_say_emotes = TRUE
 
 /datum/saymode/xeno/can_be_used_by(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user.hivecheck())
 		return FALSE
 	return TRUE
@@ -109,6 +119,8 @@
 	mode = MODE_VOCALCORDS
 
 /datum/saymode/vocalcords/can_be_used_by(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user))
 		return FALSE
 	return TRUE
@@ -129,11 +141,15 @@
 
 
 /datum/saymode/binary //everything that uses .b (silicons, drones)
+	procstart = null
+	src.procstart = null
 	key = MODE_KEY_BINARY
 	mode = MODE_BINARY
 	allows_custom_say_emotes = TRUE
 
 /datum/saymode/binary/can_be_used_by(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!isdrone(user) && !user.binarycheck())
 		return FALSE
 	return TRUE
@@ -159,6 +175,8 @@
 	allows_custom_say_emotes = TRUE
 
 /datum/saymode/holopad/can_be_used_by(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!isAI(user))
 		return FALSE
 	return TRUE

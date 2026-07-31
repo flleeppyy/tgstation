@@ -10,12 +10,16 @@
 	var/list/wire_output_ports = list()
 
 /obj/item/circuit_component/wire_bundle/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("Port count is proportional to shell capacity.", "orange", "plug")
 	. += create_ui_notice("Max port count: [MAX_WIRE_COUNT]", "orange", "plug")
 	. += create_ui_notice("Incompatible with assembly shell.", "red", "plug-circle-xmark")
 
 /obj/item/circuit_component/wire_bundle/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isassembly(shell) && !parent.admin_only)
 		return
@@ -31,6 +35,8 @@
 	RegisterSignal(shell, COMSIG_ATOM_ITEM_INTERACTION_SECONDARY, PROC_REF(on_shell_secondary_interaction))
 
 /obj/item/circuit_component/wire_bundle/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(shell.wires != tracked_wires)
 		return
@@ -50,17 +56,23 @@
 	wire_output_ports.Cut()
 
 /obj/item/circuit_component/wire_bundle/add_to(obj/item/integrated_circuit/added_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(added_to, TRAIT_COMPONENT_WIRE_BUNDLE))
 		return FALSE
 	ADD_TRAIT(added_to, TRAIT_COMPONENT_WIRE_BUNDLE, REF(src))
 
 /obj/item/circuit_component/wire_bundle/removed_from(obj/item/integrated_circuit/removed_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(removed_from, TRAIT_COMPONENT_WIRE_BUNDLE, REF(src))
 	return ..()
 
 /obj/item/circuit_component/wire_bundle/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!port)
 		return
@@ -74,6 +86,8 @@
 	attached?.activate()
 
 /obj/item/circuit_component/wire_bundle/proc/on_pulse_wire(source, wire)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(tracked_wires.is_cut(wire))
 		return
@@ -83,12 +97,16 @@
 	port.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/wire_bundle/proc/can_access_wires(atom/source)
+	procstart = null
+	src.procstart = null
 	if(ismachinery(source))
 		var/obj/machinery/machine = source
 		return machine.panel_open
 	return TRUE
 
 /obj/item/circuit_component/wire_bundle/proc/on_shell_requesting_context(atom/source, list/context, obj/item/item, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	. = NONE
 
@@ -100,6 +118,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/circuit_component/wire_bundle/proc/on_shell_secondary_interaction(atom/source, mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!is_wire_tool(tool))
 		return

@@ -29,23 +29,33 @@
 	return ..()
 
 /datum/component/reagent_refiller/Destroy(force)
+	procstart = null
+	src.procstart = null
 	power_draw_callback = null
 	return ..()
 
 /datum/component/reagent_refiller/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ITEM_INTERACTING_WITH_ATOM, PROC_REF(refill))
 	RegisterSignal(parent, COMSIG_ATOM_EXITED, PROC_REF(delete_self))
 
 /datum/component/reagent_refiller/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ITEM_INTERACTING_WITH_ATOM, COMSIG_ATOM_EXITED))
 
 /datum/component/reagent_refiller/proc/delete_self()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(src)
 
 /// Preps the reagent container for being refilled
 /datum/component/reagent_refiller/proc/refill()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/reagent_containers/container = parent
@@ -61,6 +71,8 @@
 
 /// Refills the reagent container, and uses cell power if applicable
 /datum/component/reagent_refiller/proc/add_reagents(obj/item/reagent_containers/target, oldloc, reagent_to_refill, amount)
+	procstart = null
+	src.procstart = null
 	if (QDELETED(src) || QDELETED(target))
 		return
 	if (target.loc != oldloc)

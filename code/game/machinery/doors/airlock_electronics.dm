@@ -19,6 +19,8 @@
 	var/shell = FALSE
 
 /obj/item/electronics/airlock/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Has a neat <i>selection menu</i> for modifying airlock access levels.")
 
@@ -28,6 +30,8 @@
  * * [location][atom]- the location to create the new copy in
  */
 /obj/item/electronics/airlock/proc/create_copy(atom/location)
+	procstart = null
+	src.procstart = null
 	//create a copy
 	var/obj/item/electronics/airlock/new_electronics = new(location)
 	//copy all params
@@ -42,15 +46,21 @@
 
 
 /obj/item/electronics/airlock/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.hands_state
 
 /obj/item/electronics/airlock/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AirlockElectronics", name)
 		ui.open()
 
 /obj/item/electronics/airlock/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/list/regions = list()
@@ -62,6 +72,8 @@
 	return data
 
 /obj/item/electronics/airlock/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["accesses"] = accesses
 	data["oneAccess"] = one_access
@@ -73,6 +85,8 @@
 
 ///shared by rcd & airlock electronics
 /obj/item/electronics/airlock/proc/do_action(action, params)
+	procstart = null
+	src.procstart = null
 	switch(action)
 		if("clear_all")
 			accesses = list()
@@ -110,6 +124,8 @@
 			passed_cycle_id = new_cycle_id
 
 /obj/item/electronics/airlock/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -117,6 +133,8 @@
 	return TRUE
 
 /obj/item/electronics/airlock/ui_host()
+	procstart = null
+	src.procstart = null
 	if(holder)
 		return holder
 	return src

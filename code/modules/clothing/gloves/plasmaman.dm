@@ -82,6 +82,8 @@
 	greyscale_colors = "#ff0000"
 
 /obj/item/clothing/gloves/color/plasmaman/clown/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CLOWN, CELL_VIRUS_TABLE_GENERIC, rand(2,3), 0)
 

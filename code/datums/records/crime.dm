@@ -16,6 +16,8 @@
 	var/voider
 
 /datum/crime/New(name = "Crime", details = "No details provided.", author = "Anonymous")
+	procstart = null
+	src.procstart = null
 	src.author = author
 	src.details = details
 	src.name = name
@@ -28,12 +30,16 @@
 	var/paid
 
 /datum/crime/citation/New(name = "Citation", details = "No details provided.", author = "Anonymous", fine = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.fine = fine
 	src.paid = 0
 
 /// Pays off a fine and attempts to fix any weird values.
 /datum/crime/citation/proc/pay_fine(amount)
+	procstart = null
+	src.procstart = null
 	if(amount <= 0)
 		return FALSE
 
@@ -49,6 +55,8 @@
 
 /// Sends a citation alert message to the target's PDA.
 /datum/crime/citation/proc/alert_owner(mob/sender, atom/source, target_name, message)
+	procstart = null
+	src.procstart = null
 	for(var/messenger_ref in GLOB.pda_messengers)
 		var/datum/computer_file/program/messenger/messenger = GLOB.pda_messengers[messenger_ref]
 		if(messenger.computer.saved_identification != target_name)

@@ -4,11 +4,15 @@
 	demand_connects = SOUTH
 
 /datum/component/plumbing/simple_demand/Initialize(ducting_layer, distinct_reagent_cap = INFINITY)
+	procstart = null
+	src.procstart = null
 	src.distinct_reagent_cap = distinct_reagent_cap
 	return ..()
 
 ///Component for adding an extended overlay on wall mounts
 /datum/component/plumbing/simple_demand/extended/create_overlays(atom/movable/parent_movable, list/overlays)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// This is a little wiggley extension to make wallmounts like sinks and showers visually link to the pipe
@@ -24,11 +28,15 @@
 /datum/component/plumbing/simple_demand/disposer
 
 /datum/component/plumbing/simple_demand/disposer/Initialize(ducting_layer, distinct_reagent_cap)
+	procstart = null
+	src.procstart = null
 	if(!istype(parent, /obj/machinery/plumbing/disposer))
 		return COMPONENT_INCOMPATIBLE
 	return ..()
 
 /datum/component/plumbing/simple_demand/disposer/send_request(dir)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/plumbing/disposer/target = parent
 	if(target.on)
 		process_request(target.disposal_rate * SSFLUIDS_DT, dir = dir)
@@ -47,6 +55,8 @@
 	demand_connects = SOUTH|NORTH|EAST|WEST
 
 /datum/component/plumbing/aquarium/create_overlays(atom/movable/parent_movable, list/overlays)
+	procstart = null
+	src.procstart = null
 	//Overlays won't look good, and the aquarium sprite occupies about the entire 32x32 area anyway.
 	return
 
@@ -56,4 +66,6 @@
 	supply_connects = SOUTH
 
 /datum/component/plumbing/manifold/change_ducting_layer(obj/source, obj/changer, new_layer)
+	procstart = null
+	src.procstart = null
 	return

@@ -14,6 +14,8 @@ SUBSYSTEM_DEF(area_contents)
 	var/list/area/marked_for_clearing = list()
 
 /datum/controller/subsystem/area_contents/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	var/total_clearing_from = 0
 	var/total_to_clear = 0
 	for(var/area/to_clear as anything in marked_for_clearing)
@@ -27,6 +29,8 @@ SUBSYSTEM_DEF(area_contents)
 
 
 /datum/controller/subsystem/area_contents/fire(resumed)
+	procstart = null
+	src.procstart = null
 	if(!resumed)
 		currentrun = GLOB.areas.Copy()
 

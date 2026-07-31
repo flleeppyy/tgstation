@@ -5,6 +5,8 @@
 	var/venue_price
 
 /datum/element/venue_price/Attach(datum/target, venue_price)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!venue_price)
 		stack_trace("A venue_price element was attached to something without specifying an actual price.")
@@ -17,23 +19,31 @@
 		RegisterSignal(target, COMSIG_REAGENT_SOLD_TO_CUSTOMER, PROC_REF(reagent_sold))
 
 /datum/element/venue_price/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_ITEM_SOLD_TO_CUSTOMER)
 	UnregisterSignal(target, COMSIG_REAGENT_SOLD_TO_CUSTOMER)
 
 /datum/element/venue_price/proc/item_sold(obj/item/thing_sold, mob/living/basic/robot_customer/sold_to)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	produce_cash(sold_to, thing_sold)
 	return TRANSACTION_SUCCESS
 
 /datum/element/venue_price/proc/reagent_sold(datum/reagent/reagent_sold, mob/living/basic/robot_customer/sold_to, obj/item/container)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	produce_cash(sold_to, container)
 	return TRANSACTION_SUCCESS
 
 /datum/element/venue_price/proc/produce_cash(mob/living/basic/robot_customer/sold_to, obj/item/container)
+	procstart = null
+	src.procstart = null
 	new /obj/item/holochip(get_turf(container), venue_price)
 	playsound(container, 'sound/effects/cashregister.ogg', 60, TRUE)
 

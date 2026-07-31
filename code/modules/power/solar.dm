@@ -38,6 +38,8 @@
 	var/power_tier = 1
 
 /obj/machinery/power/solar/Initialize(mapload, obj/item/solar_assembly/S)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	panel_edge = add_panel_overlay("solar_panel_glass_edge", PANEL_EDGE_Z_OFFSET)
@@ -48,12 +50,16 @@
 	RegisterSignal(SSsun, COMSIG_SUN_MOVED, PROC_REF(queue_update_solar_exposure))
 
 /obj/machinery/power/solar/Destroy()
+	procstart = null
+	src.procstart = null
 	unset_control() //remove from control computer
 	QDEL_NULL(panel)
 	QDEL_NULL(panel_edge)
 	return ..()
 
 /obj/machinery/power/solar/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(same_z_layer)
 		return
@@ -66,6 +72,8 @@
 	blocks_emissive = EMISSIVE_BLOCK_UNIQUE
 
 /obj/machinery/power/solar/proc/add_panel_overlay(icon_state, z_offset)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/overlay/solar_panel/overlay = new(src)
 	overlay.icon_state = icon_state
 	SET_PLANE_EXPLICIT(overlay, ABOVE_GAME_PLANE, src)
@@ -74,10 +82,14 @@
 	return overlay
 
 /obj/machinery/power/solar/should_have_node()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 //set the control of the panel to a given computer
 /obj/machinery/power/solar/proc/set_control(obj/machinery/power/solar_control/SC)
+	procstart = null
+	src.procstart = null
 	unset_control()
 	control = SC
 	SC.connected_panels += src
@@ -86,12 +98,16 @@
 
 //set the control of the panel to null and removes it from the control list of the previous control computer if needed
 /obj/machinery/power/solar/proc/unset_control()
+	procstart = null
+	src.procstart = null
 	if(control)
 		control.connected_panels -= src
 		control.total_capacity -= SOLAR_GEN_RATE * power_tier
 		control = null
 
 /obj/machinery/power/solar/proc/Make(obj/item/solar_assembly/assembly)
+	procstart = null
+	src.procstart = null
 	if(!assembly)
 		assembly= new /obj/item/solar_assembly(src)
 		assembly.glass_type = /obj/item/stack/sheet/glass
@@ -100,6 +116,8 @@
 		assembly.forceMove(src)
 
 /obj/machinery/power/solar/crowbar_act(mob/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(I.use_tool(src, user, 0))
 		playsound(src.loc, 'sound/items/deconstruct.ogg', 50, TRUE)
 		user.visible_message(span_notice("[user] takes the glass off [src]."), span_notice("You take the glass off [src]."))
@@ -107,6 +125,8 @@
 	return TRUE
 
 /obj/machinery/power/solar/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(machine_stat & BROKEN)
@@ -118,6 +138,8 @@
 
 
 /obj/machinery/power/solar/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		playsound(loc, 'sound/effects/glass/glassbr3.ogg', 100, TRUE)
@@ -128,6 +150,8 @@
 		azimuth_current = new_angle
 
 /obj/machinery/power/solar/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	if(disassembled)
 		var/obj/item/solar_assembly/assembly = locate() in src
 		if(assembly)
@@ -147,16 +171,22 @@
 
 
 /obj/machinery/power/solar/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	panel.icon_state = "solar_panel_[material_type.name][(machine_stat & BROKEN) ? "-b" : null]"
 	panel_edge.icon_state = "solar_panel_[material_type.name][(machine_stat & BROKEN) ? "-b" : "_edge"]"
 
 
 /obj/machinery/power/solar/proc/queue_turn(azimuth)
+	procstart = null
+	src.procstart = null
 	needs_to_turn = TRUE
 	azimuth_target = azimuth
 
 /obj/machinery/power/solar/proc/queue_update_solar_exposure()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	needs_to_update_solar_exposure = TRUE //updating right away would be wasteful if we're also turning later
@@ -167,6 +197,8 @@
  * * angle - the angle the panel is facing
  */
 /obj/machinery/power/solar/proc/get_panel_transform(angle)
+	procstart = null
+	src.procstart = null
 	// 2.5D solar panel works by using a magic combination of transforms
 	var/matrix/turner = matrix()
 	// Rotate towards sun
@@ -179,6 +211,8 @@
 	return turner
 
 /obj/machinery/power/solar/proc/visually_turn_part(part, angle)
+	procstart = null
+	src.procstart = null
 	var/mid_azimuth = (azimuth_current + angle) / 2
 
 	// actually flip to other direction?
@@ -196,10 +230,14 @@
 	)
 
 /obj/machinery/power/solar/proc/visually_turn(angle)
+	procstart = null
+	src.procstart = null
 	visually_turn_part(panel, angle)
 	visually_turn_part(panel_edge, angle)
 
 /obj/machinery/power/solar/proc/update_turn()
+	procstart = null
+	src.procstart = null
 	needs_to_turn = FALSE
 	if(azimuth_current != azimuth_target)
 		visually_turn(azimuth_target)
@@ -210,6 +248,8 @@
 
 ///calculates the fraction of the sunlight that the panel receives
 /obj/machinery/power/solar/proc/update_solar_exposure()
+	procstart = null
+	src.procstart = null
 	needs_to_update_solar_exposure = FALSE
 	sunfrac = 0
 	if(obscured)
@@ -225,6 +265,8 @@
 	sunfrac = .
 
 /obj/machinery/power/solar/process()
+	procstart = null
+	src.procstart = null
 	// If the turf is sun blocked directly we have no hope of being able to see the sun so don't bother processing
 	// On the other hand if the station is blocking the sun we might we might be able to see it later, so check for that (in update_turn)
 	if((machine_stat & BROKEN) || isnull(loc) || HAS_TRAIT(loc, TRAIT_TURF_SUN_BLOCKED))
@@ -246,10 +288,14 @@
 
 //Bit of a hack but this whole type is a hack
 /obj/machinery/power/solar/fake/Initialize(mapload, obj/item/solar_assembly/S)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(SSsun, COMSIG_SUN_MOVED)
 
 /obj/machinery/power/solar/fake/process()
+	procstart = null
+	src.procstart = null
 	return PROCESS_KILL
 
 //
@@ -272,25 +318,35 @@
 	var/random_offset = 6 //amount in pixels an unanchored assembly may be offset by
 
 /obj/item/solar_assembly/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!anchored && !pixel_x && !pixel_y)
 		randomise_offset(random_offset)
 
 /obj/item/solar_assembly/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = tracker ? "tracker_base" : "sp_base"
 
 /obj/item/solar_assembly/proc/randomise_offset(amount)
+	procstart = null
+	src.procstart = null
 	pixel_x = base_pixel_x + rand(-amount, amount)
 	pixel_y = base_pixel_y + rand(-amount, amount)
 
 /obj/item/solar_assembly/set_anchored(anchorvalue)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.))
 		return
 	randomise_offset(anchored ? 0 : random_offset)
 
 /obj/item/solar_assembly/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/turf/solarturf = get_turf(src)
 
 	if(tracker)
@@ -370,6 +426,8 @@
 	return NONE
 
 /obj/item/solar_assembly/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	var/turf/solarturf = get_turf(src)
 	if(!isturf(loc))
 		return NONE
@@ -394,6 +452,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/solar_assembly/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!tracker)
 		return NONE
 	new /obj/item/electronics/tracker(src.loc)
@@ -442,6 +502,8 @@
 	var/next_record = 0
 
 /obj/machinery/power/solar_control/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSsun, COMSIG_SUN_MOVED, PROC_REF(timed_track))
 	connect_to_network()
@@ -453,6 +515,8 @@
 	history["capacity"] = list()
 
 /obj/machinery/power/solar_control/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/power/solar/M in connected_panels)
 		M.unset_control()
 	if(connected_tracker)
@@ -461,6 +525,8 @@
 
 //search for unconnected panels and trackers in the computer powernet and connect them
 /obj/machinery/power/solar_control/proc/search_for_connected()
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		for(var/obj/machinery/power/M in powernet.nodes)
 			if(istype(M, /obj/machinery/power/solar))
@@ -480,6 +546,8 @@
 
 ///Record the generated power supply and capacity for history
 /obj/machinery/power/solar_control/proc/record()
+	procstart = null
+	src.procstart = null
 	if(record_size == 0)
 		record_size = 1 + ROUND_UP(360 / (azimuth_rate * abs(SSsun.azimuth_mod))) //History contains full sun cycle
 
@@ -499,6 +567,8 @@
 			capacity.Cut(1, 2)
 
 /obj/machinery/power/solar_control/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & NOPOWER)
 		. += mutable_appearance(icon, "[icon_keyboard]_off")
@@ -511,12 +581,16 @@
 	. += mutable_appearance(icon, icon_screen)
 
 /obj/machinery/power/solar_control/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SolarControl", name)
 		ui.open()
 
 /obj/machinery/power/solar_control/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["supply"] = round(lastgen)
 	data["capacity"] = total_capacity
@@ -530,6 +604,8 @@
 	return data
 
 /obj/machinery/power/solar_control/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -566,12 +642,16 @@
 	return FALSE
 
 /obj/machinery/power/solar_control/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode || (tool.item_flags & NOBLUDGEON))
 		return ..()
 	attack_hand(user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/solar_control/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(tool.use_tool(src, user, 20, volume=50))
 		return ITEM_INTERACT_BLOCKING
 	var/obj/structure/frame/computer/new_computer = new /obj/structure/frame/computer(src.loc)
@@ -592,6 +672,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/solar_control/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(machine_stat & BROKEN)
@@ -602,11 +684,15 @@
 			playsound(src.loc, 'sound/items/tools/welder.ogg', 100, TRUE)
 
 /obj/machinery/power/solar_control/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		playsound(loc, 'sound/effects/glass/glassbr3.ogg', 100, TRUE)
 
 /obj/machinery/power/solar_control/process()
+	procstart = null
+	src.procstart = null
 	lastgen = gen
 	gen = 0
 	if(connected_tracker && (!powernet || connected_tracker.powernet != powernet))
@@ -615,6 +701,8 @@
 
 ///Ran every time the sun updates.
 /obj/machinery/power/solar_control/proc/timed_track()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(track == SOLAR_TRACK_TIMED)
@@ -623,6 +711,8 @@
 
 ///Rotates the panel to the passed angles
 /obj/machinery/power/solar_control/proc/set_panels(azimuth)
+	procstart = null
+	src.procstart = null
 	azimuth = clamp(round(azimuth, 0.01), -360, 719.99)
 	if(azimuth >= 360)
 		azimuth -= 360

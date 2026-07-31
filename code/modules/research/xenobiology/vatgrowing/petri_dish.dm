@@ -10,15 +10,21 @@
 	var/datum/biological_sample/sample
 
 /obj/item/petri_dish/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(sample)
 
 /obj/item/petri_dish/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vname == NAMEOF(src, sample))
 		update_appearance()
 
 /obj/item/petri_dish/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!sample)
 		return
@@ -28,11 +34,15 @@
 		. += MO.get_details()
 
 /obj/item/petri_dish/wash(clean_types)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	sample = null
 	update_appearance()
 
 /obj/item/petri_dish/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!sample)
 		return
@@ -44,6 +54,8 @@
 	. += overlay2
 
 /obj/item/petri_dish/proc/deposit_sample(user, datum/biological_sample/deposited_sample)
+	procstart = null
+	src.procstart = null
 	sample = deposited_sample
 	to_chat(user, span_notice("You deposit a sample into [src]."))
 	update_appearance()
@@ -59,6 +71,8 @@
 	name = "basic sample petri dish"
 
 /obj/item/petri_dish/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/chosen = pick(possible_samples)
 	sample = new

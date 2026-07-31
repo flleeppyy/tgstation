@@ -12,6 +12,8 @@
 	var/all_layers
 
 /datum/pipe_info/pipe/New(label, obj/machinery/atmospherics/path, use_five_layers)
+	procstart = null
+	src.procstart = null
 	name = label
 	id = path
 	all_layers = use_five_layers
@@ -27,6 +29,8 @@
  * * selected - is this pipe meant to be highlighted in the UI
  */
 /datum/pipe_info/proc/get_preview(selected_dir, selected = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 
 	var/list/dirs
@@ -78,12 +82,16 @@
 	all_layers = TRUE
 
 /datum/pipe_info/meter/New(label)
+	procstart = null
+	src.procstart = null
 	name = label
 
 //==============================================================================================
 
 ///Disposal pipe info
 /datum/pipe_info/disposal/New(label, obj/path, dt=PIPE_UNARY)
+	procstart = null
+	src.procstart = null
 	name = label
 	id = path
 
@@ -98,6 +106,8 @@
 
 ///Transient tube pipe info
 /datum/pipe_info/transit/New(label, obj/path, dt=PIPE_UNARY)
+	procstart = null
+	src.procstart = null
 	name = label
 	id = path
 	dirtype = dt

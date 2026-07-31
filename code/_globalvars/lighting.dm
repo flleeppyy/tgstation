@@ -4,6 +4,8 @@ GLOBAL_VAR_INIT(light_debug_enabled, FALSE)
 GLOBAL_LIST_INIT_TYPED(light_types, /datum/light_template, generate_light_types())
 
 /proc/generate_light_types()
+	procstart = null
+	src.procstart = null
 	var/list/types = list()
 	for(var/datum/light_template/template_path as anything in typesof(/datum/light_template))
 		if(initial(template_path.ignore_type) == template_path)
@@ -41,11 +43,15 @@ GLOBAL_LIST_INIT_TYPED(light_types, /datum/light_template, generate_light_types(
 	var/ignore_type = /datum/light_template
 
 /datum/light_template/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	id = replacetext("[type]", "/", "-")
 
 /// Create an atom with our light details
 /datum/light_template/proc/create(atom/location, direction)
+	procstart = null
+	src.procstart = null
 	var/atom/lad = new spawn_type(location)
 	lad.light_flags &= ~LIGHT_FROZEN
 	lad.set_light(range, power, color, angle, l_on = TRUE)
@@ -61,6 +67,8 @@ GLOBAL_LIST_INIT_TYPED(light_types, /datum/light_template, generate_light_types(
 	var/obj/machinery/light/path_to_read
 
 /datum/light_template/read_light/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc ||= "[path_to_read]"
 	icon ||= initial(path_to_read.icon)

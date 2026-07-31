@@ -12,6 +12,8 @@
 	var/refundable_tc = 1
 
 /datum/element/uplink_reimburse/Attach(datum/target, refundable_tc = 1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isitem(target))
@@ -24,6 +26,8 @@
 	RegisterSignal(target,COMSIG_TRAITOR_ITEM_USED(target.type), PROC_REF(used))
 
 /datum/element/uplink_reimburse/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, list(COMSIG_ATOM_EXAMINE, COMSIG_TRAITOR_ITEM_USED(target.type), COMSIG_ITEM_ATTEMPT_TC_REIMBURSE))
 
 
@@ -31,6 +35,8 @@
 
 ///signal called on parent being examined
 /datum/element/uplink_reimburse/proc/on_examine(datum/target, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!IS_TRAITOR(user) && !IS_NUKE_OP(user))
@@ -40,6 +46,8 @@
 	examine_list += span_notice("There's a label written in codespeak on the side, saying that this item can be refunded for [refundable_tc] by applying it onto an uplink.")
 
 /datum/element/uplink_reimburse/proc/reimburse(obj/item/refund_item, mob/user, datum/component/uplink/uplink_comp)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!uplink_comp)
@@ -53,6 +61,8 @@
 
 /// If the item is used, it needs to no longer be refundable
 /datum/element/uplink_reimburse/proc/used(datum/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	Detach(target)

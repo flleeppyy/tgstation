@@ -27,6 +27,8 @@
 	ai_controller = /datum/ai_controller/basic_controller/spaceman
 
 /mob/living/basic/spaceman/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/ai_retaliate)
 

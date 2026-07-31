@@ -14,10 +14,14 @@
 	var/flipped_build_type
 
 /obj/structure/c_transit_tube/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_rotation)
 
 /obj/structure/c_transit_tube/proc/can_wrench_in_loc(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/source_turf = get_turf(loc)
 	var/existing_tubes = 0
 	for(var/obj/structure/transit_tube/tube in source_turf)
@@ -28,6 +32,8 @@
 	return TRUE
 
 /obj/structure/c_transit_tube/proc/post_rotation(mob/user, degrees)
+	procstart = null
+	src.procstart = null
 	if(flipped_build_type && degrees == ROTATION_FLIP)
 		setDir(turn(dir, degrees)) //Turn back we don't actually flip
 		flipped = !flipped
@@ -39,6 +45,8 @@
 		icon_state = "[base_icon_state][flipped]"
 
 /obj/structure/c_transit_tube/wrench_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!can_wrench_in_loc(user))
 		return

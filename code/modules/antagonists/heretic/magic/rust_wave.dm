@@ -21,16 +21,22 @@
 	respect_density = TRUE
 
 /datum/action/cooldown/spell/cone/staggered/entropic_plume/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/temp_visual/dir_setting/entropic(get_step(cast_on, cast_on.dir), cast_on.dir)
 
 /datum/action/cooldown/spell/cone/staggered/entropic_plume/do_turf_cone_effect(turf/target_turf, mob/living/caster, level)
+	procstart = null
+	src.procstart = null
 	if(ismob(caster))
 		caster.do_rust_heretic_act(target_turf)
 	else
 		target_turf.rust_heretic_act()
 
 /datum/action/cooldown/spell/cone/staggered/entropic_plume/do_mob_cone_effect(mob/living/victim, atom/caster, level)
+	procstart = null
+	src.procstart = null
 	if(victim.can_block_magic(antimagic_flags) || IS_HERETIC_OR_MONSTER(victim) || victim == caster)
 		return
 	victim.apply_status_effect(/datum/status_effect/forced_combat/amok)
@@ -39,6 +45,8 @@
 	to_chat(victim, span_boldwarning("You feel filled with a rage that is not your own!"))
 
 /datum/action/cooldown/spell/cone/staggered/entropic_plume/calculate_cone_shape(current_level)
+	procstart = null
+	src.procstart = null
 	// At the first level (that isn't level 1) we will be small
 	if(current_level == 2)
 		return 3
@@ -54,6 +62,8 @@
 	duration = 3 SECONDS
 
 /obj/effect/temp_visual/dir_setting/entropic/setDir(dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(dir)
 		if(NORTH)
@@ -98,6 +108,8 @@
 	speed = 1
 
 /obj/projectile/magic/aoe/rust_wave/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(src, 'sound/items/tools/welder.ogg', 75, TRUE)
 	var/list/turflist = list()

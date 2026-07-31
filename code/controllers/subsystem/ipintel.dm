@@ -18,6 +18,8 @@ SUBSYSTEM_DEF(ipintel)
 	var/date
 
 /datum/controller/subsystem/ipintel/OnConfigLoad()
+	procstart = null
+	src.procstart = null
 	var/list/fail_messages = list()
 
 	var/contact_email = CONFIG_GET(string/ipintel_email)
@@ -41,14 +43,20 @@ SUBSYSTEM_DEF(ipintel)
 		))
 
 /datum/controller/subsystem/ipintel/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg = "M:[CONFIG_GET(number/ipintel_rate_minute) - rate_limit_minute]"
 	return ..()
 
 
 /datum/controller/subsystem/ipintel/proc/is_enabled()
+	procstart = null
+	src.procstart = null
 	return length(CONFIG_GET(string/ipintel_email)) && length(CONFIG_GET(string/ipintel_base)) && CONFIG_GET(flag/sql_enabled)
 
 /datum/controller/subsystem/ipintel/proc/get_address_intel_state(address, probability_override)
+	procstart = null
+	src.procstart = null
 	if (!is_enabled())
 		return IPINTEL_GOOD_IP
 	var/datum/ip_intel/intel = query_address(address)
@@ -67,6 +75,8 @@ SUBSYSTEM_DEF(ipintel)
 	return IPINTEL_GOOD_IP
 
 /datum/controller/subsystem/ipintel/proc/is_rate_limited()
+	procstart = null
+	src.procstart = null
 	var/static/minute_key
 	var/expected_minute_key = floor(REALTIMEOFDAY / 1 MINUTES)
 
@@ -79,6 +89,8 @@ SUBSYSTEM_DEF(ipintel)
 	return FALSE
 
 /datum/controller/subsystem/ipintel/proc/query_address(address, allow_cached = TRUE)
+	procstart = null
+	src.procstart = null
 	if (!is_enabled())
 		return
 	if(allow_cached && fetch_cached_ip_intel(address))
@@ -113,6 +125,8 @@ SUBSYSTEM_DEF(ipintel)
 	return intel
 
 /datum/controller/subsystem/ipintel/proc/add_intel_to_database(datum/ip_intel/intel)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE //no need to make the client connection wait for this step.
 	if (!SSdbcore.Connect())
 		return
@@ -133,6 +147,8 @@ SUBSYSTEM_DEF(ipintel)
 	QDEL_NULL(query)
 
 /datum/controller/subsystem/ipintel/proc/fetch_cached_ip_intel(address)
+	procstart = null
+	src.procstart = null
 	if (!SSdbcore.Connect())
 		return
 	var/ipintel_cache_length = CONFIG_GET(number/ipintel_cache_length)
@@ -167,6 +183,8 @@ SUBSYSTEM_DEF(ipintel)
 	return TRUE
 
 /datum/controller/subsystem/ipintel/proc/is_exempt(client/player)
+	procstart = null
+	src.procstart = null
 	if(player.holder || GLOB.deadmins[player.ckey])
 		return TRUE
 	var/exempt_living_playtime = CONFIG_GET(number/ipintel_exempt_playtime_living)
@@ -180,6 +198,8 @@ SUBSYSTEM_DEF(ipintel)
 	return FALSE
 
 /datum/controller/subsystem/ipintel/proc/is_whitelisted(ckey)
+	procstart = null
+	src.procstart = null
 	var/datum/db_query/query = SSdbcore.NewQuery(
 		"SELECT * FROM [format_table_name("ipintel_whitelist")] WHERE ckey = :ckey", list(
 			"ckey" = ckey
@@ -236,6 +256,8 @@ ADMIN_VERB(ipintel_revoke, R_BAN, "Revoke Player VPN Whitelist", "Revoke a playe
 	message_admins("IPINTEL: [key_name_admin(user)] has revoked the VPN whitelist for '[ckey]'")
 
 /client/proc/check_ip_intel()
+	procstart = null
+	src.procstart = null
 	if (!SSipintel.is_enabled())
 		return
 	if(SSipintel.is_exempt(src) || SSipintel.is_whitelisted(ckey))

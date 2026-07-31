@@ -6,23 +6,33 @@ ADMIN_VERB(trophy_manager, R_ADMIN, "Trophy Manager", "View all trophies.", ADMI
 /datum/trophy_manager
 
 /datum/trophy_manager/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_ADMIN)
 
 /datum/trophy_manager/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /datum/trophy_manager/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "TrophyAdminPanel")
 		ui.open()
 
 /datum/trophy_manager/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["trophies"] = SSpersistence.trophy_ui_data()
 	return data
 
 /datum/trophy_manager/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if (!check_rights(R_ADMIN))

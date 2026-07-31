@@ -9,6 +9,8 @@
 	mob_species = /datum/species/skeleton
 
 /obj/effect/mob_spawn/corpse/human/charredskeleton/special(mob/living/carbon/human/spawned_human, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spawned_human.color = "#454545"
 	spawned_human.gender = NEUTER
@@ -31,10 +33,14 @@
 	brute_damage = 1000
 
 /obj/effect/mob_spawn/corpse/human/legioninfested/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	outfit = select_outfit()
 	return ..()
 
 /obj/effect/mob_spawn/corpse/human/legioninfested/get_mob_species(mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	if(ispath(outfit, /datum/outfit/consumed_miner))
 		return pick_weight(list(
 			/datum/species/human = 70,
@@ -53,12 +59,16 @@
 	return ..()
 
 /obj/effect/mob_spawn/corpse/human/legioninfested/special(mob/living/carbon/human/spawned_human, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/organ/legion_tumour/cancer = new()
 	cancer.Insert(spawned_human, special = TRUE, movement_flags = DELETE_IF_REPLACED)
 
 /// Returns the outfit worn by our corpse
 /obj/effect/mob_spawn/corpse/human/legioninfested/proc/select_outfit()
+	procstart = null
+	src.procstart = null
 	var/corpse_theme = pick_weight(list(
 		"Miner" = 64,
 		"Clown" = 5,
@@ -94,6 +104,8 @@
 /obj/effect/mob_spawn/corpse/human/legioninfested/dwarf
 
 /obj/effect/mob_spawn/corpse/human/legioninfested/dwarf/special(mob/living/carbon/human/spawned_human, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spawned_human.dna.add_mutation(/datum/mutation/dwarfism, MUTATION_SOURCE_MUTATOR)
 
@@ -101,6 +113,8 @@
 /obj/effect/mob_spawn/corpse/human/legioninfested/snow
 
 /obj/effect/mob_spawn/corpse/human/legioninfested/snow/select_outfit()
+	procstart = null
+	src.procstart = null
 	var/corpse_theme = pick_weight(list(
 		"Miner" = 64,
 		"Clown" = 5,
@@ -139,9 +153,13 @@
 	mob_species = /datum/species/skeleton
 
 /obj/effect/mob_spawn/corpse/human/legioninfested/skeleton/select_outfit()
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/effect/mob_spawn/corpse/human/legioninfested/skeleton/special(mob/living/carbon/human/spawned_human, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spawned_human.gender = NEUTER
 
@@ -153,6 +171,8 @@
 	burn_damage = 1000
 
 /obj/effect/mob_spawn/corpse/human/legioninfested/skeleton/charred/special(mob/living/carbon/human/spawned_human, mob/mob_possessor, apply_prefs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spawned_human.color = "#454545"
 	spawned_human.AddComponent(/datum/component/storm_hating)
@@ -165,6 +185,8 @@
 	shoes = /obj/item/clothing/shoes/workboots/mining
 
 /datum/outfit/consumed_miner/pre_equip(mob/living/carbon/human/miner, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	var/regular_uniform = FALSE
 	if(visuals_only)
 		regular_uniform = TRUE //assume human
@@ -219,6 +241,8 @@
 	uniform = /obj/item/clothing/under/costume/gladiator/ash_walker
 
 /datum/outfit/consumed_ashwalker/pre_equip(mob/living/carbon/human/ashwalker, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(prob(95))
 		head = /obj/item/clothing/head/helmet/gladiator
 	else
@@ -256,6 +280,8 @@
 	var/drop_a_pie_cannon = FALSE
 
 /datum/outfit/consumed_clown/pre_equip(mob/living/carbon/human/clown, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!visuals_only)
 		clown.fully_replace_character_name(clown.name, pick(GLOB.clown_names))
 	if(prob(70))
@@ -282,6 +308,8 @@
 		r_pocket = /obj/item/implanter/sad_trombone
 
 /datum/outfit/consumed_clown/post_equip(mob/living/carbon/human/clown, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(drop_a_pie_cannon)
 		new /obj/item/pneumatic_cannon/pie(get_turf(clown))
@@ -291,6 +319,8 @@
 	//Oops! All randomized!
 
 /datum/outfit/consumed_golem/pre_equip(mob/living/carbon/human/golem, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(prob(30))
 		glasses = pick_weight(list(
 			/obj/item/clothing/glasses/hud/diagnostic = 2,
@@ -319,6 +349,8 @@
 	mask = /obj/item/clothing/mask/breath
 
 /datum/outfit/consumed_ice_settler/pre_equip(mob/living/carbon/human/ice_settler, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(prob(40))
 		r_pocket = pick_weight(list(
 			/obj/item/coin/silver = 5,
@@ -353,6 +385,8 @@
 	r_pocket = /obj/item/tank/internals/emergency_oxygen
 
 /datum/outfit/consumed_dame/pre_equip(mob/living/carbon/human/dame, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!visuals_only)
 		dame.gender = FEMALE
 		dame.physique = FEMALE
@@ -395,6 +429,8 @@
 	head = /obj/item/clothing/head/helmet/chaplain/heretic
 
 /datum/outfit/consumed_heremoth/pre_equip(mob/living/carbon/human/moth, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(prob(70))
 		glasses = /obj/item/clothing/glasses/blindfold
 	if(prob(90))

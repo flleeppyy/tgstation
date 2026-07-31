@@ -5,6 +5,8 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	)))
 
 /turf/proc/empty(turf_type=/turf/open/space, baseturf_type, list/ignore_typecache, flags)
+	procstart = null
+	src.procstart = null
 	// Remove all atoms except observers, landmarks, docking ports
 	var/static/list/ignored_atoms = typecacheof(list(/mob/dead, /obj/effect/landmark, /obj/docking_port))
 	var/list/allowed_contents = typecache_filter_list_reverse(get_all_contents_ignoring(ignore_typecache), ignored_atoms)
@@ -19,6 +21,8 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 		CALCULATE_ADJACENT_TURFS(new_turf, KILL_EXCITED)
 
 /turf/proc/copyTurf(turf/copy_to_turf, copy_air = FALSE, flags = null)
+	procstart = null
+	src.procstart = null
 	if(copy_to_turf.type != type)
 		copy_to_turf.ChangeTurf(type, null, flags)
 	if(copy_to_turf.icon_state != icon_state)
@@ -38,6 +42,8 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	return copy_to_turf
 
 /turf/open/copyTurf(turf/open/copy_to_turf, copy_air = FALSE, flags = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ASSERT(istype(copy_to_turf, /turf/open))
 	var/datum/component/wet_floor/slip = GetComponent(/datum/component/wet_floor)
@@ -49,11 +55,15 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 
 //wrapper for ChangeTurf()s that you want to prevent/affect without overriding ChangeTurf() itself
 /turf/proc/TerraformTurf(path, new_baseturf, flags)
+	procstart = null
+	src.procstart = null
 	return ChangeTurf(path, new_baseturf, flags)
 
 // Creates a new turf
 // new_baseturfs can be either a single type or list of types, formated the same as baseturfs. see turf.dm
 /turf/proc/ChangeTurf(path, list/new_baseturfs, flags)
+	procstart = null
+	src.procstart = null
 	switch(path)
 		if(null)
 			return
@@ -218,7 +228,9 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 
 	return new_turf
 
-/turf/open/ChangeTurf(path, list/new_baseturfs, flags) //Resist the temptation to make this default to keeping air.
+/turf/open/ChangeTurf(path, list/new_baseturfs, flags)
+	procstart = null
+	src.procstart = null //Resist the temptation to make this default to keeping air.
 	if ((flags & CHANGETURF_INHERIT_AIR) && ispath(path, /turf/open))
 		var/datum/gas_mixture/stashed_air = new()
 		stashed_air.copy_from(air)
@@ -247,6 +259,8 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 
 //If you modify this function, ensure it works correctly with lateloaded map templates.
 /turf/proc/AfterChange(flags, oldType) //called after a turf has been replaced in ChangeTurf()
+	procstart = null
+	src.procstart = null
 	levelupdate()
 	if(flags & CHANGETURF_RECALC_ADJACENT)
 		immediate_calculate_adjacent_turfs()
@@ -256,6 +270,8 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 		CALCULATE_ADJACENT_TURFS(src, (ispath(oldType, /turf/closed) && isopenturf(src) ? MAKE_ACTIVE : NORMAL_TURF))
 
 /turf/open/AfterChange(flags, oldType)
+	procstart = null
+	src.procstart = null
 	..()
 	RemoveLattice()
 	if(!(flags & (CHANGETURF_IGNORE_AIR | CHANGETURF_INHERIT_AIR)))
@@ -263,6 +279,8 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 
 //////Assimilate Air//////
 /turf/open/proc/Assimilate_Air()
+	procstart = null
+	src.procstart = null
 	var/turf_count = LAZYLEN(atmos_adjacent_turfs)
 	if(blocks_air || !turf_count) //if there weren't any open turfs, no need to update.
 		return
@@ -298,6 +316,8 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 
 /// Attempts to replace a tile with lattice. Amount is the amount of tiles to scrape away.
 /turf/proc/attempt_lattice_replacement(amount = 2)
+	procstart = null
+	src.procstart = null
 	if (!lattice_underneath)
 		ScrapeAway(amount, flags = CHANGETURF_INHERIT_AIR)
 		return

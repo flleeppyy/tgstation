@@ -14,6 +14,8 @@
 	var/obj/item/internal_storage
 
 /mob/living/basic/guardian/dextrous/Initialize(mapload, datum/guardian_fluff/theme)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/basic_inhands)
 	add_traits(list(TRAIT_ADVANCEDTOOLUSER, TRAIT_CAN_STRIP), ROUNDSTART_TRAIT)
@@ -22,10 +24,14 @@
 	AddComponent(/datum/component/basic_inhands)
 
 /mob/living/basic/guardian/dextrous/death(gibbed)
+	procstart = null
+	src.procstart = null
 	dropItemToGround(internal_storage)
 	return ..()
 
 /mob/living/basic/guardian/dextrous/create_actions()
+	procstart = null
+	src.procstart = null
 	for (var/action_type in self_actions)
 		if(isnull(action_type)) //no toggle button type
 			continue
@@ -38,16 +44,22 @@
 	update_action_buttons()
 
 /mob/living/basic/guardian/dextrous/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(internal_storage) || (internal_storage.item_flags & ABSTRACT))
 		return
 	. += span_info("It is holding [internal_storage.examine_title(user)] in its internal storage.")
 
 /mob/living/basic/guardian/dextrous/manifest_effects()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(src, TRAIT_HANDS_BLOCKED, GUARDIAN_RECALLED)
 
 /mob/living/basic/guardian/dextrous/recall_effects()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	drop_all_held_items()
 	ADD_TRAIT(src, TRAIT_HANDS_BLOCKED, GUARDIAN_RECALLED)
@@ -55,6 +67,8 @@
 // Bullshit related to having a fake pocket begins here
 
 /mob/living/basic/guardian/dextrous/doUnEquip(obj/item/item_dropping, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -65,21 +79,29 @@
 	return TRUE
 
 /mob/living/basic/guardian/dextrous/can_equip(mob/living/M, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE, ignore_equipped = FALSE, indirect_action = FALSE)
+	procstart = null
+	src.procstart = null
 	if(slot != ITEM_SLOT_DEX_STORAGE)
 		return FALSE
 	return isnull(internal_storage)
 
 /mob/living/basic/guardian/dextrous/get_item_by_slot(slot_id)
+	procstart = null
+	src.procstart = null
 	if(slot_id == ITEM_SLOT_DEX_STORAGE)
 		return internal_storage
 	return ..()
 
 /mob/living/basic/guardian/dextrous/get_slot_by_item(obj/item/looking_for)
+	procstart = null
+	src.procstart = null
 	if(internal_storage == looking_for)
 		return ITEM_SLOT_DEX_STORAGE
 	return ..()
 
 /mob/living/basic/guardian/dextrous/equip_to_slot(obj/item/equipping, slot, initial = FALSE, redraw_mob = FALSE, indirect_action = FALSE)
+	procstart = null
+	src.procstart = null
 	if (slot != ITEM_SLOT_DEX_STORAGE)
 		to_chat(src, span_danger("You are trying to equip this item to an unsupported inventory slot. Report this to a coder!"))
 		return FALSE
@@ -103,10 +125,16 @@
 	return TRUE
 
 /mob/living/basic/guardian/dextrous/getBackSlot()
+	procstart = null
+	src.procstart = null
 	return ITEM_SLOT_DEX_STORAGE
 
 /mob/living/basic/guardian/dextrous/proc/update_inv_internal_storage()
+	procstart = null
+	src.procstart = null
 	hud_used?.update_inventory_slot(ITEM_SLOT_DEX_STORAGE)
 
 /mob/living/basic/guardian/dextrous/regenerate_icons()
+	procstart = null
+	src.procstart = null
 	update_inv_internal_storage()

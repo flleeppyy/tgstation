@@ -7,6 +7,8 @@
 	var/blip_tag = ""
 
 /atom/movable/screen/minimap_element/Destroy()
+	procstart = null
+	src.procstart = null
 	if(blip_tag)
 		LAZYREMOVE(GLOB.minimap_blip_tags[blip_tag], src)
 	return ..()

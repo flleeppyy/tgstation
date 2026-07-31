@@ -1,5 +1,7 @@
 ///Loads all tattoos, and select a few based on the amount of prisoner spawn positions.
 /datum/controller/subsystem/persistence/proc/load_prisoner_tattoos()
+	procstart = null
+	src.procstart = null
 	var/json_file = file(PRISONER_TATTOO_SAVE_FILE)
 	if(!fexists(json_file))
 		return
@@ -24,6 +26,8 @@
 
 ///Saves all tattoos, so they can appear on prisoners in future rounds
 /datum/controller/subsystem/persistence/proc/save_prisoner_tattoos()
+	procstart = null
+	src.procstart = null
 	var/json_file = file(PRISONER_TATTOO_SAVE_FILE)
 	var/list/saved_data = list()
 	var/list/entries = list()
@@ -43,6 +47,8 @@
 
 ///This proc can update entries if the format has changed at some point.
 /datum/controller/subsystem/persistence/proc/update_prisoner_tattoos(json)
+	procstart = null
+	src.procstart = null
 	for(var/tattoo_entry in json["entries"])
 		continue //no versioning yet
 

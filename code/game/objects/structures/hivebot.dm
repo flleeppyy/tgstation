@@ -9,6 +9,8 @@
 	var/bot_amt = 10
 
 /obj/structure/hivebot_beacon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	do_smoke(2, src, loc)
 	visible_message(span_bolddanger("[src] warps in!"))
@@ -16,6 +18,8 @@
 	addtimer(CALLBACK(src, PROC_REF(warpbots)), rand(1 SECONDS, 1 MINUTES))
 
 /obj/structure/hivebot_beacon/proc/warpbots()
+	procstart = null
+	src.procstart = null
 	icon_state = "def_radar"
 	visible_message(span_danger("[src] turns on!"))
 	while(bot_amt > 0)

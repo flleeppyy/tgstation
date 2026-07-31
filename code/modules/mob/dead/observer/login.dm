@@ -1,4 +1,6 @@
 /mob/dead/observer/Login()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !client)
 		return FALSE

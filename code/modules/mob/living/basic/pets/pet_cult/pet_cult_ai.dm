@@ -10,6 +10,8 @@
 
 ///if target gets pulled away, unset him
 /datum/ai_controller/basic_controller/pet_cult/proc/delete_pull_target(datum/source, atom/movable/was_pulling)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(src, COMSIG_ATOM_NO_LONGER_PULLING)
@@ -22,6 +24,8 @@
 	custom_faction_check = TRUE
 
 /datum/targeting_strategy/basic/cultist/faction_check(datum/ai_controller/controller, mob/living/living_mob, mob/living/the_target)
+	procstart = null
+	src.procstart = null
 	return IS_CULTIST_OR_CULTIST_MOB(the_target)
 
 ///command ability to draw runes
@@ -34,4 +38,6 @@
 	ability_key = BB_RUNE_ABILITY
 
 /datum/pet_command/untargeted_ability/draw_rune/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return "signals [living_pet] to draw a rune!"

@@ -4,6 +4,8 @@
 	var/forced_pickup = FALSE
 
 /datum/storage/carpskin_bag/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/fish,
@@ -16,6 +18,8 @@
 
 // All hooks, lines and lures are classified as one type
 /datum/storage/carpskin_bag/process_numerical_display()
+	procstart = null
+	src.procstart = null
 	var/list/toreturn = list()
 
 	for(var/obj/item/thing in real_location)
@@ -44,6 +48,8 @@
 
 /// Display a radial of all items of that "parent" type
 /datum/storage/carpskin_bag/remove_single(mob/removing, obj/item/thing, atom/remove_to_loc, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if (forced_pickup)
 		return ..()
 

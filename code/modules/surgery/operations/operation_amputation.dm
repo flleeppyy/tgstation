@@ -24,12 +24,18 @@
 	any_surgery_states_blocked = SURGERY_VESSELS_UNCLAMPED
 
 /datum/surgery_operation/limb/amputate/get_recommended_tool()
+	procstart = null
+	src.procstart = null
 	return TOOL_SAW
 
 /datum/surgery_operation/limb/amputate/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/hud/surgery_radial.dmi', "amputate")
 
 /datum/surgery_operation/limb/amputate/state_check(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	if(limb.body_zone == BODY_ZONE_CHEST)
 		return FALSE
 	if(limb.bodypart_flags & BODYPART_UNREMOVABLE)
@@ -39,6 +45,8 @@
 	return TRUE
 
 /datum/surgery_operation/limb/amputate/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -49,6 +57,8 @@
 	display_pain(limb.owner, "You feel a gruesome pain in your [limb.plaintext_zone]'s joint!")
 
 /datum/surgery_operation/limb/amputate/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -79,16 +89,22 @@
 	all_surgery_states_required = SURGERY_SKIN_OPEN
 
 /datum/surgery_operation/limb/amputate/mechanic/state_check(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	// added requirement for bone sawed to prevent accidental head removals.
 	return ..() && (limb.body_zone != BODY_ZONE_HEAD || LIMB_HAS_SURGERY_STATE(limb, SURGERY_BONE_SAWED))
 
 /datum/surgery_operation/limb/amputate/mechanic/any_required_strings()
+	procstart = null
+	src.procstart = null
 	return ..() + list(
 		"if operating on the head, the bone MUST be sawed",
 		"otherwise, the state of the bone doesn't matter",
 	)
 
 /datum/surgery_operation/limb/amputate/mechanic/get_recommended_tool()
+	procstart = null
+	src.procstart = null
 	return "[TOOL_WRENCH] / [TOOL_SAW]"
 
 /datum/surgery_operation/limb/amputate/pegleg
@@ -112,5 +128,7 @@
 	all_surgery_states_required = NONE
 
 /datum/surgery_operation/limb/amputate/pegleg/all_required_strings()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "the limb must be wooden"

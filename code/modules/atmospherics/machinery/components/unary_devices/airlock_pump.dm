@@ -82,6 +82,8 @@
 
 
 /obj/machinery/atmospherics/components/unary/airlock_pump/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	if(!on || !is_operational || !powered())
 		icon_state = "vent_off"
 	else
@@ -89,6 +91,8 @@
 
 
 /obj/machinery/atmospherics/components/unary/airlock_pump/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!underfloor_state)
 		return
@@ -111,6 +115,8 @@
 
 
 /obj/machinery/atmospherics/components/unary/airlock_pump/atmos_init(list/node_connects)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/atmospherics/target in get_step(src, dir))
 		if(connection_check(target, 4) && !nodes[1])
 			nodes[1] = target // Distro
@@ -120,6 +126,8 @@
 
 
 /obj/machinery/atmospherics/components/unary/airlock_pump/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		can_unwrench = FALSE
@@ -129,6 +137,8 @@
 	waste_air.volume = 1000
 
 /obj/machinery/atmospherics/components/unary/airlock_pump/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_links()
 	// If we are on docked shuttle - setup docking variables
@@ -158,12 +168,16 @@
 		on_dock_request(tile_air_pressure)
 
 /obj/machinery/atmospherics/components/unary/airlock_pump/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cycling_set_up)
 		break_all_links()
 
 
 /obj/machinery/atmospherics/components/unary/airlock_pump/can_unwrench(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		to_chat(user, span_warning("You cannot unwrench [src], it is secured firmly in place!"))
@@ -173,6 +187,8 @@
 		return FALSE
 
 /obj/machinery/atmospherics/components/unary/airlock_pump/set_on(active)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		update_use_power(ACTIVE_POWER_USE)
@@ -180,6 +196,8 @@
 		update_use_power(IDLE_POWER_USE)
 
 /obj/machinery/atmospherics/components/unary/airlock_pump/process_atmos()
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return
 	if(!is_operational)
@@ -223,6 +241,8 @@
 
 /// Fill a tile with air from the distro node
 /obj/machinery/atmospherics/components/unary/airlock_pump/proc/fill_tile(turf/tile, moles, pressure_delta)
+	procstart = null
+	src.procstart = null
 	var/datum/pipeline/distro_pipe = parents[1]
 	var/datum/gas_mixture/distro_air = airs[1]
 	var/datum/gas_mixture/tile_air = tile.return_air()
@@ -240,6 +260,8 @@
 
 /// Siphon air from the tile to the waste node within the volume rate limit
 /obj/machinery/atmospherics/components/unary/airlock_pump/proc/siphon_tile(turf/tile)
+	procstart = null
+	src.procstart = null
 	var/datum/pipeline/waste_pipe = parents[2]
 	var/datum/gas_mixture/waste_air = airs[2]
 	var/datum/gas_mixture/tile_air = tile.return_air()
@@ -256,6 +278,8 @@
 
 /// Proc for triggering cycle by clicking on a bolted airlock that has a pump assigned
 /obj/machinery/atmospherics/components/unary/airlock_pump/proc/airlock_act(obj/machinery/door/airlock/airlock)
+	procstart = null
+	src.procstart = null
 	if(on)
 		airlock.run_animation(DOOR_DENY_ANIMATION) // Already cycling
 		return
@@ -284,6 +308,8 @@
 		start_cycle(ATMOS_DIRECTION_RELEASING, airlock)
 
 /obj/machinery/atmospherics/components/unary/airlock_pump/proc/emergency_stop()
+	procstart = null
+	src.procstart = null
 	if(!on || airlocks_animating || !is_operational)
 		return // Already done
 
@@ -291,6 +317,8 @@
 
 ///Start decompression or pressurization cycle depending on the passed direction
 /obj/machinery/atmospherics/components/unary/airlock_pump/proc/start_cycle(cycle_direction, obj/machinery/door/airlock/source_airlock = null)
+	procstart = null
+	src.procstart = null
 	if(on || !cycling_set_up || airlocks_animating || !powered())
 		return FALSE
 
@@ -341,6 +369,8 @@
 
 ///Complete/Abort cycle with the passed message
 /obj/machinery/atmospherics/components/unary/airlock_pump/proc/stop_cycle(message = null, unbolt_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return FALSE
 	set_on(FALSE)
@@ -368,6 +398,8 @@
 	return TRUE
 
 /obj/machinery/atmospherics/components/unary/airlock_pump/proc/on_dock_request(requester_pressure = 0)
+	procstart = null
+	src.procstart = null
 	if (docked_side_pressure != null)
 		return
 
@@ -406,6 +438,8 @@
 
 
 /obj/machinery/atmospherics/components/unary/airlock_pump/proc/safe_dock(unbolt_only = FALSE)
+	procstart = null
+	src.procstart = null
 	var/pressure_delta = internal_pressure_target - docked_side_pressure
 	// Docked vessel has pressure higher then our internal
 	if ((pressure_delta + allowed_pressure_error) < 0)
@@ -453,6 +487,8 @@
 
 
 /obj/machinery/atmospherics/components/unary/airlock_pump/proc/undock()
+	procstart = null
+	src.procstart = null
 	if (docked_side_pressure == null)
 		return
 	docked_side_pressure = null
@@ -470,6 +506,8 @@
 
 ///Update adjacent_turfs with atmospherically adjacent tiles
 /obj/machinery/atmospherics/components/unary/airlock_pump/proc/check_turfs()
+	procstart = null
+	src.procstart = null
 	adjacent_turfs.Cut()
 	var/turf/local_turf = get_turf(src)
 	adjacent_turfs = local_turf.get_atmos_adjacent_turfs(alldir = TRUE)
@@ -477,6 +515,8 @@
 
 ///Find airlocks and link up with them
 /obj/machinery/atmospherics/components/unary/airlock_pump/proc/set_links()
+	procstart = null
+	src.procstart = null
 	var/perpendicular_dirs = NSCOMPONENT(dir) ? WEST|EAST : NORTH|SOUTH
 	var/turf/internal_airlocks_origin = find_density(get_turf(src), dir)
 	var/turf/external_airlocks_origin = find_density(get_turf(src), REVERSE_DIR(dir))
@@ -517,6 +557,8 @@
 
 ///Get the turf of the first found airlock or an airtight structure (walls) within the allowed range
 /obj/machinery/atmospherics/components/unary/airlock_pump/proc/find_density(turf/origin, direction, max_distance = airlock_pump_distance_limit)
+	procstart = null
+	src.procstart = null
 	var/turf/next_turf = origin
 	var/limit = max(1, max_distance)
 	while(limit)
@@ -531,6 +573,8 @@
 
 ///Find airlocks adjacent to the central one, lined up along the provided directions
 /obj/machinery/atmospherics/components/unary/airlock_pump/proc/get_adjacent_airlocks(origin_turf, directions)
+	procstart = null
+	src.procstart = null
 	var/list/airlocks = list()
 
 	var/obj/machinery/door/airlock/origin_airlock = locate() in origin_turf
@@ -556,6 +600,8 @@
 
 ///Whether the passed airlock can be linked with
 /obj/machinery/atmospherics/components/unary/airlock_pump/proc/is_valid_airlock(obj/machinery/door/airlock/airlock)
+	procstart = null
+	src.procstart = null
 	if(!airlock)
 		return FALSE
 	if(airlock.cycle_pump)
@@ -567,6 +613,8 @@
 
 ///Find airlocks and link up with them
 /obj/machinery/atmospherics/components/unary/airlock_pump/proc/unlink_airlock(airlock)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(airlock, COMSIG_QDELETING)
@@ -582,6 +630,8 @@
 
 ///Break the cycling setup
 /obj/machinery/atmospherics/components/unary/airlock_pump/proc/break_all_links()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/door/airlock/airlock as anything in (internal_airlocks + external_airlocks))
 		UnregisterSignal(airlock, COMSIG_QDELETING)
 		airlock.unbolt()
@@ -592,6 +642,8 @@
 	cycling_set_up = FALSE
 
 /obj/machinery/atmospherics/components/unary/airlock_pump/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(initialize_directions & direction)
 		return ..()
 	if((NORTH|EAST) & direction)
@@ -601,6 +653,8 @@
 	to_chat(user, "You align yourself with the [user.ventcrawl_layer == 2 ? 1 : 2]\th output.")
 
 /obj/machinery/atmospherics/components/unary/airlock_pump/on_set_is_operational(was_operational)
+	procstart = null
+	src.procstart = null
 	if(was_operational && !is_operational)
 		// unbolt all the doors but don't open them
 		for(var/obj/machinery/door/airlock/airlock as anything in (internal_airlocks + external_airlocks))

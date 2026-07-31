@@ -10,6 +10,8 @@ GLOBAL_LIST_INIT(bitfields, generate_bitfields())
 
 /// Turns /datum/bitfield subtypes into a list for use in debugging
 /proc/generate_bitfields()
+	procstart = null
+	src.procstart = null
 	var/list/bitfields = list()
 	for (var/_bitfield in subtypesof(/datum/bitfield))
 		var/datum/bitfield/bitfield = new _bitfield
@@ -18,9 +20,13 @@ GLOBAL_LIST_INIT(bitfields, generate_bitfields())
 
 /// Returns an associative list of bitflag name -> number for all valid bitflags in the passed in field
 /proc/get_valid_bitflags(var_name)
+	procstart = null
+	src.procstart = null
 	return GLOB.bitfields[var_name] || list()
 
 /proc/get_random_bitflag(var_name)
+	procstart = null
+	src.procstart = null
 	var/list/flags = get_valid_bitflags(var_name)
 	if(!length(flags))
 		return
@@ -29,6 +35,8 @@ GLOBAL_LIST_INIT(bitfields, generate_bitfields())
 
 /// Returns null if no such field exists, a list of all matching flags by name otherwise
 /proc/get_matching_bitflags(var_name, value)
+	procstart = null
+	src.procstart = null
 	var/list/valid_bitflags = get_valid_bitflags(var_name)
 	if(!length(valid_bitflags))
 		return null

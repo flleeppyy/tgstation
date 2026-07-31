@@ -20,6 +20,8 @@
 	)
 
 /datum/venue/restaurant/get_food_appearance(order)
+	procstart = null
+	src.procstart = null
 	var/appearance = SSrestaurant.food_appearance_cache[order]
 
 	if(!appearance) //We havn't made this one before, do so now.
@@ -35,14 +37,20 @@
 	return food_image
 
 /datum/venue/restaurant/is_correct_order(atom/movable/object_used, wanted_item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return . || object_used.type == wanted_item
 
 /datum/venue/restaurant/order_food_line(order)
+	procstart = null
+	src.procstart = null
 	var/obj/item/object_to_order = order
 	return "I'll take \a [initial(object_to_order.name)]"
 
 /datum/venue/restaurant/on_get_order(mob/living/basic/robot_customer/customer_pawn, obj/item/order_item)
+	procstart = null
+	src.procstart = null
 	var/transaction_result = ..()
 	if((transaction_result & TRANSACTION_HANDLED) || !(transaction_result & TRANSACTION_SUCCESS))
 		return

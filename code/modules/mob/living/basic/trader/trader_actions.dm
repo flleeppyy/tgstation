@@ -17,6 +17,8 @@
 	var/opening_lines
 
 /datum/action/setup_shop/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -27,6 +29,8 @@
 	return TRUE
 
 /datum/action/setup_shop/New(Target, shop_spot_type = /obj/structure/chair/plastic, sign_type = /obj/structure/trader_sign, sell_sound = 'sound/effects/cashregister.ogg', opening_lines = list("Welcome to my shop, friend!"))
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	src.shop_spot_type = shop_spot_type
@@ -35,6 +39,8 @@
 	src.opening_lines = opening_lines
 
 /datum/action/setup_shop/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -66,6 +72,8 @@
 
 ///Look for a spot we can place our sign on
 /datum/action/setup_shop/proc/try_find_valid_spot(origin_turf, direction_to_check)
+	procstart = null
+	src.procstart = null
 	var/turf/sign_turf = get_step(origin_turf, direction_to_check)
 	if(sign_turf && !isgroundlessturf(sign_turf) && !isclosedturf(sign_turf) && !sign_turf.is_blocked_turf())
 		return sign_turf

@@ -11,6 +11,8 @@
 	var/base_lighting_color = COLOR_WHITE
 
 /area/proc/set_base_lighting(new_base_lighting_color = -1, new_alpha = -1)
+	procstart = null
+	src.procstart = null
 	if(base_lighting_alpha == new_alpha && base_lighting_color == new_base_lighting_color)
 		return FALSE
 	if(new_alpha != -1)
@@ -21,6 +23,8 @@
 	return TRUE
 
 /area/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	switch(var_name)
 		if(NAMEOF(src, base_lighting_color))
 			set_base_lighting(new_base_lighting_color = var_value)
@@ -37,6 +41,8 @@
 	return ..()
 
 /area/proc/update_base_lighting()
+	procstart = null
+	src.procstart = null
 	if(!area_has_base_lighting && (!base_lighting_alpha || !base_lighting_color))
 		return
 
@@ -48,6 +54,8 @@
 		add_base_lighting()
 
 /area/proc/remove_base_lighting()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(SSdcs, COMSIG_STARLIGHT_COLOR_CHANGED)
 	var/list/z_offsets = SSmapping.z_level_to_plane_offset
 	if(length(lighting_effects) > 1)
@@ -60,6 +68,8 @@
 	area_has_base_lighting = FALSE
 
 /area/proc/add_base_lighting()
+	procstart = null
+	src.procstart = null
 	lighting_effects = list()
 	for(var/offset in 0 to SSmapping.max_plane_offset)
 		var/mutable_appearance/light
@@ -108,6 +118,8 @@
 	area_has_base_lighting = TRUE
 
 /area/proc/starlight_changed(datum/source, old_star, new_star)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/old_star_effect = mutable_appearance('icons/effects/alphacolors.dmi', "white")
 	old_star_effect.layer = LIGHTING_PRIMARY_LAYER
 	old_star_effect.blend_mode = BLEND_ADD

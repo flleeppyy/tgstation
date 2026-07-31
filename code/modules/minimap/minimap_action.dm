@@ -23,6 +23,8 @@
 	)
 
 /datum/action/minimap/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/hud/hud = clicker.hud_used
 	// Toggle off if already visible.
@@ -49,31 +51,43 @@
 	to_chat(clicker, span_notice("Minimap shown."))
 
 /datum/action/minimap/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_tracked_owner(grant_to)
 
 /datum/action/minimap/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	set_tracked_owner(null)
 	return ..()
 
 /datum/action/minimap/proc/has_minimap_huds(datum/hud/hud)
+	procstart = null
+	src.procstart = null
 	for(var/element in huds)
 		if(hud.screen_objects[element])
 			return TRUE
 	return FALSE
 
 /datum/action/minimap/proc/get_open_minimap_display(datum/hud/hud)
+	procstart = null
+	src.procstart = null
 	if(isnull(hud) || !has_minimap_huds(hud))
 		return null
 	return hud.screen_objects[HUD_TAC_MINIMAP]
 
 /datum/action/minimap/proc/add_huds(datum/hud/hud, datum/minimap/minimap, initial_display_z_level)
+	procstart = null
+	src.procstart = null
 	for(var/element in huds)
 		var/hud_element_type = huds[element]
 		var/instanced = new hud_element_type(null, hud, minimap, minimap_blip_tags, initial_display_z_level, annotation_share_tag, can_draw)
 		hud.add_screen_object(instanced, element, HUD_GROUP_STATIC, update_screen = TRUE)
 
 /datum/action/minimap/proc/set_tracked_owner(mob/new_owner)
+	procstart = null
+	src.procstart = null
 	if(tracked_owner == new_owner)
 		return
 	if(!isnull(tracked_owner))
@@ -83,25 +97,35 @@
 		RegisterSignal(tracked_owner, COMSIG_MOVABLE_Z_CHANGED, PROC_REF(on_owner_z_changed))
 
 /datum/action/minimap/proc/get_anchor_z_level(current_z_level)
+	procstart = null
+	src.procstart = null
 	return isnull(fixed_z_level) ? current_z_level : fixed_z_level
 
 
 /datum/action/minimap/proc/get_opening_display_z_level(anchor_z_level, current_z_level)
+	procstart = null
+	src.procstart = null
 	var/list/connected_levels = SSmapping.get_connected_levels(anchor_z_level)
 	if(length(connected_levels) && connected_levels.Find(current_z_level))
 		return current_z_level
 	return (length(connected_levels) ? connected_levels[1] : anchor_z_level)
 
 /datum/action/minimap/proc/is_forbidden_minimap_z(z_level)
+	procstart = null
+	src.procstart = null
 	if(isnull(z_level))
 		return FALSE
 	return is_centcom_level(z_level) || is_reserved_level(z_level)
 
 /datum/action/minimap/proc/on_owner_z_changed(atom/movable/source, turf/old_turf, turf/new_turf, same_z_layer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(handle_owner_z_changed), source, new_turf?.z)
 
 /datum/action/minimap/proc/handle_owner_z_changed(mob/owner_mob, new_z_level)
+	procstart = null
+	src.procstart = null
 	var/datum/hud/owner_hud = owner_mob?.hud_used
 	if(isnull(get_open_minimap_display(owner_hud)))
 		return
@@ -137,5 +161,7 @@
 	)
 
 /datum/action/minimap/proc/remove_huds(datum/hud/hud)
+	procstart = null
+	src.procstart = null
 	for(var/element in huds)
 		hud.remove_screen_object(element)

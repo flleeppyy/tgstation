@@ -18,11 +18,15 @@
 	var/current_type
 
 /obj/item/circuit_component/typecast/populate_ports()
+	procstart = null
+	src.procstart = null
 	current_type = typecast_options.value
 	input_value = add_input_port("Input", PORT_TYPE_ANY)
 	output_value = add_output_port("Output", current_type)
 
 /obj/item/circuit_component/typecast/populate_options()
+	procstart = null
+	src.procstart = null
 	var/static/list/component_options = list(
 		PORT_TYPE_STRING,
 		PORT_TYPE_NUMBER,
@@ -32,6 +36,8 @@
 	typecast_options = add_option_port("Typecast Options", component_options)
 
 /obj/item/circuit_component/typecast/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	var/current_option = typecast_options.value
 	if(current_type != current_option)
 		current_type = current_option
@@ -39,6 +45,8 @@
 
 
 /obj/item/circuit_component/typecast/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	var/current_option = typecast_options.value
 	var/value = input_value.value
 	var/value_to_set = null

@@ -28,6 +28,8 @@
 	sound_environment = SOUND_ENVIRONMENT_CITY
 
 /area/ruin/comms_agent/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/block_area_power_fail)
 

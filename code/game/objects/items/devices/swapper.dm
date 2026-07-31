@@ -18,6 +18,8 @@
 	var/obj/item/swapper/linked_swapper
 
 /obj/item/swapper/Destroy()
+	procstart = null
+	src.procstart = null
 	if(linked_swapper)
 		linked_swapper.linked_swapper = null //*inception music*
 		linked_swapper.update_appearance()
@@ -25,10 +27,14 @@
 	return ..()
 
 /obj/item/swapper/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "swapper[linked_swapper ? "-linked" : null]"
 	return ..()
 
 /obj/item/swapper/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/swapper))
 		return NONE
 	var/obj/item/swapper/other_swapper = tool
@@ -46,6 +52,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/swapper/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(world.time < next_use)
 		to_chat(user, span_warning("[src] is still recharging."))
 		return
@@ -62,6 +70,8 @@
 	addtimer(CALLBACK(src, PROC_REF(swap), user), 2.5 SECONDS)
 
 /obj/item/swapper/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(world.time < next_use)
 		. += span_warning("Time left to recharge: [DisplayTimeText(next_use - world.time)].")
@@ -71,6 +81,8 @@
 		. += span_notice("<b>Not Linked.</b> Use on another quantum spin inverter to establish a quantum link.")
 
 /obj/item/swapper/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You break the current quantum link."))
 	if(!QDELETED(linked_swapper))
 		linked_swapper.linked_swapper = null
@@ -84,6 +96,8 @@
  * If a mob is holding a swapper, it will carry the mob as-per the rules of do_teleport().
  */
 /obj/item/swapper/proc/swap(mob/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(linked_swapper) || isnull(linked_swapper.loc) || world.time < linked_swapper.cooldown)
 		return
 

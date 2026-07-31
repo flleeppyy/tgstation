@@ -7,6 +7,8 @@
 	var/additional_icon_locations
 
 /datum/unit_test/missing_icons/proc/generate_possible_icon_states_list(directory_path)
+	procstart = null
+	src.procstart = null
 	if(!directory_path)
 		directory_path = default_location
 	for(var/file_path in flist(directory_path))
@@ -17,6 +19,8 @@
 			possible_icon_states += generate_possible_icon_states_list("[directory_path][file_path]")
 
 /datum/unit_test/missing_icons/proc/compile_icon_state_locations()
+	procstart = null
+	src.procstart = null
 	generate_possible_icon_states_list(default_location)
 	for(var/path in additional_icon_locations)
 		generate_possible_icon_states_list(path)

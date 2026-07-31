@@ -14,6 +14,8 @@
 	var/uses = 1
 
 /obj/item/clothing/head/helmet/skull/cosmic/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(istype(user, /mob/living/basic/voidwalker))
@@ -69,6 +71,8 @@
 	exposed_wound_bonus = 20
 
 /obj/item/void_eater/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	ADD_TRAIT(src, TRAIT_NODROP, HAND_REPLACEMENT_TRAIT)
@@ -84,6 +88,8 @@
 	var/max_spawn = 6
 
 /obj/effect/spawner/random/glass_shards/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	spawn_loot_count = rand(min_spawn, max_spawn)
 
 	return ..()

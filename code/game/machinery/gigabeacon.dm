@@ -10,6 +10,8 @@
 	var/obj/item/beacon/Beacon
 
 /obj/machinery/bluespace_beacon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/T = loc
 	Beacon = new(T)
@@ -18,10 +20,14 @@
 	AddElement(/datum/element/undertile, TRAIT_T_RAY_VISIBLE)
 
 /obj/machinery/bluespace_beacon/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(Beacon)
 	return ..()
 
 /obj/machinery/bluespace_beacon/process()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(Beacon)) //Don't move it out of nullspace BACK INTO THE GAME for the love of god
 		var/turf/T = loc
 		Beacon = new(T)

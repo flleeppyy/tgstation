@@ -19,6 +19,8 @@ GLOBAL_PROTECT(protected_ranks)
 	var/can_edit_rights = NONE
 
 /datum/admin_rank/New(init_name, init_source, init_rights, init_exclude_rights, init_edit_rights)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		alert_to_permissions_elevation_attempt(usr)
 		if (name == "NoRank") //only del if this is a true creation (and not just a New() proc call), other wise trialmins/coders could abuse this to deadmin other admins
@@ -43,24 +45,34 @@ GLOBAL_PROTECT(protected_ranks)
 		can_edit_rights = init_edit_rights
 
 /datum/admin_rank/Destroy()
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		alert_to_permissions_elevation_attempt(usr)
 		return QDEL_HINT_LETMELIVE
 	. = ..()
 
 /datum/admin_rank/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /datum/admin_rank/allow_mark_datum()
+	procstart = null
+	src.procstart = null
 	alert_to_permissions_elevation_attempt(usr)
 	return FALSE
 
 /datum/admin_rank/can_vv_mark()
+	procstart = null
+	src.procstart = null
 	alert_to_permissions_elevation_attempt(usr)
 	return FALSE
 
 // Adds/removes rights to this admin_rank
 /datum/admin_rank/proc/process_keyword(group, group_count, datum/admin_rank/previous_rank)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		alert_to_permissions_elevation_attempt(usr)
 		return
@@ -122,6 +134,8 @@ GLOBAL_PROTECT(protected_ranks)
 				can_edit_rights |= flag
 
 /datum/admin_rank/proc/pretty_print_source()
+	procstart = null
+	src.procstart = null
 	switch(source)
 		if(RANK_SOURCE_LOCAL)
 			return "Localhost"
@@ -137,6 +151,8 @@ GLOBAL_PROTECT(protected_ranks)
 /// Loads admin ranks.
 ///	Return a list containing the backup data if they were loaded from the database backup json
 /proc/load_admin_ranks(dbfail, no_update)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		to_chat(usr, span_adminprefix("Admin Reload blocked: Advanced ProcCall detected."), confidential = TRUE)
 		return
@@ -217,6 +233,8 @@ GLOBAL_PROTECT(protected_ranks)
 
 /// Converts a rank name (such as "Coder+Moth") into a list of /datum/admin_rank
 /proc/ranks_from_rank_name(rank_name)
+	procstart = null
+	src.procstart = null
 	var/list/rank_names = splittext(rank_name, "+")
 	var/list/ranks = list()
 
@@ -235,6 +253,8 @@ GLOBAL_PROTECT(protected_ranks)
 
 /// Takes a list of rank names and joins them with +
 /proc/join_admin_ranks(list/datum/admin_rank/ranks)
+	procstart = null
+	src.procstart = null
 	var/list/names = list()
 
 	for (var/datum/admin_rank/rank as anything in ranks)
@@ -245,6 +265,8 @@ GLOBAL_PROTECT(protected_ranks)
 /// (Re)Loads the admin list.
 /// returns TRUE if database admins had to be loaded from the backup json
 /proc/load_admins(no_update, initial = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!initial)
 		if(!global.config.PreConfigReload())
 			return
@@ -337,6 +359,8 @@ GLOBAL_PROTECT(protected_ranks)
 
 
 /proc/sync_ranks_with_db()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	if(IsAdminAdvancedProcCall())
@@ -351,6 +375,8 @@ GLOBAL_PROTECT(protected_ranks)
 
 
 /proc/update_everything_flag_in_db()
+	procstart = null
+	src.procstart = null
 	for(var/datum/admin_rank/R as anything in GLOB.admin_ranks)
 		var/list/flags = list()
 		if(R.include_rights == R_EVERYTHING)
@@ -383,6 +409,8 @@ GLOBAL_PROTECT(protected_ranks)
 
 
 /proc/sync_admins_with_db()
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		to_chat(usr, span_adminprefix("Admin rank DB Sync blocked: Advanced ProcCall detected."))
 		return
@@ -401,6 +429,8 @@ GLOBAL_PROTECT(protected_ranks)
 
 
 /proc/save_admin_backup()
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		to_chat(usr, span_adminprefix("Admin rank DB Sync blocked: Advanced ProcCall detected."))
 		return

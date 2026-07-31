@@ -38,10 +38,14 @@
 	var/list/mobs_hit = list()
 
 /obj/projectile/moon_parade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	soundloop = new(src,  TRUE)
 
 /obj/projectile/moon_parade/prehit_pierce(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!isliving(firer) || !isliving(A))
 		return ..()
 
@@ -70,6 +74,8 @@
 	return ..()
 
 /obj/projectile/moon_parade/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == BULLET_ACT_BLOCK || !isliving(target))
 		return
@@ -85,6 +91,8 @@
 	victim.mob_mood.adjust_sanity(-20)
 
 /obj/projectile/moon_parade/proc/was_hit_already(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	for(var/datum/weakref/ref as anything in mobs_hit)
 		var/mob/living/hit_victim = ref.resolve()
 		if(hit_victim == victim)
@@ -92,6 +100,8 @@
 	return FALSE
 
 /obj/projectile/moon_parade/Destroy()
+	procstart = null
+	src.procstart = null
 	mobs_hit.Cut()
 	soundloop.stop()
 	return ..()

@@ -37,11 +37,15 @@
 	botEmagChance = 0
 
 /datum/round_event/ion_storm/announce(fake)
+	procstart = null
+	src.procstart = null
 	if(prob(announce_chance) || fake)
 		priority_announce("Ion storm detected near the station. Please check all AI-controlled equipment for errors.", "Anomaly Alert", ANNOUNCER_IONSTORM)
 
 
 /datum/round_event/ion_storm/start()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/ai_law_rack/rack as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/ai_law_rack))
 		rack.scramble_ai_rack(
 			new_lawset_prob = replaceLawsetChance,
@@ -58,6 +62,8 @@
 			bot.emag_act()
 
 /proc/generate_ion_law()
+	procstart = null
+	src.procstart = null
 	//Threats are generally bad things, silly or otherwise. Plural.
 	var/ionthreats = pick_list(ION_FILE, "ionthreats")
 	//Objects are anything that can be found on the station or elsewhere, plural.

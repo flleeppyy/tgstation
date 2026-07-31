@@ -27,6 +27,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/medicine/c2/helbital/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/death_is_coming = (affected_mob.get_tox_loss() + affected_mob.get_oxy_loss() + affected_mob.get_fire_loss() + affected_mob.get_brute_loss())*normalise_creation_purity()
 	var/thou_shall_heal = 0
@@ -83,17 +85,23 @@
 				return
 
 /datum/reagent/medicine/c2/helbital/overdose_process(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!helbent)
 		affected_mob.apply_necropolis_curse(CURSE_WASTING | CURSE_BLINDING)
 		helbent = TRUE
 
 /datum/reagent/medicine/c2/helbital/on_mob_delete(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(helbent)
 		affected_mob.remove_status_effect(/datum/status_effect/necropolis_curse)
 
 /datum/reagent/medicine/c2/helbital/on_mob_end_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(current_cycle >= 50) //greater than 10u in the system
 		affected_mob.AddComponent(/datum/component/omen, incidents_left = min(round(current_cycle/51), 3)) //no more than 3 bad incidents for dropping more than 10u
@@ -111,6 +119,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/medicine/c2/libital/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/need_mob_update
 	need_mob_update = affected_mob.adjust_organ_loss(ORGAN_SLOT_LIVER, 0.3 * metabolization_ratio * seconds_per_tick, required_organ_flag = affected_organ_flags)
@@ -130,6 +140,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/medicine/c2/probital/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/need_mob_update
 	need_mob_update = affected_mob.adjust_brute_loss(-3 * metabolization_ratio * normalise_creation_purity() * seconds_per_tick, updating_health = FALSE, required_bodytype = affected_bodytype)
@@ -146,6 +158,8 @@
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/medicine/c2/probital/overdose_process(mob/living/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/need_mob_update
 	need_mob_update = affected_mob.adjust_stamina_loss(3 * metabolization_ratio * seconds_per_tick, updating_stamina = FALSE)
@@ -159,6 +173,8 @@
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/medicine/c2/probital/expose_mob(mob/living/exposed_mob, methods, reac_volume, show_message, touch_protection)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(methods & INGEST) || !iscarbon(exposed_mob))
 		return
@@ -180,6 +196,8 @@
 	inverse_chem = /datum/reagent/inverse/lentslurri
 
 /datum/reagent/medicine/c2/lenturi/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/need_mob_update
 	need_mob_update = affected_mob.adjust_fire_loss(-3.75 * metabolization_ratio * normalise_creation_purity() * seconds_per_tick, required_bodytype = affected_bodytype)
@@ -198,6 +216,8 @@
 	inverse_chem = /datum/reagent/inverse/aiuri
 
 /datum/reagent/medicine/c2/aiuri/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/need_mob_update
 	need_mob_update = affected_mob.adjust_fire_loss(-2 * normalise_creation_purity() * metabolization_ratio * seconds_per_tick, updating_health = FALSE, required_bodytype = affected_bodytype)
@@ -218,6 +238,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/medicine/c2/hercuri/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/need_mob_update
 	if(affected_mob.get_fire_loss() > 50)
@@ -234,6 +256,8 @@
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/medicine/c2/hercuri/expose_mob(mob/living/carbon/exposed_mob, methods=VAPOR, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(methods & VAPOR))
 		return
@@ -244,6 +268,8 @@
 		exposed_mob.extinguish_mob()
 
 /datum/reagent/medicine/c2/hercuri/overdose_process(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.adjust_bodytemperature(-10 * TEMPERATURE_DAMAGE_COEFFICIENT * metabolization_ratio * seconds_per_tick, 50) //chilly chilly
 	if(ishuman(affected_mob))
@@ -267,6 +293,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/medicine/c2/convermol/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/oxycalc = 2.5 * metabolization_ratio * (current_cycle-1)
 	if(!overdosed)
@@ -281,6 +309,8 @@
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/medicine/c2/convermol/overdose_process(mob/living/carbon/human/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	metabolization_rate += 2.5 * REAGENTS_METABOLISM
 
@@ -300,6 +330,8 @@
 	COOLDOWN_DECLARE(drowsycd)
 
 /datum/reagent/medicine/c2/tirimol/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/need_mob_update
 	need_mob_update = affected_mob.adjust_oxy_loss(-4.5 * metabolization_ratio * seconds_per_tick * normalise_creation_purity(), updating_health = FALSE, required_biotype = affected_biotype)
@@ -313,6 +345,8 @@
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/medicine/c2/tirimol/on_mob_end_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(current_cycle > 21)
 		affected_mob.Sleeping(10 SECONDS)
@@ -333,10 +367,14 @@
 	var/rads_heal_threshold = 100
 
 /datum/reagent/medicine/c2/seiver/on_mob_metabolize(mob/living/carbon/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	rads_heal_threshold = rand(rads_heal_threshold - 50, rads_heal_threshold + 50) // Basically this means 50K and below will always give the radiation heal, and upto 150K could. Calculated once.
 
 /datum/reagent/medicine/c2/seiver/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/chemtemp = min(holder.chem_temp, 1000)
 	chemtemp = chemtemp ? chemtemp : T0C //why do you have null sweaty
@@ -376,6 +414,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/medicine/c2/multiver/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/medibonus = 0 //it will always have itself which makes it REALLY start @ 1
 	for(var/r in affected_mob.reagents.reagent_list)
@@ -399,6 +439,8 @@
 
 // Antitoxin binds plants pretty well. So the tox goes significantly down
 /datum/reagent/medicine/c2/multiver/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 	mytray.adjust_toxic(-(round(volume * 2)*normalise_creation_purity())) //0-2.66, 2 by default (0.75 purity).
 
 #define issyrinormusc(A) (istype(A,/datum/reagent/medicine/c2/syriniver) || istype(A,/datum/reagent/medicine/c2/musiver)) //musc is metab of syrin so let's make sure we're not purging either
@@ -415,6 +457,8 @@
 	var/conversion_amount
 
 /datum/reagent/medicine/c2/syriniver/expose_mob(mob/living/carbon/exposed_mob, methods, trans_volume, show_message, touch_protection)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(methods & INJECT) || !iscarbon(exposed_mob))
 		return
@@ -431,6 +475,8 @@
 	mob_reagents.add_reagent(/datum/reagent/medicine/c2/musiver, conversion_amount)
 
 /datum/reagent/medicine/c2/syriniver/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/need_mob_update
 	need_mob_update = affected_mob.adjust_organ_loss(ORGAN_SLOT_LIVER, 0.54 * metabolization_ratio * seconds_per_tick, required_organ_flag = affected_organ_flags)
@@ -445,6 +491,8 @@
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/medicine/c2/syriniver/overdose_process(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(affected_mob.adjust_organ_loss(ORGAN_SLOT_LIVER, 1 * metabolization_ratio * seconds_per_tick, required_organ_flag = affected_organ_flags))
 		. = UPDATE_MOB_HEALTH
@@ -463,6 +511,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/medicine/c2/musiver/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/need_mob_update
 	need_mob_update = affected_mob.adjust_organ_loss(ORGAN_SLOT_LIVER, 0.2 * metabolization_ratio * seconds_per_tick, required_organ_flag = affected_organ_flags)
@@ -475,16 +525,22 @@
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/medicine/c2/musiver/overdose_start(mob/living/carbon/affected_mob, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	trauma = new()
 	affected_mob.gain_trauma(trauma, TRAUMA_RESILIENCE_ABSOLUTE)
 
 /datum/reagent/medicine/c2/musiver/on_mob_delete(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(trauma)
 		QDEL_NULL(trauma)
 
 /datum/reagent/medicine/c2/musiver/overdose_process(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(affected_mob.adjust_organ_loss(ORGAN_SLOT_LIVER, 3 * metabolization_ratio * seconds_per_tick, required_organ_flag = affected_organ_flags))
 		. = UPDATE_MOB_HEALTH
@@ -502,6 +558,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/medicine/c2/synthflesh/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(exposed_mob))
 		return
@@ -602,11 +660,15 @@
 	overlay_state = "luxpen"
 
 /datum/reagent/medicine/c2/penthrite/on_mob_metabolize(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	send_alert(user)
 	user.add_traits(subject_traits, type)
 
 /datum/reagent/medicine/c2/penthrite/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/need_mob_update
 	need_mob_update = affected_mob.adjust_organ_loss(ORGAN_SLOT_STOMACH, 0.25 * metabolization_ratio * seconds_per_tick, required_organ_flag = affected_organ_flags)
@@ -639,11 +701,15 @@
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/medicine/c2/penthrite/on_mob_end_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	remove_alert(affected_mob)
 	affected_mob.remove_traits(subject_traits, type)
 
 /datum/reagent/medicine/c2/penthrite/overdose_process(mob/living/carbon/human/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(affected_mob, TRAIT_STABLEHEART, type)
 	var/need_mob_update
@@ -654,9 +720,13 @@
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/medicine/c2/penthrite/proc/send_alert(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	affected_mob.throw_alert("penthrite", /atom/movable/screen/alert/penthrite)
 
 /datum/reagent/medicine/c2/penthrite/proc/remove_alert(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	affected_mob.clear_alert("penthrite")
 
 /******NICHE******/

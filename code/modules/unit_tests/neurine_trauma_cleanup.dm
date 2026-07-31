@@ -2,6 +2,8 @@
 /datum/unit_test/neurine_trauma_cleanup
 
 /datum/unit_test/neurine_trauma_cleanup/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 	dummy.mind_initialize()
 

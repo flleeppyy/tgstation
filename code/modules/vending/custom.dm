@@ -21,6 +21,8 @@
 	VAR_PRIVATE/static/list/base64_cache = list()
 
 /obj/machinery/vending/custom/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	var/obj/item/vending_refill/custom/installed_refill = locate() in component_parts
 
 	if(linked_account)
@@ -42,6 +44,8 @@
 		stored_item.forceMove(installed_refill)
 
 /obj/machinery/vending/custom/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(panel_open && istype(held_item, refill_canister))
 		context[SCREENTIP_CONTEXT_LMB] = "Restock vending machine"
 		return CONTEXTUAL_SCREENTIP_SET
@@ -59,11 +63,15 @@
 	return ..()
 
 /obj/machinery/vending/custom/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(linked_account)
 		. += span_warning("Machine is ID locked. Be sure to unlink before deconstructing the machine.")
 
 /obj/machinery/vending/custom/Exited(obj/item/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/hash_key = ITEM_HASH(gone)
@@ -77,6 +85,8 @@
 
 ///Returns the number of products loaded in this machine
 /obj/machinery/vending/custom/proc/loaded_items()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	SHOULD_BE_PURE(TRUE)
 
@@ -85,6 +95,8 @@
 		. += products[product_hash]
 
 /obj/machinery/vending/custom/canLoadItem(obj/item/loaded_item, mob/user, send_message = TRUE)
+	procstart = null
+	src.procstart = null
 	if(loaded_item.flags_1 & HOLOGRAM_1)
 		if(send_message)
 			speak("This vendor cannot accept nonexistent items.")
@@ -100,6 +112,8 @@
 	return TRUE
 
 /obj/machinery/vending/custom/loadingAttempt(obj/item/inserted_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!canLoadItem(inserted_item, user))
 		return FALSE
 
@@ -121,11 +135,15 @@
 	return TRUE
 
 /obj/machinery/vending/custom/RefreshParts()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 
 	restock(locate(refill_canister) in component_parts)
 
 /obj/machinery/vending/custom/restock(obj/item/vending_refill/canister)
+	procstart = null
+	src.procstart = null
 	. = 0
 	if(!canister.products?.len)
 		if(!canister.products)
@@ -162,6 +180,8 @@
 
 
 /obj/machinery/vending/custom/post_restock(mob/living/user, restocked)
+	procstart = null
+	src.procstart = null
 	if(!restocked)
 		to_chat(user, span_warning("There's nothing to restock!"))
 		return
@@ -169,6 +189,8 @@
 	to_chat(user, span_notice("You loaded [restocked] items in [src]"))
 
 /obj/machinery/vending/custom/crowbar_act(mob/living/user, obj/item/attack_item)
+	procstart = null
+	src.procstart = null
 	if(linked_account)
 		visible_message(
 			span_warning("Security warning"),
@@ -185,6 +207,8 @@
 	return ..()
 
 /obj/machinery/vending/custom/compartmentLoadAccessCheck(mob/user)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(!isliving(user))
 		return FALSE
@@ -194,6 +218,8 @@
 		return TRUE
 
 /obj/machinery/vending/custom/item_interaction(mob/living/user, obj/item/attack_item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isliving(user) && istype(attack_item, /obj/item/card/id))
 		var/obj/item/card/id/card_used = attack_item
 		if(card_used?.registered_account)
@@ -211,6 +237,8 @@
 	return ..()
 
 /obj/machinery/vending/custom/descformat(input, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = input
 	var/new_slogan = reject_bad_text(tgui_input_text(user, "Set slogan", "Slogan", "Epic", max_length = 60))
 	if(!user.can_perform_action(src, FORBID_TELEKINESIS_REACH))
@@ -220,6 +248,8 @@
 		last_slogan = world.time + rand(0, slogan_delay)
 
 /obj/machinery/vending/custom/collect_records_for_static_data(list/records, list/categories, premium)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(records != product_records) //no coin or hidden stuff only product records
 		return
@@ -249,12 +279,16 @@
 
 
 /obj/machinery/vending/custom/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(!linked_account)
 		balloon_alert(user, "no registered owner!")
 		return FALSE
 	return ..()
 
 /obj/machinery/vending/custom/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/is_owner = compartmentLoadAccessCheck(user)
@@ -267,6 +301,8 @@
 		)
 
 /obj/machinery/vending/custom/vend(list/params, mob/living/user, list/greyscale_colors)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(!isliving(user))
 		return
@@ -319,6 +355,8 @@
 	custom_premium_price = PAYCHECK_CREW
 
 /obj/item/vending_refill/custom/get_part_rating()
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/key in products)
 		. += products[key]
@@ -339,6 +377,8 @@
 	custom_materials = list(/datum/material/gold = SHEET_MATERIAL_AMOUNT * 5)
 
 /obj/machinery/vending/custom/greed/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//starts in a state where you can move it
 	set_anchored(FALSE)

@@ -2,6 +2,8 @@
 /datum/unit_test/food_edibility_check
 
 /datum/unit_test/food_edibility_check/Run()
+	procstart = null
+	src.procstart = null
 	var/list/not_food = list(
 		/obj/item/food/clothing,
 	)

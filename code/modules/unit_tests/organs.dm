@@ -12,10 +12,14 @@
 	))
 
 /datum/unit_test/organ_sanity/Run()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/organ/organ_type as anything in subtypesof(/obj/item/organ) - GLOB.prototype_organs)
 		organ_test_insert(organ_type)
 
 /datum/unit_test/organ_sanity/proc/organ_test_insert(obj/item/organ/organ_type)
+	procstart = null
+	src.procstart = null
 	// Appropriate mob (Human) which will receive organ.
 	var/mob/living/carbon/human/lab_rat = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/organ/test_organ = new organ_type()
@@ -71,11 +75,15 @@
 /datum/unit_test/organ_damage
 
 /datum/unit_test/organ_damage/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 	for(var/obj/item/organ/organ_to_test in dummy.organs)
 		test_organ(dummy, organ_to_test)
 
 /datum/unit_test/organ_damage/proc/test_organ(mob/living/carbon/human/dummy, obj/item/organ/test_organ)
+	procstart = null
+	src.procstart = null
 	var/slot_to_use = test_organ.slot
 
 	// Tests [mob/living/proc/adjust_organ_loss]
@@ -109,6 +117,8 @@
 /datum/unit_test/chipped_traumatized_brain_removal
 
 /datum/unit_test/chipped_traumatized_brain_removal/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy/dummy = allocate(__IMPLIED_TYPE__)
 
 	//add the chip and activate it
@@ -128,6 +138,8 @@
 /datum/unit_test/felinid_ears
 
 /datum/unit_test/felinid_ears/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/normal_dummy = allocate(/mob/living/carbon/human/consistent)
 	normal_dummy.dna.features[FEATURE_EARS] = SPRITE_ACCESSORY_NONE
 	normal_dummy.set_species(/datum/species/human/felinid, pref_load = TRUE)

@@ -38,6 +38,8 @@
 	)
 
 /mob/living/basic/cat_butcherer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	apply_dynamic_human_appearance(src, mob_spawn_path = /obj/effect/mob_spawn/corpse/human/cat_butcher, l_hand = /obj/item/circular_saw, bloody_slots = ITEM_SLOT_GLOVES|ITEM_SLOT_OCLOTHING)
 	AddElement(/datum/element/ai_retaliate)
@@ -45,9 +47,13 @@
 	RegisterSignal(src, COMSIG_HOSTILE_POST_ATTACKINGTARGET, PROC_REF(after_attack))
 
 /mob/living/basic/cat_butcherer/get_unconscious_appearance()
+	procstart = null
+	src.procstart = null
 	return get_generic_humanoid_static_appearance()
 
 /mob/living/basic/cat_butcherer/proc/after_attack(mob/living/basic/attacker, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!iscarbon(target) || !prob(35))

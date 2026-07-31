@@ -2,6 +2,8 @@
 /datum/unit_test/traitor_mail_content_check
 
 /datum/unit_test/traitor_mail_content_check/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/person = allocate(/mob/living/carbon/human/consistent)
 	person.mind_initialize()
 	var/obj/item/mail/traitor/test_mail = allocate(/obj/item/mail/traitor)

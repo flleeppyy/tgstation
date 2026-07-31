@@ -23,6 +23,8 @@
 	var/list/alt_simple = list("stab", "pierce", "impale")
 
 /obj/item/melee/synthetic_arm_blade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	alt_continuous = string_list(alt_continuous)
 	alt_simple = string_list(alt_simple)
@@ -57,16 +59,22 @@
 	block_sound = 'sound/items/weapons/parry.ogg'
 
 /obj/item/melee/beesword/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(attack_type == PROJECTILE_ATTACK || attack_type == LEAP_ATTACK || attack_type == OVERWHELMING_ATTACK)
 		final_block_chance = 0 //Don't bring a sword to a gunfight, and also you aren't going to really block someone full body tackling you with a sword. Or a road roller, if one happened to hit you.
 	return ..()
 
 /obj/item/melee/beesword/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(target) && !QDELETED(target))
 		var/mob/living/carbon/carbon_target = target
 		carbon_target.reagents.add_reagent(/datum/reagent/toxin, 4)
 
 /obj/item/melee/beesword/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is stabbing [user.p_them()]self in the throat with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(get_turf(src), hitsound, 75, TRUE, -1)
 	return TOXLOSS
@@ -90,6 +98,8 @@
 	hitsound = 'sound/items/weapons/whip.ogg'
 
 /obj/item/melee/curator_whip/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(ishuman(target))
 		var/mob/living/carbon/human/human_target = target
 		human_target.drop_all_held_items()
@@ -118,6 +128,8 @@
 	var/datum/beam/beam
 
 /obj/item/melee/roastingstick/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!ovens)
 		ovens = typecacheof(list(/obj/singularity, /obj/energy_ball, /obj/machinery/power/supermatter_crystal, /obj/structure/bonfire))
@@ -136,6 +148,8 @@
  * If there is a sausage attached, returns COMPONENT_BLOCK_TRANSFORM.
  */
 /obj/item/melee/roastingstick/proc/attempt_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(held_sausage)
@@ -148,6 +162,8 @@
  * Gives feedback on stick extension.
  */
 /obj/item/melee/roastingstick/proc/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	inhand_icon_state = active ? "nullrod" : null
@@ -157,6 +173,8 @@
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
 /obj/item/melee/roastingstick/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!istype(tool, /obj/item/food/sausage))
 		return NONE
 
@@ -177,22 +195,30 @@
 	return ITEM_INTERACT_SKIP_TO_ATTACK
 
 /obj/item/melee/roastingstick/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	..()
 	if (held_sausage)
 		user.put_in_hands(held_sausage)
 
 /obj/item/melee/roastingstick/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(held_sausage)
 		. += mutable_appearance(icon, "roastingstick_sausage")
 
 /obj/item/melee/roastingstick/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (gone == held_sausage)
 		held_sausage = null
 		update_appearance()
 
 /obj/item/melee/roastingstick/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		return NONE
 	if (!is_type_in_typecache(interacting_with, ovens))
@@ -206,6 +232,8 @@
 	return NONE
 
 /obj/item/melee/roastingstick/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		return NONE
 	if (!is_type_in_typecache(interacting_with, ovens))
@@ -216,6 +244,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/melee/roastingstick/proc/finish_roasting(user, atom/target)
+	procstart = null
+	src.procstart = null
 	if(do_after(user, 10 SECONDS, target = user))
 		to_chat(user, span_notice("You finish roasting [held_sausage]."))
 		playsound(src, 'sound/items/tools/welder2.ogg', 50, TRUE)
@@ -260,16 +290,22 @@
 
 // It only inherits the name of the main material it's made of. The secondary is in the description.
 /obj/item/melee/cleric_mace/get_material_prefixes(list/materials)
+	procstart = null
+	src.procstart = null
 	var/datum/material/material = get_material_from_slot(/datum/material_slot/weapon_head)
 	return material?.name
 
 /obj/item/melee/cleric_mace/finalize_material_effects(list/materials)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/material/material = get_material_from_slot(/datum/material_slot/handle)
 	if (material)
 		desc = "[initial(desc)] Its handle is made of [material.name]."
 
 /obj/item/melee/cleric_mace/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	// Don't bring a...mace to a gunfight, and also you aren't going to really block someone full body tackling you with a mace.
 	// Or a road roller, if one happened to hit you.
 	if(attack_type == PROJECTILE_ATTACK || attack_type == LEAP_ATTACK || attack_type == OVERWHELMING_ATTACK)
@@ -298,6 +334,8 @@
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 
 /obj/item/sord/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is trying to impale [user.p_them()]self with [src]! It might be a suicide attempt if it weren't so shitty."), \
 	span_suicide("You try to impale yourself with [src], but it's USELESS..."))
 	return SHAME
@@ -321,6 +359,8 @@
 	slot_flags = ITEM_SLOT_BELT
 
 /obj/item/carpenter_hammer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/kneejerk)
 	AddComponent(/datum/component/item_killsound, \
@@ -330,6 +370,8 @@
 	)
 
 /obj/item/carpenter_hammer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += ""
 	. += "Real World Tip:"
@@ -357,6 +399,8 @@
 	hitsound = 'sound/items/weapons/ring.ogg'
 
 /obj/item/phone/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/structure/chair/stool) in user.loc)
 		user.visible_message(span_suicide("[user] begins to tie a noose with [src]'s cord! It looks like [user.p_theyre()] trying to commit suicide!"))
 	else
@@ -385,6 +429,8 @@
 	custom_materials = list(/datum/material/bamboo = SHEET_MATERIAL_AMOUNT * 4)
 
 /obj/item/bambostaff/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// there are too many puns to choose from. ('Bo' is the 'real' name for this kind of weapon.)
 	name = pick("bamboo staff", "bambo staff", "bam-Bo staff", "bam boo staff", "bam-boo staff", "bam Bo", "bambo", "bam-Bo", "bamboo-Bo")
@@ -395,10 +441,14 @@
 	AddComponent(/datum/component/walking_aid)
 
 /obj/item/bambostaff/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = inhand_icon_state = "[base_icon_state][HAS_TRAIT(src, TRAIT_WIELDED)]"
 	return ..()
 
 /obj/item/bambostaff/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(attack_type == PROJECTILE_ATTACK || attack_type == LEAP_ATTACK || attack_type == OVERWHELMING_ATTACK)
 		final_block_chance = 0 //Don't bring a staff to a gunfight, and also you aren't going to really block someone full body tackling you with a staff. Or a road roller, if one happened to hit you.
 	return ..()
@@ -422,6 +472,8 @@
 	resistance_flags = FLAMMABLE
 
 /obj/item/staff/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/walking_aid)
 
@@ -487,6 +539,8 @@
 	var/static/list/splattable
 
 /obj/item/melee/flyswatter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isnull(splattable))
 		splattable = typecacheof(list(
@@ -503,6 +557,8 @@
 
 // Different type of bug mobs get different amounts of damage multipliers
 /obj/item/melee/flyswatter/proc/bane_check(mob/living/target, mob/living/attacker, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(isanimal_or_basicmob(target))
 		MODIFY_ATTACK_FORCE(attack_modifiers, 24)
 	else if(isflyperson(target))
@@ -513,6 +569,8 @@
 		MODIFY_ATTACK_FORCE(attack_modifiers, 14)
 
 /obj/item/melee/flyswatter/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(is_type_in_typecache(target, splattable))
 		to_chat(user, span_warning("You easily splat [target]."))
 		if(QDELETED(target))
@@ -526,6 +584,8 @@
 			qdel(target)
 
 /obj/item/proc/can_trigger_gun(mob/living/user, akimbo_usage)
+	procstart = null
+	src.procstart = null
 	if(!user.can_use_guns(src))
 		return FALSE
 	return TRUE
@@ -570,6 +630,8 @@
 	var/list/alt_simple = list("stab", "pierce", "impale")
 
 /obj/item/melee/moonlight_greatsword/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	alt_continuous = string_list(alt_continuous)
 	alt_simple = string_list(alt_simple)

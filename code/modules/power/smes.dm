@@ -44,6 +44,8 @@
 	var/obj/machinery/power/terminal/terminal = null
 
 /obj/machinery/power/smes/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	//screentips
@@ -72,6 +74,8 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/power/smes/get_cell()
+	procstart = null
+	src.procstart = null
 	var/obj/item/stock_parts/power_store/lowest_charged_part
 	for(var/obj/item/stock_parts/power_store/power_cell in component_parts)
 		if(lowest_charged_part && (power_cell.charge >= lowest_charged_part.charge || (power_cell.charge == power_cell.maxcharge)))
@@ -80,18 +84,24 @@
 	return lowest_charged_part
 
 /obj/machinery/power/smes/on_construction(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/cable/C = locate() in loc
 	if(!QDELETED(C))
 		cable_layer = C.cable_layer
 		connect_to_network()
 
 /obj/machinery/power/smes/disconnect_terminal()
+	procstart = null
+	src.procstart = null
 	if(terminal)
 		terminal.master = null
 		terminal = null
 		atom_break()
 
 /obj/machinery/power/smes/Destroy()
+	procstart = null
+	src.procstart = null
 	if(SSticker.IsRoundInProgress())
 		var/turf/turf = get_turf(src)
 		message_admins("[src] deleted at [ADMIN_VERBOSEJMP(turf)]")
@@ -101,6 +111,8 @@
 	return ..()
 
 /obj/machinery/power/smes/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(isnull(held_item))
 		return
@@ -123,6 +135,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/power/smes/examine(user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	. += span_notice("Its maintenance panel can be [EXAMINE_HINT("screwed")] [panel_open ? "closed" : "opened"].")
@@ -137,6 +151,8 @@
 		. += span_notice("The terminal can be [EXAMINE_HINT("cut")] apart.")
 
 /obj/machinery/power/smes/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(panel_open || !is_operational)
 		return
@@ -150,6 +166,8 @@
 			. += "smes-og[clevel]"
 
 /obj/machinery/power/smes/get_save_vars()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	charge = total_charge()
 	. += NAMEOF(src, charge)
@@ -158,6 +176,8 @@
 
 /// Returns the total charge of this smes
 /obj/machinery/power/smes/proc/total_charge()
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	SHOULD_BE_PURE(TRUE)
@@ -172,6 +192,8 @@
  * * charge_adjust - the amount of give/take from this smes
  */
 /obj/machinery/power/smes/proc/adjust_charge(charge_adjust)
+	procstart = null
+	src.procstart = null
 	var/give = charge_adjust > 0
 	charge_adjust = abs(charge_adjust)
 	for(var/obj/item/stock_parts/power_store/power_cell in component_parts)
@@ -187,6 +209,8 @@
 			return
 
 /obj/machinery/power/smes/RefreshParts()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 
 	var/power_coefficient = 0
@@ -202,6 +226,8 @@
 	update_static_data_for_all_viewers()
 
 /obj/machinery/power/smes/should_have_node()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /**
@@ -213,6 +239,8 @@
  * * silent - should we display error messages
 */
 /obj/machinery/power/smes/proc/can_place_terminal(mob/living/user, obj/item/stack/cable_coil/installing_cable, silent = TRUE)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/set_dir = get_dir(user, src)
@@ -240,6 +268,8 @@
 
 // adapted from APC item interacts for cable act handling
 /obj/machinery/power/smes/item_interaction(mob/living/user, obj/item/stack/cable_coil/installing_cable, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(istype(installing_cable))
 		. = ITEM_INTERACT_BLOCKING
@@ -287,19 +317,27 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/smes/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]-o" : base_icon_state
 
 /obj/machinery/power/smes/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/power/smes/wirecutter_act(mob/living/user, obj/item/item)
+	procstart = null
+	src.procstart = null
 	if(terminal && panel_open)
 		terminal.dismantle(user, item)
 		return ITEM_INTERACT_SUCCESS
 	return ITEM_INTERACT_BLOCKING
 
 /obj/machinery/power/smes/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(terminal)
 		balloon_alert(user, "remove the power terminal!")
 		return ITEM_INTERACT_BLOCKING
@@ -315,6 +353,8 @@
 
 //changing direction using wrench
 /obj/machinery/power/smes/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_FAILURE
 	if(default_change_direction_wrench(user, tool))
 		disconnect_terminal()
@@ -329,23 +369,31 @@
 		to_chat(user, span_alert("No power terminal found."))
 
 /obj/machinery/power/smes/cable_layer_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		balloon_alert(user, "open panel first!")
 		return ITEM_INTERACT_BLOCKING
 	return ..()
 
 /obj/machinery/power/smes/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == ITEM_INTERACT_SUCCESS)
 		connect_to_network()
 
 ///Returns the charge level this smes is at 0->5 for display purposes
 /obj/machinery/power/smes/proc/chargedisplay()
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 
 	return clamp(round(5 * (total_charge() / total_capacity)), 0, 5)
 
 /obj/machinery/power/smes/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!is_operational)
 		return
 
@@ -404,6 +452,8 @@
 // called after all power processes are finished
 // restores charge level to smes if there was excess this ptick
 /obj/machinery/power/smes/proc/restore()
+	procstart = null
+	src.procstart = null
 	if(!is_operational)
 		return
 
@@ -425,12 +475,16 @@
 		update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/power/smes/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Smes", name)
 		ui.open()
 
 /obj/machinery/power/smes/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list(
 		"capacity" = total_capacity,
 		"inputLevelMax" = input_level_max,
@@ -438,6 +492,8 @@
 	)
 
 /obj/machinery/power/smes/ui_data()
+	procstart = null
+	src.procstart = null
 	. = list(
 		"charge" = total_charge(),
 		"inputAttempt" = input_attempt,
@@ -451,6 +507,8 @@
 	)
 
 /obj/machinery/power/smes/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -509,11 +567,15 @@
 
 ///Logs the current state of this smes
 /obj/machinery/power/smes/proc/log_smes(mob/user)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	investigate_log("Input/Output: [input_level]/[output_level] | Charge: [total_charge()] | Output-mode: [output_attempt?"ON":"OFF"] | Input-mode: [input_attempt?"AUTO":"OFF"] by [user ? key_name(user) : "outside forces"]", INVESTIGATE_ENGINE)
 
 /obj/machinery/power/smes/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -551,6 +613,8 @@
 	desc = "A high-capacity superconducting magnetic energy storage (SMES) unit. Magically produces power."
 
 /obj/machinery/power/smes/magical/adjust_charge(charge_adjust)
+	procstart = null
+	src.procstart = null
 	//give charge without consuming anything
 	if(charge_adjust < 0)
 		return abs(charge_adjust)

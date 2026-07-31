@@ -15,10 +15,14 @@
 	var/obj/item/organ/vocal_cords/colossus/cords = null
 
 /datum/action/item_action/organ_action/colossus/New()
+	procstart = null
+	src.procstart = null
 	..()
 	cords = target
 
 /datum/action/item_action/organ_action/colossus/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return FALSE
 	if(world.time < cords.next_command)
@@ -43,6 +47,8 @@
 	return TRUE
 
 /datum/action/item_action/organ_action/colossus/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	var/command = tgui_input_text(owner, "Speak with the Voice of God", "Command", max_length = MAX_MESSAGE_LEN)
 	if(!command)
 		return FALSE
@@ -52,6 +58,8 @@
 	return TRUE
 
 /obj/item/organ/vocal_cords/colossus/can_speak_with()
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return FALSE
 
@@ -62,10 +70,14 @@
 	return owner.can_speak()
 
 /obj/item/organ/vocal_cords/colossus/handle_speech(message)
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(owner), 'sound/effects/magic/clockwork/invoke_general.ogg', 300, TRUE, 5)
 	return //voice of god speaks for us
 
 /obj/item/organ/vocal_cords/colossus/speak_with(message)
+	procstart = null
+	src.procstart = null
 	var/cooldown = voice_of_god(uppertext(message), owner, spans, base_multiplier)
 	next_command = world.time + (cooldown * cooldown_mod)
 
@@ -105,29 +117,39 @@
 	COOLDOWN_DECLARE(cooldown_timer)
 
 /obj/machinery/anomalous_crystal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!activation_method)
 		activation_method = pick(possible_methods)
 	become_hearing_sensitive(trait_source = ROUNDSTART_TRAIT)
 
 /obj/machinery/anomalous_crystal/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isobserver(user))
 		. += observer_desc
 		. += "It is activated by [activation_method]."
 
 /obj/machinery/anomalous_crystal/Hear(atom/movable/speaker, message_langs, raw_message, radio_freq, radio_freq_name, radio_freq_color, spans, list/message_mods = list(), message_range)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(speaker))
 		ActivationReaction(speaker, ACTIVATE_SPEECH)
 
 /obj/machinery/anomalous_crystal/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
 	ActivationReaction(user, ACTIVATE_TOUCH)
 
 /obj/machinery/anomalous_crystal/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(I.get_temperature())
 		ActivationReaction(user, ACTIVATE_HEAT)
 	else
@@ -135,6 +157,8 @@
 	..()
 
 /obj/machinery/anomalous_crystal/bullet_act(obj/projectile/proj, def_zone)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(proj, /obj/projectile/magic))
 		ActivationReaction(proj.firer, ACTIVATE_MAGIC, proj.damage_type)
@@ -142,6 +166,8 @@
 	ActivationReaction(proj.firer, proj.armor_flag, proj.damage_type)
 
 /obj/machinery/anomalous_crystal/proc/ActivationReaction(mob/user, method, damtype)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, cooldown_timer))
 		return FALSE
 	if(activation_damage_type && activation_damage_type != damtype)
@@ -158,6 +184,8 @@
 	return TRUE
 
 /obj/machinery/anomalous_crystal/proc/charge_animation()
+	procstart = null
+	src.procstart = null
 	icon_state = "anomaly_crystal_charging"
 	active = TRUE
 	set_anchored(TRUE)
@@ -170,11 +198,15 @@
 	return TRUE
 
 /obj/machinery/anomalous_crystal/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ismob(AM))
 		ActivationReaction(AM, ACTIVATE_MOB_BUMP)
 
 /obj/machinery/anomalous_crystal/ex_act()
+	procstart = null
+	src.procstart = null
 	ActivationReaction(null, ACTIVATE_BOMB)
 	return TRUE
 
@@ -187,6 +219,8 @@
 	var/list/clowned_mob_refs = list()
 
 /obj/machinery/anomalous_crystal/honk/ActivationReaction(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -229,11 +263,15 @@
 	var/list/converted_areas = list()
 
 /obj/machinery/anomalous_crystal/theme_warp/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	terrain_theme = SSmaterials.dimensional_themes[pick(subtypesof(/datum/dimension_theme))]
 	observer_desc = "This crystal changes the area around it to match the theme of \"[terrain_theme.name]\"."
 
 /obj/machinery/anomalous_crystal/theme_warp/ActivationReaction(mob/user, method)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -245,6 +283,8 @@
 	return TRUE
 
 /obj/machinery/anomalous_crystal/theme_warp/Destroy()
+	procstart = null
+	src.procstart = null
 	terrain_theme = null
 	converted_areas.Cut()
 	return ..()
@@ -256,10 +296,14 @@
 	var/obj/projectile/generated_projectile = /obj/projectile/colossus
 
 /obj/machinery/anomalous_crystal/emitter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	observer_desc = "This crystal generates \a [initial(generated_projectile.name)] when activated."
 
 /obj/machinery/anomalous_crystal/emitter/ActivationReaction(mob/user, method)
+	procstart = null
+	src.procstart = null
 	if(..())
 		var/obj/projectile/proj = new generated_projectile(get_turf(src))
 		proj.firer = src
@@ -272,6 +316,8 @@
 	use_time = 3 SECONDS
 
 /obj/machinery/anomalous_crystal/dark_reprise/ActivationReaction(mob/user, method)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -305,6 +351,8 @@
 	var/ready_to_deploy = FALSE
 
 /obj/machinery/anomalous_crystal/helpers/ActivationReaction(mob/user, method)
+	procstart = null
+	src.procstart = null
 	if(..() && !ready_to_deploy)
 		SSpoints_of_interest.make_point_of_interest(src)
 		ready_to_deploy = TRUE
@@ -317,6 +365,8 @@
 		)
 
 /obj/machinery/anomalous_crystal/helpers/attack_ghost(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -332,6 +382,8 @@
 	use_time = 1 SECONDS
 
 /obj/machinery/anomalous_crystal/possessor/ActivationReaction(mob/user, method)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!. || !ishuman(user))
 		return FALSE
@@ -357,6 +409,8 @@
 
 /// Returns true if this is a mob you're allowed to possess
 /obj/machinery/anomalous_crystal/possessor/proc/is_valid_animal(mob/living/check_mob)
+	procstart = null
+	src.procstart = null
 	return check_mob.stat != DEAD && !check_mob.ckey && check_mob.mob_size < MOB_SIZE_LARGE && check_mob.melee_damage_upper <= 5
 
 
@@ -373,6 +427,8 @@
 	var/mob/living/holder_animal
 
 /obj/structure/closet/stasis/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isanimal_or_basicmob(loc))
 		holder_animal = loc
@@ -380,6 +436,8 @@
 	AddElement(/datum/element/empprotection, EMP_PROTECT_ALL|EMP_NO_EXAMINE)
 
 /obj/structure/closet/stasis/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(arrived) && holder_animal)
 		var/mob/living/possessor = arrived
@@ -389,6 +447,8 @@
 		escape.Grant(holder_animal)
 
 /obj/structure/closet/stasis/dump_contents(kill = TRUE)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/possessor in src)
 		possessor.remove_traits(list(TRAIT_UNDENSE, TRAIT_NO_TRANSFORM, TRAIT_GODMODE), STASIS_MUTE)
 		if(kill || !isanimal_or_basicmob(loc))
@@ -404,10 +464,14 @@
 	return ..()
 
 /obj/structure/closet/stasis/ex_act()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 ///When our host animal dies in any way, we empty the stasis closet out.
 /obj/structure/closet/stasis/proc/on_holder_animal_death()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	dump_contents()
 
@@ -418,9 +482,13 @@
 	button_icon_state = "exit_possession"
 
 /datum/action/exit_possession/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	return ..() && isfloorturf(owner.loc)
 
 /datum/action/exit_possession/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

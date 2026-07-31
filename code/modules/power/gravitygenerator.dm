@@ -31,9 +31,13 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 	var/sprite_number = 0
 
 /obj/machinery/gravity_generator/safe_throw_at(atom/target, range, speed, mob/thrower, spin = TRUE, diagonals_first = FALSE, datum/callback/callback, force = MOVE_FORCE_STRONG, gentle = FALSE)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/gravity_generator/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(severity >= EXPLODE_DEVASTATE) // Very sturdy.
 		set_broken()
 		return TRUE
@@ -41,30 +45,44 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 	return FALSE
 
 /obj/machinery/gravity_generator/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if(prob(20))
 		set_broken()
 
 /obj/machinery/gravity_generator/zap_act(power, zap_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(zap_flags & ZAP_MACHINE_EXPLOSIVE)
 		qdel(src)//like the singulo, tesla deletes it. stops it from exploding over and over
 
 /obj/machinery/gravity_generator/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[get_status()]_[sprite_number]"
 	return ..()
 
 /obj/machinery/gravity_generator/proc/get_status()
+	procstart = null
+	src.procstart = null
 	return "off"
 
 // You aren't allowed to move.
 /obj/machinery/gravity_generator/Move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(src)
 
 /obj/machinery/gravity_generator/proc/set_broken()
+	procstart = null
+	src.procstart = null
 	atom_break()
 
 /obj/machinery/gravity_generator/proc/set_fix()
+	procstart = null
+	src.procstart = null
 	set_machine_stat(machine_stat & ~BROKEN)
 
 /**
@@ -76,6 +94,8 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 	var/obj/machinery/gravity_generator/main/main_part
 
 /obj/machinery/gravity_generator/part/Destroy()
+	procstart = null
+	src.procstart = null
 	atom_break()
 	if(main_part)
 		main_part.generator_parts -= src
@@ -84,21 +104,29 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 	return ..()
 
 /obj/machinery/gravity_generator/part/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!main_part)
 		return NONE
 	return main_part.item_interaction(user, tool)
 
 /obj/machinery/gravity_generator/part/get_status()
+	procstart = null
+	src.procstart = null
 	if(!main_part)
 		return
 	return main_part.get_status()
 
 /obj/machinery/gravity_generator/part/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!main_part)
 		return
 	return main_part.attack_hand(user, modifiers)
 
 /obj/machinery/gravity_generator/part/set_broken()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!main_part || (main_part.machine_stat & BROKEN))
 		return
@@ -106,6 +134,8 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 
 /// Used to eat args
 /obj/machinery/gravity_generator/part/proc/on_update_icon(obj/machinery/gravity_generator/source, updates, updated)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return update_appearance(updates)
 
@@ -159,6 +189,8 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 	charge_count = 0
 
 /obj/machinery/gravity_generator/main/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	soundloop = new(src, start_immediately = FALSE)
 	setup_parts()
@@ -168,7 +200,9 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 
 	add_to_nebula_shielding(src, /datum/station_trait/nebula/hostile/radiation, PROC_REF(get_radioactive_nebula_shielding))
 
-/obj/machinery/gravity_generator/main/Destroy() // If we somehow get deleted, remove all of our other parts.
+/obj/machinery/gravity_generator/main/Destroy()
+	procstart = null
+	src.procstart = null // If we somehow get deleted, remove all of our other parts.
 	investigate_log("was destroyed!", INVESTIGATE_GRAVITY)
 	disable()
 	QDEL_NULL(soundloop)
@@ -177,6 +211,8 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 	return ..()
 
 /obj/machinery/gravity_generator/main/proc/setup_parts()
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	// 9x9 block obtained from the bottom middle of the block
 	var/list/spawn_turfs = CORNER_BLOCK_OFFSET(our_turf, 3, 3, -1, 0)
@@ -198,6 +234,8 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 		part.RegisterSignal(src, COMSIG_ATOM_UPDATED_ICON, TYPE_PROC_REF(/obj/machinery/gravity_generator/part, on_update_icon))
 
 /obj/machinery/gravity_generator/main/set_broken()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/machinery/gravity_generator/internal_parts as anything in generator_parts)
 		if(!(internal_parts.machine_stat & BROKEN))
@@ -210,6 +248,8 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 	investigate_log("has broken down.", INVESTIGATE_GRAVITY)
 
 /obj/machinery/gravity_generator/main/set_fix()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/machinery/gravity_generator/internal_parts as anything in generator_parts)
 		if(internal_parts.machine_stat & BROKEN)
@@ -221,6 +261,8 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 // Interaction
 
 /obj/machinery/gravity_generator/main/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(machine_stat & BROKEN))
 		return
@@ -236,6 +278,8 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 
 // Fixing the gravity generator.
 /obj/machinery/gravity_generator/main/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!(machine_stat & BROKEN) || (broken_state != GRAV_NEEDS_PLASTEEL))
 		return NONE
 	if(!istype(tool, /obj/item/stack/sheet/plasteel))
@@ -252,6 +296,8 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/gravity_generator/main/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!(machine_stat & BROKEN) || (broken_state != GRAV_NEEDS_WELDING))
 		return NONE
 	if(!tool.use_tool(src, user, 0, volume=50))
@@ -262,6 +308,8 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/gravity_generator/main/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!(machine_stat & BROKEN) || (broken_state != GRAV_NEEDS_WRENCH))
 		return NONE
 	to_chat(user, span_notice("You secure the plating to the framework."))
@@ -270,6 +318,8 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/gravity_generator/main/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!(machine_stat & BROKEN) || (broken_state != GRAV_NEEDS_SCREWDRIVER))
 		return NONE
 	to_chat(user, span_notice("You secure the screws of the framework."))
@@ -279,12 +329,16 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/gravity_generator/main/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "GravityGenerator", name)
 		ui.open()
 
 /obj/machinery/gravity_generator/main/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["breaker"] = breaker
@@ -296,6 +350,8 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 	return data
 
 /obj/machinery/gravity_generator/main/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -310,18 +366,24 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 // Power and Icon States
 
 /obj/machinery/gravity_generator/main/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(SSticker.current_state == GAME_STATE_PLAYING)
 		investigate_log("has [machine_stat & NOPOWER ? "lost" : "regained"] power.", INVESTIGATE_GRAVITY)
 	set_power()
 
 /obj/machinery/gravity_generator/main/get_status()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & BROKEN)
 		return "fix[min(broken_state, 3)]"
 	return on || charging_state != POWER_IDLE ? "on" : "off"
 
 // Set the charging state based on power/breaker.
 /obj/machinery/gravity_generator/main/proc/set_power()
+	procstart = null
+	src.procstart = null
 	var/new_state = FALSE
 	if(machine_stat & (NOPOWER|BROKEN) || !breaker)
 		new_state = FALSE
@@ -334,6 +396,8 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 	update_appearance()
 
 /obj/machinery/gravity_generator/main/proc/enable()
+	procstart = null
+	src.procstart = null
 	charging_state = POWER_IDLE
 	on = TRUE
 	update_use_power(ACTIVE_POWER_USE)
@@ -352,6 +416,8 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 
 
 /obj/machinery/gravity_generator/main/proc/disable()
+	procstart = null
+	src.procstart = null
 	charging_state = POWER_IDLE
 	on = FALSE
 	update_use_power(IDLE_POWER_USE)
@@ -369,11 +435,15 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 
 
 /obj/machinery/gravity_generator/main/proc/complete_state_update()
+	procstart = null
+	src.procstart = null
 	update_appearance()
 	update_list()
 
 // Charge/Discharge and turn on/off gravity when you reach 0/100 percent.
 /obj/machinery/gravity_generator/main/process()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & BROKEN)
 		return
 	if(charging_state == POWER_IDLE)
@@ -413,6 +483,8 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 
 /// Shake everyone on the z level to let them know that gravity was enagaged/disengaged.
 /obj/machinery/gravity_generator/main/proc/shake_everyone()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	var/sound/alert_sound = sound('sound/effects/alert.ogg')
 	for(var/mob/mobs as anything in GLOB.mob_list)
@@ -429,6 +501,8 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 			mobs.playsound_local(T, null, 100, 1, 0.5, sound_to_use = alert_sound)
 
 /obj/machinery/gravity_generator/main/proc/gravity_in_level()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(!T)
 		return FALSE
@@ -437,6 +511,8 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 	return FALSE
 
 /obj/machinery/gravity_generator/main/proc/update_list()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(!T)
 		return
@@ -457,6 +533,8 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 		SSmapping.calculate_z_level_gravity(z)
 
 /obj/machinery/gravity_generator/main/proc/blackout()
+	procstart = null
+	src.procstart = null
 	charge_count = 0
 	breaker = FALSE
 	set_power()
@@ -464,15 +542,21 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 	investigate_log("was turned off by blackout event or a gravity anomaly detonation.", INVESTIGATE_GRAVITY)
 
 /obj/machinery/gravity_generator/main/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	disable()
 
 /obj/machinery/gravity_generator/main/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(charge_count != 0 && charging_state != POWER_UP)
 		enable()
 
 /obj/machinery/gravity_generator/main/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(same_z_layer)
 		return
@@ -481,15 +565,21 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 
 /// Returns the radioactive shielding (if there's a radioactive nebula). Called from a callback set in add_to_nebula_shielding()
 /obj/machinery/gravity_generator/main/proc/get_radioactive_nebula_shielding()
+	procstart = null
+	src.procstart = null
 	return on ? radioactive_nebula_shielding : 0
 
 //prevents shuttles attempting to rotate this since it messes up sprites
 /obj/machinery/gravity_generator/main/shuttleRotate(rotation, params)
+	procstart = null
+	src.procstart = null
 	params = NONE
 	return ..()
 
 /// Admin proc that causes gravity to fully restart, via the secrets panel's fix gravity.
 /obj/machinery/gravity_generator/main/proc/kickstart()
+	procstart = null
+	src.procstart = null
 	charge_count = 100
 	breaker = TRUE
 	set_power()

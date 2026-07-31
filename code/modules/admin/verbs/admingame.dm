@@ -350,6 +350,8 @@ ADMIN_VERB(manage_job_slots, R_ADMIN, "Manage Job Slots", "Manage the number of 
 	BLACKBOX_LOG_ADMIN_VERB("Manage Job Slots")
 
 /datum/admins/proc/manage_free_slots()
+	procstart = null
+	src.procstart = null
 	if(!check_rights())
 		return
 	var/datum/browser/browser = new(usr, "jobmanagement", "Manage Free Slots", 520)
@@ -413,6 +415,8 @@ ADMIN_VERB(combo_hud, R_ADMIN, "Toggle Combo HUD", "Toggles the Admin Combo HUD.
 #define ADMIN_HUDS list(TRAIT_SECURITY_HUD, TRAIT_MEDICAL_HUD, TRAIT_DIAGNOSTIC_HUD, TRAIT_BOT_PATH_HUD)
 
 /client/proc/enable_combo_hud()
+	procstart = null
+	src.procstart = null
 	if (combo_hud_enabled)
 		return
 
@@ -428,6 +432,8 @@ ADMIN_VERB(combo_hud, R_ADMIN, "Toggle Combo HUD", "Toggles the Admin Combo HUD.
 	mob.update_sight()
 
 /client/proc/disable_combo_hud()
+	procstart = null
+	src.procstart = null
 	if (!combo_hud_enabled)
 		return
 

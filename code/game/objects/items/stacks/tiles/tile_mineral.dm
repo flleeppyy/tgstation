@@ -3,6 +3,8 @@
 	var/mineralType = null
 
 /obj/item/stack/tile/mineral/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(get_amount() < 4)
 		to_chat(user, span_warning("You need at least four tiles to do this!"))
 		return ITEM_INTERACT_BLOCKING

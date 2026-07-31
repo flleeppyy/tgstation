@@ -25,14 +25,20 @@
 	var/bolt_flags =  ZAP_MOB_DAMAGE
 
 /datum/action/cooldown/spell/pointed/projectile/lightningbolt/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(owner, TRAIT_TESLA_SHOCKIMMUNE, type)
 
 /datum/action/cooldown/spell/pointed/projectile/lightningbolt/Remove(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(remove_from, TRAIT_TESLA_SHOCKIMMUNE, type)
 	return ..()
 
 /datum/action/cooldown/spell/pointed/projectile/lightningbolt/ready_projectile(obj/projectile/to_fire, atom/target, mob/user, iteration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(to_fire, /obj/projectile/magic/aoe/lightning))
 		return

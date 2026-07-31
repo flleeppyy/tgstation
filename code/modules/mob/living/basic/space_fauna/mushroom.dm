@@ -42,6 +42,8 @@
 	COOLDOWN_DECLARE(recovery_cooldown)
 
 /mob/living/basic/mushroom/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	melee_damage_lower = rand(3, 5)
 	melee_damage_upper = rand(10,20)
@@ -68,9 +70,13 @@
 
 ///we only attacked another mushrooms
 /datum/targeting_strategy/basic/mushroom/faction_check(datum/ai_controller/controller, mob/living/living_mob, mob/living/the_target)
+	procstart = null
+	src.procstart = null
 	return !living_mob.faction_check_atom(the_target, exact_match = check_factions_exactly)
 
 /mob/living/basic/mushroom/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -83,6 +89,8 @@
 		return TRUE
 
 /mob/living/basic/mushroom/melee_attack(mob/living/basic/mushroom/target, list/modifiers, ignore_cooldown = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -95,6 +103,8 @@
 	visible_message(span_notice("[src] chews a bit on [target]."))
 
 /mob/living/basic/mushroom/proc/consume_mushroom(mob/living/basic/mushroom/consumed)
+	procstart = null
+	src.procstart = null
 	visible_message(span_warning("[src] devours [consumed]!"))
 	var/level_gain = (consumed.powerlevel - powerlevel)
 	if(level_gain >= 0 && !ckey && !consumed.bruised)//Player shrooms can't level up to become robust gods.
@@ -103,6 +113,8 @@
 	qdel(consumed)
 
 /mob/living/basic/mushroom/revive(full_heal_flags = NONE, excess_healing = 0, force_grab_ghost = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -111,10 +123,14 @@
 	update_mushroomcap()
 
 /mob/living/basic/mushroom/death(gibbed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_mushroomcap()
 
 /mob/living/basic/mushroom/proc/update_mushroomcap()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	cap_living.color = cap_color
 	cap_dead.color = cap_color
@@ -124,6 +140,8 @@
 		add_overlay(cap_living)
 
 /mob/living/basic/mushroom/proc/recover(obj/item/mush_meal)
+	procstart = null
+	src.procstart = null
 	visible_message(span_notice("[src] eats [mush_meal]!"))
 	update_mushroomcap()
 	qdel(mush_meal)
@@ -137,6 +155,8 @@
 	COOLDOWN_START(src, recovery_cooldown, 5 MINUTES)
 
 /mob/living/basic/mushroom/proc/level_up(level_gain)
+	procstart = null
+	src.procstart = null
 	adjust_brute_loss(-maxHealth) //They'll always heal, even if they don't gain a level
 	if(powerlevel > 9)
 		return
@@ -150,6 +170,8 @@
 	maxHealth += (level_gain * rand(1,5))
 
 /mob/living/basic/mushroom/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/food/grown/mushroom))
 		return ..()
 
@@ -157,11 +179,15 @@
 	return ITEM_INTERACT_SUCCESS
 
 /mob/living/basic/mushroom/attackby(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(attacking_item.force || user.combat_mode)
 		bruised = TRUE
 	return ..()
 
 /mob/living/basic/mushroom/harvest(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/counter
 	for(counter=0, counter <= powerlevel, counter++)
 		var/obj/item/food/hugemushroomslice/shroomslice = new /obj/item/food/hugemushroomslice(src.loc)

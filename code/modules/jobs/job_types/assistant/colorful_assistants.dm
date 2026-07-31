@@ -1,4 +1,6 @@
 /proc/get_configured_colored_assistant_type()
+	procstart = null
+	src.procstart = null
 	return CONFIG_GET(flag/grey_assistants) ? /datum/colored_assistant/grey : /datum/colored_assistant/random
 
 /// Defines a style of jumpsuit/jumpskirt for assistants.
@@ -108,6 +110,8 @@
 /datum/colored_assistant/solid
 
 /datum/colored_assistant/solid/New()
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/under/color/random_jumpsuit_type = get_random_jumpsuit()
 	jumpsuits = list(random_jumpsuit_type)
 

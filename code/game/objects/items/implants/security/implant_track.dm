@@ -20,6 +20,8 @@
 		Automatically deactivates ten minutes after the host's death."
 
 /obj/item/implant/tracking/is_shown_on_console(obj/machinery/computer/prisoner/management/console)
+	procstart = null
+	src.procstart = null
 	if(imp_in.stat == DEAD && imp_in.timeofdeath + lifespan_postmortem < world.time)
 		return FALSE
 	if(!is_valid_z_level(get_turf(console), get_turf(imp_in)))
@@ -27,11 +29,15 @@
 	return TRUE
 
 /obj/item/implant/tracking/get_management_console_data()
+	procstart = null
+	src.procstart = null
 	var/list/info_shown = ..()
 	info_shown["Location"] = get_area_name(imp_in, format_text = TRUE) || "Unknown"
 	return info_shown
 
 /obj/item/implant/tracking/get_management_console_buttons()
+	procstart = null
+	src.procstart = null
 	var/list/buttons = ..()
 	UNTYPED_LIST_ADD(buttons, list(
 		"name" = "Warn",
@@ -42,6 +48,8 @@
 	return buttons
 
 /obj/item/implant/tracking/handle_management_console_action(mob/user, list/params, obj/machinery/computer/prisoner/management/console)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -79,15 +87,21 @@
 		Dissolves into bio-safe elements after five minutes."
 
 /obj/item/implant/tracking/c38/implant(mob/living/target, mob/user, silent, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	timerid = QDEL_IN_STOPPABLE(src, lifespan)
 
 /obj/item/implant/tracking/c38/removed(mob/living/source, silent, special)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	deltimer(timerid)
 	timerid = null
 
 /obj/item/implant/tracking/c38/Destroy()
+	procstart = null
+	src.procstart = null
 	return ..()
 
 /obj/item/implanter/tracking

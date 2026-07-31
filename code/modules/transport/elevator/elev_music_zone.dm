@@ -17,6 +17,8 @@ GLOBAL_LIST_EMPTY(elevator_music)
 	var/datum/proximity_monitor/elevator_music_area/sound_player
 
 /obj/effect/abstract/elevator_music_zone/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!linked_elevator_id)
 		log_mapping("No elevator ID for elevator music provided at [AREACOORD(src)].")
@@ -26,27 +28,37 @@ GLOBAL_LIST_EMPTY(elevator_music)
 	sound_player = new(src, range = src.range, soundloop_type = src.soundloop_type)
 
 /obj/effect/abstract/elevator_music_zone/Destroy(force)
+	procstart = null
+	src.procstart = null
 	GLOB.elevator_music -= src
 	QDEL_NULL(sound_player)
 	return ..()
 
 /obj/effect/abstract/elevator_music_zone/proc/link_to_panel(atom/elevator_panel)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(elevator_panel, COMSIG_MACHINERY_POWER_RESTORED, PROC_REF(on_panel_powered))
 	RegisterSignal(elevator_panel, COMSIG_MACHINERY_POWER_LOST, PROC_REF(on_panel_depowered))
 	RegisterSignal(elevator_panel, COMSIG_QDELETING, PROC_REF(on_panel_destroyed))
 
 /// Start sound loops when power is restored
 /obj/effect/abstract/elevator_music_zone/proc/on_panel_powered()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	sound_player.turn_on()
 
 /// Stop sound loops if power is lost
 /obj/effect/abstract/elevator_music_zone/proc/on_panel_depowered()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	sound_player.turn_off()
 
 /// Die if panel is destroyed, although currently they are invincible
 /obj/effect/abstract/elevator_music_zone/proc/on_panel_destroyed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
@@ -60,14 +72,20 @@ GLOBAL_LIST_EMPTY(elevator_music)
 	var/list/tracked_mobs = list()
 
 /datum/proximity_monitor/elevator_music_area/New(atom/_host, range, _ignore_if_not_on_turf, soundloop_type)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.soundloop_type = soundloop_type
 
 /datum/proximity_monitor/elevator_music_area/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST_ASSOC_VAL(tracked_mobs)
 	return ..()
 
 /datum/proximity_monitor/elevator_music_area/on_entered(turf/new_location, mob/entered, turf/old_location)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!istype(entered) || !entered.mind)
 		return
@@ -84,6 +102,8 @@ GLOBAL_LIST_EMPTY(elevator_music)
 	RegisterSignal(entered, COMSIG_QDELETING, PROC_REF(mob_destroyed))
 
 /datum/proximity_monitor/elevator_music_area/on_uncrossed(turf/old_location, mob/exited, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!(exited in tracked_mobs))
 		return
@@ -95,6 +115,8 @@ GLOBAL_LIST_EMPTY(elevator_music)
 
 /// Remove references on mob deletion
 /datum/proximity_monitor/elevator_music_area/proc/mob_destroyed(mob/former_mob)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (former_mob in tracked_mobs)
 		qdel(tracked_mobs[former_mob])
@@ -102,6 +124,8 @@ GLOBAL_LIST_EMPTY(elevator_music)
 
 /// Start sound loops playing
 /datum/proximity_monitor/elevator_music_area/proc/turn_on()
+	procstart = null
+	src.procstart = null
 	enabled = TRUE
 	for (var/mob in tracked_mobs)
 		var/datum/looping_sound/loop = tracked_mobs[mob]
@@ -109,6 +133,8 @@ GLOBAL_LIST_EMPTY(elevator_music)
 
 /// Stop active sound loops
 /datum/proximity_monitor/elevator_music_area/proc/turn_off()
+	procstart = null
+	src.procstart = null
 	enabled = FALSE
 	for (var/mob in tracked_mobs)
 		var/datum/looping_sound/loop = tracked_mobs[mob]

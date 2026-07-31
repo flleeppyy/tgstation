@@ -24,6 +24,8 @@ GLOBAL_REAL(Failsafe, /datum/controller/failsafe)
 	var/running = TRUE
 
 /datum/controller/failsafe/New()
+	procstart = null
+	src.procstart = null
 	// Ensure usr is null, to prevent any potential weirdness resulting from the failsafe having a usr if it's manually restarted.
 	usr = null
 
@@ -35,6 +37,8 @@ GLOBAL_REAL(Failsafe, /datum/controller/failsafe)
 	Initialize()
 
 /datum/controller/failsafe/Initialize()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	Failsafe.Loop()
 	if (!Master || defcon == 0) //Master is gone/not responding and Failsafe just exited its loop
@@ -57,11 +61,15 @@ GLOBAL_REAL(Failsafe, /datum/controller/failsafe)
 		qdel(src) //when Loop() returns, we delete ourselves and let the mc recreate us
 
 /datum/controller/failsafe/Destroy()
+	procstart = null
+	src.procstart = null
 	running = FALSE
 	..()
 	return QDEL_HINT_HARDDEL_NOW
 
 /datum/controller/failsafe/proc/Loop()
+	procstart = null
+	src.procstart = null
 	while(running)
 		lasttick = world.time
 		if(!Master)
@@ -129,6 +137,8 @@ GLOBAL_REAL(Failsafe, /datum/controller/failsafe)
 //Emergency loop used when Master got deleted or the main loop exited while Defcon == 0
 //Loop is driven externally so runtimes only cancel the current recovery attempt
 /datum/controller/failsafe/proc/emergency_loop()
+	procstart = null
+	src.procstart = null
 	//The code in this proc should be kept as simple as possible, anything complicated like to_chat might rely on master existing and runtime
 	//The goal should always be to get a new Master up and running before anything else
 	. = -1
@@ -150,6 +160,8 @@ GLOBAL_REAL(Failsafe, /datum/controller/failsafe)
 
 ///Recreate all SSs which will still cause data survive due to Recover(), the new Master will then find and take them from global.vars
 /proc/recover_all_SS_and_recreate_master()
+	procstart = null
+	src.procstart = null
 	del(Master)
 	var/list/subsytem_types = subtypesof(/datum/controller/subsystem)
 	sortTim(subsytem_types, GLOBAL_PROC_REF(cmp_subsystem_init_stage))
@@ -165,6 +177,8 @@ GLOBAL_REAL(Failsafe, /datum/controller/failsafe)
 
 ///Delete all existing SS to basically start over
 /proc/delete_all_SS_and_recreate_master()
+	procstart = null
+	src.procstart = null
 	del(Master)
 	for(var/global_var in global.vars)
 		if (istype(global.vars[global_var], /datum/controller/subsystem))
@@ -178,8 +192,12 @@ GLOBAL_REAL(Failsafe, /datum/controller/failsafe)
 		message_admins(span_boldannounce("Failed to create new MC!"))
 
 /datum/controller/failsafe/proc/defcon_pretty()
+	procstart = null
+	src.procstart = null
 	return defcon
 
 /datum/controller/failsafe/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg = "Defcon: [defcon_pretty()] (Interval: [Failsafe.processing_interval] | Iteration: [Failsafe.master_iteration])"
 	return msg

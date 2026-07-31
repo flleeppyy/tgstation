@@ -8,6 +8,8 @@
 /datum/bt_node/ai_behavior/basic_melee_attack/dog
 
 /datum/bt_node/ai_behavior/basic_melee_attack/dog/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	if(!(isturf(living_pawn.loc) || HAS_TRAIT(living_pawn, TRAIT_AI_BAGATTACK)))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
@@ -29,6 +31,8 @@
 
 /// Swat at someone we don't like but won't hurt
 /datum/bt_node/ai_behavior/basic_melee_attack/dog/proc/paw_harmlessly(mob/living/living_pawn, atom/target, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!SPT_PROB(20, seconds_per_tick))
 		return
 	living_pawn.do_attack_animation(target, ATTACK_EFFECT_DISARM)
@@ -46,6 +50,8 @@
 	var/targeting_strategy = BB_TARGETING_STRATEGY
 
 /datum/bt_node/ai_behavior/find_hated_dog_target/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(!SPT_PROB(10, seconds_per_tick))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
 
@@ -80,6 +86,8 @@
 /datum/bt_node/ai_behavior/idle_dog
 
 /datum/bt_node/ai_behavior/idle_dog/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 
 	var/obj/item/carry_item = controller.blackboard[BB_SIMPLE_CARRY_ITEM]
@@ -101,6 +109,8 @@
 /datum/bt_node/ai_behavior/random_speech_blackboard/dog_random_speech
 
 /datum/bt_node/ai_behavior/random_speech_blackboard/dog/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/pet/dog/dog_pawn = controller.pawn
 	if(!istype(dog_pawn))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED

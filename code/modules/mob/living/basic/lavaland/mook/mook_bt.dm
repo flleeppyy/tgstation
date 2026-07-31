@@ -5,6 +5,8 @@
 	var/target_key = BB_HOME_VILLAGE
 
 /datum/bt_node/ai_behavior/find_village/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/landmark/home = locate(/obj/effect/landmark/mook_village) in GLOB.landmarks_list
 	if(isnull(home))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
@@ -15,6 +17,8 @@
 /datum/bt_node/ai_behavior/find_mineral_wall/mook
 
 /datum/bt_node/ai_behavior/find_mineral_wall/mook/check_if_mineable(datum/ai_controller/controller, turf/target_wall)
+	procstart = null
+	src.procstart = null
 	var/list/forbidden = controller.blackboard[BB_BLACKLIST_MINERAL_TURFS]
 	if(is_type_in_list(target_wall, forbidden))
 		return FALSE
@@ -29,6 +33,8 @@
 	var/wander_distance = 9
 
 /datum/bt_node/ai_behavior/calculate_wander_destination/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	var/atom/anchor = controller.blackboard[anchor_key]
 	if(QDELETED(anchor))
@@ -62,6 +68,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/calculate_wander_destination/proc/_get_furthest_turf(atom/source, angle, atom/anchor)
+	procstart = null
+	src.procstart = null
 	var/turf/result
 	for(var/i in 1 to wander_distance)
 		var/turf/candidate = get_ranged_target_turf_direct(source, anchor, range = i, offset = angle)
@@ -79,6 +87,8 @@
 	var/destination_key = BB_DEPOSIT_POSITION
 
 /datum/bt_node/ai_behavior/find_deposit_position/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/stand = controller.blackboard[stand_key]
 	if(QDELETED(stand))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
@@ -98,6 +108,8 @@
 /datum/bt_node/decorator/mook_has_flee_reason
 
 /datum/bt_node/decorator/mook_has_flee_reason/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	RegisterSignals(pawn, list(\
 		COMSIG_AI_BLACKBOARD_KEY_SET(BB_STORM_APPROACHING),\
 		COMSIG_AI_BLACKBOARD_KEY_SET(BB_SIMPLE_CARRY_ITEM),\
@@ -106,6 +118,8 @@
 	return TRUE
 
 /datum/bt_node/decorator/mook_has_flee_reason/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(pawn, list(\
 		COMSIG_AI_BLACKBOARD_KEY_SET(BB_STORM_APPROACHING),\
 		COMSIG_AI_BLACKBOARD_KEY_SET(BB_SIMPLE_CARRY_ITEM),\
@@ -113,6 +127,8 @@
 	))
 
 /datum/bt_node/decorator/mook_has_flee_reason/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	return controller.blackboard[BB_STORM_APPROACHING] || !isnull(controller.blackboard[BB_SIMPLE_CARRY_ITEM])
 
 

@@ -29,9 +29,13 @@
 	var/carved_type = /obj/item/clothing/head/utility/hardhat/pumpkinhead
 
 /obj/item/food/grown/pumpkin/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/pumpkinjuice
 
 /obj/item/food/grown/pumpkin/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!tool.get_sharpness())
 		return NONE
 
@@ -62,4 +66,6 @@
 	carved_type = /obj/item/clothing/head/utility/hardhat/pumpkinhead/blumpkin
 
 /obj/item/food/grown/pumpkin/blumpkin/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/blumpkinjuice

@@ -9,6 +9,8 @@
 	var/only_show_on_shuttle_edge
 
 /datum/element/nav_computer_icon/Attach(datum/target, use_icon, use_icon_state, only_show_on_shuttle_edge)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
@@ -20,6 +22,8 @@
 	RegisterSignal(target, COMSIG_SHUTTLE_NAV_COMPUTER_IMAGE_REQUESTED, PROC_REF(provide_image))
 
 /datum/element/nav_computer_icon/proc/provide_image(datum/source, list/images_out)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/source_obj = source
 	var/turf/source_turf = get_turf(source_obj)
@@ -40,5 +44,7 @@
 	images_out += the_image
 
 /datum/element/nav_computer_icon/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_SHUTTLE_NAV_COMPUTER_IMAGE_REQUESTED)

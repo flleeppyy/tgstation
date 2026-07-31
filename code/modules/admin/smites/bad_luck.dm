@@ -9,12 +9,16 @@
 	var/incidents
 
 /datum/smite/bad_luck/configure(client/user)
+	procstart = null
+	src.procstart = null
 	silent = tgui_alert(user, "Do you want to apply the omen with a player notification?", "Notify Player?", list("Notify", "Silent")) == "Silent"
 	incidents = tgui_input_number(user, "For how many incidents will the omen last? 0 means permanent.", "Duration?", default = 0, round_value = 1)
 	if(incidents == 0)
 		incidents = INFINITY
 
 /datum/smite/bad_luck/effect(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//if permanent, replace any existing omen
 	if(incidents == INFINITY)
@@ -32,6 +36,8 @@
 		to_chat(target, span_warning("A <b>very</b> bad feeling... As if malevolent forces are watching you..."))
 
 /datum/smite/bad_luck/proc/on_death(datum/component/omen/omen)
+	procstart = null
+	src.procstart = null
 	if(omen.incidents_left == INFINITY)
 		return
 

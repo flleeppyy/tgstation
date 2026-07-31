@@ -6,7 +6,11 @@
 	should_update_preview = FALSE
 
 /datum/preference/toggle/rds_limit/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/preference/toggle/rds_limit/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	return ..() && (/datum/quirk/insanity::name in preferences.all_quirks)

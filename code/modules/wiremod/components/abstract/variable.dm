@@ -16,20 +16,30 @@
 	var/should_listen = FALSE
 
 /obj/item/circuit_component/variable/populate_options()
+	procstart = null
+	src.procstart = null
 	variable_name = add_option_port("Variable", null)
 
 /obj/item/circuit_component/variable/add_to(obj/item/integrated_circuit/added_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	variable_name.possible_options = get_variable_list(added_to)
 
 /obj/item/circuit_component/variable/proc/get_variable_list(obj/item/integrated_circuit/integrated_circuit)
+	procstart = null
+	src.procstart = null
 	return integrated_circuit.circuit_variables
 
 /obj/item/circuit_component/variable/removed_from(obj/item/integrated_circuit/removed_from)
+	procstart = null
+	src.procstart = null
 	variable_name.possible_options = null
 	return ..()
 
 /obj/item/circuit_component/variable/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!parent)
 		return
 
@@ -46,6 +56,8 @@
 	set_current_variable(variable)
 
 /obj/item/circuit_component/variable/proc/remove_current_variable()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(current_variable)
 		if(should_listen)
@@ -54,6 +66,8 @@
 		current_variable = null
 
 /obj/item/circuit_component/variable/proc/set_current_variable(datum/circuit_variable/variable)
+	procstart = null
+	src.procstart = null
 	if(variable == current_variable)
 		return
 

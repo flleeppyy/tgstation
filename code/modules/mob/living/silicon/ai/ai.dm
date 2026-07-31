@@ -10,6 +10,8 @@
  * * force_mind_move - If TRUE, forces the mind to move even if it is inactive.
  */
 /mob/living/silicon/ai/Initialize(mapload, mob/target_ai, datum/ai_laws/base_laws, obj/machinery/ai_law_rack/base/default_link, force_mind_move = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(target_ai)) //If there is no player/brain inside.
 		new/obj/structure/ai_core(loc, CORE_STATE_FINISHED) //New empty terminal.
@@ -126,6 +128,8 @@
 	RegisterSignal(src, COMSIG_SILICON_MODULE_RACK_LAWSET_UPDATE, PROC_REF(lawset_updated_sync_borgs))
 
 /mob/living/silicon/ai/mind_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	mind.has_ever_been_ai = TRUE
 
@@ -137,6 +141,8 @@
 	announce_init_to_others = FALSE
 
 /mob/living/silicon/ai/key_down(_key, client/user)
+	procstart = null
+	src.procstart = null
 	if(findtext(_key, "numpad")) //if it's a numpad number, we can convert it to just the number
 		_key = _key[7] //strings, lists, same thing really
 	switch(_key)
@@ -159,6 +165,8 @@
 	return ..()
 
 /mob/living/silicon/ai/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.ai_list -= src
 	GLOB.shuttle_caller_list -= src
 	SSshuttle.autoEvac()
@@ -184,6 +192,8 @@
 
 /// Removes all malfunction-related abilities from the AI
 /mob/living/silicon/ai/proc/remove_malf_abilities()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(modules_action)
 	for(var/datum/ai_module/malf/AM in current_modules)
 		for(var/datum/action/A in actions)
@@ -191,6 +201,8 @@
 				qdel(A)
 
 /mob/living/silicon/ai/ignite_mob(silent)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/silicon/ai
@@ -198,6 +210,8 @@
 	var/mutable_appearance/portrait_appearance
 
 /mob/living/silicon/ai/proc/set_core_display_icon(input, client/C)
+	procstart = null
+	src.procstart = null
 	portrait_appearance = null
 
 	var/preferred_choice
@@ -218,6 +232,8 @@
 
 /// Apply an AI's hologram preference
 /mob/living/silicon/ai/proc/apply_pref_hologram_display(client/player_client)
+	procstart = null
+	src.procstart = null
 	if(player_client.prefs?.read_preference(/datum/preference/choiced/ai_hologram_display))
 		var/list/hologram_choice = player_client.prefs.read_preference(/datum/preference/choiced/ai_hologram_display)
 		if(hologram_choice == "Random")
@@ -229,6 +245,8 @@
 
 /// Apply an AI's emote display preference
 /mob/living/silicon/ai/proc/apply_pref_emote_display(client/player_client)
+	procstart = null
+	src.procstart = null
 	if(player_client.prefs?.read_preference(/datum/preference/choiced/ai_emote_display))
 		var/emote_choice = player_client.prefs.read_preference(/datum/preference/choiced/ai_emote_display)
 
@@ -241,6 +259,8 @@
 
 /// Apply an emote to all AI status displays on the station
 /mob/living/silicon/ai/proc/apply_emote_display(emote)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/status_display/ai/ai_display as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/status_display/ai))
 		ai_display.emotion = emote
 		ai_display.update()
@@ -270,6 +290,8 @@ GAME_VERB_DESC(/mob/living/silicon/ai, pick_status_display, "Set AI Status Displ
 	status_display_picker.ui_interact(src)
 
 /mob/living/silicon/ai/get_status_tab_items()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_UNCONSCIOUS_OR_CRIT(src))
 		. += "Systems nonfunctional"
@@ -298,6 +320,8 @@ GAME_VERB_DESC(/mob/living/silicon/ai, pick_status_display, "Set AI Status Displ
 	. += "AI shell beacons detected: [LAZYLEN(GLOB.available_ai_shells)]" //Count of total AI shells
 
 /mob/living/silicon/ai/proc/ai_call_shuttle()
+	procstart = null
+	src.procstart = null
 	if(control_disabled)
 		to_chat(usr, span_warning("Wireless control is disabled!"))
 		return
@@ -327,6 +351,8 @@ GAME_VERB_DESC(/mob/living/silicon/ai, pick_status_display, "Set AI Status Displ
 			C.post_status("shuttle")
 
 /mob/living/silicon/ai/can_interact_with(atom/A, treat_mob_as_adjacent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -348,6 +374,8 @@ GAME_VERB_DESC(/mob/living/silicon/ai, pick_status_display, "Set AI Status Displ
 		return SScameras.is_visible_by_cameras(target_turf)
 
 /mob/living/silicon/ai/cancel_camera()
+	procstart = null
+	src.procstart = null
 	view_core()
 
 GAME_VERB_HIDDEN(/mob/living/silicon/ai, ai_camera_track, "track") //Don't display it on the verb lists. This verb exists purely so you can type "track Oldman Robustin" and follow his ass
@@ -356,12 +384,16 @@ GAME_VERB_HIDDEN(/mob/living/silicon/ai, ai_camera_track, "track") //Don't displ
 
 ///Called when an AI starts tracking a new target, before the eye moves. Saves the return point for the "last camera" hotkey.
 /mob/living/silicon/ai/proc/on_track_started(datum/trackable/source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(eyeobj)
 		cam_prev = get_turf(eyeobj)
 
 ///Called when an AI finds their tracking target.
 /mob/living/silicon/ai/proc/on_track_target(datum/trackable/source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(eyeobj)
 		eyeobj.setLoc(get_turf(target))
@@ -370,6 +402,8 @@ GAME_VERB_HIDDEN(/mob/living/silicon/ai, ai_camera_track, "track") //Don't displ
 
 /// Keeps our rate of gliding in step with the mob we're following
 /mob/living/silicon/ai/proc/tracked_glidesize_changed(datum/trackable/source, mob/living/target, new_glide_size)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(eyeobj)
 		eyeobj.glide_size = new_glide_size
@@ -389,6 +423,8 @@ GAME_VERB(/mob/living/silicon/ai, toggle_anchor, "Toggle Floor Bolts", "AI Comma
 	to_chat(src, "<b>You are now [is_anchored ? "" : "un"]anchored.</b>")
 
 /mob/living/silicon/ai/proc/flip_anchored()
+	procstart = null
+	src.procstart = null
 	if(is_anchored)
 		is_anchored = !is_anchored
 		move_resist = MOVE_FORCE_NORMAL
@@ -401,7 +437,9 @@ GAME_VERB(/mob/living/silicon/ai, toggle_anchor, "Toggle Floor Bolts", "AI Comma
 		ADD_TRAIT(src, TRAIT_NO_TELEPORT, AI_ANCHOR_TRAIT)
 
 /// Creates an MMI of the AI based on its configuration.
-/mob/living/silicon/ai/proc/make_mmi(atom/destination) as /obj/item/mmi
+/mob/living/silicon/ai/proc/make_mmi(atom/destination)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/obj/item/mmi)
 	//FIXME: this code is really bad, we shouldn't be doing most of this ourselves. MMI code needs a good refactoring....
 	var/obj/item/mmi/copied_mmi
@@ -432,6 +470,8 @@ GAME_VERB(/mob/living/silicon/ai, toggle_anchor, "Toggle Floor Bolts", "AI Comma
 	return copied_mmi
 
 /mob/living/silicon/ai/proc/ai_mob_to_structure()
+	procstart = null
+	src.procstart = null
 	disconnect_shell()
 	ShutOffDoomsdayDevice()
 	var/obj/structure/ai_core/ai_core = new(get_turf(src), CORE_STATE_FINISHED, make_mmi())
@@ -440,6 +480,8 @@ GAME_VERB(/mob/living/silicon/ai, toggle_anchor, "Toggle Floor Bolts", "AI Comma
 	return ai_core
 
 /mob/living/silicon/ai/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(usr != src)
 		return
@@ -521,6 +563,8 @@ GAME_VERB(/mob/living/silicon/ai, toggle_anchor, "Toggle Floor Bolts", "AI Comma
 
 
 /mob/living/silicon/ai/proc/switchCamera(obj/machinery/camera/C)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(C))
 		return FALSE
 
@@ -542,6 +586,8 @@ GAME_VERB_PROC_DESC(/mob/living/silicon/ai, botcall, "Access Robot Control", "Wi
 	robot_control.ui_interact(src)
 
 /mob/living/silicon/ai/proc/set_waypoint(atom/A)
+	procstart = null
+	src.procstart = null
 	var/turf/turf_check = get_turf(A)
 		//The target must be in view of a camera or near the core.
 	if(turf_check in range(get_turf(src)))
@@ -552,6 +598,8 @@ GAME_VERB_PROC_DESC(/mob/living/silicon/ai, botcall, "Access Robot Control", "Wi
 		to_chat(src, span_danger("Selected location is not visible."))
 
 /mob/living/silicon/ai/proc/call_bot(turf/waypoint)
+	procstart = null
+	src.procstart = null
 	var/mob/living/bot = bot_ref?.resolve()
 	if(!bot)
 		return
@@ -562,6 +610,8 @@ GAME_VERB_PROC_DESC(/mob/living/silicon/ai, botcall, "Access Robot Control", "Wi
 	to_chat(src, span_notice("[chat_message]"))
 
 /mob/living/silicon/ai/proc/alarm_triggered(datum/source, alarm_type, area/source_area)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/list/cameras = source_area.cameras
 	var/home_name = source_area.name
@@ -582,6 +632,8 @@ GAME_VERB_PROC_DESC(/mob/living/silicon/ai, botcall, "Access Robot Control", "Wi
 	return 1
 
 /mob/living/silicon/ai/proc/alarm_cleared(datum/source, alarm_type, area/source_area)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	queueAlarm("--- [alarm_type] alarm in [source_area.name] has been cleared.", alarm_type, 0)
 
@@ -704,16 +756,22 @@ GAME_VERB_PROC_DESC(/mob/living/silicon/ai, ai_hologram_change, "Change Hologram
 	button_icon_state = "ai_malf_core"
 
 /datum/action/innate/core_return/Grant(mob/new_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(new_owner, COMSIG_SILICON_AI_VACATE_APC, PROC_REF(returned_to_core))
 
 /datum/action/innate/core_return/proc/returned_to_core(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	Remove(source)
 	UnregisterSignal(source, COMSIG_SILICON_AI_VACATE_APC)
 
 /datum/action/innate/core_return/Activate()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/power/apc/apc = owner.loc
 	if(!istype(apc))
 		to_chat(owner, span_notice("You are already in your Main Core."))
@@ -726,6 +784,8 @@ GAME_VERB_PROC_DESC(/mob/living/silicon/ai, ai_hologram_change, "Change Hologram
 	qdel(src)
 
 /mob/living/silicon/ai/proc/toggle_camera_light()
+	procstart = null
+	src.procstart = null
 	camera_light_on = !camera_light_on
 
 	if (!camera_light_on)
@@ -743,6 +803,8 @@ GAME_VERB_PROC_DESC(/mob/living/silicon/ai, ai_hologram_change, "Change Hologram
 
 // Allows AIs to turn their hologram instead on alt-move
 /mob/living/silicon/ai/keybind_face_direction(direction)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/holopad/active_pad = current
 	if(istype(active_pad) && active_pad.masters[src])
 		var/obj/effect/overlay/holo_pad_hologram/ai_holo = active_pad.masters[src]
@@ -753,6 +815,8 @@ GAME_VERB_PROC_DESC(/mob/living/silicon/ai, ai_hologram_change, "Change Hologram
 //AI_CAMERA_LUMINOSITY
 
 /mob/living/silicon/ai/proc/light_cameras()
+	procstart = null
+	src.procstart = null
 	var/list/obj/machinery/camera/add = list()
 	var/list/obj/machinery/camera/remove = list()
 	var/list/obj/machinery/camera/visible = list()
@@ -783,6 +847,8 @@ GAME_VERB_PROC_DESC(/mob/living/silicon/ai, control_integrated_radio, "Transceiv
 		radio.interact(src)
 
 /mob/living/silicon/ai/proc/set_syndie_radio()
+	procstart = null
+	src.procstart = null
 	if(radio)
 		radio.make_syndie()
 
@@ -793,6 +859,8 @@ GAME_VERB_PROC_DESC(/mob/living/silicon/ai, set_automatic_say_channel, "Set Auto
 	set_autosay()
 
 /mob/living/silicon/ai/transfer_ai(interaction, mob/user, mob/living/silicon/ai/AI, obj/item/aicard/card)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(interaction != AI_TRANS_TO_CARD)//The only possible interaction. Upload AI mob to a card.
@@ -816,12 +884,16 @@ GAME_VERB_PROC_DESC(/mob/living/silicon/ai, set_automatic_say_channel, "Set Auto
 	to_chat(user, "[span_boldnotice("Transfer successful")]: [name] ([rand(1000,9999)].exe) removed from host terminal and stored within local memory.")
 
 /mob/living/silicon/ai/can_perform_action(atom/target, action_bitflags)
+	procstart = null
+	src.procstart = null
 	if(control_disabled)
 		to_chat(src, span_warning("You can't do that right now!"))
 		return FALSE
 	return can_see(target) && ..() //stop AIs from leaving windows open and using then after they lose vision
 
 /mob/living/silicon/ai/proc/can_see(atom/A)
+	procstart = null
+	src.procstart = null
 	if(isturf(loc)) //AI in core, check if on cameras
 		//get_turf_pixel() is because APCs in maint aren't actually in view of the inner camera
 		//apc_override is needed here because AIs use their own APC when depowered
@@ -832,6 +904,8 @@ GAME_VERB_PROC_DESC(/mob/living/silicon/ai, set_automatic_say_channel, "Set Auto
 	return get_dist(src, A) <= max(viewscale[1]*0.5,viewscale[2]*0.5)
 
 /mob/living/silicon/ai/proc/relay_speech(atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list())
+	procstart = null
+	src.procstart = null
 	var/raw_translation = translate_language(speaker, message_language, raw_message, spans, message_mods)
 	var/atom/movable/source = speaker.GetSource() || speaker // is the speaker virtual/radio
 	var/treated_message = source.generate_messagepart(raw_translation, spans, message_mods)
@@ -863,6 +937,8 @@ GAME_VERB_PROC_DESC(/mob/living/silicon/ai, set_automatic_say_channel, "Set Auto
 	show_message(rendered, 2)
 
 /mob/living/silicon/ai/fully_replace_character_name(oldname, newname, log_new_name = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -882,6 +958,8 @@ GAME_VERB_PROC_DESC(/mob/living/silicon/ai, set_automatic_say_channel, "Set Auto
 	var/datum/module_picker/module_picker
 
 /datum/action/innate/choose_modules/New(picker)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(picker, /datum/module_picker))
 		module_picker = picker
@@ -889,9 +967,13 @@ GAME_VERB_PROC_DESC(/mob/living/silicon/ai, set_automatic_say_channel, "Set Auto
 		CRASH("choose_modules action created with non module picker")
 
 /datum/action/innate/choose_modules/Activate()
+	procstart = null
+	src.procstart = null
 	module_picker.ui_interact(owner)
 
 /mob/living/silicon/ai/proc/add_malf_picker()
+	procstart = null
+	src.procstart = null
 	if (malf_picker)
 		stack_trace("Attempted to give malf AI malf picker to \[[src]\], who already has a malf picker.")
 		return
@@ -903,6 +985,8 @@ GAME_VERB_PROC_DESC(/mob/living/silicon/ai, set_automatic_say_channel, "Set Auto
 	modules_action.Grant(src)
 
 /mob/living/silicon/ai/reset_perspective(atom/new_eye)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE) // I hate you all
 	if(camera_light_on)
 		light_cameras()
@@ -939,6 +1023,8 @@ GAME_VERB_PROC_DESC(/mob/living/silicon/ai, set_automatic_say_channel, "Set Auto
 	SEND_SIGNAL(src, COMSIG_MOB_RESET_PERSPECTIVE)
 
 /mob/living/silicon/ai/revive(full_heal_flags = NONE, excess_healing = 0, force_grab_ghost = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -948,6 +1034,8 @@ GAME_VERB_PROC_DESC(/mob/living/silicon/ai, set_automatic_say_channel, "Set Auto
 	set_eyeobj_visible(TRUE)
 
 /mob/living/silicon/ai/proc/malfhacked(obj/machinery/power/apc/apc)
+	procstart = null
+	src.procstart = null
 	malfhack = null
 	malfhacking = FALSE
 	clear_alert(ALERT_HACKING_APC)
@@ -990,6 +1078,8 @@ GAME_VERB_DESC(/mob/living/silicon/ai, deploy_to_shell, "Deploy to Shell", "Tran
 	select_shell()
 
 /mob/living/silicon/ai/proc/select_shell(mob/living/silicon/robot/target)
+	procstart = null
+	src.procstart = null
 	if(incapacitated)
 		return
 	if(control_disabled)
@@ -1030,6 +1120,8 @@ GAME_VERB_DESC(/mob/living/silicon/ai, deploy_to_shell, "Deploy to Shell", "Tran
 	button_icon_state = "ai_shell"
 
 /datum/action/innate/deploy_shell/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/silicon/ai/AI = owner
@@ -1045,6 +1137,8 @@ GAME_VERB_DESC(/mob/living/silicon/ai, deploy_to_shell, "Deploy to Shell", "Tran
 	var/mob/living/silicon/robot/last_used_shell
 
 /datum/action/innate/deploy_last_shell/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(!owner)
@@ -1056,6 +1150,8 @@ GAME_VERB_DESC(/mob/living/silicon/ai, deploy_to_shell, "Deploy to Shell", "Tran
 		Remove(owner) //If the last shell is blown, destroy it.
 
 /mob/living/silicon/ai/proc/disconnect_shell()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(deployed_shell) //Forcibly call back AI in event of things such as damage, EMP or power loss.
 		to_chat(src, span_danger("Your remote connection has been reset!"))
@@ -1063,26 +1159,38 @@ GAME_VERB_DESC(/mob/living/silicon/ai, deploy_to_shell, "Deploy to Shell", "Tran
 	diag_hud_set_deployed()
 
 /mob/living/silicon/ai/resist()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/silicon/ai/proc/camera_visibility(mob/eye/camera/ai/moved_eye)
+	procstart = null
+	src.procstart = null
 	SScameras.update_eye_chunk(moved_eye)
 
 /mob/living/silicon/ai/forceMove(atom/destination)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		end_multicam()
 
 /mob/living/silicon/ai/up()
+	procstart = null
+	src.procstart = null
 	if(eyeobj.zMove(UP, z_move_flags = ZMOVE_FEEDBACK))
 		to_chat(src, span_notice("You move upwards."))
 
 /mob/living/silicon/ai/down()
+	procstart = null
+	src.procstart = null
 	if(eyeobj.zMove(DOWN, z_move_flags = ZMOVE_FEEDBACK))
 		to_chat(src, span_notice("You move down."))
 
 /// Proc to hook behavior to the changes of the value of [aiRestorePowerRoutine].
 /mob/living/silicon/ai/proc/setAiRestorePowerRoutine(new_value)
+	procstart = null
+	src.procstart = null
 	if(new_value == aiRestorePowerRoutine)
 		return
 	. = aiRestorePowerRoutine
@@ -1094,6 +1202,8 @@ GAME_VERB_DESC(/mob/living/silicon/ai, deploy_to_shell, "Deploy to Shell", "Tran
 		REMOVE_TRAIT(src, TRAIT_INCAPACITATED, POWER_LACK_TRAIT)
 
 /mob/living/silicon/ai/proc/show_camera_list()
+	procstart = null
+	src.procstart = null
 	var/list/cameras = SScameras.get_available_camera_by_tag_list(network)
 	var/camera_tag = tgui_input_list(src, "Choose which camera you want to view", "Cameras", cameras)
 	if(isnull(camera_tag))
@@ -1106,21 +1216,31 @@ GAME_VERB_DESC(/mob/living/silicon/ai, deploy_to_shell, "Deploy to Shell", "Tran
 	switchCamera(chosen_camera)
 
 /mob/living/silicon/ai/on_handsblocked_start()
+	procstart = null
+	src.procstart = null
 	return // AIs have no hands
 
 /mob/living/silicon/ai/on_handsblocked_end()
+	procstart = null
+	src.procstart = null
 	return // AIs have no hands
 
 /mob/living/silicon/ai/get_exp_list(minutes)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.[/datum/job/ai::title] = minutes
 
 /mob/living/silicon/ai/get_voice(add_id_name)
+	procstart = null
+	src.procstart = null
 	if(ai_voicechanger?.changing_voice)
 		return ai_voicechanger.say_name
 	return ..()
 
 /mob/living/silicon/ai/get_unconscious_appearance()
+	procstart = null
+	src.procstart = null
 	var/image/static_overlay = image('icons/effects/effects.dmi', null, "static_base")
 	static_overlay.blend_mode = BLEND_INSET_OVERLAY
 
@@ -1133,6 +1253,8 @@ GAME_VERB_DESC(/mob/living/silicon/ai, deploy_to_shell, "Deploy to Shell", "Tran
 	return static_image
 
 /mob/living/silicon/ai/proc/set_control_disabled(control_disabled)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_SILICON_AI_SET_CONTROL_DISABLED, control_disabled)
 	src.control_disabled = control_disabled
 
@@ -1141,6 +1263,8 @@ GAME_VERB_DESC(/mob/living/silicon/ai, deploy_to_shell, "Deploy to Shell", "Tran
 /// This will register multiple signals and give the AI a strong reference to it.
 /// See [proc/resolve_core_link] or [proc/break_core_link] for ways to end the connection.
 /mob/living/silicon/ai/proc/create_core_link(obj/structure/ai_core/core)
+	procstart = null
+	src.procstart = null
 	if(linked_core) //uh oh
 		break_core_link(linked_core)
 	linked_core = core
@@ -1165,6 +1289,8 @@ GAME_VERB_DESC(/mob/living/silicon/ai, deploy_to_shell, "Deploy to Shell", "Tran
 /// moving them to its location and cleaning it up. This is generally what you want to call.
 /// Prefer calling [proc/break_core_link] directly if the connection is meant to be suddenly severed.
 /mob/living/silicon/ai/proc/resolve_core_link()
+	procstart = null
+	src.procstart = null
 	if(!linked_core) //oh no bro
 		CRASH("tried to resolve a core link with no core!!!!")
 
@@ -1177,6 +1303,8 @@ GAME_VERB_DESC(/mob/living/silicon/ai, deploy_to_shell, "Deploy to Shell", "Tran
 /// Handles unregistering the AI from its core. The core itself will not be cleaned up.
 /// Prefer calling [proc/resolve_core_link] if the connection is being closed elegantly.
 /mob/living/silicon/ai/proc/break_core_link()
+	procstart = null
+	src.procstart = null
 	if(!linked_core)
 		return
 
@@ -1195,6 +1323,8 @@ GAME_VERB_DESC(/mob/living/silicon/ai, deploy_to_shell, "Deploy to Shell", "Tran
 	linked_core = null
 
 /mob/living/silicon/ai/proc/on_core_item_interaction(datum/source, mob/living/user, obj/item/tool, list/processing_recipes)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(user.combat_mode)
 		return NONE
@@ -1203,6 +1333,8 @@ GAME_VERB_DESC(/mob/living/silicon/ai, deploy_to_shell, "Deploy to Shell", "Tran
 	return NONE
 
 /mob/living/silicon/ai/proc/on_core_take_damage(datum/source, damage_taken, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(damage_taken > 0)
@@ -1210,6 +1342,8 @@ GAME_VERB_DESC(/mob/living/silicon/ai, deploy_to_shell, "Deploy to Shell", "Tran
 	return NONE
 
 /mob/living/silicon/ai/proc/on_core_destroyed(datum/source, damage_flag)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	to_chat(src, span_danger("Your core has been destroyed!"))
@@ -1217,6 +1351,8 @@ GAME_VERB_DESC(/mob/living/silicon/ai, deploy_to_shell, "Deploy to Shell", "Tran
 	break_core_link()
 
 /mob/living/silicon/ai/proc/on_core_exited(datum/source, atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(gone, /obj/item/mmi))
@@ -1231,10 +1367,14 @@ GAME_VERB_DESC(/mob/living/silicon/ai, deploy_to_shell, "Deploy to Shell", "Tran
 
 
 /mob/living/silicon/ai/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "ai-core"
 	return ..()
 
 /mob/living/silicon/ai/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/screen_state // Display
@@ -1287,6 +1427,8 @@ GAME_VERB_DESC(/mob/living/silicon/ai, deploy_to_shell, "Deploy to Shell", "Tran
 	. += emissive_appearance(icon, lights_state, src)
 
 /mob/living/silicon/ai/proc/lawset_updated_sync_borgs(datum/source, obj/machinery/ai_law_rack/rack, announce = TRUE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/mob/living/silicon/robot/bot as anything in connected_robots)
@@ -1295,6 +1437,8 @@ GAME_VERB_DESC(/mob/living/silicon/ai, deploy_to_shell, "Deploy to Shell", "Tran
 			bot.law_change_counter++
 
 /mob/living/silicon/ai/point_at(atom/pointed_atom, intentional = FALSE)
+	procstart = null
+	src.procstart = null
 	if(pointed_atom in src)
 		return FALSE
 	var/turf/target_turf = get_turf(pointed_atom)

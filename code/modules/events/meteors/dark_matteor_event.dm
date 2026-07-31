@@ -12,6 +12,8 @@
 	fakeable = FALSE //Already faked by meteors that miss. Please, god, please miss
 
 /datum/round_event/dark_matteor/start()
+	procstart = null
+	src.procstart = null
 	var/mob/living/target
 	for(var/mob/living/potential_target as anything in GLOB.mob_living_list)
 		if(!is_station_level(potential_target.z))
@@ -25,6 +27,8 @@
 	spawn_meteor(list(/obj/effect/meteor/dark_matteor = 1), null, target, distance_from_edge = 10)
 
 /datum/round_event/dark_matteor/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("Warning. Excessive tampering of meteor satellites has attracted a dark matt-eor. Signature approaching [GLOB.station_name]. Please brace for impact.", "Meteor Alert", 'sound/announcer/alarm/airraid.ogg')
 
 /datum/event_admin_setup/warn_admin/dark_matteor
@@ -32,4 +36,6 @@
 	snitch_text = null //since this is not a conditional alert, there is nothing to snitch on. announcing a triggered event is enough.
 
 /datum/event_admin_setup/warn_admin/dark_matteor/should_warn()
+	procstart = null
+	src.procstart = null
 	return TRUE

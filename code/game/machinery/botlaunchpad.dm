@@ -11,6 +11,8 @@
 	var/datum/weakref/launched_bot // we need this to recall the bot
 
 /obj/machinery/botpad/Destroy()
+	procstart = null
+	src.procstart = null
 	if(connected_remote)
 		connected_remote.connected_botpad = null
 		connected_remote = null
@@ -18,16 +20,24 @@
 	return ..()
 
 /obj/machinery/botpad/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]-open" : base_icon_state
 
 /obj/machinery/botpad/screwdriver_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/botpad/crowbar_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/botpad/multitool_act(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		return NONE
 	var/obj/item/multitool/multitool = tool
@@ -37,6 +47,8 @@
 
 // Checks the turf for a bot and launches it if it's the only mob on the pad.
 /obj/machinery/botpad/proc/launch(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/turf/reverse_turf = get_turf(user)
 	var/atom/possible_bot
 	for(var/mob/living/robot in get_turf(src))
@@ -60,6 +72,8 @@
 	))
 
 /obj/machinery/botpad/proc/recall(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/atom/our_bot = launched_bot?.resolve()
 	if(isnull(our_bot))
 		user.balloon_alert(user, "no bots sent from the pad!")

@@ -2,5 +2,7 @@
 /datum/bt_node/ai_behavior/cancel_current_plan
 
 /datum/bt_node/ai_behavior/cancel_current_plan/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.cancel_current_plan()
 	return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_SUCCEEDED

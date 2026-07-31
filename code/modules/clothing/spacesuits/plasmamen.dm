@@ -19,20 +19,28 @@
 	acid = 75
 
 /obj/item/clothing/suit/space/eva/plasmaman/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("There [extinguishes_left == 1 ? "is" : "are"] [extinguishes_left] extinguisher charge\s left in this suit.")
 
 /obj/item/clothing/suit/space/eva/plasmaman/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (slot & ITEM_SLOT_OCLOTHING)
 		RegisterSignals(user, list(COMSIG_MOB_EQUIPPED_ITEM, COMSIG_LIVING_IGNITED, SIGNAL_ADDTRAIT(TRAIT_HEAD_ATMOS_SEALED)), PROC_REF(check_fire_state))
 		check_fire_state()
 
 /obj/item/clothing/suit/space/eva/plasmaman/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, list(COMSIG_MOB_EQUIPPED_ITEM, COMSIG_LIVING_IGNITED, SIGNAL_ADDTRAIT(TRAIT_HEAD_ATMOS_SEALED)))
 
 /obj/item/clothing/suit/space/eva/plasmaman/proc/check_fire_state(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!ishuman(loc))
@@ -56,6 +64,8 @@
 	new /obj/effect/particle_effect/water(get_turf(owner))
 
 /obj/item/clothing/suit/space/eva/plasmaman/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!istype(tool, /obj/item/extinguisher_refill))
 		return
 
@@ -106,15 +116,21 @@
 	acid = 75
 
 /obj/item/clothing/head/helmet/space/plasmaman/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	visor_toggling()
 	update_appearance()
 	register_context()
 
 /obj/item/clothing/head/helmet/space/plasmaman/add_stabilizer(loose_hat = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 
 /obj/item/clothing/head/helmet/space/plasmaman/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "Toggle Welding Screen"
 	if(istype(held_item, /obj/item/toy/crayon))
 		context[SCREENTIP_CONTEXT_LMB] = "Vandalize"
@@ -122,10 +138,14 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/clothing/head/helmet/space/plasmaman/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	adjust_visor(user)
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/clothing/head/helmet/space/plasmaman/ui_action_click(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(istype(action, /datum/action/item_action/toggle_welding_screen))
 		adjust_visor(user)
 		return
@@ -133,6 +153,8 @@
 	return ..()
 
 /obj/item/clothing/head/helmet/space/plasmaman/adjust_visor(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -143,11 +165,15 @@
 	update_appearance()
 
 /obj/item/clothing/head/helmet/space/plasmaman/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[initial(icon_state)][helmet_on ? "-light":""]"
 	inhand_icon_state = icon_state
 
 /obj/item/clothing/head/helmet/space/plasmaman/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!up)
 		. += visor_icon
@@ -157,6 +183,8 @@
 		. += smiley
 
 /obj/item/clothing/head/helmet/space/plasmaman/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/toy/crayon))
 		return NONE
 
@@ -177,11 +205,15 @@
 
 ///By the by, helmets have the update_icon_updates_onmob element, so we don't have to call mob.update_worn_head()
 /obj/item/clothing/head/helmet/space/plasmaman/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isinhands && !up)
 		. += mutable_appearance('icons/mob/clothing/head/plasmaman_head.dmi', visor_icon)
 
 /obj/item/clothing/head/helmet/space/plasmaman/separate_worn_overlays(mutable_appearance/standing, mutable_appearance/draw_target, isinhands = FALSE, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isinhands && smile)
 		var/mutable_appearance/smiley = mutable_appearance('icons/mob/clothing/head/plasmaman_head.dmi', smile_state)
@@ -189,6 +221,8 @@
 		. += smiley
 
 /obj/item/clothing/head/helmet/space/plasmaman/wash(clean_types)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(smile && (clean_types & CLEAN_TYPE_HARD_DECAL))
 		smile = FALSE
@@ -197,6 +231,8 @@
 	. |= ..()
 
 /obj/item/clothing/head/helmet/space/plasmaman/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	helmet_on = !helmet_on
 	update_appearance()
 
@@ -212,6 +248,8 @@
 	update_item_action_buttons()
 
 /obj/item/clothing/head/helmet/space/plasmaman/on_saboteur(datum/source, disrupt_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!helmet_on)
 		return FALSE
@@ -421,6 +459,8 @@
 	smile_state = "clown_smile"
 
 /obj/item/clothing/head/helmet/space/plasmaman/clown/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CLOWN, CELL_VIRUS_TABLE_GENERIC, rand(2,3), 0)
 

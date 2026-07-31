@@ -1,5 +1,7 @@
 /// Logs the contents of the gasmix to the game log, prefixed by text
 /proc/log_atmos(text, datum/gas_mixture/gas_mixture)
+	procstart = null
+	src.procstart = null
 	var/message = "[text]\"[print_gas_mixture(gas_mixture)]\""
 	//Cache commonly accessed information.
 	var/list/cached_moles = gas_mixture.moles

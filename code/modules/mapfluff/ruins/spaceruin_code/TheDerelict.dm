@@ -61,11 +61,15 @@
 	var/siphon_max = 1e7
 
 /obj/machinery/computer/monitor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It appears to be powered via a cable connector.")
 
 //Checks for cable connection, charges if possible.
 /obj/machinery/computer/vaultcontroller/process()
+	procstart = null
+	src.procstart = null
 	if(siphoned_power >= siphon_max)
 		return
 	update_cable()
@@ -74,11 +78,15 @@
 
 ///Looks for a cable connection beneath the machine.
 /obj/machinery/computer/vaultcontroller/proc/update_cable()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	attached_cable = locate(/obj/structure/cable) in T
 
 ///Initializes airlock links.
 /obj/machinery/computer/vaultcontroller/proc/find_airlocks()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/door/airlock/A as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/door/airlock))
 		if(A.id_tag == door_id)
 			if(!door1)
@@ -90,6 +98,8 @@
 
 ///Tries to charge from powernet excess, no upper limit except max charge.
 /obj/machinery/computer/vaultcontroller/proc/attempt_siphon()
+	procstart = null
+	src.procstart = null
 	var/surpluspower = clamp(attached_cable.surplus(), 0, (siphon_max - siphoned_power))
 	if(surpluspower)
 		attached_cable.add_load(surpluspower)
@@ -97,6 +107,8 @@
 
 ///Handles the doors closing
 /obj/machinery/computer/vaultcontroller/proc/cycle_close(obj/machinery/door/airlock/A)
+	procstart = null
+	src.procstart = null
 	A.safe = FALSE //Make sure its forced closed, always
 	A.unbolt()
 	A.close()
@@ -104,12 +116,16 @@
 
 ///Handles the doors opening
 /obj/machinery/computer/vaultcontroller/proc/cycle_open(obj/machinery/door/airlock/A)
+	procstart = null
+	src.procstart = null
 	A.unbolt()
 	A.open()
 	A.bolt()
 
 ///Attempts to lock the vault doors
 /obj/machinery/computer/vaultcontroller/proc/lock_vault()
+	procstart = null
+	src.procstart = null
 	if(door1 && !door1.density)
 		cycle_close(door1)
 	if(door2 && !door2.density)
@@ -119,6 +135,8 @@
 
 ///Attempts to unlock the vault doors
 /obj/machinery/computer/vaultcontroller/proc/unlock_vault()
+	procstart = null
+	src.procstart = null
 	if(door1?.density)
 		cycle_open(door1)
 	if(door2?.density)
@@ -128,6 +146,8 @@
 
 ///Attempts to lock/unlock vault doors, if machine is charged.
 /obj/machinery/computer/vaultcontroller/proc/activate_lock()
+	procstart = null
+	src.procstart = null
 	if(siphoned_power < siphon_max)
 		return
 	if(!door1 || !door2)
@@ -138,6 +158,8 @@
 		lock_vault()
 
 /obj/machinery/computer/vaultcontroller/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -145,6 +167,8 @@
 		ui.open()
 
 /obj/machinery/computer/vaultcontroller/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -153,6 +177,8 @@
 			activate_lock()
 
 /obj/machinery/computer/vaultcontroller/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["stored"] = siphoned_power
 	data["max"] = siphon_max
@@ -170,6 +196,8 @@
 
 ///Overrides screwdriver act to prevent all deconstruction and hacking. Override for extra tuff fluff
 /obj/machinery/door/airlock/vault/derelict/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_danger("The robust make of [src] makes it impossible to access the panel in any way!"))
 	return ITEM_INTERACT_SUCCESS
 
@@ -314,6 +342,8 @@
 	)
 
 /obj/item/tape/captains_log/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	unspool() // the tape spawns damaged
 

@@ -1,6 +1,8 @@
 /datum/ai_controller/basic_controller/bot/secbot/super_beepsky
 
 /datum/ai_controller/basic_controller/bot/secbot/super_beepsky/on_target_set()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/basic/bot/secbot/grievous/super_beeps = pawn
 	if(!super_beeps.sword_active)

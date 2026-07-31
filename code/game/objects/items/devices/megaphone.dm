@@ -12,22 +12,30 @@
 	var/list/voicespan = list(SPAN_COMMAND)
 
 /obj/item/megaphone/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is uttering [user.p_their()] last words into \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	spamcheck = 0//so they dont have to worry about recharging
 	user.say("AAAAAAAAAAAARGHHHHH", forced="megaphone suicide")//he must have died while coding this
 	return OXYLOSS
 
 /obj/item/megaphone/equipped(mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if ((slot & ITEM_SLOT_HANDS))
 		RegisterSignal(equipper, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 		RegisterSignal(equipper, COMSIG_LIVING_TREAT_MESSAGE, PROC_REF(add_tts_filter))
 
 /obj/item/megaphone/dropped(mob/dropper)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(dropper, list(COMSIG_MOB_SAY, COMSIG_LIVING_TREAT_MESSAGE))
 
 /obj/item/megaphone/proc/handle_speech(mob/living/user, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(HAS_TRAIT(user, TRAIT_SIGN_LANG) || user.get_active_held_item() != src)
 		return
@@ -38,6 +46,8 @@
 		speech_args[SPEECH_SPANS] |= voicespan
 
 /obj/item/megaphone/proc/add_tts_filter(mob/living/carbon/user, list/message_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(HAS_TRAIT(user, TRAIT_SIGN_LANG) || user.get_active_held_item() != src)
 		return
@@ -52,6 +62,8 @@
 		message_args[TREAT_TTS_FILTER_ARG] += "acrusher=samples=2:level_out=6,aecho=delays=90:decays=0.3,aemphasis=type=cd,acontrast=30,crystalizer=i=5"
 
 /obj/item/megaphone/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	balloon_alert(user, "voice synthesizer overloaded")

@@ -20,6 +20,8 @@
 	welded = TRUE
 
 /obj/machinery/power/emitter/energycannon/RefreshParts()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	return
 
@@ -37,16 +39,22 @@
 	var/tables_required = 2
 
 /obj/machinery/power/emitter/energycannon/magical/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(50))
 		desc = "Oh no, not again."
 	update_appearance()
 
 /obj/machinery/power/emitter/energycannon/magical/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = active ? icon_state_on : initial(icon_state)
 
 /obj/machinery/power/emitter/energycannon/magical/process_early(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active_tables.len >= tables_required)
 		if(!active)
@@ -61,12 +69,18 @@
 	update_appearance()
 
 /obj/machinery/power/emitter/energycannon/magical/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return NONE
 
 /obj/machinery/power/emitter/energycannon/magical/ex_act(severity)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/power/emitter/energycannon/magical/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/structure/table/abductor/wabbajack
@@ -79,16 +93,22 @@
 	var/never_spoken = TRUE
 
 /obj/structure/table/abductor/wabbajack/Initialize(mapload, obj/structure/table_frame/frame_used, obj/item/stack/stack_used)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/tool_blocker, TOOL_SCREWDRIVER, TOOL_ACT_PRIMARY)
 	AddElement(/datum/element/tool_blocker, TOOL_WRENCH, TOOL_ACT_PRIMARY)
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/table/abductor/wabbajack/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
 /obj/structure/table/abductor/wabbajack/process()
+	procstart = null
+	src.procstart = null
 	if(isnull(our_statue))
 		our_statue = locate() in orange(4, src)
 
@@ -137,6 +157,8 @@
 		our_statue.active_tables -= src
 
 /obj/structure/table/abductor/wabbajack/proc/sleeper_dreams(mob/living/sleeper)
+	procstart = null
+	src.procstart = null
 	if(sleeper in sleepers)
 		to_chat(sleeper, span_revennotice("While you slumber, you have the strangest dream, like you can see yourself from the outside."))
 		sleeper.ghostize(TRUE)
@@ -164,6 +186,8 @@
 	default_storage = null
 
 /mob/living/basic/drone/snowflake/bardrone/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponentFrom(ROUNDSTART_TRAIT, /datum/component/area_based_godmode, area_type = /area/shuttle/escape, allow_area_subtypes = TRUE)
 
@@ -177,6 +201,8 @@
 	var/boot_dir = 1
 
 /obj/structure/table/wood/shuttle_bar/Initialize(mapload, obj/structure/table_frame/frame_used, obj/item/stack/stack_used)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_climbed),
@@ -186,6 +212,8 @@
 	AddElement(/datum/element/tool_blocker, TOOL_WRENCH)
 
 /obj/structure/table/wood/shuttle_bar/proc/on_climbed(datum/source, atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/M = AM
 	if(istype(M) && !M.incorporeal_move && !is_barstaff(M))
@@ -196,6 +224,8 @@
 		to_chat(M, span_notice("No climbing on the bar please."))
 
 /obj/structure/table/wood/shuttle_bar/proc/is_barstaff(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(ishuman(user))
 		var/mob/living/carbon/human/human_user = user
@@ -224,6 +254,8 @@
 	var/list/payees = list()
 
 /obj/machinery/scanner_gate/luxury_shuttle/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(mover in approved_passengers)
@@ -247,16 +279,24 @@
 	return FALSE
 
 /obj/machinery/scanner_gate/luxury_shuttle/auto_scan(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/scanner_gate/luxury_shuttle/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return NONE
 
 /obj/machinery/scanner_gate/luxury_shuttle/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 #define LUXURY_MESSAGE_COOLDOWN 100
 /obj/machinery/scanner_gate/luxury_shuttle/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	///If the atom entering the gate is a vehicle, we store it here to add to the approved list to enter/leave the scanner gate.
 	var/obj/vehicle/vehicle
 	///We store the driver of vehicles separately so that we can add them to the approved list once payment is fully processed.
@@ -398,6 +438,8 @@
 	pixel_y = -32
 
 /obj/effect/decal/hammerandsickle/shuttleRotate(rotation, params)
+	procstart = null
+	src.procstart = null
 	setDir(angle2dir(rotation+dir2angle(dir))) // No parentcall, rest of the rotate code breaks the pixel offset.
 
 #undef LUXURY_MESSAGE_COOLDOWN

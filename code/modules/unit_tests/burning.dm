@@ -2,6 +2,8 @@
 /datum/unit_test/burning
 
 /datum/unit_test/burning/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 	var/initial_temp = dummy.bodytemperature
 	// Light this baby up

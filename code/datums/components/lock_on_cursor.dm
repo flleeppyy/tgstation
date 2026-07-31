@@ -63,6 +63,8 @@
 	START_PROCESSING(SSfastprocess, src)
 
 /datum/component/lock_on_cursor/Destroy(force)
+	procstart = null
+	src.procstart = null
 	clear_visuals()
 	STOP_PROCESSING(SSfastprocess, src)
 	mouse_tracker = null
@@ -74,6 +76,8 @@
 
 /// Adds overlays to all targets
 /datum/component/lock_on_cursor/proc/show_visuals()
+	procstart = null
+	src.procstart = null
 	LAZYINITLIST(lock_images)
 	var/mob/owner = parent
 	if(!owner.client)
@@ -90,6 +94,8 @@
 
 /// Removes target overlays
 /datum/component/lock_on_cursor/proc/clear_visuals()
+	procstart = null
+	src.procstart = null
 	var/mob/owner = parent
 	if(!owner.client)
 		return
@@ -101,10 +107,14 @@
 
 /// Reset the overlays on all targets
 /datum/component/lock_on_cursor/proc/refresh_visuals()
+	procstart = null
+	src.procstart = null
 	clear_visuals()
 	show_visuals()
 
 /datum/component/lock_on_cursor/process()
+	procstart = null
+	src.procstart = null
 	if(mouse_tracker.mouse_params)
 		mouse_tracker.calculate_params()
 	if(!mouse_tracker.given_turf)
@@ -115,6 +125,8 @@
 
 /// Removes targets which are out of range or don't exist any more
 /datum/component/lock_on_cursor/proc/clear_invalid_targets()
+	procstart = null
+	src.procstart = null
 	for(var/datum/weakref/weak_target as anything in locked_weakrefs)
 		var/atom/thing = weak_target.resolve()
 		if(thing && (get_dist(thing, mouse_tracker.given_turf) > lock_cursor_range))
@@ -123,6 +135,8 @@
 
 /// Replace our targets with new ones
 /datum/component/lock_on_cursor/proc/find_targets()
+	procstart = null
+	src.procstart = null
 	var/mob/owner = parent
 	if(!owner.client)
 		return
@@ -139,11 +153,15 @@
 
 /// Returns true if target is a valid target
 /datum/component/lock_on_cursor/proc/can_target(atom/target)
+	procstart = null
+	src.procstart = null
 	var/mob/mob_target = target
 	return is_type_in_typecache(target, target_typecache) && !(ismob(target) && IS_UNCONSCIOUS_OR_CRIT(mob_target)) && !immune_weakrefs[WEAKREF(target)]
 
 /// Returns the nearest targets to the current cursor position
 /datum/component/lock_on_cursor/proc/get_nearest()
+	procstart = null
+	src.procstart = null
 	current_ranging_id++
 	var/this_id = current_ranging_id
 	var/list/targets = list()
@@ -205,6 +223,8 @@
 /atom/movable/screen/fullscreen/cursor_catcher/lock_on
 
 /atom/movable/screen/fullscreen/cursor_catcher/lock_on/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(usr == owner)
 		calculate_params()
 	given_turf.Click(location, control, params)

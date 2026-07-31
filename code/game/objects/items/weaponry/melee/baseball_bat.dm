@@ -28,6 +28,8 @@
 	var/list/thrown_datums = list()
 
 /obj/item/melee/baseball_bat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/kneecapping)
 	// No subtypes
@@ -37,6 +39,8 @@
 		make_silly()
 
 /obj/item/melee/baseball_bat/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!homerun_able)
 		return ..()
 	if(homerun_ready)
@@ -50,6 +54,8 @@
 	return ..()
 
 /obj/item/melee/baseball_bat/attack(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	// we obtain the relative direction from the bat itself to the target
 	var/relative_direction = get_cardinal_dir(src, target)
 	var/atom/throw_target = get_edge_target_turf(target, relative_direction)
@@ -69,6 +75,8 @@
 		target.throw_at(throw_target, rand(1, 2), whack_speed, user, gentle = TRUE) // sorry friends, 7 speed batting caused wounds to absolutely delete whoever you knocked your target into (and said target)
 
 /obj/item/melee/baseball_bat/Destroy(force)
+	procstart = null
+	src.procstart = null
 	for(var/target in thrown_datums)
 		var/datum/thrownthing/throw_datum = thrown_datums[target]
 		throw_datum.callback.Invoke()
@@ -76,6 +84,8 @@
 	return ..()
 
 /obj/item/melee/baseball_bat/pre_attack(atom/movable/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(target)
 	if(!target_turf)
 		return ..()
@@ -86,6 +96,8 @@
 	return ..()
 
 /obj/item/melee/baseball_bat/proc/try_launch(atom/movable/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!target.throwing || (ismob(target) && !mob_thrower))
 		return FALSE
 	var/datum/thrownthing/throw_datum = target.throwing
@@ -114,6 +126,8 @@
 	return TRUE
 
 /obj/item/melee/baseball_bat/proc/launch_back(atom/movable/target, mob/living/user, turf/target_turf, datum_throw_speed)
+	procstart = null
+	src.procstart = null
 	playsound(target, 'sound/effects/magic/tail_swing.ogg', 50, TRUE)
 	REMOVE_TRAIT(user, TRAIT_IMMOBILIZED, type)
 	target.mouse_opacity = initial(target.mouse_opacity)
@@ -123,12 +137,16 @@
 	thrown_datums[target] = target.throwing
 
 /obj/item/melee/baseball_bat/proc/make_silly()
+	procstart = null
+	src.procstart = null
 	name = "cricket bat"
 	icon_state = "baseball_bat_brit"
 	inhand_icon_state = "baseball_bat_brit"
 	desc = pick("You've got red on you.", "You gotta know what a crumpet is to understand cricket.")
 
 /obj/item/melee/baseball_bat/proc/on_hit(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	target.remove_filter("baseball_launch")
 	target.throwforce *= 0.5
 	thrown_datums -= target
@@ -153,10 +171,14 @@
 	mob_thrower = TRUE
 	block_sound = 'sound/items/weapons/effects/batreflect.ogg'
 
-/obj/item/melee/baseball_bat/ablative/IsReflect()//some day this will reflect thrown items instead of lasers
+/obj/item/melee/baseball_bat/ablative/IsReflect()
+	procstart = null
+	src.procstart = null//some day this will reflect thrown items instead of lasers
 	return TRUE
 
 // In case you ever want to spawn it via map/admin console
 /obj/item/melee/baseball_bat/british/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	make_silly()

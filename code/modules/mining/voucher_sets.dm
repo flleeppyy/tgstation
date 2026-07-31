@@ -20,6 +20,8 @@
 	var/blackbox_key
 
 /datum/voucher_set/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!length(set_items))
 		stack_trace("Voucher set [type] has no items set.")
@@ -32,6 +34,8 @@
 		stack_trace("Voucher set [type] has no name set.")
 
 /datum/voucher_set/proc/spawn_set(atom/spawn_loc)
+	procstart = null
+	src.procstart = null
 	for(var/item in set_items)
 		new item(spawn_loc)
 

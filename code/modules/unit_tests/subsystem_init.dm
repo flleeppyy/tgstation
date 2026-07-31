@@ -3,6 +3,8 @@
 	test_flags = UNIT_TEST_MAP_TEST
 
 /datum/unit_test/subsystem_init/Run()
+	procstart = null
+	src.procstart = null
 	for(var/datum/controller/subsystem/subsystem as anything in Master.subsystems)
 		if(subsystem.ss_flags & SS_NO_INIT)
 			continue

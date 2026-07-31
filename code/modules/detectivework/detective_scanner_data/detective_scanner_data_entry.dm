@@ -1,4 +1,6 @@
 /proc/cmp_detective_scanner_data_entry(datum/detective_scanner_data_entry/a, datum/detective_scanner_data_entry/b)
+	procstart = null
+	src.procstart = null
 	return cmp_numeric_asc(a.display_order, b.display_order)
 
 /datum/detective_scanner_data_entry
@@ -10,16 +12,22 @@
 	var/list/data = list()
 
 /datum/detective_scanner_data_entry/New(category, display_order, data)
+	procstart = null
+	src.procstart = null
 	src.category = category
 	src.display_order = display_order
 	if(!isnull(data))
 		src.data += data
 
 /datum/detective_scanner_data_entry/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/ui_data = list()
 	ui_data["category"] = category
 	ui_data["data"] = data
 	return ui_data
 
 /datum/detective_scanner_data_entry/proc/add_data(data)
+	procstart = null
+	src.procstart = null
 	src.data += data

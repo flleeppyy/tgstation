@@ -7,6 +7,8 @@
 	var/hide_layer = ABOVE_NORMAL_TURF_LAYER
 
 /datum/action/cooldown/alien/hide/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	if(owner.layer == hide_layer)
 		owner.layer = initial(owner.layer)
 		owner.visible_message(
@@ -32,6 +34,8 @@
 	plasma_cost = 0
 
 /datum/action/cooldown/alien/larva_evolve/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -49,6 +53,8 @@
 	return TRUE
 
 /datum/action/cooldown/alien/larva_evolve/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/alien/larva/larva = owner
 	var/static/list/caste_options
 	if(!caste_options)

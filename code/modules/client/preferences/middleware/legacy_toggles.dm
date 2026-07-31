@@ -40,6 +40,8 @@
 	)
 
 /datum/preference_middleware/legacy_toggles/get_character_preferences(mob/user)
+	procstart = null
+	src.procstart = null
 	if (preferences.current_window != PREFERENCE_TAB_GAME_PREFERENCES)
 		return list()
 
@@ -95,6 +97,8 @@
 	)
 
 /datum/preference_middleware/legacy_toggles/pre_set_preference(mob/user, preference, value)
+	procstart = null
+	src.procstart = null
 	var/legacy_flag = legacy_toggles[preference]
 	if (!isnull(legacy_flag))
 		if (value)

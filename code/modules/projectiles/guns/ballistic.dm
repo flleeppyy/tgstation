@@ -147,6 +147,8 @@
 	var/burst_select_sound = SFX_FIRE_MODE_SWITCH
 
 /obj/item/gun/ballistic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!spawn_magazine_type)
 		spawn_magazine_type = accepted_magazine_type
@@ -166,6 +168,8 @@
 	RegisterSignal(src, COMSIG_ITEM_RECHARGED, PROC_REF(instant_reload))
 
 /obj/item/gun/ballistic/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/replace_chamber = TRUE
 	var/replace_magazine = !magazine || !(magazine.item_flags & ABSTRACT) //don't replace abstract magazines
@@ -201,6 +205,8 @@
 	update_appearance()
 
 /obj/item/gun/ballistic/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == suppressor)
 		clear_suppressor()
@@ -212,9 +218,13 @@
 			update_appearance()
 
 /obj/item/gun/ballistic/add_weapon_description()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/weapon_description, attached_proc = PROC_REF(add_notes_ballistic))
 
 /obj/item/gun/ballistic/fire_sounds()
+	procstart = null
+	src.procstart = null
 	var/max_ammo = magazine?.max_ammo || initial(spawn_magazine_type.max_ammo)
 	var/current_ammo = get_ammo()
 	var/frequency_to_use = sin((90 / max_ammo) * current_ammo)
@@ -237,6 +247,8 @@
  *
  **/
 /obj/item/gun/ballistic/proc/add_notes_ballistic()
+	procstart = null
+	src.procstart = null
 	if(magazine) // Make sure you have a magazine, to get the notes from
 		return "\n[magazine.add_notes_box()]"
 	else if(chambered) // if you don't have a magazine, is there something chambered?
@@ -245,15 +257,21 @@
 		return "\nThe lack of magazine and usable cartridge in chamber makes its usefulness questionable, at best."
 
 /obj/item/gun/ballistic/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vname in list(NAMEOF(src, suppressor_x_offset), NAMEOF(src, suppressor_y_offset), NAMEOF(src, internal_magazine), NAMEOF(src, magazine), NAMEOF(src, chambered), NAMEOF(src, empty_indicator), NAMEOF(src, sawn_off), NAMEOF(src, bolt_locked), NAMEOF(src, bolt_type)))
 		update_appearance()
 
 /obj/item/gun/ballistic/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state || initial(icon_state)][sawn_off ? "_sawn" : ""]"
 
 /obj/item/gun/ballistic/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(selector_switch_icon)
@@ -312,12 +330,16 @@
 		. += "[icon_state]_mag_[capacity_number]"
 
 /obj/item/gun/ballistic/ui_action_click(mob/user, actiontype)
+	procstart = null
+	src.procstart = null
 	if(istype(actiontype, /datum/action/item_action/toggle_firemode))
 		burst_select()
 	else
 		..()
 
 /obj/item/gun/ballistic/proc/burst_select()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/user = usr
 	burst_fire_selection = !burst_fire_selection
 	if(!burst_fire_selection)
@@ -353,6 +375,8 @@
 #define CASING_HOT_DELAY (5 SECONDS)
 
 /obj/item/gun/ballistic/handle_chamber(empty_chamber = TRUE, from_firing = TRUE, chamber_next_round = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!semi_auto && from_firing)
 		return
 	var/obj/item/ammo_casing/casing = chambered //Find chambered round
@@ -418,6 +442,8 @@
 /// Used to check if the mob `wielder` can catch an ejected casing.
 /// Returns CASING_CATCH_NO_ATTEMPT if not trying, CASING_CATCH_FAILED if failed, CASING_CATCH_SUCCESSFUL if successful.
 /obj/item/gun/ballistic/proc/can_catch_casing(obj/item/ammo_casing/casing, mob/living/carbon/human/wielder)
+	procstart = null
+	src.procstart = null
 	if(!wielder.throw_mode) // if they're not in throw mode, don't bother
 		return CASING_CATCH_NO_ATTEMPT
 	if(HAS_TRAIT(wielder, TRAIT_CLUMSY)) // feats of dexterity are beyond the jester
@@ -449,6 +475,8 @@
 
 ///Used to chamber a new round and eject the old one
 /obj/item/gun/ballistic/proc/chamber_round(spin_cylinder, replace_new_round)
+	procstart = null
+	src.procstart = null
 	if (chambered || !magazine)
 		return
 	if (magazine.ammo_count())
@@ -461,12 +489,16 @@
 			magazine.give_round(new chambered.type)
 
 /obj/item/gun/ballistic/proc/clear_chambered(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(chambered, COMSIG_MOVABLE_MOVED)
 	chambered = null
 
 ///updates a bunch of racking related stuff and also handles the sound effects and the like
 /obj/item/gun/ballistic/proc/rack(mob/user = null)
+	procstart = null
+	src.procstart = null
 	if (bolt_type == BOLT_TYPE_NO_BOLT) //If there's no bolt, nothing to rack
 		return
 	if (bolt_type == BOLT_TYPE_OPEN)
@@ -487,6 +519,8 @@
 
 ///Drops the bolt from a locked position
 /obj/item/gun/ballistic/proc/drop_bolt(mob/user = null)
+	procstart = null
+	src.procstart = null
 	playsound(src, bolt_drop_sound, bolt_drop_sound_volume, FALSE)
 	if (user)
 		balloon_alert(user, "[bolt_wording] dropped")
@@ -496,6 +530,8 @@
 
 ///Handles all the logic needed for magazine insertion
 /obj/item/gun/ballistic/proc/insert_magazine(mob/user, obj/item/ammo_box/magazine/AM, display_message = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!istype(AM, accepted_magazine_type))
 		balloon_alert(user, "[AM.name] doesn't fit!")
 		return FALSE
@@ -517,6 +553,8 @@
 
 ///Handles all the logic of magazine ejection, if tac_load is set that magazine will be tacloaded in the place of the old eject
 /obj/item/gun/ballistic/proc/eject_magazine(mob/user, display_message = TRUE, obj/item/ammo_box/magazine/tac_load = null)
+	procstart = null
+	src.procstart = null
 	if(bolt_type == BOLT_TYPE_OPEN)
 		chambered = null
 	if (magazine.ammo_count())
@@ -535,9 +573,13 @@
 		balloon_alert(user, "[magazine_wording] unloaded")
 
 /obj/item/gun/ballistic/can_shoot()
+	procstart = null
+	src.procstart = null
 	return chambered?.loaded_projectile
 
 /obj/item/gun/ballistic/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -588,6 +630,8 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/item/gun/ballistic/proc/load_gun(obj/item/ammo, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (chambered && !chambered.loaded_projectile)
 		chambered.forceMove(drop_location())
 		if(length(magazine?.stored_ammo) && chambered != magazine.stored_ammo[1])
@@ -607,11 +651,15 @@
 	return TRUE
 
 /obj/item/gun/ballistic/proc/check_if_held(mob/user)
+	procstart = null
+	src.procstart = null
 	if(src != user.get_inactive_held_item())
 		return FALSE
 	return TRUE
 
 /obj/item/gun/ballistic/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+	procstart = null
+	src.procstart = null
 	var/could_it_misfire = can_misfire || chambered.can_misfire
 	if(target != user && chambered.loaded_projectile && could_it_misfire && prob(misfire_probability) && blow_up(user))
 		to_chat(user, span_userdanger("[src] misfires!"))
@@ -623,6 +671,8 @@
 	return ..()
 
 /obj/item/gun/ballistic/shoot_live_shot(mob/living/user, pointblank = 0, atom/pbtarget = null, message = 1)
+	procstart = null
+	src.procstart = null
 	if(isnull(chambered))
 		return ..()
 	if(can_misfire)
@@ -635,6 +685,8 @@
 
 ///Installs a new suppressor, assumes that the suppressor is already in the contents of src
 /obj/item/gun/ballistic/proc/install_suppressor(obj/item/suppressor/new_suppressor)
+	procstart = null
+	src.procstart = null
 	suppressor = new_suppressor
 	suppressed = suppressor.suppression
 	update_weight_class(w_class + suppressor.w_class) //so pistols do not fit in pockets when suppressed
@@ -642,6 +694,8 @@
 	update_appearance()
 
 /obj/item/gun/ballistic/clear_suppressor()
+	procstart = null
+	src.procstart = null
 	suppressed = SUPPRESSED_NONE
 	if(suppressor)
 		update_weight_class(w_class - suppressor.w_class)
@@ -650,6 +704,8 @@
 	update_appearance()
 
 /obj/item/gun/ballistic/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!suppressed || !can_unsuppress)
 		return CLICK_ACTION_BLOCKING
 	if(!user.is_holding(src))
@@ -661,6 +717,8 @@
 
 ///Prefire empty checks for the bolt drop
 /obj/item/gun/ballistic/proc/prefire_empty_checks()
+	procstart = null
+	src.procstart = null
 	if (!chambered && !get_ammo())
 		if (bolt_type == BOLT_TYPE_OPEN && !bolt_locked)
 			bolt_locked = TRUE
@@ -669,6 +727,8 @@
 
 ///postfire empty checks for bolt locking and sound alarms
 /obj/item/gun/ballistic/proc/postfire_empty_checks(last_shot_succeeded)
+	procstart = null
+	src.procstart = null
 	if (!chambered && !get_ammo())
 		if (empty_alarm && last_shot_succeeded)
 			playsound(src, empty_alarm_sound, empty_alarm_volume, empty_alarm_vary)
@@ -678,18 +738,24 @@
 			update_appearance()
 
 /obj/item/gun/ballistic/fire_gun(atom/target, mob/living/user, flag, params)
+	procstart = null
+	src.procstart = null
 	prefire_empty_checks()
 	. = ..() //The gun actually firing
 	postfire_empty_checks(.)
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/gun/ballistic/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!internal_magazine && loc == user && user.is_holding(src) && magazine)
 		eject_magazine(user)
 		return
 	return ..()
 
 /obj/item/gun/ballistic/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!internal_magazine && magazine)
 		if(!magazine.ammo_count())
 			eject_magazine(user)
@@ -707,6 +773,8 @@
 	return
 
 /obj/item/gun/ballistic/proc/unload_ammo(mob/living/user, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	var/num_unloaded = 0
 	var/turf/drop_turf = get_turf(drop_location())
 	for(var/obj/item/ammo_casing/casing as anything in get_ammo_list(FALSE))
@@ -727,6 +795,8 @@
 	update_appearance()
 
 /obj/item/gun/ballistic/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/count_chambered = !(bolt_type == BOLT_TYPE_NO_BOLT || bolt_type == BOLT_TYPE_OPEN)
 	. += "It has <b>[get_ammo(count_chambered)]</b> round\s remaining."
@@ -747,6 +817,8 @@
 
 ///Gets the number of bullets in the gun
 /obj/item/gun/ballistic/proc/get_ammo(countchambered = TRUE)
+	procstart = null
+	src.procstart = null
 	var/bullets = 0 //No silly variable names on my watch.
 	if (chambered && countchambered)
 		bullets++
@@ -756,6 +828,8 @@
 
 ///gets a list of every bullet in the gun
 /obj/item/gun/ballistic/proc/get_ammo_list(countchambered = TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/rounds = list()
 	if(chambered && countchambered)
 		rounds.Add(chambered)
@@ -767,6 +841,8 @@
 #define BRAINS_BLOWN_THROW_SPEED 1
 
 /obj/item/gun/ballistic/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/B = user.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if (B && chambered && chambered.loaded_projectile && can_trigger_gun(user) && chambered.loaded_projectile.damage > 0)
 		user.visible_message(span_suicide("[user] is putting the barrel of [src] in [user.p_their()] mouth. It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -800,6 +876,8 @@ GLOBAL_LIST_INIT(gun_saw_types, typecacheof(list(
 
 ///Handles all the logic of sawing off guns,
 /obj/item/gun/ballistic/proc/sawoff(mob/user, obj/item/saw, handle_modifications = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!saw.get_sharpness() || (!is_type_in_typecache(saw, GLOB.gun_saw_types) && saw.tool_behaviour != TOOL_SAW)) //needs to be sharp. Otherwise turned off eswords can cut this.
 		return
 	if(sawn_off)
@@ -841,6 +919,8 @@ GLOBAL_LIST_INIT(gun_saw_types, typecacheof(list(
 	return TRUE
 
 /obj/item/gun/ballistic/wrench_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(!can_modify_ammo)
 		return
 
@@ -876,9 +956,13 @@ GLOBAL_LIST_INIT(gun_saw_types, typecacheof(list(
 
 ///used for sawing guns, causes the gun to fire without the input of the user
 /obj/item/gun/ballistic/proc/blow_up(mob/user)
+	procstart = null
+	src.procstart = null
 	return chambered && process_fire(user, user, FALSE)
 
 /obj/item/gun/ballistic/proc/instant_reload()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(magazine)
 		magazine.top_off()
@@ -890,6 +974,8 @@ GLOBAL_LIST_INIT(gun_saw_types, typecacheof(list(
 	update_appearance()
 
 /obj/item/gun/ballistic/toss_gun_hard(mob/living/carbon/thrower, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

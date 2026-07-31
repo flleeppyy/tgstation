@@ -3,6 +3,8 @@
 // Maybe some day it would be used as unit test.
 // -------- IT IS NOW!
 /datum/unit_test/plantgrowth/Run()
+	procstart = null
+	src.procstart = null
 	var/list/paths = subtypesof(/obj/item/seeds) - /obj/item/seeds - /obj/item/seeds/lavaland
 
 	for(var/seedpath in paths)

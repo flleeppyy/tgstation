@@ -25,6 +25,8 @@
 	var/yeet_back = TRUE
 
 /obj/item/survivalcapsule/proc/get_template()
+	procstart = null
+	src.procstart = null
 	if(template)
 		return
 	template = SSmapping.shelter_templates[template_id]
@@ -33,16 +35,22 @@
 		qdel(src)
 
 /obj/item/survivalcapsule/Destroy()
+	procstart = null
+	src.procstart = null
 	template = null // without this, capsules would be one use. per round.
 	. = ..()
 
 /obj/item/survivalcapsule/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	get_template()
 	. += "This capsule has the [template.name] stored."
 	. += template.description
 
 /obj/item/survivalcapsule/interact(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -62,6 +70,8 @@
 
 /// Expands the capsule into a full shelter, placing the template at the item's location (NOT triggerer's location)
 /obj/item/survivalcapsule/proc/expand(mob/triggerer)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 
@@ -82,10 +92,14 @@
 
 /// Returns a bitfield used to ignore some checks in template.check_deploy()
 /obj/item/survivalcapsule/proc/get_ignore_flags()
+	procstart = null
+	src.procstart = null
 	return NONE
 
 ///Returns a message including the reason why it couldn't be deployed
 /obj/item/survivalcapsule/proc/fail_feedback(status)
+	procstart = null
+	src.procstart = null
 	switch(status)
 		if(SHELTER_DEPLOY_BAD_AREA)
 			loc.visible_message(span_warning("[src] will not function in this area."))
@@ -95,6 +109,8 @@
 /// Throws any mobs near the deployed location away from the item / shelter
 /// Does some math to make closer mobs get thrown further
 /obj/item/survivalcapsule/proc/yote_nearby(turf/deploy_location)
+	procstart = null
+	src.procstart = null
 	var/width = template.width
 	var/height = template.height
 	var/base_x_throw_distance = ceil(width / 2)
@@ -124,6 +140,8 @@
 
 /// Logs if the capsule was triggered, by default only if it happened on non-lavaland
 /obj/item/survivalcapsule/proc/trigger_admin_alert(mob/triggerer, turf/trigger_loc)
+	procstart = null
+	src.procstart = null
 	//only report capsules away from the mining/lavaland level
 	if(is_mining_level(trigger_loc.z))
 		return
@@ -211,6 +229,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/door/window/survival_pod/left, 0)
 	base_icon_state = "sleeper"
 
 /obj/machinery/sleeper/survival_pod/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!state_open)
 		. += "sleeper_cover"
@@ -230,6 +250,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/door/window/survival_pod/left, 0)
 	pixel_y = -32
 
 /obj/item/gps/computer/wrench_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	..()
 
 	user.visible_message(span_warning("[user] disassembles [src]."),
@@ -240,6 +262,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/door/window/survival_pod/left, 0)
 	return TRUE
 
 /obj/item/gps/computer/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -268,6 +292,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/door/window/survival_pod/left, 0)
 	pixel_y = -4
 
 /obj/machinery/smartfridge/survival_pod/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/update_icon_blocker)
 	AddElement(/datum/element/tool_blocker, TOOL_WELDER, TOOL_ACT_PRIMARY)
 	AddElement(/datum/element/tool_blocker, TOOL_SCREWDRIVER, TOOL_ACT_PRIMARY)
@@ -276,6 +302,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/door/window/survival_pod/left, 0)
 	return ..()
 
 /obj/machinery/smartfridge/survival_pod/preloaded/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in 1 to 5)
 		var/obj/item/food/donkpocket/warm/W = new(src)
@@ -288,6 +316,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/door/window/survival_pod/left, 0)
 		load(G)
 
 /obj/machinery/smartfridge/survival_pod/accept_check(obj/item/O)
+	procstart = null
+	src.procstart = null
 	return isitem(O)
 
 //Fluff
@@ -325,6 +355,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/door/window/survival_pod/left, 0)
 	)
 
 /obj/item/fakeartefact/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/I = pick(possible)
 	name = initial(I.name)

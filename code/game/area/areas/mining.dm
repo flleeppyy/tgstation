@@ -212,6 +212,8 @@
 	outdoors = TRUE
 
 /area/icemoon/surface/outdoors/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(SSstation, STATION_TRAIT_BRIGHT_DAY))
 		base_lighting_alpha = 145
 	return ..()
@@ -223,6 +225,8 @@
 	icon_state = "less_spawns"
 
 /area/icemoon/surface/outdoors/less_spawns/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// this area SOMETIMES does map generation. Often it doesn't at all
 	// so it SHOULD NOT be used with the genturf turf type, as it is not always replaced
@@ -262,6 +266,8 @@
 	map_generator = /datum/map_generator/cave_generator/icemoon/surface
 
 /area/icemoon/surface/outdoors/unexplored/rivers/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(SSstation, STATION_TRAIT_FORESTED))
 		map_generator = /datum/map_generator/cave_generator/icemoon/surface/forested

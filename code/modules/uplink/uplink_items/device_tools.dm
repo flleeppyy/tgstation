@@ -143,6 +143,8 @@
 	purchasable_from = ~UPLINK_ALL_SYNDIE_OPS
 
 /datum/uplink_item/device_tools/frame/spawn_item(spawn_path, mob/user, datum/uplink_handler/uplink_handler, atom/movable/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/disk/computer/virus/frame/target = .
 	if(!target)
@@ -159,6 +161,8 @@
 	purchasable_from = ~UPLINK_ALL_SYNDIE_OPS
 
 /datum/uplink_item/device_tools/failsafe/spawn_item(spawn_path, mob/user, datum/uplink_handler/uplink_handler, atom/movable/source)
+	procstart = null
+	src.procstart = null
 	var/datum/component/uplink/uplink = source.GetComponent(/datum/component/uplink)
 	if(!uplink)
 		return

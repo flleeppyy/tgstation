@@ -4,6 +4,8 @@
 	var/target_key = BB_BASIC_MOB_ESCAPE_TARGET
 
 /datum/bt_node/decorator/container_attackable/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(pacifist)
 		return FALSE
 	if(!isbasicmob(controller.pawn))

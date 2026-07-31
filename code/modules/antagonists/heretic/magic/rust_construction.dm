@@ -26,9 +26,13 @@
  * Overrides 'aim assist' because we always want to hit just the turf we clicked on.
  */
 /datum/action/cooldown/spell/pointed/rust_construction/aim_assist(mob/living/clicker, atom/target)
+	procstart = null
+	src.procstart = null
 	return get_turf(target)
 
 /datum/action/cooldown/spell/pointed/rust_construction/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	if(!isturf(cast_on))
 		cast_on.balloon_alert(owner, "not a wall or floor!")
 		return FALSE
@@ -41,6 +45,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/pointed/rust_construction/before_cast(turf/open/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(owner))
 		return
@@ -50,6 +56,8 @@
 	invocation_self_message = span_notice("You drag [living_owner.usable_hands == 1 ? "a hand":"your hands"] upwards as a wall of rust rises out of [cast_on].")
 
 /datum/action/cooldown/spell/pointed/rust_construction/cast(turf/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/rises_message = "rises out of [cast_on]"
 
@@ -121,6 +129,8 @@
 		new_wall.visible_message(span_warning("\A [new_wall] [rises_message]!"))
 
 /datum/action/cooldown/spell/pointed/rust_construction/proc/fade_wall_filter(turf/closed/wall)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(wall))
 		return
 
@@ -131,6 +141,8 @@
 	animate(rust_filter, alpha = 0, time = filter_duration * (9/20))
 
 /datum/action/cooldown/spell/pointed/rust_construction/proc/remove_wall_filter(turf/closed/wall)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(wall))
 		return
 

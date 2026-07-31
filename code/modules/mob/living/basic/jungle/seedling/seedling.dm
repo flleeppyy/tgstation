@@ -56,6 +56,8 @@
 	)
 
 /mob/living/basic/seedling/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/innate_actions = list(
 		/datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/seedling = BB_RAPIDSEEDS_ABILITY,
@@ -84,6 +86,8 @@
 	update_appearance()
 
 /mob/living/basic/seedling/early_melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -102,6 +106,8 @@
 
 ///seedlings can water trays, remove weeds, or remove dead plants
 /mob/living/basic/seedling/proc/treat_hydro_tray(obj/machinery/hydroponics/hydro)
+	procstart = null
+	src.procstart = null
 
 	if(hydro.plant_status == HYDROTRAY_PLANT_DEAD)
 		balloon_alert(src, "dead plant removed")
@@ -123,6 +129,8 @@
 		return
 
 /mob/living/basic/seedling/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!. || !proximity_flag || held_can)
@@ -135,10 +143,14 @@
 	can_target.forceMove(src)
 
 /mob/living/basic/seedling/proc/change_combatant_state(state)
+	procstart = null
+	src.procstart = null
 	combatant_state = state
 	update_appearance()
 
 /mob/living/basic/seedling/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/reagent_containers/cup/watering_can) || held_can)
 		return ..()
 
@@ -146,6 +158,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /mob/living/basic/seedling/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	if(istype(arrived, /obj/item/reagent_containers/cup/watering_can))
 		held_can = arrived
 		update_appearance()
@@ -153,6 +167,8 @@
 	return ..()
 
 /mob/living/basic/seedling/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat == DEAD)
 		. += petal_dead
@@ -169,6 +185,8 @@
 			. += petal_active
 
 /mob/living/basic/seedling/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat == DEAD)
 		return
@@ -181,6 +199,8 @@
 			icon_state = "seedling_fire"
 
 /mob/living/basic/seedling/proc/drop_can(mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(held_can))
@@ -189,6 +209,8 @@
 	return COMSIG_KB_ACTIVATED
 
 /mob/living/basic/seedling/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone != held_can)
 		return
@@ -196,12 +218,16 @@
 	update_appearance()
 
 /mob/living/basic/seedling/death(gibbed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(held_can))
 		return
 	held_can.forceMove(drop_location())
 
 /mob/living/basic/seedling/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(held_can)
 	return ..()
 
@@ -237,12 +263,16 @@
 	var/is_seedling = FALSE
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/seedling/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(owner))
 		return
 	is_seedling = istype(owner, /mob/living/basic/seedling)
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/seedling/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -256,6 +286,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/seedling/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	if(is_seedling)
 		var/mob/living/basic/seedling/seed_owner = owner
 		seed_owner.change_combatant_state(state = SEEDLING_STATE_WARMUP)
@@ -264,6 +296,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/seedling/attack_sequence(mob/living/firer, atom/target)
+	procstart = null
+	src.procstart = null
 	if(is_seedling)
 		var/mob/living/basic/seedling/seed_owner = owner
 		seed_owner.change_combatant_state(state = SEEDLING_STATE_ACTIVE)
@@ -285,12 +319,16 @@
 	var/is_seedling = FALSE
 
 /datum/action/cooldown/mob_cooldown/solarbeam/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(owner))
 		return
 	is_seedling = istype(owner, /mob/living/basic/seedling)
 
 /datum/action/cooldown/mob_cooldown/solarbeam/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -304,6 +342,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/solarbeam/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	if(is_seedling)
 		var/mob/living/basic/seedling/seed_owner = owner
 		seed_owner.change_combatant_state(state = SEEDLING_STATE_WARMUP)
@@ -323,6 +363,8 @@
 
 ///the solarbeam will damage people, otherwise it will heal plants
 /datum/action/cooldown/mob_cooldown/solarbeam/proc/launch_beam(mob/living/firer, turf/target_turf)
+	procstart = null
+	src.procstart = null
 	for(var/atom/target_atom as anything in target_turf)
 
 		if(istype(target_atom, /obj/machinery/hydroponics))

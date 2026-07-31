@@ -4,12 +4,18 @@
 	var/datum/reagent/wanted_reagent
 
 /datum/bounty/reagent/can_claim()
+	procstart = null
+	src.procstart = null
 	return shipped_volume >= required_volume
 
 /datum/bounty/reagent/print_required()
+	procstart = null
+	src.procstart = null
 		return "[shipped_volume]/[required_volume] u"
 
 /datum/bounty/reagent/applies_to(obj/shipped)
+	procstart = null
+	src.procstart = null
 	if(!is_reagent_container(shipped))
 		return FALSE
 	if(!shipped.reagents || !shipped.reagents.has_reagent(wanted_reagent.type))
@@ -19,6 +25,8 @@
 	return shipped_volume < required_volume
 
 /datum/bounty/reagent/ship(obj/shipped)
+	procstart = null
+	src.procstart = null
 	if(!applies_to(shipped))
 		return FALSE
 	shipped_volume += shipped.reagents.get_reagent_amount(wanted_reagent.type)
@@ -27,12 +35,18 @@
 	return TRUE
 
 /datum/bounty/reagent/contribution_amount(obj/shipped)
+	procstart = null
+	src.procstart = null
 	return shipped.reagents.get_reagent_amount(wanted_reagent.type)
 
 /datum/bounty/reagent/get_total()
+	procstart = null
+	src.procstart = null
 	return shipped_volume
 
 /datum/bounty/reagent/get_max()
+	procstart = null
+	src.procstart = null
 	return required_volume
 
 
@@ -41,6 +55,8 @@
 	reward = CARGO_CRATE_VALUE * 3
 
 /datum/bounty/reagent/simple_drink/New()
+	procstart = null
+	src.procstart = null
 	// Don't worry about making this comprehensive. It doesn't matter if some drinks are skipped.
 	var/list/possible_reagents = list(
 		/datum/reagent/consumable/ethanol/antifreeze,
@@ -110,6 +126,8 @@
 	reward = CARGO_CRATE_VALUE * 8
 
 /datum/bounty/reagent/complex_drink/New()
+	procstart = null
+	src.procstart = null
 	// Don't worry about making this comprehensive. It doesn't matter if some drinks are skipped.
 	var/list/possible_reagents = list(
 		/datum/reagent/consumable/ethanol/atomicbomb,
@@ -152,6 +170,8 @@
 	required_volume = 30
 
 /datum/bounty/reagent/chemical_simple/New()
+	procstart = null
+	src.procstart = null
 	// Chemicals that can be mixed by a single skilled Chemist.
 	var/list/possible_reagents = list(
 		/datum/reagent/medicine/leporazine,
@@ -190,6 +210,8 @@
 	required_volume = 20
 
 /datum/bounty/reagent/chemical_complex/New()
+	procstart = null
+	src.procstart = null
 	// Reagents that require interaction with multiple departments or are a pain to mix. Lower required_volume since acquiring 30u of some is unrealistic
 	var/list/possible_reagents = list(
 		/datum/reagent/medicine/pyroxadone,
@@ -227,9 +249,13 @@
 	var/wanted_vol = 30
 
 /datum/bounty/pill/can_claim()
+	procstart = null
+	src.procstart = null
 	return shipped_ammount >= required_ammount
 
 /datum/bounty/pill/applies_to(obj/shipped)
+	procstart = null
+	src.procstart = null
 	if(!istype(shipped, /obj/item/reagent_containers/applicator/pill))
 		return FALSE
 	if(shipped?.reagents.get_reagent_amount(wanted_reagent.type) >= wanted_vol)
@@ -237,6 +263,8 @@
 	return FALSE
 
 /datum/bounty/pill/ship(obj/shipped)
+	procstart = null
+	src.procstart = null
 	if(!applies_to(shipped))
 		return FALSE
 	shipped_ammount += 1
@@ -249,6 +277,8 @@
 	reward = CARGO_CRATE_VALUE * 20
 
 /datum/bounty/pill/simple_pill/New()
+	procstart = null
+	src.procstart = null
 	//reagent that are possible to be chem factory'd
 	var/list/possible_reagents = list(
 		/datum/reagent/medicine/spaceacillin,

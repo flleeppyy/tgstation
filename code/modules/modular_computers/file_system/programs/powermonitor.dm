@@ -25,6 +25,8 @@
 
 
 /datum/computer_file/program/power_monitor/on_start(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..(user)
 	search()
 	history["supply"] = list()
@@ -32,12 +34,16 @@
 
 
 /datum/computer_file/program/power_monitor/process_tick(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!get_powernet())
 		search()
 	else
 		record()
 
-/datum/computer_file/program/power_monitor/proc/search() //keep in sync with /obj/machinery/computer/monitor's version
+/datum/computer_file/program/power_monitor/proc/search()
+	procstart = null
+	src.procstart = null //keep in sync with /obj/machinery/computer/monitor's version
 	var/turf/T = get_turf(computer)
 	attached_wire_ref = WEAKREF(locate(/obj/structure/cable) in T)
 	if(attached_wire_ref)
@@ -52,14 +58,18 @@
 		local_apc = null
 	local_apc_ref = WEAKREF(local_apc)
 
-/datum/computer_file/program/power_monitor/proc/get_powernet() //keep in sync with /obj/machinery/computer/monitor's version
+/datum/computer_file/program/power_monitor/proc/get_powernet()
+	procstart = null
+	src.procstart = null //keep in sync with /obj/machinery/computer/monitor's version
 	var/obj/structure/cable/attached_wire = attached_wire_ref?.resolve()
 	var/obj/machinery/power/apc/local_apc = local_apc_ref?.resolve()
 	if(attached_wire || (local_apc?.terminal))
 		return attached_wire ? attached_wire.powernet : local_apc.terminal.powernet
 	return FALSE
 
-/datum/computer_file/program/power_monitor/proc/record() //keep in sync with /obj/machinery/computer/monitor's version
+/datum/computer_file/program/power_monitor/proc/record()
+	procstart = null
+	src.procstart = null //keep in sync with /obj/machinery/computer/monitor's version
 	if(world.time >= next_record)
 		next_record = world.time + record_interval
 
@@ -78,6 +88,8 @@
 			demand.Cut(1, 2)
 
 /datum/computer_file/program/power_monitor/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/datum/powernet/connected_powernet = get_powernet()
 	data["stored"] = record_size

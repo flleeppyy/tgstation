@@ -10,6 +10,8 @@
 	mail_goodies = list(/obj/effect/spawner/random/food_or_drink/booze)
 
 /datum/quirk/drunkhealing/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/need_mob_update = FALSE
 	switch(quirk_holder.get_drunk_amount())
 		if (6 to 40)

@@ -2,6 +2,8 @@
 /datum/unit_test/anonymous_themes
 
 /datum/unit_test/anonymous_themes/Run()
+	procstart = null
+	src.procstart = null
 	GLOB.current_anonymous_theme = new /datum/anonymous_theme
 
 	var/mob/living/carbon/human/human = allocate(/mob/living/carbon/human/consistent)
@@ -18,5 +20,7 @@
 	TEST_ASSERT_EQUAL(client.prefs.read_preference(/datum/preference/name/real_name), "Prefs Biddle", "Anonymous theme overrode original prefs")
 
 /datum/unit_test/anonymous_themes/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(GLOB.current_anonymous_theme)
 	return ..()

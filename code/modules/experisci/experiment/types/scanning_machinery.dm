@@ -9,10 +9,14 @@
 	var/required_tier = 1
 
 /datum/experiment/scanning/points/machinery_tiered_scan/check_progress()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.[1] = EXPERIMENT_PROG_INT("Scan samples of the following machines built with parts of tier [required_tier] or better.", points, required_points)[1]
 
 /datum/experiment/scanning/points/machinery_tiered_scan/final_contributing_index_checks(datum/component/experiment_handler/experiment_handler, atom/target, typepath)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -40,10 +44,14 @@
 	var/obj/item/stock_parts/required_stock_part = /obj/item/stock_parts
 
 /datum/experiment/scanning/points/machinery_pinpoint_scan/check_progress()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.[1] = EXPERIMENT_PROG_INT("Scan samples of the following machines upgraded with \a [initial(required_stock_part.name)] to accumulate enough points to complete this experiment.", points, required_points)[1]
 
 /datum/experiment/scanning/points/machinery_pinpoint_scan/final_contributing_index_checks(datum/component/experiment_handler/experiment_handler, atom/target, typepath)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

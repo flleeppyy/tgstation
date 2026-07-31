@@ -9,12 +9,16 @@
 	var/dangerous_nation = TRUE
 
 /datum/team/nation/New(starting_members, potential_recruits, department)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSdcs, COMSIG_GLOB_CREWMEMBER_JOINED, PROC_REF(new_possible_separatist))
 	src.potential_recruits = potential_recruits
 	src.department = department
 
 /datum/team/nation/Destroy(force)
+	procstart = null
+	src.procstart = null
 	department = null
 	UnregisterSignal(SSdcs, COMSIG_GLOB_CREWMEMBER_JOINED)
 	. = ..()
@@ -28,6 +32,8 @@
  * rank: new crewmember's rank.
  */
 /datum/team/nation/proc/new_possible_separatist(datum/source, mob/living/crewmember, rank)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(rank in potential_recruits)
@@ -42,6 +48,8 @@
  * target_nation: string of the nation they need to destroy/befriend
  */
 /datum/team/nation/proc/generate_nation_objectives(are_we_hostile = TRUE, datum/team/nation/target_nation)
+	procstart = null
+	src.procstart = null
 
 	var/datum/objective/fluff
 	if(istype(department, /datum/job_department/silicon))
@@ -62,6 +70,8 @@
 	update_all_member_objectives()
 
 /datum/team/nation/proc/war_declared(datum/team/nation/attacking_nation)
+	procstart = null
+	src.procstart = null
 	if(!dangerous_nation) //peaceful nations do not wish to strike back
 		return
 	//otherwise, lets add an objective to strike them back
@@ -71,6 +81,8 @@
 	update_all_member_objectives(span_danger("The nation of [attacking_nation] has declared the intent to conquer [src]! You have new objectives."))
 
 /datum/team/nation/proc/update_all_member_objectives(message)
+	procstart = null
+	src.procstart = null
 	for(var/datum/mind/member in members)
 		var/datum/antagonist/separatist/needs_objectives = member.has_antag_datum(/datum/antagonist/separatist)
 		needs_objectives.objectives |= objectives
@@ -90,12 +102,16 @@
 	var/ui_color
 
 /datum/antagonist/separatist/on_gain()
+	procstart = null
+	src.procstart = null
 	create_objectives()
 	setup_ui_color()
 	. = ..()
 
 //give ais their role as UN
 /datum/antagonist/separatist/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/silicon/ai/united_nations_ai = mob_override || owner.current
 	if(!isAI(united_nations_ai))
@@ -104,29 +120,43 @@
 	united_nations_ai.replace_law_set(/datum/ai_laws/united_nations)
 
 /datum/antagonist/separatist/on_removal()
+	procstart = null
+	src.procstart = null
 	remove_objectives()
 	. = ..()
 
 /datum/antagonist/separatist/proc/create_objectives()
+	procstart = null
+	src.procstart = null
 	objectives |= nation.objectives
 
 /datum/antagonist/separatist/proc/remove_objectives()
+	procstart = null
+	src.procstart = null
 	objectives -= nation.objectives
 
 /datum/antagonist/separatist/proc/setup_ui_color()
+	procstart = null
+	src.procstart = null
 	var/list/hsl = rgb2num(nation.department.ui_color, COLORSPACE_HSL)
 	hsl[3] = 25 //setting lightness very low
 	ui_color = rgb(hsl[1], hsl[2], hsl[3], space = COLORSPACE_HSL)
 
 /datum/antagonist/separatist/create_team(datum/team/nation/new_team)
+	procstart = null
+	src.procstart = null
 	if(!new_team)
 		return
 	nation = new_team
 
 /datum/antagonist/separatist/get_team()
+	procstart = null
+	src.procstart = null
 	return nation
 
 /datum/antagonist/separatist/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["objectives"] = get_objectives()
 	data["nation"] = nation.name

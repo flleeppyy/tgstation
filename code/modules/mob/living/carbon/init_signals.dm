@@ -1,5 +1,7 @@
 //Called on /mob/living/carbon/Initialize(mapload), for the carbon mobs to register relevant signals.
 /mob/living/carbon/register_init_signals()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	//Traits that register add and remove
@@ -31,6 +33,8 @@
  * This will make the mob get it's gender set to PLURAL.
  */
 /mob/living/carbon/proc/on_agender_trait_gain(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	gender = PLURAL
@@ -41,6 +45,8 @@
  * This will make the mob get it's gender set to whatever the DNA says it should be.
  */
 /mob/living/carbon/proc/on_agender_trait_loss(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/dna_block/identity/gender/to_update = GLOB.dna_identity_blocks[/datum/dna_block/identity/gender]
@@ -52,6 +58,8 @@
  * This will make the mob update its blood state.
  */
 /mob/living/carbon/proc/on_noblood_trait_gain(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	update_blood_status()
@@ -62,6 +70,8 @@
  * This will make the mob update its blood state.
  */
 /mob/living/carbon/proc/on_noblood_trait_loss(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	update_blood_status()
@@ -72,6 +82,8 @@
  * This will clear all alerts and moods related to breathing.
  */
 /mob/living/carbon/proc/on_nobreath_trait_gain(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	set_oxy_loss(0, updating_health = TRUE, forced = TRUE)
@@ -103,6 +115,8 @@
  * This will clear all moods related to addictions and stop metabolization.
  */
 /mob/living/carbon/proc/on_liverless_metabolism_trait_gain(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/addiction_type in GLOB.addictions)
@@ -116,6 +130,8 @@
  * This will clear all diseases on the mob.
  */
 /mob/living/carbon/proc/on_virusimmune_trait_gain(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/datum/disease/disease as anything in diseases)
@@ -127,6 +143,8 @@
  * This will clear all toxin damage on the mob.
  */
 /mob/living/carbon/proc/on_toximmune_trait_gain(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	set_tox_loss(0, updating_health = TRUE, forced = TRUE)
@@ -137,6 +155,8 @@
  * This will clear all DNA mutations on on the mob.
  */
 /mob/living/carbon/proc/on_geneless_trait_gain(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	dna?.remove_all_mutations()
@@ -147,10 +167,14 @@
  * This will make the mob lose the split personality trauma if they have it.
  */
 /mob/living/carbon/proc/on_no_split_personality_trait_gain(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	cure_trauma_type(/datum/brain_trauma/severe/split_personality, TRAUMA_LIMIT_ABSOLUTE)
 
 /mob/living/carbon/on_hearing_loss(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	breathing_loop.stop()

@@ -2,6 +2,8 @@
 /datum/targeting_strategy/pickup_item
 
 /datum/targeting_strategy/pickup_item/is_valid_target(mob/living/living_mob, obj/item/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

@@ -11,11 +11,15 @@
 	var/list/minor_alarms = list()
 
 /obj/machinery/computer/atmos_alert/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/circuitboard/computer/atmos_alert/my_circuit = circuit
 	. += span_info("The console is set to [my_circuit.station_only ? "track all station and mining alarms" : "track alarms on the same z-level"].")
 
 /obj/machinery/computer/atmos_alert/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -23,6 +27,8 @@
 		ui.open()
 
 /obj/machinery/computer/atmos_alert/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["priority"] = list()
@@ -35,6 +41,8 @@
 	return data
 
 /obj/machinery/computer/atmos_alert/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -53,6 +61,8 @@
 	update_appearance()
 
 /obj/machinery/computer/atmos_alert/process()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -95,6 +105,8 @@
 	return TRUE
 
 /obj/machinery/computer/atmos_alert/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & (NOPOWER|BROKEN))
 		return

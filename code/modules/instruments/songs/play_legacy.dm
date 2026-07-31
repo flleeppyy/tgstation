@@ -2,6 +2,8 @@
  * Compiles our lines into "chords" with filenames for legacy playback. This makes there have to be a bit of lag at the beginning of the song, but repeats will not have to parse it again, and overall playback won't be impacted by as much lag.
  */
 /datum/song/proc/compile_legacy()
+	procstart = null
+	src.procstart = null
 	if(!length(src.lines))
 		return
 	var/list/lines = src.lines //cache for hyepr speed!
@@ -47,6 +49,8 @@
  * * oct is 1-8 (or 9 for C)
  */
 /datum/song/proc/playkey_legacy(note, acc as text, oct, atom/player)
+	procstart = null
+	src.procstart = null
 	// handle accidental -> B<>C of E<>F
 	if(acc == "b" && (note == 3 || note == 6)) // C or F
 		if(note == 3)

@@ -14,6 +14,8 @@
 	var/target_radius = 7
 
 /datum/action/cooldown/spell/list_target/PreActivate(atom/caster)
+	procstart = null
+	src.procstart = null
 	var/list/list_targets = get_list_targets(caster, target_radius)
 	if(!length(list_targets))
 		caster.balloon_alert(caster, "no targets nearby!")
@@ -31,6 +33,8 @@
 
 /// Get a list of living targets in radius of the center to put in the target list.
 /datum/action/cooldown/spell/list_target/proc/get_list_targets(atom/center, target_radius = 7)
+	procstart = null
+	src.procstart = null
 	var/list/things = list()
 	for(var/mob/living/nearby_living in view(target_radius, center))
 		if(nearby_living == owner || nearby_living == center)

@@ -15,6 +15,8 @@
 	var/yield = 5
 
 /obj/item/food/pie/make_processable()
+	procstart = null
+	src.procstart = null
 	if (slice_type)
 		AddElement(/datum/element/processable, TOOL_KNIFE, slice_type, yield, table_required = TRUE, screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
@@ -39,6 +41,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/pie/plain/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ingredients_holder, /obj/item/food/pie/empty, CUSTOM_INGREDIENT_ICON_FILL, max_ingredients = 8)
 
@@ -54,6 +58,8 @@
 	icon_state = "pie_custom_slice"
 
 /obj/item/food/pieslice/empty/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ingredients_holder, null, CUSTOM_INGREDIENT_ICON_FILL, max_ingredients = 8)
 
@@ -72,10 +78,14 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/pie/cream/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/splat, hit_callback = CALLBACK(src, PROC_REF(stun_and_blur)))
 
 /obj/item/food/pie/cream/proc/stun_and_blur(mob/living/victim, can_splat_on)
+	procstart = null
+	src.procstart = null
 	if(stunning)
 		victim.Paralyze(2 SECONDS) //splat!
 	if(can_splat_on)
@@ -189,6 +199,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/pie/plump_pie/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	var/fey = prob(10)
 	if(fey)
 		name = "exceptional plump pie"

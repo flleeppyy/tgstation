@@ -53,6 +53,8 @@
 	var/queue_size = 2
 
 /mob/living/basic/meteor_heart/opens_puzzle_door/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/puzzle_death_signal_holder(loc, src, id, queue_size)
 
@@ -62,6 +64,8 @@
 	invisibility = INVISIBILITY_ABSTRACT
 
 /obj/effect/puzzle_death_signal_holder/Initialize(mapload, mob/listened, id, queue_size = 2)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(id))
 		return INITIALIZE_HINT_QDEL
@@ -69,10 +73,14 @@
 	SSqueuelinks.add_to_queue(src, id, queue_size)
 
 /obj/effect/puzzle_death_signal_holder/proc/on_death(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	addtimer(CALLBACK(src, PROC_REF(send_sig)), delay)
 
 /obj/effect/puzzle_death_signal_holder/proc/send_sig()
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_PUZZLE_COMPLETED)
 	qdel(src)
 
@@ -82,6 +90,8 @@
 	id = "md_prevault"
 
 /obj/machinery/puzzle/button/meatderelict/on_puzzle_complete()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(src, 'sound/effects/alert.ogg', 100, TRUE)
 	visible_message(span_warning("[src] lets out an alarm as the lockdown is lifted!"))
@@ -94,10 +104,14 @@
 	opacity = TRUE
 
 /obj/structure/puzzle_blockade/meat/try_signal(datum/source)
+	procstart = null
+	src.procstart = null
 	Shake(duration = 0.5 SECONDS)
 	addtimer(CALLBACK(src, PROC_REF(open_up)), 0.5 SECONDS)
 
 /obj/structure/puzzle_blockade/meat/proc/open_up()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/gibspawner/generic(drop_location())
 	qdel(src)
 
@@ -120,16 +134,22 @@
 	var/shock_duration = 0.5 SECONDS
 
 /obj/lightning_thrower/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSprocessing, src)
 
 /obj/lightning_thrower/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	clear_signals()
 	signal_turfs = null
 	STOP_PROCESSING(SSprocessing, src)
 
 /obj/lightning_thrower/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/list/dirs = throw_diagonals ? GLOB.diagonals : GLOB.cardinals
 	throw_diagonals = !throw_diagonals
 	playsound(src, 'sound/effects/magic/lightningbolt.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, ignore_walls = FALSE)
@@ -147,11 +167,15 @@
 	addtimer(CALLBACK(src, PROC_REF(clear_signals)), shock_duration)
 
 /obj/lightning_thrower/proc/clear_signals()
+	procstart = null
+	src.procstart = null
 	for(var/turf in signal_turfs)
 		UnregisterSignal(turf, COMSIG_ATOM_ENTERED)
 		signal_turfs -= turf
 
 /obj/lightning_thrower/proc/shock_victim(datum/source, mob/living/victim)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(victim))
 		return

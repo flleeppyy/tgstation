@@ -8,6 +8,8 @@
 	max_wizard_trigger_potency = 7
 
 /datum/round_event_control/radiation_storm/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(max_occurrences > 0 && weight > 0 && check_holidays(CHERNOBYL_ANNIVERSARY))
 		weight *= 2
@@ -16,13 +18,19 @@
 /datum/round_event/radiation_storm
 
 /datum/round_event/radiation_storm/setup()
+	procstart = null
+	src.procstart = null
 	start_when = 3
 	end_when = start_when + 1
 	announce_when = 1
 
 /datum/round_event/radiation_storm/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("High levels of radiation detected near the station. Maintenance is best shielded from radiation.", "Anomaly Alert", ANNOUNCER_RADIATION)
 	//sound not longer matches the text, but an audible warning is probably good
 
 /datum/round_event/radiation_storm/start()
+	procstart = null
+	src.procstart = null
 	SSweather.run_weather(/datum/weather/rad_storm)

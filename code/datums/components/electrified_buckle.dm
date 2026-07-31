@@ -50,6 +50,8 @@
  * * shock_flags - flags passed into electrocute_act when we zap someone
 */
 /datum/component/electrified_buckle/Initialize(input_requirements, obj/item/input_item, list/overlays_to_add, override_buckle = FALSE, damage_on_shock = 50, shock_immediately = FALSE, print_message = TRUE, signal_to_register_from_parent, loop_length, area_power_channel, shock_flags = NONE)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/parent_as_movable = parent
 	if(!istype(parent_as_movable))
 		return COMPONENT_INCOMPATIBLE
@@ -114,6 +116,8 @@
 				break
 
 /datum/component/electrified_buckle/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/parent_as_movable = parent
 
 	parent_as_movable.cut_overlay(requested_overlays)
@@ -135,10 +139,14 @@
 	STOP_PROCESSING(SSprocessing, src)
 
 /datum/component/electrified_buckle/proc/delete_self()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /datum/component/electrified_buckle/proc/move_required_object_from_contents(datum/source, mob/living/user, obj/item/tool, tool_type)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/movable/parent_as_movable = parent
 	if(!QDELETED(parent_as_movable))
@@ -147,6 +155,8 @@
 	qdel(src)
 
 /datum/component/electrified_buckle/proc/on_buckle(atom/source, mob/living/mob_to_buckle, _force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(mob_to_buckle))
 		return FALSE
@@ -162,6 +172,8 @@
 	return TRUE
 
 /datum/component/electrified_buckle/proc/on_unbuckle(atom/source, mob/living/unbuckled_mob, _force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(unbuckled_mob))
 		return FALSE
@@ -170,6 +182,8 @@
 		source.update_appearance()
 
 /datum/component/electrified_buckle/proc/on_update_overlays(atom/movable/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/overlay_layer = length(source.buckled_mobs) ? ABOVE_MOB_LAYER : OBJ_LAYER
 	for (var/mutable_appearance/electrified_overlay as anything in requested_overlays)
@@ -179,6 +193,8 @@
 
 ///where the guinea pig is actually shocked if possible
 /datum/component/electrified_buckle/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/parent_as_movable = parent
 	if(QDELETED(parent_as_movable) || !parent_as_movable.has_buckled_mobs())
 		return PROCESS_KILL
@@ -197,6 +213,8 @@
 
 /// Zap whoever is buckled to us
 /datum/component/electrified_buckle/proc/do_electrocution()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if((usage_flags & SHOCK_REQUIREMENT_ITEM) && QDELETED(required_object))
@@ -230,6 +248,8 @@
 		guinea_pig.electrocute_act(shock_damage, parent_as_movable, flags = shock_flags)
 
 /datum/component/electrified_buckle/proc/toggle_shock_loop()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/movable/parent_as_movable = parent
 	if(shock_on_loop)

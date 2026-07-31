@@ -19,6 +19,8 @@
 	custom_materials = list(/datum/material/meat = MEATDISH_MATERIAL_AMOUNT * 2)
 
 /obj/item/food/raw_tiziran_sausage/make_dryable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/dryable, /obj/item/food/tiziran_sausage)
 
 /obj/item/food/tiziran_sausage
@@ -53,6 +55,8 @@
 	custom_materials = list(/datum/material/meat = MEATSLAB_MATERIAL_AMOUNT)
 
 /obj/item/food/raw_headcheese/make_dryable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/dryable, /obj/item/food/headcheese)
 
 /obj/item/food/headcheese
@@ -71,6 +75,8 @@
 	custom_materials = list(/datum/material/meat = MEATSLAB_MATERIAL_AMOUNT)
 
 /obj/item/food/headcheese/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/headcheese_slice, 5, 3 SECONDS, table_required = TRUE, screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/headcheese_slice
@@ -143,6 +149,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/moonfish_eggs/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//Moonfish can lay eggs inside aquariums (unaffected by breeding, so think of them as unfertilizard)
 	RegisterSignal(src, COMSIG_AQUARIUM_CONTENT_GENERATE_APPEARANCE, PROC_REF(generate_aquarium_appearance))
@@ -151,12 +159,16 @@
 	RegisterSignal(src, COMSIG_MOVABLE_GET_AQUARIUM_BEAUTY, PROC_REF(get_aquarium_beauty))
 
 /obj/item/food/moonfish_eggs/proc/generate_aquarium_appearance(datum/source, obj/effect/aquarium/visual)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	visual.icon = icon
 	visual.icon_state = "moonfish_eggs_aquarium"
 	visual.layer_mode = AQUARIUM_LAYER_MODE_BOTTOM
 
 /obj/item/food/moonfish_eggs/proc/randomize_aquarium_position(datum/source, obj/structure/aquarium/current_aquarium, obj/effect/aquarium/visual)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/sprite_width = 5
 	var/sprite_height = 4
@@ -168,6 +180,8 @@
 	visual.pixel_z = pz_min + rand(-1, 1)
 
 /obj/item/food/moonfish_eggs/proc/get_aquarium_beauty(datum/source, list/beauty_holder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	beauty_holder += 100 //moonfish eggs are kinda eye candy
 
@@ -445,9 +459,13 @@
 	var/flat_type = /obj/item/food/flatrootdough
 
 /obj/item/food/rootdough/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, bread_type, rand(15 SECONDS, 25 SECONDS), TRUE, TRUE)
 
 /obj/item/food/rootdough/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_ROLLINGPIN, flat_type, 1, 3 SECONDS, table_required = TRUE, screentip_verb = "Flatten", sound_to_play = SFX_ROLLING_PIN_ROLLING)
 
 /obj/item/food/rootdough/egg
@@ -469,9 +487,13 @@
 	var/grill_type = /obj/item/food/root_flatbread
 
 /obj/item/food/flatrootdough/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, process_type, 3, 3 SECONDS, table_required = TRUE, screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/flatrootdough/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, grill_type, rand(15 SECONDS, 25 SECONDS), TRUE, TRUE)
 
 /obj/item/food/flatrootdough/egg
@@ -496,9 +518,13 @@
 	foodtypes = parent_type::foodtypes | MEAT
 
 /obj/item/food/rootdoughslice/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/spaghetti/nizaya, 1, 3 SECONDS, table_required = TRUE, screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/rootdoughslice/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/rootroll, rand(15 SECONDS, 25 SECONDS), TRUE, TRUE)
 
 /obj/item/food/rootdoughslice/egg
@@ -547,6 +573,8 @@
 	slice_type = /obj/item/food/breadslice/root
 
 /obj/item/food/bread/root/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ingredients_holder, /obj/item/food/bread/empty, CUSTOM_INGREDIENT_ICON_FILL, max_ingredients = 8)
 
@@ -565,6 +593,8 @@
 	venue_value = FOOD_PRICE_TRASH
 
 /obj/item/food/breadslice/root/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ingredients_holder, null, CUSTOM_INGREDIENT_ICON_STACK)
 

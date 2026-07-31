@@ -1,6 +1,8 @@
 // All the procs that admins can use to view something like a global list in a cleaner manner than just View Variables are contained in this file.
 
 /datum/admins/proc/list_bombers()
+	procstart = null
+	src.procstart = null
 	if(!SSticker.HasRoundStarted())
 		tgui_alert(usr, "The game hasn't started yet!")
 		return
@@ -10,6 +12,8 @@
 	usr << browse(data, "window=bombers;size=800x500")
 
 /datum/admins/proc/list_signalers()
+	procstart = null
+	src.procstart = null
 	if(!SSticker.HasRoundStarted())
 		tgui_alert(usr, "The game hasn't started yet!")
 		return
@@ -19,6 +23,8 @@
 	usr << browse(data, "window=lastsignalers;size=800x500")
 
 /datum/admins/proc/list_law_changes()
+	procstart = null
+	src.procstart = null
 	if(!SSticker.HasRoundStarted())
 		tgui_alert(usr, "The game hasn't started yet!")
 		return
@@ -31,6 +37,8 @@
 	browser.open()
 
 /datum/admins/proc/list_dna()
+	procstart = null
+	src.procstart = null
 	var/data = "<b>Showing DNA from blood.</b><hr>"
 	data += "<table cellspacing=5 border=1><tr><th>Name</th><th>DNA</th><th>Blood Type</th></tr>"
 	for(var/entry in GLOB.human_list)
@@ -43,7 +51,9 @@
 	browser.set_content(data)
 	browser.open()
 
-/datum/admins/proc/list_fingerprints() //kid named fingerprints
+/datum/admins/proc/list_fingerprints()
+	procstart = null
+	src.procstart = null //kid named fingerprints
 	var/data = "<b>Showing Fingerprints.</b><hr>"
 	data += "<table cellspacing=5 border=1><tr><th>Name</th><th>Fingerprints</th></tr>"
 	for(var/entry in GLOB.human_list)
@@ -57,12 +67,16 @@
 	browser.open()
 
 /datum/admins/proc/show_manifest()
+	procstart = null
+	src.procstart = null
 	if(!SSticker.HasRoundStarted())
 		tgui_alert(usr, "The game hasn't started yet!")
 		return
 	GLOB.manifest.ui_interact(usr)
 
 /datum/admins/proc/output_ai_laws()
+	procstart = null
+	src.procstart = null
 	var/law_bound_entities = 0
 	for(var/mob/living/silicon/subject as anything in GLOB.silicon_mobs)
 		law_bound_entities++

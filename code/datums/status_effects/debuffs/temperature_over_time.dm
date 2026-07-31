@@ -30,10 +30,14 @@
 	var/removal_temperature_cold = BODYTEMP_COLD_WARNING_3
 
 /datum/status_effect/temperature_over_time/on_creation(mob/living/new_owner, duration = 10 SECONDS)
+	procstart = null
+	src.procstart = null
 	src.duration = duration
 	return ..()
 
 /datum/status_effect/temperature_over_time/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((HAS_TRAIT(owner, TRAIT_RESISTHEAT) && temperature_value > 1))
 		qdel(src) // git out
@@ -41,9 +45,13 @@
 		qdel(src) // git out
 
 /datum/status_effect/temperature_over_time/on_remove()
+	procstart = null
+	src.procstart = null
 	return ..()
 
 /datum/status_effect/temperature_over_time/get_examine_text()
+	procstart = null
+	src.procstart = null
 
 	if(temperature_value > 0)
 		return "[owner.p_They()] [owner.p_are()] sweating bullets!"
@@ -51,12 +59,16 @@
 	return "[owner.p_They()] [owner.p_are()] shivering!"
 
 /datum/status_effect/temperature_over_time/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if((TRAIT_RESISTHEAT && temperature_value > 1) || (TRAIT_RESISTCOLD && temperature_value < 1))
 		qdel(src) // git out
 		return
 	temperaturetion(seconds_between_ticks)
 
 /datum/status_effect/temperature_over_time/proc/temperaturetion(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 
 	// I feel like there should be an easier way to do this but I am a fool
 	if(capped_temperature_hot && owner.bodytemperature > capped_temperature_hot)

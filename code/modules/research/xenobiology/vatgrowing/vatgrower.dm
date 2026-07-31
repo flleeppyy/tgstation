@@ -19,6 +19,8 @@
 	var/use_plumbing = TRUE
 
 /obj/machinery/vatgrower/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(reagent_volume, reagent_flags)
 
@@ -38,11 +40,15 @@
 	AddElement(/datum/element/contextual_screentip_bare_hands, lmb_text = "Toggle Resampler", rmb_text = "Flush Soup")
 
 /obj/machinery/vatgrower/create_reagents(max_vol, flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(reagents, COMSIG_REAGENTS_HOLDER_UPDATED, PROC_REF(on_reagent_change))
 
 ///When we process, we make use of our reagents to try and feed the samples we have.
 /obj/machinery/vatgrower/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!is_operational)
 		return
 	if(!biological_sample)
@@ -55,22 +61,32 @@
 	use_energy(active_power_usage * seconds_per_tick)
 
 /obj/machinery/vatgrower/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(tool, /obj/item/petri_dish))
 		return deposit_sample(user, tool)
 
 /obj/machinery/vatgrower/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/vatgrower/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/vatgrower/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(default_unfasten_wrench(user, tool))
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/vatgrower/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(src, 'sound/machines/click.ogg', 30, TRUE)
 	if(obj_flags & EMAGGED)
@@ -80,6 +96,8 @@
 	update_appearance()
 
 /obj/machinery/vatgrower/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -96,6 +114,8 @@
 
 ///Creates a clone of the supplied sample and puts it in the vat
 /obj/machinery/vatgrower/proc/deposit_sample(mob/user, obj/item/petri_dish/petri)
+	procstart = null
+	src.procstart = null
 	if(!petri.sample)
 		balloon_alert(user, "dish empty")
 		return ITEM_INTERACT_FAILURE
@@ -115,6 +135,8 @@
 
 ///Adds text for when there is a sample in the vat
 /obj/machinery/vatgrower/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!biological_sample)
 		return
@@ -125,11 +147,15 @@
 
 /// Call update icon when reagents change to update the reagent content icons. Eats signal args.
 /obj/machinery/vatgrower/proc/on_reagent_change(datum/reagents/holder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_appearance()
 
 ///Adds overlays to show the reagent contents
 /obj/machinery/vatgrower/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/image/on_overlay
 	var/static/image/off_overlay
@@ -155,6 +181,8 @@
 		. += bubbles_overlay
 
 /obj/machinery/vatgrower/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -164,6 +192,8 @@
 	return TRUE
 
 /obj/machinery/vatgrower/proc/on_sample_growth_completed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(resampler_active)
 		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(playsound), get_turf(src), 'sound/effects/servostep.ogg', 100, 1), 1.5 SECONDS)
@@ -187,9 +217,13 @@
 	reagent_volume = 50
 
 /obj/machinery/vatgrower/small/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/vatgrower/small/deposit_sample(mob/user, obj/item/petri_dish/petri)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(. != ITEM_INTERACT_SUCCESS)
@@ -198,6 +232,8 @@
 	RegisterSignal(biological_sample, COMSIG_SAMPLE_DEPOSITED, PROC_REF(on_sample_deposited))
 
 /obj/machinery/vatgrower/small/proc/on_sample_deposited(datum/biological_sample/sample, atom/thing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isliving(thing))

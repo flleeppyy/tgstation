@@ -1,6 +1,8 @@
 GLOBAL_VAR(escape_menu_suicide_icon_base64)
 
 /proc/generate_escape_menu_suicide_icon()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(!isnull(GLOB.escape_menu_suicide_icon_base64))
 		return
@@ -20,6 +22,8 @@ GLOBAL_LIST_EMPTY(escape_menus)
 /client/var/datum/escape_menu/escape_menu
 
 /client/proc/initialize_escape_menu()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	sleep(3 SECONDS)
 	generate_escape_menu_suicide_icon()
@@ -36,6 +40,8 @@ GAME_VERB_HIDDEN(/client, reset_held_keys_verb, "Reset Held Keys")
 	var/version_warned
 
 /datum/escape_menu/New(client/client)
+	procstart = null
+	src.procstart = null
 	src.client = client
 	window = new(client, "escape_menu")
 	window.is_browser = TRUE
@@ -59,6 +65,8 @@ GAME_VERB_HIDDEN(/client, reset_held_keys_verb, "Reset Held Keys")
 	send_init()
 
 /datum/escape_menu/Destroy(force)
+	procstart = null
+	src.procstart = null
 	GLOB.escape_menus -= src
 	STOP_PROCESSING(SSescape_menu, src)
 	window?.unsubscribe(src)
@@ -67,6 +75,8 @@ GAME_VERB_HIDDEN(/client, reset_held_keys_verb, "Reset Held Keys")
 	return ..()
 
 /datum/escape_menu/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	send_update(list(
 		"serverTime" = server_timestamp(format = "hh:mm:ss"),
 		"shiftTime" = (SSticker.round_start_time == 0) ? "Pre-Game" : round_timestamp(),
@@ -77,16 +87,22 @@ GAME_VERB_HIDDEN(/client, reset_held_keys_verb, "Reset Held Keys")
 	))
 
 /datum/escape_menu/proc/on_client_qdel()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /datum/escape_menu/proc/on_client_mob_login()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	send_update(list(
 		"canLeaveBody" = isliving(client?.mob),
 	))
 
 /datum/escape_menu/proc/on_verb_change(client/source, list/verbs_changed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(/client/verb/adminhelp in verbs_changed)
 		send_update(list(
@@ -94,12 +110,16 @@ GAME_VERB_HIDDEN(/client, reset_held_keys_verb, "Reset Held Keys")
 		))
 
 /datum/escape_menu/proc/on_station_name_changed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	send_update(list(
 		"stationName" = station_name(),
 	))
 
 /datum/escape_menu/proc/on_round_start()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	send_update(list(
 		"shiftTime" = round_timestamp(),
@@ -107,6 +127,8 @@ GAME_VERB_HIDDEN(/client, reset_held_keys_verb, "Reset Held Keys")
 	))
 
 /datum/escape_menu/proc/send_init()
+	procstart = null
+	src.procstart = null
 	var/list/resources = list()
 
 	var/githuburl = CONFIG_GET(string/githuburl)
@@ -151,6 +173,8 @@ GAME_VERB_HIDDEN(/client, reset_held_keys_verb, "Reset Held Keys")
 	))
 
 /datum/escape_menu/proc/build_admin_list()
+	procstart = null
+	src.procstart = null
 	var/list/result = list()
 	for(var/client/admin as anything in GLOB.admins)
 		result += list(list(
@@ -165,6 +189,8 @@ GAME_VERB_HIDDEN(/client, reset_held_keys_verb, "Reset Held Keys")
 	return result
 
 /datum/escape_menu/proc/build_player_list()
+	procstart = null
+	src.procstart = null
 	var/list/result = list()
 	for(var/client/player as anything in GLOB.clients - GLOB.admins)
 		result += list(list(
@@ -177,6 +203,8 @@ GAME_VERB_HIDDEN(/client, reset_held_keys_verb, "Reset Held Keys")
 	return result
 
 /datum/escape_menu/proc/build_ignored_offline()
+	procstart = null
+	src.procstart = null
 	var/list/result = list()
 	if(client?.prefs?.ignoring)
 		for(var/ignored_key in client.prefs.ignoring)
@@ -185,9 +213,13 @@ GAME_VERB_HIDDEN(/client, reset_held_keys_verb, "Reset Held Keys")
 	return result
 
 /datum/escape_menu/proc/send_update(list/data)
+	procstart = null
+	src.procstart = null
 	window.send_message("state", data)
 
 /datum/escape_menu/proc/on_message(type, payload, href_list)
+	procstart = null
+	src.procstart = null
 	if(type == "ready")
 		send_init()
 		return TRUE

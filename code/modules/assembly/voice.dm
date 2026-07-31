@@ -26,14 +26,20 @@
 	pickup_sound = 'sound/items/handling/component_pickup.ogg'
 
 /obj/item/assembly/voice/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	become_hearing_sensitive(ROUNDSTART_TRAIT)
 
 /obj/item/assembly/voice/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Use a multitool to swap between \"inclusive\", \"exclusive\", \"recognizer\", and \"voice sensor\" mode.")
 
 /obj/item/assembly/voice/Hear(atom/movable/speaker, message_language, raw_message, radio_freq, radio_freq_name, radio_freq_color, list/spans, list/message_mods = list(), message_range)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(message_mods[WHISPER_MODE] || message_mods[MODE_RELAY]) //Too quiet lad
 		return FALSE
@@ -52,6 +58,8 @@
 	return HEAR_HEARD | HEAR_UNDERSTOOD
 
 /obj/item/assembly/voice/proc/record_speech(atom/movable/speaker, raw_message, datum/language/message_language)
+	procstart = null
+	src.procstart = null
 	switch(mode)
 		if(INCLUSIVE_MODE)
 			recorded = raw_message
@@ -70,6 +78,8 @@
 				send_pulse()
 
 /obj/item/assembly/voice/proc/check_activation(atom/movable/speaker, raw_message)
+	procstart = null
+	src.procstart = null
 	if (recorded == "")
 		return FALSE
 
@@ -90,11 +100,15 @@
 	return FALSE
 
 /obj/item/assembly/voice/proc/send_pulse()
+	procstart = null
+	src.procstart = null
 	visible_message("clicks.", visible_message_flags = EMOTE_MESSAGE)
 	playsound(src, 'sound/effects/whirthunk.ogg', 30)
 	addtimer(CALLBACK(src, PROC_REF(pulse)), 2 SECONDS)
 
 /obj/item/assembly/voice/multitool_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	..()
 	mode %= modes.len
 	mode++
@@ -104,6 +118,8 @@
 	return TRUE
 
 /obj/item/assembly/voice/activate()
+	procstart = null
+	src.procstart = null
 	if(!secured || holder)
 		return FALSE
 	listening = !listening
@@ -111,12 +127,16 @@
 	return TRUE
 
 /obj/item/assembly/voice/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return FALSE
 	activate()
 	return TRUE
 
 /obj/item/assembly/voice/toggle_secure()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	listening = FALSE
 

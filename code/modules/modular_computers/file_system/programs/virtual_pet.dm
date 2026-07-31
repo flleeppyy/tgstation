@@ -122,6 +122,8 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 	COOLDOWN_DECLARE(alter_appearance_cooldown)
 
 /datum/computer_file/program/virtual_pet/on_install(datum/computer_file/source, obj/item/modular_computer/computer_installing, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	profile_picture = getFlatIcon(image(icon = 'icons/ui/virtualpet/pet_state.dmi', icon_state = "pet_preview"))
 	GLOB.virtual_pets_list += src
@@ -141,6 +143,8 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 	RegisterSignal(computer, COMSIG_ATOM_EXITED, PROC_REF(on_pet_exit))
 
 /datum/computer_file/program/virtual_pet/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.virtual_pets_list -= src
 	if(!QDELETED(pet))
 		QDEL_NULL(pet)
@@ -148,18 +152,24 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 	return ..()
 
 /datum/computer_file/program/virtual_pet/proc/on_death(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	pet.forceMove(computer)
 
 
 /datum/computer_file/program/virtual_pet/proc/on_message_receive(datum/source, sender_title, inbound_message, photo_message)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/message_to_display = "[sender_title] has sent you a message [photo_message ? "with a photo attached" : ""]: [inbound_message]!"
 	pet.ai_controller?.set_blackboard_key(BB_LAST_RECEIVED_MESSAGE, message_to_display)
 
 /datum/computer_file/program/virtual_pet/proc/pet_pre_clean(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!COOLDOWN_FINISHED(src, on_clean_cooldown))
@@ -167,12 +177,16 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 		return COMSIG_ATOM_CANCEL_CLEAN
 
 /datum/computer_file/program/virtual_pet/proc/on_playmate_find(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	happiness = min(happiness + PET_PLAYMATE_BONUS, max_happiness)
 	START_PROCESSING(SSprocessing, src)
 
 /datum/computer_file/program/virtual_pet/proc/post_cleaned(mob/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	. = NONE
@@ -184,6 +198,8 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 
 ///manage the pet's hat offsets when he changes direction
 /datum/computer_file/program/virtual_pet/proc/on_change_dir(datum/source, old_dir, new_dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!length(selected_hat))
@@ -191,6 +207,8 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 	set_hat_offsets(new_dir)
 
 /datum/computer_file/program/virtual_pet/proc/on_photo_captured(datum/source, atom/target, atom/user, datum/picture/photo)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(photo))
@@ -198,6 +216,8 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 	computer.store_file(new /datum/computer_file/image(photo.picture_image, display_name = photo.picture_name))
 
 /datum/computer_file/program/virtual_pet/proc/set_hat_offsets(new_dir)
+	procstart = null
+	src.procstart = null
 	var/direction_text = dir2text(new_dir)
 	var/hat_type = selected_hat["type"]
 	var/list/offsets_list = special_hat_placement[hat_type]?[direction_text] || hat_offsets[direction_text]
@@ -208,6 +228,8 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 
 ///give our pet his hologram hat
 /datum/computer_file/program/virtual_pet/proc/on_overlays_updated(atom/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!length(selected_hat))
@@ -215,6 +237,8 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 	overlays += selected_hat["appearance"]
 
 /datum/computer_file/program/virtual_pet/proc/alter_profile_picture()
+	procstart = null
+	src.procstart = null
 	var/image/pet_preview = image(icon = 'icons/ui/virtualpet/pet_state.dmi', icon_state = "pet_preview")
 	if(pet.cached_color_filter)
 		pet_preview.color = apply_matrix_to_color(COLOR_WHITE, pet.cached_color_filter["color"], pet.cached_color_filter["space"] || COLORSPACE_RGB)
@@ -237,6 +261,8 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 
 ///decrease the pet's hunger after it eats
 /datum/computer_file/program/virtual_pet/proc/after_pet_eat(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	hunger = min(hunger + PET_EAT_BONUS, max_hunger)
@@ -245,6 +271,8 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 
 ///start processing if we enter the pda and need healing
 /datum/computer_file/program/virtual_pet/proc/on_pet_entered(atom/movable/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(arrived != pet)
@@ -256,6 +284,8 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 		START_PROCESSING(SSprocessing, src)
 
 /datum/computer_file/program/virtual_pet/proc/on_pet_exit(atom/movable/source, atom/movable/exited)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(exited != pet)
@@ -267,6 +297,8 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 		START_PROCESSING(SSprocessing, src)
 
 /datum/computer_file/program/virtual_pet/process()
+	procstart = null
+	src.procstart = null
 	if(pet.loc == computer)
 		if(pet.health >= pet.maxHealth)
 			return PROCESS_KILL
@@ -285,6 +317,8 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 		return PROCESS_KILL
 
 /datum/computer_file/program/virtual_pet/proc/after_pet_move(atom/movable/movable, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isturf(pet.loc) || !isturf(old_loc))
@@ -295,6 +329,8 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 		announce_global_updates(message = "has walked [steps_counter] steps!")
 
 /datum/computer_file/program/virtual_pet/proc/increment_exp()
+	procstart = null
+	src.procstart = null
 	var/modifier = 1
 	var/hunger_happiness = hunger + happiness
 	var/max_hunger_happiness = max_hunger + max_happiness
@@ -310,6 +346,8 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 		handle_level_up()
 
 /datum/computer_file/program/virtual_pet/proc/handle_level_up()
+	procstart = null
+	src.procstart = null
 	current_level_progress = 0
 	level++
 	grant_level_abilities()
@@ -320,6 +358,8 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 	announce_global_updates(message = "has reached level [level]!")
 
 /datum/computer_file/program/virtual_pet/proc/grant_level_abilities()
+	procstart = null
+	src.procstart = null
 	switch(level)
 		if(2)
 			RegisterSignal(computer, COMSIG_COMPUTER_RECEIVED_MESSAGE, PROC_REF(on_message_receive)) // we will now read out PDA messages
@@ -333,6 +373,8 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 			RegisterSignal(photo_ability.internal_camera, COMSIG_CAMERA_IMAGE_CAPTURED, PROC_REF(on_photo_captured))
 
 /datum/computer_file/program/virtual_pet/proc/announce_global_updates(message)
+	procstart = null
+	src.procstart = null
 	if(isnull(message))
 		return
 	var/list/message_to_announce = list(
@@ -348,6 +390,8 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 	playsound(computer.loc, 'sound/mobs/non-humanoids/orbie/orbie_notification_sound.ogg', 50)
 
 /datum/computer_file/program/virtual_pet/proc/remove_pet(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	pet = null
 	if(QDELETED(src))
@@ -355,12 +399,16 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 	computer.remove_file(src) //all is lost we no longer have a reason to exist
 
 /datum/computer_file/program/virtual_pet/kill_program(mob/user)
+	procstart = null
+	src.procstart = null
 	if(pet && pet.loc != computer)
 		pet.forceMove(computer) //recall the hologram back to the pda
 	STOP_PROCESSING(SSprocessing, src)
 	return ..()
 
 /datum/computer_file/program/virtual_pet/proc/get_pet_state()
+	procstart = null
+	src.procstart = null
 	if(isnull(pet))
 		return
 
@@ -376,6 +424,8 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 	return PET_STATE_NEUTRAL
 
 /datum/computer_file/program/virtual_pet/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/obj/item/hat_type = selected_hat?["type"]
 	data["currently_summoned"] = (pet.loc != computer)
@@ -432,6 +482,8 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 	return data
 
 /datum/computer_file/program/virtual_pet/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["pet_state_icons"] = list()
 	for(var/list_index in pet_state_icons)
@@ -481,6 +533,8 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 	return data
 
 /datum/computer_file/program/virtual_pet/ui_act(action, params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(action)
 
@@ -572,6 +626,8 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 	return TRUE
 
 /datum/computer_file/program/virtual_pet/proc/generate_petfeed_area()
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, area_reroll))
 		return
 	var/list/filter_area_list = typecache_filter_list(GLOB.the_station_areas, restricted_areas)
@@ -582,6 +638,8 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 	COOLDOWN_START(src, area_reroll, 2 MINUTES)
 
 /datum/computer_file/program/virtual_pet/proc/drop_feed()
+	procstart = null
+	src.procstart = null
 	if(!istype(get_area(computer), selected_area))
 		return
 	announce_global_updates(message = "has found a chocolate at [selected_area.name]")
@@ -590,11 +648,15 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 	chocolate.fade_into_nothing(life_time = 30 SECONDS) //we cant maintain its existence for too long!
 
 /datum/computer_file/program/virtual_pet/proc/recall_pet(mob/living/friend)
+	procstart = null
+	src.procstart = null
 	animate(pet, transform = matrix().Scale(0.3, 0.3), time = 1.5 SECONDS)
 	addtimer(CALLBACK(pet, TYPE_PROC_REF(/atom/movable, forceMove), computer), 1.5 SECONDS)
 	SEND_SIGNAL(pet, COMSIG_VIRTUAL_PET_RECALLED, friend)
 
 /datum/computer_file/program/virtual_pet/proc/release_pet(mob/living/our_user)
+	procstart = null
+	src.procstart = null
 	var/turf/drop_zone
 	var/list/turfs_list = get_adjacent_open_turfs(computer.drop_location())
 	for(var/turf/possible_turf as anything in turfs_list)

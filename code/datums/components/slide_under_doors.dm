@@ -17,6 +17,8 @@
 	var/obj/machinery/door/current_door = null
 
 /datum/component/slide_under_doors/Initialize(slide_in_delay = 5 SECONDS, slide_out_delay = 1 SECONDS)
+	procstart = null
+	src.procstart = null
 	if (!isbasicmob(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -24,12 +26,16 @@
 	src.slide_out_delay = slide_out_delay
 
 /datum/component/slide_under_doors/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_MOB_CLIENT_LOGIN, PROC_REF(on_user_login))
 	RegisterSignal(parent, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(on_user_unarmed_attack))
 
 	notify_user()
 
 /datum/component/slide_under_doors/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_MOB_CLIENT_LOGIN, COMSIG_LIVING_UNARMED_ATTACK))
 
 	if (!QDELETED(current_user) && !QDELETED(current_door))
@@ -38,13 +44,19 @@
 		unregister_user_and_door()
 
 /datum/component/slide_under_doors/proc/on_user_login(mob/living/user, client/user_client)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	notify_user()
 
 /datum/component/slide_under_doors/proc/notify_user()
+	procstart = null
+	src.procstart = null
 	to_chat(parent, span_notice("You can slide under doors! <b>Right-click on a door to slide under it.</b>"))
 
 /datum/component/slide_under_doors/proc/on_user_unarmed_attack(mob/living/user, atom/target, is_adjacent, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!modifiers[RIGHT_CLICK])
 		return
@@ -55,6 +67,8 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/component/slide_under_doors/proc/try_slide_under_door(mob/living/user, obj/machinery/door/door)
+	procstart = null
+	src.procstart = null
 	if (!can_slide_under_door(user, door))
 		return
 
@@ -72,6 +86,8 @@
 	slide_under_door(user, door)
 
 /datum/component/slide_under_doors/proc/can_slide_under_door(mob/living/user, obj/machinery/door/door)
+	procstart = null
+	src.procstart = null
 	if (!user.Adjacent(door))
 		return FALSE
 	if (user.loc == door)
@@ -94,6 +110,8 @@
 	return TRUE
 
 /datum/component/slide_under_doors/proc/slide_under_door(mob/living/user, obj/machinery/door/door)
+	procstart = null
+	src.procstart = null
 	user.visible_message(
 		message = span_danger("\The [user] slide[user.p_s()] under \the [door] with a pop!"),
 		self_message = span_notice("You slide under \the [door] with a pop!"),
@@ -107,6 +125,8 @@
 	register_user_and_door(user, door)
 
 /datum/component/slide_under_doors/proc/try_slide_out_from_under_door(move_dir)
+	procstart = null
+	src.procstart = null
 	if (DOING_INTERACTION_WITH_TARGET(current_user, current_door))
 		return
 
@@ -129,6 +149,8 @@
 	slide_out_from_under_door(move_dir)
 
 /datum/component/slide_under_doors/proc/slide_out_from_under_door(move_dir)
+	procstart = null
+	src.procstart = null
 	// We need to store local references to the user and the door before unregistering them.
 	var/mob/living/user = current_user
 	var/obj/machinery/door/door = current_door
@@ -149,6 +171,8 @@
 	playsound(user, 'sound/effects/meatslap.ogg', vol = 50, vary = TRUE, ignore_walls = FALSE)
 
 /datum/component/slide_under_doors/proc/register_user_and_door(mob/living/user, obj/machinery/door/door)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(user, TRAIT_INCAPACITATED, UNDER_DOOR_TRAIT)
 	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(on_user_moved))
 	current_user = user
@@ -159,6 +183,8 @@
 	current_door = door
 
 /datum/component/slide_under_doors/proc/unregister_user_and_door()
+	procstart = null
+	src.procstart = null
 	if (current_user)
 		REMOVE_TRAITS_IN(current_user, UNDER_DOOR_TRAIT)
 		UnregisterSignal(current_user, COMSIG_MOVABLE_MOVED)
@@ -169,20 +195,28 @@
 		current_door = null
 
 /datum/component/slide_under_doors/proc/on_user_moved(mob/living/user, obj/machinery/door/door, dir, forced, list/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (user.loc != door)
 		unregister_user_and_door()
 
 /datum/component/slide_under_doors/proc/on_door_qdeleting(obj/machinery/door/door, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	unregister_user_and_door()
 
 /datum/component/slide_under_doors/proc/on_door_density_changed(obj/machinery/door/door)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!door.density)
 		slide_out_from_under_door()
 
 /datum/component/slide_under_doors/proc/on_door_relaymove(obj/machinery/door/door, mob/living/user, move_dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(try_slide_out_from_under_door), move_dir)
 	return COMSIG_BLOCK_RELAYMOVE

@@ -25,19 +25,27 @@
 	var/static/list/throw_range_success = list(95, 80, 65, 50, 35, 20)
 
 /obj/structure/hoop/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_rotation, ROTATION_REQUIRE_WRENCH|ROTATION_IGNORE_ANCHORED, post_rotation_proccall = PROC_REF(post_rotation))
 	update_appearance()
 	register_context()
 
 /obj/structure/hoop/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	context[SCREENTIP_CONTEXT_CTRL_LMB] = "Reset score"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/hoop/proc/post_rotation(mob/user, degrees)
+	procstart = null
+	src.procstart = null
 	update_appearance()
 
 /obj/structure/hoop/proc/score(obj/item/toy/basketball/ball, mob/living/baller, points)
+	procstart = null
+	src.procstart = null
 	// we still play buzzer sound regardless of the object
 	playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 100, FALSE)
 
@@ -53,6 +61,8 @@
 	return TRUE
 
 /obj/structure/hoop/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/dir_offset_w = 0
@@ -91,6 +101,8 @@
 	scoreboard.add_overlay(emissive_tens_overlay)
 
 /obj/structure/hoop/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!user.can_perform_action(src, NEED_HANDS|FORBID_TELEKINESIS_REACH))
 		return NONE// TK users aren't allowed to dunk
 
@@ -114,6 +126,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/hoop/attack_hand(mob/living/baller, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -133,6 +147,8 @@
 	baller.stop_pulling()
 
 /obj/structure/hoop/click_ctrl(mob/user)
+	procstart = null
+	src.procstart = null
 	user.balloon_alert_to_viewers("resetting score...")
 	playsound(src, 'sound/machines/locktoggle.ogg', 50, TRUE)
 	if(do_after(user, 5 SECONDS, target = src))
@@ -141,6 +157,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/structure/hoop/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(!isitem(AM))
 		return ..()
 
@@ -178,13 +196,19 @@
 	var/list/team_ckeys = list()
 
 /obj/structure/hoop/minigame/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	return NONE
 
 // No resetting the score for minigame hoops
 /obj/structure/hoop/minigame/click_ctrl(mob/user)
+	procstart = null
+	src.procstart = null
 	return CLICK_ACTION_BLOCKING
 
 /obj/structure/hoop/minigame/score(obj/item/toy/basketball/ball, mob/living/baller, points)
+	procstart = null
+	src.procstart = null
 	var/is_team_hoop = !(baller.ckey in team_ckeys)
 	if(is_team_hoop)
 		baller.balloon_alert_to_viewers("cant score own hoop!")

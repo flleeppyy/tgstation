@@ -20,14 +20,20 @@
 	VAR_PRIVATE/async_result_flags = NONE
 
 /datum/bt_node/ai_behavior/has_active_descendants()
+	procstart = null
+	src.procstart = null
 	return running
 
 /datum/bt_node/ai_behavior/get_status_marker()
+	procstart = null
+	src.procstart = null
 	if(running)
 		return "*"
 	return ..()
 
 /datum/bt_node/ai_behavior/append_active_nodes(list/lines, indent)
+	procstart = null
+	src.procstart = null
 	if(running)
 		lines += "[indent][span_bold("● [label]")]"
 
@@ -37,6 +43,8 @@
  * Returns BT_SUCCESS / BT_FAILURE on completion, BT_RUNNING while active.
  */
 /datum/bt_node/ai_behavior/tick(datum/ai_controller/controller, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(next_perform_time > world.time)
 		if(!running && failed_last_perform)
 			return BT_FAILURE
@@ -73,19 +81,27 @@
 
 /// Returns the cooldown to apply after a AI_BEHAVIOR_DELAY perform(). Override for conditional delays.
 /datum/bt_node/ai_behavior/proc/get_cooldown(datum/ai_controller/cooldown_for)
+	procstart = null
+	src.procstart = null
 	return time_between_perform
 
 /// Called when this behavior first activates on a controller. Return FALSE to abort (returns BT_FAILURE).
 /datum/bt_node/ai_behavior/proc/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Called each tick while the behavior is running. Returns AI_BEHAVIOR_* flags.
 /datum/bt_node/ai_behavior/proc/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 	return
 
 /// Called when the behavior finishes (succeeded or failed). Subtypes should call ..().
 /datum/bt_node/ai_behavior/proc/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	running = FALSE
 	async_running = FALSE
@@ -94,6 +110,8 @@
 
 ///Checks if we're running async behavior, and if its finished, returns result flags
 /datum/bt_node/ai_behavior/proc/handle_async()
+	procstart = null
+	src.procstart = null
 	if(async_running)
 		return AI_BEHAVIOR_DELAY
 	if(async_finished)
@@ -102,20 +120,28 @@
 
 ///Marks that async behavior has started and runs perform_async
 /datum/bt_node/ai_behavior/proc/start_async()
+	procstart = null
+	src.procstart = null
 	async_running = TRUE
 	INVOKE_ASYNC(src, PROC_REF(perform_async), owning_controller)
 	return AI_BEHAVIOR_DELAY
 
 ///Override this if you have sleeping behavior, be sure to implement the other async procs in perform()
 /datum/bt_node/ai_behavior/proc/perform_async(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Call from an async behavior after its sleeping call, before committing side effects. FALSE means the behavior was aborted/reset mid-flight  bail out without side effects.
 /datum/bt_node/ai_behavior/proc/async_still_valid()
+	procstart = null
+	src.procstart = null
 	return async_running && !QDELETED(owning_controller?.pawn)
 
 /// Call from an async behavior to commit its result. No-op if the behavior was aborted mid-flight.
 /datum/bt_node/ai_behavior/proc/finish_async(result_flags)
+	procstart = null
+	src.procstart = null
 	if(!async_still_valid())
 		return
 	async_result_flags = result_flags
@@ -123,9 +149,13 @@
 	async_running = FALSE
 
 /datum/bt_node/ai_behavior/proc/modify_cooldown(new_next_perform_time)
+	procstart = null
+	src.procstart = null
 	next_perform_time = new_next_perform_time
 
 /datum/bt_node/ai_behavior/reset_tick_state()
+	procstart = null
+	src.procstart = null
 	if(running)
 		finish_action(owning_controller, FALSE)
 	..()

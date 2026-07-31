@@ -8,6 +8,8 @@
 	var/datum/turf_reservation/reserved
 
 /datum/unit_test/chain_pull_through_space/New()
+	procstart = null
+	src.procstart = null
 	..()
 
 	//reserve a tile that is always empty for our z destination
@@ -33,6 +35,8 @@
 	charlie.name = "Charlie"
 
 /datum/unit_test/chain_pull_through_space/Destroy()
+	procstart = null
+	src.procstart = null
 	space_tile.ChangeTurf(claimed_tile)
 	qdel(alice)
 	qdel(bob)
@@ -41,6 +45,8 @@
 	return ..()
 
 /datum/unit_test/chain_pull_through_space/Run()
+	procstart = null
+	src.procstart = null
 	// Alice pulls Bob, who pulls Charlie
 	// Normally, when Alice moves forward, the rest follow
 	alice.start_pulling(bob)

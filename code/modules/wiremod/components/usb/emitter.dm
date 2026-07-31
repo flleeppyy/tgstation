@@ -19,6 +19,8 @@
 	var/obj/machinery/power/emitter/attached_emitter
 
 /obj/item/circuit_component/emitter/populate_ports()
+	procstart = null
+	src.procstart = null
 	fire = add_input_port("Fire", PORT_TYPE_SIGNAL, trigger = PROC_REF(fire_emitter))
 
 	turned_on = add_output_port("Turned On", PORT_TYPE_SIGNAL)
@@ -26,6 +28,8 @@
 	has_fired = add_output_port("Has Fired", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/emitter/register_usb_parent(atom/movable/parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(parent, /obj/machinery/power/emitter))
 		attached_emitter = parent
@@ -33,12 +37,16 @@
 		RegisterSignal(attached_emitter, COMSIG_EMITTER_MACHINE_ON_FIRE, PROC_REF(handle_emitter_on_fire))
 
 /obj/item/circuit_component/emitter/unregister_usb_parent(atom/movable/parent)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(attached_emitter, COMSIG_EMITTER_MACHINE_SET_ON)
 	UnregisterSignal(attached_emitter, COMSIG_EMITTER_MACHINE_ON_FIRE)
 	attached_emitter = null
 	return ..()
 
 /obj/item/circuit_component/emitter/proc/handle_emitter_activation(datum/source, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(active)
 		turned_on.set_output(COMPONENT_SIGNAL)
@@ -46,10 +54,14 @@
 		turned_off.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/emitter/proc/handle_emitter_on_fire(datum/source, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	has_fired.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/emitter/proc/fire_emitter()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!attached_emitter)
 		return

@@ -29,6 +29,8 @@
 	COOLDOWN_DECLARE(glow_cooldown)
 
 /datum/component/unusual_effect/Initialize(color, include_particles = FALSE)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/parent_movable = parent
 	if (!istype(parent_movable))
 		return COMPONENT_INCOMPATIBLE
@@ -40,6 +42,8 @@
 	START_PROCESSING(SSobj, src)
 
 /datum/component/unusual_effect/Destroy(force)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/parent_movable = parent
 	if (istype(parent_movable))
 		parent_movable.remove_filter("unusual_effect")
@@ -47,6 +51,8 @@
 	return ..()
 
 /datum/component/unusual_effect/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/parent_movable = parent
 	var/filter = parent_movable.get_filter("unusual_effect")
 	if (!filter)

@@ -10,6 +10,8 @@
 	var/strength_flag
 
 /datum/element/wall_smasher/Attach(datum/target, strength_flag = ENVIRONMENT_SMASH_WALLS)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. == ELEMENT_INCOMPATIBLE)
 		return ELEMENT_INCOMPATIBLE
@@ -25,6 +27,8 @@
 		animal_target.environment_smash = strength_flag
 
 /datum/element/wall_smasher/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_HOSTILE_PRE_ATTACKINGTARGET))
 	if (isanimal_or_basicmob(target))
 		var/mob/living/simple_animal/animal_target = target
@@ -33,14 +37,20 @@
 	return ..()
 
 /datum/element/wall_smasher/proc/on_unarm_attack(mob/living/puncher, atom/target, proximity, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return try_smashing(puncher, target)
 
 /datum/element/wall_smasher/proc/on_pre_attackingtarget(mob/living/puncher, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return try_smashing(puncher, target)
 
 /datum/element/wall_smasher/proc/try_smashing(mob/living/puncher, atom/target)
+	procstart = null
+	src.procstart = null
 	if (!isturf(target))
 		return NONE
 	if (isfloorturf(target))

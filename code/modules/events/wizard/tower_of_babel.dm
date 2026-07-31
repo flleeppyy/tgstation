@@ -9,5 +9,7 @@
 	max_wizard_trigger_potency = 7
 
 /datum/round_event/wizard/tower_of_babel/start()
+	procstart = null
+	src.procstart = null
 	GLOB.tower_of_babel = new /datum/tower_of_babel()
 

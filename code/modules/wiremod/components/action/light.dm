@@ -24,10 +24,14 @@
 	var/shell_light_color
 
 /obj/item/circuit_component/light/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("Maximum Brightness: [max_power]", "orange", "lightbulb")
 
 /obj/item/circuit_component/light/populate_ports()
+	procstart = null
+	src.procstart = null
 	red = add_input_port("Red", PORT_TYPE_NUMBER)
 	green = add_input_port("Green", PORT_TYPE_NUMBER)
 	blue = add_input_port("Blue", PORT_TYPE_NUMBER)
@@ -36,14 +40,20 @@
 	on = add_input_port("On", PORT_TYPE_BOOLEAN)
 
 /obj/item/circuit_component/light/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	trigger_component()
 
 /obj/item/circuit_component/light/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	shell.set_light_on(FALSE)
 	return ..()
 
 /obj/item/circuit_component/light/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	brightness.set_value(clamp(brightness.value || 0, 0, max_power))
 	red.set_value(clamp(red.value, 0, 255))
 	blue.set_value(clamp(blue.value, 0, 255))
@@ -52,10 +62,14 @@
 	shell_light_color = rgb(hsl[1], hsl[2], max(min_lightness, hsl[3]), space=COLORSPACE_HSL)
 
 /obj/item/circuit_component/light/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(parent.shell)
 		set_atom_light(parent.shell)
 
 /obj/item/circuit_component/light/proc/set_atom_light(atom/movable/target_atom)
+	procstart = null
+	src.procstart = null
 	// Clamp anyways just for safety
 	var/bright_val = min(max(brightness.value || 0, 0), max_power)
 

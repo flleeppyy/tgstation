@@ -24,6 +24,8 @@
 	acid = 30
 
 /obj/item/watertank/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(volume, OPENCONTAINER)
 	noz = make_noz()
@@ -31,14 +33,20 @@
 	AddElement(/datum/element/drag_pickup)
 
 /obj/item/watertank/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(noz)
 	return ..()
 
 
 /obj/item/watertank/ui_action_click(mob/user)
+	procstart = null
+	src.procstart = null
 	toggle_mister(user)
 
 /obj/item/watertank/proc/toggle_mister(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return
 	if(user.get_item_by_slot(user.getBackSlot()) != src)
@@ -63,20 +71,28 @@ GAME_VERB(/obj/item/watertank, toggle_mister_verb, "Toggle Mister", null)
 	toggle_mister(usr)
 
 /obj/item/watertank/proc/make_noz()
+	procstart = null
+	src.procstart = null
 	return new /obj/item/reagent_containers/spray/mister(src)
 
 /obj/item/watertank/proc/noz_move(atom/movable/mover, atom/oldloc, direction)
+	procstart = null
+	src.procstart = null
 	if(mover.loc == src || mover.loc == loc)
 		return
 	balloon_alert(loc, "nozzle snaps back")
 	mover.forceMove(src)
 
 /obj/item/watertank/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!(slot & ITEM_SLOT_BACK))
 		remove_noz()
 
 /obj/item/watertank/proc/remove_noz()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(noz))
 		if(ismob(noz.loc))
 			var/mob/M = noz.loc
@@ -84,18 +100,24 @@ GAME_VERB(/obj/item/watertank, toggle_mister_verb, "Toggle Mister", null)
 		noz.forceMove(src)
 
 /obj/item/watertank/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (user.get_item_by_slot(user.getBackSlot()) == src)
 		toggle_mister(user)
 	else
 		return ..()
 
 /obj/item/watertank/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(tool != noz)
 		return NONE
 	remove_noz()
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/watertank/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	remove_noz()
 
@@ -120,12 +142,16 @@ GAME_VERB(/obj/item/watertank, toggle_mister_verb, "Toggle Mister", null)
 	slot_flags = NONE
 
 /obj/item/reagent_containers/spray/mister/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!loc?.reagents)
 		return INITIALIZE_HINT_QDEL
 	reagents = loc.reagents //This mister is really just a proxy for the tank's reagents
 
 /obj/item/reagent_containers/spray/mister/try_spray(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(target.loc == loc) //Safety check so you don't fill your mister with mutagen or something and then blast yourself in the face with it
 		return FALSE
 	return ..()
@@ -139,6 +165,8 @@ GAME_VERB(/obj/item/watertank, toggle_mister_verb, "Toggle Mister", null)
 	custom_price = PAYCHECK_CREW * 5
 
 /obj/item/watertank/janitor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent(/datum/reagent/space_cleaner, 500)
 
@@ -155,9 +183,13 @@ GAME_VERB(/obj/item/watertank, toggle_mister_verb, "Toggle Mister", null)
 	current_range = 5
 
 /obj/item/watertank/janitor/make_noz()
+	procstart = null
+	src.procstart = null
 	return new /obj/item/reagent_containers/spray/mister/janitor(src)
 
 /obj/item/reagent_containers/spray/mister/janitor/mode_change_message(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You [amount_per_transfer_from_this == 10 ? "remove" : "affix"] the nozzle. You'll now use [amount_per_transfer_from_this] units per spray."))
 
 //Security tank
@@ -171,6 +203,8 @@ GAME_VERB(/obj/item/watertank, toggle_mister_verb, "Toggle Mister", null)
 	volume = 1000
 
 /obj/item/watertank/pepperspray/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent(/datum/reagent/consumable/condensedcapsaicin, 1000)
 
@@ -187,9 +221,13 @@ GAME_VERB(/obj/item/watertank, toggle_mister_verb, "Toggle Mister", null)
 	current_range = 6
 
 /obj/item/watertank/pepperspray/make_noz()
+	procstart = null
+	src.procstart = null
 	return new /obj/item/reagent_containers/spray/mister/pepperspray(src)
 
 /obj/item/reagent_containers/spray/mister/pepperspray/mode_change_message(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You [amount_per_transfer_from_this == 10 ? "remove" : "affix"] the nozzle. You'll now use [amount_per_transfer_from_this] units per spray."))
 
 //ATMOS FIRE FIGHTING BACKPACK
@@ -203,13 +241,19 @@ GAME_VERB(/obj/item/watertank, toggle_mister_verb, "Toggle Mister", null)
 	slowdown = 0
 
 /obj/item/watertank/atmos/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent(/datum/reagent/water, 200)
 
 /obj/item/watertank/atmos/make_noz()
+	procstart = null
+	src.procstart = null
 	return new /obj/item/extinguisher/mini/nozzle(src)
 
 /obj/item/watertank/atmos/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "waterbackpackatmos"
 	if(istype(noz, /obj/item/extinguisher/mini/nozzle))
@@ -240,6 +284,8 @@ GAME_VERB(/obj/item/watertank, toggle_mister_verb, "Toggle Mister", null)
 	COOLDOWN_DECLARE(resin_cooldown)
 
 /obj/item/extinguisher/mini/nozzle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tank = loc
 	if (!tank?.reagents)
@@ -249,11 +295,15 @@ GAME_VERB(/obj/item/watertank, toggle_mister_verb, "Toggle Mister", null)
 
 
 /obj/item/extinguisher/mini/nozzle/Destroy()
+	procstart = null
+	src.procstart = null
 	reagents = null //This is a borrowed reference from the tank.
 	tank = null
 	return ..()
 
 /obj/item/extinguisher/mini/nozzle/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/uses_pack = istype(tank, /obj/item/watertank/atmos)
 	switch(nozzle_mode)
 		if(EXTINGUISHER)
@@ -277,11 +327,15 @@ GAME_VERB(/obj/item/watertank, toggle_mister_verb, "Toggle Mister", null)
 	return
 
 /obj/item/extinguisher/mini/nozzle/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(AttemptRefill(interacting_with, user))
 		return NONE
 	return ..()
 
 /obj/item/extinguisher/mini/nozzle/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(nozzle_mode == EXTINGUISHER)
 		return ..()
 
@@ -330,6 +384,8 @@ GAME_VERB(/obj/item/watertank, toggle_mister_verb, "Toggle Mister", null)
 	return NONE
 
 /obj/item/extinguisher/mini/nozzle/proc/resin_stop_check(datum/move_loop/source, result)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(result == MOVELOOP_SUCCESS)
 		return
@@ -337,6 +393,8 @@ GAME_VERB(/obj/item/watertank, toggle_mister_verb, "Toggle Mister", null)
 	qdel(source)
 
 /obj/item/extinguisher/mini/nozzle/proc/resin_landed(datum/move_loop/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(source.moving, /obj/effect/resin_container) || QDELETED(source.moving))
 		return
@@ -344,6 +402,8 @@ GAME_VERB(/obj/item/watertank, toggle_mister_verb, "Toggle Mister", null)
 	resin.Smoke()
 
 /obj/item/extinguisher/mini/nozzle/proc/reduce_metal_synth_cooldown()
+	procstart = null
+	src.procstart = null
 	metal_synthesis_cooldown--
 
 /obj/effect/resin_container
@@ -356,12 +416,16 @@ GAME_VERB(/obj/item/watertank, toggle_mister_verb, "Toggle Mister", null)
 	anchored = TRUE
 
 /obj/effect/resin_container/proc/Smoke()
+	procstart = null
+	src.procstart = null
 	do_foam(4, src, loc, foam_type = /datum/effect_system/fluid_spread/foam/metal/resin)
 	playsound(src,'sound/effects/bamf.ogg',100,TRUE)
 	qdel(src)
 
 // Please don't spacedrift thanks
 /obj/effect/resin_container/newtonian_move(inertia_angle, instant = FALSE, start_delay = 0, drift_force = 0, controlled_cap = null)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 #undef EXTINGUISHER
@@ -393,9 +457,13 @@ GAME_VERB(/obj/item/watertank, toggle_mister_verb, "Toggle Mister", null)
 	fill_icon_state = "backpack"
 
 /obj/item/reagent_containers/chemtank/ui_action_click()
+	procstart = null
+	src.procstart = null
 	toggle_injection()
 
 /obj/item/reagent_containers/chemtank/proc/toggle_injection()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/user = usr
 	if(!istype(user))
 		return
@@ -408,7 +476,9 @@ GAME_VERB(/obj/item/watertank, toggle_mister_verb, "Toggle Mister", null)
 		turn_on()
 
 //Todo : cache these.
-/obj/item/reagent_containers/chemtank/worn_overlays(mutable_appearance/standing, isinhands = FALSE, icon_file, bodyshape = NONE) //apply chemcolor and level
+/obj/item/reagent_containers/chemtank/worn_overlays(mutable_appearance/standing, isinhands = FALSE, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null //apply chemcolor and level
 	. = ..()
 	//inhands + reagent_filling
 	if(isinhands || !reagents.total_volume)
@@ -428,18 +498,24 @@ GAME_VERB(/obj/item/watertank, toggle_mister_verb, "Toggle Mister", null)
 	. += filling
 
 /obj/item/reagent_containers/chemtank/proc/turn_on()
+	procstart = null
+	src.procstart = null
 	on = TRUE
 	START_PROCESSING(SSobj, src)
 	if(ismob(loc))
 		to_chat(loc, span_notice("[src] turns on."))
 
 /obj/item/reagent_containers/chemtank/proc/turn_off()
+	procstart = null
+	src.procstart = null
 	on = FALSE
 	STOP_PROCESSING(SSobj, src)
 	if(ismob(loc))
 		to_chat(loc, span_notice("[src] turns off."))
 
 /obj/item/reagent_containers/chemtank/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(loc))
 		turn_off()
 		return

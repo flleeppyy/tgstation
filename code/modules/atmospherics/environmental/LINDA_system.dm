@@ -3,6 +3,8 @@
 	var/can_atmos_pass = ATMOS_PASS_YES
 
 /atom/proc/can_atmos_pass(turf/target_turf, vertical = FALSE)
+	procstart = null
+	src.procstart = null
 	switch (can_atmos_pass)
 		if (ATMOS_PASS_PROC)
 			return ATMOS_PASS_YES
@@ -20,6 +22,8 @@
 ///Do NOT use this to see if 2 turfs are connected, it mutates state, and we cache that info anyhow.
 ///Use TURFS_CAN_SHARE or TURF_SHARES depending on your usecase
 /turf/open/can_atmos_pass(turf/target_turf, vertical = FALSE)
+	procstart = null
+	src.procstart = null
 	var/can_pass = TRUE
 	var/direction = vertical ? get_dir_multiz(src, target_turf) : get_dir(src, target_turf)
 	var/opposite_direction = REVERSE_DIR(direction)
@@ -50,13 +54,17 @@
 
 	return can_pass
 
-/atom/movable/proc/block_superconductivity() // objects that block air and don't let superconductivity act
+/atom/movable/proc/block_superconductivity()
+	procstart = null
+	src.procstart = null // objects that block air and don't let superconductivity act
 	return FALSE
 
 /// This proc is a more deeply optimized version of immediate_calculate_adjacent_turfs
 /// It contains dumbshit, and also stuff I just can't do at runtime
 /// If you're not editing behavior, just read that proc. It's less bad
 /turf/proc/init_immediate_calculate_adjacent_turfs()
+	procstart = null
+	src.procstart = null
 	//Basic optimization, if we can't share why bother asking other people ya feel?
 	// You know it's gonna be stupid when they include a unit test in the atmos code
 	// Yes, inlining the string concat does save 0.1 seconds
@@ -109,6 +117,8 @@
 	SEND_SIGNAL(src, COMSIG_TURF_CALCULATED_ADJACENT_ATMOS)
 
 /turf/proc/immediate_calculate_adjacent_turfs()
+	procstart = null
+	src.procstart = null
 	LAZYINITLIST(src.atmos_adjacent_turfs)
 	var/list/atmos_adjacent_turfs = src.atmos_adjacent_turfs
 	var/canpass = CANATMOSPASS(src, src, FALSE)
@@ -140,6 +150,8 @@
  * air with both of the related adjacent cardinal tiles
 **/
 /turf/proc/get_atmos_adjacent_turfs(alldir = 0)
+	procstart = null
+	src.procstart = null
 	var/adjacent_turfs
 	if (atmos_adjacent_turfs)
 		adjacent_turfs = atmos_adjacent_turfs.Copy()
@@ -172,6 +184,8 @@
 	return adjacent_turfs
 
 /atom/proc/air_update_turf(update = FALSE, remove = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!SSair.initialized) // I'm sorry for polutting user code, I'll do 10 hail giacom's
 		return
 	var/turf/local_turf = get_turf(loc)
@@ -189,6 +203,8 @@
  * * remove - Are you removing an active turf (Read wall), or adding one
 */
 /turf/air_update_turf(update = FALSE, remove = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!SSair.initialized) // I'm sorry for polutting user code, I'll do 10 hail giacom's
 		return
 	if(update)
@@ -199,17 +215,23 @@
 		SSair.add_to_active(src)
 
 /atom/movable/proc/move_update_air(turf/target_turf)
+	procstart = null
+	src.procstart = null
 	if(isturf(target_turf))
 		target_turf.air_update_turf(TRUE, FALSE) //You're empty now
 	air_update_turf(TRUE, TRUE) //You aren't
 
-/atom/proc/atmos_spawn_air(text) //because a lot of people loves to copy paste awful code lets just make an easy proc to spawn your plasma fires
+/atom/proc/atmos_spawn_air(text)
+	procstart = null
+	src.procstart = null //because a lot of people loves to copy paste awful code lets just make an easy proc to spawn your plasma fires
 	var/turf/open/local_turf = get_turf(src)
 	if(!istype(local_turf))
 		return
 	local_turf.atmos_spawn_air(text)
 
 /turf/open/atmos_spawn_air(text)
+	procstart = null
+	src.procstart = null
 	if(!text || !air)
 		return
 

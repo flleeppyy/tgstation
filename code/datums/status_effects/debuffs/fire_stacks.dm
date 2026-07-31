@@ -20,12 +20,16 @@
 	var/stack_modifier = 1
 
 /datum/status_effect/fire_handler/refresh(effect, new_stacks, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(forced)
 		set_stacks(new_stacks)
 	else
 		adjust_stacks(new_stacks)
 
 /datum/status_effect/fire_handler/on_creation(mob/living/new_owner, new_stacks, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isanimal(owner))
@@ -88,15 +92,21 @@
  */
 
 /datum/status_effect/fire_handler/proc/set_stacks(new_stacks)
+	procstart = null
+	src.procstart = null
 	stacks = max(0, min(stack_limit, new_stacks))
 	cache_stacks()
 
 /datum/status_effect/fire_handler/proc/adjust_stacks(new_stacks)
+	procstart = null
+	src.procstart = null
 	stacks = max(0, min(stack_limit, stacks + new_stacks))
 	cache_stacks()
 
 /// Checks if the applicable basic mob is immune to the status effect we're trying to apply. Returns TRUE if it is, FALSE if it isn't.
 /datum/status_effect/fire_handler/proc/check_basic_mob_immunity(mob/living/basic/basic_owner)
+	procstart = null
+	src.procstart = null
 	return (basic_owner.basic_mob_flags & FLAMMABLE_MOB)
 
 /**
@@ -104,6 +114,8 @@
  */
 
 /datum/status_effect/fire_handler/proc/cache_stacks()
+	procstart = null
+	src.procstart = null
 	owner.fire_stacks = 0
 	var/was_on_fire = owner.on_fire
 	owner.on_fire = FALSE
@@ -141,24 +153,34 @@
 	var/cached_state
 
 /datum/status_effect/fire_handler/fire_stacks/get_examine_text()
+	procstart = null
+	src.procstart = null
 	if(owner.on_fire)
 		return
 
 	return "[owner.p_They()] [owner.p_are()] covered in something flammable."
 
 /datum/status_effect/fire_handler/fire_stacks/proc/owner_touched_sparks()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	ignite()
 
 /datum/status_effect/fire_handler/fire_stacks/on_creation(mob/living/new_owner, new_stacks, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_ATOM_TOUCHED_SPARKS, PROC_REF(owner_touched_sparks))
 
 /datum/status_effect/fire_handler/fire_stacks/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_ATOM_TOUCHED_SPARKS)
 
 /datum/status_effect/fire_handler/fire_stacks/cache_stacks()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(moblight))
 		return
@@ -167,6 +189,8 @@
 	moblight.set_light_range(max(1.5, round(moblight_type::light_range * stack_percent, 0.1)))
 
 /datum/status_effect/fire_handler/fire_stacks/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(stacks <= 0)
 		qdel(src)
 		return TRUE
@@ -198,6 +222,8 @@
  */
 
 /datum/status_effect/fire_handler/fire_stacks/proc/deal_damage(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	owner.on_fire_stack(seconds_per_tick, src)
 
 	var/turf/location = get_turf(owner)
@@ -213,6 +239,8 @@
  */
 
 /datum/status_effect/fire_handler/fire_stacks/proc/harm_human(seconds_per_tick, no_protection = FALSE)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/victim = owner
 	var/thermal_protection = victim.get_thermal_protection()
 
@@ -242,6 +270,8 @@
  */
 
 /datum/status_effect/fire_handler/fire_stacks/proc/ignite(silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(owner, TRAIT_NOFIRE))
 		return FALSE
 
@@ -263,6 +293,8 @@
  */
 
 /datum/status_effect/fire_handler/fire_stacks/proc/extinguish()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(moblight)
 	on_fire = FALSE
 	owner.clear_mood_event("on_fire")
@@ -272,6 +304,8 @@
 		equipped.extinguish()
 
 /datum/status_effect/fire_handler/fire_stacks/on_remove()
+	procstart = null
+	src.procstart = null
 	if(on_fire)
 		extinguish()
 	set_stacks(0)
@@ -280,12 +314,16 @@
 	return ..()
 
 /datum/status_effect/fire_handler/fire_stacks/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(add_fire_overlay))
 	RegisterSignal(owner, COMSIG_ATOM_EXTINGUISH, PROC_REF(extinguish))
 	owner.update_appearance(UPDATE_OVERLAYS)
 
 /datum/status_effect/fire_handler/fire_stacks/proc/add_fire_overlay(mob/living/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(stacks <= 0 || !on_fire)
@@ -307,6 +345,8 @@
 	var/datum/component/slippery/slipperiness
 
 /datum/status_effect/fire_handler/wet_stacks/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignals(owner, list(SIGNAL_ADDTRAIT(TRAIT_WET_FOR_LONGER), SIGNAL_REMOVETRAIT(TRAIT_WET_FOR_LONGER)), PROC_REF(update_wet_stack_modifier))
 	update_wet_stack_modifier()
@@ -318,6 +358,8 @@
 	owner.add_shared_particles(/particles/droplets)
 
 /datum/status_effect/fire_handler/wet_stacks/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(owner, TRAIT_IS_WET, TRAIT_STATUS_EFFECT(id))
 	if(HAS_TRAIT(owner, TRAIT_SLIPPERY_WHEN_WET))
@@ -325,23 +367,33 @@
 	owner.remove_shared_particles(/particles/droplets)
 
 /datum/status_effect/fire_handler/wet_stacks/proc/update_wet_stack_modifier()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	stack_modifier = HAS_TRAIT(owner, TRAIT_WET_FOR_LONGER) ? -3.5 : -1
 
 /datum/status_effect/fire_handler/wet_stacks/proc/become_slippery()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	slipperiness = owner.AddComponent(/datum/component/slippery, 5 SECONDS, lube_flags = SLIPPERY_WHEN_LYING_DOWN|NO_SLIP_WHEN_WALKING|WEAK_SLIDE)
 	ADD_TRAIT(owner, TRAIT_NO_SLIP_WATER, TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/fire_handler/wet_stacks/proc/no_longer_slippery()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	QDEL_NULL(slipperiness)
 	REMOVE_TRAIT(owner, TRAIT_NO_SLIP_WATER, TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/fire_handler/wet_stacks/get_examine_text()
+	procstart = null
+	src.procstart = null
 	return "[owner.p_They()] look[owner.p_s()] a little soaked."
 
 /datum/status_effect/fire_handler/wet_stacks/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	var/decay = HAS_TRAIT(owner, TRAIT_WET_FOR_LONGER) ? -0.035 : -0.5
 	adjust_stacks(decay * seconds_between_ticks)
 	if(stacks <= 0)
@@ -356,4 +408,6 @@
 		qdel(src)
 
 /datum/status_effect/fire_handler/wet_stacks/check_basic_mob_immunity(mob/living/basic/basic_owner)
+	procstart = null
+	src.procstart = null
 	return !(basic_owner.basic_mob_flags & IMMUNE_TO_GETTING_WET)

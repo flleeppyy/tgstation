@@ -6,6 +6,8 @@
 	var/leaves_fire_trail = TRUE
 
 /obj/projectile/bullet/incendiary/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(target))
 		var/mob/living/carbon/M = target
@@ -13,6 +15,8 @@
 		M.ignite_mob()
 
 /obj/projectile/bullet/incendiary/Move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!leaves_fire_trail)
@@ -42,6 +46,8 @@
 	fire_stacks = 3
 
 /obj/projectile/bullet/incendiary/fire/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/location = get_turf(target)
 	if(isopenturf(location))
@@ -62,6 +68,8 @@
 #define BACKBLAST_MAX_ITEM_KNOCKBACK 6
 
 /obj/projectile/bullet/incendiary/fire/backblast/Move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(knockback_range <= 0)
 		return

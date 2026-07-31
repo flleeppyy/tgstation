@@ -12,6 +12,8 @@
 	max_charges = 12
 
 /obj/item/gun/magic/wand/pax/fire_gun(atom/target, mob/living/user, flag, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -19,10 +21,14 @@
 	user.adjust_brute_loss(-30)
 
 /obj/item/gun/magic/wand/pax/zap_self(mob/living/user, suicide = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!suicide)
 		user.visible_message(span_notice("[user] tenderly kisses [user.p_their()] own wand."))
 
 /obj/item/gun/magic/wand/pax/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.visible_message(span_suicide("...but [user] can't bring [user.p_themselves()] to hurt anyone!"))
 	return SHAME
@@ -37,6 +43,8 @@
 	icon_state = "heart"
 
 /obj/projectile/magic/pax/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/victim = target
 	if (!istype(victim))
@@ -50,11 +58,15 @@
 	alert_type = /atom/movable/screen/alert/status_effect/pacified
 
 /datum/status_effect/pacify/visible/on_apply()
+	procstart = null
+	src.procstart = null
 	if (!HAS_TRAIT(owner, TRAIT_PACIFISM))
 		owner.visible_message(span_notice("[owner] seems to relax."), span_notice("You feel your muscles loosen and your will to fight melt away."))
 	return ..()
 
 /datum/status_effect/pacify/visible/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Might have it from somewhere else
 	if (HAS_TRAIT(owner, TRAIT_PACIFISM))

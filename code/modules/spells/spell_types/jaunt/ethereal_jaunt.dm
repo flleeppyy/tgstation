@@ -22,6 +22,8 @@
 	var/list/exit_point_list
 
 /datum/action/cooldown/spell/jaunt/ethereal_jaunt/enter_jaunt(mob/living/jaunter, turf/loc_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -32,6 +34,8 @@
 	do_steam_effects(cast_turf)
 
 /datum/action/cooldown/spell/jaunt/ethereal_jaunt/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	do_jaunt(cast_on)
 
@@ -42,6 +46,8 @@
  * starts the timer until the end.
  */
 /datum/action/cooldown/spell/jaunt/ethereal_jaunt/proc/do_jaunt(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	// Makes sure they don't die or get jostled or something during the jaunt entry
 	// Honestly probably not necessary anymore, but better safe than sorry
 	ADD_TRAIT(cast_on, TRAIT_NO_TRANSFORM, REF(src))
@@ -65,6 +71,8 @@
  * - 2.5 seconds - jaunt_in_time seconds otherwise
  */
 /datum/action/cooldown/spell/jaunt/ethereal_jaunt/proc/stop_jaunt(mob/living/cast_on, obj/effect/dummy/phased_mob/spell_jaunt/holder, turf/start_point)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(cast_on) || QDELETED(holder) || QDELETED(src))
 		return
 
@@ -111,6 +119,8 @@
  * Calls end_jaunt.
  */
 /datum/action/cooldown/spell/jaunt/ethereal_jaunt/proc/do_jaunt_in(mob/living/cast_on, obj/effect/dummy/phased_mob/spell_jaunt/holder, turf/final_point)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(cast_on) || QDELETED(holder) || QDELETED(src))
 		return
 
@@ -131,6 +141,8 @@
  * tries to put the caster in an adjacent turf.
  */
 /datum/action/cooldown/spell/jaunt/ethereal_jaunt/proc/end_jaunt(mob/living/cast_on, obj/effect/dummy/phased_mob/spell_jaunt/holder, turf/final_point)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(cast_on) || QDELETED(holder) || QDELETED(src))
 		return
 
@@ -154,6 +166,8 @@
  * by (doors closing, engineers building walls, etc)
  */
 /datum/action/cooldown/spell/jaunt/ethereal_jaunt/proc/update_exit_point(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/turf/location = get_turf(source)
@@ -165,6 +179,8 @@
 
 /// Does some steam effects from the jaunt at passed loc.
 /datum/action/cooldown/spell/jaunt/ethereal_jaunt/proc/do_steam_effects(turf/loc)
+	procstart = null
+	src.procstart = null
 	var/datum/effect_system/basic/steam_spread/steam = new(loc, 10, FALSE)
 	steam.start()
 
@@ -188,6 +204,8 @@
 	jaunt_out_type = /obj/effect/temp_visual/dir_setting/wraith/out
 
 /datum/action/cooldown/spell/jaunt/ethereal_jaunt/shift/do_steam_effects(mobloc)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/action/cooldown/spell/jaunt/ethereal_jaunt/shift/angelic
@@ -215,6 +233,8 @@
 	var/reappearing = FALSE
 
 /obj/effect/dummy/phased_mob/spell_jaunt/phased_check(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(reappearing)
 		return
 	. = ..()

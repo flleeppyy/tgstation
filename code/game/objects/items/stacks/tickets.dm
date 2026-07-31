@@ -9,6 +9,8 @@
 	merge_type = /obj/item/stack/arcadeticket
 
 /obj/item/stack/arcadeticket/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(get_amount())
 		if(12 to INFINITY)

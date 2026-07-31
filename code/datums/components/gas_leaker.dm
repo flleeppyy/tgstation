@@ -17,6 +17,8 @@
 	var/atmos_processing = FALSE
 
 /datum/component/gas_leaker/Initialize(integrity_leak_percent=0.9, leak_rate=1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(parent, /obj/machinery/atmospherics/components))
 		process_type = PROCESS_COMPONENT
@@ -31,18 +33,26 @@
 	src.leak_rate = leak_rate
 
 /datum/component/gas_leaker/Destroy(force)
+	procstart = null
+	src.procstart = null
 	SSair.stop_processing_machine(src)
 	return ..()
 
 /datum/component/gas_leaker/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_ATOM_TAKE_DAMAGE, PROC_REF(start_processing))
 
 /datum/component/gas_leaker/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, COMSIG_ATOM_TAKE_DAMAGE)
 
 /datum/component/gas_leaker/proc/process_atmos()
+	procstart = null
+	src.procstart = null
 	. = PROCESS_KILL
 	switch(process_type)
 		if(PROCESS_OBJ)
@@ -53,25 +63,35 @@
 			. = process_component(parent)
 
 /datum/component/gas_leaker/proc/start_processing()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Hello fellow atmospherics machines, I too am definitely an atmos machine like you!
 	// This component needs to tick at the same rate as the atmos system
 	SSair.start_processing_machine(src)
 
 /datum/component/gas_leaker/proc/process_obj(obj/master, list/airs=list())
+	procstart = null
+	src.procstart = null
 	airs += master.return_air()
 	return process_leak(master, airs)
 
 /datum/component/gas_leaker/proc/process_machine(obj/machinery/master, list/airs=list())
+	procstart = null
+	src.procstart = null
 	if(master.machine_stat & BROKEN)
 		return PROCESS_KILL
 	return process_obj(master, airs)
 
 /datum/component/gas_leaker/proc/process_component(obj/machinery/atmospherics/components/master, list/airs=list())
+	procstart = null
+	src.procstart = null
 	airs += master.airs
 	return process_machine(master, airs)
 
 /datum/component/gas_leaker/proc/process_leak(obj/master, list/airs)
+	procstart = null
+	src.procstart = null
 	var/current_integrity = master.get_integrity()
 	if(current_integrity > master.max_integrity * integrity_leak_percent)
 		return PROCESS_KILL

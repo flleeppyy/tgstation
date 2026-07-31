@@ -10,14 +10,20 @@
 	var/datum/martial_art/cqc/under_siege/style
 
 /obj/item/skillchip/job/chef/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	style = new(src)
 	style.refresh_valid_areas()
 
 /obj/item/skillchip/job/chef/on_activate(mob/living/carbon/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	style.teach(user)
 
 /obj/item/skillchip/job/chef/on_deactivate(mob/living/carbon/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	style.unlearn(user)
 	return ..()

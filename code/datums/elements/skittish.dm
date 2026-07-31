@@ -5,6 +5,8 @@
 /datum/element/skittish
 
 /datum/element/skittish/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -12,10 +14,14 @@
 	RegisterSignal(target, COMSIG_MOVABLE_BUMP, PROC_REF(Bump))
 
 /datum/element/skittish/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, COMSIG_MOVABLE_BUMP)
 	. = ..()
 
 /datum/element/skittish/proc/Bump(mob/living/scooby, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(IS_UNCONSCIOUS_OR_CRIT(scooby) || scooby.move_intent != MOVE_INTENT_RUN)
 		return

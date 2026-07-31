@@ -199,14 +199,20 @@
 	var/static/list/all_drawables = graffiti + symbols + drawings + oriented + runes + graffiti_large_h
 
 /obj/item/toy/crayon/proc/isValidSurface(surface)
+	procstart = null
+	src.procstart = null
 	return isfloorturf(surface)
 
 /obj/item/toy/crayon/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is jamming [src] up [user.p_their()] nose and into [user.p_their()] brain. It looks like [user.p_theyre()] trying to commit suicide!"))
 	user.add_atom_colour(color_transition_filter(paint_color, SATURATION_OVERRIDE), ADMIN_COLOUR_PRIORITY)
 	return (BRUTELOSS|OXYLOSS)
 
 /obj/item/toy/crayon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	dye_color = crayon_color
@@ -231,12 +237,16 @@
 
 /// Used for edible component to reduce charges_left on bite.
 /obj/item/toy/crayon/proc/after_eat(mob/user)
+	procstart = null
+	src.procstart = null
 	use_charges(user, amount = 5, requires_full = FALSE, override_infinity = TRUE)
 	if(check_empty(user, override_infinity = TRUE)) //Prevents division by zero
 		return
 
 /// Sets painting color and updates appearance.
 /obj/item/toy/crayon/set_painting_tool_color(chosen_color)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!can_change_colour)
 		return
@@ -249,6 +259,8 @@
  * Spawns reagents in crayons based on the amount of charges_left if not spawned yet.
  */
 /obj/item/toy/crayon/proc/refill()
+	procstart = null
+	src.procstart = null
 	if(charges == INFINITE_CHARGES)
 		charges_left = 100
 	else
@@ -278,6 +290,8 @@
  * * override_infinity - if TRUE stops infinite crayons from refilling.
  */
 /obj/item/toy/crayon/proc/use_charges(mob/user, amount = 1, requires_full = TRUE, override_infinity = FALSE)
+	procstart = null
+	src.procstart = null
 	if(charges == INFINITE_CHARGES && !override_infinity)
 		refill()
 		return TRUE
@@ -296,6 +310,8 @@
  * * override_infinity - if TRUE it will override checks for infinite crayons.
  */
 /obj/item/toy/crayon/proc/check_empty(mob/user, amount = 1, requires_full = TRUE, override_infinity = FALSE)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return TRUE
 
@@ -315,9 +331,13 @@
 	return FALSE
 
 /obj/item/toy/crayon/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.hands_state
 
 /obj/item/toy/crayon/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if (!actually_paints)
 		return
 	// tgui is a plague upon this codebase
@@ -328,6 +348,8 @@
 		ui.open()
 
 /obj/item/toy/crayon/proc/staticDrawables(is_literate_user)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	var/list/g_items = list()
@@ -369,6 +391,8 @@
 		rand_items += list(list("item" = i))
 
 /obj/item/toy/crayon/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/crayon_drawables
 	var/is_literate_user = user.is_literate()
 
@@ -387,6 +411,8 @@
 	.["paint_colors"] = GLOB.pipe_paint_colors
 
 /obj/item/toy/crayon/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -430,18 +456,24 @@
 	update_appearance()
 
 /obj/item/toy/crayon/proc/crayon_text_strip(text)
+	procstart = null
+	src.procstart = null
 	text = copytext(text, 1, MAX_MESSAGE_LEN)
 	var/static/regex/crayon_regex = new /regex(@"[^\w!?,.=&%#+/\-]", "ig")
 	return LOWER_TEXT(crayon_regex.Replace(text, ""))
 
 /// Is this a valid object for use_on to run on?
 /obj/item/toy/crayon/proc/can_use_on(atom/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isturf(target) && !istype(target, /obj/effect/decal/cleanable))
 		return FALSE
 	return TRUE
 
 /// Attempts to color the target.
 /obj/item/toy/crayon/proc/use_on(atom/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/static/list/punctuation = list("!","?",".",",","/","+","-","=","%","#","&")
 
 	if(istype(target, /obj/effect/decal/cleanable))
@@ -593,12 +625,16 @@
 
 ///Checks if the user is still adjacent to the target (used for do_after extra_checks)
 /obj/item/toy/crayon/proc/adjacency_check(mob/user, atom/target)
+	procstart = null
+	src.procstart = null
 	if(!user.Adjacent(target))
 		user.balloon_alert(user, "moved too far away!")
 		return FALSE
 	return TRUE
 
 /obj/item/toy/crayon/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!check_allowed_items(interacting_with))
 		return NONE
 
@@ -626,6 +662,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/toy/crayon/get_writing_implement_details()
+	procstart = null
+	src.procstart = null
 	return list(
 		interaction_mode = MODE_WRITING,
 		font = CRAYON_FONT,
@@ -720,6 +758,8 @@
 	dye_color = DYE_RAINBOW
 
 /obj/item/toy/crayon/rainbow/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	set_painting_tool_color(rgb(rand(0,255), rand(0,255), rand(0,255)))
 	return ..()
 
@@ -737,6 +777,8 @@
 	storage_type = /datum/storage/crayons
 
 /obj/item/storage/crayons/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/toy/crayon/red(src)
 	new /obj/item/toy/crayon/orange(src)
 	new /obj/item/toy/crayon/yellow(src)
@@ -747,11 +789,15 @@
 	update_appearance()
 
 /obj/item/storage/crayons/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/toy/crayon/crayon in contents)
 		. += mutable_appearance('icons/obj/art/crayons.dmi', crayon.crayon_color)
 
 /obj/item/storage/crayons/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(contents.len > 0)
 		balloon_alert(user, "too full to fold!")
@@ -805,6 +851,8 @@
 	))
 
 /obj/item/toy/crayon/spraycan/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/improvised_coolant)
 
@@ -820,6 +868,8 @@
 	refill()
 
 /obj/item/toy/crayon/spraycan/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!user.can_perform_action(src, NEED_DEXTERITY|NEED_HANDS|SILENT_ADJACENCY))
@@ -831,6 +881,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/toy/crayon/spraycan/add_item_context(datum/source, list/context, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!user.can_perform_action(src, NEED_DEXTERITY|NEED_HANDS|SILENT_ADJACENCY))
@@ -847,9 +899,13 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/toy/crayon/spraycan/isValidSurface(surface)
+	procstart = null
+	src.procstart = null
 	return (isfloorturf(surface) || iswallturf(surface))
 
 /obj/item/toy/crayon/spraycan/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/used = min(charges_left, 10)
 	if(is_capped || !actually_paints || !use_charges(user, 10, FALSE))
 		user.visible_message(span_suicide("[user] shakes up [src] with a rattle and lifts it to [user.p_their()] mouth, but nothing happens!"))
@@ -869,6 +925,8 @@
 	return OXYLOSS
 
 /obj/item/toy/crayon/spraycan/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(charges != INFINITE_CHARGES)
 		if(charges_left)
@@ -879,6 +937,8 @@
 
 
 /obj/item/toy/crayon/spraycan/can_use_on(atom/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(target))
 		return TRUE
 	if(is_capped && HAS_TRAIT(target, TRAIT_COMBAT_MODE_SKIP_INTERACTION))
@@ -891,6 +951,8 @@
 	return ..()
 
 /obj/item/toy/crayon/spraycan/use_on(atom/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(is_capped)
 		balloon_alert(user, "take the cap off first!")
 		return ITEM_INTERACT_BLOCKING
@@ -1003,6 +1065,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/toy/crayon/spraycan/proc/color_limb(obj/item/bodypart/limb, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!IS_ROBOTIC_LIMB(limb))
 		return FALSE
 
@@ -1026,6 +1090,8 @@
 	return TRUE
 
 /obj/item/toy/crayon/spraycan/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!has_cap)
 		return CLICK_ACTION_BLOCKING
 	is_capped = !is_capped
@@ -1034,10 +1100,14 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/toy/crayon/spraycan/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = is_capped ? icon_capped : icon_uncapped
 	return ..()
 
 /obj/item/toy/crayon/spraycan/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(overlay_paint_colour)
 		var/mutable_appearance/spray_overlay = mutable_appearance('icons/obj/art/crayons.dmi', "[is_capped ? "spraycan_cap_colors" : "spraycan_colors"]")
@@ -1050,6 +1120,8 @@
 	charges = INFINITE_CHARGES
 
 /obj/item/toy/crayon/spraycan/borg/use_charges(mob/user, amount = 1, requires_full = TRUE, override_infinity = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!iscyborg(user))
 		to_chat(user, span_notice("How did you get this?"))
 		qdel(src)
@@ -1079,6 +1151,8 @@
 	paint_color = COLOR_BLACK
 
 /obj/item/toy/crayon/spraycan/hellcan/isValidSurface(surface)
+	procstart = null
+	src.procstart = null
 	return isfloorturf(surface)
 
 /obj/item/toy/crayon/spraycan/lubecan
@@ -1094,6 +1168,8 @@
 	expose_turfs = TRUE
 
 /obj/item/toy/crayon/spraycan/lubecan/isValidSurface(surface)
+	procstart = null
+	src.procstart = null
 	return isfloorturf(surface)
 
 /obj/item/toy/crayon/spraycan/mimecan

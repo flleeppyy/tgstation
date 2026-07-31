@@ -13,6 +13,8 @@
 	spell_max_level = 1
 
 /datum/action/cooldown/spell/ghostliness/can_cast_spell(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -25,9 +27,13 @@
 	return TRUE
 
 /datum/action/cooldown/spell/ghostliness/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return ishuman(cast_on) && !HAS_TRAIT(owner, TRAIT_NO_SOUL)
 
 /datum/action/cooldown/spell/ghostliness/cast(mob/living/carbon/human/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isspirit(cast_on))

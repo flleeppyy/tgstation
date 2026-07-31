@@ -15,6 +15,8 @@
 	var/list/strip_menus
 
 /datum/element/strippable/Attach(datum/target, list/items = list(), should_strip_proc_path)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isatom(target))
 		return ELEMENT_INCOMPATIBLE
@@ -25,6 +27,8 @@
 	src.should_strip_proc_path = should_strip_proc_path
 
 /datum/element/strippable/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	UnregisterSignal(source, COMSIG_MOUSEDROP_ONTO)
@@ -34,6 +38,8 @@
 		strip_menus -= source
 
 /datum/element/strippable/proc/mouse_drop_onto(datum/source, atom/over, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(SEND_SIGNAL(source, COMSIG_MOB_STRIP_MENU_OPEN, over, user) & COMPONENT_BLOCK_STRIP_MENU_OPEN)
@@ -79,12 +85,16 @@
 
 /// Gets the item from the given source.
 /datum/strippable_item/proc/get_item(atom/source)
+	procstart = null
+	src.procstart = null
 
 /// Tries to equip the item onto the given source.
 /// Returns TRUE/FALSE depending on if it is allowed.
 /// This should be used for checking if an item CAN be equipped.
 /// It should not perform the equipping itself.
 /datum/strippable_item/proc/try_equip(atom/source, obj/item/equipping, mob/user)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(user, COMSIG_TRY_STRIP, source, equipping) & COMPONENT_CANT_STRIP)
 		return FALSE
 	if(SEND_SIGNAL(source, COMSIG_BEING_STRIPPED, user, equipping) & COMPONENT_CANT_STRIP)
@@ -102,12 +112,16 @@
 /// Start the equipping process. This is the proc you should yield in.
 /// Returns TRUE/FALSE depending on if it is allowed.
 /datum/strippable_item/proc/start_equip(atom/source, obj/item/equipping, mob/user)
+	procstart = null
+	src.procstart = null
 
 	equipping.item_start_equip(source, equipping, user, show_visible_message)
 	return TRUE
 
 /// The proc that places the item on the source. This should not yield.
 /datum/strippable_item/proc/finish_equip(atom/source, obj/item/equipping, mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 
 /// Tries to unequip the item from the given source.
@@ -115,6 +129,8 @@
 /// This should be used for checking if it CAN be unequipped.
 /// It should not perform the unequipping itself.
 /datum/strippable_item/proc/try_unequip(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 
 	var/obj/item/item = get_item(source)
@@ -135,6 +151,8 @@
 /// Start the unequipping process. This is the proc you should yield in.
 /// Returns TRUE/FALSE depending on if it is allowed.
 /datum/strippable_item/proc/start_unequip(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/item = get_item(source)
 	if (isnull(item))
 		return FALSE
@@ -168,9 +186,13 @@
 
 /// The proc that unequips the item from the source. This should not yield.
 /datum/strippable_item/proc/finish_unequip(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 
 /// Returns a STRIPPABLE_OBSCURING_* define to report on whether or not this is obscured.
 /datum/strippable_item/proc/get_obscuring(atom/source)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 	return STRIPPABLE_OBSCURING_NONE
 
@@ -180,6 +202,8 @@
  * You can also return null if there are no alternate actions.
  */
 /datum/strippable_item/proc/get_alternate_actions(atom/source, mob/user, obj/item/item)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 	SHOULD_CALL_PARENT(TRUE)
 
@@ -196,6 +220,8 @@
  * Returns FALSE if unable to perform the action; whether it be due to the signal or some other factor.
  */
 /datum/strippable_item/proc/perform_alternate_action(atom/source, mob/user, action_key, obj/item/item)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(item && SEND_SIGNAL(item, COMSIG_ITEM_STRIPPABLE_ALT_ACTION, source, user, action_key) & COMPONENT_ALT_ACTION_DONE)
 		return FALSE
@@ -203,6 +229,8 @@
 
 /// Returns whether or not this item should show.
 /datum/strippable_item/proc/should_show(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// A preset for equipping items onto mob slots
@@ -211,6 +239,8 @@
 	var/item_slot
 
 /datum/strippable_item/mob_item_slot/get_item(atom/source)
+	procstart = null
+	src.procstart = null
 	if (!ismob(source))
 		return null
 
@@ -218,6 +248,8 @@
 	return mob_source.get_item_by_slot(item_slot)
 
 /datum/strippable_item/mob_item_slot/try_equip(atom/source, obj/item/equipping, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -232,6 +264,8 @@
 	return TRUE
 
 /datum/strippable_item/mob_item_slot/start_equip(atom/source, obj/item/equipping, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -251,6 +285,8 @@
 	return TRUE
 
 /datum/strippable_item/mob_item_slot/finish_equip(atom/source, obj/item/equipping, mob/user)
+	procstart = null
+	src.procstart = null
 	if (!ismob(source))
 		return FALSE
 
@@ -260,6 +296,8 @@
 	return finish_equip_mob(equipping, source, user)
 
 /datum/strippable_item/mob_item_slot/get_obscuring(atom/source)
+	procstart = null
+	src.procstart = null
 	if (!iscarbon(source))
 		return STRIPPABLE_OBSCURING_NONE
 
@@ -273,6 +311,8 @@
 	return STRIPPABLE_OBSCURING_NONE
 
 /datum/strippable_item/mob_item_slot/start_unequip(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -280,6 +320,8 @@
 	return start_unequip_mob(get_item(source), source, user)
 
 /datum/strippable_item/mob_item_slot/finish_unequip(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/item = get_item(source)
 	if (isnull(item))
 		return FALSE
@@ -291,15 +333,21 @@
 
 /// Returns the delay of equipping this item to a mob
 /datum/strippable_item/mob_item_slot/proc/get_equip_delay(obj/item/equipping)
+	procstart = null
+	src.procstart = null
 	return equipping.equip_delay_other
 
 /// A utility function for `/datum/strippable_item`s to finish equipping an item to a mob.
 /proc/finish_equip_mob(obj/item/item, mob/source, mob/user)
+	procstart = null
+	src.procstart = null
 	user.log_message("has put [item] on [key_name(source)].", LOG_ATTACK, color="red")
 	source.log_message("had [item] put on them by [key_name(user)].", LOG_VICTIM, color="orange", log_globally=FALSE)
 
 /// A utility function for `/datum/strippable_item`s to start unequipping an item from a mob.
 /proc/start_unequip_mob(obj/item/item, mob/source, mob/user, strip_delay, hidden = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!do_after(user, strip_delay || item.strip_delay, source, interaction_key = REF(item), cog_icon = hidden ? null : 'icons/effects/progressbar.dmi'))
 		return FALSE
 
@@ -307,6 +355,8 @@
 
 /// A utility function for `/datum/strippable_item`s to finish unequipping an item from a mob.
 /proc/finish_unequip_mob(obj/item/item, mob/source, mob/user)
+	procstart = null
+	src.procstart = null
 	if (!item.doStrip(user, source))
 		return FALSE
 
@@ -325,28 +375,38 @@
 	var/list/interactions
 
 /datum/strip_menu/New(atom/movable/owner, datum/element/strippable/strippable)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.owner = owner
 	src.strippable = strippable
 
 /datum/strip_menu/Destroy()
+	procstart = null
+	src.procstart = null
 	owner = null
 	strippable = null
 
 	return ..()
 
 /datum/strip_menu/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		ui = new(user, src, "StripMenu")
 		ui.open()
 
 /datum/strip_menu/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/simple/inventory),
 	)
 
 /datum/strip_menu/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/list/items = list()
@@ -398,6 +458,8 @@
 	return data
 
 /datum/strip_menu/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -501,12 +563,18 @@
 			LAZYREMOVEASSOC(interactions, user, key)
 
 /datum/strip_menu/ui_host(mob/user)
+	procstart = null
+	src.procstart = null
 	return owner
 
 /datum/strip_menu/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 /datum/strip_menu/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	return min(
 		ui_status_only_living(user, owner),
 		ui_status_user_has_free_hands(user, owner),
@@ -520,6 +588,8 @@
 
 /// Creates an assoc list of keys to /datum/strippable_item
 /proc/create_strippable_list(types)
+	procstart = null
+	src.procstart = null
 	var/list/strippable_items = list()
 
 	for (var/strippable_type in types)

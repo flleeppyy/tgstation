@@ -10,12 +10,16 @@
  */
 
 /obj/structure/grille/tram/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RemoveElement(/datum/element/atmos_sensitive, mapload)
 	//atmos_sensitive applies connect_loc which 1. reacts to movement in order to 2. unregister and register signals to
 	//the old and new locs. we dont want that, pretend these grilles and windows are plastic or something idk
 
 /obj/structure/tram/Initialize(mapload, direct)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RemoveElement(/datum/element/atmos_sensitive, mapload)
 
@@ -70,6 +74,8 @@
 	acid = 100
 
 /obj/structure/tram/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/blocks_explosives)
 	. = ..()
 	var/obj/item/stack/initialized_mineral = new mineral
@@ -79,6 +85,8 @@
 	register_context()
 
 /obj/structure/tram/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(state)
 		if(TRAM_SCREWED_TO_FRAME)
@@ -89,6 +97,8 @@
 			. += span_notice("The panel is [EXAMINE_HINT("pried")] out of the frame, but still[EXAMINE_HINT("wired.")] To dismantle use [EXAMINE_HINT("wirecutters.")]")
 
 /obj/structure/tram/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(held_item?.tool_behaviour == TOOL_WELDER && atom_integrity < max_integrity)
 		context[SCREENTIP_CONTEXT_LMB] = "repair"
 	if(held_item?.tool_behaviour == TOOL_SCREWDRIVER && state == TRAM_SCREWED_TO_FRAME)
@@ -101,6 +111,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/tram/update_overlays(updates = ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/ratio = atom_integrity / max_integrity
 	ratio = ceil(ratio * 4) * 25
@@ -112,6 +124,8 @@
 	. += damage_overlay
 
 /obj/structure/tram/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!user.combat_mode)
@@ -124,12 +138,16 @@
 		playsound(src, bash_sound, 100, TRUE)
 
 /obj/structure/tram/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	switch(the_rcd.mode)
 		if(RCD_DECONSTRUCT)
 			return list("mode" = RCD_DECONSTRUCT, "delay" = 3 SECONDS, "cost" = 10)
 	return FALSE
 
 /obj/structure/tram/rcd_act(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	switch(the_rcd.mode)
 		if(RCD_DECONSTRUCT)
 			qdel(src)
@@ -137,20 +155,28 @@
 	return FALSE
 
 /obj/structure/tram/take_damage(damage_amount, damage_type = BRUTE, damage_flag = "", sound_effect = TRUE, attack_dir, armour_penetration = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.) //received damage
 		update_appearance()
 
 /obj/structure/tram/narsie_act()
+	procstart = null
+	src.procstart = null
 	add_atom_colour(NARSIE_WINDOW_COLOUR, FIXED_COLOUR_PRIORITY)
 
 /obj/structure/tram/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(current_size >= STAGE_FIVE)
 		deconstruct(disassembled = FALSE)
 
 /obj/structure/tram/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(atom_integrity >= max_integrity)
 		to_chat(user, span_warning("[src] is already in good condition!"))
 		return ITEM_INTERACT_SUCCESS
@@ -164,6 +190,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/tram/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(tool.tool_behaviour)
 		switch(state)
 			if(TRAM_SCREWED_TO_FRAME)
@@ -176,6 +204,8 @@
 	return NONE
 
 /obj/structure/tram/crowbar_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	switch(state)
 		if(TRAM_IN_FRAME)
 			user.visible_message(span_notice("[user] wedges \the [tool] into the tram panel's gap in the frame and starts prying..."),
@@ -195,6 +225,8 @@
 	return NONE //Head back to item_interaction_secondary() to get the same message as other unsuitable tools
 
 /obj/structure/tram/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	switch(state)
 		if(TRAM_SCREWED_TO_FRAME)
 			user.visible_message(span_notice("[user] begins to unscrew the tram panel from the frame..."),
@@ -214,6 +246,8 @@
 	return NONE
 
 /obj/structure/tram/wirecutter_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(state != TRAM_OUT_OF_FRAME)
 		return NONE
 	user.visible_message(span_notice("[user] starts cutting the connective cabling on \the [src]..."),
@@ -225,6 +259,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/tram/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(disassembled)
 		new girder_type(loc)
 	if(mineral_amount)
@@ -349,14 +385,20 @@
 	var/last_event = 0
 
 /obj/structure/tram/alt/uranium/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	radiate()
 	return ..()
 
 /obj/structure/tram/alt/uranium/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	radiate()
 	return ..()
 
 /obj/structure/tram/alt/uranium/proc/radiate()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(active)
 		return
@@ -402,6 +444,8 @@
 	custom_materials = list(/datum/material/wood = SHEET_MATERIAL_AMOUNT*2)
 
 /obj/structure/tram/alt/wood/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!tool.get_sharpness() || !tool.force)
 		return NONE
 	var/duration = ((4.8 SECONDS) / tool.force) * 2 //In seconds, for now.
@@ -454,6 +498,8 @@
 	custom_materials = list(/datum/material/alloy/alien = SHEET_MATERIAL_AMOUNT*2)
 
 /obj/structure/tram/get_dumping_location()
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/structure/tram/spoiler
@@ -478,13 +524,19 @@
 	var/tram_id = TRAMSTATION_LINE_1
 
 /obj/structure/tram/spoiler/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/tram/spoiler/LateInitialize()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(SStransport, COMSIG_TRANSPORT_UPDATED, PROC_REF(set_spoiler))
 
 /obj/structure/tram/spoiler/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(held_item?.tool_behaviour == TOOL_MULTITOOL && (obj_flags & EMAGGED))
 		context[SCREENTIP_CONTEXT_LMB] = "repair"
@@ -495,6 +547,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/tram/spoiler/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(obj_flags & EMAGGED)
 		. += span_warning("The electronics panel is sparking occasionally. It can be reset with a [EXAMINE_HINT("multitool.")]")
@@ -505,6 +559,8 @@
 		. += span_notice("The spoiler can be locked in place with a [EXAMINE_HINT("welder.")]")
 
 /obj/structure/tram/spoiler/proc/set_spoiler(source, controller, controller_active, controller_status, travel_direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/spoiler_direction = travel_direction
@@ -537,6 +593,8 @@
 	return
 
 /obj/structure/tram/spoiler/proc/deploy_spoiler()
+	procstart = null
+	src.procstart = null
 	if(deployed)
 		return
 	flick("tram-spoiler-deploying", src)
@@ -545,6 +603,8 @@
 	update_appearance()
 
 /obj/structure/tram/spoiler/proc/retract_spoiler()
+	procstart = null
+	src.procstart = null
 	if(!deployed)
 		return
 	flick("tram-spoiler-retracting", src)
@@ -553,6 +613,8 @@
 	update_appearance()
 
 /obj/structure/tram/spoiler/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return
 	to_chat(user, span_warning("You short-circuit the [src]'s servo to overheat!"), type = MESSAGE_TYPE_INFO)
@@ -561,6 +623,8 @@
 	obj_flags |= EMAGGED
 
 /obj/structure/tram/spoiler/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return FALSE
 
@@ -572,6 +636,8 @@
 	return FALSE
 
 /obj/structure/tram/spoiler/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!tool.tool_start_check(user, amount = 1, heat_required = HIGH_TEMPERATURE_REQUIRED))
 		return FALSE
 
@@ -598,6 +664,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/tram/spoiler/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(deployed && locked)
 		. += mutable_appearance(icon, "tram-spoiler-welded")

@@ -21,6 +21,8 @@
 	snap2grid = TRUE
 
 /atom/movable/screen/movable/mouse_drop_dragged(atom/over, mob/user, src_location, over_location, params)
+	procstart = null
+	src.procstart = null
 	var/position = mouse_params_to_position(params)
 	if(!position)
 		return
@@ -29,6 +31,8 @@
 
 /// Takes mouse parmas as input, returns a string representing the appropriate mouse position
 /atom/movable/screen/movable/proc/mouse_params_to_position(params)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 
 	//No screen-loc information? abort.

@@ -40,6 +40,8 @@
 
 
 /mob/living/basic/hivebot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/death_drops, /obj/effect/decal/cleanable/blood/gibs/robot_debris)
 	AddComponent(/datum/component/appearance_on_aggro, overlay_icon = icon, overlay_state = "[initial(icon_state)]_attack")
@@ -48,6 +50,8 @@
 	AddComponent(/datum/component/ranged_attacks, /obj/item/ammo_casing/hivebot, cooldown_time = ranged_attack_cooldown)
 
 /mob/living/basic/hivebot/death(gibbed)
+	procstart = null
+	src.procstart = null
 	do_sparks(number = 3, cardinal_only = TRUE, source = src)
 	return ..()
 
@@ -94,10 +98,14 @@
 	COOLDOWN_DECLARE(repair_cooldown)
 
 /mob/living/basic/hivebot/mechanic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GRANT_ACTION(/datum/action/cooldown/spell/conjure/foam_wall)
 
 /mob/living/basic/hivebot/mechanic/early_melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -111,6 +119,8 @@
 		return BASIC_MOB_END_ATTACK_CHAIN_COOLDOWN
 
 /mob/living/basic/hivebot/mechanic/proc/repair_machine(obj/machinery/fixable)
+	procstart = null
+	src.procstart = null
 	if(fixable.get_integrity() >= fixable.max_integrity)
 		to_chat(src, span_warning("Diagnostics indicate that this machine is at peak integrity."))
 		return
@@ -123,6 +133,8 @@
 	COOLDOWN_START(src, repair_cooldown, 50 SECONDS)
 
 /mob/living/basic/hivebot/mechanic/proc/repair_hivebot(mob/living/basic/bot_target)
+	procstart = null
+	src.procstart = null
 	if(bot_target.health >= bot_target.maxHealth)
 		to_chat(src, span_warning("Diagnostics indicate that this unit is at peak integrity."))
 		return

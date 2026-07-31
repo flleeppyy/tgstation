@@ -15,6 +15,8 @@
 	var/examine_message
 
 /datum/component/boomerang/Initialize(boomerang_throw_range, thrower_easy_catch_enabled, examine_message)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(parent)) //Only items support being thrown around like a boomerang, feel free to make this apply to humans later on.
 		return COMPONENT_INCOMPATIBLE
@@ -28,6 +30,8 @@
 		src.examine_message = examine_message
 
 /datum/component/boomerang/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_MOVABLE_POST_THROW, PROC_REF(prepare_throw)) //Collect data on current thrower and the throwing datum
 	RegisterSignal(parent, COMSIG_MOVABLE_THROW_LANDED, PROC_REF(return_missed_throw))
 	RegisterSignal(parent, COMSIG_MOVABLE_IMPACT, PROC_REF(return_hit_throw))
@@ -35,6 +39,8 @@
 		RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/component/boomerang/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_MOVABLE_POST_THROW, COMSIG_MOVABLE_THROW_LANDED, COMSIG_MOVABLE_IMPACT, COMSIG_ATOM_EXAMINE))
 
 /**
@@ -44,6 +50,8 @@
  * * spin: Carry over from POST_THROW, the speed of rotation on the boomerang when thrown.
  */
 /datum/component/boomerang/proc/prepare_throw(datum/source, datum/thrownthing/throwingdatum, spin)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/thrower = throwingdatum?.get_thrower()
 	if(thrower_easy_catch_enabled && iscarbon(thrower))
@@ -51,6 +59,8 @@
 		carbon_mob.throw_mode_on(THROW_MODE_TOGGLE)
 
 /datum/component/boomerang/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_list += examine_message
 
@@ -61,6 +71,8 @@
  * * init_throwing_datum: The thrownthing datum that originally impacted the object, that we use to build the new throwing datum for the rebound.
  */
 /datum/component/boomerang/proc/return_hit_throw(datum/source, atom/hit_atom, datum/thrownthing/init_throwing_datum, caught)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!COOLDOWN_FINISHED(src, last_boomerang_throw) || caught)
 		return
@@ -72,6 +84,8 @@
  * * throwing_datum: The thrownthing datum that originally impacted the object, that we use to build the new throwing datum for the rebound.
  */
 /datum/component/boomerang/proc/return_missed_throw(datum/source, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!COOLDOWN_FINISHED(src, last_boomerang_throw))
 		return
@@ -83,6 +97,8 @@
  * * hit_atom: The atom that has been hit by the boomerang'd object.
  */
 /datum/component/boomerang/proc/aerodynamic_swing(datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	var/mob/thrown_by = throwingdatum?.get_thrower()
 	var/obj/item/true_parent = parent
 	if(istype(thrown_by))

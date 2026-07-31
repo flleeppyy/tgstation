@@ -18,6 +18,8 @@
 	//node 3 is the outlet, nodes 1 & 2 are intakes
 
 /obj/machinery/atmospherics/components/trinary/mixer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/gas_mixture/air3 = airs[3]
 	air3.volume = 300
@@ -25,12 +27,16 @@
 	register_context()
 
 /obj/machinery/atmospherics/components/trinary/mixer/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	context[SCREENTIP_CONTEXT_CTRL_LMB] = "Turn [on ? "off" : "on"]"
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "Maximize target pressure"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/atmospherics/components/trinary/mixer/click_ctrl(mob/user)
+	procstart = null
+	src.procstart = null
 	if(is_operational)
 		set_on(!on)
 		balloon_alert(user, "turned [on ? "on" : "off"]")
@@ -39,6 +45,8 @@
 	return CLICK_ACTION_BLOCKING
 
 /obj/machinery/atmospherics/components/trinary/mixer/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(target_pressure == MAX_OUTPUT_PRESSURE)
 		return CLICK_ACTION_BLOCKING
 
@@ -48,6 +56,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/atmospherics/components/trinary/mixer/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/direction in GLOB.cardinals)
 		if(!(direction & initialize_directions))
@@ -58,10 +68,14 @@
 		. += cap
 
 /obj/machinery/atmospherics/components/trinary/mixer/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	var/on_state = on && nodes[1] && nodes[2] && nodes[3] && is_operational
 	icon_state = "mixer_[on_state ? "on" : "off"]-[set_overlay_offset(piping_layer)][flipped ? "_f" : ""]"
 
 /obj/machinery/atmospherics/components/trinary/mixer/process_atmos()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!on || !(nodes[1] && nodes[2] && nodes[3]) && !is_operational)
 		return
@@ -133,12 +147,16 @@
 	parent3.update = TRUE
 
 /obj/machinery/atmospherics/components/trinary/mixer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AtmosMixer", name)
 		ui.open()
 
 /obj/machinery/atmospherics/components/trinary/mixer/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["on"] = on
 	data["set_pressure"] = round(target_pressure)
@@ -148,6 +166,8 @@
 	return data
 
 /obj/machinery/atmospherics/components/trinary/mixer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -180,10 +200,14 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/machinery/atmospherics/components/trinary/mixer/proc/adjust_node1_value(newValue)
+	procstart = null
+	src.procstart = null
 	node1_concentration = newValue / 100
 	node2_concentration = 1 - node1_concentration
 
 /obj/machinery/atmospherics/components/trinary/mixer/can_unwrench(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && on && is_operational)
 		to_chat(user, span_warning("You cannot unwrench [src], turn it off first!"))

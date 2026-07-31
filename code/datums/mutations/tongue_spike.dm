@@ -22,9 +22,13 @@
 	var/spike_path = /obj/item/hardened_spike
 
 /datum/action/cooldown/spell/tongue_spike/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return iscarbon(cast_on)
 
 /datum/action/cooldown/spell/tongue_spike/cast(mob/living/carbon/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(cast_on, TRAIT_NODISMEMBER))
 		to_chat(cast_on, span_notice("You concentrate really hard, but nothing happens."))
@@ -59,16 +63,22 @@
 	var/missed = TRUE
 
 /obj/item/hardened_spike/Initialize(mapload, mob/living/carbon/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.fired_by_ref = WEAKREF(source)
 	addtimer(CALLBACK(src, PROC_REF(check_morph)), 5 SECONDS)
 
 /obj/item/hardened_spike/proc/check_morph()
+	procstart = null
+	src.procstart = null
 	// Failed to embed, morph back
 	if (!embed_data?.owner)
 		morph_back()
 
 /obj/item/hardened_spike/proc/morph_back()
+	procstart = null
+	src.procstart = null
 	visible_message(span_warning("[src] cracks and twists, changing shape!"))
 	for(var/obj/tongue as anything in contents)
 		tongue.forceMove(get_turf(src))
@@ -82,6 +92,8 @@
 	ignore_throwspeed_threshold = TRUE
 
 /datum/embedding/tongue_spike/stop_embedding()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/hardened_spike/tongue_spike = parent
 	if (!QDELETED(tongue_spike)) // This can cause a qdel loop
@@ -120,6 +132,8 @@
 	pain_chance = 0
 
 /datum/embedding/tongue_spike/chem/on_successful_embed(mob/living/carbon/victim, obj/item/bodypart/target_limb)
+	procstart = null
+	src.procstart = null
 	var/obj/item/hardened_spike/chem/tongue_spike = parent
 	var/mob/living/carbon/fired_by = tongue_spike.fired_by_ref?.resolve()
 	if(!istype(fired_by))
@@ -133,6 +147,8 @@
 		to send your chemicals to the linked target!"))
 
 /datum/embedding/tongue_spike/chem/stop_embedding()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/hardened_spike/chem/tongue_spike = parent
 	var/mob/living/carbon/fired_by = tongue_spike.fired_by_ref?.resolve()
@@ -155,11 +171,15 @@
 	var/datum/weakref/transferred_ref
 
 /datum/action/send_chems/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(target, /obj/item/hardened_spike/chem))
 		qdel(src)
 
 /datum/action/send_chems/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

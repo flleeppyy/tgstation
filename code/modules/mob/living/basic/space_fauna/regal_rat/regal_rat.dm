@@ -47,6 +47,8 @@
 	var/special_moniker = ""
 
 /mob/living/basic/regal_rat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 
@@ -74,12 +76,16 @@
 	grant_actions_by_list(innate_actions)
 
 /mob/living/basic/regal_rat/death(gibbed)
+	procstart = null
+	src.procstart = null
 	var/datum/component/potential_component = GetComponent(/datum/component/ghost_direct_control)
 	if(!QDELETED(potential_component))
 		qdel(potential_component)
 	return ..()
 
 /mob/living/basic/regal_rat/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user == src)
 		return
@@ -98,6 +104,8 @@
 	. += special_moniker
 
 /mob/living/basic/regal_rat/handle_environment(datum/gas_mixture/environment)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat == DEAD || isnull(environment) || isnull(environment.moles[/datum/gas/miasma]))
 		return
@@ -107,6 +115,8 @@
 
 /// Triggers an alert to all ghosts that the rat has become player controlled.
 /mob/living/basic/regal_rat/proc/became_player_controlled()
+	procstart = null
+	src.procstart = null
 	notify_ghosts(
 		"All rise for [name], ascendant to the throne in \the [get_area(src)].",
 		source = src,
@@ -116,12 +126,16 @@
 
 /// Supplementary work we do when we login. Done this way so we synchronize with the ai controller shutting off and all that jazz as well as allowing more shit to be passed in if need be in future.
 /mob/living/basic/regal_rat/proc/on_login()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!special_moniker)
 		grant_titles() // all players are special :)
 
 /// Grants the rat a special name.
 /mob/living/basic/regal_rat/proc/grant_titles()
+	procstart = null
+	src.procstart = null
 	// The title conveyed upon us thanks to our position.
 	var/static/list/titles = list(
 		"Bojar",
@@ -170,6 +184,8 @@
 
 /// Checks if we are able to attack this object, as well as send out the signal to see if we get any special regal rat interactions.
 /mob/living/basic/regal_rat/early_melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -190,6 +206,8 @@
 
 /// Checks if we are allowed to attack this mob. Will return TRUE if we are potentially allowed to attack, but if we end up in a case where we should NOT attack, return FALSE.
 /mob/living/basic/regal_rat/proc/allowed_to_attack(atom/the_target)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(the_target))
 		return FALSE //wat
 
@@ -216,6 +234,8 @@
  * * atom/lean_target - the target we try to add the spit to
  */
 /mob/living/basic/regal_rat/proc/poison_target(atom/target)
+	procstart = null
+	src.procstart = null
 	if(isnull(target.reagents) || !target.is_injectable(src, /*allowmobs = */TRUE))
 		return FALSE
 
@@ -241,6 +261,8 @@
  * place.
  */
 /mob/living/basic/regal_rat/proc/cheese_heal(obj/item/target, amount, message)
+	procstart = null
+	src.procstart = null
 	if(health >= maxHealth)
 		balloon_alert(src, "you feel full!")
 		return

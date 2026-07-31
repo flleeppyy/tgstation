@@ -3,6 +3,8 @@
 /datum/unit_test/hydroponics_extractor_storage
 
 /datum/unit_test/hydroponics_extractor_storage/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/seed_extractor/extractor = allocate(/obj/machinery/seed_extractor)
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 

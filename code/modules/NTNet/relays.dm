@@ -1,5 +1,7 @@
 ///Checks whether NTNet is available by ensuring at least one relay exists and is operational.
 /proc/find_functional_ntnet_relay()
+	procstart = null
+	src.procstart = null
 	// Check all relays. If we have at least one working relay, ntos is up.
 	for(var/obj/machinery/ntnet_relay/relays as anything in SSmachines.get_machines_by_type(/obj/machinery/ntnet_relay))
 		if(!relays.is_operational)
@@ -32,12 +34,16 @@
 	var/dos_dissipate = 0.5 // Amount of DoS "packets" dissipated over time.
 
 /obj/machinery/ntnet_relay/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	uid = gl_uid++
 	var/list/current_machines = SSmachines.get_machines_by_type(/obj/machinery/ntnet_relay)
 	SSmodular_computers.add_log("New quantum relay activated. Current amount of linked relays: [current_machines.len]")
 
 /obj/machinery/ntnet_relay/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/machines_left = SSmachines.get_machines_by_type(/obj/machinery/ntnet_relay)
 	SSmodular_computers.add_log("Quantum relay connection severed. Current amount of linked relays: [machines_left.len]")
@@ -47,6 +53,8 @@
 
 ///Proc called to change the value of the `relay_enabled` variable and append behavior related to its change.
 /obj/machinery/ntnet_relay/proc/set_relay_enabled(new_value)
+	procstart = null
+	src.procstart = null
 	if(new_value == relay_enabled)
 		return
 	. = relay_enabled
@@ -58,6 +66,8 @@
 
 ///Proc called to change the value of the `dos_failure` variable and append behavior related to its change.
 /obj/machinery/ntnet_relay/proc/set_dos_failure(new_value)
+	procstart = null
+	src.procstart = null
 	if(new_value == dos_failure)
 		return
 	. = dos_failure
@@ -69,6 +79,8 @@
 		set_is_operational(FALSE)
 
 /obj/machinery/ntnet_relay/on_set_machine_stat(old_value)
+	procstart = null
+	src.procstart = null
 	if(old_value & (NOPOWER|BROKEN|MAINT))
 		if(relay_enabled && !dos_failure && !(machine_stat & (NOPOWER|BROKEN|MAINT))) //From off to on.
 			set_is_operational(TRUE)
@@ -76,10 +88,14 @@
 		set_is_operational(FALSE)
 
 /obj/machinery/ntnet_relay/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "bus[is_operational ? null : "_off"]"
 	return ..()
 
 /obj/machinery/ntnet_relay/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	update_use_power(is_operational ? ACTIVE_POWER_USE : IDLE_POWER_USE)
 
 	update_appearance()
@@ -100,12 +116,16 @@
 	return TRUE
 
 /obj/machinery/ntnet_relay/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "NtnetRelay")
 		ui.open()
 
 /obj/machinery/ntnet_relay/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["enabled"] = relay_enabled
 	data["dos_capacity"] = dos_capacity
@@ -114,6 +134,8 @@
 	return data
 
 /obj/machinery/ntnet_relay/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

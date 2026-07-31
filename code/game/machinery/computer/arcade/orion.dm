@@ -32,6 +32,8 @@
 	var/killed_crew = 0
 
 /obj/machinery/computer/arcade/orion_trail/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(orion_events))
 		var/list/events = list()
@@ -42,9 +44,13 @@
 	setup_events()
 
 /obj/machinery/computer/arcade/orion_trail/proc/setup_events()
+	procstart = null
+	src.procstart = null
 	events = orion_events.Copy()
 
 /obj/machinery/computer/arcade/orion_trail/Destroy()
+	procstart = null
+	src.procstart = null
 	events = null
 	return ..()
 
@@ -73,12 +79,16 @@
 	settlers = list("Kirk","Worf","Gene")
 
 /obj/machinery/computer/arcade/orion_trail/kobayashi/setup_events()
+	procstart = null
+	src.procstart = null
 	events = orion_events.Copy()
 	for(var/datum/orion_event/event as anything in events)
 		if(!(event.type in event_whitelist))
 			events.Remove(event)
 
 /obj/machinery/computer/arcade/orion_trail/proc/newgame(mob/living/player)
+	procstart = null
+	src.procstart = null
 	// Set names of settlers in crew
 	var/player_crew_name = first_name(player.name)
 	settlers = list()
@@ -103,6 +113,8 @@
 	spaceport_raided = FALSE
 
 /obj/machinery/computer/arcade/orion_trail/proc/report_player(mob/gamer)
+	procstart = null
+	src.procstart = null
 	if(gamers[gamer] == ORION_GAMER_GIVE_UP)
 		return // enough harassing them
 
@@ -134,6 +146,8 @@
 		gamer.mind?.adjust_experience(/datum/skill/gaming, 50) // cheevos make u better
 
 /obj/machinery/computer/arcade/orion_trail/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -141,11 +155,15 @@
 		ui.open()
 
 /obj/machinery/computer/arcade/orion_trail/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/moods),
 	)
 
 /obj/machinery/computer/arcade/orion_trail/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["gamestatus"] = gameStatus
 
@@ -171,6 +189,8 @@
 	return data
 
 /obj/machinery/computer/arcade/orion_trail/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/static_data = list()
 	static_data["gamename"] = name
 	static_data["emagged"] = obj_flags & EMAGGED
@@ -178,6 +198,8 @@
 	return static_data
 
 /obj/machinery/computer/arcade/orion_trail/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -319,6 +341,8 @@
  * * gamer_skill_rands: See above but for random chances, you can just look at gaming skill to see how it chalks that up
  */
 /obj/machinery/computer/arcade/orion_trail/proc/encounter_event(path, gamer, gamer_skill, gamer_skill_level, gamer_skill_rands)
+	procstart = null
+	src.procstart = null
 	if(!path)
 		event = pick_weight(events)
 	else
@@ -333,12 +357,16 @@
 		event.emag_effect(src, gamer)
 
 /obj/machinery/computer/arcade/orion_trail/proc/set_game_over(mob/living/user, given_reason)
+	procstart = null
+	src.procstart = null
 	user.lost_game()
 	gameStatus = ORION_STATUS_GAMEOVER
 	event = null
 	reason = given_reason || death_reason(user)
 
 /obj/machinery/computer/arcade/orion_trail/proc/death_reason(mob/living/gamer)
+	procstart = null
+	src.procstart = null
 	var/reason
 	if(!settlers.len)
 		reason = "Your entire crew died, and your ship joins the fleet of ghost-ships littering the galaxy."
@@ -370,6 +398,8 @@
 
 //Add Random/Specific crewmember
 /obj/machinery/computer/arcade/orion_trail/proc/add_crewmember(specific = "", update = TRUE)
+	procstart = null
+	src.procstart = null
 	var/newcrew = ""
 	if(specific)
 		newcrew = specific
@@ -388,6 +418,8 @@
 
 //Remove Random/Specific crewmember
 /obj/machinery/computer/arcade/orion_trail/proc/remove_crewmember(specific = "", dont_remove = "", update = TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/safe_to_remove = settlers
 	var/removed = ""
 	if(dont_remove)
@@ -413,6 +445,8 @@
  * * gamer: carbon that may need emag effects applied
  */
 /obj/machinery/computer/arcade/orion_trail/proc/execute_crewmember(mob/living/gamer, target)
+	procstart = null
+	src.procstart = null
 	var/sheriff = remove_crewmember(target) //I shot the sheriff
 	if(target)
 		killed_crew += 1 //if there was no suspected lings, this is just plain murder
@@ -444,6 +478,8 @@
  * * None!
  */
 /obj/machinery/computer/arcade/orion_trail/proc/new_settler_mood()
+	procstart = null
+	src.procstart = null
 	settlermoods.Cut()
 	for(var/i in 1 to settlers.len)
 		var/food_mood = food >= 15
@@ -462,6 +498,8 @@
 			settlermoods[settlers[i]] = min(settlermoods[settlers[i]], 3)
 
 /obj/machinery/computer/arcade/orion_trail/proc/win(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.won_game()
 	gameStatus = ORION_STATUS_START
 	say("Congratulations, you made it to Orion!")
@@ -476,6 +514,8 @@
 	desc = initial(desc)
 
 /obj/machinery/computer/arcade/orion_trail/emag_act(mob/living/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 
@@ -503,6 +543,8 @@
 	var/active = 0
 
 /obj/item/orion_ship/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(in_range(user, src)))
 		return
@@ -512,6 +554,8 @@
 	. += span_notice("There's a little switch on the bottom. It's flipped down.")
 
 /obj/item/orion_ship/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(active)
 		return
 
@@ -522,6 +566,8 @@
 
 ///After some dialogue (which doubles as the timer until explosion), causes a minibomb-level explosion.
 /obj/item/orion_ship/proc/commit_explosion(dialogue_level = 0)
+	procstart = null
+	src.procstart = null
 	var/time_for_next_level
 	switch(dialogue_level)
 		if(0)

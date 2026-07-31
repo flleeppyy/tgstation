@@ -6,6 +6,8 @@
 	wire_behavior = WIRES_ALL
 
 /datum/wires/wire_bundle_component/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	var/datum/component/shell/shell_comp = holder.GetComponent(/datum/component/shell)
 	if(!istype(shell_comp))
 		CRASH("Holder does not have a shell component!")
@@ -15,13 +17,19 @@
 	..()
 
 /datum/wires/wire_bundle_component/always_reveal_wire(color)
+	procstart = null
+	src.procstart = null
 	return TRUE // Let's not make wiring up this stuff confusing - just give them what wires correspond to what ports.
 
 /datum/wires/wire_bundle_component/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	proper_name = holder.name
 	. = ..()
 
 /datum/wires/wire_bundle_component/ui_host(mob/user)
+	procstart = null
+	src.procstart = null
 	return holder.ui_host(user)
 
 #undef CAPACITY_PER_WIRE

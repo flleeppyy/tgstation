@@ -9,6 +9,8 @@
 	energy_coeff = 1
 
 /datum/mutation/webbing/setup()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/action/cooldown/mob_cooldown/lay_web/genetic/to_modify = .
 
@@ -21,12 +23,16 @@
 	to_modify.webbing_time = 2 SECONDS // Spin webs faster but not more often
 
 /datum/mutation/webbing/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	ADD_TRAIT(owner, TRAIT_WEB_WEAVER, GENETIC_MUTATION)
 
 /datum/mutation/webbing/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	REMOVE_TRAIT(owner, TRAIT_WEB_WEAVER, GENETIC_MUTATION)

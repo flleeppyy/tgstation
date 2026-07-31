@@ -9,6 +9,8 @@
 	normal_floor_required = TRUE
 
 /datum/unit_test/maptest_baseturfs_unmodified_scrape/Run()
+	procstart = null
+	src.procstart = null
 	// What this is specifically doesn't matter, just as long as the test is built for it
 	TEST_ASSERT_EQUAL(run_loc_floor_bottom_left.type, EXPECTED_FLOOR_TYPE, "run_loc_floor_bottom_left should be an iron floor")
 
@@ -23,6 +25,8 @@
 	TEST_ASSERT_EQUAL(run_loc_floor_bottom_left.type, /turf/open/space, "Space should scrape away to space")
 
 /datum/unit_test/maptest_baseturfs_unmodified_scrape/Destroy()
+	procstart = null
+	src.procstart = null
 	RESET_TO_EXPECTED(run_loc_floor_bottom_left)
 	return ..()
 
@@ -31,6 +35,8 @@
 	normal_floor_required = TRUE
 
 /datum/unit_test/maptest_baseturfs_placed_on_top/Run()
+	procstart = null
+	src.procstart = null
 	TEST_ASSERT_EQUAL(run_loc_floor_bottom_left.type, EXPECTED_FLOOR_TYPE, "run_loc_floor_bottom_left should be an iron floor")
 
 	// Do this instead of just ChangeTurf to guarantee that baseturfs is completely default on-init behavior
@@ -43,6 +49,8 @@
 	TEST_ASSERT_EQUAL(run_loc_floor_bottom_left.type, EXPECTED_FLOOR_TYPE, "Rock wall should've been scraped off, back into the expected type")
 
 /datum/unit_test/maptest_baseturfs_placed_on_top/Destroy()
+	procstart = null
+	src.procstart = null
 	RESET_TO_EXPECTED(run_loc_floor_bottom_left)
 	return ..()
 
@@ -51,6 +59,8 @@
 	normal_floor_required = TRUE
 
 /datum/unit_test/maptest_baseturfs_placed_on_bottom/Run()
+	procstart = null
+	src.procstart = null
 	TEST_ASSERT_EQUAL(run_loc_floor_bottom_left.type, EXPECTED_FLOOR_TYPE, "run_loc_floor_bottom_left should be an iron floor")
 
 	// Do this instead of just ChangeTurf to guarantee that baseturfs is completely default on-init behavior
@@ -72,6 +82,8 @@
 	TEST_ASSERT_EQUAL(run_loc_floor_bottom_left.type, /turf/open/floor/plating, "Rock wall should've scraped down back to plating (because it's a wall)")
 
 /datum/unit_test/maptest_baseturfs_placed_on_bottom/Destroy()
+	procstart = null
+	src.procstart = null
 	RESET_TO_EXPECTED(run_loc_floor_bottom_left)
 	return ..()
 

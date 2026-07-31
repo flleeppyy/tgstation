@@ -8,6 +8,8 @@
 	should_log = FALSE
 
 /datum/smite/supply_pod/effect(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/centcom_podlauncher/plaunch = new(user)
 	plaunch.specificTarget = target

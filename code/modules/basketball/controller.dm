@@ -48,6 +48,8 @@ GLOBAL_VAR(basketball_game)
 	var/list/referee_landmark = list()
 
 /datum/basketball_controller/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(GLOB.basketball_game)
 		qdel(src)
@@ -55,6 +57,8 @@ GLOBAL_VAR(basketball_game)
 	GLOB.basketball_game = src
 
 /datum/basketball_controller/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.basketball_game = null
 	current_map = null
@@ -74,6 +78,8 @@ GLOBAL_VAR(basketball_game)
  * * ready_players: list of filtered, sane players (so not playing or disconnected) for the game to put into roles
  */
 /datum/basketball_controller/proc/prepare_game(ready_players)
+	procstart = null
+	src.procstart = null
 	var/list/possible_maps = subtypesof(/datum/lazy_template/basketball)
 
 	current_map = pick(possible_maps)
@@ -113,6 +119,8 @@ GLOBAL_VAR(basketball_game)
  * The game by this point is now all set up, and so we can put people in their bodies.
  */
 /datum/basketball_controller/proc/start_game(ready_players)
+	procstart = null
+	src.procstart = null
 	message_admins("The players have spoken! Voting has enabled the basketball minigame!")
 	notify_ghosts(
 		"Basketball minigame is about to start!",
@@ -135,6 +143,8 @@ GLOBAL_VAR(basketball_game)
  * Called when the game is setting up, AFTER map is loaded but BEFORE the game start. Creates and places each body and gives the correct player key
  */
 /datum/basketball_controller/proc/create_bodies(ready_players)
+	procstart = null
+	src.procstart = null
 	var/list/possible_away_teams = subtypesof(/datum/lazy_template/basketball) - current_map.type
 	var/datum/lazy_template/basketball/away_map = pick(possible_away_teams)
 
@@ -214,6 +224,8 @@ GLOBAL_VAR(basketball_game)
  * Called after the game is finished. Sends end game notifications to teams and dusts the losers.
  */
 /datum/basketball_controller/proc/victory()
+	procstart = null
+	src.procstart = null
 	var/is_game_draw
 	var/list/winner_team_ckeys = list()
 	var/list/loser_team_ckeys = list()
@@ -255,6 +267,8 @@ GLOBAL_VAR(basketball_game)
  * Cleans up the game, resetting variables back to the beginning and removing the map with the generator.
  */
 /datum/basketball_controller/proc/end_game()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/living in minigame_basketball_mobs)
 		living.ghostize(can_reenter_corpse = FALSE) // avoids runtimes when a cliented mob is qdel'd
 	QDEL_LIST(minigame_basketball_mobs)
@@ -278,6 +292,8 @@ GLOBAL_VAR(basketball_game)
  * If there aren't enough players post sanity, it aborts. otherwise, it selects enough people for the game and starts preparing the game for real.
  */
 /datum/basketball_controller/proc/basic_setup()
+	procstart = null
+	src.procstart = null
 	//final list for all the players who will be in this game
 	var/list/filtered_keys = list()
 	//cuts invalid players from signups (disconnected/not a ghost)
@@ -315,6 +331,8 @@ GLOBAL_VAR(basketball_game)
  * Filters inactive player into a different list until they reconnect, and removes players who are no longer ghosts.
  */
 /datum/basketball_controller/proc/check_signups()
+	procstart = null
+	src.procstart = null
 	for(var/bad_key in GLOB.basketball_bad_signup)
 		var/client/signup_client = GLOB.directory[bad_key]
 		if(signup_client) //they have reconnected if we can search their key and get a client
@@ -336,15 +354,21 @@ GLOBAL_VAR(basketball_game)
  * Only checks if everyone is actually valid to start (still connected and an observer) if there are enough players (basic_setup)
  */
 /datum/basketball_controller/proc/try_autostart()
+	procstart = null
+	src.procstart = null
 	if(!(GLOB.ghost_role_flags & GHOSTROLE_MINIGAME))
 		return
 	if(GLOB.basketball_signup.len >= BASKETBALL_MIN_PLAYER_COUNT) //enough people to try and make something (or debug mode)
 		basic_setup()
 
 /datum/basketball_controller/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 /datum/basketball_controller/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	check_signups()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -353,6 +377,8 @@ GLOBAL_VAR(basketball_game)
 		ui.open()
 
 /datum/basketball_controller/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	.["total_votes"] = GLOB.basketball_signup.len
@@ -368,6 +394,8 @@ GLOBAL_VAR(basketball_game)
 	.["lobbydata"] = lobby_data
 
 /datum/basketball_controller/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -408,6 +436,8 @@ GLOBAL_VAR(basketball_game)
  * Creates the global datum for playing basketball games, destroys the last if that's required and returns the new.
  */
 /proc/create_basketball_game()
+	procstart = null
+	src.procstart = null
 	if(GLOB.basketball_game)
 		QDEL_NULL(GLOB.basketball_game)
 	var/datum/basketball_controller/basketball_minigame = new()

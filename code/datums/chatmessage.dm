@@ -65,6 +65,8 @@
  * * lifespan - The lifespan of the message in deciseconds
  */
 /datum/chatmessage/New(text, atom/target, mob/owner, datum/language/language, list/extra_classes = list(), lifespan = CHAT_MESSAGE_LIFESPAN, list/message_mods)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!istype(target))
 		CRASH("Invalid target given for chatmessage")
@@ -75,6 +77,8 @@
 	INVOKE_ASYNC(src, PROC_REF(generate_image), text, target, owner, language, extra_classes, lifespan, message_mods)
 
 /datum/chatmessage/Destroy()
+	procstart = null
+	src.procstart = null
 	if (!QDELING(owned_by))
 		if(REALTIMEOFDAY < animate_start + animate_lifespan)
 			stack_trace("Del'd before we finished fading, with [(animate_start + animate_lifespan) - REALTIMEOFDAY] time left")
@@ -96,6 +100,8 @@
  * Calls qdel on the chatmessage when its parent is deleted, used to register qdel signal
  */
 /datum/chatmessage/proc/on_parent_qdel()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
@@ -112,6 +118,8 @@
  * * message_mods - All mods from whatever message triggered this (if applicable)
  */
 /datum/chatmessage/proc/generate_image(text, atom/target, mob/owner, datum/language/language, list/extra_classes, lifespan, list/message_mods)
+	procstart = null
+	src.procstart = null
 	/// Cached icons to show what language the user is speaking
 	var/static/list/language_icons
 
@@ -206,6 +214,8 @@
 ///finishes the image generation after the MeasureText() call in generate_image().
 ///necessary because after that call the proc can resume at the end of the tick and cause overtime.
 /datum/chatmessage/proc/finish_image_generation(mheight, atom/target, mob/owner, complete_text, lifespan)
+	procstart = null
+	src.procstart = null
 	finish_callback = null
 	var/rough_time = REALTIMEOFDAY
 	approx_lines = max(1, mheight / CHAT_MESSAGE_APPROX_LHEIGHT)
@@ -302,6 +312,8 @@
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(qdel), src), lifespan + CHAT_MESSAGE_GRACE_PERIOD, TIMER_DELETE_ME, SSrunechat)
 
 /datum/chatmessage/proc/get_current_alpha(time_spent)
+	procstart = null
+	src.procstart = null
 	if(time_spent < CHAT_MESSAGE_SPAWN_TIME)
 		return (time_spent / CHAT_MESSAGE_SPAWN_TIME) * 255
 
@@ -312,6 +324,8 @@
 	return (1 - ((time_spent - time_before_fade) / CHAT_MESSAGE_EOL_FADE)) * 255
 
 /datum/chatmessage/proc/loc_z_changed(datum/source, turf/old_turf, turf/new_turf, same_z_layer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SET_PLANE(message, RUNECHAT_PLANE, new_turf)
 
@@ -325,6 +339,8 @@
  * * spans - Additional classes to be added to the message
  */
 /mob/proc/create_chat_message(atom/movable/speaker, datum/language/message_language, raw_message, list/spans, runechat_flags = NONE, list/message_mods)
+	procstart = null
+	src.procstart = null
 	if(SSlag_switch.measures[DISABLE_RUNECHAT] && !HAS_TRAIT(speaker, TRAIT_BYPASS_MEASURES))
 		return
 	if(HAS_TRAIT(speaker, TRAIT_RUNECHAT_HIDDEN))

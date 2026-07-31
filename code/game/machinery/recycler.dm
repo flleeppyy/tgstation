@@ -19,6 +19,8 @@
 	var/datum/material_container/materials
 
 /obj/machinery/recycler/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	materials = new (
 		src, \
 		SSmaterials.get_materials_by_flag(MATERIAL_SILO_STORED), \
@@ -36,6 +38,8 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/recycler/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 	req_one_access = SSid_access.get_region_access_list(list(REGION_ALL_STATION, REGION_CENTCOM))
@@ -45,10 +49,14 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/machinery/recycler/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(materials)
 	return ..()
 
 /obj/machinery/recycler/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/amt_made = 0
 	for(var/datum/stock_part/servo/servo in component_parts)
@@ -59,6 +67,8 @@
 	butchering.bonus_modifier = amount_produced/5
 
 /obj/machinery/recycler/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Reclaiming <b>[amount_produced]%</b> of materials salvaged.")
 	. += {"The power light is [(machine_stat & NOPOWER) ? "off" : "on"].
@@ -66,16 +76,24 @@
 	The safety-sensors status light is [obj_flags & EMAGGED ? "off" : "on"]."}
 
 /obj/machinery/recycler/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/recycler/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/recycler/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/recycler/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -87,6 +105,8 @@
 	return FALSE
 
 /obj/machinery/recycler/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		icon_state = base_icon_state + "Open"
 	else
@@ -94,9 +114,13 @@
 	return ..()
 
 /obj/machinery/recycler/on_set_is_operational(old_value)
+	procstart = null
+	src.procstart = null
 	update_appearance()
 
 /obj/machinery/recycler/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!bloody || !GET_ATOM_BLOOD_DECAL_LENGTH(src))
 		return
@@ -106,6 +130,8 @@
 	. += blood_overlay
 
 /obj/machinery/recycler/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!anchored)
 		return
@@ -113,11 +139,15 @@
 		return TRUE
 
 /obj/machinery/recycler/proc/on_entered(datum/source, atom/movable/enterer, old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(eat), enterer)
 
 /obj/machinery/recycler/proc/eat(atom/movable/morsel, sound=TRUE)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (BROKEN|NOPOWER) || safety_mode)
 		return
 	if(!isturf(morsel.loc))
@@ -225,6 +255,8 @@
 
 /// Determines if the target should trigger an emergency stop due to safety concerns.
 /obj/machinery/recycler/proc/triggers_safety_shutdown(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE // Emagged recycler ignores all safety checks.
 
@@ -241,6 +273,8 @@
 	return FALSE
 
 /obj/machinery/recycler/proc/recycle_item(obj/item/target)
+	procstart = null
+	src.procstart = null
 	if(istype(target, /obj/item/grown/log))
 		var/obj/item/grown/log/wood = target
 		var/seed_modifier = wood.seed ? round(wood.seed.potency / 25) : 0
@@ -258,17 +292,23 @@
 	return FALSE
 
 /obj/machinery/recycler/proc/emergency_stop()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50, FALSE)
 	safety_mode = TRUE
 	update_appearance()
 	addtimer(CALLBACK(src, PROC_REF(reboot)), SAFETY_COOLDOWN)
 
 /obj/machinery/recycler/proc/reboot()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/machines/ping.ogg', 50, FALSE)
 	safety_mode = FALSE
 	update_appearance()
 
 /obj/machinery/recycler/proc/crush_living(mob/living/living_mob)
+	procstart = null
+	src.procstart = null
 	if(issilicon(living_mob))
 		playsound(src, 'sound/items/tools/welder.ogg', 50, TRUE)
 	else
@@ -287,6 +327,8 @@
 	update_appearance()
 
 /obj/machinery/recycler/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	safety_mode = TRUE
 
 /obj/machinery/recycler/deathtrap
@@ -295,6 +337,8 @@
 	crush_damage = 120
 
 /obj/machinery/recycler/deathtrap/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/tool_blocker, TOOL_SCREWDRIVER)
 	AddElement(/datum/element/tool_blocker, TOOL_CROWBAR)

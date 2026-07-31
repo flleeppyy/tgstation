@@ -2,12 +2,16 @@
 	key = "delete"
 
 /datum/buildmode_mode/delete/show_help(client/builder)
+	procstart = null
+	src.procstart = null
 	to_chat(builder, span_purple(boxed_message(
 		"[span_bold("Delete an object")] -> Left Mouse Button on obj/turf/mob\n\
 		[span_bold("Delete all objects of a type")] -> Right Mouse Button on obj/turf/mob"))
 	)
 
 /datum/buildmode_mode/delete/handle_click(client/c, params, object)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 
 	if(LAZYACCESS(modifiers, LEFT_CLICK))

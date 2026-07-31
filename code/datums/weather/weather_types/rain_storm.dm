@@ -34,6 +34,8 @@
 	whitelist_weather_reagents = list(/datum/reagent/water)
 
 /datum/weather/particle/rain_storm/New(z_levels, list/weather_data)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isnull(weather_reagent) || istype(weather_reagent, /datum/reagent/water) || !weather_color)
 		return
@@ -44,9 +46,13 @@
 			holder.particles.color = weather_color
 
 /datum/weather/particle/rain_storm/get_playlist_ref()
+	procstart = null
+	src.procstart = null
 	return GLOB.rain_storm_sounds
 
 /datum/weather/particle/rain_storm/telegraph()
+	procstart = null
+	src.procstart = null
 	GLOB.rain_storm_sounds.Cut()
 	for(var/area/impacted_area as anything in impacted_areas)
 		GLOB.rain_storm_sounds[impacted_area] = /datum/looping_sound/rain/start
@@ -60,18 +66,24 @@
 	return ..()
 
 /datum/weather/particle/rain_storm/start()
+	procstart = null
+	src.procstart = null
 	GLOB.rain_storm_sounds.Cut()
 	for(var/area/impacted_area as anything in impacted_areas)
 		GLOB.rain_storm_sounds[impacted_area] = /datum/looping_sound/rain/middle
 	return ..()
 
 /datum/weather/particle/rain_storm/wind_down()
+	procstart = null
+	src.procstart = null
 	GLOB.rain_storm_sounds.Cut()
 	for(var/area/impacted_area as anything in impacted_areas)
 		GLOB.rain_storm_sounds[impacted_area] = /datum/looping_sound/rain/end
 	return ..()
 
 /datum/weather/particle/rain_storm/end()
+	procstart = null
+	src.procstart = null
 	GLOB.rain_storm_sounds.Cut()
 	return ..()
 
@@ -147,6 +159,8 @@
 	weather_flags = (WEATHER_TURFS | WEATHER_MOBS | WEATHER_INDOORS | WEATHER_BAROMETER)
 
 /datum/weather/particle/rain_storm/wizard/New(z_levels, list/weather_data)
+	procstart = null
+	src.procstart = null
 	if(length(GLOB.wizard_rain_reagents)) // the wizard event has already been run once and setup the whitelist
 		whitelist_weather_reagents = GLOB.wizard_rain_reagents
 		return ..()

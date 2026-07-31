@@ -11,10 +11,14 @@
 	quirk_flags = QUIRK_HUMAN_ONLY|QUIRK_TRAUMALIKE
 
 /datum/quirk/prosopagnosia/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	quirk_holder.apply_status_effect(/datum/status_effect/grouped/see_no_names/allow_ids, REF(src))
 
 /datum/quirk/prosopagnosia/remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	quirk_holder.remove_status_effect(/datum/status_effect/grouped/see_no_names/allow_ids, REF(src))
 
@@ -26,16 +30,22 @@
 	var/see_ids = FALSE
 
 /datum/status_effect/grouped/see_no_names/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_MOB_REQUESTING_SCREENTIP_NAME_FROM_USER, PROC_REF(screentip_name_override))
 	RegisterSignal(owner, COMSIG_LIVING_PERCEIVE_EXAMINE_NAME, PROC_REF(examine_name_override))
 	owner.mob_flags |= MOB_HAS_SCREENTIPS_NAME_OVERRIDE
 
 /datum/status_effect/grouped/see_no_names/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(owner, list(COMSIG_MOB_REQUESTING_SCREENTIP_NAME_FROM_USER, COMSIG_LIVING_PERCEIVE_EXAMINE_NAME))
 
 /datum/status_effect/grouped/see_no_names/proc/examine_name_override(datum/source, mob/living/carbon/human/examined, visible_name, list/name_override)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!ishuman(examined) || source == examined)
@@ -46,6 +56,8 @@
 	return COMPONENT_EXAMINE_NAME_OVERRIDEN
 
 /datum/status_effect/grouped/see_no_names/proc/screentip_name_override(datum/source, list/returned_name, obj/item/held_item, mob/living/carbon/human/hovered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!ishuman(hovered) || source == hovered)

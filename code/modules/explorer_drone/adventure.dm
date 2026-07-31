@@ -50,6 +50,8 @@ GLOBAL_LIST_EMPTY(explorer_drone_adventure_db_entries)
 
 /// Loads all adventures from DB
 /proc/load_adventures()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/filename in flist(ADVENTURE_LOOK_PATH))
 		var/raw_json = file2text(ADVENTURE_LOOK_PATH + filename)
@@ -85,6 +87,8 @@ GLOBAL_LIST_EMPTY(explorer_drone_adventure_db_entries)
 
 /// Check if the adventure usable for given exploration site traits
 /datum/adventure_db_entry/proc/valid_for_use(list/site_traits)
+	procstart = null
+	src.procstart = null
 	if(!raw_json || version != CURRENT_ADVENTURE_VERSION || placed)
 		return FALSE
 	if(required_site_traits && length(required_site_traits - site_traits) != 0)
@@ -93,6 +97,8 @@ GLOBAL_LIST_EMPTY(explorer_drone_adventure_db_entries)
 
 /// Extracts fields that are used by adventure browser / generation before instantiating
 /datum/adventure_db_entry/proc/extract_metadata()
+	procstart = null
+	src.procstart = null
 	if(!raw_json)
 		CRASH("Trying to extract metadata from empty adventure")
 	var/list/json_data = json_decode(raw_json)
@@ -104,12 +110,16 @@ GLOBAL_LIST_EMPTY(explorer_drone_adventure_db_entries)
 
 /// Creates new adventure instance
 /datum/adventure_db_entry/proc/create_adventure()
+	procstart = null
+	src.procstart = null
 	if(version != CURRENT_ADVENTURE_VERSION)
 		CRASH("Trying to instance outdated adventure version")
 	return try_loading_adventure()
 
 /// Parses adventure JSON and returns /datum/adventure instance on success
 /datum/adventure_db_entry/proc/try_loading_adventure()
+	procstart = null
+	src.procstart = null
 	var/list/json_data = json_decode(raw_json)
 	if(!islist(json_data))
 		CRASH("Invalid JSON in adventure with path:[filename], name:[name]")
@@ -142,6 +152,8 @@ GLOBAL_LIST_EMPTY(explorer_drone_adventure_db_entries)
 	return loaded_adventure
 
 /datum/adventure_db_entry/proc/try_loading_node(node_data)
+	procstart = null
+	src.procstart = null
 	if(!islist(node_data))
 		CRASH("Invalid adventure node data in path:[filename], name:[name] adventure.")
 	var/datum/adventure_node/fresh_node = new
@@ -191,6 +203,8 @@ GLOBAL_LIST_EMPTY(explorer_drone_adventure_db_entries)
 
 /// Basic sanity checks to ensure broken adventures are not used.
 /datum/adventure/proc/validate()
+	procstart = null
+	src.procstart = null
 	///Check all nodes have choices
 	for(var/node_id in nodes)
 		var/datum/adventure_node/node = nodes[node_id]
@@ -199,19 +213,27 @@ GLOBAL_LIST_EMPTY(explorer_drone_adventure_db_entries)
 	return TRUE
 
 /datum/adventure/proc/start_adventure()
+	procstart = null
+	src.procstart = null
 	initialize_qualities()
 	previous_node_id = starting_node
 	navigate_to_node(starting_node)
 
 /// Finish adventure
 /datum/adventure/proc/end_adventure(result)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src,COMSIG_ADVENTURE_FINISHED,result)
 
 /datum/adventure/proc/initialize_qualities()
+	procstart = null
+	src.procstart = null
 	qualities = starting_qualities || list()
 	SEND_SIGNAL(src,COMSIG_ADVENTURE_QUALITY_INIT,qualities)
 
 /datum/adventure/proc/navigate_to_node(node_id)
+	procstart = null
+	src.procstart = null
 	if(current_node)
 		if(current_node.on_exit(src)) //Trigger on exit caused node change <- I don't really see much use for this so might want to warn about it ?
 			return
@@ -226,6 +248,8 @@ GLOBAL_LIST_EMPTY(explorer_drone_adventure_db_entries)
 
 /// Handles special node ID's
 /datum/adventure/proc/handle_special_nodes(node_id)
+	procstart = null
+	src.procstart = null
 	switch(node_id)
 		if(FAIL_NODE)
 			end_adventure(ADVENTURE_RESULT_DAMAGE)
@@ -246,6 +270,8 @@ GLOBAL_LIST_EMPTY(explorer_drone_adventure_db_entries)
 			return FALSE
 
 /datum/adventure/proc/select_choice(choice_id)
+	procstart = null
+	src.procstart = null
 	if(!current_node || !islist(current_node.choices[choice_id]))
 		return
 	var/list/choice_data = current_node.choices[choice_id]
@@ -269,11 +295,15 @@ GLOBAL_LIST_EMPTY(explorer_drone_adventure_db_entries)
 	navigate_to_node(exit_id)
 
 /datum/adventure/proc/finish_delay(exit_id)
+	procstart = null
+	src.procstart = null
 	delayed_action = null
 	navigate_to_node(exit_id)
 	SEND_SIGNAL(src,COMSIG_ADVENTURE_DELAY_END)
 
 /datum/adventure/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["description"] = current_node?.description
 	.["image"] = current_node?.image_name
@@ -303,18 +333,24 @@ GLOBAL_LIST_EMPTY(explorer_drone_adventure_db_entries)
 
 
 /datum/adventure_node/proc/on_enter(datum/adventure/context)
+	procstart = null
+	src.procstart = null
 	if(on_enter_effects)
 		if(context.apply_adventure_effect(on_enter_effects))
 			return TRUE
 
 
 /datum/adventure_node/proc/on_exit(datum/adventure/context)
+	procstart = null
+	src.procstart = null
 	if(on_exit_effects)
 		if(context.apply_adventure_effect(on_exit_effects))
 			return TRUE
 
 
 /datum/adventure_node/proc/get_available_choices(datum/adventure/context)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/choice_key in choices)
 		var/list/choice_data = choices[choice_key]
@@ -323,6 +359,8 @@ GLOBAL_LIST_EMPTY(explorer_drone_adventure_db_entries)
 
 ///Applies changes encoded in effect data and processes triggers, returns TRUE if the change forced node change.
 /datum/adventure/proc/apply_adventure_effect(list/effect_data,process_triggers=TRUE)
+	procstart = null
+	src.procstart = null
 	if(!islist(effect_data))
 		CRASH("Invalid effect data [json_encode(effect_data)] in adventure [name]")
 	for(var/list/effect_group in effect_data)
@@ -362,6 +400,8 @@ GLOBAL_LIST_EMPTY(explorer_drone_adventure_db_entries)
 
 /// Extracts raw value from special value objects
 /datum/adventure/proc/process_adventure_value(raw_value)
+	procstart = null
+	src.procstart = null
 	if(islist(raw_value))
 		var/list/value_as_list = raw_value
 		switch(value_as_list[EFFECT_VALUE_VALUE_TYPE_FIELD])
@@ -374,6 +414,8 @@ GLOBAL_LIST_EMPTY(explorer_drone_adventure_db_entries)
 
 /// Checks if current qualities satisfy passed in requirements
 /datum/adventure/proc/check_requirements(raw_requirements)
+	procstart = null
+	src.procstart = null
 	if(!islist(raw_requirements))
 		return TRUE
 	var/list/req_groups = raw_requirements
@@ -389,6 +431,8 @@ GLOBAL_LIST_EMPTY(explorer_drone_adventure_db_entries)
 
 /// Recursively validates group requirements.
 /datum/adventure/proc/check_requirement_group(raw_group_data)
+	procstart = null
+	src.procstart = null
 	if(!islist(raw_group_data))
 		CRASH("Invalid group requirement in adventure [name]")
 	var/list/group_data = raw_group_data
@@ -418,6 +462,8 @@ GLOBAL_LIST_EMPTY(explorer_drone_adventure_db_entries)
 
 //Checks if unit requirement {"quality": "a","op": "==","value": "something"} is met.
 /datum/adventure/proc/check_single_requirement(raw_requirement)
+	procstart = null
+	src.procstart = null
 	var/qkey = raw_requirement[REQ_QUALITY_FIELD]
 	var/qval = raw_requirement[REQ_VALUE_FIELD]
 	switch(raw_requirement[REQ_OPERATOR_FIELD])

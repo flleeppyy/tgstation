@@ -41,5 +41,7 @@
 	max_ammo = 150
 
 /obj/item/ammo_box/magazine/m7mm/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "a7mm-[min(round(ammo_count(), 10), 50)]" //Min is used to prevent high capacity magazines from attempting to get sprites with larger capacities

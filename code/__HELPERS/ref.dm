@@ -4,6 +4,8 @@
  * #define REF(thing) (thing && isdatum(thing) && (thing:datum_flags & DF_USE_TAG) && thing:tag ? "[thing:tag]" : text_ref(thing))
 **/
 /proc/REF(input)
+	procstart = null
+	src.procstart = null
 	if(isdatum(input))
 		var/datum/thing = input
 		if(thing.datum_flags & DF_USE_TAG)

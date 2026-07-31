@@ -1,5 +1,7 @@
 /// Is `observed_atom` in a mob's field of view? This takes blindness, nearsightness and FOV into consideration
 /mob/living/proc/in_fov(atom/observed_atom, ignore_self = FALSE)
+	procstart = null
+	src.procstart = null
 	if(ignore_self && observed_atom == src)
 		return TRUE
 
@@ -51,6 +53,8 @@
 
 /// Updates the applied FOV value and applies the handler to client if able
 /mob/living/proc/update_fov()
+	procstart = null
+	src.procstart = null
 	var/highest_fov
 	for(var/trait_type in fov_traits)
 		var/fov_type = fov_traits[trait_type]
@@ -63,6 +67,8 @@
 
 /// Updates the FOV for the client.
 /mob/living/proc/update_fov_client()
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return
 	var/datum/component/fov_handler/fov_component = GetComponent(/datum/component/fov_handler)
@@ -76,11 +82,15 @@
 
 /// Adds a trait which limits a user's FOV
 /mob/living/proc/add_fov_trait(source, type)
+	procstart = null
+	src.procstart = null
 	LAZYSET(fov_traits, source, type)
 	update_fov()
 
 /// Removes a trait which limits a user's FOV
 /mob/living/proc/remove_fov_trait(source, type)
+	procstart = null
+	src.procstart = null
 	if(!fov_traits) //Clothing equip/unequip is bad code and invokes this several times
 		return
 	LAZYREMOVE(fov_traits, source)
@@ -95,6 +105,8 @@
 
 /// Plays a visual effect representing a sound cue for people with vision obstructed by FOV or blindness
 /proc/play_fov_effect(atom/center, range, icon_state, dir = SOUTH, ignore_self = FALSE, angle = 0, time = 1.5 SECONDS, list/override_list)
+	procstart = null
+	src.procstart = null
 	var/turf/anchor_point = get_turf(center)
 	var/image/fov_image/fov_image
 	var/list/clients_shown

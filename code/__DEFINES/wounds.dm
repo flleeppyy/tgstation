@@ -146,6 +146,8 @@ GLOBAL_LIST_INIT_TYPED(all_wound_pregen_data, /datum/wound_pregen_data, generate
 
 /// Constructs [GLOB.all_wound_pregen_data] by iterating through a typecache of pregen data, ignoring abstract types, and instantiating the rest.
 /proc/generate_wound_static_data()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list/datum/wound_pregen_data)
 
 	var/list/datum/wound_pregen_data/all_pregen_data = list()
@@ -178,6 +180,8 @@ GLOBAL_LIST_INIT(wound_series_collections, generate_wound_series_collection())
 // Series -> severity -> type -> weight
 /// Generates [wound_series_collections] by iterating through all pregen_data. Refer to the mentioned list for documentation
 /proc/generate_wound_series_collection()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list/datum/wound)
 
 	var/list/datum/wound/wound_collection = list()
@@ -255,6 +259,8 @@ GLOBAL_LIST_INIT(wounding_types_to_series, list(
  * A randomly picked wound typepath meeting all the above criteria and being applicable to the part's biotype - or null if there were none.
  */
 /proc/get_corresponding_wound_type(wounding_type, obj/item/bodypart/part, severity_min, severity_max = severity_min, severity_pick_mode = WOUND_PICK_HIGHEST_SEVERITY, random_roll = TRUE, duplicates_allowed = FALSE, care_about_existing_wounds = TRUE)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/wound) // note that just because its set to return this doesnt mean its non-nullable
 
 	var/list/wounding_type_list = GLOB.wounding_types_to_series[wounding_type]

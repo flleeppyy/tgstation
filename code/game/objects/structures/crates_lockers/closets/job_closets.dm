@@ -6,6 +6,8 @@
 	icon_door = "bar_wardrobe"
 
 /obj/structure/closet/gmcloset/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	var/list/items_inside = list(
 		/obj/item/clothing/head/hats/tophat = 2,
@@ -29,6 +31,8 @@
 	icon_door = "chef_wardrobe"
 
 /obj/structure/closet/chefcloset/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	var/list/items_inside = list(
 		/obj/item/clothing/under/suit/waiter = 2,
@@ -50,6 +54,8 @@
 	icon_door = "jani_wardrobe"
 
 /obj/structure/closet/jcloset/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/under/rank/civilian/janitor(src)
 	new /obj/item/clothing/gloves/color/black(src)
@@ -74,6 +80,8 @@
 	icon_door = "law_wardrobe"
 
 /obj/structure/closet/lawcloset/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/under/suit/black(src)
 	new /obj/item/clothing/under/rank/civilian/lawyer/beige(src)
@@ -91,6 +99,8 @@
 	new /obj/item/clothing/shoes/laceup(src)
 
 /obj/structure/closet/lawcloset/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/clothing/accessory/lawyers_badge(src)
 	new /obj/item/clothing/accessory/lawyers_badge(src)
@@ -101,6 +111,8 @@
 	icon_door = "chap_wardrobe"
 
 /obj/structure/closet/wardrobe/chaplain_black/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/choice_beacon/holy(src)
 	new /obj/item/clothing/accessory/pocketprotector/cosmetology(src)
 	new /obj/item/clothing/under/rank/civilian/chaplain(src)
@@ -119,6 +131,8 @@
 	icon_door = "sec_wardrobe"
 
 /obj/structure/closet/wardrobe/red/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/clothing/suit/hooded/wintercoat/security = 1,
 		/obj/item/storage/backpack/security = 1,
@@ -139,6 +153,8 @@
 	icon_door = "cargo_wardrobe"
 
 /obj/structure/closet/wardrobe/cargotech/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/clothing/suit/hooded/wintercoat/cargo = 1,
 		/obj/item/clothing/under/rank/cargo/tech = 3,
@@ -153,6 +169,8 @@
 	icon_door = "atmos_wardrobe"
 
 /obj/structure/closet/wardrobe/atmospherics_yellow/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/clothing/accessory/pocketprotector = 1,
 		/obj/item/storage/backpack/duffelbag/engineering = 1,
@@ -171,6 +189,8 @@
 	icon_door = "engi_wardrobe"
 
 /obj/structure/closet/wardrobe/engineering_yellow/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/clothing/accessory/pocketprotector = 1,
 		/obj/item/storage/backpack/duffelbag/engineering = 1,
@@ -190,6 +210,8 @@
 	icon_door = "med_wardrobe"
 
 /obj/structure/closet/wardrobe/white/medical/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/clothing/accessory/pocketprotector = 1,
 		/obj/item/storage/backpack/duffelbag/med = 1,
@@ -213,6 +235,8 @@
 	icon_door = "robo_wardrobe"
 
 /obj/structure/closet/wardrobe/robotics_black/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/clothing/glasses/hud/diagnostic = 2,
 		/obj/item/clothing/under/rank/rnd/roboticist = 2,
@@ -233,6 +257,8 @@
 	icon_door = "chem_wardrobe"
 
 /obj/structure/closet/wardrobe/chemistry_white/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/clothing/under/rank/medical/chemist = 2,
 		/obj/item/clothing/shoes/sneakers/white = 2,
@@ -251,6 +277,8 @@
 	icon_door = "gen_wardrobe"
 
 /obj/structure/closet/wardrobe/genetics_white/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/clothing/under/rank/rnd/geneticist = 2,
 		/obj/item/clothing/shoes/sneakers/white = 2,
@@ -268,6 +296,8 @@
 	icon_door = "viro_wardrobe"
 
 /obj/structure/closet/wardrobe/virology_white/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/clothing/under/rank/medical/virologist = 2,
 		/obj/item/clothing/shoes/sneakers/white = 2,
@@ -285,6 +315,8 @@
 	icon_door = "sci_wardrobe"
 
 /obj/structure/closet/wardrobe/science_white/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/clothing/accessory/pocketprotector = 1,
 		/obj/item/storage/backpack/science = 2,
@@ -304,6 +336,8 @@
 	icon_door = "botany_wardrobe"
 
 /obj/structure/closet/wardrobe/botanist/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/storage/backpack/botany = 2,
 		/obj/item/storage/backpack/satchel/hyd = 2,
@@ -321,6 +355,8 @@
 	icon_door = "curator_wardrobe"
 
 /obj/structure/closet/wardrobe/curator/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/head/fedora/curator(src)
 	new /obj/item/clothing/suit/jacket/curator(src)
 	new /obj/item/clothing/under/rank/civilian/curator/treasure_hunter(src)

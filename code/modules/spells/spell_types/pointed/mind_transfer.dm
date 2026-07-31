@@ -37,6 +37,8 @@
 	))
 
 /datum/action/cooldown/spell/pointed/mind_transfer/can_cast_spell(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -49,6 +51,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/pointed/mind_transfer/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -90,10 +94,14 @@
 	return TRUE
 
 /datum/action/cooldown/spell/pointed/mind_transfer/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	swap_minds(owner, cast_on)
 
 /datum/action/cooldown/spell/pointed/mind_transfer/proc/swap_minds(mob/living/caster, mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 
 	var/mob/living/to_swap = cast_on
 	if(isguardian(cast_on))

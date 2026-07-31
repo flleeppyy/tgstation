@@ -24,15 +24,21 @@
 	COOLDOWN_DECLARE(cooldown)
 
 /obj/item/relic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	random_themed_appearance()
 	RegisterSignal(src, COMSIG_ITEM_OPENED_FROM_GIFT, PROC_REF(auto_reveal))
 
 /obj/item/relic/proc/auto_reveal(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	reveal()
 
 /obj/item/relic/proc/random_themed_appearance()
+	procstart = null
+	src.procstart = null
 	var/themed_name_prefix
 	var/themed_name_suffix
 	if(artifact_theme == RELIC_PROTOTYPE)
@@ -54,6 +60,8 @@
 	artifact_theme = RELIC_NECROTECH
 
 /obj/item/relic/proc/reveal()
+	procstart = null
+	src.procstart = null
 	if(activated) //no rerolling
 		return
 	activated = TRUE
@@ -96,6 +104,8 @@
 	obj_flags |= UNIQUE_RENAME
 
 /obj/item/relic/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!activated)
 		to_chat(user, span_notice("You aren't quite sure what this is. Maybe R&D knows what to do with it?"))
 		return
@@ -109,10 +119,14 @@
 
 /// Helper to spawn smoke somewhere
 /obj/item/relic/proc/throw_smoke(turf/where)
+	procstart = null
+	src.procstart = null
 	do_smoke(0, src, get_turf(where))
 
 /// Helper to show a message to people around the relic
 /obj/item/relic/proc/relic_message(message)
+	procstart = null
+	src.procstart = null
 	var/atom/message_source = ismob(loc) ? loc : src
 	message_source.visible_message(message)
 
@@ -120,6 +134,8 @@
 
 /// Throws a corgi somewhere
 /obj/item/relic/proc/corgi_cannon(mob/user)
+	procstart = null
+	src.procstart = null
 	playsound(src, SFX_SPARKS, rand(25,50), TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	var/mob/living/basic/pet/dog/corgi/sad_corgi = new(get_turf(user))
 	sad_corgi.throw_at(pick(oview(10,user)), 10, rand(3,8), callback = CALLBACK(src, PROC_REF(throw_smoke), sad_corgi))
@@ -127,6 +143,8 @@
 
 /// Spawns cleaning foam
 /obj/item/relic/proc/cleaning_foam(mob/user)
+	procstart = null
+	src.procstart = null
 	playsound(src, SFX_SPARKS, rand(25, 50), TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	var/obj/item/grenade/chem_grenade/cleaner/spawned_foamer = new(get_turf(user))
 	spawned_foamer.detonate()
@@ -135,6 +153,8 @@
 
 /// Similar to cleaning foam but spawns the acid variant
 /obj/item/relic/proc/cleaning_foam_acid(mob/user)
+	procstart = null
+	src.procstart = null
 	playsound(src, SFX_SPARKS, rand(25, 50), TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	var/obj/item/grenade/chem_grenade/ez_clean/spawned_foamer = new(get_turf(user))
 	spawned_foamer.detonate()
@@ -146,6 +166,8 @@
 
 /// Flashbangs anyone nearby
 /obj/item/relic/proc/flashbanger(mob/user)
+	procstart = null
+	src.procstart = null
 	playsound(src, SFX_SPARKS, rand(25,50), TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	var/obj/item/grenade/flashbang/spawned_flashbang = new(get_turf(user))
 	spawned_flashbang.detonate()
@@ -153,6 +175,8 @@
 
 /// Summon a bunch of random animals, some of which are dangerous
 /obj/item/relic/proc/summon_animals(mob/user)
+	procstart = null
+	src.procstart = null
 	var/message = span_danger("[src] begins to shake, and in the distance the sound of rampaging animals arises!")
 	visible_message(message)
 	to_chat(user, message)
@@ -181,6 +205,8 @@
 
 /// Version of summon_animals that spawns mostly lavaland monsters
 /obj/item/relic/proc/summon_animals_monsters(mob/user)
+	procstart = null
+	src.procstart = null
 	var/message = span_danger("[src] begins to shake, and in the distance the sound of roaring arises!")
 	visible_message(message)
 	to_chat(user, message)
@@ -215,6 +241,8 @@
 
 /// Spawns a bunch of mimics of the relic which also can spawn relics, but despawn shortly
 /obj/item/relic/proc/rapid_self_dupe(mob/user)
+	procstart = null
+	src.procstart = null
 	audible_message("[src] emits a loud pop!")
 	var/list/dummy_artifacts = list()
 	for(var/counter in 1 to rand(5,10))
@@ -231,10 +259,14 @@
 
 /// Explodes after a few seconds
 /obj/item/relic/proc/heat_and_explode(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_danger("[src] begins to heat up!"))
 	addtimer(CALLBACK(src, PROC_REF(blow_up), user), rand(3.5 SECONDS, 10 SECONDS))
 
 /obj/item/relic/proc/blow_up(mob/user)
+	procstart = null
+	src.procstart = null
 	if(loc == user)
 		visible_message(span_notice("\The [src]'s top opens, releasing a powerful blast!"))
 		explosion(src, heavy_impact_range = rand(1,5), light_impact_range = rand(1,5), flame_range = 2, flash_range = rand(1,5), adminlog = TRUE)
@@ -243,6 +275,8 @@
 
 /// Teleports the relic, and anyone holding it, to a random location nearby
 /obj/item/relic/proc/uncontrolled_teleport(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("[src] begins to vibrate!"))
 
 	var/teleport_time = rand(1 SECONDS, 3 SECONDS)
@@ -250,6 +284,8 @@
 	Shake(1, 1, teleport_time, 0.05 SECONDS)
 
 /obj/item/relic/proc/do_the_teleport(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/userturf = get_turf(user)
 	//Because Nuke Ops bringing this back on their shuttle, then looting the ERT area is 2fun4you!
 	if(is_centcom_level(userturf.z))
@@ -263,6 +299,8 @@
 
 /// Version of uncontrolled_teleport with cult theming, and that affects all nearby movables rather than just the relic
 /obj/item/relic/proc/uncontrolled_aoe_teleport(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("[src] begins to vibrate intensely!"))
 
 	var/teleport_time = rand(1 SECONDS, 3 SECONDS)
@@ -270,6 +308,8 @@
 	Shake(2, 2, teleport_time, 0.03 SECONDS)
 
 /obj/item/relic/proc/do_the_aoe_teleport(mob/user)
+	procstart = null
+	src.procstart = null
 	visible_message(span_notice("[src] twists and bends, relocating anything nearby!"))
 	var/turf/teleturf = get_turf(src)
 	for(var/atom/movable/nearby in view(2, teleturf))
@@ -303,23 +343,31 @@
 
 // Creates a glass and fills it up with a drink.
 /obj/item/relic/proc/drink_dispenser(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/reagent_containers/cup/glass/drinkingglass/freebie = new(get_step_rand(user))
 	playsound(freebie, SFX_SPARKS, rand(25,50), TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	do_sparks(5, TRUE, src, src)
 	addtimer(CALLBACK(src, PROC_REF(dispense_drink), freebie), 0.5 SECONDS)
 
 /obj/item/relic/proc/dispense_drink(obj/item/reagent_containers/cup/glass/glasser)
+	procstart = null
+	src.procstart = null
 	playsound(glasser, 'sound/effects/phasein.ogg', rand(25,50), TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	glasser.reagents.add_reagent(get_random_reagent_id(whitelist = subtypesof(/datum/reagent/consumable/ethanol)), rand(glasser.volume * 0.3, glasser.volume))
 	throw_smoke(get_turf(glasser))
 
 /// Scrambles your organs. 33% chance to delete after use.
 /obj/item/relic/proc/tummy_ache(mob/user)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/circle_wave/bioscrambler/light(get_turf(src))
 	to_chat(user, span_notice("Your stomach starts growling..."))
 	addtimer(CALLBACK(src, PROC_REF(scrambliticus), user), rand(1 SECONDS, 3 SECONDS)) // throw it away!
 
 /obj/item/relic/proc/scrambliticus(mob/user)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/circle_wave/bioscrambler/light(get_turf(src))
 	playsound(src, 'sound/effects/magic/cosmic_energy.ogg', vol = 50, vary = TRUE)
 	for(var/mob/living/carbon/nearby in range(2, get_turf(src))) //needs get_turf() to work
@@ -333,6 +381,8 @@
 
 /// Charges an item or two in your inventory. Also yourself.
 /obj/item/relic/proc/charger(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_danger("You're recharged!"))
 	var/stunner = 1.25 SECONDS
 	if(iscarbon(user))
@@ -359,15 +409,21 @@
 		lightning_fx(to_charge_base, 0.8 SECONDS)
 
 /obj/item/relic/proc/lightning_fx(atom/shocker, time)
+	procstart = null
+	src.procstart = null
 	var/lightning = mutable_appearance('icons/effects/effects.dmi', "electricity3", layer = ABOVE_MOB_LAYER)
 	shocker.add_overlay(lightning)
 	addtimer(CALLBACK(src, PROC_REF(cut_the_overlay), shocker, lightning), time)
 
 /obj/item/relic/proc/cut_the_overlay(atom/shocker, lightning)
+	procstart = null
+	src.procstart = null
 	shocker.cut_overlay(lightning)
 
 /// Hugs/shakes everyone in range!
 /obj/item/relic/proc/hugger(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/mob/living/carbon/huggeds = oviewers(3, user)
 	for(var/mob/living/carbon/victim in huggeds)
 		victim.help_shake_act(user, force_friendly = TRUE)
@@ -379,6 +435,8 @@
 
 /// Converts a 3x3 area into a random dimensional theme.
 /obj/item/relic/proc/dimensional_shift(mob/user)
+	procstart = null
+	src.procstart = null
 	var/new_theme_path = pick(subtypesof(/datum/dimension_theme))
 	var/datum/dimension_theme/shifter = SSmaterials.dimensional_themes[new_theme_path]
 	for(var/turf/shiftee in range(1, user))
@@ -390,6 +448,8 @@
 /// Replaces your clothing with a random costume, and your ID with a cardboard one.
 /// TODO: make them part of the same kit (lobster hat, lobster suit)
 /obj/item/relic/proc/disguiser(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user))
 		to_chat(user, span_notice("You have a strange feeling for a moment, but then it passes."))
 		return
@@ -439,6 +499,8 @@
 	REMOVE_TRAIT(user, TRAIT_NO_JUMPSUIT, REF(src))
 
 /obj/item/relic/proc/roll_costume(slot, flagcheck)
+	procstart = null
+	src.procstart = null
 	var/list/candidates = list()
 	for(var/obj/item/costume as anything in GLOB.all_autodrobe_items)
 		if(flagcheck && !(initial(costume.flags_inv) & flagcheck))
@@ -453,6 +515,8 @@
 
 /// Makes the relic holder have a shield that blocks 3 common attacks
 /obj/item/relic/proc/t1_shield_holder(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/component/shield = AddComponent( \
 		/datum/component/shielded, \
 		max_charges = 3, \
@@ -482,6 +546,8 @@
 
 /// Makes the relic holder have a shield that blocks 1 powerful attack
 /obj/item/relic/proc/t2_shield_holder(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/component/shield = AddComponent( \
 		/datum/component/shielded, \
 		max_charges = 1, \
@@ -510,6 +576,8 @@
 	warn_admins(user, "Shield", FALSE)
 
 /obj/item/relic/proc/shield_hit(mob/living/owner, attack_text, current_charges)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/items/weapons/marauder.ogg', 20, TRUE, frequency = 1.25)
 	owner.visible_message(span_danger("[owner]'s holds [src] up, blocking [attack_text] with a projected shield!"))
 	if(current_charges <= 0)
@@ -518,6 +586,8 @@
 		remove_filter("block_shield")
 
 /obj/item/relic/proc/remove_shield(list/cleanup_components)
+	procstart = null
+	src.procstart = null
 	for(var/datum/component/comp as anything in cleanup_components)
 		qdel(comp)
 	light_system = initial(light_system)
@@ -527,6 +597,8 @@
 
 /// Places rock turfs around the relic
 /obj/item/relic/proc/place_rocks(mob/user)
+	procstart = null
+	src.procstart = null
 	relic_message(span_notice("A spire of rock erupts from the ground beneath [src]!"))
 	playsound(src, 'sound/effects/rock/rock_break.ogg', 50, TRUE)
 	var/turf/spawnloc = get_turf(src)
@@ -550,6 +622,8 @@
 /// User sprays out blood in all directions
 /// Has a small chance of changing the power to suck_blood
 /obj/item/relic/proc/yeet_blood(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/yeet_time = rand(1 SECONDS, 3 SECONDS)
 	add_filter("blood_outgoing", 1, outline_filter(0, COLOR_DARK))
 	transition_filter("blood_outgoing", outline_filter(2, BLOOD_COLOR_RED), yeet_time)
@@ -561,6 +635,8 @@
 	addtimer(CALLBACK(src, PROC_REF(actually_yeet_blood)), yeet_time)
 
 /obj/item/relic/proc/actually_yeet_blood()
+	procstart = null
+	src.procstart = null
 	var/mob/living/user = loc
 	var/splatcount = 0
 	if(istype(user) && CAN_HAVE_BLOOD(user) && !user.can_block_magic(MAGIC_RESISTANCE_HOLY, 1))
@@ -587,6 +663,8 @@
 /// Nearby mobs transfer blood to the user
 /// Has a small chance of changing the power to yeet_blood
 /obj/item/relic/proc/suck_blood(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/suck_time = rand(1 SECONDS, 3 SECONDS)
 	add_filter("blood_incoming", 1, outline_filter(0, COLOR_DARK))
 	transition_filter("blood_incoming", outline_filter(2, BLOOD_COLOR_RED), suck_time)
@@ -598,6 +676,8 @@
 	addtimer(CALLBACK(src, PROC_REF(actually_suck_blood)), suck_time)
 
 /obj/item/relic/proc/actually_suck_blood()
+	procstart = null
+	src.procstart = null
 	var/mob/living/user = loc
 	var/any_affected = FALSE
 	if(istype(user) && CAN_HAVE_BLOOD(user) && !user.can_block_magic(MAGIC_RESISTANCE_HOLY, 1))
@@ -624,6 +704,8 @@
 
 /// Alerts admins on usage of dagnerous relics
 /obj/item/relic/proc/warn_admins(mob/user, relic_type, priority = TRUE)
+	procstart = null
+	src.procstart = null
 	var/turf/location = get_turf(src)
 	var/log_msg = "[relic_type] relic used by [key_name(user)] in [AREACOORD(location)]"
 	if(priority)
@@ -635,12 +717,16 @@
 /obj/item/relic/revealed
 
 /obj/item/relic/revealed/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	auto_reveal()
 
 /obj/item/relic/lavaland
 
 /obj/item/relic/lavaland/revealed/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	auto_reveal()
 

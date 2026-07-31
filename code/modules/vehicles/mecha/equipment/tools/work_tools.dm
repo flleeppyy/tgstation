@@ -24,25 +24,35 @@
 	var/obj/vehicle/sealed/mecha/ripley/workmech
 
 /obj/item/mecha_parts/mecha_equipment/hydraulic_clamp/attach(obj/vehicle/sealed/mecha/new_mecha)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	workmech = chassis
 	ADD_TRAIT(chassis, TRAIT_OREBOX_FUNCTIONAL, TRAIT_MECH_EQUIPMENT(type))
 
 /obj/item/mecha_parts/mecha_equipment/hydraulic_clamp/detach(atom/moveto)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(chassis, TRAIT_OREBOX_FUNCTIONAL, TRAIT_MECH_EQUIPMENT(type))
 	workmech = null
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/hydraulic_clamp/use_tool(atom/target, mob/living/user, delay, amount, volume, datum/callback/extra_checks)
+	procstart = null
+	src.procstart = null
 	return do_after_mecha(target, user, delay)
 
 /obj/item/mecha_parts/mecha_equipment/hydraulic_clamp/do_after_checks(atom/target)
+	procstart = null
+	src.procstart = null
 	// Gotta be close to the target
 	if(!loc.Adjacent(target))
 		return FALSE
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/hydraulic_clamp/action(mob/living/source, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!action_checks(target))
 		return
 	if(!workmech.cargo_hold)
@@ -167,11 +177,15 @@
 	var/required_amount = 80
 
 /obj/item/mecha_parts/mecha_equipment/extinguisher/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(400)
 	reagents.add_reagent(/datum/reagent/water, 400)
 
 /obj/item/mecha_parts/mecha_equipment/extinguisher/proc/spray_extinguisher(mob/user)
+	procstart = null
+	src.procstart = null
 	if(reagents.total_volume < required_amount)
 		return
 
@@ -193,6 +207,8 @@
  * Only water tank objects can be used.
  */
 /obj/item/mecha_parts/mecha_equipment/extinguisher/proc/attempt_refill(mob/user)
+	procstart = null
+	src.procstart = null
 	if(reagents.maximum_volume == reagents.total_volume)
 		return
 	var/turf/in_front = get_step(chassis, chassis.dir)
@@ -208,6 +224,8 @@
 	playsound(chassis, 'sound/effects/refill.ogg', 50, TRUE, -6)
 
 /obj/item/mecha_parts/mecha_equipment/extinguisher/get_snowflake_data()
+	procstart = null
+	src.procstart = null
 	return list(
 		"snowflake_id" = MECHA_SNOWFLAKE_ID_EXTINGUISHER,
 		"reagents" = reagents.total_volume,
@@ -216,6 +234,8 @@
 	)
 
 /obj/item/mecha_parts/mecha_equipment/extinguisher/handle_ui_act(action, list/params)
+	procstart = null
+	src.procstart = null
 	switch(action)
 		if("activate")
 			spray_extinguisher(usr)
@@ -245,15 +265,21 @@
 	var/obj/item/construction/rcd/exosuit/internal_rcd
 
 /obj/item/mecha_parts/mecha_equipment/rcd/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	internal_rcd = new(src)
 
 /obj/item/mecha_parts/mecha_equipment/rcd/Destroy()
+	procstart = null
+	src.procstart = null
 	initial_location = null
 	QDEL_NULL(internal_rcd)
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/rcd/get_snowflake_data()
+	procstart = null
+	src.procstart = null
 	return list(
 		"snowflake_id" = MECHA_SNOWFLAKE_ID_RCD,
 		"scan_ready" = COOLDOWN_FINISHED(internal_rcd, destructive_scan_cooldown),
@@ -263,14 +289,20 @@
 
 /// Set the RCD's owner when attaching and detaching it
 /obj/item/mecha_parts/mecha_equipment/rcd/attach(obj/vehicle/sealed/mecha/new_mecha, attach_right)
+	procstart = null
+	src.procstart = null
 	internal_rcd.owner = new_mecha
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/rcd/detach(atom/moveto)
+	procstart = null
+	src.procstart = null
 	internal_rcd.owner = null
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/rcd/handle_ui_act(action, list/params)
+	procstart = null
+	src.procstart = null
 	switch(action)
 		if("rcd_scan")
 			if(!COOLDOWN_FINISHED(internal_rcd, destructive_scan_cooldown))
@@ -288,6 +320,8 @@
 
 
 /obj/item/mecha_parts/mecha_equipment/rcd/do_after_checks(atom/target)
+	procstart = null
+	src.procstart = null
 	// Checks if mech moved during operation
 	if(chassis.loc != initial_location)
 		return FALSE
@@ -299,6 +333,8 @@
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/rcd/action(mob/source, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!action_checks(target))
 		return
 	// No meson action!
@@ -319,6 +355,8 @@
 	return TRUE
 
 /obj/item/mecha_parts/mecha_equipment/rcd/interact_with_atom(obj/item/attacking_item, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(istype(attacking_item, /obj/item/rcd_upgrade))
 		internal_rcd.install_upgrade(attacking_item, user)
@@ -336,6 +374,8 @@
 	var/result = /obj/vehicle/sealed/mecha/ripley/mk2
 
 /obj/item/mecha_parts/mecha_equipment/ripleyupgrade/can_attach(obj/vehicle/sealed/mecha/ripley/mecha, attach_right = FALSE, mob/user)
+	procstart = null
+	src.procstart = null
 	if(mecha.type != /obj/vehicle/sealed/mecha/ripley)
 		to_chat(user, span_warning("This conversion kit can only be applied to APLU MK-I models."))
 		return FALSE
@@ -355,6 +395,8 @@
 	return TRUE
 
 /obj/item/mecha_parts/mecha_equipment/ripleyupgrade/attach(obj/vehicle/sealed/mecha/markone, attach_right = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/vehicle/sealed/mecha/newmech = new result(get_turf(markone),1)
 	if(!newmech)
 		return
@@ -408,6 +450,8 @@
 	result = /obj/vehicle/sealed/mecha/ripley/paddy
 
 /obj/item/mecha_parts/mecha_equipment/ripleyupgrade/paddy/can_attach(obj/vehicle/sealed/mecha/ripley/mecha, attach_right = FALSE, mob/user)
+	procstart = null
+	src.procstart = null
 	if(mecha.equip_by_category[MECHA_L_ARM] || mecha.equip_by_category[MECHA_R_ARM]) //Paddys can't use RIPLEY-type equipment
 		to_chat(user, span_warning("This kit cannot be applied with hardpoint equipment attached."))
 		return FALSE

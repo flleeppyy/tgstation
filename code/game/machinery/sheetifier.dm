@@ -10,6 +10,8 @@
 	var/datum/material_container/materials
 
 /obj/machinery/sheetifier/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	materials = new ( \
 		src, \
@@ -24,10 +26,14 @@
 	)
 
 /obj/machinery/sheetifier/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(materials)
 	return ..()
 
 /obj/machinery/sheetifier/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & (BROKEN|NOPOWER))
 		return
@@ -35,15 +41,21 @@
 	. += on_overlay
 
 /obj/machinery/sheetifier/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "base_machine[busy_processing ? "_processing" : ""]"
 	return ..()
 
 /obj/machinery/sheetifier/proc/CanInsertMaterials(container, held_item, user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return busy_processing ? MATCONTAINER_BLOCK_INSERT : TRUE
 
 /obj/machinery/sheetifier/proc/AfterInsertMaterials(container, item_inserted, id_inserted, mats_consumed, amount_inserted, atom/context)
+	procstart = null
+	src.procstart = null
 	busy_processing = TRUE
 	update_appearance()
 	var/datum/material/last_inserted_material = id_inserted
@@ -53,18 +65,26 @@
 	addtimer(CALLBACK(src, PROC_REF(finish_processing)), 6.4 SECONDS)
 
 /obj/machinery/sheetifier/proc/finish_processing()
+	procstart = null
+	src.procstart = null
 	busy_processing = FALSE
 	update_appearance()
 	materials.retrieve_all() //Returns all as sheets
 	use_energy(active_power_usage)
 
 /obj/machinery/sheetifier/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/sheetifier/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/sheetifier/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)

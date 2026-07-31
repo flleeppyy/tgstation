@@ -17,36 +17,56 @@
 	baseturfs = /turf/cordon
 
 /turf/cordon/AfterChange()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSair.high_pressure_delta -= src
 
 /turf/cordon/rust_heretic_act()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/cordon/acid_act(acidpwr, acid_volume, acid_id)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/cordon/Melt()
+	procstart = null
+	src.procstart = null
 	to_be_destroyed = FALSE
 	return src
 
 /turf/cordon/singularity_act()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/cordon/ScrapeAway(amount, flags)
+	procstart = null
+	src.procstart = null
 	return src // :devilcat:
 
 /turf/cordon/TerraformTurf(path, list/new_baseturfs, flags)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/cordon/bullet_act(obj/projectile/hitting_projectile, def_zone, piercing_hit)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE) // Fuck you
 	return BULLET_ACT_BLOCK
 
 /turf/cordon/Adjacent(atom/neighbor, atom/target, atom/movable/mover)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/cordon/Bumped(atom/movable/bumped_atom)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(HAS_TRAIT(bumped_atom, TRAIT_FREE_HYPERSPACE_SOFTCORDON_MOVEMENT)) //we could feasibly reach the border, so just don't
@@ -62,6 +82,8 @@
 	requires_power = FALSE
 
 /area/misc/cordon/Entered(atom/movable/arrived, area/old_area)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/mob/living/enterer as anything in arrived.get_all_contents_type(/mob/living))
 		to_chat(enterer, span_userdanger("This was a bad idea..."))
@@ -72,4 +94,6 @@
 	name = "secret cordon (ghost blocking)"
 
 /turf/cordon/secret/attack_ghost(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	return FALSE

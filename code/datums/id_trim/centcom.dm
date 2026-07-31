@@ -52,6 +52,8 @@
 	honorific_positions = HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_NONE
 
 /datum/id_trim/centcom/intern/head/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	access |= SSid_access.get_flag_access_list(ACCESS_FLAG_COMMON)
@@ -86,6 +88,8 @@
 	big_pointer = FALSE
 
 /datum/id_trim/centcom/specops_officer/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	access = SSid_access.get_region_access_list(list(REGION_CENTCOM, REGION_ALL_STATION))
@@ -95,6 +99,8 @@
 	assignment = JOB_CENTCOM_ADMIRAL
 
 /datum/id_trim/centcom/admiral/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	access = SSid_access.get_region_access_list(list(REGION_CENTCOM, REGION_ALL_STATION))
@@ -106,6 +112,8 @@
 	honorific_positions = HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_NONE
 
 /datum/id_trim/centcom/commander/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	access = SSid_access.get_region_access_list(list(REGION_CENTCOM, REGION_ALL_STATION))
@@ -120,6 +128,8 @@
 
 
 /datum/id_trim/centcom/deathsquad/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	access = (SSid_access.get_region_access_list(list(REGION_CENTCOM)) - ACCESS_CENT_OFFICER) | (SSid_access.get_region_access_list(list(REGION_ALL_STATION)))
@@ -131,6 +141,8 @@
 	honorific_positions = HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_NONE
 
 /datum/id_trim/centcom/ert/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	access = list(ACCESS_CENT_GENERAL) | (SSid_access.get_region_access_list(list(REGION_ALL_STATION)) - ACCESS_CHANGE_IDS)
@@ -142,6 +154,8 @@
 	sechud_icon_state = SECHUD_EMERGENCY_RESPONSE_TEAM_COMMANDER
 
 /datum/id_trim/centcom/ert/commander/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	access = (SSid_access.get_region_access_list(list(REGION_CENTCOM)) - ACCESS_CENT_OFFICER) | (SSid_access.get_region_access_list(list(REGION_ALL_STATION)))
@@ -157,6 +171,8 @@
 	honorific_positions = HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_NONE
 
 /datum/id_trim/centcom/ert/security/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	access = list(ACCESS_CENT_GENERAL, ACCESS_CENT_SPECOPS, ACCESS_CENT_LIVING) | (SSid_access.get_region_access_list(list(REGION_ALL_STATION)) - ACCESS_CHANGE_IDS)
@@ -170,6 +186,8 @@
 	big_pointer = FALSE
 
 /datum/id_trim/centcom/ert/engineer/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	access = list(ACCESS_CENT_GENERAL, ACCESS_CENT_SPECOPS, ACCESS_CENT_LIVING, ACCESS_CENT_STORAGE) | (SSid_access.get_region_access_list(list(REGION_ALL_STATION)) - ACCESS_CHANGE_IDS)
@@ -186,6 +204,8 @@
 
 
 /datum/id_trim/centcom/ert/medical/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	access = list(ACCESS_CENT_GENERAL, ACCESS_CENT_SPECOPS, ACCESS_CENT_MEDICAL, ACCESS_CENT_LIVING) | (SSid_access.get_region_access_list(list(REGION_ALL_STATION)) - ACCESS_CHANGE_IDS)
@@ -202,6 +222,8 @@
 
 
 /datum/id_trim/centcom/ert/chaplain/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	access = list(ACCESS_CENT_GENERAL, ACCESS_CENT_SPECOPS, ACCESS_CENT_LIVING) | (SSid_access.get_region_access_list(list(REGION_ALL_STATION)) - ACCESS_CHANGE_IDS)
@@ -218,6 +240,8 @@
 
 
 /datum/id_trim/centcom/ert/janitor/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	access = list(ACCESS_CENT_GENERAL, ACCESS_CENT_LIVING) | (SSid_access.get_region_access_list(list(REGION_ALL_STATION)) - ACCESS_CHANGE_IDS)
@@ -231,6 +255,8 @@
 	big_pointer = FALSE
 
 /datum/id_trim/centcom/ert/clown/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	access = list(ACCESS_CENT_GENERAL, ACCESS_CENT_LIVING) | (SSid_access.get_region_access_list(list(REGION_ALL_STATION)) - ACCESS_CHANGE_IDS)

@@ -55,6 +55,8 @@
 	sound = 'sound/mobs/non-humanoids/mouse/mousesqueek.ogg'
 
 /mob/living/basic/mouse/Initialize(mapload, tame = FALSE, new_body_color)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(contributes_to_ratcap)
 		SSmobs.cheeserats |= src
@@ -80,6 +82,8 @@
 	AddElement(/datum/element/can_be_held)
 
 /mob/living/basic/mouse/proc/make_tameable()
+	procstart = null
+	src.procstart = null
 	if (HAS_TRAIT(src, TRAIT_TAMED))
 		add_faction(FACTION_NEUTRAL)
 	else
@@ -89,10 +93,14 @@
 	AddElement(/datum/element/regal_rat_minion, converted_path = /mob/living/basic/mouse/rat, pet_commands = GLOB.regal_rat_minion_commands)
 
 /mob/living/basic/mouse/Destroy()
+	procstart = null
+	src.procstart = null
 	SSmobs.cheeserats -= src
 	return ..()
 
 /mob/living/basic/mouse/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/sameside = user.faction_check_atom(src, exact_match = TRUE)
@@ -110,11 +118,15 @@
 
 /// Kills the rat and changes its icon state to be splatted (bloody).
 /mob/living/basic/mouse/proc/splat()
+	procstart = null
+	src.procstart = null
 	icon_dead = "mouse_[body_color]_splat"
 	adjust_health(maxHealth)
 
 // On revival, re-add the mouse to the ratcap, or block it if we're at it
 /mob/living/basic/mouse/revive(full_heal_flags = NONE, excess_healing = 0, force_grab_ghost = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!contributes_to_ratcap)
 		return ..()
 
@@ -131,6 +143,8 @@
 
 // On death, remove the mouse from the ratcap, and turn it into an item if applicable
 /mob/living/basic/mouse/death(gibbed)
+	procstart = null
+	src.procstart = null
 	SSmobs.cheeserats -= src
 	// Rats with a mind will not turn into a lizard snack on death
 	if(mind)
@@ -171,6 +185,8 @@
 	qdel(src)
 
 /mob/living/basic/mouse/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -188,6 +204,8 @@
 
 /// Signal proc for [COMSIG_ATOM_ENTERED]. Sends a lil' squeak to chat when someone walks over us.
 /mob/living/basic/mouse/proc/on_entered(datum/source, atom/movable/entered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(ishuman(entered) && !IS_UNCONSCIOUS_OR_CRIT(src))
@@ -195,6 +213,8 @@
 
 /// Called when a mouse is hand-fed some cheese, it will stop being afraid of humans
 /mob/living/basic/mouse/tamed(mob/living/tamer, obj/item/food/cheese/cheese)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/temp_visual/heart(loc)
 	add_faction(FACTION_NEUTRAL)
@@ -203,6 +223,8 @@
 
 /// Attempts to consume a piece of cheese, causing a few effects.
 /mob/living/basic/mouse/proc/try_consume_cheese(obj/item/food/cheese/cheese)
+	procstart = null
+	src.procstart = null
 	// Royal cheese will evolve us into a regal rat
 	if(istype(cheese, /obj/item/food/cheese/royal))
 		visible_message(
@@ -240,6 +262,8 @@
 
 /// Evolves this rat into a regal rat
 /mob/living/basic/mouse/proc/evolve_into_regal_rat()
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/regal_rat/controlled/regalrat = new(loc)
 	mind?.transfer_to(regalrat)
 	INVOKE_ASYNC(regalrat, TYPE_PROC_REF(/atom/movable, say), "RISE, MY SUBJECTS! SCREEEEEEE!")
@@ -247,10 +271,14 @@
 
 /// Creates a new mouse based on this mouse's subtype.
 /mob/living/basic/mouse/proc/create_a_new_rat()
+	procstart = null
+	src.procstart = null
 	new /mob/living/basic/mouse(loc, HAS_TRAIT(src, TRAIT_TAMED))
 
 /// Biting into a cable will cause a mouse to get shocked and die if applicable. Or do nothing if they're lucky.
 /mob/living/basic/mouse/proc/try_bite_cable(obj/structure/cable/cable)
+	procstart = null
+	src.procstart = null
 	if(cable.avail() && !HAS_TRAIT(src, TRAIT_SHOCKIMMUNE) && prob(cable_zap_prob))
 		visible_message(
 			span_warning("[src] chews through \the [cable]. It's toast!"),
@@ -301,16 +329,22 @@
 	contributes_to_ratcap = FALSE
 
 /mob/living/basic/mouse/brown/tom/make_tameable()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(src, TRAIT_TAMED, INNATE_TRAIT)
 	return ..()
 
 /mob/living/basic/mouse/brown/tom/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Tom fears no cable.
 	ADD_TRAIT(src, TRAIT_SHOCKIMMUNE, INNATE_TRAIT)
 	AddElement(/datum/element/pet_bonus, "squeak")
 
 /mob/living/basic/mouse/brown/tom/create_a_new_rat()
+	procstart = null
+	src.procstart = null
 	new /mob/living/basic/mouse/brown(loc, HAS_TRAIT(src, TRAIT_TAMED)) // dominant gene
 
 /mob/living/basic/mouse/rat
@@ -327,9 +361,13 @@
 	ai_controller = /datum/ai_controller/basic_controller/mouse/rat
 
 /mob/living/basic/mouse/rat/make_tameable()
+	procstart = null
+	src.procstart = null
 	return // Unlike in real life, space rats are horrible creatures who don't like you
 
 /mob/living/basic/mouse/rat/create_a_new_rat()
+	procstart = null
+	src.procstart = null
 	new /mob/living/basic/mouse/rat(loc)
 
 /// Mice turn into food when they die
@@ -349,27 +387,37 @@
 	var/critter_type = /mob/living/basic/mouse
 
 /obj/item/food/deadmouse/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MOUSE, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 10)
 	RegisterSignal(src, COMSIG_ATOM_ON_LAZARUS_INJECTOR, PROC_REF(use_lazarus))
 
 /obj/item/food/deadmouse/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/blood = 20, /datum/reagent/consumable/liquidgibs = 5)
 
 /// Copy properties from an imminently dead mouse
 /obj/item/food/deadmouse/proc/copy_corpse(mob/living/basic/mouse/dead_critter)
+	procstart = null
+	src.procstart = null
 	body_color = dead_critter.body_color
 	critter_type = dead_critter.type
 	name = dead_critter.name
 	icon_state = dead_critter.icon_dead
 
 /obj/item/food/deadmouse/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (reagents?.has_reagent(/datum/reagent/yuck) || reagents?.has_reagent(/datum/reagent/fuel))
 		. += span_warning("[p_Theyre()] dripping with fuel and smells terrible.")
 
 ///Spawn a new mouse from this dead mouse item when hit by a lazarus injector and conditions are met.
 /obj/item/food/deadmouse/proc/use_lazarus(datum/source, obj/item/lazarus_injector/injector, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(injector.revive_type != SENTIENCE_ORGANIC)
 		balloon_alert(user, "invalid creature!")
@@ -382,6 +430,8 @@
 	return LAZARUS_INJECTOR_USED
 
 /obj/item/food/deadmouse/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!tool.get_sharpness() || !user.combat_mode)
 		return NONE
 	if(!isturf(loc))
@@ -399,6 +449,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/food/deadmouse/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isnull(reagents) || !interacting_with.is_open_container())
 		return NONE
 
@@ -418,6 +470,8 @@
 	preserved_food = TRUE
 
 /obj/item/food/deadmouse/moldy/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/blood = 20, /datum/reagent/consumable/liquidgibs = 5, /datum/reagent/consumable/mold = 10)
 
 /// The mouse AI controller

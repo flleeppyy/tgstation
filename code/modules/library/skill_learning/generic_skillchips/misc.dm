@@ -93,10 +93,14 @@
 	deactivate_message = span_warning("All knowledge of the secret brainwashing technique is GONE.")
 
 /obj/item/skillchip/brainwashing/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_warning("It seems to have been corroded over time, putting this in your head may not be the best idea...")
 
 /obj/item/skillchip/brainwashing/on_activate(mob/living/carbon/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_danger("You get a pounding headache as the chip sends corrupt memories into your head!"))
 	user.adjust_organ_loss(ORGAN_SLOT_BRAIN, 20)
 	. = ..()
@@ -152,6 +156,8 @@
 	cooldown_time = 2.5 SECONDS //enough time to skim through tips.
 
 /datum/action/cooldown/fishing_tip/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	send_tip_of_the_round(owner, pick(GLOB.fishing_tips), source = "Ancient fishing wisdom")
 

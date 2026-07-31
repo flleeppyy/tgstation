@@ -4,6 +4,8 @@
  * Override in subtypes to add custom VV handling in the VV panel
  */
 /atom/vv_get_dropdown()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	VV_DROPDOWN_OPTION("", "--- /atom ---")
 	if(!ismovable(src))
@@ -28,6 +30,8 @@
 		VV_DROPDOWN_OPTION(VV_HK_MODIFY_GREYSCALE, "Modify greyscale colors")
 
 /atom/vv_do_topic(list/href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)
@@ -195,6 +199,8 @@
 		usr << ftp(target_icon, "[name].png")
 
 /atom/vv_get_header()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/refid = REF(src)
 	. += "[VV_HREF_TARGETREF(refid, VV_HK_AUTO_RENAME, "<b id='name'>[src]</b>")]"
@@ -212,6 +218,8 @@
  * the object has been admin edited
  */
 /atom/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	var/old_light_flags = light_flags
 	// Disable frozen lights for now, so we can actually modify it
 	light_flags &= ~LIGHT_FROZEN
@@ -313,4 +321,6 @@
 			update_appearance()
 
 /atom/proc/vv_auto_rename(newname)
+	procstart = null
+	src.procstart = null
 	name = newname

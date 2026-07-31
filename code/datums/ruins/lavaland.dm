@@ -173,6 +173,8 @@
 	always_place = TRUE
 
 /datum/map_template/ruin/lavaland/blood_drunk_miner/random/New()
+	procstart = null
+	src.procstart = null
 	suffix = pick("lavaland_surface_blooddrunk1.dmm", "lavaland_surface_blooddrunk2.dmm", "lavaland_surface_blooddrunk3.dmm")
 	return ..()
 

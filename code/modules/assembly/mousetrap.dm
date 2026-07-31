@@ -18,6 +18,8 @@
  * * force: Re-register signals even if the host or loc is unchanged
  */
 /obj/item/assembly/mousetrap/proc/update_host(force = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/newhost
 	// Pick the first valid object in this list:
 	// Wiring datum's owner
@@ -68,18 +70,26 @@
 			host_turf = null
 
 /obj/item/assembly/mousetrap/holder_movement()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_host()
 
 /obj/item/assembly/mousetrap/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_host(force = TRUE)
 
 /obj/item/assembly/mousetrap/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("The pressure plate is [armed?"primed":"safe"].")
 
 /obj/item/assembly/mousetrap/activate()
+	procstart = null
+	src.procstart = null
 	if(..())
 		armed = !armed
 		if(!armed)
@@ -92,22 +102,32 @@
 		playsound(loc, 'sound/items/weapons/handcuffs.ogg', 30, TRUE, -3)
 
 /obj/item/assembly/mousetrap/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "mousetrap[armed ? "armed" : ""]"
 	return ..()
 
 /obj/item/assembly/mousetrap/update_icon(updates=ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	holder?.update_icon(updates)
 
 /obj/item/assembly/mousetrap/on_attach()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_host()
 
 /obj/item/assembly/mousetrap/on_detach()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_host()
 
 /obj/item/assembly/mousetrap/proc/triggered(mob/target, type = "feet")
+	procstart = null
+	src.procstart = null
 	if(!armed)
 		return
 	armed = FALSE // moved to the top because you could trigger it more than once under some circumstances
@@ -152,6 +172,8 @@
  * * user: The mob handling the trap
  */
 /obj/item/assembly/mousetrap/proc/clumsy_check(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!armed || !user)
 		return FALSE
 	if((HAS_TRAIT(user, TRAIT_DUMB) || HAS_TRAIT(user, TRAIT_CLUMSY)) && prob(50))
@@ -165,6 +187,8 @@
 	return FALSE
 
 /obj/item/assembly/mousetrap/attack_self(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!armed)
 		to_chat(user, span_notice("You arm [src]."))
 	else
@@ -178,12 +202,16 @@
 
 // Clumsy check only
 /obj/item/assembly/mousetrap/attack_hand(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(clumsy_check(user))
 		return
 	return ..()
 
 
 /obj/item/assembly/mousetrap/proc/on_entered(datum/source, atom/movable/AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(armed)
 		if(ismob(AM))
@@ -201,6 +229,8 @@
 			INVOKE_ASYNC(src, PROC_REF(triggered), AM)
 
 /obj/item/assembly/mousetrap/on_found(mob/finder)
+	procstart = null
+	src.procstart = null
 	if(armed)
 		if(finder)
 			finder.visible_message(span_warning("[finder] accidentally sets off [src], breaking their fingers."), \
@@ -215,6 +245,8 @@
 
 
 /obj/item/assembly/mousetrap/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(!armed)
 		return ..()
 	visible_message(span_warning("[src] is triggered by [AM]."))
@@ -222,6 +254,8 @@
 
 
 /obj/item/assembly/mousetrap/Destroy()
+	procstart = null
+	src.procstart = null
 	if(host)
 		UnregisterSignal(host,COMSIG_MOVABLE_MOVED)
 		host = null

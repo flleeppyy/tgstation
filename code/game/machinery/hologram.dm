@@ -102,6 +102,8 @@ Possible to do for anyone motivated enough:
 	fire = 50
 
 /obj/machinery/holopad/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/static/list/hovering_mob_typechecks = list(
@@ -121,6 +123,8 @@ Possible to do for anyone motivated enough:
 	secure = TRUE
 
 /obj/machinery/holopad/secure/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/circuitboard/machine/holopad/board = circuit
 	board.secure = TRUE
@@ -134,6 +138,8 @@ Possible to do for anyone motivated enough:
 	var/proximity_range = 1
 
 /obj/machinery/holopad/tutorial/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(proximity_range)
 		proximity_monitor = new(src, proximity_range)
@@ -147,6 +153,8 @@ Possible to do for anyone motivated enough:
 	AddElement(/datum/element/tool_blocker, TOOL_CROWBAR)
 
 /obj/machinery/holopad/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!loc)
 		return
@@ -166,6 +174,8 @@ Possible to do for anyone motivated enough:
 		update_holoray(holo_master, holo.loc)
 
 /obj/machinery/holopad/tutorial/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return
 	if(user.incapacitated || !is_operational)
@@ -176,12 +186,16 @@ Possible to do for anyone motivated enough:
 		replay_start()
 
 /obj/machinery/holopad/tutorial/HasProximity(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if (!isliving(AM))
 		return
 	if(!replay_mode && (disk?.record))
 		replay_start()
 
 /obj/machinery/holopad/Destroy()
+	procstart = null
+	src.procstart = null
 	if(outgoing_call)
 		outgoing_call.ConnectionFailure(src)
 
@@ -202,6 +216,8 @@ Possible to do for anyone motivated enough:
 	return ..()
 
 /obj/machinery/holopad/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!powered())
 		if(replay_mode)
@@ -212,15 +228,21 @@ Possible to do for anyone motivated enough:
 			outgoing_call.ConnectionFailure(src)
 
 /obj/machinery/holopad/atom_break()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(outgoing_call)
 		outgoing_call.ConnectionFailure(src)
 
 /obj/machinery/holopad/on_deconstruction(dissassembled)
+	procstart = null
+	src.procstart = null
 	disk?.forceMove(drop_location())
 	return ..()
 
 /obj/machinery/holopad/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/holograph_range = 4
 	for(var/datum/stock_part/capacitor/capacitor in component_parts)
@@ -228,6 +250,8 @@ Possible to do for anyone motivated enough:
 	holo_range = holograph_range
 
 /obj/machinery/holopad/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isAI(user) || in_range(user, src) || isobserver(user))
 		. += span_notice("The status display reads: Current projection range: <b>[holo_range]</b> units.")
@@ -241,11 +265,15 @@ Possible to do for anyone motivated enough:
 	. += span_info("Ctrl-click to end projection without jumping to your last location.")
 
 /obj/machinery/holopad/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/holopad/set_anchored(anchorvalue)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.) || anchorvalue)
 		return
@@ -262,12 +290,18 @@ Possible to do for anyone motivated enough:
 		record_stop()
 
 /obj/machinery/holopad/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/holopad/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_pry_open(user, tool, close_after_pry = TRUE, closed_density = FALSE, deconstruct_on_fail = TRUE)
 
 /obj/machinery/holopad/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/disk/holodisk))
 		if(disk)
 			to_chat(user,span_warning("There's already a disk inside [src]!"))
@@ -280,11 +314,15 @@ Possible to do for anyone motivated enough:
 	return NONE
 
 /obj/machinery/holopad/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == disk)
 		disk = null
 
 /obj/machinery/holopad/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(!is_operational)
 		return UI_CLOSE
 	if(outgoing_call && !calling)
@@ -292,12 +330,16 @@ Possible to do for anyone motivated enough:
 	return ..()
 
 /obj/machinery/holopad/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Holopad", name)
 		ui.open()
 
 /obj/machinery/holopad/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["calling"] = calling
 	data["on_network"] = on_network
@@ -320,6 +362,8 @@ Possible to do for anyone motivated enough:
 	return data
 
 /obj/machinery/holopad/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -435,6 +479,8 @@ Possible to do for anyone motivated enough:
  * if FALSE unsets the flag and possibly removes hearing sensitivity
  */
 /obj/machinery/holopad/proc/set_can_hear_flags(flag, set_flag = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flag & CAN_HEAR_ALL_FLAGS))
 		return FALSE //the given flag doesnt exist
 
@@ -455,6 +501,8 @@ Possible to do for anyone motivated enough:
 ///setter for adding/removing holocalls to this holopad. used to update the holo_calls list and can_hear_flags
 ///adds the given holocall if add_holocall is TRUE, removes if FALSE
 /obj/machinery/holopad/proc/set_holocall(datum/holocall/holocall_to_update, add_holocall = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!istype(holocall_to_update))
 		return FALSE
 
@@ -474,10 +522,14 @@ Possible to do for anyone motivated enough:
  * hangup_all_calls: Disconnects all current holocalls from the holopad
  */
 /obj/machinery/holopad/proc/hangup_all_calls()
+	procstart = null
+	src.procstart = null
 	for(var/datum/holocall/holocall_to_disconnect as anything in holo_calls)
 		holocall_to_disconnect.Disconnect(src)
 
 /obj/machinery/holopad/attack_ai_secondary(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	if (!istype(user))
 		return SECONDARY_ATTACK_CONTINUE_CHAIN
 	if (!on_network)
@@ -495,6 +547,8 @@ Possible to do for anyone motivated enough:
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/holopad/AICtrlClick(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	if (!istype(user))
 		return
 	if (!on_network)
@@ -509,6 +563,8 @@ Possible to do for anyone motivated enough:
 //this really should not be processing by default with how common holopads are
 //everything in here can start processing if need be once first set and stop processing after being unset
 /obj/machinery/holopad/process()
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(masters))
 		for(var/datum/master as anything in masters)
 			if(!is_operational || !validate_user(master))
@@ -540,6 +596,8 @@ Possible to do for anyone motivated enough:
 		update_appearance(UPDATE_ICON_STATE)
 
 /obj/machinery/holopad/proc/activate_holo(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/ai/AI = user
 	if(!istype(AI))
 		AI = null
@@ -579,6 +637,8 @@ Possible to do for anyone motivated enough:
 /*This is the proc for special two-way communication between AI and holopad/people talking near holopad.
 For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 /obj/machinery/holopad/Hear(atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, radio_freq_name, radio_freq_color, list/spans, list/message_mods = list(), message_range)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(speaker && LAZYLEN(masters) && !radio_freq)//Master is mostly a safety in case lag hits or something. Radio_freq so AIs dont hear holopad stuff through radios.
 		for(var/mob/living/silicon/ai/master in masters)
@@ -599,6 +659,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 		record_message(speaker, raw_message, message_language)
 
 /obj/machinery/holopad/proc/SetLightsAndPower()
+	procstart = null
+	src.procstart = null
 	var/total_users = LAZYLEN(masters) + LAZYLEN(holo_calls)
 	update_use_power(total_users > 0 ? ACTIVE_POWER_USE : IDLE_POWER_USE)
 	update_mode_power_usage(ACTIVE_POWER_USE, initial(active_power_usage) + HOLOPAD_PASSIVE_POWER_USAGE + (HOLOGRAM_POWER_USAGE * total_users))
@@ -609,6 +671,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	update_appearance()
 
 /obj/machinery/holopad/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		icon_state = "[base_icon_state]_open"
 		return ..()
@@ -623,6 +687,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	return ..()
 
 /obj/machinery/holopad/proc/set_holo(datum/owner, obj/effect/overlay/holo_pad_hologram/h)
+	procstart = null
+	src.procstart = null
 	LAZYSET(masters, owner, h)
 	LAZYSET(holorays, owner, new /obj/effect/overlay/holoray(loc))
 	set_can_hear_flags(CAN_HEAR_MASTERS)
@@ -634,6 +700,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	return TRUE
 
 /obj/machinery/holopad/proc/clear_holo(datum/owner)
+	procstart = null
+	src.procstart = null
 	qdel(masters[owner])
 	unset_holo(owner)
 	return TRUE
@@ -641,6 +709,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
  * Called by holocall to inform outgoing_call that the receiver picked up.
  */
 /obj/machinery/holopad/proc/callee_picked_up()
+	procstart = null
+	src.procstart = null
 	calling = FALSE
 	set_can_hear_flags(CAN_HEAR_HOLOCALL_USER)
 
@@ -648,11 +718,15 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
  * Called by holocall to inform outgoing_call that the call is terminated.
  */
 /obj/machinery/holopad/proc/callee_hung_up()
+	procstart = null
+	src.procstart = null
 	set_can_hear_flags(CAN_HEAR_HOLOCALL_USER, set_flag = FALSE)
 	calling = FALSE
 	outgoing_call = null
 
 /obj/machinery/holopad/proc/unset_holo(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/ai/AI = user
 	if(istype(AI) && AI.current == src)
 		AI.current = null
@@ -666,6 +740,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 
 //Try to transfer hologram to another pad that can project on T
 /obj/machinery/holopad/proc/transfer_to_nearby_pad(turf/T, datum/holo_owner)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/overlay/holo_pad_hologram/h = masters[holo_owner]
 	if(!h || h.HC) //Holocalls can't change source.
 		return FALSE
@@ -682,6 +758,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	return FALSE
 
 /obj/machinery/holopad/proc/validate_user(datum/owner)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(owner))
 		return FALSE
 	if(!isliving(owner))
@@ -694,12 +772,16 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 //Can we display holos there
 //Area check instead of line of sight check because this is a called a lot if AI wants to move around.
 /obj/machinery/holopad/proc/validate_location(turf/T,check_los = FALSE)
+	procstart = null
+	src.procstart = null
 	if(T.z == z && get_dist(T, src) <= holo_range && T.loc == get_area(src))
 		return TRUE
 	else
 		return FALSE
 
 /obj/machinery/holopad/proc/move_hologram(datum/owner, turf/new_turf)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(masters) || !masters[owner])
 		return TRUE
 	var/obj/effect/overlay/holo_pad_hologram/holo = masters[owner]
@@ -718,6 +800,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 
 
 /obj/machinery/holopad/proc/update_holoray(datum/holo_owner, turf/new_turf)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/overlay/holo_pad_hologram/holo = masters[holo_owner]
 	var/obj/effect/overlay/holoray/ray = holorays[holo_owner]
 	var/disty = holo.y - ray.y
@@ -742,6 +826,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 
 /// Project a holographic pointing arrow from this holopad toward a target
 /obj/machinery/holopad/proc/holo_point(atom/target, invisibility = 0)
+	procstart = null
+	src.procstart = null
 	if(pointing)
 		return
 	var/turf/pad_turf = get_turf(src)
@@ -773,6 +859,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 
 /// Called after the holo-point expires to restore the holopad's state
 /obj/machinery/holopad/proc/clear_holo_point(obj/effect/overlay/holoray/ray)
+	procstart = null
+	src.procstart = null
 	qdel(ray)
 	pointing = FALSE
 	SetLightsAndPower()
@@ -780,6 +868,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 // RECORDED MESSAGES
 
 /obj/machinery/holopad/proc/setup_replay_holo(datum/holorecord/record)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/overlay/holo_pad_hologram/hologram = new(loc)//Spawn a blank effect at the location.
 	var/image/work_off = record.caller_image
 	hologram.icon = work_off.icon
@@ -800,6 +890,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	return hologram
 
 /obj/machinery/holopad/proc/replay_start()
+	procstart = null
+	src.procstart = null
 	if(!disk)
 		say("Please insert the disc to play the recording.")
 		return
@@ -815,6 +907,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 		replay_entry(1)
 
 /obj/machinery/holopad/proc/replay_stop()
+	procstart = null
+	src.procstart = null
 	if(!disk || !disk.record)
 		return FALSE
 	if(replay_mode)
@@ -825,6 +919,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 		SetLightsAndPower()
 
 /obj/machinery/holopad/proc/record_start(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user || !disk || disk.record)
 		return
 	disk.record = new
@@ -835,6 +931,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	disk.record.set_caller_image(user)
 
 /obj/machinery/holopad/proc/record_message(mob/living/speaker,message,language)
+	procstart = null
+	src.procstart = null
 	if(!record_mode)
 		return
 	//make this command so you can have multiple languages in single record
@@ -861,6 +959,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 		record_stop()
 
 /obj/machinery/holopad/proc/replay_entry(entry_number)
+	procstart = null
+	src.procstart = null
 	if(!replay_mode)
 		return
 	if (!length(disk.record.entries)) // check for zero entries such as photographs and no text recordings
@@ -898,12 +998,16 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	.(entry_number+1)
 
 /obj/machinery/holopad/proc/record_stop()
+	procstart = null
+	src.procstart = null
 	if(record_mode)
 		record_mode = FALSE
 		record_user = null
 		set_can_hear_flags(CAN_HEAR_RECORD_MODE, FALSE)
 
 /obj/machinery/holopad/proc/record_clear()
+	procstart = null
+	src.procstart = null
 	if(disk?.record)
 		QDEL_NULL(disk.record)
 
@@ -915,10 +1019,14 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	var/datum/holocall/HC
 
 /obj/effect/overlay/holo_pad_hologram/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/holographic_nature)
 
 /obj/effect/overlay/holo_pad_hologram/Destroy()
+	procstart = null
+	src.procstart = null
 	Impersonation = null
 	if(!QDELETED(HC))
 		HC.Disconnect(HC.calling_holopad)
@@ -926,9 +1034,13 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	return ..()
 
 /obj/effect/overlay/holo_pad_hologram/Process_Spacemove(movement_dir = 0, continuous_move = FALSE)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/effect/overlay/holo_pad_hologram/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	if(Impersonation)
 		return Impersonation.examine(user)
 	return ..()
@@ -948,6 +1060,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	var/atom/movable/render_step/emissive/glow
 
 /obj/effect/overlay/holoray/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!render_target)
 		var/static/uid = 0
@@ -962,6 +1076,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	LAZYADD(update_overlays_on_z, glow)
 
 /obj/effect/overlay/holoray/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(glow)
 

@@ -10,6 +10,8 @@
 	var/dumped = FALSE
 
 /obj/item/suspiciousphone/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!ISADVANCEDTOOLUSER(user))
 		to_chat(user, span_warning("This device is too advanced for you!"))
 		return
@@ -58,6 +60,8 @@
 	var/datum/bank_account/internal_account
 
 /obj/structure/checkoutmachine/examine(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info("It has a flashing <b>ID card reader</b> for convenient cashing out.")
 
@@ -66,12 +70,16 @@
  * Returns TRUE if no accounts are being drained, FALSE otherwise
  */
 /obj/structure/checkoutmachine/proc/check_if_finished()
+	procstart = null
+	src.procstart = null
 	for(var/datum/bank_account/B as anything in accounts_to_rob)
 		if(LAZYFIND(B.being_dumped, src))
 			return FALSE
 	return TRUE
 
 /obj/structure/checkoutmachine/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!canwalk)
 		balloon_alert(user, "not ready to accept transactions!")
 		return ITEM_INTERACT_BLOCKING
@@ -108,6 +116,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/checkoutmachine/Initialize(mapload, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(src))
 		return
@@ -115,6 +125,8 @@
 	internal_account = new /datum/bank_account/remote("CRAB-17", 0, player_account = FALSE)
 
 /obj/structure/checkoutmachine/proc/setup_siphoning()
+	procstart = null
+	src.procstart = null
 	add_overlay("flaps")
 	add_overlay("hatch")
 	add_overlay("legs_retracted")
@@ -125,7 +137,9 @@
 /**
  * Starts the dumping process and plays a start-up animation before the checkout starts walking.
  */
-/obj/structure/checkoutmachine/proc/startUp() //very VERY snowflake code that adds a neat animation when the pod lands.
+/obj/structure/checkoutmachine/proc/startUp()
+	procstart = null
+	src.procstart = null //very VERY snowflake code that adds a neat animation when the pod lands.
 	start_dumping() //The machine doesnt move during this time, giving people close by a small window to grab their funds before it starts running around
 	sleep(1 SECONDS)
 	if(QDELETED(src))
@@ -189,6 +203,8 @@
 	canwalk = TRUE
 
 /obj/structure/checkoutmachine/Destroy()
+	procstart = null
+	src.procstart = null
 	stop_dumping()
 	STOP_PROCESSING(SSfastprocess, src)
 	priority_announce("The credit deposit machine at [get_area(src)] has been destroyed. Station funds have stopped draining!", sender_override = "CRAB-17 Protocol")
@@ -203,6 +219,8 @@
  * Grabs the accounts to be robbed and puts them in accounts_to_rob, tells the accounts they're being drained and calls dump() to start draining.
  */
 /obj/structure/checkoutmachine/proc/start_dumping()
+	procstart = null
+	src.procstart = null
 	accounts_to_rob = assoc_to_values(SSeconomy.bank_accounts_by_id)
 	accounts_to_rob -= bogdanoff?.get_bank_account()
 	dump()
@@ -213,6 +231,8 @@
  * Sets a timer to call itself again after an interval.
  */
 /obj/structure/checkoutmachine/proc/dump()
+	procstart = null
+	src.procstart = null
 	var/percentage_lost = (rand(5, 15) / 100)
 	for(var/datum/bank_account/B as anything in accounts_to_rob)
 		if(!(B?.being_dumped))
@@ -226,6 +246,8 @@
 	addtimer(CALLBACK(src, PROC_REF(dump)), 15 SECONDS) //Drain every 15 seconds
 
 /obj/structure/checkoutmachine/process()
+	procstart = null
+	src.procstart = null
 	var/anydir = pick(GLOB.cardinals)
 	if(Process_Spacemove(anydir))
 		Move(get_step(src, anydir), anydir)
@@ -234,6 +256,8 @@
  * Goes through accounts_to_rob and tells every account that the drain has stopped.
  */
 /obj/structure/checkoutmachine/proc/stop_dumping()
+	procstart = null
+	src.procstart = null
 	for(var/datum/bank_account/B as anything in accounts_to_rob)
 		B.stop_dump(src)
 
@@ -241,6 +265,8 @@
  * Splits the balance of the internal_account into several smaller piles of cash and scatters them around the area.
  */
 /obj/structure/checkoutmachine/proc/expel_cash()
+	procstart = null
+	src.procstart = null
 	var/funds_remaining = internal_account.account_balance
 	var/safety = funds_remaining + 1 // In the absolute worst case scenario the loop will complete in funds_remaining steps, if this is counter reaches 0 something went terribly wrong and we need to leave
 	while(floor(funds_remaining))
@@ -275,6 +301,8 @@
 	var/mob/living/bogdanoff
 
 /obj/effect/dumpeet_target/Initialize(mapload, user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	bogdanoff = user
 	dump = new /obj/structure/checkoutmachine(null, bogdanoff)
@@ -286,6 +314,8 @@
  * Sets up the falling animation for the checkout machine.
  */
 /obj/effect/dumpeet_target/proc/startLaunch()
+	procstart = null
+	src.procstart = null
 	DF = new /obj/effect/dumpeet_fall(drop_location())
 	dump.setup_siphoning()
 	priority_announce("The spacecoin bubble has popped! Get to the credit deposit machine at [get_area(src)] and cash out before you lose all of your funds!", sender_override = "CRAB-17 Protocol")
@@ -297,6 +327,8 @@
  * Cleans up after the falling animation.
  */
 /obj/effect/dumpeet_target/proc/end_launch()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(DF) //Delete the falling machine effect, because at this point its animation is over. We dont use temp_visual because we want to manually delete it as soon as the pod appears
 	playsound(src, SFX_EXPLOSION, 80, TRUE)
 	dump.forceMove(get_turf(src))

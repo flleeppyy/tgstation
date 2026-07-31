@@ -33,6 +33,8 @@
 	var/datum/looping_sound/heartbeat/soundloop
 
 /mob/living/basic/meteor_heart/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_IMMOBILIZED, INNATE_TRAIT)
 	AddElement(/datum/element/death_drops, /obj/effect/temp_visual/meteor_heart_death)
@@ -60,6 +62,8 @@
 
 /// Called when we get mad at something, either for attacking us or attacking the nearby area
 /mob/living/basic/meteor_heart/proc/aggro()
+	procstart = null
+	src.procstart = null
 	if (ai_controller.ai_status == AI_STATUS_ON)
 		return
 	ai_controller.clear_forced_off()
@@ -70,18 +74,24 @@
 
 /// Called when we stop being mad
 /mob/living/basic/meteor_heart/proc/deaggro()
+	procstart = null
+	src.procstart = null
 	ai_controller.force_ai_off()
 	icon_state = "heart"
 	soundloop.set_mid_length(HEARTBEAT_NORMAL)
 
 /// Animate when using certain abilities
 /mob/living/basic/meteor_heart/proc/used_ability(mob/living/owner, datum/action/cooldown/mob_cooldown/ability)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(ability, SPIKES_ABILITY_TYPEPATH))
 		return
 	Shake(1, 0, 1.5 SECONDS)
 
 /mob/living/basic/meteor_heart/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(soundloop)
 	return ..()
 
@@ -96,6 +106,8 @@
 	var/datum/looping_sound/heartbeat/soundloop
 
 /obj/effect/temp_visual/meteor_heart_death/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(src, 'sound/effects/magic/demon_dies.ogg', vol = 100, vary = TRUE, pressure_affected = FALSE)
 	Shake(2, 0, 3 SECONDS)
@@ -106,11 +118,15 @@
 	soundloop.start()
 
 /obj/effect/temp_visual/meteor_heart_death/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(soundloop)
 	return ..()
 
 /// Make this place a mess
 /obj/effect/temp_visual/meteor_heart_death/proc/gib()
+	procstart = null
+	src.procstart = null
 	playsound(loc, 'sound/effects/blob/attackblob.ogg', vol = 100, vary = TRUE, pressure_affected = FALSE)
 	var/turf/my_turf = get_turf(src)
 	new /obj/effect/gibspawner/human(my_turf)

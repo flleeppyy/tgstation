@@ -8,12 +8,18 @@
 	appearance_flags = LONG_GLIDE
 
 /obj/effect/projectile/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/projectile/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/projectile/proc/scale_to(nx,ny,override=TRUE)
+	procstart = null
+	src.procstart = null
 	var/matrix/M
 	if(!override)
 		M = transform
@@ -23,6 +29,8 @@
 	transform = M
 
 /obj/effect/projectile/proc/turn_to(angle,override=TRUE)
+	procstart = null
+	src.procstart = null
 	var/matrix/M
 	if(!override)
 		M = transform
@@ -32,11 +40,15 @@
 	transform = M
 
 /obj/effect/projectile/New(angle_override, p_x, p_y, color_override, scaling = 1)
+	procstart = null
+	src.procstart = null
 	if(angle_override && p_x && p_y && color_override && scaling)
 		apply_vars(angle_override, p_x, p_y, color_override, scaling)
 	return ..()
 
 /obj/effect/projectile/proc/apply_vars(angle_override, p_x = 0, p_y = 0, color_override, scaling = 1, increment = 0)
+	procstart = null
+	src.procstart = null
 	pixel_x = p_x
 	pixel_y = p_y
 	if(color_override)
@@ -51,5 +63,7 @@
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /obj/effect/abstract/projectile_lighting/Initialize(mapload, color, range, intensity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light(range, intensity, color)

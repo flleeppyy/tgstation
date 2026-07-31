@@ -8,11 +8,15 @@
 	mind_control_duration = 800
 
 /obj/item/organ/heart/gland/plasma/activate()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_warning("You feel bloated."))
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), owner, span_userdanger("A massive stomachache overcomes you.")), 15 SECONDS)
 	addtimer(CALLBACK(src, PROC_REF(vomit_plasma)), 20 SECONDS)
 
 /obj/item/organ/heart/gland/plasma/proc/vomit_plasma()
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return
 	owner.visible_message(span_danger("[owner] vomits a cloud of plasma!"))

@@ -16,23 +16,33 @@
 	var/obj/marked_item
 
 /datum/action/cooldown/spell/summonitem/New(Target, original)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/action_item_overlay, item_callback = CALLBACK(src, PROC_REF(get_marked)))
 
 /datum/action/cooldown/spell/summonitem/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!isnull(marked_item))
 		unmark_item()
 	return ..()
 
 /// For use in callbacks to get the marked item
 /datum/action/cooldown/spell/summonitem/proc/get_marked()
+	procstart = null
+	src.procstart = null
 	return marked_item
 
 /datum/action/cooldown/spell/summonitem/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return isliving(cast_on)
 
 /// Set the passed object as our marked item
 /datum/action/cooldown/spell/summonitem/proc/mark_item(obj/to_mark)
+	procstart = null
+	src.procstart = null
 	marked_item = to_mark
 	RegisterSignal(marked_item, COMSIG_QDELETING, PROC_REF(on_marked_item_deleted))
 
@@ -41,6 +51,8 @@
 
 /// Unset our current marked item
 /datum/action/cooldown/spell/summonitem/proc/unmark_item()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(marked_item, COMSIG_QDELETING)
 	marked_item = null
 
@@ -50,6 +62,8 @@
 
 /// Signal proc for [COMSIG_QDELETING] on our marked item, unmarks our item if it's deleted
 /datum/action/cooldown/spell/summonitem/proc/on_marked_item_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(owner)
@@ -57,6 +71,8 @@
 	unmark_item()
 
 /datum/action/cooldown/spell/summonitem/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(marked_item))
 		try_link_item(cast_on)
@@ -70,12 +86,16 @@
 
 /// Checks if the passed item is a valid item that can be marked / linked to summon.
 /datum/action/cooldown/spell/summonitem/proc/can_link_to(obj/item/potential_mark, mob/living/caster)
+	procstart = null
+	src.procstart = null
 	if(potential_mark.item_flags & ABSTRACT)
 		return FALSE
 	return TRUE
 
 /// If we don't have a marked item, attempts to mark the caster's held item.
 /datum/action/cooldown/spell/summonitem/proc/try_link_item(mob/living/caster)
+	procstart = null
+	src.procstart = null
 	var/obj/item/potential_mark = caster.get_active_held_item()
 	if(!potential_mark)
 		if(caster.get_inactive_held_item())
@@ -99,6 +119,8 @@
 
 /// If we have a marked item and it's in our hand, we will try to unlink it
 /datum/action/cooldown/spell/summonitem/proc/try_unlink_item(mob/living/caster)
+	procstart = null
+	src.procstart = null
 	to_chat(caster, span_notice("You begin removing the mark on [marked_item]..."))
 	if(!do_after(caster, 5 SECONDS, marked_item))
 		to_chat(caster, span_notice("You decide to keep [marked_item] marked."))
@@ -110,6 +132,8 @@
 
 /// Recalls our marked item to the caster. May bring some unexpected things along.
 /datum/action/cooldown/spell/summonitem/proc/try_recall_item(mob/living/caster)
+	procstart = null
+	src.procstart = null
 	var/obj/item_to_retrieve = marked_item
 
 	if(item_to_retrieve.loc)
@@ -191,6 +215,8 @@
 	antimagic_flags = MAGIC_RESISTANCE_MIND
 
 /datum/action/cooldown/spell/summonitem/abductor/can_link_to(obj/item/potential_mark, mob/living/caster)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -202,5 +228,7 @@
 	return TRUE
 
 /datum/action/cooldown/spell/summonitem/abductor/try_unlink_item(mob/living/caster)
+	procstart = null
+	src.procstart = null
 	to_chat(caster, span_warning("You can't unlink [marked_item]'s translocation crystals."))
 	return FALSE

@@ -8,6 +8,8 @@
 	domain_flags = DOMAIN_NO_NOHIT_BONUS
 
 /datum/lazy_template/virtual_domain/breeze_bay/setup_domain(list/created_atoms)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	for(var/obj/item/fishing_rod/rod in created_atoms)
@@ -15,6 +17,8 @@
 
 /// Eventually reveal the cache
 /datum/lazy_template/virtual_domain/breeze_bay/proc/on_fish_caught(datum/source, reward)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(reward))

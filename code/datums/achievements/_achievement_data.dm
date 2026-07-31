@@ -10,16 +10,22 @@
 	var/initialized = FALSE
 
 /datum/achievement_data/New(ckey)
+	procstart = null
+	src.procstart = null
 	owner_ckey = ckey
 	if(SSachievements.initialized && !initialized)
 		InitializeData()
 
 /datum/achievement_data/proc/InitializeData()
+	procstart = null
+	src.procstart = null
 	initialized = TRUE
 	load_all_achievements() //So we know which achievements we have unlocked so far.
 
 ///Gets list of changed rows in MassInsert format
 /datum/achievement_data/proc/get_changed_data()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/T in data)
 		var/datum/award/A = SSachievements.awards[T]
@@ -29,6 +35,8 @@
 				. += list(deets)
 
 /datum/achievement_data/proc/load_all_achievements()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	var/list/kv = list()
@@ -53,6 +61,8 @@
 
 ///Updates local cache with db data for the given achievement type if it wasn't loaded yet.
 /datum/achievement_data/proc/get_data(achievement_type)
+	procstart = null
+	src.procstart = null
 	var/datum/award/award = SSachievements.awards[achievement_type]
 	if(!award.name)
 		return FALSE
@@ -61,6 +71,8 @@
 
 ///Unlocks an achievement of a specific type. achievement type is a typepath to the award, user is the mob getting the award, and value is an optional value to be used for defining a score to add to the leaderboard
 /datum/achievement_data/proc/unlock(achievement_type, mob/user, value = 1, ...)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	if(!SSachievements.achievements_enabled)
@@ -75,23 +87,33 @@
 
 ///Getter for the status/score of an achievement
 /datum/achievement_data/proc/get_achievement_status(achievement_type)
+	procstart = null
+	src.procstart = null
 	return data[achievement_type]
 
 /datum/achievement_data/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/achievements),
 	)
 
 /datum/achievement_data/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 /datum/achievement_data/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Achievements")
 		ui.open()
 
 /datum/achievement_data/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["categories"] = GLOB.achievement_categories
 	.["achievements"] = list()

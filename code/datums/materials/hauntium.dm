@@ -21,6 +21,8 @@
 	value_per_unit = 0.05
 
 /datum/material/hauntium/on_main_applied(atom/source, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(source))
 		return
@@ -36,6 +38,8 @@
 			organ.organ_flags |= ORGAN_GHOST
 
 /datum/material/hauntium/on_main_removed(atom/source, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(source))
 		return

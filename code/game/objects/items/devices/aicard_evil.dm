@@ -9,10 +9,14 @@
 	force = 7
 
 /obj/item/aicard/syndie/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = base_icon_state
 	return ..()
 
 /obj/item/aicard/syndie/update_overlays()
+	procstart = null
+	src.procstart = null
 	..()
 	. = list()
 
@@ -33,10 +37,14 @@
 	var/finding_candidate = FALSE
 
 /obj/item/aicard/syndie/loaded/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("This one has a little S.E.L.F. insignia on the back, and a label next to it that says 'Activate for one FREE aligned AI! Please attempt uplink reintegration or ask your employers for reimbursal if AI is unavailable or belligerent.")
 
 /obj/item/aicard/syndie/loaded/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isnull(AI))
 		return ..()
 	if(finding_candidate)
@@ -50,6 +58,8 @@
 
 /// Sets up the ghost poll
 /obj/item/aicard/syndie/loaded/proc/procure_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/nukeop/op_datum = user.mind?.has_antag_datum(/datum/antagonist/nukeop,TRUE)
 	if(isnull(op_datum))
 		balloon_alert(user, "invalid access!")
@@ -67,6 +77,8 @@
 
 /// Poll has concluded with a ghost, create the AI
 /obj/item/aicard/syndie/loaded/proc/on_poll_concluded(mob/user, datum/antagonist/nukeop/op_datum, mob/dead/observer/ghost)
+	procstart = null
+	src.procstart = null
 	if(!ismob(ghost))
 		to_chat(user, span_warning("Unable to connect to S.E.L.F. dispatch. Please wait and try again later or use the intelliCard on your uplink to get your points refunded."))
 		return
@@ -107,6 +119,8 @@
 	return
 
 /obj/item/aicard/syndie/loaded/upload_ai(atom/to_what, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -124,6 +138,8 @@
 	sticker_icon_state = "o_syndicate"
 
 /obj/item/disk/computer/syndie_ai_upgrade/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/ai/AI
 	if(isAI(target))
 		AI = target

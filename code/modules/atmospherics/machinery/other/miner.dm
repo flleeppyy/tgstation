@@ -31,15 +31,21 @@
 	var/broken_message = "ERROR"
 
 /obj/machinery/atmospherics/miner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_active(active) //Force overlay update.
 
 /obj/machinery/atmospherics/miner/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(broken)
 		. += {"Its debug output is printing "[broken_message]"."}
 
 /obj/machinery/atmospherics/miner/proc/check_operation()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return FALSE
 	var/turf/T = get_turf(src)
@@ -71,16 +77,22 @@
 	return TRUE
 
 /obj/machinery/atmospherics/miner/proc/set_active(setting)
+	procstart = null
+	src.procstart = null
 	if(active != setting)
 		active = setting
 		update_appearance()
 
 /obj/machinery/atmospherics/miner/proc/set_broken(setting)
+	procstart = null
+	src.procstart = null
 	if(broken != setting)
 		broken = setting
 		update_appearance()
 
 /obj/machinery/atmospherics/miner/proc/update_power()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		active_power_usage = idle_power_usage
 	var/turf/T = get_turf(src)
@@ -99,6 +111,8 @@
 			update_use_power(ACTIVE_POWER_USE, (spawn_mol * power_draw_dynamic_mol_coeff) + (P * power_draw_dynamic_kpa_coeff))
 
 /obj/machinery/atmospherics/miner/proc/do_use_energy(amount)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(T && istype(T))
 		var/obj/structure/cable/C = T.get_cable_node() //check if we have a node cable on the machine turf, the first found is picked
@@ -111,6 +125,8 @@
 	return FALSE
 
 /obj/machinery/atmospherics/miner/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(broken)
 		. += "broken"
@@ -122,6 +138,8 @@
 		. += on_overlay
 
 /obj/machinery/atmospherics/miner/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	update_power()
 	check_operation()
 	if(active && !broken)
@@ -131,6 +149,8 @@
 			mine_gas(seconds_per_tick)
 
 /obj/machinery/atmospherics/miner/proc/mine_gas(seconds_per_tick = 2)
+	procstart = null
+	src.procstart = null
 	var/turf/open/O = get_turf(src)
 	if(!isopenturf(O))
 		return FALSE
@@ -141,6 +161,8 @@
 	O.assume_air(merger)
 
 /obj/machinery/atmospherics/miner/attack_ai(mob/living/silicon/user)
+	procstart = null
+	src.procstart = null
 	if(broken)
 		to_chat(user, "[src] seems to be broken. Its debug interface outputs: [broken_message]")
 	..()

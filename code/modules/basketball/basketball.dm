@@ -23,6 +23,8 @@
 	COOLDOWN_DECLARE(pickup_cooldown)
 
 /obj/item/toy/basketball/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	RegisterSignal(src, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equip))
@@ -31,10 +33,14 @@
 	RegisterSignal(src, COMSIG_MOVABLE_IMPACT, PROC_REF(after_throw_reset))
 
 /obj/item/toy/basketball/proc/reset_pickup_restriction()
+	procstart = null
+	src.procstart = null
 	pickup_restriction_ckeys = list()
 	COOLDOWN_RESET(src, pickup_cooldown)
 
 /obj/item/toy/basketball/proc/on_equip(obj/item/source, mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	wielder = user
@@ -51,6 +57,8 @@
 	RegisterSignal(user, COMSIG_LIVING_STATUS_KNOCKDOWN, PROC_REF(on_equipped_mob_knockdown))
 
 /obj/item/toy/basketball/proc/remove_ball_effects()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// unlike on_equip, this signal is triggered after the ball is removed from hands
@@ -64,12 +72,16 @@
  * After a ball is thrown we need to reset the pass_flags since shooting lets you shoot through mobs
  * * source: Datum src from original signal call
 **/
-/obj/item/toy/basketball/proc/after_throw_reset() // don't need the args for the signal
+/obj/item/toy/basketball/proc/after_throw_reset()
+	procstart = null
+	src.procstart = null // don't need the args for the signal
 	SIGNAL_HANDLER
 
 	pass_flags = initial(pass_flags)
 
 /obj/item/toy/basketball/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!user.can_perform_action(src, NEED_HANDS))
 		return
 
@@ -81,6 +93,8 @@
 	return ..()
 
 /obj/item/toy/basketball/proc/movement_effect(atom/movable/source, atom/old_loc, dir, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(steps > step_delay)
@@ -90,6 +104,8 @@
 		steps++
 
 /obj/item/toy/basketball/proc/on_spin(mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/i in 1 to 6)
@@ -99,6 +115,8 @@
 /// Used to calculate our disarm chance based on stamina, direction, and spinning
 /// Note - monkeys use attack_paw() and never trigger this signal (so they always have 100% disarm)
 /obj/item/toy/basketball/proc/on_equipped_mob_disarm(mob/living/baller, mob/living/stealer, zone, obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// spinning gives you a lower disarm chance but it drains stamina
@@ -135,6 +153,8 @@
 			stealer.balloon_alert_to_viewers("bats the ball")
 
 /obj/item/toy/basketball/proc/on_equipped_mob_knockdown(mob/living/user, amount)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(user))
@@ -150,6 +170,8 @@
 	user.balloon_alert_to_viewers("fumbles the ball")
 
 /obj/item/toy/basketball/attack(mob/living/carbon/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(target) || user.combat_mode)
 		return ..()
 
@@ -157,6 +179,8 @@
 	target.put_in_hands(src)
 
 /obj/item/toy/basketball/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user.can_perform_action(src, NEED_HANDS|FORBID_TELEKINESIS_REACH))
 		return
 
@@ -173,18 +197,26 @@
 	playsound(src, 'sound/items/basketball_bounce.ogg', 75, FALSE)
 
 /obj/item/toy/basketball/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/toy/basketball/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		user.throw_item(interacting_with)
 		return ITEM_INTERACT_SUCCESS
 	return NONE
 
 /obj/item/toy/basketball/ranged_interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return interact_with_atom_secondary(interacting_with, user, modifiers)
 
 /obj/item/toy/basketball/interact_with_atom_secondary(atom/interacting_with, mob/living/baller, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(interacting_with, /obj/structure/hoop) && baller.Adjacent(interacting_with))
 		return NONE // Do hoop stuff
 
@@ -205,6 +237,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/toy/basketball/throw_impact(mob/living/carbon/target, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/items/basketball_bounce.ogg', 75, FALSE)
 
 	if(!istype(target))

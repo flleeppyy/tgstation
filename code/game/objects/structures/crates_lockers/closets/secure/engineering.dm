@@ -4,6 +4,8 @@
 	icon_state = "ce"
 
 /obj/structure/closet/secure_closet/engineering_chief/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 
 	new /obj/item/storage/bag/garment/engineering_chief (src)
@@ -20,6 +22,8 @@
 	new /obj/item/storage/box/stickers/chief_engineer(src)
 
 /obj/structure/closet/secure_closet/engineering_chief/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Traitor steal objective
@@ -35,6 +39,8 @@
 	icon_door = "eng_elec"
 
 /obj/structure/closet/secure_closet/engineering_electrical/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	var/list/items_inside = list(
 		/obj/item/inducer = 2,
@@ -44,6 +50,8 @@
 	generate_items_inside(items_inside,src)
 
 /obj/structure/closet/secure_closet/engineering_electrical/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	new /obj/item/clothing/gloves/color/yellow(src)
@@ -56,6 +64,8 @@
 	icon_door = "eng_weld"
 
 /obj/structure/closet/secure_closet/engineering_welding/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/head/utility/welding(src)
@@ -68,6 +78,8 @@
 	icon_state = "eng_secure"
 
 /obj/structure/closet/secure_closet/engineering_personal/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/radio/headset/headset_eng(src)
 	new /obj/item/storage/toolbox/mechanical(src)
@@ -85,6 +97,8 @@
 	icon_state = "atmos"
 
 /obj/structure/closet/secure_closet/atmospherics/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/radio/headset/headset_eng(src)
 
@@ -100,6 +114,8 @@
 	new /obj/item/extinguisher/advanced(src)
 
 /obj/structure/closet/secure_closet/atmospherics/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	new /obj/item/pipe_dispenser(src)

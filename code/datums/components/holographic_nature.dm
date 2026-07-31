@@ -13,10 +13,14 @@
 	)
 
 /datum/component/holographic_nature/Initialize()
+	procstart = null
+	src.procstart = null
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
 
 /datum/component/holographic_nature/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/connect_loc_behalf, parent, loc_connections)
 	if(isliving(parent))
 		RegisterSignal(parent, COMSIG_LIVING_MOB_BUMP, PROC_REF(on_bumped))
@@ -30,16 +34,22 @@
 
 
 /datum/component/holographic_nature/proc/on_mob_damaged(mob/living/source, damage_amount, damagetype, def_zone, blocked, wound_bonus, exposed_wound_bonus, sharpness, attack_direction, attacking_item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(damagetype == BURN || damagetype == BRUTE)
 		apply_effects()
 
 /datum/component/holographic_nature/proc/on_object_damaged(obj/source, damage, damage_type, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(damage_type == BURN || damage_type == BRUTE)
 		apply_effects()
 
 /datum/component/holographic_nature/proc/on_entered(atom/movable/source, atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/movable/movable_parent = parent
 	if(!isturf(movable_parent.loc))
@@ -48,10 +58,14 @@
 		apply_effects()
 
 /datum/component/holographic_nature/proc/on_bumped(atom/movable/source, mob/living/crossing_mob)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	apply_effects()
 
 /datum/component/holographic_nature/proc/apply_effects()
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, glitch_cooldown))
 		return
 	COOLDOWN_START(src, glitch_cooldown, GLITCH_DURATION + GLITCH_REMOVAL_DURATION)

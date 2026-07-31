@@ -8,11 +8,15 @@
 	r_hand = /obj/item/melee/blood_magic/stun
 
 /datum/outfit/cultist/post_equip(mob/living/carbon/human/equipped, visuals_only)
+	procstart = null
+	src.procstart = null
 	equipped.set_eye_color(BLOODCULT_EYE)
 	equipped.update_eyes()
 
 ///Returns whether the given mob is convertable to the blood cult
 /proc/is_convertable_to_cult(mob/living/target, datum/team/cult/specific_cult)
+	procstart = null
+	src.procstart = null
 	if(!istype(target))
 		return FALSE
 	if(isnull(target.mind))

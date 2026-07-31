@@ -77,6 +77,8 @@
 	src.singularity_size = singularity_size
 
 /datum/component/singularity/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSsinguloprocess, src)
 
 	// The singularity stops drifting for no man!
@@ -109,6 +111,8 @@
 	GLOB.singularities |= src
 
 /datum/component/singularity/Destroy(force)
+	procstart = null
+	src.procstart = null
 	GLOB.singularities -= src
 	consume_callback = null
 	target = null
@@ -116,6 +120,8 @@
 	return ..()
 
 /datum/component/singularity/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSsinguloprocess, src)
 
 	parent.RemoveElement(/datum/element/bsa_blocker)
@@ -134,6 +140,8 @@
 	))
 
 /datum/component/singularity/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	// We want to move and eat once a second, but want to process our turf consume queue the rest of the time
 	time_since_last_eat += seconds_per_tick
 	digest()
@@ -147,16 +155,22 @@
 		digest() // Try and process as much as you can with the time we have left
 
 /datum/component/singularity/proc/block_blob()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return COMPONENT_CANCEL_BLOB_ACT
 
 /// Triggered when something enters the component's parent.
 /datum/component/singularity/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	consume(source, arrived)
 
 /datum/component/singularity/proc/consume(datum/source, atom/thing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (thing == parent)
 		stack_trace("Singularity tried to consume itself.")
@@ -165,18 +179,24 @@
 	consume_callback?.Invoke(thing, src)
 
 /datum/component/singularity/proc/consume_attack(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	consume(source, user)
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/component/singularity/proc/consume_attackby(datum/source, obj/item/item, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	consume(source, user)
 
 // Will there be an impact? Who knows.  Will we see it? No.
 /datum/component/singularity/proc/consume_bullets(datum/source, obj/projectile/projectile)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(projectile)
@@ -184,12 +204,18 @@
 
 /// Calls singularity_act on the thing passed, usually destroying the object
 /datum/component/singularity/proc/default_singularity_act(atom/thing)
+	procstart = null
+	src.procstart = null
 	thing.singularity_act(singularity_size, parent)
 
 /datum/component/singularity/proc/eat()
+	procstart = null
+	src.procstart = null
 	turfs_to_consume |= spiral_range_turfs(grav_pull, parent)
 
 /datum/component/singularity/proc/digest()
+	procstart = null
+	src.procstart = null
 	var/atom/atom_parent = parent
 
 	if(!isturf(atom_parent.loc))
@@ -233,6 +259,8 @@
 	cached_index = 0
 
 /datum/component/singularity/proc/move()
+	procstart = null
+	src.procstart = null
 	var/drifting_dir = pick(GLOB.alldirs - last_failed_movement)
 
 	if (!QDELETED(target) && prob(chance_to_move_to_target))
@@ -241,6 +269,8 @@
 	step(parent, drifting_dir)
 
 /datum/component/singularity/proc/moved(datum/source, atom/new_location)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/atom_parent = parent
@@ -264,6 +294,8 @@
 		return COMPONENT_MOVABLE_BLOCK_PRE_MOVE
 
 /datum/component/singularity/proc/can_move(turf/to_move)
+	procstart = null
+	src.procstart = null
 	if (!to_move)
 		return FALSE
 
@@ -278,6 +310,8 @@
 /// Takes in the direction we're going, and optionally how many steps forward to look.
 /// If steps are not provided, it will be inferred by singularity_size.
 /datum/component/singularity/proc/check_turfs_in(direction, steps)
+	procstart = null
+	src.procstart = null
 	if (!direction)
 		return FALSE
 	var/atom/atom_parent = parent
@@ -329,6 +363,8 @@
 
 /// Logs to admins that a singularity was created
 /datum/component/singularity/proc/admin_investigate_setup()
+	procstart = null
+	src.procstart = null
 	var/turf/spawned_turf = get_turf(parent)
 	message_admins("A singulo has been created at [ADMIN_VERBOSEJMP(spawned_turf)].")
 	var/atom/atom_parent = parent
@@ -336,6 +372,8 @@
 
 /// Fired when the singularity is fired at with the BSA and deletes it
 /datum/component/singularity/proc/bluespace_reaction()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!bsa_targetable)
 		return
@@ -348,6 +386,8 @@
 	chance_to_move_to_target = CHANCE_TO_MOVE_TO_TARGET_BLOODTHIRSTY
 
 /datum/component/singularity/bloodthirsty/move()
+	procstart = null
+	src.procstart = null
 	var/atom/atom_parent = parent
 	//handle current target
 	if(target && !QDELETED(target))
@@ -367,6 +407,8 @@
 
 ///Searches the living list for the closest target, and begins chasing them down.
 /datum/component/singularity/bloodthirsty/proc/find_new_target()
+	procstart = null
+	src.procstart = null
 	var/atom/atom_parent = parent
 	var/closest_distance = INFINITY
 	var/mob/living/closest_target

@@ -31,6 +31,8 @@
 	)
 
 /obj/item/circuit_component/arithmetic/populate_options()
+	procstart = null
+	src.procstart = null
 	var/static/component_options = list(
 		COMP_ARITHMETIC_ADD,
 		COMP_ARITHMETIC_SUBTRACT,
@@ -44,6 +46,8 @@
 	arithmetic_option = add_option_port("Arithmetic Option", component_options)
 
 /obj/item/circuit_component/arithmetic/populate_ports()
+	procstart = null
+	src.procstart = null
 	arithmetic_ports = list()
 	AddComponent(/datum/component/circuit_component_add_port, \
 		port_list = arithmetic_ports, \
@@ -56,6 +60,8 @@
 	output = add_output_port("Output", PORT_TYPE_NUMBER, order = 1.1)
 
 /obj/item/circuit_component/arithmetic/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 
 	var/list/ports = arithmetic_ports.Copy()
 	var/datum/port/input/first_port = popleft(ports)

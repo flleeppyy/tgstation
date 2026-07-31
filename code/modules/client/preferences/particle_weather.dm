@@ -5,6 +5,8 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/toggle/particle_weather/apply_to_client(client/client, value)
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/screen/plane_master/rendering_plate/particle_weather/plane_master as anything in client.mob?.hud_used?.get_true_plane_masters(RENDER_PLANE_PARTICLE_WEATHER))
 		plane_master.update_state(client.mob)
 

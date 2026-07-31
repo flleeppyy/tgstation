@@ -19,10 +19,14 @@
 	rcd_proof = TRUE
 
 /turf/open/floor/tram/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. += ..()
 	. += span_notice("The reinforcement bolts are [EXAMINE_HINT("wrenched")] firmly in place. Use a [EXAMINE_HINT("wrench")] to remove the plate.")
 
 /turf/open/floor/tram/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/stack/thermoplastic))
 		build_with_transport_tiles(tool, user)
 		return ITEM_INTERACT_SUCCESS
@@ -32,17 +36,25 @@
 	return NONE
 
 /turf/open/floor/tram/make_plating(force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(force)
 		return ..()
 	return //unplateable
 
 /turf/open/floor/tram/try_replace_tile(obj/item/stack/tile/replacement_tile, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/floor/tram/crowbar_act(mob/living/user, obj/item/item)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/floor/tram/wrench_act(mob/living/user, obj/item/item)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, span_notice("You begin removing the plate..."))
 	if(item.use_tool(src, user, 30, volume=80))
@@ -54,6 +66,8 @@
 	return TRUE
 
 /turf/open/floor/tram/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(target == src)
 		ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
 		return TRUE
@@ -84,9 +98,13 @@
 	return TRUE
 
 /turf/open/floor/tram/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("tram_platform-damaged1","tram_platform-damaged2")
 
 /turf/open/floor/tram/tram_platform/burnt_states()
+	procstart = null
+	src.procstart = null
 	return list("tram_platform-scorched1","tram_platform-scorched2")
 
 /turf/open/floor/tram/plate
@@ -98,9 +116,13 @@
 	flags_1 = NONE
 
 /turf/open/floor/tram/plate/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("tram_plate-damaged1","tram_plate-damaged2")
 
 /turf/open/floor/tram/plate/burnt_states()
+	procstart = null
+	src.procstart = null
 	return list("tram_plate-scorched1","tram_plate-scorched2")
 
 /turf/open/floor/tram/plate/energized
@@ -113,22 +135,32 @@
 	var/specific_transport_id = TRAMSTATION_LINE_1
 
 /turf/open/floor/tram/plate/energized/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/energized, inbound, outbound, specific_transport_id)
 
 /turf/open/floor/tram/plate/energized/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(broken || burnt)
 		. += span_danger("It looks damaged and the electrical components exposed!")
 		. += span_notice("The plate can be repaired using a [EXAMINE_HINT("titanium sheet")].")
 
 /turf/open/floor/tram/plate/energized/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("energized_plate_damaged")
 
 /turf/open/floor/tram/plate/energized/burnt_states()
+	procstart = null
+	src.procstart = null
 	return list("energized_plate_damaged")
 
 /turf/open/floor/tram/plate/energized/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!broken && !burnt)
 		return NONE
 	if(!istype(tool, /obj/item/stack/sheet/mineral/titanium))
@@ -155,6 +187,8 @@
 	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 
 /turf/open/indestructible/tram/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/stack/thermoplastic))
 		build_with_transport_tiles(tool, user)
 		return ITEM_INTERACT_SUCCESS
@@ -171,6 +205,8 @@
 	flags_1 = NONE
 
 /turf/open/floor/glass/reinforced/tram/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RemoveElement(/datum/element/atmos_sensitive, mapload)
 
@@ -199,6 +235,8 @@
 	var/mutable_appearance/damage_overlay
 
 /obj/structure/thermoplastic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/force_move_pulled)
 
@@ -216,6 +254,8 @@
 	floor_tile = /obj/item/stack/thermoplastic/light
 
 /obj/structure/thermoplastic/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(secured)
@@ -225,11 +265,15 @@
 		. += span_notice("It can be re-secured using a [EXAMINE_HINT("screwdriver.")]")
 
 /obj/structure/thermoplastic/take_damage(damage_amount, damage_type = BRUTE, damage_flag = "", sound_effect = TRUE, attack_dir, armour_penetration = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.) //received damage
 		update_appearance()
 
 /obj/structure/thermoplastic/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/ratio = atom_integrity / max_integrity
 	ratio = ceil(ratio * 4) * 25
@@ -240,6 +284,8 @@
 	icon_state = "[base_icon_state]_damage[ratio]"
 
 /obj/structure/thermoplastic/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(secured)
 		user.visible_message(span_notice("[user] begins to unscrew the tile..."),
@@ -257,6 +303,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/thermoplastic/crowbar_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(secured)
 		to_chat(user, span_warning("The security screws need to be removed first!"))
@@ -275,6 +323,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/thermoplastic/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(atom_integrity >= max_integrity)
 		to_chat(user, span_warning("[src] is already in good condition!"))
 		return ITEM_INTERACT_SUCCESS
@@ -316,11 +366,15 @@
 	tile_type = /obj/structure/thermoplastic/light
 
 /obj/item/stack/thermoplastic/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(-3, 3)
 	pixel_y = rand(-3, 3) //randomize a little
 
 /obj/item/stack/thermoplastic/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(throwforce && !is_cyborg) //do not want to divide by zero or show the message to borgs who can't throw
 		var/damage_value

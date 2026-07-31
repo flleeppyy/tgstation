@@ -37,6 +37,8 @@
 	)
 
 /mob/living/basic/vatbeast/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	add_cell_sample()
@@ -51,15 +53,21 @@
 	ai_controller.set_blackboard_key(BB_BASIC_FOODS, typecacheof(enjoyed_food))
 
 /mob/living/basic/vatbeast/tamed(mob/living/tamer, obj/item/food)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	buckle_lying = 0
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/vatbeast)
 	set_faction(list(FACTION_NEUTRAL))
 
 /mob/living/basic/vatbeast/proc/add_cell_sample()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_VATBEAST, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /mob/living/basic/vatbeast/get_bloodtype()
+	procstart = null
+	src.procstart = null
 	return get_blood_type(BLOOD_TYPE_LIZARD) // Green and alien
 
 /// Attack people and slap them
@@ -86,6 +94,8 @@
 	ranged_mousepointer = 'icons/effects/mouse_pointers/supplypod_target.dmi'
 
 /datum/action/cooldown/tentacle_slap/update_button_name(atom/movable/screen/movable/action_button/button, force)
+	procstart = null
+	src.procstart = null
 	if (button.our_hud?.mymob != owner)
 		// For buttons given to mobs which are not our owner, give it this alt name
 		button.name = "Command Tentacle Slap"
@@ -95,12 +105,16 @@
 	return ..()
 
 /datum/action/cooldown/tentacle_slap/set_click_ability(mob/on_who)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
 	to_chat(on_who, span_notice("You prepare your [on_who == owner ? "":"steed's "]pimp-tentacle. <b>Left-click to slap a target!</b>"))
 
 /datum/action/cooldown/tentacle_slap/unset_click_ability(mob/on_who, refund_cooldown = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -108,6 +122,8 @@
 		to_chat(on_who, span_notice("You stop preparing your [on_who == owner ? "":"steed's "]pimp-tentacle."))
 
 /datum/action/cooldown/tentacle_slap/InterceptClickOn(mob/living/clicker, params, atom/target)
+	procstart = null
+	src.procstart = null
 	// Check if we can slap
 	if (!isliving(target) || target == owner)
 		return FALSE
@@ -129,6 +145,8 @@
 	return TRUE
 
 /datum/action/cooldown/tentacle_slap/Activate(atom/to_slap)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_to_slap = to_slap
 
 	owner.visible_message(

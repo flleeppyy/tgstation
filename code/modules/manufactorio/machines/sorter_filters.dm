@@ -11,12 +11,16 @@
 	var/obj/machinery/power/manufacturing/sorter/sorter
 
 /datum/sortrouter_filter/New(sorter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(sorter))
 		return
 	src.sorter = sorter
 
 /datum/sortrouter_filter/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(sorter))
 		return
@@ -25,44 +29,62 @@
 /datum/sortrouter_filter
 
 /datum/sortrouter_filter/proc/return_name()
+	procstart = null
+	src.procstart = null
 	return name
 
 /datum/sortrouter_filter/proc/edit(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "This filter is not editable.")
 
 /datum/sortrouter_filter/proc/meets_conditions(atom/checking)
+	procstart = null
+	src.procstart = null
 
 /datum/sortrouter_filter/is_stack
 	name = "input is stack"
 
 /datum/sortrouter_filter/is_stack/meets_conditions(atom/checking)
+	procstart = null
+	src.procstart = null
 	return isstack(checking)
 
 /datum/sortrouter_filter/is_ore
 	name = "input is ore"
 
 /datum/sortrouter_filter/is_ore/meets_conditions(atom/checking)
+	procstart = null
+	src.procstart = null
 	return istype(checking, /obj/item/stack/ore)
 
 /datum/sortrouter_filter/is_mail
 	name = "input is mail"
 
 /datum/sortrouter_filter/is_mail/meets_conditions(atom/checking)
+	procstart = null
+	src.procstart = null
 	return istype(checking, /obj/item/mail)
 
 /datum/sortrouter_filter/is_tagged
 	name = "input is tagged X"
 
 /datum/sortrouter_filter/is_tagged/edit(mob/user)
+	procstart = null
+	src.procstart = null
 	var/target = tgui_input_list(user, "Select a tag", "Tag", sort_list(GLOB.TAGGERLOCATIONS))
 	if(isnull(target) || !user.can_perform_action(sorter, ALLOW_SILICON_REACH))
 		return
 	value = GLOB.TAGGERLOCATIONS.Find(target)
 
 /datum/sortrouter_filter/is_tagged/return_name()
+	procstart = null
+	src.procstart = null
 	return "input is tagged [value ? GLOB.TAGGERLOCATIONS[value] : ""]"
 
 /datum/sortrouter_filter/is_tagged/meets_conditions(checking)
+	procstart = null
+	src.procstart = null
 	var/obj/item/delivery/mail_or_delivery = checking
 	var/sort_tag
 	if(istype(checking, /obj/item/delivery) || istype(checking, /obj/item/mail))
@@ -74,15 +96,21 @@
 	name = "input's name contains"
 
 /datum/sortrouter_filter/name_contains/edit(mob/user)
+	procstart = null
+	src.procstart = null
 	var/target = tgui_input_text(user, "What should it contain?", "Name", value, 12)
 	if(isnull(target)|| !user.can_perform_action(sorter, ALLOW_SILICON_REACH))
 		return
 	value = target
 
 /datum/sortrouter_filter/name_contains/return_name()
+	procstart = null
+	src.procstart = null
 	return "input's name contains [value]"
 
 /datum/sortrouter_filter/name_contains/meets_conditions(atom/checking)
+	procstart = null
+	src.procstart = null
 	return findtext(LOWER_TEXT(checking.name), value)
 
 /datum/sortrouter_filter/is_path_specific
@@ -91,6 +119,8 @@
 	var/currently_listening = FALSE
 
 /datum/sortrouter_filter/is_path_specific/edit(mob/user)
+	procstart = null
+	src.procstart = null
 	name = initial(name)
 	if(!currently_listening)
 		name = "awaiting item"
@@ -103,6 +133,8 @@
 		UnregisterSignal(sorter, COMSIG_ATOM_ATTACKBY)
 
 /datum/sortrouter_filter/is_path_specific/proc/sorter_hit(datum/source, obj/item/attacking_item, user, params)
+	procstart = null
+	src.procstart = null
 	currently_listening = FALSE
 	value = attacking_item.type
 	name = attacking_item.name
@@ -111,10 +143,14 @@
 	return COMPONENT_NO_AFTERATTACK
 
 /datum/sortrouter_filter/is_path_specific/meets_conditions(atom/checking)
+	procstart = null
+	src.procstart = null
 	return checking.type == value
 
 /datum/sortrouter_filter/is_path_specific/subtypes
 	name = "input is specific kind of item"
 
 /datum/sortrouter_filter/is_path_specific/subtypes/meets_conditions(atom/checking)
+	procstart = null
+	src.procstart = null
 	return istype(checking.type, value)

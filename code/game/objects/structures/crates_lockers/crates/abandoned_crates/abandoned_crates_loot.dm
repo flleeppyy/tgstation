@@ -10,6 +10,8 @@
 	var/list/loot
 
 /obj/effect/spawner/abandoned_crate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(LAZYLEN(loot))
@@ -43,6 +45,8 @@
 		)
 
 /obj/effect/spawner/abandoned_crate/boda/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	for(var/obj/item/circuitboard/machine/vendor/board in loc)
@@ -57,6 +61,8 @@
 	loot = list()
 
 /obj/effect/spawner/abandoned_crate/mecha/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	var/mecha = pick(subtypesof(/obj/item/toy/mecha))
 	loot[mecha] = 1
 
@@ -87,6 +93,8 @@
 		)
 
 /obj/effect/spawner/abandoned_crate/gibtonite/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	for(var/obj/item/gibtonite/free_bomb in loc)
@@ -107,6 +115,8 @@
 	loot = list()
 
 /obj/effect/spawner/abandoned_crate/weed/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	var/seed_type = pick(typesof(/obj/item/seeds/cannabis))
 	var/cannabis_type= pick(typesof(/obj/item/food/grown/cannabis))
 	var/weed_amount = rand(2, 4)
@@ -128,6 +138,8 @@
 		)
 
 /obj/effect/spawner/abandoned_crate/mimic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/obj/structure/closet/crate/secure/loot/parent_crate = loc
@@ -141,6 +153,8 @@
 		)
 
 /obj/effect/spawner/abandoned_crate/bwoink/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	for(var/obj/effect/mine/sound/bwoink/mine in loc)

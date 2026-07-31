@@ -19,6 +19,8 @@
  * add_defaults - should terror handlers marked as "default" be added to the mob?
  */
 /datum/component/fearful/Initialize(list/handler_types, initial_buildup, add_defaults = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -35,11 +37,15 @@
 		add_handler(handler, "default")
 
 /datum/component/fearful/Destroy(force)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSdcs, src)
 	QDEL_LIST(terror_handlers)
 	return ..()
 
 /datum/component/fearful/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 	RegisterSignal(parent, COMSIG_CARBON_PRE_MISC_HELP, PROC_REF(comfort_owner))
@@ -47,16 +53,22 @@
 	RegisterSignal(parent, COMSIG_CARBON_MOOD_CHECK, PROC_REF(on_mood_check))
 
 /datum/component/fearful/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, list(COMSIG_ATOM_EXAMINE, COMSIG_CARBON_PRE_MISC_HELP, SIGNAL_ADDTRAIT(TRAIT_FEARLESS), COMSIG_CARBON_MOOD_CHECK))
 
 /datum/component/fearful/on_source_add(source, list/handler_types, initial_buildup, add_defaults = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	terror_buildup = clamp(terror_buildup + initial_buildup, 0, TERROR_BUILDUP_MAXIMUM)
 	for (var/handler_type in handler_types)
 		add_handler(handler_type, source)
 
 /datum/component/fearful/on_source_remove(source)
+	procstart = null
+	src.procstart = null
 	for (var/datum/terror_handler/handler as anything in terror_handlers)
 		terror_handlers[handler] -= source
 		if (length(terror_handlers[handler]))
@@ -72,6 +84,8 @@
 	return ..()
 
 /datum/component/fearful/proc/add_handler(handler_type, source)
+	procstart = null
+	src.procstart = null
 	for (var/datum/terror_handler/existing as anything in terror_handlers)
 		if (existing.type == handler_type && !existing.bespoke)
 			terror_handlers[existing] += source
@@ -86,6 +100,8 @@
 	return handler
 
 /datum/component/fearful/proc/get_fear_multiplier()
+	procstart = null
+	src.procstart = null
 	var/multiplier = 1
 	var/mob/living/parent_mob = parent
 	if(HAS_PERSONALITY(parent_mob, /datum/personality/cowardly))
@@ -97,6 +113,8 @@
 	return multiplier
 
 /datum/component/fearful/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/fear_modifier = get_fear_multiplier()
 	var/terror_adjustment = 0
 	var/list/tick_later = list()
@@ -126,6 +144,8 @@
 	last_tick_buildup = terror_buildup
 
 /datum/component/fearful/proc/on_examine(mob/living/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (IS_UNCONSCIOUS(source))
@@ -143,6 +163,8 @@
 		examine_list += span_smallnotice("[source] looks rather anxious. [source.p_They()] could probably use a hug...")
 
 /datum/component/fearful/proc/comfort_owner(mob/living/carbon/source, mob/living/hugger)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(hugger == parent)
@@ -191,10 +213,14 @@
 
 /// Remove all terror buildup when we become fearless
 /datum/component/fearful/proc/fearless_added(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	terror_buildup = 0
 
 /datum/component/fearful/proc/on_mood_check(mob/living/source, list/mood_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(terror_buildup >= TERROR_BUILDUP_HEART_ATTACK)

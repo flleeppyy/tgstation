@@ -12,6 +12,8 @@
 	check_flags = NONE
 
 /datum/action/cooldown/mob_cooldown/blood_worm/revive/Grant(mob/granted_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/mob/living/basic/blood_worm/worm = target
@@ -20,6 +22,8 @@
 	RegisterSignals(host, list(COMSIG_MOB_STATCHANGE, COMSIG_LIVING_HEALTH_UPDATE), PROC_REF(update_status_on_signal))
 
 /datum/action/cooldown/mob_cooldown/blood_worm/revive/Remove(mob/removed_from)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/blood_worm/worm = target
 	var/mob/living/carbon/human/host = worm.host
 
@@ -28,6 +32,8 @@
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/revive/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	if (!ishuman(owner) && !istype(owner, /mob/living/basic/blood_worm))
 		return FALSE
 
@@ -40,6 +46,8 @@
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/revive/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/blood_worm/worm = target
 	var/mob/living/carbon/human/host = worm.host
 
@@ -76,6 +84,8 @@
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/revive/proc/run_checks(mob/living/basic/blood_worm/worm, mob/living/carbon/human/host, feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!worm.host)
 		return FALSE
 	if (host.stat != DEAD)

@@ -3,6 +3,8 @@
 	var/list/say_lines
 
 /datum/component/edit_complainer/Initialize(list/text)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -19,6 +21,8 @@
 	RegisterSignal(SSdcs, COMSIG_GLOB_VAR_EDIT, PROC_REF(var_edit_react))
 
 /datum/component/edit_complainer/proc/var_edit_react(datum/source, list/arguments)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/movable/master = parent

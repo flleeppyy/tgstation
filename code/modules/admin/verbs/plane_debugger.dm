@@ -17,15 +17,21 @@
 	var/mirror_target = FALSE
 
 /datum/plane_master_debug/New(datum/admins/owner)
+	procstart = null
+	src.procstart = null
 	src.owner = owner
 
 /datum/plane_master_debug/Destroy()
+	procstart = null
+	src.procstart = null
 	if(owner)
 		owner.plane_debug = null
 		owner = null
 	return ..()
 
 /datum/plane_master_debug/proc/set_target(mob/new_mob, explicit = TRUE)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(mirror)
 	QDEL_NULL(stored)
 
@@ -52,6 +58,8 @@
 	create_store()
 
 /datum/plane_master_debug/proc/on_our_logout(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Recreate our stored view, since we've changed mobs now
 	create_store()
@@ -60,6 +68,8 @@
 
 /// Create or refresh our stored visual data, represeting the viewing mob
 /datum/plane_master_debug/proc/create_store()
+	procstart = null
+	src.procstart = null
 	if(stored)
 		QDEL_NULL(stored)
 	stored = new()
@@ -68,6 +78,8 @@
 	mirror.set_mirror_target(owner.owner.mob)
 
 /datum/plane_master_debug/proc/get_target()
+	procstart = null
+	src.procstart = null
 	var/mob/cur_target = mob_ref?.resolve()
 	var/mob/target = cur_target
 	if(!target?.hud_used || !explicit_mirror)
@@ -82,6 +94,8 @@
 
 /// Setter for mirror_target, basically allows for enabling/disabiling viewing through mob's sight
 /datum/plane_master_debug/proc/set_mirroring(value)
+	procstart = null
+	src.procstart = null
 	if(value == mirror_target)
 		return
 	mirror_target = value
@@ -89,18 +103,26 @@
 	set_target(get_target(), explicit_mirror)
 
 /datum/plane_master_debug/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_DEBUG)
 
 /datum/plane_master_debug/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PlaneMasterDebug")
 		ui.open()
 
 /datum/plane_master_debug/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(get_asset_datum(/datum/asset/simple/plane_background))
 
 /datum/plane_master_debug/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/mob/reference_frame = get_target()
@@ -171,6 +193,8 @@
 	return data
 
 /datum/plane_master_debug/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -250,5 +274,7 @@
 			return TRUE
 
 /datum/plane_master_debug/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_mirroring(FALSE)

@@ -34,9 +34,13 @@
 	immune_traits = null
 
 /obj/item/stack/medical/wrap/sticky_tape/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/cellulose = 5)
 
 /obj/item/stack/medical/wrap/sticky_tape/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.get_inactive_held_item() == src)
 		if(is_zero_amount(delete_if_zero = TRUE))
 			return
@@ -52,10 +56,14 @@
 	return ..()
 
 /obj/item/stack/medical/wrap/sticky_tape/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "[span_notice("You could rip a piece off by using an empty hand.")]"
 
 /obj/item/stack/medical/wrap/sticky_tape/interact_with_atom(obj/item/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isitem(target))
 		return NONE
 
@@ -156,6 +164,8 @@
 	embed_chance = 30
 
 /obj/item/stack/medical/wrap/sticky_tape/surgical/get_surgery_tool_overlay(tray_extended)
+	procstart = null
+	src.procstart = null
 	return "tape" + (tray_extended ? "" : "_out")
 
 /obj/item/stack/medical/wrap/sticky_tape/duct
@@ -173,6 +183,8 @@
 	embed_chance = 0 //Wrapping something in duct tape is basically ensuring it never embeds.
 
 /obj/item/stack/medical/wrap/sticky_tape/duct/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!object_repair_value)
 		return NONE
 

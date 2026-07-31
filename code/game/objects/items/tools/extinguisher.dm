@@ -55,6 +55,8 @@
 
 
 /obj/item/extinguisher/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/ghettojetpack)
 
@@ -66,6 +68,8 @@
 	register_context()
 
 /obj/item/extinguisher/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(held_item != src)
 		return
 	context[SCREENTIP_CONTEXT_LMB] = "Engage nozzle"
@@ -73,17 +77,23 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/extinguisher/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(fire_extinguisher_reagent_sloshing_sound && reagents.total_volume > 0)
 		playsound(src, fire_extinguisher_reagent_sloshing_sound, LIQUID_SLOSHING_SOUND_VOLUME, vary = TRUE, ignore_walls = FALSE)
 
 /obj/item/extinguisher/equipped(mob/user, slot, initial = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((slot & ITEM_SLOT_HANDS) && fire_extinguisher_reagent_sloshing_sound && reagents.total_volume > 0)
 		playsound(src, fire_extinguisher_reagent_sloshing_sound, LIQUID_SLOSHING_SOUND_VOLUME, vary = TRUE, ignore_walls = FALSE)
 
 // A secondary attack letting you wind up the extinguisher for a real wallopping to your targets head
 /obj/item/extinguisher/attack_secondary(mob/living/victim, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	// This only makes sense for heavier extinguishers
 	if(w_class < WEIGHT_CLASS_BULKY)
 		return SECONDARY_ATTACK_CALL_NORMAL
@@ -171,17 +181,23 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT, /datum/material/glass = SMALL_MATERIAL_AMOUNT)
 
 /obj/item/extinguisher/crafted/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	safety = !safety
 	icon_state = "[sprite_name][!safety]"
 	to_chat(user, "[safety ? "You remove the straw and put it on the side of the cool canister" : "You insert the straw, readying it for use"].")
 
 /obj/item/extinguisher/proc/refill()
+	procstart = null
+	src.procstart = null
 	if(!chem)
 		return
 	create_reagents(max_water, AMOUNT_VISIBLE)
 	reagents.add_reagent(chem, max_water)
 
 /obj/item/extinguisher/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(tank_holder_icon_state)
 		AddComponent(/datum/component/container_item/tank_holder, tank_holder_icon_state)
@@ -214,6 +230,8 @@
 	starting_water = FALSE
 
 /obj/item/extinguisher/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (!safety && (reagents.total_volume >= 1))
 		user.visible_message(span_suicide("[user] puts the nozzle to [user.p_their()] mouth. It looks like [user.p_theyre()] trying to extinguish the spark of life!"))
 		interact_with_atom(user, user)
@@ -226,18 +244,24 @@
 		return SHAME
 
 /obj/item/extinguisher/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	safety = !safety
 	src.icon_state = "[sprite_name][!safety]"
 	balloon_alert(user, "safety [safety ? "on" : "off"]")
 	return
 
 /obj/item/extinguisher/attack(mob/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user.combat_mode && !safety) //If we're on help intent and going to spray people, don't bash them.
 		return FALSE
 	else
 		return ..()
 
 /obj/item/extinguisher/attack_atom(obj/attacked_obj, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(AttemptRefill(attacked_obj, user))
 		refilling = TRUE
 		return FALSE
@@ -245,6 +269,8 @@
 		return ..()
 
 /obj/item/extinguisher/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "The safety is [safety ? "on" : "off"]."
 
@@ -252,6 +278,8 @@
 		. += span_notice("Alt-click to empty it.")
 
 /obj/item/extinguisher/proc/AttemptRefill(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(is_type_in_list(target, tanktypes) && target.Adjacent(user))
 		if(reagents.total_volume == reagents.maximum_volume)
 			balloon_alert(user, "already full!")
@@ -275,6 +303,8 @@
 		return FALSE
 
 /obj/item/extinguisher/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(interacting_with.loc == user)
 		return NONE
 	// Always skip interaction if it's a bag or table (that's not on fire)
@@ -283,6 +313,8 @@
 	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/extinguisher/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(refilling)
 		refilling = FALSE
 		return NONE
@@ -338,6 +370,8 @@
 
 //Particle movement loop
 /obj/item/extinguisher/proc/move_particles(list/particles)
+	procstart = null
+	src.procstart = null
 	var/delay = 2
 	// Second loop: Get all the water particles and make them move to their target
 	for(var/obj/effect/particle_effect/water/extinguisher/water as anything in particles)
@@ -345,12 +379,16 @@
 
 //Chair movement loop
 /obj/item/extinguisher/proc/move_chair(obj/buckled_object, movementdirection)
+	procstart = null
+	src.procstart = null
 	var/datum/move_loop/loop = GLOB.move_manager.move(buckled_object, movementdirection, 1, timeout = 9, flags = MOVEMENT_LOOP_START_INSTANT, priority = MOVEMENT_ABOVE_SPACE_PRIORITY)
 	//This means the chair slowing down is dependant on the extinguisher existing, which is weird
 	//Couldn't figure out a better way though
 	RegisterSignal(loop, COMSIG_MOVELOOP_POSTPROCESS, PROC_REF(manage_chair_speed))
 
 /obj/item/extinguisher/proc/manage_chair_speed(datum/move_loop/move/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	switch(source.lifetime)
 		if(4 to 5)
@@ -359,6 +397,8 @@
 			source.delay = 3
 
 /obj/item/extinguisher/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.is_holding(src))
 		to_chat(user, span_notice("You must be holding [src] in your hands to do this!"))
 		return CLICK_ACTION_BLOCKING
@@ -366,6 +406,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/extinguisher/proc/EmptyExtinguisher(mob/user)
+	procstart = null
+	src.procstart = null
 	if(loc == user && reagents.total_volume)
 		reagents.expose(user.loc, TOUCH)
 		reagents.clear_reagents()
@@ -373,6 +415,8 @@
 
 // Firebot assembly
 /obj/item/extinguisher/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!istype(tool, /obj/item/bodypart/arm/left/robot) && !istype(tool, /obj/item/bodypart/arm/right/robot))
 		return NONE
 

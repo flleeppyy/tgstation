@@ -7,6 +7,8 @@
 	description = "A single nuclear operative assaults the station."
 
 /datum/round_event_control/operative/can_spawn_event(players_amt, allow_magic)
+	procstart = null
+	src.procstart = null
 	return ..() && SSdynamic.antag_events_enabled
 
 /datum/round_event/ghost_role/operative
@@ -15,6 +17,8 @@
 	fakeable = FALSE
 
 /datum/round_event/ghost_role/operative/spawn_role()
+	procstart = null
+	src.procstart = null
 	var/mob/chosen_one = SSpolling.poll_ghost_candidates(check_jobban = ROLE_OPERATIVE, role = ROLE_LONE_OPERATIVE, alert_pic = /obj/machinery/nuclearbomb, amount_to_pick = 1)
 	if(isnull(chosen_one))
 		return NOT_ENOUGH_PLAYERS

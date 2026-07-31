@@ -30,6 +30,8 @@
 	var/list/atmos_contents
 
 /datum/spatial_grid_cell/New(cell_x, cell_y, cell_z)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.cell_x = cell_x
 	src.cell_y = cell_y
@@ -45,6 +47,8 @@
 	atmos_contents = dummy_list
 
 /datum/spatial_grid_cell/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(!force)//the response to someone trying to qdel this is a right proper fuck you
 		stack_trace("dont try to destroy spatial grid cells without a good reason. if you need to do it use force")
 		return QDEL_HINT_LETMELIVE
@@ -108,6 +112,8 @@ SUBSYSTEM_DEF(spatial_grid)
 	var/list/cells_with_color
 
 /datum/controller/subsystem/spatial_grid/Initialize()
+	procstart = null
+	src.procstart = null
 	cells_on_x_axis = SPATIAL_GRID_CELLS_PER_SIDE(world.maxx)
 	cells_on_y_axis = SPATIAL_GRID_CELLS_PER_SIDE(world.maxy)
 
@@ -136,12 +142,16 @@ SUBSYSTEM_DEF(spatial_grid)
 
 ///add a movable to the pre init queue for whichever type is specified so that when the subsystem initializes they get added to the grid
 /datum/controller/subsystem/spatial_grid/proc/enter_pre_init_queue(atom/movable/waiting_movable, type)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(waiting_movable, COMSIG_QDELETING, PROC_REF(queued_item_deleted), override = TRUE)
 	//override because something can enter the queue for two different types but that is done through unrelated procs that shouldnt know about eachother
 	waiting_to_add_by_type[type] += waiting_movable
 
 ///removes an initialized and probably deleted movable from our pre init queue before we're initialized
 /datum/controller/subsystem/spatial_grid/proc/remove_from_pre_init_queue(atom/movable/movable_to_remove, exclusive_type)
+	procstart = null
+	src.procstart = null
 	if(exclusive_type)
 		waiting_to_add_by_type[exclusive_type] -= movable_to_remove
 
@@ -161,11 +171,15 @@ SUBSYSTEM_DEF(spatial_grid)
 
 ///if a movable is inside our pre init queue before we're initialized and it gets deleted we need to remove that reference with this proc
 /datum/controller/subsystem/spatial_grid/proc/queued_item_deleted(atom/movable/movable_being_deleted)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	remove_from_pre_init_queue(movable_being_deleted, null)
 
 ///creates the spatial grid for a new z level
 /datum/controller/subsystem/spatial_grid/proc/propogate_spatial_grid_to_new_z(datum/controller/subsystem/processing/dcs/fucking_dcs, datum/space_level/z_level)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/list/new_cell_grid = list()
@@ -181,6 +195,8 @@ SUBSYSTEM_DEF(spatial_grid)
 ///adds cells to the grid for every z level when world.maxx or world.maxy is expanded after this subsystem is initialized. hopefully this is never needed.
 ///because i never tested this.
 /datum/controller/subsystem/spatial_grid/proc/after_world_bounds_expanded(datum/controller/subsystem/processing/dcs/fucking_dcs, has_expanded_world_maxx, has_expanded_world_maxy)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/old_x_axis = cells_on_x_axis
 	var/old_y_axis = cells_on_y_axis
@@ -231,6 +247,8 @@ SUBSYSTEM_DEF(spatial_grid)
  * * range - the bigger this is, the more spatial grid cells the search space intersects
  */
 /datum/controller/subsystem/spatial_grid/proc/orthogonal_range_search(atom/center, type, range)
+	procstart = null
+	src.procstart = null
 	var/turf/center_turf = get_turf(center)
 
 	var/center_x = center_turf.x//used inside the macros
@@ -263,6 +281,8 @@ SUBSYSTEM_DEF(spatial_grid)
 
 ///get the grid cell encomapassing targets coordinates
 /datum/controller/subsystem/spatial_grid/proc/get_cell_of(atom/target)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(target)
 	if(!target_turf)
 		return
@@ -271,10 +291,14 @@ SUBSYSTEM_DEF(spatial_grid)
 
 ///get all grid cells intersecting the bounding box around center with sides of length 2 * range
 /datum/controller/subsystem/spatial_grid/proc/get_cells_in_range(atom/center, range)
+	procstart = null
+	src.procstart = null
 	return get_cells_in_bounds(center, range, range)
 
 ///get all grid cells intersecting the bounding box around center with sides of length (2 * range_x, 2 * range_y)
 /datum/controller/subsystem/spatial_grid/proc/get_cells_in_bounds(atom/center, range_x, range_y)
+	procstart = null
+	src.procstart = null
 	var/turf/center_turf = get_turf(center)
 
 	var/center_x = center_turf.x
@@ -303,6 +327,8 @@ SUBSYSTEM_DEF(spatial_grid)
 /// Adds grid awareness to the passed in atom, of the passed in type
 /// Basically, when this atom moves between grids, it wants to have enter/exit cell called on it
 /datum/controller/subsystem/spatial_grid/proc/add_grid_awareness(atom/movable/add_to, type)
+	procstart = null
+	src.procstart = null
 	// We need to ensure we have a new list reference, to build our new key out of
 	var/list/current_list = spatial_grid_categories[add_to.spatial_grid_key]
 	if(current_list)
@@ -315,6 +341,8 @@ SUBSYSTEM_DEF(spatial_grid)
 
 /// Removes grid awareness from the passed in atom, of the passed in type
 /datum/controller/subsystem/spatial_grid/proc/remove_grid_awareness(atom/movable/remove_from, type)
+	procstart = null
+	src.procstart = null
 	// We need to ensure we have a new list reference, to build our new key out of
 	var/list/current_list = spatial_grid_categories[remove_from.spatial_grid_key]
 	if(current_list)
@@ -327,6 +355,8 @@ SUBSYSTEM_DEF(spatial_grid)
 /// Alerts the atom's current cell that it wishes to be treated as a member
 /// This functionally amounts to "hey, I was recently made aware by [add_grid_awareness], please insert me into my current cell"
 /datum/controller/subsystem/spatial_grid/proc/add_grid_membership(atom/movable/add_to, turf/target_turf, type)
+	procstart = null
+	src.procstart = null
 	if(!target_turf)
 		return
 	if(initialized)
@@ -336,6 +366,8 @@ SUBSYSTEM_DEF(spatial_grid)
 
 /// Removes grid membership from the passed in atom, of the passed in type
 /datum/controller/subsystem/spatial_grid/proc/remove_grid_membership(atom/movable/remove_from, turf/target_turf, type)
+	procstart = null
+	src.procstart = null
 	if(!target_turf)
 		return
 	if(initialized)
@@ -346,6 +378,8 @@ SUBSYSTEM_DEF(spatial_grid)
 /// Updates the string that atoms hold that stores their grid awareness
 /// We will use it to key into their spatial grid categories later
 /datum/controller/subsystem/spatial_grid/proc/update_grid_awareness(atom/movable/update, list/new_list)
+	procstart = null
+	src.procstart = null
 	// We locally store a stringified version of the list, to prevent people trying to mutate it
 	update.spatial_grid_key = new_list.Join("-")
 	// Ensure the global representation is cached
@@ -355,6 +389,8 @@ SUBSYSTEM_DEF(spatial_grid)
 ///find the spatial map cell that target belongs to, then add the target to it, as its type prefers.
 ///make sure to provide the turf new_target is "in"
 /datum/controller/subsystem/spatial_grid/proc/enter_cell(atom/movable/new_target, turf/target_turf)
+	procstart = null
+	src.procstart = null
 	if(!initialized)
 		return
 	if(QDELETED(new_target))
@@ -386,6 +422,8 @@ SUBSYSTEM_DEF(spatial_grid)
 
 ///acts like enter_cell() but only adds the target to a specified type of grid cell contents list
 /datum/controller/subsystem/spatial_grid/proc/add_single_type(atom/movable/new_target, turf/target_turf, exclusive_type)
+	procstart = null
+	src.procstart = null
 	if(!initialized)
 		return
 	if(QDELETED(new_target))
@@ -425,6 +463,8 @@ SUBSYSTEM_DEF(spatial_grid)
  * * exclusive_type - either null or a valid contents channel. if you just want to remove a single type from the grid cell then use this
  */
 /datum/controller/subsystem/spatial_grid/proc/exit_cell(atom/movable/old_target, turf/target_turf, exclusive_type)
+	procstart = null
+	src.procstart = null
 	if(!initialized)
 		return
 
@@ -457,6 +497,8 @@ SUBSYSTEM_DEF(spatial_grid)
 
 ///acts like exit_cell() but only removes the target from the specified type of grid cell contents list
 /datum/controller/subsystem/spatial_grid/proc/remove_single_type(atom/movable/old_target, turf/target_turf, exclusive_type)
+	procstart = null
+	src.procstart = null
 	if(!target_turf || !exclusive_type || !old_target.spatial_grid_key)
 		stack_trace("/datum/controller/subsystem/spatial_grid/proc/remove_single_type() was given null arguments or an old_target that doesn't use the spatial grid!")
 		return FALSE
@@ -491,6 +533,8 @@ SUBSYSTEM_DEF(spatial_grid)
 /// this will error. this checks every grid cell in the world so dont call this on live unless you have to.
 /// returns TRUE if this movable is untracked, FALSE otherwise
 /datum/controller/subsystem/spatial_grid/proc/untracked_movable_error(atom/movable/movable_to_check)
+	procstart = null
+	src.procstart = null
 	if(!movable_to_check?.spatial_grid_key)
 		return FALSE
 
@@ -561,6 +605,8 @@ SUBSYSTEM_DEF(spatial_grid)
  * if it cant infer a grid cell its located in (e.g. if its in nullspace but it can happen if the grid isnt expanded to a z level), search every grid cell.
  */
 /datum/controller/subsystem/spatial_grid/proc/force_remove_from_grid(atom/movable/to_remove)
+	procstart = null
+	src.procstart = null
 	if(!to_remove?.spatial_grid_key)
 		return
 
@@ -583,6 +629,8 @@ SUBSYSTEM_DEF(spatial_grid)
 
 ///remove this movable from the given spatial_grid_cell
 /datum/controller/subsystem/spatial_grid/proc/force_remove_from_cell(atom/movable/to_remove, datum/spatial_grid_cell/input_cell)
+	procstart = null
+	src.procstart = null
 	if(!input_cell)
 		return
 
@@ -590,6 +638,8 @@ SUBSYSTEM_DEF(spatial_grid)
 
 ///if shit goes south, this will find hanging references for qdeleting movables inside the spatial grid
 /datum/controller/subsystem/spatial_grid/proc/find_hanging_cell_refs_for_movable(atom/movable/to_remove, remove_from_cells = TRUE)
+	procstart = null
+	src.procstart = null
 
 	var/list/queues_containing_movable = list()
 	for(var/queue_channel in waiting_to_add_by_type)
@@ -615,6 +665,8 @@ SUBSYSTEM_DEF(spatial_grid)
 
 ///debug proc for checking if a movable is in multiple cells when it shouldnt be (ie always unless multitile entering is implemented)
 /atom/proc/find_all_cells_containing(remove_from_cells = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/spatial_grid_cell/real_cell = SSspatial_grid.get_cell_of(src)
 	var/list/containing_cells = SSspatial_grid.find_hanging_cell_refs_for_movable(src, remove_from_cells)
 
@@ -630,6 +682,8 @@ SUBSYSTEM_DEF(spatial_grid)
 ///creates number_to_generate new oranges_ear's and adds them to the subsystems list of ears.
 ///i really fucking hope this never gets called after init :clueless:
 /datum/controller/subsystem/spatial_grid/proc/pregenerate_more_oranges_ears(number_to_generate)
+	procstart = null
+	src.procstart = null
 	for(var/new_ear in 1 to number_to_generate)
 		pregenerated_oranges_ears += new/mob/oranges_ear(null)
 
@@ -638,6 +692,8 @@ SUBSYSTEM_DEF(spatial_grid)
 ///allocate one [/mob/oranges_ear] mob per turf containing atoms_that_need_ears and give them a reference to every listed atom in their turf.
 ///if an oranges_ear is allocated to a turf that already has an oranges_ear then the second one fails to allocate (and gives the existing one the atom it was assigned to)
 /datum/controller/subsystem/spatial_grid/proc/assign_oranges_ears(list/atoms_that_need_ears)
+	procstart = null
+	src.procstart = null
 	var/input_length = length(atoms_that_need_ears)
 
 	if(input_length > number_of_oranges_ears)
@@ -676,6 +732,8 @@ SUBSYSTEM_DEF(spatial_grid)
 
 ///debug proc for finding how full the cells of src's z level are
 /atom/proc/find_grid_statistics_for_z_level(insert_clients = 0)
+	procstart = null
+	src.procstart = null
 	var/raw_clients = 0
 	var/raw_hearables = 0
 	var/raw_atmos = 0
@@ -848,6 +906,8 @@ SUBSYSTEM_DEF(spatial_grid)
 
 //A debugging proc that colors objects based on what grid they belong to
 /datum/controller/subsystem/spatial_grid/proc/paint_grids()
+	procstart = null
+	src.procstart = null
 	cells_with_color = list()
 	for(var/list/z_level_grid as anything in grids_by_z_level)
 		for(var/list/cell_row as anything in z_level_grid)
@@ -864,6 +924,8 @@ SUBSYSTEM_DEF(spatial_grid)
 
 //A debugging proc that colors objects based on what grid they belong to
 /datum/controller/subsystem/spatial_grid/proc/update_color(atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/spatial_grid_cell/things_cell = get_cell_of(thing)

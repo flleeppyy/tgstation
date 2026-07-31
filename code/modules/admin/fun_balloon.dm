@@ -8,26 +8,38 @@
 	var/pop_sound_effect = 'sound/items/party_horn.ogg'
 
 /obj/effect/fun_balloon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSobj.processing |= src
 
 /obj/effect/fun_balloon/Destroy()
+	procstart = null
+	src.procstart = null
 	SSobj.processing -= src
 	. = ..()
 
 /obj/effect/fun_balloon/process()
+	procstart = null
+	src.procstart = null
 	if(!popped && check() && !QDELETED(src))
 		popped = TRUE
 		effect()
 		pop()
 
 /obj/effect/fun_balloon/proc/check()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/effect/fun_balloon/proc/effect()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/fun_balloon/proc/pop()
+	procstart = null
+	src.procstart = null
 	visible_message(span_notice("[src] pops!"))
 	playsound(get_turf(src), pop_sound_effect, 50, TRUE, -1)
 	qdel(src)
@@ -42,12 +54,16 @@
 	var/make_antag = FALSE
 
 /obj/effect/fun_balloon/sentience/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SentienceFunBalloon", name)
 		ui.open()
 
 /obj/effect/fun_balloon/sentience/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["group_name"] = group_name
 	data["range"] = effect_range
@@ -55,9 +71,13 @@
 	return data
 
 /obj/effect/fun_balloon/sentience/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_ADMIN)
 
 /obj/effect/fun_balloon/sentience/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(popped)
 		return UI_CLOSE
 	if(isAdminObserver(user)) // ignore proximity if we're an admin
@@ -65,6 +85,8 @@
 	return ..()
 
 /obj/effect/fun_balloon/sentience/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -90,6 +112,8 @@
 	return TRUE
 
 /obj/effect/fun_balloon/sentience/effect()
+	procstart = null
+	src.procstart = null
 	var/list/bodies = list()
 	for(var/mob/living/possessable in range(effect_range, get_turf(src)))
 		if (!possessable.ckey && !IS_UNCONSCIOUS_OR_CRIT(possessable)) // Only assign ghosts to living, non-occupied mobs!
@@ -124,6 +148,8 @@
 	var/trigger_time = 60
 
 /obj/effect/fun_balloon/sentience/emergency_shuttle/check()
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(SSshuttle.emergency && (SSshuttle.emergency.timeLeft() <= trigger_time) && (SSshuttle.emergency.mode == SHUTTLE_CALL))
 		. = TRUE
@@ -135,6 +161,8 @@
 	var/effect_range = 5
 
 /obj/effect/fun_balloon/scatter/effect()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/dispersed_mob in range(effect_range, get_turf(src)))
 		var/turf/drop_off = find_safe_turf(z)
 		new /obj/effect/temp_visual/gravpush(get_turf(dispersed_mob))
@@ -153,11 +181,15 @@
 	var/max_crash_strength = 15
 
 /obj/effect/station_crash/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	shuttle_crash()
 	return INITIALIZE_HINT_QDEL
 
 /obj/effect/station_crash/proc/shuttle_crash()
+	procstart = null
+	src.procstart = null
 	var/crash_strength = rand(min_crash_strength,max_crash_strength)
 	for (var/S in SSshuttle.stationary_docking_ports)
 		var/obj/docking_port/stationary/SM = S

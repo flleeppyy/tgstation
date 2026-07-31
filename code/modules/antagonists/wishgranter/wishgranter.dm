@@ -6,21 +6,29 @@
 	suicide_cry = "HAHAHAHAHA!!"
 
 /datum/antagonist/wishgranter/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/hijack/hijack = new
 	hijack.owner = owner
 	objectives += hijack
 
 /datum/antagonist/wishgranter/on_gain()
+	procstart = null
+	src.procstart = null
 	forge_objectives()
 	. = ..()
 	give_powers()
 
 /datum/antagonist/wishgranter/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(owner, "<B>Your inhibitions are swept away, the bonds of loyalty broken, you are free to murder as you please!</B>")
 	owner.announce_objectives()
 
 /datum/antagonist/wishgranter/proc/give_powers()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = owner.current
 	if(!istype(H))
 		return

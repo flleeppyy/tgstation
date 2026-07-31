@@ -17,6 +17,8 @@
 	var/obj/docking_port/mobile/our_port
 
 /obj/item/shuttle_remote/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/machinery/computer/shuttle/our_computer = computer_ref?.resolve()
 	if(may_change_docks && our_computer)
@@ -24,12 +26,16 @@
 		context[SCREENTIP_CONTEXT_ALT_RMB] = "Change Shuttle Docks"
 
 /obj/item/shuttle_remote/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/machinery/computer/shuttle/our_computer = computer_ref?.resolve()
 	if(may_change_docks && our_computer)
 		. += span_notice("You can change where the [get_area_name(SSshuttle.getShuttle(our_computer.shuttleId))] docks using [EXAMINE_HINT("alt-right-click")].")
 
 /obj/item/shuttle_remote/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		return
@@ -40,6 +46,8 @@
 	computer_ref = WEAKREF(computer)
 
 /obj/item/shuttle_remote/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/computer/shuttle/our_computer = computer_ref?.resolve()
 	if(!istype(interacting_with, /obj/machinery/computer/shuttle))
 		return NONE
@@ -58,6 +66,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/shuttle_remote/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/computer/shuttle/our_computer = computer_ref?.resolve()
 	if(!our_port)
 		our_port = SSshuttle.getShuttle(our_computer.shuttleId) //incase we were maploaded
@@ -97,6 +107,8 @@
 	transit_shuttle(user, destination)
 
 /obj/item/shuttle_remote/click_alt_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/computer/shuttle/our_computer = computer_ref?.resolve()
 	if(!may_change_docks || !our_computer)
 		return NONE
@@ -122,6 +134,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/shuttle_remote/proc/can_use(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/computer/shuttle/our_computer = computer_ref?.resolve()
 	if(!user.can_perform_action(src))
 		return FALSE
@@ -146,6 +160,8 @@
 	return TRUE
 
 /obj/item/shuttle_remote/proc/transit_shuttle(mob/user, destination)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/computer/shuttle/our_computer = computer_ref?.resolve()
 	our_computer.send_shuttle(destination, user)
 	our_computer.destination = destination

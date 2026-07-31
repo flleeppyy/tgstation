@@ -39,12 +39,16 @@
 	var/list/wing_types = list(/obj/item/organ/wings/functional/angel)
 
 /obj/item/bodypart/chest/apply_ownership(mob/living/carbon/new_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ishuman(new_owner))
 		var/mob/living/carbon/human/humie = new_owner
 		humie.update_mob_height()
 
 /obj/item/bodypart/chest/get_butcher_drops(force = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(butcher_drops) && !force)
 		return
@@ -56,9 +60,13 @@
 	.[species.skinned_type] = 1
 
 /obj/item/bodypart/chest/grind_results()
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/item/bodypart/chest/forced_removal(dismembered, special, move_to_floor)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/old_owner = owner
 	..(special = TRUE) //special because we're self destructing
 
@@ -69,6 +77,8 @@
 	old_owner.gib(DROP_ALL_REMAINS)
 
 /obj/item/bodypart/chest/can_dismember(obj/item/item)
+	procstart = null
+	src.procstart = null
 	if((!HAS_TRAIT(owner, TRAIT_CURSED) && owner.stat < HARD_CRIT) || !contents.len)
 		return FALSE
 	return ..()
@@ -80,6 +90,8 @@
  * Return null to just use the mob's base height
  */
 /obj/item/bodypart/chest/proc/update_mob_heights(mob/living/carbon/holder)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(holder, TRAIT_DWARF))
 		return HUMAN_HEIGHT_DWARF
 
@@ -89,6 +101,8 @@
 	return null
 
 /obj/item/bodypart/chest/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(cavity_item)
 	QDEL_NULL(worn_uniform_offset)
 	QDEL_NULL(worn_id_offset)
@@ -100,6 +114,8 @@
 	return ..()
 
 /obj/item/bodypart/chest/drop_organs(mob/user, violent_removal)
+	procstart = null
+	src.procstart = null
 	if(cavity_item)
 		cavity_item.forceMove(drop_location())
 		cavity_item = null
@@ -107,6 +123,8 @@
 
 /// Sprite to show for photocopying mob butts
 /obj/item/bodypart/chest/proc/get_butt_sprite()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(owner))
 		return null
 	var/mob/living/carbon/human/human_owner = owner
@@ -152,11 +170,15 @@
 	biological_state = BIO_STANDARD_JOINTED
 
 /obj/item/bodypart/arm/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(worn_glove_offset)
 	QDEL_NULL(held_hand_offset)
 	return ..()
 
 /obj/item/bodypart/arm/proc/set_speed_modifiers(interaction = 0, click = 1)
+	procstart = null
+	src.procstart = null
 	if(interaction_modifier == interaction && click_cd_modifier == click)
 		return
 
@@ -168,6 +190,8 @@
 
 /// We need to clear out hand hud items and appearance, so do that here
 /obj/item/bodypart/arm/clear_ownership(mob/living/carbon/old_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	old_owner.update_worn_gloves()
 	if(!held_index)
@@ -180,6 +204,8 @@
 
 /// We need to add hand hud items and appearance, so do that here
 /obj/item/bodypart/arm/apply_ownership(mob/living/carbon/new_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	new_owner.update_worn_gloves()
@@ -193,6 +219,8 @@
 	new_owner.hud_used?.update_inventory_slot(ITEM_SLOT_HANDS, held_index)
 
 /obj/item/bodypart/arm/set_disabled(new_disabled)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.) || !owner)
 		return
@@ -209,6 +237,8 @@
 	owner.hud_used?.update_inventory_slot(ITEM_SLOT_HANDS, held_index)
 
 /obj/item/bodypart/arm/animate_atom_living(mob/living/owner)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/slapper = ..()
 	slapper.attack_vis_effect = ATTACK_EFFECT_PUNCH
 	slapper.attack_verb_continuous = "punches"
@@ -231,6 +261,8 @@
 	var/click_cd_mod = 1
 
 /datum/status_effect/arm_speed_penalty/on_creation(mob/living/new_owner, hand_index, new_actionspeed = 0, new_click_cd = 1)
+	procstart = null
+	src.procstart = null
 	src.hand_index = hand_index
 	src.actionspeed_mod = new_actionspeed
 	src.click_cd_mod = new_click_cd
@@ -244,18 +276,26 @@
 	return ..()
 
 /datum/status_effect/arm_speed_penalty/before_remove(hand_index)
+	procstart = null
+	src.procstart = null
 	return (src.hand_index == hand_index)
 
 /datum/status_effect/arm_speed_penalty/on_apply()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(owner, COMSIG_MOB_SWAP_HANDS, PROC_REF(on_handswap))
 	on_handswap(owner)
 	return TRUE
 
 /datum/status_effect/arm_speed_penalty/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_actionspeed_modifier(actionspeed_typepath)
 	UnregisterSignal(owner, COMSIG_MOB_SWAP_HANDS)
 
 /datum/status_effect/arm_speed_penalty/proc/on_handswap(mob/living/carbon/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(owner.active_hand_index == hand_index)
 		owner.add_or_update_variable_actionspeed_modifier(actionspeed_typepath, update = TRUE, multiplicative_slowdown = actionspeed_mod)
@@ -263,6 +303,8 @@
 		owner.remove_actionspeed_modifier(actionspeed_typepath)
 
 /datum/status_effect/arm_speed_penalty/nextmove_modifier()
+	procstart = null
+	src.procstart = null
 	return (owner.active_hand_index == hand_index) ? click_cd_mod : 1
 
 /datum/actionspeed_modifier/arm_speed_penalty
@@ -291,6 +333,8 @@
 	stump_typepath = /obj/item/bodypart/arm/left/stump
 
 /obj/item/bodypart/arm/left/apply_ownership(mob/living/carbon/new_owner)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(new_owner, TRAIT_PARALYSIS_L_ARM))
 		ADD_TRAIT(src, TRAIT_PARALYSIS, TRAIT_PARALYSIS_L_ARM)
 		RegisterSignal(new_owner, SIGNAL_REMOVETRAIT(TRAIT_PARALYSIS_L_ARM), PROC_REF(on_owner_paralysis_loss))
@@ -300,6 +344,8 @@
 	..()
 
 /obj/item/bodypart/arm/left/clear_ownership(mob/living/carbon/old_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(old_owner, TRAIT_PARALYSIS_L_ARM))
 		UnregisterSignal(old_owner, SIGNAL_REMOVETRAIT(TRAIT_PARALYSIS_L_ARM))
@@ -309,6 +355,8 @@
 
 ///Proc to react to the owner gaining the TRAIT_PARALYSIS_L_ARM trait.
 /obj/item/bodypart/arm/left/proc/on_owner_paralysis_gain(mob/living/carbon/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	ADD_TRAIT(src, TRAIT_PARALYSIS, TRAIT_PARALYSIS_L_ARM)
 	UnregisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_PARALYSIS_L_ARM))
@@ -316,6 +364,8 @@
 
 ///Proc to react to the owner losing the TRAIT_PARALYSIS_L_ARM trait.
 /obj/item/bodypart/arm/left/proc/on_owner_paralysis_loss(mob/living/carbon/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	REMOVE_TRAIT(src, TRAIT_PARALYSIS, TRAIT_PARALYSIS_L_ARM)
 	UnregisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_PARALYSIS_L_ARM))
@@ -339,6 +389,8 @@
 	stump_typepath = /obj/item/bodypart/arm/right/stump
 
 /obj/item/bodypart/arm/right/apply_ownership(mob/living/carbon/new_owner)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(new_owner, TRAIT_PARALYSIS_R_ARM))
 		ADD_TRAIT(src, TRAIT_PARALYSIS, TRAIT_PARALYSIS_R_ARM)
 		RegisterSignal(new_owner, SIGNAL_REMOVETRAIT(TRAIT_PARALYSIS_R_ARM), PROC_REF(on_owner_paralysis_loss))
@@ -348,6 +400,8 @@
 	..()
 
 /obj/item/bodypart/arm/right/clear_ownership(mob/living/carbon/old_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(old_owner, TRAIT_PARALYSIS_R_ARM))
 		UnregisterSignal(old_owner, SIGNAL_REMOVETRAIT(TRAIT_PARALYSIS_R_ARM))
@@ -357,6 +411,8 @@
 
 ///Proc to react to the owner gaining the TRAIT_PARALYSIS_R_ARM trait.
 /obj/item/bodypart/arm/right/proc/on_owner_paralysis_gain(mob/living/carbon/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	ADD_TRAIT(src, TRAIT_PARALYSIS, TRAIT_PARALYSIS_R_ARM)
 	UnregisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_PARALYSIS_R_ARM))
@@ -364,6 +420,8 @@
 
 ///Proc to react to the owner losing the TRAIT_PARALYSIS_R_ARM trait.
 /obj/item/bodypart/arm/right/proc/on_owner_paralysis_loss(mob/living/carbon/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	REMOVE_TRAIT(src, TRAIT_PARALYSIS, TRAIT_PARALYSIS_R_ARM)
 	UnregisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_PARALYSIS_R_ARM))
@@ -401,6 +459,8 @@
 	var/list/special_footstep_sounds
 
 /obj/item/bodypart/leg/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(PERFORM_ALL_TESTS(focus_only/humanstep_validity))
 		// Update this list if more types are suported in the footstep element
@@ -416,10 +476,14 @@
 				If you want to use this type, you will need to create a global footstep index for it.")
 
 /obj/item/bodypart/leg/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(worn_foot_offset)
 	return ..()
 
 /obj/item/bodypart/leg/set_disabled(new_disabled, update_limbs = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.) || !owner || !update_limbs)
 		return
@@ -433,6 +497,8 @@
 		owner.set_usable_legs(owner.usable_legs + 1)
 
 /obj/item/bodypart/leg/animate_atom_living(mob/living/owner)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/kicker = ..()
 	kicker.attack_vis_effect = ATTACK_EFFECT_KICK
 	kicker.attack_verb_continuous = "kicks"
@@ -440,16 +506,22 @@
 	return kicker
 
 /obj/item/bodypart/leg/apply_ownership(mob/living/carbon/new_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(speed_modifier)
 		new_owner.update_bodypart_speed_modifier()
 
 /obj/item/bodypart/leg/clear_ownership(mob/living/carbon/old_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(speed_modifier)
 		old_owner.update_bodypart_speed_modifier()
 
 /obj/item/bodypart/leg/proc/set_speed_modifier(new_modifier)
+	procstart = null
+	src.procstart = null
 	if(speed_modifier == new_modifier)
 		return
 
@@ -472,6 +544,8 @@
 	stump_typepath = /obj/item/bodypart/leg/left/stump
 
 /obj/item/bodypart/leg/left/apply_ownership(mob/living/carbon/new_owner)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(new_owner, TRAIT_PARALYSIS_L_LEG))
 		ADD_TRAIT(src, TRAIT_PARALYSIS, TRAIT_PARALYSIS_L_LEG)
 		RegisterSignal(new_owner, SIGNAL_REMOVETRAIT(TRAIT_PARALYSIS_L_LEG), PROC_REF(on_owner_paralysis_loss))
@@ -481,6 +555,8 @@
 	..()
 
 /obj/item/bodypart/leg/left/clear_ownership(mob/living/carbon/old_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(old_owner, TRAIT_PARALYSIS_L_LEG))
 		UnregisterSignal(old_owner, SIGNAL_REMOVETRAIT(TRAIT_PARALYSIS_L_LEG))
@@ -490,6 +566,8 @@
 
 ///Proc to react to the owner gaining the TRAIT_PARALYSIS_L_ARM trait.
 /obj/item/bodypart/leg/left/proc/on_owner_paralysis_gain(mob/living/carbon/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	ADD_TRAIT(src, TRAIT_PARALYSIS, TRAIT_PARALYSIS_L_LEG)
 	UnregisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_PARALYSIS_L_LEG))
@@ -497,6 +575,8 @@
 
 ///Proc to react to the owner losing the TRAIT_PARALYSIS_L_LEG trait.
 /obj/item/bodypart/leg/left/proc/on_owner_paralysis_loss(mob/living/carbon/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	REMOVE_TRAIT(src, TRAIT_PARALYSIS, TRAIT_PARALYSIS_L_LEG)
 	UnregisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_PARALYSIS_L_LEG))
@@ -519,6 +599,8 @@
 	stump_typepath = /obj/item/bodypart/leg/right/stump
 
 /obj/item/bodypart/leg/right/apply_ownership(mob/living/carbon/new_owner)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(new_owner, TRAIT_PARALYSIS_R_LEG))
 		ADD_TRAIT(src, TRAIT_PARALYSIS, TRAIT_PARALYSIS_R_LEG)
 		RegisterSignal(new_owner, SIGNAL_REMOVETRAIT(TRAIT_PARALYSIS_R_LEG), PROC_REF(on_owner_paralysis_loss))
@@ -528,6 +610,8 @@
 	..()
 
 /obj/item/bodypart/leg/right/clear_ownership(mob/living/carbon/old_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(old_owner, TRAIT_PARALYSIS_R_LEG))
 		UnregisterSignal(old_owner, SIGNAL_REMOVETRAIT(TRAIT_PARALYSIS_R_LEG))
@@ -537,6 +621,8 @@
 
 ///Proc to react to the owner gaining the TRAIT_PARALYSIS_R_LEG trait.
 /obj/item/bodypart/leg/right/proc/on_owner_paralysis_gain(mob/living/carbon/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	ADD_TRAIT(src, TRAIT_PARALYSIS, TRAIT_PARALYSIS_R_LEG)
 	UnregisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_PARALYSIS_R_LEG))
@@ -544,6 +630,8 @@
 
 ///Proc to react to the owner losing the TRAIT_PARALYSIS_R_LEG trait.
 /obj/item/bodypart/leg/right/proc/on_owner_paralysis_loss(mob/living/carbon/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	REMOVE_TRAIT(src, TRAIT_PARALYSIS, TRAIT_PARALYSIS_R_LEG)
 	UnregisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_PARALYSIS_R_LEG))

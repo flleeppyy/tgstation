@@ -5,6 +5,8 @@ TIMER_SUBSYSTEM_DEF(runechat)
 	var/list/datum/callback/message_queue = list()
 
 /datum/controller/subsystem/timer/runechat/fire(resumed)
+	procstart = null
+	src.procstart = null
 	. = ..() //poggers
 	while(message_queue.len)
 		var/datum/callback/queued_message = message_queue[message_queue.len]

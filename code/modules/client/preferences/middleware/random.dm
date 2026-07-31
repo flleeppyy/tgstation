@@ -6,11 +6,15 @@
 	)
 
 /datum/preference_middleware/random/get_character_preferences(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		"randomization" = preferences.randomise,
 	)
 
 /datum/preference_middleware/random/get_constant_data()
+	procstart = null
+	src.procstart = null
 	var/list/randomizable = list()
 
 	for (var/preference_type in GLOB.preference_entries)
@@ -25,6 +29,8 @@
 	)
 
 /datum/preference_middleware/random/proc/randomize_character()
+	procstart = null
+	src.procstart = null
 	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
 		if (preferences.should_randomize(preference))
 			preferences.write_preference(preference, preference.create_random_value(preferences))
@@ -34,6 +40,8 @@
 	return TRUE
 
 /datum/preference_middleware/random/proc/set_random_preference(list/params, mob/user)
+	procstart = null
+	src.procstart = null
 	var/requested_preference_key = params["preference"]
 	var/value = params["value"]
 
@@ -57,6 +65,8 @@
 
 /// Returns if a preference should be randomized.
 /datum/preferences/proc/should_randomize(datum/preference/preference, is_antag)
+	procstart = null
+	src.procstart = null
 	if (!preference.is_randomizable())
 		return FALSE
 
@@ -75,10 +85,16 @@
 
 /// Given randomization flags, will return whether or not this preference should be randomized.
 /datum/preference/proc/included_in_randomization_flags(randomize_flags)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/preference/name/included_in_randomization_flags(randomize_flags)
+	procstart = null
+	src.procstart = null
 	return !!(randomize_flags & RANDOMIZE_NAME)
 
 /datum/preference/choiced/species/included_in_randomization_flags(randomize_flags)
+	procstart = null
+	src.procstart = null
 	return !!(randomize_flags & RANDOMIZE_SPECIES)

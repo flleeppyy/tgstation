@@ -47,6 +47,8 @@ GLOBAL_LIST_EMPTY(request_list)
 	var/message_id
 
 /datum/feed_message/proc/return_author(censor)
+	procstart = null
+	src.procstart = null
 	if(censor == -1)
 		censor = author_censor
 	var/txt = "[GLOB.news_network.redacted_text]"
@@ -55,6 +57,8 @@ GLOBAL_LIST_EMPTY(request_list)
 	return txt
 
 /datum/feed_message/proc/return_body(censor)
+	procstart = null
+	src.procstart = null
 	if(censor == -1)
 		censor = body_censor
 	var/txt = "[GLOB.news_network.redacted_text]"
@@ -63,6 +67,8 @@ GLOBAL_LIST_EMPTY(request_list)
 	return txt
 
 /datum/feed_message/proc/toggle_censor_author()
+	procstart = null
+	src.procstart = null
 	if(author_censor)
 		author_censor_time.Add(GLOB.news_network.last_action*-1)
 	else
@@ -71,6 +77,8 @@ GLOBAL_LIST_EMPTY(request_list)
 	GLOB.news_network.last_action ++
 
 /datum/feed_message/proc/toggle_censor_body()
+	procstart = null
+	src.procstart = null
 	if(body_censor)
 		body_censor_time.Add(GLOB.news_network.last_action*-1)
 	else
@@ -107,6 +115,8 @@ GLOBAL_LIST_EMPTY(request_list)
 	var/receiving_cross_sector = FALSE
 
 /datum/feed_channel/proc/return_author(censor)
+	procstart = null
+	src.procstart = null
 	if(censor == -1)
 		censor = author_censor
 	var/txt = "[GLOB.news_network.redacted_text]"
@@ -115,6 +125,8 @@ GLOBAL_LIST_EMPTY(request_list)
 	return txt
 
 /datum/feed_channel/proc/toggle_censor_D_class()
+	procstart = null
+	src.procstart = null
 	if(censored)
 		D_class_censor_time.Add(GLOB.news_network.last_action*-1)
 	else
@@ -123,6 +135,8 @@ GLOBAL_LIST_EMPTY(request_list)
 	GLOB.news_network.last_action ++
 
 /datum/feed_channel/proc/toggle_censor_author()
+	procstart = null
+	src.procstart = null
 	if(author_censor)
 		author_censor_time.Add(GLOB.news_network.last_action*-1)
 	else
@@ -165,16 +179,22 @@ GLOBAL_LIST_EMPTY(request_list)
 	var/message_count = 0
 
 /datum/feed_network/New()
+	procstart = null
+	src.procstart = null
 	create_feed_channel(NEWSCASTER_STATION_ANNOUNCEMENTS, "SS13", "Company news, staff announcements, and all the latest information. Have a secure shift!", locked = TRUE)
 	create_feed_channel(NEWSCASTER_SPACE_BETTING, "NtOS", "News from the SpaceBet PDA App! Download now and make your own bets!", locked = TRUE)
 	wanted_issue = new /datum/wanted_message
 
 /datum/feed_network/proc/add_feed_channel(datum/feed_channel/new_channel)
+	procstart = null
+	src.procstart = null
 	network_channels += new_channel
 	network_channels_by_id["[new_channel.channel_id]"] = new_channel
 	network_channels_by_name["[new_channel.channel_name]"] = new_channel
 
 /datum/feed_network/proc/create_feed_channel(channel_name, author, desc, locked, adminChannel = FALSE, author_ckey = null, cross_sector = FALSE, cross_sector_delay = null, receiving_cross_sector = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/feed_channel/new_channel = new /datum/feed_channel
 	new_channel.channel_name = channel_name
 	new_channel.author = author
@@ -199,6 +219,8 @@ GLOBAL_LIST_EMPTY(request_list)
 	send2otherserver(html_decode(station_name()), channel_name, "create_news_channel", additional_data = payload)
 
 /datum/feed_network/proc/submit_article(msg, author, channel_name, datum/picture/picture, adminMessage = FALSE, allow_comments = TRUE, update_alert = TRUE, mob/author_mob = null)
+	procstart = null
+	src.procstart = null
 	var/datum/feed_channel/chosen_channel = network_channels_by_name[channel_name]
 	if(isnull(chosen_channel))
 		stack_trace("Article submitted to non-existent newscaster channel: [channel_name]")
@@ -241,6 +263,8 @@ GLOBAL_LIST_EMPTY(request_list)
 
 ///Submits a comment on the news network
 /datum/feed_network/proc/submit_comment(mob/user, comment_text, newscaster_username, datum/feed_message/current_message)
+	procstart = null
+	src.procstart = null
 	var/datum/feed_comment/new_feed_comment = new/datum/feed_comment
 	new_feed_comment.author = newscaster_username
 	new_feed_comment.body = comment_text
@@ -251,6 +275,8 @@ GLOBAL_LIST_EMPTY(request_list)
 		user.log_message("(as [newscaster_username]) commented on message [current_message.return_body(-1)] -- [current_message.body]", LOG_COMMENT)
 
 /datum/feed_network/proc/submit_wanted(criminal, body, scanned_user, datum/picture/picture, adminMsg = FALSE, newMessage = FALSE)
+	procstart = null
+	src.procstart = null
 	wanted_issue.active = TRUE
 	wanted_issue.criminal = criminal
 	wanted_issue.body = body
@@ -264,6 +290,8 @@ GLOBAL_LIST_EMPTY(request_list)
 			N.news_alert()
 
 /datum/feed_network/proc/delete_wanted()
+	procstart = null
+	src.procstart = null
 	wanted_issue.active = FALSE
 	wanted_issue.criminal = null
 	wanted_issue.body = null
@@ -273,6 +301,8 @@ GLOBAL_LIST_EMPTY(request_list)
 		updated_newscaster.update_appearance()
 
 /datum/feed_network/proc/save_photo(icon/photo)
+	procstart = null
+	src.procstart = null
 	var/photo_file = copytext_char(md5("\icon[photo]"), 1, 6)
 	if(!fexists("[GLOB.log_directory]/photos/[photo_file].png"))
 		//Clean up repeated frames
@@ -305,6 +335,8 @@ GLOBAL_LIST_EMPTY(request_list)
 	var/list/applicants = list()
 
 /datum/station_request/New(owned, newvalue, newdescription, reqnum, own_account)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner = owned
 	value = newvalue

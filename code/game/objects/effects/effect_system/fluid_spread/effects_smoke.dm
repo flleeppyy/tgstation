@@ -21,6 +21,8 @@
 	)
 
 /obj/effect/particle_effect/fluid/smoke/Initialize(mapload, datum/fluid_group/group, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(1000, REAGENT_HOLDER_INSTANT_REACT)
 	setDir(pick(GLOB.cardinals))
@@ -28,6 +30,8 @@
 	SSsmoke.start_processing(src)
 
 /obj/effect/particle_effect/fluid/smoke/Destroy()
+	procstart = null
+	src.procstart = null
 	SSsmoke.stop_processing(src)
 	if (spread_bucket)
 		SSsmoke.cancel_spread(src)
@@ -38,6 +42,8 @@
  * Makes the smoke fade out and then deletes it.
  */
 /obj/effect/particle_effect/fluid/smoke/proc/kill_smoke()
+	procstart = null
+	src.procstart = null
 	SSsmoke.stop_processing(src)
 	if (spread_bucket)
 		SSsmoke.cancel_spread(src)
@@ -52,6 +58,8 @@
  * - frames = 0.8 [SECONDS]: The amount of time the smoke should fade out over.
  */
 /obj/effect/particle_effect/fluid/smoke/proc/fade_out(frames = 0.8 SECONDS)
+	procstart = null
+	src.procstart = null
 	if(alpha == 0) //Handle already transparent case
 		if(opacity)
 			set_opacity(FALSE)
@@ -71,6 +79,8 @@
 
 
 /obj/effect/particle_effect/fluid/smoke/spread(seconds_per_tick = 0.1 SECONDS)
+	procstart = null
+	src.procstart = null
 	if(group.total_size > group.target_size)
 		return
 	var/turf/t_loc = get_turf(src)
@@ -93,6 +103,8 @@
 
 
 /obj/effect/particle_effect/fluid/smoke/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	lifetime -= seconds_per_tick SECONDS
 	if(lifetime <= 0)
 		kill_smoke()
@@ -111,6 +123,8 @@
  * Returns whether the smoke effect was applied to the mob.
  */
 /obj/effect/particle_effect/fluid/smoke/proc/smoke_mob(mob/living/carbon/smoker, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!istype(smoker))
 		return FALSE
 	if(lifetime < 1)
@@ -133,6 +147,8 @@
  * - [source][/turf]: The turf that has been touched by an atmos adjacency change.
  */
 /obj/effect/particle_effect/fluid/smoke/proc/react_to_atmos_adjacency_changes(turf/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!group)
 		return NONE
@@ -168,6 +184,8 @@
  * - log: Should the system log the smoke spawned?
  */
 /proc/do_smoke(range = 0, atom/holder = null, location = null, amount = null, smoke_type = /datum/effect_system/fluid_spread/smoke, effect_type = /obj/effect/particle_effect/fluid/smoke, log = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/effect_system/fluid_spread/smoke/smoke = new smoke_type(location, range, amount, holder)
 	smoke.effect_type = effect_type
 	smoke.start(log = log)
@@ -194,6 +212,8 @@
 	lifetime = 16 SECONDS
 
 /obj/effect/particle_effect/fluid/smoke/bad/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
@@ -201,6 +221,8 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/effect/particle_effect/fluid/smoke/bad/smoke_mob(mob/living/carbon/smoker)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -218,6 +240,8 @@
  * - [old_locs][/list/atom]: The set of locations the entering atom was just in.
  */
 /obj/effect/particle_effect/fluid/smoke/bad/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(istype(arrived, /obj/projectile/beam))
 		var/obj/projectile/beam/beam = arrived
@@ -274,6 +298,8 @@
 	var/distcheck = TRUE
 
 /datum/effect_system/fluid_spread/smoke/freezing/New(turf/location, range = 1, amount = null, atom/holder = null, blast_radius = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	blast = blast_radius
 
@@ -289,6 +315,8 @@
  * - [chilly][/turf/open]: The open turf to chill
  */
 /datum/effect_system/fluid_spread/smoke/freezing/proc/chill_turf(turf/open/chilly)
+	procstart = null
+	src.procstart = null
 	if(!istype(chilly))
 		return
 
@@ -321,6 +349,8 @@
 		potential_tinder.extinguish()
 
 /datum/effect_system/fluid_spread/smoke/freezing/start(log = FALSE)
+	procstart = null
+	src.procstart = null
 	if(blast)
 		for(var/turf/T in RANGE_TURFS(blast, location))
 			chill_turf(T)
@@ -343,6 +373,8 @@
 	lifetime = 20 SECONDS
 
 /obj/effect/particle_effect/fluid/smoke/sleeping/smoke_mob(mob/living/carbon/smoker, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(..())
 		smoker.Sleeping(20 SECONDS)
 		smoker.emote("cough")
@@ -363,6 +395,8 @@
 	lifetime = 20 SECONDS
 
 /obj/effect/particle_effect/fluid/smoke/chem/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -384,6 +418,8 @@
 	return TRUE
 
 /obj/effect/particle_effect/fluid/smoke/chem/smoke_mob(mob/living/carbon/smoker, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(lifetime < 1)
 		return FALSE
 	if(!istype(smoker))
@@ -398,6 +434,8 @@
 /// Helper to quickly create a cloud of reagent smoke
 /// reagent_type can accept a list of reagents, optionally as a key-value pair with values overriding reagent_volume if not null
 /proc/do_chem_smoke(range = 0, atom/holder = null, location = null, reagent_type = /datum/reagent/water, reagent_volume = 10, datum/reagents/carry = null, carry_limit = null, log = FALSE, amount = null, datum/effect_system/fluid_spread/smoke/chem/smoke_type = /datum/effect_system/fluid_spread/smoke/chem, silent = TRUE)
+	procstart = null
+	src.procstart = null
 	if (carry)
 		var/datum/effect_system/fluid_spread/smoke/chem/smoke = new smoke_type(location, range, amount, holder || location, carry, carry_limit, silent)
 		smoke.start(log = log)
@@ -432,6 +470,8 @@
 	effect_type = /obj/effect/particle_effect/fluid/smoke/chem
 
 /datum/effect_system/fluid_spread/smoke/chem/New(turf/location, range = 1, amount = null, atom/holder = null, datum/reagents/carry = null, carry_limit = null, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	chemholder = new(1000, NO_REACT)
 	carry?.trans_to(chemholder, isnull(carry_limit) ? carry.total_volume : carry_limit, copy_only = TRUE)
@@ -460,10 +500,14 @@
 	log_game("A chemical smoke reaction has taken place in ([where])[contained]. Last touched by [carry.my_atom.fingerprintslast].")
 
 /datum/effect_system/fluid_spread/smoke/chem/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(chemholder)
 	return ..()
 
 /datum/effect_system/fluid_spread/smoke/chem/start(log = FALSE)
+	procstart = null
+	src.procstart = null
 	var/start_loc = holder ? get_turf(holder) : src.location
 	var/mixcolor = mix_color_from_reagents(chemholder.reagent_list)
 	var/obj/effect/particle_effect/fluid/smoke/chem/smoke = new effect_type(start_loc, new /datum/fluid_group(amount))

@@ -91,6 +91,8 @@ GLOBAL_LIST_INIT(fancy_type_replacements, list(
 ))
 
 /proc/make_types_fancy(list/types)
+	procstart = null
+	src.procstart = null
 	if (ispath(types))
 		types = list(types)
 	var/static/list/types_to_replacement
@@ -118,6 +120,8 @@ GLOBAL_LIST_INIT(fancy_type_replacements, list(
 		.[replace_with + copytext("[type]", length(cut_out) + 1)] = type
 
 /proc/get_fancy_list_of_atom_types()
+	procstart = null
+	src.procstart = null
 	var/static/list/pre_generated_list
 	if (!pre_generated_list) //init
 		pre_generated_list = make_types_fancy(typesof(/atom))
@@ -125,6 +129,8 @@ GLOBAL_LIST_INIT(fancy_type_replacements, list(
 
 
 /proc/get_fancy_list_of_datum_types()
+	procstart = null
+	src.procstart = null
 	var/static/list/pre_generated_list
 	if (!pre_generated_list) //init
 		pre_generated_list = make_types_fancy(sort_list(typesof(/datum) - typesof(/atom)))
@@ -132,6 +138,8 @@ GLOBAL_LIST_INIT(fancy_type_replacements, list(
 
 
 /proc/filter_fancy_list(list/L, filter as text)
+	procstart = null
+	src.procstart = null
 	var/list/matches = new
 	var/end_len = -1
 	var/list/endcheck = splittext(filter, "!")
@@ -170,4 +178,6 @@ GLOBAL_LIST_INIT(fancy_type_replacements, list(
 	return matches
 
 /proc/return_typenames(type)
+	procstart = null
+	src.procstart = null
 	return splittext("[type]", "/")

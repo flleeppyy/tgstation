@@ -14,6 +14,8 @@
 
 // Late load to ensure the component initialization occurs after the machines are initialized
 /obj/machinery/destructive_scanner/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/static/list/destructive_signals = list(
@@ -29,6 +31,8 @@
 
 ///Activates the machine; checks if it can actually scan, then starts.
 /obj/machinery/destructive_scanner/proc/activate()
+	procstart = null
+	src.procstart = null
 	var/atom/pickup_zone = drop_location()
 	var/aggressive = FALSE
 	for(var/mob/living/living_mob in pickup_zone)
@@ -42,6 +46,8 @@
 
 ///Closes the machine to kidnap everything in the turf into it.
 /obj/machinery/destructive_scanner/proc/start_closing(aggressive)
+	procstart = null
+	src.procstart = null
 	if(scanning)
 		return
 	var/atom/pickup_zone = drop_location()
@@ -58,6 +64,8 @@
 
 ///Starts scanning the fancy scanning effects
 /obj/machinery/destructive_scanner/proc/start_scanning(aggressive)
+	procstart = null
+	src.procstart = null
 	if(aggressive)
 		playsound(src, 'sound/machines/destructive_scanner/ScanDangerous.ogg', 100, extrarange = 5)
 	else
@@ -68,6 +76,8 @@
 
 ///Performs the actual scan, happens once the tube effects are done
 /obj/machinery/destructive_scanner/proc/finish_scanning(aggressive)
+	procstart = null
+	src.procstart = null
 	flick("tube_up", src)
 	scanning = FALSE
 	update_icon()
@@ -76,6 +86,8 @@
 
 ///Opens the machine to let out any contents. If the scan had mobs it'll gib them.
 /obj/machinery/destructive_scanner/proc/open(aggressive)
+	procstart = null
+	src.procstart = null
 	var/turf/this_turf = get_turf(src)
 	var/list/scanned_atoms = list()
 
@@ -93,6 +105,8 @@
 
 
 /obj/machinery/destructive_scanner/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -101,14 +115,22 @@
 	return TRUE
 
 /obj/machinery/destructive_scanner/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = scanning ? "tube_on" : "tube_open"
 
 /obj/machinery/destructive_scanner/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return scanning ? NONE : default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/destructive_scanner/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/destructive_scanner/can_crowbar_deconstruct()
+	procstart = null
+	src.procstart = null
 	return ..() && !scanning

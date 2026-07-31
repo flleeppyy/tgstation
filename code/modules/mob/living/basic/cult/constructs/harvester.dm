@@ -25,10 +25,14 @@
 	slowed_by_drag = FALSE
 
 /mob/living/basic/construct/harvester/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	grant_abilities()
 
 /mob/living/basic/construct/harvester/proc/grant_abilities()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/wall_walker, /turf/closed/wall/mineral/cult)
 	AddComponent(\
 		/datum/component/amputating_limbs,\
@@ -42,6 +46,8 @@
 
 /// If the attack is a limbless carbon, abort the attack, paralyze them, and get a special message from Nar'Sie.
 /mob/living/basic/construct/harvester/resolve_unarmed_attack(atom/attack_target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(attack_target))
 		return ..()
 	var/mob/living/carbon/carbon_target = attack_target
@@ -71,10 +77,14 @@
 	var/mob/living/basic/construct/the_construct
 
 /datum/action/innate/seek_master/Grant(mob/living/player)
+	procstart = null
+	src.procstart = null
 	the_construct = player
 	..()
 
 /datum/action/innate/seek_master/Activate()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/cult/cult_status = owner.mind.has_antag_datum(/datum/antagonist/cult)
 	if(!cult_status)
 		return
@@ -108,6 +118,8 @@
 	button_icon_state = "cult_mark"
 
 /datum/action/innate/seek_prey/Activate()
+	procstart = null
+	src.procstart = null
 	if(GLOB.cult_narsie == null)
 		return
 	var/mob/living/basic/construct/harvester/the_construct = owner
@@ -155,6 +167,8 @@
 	theme = THEME_HERETIC
 
 /mob/living/basic/construct/harvester/heretic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_MANSUS_TOUCHED, REF(src))
 	add_filter("rusted_harvester", 3, list("type" = "outline", "color" = COLOR_GREEN, "size" = 2, "alpha" = 40))
@@ -162,23 +176,31 @@
 	RegisterSignal(src, COMSIG_MOB_ENSLAVED_TO, PROC_REF(link_master))
 
 /mob/living/basic/construct/harvester/heretic/proc/link_master(mob/self, mob/master)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	src.construct_master = master
 	RegisterSignal(construct_master, COMSIG_LIVING_DEATH, PROC_REF(on_master_death))
 
 /mob/living/basic/construct/harvester/heretic/proc/on_master_death(mob/self, mob/master)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	to_chat(src, span_userdanger("Your link to the mansus suddenly snaps as your master [construct_master] perishes! Without [construct_master.p_their()] support, your body crumbles..."))
 	visible_message(span_alert("[src] suddenly crumbles to dust!"))
 	death()
 
 /mob/living/basic/construct/harvester/heretic/attack_animal(mob/living/simple_animal/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// They're pretty fragile so this is probably necessary to prevent bullshit deaths.
 	if(user == src)
 		return
 	return ..()
 
 /mob/living/basic/construct/harvester/heretic/grant_abilities()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/wall_walker, or_trait = TRAIT_RUSTY)
 	AddElement(/datum/element/rust_healing)
 	AddComponent(\
@@ -207,6 +229,8 @@
 // These aren't friends they're assholes
 // Don't let them be near you!
 /mob/living/basic/construct/harvester/heretic/Life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.) //dead or deleted
 		return
@@ -223,6 +247,8 @@
 		to_chat(src, span_notice("Eldritch energies emanate from your body."))
 
 /mob/living/basic/construct/harvester/heretic/proc/is_cultist_handler(mob/victim)
+	procstart = null
+	src.procstart = null
 	return IS_CULTIST(victim)
 
 /datum/action/innate/seek_master/heretic
@@ -234,10 +260,14 @@
 	tracking = TRUE
 
 /datum/action/innate/seek_master/heretic/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	the_construct = Target
 	the_construct.seeking = TRUE
 
 // no real reason for most of this weird oldcode
 /datum/action/innate/seek_master/Activate()
+	procstart = null
+	src.procstart = null
 	return

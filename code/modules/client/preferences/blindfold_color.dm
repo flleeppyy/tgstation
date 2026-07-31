@@ -5,13 +5,19 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 
 /datum/preference/color/blindfold_color/create_default_value()
+	procstart = null
+	src.procstart = null
 	return COLOR_WHITE
 
 /datum/preference/color/blindfold_color/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if (!..(preferences))
 		return FALSE
 
 	return /datum/quirk/item_quirk/blindness::name in preferences.all_quirks
 
 /datum/preference/color/blindfold_color/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return

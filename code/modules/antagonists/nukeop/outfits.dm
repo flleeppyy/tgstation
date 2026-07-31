@@ -54,6 +54,8 @@
 	internals_slot = ITEM_SLOT_HANDS
 
 /datum/outfit/syndicate/post_equip(mob/living/carbon/human/nukie, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visuals_only)
 		return
 
@@ -110,6 +112,8 @@
 	mask = /obj/item/clothing/mask/gas/syndicate/plasmaman
 
 /datum/outfit/syndicate/full/plasmaman/New()
+	procstart = null
+	src.procstart = null
 	backpack_contents += /obj/item/clothing/head/helmet/space/plasmaman/syndie
 	return ..()
 
@@ -127,6 +131,8 @@
 	var/faction = "The Syndicate"
 
 /datum/outfit/syndicate/reinforcement/post_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(visuals_only)
 		return
@@ -215,6 +221,8 @@
 	r_hand = /obj/item/shield/energy
 
 /datum/outfit/nuclear_operative_elite/post_equip(mob/living/carbon/human/H, visuals_only)
+	procstart = null
+	src.procstart = null
 	var/obj/item/shield/energy/shield = locate() in H.held_items
 	shield.icon_state = "[shield.base_icon_state]1"
 	H.update_held_items()

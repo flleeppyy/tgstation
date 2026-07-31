@@ -9,10 +9,14 @@
 	layer = SCREENTIP_LAYER //Added to make screentips appear above action buttons (and other /atom/movable/screen objects)
 
 /atom/movable/screen/screentip/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_view()
 
 /atom/movable/screen/screentip/proc/update_view(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!hud || !hud.mymob.canon_client?.view_size) //Might not have been initialized by now
 		return

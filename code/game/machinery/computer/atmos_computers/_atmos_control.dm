@@ -21,12 +21,16 @@
 	VAR_PRIVATE/last_chamber_id = ""
 
 /obj/machinery/computer/atmos_control/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	scan()
 
 ///Scans the z level for new air sensors & monitors
 /obj/machinery/computer/atmos_control/proc/scan()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	//collect all sensors that are the closest to this computer
@@ -59,6 +63,8 @@
 
 /// Reconnect only works for station based chambers.
 /obj/machinery/computer/atmos_control/proc/reconnect(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!reconnecting)
 		return FALSE
 
@@ -98,6 +104,8 @@
 	return TRUE
 
 /obj/machinery/computer/atmos_control/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -105,6 +113,8 @@
 		ui.open()
 
 /obj/machinery/computer/atmos_control/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["maxInput"] = MAX_TRANSFER_RATE
 	data["maxOutput"] = MAX_OUTPUT_PRESSURE
@@ -114,6 +124,8 @@
 	return data
 
 /obj/machinery/computer/atmos_control/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/data = list()
 
 	data["chambers"] = list()
@@ -147,6 +159,8 @@
 	return data
 
 /obj/machinery/computer/atmos_control/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !(control || reconnecting))
 		return

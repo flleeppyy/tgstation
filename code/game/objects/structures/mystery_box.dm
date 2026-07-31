@@ -150,10 +150,14 @@ GLOBAL_LIST_INIT(mystery_fishing, list(
 	var/list/datum/weakref/minds_that_opened_us
 
 /obj/structure/mystery_box/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	generate_valid_types()
 
 /obj/structure/mystery_box/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(presented_item)
 	if(current_sound_channel)
 		SSsounds.free_sound_channel(current_sound_channel)
@@ -161,6 +165,8 @@ GLOBAL_LIST_INIT(mystery_fishing, list(
 	return ..()
 
 /obj/structure/mystery_box/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(box_state)
 		if(MYSTERY_BOX_STANDBY)
@@ -171,18 +177,26 @@ GLOBAL_LIST_INIT(mystery_fishing, list(
 				grant_weapon(user)
 
 /obj/structure/mystery_box/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)][box_state > MYSTERY_BOX_STANDBY ? "open" : ""]"
 	return ..()
 
 /// This proc is used to define what item types valid_types is filled with
 /obj/structure/mystery_box/proc/generate_valid_types()
+	procstart = null
+	src.procstart = null
 	valid_types = get_sane_item_types(selectable_base_type)
 
 /obj/structure/mystery_box/IsContainedAtomAccessible(atom/contained, atom/movable/user)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// The box has been activated, play the sound and spawn the prop item
 /obj/structure/mystery_box/proc/activate(mob/living/user)
+	procstart = null
+	src.procstart = null
 	box_state = MYSTERY_BOX_CHOOSING
 	update_icon_state()
 	presented_item = new(src)
@@ -200,17 +214,23 @@ GLOBAL_LIST_INIT(mystery_fishing, list(
 
 /// The box has finished choosing, mark it as available for grabbing
 /obj/structure/mystery_box/proc/present_weapon()
+	procstart = null
+	src.procstart = null
 	visible_message(span_notice("[src] presents [presented_item]!"), vision_distance = COMBAT_MESSAGE_RANGE)
 	box_state = MYSTERY_BOX_PRESENTING
 	box_expire_timer = addtimer(CALLBACK(src, PROC_REF(start_expire_offer)), MBOX_DURATION_PRESENTING, TIMER_STOPPABLE)
 
 /// The prize is still claimable, but the animation will show it start to recede back into the box
 /obj/structure/mystery_box/proc/start_expire_offer()
+	procstart = null
+	src.procstart = null
 	presented_item.expire_animation()
 	box_close_timer = addtimer(CALLBACK(src, PROC_REF(close_box)), MBOX_DURATION_EXPIRING, TIMER_STOPPABLE)
 
 /// The box is closed, whether because the prize fully expired, or it was claimed. Start resetting all of the state stuff
 /obj/structure/mystery_box/proc/close_box()
+	procstart = null
+	src.procstart = null
 	box_state = MYSTERY_BOX_COOLING_DOWN
 	update_icon_state()
 	QDEL_NULL(presented_item)
@@ -226,6 +246,8 @@ GLOBAL_LIST_INIT(mystery_fishing, list(
 
 /// The cooldown between activations has finished, shake to show that
 /obj/structure/mystery_box/proc/ready_again()
+	procstart = null
+	src.procstart = null
 	SSsounds.free_sound_channel(current_sound_channel)
 	current_sound_channel = null
 	box_state = MYSTERY_BOX_STANDBY
@@ -233,6 +255,8 @@ GLOBAL_LIST_INIT(mystery_fishing, list(
 
 /// Someone attacked the box with an empty hand, spawn the shown prize and give it to them, then close the box
 /obj/structure/mystery_box/proc/grant_weapon(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/instantiated_weapon = new presented_item.selected_path(loc)
 	user.visible_message(span_notice("[user] takes [presented_item] from [src]."), span_notice("You take [presented_item] from [src]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	playsound(src, grant_sound, 70, FALSE, channel = current_sound_channel, falloff_exponent = 10)
@@ -258,24 +282,32 @@ GLOBAL_LIST_INIT(mystery_fishing, list(
 	desc = "A wooden crate that seems equally magical and mysterious, capable of granting the user all kinds of different pieces of gear. This one seems focused on firearms."
 
 /obj/structure/mystery_box/guns/generate_valid_types()
+	procstart = null
+	src.procstart = null
 	valid_types = GLOB.summoned_guns
 
 /obj/structure/mystery_box/tdome
 	desc = "A wooden crate that seems equally magical and mysterious, capable of granting the user all kinds of different pieces of gear. This one has an extended array of weaponry."
 
 /obj/structure/mystery_box/tdome/generate_valid_types()
+	procstart = null
+	src.procstart = null
 	valid_types = GLOB.mystery_box_guns + GLOB.mystery_box_extended
 
 /obj/structure/mystery_box/wands
 	desc = "A wooden crate that seems equally magical and mysterious, capable of granting the user all kinds of different magical items."
 
 /obj/structure/mystery_box/wands/generate_valid_types()
+	procstart = null
+	src.procstart = null
 	valid_types = GLOB.mystery_magic
 
 /obj/structure/mystery_box/wildcard
 	desc = "A wooden crate that seems equally magical and mysterious, capable of granting the user all kinds of different pieces of gear. This one has an EXTREAMLY extended array of weaponry."
 
 /obj/structure/mystery_box/wildcard/generate_valid_types()
+	procstart = null
+	src.procstart = null
 	valid_types = GLOB.summoned_all_guns
 
 ///A fishing and pirate-themed mystery box, rarely found by fishing in the ocean, then another cannot be caught for the next 30 minutes.
@@ -290,13 +322,19 @@ GLOBAL_LIST_INIT(mystery_fishing, list(
 	anchored = FALSE
 
 /obj/structure/mystery_box/handle_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/mineral/wood(drop_location(), 2)
 	return ..()
 
 /obj/structure/mystery_box/fishing/generate_valid_types()
+	procstart = null
+	src.procstart = null
 	valid_types = GLOB.mystery_fishing
 
 /obj/structure/mystery_box/fishing/activate(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.mind && minds_that_opened_us?[WEAKREF(user.mind)] >= 3)
 		to_chat(user, span_warning("[src] refuses to open to you anymore. Perhaps you should present it to someone else..."))
 		return
@@ -320,6 +358,8 @@ GLOBAL_LIST_INIT(mystery_fishing, list(
 
 
 /obj/effect/abstract/mystery_box_item/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/matrix/starting = matrix()
 	starting.Scale(0.5,0.5)
@@ -327,22 +367,30 @@ GLOBAL_LIST_INIT(mystery_fishing, list(
 	add_filter("weapon_rays", 3, list("type" = "rays", "size" = 28, "color" = COLOR_VIVID_YELLOW))
 
 /obj/effect/abstract/mystery_box_item/Destroy(force)
+	procstart = null
+	src.procstart = null
 	parent_box = null
 	return ..()
 
 // this way, clicking on the prize will work the same as clicking on the box
 /obj/effect/abstract/mystery_box_item/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(claimable)
 		parent_box.grant_weapon(user)
 
 /// Start pushing the prize up
 /obj/effect/abstract/mystery_box_item/proc/start_animation(atom/parent)
+	procstart = null
+	src.procstart = null
 	parent_box = parent
 	loop_icon_changes()
 
 /// Keep changing the icon and selected path
 /obj/effect/abstract/mystery_box_item/proc/loop_icon_changes()
+	procstart = null
+	src.procstart = null
 	var/change_delay = 1 // the running count of the delay
 	var/change_delay_delta = 1 // How much to increment the delay per step so the changing slows down
 	var/change_counter = 0 // The running count of the running count
@@ -360,11 +408,15 @@ GLOBAL_LIST_INIT(mystery_fishing, list(
 
 /// animate() isn't up to the task for queueing up icon changes, so this is the proc we call with timers to update our icon
 /obj/effect/abstract/mystery_box_item/proc/update_random_icon(new_item_type)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/new_item = new_item_type
 	icon = new_item::icon
 	icon_state = new_item::icon_state
 
 /obj/effect/abstract/mystery_box_item/proc/present_item()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/selected_item = selected_path
 	add_filter("ready_outline", 2, list("type" = "outline", "color" = COLOR_VIVID_YELLOW, "size" = 0.2))
 	name = selected_item::name
@@ -373,6 +425,8 @@ GLOBAL_LIST_INIT(mystery_fishing, list(
 
 /// Sink back into the box
 /obj/effect/abstract/mystery_box_item/proc/expire_animation()
+	procstart = null
+	src.procstart = null
 	var/matrix/shrink_back = matrix()
 	shrink_back.Scale(0.5,0.5)
 	animate(src, pixel_z = -4, transform = shrink_back, time = MBOX_DURATION_EXPIRING)

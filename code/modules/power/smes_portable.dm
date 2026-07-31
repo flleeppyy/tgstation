@@ -15,14 +15,20 @@
 	var/obj/machinery/smesbank/connected_smes
 
 /obj/machinery/power/smes/connector/Destroy()
+	procstart = null
+	src.procstart = null
 	connected_smes?.disconnect_port() // in the unlikely but possible case a SMES is connected and this explodes
 	return ..()
 
 /obj/machinery/power/smes/connector/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	connected_smes?.update_appearance(updates)
 
 /obj/machinery/power/smes/connector/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!connected_smes)
 		return
@@ -36,6 +42,8 @@
 			. += "bp-d"
 
 /obj/machinery/power/smes/connector/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	//happens if the terminal gets rped without a bank attached. No division by zero error
@@ -43,16 +51,22 @@
 		total_capacity = 1
 
 /obj/machinery/power/smes/connector/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!connector_free(user))
 		return ITEM_INTERACT_BLOCKING
 	return ..()
 
 /obj/machinery/power/smes/connector/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!connector_free(user))
 		return ITEM_INTERACT_BLOCKING
 	return ..()
 
 /obj/machinery/power/smes/connector/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!connector_free(user))
 		return ITEM_INTERACT_BLOCKING
 	return ..()
@@ -64,6 +78,8 @@
  * * mob/living/user - the player doing the checking
  */
 /obj/machinery/power/smes/connector/proc/connector_free(mob/living/user)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(connected_smes)
@@ -78,6 +94,8 @@
  * * obj/machinery/power/smesbank/bank - the bank to connect
  */
 /obj/machinery/power/smes/connector/proc/connect_smes(obj/machinery/smesbank/bank)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	connected_smes = bank
@@ -96,6 +114,8 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/power/smes/connector/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(!connected_smes)
 		balloon_alert(user, "no power bank!")
 		return FALSE
@@ -103,6 +123,8 @@
 	return ..()
 
 /obj/machinery/power/smes/connector/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	return connected_smes ? ..() : FALSE
 
 /// The actual portable part of the portable SMES system. Pretty useless without an actual connector.
@@ -123,6 +145,8 @@
 	var/obj/machinery/power/smes/connector/connected_port
 
 /obj/machinery/smesbank/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	///Initial connection for mapload, We attempt to locate the connector but only connect to it after it has initialized
@@ -140,6 +164,8 @@
 	register_context()
 
 /obj/machinery/smesbank/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	//we somehow located an deleted port or no port at all. clear out
@@ -156,9 +182,13 @@
 	connected_port.output_attempt = TRUE
 
 /obj/machinery/smesbank/on_construction(mob/user)
+	procstart = null
+	src.procstart = null
 	set_anchored(FALSE)
 
 /obj/machinery/smesbank/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(isnull(held_item))
 		return
@@ -174,6 +204,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/smesbank/examine(user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("its maintenance panel can be [EXAMINE_HINT("screwed")] [panel_open ? "closed" : "open"].")
 	if(connected_port)
@@ -184,10 +216,14 @@
 		. += span_notice("It should be [EXAMINE_HINT("wrenched")] onto a connector port to operate.")
 
 /obj/machinery/smesbank/Destroy()
+	procstart = null
+	src.procstart = null
 	disconnect_port()
 	return ..()
 
 /obj/machinery/smesbank/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(panel_open || !is_operational)
 		return
@@ -200,11 +236,15 @@
 			. += "smes-og[clevel]"
 
 /obj/machinery/smesbank/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	connected_port?.interact(user)
 
 // adapted from portable atmos connection code
 /obj/machinery/smesbank/wrench_act(mob/living/user, obj/item/wrench)
+	procstart = null
+	src.procstart = null
 	if(connected_port)
 		if(!wrench.use_tool(src, user, 8 SECONDS))
 			return ITEM_INTERACT_BLOCKING
@@ -231,13 +271,19 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/smesbank/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]-o" : base_icon_state
 
 /obj/machinery/smesbank/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/smesbank/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(connected_port)
 		balloon_alert(user, "disconnect from [connected_port] first!")
 		return ITEM_INTERACT_FAILURE
@@ -253,6 +299,8 @@
  * * check_only - don't connect but check if we can
  */
 /obj/machinery/smesbank/proc/connect_port(obj/machinery/power/smes/connector/possible_connector, mob/living/user, check_only = FALSE)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(QDELETED(possible_connector))
@@ -277,6 +325,8 @@
 
 /// Disconnects the portable SMES from its assigned connector, if it has any. Also adapted from portable atmos connection code.
 /obj/machinery/smesbank/proc/disconnect_port()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(!connected_port)
@@ -288,6 +338,8 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/smesbank/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return

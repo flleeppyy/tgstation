@@ -22,6 +22,8 @@
 	var/offset_y
 
 /datum/progressbar/New(mob/User, goal_number, atom/target, starting_amount)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!istype(target))
 		stack_trace("Invalid target [target] passed in")
@@ -64,6 +66,8 @@
 		update(starting_amount)
 
 /datum/progressbar/Destroy()
+	procstart = null
+	src.procstart = null
 	if(user)
 		for(var/pb in user.progressbars[bar_loc])
 			var/datum/progressbar/progress_bar = pb
@@ -89,6 +93,8 @@
 
 ///Called right before the user's Destroy()
 /datum/progressbar/proc/on_user_delete(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	user.progressbars = null //We can simply nuke the list and stop worrying about updating other prog bars if the user itself is gone.
@@ -98,6 +104,8 @@
 
 ///Removes the progress bar image from the user_client and nulls the variable, if it exists.
 /datum/progressbar/proc/clean_user_client(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!user_client) //Disconnected, already gone.
@@ -108,6 +116,8 @@
 
 ///Called by user's Login(), it transfers the progress bar image to the new client.
 /datum/progressbar/proc/on_user_login(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(user_client)
@@ -122,6 +132,8 @@
 
 ///Adds a smoothly-appearing progress bar image to the player's screen.
 /datum/progressbar/proc/add_prog_bar_image_to_client()
+	procstart = null
+	src.procstart = null
 	bar.pixel_z = 0
 	bar.alpha = 0
 	user_client.images += bar
@@ -130,6 +142,8 @@
 
 ///Updates the progress bar image visually.
 /datum/progressbar/proc/update(progress)
+	procstart = null
+	src.procstart = null
 	progress = clamp(progress, 0, goal)
 	if(progress == last_progress)
 		return
@@ -139,6 +153,8 @@
 
 ///Called on progress end, be it successful or a failure. Wraps up things to delete the datum and bar.
 /datum/progressbar/proc/end_progress()
+	procstart = null
+	src.procstart = null
 	if(last_progress != goal)
 		bar.icon_state = "[bar.icon_state]_fail"
 
@@ -149,6 +165,8 @@
 ///Progress bars are very generic, and what hangs a ref to them depends heavily on the context in which they're used
 ///So let's make hunting harddels easier yeah?
 /datum/progressbar/dump_harddel_info()
+	procstart = null
+	src.procstart = null
 	if(harddel_deets_dumped)
 		return
 	harddel_deets_dumped = TRUE

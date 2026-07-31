@@ -24,6 +24,8 @@
 	var/list/targeted_turfs = list()
 
 /obj/item/storm_staff/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It has [thunder_charges] charges remaining.")
 	. += span_notice("Use it in hand to dispel storms.")
@@ -31,6 +33,8 @@
 	. += span_notice("The thunderbolts are boosted if in an area with weather effects.")
 
 /obj/item/storm_staff/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/area/user_area = get_area(user)
 	var/turf/user_turf = get_turf(user)
 	if(!user_area || !user_turf || (is_type_in_list(user_area, excluded_areas)))
@@ -65,12 +69,18 @@
 	user.log_message("has dispelled a storm at [AREACOORD(user_turf)].", LOG_GAME)
 
 /obj/item/storm_staff/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return thunder_blast(interacting_with, user) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 
 /obj/item/storm_staff/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	thunder_blast(target, user)
 
 /obj/item/storm_staff/proc/thunder_blast(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!thunder_charges)
 		balloon_alert(user, "needs to charge!")
 		return FALSE
@@ -103,10 +113,14 @@
 	return TRUE
 
 /obj/item/storm_staff/proc/recharge(mob/user)
+	procstart = null
+	src.procstart = null
 	thunder_charges = min(thunder_charges + 1, max_thunder_charges)
 	playsound(src, 'sound/effects/magic/charge.ogg', 10, TRUE, extrarange = SILENCED_SOUND_EXTRARANGE, falloff_distance = 0)
 
 /obj/item/storm_staff/proc/throw_thunderbolt(turf/target, boosted)
+	procstart = null
+	src.procstart = null
 	targeted_turfs -= target
 	new /obj/effect/temp_visual/thunderbolt(target)
 	var/list/affected_turfs = list(target)

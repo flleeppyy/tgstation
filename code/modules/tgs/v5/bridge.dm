@@ -1,4 +1,6 @@
 /datum/tgs_api/v5/proc/Bridge(command, list/data)
+	procstart = null
+	src.procstart = null
 	if(!data)
 		data = list()
 
@@ -45,6 +47,8 @@
 	return response
 
 /datum/tgs_api/v5/proc/CreateBridgeRequest(command, list/data)
+	procstart = null
+	src.procstart = null
 	var/json = CreateBridgeData(command, data, TRUE)
 	var/encoded_json = url_encode(json)
 
@@ -54,6 +58,8 @@
 	return url
 
 /datum/tgs_api/v5/proc/CreateBridgeData(command, list/data, needs_auth)
+	procstart = null
+	src.procstart = null
 	data[DMAPI5_BRIDGE_PARAMETER_COMMAND_TYPE] = command
 	if(needs_auth)
 		data[DMAPI5_PARAMETER_ACCESS_IDENTIFIER] = access_identifier
@@ -62,6 +68,8 @@
 	return json
 
 /datum/tgs_api/v5/proc/WaitForReattach(require_channels = FALSE)
+	procstart = null
+	src.procstart = null
 	if(detached)
 		// Wait up to one minute
 		for(var/i in 1 to 600)
@@ -75,6 +83,8 @@
 				detached = FALSE
 
 /datum/tgs_api/v5/proc/PerformBridgeRequest(bridge_request)
+	procstart = null
+	src.procstart = null
 	WaitForReattach(FALSE)
 
 	TGS_DEBUG_LOG("Bridge request start")

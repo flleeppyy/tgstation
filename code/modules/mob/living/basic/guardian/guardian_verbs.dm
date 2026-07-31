@@ -1,5 +1,7 @@
 /// Pop out into the realm of the living.
 /mob/living/basic/guardian/proc/manifest(forced)
+	procstart = null
+	src.procstart = null
 	if (is_deployed() || isnull(summoner) || isnull(summoner.loc) || istype(summoner.loc, /obj/effect) || (!COOLDOWN_FINISHED(src, manifest_cooldown) && !forced) || locked)
 		return FALSE
 	forceMove(summoner.loc)
@@ -11,6 +13,8 @@
 
 /// Go and hide inside your boss.
 /mob/living/basic/guardian/proc/recall(forced)
+	procstart = null
+	src.procstart = null
 	if (!is_deployed() || isnull(summoner) || (!COOLDOWN_FINISHED(src, manifest_cooldown) && !forced) || locked)
 		return FALSE
 	new /obj/effect/temp_visual/guardian/phase/out(loc)
@@ -21,21 +25,29 @@
 
 /// Do something when we appear.
 /mob/living/basic/guardian/proc/manifest_effects()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_GUARDIAN_MANIFESTED)
 
 /// Do something when we vanish.
 /mob/living/basic/guardian/proc/recall_effects()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_GUARDIAN_RECALLED)
 
 /// Swap to a different mode... if we have one
 /mob/living/basic/guardian/proc/toggle_modes()
+	procstart = null
+	src.procstart = null
 	to_chat(src, span_bolddanger("You don't have another mode!"))
 
 
 /// Turn an internal light on or off.
 /mob/living/basic/guardian/proc/toggle_light()
+	procstart = null
+	src.procstart = null
 	if (!light_on)
 		to_chat(src, span_notice("You activate your light."))
 		set_light_on(TRUE)
@@ -45,6 +57,8 @@
 
 /// Speak with our boss at a distance
 /mob/living/basic/guardian/proc/communicate()
+	procstart = null
+	src.procstart = null
 	if (isnull(summoner))
 		return
 	var/sender_key = key
@@ -81,6 +95,8 @@
 	shared_cooldown = NONE
 
 /datum/action/cooldown/mob_cooldown/guardian_comms/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	StartCooldown(360 SECONDS)
 	var/input = tgui_input_text(owner, "Enter a message to tell your guardian", "Message", max_length = MAX_MESSAGE_LEN)
 	StartCooldown()
@@ -118,6 +134,8 @@
 	shared_cooldown = NONE
 
 /datum/action/cooldown/mob_cooldown/recall_guardian/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_owner = owner
 	var/list/guardians = living_owner.get_all_linked_holoparasites()
 	for(var/mob/living/basic/guardian/guardian in guardians)
@@ -140,6 +158,8 @@
 	shared_cooldown = NONE
 
 /datum/action/cooldown/mob_cooldown/replace_guardian/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	StartCooldown(5 MINUTES)
 
 	var/mob/living/living_owner = owner

@@ -1,6 +1,8 @@
 /datum/unit_test/designs
 
 /datum/unit_test/designs/Run()
+	procstart = null
+	src.procstart = null
 //Can't use allocate because of bug with certain datums
 	var/datum/design/default_design = new /datum/design()
 
@@ -33,6 +35,8 @@
 /datum/unit_test/design_source
 
 /datum/unit_test/design_source/Run()
+	procstart = null
+	src.procstart = null
 	var/list/all_designs = list()
 
 	for(var/id in SSresearch.techweb_designs)
@@ -81,6 +85,8 @@
 /datum/unit_test/design_mats
 
 /datum/unit_test/design_mats/Run()
+	procstart = null
+	src.procstart = null
 	var/list/special_types = typesof(/datum/material_requirement) + typesof(/datum/material_slot) //we skip designs that can be printed with non-specific materials.
 
 	for (var/design_id in SSresearch.techweb_designs)
@@ -156,6 +162,8 @@
 
 ///Proc made to reduce copypasted code when allocating an object from a design, because stacks have a tendency to merge with each other, and we don't want that.
 /datum/unit_test/design_mats/proc/allocate_build_path_for_design(build_path)
+	procstart = null
+	src.procstart = null
 	var/is_stack = ispath(build_path)
 	if(is_stack) //If this is a stack, we don't want it to merge with any other stack on the same location
 		var/obj/item/stack/stack_path = build_path

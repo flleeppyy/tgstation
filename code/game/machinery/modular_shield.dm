@@ -77,6 +77,8 @@
 	var/display_name = "Shield Generator"
 
 /obj/machinery/modular_shield_generator/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(machine_stat & NOPOWER))
 		begin_processing()
@@ -86,6 +88,8 @@
 	end_processing()
 
 /obj/machinery/modular_shield_generator/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	innate_regen = initial(innate_regen)
@@ -106,6 +110,8 @@
 	calculate_radius()
 
 /obj/machinery/modular_shield_generator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_wires(new /datum/wires/modular_shield_generator(src))
 	if(mapload && active && anchored)
@@ -117,10 +123,14 @@
 	holder_type = /obj/machinery/modular_shield_generator
 
 /datum/wires/modular_shield_generator/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(WIRE_HACK)
 	return ..()
 
 /datum/wires/modular_shield_generator/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 
 	var/obj/machinery/modular_shield_generator/shield_gen = holder
 	switch(wire)
@@ -131,6 +141,8 @@
 
 ///qdels the forcefield and calls calculate regen to update the regen value accordingly
 /obj/machinery/modular_shield_generator/proc/deactivate_shields()
+	procstart = null
+	src.procstart = null
 	active = FALSE
 	QDEL_LIST(deployed_shields)
 	deployed_shields = null
@@ -139,24 +151,34 @@
 	calculate_regeneration()
 
 /obj/machinery/modular_shield_generator/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/modular_shield_generator/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/modular_shield_generator/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!panel_open || !is_wire_tool(tool))
 		return NONE
 	wires.interact(user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/modular_shield_generator/multitool_act(mob/living/user, obj/item/multitool/multi)
+	procstart = null
+	src.procstart = null
 	multi.set_buffer(src)
 	balloon_alert(user, "saved to buffer")
 	return ITEM_INTERACT_SUCCESS
 
 ///toggles the forcefield on and off
 /obj/machinery/modular_shield_generator/proc/toggle_shields()
+	procstart = null
+	src.procstart = null
 	if(initiating)
 		return
 	if(active)
@@ -167,12 +189,16 @@
 	activate_shields()
 
 /obj/machinery/modular_shield_generator/onShuttleMove(turf/newT, turf/oldT, list/movement_force, move_dir, obj/docking_port/stationary/old_dock, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		deactivate_shields()
 
 ///generates the forcefield based on the given radius and calls calculate_regen to update the regen value accordingly
 /obj/machinery/modular_shield_generator/proc/activate_shields()
+	procstart = null
+	src.procstart = null
 	if(active || (machine_stat & NOPOWER))//bug or did admin call proc on already active shield gen?
 		return
 	if(radius < 0)//what the fuck are admins doing
@@ -244,6 +270,8 @@
 
 ///After giving people a grace period to react to we up the alpha value and make the forcefield dense
 /obj/machinery/modular_shield_generator/proc/finish_field()
+	procstart = null
+	src.procstart = null
 
 	for(var/obj/structure/emergency_shield/modular/current_shield in deployed_shields)
 		current_shield.set_density(TRUE)
@@ -251,6 +279,8 @@
 	initiating = FALSE
 
 /obj/machinery/modular_shield_generator/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(deployed_shields)
 	for(var/obj/machinery/modular_shield/module/disconnecting in connected_modules)
 		disconnecting.shield_generator = null
@@ -258,12 +288,16 @@
 	return ..()
 
 /obj/machinery/modular_shield_generator/update_icon_state()
+	procstart = null
+	src.procstart = null
 
 	icon_state = ("[icon_type]_[!(machine_stat & NOPOWER) ? "[recovering ? "recovering_" : "ready_"]" : "no_power_"][(panel_open)?"open" : "closed"]")
 	return ..()
 
 //ui stuff
 /obj/machinery/modular_shield_generator/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -271,6 +305,8 @@
 		ui.open()
 
 /obj/machinery/modular_shield_generator/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 
 	var/list/data = list()
 	data["max_radius"] = max_radius
@@ -286,6 +322,8 @@
 	return data
 
 /obj/machinery/modular_shield_generator/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -308,6 +346,8 @@
 
 ///calculations for the stats supplied by the network of machines that boost us
 /obj/machinery/modular_shield_generator/proc/calculate_boost()
+	procstart = null
+	src.procstart = null
 
 	regen_boost = initial(regen_boost)
 	for (var/obj/machinery/modular_shield/module/charger/new_charger in connected_modules)
@@ -329,6 +369,8 @@
 
 ///Calculates the max radius the shield generator can support, modifiers go here
 /obj/machinery/modular_shield_generator/proc/calculate_radius()
+	procstart = null
+	src.procstart = null
 
 	max_radius = innate_radius + radius_boost
 	if(!exterior_only && internal_penalty)
@@ -342,12 +384,16 @@
 
 ///Calculates the max strength or health of the forcefield, modifiers go here
 /obj/machinery/modular_shield_generator/proc/calculate_max_strength()
+	procstart = null
+	src.procstart = null
 
 	max_strength = innate_strength + max_strength_boost
 	begin_processing()
 
 ///Calculates the regeneration based on the status of the generator and boosts from network, modifiers go here
 /obj/machinery/modular_shield_generator/proc/calculate_regeneration()
+	procstart = null
+	src.procstart = null
 
 	max_regeneration = innate_regen + regen_boost
 
@@ -368,6 +414,8 @@
 
 ///Reduces the strength of the shield based on the given integer
 /obj/machinery/modular_shield_generator/proc/shield_drain(damage_amount)
+	procstart = null
+	src.procstart = null
 	stored_strength -= damage_amount
 	begin_processing()
 	if (stored_strength < 5)
@@ -377,6 +425,8 @@
 		update_icon_state()
 
 /obj/machinery/modular_shield_generator/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	stored_strength = min((stored_strength + (current_regeneration * seconds_per_tick)),max_strength)
 	if(stored_strength == max_strength)
 		if (recovering)
@@ -402,9 +452,13 @@
 	display_name = "Shield Gate"
 
 /obj/machinery/modular_shield_generator/gate/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/modular_shield_generator/gate/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!default_change_direction_wrench(user, tool))
@@ -413,6 +467,8 @@
 
 ///we shield a tile and step forward until we either run out of max radius or hit a closed turf, every turf we shield is a penalty towards regen
 /obj/machinery/modular_shield_generator/gate/activate_shields()
+	procstart = null
+	src.procstart = null
 	if(active || (machine_stat & NOPOWER))//bug or did admin call proc on already active shield gen?
 		return
 	if(max_radius < 0)//what the fuck are admins doing
@@ -440,6 +496,8 @@
 
 //if we are active we most definitely have something protecting us
 /obj/machinery/modular_shield_generator/gate/take_damage()
+	procstart = null
+	src.procstart = null
 	if(active)
 		return
 	. = ..()
@@ -469,12 +527,16 @@
 	var/turf/connected_turf
 
 /obj/machinery/modular_shield/module/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	connected_turf = get_step(src, dir)
 	try_connect()
 
 /obj/machinery/modular_shield/module/Destroy()
+	procstart = null
+	src.procstart = null
 
 	if(shield_generator)
 		LAZYREMOVE(shield_generator.connected_modules, (src))
@@ -485,6 +547,8 @@
 	return ..()
 
 /obj/machinery/modular_shield/module/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isnull(shield_generator) && isnull(connected_node))
@@ -493,6 +557,8 @@
 	. += "It can be loosed and rotated with a screwdriver and wrench, rotating it will sever its connection."
 
 /obj/machinery/modular_shield/module/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	panel_open = !(panel_open)
@@ -505,6 +571,8 @@
 	return TRUE
 
 /obj/machinery/modular_shield/module/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	//rather than automatically checking for connections its probably alot less
@@ -513,6 +581,8 @@
 	return TRUE
 
 /obj/machinery/modular_shield/module/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!default_change_direction_wrench(user, tool))
@@ -534,14 +604,20 @@
 	return TRUE
 
 /obj/machinery/modular_shield/module/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/modular_shield/module/setDir(new_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	connected_turf = get_step(src, dir)
 
 ///checks for a valid machine in front of us and connects to it
 /obj/machinery/modular_shield/module/proc/try_connect(user)
+	procstart = null
+	src.procstart = null
 
 	if(shield_generator || connected_node)
 		balloon_alert(user, "already connected to something!")
@@ -595,6 +671,8 @@
 	var/list/connected_through_us
 
 /obj/machinery/modular_shield/module/node/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(shield_generator) || (machine_stat & NOPOWER))
 		icon_state = "node_off_[panel_open ? "open" : "closed"]"
@@ -602,6 +680,8 @@
 	icon_state = "node_on_[panel_open ? "open" : "closed"]"
 
 /obj/machinery/modular_shield/module/node/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 
 	if(!default_change_direction_wrench(user, tool))
 		return FALSE
@@ -625,6 +705,8 @@
 
 //after trying to connect to a machine infront of us, we will try to link anything connected to us to a generator
 /obj/machinery/modular_shield/module/node/try_connect(user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isnull(shield_generator))
@@ -633,6 +715,8 @@
 	shield_generator.calculate_boost()
 
 /obj/machinery/modular_shield/module/node/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	disconnect_connected_through_us()
@@ -643,6 +727,8 @@
 
 ///If we are connected to a shield generator this proc will connect anything connected to us to that generator
 /obj/machinery/modular_shield/module/node/proc/connect_connected_through_us()
+	procstart = null
+	src.procstart = null
 
 	if(shield_generator)
 		for(var/obj/machinery/modular_shield/module/connected in connected_through_us)
@@ -656,6 +742,8 @@
 
 ///This proc disconnects modules connected through us from the shield generator in the event that we lose connection
 /obj/machinery/modular_shield/module/node/proc/disconnect_connected_through_us()
+	procstart = null
+	src.procstart = null
 
 	for(var/obj/machinery/modular_shield/module/connected in connected_through_us)
 		LAZYREMOVE(shield_generator.connected_modules, connected)
@@ -676,6 +764,8 @@
 	allow_boosters = FALSE
 
 /obj/machinery/modular_shield/module/node/cable/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/right_turf = get_step(src, turn(dir, 270))
 	var/obj/machinery/modular_shield/module/node/connected_right = (locate(/obj/machinery/modular_shield/module/node) in right_turf)
@@ -704,6 +794,8 @@
 	var/charge_boost = 0
 
 /obj/machinery/modular_shield/module/charger/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(shield_generator) || (machine_stat & NOPOWER))
 		icon_state = "charger_off_[panel_open ? "open" : "closed"]"
@@ -711,6 +803,8 @@
 	icon_state = "charger_on_[panel_open ? "open" : "closed"]"
 
 /obj/machinery/modular_shield/module/charger/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	charge_boost = initial(charge_boost)
 	for(var/datum/stock_part/servo/new_servo in component_parts)
@@ -732,6 +826,8 @@
 	var/range_boost = 0
 
 /obj/machinery/modular_shield/module/relay/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(shield_generator) || (machine_stat & NOPOWER))
 		icon_state = "relay_off_[panel_open ? "open" : "closed"]"
@@ -739,6 +835,8 @@
 	icon_state = "relay_on_[panel_open ? "open" : "closed"]"
 
 /obj/machinery/modular_shield/module/relay/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	range_boost = initial(range_boost)
 	for(var/datum/stock_part/micro_laser/new_laser in component_parts)
@@ -760,6 +858,8 @@
 	var/strength_boost = 0
 
 /obj/machinery/modular_shield/module/well/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	strength_boost = initial(strength_boost)
 	for(var/datum/stock_part/capacitor/new_capacitor in component_parts)
@@ -769,6 +869,8 @@
 		shield_generator.calculate_boost()
 
 /obj/machinery/modular_shield/module/well/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(shield_generator) || (machine_stat & NOPOWER))
 		icon_state = "well_off_[panel_open ? "open" : "closed"]"
@@ -793,6 +895,8 @@
 
 
 /obj/structure/emergency_shield/modular/Initialize(mapload, connected_to_generator)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/blocks_explosives)
 	. = ..()
 	if(!connected_to_generator)
@@ -801,10 +905,14 @@
 	AddElement(/datum/element/atmos_sensitive, mapload)
 
 /obj/structure/emergency_shield/modular/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return exposed_temperature > (T0C + 200)
 
 //Damage from atmos
 /obj/structure/emergency_shield/modular/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	if(isnull(shield_generator))
 		qdel(src)
 		return
@@ -814,6 +922,8 @@
 
 //Damage from direct attacks
 /obj/structure/emergency_shield/modular/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(damage_type == BRUTE || damage_type == BURN)
 		if(isnull(shield_generator))
@@ -824,6 +934,8 @@
 
 //Damage from emp
 /obj/structure/emergency_shield/modular/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(shield_generator))
 		qdel(src)
@@ -833,6 +945,8 @@
 
 //Damage from explosions, remember we dont use armor
 /obj/structure/emergency_shield/modular/ex_act(severity)
+	procstart = null
+	src.procstart = null
 	if(isnull(shield_generator))
 		qdel(src)
 		return
@@ -851,6 +965,8 @@
 			shield_generator.shield_drain(100)
 
 /obj/structure/emergency_shield/modular/hulk_damage()
+	procstart = null
+	src.procstart = null
 	if(isnull(shield_generator))
 		qdel(src)
 		return 0

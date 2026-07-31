@@ -13,10 +13,14 @@
 	light_color = LIGHT_COLOR_BLUE
 
 /obj/item/gun/energy/ionrifle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_ALL)
 
 /obj/item/gun/energy/ionrifle/add_seclight_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/seclite_attachable, \
 		light_overlay_icon = 'icons/obj/weapons/guns/flashlights.dmi', \
 		light_overlay = "flight", \
@@ -32,6 +36,8 @@
 	slot_flags = ITEM_SLOT_BELT
 
 /obj/item/gun/energy/ionrifle/carbine/add_seclight_point()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// We use the same overlay as the parent, so we can just let the component inherit the correct offsets here
 	AddComponent(/datum/component/seclite_attachable, overlay_x = 18, overlay_y = 11)
@@ -104,6 +110,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 0.75, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/plasma = SMALL_MATERIAL_AMOUNT * 4)
 
 /obj/item/gun/energy/plasmacutter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/update_icon_blocker)
 	. = ..()
 	AddComponent(/datum/component/butchering, \
@@ -115,11 +123,15 @@
 	AddElement(/datum/element/tool_flash, 1)
 
 /obj/item/gun/energy/plasmacutter/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cell)
 		. += span_notice("[src] is [round(cell.percent())]% charged.")
 
 /obj/item/gun/energy/plasmacutter/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/charge_multiplier = 0
 	if(istype(tool, /obj/item/stack/sheet/mineral/plasma))
 		charge_multiplier = 2
@@ -142,6 +154,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/gun/energy/plasmacutter/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_CONTENTS)
 		return
@@ -157,6 +171,8 @@
 // Can we weld? Plasma cutter does not use charge continuously.
 // Amount cannot be defaulted to 1: most of the code specifies 0 in the call.
 /obj/item/gun/energy/plasmacutter/tool_use_check(mob/living/user, amount, heat_required)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(cell))
 		balloon_alert(user, "no cell inserted!")
 		return FALSE
@@ -173,9 +189,13 @@
 	return TRUE
 
 /obj/item/gun/energy/plasmacutter/use(used)
+	procstart = null
+	src.procstart = null
 	return (!QDELETED(cell) && cell.use(used ? used * PLASMA_CUTTER_CHARGE_WELD : PLASMA_CUTTER_CHARGE_WELD))
 
 /obj/item/gun/energy/plasmacutter/use_tool(atom/target, mob/living/user, delay, amount=1, volume=0, datum/callback/extra_checks)
+	procstart = null
+	src.procstart = null
 	if(!amount)
 		return ..(amount = 1)
 
@@ -187,6 +207,8 @@
 	target.cut_overlay(sparks)
 
 /obj/item/gun/energy/plasmacutter/try_fire_gun(atom/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	return fire_gun(target, user, user.Adjacent(target) && !isturf(target), params)
 
 #undef PLASMA_CUTTER_CHARGE_WELD
@@ -219,10 +241,14 @@
 	gun_flags = NOT_A_REAL_GUN
 
 /obj/item/gun/energy/wormhole_projector/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("<b>Left-click</b> to fire blue wormholes and <b><font color=orange>right-click</font></b> to fire orange wormholes.")
 
 /obj/item/gun/energy/wormhole_projector/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/assembly/signaler/anomaly/bluespace))
 		return NONE
 	if(firing_core)
@@ -235,19 +261,27 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/gun/energy/wormhole_projector/can_shoot()
+	procstart = null
+	src.procstart = null
 	if(!firing_core)
 		return FALSE
 	return ..()
 
 /obj/item/gun/energy/wormhole_projector/shoot_with_empty_chamber(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(user, span_danger("The display says, 'NO CORE INSTALLED'."))
 
 /obj/item/gun/energy/wormhole_projector/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = inhand_icon_state = "[base_icon_state][select]"
 
 /obj/item/gun/energy/wormhole_projector/update_ammo_types()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in 1 to ammo_type.len)
 		var/obj/item/ammo_casing/energy/wormhole/W = ammo_type[i]
@@ -258,6 +292,8 @@
 				WH.gun = WEAKREF(src)
 
 /obj/item/gun/energy/wormhole_projector/try_fire_gun(atom/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(LAZYACCESS(params2list(params), RIGHT_CLICK))
 		if(select == AMMO_SELECT_BLUE) //Last fired in left click mode. Switch to orange wormhole (right click).
 			select_fire()
@@ -267,6 +303,8 @@
 	return ..()
 
 /obj/item/gun/energy/wormhole_projector/proc/on_portal_destroy(obj/effect/portal/P)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(P == p_blue)
 		p_blue = null
@@ -274,16 +312,22 @@
 		p_orange = null
 
 /obj/item/gun/energy/wormhole_projector/proc/has_blue_portal()
+	procstart = null
+	src.procstart = null
 	if(istype(p_blue) && !QDELETED(p_blue))
 		return TRUE
 	return FALSE
 
 /obj/item/gun/energy/wormhole_projector/proc/has_orange_portal()
+	procstart = null
+	src.procstart = null
 	if(istype(p_orange) && !QDELETED(p_orange))
 		return TRUE
 	return FALSE
 
 /obj/item/gun/energy/wormhole_projector/proc/crosslink()
+	procstart = null
+	src.procstart = null
 	if(!has_blue_portal() && !has_orange_portal())
 		return
 	if(!has_blue_portal() && has_orange_portal())
@@ -296,6 +340,8 @@
 	p_blue.link_portal(p_orange)
 
 /obj/item/gun/energy/wormhole_projector/proc/create_portal(obj/projectile/beam/wormhole/wormhole_beam, turf/target)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/portal/new_portal = new /obj/effect/portal(target, 300, null, FALSE, null)
 	RegisterSignal(new_portal, COMSIG_QDELETING, PROC_REF(on_portal_destroy))
 	if(istype(wormhole_beam, /obj/projectile/beam/wormhole/orange))
@@ -329,6 +375,8 @@
 	use_cyborg_cell = TRUE
 
 /obj/item/gun/energy/printer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/update_icon_blocker)
 	. = ..()
 	AddComponent(/datum/component/automatic_fire, 0.3 SECONDS)
@@ -376,6 +424,8 @@
 	gun_flags = NOT_A_REAL_GUN
 
 /obj/item/gun/energy/gravity_gun/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/assembly/signaler/anomaly/grav))
 		return NONE
 	if(firing_core)
@@ -388,6 +438,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/gun/energy/gravity_gun/can_shoot()
+	procstart = null
+	src.procstart = null
 	if(!firing_core)
 		return FALSE
 	return ..()
@@ -424,10 +476,14 @@ it is often confused with the mech weapon of the same name, since it is a bit mo
 	var/ready_to_fire = FALSE
 
 /obj/item/gun/energy/tesla_cannon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/automatic_fire, autofire_shot_delay =  100 MILLISECONDS, firing_sound_loop = /datum/looping_sound/tesla_cannon)
 
 /obj/item/gun/energy/tesla_cannon/can_trigger_gun(mob/living/user, akimbo_usage)
+	procstart = null
+	src.procstart = null
 	if(ready_to_fire)
 		return ..()
 	//If we have charge, but the stock is folded, do sparks.
@@ -441,6 +497,8 @@ it is often confused with the mech weapon of the same name, since it is a bit mo
 	return FALSE
 
 /obj/item/gun/energy/tesla_cannon/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ready_to_fire)
 		w_class = WEIGHT_CLASS_NORMAL
@@ -478,10 +536,14 @@ it is often confused with the mech weapon of the same name, since it is a bit mo
 	COOLDOWN_DECLARE(coin_regen_cd)
 
 /obj/item/gun/energy/marksman_revolver/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	coin_count = max_coins
 
 /obj/item/gun/energy/marksman_revolver/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(max_coins)
 		. += "It currently has [coin_count] out of [max_coins] coins, and takes [coin_regen_rate/10] seconds to recharge each one."
@@ -489,6 +551,8 @@ it is often confused with the mech weapon of the same name, since it is a bit mo
 		. += "It has infinite coins available for use."
 
 /obj/item/gun/energy/marksman_revolver/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!max_coins || coin_count >= max_coins)
 		STOP_PROCESSING(SSobj, src)
 		return
@@ -501,6 +565,8 @@ it is often confused with the mech weapon of the same name, since it is a bit mo
 		COOLDOWN_START(src, coin_regen_cd, coin_regen_rate)
 
 /obj/item/gun/energy/marksman_revolver/try_fire_gun(atom/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(!LAZYACCESS(params2list(params), RIGHT_CLICK))
 		return ..()
 	if(!CAN_THEY_SEE(target, user))
@@ -538,5 +604,7 @@ it is often confused with the mech weapon of the same name, since it is a bit mo
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 3, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 7, /datum/material/gold = SHEET_MATERIAL_AMOUNT * 5)
 
 /obj/item/gun/energy/photon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light_on(TRUE) // The gun quite literally shoots mini-suns.

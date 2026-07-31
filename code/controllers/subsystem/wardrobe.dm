@@ -47,6 +47,8 @@ SUBSYSTEM_DEF(wardrobe)
 	))
 
 /datum/controller/subsystem/wardrobe/Initialize()
+	procstart = null
+	src.procstart = null
 	setup_callbacks()
 	load_outfits()
 	load_species()
@@ -58,6 +60,8 @@ SUBSYSTEM_DEF(wardrobe)
 
 /// Resets the load queue to the master template, accounting for the existing stock
 /datum/controller/subsystem/wardrobe/proc/hard_refresh_queue()
+	procstart = null
+	src.procstart = null
 	for(var/datum/type_to_queue as anything in canon_minimum)
 		var/list/master_info = canon_minimum[type_to_queue]
 		var/amount_to_load = master_info[WARDROBE_CACHE_COUNT] * cache_intensity
@@ -68,6 +72,8 @@ SUBSYSTEM_DEF(wardrobe)
 		set_queue_item(type_to_queue, amount_to_load)
 
 /datum/controller/subsystem/wardrobe/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	var/total_provided = max(stock_hit + stock_miss, 1)
 	var/current_max_store = (one_go_master * cache_intensity) + (overflow_lienency * length(canon_minimum))
 	msg += "\n  P:[length(canon_minimum)] Q:[length(order_list)] S:[length(preloaded_stock)] I:[cache_intensity] O:[overflow_lienency] MAX:[current_max_store]"
@@ -76,6 +82,8 @@ SUBSYSTEM_DEF(wardrobe)
 	return ..()
 
 /datum/controller/subsystem/wardrobe/fire(resumed=FALSE)
+	procstart = null
+	src.procstart = null
 	if(current_task != SSWARDROBE_INSPECT && world.time - last_inspect_time >= inspect_delay)
 		current_task = SSWARDROBE_INSPECT
 
@@ -91,6 +99,8 @@ SUBSYSTEM_DEF(wardrobe)
 
 /// Turns the order list into actual loaded items, this is where most work is done
 /datum/controller/subsystem/wardrobe/proc/stock_wardrobe()
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/type_to_stock as anything in order_list)
 		var/amount_to_stock = order_list[type_to_stock]
 		for(var/i in 1 to amount_to_stock)
@@ -108,6 +118,8 @@ SUBSYSTEM_DEF(wardrobe)
 /// Or that we're not too low on some other stock
 /// This exists as a failsafe, so the wardrobe doesn't just end up generating too many items or accidentially running out somehow
 /datum/controller/subsystem/wardrobe/proc/run_inspection()
+	procstart = null
+	src.procstart = null
 	for(var/datum/loaded_type as anything in canon_minimum)
 		var/list/master_info = canon_minimum[loaded_type]
 		var/last_looked_at = master_info[WARDROBE_CACHE_LAST_INSPECT]
@@ -144,6 +156,8 @@ SUBSYSTEM_DEF(wardrobe)
 /// Returns the deepest path in our callback store that matches the input
 /// The hope is this will prevent dumb conflicts, since the furthest down is always going to be the most relevant
 /datum/controller/subsystem/wardrobe/proc/get_callback_type(datum/to_check)
+	procstart = null
+	src.procstart = null
 	var/longest_path
 	var/longest_path_length = 0
 	for(var/datum/path as anything in initial_callbacks)
@@ -164,6 +178,8 @@ SUBSYSTEM_DEF(wardrobe)
  *
 */
 /datum/controller/subsystem/wardrobe/proc/canonize_type(type_to_stock)
+	procstart = null
+	src.procstart = null
 	if(!type_to_stock)
 		return
 	if(!ispath(type_to_stock))
@@ -183,16 +199,22 @@ SUBSYSTEM_DEF(wardrobe)
 	one_go_master++
 
 /datum/controller/subsystem/wardrobe/proc/add_queue_item(queued_type, amount)
+	procstart = null
+	src.procstart = null
 	var/amount_held = order_list[queued_type] || 0
 	set_queue_item(queued_type, amount_held + amount)
 
 /datum/controller/subsystem/wardrobe/proc/remove_queue_item(queued_type, amount)
+	procstart = null
+	src.procstart = null
 	var/amount_held = order_list[queued_type]
 	if(!amount_held)
 		return
 	set_queue_item(queued_type, amount_held - amount)
 
 /datum/controller/subsystem/wardrobe/proc/set_queue_item(queued_type, amount)
+	procstart = null
+	src.procstart = null
 	var/list/master_info = canon_minimum[queued_type]
 	if(!master_info)
 		stack_trace("We just tried to queue a type \[[queued_type]\] that's not stored in the master canon")
@@ -213,6 +235,8 @@ SUBSYSTEM_DEF(wardrobe)
 
 /// Take an existing object, and recycle it if we are allowed to by stashing it back into our storage
 /datum/controller/subsystem/wardrobe/proc/recycle_object(obj/item/object)
+	procstart = null
+	src.procstart = null
 	// Don't restock blacklisted items, instead just delete them
 	if(is_type_in_typecache(object, recycle_blacklist))
 		qdel(object)
@@ -222,6 +246,8 @@ SUBSYSTEM_DEF(wardrobe)
 /// Take an existing object, and insert it into our storage
 /// If we can't or won't take it, it's deleted. You do not own this object after passing it in
 /datum/controller/subsystem/wardrobe/proc/stash_object(obj/item/object)
+	procstart = null
+	src.procstart = null
 	var/object_type = object.type
 	var/list/master_info = canon_minimum[object_type]
 	// I will not permit objects you didn't reserve ahead of time
@@ -261,6 +287,8 @@ SUBSYSTEM_DEF(wardrobe)
 	stock_info[WARDROBE_STOCK_CONTENTS] += object
 
 /datum/controller/subsystem/wardrobe/proc/provide_type(datum/requested_type, atom/movable/location)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/requested_object
 	var/list/stock_info = preloaded_stock[requested_type]
 	if(!stock_info)
@@ -298,6 +326,8 @@ SUBSYSTEM_DEF(wardrobe)
 /// Unloads an amount of some type we have in stock
 /// Private function, for internal use only
 /datum/controller/subsystem/wardrobe/proc/unload_stock(datum/unload_type, amount, force = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/stock_info = preloaded_stock[unload_type]
 	if(!stock_info)
 		return
@@ -317,6 +347,8 @@ SUBSYSTEM_DEF(wardrobe)
 /// We will always use the deepest path. So /obj/item/blade/knife superceeds the entries of /obj/item and /obj/item/blade
 /// Mind this
 /datum/controller/subsystem/wardrobe/proc/setup_callbacks()
+	procstart = null
+	src.procstart = null
 	var/list/play_with = new /list(WARDROBE_CALLBACK_REMOVE) // Turns out there's a global list of pdas. Let's work around that yeah?
 
 	play_with = new /list(WARDROBE_CALLBACK_REMOVE) // Don't want organs rotting on the job
@@ -329,6 +361,8 @@ SUBSYSTEM_DEF(wardrobe)
 	initial_callbacks[/obj/item/storage/box/survival] = play_with
 
 /datum/controller/subsystem/wardrobe/proc/load_outfits()
+	procstart = null
+	src.procstart = null
 	for(var/datum/outfit/to_stock as anything in subtypesof(/datum/outfit))
 		if(!initial(to_stock.preload)) // Clearly not interested
 			continue
@@ -338,6 +372,8 @@ SUBSYSTEM_DEF(wardrobe)
 		CHECK_TICK
 
 /datum/controller/subsystem/wardrobe/proc/load_species()
+	procstart = null
+	src.procstart = null
 	for(var/datum/species/to_record as anything in subtypesof(/datum/species))
 		if(!initial(to_record.preload))
 			continue
@@ -348,6 +384,8 @@ SUBSYSTEM_DEF(wardrobe)
 		CHECK_TICK
 
 /datum/controller/subsystem/wardrobe/proc/load_storage_contents()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/storage/crate as anything in subtypesof(/obj/item/storage))
 		if(!initial(crate.preload))
 			continue

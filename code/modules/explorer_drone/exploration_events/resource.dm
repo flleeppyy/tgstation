@@ -21,6 +21,8 @@
 
 /// Description shown below image
 /datum/exploration_event/simple/resource/get_description(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/desc_list = list(.)
 	if(!required_tool || drone.has_tool(required_tool))
@@ -30,9 +32,13 @@
 	return desc_list.Join("\n")
 
 /datum/exploration_event/simple/resource/action_enabled(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	return (amount > 0) && (!required_tool || drone.has_tool(required_tool))
 
 /datum/exploration_event/simple/resource/fire(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	if(!action_enabled(drone)) //someone used it up or we lost the tool while we were looking at ui
 		end()
 		return
@@ -44,9 +50,13 @@
 		finish_event(drone)
 
 /datum/exploration_event/simple/resource/is_targetable()
+	procstart = null
+	src.procstart = null
 	return visited && amount > 0 ///Can go back if something is left.
 
 /datum/exploration_event/simple/resource/proc/delay_finished(datum/weakref/drone_ref)
+	procstart = null
+	src.procstart = null
 	var/obj/item/exodrone/drone = drone_ref.resolve()
 	if(QDELETED(drone)) //drone blown up in the meantime
 		return
@@ -54,11 +64,15 @@
 	finish_event(drone)
 
 /datum/exploration_event/simple/resource/proc/finish_event(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	drone.drone_log(success_log)
 	dispense_loot(drone)
 	end(drone)
 
 /datum/exploration_event/simple/resource/proc/dispense_loot(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	if(ispath(loot_type,/datum/adventure_loot_generator))
 		var/datum/adventure_loot_generator/generator = new loot_type
 		generator.transfer_loot(drone)
@@ -247,6 +261,8 @@
 	loot_type = /obj/item/bodypart/head
 
 /datum/exploration_event/simple/resource/welded_locker/dispense_loot(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/head_species_source = new
 	head_species_source.set_species(/datum/species/skeleton)
 	head_species_source.real_name = "spaced locker victim"
@@ -287,6 +303,8 @@
 	var/chosen_material_type
 
 /datum/exploration_event/simple/resource/mineral_deposit/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	chosen_material_type = pick(possible_materials)
 	var/datum/material/chosen_mat = SSmaterials.get_material(chosen_material_type)
@@ -296,6 +314,8 @@
 	description = "You locate a rich surface deposit of [chosen_mat.name]."
 
 /datum/exploration_event/simple/resource/mineral_deposit/dispense_loot(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	var/datum/material/chosen_mat = SSmaterials.get_material(chosen_material_type)
 	var/obj/loot = new chosen_mat.sheet_type(loot_amount)
 	drone.try_transfer(loot)

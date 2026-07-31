@@ -24,10 +24,14 @@
 	var/rods_amount = 2
 
 /obj/structure/wall_support/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/structure/wall_support/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(resistance_flags & INDESTRUCTIBLE)
 		return
@@ -37,6 +41,8 @@
 		. += span_notice("The anchoring screws are [EXAMINE_HINT("unscrewed")]. The rods look like they could be [EXAMINE_HINT("cut")] through.")
 
 /obj/structure/wall_support/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(held_item?.tool_behaviour == TOOL_WIRECUTTER)
 		context[SCREENTIP_CONTEXT_RMB] = "Deconstruct"
@@ -47,12 +53,16 @@
 	return .
 
 /obj/structure/wall_support/wirecutter_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	tool.play_tool_sound(src, 100)
 	deconstruct(TRUE)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/wall_support/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!isturf(loc))
 		return FALSE
 	add_fingerprint(user)
@@ -64,13 +74,19 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/wall_support/play_attack_sound(...)
+	procstart = null
+	src.procstart = null
 	return call(src, /obj/structure/grille::play_attack_sound())(arglist(args))
 
 /obj/structure/wall_support/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/obj/rods = new rods_type(drop_location(), rods_amount)
 	transfer_fingerprints_to(rods)
 
 /obj/structure/wall_support/atom_break()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(broken)
 		return
@@ -82,7 +98,11 @@
 	update_appearance()
 
 /obj/structure/wall_support/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return exposed_temperature > T0C + 1500 && !broken
 
 /obj/structure/wall_support/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	take_damage(1, BURN, 0, 0)

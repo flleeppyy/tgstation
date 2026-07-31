@@ -4,14 +4,20 @@
  * * text - text to log.
  */
 /mob/proc/log_mob_tag(text, list/data)
+	procstart = null
+	src.procstart = null
 	logger.Log(LOG_CATEGORY_DEBUG_MOBTAG, text, data)
 
 /proc/log_silicon(text, list/data)
+	procstart = null
+	src.procstart = null
 	logger.Log(LOG_CATEGORY_SILICON, text, data)
 
 
 /// Logs a message in a mob's individual log, and in the global logs as well if log_globally is true
 /mob/log_message(message, message_type, color = null, log_globally = TRUE, list/data)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(message))
 		stack_trace("Empty message")
 		return

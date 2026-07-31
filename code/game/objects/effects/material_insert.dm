@@ -5,6 +5,8 @@
  * * material - the material used to generate the overlay
  */
 /proc/material_insertion_animation(datum/material/material)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/mutable_appearance)
 
 	var/static/list/mutable_appearance/apps = list()

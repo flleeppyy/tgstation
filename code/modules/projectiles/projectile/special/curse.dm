@@ -16,20 +16,28 @@
 	var/handedness = 0
 
 /obj/projectile/curse_hand/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_FREE_HYPERSPACE_MOVEMENT, INNATE_TRAIT)
 	handedness = prob(50)
 	icon_state = "[base_icon_state][handedness]"
 
 /obj/projectile/curse_hand/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(arm)
 	return ..()
 
 /obj/projectile/curse_hand/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state]0[handedness]"
 	return ..()
 
 /obj/projectile/curse_hand/fire(setAngle)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src)) //I'm going to try returning nothing because if it's being deleted, surely we don't want anything to happen?
 		return
 	if(starting)
@@ -37,10 +45,14 @@
 	..()
 
 /obj/projectile/curse_hand/prehit_pierce(atom/target)
+	procstart = null
+	src.procstart = null
 	return (target == original)? PROJECTILE_PIERCE_NONE : PROJECTILE_PIERCE_PHASE
 
 /// The visual effect for the hand disappearing
 /obj/projectile/curse_hand/proc/finale()
+	procstart = null
+	src.procstart = null
 	if(arm)
 		QDEL_NULL(arm)
 	if((movement_type & PHASING))
@@ -57,10 +69,14 @@
 	animate(D.visuals, alpha = 0, time = 32)
 
 /obj/projectile/curse_hand/on_range()
+	procstart = null
+	src.procstart = null
 	finale()
 	return ..()
 
 /obj/projectile/curse_hand/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. == BULLET_ACT_HIT)
 		finale()

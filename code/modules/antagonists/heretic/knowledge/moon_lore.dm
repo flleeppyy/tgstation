@@ -69,10 +69,14 @@
 	eldritch_passive = /datum/status_effect/heretic_passive/moon
 
 /datum/heretic_knowledge/limited_amount/starting/base_moon/on_gain(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.AddComponentFrom(REF(src), /datum/component/empathy, seen_it = TRUE, visible_info = ALL, self_empath = FALSE, sense_dead = FALSE, sense_whisper = TRUE, smite_target = FALSE)
 
 /datum/heretic_knowledge/limited_amount/starting/base_moon/on_mansus_grasp(mob/living/source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(target.can_block_magic(MAGIC_RESISTANCE_MOON))
@@ -164,6 +168,8 @@
 	research_tree_icon_state = "blade_upgrade_moon"
 
 /datum/heretic_knowledge/blade_upgrade/moon/do_melee_effects(mob/living/source, mob/living/target, obj/item/melee/sickly_blade/blade)
+	procstart = null
+	src.procstart = null
 	if(source == target || !isliving(target))
 		return
 
@@ -214,6 +220,8 @@
 	announcement_sound = 'sound/music/antag/heretic/ascend_moon.ogg'
 
 /datum/heretic_knowledge/ultimate/moon_final/is_valid_sacrifice(mob/living/sacrifice)
+	procstart = null
+	src.procstart = null
 
 	var/brain_damage = sacrifice.get_organ_loss(ORGAN_SLOT_BRAIN)
 	// Checks if our target has enough brain damage
@@ -223,6 +231,8 @@
 	return ..()
 
 /datum/heretic_knowledge/ultimate/moon_final/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(user, TRAIT_MADNESS_IMMUNE, type)
 	user.mind.add_antag_datum(/datum/antagonist/lunatic/master)
@@ -252,6 +262,8 @@
 			amount_of_lunatics++
 
 /datum/heretic_knowledge/ultimate/moon_final/proc/attempt_conversion(mob/living/carbon/convertee, mob/user)
+	procstart = null
+	src.procstart = null
 	// Heretics, lunatics and monsters shouldn't become lunatics because they either have a master or have a mansus grasp
 	if(IS_HERETIC_OR_MONSTER(convertee))
 		to_chat(convertee, span_boldwarning("[user]'s rise is influencing those who are weak willed. Their minds shall rend." ))
@@ -279,6 +291,8 @@
 	return TRUE
 
 /datum/heretic_knowledge/ultimate/moon_final/proc/on_life(mob/living/source, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	visible_hallucination_pulse(
 		center = get_turf(source),
@@ -325,6 +339,8 @@
 
 
 /datum/heretic_knowledge/ultimate/moon_final/proc/should_mind_explode(mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(target, TRAIT_MINDSHIELD))
 		return TRUE
 	if(IS_CULTIST_OR_CULTIST_MOB(target))

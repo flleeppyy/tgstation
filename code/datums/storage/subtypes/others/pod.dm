@@ -6,12 +6,16 @@
 	var/always_unlocked = FALSE
 
 /datum/storage/pod/open_storage(mob/to_show)
+	procstart = null
+	src.procstart = null
 	if(locked && isliving(to_show)) //Observers get to see anyway
 		to_chat(to_show, span_warning("The storage unit will only unlock during a Red or Delta security alert."))
 		return FALSE
 	return ..()
 
 /datum/storage/pod/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// all of these are a type below what actually spawn with
 	// (IE all space suits instead of just the emergency ones)
@@ -27,10 +31,14 @@
 	update_lock(new_level = SSsecurity_level.get_current_level_as_number())
 
 /datum/storage/pod/set_parent(atom/new_parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_ATOM_AFTER_SHUTTLE_MOVE, PROC_REF(pod_launch))
 
 /datum/storage/pod/proc/update_lock(datum/source, new_level)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(always_unlocked)
 		return
@@ -41,6 +49,8 @@
 		close_all()
 
 /datum/storage/pod/proc/pod_launch(datum/source, turf/old_turf)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// This check is to ignore the movement of the shuttle from the transit level to the station as it is loaded in.
 	if(old_turf && is_reserved_level(old_turf.z))

@@ -9,6 +9,8 @@ SUBSYSTEM_DEF(stickyban)
 
 
 /datum/controller/subsystem/stickyban/Initialize()
+	procstart = null
+	src.procstart = null
 	// load IGNORED_CIDS as number_list into a fast lookup map
 	var/list/ignored_conf = CONFIG_GET(number_list/ignored_cids)
 	if (ignored_conf && ignored_conf.len)
@@ -71,6 +73,8 @@ SUBSYSTEM_DEF(stickyban)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/stickyban/proc/Populatedbcache()
+	procstart = null
+	src.procstart = null
 	var/newdbcache = list() //so if we runtime or the db connection dies we don't kill the existing cache
 
 	var/datum/db_query/query_stickybans = SSdbcore.NewQuery("SELECT ckey, reason, banning_admin, datetime FROM [format_table_name("stickyban")] ORDER BY ckey")
@@ -163,6 +167,8 @@ SUBSYSTEM_DEF(stickyban)
 
 
 /datum/controller/subsystem/stickyban/proc/import_raw_stickyban_to_db(ckey, list/ban)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if (!ban["admin"])
 		ban["admin"] = "LEGACY"

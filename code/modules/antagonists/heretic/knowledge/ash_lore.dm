@@ -63,6 +63,8 @@
 	eldritch_passive = /datum/status_effect/heretic_passive/ash
 
 /datum/heretic_knowledge/limited_amount/starting/base_ash/on_mansus_grasp(mob/living/source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(target.is_blind())
@@ -76,6 +78,8 @@
 	target.set_eye_blur_if_lower(20 SECONDS)
 
 /datum/heretic_knowledge/limited_amount/starting/base_ash/trigger_mark(mob/living/source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -145,12 +149,16 @@
 	research_tree_icon_state = "lantern"
 
 /datum/heretic_knowledge/nightwatchers_lantern/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/flashlight/flare/candle/candle in atoms)
 		if(!candle.light_on)
 			atoms -= candle
 
 /datum/heretic_knowledge/nightwatchers_lantern/prepare_atom_for_ritual_test(atom/what)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(what, /obj/item/flashlight/flare/candle))
 		what.set_light_on(TRUE)
@@ -165,6 +173,8 @@
 	research_tree_icon_state = "blade_upgrade_ash"
 
 /datum/heretic_knowledge/blade_upgrade/ash/do_melee_effects(mob/living/source, mob/living/target, obj/item/melee/sickly_blade/blade)
+	procstart = null
+	src.procstart = null
 	if(source == target || !isliving(target))
 		return
 
@@ -213,6 +223,8 @@
 	)
 
 /datum/heretic_knowledge/ultimate/ash_final/is_valid_sacrifice(mob/living/carbon/human/sacrifice)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -224,6 +236,8 @@
 	return FALSE
 
 /datum/heretic_knowledge/ultimate/ash_final/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/action/cooldown/spell/fire_sworn/circle_spell = new(user.mind)
 	circle_spell.Grant(user)

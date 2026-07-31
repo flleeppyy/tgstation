@@ -10,6 +10,8 @@
 	var/obj/item/observed_item = null
 
 /datum/bt_node/decorator/item_inside_pawn/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	var/obj/item/target = owning_controller?.blackboard[key]
 	if(target)
 		observed_item = target
@@ -18,6 +20,8 @@
 	return TRUE
 
 /datum/bt_node/decorator/item_inside_pawn/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	if(observed_item)
 		UnregisterSignal(observed_item, COMSIG_MOVABLE_MOVED)
 		observed_item = null
@@ -25,6 +29,8 @@
 
 /// Fires when the blackboard key changes. Rebinds the move observer to the new item and re-evaluates.
 /datum/bt_node/decorator/item_inside_pawn/proc/on_item_key_changed(atom/source, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/item/target = owning_controller?.blackboard[key]
 	if(target == observed_item)
@@ -39,6 +45,8 @@
 		on_observed_change(owning_controller, null)
 
 /datum/bt_node/decorator/item_inside_pawn/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/item/target = controller.blackboard[key]
 	if(QDELETED(target))
 		controller.clear_blackboard_key(key)

@@ -15,9 +15,13 @@
 	var/valid_species = list()
 
 /obj/item/debug/human_spawner/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/debug/human_spawner/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isturf(interacting_with))
 		var/mob/living/carbon/human/H = new /mob/living/carbon/human(interacting_with)
 		if(selected_species)
@@ -26,6 +30,8 @@
 	return NONE
 
 /obj/item/debug/human_spawner/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	var/choice = input("Select a species", "Human Spawner", null) in sortTim(GLOB.species_list, GLOBAL_PROC_REF(cmp_text_asc))
 	selected_species = GLOB.species_list[choice]
@@ -43,10 +49,14 @@
 	tool_behaviour = null
 
 /obj/item/debug/omnitool/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += " The mode is: [tool_behaviour]"
 
 /obj/item/debug/omnitool/proc/check_menu(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated || !user.Adjacent(src))
@@ -54,9 +64,13 @@
 	return TRUE
 
 /obj/item/debug/omnitool/get_all_tool_behaviours()
+	procstart = null
+	src.procstart = null
 	return GLOB.all_tool_behaviours
 
 /obj/item/debug/omnitool/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return
 	var/tool_result = show_radial_menu(user, src, GLOB.tool_to_image, custom_check = CALLBACK(src, PROC_REF(check_menu), user), require_near = TRUE, tooltips = TRUE)
@@ -69,6 +83,8 @@
 	color = COLOR_ADMIN_PINK
 
 /obj/item/debug/omnitool/item_spawner/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user || !user.client)
 		return
 	var/path = text2path(tgui_input_text(user, "Insert an item typepath to spawn", "ADMINS ONLY. FUCK AROUND AND FIND OUT."))

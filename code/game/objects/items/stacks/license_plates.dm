@@ -25,6 +25,8 @@
 
 ///Override to allow for variations
 /obj/item/stack/license_plates/filled/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(novariants)
 		return

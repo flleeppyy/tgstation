@@ -38,6 +38,8 @@
  * * encode_text - if TRUE, the text will be HTML encoded
  */
 /proc/priority_announce(text, title = "", sound, type, sender_override, has_important_message = FALSE, list/mob/players = GLOB.player_list, encode_title = TRUE, encode_text = TRUE, color_override)
+	procstart = null
+	src.procstart = null
 	if(!text)
 		return
 
@@ -105,6 +107,8 @@
  * Defaults to FALSE, which means only basic HTML will be rendered.
  */
 /proc/print_command_report(text = "", title = null, announce = TRUE, contains_advanced_html = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!title)
 		title = "Classified [command_name()] Update"
 
@@ -137,6 +141,8 @@
  * color_override - optional, use the passed color instead of the default notice color.
  */
 /proc/minor_announce(message, title = "Attention:", alert = FALSE, html_encode = TRUE, list/players, sound_override, should_play_sound = TRUE, color_override)
+	procstart = null
+	src.procstart = null
 	if(!message)
 		return
 
@@ -160,6 +166,8 @@
 
 /// Sends an announcement about the level changing to players. Uses the passed in datum and the subsystem's previous security level to generate the message.
 /proc/level_announce(datum/security_level/selected_level, previous_level_number)
+	procstart = null
+	src.procstart = null
 	var/current_level_number = selected_level.number_level
 	var/current_level_name = selected_level.name
 	var/current_level_color = selected_level.announcement_color
@@ -186,6 +194,8 @@
 /// Proc that just generates a custom header based on variables fed into `priority_announce()`
 /// Will return a string.
 /proc/generate_unique_announcement_header(title, sender_override)
+	procstart = null
+	src.procstart = null
 	var/list/returnable_strings = list()
 	if(isnull(sender_override))
 		returnable_strings += MAJOR_ANNOUNCEMENT_TITLE("[command_name()] Update")
@@ -200,6 +210,8 @@
 /// Proc that just dispatches the announcement to our applicable audience. Only the announcement is a mandatory arg.
 /// `should_play_sound` can also be a callback, if you want to only play the sound to specific players.
 /proc/dispatch_announcement_to_players(announcement, list/players = GLOB.player_list, sound_override = null, should_play_sound = TRUE)
+	procstart = null
+	src.procstart = null
 	var/sound_to_play = !isnull(sound_override) ? sound_override : 'sound/announcer/notice/notice2.ogg'
 
 	var/datum/callback/should_play_sound_callback = astype(should_play_sound)

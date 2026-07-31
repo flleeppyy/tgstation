@@ -14,9 +14,13 @@
 	circuit_flags = CIRCUIT_FLAG_INPUT_SIGNAL|CIRCUIT_FLAG_OUTPUT_SIGNAL
 
 /obj/item/circuit_component/variable/assoc_list/list_remove/populate_ports()
+	procstart = null
+	src.procstart = null
 	to_remove = add_input_port("To Remove", PORT_TYPE_STRING)
 
 /obj/item/circuit_component/variable/assoc_list/list_remove/input_received(datum/port/input/port, list/return_values)
+	procstart = null
+	src.procstart = null
 	if(!current_variable)
 		return
 	var/list/info = current_variable.value

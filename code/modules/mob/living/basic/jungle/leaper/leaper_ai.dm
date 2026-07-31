@@ -24,6 +24,8 @@
 	pet_ability_key = BB_LEAPER_BUBBLE
 
 /datum/pet_command/use_ability/bubble/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return isnull(target) ? null : "signals [living_pet] to shoot a bubble towards [target]!"
 
 /datum/pet_command/untargeted_ability/blood_rain
@@ -35,6 +37,8 @@
 	ability_key = BB_LEAPER_VOLLEY
 
 /datum/pet_command/untargeted_ability/blood_rain/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return "signals [living_pet] to unleash a volley of rain!"
 
 /datum/pet_command/untargeted_ability/summon_toad
@@ -46,4 +50,6 @@
 	ability_key = BB_LEAPER_SUMMON
 
 /datum/pet_command/untargeted_ability/summon_toad/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return "signals [living_pet] to summon some explosive frogs!"

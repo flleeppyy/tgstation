@@ -2,6 +2,8 @@
 	name = "syndicate teleporter kit"
 
 /obj/item/storage/box/syndie_kit/syndicate_teleporter/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/syndicate_teleporter(src)
 	new /obj/item/paper/syndicate_teleporter(src)
 
@@ -11,6 +13,8 @@
 	illustration = "beaker"
 
 /obj/item/storage/box/alchemist_basic_chems/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		if(prob(1))
 			new /obj/item/reagent_containers/cup/glass/coffee(src)
@@ -24,6 +28,8 @@
 	illustration = "beaker"
 
 /obj/item/storage/box/alchemist_random_chems/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		if(prob(1))
 			new /obj/item/reagent_containers/cup/glass/coffee(src)
@@ -35,6 +41,8 @@
 	desc = "Contains everything needed for the up and coming chemistry student to enact hazardous chemical mishaps in the comfort of their own home."
 
 /obj/item/storage/box/alchemist_chemistry_kit/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/reagent_containers/cup/mortar(src)
 	new /obj/item/pestle(src)
 	new /obj/item/lighter/skull(src)
@@ -48,6 +56,8 @@
 	name = "exosuit tracking beacons"
 
 /obj/item/storage/box/mechabeacons/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/mecha_parts/mecha_tracking(src)
 	new /obj/item/mecha_parts/mecha_tracking(src)
@@ -63,6 +73,8 @@
 	icon_state = "blank_package"
 
 /obj/item/storage/box/methdealer/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/food/drug/meth_crystal = 4,
 		/obj/item/cigarette/pipe/crackpipe = 2,
@@ -75,6 +87,8 @@
 	icon_state = "blank_package"
 
 /obj/item/storage/box/opiumdealer/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/food/drug/opium = 4,
 		/obj/item/cigarette/pipe/cobpipe = 2,
@@ -87,6 +101,8 @@
 	icon_state = "blank_package"
 
 /obj/item/storage/box/kronkdealer/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/items_inside = list(
 		/obj/item/food/drug/moon_rock = 4,
 		/obj/item/cigarette/pipe/crackpipe = 2,

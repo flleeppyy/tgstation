@@ -1,6 +1,8 @@
 /datum/unit_test/screenshot_hair_gradient
 
 /datum/unit_test/screenshot_hair_gradient/Run()
+	procstart = null
+	src.procstart = null
 	// Check if hair gradients render properly
 	var/mob/living/carbon/human/human = allocate(/mob/living/carbon/human/dummy/consistent)
 	human.set_hairstyle(/datum/sprite_accessory/hair/bedheadv4::name)

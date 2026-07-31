@@ -23,6 +23,8 @@
 	var/smite_target = TRUE
 
 /datum/component/empathy/Initialize(seen_it = FALSE, visible_info = ALL, self_empath = FALSE, sense_dead = FALSE, sense_whisper = TRUE, smite_target = TRUE)
+	procstart = null
+	src.procstart = null
 	if (!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -36,10 +38,14 @@
 		ADD_TRAIT(parent, TRAIT_SEE_MASK_WHISPER, REF(src))
 
 /datum/component/empathy/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_CARBON_MID_EXAMINE, PROC_REF(get_empath_info))
 	RegisterSignal(parent, COMSIG_ON_LAY_ON_HANDS, PROC_REF(on_hands_laid))
 
 /datum/component/empathy/proc/get_empath_info(datum/source, mob/living/target, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(target.stat == DEAD)
 		return
@@ -81,6 +87,8 @@
 			living_parent.set_jitter_if_lower(15 SECONDS)
 
 /datum/component/empathy/proc/on_hands_laid(datum/source, mob/living/carbon/smiter)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(iscarbon(parent))
 		var/mob/living/carbon/carbon_parent = parent
@@ -91,8 +99,12 @@
 	return FALSE
 
 /datum/component/empathy/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_CARBON_MID_EXAMINE)
 
 /datum/component/empathy/Destroy(force = FALSE)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(parent, TRAIT_SEE_MASK_WHISPER, REF(src))
 	return ..()

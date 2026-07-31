@@ -9,13 +9,19 @@
 	var/key
 
 /datum/bt_node/decorator/is_holding_target/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	RegisterSignals(pawn, list(COMSIG_MOB_EQUIPPED_ITEM, COMSIG_MOB_UNEQUIPPED_ITEM, COMSIG_AI_BLACKBOARD_KEY_SET(key), COMSIG_AI_BLACKBOARD_KEY_CLEARED(key)), PROC_REF(on_signal_changed))
 	return TRUE
 
 /datum/bt_node/decorator/is_holding_target/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(pawn, list(COMSIG_MOB_EQUIPPED_ITEM, COMSIG_MOB_UNEQUIPPED_ITEM, COMSIG_AI_BLACKBOARD_KEY_SET(key), COMSIG_AI_BLACKBOARD_KEY_CLEARED(key)))
 
 /datum/bt_node/decorator/is_holding_target/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/item/target = controller.blackboard[key]
 	var/mob/mob_pawn = controller.pawn
 	if(QDELETED(target))

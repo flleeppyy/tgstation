@@ -35,16 +35,22 @@
 	var/list/connection_images = list()
 
 /obj/item/clothing/glasses/meson/engine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 	START_PROCESSING(SSobj, src)
 	update_appearance()
 
 /obj/item/clothing/glasses/meson/engine/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/clothing/glasses/meson/engine/proc/toggle_mode(mob/user, voluntary)
+	procstart = null
+	src.procstart = null
 	mode_index = WRAP_UP(mode_index, modes.len)
 	mode = modes[mode_index]
 	to_chat(user, "<span class='[voluntary ? "notice":"warning"]'>[voluntary ? "You turn the goggles":"The goggles turn"] [mode ? "to [mode] mode":"off"][voluntary ? ".":"!"]</span>")
@@ -82,9 +88,13 @@
 	update_item_action_buttons()
 
 /obj/item/clothing/glasses/meson/engine/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	toggle_mode(user, TRUE)
 
 /obj/item/clothing/glasses/meson/engine/process()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(loc))
 		return
 	var/mob/living/carbon/human/user = loc
@@ -103,6 +113,8 @@
 			show_blueprints(user)
 
 /obj/item/clothing/glasses/meson/engine/proc/show_shuttle()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/user = loc
 	var/obj/docking_port/mobile/port = SSshuttle.get_containing_shuttle(user)
 	if(!port)
@@ -121,6 +133,8 @@
 				flick_overlay_global(pic, list(user.client), 8)
 
 /obj/item/clothing/glasses/meson/engine/proc/show_connections()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/user = loc
 
 	for(var/obj/machinery/atmospherics/pipe/smart/smart in connection_images)
@@ -145,6 +159,8 @@
 				flick_overlay_global(connection_images[smart][dir2text(direction)], list(user.client), 1.5 SECONDS)
 
 /obj/item/clothing/glasses/meson/engine/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = inhand_icon_state = "trayson-[mode]"
 	return ..()
 
@@ -158,6 +174,8 @@
 	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/clothing/glasses/meson/engine/tray/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(connection_images.len)
 		connection_images.Cut()
@@ -178,6 +196,8 @@
 	modes = list(MODE_NONE, MODE_ATMOS_THERMAL)
 
 /obj/item/clothing/glasses/meson/engine/atmos_imaging/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = inhand_icon_state = "trayson-[mode]"
 	return ..()
 
@@ -188,6 +208,8 @@
 	modes = list(MODE_NONE, MODE_TRAY, MODE_PIPE_CONNECTABLE, MODE_ATMOS_THERMAL, MODE_AREA_BLUEPRINTS)
 
 /proc/show_blueprints(mob/viewer, range = 7, duration = 10)
+	procstart = null
+	src.procstart = null
 	if(!ismob(viewer) || !viewer.client)
 		return
 	for(var/turf/viewable_turf in view(range, viewer))
@@ -200,6 +222,8 @@
 		flick_overlay_global(area_overlay, list(viewer.client), duration)
 
 /proc/atmos_thermal(mob/viewer, range = 5, duration = 10)
+	procstart = null
+	src.procstart = null
 	if(!ismob(viewer) || !viewer.client)
 		return
 	for(var/turf/open in view(range, viewer))

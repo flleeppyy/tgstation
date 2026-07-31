@@ -4,6 +4,8 @@
 /datum/unit_test/orderable_items
 
 /datum/unit_test/orderable_items/Run()
+	procstart = null
+	src.procstart = null
 	var/list/all_paths = list()
 	for (var/datum/orderable_item/orderable_item as anything in subtypesof(/datum/orderable_item))
 		if(isnull(initial(orderable_item.purchase_path))) // don't check if they're not actual orderable items

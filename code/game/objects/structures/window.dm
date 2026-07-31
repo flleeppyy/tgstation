@@ -45,6 +45,8 @@
 	acid = 100
 
 /obj/structure/window/Initialize(mapload, direct)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/blocks_explosives)
 	. = ..()
 	if(direct)
@@ -80,6 +82,8 @@
 		AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/structure/window/mouse_drop_receive(atom/dropping, mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (flags_1 & ON_BORDER_1)
 		return
@@ -88,6 +92,8 @@
 	LoadComponent(/datum/component/leanable, dropping)
 
 /obj/structure/window/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	switch(state)
@@ -102,20 +108,28 @@
 				. += span_notice("The window is <i>unscrewed</i> from the floor, and could be deconstructed by <b>wrenching</b>.")
 
 /obj/structure/window/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	if(the_rcd.mode == RCD_DECONSTRUCT)
 		return list("delay" = 2 SECONDS, "cost" = 5)
 	return FALSE
 
 /obj/structure/window/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	procstart = null
+	src.procstart = null
 	if(rcd_data[RCD_DESIGN_MODE] == RCD_DECONSTRUCT)
 		qdel(src)
 		return TRUE
 	return FALSE
 
 /obj/structure/window/narsie_act()
+	procstart = null
+	src.procstart = null
 	add_atom_colour(NARSIE_WINDOW_COLOUR, FIXED_COLOUR_PRIORITY)
 
 /obj/structure/window/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(anchored && current_size >= STAGE_TWO)
 		set_anchored(FALSE)
@@ -123,6 +137,8 @@
 		deconstruct(FALSE)
 
 /obj/structure/window/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -143,6 +159,8 @@
 	return TRUE
 
 /obj/structure/window/proc/on_exit(datum/source, atom/movable/leaving, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(leaving.movement_type & PHASING)
@@ -162,6 +180,8 @@
 		return COMPONENT_ATOM_BLOCK_EXIT
 
 /obj/structure/window/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.visible_message(span_notice("Something knocks on [src]."))
 	add_fingerprint(user)
@@ -170,11 +190,15 @@
 
 
 /obj/structure/window/attack_hulk(mob/living/carbon/human/user, does_attack_animation = 0)
+	procstart = null
+	src.procstart = null
 	if(!can_be_reached(user))
 		return
 	. = ..()
 
 /obj/structure/window/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -192,20 +216,28 @@
 		playsound(src, bash_sound, 100, TRUE)
 
 /obj/structure/window/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
-/obj/structure/window/attack_generic(mob/user, damage_amount = 0, damage_type = BRUTE, damage_flag = 0, sound_effect = 1) //used by attack_alien, attack_animal
+/obj/structure/window/attack_generic(mob/user, damage_amount = 0, damage_type = BRUTE, damage_flag = 0, sound_effect = 1)
+	procstart = null
+	src.procstart = null //used by attack_alien, attack_animal
 	if(!can_be_reached(user))
 		return
 	return ..()
 
 /obj/structure/window/tool_act(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!can_be_reached(user))
 		return ITEM_INTERACT_SKIP_TO_ATTACK // Guess you get to hit it
 	add_fingerprint(user)
 	return ..()
 
 /obj/structure/window/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(atom_integrity >= max_integrity)
 		to_chat(user, span_warning("[src] is already in good condition!"))
 		return ITEM_INTERACT_SUCCESS
@@ -218,6 +250,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/window/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 
 	switch(state)
 		if(WINDOW_SCREWED_TO_FRAME)
@@ -244,6 +278,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/window/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(anchored)
 		return FALSE
 	if(reinf && state >= RWINDOW_FRAME_BOLTED)
@@ -261,6 +297,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/window/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		return FALSE
 
@@ -281,6 +319,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/window/attackby(obj/item/I, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!can_be_reached(user))
 		return TRUE //skip the afterattack
 
@@ -289,23 +329,33 @@
 
 
 /obj/structure/window/set_anchored(anchorvalue)
+	procstart = null
+	src.procstart = null
 	..()
 	air_update_turf(TRUE, anchorvalue)
 	update_nearby_icons()
 
 /obj/structure/window/proc/check_state(checked_state)
+	procstart = null
+	src.procstart = null
 	if(state == checked_state)
 		return TRUE
 
 /obj/structure/window/proc/check_anchored(checked_anchored)
+	procstart = null
+	src.procstart = null
 	if(anchored == checked_anchored)
 		return TRUE
 
 /obj/structure/window/proc/check_state_and_anchored(checked_state, checked_anchored)
+	procstart = null
+	src.procstart = null
 	return check_state(checked_state) && check_anchored(checked_anchored)
 
 
 /obj/structure/window/proc/can_be_reached(mob/user)
+	procstart = null
+	src.procstart = null
 	if(fulltile)
 		return TRUE
 	var/checking_dir = get_dir(user, src)
@@ -319,15 +369,21 @@
 
 
 /obj/structure/window/take_damage(damage_amount, damage_type = BRUTE, damage_flag = "", sound_effect = TRUE, attack_dir, armour_penetration = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.) //received damage
 		update_nearby_icons()
 
 /obj/structure/window/repair_damage(amount)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_nearby_icons()
 
 /obj/structure/window/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(damage_amount)
@@ -339,6 +395,8 @@
 
 
 /obj/structure/window/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!disassembled)
 		playsound(src, break_sound, 70, TRUE)
 		for(var/obj/item/shard/debris in spawn_debris(drop_location()))
@@ -347,6 +405,8 @@
 
 ///Spawns shard and debris decal based on the glass_material_datum, spawns rods if window is reinforned and number of shards/rods is determined by the window being fulltile or not.
 /obj/structure/window/proc/spawn_debris(location)
+	procstart = null
+	src.procstart = null
 	var/datum/material/glass_material_ref = SSmaterials.get_material(glass_material_datum)
 	var/obj/item/shard_type = glass_material_ref.shard_type
 	var/obj/effect/decal/debris_type = glass_material_ref.debris_type
@@ -362,9 +422,13 @@
 	return dropped_debris
 
 /obj/structure/window/proc/post_rotation(mob/user, degrees)
+	procstart = null
+	src.procstart = null
 	air_update_turf(TRUE, FALSE)
 
 /obj/structure/window/proc/on_painted(obj/structure/window/source, mob/user, obj/item/toy/crayon/spraycan/spraycan, is_dark_color)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!spraycan.actually_paints)
 		return
@@ -374,6 +438,8 @@
 		set_opacity(initial(opacity))
 
 /obj/structure/window/wash(clean_types)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(clean_types & CLEAN_SCRUB))
 		return
@@ -391,30 +457,40 @@
 		vis_contents -= cleanables
 
 /obj/structure/window/Destroy()
+	procstart = null
+	src.procstart = null
 	set_density(FALSE)
 	air_update_turf(TRUE, FALSE)
 	update_nearby_icons()
 	return ..()
 
 /obj/structure/window/Move()
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 	. = ..()
 	if(anchored)
 		move_update_air(T)
 
 /obj/structure/window/can_atmos_pass(turf/T, vertical = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!anchored || !density)
 		return TRUE
 	return !(fulltile || dir == get_dir(loc, T))
 
 //This proc is used to update the icons of nearby windows.
 /obj/structure/window/proc/update_nearby_icons()
+	procstart = null
+	src.procstart = null
 	update_appearance()
 	if(smoothing_flags & USES_SMOOTHING)
 		QUEUE_SMOOTH_NEIGHBORS(src)
 
 //merges adjacent full-tile windows into one
 /obj/structure/window/update_overlays(updates=ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(src) || !fulltile)
 		return
@@ -429,15 +505,23 @@
 	. += mutable_appearance('icons/obj/structures.dmi', "damage[ratio]", -(layer+0.1))
 
 /obj/structure/window/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return exposed_temperature > T0C + heat_resistance
 
 /obj/structure/window/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	take_damage(round(air.return_volume() / 100), BURN, 0, 0)
 
 /obj/structure/window/get_dumping_location()
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/structure/window/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	procstart = null
+	src.procstart = null
 	if(!density)
 		return TRUE
 	if(fulltile || (dir == to_dir))
@@ -446,6 +530,8 @@
 	return TRUE
 
 /obj/structure/window/proc/temporary_shatter(time_to_go = 1 SECONDS, time_to_return = 4 SECONDS, take_grill = TRUE)
+	procstart = null
+	src.procstart = null
 	if(dramatically_disappearing)
 		return
 
@@ -472,6 +558,8 @@
 		grill.temporary_shatter(time_to_go, time_to_return)
 
 /obj/structure/window/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(loc)
 		update_nearby_icons()
@@ -514,11 +602,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/unanchored/spawner, 0)
 	acid = 100
 
 /obj/structure/window/reinforced/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	if(the_rcd.mode == RCD_DECONSTRUCT)
 		return list("delay" = 3 SECONDS, "cost" = 15)
 	return FALSE
 
 /obj/structure/window/reinforced/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(resistance_flags & INDESTRUCTIBLE)
 		balloon_alert(user, "too resilient!")
 		return ITEM_INTERACT_BLOCKING
@@ -545,6 +637,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/unanchored/spawner, 0)
 	return ITEM_INTERACT_BLOCKING
 
 /obj/structure/window/reinforced/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		return NONE
 	if(state != WINDOW_OUT_OF_FRAME)
@@ -558,6 +652,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/unanchored/spawner, 0)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/window/reinforced/welder_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(state != RWINDOW_SECURE)
 		return NONE // we got all that messaging for innapropriate tools, no skip to attack
 
@@ -575,6 +671,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/unanchored/spawner, 0)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/window/reinforced/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(state != RWINDOW_BOLTS_HEATED)
 		return NONE
 
@@ -588,6 +686,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/unanchored/spawner, 0)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/window/reinforced/crowbar_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(state != RWINDOW_BOLTS_OUT)
 		return NONE
 
@@ -601,6 +701,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/unanchored/spawner, 0)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/window/reinforced/wirecutter_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(state != RWINDOW_POPPED)
 		return NONE
 
@@ -614,6 +716,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/unanchored/spawner, 0)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/window/reinforced/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(state != RWINDOW_BARS_CUT)
 		return NONE
 
@@ -628,11 +732,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/unanchored/spawner, 0)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/window/proc/cool_bolts()
+	procstart = null
+	src.procstart = null
 	if(state == RWINDOW_BOLTS_HEATED)
 		state = RWINDOW_SECURE
 		visible_message(span_notice("The bolts on \the [src] look like they've cooled off..."))
 
 /obj/structure/window/reinforced/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(resistance_flags & INDESTRUCTIBLE)
 		return
@@ -678,6 +786,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/unanchored/spawner,
 	acid = 100
 
 /obj/structure/window/plasma/Initialize(mapload, direct)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RemoveElement(/datum/element/atmos_sensitive)
 
@@ -709,6 +819,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/plasma/spawner, 0)
 	acid = 100
 
 /obj/structure/window/reinforced/plasma/block_superconductivity()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/plasma/spawner, 0)
@@ -748,6 +860,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/tinted/frosted/spaw
 	custom_materials = list(/datum/material/glass = SHEET_MATERIAL_AMOUNT * 2)
 
 /obj/structure/window/fulltile/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	if(the_rcd.mode == RCD_DECONSTRUCT)
 		return list("delay" = 2.5 SECONDS, "cost" = 10)
 	return FALSE
@@ -809,6 +923,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/tinted/frosted/spaw
 	custom_materials = list(/datum/material/glass = SHEET_MATERIAL_AMOUNT * 2, /datum/material/iron = SHEET_MATERIAL_AMOUNT)
 
 /obj/structure/window/reinforced/fulltile/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	if(the_rcd.mode == RCD_DECONSTRUCT)
 		return list("mode" = RCD_DECONSTRUCT, "delay" = 4 SECONDS, "cost" = 20)
 	return FALSE
@@ -871,6 +987,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/tinted/frosted/spaw
 	acid = 100
 
 /obj/structure/window/reinforced/shuttle/narsie_act()
+	procstart = null
+	src.procstart = null
 	add_atom_colour("#3C3434", FIXED_COLOUR_PRIORITY)
 
 /obj/structure/window/reinforced/shuttle/tinted
@@ -886,6 +1004,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/tinted/frosted/spaw
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
 /obj/structure/window/reinforced/shuttle/indestructible/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/tool_blocker, TOOL_WELDER, TOOL_ACT_PRIMARY)
 	AddElement(/datum/element/tool_blocker, TOOL_SCREWDRIVER, TOOL_ACT_PRIMARY)
@@ -980,20 +1100,28 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/tinted/frosted/spaw
 	var/static/mutable_appearance/paper = mutable_appearance('icons/obj/smooth_structures/structure_variations.dmi',icon_state = "paper-whole", layer = ABOVE_OBJ_LAYER - 0.1)
 
 /obj/structure/window/paperframe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/structure/window/paperframe/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(atom_integrity < max_integrity)
 		. += span_info("It looks a bit damaged, you may be able to fix it with some <b>paper</b>.")
 
 /obj/structure/window/paperframe/spawn_debris(location)
+	procstart = null
+	src.procstart = null
 	. = list(new /obj/item/stack/sheet/mineral/wood(location))
 	for (var/i in 1 to rand(1,4))
 		. += new /obj/item/paper/natural(location)
 
 /obj/structure/window/paperframe/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -1003,19 +1131,27 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/tinted/frosted/spaw
 			update_appearance()
 
 /obj/structure/window/paperframe/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_opacity(atom_integrity >= max_integrity)
 
 /obj/structure/window/paperframe/update_icon(updates=ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((updates & UPDATE_SMOOTHING) && (smoothing_flags & USES_SMOOTHING))
 		QUEUE_SMOOTH(src)
 
 /obj/structure/window/paperframe/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += (atom_integrity < max_integrity) ? torn : paper
 
 /obj/structure/window/paperframe/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(tool.get_temperature() >= FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
 		fire_act(tool.get_temperature())
 		return ITEM_INTERACT_SUCCESS

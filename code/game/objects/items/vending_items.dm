@@ -33,10 +33,14 @@
 	acid = 30
 
 /obj/item/vending_refill/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "\improper [machine_name] restocking unit"
 
 /obj/item/vending_refill/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/num = get_part_rating()
@@ -48,6 +52,8 @@
 		. += span_notice("It can restock [num] item\s.")
 
 /obj/item/vending_refill/get_part_rating()
+	procstart = null
+	src.procstart = null
 	. = 0
 	//first time needs to be filled by the vending machine
 	if(!products)

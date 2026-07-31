@@ -16,22 +16,30 @@
 	var/needs_item_input = FALSE
 
 /obj/machinery/mineral/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(needs_item_input && anchored)
 		register_input_turf()
 
 /// Gets the turf in the `input_dir` direction adjacent to the machine, and registers signals for ATOM_ENTERED and ATOM_CREATED. Calls the `pickup_item()` proc when it receives these signals.
 /obj/machinery/mineral/proc/register_input_turf()
+	procstart = null
+	src.procstart = null
 	input_turf = get_step(src, input_dir)
 	if(input_turf) // make sure there is actually a turf
 		RegisterSignals(input_turf, list(COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON, COMSIG_ATOM_ENTERED), PROC_REF(pickup_item))
 
 /// Unregisters signals that are registered the machine's input turf, if it has one.
 /obj/machinery/mineral/proc/unregister_input_turf()
+	procstart = null
+	src.procstart = null
 	if(input_turf)
 		UnregisterSignal(input_turf, list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON))
 
 /obj/machinery/mineral/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!needs_item_input || !anchored)
 		return
@@ -39,6 +47,8 @@
 	register_input_turf()
 
 /obj/machinery/mineral/shuttleRotate(rotation, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	input_dir = angle2dir(rotation + dir2angle(input_dir))
 	output_dir = angle2dir(rotation + dir2angle(output_dir))
@@ -54,12 +64,16 @@
 	* oldLoc - the old location that `target` was at before moving onto `source`.
 */
 /obj/machinery/mineral/proc/pickup_item(datum/source, atom/movable/target, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return
 
 /// Generic unloading proc. Takes an atom as an argument and forceMove's it to the turf adjacent to this machine in the `output_dir` direction.
 /obj/machinery/mineral/proc/unload_mineral(atom/movable/unloaded_mineral)
+	procstart = null
+	src.procstart = null
 	unloaded_mineral.forceMove(drop_location())
 	var/turf/unload_turf = get_step(src, output_dir)
 	if(unload_turf)
@@ -75,6 +89,8 @@
 	var/obj/machinery/mineral/processing_unit/processing_machine
 
 /obj/machinery/mineral/processing_unit_console/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	processing_machine = locate(/obj/machinery/mineral/processing_unit) in range(2, src)
 	if (processing_machine)
@@ -83,18 +99,26 @@
 		return INITIALIZE_HINT_QDEL
 
 /obj/machinery/mineral/processing_unit_console/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ProcessingConsole")
 		ui.open()
 
 /obj/machinery/mineral/processing_unit_console/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return processing_machine.ui_static_data()
 
 /obj/machinery/mineral/processing_unit_console/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return processing_machine.ui_data()
 
 /obj/machinery/mineral/processing_unit_console/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -121,6 +145,8 @@
 			return TRUE
 
 /obj/machinery/mineral/processing_unit_console/Destroy()
+	procstart = null
+	src.procstart = null
 	processing_machine = null
 	return ..()
 
@@ -147,6 +173,8 @@
 	var/accepted_type = /obj/item/stack
 
 /obj/machinery/mineral/processing_unit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	proximity_monitor = new(src, 1)
 
@@ -163,6 +191,8 @@
 	selected_material = SSmaterials.get_material(/datum/material/iron)
 
 /obj/machinery/mineral/processing_unit/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(proximity_monitor)
 	QDEL_NULL(materials)
 	mineral_machine = null
@@ -170,6 +200,8 @@
 	return ..()
 
 /obj/machinery/mineral/processing_unit/proc/process_ore(obj/item/stack/O)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(O))
 		return
 	var/material_amount = materials.get_item_material_amount(O)
@@ -179,6 +211,8 @@
 		materials.insert_item(O)
 
 /obj/machinery/mineral/processing_unit/ui_static_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	for(var/datum/material/material as anything in materials.materials)
@@ -205,6 +239,8 @@
 	return data
 
 /obj/machinery/mineral/processing_unit/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["materials"] = materials.ui_data()
@@ -226,12 +262,16 @@
 	return data
 
 /obj/machinery/mineral/processing_unit/pickup_item(datum/source, atom/movable/target, direction)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target))
 		return
 	if(istype(target, accepted_type))
 		process_ore(target)
 
 /obj/machinery/mineral/processing_unit/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return PROCESS_KILL
 
@@ -241,6 +281,8 @@
 		smelt_alloy(seconds_per_tick)
 
 /obj/machinery/mineral/processing_unit/proc/smelt_ore(seconds_per_tick = 2)
+	procstart = null
+	src.procstart = null
 	var/datum/material/mat = selected_material
 	if(!mat)
 		return
@@ -252,6 +294,8 @@
 		materials.retrieve_stack(sheets_to_remove, mat, out)
 
 /obj/machinery/mineral/processing_unit/proc/smelt_alloy(seconds_per_tick = 2)
+	procstart = null
+	src.procstart = null
 	var/datum/design/alloy = stored_research.isDesignResearchedID(selected_alloy) //check if it's a valid design
 	if(!alloy)
 		on = FALSE
@@ -268,6 +312,8 @@
 	generate_mineral(alloy.build_path)
 
 /obj/machinery/mineral/processing_unit/proc/can_smelt(datum/design/design, seconds_per_tick = 2)
+	procstart = null
+	src.procstart = null
 	if(design.make_reagent)
 		return FALSE
 
@@ -280,6 +326,8 @@
 	return build_amount
 
 /obj/machinery/mineral/processing_unit/proc/generate_mineral(P)
+	procstart = null
+	src.procstart = null
 	var/O = new P(src)
 	unload_mineral(O)
 

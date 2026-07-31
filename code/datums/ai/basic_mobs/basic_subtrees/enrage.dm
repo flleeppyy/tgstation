@@ -4,6 +4,8 @@
 	var/health_threshold = 0.5
 
 /datum/bt_node/ai_behavior/enrage/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(!isbasicmob(controller.pawn))
 		return AI_BEHAVIOR_FAILED
 

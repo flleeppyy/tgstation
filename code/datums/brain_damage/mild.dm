@@ -17,6 +17,8 @@
 	var/uncapped = FALSE
 
 /datum/brain_trauma/mild/hallucinations/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS(owner))
 		return
 	if(HAS_TRAIT(owner, TRAIT_RDS_SUPPRESSED))
@@ -28,6 +30,8 @@
 	owner.adjust_hallucinations_up_to(((uncapped ? 12 SECONDS : 5 SECONDS) * seconds_per_tick), (uncapped ? 240 SECONDS : 60 SECONDS))
 
 /datum/brain_trauma/mild/hallucinations/on_lose()
+	procstart = null
+	src.procstart = null
 	owner.remove_status_effect(/datum/status_effect/hallucination)
 	if(!QDELING(owner))
 		owner.remove_language(/datum/language/aphasia, source = LANGUAGE_APHASIA)
@@ -42,9 +46,13 @@
 	lose_text = span_notice("You feel in control of your speech.")
 
 /datum/brain_trauma/mild/stuttering/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	owner.adjust_stutter_up_to(5 SECONDS * seconds_per_tick, 50 SECONDS)
 
 /datum/brain_trauma/mild/stuttering/on_lose()
+	procstart = null
+	src.procstart = null
 	owner.remove_status_effect(/datum/status_effect/speech/stutter)
 	return ..()
 
@@ -57,11 +65,15 @@
 	lose_text = span_notice("You feel smart again.")
 
 /datum/brain_trauma/mild/dumbness/on_gain()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(owner, TRAIT_DUMB, TRAUMA_TRAIT)
 	owner.add_mood_event("dumb", /datum/mood_event/oblivious)
 	return ..()
 
 /datum/brain_trauma/mild/dumbness/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	owner.adjust_derpspeech_up_to(5 SECONDS * seconds_per_tick, 50 SECONDS)
 	if(SPT_PROB(1.5, seconds_per_tick))
 		owner.emote("drool")
@@ -69,6 +81,8 @@
 		owner.say(pick_list_replacements(BRAIN_DAMAGE_FILE, "brain_damage"), forced = "brain damage", filterproof = TRUE)
 
 /datum/brain_trauma/mild/dumbness/on_lose()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_DUMB, TRAUMA_TRAIT)
 	owner.remove_status_effect(/datum/status_effect/speech/stutter/derpspeech)
 	owner.clear_mood_event("dumb")
@@ -83,10 +97,14 @@
 	lose_text = span_danger("Your mind feels more clear.")
 
 /datum/brain_trauma/mild/speech_impediment/on_gain()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(owner, TRAIT_UNINTELLIGIBLE_SPEECH, TRAUMA_TRAIT)
 	. = ..()
 
 /datum/brain_trauma/mild/speech_impediment/on_lose()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_UNINTELLIGIBLE_SPEECH, TRAUMA_TRAIT)
 	..()
 
@@ -99,6 +117,8 @@
 	lose_text = span_notice("The pressure inside your head starts fading.")
 
 /datum/brain_trauma/mild/concussion/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(SPT_PROB(2.5, seconds_per_tick))
 		switch(rand(1,11))
 			if(1)
@@ -129,13 +149,19 @@
 	lose_text = span_warning("You no longer feel perfectly healthy.")
 
 /datum/brain_trauma/mild/healthy/on_gain()
+	procstart = null
+	src.procstart = null
 	owner.apply_status_effect(/datum/status_effect/grouped/screwy_hud/fake_healthy, type)
 	return ..()
 
 /datum/brain_trauma/mild/healthy/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	owner.adjust_stamina_loss(-6 * seconds_per_tick) //no pain, no fatigue
 
 /datum/brain_trauma/mild/healthy/on_lose()
+	procstart = null
+	src.procstart = null
 	owner.remove_status_effect(/datum/status_effect/grouped/screwy_hud/fake_healthy, type)
 	return ..()
 
@@ -148,6 +174,8 @@
 	lose_text = span_notice("You feel in control of your muscles again.")
 
 /datum/brain_trauma/mild/muscle_weakness/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/fall_chance = 1
 	if(owner.move_intent == MOVE_INTENT_RUN)
 		fall_chance += 2
@@ -176,10 +204,14 @@
 	lose_text = span_notice("You feel in control of your muscles again.")
 
 /datum/brain_trauma/mild/muscle_spasms/on_gain()
+	procstart = null
+	src.procstart = null
 	owner.apply_status_effect(/datum/status_effect/spasms)
 	. = ..()
 
 /datum/brain_trauma/mild/muscle_spasms/on_lose()
+	procstart = null
+	src.procstart = null
 	owner.remove_status_effect(/datum/status_effect/spasms)
 	..()
 
@@ -192,6 +224,8 @@
 	lose_text = span_notice("Your throat stops itching.")
 
 /datum/brain_trauma/mild/nervous_cough/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(SPT_PROB(6, seconds_per_tick) && !HAS_TRAIT(owner, TRAIT_SOOTHED_THROAT))
 		if(prob(5))
 			to_chat(owner, span_warning("[pick("You have a coughing fit!", "You can't stop coughing!")]"))
@@ -211,6 +245,8 @@
 	lose_text = span_notice("You feel your vocabulary returning to normal again.")
 
 /datum/brain_trauma/mild/expressive_aphasia/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	var/message = speech_args[SPEECH_MESSAGE]
 	if(message)
 		var/list/message_split = splittext(message, " ")
@@ -256,6 +292,8 @@
 	var/list/speak_dejavu = list()
 
 /datum/brain_trauma/mild/mind_echo/handle_hearing(datum/source, list/hearing_args)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(owner, TRAIT_DEAF) || owner == hearing_args[HEARING_SPEAKER])
 		return
 
@@ -273,6 +311,8 @@
 		hear_dejavu += hearing_args[HEARING_RAW_MESSAGE]
 
 /datum/brain_trauma/mild/mind_echo/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	if(speak_dejavu.len >= 5)
 		if(prob(25))
 			var/deja_vu = pick_n_take(speak_dejavu)
@@ -294,10 +334,14 @@
 	lose_text = span_notice("The world feels bright and colorful again.")
 
 /datum/brain_trauma/mild/color_blindness/on_gain()
+	procstart = null
+	src.procstart = null
 	owner.add_client_colour(/datum/client_colour/monochrome, TRAUMA_TRAIT)
 	return ..()
 
 /datum/brain_trauma/mild/color_blindness/on_lose(silent)
+	procstart = null
+	src.procstart = null
 	owner.remove_client_colour(TRAUMA_TRAIT)
 	return ..()
 
@@ -311,11 +355,15 @@
 	lose_text = span_notice("You worry less about your belongings.")
 
 /datum/brain_trauma/mild/possessive/on_lose(silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/thing in owner.held_items)
 		clear_trait(thing)
 
 /datum/brain_trauma/mild/possessive/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!SPT_PROB(5, seconds_per_tick))
 		return
 
@@ -329,6 +377,8 @@
 	addtimer(CALLBACK(src, PROC_REF(relax), my_thing), rand(30 SECONDS, 3 MINUTES), TIMER_DELETE_ME)
 
 /datum/brain_trauma/mild/possessive/proc/relax(obj/item/my_thing)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(my_thing))
 		return
 	if(HAS_TRAIT_FROM_ONLY(my_thing, TRAIT_NODROP, TRAUMA_TRAIT)) // in case something else adds nodrop, somehow?
@@ -336,6 +386,8 @@
 	clear_trait(my_thing)
 
 /datum/brain_trauma/mild/possessive/proc/clear_trait(obj/item/my_thing, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	REMOVE_TRAIT(my_thing, TRAIT_NODROP, TRAUMA_TRAIT)

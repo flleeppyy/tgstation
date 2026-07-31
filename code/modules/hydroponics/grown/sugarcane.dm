@@ -55,6 +55,8 @@
 	plank_name = "bamboo sticks"
 
 /obj/item/grown/log/bamboo/CheckAccepted(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 //Saltcane - Gross, salty shafts!
@@ -77,4 +79,6 @@
 	foodtypes = VEGETABLES | GROSS
 
 /obj/item/food/grown/sugarcane/saltcane/make_dryable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/dryable, /obj/item/food/seaweedsheet/saltcane) //soooshi

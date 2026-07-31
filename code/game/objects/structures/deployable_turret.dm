@@ -40,17 +40,23 @@
 	var/always_anchored = FALSE
 
 /obj/machinery/deployable_turret/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(always_anchored)
 		set_anchored(TRUE)
 
 /obj/machinery/deployable_turret/Destroy()
+	procstart = null
+	src.procstart = null
 	target = null
 	target_turf = null
 	return ..()
 
 /// Undeploying, for when you want to move your big dakka around
 /obj/machinery/deployable_turret/wrench_act(mob/living/user, obj/item/wrench/used_wrench)
+	procstart = null
+	src.procstart = null
 	if(!can_be_undeployed)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 	if(!ishuman(user))
@@ -70,6 +76,8 @@
 //BUCKLE HOOKS
 
 /obj/machinery/deployable_turret/unbuckle_mob(mob/living/buckled_mob, force = FALSE, can_fall = TRUE)
+	procstart = null
+	src.procstart = null
 	playsound(src,'sound/vehicles/mecha/mechmove01.ogg', 50, TRUE)
 	for(var/obj/item/I in buckled_mob.held_items)
 		if(istype(I, /obj/item/gun_control))
@@ -85,6 +93,8 @@
 	STOP_PROCESSING(SSfastprocess, src)
 
 /obj/machinery/deployable_turret/user_buckle_mob(mob/living/M, mob/user, check_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated || !istype(user))
 		return
 	M.forceMove(get_turf(src))
@@ -110,10 +120,14 @@
 	START_PROCESSING(SSfastprocess, src)
 
 /obj/machinery/deployable_turret/process()
+	procstart = null
+	src.procstart = null
 	if (!update_positioning())
 		return PROCESS_KILL
 
 /obj/machinery/deployable_turret/proc/update_positioning()
+	procstart = null
+	src.procstart = null
 	if (!LAZYLEN(buckled_mobs))
 		return FALSE
 	var/mob/living/controller = buckled_mobs[1]
@@ -129,6 +143,8 @@
 			calculated_projectile_vars = calculate_projectile_angle_and_pixel_offsets(controller, target_turf, modifiers)
 
 /obj/machinery/deployable_turret/proc/direction_track(mob/user, atom/targeted)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated)
 		return
 	setDir(get_dir(src,targeted))
@@ -168,6 +184,8 @@
 			user.pixel_y = -4
 
 /obj/machinery/deployable_turret/proc/checkfire(atom/targeted_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	target = targeted_atom
 	if(target == user || user.incapacitated || target == get_turf(src))
 		return
@@ -182,11 +200,15 @@
 		volley(user)
 
 /obj/machinery/deployable_turret/proc/volley(mob/user)
+	procstart = null
+	src.procstart = null
 	target_turf = get_turf(target)
 	for(var/i in 1 to number_of_shots)
 		addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/machinery/deployable_turret/, fire_helper), user), i*rate_of_fire)
 
 /obj/machinery/deployable_turret/proc/fire_helper(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated || !(user in buckled_mobs))
 		return
 	update_positioning() //REFRESH MOUSE TRACKING!!
@@ -205,6 +227,8 @@
 	view_range = 12
 
 /obj/machinery/deployable_turret/ultimate/checkfire(atom/targeted_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	target = targeted_atom
 	if(target == user || target == get_turf(src))
 		return
@@ -236,6 +260,8 @@
 	var/obj/machinery/deployable_turret/turret
 
 /obj/item/gun_control/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, ABSTRACT_ITEM_TRAIT)
 	turret = loc
@@ -243,23 +269,33 @@
 		return INITIALIZE_HINT_QDEL
 
 /obj/item/gun_control/Destroy()
+	procstart = null
+	src.procstart = null
 	turret = null
 	return ..()
 
 /obj/item/gun_control/CanItemAutoclick()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/item/gun_control/attack_atom(obj/attacked_obj, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE)
 	attacked_obj.attacked_by(src, user, modifiers)
 
 /obj/item/gun_control/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	target_mob.lastattacker = user.real_name
 	target_mob.lastattackerckey = user.ckey
 	target_mob.attacked_by(src, user, modifiers)
 	add_fingerprint(user)
 
 /obj/item/gun_control/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/deployable_turret/buckled_turret = user.buckled
 	if(!istype(buckled_turret))
 		return NONE
@@ -269,4 +305,6 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/gun_control/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return ranged_interact_with_atom(interacting_with, user, modifiers)

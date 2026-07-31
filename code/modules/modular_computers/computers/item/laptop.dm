@@ -26,6 +26,8 @@
 	var/slowdown_open = 1
 
 /obj/item/modular_computer/laptop/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(start_open && !screen_on)
 		toggle_open()
@@ -33,11 +35,15 @@
 	AddElement(/datum/element/drag_pickup)
 
 /obj/item/modular_computer/laptop/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(screen_on)
 		. += span_notice("Alt-click to close it.")
 
 /obj/item/modular_computer/laptop/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(screen_on)
 		context[SCREENTIP_CONTEXT_ALT_LMB] = "Close"
@@ -49,23 +55,31 @@
 
 /// Signal handler for [COMSIG_SPEED_POTION_APPLIED]. Speed potion removes the open slowdown
 /obj/item/modular_computer/laptop/proc/on_speed_potioned(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Don't need to touch the actual slowdown here, since the speed potion does it for us
 	slowdown_open = 0
 
 /obj/item/modular_computer/laptop/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!screen_on)
 		icon_state = icon_state_closed
 		return
 	return ..()
 
 /obj/item/modular_computer/laptop/update_overlays()
+	procstart = null
+	src.procstart = null
 	if(!screen_on)
 		cut_overlays()
 		return
 	return ..()
 
 /obj/item/modular_computer/laptop/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!screen_on)
 		try_toggle_open(user)
 	else
@@ -76,6 +90,8 @@ GAME_VERB_SRC(/obj/item/modular_computer/laptop, open_computer, view(1), "Toggle
 	try_toggle_open(usr)
 
 /obj/item/modular_computer/laptop/proc/try_toggle_open(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(issilicon(user))
 		return
 	if(!isturf(loc) && !ismob(loc)) // No opening it in backpack.
@@ -87,12 +103,16 @@ GAME_VERB_SRC(/obj/item/modular_computer/laptop, open_computer, view(1), "Toggle
 
 
 /obj/item/modular_computer/laptop/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!screen_on)
 		return CLICK_ACTION_BLOCKING
 	try_toggle_open(user) // Close it.
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/modular_computer/laptop/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -101,6 +121,8 @@ GAME_VERB_SRC(/obj/item/modular_computer/laptop, open_computer, view(1), "Toggle
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/modular_computer/laptop/proc/toggle_open(mob/living/user=null)
+	procstart = null
+	src.procstart = null
 	if(screen_on)
 		to_chat(user, span_notice("You close \the [src]."))
 		slowdown -= slowdown_open
@@ -121,6 +143,8 @@ GAME_VERB_SRC(/obj/item/modular_computer/laptop, open_computer, view(1), "Toggle
 	update_appearance()
 
 /obj/item/modular_computer/laptop/get_messenger_ending()
+	procstart = null
+	src.procstart = null
 	return "Sent from my UNIX Laptop"
 
 // Laptop frame, starts empty and closed.

@@ -63,6 +63,8 @@
 	wing_types = null
 
 /obj/item/bodypart/chest/abductor/get_butt_sprite()
+	procstart = null
+	src.procstart = null
 	return icon('icons/mob/butts.dmi', BUTT_SPRITE_GREY)
 
 /obj/item/bodypart/arm/left/abductor
@@ -103,6 +105,8 @@
 	butcher_replacement = null
 
 /obj/item/bodypart/chest/jelly/get_butt_sprite()
+	procstart = null
+	src.procstart = null
 	return icon('icons/mob/butts.dmi', BUTT_SPRITE_SLIME)
 
 /obj/item/bodypart/arm/left/jelly
@@ -233,6 +237,8 @@
 	bodypart_effects = list(/datum/status_effect/grouped/bodypart_effect/photosynthesis)
 
 /obj/item/bodypart/chest/pod/get_butt_sprite()
+	procstart = null
+	src.procstart = null
 	return icon('icons/mob/butts.dmi', BUTT_SPRITE_FLOWERPOT)
 
 /obj/item/bodypart/arm/left/pod
@@ -437,6 +443,8 @@
 	bodypart_disabled = TRUE
 
 /obj/item/bodypart/head/skeleton/nonfunctional/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/blood_limb_overlay)
 
@@ -446,16 +454,22 @@
 	bodypart_disabled = TRUE
 
 /obj/item/bodypart/chest/skeleton/nonfunctional/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/blood_limb_overlay)
 
 /obj/item/bodypart/chest/skeleton/nonfunctional/on_adding(mob/living/carbon/new_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Treat people with bone chests as husks for all purposes for now
 	// Ideally husking should be per-bodypart but this simplifies a lot of behaviors
 	new_owner.become_husk(SKELETON_TRAIT)
 
 /obj/item/bodypart/chest/skeleton/nonfunctional/on_removal(mob/living/carbon/old_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	old_owner.cure_husk(SKELETON_TRAIT)
 
@@ -465,6 +479,8 @@
 	bodypart_disabled = TRUE
 
 /obj/item/bodypart/arm/left/skeleton/nonfunctional/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/blood_limb_overlay)
 
@@ -474,6 +490,8 @@
 	bodypart_disabled = TRUE
 
 /obj/item/bodypart/arm/right/skeleton/nonfunctional/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/blood_limb_overlay)
 
@@ -483,6 +501,8 @@
 	bodypart_disabled = TRUE
 
 /obj/item/bodypart/leg/left/skeleton/nonfunctional/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/blood_limb_overlay)
 
@@ -492,6 +512,8 @@
 	bodypart_disabled = TRUE
 
 /obj/item/bodypart/leg/right/skeleton/nonfunctional/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/blood_limb_overlay)
 
@@ -548,12 +570,16 @@
 	stump_typepath = null
 
 /obj/item/bodypart/head/dullahan/Entered(obj/item/organ/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isorgan(arrived))
 		return
 	arrived.organ_flags |= ORGAN_FROZEN
 
 /obj/item/bodypart/head/dullahan/Exited(obj/item/organ/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isorgan(gone))
 		return
@@ -580,6 +606,8 @@
 	butcher_replacement = null
 
 /obj/item/bodypart/head/golem/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	worn_ears_offset = new(
 		attached_part = src,
 		feature_key = OFFSET_EARS,
@@ -623,6 +651,8 @@
 	butcher_replacement = null
 
 /obj/item/bodypart/chest/golem/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	worn_belt_offset = new(
 		attached_part = src,
 		feature_key = OFFSET_BELT,
@@ -649,6 +679,8 @@
 	butcher_replacement = null
 
 /obj/item/bodypart/arm/left/golem/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	held_hand_offset =  new(
 		attached_part = src,
 		feature_key = OFFSET_HELD,
@@ -658,11 +690,15 @@
 	return ..()
 
 /obj/item/bodypart/arm/left/golem/clear_ownership(mob/living/carbon/old_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	old_owner.RemoveComponentSource(REF(src), /datum/component/shovel_hands)
 
 /obj/item/bodypart/arm/left/golem/apply_ownership(mob/living/carbon/new_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	new_owner.AddComponentFrom(REF(src), /datum/component/shovel_hands)
@@ -686,6 +722,8 @@
 	butcher_replacement = null
 
 /obj/item/bodypart/arm/right/golem/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	held_hand_offset =  new(
 		attached_part = src,
 		feature_key = OFFSET_HELD,
@@ -695,11 +733,15 @@
 	return ..()
 
 /obj/item/bodypart/arm/right/golem/clear_ownership(mob/living/carbon/old_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	old_owner.RemoveComponentSource(REF(src), /datum/component/shovel_hands)
 
 /obj/item/bodypart/arm/right/golem/apply_ownership(mob/living/carbon/new_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	new_owner.AddComponentFrom(REF(src), /datum/component/shovel_hands)
@@ -744,11 +786,15 @@
 	should_draw_greyscale = FALSE
 
 /obj/item/bodypart/arm/left/flesh/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_IGNORED_BY_LIVING_FLESH, BODYPART_TRAIT)
 	AddElement(/datum/element/living_limb_initialiser)
 
 /obj/item/bodypart/arm/left/flesh/get_butcher_drops()
+	procstart = null
+	src.procstart = null
 	return list(/obj/item/food/meat/slab/synthmeat = 1)
 
 /obj/item/bodypart/arm/right/flesh
@@ -756,11 +802,15 @@
 	should_draw_greyscale = FALSE
 
 /obj/item/bodypart/arm/right/flesh/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_IGNORED_BY_LIVING_FLESH, BODYPART_TRAIT)
 	AddElement(/datum/element/living_limb_initialiser)
 
 /obj/item/bodypart/arm/right/flesh/get_butcher_drops()
+	procstart = null
+	src.procstart = null
 	return list(/obj/item/food/meat/slab/synthmeat = 1)
 
 /obj/item/bodypart/leg/left/flesh
@@ -768,11 +818,15 @@
 	should_draw_greyscale = FALSE
 
 /obj/item/bodypart/leg/left/flesh/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_IGNORED_BY_LIVING_FLESH, BODYPART_TRAIT)
 	AddElement(/datum/element/living_limb_initialiser)
 
 /obj/item/bodypart/leg/left/flesh/get_butcher_drops()
+	procstart = null
+	src.procstart = null
 	return list(/obj/item/food/meat/slab/synthmeat = 1)
 
 /obj/item/bodypart/leg/right/flesh
@@ -780,9 +834,13 @@
 	should_draw_greyscale = FALSE
 
 /obj/item/bodypart/leg/right/flesh/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_IGNORED_BY_LIVING_FLESH, BODYPART_TRAIT)
 	AddElement(/datum/element/living_limb_initialiser)
 
 /obj/item/bodypart/leg/right/flesh/get_butcher_drops()
+	procstart = null
+	src.procstart = null
 	return list(/obj/item/food/meat/slab/synthmeat = 1)

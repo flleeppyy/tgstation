@@ -7,16 +7,22 @@
 /datum/element/drag_pickup
 
 /datum/element/drag_pickup/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(target))
 		return ELEMENT_INCOMPATIBLE
 	RegisterSignal(target, COMSIG_MOUSEDROP_ONTO, PROC_REF(pick_up))
 	return ..()
 
 /datum/element/drag_pickup/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, COMSIG_MOUSEDROP_ONTO)
 	return ..()
 
 /datum/element/drag_pickup/proc/pick_up(atom/movable/source, atom/over, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!user.can_perform_action(source, FORBID_TELEKINESIS_REACH))

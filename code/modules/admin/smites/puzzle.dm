@@ -3,6 +3,8 @@
 	name = "Puzzle"
 
 /datum/smite/puzzle/effect(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!puzzle_imprison(target))
 		to_chat(user, span_warning("Imprisonment failed!"), confidential = TRUE)

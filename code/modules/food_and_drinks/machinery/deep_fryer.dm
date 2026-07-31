@@ -55,6 +55,8 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 	))
 
 /obj/machinery/deepfryer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(50, OPENCONTAINER)
 	reagents.add_reagent(/datum/reagent/consumable/nutriment/fat/oil, 25)
@@ -64,16 +66,22 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 	AddElement(/datum/element/fish_safe_storage) //Prevents fryish and fritterish from dying inside the deepfryer.
 
 /obj/machinery/deepfryer/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(fry_loop)
 	QDEL_NULL(frying)
 	return ..()
 
 /obj/machinery/deepfryer/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	// This handles nulling out frying via exited
 	if(frying)
 		frying.forceMove(drop_location())
 
 /obj/machinery/deepfryer/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/oil_efficiency = 0
 	for(var/datum/stock_part/micro_laser/laser in component_parts)
@@ -82,11 +90,15 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 	fry_speed = oil_efficiency
 
 /obj/machinery/deepfryer/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(grease_level >= 1)
 		. += "fryer_greasy"
 
 /obj/machinery/deepfryer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(frying)
 		. += "You can make out \a [frying] in the oil."
@@ -94,18 +106,26 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 		. += span_notice("The status display reads: Frying at <b>[fry_speed*100]%</b> speed.<br>Using <b>[oil_use]</b> units of oil per second.")
 
 /obj/machinery/deepfryer/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/deepfryer/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/deepfryer/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state]_[frying ? "on" : panel_open ? "open" : "off"]"
 
 /obj/machinery/deepfryer/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/reagent_containers/applicator/pill))
 		if(!reagents.total_volume)
 			to_chat(user, span_warning("There's nothing to dissolve [tool] in!"))
@@ -142,6 +162,8 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 	return NONE
 
 /obj/machinery/deepfryer/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	..()
 	var/datum/reagent/consumable/nutriment/fat/frying_oil = reagents.has_reagent(/datum/reagent/consumable/nutriment/fat, check_subtypes = TRUE)
 	if(!frying_oil)
@@ -169,11 +191,15 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 	use_energy(active_power_usage)
 
 /obj/machinery/deepfryer/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == frying)
 		reset_frying()
 
 /obj/machinery/deepfryer/proc/reset_frying()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(frying))
 		frying.AddElement(/datum/element/fried_item, cook_time)
 
@@ -186,6 +212,8 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 	flick("fryer_stop", src)
 
 /obj/machinery/deepfryer/proc/start_fry(obj/item/frying_item, mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You put [frying_item] into [src]."))
 	if(istype(frying_item, /obj/item/freeze_cube))
 		log_bomber(user, "put a freeze cube in a", src)
@@ -207,14 +235,20 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 	fry_loop.start()
 
 /obj/machinery/deepfryer/proc/blow_up()
+	procstart = null
+	src.procstart = null
 	visible_message(span_userdanger("[src] blows up from the entropic reaction!"))
 	explosion(src, devastation_range = 1, heavy_impact_range = 3, light_impact_range = 5, flame_range = 7)
 	deconstruct(FALSE)
 
 /obj/machinery/deepfryer/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/deepfryer/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(frying)
 		to_chat(user, span_notice("You eject [frying] from [src]."))
 		frying.forceMove(drop_location())
@@ -250,6 +284,8 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 	return ..()
 
 /obj/machinery/deepfryer/proc/on_cleaned(obj/source_component, obj/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	. = NONE

@@ -16,6 +16,8 @@
 */
 
 /area/station/holodeck/powered(chan)
+	procstart = null
+	src.procstart = null
 	if(!requires_power)
 		return TRUE
 	if(always_unpowered)
@@ -27,6 +29,8 @@
 	return A.powered(chan)
 
 /area/station/holodeck/addStaticPower(value, powerchannel)
+	procstart = null
+	src.procstart = null
 	if(!linked)
 		return
 	var/area/A = get_area(linked)
@@ -34,6 +38,8 @@
 	return ..()
 
 /area/station/holodeck/use_energy(amount, chan)
+	procstart = null
+	src.procstart = null
 	if(!linked)
 		return FALSE
 	var/area/A = get_area(linked)

@@ -39,11 +39,15 @@
 	acid = 100
 
 /obj/vehicle/sealed/mecha/phazon/generate_actions()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	initialize_passenger_action_type(/datum/action/vehicle/sealed/mecha/mech_toggle_phasing)
 	initialize_passenger_action_type(/datum/action/vehicle/sealed/mecha/mech_switch_damtype)
 
 /obj/vehicle/sealed/mecha/phazon/CanPassThrough(atom/blocker, movement_dir, blocker_opinion)
+	procstart = null
+	src.procstart = null
 	if(!phasing || get_charge() <= phasing_energy_drain || throwing)
 		return ..()
 	if(phase_state)
@@ -54,11 +58,15 @@
 	return TRUE
 
 /obj/vehicle/sealed/mecha/phazon/vehicle_move(direction, forcerotate)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && phasing)
 		use_energy(phasing_energy_drain)
 
 /obj/vehicle/sealed/mecha/phazon/try_bumpsmash(atom/obstacle)
+	procstart = null
+	src.procstart = null
 	if(phasing) // Theres only one cause for phasing canpass fails
 		to_chat(occupants, "[icon2html(src, occupants)][span_warning("A dull, universal force is preventing you from phasing here!")]")
 		spark_system.start()
@@ -66,6 +74,8 @@
 	return ..()
 
 /obj/vehicle/sealed/mecha/phazon/update_energy_drain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(capacitor)
 		phasing_energy_drain = initial(phasing_energy_drain) / capacitor.rating
@@ -73,6 +83,8 @@
 		phasing_energy_drain = initial(phasing_energy_drain)
 
 /obj/vehicle/sealed/mecha/phazon/can_interact_with(atom/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!. || !phasing)
 		return
@@ -84,6 +96,8 @@
 	button_icon_state = "mech_damtype_brute"
 
 /datum/action/vehicle/sealed/mecha/mech_switch_damtype/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -110,6 +124,8 @@
 	button_icon_state = "mech_phasing_off"
 
 /datum/action/vehicle/sealed/mecha/mech_toggle_phasing/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

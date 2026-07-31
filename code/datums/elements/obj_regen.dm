@@ -14,6 +14,8 @@
 
 
 /datum/element/obj_regen/Attach(obj/target, _rate=0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(target))
 		return ELEMENT_INCOMPATIBLE
@@ -28,6 +30,8 @@
 		processing |= target
 
 /datum/element/obj_regen/Detach(obj/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_ATOM_TAKE_DAMAGE)
 	processing -= target
@@ -36,6 +40,8 @@
 
 /// Handles beginning processing objects.
 /datum/element/obj_regen/proc/on_take_damage(obj/target, damage_amt)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!damage_amt)
 		return
@@ -46,6 +52,8 @@
 
 /// Handle regenerating attached objects.
 /datum/element/obj_regen/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	if(!resumed)

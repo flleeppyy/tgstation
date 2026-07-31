@@ -69,18 +69,28 @@
 	syndicate = TRUE
 
 /obj/machinery/computer/communications/syndicate/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/computer/communications/syndicate/can_buy_shuttles(mob/user)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/computer/communications/syndicate/can_send_messages_to_other_sectors(mob/user)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/computer/communications/syndicate/authenticated_as_silicon_or_captain(mob/user)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/computer/communications/syndicate/get_communication_players()
+	procstart = null
+	src.procstart = null
 	var/list/targets = list()
 	for(var/mob/target in GLOB.player_list)
 		if(target.stat == DEAD || target.z == z || target.mind?.has_antag_datum(/datum/antagonist/battlecruiser))
@@ -88,6 +98,8 @@
 	return targets
 
 /obj/machinery/computer/communications/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// All maps should have at least 1 comms console
 	REGISTER_REQUIRED_MAP_ITEM(1, INFINITY)
@@ -96,29 +108,39 @@
 
 /// Are we NOT a silicon, AND we're logged in as the captain?
 /obj/machinery/computer/communications/proc/authenticated_as_non_silicon_captain(mob/user)
+	procstart = null
+	src.procstart = null
 	if (HAS_SILICON_ACCESS(user))
 		return FALSE
 	return ACCESS_CAPTAIN in authorize_access
 
 /// Are we a silicon, OR we're logged in as the captain?
 /obj/machinery/computer/communications/proc/authenticated_as_silicon_or_captain(mob/user)
+	procstart = null
+	src.procstart = null
 	if (HAS_SILICON_ACCESS(user))
 		return TRUE
 	return ACCESS_CAPTAIN in authorize_access
 
 /// Are we a silicon, OR logged in?
 /obj/machinery/computer/communications/proc/authenticated(mob/user)
+	procstart = null
+	src.procstart = null
 	if (HAS_SILICON_ACCESS(user))
 		return TRUE
 	return authenticated
 
 /obj/machinery/computer/communications/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isidcard(tool))
 		return NONE
 	attack_hand(user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/computer/communications/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(istype(emag_card, /obj/item/card/emag/battlecruiser))
 		var/obj/item/card/emag/battlecruiser/caller_card = emag_card
 		if (user)
@@ -145,6 +167,8 @@
 	return TRUE
 
 /obj/machinery/computer/communications/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/ui_state)
+	procstart = null
+	src.procstart = null
 	var/static/list/approved_states = list(STATE_BUYING_SHUTTLE, STATE_CHANGING_STATUS, STATE_MAIN, STATE_MESSAGES)
 
 	. = ..()
@@ -459,6 +483,8 @@
 			minor_announce("Due to staff shortages, your station has been approved for delivery of access codes to secure the Captain's Spare ID. Delivery via drop pod at [get_area(pod_location)]. ETA 120 seconds.")
 
 /obj/machinery/computer/communications/proc/emergency_access_cooldown(mob/user)
+	procstart = null
+	src.procstart = null
 	if(toggle_uses == toggle_max_uses) //you have used up free uses already, do it one more time and start a cooldown
 		to_chat(user, span_warning("This was your last free use without cooldown, you will not be able to use this again for [DisplayTimeText(EMERGENCY_ACCESS_COOLDOWN)]."))
 		COOLDOWN_START(src, emergency_access_cooldown, EMERGENCY_ACCESS_COOLDOWN)
@@ -477,6 +503,8 @@
 	return FALSE //if we are not in cooldown, allow using the button
 
 /obj/machinery/computer/communications/proc/send_cross_comms_message(mob/user, destination, message)
+	procstart = null
+	src.procstart = null
 	send_cross_comms_message_timer = null
 
 	var/list/payload = list()
@@ -496,6 +524,8 @@
 	GLOB.communications_controller.soft_filtering = FALSE // set it to false at the end of the proc to ensure that everything prior reads as intended
 
 /obj/machinery/computer/communications/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list(
 		"authenticated" = FALSE,
 		"emagged" = FALSE,
@@ -628,6 +658,8 @@
 	return data
 
 /obj/machinery/computer/communications/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
@@ -635,6 +667,8 @@
 		ui.open()
 
 /obj/machinery/computer/communications/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		"callShuttleReasonMinLength" = CALL_SHUTTLE_REASON_LENGTH,
 		"maxStatusLineLength" = MAX_STATUS_LINE_LENGTH,
@@ -644,6 +678,8 @@
 	)
 
 /obj/machinery/computer/communications/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if (href_list["reject_cross_comms_message"])
 		if (!usr.client?.holder)
 			usr.log_message("tried to reject a cross-comms message without being an admin.", LOG_ADMIN)
@@ -667,6 +703,8 @@
 
 /// Returns whether or not the communications console can communicate with the station
 /obj/machinery/computer/communications/proc/has_communication()
+	procstart = null
+	src.procstart = null
 	var/turf/current_turf = get_turf(src)
 	var/z_level = current_turf.z
 	if(syndicate)
@@ -674,6 +712,8 @@
 	return is_station_level(z_level) || is_centcom_level(z_level)
 
 /obj/machinery/computer/communications/proc/set_state(mob/user, new_state)
+	procstart = null
+	src.procstart = null
 	if (HAS_SILICON_ACCESS(user))
 		cyborg_state = new_state
 	else
@@ -682,6 +722,8 @@
 /// Returns TRUE if the user can buy shuttles.
 /// If they cannot, returns FALSE or a string detailing why.
 /obj/machinery/computer/communications/proc/can_buy_shuttles(mob/user)
+	procstart = null
+	src.procstart = null
 	if (!SSmapping.current_map.allow_custom_shuttles)
 		return FALSE
 	if (HAS_SILICON_ACCESS(user))
@@ -708,6 +750,8 @@
 /// Returns whether we are authorized to buy this specific shuttle.
 /// Does not handle prerequisite checks, as those should still *show*.
 /obj/machinery/computer/communications/proc/can_purchase_this_shuttle(datum/map_template/shuttle/shuttle_template)
+	procstart = null
+	src.procstart = null
 	if (isnull(shuttle_template.who_can_purchase))
 		return FALSE
 
@@ -721,12 +765,16 @@
 	return FALSE
 
 /obj/machinery/computer/communications/proc/can_send_messages_to_other_sectors(mob/user)
+	procstart = null
+	src.procstart = null
 	if (!authenticated_as_non_silicon_captain(user))
 		return
 
 	return length(CONFIG_GET(keyed_list/cross_server)) > 0
 
 /obj/machinery/computer/communications/proc/make_announcement(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/is_ai = HAS_SILICON_ACCESS(user)
 	if(!GLOB.communications_controller.can_announce(user, is_ai))
 		to_chat(user, span_alert("Intercomms recharging. Please stand by."))
@@ -753,9 +801,13 @@
 	deadchat_broadcast(" made a priority announcement from [span_name("[get_area_name(user, TRUE)]")].", span_name("[user.real_name]"), user, message_type=DEADCHAT_ANNOUNCEMENT)
 
 /obj/machinery/computer/communications/proc/get_communication_players()
+	procstart = null
+	src.procstart = null
 	return GLOB.player_list
 
 /obj/machinery/computer/communications/proc/post_status(command, data1, data2)
+	procstart = null
+	src.procstart = null
 
 	var/datum/radio_frequency/frequency = SSradio.return_frequency(FREQ_STATUS_DISPLAYS)
 
@@ -777,6 +829,8 @@
 	frequency.post_signal(src, status_signal)
 
 /obj/machinery/computer/communications/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.shuttle_caller_list -= src
 	SSshuttle.autoEvac()
 	return ..()
@@ -784,9 +838,13 @@
 /// Override the cooldown for special actions
 /// Used in places such as CentCom messaging back so that the crew can answer right away
 /obj/machinery/computer/communications/proc/override_cooldown()
+	procstart = null
+	src.procstart = null
 	COOLDOWN_RESET(src, important_action_cooldown)
 
 /obj/machinery/computer/communications/proc/add_message(datum/comm_message/new_message)
+	procstart = null
+	src.procstart = null
 	LAZYADD(messages, new_message)
 
 /// Defines for the various hack results.
@@ -803,6 +861,8 @@
 
 /// Begin the process of hacking into the comms console to call in a threat.
 /obj/machinery/computer/communications/proc/try_hack_console(mob/living/hacker, duration = 30 SECONDS)
+	procstart = null
+	src.procstart = null
 	if(!can_hack(hacker, feedback = TRUE))
 		return FALSE
 
@@ -815,6 +875,8 @@
 
 /// Checks if this console is hackable. Used as a callback during try_hack_console's doafter as well.
 /obj/machinery/computer/communications/proc/can_hack(mob/living/hacker, feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (NOPOWER|BROKEN))
 		if(feedback && hacker)
 			balloon_alert(hacker, "can't hack!")
@@ -835,6 +897,8 @@
  * hacker - the mob that caused the hack
  */
 /obj/machinery/computer/communications/proc/hack_console(mob/living/hacker)
+	procstart = null
+	src.procstart = null
 	// All hack results we'll choose from.
 	var/list/hack_options = list(HACK_SLEEPER)
 
@@ -894,6 +958,8 @@
 	var/datum/callback/answer_callback
 
 /datum/comm_message/New(new_title,new_content,new_possible_answers)
+	procstart = null
+	src.procstart = null
 	..()
 	if(new_title)
 		title = new_title
@@ -903,6 +969,8 @@
 		possible_answers = new_possible_answers
 
 /datum/comm_message/Destroy()
+	procstart = null
+	src.procstart = null
 	answer_callback = null
 	return ..()
 

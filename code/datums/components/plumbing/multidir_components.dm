@@ -10,6 +10,8 @@
  * * datum/ductnet/net - the net we are checking for an connection to
 */
 /datum/component/plumbing/multidirectional/proc/get_connection(datum/ductnet/net)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	var/atom/movable/parent_movable = parent
@@ -19,11 +21,15 @@
 
 ///Splits reagent amounts along 3 directions
 /datum/component/plumbing/multidirectional/splitter/Initialize(ducting_layer)
+	procstart = null
+	src.procstart = null
 	if(!istype(parent, /obj/machinery/plumbing/splitter))
 		return COMPONENT_INCOMPATIBLE
 	return ..()
 
 /datum/component/plumbing/multidirectional/splitter/transfer_to(datum/component/plumbing/target, amount, reagent, datum/ductnet/net, round_robin = TRUE)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/plumbing/splitter/S = parent
 	var/limit = INFINITY
 	switch(get_connection(net))
@@ -39,6 +45,8 @@
 
 ///Splits reagents along 3 directions
 /datum/component/plumbing/multidirectional/filter/Initialize(ducting_layer)
+	procstart = null
+	src.procstart = null
 	if(!istype(parent, /obj/machinery/plumbing/filter))
 		return COMPONENT_INCOMPATIBLE
 	return ..()
@@ -52,6 +60,8 @@
  * * datum/reagent/reagent - the reagent we are checking for
 */
 /datum/component/plumbing/multidirectional/filter/proc/can_give_in_direction(dir, datum/reagent/reagent)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/obj/machinery/plumbing/filter/F = parent
@@ -64,9 +74,13 @@
 			return F.right.Find(reagent)
 
 /datum/component/plumbing/multidirectional/filter/can_give(amount, reagent, datum/ductnet/net)
+	procstart = null
+	src.procstart = null
 	return (reagent ? can_give_in_direction(get_connection(net), reagent) : TRUE) && ..()
 
 /datum/component/plumbing/multidirectional/filter/transfer_to(datum/component/plumbing/target, amount, reagent, datum/ductnet/net, round_robin = TRUE)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/plumbing/filter/F = parent
 	if(reagent)
 		reagents.trans_to(target.parent, amount, target_id = reagent, methods = round_robin ? LINEAR : NONE)

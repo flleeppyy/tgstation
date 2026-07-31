@@ -41,6 +41,8 @@
 	var/list/mood_events = list()
 
 /datum/mood/New(mob/living/mob_to_make_moody)
+	procstart = null
+	src.procstart = null
 	if (!istype(mob_to_make_moody))
 		stack_trace("Tried to apply mood to a non-living atom!")
 		qdel(src)
@@ -68,6 +70,8 @@
 		hud.show_hud(hud.hud_version)
 
 /datum/mood/proc/clear_parent_ref()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	unmodify_hud()
@@ -80,11 +84,15 @@
 	mob_parent = null
 
 /datum/mood/Destroy(force)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSmood, src)
 	QDEL_LIST_ASSOC_VAL(mood_events)
 	return ..()
 
 /datum/mood/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	switch(mood_level)
 		if(MOOD_LEVEL_SAD4)
 			adjust_sanity(-0.3 * seconds_per_tick, SANITY_INSANE)
@@ -106,6 +114,8 @@
 			adjust_sanity(0.6 * seconds_per_tick, SANITY_NEUTRAL, SANITY_MAXIMUM)
 
 /datum/mood/proc/handle_mob_death(datum/source, new_stat, old_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (old_stat == DEAD && new_stat != DEAD)
@@ -115,6 +125,8 @@
 
 /// Handles mood given by nutrition
 /datum/mood/proc/update_nutrition_moodlets()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(mob_parent, TRAIT_NOHUNGER))
 		clear_mood_event(MOOD_CATEGORY_NUTRITION)
 		return FALSE
@@ -153,6 +165,8 @@
  * * type - (path) any /datum/mood_event (besides /datum/mood_event/conditional)
  */
 /datum/mood/proc/add_mood_event(category, new_type, ...)
+	procstart = null
+	src.procstart = null
 	if (!ispath(new_type, /datum/mood_event))
 		CRASH("A non path ([new_type]), was used to add a mood event. This shouldn't be happening.")
 	if (ispath(new_type, /datum/mood_event/conditional))
@@ -172,6 +186,8 @@
  * Handles adding a mood event instance, including replacing or refreshing existing events
  */
 /datum/mood/proc/add_mood_event_instance(datum/mood_event/new_event, list/params)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	var/category = new_event.category
 	var/datum/mood_event/existing_event = mood_events[category]
@@ -211,6 +227,8 @@
  * * base_type - (path) any /datum/mood_event/conditional
  */
 /datum/mood/proc/add_conditional_mood_event(category, datum/base_type, ...)
+	procstart = null
+	src.procstart = null
 	if (!ispath(base_type, /datum/mood_event/conditional))
 		if (ispath(base_type, /datum/mood_event))
 			CRASH("A non-conditional mood event ([base_type]) was used in add_conditional_mood_event. Use add_mood_event instead.")
@@ -247,6 +265,8 @@
  * * category - (Text) Removes the mood event with the given category
  */
 /datum/mood/proc/clear_mood_event(category)
+	procstart = null
+	src.procstart = null
 	if (!istext(category))
 		category = REF(category)
 
@@ -259,11 +279,15 @@
 	update_mood()
 
 /datum/mood/proc/get_mood_event(category)
+	procstart = null
+	src.procstart = null
 	return mood_events[category]
 
 /// Updates the mobs mood.
 /// Called after mood events have been added/removed.
 /datum/mood/proc/update_mood()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(mob_parent)) //don't bother updating their mood if they're about to be salty anyway. (in other words, we're about to be destroyed too anyway.)
 		return
 	mood = 0
@@ -306,6 +330,8 @@
 
 /// Updates the mob's mood icon
 /datum/mood/proc/update_mood_icon()
+	procstart = null
+	src.procstart = null
 	if (!mob_parent.client || !mob_parent.hud_used)
 		return
 
@@ -355,6 +381,8 @@
 
 /// Sets up the mood HUD object
 /datum/mood/proc/modify_hud(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/hud/hud = mob_parent.hud_used
@@ -365,6 +393,8 @@
 
 /// Removes the mood HUD object
 /datum/mood/proc/unmodify_hud(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/hud/hud = mob_parent.hud_used
@@ -382,6 +412,8 @@
 
 /// Handles clicking on the mood HUD object
 /datum/mood/proc/hud_click(datum/source, location, control, params, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(user != mob_parent)
@@ -392,6 +424,8 @@
 
 /// Prints the users mood, sanity, and moodies to chat
 /datum/mood/proc/print_mood(mob/user)
+	procstart = null
+	src.procstart = null
 	var/msg = "[span_info("<EM>My current mental status:</EM>")]<br>"
 
 	if(!HAS_TRAIT(src, TRAIT_NOHUNGER))
@@ -505,6 +539,8 @@
 
 /// Updates the mob's moodies, if the area provides a mood bonus
 /datum/mood/proc/check_area_mood(datum/source, area/new_area)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	RegisterSignal(new_area, COMSIG_AREA_BEAUTY_UPDATED, PROC_REF(update_beauty))
@@ -517,6 +553,8 @@
 
 /// Updates the mob's given beauty moodie, based on the area
 /datum/mood/proc/update_beauty(area/area_to_beautify)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (area_to_beautify.outdoors) // if we're outside, we don't care
 		clear_mood_event(MOOD_CATEGORY_AREA_BEAUTY)
@@ -562,11 +600,15 @@
 			add_mood_event(MOOD_CATEGORY_AREA_BEAUTY, /datum/mood_event/greatroom)
 
 /datum/mood/proc/exit_area(datum/source, area/old_area)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(old_area, COMSIG_AREA_BEAUTY_UPDATED)
 
 /// Called when parent is ahealed.
 /datum/mood/proc/on_revive(datum/source, full_heal)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!full_heal)
@@ -576,6 +618,8 @@
 
 /// Sets sanity to the specified amount and applies effects.
 /datum/mood/proc/set_sanity(amount, minimum = SANITY_INSANE, maximum = SANITY_GREAT, override = FALSE)
+	procstart = null
+	src.procstart = null
 	// If we're out of the acceptable minimum-maximum range move back towards it in steps of 0.7
 	// If the new amount would move towards the acceptable range faster then use it instead
 	if(amount < minimum && sanity < minimum)
@@ -637,14 +681,20 @@
 
 /// Sets sanity to a specific amount, useful for callbacks
 /datum/mood/proc/reset_sanity(amount)
+	procstart = null
+	src.procstart = null
 	set_sanity(amount, override = TRUE)
 
 /// Adjusts sanity by a value
 /datum/mood/proc/adjust_sanity(amount, minimum = SANITY_INSANE, maximum = SANITY_GREAT, override = FALSE)
+	procstart = null
+	src.procstart = null
 	set_sanity(sanity + amount, minimum, maximum, override)
 
 /// Sets the insanity effect on the mob
 /datum/mood/proc/set_insanity_effect(newval)
+	procstart = null
+	src.procstart = null
 	if (newval == insanity_effect)
 		return
 	mob_parent.crit_threshold = (mob_parent.crit_threshold - insanity_effect) + newval
@@ -652,6 +702,8 @@
 
 /// Removes all temporary moods
 /datum/mood/proc/remove_temp_moods()
+	procstart = null
+	src.procstart = null
 	for (var/category in mood_events)
 		var/datum/mood_event/moodlet = mood_events[category]
 		if (!moodlet || !moodlet.timeout)
@@ -662,6 +714,8 @@
 
 /// Helper to forcefully drain sanity
 /datum/mood/proc/direct_sanity_drain(amount)
+	procstart = null
+	src.procstart = null
 	adjust_sanity(amount, override = TRUE)
 
 /**
@@ -671,6 +725,8 @@
  * * category - Mood category to validate against.
  */
 /datum/mood/proc/has_mood_of_category(category)
+	procstart = null
+	src.procstart = null
 	for(var/i in mood_events)
 		var/datum/mood_event/moodlet = mood_events[i]
 		if (moodlet.category == category)

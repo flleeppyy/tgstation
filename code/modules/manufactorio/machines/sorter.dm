@@ -16,6 +16,8 @@
 	var/max_filters = 10
 
 /obj/machinery/power/manufacturing/sorter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(dir_if_not_met))
 		dir_if_not_met = dir
@@ -33,14 +35,20 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/machinery/power/manufacturing/sorter/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_LIST(sort_filters)
 
 /obj/machinery/power/manufacturing/sorter/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui_interact(user)
 
 /obj/machinery/power/manufacturing/sorter/receive_resource(atom/movable/receiving, atom/from, receive_dir)
+	procstart = null
+	src.procstart = null
 	if(length(loc.contents) >= MANUFACTURING_TURF_LAG_LIMIT)
 		return MANUFACTURING_FAIL
 	receiving.Move(loc)
@@ -48,6 +56,8 @@
 
 
 /obj/machinery/power/manufacturing/sorter/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["unmet_dir"] = dir_if_not_met
 	.["filters"] = list()
@@ -60,6 +70,8 @@
 		))
 
 /obj/machinery/power/manufacturing/sorter/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -113,24 +125,32 @@
 			return TRUE
 
 /obj/machinery/power/manufacturing/sorter/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ManufacturingSorter")
 		ui.open()
 
 /obj/machinery/power/manufacturing/sorter/proc/send_nomobs(atom/movable/moving, dir)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/operate = mutable_appearance(icon, "router_operate")
 	operate.dir = dir
 	flick_overlay_view(operate, 1 SECONDS)
 	return ismob(moving) ? moving.Move(get_step(src,dir), dir) : send_resource(moving, dir)
 
 /obj/machinery/power/manufacturing/sorter/process()
+	procstart = null
+	src.procstart = null
 	if(!anchored || delay_timerid || !length(loc?.contents - 1))
 		return
 	launch_everything()
 
 /// Is target something we should even attempt to start launching?
 /obj/machinery/power/manufacturing/sorter/proc/can_be_launched(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	if(!istype(target) || target == src || target.anchored) //target is not movable, us or anchored
 		return FALSE
@@ -139,12 +159,16 @@
 		return FALSE
 
 /obj/machinery/power/manufacturing/sorter/proc/on_entered(datum/source, atom/movable/mover)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!anchored || !can_be_launched(mover) || delay_timerid)
 		return
 	delay_timerid = addtimer(CALLBACK(src, PROC_REF(launch_everything)), 0.2 SECONDS)
 
 /obj/machinery/power/manufacturing/sorter/proc/launch_everything()
+	procstart = null
+	src.procstart = null
 	delay_timerid = null
 	if(!anchored)
 		return

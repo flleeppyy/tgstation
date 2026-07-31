@@ -18,19 +18,27 @@
 	var/stored_permanent_multiplier = 0
 
 /obj/item/style_meter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	meter_appearance = mutable_appearance(icon, icon_state)
 
 /obj/item/style_meter/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(istype(loc, /obj/item/clothing/glasses))
 		clean_up(loc)
 	return ..()
 
 /obj/item/style_meter/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You feel like a <b>multitool</b> could be used on this.")
 
 /obj/item/style_meter/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(interacting_with, /obj/item/clothing/glasses))
 		return NONE
 
@@ -56,6 +64,8 @@
 	return .
 
 /obj/item/style_meter/Moved(atom/old_loc, Dir, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(old_loc, /obj/item/clothing/glasses))
 		return
@@ -64,6 +74,8 @@
 
 /// Check if the glasses that this meter is linked with are being worn
 /obj/item/style_meter/proc/check_wearing(datum/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(slot & ITEM_SLOT_EYES))
@@ -76,6 +88,8 @@
 
 /// Signal proc for when the meter-holding glasses are dropped/unequipped
 /obj/item/style_meter/proc/on_drop(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!style_meter)
@@ -86,6 +100,8 @@
 
 /// Signal proc for on-examine
 /obj/item/style_meter/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += span_notice("You feel like a <b>multitool</b> could be used on this.")
@@ -94,6 +110,8 @@
 
 /// Signal proc to remove from glasses
 /obj/item/style_meter/proc/on_click_alt(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(loc, /obj/item/clothing/glasses) || !user.can_perform_action(source))
@@ -105,6 +123,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/style_meter/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	multitooled = !multitooled
 	balloon_alert(user, "meter [multitooled ? "" : "un"]hacked")
 	style_meter?.multitooled = multitooled
@@ -112,12 +132,16 @@
 
 /// Redirect multitooling on our glasses to our style meter
 /obj/item/style_meter/proc/redirect_multitool(datum/source, mob/living/user, obj/item/tool, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return multitool_act(user, tool)
 
 /// Unregister signals and just generally clean up ourselves after being removed from glasses
 /obj/item/style_meter/proc/clean_up(atom/movable/old_location)
+	procstart = null
+	src.procstart = null
 	old_location.cut_overlay(meter_appearance)
 	UnregisterSignal(old_location, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED, COMSIG_ATOM_EXAMINE, COMSIG_CLICK_ALT))
 	UnregisterSignal(old_location, COMSIG_ATOM_TOOL_ACT(TOOL_MULTITOOL))
@@ -127,12 +151,16 @@
 
 /// Create the style meter component, attach it to our wearer, register other things onto the component.
 /obj/item/style_meter/proc/start_meter(mob/living/carbon/human/human_wearer)
+	procstart = null
+	src.procstart = null
 	style_meter = human_wearer.AddComponent(/datum/component/style, multitooled, stored_permanent_multiplier)
 	RegisterSignal(SSdcs, COMSIG_GLOB_MOB_DEATH, PROC_REF(on_death))
 	RegisterSignal(human_wearer, COMSIG_LIVING_ON_VENT_WIN, PROC_REF(on_vent_win))
 
 /// On a successful vent tap, adjust permanent multiplier, scaling with vent value.
 /obj/item/style_meter/proc/on_vent_win(datum/source, obj/structure/ore_vent/vent)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/vent_value = vent.boulder_size / BOULDER_SIZE_MEDIUM
@@ -140,6 +168,8 @@
 
 /// When something dies, if it's a megafauna, adjust our permanent multiplier.
 /obj/item/style_meter/proc/on_death(datum/source, mob/living/died, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!style_meter)
 		return
@@ -153,6 +183,8 @@
 
 /// Adjust the stored permanent multiplier. If we have an active style meter, update that style meter too.
 /obj/item/style_meter/proc/adjust_permanent_multiplier(modifier)
+	procstart = null
+	src.procstart = null
 	stored_permanent_multiplier += modifier
 	if(style_meter)
 		style_meter.adjust_permanent_multiplier(modifier)

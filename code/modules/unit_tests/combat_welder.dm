@@ -1,6 +1,8 @@
 /datum/unit_test/welder_combat
 
 /datum/unit_test/welder_combat/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/tider = EASY_ALLOCATE()
 	var/mob/living/carbon/human/consistent/victim = EASY_ALLOCATE()
 	var/obj/item/weldingtool/weapon = EASY_ALLOCATE()

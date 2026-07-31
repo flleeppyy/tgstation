@@ -3,6 +3,8 @@
 	name = "crafting"
 
 /datum/asset/spritesheet_batched/crafting/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	var/id = 1
 	for(var/atom in GLOB.crafting_recipes_atoms)
 		add_atom_icon(atom, id++)
@@ -12,6 +14,8 @@
 	name = "cooking"
 
 /datum/asset/spritesheet_batched/crafting/cooking/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	var/id = 1
 	for(var/atom in GLOB.cooking_recipes_atoms)
 		add_atom_icon(atom, id++)
@@ -25,6 +29,8 @@
  * OR if it has a glass style associated, it will use that
  */
 /datum/asset/spritesheet_batched/crafting/proc/add_atom_icon(ingredient_typepath, id)
+	procstart = null
+	src.procstart = null
 	var/icon_file
 	var/icon_state
 	var/obj/preview_item = ingredient_typepath
@@ -47,6 +53,8 @@
 
 ///Adds tool icons to the spritesheet
 /datum/asset/spritesheet_batched/crafting/proc/add_tool_icons()
+	procstart = null
+	src.procstart = null
 	var/list/tool_icons = list(
 		TOOL_CROWBAR = uni_icon('icons/obj/tools.dmi', "crowbar"),
 		TOOL_MULTITOOL = uni_icon('icons/obj/devices/tool.dmi', "multitool"),

@@ -17,6 +17,8 @@
 
 // Before the cast, we do some small AOE damage around the caster
 /datum/action/cooldown/spell/aoe/void_pull/before_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & SPELL_CANCEL_CAST)
 		return
@@ -24,6 +26,8 @@
 	new /obj/effect/temp_visual/voidin(get_turf(cast_on))
 
 /datum/action/cooldown/spell/aoe/void_pull/get_things_to_cast_on(atom/center)
+	procstart = null
+	src.procstart = null
 	var/list/things = list()
 	for(var/mob/living/nearby_mob in view(aoe_radius, center))
 		if(nearby_mob == owner || nearby_mob == center)
@@ -42,6 +46,8 @@
 
 // For the actual cast, we microstun people nearby and pull them in
 /datum/action/cooldown/spell/aoe/void_pull/cast_on_thing_in_aoe(mob/living/victim, atom/caster)
+	procstart = null
+	src.procstart = null
 	victim.apply_damage(30, BRUTE, wound_bonus = CANT_WOUND)
 	victim.apply_status_effect(/datum/status_effect/void_chill, 3)
 	victim.AdjustKnockdown(3 SECONDS)

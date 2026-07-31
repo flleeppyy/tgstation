@@ -18,10 +18,14 @@
 	aoe_radius = 3
 
 /datum/action/cooldown/spell/aoe/wave_of_desperation/is_valid_target(mob/living/carbon/cast_on)
+	procstart = null
+	src.procstart = null
 	return ..() && istype(cast_on) && (cast_on.handcuffed || cast_on.legcuffed)
 
 // Before the cast, we do some small AOE damage around the caster
 /datum/action/cooldown/spell/aoe/wave_of_desperation/before_cast(mob/living/carbon/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & SPELL_CANCEL_CAST)
 		return
@@ -41,6 +45,8 @@
 		victim.AdjustParalyzed(0.5 SECONDS)
 
 /datum/action/cooldown/spell/aoe/wave_of_desperation/get_things_to_cast_on(atom/center, radius_override)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/atom/nearby in orange(center, radius_override ? radius_override : aoe_radius))
 		if(nearby == owner || nearby == center || isarea(nearby))
@@ -59,6 +65,8 @@
 		. += nearby_mob
 
 /datum/action/cooldown/spell/aoe/wave_of_desperation/cast_on_thing_in_aoe(atom/victim, atom/caster)
+	procstart = null
+	src.procstart = null
 	if(!ismob(victim))
 		SEND_SIGNAL(owner, COMSIG_HERETIC_MANSUS_GRASP_ATTACK_SECONDARY, victim)
 

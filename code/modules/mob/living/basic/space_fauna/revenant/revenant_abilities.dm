@@ -13,6 +13,8 @@
 	antimagic_flags = MAGIC_RESISTANCE_HOLY|MAGIC_RESISTANCE_MIND
 
 /datum/action/cooldown/spell/list_target/telepathy/revenant/get_list_targets(atom/center, target_radius = 7)
+	procstart = null
+	src.procstart = null
 	if(!istype(center, /mob/living/basic/revenant))
 		return ..()
 	var/mob/living/basic/revenant/revenant = center
@@ -38,6 +40,8 @@
 	var/stun_duration = 2 SECONDS
 
 /datum/action/cooldown/spell/aoe/revenant/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/revenant_ability, \
 		unlock_amount = unlock_amount, \
@@ -47,9 +51,13 @@
 	)
 
 /datum/action/cooldown/spell/aoe/revenant/get_things_to_cast_on(atom/center)
+	procstart = null
+	src.procstart = null
 	return RANGE_TURFS(aoe_radius, center)
 
 /datum/action/cooldown/spell/aoe/revenant/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// gross getcomp, but this is solely to make life easier for badmins/debug. sue me
 	var/datum/component/revenant_ability/rev_comp = GetComponent(/datum/component/revenant_ability)
@@ -79,6 +87,8 @@
 	var/shock_damage = 15
 
 /datum/action/cooldown/spell/aoe/revenant/overload/cast_on_thing_in_aoe(turf/victim, mob/living/basic/revenant/caster)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/light/light in victim)
 		if(!light.on)
 			continue
@@ -89,6 +99,8 @@
 		addtimer(CALLBACK(src, PROC_REF(overload_shock), light, caster), 2 SECONDS)
 
 /datum/action/cooldown/spell/aoe/revenant/overload/proc/overload_shock(obj/machinery/light/to_shock, mob/living/basic/revenant/caster)
+	procstart = null
+	src.procstart = null
 	flick("[to_shock.base_state]2", to_shock)
 	for(var/mob/living/carbon/human/human_mob in view(shock_range, to_shock))
 		if(human_mob == caster)
@@ -113,6 +125,8 @@
 	stun_duration = 2 SECONDS
 
 /datum/action/cooldown/spell/aoe/revenant/defile/cast_on_thing_in_aoe(turf/target_turf, mob/living/basic/revenant/caster)
+	procstart = null
+	src.procstart = null
 	/// causes the purple sparks defile animation on the turf
 	var/turf_was_defiled = FALSE
 
@@ -282,6 +296,8 @@
 
 // A note to future coders: do not replace this with an EMP because it will wreck malf AIs and everyone will hate you.
 /datum/action/cooldown/spell/aoe/revenant/malfunction/cast_on_thing_in_aoe(turf/victim, mob/living/basic/revenant/caster)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/basic/bot/bot in victim)
 		if(!(bot.bot_access_flags & BOT_COVER_EMAGGED))
 			new /obj/effect/temp_visual/revenant(bot.loc)
@@ -323,6 +339,8 @@
 	unlock_amount = 75
 
 /datum/action/cooldown/spell/aoe/revenant/blight/cast_on_thing_in_aoe(turf/victim, mob/living/basic/revenant/caster)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/mob in victim)
 		if(mob == caster)
 			continue
@@ -375,6 +393,8 @@
 	reveal_duration = 6 SECONDS
 
 /datum/action/cooldown/spell/aoe/revenant/haunt_object/get_things_to_cast_on(atom/center)
+	procstart = null
+	src.procstart = null
 	var/list/things = list()
 	for(var/obj/item/nearby_item in range(aoe_radius, center))
 		// Don't throw around anchored things or dense things
@@ -396,6 +416,8 @@
 	return things
 
 /datum/action/cooldown/spell/aoe/revenant/haunt_object/cast_on_thing_in_aoe(obj/item/victim, mob/living/basic/revenant/caster)
+	procstart = null
+	src.procstart = null
 	var/distance_from_caster = get_dist(get_turf(victim), get_turf(caster))
 	var/chance_of_haunting = 150 * (1 / distance_from_caster)
 	if(!prob(chance_of_haunting))
@@ -424,6 +446,8 @@
 	reveal_duration = 5 SECONDS
 
 /datum/action/cooldown/spell/aoe/revenant/vortex/cast_on_thing_in_aoe(turf/target_turf, mob/living/basic/revenant/caster)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/storage/cursed_storage in target_turf)
 		if(cursed_storage.atom_storage?.locked)
 			continue
@@ -432,10 +456,14 @@
 		new /obj/effect/temp_visual/revenant(target_turf)
 
 /datum/action/cooldown/spell/aoe/revenant/vortex/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	movement_effect(cast_on)
 	. = ..()
 
 /datum/action/cooldown/spell/aoe/revenant/vortex/proc/movement_effect(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	goonchem_vortex(get_turf(cast_on), FALSE, 3)
 	playsound(cast_on, 'sound/machines/woosh.ogg', 50, TRUE)
 
@@ -451,6 +479,8 @@
 	reveal_duration = 5 SECONDS
 
 /datum/action/cooldown/spell/aoe/revenant/vortex/scatter/movement_effect(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	goonchem_vortex(get_turf(cast_on), TRUE, 5) // pushing is much stronger than pulling
 	playsound(cast_on, 'sound/machines/hiss.ogg', 50, TRUE)
 

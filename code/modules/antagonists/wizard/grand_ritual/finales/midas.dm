@@ -15,6 +15,8 @@
 
 // I sure hope this doesn't have performance implications
 /datum/grand_finale/midas/trigger(mob/living/carbon/human/invoker)
+	procstart = null
+	src.procstart = null
 	var/theme_path = pick(permitted_transforms)
 	chosen_theme = new theme_path()
 	var/turf/start_turf = get_turf(invoker)
@@ -39,4 +41,6 @@
 		addtimer(CALLBACK(src, PROC_REF(transform_area), turfs_to_transform["[iterator]"]), (5 SECONDS) * iterator)
 
 /datum/grand_finale/midas/proc/transform_area(list/turfs)
+	procstart = null
+	src.procstart = null
 	chosen_theme.apply_theme_to_list_of_turfs(turfs)

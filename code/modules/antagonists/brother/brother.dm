@@ -14,6 +14,8 @@
 		datum/team/brother_team/team
 
 /datum/antagonist/brother/create_team(datum/team/brother_team/new_team)
+	procstart = null
+	src.procstart = null
 	if(!new_team)
 		team = new()
 		return
@@ -22,9 +24,13 @@
 	team = new_team
 
 /datum/antagonist/brother/get_team()
+	procstart = null
+	src.procstart = null
 	return team
 
 /datum/antagonist/brother/on_gain()
+	procstart = null
+	src.procstart = null
 	objectives += team.objectives
 	finalize_brother()
 
@@ -45,11 +51,15 @@
 	return ..()
 
 /datum/antagonist/brother/on_removal()
+	procstart = null
+	src.procstart = null
 	remove_conversion_skills()
 	return ..()
 
 /// Give us the ability to add another brother
 /datum/antagonist/brother/proc/grant_conversion_skills()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/carbon_owner = owner.current
 	if (!istype(carbon_owner))
 		return
@@ -58,6 +68,8 @@
 
 /// Take away the ability to add more brothers
 /datum/antagonist/brother/proc/remove_conversion_skills()
+	procstart = null
+	src.procstart = null
 	if (isnull(owner.current))
 		return
 	var/mob/living/carbon/carbon_owner = owner.current
@@ -65,6 +77,8 @@
 	UnregisterSignal(carbon_owner, COMSIG_MOB_SUCCESSFUL_FLASHED_MOB)
 
 /datum/antagonist/brother/proc/on_mob_successful_flashed_mob(mob/living/source, mob/living/flashed, obj/item/assembly/flash/flash)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (flashed.stat == DEAD || issilicon(flashed) || isdrone(flashed))
@@ -120,20 +134,28 @@
 	flashed.balloon_alert(source, "converted")
 
 /datum/antagonist/brother/antag_panel_data()
+	procstart = null
+	src.procstart = null
 	return "Conspirators : [get_brother_names()] | Remaining: [team.brothers_left]"
 
 /datum/antagonist/brother/get_admin_commands()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["Adjust Remaining Conversions"] = CALLBACK(src, PROC_REF(update_recruitments_remaining))
 
 /// Add or remove the potential to put more bros in here
 /datum/antagonist/brother/proc/update_recruitments_remaining(mob/admin)
+	procstart = null
+	src.procstart = null
 	var/new_count = tgui_input_number(admin, "How many more people should be able to be recruited?", "Adjust Conversions Remaining", default = 1, min_value = 0)
 	if (isnull(new_count))
 		return
 	team.set_brothers_left(new_count)
 
 /datum/antagonist/brother/get_preview_icon()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy/consistent/brother1 = new
 	var/mob/living/carbon/human/dummy/consistent/brother2 = new
 
@@ -166,6 +188,8 @@
 	return finish_preview_icon(final_icon)
 
 /datum/antagonist/brother/proc/get_brother_names()
+	procstart = null
+	src.procstart = null
 	var/list/brothers = team.members - owner
 	if (!length(brothers))
 		return "none"
@@ -181,25 +205,35 @@
 	return brother_text
 
 /datum/antagonist/brother/greet()
+	procstart = null
+	src.procstart = null
 	to_chat(owner.current, span_alertsyndie("You are a Blood Brother."))
 	owner.announce_objectives()
 
 /datum/antagonist/brother/proc/finalize_brother()
+	procstart = null
+	src.procstart = null
 	play_stinger()
 	team.update_name()
 
 /datum/antagonist/brother/admin_add(datum/mind/new_owner,mob/admin)
+	procstart = null
+	src.procstart = null
 	var/datum/team/brother_team/team = new
 	team.add_member(new_owner)
 	message_admins("[key_name_admin(admin)] made [key_name_admin(new_owner)] into a blood brother.")
 	log_admin("[key_name(admin)] made [key_name(new_owner)] into a blood brother.")
 
 /datum/antagonist/brother/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/the_mob = owner.current || mob_override
 	add_team_hud(the_mob)
 
 /datum/antagonist/brother/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["antag_name"] = name
 	data["objectives"] = get_objectives()
@@ -211,11 +245,15 @@
 	var/brothers_left = 2
 
 /datum/team/brother_team/New(starting_members)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (prob(10))
 		brothers_left += 1
 
 /datum/team/brother_team/add_member(datum/mind/new_member)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!length(objectives))
 		forge_brother_objectives()
@@ -226,6 +264,8 @@
 		set_brothers_left(brothers_left - 1)
 
 /datum/team/brother_team/remove_member(datum/mind/member)
+	procstart = null
+	src.procstart = null
 	if (!(member in members))
 		return
 	. = ..()
@@ -241,6 +281,8 @@
 
 /// Adds a new brother to the team
 /datum/team/brother_team/proc/add_brother(mob/living/new_brother, source)
+	procstart = null
+	src.procstart = null
 #ifndef TESTING
 	if (isnull(new_brother) || isnull(new_brother.mind) || !GET_CLIENT(new_brother) || new_brother.mind.has_antag_datum(/datum/antagonist/brother))
 		return FALSE
@@ -263,6 +305,8 @@
 	return TRUE
 
 /datum/team/brother_team/proc/update_name()
+	procstart = null
+	src.procstart = null
 	var/list/last_names = list()
 	for(var/datum/mind/team_minds as anything in members)
 		var/list/split_name = splittext(team_minds.name," ")
@@ -274,6 +318,8 @@
 		name = "[initial(name)] of " + last_names.Join(" & ")
 
 /datum/team/brother_team/proc/forge_brother_objectives()
+	procstart = null
+	src.procstart = null
 	objectives = list()
 
 	add_objective(new /datum/objective/convert_brother)
@@ -288,6 +334,8 @@
 		add_objective(new /datum/objective/escape)
 
 /datum/team/brother_team/proc/forge_single_objective()
+	procstart = null
+	src.procstart = null
 	if(prob(50))
 		if(LAZYLEN(active_ais()) && prob(100/GLOB.joined_player_list.len))
 			add_objective(new /datum/objective/destroy, needs_target = TRUE)
@@ -300,6 +348,8 @@
 
 /// Control how many more people we can recruit
 /datum/team/brother_team/proc/set_brothers_left(remaining_brothers)
+	procstart = null
+	src.procstart = null
 	if (brothers_left == remaining_brothers)
 		return
 
@@ -321,4 +371,6 @@
 	martyr_compatible = TRUE
 
 /datum/objective/convert_brother/check_completion()
+	procstart = null
+	src.procstart = null
 	return length(team?.members) > 1

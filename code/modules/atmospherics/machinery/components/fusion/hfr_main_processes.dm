@@ -5,6 +5,8 @@
  */
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/process_atmos(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	/*
 	 *Pre-checks
 	 */
@@ -43,6 +45,8 @@
  * Contains the main fusion calculations and checks, for more informations check the comments along the code.
  */
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/fusion_process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 //fusion: a terrible idea that was fun but broken. Now reworked to be less broken and more interesting. Again (and again, and again). Again! Again but with machine!
 //Fusion Rework Counter: Please increment this if you make a major overhaul to this system again.
 //7 reworks
@@ -242,6 +246,8 @@
  * Perform recipe specific actions. Fuel consumption and recipe based gas production happens here.
  */
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/moderator_fuel_process(seconds_per_tick, production_amount, consumption_amount, datum/gas_mixture/internal_output, moderator_list, datum/hfr_fuel/fuel, fuel_list)
+	procstart = null
+	src.procstart = null
 	// Adjust fusion consumption/production based on this recipe's characteristics
 	var/fuel_consumption = consumption_amount * 0.85 * selected_fuel.fuel_consumption_multiplier
 	var/scaled_production = production_amount * selected_fuel.gas_production_multiplier
@@ -287,6 +293,8 @@
  * - Committing staged output, performing filtering, and making !FUN! emissions
  */
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/moderator_common_process(seconds_per_tick, scaled_production, datum/gas_mixture/internal_output, moderator_list, dirty_production_rate, heat_output, radiation_modifier)
+	procstart = null
+	src.procstart = null
 	switch(power_level)
 		if(1)
 			if(moderator_list[/datum/gas/plasma] > 100)
@@ -404,6 +412,8 @@
 	radiation_pulse(src, max_range = 6, threshold = 0.3)
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/evaporate_moderator(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	// Don't evaporate if the reaction is dead
 	if (!power_level)
 		return
@@ -412,6 +422,8 @@
 		moderator_internal.remove(moderator_internal.total_moles() * (1 - (1 - 0.0005 * power_level) ** seconds_per_tick))
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/process_damageheal(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	// Archive current health for damage cap purposes
 	critical_threshold_proximity_archived = critical_threshold_proximity
 
@@ -458,6 +470,8 @@
 	iron_content = clamp(iron_content, 0, 1)
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/check_nuclear_particles(moderator_list)
+	procstart = null
+	src.procstart = null
 	// New nuclear particle emission sytem.
 	if(power_level < 4)
 		return
@@ -467,6 +481,8 @@
 	picked_corner.loc.fire_nuclear_particle(REVERSE_DIR(picked_corner.dir))
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/check_lightning_arcs(moderator_list)
+	procstart = null
+	src.procstart = null
 	if(power_level < 4)
 		return
 	if(moderator_list[/datum/gas/antinoblium] <= 50 && critical_threshold_proximity <= 500)
@@ -494,6 +510,8 @@
 		supermatter_zap(src, 5, power_level * 2.4e5, flags, zap_cutoff = cutoff, power_level = src.power_level * 1000, zap_icon = zaps_aspect)
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/check_gravity_pulse(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(SPT_PROB(100 - critical_threshold_proximity / 15, seconds_per_tick))
 		return
 	var/grav_range = round(log(2.5, critical_threshold_proximity))
@@ -503,6 +521,8 @@
 		step_towards(alive_mob, loc)
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/remove_waste(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	//Gases can be removed from the moderator internal by using the interface.
 	if(!waste_remove)
 		return
@@ -522,6 +542,8 @@
 	moderator_internal.garbage_collect()
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/process_internal_cooling(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(moderator_internal.total_moles() > 0 && internal_fusion.total_moles() > 0)
 		//Modifies the moderator_internal temperature based on energy conduction and also the fusion by the same amount
 		var/fusion_temperature_delta = internal_fusion.temperature - moderator_internal.temperature
@@ -548,6 +570,8 @@
 	cooling_port.merge(cooling_remove)
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/inject_from_side_components(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	update_pipenets()
 
 	//Check and stores the gases from the moderator input in the moderator internal gasmix
@@ -567,6 +591,8 @@
 		linked_input.update_parents()
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/check_deconstructable()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return
 	if(power_level > 0)

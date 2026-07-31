@@ -53,6 +53,8 @@
 	return ..()
 
 /datum/candidate_poll/Destroy()
+	procstart = null
+	src.procstart = null
 	if(src in SSpolling.currently_polling)
 		SSpolling.polling_finished(src)
 		return QDEL_HINT_IWILLGC // the above proc will call QDEL_IN(src, 0.5 SECONDS)
@@ -61,10 +63,14 @@
 	return ..()
 
 /datum/candidate_poll/proc/clear_alert_ref(atom/movable/screen/alert/poll_alert/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	alert_buttons -= source
 
 /datum/candidate_poll/proc/sign_up(mob/candidate, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(candidate) || isnull(candidate.key) || isnull(candidate.client))
 		return FALSE
 	if(candidate in signed_up)
@@ -96,6 +102,8 @@
 	return TRUE
 
 /datum/candidate_poll/proc/remove_candidate(mob/candidate, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(candidate) || isnull(candidate.key) || isnull(candidate.client))
 		return FALSE
 	if(!(candidate in signed_up))
@@ -127,6 +135,8 @@
 	return TRUE
 
 /datum/candidate_poll/proc/do_never_for_this_round(mob/candidate)
+	procstart = null
+	src.procstart = null
 	var/list/ignore_list = GLOB.poll_ignore[ignoring_category]
 	if(!ignore_list)
 		GLOB.poll_ignore[ignoring_category] = list()
@@ -135,21 +145,29 @@
 	remove_candidate(candidate, silent = TRUE)
 
 /datum/candidate_poll/proc/undo_never_for_this_round(mob/candidate)
+	procstart = null
+	src.procstart = null
 	GLOB.poll_ignore[ignoring_category] -= candidate.ckey
 	to_chat(candidate, span_notice("Choice registered: Eligible for this round"))
 
 /datum/candidate_poll/proc/trim_candidates()
+	procstart = null
+	src.procstart = null
 	list_clear_nulls(signed_up)
 	for(var/mob/candidate as anything in signed_up)
 		if(isnull(candidate.key) || isnull(candidate.client))
 			signed_up -= candidate
 
 /datum/candidate_poll/proc/time_left()
+	procstart = null
+	src.procstart = null
 	return duration - (world.time - time_started)
 
 
 /// Print to chat which candidate was selected
 /datum/candidate_poll/proc/announce_chosen(list/poll_recipients)
+	procstart = null
+	src.procstart = null
 	if(!length(chosen_candidates))
 		return
 	for(var/mob/chosen in chosen_candidates)

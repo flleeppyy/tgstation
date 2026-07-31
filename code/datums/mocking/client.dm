@@ -44,6 +44,8 @@
 	var/static/mock_client_uid = 0
 
 /datum/client_interface/New()
+	procstart = null
+	src.procstart = null
 	..()
 
 	byond_version = world.byond_version
@@ -65,6 +67,8 @@
 	fully_created = TRUE
 
 /datum/client_interface/Destroy(force)
+	procstart = null
+	src.procstart = null
 	GLOB.directory -= ckey
 	if(persistent_client?.client == src)
 		persistent_client.set_client(null)
@@ -72,19 +76,31 @@
 	return ..()
 
 /datum/client_interface/proc/IsByondMember()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /datum/client_interface/proc/set_macros()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/client_interface/proc/update_ambience_pref()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/client_interface/proc/get_award_status(achievement_type, mob/user, value = 1)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /datum/client_interface/proc/set_fullscreen()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/client_interface/proc/check_drag_proximity(atom/dragging, atom/over, src_location, over_location, src_control, over_control, params)
+	procstart = null
+	src.procstart = null
 	return FALSE

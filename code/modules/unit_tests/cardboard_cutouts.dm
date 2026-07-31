@@ -2,6 +2,8 @@
 /datum/unit_test/cardboard_cutouts
 
 /datum/unit_test/cardboard_cutouts/Run()
+	procstart = null
+	src.procstart = null
 	for(var/datum/cardboard_cutout/cutout as anything in subtypesof(/datum/cardboard_cutout))
 		var/direct_icon = initial(cutout.direct_icon)
 		if(isnull(direct_icon)) //these are dynamically generated.

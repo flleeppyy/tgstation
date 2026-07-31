@@ -8,6 +8,8 @@
 	nuke_icon_state = null
 
 /datum/antagonist/nukeop/lone/create_team(datum/team/nuclear/new_team)
+	procstart = null
+	src.procstart = null
 	if(new_team)
 		return ..()
 	// Lone ops always get a solo team solely because a lot of nukie code is on the team

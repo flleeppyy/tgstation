@@ -27,24 +27,34 @@
 	var/transfer_blood = 0
 
 /obj/item/clothing/gloves/apply_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	siemens_coefficient = modify_fantasy_variable("siemens_coefficient", siemens_coefficient, -bonus / 10)
 
 /obj/item/clothing/gloves/remove_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	siemens_coefficient = reset_fantasy_variable("siemens_coefficient", siemens_coefficient)
 	return ..()
 
 /obj/item/clothing/gloves/wash(clean_types)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((clean_types & CLEAN_TYPE_BLOOD) && transfer_blood > 0)
 		transfer_blood = 0
 		. |= COMPONENT_CLEANED|COMPONENT_CLEANED_GAIN_XP
 
 /obj/item/clothing/gloves/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("\the [src] are forcing [user]'s hands around [user.p_their()] neck! It looks like the gloves are possessed!"))
 	return OXYLOSS
 
 /obj/item/clothing/gloves/worn_overlays(mutable_appearance/standing, isinhands = FALSE, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isinhands)
 		return
@@ -52,6 +62,8 @@
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damagedgloves")
 
 /obj/item/clothing/gloves/separate_worn_overlays(mutable_appearance/standing, mutable_appearance/draw_target, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isinhands)
 		return
@@ -60,12 +72,16 @@
 		. += blood_overlay
 
 /obj/item/clothing/gloves/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ismob(loc))
 		var/mob/M = loc
 		M.update_worn_gloves()
 
 /obj/item/clothing/gloves/proc/can_cut_with(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!cut_type)
 		return FALSE
 	if(icon_state != initial(icon_state))
@@ -73,6 +89,8 @@
 	return TRUE
 
 /obj/item/clothing/gloves/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ITEM_INTERACT_ANY_BLOCKER & .)
 		return .

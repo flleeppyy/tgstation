@@ -20,6 +20,8 @@
 	var/replace_all
 
 /datum/element/crusher_loot/Attach(datum/target, trophy_type, drop_mod = 25, drop_immediately = FALSE, guaranteed_drop = null, replace_all = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -35,15 +37,21 @@
 		RegisterSignal(target, COMSIG_LIVING_DROP_LOOT, PROC_REF(on_loot_drop))
 
 /datum/element/crusher_loot/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, list(COMSIG_LIVING_DEATH, COMSIG_LIVING_DROP_LOOT))
 	return ..()
 
 /datum/element/crusher_loot/proc/on_loot_drop(mob/living/target, list/spawn_loot, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Prevent normal loot from being dropped if we have replace_all enabled
 	return COMPONENT_NO_LOOT_DROP
 
 /datum/element/crusher_loot/proc/on_death(mob/living/target, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/status_effect/crusher_damage/damage = target.has_status_effect(/datum/status_effect/crusher_damage)
@@ -78,6 +86,8 @@
 		make_path(target, trophypath)
 
 /datum/element/crusher_loot/proc/make_path(mob/living/target, path)
+	procstart = null
+	src.procstart = null
 	if(drop_immediately)
 		new path(get_turf(target))
 		return

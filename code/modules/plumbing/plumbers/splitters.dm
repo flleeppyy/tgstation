@@ -16,10 +16,14 @@
 	var/transfer_right = 5
 
 /obj/machinery/plumbing/splitter/Initialize(mapload, layer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/plumbing/multidirectional/splitter, layer)
 
 /obj/machinery/plumbing/splitter/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ChemSplitter", name)
@@ -27,11 +31,15 @@
 		ui.open()
 
 /obj/machinery/plumbing/splitter/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		max_transfer = MAX_TRANSFER
 	)
 
 /obj/machinery/plumbing/splitter/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		straight = transfer_straight,
 		left = transfer_left,
@@ -39,6 +47,8 @@
 	)
 
 /obj/machinery/plumbing/splitter/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

@@ -3,6 +3,8 @@
 GLOBAL_LIST_INIT(air_alarm_modes, init_air_alarm_modes())
 
 /proc/init_air_alarm_modes()
+	procstart = null
+	src.procstart = null
 	var/list/ret = list()
 	for(var/mode_path in subtypesof(/datum/air_alarm_mode))
 		ret[mode_path] = new mode_path
@@ -25,9 +27,13 @@ GLOBAL_LIST_INIT(air_alarm_modes, init_air_alarm_modes())
  * * applied - which area will we apply this mode to.
  */
 /datum/air_alarm_mode/proc/apply(area/applied)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/air_alarm_mode/proc/replace(area/applied, pressure)
+	procstart = null
+	src.procstart = null
 	return
 
 /// The default.
@@ -37,6 +43,8 @@ GLOBAL_LIST_INIT(air_alarm_modes, init_air_alarm_modes())
 	danger = FALSE
 
 /datum/air_alarm_mode/filtering/apply(area/applied)
+	procstart = null
+	src.procstart = null
 	for (var/obj/machinery/atmospherics/components/unary/vent_pump/vent as anything in applied.air_vents)
 		vent.on = TRUE
 		vent.pressure_checks = ATMOS_EXTERNAL_BOUND
@@ -56,6 +64,8 @@ GLOBAL_LIST_INIT(air_alarm_modes, init_air_alarm_modes())
 	danger = FALSE
 
 /datum/air_alarm_mode/contaminated/apply(area/applied)
+	procstart = null
+	src.procstart = null
 	for (var/obj/machinery/atmospherics/components/unary/vent_pump/vent as anything in applied.air_vents)
 		vent.on = TRUE
 		vent.pressure_checks = ATMOS_EXTERNAL_BOUND
@@ -77,6 +87,8 @@ GLOBAL_LIST_INIT(air_alarm_modes, init_air_alarm_modes())
 	danger = FALSE
 
 /datum/air_alarm_mode/draught/apply(area/applied)
+	procstart = null
+	src.procstart = null
 	for (var/obj/machinery/atmospherics/components/unary/vent_pump/vent as anything in applied.air_vents)
 		vent.on = TRUE
 		vent.pressure_checks = ATMOS_EXTERNAL_BOUND
@@ -95,6 +107,8 @@ GLOBAL_LIST_INIT(air_alarm_modes, init_air_alarm_modes())
 	danger = TRUE
 
 /datum/air_alarm_mode/refill/apply(area/applied)
+	procstart = null
+	src.procstart = null
 	for (var/obj/machinery/atmospherics/components/unary/vent_pump/vent as anything in applied.air_vents)
 		vent.on = TRUE
 		vent.pressure_checks = ATMOS_EXTERNAL_BOUND
@@ -116,6 +130,8 @@ GLOBAL_LIST_INIT(air_alarm_modes, init_air_alarm_modes())
 
 /// Same as [/datum/air_alarm_mode/siphon/apply]
 /datum/air_alarm_mode/cycle/apply(area/applied)
+	procstart = null
+	src.procstart = null
 	for (var/obj/machinery/atmospherics/components/unary/vent_pump/vent as anything in applied.air_vents)
 		vent.on = FALSE
 		vent.update_appearance(UPDATE_ICON)
@@ -128,6 +144,8 @@ GLOBAL_LIST_INIT(air_alarm_modes, init_air_alarm_modes())
 /// Special case for cycles. Cycles need to refill the air again after it's scrubbed out so this proc is called.
 /// Same as [/datum/air_alarm_mode/filtering/apply]
 /datum/air_alarm_mode/cycle/replace(area/applied, pressure)
+	procstart = null
+	src.procstart = null
 	if(pressure >= ONE_ATMOSPHERE * 0.05)
 		return
 
@@ -150,6 +168,8 @@ GLOBAL_LIST_INIT(air_alarm_modes, init_air_alarm_modes())
 	danger = TRUE
 
 /datum/air_alarm_mode/siphon/apply(area/applied)
+	procstart = null
+	src.procstart = null
 	for (var/obj/machinery/atmospherics/components/unary/vent_pump/vent as anything in applied.air_vents)
 		vent.on = FALSE
 		vent.update_appearance(UPDATE_ICON)
@@ -165,6 +185,8 @@ GLOBAL_LIST_INIT(air_alarm_modes, init_air_alarm_modes())
 	danger = TRUE
 
 /datum/air_alarm_mode/panic_siphon/apply(area/applied)
+	procstart = null
+	src.procstart = null
 	for (var/obj/machinery/atmospherics/components/unary/vent_pump/vent as anything in applied.air_vents)
 		vent.on = FALSE
 		vent.update_appearance(UPDATE_ICON)
@@ -180,6 +202,8 @@ GLOBAL_LIST_INIT(air_alarm_modes, init_air_alarm_modes())
 	danger = FALSE
 
 /datum/air_alarm_mode/off/apply(area/applied)
+	procstart = null
+	src.procstart = null
 	for (var/obj/machinery/atmospherics/components/unary/vent_pump/vent as anything in applied.air_vents)
 		vent.on = FALSE
 		vent.update_appearance(UPDATE_ICON)
@@ -195,6 +219,8 @@ GLOBAL_LIST_INIT(air_alarm_modes, init_air_alarm_modes())
 	emag = TRUE
 
 /datum/air_alarm_mode/flood/apply(area/applied)
+	procstart = null
+	src.procstart = null
 	for (var/obj/machinery/atmospherics/components/unary/vent_pump/vent as anything in applied.air_vents)
 		vent.on = TRUE
 		vent.pressure_checks = ATMOS_INTERNAL_BOUND
@@ -213,6 +239,8 @@ GLOBAL_LIST_INIT(air_alarm_modes, init_air_alarm_modes())
 	emag = TRUE // siphoning things with vents can horribly fuck up distro, even if its surprisingly fast
 
 /datum/air_alarm_mode/vent_siphon/apply(area/applied)
+	procstart = null
+	src.procstart = null
 	for (var/obj/machinery/atmospherics/components/unary/vent_pump/vent as anything in applied.air_vents)
 		vent.on = TRUE
 		vent.pressure_checks = NONE

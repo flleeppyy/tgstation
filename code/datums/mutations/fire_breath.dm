@@ -12,6 +12,8 @@
 	power_coeff = 1
 
 /datum/mutation/firebreath/setup()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/action/cooldown/spell/cone/staggered/fire_breath/to_modify = .
 	if(!istype(to_modify)) // null or invalid
@@ -43,6 +45,8 @@
 	var/self_throw_range = 1
 
 /datum/action/cooldown/spell/cone/staggered/fire_breath/before_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & SPELL_CANCEL_CAST)
 		return
@@ -59,6 +63,8 @@
 	to_chat(our_lizard, span_warning("Something in front of your mouth catches fire!"))
 
 /datum/action/cooldown/spell/cone/staggered/fire_breath/after_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(cast_on))
 		return
@@ -76,15 +82,21 @@
 	living_cast_on.setDir(original_dir)
 
 /datum/action/cooldown/spell/cone/staggered/fire_breath/calculate_cone_shape(current_level)
+	procstart = null
+	src.procstart = null
 	// This makes the cone shoot out into a 3 wide column of flames no matter the distance
 	return 3
 
 /datum/action/cooldown/spell/cone/staggered/fire_breath/do_turf_cone_effect(turf/target_turf, atom/caster, level)
+	procstart = null
+	src.procstart = null
 	// Further turfs experience less exposed_temperature and exposed_volume
 	new /obj/effect/hotspot(target_turf) // for style
 	target_turf.hotspot_expose(max(500, 900 - (100 * level)), max(50, 200 - (50 * level)), 1)
 
 /datum/action/cooldown/spell/cone/staggered/fire_breath/do_mob_cone_effect(mob/living/target_mob, atom/caster, level)
+	procstart = null
+	src.procstart = null
 	// Further out targets take less immediate burn damage and get less fire stacks.
 	// The actual burn damage application is not blocked by fireproofing, like space dragons.
 	target_mob.apply_damage(max(10, 40 - (5 * level)), BURN, spread_damage = TRUE)
@@ -92,5 +104,7 @@
 	target_mob.ignite_mob()
 
 /datum/action/cooldown/spell/cone/staggered/fire_breath/do_obj_cone_effect(obj/target_obj, atom/caster, level)
+	procstart = null
+	src.procstart = null
 	// Further out objects experience less exposed_temperature and exposed_volume
 	target_obj.fire_act(max(500, 900 - (100 * level)), max(50, 200 - (50 * level)))

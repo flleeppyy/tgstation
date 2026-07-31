@@ -22,10 +22,14 @@
 	var/obj/item/tank/internals/emergency_oxygen/tank
 
 /obj/structure/closet/crate/critter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tank = new
 
 /obj/structure/closet/crate/critter/Destroy()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(tank)
 		tank.forceMove(T)
@@ -34,10 +38,14 @@
 	return ..()
 
 /obj/structure/closet/crate/critter/update_icon_state()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	return
 
 /obj/structure/closet/crate/critter/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(opened)
 		. += "crittercrate_door_open"
@@ -48,12 +56,16 @@
 		. += "manifest"
 
 /obj/structure/closet/crate/critter/return_air()
+	procstart = null
+	src.procstart = null
 	if(tank)
 		return tank.return_air()
 	else
 		return loc.return_air()
 
 /obj/structure/closet/crate/critter/return_analyzable_air()
+	procstart = null
+	src.procstart = null
 	if(tank)
 		return tank.return_analyzable_air()
 	else
@@ -65,14 +77,20 @@
 	var/stasis_sealed = TRUE
 
 /obj/structure/closet/crate/critter/stasis/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(gone, TRAIT_STASIS))
 		remove_stasis(gone)
 
 /obj/structure/closet/crate/critter/stasis/proc/remove_stasis(mob/living/target)
+	procstart = null
+	src.procstart = null
 	target.remove_status_effect(/datum/status_effect/grouped/stasis, STASIS_CRATE_EFFECT)
 
 /obj/structure/closet/crate/critter/stasis/after_open(mob/living/user, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!stasis_sealed)
 		return

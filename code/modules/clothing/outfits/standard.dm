@@ -16,6 +16,8 @@
 	r_pocket = /obj/item/lighter
 
 /datum/outfit/centcom/spec_ops/post_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visuals_only)
 		return
 
@@ -82,6 +84,8 @@
 	l_hand = /obj/item/reagent_containers/cup/bucket
 
 /datum/outfit/tournament/janitor/post_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visuals_only)
 		return
 
@@ -161,6 +165,8 @@
 	l_hand = /obj/item/fireaxe
 
 /datum/outfit/tunnel_clown/post_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visuals_only)
 		return
 
@@ -185,6 +191,8 @@
 	l_hand = /obj/item/fireaxe
 
 /datum/outfit/psycho/post_equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/carried_item in H.get_equipped_items(INCLUDE_POCKETS | INCLUDE_ACCESSORIES))
 		carried_item.add_mob_blood(H)//Oh yes, there will be blood...
 	for(var/obj/item/I in H.held_items)
@@ -207,6 +215,8 @@
 	l_hand = /obj/item/storage/briefcase/secure
 
 /datum/outfit/assassin/post_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/under/U = H.w_uniform
 	U.attach_accessory(new /obj/item/clothing/accessory/waistcoat(H))
 
@@ -251,6 +261,8 @@
 	r_pocket = /obj/item/lighter
 
 /datum/outfit/centcom/commander/post_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visuals_only)
 		return
 
@@ -304,6 +316,8 @@
 	l_hand = /obj/item/staff
 
 /datum/outfit/wizard/post_equip(mob/living/carbon/human/wizard, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visuals_only)
 		return
 
@@ -316,6 +330,8 @@
 	backpack_contents = list()
 
 /datum/outfit/wizard/bookless/post_equip(mob/living/carbon/human/wizard, visuals_only)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/outfit/wizard/apprentice
@@ -363,6 +379,8 @@
 	shoes = /obj/item/clothing/shoes/combat
 
 /datum/outfit/centcom/soviet/post_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visuals_only)
 		return
 
@@ -388,6 +406,8 @@
 	l_hand = /obj/item/gun/ballistic/automatic/tommygun
 
 /datum/outfit/mobster/post_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visuals_only)
 		return
 
@@ -405,6 +425,8 @@
 	back = /obj/item/mod/control/pre_equipped/chrono
 
 /datum/outfit/chrono_agent/post_equip(mob/living/carbon/human/agent, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/mod/control/mod = agent.back
 	if(!istype(mod))
@@ -438,6 +460,8 @@
 	internals_slot = ITEM_SLOT_SUITSTORE
 
 /datum/outfit/debug/post_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/id/W = H.wear_id
 	W.registered_name = H.real_name
 	W.update_label()
@@ -470,6 +494,8 @@
 	internals_slot = ITEM_SLOT_SUITSTORE
 
 /datum/outfit/admin/post_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/id/W = H.wear_id
 	W.registered_name = H.real_name
 	W.update_label()

@@ -19,6 +19,8 @@ GLOBAL_LIST_EMPTY(jam_on_wardec)
 	var/announcement_sound = 'sound/announcer/alarm/nuke_alarm.ogg'
 
 /obj/item/nuclear_challenge/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!check_allowed(user))
 		return
 
@@ -54,6 +56,8 @@ GLOBAL_LIST_EMPTY(jam_on_wardec)
 
 ///Admin only proc to bypass checks and force a war declaration. Button on antag panel.
 /obj/item/nuclear_challenge/proc/force_war()
+	procstart = null
+	src.procstart = null
 	var/are_you_sure = tgui_alert(usr, "Are you sure you wish to force a war declaration?[GLOB.player_list.len < CHALLENGE_MIN_PLAYERS ? " Note, the player count is under the required limit." : ""]", "Declare war?", list("Yes", "No"))
 
 	if(are_you_sure != "Yes")
@@ -78,6 +82,8 @@ GLOBAL_LIST_EMPTY(jam_on_wardec)
 	war_was_declared(memo = war_declaration)
 
 /obj/item/nuclear_challenge/proc/war_was_declared(mob/living/user, memo)
+	procstart = null
+	src.procstart = null
 	priority_announce(
 		text = memo,
 		title = "Declaration of War",
@@ -110,6 +116,8 @@ GLOBAL_LIST_EMPTY(jam_on_wardec)
 	qdel(src)
 
 /obj/item/nuclear_challenge/proc/distribute_tc()
+	procstart = null
+	src.procstart = null
 	var/list/orphans = list()
 	var/list/uplinks = list()
 
@@ -144,6 +152,8 @@ GLOBAL_LIST_EMPTY(jam_on_wardec)
 
 
 /obj/item/nuclear_challenge/proc/check_allowed(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(declaring_war)
 		to_chat(user, span_boldwarning("You are already in the process of declaring war! Make your mind up."))
 		return FALSE
@@ -176,6 +186,8 @@ GLOBAL_LIST_EMPTY(jam_on_wardec)
 	var/admin_only = TRUE
 
 /obj/item/nuclear_challenge/literally_just_does_the_message/check_allowed(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(admin_only && !check_rights_for(user.client, R_SPAWN|R_FUN|R_DEBUG))
 		to_chat(user, span_hypnophrase("You shouldn't have this!"))
 		return FALSE
@@ -183,6 +195,8 @@ GLOBAL_LIST_EMPTY(jam_on_wardec)
 	return TRUE
 
 /obj/item/nuclear_challenge/literally_just_does_the_message/war_was_declared(mob/living/user, memo)
+	procstart = null
+	src.procstart = null
 #ifndef TESTING
 	// Reminder for our friends the admins
 	var/are_you_sure = tgui_alert(user, "Last second reminder that fake war declarations is a horrible idea and yes, \
@@ -201,6 +215,8 @@ GLOBAL_LIST_EMPTY(jam_on_wardec)
 	)
 
 /obj/item/nuclear_challenge/literally_just_does_the_message/distribute_tc()
+	procstart = null
+	src.procstart = null
 	return
 
 #undef CHALLENGE_TELECRYSTALS

@@ -14,14 +14,20 @@
 	display_combos = TRUE
 
 /datum/martial_art/plasma_fist/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tornado_spell = new(src)
 
 /datum/martial_art/plasma_fist/Destroy()
+	procstart = null
+	src.procstart = null
 	tornado_spell = null
 	return ..()
 
 /datum/martial_art/plasma_fist/proc/check_streak(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(findtext(streak,TORNADO_COMBO))
 		if(attacker == defender)//helps using apotheosis
 			return FALSE
@@ -40,6 +46,8 @@
 	return FALSE
 
 /datum/martial_art/plasma_fist/proc/Tornado(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	attacker.say("TORNADO SWEEP!", forced="plasma fist")
 	dance_rotate(attacker, CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(playsound), attacker, 'sound/items/weapons/punch1.ogg', 15, TRUE, -1))
 	tornado_spell.cast(attacker)
@@ -47,6 +55,8 @@
 	return TRUE
 
 /datum/martial_art/plasma_fist/proc/Throwback(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	defender.visible_message(
 		span_danger("[attacker] hits [defender] with Plasma Punch!"),
 		span_userdanger("You're hit with a Plasma Punch by [attacker]!"),
@@ -63,6 +73,8 @@
 	return TRUE
 
 /datum/martial_art/plasma_fist/proc/Plasma(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	var/hasclient = !!defender.client
 
 	attacker.do_attack_animation(defender, ATTACK_EFFECT_PUNCH)
@@ -103,6 +115,8 @@
 	return TRUE
 
 /datum/martial_art/plasma_fist/proc/Apotheosis(mob/living/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	user.say("APOTHEOSIS!!", forced="plasma fist")
 	if (ishuman(user))
 		var/mob/living/carbon/human/human_attacker = user
@@ -131,6 +145,8 @@
 	return TRUE
 
 /datum/martial_art/plasma_fist/proc/Apotheosis_end(mob/living/dying)
+	procstart = null
+	src.procstart = null
 	dying.remove_traits(list(TRAIT_FORCED_STANDING, TRAIT_BOMBIMMUNE), type)
 	if(dying.stat == DEAD)
 		return
@@ -138,6 +154,8 @@
 	dying.death()
 
 /datum/martial_art/plasma_fist/harm_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(defender.check_block(attacker, 10, attacker.name, UNARMED_ATTACK))
 		return MARTIAL_ATTACK_FAIL
 
@@ -145,6 +163,8 @@
 	return check_streak(attacker, defender) ? MARTIAL_ATTACK_SUCCESS : MARTIAL_ATTACK_INVALID
 
 /datum/martial_art/plasma_fist/disarm_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(defender.check_block(attacker, 0, attacker.name, UNARMED_ATTACK))
 		return MARTIAL_ATTACK_FAIL
 	add_to_streak("D", defender)
@@ -156,6 +176,8 @@
 	return MARTIAL_ATTACK_INVALID
 
 /datum/martial_art/plasma_fist/grab_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(defender.check_block(attacker, 0, "[attacker]'s grab", UNARMED_ATTACK))
 		return MARTIAL_ATTACK_FAIL
 
@@ -163,6 +185,8 @@
 	return check_streak(attacker, defender) ? MARTIAL_ATTACK_SUCCESS : MARTIAL_ATTACK_INVALID
 
 /datum/martial_art/plasma_fist/get_style_help()
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	var/datum/martial_art/plasma_fist/martial = GET_ACTIVE_MARTIAL_ART(holder)
@@ -184,6 +208,8 @@
 	var/atom/movable/beam_target
 
 /obj/effect/temp_visual/plasma_soul/Initialize(mapload, _beam_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	beam_target = _beam_target
 	if(beam_target)
@@ -192,6 +218,8 @@
 	animate(src, alpha = 0, transform = matrix()*0.5, time = 3 SECONDS)
 
 /obj/effect/temp_visual/plasma_soul/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!beam_target)
 		visible_message(span_notice("[src] fades away..."))
 	. = ..()

@@ -58,6 +58,8 @@
 	var/heal_continuous_sound = null
 
 /obj/item/stack/medical/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isliving(interacting_with))
 		return NONE
 	if(!begin_heal_loop(interacting_with, user, auto_change_zone = TRUE))
@@ -65,6 +67,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/stack/medical/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isliving(interacting_with))
 		return NONE
 	if(!begin_heal_loop(interacting_with, user, auto_change_zone = FALSE))
@@ -72,10 +76,14 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/stack/medical/Initialize(mapload, new_amount, merge, list/mat_override, mat_amt)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_item_context()
 
 /obj/item/stack/medical/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(target))
 		return NONE
 	if(iscarbon(target))
@@ -86,6 +94,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/stack/medical/apply_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(heal_brute)
 		heal_brute = modify_fantasy_variable("heal_brute", heal_brute, bonus)
@@ -99,6 +109,8 @@
 		flesh_regeneration = modify_fantasy_variable("flesh_regeneration", flesh_regeneration, bonus/10)
 
 /obj/item/stack/medical/remove_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	heal_brute = reset_fantasy_variable("heal_brute", heal_brute)
 	heal_burn = reset_fantasy_variable("heal_burn", heal_burn)
 	stop_bleeding = reset_fantasy_variable("stop_bleeding", stop_bleeding)
@@ -109,6 +121,8 @@
 /// Used to begin the recursive healing loop.
 /// Returns TRUE if we entered the loop, FALSE if we didn't
 /obj/item/stack/medical/proc/begin_heal_loop(mob/living/patient, mob/living/user, auto_change_zone = TRUE)
+	procstart = null
+	src.procstart = null
 	if(DOING_INTERACTION_WITH_TARGET(user, patient))
 		return FALSE
 	var/heal_zone = check_zone(user.zone_selected)
@@ -137,6 +151,8 @@
  * If continuous is set to true, it will play the continuous sound for healing
  */
 /obj/item/stack/medical/proc/try_heal(mob/living/patient, mob/living/user, healed_zone, silent = FALSE, auto_change_zone = TRUE, continuous = FALSE)
+	procstart = null
+	src.procstart = null
 	if(heal_begin_sound && !continuous)
 		playsound(patient, heal_begin_sound, 75, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE)
 	if(patient == user)
@@ -227,6 +243,8 @@
 		playsound(patient, heal_end_sound, 75, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE)
 
 /obj/item/stack/medical/proc/try_heal_auto_change_zone(mob/living/carbon/patient, mob/living/user, preferred_target, last_zone)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/list/other_affected_limbs = list()
@@ -245,6 +263,8 @@
 	try_heal(patient, user, next_picked, silent = TRUE, auto_change_zone = TRUE, continuous = TRUE)
 
 /obj/item/stack/medical/proc/try_heal_manual_target(mob/living/carbon/patient, mob/living/user)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	patient.balloon_alert(user, "assessing injury...")
@@ -258,11 +278,15 @@
 
 /// Checks if the passed patient can be healed by the passed user
 /obj/item/stack/medical/proc/can_heal(mob/living/patient, mob/living/user, healed_zone, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	return patient.try_inject(user, healed_zone, injection_flags = silent ? NONE : INJECT_TRY_SHOW_ERROR_MESSAGE)
 
 /// Checks a bunch of stuff to see if we can heal the patient, including can_heal
 /// Gives a feedback if we can't ultimatly heal the patient (unless silent is TRUE)
 /obj/item/stack/medical/proc/try_heal_checks(mob/living/patient, mob/living/user, healed_zone, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!(healed_zone in patient.get_all_limbs()))
 		healed_zone = BODY_ZONE_CHEST
 
@@ -326,6 +350,8 @@
 /// Since we have extra details for dealing with bodyparts, we get our own fancy proc.
 /// Still returns TRUE on success and FALSE on fail
 /obj/item/stack/medical/proc/heal_carbon(mob/living/carbon/patient, mob/living/user, healed_zone)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/affecting = patient.get_bodypart(healed_zone)
 	user.visible_message(
 		span_green("[user] applies [src] on [patient]'s [affecting.plaintext_zone]."),
@@ -352,6 +378,8 @@
 
 /// Healing a simple mob, just an adjust_brute_loss() call
 /obj/item/stack/medical/proc/heal_simplemob(mob/living/patient, mob/living/user)
+	procstart = null
+	src.procstart = null
 	patient.adjust_brute_loss(-1 * (heal_brute * patient.maxHealth / 100))
 	user.visible_message(
 		span_green("[user] applies [src] on [patient]."),
@@ -362,6 +390,8 @@
 
 ///Override this proc for special post heal effects. Only called for carbon patients.
 /obj/item/stack/medical/proc/post_heal_effects(amount_healed, mob/living/carbon/healed_mob, mob/living/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/stack/medical/bruise_pack
@@ -378,9 +408,13 @@
 	apply_verb = "applying to"
 
 /obj/item/stack/medical/bruise_pack/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/medicine/c2/libital = 10)
 
 /obj/item/stack/medical/bruise_pack/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is bludgeoning [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 
@@ -393,6 +427,8 @@
 	works_on_dead = TRUE
 
 /obj/item/stack/medical/wrap/Initialize(mapload, new_amount, merge, list/mat_override, mat_amt)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/limb_applicable, \
@@ -405,10 +441,14 @@
 	RegisterSignals(src, list(COMSIG_ITEM_APPLIED_TO_LIMB, COMSIG_ITEM_UNAPPLIED_FROM_LIMB), PROC_REF(update_wounds))
 
 /obj/item/stack/medical/wrap/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return NONE // uses component
 
 /// Callback for limb applicability component
 /obj/item/stack/medical/wrap/proc/can_gauze_limb(mob/user, mob/living/patient, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	var/can_gauze = FALSE
 	for(var/datum/wound/wound as anything in limb.wounds)
 		if(!(wound.wound_flags & ACCEPTS_GAUZE))
@@ -436,6 +476,8 @@
 
 /// Callback for limb applicability component
 /obj/item/stack/medical/wrap/proc/do_gauze_limb(mob/user, mob/living/patient, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 
 	var/scanned_wound = FALSE
 	for(var/datum/wound/wound as anything in limb.wounds)
@@ -477,6 +519,8 @@
 
 /// Callback for limb applicability component
 /obj/item/stack/medical/wrap/proc/on_gauze_limb(mob/user, mob/living/patient, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	patient.balloon_alert(user, "wrapped [limb.plaintext_zone]")
 	user.visible_message(
 		span_green("[user] applies [src] to [patient]'s [limb.plaintext_zone]."),
@@ -493,6 +537,8 @@
 
 /// Used via signal to update wounds
 /obj/item/stack/medical/wrap/proc/update_wounds(datum/source, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/datum/wound/gauzed as anything in limb.wounds)
 		gauzed.update_inefficiencies()
@@ -519,9 +565,13 @@
 	pickup_sound = SFX_CLOTH_PICKUP
 
 /obj/item/stack/medical/wrap/gauze/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/cellulose = 2)
 
 /obj/item/stack/medical/wrap/gauze/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(held_item))
 		return
@@ -533,6 +583,8 @@
 	amount = 12
 
 /obj/item/stack/medical/wrap/gauze/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(tool.tool_behaviour == TOOL_WIRECUTTER || tool.get_sharpness())
 		if(get_amount() < 2)
 			balloon_alert(user, "not enough gauze!")
@@ -552,6 +604,8 @@
 
 
 /obj/item/stack/medical/wrap/gauze/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins tightening [src] around [user.p_their()] neck! It looks like [user.p_they()] forgot how to use medical supplies!"))
 	return OXYLOSS
 
@@ -600,6 +654,8 @@
 	heal_end_sound = SFX_SUTURE_END
 
 /obj/item/stack/medical/suture/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/medicine/spaceacillin = 2)
 
 /obj/item/stack/medical/suture/medicated
@@ -611,6 +667,8 @@
 	merge_type = /obj/item/stack/medical/suture/medicated
 
 /obj/item/stack/medical/suture/medicated/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/medicine/polypyr = 1)
 
 /obj/item/stack/medical/ointment
@@ -632,9 +690,13 @@
 	apply_verb = "applying to"
 
 /obj/item/stack/medical/ointment/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/medicine/c2/lenturi = 10)
 
 /obj/item/stack/medical/ointment/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is squeezing [src] into [user.p_their()] mouth! [capitalize(user.p_do())]n't [user.p_they()] know that stuff is toxic?"))
 	return TOXLOSS
 
@@ -663,20 +725,28 @@
 	var/is_open = TRUE
 
 /obj/item/stack/medical/mesh/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(amount == max_amount)  //only seal full mesh packs
 		is_open = FALSE
 		update_appearance()
 
 /obj/item/stack/medical/mesh/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/medicine/spaceacillin = 2)
 
 /obj/item/stack/medical/mesh/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(is_open)
 		return ..()
 	icon_state = "regen_mesh_closed"
 
 /obj/item/stack/medical/mesh/try_heal_checks(mob/living/patient, mob/living/user, healed_zone, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!is_open)
 		if(!silent)
 			balloon_alert(user, "open it first!")
@@ -684,18 +754,24 @@
 	return ..()
 
 /obj/item/stack/medical/mesh/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!is_open)
 		balloon_alert(user, "open it first!")
 		return CLICK_ACTION_BLOCKING
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/stack/medical/mesh/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!is_open && user.get_inactive_held_item() == src)
 		balloon_alert(user, "open it first!")
 		return
 	return ..()
 
 /obj/item/stack/medical/mesh/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!is_open)
 		is_open = TRUE
 		balloon_alert(user, "opened")
@@ -715,9 +791,13 @@
 	merge_type = /obj/item/stack/medical/mesh/advanced
 
 /obj/item/stack/medical/mesh/advanced/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/aloejuice = 1)
 
 /obj/item/stack/medical/mesh/advanced/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(is_open)
 		return ..()
 	icon_state = "aloe_mesh_closed"
@@ -740,10 +820,14 @@
 	apply_verb = "applying to"
 
 /obj/item/stack/medical/aloe/Initialize(mapload, new_amount, merge, list/mat_override, mat_amt)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/bakeable, /obj/item/food/badrecipe, rand(10 SECONDS, 15 SECONDS), FALSE)
 
 /obj/item/stack/medical/aloe/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/aloejuice = 1)
 
 /obj/item/stack/medical/aloe/fresh
@@ -765,16 +849,24 @@
 	apply_verb = "applying to"
 
 /obj/item/stack/medical/bone_gel/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/bone_dust = 10, /datum/reagent/carbon = 10)
 
 /obj/item/stack/medical/bone_gel/get_surgery_tool_overlay(tray_extended)
+	procstart = null
+	src.procstart = null
 	return "gel" + (tray_extended ? "" : "_out")
 
 /obj/item/stack/medical/bone_gel/attack(mob/living/patient, mob/user)
+	procstart = null
+	src.procstart = null
 	patient.balloon_alert(user, "no fractures!")
 	return
 
 /obj/item/stack/medical/bone_gel/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user))
 		return
 	var/mob/living/carbon/patient = user
@@ -822,6 +914,8 @@
 	works_on_dead = TRUE
 
 /obj/item/stack/medical/poultice/post_heal_effects(amount_healed, mob/living/carbon/healed_mob, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(src, 'sound/misc/soggy.ogg', 30, TRUE)
 	healed_mob.adjust_oxy_loss(amount_healed)
@@ -844,6 +938,8 @@
 	pickup_sound = SFX_CLOTH_PICKUP
 
 /obj/item/stack/medical/bandage/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/medicine/c2/libital = 2)
 
 /obj/item/stack/medical/bandage/makeshift

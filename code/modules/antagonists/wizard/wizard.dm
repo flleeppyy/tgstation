@@ -39,6 +39,8 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	var/datum/team/wizard/wiz_team
 
 /datum/antagonist/wizard_minion/create_team(datum/team/wizard/new_team)
+	procstart = null
+	src.procstart = null
 	if(!new_team)
 		return
 	if(!istype(new_team))
@@ -46,15 +48,21 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	wiz_team = new_team
 
 /datum/antagonist/wizard_minion/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/current_mob = mob_override || owner.current
 	current_mob.add_faction(ROLE_WIZARD)
 	add_team_hud(current_mob)
 
 /datum/antagonist/wizard_minion/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/last_mob = mob_override || owner.current
 	last_mob.remove_faction(ROLE_WIZARD)
 
 /datum/antagonist/wizard_minion/on_gain()
+	procstart = null
+	src.procstart = null
 	create_objectives()
 	. = ..()
 	owner.add_traits(list(TRAIT_MAGICALLY_GIFTED, TRAIT_SEE_BLESSED_TILES), REF(src))
@@ -62,10 +70,14 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 		blessed_hud.check_hud(owner.current)
 
 /datum/antagonist/wizard_minion/on_removal()
+	procstart = null
+	src.procstart = null
 	owner.remove_traits(list(TRAIT_MAGICALLY_GIFTED, TRAIT_SEE_BLESSED_TILES), REF(src))
 	return ..()
 
 /datum/antagonist/wizard_minion/proc/create_objectives()
+	procstart = null
+	src.procstart = null
 	if(!wiz_team)
 		return
 	var/datum/objective/custom/custom_objective = new()
@@ -75,9 +87,13 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	objectives += custom_objective
 
 /datum/antagonist/wizard_minion/get_team()
+	procstart = null
+	src.procstart = null
 	return wiz_team
 
 /datum/antagonist/wizard/on_gain()
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		CRASH("Wizard datum with no owner.")
 	assign_ritual()
@@ -96,10 +112,14 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 		blessed_hud.check_hud(owner.current)
 
 /datum/antagonist/wizard/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(ritual)
 	return ..()
 
 /datum/antagonist/wizard/create_team(datum/team/wizard/new_team)
+	procstart = null
+	src.procstart = null
 	if(!new_team)
 		return
 	if(!istype(new_team))
@@ -107,6 +127,8 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	wiz_team = new_team
 
 /datum/antagonist/wizard/get_team()
+	procstart = null
+	src.procstart = null
 	return wiz_team
 
 /datum/team/wizard
@@ -114,16 +136,22 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	var/datum/antagonist/wizard/master_wizard
 
 /datum/antagonist/wizard/proc/create_wiz_team()
+	procstart = null
+	src.procstart = null
 	wiz_team = new(owner)
 	wiz_team.name = "[owner.current.real_name] team"
 	wiz_team.master_wizard = src
 
 /// Initialises the grand ritual action for this mob
 /datum/antagonist/wizard/proc/assign_ritual()
+	procstart = null
+	src.procstart = null
 	ritual = new(src)
 	RegisterSignal(ritual, COMSIG_GRAND_RITUAL_FINAL_COMPLETE, PROC_REF(on_ritual_complete))
 
 /datum/antagonist/wizard/proc/send_to_lair()
+	procstart = null
+	src.procstart = null
 	// And now we ensure that its loaded
 	SSmapping.lazy_load_template(LAZY_TEMPLATE_KEY_WIZARDDEN)
 
@@ -135,6 +163,8 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	owner.current.forceMove(pick(GLOB.wizardstart))
 
 /datum/antagonist/wizard/proc/create_objectives()
+	procstart = null
+	src.procstart = null
 	switch(rand(1,100))
 		if(1 to 30)
 			var/datum/objective/assassinate/kill_objective = new
@@ -181,6 +211,8 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 				objectives += hijack_objective
 
 /datum/antagonist/wizard/on_removal()
+	procstart = null
+	src.procstart = null
 	// Currently removes all spells regardless of innate or not. Could be improved.
 	for(var/datum/action/cooldown/spell/spell in owner.current.actions)
 		if(spell.target == owner)
@@ -191,6 +223,8 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	return ..()
 
 /datum/antagonist/wizard/proc/equip_wizard()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = owner.current
 	if(!istype(H))
 		return
@@ -203,12 +237,16 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	H.equipOutfit(outfit_type)
 
 /datum/antagonist/wizard/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["objectives"] = get_objectives()
 	data["can_change_objective"] = can_assign_self_objectives
 	return data
 
 /datum/antagonist/wizard/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/completed = ritual ? ritual.times_completed : 0
 	data["ritual"] = list(\
@@ -218,6 +256,8 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	return data
 
 /datum/antagonist/wizard/proc/rename_wizard()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	var/wizard_name_first = pick(GLOB.wizard_first)
@@ -232,12 +272,16 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	wiz_mob.fully_replace_character_name(wiz_mob.real_name, newname)
 
 /datum/antagonist/wizard/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/wizard_mob = mob_override || owner.current
 	wizard_mob.add_faction(ROLE_WIZARD)
 	add_team_hud(wizard_mob)
 	ritual?.Grant(owner.current)
 
 /datum/antagonist/wizard/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/wizard_mob = mob_override || owner.current
 	wizard_mob.remove_faction(ROLE_WIZARD)
 	if (ritual)
@@ -246,6 +290,8 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 
 /// If we receive this signal, you're done with objectives
 /datum/antagonist/wizard/proc/on_ritual_complete()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/datum/objective/custom/successful_ritual = new()
 	successful_ritual.owner = owner
@@ -255,10 +301,14 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	UnregisterSignal(ritual, COMSIG_GRAND_RITUAL_FINAL_COMPLETE)
 
 /datum/antagonist/wizard/get_admin_commands()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["Send to Lair"] = CALLBACK(src, PROC_REF(admin_send_to_lair))
 
 /datum/antagonist/wizard/proc/admin_send_to_lair(mob/admin)
+	procstart = null
+	src.procstart = null
 	owner.current.forceMove(pick(GLOB.wizardstart))
 
 /datum/antagonist/wizard/apprentice
@@ -272,13 +322,19 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	wiz_age = APPRENTICE_AGE_MIN
 
 /datum/antagonist/wizard/apprentice/greet()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, "<B>You are [master.current.real_name]'s apprentice! You are bound by magic contract to follow [master.p_their()] orders and help [master.p_them()] in accomplishing [master.p_their()] goals.")
 	owner.announce_objectives()
 
 /datum/antagonist/wizard/apprentice/assign_ritual()
+	procstart = null
+	src.procstart = null
 	return // Haven't learned how to do it yet
 
 /datum/antagonist/wizard/apprentice/equip_wizard()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(owner.current))
 		return
@@ -334,6 +390,8 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 		owner.current.put_in_hands(new_item)
 
 /datum/antagonist/wizard/apprentice/create_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/protect/new_objective = new /datum/objective/protect
 	new_objective.owner = owner
 	new_objective.target = master
@@ -348,11 +406,15 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	move_to_lair = FALSE
 
 /datum/antagonist/wizard/apprentice/imposter/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(owner, "<B>Trick and confuse the crew to misdirect malice from your handsome original!</B>")
 	owner.announce_objectives()
 
 /datum/antagonist/wizard/apprentice/imposter/equip_wizard()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/master_mob = master.current
 	var/mob/living/carbon/human/H = owner.current
 	if(!istype(master_mob) || !istype(H))
@@ -386,9 +448,13 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	can_assign_self_objectives = FALSE
 
 /datum/antagonist/wizard/academy/assign_ritual()
+	procstart = null
+	src.procstart = null
 	return // Has other duties to be getting on with
 
 /datum/antagonist/wizard/academy/equip_wizard()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(owner.current))
 		return
@@ -405,12 +471,16 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	exiled.implant(living_current)
 
 /datum/antagonist/wizard/academy/create_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/new_objective = new("Protect Wizard Academy from the intruders")
 	new_objective.owner = owner
 	objectives += new_objective
 
 //Solo wizard report
 /datum/antagonist/wizard/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 
 	parts += printplayer(owner)
@@ -447,6 +517,8 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 
 //Wizard with apprentices report
 /datum/team/wizard/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 
 	parts += span_header("Wizards/witches of [master_wizard.owner.name] team were:")
@@ -458,6 +530,8 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	return "<div class='panel redborder'>[parts.Join("<br>")]</div>"
 
 /datum/antagonist/wizard/on_respawn(mob/new_character)
+	procstart = null
+	src.procstart = null
 	new_character.forceMove(pick(GLOB.wizardstart))
 	equip_wizard()
 	return TRUE

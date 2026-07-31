@@ -22,10 +22,14 @@
 	var/efficiency_coeff = 1
 
 /obj/machinery/component_printer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	materials = new (src, mapload)
 
 /obj/machinery/component_printer/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!CONFIG_GET(flag/no_default_techweb_link) && !techweb)
 		CONNECT_TO_RND_SERVER_ROUNDSTART(techweb, src)
@@ -33,10 +37,14 @@
 		on_connected_techweb()
 
 /obj/machinery/component_printer/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(materials)
 	return ..()
 
 /obj/machinery/component_printer/proc/connect_techweb(datum/techweb/new_techweb)
+	procstart = null
+	src.procstart = null
 	if(techweb)
 		UnregisterSignal(techweb, list(COMSIG_TECHWEB_ADD_DESIGN, COMSIG_TECHWEB_REMOVE_DESIGN))
 	techweb = new_techweb
@@ -44,6 +52,8 @@
 		on_connected_techweb()
 
 /obj/machinery/component_printer/proc/on_connected_techweb()
+	procstart = null
+	src.procstart = null
 	for (var/researched_design_id in techweb.researched_designs)
 		var/datum/design/design = SSresearch.techweb_design_by_id(researched_design_id)
 		if (!(design.build_type & COMPONENT_PRINTER) || !ispath(design.build_path, /obj/item/circuit_component))
@@ -55,23 +65,31 @@
 	RegisterSignal(techweb, COMSIG_TECHWEB_REMOVE_DESIGN, PROC_REF(on_removed))
 
 /obj/machinery/component_printer/multitool_act(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(tool.buffer) && istype(tool.buffer, /datum/techweb))
 		connect_techweb(tool.buffer)
 	return TRUE
 
 /obj/machinery/component_printer/proc/on_research(datum/source, datum/design/added_design, custom)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!(added_design.build_type & COMPONENT_PRINTER) || !ispath(added_design.build_path, /obj/item/circuit_component))
 		return
 	current_unlocked_designs[added_design.build_path] = added_design.id
 
 /obj/machinery/component_printer/proc/on_removed(datum/source, datum/design/added_design, custom)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!(added_design.build_type & COMPONENT_PRINTER) || !ispath(added_design.build_path, /obj/item/circuit_component))
 		return
 	current_unlocked_designs -= added_design.build_path
 
 /obj/machinery/component_printer/base_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	//to allow quick recycling of circuits
 	if(istype(tool, /obj/item/circuit_component))
 		var/amount_inserted = materials.insert_item(tool, user_data = ID_DATA(user))
@@ -86,18 +104,24 @@
 	return ..()
 
 /obj/machinery/component_printer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ComponentPrinter", name)
 		ui.open()
 
 /obj/machinery/component_printer/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/sheetmaterials),
 		get_asset_datum(/datum/asset/spritesheet_batched/research_designs)
 	)
 
 /obj/machinery/component_printer/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(materials)
@@ -125,6 +149,8 @@
  * user_data - data in the form rendered by ID_DATA(user), for print logging, see the proc on SSid_access
 */
 /obj/machinery/component_printer/proc/print_component(typepath, alist/user_data)
+	procstart = null
+	src.procstart = null
 	var/design_id = current_unlocked_designs[typepath]
 
 	var/datum/design/design = SSresearch.techweb_design_by_id(design_id)
@@ -141,6 +167,8 @@
 	return design.create_result(drop_location())
 
 /obj/machinery/component_printer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -178,11 +206,15 @@
 	return TRUE
 
 /obj/machinery/component_printer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["materials"] = materials.mat_container.ui_data()
 	return data
 
 /obj/machinery/component_printer/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = materials.mat_container.ui_static_data()
 
 	var/list/designs = list()
@@ -215,6 +247,8 @@
 	return data
 
 /obj/machinery/component_printer/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (user.combat_mode)
 		return NONE
 
@@ -234,16 +268,24 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/component_printer/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/component_printer/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/component_printer/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]-o" : "[base_icon_state]-idle"
 
 /obj/machinery/component_printer/proc/get_material_cost_data(list/materials, efficiency_coeff)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	for (var/datum/material/material_type as anything in materials)
@@ -263,6 +305,8 @@
 	density = TRUE
 
 /obj/machinery/debug_component_printer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	all_circuit_designs = list()
 
@@ -291,18 +335,24 @@
 			)
 
 /obj/machinery/debug_component_printer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ComponentPrinter", name)
 		ui.open()
 
 /obj/machinery/debug_component_printer/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/sheetmaterials),
 		get_asset_datum(/datum/asset/spritesheet_batched/research_designs)
 	)
 
 /obj/machinery/debug_component_printer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -325,6 +375,8 @@
 	return TRUE
 
 /obj/machinery/debug_component_printer/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["debug"] = TRUE
@@ -354,27 +406,37 @@
 	var/efficiency_coeff = 1
 
 /obj/machinery/module_duplicator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	materials = new (src, mapload)
 
 /obj/machinery/module_duplicator/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(materials)
 	return ..()
 
 /obj/machinery/module_duplicator/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ComponentPrinter", name)
 		ui.open()
 
 /obj/machinery/module_duplicator/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/sheetmaterials),
 		get_asset_datum(/datum/asset/spritesheet_batched/research_designs)
 	)
 
 /obj/machinery/module_duplicator/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(materials)
@@ -398,6 +460,8 @@
 	update_static_data_for_all_viewers()
 
 /obj/machinery/module_duplicator/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -431,10 +495,14 @@
 	return TRUE
 
 /obj/machinery/module_duplicator/proc/print_module(list/design)
+	procstart = null
+	src.procstart = null
 	flick("module-fab-print", src)
 	addtimer(CALLBACK(src, PROC_REF(finish_module_print), design), 1.6 SECONDS)
 
 /obj/machinery/module_duplicator/proc/finish_module_print(list/design)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/created_atom
 	if(design["integrated_circuit"])
 		var/obj/item/integrated_circuit/circuit = new(drop_location())
@@ -451,6 +519,8 @@
 	created_atom.pixel_y = created_atom.base_pixel_y + rand(-5, 5)
 
 /obj/machinery/module_duplicator/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	if(istype(tool, /obj/item/circuit_component/module))
@@ -501,6 +571,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/module_duplicator/proc/finish_module_scan(mob/user, data)
+	procstart = null
+	src.procstart = null
 	scanned_designs += list(data)
 
 	balloon_alert(user, "module has been saved.")
@@ -509,11 +581,15 @@
 	update_static_data_for_all_viewers()
 
 /obj/machinery/module_duplicator/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["materials"] = materials.mat_container.ui_data()
 	return data
 
 /obj/machinery/module_duplicator/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = materials.mat_container.ui_static_data()
 
 	var/list/designs = list()
@@ -541,11 +617,17 @@
 	return data
 
 /obj/machinery/module_duplicator/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/module_duplicator/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/module_duplicator/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]-o" : "[base_icon_state]-idle"

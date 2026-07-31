@@ -12,18 +12,26 @@
 	VAR_PRIVATE/datum/ai_module/gift
 
 /obj/item/ai_module/upgrade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	gift = new upgrade_type()
 
 /obj/item/ai_module/upgrade/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(gift)
 	return ..()
 
 /obj/item/ai_module/upgrade/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info("Must be inserted into a module rack to function.")
 
 /obj/item/ai_module/upgrade/silicon_linked_to_installed(mob/living/silicon/lawed)
+	procstart = null
+	src.procstart = null
 	if(!isAI(lawed))
 		return
 
@@ -39,6 +47,8 @@
 		gifted_action.Grant(lawed)
 
 /obj/item/ai_module/upgrade/silicon_unlinked_from_installed(mob/living/silicon/lawed)
+	procstart = null
+	src.procstart = null
 	if(!isAI(lawed))
 		return
 	if(gift.upgrade)
@@ -59,22 +69,32 @@
 	icon_state = "secmodschematic"
 
 /obj/item/ai_module/combat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CONTRABAND, INNATE_TRAIT)
 
 /obj/item/ai_module/combat/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_warning("Must be inserted into a module rack to function.")
 
 /obj/item/ai_module/combat/log_install(mob/living/user, obj/machinery/ai_law_rack/rack)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	message_admins("[ADMIN_LOOKUPFLW(user)] has installed [src] into [ADMIN_VERBOSEJMP(rack)] ([rack.log_status()])")
 
 /obj/item/ai_module/combat/log_uninstall(mob/living/user, obj/machinery/ai_law_rack/rack)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	message_admins("[ADMIN_LOOKUPFLW(user)] has removed [src] from [ADMIN_VERBOSEJMP(rack)] ([rack.log_status()])")
 
 /obj/item/ai_module/combat/silicon_linked_to_installed(mob/living/silicon/lawed)
+	procstart = null
+	src.procstart = null
 	if(!isAI(lawed))
 		return
 	var/mob/living/silicon/ai/combatai = lawed
@@ -86,6 +106,8 @@
 	combatai.hack_software = TRUE
 
 /obj/item/ai_module/combat/silicon_unlinked_from_installed(mob/living/silicon/lawed)
+	procstart = null
+	src.procstart = null
 	if(!isAI(lawed))
 		return
 	var/mob/living/silicon/ai/combatai = lawed
@@ -115,6 +137,8 @@
 	)
 
 /obj/item/ai_module/upgrade/surveillance/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CONTRABAND, INNATE_TRAIT)
 

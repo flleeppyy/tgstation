@@ -11,6 +11,8 @@
  *
  */
 /proc/rcd_result_with_memory(list/defaults, turf/place, expected_memory)
+	procstart = null
+	src.procstart = null
 	if (place?.rcd_memory == expected_memory)
 		return defaults + list(
 			"cost" = defaults["cost"] / RCD_MEMORY_COST_BUFF,
@@ -27,6 +29,8 @@
  * - amt: amount to convert
  */
 /proc/amount2sheet(amt)
+	procstart = null
+	src.procstart = null
 	if(amt >= SHEET_MATERIAL_AMOUNT)
 		return floor(amt / SHEET_MATERIAL_AMOUNT)
 	return 0
@@ -38,6 +42,8 @@
  * - amt: amount to convert
  */
 /proc/sheet2amount(sheet_amt)
+	procstart = null
+	src.procstart = null
 	if(sheet_amt > 0)
 		return sheet_amt * SHEET_MATERIAL_AMOUNT
 	return 0
@@ -52,6 +58,8 @@
  * - [amount]: amount to split by
  */
 /proc/fast_split_stack(obj/item/stack/target, amount)
+	procstart = null
+	src.procstart = null
 	if(!target.use(amount, TRUE, FALSE))
 		return null
 

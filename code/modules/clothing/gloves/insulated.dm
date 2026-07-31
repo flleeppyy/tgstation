@@ -17,15 +17,21 @@
 	equip_sound = 'sound/items/equip/glove_equip.ogg'
 
 /obj/item/clothing/gloves/color/yellow/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, 10)
 
 /obj/item/clothing/gloves/color/yellow/apply_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(bonus >= 10)
 		RemoveElement(/datum/element/adjust_fishing_difficulty)
 
 /obj/item/clothing/gloves/color/yellow/remove_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	if(bonus >= 10)
 		RemoveElement(/datum/element/adjust_fishing_difficulty)
 		AddElement(/datum/element/adjust_fishing_difficulty, 10)
@@ -47,6 +53,8 @@
 	icon_state = "sprayoncan"
 
 /obj/item/toy/sprayoncan/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(interacting_with))
 		return NONE
 	var/mob/living/carbon/C = interacting_with
@@ -73,15 +81,21 @@
 	var/charges_remaining = 10
 
 /obj/item/clothing/gloves/color/yellow/sprayon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	.=..()
 	ADD_TRAIT(src, TRAIT_NODROP, INNATE_TRAIT)
 
 /obj/item/clothing/gloves/color/yellow/sprayon/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(user, COMSIG_LIVING_SHOCK_PREVENTED, PROC_REF(use_charge))
 	RegisterSignal(src, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(use_charge))
 
 /obj/item/clothing/gloves/color/yellow/sprayon/proc/use_charge()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	. = NONE
@@ -109,10 +123,14 @@
 	bio = 25
 
 /obj/item/clothing/gloves/color/fyellow/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	siemens_coefficient = pick(0,0.5,0.5,0.5,0.5,0.75,1.5)
 
 /obj/item/clothing/gloves/color/fyellow/examine_tags(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Pretend we're always insulated
 	if (.["partially insulated"])
@@ -124,6 +142,8 @@
 	name = "worn out insulated gloves"
 
 /obj/item/clothing/gloves/color/fyellow/old/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	siemens_coefficient = pick(0,0,0,0.5,0.5,0.5,0.75)
 
@@ -136,6 +156,8 @@
 	clothing_traits = list(TRAIT_FINGERPRINT_PASSTHROUGH)
 
 /obj/item/clothing/gloves/cut/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -5)
 
@@ -156,5 +178,7 @@
 	resistance_flags = NONE
 
 /obj/item/clothing/gloves/chief_engineer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -6)

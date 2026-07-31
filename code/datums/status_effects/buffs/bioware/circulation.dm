@@ -6,18 +6,26 @@
 /datum/status_effect/bioware/heart/muscled_veins
 
 /datum/status_effect/bioware/heart/muscled_veins/bioware_gained()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(owner, TRAIT_STABLEHEART, TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/bioware/heart/muscled_veins/bioware_lost()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_STABLEHEART, TRAIT_STATUS_EFFECT(id))
 
 /// Threaded veins - Bleed way less
 /datum/status_effect/bioware/heart/threaded_veins
 
 /datum/status_effect/bioware/heart/threaded_veins/bioware_gained()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_owner = owner
 	human_owner.physiology.bleed_mod *= 0.25
 
 /datum/status_effect/bioware/heart/threaded_veins/bioware_lost()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_owner = owner
 	human_owner.physiology.bleed_mod *= 4

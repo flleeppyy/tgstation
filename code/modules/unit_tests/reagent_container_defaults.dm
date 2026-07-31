@@ -2,6 +2,8 @@
 /datum/unit_test/reagent_container_defaults
 
 /datum/unit_test/reagent_container_defaults/Run()
+	procstart = null
+	src.procstart = null
 	for(var/container_type in subtypesof(/obj/item/reagent_containers))
 		var/obj/item/reagent_containers/container = allocate(container_type)
 		if(!container.has_variable_transfer_amount)

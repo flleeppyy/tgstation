@@ -16,26 +16,36 @@
 	var/pulseicon = "plutonium_core_pulse"
 
 /obj/item/nuke_core/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/nuke_core/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/nuke_core/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/nuke_core_container))
 		return NONE
 	astype(tool, /obj/item/nuke_core_container).load(src, user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/nuke_core/process()
+	procstart = null
+	src.procstart = null
 	if(cooldown < world.time - 60)
 		cooldown = world.time
 		flick(pulseicon, src)
 		radiation_pulse(get_turf(src), max_range = 2, threshold = RAD_EXTREME_INSULATION)
 
 /obj/item/nuke_core/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is rubbing [src] against [user.p_them()]self! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return TOXLOSS
 
@@ -51,10 +61,14 @@
 	var/obj/item/nuke_core/core
 
 /obj/item/nuke_core_container/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(core)
 	return ..()
 
 /obj/item/nuke_core_container/proc/load(obj/item/nuke_core/ncore, mob/user)
+	procstart = null
+	src.procstart = null
 	if(core || !istype(ncore))
 		return FALSE
 	ncore.forceMove(src)
@@ -65,6 +79,8 @@
 	return TRUE
 
 /obj/item/nuke_core_container/proc/seal()
+	procstart = null
+	src.procstart = null
 	if(istype(core))
 		STOP_PROCESSING(SSobj, core)
 		icon_state = "core_container_sealed"
@@ -73,6 +89,8 @@
 			to_chat(loc, span_warning("[src] is sealed, [core]'s radiation is contained."))
 
 /obj/item/nuke_core_container/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/nuke_core))
 		return NONE
 
@@ -99,6 +117,8 @@
 	greyscale_colors = null
 
 /obj/item/screwdriver/nuke/get_belt_overlay()
+	procstart = null
+	src.procstart = null
 	return mutable_appearance('icons/obj/clothing/belt_overlays.dmi', "screwdriver_nuke")
 
 /obj/item/paper/guides/antag/nuke_instructions
@@ -162,10 +182,14 @@
 	layer = ABOVE_MOB_LAYER
 
 /obj/item/nuke_core/supermatter_sliver/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_FISHING_ROD_CAST, PROC_REF(on_hook))
 
 /obj/item/nuke_core/supermatter_sliver/proc/on_hook(obj/item/nuke_core/supermatter_sliver/source, obj/item/fishing_rod/rod, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	//hook gets dusted but the rod remains intact
@@ -173,13 +197,19 @@
 
 	return FISHING_ROD_CAST_HANDLED
 
-/obj/item/nuke_core/supermatter_sliver/attack_tk(mob/user) // no TK dusting memes
+/obj/item/nuke_core/supermatter_sliver/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null // no TK dusting memes
 	return
 
-/obj/item/nuke_core/supermatter_sliver/can_be_pulled(user, force) // no drag memes
+/obj/item/nuke_core/supermatter_sliver/can_be_pulled(user, force)
+	procstart = null
+	src.procstart = null // no drag memes
 	return FALSE
 
 /obj/item/nuke_core/supermatter_sliver/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/hemostat/supermatter))
 		var/obj/item/hemostat/supermatter/tongs = tool
 		if (tongs.sliver)
@@ -202,6 +232,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/nuke_core/supermatter_sliver/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(!isliving(hit_atom))
 		return ..()
 	var/mob/living/victim = hit_atom
@@ -225,6 +257,8 @@
 	qdel(src)
 
 /obj/item/nuke_core/supermatter_sliver/pickup(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!isliving(user) || HAS_TRAIT(user, TRAIT_GODMODE)) //try to keep this in sync with supermatter's consume fail conditions
 		return FALSE
@@ -242,10 +276,14 @@
 	var/obj/item/nuke_core/supermatter_sliver/sliver
 
 /obj/item/nuke_core_container/supermatter/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(sliver)
 	return ..()
 
 /obj/item/nuke_core_container/supermatter/load(obj/item/hemostat/supermatter/T, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(T) || !T.sliver)
 		return FALSE
 	T.sliver.forceMove(src)
@@ -258,6 +296,8 @@
 	return TRUE
 
 /obj/item/nuke_core_container/supermatter/seal()
+	procstart = null
+	src.procstart = null
 	if(istype(sliver))
 		STOP_PROCESSING(SSobj, sliver)
 		icon_state = "core_container_sealed"
@@ -276,6 +316,8 @@
 	var/usesLeft
 
 /obj/item/scalpel/supermatter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	usesLeft = rand(2, 4)
 
@@ -292,19 +334,27 @@
 	var/obj/item/nuke_core/supermatter_sliver/sliver
 
 /obj/item/hemostat/supermatter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 
 /obj/item/hemostat/supermatter/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(sliver)
 	return ..()
 
 /obj/item/hemostat/supermatter/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "supermatter_tongs[sliver ? "_loaded" : null]"
 	inhand_icon_state = "supermatter_tongs[sliver ? "_loaded" : null]"
 	return ..()
 
 /obj/item/hemostat/supermatter/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!sliver)
 		return ..()
 	if (istype(interacting_with, /obj/item/nuke_core_container/supermatter))
@@ -316,7 +366,9 @@
 		return ITEM_INTERACT_SUCCESS
 	return ..()
 
-/obj/item/hemostat/supermatter/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum) // no instakill supermatter javelins
+/obj/item/hemostat/supermatter/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null // no instakill supermatter javelins
 	if(sliver)
 		sliver.forceMove(loc)
 		visible_message(span_notice("\The [sliver] falls out of \the [src] as it hits the ground."))
@@ -325,6 +377,8 @@
 	return ..()
 
 /obj/item/hemostat/supermatter/proc/Consume(atom/movable/AM, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(ismob(AM))
 		if(!isliving(AM))
 			return

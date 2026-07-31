@@ -1,5 +1,7 @@
 // Populate the space level list and prepare space transitions
 /datum/controller/subsystem/mapping/proc/InitializeDefaultZLevels()
+	procstart = null
+	src.procstart = null
 	if (z_list)  // subsystem/Recover or badminnery, no need
 		return
 
@@ -22,6 +24,8 @@
 /// Generates a real, honest to god new z level. Will create the actual space, and also generate a datum that holds info about the new plot of land
 /// Accepts the name, traits list, datum type, and if we should manage the turfs we create
 /datum/controller/subsystem/mapping/proc/add_new_zlevel(name, traits = list(), z_type = /datum/space_level, contain_turfs = TRUE)
+	procstart = null
+	src.procstart = null
 	UNTIL(!adding_new_zlevel)
 	adding_new_zlevel = TRUE
 	var/new_z = z_list.len + 1
@@ -38,7 +42,9 @@
 	return S
 
 /// Returns the /datum/space_level associated with the given z level.
-/datum/controller/subsystem/mapping/proc/get_level(z) as /datum/space_level
+/datum/controller/subsystem/mapping/proc/get_level(z)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/space_level)
 	if(ISINRANGE(z, 1, length(z_list)))
 		return z_list[z]

@@ -31,6 +31,8 @@
 	var/adding_failure = 50
 
 /obj/item/resonator/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(mode == RESONATOR_MODE_AUTO)
 		to_chat(user, span_info("You set the resonator's fields to detonate only after you hit one with it."))
 		mode = RESONATOR_MODE_MANUAL
@@ -39,6 +41,8 @@
 		mode = RESONATOR_MODE_AUTO
 
 /obj/item/resonator/proc/create_resonance(target, mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(target)
 	var/obj/effect/temp_visual/resonance/resonance_field = locate(/obj/effect/temp_visual/resonance) in target_turf
 	if(resonance_field)
@@ -50,6 +54,8 @@
 		user.changeNext_move(CLICK_CD_MELEE)
 
 /obj/item/resonator/pre_attack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(check_allowed_items(target, not_inside = TRUE))
 		create_resonance(target, user)
 	return ..()
@@ -78,6 +84,8 @@
 	var/adding_failure
 
 /obj/effect/temp_visual/resonance/Initialize(mapload, set_creator, set_resonator, mode, set_failure = 50)
+	procstart = null
+	src.procstart = null
 	if(mode == RESONATOR_MODE_AUTO)
 		duration = 2 SECONDS
 	if(mode == RESONATOR_MODE_MATRIX)
@@ -102,6 +110,8 @@
 	timerid = addtimer(CALLBACK(src, PROC_REF(burst)), duration, TIMER_STOPPABLE)
 
 /obj/effect/temp_visual/resonance/Destroy()
+	procstart = null
+	src.procstart = null
 	if(parent_resonator)
 		parent_resonator.fields -= src
 		parent_resonator = null
@@ -109,6 +119,8 @@
 	. = ..()
 
 /obj/effect/temp_visual/resonance/proc/check_pressure(turf/proj_turf)
+	procstart = null
+	src.procstart = null
 	if(!proj_turf)
 		proj_turf = get_turf(src)
 	resonance_damage = initial(resonance_damage)
@@ -120,6 +132,8 @@
 	resonance_damage *= damage_multiplier
 
 /obj/effect/temp_visual/resonance/proc/burst()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(rupturing)
 		return
@@ -159,6 +173,8 @@
 	duration = 4
 
 /obj/effect/temp_visual/resonance_crush/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transform = matrix() * 1.5
 	animate(src, transform = matrix() * 0.1, alpha = 50, time = 4)
@@ -173,6 +189,8 @@
 	adding_failure = 30
 
 /obj/item/resonator/upgraded/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(mode == RESONATOR_MODE_AUTO)
 		to_chat(user, span_info("You set the resonator's fields to detonate only after you hit one with it."))
 		mode = RESONATOR_MODE_MANUAL

@@ -7,6 +7,8 @@
 	var/mob/observed_target = null
 
 /datum/bt_node/decorator/target_is_holding_item/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	var/mob/target = owning_controller?.blackboard[key]
 	if(ismob(target))
 		observed_target = target
@@ -15,6 +17,8 @@
 	return TRUE
 
 /datum/bt_node/decorator/target_is_holding_item/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	if(observed_target)
 		UnregisterSignal(observed_target, list(COMSIG_MOB_EQUIPPED_ITEM, COMSIG_MOB_UNEQUIPPED_ITEM))
 		observed_target = null
@@ -22,6 +26,8 @@
 
 /// Fires when the blackboard key changes. Rebinds equip signals to the new target and re-evaluates.
 /datum/bt_node/decorator/target_is_holding_item/proc/on_target_key_changed(atom/source, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/target = owning_controller?.blackboard[key]
 	if(target == observed_target)
@@ -36,6 +42,8 @@
 		on_observed_change(owning_controller, null)
 
 /datum/bt_node/decorator/target_is_holding_item/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/target = controller.blackboard[key]
 	if(QDELETED(target))
 		return FALSE

@@ -1,6 +1,8 @@
 GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 
 /proc/add_item_to_steal(source, type)
+	procstart = null
+	src.procstart = null
 	GLOB.steal_item_handler.objectives_by_path[type] += source
 	return type
 
@@ -10,6 +12,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	var/generated_items = FALSE
 
 /datum/objective_item_handler/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	objectives_by_path = list()
 	for(var/datum/objective_item/item as anything in subtypesof(/datum/objective_item))
@@ -18,6 +22,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	RegisterSignal(SSdcs, COMSIG_GLOB_NEW_ITEM, PROC_REF(new_item_created))
 
 /datum/objective_item_handler/proc/new_item_created(datum/source, obj/item/item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(HAS_TRAIT(item, TRAIT_ITEM_OBJECTIVE_BLOCKED))
 		return
@@ -31,6 +37,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 /// Registers all items that are potentially stealable and removes ones that aren't.
 /// We still need to do things this way because on mapload, items may not be on the station until everything has finished loading.
 /datum/objective_item_handler/proc/save_items()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/obj/item/typepath as anything in objectives_by_path)
 		var/list/obj_by_path_cache = objectives_by_path[typepath].Copy()
@@ -39,6 +47,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	generated_items = TRUE
 
 /datum/objective_item_handler/proc/register_item(atom/object, typepath)
+	procstart = null
+	src.procstart = null
 	var/turf/place = get_turf(object)
 	if(!place || !is_station_level(place.z))
 		objectives_by_path[typepath] -= object
@@ -46,6 +56,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	RegisterSignal(object, COMSIG_QDELETING, PROC_REF(remove_item))
 
 /datum/objective_item_handler/proc/remove_item(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/typepath in objectives_by_path)
 		objectives_by_path[typepath] -= source
@@ -90,10 +102,14 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 
 /// For objectives with special checks (does that intellicard have an ai in it? etcetc)
 /datum/objective_item/proc/check_special_completion(obj/item/thing)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Takes a list of minds and returns true if this is a valid objective to give to a team of these minds
 /datum/objective_item/proc/valid_objective_for(list/potential_thieves, require_owner = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!target_exists() || (require_owner && !owner_exists()))
 		return FALSE
 	for (var/datum/mind/possible_thief as anything in potential_thieves)
@@ -104,10 +120,14 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 
 /// Returns true if the target item exists
 /datum/objective_item/proc/target_exists()
+	procstart = null
+	src.procstart = null
 	return (exists_on_map) ? length(GLOB.steal_item_handler.objectives_by_path[targetitem]) : TRUE
 
 /// Returns true if one of the item's owners exists somewhere
 /datum/objective_item/proc/owner_exists()
+	procstart = null
+	src.procstart = null
 	if (!length(item_owner))
 		return TRUE
 	for (var/mob/living/player as anything in GLOB.player_list)
@@ -116,6 +136,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	return FALSE
 
 /datum/objective_item/steal/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(target_exists())
 		GLOB.possible_items += src
@@ -123,6 +145,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 		qdel(src)
 
 /datum/objective_item/steal/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.possible_items -= src
 	return ..()
 
@@ -141,6 +165,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "A double-barrel shotgun usually found on the bartender's person, or if none are around, in the bar's backroom."
 
 /obj/item/gun/ballistic/shotgun/doublebarrel/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/gun/ballistic/shotgun/doublebarrel)
 
 /datum/objective_item/steal/traitor/fireaxe
@@ -163,6 +189,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 		You can use a multitool to hack open the case, or break it open the hard way."
 
 /obj/item/fireaxe/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/fireaxe)
 
 /datum/objective_item/steal/traitor/big_crowbar
@@ -179,6 +207,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "A specialized tool found in the roboticist's lab. You can use a multitool to hack open the case, or break it open the hard way."
 
 /obj/item/crowbar/mechremoval/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/crowbar/mechremoval)
 
 /datum/objective_item/steal/traitor/nullrod
@@ -192,6 +222,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 		If there is a chaplain aboard, it is likely be to be transformed into some holy weapon - some of which are... difficult to remove from their person."
 
 /obj/item/nullrod/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/nullrod)
 
 /datum/objective_item/steal/traitor/clown_shoes
@@ -204,6 +236,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "The clown's huge, bright shoes. They should always be on the clown's feet."
 
 /obj/item/clothing/shoes/clown_shoes/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/clothing/shoes/clown_shoes)
 
 /datum/objective_item/steal/traitor/mime_mask
@@ -216,6 +250,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "The mime's mask. It should always be on the mime's face."
 
 /obj/item/clothing/mask/gas/mime/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/clothing/mask/gas/mime)
 
 /datum/objective_item/steal/traitor/pka
@@ -229,6 +265,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 		but they can also be found in the Mining Station, Mining office, or Auxiliary Mining Base on the station."
 
 /obj/item/gun/energy/recharge/kinetic_accelerator/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/gun/energy/recharge/kinetic_accelerator)
 
 /datum/objective_item/steal/traitor/chef_moustache
@@ -241,6 +279,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "The chef's fake Italian moustache, either found on their face or in the garbage, depending on who's on duty."
 
 /obj/item/clothing/mask/fakemoustache/italian/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/clothing/mask/fakemoustache/italian)
 
 /datum/objective_item/steal/traitor/det_revolver
@@ -253,6 +293,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 		Usually found on the Detective's person, or if none are around, in the detective's locker, in their office."
 
 /obj/item/gun/ballistic/revolver/c38/detective/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/gun/ballistic/revolver/c38/detective)
 
 /datum/objective_item/steal/traitor/lawyers_badge
@@ -265,6 +307,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "The lawyer's badge. Usually pinned to their chest, but a spare can be obtained from their clothes vendor."
 
 /obj/item/clothing/accessory/lawyers_badge/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/clothing/accessory/lawyers_badge)
 
 /datum/objective_item/steal/traitor/chief_engineer_belt
@@ -276,6 +320,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "The chief engineer's toolbelt, strapped to their waist at all times."
 
 /obj/item/storage/belt/utility/chief/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/storage/belt/utility/chief)
 
 /datum/objective_item/steal/traitor/telebaton
@@ -295,9 +341,13 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "A self-defense weapon standard-issue for all heads of staffs barring the Head of Security. Rarely found off of their person."
 
 /datum/objective_item/steal/traitor/telebaton/check_special_completion(obj/item/thing)
+	procstart = null
+	src.procstart = null
 	return !istype(thing, /obj/item/melee/baton/telescopic/contractor_baton)
 
 /obj/item/melee/baton/telescopic/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/melee/baton/telescopic)
 
 /datum/objective_item/steal/traitor/cargo_budget
@@ -311,6 +361,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 		Normally found in the locker of the Quartermaster, but a particularly keen one may have it on their person or in their wallet."
 
 /obj/item/card/id/departmental_budget/car/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/card/id/departmental_budget/car)
 
 /datum/objective_item/steal/traitor/captain_modsuit
@@ -323,6 +375,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 		If not being worn by the Captain, you would find it in the Suit Storage Unit in their quarters."
 
 /obj/item/mod/control/pre_equipped/magnate/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/mod/control/pre_equipped/magnate)
 
 /datum/objective_item/steal/traitor/captain_spare
@@ -344,6 +398,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 		Otherwise, you'll have to bust open the golden safe on the bridge with acid or explosives to get to it."
 
 /obj/item/card/id/advanced/gold/captains_spare/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/card/id/advanced/gold/captains_spare)
 
 // High risk steal objectives
@@ -359,6 +415,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 		Breaking it open may trigger a security alert, so be careful."
 
 /obj/item/gun/energy/laser/captain/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/gun/energy/laser/captain)
 
 /datum/objective_item/steal/hoslaser
@@ -372,6 +430,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 		Always found on their person, if they are alive, but may otherwise be found in their locker."
 
 /obj/item/gun/energy/e_gun/hos/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/gun/energy/e_gun/hos)
 
 /datum/objective_item/steal/compactshotty
@@ -384,6 +444,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "A miniaturized combat shotgun. May be found in Head of Security's locker or strapped to their back."
 
 /obj/item/gun/ballistic/shotgun/automatic/combat/compact/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/gun/ballistic/shotgun/automatic/combat/compact)
 
 /datum/objective_item/steal/handtele
@@ -397,6 +459,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 		for emergencies, and the other in the Captain's Quarters for personal use."
 
 /obj/item/hand_tele/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/hand_tele)
 
 /datum/objective_item/steal/jetpack
@@ -409,6 +473,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "A special yellow jetpack found in the Suit Storage Unit in the Captain's Quarters."
 
 /obj/item/tank/jetpack/captain/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/tank/jetpack/captain)
 
 /datum/objective_item/steal/magboots
@@ -422,6 +488,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 		May also be found on their person, concealed beneath their MODsuit."
 
 /obj/item/clothing/shoes/magboots/advance/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/clothing/shoes/magboots/advance)
 
 /datum/objective_item/steal/capmedal
@@ -435,6 +503,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 		The Captain usually also has one pinned to their jumpsuit."
 
 /obj/item/clothing/accessory/medal/gold/captain/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/clothing/accessory/medal/gold/captain)
 
 /datum/objective_item/steal/hypo
@@ -448,6 +518,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 		Usually found amongst their medical supplies on their person, in their belt, or otherwise in their locker."
 
 /obj/item/reagent_containers/hypospray/cmo/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/reagent_containers/hypospray/cmo)
 
 /datum/objective_item/steal/nukedisc
@@ -459,9 +531,13 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 		Difficult to miss, but if you can't find it, the Head of Security and Captain both have devices to track its precise location."
 
 /obj/item/disk/nuclear/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/disk/nuclear)
 
 /datum/objective_item/steal/nukedisc/check_special_completion(obj/item/disk/nuclear/N)
+	procstart = null
+	src.procstart = null
 	return !N.fake
 
 /datum/objective_item/steal/ablative
@@ -474,6 +550,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "An ablative trechcoat found on the shelves of the Armory."
 
 /obj/item/clothing/suit/hooded/ablative/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/clothing/suit/hooded/ablative)
 
 /datum/objective_item/steal/reactive
@@ -487,6 +565,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 		You may otherwise find it in their locker."
 
 /obj/item/clothing/suit/armor/reactive/teleport/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/clothing/suit/armor/reactive/teleport)
 
 /datum/objective_item/steal/documents
@@ -501,6 +581,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 		A photocopy may also suffice."
 
 /obj/item/documents/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/documents) //Any set of secret documents. Doesn't have to be NT's
 
 /datum/objective_item/steal/nuke_core
@@ -512,9 +594,13 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "The core of the station's self-destruct device, found in the vault."
 
 /obj/item/nuke_core/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/nuke_core)
 
 /datum/objective_item/steal/nuke_core/New()
+	procstart = null
+	src.procstart = null
 	special_equipment += /obj/item/storage/box/syndie_kit/nuke
 	..()
 
@@ -528,9 +614,13 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "The hard drive of the master research server, found in R&D's server room."
 
 /obj/item/disk/computer/hdd_theft/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/disk/computer/hdd_theft)
 
 /datum/objective_item/steal/hdd_extraction/New()
+	procstart = null
+	src.procstart = null
 	special_equipment += /obj/item/paper/guides/antag/hdd_extraction
 	return ..()
 
@@ -543,10 +633,14 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "A small shard of the station's supermatter crystal engine."
 
 /datum/objective_item/steal/supermatter/New()
+	procstart = null
+	src.procstart = null
 	special_equipment += /obj/item/storage/box/syndie_kit/supermatter
 	..()
 
 /datum/objective_item/steal/supermatter/target_exists()
+	procstart = null
+	src.procstart = null
 	return GLOB.main_supermatter_engine != null
 
 // Doesn't need item_owner = (JOB_AI) because this handily functions as a murder objective if there isn't one
@@ -557,10 +651,14 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "An intellicard (or MODsuit) containing an active, functional AI."
 
 /datum/objective_item/steal/functionalai/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	altitems += typesof(/obj/item/mod/control) // only here so we can account for AIs tucked away in a MODsuit.
 
 /datum/objective_item/steal/functionalai/check_special_completion(obj/item/potential_storage)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/ai/being
 
 	if(istype(potential_storage, /obj/item/aicard))
@@ -590,9 +688,13 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "The blueprints of the station, found in the Chief Engineer's locker, or on their person. A picture may suffice."
 
 /obj/item/blueprints/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/blueprints)
 
 /datum/objective_item/steal/blueprints/check_special_completion(obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/blueprints))
 		return TRUE
 	if(istype(I, /obj/item/photo))
@@ -611,6 +713,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	destruction_method = "Too strong to be destroyed via normal means - needs to be dusted via the supermatter, or burnt in the chapel's crematorium."
 
 /obj/item/blackbox/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/blackbox)
 
 
@@ -626,6 +730,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "A basic pair of insulated gloves, usually worn by Assistants, Engineers, or Cargo Technicians."
 
 /obj/item/clothing/gloves/color/yellow/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/clothing/gloves/color/yellow)
 
 /datum/objective_item/steal/traitor/moth_plush
@@ -637,6 +743,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "A moth plush toy. The Psychologist has one to help console patients."
 
 /obj/item/toy/plush/moth/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/toy/plush/moth)
 
 /datum/objective_item/steal/traitor/lizard_plush
@@ -647,6 +755,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "A lizard plush toy. Often found hidden in maintenance."
 
 /obj/item/toy/plush/lizard_plushie/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/toy/plush/lizard_plushie)
 
 /datum/objective_item/steal/traitor/denied_stamp
@@ -658,6 +768,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "Cargo often has multiple of these red stamps lying around to process paperwork."
 
 /obj/item/stamp/denied/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/stamp/denied)
 
 /datum/objective_item/steal/traitor/granted_stamp
@@ -669,6 +781,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "Cargo often has multiple of these green stamps lying around to process paperwork."
 
 /obj/item/stamp/granted/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/stamp/granted)
 
 /datum/objective_item/steal/traitor/space_law
@@ -681,6 +795,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 		The courtroom and the library are also good places to look."
 
 /obj/item/book/manual/wiki/security_space_law/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/book/manual/wiki/security_space_law)
 
 /datum/objective_item/steal/traitor/rpd
@@ -701,6 +817,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "A tool often used by Engineers, Atmospherics Technicians, and Ordnance Technicians."
 
 /obj/item/pipe_dispenser/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/pipe_dispenser)
 
 /datum/objective_item/steal/traitor/donut_box
@@ -724,6 +842,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "Everyone has a box of donuts - you may most commonly find them on the Bridge, within Security, or in any department's break room."
 
 /obj/item/storage/fancy/donut_box/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/storage/fancy/donut_box)
 
 /datum/objective_item/steal/spy
@@ -738,6 +858,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "The Research Director's pet headcrab, Lamarr, found in a secure cage in their office."
 
 /obj/item/clothing/mask/facehugger/lamarr/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/clothing/mask/facehugger/lamarr)
 
 /datum/objective_item/steal/spy/disabler
@@ -774,9 +896,13 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "A two-mode energy gun, found in the station's Armory, as well as in the hands of some heads of staff for personal defense."
 
 /datum/objective_item/steal/spy/energy_gun/check_special_completion(obj/item/thing)
+	procstart = null
+	src.procstart = null
 	return thing.type == /obj/item/gun/energy/e_gun
 
 /obj/item/gun/energy/e_gun/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	if(type == /obj/item/gun/energy/e_gun)
 		return add_item_to_steal(src, /obj/item/gun/energy/e_gun)
 
@@ -800,9 +926,13 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "A simple laser gun, found in the station's Armory."
 
 /datum/objective_item/steal/spy/laser_gun/check_special_completion(obj/item/thing)
+	procstart = null
+	src.procstart = null
 	return thing.type == /obj/item/gun/energy/laser
 
 /obj/item/gun/energy/laser/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	if(type == /obj/item/gun/energy/laser)
 		return add_item_to_steal(src, /obj/item/gun/energy/laser)
 
@@ -821,6 +951,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "A shotgun found in the station's Armory for riot suppression. Doesn't miss."
 
 /obj/item/gun/ballistic/shotgun/riot/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/gun/ballistic/shotgun/riot)
 
 /datum/objective_item/steal/spy/temp_gun
@@ -838,6 +970,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "Security's TRUSTY temperature gun, found in the station's Armory."
 
 /obj/item/gun/energy/temperature/security/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/gun/energy/temperature/security)
 
 /datum/objective_item/steal/spy/stamp
@@ -857,6 +991,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "A stamp owned by a head of staff, from their offices."
 
 /obj/item/stamp/head/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/stamp/head)
 
 /datum/objective_item/steal/spy/sunglasses
@@ -887,6 +1023,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "An advanced version of the standard Engineering MODsuit commonly worn by the Chief Engineer."
 
 /obj/item/mod/control/pre_equipped/advanced/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/mod/control/pre_equipped/advanced)
 
 /datum/objective_item/steal/spy/rd_modsuit
@@ -898,6 +1036,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "A bulky MODsuit commonly worn by the Research Director to protect themselves from the hazards of their work."
 
 /obj/item/mod/control/pre_equipped/research/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/mod/control/pre_equipped/research)
 
 /datum/objective_item/steal/spy/cmo_modsuit
@@ -909,6 +1049,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "A MODsuit sometimes equipped by the Chief Medical Officer to perform rescue opperations in hazardous environments."
 
 /obj/item/mod/control/pre_equipped/rescue/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/mod/control/pre_equipped/rescue)
 
 /datum/objective_item/steal/spy/cmo_defib
@@ -920,6 +1062,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "The Compact Defibrillator, found on their person, or in their closet."
 
 /obj/item/defibrillator/compact/loaded/cmo/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/defibrillator/compact/loaded/cmo)
 
 /datum/objective_item/steal/spy/hos_modsuit
@@ -931,6 +1075,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "An advanced MODsuit sometimes worn by the Head of Security when needing to detain hostiles invading the station."
 
 /obj/item/mod/control/pre_equipped/safeguard/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/mod/control/pre_equipped/safeguard)
 
 /datum/objective_item/steal/spy/stun_baton
@@ -948,6 +1094,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "Steal any stun baton from Security."
 
 /datum/objective_item/steal/spy/stun_baton/check_special_completion(obj/item/thing)
+	procstart = null
+	src.procstart = null
 	return !istype(thing, /obj/item/melee/baton/security/cattleprod)
 
 /datum/objective_item/steal/spy/det_baton
@@ -966,9 +1114,13 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "The detective's old wooden truncheon, commonly found on their person for self defense."
 
 /datum/objective_item/steal/spy/det_baton/check_special_completion(obj/item/thing)
+	procstart = null
+	src.procstart = null
 	return thing.type == /obj/item/melee/baton
 
 /obj/item/melee/baton/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	if(type == /obj/item/melee/baton)
 		return add_item_to_steal(src, /obj/item/melee/baton)
 
@@ -981,4 +1133,6 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 	steal_hint = "The sheathe for the captain's sabre, found in their closet or strapped to their waist at all times."
 
 /obj/item/storage/belt/sheath/sabre/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return add_item_to_steal(src, /obj/item/storage/belt/sheath/sabre)

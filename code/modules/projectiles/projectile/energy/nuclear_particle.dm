@@ -19,6 +19,8 @@
 	)
 
 /obj/projectile/energy/nuclear_particle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//Random color time!
 	var/our_color = pick(particle_colors)
@@ -26,11 +28,15 @@
 	set_light(4, 3, particle_colors[our_color]) //Range of 4, brightness of 3 - Same range as a flashlight
 
 /obj/projectile/energy/nuclear_particle/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	if (ishuman(target))
 		SSradiation.irradiate(target)
 
 	return ..()
 
-/atom/proc/fire_nuclear_particle(angle = rand(0,360)) //used by fusion to fire random nuclear particles. Fires one particle in a random direction.
+/atom/proc/fire_nuclear_particle(angle = rand(0,360))
+	procstart = null
+	src.procstart = null //used by fusion to fire random nuclear particles. Fires one particle in a random direction.
 	var/obj/projectile/energy/nuclear_particle/P = new /obj/projectile/energy/nuclear_particle(src)
 	P.fire(angle)

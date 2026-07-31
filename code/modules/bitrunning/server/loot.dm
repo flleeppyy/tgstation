@@ -7,6 +7,8 @@
 
 /// Handles calculating rewards based on number of players, parts, threats, etc
 /obj/machinery/quantum_server/proc/calculate_rewards()
+	procstart = null
+	src.procstart = null
 	var/rewards_base = 0.8
 
 	if(domain_randomized)
@@ -24,6 +26,8 @@
 
 /// Calculates total bonus from completing the domain in multiplayer
 /obj/machinery/quantum_server/proc/get_multiplayer_bonus()
+	procstart = null
+	src.procstart = null
 	var/total = 0
 	var/multiplayer = FALSE
 	for(var/datum/weakref/connection_ref as anything in avatar_connection_refs)
@@ -37,6 +41,8 @@
 
 /// Calculates total bonus from completing the domain without taking damage
 /obj/machinery/quantum_server/proc/get_nohit_bouns()
+	procstart = null
+	src.procstart = null
 	if(generated_domain.domain_flags & DOMAIN_NO_NOHIT_BONUS)
 		return 0
 
@@ -49,6 +55,8 @@
 
 /// Handles spawning the (new) crate and deleting the former
 /obj/machinery/quantum_server/proc/generate_loot(obj/cache, obj/machinery/byteforge/chosen_forge)
+	procstart = null
+	src.procstart = null
 	SSblackbox.record_feedback("tally", "bitrunning_domain_primary_completed", 1, generated_domain.key)
 	for(var/mob/person in cache.contents)
 		SEND_SIGNAL(person, COMSIG_BITRUNNER_CACHE_SEVER)
@@ -87,6 +95,8 @@
 
 /// Builds secondary loot if the achievements were met
 /obj/machinery/quantum_server/proc/generate_secondary_loot(obj/curiosity, obj/machinery/byteforge/chosen_forge)
+	procstart = null
+	src.procstart = null
 	SSblackbox.record_feedback("tally", "bitrunning_domain_secondary_completed", 1, generated_domain.key)
 	spark_at_location(curiosity) // abracadabra!
 	qdel(curiosity) // and it's gone!
@@ -99,6 +109,8 @@
 
 /// Returns the markdown text containing domain completion information
 /obj/machinery/quantum_server/proc/get_completion_certificate(time_difference, grade)
+	procstart = null
+	src.procstart = null
 	var/base_points = generated_domain.reward_points
 	if(domain_randomized)
 		base_points -= 1
@@ -151,6 +163,8 @@
 
 /// Checks if the players should get a bepis reward
 /obj/machinery/quantum_server/proc/can_generate_tech_disk(grade)
+	procstart = null
+	src.procstart = null
 	if(generated_domain.disk_reward_spawned)
 		return FALSE
 
@@ -166,6 +180,8 @@
 
 /// Grades the player's run based on several factors
 /obj/machinery/quantum_server/proc/grade_completion(completion_time)
+	procstart = null
+	src.procstart = null
 	var/score = length(spawned_threat_refs) * 5
 	score += generated_domain.reward_points
 

@@ -86,12 +86,16 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
 	)
 
 /proc/setup_mafia_roles_by_name()
+	procstart = null
+	src.procstart = null
 	var/list/rolelist_dict = list()
 	for(var/datum/mafia_role/mafia_role as anything in typesof(/datum/mafia_role))
 		rolelist_dict[initial(mafia_role.name) + " ([uppertext(initial(mafia_role.role_type))])"] = mafia_role
 	return rolelist_dict
 
 /proc/setup_mafia_role_by_alignment()
+	procstart = null
+	src.procstart = null
 	var/list/rolelist_dict = list()
 	for(var/datum/mafia_role/mafia_role as anything in typesof(/datum/mafia_role))
 		if(!rolelist_dict[initial(mafia_role.role_type)])
@@ -100,11 +104,15 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
 	return rolelist_dict
 
 /datum/mafia_controller/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.mafia_game = src
 	map_deleter = new
 
 /datum/mafia_controller/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	end_game()
 	player_role_lookup.Cut()
@@ -127,6 +135,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * * ready_ghosts_and_pdas: list of filtered, sane (so not playing or disconnected) ghost ckeys & PDAs for the game to put into roles.
  */
 /datum/mafia_controller/proc/prepare_game(setup_list, ready_ghosts_and_pdas)
+	procstart = null
+	src.procstart = null
 	var/static/list/possible_maps = subtypesof(/datum/map_template/mafia)
 	var/turf/spawn_area = get_turf(locate(/obj/effect/landmark/mafia_game_area) in GLOB.landmarks_list)
 
@@ -181,6 +191,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * needed to be flooding their chat for people who are there physically, such as Day/Night starting.
  */
 /datum/mafia_controller/proc/send_message(msg, team, log_only = FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/datum/mafia_role/role as anything in all_roles)
 		if(team && !(role.team & team))
 			continue
@@ -199,6 +211,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * * Starts the first day manually (so no timer) with the second proc
  */
 /datum/mafia_controller/proc/start_game()
+	procstart = null
+	src.procstart = null
 	create_bodies()
 	SEND_GLOBAL_SIGNAL(COMSIG_MAFIA_GAME_START, src)
 	start_day(can_vote = FALSE)
@@ -220,6 +234,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * * Otherwise, it's a longer period used to discuss events that happened during the night, leading to the voting phase.
  */
 /datum/mafia_controller/proc/start_day(can_vote = TRUE)
+	procstart = null
+	src.procstart = null
 	turn += 1
 	phase = MAFIA_PHASE_DAY
 	if(check_victory())
@@ -242,6 +258,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * * If no votes are case, the judgement phase is skipped, leading to the night phase.
  */
 /datum/mafia_controller/proc/start_voting_phase()
+	procstart = null
+	src.procstart = null
 	phase = MAFIA_PHASE_VOTING
 	next_phase_timer = addtimer(CALLBACK(src, PROC_REF(check_trial), TRUE), (VOTING_PERIOD_LENGTH / time_speedup), TIMER_STOPPABLE) //be verbose!
 	send_message("<b>Voting started! Vote for who you want to see on trial today.</b>")
@@ -257,6 +275,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * * verbose: boolean, announces whether there were votes or not. after judgement it goes back here with no voting period to end the day.
  */
 /datum/mafia_controller/proc/check_trial(verbose = TRUE)
+	procstart = null
+	src.procstart = null
 	var/datum/mafia_role/loser = get_vote_winner("Day")//, majority_of_town = TRUE)
 	var/loser_votes = get_vote_count(loser, "Day")
 	if(loser)
@@ -291,6 +311,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * * If the accused is killed, their true role is revealed to the rest of the players.
  */
 /datum/mafia_controller/proc/lynch()
+	procstart = null
+	src.procstart = null
 	for(var/datum/mafia_role/role as anything in judgement_abstain_votes)
 		send_message(span_comradio("[role.body.real_name] abstained."))
 
@@ -323,6 +345,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * * role: mafia role that is getting sent back to the game.
  */
 /datum/mafia_controller/proc/send_home(datum/mafia_role/role)
+	procstart = null
+	src.procstart = null
 	role.body.forceMove(get_turf(role.assigned_landmark))
 
 /**
@@ -336,6 +360,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * * returns TRUE if someone won the game, halting other procs from continuing in the case of a victory
  */
 /datum/mafia_controller/proc/check_victory()
+	procstart = null
+	src.procstart = null
 	var/list/datum/mafia_role/living_town = list()
 	var/list/datum/mafia_role/living_mafia = list()
 	var/list/datum/mafia_role/living_neutrals = list()
@@ -401,6 +427,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * * role: mafia_role datum to reward.
  */
 /datum/mafia_controller/proc/award_role(award, datum/mafia_role/rewarded)
+	procstart = null
+	src.procstart = null
 	rewarded.body?.client?.give_award(award, rewarded.body)
 	if(!rewarded.player_pda)
 		return
@@ -419,6 +447,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * * message: string, if non-null it sends it to all players. used to announce team victories while solos are handled in check victory
  */
 /datum/mafia_controller/proc/start_the_end(message)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_MAFIA_GAME_END)
 	for(var/datum/mafia_role/roles as anything in all_roles)
 		if(message)
@@ -433,6 +463,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * Cleans up the game, resetting variables back to the beginning and removing the map with the generator.
  */
 /datum/mafia_controller/proc/end_game()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(all_roles)
 	living_roles.Cut()
 	QDEL_LIST(landmarks)
@@ -443,6 +475,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * After the voting and judgement phases, the game goes to night shutting the windows and beginning night with a proc.
  */
 /datum/mafia_controller/proc/lockdown()
+	procstart = null
+	src.procstart = null
 	toggle_night_curtains(close=TRUE)
 	start_night()
 
@@ -452,6 +486,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * * close: boolean, the state you want the curtains in.
  */
 /datum/mafia_controller/proc/toggle_night_curtains(close)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/door/poddoor/D as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/door/poddoor))
 		if(D.id != "mafia") //so as to not trigger shutters on station, lol
 			continue
@@ -468,6 +504,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * * Powers that are picked during the day announce themselves right now
  */
 /datum/mafia_controller/proc/start_night()
+	procstart = null
+	src.procstart = null
 	phase = MAFIA_PHASE_NIGHT
 	send_message("<b>Night [turn] started! Lockdown will end in 40 seconds.</b>")
 	SEND_SIGNAL(src, COMSIG_MAFIA_SUNDOWN)
@@ -485,6 +523,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * * Finally opens the curtains and calls the start of day phase, completing the cycle until check victory returns TRUE
  */
 /datum/mafia_controller/proc/resolve_night()
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_MAFIA_NIGHT_PRE_ACTION_PHASE)
 	SEND_SIGNAL(src, COMSIG_MAFIA_NIGHT_ACTION_PHASE)
 	SEND_SIGNAL(src, COMSIG_MAFIA_NIGHT_KILL_PHASE)
@@ -503,6 +543,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * * teams: see mafia team defines for what to put in, makes the messages only send to a specific team (so mafia night votes only sending messages to mafia at night)
  */
 /datum/mafia_controller/proc/vote_for(datum/mafia_role/voter, datum/mafia_role/target, vote_type, teams)
+	procstart = null
+	src.procstart = null
 	if(!votes[vote_type])
 		votes[vote_type] = list()
 	var/old_vote = votes[vote_type][voter]
@@ -532,6 +574,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * Clears out the votes of a certain type (day votes, mafia kill votes) while leaving others untouched
  */
 /datum/mafia_controller/proc/reset_votes(vote_type)
+	procstart = null
+	src.procstart = null
 	var/list/bodies_to_update = list()
 	for(var/datum/mafia_role/voter as anything in votes[vote_type])
 		voter.body.maptext_y = initial(voter.body.maptext_y)
@@ -551,6 +595,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * * vote_type: the vote type (getting how many day votes were for the role, or mafia night votes for the role)
  */
 /datum/mafia_controller/proc/get_vote_count(role,vote_type)
+	procstart = null
+	src.procstart = null
 	var/total_votes = 0
 	for(var/datum/mafia_role/votee as anything in votes[vote_type])
 		if(votes[vote_type][votee] == role)
@@ -564,6 +610,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * * vote_type: the vote type (getting the role that got the most day votes, or the role that got the most mafia votes)
  */
 /datum/mafia_controller/proc/get_vote_winner(vote_type)
+	procstart = null
+	src.procstart = null
 	var/list/tally = list()
 	for(var/votee in votes[vote_type])
 		var/datum/mafia_role/vote_role = votee
@@ -580,6 +628,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * * vote_type: vote type (getting a random day voter, or mafia night voter)
  */
 /datum/mafia_controller/proc/get_random_voter(vote_type)
+	procstart = null
+	src.procstart = null
 	if(length(votes[vote_type]))
 		return pick(votes[vote_type])
 
@@ -590,6 +640,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * * overlay_list: signal var passing the overlay list of the mob
  */
 /datum/mafia_controller/proc/display_votes(atom/source, list/overlay_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(phase != MAFIA_PHASE_VOTING)
@@ -608,6 +660,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * * sends the greeting text (goals, role name, etc)
  */
 /datum/mafia_controller/proc/create_bodies()
+	procstart = null
+	src.procstart = null
 	var/outfit_to_distribute
 	if(current_map.custom_outfit) //If our map has a cool custom outfit override, we use that.
 		outfit_to_distribute = current_map.custom_outfit
@@ -638,6 +692,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
 
 ///From a 'user' (Either a mob or ModPC) or TGUI UI, will try to find the Mafia role from 'player_role_lookup'.
 /datum/mafia_controller/proc/get_role_player(atom/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	var/obj/item/modular_computer/modpc = ui?.src_object || user
 	if(istype(modpc))
 		return player_role_lookup[modpc]
@@ -654,6 +710,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * - modpc: is a living player signing up through a PDA. This can be null in favor of ghost_client.
  */
 /datum/mafia_controller/proc/signup_mafia(mob/user, client/ghost_client, obj/item/modular_computer/modpc)
+	procstart = null
+	src.procstart = null
 	if(!SSticker.HasRoundStarted())
 		to_chat(user, span_warning("Wait for the round to start."))
 		return FALSE
@@ -687,6 +745,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * req_players - The amount of players needed.
  */
 /datum/mafia_controller/proc/generate_standard_setup(req_players)
+	procstart = null
+	src.procstart = null
 	var/list/selected_roles = list()
 	var/list/unique_roles_added = list()
 	for(var/i in 1 to req_players)
@@ -697,6 +757,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * Helper proc that adds a random role of a type to a setup. if it doesn't exist in the setup, it adds the path to the list and otherwise bumps the path in the list up one. unique roles can only get added once.
  */
 /datum/mafia_controller/proc/add_setup_role(setup_list, banned_roles, wanted_role_type)
+	procstart = null
+	src.procstart = null
 	var/list/role_type_paths = list()
 	for(var/datum/mafia_role/instance as anything in GLOB.mafia_role_by_alignment[wanted_role_type])
 		if(instance in banned_roles)
@@ -720,6 +782,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * If there aren't enough players post sanity, it aborts. otherwise, it selects enough people for the game and starts preparing the game for real.
  */
 /datum/mafia_controller/proc/basic_setup()
+	procstart = null
+	src.procstart = null
 	var/req_players = MAFIA_MAX_PLAYER_COUNT
 	var/list/setup = custom_setup
 	if(length(setup))
@@ -741,6 +805,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  */
 
 /datum/mafia_controller/proc/forced_setup()
+	procstart = null
+	src.procstart = null
 	check_signups() //Refresh the signup list, so our numbers are accurate and we only take active players into consideration.
 	var/players_needed = GLOB.mafia_signup.len + GLOB.pda_mafia_signup.len
 	var/list/filtered_keys_and_pdas = filter_players(players_needed)
@@ -762,6 +828,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  */
 
 /datum/mafia_controller/proc/check_start_votes()
+	procstart = null
+	src.procstart = null
 	check_signups() //Same as before. What a useful proc.
 
 	if(length(GLOB.mafia_signup + GLOB.pda_mafia_signup) < MAFIA_MIN_PLAYER_COUNT)
@@ -784,6 +852,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * filtered_keys_and_pdas - A list of player ckeys and PDAs, to be included in the game.
  */
 /datum/mafia_controller/proc/filter_players(max_players)
+	procstart = null
+	src.procstart = null
 	//final list for all the players who will be in this game
 	var/list/filtered_keys_and_pdas = list()
 	//cuts invalid players from signups (disconnected/not a ghost)
@@ -826,6 +896,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * Only checks if everyone is actually valid to start (still connected and an observer) if there are enough players (basic_setup)
  */
 /datum/mafia_controller/proc/try_autostart()
+	procstart = null
+	src.procstart = null
 	if(phase != MAFIA_PHASE_SETUP || !(GLOB.ghost_role_flags & GHOSTROLE_MINIGAME))
 		return
 	if((GLOB.mafia_signup.len + GLOB.pda_mafia_signup.len) >= MAFIA_MAX_PLAYER_COUNT || custom_setup)//enough people to try and make something (or debug mode)
@@ -837,6 +909,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * If a disconnected player gets a non-ghost mob and reconnects, they will be first put back into mafia_signup then filtered by that.
  */
 /datum/mafia_controller/proc/check_signups()
+	procstart = null
+	src.procstart = null
 #ifndef UNIT_TESTS
 	for(var/bad_key in GLOB.mafia_bad_signup)
 		if(GLOB.directory[bad_key])//they have reconnected if we can search their key and get a client
@@ -862,14 +936,20 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
 	var/datum/mafia_controller/controller_panel
 
 /datum/action/innate/mafia_panel/New(Target, datum/mafia_controller/controller)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller_panel = controller
 
 /datum/action/innate/mafia_panel/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller_panel = null
 
 /datum/action/innate/mafia_panel/Activate()
+	procstart = null
+	src.procstart = null
 	controller_panel.ui_interact(owner)
 
 /**
@@ -888,14 +968,20 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
 	var/datum/mafia_role/owner
 
 /atom/movable/screen/mafia_popup/Initialize(mapload, datum/mafia_role/mafia)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.owner = mafia
 
 /atom/movable/screen/mafia_popup/Destroy()
+	procstart = null
+	src.procstart = null
 	owner = null
 	return ..()
 
 /atom/movable/screen/mafia_popup/proc/update_text(text)
+	procstart = null
+	src.procstart = null
 	owner.role_messages += text
 	if(!owner.body.client)
 		return
@@ -906,6 +992,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
 
 ///Clears all text to re-use in the future. We use to_clear here in case someone takes over their old body.
 /atom/movable/screen/mafia_popup/proc/null_text(client/to_clear)
+	procstart = null
+	src.procstart = null
 	maptext = null
 	to_clear?.screen -= src
 
@@ -913,6 +1001,8 @@ GLOBAL_LIST_INIT(mafia_role_by_alignment, setup_mafia_role_by_alignment())
  * Creates the global datum for playing mafia games, destroys the last if that's required and returns the new.
  */
 /proc/create_mafia_game()
+	procstart = null
+	src.procstart = null
 	if(GLOB.mafia_game)
 		QDEL_NULL(GLOB.mafia_game)
 	var/datum/mafia_controller/new_controller = new()

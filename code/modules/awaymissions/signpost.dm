@@ -14,11 +14,15 @@
 	VAR_FINAL/list/zlevels = null
 
 /obj/structure/signpost/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	set_light(2)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/signpost/LateInitialize()
+	procstart = null
+	src.procstart = null
 	// This is here cause we wanna be super sure zlevels is properly initialized
 	if(teleports)
 		AddComponent(/datum/component/houlihan_teleport, question, zlevels)
@@ -41,5 +45,7 @@
 	var/power = 0.8
 
 /obj/structure/signpost/void/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light(range, power)

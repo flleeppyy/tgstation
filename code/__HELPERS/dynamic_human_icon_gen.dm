@@ -3,6 +3,8 @@ GLOBAL_LIST_EMPTY(dynamic_human_appearances)
 
 /// Creates a human with the given parameters and returns an appearance of it
 /proc/get_dynamic_human_appearance(outfit_path, species_path = /datum/species/human, mob_spawn_path, r_hand, l_hand, bloody_slots = NONE, animated = TRUE, combat_mode = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!species_path)
 		return FALSE
 	if(!ispath(species_path))
@@ -52,10 +54,14 @@ GLOBAL_LIST_EMPTY(dynamic_human_appearances)
 
 ///This exists to apply the icons async, as that cannot be done in Initialize because of possible sleeps.
 /proc/apply_dynamic_human_appearance(atom/target, outfit_path, species_path = /datum/species/human, mob_spawn_path, r_hand, l_hand, bloody_slots = NONE)
+	procstart = null
+	src.procstart = null
 	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(set_dynamic_human_appearance), args)
 
 ///This proc gets an argument of a target and runs
 /proc/set_dynamic_human_appearance(list/arguments)
+	procstart = null
+	src.procstart = null
 	var/atom/target = arguments[1] //1st argument is the target
 	var/dynamic_appearance = get_dynamic_human_appearance(arglist(arguments.Copy(2))) //the rest of the arguments starting from 2 matter to the proc
 	target.icon = 'icons/mob/human/human.dmi'

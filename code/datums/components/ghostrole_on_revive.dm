@@ -47,6 +47,8 @@
 
 /// Give the appropriate signals, and watch for organ removal
 /datum/component/ghostrole_on_revive/proc/prepare_mob(mob/living/to_prepare)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(to_prepare, COMSIG_LIVING_REVIVE, PROC_REF(on_revive))
 	RegisterSignal(to_prepare, COMSIG_MOB_REAGENT_TICK, PROC_REF(block_formaldehyde_metabolism))
 	if(istype(parent, /obj/item/organ/brain))
@@ -57,6 +59,8 @@
 	to_prepare.med_hud_set_status()
 
 /datum/component/ghostrole_on_revive/proc/unprepare_mob(mob/living/to_unprepare)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(to_unprepare, TRAIT_GHOSTROLE_ON_REVIVE, REF(src))
 	UnregisterSignal(to_unprepare, list(
 		COMSIG_LIVING_REVIVE,
@@ -68,6 +72,8 @@
 	remove_orbit_twitching(to_unprepare)
 
 /datum/component/ghostrole_on_revive/proc/on_remove(mob/living/carbon/source, obj/item/organ/removed_brain)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(removed_brain, /obj/item/organ/brain))
@@ -82,12 +88,16 @@
 	prepare_brain(removed_brain)
 
 /datum/component/ghostrole_on_revive/proc/prepare_brain(obj/item/organ/source)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(source, TRAIT_GHOSTROLE_ON_REVIVE, REF(src))
 	RegisterSignal(source, COMSIG_ORGAN_IMPLANTED, PROC_REF(prepare_mob_from_brain))
 	RegisterSignal(source, COMSIG_ATOM_EXAMINE, PROC_REF(brain_examine))
 	UnregisterSignal(source, COMSIG_ORGAN_REMOVED)
 
 /datum/component/ghostrole_on_revive/proc/unprepare_brain(obj/item/organ/source)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(source, TRAIT_GHOSTROLE_ON_REVIVE, REF(src))
 	UnregisterSignal(source, COMSIG_ORGAN_IMPLANTED)
 	UnregisterSignal(source, COMSIG_ATOM_EXAMINE)
@@ -95,6 +105,8 @@
 	source.owner?.med_hud_set_status()
 
 /datum/component/ghostrole_on_revive/proc/prepare_mob_from_brain(obj/item/organ/brain/source, mob/living/owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	REMOVE_TRAIT(source, TRAIT_GHOSTROLE_ON_REVIVE, REF(src))
@@ -102,16 +114,22 @@
 	prepare_mob(owner)
 
 /datum/component/ghostrole_on_revive/proc/brain_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += span_info("Another soul may take [source.p_their()] place if put in a body...")
 
 /datum/component/ghostrole_on_revive/proc/on_revive(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(poll_ghosts), source)
 
 /datum/component/ghostrole_on_revive/proc/poll_ghosts(mob/living/reviving)
+	procstart = null
+	src.procstart = null
 	var/datum/bodypart_overlay/simple/soul_pending_eyes/soul_eyes
 	// adds soulful SOUL PENDING eyes to indicate what's happening to observers
 	var/obj/item/bodypart/head/head = reviving.get_bodypart(BODY_ZONE_HEAD)
@@ -156,12 +174,16 @@
 
 
 /datum/component/ghostrole_on_revive/proc/add_orbit_twitching(mob/living/parent_mob)
+	procstart = null
+	src.procstart = null
 	parent_mob.AddElement(/datum/element/orbit_twitcher, twitch_chance)
 	// Add it to the ghostrole spawner menu. Note that we can't directly spawn from it, but we can make it twitch to alert bystanders to defib it
 	LAZYADDASSOCLIST(GLOB.joinable_mobs, spawn_text, parent_mob)
 	RegisterSignal(parent_mob, COMSIG_LIVING_GHOSTROLE_INFO, PROC_REF(set_spawner_info))
 
 /datum/component/ghostrole_on_revive/proc/set_spawner_info(datum/spawners_menu/menu, list/string_info)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	string_info["you_are_text"] = src.you_are_text
@@ -169,18 +191,24 @@
 	string_info["important_text"] = src.important_text
 
 /datum/component/ghostrole_on_revive/proc/remove_orbit_twitching(mob/living/parent_mob)
+	procstart = null
+	src.procstart = null
 	parent_mob.RemoveElement(/datum/element/orbit_twitcher, twitch_chance)
 	LAZYREMOVEASSOC(GLOB.joinable_mobs, spawn_text, parent_mob)
 	UnregisterSignal(parent_mob, COMSIG_LIVING_GHOSTROLE_INFO)
 
 // Block formaldehyde from being metabolized, Coroner QoL
 /datum/component/ghostrole_on_revive/proc/block_formaldehyde_metabolism(mob/living/source, datum/reagent/chem)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(chem, /datum/reagent/toxin/formaldehyde))
 		return COMSIG_MOB_STOP_REAGENT_TICK
 
 /datum/component/ghostrole_on_revive/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(isliving(parent))
 		unprepare_mob(parent)
 

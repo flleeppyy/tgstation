@@ -26,11 +26,15 @@
 	wound = 10
 
 /obj/item/clothing/suit/armor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!allowed)
 		allowed = GLOB.security_vest_allowed
 
 /obj/item/clothing/suit/armor/apply_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	slowdown = modify_fantasy_variable("slowdown", slowdown, -bonus * 0.1, 0)
 	if(ismob(loc))
@@ -38,6 +42,8 @@
 		wearer.update_equipment_speed_mods()
 
 /obj/item/clothing/suit/armor/remove_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	slowdown = reset_fantasy_variable("slowdown", slowdown)
 	if(ismob(loc))
 		var/mob/wearer = loc
@@ -66,6 +72,8 @@
 	icon_state = "armor_press"
 
 /obj/item/clothing/suit/armor/vest/press/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "[icon_state]-emissive", src, alpha = src.alpha, effect_type = EMISSIVE_SPECULAR)
@@ -147,6 +155,8 @@
 	dog_fashion = null
 
 /obj/item/clothing/suit/armor/vest/cuirass/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/item_equipped_movement_rustle, SFX_PLATE_ARMOR_RUSTLE, 8)
 
@@ -193,6 +203,8 @@
 	body_parts_covered = CHEST|GROIN|ARMS
 
 /obj/item/clothing/suit/armor/hos/hos_formal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/toggle_icon)
 
@@ -226,6 +238,8 @@
 	dog_fashion = null
 
 /obj/item/clothing/suit/armor/vest/secjacket/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "[icon_state]-emissive", src, alpha = src.alpha, effect_type = EMISSIVE_SPECULAR)
@@ -283,6 +297,8 @@
 	body_parts_covered = CHEST|GROIN|ARMS
 
 /obj/item/clothing/suit/armor/vest/capcarapace/captains_formal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/toggle_icon)
 
@@ -300,11 +316,15 @@
 	clothing_traits = list(TRAIT_BRAWLING_KNOCKDOWN_BLOCKED)
 
 /obj/item/clothing/suit/armor/riot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, 5)
 	init_rustle_component()
 
 /obj/item/clothing/suit/armor/riot/proc/init_rustle_component()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/item_equipped_movement_rustle)
 
 /datum/armor/armor_riot
@@ -336,6 +356,8 @@
 	acid = 50
 
 /obj/item/clothing/suit/armor/balloon_vest/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(isitem(hitby))
 		var/obj/item/item_hit = hitby
 		if(item_hit.get_sharpness())
@@ -347,6 +369,8 @@
 	return ..()
 
 /obj/item/clothing/suit/armor/balloon_vest/proc/pop()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/cartoon_sfx/cartoon_pop.ogg', 50, vary = TRUE)
 	qdel(src)
 
@@ -393,6 +417,8 @@
 	acid = 100
 
 /obj/item/clothing/suit/armor/laserproof/IsReflect(def_zone)
+	procstart = null
+	src.procstart = null
 	if(!(def_zone in list(BODY_ZONE_CHEST, BODY_ZONE_PRECISE_GROIN, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM))) //If not shot where ablative is covering you, you don't get the reflection bonus!
 		return FALSE
 	if (prob(hit_reflect_chance))
@@ -406,6 +432,8 @@
 	dog_fashion = null
 
 /obj/item/clothing/suit/armor/vest/det_suit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed = GLOB.detective_vest_allowed
 
@@ -428,11 +456,15 @@
 	clothing_traits = list(TRAIT_BRAWLING_KNOCKDOWN_BLOCKED)
 
 /obj/item/clothing/suit/armor/swat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, 5)
 	init_rustle_component()
 
 /obj/item/clothing/suit/armor/swat/proc/init_rustle_component()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/item_equipped_movement_rustle)
 
 
@@ -534,6 +566,8 @@
 		/obj/item/tank/internals/plasmaman,
 		)
 /obj/item/clothing/suit/armor/riot/knight/init_rustle_component()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/item_equipped_movement_rustle, SFX_PLATE_ARMOR_RUSTLE, 8)
 
 /obj/item/clothing/suit/armor/riot/knight/yellow
@@ -579,6 +613,8 @@
 	dog_fashion = null
 
 /obj/item/clothing/suit/armor/vest/durathread/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed |= /obj/item/clothing/suit/apron::allowed
 
@@ -642,6 +678,8 @@
 	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 
 /obj/item/clothing/suit/armor/elder_atmosian/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += list(
 		/obj/item/fireaxe/metal_h2_axe,
@@ -678,6 +716,8 @@
 	acid = 60
 
 /obj/item/clothing/suit/armor/centcom_formal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/toggle_icon)
 
@@ -725,6 +765,8 @@
 	)
 
 /obj/item/clothing/suit/armor/vest/military/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, 5)
 
@@ -762,6 +804,8 @@
 	abstract_type = /obj/item/clothing/suit/armor/durability
 
 /obj/item/clothing/suit/armor/durability/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	take_damage(1, BRUTE, 0, 0)
 
 /obj/item/clothing/suit/armor/durability/watermelon
@@ -815,6 +859,8 @@
 	armor_type = /datum/armor/watermelon_fr
 
 /obj/item/clothing/suit/armor/durability/holymelon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddComponent(
@@ -827,9 +873,13 @@
 	)
 
 /obj/item/clothing/suit/armor/durability/holymelon/proc/drain_antimagic(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("[src] looses a bit of its shimmer and glossiness..."))
 
 /obj/item/clothing/suit/armor/durability/holymelon/proc/decay()
+	procstart = null
+	src.procstart = null
 	take_damage(8, BRUTE, 0, 0)
 
 

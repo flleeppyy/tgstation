@@ -10,6 +10,8 @@
 	var/diminishing_return_counter = 0
 
 /datum/status_effect/incapacitating/stamcrit/on_creation(mob/living/new_owner, set_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -25,6 +27,8 @@
 	RegisterSignal(owner, COMSIG_LIVING_STAMINA_UPDATE, PROC_REF(check_remove))
 
 /datum/status_effect/incapacitating/stamcrit/on_apply()
+	procstart = null
+	src.procstart = null
 	if(owner.stat == DEAD)
 		return FALSE
 	if(owner.check_stun_immunity(CANSTUN))
@@ -42,12 +46,16 @@
 	return .
 
 /datum/status_effect/incapacitating/stamcrit/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_LIVING_HEALTH_UPDATE)
 	UnregisterSignal(owner, COMSIG_LIVING_ADJUST_STAMINA_DAMAGE)
 	owner.remove_traits(list(TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED), STAMINA)
 	return ..()
 
 /datum/status_effect/incapacitating/stamcrit/proc/update_diminishing_return(datum/source, type, amount, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(amount <= 0 || forced)
 		return NONE
@@ -73,6 +81,8 @@
 	return COMPONENT_IGNORE_CHANGE
 
 /datum/status_effect/incapacitating/stamcrit/proc/check_remove(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (isbasicmob(owner))
 		var/mob/living/basic/basic_owner = owner

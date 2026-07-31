@@ -2,6 +2,8 @@
 	name = "supplypods"
 
 /datum/asset/spritesheet_batched/supplypods/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	for (var/datum/pod_style/style as anything in typesof(/datum/pod_style))
 		if (ispath(style, /datum/pod_style/seethrough))
 			insert_icon("pod_asset[style::id]", uni_icon('icons/obj/supplypods.dmi' , "seethrough-icon"))

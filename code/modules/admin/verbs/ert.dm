@@ -7,6 +7,8 @@
 // CENTCOM RESPONSE TEAM
 
 /datum/admins/proc/makeERTTemplateModified(list/settings)
+	procstart = null
+	src.procstart = null
 	. = settings
 	var/datum/ert/newtemplate = settings["mainsettings"]["template"]["value"]
 	if (isnull(newtemplate))
@@ -25,6 +27,8 @@
 
 
 /datum/admins/proc/equipAntagOnDummy(mob/living/carbon/human/dummy/mannequin, datum/antagonist/antag)
+	procstart = null
+	src.procstart = null
 	for(var/I in mannequin.get_equipped_items(INCLUDE_POCKETS))
 		qdel(I)
 	if (ispath(antag, /datum/antagonist/ert))
@@ -32,6 +36,8 @@
 		mannequin.equipOutfit(initial(ert.outfit), TRUE)
 
 /datum/admins/proc/makeERTPreviewIcon(list/settings)
+	procstart = null
+	src.procstart = null
 	// Set up the dummy for its photoshoot
 	var/mob/living/carbon/human/dummy/mannequin = generate_or_wait_for_human_dummy(DUMMY_HUMAN_SLOT_ADMIN)
 
@@ -72,6 +78,8 @@
 	return preview_icon
 
 /datum/admins/proc/make_emergency_response_team(datum/ert/ertemplate = null)
+	procstart = null
+	src.procstart = null
 	if (ertemplate)
 		ertemplate = new ertemplate
 	else

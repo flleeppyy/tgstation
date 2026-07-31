@@ -2,6 +2,8 @@
 	page = "Template:Autowiki/Content/SoupRecipes"
 
 /datum/autowiki/soup/generate()
+	procstart = null
+	src.procstart = null
 	var/output = ""
 
 	// Since we're here, generate a range icon since that's what is installed in most kitchens

@@ -10,6 +10,8 @@
 	COOLDOWN_DECLARE(spell_recharge_cd)
 
 /obj/item/clothing/neck/heretic_focus/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(slot & ITEM_SLOT_NECK) || !IS_HERETIC(user))
 		return
@@ -17,10 +19,14 @@
 	COOLDOWN_START(src, spell_recharge_cd, cooldown_period)
 
 /obj/item/clothing/neck/heretic_focus/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
 
 /obj/item/clothing/neck/heretic_focus/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, spell_recharge_cd))
 		return
 
@@ -46,6 +52,8 @@
 	var/active = FALSE
 
 /obj/item/clothing/neck/heretic_focus/crimson_medallion/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(slot & ITEM_SLOT_NECK))
 		return
@@ -79,6 +87,8 @@
 	)
 
 /obj/item/clothing/neck/heretic_focus/crimson_medallion/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!istype(user))
@@ -103,6 +113,8 @@
 
 
 /obj/item/clothing/neck/heretic_focus/crimson_medallion/attack_self(mob/living/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(user, span_danger("You start tightly squeezing [src]..."))
 	if(!do_after(user, 1.25 SECONDS, src))
@@ -118,6 +130,8 @@
 	qdel(src)
 
 /obj/item/clothing/neck/heretic_focus/crimson_medallion/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/magic_dude
@@ -142,6 +156,8 @@
 	var/heretic_only_trait = TRAIT_THERMAL_VISION
 
 /obj/item/clothing/neck/eldritch_amulet/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(slot & ITEM_SLOT_NECK))
 		return
@@ -152,6 +168,8 @@
 	user.update_sight()
 
 /obj/item/clothing/neck/eldritch_amulet/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(user, heretic_only_trait, "[CLOTHING_TRAIT]_[REF(src)]")
 	user.update_sight()
@@ -187,11 +205,15 @@
 	var/sanity_threshold = SANITY_LEVEL_INSANE
 
 /obj/item/clothing/neck/moon_amulet/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_HERETIC(user))
 		. += span_notice("Wearing this amulet increases your healing speed by 50%.")
 
 /obj/item/clothing/neck/moon_amulet/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!IS_HERETIC(user) && (slot_flags & slot))
 		channel_amulet(user)
@@ -203,6 +225,8 @@
 
 /// Modifies any blades you hold/pickup/drop when the amulet is enabled
 /obj/item/clothing/neck/moon_amulet/proc/on_amulet_activate(mob/living/user)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(user, COMSIG_HERETIC_BLADE_ATTACK, PROC_REF(blade_channel))
 	RegisterSignal(user, COMSIG_MOB_EQUIPPED_ITEM, PROC_REF(on_equip_item))
 	RegisterSignal(user, COMSIG_MOB_DROPPED_ITEM, PROC_REF(on_dropped_item))
@@ -216,6 +240,8 @@
 
 /// Modifies any blades you hold/pickup/drop when the amulet is disabled
 /obj/item/clothing/neck/moon_amulet/proc/on_amulet_deactivate(mob/living/user)
+	procstart = null
+	src.procstart = null
 	// Make sure to restore the values of any blades we might be holding when our amulet is deactivated
 	on_dropped_item(user, user.get_active_held_item())
 	on_dropped_item(user, user.get_inactive_held_item())
@@ -225,20 +251,28 @@
 	moon_passive?.amulet_equipped = FALSE
 
 /obj/item/clothing/neck/moon_amulet/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	on_amulet_deactivate(user)
 	return ..()
 
 /obj/item/clothing/neck/moon_amulet/attack(mob/living/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(channel_amulet(user, target))
 		return
 	return ..()
 
 /obj/item/clothing/neck/moon_amulet/proc/blade_channel(mob/living/attacker, mob/living/victim)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	channel_amulet(attacker, victim)
 
 /// Makes whoever the target is a bit more insane. If they are insane enough, they will be zombified into a moon zombie
 /obj/item/clothing/neck/moon_amulet/proc/channel_amulet(mob/user, atom/target)
+	procstart = null
+	src.procstart = null
 
 	if(!isliving(user))
 		return FALSE
@@ -285,6 +319,8 @@
 
 /// Modifies any blades that we equip while wearing the amulet
 /obj/item/clothing/neck/moon_amulet/proc/on_equip_item(mob/user, obj/item/blade, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(blade, valid_weapon_type))
 		return // We only care about modifying blades
@@ -302,6 +338,8 @@
 	UnregisterSignal(blade, COMSIG_SEND_ITEM_ATTACK_MESSAGE_OBJECT)
 
 /obj/item/clothing/neck/moon_amulet/proc/modify_attack_message(obj/item/weapon, mob/living/victim, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/list/attack_list = list(
@@ -322,6 +360,8 @@
 
 /// Modifies any blades that we drop while wearing the amulet
 /obj/item/clothing/neck/moon_amulet/proc/on_dropped_item(mob/user, obj/item/dropped_item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(dropped_item, valid_weapon_type))
 		return // We only care about modifying blades

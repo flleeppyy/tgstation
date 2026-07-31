@@ -15,6 +15,8 @@
 	pipe_state = "he"
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/simple/set_init_directions()
+	procstart = null
+	src.procstart = null
 	if(ISDIAGONALDIR(dir))
 		initialize_directions = dir
 		return
@@ -25,6 +27,8 @@
 			initialize_directions = EAST|WEST
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/simple/update_pipe_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "pipe[nodes[1] ? "1" : "0"][nodes[2] ? "1" : "0"]-[piping_layer]"
 	return
 

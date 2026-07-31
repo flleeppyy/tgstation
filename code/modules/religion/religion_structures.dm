@@ -15,12 +15,16 @@
 	var/emissive_icon_state
 
 /obj/structure/altar/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/climbable)
 	AddElement(/datum/element/elevation, pixel_shift = 12)
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/altar/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (lit_candles)
 		. += mutable_appearance(icon, "convertaltarcandle", alpha = src.alpha)
@@ -29,6 +33,8 @@
 		. += emissive_appearance(icon, emissive_icon_state, src, alpha = src.alpha)
 
 /obj/structure/altar/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!Adjacent(user) || !user.pulling)
 		return ..()
 	if(!isliving(user.pulling))
@@ -51,16 +57,22 @@
 	var/datum/religion_sect/sect_to_altar
 
 /obj/structure/altar/of_gods/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/religious_tool, ALL, FALSE, CALLBACK(src, PROC_REF(reflect_sect_in_icons)))
 	reflect_sect_in_icons()
 	GLOB.chaplain_altars += src
 
 /obj/structure/altar/of_gods/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.chaplain_altars -= src
 	return ..()
 
 /obj/structure/altar/of_gods/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isobserver(user))
 		return ..()
 	. = list(span_notice("<i>You examine [src] closer, and note the following...</i>"))
@@ -76,6 +88,8 @@
 		. += list(span_notice("Chaplains: [chaplains]."))
 
 /obj/structure/altar/of_gods/proc/reflect_sect_in_icons()
+	procstart = null
+	src.procstart = null
 	if(isnull(GLOB.religious_sect))
 		lit_candles = FALSE
 		icon = initial(icon)
@@ -93,6 +107,8 @@
 	update_appearance(UPDATE_OVERLAYS) //Light the candles!
 
 /obj/structure/altar/of_gods/proc/get_chaplains()
+	procstart = null
+	src.procstart = null
 	var/chaplain_string = ""
 	for(var/mob/living/carbon/human/potential_chap in GLOB.player_list)
 		if(potential_chap.key && is_chaplain_job(potential_chap.mind?.assigned_role))
@@ -114,6 +130,8 @@
 	item_flags = NO_PIXEL_RANDOM_DROP
 
 /obj/item/ritual_totem/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/anti_magic, \
 		antimagic_flags = MAGIC_RESISTANCE|MAGIC_RESISTANCE_HOLY, \
@@ -124,21 +142,29 @@
 
 /// When the ritual totem is depleted of antimagic
 /obj/item/ritual_totem/proc/expire(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("[src] consumes the magic within itself and quickly decays into rot!"))
 	new /obj/effect/decal/cleanable/ash(drop_location())
 	qdel(src)
 
 /obj/item/ritual_totem/can_be_pulled(user, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return FALSE //no
 
 /obj/item/ritual_totem/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/is_holy = user.mind?.holy_role
 	if(is_holy)
 		. += span_notice("[src] can only be moved by important followers of [GLOB.deity].")
 
 /obj/item/ritual_totem/pickup(mob/taker)
+	procstart = null
+	src.procstart = null
 	var/initial_loc = loc
 	var/holiness = taker.mind?.holy_role
 	var/no_take = FALSE

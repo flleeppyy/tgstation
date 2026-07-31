@@ -89,6 +89,8 @@
 	var/loading_id = ""
 
 /area/centcom/central_command_areas/supplypod/loading/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!loading_id)
 		CRASH("[type] created without a loading_id")

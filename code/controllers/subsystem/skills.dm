@@ -11,11 +11,15 @@ SUBSYSTEM_DEF(skills)
 	var/list/level_names = list("None", "Novice", "Apprentice", "Journeyman", "Expert", "Master", "Legendary") //List of skill level names. Note that indexes can be accessed like so: level_names[SKILL_LEVEL_NOVICE]
 
 /datum/controller/subsystem/skills/Initialize()
+	procstart = null
+	src.procstart = null
 	InitializeSkills()
 	return SS_INIT_SUCCESS
 
 ///Ran on initialize, populates the skills dictionary
 /datum/controller/subsystem/skills/proc/InitializeSkills()
+	procstart = null
+	src.procstart = null
 	for(var/type in GLOB.skill_types)
 		var/datum/skill/ref = new type
 		all_skills[type] = ref

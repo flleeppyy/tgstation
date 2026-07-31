@@ -10,6 +10,8 @@
 	var/require_reach = FALSE
 
 /datum/bt_node/decorator/is_at_distance/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[target_key]
 	if(QDELETED(target))
 		return FALSE

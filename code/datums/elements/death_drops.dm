@@ -12,6 +12,8 @@
 	var/no_gib_drops
 
 /datum/element/death_drops/Attach(datum/target, list/loot, no_gib_drops = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -22,11 +24,15 @@
 	RegisterSignal(target, COMSIG_LIVING_DEATH, PROC_REF(on_death))
 
 /datum/element/death_drops/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_LIVING_DEATH)
 
 ///signal called by the stat of the target changing
 /datum/element/death_drops/proc/on_death(mob/living/target, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (no_gib_drops && gibbed)
 		return
@@ -51,6 +57,8 @@
 
 /// Handles creating the loots
 /datum/element/death_drops/proc/create_loot(typepath, atom/loot_loc, mob/living/dead, gibbed, spread_px = 4)
+	procstart = null
+	src.procstart = null
 	if(ispath(typepath, /obj/effect/mob_spawn/corpse))
 		return handle_corpse(typepath, loot_loc, dead, gibbed)
 
@@ -64,6 +72,8 @@
 
 /// Handles snowflake case of mob corpses
 /datum/element/death_drops/proc/handle_corpse(typepath, atom/loot_loc, mob/living/dead, gibbed)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/mob_spawn/corpse/spawner = new typepath(loot_loc, TRUE)
 	var/mob/living/body = spawner.create()
 	// done before the gib check so the bodyparts will be damaged

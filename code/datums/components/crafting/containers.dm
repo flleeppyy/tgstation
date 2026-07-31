@@ -35,6 +35,8 @@
 	)
 
 /datum/crafting_recipe/underwater_basket/check_requirements(mob/user, list/collected_requirements)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/T = get_turf(user)
 	if(istype(T, /turf/open/water))

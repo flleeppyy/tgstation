@@ -57,11 +57,15 @@
 	var/floor_variance = 15
 
 /turf/open/misc/dirt/jungle/wasteland/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	.=..()
 	if(prob(floor_variance))
 		icon_state = "[initial(icon_state)][rand(0,12)]"
 
 /turf/open/misc/dirt/jungle/wasteland/break_tile()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[initial(icon_state)]0"
 
@@ -85,6 +89,8 @@
 	baseturfs = /turf/open/misc/dirt/dark/jungle
 
 /turf/closed/mineral/random/jungle/mineral_chances()
+	procstart = null
+	src.procstart = null
 	return list(
 		/obj/item/stack/ore/bluespace_crystal = 1,
 		/obj/item/stack/ore/diamond = 1,

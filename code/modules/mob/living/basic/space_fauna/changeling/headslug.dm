@@ -34,15 +34,21 @@
 	var/egg_lain = FALSE
 
 /mob/living/basic/headslug/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 	RegisterSignal(src, COMSIG_HOSTILE_POST_ATTACKINGTARGET, PROC_REF(check_and_implant))
 
 /mob/living/basic/headslug/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(src, COMSIG_HOSTILE_POST_ATTACKINGTARGET)
 	return ..()
 
 /mob/living/basic/headslug/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat != DEAD)
 		if(isnull(client))
@@ -54,6 +60,8 @@
 
 /// Signal Handler proc that runs on every attack and checks to see if this is a valid target for implantation. If so, it implants the egg and starts the countdown to death.
 /mob/living/basic/headslug/proc/check_and_implant(mob/living/basic/attacker, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (egg_lain || !iscarbon(target) || ismonkey(target))
@@ -78,6 +86,8 @@
 /// Simply infects the target corpse with our changeling eggs. This shouldn't fail, because all checks should have been done in check_and_implant()
 /// Just to be super-duper safe to the player, we do return TRUE if all goes well and read that value in check_and_implant() to be nice to the player.
 /mob/living/basic/headslug/proc/infect(mob/living/carbon/victim)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/body_egg/changeling_egg/egg = new(victim)
 
 	egg.origin = mind

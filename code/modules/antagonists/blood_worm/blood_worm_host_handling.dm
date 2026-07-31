@@ -2,6 +2,8 @@
 // There are a ton of these and they are pretty tightly coupled to each other.
 
 /mob/living/basic/blood_worm/proc/enter_host(mob/living/carbon/human/new_host, silent = FALSE, gain_progress = TRUE)
+	procstart = null
+	src.procstart = null
 	if (!silent)
 		playsound(src, 'sound/effects/magic/enter_blood.ogg', vol = 60, vary = TRUE, ignore_walls = FALSE)
 
@@ -79,6 +81,8 @@
 		possess_host()
 
 /mob/living/basic/blood_worm/proc/leave_host()
+	procstart = null
+	src.procstart = null
 	if (!host)
 		return
 
@@ -103,6 +107,8 @@
 	flick("leave-[effect_name]", src)
 
 /mob/living/basic/blood_worm/proc/unregister_host()
+	procstart = null
+	src.procstart = null
 	if (!host)
 		return
 
@@ -146,6 +152,8 @@
 	host = null
 
 /mob/living/basic/blood_worm/proc/possess_host()
+	procstart = null
+	src.procstart = null
 	if (!host || is_possessing_host)
 		return
 
@@ -168,6 +176,8 @@
 	log_blood_worm("[key_name(src)] possessed their host [key_name(host)]")
 
 /mob/living/basic/blood_worm/proc/possess_worm()
+	procstart = null
+	src.procstart = null
 	if (!host || !is_possessing_host)
 		return
 
@@ -187,10 +197,14 @@
 	log_blood_worm("[key_name(src)] unpossessed their host [key_name(host)]")
 
 /mob/living/basic/blood_worm/proc/on_host_qdel(datum/source, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /mob/living/basic/blood_worm/proc/on_host_stat_changed(datum/source, new_stat, old_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (old_stat == DEAD && new_stat != DEAD)
 		possess_host()
@@ -198,10 +212,14 @@
 		possess_worm()
 
 /mob/living/basic/blood_worm/proc/on_host_handle_blood(datum/source, seconds_per_tick, times_fired)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return HANDLE_BLOOD_NO_OXYLOSS | HANDLE_BLOOD_NO_NUTRITION_DRAIN
 
 /mob/living/basic/blood_worm/proc/on_host_life(datum/source, seconds_per_tick, times_fired)
+	procstart = null
+	src.procstart = null
 	// Moved to worm life when not in a host.
 	adjust_worm_health(regen_rate * seconds_per_tick)
 
@@ -214,6 +232,8 @@
 		handle_host_temperature(seconds_per_tick, times_fired)
 
 /mob/living/basic/blood_worm/proc/handle_host_blood(seconds_per_tick, times_fired)
+	procstart = null
+	src.procstart = null
 	if (host.stat == DEAD)
 		host.handle_blood(seconds_per_tick, times_fired)
 
@@ -223,6 +243,8 @@
 		COOLDOWN_START(src, host_bleed_alert_cooldown, 15 SECONDS)
 
 /mob/living/basic/blood_worm/proc/handle_host_temperature(seconds_per_tick, times_fired)
+	procstart = null
+	src.procstart = null
 	if (host.coretemperature <= maximum_survivable_temperature)
 		return
 
@@ -234,15 +256,21 @@
 		COOLDOWN_START(src, host_heat_alert_cooldown, 15 SECONDS)
 
 /mob/living/basic/blood_worm/proc/on_host_adjust_oxy_damage(datum/source, type, amount, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return COMPONENT_IGNORE_CHANGE // Functionally, this unimplements oxy damage from hosts altogether. Which is exactly what we want.
 
 /mob/living/basic/blood_worm/proc/on_host_pre_update_blood_status(datum/source, had_blood, has_blood, old_blood_volume)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!has_blood)
 		leave_host()
 
 /mob/living/basic/blood_worm/proc/create_host_hud(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(host, COMSIG_MOB_HUD_CREATED)
 

@@ -54,10 +54,14 @@ GLOBAL_VAR_INIT(glowshrooms, 0)
 /obj/structure/glowshroom/single
 
 /obj/structure/glowshroom/single/Initialize(mapload, obj/item/seeds/newseed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
 
 /obj/structure/glowshroom/single/Spread()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/glowshroom/brownshroom
@@ -67,6 +71,8 @@ GLOBAL_VAR_INIT(glowshrooms, 0)
 	myseed = /obj/item/seeds/reishi //Just to have something since these aren't a new growable mushroom.
 
 /obj/structure/glowshroom/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "This is a [generation]\th generation [name]!"
 
@@ -80,6 +86,8 @@ GLOBAL_VAR_INIT(glowshrooms, 0)
 
 
 /obj/structure/glowshroom/Initialize(mapload, obj/item/seeds/newseed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.glowshrooms++
 	if(istype(newseed))
@@ -128,6 +136,8 @@ GLOBAL_VAR_INIT(glowshrooms, 0)
 	AddElement(/datum/element/contextual_screentip_item_typechecks, hovering_item_typechecks)
 
 /obj/structure/glowshroom/Destroy()
+	procstart = null
+	src.procstart = null
 	if(isatom(myseed))
 		QDEL_NULL(myseed)
 	GLOB.glowshrooms--
@@ -139,6 +149,8 @@ GLOBAL_VAR_INIT(glowshrooms, 0)
  */
 
 /obj/structure/glowshroom/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(COOLDOWN_FINISHED(src, spread_cooldown))
 		COOLDOWN_START(src, spread_cooldown, rand(min_delay_spread, max_delay_spread))
 		Spread()
@@ -148,6 +160,8 @@ GLOBAL_VAR_INIT(glowshrooms, 0)
 
 
 /obj/structure/glowshroom/proc/Spread()
+	procstart = null
+	src.procstart = null
 	var/turf/ownturf = get_turf(src)
 	if(!TURF_SHARES(ownturf)) //If we are in a 1x1 room
 		return //Deal with it not now
@@ -205,6 +219,8 @@ GLOBAL_VAR_INIT(glowshrooms, 0)
 		child.generation = generation + 1
 
 /obj/structure/glowshroom/proc/calc_dir(turf/location = loc)
+	procstart = null
+	src.procstart = null
 	var/direction = 16
 
 	for(var/wall_dir in GLOB.cardinals)
@@ -243,6 +259,8 @@ GLOBAL_VAR_INIT(glowshrooms, 0)
  * * amount - Amount of endurance to be reduced due to spread decay.
  */
 /obj/structure/glowshroom/proc/Decay(amount)
+	procstart = null
+	src.procstart = null
 	myseed.adjust_endurance(-amount * endurance_decay_rate)
 	take_damage(amount)
 	// take_damage could qdel our shroom, so check beforehand
@@ -251,16 +269,24 @@ GLOBAL_VAR_INIT(glowshrooms, 0)
 		qdel(src)
 
 /obj/structure/glowshroom/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	if(damage_type == BURN && damage_amount)
 		playsound(src.loc, 'sound/items/tools/welder.ogg', 100, TRUE)
 
 /obj/structure/glowshroom/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return exposed_temperature > 300
 
 /obj/structure/glowshroom/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	take_damage(5, BURN, 0, 0)
 
 /obj/structure/glowshroom/acid_act(acidpwr, acid_volume)
+	procstart = null
+	src.procstart = null
 	visible_message(span_danger("[src] melts away!"))
 	var/obj/effect/decal/cleanable/molten_object/I = new (get_turf(src))
 	I.desc = "Looks like this was \an [src] some time ago."
@@ -268,6 +294,8 @@ GLOBAL_VAR_INIT(glowshrooms, 0)
 	return TRUE
 
 /obj/structure/glowshroom/extreme/Initialize(mapload, obj/item/seeds/newseed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(generation == 1)
 		myseed.potency = 100
@@ -275,6 +303,8 @@ GLOBAL_VAR_INIT(glowshrooms, 0)
 		myseed.yield = 10
 
 /obj/structure/glowshroom/medium/Initialize(mapload, obj/item/seeds/newseed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(generation == 1)
 		myseed.potency = 50

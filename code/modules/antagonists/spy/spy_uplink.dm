@@ -12,6 +12,8 @@
 	var/static/datum/spy_bounty_handler/handler
 
 /datum/component/spy_uplink/Initialize(datum/antagonist/spy/spy)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -21,12 +23,16 @@
 		handler = new()
 
 /datum/component/spy_uplink/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, PROC_REF(on_attack_self))
 	RegisterSignal(parent, COMSIG_ITEM_INTERACTING_WITH_ATOM_SECONDARY, PROC_REF(on_item_atom_interaction))
 	RegisterSignal(parent, COMSIG_TABLET_CHECK_DETONATE, PROC_REF(block_pda_bombs))
 
 /datum/component/spy_uplink/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ATOM_EXAMINE,
 		COMSIG_ITEM_ATTACK_SELF,
@@ -36,10 +42,14 @@
 
 /// Checks that the passed mob is the owner of this uplink.
 /datum/component/spy_uplink/proc/is_our_spy(mob/whoever)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/spy/spy_datum = spy_ref?.resolve()
 	return spy_datum?.owner.current == whoever
 
 /datum/component/spy_uplink/proc/on_examine(obj/item/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!is_our_spy(user))
@@ -49,11 +59,15 @@
 	examine_list += span_notice("- [EXAMINE_HINT("Right click")] with it on a bounty target to claim it.")
 
 /datum/component/spy_uplink/proc/block_pda_bombs(obj/item/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return COMPONENT_TABLET_NO_DETONATE
 
 /datum/component/spy_uplink/proc/on_attack_self(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(IS_SPY(user))
@@ -61,6 +75,8 @@
 	return NONE
 
 /datum/component/spy_uplink/proc/on_item_atom_interaction(obj/item/source, mob/living/user, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!ismovable(target))
@@ -76,6 +92,8 @@
 /// Checks if the passed atom is something that can be stolen according to one of the active bounties.
 /// If so, starts the stealing process.
 /datum/component/spy_uplink/proc/try_steal(atom/movable/stealing, mob/living/spy)
+	procstart = null
+	src.procstart = null
 	for(var/datum/spy_bounty/bounty as anything in handler.get_all_bounties())
 		if(!bounty.can_claim(spy))
 			continue
@@ -95,6 +113,8 @@
 
 /// Wraps the stealing process in a scanning effect.
 /datum/component/spy_uplink/proc/start_stealing(atom/movable/stealing, mob/living/spy, datum/spy_bounty/bounty)
+	procstart = null
+	src.procstart = null
 	if(!isturf(stealing.loc) && stealing.loc != spy)
 		to_chat(spy, span_warning("Your uplink blinks red: [stealing] cannot be extracted from there."))
 		return FALSE
@@ -133,6 +153,8 @@
 /// Attempts to steal the passed atom in accordance with the passed bounty.
 /// If successful, proceeds to complete the bounty.
 /datum/component/spy_uplink/proc/steal_process(atom/movable/stealing, mob/living/spy, datum/spy_bounty/bounty)
+	procstart = null
+	src.procstart = null
 	spy.visible_message(
 		span_warning("[spy] starts scanning [stealing] with a strange device..."),
 		span_notice("You start scanning [stealing], preparing it for extraction."),
@@ -181,12 +203,16 @@
 	return TRUE
 
 /datum/component/spy_uplink/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SpyUplink")
 		ui.open()
 
 /datum/component/spy_uplink/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["bounties"] = list()
@@ -197,6 +223,8 @@
 	return data
 
 /datum/component/spy_uplink/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(isobserver(user) && user.client?.holder)
 		return UI_UPDATE
 	return ..()

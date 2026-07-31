@@ -5,9 +5,13 @@
 	var/duration
 
 /datum/smite/curse_of_babel/configure(client/user)
+	procstart = null
+	src.procstart = null
 	duration = tgui_input_number(user, "How many minutes would you like this effect to last?", "Time", 1, 60, -1, round_value = FALSE) MINUTES
 
 /datum/smite/curse_of_babel/effect(client/user, mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(target))
 		to_chat(user, span_warning("This must be used on a carbon mob."), confidential = TRUE)

@@ -19,10 +19,14 @@
 	var/on = FALSE
 
 /obj/item/t_scanner/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins to emit terahertz-rays into [user.p_their()] brain with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return TOXLOSS
 
 /obj/item/t_scanner/proc/toggle_on()
+	procstart = null
+	src.procstart = null
 	playsound(src, SFX_INDUSTRIAL_SCAN, 20, TRUE, -2, TRUE, FALSE)
 	on = !on
 	icon_state = copytext_char(icon_state, 1, -1) + "[on]"
@@ -32,22 +36,32 @@
 		STOP_PROCESSING(SSobj, src)
 
 /obj/item/t_scanner/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	toggle_on()
 
 /obj/item/t_scanner/cyborg_unequip(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return
 	toggle_on()
 
 /obj/item/t_scanner/process()
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return PROCESS_KILL
 	scan()
 
 /obj/item/t_scanner/proc/scan()
+	procstart = null
+	src.procstart = null
 	t_ray_scan(loc)
 
 /proc/t_ray_scan(mob/viewer, flick_time = 8, distance = 3)
+	procstart = null
+	src.procstart = null
 	if(!ismob(viewer) || !viewer.client)
 		return
 	var/list/t_ray_images = list()

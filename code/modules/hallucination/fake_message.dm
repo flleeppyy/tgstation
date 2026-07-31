@@ -3,6 +3,8 @@
 	hallucination_tier = HALLUCINATION_TIER_COMMON
 
 /datum/hallucination/message/start()
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS(hallucinator))
 		return FALSE
 

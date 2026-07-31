@@ -12,6 +12,8 @@
 	requires_hands = TRUE
 
 /datum/action/cooldown/spell/conjure_item/spellpacket/cast(mob/living/carbon/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cast_on.throw_mode_on(THROW_MODE_TOGGLE)
 
@@ -23,6 +25,8 @@
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/spellpacket/lightningbolt/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -34,6 +38,8 @@
 	qdel(src)
 
 /obj/item/spellpacket/lightningbolt/throw_at(atom/target, range, speed, mob/thrower, spin = TRUE, diagonals_first = FALSE, datum/callback/callback, force = INFINITY, gentle, quickstart = TRUE, throw_type_path = /datum/thrownthing)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ishuman(thrower))
 		var/mob/living/carbon/human/human_thrower = thrower

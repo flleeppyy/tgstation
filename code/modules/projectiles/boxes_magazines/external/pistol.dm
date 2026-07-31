@@ -43,6 +43,8 @@
 	max_ammo = 15
 
 /obj/item/ammo_box/magazine/m9mm_aps/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state]-[round(ammo_count(), 5)]"
 

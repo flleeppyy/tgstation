@@ -44,17 +44,23 @@
 	var/list/no_process_traits
 
 /datum/quirk/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/trait in no_process_traits)
 		LAZYADD(process_update_signals, list(SIGNAL_ADDTRAIT(trait), SIGNAL_REMOVETRAIT(trait)))
 
 /datum/quirk/Destroy()
+	procstart = null
+	src.procstart = null
 	if(quirk_holder)
 		remove_from_current_holder()
 	return ..()
 
 /// Called when quirk_holder is qdeleting. Simply qdels this datum and lets Destroy() handle the rest.
 /datum/quirk/proc/on_holder_qdeleting(mob/living/source, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
@@ -68,6 +74,8 @@
  * * quirk_transfer - If this is being added to the holder as part of a quirk transfer. Quirks can use this to decide not to spawn new items or apply any other one-time effects.
  */
 /datum/quirk/proc/add_to_holder(mob/living/new_holder, quirk_transfer = FALSE, client/client_source, unique = TRUE, announce = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!new_holder)
 		CRASH("Quirk attempted to be added to null mob.")
 
@@ -115,6 +123,8 @@
 
 /// Removes the quirk from the current quirk_holder.
 /datum/quirk/proc/remove_from_current_holder(quirk_transfer = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!quirk_holder)
 		CRASH("Attempted to remove quirk from the current holder when it has no current holder.")
 
@@ -145,6 +155,8 @@
  * Used when the quirk has been gained and no client is attached to the mob.
  */
 /datum/quirk/proc/on_quirk_holder_first_login(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(source, COMSIG_MOB_LOGIN)
@@ -152,25 +164,35 @@
 
 /// Any effect that should be applied every single time the quirk is added to any mob, even when transferred.
 /datum/quirk/proc/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Any effects from the proc that should not be done multiple times if the quirk is transferred between mobs.
 /// Put stuff like spawning items in here.
 /datum/quirk/proc/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Removal of any reversible effects added by the quirk.
 /datum/quirk/proc/remove()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Any special effects or chat messages which should be applied.
 /// This proc is guaranteed to run if the mob has a client when the quirk is added.
 /// Otherwise, it runs once on the next COMSIG_MOB_LOGIN.
 /datum/quirk/proc/post_add()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Returns if the quirk holder should process currently or not.
 /datum/quirk/proc/should_process()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SHOULD_BE_PURE(TRUE)
 	if(QDELETED(quirk_holder))
@@ -186,6 +208,8 @@
 
 /// Checks to see if the quirk should be processing, and starts/stops it.
 /datum/quirk/proc/update_process()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if(should_process())
@@ -195,11 +219,15 @@
 
 /// Updates processing status whenever the mob's stat changes.
 /datum/quirk/proc/on_stat_changed(mob/living/source, new_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_process()
 
 /// If a quirk is able to be selected for the mob's species
 /datum/quirk/proc/is_species_appropriate(datum/species/mob_species)
+	procstart = null
+	src.procstart = null
 	if(mob_trait in GLOB.species_prototypes[mob_species].inherent_traits)
 		return FALSE
 	return TRUE
@@ -224,6 +252,8 @@
  * * notify_player - If TRUE, adds strings to where_items_spawned list to be output to the player in [/datum/quirk/item_quirk/post_add()]
  */
 /datum/quirk/item_quirk/proc/give_item_to_holder(obj/item/quirk_item, list/valid_slots, flavour_text = null, default_location = "at your feet", notify_player = FALSE)
+	procstart = null
+	src.procstart = null
 	if(ispath(quirk_item))
 		quirk_item = new quirk_item(get_turf(quirk_holder))
 
@@ -238,6 +268,8 @@
 		LAZYADD(where_items_spawned, span_boldnotice("You have \a [quirk_item] [where]. [flavour_text]"))
 
 /datum/quirk/item_quirk/post_add()
+	procstart = null
+	src.procstart = null
 	if(open_backpack)
 		var/mob/living/carbon/human/human_holder = quirk_holder
 		// post_add() can be called via delayed callback. Check they still have a backpack equipped before trying to open it.

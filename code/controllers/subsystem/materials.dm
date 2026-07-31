@@ -41,6 +41,8 @@ SUBSYSTEM_DEF(materials)
 
 ///Ran on initialize, populated the materials and material dictionaries with their appropriate vars (See these variables for more info)
 /datum/controller/subsystem/materials/proc/initialize_materials()
+	procstart = null
+	src.procstart = null
 	materials = list()
 	flat_materials = list()
 	materials_by_type = list()
@@ -68,6 +70,8 @@ SUBSYSTEM_DEF(materials)
  *	The first argument is the type of material to initialize, the rest are passed to the material's init
  */
 /datum/controller/subsystem/materials/proc/initialize_material(datum/material/mat_type, ...)
+	procstart = null
+	src.procstart = null
 	var/mat_id = mat_type
 	if(initial(mat_type.init_flags) & MATERIAL_INIT_BESPOKE)
 		mat_id = get_id_from_args(arglist(list(mat_type) + args.Copy(2)))
@@ -95,6 +99,8 @@ SUBSYSTEM_DEF(materials)
  * - The following elements are used to generate bespoke IDs
  */
 /datum/controller/subsystem/materials/proc/get_material(datum/material/material_type, ...)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/material)
 
 	if(!materials)
@@ -123,6 +129,8 @@ SUBSYSTEM_DEF(materials)
 
 /// Fetches all materials that match a flag, or that don't have a flag if the passed flag is negative
 /datum/controller/subsystem/materials/proc/get_materials_by_flag(mat_flag)
+	procstart = null
+	src.procstart = null
 	if (isnull(mat_flag) || mat_flag == MATERIAL_CLASS_ANY) // Wildcard for "any" material
 		return flat_materials
 
@@ -156,6 +164,8 @@ SUBSYSTEM_DEF(materials)
  * We assume that no one will pass in a named argument with a value of null
  **/
 /datum/controller/subsystem/materials/proc/get_id_from_args(datum/material/mat_type, ...)
+	procstart = null
+	src.procstart = null
 	var/list/fullid = list("[initial(mat_type.id) || mat_type]")
 	var/list/named_arguments = list()
 	for(var/i in 2 to length(args))
@@ -181,6 +191,8 @@ SUBSYSTEM_DEF(materials)
 
 /// Returns a list to be used as an object's custom_materials. Lists will be cached and re-used based on the parameters.
 /datum/controller/subsystem/materials/proc/get_material_set_cache(list/materials_declaration, multiplier = 1)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(materials_declaration))
 		return null // If we get a null we pass it right back, we don't want to generate stack traces just because something is clearing out its materials list.
 
@@ -201,6 +213,8 @@ SUBSYSTEM_DEF(materials)
 
 /// Returns all materials that fit a requirement datum
 /datum/controller/subsystem/materials/proc/get_materials_by_req(datum/material_requirement/requirement)
+	procstart = null
+	src.procstart = null
 	if (ispath(requirement))
 		if (!requirements[requirement])
 			CRASH("Invalid material requirement passed into get_materials_by_req: [requirement]")

@@ -14,10 +14,14 @@
 	plane = POINT_PLANE
 
 /obj/effect/baseturf_helper/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/baseturf_helper/LateInitialize()
+	procstart = null
+	src.procstart = null
 	if(!baseturf_to_replace)
 		baseturf_to_replace = typecacheof(list(/turf/open/space,/turf/baseturf_bottom))
 	else if(!length(baseturf_to_replace))
@@ -36,6 +40,8 @@
 
 /// Replaces all the requested baseturfs (usually space/baseturfbottom) with the desired baseturf. Skips if its already there
 /obj/effect/baseturf_helper/proc/replace_baseturf(turf/thing)
+	procstart = null
+	src.procstart = null
 	thing.remove_baseturfs_from_typecache(baseturf_to_replace)
 
 	if(length(thing.baseturfs))
@@ -91,6 +97,8 @@
 	baseturf_to_replace = list(/turf/open/floor/plating)
 
 /obj/effect/baseturf_helper/reinforced_plating/replace_baseturf(turf/thing)
+	procstart = null
+	src.procstart = null
 	if(istype(thing, /turf/open/floor/plating))
 		return //Plates should not be placed under other plates
 	thing.stack_ontop_of_baseturf(/turf/open/floor/plating, baseturf)
@@ -100,6 +108,8 @@
 	name = "reinforced ceiling plating baseturf editor"
 
 /obj/effect/baseturf_helper/reinforced_plating/ceiling/replace_baseturf(turf/thing)
+	procstart = null
+	src.procstart = null
 	var/turf/ceiling = get_step_multiz(thing, UP)
 	if(isnull(ceiling))
 		CRASH("baseturf helper is attempting to modify the Z level above but there is no Z level above it.")
@@ -123,6 +133,8 @@
 	var/late = FALSE
 
 /obj/effect/mapping_helpers/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	return late ? INITIALIZE_HINT_LATELOAD : INITIALIZE_HINT_QDEL
 
@@ -134,6 +146,8 @@
 	var/apply_to_windoors = FALSE
 
 /obj/effect/mapping_helpers/airlock/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		log_mapping("[src] spawned outside of mapload!")
@@ -156,6 +170,8 @@
 	payload(airlock)
 
 /obj/effect/mapping_helpers/airlock/LateInitialize()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/door/airlock/airlock = locate(/obj/machinery/door/airlock) in loc
 	if(!airlock)
 		qdel(src)
@@ -196,6 +212,8 @@
 	qdel(src)
 
 /obj/effect/mapping_helpers/airlock/proc/payload(obj/machinery/door/airlock/payload)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/mapping_helpers/airlock/cyclelink_helper
@@ -203,6 +221,8 @@
 	icon_state = "airlock_cyclelink_helper"
 
 /obj/effect/mapping_helpers/airlock/cyclelink_helper/payload(obj/machinery/door/airlock/airlock)
+	procstart = null
+	src.procstart = null
 	if(airlock.cyclelinkeddir)
 		log_mapping("[src] at [AREACOORD(src)] tried to set [airlock] cyclelinkeddir, but it's already set!")
 	else
@@ -214,6 +234,8 @@
 	var/cycle_id
 
 /obj/effect/mapping_helpers/airlock/cyclelink_helper_multi/payload(obj/machinery/door/airlock/airlock)
+	procstart = null
+	src.procstart = null
 	if(airlock.closeOtherId)
 		log_mapping("[src] at [AREACOORD(src)] tried to set [airlock] closeOtherId, but it's already set!")
 	else if(!cycle_id)
@@ -226,6 +248,8 @@
 	icon_state = "airlock_locked_helper"
 
 /obj/effect/mapping_helpers/airlock/locked/payload(obj/machinery/door/airlock/airlock)
+	procstart = null
+	src.procstart = null
 	if(airlock.locked)
 		log_mapping("[src] at [AREACOORD(src)] tried to bolt [airlock] but it's already locked!")
 	else
@@ -237,6 +261,8 @@
 	icon_state = "airlock_unres_helper"
 
 /obj/effect/mapping_helpers/airlock/unres/payload(obj/machinery/door/airlock/airlock)
+	procstart = null
+	src.procstart = null
 	airlock.unres_sides ^= dir
 	airlock.unres_latch = TRUE
 
@@ -245,6 +271,8 @@
 	icon_state = "airlock_unres_delayed_helper"
 
 /obj/effect/mapping_helpers/airlock/unres/delayed/payload(obj/machinery/door/airlock/airlock)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	airlock.delayed_unres_open = TRUE
 
@@ -253,6 +281,8 @@
 	icon_state = "airlock_abandoned"
 
 /obj/effect/mapping_helpers/airlock/abandoned/payload(obj/machinery/door/airlock/airlock)
+	procstart = null
+	src.procstart = null
 	if(airlock.abandoned)
 		log_mapping("[src] at [AREACOORD(src)] tried to make [airlock] abandoned but it's already abandoned!")
 	else
@@ -263,6 +293,8 @@
 	icon_state = "airlock_welded"
 
 /obj/effect/mapping_helpers/airlock/welded/payload(obj/machinery/door/airlock/airlock)
+	procstart = null
+	src.procstart = null
 	if(airlock.welded)
 		log_mapping("[src] at [AREACOORD(src)] tried to make [airlock] welded but it's already welded closed!")
 	airlock.welded = TRUE
@@ -272,6 +304,8 @@
 	icon_state = "airlock_cutaiwire"
 
 /obj/effect/mapping_helpers/airlock/cutaiwire/payload(obj/machinery/door/airlock/airlock)
+	procstart = null
+	src.procstart = null
 	if(airlock.cutAiWire)
 		log_mapping("[src] at [AREACOORD(src)] tried to cut the ai wire on [airlock] but it's already cut!")
 	else
@@ -282,6 +316,8 @@
 	icon_state = "airlock_autoname"
 
 /obj/effect/mapping_helpers/airlock/autoname/payload(obj/machinery/door/airlock/airlock)
+	procstart = null
+	src.procstart = null
 	if(airlock.autoname)
 		log_mapping("[src] at [AREACOORD(src)] tried to autoname the [airlock] but it's already autonamed!")
 	else
@@ -292,6 +328,8 @@
 	icon_state = "airlock_inaccessible"
 
 /obj/effect/mapping_helpers/airlock/inaccessible/payload(obj/machinery/door/airlock/airlock)
+	procstart = null
+	src.procstart = null
 	if(airlock.req_one_access != null)
 		log_mapping("[src] at [AREACOORD(src)] tried to set req_access, but req__one_access was already set!")
 	else
@@ -303,6 +341,8 @@
 	apply_to_windoors = TRUE
 
 /obj/effect/mapping_helpers/airlock/red_alert_access/payload(obj/machinery/door/airlock)
+	procstart = null
+	src.procstart = null
 	airlock.red_alert_access = TRUE
 
 //air alarm helpers
@@ -311,6 +351,8 @@
 	late = TRUE
 
 /obj/effect/mapping_helpers/airalarm/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		log_mapping("[src] spawned outside of mapload!")
@@ -326,6 +368,8 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/mapping_helpers/airalarm/LateInitialize()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/airalarm/target = locate(/obj/machinery/airalarm) in loc
 
 	if(isnull(target))
@@ -360,6 +404,8 @@
 	qdel(src)
 
 /obj/effect/mapping_helpers/airalarm/proc/payload(obj/machinery/airalarm/target)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/mapping_helpers/airalarm/unlocked
@@ -367,6 +413,8 @@
 	icon_state = "airalarm_unlocked_interface_helper"
 
 /obj/effect/mapping_helpers/airalarm/unlocked/payload(obj/machinery/airalarm/target)
+	procstart = null
+	src.procstart = null
 	if(target.unlocked)
 		var/area/area = get_area(target)
 		log_mapping("[src] at [AREACOORD(src)] [(area.type)] tried to unlock the [target] but it's already unlocked!")
@@ -377,6 +425,8 @@
 	icon_state = "airalarm_syndicate_access_helper"
 
 /obj/effect/mapping_helpers/airalarm/syndicate_access/payload(obj/machinery/airalarm/target)
+	procstart = null
+	src.procstart = null
 	if(target.syndicate_access)
 		var/area/area = get_area(target)
 		log_mapping("[src] at [AREACOORD(src)] [(area.type)] tried to adjust [target]'s access to syndicate but it's already changed!")
@@ -387,6 +437,8 @@
 	icon_state = "airalarm_away_general_access_helper"
 
 /obj/effect/mapping_helpers/airalarm/away_general_access/payload(obj/machinery/airalarm/target)
+	procstart = null
+	src.procstart = null
 	if(target.away_general_access)
 		var/area/area = get_area(target)
 		log_mapping("[src] at [AREACOORD(src)] [(area.type)] tried to adjust [target]'s access to away_general but it's already changed!")
@@ -397,6 +449,8 @@
 	icon_state = "airalarm_engine_access_helper"
 
 /obj/effect/mapping_helpers/airalarm/engine_access/payload(obj/machinery/airalarm/target)
+	procstart = null
+	src.procstart = null
 	if(target.engine_access)
 		var/area/area = get_area(target)
 		log_mapping("[src] at [AREACOORD(src)] [(area.type)] tried to adjust [target]'s access to engine_access but it's already changed!")
@@ -407,6 +461,8 @@
 	icon_state = "airalarm_mixingchamber_access_helper"
 
 /obj/effect/mapping_helpers/airalarm/mixingchamber_access/payload(obj/machinery/airalarm/target)
+	procstart = null
+	src.procstart = null
 	if(target.mixingchamber_access)
 		var/area/area = get_area(target)
 		log_mapping("[src] at [AREACOORD(src)] [(area.type)] tried to adjust [target]'s access to mixingchamber_access but it's already changed!")
@@ -417,6 +473,8 @@
 	icon_state = "airalarm_all_access_helper"
 
 /obj/effect/mapping_helpers/airalarm/all_access/payload(obj/machinery/airalarm/target)
+	procstart = null
+	src.procstart = null
 	if(target.all_access)
 		var/area/area = get_area(target)
 		log_mapping("[src] at [AREACOORD(src)] [(area.type)] tried to adjust [target]'s access to all_access but it's already changed!")
@@ -427,6 +485,8 @@
 	icon_state = "airalarm_tlv_cold_room_helper"
 
 /obj/effect/mapping_helpers/airalarm/tlv_cold_room/payload(obj/machinery/airalarm/target)
+	procstart = null
+	src.procstart = null
 	if(target.tlv_cold_room)
 		var/area/area = get_area(target)
 		log_mapping("[src] at [AREACOORD(src)] [(area.type)] tried to adjust [target]'s tlv to cold_room but it's already changed!")
@@ -437,6 +497,8 @@
 	icon_state = "airalarm_tlv_kitchen_helper"
 
 /obj/effect/mapping_helpers/airalarm/tlv_kitchen/payload(obj/machinery/airalarm/target)
+	procstart = null
+	src.procstart = null
 	if(target.tlv_kitchen)
 		var/area/area = get_area(target)
 		log_mapping("[src] at [AREACOORD(src)] [(area.type)] tried to adjust [target]'s tlv to kitchen but it's already changed!")
@@ -447,6 +509,8 @@
 	icon_state = "airalarm_tlv_no_checks_helper"
 
 /obj/effect/mapping_helpers/airalarm/tlv_no_checks/payload(obj/machinery/airalarm/target)
+	procstart = null
+	src.procstart = null
 	if(target.tlv_no_checks)
 		var/area/area = get_area(target)
 		log_mapping("[src] at [AREACOORD(src)] [(area.type)] tried to adjust [target]'s tlv to no_checks but it's already changed!")
@@ -460,12 +524,16 @@
 	var/allow_link_change = FALSE
 
 /obj/effect/mapping_helpers/airalarm/link/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		log_mapping("[src] spawned outside of mapload!")
 		return INITIALIZE_HINT_QDEL
 
 /obj/effect/mapping_helpers/airalarm/link/LateInitialize(mapload)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/airalarm/alarm = locate(/obj/machinery/airalarm) in loc
 	if(!isnull(alarm))
 		alarm.air_sensor_chamber_id = chamber_id
@@ -480,6 +548,8 @@
 	icon_state = "airalarm_surgery_helper"
 
 /obj/effect/mapping_helpers/airalarm/surgery/LateInitialize()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/airalarm/target = locate() in loc
 	for(var/obj/machinery/atmospherics/components/unary/vent_scrubber/scrubber as anything in target?.my_area?.air_scrubbers)
 		scrubber.filter_types |= /datum/gas/nitrous_oxide
@@ -492,6 +562,8 @@
 	late = TRUE
 
 /obj/effect/mapping_helpers/apc/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		log_mapping("[src] spawned outside of mapload!")
@@ -507,6 +579,8 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/mapping_helpers/apc/LateInitialize()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/power/apc/target = locate(/obj/machinery/power/apc) in loc
 
 	if(isnull(target))
@@ -538,6 +612,8 @@
 	qdel(src)
 
 /obj/effect/mapping_helpers/apc/proc/payload(obj/machinery/power/apc/target)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/mapping_helpers/apc/cut_AI_wire
@@ -545,6 +621,8 @@
 	icon_state = "apc_cut_AIwire_helper"
 
 /obj/effect/mapping_helpers/apc/cut_AI_wire/payload(obj/machinery/power/apc/target)
+	procstart = null
+	src.procstart = null
 	if(target.cut_AI_wire)
 		var/area/apc_area = get_area(target)
 		log_mapping("[src] at [AREACOORD(src)] [(apc_area.type)] tried to mend the AI wire on the [target] but it's already cut!")
@@ -555,6 +633,8 @@
 	icon_state = "apc_5k_cell_helper"
 
 /obj/effect/mapping_helpers/apc/cell_5k/payload(obj/machinery/power/apc/target)
+	procstart = null
+	src.procstart = null
 	if(target.cell_5k)
 		var/area/apc_area = get_area(target)
 		log_mapping("[src] at [AREACOORD(src)] [(apc_area.type)] tried to change [target]'s cell to cell_5k but it's already changed!")
@@ -565,6 +645,8 @@
 	icon_state = "apc_10k_cell_helper"
 
 /obj/effect/mapping_helpers/apc/cell_10k/payload(obj/machinery/power/apc/target)
+	procstart = null
+	src.procstart = null
 	if(target.cell_10k)
 		var/area/apc_area = get_area(target)
 		log_mapping("[src] at [AREACOORD(src)] [(apc_area.type)] tried to change [target]'s cell to cell_10k but it's already changed!")
@@ -575,6 +657,8 @@
 	icon_state = "apc_syndicate_access_helper"
 
 /obj/effect/mapping_helpers/apc/syndicate_access/payload(obj/machinery/power/apc/target)
+	procstart = null
+	src.procstart = null
 	if(target.syndicate_access)
 		var/area/apc_area = get_area(target)
 		log_mapping("[src] at [AREACOORD(src)] [(apc_area.type)] tried to adjust [target]'s access to syndicate but it's already changed!")
@@ -585,6 +669,8 @@
 	icon_state = "apc_away_general_access_helper"
 
 /obj/effect/mapping_helpers/apc/away_general_access/payload(obj/machinery/power/apc/target)
+	procstart = null
+	src.procstart = null
 	if(target.away_general_access)
 		var/area/apc_area = get_area(target)
 		log_mapping("[src] at [AREACOORD(src)] [(apc_area.type)] tried to adjust [target]'s access to away_general but it's already changed!")
@@ -595,6 +681,8 @@
 	icon_state = "apc_unlocked_interface_helper"
 
 /obj/effect/mapping_helpers/apc/unlocked/payload(obj/machinery/power/apc/target)
+	procstart = null
+	src.procstart = null
 	if(target.unlocked)
 		var/area/apc_area = get_area(target)
 		log_mapping("[src] at [AREACOORD(src)] [(apc_area.type)] tried to unlock the [target] but it's already unlocked!")
@@ -605,6 +693,8 @@
 	icon_state = "apc_no_charge_helper"
 
 /obj/effect/mapping_helpers/apc/no_charge/payload(obj/machinery/power/apc/target)
+	procstart = null
+	src.procstart = null
 	if(target.no_charge)
 		var/area/apc_area = get_area(target)
 		log_mapping("[src] at [AREACOORD(src)] [(apc_area.type)] tried to set [target]'s charge to 0 but it's already at 0!")
@@ -615,6 +705,8 @@
 	icon_state = "apc_full_charge_helper"
 
 /obj/effect/mapping_helpers/apc/full_charge/payload(obj/machinery/power/apc/target)
+	procstart = null
+	src.procstart = null
 	if(target.full_charge)
 		var/area/apc_area = get_area(target)
 		log_mapping("[src] at [AREACOORD(src)] [(apc_area.type)] tried to set [target]'s charge to 100 but it's already at 100!")
@@ -626,6 +718,8 @@
 	icon_state = "lights_off"
 
 /obj/effect/mapping_helpers/turn_off_lights_with_lightswitch/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		log_mapping("[src] spawned outside of mapload!")
@@ -633,6 +727,8 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/mapping_helpers/turn_off_lights_with_lightswitch/LateInitialize()
+	procstart = null
+	src.procstart = null
 	var/area/needed_area = get_area(src)
 	if(!needed_area.lightswitch)
 		stack_trace("[src] at [AREACOORD(src)] [(needed_area.type)] tried to turn lights off but they are already off!")
@@ -649,6 +745,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	icon_state = "no_lava"
 
 /obj/effect/mapping_helpers/no_lava/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/T = get_turf(src)
 	T.turf_flags |= NO_LAVA_GEN
@@ -658,6 +756,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	icon_state = "no_atoms_ontop"
 
 /obj/effect/mapping_helpers/no_atoms_ontop/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/loc_turf = get_turf(src)
 	loc_turf.turf_flags |= TURF_BLOCKS_POPULATE_TERRAIN_FLORAFEATURES
@@ -676,6 +776,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 
 //Late init so everything is likely ready and loaded (no warranty)
 /obj/effect/mapping_helpers/atom_injector/LateInitialize()
+	procstart = null
+	src.procstart = null
 	if(!check_validity())
 		return
 	var/turf/target_turf = get_turf(src)
@@ -698,14 +800,20 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 
 ///Checks if whatever we are trying to inject with is valid
 /obj/effect/mapping_helpers/atom_injector/proc/check_validity()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 ///Injects our stuff into the atom
 /obj/effect/mapping_helpers/atom_injector/proc/inject(atom/target)
+	procstart = null
+	src.procstart = null
 	return
 
 ///Generates text for our stack trace
 /obj/effect/mapping_helpers/atom_injector/proc/generate_stack_trace()
+	procstart = null
+	src.procstart = null
 	. = "[name] found no targets at ([x], [y], [z]). First Match Only: [first_match_only ? "true" : "false"] target type: [target_type] | target name: [target_name]"
 
 /obj/effect/mapping_helpers/atom_injector/obj_flag
@@ -714,6 +822,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	var/inject_flags = NONE
 
 /obj/effect/mapping_helpers/atom_injector/obj_flag/inject(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!isobj(target))
 		return
 	var/obj/obj_target = target
@@ -729,16 +839,22 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	var/list/component_args = list()
 
 /obj/effect/mapping_helpers/atom_injector/component_injector/check_validity()
+	procstart = null
+	src.procstart = null
 	if(!ispath(component_type, /datum/component))
 		CRASH("Wrong component type in [type] - [component_type] is not a component")
 	return TRUE
 
 /obj/effect/mapping_helpers/atom_injector/component_injector/inject(atom/target)
+	procstart = null
+	src.procstart = null
 	var/arguments = list(component_type)
 	arguments += component_args
 	target._AddComponent(arguments)
 
 /obj/effect/mapping_helpers/atom_injector/component_injector/generate_stack_trace()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += " | component type: [component_type] | component arguments: [list2params(component_args)]"
 
@@ -752,16 +868,22 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	var/list/element_args = list()
 
 /obj/effect/mapping_helpers/atom_injector/element_injector/check_validity()
+	procstart = null
+	src.procstart = null
 	if(!ispath(element_type, /datum/element))
 		CRASH("Wrong element type in [type] - [element_type] is not a element")
 	return TRUE
 
 /obj/effect/mapping_helpers/atom_injector/element_injector/inject(atom/target)
+	procstart = null
+	src.procstart = null
 	var/arguments = list(element_type)
 	arguments += element_args
 	target._AddElement(arguments)
 
 /obj/effect/mapping_helpers/atom_injector/element_injector/generate_stack_trace()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += " | element type: [element_type] | element arguments: [list2params(element_args)]"
 
@@ -773,6 +895,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	var/trait_name
 
 /obj/effect/mapping_helpers/atom_injector/trait_injector/check_validity()
+	procstart = null
+	src.procstart = null
 	if(!istext(trait_name))
 		CRASH("Wrong trait in [type] - [trait_name] is not a trait")
 	if(!GLOB.global_trait_name_map)
@@ -782,9 +906,13 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	return TRUE
 
 /obj/effect/mapping_helpers/atom_injector/trait_injector/inject(atom/target)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(target, trait_name, MAPPING_HELPER_TRAIT)
 
 /obj/effect/mapping_helpers/atom_injector/trait_injector/generate_stack_trace()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += " | trait name: [trait_name]"
 
@@ -808,6 +936,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	var/animated = TRUE
 
 /obj/effect/mapping_helpers/atom_injector/human_icon_injector/check_validity()
+	procstart = null
+	src.procstart = null
 	if(!ispath(species_path, /datum/species))
 		CRASH("Wrong species path in [type] - [species_path] is not a species")
 	if(outfit_path && !ispath(outfit_path, /datum/outfit))
@@ -821,9 +951,13 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	return TRUE
 
 /obj/effect/mapping_helpers/atom_injector/human_icon_injector/inject(atom/target)
+	procstart = null
+	src.procstart = null
 	apply_dynamic_human_appearance(target, outfit_path, species_path, mob_spawn_path, r_hand, l_hand, bloody_slots, animated)
 
 /obj/effect/mapping_helpers/atom_injector/human_icon_injector/generate_stack_trace()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += " | outfit path: [outfit_path] | species path: [species_path] | mob spawner path: [mob_spawn_path] | right/left hand path: [r_hand]/[l_hand]"
 
@@ -839,6 +973,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	var/icon_file
 
 /obj/effect/mapping_helpers/atom_injector/custom_icon/check_validity()
+	procstart = null
+	src.procstart = null
 	var/static/icon_cache = list()
 	var/static/query_in_progress = FALSE //We're using a single tmp file so keep it linear.
 	if(query_in_progress)
@@ -864,11 +1000,15 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	return TRUE
 
 /obj/effect/mapping_helpers/atom_injector/custom_icon/inject(atom/target)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		return
 	target.vars[target_variable] = icon_file
 
 /obj/effect/mapping_helpers/atom_injector/custom_icon/generate_stack_trace()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += " | target variable: [target_variable] | icon url: [icon_url]"
 
@@ -884,6 +1024,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	var/sound_file
 
 /obj/effect/mapping_helpers/atom_injector/custom_sound/check_validity()
+	procstart = null
+	src.procstart = null
 	var/static/sound_cache = list()
 	var/static/query_in_progress = FALSE //We're using a single tmp file so keep it linear.
 	if(query_in_progress)
@@ -909,11 +1051,15 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	return TRUE
 
 /obj/effect/mapping_helpers/atom_injector/custom_sound/inject(atom/target)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		return
 	target.vars[target_variable] = sound_file
 
 /obj/effect/mapping_helpers/atom_injector/custom_sound/generate_stack_trace()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += " | target variable: [target_variable] | sound url: [sound_url]"
 
@@ -929,12 +1075,16 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	var/datum/corpse_damage_class/morgue_body_class = /datum/corpse_damage_class/station/morgue
 
 /obj/effect/mapping_helpers/dead_body_placer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		return
 	admin_spawned = TRUE
 
 /obj/effect/mapping_helpers/dead_body_placer/LateInitialize()
+	procstart = null
+	src.procstart = null
 	var/area/morgue_area = get_area(src)
 	var/list/obj/structure/bodycontainer/morgue/trays = list()
 	for (var/list/zlevel_turfs as anything in morgue_area.get_zlevel_turf_lists())
@@ -981,11 +1131,15 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	var/map_warning = TRUE
 
 /obj/effect/mapping_helpers/ianbirthday/LateInitialize()
+	procstart = null
+	src.procstart = null
 	if(check_holidays(IAN_HOLIDAY))
 		birthday()
 	qdel(src)
 
 /obj/effect/mapping_helpers/ianbirthday/proc/birthday()
+	procstart = null
+	src.procstart = null
 	var/area/celebration_area = get_area(src)
 	var/list/table_turfs = list()
 	var/list/open_turfs = list()
@@ -1045,6 +1199,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	map_warning = FALSE
 
 /obj/effect/mapping_helpers/ianbirthday/admin/LateInitialize()
+	procstart = null
+	src.procstart = null
 	birthday()
 	qdel(src)
 
@@ -1055,11 +1211,15 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	icon_state = "iansnewyrshelper"
 
 /obj/effect/mapping_helpers/iannewyear/LateInitialize()
+	procstart = null
+	src.procstart = null
 	if(check_holidays(NEW_YEAR))
 		fireworks()
 	qdel(src)
 
 /obj/effect/mapping_helpers/iannewyear/proc/fireworks()
+	procstart = null
+	src.procstart = null
 	var/area/celebration_area = get_area(src)
 	var/list/table_turfs = list()
 	var/turf/dogbed_turf
@@ -1096,6 +1256,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	var/note_path //if you already have something wrote up in a paper subtype, put the path here
 
 /obj/effect/mapping_helpers/airlock_note_placer/LateInitialize()
+	procstart = null
+	src.procstart = null
 	var/turf/turf = get_turf(src)
 	if(note_path && !ispath(note_path, /obj/item/paper)) //don't put non-paper in the paper slot thank you
 		log_mapping("[src] at [x],[y] had an improper note_path path, could not place paper note.")
@@ -1142,6 +1304,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	late = TRUE
 
 /obj/effect/mapping_helpers/trapdoor_placer/LateInitialize()
+	procstart = null
+	src.procstart = null
 	var/turf/component_target = get_turf(src)
 	component_target.AddComponent(/datum/component/trapdoor, starts_open = FALSE, conspicuous = FALSE)
 	qdel(src)
@@ -1154,6 +1318,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	var/list/traits_to_add = list()
 
 /obj/effect/mapping_helpers/ztrait_injector/LateInitialize()
+	procstart = null
+	src.procstart = null
 	var/datum/space_level/level = SSmapping.z_list[z]
 	if(!level || !length(traits_to_add))
 		return
@@ -1171,10 +1337,14 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	var/json_url
 
 /obj/effect/mapping_helpers/circuit_spawner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	INVOKE_ASYNC(src, PROC_REF(spawn_circuit))
 
 /obj/effect/mapping_helpers/circuit_spawner/proc/spawn_circuit()
+	procstart = null
+	src.procstart = null
 	var/list/errors = list()
 	var/obj/item/integrated_circuit/loaded/new_circuit = new(loc)
 	var/json_data = load_data()
@@ -1194,6 +1364,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 			)
 
 /obj/effect/mapping_helpers/circuit_spawner/proc/load_data()
+	procstart = null
+	src.procstart = null
 	var/static/json_cache = list()
 	var/static/query_in_progress = FALSE //We're using a single tmp file so keep it linear.
 	if(query_in_progress)
@@ -1223,6 +1395,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	late = TRUE
 
 /obj/effect/mapping_helpers/broken_floor/LateInitialize()
+	procstart = null
+	src.procstart = null
 	var/turf/open/floor/floor = get_turf(src)
 	floor.break_tile()
 	qdel(src)
@@ -1235,6 +1409,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	late = TRUE
 
 /obj/effect/mapping_helpers/burnt_floor/LateInitialize()
+	procstart = null
+	src.procstart = null
 	var/turf/open/floor/floor = get_turf(src)
 	floor.burn_tile()
 	qdel(src)
@@ -1246,6 +1422,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	late = TRUE
 
 /obj/effect/mapping_helpers/broken_machine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		log_mapping("[src] spawned outside of mapload!")
@@ -1261,6 +1439,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/mapping_helpers/broken_machine/LateInitialize()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/target = locate(/obj/machinery) in loc
 
 	if(isnull(target))
@@ -1271,6 +1451,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	qdel(src)
 
 /obj/effect/mapping_helpers/broken_machine/proc/payload(obj/machinery/airalarm/target)
+	procstart = null
+	src.procstart = null
 	if(target.machine_stat & BROKEN)
 		var/area/area = get_area(target)
 		log_mapping("[src] at [AREACOORD(src)] [(area.type)] tried to break [target] but it's already broken!")
@@ -1287,6 +1469,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	var/integrity_damage_max = 0.85
 
 /obj/effect/mapping_helpers/damaged_window/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		log_mapping("[src] spawned outside of mapload!")
@@ -1294,6 +1478,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/mapping_helpers/damaged_window/LateInitialize()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/window/target = locate(/obj/structure/window) in loc
 
 	if(isnull(target))
@@ -1308,6 +1494,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	qdel(src)
 
 /obj/effect/mapping_helpers/damaged_window/proc/payload(obj/structure/window/target)
+	procstart = null
+	src.procstart = null
 	if(target.get_integrity() < target.max_integrity)
 		var/area/area = get_area(target)
 		log_mapping("[src] at [AREACOORD(src)] [(area.type)] tried to damage [target] but it's already damaged!")
@@ -1319,6 +1507,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	late = TRUE
 
 /obj/effect/mapping_helpers/requests_console/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		log_mapping("[src] spawned outside of mapload!")
@@ -1327,6 +1517,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/mapping_helpers/requests_console/LateInitialize()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/airalarm/target = locate(/obj/machinery/requests_console) in loc
 	if(isnull(target))
 		var/area/target_area = get_area(src)
@@ -1338,6 +1530,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 
 /// Fills out the request console's variables
 /obj/effect/mapping_helpers/requests_console/proc/payload(obj/machinery/requests_console/console)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/mapping_helpers/requests_console/announcement
@@ -1345,6 +1539,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	icon_state = "requests_console_announcement_helper"
 
 /obj/effect/mapping_helpers/requests_console/announcement/payload(obj/machinery/requests_console/console)
+	procstart = null
+	src.procstart = null
 	console.can_send_announcements = TRUE
 
 /obj/effect/mapping_helpers/requests_console/assistance
@@ -1352,6 +1548,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	icon_state = "requests_console_assistance_helper"
 
 /obj/effect/mapping_helpers/requests_console/assistance/payload(obj/machinery/requests_console/console)
+	procstart = null
+	src.procstart = null
 	GLOB.req_console_assistance |= console.department
 
 /obj/effect/mapping_helpers/requests_console/supplies
@@ -1359,6 +1557,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	icon_state = "requests_console_supplies_helper"
 
 /obj/effect/mapping_helpers/requests_console/supplies/payload(obj/machinery/requests_console/console)
+	procstart = null
+	src.procstart = null
 	GLOB.req_console_supplies |= console.department
 
 /obj/effect/mapping_helpers/requests_console/information
@@ -1366,6 +1566,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	icon_state = "requests_console_information_helper"
 
 /obj/effect/mapping_helpers/requests_console/information/payload(obj/machinery/requests_console/console)
+	procstart = null
+	src.procstart = null
 	GLOB.req_console_information |= console.department
 
 /obj/effect/mapping_helpers/requests_console/ore_update
@@ -1373,6 +1575,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	icon_state = "requests_console_ore_update_helper"
 
 /obj/effect/mapping_helpers/requests_console/ore_update/payload(obj/machinery/requests_console/console)
+	procstart = null
+	src.procstart = null
 	console.receive_ore_updates = TRUE
 
 /obj/effect/mapping_helpers/engraving
@@ -1383,10 +1587,14 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	layer = ABOVE_NORMAL_TURF_LAYER
 
 /obj/effect/mapping_helpers/engraving/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/mapping_helpers/engraving/LateInitialize()
+	procstart = null
+	src.procstart = null
 	var/turf/closed/engraved_wall = get_turf(src)
 
 	if(!isclosedturf(engraved_wall) || !SSpersistence.saved_engravings.len || HAS_TRAIT(engraved_wall, TRAIT_NOT_ENGRAVABLE))
@@ -1409,6 +1617,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	icon_state = "explodable"
 
 /obj/effect/mapping_helpers/bombable_wall/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		log_mapping("[src] spawned outside of mapload!")
@@ -1427,6 +1637,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	var/force_buckle = FALSE
 
 /obj/effect/mapping_helpers/mob_buckler/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		log_mapping("[src] spawned outside of mapload!")
@@ -1435,6 +1647,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/mapping_helpers/mob_buckler/LateInitialize()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/buckle_to
 	var/list/mobs = list()
 	for(var/atom/movable/possible_buckle as anything in loc)
@@ -1465,12 +1679,16 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	var/flag_to_give
 
 /obj/effect/mapping_helpers/basic_mob_flags/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		log_mapping("[src] spawned outside of mapload!")
 		return INITIALIZE_HINT_QDEL
 
 /obj/effect/mapping_helpers/basic_mob_flags/LateInitialize()
+	procstart = null
+	src.procstart = null
 	var/had_any_mobs = FALSE
 	for(var/mob/living/basic/basic_mobs in loc)
 		had_any_mobs = TRUE
@@ -1517,6 +1735,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	var/dent_type = WALL_DENT_SHOT
 
 /obj/effect/mapping_helpers/wall_dent/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		log_mapping("[src] spawned outside of mapload!")
@@ -1545,6 +1765,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	icon_state = "no_teleport_turf"
 
 /obj/effect/mapping_helpers/wall_dent/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/our_turf = get_turf(src)
 	ADD_TRAIT(our_turf, TRAIT_NO_TELEPORT, INNATE_TRAIT)

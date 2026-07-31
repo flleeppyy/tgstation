@@ -18,6 +18,8 @@
 	desc = "It's a personal storage unit for operative gear."
 
 /obj/structure/closet/syndicate/personal/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/trench_tool(src)
 	new /obj/item/clothing/glasses/night(src)
@@ -37,6 +39,8 @@
 	desc = "It's a storage unit for a Syndicate boarding party."
 
 /obj/structure/closet/syndicate/nuclear/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 5)
 		new /obj/item/ammo_box/magazine/m10mm(src)
 	new /obj/item/storage/box/flashbangs(src)
@@ -50,6 +54,8 @@
 	icon_state = "syndicate_chemical"
 
 /obj/structure/closet/syndicate/chemical/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/storage/box/pillbottles(src)
 	new /obj/item/storage/box/pillbottles(src)
@@ -66,6 +72,8 @@
 
 // A lot of this stuff is objective items, and it's also only used for debugging, so init times don't matter here.
 /obj/structure/closet/syndicate/resources/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/common_min = 30 //Minimum amount of minerals in the stack for common minerals
 	var/common_max = 50 //Maximum amount of HONK in the stack for HONK common minerals
@@ -132,6 +140,8 @@
 
 // A lot of this stuff is objective items, and it's also only used for debugging, so init times don't matter here.
 /obj/structure/closet/syndicate/resources/everything/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	var/list/resources = list(
 	/obj/item/stack/sheet/iron,
 	/obj/item/stack/sheet/glass,

@@ -9,6 +9,8 @@
 	casing_phrasing = "shell"
 
 /obj/item/ammo_box/magazine/m12g/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state]-[ceil(ammo_count(FALSE)/8)*8]"
 
@@ -57,6 +59,8 @@
 	ammo_type = /obj/item/ammo_casing/shotgun/flechette/donk
 
 /obj/item/ammo_box/magazine/m12g/donk/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ishuman(user))
 		return

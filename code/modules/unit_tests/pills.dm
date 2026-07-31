@@ -1,4 +1,6 @@
 /datum/unit_test/pills/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/reagent_containers/applicator/pill/iron/pill_one = allocate(/obj/item/reagent_containers/applicator/pill/iron)
 	var/obj/item/reagent_containers/applicator/pill/iron/pill_two = allocate(/obj/item/reagent_containers/applicator/pill/tox)

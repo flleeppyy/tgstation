@@ -10,9 +10,13 @@
 	var/datum/component/experiment_handler/linked_experiment_handler
 
 /datum/experiment/physical/is_complete()
+	procstart = null
+	src.procstart = null
 	return completed
 
 /datum/experiment/physical/perform_experiment_actions(datum/component/experiment_handler/experiment_handler, atom/target)
+	procstart = null
+	src.procstart = null
 	if(currently_scanned_atom)
 		unregister_events()
 	currently_scanned_atom = target
@@ -27,10 +31,14 @@
  * Handles registering to events relevant to the experiment
  */
 /datum/experiment/physical/proc/register_events()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /**
  * Handles unregistering to events relevant to the experiment
  */
 /datum/experiment/physical/proc/unregister_events()
+	procstart = null
+	src.procstart = null
 	return

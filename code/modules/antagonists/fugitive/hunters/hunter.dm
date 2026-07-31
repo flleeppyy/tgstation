@@ -13,16 +13,22 @@
 	var/backstory = "error"
 
 /datum/antagonist/fugitive_hunter/on_gain()
+	procstart = null
+	src.procstart = null
 	forge_objectives()
 	. = ..()
 
-/datum/antagonist/fugitive_hunter/forge_objectives() //this isn't an actual objective because it's about round end rosters
+/datum/antagonist/fugitive_hunter/forge_objectives()
+	procstart = null
+	src.procstart = null //this isn't an actual objective because it's about round end rosters
 	var/datum/objective/capture = new /datum/objective
 	capture.owner = owner
 	capture.explanation_text = "Capture the fugitives in the station and put them into the bluespace capture machine on your ship."
 	objectives += capture
 
 /datum/antagonist/fugitive_hunter/greet()
+	procstart = null
+	src.procstart = null
 	switch(backstory)
 		if(HUNTER_PACK_COPS)
 			to_chat(owner, span_bolddanger("Justice has arrived. I am a member of the Spacepol!"))
@@ -50,6 +56,8 @@
 	owner.announce_objectives()
 
 /datum/antagonist/fugitive_hunter/create_team(datum/team/fugitive_hunters/new_team)
+	procstart = null
+	src.procstart = null
 	if(!new_team)
 		for(var/datum/antagonist/fugitive_hunter/H in GLOB.antagonists)
 			if(!H.owner)
@@ -66,9 +74,13 @@
 	hunter_team = new_team
 
 /datum/antagonist/fugitive_hunter/get_team()
+	procstart = null
+	src.procstart = null
 	return hunter_team
 
 /datum/antagonist/fugitive_hunter/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	add_team_hud(mob_override || owner.current)
 	if(backstory == HUNTER_PACK_RUSSIAN)
 		var/mob/living/owner_mob = mob_override || owner.current
@@ -76,6 +88,8 @@
 		owner_mob.set_active_language(/datum/language/spinwarder)
 
 /datum/antagonist/fugitive_hunter/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/owner_mob = mob_override || owner.current
 	owner_mob.remove_language(/datum/language/spinwarder, source = LANGUAGE_BOUNTYHUNTER)
 
@@ -83,12 +97,16 @@
 	var/backstory = "error"
 
 /datum/team/fugitive_hunters/proc/update_objectives(initial = FALSE)
+	procstart = null
+	src.procstart = null
 	objectives = list()
 	var/datum/objective/O = new()
 	O.team = src
 	objectives += O
 
 /datum/team/fugitive_hunters/proc/assemble_fugitive_results()
+	procstart = null
+	src.procstart = null
 	var/list/fugitives_counted = list()
 	var/list/fugitives_dead = list()
 	var/list/fugitives_captured = list()
@@ -104,6 +122,8 @@
 	. = list(fugitives_counted, fugitives_dead, fugitives_captured) //okay, check out how cool this is.
 
 /datum/team/fugitive_hunters/proc/all_hunters_dead()
+	procstart = null
+	src.procstart = null
 	var/dead_boys = 0
 	for(var/I in members)
 		var/datum/mind/hunter_mind = I
@@ -112,6 +132,8 @@
 	return dead_boys >= members.len
 
 /datum/team/fugitive_hunters/proc/get_result()
+	procstart = null
+	src.procstart = null
 	var/list/fugitive_results = assemble_fugitive_results()
 	var/list/fugitives_counted = fugitive_results[1]
 	var/list/fugitives_dead = fugitive_results[2]
@@ -142,7 +164,9 @@
 		else//all fugitives died, all hunters died, nobody brought back. seems weird to not give fugitives a victory if they managed to kill the hunters but literally no progress to either goal should lead to a nobody wins situation
 			return FUGITIVE_RESULT_STALEMATE
 
-/datum/team/fugitive_hunters/roundend_report() //shows the number of fugitives, but not if they won in case there is no security
+/datum/team/fugitive_hunters/roundend_report()
+	procstart = null
+	src.procstart = null //shows the number of fugitives, but not if they won in case there is no security
 	if(!members.len)
 		return
 

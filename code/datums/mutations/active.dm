@@ -11,6 +11,8 @@
 	power_coeff = 1
 
 /datum/mutation/adrenaline_rush/setup()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/action/cooldown/adrenaline/to_modify = .
 	if(!istype(to_modify)) // null or invalid
@@ -34,6 +36,8 @@
 
 
 /datum/action/cooldown/adrenaline/Activate(mob/living/carbon/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(cast_on, span_userdanger("You feel pumped up! It's time to GO!"))
 	cast_on.reagents.add_reagent(/datum/reagent/drug/pumpup, adrenaline_amount)
@@ -43,6 +47,8 @@
 	return TRUE
 
 /datum/action/cooldown/adrenaline/proc/get_tired(mob/living/carbon/cast_on)
+	procstart = null
+	src.procstart = null
 	to_chat(cast_on, span_danger("Your adrenaline rush makes way for a bout of nausea and a deep feeling of exhaustion in your muscles."))
 	cast_on.reagents.add_reagent(/datum/reagent/peaceborg/tire, comedown_amount)
 	cast_on.reagents.add_reagent(/datum/reagent/peaceborg/confuse, comedown_amount)

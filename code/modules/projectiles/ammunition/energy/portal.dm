@@ -14,10 +14,14 @@
 	firing_effect_type = /obj/effect/temp_visual/dir_setting/firing_effect/red
 
 /obj/item/ammo_casing/energy/wormhole/Initialize(mapload, obj/item/gun/energy/wormhole_projector/wh)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	gun = WEAKREF(wh)
 
 /obj/item/ammo_casing/energy/wormhole/throw_proj(atom/target, turf/targloc, mob/living/user, params, spread, atom/fired_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(loaded_projectile, /obj/projectile/beam/wormhole))
 		var/obj/projectile/beam/wormhole/WH = loaded_projectile

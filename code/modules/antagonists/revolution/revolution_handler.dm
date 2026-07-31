@@ -13,9 +13,13 @@ GLOBAL_DATUM(revolution_handler, /datum/revolution_handler)
 	var/result
 
 /datum/revolution_handler/New()
+	procstart = null
+	src.procstart = null
 	revs = new()
 
 /datum/revolution_handler/proc/start_revolution()
+	procstart = null
+	src.procstart = null
 	if((datum_flags & DF_ISPROCESSING) || result)
 		return
 	START_PROCESSING(SSprocessing, src)
@@ -32,11 +36,15 @@ GLOBAL_DATUM(revolution_handler, /datum/revolution_handler)
 	COOLDOWN_START(src, rev_head_promote_cd, 5 MINUTES)
 
 /datum/revolution_handler/proc/cleanup()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSprocessing, src)
 	SSshuttle.clearHostileEnvironment(src)
 	UnregisterSignal(SSdcs, COMSIG_GLOB_JOB_AFTER_LATEJOIN_SPAWN)
 
 /datum/revolution_handler/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(check_rev_victory())
 		declare_revs_win()
 		. = PROCESS_KILL
@@ -56,6 +64,8 @@ GLOBAL_DATUM(revolution_handler, /datum/revolution_handler)
 	return .
 
 /datum/revolution_handler/proc/update_objectives(datum/source, datum/job/job, mob/living/spawned)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(job.job_flags & JOB_HEAD_OF_STAFF))
@@ -68,6 +78,8 @@ GLOBAL_DATUM(revolution_handler, /datum/revolution_handler)
 	revs.objectives += new_target
 
 /datum/revolution_handler/proc/declare_revs_win()
+	procstart = null
+	src.procstart = null
 	for(var/datum/mind/headrev_mind as anything in revs.ex_headrevs)
 		var/mob/living/real_headrev = headrev_mind.current
 		if(isnull(real_headrev))
@@ -81,6 +93,8 @@ GLOBAL_DATUM(revolution_handler, /datum/revolution_handler)
 	result = REVOLUTION_VICTORY
 
 /datum/revolution_handler/proc/declare_heads_win()
+	procstart = null
+	src.procstart = null
 	// Save rev lists before we remove the antag datums.
 	revs.save_members()
 
@@ -114,12 +128,16 @@ GLOBAL_DATUM(revolution_handler, /datum/revolution_handler)
 	result = STATION_VICTORY
 
 /datum/revolution_handler/proc/check_rev_victory()
+	procstart = null
+	src.procstart = null
 	for(var/datum/objective/mutiny/objective in revs.objectives)
 		if(!objective.check_completion())
 			return FALSE
 	return TRUE
 
 /datum/revolution_handler/proc/check_heads_victory()
+	procstart = null
+	src.procstart = null
 	// List of headrevs we're currently tracking
 	var/list/included_headrevs = list()
 	// List of current headrevs
@@ -151,6 +169,8 @@ GLOBAL_DATUM(revolution_handler, /datum/revolution_handler)
 
 /// Checks if someone is valid to be a headrev
 /proc/can_be_headrev(datum/mind/candidate, roundstart = FALSE)
+	procstart = null
+	src.procstart = null
 	var/turf/head_turf = get_turf(candidate.current)
 	if(considered_afk(candidate))
 		return FALSE

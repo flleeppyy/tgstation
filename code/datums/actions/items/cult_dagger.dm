@@ -11,12 +11,16 @@
 	default_button_position = "6:157,4:-2"
 
 /datum/action/item_action/cult_dagger/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	if(!IS_CULTIST(grant_to))
 		return
 
 	return ..()
 
 /datum/action/item_action/cult_dagger/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	if(!isliving(owner))
 		to_chat(owner, span_warning("You lack the necessary living force for this action."))
 		return FALSE

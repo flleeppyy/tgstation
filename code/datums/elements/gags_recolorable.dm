@@ -2,6 +2,8 @@
 /datum/element/gags_recolorable
 
 /datum/element/gags_recolorable/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
@@ -9,10 +11,14 @@
 	RegisterSignal(target, COMSIG_ATOM_EXAMINE_MORE, PROC_REF(on_examine))
 
 /datum/element/gags_recolorable/proc/on_examine(atom/source, mob/user, list/examine_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_text += span_notice("Now utilising PPP recolouring technology, capable of absorbing paint and pigments for changing its colours!")
 
 /datum/element/gags_recolorable/proc/on_item_interaction(atom/movable/source, mob/living/user, obj/item/toy/crayon/spraycan/item, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(item))
@@ -29,6 +35,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /datum/element/gags_recolorable/proc/open_ui(mob/user, obj/item/toy/crayon/spraycan/can, atom/target)
+	procstart = null
+	src.procstart = null
 	var/list/allowed_configs = list()
 	var/config = initial(target.greyscale_config)
 	if(!config)
@@ -53,6 +61,8 @@
 	menu.ui_interact(user)
 
 /datum/element/gags_recolorable/proc/recolor(mob/user, obj/item/toy/crayon/spraycan/can, atom/target, datum/greyscale_modify_menu/menu)
+	procstart = null
+	src.procstart = null
 	if(can.is_capped || can.check_empty(user))
 		menu.ui_close()
 		return

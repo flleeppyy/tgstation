@@ -1,4 +1,6 @@
 /mob/living/silicon/pai/Login()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !client)
 		return FALSE

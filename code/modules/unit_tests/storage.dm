@@ -2,6 +2,8 @@
 /datum/unit_test/storage
 
 /datum/unit_test/storage/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/item/big_thing = allocate(__IMPLIED_TYPE__, run_loc_floor_bottom_left)
 	big_thing.w_class = WEIGHT_CLASS_BULKY
 	var/obj/item/small_thing =  allocate(__IMPLIED_TYPE__, run_loc_floor_bottom_left)
@@ -24,6 +26,8 @@
 /datum/unit_test/common_item_inserting
 
 /datum/unit_test/common_item_inserting/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/item/storage/backpack/bag = allocate(__IMPLIED_TYPE__, run_loc_floor_bottom_left)
 	var/mob/living/carbon/human/consistent/dummy = allocate(__IMPLIED_TYPE__, run_loc_floor_bottom_left)
 	bag.atom_storage.max_slots = INFINITY

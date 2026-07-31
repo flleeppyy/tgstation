@@ -18,23 +18,33 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	var/admin_grantable = FALSE
 
 /datum/objective/New(text)
+	procstart = null
+	src.procstart = null
 	if(text)
 		explanation_text = text
 
 //Apparently objectives can be qdel'd. Learn a new thing every day
 /datum/objective/Destroy()
+	procstart = null
+	src.procstart = null
 	return ..()
 
-/datum/objective/proc/get_owners() // Combine owner and team into a single list.
+/datum/objective/proc/get_owners()
+	procstart = null
+	src.procstart = null // Combine owner and team into a single list.
 	. = (team?.members) ? team.members.Copy() : list()
 	if(owner)
 		. += owner
 
 /datum/objective/proc/admin_edit(mob/admin)
+	procstart = null
+	src.procstart = null
 	return
 
 //Shared by few objective types
 /datum/objective/proc/admin_simple_target_pick(mob/admin)
+	procstart = null
+	src.procstart = null
 	var/list/possible_targets = list()
 	var/def_value
 	for(var/datum/mind/possible_target in SSticker.minds)
@@ -70,6 +80,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
  * Returns TRUE if they're a free person, or FALSE if they failed
  */
 /proc/considered_escaped(datum/mind/escapee)
+	procstart = null
+	src.procstart = null
 	if(!considered_alive(escapee))
 		return FALSE
 	if(considered_exiled(escapee))
@@ -94,15 +106,21 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	return current_turf.onCentCom() || current_turf.onSyndieBase()
 
 /datum/objective/proc/check_completion()
+	procstart = null
+	src.procstart = null
 	return completed
 
 /// Provides a string describing what a good job you did or did not do
 /datum/objective/proc/get_roundend_success_suffix()
+	procstart = null
+	src.procstart = null
 	if(no_failure)
 		return "" // Just print the objective with no success/fail evaluation, as it has no mechanical backing
 	return check_completion() ? span_greentext("Success!") : span_redtext("Fail.")
 
 /datum/objective/proc/is_unique_objective(possible_target, dupe_search_range)
+	procstart = null
+	src.procstart = null
 	if(!islist(dupe_search_range))
 		stack_trace("Non-list passed as duplicate objective search range")
 		dupe_search_range = list(dupe_search_range)
@@ -124,9 +142,13 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	return TRUE
 
 /datum/objective/proc/get_target()
+	procstart = null
+	src.procstart = null
 	return target
 
 /datum/objective/proc/is_valid_target(datum/mind/possible_target)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(possible_target.current))
 		return FALSE
 
@@ -141,6 +163,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 
 //dupe_search_range is a list of antag datums / minds / teams
 /datum/objective/proc/find_target(dupe_search_range, list/blacklist)
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/owners = get_owners()
 	if(!dupe_search_range)
 		dupe_search_range = get_owners()
@@ -174,10 +198,14 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	return target
 
 /datum/objective/proc/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	if(team_explanation_text && LAZYLEN(get_owners()) > 1)
 		explanation_text = team_explanation_text
 
 /datum/objective/proc/give_special_equipment(special_equipment)
+	procstart = null
+	src.procstart = null
 	var/datum/mind/receiver = pick(get_owners())
 	if(!ishuman(receiver?.current))
 		return
@@ -197,6 +225,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	button_icon_state = "beacon"
 
 /datum/action/special_equipment_fallback/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -225,9 +255,13 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 
 
 /datum/objective/assassinate/check_completion()
+	procstart = null
+	src.procstart = null
 	return completed || (!considered_alive(target) || considered_afk(target) || considered_exiled(target))
 
 /datum/objective/assassinate/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	..()
 	if(target?.current)
 		explanation_text = "Assassinate [target.name], the [!target_role_type ? target.assigned_role.title : english_list(target.get_special_roles())]."
@@ -235,6 +269,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 		explanation_text = "Free objective."
 
 /datum/objective/assassinate/admin_edit(mob/admin)
+	procstart = null
+	src.procstart = null
 	admin_simple_target_pick(admin)
 
 #define DISCONNECT_GRACE_TIME (2 MINUTES)
@@ -250,9 +286,13 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	var/warned_admins = FALSE
 
 /datum/objective/mutiny/proc/warn_admins()
+	procstart = null
+	src.procstart = null
 	message_admins("[ADMIN_LOOKUPFLW(target.current)] has gone AFK with a mutiny objective that involves them. They only have [COOLDOWN_TIMELEFT(src, disconnect_timer) / 10] seconds remaining before they are treated as if they were dead.")
 
 /datum/objective/mutiny/check_completion()
+	procstart = null
+	src.procstart = null
 	if(!target || !considered_alive(target) || considered_exiled(target))
 		return TRUE
 
@@ -278,6 +318,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 
 
 /datum/objective/mutiny/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	..()
 	if(target?.current)
 		explanation_text = "Assassinate or exile [target.name], the [!target_role_type ? target.assigned_role.title : english_list(target.get_special_roles())]."
@@ -292,6 +334,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 
 
 /datum/objective/maroon/check_completion()
+	procstart = null
+	src.procstart = null
 	if (!target)
 		return TRUE
 	if (!considered_alive(target))
@@ -301,12 +345,16 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	return FALSE
 
 /datum/objective/maroon/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	if(target?.current)
 		explanation_text = "Prevent [target.name], the [!target_role_type ? target.assigned_role.title : english_list(target.get_special_roles())], from escaping alive."
 	else
 		explanation_text = "Free objective."
 
 /datum/objective/maroon/admin_edit(mob/admin)
+	procstart = null
+	src.procstart = null
 	admin_simple_target_pick(admin)
 
 /datum/objective/debrain
@@ -316,6 +364,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 
 
 /datum/objective/debrain/check_completion()
+	procstart = null
+	src.procstart = null
 	if(!target)//If it's a free objective.
 		return TRUE
 	if(!target.current || !isbrain(target.current))
@@ -331,6 +381,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	return FALSE
 
 /datum/objective/debrain/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	..()
 	if(target?.current)
 		explanation_text = "Steal the brain of [target.name], the [!target_role_type ? target.assigned_role.title : english_list(target.get_special_roles())]."
@@ -338,6 +390,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 		explanation_text = "Free objective."
 
 /datum/objective/debrain/admin_edit(mob/admin)
+	procstart = null
+	src.procstart = null
 	admin_simple_target_pick(admin)
 
 /datum/objective/protect//The opposite of killing a dude.
@@ -348,6 +402,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	var/human_check = TRUE
 
 /datum/objective/protect/check_completion()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/brain_target
 	if(isnull(target))
 		return FALSE
@@ -357,6 +413,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	return !target || (target.current && HAS_TRAIT(target.current, TRAIT_SUICIDED)) || considered_alive(target, enforce_human = human_check) || (brain_target && HAS_TRAIT(brain_target, TRAIT_SUICIDED))
 
 /datum/objective/protect/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	..()
 	if(target?.current)
 		explanation_text = "Protect [target.name], the [!target_role_type ? target.assigned_role.title : english_list(target.get_special_roles())]."
@@ -364,6 +422,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 		explanation_text = "Free objective."
 
 /datum/objective/protect/admin_edit(mob/admin)
+	procstart = null
+	src.procstart = null
 	admin_simple_target_pick(admin)
 
 /datum/objective/protect/nonhuman
@@ -379,9 +439,13 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 
 
 /datum/objective/jailbreak/check_completion()
+	procstart = null
+	src.procstart = null
 	return completed || (considered_escaped(target))
 
 /datum/objective/jailbreak/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	..()
 	if(target?.current)
 		explanation_text = "Ensure that [target.name], the [!target_role_type ? target.assigned_role.title : english_list(target.get_special_roles())] escapes alive and out of custody."
@@ -389,15 +453,21 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 		explanation_text = "Free objective."
 
 /datum/objective/jailbreak/admin_edit(mob/admin)
+	procstart = null
+	src.procstart = null
 	admin_simple_target_pick(admin)
 
 /datum/objective/jailbreak/detain
 	name = "detain"
 
 /datum/objective/jailbreak/detain/check_completion()
+	procstart = null
+	src.procstart = null
 	return completed || (!considered_escaped(target) && (considered_alive(target) && target.current.onCentCom()))
 
 /datum/objective/jailbreak/detain/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	..()
 	if(target?.current)
 		explanation_text = "Ensure that [target.name], the [!target_role_type ? target.assigned_role.title : english_list(target.get_special_roles())] is delivered to Nanotrasen alive and in custody."
@@ -413,7 +483,9 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	admin_grantable = TRUE
 	var/hijack_speed_override = 1
 
-/datum/objective/hijack/check_completion() // Requires all owners to escape.
+/datum/objective/hijack/check_completion()
+	procstart = null
+	src.procstart = null // Requires all owners to escape.
 	if(SSshuttle.emergency.mode != SHUTTLE_ENDGAME)
 		return FALSE
 	var/list/datum/mind/owners = get_owners()
@@ -429,6 +501,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	martyr_compatible = FALSE
 
 /datum/objective/elimination/check_completion()
+	procstart = null
+	src.procstart = null
 	if(SSshuttle.emergency.mode != SHUTTLE_ENDGAME)
 		return FALSE
 	var/list/datum/mind/owners = get_owners()
@@ -442,6 +516,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	explanation_text = "Escape on the shuttle alone. Ensure that nobody else makes it out."
 
 /datum/objective/elimination/highlander/check_completion()
+	procstart = null
+	src.procstart = null
 	if(SSshuttle.emergency.mode != SHUTTLE_ENDGAME)
 		return FALSE
 	var/list/datum/mind/owners = get_owners()
@@ -456,6 +532,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	martyr_compatible = 1
 
 /datum/objective/block/check_completion()
+	procstart = null
+	src.procstart = null
 	if(SSshuttle.emergency.mode != SHUTTLE_ENDGAME)
 		return TRUE
 	for(var/mob/living/player in GLOB.player_list)
@@ -470,6 +548,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	martyr_compatible = TRUE
 
 /datum/objective/purge/check_completion()
+	procstart = null
+	src.procstart = null
 	if(SSshuttle.emergency.mode != SHUTTLE_ENDGAME)
 		return TRUE
 	for(var/mob/living/player in GLOB.player_list)
@@ -485,6 +565,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	martyr_compatible = FALSE
 
 /datum/objective/robot_army/check_completion()
+	procstart = null
+	src.procstart = null
 	var/counter = 0
 	var/list/datum/mind/owners = get_owners()
 	for(var/datum/mind/M in owners)
@@ -503,6 +585,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	admin_grantable = TRUE
 
 /datum/objective/escape/check_completion()
+	procstart = null
+	src.procstart = null
 	// Require all owners escape safely.
 	var/list/datum/mind/owners = get_owners()
 	for(var/datum/mind/M in owners)
@@ -516,15 +600,21 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	var/target_missing_id
 
 /datum/objective/escape/escape_with_identity/find_target(dupe_search_range, list/blacklist)
+	procstart = null
+	src.procstart = null
 	target = ..()
 	update_explanation_text()
 
 /datum/objective/escape/escape_with_identity/is_valid_target(datum/mind/possible_target)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(possible_target.current, TRAIT_NO_DNA_COPY))
 		return FALSE
 	return ..()
 
 /datum/objective/escape/escape_with_identity/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	if(target?.current)
 		target_real_name = target.current.real_name
 		explanation_text = "Escape on the shuttle or an escape pod with the identity of [target_real_name], the [target.assigned_role.title]"
@@ -541,6 +631,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 		explanation_text = "Escape on the shuttle or an escape pod alive and without being in custody."
 
 /datum/objective/escape/escape_with_identity/check_completion()
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/owners = get_owners()
 	if(!target || !target_real_name)
 		return ..()
@@ -553,6 +645,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	return FALSE
 
 /datum/objective/escape/escape_with_identity/admin_edit(mob/admin)
+	procstart = null
+	src.procstart = null
 	admin_simple_target_pick(admin)
 
 /datum/objective/survive
@@ -561,6 +655,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	admin_grantable = TRUE
 
 /datum/objective/survive/check_completion()
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/owners = get_owners()
 	for(var/datum/mind/M in owners)
 		if(!considered_alive(M))
@@ -573,6 +669,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	admin_grantable = FALSE
 
 /datum/objective/survive/malf/check_completion()
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/owners = get_owners()
 	for(var/datum/mind/mindobj in owners)
 		if(!iscyborg(mindobj) && !considered_alive(mindobj, FALSE)) //Shells (and normal borgs for that matter) are considered alive for Malf
@@ -584,6 +682,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	explanation_text = "Stay alive off station. Do not go to CentCom."
 
 /datum/objective/exile/check_completion()
+	procstart = null
+	src.procstart = null
 	var/list/owners = get_owners()
 	for(var/datum/mind/mind as anything in owners)
 		if(!considered_alive(mind))
@@ -598,6 +698,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	admin_grantable = TRUE
 
 /datum/objective/martyr/check_completion()
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/owners = get_owners()
 	for(var/datum/mind/M in owners)
 		if(considered_alive(M))
@@ -613,6 +715,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	admin_grantable = TRUE
 
 /datum/objective/nuclear/check_completion()
+	procstart = null
+	src.procstart = null
 	if(GLOB.station_was_nuked)
 		return TRUE
 	return FALSE
@@ -626,9 +730,13 @@ GLOBAL_LIST_EMPTY(possible_items)
 	var/obj/item/steal_target = null //Needed for custom objectives (they're just items, not datums).
 
 /datum/objective/steal/get_target()
+	procstart = null
+	src.procstart = null
 	return steal_target
 
 /datum/objective/steal/find_target(dupe_search_range, list/blacklist)
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/owners = get_owners()
 	if(!dupe_search_range)
 		dupe_search_range = get_owners()
@@ -646,6 +754,8 @@ GLOBAL_LIST_EMPTY(possible_items)
 	return set_target(null)
 
 /datum/objective/steal/proc/set_target(datum/objective_item/item)
+	procstart = null
+	src.procstart = null
 	if(item)
 		targetinfo = item
 		steal_target = targetinfo.targetitem
@@ -657,6 +767,8 @@ GLOBAL_LIST_EMPTY(possible_items)
 		return
 
 /datum/objective/steal/admin_edit(mob/admin)
+	procstart = null
+	src.procstart = null
 	var/list/possible_items_all = GLOB.possible_items
 	var/new_target = input(admin,"Select target:", "Objective target", steal_target) as null|anything in sort_names(possible_items_all)+"custom"
 	if (!new_target)
@@ -678,6 +790,8 @@ GLOBAL_LIST_EMPTY(possible_items)
 		set_target(new_target)
 
 /datum/objective/steal/check_completion()
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/owners = get_owners()
 	if(!steal_target)
 		return TRUE
@@ -707,15 +821,21 @@ GLOBAL_LIST_EMPTY(possible_items)
 	admin_grantable = TRUE
 
 /datum/objective/capture/proc/gen_amount_goal()
+	procstart = null
+	src.procstart = null
 	target_amount = rand(5,10)
 	update_explanation_text()
 	return target_amount
 
 /datum/objective/capture/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	explanation_text = "Capture [target_amount] lifeform\s with an energy net. Live, rare specimens are worth more."
 
-/datum/objective/capture/check_completion()//Basically runs through all the mobs in the area to determine how much they are worth.
+/datum/objective/capture/check_completion()
+	procstart = null
+	src.procstart = null//Basically runs through all the mobs in the area to determine how much they are worth.
 	var/captured_amount = 0
 	var/area/centcom/central_command_areas/holding/A = GLOB.areas_by_type[/area/centcom/central_command_areas/holding]
 	for(var/mob/living/carbon/human/M in A)//Humans.
@@ -745,6 +865,8 @@ GLOBAL_LIST_EMPTY(possible_items)
 	return captured_amount >= target_amount
 
 /datum/objective/capture/admin_edit(mob/admin)
+	procstart = null
+	src.procstart = null
 	var/count = input(admin,"How many mobs to capture ?","capture",target_amount) as num|null
 	if(count)
 		target_amount = count
@@ -755,11 +877,15 @@ GLOBAL_LIST_EMPTY(possible_items)
 	var/obj/protect_target
 
 /datum/objective/protect_object/proc/set_target(obj/O)
+	procstart = null
+	src.procstart = null
 	protect_target = O
 	RegisterSignal(protect_target, COMSIG_QDELETING, PROC_REF(on_objective_qdel))
 	update_explanation_text()
 
 /datum/objective/protect_object/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(protect_target)
 		explanation_text = "Protect \the [protect_target] at all costs."
@@ -767,9 +893,13 @@ GLOBAL_LIST_EMPTY(possible_items)
 		explanation_text = "Free objective."
 
 /datum/objective/protect_object/check_completion()
+	procstart = null
+	src.procstart = null
 	return !isnull(protect_target)
 
 /datum/objective/protect_object/proc/on_objective_qdel()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	protect_target = null
 
@@ -780,6 +910,8 @@ GLOBAL_LIST_EMPTY(possible_items)
 	admin_grantable = TRUE
 
 /datum/objective/absorb/proc/gen_amount_goal(lowbound = 4, highbound = 6)
+	procstart = null
+	src.procstart = null
 	target_amount = rand (lowbound,highbound)
 	var/n_p = 1 //autowin
 	var/list/datum/mind/owners = get_owners()
@@ -798,16 +930,22 @@ GLOBAL_LIST_EMPTY(possible_items)
 	return target_amount
 
 /datum/objective/absorb/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	explanation_text = "Extract [target_amount] compatible genome\s."
 
 /datum/objective/absorb/admin_edit(mob/admin)
+	procstart = null
+	src.procstart = null
 	var/count = input(admin,"How many people to absorb?","absorb",target_amount) as num|null
 	if(count)
 		target_amount = count
 	update_explanation_text()
 
 /datum/objective/absorb/check_completion()
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/owners = get_owners()
 	var/absorbed_count = 0
 	for(var/datum/mind/M in owners)
@@ -824,6 +962,8 @@ GLOBAL_LIST_EMPTY(possible_items)
 	explanation_text = "Extract more compatible genomes than any other Changeling."
 
 /datum/objective/absorb_most/check_completion()
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/owners = get_owners()
 	var/absorbed_count = 0
 	for(var/datum/mind/M in owners)
@@ -845,6 +985,8 @@ GLOBAL_LIST_EMPTY(possible_items)
 	explanation_text = "Absorb another Changeling."
 
 /datum/objective/absorb_changeling/check_completion()
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/owners = get_owners()
 	for(var/datum/mind/ling_mind as anything in owners)
 		var/datum/antagonist/changeling/changeling = ling_mind.has_antag_datum(/datum/antagonist/changeling)
@@ -867,6 +1009,8 @@ GLOBAL_LIST_EMPTY(possible_items)
 	martyr_compatible = TRUE
 
 /datum/objective/destroy/find_target(dupe_search_range, list/blacklist)
+	procstart = null
+	src.procstart = null
 	var/list/possible_targets = active_ais(TRUE)
 	possible_targets -= blacklist
 	var/mob/living/silicon/ai/target_ai = pick(possible_targets)
@@ -875,11 +1019,15 @@ GLOBAL_LIST_EMPTY(possible_items)
 	return target
 
 /datum/objective/destroy/check_completion()
+	procstart = null
+	src.procstart = null
 	if(target?.current)
 		return target.current.stat == DEAD || target.current.z > 6 || !target.current.ckey //Borgs/brains/AIs count as dead for traitor objectives.
 	return TRUE
 
 /datum/objective/destroy/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	..()
 	if(target?.current)
 		explanation_text = "Destroy [target.name], the experimental AI."
@@ -887,6 +1035,8 @@ GLOBAL_LIST_EMPTY(possible_items)
 		explanation_text = "Free objective."
 
 /datum/objective/destroy/admin_edit(mob/admin)
+	procstart = null
+	src.procstart = null
 	var/list/possible_targets = active_ais(1)
 	if(possible_targets.len)
 		var/mob/new_target = input(admin,"Select target:", "Objective target") as null|anything in sort_names(possible_targets)
@@ -904,10 +1054,14 @@ GLOBAL_LIST_EMPTY(possible_items)
 	var/amount = 5
 
 /datum/objective/steal_n_of_type/New()
+	procstart = null
+	src.procstart = null
 	..()
 	wanted_items = typecacheof(wanted_items)
 
 /datum/objective/steal_n_of_type/check_completion()
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/owners = get_owners()
 	var/stolen_count = 0
 	for(var/datum/mind/M in owners)
@@ -921,6 +1075,8 @@ GLOBAL_LIST_EMPTY(possible_items)
 	return stolen_count >= amount
 
 /datum/objective/steal_n_of_type/proc/check_if_valid_item(obj/item/current_item)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/objective/steal_n_of_type/summon_guns
@@ -930,6 +1086,8 @@ GLOBAL_LIST_EMPTY(possible_items)
 	amount = 5
 
 /datum/objective/steal_n_of_type/summon_guns/check_if_valid_item(obj/item/current_item)
+	procstart = null
+	src.procstart = null
 	var/obj/item/gun/gun = current_item
 	return !(gun.gun_flags & NOT_A_REAL_GUN)
 
@@ -940,10 +1098,14 @@ GLOBAL_LIST_EMPTY(possible_items)
 	amount = 5
 
 /datum/objective/steal_n_of_type/summon_magic/New()
+	procstart = null
+	src.procstart = null
 	wanted_items = GLOB.summoned_magic_objectives
 	..()
 
 /datum/objective/steal_n_of_type/summon_magic/check_completion()
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/owners = get_owners()
 	var/stolen_count = 0
 	for(var/datum/mind/M in owners)
@@ -966,6 +1128,8 @@ GLOBAL_LIST_EMPTY(possible_items)
 	amount = 5 //i want this to be higher, but the organs must be fresh at roundend
 
 /datum/objective/steal_n_of_type/organs/check_completion()
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/owners = get_owners()
 	var/stolen_count = 0
 	for(var/datum/mind/mind in owners)
@@ -993,12 +1157,16 @@ GLOBAL_LIST_EMPTY(possible_items)
 	no_failure = TRUE
 
 /datum/objective/custom/admin_edit(mob/admin)
+	procstart = null
+	src.procstart = null
 	var/expl = stripped_input(admin, "Custom objective:", "Objective", explanation_text)
 	if(expl)
 		explanation_text = expl
 
 //Ideally this would be all of them but laziness and unusual subtypes
 /proc/generate_admin_objective_list()
+	procstart = null
+	src.procstart = null
 	GLOB.admin_objective_list = list()
 
 	var/list/allowed_types = sort_list(subtypesof(/datum/objective), GLOBAL_PROC_REF(cmp_typepaths_asc))
@@ -1014,12 +1182,16 @@ GLOBAL_LIST_EMPTY(possible_items)
 	var/area/dropoff = null
 
 /datum/objective/contract/is_valid_target(datum/mind/possible_target)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(possible_target, TRAIT_HAS_BEEN_KIDNAPPED))
 		return FALSE
 	return ..()
 
 // Generate a random valid area on the station that the dropoff will happen.
 /datum/objective/contract/proc/generate_dropoff()
+	procstart = null
+	src.procstart = null
 	var/found = FALSE
 	while (!found)
 		var/area/dropoff_area = pick(GLOB.areas)
@@ -1029,6 +1201,8 @@ GLOBAL_LIST_EMPTY(possible_items)
 
 // Check if both the contractor and contract target are at the dropoff point.
 /datum/objective/contract/proc/dropoff_check(mob/user, mob/target)
+	procstart = null
+	src.procstart = null
 	var/area/user_area = get_area(user)
 	var/area/target_area = get_area(target)
 

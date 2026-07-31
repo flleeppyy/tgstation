@@ -78,6 +78,8 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 	)
 
 /mob/dead/observer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	set_invisibility(GLOB.observer_default_invisibility)
 	if(icon_state in GLOB.ghost_forms_with_directions_list)
 		ghostimage_default = image(src.icon,src,src.icon_state + "_nodir")
@@ -153,16 +155,22 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 	ADD_TRAIT(src, TRAIT_DETECT_STORM, INNATE_TRAIT)
 
 /mob/dead/observer/get_photo_description(obj/item/camera/camera)
+	procstart = null
+	src.procstart = null
 	if(!invisibility || camera.see_ghosts)
 		return photo_description
 
 /mob/dead/observer/narsie_act()
+	procstart = null
+	src.procstart = null
 	var/old_color = color
 	color = COLOR_CULT_RED
 	animate(src, color = old_color, time = 10, flags = ANIMATION_PARALLEL)
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, update_atom_colour)), 1 SECONDS)
 
 /mob/dead/observer/Destroy()
+	procstart = null
+	src.procstart = null
 	if(ghost_hud_flags & GHOST_DATA_HUDS)
 		remove_data_huds()
 
@@ -190,6 +198,8 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
  * |- Ricotez
  */
 /mob/dead/observer/update_icon(updates=ALL, new_form)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(client) //We update our preferences in case they changed right before update_appearance was called.
@@ -240,6 +250,8 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
  * We use HSL for this, makes life SOOO easy
  */
 /proc/ghostify_color(input_color)
+	procstart = null
+	src.procstart = null
 	var/list/read_color = rgb2num(input_color, COLORSPACE_HSL)
 	var/sat = read_color[2]
 	var/lum = read_color[3]
@@ -264,6 +276,8 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
  * forced: Whether we are forcing this player to be ghosted, ignoring things like corpselocking, FALSE by default.
  */
 /mob/proc/ghostize(can_reenter_corpse = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!key)
 		return
 	if(IS_FAKE_KEY(key)) // Skip aghosts.
@@ -298,6 +312,8 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 	return ghost
 
 /mob/living/ghostize(can_reenter_corpse = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && can_reenter_corpse)
 		var/mob/dead/observer/ghost = .
@@ -328,6 +344,8 @@ GAME_VERB_DESC(/mob/eye, ghost, "Ghost", "Relinquish your life and enter the lan
 	ghostize(FALSE)
 
 /mob/dead/observer/Move(NewLoc, direct, glide_size_override = 32)
+	procstart = null
+	src.procstart = null
 	if(updatedir)
 		setDir(direct)//only update dir if we actually need it, so overlays won't spin on base sprites that don't have directions of their own
 
@@ -353,10 +371,14 @@ GAME_VERB_DESC(/mob/eye, ghost, "Ghost", "Relinquish your life and enter the lan
 		abstract_move(destination)//Get out of closets and such as a ghost
 
 /mob/dead/observer/forceMove(atom/destination)
+	procstart = null
+	src.procstart = null
 	abstract_move(destination) // move like the wind
 	return TRUE
 
 /mob/dead/observer/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/area/new_area = get_area(src)
 	if(new_area != ambience_tracked_area)
@@ -394,6 +416,8 @@ GAME_VERB(/mob/dead/observer, do_not_resuscitate, "Do Not Resuscitate", null)
 		stay_dead()
 
 /mob/dead/observer/proc/stay_dead()
+	procstart = null
+	src.procstart = null
 	if(!can_reenter_corpse)
 		to_chat(usr, span_warning("You're already stuck out of your body!"))
 		return FALSE
@@ -415,6 +439,8 @@ GAME_VERB(/mob/dead/observer, do_not_resuscitate, "Do Not Resuscitate", null)
 	return TRUE
 
 /mob/dead/observer/proc/send_revival_notification(message, sound, atom/source, flashwindow)
+	procstart = null
+	src.procstart = null
 	if(flashwindow)
 		window_flash(client)
 	if(message)
@@ -618,6 +644,8 @@ GAME_VERB(/mob/dead/observer, restore_ghost_appearance, "Restore Ghost Character
 
 /// Toggles a flag from ghost hud and updates the mob accordingly
 /mob/dead/observer/proc/toggle_ghost_hud_flag(toggled)
+	procstart = null
+	src.procstart = null
 	ghost_hud_flags ^= toggled
 	if(ghost_hud_flags & GHOST_DATA_HUDS)
 		show_data_huds()
@@ -631,6 +659,8 @@ GAME_VERB(/mob/dead/observer, restore_ghost_appearance, "Restore Ghost Character
 
 // This is the ghost's follow verb with an argument
 /mob/dead/observer/proc/ManualFollow(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	if (!istype(target) || (is_secret_level(target.z) && !client?.holder))
 		return
 
@@ -655,10 +685,14 @@ GAME_VERB(/mob/dead/observer, restore_ghost_appearance, "Restore Ghost Character
 	orbit(target,orbitsize, FALSE, 20, rot_seg)
 
 /mob/dead/observer/orbit()
+	procstart = null
+	src.procstart = null
 	setDir(2)//reset dir so the right directional sprites show up
 	return ..()
 
 /mob/dead/observer/stop_orbit(datum/component/orbiter/orbits)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//restart our floating animation after orbit is done.
 	pixel_y = base_pixel_y
@@ -677,6 +711,8 @@ GAME_VERB_HIDDEN(/mob/dead/observer, add_view_range, "Add View Range", input as 
 		client.rescale_view(input, 0, ((max_view * 2) + 1) - 15)
 
 /mob/dead/observer/proc/boo()
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, bootime))
 		return
 	var/obj/machinery/light/L = locate(/obj/machinery/light) in view(1, src)
@@ -685,6 +721,8 @@ GAME_VERB_HIDDEN(/mob/dead/observer, add_view_range, "Add View Range", input as 
 	//Maybe in the future we can add more <i>spooky</i> code here!
 
 /mob/dead/observer/update_sight()
+	procstart = null
+	src.procstart = null
 	if(client)
 		ghost_others = client.prefs.read_preference(/datum/preference/choiced/ghost_others) //A quick update just in case this setting was changed right before calling the proc
 
@@ -697,6 +735,8 @@ GAME_VERB_HIDDEN(/mob/dead/observer, add_view_range, "Add View Range", input as 
 	..()
 
 /proc/updateallghostimages()
+	procstart = null
+	src.procstart = null
 	list_clear_nulls(GLOB.ghost_images_default)
 	list_clear_nulls(GLOB.ghost_images_simple)
 
@@ -704,6 +744,8 @@ GAME_VERB_HIDDEN(/mob/dead/observer, add_view_range, "Add View Range", input as 
 		O.updateghostimages()
 
 /mob/dead/observer/proc/updateghostimages()
+	procstart = null
+	src.procstart = null
 	if (!client)
 		return
 
@@ -724,6 +766,8 @@ GAME_VERB_HIDDEN(/mob/dead/observer, add_view_range, "Add View Range", input as 
 				client?.images |= (GLOB.ghost_images_simple-ghostimage_simple)
 
 /mob/dead/observer/proc/possess()
+	procstart = null
+	src.procstart = null
 	var/list/possessible = list()
 	for(var/mob/living/L in GLOB.alive_mob_list)
 		if(istype(L,/mob/living/carbon/human/dummy) || !get_turf(L)) //Haha no.
@@ -752,6 +796,8 @@ GAME_VERB_HIDDEN(/mob/dead/observer, add_view_range, "Add View Range", input as 
 	return TRUE
 
 /mob/dead/observer/_pointed(atom/pointed_at)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 
@@ -759,10 +805,14 @@ GAME_VERB_HIDDEN(/mob/dead/observer, add_view_range, "Add View Range", input as 
 
 //this is called when a ghost is drag clicked to something.
 /mob/dead/observer/mouse_drop_dragged(atom/over, mob/user)
+	procstart = null
+	src.procstart = null
 	if (isobserver(user) && user.client.holder && (isliving(over) || iseyemob(over)))
 		user.client.holder.cmd_ghost_drag(src, over)
 
 /mob/dead/observer/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(usr == src)
 		if(href_list["follow"])
@@ -795,6 +845,8 @@ GAME_VERB_HIDDEN(/mob/dead/observer, add_view_range, "Add View Range", input as 
 
 /// We orbit and interact with the target
 /mob/dead/observer/proc/jump_to_interact(atom/target)
+	procstart = null
+	src.procstart = null
 	if(isnull(target) || target == src)
 		return
 
@@ -803,6 +855,8 @@ GAME_VERB_HIDDEN(/mob/dead/observer, add_view_range, "Add View Range", input as 
 
 /// We orbit the target or jump if its a turf
 /mob/dead/observer/proc/observer_view(atom/target)
+	procstart = null
+	src.procstart = null
 	if(isnull(target) || target == src)
 		return
 
@@ -815,19 +869,27 @@ GAME_VERB_HIDDEN(/mob/dead/observer, add_view_range, "Add View Range", input as 
 //We don't want to update the current var
 //But we will still carry a mind.
 /mob/dead/observer/mind_initialize()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/dead/observer/proc/show_data_huds()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	ghost_hud_flags |= GHOST_DATA_HUDS // only for safety, it should be set already.
 	add_traits(observer_hud_traits, REF(src))
 
 /mob/dead/observer/proc/remove_data_huds()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	ghost_hud_flags &= ~GHOST_DATA_HUDS // only for safety, it should be unset already.
 	remove_traits(observer_hud_traits, REF(src))
 
 /mob/dead/observer/proc/set_ghost_appearance()
+	procstart = null
+	src.procstart = null
 	if(!client?.prefs)
 		return
 
@@ -846,15 +908,23 @@ GAME_VERB_HIDDEN(/mob/dead/observer, add_view_range, "Add View Range", input as 
 	update_appearance()
 
 /mob/dead/observer/can_perform_action(atom/movable/target, action_bitflags)
+	procstart = null
+	src.procstart = null
 	return isAdminGhostAI(usr)
 
 /mob/dead/observer/is_literate()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /mob/dead/observer/can_read(atom/viewed_atom, reading_check_flags, silent)
+	procstart = null
+	src.procstart = null
 	return TRUE // we want to bypass all the checks
 
 /mob/dead/observer/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(var_name)
 		if(NAMEOF(src, icon))
@@ -867,6 +937,8 @@ GAME_VERB_HIDDEN(/mob/dead/observer, add_view_range, "Add View Range", input as 
 			set_invisibility(invisibility) // updates light
 
 /mob/dead/observer/reset_perspective(atom/A)
+	procstart = null
+	src.procstart = null
 	if(client)
 		if(ismob(client.eye) && (client.eye != src))
 			cleanup_observe()
@@ -877,6 +949,8 @@ GAME_VERB_HIDDEN(/mob/dead/observer, add_view_range, "Add View Range", input as 
 
 
 /mob/dead/observer/proc/cleanup_observe()
+	procstart = null
+	src.procstart = null
 	if(isnull(observetarget))
 		return
 	var/mob/target = observetarget
@@ -889,6 +963,8 @@ GAME_VERB_HIDDEN(/mob/dead/observer, add_view_range, "Add View Range", input as 
 		LAZYREMOVE(target.observers, src)
 
 /mob/dead/observer/proc/do_observe(mob/mob_eye)
+	procstart = null
+	src.procstart = null
 	if(isnewplayer(mob_eye))
 		stack_trace("/mob/dead/new_player: \[[mob_eye]\] is being observed by [key_name(src)]. This should never happen and has been blocked.")
 		message_admins("[ADMIN_LOOKUPFLW(src)] attempted to observe someone in the lobby: [ADMIN_LOOKUPFLW(mob_eye)]. This should not be possible and has been blocked.")
@@ -917,6 +993,8 @@ GAME_VERB_HIDDEN(/mob/dead/observer, add_view_range, "Add View Range", input as 
 			observetarget = mob_eye
 
 /mob/dead/observer/proc/on_observing_z_changed(datum/source, turf/old_turf, turf/new_turf)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(is_secret_level(new_turf.z) && !client?.holder)
@@ -925,24 +1003,34 @@ GAME_VERB_HIDDEN(/mob/dead/observer, add_view_range, "Add View Range", input as 
 		set_sight(initial(sight))
 
 /mob/dead/observer/AltClickOn(atom/target)
+	procstart = null
+	src.procstart = null
 	client.loot_panel.open(get_turf(target))
 
 /mob/dead/observer/AltClickSecondaryOn(atom/target)
+	procstart = null
+	src.procstart = null
 	if(client && check_rights_for(client, R_DEBUG))
 		client.toggle_tag_datum(src)
 
 /mob/dead/observer/CtrlShiftClickOn(atom/target)
+	procstart = null
+	src.procstart = null
 	if(isobserver(target) && check_rights(R_SPAWN))
 		var/mob/dead/observer/target_ghost = target
 
 		target_ghost.change_mob_type(/mob/living/carbon/human , null, null, TRUE) //always delmob, ghosts shouldn't be left lingering
 
 /mob/dead/observer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!invisibility)
 		. += "It seems extremely obvious."
 
 /mob/dead/observer/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isAdminObserver(user))
 		return ..()
 	. = list(span_notice("<i>You examine [src] closer, and note the following...</i>"))
@@ -950,15 +1038,21 @@ GAME_VERB_HIDDEN(/mob/dead/observer, add_view_range, "Add View Range", input as 
 
 
 /mob/dead/observer/proc/set_invisibility(value)
+	procstart = null
+	src.procstart = null
 	SetInvisibility(value, id=type)
 	set_light_on(!value ? TRUE : FALSE)
 
 
 // Ghosts have no momentum, being massless ectoplasm
 /mob/dead/observer/Process_Spacemove(movement_dir, continuous_move = FALSE)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /proc/set_observer_default_invisibility(amount, message=null)
+	procstart = null
+	src.procstart = null
 	for(var/mob/dead/observer/G in GLOB.player_list)
 		G.set_invisibility(amount)
 		if(message)
@@ -983,6 +1077,8 @@ GAME_VERB_PROC(/mob/dead/observer, open_minigames_menu, "Minigames Menu", null)
 	minigames_menu.ui_interact(src)
 
 /mob/dead/observer/default_lighting_cutoff()
+	procstart = null
+	src.procstart = null
 	var/datum/preferences/prefs = client?.prefs
 	if(!prefs || (client?.combo_hud_enabled && prefs.toggles & COMBOHUD_LIGHTING))
 		return ..()
@@ -990,6 +1086,8 @@ GAME_VERB_PROC(/mob/dead/observer, open_minigames_menu, "Minigames Menu", null)
 
 /// Called when we exit the orbiting state
 /mob/dead/observer/proc/on_deorbit(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	orbiting_ref = null

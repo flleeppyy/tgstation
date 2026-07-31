@@ -13,6 +13,8 @@
 	armor_type = /datum/armor/gloves_botanic_leather
 
 /obj/item/clothing/gloves/botanic_leather/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -4)
 

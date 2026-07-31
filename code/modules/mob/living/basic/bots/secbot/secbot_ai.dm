@@ -12,6 +12,8 @@
 	)
 
 /datum/targeting_strategy/basic/secbot/is_valid_target(mob/living/living_mob, atom/the_target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	var/datum/ai_controller/basic_controller/bot/my_controller = living_mob.ai_controller
 	if(isnull(my_controller))
 		return FALSE
@@ -32,6 +34,8 @@
 	return (assessed_threat > THREAT_ASSESS_DANGEROUS)
 
 /datum/ai_controller/basic_controller/bot/secbot/TryPossessPawn(atom/new_pawn)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & AI_CONTROLLER_INCOMPATIBLE)
 		return
@@ -39,6 +43,8 @@
 	RegisterSignal(new_pawn, COMSIG_AI_BLACKBOARD_KEY_CLEARED(BB_CURRENT_TARGET), PROC_REF(on_clear_target))
 
 /datum/ai_controller/basic_controller/bot/secbot/proc/on_target_set()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/datum/action/cooldown/bot_announcement/announcement = blackboard[BB_ANNOUNCE_ABILITY]
 	var/threat_level = 5 || blackboard[BB_CURRENT_CRIMINAL_ASSESSMENT]
@@ -52,5 +58,7 @@
 	my_bot.update_bot_mode(new_mode = BOT_HUNT)
 
 /datum/ai_controller/basic_controller/bot/secbot/proc/on_clear_target()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	clear_blackboard_key(BB_CURRENT_CRIMINAL_ASSESSMENT)

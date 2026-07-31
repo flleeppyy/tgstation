@@ -15,6 +15,8 @@
 	var/tamed_reaction
 
 /datum/element/befriend_petting/Attach(datum/target, befriend_chance = AI_DOG_PET_FRIEND_PROB, tamed_reaction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -24,11 +26,15 @@
 	RegisterSignal(target, COMSIG_ATOM_ATTACK_HAND, PROC_REF(on_click))
 
 /datum/element/befriend_petting/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_ATOM_ATTACK_HAND, COMSIG_ATOM_WAS_ATTACKED)
 
 /// If it's a nice touch make friends
 /datum/element/befriend_petting/proc/on_click(mob/living/owner, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!istype(user))

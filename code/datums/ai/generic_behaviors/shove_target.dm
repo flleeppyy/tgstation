@@ -7,6 +7,8 @@
 	var/shove_chance = 100
 
 /datum/bt_node/ai_behavior/shove_target/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	var/mob/living/living_target = controller.blackboard[target_key]
 
@@ -36,6 +38,8 @@
 
 /// Makes sure the active hand is empty, swapping to a free one if it isn't. FALSE when every hand is full.
 /datum/bt_node/ai_behavior/shove_target/proc/free_up_hand(mob/living/living_pawn)
+	procstart = null
+	src.procstart = null
 	if(isnull(living_pawn.get_active_held_item()))
 		return TRUE
 	var/list/empty_hands = living_pawn.get_empty_held_indexes()

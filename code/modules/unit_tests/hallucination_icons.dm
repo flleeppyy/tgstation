@@ -8,6 +8,8 @@
 /datum/unit_test/hallucination_icons
 
 /datum/unit_test/hallucination_icons/Run()
+	procstart = null
+	src.procstart = null
 
 	// Test nearby_fake_item hallucinations for invalid image setups
 	for(var/datum/hallucination/nearby_fake_item/hallucination as anything in subtypesof(/datum/hallucination/nearby_fake_item))
@@ -75,6 +77,8 @@
 	check_hallucination_icon(malf_apc_hallucination, malf_apc_icon, malf_apc_icon_state)
 
 /datum/unit_test/hallucination_icons/proc/check_hallucination_icon(hallucination, icon, icon_state)
+	procstart = null
+	src.procstart = null
 	if(!icon)
 		TEST_FAIL("Hallucination [hallucination] forgot to set its icon file.")
 	if(!icon_state)

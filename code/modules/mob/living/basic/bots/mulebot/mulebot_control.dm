@@ -1,10 +1,14 @@
 /mob/living/basic/bot/mulebot/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Mule", name)
 		ui.open()
 
 /mob/living/basic/bot/mulebot/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["powerStatus"] = bot_mode_flags & BOT_MODE_ON
 	data["locked"] = bot_access_flags & BOT_COVER_LOCKED
@@ -33,6 +37,8 @@
 	return data
 
 /mob/living/basic/bot/mulebot/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/user = ui.user
 	if(. || (bot_access_flags & BOT_COVER_LOCKED && !HAS_SILICON_ACCESS(user)))
@@ -42,6 +48,8 @@
 	return TRUE
 
 /mob/living/basic/bot/mulebot/bot_control(command, mob/user, list/params = list(), pda = FALSE)
+	procstart = null
+	src.procstart = null
 	if(pda && wires.is_cut(WIRE_RX)) // MULE wireless is controlled by wires.
 		return
 
@@ -83,6 +91,8 @@
 			mulebot_delivery_flags ^= MULEBOT_REPORT_DELIVERY_MODE
 
 /mob/living/basic/bot/mulebot/proc/start()
+	procstart = null
+	src.procstart = null
 	if(!(bot_mode_flags & BOT_MODE_ON))
 		return
 	if(ai_controller.blackboard[BB_MULEBOT_DESTINATION_BEACON] == ai_controller.blackboard[BB_MULEBOT_HOME_BEACON])
@@ -91,13 +101,19 @@
 		update_bot_mode(new_mode = BOT_DELIVER)
 
 /mob/living/basic/bot/mulebot/proc/start_home()
+	procstart = null
+	src.procstart = null
 	set_destination(ai_controller.blackboard[BB_MULEBOT_HOME_BEACON])
 	update_bot_mode(new_mode = BOT_GO_HOME)
 
 /mob/living/basic/bot/mulebot/proc/set_destination(new_destination)
+	procstart = null
+	src.procstart = null
 	ai_controller.set_blackboard_key(BB_MULEBOT_DESTINATION_BEACON, new_destination)
 
 /mob/living/basic/bot/mulebot/proc/set_home(turf/home_loc)
+	procstart = null
+	src.procstart = null
 	if(home_destination)
 		ai_controller.set_blackboard_key(BB_MULEBOT_HOME_BEACON, home_destination)
 		home_destination = null
@@ -113,4 +129,6 @@
 
 ///Sets the new ID of the mulebot
 /mob/living/basic/bot/mulebot/proc/set_id(new_id)
+	procstart = null
+	src.procstart = null
 	id = new_id

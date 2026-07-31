@@ -12,6 +12,8 @@
 	head_flags = HEAD_LIPS|HEAD_DEBRAIN
 
 /obj/item/bodypart/head/monkey/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	worn_head_offset = new(
 		attached_part = src,
 		feature_key = OFFSET_HEAD,
@@ -45,6 +47,8 @@
 	)
 
 /obj/item/bodypart/chest/monkey/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	worn_neck_offset = new(
 		attached_part = src,
 		feature_key = OFFSET_NECK,
@@ -53,6 +57,8 @@
 	return ..()
 
 /obj/item/bodypart/chest/monkey/update_mob_heights(mob/living/carbon/holder)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(holder, TRAIT_DWARF))
 		return MONKEY_HEIGHT_DWARF
 

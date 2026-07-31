@@ -5,6 +5,8 @@
 	)
 
 /datum/preference_middleware/jobs/proc/set_job_preference(list/params, mob/user)
+	procstart = null
+	src.procstart = null
 	var/job_title = params["job"]
 	var/level = params["level"]
 
@@ -27,6 +29,8 @@
 	return TRUE
 
 /datum/preference_middleware/jobs/proc/set_job_to_profile(list/params, mob/user)
+	procstart = null
+	src.procstart = null
 	var/job_title = params["job"]
 	var/profile_slot = params["profile"]
 
@@ -38,6 +42,8 @@
 	return TRUE
 
 /datum/preference_middleware/jobs/get_constant_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/list/departments = list()
@@ -80,6 +86,8 @@
 	return data
 
 /datum/preference_middleware/jobs/get_ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["job_preferences"] = list()
@@ -100,6 +108,8 @@
 	return data
 
 /datum/preference_middleware/jobs/get_ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/list/required_job_playtime = get_required_job_playtime(user)
@@ -113,6 +123,8 @@
 	return data.len > 0 ? data : null
 
 /datum/preference_middleware/jobs/proc/get_required_job_playtime(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/list/job_days_left = list()
@@ -142,6 +154,8 @@
 	return data
 
 /datum/preference_middleware/jobs/proc/get_job_bans(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	for (var/datum/job/job as anything in SSjob.all_occupations)

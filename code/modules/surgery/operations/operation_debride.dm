@@ -23,23 +23,33 @@
 	var/sanitization_added = 0.5 // just enough to stop infestation from worsening
 
 /datum/surgery_operation/limb/debride/get_time_modifiers(obj/item/bodypart/limb, mob/living/surgeon, tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/wound/burn/flesh/wound in limb.wounds)
 		if(HAS_TRAIT(wound, TRAIT_WOUND_SCANNED))
 			. *= 0.5
 
 /datum/surgery_operation/limb/debride/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(/obj/item/reagent_containers/applicator/patch/aiuri)
 
 /datum/surgery_operation/limb/debride/all_required_strings()
+	procstart = null
+	src.procstart = null
 	return list("the limb must have a second degree or worse burn") + ..()
 
 /datum/surgery_operation/limb/debride/state_check(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	var/datum/wound/burn/flesh/wound = locate() in limb.wounds
 	return wound?.infection > 0
 
 /// To give the surgeon a heads up how much work they have ahead of them
 /datum/surgery_operation/limb/debride/proc/get_progress(datum/wound/burn/flesh/wound)
+	procstart = null
+	src.procstart = null
 	if(wound?.infection <= 0)
 		return null
 
@@ -59,6 +69,8 @@
 	return progress_text
 
 /datum/surgery_operation/limb/debride/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -69,6 +81,8 @@
 	display_pain(limb.owner, "The infection in your [limb.plaintext_zone] stings like hell! It feels like you're being stabbed!")
 
 /datum/surgery_operation/limb/debride/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args, default_display_results = FALSE)
+	procstart = null
+	src.procstart = null
 	limb.receive_damage(3, wound_bonus = CANT_WOUND, sharpness = tool.get_sharpness(), damage_source = tool)
 	var/datum/wound/burn/flesh/wound = locate() in limb.wounds
 	wound?.infection -= infestation_removed
@@ -82,6 +96,8 @@
 	)
 
 /datum/surgery_operation/limb/debride/on_failure(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,

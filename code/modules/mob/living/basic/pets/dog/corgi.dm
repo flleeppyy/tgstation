@@ -31,6 +31,8 @@
 	var/can_breed = TRUE
 
 /mob/living/basic/pet/dog/corgi/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 	AddElement(/datum/element/strippable, length(strippable_inventory_slots) ? create_strippable_list(strippable_inventory_slots) : GLOB.strippable_corgi_items)
@@ -41,6 +43,8 @@
 		add_breeding_component()
 
 /mob/living/basic/pet/dog/corgi/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(inventory_head)
 	QDEL_NULL(inventory_back)
 	QDEL_NULL(access_card)
@@ -48,6 +52,8 @@
 	return ..()
 
 /mob/living/basic/pet/dog/corgi/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/dropped_something = FALSE
 	if(gone == inventory_head)
@@ -61,6 +67,8 @@
 		update_appearance(UPDATE_OVERLAYS)
 
 /mob/living/basic/pet/dog/corgi/gib()
+	procstart = null
+	src.procstart = null
 	undress_dog()
 	if(access_card)
 		access_card.forceMove(drop_location())
@@ -68,6 +76,8 @@
 	return ..()
 
 /mob/living/basic/pet/dog/corgi/proc/add_breeding_component()
+	procstart = null
+	src.procstart = null
 	var/static/list/partner_paths = typecacheof(list(/mob/living/basic/pet/dog/corgi))
 	var/static/list/baby_paths = list(
 		/mob/living/basic/pet/dog/corgi/puppy = 95,
@@ -81,10 +91,14 @@
 
 /// Removes the hat and shirt (but not ID) of this corgi
 /mob/living/basic/pet/dog/corgi/proc/undress_dog()
+	procstart = null
+	src.procstart = null
 	inventory_head?.forceMove(drop_location())
 	inventory_back?.forceMove(drop_location())
 
 /mob/living/basic/pet/dog/corgi/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(access_card)
 		. += "There appears to be [icon2html(access_card, user)] \a [access_card] pinned to [p_them()]."
@@ -95,6 +109,8 @@
  * will instead give half the armor value.
  */
 /mob/living/basic/pet/dog/corgi/getarmor(def_zone, type)
+	procstart = null
+	src.procstart = null
 	var/armorval = 0
 
 	if(def_zone)
@@ -113,6 +129,8 @@
 	return armorval * 0.5
 
 /mob/living/basic/pet/dog/corgi/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/razor))
 		return ..()
 
@@ -145,6 +163,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /mob/living/basic/pet/dog/corgi/update_dog_speech(list/speech_data)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(inventory_head?.dog_fashion)
 		var/datum/dog_fashion/equipped_head_fashion_item = new inventory_head.dog_fashion(src)
@@ -156,6 +176,8 @@
 
 /// Applies corgi fashion to the BT blackboard speech data by routing through the planning stub.
 /mob/living/basic/pet/dog/corgi/update_dog_speak_blackboard(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/list/speech_data = list()
 	update_dog_speech(speech_data)
 	if(!speech_data[BB_SPEAK_CHANCE])
@@ -163,6 +185,8 @@
 	controller.override_blackboard_key(BB_BASIC_MOB_SPEAK_LINES, speech_data)
 
 /mob/living/basic/pet/dog/corgi/deadchat_plays(mode = ANARCHY_MODE, cooldown = 12 SECONDS)
+	procstart = null
+	src.procstart = null
 	. = AddComponent(/datum/component/deadchat_control/cardinal_movement, mode, list(
 		"speak" = CALLBACK(src, PROC_REF(bork)),
 		"wear_hat" = CALLBACK(src, PROC_REF(find_new_hat)),
@@ -176,6 +200,8 @@
 	QDEL_NULL(ai_controller)
 
 /mob/living/basic/pet/dog/corgi/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(inventory_head)
 		var/image/head_icon
@@ -227,6 +253,8 @@
  * to the name, description, speech etc. Doesn't need the user to complete, and is also used in station traits/events/persistence reading.
 */
 /mob/living/basic/pet/dog/corgi/proc/place_on_head(obj/item/item_to_add, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(inventory_head)
 		if(user)
 			balloon_alert(user, "already wearing a hat!")
@@ -270,6 +298,8 @@
 	return TRUE
 
 /mob/living/basic/pet/dog/corgi/proc/update_corgi_fluff()
+	procstart = null
+	src.procstart = null
 	// First, change back to defaults
 	name = real_name
 	desc = initial(desc)
@@ -288,22 +318,30 @@
 
 ///Handler for COMSIG_MOB_RETRIEVE_ACCESS
 /mob/living/basic/pet/dog/corgi/proc/retrieve_access(mob/accessor, list/player_access)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(access_card)
 		player_access += access_card.GetAccess()
 
 ///Handles updating any existing overlays for the corgi (such as fashion items) when it changes how it appears, as in, dead or alive.
 /mob/living/basic/pet/dog/corgi/proc/on_appearance_change()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_appearance(UPDATE_OVERLAYS)
 
 ///Deadchat plays bark.
 /mob/living/basic/pet/dog/corgi/proc/bork()
+	procstart = null
+	src.procstart = null
 	var/emote = pick("barks!", "woofs!", "yaps.", "pants.")
 	manual_emote(emote)
 
 ///Deadchat plays command that picks a new hat for Ian.
 /mob/living/basic/pet/dog/corgi/proc/find_new_hat()
+	procstart = null
+	src.procstart = null
 	if(!isturf(loc))
 		return
 	var/list/possible_headwear = list()
@@ -324,6 +362,8 @@
 
 ///Deadchat plays command that drops the current hat off Ian.
 /mob/living/basic/pet/dog/corgi/proc/drop_hat()
+	procstart = null
+	src.procstart = null
 	if(!inventory_head)
 		return
 	visible_message(span_notice("[src] vigorously shakes [p_their()] head, dropping [inventory_head] to the ground."))
@@ -334,6 +374,8 @@
 
 ///Turn AI back on.
 /mob/living/basic/pet/dog/corgi/proc/stop_deadchat_plays()
+	procstart = null
+	src.procstart = null
 	var/controller_type = initial(ai_controller)
 	ai_controller = new controller_type(src)
 	ai_controller?.set_blackboard_key(BB_DOG_IS_SLOW, is_slow)
@@ -350,6 +392,8 @@
 	can_be_shaved = FALSE
 
 /mob/living/basic/pet/dog/corgi/exoticcorgi/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/newcolor = rgb(rand(0, 255), rand(0, 255), rand(0, 255))
 	add_atom_colour(newcolor, FIXED_COLOUR_PRIORITY)
@@ -380,6 +424,8 @@
 	var/saved_head = null
 
 /mob/living/basic/pet/dog/corgi/ian/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Ensure Ian exists
 	REGISTER_REQUIRED_MAP_ITEM(1, 1)
@@ -408,16 +454,22 @@
 	SSticker.OnRoundend(i_will_survive)
 
 /mob/living/basic/pet/dog/corgi/ian/Destroy()
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(SSticker.round_end_events, i_will_survive) //cleanup the survival callback
 	i_will_survive = null
 	return ..()
 
 /mob/living/basic/pet/dog/corgi/ian/death()
+	procstart = null
+	src.procstart = null
 	if(!memory_saved)
 		Write_Memory(TRUE)
 	return ..()
 
 /mob/living/basic/pet/dog/corgi/ian/revive(full_heal_flags, excess_healing, force_grab_ghost)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -426,6 +478,8 @@
 	place_on_head(new /obj/item/clothing/glasses/eyepatch/medical)
 
 /mob/living/basic/pet/dog/corgi/ian/narsie_act()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/magic/demon_dies.ogg', 75, TRUE)
 	var/mob/living/basic/pet/dog/corgi/narsie/narsIan = new(loc)
 	narsIan.setDir(dir)
@@ -433,6 +487,8 @@
 	gib()
 
 /mob/living/basic/pet/dog/corgi/ian/Write_Memory(dead, gibbed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -458,6 +514,8 @@
 
 ///Reads the database's persistence json file and applies age, record_age and saved_head to Ian.
 /mob/living/basic/pet/dog/corgi/ian/proc/Read_Memory()
+	procstart = null
+	src.procstart = null
 	if(fexists("data/npc_saves/Ian.sav")) //legacy compatability to convert old format to new
 		var/savefile/S = new /savefile("data/npc_saves/Ian.sav")
 		S["age"] >> age
@@ -481,6 +539,8 @@
 
 ///Checks whether Ian has survived the round or not
 /mob/living/basic/pet/dog/corgi/ian/proc/check_ian_survival()
+	procstart = null
+	src.procstart = null
 	if(!IS_UNCONSCIOUS_OR_CRIT(src) && !memory_saved)
 		Write_Memory(FALSE)
 
@@ -502,12 +562,16 @@
 	var/static/list/edible_types = list(/mob/living/basic/pet)
 
 /mob/living/basic/pet/dog/corgi/narsie/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/connections = list(COMSIG_ATOM_ENTERED = PROC_REF(on_prey_approached))
 	AddComponent(/datum/component/connect_range, tracked = src, connections = connections, range = 1, works_in_containers = FALSE)
 
 /// Attempt to eat a pet we get near
 /mob/living/basic/pet/dog/corgi/narsie/proc/on_prey_approached(atom/movable/dog, atom/movable/prey)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!is_type_in_list(prey, edible_types) || istype(prey, type))
 		return
@@ -524,15 +588,21 @@
 		qdel(prey)
 
 /mob/living/basic/pet/dog/corgi/narsie/update_corgi_fluff()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	speak_emote = list("growls", "barks ominously")
 
 /mob/living/basic/pet/dog/corgi/narsie/update_dog_speech(list/speech_data)
+	procstart = null
+	src.procstart = null
 	speech_data[BB_EMOTE_SAY] = string_list(list("Tari'karat-pasnar!", "IA! IA!", "BRRUUURGHGHRHR"))
 	speech_data[BB_EMOTE_HEAR] = string_list(list("barks echoingly!", "woofs hauntingly!", "yaps in an eldritch manner.", "mutters something unspeakable."))
 	speech_data[BB_EMOTE_SEE] = string_list(list("communes with the unnameable.", "ponders devouring some souls.", "shakes."))
 
 /mob/living/basic/pet/dog/corgi/narsie/narsie_act()
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD) //Nar'Sie loves her doggy
 		visible_message(span_warning("[src] arises again, revived by the dark magicks!"), \
 		span_cult_large("RISE"))
@@ -597,6 +667,8 @@
 	maximum_survivable_temperature = T0C + 40
 
 /mob/living/basic/pet/dog/corgi/puppy/void/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//void puppies can spacewalk and can harass people from within a container because they're void puppies
 	add_traits(list(TRAIT_AI_BAGATTACK, TRAIT_SPACEWALK), INNATE_TRAIT)

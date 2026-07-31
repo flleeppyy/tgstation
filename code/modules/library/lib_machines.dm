@@ -13,6 +13,8 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 
 /// Increments every time WE update the library db table, causes all existing consoles to repull when they next check
 /proc/library_updated()
+	procstart = null
+	src.procstart = null
 	GLOB.library_table_modified = WRAP_UID(GLOB.library_table_modified + 1)
 
 /*
@@ -54,11 +56,15 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	var/interface_type = "LibraryVisitor"
 
 /obj/machinery/computer/libraryconsole/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	category = DEFAULT_SEARCH_CATAGORY
 	INVOKE_ASYNC(src, PROC_REF(update_db_info))
 
 /obj/machinery/computer/libraryconsole/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -66,6 +72,8 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 		ui.open()
 
 /obj/machinery/computer/libraryconsole/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["can_db_request"] = can_db_request()
 	data["search_categories"] = SSlibrary.search_categories
@@ -81,6 +89,8 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	return data
 
 /obj/machinery/computer/libraryconsole/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -137,6 +147,8 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 
 ///Checks if the machine is alloweed to make another db request yet. TRUE if so, FALSE otherwise
 /obj/machinery/computer/libraryconsole/proc/prevent_db_spam()
+	procstart = null
+	src.procstart = null
 	var/allowed = can_db_request()
 	if(!allowed)
 		return FALSE
@@ -144,6 +156,8 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	return TRUE
 
 /obj/machinery/computer/libraryconsole/proc/can_db_request()
+	procstart = null
+	src.procstart = null
 	if(sending_request) //Absolutely not
 		return FALSE
 	if(!COOLDOWN_FINISHED(src, db_request_cooldown))
@@ -152,12 +166,16 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 
 ///Returns a santized page input, so converted from num/text to num, and properly maxed
 /obj/machinery/computer/libraryconsole/proc/sanitize_page_input(input, default, max)
+	procstart = null
+	src.procstart = null
 	input = convert_ambiguous_input(input, default + 1) // + 1 to invert the below reasons
 	//We expect the search page to be one greater then it should be, because we're lying about indexing at 1
 	return clamp(input - 1, 0, max)
 
 ///Takes input that could either be a number, or a string that represents a number and returns a number
 /obj/machinery/computer/libraryconsole/proc/convert_ambiguous_input(input, default)
+	procstart = null
+	src.procstart = null
 	if(isnum(input))
 		return input
 	if(!istext(input))
@@ -168,6 +186,8 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	return hidden_number
 
 /obj/machinery/computer/libraryconsole/proc/update_db_info()
+	procstart = null
+	src.procstart = null
 	if(!has_anything_changed()) //You're not allowed to make the same search twice, waste of resources
 		return
 	if (!SSdbcore.Connect())
@@ -185,14 +205,20 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 
 //Returns true if there's been an update worth refreshing our pages for, false otherwise
 /obj/machinery/computer/libraryconsole/proc/has_anything_changed()
+	procstart = null
+	src.procstart = null
 	if(last_search_hash == hash_search_info())
 		return FALSE
 	return TRUE
 
 /obj/machinery/computer/libraryconsole/proc/hash_search_info()
+	procstart = null
+	src.procstart = null
 	return "[GLOB.library_table_modified]-[book_id]-[title]-[author]-[category]-[search_page]-[page_count]"
 
 /obj/machinery/computer/libraryconsole/proc/update_page_contents()
+	procstart = null
+	src.procstart = null
 	if(sending_request) //Final defense against nerds spamming db requests
 		return
 	sending_request = TRUE
@@ -225,6 +251,8 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	qdel(query_library_list_books)
 
 /obj/machinery/computer/libraryconsole/proc/update_page_count()
+	procstart = null
+	src.procstart = null
 	var/bookcount = 0
 	var/datum/db_query/query_library_count_books = SSdbcore.NewQuery({"
 		SELECT COUNT(id) FROM [format_table_name("library")]
@@ -317,11 +345,15 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	COOLDOWN_DECLARE(newscaster_cooldown)
 
 /obj/machinery/computer/libraryconsole/bookmanagement/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		dynamic_inv_load = TRUE //Only load in stuff if we were placed during mapload
 
 /obj/machinery/computer/libraryconsole/bookmanagement/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["inventory"] = list()
 	var/inventory_len = length(inventory)
@@ -341,6 +373,8 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	return data
 
 /obj/machinery/computer/libraryconsole/bookmanagement/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["can_db_request"] = can_db_request()
 	data["screen_state"] = screen_state
@@ -409,14 +443,20 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	return data
 
 /obj/machinery/computer/libraryconsole/bookmanagement/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(get_asset_datum(/datum/asset/spritesheet_batched/bibles))
 
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/load_nearby_books()
+	procstart = null
+	src.procstart = null
 	for(var/datum/book_info/book as anything in SSlibrary.get_area_books(get_area(src)))
 		inventory[ref(book)] = book
 	inventory_update()
 
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/get_scanner(viewrange)
+	procstart = null
+	src.procstart = null
 	if(scanner)
 		var/obj/machinery/libraryscanner/potential_scanner = scanner.resolve()
 		if(potential_scanner)
@@ -428,6 +468,8 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 		return foundya
 
 /obj/machinery/computer/libraryconsole/bookmanagement/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	//The parent call takes care of stuff like searching, don't forget about that yeah?
 	. = ..()
 	if(.)
@@ -548,6 +590,8 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 			return TRUE
 
 /obj/machinery/computer/libraryconsole/bookmanagement/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/barcodescanner))
 		return NONE
 
@@ -562,6 +606,8 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/computer/libraryconsole/bookmanagement/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(!density || obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -569,17 +615,25 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	return TRUE
 
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/set_screen_state(new_state)
+	procstart = null
+	src.procstart = null
 	screen_state = clamp(new_state, MIN_LIBRARY, MAX_LIBRARY)
 
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/inventory_update()
+	procstart = null
+	src.procstart = null
 	inventory_page_count = round(max(length(inventory) - 1, 0) / INVENTORY_PER_PAGE) //This is just floor()
 	inventory_page = clamp(inventory_page, 0, inventory_page_count)
 
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/checkout_update()
+	procstart = null
+	src.procstart = null
 	checkout_page_count = round(max(length(checkouts) - 1, 0) / CHECKOUTS_PER_PAGE) //This is just floor()
 	checkout_page = clamp(checkout_page, 0, checkout_page_count)
 
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/print_forbidden_lore(mob/user)
+	procstart = null
+	src.procstart = null
 	can_spawn_lore = FALSE
 	new /obj/item/melee/cultblade/dagger(get_turf(src))
 	to_chat(user, span_warning("Your sanity barely endures the seconds spent in the vault's browsing window. The only thing to remind you of this when you stop browsing is a sinister dagger sitting on the desk. You don't even remember where it came from..."))
@@ -589,10 +643,14 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 		fool.age = clamp(fool.age + 10, AGE_MIN, AGE_MAX) //Fuck you
 
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/shun_the_corp(mob/user)
+	procstart = null
+	src.procstart = null
 	can_spawn_lore = FALSE
 	to_chat(user, span_warning("You click off the page in a rush, and the machine hums back to normal, the tab gone..."))
 
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/upload_from_scanner(upload_category)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/libraryscanner/scan = get_scanner()
 	if(!scan)
 		say("No nearby scanner detected.")
@@ -631,6 +689,8 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 /// Call this proc to attempt a print. It will return false if the print failed, true otherwise, longside some ux
 /// Accepts a callback to call when the print "finishes"
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/attempt_print(datum/callback/call_after)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, printer_cooldown))
 		say("Printer currently unavailable, please wait a moment.")
 		return FALSE
@@ -640,6 +700,8 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	return TRUE
 
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/print_bible()
+	procstart = null
+	src.procstart = null
 	var/obj/item/book/bible/holy_book = new(loc)
 	if(!GLOB.bible_icon_state || !GLOB.bible_inhand_icon_state)
 		return
@@ -649,12 +711,16 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	holy_book.deity_name = GLOB.deity
 
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/print_poster(poster_name)
+	procstart = null
+	src.procstart = null
 	var/poster_type = SSlibrary.printable_posters[poster_name]
 	if(!poster_type)
 		return
 	new /obj/item/poster(loc, new poster_type)
 
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/print_book(id)
+	procstart = null
+	src.procstart = null
 	if (!SSdbcore.Connect())
 		say("Connection to Archive has been severed. Aborting.")
 		can_connect = FALSE
@@ -703,21 +769,31 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	var/datum/book_info/cache
 
 /obj/machinery/libraryscanner/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/libraryscanner/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/libraryscanner/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]2" : base_icon_state
 
 /obj/machinery/libraryscanner/Destroy()
+	procstart = null
+	src.procstart = null
 	held_book = null
 	cache = null
 	return ..()
 
 /obj/machinery/libraryscanner/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/book))
 		return NONE
 
@@ -729,17 +805,23 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/libraryscanner/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == held_book)
 		held_book = null
 
 /obj/machinery/libraryscanner/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "LibraryScanner")
 		ui.open()
 
 /obj/machinery/libraryscanner/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/cached_info = list()
 	data["has_book"] = !!held_book
@@ -752,6 +834,8 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	return data
 
 /obj/machinery/libraryscanner/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -791,16 +875,24 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	var/scanned_name
 
 /obj/machinery/bookbinder/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/bookbinder/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/bookbinder/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]2" : base_icon_state
 
 /obj/machinery/bookbinder/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/paper))
 		prebind_book(user, tool)
 		return ITEM_INTERACT_SUCCESS
@@ -814,6 +906,8 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	return NONE
 
 /obj/machinery/bookbinder/proc/prebind_book(mob/user, obj/item/paper/draw_from)
+	procstart = null
+	src.procstart = null
 	if(machine_stat)
 		return
 
@@ -837,6 +931,8 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	addtimer(CALLBACK(src, PROC_REF(bind_book), draw_from), 4.1 SECONDS)
 
 /obj/machinery/bookbinder/proc/bind_book(obj/item/paper/draw_from)
+	procstart = null
+	src.procstart = null
 	busy = FALSE
 	if(!draw_from) //What the fuck did you do
 		return

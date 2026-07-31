@@ -1,5 +1,7 @@
 /// Generic attack logging
 /proc/log_attack(text, list/data)
+	procstart = null
+	src.procstart = null
 	logger.Log(LOG_CATEGORY_ATTACK, text, data)
 
 /**
@@ -13,6 +15,8 @@
  * * addition - is any additional text, which will be appended to the rest of the log line
  */
 /proc/log_combat(atom/user, atom/target, what_done, atom/object=null, addition=null)
+	procstart = null
+	src.procstart = null
 	var/ssource = key_name(user)
 	var/starget = key_name(target)
 
@@ -50,6 +54,8 @@
  * * base_roll- Base wounding ability of an attack is a random number from 1 to (dealt_damage * WOUND_DAMAGE_EXPONENT). This is the number that was rolled in there, before mods
  */
 /proc/log_wound(atom/victim, datum/wound/suffered_wound, dealt_damage, dealt_wound_bonus, dealt_exposed_wound_bonus, base_roll)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(victim) || !suffered_wound)
 		return
 	var/message = "suffered: [suffered_wound][suffered_wound.limb ? " to [suffered_wound.limb.plaintext_zone]" : null]"// maybe indicate if it's a promote/demote?
@@ -70,6 +76,8 @@
 
 /// Logging for bombs detonating
 /proc/log_bomber(atom/user, details, atom/bomb, additional_details, message_admins = TRUE)
+	procstart = null
+	src.procstart = null
 	var/bomb_message = "[details][bomb ? " [bomb.name] at [AREACOORD(bomb)]": ""][additional_details ? " [additional_details]" : ""]."
 
 	if(user)

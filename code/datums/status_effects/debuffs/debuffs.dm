@@ -23,6 +23,8 @@
 	var/list/alter_phrases
 
 /datum/status_effect/incapacitating/on_creation(mob/living/new_owner, set_duration)
+	procstart = null
+	src.procstart = null
 	if(isnum(set_duration))
 		duration = set_duration
 	. = ..()
@@ -32,11 +34,15 @@
 		owner.update_stat()
 
 /datum/status_effect/incapacitating/on_remove()
+	procstart = null
+	src.procstart = null
 	if(needs_update_stat || issilicon(owner)) //silicons need stat updates in addition to normal canmove updates
 		owner.update_stat()
 	return ..()
 
 /datum/status_effect/incapacitating/on_apply()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	. = ..()
 	if(!.)
@@ -45,6 +51,8 @@
 	try_force_say()
 
 /datum/status_effect/incapacitating/proc/try_force_say()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	var/mob/living/carbon/human/human = owner
@@ -56,12 +64,16 @@
 	id = "stun"
 
 /datum/status_effect/incapacitating/stun/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	owner.add_traits(list(TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_HANDS_BLOCKED), TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/incapacitating/stun/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_traits(list(TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_HANDS_BLOCKED), TRAIT_STATUS_EFFECT(id))
 	return ..()
 
@@ -70,12 +82,16 @@
 	id = "knockdown"
 
 /datum/status_effect/incapacitating/knockdown/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	ADD_TRAIT(owner, TRAIT_FLOORED, TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/incapacitating/knockdown/on_remove()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_FLOORED, TRAIT_STATUS_EFFECT(id))
 	return ..()
 
@@ -86,12 +102,16 @@
 	force_say_chance = 0
 
 /datum/status_effect/incapacitating/immobilized/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	ADD_TRAIT(owner, TRAIT_IMMOBILIZED, TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/incapacitating/immobilized/on_remove()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_IMMOBILIZED, TRAIT_STATUS_EFFECT(id))
 	return ..()
 
@@ -102,12 +122,16 @@
 	alter_phrases = list("") // "Why am I about to be froz-"
 
 /datum/status_effect/incapacitating/paralyzed/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	owner.add_traits(list(TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/incapacitating/paralyzed/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_traits(list(TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), TRAIT_STATUS_EFFECT(id))
 	return ..()
 
@@ -119,6 +143,8 @@
 
 // What happens when you get the incapacitated status. You get TRAIT_INCAPACITATED added to you for the duration of the status effect.
 /datum/status_effect/incapacitating/incapacitated/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -126,6 +152,8 @@
 
 // When the status effect runs out, your TRAIT_INCAPACITATED is removed.
 /datum/status_effect/incapacitating/incapacitated/on_remove()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_INCAPACITATED, TRAIT_STATUS_EFFECT(id))
 	return ..()
 
@@ -136,12 +164,16 @@
 	force_say_chance = 100
 
 /datum/status_effect/incapacitating/unconscious/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	ADD_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/incapacitating/unconscious/on_remove()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
 	return ..()
 
@@ -151,6 +183,8 @@
 	alert_type = null
 
 /datum/status_effect/knocked_out/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.become_blind(TRAIT_STATUS_EFFECT(id))
 	owner.apply_status_effect(/datum/status_effect/grouped/see_no_names, TRAIT_STATUS_EFFECT(id))
 	owner.add_traits(list(TRAIT_HANDS_BLOCKED, TRAIT_IMMOBILIZED, TRAIT_BLOCK_SECHUD, TRAIT_BLOCK_MEDHUD, TRAIT_INCAPACITATED, TRAIT_FLOORED), TRAIT_STATUS_EFFECT(id))
@@ -162,6 +196,8 @@
 	return TRUE
 
 /datum/status_effect/knocked_out/on_creation(mob/living/new_owner, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -169,6 +205,8 @@
 		stop_ticking()
 
 /datum/status_effect/knocked_out/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.cure_blind(TRAIT_STATUS_EFFECT(id))
 	owner.remove_status_effect(/datum/status_effect/grouped/see_no_names, TRAIT_STATUS_EFFECT(id))
 	owner.remove_traits(list(TRAIT_HANDS_BLOCKED, TRAIT_IMMOBILIZED, TRAIT_BLOCK_SECHUD, TRAIT_BLOCK_MEDHUD, TRAIT_INCAPACITATED, TRAIT_FLOORED), TRAIT_STATUS_EFFECT(id))
@@ -178,22 +216,30 @@
 		hide_unconscious_hud(owner)
 
 /datum/status_effect/knocked_out/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	owner.adjust_stamina_loss(-3 * seconds_between_ticks)
 
 /// Global list of images that correspond to a mob's unconscious appearance
 GLOBAL_LIST_EMPTY(unconscious_appearances)
 
 /datum/status_effect/knocked_out/proc/show_unconscious_hud(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	source.client?.images += (GLOB.unconscious_appearances - source.unconscious_appearance)
 
 /datum/status_effect/knocked_out/proc/hide_unconscious_hud(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	source.client?.images -= GLOB.unconscious_appearances
 
 /datum/status_effect/knocked_out/proc/on_mob_statchange(mob/living/source, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(owner.stat == DEAD)
 		stop_ticking()
@@ -210,6 +256,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	force_say_chance = 100
 
 /datum/status_effect/incapacitating/sleeping/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -219,6 +267,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	RegisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_SLEEPIMMUNE), PROC_REF(on_owner_sleepy))
 
 /datum/status_effect/incapacitating/sleeping/on_creation(mob/living/new_owner, set_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -226,27 +276,37 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 		stop_ticking()
 
 /datum/status_effect/incapacitating/sleeping/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, list(SIGNAL_ADDTRAIT(TRAIT_SLEEPIMMUNE), SIGNAL_REMOVETRAIT(TRAIT_SLEEPIMMUNE)))
 	REMOVE_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
 	return ..()
 
 /datum/status_effect/incapacitating/sleeping/try_force_say()
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(owner, TRAIT_SLEEPIMMUNE))
 		return ..()
 
 ///If the mob is sleeping and gain the TRAIT_SLEEPIMMUNE we remove the TRAIT_KNOCKEDOUT and stop the tick() from happening
 /datum/status_effect/incapacitating/sleeping/proc/on_owner_insomniac(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	REMOVE_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
 	stop_ticking()
 
 ///If the mob has the TRAIT_SLEEPIMMUNE but somehow looses it we make him sleep and restart the tick()
 /datum/status_effect/incapacitating/sleeping/proc/on_owner_sleepy(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	ADD_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
 	start_ticking()
 
 /datum/status_effect/incapacitating/sleeping/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(owner.maxHealth)
 		var/health_ratio = owner.health / owner.maxHealth
 		var/sleep_quality = HEALING_SLEEP_DEFAULT
@@ -344,6 +404,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	var/last_dead_time
 
 /datum/status_effect/grouped/stasis/proc/update_time_of_death()
+	procstart = null
+	src.procstart = null
 	if(last_dead_time)
 		var/delta = world.time - last_dead_time
 		var/new_timeofdeath = owner.timeofdeath + delta
@@ -354,12 +416,16 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 		last_dead_time = world.time
 
 /datum/status_effect/grouped/stasis/on_creation(mob/living/new_owner, set_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		update_time_of_death()
 		owner.reagents?.end_metabolization(owner, FALSE)
 
 /datum/status_effect/grouped/stasis/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -373,9 +439,13 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 		carbon_owner.update_bodypart_bleed_overlays()
 
 /datum/status_effect/grouped/stasis/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	update_time_of_death()
 
 /datum/status_effect/grouped/stasis/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_traits(list(TRAIT_IMMOBILIZED, TRAIT_HANDS_BLOCKED, TRAIT_STASIS, TRAIT_TUMOR_SUPPRESSED), TRAIT_STATUS_EFFECT(id))
 	owner.remove_filter("stasis_status_ripple")
 	update_time_of_death()
@@ -397,6 +467,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	alert_type = /atom/movable/screen/alert/status_effect/his_wrath
 
 /datum/status_effect/his_wrath/on_creation(mob/living/new_owner, His, Him)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	linked_alert.name = "[His] Wrath"
 	linked_alert.desc = "You fled from [His] Grace instead of feeding [Him], and now you suffer."
@@ -409,6 +481,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	alerttooltipstyle = "hisgrace"
 
 /datum/status_effect/his_wrath/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/his_grace/HG in owner.held_items)
 		qdel(src)
 		return
@@ -425,10 +499,14 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	alert_type = null
 
 /datum/status_effect/cultghost/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.set_invis_see(SEE_INVISIBLE_OBSERVER)
 	return TRUE
 
 /datum/status_effect/cultghost/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(owner.reagents)
 		owner.reagents.del_reagent(/datum/reagent/water/holywater) //can't be deconverted
 
@@ -449,6 +527,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	var/obj/item/kinetic_crusher/crusher
 
 /datum/status_effect/crusher_mark/on_creation(mob/living/new_owner, was_boosted, obj/item/kinetic_crusher/crusher)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	boosted = was_boosted
 	src.crusher = crusher
@@ -456,10 +536,14 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 		RegisterSignal(crusher, COMSIG_QDELETING, PROC_REF(on_crusher_destroyed))
 
 /datum/status_effect/crusher_mark/proc/on_crusher_destroyed(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	crusher = null
 
 /datum/status_effect/crusher_mark/on_apply()
+	procstart = null
+	src.procstart = null
 	if(owner.mob_size < MOB_SIZE_LARGE)
 		return FALSE
 
@@ -473,9 +557,13 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	return TRUE
 
 /datum/status_effect/crusher_mark/proc/scale_back()
+	procstart = null
+	src.procstart = null
 	animate(marked_underlay, time = 0.1 SECONDS, transform = matrix(), flags = CUBIC_EASING | EASE_OUT)
 
 /datum/status_effect/crusher_mark/Destroy()
+	procstart = null
+	src.procstart = null
 	if(owner)
 		owner.underlays -= marked_underlay
 	QDEL_NULL(marked_underlay)
@@ -483,6 +571,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	return ..()
 
 /datum/status_effect/crusher_mark/proc/detonate(obj/item/kinetic_crusher/used_crusher, mob/living/user, melee_hit = TRUE)
+	procstart = null
+	src.procstart = null
 	var/datum/status_effect/crusher_damage/crusher_damage_effect = owner.has_status_effect(/datum/status_effect/crusher_damage) || owner.apply_status_effect(/datum/status_effect/crusher_damage)
 	var/target_health = owner.health
 	var/combined_damage = detonation_damage
@@ -535,9 +625,13 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	var/bleed_damage = 200
 
 /datum/status_effect/stacking/saw_bleed/fadeout_effect()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/bleed(get_turf(owner))
 
 /datum/status_effect/stacking/saw_bleed/threshold_cross_effect()
+	procstart = null
+	src.procstart = null
 	owner.adjust_brute_loss(bleed_damage)
 	new /obj/effect/temp_visual/bleed/explode(get_turf(owner))
 	for(var/splatter_dir in GLOB.alldirs)
@@ -557,6 +651,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	duration = STATUS_EFFECT_PERMANENT
 
 /datum/status_effect/neck_slice/on_apply()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(owner))
 		return FALSE
 	if(!owner.get_bodypart(BODY_ZONE_HEAD))
@@ -564,6 +660,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	return TRUE
 
 /datum/status_effect/neck_slice/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/throat = owner.get_bodypart(BODY_ZONE_HEAD)
 	if(owner.stat == DEAD || !throat) // they can lose their head while it's going.
 		qdel(src)
@@ -584,10 +682,14 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 		owner.emote(pick("gasp", "gag", "choke"))
 
 /datum/status_effect/neck_slice/get_examine_text()
+	procstart = null
+	src.procstart = null
 	return span_warning("[owner.p_Their()] neck is cut and is bleeding profusely!")
 
 /// Applies a curse with various possible effects
 /mob/living/proc/apply_necropolis_curse(set_curse)
+	procstart = null
+	src.procstart = null
 	var/datum/status_effect/necropolis_curse/curse = has_status_effect(/datum/status_effect/necropolis_curse)
 	if(!set_curse)
 		set_curse = pick(CURSE_BLINDING, CURSE_WASTING, CURSE_GRASPING)
@@ -614,20 +716,28 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	var/obj/effect/temp_visual/curse/wasting_effect
 
 /datum/status_effect/necropolis_curse/on_creation(mob/living/new_owner, set_curse)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		apply_curse(set_curse)
 
 /datum/status_effect/necropolis_curse/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(wasting_effect))
 		qdel(wasting_effect)
 		wasting_effect = null
 	return ..()
 
 /datum/status_effect/necropolis_curse/on_remove()
+	procstart = null
+	src.procstart = null
 	remove_curse(curse_flags)
 
 /datum/status_effect/necropolis_curse/proc/apply_curse(set_curse)
+	procstart = null
+	src.procstart = null
 	curse_flags |= set_curse
 	if(curse_flags & CURSE_BLINDING)
 		owner.overlay_fullscreen("curse", /atom/movable/screen/fullscreen/curse, 1)
@@ -635,11 +745,15 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 		wasting_effect = new
 
 /datum/status_effect/necropolis_curse/proc/remove_curse(remove_curse)
+	procstart = null
+	src.procstart = null
 	if(remove_curse & CURSE_BLINDING)
 		owner.clear_fullscreen("curse", 50)
 	curse_flags &= ~remove_curse
 
 /datum/status_effect/necropolis_curse/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(owner.stat == DEAD)
 		return
 
@@ -662,6 +776,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	icon_state = "curse"
 
 /obj/effect/temp_visual/curse/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	deltimer(timerid)
 
@@ -673,12 +789,16 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	alert_type = null
 
 /datum/status_effect/gonbola_pacify/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.add_traits(list(TRAIT_PACIFISM, TRAIT_MUTE), REF(src))
 	owner.add_mood_event(REF(src), /datum/mood_event/gondola)
 	to_chat(owner, span_notice("You suddenly feel at peace and feel no need to make any sudden or rash actions..."))
 
 /datum/status_effect/gonbola_pacify/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_traits(list(TRAIT_PACIFISM, TRAIT_MUTE), REF(src))
 	owner.clear_mood_event(REF(src))
 	return ..()
@@ -698,11 +818,15 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	overlay_state = "high"
 
 /datum/status_effect/trance/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(stun)
 		owner.Stun(6 SECONDS, TRUE)
 	owner.set_dizzy(40 SECONDS)
 
 /datum/status_effect/trance/on_apply()
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(owner))
 		return FALSE
 	RegisterSignal(owner, COMSIG_MOVABLE_HEAR, PROC_REF(hypnotize))
@@ -713,11 +837,15 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	return TRUE
 
 /datum/status_effect/trance/on_creation(mob/living/new_owner, _duration, _stun = TRUE)
+	procstart = null
+	src.procstart = null
 	duration = _duration
 	stun = _stun
 	return ..()
 
 /datum/status_effect/trance/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_MOVABLE_HEAR)
 	REMOVE_TRAIT(owner, TRAIT_MUTE, TRAIT_STATUS_EFFECT(id))
 	owner.remove_status_effect(/datum/status_effect/dizziness)
@@ -725,9 +853,13 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	to_chat(owner, span_warning("You snap out of your trance!"))
 
 /datum/status_effect/trance/get_examine_text()
+	procstart = null
+	src.procstart = null
 	return span_warning("[owner.p_They()] seem[owner.p_s()] slow and unfocused.")
 
 /datum/status_effect/trance/proc/hypnotize(datum/source, list/hearing_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT(owner, TRAIT_DEAF) || owner == hearing_args[HEARING_SPEAKER])
@@ -749,6 +881,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	alert_type = null
 
 /datum/status_effect/spasms/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(owner.incapacitated || IS_UNCONSCIOUS(owner) || HAS_TRAIT(owner, TRAIT_HANDS_BLOCKED) || HAS_TRAIT(owner, TRAIT_IMMOBILIZED))
 		return
 	if(!prob(15))
@@ -804,10 +938,14 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	show_duration = TRUE
 
 /datum/status_effect/convulsing/on_creation(mob/living/zappy_boy)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(zappy_boy, span_boldwarning("You feel a shock moving through your body! Your hands start shaking!"))
 
 /datum/status_effect/convulsing/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/H = owner
 	if(prob(40))
 		var/obj/item/I = H.get_active_held_item()
@@ -832,10 +970,14 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	var/kill_either_way = FALSE //no amount of removing mutations is gonna save you now
 
 /datum/status_effect/dna_melt/on_creation(mob/living/new_owner, set_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(new_owner, span_boldwarning("My body can't handle the mutations! I need to get my mutations removed fast!"))
 
 /datum/status_effect/dna_melt/on_remove()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(owner))
 		owner.gib(DROP_ALL_REMAINS) //fuck you in particular
 		return
@@ -857,12 +999,16 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	var/direction
 
 /datum/status_effect/go_away/on_creation(mob/living/new_owner, set_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	direction = pick(NORTH, SOUTH, EAST, WEST)
 	new_owner.setDir(direction)
 	owner.add_traits(list(TRAIT_NO_FLOATING_ANIM, TRAIT_MOVE_FLYING), TRAIT_STATUS_EFFECT(id)) //I believe I can fly!
 
 /datum/status_effect/go_away/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	owner.AdjustStun(1, ignore_canstun = TRUE)
 	var/turf/turf = get_step(owner, direction)
 	if(!turf)
@@ -871,6 +1017,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	owner.forceMove(turf)
 
 /datum/status_effect/go_away/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.remove_traits(list(TRAIT_NO_FLOATING_ANIM, TRAIT_MOVE_FLYING), TRAIT_STATUS_EFFECT(id))
 
@@ -882,17 +1030,23 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	var/deletion_timer
 
 /datum/status_effect/go_away/deletes_mob/on_creation(mob/living/new_owner, set_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	deletion_timer = addtimer(CALLBACK(src, PROC_REF(wipe_bozo)), duration - 5 SECONDS, TIMER_STOPPABLE | TIMER_DELETE_ME)
 	ADD_TRAIT(owner, TRAIT_IMMOBILIZED, REF(src))
 	RegisterSignals(new_owner, list(COMSIG_MOVABLE_Z_CHANGED, COMSIG_LIVING_DEATH), PROC_REF(wipe_bozo))
 
 /datum/status_effect/go_away/deletes_mob/proc/wipe_bozo()
+	procstart = null
+	src.procstart = null
 	deltimer(deletion_timer)
 	owner.fade_into_nothing()
 	UnregisterSignal(owner, list(COMSIG_MOVABLE_Z_CHANGED, COMSIG_LIVING_DEATH))
 
 /datum/status_effect/go_away/deletes_mob/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	deltimer(deletion_timer)
 	REMOVE_TRAIT(owner, TRAIT_IMMOBILIZED, REF(src))
@@ -913,6 +1067,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	var/msg_stage = 0//so you don't get the most intense messages immediately
 
 /datum/status_effect/fake_virus/on_apply()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(owner, TRAIT_VIRUSIMMUNE))
 		return FALSE
 	if(IS_UNCONSCIOUS_OR_CRIT(owner))
@@ -920,6 +1076,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	return TRUE
 
 /datum/status_effect/fake_virus/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	var/fake_msg = ""
 	var/fake_emote = ""
 	switch(msg_stage)
@@ -982,6 +1140,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	)
 
 /datum/status_effect/ants/on_creation(mob/living/new_owner, amount_left)
+	procstart = null
+	src.procstart = null
 	if(isnum(amount_left) && new_owner.stat < HARD_CRIT)
 		if(!IS_UNCONSCIOUS(new_owner)) // Unconscious people won't get messages
 			to_chat(new_owner, span_userdanger("You're covered in ants!"))
@@ -990,6 +1150,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	. = ..()
 
 /datum/status_effect/ants/refresh(effect, amount_left)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/victim = owner
 	if(isnum(amount_left) && ants_remaining >= 1 && victim.stat < HARD_CRIT)
 		if(!IS_UNCONSCIOUS(victim)) // Unconscious people won't get messages
@@ -1001,12 +1163,16 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	. = ..()
 
 /datum/status_effect/ants/on_remove()
+	procstart = null
+	src.procstart = null
 	ants_remaining = 0
 	to_chat(owner, span_notice("All of the ants are off of your body!"))
 	UnregisterSignal(owner, COMSIG_COMPONENT_CLEAN_ACT)
 	. = ..()
 
 /datum/status_effect/ants/proc/ants_washed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	. = NONE
@@ -1015,9 +1181,13 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 		return COMPONENT_CLEANED|COMPONENT_CLEANED_GAIN_XP
 
 /datum/status_effect/ants/get_examine_text()
+	procstart = null
+	src.procstart = null
 	return span_warning("[owner.p_They()] [owner.p_are()] covered in ants!")
 
 /datum/status_effect/ants/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/victim = owner
 	victim.apply_damage(max(0.1, round((ants_remaining * damage_per_ant), 0.1)) * seconds_between_ticks, BRUTE, spread_damage = TRUE) //Scales with # of ants (lowers with time). Roughly 10 brute over 50 seconds.
 	if(!IS_UNCONSCIOUS_OR_CRIT(victim)) //Makes sure people don't scratch at themselves while they're in a critical condition
@@ -1054,6 +1224,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	clickable_glow = TRUE
 
 /atom/movable/screen/alert/status_effect/ants/Click()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -1086,6 +1258,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	var/cd_increase = 2.5
 
 /datum/status_effect/rebuked/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.next_move_modifier *= 2
 	if(ishostile(owner))
 		var/mob/living/simple_animal/hostile/simple_owner = owner
@@ -1093,6 +1267,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	return TRUE
 
 /datum/status_effect/rebuked/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(owner))
 		return
@@ -1113,10 +1289,14 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	icon_state = "frozen"
 
 /datum/status_effect/freezing_blast/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.add_movespeed_modifier(/datum/movespeed_modifier/freezing_blast, update = TRUE)
 	return ..()
 
 /datum/status_effect/freezing_blast/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/freezing_blast, update = TRUE)
 
 /datum/movespeed_modifier/freezing_blast
@@ -1134,10 +1314,14 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	overlay_state = "convulsing"
 
 /datum/status_effect/discoordinated/on_apply()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(owner, TRAIT_DISCOORDINATED_TOOL_USER, TRAIT_STATUS_EFFECT(id))
 	return ..()
 
 /datum/status_effect/discoordinated/on_remove()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_DISCOORDINATED_TOOL_USER, TRAIT_STATUS_EFFECT(id))
 	return ..()
 
@@ -1150,6 +1334,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	alert_type = null
 
 /datum/status_effect/teleport_madness/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	dump_in_space(owner)
 
 /datum/status_effect/careful_driving
@@ -1159,10 +1345,14 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	status_type = STATUS_EFFECT_REPLACE
 
 /datum/status_effect/careful_driving/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.add_movespeed_modifier(/datum/movespeed_modifier/careful_driving, update = TRUE)
 
 /datum/status_effect/careful_driving/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/careful_driving, update = TRUE)
 
@@ -1188,6 +1378,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	var/goldscale = 30 // x2.8 - Gives ~ 15u for 1 second
 
 /datum/status_effect/midas_blight/on_creation(mob/living/new_owner, duration = 1)
+	procstart = null
+	src.procstart = null
 	// Duration is already input in SECONDS
 	src.duration = duration
 	RegisterSignal(new_owner, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(on_update_overlays))
@@ -1200,6 +1392,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	overlay_state = "midas_blight"
 
 /datum/status_effect/midas_blight/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/victim = owner
 	// We're transmuting blood, time to lose some.
 	victim.adjust_blood_volume(-5 * seconds_between_ticks, minimum = BLOOD_VOLUME_SURVIVE + 50)
@@ -1228,6 +1422,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 		qdel(src) // Dead people stop being turned to gold. Don't want people sitting on dead bodies.
 
 /datum/status_effect/midas_blight/proc/on_update_overlays(atom/parent_atom, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(midas_state)
@@ -1236,6 +1432,8 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 		overlays += midas_overlay
 
 /datum/status_effect/midas_blight/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_movespeed_modifier(MOVESPEED_ID_MIDAS_BLIGHT, update = TRUE)
 	owner.remove_actionspeed_modifier(ACTIONSPEED_ID_MIDAS_BLIGHT, update = TRUE)
 	UnregisterSignal(owner, COMSIG_ATOM_UPDATE_OVERLAYS)
@@ -1258,18 +1456,24 @@ GLOBAL_LIST_EMPTY(unconscious_appearances)
 	var/obj/effect/dummy/lighting_obj/moblight/mob_flare
 
 /datum/status_effect/designated_target/on_apply()
+	procstart = null
+	src.procstart = null
 	mob_flare = owner.mob_light(3, 15, LIGHT_COLOR_FLARE)
 	ADD_TRAIT(owner, TRAIT_DESIGNATED_TARGET, id)
 	owner.add_filter("designated_target", 3, list("type" = "outline", "color" = COLOR_RED, "size" = 1))
 	return TRUE
 
 /datum/status_effect/designated_target/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	// If we are ever wet, remove our flare status effect
 	var/datum/status_effect/fire_handler/wet_stacks/splashed_with_water = locate() in owner.status_effects
 	if(istype(splashed_with_water))
 		qdel(src)
 
 /datum/status_effect/designated_target/on_remove()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(mob_flare)
 	owner.remove_filter("designated_target")
 	REMOVE_TRAIT(owner, TRAIT_DESIGNATED_TARGET, id)

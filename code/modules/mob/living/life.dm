@@ -10,6 +10,8 @@
  * - times_fired: The number of times SSmobs has fired
  */
 /mob/living/proc/Life(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	SHOULD_NOT_SLEEP(TRUE)
 
@@ -71,10 +73,14 @@
 		return TRUE
 
 /mob/living/proc/handle_breathing(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_LIVING_HANDLE_BREATHING, seconds_per_tick)
 
 // Base mob environment handler for body temperature
 /mob/living/proc/handle_environment(datum/gas_mixture/environment, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/loc_temp = get_temperature(environment)
 	var/temp_delta = loc_temp - bodytemperature
 
@@ -100,6 +106,8 @@
  * Returns a number representing fullness, scaled similarly to nutrition.
  */
 /mob/living/proc/get_fullness(only_consumable)
+	procstart = null
+	src.procstart = null
 	var/fullness = nutrition
 	// we add the nutrition value of what we're currently digesting
 	for(var/datum/reagent/consumable/bits in reagents.reagent_list)
@@ -116,22 +124,32 @@
  * * needs_metabolizing (bool) takes into consideration if the chemical is matabolizing when it's checked.
  */
 /mob/living/proc/has_reagent(reagent, amount = -1, needs_metabolizing = FALSE)
+	procstart = null
+	src.procstart = null
 	return reagents?.has_reagent(reagent, amount, needs_metabolizing)
 
 /mob/living/proc/update_damage_hud()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/proc/handle_gravity(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(gravity_state > STANDARD_GRAVITY)
 		handle_high_gravity(gravity_state, seconds_per_tick)
 
 /mob/living/proc/gravity_animate()
+	procstart = null
+	src.procstart = null
 	if(!get_filter("gravity"))
 		add_filter("gravity",1,list("type"="motion_blur", "x"=0, "y"=0))
 	animate(get_filter("gravity"), y = 1, time = 10, loop = -1)
 	animate(y = 0, time = 10)
 
 /mob/living/proc/handle_high_gravity(gravity, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(gravity < GRAVITY_DAMAGE_THRESHOLD) //Aka gravity values of 3 or more
 		return
 
@@ -140,11 +158,15 @@
 
 /// Proc used for custom metabolization of reagents, if any
 /mob/living/proc/reagent_tick(datum/reagent/chem, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	return SEND_SIGNAL(src, COMSIG_MOB_REAGENT_TICK, chem, seconds_per_tick)
 
 /// Proc used for custom reagent exposure effects, if any
 /mob/living/proc/reagent_expose(datum/reagent/chem, methods = TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	return
 
 #undef BODYTEMP_DIVISOR

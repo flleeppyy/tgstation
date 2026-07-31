@@ -9,6 +9,8 @@
 	abstract_type = /datum/loadout_item/inhand
 
 /datum/loadout_item/inhand/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(outfit.l_hand && !outfit.r_hand)
 		outfit.r_hand = item_path
 	else

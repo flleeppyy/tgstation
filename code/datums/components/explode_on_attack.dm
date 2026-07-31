@@ -10,6 +10,8 @@
 	var/list/mob_type_dont_bomb
 
 /datum/component/explode_on_attack/Initialize(impact_range = 1, destroy_on_explode = TRUE, list/mob_type_dont_bomb = list())
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 	src.impact_range = impact_range
@@ -17,13 +19,19 @@
 	src.mob_type_dont_bomb = mob_type_dont_bomb
 
 /datum/component/explode_on_attack/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(bomb_target))
 
 /datum/component/explode_on_attack/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_HOSTILE_PRE_ATTACKINGTARGET)
 
 
 /datum/component/explode_on_attack/proc/bomb_target(mob/living/owner, atom/victim)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(victim))

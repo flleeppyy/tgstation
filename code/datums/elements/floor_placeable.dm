@@ -4,6 +4,8 @@
 /datum/element/floor_placeable
 
 /datum/element/floor_placeable/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -12,6 +14,8 @@
 	RegisterSignal(target, COMSIG_ITEM_INTERACTING_WITH_ATOM, PROC_REF(on_interact_with_atom))
 
 /datum/element/floor_placeable/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, list(
 		COMSIG_ATOM_EXAMINE_TAGS,
@@ -19,10 +23,14 @@
 	))
 
 /datum/element/floor_placeable/proc/get_examine_tags(atom/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_list["floor placeable"] = "This item can be placed directly on the floor."
 
 /datum/element/floor_placeable/proc/on_interact_with_atom(obj/item/source, mob/living/user, atom/interacting_with, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isopenturf(interacting_with))
 		return NONE

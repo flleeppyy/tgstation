@@ -4,6 +4,8 @@ ADMIN_VERB(force_event, R_FUN, "Trigger Event", "Forces an event to occur.", ADM
 
 ///Opens up the Force Event Panel
 /datum/admins/proc/forceEvent()
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_FUN))
 		return
 
@@ -14,15 +16,21 @@ ADMIN_VERB(force_event, R_FUN, "Trigger Event", "Forces an event to occur.", ADM
 /datum/force_event
 
 /datum/force_event/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ForceEvent")
 		ui.open()
 
 /datum/force_event/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_FUN)
 
 /datum/force_event/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/static/list/category_to_icons
 	if(!category_to_icons)
 		category_to_icons = list(
@@ -67,6 +75,8 @@ ADMIN_VERB(force_event, R_FUN, "Trigger Event", "Forces an event to occur.", ADM
 	return data
 
 /datum/force_event/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(!check_rights(R_FUN))

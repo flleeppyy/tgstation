@@ -26,13 +26,19 @@
 		src.removal_signals = removal_signals
 
 /datum/component/temporary_description/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examined))
 	RegisterSignals(parent, removal_signals, PROC_REF(remove_component))
 
 /datum/component/temporary_description/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, removal_signals + COMSIG_ATOM_EXAMINE)
 
 /datum/component/temporary_description/proc/on_examined(atom/corpse, mob/thing_inspector, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (naive_description && HAS_MIND_TRAIT(thing_inspector, TRAIT_NAIVE))
 		examine_list += span_notice(naive_description)
@@ -40,5 +46,7 @@
 	examine_list += span_notice(description_text)
 
 /datum/component/temporary_description/proc/remove_component()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src) // It wouldn't be immersive if the circumstances of my grisly death remained after I was revived

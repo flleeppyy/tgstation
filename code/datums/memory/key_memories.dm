@@ -23,9 +23,13 @@
 	return ..()
 
 /datum/memory/key/account/get_names()
+	procstart = null
+	src.procstart = null
 	return list("The bank ID of [protagonist_name], [remembered_id].")
 
 /datum/memory/key/account/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] flexing their last brain cells, proudly showing their lucky numbers [remembered_id].",
 		"[remembered_id]. The numbers mason, what do they mean!?",
@@ -46,9 +50,13 @@
 	return ..()
 
 /datum/memory/key/captains_spare_code/get_names()
+	procstart = null
+	src.procstart = null
 	return list("The code to the golden safe on the bridge, [safe_code].")
 
 /datum/memory/key/captains_spare_code/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] struggling at a wall safe, until finally entering [safe_code].",
 		"[safe_code][rand(0,9)]. The numbers mason, what do they mean!?", // Same as the account code
@@ -70,9 +78,13 @@
 	return ..()
 
 /datum/memory/key/nuke_code/get_names()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] learns the detonation codes for a nuclear weapon, [nuclear_code].")
 
 /datum/memory/key/nuke_code/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"The number [nuclear_code] written on a sticky note with the words \"FOR SYNDICATE EYES ONLY\" scrawled next to it.",
 		"A piece of paper with the number [nuclear_code] being handed to [protagonist_name] from a figure in a blood-red MODsuit.",
@@ -94,9 +106,13 @@
 	return ..()
 
 /datum/memory/key/quirk_allergy/get_names()
+	procstart = null
+	src.procstart = null
 	return list("The [allergy_string] allergy of [protagonist_name].")
 
 /datum/memory/key/quirk_allergy/get_starts()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] sneezing after coming into contact with [allergy_string].")
 
 /// Tracks what kind of item the quirk user's heirloom is
@@ -114,9 +130,13 @@
 	return ..()
 
 /datum/memory/key/quirk_heirloom/get_names()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name]'s heirloom [heirloom_name].")
 
 /datum/memory/key/quirk_heirloom/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] being bequeathed the heirloom [heirloom_name] by a dear relative.",
 		"[protagonist_name] discovering the heirloom [heirloom_name] in some long-forgotten boxes.",
@@ -139,9 +159,13 @@
 	return ..()
 
 /datum/memory/key/quirk_smoker/get_names()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name]'s addiction to [preferred_brand] cigarettes.")
 
 /datum/memory/key/quirk_smoker/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[preferred_brand] cigarettes being plundered by [protagonist_name].",
 		"[protagonist_name] buying a box of [preferred_brand] nicotine sticks.",
@@ -149,6 +173,8 @@
 	)
 
 /datum/memory/key/quirk_smoker/get_moods()
+	procstart = null
+	src.procstart = null
 	return list("[memorizer] [mood_verb] as they light another up.")
 
 /// Tracks what beverage an alcoholic quirk user likes
@@ -167,9 +193,13 @@
 	return ..()
 
 /datum/memory/key/quirk_alcoholic/get_names()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name]'s addiction to [preferred_brandy] alcohol.")
 
 /datum/memory/key/quirk_alcoholic/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[preferred_brandy] being downed by [protagonist_name].",
 		"[protagonist_name] buying a box of [preferred_brandy] bottles.",
@@ -177,6 +207,8 @@
 	)
 
 /datum/memory/key/quirk_alcoholic/get_moods()
+	procstart = null
+	src.procstart = null
 	return list("[memorizer] [mood_verb] as they drink some [preferred_brandy].")
 
 /// Where our traitor uplink is, and what is its code
@@ -197,9 +229,13 @@
 	return ..()
 
 /datum/memory/key/traitor_uplink/get_names()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name]'s equipment uplink in their [uplink_loc], opened via [uplink_code].")
 
 /datum/memory/key/traitor_uplink/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] punching in [uplink_code] into their [uplink_loc].",
 		"[protagonist_name] writing down [uplink_code] with their [uplink_loc] besides them, so as to not forget it.",
@@ -208,9 +244,13 @@
 /datum/memory/key/traitor_uplink/implant
 
 /datum/memory/key/traitor_uplink/implant/get_names()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name]'s equipment uplink implanted into their body.")
 
 /datum/memory/key/traitor_uplink/implant/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] being implanted by a scientist.",
 		"[protagonist_name] having surgery done on them by a scientist.",
@@ -230,9 +270,13 @@
 	return ..()
 
 /datum/memory/key/permabrig_crimes/get_names()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name]'s crime of \"[crimes]\".")
 
 /datum/memory/key/permabrig_crimes/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] being arrested by security for [crimes].",
 		"[protagonist_name] committing the crimes of [crimes].",
@@ -252,9 +296,13 @@
 	return ..()
 
 /datum/memory/key/message_server_key/get_names()
+	procstart = null
+	src.procstart = null
 	return list("The daily message server key is [decrypt_key]. Keep it a secret from the clown.")
 
 /datum/memory/key/message_server_key/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"A sticky note attached to a monitor with [decrypt_key] written on it.",
 		"Poly the parrot screaming \"[decrypt_key]!\" over and over again.",

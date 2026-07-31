@@ -45,6 +45,8 @@
 */
 
 /obj/item/toy/plush/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/squeak, squeak_override)
 	AddElement(/datum/element/bed_tuckable, mapload, 6, -5, 90)
@@ -70,6 +72,8 @@
 	normal_desc = desc
 
 /obj/item/toy/plush/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(grenade)
 
 	//inform next of kin and... acquaintances
@@ -117,11 +121,15 @@
 	return ..()
 
 /obj/item/toy/plush/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == grenade)
 		grenade = null
 
 /obj/item/toy/plush/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stuffed || grenade)
 		to_chat(user, span_notice("You pet [src]. D'awww."))
@@ -132,6 +140,8 @@
 		to_chat(user, span_notice("You try to pet [src], but it has no stuffing. Aww..."))
 
 /obj/item/toy/plush/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(tool.get_sharpness())
 		if(grenade)
 			to_chat(user, span_notice("You remove the grenade from [src]."))
@@ -180,7 +190,9 @@
 
 	return NONE
 
-/obj/item/toy/plush/proc/love(obj/item/toy/plush/Kisser, mob/living/user) //~<3
+/obj/item/toy/plush/proc/love(obj/item/toy/plush/Kisser, mob/living/user)
+	procstart = null
+	src.procstart = null //~<3
 	var/chance = 100 //to steal a kiss, surely there's a 100% chance no-one would reject a plush such as I?
 	var/concern = 20 //perhaps something might cloud true love with doubt
 	var/loyalty = 30 //why should another get between us?
@@ -249,6 +261,8 @@
 		user.show_message(span_warning("[Kisser] and [src] don't know what to do with one another."), NONE)
 
 /obj/item/toy/plush/proc/heartbreak(obj/item/toy/plush/Brutus)
+	procstart = null
+	src.procstart = null
 	if(lover != Brutus)
 		CRASH("plushie heartbroken by a plushie that is not their lover")
 
@@ -270,9 +284,13 @@
 	update_desc()
 
 /obj/item/toy/plush/proc/scorned_by(obj/item/toy/plush/Outmoded)
+	procstart = null
+	src.procstart = null
 	scorned_by.Add(Outmoded)
 
 /obj/item/toy/plush/proc/new_lover(obj/item/toy/plush/Juliet)
+	procstart = null
+	src.procstart = null
 	if(lover == Juliet)
 		return //nice try
 	lover = Juliet
@@ -287,6 +305,8 @@
 		partner = null //more like who cares
 
 /obj/item/toy/plush/proc/new_partner(obj/item/toy/plush/Apple_of_my_eye)
+	procstart = null
+	src.procstart = null
 	if(partner == Apple_of_my_eye)
 		return //double marriage is just insecurity
 	if(lover != Apple_of_my_eye)
@@ -301,6 +321,8 @@
 	update_desc()
 
 /obj/item/toy/plush/proc/plop(obj/item/toy/plush/daddy)
+	procstart = null
+	src.procstart = null
 	if(partner != daddy)
 		return FALSE //we do not have bastards in our toyshop
 
@@ -311,6 +333,8 @@
 	plush_child.make_young(src, daddy)
 
 /obj/item/toy/plush/proc/make_young(obj/item/toy/plush/Mama, obj/item/toy/plush/Dada)
+	procstart = null
+	src.procstart = null
 	if(Mama == Dada)
 		return //cloning is reserved for plants and spacemen
 
@@ -327,7 +351,9 @@
 	Dada.mood_message = pick(Dada.parent_message)
 	Dada.update_desc()
 
-/obj/item/toy/plush/proc/bad_news(obj/item/toy/plush/Deceased) //cotton to cotton, sawdust to sawdust
+/obj/item/toy/plush/proc/bad_news(obj/item/toy/plush/Deceased)
+	procstart = null
+	src.procstart = null //cotton to cotton, sawdust to sawdust
 	var/is_that_letter_for_me = FALSE
 	if(partner == Deceased) //covers marriage
 		is_that_letter_for_me = TRUE
@@ -366,7 +392,9 @@
 		mood_message = pick(heartbroken_message)
 		update_desc()
 
-/obj/item/toy/plush/proc/cheer_up() //it'll be all right
+/obj/item/toy/plush/proc/cheer_up()
+	procstart = null
+	src.procstart = null //it'll be all right
 	if(!heartbroken)
 		return //you cannot make smile what is already
 	if(vowbroken)
@@ -378,7 +406,9 @@
 		mood_message = null
 	update_desc()
 
-/obj/item/toy/plush/proc/heal_memories() //time fixes all wounds
+/obj/item/toy/plush/proc/heal_memories()
+	procstart = null
+	src.procstart = null //time fixes all wounds
 	if(!vowbroken)
 		vowbroken = !vowbroken
 		if(mood_message in vowbroken_message)
@@ -386,6 +416,8 @@
 	cheer_up()
 
 /obj/item/toy/plush/update_desc()
+	procstart = null
+	src.procstart = null
 	desc = normal_desc
 	. = ..()
 	if(mood_message)
@@ -423,6 +455,8 @@
 	gender = MALE //he's a boy, right?
 
 /obj/item/toy/plush/ratplush/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(clash_target)
 		return
@@ -431,6 +465,8 @@
 		INVOKE_ASYNC(src, PROC_REF(clash_of_the_plushies), P)
 
 /obj/item/toy/plush/ratplush/proc/clash_of_the_plushies(obj/item/toy/plush/narplush/P)
+	procstart = null
+	src.procstart = null
 	clash_target = P
 	P.clashing = TRUE
 	say("YOU.")
@@ -511,6 +547,8 @@
 	gender = FEMALE //it's canon if the toy is
 
 /obj/item/toy/plush/narplush/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/toy/plush/ratplush/P = locate() in range(1, src)
 	if(P && istype(P.loc, /turf/open) && !P.clash_target && !clashing)
@@ -526,6 +564,8 @@
 	squeak_override = list('sound/items/weapons/slash.ogg' = 1)
 
 /obj/item/toy/plush/lizard_plushie/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!greyscale_colors)
 		// Generate a random valid lizard color for our plushie friend
@@ -624,6 +664,8 @@
 	inhand_icon_state = null
 
 /obj/item/toy/plush/awakenedplushie/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/edit_complainer)
 
@@ -640,6 +682,8 @@
 	COOLDOWN_DECLARE(cry_cooldown)
 
 /obj/item/toy/plush/whiny_plushie/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!cry_still_messages)
 		cry_still_messages = list(
@@ -661,9 +705,13 @@
 	AddComponent(/datum/component/keep_me_secure, CALLBACK(src, PROC_REF(secured_process)) , CALLBACK(src, PROC_REF(unsecured_process)), 0)
 
 /obj/item/toy/plush/whiny_plushie/proc/secured_process(last_move)
+	procstart = null
+	src.procstart = null
 	icon_state = initial(icon_state)
 
 /obj/item/toy/plush/whiny_plushie/proc/unsecured_process(last_move)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, cry_cooldown))
 		return
 	COOLDOWN_START(src, cry_cooldown, 10 SECONDS)
@@ -696,6 +744,8 @@
 	var/suicide_count = 0
 
 /obj/item/toy/plush/moth/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] stares deeply into the eyes of [src] and it begins consuming [user.p_them()]!  It looks like [user.p_theyre()] trying to commit suicide!"))
 	suicide_count++
 	if(suicide_count < 3)
@@ -809,6 +859,8 @@
 	var/french = FALSE
 
 /obj/item/toy/plush/monkey/item_interaction(mob/living/feeder, obj/item/food/grown/banana/nana, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(nana))
 		return ..()
 	nana.forceMove(src) // go into the cotton stomach
@@ -818,6 +870,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/toy/plush/monkey/proc/eat(mob/living/feeder, obj/item/food/grown/banana/nana)
+	procstart = null
+	src.procstart = null
 	if(istype(nana, /obj/item/food/grown/banana/bluespace))
 		do_teleport(src, get_turf(src), 15, channel = TELEPORT_CHANNEL_BLUESPACE)
 	else if(istype(nana, /obj/item/food/grown/banana/mime) && !french)

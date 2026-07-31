@@ -2,6 +2,8 @@
 GLOBAL_LIST_INIT(armor_by_type, generate_armor_type_cache())
 
 /proc/generate_armor_type_cache()
+	procstart = null
+	src.procstart = null
 	var/list/armor_cache = list()
 	for(var/datum/armor/armor_type as anything in subtypesof(/datum/armor))
 		armor_type = new armor_type
@@ -13,6 +15,8 @@ GLOBAL_LIST_INIT(armor_by_type, generate_armor_type_cache())
  * Gets an armor type datum using the given type by formatting it into the expected datum tag
  */
 /proc/get_armor_by_type(armor_type)
+	procstart = null
+	src.procstart = null
 	var/armor = locate(replacetext("[armor_type]", "/", "-"))
 	if(armor)
 		return armor
@@ -43,6 +47,8 @@ GLOBAL_LIST_INIT(armor_by_type, generate_armor_type_cache())
 /datum/armor/immune
 
 /datum/armor/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(!force && tag)
 		return QDEL_HINT_LETMELIVE
 
@@ -52,24 +58,36 @@ GLOBAL_LIST_INIT(armor_by_type, generate_armor_type_cache())
 	return ..()
 
 /datum/armor/GenerateTag()
+	procstart = null
+	src.procstart = null
 	..()
 	tag = replacetext("[type]", "/", "-")
 
 /datum/armor/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /datum/armor/can_vv_mark()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /datum/armor/vv_get_dropdown()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	return list("", "MUST MODIFY ARMOR VALUES ON THE PARENT ATOM")
 
 /datum/armor/CanProcCall(procname)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// Generate a brand new armor datum with the modifiers given, if ARMOR_ALL is specified only that modifier is used
 /datum/armor/proc/generate_new_with_modifiers(list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/datum/armor/new_armor = new
 
 	var/all_keys = ARMOR_LIST_ALL
@@ -89,10 +107,14 @@ GLOBAL_LIST_INIT(armor_by_type, generate_armor_type_cache())
 	return new_armor
 
 /datum/armor/immune/generate_new_with_modifiers(list/modifiers)
+	procstart = null
+	src.procstart = null
 	return src
 
 /// Generate a brand new armor datum with the multiplier given, if ARMOR_ALL is specified only that modifer is used
 /datum/armor/proc/generate_new_with_multipliers(list/multipliers)
+	procstart = null
+	src.procstart = null
 	var/datum/armor/new_armor = new
 
 	var/all_keys = ARMOR_LIST_ALL
@@ -112,10 +134,14 @@ GLOBAL_LIST_INIT(armor_by_type, generate_armor_type_cache())
 	return new_armor
 
 /datum/armor/immune/generate_new_with_multipliers(list/multipliers)
+	procstart = null
+	src.procstart = null
 	return src
 
 /// Generate a brand new armor datum with the values given, if a value is not present it carries over
 /datum/armor/proc/generate_new_with_specific(list/values)
+	procstart = null
+	src.procstart = null
 	var/datum/armor/new_armor = new
 
 	var/all_keys = ARMOR_LIST_ALL
@@ -135,20 +161,28 @@ GLOBAL_LIST_INIT(armor_by_type, generate_armor_type_cache())
 	return new_armor
 
 /datum/armor/immune/generate_new_with_specific(list/values)
+	procstart = null
+	src.procstart = null
 	return src
 
 /// Gets the rating of armor for the specified rating
 /datum/armor/proc/get_rating(rating)
+	procstart = null
+	src.procstart = null
 	// its not that I don't trust coders, it's just that I don't trust coders
 	if(!(rating in ARMOR_LIST_ALL))
 		CRASH("Attempted to get a rating '[rating]' that doesn't exist")
 	return vars[rating]
 
 /datum/armor/immune/get_rating(rating)
+	procstart = null
+	src.procstart = null
 	return 100
 
 /// Converts all the ratings of the armor into a list, optionally inverted
 /datum/armor/proc/get_rating_list(inverse = FALSE)
+	procstart = null
+	src.procstart = null
 	var/ratings = list()
 	for(var/rating in ARMOR_LIST_ALL)
 		var/value = vars[rating]
@@ -158,6 +192,8 @@ GLOBAL_LIST_INIT(armor_by_type, generate_armor_type_cache())
 	return ratings
 
 /datum/armor/immune/get_rating_list(inverse)
+	procstart = null
+	src.procstart = null
 	var/ratings = ..() // get all ratings
 	for(var/rating in ratings)
 		ratings[rating] = 100 // and set them to 100
@@ -165,30 +201,42 @@ GLOBAL_LIST_INIT(armor_by_type, generate_armor_type_cache())
 
 /// Returns a new armor datum with the given armor added onto this one
 /datum/armor/proc/add_other_armor(datum/armor/other)
+	procstart = null
+	src.procstart = null
 	if(ispath(other))
 		other = get_armor_by_type(other)
 	return generate_new_with_modifiers(other.get_rating_list())
 
 /datum/armor/immune/add_other_armor(datum/armor/other)
+	procstart = null
+	src.procstart = null
 	return src
 
 /// Returns a new armor datum with the given armor removed from this one
 /datum/armor/proc/subtract_other_armor(datum/armor/other)
+	procstart = null
+	src.procstart = null
 	if(ispath(other))
 		other = get_armor_by_type(other)
 	return generate_new_with_modifiers(other.get_rating_list(inverse = TRUE))
 
 /datum/armor/immune/subtract_other_armor(datum/armor/other)
+	procstart = null
+	src.procstart = null
 	return src
 
 /// Checks if any of the armor values are non-zero, so this technically also counts negative armor!
 /datum/armor/proc/has_any_armor()
+	procstart = null
+	src.procstart = null
 	for(var/rating in ARMOR_LIST_ALL)
 		if(vars[rating])
 			return TRUE
 	return FALSE
 
 /datum/armor/immune/has_any_armor()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /**
@@ -198,6 +246,8 @@ GLOBAL_LIST_INIT(armor_by_type, generate_armor_type_cache())
  * * armor_value - Number we're converting
  */
 /proc/armor_to_protection_class(armor_value)
+	procstart = null
+	src.procstart = null
 	if (armor_value < 0)
 		. = "-"
 	. += "\Roman[round(abs(armor_value), 10) / 10]"
@@ -210,6 +260,8 @@ GLOBAL_LIST_INIT(armor_by_type, generate_armor_type_cache())
  * * armor_type - The type to convert
  */
 /proc/armor_to_protection_name(armor_type)
+	procstart = null
+	src.procstart = null
 	switch(armor_type)
 		if(ACID)
 			return "ACID"

@@ -50,6 +50,8 @@
 	sound = 'sound/mobs/non-humanoids/cow/cow.ogg'
 
 /mob/living/basic/cow/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/tippable, \
 		tip_time = 0.5 SECONDS, \
 		untip_time = 0.5 SECONDS, \
@@ -64,6 +66,8 @@
 
 ///wrapper for the udder component addition so you can have uniquely uddered cow subtypes
 /mob/living/basic/cow/proc/setup_udder()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/udder, reagent_produced_override = milked_reagent)
 
 /*
@@ -73,12 +77,16 @@
  * * all eating-related components and elements share the same pool of food the mob likes
  */
 /mob/living/basic/cow/proc/setup_eating()
+	procstart = null
+	src.procstart = null
 	var/static/list/food_types
 	if(!food_types)
 		food_types = src.food_types.Copy()
 	AddComponent(/datum/component/tameable, food_types = food_types, tame_chance = 25, bonus_tame_chance = 15)
 
 /mob/living/basic/cow/tamed(mob/living/tamer, atom/food)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	visible_message("[src] [tame_message] as it seems to bond with [tamer].", "You [self_tame_message], recognizing [tamer] as your new pal.")
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/cow)
@@ -90,6 +98,8 @@
  * tipper - the mob who tipped us
  */
 /mob/living/basic/cow/proc/after_cow_tipped(mob/living/carbon/tipper)
+	procstart = null
+	src.procstart = null
 		addtimer(CALLBACK(src, PROC_REF(set_tip_react_blackboard), tipper), rand(10 SECONDS, 20 SECONDS))
 
 /*
@@ -98,6 +108,8 @@
  * tipper - the mob who originally tipped us
  */
 /mob/living/basic/cow/proc/set_tip_react_blackboard(mob/living/carbon/tipper)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT_FROM(src, TRAIT_IMMOBILIZED, TIPPED_OVER) || !ai_controller)
 		return
 	ai_controller.set_blackboard_key(BB_BASIC_MOB_TIP_REACTING, TRUE)

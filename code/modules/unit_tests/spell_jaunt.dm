@@ -2,6 +2,8 @@
 /datum/unit_test/shadow_jaunt
 
 /datum/unit_test/shadow_jaunt/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/jaunter = allocate(/mob/living/carbon/human/consistent)
 	var/datum/action/cooldown/spell/jaunt/shadow_walk/walk = allocate(/datum/action/cooldown/spell/jaunt/shadow_walk, jaunter)
 	walk.Grant(jaunter)

@@ -12,6 +12,8 @@
 
 //Recover from stuns.
 /datum/action/changeling/adrenaline/sting_action(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	..()
 
 	// Get us standing up.

@@ -7,6 +7,8 @@
 	replacement_chance = 0
 
 /mob/living/basic/bot/mulebot/paranormal/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isobserver(load))
 		return
@@ -14,12 +16,16 @@
 	ghost_overlay.pixel_y = 12
 	. += ghost_overlay
 
-/mob/living/basic/bot/mulebot/paranormal/get_load_name() //Don't reveal the name of ghosts so we can't metagame who died and all that.
+/mob/living/basic/bot/mulebot/paranormal/get_load_name()
+	procstart = null
+	src.procstart = null //Don't reveal the name of ghosts so we can't metagame who died and all that.
 	. = ..()
 	if(. && isobserver(load))
 		return "Unknown"
 
 /mob/living/basic/bot/mulebot/paranormal/load(atom/movable/movable_atom)
+	procstart = null
+	src.procstart = null
 	if(load || movable_atom.anchored)
 		return
 
@@ -55,6 +61,8 @@
 
 ///Handles the ghosts moving out from the mule
 /mob/living/basic/bot/mulebot/paranormal/proc/ghost_moved()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	visible_message(span_notice("The ghostly figure vanishes..."))
 	UnregisterSignal(load, COMSIG_MOVABLE_MOVED)

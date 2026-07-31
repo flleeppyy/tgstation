@@ -19,6 +19,8 @@
 	var/networked = FALSE
 
 /datum/computer_file/program/bounty_board/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/formatted_requests = list()
 	var/list/formatted_applicants = list()
@@ -58,6 +60,8 @@
 	return data
 
 /datum/computer_file/program/bounty_board/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/current_ref_num = params["request"]
 	var/current_app_num = params["applicant"]

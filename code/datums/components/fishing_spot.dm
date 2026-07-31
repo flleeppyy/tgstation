@@ -5,6 +5,8 @@
 	var/datum/fish_source/fish_source
 
 /datum/component/fishing_spot/Initialize(configuration)
+	procstart = null
+	src.procstart = null
 	if(ispath(configuration,/datum/fish_source))
 		//Create new one of the given type
 		fish_source = new configuration
@@ -24,12 +26,16 @@
 	ADD_TRAIT(parent, TRAIT_FISHING_SPOT, REF(src))
 
 /datum/component/fishing_spot/Destroy()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(parent, TRAIT_FISHING_SPOT, REF(src))
 	fish_source.on_fishing_spot_del(src)
 	fish_source = null
 	return ..()
 
 /datum/component/fishing_spot/proc/handle_cast(datum/source, obj/item/fishing_rod/rod, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(try_start_fishing(rod,user))
 		return FISHING_ROD_CAST_HANDLED
@@ -37,6 +43,8 @@
 
 ///If the fish source has fishes that are shown in the
 /datum/component/fishing_spot/proc/on_examined(datum/source, mob/user, list/examine_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!HAS_MIND_TRAIT(user, TRAIT_EXAMINE_FISHING_SPOT) || !fish_source.has_known_fishes(source))
 		return
@@ -44,6 +52,8 @@
 	examine_text += span_tinynoticeital("This is a fishing spot. You can look again to list its fishes...")
 
 /datum/component/fishing_spot/proc/on_examined_more(datum/source, mob/user, list/examine_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!HAS_MIND_TRAIT(user, TRAIT_EXAMINE_FISHING_SPOT) || !fish_source.has_known_fishes(source))
 		return
@@ -51,6 +61,8 @@
 	fish_source.get_catchable_fish_names(user, parent, examine_text)
 
 /datum/component/fishing_spot/proc/try_start_fishing(obj/item/possibly_rod, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/item/fishing_rod/rod = possibly_rod
 	if(!istype(rod))
@@ -70,18 +82,26 @@
 	return COMPONENT_NO_AFTERATTACK
 
 /datum/component/fishing_spot/proc/return_fishing_spot(datum/source, list/fish_spot_container)
+	procstart = null
+	src.procstart = null
 	fish_spot_container[NPC_FISHING_SPOT] = fish_source
 
 /datum/component/fishing_spot/proc/explosive_fishing(atom/location, severity)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	fish_source.spawn_reward_from_explosion(location, severity)
 
 /datum/component/fishing_spot/proc/link_to_fish_porter(atom/source, mob/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(istype(tool.buffer, /obj/machinery/fishing_portal_generator))
 		var/obj/machinery/fishing_portal_generator/portal = tool.buffer
 		return portal.link_fishing_spot(fish_source, source, user)
 
 /datum/component/fishing_spot/proc/fish_released(atom/source, obj/item/fish/fish, mob/living/releaser)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	fish_source.readd_fish(source, fish, releaser)

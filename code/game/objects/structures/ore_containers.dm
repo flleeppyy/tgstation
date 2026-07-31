@@ -2,20 +2,28 @@
 /obj/structure/ore_container
 
 /obj/structure/ore_container/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stack/ore) || user.combat_mode)
 		return NONE
 	tool.forceMove(src)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/ore_container/Entered(atom/movable/mover)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/ore_container/Exited(atom/movable/mover)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/ore_container/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -23,6 +31,8 @@
 		ui.open()
 
 /obj/structure/ore_container/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/ores = list()
 	for(var/obj/item/stack/ore/ore_item in contents)
 		ores += list(list(
@@ -35,6 +45,8 @@
 	return list("ores" = ores)
 
 /obj/structure/ore_container/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(. || !isliving(ui.user))

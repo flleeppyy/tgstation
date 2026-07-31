@@ -9,16 +9,22 @@
 	var/mob/grabber
 
 /datum/component/marionette/Destroy()
+	procstart = null
+	src.procstart = null
 	if(grabber)
 		UnregisterSignal(grabber, list(COMSIG_MOVABLE_KEYBIND_FACE_DIR, COMSIG_MOB_SAY, COMSIG_QDELETING))
 	grabber = null
 	return ..()
 
 /datum/component/marionette/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_LIVING_TRYING_TO_PULL, PROC_REF(on_pull))
 	RegisterSignal(parent, COMSIG_ATOM_NO_LONGER_PULLED, PROC_REF(on_stop_pull))
 
 /datum/component/marionette/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_LIVING_TRYING_TO_PULL,
 		COMSIG_ATOM_NO_LONGER_PULLED,
@@ -27,6 +33,8 @@
 
 ///Called when something starts pulling us, we now listen in to that thing for rotation.
 /datum/component/marionette/proc/on_pull(atom/movable/source, atom/movable/puller, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!puller || grabber == puller)
@@ -40,6 +48,8 @@
 
 ///Stopped pulling, we clear out signals and references.
 /datum/component/marionette/proc/on_stop_pull(datum/source, atom/movable/was_pulling)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(grabber)
 		UnregisterSignal(grabber, list(COMSIG_MOVABLE_KEYBIND_FACE_DIR, COMSIG_MOB_SAY, COMSIG_QDELETING))
@@ -47,12 +57,16 @@
 
 ///Callled when the person grabbin us turns, we rotate to match their direction.
 /datum/component/marionette/proc/on_puller_turn(mob/living/source, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/movable/parent_movable = parent
 	parent_movable.setDir(direction)
 
 ///Called when the person grabbing us speaks, we lower their volume to 1 tile and speak what they said through us.
 /datum/component/marionette/proc/on_puller_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT(grabber, TRAIT_SIGN_LANG))
@@ -75,6 +89,8 @@
 
 ///Called when our puller is somehow deleted, we simply clear the reference to them.
 /datum/component/marionette/proc/on_puller_qdel()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	grabber = null

@@ -37,6 +37,8 @@
 	ai_controller = /datum/ai_controller/basic_controller/killer_tomato
 
 /mob/living/basic/killer_tomato/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 

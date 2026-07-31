@@ -21,6 +21,8 @@
 	var/department_discount = FALSE
 
 /datum/component/payment/Initialize(_cost, _target, _style)
+	procstart = null
+	src.procstart = null
 	target_acc = _target
 	if(!target_acc)
 		target_acc = SSeconomy.get_dep_account(ACCOUNT_CIV)
@@ -28,13 +30,19 @@
 	transaction_style = _style
 
 /datum/component/payment/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_OBJ_ATTEMPT_CHARGE, PROC_REF(attempt_charge))
 	RegisterSignal(parent, COMSIG_OBJ_ATTEMPT_CHARGE_CHANGE, PROC_REF(change_cost))
 
 /datum/component/payment/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_OBJ_ATTEMPT_CHARGE, COMSIG_OBJ_ATTEMPT_CHARGE_CHANGE))
 
 /datum/component/payment/proc/attempt_charge(datum/source, atom/movable/target, extra_fees = 0)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!cost && !extra_fees) //In case a free variant of anything is made it'll skip charging anyone.
 		return
@@ -62,6 +70,8 @@
  * * new_cost: the int value of the attempted new_cost to replace the cost value.
  */
 /datum/component/payment/proc/change_cost(datum/source, new_cost)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isnum(new_cost))
@@ -72,6 +82,8 @@
  * Attempts to charge the mob, user, an integer number of credits, total_cost, without the use of an ID card to directly draw upon.
  */
 /datum/component/payment/proc/handle_cardless(mob/living/user, total_cost)
+	procstart = null
+	src.procstart = null
 	//Here is all the possible non-ID payment methods.
 	var/list/counted_money = list()
 	var/physical_cash_total = 0
@@ -129,6 +141,8 @@
  * Attempts to charge a mob, user, an integer number of credits, total_cost, directly from an ID card/bank account.
  */
 /datum/component/payment/proc/handle_card(mob/living/user, obj/item/card/id/idcard, total_cost)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/atom_parent = parent
 
 	if(!idcard)
@@ -176,6 +190,8 @@
  * * datum/source: source of the signal.
  */
 /datum/component/payment/proc/clean_up(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	target_acc = null
 	qdel(src)

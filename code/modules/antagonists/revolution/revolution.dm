@@ -14,6 +14,8 @@
 	var/deconversion_source
 
 /datum/antagonist/rev/can_be_owned(datum/mind/new_owner)
+	procstart = null
+	src.procstart = null
 	if(new_owner.assigned_role.job_flags & JOB_HEAD_OF_STAFF)
 		return FALSE
 	if(new_owner.current && HAS_MIND_TRAIT(new_owner.current, TRAIT_UNCONVERTABLE))
@@ -21,33 +23,47 @@
 	return ..()
 
 /datum/antagonist/rev/admin_add(datum/mind/new_owner, mob/admin)
+	procstart = null
+	src.procstart = null
 	new_owner.add_antag_datum(src)
 	message_admins("[key_name_admin(admin)] has rev'ed [key_name_admin(new_owner)].")
 	log_admin("[key_name(admin)] has rev'ed [key_name(new_owner)].")
 	to_chat(new_owner.current, span_userdanger("You are a member of the revolution!"))
 
 /datum/antagonist/rev/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/M = mob_override || owner.current
 	handle_clown_mutation(M, mob_override ? null : "Your training has allowed you to overcome your clownish nature, allowing you to wield weapons without harming yourself.")
 	add_team_hud(M, /datum/antagonist/rev)
 
 /datum/antagonist/rev/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/M = mob_override || owner.current
 	handle_clown_mutation(M, removing = FALSE)
 
 /datum/antagonist/rev/on_mindshield(mob/implanter)
+	procstart = null
+	src.procstart = null
 	remove_revolutionary(implanter)
 	return COMPONENT_MINDSHIELD_DECONVERTED
 
 /datum/antagonist/rev/proc/equip_rev()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/antagonist/rev/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	equip_rev()
 	owner.current.log_message("has been converted to the revolution!", LOG_ATTACK, color="red")
 
 /datum/antagonist/rev/create_team(datum/team/revolution/new_team)
+	procstart = null
+	src.procstart = null
 	if(!new_team)
 		GLOB.revolution_handler ||= new()
 		rev_team = GLOB.revolution_handler.revs
@@ -58,10 +74,14 @@
 	rev_team = new_team
 
 /datum/antagonist/rev/get_team()
+	procstart = null
+	src.procstart = null
 	return rev_team
 
 //Bump up to head_rev
 /datum/antagonist/rev/proc/promote()
+	procstart = null
+	src.procstart = null
 	var/old_team = rev_team
 	var/datum/mind/old_owner = owner
 	silent = TRUE
@@ -73,16 +93,22 @@
 	to_chat(old_owner, span_userdanger("You have proved your devotion to revolution! You are a head revolutionary now!"))
 
 /datum/antagonist/rev/get_admin_commands()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["Promote"] = CALLBACK(src, PROC_REF(admin_promote))
 
 /datum/antagonist/rev/proc/admin_promote(mob/admin)
+	procstart = null
+	src.procstart = null
 	var/datum/mind/O = owner
 	promote()
 	message_admins("[key_name_admin(admin)] has head-rev'ed [O].")
 	log_admin("[key_name(admin)] has head-rev'ed [O].")
 
 /datum/antagonist/rev/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["leader"] = (pref_flag == ROLE_REV_HEAD)
 	.["heads"] = list()
@@ -90,12 +116,16 @@
 		.["heads"] += list(list("name" = head_of_staff.name, "role" = head_of_staff.assigned_role.title))
 
 /datum/antagonist/rev/head/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["code_phrases"] = rev_team.head_chose_phrase_raw
 	.["code_responses"] = rev_team.head_code_responses_raw
 	.["lone_wolf"] = !roundstart || length(rev_team.get_head_revolutionaries()) == 1
 
 /datum/antagonist/rev/head/admin_add(datum/mind/new_owner, mob/admin)
+	procstart = null
+	src.procstart = null
 	give_flash = TRUE
 	give_hud = TRUE
 	remove_clumsy = TRUE
@@ -105,6 +135,8 @@
 	to_chat(new_owner.current, span_userdanger("You are a member of the revolutionaries' leadership now!"))
 
 /datum/antagonist/rev/head/get_admin_commands()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. -= "Promote"
 	.["Take flash"] = CALLBACK(src, PROC_REF(admin_take_flash))
@@ -113,6 +145,8 @@
 	.["Demote"] = CALLBACK(src, PROC_REF(admin_demote))
 
 /datum/antagonist/rev/head/proc/admin_take_flash(mob/admin)
+	procstart = null
+	src.procstart = null
 	var/list/L = owner.current.get_contents()
 	var/obj/item/assembly/flash/handheld/flash = locate() in L
 	if (!flash)
@@ -121,6 +155,8 @@
 	qdel(flash)
 
 /datum/antagonist/rev/head/proc/admin_give_flash(mob/admin)
+	procstart = null
+	src.procstart = null
 	//This is probably overkill but making these impact state annoys me
 	var/old_give_flash = give_flash
 	var/old_give_hud = give_hud
@@ -134,6 +170,8 @@
 	remove_clumsy = old_remove_clumsy
 
 /datum/antagonist/rev/head/proc/admin_repair_flash(mob/admin)
+	procstart = null
+	src.procstart = null
 	var/list/L = owner.current.get_contents()
 	var/obj/item/assembly/flash/handheld/flash = locate() in L
 	if (!flash)
@@ -143,6 +181,8 @@
 		flash.update_appearance()
 
 /datum/antagonist/rev/head/proc/admin_demote(mob/admin)
+	procstart = null
+	src.procstart = null
 	message_admins("[key_name_admin(admin)] has demoted [key_name_admin(owner)] from head revolutionary.")
 	log_admin("[key_name(admin)] has demoted [key_name(owner)] from head revolutionary.")
 	demote()
@@ -161,9 +201,13 @@
 	var/roundstart = FALSE
 
 /datum/antagonist/rev/head/pre_mindshield(mob/implanter, mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	return COMPONENT_MINDSHIELD_RESISTED
 
 /datum/antagonist/rev/head/on_removal()
+	procstart = null
+	src.procstart = null
 	if(!give_hud)
 		return ..()
 	var/mob/living/carbon/C = owner.current
@@ -175,6 +219,8 @@
 	return ..()
 
 /datum/antagonist/rev/head/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/real_mob = mob_override || owner.current
 	real_mob.AddComponentFrom(REF(src), /datum/component/can_flash_from_behind)
@@ -184,6 +230,8 @@
 	real_mob.AddComponent(/datum/component/codeword_hearing, rev_team.head_code_responses, "red", src)
 
 /datum/antagonist/rev/head/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/real_mob = mob_override || owner.current
 	real_mob.RemoveComponentSource(REF(src), /datum/component/can_flash_from_behind)
@@ -195,6 +243,8 @@
 /// Signal proc for [COMSIG_MOB_SUCCESSFUL_FLASHED_MOB].
 /// Bread and butter of revolution conversion, successfully flashing a carbon will make them a revolutionary
 /datum/antagonist/rev/head/proc/on_flash_success(mob/living/source, mob/living/flashed, obj/item/assembly/flash/flash, deviation)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(flashed.stat == DEAD || issilicon(flashed) || isdrone(flashed))
@@ -217,15 +267,21 @@
 
 /// Used / called async from [proc/on_flash] to deliver a funny meme line
 /datum/antagonist/rev/head/proc/_async_holiday_meme_say(mob/living/carbon/flashed)
+	procstart = null
+	src.procstart = null
 	if(ishuman(flashed))
 		var/mob/living/carbon/human/human_flashed = flashed
 		human_flashed.force_say()
 	flashed.say("You son of a bitch! I'm in.", forced = "That son of a bitch! They're in. (April Fools)")
 
 /datum/antagonist/rev/head/antag_listing_name()
+	procstart = null
+	src.procstart = null
 	return ..() + "(Leader)"
 
 /datum/antagonist/rev/head/get_preview_icon()
+	procstart = null
+	src.procstart = null
 	var/datum/universal_icon/final_icon = render_preview_outfit(preview_outfit)
 
 	final_icon.blend_icon(make_assistant_icon("Business Hair"), ICON_UNDERLAY, -8, 0)
@@ -245,6 +301,8 @@
 	return finish_preview_icon(final_icon)
 
 /datum/antagonist/rev/head/proc/make_assistant_icon(hairstyle)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy/consistent/assistant = new
 	assistant.set_hairstyle(hairstyle, update = TRUE)
 
@@ -256,6 +314,8 @@
 	return assistant_icon
 
 /datum/antagonist/rev/proc/can_be_converted(mob/living/candidate)
+	procstart = null
+	src.procstart = null
 	if(!candidate.mind)
 		return FALSE
 	if(!can_be_owned(candidate.mind))
@@ -273,6 +333,8 @@
  * * mute - If TRUE, we will apply a mute when we're applied
  */
 /datum/antagonist/rev/proc/add_revolutionary(datum/mind/rev_mind, stun = TRUE, mute = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!can_be_converted(rev_mind.current))
 		return FALSE
 
@@ -287,6 +349,8 @@
 	return TRUE
 
 /datum/antagonist/rev/head/proc/demote()
+	procstart = null
+	src.procstart = null
 	var/datum/mind/old_owner = owner
 	var/old_team = rev_team
 	silent = TRUE
@@ -298,6 +362,8 @@
 	to_chat(old_owner, span_userdanger("Revolution has been disappointed of your leader traits! You are a regular revolutionary now!"))
 
 /datum/antagonist/rev/farewell()
+	procstart = null
+	src.procstart = null
 	if(!owner.current)
 		return
 	owner.current.balloon_alert_to_viewers("deconverted!")
@@ -309,6 +375,8 @@
 		to_chat(owner, span_userdanger("The frame's firmware detects and deletes your neural reprogramming! You remember nothing but the name of the one who flashed you."))
 
 /datum/antagonist/rev/head/farewell()
+	procstart = null
+	src.procstart = null
 	if (deconversion_source == DECONVERTER_STATION_WIN || !owner.current)
 		return
 	owner.current.balloon_alert_to_viewers("deconverted!")
@@ -324,6 +392,8 @@
 
 /// Handles rev removal via IC methods such as borging, mindshielding, blunt force trauma to the head or revs losing.
 /datum/antagonist/rev/proc/remove_revolutionary(deconverter)
+	procstart = null
+	src.procstart = null
 	owner.current.log_message("has been deconverted from the revolution by [ismob(deconverter) ? key_name(deconverter) : deconverter]!", LOG_ATTACK, color=COLOR_CULT_RED)
 	if(deconverter == DECONVERTER_BORGED)
 		message_admins("[ADMIN_LOOKUPFLW(owner.current)] has been borged while being a [name]")
@@ -335,6 +405,8 @@
 
 /// This is for revheads, for which they ordinarily shouldn't be deconverted outside of revs losing. As an exception, forceborging can de-headrev them.
 /datum/antagonist/rev/head/remove_revolutionary(deconverter)
+	procstart = null
+	src.procstart = null
 	// If they're living and the station won, turn them into an exiled headrev.
 	if(owner.current.stat != DEAD && deconverter == DECONVERTER_STATION_WIN)
 		owner.add_antag_datum(/datum/antagonist/enemy_of_the_state)
@@ -344,6 +416,8 @@
 		return ..()
 
 /datum/antagonist/rev/head/equip_rev()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/carbon_owner = owner.current
 	if(!ishuman(carbon_owner))
 		return
@@ -385,6 +459,8 @@
 	VAR_FINAL/regex/head_code_responses
 
 /datum/team/revolution/New(starting_members)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	head_chose_phrase_raw = generate_code_phrase(return_list = TRUE)
 	head_code_phrases = new("([jointext(head_chose_phrase_raw, "|")])", "ig")
@@ -394,11 +470,15 @@
 
 /// Saves all current headrevs and revs
 /datum/team/revolution/proc/save_members()
+	procstart = null
+	src.procstart = null
 	ex_headrevs = get_head_revolutionaries()
 	ex_revs = members - ex_headrevs
 
 /// Returns a list of all headrevs.
 /datum/team/revolution/proc/get_head_revolutionaries()
+	procstart = null
+	src.procstart = null
 	var/list/headrev_list = list()
 
 	for(var/datum/mind/revolutionary in members)
@@ -408,6 +488,8 @@
 	return headrev_list
 
 /datum/team/revolution/proc/headrev_cap()
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/heads = SSjob.get_all_heads()
 	var/list/sec = SSjob.get_all_sec()
 
@@ -416,6 +498,8 @@
 /// Tries to make sure an appropriate number of headrevs are part of the revolution.
 /// Will promote up revs to headrevs as necessary based on the hard max_headrevs cap and the soft cap based on the number of heads of staff and sec.
 /datum/team/revolution/proc/update_rev_heads()
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/head_revolutionaries = get_head_revolutionaries()
 
 	if(length(head_revolutionaries) >= headrev_cap())
@@ -440,6 +524,8 @@
 
 /// Mutates the ticker to report that the revs have won
 /datum/team/revolution/proc/round_result(finished)
+	procstart = null
+	src.procstart = null
 	if (finished == REVOLUTION_VICTORY)
 		SSticker.mode_result = "win - heads killed"
 		SSticker.news_report = REVS_WIN
@@ -448,6 +534,8 @@
 		SSticker.news_report = REVS_LOSE
 
 /datum/team/revolution/roundend_report()
+	procstart = null
+	src.procstart = null
 	if(!members.len && !ex_headrevs.len)
 		return
 
@@ -509,6 +597,8 @@
 	return result.Join()
 
 /datum/team/revolution/antag_listing_entry()
+	procstart = null
+	src.procstart = null
 	var/common_part = ""
 	var/list/parts = list()
 	parts += "<b>[antag_listing_name()]</b><br>"

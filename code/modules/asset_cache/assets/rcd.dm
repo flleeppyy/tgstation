@@ -2,6 +2,8 @@
 	name = "rcd-tgui"
 
 /datum/asset/spritesheet_batched/rcd/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	for(var/root_category in GLOB.rcd_designs)
 
 		var/list/category_designs = GLOB.rcd_designs[root_category]

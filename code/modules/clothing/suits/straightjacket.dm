@@ -10,5 +10,7 @@
 	breakouttime = 5 MINUTES
 
 /obj/item/clothing/suit/jacket/straight_jacket/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_DANGEROUS_OBJECT, INNATE_TRAIT)

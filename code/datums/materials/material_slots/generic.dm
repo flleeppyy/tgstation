@@ -6,6 +6,8 @@
 	requirement_type = /datum/material_requirement/solid_material
 
 /datum/material_slot/weapon_head/on_applied(obj/item/target, datum/material/material, amount, multiplier)
+	procstart = null
+	src.procstart = null
 	// Weapon head controls strength and conductivity
 	if (!(target.material_flags & MATERIAL_EFFECTS))
 		return FALSE
@@ -33,6 +35,8 @@
 		target.obj_flags &= ~CONDUCTS_ELECTRICITY
 
 /datum/material_slot/weapon_head/on_removed(obj/item/target, datum/material/material, amount, multiplier)
+	procstart = null
+	src.procstart = null
 	var/static/list/interaction_signals = list(
 		COMSIG_MOVABLE_IMPACT,
 		COMSIG_MOVABLE_IMPACT_ZONE,
@@ -59,17 +63,23 @@
 		target.obj_flags |= CONDUCTS_ELECTRICITY
 
 /datum/material_slot/weapon_head/proc/on_throw_impact(obj/item/source, atom/hit_atom, datum/thrownthing/throwing_datum, caught)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!caught && !isliving(hit_atom))
 		affect_throw_impact(source, hit_atom, astype(throwing_datum.thrower?.resolve(), /mob/living))
 
 /datum/material_slot/weapon_head/proc/on_item_attack(obj/item/source, atom/movable/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Living mobs use a different signal
 	if (!isliving(target))
 		affect_target(source, target, user)
 
 /datum/material_slot/weapon_head/proc/on_item_attack_living(obj/item/source, mob/living/target, mob/living/user, def_zone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/skin_contact = body_zone2cover_flags(def_zone)
@@ -81,6 +91,8 @@
 	affect_target(source, target, user, def_zone, !!skin_contact)
 
 /datum/material_slot/weapon_head/proc/on_throw_impact_living(obj/item/source, mob/living/target, def_zone, blocked, datum/thrownthing/throwing_datum)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/skin_contact = body_zone2cover_flags(def_zone)
@@ -92,10 +104,14 @@
 	affect_throw_impact(source, target, astype(throwing_datum.thrower?.resolve(), /mob/living), def_zone, !!skin_contact)
 
 /datum/material_slot/weapon_head/proc/affect_target(obj/item/source, atom/target, mob/living/user, def_zone, skin_contact = TRUE)
+	procstart = null
+	src.procstart = null
 	var/datum/material/source_mat = source.get_material_from_slot(type)
 	SEND_SIGNAL(source_mat, COMSIG_MATERIAL_EFFECT_HIT, source, target, user, def_zone, skin_contact)
 
 /datum/material_slot/weapon_head/proc/affect_throw_impact(obj/item/source, atom/target, mob/living/user, def_zone, skin_contact = TRUE)
+	procstart = null
+	src.procstart = null
 	var/datum/material/source_mat = source.get_material_from_slot(type)
 	SEND_SIGNAL(source_mat, COMSIG_MATERIAL_EFFECT_THROW_IMPACT, source, target, user, def_zone, skin_contact)
 
@@ -105,6 +121,8 @@
 	requirement_type = /datum/material_requirement/solid_material
 
 /datum/material_slot/handle/on_applied(obj/item/target, datum/material/material, amount, multiplier)
+	procstart = null
+	src.procstart = null
 	// Handle controls integrity, armor, conductivity and wieldiness stats-wise
 	if (!(target.material_flags & MATERIAL_EFFECTS))
 		return FALSE
@@ -142,6 +160,8 @@
 	return FALSE
 
 /datum/material_slot/handle/on_removed(obj/item/target, datum/material/material, amount, multiplier)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, list(COMSIG_MOVABLE_IMPACT, COMSIG_ITEM_ATTACK, COMSIG_ITEM_ATTACK_ATOM, COMSIG_ITEM_ATTACK_SELF))
 
 	if (!(target.material_flags & MATERIAL_AFFECT_STATISTICS) || !(target.material_flags & MATERIAL_EFFECTS))
@@ -175,19 +195,27 @@
 	return FALSE
 
 /datum/material_slot/handle/proc/on_item_attack(obj/item/source, atom/movable/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	affect_user(source, user, user)
 
 /datum/material_slot/handle/proc/on_item_attack_self(obj/item/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	affect_user(source, user, user)
 
 /datum/material_slot/handle/proc/on_throw_impact(obj/item/source, atom/hit_atom, datum/thrownthing/throwing_datum, caught)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (caught)
 		affect_user(source, hit_atom, astype(throwing_datum.thrower?.resolve(), /mob/living))
 
 /datum/material_slot/handle/proc/affect_user(obj/item/source, mob/living/user, mob/living/initiator)
+	procstart = null
+	src.procstart = null
 	var/datum/material/source_mat = source.get_material_from_slot(type)
 	var/arm_dir = IS_LEFT_INDEX(user.active_hand_index) ? BODY_ZONE_L_ARM : BODY_ZONE_R_ARM
 	if (!ishuman(user))

@@ -16,6 +16,8 @@
 	var/override_icon
 
 /datum/status_effect/grouped/screwy_hud/on_apply()
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(owner))
 		return FALSE
 
@@ -24,10 +26,14 @@
 	return TRUE
 
 /datum/status_effect/grouped/screwy_hud/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_CARBON_UPDATING_HEALTH_HUD)
 	owner.update_health_hud()
 
 /datum/status_effect/grouped/screwy_hud/proc/on_health_hud_updated(mob/living/carbon/source, shown_health_amount)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Shouldn't even be running if we're dead, but just in case...

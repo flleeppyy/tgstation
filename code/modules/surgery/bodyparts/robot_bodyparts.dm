@@ -48,6 +48,8 @@
 	butcher_replacement = null
 
 /obj/item/bodypart/arm/left/robot/generate_icon_key()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(limb_id == BODYPART_ID_ROBOTIC)
 		. += should_draw_greyscale ? icon_greyscale : icon_static
@@ -90,6 +92,8 @@
 	butcher_replacement = null
 
 /obj/item/bodypart/arm/right/robot/generate_icon_key()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(limb_id == BODYPART_ID_ROBOTIC)
 		. += should_draw_greyscale ? icon_greyscale : icon_static
@@ -132,11 +136,15 @@
 	butcher_replacement = null
 
 /obj/item/bodypart/leg/left/robot/generate_icon_key()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(limb_id == BODYPART_ID_ROBOTIC)
 		. += should_draw_greyscale ? icon_greyscale : icon_static
 
 /obj/item/bodypart/leg/left/robot/emp_effect(severity, protection)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || isnull(owner))
 		return
@@ -188,11 +196,15 @@
 	butcher_replacement = null
 
 /obj/item/bodypart/leg/right/robot/generate_icon_key()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(limb_id == BODYPART_ID_ROBOTIC)
 		. += should_draw_greyscale ? icon_greyscale : icon_static
 
 /obj/item/bodypart/leg/right/robot/emp_effect(severity, protection)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || isnull(owner))
 		return
@@ -248,6 +260,8 @@
 	var/obj/item/stock_parts/power_store/cell = null
 
 /obj/item/bodypart/chest/robot/generate_icon_key()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// When we reskin cybernetic limbs, we solely change their icon, nothing else
 	// So we need to include the relevant icon in the cache key
@@ -255,6 +269,8 @@
 		. += should_draw_greyscale ? icon_greyscale : icon_static
 
 /obj/item/bodypart/chest/robot/emp_effect(severity, protection)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || isnull(owner))
 		return
@@ -278,34 +294,48 @@
 	return
 
 /obj/item/bodypart/chest/robot/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/item/bodypart/chest/robot/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == cell)
 		cell = null
 
 /obj/item/bodypart/chest/robot/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(cell)
 	UnregisterSignal(src, COMSIG_BODYPART_ATTACHED)
 	return ..()
 
 /obj/item/bodypart/chest/robot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_BODYPART_ATTACHED, PROC_REF(on_attached))
 	RegisterSignal(src, COMSIG_BODYPART_REMOVED, PROC_REF(on_detached))
 
 /obj/item/bodypart/chest/robot/proc/on_attached(obj/item/bodypart/chest/robot/this_bodypart, mob/living/carbon/human/new_owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	RegisterSignals(new_owner, list(COMSIG_CARBON_POST_ATTACH_LIMB, COMSIG_CARBON_POST_REMOVE_LIMB), PROC_REF(check_limbs))
 
 /obj/item/bodypart/chest/robot/proc/on_detached(obj/item/bodypart/chest/robot/this_bodypart, mob/living/carbon/human/old_owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(old_owner, list(COMSIG_CARBON_POST_ATTACH_LIMB, COMSIG_CARBON_POST_REMOVE_LIMB))
 
 /obj/item/bodypart/chest/robot/proc/check_limbs()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/all_robotic = TRUE
@@ -328,6 +358,8 @@
 			), AUGMENTATION_TRAIT)
 
 /obj/item/bodypart/chest/robot/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/stock_parts/power_store/cell))
 		if(cell)
 			to_chat(user, span_warning("A cell is already present in [src]!"))
@@ -352,6 +384,8 @@
 	return NONE
 
 /obj/item/bodypart/chest/robot/wirecutter_act(mob/living/user, obj/item/cutter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!wired)
 		return
@@ -362,6 +396,8 @@
 	wired = FALSE
 
 /obj/item/bodypart/chest/robot/screwdriver_act(mob/living/user, obj/item/screwtool)
+	procstart = null
+	src.procstart = null
 	..()
 	. = TRUE
 	if(!cell)
@@ -372,6 +408,8 @@
 	cell.forceMove(drop_location())
 
 /obj/item/bodypart/chest/robot/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cell)
 		. += {"It has a [cell] inserted.\n
@@ -385,6 +423,8 @@
 		. += span_info("It has a couple spots that still need to be <b>wired</b>.")
 
 /obj/item/bodypart/chest/robot/drop_organs(mob/user, violent_removal)
+	procstart = null
+	src.procstart = null
 	var/atom/drop_loc = drop_location()
 	if(wired)
 		new /obj/item/stack/cable_coil(drop_loc, 1)
@@ -432,6 +472,8 @@
 	var/obj/item/assembly/flash/handheld/flash2 = null
 
 /obj/item/bodypart/head/robot/generate_icon_key()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(limb_id == BODYPART_ID_ROBOTIC)
 		. += should_draw_greyscale ? icon_greyscale : icon_static
@@ -439,6 +481,8 @@
 #define EMP_GLITCH "EMP_GLITCH"
 
 /obj/item/bodypart/head/robot/emp_effect(severity, protection)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || isnull(owner))
 		return
@@ -454,6 +498,8 @@
 #undef EMP_GLITCH
 
 /obj/item/bodypart/head/robot/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == flash1)
 		flash1 = null
@@ -461,11 +507,15 @@
 		flash2 = null
 
 /obj/item/bodypart/head/robot/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(flash1)
 	QDEL_NULL(flash2)
 	return ..()
 
 /obj/item/bodypart/head/robot/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!flash1 && !flash2)
 		. += span_info("It has two empty eye sockets for <b>flashes</b>.")
@@ -480,6 +530,8 @@
 		. += span_notice("You can remove the seated flash[single_flash ? "":"es"] with a <b>crowbar</b>.")
 
 /obj/item/bodypart/head/robot/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/assembly/flash/handheld))
 		return NONE
 
@@ -503,6 +555,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/bodypart/head/robot/crowbar_act(mob/living/user, obj/item/prytool)
+	procstart = null
+	src.procstart = null
 	..()
 	if(flash1 || flash2)
 		prytool.play_tool_sound(src)
@@ -514,6 +568,8 @@
 	return TRUE
 
 /obj/item/bodypart/head/robot/drop_organs(mob/user, violent_removal)
+	procstart = null
+	src.procstart = null
 	var/atom/drop_loc = drop_location()
 	flash1?.forceMove(drop_loc)
 	flash2?.forceMove(drop_loc)

@@ -23,6 +23,8 @@
 	var/damage_radius = 1
 
 /datum/action/cooldown/spell/pointed/void_phase/before_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & SPELL_CANCEL_CAST)
 		return
@@ -32,6 +34,8 @@
 		return . | SPELL_CANCEL_CAST
 
 /datum/action/cooldown/spell/pointed/void_phase/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/source_turf = get_turf(owner)
 	var/turf/targeted_turf = get_turf(cast_on)
@@ -49,6 +53,8 @@
 
 /// Does the AOE effect of the blinka t the passed turf
 /datum/action/cooldown/spell/pointed/void_phase/proc/cause_aoe(turf/target_turf, effect_type = /obj/effect/temp_visual/voidin)
+	procstart = null
+	src.procstart = null
 	new effect_type(target_turf)
 	playsound(target_turf, 'sound/effects/magic/voidblink.ogg', 60, FALSE)
 	for(var/mob/living/living_mob in range(damage_radius, target_turf))

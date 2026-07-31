@@ -2,12 +2,18 @@
 /datum/bt_node/decorator/pawn_has_gravity
 
 /datum/bt_node/decorator/pawn_has_gravity/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(pawn, COMSIG_LIVING_GRAVITY_CHANGED, PROC_REF(on_signal_changed))
 	return TRUE
 
 /datum/bt_node/decorator/pawn_has_gravity/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(pawn, COMSIG_LIVING_GRAVITY_CHANGED)
 
 /datum/bt_node/decorator/pawn_has_gravity/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	return istype(living_pawn) && living_pawn.has_gravity()

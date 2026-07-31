@@ -49,12 +49,16 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	var/default_click = FALSE
 
 /atom/movable/screen/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(hud_owner)) //some screens set their hud owners on /new, this prevents overriding them with null post atoms init
 		return
 	set_new_hud(hud_owner)
 
 /atom/movable/screen/Destroy()
+	procstart = null
+	src.procstart = null
 	if(hud)
 		if (hud_group_key && hud.screen_groups?[hud_group_key])
 			hud.screen_groups?[hud_group_key] -= src
@@ -64,6 +68,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	return ..()
 
 /atom/movable/screen/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(flags_1 & INITIALIZED_1)
 		SEND_SIGNAL(src, COMSIG_SCREEN_ELEMENT_CLICK, location, control, params, usr)
 
@@ -72,19 +78,29 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 
 ///Screen elements are always on top of the players screen and don't move so yes they are adjacent
 /atom/movable/screen/Adjacent(atom/neighbor, atom/target, atom/movable/mover)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /atom/movable/screen/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	return list()
 
 /atom/movable/screen/orbit()
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/movable/screen/proc/component_click(atom/movable/screen/component_button/component, params)
+	procstart = null
+	src.procstart = null
 	return
 
 ///setter used to set our new hud
 /atom/movable/screen/proc/set_new_hud(datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	if(hud)
 		UnregisterSignal(hud, COMSIG_QDELETING)
 	if(isnull(hud_owner))
@@ -95,9 +111,13 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 
 /// Returns the mob this is being displayed to, if any
 /atom/movable/screen/proc/get_mob() as /mob
+	procstart = null
+	src.procstart = null
 	return hud?.mymob
 
 /atom/movable/screen/proc/on_hud_delete(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	set_new_hud(hud_owner = null)
@@ -115,6 +135,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/swap_hand/Click()
+	procstart = null
+	src.procstart = null
 	// At this point in client Click() code we have passed the 1/10 sec check and little else
 	// We don't even know if it's a middle click
 	if(world.time <= usr.next_move)
@@ -136,6 +158,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/navigate/Click()
+	procstart = null
+	src.procstart = null
 	if(!isliving(usr))
 		return TRUE
 	var/mob/living/navigator = usr
@@ -156,6 +180,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/area_creator/Click()
+	procstart = null
+	src.procstart = null
 	if(usr.incapacitated || (isobserver(usr) && !isAdminGhostAI(usr)))
 		return TRUE
 	var/area/A = get_area(usr)
@@ -172,6 +198,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/language_menu/Click()
+	procstart = null
+	src.procstart = null
 	usr.get_language_holder().open_language_menu(usr)
 
 /atom/movable/screen/memories
@@ -182,6 +210,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/memories/Click()
+	procstart = null
+	src.procstart = null
 	if(!isliving(usr))
 		return TRUE
 	var/mob/living/daydreamer = usr
@@ -198,6 +228,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	var/image/object_overlay
 
 /atom/movable/screen/inventory/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	// At this point in client Click() code we have passed the 1/10 sec check and little else
 	// We don't even know if it's a middle click
 	if(world.time <= usr.next_move)
@@ -218,11 +250,15 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	return TRUE
 
 /atom/movable/screen/inventory/MouseEntered(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (usr == hud?.mymob)
 		add_overlays()
 
 /atom/movable/screen/inventory/MouseExited()
+	procstart = null
+	src.procstart = null
 	..()
 	if (usr != hud?.mymob)
 		return
@@ -230,6 +266,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	QDEL_NULL(object_overlay)
 
 /atom/movable/screen/inventory/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!icon_empty)
 		icon_empty = icon_state
 
@@ -238,6 +276,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	return ..()
 
 /atom/movable/screen/inventory/proc/add_overlays()
+	procstart = null
+	src.procstart = null
 	var/mob/user = hud?.mymob
 
 	if(!user || !slot_id)
@@ -267,6 +307,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	interaction_flags_atom = NONE //so dragging objects into hands icon don't skip adjacency & other checks
 
 /atom/movable/screen/inventory/hand/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!handcuff_overlay)
@@ -289,6 +331,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 		. += IS_LEFT_INDEX(held_index) ? "lhandactive" : "rhandactive"
 
 /atom/movable/screen/inventory/hand/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	// At this point in client Click() code we have passed the 1/10 sec check and little else
 	// We don't even know if it's a middle click
 	var/mob/user = hud?.mymob
@@ -318,10 +362,14 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	hud_group_key = HUD_GROUP_STORAGE
 
 /atom/movable/screen/close/Initialize(mapload, datum/hud/hud_owner, new_master)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	master_ref = WEAKREF(new_master)
 
 /atom/movable/screen/close/Click()
+	procstart = null
+	src.procstart = null
 	var/datum/storage/storage = master_ref?.resolve()
 	if(!storage)
 		return
@@ -335,6 +383,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/drop/Click()
+	procstart = null
+	src.procstart = null
 	if(!IS_UNCONSCIOUS_OR_CRIT(usr))
 		usr.dropItemToGround(usr.get_active_held_item())
 
@@ -348,6 +398,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	var/default_screen_location
 
 /atom/movable/screen/combattoggle/Initialize(mapload, datum/hud/hud_owner, default_screen_location)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 	if(default_screen_location)
@@ -355,12 +407,16 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	src.default_screen_location = screen_loc
 
 /atom/movable/screen/combattoggle/Click()
+	procstart = null
+	src.procstart = null
 	if(isliving(usr))
 		var/mob/living/owner = usr
 		owner.set_combat_mode(!owner.combat_mode, FALSE)
 		update_appearance()
 
 /atom/movable/screen/combattoggle/update_icon_state()
+	procstart = null
+	src.procstart = null
 	var/mob/living/user = hud?.mymob
 	if(!istype(user) || !user.client)
 		return ..()
@@ -373,6 +429,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	var/mutable_appearance/flashy
 
 /atom/movable/screen/combattoggle/flashy/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/user = hud?.mymob
 	if(!istype(user) || !user.client)
@@ -399,6 +457,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	var/vertical = FALSE
 
 /atom/movable/screen/floor_changer/Click(location,control,params)
+	procstart = null
+	src.procstart = null
 	var/mob/living/user = get_mob()
 	if(usr != user)
 		return
@@ -448,6 +508,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	var/cached_thermal_on = TRUE
 
 /atom/movable/screen/spacesuit/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(usr != get_mob())
 		return
 	. = ..()
@@ -455,6 +517,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	astype(wearer.wear_suit, /obj/item/clothing/suit/space)?.toggle_spacesuit(wearer, manual_toggle = TRUE)
 
 /atom/movable/screen/spacesuit/MouseEntered(location,control,params)
+	procstart = null
+	src.procstart = null
 	if(usr != get_mob())
 		return
 	. = ..()
@@ -463,6 +527,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	astype(wearer.wear_suit, /obj/item/clothing/suit/space)?.update_hud_icon(usr)
 
 /atom/movable/screen/spacesuit/MouseExited(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(usr != get_mob())
 		return
 	. = ..()
@@ -471,6 +537,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	astype(wearer.wear_suit, /obj/item/clothing/suit/space)?.update_hud_icon(usr)
 
 /atom/movable/screen/spacesuit/proc/update_spacesuit_hud_icon(cell_state, cell_percent, thermal_on = TRUE)
+	procstart = null
+	src.procstart = null
 	if(cell_state)
 		switch(cell_state)
 			if(SPACESUIT_NO_ICON)
@@ -493,6 +561,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 		update_appearance(UPDATE_ICON)
 
 /atom/movable/screen/spacesuit/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!cached_thermal_on && icon_state)
 		. |= off_overlay
@@ -505,13 +575,19 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	screen_loc = ui_movi
 
 /atom/movable/screen/mov_intent/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_ICON_STATE)
 
 /atom/movable/screen/mov_intent/Click()
+	procstart = null
+	src.procstart = null
 	toggle(usr)
 
 /atom/movable/screen/mov_intent/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!hud || !hud.mymob || !isliving(hud.mymob))
 		return
 	var/mob/living/living_hud_owner = hud.mymob
@@ -523,6 +599,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	return ..()
 
 /atom/movable/screen/mov_intent/proc/toggle(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return
 	user.toggle_move_intent()
@@ -536,15 +614,21 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	screen_loc = ui_living_pull
 
 /atom/movable/screen/pull/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_ICON_STATE)
 
 /atom/movable/screen/pull/Click()
+	procstart = null
+	src.procstart = null
 	if(isobserver(usr))
 		return
 	usr.stop_pulling()
 
 /atom/movable/screen/pull/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][hud?.mymob?.pulling ? null : 0]"
 	return ..()
 
@@ -557,6 +641,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	screen_loc = ui_above_movement
 
 /atom/movable/screen/resist/Click()
+	procstart = null
+	src.procstart = null
 	flick("[base_icon_state]_on", src)
 	if(isliving(usr))
 		var/mob/living/L = usr
@@ -571,15 +657,21 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	screen_loc = ui_below_throw
 
 /atom/movable/screen/rest/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_ICON_STATE)
 
 /atom/movable/screen/rest/Click()
+	procstart = null
+	src.procstart = null
 	if(isliving(usr))
 		var/mob/living/L = usr
 		L.toggle_resting()
 
 /atom/movable/screen/rest/update_icon_state()
+	procstart = null
+	src.procstart = null
 	var/mob/living/user = hud?.mymob
 	if(!istype(user))
 		return ..()
@@ -595,11 +687,15 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	screen_loc = ui_above_throw
 
 /atom/movable/screen/sleep/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Invisible by default
 	SetInvisibility(INVISIBILITY_ABSTRACT, INVISIBILITY_SOURCE_SLEEP_HUD_BUTTON)
 
 /atom/movable/screen/sleep/Click()
+	procstart = null
+	src.procstart = null
 	if(!isliving(usr) || IS_UNCONSCIOUS(usr))
 		return
 	if(!usr.client?.prefs.read_preference(/datum/preference/toggle/remove_double_click))
@@ -612,6 +708,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 		L.Sleeping(400)
 
 /atom/movable/screen/sleep/DblClick(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(!isliving(usr) || usr.client?.prefs.read_preference(/datum/preference/toggle/remove_double_click))
 		return
 	if(isliving(usr))
@@ -625,10 +723,14 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	hud_group_key = HUD_GROUP_STORAGE
 
 /atom/movable/screen/storage/Initialize(mapload, datum/hud/hud_owner, new_master)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	master_ref = WEAKREF(new_master)
 
 /atom/movable/screen/storage/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	var/datum/storage/storage_master = master_ref?.resolve()
 	if(!istype(storage_master))
 		return FALSE
@@ -649,6 +751,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 /atom/movable/screen/storage/cell
 
 /atom/movable/screen/storage/cell/mouse_drop_receive(atom/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	var/datum/storage/storage = master_ref?.resolve()
 
 	if (isnull(storage) || !istype(user) || storage != user.active_storage)
@@ -693,6 +797,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	screen_loc = ui_drop_throw
 
 /atom/movable/screen/throw_catch/Click()
+	procstart = null
+	src.procstart = null
 	if(isliving(usr))
 		var/mob/living/user = usr
 		user.toggle_throw_mode()
@@ -707,10 +813,14 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	var/hovering
 
 /atom/movable/screen/zone_sel/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /atom/movable/screen/zone_sel/Click(location, control,params)
+	procstart = null
+	src.procstart = null
 	if(isobserver(usr))
 		return
 
@@ -724,10 +834,14 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	return set_selected_zone(choice, usr)
 
 /atom/movable/screen/zone_sel/MouseEntered(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	MouseMove(location, control, params)
 
 /atom/movable/screen/zone_sel/MouseMove(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(isobserver(usr))
 		return
 
@@ -757,11 +871,15 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	plane = ABOVE_HUD_PLANE
 
 /atom/movable/screen/zone_sel/MouseExited(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(!isobserver(usr) && hovering)
 		vis_contents -= hover_overlays_cache[hovering]
 		hovering = null
 
 /atom/movable/screen/zone_sel/proc/get_zone_at(icon_x, icon_y)
+	procstart = null
+	src.procstart = null
 	switch(icon_y)
 		if(1 to 9) //Legs
 			switch(icon_x)
@@ -800,6 +918,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 				return BODY_ZONE_HEAD
 
 /atom/movable/screen/zone_sel/proc/set_selected_zone(choice, mob/user, should_log = TRUE)
+	procstart = null
+	src.procstart = null
 	if(user != hud?.mymob)
 		return
 
@@ -813,6 +933,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	return TRUE
 
 /atom/movable/screen/zone_sel/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!hud?.mymob)
 		return
@@ -885,11 +1007,15 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	screen_loc = ui_healthdoll
 
 /atom/movable/screen/healthdoll/Click()
+	procstart = null
+	src.procstart = null
 	if (iscarbon(usr))
 		var/mob/living/carbon/C = usr
 		C.check_self_for_injuries()
 
 /atom/movable/screen/healthdoll/proc/update_body_zones()
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/movable/screen/healthdoll/living
@@ -902,19 +1028,27 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	var/filtered = FALSE //so we don't repeatedly create the mask of the mob every update
 
 /atom/movable/screen/healthdoll/living/New(loc, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	health_overlay = image(loc = src, layer = src.layer+0.1)
 
 /atom/movable/screen/healthdoll/living/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(health_overlay)
 	return ..()
 
 /atom/movable/screen/healthdoll/living/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(hovering)
 		. |= health_overlay
 
 /atom/movable/screen/healthdoll/living/MouseEntered(location,control,params)
+	procstart = null
+	src.procstart = null
 	if(usr != get_mob())
 		return
 	. = ..()
@@ -922,6 +1056,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	update_appearance(UPDATE_ICON)
 
 /atom/movable/screen/healthdoll/living/MouseExited(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(usr != get_mob())
 		return
 	. = ..()
@@ -937,6 +1073,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	VAR_PRIVATE/list/animated_zones
 
 /atom/movable/screen/healthdoll/human/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(hud_owner)) //we require a hud owner to work properly, so return out.
 		return
@@ -944,6 +1082,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	update_appearance()
 
 /atom/movable/screen/healthdoll/human/update_body_zones()
+	procstart = null
+	src.procstart = null
 	vis_contents.Cut()
 	QDEL_LIST_ASSOC_VAL(limbs)
 	limbs ||= list()
@@ -957,11 +1097,15 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 		vis_contents += limb
 
 /atom/movable/screen/healthdoll/human/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST_ASSOC_VAL(limbs)
 	vis_contents.Cut()
 	return ..()
 
 /atom/movable/screen/healthdoll/human/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/carbon/human/owner = hud?.mymob
 	if(isnull(owner))
@@ -1034,6 +1178,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 
 
 /atom/movable/screen/splash/Initialize(mapload, datum/hud/hud_owner, client/C, visible, use_previous_title)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(C))
 		return
@@ -1054,6 +1200,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	holder.screen += src
 
 /atom/movable/screen/splash/proc/fade(out, qdel_after = TRUE)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	if(out)
@@ -1066,6 +1214,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 		QDEL_IN(src, 30)
 
 /atom/movable/screen/splash/Destroy()
+	procstart = null
+	src.procstart = null
 	if(holder)
 		holder.screen -= src
 		holder = null
@@ -1077,10 +1227,14 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	var/atom/movable/screen/parent
 
 /atom/movable/screen/component_button/Initialize(mapload, atom/movable/screen/parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.parent = parent
 
 /atom/movable/screen/component_button/Click(params)
+	procstart = null
+	src.procstart = null
 	if(parent)
 		parent.component_click(src, params)
 
@@ -1092,14 +1246,20 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	var/timerid
 
 /atom/movable/screen/combo/proc/clear_streak()
+	procstart = null
+	src.procstart = null
 	animate(src, alpha = 0, 2 SECONDS, SINE_EASING)
 	timerid = addtimer(CALLBACK(src, PROC_REF(reset_icons)), 2 SECONDS, TIMER_UNIQUE | TIMER_STOPPABLE)
 
 /atom/movable/screen/combo/proc/reset_icons()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	icon_state = ""
 
 /atom/movable/screen/combo/update_icon_state(streak = "", time = 2 SECONDS)
+	procstart = null
+	src.procstart = null
 	reset_icons()
 	if(timerid)
 		deltimer(timerid)
@@ -1146,6 +1306,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	VAR_PRIVATE/atom/movable/screen/hunger_bar/hunger_bar
 
 /atom/movable/screen/hunger/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/hungry = hud_owner?.mymob
 	if(!istype(hungry))
@@ -1168,6 +1330,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	update_hunger_bar(instant = TRUE)
 
 /atom/movable/screen/hunger/proc/update_hunger_state()
+	procstart = null
+	src.procstart = null
 	var/mob/living/hungry = hud?.mymob
 	if(!istype(hungry))
 		return
@@ -1200,12 +1364,16 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 			state = HUNGER_STATE_STARVING
 
 /atom/movable/screen/hunger/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	update_hunger_bar()
 	return ..()
 
 /// Updates the hunger bar's appearance.
 /// If `instant` is TRUE, the bar will update immediately rather than animating.
 /atom/movable/screen/hunger/proc/update_hunger_bar(instant = FALSE)
+	procstart = null
+	src.procstart = null
 	var/old_state = state
 	var/old_fullness = fullness
 	update_hunger_state()
@@ -1268,12 +1436,16 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	VAR_PRIVATE/last_fullness_band = -1
 
 /atom/movable/screen/hunger_bar/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/movable/movable_loc = ismovable(loc) ? loc : null
 	screen_loc = movable_loc?.screen_loc
 	bar_mask ||= icon(icon, "hungerbar_mask")
 
 /atom/movable/screen/hunger_bar/proc/update_fullness(new_fullness, instant)
+	procstart = null
+	src.procstart = null
 	new_fullness = round(new_fullness / NUTRITION_LEVEL_FULL, 0.05)
 	if(new_fullness == last_fullness_band)
 		return
@@ -1316,12 +1488,16 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	screen_loc = ui_blooddisplay
 
 /atom/movable/screen/blood_level/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(hud_owner))
 		return INITIALIZE_HINT_QDEL
 	RegisterSignal(hud_owner.mymob, COMSIG_LIVING_LIFE, PROC_REF(on_mob_life))
 
 /atom/movable/screen/blood_level/proc/on_mob_life(mob/living/source, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(source))
@@ -1342,6 +1518,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 	var/atom/movable/screen/xenobio_potion/potion_launcher
 
 /atom/movable/screen/xenobio_console/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	potion_hud = new()
 	potion_hud.layer = layer-1
@@ -1352,12 +1530,16 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 
 /// Called by the console any time we update the monkeys, slimes, or max slimes
 /atom/movable/screen/xenobio_console/proc/on_update_hud(slimes, monkeys, max_slimes)
+	procstart = null
+	src.procstart = null
 	maptext = FORMAT_XENOBIO_HUD_MAPTEXT("[monkeys]\n[slimes]/[max_slimes]")
 	maptext_x = 5
 	maptext_y = 2
 
 /// Called by the console any time we update the potion
 /atom/movable/screen/xenobio_console/proc/update_potion(obj/item/slimepotion/slime/potion)
+	procstart = null
+	src.procstart = null
 	if(isnull(potion))
 		potion_hud.eject_pot()
 		flick("xenobio_potion_launch", potion_launcher)
@@ -1367,6 +1549,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 		potion_hud.add_pot(potion)
 
 /atom/movable/screen/xenobio_console/Destroy()
+	procstart = null
+	src.procstart = null
 	vis_contents -= potion_hud
 	QDEL_NULL(potion_hud)
 	vis_contents -= potion_launcher
@@ -1381,11 +1565,15 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 
 /// Visually ejects the current potion
 /atom/movable/screen/xenobio_potion/proc/eject_pot(obj/item/slimepotion/slime/potion)
+	procstart = null
+	src.procstart = null
 	animate(src, 2 DECISECONDS, pixel_y = 280)
 	stored_potion = FALSE
 
 /// Visually add the current potion
 /atom/movable/screen/xenobio_potion/proc/add_pot(obj/item/slimepotion/slime/potion)
+	procstart = null
+	src.procstart = null
 	stored_potion = TRUE
 	icon = potion.icon
 	icon_state = potion.icon_state
@@ -1398,11 +1586,15 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen) // I hate this place
 
 /// Swap out our current potion for a new one
 /atom/movable/screen/xenobio_potion/proc/swap_pot(obj/item/slimepotion/slime/potion)
+	procstart = null
+	src.procstart = null
 	addtimer(CALLBACK(src, PROC_REF(swap_pot_icon), potion), POTION_DROP_SPEED, TIMER_CLIENT_TIME)
 	animate(src, POTION_DROP_SPEED, easing = BACK_EASING, pixel_x = -50)
 
 /// Swaps the potion icon & name. Made for use w/ addtimer() so as to not disrupt the animation chain
 /atom/movable/screen/xenobio_potion/proc/swap_pot_icon(obj/item/pot)
+	procstart = null
+	src.procstart = null
 	name = pot.name
 	icon_state = pot.icon_state
 	animate(src, POTION_DROP_SPEED, easing = BACK_EASING, pixel_x = -8)

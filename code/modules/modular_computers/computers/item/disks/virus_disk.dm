@@ -10,6 +10,8 @@
 	var/charges = 5
 
 /obj/item/disk/computer/virus/proc/send_virus(obj/item/modular_computer/pda/source, obj/item/modular_computer/pda/target, mob/living/user, message)
+	procstart = null
+	src.procstart = null
 	if(charges <= 0)
 		to_chat(user, span_notice("ERROR: Out of charges."))
 		return FALSE
@@ -27,6 +29,8 @@
 	name = "\improper H.O.N.K. disk"
 
 /obj/item/disk/computer/virus/clown/send_virus(obj/item/modular_computer/pda/source, obj/item/modular_computer/pda/target, mob/living/user, message)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -44,6 +48,8 @@
 	name = "\improper sound of silence disk"
 
 /obj/item/disk/computer/virus/mime/send_virus(obj/item/modular_computer/pda/source, obj/item/modular_computer/pda/target, mob/living/user, message)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -65,6 +71,8 @@
 	charges = 6
 
 /obj/item/disk/computer/virus/detomatix/send_virus(obj/item/modular_computer/pda/source, obj/item/modular_computer/pda/target, mob/living/user, message)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -110,6 +118,8 @@
 	var/current_progression = 0
 
 /obj/item/disk/computer/virus/frame/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stack/telecrystal))
 		return ..()
 
@@ -124,6 +134,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/disk/computer/virus/frame/send_virus(obj/item/modular_computer/pda/source, obj/item/modular_computer/pda/target, mob/living/user, message)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

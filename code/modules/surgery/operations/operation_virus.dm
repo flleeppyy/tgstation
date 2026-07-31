@@ -21,18 +21,26 @@
 	)
 
 /datum/surgery_operation/basic/viral_bonding/get_any_tool()
+	procstart = null
+	src.procstart = null
 	return "Any heat source"
 
 /datum/surgery_operation/basic/viral_bonding/all_required_strings()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "the patient must have a virus to bond"
 	for(var/datum/reagent/chem as anything in required_chems)
 		. += "the patient must be dosed with >=1u [chem::name]"
 
 /datum/surgery_operation/basic/viral_bonding/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(/obj/item/clothing/mask/surgical)
 
 /datum/surgery_operation/basic/viral_bonding/state_check(mob/living/patient)
+	procstart = null
+	src.procstart = null
 	for(var/chem in required_chems)
 		if(patient.reagents?.get_reagent_amount(chem) < 1)
 			return FALSE
@@ -42,9 +50,13 @@
 	return FALSE
 
 /datum/surgery_operation/basic/viral_bonding/tool_check(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return tool.get_temperature() >= FIRE_MINIMUM_TEMPERATURE_TO_EXIST
 
 /datum/surgery_operation/basic/viral_bonding/on_preop(mob/living/patient, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		patient,
@@ -55,6 +67,8 @@
 	display_pain(patient, "You feel a searing heat spread through your chest!")
 
 /datum/surgery_operation/basic/viral_bonding/on_success(mob/living/patient, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		patient,

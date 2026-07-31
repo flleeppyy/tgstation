@@ -40,6 +40,8 @@ GLOBAL_LIST_EMPTY(blended_hair_icons_cache)
 
 /// Retrieve the base hair icon with all hair appendeges blended in, with hair masks applied, from the cache, or generate it if it doesn't exist
 /datum/sprite_accessory/hair/proc/getCachedIcon(list/hair_masks)
+	procstart = null
+	src.procstart = null
 	var/icon/cachedIcon
 	var/joinedMasks = LAZYLEN(hair_masks) ? jointext(hair_masks, ",") : ""
 	var/list/masks_to_icons = GLOB.blended_hair_icons_cache[type]

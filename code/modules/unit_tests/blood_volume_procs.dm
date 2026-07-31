@@ -1,6 +1,8 @@
 /datum/unit_test/blood_volume_procs
 
 /datum/unit_test/blood_volume_procs/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 
 	// Test initial blood status.

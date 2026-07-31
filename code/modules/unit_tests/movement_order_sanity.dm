@@ -1,4 +1,6 @@
 /datum/unit_test/movement_order_sanity/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/movement_tester/test_obj = allocate(__IMPLIED_TYPE__, run_loc_floor_bottom_left)
 	var/list/movement_cache = test_obj.movement_order
 
@@ -23,14 +25,20 @@
 	var/list/movement_order = list()
 
 /obj/movement_tester/Move(atom/newloc, direct, glide_size_override, z_movement_flags)
+	procstart = null
+	src.procstart = null
 	movement_order += "Moving from ([loc.x], [loc.y]) to [newloc ? "([newloc.x], [newloc.y])" : "NULL"]"
 	return ..()
 
 /obj/movement_tester/doMove(atom/destination)
+	procstart = null
+	src.procstart = null
 	movement_order += "Abstractly Moving from ([loc.x], [loc.y]) to [destination ? "([destination.x], [destination.y])" : "NULL"]"
 	return ..()
 
 /obj/movement_tester/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	movement_order += "Moved from ([old_loc.x], [old_loc.y]) to [loc ? "([loc.x], [loc.y])" : "NULL"]"
 	return ..()
 
@@ -38,10 +46,14 @@
 	name = "movement interceptor"
 
 /obj/movement_interceptor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/connect_loc, list(COMSIG_ATOM_ENTERED = PROC_REF(on_crossed)))
 
 /obj/movement_interceptor/proc/on_crossed(datum/source, atom/movable/arrived)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(src == arrived)
 		return

@@ -12,6 +12,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 2.5)
 
 /obj/item/storage/part_replacer/interact_with_atom(obj/attacked_object, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 
@@ -27,6 +29,8 @@
 
 ///Plays the sound & flick animation for RPED exhanging or installing parts.
 /obj/item/storage/part_replacer/proc/play_rped_effect()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/items/tools/rped.ogg', 40, TRUE)
 	flick("[icon_state]_active", src)
 
@@ -37,6 +41,8 @@
  * * ignore_stacks - should the final list contain stacks
  */
 /obj/item/storage/part_replacer/proc/get_sorted_parts(ignore_stacks = FALSE)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list/obj/item)
 
 	var/list/obj/item/part_list = list()
@@ -62,20 +68,28 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 7.5, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 2.5, /datum/material/silver = SHEET_MATERIAL_AMOUNT * 1.25)
 
 /obj/item/storage/part_replacer/bluespace/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	RegisterSignal(src, COMSIG_ATOM_ENTERED, PROC_REF(on_part_entered))
 	RegisterSignal(src, COMSIG_ATOM_EXITED, PROC_REF(on_part_exited))
 
 /obj/item/storage/part_replacer/bluespace/interact_with_atom(obj/attacked_object, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		user.Beam(attacked_object, icon_state = "rped_upgrade", time = 0.5 SECONDS)
 
 /obj/item/storage/part_replacer/bluespace/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/storage/part_replacer/bluespace/play_rped_effect()
+	procstart = null
+	src.procstart = null
 	if(prob(1))
 		playsound(src, 'sound/items/pshoom/pshoom_2.ogg', 40, TRUE)
 	else
@@ -88,6 +102,8 @@
  * We clear existing reagents & stop new ones from being added to prevent remote spam bombing
  */
 /obj/item/storage/part_replacer/bluespace/proc/on_part_entered(datum/source, obj/item/inserted_component)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(inserted_component, /obj/item/stock_parts/power_store))
@@ -108,6 +124,8 @@
 
 /// Hooks [COMSIG_REAGENTS_PRE_ADD_REAGENT] to block adding any form of reagent to component beakers inside the RPED
 /obj/item/storage/part_replacer/bluespace/proc/on_insered_component_reagent_pre_add(datum/source, reagent, amount, reagtemp, data, no_react)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return COMPONENT_CANCEL_REAGENT_ADD
@@ -117,6 +135,8 @@
  * Restores original reagents of the component part, if it has any.
  */
 /obj/item/storage/part_replacer/bluespace/proc/on_part_exited(datum/source, obj/item/removed_component)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/reagents/target_holder = removed_component.reagents
@@ -125,6 +145,8 @@
 
 //RPED with tiered contents
 /obj/item/storage/part_replacer/bluespace/tier1/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 10)
 		new /obj/item/stock_parts/capacitor(src)
 		new /obj/item/stock_parts/scanning_module(src)
@@ -135,6 +157,8 @@
 		new /obj/item/stock_parts/power_store/battery/high(src)
 
 /obj/item/storage/part_replacer/bluespace/tier2/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 10)
 		new /obj/item/stock_parts/capacitor/adv(src)
 		new /obj/item/stock_parts/scanning_module/adv(src)
@@ -145,6 +169,8 @@
 		new /obj/item/stock_parts/power_store/battery/super(src)
 
 /obj/item/storage/part_replacer/bluespace/tier3/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 10)
 		new /obj/item/stock_parts/capacitor/super(src)
 		new /obj/item/stock_parts/scanning_module/phasic(src)
@@ -155,6 +181,8 @@
 		new /obj/item/stock_parts/power_store/battery/hyper(src)
 
 /obj/item/storage/part_replacer/bluespace/tier4/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 10)
 		new /obj/item/stock_parts/capacitor/quadratic(src)
 		new /obj/item/stock_parts/scanning_module/triphasic(src)
@@ -166,6 +194,8 @@
 		new /obj/item/stack/cable_coil/thirty(src)
 
 /obj/item/storage/part_replacer/bluespace/AdminDebug/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 40)
 		new /obj/item/stock_parts/capacitor/quadratic(src)
 		new /obj/item/stock_parts/scanning_module/triphasic(src)
@@ -177,6 +207,8 @@
 
 //used in a cargo crate
 /obj/item/storage/part_replacer/cargo/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 10)
 		new /obj/item/stock_parts/capacitor(src)
 		new /obj/item/stock_parts/scanning_module(src)

@@ -29,6 +29,8 @@
 
 
 /datum/weather/floor_is_lava/can_weather_act_mob(mob/living/mob_to_check)
+	procstart = null
+	src.procstart = null
 	if(!mob_to_check.client) //Only sentient people are going along with it!
 		return FALSE
 	. = ..()
@@ -44,5 +46,7 @@
 		return FALSE
 
 /datum/weather/floor_is_lava/weather_act_mob(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	victim.adjust_fire_loss(3)
 	return ..()

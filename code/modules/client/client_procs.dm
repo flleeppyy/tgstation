@@ -35,6 +35,8 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 
 //the undocumented 4th argument is for ?[0x\ref] style topic links. hsrc is set to the reference and anything after the ] gets put into hsrc_command
 /client/Topic(href, href_list, hsrc, hsrc_command)
+	procstart = null
+	src.procstart = null
 	if(!usr || usr != mob) //stops us calling Topic for somebody else's client. Also helps prevent usr=null
 		return
 
@@ -162,15 +164,21 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 ///dumb workaround because byond doesnt seem to recognize the Topic() typepath for /datum/proc/Topic() from the client Topic,
 ///so we cant queue it without this
 /client/proc/_Topic(datum/hsrc, href, list/href_list)
+	procstart = null
+	src.procstart = null
 	return hsrc.Topic(href, href_list)
 
 /client/proc/is_content_unlocked()
+	procstart = null
+	src.procstart = null
 	if(!prefs.unlock_content)
 		to_chat(src, "Become a BYOND member to access member-perks and features, as well as support the engine that makes this game possible. Only 10 bucks for 3 months! <a href=\"https://secure.byond.com/membership\">Click Here to find out more</a>.")
 		return FALSE
 	return TRUE
 
 /client/proc/is_localhost()
+	procstart = null
+	src.procstart = null
 	var/static/localhost_addresses = list(
 		"127.0.0.1",
 		"::1",
@@ -192,6 +200,8 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
  * you for it
  */
 /client/proc/handle_spam_prevention(message, mute_type)
+	procstart = null
+	src.procstart = null
 
 	//Increment message count
 	total_message_count += 1
@@ -236,6 +246,8 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 
 //This stops files larger than UPLOAD_LIMIT being sent from client to server via input(), client.Import() etc.
 /client/AllowUpload(filename, filelength)
+	procstart = null
+	src.procstart = null
 	var/client_max_file_size = CONFIG_GET(number/upload_limit)
 	if (holder)
 		var/admin_max_file_size = CONFIG_GET(number/upload_limit_admin)
@@ -253,6 +265,8 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 	///////////
 
 /client/New(TopicData)
+	procstart = null
+	src.procstart = null
 	var/tdata = TopicData //save this for later use
 	TopicData = null //Prevent calls to client.Topic from connect
 
@@ -601,6 +615,8 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 //////////////
 
 /client/Del()
+	procstart = null
+	src.procstart = null
 	if(!gc_destroyed)
 		gc_destroyed = world.time
 		if (!QDELING(src))
@@ -613,6 +629,8 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 	return ..()
 
 /client/Destroy()
+	procstart = null
+	src.procstart = null
 	if(mob)
 		var/stealth_admin = mob.client?.holder?.fakekey
 		var/announce_join = mob.client?.prefs?.read_preference(/datum/preference/toggle/broadcast_login_logout)
@@ -657,6 +675,8 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 	return QDEL_HINT_HARDDEL_NOW
 
 /client/proc/set_client_age_from_db(connectiontopic)
+	procstart = null
+	src.procstart = null
 	if (is_guest_key(src.key))
 		return
 	if(!SSdbcore.Connect())
@@ -790,6 +810,8 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 	. = player_age
 
 /client/proc/findJoinDate()
+	procstart = null
+	src.procstart = null
 	var/list/http = world.Export("http://byond.com/members/[ckey]?format=text")
 	if(!http)
 		log_world("Failed to connect to byond member page to age check [ckey]")
@@ -803,6 +825,8 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 			CRASH("Age check regex failed for [src.ckey]")
 
 /client/proc/validate_key_in_db()
+	procstart = null
+	src.procstart = null
 	var/sql_key
 	var/datum/db_query/query_check_byond_key = SSdbcore.NewQuery(
 		"SELECT byond_key FROM [format_table_name("player")] WHERE ckey = :ckey",
@@ -834,6 +858,8 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 				CRASH("Key check regex failed for [ckey]")
 
 /client/proc/add_system_note(system_ckey, message)
+	procstart = null
+	src.procstart = null
 	//check to see if we noted them in the last day.
 	var/datum/db_query/query_get_notes = SSdbcore.NewQuery(
 		"SELECT id FROM [format_table_name("messages")] WHERE type = 'note' AND targetckey = :targetckey AND adminckey = :adminckey AND timestamp + INTERVAL 1 DAY < NOW() AND deleted = 0 AND (expire_timestamp > NOW() OR expire_timestamp IS NULL)",
@@ -862,6 +888,8 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 	create_message("note", key, system_ckey, message, null, null, 0, 0, null, 0, 0)
 
 /client/Click(atom/object, atom/location, control, params)
+	procstart = null
+	src.procstart = null
 	if(click_intercept_time)
 		if(click_intercept_time >= world.time)
 			click_intercept_time = 0 //Reset and return. Next click should work, but not this one.
@@ -941,6 +969,8 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 	..()
 
 /client/proc/add_verbs_from_config()
+	procstart = null
+	src.procstart = null
 	if (interviewee)
 		return
 	if(CONFIG_GET(flag/see_own_notes))
@@ -954,6 +984,8 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 //checks if a client is afk
 //3000 frames = 5 minutes
 /client/proc/is_afk(duration = CONFIG_GET(number/inactivity_period))
+	procstart = null
+	src.procstart = null
 	if(inactivity > duration)
 		return inactivity
 	return FALSE
@@ -961,6 +993,8 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 /// Send resources to the client.
 /// Sends both game resources and browser assets.
 /client/proc/send_resources()
+	procstart = null
+	src.procstart = null
 #if (PRELOAD_RSC == 0)
 	var/static/next_external_rsc = 0
 	var/list/external_rsc_urls = CONFIG_GET(keyed_list/external_rsc_urls)
@@ -984,6 +1018,8 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 
 #if (PRELOAD_RSC == 0)
 /client/proc/preload_vox()
+	procstart = null
+	src.procstart = null
 	for (var/name in GLOB.vox_sounds)
 		var/file = GLOB.vox_sounds[name]
 		Export("##action=load_rsc", file)
@@ -993,9 +1029,13 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 //Hook, override it to run code when dir changes
 //Like for /atoms, but clients are their own snowflake FUCK
 /client/proc/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	dir = newdir
 
 /client/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	switch (var_name)
 		if (NAMEOF(src, holder))
 			return FALSE
@@ -1009,9 +1049,13 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 	. = ..()
 
 /client/proc/rescale_view(change, min, max)
+	procstart = null
+	src.procstart = null
 	view_size.setTo(clamp(change, min, max), clamp(change, min, max))
 
 /client/proc/set_eye(new_eye)
+	procstart = null
+	src.procstart = null
 	if(new_eye == eye)
 		return
 	var/atom/old_eye = eye
@@ -1027,6 +1071,8 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
  * * direct_prefs - the preference we're going to get keybinds from
  */
 /client/proc/update_special_keybinds(datum/preferences/direct_prefs)
+	procstart = null
+	src.procstart = null
 	var/datum/preferences/D = prefs || direct_prefs
 	if(!D?.key_bindings)
 		return
@@ -1051,6 +1097,8 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 	calculate_move_dir()
 
 /client/proc/change_view(new_size)
+	procstart = null
+	src.procstart = null
 	if (isnull(new_size))
 		CRASH("change_view called without argument.")
 
@@ -1065,30 +1113,42 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 	attempt_auto_fit_viewport()
 
 /client/proc/generate_clickcatcher()
+	procstart = null
+	src.procstart = null
 	if(!void)
 		void = new()
 	if(!(void in screen))
 		screen += void
 
 /client/proc/apply_clickcatcher()
+	procstart = null
+	src.procstart = null
 	generate_clickcatcher()
 	var/list/actualview = getviewsize(view)
 	void.UpdateGreed(actualview[1],actualview[2])
 
 /client/proc/AnnouncePR(announcement)
+	procstart = null
+	src.procstart = null
 	if(get_chat_toggles(src) & CHAT_PULLR)
 		to_chat(src, announcement)
 
 ///Redirect proc that makes it easier to call the unlock achievement proc. Achievement type is the typepath to the award, user is the mob getting the award, and value is an optional variable used for leaderboard value increments
 /client/proc/give_award(achievement_type, mob/user, value = 1, ...)
+	procstart = null
+	src.procstart = null
 	return persistent_client.achievements.unlock(arglist(args))
 
 ///Redirect proc that makes it easier to get the status of an achievement. Achievement type is the typepath to the award.
 /client/proc/get_award_status(achievement_type)
+	procstart = null
+	src.procstart = null
 	return persistent_client.achievements.get_achievement_status(achievement_type)
 
 ///Gives someone hearted status for OOC, from behavior commendations
 /client/proc/adjust_heart(duration = 24 HOURS)
+	procstart = null
+	src.procstart = null
 	var/new_duration = world.realtime + duration
 	if(prefs.hearted_until > new_duration)
 		return
@@ -1099,6 +1159,8 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 
 /// compiles a full list of verbs and sends it to the browser
 /client/proc/init_verbs()
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		return
 	var/list/verblist = list()
@@ -1120,22 +1182,30 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 	src.stat_panel.send_message("init_verbs", list(panel_tabs = panel_tabs, verblist = verblist))
 
 /client/proc/check_panel_loaded()
+	procstart = null
+	src.procstart = null
 	if(stat_panel.is_ready())
 		return
 	to_chat(src, span_userdanger("Statpanel failed to load, click <a href='byond://?src=[REF(src)];reload_statbrowser=1'>here</a> to reload the panel "))
 
 /client/proc/open_filter_editor(atom/in_atom)
+	procstart = null
+	src.procstart = null
 	if(holder)
 		holder.filterrific = new /datum/filter_editor(in_atom)
 		holder.filterrific.ui_interact(mob)
 
 ///opens the particle editor UI for the in_atom object for this client
 /client/proc/open_particle_editor(atom/movable/in_atom)
+	procstart = null
+	src.procstart = null
 	if(holder)
 		holder.particle_test = new /datum/particle_editor(in_atom)
 		holder.particle_test.ui_interact(mob)
 
 /client/proc/set_right_click_menu_mode(shift_only)
+	procstart = null
+	src.procstart = null
 	if(shift_only)
 		winset(src, SKIN_MAPWINDOW_MAP, "right-click=true")
 		winset(src, SKIN_DEFAULT_SHIFTUP, "is-disabled=false")
@@ -1146,6 +1216,8 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 		winset(src, SKIN_DEFAULT_SHIFTUP, "is-disabled=true")
 
 /client/proc/update_ambience_pref(value)
+	procstart = null
+	src.procstart = null
 	if(value)
 		if(SSambience.ambience_listening_clients[src] > world.time)
 			return // If already properly set we don't want to reset the timer.
@@ -1157,6 +1229,8 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
  * Handles incoming messages from the stat-panel TGUI.
  */
 /client/proc/on_stat_panel_message(type, payload)
+	procstart = null
+	src.procstart = null
 	switch(type)
 		if("Update-Verbs")
 			init_verbs()
@@ -1174,6 +1248,8 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 /// they are exempt from it.
 /// Returns the number of days left, or 0.
 /client/proc/get_remaining_days(days_needed)
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(flag/use_age_restriction_for_jobs))
 		return 0
 
@@ -1188,6 +1264,8 @@ GLOBAL_LIST_INIT(unrecommended_builds, list(
 /// Attempts to make the client orbit the given object, for administrative purposes.
 /// If they are not an observer, will try to aghost them.
 /client/proc/admin_follow(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	if(!isobserver(mob))
 		SSadmin_verbs.dynamic_invoke_verb(src, /datum/admin_verb/admin_ghost)
 		if(!isobserver(mob))
@@ -1208,11 +1286,15 @@ GAME_VERB(/client, toggle_fullscreen, "Toggle Fullscreen", "OOC")
 	set_fullscreen()
 
 /client/proc/set_fullscreen()
+	procstart = null
+	src.procstart = null
 	winset(src, SKIN_MAINWINDOW, "is-fullscreen=[prefs?.read_preference(/datum/preference/toggle/fullscreen_mode) ? "true" : "false"]")
 	attempt_auto_fit_viewport()
 
 /// Clears the client's screen, aside from ones that opt out
 /client/proc/clear_screen()
+	procstart = null
+	src.procstart = null
 	for (var/object in screen)
 		if (istype(object, /atom/movable/screen))
 			var/atom/movable/screen/screen_object = object
@@ -1223,6 +1305,8 @@ GAME_VERB(/client, toggle_fullscreen, "Toggle Fullscreen", "OOC")
 
 /// Handles any "fluff" or supplementary procedures related to an admin logout event. Should not have anything critically related cleaning up an admin's logout.
 /client/proc/handle_admin_logout()
+	procstart = null
+	src.procstart = null
 	adminGreet(logout = TRUE)
 	if(length(GLOB.admins) > 0 || !SSticker.IsRoundInProgress()) // We only want to report this stuff if we are currently playing.
 		return
@@ -1253,6 +1337,8 @@ GAME_VERB(/client, toggle_fullscreen, "Toggle Fullscreen", "OOC")
 
 /// This grabs the DPI of the user per their skin
 /client/proc/acquire_dpi()
+	procstart = null
+	src.procstart = null
 	window_scaling = text2num(winget(src, null, "dpi"))
 
 #undef ADMINSWARNED_AT

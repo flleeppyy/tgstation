@@ -12,6 +12,8 @@
 	var/screw_delay = 3 SECONDS
 
 /obj/item/shell/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_notice("[user] begins finishing [src]."), span_notice("You begin finishing [src]."))
 	tool.play_tool_sound(src)
 	if(!do_after(user, screw_delay, src))

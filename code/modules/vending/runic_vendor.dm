@@ -17,6 +17,8 @@
 	allow_custom = FALSE
 
 /obj/machinery/vending/runic_vendor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(mapload)
 		log_mapping("[type] is not supposed to be mapped it, it decays after a set time")
 		stack_trace("Someone mapped in the meme vending machine the wizard scepter spawns, please remove it")
@@ -50,6 +52,8 @@
 	return ..()
 
 /obj/machinery/vending/runic_vendor/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(held_item)
@@ -62,6 +66,8 @@
 	return .
 
 /obj/machinery/vending/runic_vendor/handle_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	visible_message(span_warning("[src] flickers and disappears!"))
@@ -69,10 +75,14 @@
 	return ..()
 
 /obj/machinery/vending/runic_vendor/proc/runic_explosion()
+	procstart = null
+	src.procstart = null
 	explosion(src, light_impact_range = 2)
 	deconstruct(FALSE)
 
 /obj/machinery/vending/runic_vendor/proc/runic_pulse()
+	procstart = null
+	src.procstart = null
 	var/pulse_locs = spiral_range_turfs(pulse_distance, get_turf(src))
 	var/list/hit_things = list()
 	for(var/turf/pulsing_turf in pulse_locs)
@@ -84,9 +94,13 @@
 			mob_to_be_pulsed_back.throw_at(target, 4, 4)
 
 /obj/machinery/vending/runic_vendor/screwdriver_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	runic_explosion()
 
 /obj/machinery/vending/runic_vendor/proc/decay()
+	procstart = null
+	src.procstart = null
 	deconstruct(FALSE)
 
 #undef PULSE_DISTANCE_RANGE

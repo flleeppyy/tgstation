@@ -9,6 +9,8 @@
 	var/shot_prob = 50
 
 /obj/item/clothing/shoes/gunboots/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	create_storage(storage_type = /datum/storage/pockets/shoes)
@@ -16,6 +18,8 @@
 	RegisterSignal(src, COMSIG_SHOES_STEP_ACTION, PROC_REF(check_step))
 
 /obj/item/clothing/shoes/gunboots/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot & ITEM_SLOT_FEET)
 		RegisterSignal(user, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(check_kick))
@@ -23,12 +27,16 @@
 		UnregisterSignal(user, COMSIG_LIVING_UNARMED_ATTACK)
 
 /obj/item/clothing/shoes/gunboots/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user)
 		UnregisterSignal(user, COMSIG_LIVING_UNARMED_ATTACK)
 	return ..()
 
 /// After each step, check if we randomly fire a shot
 /obj/item/clothing/shoes/gunboots/proc/check_step(mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!prob(shot_prob))
 		return
@@ -37,6 +45,8 @@
 
 /// Stomping on someone while wearing gunboots shoots them point blank
 /obj/item/clothing/shoes/gunboots/proc/check_kick(mob/living/carbon/human/kicking_person, atom/attacked_atom, proximity)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!proximity || !isliving(attacked_atom))
 		return NONE
@@ -46,6 +56,8 @@
 
 /// Actually fire a shot. If no target is provided, just fire off in a random direction
 /obj/item/clothing/shoes/gunboots/proc/fire_shot(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!isliving(loc))
 		return
 

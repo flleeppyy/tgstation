@@ -32,6 +32,8 @@
 	detomatix_resistance = DETOMATIX_RESIST_MINOR
 
 /datum/computer_file/program/records/proc/GetRecordsReadable()
+	procstart = null
+	src.procstart = null
 	var/list/all_records = list()
 
 	switch(mode)
@@ -66,6 +68,8 @@
 	return all_records
 
 /datum/computer_file/program/records/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["records"] = GetRecordsReadable()
 	data["mode"] = mode

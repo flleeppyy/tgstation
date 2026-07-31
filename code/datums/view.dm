@@ -21,15 +21,21 @@
 	var/client/chief = null
 
 /datum/view_data/New(client/owner)
+	procstart = null
+	src.procstart = null
 	chief = owner
 	default = getScreenSize()
 	apply()
 
 /datum/view_data/Destroy()
+	procstart = null
+	src.procstart = null
 	chief = null
 	return ..()
 
 /datum/view_data/proc/setDefault(string)
+	procstart = null
+	src.procstart = null
 	if(string == VIEWPORT_USE_PREF)
 		default = getScreenSize()
 	else
@@ -37,6 +43,8 @@
 	apply()
 
 /datum/view_data/proc/afterViewChange()
+	procstart = null
+	src.procstart = null
 	if(isZooming())
 		assertFormat()
 	else
@@ -44,92 +52,132 @@
 	if(chief?.mob)
 		SEND_SIGNAL(chief.mob, COMSIG_VIEWDATA_UPDATE, getView())
 
-/datum/view_data/proc/assertFormat()//T-Pose
+/datum/view_data/proc/assertFormat()
+	procstart = null
+	src.procstart = null//T-Pose
 	winset(chief, SKIN_MAPWINDOW_MAP, "zoom=0")
 	zoom = 0
 
-/datum/view_data/proc/resetFormat()//Cuck
+/datum/view_data/proc/resetFormat()
+	procstart = null
+	src.procstart = null//Cuck
 	zoom = chief?.prefs.read_preference(/datum/preference/numeric/pixel_size)
 	winset(chief, SKIN_MAPWINDOW_MAP, "zoom=[zoom]")
 	chief?.attempt_auto_fit_viewport() // If you change zoom mode, fit the viewport
 
 /datum/view_data/proc/setZoomMode()
+	procstart = null
+	src.procstart = null
 	winset(chief, SKIN_MAPWINDOW_MAP, "zoom-mode=[chief?.prefs.read_preference(/datum/preference/choiced/scaling_method)]")
 
 /datum/view_data/proc/isZooming()
+	procstart = null
+	src.procstart = null
 	return (width || height)
 
 /datum/view_data/proc/getScreenSize()
+	procstart = null
+	src.procstart = null
 	if(chief.prefs.read_preference(/datum/preference/toggle/widescreen))
 		return WIDESCREEN_VIEWPORT_SIZE
 	return SQUARE_VIEWPORT_SIZE
 
 /datum/view_data/proc/resetToDefault()
+	procstart = null
+	src.procstart = null
 	width = 0
 	height = 0
 	apply()
 
 /datum/view_data/proc/add(toAdd)
+	procstart = null
+	src.procstart = null
 	width += toAdd
 	height += toAdd
 	apply()
 
 /datum/view_data/proc/addTo(toAdd)
+	procstart = null
+	src.procstart = null
 	var/list/shitcode = getviewsize(toAdd)
 	width += shitcode[1]
 	height += shitcode[2]
 	apply()
 
 /datum/view_data/proc/setTo(to_set)
+	procstart = null
+	src.procstart = null
 	var/list/shitcode = getviewsize(to_set)  //Backward compatibility to account
 	width = shitcode[1] //for a change in how sizes get calculated. we used to include world.view in
 	height = shitcode[2] //this, but it was jank, so I had to move it
 	apply()
 
 /datum/view_data/proc/setBoth(wid, hei)
+	procstart = null
+	src.procstart = null
 	width = wid
 	height = hei
 	apply()
 
 /datum/view_data/proc/setWidth(wid)
+	procstart = null
+	src.procstart = null
 	width = wid
 	apply()
 
 /datum/view_data/proc/setHeight(hei)
+	procstart = null
+	src.procstart = null
 	width = hei
 	apply()
 
 /datum/view_data/proc/addToWidth(toAdd)
+	procstart = null
+	src.procstart = null
 	width += toAdd
 	apply()
 
 /datum/view_data/proc/addToHeight(screen, toAdd)
+	procstart = null
+	src.procstart = null
 	height += toAdd
 	apply()
 
 /datum/view_data/proc/apply()
+	procstart = null
+	src.procstart = null
 	chief?.change_view(getView())
 	afterViewChange()
 
 /datum/view_data/proc/supress()
+	procstart = null
+	src.procstart = null
 	is_suppressed = TRUE
 	apply()
 
 /datum/view_data/proc/unsupress()
+	procstart = null
+	src.procstart = null
 	is_suppressed = FALSE
 	apply()
 
 /datum/view_data/proc/getView()
+	procstart = null
+	src.procstart = null
 	var/list/temp = getviewsize(default)
 	if(is_suppressed)
 		return "[temp[1]]x[temp[2]]"
 	return "[width + temp[1]]x[height + temp[2]]"
 
 /datum/view_data/proc/zoomIn()
+	procstart = null
+	src.procstart = null
 	resetToDefault()
 	animate(chief, pixel_x = 0, pixel_y = 0, 0, FALSE, LINEAR_EASING, ANIMATION_END_NOW)
 
 /datum/view_data/proc/zoomOut(radius = 0, offset = 0, direction = FALSE)
+	procstart = null
+	src.procstart = null
 	if(direction)
 		var/_x = 0
 		var/_y = 0

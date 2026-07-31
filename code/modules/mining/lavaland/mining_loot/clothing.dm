@@ -10,20 +10,28 @@
 	var/mob/living/carbon/human/active_owner
 
 /obj/item/clothing/neck/necklace/memento_mori/item_action_slot_check(slot)
+	procstart = null
+	src.procstart = null
 	return (slot & ITEM_SLOT_NECK)
 
 /obj/item/clothing/neck/necklace/memento_mori/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active_owner)
 		mori()
 
 // Just in case
 /obj/item/clothing/neck/necklace/memento_mori/Destroy()
+	procstart = null
+	src.procstart = null
 	if(active_owner)
 		mori()
 	return ..()
 
 /obj/item/clothing/neck/necklace/memento_mori/proc/memento(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("You feel your life being drained by the pendant..."))
 	if (!do_after(user, 4 SECONDS, target = user))
 		return
@@ -35,6 +43,8 @@
 	active_owner = user
 
 /obj/item/clothing/neck/necklace/memento_mori/proc/mori()
+	procstart = null
+	src.procstart = null
 	icon_state = "memento_mori"
 	if (!active_owner)
 		return
@@ -45,6 +55,8 @@
 	stored_owner.dust(just_ash = TRUE, drop_items = TRUE)
 
 /obj/item/clothing/neck/necklace/memento_mori/proc/check_health(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/list/guardians = source.get_all_linked_holoparasites()
@@ -62,6 +74,8 @@
 			regurgitate_guardian(guardian)
 
 /obj/item/clothing/neck/necklace/memento_mori/proc/consume_guardian(mob/living/basic/guardian/guardian)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/guardian/phase/out(get_turf(guardian))
 	guardian.locked = TRUE
 	guardian.forceMove(src)
@@ -69,6 +83,8 @@
 	guardian.playsound_local(get_turf(guardian), 'sound/effects/magic/summonitems_generic.ogg', 50, TRUE)
 
 /obj/item/clothing/neck/necklace/memento_mori/proc/regurgitate_guardian(mob/living/basic/guardian/guardian)
+	procstart = null
+	src.procstart = null
 	guardian.locked = FALSE
 	guardian.recall(forced = TRUE)
 	to_chat(guardian, span_notice("You have been returned back from your summoner's pendant!"))
@@ -80,6 +96,8 @@
 	desc = "Bind your life to the pendant."
 
 /datum/action/item_action/hands_free/memento_mori/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/neck/necklace/memento_mori/memento = target
 	if(memento.active_owner || !ishuman(owner))
 		return FALSE
@@ -115,10 +133,14 @@
 	acid = 30
 
 /obj/item/clothing/gloves/gauntlets/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/martial_art_giver, /datum/martial_art/boxing/hunter)
 
 /obj/item/clothing/gloves/gauntlets/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(slot & ITEM_SLOT_GLOVES))
 		return
@@ -127,14 +149,20 @@
 	RegisterSignal(user, COMSIG_MOVABLE_BUMP, PROC_REF(rocksmash))
 
 /obj/item/clothing/gloves/gauntlets/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	stopmining(user)
 
 /obj/item/clothing/gloves/gauntlets/proc/stopmining(mob/user)
+	procstart = null
+	src.procstart = null
 	tool_behaviour = initial(tool_behaviour)
 	UnregisterSignal(user, list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_MOVABLE_BUMP))
 
 /obj/item/clothing/gloves/gauntlets/proc/rocksmash(mob/living/carbon/human/user, atom/rocks, proximity)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!proximity)
 		return NONE

@@ -22,7 +22,9 @@
 	/// hides time icon effect and mutes sound
 	var/hidden = FALSE
 
-/obj/effect/timestop/Initialize(mapload, radius, time, list/immune_atoms, start = TRUE, silent = FALSE) //Immune atoms assoc list atom = TRUE
+/obj/effect/timestop/Initialize(mapload, radius, time, list/immune_atoms, start = TRUE, silent = FALSE)
+	procstart = null
+	src.procstart = null //Immune atoms assoc list atom = TRUE
 	. = ..()
 	if(!isnull(time))
 		duration = time
@@ -43,12 +45,16 @@
 		INVOKE_ASYNC(src, PROC_REF(timestop))
 
 /obj/effect/timestop/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(chronofield)
 	if(!hidden)
 		playsound(src, 'sound/effects/magic/timeparadox2.ogg', 75, TRUE, frequency = -1) //reverse!
 	return ..()
 
 /obj/effect/timestop/proc/timestop()
+	procstart = null
+	src.procstart = null
 	target = get_turf(src)
 	if(!hidden)
 		playsound(src, 'sound/effects/magic/timeparadox2.ogg', 75, TRUE, -1)
@@ -78,6 +84,8 @@
 	var/static/list/global_frozen_atoms = list()
 
 /datum/proximity_monitor/advanced/timestop/New(atom/_host, range, _ignore_if_not_on_turf = TRUE, list/immune, antimagic_flags, channelled)
+	procstart = null
+	src.procstart = null
 	..()
 	src.immune = immune
 	src.antimagic_flags = antimagic_flags
@@ -86,6 +94,8 @@
 	START_PROCESSING(SSfastprocess, src)
 
 /datum/proximity_monitor/advanced/timestop/Destroy()
+	procstart = null
+	src.procstart = null
 	unfreeze_all()
 	if(channelled)
 		for(var/atom in immune)
@@ -94,9 +104,13 @@
 	return ..()
 
 /datum/proximity_monitor/advanced/timestop/field_turf_crossed(atom/movable/movable, turf/old_location, turf/new_location)
+	procstart = null
+	src.procstart = null
 	freeze_atom(movable)
 
 /datum/proximity_monitor/advanced/timestop/proc/freeze_atom(atom/movable/A)
+	procstart = null
+	src.procstart = null
 	if(global_frozen_atoms[A] || !istype(A))
 		return FALSE
 	if(immune[A]) //a little special logic but yes immune things don't freeze
@@ -137,12 +151,16 @@
 	return TRUE
 
 /datum/proximity_monitor/advanced/timestop/proc/unfreeze_all()
+	procstart = null
+	src.procstart = null
 	for(var/i in frozen_things)
 		unfreeze_atom(i)
 	for(var/T in frozen_turfs)
 		unfreeze_turf(T)
 
 /datum/proximity_monitor/advanced/timestop/proc/unfreeze_atom(atom/movable/A)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(A.throwing)
 		unfreeze_throwing(A)
@@ -165,52 +183,78 @@
 
 
 /datum/proximity_monitor/advanced/timestop/proc/freeze_mecha(obj/vehicle/sealed/mecha/M)
+	procstart = null
+	src.procstart = null
 	M.completely_disabled = TRUE
 
 /datum/proximity_monitor/advanced/timestop/proc/unfreeze_mecha(obj/vehicle/sealed/mecha/M)
+	procstart = null
+	src.procstart = null
 	M.completely_disabled = FALSE
 
 /datum/proximity_monitor/advanced/timestop/proc/freeze_throwing(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	var/datum/thrownthing/T = AM.throwing
 	T.paused = TRUE
 
 /datum/proximity_monitor/advanced/timestop/proc/unfreeze_throwing(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	var/datum/thrownthing/T = AM.throwing
 	if(T)
 		T.paused = FALSE
 
 /datum/proximity_monitor/advanced/timestop/proc/freeze_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	into_the_negative_zone(T)
 	frozen_turfs += T
 
 /datum/proximity_monitor/advanced/timestop/proc/unfreeze_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	escape_the_negative_zone(T)
 
 /datum/proximity_monitor/advanced/timestop/proc/freeze_structure(obj/O)
+	procstart = null
+	src.procstart = null
 	into_the_negative_zone(O)
 	frozen_structures += O
 
 /datum/proximity_monitor/advanced/timestop/proc/unfreeze_structure(obj/O)
+	procstart = null
+	src.procstart = null
 	escape_the_negative_zone(O)
 
 /datum/proximity_monitor/advanced/timestop/process()
+	procstart = null
+	src.procstart = null
 	for(var/i in frozen_mobs)
 		var/mob/living/m = i
 		m.Stun(20, ignore_canstun = TRUE)
 
 /datum/proximity_monitor/advanced/timestop/setup_field_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in target.contents)
 		freeze_atom(i)
 	freeze_turf(target)
 
 /datum/proximity_monitor/advanced/timestop/proc/freeze_projectile(obj/projectile/proj)
+	procstart = null
+	src.procstart = null
 	proj.paused = TRUE
 
 /datum/proximity_monitor/advanced/timestop/proc/unfreeze_projectile(obj/projectile/proj)
+	procstart = null
+	src.procstart = null
 	proj.paused = FALSE
 
 /datum/proximity_monitor/advanced/timestop/proc/freeze_mob(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	frozen_mobs += victim
 	victim.Stun(20, ignore_canstun = TRUE)
 	victim.add_traits(list(TRAIT_MUTE, TRAIT_EMOTEMUTE), TIMESTOP_TRAIT)
@@ -226,6 +270,8 @@
 		basic_victim.ai_controller?.force_ai_off()
 
 /datum/proximity_monitor/advanced/timestop/proc/unfreeze_mob(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	victim.AdjustStun(-20, ignore_canstun = TRUE)
 	victim.remove_traits(list(TRAIT_MUTE, TRAIT_EMOTEMUTE), TIMESTOP_TRAIT)
 	frozen_mobs -= victim
@@ -238,13 +284,19 @@
 
 //you don't look quite right, is something the matter?
 /datum/proximity_monitor/advanced/timestop/proc/into_the_negative_zone(atom/A)
+	procstart = null
+	src.procstart = null
 	A.add_atom_colour(COLOR_MATRIX_INVERT, TEMPORARY_COLOUR_PRIORITY)
 
 //let's put some colour back into your cheeks
 /datum/proximity_monitor/advanced/timestop/proc/escape_the_negative_zone(atom/A)
+	procstart = null
+	src.procstart = null
 	A.remove_atom_colour(TEMPORARY_COLOUR_PRIORITY)
 
 //signal fired when an immune atom moves in the time freeze zone
 /datum/proximity_monitor/advanced/timestop/proc/atom_broke_channel(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(host)

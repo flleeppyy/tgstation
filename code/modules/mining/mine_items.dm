@@ -10,13 +10,19 @@
 	var/set_cap = 0
 
 /obj/effect/light_emitter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light(set_luminosity, set_cap)
 
 /obj/effect/light_emitter/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/light_emitter/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/light_emitter/podbay
@@ -37,6 +43,8 @@
 	icon_door = "mining_wardrobe"
 
 /obj/structure/closet/wardrobe/miner/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/storage/backpack/duffelbag/explorer(src)
 	new /obj/item/storage/backpack/explorer(src)
 	new /obj/item/storage/backpack/satchel/explorer(src)
@@ -63,6 +71,8 @@
 	locked = FALSE
 
 /obj/structure/closet/secure_closet/miner/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/stack/sheet/mineral/sandbags(src, 5)
 	new /obj/item/storage/box/emptysandbags(src)
@@ -83,6 +93,8 @@
 
 
 /obj/structure/closet/secure_closet/miner/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	new /obj/item/gun/energy/recharge/kinetic_accelerator(src)
@@ -99,6 +111,8 @@
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/machinery/computer/shuttle/mining/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(is_station_level(user.z) && user.mind && IS_HEAD_REVOLUTIONARY(user) && !(user.mind in dumb_rev_heads))
 		to_chat(user, span_warning("You get a feeling that leaving the station might be a REALLY dumb idea..."))
 		dumb_rev_heads += user.mind
@@ -172,12 +186,16 @@
 	var/momentum = 0
 
 /obj/structure/closet/crate/miningcar/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/noisy_movement, 'sound/effects/tank_treads.ogg', 50)
 	if(locate(/obj/structure/minecart_rail) in loc)
 		update_rail_state(TRUE)
 
 /obj/structure/closet/crate/miningcar/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(on_rails)
 		. += span_notice("You can give this a bump to send it on its way, or drag it off the rails to drag it around.")
@@ -186,9 +204,13 @@
 
 // We don't want the locked crate overlay show up.
 /obj/structure/closet/crate/miningcar/closet_update_overlays(list/new_overlays)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/closet/crate/miningcar/Move(atom/newloc, direct, glide_size_override, update_dir)
+	procstart = null
+	src.procstart = null
 	if(isnull(newloc))
 		return ..()
 	if(!on_rails)
@@ -200,6 +222,8 @@
 	return FALSE
 
 /obj/structure/closet/crate/miningcar/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!on_rails || momentum <= 0)
 		return
@@ -216,22 +240,32 @@
 			break
 
 /obj/structure/closet/crate/miningcar/is_buckle_possible(mob/living/target, force, check_loc)
+	procstart = null
+	src.procstart = null
 	return !opened && ..()
 
 /obj/structure/closet/crate/miningcar/after_open(mob/living/user, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	unbuckle_all_mobs()
 
 // Hack: If a mob is buckled onto the cart, bumping the cart will instead bump the mob (because higher layer)
 // So if we want to allow people to shove carts people are riding, we gotta check the mob for bumped and redirect it
 /obj/structure/closet/crate/miningcar/post_buckle_mob(mob/living/buckled_mob)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(buckled_mob, COMSIG_ATOM_BUMPED, PROC_REF(buckled_bumped))
 	RegisterSignal(buckled_mob, COMSIG_MOVABLE_BUMP_PUSHED, PROC_REF(block_bump_push))
 
 /obj/structure/closet/crate/miningcar/post_unbuckle_mob(mob/living/unbuckled_mob)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(unbuckled_mob, list(COMSIG_ATOM_BUMPED, COMSIG_MOVABLE_BUMP_PUSHED))
 
 /obj/structure/closet/crate/miningcar/proc/buckled_bumped(datum/source, atom/bumper)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(shove_off), bumper)
 
@@ -243,6 +277,8 @@
  * * momentum_mod - How much to divide the momentum by after the smack.
  */
 /obj/structure/closet/crate/miningcar/proc/smack(mob/living/smacked, damage_mod = 2, momentum_mod = 2)
+	procstart = null
+	src.procstart = null
 	ASSERT(momentum_mod >= 1)
 	if(!smacked.apply_damage(damage_mod * momentum, BRUTE, BODY_ZONE_CHEST, wound_bonus = damage_mod * 10, attack_direction = dir))
 		return
@@ -281,6 +317,8 @@
  * Updates the state of the minecart to be on or off rails.
  */
 /obj/structure/closet/crate/miningcar/proc/update_rail_state(new_state)
+	procstart = null
+	src.procstart = null
 	if(on_rails == new_state)
 		return
 	on_rails = new_state
@@ -294,6 +332,8 @@
 // We want a low move resistance so people can drag it along the tracks
 // But we also don't want people to nudge it with a push (since it requires a do_after to set off)
 /obj/structure/closet/crate/miningcar/proc/block_bump_push(datum/source, mob/living/bumper, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(on_rails)
 		return COMPONENT_NO_PUSH
@@ -302,10 +342,14 @@
 	return NONE
 
 /obj/structure/closet/crate/miningcar/forceMove(atom/destination)
+	procstart = null
+	src.procstart = null
 	update_rail_state(FALSE)
 	return ..()
 
 /obj/structure/closet/crate/miningcar/mouse_drop_dragged(atom/over, mob/user, src_location, over_location, params)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		return
 	if(on_rails)
@@ -324,6 +368,8 @@
  * * new_destination - The turf the cart will be moved to.
  */
 /obj/structure/closet/crate/miningcar/proc/try_take_off_rails(mob/living/user, turf/open/new_destination)
+	procstart = null
+	src.procstart = null
 	balloon_alert(user, "removing from rails...")
 	if(!do_after(user, 2 SECONDS, src))
 		return
@@ -340,6 +386,8 @@
  * * new_destination - The turf the cart will be moved to.
  */
 /obj/structure/closet/crate/miningcar/proc/try_put_on_rails(mob/living/user, turf/open/new_destination)
+	procstart = null
+	src.procstart = null
 	balloon_alert(user, "putting on rails...")
 	if(!do_after(user, 2 SECONDS, src))
 		return
@@ -354,6 +402,8 @@
 	playsound(src, click_sound, 50, TRUE)
 
 /obj/structure/closet/crate/miningcar/Bump(atom/bumped_atom)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -367,11 +417,15 @@
 	smack(bumped_atom)
 
 /obj/structure/closet/crate/miningcar/Bumped(atom/movable/bumped_atom)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	INVOKE_ASYNC(src, PROC_REF(shove_off), bumped_atom)
 
 /// Starts the cart moving automatically.
 /obj/structure/closet/crate/miningcar/proc/shove_off(atom/movable/bumped_atom)
+	procstart = null
+	src.procstart = null
 	if(!on_rails || momentum > 0)
 		return
 
@@ -416,6 +470,8 @@
 	RegisterSignal(loop, COMSIG_MOVELOOP_POSTPROCESS, PROC_REF(decay_momentum))
 
 /obj/structure/closet/crate/miningcar/proc/check_rail(datum/move_loop/move/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(momentum <= 0)
@@ -448,6 +504,8 @@
 	return MOVELOOP_SKIP_STEP
 
 /obj/structure/closet/crate/miningcar/proc/decay_momentum(datum/move_loop/move/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(momentum > 0)
@@ -488,10 +546,14 @@
 
 /// Calculates how fast the cart is going
 /obj/structure/closet/crate/miningcar/proc/calculate_delay()
+	procstart = null
+	src.procstart = null
 	return (-0.05 SECONDS * momentum) + 1.1 SECONDS
 
 /// Checks if we can travel on the passed turf
 /obj/structure/closet/crate/miningcar/proc/can_travel_on_turf(turf/next_turf, dir_to_check = dir)
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/minecart_rail/rail in next_turf)
 		if(rail.dir & (dir_to_check|REVERSE_DIR(dir_to_check)))
 			return TRUE
@@ -500,6 +562,8 @@
 
 /// Throws all the contents of the cart out ahead
 /obj/structure/closet/crate/miningcar/proc/throw_contents()
+	procstart = null
+	src.procstart = null
 	var/was_open = opened
 	var/list/to_yeet = contents.Copy()
 	var/yeet_rider = has_buckled_mobs()
@@ -538,6 +602,8 @@
 	move_resist = INFINITY
 
 /obj/structure/minecart_rail/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/give_turf_traits, string_list(list(TRAIT_TURF_IGNORE_SLOWDOWN)))
 	AddElement(/datum/element/footstep_override, footstep = FOOTSTEP_CATWALK)
@@ -545,10 +611,14 @@
 		cart.update_rail_state(TRUE)
 
 /obj/structure/minecart_rail/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += rail_examine()
 
 /obj/structure/minecart_rail/proc/rail_examine()
+	procstart = null
+	src.procstart = null
 	return span_notice("Run a powered cable underneath it to power carts as they travel, maintaining their speed.")
 
 /obj/structure/minecart_rail/railbreak
@@ -560,4 +630,6 @@
 	buckle_lying = NO_BUCKLE_LYING
 
 /obj/structure/minecart_rail/railbreak/rail_examine()
+	procstart = null
+	src.procstart = null
 	return span_notice("Run a powered cable underneath it to stop carts that pass over it.")

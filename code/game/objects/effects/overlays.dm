@@ -2,9 +2,13 @@
 	name = "overlay"
 
 /obj/effect/overlay/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/overlay/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/overlay/beam//Not actually a projectile, just an effect.
@@ -14,6 +18,8 @@
 	var/atom/BeamSource
 
 /obj/effect/overlay/beam/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_IN(src, 10)
 

@@ -7,18 +7,26 @@
 	var/hijack_status = HIJACK_NOT_BEGUN
 
 /obj/docking_port/mobile/emergency/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	setup_shuttle_events()
 
 /obj/docking_port/mobile/emergency/canDock(obj/docking_port/stationary/S)
+	procstart = null
+	src.procstart = null
 	return SHUTTLE_CAN_DOCK //If the emergency shuttle can't move, the whole game breaks, so it will force itself to land even if it has to crush a few departments in the process
 
 /obj/docking_port/mobile/emergency/register()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSshuttle.emergency = src
 
 /obj/docking_port/mobile/emergency/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(force)
 		// This'll make the shuttle subsystem use the backup shuttle.
 		if(src == SSshuttle.emergency)
@@ -28,6 +36,8 @@
 	. = ..()
 
 /obj/docking_port/mobile/emergency/request(obj/docking_port/stationary/S, area/signal_origin, reason, red_alert, set_coefficient=null)
+	procstart = null
+	src.procstart = null
 	if(!isnum(set_coefficient))
 		set_coefficient = SSsecurity_level.current_security_level.shuttle_call_time_mod
 	alert_coeff = set_coefficient
@@ -58,6 +68,8 @@
 /// This proc will assume you have done all of the necessary checks to see if the shuttle can be recalled, it will always recall when invoked.
 /// signal_origin is an optional parameter that will log where the recall signal was sent from
 /obj/docking_port/mobile/emergency/cancel(area/signal_origin = null)
+	procstart = null
+	src.procstart = null
 	if(mode != SHUTTLE_CALL)
 		return
 
@@ -90,6 +102,8 @@
  * solo_hijack, default FALSE, tells the proc to fail with multiple hijackers, such as for Highlander mode.
  */
 /obj/docking_port/mobile/emergency/proc/elimination_hijack(filter_by_human = TRUE, solo_hijack = FALSE)
+	procstart = null
+	src.procstart = null
 	var/has_people = FALSE
 	var/hijacker_count = 0
 	for(var/mob/living/player in GLOB.player_list)
@@ -123,9 +137,13 @@
 	return has_people && ((hijacker_count == 1) || (hijacker_count && !solo_hijack))
 
 /obj/docking_port/mobile/emergency/proc/is_hijacked()
+	procstart = null
+	src.procstart = null
 	return hijack_status == HIJACK_COMPLETED
 
 /obj/docking_port/mobile/emergency/proc/ShuttleDBStuff()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(!SSdbcore.Connect())
 		return
@@ -136,6 +154,8 @@
 	qdel(query_round_shuttle_name)
 
 /obj/docking_port/mobile/emergency/check()
+	procstart = null
+	src.procstart = null
 	if(!timer)
 		return
 	var/time_left = timeLeft(1)
@@ -287,6 +307,8 @@
 				timer = 0
 
 /obj/docking_port/mobile/emergency/transit_failure()
+	procstart = null
+	src.procstart = null
 	..()
 	message_admins("Moving emergency shuttle directly to centcom dock to prevent deadlock.")
 
@@ -302,6 +324,8 @@
 
 ///Generate a list of events to run during the departure
 /obj/docking_port/mobile/emergency/proc/setup_shuttle_events()
+	procstart = null
+	src.procstart = null
 	var/list/names = list()
 	for(var/datum/shuttle_event/event as anything in subtypesof(/datum/shuttle_event))
 		if(prob(initial(event.event_probability)))

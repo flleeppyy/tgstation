@@ -25,6 +25,8 @@
  * * Returns a proc call on the given human which will equip them with all the gear.
  */
 /datum/antagonist/ninja/proc/equip_space_ninja(mob/living/carbon/human/ninja = owner.current)
+	procstart = null
+	src.procstart = null
 	return ninja.equip_species_outfit(/datum/outfit/ninja)
 
 /**
@@ -33,6 +35,8 @@
  * Proc that adds the ninja starting memories to the owner of the antagonist datum.
  */
 /datum/antagonist/ninja/proc/addMemories()
+	procstart = null
+	src.procstart = null
 	antag_memory += "I am an elite mercenary of the mighty Spider Clan. A <font color='red'><B>SPACE NINJA</B></font>!<br>"
 	antag_memory += "Surprise is my weapon. Shadows are my armor. Without them, I am nothing.<br>"
 
@@ -61,6 +65,8 @@
  * Proc that adds all the ninja's objectives to the antag datum.  Called when the datum is gained.
  */
 /datum/antagonist/ninja/proc/addObjectives()
+	procstart = null
+	src.procstart = null
 	//Cyborg Hijack: Flag set to complete in the DrainAct in ninjaDrainAct.dm
 	var/datum/objective/hijack = new /datum/objective/cyborg_hijack()
 	objectives += hijack
@@ -101,6 +107,8 @@
 	objectives += survival
 
 /datum/antagonist/ninja/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SEND_SOUND(owner.current, sound('sound/music/antag/ninja_greeting.ogg'))
 	to_chat(owner.current, span_danger("I am an elite mercenary of the mighty Spider Clan!"))
@@ -109,6 +117,8 @@
 	owner.announce_objectives()
 
 /datum/antagonist/ninja/on_gain()
+	procstart = null
+	src.procstart = null
 	if(give_objectives)
 		addObjectives()
 	addMemories()
@@ -119,12 +129,16 @@
 	return ..()
 
 /datum/antagonist/ninja/admin_add(datum/mind/new_owner,mob/admin)
+	procstart = null
+	src.procstart = null
 	new_owner.set_assigned_role(SSjob.get_job_type(/datum/job/space_ninja))
 	new_owner.add_antag_datum(src)
 	message_admins("[key_name_admin(admin)] has ninja'ed [key_name_admin(new_owner)].")
 	log_admin("[key_name(admin)] has ninja'ed [key_name(new_owner)].")
 
 /datum/antagonist/ninja/on_respawn(mob/new_character)
+	procstart = null
+	src.procstart = null
 	equip_space_ninja()
 	var/turf/spawnpoint = find_space_spawn()
 	if(spawnpoint)

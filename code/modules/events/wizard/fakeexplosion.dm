@@ -7,5 +7,7 @@
 	description = "The nuclear explosion cutscene begins to play to scare the crew."
 
 /datum/round_event/wizard/fake_explosion/start()
+	procstart = null
+	src.procstart = null
 	sound_to_playing_players('sound/announcer/alarm/nuke_alarm.ogg', 70)
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(play_cinematic), /datum/cinematic/nuke/fake, world), 10 SECONDS)

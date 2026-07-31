@@ -25,11 +25,15 @@
 	var/datum/weakref/summoner
 
 /datum/action/cooldown/spell/pointed/projectile/star_blast/ready_projectile(obj/projectile/to_fire, atom/target, mob/user, iteration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	projectile_weakref = WEAKREF(to_fire)
 	to_fire.AddElement(cosmic_trail_based_on_passive(user), /obj/effect/forcefield/cosmic_field/fast)
 
 /datum/action/cooldown/spell/pointed/projectile/star_blast/apply_button_overlay(atom/movable/screen/movable/action_button/current_button, force)
+	procstart = null
+	src.procstart = null
 	var/obj/projectile/magic/star_ball/active_ball = projectile_weakref?.resolve()
 	if(!active_ball)
 		return ..()
@@ -40,6 +44,8 @@
 	current_button.add_overlay(current_button.button_overlay)
 
 /datum/action/cooldown/spell/pointed/projectile/star_blast/set_click_ability(mob/on_who)
+	procstart = null
+	src.procstart = null
 	var/obj/projectile/magic/star_ball/active_ball = projectile_weakref?.resolve()
 	if(!active_ball)
 		build_all_button_icons(UPDATE_OVERLAYS)
@@ -54,6 +60,8 @@
 	StartCooldown(25 SECONDS)
 
 /datum/action/cooldown/spell/pointed/projectile/star_blast/proc/pull_victims()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/circle_wave/star_blast(get_turf(owner))
 	for(var/turf/spawn_turf in range(1, get_turf(owner)))
 		if(spawn_turf.density)
@@ -74,6 +82,8 @@
 		nearby_mob.apply_status_effect(/datum/status_effect/star_mark)
 
 /datum/action/cooldown/spell/pointed/projectile/star_blast/after_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	unset_click_ability(owner) // Unselect because we will re-select it to teleport
 
@@ -92,6 +102,8 @@
 	var/star_mark_range = 3
 
 /obj/projectile/magic/star_ball/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/cast_on = firer
 	for(var/mob/living/nearby_mob in range(star_mark_range, target))
@@ -100,5 +112,7 @@
 		nearby_mob.apply_status_effect(/datum/status_effect/star_mark, cast_on)
 
 /obj/projectile/magic/star_ball/Destroy()
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(src), 'sound/effects/magic/cosmic_energy.ogg', 50, FALSE)
 	return ..()

@@ -33,28 +33,40 @@
 	)
 
 /datum/species/shadow/on_species_gain(mob/living/carbon/carbon_mob, datum/species/old_species, pref_load, regenerate_icons)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(carbon_mob, COMSIG_MOB_FLASH_OVERRIDE_CHECK, PROC_REF(on_flashed))
 
 /datum/species/shadow/on_species_loss(mob/living/carbon/human/human, datum/species/new_species, pref_load)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(human, COMSIG_MOB_FLASH_OVERRIDE_CHECK)
 
 /datum/species/shadow/check_roundstart_eligible()
+	procstart = null
+	src.procstart = null
 	if(check_holidays(HALLOWEEN))
 		return TRUE
 	return ..()
 
 /datum/species/shadow/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "These cursed creatures heal in the dark, but suffer in the light much more heavily. Their eyes let them see in the dark as though it were day."
 
 /datum/species/shadow/get_species_description()
+	procstart = null
+	src.procstart = null
 	return "Victims of a long extinct space alien. Their flesh is a sickly \
 		seethrough filament, their tangled insides in clear view. Their form \
 		is a mockery of life, leaving them mostly unable to work with others under \
 		normal circumstances."
 
 /datum/species/shadow/get_species_lore()
+	procstart = null
+	src.procstart = null
 	return list(
 		"Long ago, the Spinward Sector used to be inhabited by terrifying aliens aptly named \"Shadowlings\" \
 		after their control over darkness, and tendancy to kidnap victims into the dark maintenance shafts. \
@@ -70,6 +82,8 @@
 	)
 
 /datum/species/shadow/create_pref_unique_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 
 	to_add += list(
@@ -114,9 +128,13 @@
 	shade_color = "grey-ish"
 
 /datum/species/shadow/get_scream_sound(mob/living/carbon/human/moth)
+	procstart = null
+	src.procstart = null
 	return 'sound/mobs/humanoids/shadow/shadow_wail.ogg'
 
 /datum/species/shadow/proc/on_flashed(source, mob/living/carbon/flashed, flash, deviation)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(deviation == DEVIATION_FULL) //If no deviation, we can assume it's a non-assembly flash and should do max flash damage.

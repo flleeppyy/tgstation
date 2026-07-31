@@ -6,6 +6,8 @@
 	var/complexity_increase = 0
 
 /datum/element/quality_food_ingredient/Attach(datum/target, complexity_increase)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
@@ -23,6 +25,8 @@
 	RegisterSignal(target, COMSIG_ITEM_USED_AS_INGREDIENT, PROC_REF(used_as_ingredient))
 
 /datum/element/quality_food_ingredient/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, list(
 		COMSIG_ATOM_USED_IN_CRAFT,
 		COMSIG_ITEM_BAKED,
@@ -38,40 +42,58 @@
 	return ..()
 
 /datum/element/quality_food_ingredient/proc/used_in_craft(datum/source, atom/result)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	add_quality(result)
 
 /datum/element/quality_food_ingredient/proc/item_baked(datum/source, atom/baked_result)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	add_quality(baked_result)
 
 /datum/element/quality_food_ingredient/proc/microwaved_from(datum/source, atom/result)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	add_quality(result)
 
 /datum/element/quality_food_ingredient/proc/item_grilled(datum/source, atom/grill_result)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	add_quality(grill_result)
 
 /datum/element/quality_food_ingredient/proc/item_dried(datum/source, atom/result)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	add_quality(result)
 
 /datum/element/quality_food_ingredient/proc/simply_cooked(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	//The target of the food quality and the source are the same, there's no need to re-add the whole element.
 	RegisterSignal(source, COMSIG_FOOD_GET_EXTRA_COMPLEXITY, PROC_REF(add_complexity), TRUE)
 	ADD_TRAIT(source, TRAIT_QUALITY_FOOD_INGREDIENT, REF(src))
 
 /datum/element/quality_food_ingredient/proc/used_as_ingredient(datum/source, atom/container)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	add_quality(container)
 
 /datum/element/quality_food_ingredient/proc/add_quality(atom/target)
+	procstart = null
+	src.procstart = null
 	target.AddElement(/datum/element/quality_food_ingredient, complexity_increase)
 	RegisterSignal(target, COMSIG_FOOD_GET_EXTRA_COMPLEXITY, PROC_REF(add_complexity), TRUE)
 	ADD_TRAIT(target, TRAIT_QUALITY_FOOD_INGREDIENT, REF(src))
 
 /datum/element/quality_food_ingredient/proc/add_complexity(datum/source, list/complexity)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	complexity[1] += complexity_increase

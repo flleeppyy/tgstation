@@ -4,6 +4,8 @@
 	var/impressiveness = 0
 
 /datum/element/art/Attach(datum/target, impress)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(target) || isarea(target))
 		return ELEMENT_INCOMPATIBLE
@@ -11,10 +13,14 @@
 	RegisterSignal(target, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/element/art/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, COMSIG_ATOM_EXAMINE)
 	return ..()
 
 /datum/element/art/proc/apply_moodlet(atom/source, mob/living/user, impress)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/msg
@@ -36,6 +42,8 @@
 		span_notice("You appraise [source]... [msg]"))
 
 /datum/element/art/proc/on_examine(atom/source, mob/user, list/examine_texts)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isliving(user))
 		return
@@ -43,6 +51,8 @@
 		INVOKE_ASYNC(src, PROC_REF(appraise), source, user) //Do not sleep the proc.
 
 /datum/element/art/proc/appraise(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You start appraising [source]..."))
 	if(!do_after(user, 2 SECONDS, target = source))
 		return
@@ -54,6 +64,8 @@
 /datum/element/art/rev
 
 /datum/element/art/rev/apply_moodlet(atom/source, mob/living/user, impress)
+	procstart = null
+	src.procstart = null
 	var/msg
 	if(user.mind?.has_antag_datum(/datum/antagonist/rev))
 		user.add_mood_event("artgreat", /datum/mood_event/artgreat)
@@ -68,6 +80,8 @@
 /datum/element/art/commoner
 
 /datum/element/art/commoner/apply_moodlet(atom/source, mob/living/user, impress)
+	procstart = null
+	src.procstart = null
 	var/msg
 	var/list/haters = list()
 	for(var/hater_department_type in list(/datum/job_department/security, /datum/job_department/command))

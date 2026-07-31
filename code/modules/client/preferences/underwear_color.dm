@@ -4,6 +4,8 @@
 	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
 
 /datum/preference/color/underwear_color/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if (!..(preferences))
 		return FALSE
 
@@ -12,4 +14,6 @@
 	return !(TRAIT_NO_UNDERWEAR in species.inherent_traits)
 
 /datum/preference/color/underwear_color/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	target.underwear_color = value

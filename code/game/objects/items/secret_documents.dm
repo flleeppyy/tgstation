@@ -59,6 +59,8 @@
 	var/copy_type = null
 
 /obj/item/documents/photocopy/Initialize(mapload, obj/item/documents/copy=null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(copy)
 		copy_type = copy.type
@@ -67,6 +69,8 @@
 			copy_type = C.copy_type
 
 /obj/item/documents/photocopy/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/toy/crayon/red) && !istype(tool, /obj/item/toy/crayon/blue))
 		return NONE
 	if (forgedseal)

@@ -16,6 +16,8 @@
 	)
 
 /datum/round_event_control/anomaly/anomaly_weather/can_spawn_event(players_amt, allow_magic = FALSE)
+	procstart = null
+	src.procstart = null
 	// weathers have some funky global state that may break if multiple are running. better safe than sorry.
 	return ..() && !length(SSweather.processing)
 
@@ -28,11 +30,15 @@
 	var/forced_thunder_chance = null
 
 /datum/round_event/anomaly/anomaly_weather/announce(fake)
+	procstart = null
+	src.procstart = null
 	if(isnull(impact_area))
 		impact_area = placer.findValidArea()
 	priority_announce("Barometric anomaly detected on [ANOMALY_ANNOUNCE_HARMFUL_TEXT] [impact_area.name].", "Anomaly Alert")
 
 /datum/round_event/anomaly/anomaly_weather/make_anomaly(turf/anomaly_turf)
+	procstart = null
+	src.procstart = null
 	return new anomaly_path(anomaly_turf, null, null, forced_weather_type, forced_thunder_chance)
 
 /datum/round_event_control/anomaly/anomaly_weather/thundering
@@ -52,6 +58,8 @@
 	anomaly_path = /obj/effect/anomaly/weather/thundering
 
 /datum/round_event/anomaly/anomaly_weather/thundering/announce(fake)
+	procstart = null
+	src.procstart = null
 	if(isnull(impact_area))
 		impact_area = placer.findValidArea()
 	priority_announce("Severe barometric anomaly detected on [ANOMALY_ANNOUNCE_DANGEROUS_TEXT] [impact_area.name].", "Anomaly Alert")
@@ -61,9 +69,13 @@
 	normal_run_option = "Default"
 
 /datum/event_admin_setup/listed_options/weather_anomaly/get_list()
+	procstart = null
+	src.procstart = null
 	return valid_subtypesof(/datum/weather)
 
 /datum/event_admin_setup/listed_options/weather_anomaly/apply_to_event(datum/round_event/anomaly/anomaly_weather/event)
+	procstart = null
+	src.procstart = null
 	event.forced_weather_type = chosen
 
 /datum/event_admin_setup/listed_options/weather_thunder
@@ -71,7 +83,11 @@
 	normal_run_option = "Default"
 
 /datum/event_admin_setup/listed_options/weather_thunder/get_list()
+	procstart = null
+	src.procstart = null
 	return GLOB.thunder_chance_options.Copy()
 
 /datum/event_admin_setup/listed_options/weather_thunder/apply_to_event(datum/round_event/anomaly/anomaly_weather/event)
+	procstart = null
+	src.procstart = null
 	event.forced_thunder_chance = GLOB.thunder_chance_options[chosen]

@@ -22,6 +22,8 @@
 	var/atom/current_linked_atom
 
 /obj/machinery/fishing_portal_generator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/tool_screentips = list(
 		TOOL_MULTITOOL = list(
@@ -33,12 +35,16 @@
 	ADD_TRAIT(src, TRAIT_UNLINKABLE_FISHING_SPOT, INNATE_TRAIT)
 
 /obj/machinery/fishing_portal_generator/Destroy()
+	procstart = null
+	src.procstart = null
 	deactivate()
 	linked_fishing_spots = null
 	return ..()
 
 ///Higher tier parts let you link to more fishing spots at once and eventually let you connect through different zlevels.
 /obj/machinery/fishing_portal_generator/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	max_fishing_spots = 0
 	long_range_link = FALSE
@@ -56,15 +62,21 @@
 		linked_fishing_spots.len = max_fishing_spots
 
 /obj/machinery/fishing_portal_generator/on_set_panel_open()
+	procstart = null
+	src.procstart = null
 	update_appearance()
 	return ..()
 
 /obj/machinery/fishing_portal_generator/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/fishing_portal_generator/multitool_act(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & NOPOWER)
 		balloon_alert(user, "no power!")
 		return ITEM_INTERACT_BLOCKING
@@ -78,6 +90,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/fishing_portal_generator/multitool_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & NOPOWER)
 		balloon_alert(user, "no power!")
 		return ITEM_INTERACT_BLOCKING
@@ -107,6 +121,8 @@
 	balloon_alert(user, "fishing spot unlinked")
 
 /obj/machinery/fishing_portal_generator/proc/multitool_context(obj/item/source, list/context, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(HAS_TRAIT(target, TRAIT_FISHING_SPOT) && !HAS_TRAIT(target, TRAIT_UNLINKABLE_FISHING_SPOT))
 		context[SCREENTIP_CONTEXT_LMB] = "Link to fish-porter"
@@ -114,11 +130,15 @@
 	return NONE
 
 /obj/machinery/fishing_portal_generator/proc/multitool_unbuffered(datum/source, datum/buffer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(source, list(COMSIG_ITEM_REQUESTING_CONTEXT_FOR_TARGET, COMSIG_MULTITOOL_REMOVE_BUFFER))
 
 ///Called when using a multitool on any other fishing source.
 /obj/machinery/fishing_portal_generator/proc/link_fishing_spot(datum/fish_source/source, atom/spot, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(istype(spot, /obj/machinery/fishing_portal_generator)) //Don't link it to itself or other fishing portals.
 		return
 	if(length(linked_fishing_spots) >= max_fishing_spots)
@@ -141,6 +161,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/fishing_portal_generator/proc/unlink_fishing_spot(atom/spot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/datum/fish_source/source = linked_fishing_spots[spot]
 	if(active?.fish_source == source)
@@ -149,11 +171,15 @@
 	UnregisterSignal(spot, SIGNAL_REMOVETRAIT(TRAIT_FISHING_SPOT))
 
 /obj/machinery/fishing_portal_generator/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You can unlock further portal settings by completing fish scanning experiments, \
 		or by connecting it to other fishing spots with a multitool.")
 
 /obj/machinery/fishing_portal_generator/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -162,6 +188,8 @@
 	return TRUE
 
 /obj/machinery/fishing_portal_generator/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		deactivate()
@@ -169,6 +197,8 @@
 		select_fish_source(user)
 
 /obj/machinery/fishing_portal_generator/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(panel_open)
 		. += "portal_open"
@@ -180,10 +210,14 @@
 	. += emissive_appearance(icon, "portal_emissive", src)
 
 /obj/machinery/fishing_portal_generator/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	check_fishing_spot_z()
 
 /obj/machinery/fishing_portal_generator/proc/check_fishing_spot_z()
+	procstart = null
+	src.procstart = null
 	if(!active || long_range_link || istype(active.fish_source, /datum/fish_source/portal))
 		return
 	var/turf/new_turf = get_turf(src)
@@ -198,6 +232,8 @@
 			deactivate()
 
 /obj/machinery/fishing_portal_generator/proc/activate(datum/fish_source/selected_source, mob/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(selected_source))
 		return
 	if(machine_stat & NOPOWER)
@@ -228,6 +264,8 @@
 	update_icon()
 
 /obj/machinery/fishing_portal_generator/proc/deactivate()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return
 	if(!istype(active.fish_source, /datum/fish_source/portal))
@@ -243,17 +281,23 @@
 		update_icon()
 
 /obj/machinery/fishing_portal_generator/proc/on_fishing_spot_z_level_changed(atom/spot, turf/old_turf, turf/new_turf, same_z_layer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/turf/turf = get_turf(src)
 	if(turf.z != new_turf.z && !(is_station_level(turf.z) && is_station_level(new_turf.z)))
 		deactivate()
 
 /obj/machinery/fishing_portal_generator/on_set_is_operational(old_value)
+	procstart = null
+	src.procstart = null
 	if(old_value)
 		deactivate()
 
 ///Create a radial menu from a list of available fish sources. If only the default is available, activate it right away.
 /obj/machinery/fishing_portal_generator/proc/select_fish_source(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/fish_source/portal/default = GLOB.preset_fish_sources[/datum/fish_source/portal]
 	var/list/available_fish_sources = list(default.radial_name = default)
 	if(obj_flags & EMAGGED)

@@ -20,6 +20,8 @@
 	var/atom/movable/screen/map_view/camera/cam_screen
 
 /obj/machinery/computer/security/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Map name has to start and end with an A-Z character,
 	// and definitely NOT with a square bracket or even a number.
@@ -34,15 +36,21 @@
 	cam_screen.generate_view(map_name)
 
 /obj/machinery/computer/security/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(cam_screen)
 	return ..()
 
 /obj/machinery/computer/security/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
+	procstart = null
+	src.procstart = null
 	for(var/i in network)
 		network -= i
 		network += "[port.shuttle_id]_[i]"
 
 /obj/machinery/computer/security/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!user.client) //prevents errors by trying to pass clients that don't exist.
 		return
@@ -70,12 +78,16 @@
 		cam_screen.display_to(user, ui.window)
 
 /obj/machinery/computer/security/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == UI_DISABLED)
 		return UI_CLOSE
 	return .
 
 /obj/machinery/computer/security/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["activeCamera"] = null
 	if(active_camera)
@@ -87,6 +99,8 @@
 	return data
 
 /obj/machinery/computer/security/ui_static_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["network"] = network
 	data["mapRef"] = cam_screen.assigned_map
@@ -94,6 +108,8 @@
 	return data
 
 /obj/machinery/computer/security/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -112,6 +128,8 @@
 		return TRUE
 
 /obj/machinery/computer/security/proc/update_active_camera_screen()
+	procstart = null
+	src.procstart = null
 	// Show static if can't use the camera
 	if(!active_camera?.can_use())
 		cam_screen.show_camera_static()
@@ -145,6 +163,8 @@
 	cam_screen.show_camera(visible_turfs, size_x, size_y)
 
 /obj/machinery/computer/security/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/user_ref = REF(user)
 	var/is_living = isliving(user)
@@ -164,25 +184,35 @@
 	var/atom/movable/screen/background/cam_background
 
 /atom/movable/screen/map_view/camera/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(cam_background)
 	return ..()
 
 /atom/movable/screen/map_view/camera/generate_view(map_key)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cam_background = new
 	cam_background.del_on_map_removal = FALSE
 	cam_background.assigned_map = assigned_map
 
 /atom/movable/screen/map_view/camera/display_to_client(client/show_to)
+	procstart = null
+	src.procstart = null
 	show_to.register_map_obj(cam_background)
 	. = ..()
 
 /atom/movable/screen/map_view/camera/proc/show_camera(list/visible_turfs, size_x, size_y)
+	procstart = null
+	src.procstart = null
 	vis_contents = visible_turfs
 	cam_background.icon_state = "clear"
 	cam_background.fill_rect(1, 1, size_x, size_y)
 
 /atom/movable/screen/map_view/camera/proc/show_camera_static()
+	procstart = null
+	src.procstart = null
 	vis_contents.Cut()
 	cam_background.icon_state = "scanline2"
 	cam_background.fill_rect(1, 1, DEFAULT_MAP_SIZE, DEFAULT_MAP_SIZE)

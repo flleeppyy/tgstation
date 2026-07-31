@@ -12,10 +12,14 @@
 	girder_type = /obj/structure/girder/cult
 
 /turf/closed/wall/mineral/cult/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/cult/turf(src)
 	. = ..()
 
 /turf/closed/wall/mineral/cult/devastate_wall()
+	procstart = null
+	src.procstart = null
 	new sheet_type(get_turf(src), sheet_amount)
 
 /turf/closed/wall/mineral/cult/artificer
@@ -23,10 +27,14 @@
 	desc = "A cold stone wall engraved with indecipherable symbols. Studying them causes your head to pound."
 
 /turf/closed/wall/mineral/cult/artificer/break_wall()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/cult/turf(get_turf(src))
 	return null //excuse me we want no runed metal here
 
 /turf/closed/wall/mineral/cult/artificer/devastate_wall()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/cult/turf(get_turf(src))
 
 /turf/closed/wall/ice
@@ -47,6 +55,8 @@
 	WHEN_MAP(color = COLOR_ORANGE_BROWN)
 
 /turf/closed/wall/rust/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/rust)
 
@@ -54,6 +64,8 @@
 	WHEN_MAP(color = COLOR_GREEN_GRAY)
 
 /turf/closed/wall/heretic_rust/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/rust/heretic)
 
@@ -63,6 +75,8 @@
 	base_decon_state = "rusty_r_wall"
 
 /turf/closed/wall/r_wall/rust/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/rust)
 
@@ -70,6 +84,8 @@
 	WHEN_MAP(color = COLOR_GREEN_GRAY)
 
 /turf/closed/wall/r_wall/heretic_rust/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/rust/heretic)
 
@@ -119,6 +135,8 @@
 	material_flags = MATERIAL_EFFECTS | MATERIAL_COLOR | MATERIAL_AFFECT_STATISTICS
 
 /turf/closed/wall/material/meat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_custom_materials(list(SSmaterials.get_material(/datum/material/meat) = SHEET_MATERIAL_AMOUNT))
 

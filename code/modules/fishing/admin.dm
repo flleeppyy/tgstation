@@ -6,18 +6,26 @@ ADMIN_VERB(fishing_calculator, R_DEBUG, "Fishing Calculator", "A calculator... f
 	var/list/current_table
 
 /datum/fishing_calculator/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "FishingCalculator")
 		ui.open()
 
 /datum/fishing_calculator/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_DEBUG)
 
 /datum/fishing_calculator/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /datum/fishing_calculator/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["rod_types"] = typesof(/obj/item/fishing_rod)
 	.["hook_types"] = typesof(/obj/item/fishing_hook)
@@ -25,9 +33,13 @@ ADMIN_VERB(fishing_calculator, R_DEBUG, "Fishing Calculator", "A calculator... f
 	.["spot_types"] = subtypesof(/datum/fish_source)
 
 /datum/fishing_calculator/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list("info" = current_table)
 
 /datum/fishing_calculator/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/user = usr
 	switch(action)

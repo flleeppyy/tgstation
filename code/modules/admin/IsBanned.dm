@@ -7,6 +7,8 @@
 #define STICKYBAN_MAX_ADMIN_MATCHES 1
 
 /world/IsBanned(key, address, computer_id, type, real_bans_only=FALSE)
+	procstart = null
+	src.procstart = null
 	debug_world_log("isbanned(): '[args.Join("', '")]'")
 	if (!key || (!real_bans_only && (!address || !computer_id)))
 		if(real_bans_only)
@@ -250,6 +252,8 @@
 	return .
 
 /proc/restore_stickybans()
+	procstart = null
+	src.procstart = null
 	for (var/banned_ckey in GLOB.stickybanadmintexts)
 		world.SetConfig("ban", banned_ckey, GLOB.stickybanadmintexts[banned_ckey])
 	GLOB.stickybanadminexemptions = list()

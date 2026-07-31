@@ -15,6 +15,8 @@
 	var/liver_damage = 0.5
 
 /datum/reagent/impurity/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/organ/liver/liver = affected_mob.get_organ_slot(ORGAN_SLOT_LIVER)
 	var/need_mob_update
@@ -39,6 +41,8 @@
 	var/tox_damage = 1
 
 /datum/reagent/inverse/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(affected_mob.adjust_tox_loss(METABOLIZE_FREE_CONSTANT(0.5) * tox_damage * metabolization_ratio * seconds_per_tick, updating_health = FALSE, required_biotype = affected_biotype))
@@ -68,6 +72,8 @@
 	tox_damage = 0
 
 /datum/reagent/inverse/eigenswap/on_mob_life(mob/living/carbon/affected_mob, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!prob(creation_purity * 100))
 		return
@@ -98,6 +104,8 @@
 	metabolization_rate = 2.5 * REAGENTS_METABOLISM
 
 /datum/reagent/inverse/cryostylane/expose_mob(mob/living/carbon/human/human_thing, methods, reac_volume, show_message, touch_protection)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((methods & INGEST) || !ishuman(human_thing))
 		return
@@ -109,10 +117,14 @@
 	human_thing.apply_status_effect(/datum/status_effect/reagent_effect/freeze, type)
 
 /datum/reagent/inverse/cryostylane/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	metabolization_rate += 0.05 * REAGENTS_METABOLISM //speed up our metabolism over time. Chop chop.
 
 /datum/reagent/inverse/cryostylane/metabolize_reagent(mob/living/carbon/affected_mob, seconds_per_tick, metabolized_volume)
+	procstart = null
+	src.procstart = null
 	if(current_cycle >= 60)
 		volume = 0 // remove it all if we're past 60 cycles
 		holder.update_total()
@@ -121,5 +133,7 @@
 	return ..()
 
 /datum/reagent/inverse/cryostylane/on_mob_end_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.remove_status_effect(/datum/status_effect/reagent_effect/freeze)

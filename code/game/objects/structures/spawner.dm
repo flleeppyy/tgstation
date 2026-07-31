@@ -31,6 +31,8 @@
 	var/assigned_tag
 
 /obj/structure/spawner/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!scanner_taggable)
 		return
@@ -40,6 +42,8 @@
 		. += span_notice("It looks like you could probably scan and tag it with a <b>[scanner_descriptor]</b>.")
 
 /obj/structure/spawner/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(scanner_taggable && is_type_in_list(tool, scanner_types))
 		gps_tag(user)
 		return ITEM_INTERACT_SUCCESS
@@ -48,6 +52,8 @@
 
 /// Tag the spawner, prefixing its GPS entry with an identifier - or giving it one, if nonexistent.
 /obj/structure/spawner/proc/gps_tag(mob/user)
+	procstart = null
+	src.procstart = null
 	if(gps_tagged)
 		to_chat(user, span_warning("[src] already has a holotag attached!"))
 		return
@@ -62,6 +68,8 @@
 	AddComponent(/datum/component/gps, assigned_tag)
 
 /obj/structure/spawner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(\
 		spawner_type, \
@@ -75,11 +83,15 @@
 	)
 
 /obj/structure/spawner/attack_animal(mob/living/simple_animal/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(faction_check_atom(user) && !user.client)
 		return
 	return ..()
 
 /obj/structure/spawner/proc/on_mob_spawn(atom/created_atom)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/spawner/syndicate
@@ -198,10 +210,14 @@
 	spawner_gps_id = "Netheric Distortion"
 
 /obj/structure/spawner/nether/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSprocessing, src)
 
 /obj/structure/spawner/nether/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isskeleton(user) || iszombie(user))
 		. += "A direct link to another dimension full of creatures very happy to see you. [span_nicegreen("You can see your house from here!")]"
@@ -209,6 +225,8 @@
 		. += "A direct link to another dimension full of creatures not very happy to see you. [span_warning("Entering the link would be a very bad idea.")]"
 
 /obj/structure/spawner/nether/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isskeleton(user) || iszombie(user))
 		to_chat(user, span_notice("You don't feel like going home yet..."))
@@ -218,6 +236,8 @@
 		contents.Add(user)
 
 /obj/structure/spawner/nether/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/living_mob in contents)
 		playsound(src, 'sound/effects/magic/demon_consume.ogg', 50, TRUE)
 		living_mob.adjust_brute_loss(60 * seconds_per_tick)
@@ -234,6 +254,8 @@
 	var/assumed_control_message = "You are a sentient mob from a badly coded spawner"
 
 /obj/structure/spawner/sentient/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	notify_ghosts(
 		"A [name] has been created in \the [get_area(src)]!",
@@ -243,6 +265,8 @@
 	)
 
 /obj/structure/spawner/sentient/on_mob_spawn(atom/created_atom)
+	procstart = null
+	src.procstart = null
 	created_atom.AddComponent(\
 		/datum/component/ghost_direct_control,\
 		role_name = src.role_name,\
@@ -251,6 +275,8 @@
 	)
 
 /obj/structure/spawner/sentient/proc/became_player_controlled(mob/proteon)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/spawner/sentient/proteon_spawner
@@ -271,11 +297,15 @@
 	assumed_control_message = null
 
 /obj/structure/spawner/sentient/proteon_spawner/examine_status(mob/user)
+	procstart = null
+	src.procstart = null
 	if(IS_CULTIST(user) || !isliving(user))
 		return span_cult("It's at <b>[round(atom_integrity * 100 / max_integrity)]%</b> stability.")
 	return ..()
 
 /obj/structure/spawner/sentient/proteon_spawner/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!IS_CULTIST(user) && isliving(user))
 		var/mob/living/living_user = user
@@ -285,6 +315,8 @@
 		. += span_cult("The gateway will create one weak proteon construct every [spawn_time * 0.1] seconds, up to a total of [max_mobs], that may be controlled by the spirits of the dead.")
 
 /obj/structure/spawner/sentient/proteon_spawner/became_player_controlled(mob/living/basic/construct/proteon/proteon)
+	procstart = null
+	src.procstart = null
 	proteon.mind.add_antag_datum(/datum/antagonist/cult)
 	proteon.add_filter("awoken_proteon", 3, list("type" = "outline", "color" = COLOR_CULT_RED, "size" = 2))
 	visible_message(span_cult_bold("[proteon] awakens, glowing an eerie red as it stirs from its stupor!"))
@@ -293,9 +325,13 @@
 	addtimer(CALLBACK(src, PROC_REF(remove_wake_outline), proteon), 8 SECONDS)
 
 /obj/structure/spawner/sentient/proteon_spawner/proc/remove_wake_outline(mob/proteon)
+	procstart = null
+	src.procstart = null
 	proteon.remove_filter("awoken_proteon")
 	proteon.add_filter("sentient_proteon", 3, list("type" = "outline", "color" = COLOR_CULT_RED, "size" = 2, "alpha" = 40))
 
 /obj/structure/spawner/sentient/proteon_spawner/handle_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/hallucinations/veryfar_noise.ogg', 75)
 	visible_message(span_cult_bold("[src] completely falls apart, the screams of the damned reaching a feverous pitch before slowly fading away into nothing."))

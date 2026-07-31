@@ -7,12 +7,16 @@
 	text_gain_indication = span_danger("You can't see very well.")
 
 /datum/mutation/nearsight/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	owner.become_nearsighted(GENETIC_MUTATION)
 
 /datum/mutation/nearsight/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	owner.cure_nearsighted(GENETIC_MUTATION)
@@ -26,12 +30,16 @@
 	text_gain_indication = span_danger("You can't seem to see anything.")
 
 /datum/mutation/blind/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	owner.become_blind(GENETIC_MUTATION)
 
 /datum/mutation/blind/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	owner.cure_blind(GENETIC_MUTATION)
@@ -52,6 +60,8 @@
 	power_path = /datum/action/cooldown/spell/thermal_vision
 
 /datum/mutation/thermal/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -59,6 +69,8 @@
 	REMOVE_TRAIT(owner, TRAIT_THERMAL_VISION, GENETIC_MUTATION)
 
 /datum/mutation/thermal/setup()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/action/cooldown/spell/thermal_vision/to_modify = .
 	if(!istype(to_modify)) // null or invalid
@@ -82,19 +94,27 @@
 	var/thermal_duration = 30 SECONDS
 
 /datum/action/cooldown/spell/thermal_vision/Remove(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(remove_from, TRAIT_THERMAL_VISION, GENETIC_MUTATION)
 	return ..()
 
 /datum/action/cooldown/spell/thermal_vision/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return isliving(cast_on) && !HAS_TRAIT(cast_on, TRAIT_THERMAL_VISION)
 
 /datum/action/cooldown/spell/thermal_vision/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(cast_on, TRAIT_THERMAL_VISION, GENETIC_MUTATION)
 	to_chat(cast_on, span_info("You focus your eyes intensely, as your vision becomes filled with heat signatures."))
 	addtimer(CALLBACK(src, PROC_REF(deactivate), cast_on), thermal_duration)
 
 /datum/action/cooldown/spell/thermal_vision/proc/deactivate(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(cast_on) || !HAS_TRAIT_FROM(cast_on, TRAIT_THERMAL_VISION, GENETIC_MUTATION))
 		return
 
@@ -114,12 +134,16 @@
 	locked = TRUE
 
 /datum/mutation/xray/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	ADD_TRAIT(owner, TRAIT_XRAY_VISION, GENETIC_MUTATION)
 
 /datum/mutation/xray/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	REMOVE_TRAIT(owner, TRAIT_XRAY_VISION, GENETIC_MUTATION)
@@ -138,12 +162,16 @@
 	mutation_icon_state = "lasereyes"
 
 /datum/mutation/laser_eyes/on_acquiring(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	RegisterSignal(H, COMSIG_MOB_ATTACK_RANGED, PROC_REF(on_ranged_attack))
 
 /datum/mutation/laser_eyes/on_losing(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -151,6 +179,8 @@
 
 ///Triggers on COMSIG_MOB_ATTACK_RANGED. Does the projectile shooting.
 /datum/mutation/laser_eyes/proc/on_ranged_attack(mob/living/carbon/human/source, atom/target, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!source.combat_mode)
@@ -180,12 +210,16 @@
 	text_lose_indication = span_danger("You feel able to read and write again.")
 
 /datum/mutation/illiterate/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	ADD_TRAIT(owner, TRAIT_ILLITERATE, GENETIC_MUTATION)
 
 /datum/mutation/illiterate/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	REMOVE_TRAIT(owner, TRAIT_ILLITERATE, GENETIC_MUTATION)
@@ -199,12 +233,16 @@
 	text_lose_indication = span_notice("The darkness of the corners of the room returns.")
 
 /datum/mutation/night_vision/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	ADD_TRAIT(owner, TRAIT_NIGHT_VISION, GENETIC_MUTATION)
 
 /datum/mutation/night_vision/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	REMOVE_TRAIT(owner, TRAIT_NIGHT_VISION, GENETIC_MUTATION)

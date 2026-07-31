@@ -11,6 +11,8 @@
 	var/static/list/fugu_blacklist
 
 /obj/item/fugu_gland/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(fugu_blacklist)
 		return
@@ -19,6 +21,8 @@
 	))
 
 /obj/item/fugu_gland/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isanimal_or_basicmob(interacting_with) || fugu_blacklist[interacting_with.type])
 		return NONE
 	var/mob/living/animal = interacting_with

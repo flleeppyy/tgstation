@@ -2,6 +2,8 @@
 /datum/unit_test/greyscale_item_icon_states
 
 /datum/unit_test/greyscale_item_icon_states/Run()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/item_path as anything in subtypesof(/obj/item))
 		if(isnull(initial(item_path.greyscale_colors)))
 			continue //All configs depend on greyscale_colors being defined.
@@ -29,6 +31,8 @@
 /datum/unit_test/greyscale_color_count
 
 /datum/unit_test/greyscale_color_count/Run()
+	procstart = null
+	src.procstart = null
 	for(var/atom/thing as anything in subtypesof(/atom))
 		var/datum/greyscale_config/config = SSgreyscale.configurations["[initial(thing.greyscale_config)]"]
 		if(!config)

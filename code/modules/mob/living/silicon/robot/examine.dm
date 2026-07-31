@@ -1,4 +1,6 @@
 /mob/living/silicon/robot/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(desc)
 		. += "[desc]"
@@ -51,4 +53,6 @@
 	. += ..()
 
 /mob/living/silicon/robot/examine_descriptor(mob/user)
+	procstart = null
+	src.procstart = null
 	return "cyborg"

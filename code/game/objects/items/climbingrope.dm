@@ -19,17 +19,23 @@
 	var/climb_time = 2.5 SECONDS
 
 /obj/item/climbing_hook/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/look_binds = user.client.prefs.key_bindings["look up"]
 	. += span_notice("Firstly, look upwards by holding <b>[english_list(look_binds, nothing_text = "(nothing bound)", and_text = " or ", comma_text = ", or ")]!</b>")
 	. += span_notice("Then, click solid ground (or lattice/catwalk) adjacent to the hole above you.")
 
 /obj/item/climbing_hook/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(interacting_with, TRAIT_COMBAT_MODE_SKIP_INTERACTION))
 		return NONE
 	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/climbing_hook/ranged_interact_with_atom(turf/open/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	interacting_with = get_turf(interacting_with)
 	if(interacting_with.z == user.z)
 		return NONE
@@ -73,6 +79,8 @@
 // didnt want to mess up is_blocked_turf_ignore_climbable
 /// checks if our target is blocked, also checks for border objects facing the above turf and climbable stuff
 /obj/item/climbing_hook/proc/target_blocked(turf/target, turf/trans_vertical)
+	procstart = null
+	src.procstart = null
 	if(target.density || (isopenspaceturf(target) && target.zPassOut(DOWN)) || !trans_vertical.zPassOut(DOWN) || trans_vertical.density) // we check if we would fall down from it additionally
 		return TRUE
 
@@ -111,5 +119,7 @@
 	duration = 4 SECONDS
 
 /obj/effect/temp_visual/climbing_hook/Initialize(mapload, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	dir = direction

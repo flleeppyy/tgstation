@@ -33,6 +33,8 @@
 
 
 /datum/quirk/transhumanist/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(quirk_holder, COMSIG_CARBON_POST_ATTACH_LIMB, PROC_REF(calculate_bodypart_score))
 	RegisterSignal(quirk_holder, COMSIG_CARBON_POST_REMOVE_LIMB, PROC_REF(calculate_bodypart_score))
 	RegisterSignal(quirk_holder, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(calculate_bodypart_score))
@@ -40,6 +42,8 @@
 	calculate_bodypart_score()
 
 /datum/quirk/transhumanist/remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(quirk_holder, list(
 		COMSIG_CARBON_POST_ATTACH_LIMB,
 		COMSIG_CARBON_POST_REMOVE_LIMB,
@@ -73,6 +77,8 @@
 	quirk_holder.clear_mood_event(MOOD_CATEGORY_TRANSHUMANIST_PEOPLE)
 
 /datum/quirk/transhumanist/proc/get_bodypart_score(mob/living/carbon/target, limbs_only = FALSE)
+	procstart = null
+	src.procstart = null
 	var/organic_bodytypes = 0
 	var/silicon_bodytypes = 0
 	var/other_bodytypes = FALSE
@@ -100,6 +106,8 @@
 
 
 /datum/quirk/transhumanist/proc/calculate_bodypart_score()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/alist/score = get_bodypart_score(quirk_holder)
 	var/organic_bodytypes = score[BODYPART_SCORE_ORGANIC]
@@ -131,6 +139,8 @@
 	customization_options = list(/datum/preference/choiced/trans_prosthetic)
 
 /datum/quirk/transhumanist/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/part_type = GLOB.part_choice_transhuman[client_source?.prefs?.read_preference(/datum/preference/choiced/trans_prosthetic)]
 	if(isnull(part_type))  //Client gone or they chose a random part
 		part_type = GLOB.part_choice_transhuman[pick(GLOB.part_choice_transhuman)]
@@ -158,6 +168,8 @@
 		slot_string = new_organ.name
 
 /datum/quirk/transhumanist/post_add()
+	procstart = null
+	src.procstart = null
 	if(!slot_string)
 		return
 	if(isbodypart(old_part))
@@ -168,6 +180,8 @@
 		to_chat(quirk_holder, span_bolddanger("Your [slot_string] brings you one step closer to silicon perfection, but you feel you're not quite there yet."))
 
 /datum/quirk/transhumanist/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/organics_nearby = 0
 	var/silicons_nearby = 0
 

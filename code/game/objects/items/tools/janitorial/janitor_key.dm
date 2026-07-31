@@ -23,20 +23,28 @@
 	var/key_speed = 3 SECONDS
 
 /obj/item/access_key/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSdcs, COMSIG_ON_DEPARTMENT_ACCESS, PROC_REF(department_access_given))
 	GLOB.janitor_devices += src
 
 /obj/item/access_key/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.janitor_devices -= src
 	return ..()
 
 /obj/item/access_key/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(department_access)
 		. += "It currently holds access to the [department_access] region."
 
 /obj/item/access_key/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Access can be granted through a Keycard Authentication Device.")
 	. += span_notice("This access is limited to one department at a time.")
@@ -49,6 +57,8 @@
  * airlock - The door we're attempting to open
  */
 /obj/item/access_key/proc/attempt_open_door(mob/living/user, obj/machinery/door/airlock)
+	procstart = null
+	src.procstart = null
 	if(DOING_INTERACTION_WITH_TARGET(user, airlock))
 		return FALSE
 	user.balloon_alert_to_viewers("fumbles with keys...", "finding key...")
@@ -68,6 +78,8 @@
  * region_access - the list of access we're being sent, we only take the first entry in the list as there should only have one department at a time.
  */
 /obj/item/access_key/proc/department_access_given(obj/machinery/keycard_auth/source, list/region_access)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	department_access = region_access[1]
 	say("Access granted to [department_access] area.")
@@ -81,6 +93,8 @@
  * Clears the department access and alerts nearby people of such.
  */
 /obj/item/access_key/proc/clear_access()
+	procstart = null
+	src.procstart = null
 	log_game("Access to the [department_access] department on [src] has expired.")
 	investigate_log("Access to the [department_access] department on [src] has expired.]", INVESTIGATE_ACCESSCHANGES)
 	department_access = null

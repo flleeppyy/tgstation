@@ -31,6 +31,8 @@
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 
 /mob/living/basic/pet/penguin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_MOB_CAN_DIG, TRAIT_NODROWN, TRAIT_SWIMMER), INNATE_TRAIT)
 	AddElement(/datum/element/cultist_pet)
@@ -60,6 +62,8 @@
 	)
 
 /mob/living/basic/pet/penguin/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -77,10 +81,14 @@
 	RegisterSignal(egg_target, COMSIG_QDELETING, PROC_REF(on_hatch_egg))
 
 /mob/living/basic/pet/penguin/death(gibbed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	remove_egg()
 
 /mob/living/basic/pet/penguin/proc/lay_penguin_egg(obj/item/penguin_egg)
+	procstart = null
+	src.procstart = null
 	if(prob(35))
 		penguin_egg.AddComponent(\
 			/datum/component/fertile_egg,\
@@ -93,10 +101,14 @@
 		)
 
 /mob/living/basic/pet/penguin/proc/on_hatch_egg()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	remove_egg()
 
 /mob/living/basic/pet/penguin/proc/remove_egg()
+	procstart = null
+	src.procstart = null
 	if(isnull(carried_egg))
 		return
 	carried_egg.forceMove(get_turf(src))
@@ -143,6 +155,8 @@
 	var/can_grow_up = TRUE
 
 /mob/living/basic/pet/penguin/baby/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!can_grow_up)
 		return
@@ -163,6 +177,8 @@
 	)
 
 /mob/living/basic/pet/penguin/baby/proc/ready_to_grow()
+	procstart = null
+	src.procstart = null
 	return (!IS_UNCONSCIOUS_OR_CRIT(src))
 
 /mob/living/basic/pet/penguin/baby/permanent

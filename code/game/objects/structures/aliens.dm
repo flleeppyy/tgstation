@@ -12,6 +12,8 @@
 	max_integrity = 100
 
 /obj/structure/alien/run_atom_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
+	procstart = null
+	src.procstart = null
 	if(damage_flag == MELEE)
 		switch(damage_type)
 			if(BRUTE)
@@ -21,6 +23,8 @@
 	. = ..()
 
 /obj/structure/alien/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(damage_amount)
@@ -42,6 +46,8 @@
 	icon_state = "gelmound"
 
 /obj/structure/alien/gelpod/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/mob_spawn/corpse/human/damaged(get_turf(src))
 
 /*
@@ -65,15 +71,21 @@
 
 
 /obj/structure/alien/resin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	air_update_turf(TRUE, TRUE)
 	ADD_TRAIT(src, TRAIT_INVERTED_DEMOLITION, INNATE_TRAIT)
 
 /obj/structure/alien/resin/Destroy()
+	procstart = null
+	src.procstart = null
 	air_update_turf(TRUE, FALSE)
 	. = ..()
 
 /obj/structure/alien/resin/Move()
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 	. = ..()
 	move_update_air(T)
@@ -89,6 +101,8 @@
 	canSmoothWith = SMOOTH_GROUP_ALIEN_WALLS
 
 /obj/structure/alien/resin/wall/block_superconductivity()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /// meant for one lavaland ruin or anywhere that has simplemobs who can push aside structures
@@ -114,6 +128,8 @@
 	canSmoothWith = SMOOTH_GROUP_ALIEN_WALLS
 
 /obj/structure/alien/resin/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 ///Used in the big derelict ruin exclusively.
@@ -157,6 +173,8 @@
 	)
 
 /obj/structure/alien/weeds/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	//so the sprites line up right in the map editor
 	pixel_x = -4
 	pixel_y = -4
@@ -168,6 +186,8 @@
 	AddElement(/datum/element/atmos_sensitive, mapload)
 
 /obj/structure/alien/weeds/Destroy()
+	procstart = null
+	src.procstart = null
 	if(parent_node)
 		UnregisterSignal(parent_node, COMSIG_QDELETING)
 		parent_node = null
@@ -175,6 +195,8 @@
 
 ///Randomizes the weeds' starting icon, gets redefined by children for them not to share the behavior.
 /obj/structure/alien/weeds/proc/set_base_icon()
+	procstart = null
+	src.procstart = null
 	. = base_icon_state
 	switch(rand(1,3))
 		if(1)
@@ -192,6 +214,8 @@
  * Called when the node is trying to grow/expand
  */
 /obj/structure/alien/weeds/proc/try_expand()
+	procstart = null
+	src.procstart = null
 	//we cant grow without a parent node
 	if(!parent_node)
 		return
@@ -219,6 +243,8 @@
  * Called when the parent node is destroyed
  */
 /obj/structure/alien/weeds/proc/after_parent_destroyed()
+	procstart = null
+	src.procstart = null
 	if(!find_new_parent())
 		var/random_time = rand(2 SECONDS, 8 SECONDS)
 		addtimer(CALLBACK(src, PROC_REF(do_qdel)), random_time)
@@ -229,6 +255,8 @@
  * Will return the new parent if it can find one
  */
 /obj/structure/alien/weeds/proc/find_new_parent()
+	procstart = null
+	src.procstart = null
 	var/previous_node = parent_node
 	parent_node = null
 	for(var/obj/structure/alien/weeds/node/new_parent in range(node_range, src))
@@ -243,12 +271,18 @@
  * Called to delete the weed
  */
 /obj/structure/alien/weeds/proc/do_qdel()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /obj/structure/alien/weeds/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return exposed_temperature > 300
 
 /obj/structure/alien/weeds/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	take_damage(5, BURN, 0, 0)
 
 /obj/structure/alien/weeds/node
@@ -269,6 +303,8 @@
 	COOLDOWN_DECLARE(growtime)
 
 /obj/structure/alien/weeds/node/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	//give it light
@@ -281,6 +317,8 @@
 
 // we do this in LateInitialize() because weeds on the same loc may not be done initializing yet (as in create_and_destroy)
 /obj/structure/alien/weeds/node/LateInitialize()
+	procstart = null
+	src.procstart = null
 	//destroy any non-node weeds on turf
 	var/obj/structure/alien/weeds/check_weed = locate(/obj/structure/alien/weeds) in loc
 	if(check_weed && check_weed != src)
@@ -293,10 +331,14 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/alien/weeds/node/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/structure/alien/weeds/node/process()
+	procstart = null
+	src.procstart = null
 	//we need to have a cooldown, so check and then add
 	if(!COOLDOWN_FINISHED(src, growtime))
 		return
@@ -306,6 +348,8 @@
 		growing_weed.try_expand()
 
 /obj/structure/alien/weeds/node/set_base_icon()
+	procstart = null
+	src.procstart = null
 	return //No icon randomization at init. The node's icon is already well defined.
 
 /obj/structure/alien/weeds/creature
@@ -347,6 +391,8 @@
 	var/datum/proximity_monitor/proximity_monitor
 
 /obj/structure/alien/egg/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 	if(status == GROWING || status == GROWN)
@@ -360,11 +406,15 @@
 	AddElement(/datum/element/atmos_sensitive, mapload)
 
 /obj/structure/alien/egg/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(child)
 	QDEL_NULL(proximity_monitor)
 	return ..()
 
 /obj/structure/alien/egg/update_icon_state()
+	procstart = null
+	src.procstart = null
 	switch(status)
 		if(GROWING)
 			icon_state = "[base_icon_state]_growing"
@@ -377,12 +427,18 @@
 	return ..()
 
 /obj/structure/alien/egg/attack_paw(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/structure/alien/egg/attack_alien(mob/living/carbon/alien/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/structure/alien/egg/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -409,12 +465,16 @@
 
 
 /obj/structure/alien/egg/proc/Grow()
+	procstart = null
+	src.procstart = null
 	status = GROWN
 	update_appearance()
 	proximity_monitor.set_range(1)
 
 //drops and kills the hugger if any is remaining
 /obj/structure/alien/egg/proc/Burst(kill = TRUE)
+	procstart = null
+	src.procstart = null
 	if(status == GROWN || status == GROWING)
 		status = BURSTING
 		proximity_monitor.set_range(0)
@@ -422,6 +482,8 @@
 		addtimer(CALLBACK(src, PROC_REF(finish_bursting), kill), 1.5 SECONDS)
 
 /obj/structure/alien/egg/proc/finish_bursting(kill = TRUE)
+	procstart = null
+	src.procstart = null
 	status = BURST
 	update_appearance()
 	if(child)
@@ -437,22 +499,32 @@
 						break
 
 /obj/structure/alien/egg/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == child)
 		child = null
 
 /obj/structure/alien/egg/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return exposed_temperature > 500
 
 /obj/structure/alien/egg/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	take_damage(5, BURN, 0, 0)
 
 /obj/structure/alien/egg/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(status != BURST)
 		Burst(kill=TRUE)
 
 /obj/structure/alien/egg/HasProximity(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(status == GROWN)
 		if(!CanHug(AM))
 			return

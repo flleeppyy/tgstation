@@ -47,6 +47,8 @@
 	var/list/mutable_appearance/storm_appearances
 
 /datum/round_event/portal_storm/setup()
+	procstart = null
+	src.procstart = null
 	storm_appearances = list()
 	for(var/offset in 0 to SSmapping.max_plane_offset)
 		var/mutable_appearance/storm = mutable_appearance('icons/obj/machines/engine/energy_ball.dmi', "energy_ball_fast", FLY_LAYER)
@@ -71,6 +73,8 @@
 	next_boss_spawn = start_when + ceil(2 * number_of_hostiles / number_of_bosses)
 
 /datum/round_event/portal_storm/announce(fake)
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	sound_to_playing_players('sound/effects/magic/lightning_chargeup.ogg')
 	sleep(8 SECONDS)
@@ -79,6 +83,8 @@
 	sound_to_playing_players('sound/effects/magic/lightningbolt.ogg')
 
 /datum/round_event/portal_storm/tick()
+	procstart = null
+	src.procstart = null
 	spawn_effects(get_random_station_turf())
 
 	if(spawn_hostile() && length(hostile_types))
@@ -98,6 +104,8 @@
 	time_to_end()
 
 /datum/round_event/portal_storm/proc/spawn_mob(type, spawn_list)
+	procstart = null
+	src.procstart = null
 	if(!type)
 		return
 	var/turf/T = pick_n_take(spawn_list)
@@ -107,6 +115,8 @@
 	spawn_effects(T)
 
 /datum/round_event/portal_storm/proc/spawn_effects(turf/T)
+	procstart = null
+	src.procstart = null
 	if(!T)
 		log_game("Portal Storm failed to spawn effect due to an invalid location.")
 		return
@@ -115,11 +125,15 @@
 	playsound(T, 'sound/effects/magic/lightningbolt.ogg', rand(80, 100), TRUE)
 
 /datum/round_event/portal_storm/proc/spawn_hostile()
+	procstart = null
+	src.procstart = null
 	if(!hostile_types || !hostile_types.len)
 		return 0
 	return ISMULTIPLE(activeFor, 2)
 
 /datum/round_event/portal_storm/proc/spawn_boss()
+	procstart = null
+	src.procstart = null
 	if(!boss_types || !boss_types.len)
 		return FALSE
 
@@ -129,6 +143,8 @@
 	return FALSE
 
 /datum/round_event/portal_storm/proc/time_to_end()
+	procstart = null
+	src.procstart = null
 	if(!hostile_types.len && !boss_types.len)
 		end_when = activeFor
 

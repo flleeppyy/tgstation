@@ -23,6 +23,8 @@ SUBSYSTEM_DEF(market)
 	var/admin_items_spawned = 0
 
 /datum/controller/subsystem/market/Initialize()
+	procstart = null
+	src.procstart = null
 	for(var/market in subtypesof(/datum/market))
 		markets[market] += new market
 
@@ -37,6 +39,8 @@ SUBSYSTEM_DEF(market)
  * @param market_whitelist A list of markets to which the item should be added. If null, the item is added to all markets.
  */
 /datum/controller/subsystem/market/proc/initialize_item(datum/market_item/path, list/market_whitelist)
+	procstart = null
+	src.procstart = null
 	if(!path::item || !prob(path::availability_prob))
 		return
 	var/datum/market_item/item_instance = new path()
@@ -51,6 +55,8 @@ SUBSYSTEM_DEF(market)
  * Adds an admin polled item to the market, expecting a market_item object having been created.
  */
 /datum/controller/subsystem/market/proc/initialize_admin_item(datum/market_item/item_instance, list/market_whitelist)
+	procstart = null
+	src.procstart = null
 	if(!item_instance)
 		return
 	for(var/potential_market in item_instance.markets)
@@ -61,6 +67,8 @@ SUBSYSTEM_DEF(market)
 			markets[potential_market].add_item(item_instance)
 
 /datum/controller/subsystem/market/fire(resumed)
+	procstart = null
+	src.procstart = null
 	while(length(queued_purchases))
 		var/datum/market_purchase/purchase = queued_purchases[1]
 		queued_purchases.Cut(1,2)
@@ -132,6 +140,8 @@ SUBSYSTEM_DEF(market)
 
 /// Used to make a teleportation effect as do_teleport does not like moving items from nullspace.
 /datum/controller/subsystem/market/proc/fake_teleport(datum/market_purchase/purchase, turf/target)
+	procstart = null
+	src.procstart = null
 	// Oopsie, whoopsie, the item is gone. So long, and thanks for all the money.
 	if(QDELETED(purchase))
 		return
@@ -142,6 +152,8 @@ SUBSYSTEM_DEF(market)
 
 /// Used to add /datum/market_purchase to queued_purchases var. Returns TRUE when queued.
 /datum/controller/subsystem/market/proc/queue_item(datum/market_purchase/purchase)
+	procstart = null
+	src.procstart = null
 	if((purchase.method == SHIPPING_METHOD_LTSRBT && !telepads.len) || isnull(purchase.uplink))
 		qdel(purchase)
 		return FALSE
@@ -150,6 +162,8 @@ SUBSYSTEM_DEF(market)
 
 ///A proc that restocks one or more markets, or all if the market_whitelist is null.
 /datum/controller/subsystem/market/proc/restock(list/market_whitelist)
+	procstart = null
+	src.procstart = null
 	var/market_name = "Markets"
 	if(market_whitelist && !islist(market_whitelist))
 		var/datum/market/market_path = market_whitelist

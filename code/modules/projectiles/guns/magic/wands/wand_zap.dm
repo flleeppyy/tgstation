@@ -12,6 +12,8 @@
 	max_charges = 8
 
 /obj/item/gun/magic/wand/zap/zap_self(mob/living/user, suicide = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	do_sparks(1, TRUE, src)
 	var/obj/projectile/magic/zap/spark = new(user.drop_location())
@@ -21,6 +23,8 @@
 	charges--
 
 /obj/item/gun/magic/wand/zap/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	charges--
 	playsound(user, fire_sound, 50, TRUE)
 	do_sparks(2, TRUE, user)
@@ -46,6 +50,8 @@
 	impact_type = /obj/effect/projectile/impact/stun
 
 /obj/projectile/magic/zap/on_hit(mob/living/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!istype(target) || blocked >= 100)
 		do_sparks(1, TRUE, src)
@@ -57,5 +63,7 @@
 		addtimer(CALLBACK(target, TYPE_PROC_REF(/mob/living, do_jitter_animation), 20), 0.5 SECONDS)
 
 /obj/projectile/magic/zap/on_range()
+	procstart = null
+	src.procstart = null
 	do_sparks(1, TRUE, src)
 	return ..()

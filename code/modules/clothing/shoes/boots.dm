@@ -22,6 +22,8 @@
 	acid = 50
 
 /obj/item/clothing/shoes/combat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_storage(storage_type = /datum/storage/pockets/shoes)
 	AddElement(/datum/element/ignites_matches)
@@ -60,6 +62,8 @@
 	bio = 90
 
 /obj/item/clothing/shoes/jackboots/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_storage(storage_type = /datum/storage/pockets/shoes)
 	AddElement(/datum/element/ignites_matches)
@@ -79,6 +83,8 @@
 	bodyshapes_with_variations = NONE
 
 /obj/item/clothing/shoes/jackboots/floortile/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -5) //tacticool
 
@@ -100,6 +106,8 @@
 	bio = 80
 
 /obj/item/clothing/shoes/winterboots/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_storage(storage_type = /datum/storage/pockets/shoes)
 	AddElement(/datum/element/ignites_matches)
@@ -149,6 +157,8 @@
 	bio = 80
 
 /obj/item/clothing/shoes/workboots/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_storage(storage_type = /datum/storage/pockets/shoes)
 	AddElement(/datum/element/ignites_matches)
@@ -174,6 +184,8 @@
 	bodyshapes_with_variations = BODYSHAPE_DIGITIGRADE
 
 /obj/item/clothing/shoes/russian/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_storage(storage_type = /datum/storage/pockets/shoes)
 	AddElement(/datum/element/ignites_matches)
@@ -197,6 +209,8 @@
 	inhand_icon_state = null
 
 /obj/item/clothing/shoes/pirate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_storage(storage_type = /datum/storage/pockets/shoes)
 	AddElement(/datum/element/adjust_fishing_difficulty, -4)

@@ -35,25 +35,35 @@
 	var/particle_type
 
 /obj/machinery/oven/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	oven_loop = new(src)
 	if(mapload)
 		add_tray_to_oven(new /obj/item/plate/oven_tray(src)) //Start with a tray
 
 /obj/machinery/oven/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(oven_loop)
 	if (particle_type)
 		remove_shared_particles(particle_type)
 	return ..()
 
 /obj/machinery/oven/IsContainedAtomAccessible(atom/contained, atom/movable/user)
+	procstart = null
+	src.procstart = null
 	return ..() || istype(contained, /obj/item/plate/oven_tray)
 
 /// Used to determine if the oven appears active and cooking, or offline.
 /obj/machinery/oven/proc/appears_active()
+	procstart = null
+	src.procstart = null
 	return !open && length(used_tray?.contents) && !(machine_stat & (BROKEN|NOPOWER))
 
 /obj/machinery/oven/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(appears_active())
 		icon_state = "[base_icon_state]_on"
 	else
@@ -61,6 +71,8 @@
 	return ..()
 
 /obj/machinery/oven/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(open)
 		var/mutable_appearance/door_overlay = mutable_appearance(icon, "[base_icon_state]_lid_open")
@@ -72,6 +84,8 @@
 			. += emissive_appearance(icon, "[base_icon_state]_light_mask", src, alpha = src.alpha)
 
 /obj/machinery/oven/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!appears_active())
 		set_smoke_state(OVEN_SMOKE_STATE_NONE)
 		update_baking_audio()
@@ -106,6 +120,8 @@
 	use_energy(active_power_usage)
 
 /obj/machinery/oven/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(open && used_tray && tool.atom_storage)
 		return used_tray.item_interaction(user, tool, modifiers)
 
@@ -120,12 +136,16 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/oven/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(open && used_tray && tool.atom_storage)
 		return used_tray.item_interaction_secondary(user, tool, modifiers)
 	return NONE
 
 ///Adds a tray to the oven, making sure the shit can get baked.
 /obj/machinery/oven/proc/add_tray_to_oven(obj/item/plate/oven_tray, mob/baker)
+	procstart = null
+	src.procstart = null
 	used_tray = oven_tray
 	playsound(src, SFX_TRAY_INSERT, 50, TRUE)
 
@@ -142,11 +162,15 @@
 
 ///Called when the tray is moved out of the oven in some way
 /obj/machinery/oven/proc/on_tray_moved(obj/item/oven_tray, atom/OldLoc, Dir, Forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	tray_removed_from_oven(oven_tray)
 
 /obj/machinery/oven/proc/tray_removed_from_oven(obj/item/oven_tray)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	oven_tray.vis_flags &= ~VIS_INHERIT_PLANE
 	vis_contents -= oven_tray
@@ -155,6 +179,8 @@
 	update_baking_audio()
 
 /obj/machinery/oven/attack_hand(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	open = !open
 	if(open)
@@ -180,6 +206,8 @@
 	return TRUE
 
 /obj/machinery/oven/attack_robot(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	open = !open
 	if(open)
@@ -205,6 +233,8 @@
 	return TRUE
 
 /obj/machinery/oven/proc/update_baking_audio()
+	procstart = null
+	src.procstart = null
 	if(!oven_loop)
 		return
 	if(appears_active())
@@ -214,6 +244,8 @@
 
 ///Updates the smoke state to something else, setting particles if relevant
 /obj/machinery/oven/proc/set_smoke_state(new_state)
+	procstart = null
+	src.procstart = null
 	if(new_state == smoke_state)
 		return
 
@@ -234,12 +266,18 @@
 		add_shared_particles(particle_type)
 
 /obj/machinery/oven/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/oven/can_crowbar_deconstruct()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/machinery/oven/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	default_unfasten_wrench(user, tool, time = 2 SECONDS)
 	return ITEM_INTERACT_SUCCESS
 
@@ -253,6 +291,8 @@
 	circuit = /obj/item/circuitboard/machine/range
 
 /obj/machinery/oven/range/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/cup/soup_pot/mapload_container
 	if(mapload)
@@ -273,6 +313,8 @@
 	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/plate/oven_tray/item_interaction_secondary(mob/living/user, obj/item/item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isnull(item.atom_storage))
 		return NONE
 
@@ -281,6 +323,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/plate/oven_tray/item_interaction(mob/living/user, obj/item/item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .

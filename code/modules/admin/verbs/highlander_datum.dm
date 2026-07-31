@@ -8,6 +8,8 @@ GLOBAL_DATUM(highlander_controller, /datum/highlander_controller)
 /datum/highlander_controller
 
 /datum/highlander_controller/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSdcs, COMSIG_GLOB_CREWMEMBER_JOINED, PROC_REF(new_highlander))
 	sound_to_playing_players('sound/misc/highlander.ogg')
@@ -39,6 +41,8 @@ GLOBAL_DATUM(highlander_controller, /datum/highlander_controller)
 	addtimer(CALLBACK(SSshuttle.emergency, TYPE_PROC_REF(/obj/docking_port/mobile/emergency, request), null, 1), 5 SECONDS)
 
 /datum/highlander_controller/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(SSdcs, COMSIG_GLOB_CREWMEMBER_JOINED)
 
@@ -57,6 +61,8 @@ GLOBAL_DATUM(highlander_controller, /datum/highlander_controller)
  * * ready_players: list of filtered, sane players (so not playing or disconnected) for the game to put into roles
  */
 /datum/highlander_controller/proc/new_highlander(datum/source, mob/living/new_crewmember, rank)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	to_chat(new_crewmember, span_userdanger("<i>THERE CAN BE ONLY ONE!!!</i>"))
@@ -71,6 +77,8 @@ GLOBAL_DATUM(highlander_controller, /datum/highlander_controller)
 
  */
 /client/proc/only_one(was_delayed = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!SSticker.HasRoundStarted())
 		tgui_alert(usr,"The game hasn't started yet!")
 		return
@@ -85,16 +93,24 @@ GLOBAL_DATUM(highlander_controller, /datum/highlander_controller)
 	GLOB.highlander_controller = new /datum/highlander_controller
 
 /client/proc/only_one_delayed()
+	procstart = null
+	src.procstart = null
 	send_to_playing_players(span_userdanger("Bagpipes begin to blare. You feel Scottish pride coming over you."))
 	message_admins(span_adminnotice("[key_name_admin(usr)] used (delayed) THERE CAN BE ONLY ONE!"))
 	log_admin("[key_name(usr)] used delayed THERE CAN BE ONLY ONE.")
 	addtimer(CALLBACK(src, PROC_REF(only_one), TRUE), 42 SECONDS)
 
 /mob/living/proc/make_scottish()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/make_scottish()
+	procstart = null
+	src.procstart = null
 	mind.add_antag_datum(/datum/antagonist/highlander)
 
 /mob/living/silicon/robot/make_scottish()
+	procstart = null
+	src.procstart = null
 	mind.add_antag_datum(/datum/antagonist/highlander/robot)

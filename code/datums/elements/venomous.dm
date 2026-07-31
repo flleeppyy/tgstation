@@ -16,6 +16,8 @@
 	var/thrown_effect = FALSE
 
 /datum/element/venomous/Attach(datum/target, poison_type, amount_added, injection_flags = NONE, thrown_effect = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.reagents = poison_type
 	src.amount_added = amount_added
@@ -25,11 +27,15 @@
 	RegisterSignal(target, COMSIG_ON_HIT_EFFECT, PROC_REF(do_venom))
 
 /datum/element/venomous/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, COMSIG_ON_HIT_EFFECT)
 	REMOVE_TRAIT(source, TRAIT_ON_HIT_EFFECT, REF(src))
 	return ..()
 
 /datum/element/venomous/proc/do_venom(datum/element_owner, atom/venom_source, mob/living/target, hit_zone, throw_hit)
+	procstart = null
+	src.procstart = null
 	if((throw_hit && !thrown_effect) || !istype(target))
 		return
 	if(target.stat == DEAD)

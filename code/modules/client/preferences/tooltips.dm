@@ -7,6 +7,8 @@
 	maximum = 5000
 
 /datum/preference/numeric/tooltip_delay/create_default_value()
+	procstart = null
+	src.procstart = null
 	return 500
 
 /datum/preference/toggle/enable_tooltips

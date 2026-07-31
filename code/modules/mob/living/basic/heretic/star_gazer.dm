@@ -56,6 +56,8 @@
 	)
 
 /mob/living/basic/heretic_summon/star_gazer/Initialize(mapload, mob/living/master)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/action/cooldown/spell/spell as anything in abilities_to_grant)
 		spell = new spell(src)
@@ -87,11 +89,15 @@
 	RegisterSignal(src, COMSIG_MOB_GHOSTIZED, PROC_REF(beg_for_ghost))
 
 /mob/living/basic/heretic_summon/star_gazer/Destroy()
+	procstart = null
+	src.procstart = null
 	deltimer(begging_timer)
 	return ..()
 
 /// Tries to find a ghost to take control of the mob. If no ghost accepts, ask again in a bit
 /mob/living/basic/heretic_summon/star_gazer/proc/beg_for_ghost()
+	procstart = null
+	src.procstart = null
 	if(timeleft(begging_timer) && !client)
 		return
 	begging_timer = addtimer(CALLBACK(src, PROC_REF(beg_for_ghost)), 2 MINUTES, TIMER_STOPPABLE | TIMER_UNIQUE) // Keep begging until someone accepts
@@ -111,6 +117,8 @@
 
 /// Connects these two mobs by a leash
 /mob/living/basic/heretic_summon/star_gazer/proc/leash_to(atom/movable/leashed, atom/movable/leashed_to)
+	procstart = null
+	src.procstart = null
 	leashed.AddComponent(\
 		/datum/component/leash,\
 		owner = leashed_to,\
@@ -121,6 +129,8 @@
 
 // Star gazer attacks everything around itself applies a spooky mark
 /mob/living/basic/heretic_summon/star_gazer/melee_attack(mob/living/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	if(target == summoner?.resolve())
 		return FALSE
 	. = ..()
@@ -150,6 +160,8 @@
 	cooldown_time = 5 SECONDS
 
 /datum/action/cooldown/recall_stargazer/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/heretic_summon/star_gazer/real_owner = owner
 	var/mob/living/master = real_owner.summoner?.resolve()
 	if(!master)
@@ -193,6 +205,8 @@
 	var/cycle_tracker = 0
 
 /datum/action/cooldown/spell/stargazer_laser/cast(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	cooldown_time = initial(cooldown_time)
@@ -241,15 +255,21 @@
 	process_beam()
 
 /datum/action/cooldown/spell/stargazer_laser/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(sound_loop)
 	return ..()
 
 /datum/action/cooldown/spell/stargazer_laser/New(Target, original)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	sound_loop = new
 
 /// Spawns the beginning of the laser, uses `targets` to determine the rotation
 /datum/action/cooldown/spell/stargazer_laser/proc/open_laser(mob/owner, list/turf/targets)
+	procstart = null
+	src.procstart = null
 	beam_visual = new(get_step(get_step(owner, owner.dir), owner.dir), targets[length(targets)])
 	end_visual = new(targets[length(targets)], owner)
 	for(var/turf/to_fill as anything in (get_line(targets[4], targets[length(targets)-2])))
@@ -268,6 +288,8 @@
 	SET_BASE_VISUAL_PIXEL(-32, -32)
 
 /obj/effect/abstract/gazer_beam/Initialize(mapload, turf/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!target)
 		return INITIALIZE_HINT_QDEL
@@ -285,6 +307,8 @@
 	icon_state = "gazer_beam"
 
 /obj/effect/abstract/gazer_beam_filling/Initialize(mapload, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!direction)
 		return INITIALIZE_HINT_QDEL
@@ -296,6 +320,8 @@
 	flick("gazer_beam_end_opening", src)
 
 /obj/effect/abstract/gazer_beam_filling/proc/pull_victims()
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/movable_atom in orange(5, src))
 		if((movable_atom.anchored || movable_atom.move_resist >= MOVE_FORCE_EXTREMELY_STRONG))
 			continue
@@ -310,6 +336,8 @@
 	icon = 'icons/effects/beam.dmi'
 
 /obj/effect/abstract/gazer_beamend/Initialize(mapload, atom/origin)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!origin)
 		return INITIALIZE_HINT_QDEL
@@ -330,15 +358,21 @@
 	alpha = 0
 
 /obj/effect/ebeam/phase_in/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, 2 SECONDS, alpha = 255, transform = matrix(3, 1, MATRIX_SCALE))
 
-/obj/effect/ebeam/phased_in/Initialize(mapload, beam_owner)  // phased in, fully powered laser
+/obj/effect/ebeam/phased_in/Initialize(mapload, beam_owner)
+	procstart = null
+	src.procstart = null  // phased in, fully powered laser
 	. = ..()
 	transform = matrix(2, 2, MATRIX_SCALE)
 
 /// Recursive proc which affects whatever is caught within the beam
 /datum/action/cooldown/spell/stargazer_laser/proc/process_beam()
+	procstart = null
+	src.procstart = null
 	if(cycle_tracker > 33)
 		stop_beaming()
 	for(var/obj/effect/abstract/gazer_beam_filling/fillings as anything in beam_fillings)
@@ -383,6 +417,8 @@
 
 /// Stops the beam after we cancel it
 /datum/action/cooldown/spell/stargazer_laser/proc/stop_beaming()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	sound_loop.stop()
 	UnregisterSignal(owner, list(COMSIG_MOVABLE_MOVED, COMSIG_ATOM_DIR_CHANGE))

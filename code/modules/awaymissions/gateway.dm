@@ -16,10 +16,14 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 
 /* Can a gateway link to this destination right now. */
 /datum/gateway_destination/proc/is_available()
+	procstart = null
+	src.procstart = null
 	return enabled && (world.time - SSticker.round_start_time >= wait)
 
 /* Returns user-friendly description why you can't connect to this destination, displayed in UI */
 /datum/gateway_destination/proc/get_available_reason()
+	procstart = null
+	src.procstart = null
 	. = "Unreachable"
 	if(world.time - SSticker.round_start_time < wait)
 		playsound(src, 'sound/machines/gateway/gateway_calibrating.ogg', 80, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
@@ -27,14 +31,20 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 
 /* Check if the movable is allowed to arrive at this destination (exile implants mostly) */
 /datum/gateway_destination/proc/incoming_pass_check(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /* Get the actual turf we'll arrive at */
 /datum/gateway_destination/proc/get_target_turf()
+	procstart = null
+	src.procstart = null
 	CRASH("get target turf not implemented for this destination type")
 
 /* Called after moving the movable to target turf */
 /datum/gateway_destination/proc/post_transfer(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if (ismob(AM))
 		var/mob/M = AM
 		if (M.client)
@@ -42,14 +52,20 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 
 /* Called when gateway activates with this destination. */
 /datum/gateway_destination/proc/activate(obj/machinery/gateway/activated)
+	procstart = null
+	src.procstart = null
 	return
 
 /* Called when gateway targeting this destination deactivates. */
 /datum/gateway_destination/proc/deactivate(obj/machinery/gateway/deactivated)
+	procstart = null
+	src.procstart = null
 	return
 
 /* Returns data used by gateway controller ui */
 /datum/gateway_destination/proc/get_ui_data()
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["ref"] = REF(src)
 	.["name"] = name
@@ -65,18 +81,26 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 
 /* We set the target gateway target to activator gateway */
 /datum/gateway_destination/gateway/activate(obj/machinery/gateway/activated)
+	procstart = null
+	src.procstart = null
 	if(!target_gateway.target)
 		target_gateway.activate(activated)
 
 /* We turn off the target gateway if it's linked with us */
 /datum/gateway_destination/gateway/deactivate(obj/machinery/gateway/deactivated)
+	procstart = null
+	src.procstart = null
 	if(target_gateway.target == deactivated.destination)
 		target_gateway.deactivate()
 
 /datum/gateway_destination/gateway/is_available()
+	procstart = null
+	src.procstart = null
 	return ..() && target_gateway.calibrated && !target_gateway.target && target_gateway.powered()
 
 /datum/gateway_destination/gateway/get_available_reason()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!target_gateway.calibrated)
 		. = "Exit gateway malfunction. Manual recalibration required."
@@ -86,9 +110,13 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 		. = "Exit gateway unpowered."
 
 /datum/gateway_destination/gateway/get_target_turf()
+	procstart = null
+	src.procstart = null
 	return get_step(target_gateway.portal, target_gateway.dir)
 
 /datum/gateway_destination/gateway/post_transfer(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(AM, TYPE_PROC_REF(/atom/movable, setDir), target_gateway.dir),0)
 
@@ -96,6 +124,8 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 /datum/gateway_destination/gateway/home
 
 /datum/gateway_destination/gateway/home/incoming_pass_check(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(isliving(AM))
 		if(check_exile_implant(AM))
 			return FALSE
@@ -112,6 +142,8 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 	return TRUE
 
 /datum/gateway_destination/gateway/home/proc/check_exile_implant(mob/living/L)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/implant/exile/E in L.implants)//Checking that there is an exile implant
 		to_chat(L, span_userdanger("The station gate has detected your exile implant and is blocking your entry."))
 		return TRUE
@@ -125,6 +157,8 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 	var/id
 
 /datum/gateway_destination/point/get_target_turf()
+	procstart = null
+	src.procstart = null
 	return pick(target_turfs)
 
 /* Dense invisible object starting the teleportation. Created by gateways on activation. */
@@ -134,11 +168,15 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 	invisibility = INVISIBILITY_ABSTRACT
 
 /obj/effect/gateway_portal_bumper/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(get_dir(src,AM) == gateway?.dir)
 		playsound(src, 'sound/machines/gateway/gateway_travel.ogg', 70, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		gateway.Transfer(AM)
 
 /obj/effect/gateway_portal_bumper/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	gateway = null
 
@@ -177,6 +215,8 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 	var/transport_active = FALSE
 
 /obj/machinery/gateway/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	generate_destination()
 	update_appearance()
 	portal_visuals = new
@@ -185,6 +225,8 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 	return ..()
 
 /obj/machinery/gateway/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(portal_visuals)
 	destination.target_gateway = null
 	GLOB.gateway_destinations -= destination
@@ -192,12 +234,16 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 	return ..()
 
 /obj/machinery/gateway/proc/generate_destination()
+	procstart = null
+	src.procstart = null
 	destination = new destination_type
 	destination.name = destination_name
 	destination.target_gateway = src
 	GLOB.gateway_destinations += destination
 
 /obj/machinery/gateway/proc/deactivate()
+	procstart = null
+	src.procstart = null
 	var/datum/gateway_destination/dest = target
 	target = null
 	playsound(src, 'sound/machines/gateway/gateway_close.ogg', 140, TRUE, TRUE, SOUND_RANGE)
@@ -209,6 +255,8 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 	portal_visuals.reset_visuals()
 
 /obj/machinery/gateway/process()
+	procstart = null
+	src.procstart = null
 	if((machine_stat & (NOPOWER)) && use_power)
 		teleportion_possible = FALSE
 		if(target)
@@ -224,6 +272,8 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 		break
 
 /obj/machinery/gateway/proc/valid_destination(datum/gateway_destination/possible_destination)
+	procstart = null
+	src.procstart = null
 	if(possible_destination == destination)
 		return FALSE
 	if(istype(possible_destination, /datum/gateway_destination/gateway))
@@ -233,6 +283,8 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 	return TRUE
 
 /obj/machinery/gateway/proc/show_light_overlays(light_state, toggle)
+	procstart = null
+	src.procstart = null
 	if(!toggle)
 		return list()
 
@@ -245,18 +297,26 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 	return to_animate
 
 /obj/machinery/gateway/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += show_light_overlays("portal_light", teleportion_possible)
 	. += show_light_overlays("portal_effect", transport_active)
 
 /obj/machinery/gateway/safe_throw_at(atom/target, range, speed, mob/thrower, spin = TRUE, diagonals_first = FALSE, datum/callback/callback, force = MOVE_FORCE_STRONG, gentle = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/gateway/proc/generate_bumper()
+	procstart = null
+	src.procstart = null
 	portal = new(get_turf(src))
 	portal.gateway = src
 
 /obj/machinery/gateway/proc/activate(datum/gateway_destination/D)
+	procstart = null
+	src.procstart = null
 	if(!powered() || target)
 		return
 	target = D
@@ -269,12 +329,16 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 	update_appearance()
 
 /obj/machinery/gateway/proc/Transfer(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(!target || !target.incoming_pass_check(AM))
 		return
 	AM.forceMove(target.get_target_turf())
 	target.post_transfer(AM)
 
 /obj/machinery/gateway/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -293,16 +357,22 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 	destination_name = "Home Gateway"
 
 /obj/machinery/gateway/centerstation/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!GLOB.the_gateway)
 		GLOB.the_gateway = src
 
 /obj/machinery/gateway/centerstation/Destroy()
+	procstart = null
+	src.procstart = null
 	if(GLOB.the_gateway == src)
 		GLOB.the_gateway = null
 	return ..()
 
 /obj/machinery/gateway/multitool_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(calibrated)
 		to_chat(user, span_alert("The gate is already calibrated, there is no work for you to do here."))
 	else
@@ -317,6 +387,8 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 	use_power = NO_POWER_USE
 
 /obj/machinery/gateway/away/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!target)
 		if(!GLOB.the_gateway)
@@ -335,10 +407,14 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 	var/obj/machinery/gateway/G
 
 /obj/machinery/computer/gateway_control/Initialize(mapload, obj/item/circuitboard/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	try_to_linkup()
 
 /obj/machinery/computer/gateway_control/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -347,6 +423,8 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 		ui.open()
 
 /obj/machinery/computer/gateway_control/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["gateway_present"] = G
 	.["gateway_status"] = G ? G.powered() : FALSE
@@ -361,6 +439,8 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 	.["destinations"] = destinations
 
 /obj/machinery/computer/gateway_control/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -378,13 +458,19 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 			return TRUE
 
 /obj/machinery/computer/gateway_control/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	G.portal_visuals.hide_from(user)
 
 /obj/machinery/computer/gateway_control/proc/try_to_linkup()
+	procstart = null
+	src.procstart = null
 	G = locate(/obj/machinery/gateway) in view(7,get_turf(src))
 
 /obj/machinery/computer/gateway_control/proc/try_to_connect(datum/gateway_destination/D)
+	procstart = null
+	src.procstart = null
 	if(!D || !G)
 		return
 	if(!D.is_available() || G.target)
@@ -401,6 +487,8 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 	var/atom/movable/screen/background/cam_background
 
 /atom/movable/screen/map_view/gateway_port/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cam_background = new
 	cam_background.del_on_map_removal = FALSE
@@ -411,27 +499,39 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 
 
 /atom/movable/screen/map_view/gateway_port/generate_view(map_key)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cam_background.assigned_map = assigned_map
 	cam_background.fill_rect(1, 1, 3, 3)
 
 /atom/movable/screen/map_view/gateway_port/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(cam_background)
 	return ..()
 
 /atom/movable/screen/map_view/gateway_port/display_on_ui_visible(mob/show_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	show_to.client.register_map_obj(cam_background)
 
 /atom/movable/screen/map_view/gateway_port/proc/setup_visuals(datum/gateway_destination/D)
+	procstart = null
+	src.procstart = null
 	our_destination = D
 	update_portal_filters()
 
 /atom/movable/screen/map_view/gateway_port/proc/reset_visuals()
+	procstart = null
+	src.procstart = null
 	our_destination = null
 	update_portal_filters()
 
 /atom/movable/screen/map_view/gateway_port/proc/update_portal_filters()
+	procstart = null
+	src.procstart = null
 	cam_background.clear_filters()
 	// ok so what this used to do was render the tiles "on the other side" of the gateway onto the gateway mask
 	// Unfortunately since I've removed the plane inheriting from /atom vis_flags, this no longer works

@@ -10,6 +10,8 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/monkey_equip/finish_action(datum/ai_controller/controller, success)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!success) // Don't try to pick this item up again
 		controller.set_blackboard_key_assoc(BB_MONKEY_BLACKLISTITEMS, controller.blackboard[target_key], TRUE)
@@ -20,10 +22,14 @@
 /datum/bt_node/ai_behavior/monkey_equip/ground
 
 /datum/bt_node/ai_behavior/monkey_equip/ground/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/item/target = controller.blackboard[target_key]
 	return !QDELETED(target)
 
 /datum/bt_node/ai_behavior/monkey_equip/ground/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/async_flags = handle_async()
 	if(async_flags)
 		return async_flags
@@ -31,6 +37,8 @@
 	return start_async()
 
 /datum/bt_node/ai_behavior/monkey_equip/ground/perform_async(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/result = equip_item(controller)
 	if(!async_still_valid())
 		return
@@ -40,16 +48,22 @@
 /datum/bt_node/ai_behavior/monkey_equip/pickpocket
 
 /datum/bt_node/ai_behavior/monkey_equip/pickpocket/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/item/target = controller.blackboard[target_key]
 	return !QDELETED(target)
 
 /datum/bt_node/ai_behavior/monkey_equip/pickpocket/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(controller.blackboard[BB_MONKEY_PICKPOCKETING]) // mid-snatch; wait
 		return AI_BEHAVIOR_DELAY
 	INVOKE_ASYNC(src, PROC_REF(attempt_pickpocket), controller)
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/monkey_equip/pickpocket/proc/attempt_pickpocket(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/item/target = controller.blackboard[BB_MONKEY_PICKUPTARGET]
 	var/mob/living/victim = target?.loc
 	var/mob/living/living_pawn = controller.pawn
@@ -78,11 +92,15 @@
 	finish_action(controller, success)
 
 /datum/bt_node/ai_behavior/monkey_equip/pickpocket/finish_action(datum/ai_controller/controller, success)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.set_blackboard_key(BB_MONKEY_PICKPOCKETING, FALSE)
 
 /// Shared item equip proc
 /datum/bt_node/ai_behavior/monkey_equip/proc/equip_item(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	var/obj/item/target = controller.blackboard[BB_MONKEY_PICKUPTARGET]
 	var/best_force = controller.blackboard[BB_MONKEY_BEST_FORCE_FOUND]
@@ -117,6 +135,8 @@
 /datum/target_source/monkey_weapon_upgrade
 
 /datum/target_source/monkey_weapon_upgrade/collect_candidates(mob/living/pawn, datum/ai_controller/controller, range)
+	procstart = null
+	src.procstart = null
 	var/list/candidates = list()
 	for(var/obj/item/ground_item in oview(range, pawn))
 		candidates += ground_item
@@ -128,6 +148,8 @@
 /datum/targeting_strategy/monkey_weapon_upgrade
 
 /datum/targeting_strategy/monkey_weapon_upgrade/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -142,6 +164,8 @@
 /datum/bt_node/ai_behavior/acquire_target/update_interaction_target/monkey_find_weapon
 
 /datum/bt_node/ai_behavior/acquire_target/update_interaction_target/monkey_find_weapon/can_search(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	if(!(locate(/obj/item) in living_pawn.held_items))
 		controller.set_blackboard_key(BB_MONKEY_BEST_FORCE_FOUND, 0)
@@ -151,6 +175,8 @@
 
 /// Prefers any gun once gun neurons are activated, else the strongest candidate that beats our current best held item.
 /datum/bt_node/ai_behavior/acquire_target/update_interaction_target/monkey_find_weapon/pick_final_target(datum/ai_controller/controller, list/filtered_targets)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 
 	if(controller.blackboard[BB_MONKEY_GUN_NEURONS_ACTIVATED])
@@ -173,6 +199,8 @@
 	return best
 
 /datum/bt_node/ai_behavior/acquire_target/update_interaction_target/monkey_find_weapon/on_target_found(datum/ai_controller/controller, atom/target, datum/targeting_strategy/strategy)
+	procstart = null
+	src.procstart = null
 	controller.set_blackboard_key(BB_MONKEY_PICKUP_IS_PICKPOCKET, ismob(target.loc) ? TRUE : null)
 
 
@@ -182,6 +210,8 @@
 	var/enemies_key
 
 /datum/bt_node/ai_behavior/monkey_set_combat_target/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	var/list/enemies = controller.blackboard[enemies_key]
 
@@ -225,6 +255,8 @@
 	VAR_PRIVATE/obj/item/attack_holding_weapon
 
 /datum/bt_node/ai_behavior/monkey_attack_mob/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/async_flags = handle_async()
 	if(async_flags)
 		return async_flags
@@ -247,6 +279,8 @@
 	return start_async()
 
 /datum/bt_node/ai_behavior/monkey_attack_mob/perform_async(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = controller.blackboard[target_key]
 	var/seconds_per_tick = attack_seconds_per_tick
 	var/obj/item/holding_weapon = attack_holding_weapon
@@ -265,12 +299,16 @@
 	finish_async(succeeded ? AI_BEHAVIOR_SUCCEEDED : AI_BEHAVIOR_FAILED)
 
 /datum/bt_node/ai_behavior/monkey_attack_mob/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	attack_seconds_per_tick = 0
 	attack_holding_weapon = null
 
 /// Attack with held weapon or bite; try to disarm if target is holding something
 /datum/bt_node/ai_behavior/monkey_attack_mob/proc/monkey_attack(datum/ai_controller/controller, mob/living/target, seconds_per_tick, disarm, holding_weapon)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 
 	if(living_pawn.next_move > world.time)
@@ -319,6 +357,8 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/recruit_monkeys/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	var/mob/living/attack_target = controller.blackboard[target_key]
 
@@ -338,6 +378,8 @@
 	var/give_target_key
 
 /datum/bt_node/ai_behavior/monkey_find_patrons/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	var/list/nearby_patrons = list()
 
@@ -362,6 +404,8 @@
 /datum/target_source/monkey_press_target
 
 /datum/target_source/monkey_press_target/collect_candidates(mob/living/pawn, datum/ai_controller/controller, range)
+	procstart = null
+	src.procstart = null
 	var/locate_path = controller.blackboard[BB_MONKEY_PRESS_TYPEPATH]
 	var/list/candidates = list()
 	for(var/obj/potential_candidate in oview(range, pawn))
@@ -376,6 +420,8 @@
 /datum/bt_node/ai_behavior/monkey_idle
 
 /datum/bt_node/ai_behavior/monkey_idle/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	if(SPT_PROB(25, seconds_per_tick) && (living_pawn.mobility_flags & MOBILITY_MOVE) && isturf(living_pawn.loc) && !living_pawn.pulledby)
 		var/move_dir = pick(GLOB.alldirs)

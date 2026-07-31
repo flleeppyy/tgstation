@@ -16,6 +16,8 @@
 	var/list/matching_paintings
 
 /datum/portrait_picker/New(user)//user can either be a client or a mob due to byondcode(tm)
+	procstart = null
+	src.procstart = null
 	if (istype(user, /client))
 		var/client/user_client = user
 		holder = user_client //if its a client, assign it to holder
@@ -24,23 +26,33 @@
 		holder = user_mob.client //if its a mob, assign the mob's client to holder
 
 /datum/portrait_picker/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PortraitPicker")
 		ui.open()
 
 /datum/portrait_picker/ui_close()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /datum/portrait_picker/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.conscious_state
 
 /datum/portrait_picker/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/simple/portraits)
 	)
 
 /datum/portrait_picker/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["paintings"] = matching_paintings || SSpersistent_paintings.painting_ui_data(filter = PAINTINGS_FILTER_AI_PORTRAIT)
 	data["search_string"] = search_string
@@ -48,6 +60,8 @@
 	return data
 
 /datum/portrait_picker/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -100,6 +114,8 @@
 			ai.update_appearance()
 
 /datum/portrait_picker/proc/generate_matching_paintings_list()
+	procstart = null
+	src.procstart = null
 	matching_paintings = null
 	if(!search_string)
 		return

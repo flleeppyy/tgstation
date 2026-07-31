@@ -1,6 +1,8 @@
 
 
 /mob/living/carbon/alien/larva/attack_hand(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -24,12 +26,16 @@
 		log_combat(user, src, "attacked and missed")
 
 /mob/living/carbon/alien/larva/attack_hulk(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	user.AddComponent(/datum/component/force_move, get_step_away(user,src, 30))
 
 /mob/living/carbon/alien/larva/do_attack_animation(atom/A, visual_effect_icon, obj/item/used_item, no_effect)
+	procstart = null
+	src.procstart = null
 	if(!no_effect && !visual_effect_icon)
 		visual_effect_icon = ATTACK_EFFECT_BITE
 	..()

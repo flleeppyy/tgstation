@@ -17,11 +17,15 @@
 	var/last_fire = 0
 
 /obj/item/gun/ballistic/revolver/process_fire(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		last_fire = world.time
 
 /obj/item/gun/ballistic/revolver/chamber_round(spin_cylinder = TRUE, replace_new_round)
+	procstart = null
+	src.procstart = null
 	if(!magazine) //if it mag was qdel'd somehow.
 		CRASH("revolver tried to chamber a round without a magazine!")
 	if(chambered)
@@ -37,14 +41,20 @@
 		RegisterSignal(chambered, COMSIG_MOVABLE_MOVED, PROC_REF(clear_chambered))
 
 /obj/item/gun/ballistic/revolver/shoot_with_empty_chamber(mob/living/user as mob|obj)
+	procstart = null
+	src.procstart = null
 	..()
 	chamber_round()
 
 /obj/item/gun/ballistic/revolver/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	spin_chamber(user)
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/gun/ballistic/revolver/fire_sounds()
+	procstart = null
+	src.procstart = null
 	var/frequency_to_use = sin((90/magazine?.max_ammo) * get_ammo(TRUE, FALSE)) // fucking REVOLVERS
 	var/click_frequency_to_use = 1 - frequency_to_use * 0.75
 	var/play_click = sqrt(magazine?.max_ammo) > get_ammo(TRUE, FALSE)
@@ -61,6 +71,8 @@ GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "Spin Chamber", null)
 	spin_chamber(usr)
 
 /obj/item/gun/ballistic/revolver/verb/spin_chamber(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) || IS_UNCONSCIOUS_OR_CRIT(user) || !in_range(user, src))
 		return
 
@@ -77,6 +89,8 @@ GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "Spin Chamber", null)
 		verbs -= /obj/item/gun/ballistic/revolver/verb/spin
 
 /obj/item/gun/ballistic/revolver/proc/do_spin()
+	procstart = null
+	src.procstart = null
 	var/obj/item/ammo_box/magazine/internal/cylinder/C = magazine
 	. = istype(C)
 	if(.)
@@ -84,6 +98,8 @@ GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "Spin Chamber", null)
 		chamber_round(spin_cylinder = FALSE)
 
 /obj/item/gun/ballistic/revolver/get_ammo(countchambered = FALSE, countempties = TRUE)
+	procstart = null
+	src.procstart = null
 	var/boolets = 0 //mature var names for mature people
 	if (chambered && countchambered)
 		boolets++
@@ -92,12 +108,16 @@ GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "Spin Chamber", null)
 	return boolets
 
 /obj/item/gun/ballistic/revolver/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/live_ammo = get_ammo(FALSE, FALSE)
 	. += "[live_ammo ? live_ammo : "None"] of those are live rounds."
 	. += span_notice("It can be spun with [EXAMINE_HINT("alt-click")].")
 
 /obj/item/gun/ballistic/revolver/ignition_effect(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	if(last_fire && last_fire + 15 SECONDS > world.time)
 		return span_rose("[user] touches the end of [src] to \the [A], using the residual heat to ignite it in a puff of smoke. What a badass.")
 
@@ -166,6 +186,8 @@ GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "Spin Chamber", null)
 	obj_flags = UNIQUE_RENAME
 
 /obj/item/gun/ballistic/revolver/c38/detective/setup_reskins()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/reskinable_item, /datum/atom_skin/det_revolver)
 
 /obj/item/gun/ballistic/revolver/badass
@@ -224,10 +246,14 @@ GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "Spin Chamber", null)
 	var/aim_time = 4 SECONDS
 
 /obj/item/gun/ballistic/revolver/russian/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You can change length of your pause before pulling the trigger with [EXAMINE_HINT("alt-right-click")].")
 
 /obj/item/gun/ballistic/revolver/russian/click_alt_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	if(loc != user)
 		to_chat(user, span_warning("You need to be holding the gun to determine how long you are going to pause!"))
 		return CLICK_ACTION_BLOCKING
@@ -239,39 +265,55 @@ GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "Spin Chamber", null)
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/gun/ballistic/revolver/russian/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	aim_time = initial(aim_time) // next person chooses their own time
 
 /obj/item/gun/ballistic/revolver/russian/do_spin()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		spun = TRUE
 
 /obj/item/gun/ballistic/revolver/russian/can_shoot()
+	procstart = null
+	src.procstart = null
 	return TRUE // we ALWAYS want to shoot. even if we don't have a chambered round, even if our chambered round has no bullet
 
 /obj/item/gun/ballistic/revolver/russian/load_gun(obj/item/ammo, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	do_spin()
 
 /obj/item/gun/ballistic/revolver/russian/can_trigger_gun(mob/living/user, akimbo_usage)
+	procstart = null
+	src.procstart = null
 	if(akimbo_usage)
 		return FALSE
 	return ..()
 
 /obj/item/gun/ballistic/revolver/russian/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!spun)
 		spin_chamber(user)
 		return TRUE
 	return ..()
 
 /obj/item/gun/ballistic/revolver/russian/handle_chamber(empty_chamber = TRUE, from_firing = TRUE, chamber_next_round = TRUE)
+	procstart = null
+	src.procstart = null
 	from_firing = FALSE // never eject casings from firing the gun
 	return ..()
 
 /obj/item/gun/ballistic/revolver/russian/try_fire_gun(atom/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return FALSE // melee attack
 	if(target != user)
@@ -299,6 +341,8 @@ GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "Spin Chamber", null)
 
 // Replaces clumsy check with a do after
 /obj/item/gun/ballistic/revolver/russian/check_botched(mob/living/user, atom/target)
+	procstart = null
+	src.procstart = null
 	if(aim_time <= 0)
 		return FALSE
 	user.visible_message(
@@ -319,6 +363,8 @@ GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "Spin Chamber", null)
 	return FALSE
 
 /obj/item/gun/ballistic/revolver/russian/before_firing(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(target != user)
 		CRASH("Russian revolver somehow got to before_firing with a target that isn't the user!")
 	// we will definitely have a chambered round, but not always projectile
@@ -330,6 +376,8 @@ GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "Spin Chamber", null)
 		chambered.loaded_projectile?.wound_bonus = 10
 
 /obj/item/gun/ballistic/revolver/russian/fire_gun(atom/target, mob/living/user, flag, params)
+	procstart = null
+	src.procstart = null
 	// . = false = no shot fired
 	. = ..()
 	spun = FALSE
@@ -368,12 +416,16 @@ GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "Spin Chamber", null)
 	return .
 
 /obj/item/gun/ballistic/revolver/russian/on_mail_unwrap(atom/source, mob/user, obj/item/mail/traitor/letter)
+	procstart = null
+	src.procstart = null
 	if((get_ammo(FALSE, FALSE) > 1) || (get_ammo(TRUE, TRUE) < 6))
 		return NONE
 	return ..()
 
 /// Called after successfully(if you can call it that) shooting ourselves
 /obj/item/gun/ballistic/revolver/russian/proc/shoot_self(mob/living/carbon/human/user, affecting = BODY_ZONE_HEAD)
+	procstart = null
+	src.procstart = null
 	user.add_mood_event(
 		"russian_roulette_lose",
 		affecting == BODY_ZONE_HEAD ? /datum/mood_event/russian_roulette_lose : /datum/mood_event/russian_roulette_lose_cheater,
@@ -384,6 +436,8 @@ GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "Spin Chamber", null)
 	desc = "To play with this revolver requires wagering your very soul."
 
 /obj/item/gun/ballistic/revolver/russian/soul/shoot_self(mob/living/user, affecting = BODY_ZONE_HEAD)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(affecting == BODY_ZONE_HEAD)
 		var/obj/item/soulstone/anybody/revolver/stone = new(user.drop_location())
@@ -408,6 +462,8 @@ GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "Spin Chamber", null)
 	clumsy_check = FALSE
 
 /obj/item/gun/ballistic/revolver/reverse/can_trigger_gun(mob/living/user, akimbo_usage)
+	procstart = null
+	src.procstart = null
 	if(akimbo_usage)
 		return FALSE
 	if(HAS_TRAIT(user, TRAIT_CLUMSY) || is_clown_job(user.mind?.assigned_role))

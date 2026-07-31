@@ -8,6 +8,8 @@
 	button_icon_state = "expel_worm"
 
 /datum/action/changeling_expel_worm/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	if (!IS_CHANGELING(owner))
 		return FALSE
 	if (!istype(owner, /mob/living/blood_worm_host))
@@ -19,6 +21,8 @@
 	return TRUE
 
 /datum/action/changeling_expel_worm/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

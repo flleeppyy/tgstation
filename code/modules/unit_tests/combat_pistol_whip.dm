@@ -2,6 +2,8 @@
 /datum/unit_test/pistol_whip
 
 /datum/unit_test/pistol_whip/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/attacker = EASY_ALLOCATE()
 	var/mob/living/carbon/human/consistent/victim = EASY_ALLOCATE()
 	var/obj/item/gun/ballistic/automatic/pistol/gun = EASY_ALLOCATE()
@@ -43,6 +45,8 @@
 /datum/unit_test/bayonet_butchering
 
 /datum/unit_test/bayonet_butchering/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/species/monkey/meat = EASY_ALLOCATE()
 	meat.death()
 

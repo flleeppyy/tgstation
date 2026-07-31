@@ -1,5 +1,7 @@
 /// Creates a list of outfit entries for the UI.
 /obj/machinery/netpod/proc/make_outfit_collection(identifier, list/outfit_list)
+	procstart = null
+	src.procstart = null
 	var/list/collection = list(
 		"name" = identifier,
 		"outfits" = list()
@@ -17,6 +19,8 @@
 
 /// Resolves a path to an outfit.
 /obj/machinery/netpod/proc/resolve_outfit(text)
+	procstart = null
+	src.procstart = null
 	var/path = text2path(text)
 	if(!ispath(path, /datum/outfit))
 		return

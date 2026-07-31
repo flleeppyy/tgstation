@@ -11,6 +11,8 @@
 	text_gain_indication = span_danger("You feel nervous.")
 
 /datum/mutation/nervousness/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(SPT_PROB(5, seconds_per_tick))
 		owner.set_stutter_if_lower(20 SECONDS)
 
@@ -23,17 +25,23 @@
 	text_lose_indication = span_notice("The off sensation passes.")
 
 /datum/mutation/wacky/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	RegisterSignal(owner, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 
 /datum/mutation/wacky/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	UnregisterSignal(owner, COMSIG_MOB_SAY)
 
 /datum/mutation/wacky/proc/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	speech_args[SPEECH_SPANS] |= SPAN_SANS
@@ -47,6 +55,8 @@
 	locked = TRUE
 
 /datum/mutation/heckacious/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -54,15 +64,21 @@
 	RegisterSignal(owner, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 
 /datum/mutation/heckacious/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	UnregisterSignal(owner, list(COMSIG_LIVING_TREAT_MESSAGE, COMSIG_MOB_SAY))
 
 /datum/mutation/heckacious/proc/handle_caps(atom/movable/source, list/message_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	message_args[TREAT_CAPITALIZE_MESSAGE] = FALSE
 
 /datum/mutation/heckacious/proc/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 
 	var/message = speech_args[SPEECH_MESSAGE]
 	if(!message)
@@ -142,12 +158,16 @@
 	text_lose_indication = span_danger("You feel able to speak freely again.")
 
 /datum/mutation/mute/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	ADD_TRAIT(owner, TRAIT_MUTE, GENETIC_MUTATION)
 
 /datum/mutation/mute/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	REMOVE_TRAIT(owner, TRAIT_MUTE, GENETIC_MUTATION)
@@ -161,12 +181,16 @@
 	text_lose_indication = span_danger("Your mind feels more clear.")
 
 /datum/mutation/unintelligible/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	ADD_TRAIT(owner, TRAIT_UNINTELLIGIBLE_SPEECH, GENETIC_MUTATION)
 
 /datum/mutation/unintelligible/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	REMOVE_TRAIT(owner, TRAIT_UNINTELLIGIBLE_SPEECH, GENETIC_MUTATION)
@@ -182,6 +206,8 @@
 	var/static/list/language_mutilation = list("w" = "v", "j" = "y", "bo" = "bjo", "a" = list("å","ä","æ","a"), "o" = list("ö","ø","o"))
 
 /datum/mutation/swedish/New(datum/mutation/copymut)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/speechmod, replacements = language_mutilation, end_string = list("",", bork",", bork, bork"), end_string_chance = 30)
 
@@ -195,6 +221,8 @@
 	text_lose_indication = span_notice("You no longer feel like being rude and sassy.")
 
 /datum/mutation/chav/New(datum/mutation/copymut)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/speechmod, replacements = strings("chav_replacement.json", "chav"), end_string = ", mate", end_string_chance = 30)
 
@@ -208,10 +236,14 @@
 	text_lose_indication = span_notice("You feel a little less conversation would be great.")
 
 /datum/mutation/elvis/New(datum/mutation/copymut)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/speechmod, replacements = strings("elvis_replacement.json", "elvis"))
 
 /datum/mutation/elvis/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	switch(pick(1,2))
 		if(1)
 			if(SPT_PROB(7.5, seconds_per_tick))
@@ -230,6 +262,8 @@
 	text_lose_indication = span_notice("You feel like you have a better sense of time.")
 
 /datum/mutation/stoner/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -237,6 +271,8 @@
 	owner.add_blocked_language(subtypesof(/datum/language) - /datum/language/beachbum, source = LANGUAGE_STONER)
 
 /datum/mutation/stoner/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	..()
 	owner.remove_language(/datum/language/beachbum, source = LANGUAGE_STONER)
 	owner.remove_blocked_language(subtypesof(/datum/language) - /datum/language/beachbum, source = LANGUAGE_STONER)
@@ -251,17 +287,23 @@
 	text_lose_indication = span_notice("You no longer feel like seeking anything.")
 
 /datum/mutation/medieval/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	RegisterSignal(owner, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 
 /datum/mutation/medieval/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	UnregisterSignal(owner, COMSIG_MOB_SAY)
 
 /datum/mutation/medieval/proc/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/message = speech_args[SPEECH_MESSAGE]
@@ -294,17 +336,23 @@
 	text_lose_indication = span_notice("The off sensation passes.")
 
 /datum/mutation/piglatin/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	RegisterSignal(owner, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 
 /datum/mutation/piglatin/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	UnregisterSignal(owner, COMSIG_MOB_SAY)
 
 /datum/mutation/piglatin/proc/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/spoken_message = speech_args[SPEECH_MESSAGE]

@@ -8,6 +8,8 @@
 
 /// Returns one of the human blood types at random, weighted by their rarity
 /proc/random_human_blood_type()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/blood_type)
 	return get_blood_type(pick_weight(
 		list(
@@ -22,6 +24,8 @@
 		)))
 
 /proc/random_eye_color()
+	procstart = null
+	src.procstart = null
 	switch(pick(20;"brown",20;"hazel",20;"grey",15;"blue",15;"green",1;"amber",1;"albino"))
 		if("brown")
 			return COLOR_BROWNER_BROWN
@@ -41,6 +45,8 @@
 			return COLOR_BLACK
 
 /proc/random_hair_color()
+	procstart = null
+	src.procstart = null
 	var/static/list/natural_hair_colors = list(
 		"#111111", "#362925", "#3B3831", "#41250C", "#412922",
 		"#544C49", "#583322", "#593029", "#703b30", "#714721",
@@ -55,6 +61,8 @@
 	return pick(natural_hair_colors)
 
 /proc/random_underwear(gender)
+	procstart = null
+	src.procstart = null
 	if(length(SSaccessories.underwear_list) == 0)
 		CRASH("No underwear to choose from!")
 	switch(gender)
@@ -66,6 +74,8 @@
 			return pick(SSaccessories.underwear_list)
 
 /proc/random_undershirt(gender)
+	procstart = null
+	src.procstart = null
 	if(length(SSaccessories.undershirt_list) == 0)
 		CRASH("No undershirts to choose from!")
 	switch(gender)
@@ -77,14 +87,20 @@
 			return pick(SSaccessories.undershirt_list)
 
 /proc/random_socks()
+	procstart = null
+	src.procstart = null
 	if(length(SSaccessories.socks_list) == 0)
 		CRASH("No socks to choose from!")
 	return pick(SSaccessories.socks_list)
 
 /proc/random_backpack()
+	procstart = null
+	src.procstart = null
 	return pick(GLOB.backpacklist)
 
 /proc/random_hairstyle(gender)
+	procstart = null
+	src.procstart = null
 	switch(gender)
 		if(MALE)
 			return pick(SSaccessories.hairstyles_male_list)
@@ -94,6 +110,8 @@
 			return pick(SSaccessories.hairstyles_list)
 
 /proc/random_facial_hairstyle(gender)
+	procstart = null
+	src.procstart = null
 	switch(gender)
 		if(MALE)
 			return pick(SSaccessories.facial_hairstyles_male_list)
@@ -141,6 +159,8 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 ))
 
 /proc/age2agedescription(age)
+	procstart = null
+	src.procstart = null
 	switch(age)
 		if(0 to 1)
 			return "infant"
@@ -165,12 +185,16 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 
 /// Returns the total amount of do_afters this mob is taking part in
 /mob/proc/do_after_count()
+	procstart = null
+	src.procstart = null
 	var/count = 0
 	for(var/key in do_afters)
 		count += do_afters[key]
 	return count
 
 /proc/is_species(A, species_datum)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(ishuman(A))
 		var/mob/living/carbon/human/H = A
@@ -180,6 +204,8 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 /// Returns if the given target is a human. Like, a REAL human.
 /// Not a moth, not a felinid (which are human subtypes), but a human.
 /proc/ishumanbasic(target)
+	procstart = null
+	src.procstart = null
 	if (!ishuman(target))
 		return FALSE
 
@@ -187,6 +213,8 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 	return human_target.dna?.species?.type == /datum/species/human
 
 /proc/spawn_atom_to_turf(spawn_type, target, amount, admin_spawn=FALSE, list/extra_args)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(target)
 	if(!T)
 		CRASH("attempt to spawn atom type: [spawn_type] in nullspace")
@@ -202,6 +230,8 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 	return X //return the last mob spawned
 
 /proc/spawn_and_random_walk(spawn_type, target, amount, walk_chance=100, max_walk=3, always_max_walk=FALSE, admin_spawn=FALSE, cardinals_only = TRUE)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(target)
 	var/step_count = 0
 	if(!T)
@@ -239,6 +269,8 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 // Displays a message in deadchat, sent by source. source is not linkified, message is, to avoid stuff like character names to be linkified.
 // Automatically gives the class deadsay to the whole message (message + source)
 /proc/deadchat_broadcast(message, source=null, mob/follow_target=null, turf/turf_target=null, speaker_key=null, message_type=DEADCHAT_REGULAR, admin_only=FALSE, original_message)
+	procstart = null
+	src.procstart = null
 	message = span_deadsay("[source][span_linkify(message)]")
 
 	if(admin_only)
@@ -311,6 +343,8 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 
 //Used in chemical_mob_spawn. Generates a random mob based on a given gold_core_spawnable value.
 /proc/create_random_mob(spawn_location, mob_class = HOSTILE_SPAWN)
+	procstart = null
+	src.procstart = null
 	var/static/list/mob_spawn_meancritters = list() // list of possible hostile mobs
 	var/static/list/mob_spawn_nicecritters = list() // and possible friendly mobs
 
@@ -338,6 +372,8 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 	return spawned_mob
 
 /proc/dance_rotate(atom/movable/AM, datum/callback/callperrotate, set_original_dir=FALSE)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	var/originaldir = AM.dir
 	for(var/i in list(NORTH,SOUTH,EAST,WEST,EAST,SOUTH,NORTH,SOUTH,EAST,WEST,EAST,SOUTH))
@@ -355,6 +391,8 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 
 //Returns a list of unslaved cyborgs
 /proc/active_free_borgs()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/mob/living/silicon/robot/borg in GLOB.silicon_mobs)
 		if(borg.connected_ai || borg.shell)
@@ -367,6 +405,8 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 
 //Returns a list of AI's
 /proc/active_ais(check_mind = FALSE, z = null, skip_syndicate = FALSE, only_syndicate = FALSE)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/mob/living/silicon/ai/ai as anything in GLOB.ai_list)
 		if(ai.stat == DEAD)
@@ -386,6 +426,8 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 
 //Find an active ai with the least borgs. VERBOSE PROCNAME HUH!
 /proc/select_active_ai_with_fewest_borgs(z)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/ai/selected
 	var/list/active = active_ais(FALSE, z)
 	for(var/mob/living/silicon/ai/A in active)
@@ -395,6 +437,8 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 	return selected
 
 /proc/select_active_free_borg(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/borgs = active_free_borgs()
 	if(borgs.len)
 		if(user)
@@ -404,6 +448,8 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 	return .
 
 /proc/select_active_ai(mob/user, z = null, skip_syndicate, only_syndicate)
+	procstart = null
+	src.procstart = null
 	var/list/ais = active_ais(FALSE, z, skip_syndicate, only_syndicate)
 	if(ais.len)
 		if(user)
@@ -422,6 +468,8 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
  * * change_rate (optional)(Default: 0.06) The rate of range multiplier
  */
 /proc/get_temp_change_amount(temp_diff, change_rate = 0.06)
+	procstart = null
+	src.procstart = null
 	if(temp_diff < 0)
 		return -(BODYTEMP_AUTORECOVERY_DIVISOR / 2) * log(1 - (temp_diff * change_rate))
 	return (BODYTEMP_AUTORECOVERY_DIVISOR / 2) * log(1 + (temp_diff * change_rate))
@@ -434,6 +482,8 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 
 ///Orders mobs by type then by name. Accepts optional arg to sort a custom list, otherwise copies GLOB.mob_list.
 /proc/sort_mobs()
+	procstart = null
+	src.procstart = null
 	var/list/moblist = list()
 	var/list/sortmob = sort_names(GLOB.mob_list)
 	for(var/mob/living/silicon/ai/mob_to_sort in sortmob)
@@ -467,6 +517,8 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 
 ///returns a mob type controlled by a specified ckey
 /proc/get_mob_by_ckey(key)
+	procstart = null
+	src.procstart = null
 	if(!key)
 		return
 	var/mob/persistent_mob = GLOB.persistent_clients_by_ckey[key]?.mob
@@ -479,12 +531,16 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 
 /// Returns a string for the specified body zone. If we have a bodypart in this zone, refers to its plaintext_zone instead.
 /mob/living/proc/parse_zone_with_bodypart(zone)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/part = get_bodypart(zone)
 
 	return part?.plaintext_zone || parse_zone(zone)
 
 ///Return a string for the specified body zone. Should be used for parsing non-instantiated bodyparts, otherwise use [/obj/item/bodypart/var/plaintext_zone]
 /proc/parse_zone(zone)
+	procstart = null
+	src.procstart = null
 	switch(zone)
 		if(BODY_ZONE_CHEST)
 			return "chest"
@@ -513,6 +569,8 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 
 ///Takes a zone and returns its "parent" zone, if it has one.
 /proc/deprecise_zone(precise_zone)
+	procstart = null
+	src.procstart = null
 	switch(precise_zone)
 		if(BODY_ZONE_PRECISE_GROIN)
 			return BODY_ZONE_CHEST
@@ -533,6 +591,8 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 
 ///Returns a list of strings for a given slot flag.
 /proc/parse_slot_flags(slot_flags)
+	procstart = null
+	src.procstart = null
 	var/list/slot_strings = list()
 	if(slot_flags & ITEM_SLOT_BACK)
 		slot_strings += "back"
@@ -574,6 +634,8 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 
 ///Returns the direction that the initiator and the target are facing
 /proc/check_target_facings(mob/living/initiator, mob/living/target)
+	procstart = null
+	src.procstart = null
 	/*This can be used to add additional effects on interactions between mobs depending on how the mobs are facing each other, such as adding a crit damage to blows to the back of a guy's head.
 	Given how click code currently works (Nov '13), the initiating mob will be facing the target mob most of the time
 	That said, this proc should not be used if the change facing proc of the click code is overridden at the same time*/
@@ -589,6 +651,8 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 
 ///Returns the occupant mob or brain from a specified input
 /proc/get_mob_or_brainmob(occupant)
+	procstart = null
+	src.procstart = null
 	var/mob/living/mob_occupant
 
 	if(isliving(occupant))
@@ -602,6 +666,8 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 
 ///Generalised helper proc for letting mobs rename themselves. Used to be clname() and ainame()
 /mob/proc/apply_pref_name(preference_type, client/requesting_client)
+	procstart = null
+	src.procstart = null
 	if(!requesting_client)
 		requesting_client = client
 	var/oldname = real_name
@@ -638,6 +704,8 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 
 ///Returns the amount of currently living players
 /proc/living_player_count()
+	procstart = null
+	src.procstart = null
 	var/living_player_count = 0
 	for(var/mob in GLOB.player_list)
 		if(mob in GLOB.alive_mob_list)
@@ -648,6 +716,8 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 
 ///Version of view() which ignores darkness, because BYOND doesn't have it (I actually suggested it but it was tagged redundant, BUT HEARERS IS A T- /rant).
 /proc/dview(range = world.view, center, invis_flags = 0)
+	procstart = null
+	src.procstart = null
 	if(!center)
 		return
 
@@ -665,7 +735,9 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 	move_resist = INFINITY
 	var/ready_to_die = FALSE
 
-/mob/dview/Initialize(mapload) //Properly prevents this mob from gaining huds or joining any global lists
+/mob/dview/Initialize(mapload)
+	procstart = null
+	src.procstart = null //Properly prevents this mob from gaining huds or joining any global lists
 	SHOULD_CALL_PARENT(FALSE)
 	if(flags_1 & INITIALIZED_1)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
@@ -673,6 +745,8 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 	return INITIALIZE_HINT_NORMAL
 
 /mob/dview/Destroy(force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ready_to_die)
 		stack_trace("ALRIGHT WHICH FUCKER TRIED TO DELETE *MY* DVIEW?")
 
@@ -693,6 +767,8 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 
 ///Makes a call in the context of a different usr. Use sparingly
 /world/proc/push_usr(mob/user_mob, datum/callback/invoked_callback, ...)
+	procstart = null
+	src.procstart = null
 	var/temp = usr
 	usr = user_mob
 	if (length(args) > 2)
@@ -710,6 +786,8 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
  * * additional args may be supplied to pass into the mood event constructor.
  */
 /proc/add_personality_mood_to_viewers(atom/movable/source, mood_key, list/personality_to_mood, range, ...)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/nearby in viewers(range, source))
 		if(IS_UNCONSCIOUS(nearby) || nearby.is_blind())
 			continue

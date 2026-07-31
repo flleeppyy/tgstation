@@ -16,10 +16,14 @@
 	var/datum/team/cult/cult_team
 
 /obj/structure/destructible/cult/Destroy()
+	procstart = null
+	src.procstart = null
 	cult_team = null
 	return ..()
 
 /obj/structure/destructible/cult/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismob(crafter))
 		return
@@ -29,6 +33,8 @@
 
 /// Tries to find a cultist. If it succeeds, it also takes advantage of the moment to define the structure's cult team if it's not set yet.
 /obj/structure/destructible/cult/proc/is_cultist_check(mob/fool)
+	procstart = null
+	src.procstart = null
 
 	if(!IS_CULTIST(fool))
 		return FALSE
@@ -40,11 +46,15 @@
 	return TRUE
 
 /obj/structure/destructible/cult/examine_status(mob/user)
+	procstart = null
+	src.procstart = null
 	if(is_cultist_check(user) || isobserver(user))
 		return span_cult("It's at <b>[round(atom_integrity * 100 / max_integrity)]%</b> stability.")
 	return ..()
 
 /obj/structure/destructible/cult/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("[src] is [anchored ? "secured to":"unsecured from"] the floor.")
 	if(is_cultist_check(user) || isobserver(user))
@@ -54,12 +64,16 @@
 			. += span_cult_italic("The magic in [src] is too weak, it will be ready to use again in <b>[DisplayTimeText(COOLDOWN_TIMELEFT(src, use_cooldown_duration))]</b>.")
 
 /obj/structure/destructible/cult/set_anchored(anchorvalue)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.))
 		return
 	update_appearance(UPDATE_ICON)
 
 /obj/structure/destructible/cult/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)][anchored ? "" : "_off"]"
 	return ..()
 
@@ -67,6 +81,8 @@
  * Proc for use with the concealing spell. Hides the building (makes it invisible).
  */
 /obj/structure/destructible/cult/proc/conceal()
+	procstart = null
+	src.procstart = null
 	set_density(FALSE)
 	visible_message(span_danger("[src] fades away."))
 	SetInvisibility(INVISIBILITY_OBSERVER, id=type)
@@ -79,6 +95,8 @@
  * Proc for use with the concealing spell. Reveals the building (makes it visible).
  */
 /obj/structure/destructible/cult/proc/reveal()
+	procstart = null
+	src.procstart = null
 	set_density(initial(density))
 	RemoveInvisibility(type)
 	visible_message(span_danger("[src] suddenly appears!"))
@@ -95,10 +113,14 @@
 	var/obj/mansus_conversion_path = /obj/item/skub
 
 /obj/structure/destructible/cult/item_dispenser/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	setup_options()
 
 /obj/structure/destructible/cult/item_dispenser/rust_heretic_act()
+	procstart = null
+	src.procstart = null
 	visible_message(span_notice("[src] crumbles to dust. In its midst, you spot \a [initial(mansus_conversion_path.name)]."))
 	var/turf/turfy = get_turf(src)
 	new mansus_conversion_path(turfy)
@@ -106,6 +128,8 @@
 	return ..()
 
 /obj/structure/destructible/cult/item_dispenser/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -145,6 +169,8 @@
  *   )
  */
 /obj/structure/destructible/cult/item_dispenser/proc/setup_options()
+	procstart = null
+	src.procstart = null
 	return
 
 /*
@@ -157,6 +183,8 @@
  *   )
  */
 /obj/structure/destructible/cult/item_dispenser/proc/extra_options()
+	procstart = null
+	src.procstart = null
 	return
 
 /*
@@ -166,6 +194,8 @@
  * Return a list: A list of typepaths to items that this building will spawn, chosen by the user.
  */
 /obj/structure/destructible/cult/item_dispenser/proc/get_items_to_spawn(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(options))
 		CRASH("[type] did not set any options via setup_options!")
 
@@ -197,6 +227,8 @@
  * Override for unique feedback messages on item spawn.
  */
 /obj/structure/destructible/cult/item_dispenser/proc/succcess_message(mob/living/user, obj/item/spawned_item)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_cult_italic("[src] produces a [spawned_item.name]."))
 
 /*
@@ -205,6 +237,8 @@
  * Returns TRUE if the user is a living mob that is a cultist and is not incapacitated.
  */
 /obj/structure/destructible/cult/item_dispenser/proc/check_menu(mob/user)
+	procstart = null
+	src.procstart = null
 	return isliving(user) && is_cultist_check(user) && !user.incapacitated
 
 // Spooky looking door used in gateways. Or something.
@@ -217,7 +251,11 @@
 	anchored = TRUE
 
 /obj/effect/gateway/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/gateway/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return

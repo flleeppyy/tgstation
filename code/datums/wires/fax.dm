@@ -3,11 +3,15 @@
 	proper_name = "Fax Unit"
 
 /datum/wires/fax/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(WIRE_SHOCK, WIRE_SIGNAL, WIRE_THROW, WIRE_LOADCHECK,)
 	add_duds(1)
 	return ..()
 
 /datum/wires/fax/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -18,6 +22,8 @@
 		return TRUE
 
 /datum/wires/fax/get_status()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/fax/machine = holder
 	var/list/status = list()
 	status += "A red light is [machine.seconds_electrified ? "blinking" : "off"]."
@@ -27,6 +33,8 @@
 	return status
 
 /datum/wires/fax/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/fax/machine = holder
 	switch(wire)
 		if(WIRE_SHOCK)
@@ -39,6 +47,8 @@
 			machine.allow_exotic_faxes = !machine.allow_exotic_faxes
 
 /datum/wires/fax/on_cut(wire, mend, source)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/fax/machine = holder
 	switch(wire)
 		if(WIRE_SHOCK)

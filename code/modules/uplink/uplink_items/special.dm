@@ -15,6 +15,8 @@
 	cost = 5
 
 /datum/uplink_item/special/autosurgeon/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(HAS_TRAIT(SSstation, STATION_TRAIT_CYBERNETIC_REVOLUTION))
 		purchasable_from |= UPLINK_TRAITORS

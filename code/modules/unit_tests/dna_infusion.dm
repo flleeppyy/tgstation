@@ -2,6 +2,8 @@
 /datum/unit_test/valid_dna_infusion
 
 /datum/unit_test/valid_dna_infusion/Run()
+	procstart = null
+	src.procstart = null
 	for(var/datum/infuser_entry/infuser_entry as anything in assoc_to_values(GLOB.infuser_entries))
 		for(var/datum/input_type as anything in infuser_entry.input_obj_or_mob)
 			if(ispath(input_type, /mob/living))
@@ -19,6 +21,8 @@
 /datum/unit_test/organ_set_bonus_id
 
 /datum/unit_test/organ_set_bonus_id/Run()
+	procstart = null
+	src.procstart = null
 	var/list/bonus_effects = typesof(/datum/status_effect/organ_set_bonus)
 	var/list/existing_ids = list()
 	for(var/datum/status_effect/organ_set_bonus/bonus_effect as anything in bonus_effects)
@@ -32,6 +36,8 @@
 /datum/unit_test/organ_set_bonus_sanity
 
 /datum/unit_test/organ_set_bonus_sanity/Run()
+	procstart = null
+	src.procstart = null
 	/// List of infuser_entry typepaths which contain species-changing organs.
 	/// Species change swaps out all the organs, making test_organ un-usable after insertion.
 	var/list/species_changing_entries = typecacheof(list(

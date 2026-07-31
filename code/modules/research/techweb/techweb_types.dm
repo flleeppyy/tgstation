@@ -7,6 +7,8 @@
 	should_generate_points = TRUE
 
 /datum/techweb/science/research_node(datum/techweb_node/node, force = FALSE, auto_adjust_cost = TRUE, get_that_dosh = TRUE, atom/research_source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		node.on_station_research(research_source)
@@ -17,6 +19,8 @@
 	should_generate_points = TRUE
 
 /datum/techweb/oldstation/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	research_node_id(TECHWEB_NODE_OLDSTATION_SURGERY, TRUE, TRUE, FALSE)
 
@@ -28,6 +32,8 @@
 	organization = "Central Command"
 
 /datum/techweb/admin/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in SSresearch.techweb_nodes)
 		var/datum/techweb_node/TN = SSresearch.techweb_nodes[i]
@@ -57,6 +63,8 @@ GLOBAL_LIST_EMPTY(autounlock_techwebs)
 	var/list/hacked_designs = list()
 
 /datum/techweb/autounlocking/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/id in SSresearch.techweb_designs)
 		var/datum/design/design = SSresearch.techweb_designs[id]
@@ -68,6 +76,8 @@ GLOBAL_LIST_EMPTY(autounlock_techwebs)
 			add_design_by_id(id, add_to = hacked_designs)
 
 /datum/techweb/autounlocking/add_design(datum/design/design, custom = FALSE, list/add_to)
+	procstart = null
+	src.procstart = null
 	if(!(design.build_type & allowed_buildtypes))
 		return FALSE
 	return ..()

@@ -1,0 +1,95 @@
+-- dirs top
+ 66.2068s  code
+ 40.0218s  code/modules
+ 13.8882s  code/game
+  9.1402s  code/game/objects
+  8.8843s  code/datums
+  6.4145s  code/modules/mob
+  5.9235s  code/modules/mob/living
+  5.2852s  code/game/objects/items
+  3.7108s  code/modules/antagonists
+  3.4345s  code/game/machinery
+  3.0264s  code/modules/mob/living/basic
+  2.9226s  code/datums/components
+  2.5046s  code/game/objects/structures
+  2.0305s  code/modules/reagents
+  1.7063s  code/modules/research
+  1.6148s  code/modules/food_and_drinks
+  1.5613s  code/modules/surgery
+  1.5462s  code/modules/admin
+  1.4672s  code/modules/clothing
+  1.3676s  code/modules/reagents/chemistry
+  1.2947s  code/modules/projectiles
+  1.2205s  code/controllers
+  1.1691s  code/game/objects/effects
+  1.1595s  code/modules/mob/living/carbon
+  1.1418s  code/datums/elements
+  1.1137s  code/controllers/subsystem
+  1.1095s  code/modules/atmospherics
+  1.1009s  code/modules/antagonists/heretic
+  1.0155s  code/modules/wiremod
+  1.0111s  code/modules/power
+
+-- files
+  0.1871s  code/modules/mob/living/living.dm
+  0.1568s  code/modules/reagents/chemistry/reagents/other_reagents.dm
+  0.1503s  code/game/objects/items/cards_ids.dm
+  0.1487s  code/modules/research/designs/AI_module_designs.dm
+  0.1358s  code/modules/research/designs/medical_designs.dm
+  0.1289s  code/game/machinery/doors/airlock.dm
+  0.1286s  code/game/objects/items/toys.dm
+  0.1245s  code/modules/admin/verb_datums/_admin_verb_datum.dm
+  0.1187s  code/game/objects/items.dm
+  0.1159s  code/modules/reagents/chemistry/reagents/drinks/alcohol_reagents.dm
+  0.1111s  code/modules/fishing/fish/_fish.dm
+  0.1001s  code/modules/mapping/mapping_helpers.dm
+  0.0999s  code/modules/mob/mob.dm
+  0.0941s  code/modules/hydroponics/hydroponics.dm
+  0.0934s  code/modules/mod/modules/modules_ninja.dm
+  0.0926s  code/game/objects/structures/tables_racks.dm
+  0.0918s  code/modules/mob/living/silicon/ai/vox_sounds.dm
+  0.0913s  code/modules/surgery/bodyparts/_bodyparts.dm
+  0.0880s  code/modules/mob/living/carbon/human/_species.dm
+  0.0878s  code/modules/food_and_drinks/recipes/soup_mixtures.dm
+  0.0866s  code/modules/food_and_drinks/recipes/tablecraft/recipes_guide.dm
+  0.0857s  code/modules/reagents/chemistry/reagents/medicine_reagents.dm
+  0.0851s  code/modules/antagonists/cult/runes.dm
+  0.0847s  code/modules/research/xenobiology/xenobiology.dm
+  0.0846s  code/modules/reagents/chemistry/reagents/toxin_reagents.dm
+  0.0842s  code/modules/mod/modules/modules_general.dm
+  0.0820s  code/game/objects/structures/window.dm
+  0.0818s  code/game/gamemodes/objective_items.dm
+  0.0794s  code/game/atoms_movable.dm
+  0.0793s  code/modules/art/paintings.dm
+
+--compiler stages (can be dismissed prolly)
+ 14.2742s  Processing objects
+  2.3272s  code/controllers/subsystem/job.dm:767:warning (set_at_top): =: assignment of procedural properties takes place at compile-time; move this to the top of the procedure to avoid this warning
+  0.5887s  Total time: 1:25
+  0.2803s  code/__HELPERS/chat.dm:78:warning (set_at_top): =: assignment of procedural properties takes place at compile-time; move this to the top of the procedure to avoid this warning
+  0.2325s  Assigning parent types
+  0.1983s  Generation pass #5
+  0.1530s  Generation pass #4
+  0.1088s  code/modules/escape_menu/escape_menu.dm:6:warning (set_at_top): =: assignment of procedural properties takes place at compile-time; move this to the top of the procedure to avoid this warning
+  0.0947s  code/modules/admin/admin_ranks.dm:364:warning (set_at_top): =: assignment of procedural properties takes place at compile-time; move this to the top of the procedure to avoid this warning
+  0.0348s  Parsing stage complete.
+  0.0268s  code/modules/antagonists/cult/runes.dm:705:warning (set_at_top): =: assignment of procedural properties takes place at compile-time; move this to the top of the procedure to avoid this warning
+  0.0209s  code/modules/buildmode/buildmode.dm:209:warning (set_at_top): =: assignment of procedural properties takes place at compile-time; move this to the top of the procedure to avoid this warning
+  0.0165s  code/controllers/subsystem/ticker.dm:303:warning (set_at_top): =: assignment of procedural properties takes place at compile-time; move this to the top of the procedure to avoid this warning
+  0.0068s  code/modules/wiremod/core/duplicator.dm:233:warning (set_at_top): =: assignment of procedural properties takes place at compile-time; move this to the top of the procedure to avoid this warning
+  0.0053s  Generation pass #2
+  0.0037s  code/modules/client/verbs/ooc.dm:191:warning (set_at_top): =: assignment of procedural properties takes place at compile-time; move this to the top of the procedure to avoid this warning
+  0.0035s  code/modules/client/verbs/ooc.dm:422:warning (set_at_top): =: assignment of procedural properties takes place at compile-time; move this to the top of the procedure to avoid this warning
+  0.0033s  code/modules/client/verbs/ooc.dm:315:warning (set_at_top): =: assignment of procedural properties takes place at compile-time; move this to the top of the procedure to avoid this warning
+  0.0028s  code/modules/mob/dead/observer/observer.dm:703:warning (set_at_top): =: assignment of procedural properties takes place at compile-time; move this to the top of the procedure to avoid this warning
+  0.0026s  code/datums/components/puzzgrid.dm:317:warning (set_at_top): =: assignment of procedural properties takes place at compile-time; move this to the top of the procedure to avoid this warning
+  0.0026s  code/modules/client/verbs/ooc.dm:162:warning (set_at_top): =: assignment of procedural properties takes place at compile-time; move this to the top of the procedure to avoid this warning
+  0.0023s  code/modules/mob/living/silicon/ai/ai.dm:684:warning (set_at_top): =: assignment of procedural properties takes place at compile-time; move this to the top of the procedure to avoid this warning
+  0.0022s  code/modules/admin/verbs/grant_dna_infusion.dm:6:warning (set_at_top): =: assignment of procedural properties takes place at compile-time; move this to the top of the procedure to avoid this warning
+  0.0020s  code/modules/antagonists/malf_ai/malf_ai_modules.dm:217:warning (set_at_top): =: assignment of procedural properties takes place at compile-time; move this to the top of the procedure to avoid this warning
+  0.0019s  code/modules/mob/living/silicon/ai/ai.dm:643:warning (set_at_top): =: assignment of procedural properties takes place at compile-time; move this to the top of the procedure to avoid this warning
+  0.0019s  Generation pass #3
+  0.0017s  DM compiler version 516.1666
+  0.0015s  code/modules/mob/dead/dead.dm:40:warning (set_at_top): =: assignment of procedural properties takes place at compile-time; move this to the top of the procedure to avoid this warning
+  0.0015s  code/modules/clothing/masks/hailer.dm:145:warning (set_at_top): in: assignment of procedural properties takes place at compile-time; move this to the top of the procedure to avoid this warning
+  0.0014s  code/__HELPERS/roundend.dm:227:warning (set_at_top): =: assignment of procedural properties takes place at compile-time; move this to the top of the procedure to avoid this warning

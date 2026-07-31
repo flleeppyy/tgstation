@@ -13,11 +13,15 @@
 	icon_dead = "maid_dead"
 
 /mob/living/basic/alien/maid/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/cleaning)
 
 ///Handles the maid attacking other players, cancelling the attack to clean up instead.
 /mob/living/basic/alien/maid/early_melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -47,6 +51,8 @@
 	var/obj/item/card/id/access_card
 
 /mob/living/basic/alien/maid/barmaid/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Simple bot ID card that can hold all accesses. Someone turn access into a component at some point, please.
 	access_card = new /obj/item/card/id/advanced/simple_bot(src)
@@ -58,5 +64,7 @@
 	AddComponentFrom(ROUNDSTART_TRAIT, /datum/component/area_based_godmode, area_type = /area/shuttle/escape, allow_area_subtypes = TRUE)
 
 /mob/living/basic/alien/maid/barmaid/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(access_card)
 	return ..()

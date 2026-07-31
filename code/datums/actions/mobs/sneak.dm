@@ -14,6 +14,8 @@
 	var/animation_time = 0.5 SECONDS
 
 /datum/action/cooldown/mob_cooldown/sneak/Remove(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(remove_from, TRAIT_SNEAK))
 		remove_from.alpha = initial(remove_from.alpha)
 		REMOVE_TRAIT(remove_from, TRAIT_SNEAK, ACTION_TRAIT)
@@ -21,6 +23,8 @@
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/sneak/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(owner, TRAIT_SNEAK))
 		// It's safest to go to the initial alpha of the mob.
 		// Otherwise we get permanent invisbility exploits.

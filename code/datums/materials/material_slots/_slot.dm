@@ -11,9 +11,13 @@
 /// Called when the material in this slot is applied to the atom. Return FALSE to prevent base apply_single_mat_effect from running.
 /// If the material is main, main material application will also be cancelled. Should be consistent with on_removed.
 /datum/material_slot/proc/on_applied(atom/target, datum/material/material, amount, multiplier)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Called when the material in this slot is removed from the atom. Return FALSE to prevent base remove_single_mat_effect from running.
 /// If the material is main, main material removal will also be cancelled. Should be consistent with on_applied.
 /datum/material_slot/proc/on_removed(atom/target, datum/material/material, amount, multiplier)
+	procstart = null
+	src.procstart = null
 	return TRUE

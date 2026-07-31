@@ -20,6 +20,8 @@
 	var/tmp/exploding = FALSE
 
 /datum/component/explodable/Initialize(devastation_range, heavy_impact_range, light_impact_range, flame_range, flash_range, uncapped = FALSE, delete_after = EXPLODABLE_DELETE_PARENT)
+	procstart = null
+	src.procstart = null
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -55,30 +57,40 @@
 
 /// Explode if our parent is a storage place and something with high heat is inserted in.
 /datum/component/explodable/proc/explodable_insert_item(datum/source, obj/item/I)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!(I.item_flags & IN_STORAGE))
 		return
 	check_if_detonate(I)
 
 /datum/component/explodable/proc/explodable_impact(datum/source, atom/hit_atom, datum/thrownthing/throwing_datum, caught)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!caught)
 		check_if_detonate(hit_atom)
 
 /datum/component/explodable/proc/explodable_bump(datum/source, atom/A)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	check_if_detonate(A)
 
 ///Called when you use this object to attack sopmething
 /datum/component/explodable/proc/explodable_attack(datum/source, atom/movable/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	check_if_detonate(target)
 
 /// Welder check. Here because tool_act is higher priority than attackby.
 /datum/component/explodable/proc/welder_react(datum/source, mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(check_if_detonate(tool))
@@ -86,6 +98,8 @@
 
 /// Shot by something
 /datum/component/explodable/proc/projectile_react(datum/source, obj/projectile/shot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(shot.damage_type == BURN && shot.damage > 0)
@@ -93,6 +107,8 @@
 
 ///Called when you attack a specific body part of the thing this is equipped on. Useful for exploding pants.
 /datum/component/explodable/proc/explodable_attack_zone(datum/source, damage, damagetype, def_zone, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!def_zone)
@@ -107,17 +123,23 @@
 	detonate()
 
 /datum/component/explodable/proc/on_equip(datum/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	RegisterSignal(equipper, COMSIG_MOB_APPLY_DAMAGE,  PROC_REF(explodable_attack_zone), TRUE)
 
 /datum/component/explodable/proc/on_drop(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(user, COMSIG_MOB_APPLY_DAMAGE)
 
 /// Checks if we're hitting the zone this component is covering
 /datum/component/explodable/proc/is_hitting_zone(def_zone)
+	procstart = null
+	src.procstart = null
 	var/obj/item/item = parent
 	var/mob/living/carbon/wearer = item.loc //Get whoever is equipping the item currently
 	if(!istype(wearer))
@@ -133,6 +155,8 @@
 	return FALSE
 
 /datum/component/explodable/proc/check_if_detonate(target)
+	procstart = null
+	src.procstart = null
 	if(!isitem(target))
 		return
 	var/obj/item/I = target
@@ -142,6 +166,8 @@
 
 /// Explode and remove the object
 /datum/component/explodable/proc/detonate()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (exploding)
 		return // If we don't do this and this doesn't delete it can lock the MC into only processing Input, Timers, and Explosions.
@@ -168,5 +194,7 @@
  * Resets the expoding flag
  */
 /datum/component/explodable/proc/reset_exploding()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	src.exploding = FALSE

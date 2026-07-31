@@ -10,6 +10,8 @@
 	random_icon_states = list("tomato_floor1", "tomato_floor2", "tomato_floor3")
 
 /obj/effect/decal/cleanable/food/tomato_smudge/can_bloodcrawl_in()
+	procstart = null
+	src.procstart = null
 	return TRUE // why? why not.
 
 /obj/effect/decal/cleanable/food/plant_smudge
@@ -38,25 +40,35 @@
 	)
 
 /obj/effect/decal/cleanable/food/salt/Initialize(mapload, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/effect/decal/cleanable/food/salt/Destroy(force)
+	procstart = null
+	src.procstart = null
 	// connect_loc only unregisters via COMSIG_MOVABLE_MOVED, which never fires when the turf we're on gets replaced by ChangeTurf()
 	RemoveElement(/datum/element/connect_loc, loc_connections)
 	return ..()
 
 /obj/effect/decal/cleanable/food/salt/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_species(mover, /datum/species/snail))
 		return FALSE
 
 /obj/effect/decal/cleanable/food/salt/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_species(AM, /datum/species/snail))
 		to_chat(AM, span_danger("Your path is obstructed by [span_phobia("salt")]."))
 
 /obj/effect/decal/cleanable/food/salt/proc/on_entered(datum/source, atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(AM))
@@ -84,5 +96,7 @@
 	color = COLOR_DARK
 
 /obj/effect/decal/cleanable/food/squid_ink/Initialize(mapload, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	icon_state = "floor[rand(1, 7)]"
 	return ..()

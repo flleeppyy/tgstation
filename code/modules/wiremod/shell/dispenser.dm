@@ -19,15 +19,21 @@
 	var/locked = FALSE
 
 /obj/structure/dispenser_bot/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/stored_item as anything in stored_items)
 		remove_item(stored_item)
 
 /obj/structure/dispenser_bot/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(stored_items)
 	return ..()
 
 
 /obj/structure/dispenser_bot/proc/add_item(mob/user, obj/item/to_add)
+	procstart = null
+	src.procstart = null
 	balloon_alert(user, "inserted item")
 	stored_items += to_add
 	to_add.forceMove(src)
@@ -36,15 +42,21 @@
 	SEND_SIGNAL(src, COMSIG_DISPENSERBOT_ADD_ITEM, to_add)
 
 /obj/structure/dispenser_bot/proc/handle_stored_item_moved(obj/item/moving_item, atom/location)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(location != src)
 		remove_item(moving_item)
 
 /obj/structure/dispenser_bot/proc/handle_stored_item_deleted(obj/item/deleting_item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	remove_item(deleting_item)
 
 /obj/structure/dispenser_bot/proc/remove_item(obj/item/to_remove)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(to_remove, list(
 		COMSIG_MOVABLE_MOVED,
 		COMSIG_QDELETING,
@@ -55,12 +67,16 @@
 
 
 /obj/structure/dispenser_bot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/shell, list(
 		new /obj/item/circuit_component/dispenser_bot()
 	), SHELL_CAPACITY_LARGE)
 
 /obj/structure/dispenser_bot/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (user.combat_mode)
 		return NONE
 
@@ -85,6 +101,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/dispenser_bot/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		return
 	set_anchored(!anchored)
@@ -116,6 +134,8 @@
 
 
 /obj/item/circuit_component/dispenser_bot/populate_ports()
+	procstart = null
+	src.procstart = null
 	item_list = add_output_port("Items", PORT_TYPE_LIST(PORT_TYPE_ATOM))
 
 	item = add_output_port("Item", PORT_TYPE_ATOM)
@@ -123,11 +143,15 @@
 	on_item_removed = add_output_port("On Item Removed", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/dispenser_bot/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(shell, COMSIG_DISPENSERBOT_ADD_ITEM, PROC_REF(on_shell_add_item))
 	RegisterSignal(shell, COMSIG_DISPENSERBOT_REMOVE_ITEM, PROC_REF(on_shell_remove_item))
 
 /obj/item/circuit_component/dispenser_bot/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(shell, list(
 		COMSIG_DISPENSERBOT_ADD_ITEM,
 		COMSIG_DISPENSERBOT_REMOVE_ITEM,
@@ -135,18 +159,24 @@
 	return ..()
 
 /obj/item/circuit_component/dispenser_bot/proc/on_shell_add_item(obj/structure/dispenser_bot/source, obj/item/added_item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	item.set_output(added_item)
 	item_list.set_output(source.stored_items)
 	on_item_added.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/dispenser_bot/proc/on_shell_remove_item(obj/structure/dispenser_bot/source, obj/item/added_item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	item.set_output(added_item)
 	item_list.set_output(source.stored_items)
 	on_item_added.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/dispenser_bot/proc/remove_vendor_component(obj/item/circuit_component/vendor_component/vendor_component)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(vendor_component, list(
 		COMSIG_QDELETING,
@@ -157,6 +187,8 @@
 	vendor_components -= vendor_component
 
 /obj/item/circuit_component/dispenser_bot/ui_perform_action(mob/user, action)
+	procstart = null
+	src.procstart = null
 	switch(action)
 		if("add_vend_component")
 			if(length(vendor_components) >= max_vendor_components)
@@ -186,19 +218,27 @@
 	circuit_size = 0
 
 /obj/item/circuit_component/vendor_component/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/structure/dispenser_bot))
 		attached_bot = shell
 
 /obj/item/circuit_component/vendor_component/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	attached_bot = null
 	return ..()
 
 /obj/item/circuit_component/vendor_component/populate_ports()
+	procstart = null
+	src.procstart = null
 	item_to_vend = add_input_port("Item", PORT_TYPE_ATOM, trigger = null)
 	vend_item = add_input_port("Vend Item", PORT_TYPE_SIGNAL, trigger = PROC_REF(vend_item))
 
 /obj/item/circuit_component/vendor_component/proc/vend_item(datum/port/input/port, list/return_values)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!attached_bot)
 		return

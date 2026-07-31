@@ -66,12 +66,16 @@
 	)
 
 /datum/species/plasmaman/pre_equip_species_outfit(datum/job/job, mob/living/carbon/human/equipping, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(job?.plasmaman_outfit)
 		equipping.equipOutfit(job.plasmaman_outfit, visuals_only)
 	else
 		give_important_for_life(equipping)
 
 /datum/species/plasmaman/get_scream_sound(mob/living/carbon/human)
+	procstart = null
+	src.procstart = null
 	return pick(
 		'sound/mobs/humanoids/plasmaman/plasmeme_scream_1.ogg',
 		'sound/mobs/humanoids/plasmaman/plasmeme_scream_2.ogg',
@@ -79,15 +83,21 @@
 	)
 
 /datum/species/plasmaman/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "Plasmamen literally breathe and live plasma. They spontaneously combust on contact with oxygen, and besides all the quirks that go with that, \
 		they're very vulnerable to all kinds of physical damage due to their brittle structure."
 
 /datum/species/plasmaman/get_species_description()
+	procstart = null
+	src.procstart = null
 	return "Found on the Icemoon of Freyja, plasmamen consist of colonial \
 		fungal organisms which together form a sentient being. In human space, \
 		they're usually attached to skeletons to afford a human touch."
 
 /datum/species/plasmaman/get_species_lore()
+	procstart = null
+	src.procstart = null
 	return list(
 		"A confusing species, plasmamen are truly \"a fungus among us\". \
 		What appears to be a singular being is actually a colony of millions of organisms \
@@ -107,6 +117,8 @@
 	)
 
 /datum/species/plasmaman/create_pref_unique_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 
 	to_add += list(

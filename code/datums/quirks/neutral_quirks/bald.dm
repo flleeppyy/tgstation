@@ -13,6 +13,8 @@
 	var/old_hair
 
 /datum/quirk/item_quirk/bald/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	old_hair = human_holder.hairstyle
 	human_holder.set_hairstyle("Bald", update = TRUE)
@@ -20,6 +22,8 @@
 	RegisterSignal(human_holder, COMSIG_MOB_UNEQUIPPED_ITEM, PROC_REF(unequip_hat))
 
 /datum/quirk/item_quirk/bald/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/head/wig/natural/baldie_wig = new(get_turf(quirk_holder))
 	if(old_hair == "Bald")
 		baldie_wig.hairstyle = pick(SSaccessories.hairstyles_list - "Bald")
@@ -31,6 +35,8 @@
 	give_item_to_holder(baldie_wig, list(LOCATION_HEAD, LOCATION_BACKPACK, LOCATION_HANDS), notify_player = FALSE)
 
 /datum/quirk/item_quirk/bald/give_item_to_holder(obj/item/quirk_item, list/valid_slots, flavour_text = null, default_location = "at your feet", notify_player = TRUE)
+	procstart = null
+	src.procstart = null
 	var/any_head = FALSE
 	for(var/place_loc in valid_slots)
 		if(valid_slots[place_loc] & ITEM_SLOT_HEAD)
@@ -65,6 +71,8 @@
 	comp.attach_hat(existing)
 
 /datum/quirk/item_quirk/bald/remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	if(human_holder.hairstyle == "Bald" && old_hair != "Bald")
@@ -74,6 +82,8 @@
 
 ///Checks if the headgear equipped is a wig and sets the mood event accordingly
 /datum/quirk/item_quirk/bald/proc/equip_hat(mob/user, obj/item/possible_hat, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!(slot & ITEM_SLOT_HEAD))
@@ -86,6 +96,8 @@
 
 ///Applies a bad moodlet for having an uncovered head
 /datum/quirk/item_quirk/bald/proc/unequip_hat(mob/user, obj/item/possible_hat, old_slot, force, newloc, no_move, invdrop, silent)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (old_slot & ITEM_SLOT_HEAD)

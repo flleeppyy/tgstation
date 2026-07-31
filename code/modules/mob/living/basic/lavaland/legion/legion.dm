@@ -35,6 +35,8 @@
 	var/has_emissive = TRUE
 
 /mob/living/basic/mining/legion/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/content_barfer)
 	var/list/drops = get_loot_list()
@@ -46,6 +48,8 @@
 
 /// Give the Legion its spells
 /mob/living/basic/mining/legion/proc/assign_abilities()
+	procstart = null
+	src.procstart = null
 	var/datum/action/cooldown/mob_cooldown/skull_launcher/skull_launcher = new(src)
 	skull_launcher.Grant(src)
 	skull_launcher.spawn_type = brood_type
@@ -53,10 +57,14 @@
 
 /// Create what we want to drop on death, in proc form so we can always return a static list
 /mob/living/basic/mining/legion/proc/get_loot_list()
+	procstart = null
+	src.procstart = null
 	var/static/list/death_loot = list(/obj/item/organ/monster_core/regenerative_core/legion)
 	return death_loot
 
 /mob/living/basic/mining/legion/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (gone != stored_mob)
 		return
@@ -67,17 +75,23 @@
 	stored_mob = null
 
 /mob/living/basic/mining/legion/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if (isnull(stored_mob))
 		new corpse_type(loc)
 	return ..()
 
 /mob/living/basic/mining/legion/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (stat != DEAD && has_emissive) // Shouldn't really happen but just in case
 		. += emissive_appearance(icon, "[icon_living]_e", src, effect_type = EMISSIVE_BLOOM)
 
 /// Put a corpse in this guy
 /mob/living/basic/mining/legion/proc/consume(mob/living/carbon/human/consumed)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/gibspawner/generic(consumed.loc)
 	gender = consumed.gender
 	if (!ismonkey(consumed) || consumed == GLOB.the_one_and_only_punpun)
@@ -102,6 +116,8 @@
 /// A Legion which only drops skeletons instead of corpses which might have fun loot, so it cannot be farmed
 
 /mob/living/basic/mining/legion/proc/on_consumed_revive(full_heal_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	gib()
 
@@ -123,6 +139,8 @@
 	has_emissive = FALSE
 
 /mob/living/basic/mining/legion/snow/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/appearance_on_aggro, aggro_state = "snowlegion_alive") // Surprise! I was real!
 
@@ -163,6 +181,8 @@
 	has_emissive = FALSE
 
 /mob/living/basic/mining/legion/large/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(\
 		/datum/component/spawner,\
@@ -175,5 +195,7 @@
 
 /// Create what we want to drop on death, in proc form so we can always return a static list
 /mob/living/basic/mining/legion/large/get_loot_list()
+	procstart = null
+	src.procstart = null
 	var/static/list/death_loot = list(/obj/item/organ/monster_core/regenerative_core/legion = 3, /obj/effect/mob_spawn/corpse/human/legioninfested = 4)
 	return death_loot

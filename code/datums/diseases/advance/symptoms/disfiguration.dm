@@ -20,6 +20,8 @@
 	symptom_cure = /datum/reagent/consumable/milk
 
 /datum/symptom/disfiguration/Activate(datum/disease/advance/disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -37,6 +39,8 @@
 
 
 /datum/symptom/disfiguration/End(datum/disease/advance/disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

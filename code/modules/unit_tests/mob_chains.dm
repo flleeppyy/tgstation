@@ -2,6 +2,8 @@
 /datum/unit_test/mob_chains
 
 /datum/unit_test/mob_chains/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/centipede_head = allocate(/mob/living/basic/pet/dog)
 	var/list/segments = list(centipede_head)
 	centipede_head.AddComponent(/datum/component/mob_chain)

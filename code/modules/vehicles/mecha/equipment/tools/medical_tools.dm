@@ -4,18 +4,26 @@
 	mech_flags = EXOSUIT_MODULE_MEDICAL
 
 /obj/item/mecha_parts/mecha_equipment/medical/attach(obj/vehicle/sealed/mecha/new_mecha)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/mecha_parts/mecha_equipment/medical/mechmedbeam/detach(atom/moveto)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/medical/process()
+	procstart = null
+	src.procstart = null
 	if(!chassis)
 		return PROCESS_KILL
 
 /obj/item/mecha_parts/mecha_equipment/proc/get_reagent_data(list/datum/reagent/reagent_list)
+	procstart = null
+	src.procstart = null
 	var/list/contained_reagents = list()
 	if(length(reagent_list))
 		for(var/datum/reagent/reagent as anything in reagent_list)
@@ -35,14 +43,20 @@
 	var/mob/living/carbon/patient
 
 /obj/item/mecha_parts/mecha_equipment/sleeper/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/content as anything in src)
 		content.forceMove(get_turf(src))
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/sleeper/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	go_out()
 
 /obj/item/mecha_parts/mecha_equipment/sleeper/action(mob/source, atom/atomtarget, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!action_checks(atomtarget))
 		return
 	if(!iscarbon(atomtarget))
@@ -65,6 +79,8 @@
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/sleeper/proc/patient_insertion_check(mob/living/carbon/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isnull(target.buckled))
 		to_chat(user, "[icon2html(src, user)][span_warning("[target] will not fit into the sleeper because [target.p_theyre()] buckled to [target.buckled]!")]")
 		return FALSE
@@ -77,6 +93,8 @@
 	return TRUE
 
 /obj/item/mecha_parts/mecha_equipment/sleeper/proc/go_out()
+	procstart = null
+	src.procstart = null
 	if(!patient)
 		return
 	patient.forceMove(get_turf(src))
@@ -86,6 +104,8 @@
 	patient = null
 
 /obj/item/mecha_parts/mecha_equipment/sleeper/detach()
+	procstart = null
+	src.procstart = null
 	if(patient)
 		to_chat(chassis.occupants, "[icon2html(src, chassis.occupants)][span_warning("Unable to detach [src] - equipment occupied!")]")
 		return
@@ -93,6 +113,8 @@
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/sleeper/get_snowflake_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list("snowflake_id" = MECHA_SNOWFLAKE_ID_SLEEPER)
 	if(isnull(patient))
 		return data
@@ -127,12 +149,16 @@
 	return data
 
 /obj/item/mecha_parts/mecha_equipment/sleeper/handle_ui_act(action, list/params)
+	procstart = null
+	src.procstart = null
 	if(action == "eject")
 		go_out()
 		return TRUE
 	return FALSE
 
 /obj/item/mecha_parts/mecha_equipment/sleeper/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!chassis.has_charge(energy_drain))
 		log_message("Deactivated.", LOG_MECHA)
 		to_chat(chassis.occupants, "[icon2html(src, chassis.occupants)][span_warning("[src] deactivated - no power.")]")
@@ -170,6 +196,8 @@
 	var/inject_amount = 10
 
 /obj/item/mecha_parts/mecha_equipment/sleeper/medical/get_snowflake_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 	if(isnull(patient))
 		return data
@@ -179,6 +207,8 @@
 	return data
 
 /obj/item/mecha_parts/mecha_equipment/sleeper/medical/handle_ui_act(action, list/params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -190,6 +220,8 @@
 				break // or maybe return TRUE? i'm not certain
 
 /obj/item/mecha_parts/mecha_equipment/sleeper/medical/proc/inject_reagent(datum/reagent/reagent_to_inject, obj/item/mecha_parts/mecha_equipment/medical/syringe_gun/SG)
+	procstart = null
+	src.procstart = null
 	if(!reagent_to_inject || !patient || !SG || !(SG in chassis.flat_equipment))
 		return
 	var/to_inject = min(reagent_to_inject.volume, inject_amount)
@@ -229,19 +261,27 @@
 	var/mode = FIRE_SYRINGE_MODE // fire syringe or analyze reagents.
 
 /obj/item/mecha_parts/mecha_equipment/medical/syringe_gun/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(max_volume, NO_REACT)
 	known_reagents = list(/datum/reagent/medicine/epinephrine="Epinephrine",/datum/reagent/medicine/c2/multiver="Multiver")
 
 /obj/item/mecha_parts/mecha_equipment/medical/syringe_gun/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/medical/syringe_gun/detach()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/medical/syringe_gun/get_snowflake_data()
+	procstart = null
+	src.procstart = null
 	var/list/analyzed_reagents = list() // we need to make this list because .tsk wont map over an indexed array
 	for(var/i=1 to known_reagents.len)
 		var/enabled = FALSE
@@ -262,6 +302,8 @@
 	return data
 
 /obj/item/mecha_parts/mecha_equipment/medical/syringe_gun/handle_ui_act(action, list/params)
+	procstart = null
+	src.procstart = null
 	if(action == "change_mode")
 		mode = !mode
 		return TRUE
@@ -276,6 +318,8 @@
 				synthesize(reagent_id)
 
 /obj/item/mecha_parts/mecha_equipment/medical/syringe_gun/proc/synthesize(reagent)
+	procstart = null
+	src.procstart = null
 	if(reagent in processed_reagents)
 		LAZYREMOVE(processed_reagents, reagent)
 		return
@@ -291,6 +335,8 @@
 	log_message("Reagent processing started.", LOG_MECHA)
 
 /obj/item/mecha_parts/mecha_equipment/medical/syringe_gun/action(mob/source, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!action_checks(target))
 		return
 	if(istype(target, /obj/item/reagent_containers/syringe))
@@ -317,6 +363,8 @@
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/medical/syringe_gun/proc/load_syringe(obj/item/reagent_containers/syringe/S, mob/user)
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(syringes) >= max_syringes)
 		to_chat(user, "[icon2html(src, user)][span_warning("[src]'s syringe chamber is full!")]")
 		return FALSE
@@ -330,6 +378,8 @@
 	return TRUE
 
 /obj/item/mecha_parts/mecha_equipment/medical/syringe_gun/proc/analyze_reagents(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	if(get_dist(src,A) >= 4)
 		to_chat(user, "[icon2html(src, user)][span_notice("The object is too far away!")]")
 		return FALSE
@@ -344,6 +394,8 @@
 	return TRUE
 
 /obj/item/mecha_parts/mecha_equipment/medical/syringe_gun/proc/add_known_reagent(r_id,r_name)
+	procstart = null
+	src.procstart = null
 	if(r_id in known_reagents)
 		return FALSE
 	known_reagents += r_id
@@ -351,6 +403,8 @@
 	return TRUE
 
 /obj/item/mecha_parts/mecha_equipment/medical/syringe_gun/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -380,14 +434,20 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT*7.5, /datum/material/glass = SHEET_MATERIAL_AMOUNT*4, /datum/material/plasma = SHEET_MATERIAL_AMOUNT*1.5, /datum/material/gold = SHEET_MATERIAL_AMOUNT*4, /datum/material/diamond =SHEET_MATERIAL_AMOUNT)
 
 /obj/item/mecha_parts/mecha_equipment/medical/mechmedbeam/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	medigun = new(src)
 
 /obj/item/mecha_parts/mecha_equipment/medical/mechmedbeam/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(medigun)
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/medical/mechmedbeam/process(deltatime)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !length(chassis.occupants))
 		return
@@ -396,9 +456,13 @@
 	medigun.process(SSOBJ_DT)
 
 /obj/item/mecha_parts/mecha_equipment/medical/mechmedbeam/action(mob/source, atom/movable/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	medigun.process_fire(target, loc)
 
 /obj/item/mecha_parts/mecha_equipment/medical/mechmedbeam/detach()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	medigun.LoseTarget()
 	return ..()

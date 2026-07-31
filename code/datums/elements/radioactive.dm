@@ -16,6 +16,8 @@
 	var/list/radioactive_objects = list()
 
 /datum/element/radioactive/New()
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSdcs, src)
 
 /datum/element/radioactive/Attach(
@@ -36,11 +38,15 @@
 	src.minimum_exposure_time = minimum_exposure_time
 
 /datum/element/radioactive/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	radioactive_objects -= source
 
 	return ..()
 
 /datum/element/radioactive/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	for (var/radioactive_object in radioactive_objects)
 		if (world.time - radioactive_objects[radioactive_object] < DELAY_BETWEEN_RADIATION_PULSES)
 			continue

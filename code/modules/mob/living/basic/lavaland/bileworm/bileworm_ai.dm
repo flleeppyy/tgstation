@@ -17,6 +17,8 @@
 	var/target_key = BB_CURRENT_TARGET
 
 /datum/bt_node/decorator/bileworm_should_resurface/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(controller.blackboard[BB_BILEWORM_SCARED])
 		return TRUE
 	var/atom/target = controller.blackboard[target_key]

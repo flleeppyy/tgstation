@@ -30,12 +30,16 @@
 	COOLDOWN_DECLARE(tamper_cooldown)
 
 /obj/item/forensics_spoofer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// most things have add_fingerprint in their item interaction because lol lmao
 	// tl;dr cut off the chain before anything fires so we dont add user fingerprints to target
 	RegisterSignal(src, COMSIG_ITEM_INTERACTING_WITH_ATOM, PROC_REF(do_interact))
 
 /obj/item/forensics_spoofer/attack_self_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -45,6 +49,8 @@
 
 // ok due to shenanigans basically every item interact adds your fingerprints to it which isnt ideal so we have this
 /obj/item/forensics_spoofer/proc/do_interact(datum/source, mob/living/user, atom/interacting_with, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(scan_mode)
 		INVOKE_ASYNC(src, PROC_REF(scan), interacting_with, user)
@@ -53,6 +59,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/forensics_spoofer/proc/do_fake_scan(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(silent_mode)
 		return
 	playsound(src, SFX_INDUSTRIAL_SCAN, 20, TRUE, -2, TRUE, FALSE)
@@ -61,10 +69,14 @@
 	)
 
 /obj/item/forensics_spoofer/proc/clear_values(list/the_list)
+	procstart = null
+	src.procstart = null
 	for(var/key in the_list)
 		the_list[key] = ""
 
 /obj/item/forensics_spoofer/proc/scan(atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	do_fake_scan(target, user)
 	if(isnull(target.forensics))
 		target.balloon_alert(user, "nothing!")
@@ -105,6 +117,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/forensics_spoofer/proc/tamper(atom/target, mob/living/user, do_fibers = FALSE)
+	procstart = null
+	src.procstart = null
 	do_fake_scan(target, user)
 	if((!do_fibers && isnull(chosen_fingerprint)) || (do_fibers && isnull(chosen_fiber)))
 		balloon_alert(user, "no [do_fibers ? "fiber" : "fingerprint"] selected!") // we CAN automatically select it but if they dont have it selected then they likely didnt know of it in the first place so they learn it now
@@ -130,6 +144,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/forensics_spoofer/proc/get_name_from_fingerprint(fingerprint)
+	procstart = null
+	src.procstart = null
 	. = "Unknown"
 	for(var/datum/record/crew/player_record as anything in GLOB.manifest.general)
 		if(player_record.fingerprint != fingerprint)
@@ -137,20 +153,28 @@
 		return player_record.name
 
 /obj/item/forensics_spoofer/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.hands_state
 
 /obj/item/forensics_spoofer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ForensicsSpoofer", name)
 		ui.open()
 
 /obj/item/forensics_spoofer/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list(
 		"max_storage" = max_storage,
 	)
 
 /obj/item/forensics_spoofer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		"scanmode" = scan_mode,
 		"silent" = silent_mode,
@@ -161,6 +185,8 @@
 	)
 
 /obj/item/forensics_spoofer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

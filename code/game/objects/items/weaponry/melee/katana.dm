@@ -25,12 +25,16 @@
 	var/list/alt_simple = list("stab", "pierce", "impale")
 
 /obj/item/katana/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	alt_continuous = string_list(alt_continuous)
 	alt_simple = string_list(alt_simple)
 	AddComponent(/datum/component/alternative_sharpness, SHARP_POINTY, alt_continuous, alt_simple, -15)
 
 /obj/item/katana/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(attack_type == OVERWHELMING_ATTACK)
 		final_block_chance = 0 //Not a high freuqnecy blade, sorry pal
 	return ..()
@@ -40,6 +44,8 @@
 	acid = 50
 
 /obj/item/katana/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is slitting [user.p_their()] stomach open with [src]! It looks like [user.p_theyre()] trying to commit seppuku!"))
 	return BRUTELOSS
 

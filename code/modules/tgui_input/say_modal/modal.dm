@@ -10,6 +10,8 @@
  * string - A JSON encoded message to open the modal.
  */
 /client/proc/tgui_say_create_open_command(channel)
+	procstart = null
+	src.procstart = null
 	var/message = TGUI_CREATE_MESSAGE("open", list(
 		channel = channel,
 	))
@@ -40,6 +42,8 @@
 
 /** Creates the new input window to exist in the background. */
 /datum/tgui_say/New(client/client, id)
+	procstart = null
+	src.procstart = null
 	src.client = client
 	window = new(client, id)
 	winset(client, SKIN_TGUISAY, "size=1,1;is-visible=0;")
@@ -51,6 +55,8 @@
  * the window to listen for open commands.
  */
 /datum/tgui_say/proc/initialize()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	// Sleep to defer initialization to after client constructor
 	sleep(3 SECONDS)
@@ -67,6 +73,8 @@
  * as soon as the window sends the "ready" message.
  */
 /datum/tgui_say/proc/load()
+	procstart = null
+	src.procstart = null
 	window_open = FALSE
 
 	winset(client, SKIN_TGUISAY, "pos=848,500;is-visible=0;")
@@ -89,6 +97,8 @@
  * payload - A list containing the channel the window was opened in.
  */
 /datum/tgui_say/proc/open(payload)
+	procstart = null
+	src.procstart = null
 	if(!payload?["channel"])
 		CRASH("No channel provided to an open TGUI-Say")
 	window_open = TRUE
@@ -104,6 +114,8 @@
  * regardless of preference. Logs the event.
  */
 /datum/tgui_say/proc/close()
+	procstart = null
+	src.procstart = null
 	window_open = FALSE
 	stop_thinking()
 	if(!client.typing_indicators)
@@ -114,6 +126,8 @@
  * and delegates actions.
  */
 /datum/tgui_say/proc/on_message(type, payload)
+	procstart = null
+	src.procstart = null
 	if(type == "ready")
 		load()
 		return TRUE

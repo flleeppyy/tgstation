@@ -4,6 +4,8 @@
 	var/chamber_id
 
 /obj/machinery/meter/monitored/Initialize(mapload, new_piping_layer)
+	procstart = null
+	src.procstart = null
 	id_tag = assign_random_name()
 	return ..()
 

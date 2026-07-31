@@ -7,28 +7,40 @@
 	var/datum/antagonist/changeling/changeling
 
 /datum/cellular_emporium/New(my_changeling)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	changeling = my_changeling
 
 /datum/cellular_emporium/Destroy()
+	procstart = null
+	src.procstart = null
 	changeling = null
 	return ..()
 
 /datum/cellular_emporium/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 /datum/cellular_emporium/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(!changeling)
 		return UI_CLOSE
 	return UI_INTERACTIVE
 
 /datum/cellular_emporium/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "CellularEmporium", name)
 		ui.open()
 
 /datum/cellular_emporium/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/static/list/abilities
@@ -59,6 +71,8 @@
 	return data
 
 /datum/cellular_emporium/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["can_readapt"] = changeling.can_respec
@@ -70,6 +84,8 @@
 	return data
 
 /datum/cellular_emporium/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -94,12 +110,16 @@
 	check_flags = NONE
 
 /datum/action/cellular_emporium/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(Target, /datum/cellular_emporium))
 		stack_trace("cellular_emporium action created with non-emporium.")
 		qdel(src)
 
 /datum/action/cellular_emporium/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

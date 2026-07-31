@@ -6,6 +6,8 @@
 	element_flags = ELEMENT_DETACH_ON_HOST_DESTROY
 
 /datum/element/atmos_sensitive/Attach(datum/target, mapload)
+	procstart = null
+	src.procstart = null
 	if(!isatom(target)) //How
 		return ELEMENT_INCOMPATIBLE
 	var/atom/to_track = target
@@ -19,6 +21,8 @@
 	return ..()
 
 /datum/element/atmos_sensitive/Detach(atom/source)
+	procstart = null
+	src.procstart = null
 	if(source.loc)
 		UnregisterSignal(source.loc, COMSIG_TURF_EXPOSE)
 	UnregisterSignal(source, COMSIG_MOVABLE_MOVED)
@@ -29,6 +33,8 @@
 	return ..()
 
 /datum/element/atmos_sensitive/proc/react_to_move(atom/source, atom/movable/oldloc, direction, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(oldloc)
@@ -38,6 +44,8 @@
 	source.atmos_conditions_changed() //Make sure you're properly registered
 
 /atom/proc/check_atmos_process(datum/source, datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(should_atmos_process(air, exposed_temperature))
 		if(flags_1 & ATMOS_IS_PROCESSING_1)
@@ -50,6 +58,8 @@
 		flags_1 &= ~ATMOS_IS_PROCESSING_1
 
 /atom/proc/process_exposure()
+	procstart = null
+	src.procstart = null
 	var/turf/open/spot = loc
 	if(!isopenturf(loc))
 		//If you end up in a locker or a wall reconsider your life decisions
@@ -65,6 +75,8 @@
 	atmos_expose(spot.air, spot.air.temperature)
 
 /turf/open/process_exposure()
+	procstart = null
+	src.procstart = null
 	if(!should_atmos_process(air, air.temperature))
 		atmos_end()
 		SSair.atom_process -= src
@@ -74,12 +86,18 @@
 
 ///We use this proc to check if we should start processing an item, or continue processing it. Returns true/false as expected
 /atom/proc/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 ///This is your process() proc
 /atom/proc/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return
 
 ///What to do when our requirements are no longer met
 /atom/proc/atmos_end()
+	procstart = null
+	src.procstart = null
 	return

@@ -18,6 +18,8 @@
 	var/list/previous_factions
 
 /datum/component/npc_friendly/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isliving(parent))
@@ -29,6 +31,8 @@
 	player.add_faction(npc_factions)
 
 /datum/component/npc_friendly/Destroy(force)
+	procstart = null
+	src.procstart = null
 	var/mob/living/player = parent
 	if(!QDELETED(parent))
 		player.set_faction(previous_factions)

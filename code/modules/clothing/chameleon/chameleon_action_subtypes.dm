@@ -4,6 +4,8 @@
 	active_type = /obj/item/clothing/neck/tie/black
 
 /datum/action/item_action/chameleon/change/neck/initialize_blacklist()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	chameleon_blacklist |= typecacheof(/obj/item/clothing/neck/cloak/skill_reward)
 
@@ -16,16 +18,22 @@
 	chameleon_name = "Tablet"
 
 /datum/action/item_action/chameleon/change/tablet/initialize_blacklist()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	chameleon_blacklist |= typecacheof(list(/obj/item/modular_computer/pda/heads), only_root_path = TRUE)
 
 /datum/action/item_action/chameleon/change/tablet/update_item(obj/item/picked_item)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/modular_computer/pda/agent_pda = target
 	if(istype(agent_pda))
 		agent_pda.update_appearance()
 
 /datum/action/item_action/chameleon/change/tablet/apply_job_data(datum/job/job_datum)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/modular_computer/pda/agent_pda = target
 	if(istype(agent_pda) && istype(job_datum))
@@ -52,6 +60,8 @@
 	active_type = /obj/item/clothing/shoes/sneakers/black
 
 /datum/action/item_action/chameleon/change/shoes/initialize_blacklist()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	chameleon_blacklist |= typecacheof(/obj/item/clothing/shoes/changeling, only_root_path = TRUE)
 
@@ -61,15 +71,21 @@
 	active_type = /obj/item/clothing/mask/gas
 
 /datum/action/item_action/chameleon/change/mask/initialize_blacklist()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	chameleon_blacklist |= typecacheof(/obj/item/clothing/mask/changeling, only_root_path = TRUE)
 
 /datum/action/item_action/chameleon/change/mask/initialize_disguises()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_chameleon_items(/obj/item/cigarette)
 	add_chameleon_items(/obj/item/vape)
 
 /datum/action/item_action/chameleon/change/mask/update_item(obj/item/picked_item)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/clothing/mask/mask_picked = picked_item
 	var/obj/item/clothing/mask/mask_used = target
@@ -83,6 +99,8 @@
 	active_type = /obj/item/clothing/head/soft/black
 
 /datum/action/item_action/chameleon/change/hat/initialize_blacklist()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	chameleon_blacklist |= typecacheof(/obj/item/clothing/head/changeling, only_root_path = TRUE)
 
@@ -92,6 +110,8 @@
 	active_type = /obj/item/clothing/gloves/color/yellow
 
 /datum/action/item_action/chameleon/change/gloves/initialize_blacklist()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	chameleon_blacklist |= typecacheof(list(/obj/item/clothing/gloves, /obj/item/clothing/gloves/color, /obj/item/clothing/gloves/changeling), only_root_path = TRUE)
 
@@ -101,6 +121,8 @@
 	active_type = /obj/item/clothing/glasses/meson
 
 /datum/action/item_action/chameleon/change/glasses/initialize_blacklist()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	chameleon_blacklist |= typecacheof(list(/obj/item/clothing/glasses/changeling, /obj/item/clothing/glasses/hud/security/chameleon, /obj/item/clothing/glasses/thermal/syndi), only_root_path = TRUE)
 
@@ -113,10 +135,14 @@
 	active_type = /obj/item/clothing/suit/armor/vest
 
 /datum/action/item_action/chameleon/change/suit/initialize_blacklist()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	chameleon_blacklist |= typecacheof(list(/obj/item/clothing/suit/armor/abductor, /obj/item/clothing/suit/changeling), only_root_path = TRUE)
 
 /datum/action/item_action/chameleon/change/suit/apply_outfit(datum/outfit/applying_from, list/all_items_to_apply)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !ispath(applying_from.suit, /obj/item/clothing/suit/hooded))
 		return
@@ -131,6 +157,8 @@
 	active_type = /obj/item/clothing/under/color/black
 
 /datum/action/item_action/chameleon/change/jumpsuit/initialize_blacklist()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	chameleon_blacklist |= typecacheof(list(/obj/item/clothing/under, /obj/item/clothing/under/color, /obj/item/clothing/under/rank, /obj/item/clothing/under/changeling), only_root_path = TRUE)
 
@@ -139,12 +167,16 @@
 	chameleon_name = "ID Card"
 
 /datum/action/item_action/chameleon/change/id/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(target, /obj/item/card/id/advanced/chameleon))
 		stack_trace("Adding chameleon ID action to non-chameleon id ([target])")
 		qdel(src)
 
 /datum/action/item_action/chameleon/change/id/format_readable_name(datum/format_type)
+	procstart = null
+	src.procstart = null
 	if(ispath(format_type, /obj/item/card/id/advanced))
 		var/obj/item/card/id/advanced/format_card = format_type
 		var/list/basesplit_state = splittext(format_card::post_init_icon_state || format_card::icon_state, "_")
@@ -162,6 +194,8 @@
 	return ..()
 
 /datum/action/item_action/chameleon/change/id/initialize_disguises()
+	procstart = null
+	src.procstart = null
 	// basic id types
 	add_chameleon_items(list(
 		/obj/item/card/id/advanced,
@@ -184,6 +218,8 @@
 	add_chameleon_items(/obj/item/card/id/advanced/gold/captains_spare, only_root = TRUE)
 
 /datum/action/item_action/chameleon/change/id/update_item(obj/item/picked_item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/card/id/advanced/chameleon/agent_card = target
 	var/obj/item/card/id/copied_card = picked_item
@@ -211,6 +247,8 @@
 	agent_card.update_appearance(UPDATE_ICON)
 
 /datum/action/item_action/chameleon/change/id/apply_job_data(datum/job/job_datum)
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/id/advanced/chameleon/agent_card = target
 	agent_card.forged = TRUE
 
@@ -245,12 +283,16 @@
 	chameleon_name = "ID Trim"
 
 /datum/action/item_action/chameleon/change/id_trim/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(target, /obj/item/card/id/advanced/chameleon))
 		stack_trace("Adding chameleon ID trim action to non-chameleon id ([target])")
 		qdel(src)
 
 /datum/action/item_action/chameleon/change/id_trim/format_readable_name(datum/format_type)
+	procstart = null
+	src.procstart = null
 	if(istype(format_type, /datum/id_trim))
 		var/datum/id_trim/trim = format_type
 		var/list/trimstate_split = splittext(trim.trim_state, "_")
@@ -262,9 +304,13 @@
 	return ..()
 
 /datum/action/item_action/chameleon/change/id_trim/initialize_blacklist()
+	procstart = null
+	src.procstart = null
 	chameleon_blacklist |= typecacheof(/datum/id_trim/centcom/corpse)
 
 /datum/action/item_action/chameleon/change/id_trim/initialize_disguises()
+	procstart = null
+	src.procstart = null
 	var/list/chameleon_whitelist = typecacheof(list(
 		/datum/id_trim/battlecruiser,
 		/datum/id_trim/bit_avatar,
@@ -287,6 +333,8 @@
 			chameleon_typecache[trim_path] = TRUE
 
 /datum/action/item_action/chameleon/change/id_trim/update_item(picked_trim_path)
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/id/advanced/chameleon/agent_card = target
 
 	SSid_access.apply_trim_override(agent_card, picked_trim_path, TRUE)
@@ -299,16 +347,22 @@
 	chameleon_name = "Gun"
 
 /datum/action/item_action/chameleon/change/gun/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(target, /obj/item/gun/energy/laser/chameleon))
 		stack_trace("Adding chameleon gun action to non-chameleon gun ([target])")
 		qdel(src)
 
 /datum/action/item_action/chameleon/change/gun/initialize_blacklist()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	chameleon_blacklist |= typecacheof(/obj/item/gun/energy/minigun)
 
 /datum/action/item_action/chameleon/change/gun/update_look(obj/item/picked_item)
+	procstart = null
+	src.procstart = null
 	var/obj/item/gun/energy/laser/chameleon/chameleon_gun = target
 	chameleon_gun.set_chameleon_disguise(picked_item)
 	return ..()
@@ -341,6 +395,8 @@
 	// (Other ideas include: GPSs, PDAs, station bounced radios, holosign creators, etc. But this is good enough)
 
 /datum/action/item_action/chameleon/change/scanner/initialize_blacklist()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	chameleon_blacklist |= typecacheof(list(
 		/obj/item/assembly/signaler/anomaly,
@@ -358,6 +414,8 @@
 	))
 
 /datum/action/item_action/chameleon/change/scanner/initialize_disguises()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/other_type in other_cham_types)
 		add_chameleon_items(other_type)

@@ -78,6 +78,8 @@ GLOBAL_LIST_INIT_TYPED(virtual_areas, /area, populate_virtual_areas())
 
 /// Constructs the list of virtual areas
 /proc/populate_virtual_areas()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list/area)
 	var/list/area/virtual_areas = list()
 	for(var/area/area_type as anything in subtypesof(/area))

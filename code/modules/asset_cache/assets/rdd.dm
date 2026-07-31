@@ -2,6 +2,8 @@
 	name = "rdd"
 
 /datum/asset/spritesheet_batched/rdd/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	for(var/category in GLOB.rdd_designs)
 		for(var/list/design in GLOB.rdd_designs[category])
 			var/obj/structure/decoration/dec_path = design["path"]

@@ -18,11 +18,15 @@
 	var/datum/port/input/target
 
 /obj/item/circuit_component/list_literal/nfc_send/populate_ports()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	enc_key = add_input_port("Encryption Key", PORT_TYPE_STRING)
 	target = add_input_port("Target", PORT_TYPE_ATOM)
 
 /obj/item/circuit_component/list_literal/nfc_send/should_receive_input(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -30,6 +34,8 @@
 	return find_functional_ntnet_relay()
 
 /obj/item/circuit_component/list_literal/nfc_send/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isatom(target.value))
 		var/atom/target_enty = target.value

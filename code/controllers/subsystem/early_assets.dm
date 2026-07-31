@@ -17,6 +17,8 @@ SUBSYSTEM_DEF(early_assets)
 	ss_flags = SS_NO_FIRE
 
 /datum/controller/subsystem/early_assets/Initialize()
+	procstart = null
+	src.procstart = null
 	var/init_source = "early assets"
 	SSatoms.set_tracked_initalized(INITIALIZATION_INNEW_REGULAR, init_source)
 

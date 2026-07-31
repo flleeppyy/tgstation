@@ -8,6 +8,8 @@
  * * user: mob that initiated the attack from inside the mech as a controller
  */
 /atom/proc/mech_melee_attack(obj/vehicle/sealed/mecha/mecha_attacker, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_MECH, mecha_attacker, user)
 	if(!isnull(user))
@@ -15,6 +17,8 @@
 	return
 
 /turf/closed/wall/mech_melee_attack(obj/vehicle/sealed/mecha/mecha_attacker, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user.combat_mode)
 		return
 
@@ -36,6 +40,8 @@
 	return 100 //this is an arbitrary "damage" number since the actual damage is rng dismantle
 
 /obj/structure/mech_melee_attack(obj/vehicle/sealed/mecha/mecha_attacker, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user.combat_mode)
 		return 0
 
@@ -52,6 +58,8 @@
 	return take_damage(mecha_attacker.force * 3, mecha_attacker.damtype, "melee", FALSE, get_dir(src, mecha_attacker)) // multiplied by 3 so we can hit objs hard but not be overpowered against mobs.
 
 /obj/machinery/mech_melee_attack(obj/vehicle/sealed/mecha/mecha_attacker, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user.combat_mode)
 		return
 
@@ -68,6 +76,8 @@
 	return take_damage(mecha_attacker.force * 3, mecha_attacker.damtype, "melee", FALSE, get_dir(src, mecha_attacker)) // multiplied by 3 so we can hit objs hard but not be overpowered against mobs.
 
 /obj/structure/window/mech_melee_attack(obj/vehicle/sealed/mecha/mecha_attacker, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user.combat_mode)
 		return
 	if(!can_be_reached())
@@ -90,6 +100,8 @@
 	return take_damage(mecha_attacker.force * 100, mecha_attacker.damtype, "melee", FALSE, get_dir(src, mecha_attacker))
 
 /obj/vehicle/mech_melee_attack(obj/vehicle/sealed/mecha/mecha_attacker, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user.combat_mode)
 		return FALSE
 
@@ -106,6 +118,8 @@
 	return take_damage(mecha_attacker.force, mecha_attacker.damtype, "melee", FALSE, get_dir(src, mecha_attacker))
 
 /mob/living/mech_melee_attack(obj/vehicle/sealed/mecha/mecha_attacker, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(istype(user) && !user.combat_mode)
 		step_away(src, mecha_attacker)
 		log_combat(user, src, "pushed", mecha_attacker)

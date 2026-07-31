@@ -38,6 +38,8 @@
 	var/list/disease_candidates = list()
 
 /datum/round_event_control/disease_outbreak/can_spawn_event(players_amt, allow_magic = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -53,6 +55,8 @@
  * This proc needs to be run at some point to ensure the event has candidates to infect.
  */
 /datum/round_event_control/disease_outbreak/proc/generate_candidates()
+	procstart = null
+	src.procstart = null
 	disease_candidates.Cut() //We clear the list and rebuild it again.
 	for(var/mob/living/carbon/human/candidate in shuffle(GLOB.player_list)) //Player list is much more up to date and requires less checks(?)
 		if(!(candidate.mind.assigned_role.job_flags & JOB_CREW_MEMBER) || candidate.stat == DEAD)
@@ -70,6 +74,8 @@
 	output_text = "There are no candidates eligible to receive a disease!"
 
 /datum/event_admin_setup/minimum_candidate_requirement/disease_outbreak/count_candidates()
+	procstart = null
+	src.procstart = null
 	var/datum/round_event_control/disease_outbreak/disease_control = event_control
 	disease_control.generate_candidates() //can_spawn_event() is bypassed by admin_setup, so this makes sure that the candidates are still generated
 	return length(disease_control.disease_candidates)
@@ -82,9 +88,13 @@
 	special_run_option = "Entirely Random Disease (Dangerous)"
 
 /datum/event_admin_setup/listed_options/disease_outbreak/get_list()
+	procstart = null
+	src.procstart = null
 	return subtypesof(/datum/disease)
 
 /datum/event_admin_setup/listed_options/disease_outbreak/apply_to_event(datum/round_event/disease_outbreak/event)
+	procstart = null
+	src.procstart = null
 	var/datum/disease/virus
 	if(chosen == special_run_option)
 		virus = pick(get_list())
@@ -102,6 +112,8 @@
 	var/list/afflicted = list()
 
 /datum/round_event/disease_outbreak/announce(fake)
+	procstart = null
+	src.procstart = null
 	if(!illness_type)
 		var/list/virus_candidates = list(
 			/datum/disease/anxiety,
@@ -126,9 +138,13 @@
 	send_status_display_biohazard_alert()
 
 /datum/round_event/disease_outbreak/setup()
+	procstart = null
+	src.procstart = null
 	announce_when = ADV_ANNOUNCE_DELAY
 
 /datum/round_event/disease_outbreak/start()
+	procstart = null
+	src.procstart = null
 	var/datum/round_event_control/disease_outbreak/disease_event = control
 	afflicted += disease_event.disease_candidates
 	disease_event.disease_candidates.Cut() //Clean the list after use
@@ -193,9 +209,13 @@
 	normal_run_option = "Random"
 
 /datum/event_admin_setup/listed_options/disease_outbreak_advanced/severity/get_list()
+	procstart = null
+	src.procstart = null
 	return list("Medium", "Harmful", "Dangerous")
 
 /datum/event_admin_setup/listed_options/disease_outbreak_advanced/severity/apply_to_event(datum/round_event/disease_outbreak/advanced/event)
+	procstart = null
+	src.procstart = null
 	switch(chosen)
 		if("Medium")
 			event.requested_severity = ADV_DISEASE_MEDIUM
@@ -213,9 +233,13 @@
 	normal_run_option = "Random"
 
 /datum/event_admin_setup/listed_options/disease_outbreak_advanced/transmissibility/get_list()
+	procstart = null
+	src.procstart = null
 	return list("Blood/Fluids", "Skin Contact", "Airborne")
 
 /datum/event_admin_setup/listed_options/disease_outbreak_advanced/transmissibility/apply_to_event(datum/round_event/disease_outbreak/advanced/event)
+	procstart = null
+	src.procstart = null
 	switch(chosen)
 		if("Blood/Fluids")
 			event.requested_transmissibility = ADV_SPREAD_FORCED_LOW
@@ -235,6 +259,8 @@
 	min_value = 1
 
 /datum/event_admin_setup/input_number/disease_outbreak_advanced/prompt_admins()
+	procstart = null
+	src.procstart = null
 	var/customize_number_of_symptoms = tgui_alert(usr, "Select number of symptoms?", event_control.name, list("Default", "Custom"))
 	switch(customize_number_of_symptoms)
 		if("Custom")
@@ -245,6 +271,8 @@
 			return ADMIN_CANCEL_EVENT
 
 /datum/event_admin_setup/input_number/disease_outbreak_advanced/apply_to_event(datum/round_event/disease_outbreak/advanced/event)
+	procstart = null
+	src.procstart = null
 	event.max_symptoms = chosen_value
 
 /datum/round_event/disease_outbreak/advanced
@@ -262,6 +290,8 @@
  * or if it was not selected, randomly pick between the MIX and MAX configured in the defines.
  */
 /datum/round_event/disease_outbreak/advanced/start()
+	procstart = null
+	src.procstart = null
 	var/datum/round_event_control/disease_outbreak/advanced/disease_event = control
 	afflicted += disease_event.disease_candidates
 	disease_event.disease_candidates.Cut()
@@ -307,6 +337,8 @@
 	copy_type = /datum/disease/advance
 
 /datum/round_event/disease_outbreak/advance/setup()
+	procstart = null
+	src.procstart = null
 	announce_when = ADV_ANNOUNCE_DELAY
 
 /**
@@ -316,6 +348,8 @@
  * Viral Evolution and Eternal Youth are special modifiers, so we roll separately.
  */
 /datum/disease/advance/random/event/New(max_symptoms, requested_severity, requested_transmissibility)
+	procstart = null
+	src.procstart = null
 	var/list/datum/symptom/possible_symptoms = list(
 		/datum/symptom/beard,
 		/datum/symptom/chills,
@@ -428,6 +462,8 @@
  * If the virus is airborne, also don't hide it.
  */
 /datum/disease/advance/random/event/assign_properties()
+	procstart = null
+	src.procstart = null
 
 	if(!length(properties))
 		stack_trace("Advanced virus properties were empty or null!")
@@ -452,6 +488,8 @@
  * Apply the transmission methods we rolled in the assign_properties proc
  */
 /datum/disease/advance/random/event/set_spread(spread_id)
+	procstart = null
+	src.procstart = null
 	switch(spread_id)
 		if(DISEASE_SPREAD_CONTACT_FLUIDS)
 			update_spread_flags(DISEASE_SPREAD_BLOOD | DISEASE_SPREAD_CONTACT_FLUIDS)

@@ -25,10 +25,14 @@
 	summon_amount = 4
 
 /datum/action/cooldown/spell/conjure/simian/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(gorilla_transformation)
 
 /datum/action/cooldown/spell/conjure/simian/level_spell(bypass_cap)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	summon_amount++ // MORE, MOOOOORE
 	if(spell_level == spell_max_level) // We reward the faithful.
@@ -38,6 +42,8 @@
 		to_chat(owner, span_notice("Your simian power has reached maximum capacity! You can now cast this spell naked, and have additionally been granted a gorilla transformation spell!"))
 
 /datum/action/cooldown/spell/conjure/simian/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/cast_mob = cast_on
 	if(!istype(cast_mob))
@@ -48,9 +54,13 @@
 	addtimer(CALLBACK(src, PROC_REF(remove_monky_faction), cast_mob), 1 MINUTES)
 
 /datum/action/cooldown/spell/conjure/simian/proc/remove_monky_faction(mob/cast_mob)
+	procstart = null
+	src.procstart = null
 	cast_mob.remove_faction(FACTION_MONKEY)
 
 /datum/action/cooldown/spell/conjure/simian/post_summon(atom/summoned_object, atom/cast_on)
+	procstart = null
+	src.procstart = null
 	var/mob/living/alive_dude = summoned_object
 	alive_dude.add_faction(list(FACTION_MONKEY))
 	if(ismonkey(alive_dude))
@@ -61,6 +71,8 @@
  * Can give them bananas and garland or gatfruit and axes. Monkeys are comically inept, which balances out what might otherwise be a little crazy.
  */
 /datum/action/cooldown/spell/conjure/simian/proc/equip_monky(mob/living/carbon/human/species/monkey/summoned_monkey)
+	procstart = null
+	src.procstart = null
 
 	// These are advanced monkeys we're talking about
 	var/datum/ai_controller/monkey/monky_controller = summoned_monkey.ai_controller

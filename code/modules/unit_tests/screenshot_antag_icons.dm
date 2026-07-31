@@ -2,6 +2,8 @@
 /datum/unit_test/screenshot_antag_icons
 
 /datum/unit_test/screenshot_antag_icons/Run()
+	procstart = null
+	src.procstart = null
 	var/datum/asset/spritesheet_batched/antagonists/antagonists = get_asset_datum(/datum/asset/spritesheet_batched/antagonists)
 
 	// Generates the spritesheet in /tmp, while also ensuring that ALL icons output to the same size (will error otherwise)

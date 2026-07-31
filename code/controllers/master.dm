@@ -84,6 +84,8 @@ GLOBAL_REAL(Master, /datum/controller/master)
 	var/rolling_usage_length = 5 SECONDS
 
 /datum/controller/master/New()
+	procstart = null
+	src.procstart = null
 	// Ensure usr is null, to prevent any potential weirdness resulting from the MC having a usr if it's manually restarted.
 	usr = null
 
@@ -130,11 +132,15 @@ GLOBAL_REAL(Master, /datum/controller/master)
 		new /datum/controller/global_vars
 
 /datum/controller/master/Destroy()
+	procstart = null
+	src.procstart = null
 	..()
 	// Tell qdel() to Del() this object.
 	return QDEL_HINT_HARDDEL_NOW
 
 /datum/controller/master/Shutdown()
+	procstart = null
+	src.procstart = null
 	processing = FALSE
 	sortTim(subsystems, GLOBAL_PROC_REF(cmp_subsystem_init))
 	reverse_range(subsystems)
@@ -149,11 +155,15 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 	Master.ui_interact(user.mob)
 
 /datum/controller/master/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(!user.client?.holder?.check_for_rights(R_SERVER|R_DEBUG))
 		return UI_CLOSE
 	return UI_INTERACTIVE
 
 /datum/controller/master/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(isnull(ui))
 		ui = new /datum/tgui(user, src, "ControllerOverview")
@@ -161,6 +171,8 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 		use_rolling_usage = TRUE
 
 /datum/controller/master/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	var/valid_found = FALSE
 	for(var/datum/tgui/open_ui as anything in open_uis)
 		if(open_ui.user == user)
@@ -171,6 +183,8 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 	return ..()
 
 /datum/controller/master/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/list/subsystem_data = list()
@@ -208,6 +222,8 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 	return data
 
 /datum/controller/master/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 
@@ -239,6 +255,8 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 			return TRUE
 
 /datum/controller/master/proc/check_and_perform_fast_update()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	set waitfor = FALSE
 
@@ -256,6 +274,8 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 // Returns 1 if we created a new mc, 0 if we couldn't due to a recent restart,
 // -1 if we encountered a runtime trying to recreate it
 /proc/Recreate_MC()
+	procstart = null
+	src.procstart = null
 	. = -1 //so if we runtime, things know we failed
 	if (world.time < Master.restart_timeout)
 		return 0
@@ -275,6 +295,8 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 
 
 /datum/controller/master/Recover()
+	procstart = null
+	src.procstart = null
 	var/msg = "## DEBUG: [time2text(world.timeofday, "DDD MMM DD hh:mm:ss YYYY", TIMEZONE_UTC)] MC restarted. Reports:\n"
 	var/list/master_attributes = Master.vars
 	var/list/filtered_variables = list(
@@ -323,6 +345,8 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 // Please don't stuff random bullshit here,
 // Make a subsystem, give it the SS_NO_FIRE flag, and do your work in its Initialize()
 /datum/controller/master/Initialize(delay, init_sss, tgs_prime)
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 
 	if(delay)
@@ -486,6 +510,8 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
  * * subsystem - the subsystem to initialize.
  */
 /datum/controller/master/proc/init_subsystem(datum/controller/subsystem/subsystem)
+	procstart = null
+	src.procstart = null
 	var/static/list/valid_results = list(
 		SS_INIT_FAILURE,
 		SS_INIT_NONE,
@@ -555,6 +581,8 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 	log_world(message)
 
 /datum/controller/master/proc/SetRunLevel(new_runlevel)
+	procstart = null
+	src.procstart = null
 	var/old_runlevel = current_runlevel
 
 	testing("MC: Runlevel changed from [isnull(old_runlevel) ? "NULL" : old_runlevel] to [new_runlevel]")
@@ -565,6 +593,8 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 
 // Starts the mc, and sticks around to restart it if the loop ever ends.
 /datum/controller/master/proc/StartProcessing(delay)
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	if(delay)
 		sleep(delay)
@@ -589,6 +619,8 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 
 // Main loop.
 /datum/controller/master/proc/Loop(init_stage)
+	procstart = null
+	src.procstart = null
 	. = -1
 	//Prep the loop (most of this is because we want MC restarts to reset as much state as we can, and because
 	// local vars rock
@@ -797,6 +829,8 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 
 // This is what decides if something should run.
 /datum/controller/master/proc/CheckQueue(list/subsystemstocheck)
+	procstart = null
+	src.procstart = null
 	. = 0 //so the mc knows if we runtimed
 
 	//we create our variables outside of the loops to save on overhead
@@ -832,6 +866,8 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 /// RunQueue - Run thru the queue of subsystems to run, running them while balancing out their allocated tick precentage
 /// Returns 0 if runtimed, a negitive number for logic errors, and a positive number if the operation completed without errors
 /datum/controller/master/proc/RunQueue()
+	procstart = null
+	src.procstart = null
 	. = 0
 	var/datum/controller/subsystem/queue_node
 	var/queue_node_flags
@@ -962,6 +998,8 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 //resets the queue, and all subsystems, while filtering out the subsystem lists
 // called if any mc's queue procs runtime or exit improperly.
 /datum/controller/master/proc/SoftReset(list/ticker_SS, list/runlevel_SS)
+	procstart = null
+	src.procstart = null
 	. = 0
 	stack_trace("MC: SoftReset called, resetting MC queue state.")
 
@@ -1004,16 +1042,22 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 
 /// Warns us that the end of tick byond map_update will be laggier then normal, so that we can just skip running subsystems this tick.
 /datum/controller/master/proc/laggy_byond_map_update_incoming()
+	procstart = null
+	src.procstart = null
 	if (!skip_ticks)
 		skip_ticks = 1
 
 
 /datum/controller/master/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg = "(TickRate:[Master.processing]) (Iteration:[Master.iteration]) (TickLimit: [round(Master.current_ticklimit, 0.1)])"
 	return msg
 
 
 /datum/controller/master/StartLoadingMap()
+	procstart = null
+	src.procstart = null
 	//disallow more than one map to load at once, multithreading it will just cause race conditions
 	while(map_loading)
 		stoplag()
@@ -1023,6 +1067,8 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 	map_loading = TRUE
 
 /datum/controller/master/StopLoadingMap(bounds = null)
+	procstart = null
+	src.procstart = null
 	map_loading = FALSE
 	for(var/S in subsystems)
 		var/datum/controller/subsystem/SS = S
@@ -1030,6 +1076,8 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 
 
 /datum/controller/master/proc/UpdateTickRate()
+	procstart = null
+	src.procstart = null
 	if (!processing)
 		return
 	var/client_count = length(GLOB.clients)
@@ -1039,6 +1087,8 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 		processing = CONFIG_GET(number/mc_tick_rate/high_pop_mc_tick_rate)
 
 /datum/controller/master/proc/OnConfigLoad()
+	procstart = null
+	src.procstart = null
 	for (var/thing in subsystems)
 		var/datum/controller/subsystem/SS = thing
 		SS.OnConfigLoad()
@@ -1046,6 +1096,8 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 /// Attempts to dump our current profile info into a file, triggered if the MC thinks shit is going down
 /// Accepts a delay in deciseconds of how long ago our last dump can be, this saves causing performance problems ourselves
 /datum/controller/master/proc/AttemptProfileDump(delay)
+	procstart = null
+	src.procstart = null
 	if(REALTIMEOFDAY - last_profiled <= delay)
 		return FALSE
 	last_profiled = REALTIMEOFDAY

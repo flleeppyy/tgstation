@@ -9,6 +9,8 @@
 	var/taste_sensitivity = 15
 
 /obj/item/taster/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!interacting_with.reagents)
 		to_chat(user, span_notice("[src] cannot taste [interacting_with], since [interacting_with.p_they()] [interacting_with.p_have()] have no reagents."))
 	else if(interacting_with.reagents.total_volume == 0)

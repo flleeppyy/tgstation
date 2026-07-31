@@ -102,6 +102,8 @@
 	))
 
 /datum/crafting_recipe/shuttle_blueprints/check_tools(atom/user, list/collected_tools, final_check = FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/toy/crayon/crayon in collected_tools)
 		if(!is_type_in_typecache(crayon, valid_types))
 			continue
@@ -132,6 +134,8 @@
 	category = CAT_TOOLS
 
 /datum/crafting_recipe/jaws_of_recovery/New()
+	procstart = null
+	src.procstart = null
 	LAZYADD(blacklist, typecacheof(/obj/item/crowbar/power/paramedic, ignore_root_path = TRUE))
 	return ..()
 

@@ -9,6 +9,8 @@
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/mining_stabilizer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isorgan(interacting_with))
 		return NONE
 	var/obj/item/organ/monster_core/target_core = interacting_with
@@ -59,11 +61,15 @@
 	var/datum/status_effect/user_status
 
 /obj/item/organ/monster_core/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	decay_timer = addtimer(CALLBACK(src, PROC_REF(go_inert)), time_to_decay, TIMER_STOPPABLE)
 	AddElement(/datum/element/above_mob_drop)
 
 /obj/item/organ/monster_core/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!decay_timer)
 		return
@@ -81,10 +87,14 @@
 			. += span_warning("Signs of decay have set in, but it still looks alive. It's probably about to become unusable really quickly.")
 
 /obj/item/organ/monster_core/Destroy(force)
+	procstart = null
+	src.procstart = null
 	deltimer(decay_timer)
 	return ..()
 
 /obj/item/organ/monster_core/on_mob_insert(mob/living/carbon/target_carbon, special = FALSE, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (inert)
@@ -98,6 +108,8 @@
 	return TRUE
 
 /obj/item/organ/monster_core/on_mob_remove(mob/living/carbon/target_carbon, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	if (!inert && !special)
 		target_carbon?.visible_message(span_notice("[src] rapidly decays as it's removed."))
 		go_inert()
@@ -109,6 +121,8 @@
  * * Implanted - If true, organ has just been inserted into someone.
  */
 /obj/item/organ/monster_core/proc/preserve(implanted = FALSE)
+	procstart = null
+	src.procstart = null
 	if (inert)
 		return FALSE
 	deltimer(decay_timer)
@@ -120,6 +134,8 @@
  * Decays the organ, it is now useless.
  */
 /obj/item/organ/monster_core/proc/go_inert()
+	procstart = null
+	src.procstart = null
 	if (inert)
 		return FALSE
 	inert = TRUE
@@ -130,6 +146,8 @@
 	return TRUE
 
 /obj/item/organ/monster_core/update_desc()
+	procstart = null
+	src.procstart = null
 	if (inert)
 		desc = desc_inert ? desc_inert : initial(desc)
 		return ..()
@@ -140,6 +158,8 @@
 	return ..()
 
 /obj/item/organ/monster_core/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if (inert)
 		icon_state = icon_state_inert ? icon_state_inert : initial(icon_state)
 		return ..()
@@ -150,6 +170,8 @@
 	return ..()
 
 /obj/item/organ/monster_core/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isliving(interacting_with))
 		return NONE
 
@@ -157,6 +179,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/organ/monster_core/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if (!user.can_perform_action(src, FORBID_TELEKINESIS_REACH|ALLOW_RESTING))
 		return
 	try_apply(user, user)
@@ -169,6 +193,8 @@
  * * user - Person who is doing the applying.
  */
 /obj/item/organ/monster_core/proc/try_apply(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if (!isliving(target))
 		balloon_alert(user, "invalid target!")
 		return
@@ -189,6 +215,8 @@
  * * user - Person who is doing the applying.
  */
 /obj/item/organ/monster_core/proc/apply_to(mob/living/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if (user_status)
 		target.apply_status_effect(user_status)
 	qdel(src)
@@ -198,6 +226,8 @@
  * Call this instead of on_triggered_internal() if the action needs to trigger automatically, or the cooldown won't happen.
  */
 /obj/item/organ/monster_core/proc/trigger_organ_action(trigger_flags)
+	procstart = null
+	src.procstart = null
 	var/datum/action/cooldown/monster_core_action/action = locate() in actions
 	action?.Trigger(trigger_flags = trigger_flags)
 
@@ -206,10 +236,14 @@
  * This could be via clicking the associated action button or through the above method.
  */
 /obj/item/organ/monster_core/proc/on_triggered_internal()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Someone forgot to make their organ do something when you implant it.")
 
 /obj/item/organ/monster_core/feel_for_damage(self_aware)
+	procstart = null
+	src.procstart = null
 	return ""
 
 /**
@@ -222,6 +256,8 @@
 	button_icon_state = "hivelord_core_2"
 
 /datum/action/cooldown/monster_core_action/Activate(trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!target)
 		return

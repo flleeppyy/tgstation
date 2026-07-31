@@ -14,6 +14,8 @@
 	var/hotspot_type = /obj/effect/hotspot
 
 /obj/effect/decal/cleanable/fuel_pool/Initialize(mapload, burn_stacks)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/loc_connections = list(
 		COMSIG_TURF_MOVABLE_THROW_LANDED = PROC_REF(ignition_trigger),
@@ -33,12 +35,16 @@
 
 // Just in case of fires, do this after mapload.
 /obj/effect/decal/cleanable/fuel_pool/LateInitialize()
+	procstart = null
+	src.procstart = null
 // We don't want to burn down the create_and_destroy test area
 #ifndef UNIT_TESTS
 	RegisterSignal(src, COMSIG_ATOM_TOUCHED_SPARKS, PROC_REF(ignition_trigger))
 #endif
 
 /obj/effect/decal/cleanable/fuel_pool/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ignite()
 
@@ -46,6 +52,8 @@
  * Ignites the fuel pool. This should be the only way to ignite fuel pools.
  */
 /obj/effect/decal/cleanable/fuel_pool/proc/ignite()
+	procstart = null
+	src.procstart = null
 	if(burning)
 		return
 	burning = TRUE
@@ -57,6 +65,8 @@
  * THIS SHOULD NOT BE CALLED DIRECTLY.
  */
 /obj/effect/decal/cleanable/fuel_pool/proc/burn_process()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	burn_amount -= 1
@@ -73,16 +83,22 @@
  * Ignites other oil pools around itself.
  */
 /obj/effect/decal/cleanable/fuel_pool/proc/ignite_others()
+	procstart = null
+	src.procstart = null
 	for(var/obj/effect/decal/cleanable/fuel_pool/oil in range(1, get_turf(src)))
 		oil.ignite()
 
 /obj/effect/decal/cleanable/fuel_pool/bullet_act(obj/projectile/hit_proj)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(hit_proj.damage > 0)
 		ignite()
 		log_combat(hit_proj.firer, src, "used [hit_proj] to ignite")
 
 /obj/effect/decal/cleanable/fuel_pool/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!tool.ignition_effect(src, user))
 		return ..()
 	ignite()
@@ -90,12 +106,16 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/effect/decal/cleanable/fuel_pool/proc/on_entered(datum/source, atom/movable/entered_atom)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!entered_atom.throwing) // don't light from things being thrown over us, we handle that somewhere else
 		ignition_trigger(source = src, enflammable_atom = entered_atom)
 
 /obj/effect/decal/cleanable/fuel_pool/proc/ignition_trigger(datum/source, atom/movable/enflammable_atom)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isitem(enflammable_atom))

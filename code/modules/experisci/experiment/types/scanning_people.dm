@@ -9,10 +9,14 @@
 	var/required_traits_desc = ""
 
 /datum/experiment/scanning/people/New()
+	procstart = null
+	src.procstart = null
 	required_atoms = list(/mob/living/carbon/human = required_count)
 	return ..()
 
 /datum/experiment/scanning/people/final_contributing_index_checks(datum/component/experiment_handler/experiment_handler, atom/target, typepath)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -22,6 +26,8 @@
 
 /// Checks that the passed mob is valid human to scan
 /datum/experiment/scanning/people/proc/is_valid_scan_target(mob/living/carbon/human/check, datum/component/experiment_handler/experiment_handler)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(!mind_required || !isnull(check.mind))
 		return TRUE
@@ -30,5 +36,7 @@
 	return FALSE
 
 /datum/experiment/scanning/people/serialize_progress_stage(atom/target, list/seen_instances)
+	procstart = null
+	src.procstart = null
 	return EXPERIMENT_PROG_INT("Scan unique individuals with [required_traits_desc].", \
 		seen_instances.len, required_atoms[target])

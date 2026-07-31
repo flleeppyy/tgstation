@@ -11,6 +11,8 @@
 	var/list/file_paths
 
 /datum/sound_effect/proc/return_sfx()
+	procstart = null
+	src.procstart = null
 	return pick(file_paths)
 
 /datum/sound_effect/shatter

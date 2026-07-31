@@ -11,11 +11,15 @@
 	VAR_FINAL/can_be_layer_adjusted = FALSE
 
 /datum/loadout_item/accessory/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ispath(item_path, /obj/item/clothing/accessory))
 		can_be_layer_adjusted = TRUE
 
 /datum/loadout_item/accessory/get_ui_buttons()
+	procstart = null
+	src.procstart = null
 	if(!can_be_layer_adjusted)
 		return ..()
 	. = ..()
@@ -30,12 +34,16 @@
 	return .
 
 /datum/loadout_item/accessory/handle_loadout_action(datum/preference_middleware/loadout/manager, mob/user, action, params)
+	procstart = null
+	src.procstart = null
 	if(action == "set_layer")
 		return set_accessory_layer(manager, user)
 
 	return ..()
 
 /datum/loadout_item/accessory/proc/set_accessory_layer(datum/preference_middleware/loadout/manager, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!can_be_layer_adjusted)
 		return FALSE
 
@@ -51,11 +59,15 @@
 	return TRUE // Update UI
 
 /datum/loadout_item/accessory/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(outfit.accessory)
 		LAZYADD(outfit.backpack_contents, outfit.accessory)
 	outfit.accessory = item_path
 
 /datum/loadout_item/accessory/on_equip_item(obj/item/equipped_item, list/item_details, mob/living/carbon/human/equipper, datum/outfit/job/outfit, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(equipped_item))
 		return .

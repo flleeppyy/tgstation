@@ -6,6 +6,8 @@ GAME_VERB_HIDDEN(/client, toggle_stat_panel, "Toggle Stat Panel")
 
 ///Sets the stat panel's visibility to the player, depending on whether they need it/have it enabled or not.
 /client/proc/set_stat_panel()
+	procstart = null
+	src.procstart = null
 	if(prefs.read_preference(/datum/preference/toggle/statpanel) || needs_stat_panel())
 		winset(src, SKIN_INFOWINDOW_CHILD, "left=statwindow")
 	else
@@ -13,6 +15,8 @@ GAME_VERB_HIDDEN(/client, toggle_stat_panel, "Toggle Stat Panel")
 
 ///Returns TRUE if the player has something that necessitates the stat panel.
 /client/proc/needs_stat_panel()
+	procstart = null
+	src.procstart = null
 	if(holder || interviewee)
 		return TRUE
 	. = mob.get_status_tab_items()

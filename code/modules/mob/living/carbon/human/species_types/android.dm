@@ -49,19 +49,27 @@
 	)
 
 /datum/species/android/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "Androids are almost, but not quite, identical to fully augmented humans. \
 	Unlike those, though, they're completely immune to toxin damage, don't have blood or organs (besides their head), don't get hungry, and can reattach their limbs! \
 	That said, an EMP will devastate them and they cannot process any chemicals."
 
 /datum/species/android/get_species_description()
+	procstart = null
+	src.procstart = null
 	return "Androids are an entirely synthetic species."
 
 /datum/species/android/get_species_lore()
+	procstart = null
+	src.procstart = null
 	return list(
 		"Androids are a synthetic species created by Nanotrasen as an intermediary between humans and cyborgs."
 	)
 
 /datum/species/android/create_pref_traits_perks()
+	procstart = null
+	src.procstart = null
 	var/list/perks = list()
 	perks += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
@@ -86,6 +94,8 @@
 	return perks
 
 /datum/species/android/create_pref_unique_perks()
+	procstart = null
+	src.procstart = null
 	var/list/perks = list()
 	perks += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,

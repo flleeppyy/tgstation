@@ -5,9 +5,13 @@
 	relevant_inherent_trait = TRAIT_USES_SKINTONES
 
 /datum/preference/choiced/skin_tone/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return GLOB.skin_tones
 
 /datum/preference/choiced/skin_tone/compile_constant_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 
 	data[CHOICED_PREFERENCE_DISPLAY_NAMES] = GLOB.skin_tone_names
@@ -27,4 +31,6 @@
 	return data
 
 /datum/preference/choiced/skin_tone/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	target.skin_tone = value

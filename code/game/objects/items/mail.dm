@@ -52,6 +52,8 @@
 	stamp_offset_y = 5
 
 /obj/item/mail/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_MOVABLE_DISPOSING, PROC_REF(disposal_handling))
 	AddElement(/datum/element/item_scaling, 0.75, 1)
@@ -75,6 +77,8 @@
 	update_icon()
 
 /obj/item/mail/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/bonus_stamp_offset = 0
 	for(var/stamp in stamps)
@@ -99,6 +103,8 @@
 		. += postmark_image
 
 /obj/item/mail/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// Destination tagging
 	if(!istype(tool, /obj/item/dest_tagger))
 		return NONE
@@ -113,6 +119,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/mail/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.get_inactive_held_item() == src)
 		balloon_alert(user, "nothing to disable!")
 		return TRUE
@@ -121,12 +129,16 @@
 
 
 /obj/item/mail/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!unwrap(user))
 		return FALSE
 	return after_unwrap(user)
 
 /// proc for unwrapping a mail. Goes just for an unwrapping procces, returns FALSE if it fails.
 /obj/item/mail/proc/unwrap(mob/user)
+	procstart = null
+	src.procstart = null
 	if(recipient_ref)
 		var/datum/mind/recipient = recipient_ref.resolve()
 		// If the recipient's mind has gone, then anyone can open their mail
@@ -142,6 +154,8 @@
 
 // proc that goes after unwrapping a mail.
 /obj/item/mail/proc/after_unwrap(mob/user)
+	procstart = null
+	src.procstart = null
 	user.temporarilyRemoveItemFromInventory(src, force = TRUE)
 	for(var/obj/stuff as anything in contents) // Mail and envelope actually can have more than 1 item.
 		if(isitem(stuff))
@@ -154,6 +168,8 @@
 
 
 /obj/item/mail/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!postmarked)
 		. += span_info("This mail has no postmarking of any sort...")
@@ -170,6 +186,8 @@
 
 /// Accepts a mind to initialize goodies for a piece of mail.
 /obj/item/mail/proc/initialize_for_recipient(datum/mind/recipient)
+	procstart = null
+	src.procstart = null
 	name = "[initial(name)] for [recipient.name] ([recipient.assigned_role.title])"
 	recipient_ref = WEAKREF(recipient)
 
@@ -213,6 +231,8 @@
 
 /// Alternate setup, just complete garbage inside and anyone can open
 /obj/item/mail/proc/junk_mail()
+	procstart = null
+	src.procstart = null
 
 	var/obj/junk = /obj/item/paper/fluff/junkmail_generic
 	var/special_name = FALSE
@@ -240,12 +260,16 @@
 	return TRUE
 
 /obj/item/mail/proc/disposal_handling(disposal_source, obj/structure/disposalholder/disposal_holder, obj/machinery/disposal/disposal_machine, hasmob)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!hasmob)
 		disposal_holder.destinationTag = sort_tag
 
 /// Subtype that's always junkmail
 /obj/item/mail/junkmail/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	junk_mail()
 
@@ -266,6 +290,8 @@
 	var/postmarked = TRUE
 
 /obj/structure/closet/crate/mail/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(opened)
 		icon_state = "[base_icon_state]open"
@@ -275,12 +301,16 @@
 		icon_state = "[base_icon_state]sealed"
 
 /obj/structure/closet/crate/mail/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(postmarked)
 		. += "mail_nt"
 
 /// Fills this mail crate with N pieces of mail, where N is the lower of the amount var passed, and the maximum capacity of this crate. If N is larger than the number of alive human players, the excess will be junkmail.
 /obj/structure/closet/crate/mail/proc/populate(amount)
+	procstart = null
+	src.procstart = null
 	var/mail_count = min(amount, storage_capacity)
 	// Fills the
 	var/list/mail_recipients = list()
@@ -311,6 +341,8 @@
 
 /// Crate for mail that automatically depletes the economy subsystem's pending mail counter.
 /obj/structure/closet/crate/mail/economy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	populate(SSeconomy.mail_waiting)
 	SSeconomy.mail_waiting = 0
@@ -321,6 +353,8 @@
 	desc = "A certified post crate from CentCom. Looks stuffed to the gills."
 
 /obj/structure/closet/crate/mail/full/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	populate(INFINITY)
 
@@ -330,6 +364,8 @@
 	postmarked = FALSE
 
 /obj/structure/closet/crate/mail/full/mail_strike/populate(amount)
+	procstart = null
+	src.procstart = null
 	var/strike_mail_to_spawn = rand(1, storage_capacity-1)
 	for(var/i in 1 to strike_mail_to_spawn)
 		if(prob(95))
@@ -361,6 +397,8 @@
 	var/nuclear_option_odds = 0.1
 
 /obj/item/paper/fluff/junkmail_redpill/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/nuclearbomb/selfdestruct/self_destruct = locate() in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/nuclearbomb/selfdestruct)
 	if(!self_destruct || !prob(nuclear_option_odds)) // 1 in 1000 chance of getting 2 random nuke code characters.
 		add_raw_text("<i>You need to escape the simulation. Don't forget the numbers, they help you remember:</i> '[rand(0,9)][rand(0,9)][rand(0,9)]...'")
@@ -381,6 +419,8 @@
 	show_written_words = FALSE
 
 /obj/item/paper/fluff/junkmail_generic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	default_raw_text = pick(GLOB.junkmail_messages)
 	return ..()
 
@@ -400,6 +440,8 @@
 	stamp_offset_y = 5
 
 /obj/item/mail/traitor/after_unwrap(mob/user)
+	procstart = null
+	src.procstart = null
 	user.temporarilyRemoveItemFromInventory(src, force = TRUE)
 	playsound(loc, 'sound/items/poster/poster_ripped.ogg', vol = 50, vary = TRUE)
 	for(var/obj/item/stuff as anything in contents) // Mail and envelope actually can have more than 1 item.
@@ -419,6 +461,8 @@
 	return TRUE
 
 /obj/item/mail/traitor/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(armed == FALSE || user.get_inactive_held_item() != src)
 		return ..()
 	if(IS_WEAKREF_OF(user.mind, made_by_ref))
@@ -458,6 +502,8 @@
 	)
 
 /obj/item/mail/mail_strike/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(prob(35))
 		stamped = FALSE
 	if(prob(35))
@@ -479,6 +525,8 @@
 	postmarked = FALSE
 
 /obj/item/mail/traitor/mail_strike/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(prob(35))
 		stamped = FALSE
 	if(prob(35))
@@ -500,6 +548,8 @@
 	storage_type = /datum/storage/mail_counterfeit
 
 /obj/item/storage/mail_counterfeit_device/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("<i>You notice the manufacturer information on the side of the device...</i>")
 	. += "\t[span_info("Guerilla Letter Assembler")]"
@@ -507,6 +557,8 @@
 	return .
 
 /obj/item/storage/mail_counterfeit_device/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	var/mail_type = tgui_alert(user, "Make it look like an envelope or like normal mail?", "Mail Counterfeiting", list("Mail", "Envelope"))
 	if(isnull(mail_type))
 		return FALSE
@@ -572,6 +624,8 @@
 	storage_type = /datum/storage/mail_counterfeit/advanced
 
 /obj/item/storage/mail_counterfeit_device/advanced/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc += " This model is highly advanced and capable of compressing items, making mail's storage space comparable to standard backpack."
 
@@ -581,5 +635,7 @@
 	storage_type = /datum/storage/mail_counterfeit/bluespace
 
 /obj/item/storage/mail_counterfeit_device/bluespace/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc += " This model is the most advanced and capable of performing crazy bluespace compressions, making mail's storage space comparable to bluespace backpack."

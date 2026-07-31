@@ -4,63 +4,103 @@
 //datums don't have gender, but most of their subtypes do!
 
 /datum/proc/p_they(temp_gender)
+	procstart = null
+	src.procstart = null
 	return "it"
 
 /datum/proc/p_They(temp_gender)
+	procstart = null
+	src.procstart = null
 	return capitalize(p_they(temp_gender))
 
 /datum/proc/p_their(temp_gender)
+	procstart = null
+	src.procstart = null
 	return "its"
 
 /datum/proc/p_Their(temp_gender)
+	procstart = null
+	src.procstart = null
 	return capitalize(p_their(temp_gender))
 
 /datum/proc/p_theirs(temp_gender)
+	procstart = null
+	src.procstart = null
 	return "its"
 
 /datum/proc/p_Theirs(temp_gender)
+	procstart = null
+	src.procstart = null
 	return capitalize(p_theirs(temp_gender))
 
 /datum/proc/p_them(temp_gender)
+	procstart = null
+	src.procstart = null
 	return "it"
 
 /datum/proc/p_Them(temp_gender)
+	procstart = null
+	src.procstart = null
 	return capitalize(p_them(temp_gender))
 
 /datum/proc/p_have(temp_gender)
+	procstart = null
+	src.procstart = null
 	return "has"
 
 /datum/proc/p_are(temp_gender)
+	procstart = null
+	src.procstart = null
 	return "is"
 
 /datum/proc/p_were(temp_gender)
+	procstart = null
+	src.procstart = null
 	return "was"
 
 /datum/proc/p_do(temp_gender)
+	procstart = null
+	src.procstart = null
 	return "does"
 
 /datum/proc/p_theyve(temp_gender)
+	procstart = null
+	src.procstart = null
 	return p_they(temp_gender) + "'" + copytext_char(p_have(temp_gender), 3)
 
 /datum/proc/p_Theyve(temp_gender)
+	procstart = null
+	src.procstart = null
 	return p_They(temp_gender) + "'" + copytext_char(p_have(temp_gender), 3)
 
 /datum/proc/p_theyre(temp_gender)
+	procstart = null
+	src.procstart = null
 	return p_they(temp_gender) + "'" + copytext_char(p_are(temp_gender), 2)
 
 /datum/proc/p_Theyre(temp_gender)
+	procstart = null
+	src.procstart = null
 	return p_They(temp_gender) + "'" + copytext_char(p_are(temp_gender), 2)
 
-/datum/proc/p_s(temp_gender) //is this a descriptive proc name, or what?
+/datum/proc/p_s(temp_gender)
+	procstart = null
+	src.procstart = null //is this a descriptive proc name, or what?
 	return "s"
 
 /datum/proc/p_es(temp_gender)
+	procstart = null
+	src.procstart = null
 	return "es"
 
 /datum/proc/p_themselves(temp_gender)
+	procstart = null
+	src.procstart = null
 	return "itself"
 
 /proc/plural_s(pluralize)
+	procstart = null
+	src.procstart = null
 	switch(copytext_char(pluralize, -2))
 		if ("ss")
 			return "es"
@@ -79,6 +119,8 @@
 /// Uses associative list access from a __DEFINE list, since associative access is slightly
 /// faster
 /datum/proc/REPLACE_PRONOUNS(target_string, atom/targeted_atom, targeted_gender = null)
+	procstart = null
+	src.procstart = null
 	/// If someone specifies targeted_gender we choose that,
 	/// otherwise we go off the gender of our object
 	var/gender
@@ -98,6 +140,8 @@
 
 //like clients, which do have gender.
 /client/p_they(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	switch(temp_gender)
@@ -109,6 +153,8 @@
 			return "they"
 
 /client/p_their(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	switch(temp_gender)
@@ -120,6 +166,8 @@
 			return "their"
 
 /client/p_theirs(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	switch(temp_gender)
@@ -131,6 +179,8 @@
 			return "theirs"
 
 /client/p_them(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	switch(temp_gender)
@@ -142,6 +192,8 @@
 			return "them"
 
 /client/p_have(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender == PLURAL || temp_gender == NEUTER)
@@ -149,6 +201,8 @@
 	return "has"
 
 /client/p_are(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender == PLURAL || temp_gender == NEUTER)
@@ -156,6 +210,8 @@
 	return "is"
 
 /client/p_were(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender == PLURAL || temp_gender == NEUTER)
@@ -163,6 +219,8 @@
 	return "was"
 
 /client/p_do(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender == PLURAL || temp_gender == NEUTER)
@@ -170,18 +228,24 @@
 	return "does"
 
 /client/p_s(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender != PLURAL && temp_gender != NEUTER)
 		return "s"
 
 /client/p_es(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender != PLURAL && temp_gender != NEUTER)
 		return "es"
 
 /client/p_themselves(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	switch(temp_gender)
@@ -196,6 +260,8 @@
 
 //mobs(and atoms but atoms don't really matter write your own proc overrides) also have gender!
 /mob/p_they(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	switch(temp_gender)
@@ -209,6 +275,8 @@
 			return "it"
 
 /mob/p_their(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	switch(temp_gender)
@@ -222,6 +290,8 @@
 			return "its"
 
 /mob/p_theirs(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	switch(temp_gender)
@@ -235,6 +305,8 @@
 			return "its"
 
 /mob/p_them(capitalized, temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	switch(temp_gender)
@@ -248,6 +320,8 @@
 			return "it"
 
 /mob/p_have(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender == PLURAL)
@@ -255,6 +329,8 @@
 	return "has"
 
 /mob/p_are(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender == PLURAL)
@@ -262,6 +338,8 @@
 	return "is"
 
 /mob/p_were(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender == PLURAL)
@@ -269,6 +347,8 @@
 	return "was"
 
 /mob/p_do(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender == PLURAL)
@@ -276,18 +356,24 @@
 	return "does"
 
 /mob/p_s(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender != PLURAL)
 		return "s"
 
 /mob/p_es(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender != PLURAL)
 		return "es"
 
 /mob/p_themselves(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	switch(temp_gender)
@@ -302,6 +388,8 @@
 
 //Pronoun procs for objects
 /atom/p_they(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	switch(temp_gender)
@@ -315,6 +403,8 @@
 			return "it"
 
 /atom/p_their(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	switch(temp_gender)
@@ -328,6 +418,8 @@
 			return "its"
 
 /atom/p_theirs(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	switch(temp_gender)
@@ -341,6 +433,8 @@
 			return "its"
 
 /atom/p_them(capitalized, temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	switch(temp_gender)
@@ -354,6 +448,8 @@
 			return "it"
 
 /atom/p_have(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender == PLURAL)
@@ -361,6 +457,8 @@
 	return "has"
 
 /atom/p_are(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender == PLURAL)
@@ -368,6 +466,8 @@
 	return "is"
 
 /atom/p_were(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender == PLURAL)
@@ -375,6 +475,8 @@
 	return "was"
 
 /atom/p_do(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender == PLURAL)
@@ -382,18 +484,24 @@
 	return "does"
 
 /atom/p_s(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender != PLURAL)
 		return "s"
 
 /atom/p_es(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender != PLURAL)
 		return "es"
 
 /atom/p_themselves(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	switch(temp_gender)
@@ -408,9 +516,13 @@
 
 /// Reports what gender this atom appears to be
 /atom/proc/get_visible_gender()
+	procstart = null
+	src.procstart = null
 	return gender
 
 /mob/living/carbon/human/get_visible_gender()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_UNKNOWN_APPEARANCE))
 		return PLURAL
 	// If both face and uniform are hidden, can't assess gender
@@ -420,51 +532,75 @@
 
 //humans need special handling, because they can have their gender hidden
 /mob/living/carbon/human/p_they(temp_gender)
+	procstart = null
+	src.procstart = null
 	temp_gender ||= get_visible_gender()
 	return ..()
 
 /mob/living/carbon/human/p_their(temp_gender)
+	procstart = null
+	src.procstart = null
 	temp_gender ||= get_visible_gender()
 	return ..()
 
 /mob/living/carbon/human/p_theirs(capitalized, temp_gender)
+	procstart = null
+	src.procstart = null
 	temp_gender ||= get_visible_gender()
 	return ..()
 
 /mob/living/carbon/human/p_them(capitalized, temp_gender)
+	procstart = null
+	src.procstart = null
 	temp_gender ||= get_visible_gender()
 	return ..()
 
 /mob/living/carbon/human/p_have(temp_gender)
+	procstart = null
+	src.procstart = null
 	temp_gender ||= get_visible_gender()
 	return ..()
 
 /mob/living/carbon/human/p_are(temp_gender)
+	procstart = null
+	src.procstart = null
 	temp_gender ||= get_visible_gender()
 	return ..()
 
 /mob/living/carbon/human/p_were(temp_gender)
+	procstart = null
+	src.procstart = null
 	temp_gender ||= get_visible_gender()
 	return ..()
 
 /mob/living/carbon/human/p_do(temp_gender)
+	procstart = null
+	src.procstart = null
 	temp_gender ||= get_visible_gender()
 	return ..()
 
 /mob/living/carbon/human/p_s(temp_gender)
+	procstart = null
+	src.procstart = null
 	temp_gender ||= get_visible_gender()
 	return ..()
 
 /mob/living/carbon/human/p_es(temp_gender)
+	procstart = null
+	src.procstart = null
 	temp_gender ||= get_visible_gender()
 	return ..()
 
 /mob/living/carbon/human/p_themselves(temp_gender)
+	procstart = null
+	src.procstart = null
 	temp_gender ||= get_visible_gender()
 	return ..()
 
 //clothing need special handling due to pairs of items, ie gloves vs a singular glove, shoes, ect.
 /obj/item/clothing/p_they(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender == PLURAL)
@@ -472,6 +608,8 @@
 	return "it"
 
 /obj/item/clothing/p_their(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender == PLURAL)
@@ -479,6 +617,8 @@
 	return "its"
 
 /obj/item/clothing/p_theirs(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender == PLURAL)
@@ -486,6 +626,8 @@
 	return "its"
 
 /obj/item/clothing/p_them(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender == PLURAL)
@@ -493,6 +635,8 @@
 	return "it"
 
 /obj/item/clothing/p_have(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender == PLURAL)
@@ -500,6 +644,8 @@
 	return "has"
 
 /obj/item/clothing/p_are(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender == PLURAL)
@@ -507,6 +653,8 @@
 	return "is"
 
 /obj/item/clothing/p_were(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender == PLURAL)
@@ -514,6 +662,8 @@
 	return "was"
 
 /obj/item/clothing/p_do(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender == PLURAL)
@@ -521,18 +671,24 @@
 	return "does"
 
 /obj/item/clothing/p_s(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender != PLURAL)
 		return "s"
 
 /obj/item/clothing/p_es(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender != PLURAL)
 		return "es"
 
 /obj/item/clothing/p_themselves(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	switch(temp_gender)
@@ -546,34 +702,56 @@
 			return "itself"
 
 /datum/mind/p_they(temp_gender)
+	procstart = null
+	src.procstart = null
 	return current?.p_they(temp_gender) || ..()
 
 /datum/mind/p_their(temp_gender)
+	procstart = null
+	src.procstart = null
 	return current?.p_their(temp_gender) || ..()
 
 /datum/mind/p_theirs(temp_gender)
+	procstart = null
+	src.procstart = null
 	return current?.p_theirs(temp_gender) || ..()
 
 /datum/mind/p_them(capitalized, temp_gender)
+	procstart = null
+	src.procstart = null
 	return current?.p_them(capitalized, temp_gender) || ..()
 
 /datum/mind/p_have(temp_gender)
+	procstart = null
+	src.procstart = null
 	return current?.p_have(temp_gender) || ..()
 
 /datum/mind/p_are(temp_gender)
+	procstart = null
+	src.procstart = null
 	return current?.p_are(temp_gender) || ..()
 
 /datum/mind/p_were(temp_gender)
+	procstart = null
+	src.procstart = null
 	return current?.p_were(temp_gender) || ..()
 
 /datum/mind/p_do(temp_gender)
+	procstart = null
+	src.procstart = null
 	return current?.p_do(temp_gender) || ..()
 
 /datum/mind/p_s(temp_gender)
+	procstart = null
+	src.procstart = null
 	return current?.p_s(temp_gender) || ..()
 
 /datum/mind/p_es(temp_gender)
+	procstart = null
+	src.procstart = null
 	return current?.p_es(temp_gender) || ..()
 
 /datum/mind/p_themselves(temp_gender)
+	procstart = null
+	src.procstart = null
 	return current?.p_themselves(temp_gender) || ..()

@@ -29,6 +29,8 @@
 	var/static/list/antiquated_names = GLOB.mirror_maid_names.Copy()
 
 /mob/living/basic/heretic_summon/maid_in_the_mirror/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/loot = list(
 		/obj/effect/decal/cleanable/ash,
@@ -48,12 +50,16 @@
 	real_name = name
 
 /mob/living/basic/heretic_summon/maid_in_the_mirror/death(gibbed)
+	procstart = null
+	src.procstart = null
 	var/turf/death_turf = get_turf(src)
 	death_turf.TakeTemperature(-40) // Spooky
 	return ..()
 
 // Examining them will harm them, on a cooldown.
 /mob/living/basic/heretic_summon/maid_in_the_mirror/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!harmed_by_examine || user == src || user.stat == DEAD || !isliving(user) || IS_HERETIC_OR_MONSTER(user))
 		return
@@ -86,6 +92,8 @@
 		death()
 
 /mob/living/basic/heretic_summon/maid_in_the_mirror/proc/clear_recent_examiner(mob_ref)
+	procstart = null
+	src.procstart = null
 	if(!(mob_ref in recent_examiner_refs))
 		return
 
@@ -93,6 +101,8 @@
 	heal_overall_damage(5)
 
 /mob/living/basic/heretic_summon/maid_in_the_mirror/melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !isliving(target))
 		return

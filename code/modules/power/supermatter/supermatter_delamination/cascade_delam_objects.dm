@@ -21,6 +21,8 @@
 	COOLDOWN_DECLARE(sm_wall_cooldown)
 
 /obj/crystal_mass/Initialize(mapload, dir_to_remove)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "crystal_cascade_[rand(1,6)]"
 	START_PROCESSING(SSsupermatter_cascade, src)
@@ -40,6 +42,8 @@
 	RegisterSignal(src, COMSIG_ATOM_PRE_BULLET_ACT, PROC_REF(eat_bullets))
 
 /obj/crystal_mass/process()
+	procstart = null
+	src.procstart = null
 
 	if(!COOLDOWN_FINISHED(src, sm_wall_cooldown))
 		return
@@ -74,6 +78,8 @@
 	new /obj/crystal_mass(next_turf, get_dir(next_turf, src))
 
 /obj/crystal_mass/proc/eat_bullets(datum/source, obj/projectile/hitting_projectile)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	visible_message(
@@ -87,9 +93,13 @@
 	return COMPONENT_BULLET_BLOCKED
 
 /obj/crystal_mass/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/crystal_mass/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user))
 		return
 	var/mob/living/carbon/jedi = user
@@ -102,6 +112,8 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /obj/crystal_mass/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSsupermatter_cascade, src)
 	sm_comp = null
 	return ..()
@@ -124,6 +136,8 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF | FREEZE_PROOF
 
 /obj/cascade_portal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/location = get_turf(src)
 	var/area_name = get_area_name(src)
@@ -132,6 +146,8 @@
 	investigate_log("created at [area_name].", INVESTIGATE_ENGINE)
 
 /obj/cascade_portal/Destroy(force)
+	procstart = null
+	src.procstart = null
 	var/turf/location = get_turf(src)
 	var/area_name = get_area_name(src)
 	message_admins("Exit rift at [area_name] deleted. [ADMIN_VERBOSEJMP(location)]")
@@ -140,6 +156,8 @@
 	return ..()
 
 /obj/cascade_portal/Bumped(atom/movable/hit_object)
+	procstart = null
+	src.procstart = null
 	consume(hit_object)
 	new /obj/effect/particle_effect/sparks(loc)
 	playsound(loc, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
@@ -150,6 +168,8 @@
  * Arguments: atom/movable/consumed_object is the object hitting the portal
  */
 /obj/cascade_portal/proc/consume(atom/movable/consumed_object)
+	procstart = null
+	src.procstart = null
 	if(isliving(consumed_object))
 		consumed_object.visible_message(span_danger("\The [consumed_object] walks into \the [src]... \
 			A blinding light covers [consumed_object.p_their()] body before disappearing completely!"),

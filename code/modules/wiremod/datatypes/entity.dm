@@ -7,6 +7,8 @@
 	)
 
 /datum/circuit_datatype/entity/convert_value(datum/port/port, value_to_convert)
+	procstart = null
+	src.procstart = null
 	var/atom/object = value_to_convert
 	if(QDELETED(object))
 		return null

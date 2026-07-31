@@ -6,6 +6,8 @@
 	var/gib_on_loss
 
 /datum/smite/puzzgrid/configure(client/user)
+	procstart = null
+	src.procstart = null
 	var/timer = input(user, "How long should other people have to solve the grid? 0 gives infinite time.", "Puzzgrid", 0) as num | null
 	if (isnull(timer))
 		return FALSE
@@ -18,6 +20,8 @@
 	return TRUE
 
 /datum/smite/puzzgrid/effect(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/datum/puzzgrid/puzzgrid = create_random_puzzgrid()
@@ -43,6 +47,8 @@
 	var/gib_on_loss
 
 /obj/structure/puzzgrid_effect/Initialize(mapload, mob/living/victim, datum/puzzgrid/puzzgrid, timer, gib_on_loss)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (isnull(victim))
@@ -59,10 +65,14 @@
 	add_puzzgrid_component(puzzgrid)
 
 /obj/structure/puzzgrid_effect/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(victim)
 	return ..()
 
 /obj/structure/puzzgrid_effect/proc/add_puzzgrid_component(datum/puzzgrid/puzzgrid)
+	procstart = null
+	src.procstart = null
 	AddComponent( \
 		/datum/component/puzzgrid, \
 		puzzgrid = puzzgrid, \
@@ -72,6 +82,8 @@
 	)
 
 /obj/structure/puzzgrid_effect/proc/on_victory()
+	procstart = null
+	src.procstart = null
 	victim.forceMove(loc)
 	victim.Paralyze(5 SECONDS)
 	victim.visible_message(
@@ -86,6 +98,8 @@
 	qdel(src)
 
 /obj/structure/puzzgrid_effect/proc/loss_gib()
+	procstart = null
+	src.procstart = null
 	victim.forceMove(loc)
 	victim.visible_message(
 		span_bolddanger("You were unable to free [victim] from their fiendish prison, leaving them as nothing more than a smattering of mush!"),
@@ -97,6 +111,8 @@
 	qdel(src)
 
 /obj/structure/puzzgrid_effect/proc/loss_restart()
+	procstart = null
+	src.procstart = null
 	var/datum/puzzgrid/puzzgrid = create_random_puzzgrid()
 	if (isnull(puzzgrid))
 		victim.forceMove(loc)

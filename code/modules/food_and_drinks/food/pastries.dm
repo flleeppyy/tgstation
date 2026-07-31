@@ -35,6 +35,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_4
 
 /obj/item/food/muffin/booberry/Initialize(mapload, starting_reagent_purity, no_base_reagents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ghost_edible, bite_consumption = bite_consumption)
 
@@ -48,10 +50,14 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/muffin/moffin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state]_[rand(1, 3)]"
 
 /obj/item/food/muffin/moffin/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(user))
 		return
@@ -77,6 +83,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/waffles/make_edible()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ice_cream_holder, max_scoops = 1, x_offset = -2)
 
@@ -125,6 +133,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/rofflewaffles/make_edible()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ice_cream_holder, max_scoops = 1, x_offset = -2)
 
@@ -143,6 +153,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/cookie/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/dunkable, 10)
 
@@ -162,6 +174,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/fortunecookie/proc/get_fortune()
+	procstart = null
+	src.procstart = null
 	var/atom/drop_location = drop_location()
 
 	var/obj/item/paper/fortune = locate(/obj/item/paper) in src
@@ -176,6 +190,8 @@
 	return fortune_slip
 
 /obj/item/food/fortunecookie/make_leave_trash()
+	procstart = null
+	src.procstart = null
 	if(trash_type)
 		AddElement(/datum/element/food_trash, trash_type, food_flags, TYPE_PROC_REF(/obj/item/food/fortunecookie, get_fortune))
 
@@ -192,6 +208,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/cookie/sugar/Initialize(mapload, seasonal_changes = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(seasonal_changes && check_holidays(FESTIVE_SEASON))
 		var/shape = pick("tree", "bear", "santa", "stocking", "present", "cane")
@@ -264,6 +282,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/plumphelmetbiscuit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	var/fey = prob(10)
 	if(fey)
 		name = "exceptional plump helmet biscuit"
@@ -394,12 +414,16 @@
 	var/list/prefill_flavours
 
 /obj/item/food/icecream/Initialize(mapload, list/prefill_flavours)
+	procstart = null
+	src.procstart = null
 	if(ingredients)
 		ingredients_text = "Requires: [reagent_paths_list_to_text(ingredients)]"
 	src.prefill_flavours = prefill_flavours
 	return ..()
 
 /obj/item/food/icecream/make_edible()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/max_scoops = check_holidays(ICE_CREAM_DAY) ? DEFAULT_MAX_ICE_CREAM_SCOOPS * 4 : DEFAULT_MAX_ICE_CREAM_SCOOPS
 	AddComponent(/datum/component/ice_cream_holder, max_scoops, filled_name = "ice cream", change_desc = TRUE, prefill_flavours = prefill_flavours)
@@ -454,6 +478,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/raw_brownie_batter/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/brownie_sheet, rand(20 SECONDS, 30 SECONDS), TRUE, TRUE)
 
 /obj/item/food/brownie_sheet
@@ -471,6 +497,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/brownie_sheet/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/brownie, 4, 3 SECONDS, table_required = TRUE,  screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/brownie
@@ -503,6 +531,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/peanut_butter_brownie_batter/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/peanut_butter_brownie_sheet, rand(20 SECONDS, 30 SECONDS), TRUE, TRUE)
 
 /obj/item/food/peanut_butter_brownie_sheet
@@ -521,6 +551,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/peanut_butter_brownie_sheet/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/peanut_butter_brownie, 4, 3 SECONDS, table_required = TRUE,  screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/peanut_butter_brownie
@@ -588,6 +620,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/cookie/macaron/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state]_[rand(1, 4)]"
 

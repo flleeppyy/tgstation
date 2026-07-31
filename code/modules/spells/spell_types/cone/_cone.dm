@@ -10,17 +10,23 @@
 	var/respect_density = FALSE
 
 /datum/action/cooldown/spell/cone/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/cone_turfs = get_cone_turfs(get_turf(cast_on), cast_on.dir, cone_levels)
 	SEND_SIGNAL(src, COMSIG_SPELL_CONE_ON_CAST, cone_turfs, cast_on)
 	make_cone(cone_turfs, cast_on)
 
 /datum/action/cooldown/spell/cone/proc/make_cone(list/cone_turfs, atom/caster)
+	procstart = null
+	src.procstart = null
 	for(var/list/turf_list in cone_turfs)
 		do_cone_effects(turf_list, caster)
 
 /// This proc does obj, mob and turf cone effects on all targets in the passed list.
 /datum/action/cooldown/spell/cone/proc/do_cone_effects(list/target_turf_list, atom/caster, level = 1)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_SPELL_CONE_ON_LAYER_EFFECT, target_turf_list, caster, level)
 	for(var/turf/target_turf as anything in target_turf_list)
 		if(QDELETED(target_turf)) //if turf is no longer there
@@ -38,18 +44,26 @@
 
 ///This proc deterimines how the spell will affect turfs.
 /datum/action/cooldown/spell/cone/proc/do_turf_cone_effect(turf/target_turf, atom/caster, level)
+	procstart = null
+	src.procstart = null
 	return
 
 ///This proc deterimines how the spell will affect objects.
 /datum/action/cooldown/spell/cone/proc/do_obj_cone_effect(obj/target_obj, atom/caster, level)
+	procstart = null
+	src.procstart = null
 	return
 
 ///This proc deterimines how the spell will affect mobs.
 /datum/action/cooldown/spell/cone/proc/do_mob_cone_effect(mob/living/target_mob, atom/caster, level)
+	procstart = null
+	src.procstart = null
 	return
 
 ///This proc creates a list of turfs that are hit by the cone.
 /datum/action/cooldown/spell/cone/proc/get_cone_turfs(turf/starter_turf, dir_to_use, cone_levels = 3)
+	procstart = null
+	src.procstart = null
 	var/list/turfs_to_return = list()
 	var/turf/turf_to_use = starter_turf
 	var/turf/left_turf
@@ -112,6 +126,8 @@
  * Return a number - the TOTAL width of the cone at the passed level.
  */
 /datum/action/cooldown/spell/cone/proc/calculate_cone_shape(current_level)
+	procstart = null
+	src.procstart = null
 	// Default formula: (1 (innate) -> 3 -> 5 -> 5 -> 7 -> 7 -> 9 -> 9 -> ...)
 	return current_level + (current_level % 2) + 1
 
@@ -128,6 +144,8 @@
 	var/delay_between_level = 0.2 SECONDS
 
 /datum/action/cooldown/spell/cone/staggered/make_cone(list/cone_turfs, atom/caster)
+	procstart = null
+	src.procstart = null
 	var/level_counter = 0
 	for(var/list/turf_list in cone_turfs)
 		level_counter++

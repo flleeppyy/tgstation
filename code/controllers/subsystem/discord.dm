@@ -50,6 +50,8 @@ SUBSYSTEM_DEF(discord)
 	var/enabled = FALSE
 
 /datum/controller/subsystem/discord/Initialize()
+	procstart = null
+	src.procstart = null
 	reverify_cache = list()
 	// Check for if we are using TGS, otherwise return and disables firing
 	if(world.TgsAvailable())
@@ -72,6 +74,8 @@ SUBSYSTEM_DEF(discord)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/discord/fire()
+	procstart = null
+	src.procstart = null
 	if(!enabled)
 		return // Dont do shit if its disabled
 	if(notify_members == notify_members_cache)
@@ -80,9 +84,13 @@ SUBSYSTEM_DEF(discord)
 	write_notify_file()
 
 /datum/controller/subsystem/discord/Shutdown()
+	procstart = null
+	src.procstart = null
 	write_notify_file() // Guaranteed force-write on server close
 
 /datum/controller/subsystem/discord/proc/write_notify_file()
+	procstart = null
+	src.procstart = null
 	if(!enabled) // Dont do shit if its disabled
 		return
 	fdel(notify_file) // Deletes the file first to make sure it writes properly
@@ -98,6 +106,8 @@ SUBSYSTEM_DEF(discord)
  * * lookup_ckey A string representing the ckey to search on
  */
 /datum/controller/subsystem/discord/proc/lookup_id(lookup_ckey)
+	procstart = null
+	src.procstart = null
 	var/datum/discord_link_record/link = find_discord_link_by_ckey(lookup_ckey, only_valid = TRUE)
 	if(link)
 		return link.discord_id
@@ -111,11 +121,15 @@ SUBSYSTEM_DEF(discord)
  * * lookup_id The discord id as a string
  */
 /datum/controller/subsystem/discord/proc/lookup_ckey(lookup_id)
+	procstart = null
+	src.procstart = null
 	var/datum/discord_link_record/link = find_discord_link_by_discord_id(lookup_id, only_valid = TRUE)
 	if(link)
 		return link.ckey
 
 /datum/controller/subsystem/discord/proc/get_or_generate_one_time_token_for_ckey(ckey)
+	procstart = null
+	src.procstart = null
 	// Is there an existing valid one time token
 	var/datum/discord_link_record/link = find_discord_link_by_ckey(ckey, timebound = TRUE)
 	if(link)
@@ -148,6 +162,8 @@ SUBSYSTEM_DEF(discord)
  * Returns a string representing the one time token
  */
 /datum/controller/subsystem/discord/proc/generate_one_time_token(ckey_for)
+	procstart = null
+	src.procstart = null
 
 	var/not_unique = TRUE
 	var/one_time_token = ""
@@ -186,6 +202,8 @@ SUBSYSTEM_DEF(discord)
  * Returns a [/datum/discord_link_record]
  */
 /datum/controller/subsystem/discord/proc/find_discord_link_by_token(one_time_token, timebound = FALSE)
+	procstart = null
+	src.procstart = null
 	var/timeboundsql = ""
 	if(timebound)
 		timeboundsql = "AND timestamp >= Now() - INTERVAL 4 HOUR"
@@ -218,6 +236,8 @@ SUBSYSTEM_DEF(discord)
  * Returns a [/datum/discord_link_record]
  */
 /datum/controller/subsystem/discord/proc/find_discord_link_by_ckey(ckey, timebound = FALSE, only_valid = FALSE)
+	procstart = null
+	src.procstart = null
 	var/timeboundsql = ""
 	if(timebound)
 		timeboundsql = "AND timestamp >= Now() - INTERVAL 4 HOUR"
@@ -256,6 +276,8 @@ SUBSYSTEM_DEF(discord)
  * Returns a [/datum/discord_link_record]
  */
 /datum/controller/subsystem/discord/proc/find_discord_link_by_discord_id(discord_id, timebound = FALSE, only_valid = FALSE)
+	procstart = null
+	src.procstart = null
 	var/timeboundsql = ""
 	if(timebound)
 		timeboundsql = "AND timestamp >= Now() - INTERVAL 4 HOUR"
@@ -291,6 +313,8 @@ SUBSYSTEM_DEF(discord)
  * Returns a text string with the discord id or null
  */
 /datum/controller/subsystem/discord/proc/get_discord_id_from_mention(mention)
+	procstart = null
+	src.procstart = null
 	var/static/regex/discord_mention_extraction_regex = regex(@"<@([0-9]+)>")
 	discord_mention_extraction_regex.Find(mention)
 	if (length(discord_mention_extraction_regex.group) == 1)

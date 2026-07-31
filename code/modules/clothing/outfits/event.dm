@@ -15,6 +15,8 @@
 	box = /obj/item/storage/box/survival/engineer
 
 /datum/outfit/santa/post_equip(mob/living/carbon/human/user, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visuals_only)
 		return
 	user.fully_replace_character_name(user.real_name, "Santa Claus")

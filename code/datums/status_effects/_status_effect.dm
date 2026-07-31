@@ -36,12 +36,16 @@
 	VAR_FINAL/obj/effect/abstract/particle_holder/particle_effect
 
 /datum/status_effect/New(list/arguments)
+	procstart = null
+	src.procstart = null
 	on_creation(arglist(arguments))
 
 /// Called from New() with any supplied status effect arguments.
 /// Not guaranteed to exist by the end.
 /// Returning FALSE from on_apply will stop on_creation and self-delete the effect.
 /datum/status_effect/proc/on_creation(mob/living/new_owner, ...)
+	procstart = null
+	src.procstart = null
 	if(new_owner)
 		owner = new_owner
 	if(QDELETED(owner) || !on_apply())
@@ -73,6 +77,8 @@
 	return TRUE
 
 /datum/status_effect/Destroy()
+	procstart = null
+	src.procstart = null
 	stop_processing()
 	if(owner)
 		linked_alert = null
@@ -88,6 +94,8 @@
 
 /// Updates the status effect alert's maptext (if possible)
 /datum/status_effect/proc/update_shown_duration()
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	if(!linked_alert || !show_duration)
 		return
@@ -98,6 +106,8 @@
 // If you're adding processed effects, put them in [proc/tick]
 // instead of extending / overriding the process() proc.
 /datum/status_effect/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(QDELETED(owner))
@@ -128,11 +138,15 @@
 /// Called whenever the effect is applied in on_created
 /// Returning FALSE will cause it to delete itself during creation instead.
 /datum/status_effect/proc/on_apply()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Gets and formats examine text associated with our status effect.
 /// Return 'null' to have no examine text appear (default behavior).
 /datum/status_effect/proc/get_examine_text()
+	procstart = null
+	src.procstart = null
 	return null
 
 /**
@@ -146,12 +160,16 @@
  * It is similar to seconds_per_tick, from processing itself, but adjusted to the status effect's tick interval.
  */
 /datum/status_effect/proc/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called whenever the buff expires or is removed (qdeleted)
 /// Note that at the point this is called, it is out of the
 /// owner's status_effects list, but owner is not yet null
 /datum/status_effect/proc/on_remove()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called instead of on_remove when a status effect
@@ -159,6 +177,8 @@
 /// or when a status effect with on_remove_on_mob_delete
 /// set to FALSE has its mob deleted
 /datum/status_effect/proc/be_replaced()
+	procstart = null
+	src.procstart = null
 	linked_alert = null
 	owner.clear_alert(id)
 	LAZYREMOVE(owner.status_effects, src)
@@ -168,23 +188,33 @@
 /// Called before being fully removed (before on_remove)
 /// Returning FALSE will cancel removal
 /datum/status_effect/proc/before_remove(...)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Called when a status effect of status_type STATUS_EFFECT_REFRESH
 /// has its duration refreshed in apply_status_effect - is passed New() args
 /datum/status_effect/proc/refresh(effect, ...)
+	procstart = null
+	src.procstart = null
 	duration = initial(duration)
 
 /// Adds nextmove modifier multiplicatively to the owner while applied
 /datum/status_effect/proc/nextmove_modifier()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /// Adds nextmove adjustment additiviely to the owner while applied
 /datum/status_effect/proc/nextmove_adjust()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /// Signal proc for [COMSIG_LIVING_POST_FULLY_HEAL] to remove us on fullheal
 /datum/status_effect/proc/remove_effect_on_heal(datum/source, heal_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!remove_on_fullheal)
@@ -196,6 +226,8 @@
 /// Removes [seconds] of duration from the status effect.
 /// Returns whether or not the status effect was qdeleted due to running out of duration.
 /datum/status_effect/proc/remove_duration(seconds)
+	procstart = null
+	src.procstart = null
 	if(duration == STATUS_EFFECT_PERMANENT) // Infinite duration
 		return FALSE
 
@@ -212,10 +244,14 @@
  * Should be handled by subtypes!
  */
 /datum/status_effect/proc/update_particles()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	return
 
 /datum/status_effect/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -229,6 +265,8 @@
 
 /// Stops ticking. Entirely stops processing if the effect is permanent.
 /datum/status_effect/proc/stop_ticking()
+	procstart = null
+	src.procstart = null
 	// If we have a set duration, we can't stop processing as duration is also handled in process
 	if(duration != STATUS_EFFECT_PERMANENT)
 		time_until_next_tick = STATUS_EFFECT_NO_TICK
@@ -239,6 +277,8 @@
 
 /// Stops processing, removing it from relevant subsystems
 /datum/status_effect/proc/stop_processing()
+	procstart = null
+	src.procstart = null
 	switch(processing_speed)
 		if(STATUS_EFFECT_FAST_PROCESS)
 			STOP_PROCESSING(SSfastprocess, src)
@@ -249,6 +289,8 @@
 
 /// (Re)starts ticking, also (re)starting processing if the effect is permanent
 /datum/status_effect/proc/start_ticking()
+	procstart = null
+	src.procstart = null
 	// If we have a set duration, we assume we're processing already, so just reset the timer
 	if(duration != STATUS_EFFECT_PERMANENT)
 		time_until_next_tick = tick_interval
@@ -259,6 +301,8 @@
 
 /// (Re)starts processing, adding it to relevant subsystems
 /datum/status_effect/proc/start_processing()
+	procstart = null
+	src.procstart = null
 	switch(processing_speed)
 		if(STATUS_EFFECT_FAST_PROCESS)
 			START_PROCESSING(SSfastprocess, src)
@@ -276,5 +320,7 @@
 	var/datum/status_effect/attached_effect
 
 /atom/movable/screen/alert/status_effect/Destroy()
+	procstart = null
+	src.procstart = null
 	attached_effect = null //Don't keep a ref now
 	return ..()

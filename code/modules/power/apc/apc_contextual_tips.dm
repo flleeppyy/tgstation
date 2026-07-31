@@ -1,4 +1,6 @@
 /obj/machinery/power/apc/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isAI(user) || iscyborg(user))

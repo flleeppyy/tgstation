@@ -14,6 +14,8 @@
 	)
 
 /obj/item/book/granter/action/spell/smoke/recoil(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(user,span_warning("Your stomach rumbles..."))
 	if(user.nutrition)

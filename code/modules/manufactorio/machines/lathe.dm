@@ -19,6 +19,8 @@
 	var/atom/movable/withheld
 
 /obj/machinery/power/manufacturing/lathe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	print_sound = new(src,  FALSE)
 	materials = new ( \
 		src, \
@@ -33,26 +35,36 @@
 	stored_research = GLOB.autounlock_techwebs[/datum/techweb/autounlocking/autolathe]
 
 /obj/machinery/power/manufacturing/lathe/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(materials)
 	return ..()
 
 /obj/machinery/power/manufacturing/lathe/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(isnull(held_item))
 		context[SCREENTIP_CONTEXT_CTRL_SHIFT_LMB] = "Dump all contained materials"
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/power/manufacturing/lathe/click_ctrl_shift(mob/living/user)
+	procstart = null
+	src.procstart = null
 	balloon_alert_to_viewers("materials dumped")
 	materials.retrieve_all()
 
 /obj/machinery/power/manufacturing/lathe/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/stock_part/matter_bin/bin = locate() in component_parts
 	materials.max_amount = bin.tier * (SHEET_MATERIAL_AMOUNT * MAX_STACK_SIZE)
 
 
 /obj/machinery/power/manufacturing/lathe/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/design/design
 	if(!isnull(design_id))
@@ -67,11 +79,15 @@
 		. += "[amount / SHEET_MATERIAL_AMOUNT] sheets of [initial(ingredient.name)]"
 
 /obj/machinery/power/manufacturing/lathe/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += generate_io_overlays(dir, COLOR_ORANGE) // OUT - stuff in it
 	. += generate_io_overlays(REVERSE_DIR(dir), COLOR_MODERATE_BLUE) // IN - to crush
 
 /obj/machinery/power/manufacturing/lathe/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	stored_research = null
 	QDEL_NULL(print_sound)
@@ -79,16 +95,22 @@
 	QDEL_NULL(withheld)
 
 /obj/machinery/power/manufacturing/lathe/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	withheld?.Move(drop_location())
 	return ..()
 
 /obj/machinery/power/manufacturing/lathe/receive_resource(atom/movable/receiving, atom/from, receive_dir)
+	procstart = null
+	src.procstart = null
 	if(!isstack(receiving) || istype(receiving, /obj/item/stack/ore) || receiving.resistance_flags & INDESTRUCTIBLE || receive_dir != REVERSE_DIR(dir))
 		return MANUFACTURING_FAIL
 	materials.insert_item(receiving)
 	return MANUFACTURING_SUCCESS
 
 /obj/machinery/power/manufacturing/lathe/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/name_to_id = list()
 	for(var/id in stored_research.researched_designs)
@@ -101,6 +123,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/manufacturing/lathe/process()
+	procstart = null
+	src.procstart = null
 	if(!isnull(withheld) && !send_resource(withheld, dir))
 		return
 
@@ -144,6 +168,8 @@
 	busy = addtimer(CALLBACK(src, PROC_REF(do_make_item), design, materials_needed, slots_chosen), craft_time, TIMER_UNIQUE | TIMER_STOPPABLE | TIMER_DELETE_ME)
 
 /obj/machinery/power/manufacturing/lathe/proc/do_make_item(datum/design/design, list/materials_needed, list/slots_chosen)
+	procstart = null
+	src.procstart = null
 	finalize_build()
 	if(surplus() < power_cost)
 		return
@@ -179,6 +205,8 @@
 		withheld = created
 
 /obj/machinery/power/manufacturing/lathe/proc/finalize_build()
+	procstart = null
+	src.procstart = null
 	print_sound.stop()
 	deltimer(busy)
 	busy = null

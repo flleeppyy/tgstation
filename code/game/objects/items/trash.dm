@@ -11,12 +11,16 @@
 	custom_materials = list(/datum/material/plastic=SMALL_MATERIAL_AMOUNT*2)
 
 /obj/item/trash/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(T && is_station_level(T.z))
 		SSblackbox.record_feedback("tally", "station_mess_created", 1, name)
 	return ..()
 
 /obj/item/trash/Destroy()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(T && is_station_level(T.z))
 		SSblackbox.record_feedback("tally", "station_mess_destroyed", 1, name)
@@ -48,6 +52,8 @@
 	icon_state = "boritos"
 
 /obj/item/trash/boritos/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/aluminium = 1)
 
 /obj/item/trash/boritos/green
@@ -119,6 +125,8 @@
 	custom_materials = null
 
 /obj/item/trash/candle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/floor_placeable)
 
@@ -135,6 +143,8 @@
 	custom_materials = list(/datum/material/iron=SMALL_MATERIAL_AMOUNT*2)
 
 /obj/item/trash/can/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/aluminium = 10)
 
 /obj/item/trash/can/food
@@ -154,6 +164,8 @@
 	icon_state = "beans_empty"
 
 /obj/item/trash/can/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(-4,4)
 	pixel_y = rand(-4,4)

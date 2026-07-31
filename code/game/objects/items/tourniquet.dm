@@ -11,6 +11,8 @@
 	custom_premium_price = PAYCHECK_CREW * 2
 
 /obj/item/tourniquet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/limb_applicable, \
@@ -22,10 +24,14 @@
 	RegisterSignal(src, COMSIG_ITEM_UNAPPLIED_FROM_LIMB, PROC_REF(on_removed_from_limb))
 
 /obj/item/tourniquet/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/tourniquet/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins to wrap [src] around [p_their()] neck too tight! It looks like [user.p_theyre()] trying to commit suicide!"))
 	if(!do_after(user, 5 SECONDS, user))
 		return SHAME
@@ -35,6 +41,8 @@
 	return OXYLOSS
 
 /obj/item/tourniquet/proc/on_applied_to_limb(datum/source, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	limb.refresh_bleed_rate()
 	switch(limb.body_zone)
@@ -48,6 +56,8 @@
 			START_PROCESSING(SSobj, src)
 
 /obj/item/tourniquet/proc/on_removed_from_limb(datum/source, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	limb.refresh_bleed_rate()
 	switch(limb.body_zone)
@@ -61,6 +71,8 @@
 			START_PROCESSING(SSobj, src)
 
 /obj/item/tourniquet/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/limb = loc
 	if(!istype(limb) || isnull(limb.owner))
 		return PROCESS_KILL
@@ -78,6 +90,8 @@
 		limb.owner.adjust_confusion(2 SECONDS)
 
 /obj/item/tourniquet/proc/do_apply_tourniquet(mob/user, mob/living/patient, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	var/speed_multiplier = 2
 	var/speed_boosted = FALSE
 	for(var/datum/wound/woundies as anything in limb.wounds)

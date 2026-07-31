@@ -5,12 +5,16 @@
 	admin_only = TRUE
 
 /datum/tgs_chat_command/reload_admins/Run(datum/tgs_chat_user/sender, params)
+	procstart = null
+	src.procstart = null
 	ReloadAsync()
 	log_admin("[sender.friendly_name] reloaded admins via chat command.")
 	message_admins("[sender.friendly_name] reloaded admins via chat command.")
 	return new /datum/tgs_message_content("Admins reloaded.")
 
 /datum/tgs_chat_command/reload_admins/proc/ReloadAsync()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	load_admins()
 
@@ -23,6 +27,8 @@
 
 /// called by tgs
 /datum/tgs_chat_command/validated/Run(datum/tgs_chat_user/sender, params)
+	procstart = null
+	src.procstart = null
 	if (!CONFIG_GET(flag/secure_chat_commands) || CONFIG_GET(flag/admin_legacy_system) || !SSdbcore.Connect())
 		return Validated_Run(sender, params)
 
@@ -49,6 +55,8 @@
 
 /// Called if the sender passes validation checks or if those checks are disabled.
 /datum/tgs_chat_command/validated/proc/Validated_Run(datum/tgs_chat_user/sender, params)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/tgs_message_content)
 	CRASH("[type] has no implementation for Validated_Run()")
 
@@ -59,6 +67,8 @@
 	required_rights = R_ADMIN
 
 /datum/tgs_chat_command/validated/ahelp/Validated_Run(datum/tgs_chat_user/sender, params)
+	procstart = null
+	src.procstart = null
 	var/list/all_params = splittext(params, " ")
 	if(all_params.len < 2)
 		return new /datum/tgs_message_content("Insufficient parameters")
@@ -80,6 +90,8 @@
 	required_rights = R_ADMIN
 
 /datum/tgs_chat_command/validated/namecheck/Validated_Run(datum/tgs_chat_user/sender, params)
+	procstart = null
+	src.procstart = null
 	params = trim(params)
 	if(!params)
 		return new /datum/tgs_message_content("Insufficient parameters")
@@ -94,6 +106,8 @@
 	required_rights = 0
 
 /datum/tgs_chat_command/validated/adminwho/Validated_Run(datum/tgs_chat_user/sender, params)
+	procstart = null
+	src.procstart = null
 	return new /datum/tgs_message_content(tgsadminwho())
 
 /datum/tgs_chat_command/validated/sdql
@@ -103,6 +117,8 @@
 	required_rights = R_DEBUG
 
 /datum/tgs_chat_command/validated/sdql/Validated_Run(datum/tgs_chat_user/sender, params)
+	procstart = null
+	src.procstart = null
 	var/list/results = HandleUserlessSDQL(sender.friendly_name, params)
 	if(!results)
 		return new /datum/tgs_message_content("Query produced no output")
@@ -117,6 +133,8 @@
 	required_rights = R_ADMIN
 
 /datum/tgs_chat_command/validated/tgsstatus/Validated_Run(datum/tgs_chat_user/sender, params)
+	procstart = null
+	src.procstart = null
 	var/list/adm = get_admin_counts()
 	var/list/allmins = adm["total"]
 	var/status = "Admins: [allmins.len] (Active: [english_list(adm["present"])] AFK: [english_list(adm["afk"])] Stealth: [english_list(adm["stealth"])] Skipped: [english_list(adm["noflags"])]). "

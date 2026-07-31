@@ -12,10 +12,14 @@
 	)
 
 /datum/quirk/item_quirk/narcolepsy/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/carbon_user = quirk_holder
 	carbon_user.gain_trauma(/datum/brain_trauma/severe/narcolepsy/permanent, TRAUMA_RESILIENCE_ABSOLUTE)
 
 /datum/quirk/item_quirk/narcolepsy/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	give_item_to_holder(
 		/obj/item/storage/pill_bottle/prescription_stimulant,
 		list(
@@ -29,6 +33,8 @@
 	)
 
 /datum/quirk/item_quirk/narcolepsy/remove()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(quirk_holder) && quirk_holder.get_organ_by_type(/obj/item/organ/brain))
 		var/mob/living/carbon/carbon_user = quirk_holder
 		carbon_user?.cure_trauma_type(/datum/brain_trauma/severe/narcolepsy/permanent, TRAUMA_RESILIENCE_ABSOLUTE)

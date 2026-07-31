@@ -14,6 +14,8 @@
 	var/infect_chance = 100
 
 /obj/item/mutant_hand/zombie/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target))
 		return
 	if(ishuman(target))
@@ -28,6 +30,8 @@
 	infect_chance = 50
 
 /proc/try_to_zombie_infect(mob/living/carbon/human/target, mob/living/user, def_zone = BODY_ZONE_CHEST, base_chance = 100)
+	procstart = null
+	src.procstart = null
 	CHECK_DNA_AND_SPECIES(target)
 	if(!prob(base_chance))
 		return
@@ -71,6 +75,8 @@
 		to_chat(user, span_alien("You see [target] twitch for a moment as [target.p_their()] head is covered in \a [infection] - [target.p_Theyve()] been infected."))
 
 /obj/item/mutant_hand/zombie/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is ripping [user.p_their()] brains out! It looks like [user.p_theyre()] trying to commit suicide!"))
 	var/obj/item/bodypart/head = user.get_bodypart(BODY_ZONE_HEAD)
 	if(head)
@@ -78,6 +84,8 @@
 	return BRUTELOSS
 
 /obj/item/mutant_hand/zombie/proc/check_feast(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(target.stat == DEAD)
 		var/hp_gained = target.maxHealth
 		target.investigate_log("has been devoured by a zombie.", INVESTIGATE_DEATHS)

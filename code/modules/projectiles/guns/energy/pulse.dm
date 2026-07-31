@@ -14,6 +14,8 @@
 	cell_type = /obj/item/stock_parts/power_store/cell/pulse
 
 /obj/item/gun/energy/pulse/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_ALL)
 
@@ -21,6 +23,8 @@
 	pin = /obj/item/firing_pin
 
 /obj/item/gun/energy/pulse/prize/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSpoints_of_interest.make_point_of_interest(src)
 	var/turf/T = get_turf(src)
@@ -48,6 +52,8 @@
 	cell_type = /obj/item/stock_parts/power_store/cell/pulse/carbine
 
 /obj/item/gun/energy/pulse/carbine/add_seclight_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/seclite_attachable, \
 		light_overlay_icon = 'icons/obj/weapons/guns/flashlights.dmi', \
 		light_overlay = "flight", \
@@ -71,6 +77,8 @@
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/pulse)
 
 /obj/item/gun/energy/pulse/destroyer/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_danger("[src.name] has three settings, and they are all DESTROY."))
 
 /obj/item/gun/energy/pulse/pistol

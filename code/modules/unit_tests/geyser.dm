@@ -7,6 +7,8 @@
 /datum/unit_test/geyser
 
 /datum/unit_test/geyser/Run()
+	procstart = null
+	src.procstart = null
 	//While we're at it just check em all
 	var/list/geysers = subtypesof(/obj/structure/geyser)
 	for(var/geyser_type in geysers)

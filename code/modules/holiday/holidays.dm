@@ -37,6 +37,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 
 // This proc gets run before the game starts when the holiday is activated. Do festive shit here.
 /datum/holiday/proc/celebrate()
+	procstart = null
+	src.procstart = null
 	if(no_mail_holiday)
 		SSeconomy.mail_blocked = TRUE
 	if(LAZYLEN(holiday_mail) && !no_mail_holiday)
@@ -45,21 +47,29 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 
 // When the round starts, this proc is ran to get a text message to display to everyone to wish them a happy holiday
 /datum/holiday/proc/greet()
+	procstart = null
+	src.procstart = null
 	return "Have a happy [name]!"
 
 /// Returns special prefix station name on certain days. (See new_station_name())
 /// Turns "Experimental Research City" into "Christmas Research City"
 /datum/holiday/proc/get_station_prefix()
+	procstart = null
+	src.procstart = null
 	return ""
 
 /// Returns special names for the station name on certain days. (See new_station_name())
 /// Turns "Experimental Research City" into "Experimental Christmas City"
 /datum/holiday/proc/get_station_name()
+	procstart = null
+	src.procstart = null
 	// By default get the first word of the Holiday and use that
 	return copytext(name, 1, findtext(name, " "))
 
 // Return 1 if this holidy should be celebrated today
 /datum/holiday/proc/shouldCelebrate(dd, mm, yyyy, ddd)
+	procstart = null
+	src.procstart = null
 	if(always_celebrate)
 		return TRUE
 
@@ -92,6 +102,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	return FALSE
 
 /datum/holiday/proc/get_holiday_colors(atom/thing_to_color, pattern)
+	procstart = null
+	src.procstart = null
 	return get_decoration_color_from_pattern(thing_to_color, pattern || holiday_pattern, holiday_colors)
 
 // The actual holidays
@@ -111,9 +123,13 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	)
 
 /datum/holiday/fleet_day/greet()
+	procstart = null
+	src.procstart = null
 	return "This day commemorates another year of successful survival aboard the Mothic Grand Nomad Fleet. Moths galaxywide are encouraged to eat, drink, and be merry."
 
 /datum/holiday/fleet_day/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Moth", "Fleet", "Nomadic")
 
 // FEBRUARY
@@ -124,6 +140,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	begin_month = FEBRUARY
 
 /datum/holiday/groundhog/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Deja Vu") //I have been to this place before
 
 /datum/holiday/nz
@@ -139,9 +157,13 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	)
 
 /datum/holiday/nz/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Aotearoa","Kiwi","Fish 'n' Chips","Kākāpō","Southern Cross")
 
 /datum/holiday/nz/greet()
+	procstart = null
+	src.procstart = null
 	var/nz_age = text2num(time2text(world.timeofday, "YYYY", TIMEZONE_NZST)) - 1840
 	return "On this day [nz_age] years ago, New Zealand's Treaty of Waitangi, the founding document of the nation, was signed!"
 
@@ -160,6 +182,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 		)
 
 /datum/holiday/valentines/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Love","Amore","Single","Smootch","Hug")
 
 /datum/holiday/birthday
@@ -178,6 +202,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	)
 
 /datum/holiday/birthday/greet()
+	procstart = null
+	src.procstart = null
 	var/game_age = text2num(time2text(world.timeofday, "YYYY", world.timezone)) - 2003
 	var/Fact
 	switch(game_age)
@@ -213,6 +239,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	poster_icon = "holiday_kind"
 
 /datum/holiday/random_kindness/greet()
+	procstart = null
+	src.procstart = null
 	return "Go do some random acts of kindness for a stranger!" //haha yeah right
 
 /datum/holiday/leap
@@ -244,6 +272,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	)
 
 /datum/holiday/pi/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Sine","Cosine","Tangent","Secant", "Cosecant", "Cotangent")
 
 /datum/holiday/no_this_is_patrick
@@ -264,9 +294,13 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	)
 
 /datum/holiday/no_this_is_patrick/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Blarney","Green","Leprechaun","Booze")
 
 /datum/holiday/no_this_is_patrick/greet()
+	procstart = null
+	src.procstart = null
 	return "Happy National Inebriation Day!"
 
 // APRIL
@@ -283,11 +317,15 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	)
 
 /datum/holiday/april_fools/celebrate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSjob.set_overflow_role(/datum/job/clown)
 	SSticker.set_lobby_music('sound/music/lobby_music/clown.ogg', override = TRUE)
 
 /datum/holiday/april_fools/get_holiday_colors(atom/thing_to_color)
+	procstart = null
+	src.procstart = null
 	return "#[random_short_color()]"
 
 /datum/holiday/spess
@@ -297,6 +335,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	holiday_hat = /obj/item/clothing/head/syndicatefake
 
 /datum/holiday/spess/greet()
+	procstart = null
+	src.procstart = null
 	return "On this day over 600 years ago, Comrade Yuri Gagarin first ventured into space!"
 
 /datum/holiday/fourtwenty
@@ -312,6 +352,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	holiday_mail = list(/obj/item/cigarette/rollie/cannabis)
 
 /datum/holiday/fourtwenty/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Snoop","Blunt","Toke","Dank","Cheech","Chong")
 
 /datum/holiday/tea
@@ -321,6 +363,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	holiday_mail = list(/obj/item/reagent_containers/cup/glass/mug/tea)
 
 /datum/holiday/tea/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Crumpet","Assam","Oolong","Pu-erh","Sweet Tea","Green","Black")
 
 /datum/holiday/earth
@@ -336,6 +380,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	holiday_hat = /obj/item/food/grown/flower/poppy
 
 /datum/holiday/anz/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Australian","New Zealand","Poppy", "Southern Cross")
 
 /datum/holiday/chernobyl
@@ -345,12 +391,16 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	holiday_mail = list(/obj/item/geiger_counter)
 
 /datum/holiday/chernobyl/get_station_name()
+	procstart = null
+	src.procstart = null
 	if(prob(3))
 		return "Not Great, Not Terrible"
 
 	return pick("Atomic", "Nuclear", "Radiation", "Plutonium", "Uranium", "Corium", "Zirconium", "Graphite", "Scram", "Explosion")
 
 /datum/holiday/chernobyl/greet()
+	procstart = null
+	src.procstart = null
 	return "On this day in 1986, the Chernobyl nuclear power plant melted down, causing one of the worst nuclear disasters in human history. \
 		Today serves as a reminder to the lives lost and to the rigorous safety standards our engineers must adhere to when providing power to the station."
 
@@ -374,9 +424,13 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	)
 
 /datum/holiday/draconic_day/greet()
+	procstart = null
+	src.procstart = null
 	return "On this day, Lizardkind celebrates their language with literature and other cultural works."
 
 /datum/holiday/draconic_day/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Draconic", "Literature", "Reading")
 
 /datum/holiday/firefighter
@@ -387,6 +441,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	holiday_mail = list(/obj/item/extinguisher/mini)
 
 /datum/holiday/firefighter/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Burning","Blazing","Plasma","Fire")
 
 /datum/holiday/bee
@@ -401,6 +457,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	)
 
 /datum/holiday/bee/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Bee","Honey","Hive","Africanized","Mead","Buzz")
 
 /datum/holiday/goth
@@ -418,6 +476,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	)
 
 /datum/holiday/goth/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Goth", "Sanguine", "Tenebris", "Lacrimosa", "Umbra", "Noctis")
 
 // JUNE
@@ -434,9 +494,13 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	)
 
 /datum/holiday/atrakor_festival/greet()
+	procstart = null
+	src.procstart = null
 	return "On this day, the Lizards traditionally celebrate the Festival of Atrakor's Might, where they honour the moon god with lavishly adorned clothing, large portions of food, and a massive celebration into the night."
 
 /datum/holiday/atrakor_festival/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Moon", "Night Sky", "Celebration")
 
 /// Garbage DAYYYYY
@@ -482,17 +546,23 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	)
 
 /datum/holiday/pride_week/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(30))
 		return
 	holiday_colors = pick(LESBIAN_FLAG_COLORS, GAY_MAN_FLAG_COLORS, TRANS_FLAG_COLORS, BI_FLAG_COLORS, ACE_FLAG_COLORS, PAN_FLAG_COLORS)
 
 /datum/holiday/pride_week/get_station_prefix()
+	procstart = null
+	src.procstart = null
 	if(prob(10))
 		return pick("Gay", "Trans", "Bi", "Lesbian", "Pan", "Ace", "Aro", "Nonbinary", "Enby", "Asexual", "Aromantic", "Agender", "Intersex")
 	return pick("Rainbow", "Pride", "Queer")
 
 /datum/holiday/pride_week/get_station_name()
+	procstart = null
+	src.procstart = null
 	return ""
 
 // JULY
@@ -520,7 +590,9 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 		/obj/item/toy/toy_xeno,
 	)
 
-/datum/holiday/ufo/get_station_name() //Is such a thing even possible?
+/datum/holiday/ufo/get_station_name()
+	procstart = null
+	src.procstart = null //Is such a thing even possible?
 	return pick("Ayy","Truth","Tsoukalos","Mulder","Scully") //Yes it is!
 
 /datum/holiday/usa
@@ -540,6 +612,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 
 
 /datum/holiday/usa/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Independent","American","Burger","Bald Eagle","Star-Spangled", "Fireworks")
 
 /datum/holiday/writer
@@ -563,9 +637,13 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	holiday_pattern = PATTERN_VERTICAL_STRIPE
 
 /datum/holiday/france/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Francais", "Fromage", "Zut", "Merde", "Sacrebleu")
 
 /datum/holiday/france/greet()
+	procstart = null
+	src.procstart = null
 	return "Do you hear the people sing?"
 
 /datum/holiday/hotdogday
@@ -575,6 +653,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	holiday_mail = list(/obj/item/food/hotdog)
 
 /datum/holiday/hotdogday/greet()
+	procstart = null
+	src.procstart = null
 	return "Happy National Hot Dog Day!"
 
 //Gary Gygax's birthday, a fitting day for Wizard's Day
@@ -585,6 +665,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	holiday_hat = /obj/item/clothing/head/wizard
 
 /datum/holiday/wizards_day/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Dungeon", "Elf", "Magic", "D20", "Edition")
 
 /datum/holiday/friendship
@@ -594,6 +676,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	holiday_mail = list(/obj/item/food/grown/apple)
 
 /datum/holiday/friendship/greet()
+	procstart = null
+	src.procstart = null
 	return "Have a magical [name]!"
 
 // AUGUST
@@ -604,6 +688,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	begin_day = 9
 
 /datum/holiday/indigenous/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Endangered language", "Word", "Language", "Language revitalization", "Potato", "Corn")
 
 // AUGUST
@@ -615,6 +701,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	holiday_colors = list(COLOR_TRUE_BLUE, COLOR_TANGERINE_YELLOW)
 
 /datum/holiday/ukraine/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Kyiv", "Ukraine")
 
 // SEPTEMBER
@@ -628,9 +716,13 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	holiday_mail = list(/obj/item/toy/plush/lizard_plushie)
 
 /datum/holiday/tiziran_unification/greet()
+	procstart = null
+	src.procstart = null
 	return "On this day over 400 years ago, Lizardkind first united under a single banner, ready to face the stars as one unified people."
 
 /datum/holiday/tiziran_unification/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Tizira", "Lizard", "Imperial")
 
 /datum/holiday/ianbirthday
@@ -650,9 +742,13 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	)
 
 /datum/holiday/ianbirthday/greet()
+	procstart = null
+	src.procstart = null
 	return "Happy birthday, Ian!"
 
 /datum/holiday/ianbirthday/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Ian", "Corgi", "Erro")
 
 /datum/holiday/pirate
@@ -666,9 +762,13 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	)
 
 /datum/holiday/pirate/greet()
+	procstart = null
+	src.procstart = null
 	return "Ye be talkin' like a pirate today or else ye'r walkin' tha plank, matey!"
 
 /datum/holiday/pirate/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Yarr","Scurvy","Yo-ho-ho")
 
 /datum/holiday/questions
@@ -677,6 +777,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	begin_month = SEPTEMBER
 
 /datum/holiday/questions/greet()
+	procstart = null
+	src.procstart = null
 	return "Are you having a happy [name]?"
 
 // OCTOBER
@@ -687,6 +789,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	begin_month = OCTOBER
 
 /datum/holiday/animal/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Parrot","Corgi","Cat","Pug","Goat","Fox")
 
 /datum/holiday/smile
@@ -708,9 +812,13 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	begin_day = 24
 
 /datum/holiday/un_day/greet()
+	procstart = null
+	src.procstart = null
 	return "On this day in 1945, the United Nations was founded, laying the foundation for humanity's united government!"
 
 /datum/holiday/un_day/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("United", "Cooperation", "Humanitarian")
 
 /datum/holiday/halloween
@@ -726,9 +834,13 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 		)
 
 /datum/holiday/halloween/greet()
+	procstart = null
+	src.procstart = null
 	return "Have a spooky Halloween!"
 
 /datum/holiday/halloween/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Bone-Rattling","Mr. Bones' Own","2SPOOKY","Spooky","Scary","Skeletons")
 
 // NOVEMBER
@@ -740,6 +852,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	holiday_mail = list(/obj/item/food/tofu)
 
 /datum/holiday/vegan/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Tofu", "Tempeh", "Seitan", "Tofurkey")
 
 /datum/holiday/october_revolution
@@ -754,6 +868,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	)
 
 /datum/holiday/october_revolution/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Communist", "Soviet", "Bolshevik", "Socialist", "Red", "Workers'")
 
 /datum/holiday/remembrance_day
@@ -768,9 +884,13 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	)
 
 /datum/holiday/remembrance_day/greet()
+	procstart = null
+	src.procstart = null
 	return "Lest we forget."
 
 /datum/holiday/remembrance_day/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Peace", "Armistice", "Poppy")
 
 /datum/holiday/lifeday
@@ -779,6 +899,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	begin_month = NOVEMBER
 
 /datum/holiday/lifeday/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Itchy", "Lumpy", "Malla", "Kazook") //he really pronounced it "Kazook", I wish I was making shit up
 
 /datum/holiday/kindness
@@ -810,6 +932,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	begin_month = NOVEMBER
 
 /datum/holiday/hello/greet()
+	procstart = null
+	src.procstart = null
 	return "[pick(list("Aloha", "Bonjour", "Hello", "Hi", "Greetings", "Salutations", "Bienvenidos", "Hola", "Howdy", "Ni hao", "Guten Tag", "Konnichiwa", "G'day cunt"))]! " + ..()
 
 //The Festival of Holy Lights is celebrated on Nov 28th, the date on which ethereals were merged (#40995)
@@ -824,9 +948,13 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	)
 
 /datum/holiday/holy_lights/greet()
+	procstart = null
+	src.procstart = null
 	return "The Festival of Holy Lights is the final day of the Ethereal calendar. It is typically a day of prayer followed by celebration to close out the year in style."
 
 /datum/holiday/holy_lights/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Ethereal", "Lantern", "Holy")
 
 // DECEMBER
@@ -839,6 +967,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	holiday_hat = /obj/item/clothing/head/costume/santa
 
 /datum/holiday/festive_season/greet()
+	procstart = null
+	src.procstart = null
 	return "Have a nice festive season!"
 
 /datum/holiday/human_rights
@@ -853,6 +983,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	holiday_mail = list(/obj/item/toy/plush/monkey)
 
 /datum/holiday/monkey/celebrate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSstation.setup_trait(/datum/station_trait/job/pun_pun)
 
@@ -880,6 +1012,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	)
 
 /datum/holiday/xmas/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick(
 		"Bible",
 		"Birthday",
@@ -900,9 +1034,13 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	)
 
 /datum/holiday/xmas/greet()
+	procstart = null
+	src.procstart = null
 	return "Have a merry Christmas!"
 
 /datum/holiday/xmas/celebrate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSticker.OnRoundstart(CALLBACK(src, PROC_REF(roundstart_celebrate)))
 	GLOB.maintenance_loot += list(
@@ -914,6 +1052,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	)
 
 /datum/holiday/xmas/proc/roundstart_celebrate()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/computer/security/telescreen/entertainment/Monitor as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/computer/security/telescreen/entertainment))
 		Monitor.icon_state_on = "entertainment_xmas"
 
@@ -944,6 +1084,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	no_mail_holiday = TRUE
 
 /datum/holiday/new_year/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Party","New","Hangover","Resolution", "Auld")
 
 // MOVING DATES
@@ -952,18 +1094,24 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	name = "Friday the 13th"
 
 /datum/holiday/friday_thirteenth/shouldCelebrate(dd, mm, yyyy, ddd)
+	procstart = null
+	src.procstart = null
 	if(dd == 13 && ddd == FRIDAY)
 		return TRUE
 	return FALSE
 
 /datum/holiday/friday_thirteenth/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Mike","Friday","Evil","Myers","Murder","Deathly","Stabby")
 
 /datum/holiday/programmers
 	name = "Programmers' Day"
 	holiday_mail = list(/obj/item/sticker/robot)
 
-/datum/holiday/programmers/shouldCelebrate(dd, mm, yyyy, ddd) //Programmer's day falls on the 2^8th day of the year
+/datum/holiday/programmers/shouldCelebrate(dd, mm, yyyy, ddd)
+	procstart = null
+	src.procstart = null //Programmer's day falls on the 2^8th day of the year
 	if(mm == 9)
 		if(yyyy/4 == round(yyyy/4)) //Note: Won't work right on September 12th, 2200 (at least it's a Friday!)
 			if(dd == 12)
@@ -974,6 +1122,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	return FALSE
 
 /datum/holiday/programmers/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("span>","DEBUG: ","null","/list","EVENT PREFIX NOT FOUND") //Portability
 
 // ISLAMIC
@@ -982,6 +1132,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	name = "Islamic calendar code broken"
 
 /datum/holiday/islamic/shouldCelebrate(dd, mm, yyyy, ddd)
+	procstart = null
+	src.procstart = null
 	var/datum/foreign_calendar/islamic/cal = new(yyyy, mm, dd)
 	return ..(cal.dd, cal.mm, cal.yyyy, ddd)
 
@@ -992,6 +1144,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	end_day = 3
 
 /datum/holiday/islamic/ramadan/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Haram","Halaal","Jihad","Muslim", "Al", "Mohammad", "Rashidun", "Umayyad", "Abbasid", "Abdul", "Fatimid", "Ayyubid", "Almohad", "Abu")
 
 /datum/holiday/islamic/ramadan/end
@@ -1006,6 +1160,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	name = "If you see this the Hebrew holiday calendar code is broken"
 
 /datum/holiday/hebrew/shouldCelebrate(dd, mm, yyyy, ddd)
+	procstart = null
+	src.procstart = null
 	var/datum/foreign_calendar/hebrew/cal = new(yyyy, mm, dd)
 	return ..(cal.dd, cal.mm, cal.yyyy, ddd)
 
@@ -1017,9 +1173,13 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	end_month = 10
 
 /datum/holiday/hebrew/hanukkah/greet()
+	procstart = null
+	src.procstart = null
 	return "Happy [pick("Hanukkah", "Chanukah")]!"
 
 /datum/holiday/hebrew/hanukkah/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Dreidel", "Menorah", "Latkes", "Gelt")
 
 /datum/holiday/hebrew/passover
@@ -1029,6 +1189,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	end_day = 22
 
 /datum/holiday/hebrew/passover/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Matzah", "Moses", "Red Sea")
 
 // EASTER (this having its own spot should be understandable)
@@ -1052,6 +1214,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	var/const/days_extra = 1
 
 /datum/holiday/easter/shouldCelebrate(dd, mm, yyyy, ddd)
+	procstart = null
+	src.procstart = null
 	if(!begin_month)
 		current_year = text2num(time2text(world.timeofday, "YYYY", world.timezone))
 		var/list/easterResults = EasterDate(current_year+year_offset)
@@ -1077,6 +1241,8 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	return ..()
 
 /datum/holiday/easter/celebrate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.maintenance_loot += list(
 		list(
@@ -1086,14 +1252,20 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 	)
 
 /datum/holiday/easter/greet()
+	procstart = null
+	src.procstart = null
 	return "Greetings! Have a Happy Easter and keep an eye out for Easter Bunnies!"
 
 /datum/holiday/easter/get_station_name()
+	procstart = null
+	src.procstart = null
 	return pick("Fluffy","Bunny","Easter","Egg")
 
 /// Takes a holiday datum, a starting month, ending month, max amount of days to test in, and min/max year as input
 /// Returns a list in the form list("yyyy/m/d", ...) representing all days the holiday runs on in the tested range
 /proc/poll_holiday(datum/holiday/path, min_month, max_month, min_year, max_year, max_day)
+	procstart = null
+	src.procstart = null
 	var/list/deets = list()
 	for(var/year in min_year to max_year)
 		for(var/month in min_month to max_month)
@@ -1105,5 +1277,7 @@ GLOBAL_LIST_INIT(holiday_mail, list())
 
 /// Does the same as [/proc/poll_holiday], but prints the output to admins instead of returning it
 /proc/print_holiday(datum/holiday/path, min_month, max_month, min_year, max_year, max_day)
+	procstart = null
+	src.procstart = null
 	var/list/deets = poll_holiday(path, min_month, max_month, min_year, max_year, max_day)
 	message_admins("The accepted dates for [path] in the input range [min_year]-[max_year]/[min_month]-[max_month]/1-[max_day] are [deets.Join("\n")]")

@@ -25,6 +25,8 @@ GLOBAL_LIST_EMPTY(scanned_fish_by_techweb)
  * since this is about scanning each species, and having to redo it for each species is a hassle.
  */
 /datum/experiment/scanning/fish/New(datum/techweb/techweb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(techweb))
 		return
@@ -42,17 +44,25 @@ GLOBAL_LIST_EMPTY(scanned_fish_by_techweb)
  * It'd be an hassle not having any way (beside memory) to know which fish species have been scanned already otherwise.
  */
 /datum/experiment/scanning/fish/on_selected(datum/component/experiment_handler/experiment_handler)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(experiment_handler.parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_handler_examine))
 	RegisterSignal(experiment_handler.parent, COMSIG_ATOM_EXAMINE_MORE, PROC_REF(on_handler_examine_more))
 
 /datum/experiment/scanning/fish/on_unselected(datum/component/experiment_handler/experiment_handler)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(experiment_handler.parent, list(COMSIG_ATOM_EXAMINE, COMSIG_ATOM_EXAMINE_MORE))
 
 /datum/experiment/scanning/fish/proc/on_handler_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_list += span_notice("Examine again to review all the species of fish scanned so far.")
 
 /datum/experiment/scanning/fish/proc/on_handler_examine_more(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/message = span_notice("Fish species scanned hitherto, if any:")
 	message += "<span class='info ml-1'>"
@@ -64,6 +74,8 @@ GLOBAL_LIST_EMPTY(scanned_fish_by_techweb)
 
 ///Only scannable fish will contribute towards the experiment.
 /datum/experiment/scanning/fish/final_contributing_index_checks(datum/component/experiment_handler/experiment_handler, obj/item/fish/target, typepath)
+	procstart = null
+	src.procstart = null
 	return target.fish_flags & FISH_FLAG_EXPERIMENT_SCANNABLE
 
 /**
@@ -71,6 +83,8 @@ GLOBAL_LIST_EMPTY(scanned_fish_by_techweb)
  * and automatically link the handler to the next experiment in the list as a bit of qol.
  */
 /datum/experiment/scanning/fish/finish_experiment(datum/component/experiment_handler/experiment_handler, datum/techweb/linked_web_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(next_experiments)
 		experiment_handler.linked_web.add_experiments(next_experiments)
@@ -105,6 +119,8 @@ GLOBAL_LIST_EMPTY(scanned_fish_by_techweb)
 
 ///holo fishes are normally unscannable, but this is an experiment for them, so we don't care for the experisci_scannable variable.
 /datum/experiment/scanning/fish/holographic/final_contributing_index_checks(datum/component/experiment_handler/experiment_handler, obj/item/fish/target, typepath)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/experiment/scanning/fish/fourth

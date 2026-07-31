@@ -36,16 +36,22 @@
 	var/examine_text
 
 /obj/item/sticker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(length(icon_states))
 		icon_state = pick(icon_states)
 
 /obj/item/sticker/Bump(atom/bumped_atom)
+	procstart = null
+	src.procstart = null
 	if(prob(50) && attempt_attach(bumped_atom))
 		bumped_atom.balloon_alert_to_viewers("sticker landed on sticky side!")
 
 /obj/item/sticker/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isatom(interacting_with))
 		return NONE
 
@@ -66,6 +72,8 @@
  * picks random coordinates based on a `target`'s icon.
  */
 /obj/item/sticker/proc/attempt_attach(atom/target, mob/user, px, py)
+	procstart = null
+	src.procstart = null
 	if(COUNT_TRAIT_SOURCES(target, TRAIT_STICKERED) >= MAX_STICKER_COUNT)
 		balloon_alert_to_viewers("sticker won't stick!")
 		return FALSE
@@ -186,6 +194,8 @@
 	exclude_from_random = TRUE
 
 /obj/item/sticker/syndicate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CONTRABAND, INNATE_TRAIT)
 

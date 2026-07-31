@@ -24,6 +24,8 @@
 
 
 /datum/job/ai/after_spawn(mob/living/spawned, client/player_client)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isAI(spawned))
 		return
@@ -44,9 +46,13 @@
 	ai_spawn.show_laws(player_client.mob)
 
 /datum/job/ai/get_roundstart_spawn_point()
+	procstart = null
+	src.procstart = null
 	return get_latejoin_spawn_point()
 
 /datum/job/ai/get_latejoin_spawn_point()
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/ai_core/latejoin_inactive/inactive_core as anything in GLOB.latejoin_ai_cores)
 		if(!inactive_core.is_available())
 			continue
@@ -76,6 +82,8 @@
 	return chosen_spawn_point
 
 /datum/job/ai/special_check_latejoin(client/C)
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/ai_core/latejoin_inactive/latejoin_core as anything in GLOB.latejoin_ai_cores)
 		if(latejoin_core.is_available())
 			return TRUE
@@ -83,19 +91,29 @@
 
 
 /datum/job/ai/announce_job(mob/living/joining_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(SSticker.HasRoundStarted())
 		minor_announce("[joining_mob] has been downloaded to an empty bluespace-networked AI core at [AREACOORD(joining_mob)].")
 
 
 /datum/job/ai/config_check()
+	procstart = null
+	src.procstart = null
 	return CONFIG_GET(flag/allow_ai)
 
 /datum/job/ai/get_radio_information()
+	procstart = null
+	src.procstart = null
 	return "<b>Prefix your message with :b to speak with cyborgs and other AIs.</b>"
 
 /datum/job/ai/on_respawn(mob/new_character)
+	procstart = null
+	src.procstart = null
 	new_character.AIize()
 
 /datum/job/ai/get_lobby_icon()
+	procstart = null
+	src.procstart = null
 	return icon('icons/mob/huds/hud.dmi', "hudai")

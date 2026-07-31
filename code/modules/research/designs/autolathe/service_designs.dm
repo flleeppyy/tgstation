@@ -643,6 +643,8 @@
 	departmental_flags = DEPARTMENT_BITFLAG_SERVICE
 
 /datum/design/telescreen_monastery/New()
+	procstart = null
+	src.procstart = null
 	var/has_monastery = CHECK_MAP_JOB_CHANGE(JOB_CHAPLAIN, "has_monastery")
 	if(!has_monastery)
 		id = DESIGN_ID_IGNORE

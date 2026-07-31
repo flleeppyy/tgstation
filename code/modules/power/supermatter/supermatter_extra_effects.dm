@@ -18,6 +18,8 @@
 #define CHANCE_EQUATION_SLOPE (RADIATION_CHANCE_AT_ZERO_INTEGRITY - RADIATION_CHANCE_AT_FULL_INTEGRITY)
 
 /obj/machinery/power/supermatter_crystal/proc/emit_radiation()
+	procstart = null
+	src.procstart = null
 	// As power goes up, rads go up.
 	// A standard N2 SM seems to produce a value of around 1,500.
 	var/power_factor = min(internal_energy, MAX_ACCEPTED_POWER_OUTPUT)
@@ -55,6 +57,8 @@
 	)
 
 /obj/machinery/power/supermatter_crystal/proc/processing_sound()
+	procstart = null
+	src.procstart = null
 	if(internal_energy)
 		soundloop.volume = clamp((50 + (internal_energy / 50)), 50, 100)
 	if(damage >= 300)
@@ -74,6 +78,8 @@
 	last_accent_sound = world.time + max(SUPERMATTER_ACCENT_SOUND_MIN_COOLDOWN, next_sound)
 
 /obj/machinery/power/supermatter_crystal/proc/psychological_examination()
+	procstart = null
+	src.procstart = null
 	// Defaults to a value less than 1. Over time the psy_coeff goes to 0 if
 	// no supermatter soothers are nearby.
 	var/psy_coeff_diff = -0.05
@@ -90,6 +96,8 @@
 	psy_coeff = clamp(psy_coeff + psy_coeff_diff, 0, 1)
 
 /obj/machinery/power/supermatter_crystal/proc/handle_high_power()
+	procstart = null
+	src.procstart = null
 	if(internal_energy <= POWER_PENALTY_THRESHOLD && damage <= danger_point) //If the power is above 5000 or if the damage is above 550
 		last_high_energy_accumulation_perspective_machines = SSmachines.times_fired //Prevent oddly high initial zap due to high energy zaps not getting triggered via too low energy.
 		return
@@ -146,6 +154,8 @@
 		supermatter_anomaly_gen(get_ranged_target_turf(src, pick(GLOB.cardinals), rand(5, 10)), PYRO_ANOMALY, 3)
 
 /obj/machinery/power/supermatter_crystal/proc/supermatter_pull(turf/center, pull_range = 3)
+	procstart = null
+	src.procstart = null
 	playsound(center, 'sound/items/weapons/marauder.ogg', 100, TRUE, extrarange = pull_range - world.view)
 	for(var/atom/movable/movable_atom in orange(pull_range,center))
 		if((movable_atom.anchored || movable_atom.move_resist >= MOVE_FORCE_EXTREMELY_STRONG)) //move resist memes.
@@ -160,6 +170,8 @@
 		step_towards(movable_atom,center)
 
 /proc/supermatter_anomaly_gen(turf/anomalycenter, type = FLUX_ANOMALY, anomalyrange = 5, has_changed_lifespan = TRUE)
+	procstart = null
+	src.procstart = null
 	var/turf/local_turf = pick(RANGE_TURFS(anomalyrange, anomalycenter))
 	if(!local_turf)
 		return

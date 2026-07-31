@@ -29,10 +29,14 @@
 	icon_off = "intercom_prison-p"
 
 /obj/item/radio/intercom/prison/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	wires?.cut(WIRE_TX)
 
 /obj/item/radio/intercom/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/area/current_area = get_area(src)
 	if(!current_area)
@@ -43,10 +47,14 @@
 	GLOB.intercoms_list += src
 
 /obj/item/radio/intercom/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.intercoms_list -= src
 	return ..()
 
 /obj/item/radio/intercom/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Use [MODE_TOKEN_INTERCOM] when nearby to speak into it.")
 	if(!unscrewed)
@@ -71,6 +79,8 @@
 			preventing the removal of its encryption key[keylock == RADIO_KEYSLOT_LOCKED ? "" : " without some kind of magnet"].")
 
 /obj/item/radio/intercom/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(held_item?.tool_behaviour == TOOL_SCREWDRIVER)
 		context[SCREENTIP_CONTEXT_RMB] = unscrewed ? "Secure to wall" : "Unscrew from wall"
@@ -83,6 +93,8 @@
 		. = CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/radio/intercom/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(unscrewed)
 		user.visible_message(span_notice("[user] starts tightening [src]'s screws..."), span_notice("You start screwing in [src]..."))
 		if(tool.use_tool(src, user, 30, volume=50))
@@ -98,11 +110,15 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/radio/intercom/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(isnull(keyslot))
 		return screwdriver_act_secondary(user, tool)
 	return ..()
 
 /obj/item/radio/intercom/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!unscrewed)
 		to_chat(user, span_warning("You need to unscrew [src] from the wall first!"))
 		return ITEM_INTERACT_BLOCKING
@@ -115,6 +131,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/radio/intercom/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return wrench_act(user, tool)
 
 /**
@@ -123,26 +141,38 @@
  * intercom as if it was an ordinary item.
  */
 /obj/item/radio/intercom/attack_tk_grab(mob/user)
+	procstart = null
+	src.procstart = null
 	interact(user)
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 
 /obj/item/radio/intercom/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	interact(user)
 
 /obj/item/radio/intercom/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	interact(user)
 
 /obj/item/radio/intercom/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
 	interact(user)
 
 /obj/item/radio/intercom/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.default_state
 
 /obj/item/radio/intercom/can_receive(freq, list/levels)
+	procstart = null
+	src.procstart = null
 	if(levels != RADIO_NO_Z_LEVEL_RESTRICTION)
 		var/turf/position = get_turf(src)
 		if(isnull(position) || !(position.z in levels))
@@ -155,19 +185,27 @@
 	return TRUE
 
 /obj/item/radio/intercom/Hear(atom/movable/speaker, message_langs, raw_message, radio_freq, radio_freq_name, radio_freq_color, list/spans, list/message_mods = list(), message_range)
+	procstart = null
+	src.procstart = null
 	if(message_mods[RADIO_EXTENSION] == MODE_INTERCOM)
 		return  // Avoid hearing the same thing twice
 	return ..()
 
 /obj/item/radio/intercom/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..() // Parent call here will set `on` to FALSE.
 	update_appearance()
 
 /obj/item/radio/intercom/end_emp_effect(curremp)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AreaPowerCheck() // Make sure the area/local APC is powered first before we actually turn back on.
 
 /obj/item/radio/intercom/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(obj_flags & EMAGGED)
@@ -200,6 +238,8 @@
 	return TRUE
 
 /obj/item/radio/intercom/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = on ? initial(icon_state) : icon_off
 	return ..()
 
@@ -211,6 +251,8 @@
  * * source - the area that just had a power change.
  */
 /obj/item/radio/intercom/proc/AreaPowerCheck(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/area/current_area = get_area(src)
 	if(!current_area)
@@ -223,6 +265,8 @@
  * Called by the wall mount component and reused during the tool deconstruction proc.
  */
 /obj/item/radio/intercom/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	new/obj/item/wallframe/intercom(get_turf(src))
 
 //Created through the autolathe or through deconstructing intercoms. Can be applied to wall to make a new intercom on it!
@@ -243,6 +287,8 @@
 	freqlock = RADIO_FREQENCY_EMAGGABLE_LOCK
 
 /obj/item/radio/intercom/chapel/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_frequency(FREQ_CONFESSIONAL)
 	set_broadcasting(TRUE)
@@ -263,6 +309,8 @@
 	freqlock = RADIO_FREQENCY_LOCKED
 
 /obj/item/radio/intercom/interrogation/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_frequency(FREQ_INTERROGATION)
 
@@ -270,6 +318,8 @@
 	desc = "An intercom that broadcasts any ongoing interrogation to someone that's probably taking notes."
 
 /obj/item/radio/intercom/interrogation/inside/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_broadcasting(TRUE)
 	set_listening(FALSE)
@@ -289,6 +339,8 @@
 	name = "\improper AI free-range intercom"
 
 /obj/item/radio/intercom/freerange/ai_core/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_listening(FALSE)
 
@@ -317,6 +369,8 @@
 	desc = "An intercom primarily used for a private line directly to the station's AI."
 
 /obj/item/radio/intercom/ai_private/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_frequency(FREQ_AI_PRIVATE)
 
@@ -324,6 +378,8 @@
 /obj/item/radio/intercom/ai_private/broadcasting
 
 /obj/item/radio/intercom/ai_private/broadcasting/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_broadcasting(TRUE)
 
@@ -333,6 +389,8 @@
 	freerange = TRUE
 
 /obj/item/radio/intercom/ai_private/freerange/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_listening(FALSE)
 
@@ -340,6 +398,8 @@
 /obj/item/radio/intercom/ai_private/quiet
 
 /obj/item/radio/intercom/ai_private/quiet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_listening(FALSE)
 
@@ -351,11 +411,15 @@
 	var/stripe_color = null
 
 /obj/item/radio/intercom/departmental/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(length(keyslot?.channels) >= 1)
 		set_frequency(GLOB.default_radio_channels[keyslot.channels[1]])
 
 /obj/item/radio/intercom/departmental/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!stripe_color)
 		return

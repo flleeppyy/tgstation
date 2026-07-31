@@ -22,6 +22,8 @@
 	)
 
 /datum/computer_file/program/robocontrol/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/turf/current_turf = get_turf(computer.ui_host())
 	var/list/botlist = list()
@@ -84,6 +86,8 @@
 	return data
 
 /datum/computer_file/program/robocontrol/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/current_user = ui.user
 	var/obj/item/card/id/id_card = computer?.stored_id

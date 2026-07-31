@@ -47,9 +47,13 @@
 
 
 /datum/job/head_of_personnel/get_captaincy_announcement(mob/living/captain)
+	procstart = null
+	src.procstart = null
 	return "Due to staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"
 
 /datum/job/head_of_personnel/generate_traitor_objective()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/assassinate/captain_replacement/promotion = new()
 	promotion.target = promotion.find_target()
 	if(isnull(promotion.target))
@@ -65,10 +69,14 @@
 	admin_grantable = FALSE
 
 /datum/objective/assassinate/captain_replacement/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	explanation_text = "Assassinate [target.name], the Captain, and steal [target.p_their()] ID card."
 
 /datum/objective/assassinate/captain_replacement/check_completion()
+	procstart = null
+	src.procstart = null
 	if(completed)
 		return TRUE
 	if(!..())
@@ -84,6 +92,8 @@
 	return FALSE
 
 /datum/objective/assassinate/captain_replacement/find_target(dupe_search_range, list/blacklist)
+	procstart = null
+	src.procstart = null
 	for(var/datum/mind/fellow_head as anything in SSjob.get_all_heads() - blacklist)
 		if(is_captain_job(fellow_head.assigned_role))
 			return fellow_head
@@ -111,12 +121,16 @@
 		)
 
 /datum/outfit/job/hop/pre_equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	..()
 	if(check_holidays(IAN_HOLIDAY))
 		undershirt = /datum/sprite_accessory/clothing/undershirt/ian
 
 //only pet worth reviving
 /datum/job/head_of_personnel/get_mail_goodies(mob/recipient)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Strange Reagent if the pet is dead.
 	for(var/mob/living/basic/pet/dog/corgi/ian/staff_pet in GLOB.dead_mob_list)

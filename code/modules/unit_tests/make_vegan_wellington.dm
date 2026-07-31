@@ -2,6 +2,8 @@
  * Confirm that it is possible to make a beef wellington exclusively with podpeople "meat" that won't have the MEAT food type.
  */
 /datum/unit_test/make_vegan_wellington/Run()
+	procstart = null
+	src.procstart = null
 	var/turf/table_loc = run_loc_floor_bottom_left
 	var/turf/griddle_loc = get_step(run_loc_floor_bottom_left, EAST)
 	var/turf/human_loc = get_step(run_loc_floor_bottom_left, NORTHEAST)
@@ -80,5 +82,7 @@
 	TEST_ASSERT(meat_check(wellington), "Beef wellington made from plant \"meat\" still has MEAT foodtype!")
 
 /datum/unit_test/make_vegan_wellington/proc/meat_check(obj/item/food/target)
+	procstart = null
+	src.procstart = null
 	var/datum/component/edible/edible = target.GetComponent(__IMPLIED_TYPE__)
 	return !(edible.foodtypes & MEAT) // return FALSE if it has the MEAT foodtype

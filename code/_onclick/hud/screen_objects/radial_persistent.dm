@@ -7,14 +7,20 @@
 	icon_state = "radial_center"
 
 /atom/movable/screen/radial/persistent/center/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(usr.client == parent.current_user)
 		parent.element_chosen(null, usr, params)
 
 /atom/movable/screen/radial/persistent/center/MouseEntered(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "radial_center_focus"
 
 /atom/movable/screen/radial/persistent/center/MouseExited(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "radial_center"
 
@@ -25,15 +31,21 @@
 	var/datum/callback/select_proc_callback
 
 /datum/radial_menu/persistent/New()
+	procstart = null
+	src.procstart = null
 	close_button = new /atom/movable/screen/radial/persistent/center
 	close_button.set_parent(src)
 
 
 /datum/radial_menu/persistent/element_chosen(choice_id, mob/user, params)
+	procstart = null
+	src.procstart = null
 	select_proc_callback.Invoke(choices_values[choice_id], params)
 
 ///Version of wait used by persistent radial menus.
 /datum/radial_menu/persistent/wait()
+	procstart = null
+	src.procstart = null
 	while(!QDELETED(src))
 		if(custom_check_callback && next_check < world.time)
 			custom_check_callback.Invoke()
@@ -41,6 +53,8 @@
 		stoplag(1)
 
 /datum/radial_menu/persistent/proc/change_choices(list/newchoices, tooltips = FALSE, animate = FALSE, keep_same_page = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!newchoices.len)
 		return
 	button_animation_flags = NONE
@@ -49,6 +63,8 @@
 	set_choices(newchoices,tooltips, set_page = target_page)
 
 /datum/radial_menu/persistent/Destroy()
+	procstart = null
+	src.procstart = null
 	select_proc_callback = null
 	GLOB.radial_menus -= uniqueid
 	Reset()
@@ -63,6 +79,8 @@
 	Clicking the center button will return a choice of null
 */
 /proc/show_radial_menu_persistent(mob/user, atom/anchor, list/choices, datum/callback/select_proc, uniqueid, radius, tooltips = FALSE, radial_slice_icon = "radial_slice", datum/callback/custom_check)
+	procstart = null
+	src.procstart = null
 	if(!user || !anchor || !length(choices) || !select_proc)
 		return
 	if(!uniqueid)

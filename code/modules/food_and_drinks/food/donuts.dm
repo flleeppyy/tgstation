@@ -20,6 +20,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/donut/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/dunkable, amount_per_dunk = 10)
 	if(prob(DONUT_SPRINKLE_CHANCE))
@@ -29,16 +31,22 @@
 // here we are adding it again (but only for crafting, maploaded and spawned donuts work fine).
 // Until the issues with crafted items' reagents are resolved this will have to do
 /obj/item/food/donut/plain/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_decorated)
 		reagents.add_reagent(/datum/reagent/consumable/sprinkles, 1)
 
 ///Override for checkliked callback
 /obj/item/food/donut/make_edible()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponentFrom(SOURCE_EDIBLE_INNATE, /datum/component/edible, check_liked = CALLBACK(src, PROC_REF(check_liked)))
 
 /obj/item/food/donut/proc/decorate_donut()
+	procstart = null
+	src.procstart = null
 	if(is_decorated || !decorated_icon)
 		return
 	is_decorated = TRUE
@@ -50,10 +58,14 @@
 
 /// Returns the sprite of the donut while in a donut box
 /obj/item/food/donut/proc/in_box_sprite()
+	procstart = null
+	src.procstart = null
 	return "[icon_state]_inbox"
 
 ///Override for checkliked in edible component, because all cops LOVE donuts
 /obj/item/food/donut/proc/check_liked(mob/living/carbon/human/consumer)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/liver/liver = consumer.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(!HAS_TRAIT(consumer, TRAIT_AGEUSIA) && liver && HAS_TRAIT(liver, TRAIT_LAW_ENFORCEMENT_METABOLISM))
 		return FOOD_LIKED
@@ -73,6 +85,8 @@
 	foodtypes = GRAIN|DAIRY|JUNKFOOD|FRIED|BREAKFAST
 
 /obj/item/food/donut/chaos/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	extra_reagent = pick(
 		/datum/reagent/consumable/nutriment,
@@ -242,9 +256,13 @@
 
 // Jelly donuts don't have holes, but look the same on the outside
 /obj/item/food/donut/jelly/in_box_sprite()
+	procstart = null
+	src.procstart = null
 	return "[replacetext(icon_state, "jelly", "donut")]_inbox"
 
 /obj/item/food/donut/jelly/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(extra_reagent)
 		reagents.add_reagent(extra_reagent, 3)

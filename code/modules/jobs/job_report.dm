@@ -5,19 +5,27 @@
 	var/client/owner
 
 /datum/job_report_menu/New(client/owner, mob/viewer)
+	procstart = null
+	src.procstart = null
 	src.owner = owner
 	ui_interact(viewer)
 
 /datum/job_report_menu/ui_state()
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 /datum/job_report_menu/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		ui = new(user, src, "TrackedPlaytime")
 		ui.open()
 
 /datum/job_report_menu/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["exemptStatus"] = (owner.prefs?.db_flags & DB_FLAG_EXEMPT)
@@ -25,6 +33,8 @@
 	return data
 
 /datum/job_report_menu/ui_static_data()
+	procstart = null
+	src.procstart = null
 	if (!CONFIG_GET(flag/use_exp_tracking))
 		return list("failReason" = JOB_REPORT_MENU_FAIL_REASON_TRACKING_DISABLED)
 
@@ -56,6 +66,8 @@
 	return data
 
 /datum/job_report_menu/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

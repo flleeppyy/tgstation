@@ -8,6 +8,8 @@
 	randomize = TRUE
 
 /datum/wires/mulebot/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(
 		WIRE_POWER1, WIRE_POWER2,
 		WIRE_AVOIDANCE, WIRE_LOADCHECK,
@@ -17,6 +19,8 @@
 	..()
 
 /datum/wires/mulebot/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/mob/living/basic/bot/mulebot/mule = holder
@@ -24,6 +28,8 @@
 		return TRUE
 
 /datum/wires/mulebot/on_cut(wire, mend, source)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bot/mulebot/mule = holder
 	switch(wire)
 		if(WIRE_MOTOR1, WIRE_MOTOR2)
@@ -49,6 +55,8 @@
 				holder.audible_message(span_hear("Something inside [mule] clicks ominously!"), null,  1)
 
 /datum/wires/mulebot/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bot/mulebot/mule = holder
 	if(!mule.has_power(TRUE))
 		return //logically mulebots can't flash and beep if they don't have power.

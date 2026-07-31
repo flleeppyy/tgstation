@@ -5,5 +5,7 @@
 	abstract_type = /datum/exploration_event/adventure
 
 /datum/exploration_event/adventure/encounter(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	drone.start_adventure(adventure)

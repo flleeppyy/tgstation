@@ -21,12 +21,16 @@
 	var/unique_death
 
 /obj/item/clothing/mask/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if((clothing_flags & VOICEBOX_TOGGLABLE))
 		clothing_flags ^= (VOICEBOX_DISABLED)
 		var/status = !(clothing_flags & VOICEBOX_DISABLED)
 		to_chat(user, span_notice("You turn the voice box in [src] [status ? "on" : "off"]."))
 
 /obj/item/clothing/mask/worn_overlays(mutable_appearance/standing, isinhands = FALSE, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isinhands || !(body_parts_covered & HEAD))
 		return
@@ -34,6 +38,8 @@
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damagedmask")
 
 /obj/item/clothing/mask/separate_worn_overlays(mutable_appearance/standing, mutable_appearance/draw_target, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isinhands || !(body_parts_covered & HEAD))
 		return
@@ -42,6 +48,8 @@
 		. += blood_overlay
 
 /obj/item/clothing/mask/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ismob(loc))
 		var/mob/M = loc
@@ -49,6 +57,8 @@
 
 //Proc that moves gas/breath masks out of the way, disabling them and allowing pill/food consumption
 /obj/item/clothing/mask/visor_toggling(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(up)
 		if(adjusted_flags)
@@ -57,6 +67,8 @@
 		slot_flags = initial(slot_flags)
 
 /obj/item/clothing/mask/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state || initial(post_init_icon_state) || initial(icon_state)][up ? "_up" : ""]"
 
@@ -66,4 +78,6 @@
  * * breath - the gas mixture of the breather
  */
 /obj/item/clothing/mask/proc/consume_filter(datum/gas_mixture/breath)
+	procstart = null
+	src.procstart = null
 	return breath

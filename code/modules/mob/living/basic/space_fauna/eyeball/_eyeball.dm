@@ -51,6 +51,8 @@
 	COOLDOWN_DECLARE(eye_healing)
 
 /mob/living/basic/eyeball/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/innate_actions = list(
 		/datum/action/cooldown/spell/pointed/death_glare = BB_GLARE_ABILITY
@@ -64,6 +66,8 @@
 	on_hit_overlay = mutable_appearance(icon, "[icon_state]_crying")
 
 /mob/living/basic/eyeball/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -78,6 +82,8 @@
 		return TRUE
 
 /mob/living/basic/eyeball/attackby(obj/item/weapon, mob/living/carbon/human/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!weapon.force && !user.combat_mode)
 		return
@@ -87,6 +93,8 @@
 	addtimer(CALLBACK(src, PROC_REF(change_crying_state)), 10 SECONDS) //cry for 10 seconds then remove
 
 /mob/living/basic/eyeball/proc/change_crying_state()
+	procstart = null
+	src.procstart = null
 	crying = !crying
 	if(crying)
 		add_overlay(on_hit_overlay)
@@ -95,6 +103,8 @@
 
 
 /mob/living/basic/eyeball/early_melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -108,6 +118,8 @@
 	return BASIC_MOB_END_ATTACK_CHAIN_COOLDOWN
 
 /mob/living/basic/eyeball/proc/heal_eye_damage(mob/living/target, obj/item/organ/eyes/eyes)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, eye_healing))
 		return
 	to_chat(target, span_warning("[src] seems to be healing your [eyes.zone]!"))
@@ -117,6 +129,8 @@
 	COOLDOWN_START(src, eye_healing, 15 SECONDS)
 
 /mob/living/basic/eyeball/tamed(mob/living/tamer, atom/food)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spin(spintime = 2 SECONDS, speed = 1)
 	//become passive to the humens

@@ -4,11 +4,17 @@
 	child_typepath = /datum/bt_node/ai_behavior/resist
 
 /datum/bt_node/decorator/pawn_is_restrained/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	RegisterSignals(pawn, list(SIGNAL_ADDTRAIT(TRAIT_RESTRAINED), SIGNAL_REMOVETRAIT(TRAIT_RESTRAINED)), PROC_REF(on_signal_changed))
 	return TRUE
 
 /datum/bt_node/decorator/pawn_is_restrained/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(pawn, list(SIGNAL_ADDTRAIT(TRAIT_RESTRAINED), SIGNAL_REMOVETRAIT(TRAIT_RESTRAINED)))
 
 /datum/bt_node/decorator/pawn_is_restrained/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(controller.pawn, TRAIT_RESTRAINED)

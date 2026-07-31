@@ -6,9 +6,13 @@
 	var/used = FALSE
 
 /obj/item/antag_spawner/proc/spawn_antag(client/C, turf/T, kind = "", datum/mind/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/antag_spawner/proc/equip_antag(mob/target)
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -22,6 +26,8 @@
 	var/polling = FALSE
 
 /obj/item/antag_spawner/contract/can_interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -30,23 +36,31 @@
 		return FALSE
 
 /obj/item/antag_spawner/contract/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ApprenticeContract", name)
 		ui.open()
 
 /obj/item/antag_spawner/contract/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	if(used)
 		return GLOB.never_state
 	return GLOB.default_state
 
 /obj/item/antag_spawner/contract/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return list(
 		get_asset_datum(/datum/asset/simple/contracts),
 	)
 
 /obj/item/antag_spawner/contract/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -61,6 +75,8 @@
 			SStgui.close_uis(src)
 
 /obj/item/antag_spawner/contract/proc/poll_for_student(mob/living/carbon/human/teacher, apprentice_school)
+	procstart = null
+	src.procstart = null
 	balloon_alert(teacher, "contacting apprentice...")
 	polling = TRUE
 	var/mob/chosen_one = SSpolling.poll_ghosts_for_target("Do you want to play as [span_danger("[teacher]'s")] [span_notice("[apprentice_school] apprentice")]?", check_jobban = ROLE_WIZARD_MIDROUND, role = ROLE_WIZARD_MIDROUND, poll_time = 15 SECONDS, checked_target = src, alert_pic = /obj/item/clothing/head/wizard/red, jump_target = src, role_name_text = "wizard apprentice", chat_text_border_icon = /obj/item/clothing/head/wizard/red)
@@ -74,6 +90,8 @@
 	spawn_antag(chosen_one.client, get_turf(src), apprentice_school, teacher.mind)
 
 /obj/item/antag_spawner/contract/spawn_antag(client/C, turf/T, kind, datum/mind/user)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/particle_effect/fluid/smoke(T)
 	var/mob/living/carbon/human/M = new/mob/living/carbon/human(T)
 	C.prefs.safe_transfer_prefs_to(M, is_antag = TRUE)
@@ -119,6 +137,8 @@
 	var/turf/spawn_location
 
 /obj/item/antag_spawner/nuke_ops/proc/check_usability(mob/user)
+	procstart = null
+	src.procstart = null
 	if(used)
 		to_chat(user, span_warning("[src] is out of power!"))
 		return FALSE
@@ -129,12 +149,16 @@
 
 /// Creates the drop pod the nukie will be dropped by
 /obj/item/antag_spawner/nuke_ops/proc/setup_pod()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/closet/supplypod/pod = new(null, pod_style)
 	pod.explosionSize = list(0,0,0,0)
 	pod.bluespace = TRUE
 	return pod
 
 /obj/item/antag_spawner/nuke_ops/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!(check_usability(user)))
 		return
 
@@ -151,6 +175,8 @@
 		to_chat(user, span_warning("Unable to connect to Syndicate command. Please wait and try again later or use the beacon on your uplink to get your points refunded."))
 
 /obj/item/antag_spawner/nuke_ops/spawn_antag(client/our_client, turf/T, kind, datum/mind/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/nukie = new()
 	our_client.prefs.safe_transfer_prefs_to(nukie, is_antag = TRUE)
 	nukie.ckey = our_client.key
@@ -184,6 +210,8 @@
 	antag_datum = /datum/antagonist/nukeop/support
 
 /obj/item/antag_spawner/nuke_ops/overwatch/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(length(GLOB.nukeop_base_overwatch_start)) //Otherwise, it will default to the datum's spawn point anyways
 		spawn_location = pick(GLOB.nukeop_base_overwatch_start)
@@ -218,6 +246,8 @@
 	special_role_name = ROLE_SYNDICATE_SABOBORG
 
 /obj/item/antag_spawner/nuke_ops/borg_tele/spawn_antag(client/C, turf/T, kind, datum/mind/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/borg
 	var/datum/antagonist/nukeop/creator_op = user.has_antag_datum(/datum/antagonist/nukeop,TRUE)
 	if(!creator_op)
@@ -267,6 +297,8 @@
 	var/mob/living/demon_type = /mob/living/basic/demon/slaughter
 
 /obj/item/antag_spawner/slaughter_demon/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!is_station_level(user.z))
 		to_chat(user, span_warning("You should probably wait until you reach the station."))
 		return
@@ -287,6 +319,8 @@
 		to_chat(user, span_warning("The bottle's contents usually pop and boil constantly, but right now they're eerily still and calm. Perhaps you should try again later."))
 
 /obj/item/antag_spawner/slaughter_demon/spawn_antag(client/C, turf/T, kind = "", datum/mind/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/demon/spawned = new demon_type(T)
 	new /obj/effect/dummy/phased_mob/blood(T, spawned)
 
@@ -331,6 +365,8 @@
 	var/fail_text = "Unable to connect to Syndicate command. Please wait and try again later or use the beacon on your uplink to get your points refunded."
 
 /obj/item/antag_spawner/loadout/proc/check_usability(mob/user)
+	procstart = null
+	src.procstart = null
 	if(used)
 		to_chat(user, span_warning("[src] is out of power!"))
 		return FALSE
@@ -338,12 +374,16 @@
 
 /// Creates the drop pod the spawned_mob will be dropped by
 /obj/item/antag_spawner/loadout/proc/setup_pod()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/closet/supplypod/pod = new(null, pod_style)
 	pod.explosionSize = list(0,0,0,0)
 	pod.bluespace = TRUE
 	return pod
 
 /obj/item/antag_spawner/loadout/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!(check_usability(user)))
 		return
 
@@ -368,9 +408,13 @@
 
 // For subtypes to do special things to the summoned dude.
 /obj/item/antag_spawner/loadout/proc/do_special_things(mob/living/carbon/human/spawned_mob, mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/antag_spawner/loadout/spawn_antag(client/our_client, turf/T, mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/spawned_mob = new spawn_type()
 	var/obj/structure/closet/supplypod/pod = setup_pod()
 	our_client.prefs.safe_transfer_prefs_to(spawned_mob, is_antag = TRUE)
@@ -410,6 +454,8 @@
 	role_to_play = ROLE_CONTRACTOR_SUPPORT
 
 /obj/item/antag_spawner/loadout/contractor/do_special_things(mob/living/carbon/human/contractor_support, mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(contractor_support, "\n[span_alertwarning("[user.real_name] is your superior. Follow any, and all orders given by them. You're here to support their mission only.")]")
 	to_chat(contractor_support, "[span_alertwarning("Should they perish, or be otherwise unavailable, you're to assist other active agents in this mission area to the best of your ability.")]")
 
@@ -428,6 +474,8 @@
 	fail_text = "Unable to connect to the Animal Rights Consortium's Banana Ops. Please wait and try again later or use the beacon on your uplink to get your points refunded."
 
 /obj/item/antag_spawner/loadout/monkey_man/do_special_things(mob/living/carbon/human/monkey_man, mob/user)
+	procstart = null
+	src.procstart = null
 
 	monkey_man.fully_replace_character_name(monkey_man.real_name, pick(GLOB.syndicate_monkey_names))
 
@@ -443,6 +491,8 @@
 	imp.implant(monkey_man, user)
 
 /obj/item/antag_spawner/loadout/monkey_man/proc/allergy(mob/living/second_lifer, datum/species/folly_species)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(is_simian(second_lifer))
 		return

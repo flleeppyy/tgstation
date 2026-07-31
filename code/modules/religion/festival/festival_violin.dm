@@ -5,11 +5,15 @@
 	inhand_icon_state = "holy_violin"
 
 /obj/item/instrument/violin/festival/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_INSTRUMENT_START, PROC_REF(on_instrument_start))
 
 /// signal fired when the festival instrument starts to play.
 /obj/item/instrument/violin/festival/proc/on_instrument_start(datum/source, datum/song/starting_song, atom/player)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!starting_song || !isliving(player))
@@ -18,6 +22,8 @@
 
 ///Reports some relevant information when the song begins playing.
 /obj/item/instrument/violin/festival/proc/analyze_song(datum/song/song, mob/living/playing_song)
+	procstart = null
+	src.procstart = null
 	var/list/analysis = list()
 	//check tempo and lines
 	var/song_length = song.lines.len * song.tempo

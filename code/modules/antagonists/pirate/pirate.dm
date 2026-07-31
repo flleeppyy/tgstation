@@ -12,14 +12,20 @@
 	var/datum/team/pirate/crew
 
 /datum/antagonist/pirate/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(owner, "<B>The station refused to pay for your protection. Protect the ship, siphon the [MONEY_NAME] from the station, and raid it for even more loot.</B>")
 	owner.announce_objectives()
 
 /datum/antagonist/pirate/get_team()
+	procstart = null
+	src.procstart = null
 	return crew
 
 /datum/antagonist/pirate/create_team(datum/team/pirate/new_team)
+	procstart = null
+	src.procstart = null
 	if(!new_team)
 		for(var/datum/antagonist/pirate/P in GLOB.antagonists)
 			if(!P.owner)
@@ -37,11 +43,15 @@
 	crew = new_team
 
 /datum/antagonist/pirate/on_gain()
+	procstart = null
+	src.procstart = null
 	if(crew)
 		objectives |= crew.objectives
 	. = ..()
 
 /datum/antagonist/pirate/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/owner_mob = mob_override || owner.current
 	var/datum/language_holder/holder = owner_mob.get_language_holder()
@@ -49,6 +59,8 @@
 	holder.selected_language = /datum/language/piratespeak
 
 /datum/antagonist/pirate/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/owner_mob = mob_override || owner.current
 	owner_mob.remove_language(/datum/language/piratespeak, source = LANGUAGE_PIRATE)
 
@@ -56,6 +68,8 @@
 	name = "\improper Pirate crew"
 
 /datum/team/pirate/proc/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/loot/getbooty = new()
 	getbooty.team = src
 	for(var/obj/machinery/computer/piratepad_control/P as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/computer/piratepad_control))
@@ -78,11 +92,15 @@
 
 
 /datum/objective/loot/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	if(cargo_hold)
 		var/area/storage_area = get_area(cargo_hold)
 		explanation_text = "Acquire loot and store [target_value] of [MONEY_NAME] worth in [storage_area.name] cargo hold."
 
 /datum/objective/loot/proc/loot_listing()
+	procstart = null
+	src.procstart = null
 	//Lists notable loot.
 	if(!cargo_hold || !cargo_hold.total_report)
 		return "Nothing"
@@ -97,12 +115,18 @@
 	return loot_texts.Join(", ")
 
 /datum/objective/loot/proc/get_loot_value()
+	procstart = null
+	src.procstart = null
 	return cargo_hold ? cargo_hold.points : 0
 
 /datum/objective/loot/check_completion()
+	procstart = null
+	src.procstart = null
 	return ..() || get_loot_value() >= target_value
 
 /datum/team/pirate/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 
 	parts += span_header("Space Pirates were:")

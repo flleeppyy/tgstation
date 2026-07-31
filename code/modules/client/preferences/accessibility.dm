@@ -27,6 +27,8 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/numeric/min_recoil_multiplier/create_default_value()
+	procstart = null
+	src.procstart = null
 	return 100
 
 /// When toggled, enables staircase indicators
@@ -37,6 +39,8 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/toggle/stair_indicator/apply_to_client_updated(client/client, value)
+	procstart = null
+	src.procstart = null
 	if(value || !isliving(client.mob)) // only hide, showing is more trouble than it's worth
 		return
 

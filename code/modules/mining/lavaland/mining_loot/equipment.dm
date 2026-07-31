@@ -17,23 +17,33 @@
 	)
 
 /obj/item/rod_of_asclepius/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 
 /obj/item/rod_of_asclepius/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = activated ? "A short wooden rod with a mystical snake inseparably gripping itself and the rod to your forearm. It flows with a healing energy that disperses amongst yourself and those around you." : initial(desc)
 
 /obj/item/rod_of_asclepius/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = inhand_icon_state = "asclepius_[activated ? "active" : "dormant"]"
 
 /obj/item/rod_of_asclepius/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vname == NAMEOF(src, activated) && activated)
 		activated()
 
 /obj/item/rod_of_asclepius/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(activated)
 		return
 	if(!iscarbon(user))
@@ -58,12 +68,16 @@
 	apply_oath(itemUser)
 
 /obj/item/rod_of_asclepius/proc/apply_oath(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("The snake, satisfied with your oath, attaches itself and the rod to your forearm with an inseparable grip. Your thoughts seem to only revolve around the core idea of helping others, and harm is nothing more than a distant, wicked memory..."))
 	var/datum/status_effect/hippocratic_oath/effect = user.apply_status_effect(/datum/status_effect/hippocratic_oath)
 	effect.hand = user.get_held_index_of_item(src)
 	activated()
 
 /obj/item/rod_of_asclepius/proc/activated()
+	procstart = null
+	src.procstart = null
 	item_flags = DROPDEL | ABSTRACT
 	ADD_TRAIT(src, TRAIT_NODROP, CURSED_ITEM_TRAIT(type))
 	activated = TRUE
@@ -81,12 +95,16 @@
 	var/teleporting = FALSE
 
 /obj/item/warp_cube/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(linked))
 		qdel(linked)
 	linked = null
 	return ..()
 
 /obj/item/warp_cube/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/current_location = get_turf(user)
 	if(!linked || isnull(get_turf(linked)) || !check_teleport_valid(src, current_location))
 		to_chat(user, span_warning("[src] fizzles uselessly."))
@@ -127,6 +145,8 @@
 	teleport_color = "#FD3F48"
 
 /obj/item/warp_cube/red/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!linked)
 		var/obj/item/warp_cube/blue = new(src.loc)
@@ -149,6 +169,8 @@
 	var/cooldown = 0
 
 /obj/item/immortality_talisman/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/anti_magic, ALL)
 
@@ -156,6 +178,8 @@
 	name = "Immortality"
 
 /obj/item/immortality_talisman/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(cooldown < world.time)
 		SSblackbox.record_feedback("amount", "immortality_talisman_uses", 1)
 		cooldown = world.time + 600
@@ -173,17 +197,23 @@
 	var/datum/weakref/user_ref
 
 /obj/effect/immortality_talisman/Initialize(mapload, mob/new_user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(new_user)
 		vanish(new_user)
 
 /obj/effect/immortality_talisman/Destroy()
+	procstart = null
+	src.procstart = null
 	// If we have a mob, we need to free it before cleanup
 	// This is a safety to prevent nuking a human, not so much a good pattern in general
 	unvanish()
 	return ..()
 
 /obj/effect/immortality_talisman/proc/unvanish()
+	procstart = null
+	src.procstart = null
 	var/mob/user = user_ref?.resolve()
 	user_ref = null
 
@@ -195,6 +225,8 @@
 	user.visible_message(span_danger("[user] pops back into reality!"))
 
 /obj/effect/immortality_talisman/proc/vanish(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_danger("[user] [vanish_description], leaving a hole in [user.p_their()] place!"))
 
 	desc = "It's shaped an awful lot like [user.name]."
@@ -208,17 +240,25 @@
 	addtimer(CALLBACK(src, PROC_REF(dissipate)), 10 SECONDS)
 
 /obj/effect/immortality_talisman/proc/dissipate()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /obj/effect/immortality_talisman/attackby()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/immortality_talisman/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	// Won't really come into play since our mob has TRAIT_NO_TRANSFORM and cannot move,
 	// but regardless block all relayed moves, because no, you cannot move in the void.
 	return
 
 /obj/effect/immortality_talisman/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/immortality_talisman/void
@@ -238,6 +278,8 @@
 /obj/item/shared_storage/red
 
 /obj/item/shared_storage/red/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	create_storage(max_total_storage = 15, max_slots = 21)
@@ -245,6 +287,8 @@
 	new /obj/item/shared_storage/blue(drop_location(), src)
 
 /obj/item/shared_storage/blue/Initialize(mapload, atom/master)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(master))
 		return INITIALIZE_HINT_QDEL

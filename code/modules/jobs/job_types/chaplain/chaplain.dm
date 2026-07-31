@@ -40,6 +40,8 @@
 
 
 /datum/job/chaplain/after_spawn(mob/living/spawned, client/player_client)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(spawned))
 		return

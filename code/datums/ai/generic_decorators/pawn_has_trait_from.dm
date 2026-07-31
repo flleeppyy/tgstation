@@ -6,11 +6,17 @@
 	var/source = null
 
 /datum/bt_node/decorator/pawn_has_trait_from/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	RegisterSignals(pawn, list(SIGNAL_ADDTRAIT(trait), SIGNAL_REMOVETRAIT(trait)), PROC_REF(on_signal_changed))
 	return TRUE
 
 /datum/bt_node/decorator/pawn_has_trait_from/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(pawn, list(SIGNAL_ADDTRAIT(trait), SIGNAL_REMOVETRAIT(trait)))
 
 /datum/bt_node/decorator/pawn_has_trait_from/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT_FROM(controller.pawn, trait, source)

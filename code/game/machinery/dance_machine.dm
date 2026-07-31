@@ -18,11 +18,15 @@
 	var/datum/jukebox/music_player
 
 /obj/machinery/jukebox/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	music_player = new(src)
 	register_context()
 
 /obj/machinery/jukebox/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(held_item?.tool_behaviour == TOOL_WRENCH)
 		context[SCREENTIP_CONTEXT_LMB] = anchored ? "Unsecure" : "Secure"
@@ -31,16 +35,22 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/jukebox/Destroy()
+	procstart = null
+	src.procstart = null
 	stop_music()
 	QDEL_NULL(music_player)
 	return ..()
 
 /obj/machinery/jukebox/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(music_player.active_song_sound)
 		. += "Now playing: [music_player.selection.song_name]"
 
 /obj/machinery/jukebox/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!isnull(music_player.active_song_sound))
 		return NONE
 
@@ -50,10 +60,14 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/machinery/jukebox/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][music_player.active_song_sound ? "-active" : null]"
 	return ..()
 
 /obj/machinery/jukebox/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN || !allowed(user))
 		return .
@@ -61,6 +75,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/jukebox/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(isobserver(user))
 		return ..()
 	if(!anchored)
@@ -77,15 +93,21 @@
 	return ..()
 
 /obj/machinery/jukebox/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Jukebox", name)
 		ui.open()
 
 /obj/machinery/jukebox/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return music_player.get_ui_data()
 
 /obj/machinery/jukebox/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -124,6 +146,8 @@
 
 ///If a song is playing, cut it. If none is playing, and the cooldown is up, start the queued track.
 /obj/machinery/jukebox/proc/toggle_playing(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isnull(music_player.active_song_sound))
 		stop_music()
 		return
@@ -136,6 +160,8 @@
 		COOLDOWN_START(src, jukebox_error_cd, 15 SECONDS)
 
 /obj/machinery/jukebox/proc/activate_music()
+	procstart = null
+	src.procstart = null
 	if(!isnull(music_player.active_song_sound))
 		return FALSE
 
@@ -147,6 +173,8 @@
 	return TRUE
 
 /obj/machinery/jukebox/proc/stop_music()
+	procstart = null
+	src.procstart = null
 	if(!isnull(song_timerid))
 		deltimer(song_timerid)
 
@@ -160,6 +188,8 @@
 	return TRUE
 
 /obj/machinery/jukebox/on_set_is_operational(old_value)
+	procstart = null
+	src.procstart = null
 	if(!is_operational)
 		stop_music()
 
@@ -187,6 +217,8 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
 /obj/machinery/jukebox/disco/activate_music()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -195,6 +227,8 @@
 	begin_processing()
 
 /obj/machinery/jukebox/disco/stop_music()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -203,6 +237,8 @@
 	end_processing()
 
 /obj/machinery/jukebox/disco/process()
+	procstart = null
+	src.procstart = null
 	var/dance_num = rand(1, 4) //all will do the same dance
 	for(var/mob/living/dancer in music_player.get_active_listeners())
 		if(!(dancer.mobility_flags & MOBILITY_MOVE))
@@ -212,6 +248,8 @@
 		dance(dancer, dance_num)
 
 /obj/machinery/jukebox/disco/proc/dance_setup()
+	procstart = null
+	src.procstart = null
 	var/turf/cen = get_turf(src)
 	FOR_DVIEW(var/turf/t, 3, get_turf(src),INVISIBILITY_LIGHTING)
 		if(t.x == cen.x && t.y > cen.y)
@@ -242,6 +280,8 @@
 	FOR_DVIEW_END
 
 /obj/machinery/jukebox/disco/proc/hierofunk()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 10)
 		spawn_atom_to_turf(/obj/effect/temp_visual/hierophant/telegraph/edge, src, 1, FALSE)
 		sleep(0.5 SECONDS)
@@ -249,6 +289,8 @@
 #define DISCO_INFENO_RANGE (rand(85, 115)*0.01)
 
 /obj/machinery/jukebox/disco/proc/lights_spin()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 25)
 		if(QDELETED(src) || isnull(music_player.active_song_sound))
 			return
@@ -343,7 +385,9 @@
 
 #undef DISCO_INFENO_RANGE
 
-/obj/machinery/jukebox/disco/proc/dance(mob/living/dancer, dance_num) //Show your moves
+/obj/machinery/jukebox/disco/proc/dance(mob/living/dancer, dance_num)
+	procstart = null
+	src.procstart = null //Show your moves
 	ADD_TRAIT(dancer, TRAIT_DISCO_DANCER, REF(src))
 	switch(dance_num)
 		if(1)
@@ -356,15 +400,21 @@
 			dance4(dancer)
 
 /mob/proc/dance_flip()
+	procstart = null
+	src.procstart = null
 	if(dir == WEST)
 		emote("flip")
 
 /obj/machinery/jukebox/disco/proc/dance1(mob/living/dancer)
+	procstart = null
+	src.procstart = null
 	addtimer(TRAIT_CALLBACK_REMOVE(dancer, TRAIT_DISCO_DANCER, REF(src)), 6.5 SECONDS, TIMER_CLIENT_TIME)
 	for(var/i in 0 to (6 SECONDS) step (1.5 SECONDS))
 		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(dance_rotate), dancer, CALLBACK(dancer, TYPE_PROC_REF(/mob, dance_flip))), i, TIMER_CLIENT_TIME)
 
 /obj/machinery/jukebox/disco/proc/dance2(mob/living/dancer, dance_length = 2.5 SECONDS)
+	procstart = null
+	src.procstart = null
 	var/matrix/initial_matrix = matrix(dancer.transform)
 	var/list/transforms = list(
 		"[NORTH]" = matrix(dancer.transform).Translate(0, 3),
@@ -378,11 +428,15 @@
 		addtimer(CALLBACK(src, PROC_REF(animate_dance2), dancer, transforms, initial_matrix), i, TIMER_CLIENT_TIME)
 
 /obj/machinery/jukebox/disco/proc/animate_dance2(mob/living/dancer, list/transforms, matrix/initial_matrix)
+	procstart = null
+	src.procstart = null
 	dancer.setDir(turn(dancer.dir, 90))
 	animate(dancer, transform = transforms[num2text(dancer.dir)], time = 1, loop = 0)
 	animate(transform = initial_matrix, time = 2, loop = 0)
 
 /obj/machinery/jukebox/disco/proc/start_dance3(mob/living/dancer, dance_length = 3 SECONDS)
+	procstart = null
+	src.procstart = null
 	var/initially_resting = dancer.resting
 	var/direction_index = 1 //this should allow everyone to dance in the same direction
 	addtimer(TRAIT_CALLBACK_REMOVE(dancer, TRAIT_DISCO_DANCER, REF(src)), dance_length + 0.2 SECONDS)
@@ -394,15 +448,21 @@
 			direction_index = 1
 
 /obj/machinery/jukebox/disco/proc/dance3(mob/living/dancer, dir)
+	procstart = null
+	src.procstart = null
 	dancer.setDir(dir)
 	dancer.set_resting(!dancer.resting, silent = TRUE, instant = TRUE)
 
 /obj/machinery/jukebox/disco/proc/dance4(mob/living/dancer, dance_length = 1.5 SECONDS)
+	procstart = null
+	src.procstart = null
 	var/matrix/initial_matrix = matrix(dancer.transform)
 	animate(dancer, transform = matrix(dancer.transform).Turn(180), time = 2, loop = 0)
 	dancer.emote("spin")
 	addtimer(CALLBACK(src, PROC_REF(dance4_revert), dancer, initial_matrix), dance_length, TIMER_CLIENT_TIME)
 
 /obj/machinery/jukebox/disco/proc/dance4_revert(mob/living/dancer, matrix/starting_matrix)
+	procstart = null
+	src.procstart = null
 	animate(dancer, transform = starting_matrix, time = 5, loop = 0)
 	REMOVE_TRAIT(dancer, TRAIT_DISCO_DANCER, REF(src))

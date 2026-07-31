@@ -4,6 +4,8 @@ GLOBAL_LIST_INIT(electrolyzer_reactions, electrolyzer_reactions_list())
  * Global proc to build the electrolyzer reactions list
  */
 /proc/electrolyzer_reactions_list()
+	procstart = null
+	src.procstart = null
 	var/list/built_reaction_list = list()
 	for(var/reaction_path in subtypesof(/datum/electrolyzer_reaction))
 		var/datum/electrolyzer_reaction/reaction = new reaction_path()
@@ -27,6 +29,8 @@ GLOBAL_LIST_INIT(electrolyzer_reactions, electrolyzer_reactions_list())
  * * electrolyzer_args: Additional arguments for alternative methods of electrolysis.
  */
 /datum/electrolyzer_reaction/proc/react(datum/gas_mixture/air_mixture, working_power, list/electrolyzer_args = list())
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -36,6 +40,8 @@ GLOBAL_LIST_INIT(electrolyzer_reactions, electrolyzer_reactions_list())
  * * electrolyzer_args: Additional arguments for alternative methods of electrolysis.
  */
 /datum/electrolyzer_reaction/proc/reaction_check(datum/gas_mixture/air_mixture, list/electrolyzer_args = list())
+	procstart = null
+	src.procstart = null
 	var/temp = air_mixture.temperature
 	var/list/cached_moles = air_mixture.moles
 	if((requirements["MIN_TEMP"] && temp < requirements["MIN_TEMP"]) || (requirements["MAX_TEMP"] && temp > requirements["MAX_TEMP"]))
@@ -62,6 +68,8 @@ GLOBAL_LIST_INIT(electrolyzer_reactions, electrolyzer_reactions_list())
 	)
 
 /datum/electrolyzer_reaction/h2o_conversion/react(datum/gas_mixture/air_mixture, working_power, list/electrolyzer_args = list())
+	procstart = null
+	src.procstart = null
 
 	var/old_heat_capacity = air_mixture.heat_capacity()
 
@@ -87,11 +95,15 @@ GLOBAL_LIST_INIT(electrolyzer_reactions, electrolyzer_reactions_list())
 	)
 
 /datum/electrolyzer_reaction/nob_conversion/reaction_check(datum/gas_mixture/air_mixture, list/electrolyzer_args = list())
+	procstart = null
+	src.procstart = null
 	if(!electrolyzer_args[ELECTROLYSIS_ARGUMENT_SUPERMATTER_POWER] || electrolyzer_args[ELECTROLYSIS_ARGUMENT_SUPERMATTER_POWER] <= POWER_PENALTY_THRESHOLD)
 		return FALSE
 	. = ..()
 
 /datum/electrolyzer_reaction/nob_conversion/react(datum/gas_mixture/air_mixture, working_power, list/electrolyzer_args = list())
+	procstart = null
+	src.procstart = null
 	/// The supermatter zap power_level.
 	var/supermatter_power = electrolyzer_args[ELECTROLYSIS_ARGUMENT_SUPERMATTER_POWER]
 	var/list/cached_moles = air_mixture.moles
@@ -124,6 +136,8 @@ GLOBAL_LIST_INIT(electrolyzer_reactions, electrolyzer_reactions_list())
 	)
 
 /datum/electrolyzer_reaction/halon_generation/react(datum/gas_mixture/air_mixture, working_power, list/electrolyzer_args = list())
+	procstart = null
+	src.procstart = null
 	var/old_heat_capacity = air_mixture.heat_capacity()
 	air_mixture.assert_gases(/datum/gas/bz, /datum/gas/oxygen, /datum/gas/halon)
 	var/bz_moles = air_mixture.moles[/datum/gas/bz]

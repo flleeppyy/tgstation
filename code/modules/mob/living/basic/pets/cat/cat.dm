@@ -83,6 +83,8 @@
 	sound = SFX_CAT_PURR
 
 /mob/living/basic/pet/cat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/obeys_commands, pet_commands)
 	AddElement(/datum/element/cultist_pet, pet_cult_icon_state = cult_icon_state)
@@ -99,9 +101,13 @@
 		add_breeding_component()
 
 /mob/living/basic/pet/cat/proc/add_cell_sample()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CAT, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /mob/living/basic/pet/cat/early_melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -120,6 +126,8 @@
 	return BASIC_MOB_END_ATTACK_CHAIN_COOLDOWN
 
 /mob/living/basic/pet/cat/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone != held_food)
 		return
@@ -127,12 +135,16 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /mob/living/basic/pet/cat/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	if(is_type_in_list(arrived, huntable_items))
 		held_food = arrived
 		update_appearance(UPDATE_OVERLAYS)
 	return ..()
 
 /mob/living/basic/pet/cat/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat == DEAD || resting || !held_food)
 		return
@@ -143,12 +155,16 @@
 	. += held_item_overlay
 
 /mob/living/basic/pet/cat/update_resting()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat == DEAD)
 		return
 	update_appearance(UPDATE_ICON_STATE)
 
 /mob/living/basic/pet/cat/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (resting)
 		icon_state = "[icon_living]_rest"
@@ -156,6 +172,8 @@
 	icon_state = "[icon_living]"
 
 /mob/living/basic/pet/cat/proc/add_breeding_component()
+	procstart = null
+	src.procstart = null
 	var/static/list/partner_types = typecacheof(list(/mob/living/basic/pet/cat))
 	var/static/list/baby_types = list(
 		/mob/living/basic/pet/cat/kitten = 1,
@@ -198,6 +216,8 @@
 	custom_materials = list(/datum/material/meat = MEATSLAB_MATERIAL_AMOUNT * 3)
 
 /mob/living/basic/pet/cat/breadcat/add_cell_sample()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/basic/pet/cat/original
@@ -211,6 +231,8 @@
 	held_state = "original"
 
 /mob/living/basic/pet/cat/original/add_cell_sample()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/basic/pet/cat/kitten
@@ -228,6 +250,8 @@
 	collar_icon_state = "kitten"
 
 /mob/living/basic/pet/cat/kitten/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/basic_eating, food_types = huntable_items)
 

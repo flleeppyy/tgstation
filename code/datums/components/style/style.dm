@@ -73,6 +73,8 @@
 
 
 /datum/component/style/Initialize(multitooled = FALSE, stored_permanent_multiplier = 0)
+	procstart = null
+	src.procstart = null
 	if(!ismob(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -83,6 +85,8 @@
 		src.permanent_multiplier = stored_permanent_multiplier
 
 /datum/component/style/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_USER_PRE_ITEM_ATTACK, PROC_REF(hotswap))
 	RegisterSignal(parent, COMSIG_MOB_MINED, PROC_REF(on_mine))
 	RegisterSignal(parent, COMSIG_MOB_APPLY_DAMAGE, PROC_REF(on_take_damage))
@@ -103,6 +107,8 @@
 		on_hud_created()
 
 /datum/component/style/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_USER_PRE_ITEM_ATTACK)
 	UnregisterSignal(parent, COMSIG_MOB_MINED)
 	UnregisterSignal(parent, COMSIG_MOB_APPLY_DAMAGE)
@@ -118,6 +124,8 @@
 	REMOVE_TRAIT(parent, TRAIT_MINING_PARRYING, STYLE_TRAIT)
 
 /datum/component/style/Destroy(force)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSdcs, src)
 	QDEL_NULL(meter)
 	QDEL_NULL(meter_image)
@@ -128,6 +136,8 @@
 
 
 /datum/component/style/proc/on_hud_created(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/owner = parent
@@ -140,11 +150,15 @@
 	update_screen()
 
 /datum/component/style/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	point_multiplier = round(max(point_multiplier - 0.2 * seconds_per_tick, 1), 0.1)
 	change_points(-5 * seconds_per_tick * ROUND_UP((style_points + 1) / 200), use_multiplier = FALSE)
 	update_screen()
 
 /datum/component/style/proc/add_action(action, amount)
+	procstart = null
+	src.procstart = null
 	if(length(actions) > 9)
 		actions.Cut(1, 2)
 	var/action_id = 0
@@ -158,10 +172,14 @@
 	addtimer(CALLBACK(src, PROC_REF(remove_action), action_id), 10 SECONDS)
 
 /datum/component/style/proc/remove_action(action_id)
+	procstart = null
+	src.procstart = null
 	actions -= action_id
 	update_screen()
 
 /datum/component/style/proc/change_points(amount, use_multiplier = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!amount)
 		return
 
@@ -184,6 +202,8 @@
 		high_score = style_points
 
 /datum/component/style/proc/update_screen(rank_changed)
+	procstart = null
+	src.procstart = null
 	var/go_back = null
 	if(!isnull(rank_changed))
 		timerid = null
@@ -211,6 +231,8 @@
 	update_meter(point_to_rank(), go_back)
 
 /datum/component/style/proc/update_meter(new_rank, go_back)
+	procstart = null
+	src.procstart = null
 	if(!isnull(go_back))
 		animate(meter_image.get_filter("meter_mask"), time = 0 SECONDS, flags = ANIMATION_END_NOW, x = go_back)
 	animate(meter_image.get_filter("meter_mask"), time = 1 SECONDS, x = (rank > new_rank ? 0 : ((rank < new_rank) || (style_points >= 500) ? 100 : (style_points % 100) + 1)))
@@ -218,6 +240,8 @@
 		timerid = addtimer(CALLBACK(src, PROC_REF(update_screen), new_rank), 1 SECONDS)
 
 /datum/component/style/proc/rank_to_color(new_rank)
+	procstart = null
+	src.procstart = null
 	switch(new_rank)
 		if(STYLE_DULL)
 			return "#aaaaaa"
@@ -231,6 +255,8 @@
 			return "#ffaa00"
 
 /datum/component/style/proc/point_to_rank()
+	procstart = null
+	src.procstart = null
 	switch(style_points)
 		if(-1 to 99)
 			return STYLE_DULL
@@ -245,6 +271,8 @@
 
 
 /datum/component/style/proc/rank_to_string(new_rank)
+	procstart = null
+	src.procstart = null
 	switch(new_rank)
 		if(STYLE_DULL)
 			return "DULL"
@@ -258,12 +286,18 @@
 			return "SPACED!"
 
 /datum/component/style/proc/format_rank_string(new_rank)
+	procstart = null
+	src.procstart = null
 	return MAPTEXT_PIXELLARI("<font color='[rank_to_color(new_rank)]'>[rank_to_string(new_rank)]</font>")
 
 /datum/component/style/proc/generate_multiplier()
+	procstart = null
+	src.procstart = null
 	return "<br>" + MAPTEXT_GRAND9K("MULTIPLIER: [permanent_multiplier + point_multiplier]X")
 
 /datum/component/style/proc/generate_actions()
+	procstart = null
+	src.procstart = null
 	var/action_string = ""
 	for(var/i in 0 to length(actions) - 1)
 		var/action = actions[length(actions) - i]
@@ -271,6 +305,8 @@
 	return action_string
 
 /datum/component/style/proc/action_to_color(action)
+	procstart = null
+	src.procstart = null
 	switch(action)
 		if(ACTION_KILL)
 			return "#ff0000"
@@ -305,6 +341,8 @@
 
 /// A proc that lets a user, when their rank >= `hotswap_rank`, swap items in storage with what's in their hands, simply by clicking on the stored item with a held item
 /datum/component/style/proc/hotswap(mob/living/source, obj/item/weapon, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if((rank < hotswap_rank) || !isitem(target) || get(target, /mob/living) != source)
 		return NONE
@@ -317,6 +355,8 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/component/style/proc/hotswap_interact(mob/living/source, obj/item/weapon, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/datum/storage/atom_storage = target.loc.atom_storage
 	if(!atom_storage.can_insert(weapon, source, messages = FALSE))
 		source.balloon_alert(source, "unable to hotswap!")
@@ -329,10 +369,14 @@
 
 /// Increase our permanent multiplier based on the modifier.
 /datum/component/style/proc/adjust_permanent_multiplier(modifier)
+	procstart = null
+	src.procstart = null
 	permanent_multiplier += modifier
 
 // Point givers
 /datum/component/style/proc/on_punch(mob/living/carbon/human/punching_person, atom/attacked_atom, proximity)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!proximity || !punching_person.combat_mode || !isliving(attacked_atom))
@@ -345,6 +389,8 @@
 	add_action(ACTION_DISRESPECT, 60 * (ismegafauna(disrespected) ? 2 : 1))
 
 /datum/component/style/proc/on_attack(mob/living/attacking_person, mob/living/attacked_mob)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(attacked_mob) || IS_UNCONSCIOUS_OR_CRIT(attacked_mob))
@@ -358,6 +404,8 @@
 	add_action(ACTION_MELEED, 50 * (ismegafauna(attacked) ? 1.5 : 1))
 
 /datum/component/style/proc/on_mine(datum/source, turf/closed/mineral/rock, exp_multiplier)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(rock, /turf/closed/mineral/gibtonite))
@@ -381,6 +429,8 @@
 		rock.mineral_amt = ROUND_UP(rock.mineral_amt * (1 + ((rank * 0.1) - 0.3))) // You start out getting 20% less ore, but it goes up to 20% more at S-tier
 
 /datum/component/style/proc/on_resonator_burst(datum/source, mob/creator, mob/living/hit_living)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(creator.faction_check_atom(hit_living) || (IS_UNCONSCIOUS_OR_CRIT(hit_living)) || !hit_living.has_faction(FACTION_MINING))
@@ -389,6 +439,8 @@
 	add_action(ACTION_TRAPPER, 70)
 
 /datum/component/style/proc/on_projectile_parry(datum/source, obj/projectile/parried)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(parried.firer == parent)
@@ -397,11 +449,15 @@
 		add_action(ACTION_PARRIED, 110)
 
 /datum/component/style/proc/on_gibtonite_defuse(datum/source, det_time)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	add_action(ACTION_GIBTONITE_DEFUSED, min(40, 20 * (10 - det_time))) // 40 to 180 points depending on speed
 
 /datum/component/style/proc/on_crusher_detonate(datum/source, mob/living/target, obj/item/kinetic_crusher/crusher, backstabbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(target.stat == DEAD)
@@ -413,11 +469,15 @@
 
 
 /datum/component/style/proc/on_geyser_discover(datum/source, obj/structure/geyser/geyser)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	add_action(ACTION_GEYSER_MARKED, 100)
 
 /datum/component/style/proc/on_vent_win(datum/source, obj/structure/ore_vent/vent)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/vent_value = vent.boulder_size / BOULDER_SIZE_MEDIUM
@@ -425,6 +485,8 @@
 
 // Emote-based multipliers
 /datum/component/style/proc/on_taunt()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	point_multiplier = round(min(point_multiplier + 0.5, 3), 0.1)
@@ -432,12 +494,16 @@
 
 // Negative effects
 /datum/component/style/proc/on_take_damage(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	point_multiplier = round(max(point_multiplier - 0.3, 1), 0.1)
 	change_points(-30, use_multiplier = FALSE)
 
 /datum/component/style/proc/on_death(datum/source, mob/living/died, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/mob_parent = parent

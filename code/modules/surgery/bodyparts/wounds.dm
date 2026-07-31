@@ -1,5 +1,7 @@
 /// Allows us to roll for and apply a wound without actually dealing damage. Used for aggregate wounding power with pellet clouds
 /obj/item/bodypart/proc/painless_wound_roll(wounding_type, wounding_dmg, wound_bonus, exposed_wound_bonus, sharpness=NONE, wound_clothing)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(!owner || wounding_dmg <= WOUND_MINIMUM_DAMAGE || wound_bonus == CANT_WOUND || HAS_TRAIT(owner, TRAIT_GODMODE))
@@ -48,6 +50,8 @@
  * * wound_clothing- If this should damage clothing.
  */
 /obj/item/bodypart/proc/check_wounding(woundtype, damage, wound_bonus, exposed_wound_bonus, attack_direction, damage_source, wound_clothing)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	RETURN_TYPE(/datum/wound)
 
@@ -134,6 +138,8 @@
 
 // try forcing a specific wound, but only if there isn't already a wound of that severity or greater for that type on this bodypart
 /obj/item/bodypart/proc/force_wound_upwards(datum/wound/potential_wound, smited = FALSE, wound_source)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if (isnull(potential_wound))
@@ -168,6 +174,8 @@
  * A new wound instance if the application was successful, null otherwise.
 */
 /mob/living/carbon/proc/cause_wound_of_type_and_severity(wounding_type, obj/item/bodypart/limb, min_severity, max_severity = min_severity, severity_pick_mode = WOUND_PICK_HIGHEST_SEVERITY, wound_source)
+	procstart = null
+	src.procstart = null
 	if (isnull(limb))
 		limb = pick(bodyparts)
 
@@ -177,6 +185,8 @@
 
 /// Limb is nullable, but picks a random one. Defers to limb.get_wound_threshold_of_wound_type, see it for documentation.
 /mob/living/carbon/proc/get_wound_threshold_of_wound_type(wounding_type, severity, default, obj/item/bodypart/limb, wound_source)
+	procstart = null
+	src.procstart = null
 	if (isnull(limb))
 		limb = pick(bodyparts)
 
@@ -198,6 +208,8 @@
  * return_value_if_no_wound if no wound is found - if one IS found, the wound threshold for that wound.
  */
 /obj/item/bodypart/proc/get_wound_threshold_of_wound_type(wounding_type, severity, return_value_if_no_wound, wound_source)
+	procstart = null
+	src.procstart = null
 	var/datum/wound/wound_path = get_corresponding_wound_type(wounding_type, src, severity, duplicates_allowed = TRUE, care_about_existing_wounds = FALSE)
 	if (wound_path)
 		var/datum/wound_pregen_data/pregen_data = GLOB.all_wound_pregen_data[wound_path]
@@ -217,6 +229,8 @@
  * * It's the same ones on [/obj/item/bodypart/proc/receive_damage] except injury_roll, which is fed to this proc.
  */
 /obj/item/bodypart/proc/check_woundings_mods(wounding_type, injury_roll, damage, wound_bonus, exposed_wound_bonus, wound_clothing)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	var/armor_ablation = 0
@@ -255,6 +269,8 @@
 
 /// Should return an assoc list of (wound_series -> penalty). Will be used in determining series-specific penalties for wounding.
 /obj/item/bodypart/proc/check_series_wounding_mods()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 
 	var/list/series_mods = list()
@@ -268,6 +284,8 @@
 
 /// Get whatever wound of the given type is currently attached to this limb, if any
 /obj/item/bodypart/proc/get_wound_type(checking_type)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(checking_type)
 	SHOULD_NOT_OVERRIDE(TRUE)
 
@@ -289,6 +307,8 @@
  * * replaced- If true, this is being called from the remove_wound() of a wound that's being replaced, so the bandage that already existed is still relevant, but the new wound hasn't been added yet
  */
 /obj/item/bodypart/proc/update_wounds(replaced = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	wound_damage_multiplier = 1

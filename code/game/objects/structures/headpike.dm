@@ -25,6 +25,8 @@
 	speartype = /obj/item/spear/military
 
 /obj/structure/headpike/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		spear = new speartype(src)
@@ -33,21 +35,29 @@
 	pixel_x = rand(-8, 8)
 
 /obj/structure/headpike/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(victim)
 	QDEL_NULL(spear)
 	return ..()
 
 /obj/structure/headpike/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	victim = locate() in contents
 	spear = locate(speartype) in contents
 	update_appearance()
 
 /obj/structure/headpike/update_name()
+	procstart = null
+	src.procstart = null
 	name = "[victim.get_face_name()] on a [spear.name]"
 	return ..()
 
 /obj/structure/headpike/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!victim)
 		return
@@ -58,6 +68,8 @@
 	. += appearance
 
 /obj/structure/headpike/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone != victim && gone != spear)
 		return
@@ -69,6 +81,8 @@
 		deconstruct(TRUE)
 
 /obj/structure/headpike/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/head/our_head = victim
 	var/obj/item/spear/our_spear = spear
 	victim = null
@@ -79,6 +93,8 @@
 	our_spear?.forceMove(drop_location())
 
 /obj/structure/headpike/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

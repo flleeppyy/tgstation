@@ -27,14 +27,20 @@
 	))
 
 /obj/item/mop/apply_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	mopspeed = modify_fantasy_variable("mopspeed", mopspeed, -bonus)
 
 /obj/item/mop/remove_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	mopspeed = reset_fantasy_variable("mopspeed", mopspeed)
 	return ..()
 
 /obj/item/mop/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/cleaner, mopspeed, pre_clean_callback=CALLBACK(src, PROC_REF(should_clean)), on_cleaned_callback=CALLBACK(src, PROC_REF(apply_reagents)))
 	AddComponent(/datum/component/walking_aid)
@@ -42,11 +48,15 @@
 	GLOB.janitor_devices += src
 
 /obj/item/mop/Destroy(force)
+	procstart = null
+	src.procstart = null
 	GLOB.janitor_devices -= src
 	return ..()
 
 ///Checks whether or not we should clean.
 /obj/item/mop/proc/should_clean(datum/cleaning_source, atom/atom_to_clean, mob/living/cleaner)
+	procstart = null
+	src.procstart = null
 	if(clean_blacklist[atom_to_clean.type])
 		return CLEAN_BLOCKED|CLEAN_DONT_BLOCK_INTERACTION
 	if(reagents.total_volume < 0.1)
@@ -65,6 +75,8 @@
  * * cleaner the mob that is doing the cleaning
  */
 /obj/item/mop/proc/apply_reagents(datum/cleaning_source, turf/cleaned_turf, mob/living/cleaner, clean_succeeded)
+	procstart = null
+	src.procstart = null
 	if(!clean_succeeded)
 		return
 	reagents.expose(cleaned_turf, TOUCH, 10) //Needed for proper floor wetting.
@@ -92,10 +104,14 @@
 	var/refill_reagent = /datum/reagent/water //Determins what reagent to use for refilling, just in case someone wanted to make a HOLY MOP OF PURGING
 
 /obj/item/mop/advanced/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/mop/advanced/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	refill_enabled = !refill_enabled
 	if(refill_enabled)
 		START_PROCESSING(SSobj, src)
@@ -105,14 +121,20 @@
 	playsound(user, 'sound/machines/click.ogg', 30, TRUE)
 
 /obj/item/mop/advanced/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/amadd = min(max_reagent_volume - reagents.total_volume, refill_rate * seconds_per_tick)
 	if(amadd > 0)
 		reagents.add_reagent(refill_reagent, amadd)
 
 /obj/item/mop/advanced/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("The condenser switch is set to <b>[refill_enabled ? "ON" : "OFF"]</b>.")
 
 /obj/item/mop/advanced/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()

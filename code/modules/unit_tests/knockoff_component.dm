@@ -3,6 +3,8 @@
 /datum/unit_test/knockoff_component
 
 /datum/unit_test/knockoff_component/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/wears_the_glasses = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/shoves_the_guy = allocate(/mob/living/carbon/human/consistent)
 
@@ -81,6 +83,8 @@
 
 /// Helper to reset the glasses dummy back to its original position, clear knockdown, and return glasses (if gone)
 /datum/unit_test/knockoff_component/proc/set_glasses_wearer(mob/living/carbon/human/wearer, turf/reset_to, obj/item/clothing/glasses/reset_worn)
+	procstart = null
+	src.procstart = null
 	wearer.forceMove(reset_to)
 	wearer.SetKnockdown(0 SECONDS)
 	if(!wearer.glasses)

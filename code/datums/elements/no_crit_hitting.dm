@@ -2,6 +2,8 @@
 /datum/element/no_crit_hitting
 
 /datum/element/no_crit_hitting/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isliving(target))
@@ -10,6 +12,8 @@
 	RegisterSignals(target, list(COMSIG_MOB_ITEM_ATTACK), PROC_REF(check_attack))
 
 /datum/element/no_crit_hitting/proc/check_attack(mob/living/attacker, atom/attacked)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(attacked))

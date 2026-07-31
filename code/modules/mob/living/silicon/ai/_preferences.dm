@@ -64,6 +64,8 @@ GLOBAL_LIST_INIT(ai_status_display_all_options, list())
 
 // Initialize the combined list at runtime
 /proc/init_ai_status_display_options()
+	procstart = null
+	src.procstart = null
 	if(length(GLOB.ai_status_display_all_options)) // Already initialized
 		return
 
@@ -193,6 +195,8 @@ GLOBAL_LIST_INIT(ai_core_display_screens, sort_list(list(
 /// A form of resolve_ai_icon that is guaranteed to never sleep.
 /// Not always accurate, but always synchronous.
 /proc/resolve_ai_icon_sync(input)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 
 	if(!input || !(input in GLOB.ai_core_display_screens))
@@ -203,6 +207,8 @@ GLOBAL_LIST_INIT(ai_core_display_screens, sort_list(list(
 		return "ai-[LOWER_TEXT(input)]"
 
 /proc/resolve_ai_icon(input)
+	procstart = null
+	src.procstart = null
 	if (input == "Portrait")
 		var/datum/portrait_picker/tgui = new(usr)//create the datum
 		tgui.ui_interact(usr)//datum has a tgui component, here we open the window

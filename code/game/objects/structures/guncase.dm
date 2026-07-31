@@ -13,6 +13,8 @@
 	var/capacity = 4
 
 /obj/structure/guncase/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		for(var/obj/item/I in loc.contents)
@@ -23,6 +25,8 @@
 	update_appearance()
 
 /obj/structure/guncase/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(case_type && LAZYLEN(contents))
 		var/mutable_appearance/gun_overlay = mutable_appearance(icon, case_type)
@@ -32,6 +36,8 @@
 	. += "[icon_state]_[open ? "open" : "door"]"
 
 /obj/structure/guncase/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(user) || isalien(user))
 		return NONE
 	if(istype(tool, gun_category) && open)
@@ -54,6 +60,8 @@
 	return NONE
 
 /obj/structure/guncase/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -66,6 +74,8 @@
 		update_appearance()
 
 /obj/structure/guncase/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(user) || isalien(user))
 		return ..()
 	open = !open
@@ -79,6 +89,8 @@
  * * user The mob to which we are showing the radial menu
  */
 /obj/structure/guncase/proc/show_menu(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(contents))
 		return
 
@@ -110,6 +122,8 @@
  * * user The mob interacting with a menu
  */
 /obj/structure/guncase/proc/check_menu(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!open)
 		return FALSE
 	if(!istype(user))
@@ -119,10 +133,14 @@
 	return TRUE
 
 /obj/structure/guncase/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/structure/guncase/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
 			SSexplosions.high_mov_atom += contents

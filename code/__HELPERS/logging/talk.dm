@@ -13,6 +13,8 @@
  * * forced_by - source that forced the dialogue if any
  */
 /atom/proc/log_sayverb_talk(message, list/message_mods = list(), tag = null, log_globally = TRUE, forced_by = null)
+	procstart = null
+	src.procstart = null
 	// If it's just the custom say verb, log it to emotes.
 	if(message_mods[MODE_CUSTOM_SAY_ERASE_INPUT])
 		log_talk(message_mods[MODE_CUSTOM_SAY_EMOTE], LOG_RADIO_EMOTE, tag, log_globally, forced_by)
@@ -37,20 +39,28 @@
  * * forced_by - source that forced the dialogue if any
  */
 /atom/proc/log_talk(message, message_type, tag = null, log_globally = TRUE, forced_by = null, custom_say_emote = null)
+	procstart = null
+	src.procstart = null
 	var/prefix = tag ? "([tag]) " : ""
 	var/suffix = forced_by ? " FORCED by [forced_by]" : ""
 	log_message("[prefix][custom_say_emote ? "*[custom_say_emote]*, " : ""]\"[message]\"[suffix]", message_type, log_globally = log_globally)
 
 /// Logging for generic spoken messages
 /proc/log_say(text, list/data)
+	procstart = null
+	src.procstart = null
 	logger.Log(LOG_CATEGORY_GAME_SAY, text, data)
 
 /// Logging for whispered messages
 /proc/log_whisper(text, list/data)
+	procstart = null
+	src.procstart = null
 	logger.Log(LOG_CATEGORY_GAME_WHISPER, text, data)
 
 /// Helper for logging of messages with only one sender and receiver (i.e. mind links)
 /proc/log_directed_talk(atom/source, atom/target, message, message_type, tag)
+	procstart = null
+	src.procstart = null
 	if(!tag)
 		stack_trace("Unspecified tag for private message")
 		tag = "UNKNOWN"
@@ -61,8 +71,12 @@
 
 /// Logging for speech taking place over comms, as well as tcomms equipment
 /proc/log_telecomms(text, list/data)
+	procstart = null
+	src.procstart = null
 	logger.Log(LOG_CATEGORY_TELECOMMS, text, data)
 
 /// Logging for speech indicators.
 /proc/log_speech_indicators(text, list/data)
+	procstart = null
+	src.procstart = null
 	logger.Log(LOG_CATEGORY_SPEECH_INDICATOR, text, data)

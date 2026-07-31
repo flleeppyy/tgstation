@@ -15,16 +15,22 @@
 	var/wrap_time = 5 SECONDS
 
 /datum/action/cooldown/mob_cooldown/wrap/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!owner)
 		return
 	RegisterSignals(owner, list(COMSIG_DO_AFTER_BEGAN, COMSIG_DO_AFTER_ENDED), PROC_REF(update_status_on_signal))
 
 /datum/action/cooldown/mob_cooldown/wrap/Remove(mob/removed_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(removed_from, list(COMSIG_DO_AFTER_BEGAN, COMSIG_DO_AFTER_ENDED))
 
 /datum/action/cooldown/mob_cooldown/wrap/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || owner.incapacitated)
 		return FALSE
@@ -35,6 +41,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/wrap/set_click_ability(mob/on_who)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -44,6 +52,8 @@
 	build_all_button_icons()
 
 /datum/action/cooldown/mob_cooldown/wrap/unset_click_ability(mob/on_who, refund_cooldown = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -54,6 +64,8 @@
 	build_all_button_icons()
 
 /datum/action/cooldown/mob_cooldown/wrap/Activate(atom/to_wrap)
+	procstart = null
+	src.procstart = null
 	if(!owner.Adjacent(to_wrap))
 		owner.balloon_alert(owner, "must be closer!")
 		return FALSE
@@ -80,6 +92,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/wrap/proc/cocoon(atom/movable/to_wrap)
+	procstart = null
+	src.procstart = null
 	if(isliving(to_wrap))
 		to_chat(to_wrap, span_userdanger("[owner] begins to secrete a sticky substance around you."))
 	owner.visible_message(
@@ -92,6 +106,8 @@
 		owner.balloon_alert(owner, "interrupted!")
 
 /datum/action/cooldown/mob_cooldown/wrap/proc/wrap_target(mob/living/to_wrap)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/spider/cocoon/casing = new(to_wrap.loc)
 	if(isliving(to_wrap))
 		var/mob/living/living_wrapped = to_wrap

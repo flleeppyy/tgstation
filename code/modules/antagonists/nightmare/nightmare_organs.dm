@@ -16,6 +16,8 @@
 	var/datum/action/cooldown/spell/pointed/terrorize/terrorize_spell
 
 /obj/item/organ/brain/shadow/nightmare/on_mob_insert(mob/living/carbon/brain_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(brain_owner.dna.species.id != SPECIES_NIGHTMARE)
@@ -30,11 +32,15 @@
 		terrorize_spell.Grant(brain_owner)
 
 /obj/item/organ/brain/shadow/nightmare/on_mob_remove(mob/living/carbon/brain_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(our_jaunt)
 	QDEL_NULL(terrorize_spell)
 
 /obj/item/organ/brain/shadow/nightmare/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/turf/owner_turf = owner.loc
@@ -50,6 +56,8 @@
 	alert_type = /atom/movable/screen/alert/status_effect/shadow_regeneration/nightmare
 
 /datum/status_effect/shadow/nightmare/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -57,10 +65,14 @@
 	return TRUE
 
 /datum/status_effect/shadow/nightmare/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_ATOM_PRE_BULLET_ACT)
 	return ..()
 
 /datum/status_effect/shadow/nightmare/proc/dodge_bullets(mob/living/carbon/human/source, obj/projectile/hitting_projectile, def_zone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	source.visible_message(
 		span_danger("[source] dances in the shadows, evading [hitting_projectile]!"),
@@ -94,10 +106,14 @@
 	var/obj/item/light_eater/blade
 
 /obj/item/organ/heart/nightmare/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(blade)
 	return ..()
 
 /obj/item/organ/heart/nightmare/attack(mob/M, mob/living/carbon/user, obj/target)
+	procstart = null
+	src.procstart = null
 	if(M != user)
 		return ..()
 	user.visible_message(
@@ -114,6 +130,8 @@
 	Insert(user)
 
 /obj/item/organ/heart/nightmare/on_mob_insert(mob/living/carbon/heart_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(special == HEART_SPECIAL_SHADOWIFY)
 		return
@@ -122,6 +140,8 @@
 	RegisterSignal(blade, COMSIG_QDELETING, PROC_REF(on_blade_deleted))
 
 /obj/item/organ/heart/nightmare/on_mob_remove(mob/living/carbon/heart_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	respawn_progress = 0
 	if(blade && special != HEART_SPECIAL_SHADOWIFY)
@@ -129,14 +149,20 @@
 		QDEL_NULL(blade)
 
 /obj/item/organ/heart/nightmare/Stop()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 // Happens if the blade was deleted before we were during mob destruction
 /obj/item/organ/heart/nightmare/proc/on_blade_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	blade = null
 
 /obj/item/organ/heart/nightmare/on_death(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return
 	var/turf/T = get_turf(owner)
@@ -161,6 +187,8 @@
 	respawn_progress = 0
 
 /obj/item/organ/heart/nightmare/get_availability(datum/species/owner_species, mob/living/owner_mob)
+	procstart = null
+	src.procstart = null
 	if(isnightmare(owner_mob))
 		return TRUE
 	return ..()

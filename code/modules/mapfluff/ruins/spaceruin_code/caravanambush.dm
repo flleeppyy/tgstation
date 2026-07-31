@@ -64,10 +64,14 @@
 	possible_destinations = "whiteship_away;whiteship_home;whiteship_z4;whiteship_lavaland;caravantrade1_custom;caravantrade1_ambush"
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/caravan/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.jam_on_wardec += src
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/caravan/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.jam_on_wardec -= src
 	return ..()
 

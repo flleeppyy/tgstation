@@ -25,17 +25,25 @@ PROCESSING_SUBSYSTEM_DEF(instruments)
 	)
 
 /datum/controller/subsystem/processing/instruments/Initialize()
+	procstart = null
+	src.procstart = null
 	initialize_instrument_data()
 	synthesizer_instrument_ids = get_allowed_instrument_ids()
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/processing/instruments/proc/on_song_new(datum/song/S)
+	procstart = null
+	src.procstart = null
 	songs += S
 
 /datum/controller/subsystem/processing/instruments/proc/on_song_del(datum/song/S)
+	procstart = null
+	src.procstart = null
 	songs -= S
 
 /datum/controller/subsystem/processing/instruments/proc/initialize_instrument_data()
+	procstart = null
+	src.procstart = null
 	for(var/path in valid_subtypesof(/datum/instrument))
 		var/datum/instrument/I = path
 		I = new path
@@ -47,9 +55,13 @@ PROCESSING_SUBSYSTEM_DEF(instruments)
 		CHECK_TICK
 
 /datum/controller/subsystem/processing/instruments/proc/get_instrument(id_or_path)
+	procstart = null
+	src.procstart = null
 	return instrument_data["[id_or_path]"]
 
 /datum/controller/subsystem/processing/instruments/proc/reserve_instrument_channel(datum/instrument/I)
+	procstart = null
+	src.procstart = null
 	if(current_instrument_channels > max_instrument_channels)
 		return
 	. = SSsounds.reserve_sound_channel_for_datum(I)

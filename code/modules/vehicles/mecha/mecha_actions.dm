@@ -1,6 +1,8 @@
 /***************** MECHA ACTIONS *****************/
 
 /obj/vehicle/sealed/mecha/generate_action_type()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(., /datum/action/vehicle/sealed/mecha))
 		var/datum/action/vehicle/sealed/mecha/mecha_action = .
@@ -11,12 +13,16 @@
 	var/obj/vehicle/sealed/mecha/chassis
 
 /datum/action/vehicle/sealed/mecha/Destroy()
+	procstart = null
+	src.procstart = null
 	chassis = null
 	return ..()
 
 ///Sets the chassis var of our mecha action to the referenced mecha. Used during actions generation in
 ///generate_action_type() chain.
 /datum/action/vehicle/sealed/mecha/proc/set_chassis(passed_chassis)
+	procstart = null
+	src.procstart = null
 	chassis = passed_chassis
 
 /datum/action/vehicle/sealed/mecha/mech_eject
@@ -24,6 +30,8 @@
 	button_icon_state = "mech_eject"
 
 /datum/action/vehicle/sealed/mecha/mech_eject/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -37,6 +45,8 @@
 	desc = "Airtight cabin preserves internal air and can be pressurized with a mounted air tank."
 
 /datum/action/vehicle/sealed/mecha/mech_toggle_cabin_seal/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -49,6 +59,8 @@
 	button_icon_state = "mech_lights_off"
 
 /datum/action/vehicle/sealed/mecha/mech_toggle_lights/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -61,6 +73,8 @@
 	button_icon_state = "mech_view_stats"
 
 /datum/action/vehicle/sealed/mecha/mech_view_stats/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -74,10 +88,14 @@
 	button_icon_state = "mech_safeties_off"
 
 /datum/action/vehicle/sealed/mecha/mech_toggle_safeties/set_chassis(passed_chassis)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(chassis, COMSIG_MECH_SAFETIES_TOGGLE, PROC_REF(update_action_icon))
 
 /datum/action/vehicle/sealed/mecha/mech_toggle_safeties/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -87,10 +105,14 @@
 	chassis.set_safety(owner)
 
 /datum/action/vehicle/sealed/mecha/mech_toggle_safeties/apply_button_icon(atom/movable/screen/movable/action_button/current_button, force)
+	procstart = null
+	src.procstart = null
 	button_icon_state = "mech_safeties_[chassis.weapons_safety ? "on" : "off"]"
 	return ..()
 
 /datum/action/vehicle/sealed/mecha/mech_toggle_safeties/proc/update_action_icon()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	build_all_button_icons()
 
@@ -99,6 +121,8 @@
 	button_icon_state = "strafe"
 
 /datum/action/vehicle/sealed/mecha/strafe/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -108,6 +132,8 @@
 	chassis.toggle_strafe()
 
 /obj/vehicle/sealed/mecha/proc/toggle_strafe()
+	procstart = null
+	src.procstart = null
 	if(!(mecha_flags & CAN_STRAFE))
 		to_chat(occupants, "this mecha doesn't support strafing!")
 		return
@@ -129,6 +155,8 @@
 	button_icon_state = "mech_seat_swap"
 
 /datum/action/vehicle/sealed/mecha/swap_seat/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -164,10 +192,14 @@
 	button_icon_state = "mech_overload_off"
 
 /datum/action/vehicle/sealed/mecha/mech_overclock/siren/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	build_all_button_icons()
 
 /datum/action/vehicle/sealed/mecha/mech_overclock/Trigger(mob/clicker, trigger_flags, forced_state = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -177,10 +209,14 @@
 	build_all_button_icons()
 
 /datum/action/vehicle/sealed/mecha/mech_overclock/apply_button_icon(atom/movable/screen/movable/action_button/current_button, force)
+	procstart = null
+	src.procstart = null
 	button_icon_state = get_button_icon_state()
 	return ..()
 
 /datum/action/vehicle/sealed/mecha/mech_overclock/proc/get_button_icon_state()
+	procstart = null
+	src.procstart = null
 	return "mech_overload_[chassis.overclock_mode ? "on" : "off"]"
 
 /datum/action/vehicle/sealed/mecha/equipment
@@ -190,10 +226,14 @@
 	var/obj/item/mecha_parts/mecha_equipment/equipment
 
 /datum/action/vehicle/sealed/mecha/equipment/Destroy()
+	procstart = null
+	src.procstart = null
 	equipment = null
 	return ..()
 
 /datum/action/vehicle/sealed/mecha/equipment/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -205,6 +245,8 @@
 	chassis.balloon_alert(owner, "[equipment.name] [equipment.active ? "on" : "off"]!")
 
 /datum/action/vehicle/sealed/mecha/equipment/proc/set_equipment(passed_equipment)
+	procstart = null
+	src.procstart = null
 	equipment = passed_equipment
 	name = "Toggle [equipment.name]"
 	desc = equipment.desc
@@ -218,10 +260,14 @@
 	name = "Cargo Module"
 
 /datum/action/vehicle/sealed/mecha/equipment/cargo_module/set_equipment(passed_equipment)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[equipment.name]"
 
 /datum/action/vehicle/sealed/mecha/equipment/cargo_module/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE) //We are snowflaked from parent
 	if(!chassis || !(owner in chassis.occupants) || !equipment)
 		return
@@ -268,10 +314,14 @@
 	name = "Extinguisher"
 
 /datum/action/vehicle/sealed/mecha/equipment/extinguisher_action/set_equipment(passed_equipment)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[equipment.name]"
 
 /datum/action/vehicle/sealed/mecha/equipment/extinguisher_action/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE) //We are snowflaked from parent
 	if(!chassis || !(owner in chassis.occupants) || !equipment)
 		return

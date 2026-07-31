@@ -6,16 +6,22 @@
 	var/current_slot
 
 /datum/component/tactical/Initialize(allowed_slots)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 
 	src.allowed_slots = allowed_slots
 
 /datum/component/tactical/Destroy()
+	procstart = null
+	src.procstart = null
 	unmodify()
 	return ..()
 
 /datum/component/tactical/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(modify))
 	var/obj/item/item = parent
 	if(ismob(item.loc))
@@ -23,12 +29,16 @@
 		modify(item, holder, holder.get_slot_by_item(item))
 
 /datum/component/tactical/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ITEM_EQUIPPED,
 	))
 	unmodify()
 
 /datum/component/tactical/proc/modify(obj/item/source, mob/user, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(current_slot == slot)
 		return
@@ -56,6 +66,8 @@
 	on_icon_update(source)
 
 /datum/component/tactical/proc/on_icon_update(obj/item/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/user = source.loc
 	if(!istype(user))
@@ -72,6 +84,8 @@
 
 
 /datum/component/tactical/proc/on_name_inquiry(obj/item/source, list/identity)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/tactical_disguise_power = INFINITY // it's a flawless plan: they'll never look behind this unassuming potted plant
@@ -89,6 +103,8 @@
 
 
 /datum/component/tactical/proc/unmodify(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!source)
 		source = parent
@@ -114,6 +130,8 @@
 
 ///Checks if a mob is holding us, and if so we will modify our appearance to properly match w/ the mob.
 /datum/component/tactical/proc/tactical_update(obj/item/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!ismob(source.loc))
 		return
@@ -121,5 +139,7 @@
 
 ///We really want to make sure that, if things ever slightly breaks, that the alt appearance will be removed anyway.
 /datum/component/tactical/proc/on_moved(obj/item/source, atom/oldloc, direction, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	unmodify(source, oldloc)

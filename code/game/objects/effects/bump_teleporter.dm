@@ -16,20 +16,30 @@
 	var/static/list/AllTeleporters
 
 /obj/effect/bump_teleporter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	LAZYADD(AllTeleporters, src)
 
 /obj/effect/bump_teleporter/Destroy()
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(AllTeleporters, src)
 	return ..()
 
 /obj/effect/bump_teleporter/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/bump_teleporter/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/bump_teleporter/Bumped(atom/movable/bumper)
+	procstart = null
+	src.procstart = null
 	if(!validate_setup(bumper))
 		return
 
@@ -42,6 +52,8 @@
 
 /// Check to see if our teleporter was set up correctly mapside. Return TRUE if everything is fine, FALSE if not.
 /obj/effect/bump_teleporter/proc/validate_setup(atom/movable/checkable)
+	procstart = null
+	src.procstart = null
 	var/message = ""
 
 	if(!ismob(checkable))
@@ -57,6 +69,8 @@
 
 /// Actually move our target atom from one position to another. Return TRUE if everything is fine. Override this proc on subtypes for specific teleportation methods.
 /obj/effect/bump_teleporter/proc/teleport_action(atom/movable/target, turf/destination)
+	procstart = null
+	src.procstart = null
 	target.forceMove(destination)
 
 /// Subtype that uses do_teleport instead, to leverage any NO_TELEPORT traits that you might need to add in a given map
@@ -67,4 +81,6 @@
 
 /// As promised in the name of this subtype, use do_teleport to leverage all of the filtering checks that it does.
 /obj/effect/bump_teleporter/filtering/teleport_action(atom/movable/target, turf/destination)
+	procstart = null
+	src.procstart = null
 	do_teleport(target, destination, channel = TELEPORT_CHANNEL_QUANTUM)

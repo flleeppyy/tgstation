@@ -20,6 +20,8 @@
 	var/obj/item/reagent_containers/beaker
 
 /obj/machinery/computer/pandemic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
@@ -45,10 +47,14 @@
 
 
 /obj/machinery/computer/pandemic/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(beaker)
 	return ..()
 
 /obj/machinery/computer/pandemic/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(beaker)
 		var/is_close
@@ -60,6 +66,8 @@
 		. += span_info("Alt-click to eject [is_close ? beaker : "the beaker"].")
 
 /obj/machinery/computer/pandemic/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -69,12 +77,18 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/computer/pandemic/attack_robot_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand_secondary(user, modifiers)
 
 /obj/machinery/computer/pandemic/attack_ai_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand_secondary(user, modifiers)
 
 /obj/machinery/computer/pandemic/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == beaker)
 		beaker = null
@@ -82,6 +96,8 @@
 		SStgui.update_uis(src)
 
 /obj/machinery/computer/pandemic/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	//Advanced science! Precision instruments (eg droppers and syringes) are precise enough to modify the loaded sample!
 	if(istype(tool, /obj/item/reagent_containers/dropper) || istype(tool, /obj/item/reagent_containers/syringe))
 		if(!beaker)
@@ -110,19 +126,27 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/computer/pandemic/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	eject_beaker()
 	. = ..()
 
 /obj/machinery/computer/pandemic/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][beaker ? 1 : 0][(machine_stat & BROKEN) ? "_b" : (powered() ? null : "_nopower")]"
 	return ..()
 
 /obj/machinery/computer/pandemic/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(wait)
 		. += "waitlight"
 
 /obj/machinery/computer/pandemic/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -131,6 +155,8 @@
 		ui.set_autoupdate(FALSE)
 
 /obj/machinery/computer/pandemic/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["is_ready"] = !wait
 	if(!beaker)
@@ -155,6 +181,8 @@
 	return data
 
 /obj/machinery/computer/pandemic/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -194,6 +222,8 @@
  * @returns {boolean} - Success or failure.
  */
 /obj/machinery/computer/pandemic/proc/create_culture_bottle(index)
+	procstart = null
+	src.procstart = null
 	var/id = get_virus_id_by_index(text2num(index))
 	var/datum/disease/advance/adv_disease = SSdisease.archive_diseases[id]
 
@@ -217,6 +247,8 @@
 
 /// Tries to locate a reagent with valid blood_type data
 /obj/machinery/computer/pandemic/proc/get_blood_reagent()
+	procstart = null
+	src.procstart = null
 	for (var/datum/reagent/reagent as anything in beaker?.reagents?.reagent_list)
 		if (reagent.data?["blood_type"])
 			return reagent
@@ -229,6 +261,8 @@
  * @returns {boolean} - Success or failure.
  */
 /obj/machinery/computer/pandemic/proc/create_vaccine_bottle(index)
+	procstart = null
+	src.procstart = null
 	use_energy(active_power_usage)
 	var/id = index
 	var/datum/disease/disease = SSdisease.archive_diseases[id]
@@ -248,6 +282,8 @@
  * @returns {boolean} - Success or failure.
  */
 /obj/machinery/computer/pandemic/proc/eject_beaker()
+	procstart = null
+	src.procstart = null
 	if(!beaker)
 		return FALSE
 	try_put_in_hand(beaker, usr)
@@ -265,6 +301,8 @@
  * @returns {any | boolean} The thing found or FALSE if unsuccessful.
  */
 /obj/machinery/computer/pandemic/proc/get_by_index(thing, index)
+	procstart = null
+	src.procstart = null
 	if(!beaker || !beaker.reagents)
 		return FALSE
 	var/datum/reagent/blood/blood = locate() in beaker.reagents.reagent_list
@@ -280,6 +318,8 @@
  * @returns {list} - The resistances.
  */
 /obj/machinery/computer/pandemic/proc/get_resistance_data(datum/reagent/blood/blood)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	if(!islist(blood.data["resistances"]))
 		return data
@@ -305,6 +345,8 @@
  * @returns {list} - A list of virus info present in the sample.
  */
 /obj/machinery/computer/pandemic/proc/get_viruses_data(datum/reagent/blood)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/viruses = blood.data?["viruses"]
 	var/index = 1
@@ -346,6 +388,8 @@
  * to find the virus.
  */
 /obj/machinery/computer/pandemic/proc/get_virus_id_by_index(index)
+	procstart = null
+	src.procstart = null
 	var/datum/disease/disease = get_by_index("viruses", index)
 	if(!disease)
 		return FALSE
@@ -361,6 +405,8 @@
  * @returns {boolean} - Success or failure.
  */
 /obj/machinery/computer/pandemic/proc/rename_disease(index, name)
+	procstart = null
+	src.procstart = null
 	var/id = get_virus_id_by_index(text2num(index))
 	var/datum/disease/advance/adv_disease = SSdisease.archive_diseases[id]
 	if(!adv_disease.mutable)
@@ -379,6 +425,8 @@
  * @returns {boolean} - Success or failure.
  */
 /obj/machinery/computer/pandemic/proc/reset_replicator_cooldown()
+	procstart = null
+	src.procstart = null
 	wait = FALSE
 	SStgui.update_uis(src)
 	update_appearance()

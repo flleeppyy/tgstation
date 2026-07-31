@@ -2,6 +2,8 @@
 /datum/element/blood_limb_overlay
 
 /datum/element/blood_limb_overlay/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isbodypart(target))
 		return ELEMENT_INCOMPATIBLE
@@ -9,10 +11,14 @@
 	RegisterSignal(target, COMSIG_BODYPART_GENERATE_ICON_KEY, PROC_REF(on_icon_key))
 
 /datum/element/blood_limb_overlay/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, list(COMSIG_BODYPART_GET_LIMB_ICON, COMSIG_BODYPART_GENERATE_ICON_KEY))
 
 /datum/element/blood_limb_overlay/proc/on_limb_icon(obj/item/bodypart/source, list/limb_icons, dropped)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/list/blood_dna_info = source.blood_dna_info
@@ -34,6 +40,8 @@
 	aux.overlays += aux_blood_visual
 
 /datum/element/blood_limb_overlay/proc/on_icon_key(obj/item/bodypart/source, list/icon_keys)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/list/blood_dna_info = source.blood_dna_info || source.owner?.get_blood_dna_list()

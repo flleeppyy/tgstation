@@ -11,26 +11,36 @@
 	var/buildmode_name = "Undocumented"
 
 /datum/map_generator/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(buildmode_name == "Undocumented")
 		buildmode_name = copytext_char("[type]", 20) // / d a t u m / m a p g e n e r a t o r / = 20 characters.
 	initialiseModules()
 
 /datum/map_generator/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_LIST(modules)
 
 ///This proc will be ran by areas on Initialize, and provides the areas turfs as argument to allow for generation.
 /datum/map_generator/proc/generate_terrain(list/turfs, area/generate_in)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Populate terrain with flora, fauna, features and basically everything that isn't a turf.
 /datum/map_generator/proc/populate_terrain(list/turfs, area/generate_in)
+	procstart = null
+	src.procstart = null
 	return
 
 //Defines the region the map represents, sets map
 //Returns the map
 /datum/map_generator/proc/defineRegion(turf/Start, turf/End, replace = 0)
+	procstart = null
+	src.procstart = null
 	if(!checkRegion(Start, End))
 		return 0
 
@@ -43,6 +53,8 @@
 //Defines the region the map represents, as a CIRCLE!, sets map
 //Returns the map
 /datum/map_generator/proc/defineCircularRegion(turf/Start, turf/End, replace = 0)
+	procstart = null
+	src.procstart = null
 	if(!checkRegion(Start, End))
 		return 0
 
@@ -78,12 +90,16 @@
 
 //Empties the map list, he's dead jim.
 /datum/map_generator/proc/undefineRegion()
+	procstart = null
+	src.procstart = null
 	map = list() //bai bai
 
 
 //Checks for and Rejects bad region coordinates
 //Returns 1/0
 /datum/map_generator/proc/checkRegion(turf/Start, turf/End)
+	procstart = null
+	src.procstart = null
 	if(!Start || !End)
 		return FALSE //Just bail
 
@@ -98,6 +114,8 @@
 
 //Requests the mapGeneratorModule(s) to (re)generate
 /datum/map_generator/proc/generate()
+	procstart = null
+	src.procstart = null
 	syncModules()
 	if(!modules || !modules.len)
 		return
@@ -107,6 +125,8 @@
 
 //Requests the mapGeneratorModule(s) to (re)generate this one turf
 /datum/map_generator/proc/generateOneTurf(turf/T)
+	procstart = null
+	src.procstart = null
 	if(!T)
 		return
 	syncModules()
@@ -118,6 +138,8 @@
 
 //Replaces all paths in the module list with actual module datums
 /datum/map_generator/proc/initialiseModules()
+	procstart = null
+	src.procstart = null
 	for(var/path in modules)
 		if(ispath(path))
 			modules.Remove(path)
@@ -127,6 +149,8 @@
 
 //Sync mapGeneratorModule(s) to mapGenerator
 /datum/map_generator/proc/syncModules()
+	procstart = null
+	src.procstart = null
 	for(var/datum/map_generator_module/mod as anything in modules)
 		mod.sync(src)
 

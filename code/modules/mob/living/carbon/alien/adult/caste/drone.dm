@@ -20,6 +20,8 @@
 	)
 
 /mob/living/carbon/alien/adult/drone/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	GRANT_ACTION(/datum/action/cooldown/alien/evolve_to_praetorian)
 	return ..()
 
@@ -30,6 +32,8 @@
 	plasma_cost = 500
 
 /datum/action/cooldown/alien/evolve_to_praetorian/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -51,6 +55,8 @@
 	return TRUE
 
 /datum/action/cooldown/alien/evolve_to_praetorian/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/alien/adult/evolver = owner
 	var/mob/living/carbon/alien/adult/royal/praetorian/new_xeno = new(owner.loc)
 	evolver.alien_evolve(new_xeno)

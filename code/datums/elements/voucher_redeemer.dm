@@ -14,6 +14,8 @@
 	var/list/set_instances
 
 /datum/element/voucher_redeemer/Attach(datum/target, voucher_type = /obj/item/coin, set_type = /datum/voucher_set)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(target))
 		return ELEMENT_INCOMPATIBLE
@@ -29,10 +31,14 @@
 	RegisterSignal(target, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(redeem_voucher))
 
 /datum/element/voucher_redeemer/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_ATOM_ITEM_INTERACTION)
 
 /datum/element/voucher_redeemer/proc/redeem_voucher(atom/source, mob/living/redeemer, obj/item/voucher, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(voucher, voucher_type))
@@ -41,11 +47,15 @@
 	return ITEM_INTERACT_SUCCESS
 
 /datum/element/voucher_redeemer/proc/generate_sets()
+	procstart = null
+	src.procstart = null
 	set_instances = list()
 	for(var/datum/voucher_set/static_set as anything in subtypesof(set_type))
 		set_instances[static_set::name] = new static_set
 
 /datum/element/voucher_redeemer/proc/generate_options()
+	procstart = null
+	src.procstart = null
 	cached_options = list()
 	for(var/set_name in set_instances)
 		var/datum/voucher_set/current_set = set_instances[set_name]
@@ -56,6 +66,8 @@
 		cached_options[set_name] = option
 
 /datum/element/voucher_redeemer/proc/redeem_voucher_async(atom/source, mob/living/redeemer, obj/item/voucher)
+	procstart = null
+	src.procstart = null
 	if(!set_instances)
 		generate_sets()
 		generate_options()
@@ -72,6 +84,8 @@
 	qdel(voucher)
 
 /datum/element/voucher_redeemer/proc/check_menu(obj/item/voucher, mob/living/redeemer)
+	procstart = null
+	src.procstart = null
 	if(!istype(redeemer))
 		return FALSE
 	if(redeemer.incapacitated)

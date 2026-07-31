@@ -9,6 +9,8 @@
 
 /// Loads the trophies from the source file, and places a few in trophy display cases.
 /datum/controller/subsystem/persistence/proc/load_trophies()
+	procstart = null
+	src.procstart = null
 	var/list/raw_saved_trophies = list()
 	if(fexists("data/npc_saves/TrophyItems.json"))
 		var/json_file = file("data/npc_saves/TrophyItems.json")
@@ -36,11 +38,15 @@
 	set_up_trophies()
 
 /datum/trophy_data/proc/load_from_json(list/json_data)
+	procstart = null
+	src.procstart = null
 	path = json_data["path"]
 	message = json_data["message"]
 	placer_key = json_data["placer_key"]
 
 /datum/trophy_data/proc/to_json()
+	procstart = null
+	src.procstart = null
 	var/list/new_data = list()
 	new_data["path"] = path
 	new_data["message"] = message
@@ -50,6 +56,8 @@
 
 /// Returns a list for the admin trophy panel.
 /datum/controller/subsystem/persistence/proc/trophy_ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/ui_data = list()
 	for(var/datum/trophy_data/data in saved_trophies)
 		var/list/pdata = data.to_json()
@@ -61,6 +69,8 @@
 
 /// Puts trophies into trophy cases.
 /datum/controller/subsystem/persistence/proc/set_up_trophies()
+	procstart = null
+	src.procstart = null
 
 	var/list/valid_trophies = list()
 
@@ -86,6 +96,8 @@
 
 ///Collects trophies from all existing trophy cases.
 /datum/controller/subsystem/persistence/proc/collect_trophies()
+	procstart = null
+	src.procstart = null
 	for(var/trophy_case in GLOB.trophy_cases)
 		save_trophy(trophy_case)
 
@@ -104,6 +116,8 @@
 
 ///gets the list of json trophies, and deletes the ones with an identical path and message
 /datum/controller/subsystem/persistence/proc/remove_duplicate_trophies(list/trophies)
+	procstart = null
+	src.procstart = null
 	var/list/ukeys = list()
 	. = list()
 	for(var/trophy in trophies)
@@ -116,6 +130,8 @@
 
 ///If there is a trophy in the trophy case, saved it, if the trophy was not a holo trophy and has a message attached.
 /datum/controller/subsystem/persistence/proc/save_trophy(obj/structure/displaycase/trophy/trophy_case)
+	procstart = null
+	src.procstart = null
 	if(!trophy_case.holographic_showpiece && trophy_case.showpiece && trophy_case.trophy_message)
 		var/datum/trophy_data/data = new
 		data.path = trophy_case.showpiece.type

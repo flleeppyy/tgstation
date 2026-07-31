@@ -2,6 +2,8 @@
  * Check that standard food items fit on the serving tray
  */
 /datum/unit_test/servingtray/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human = allocate(/mob/living/carbon/human/consistent)
 	var/obj/structure/table/the_table = allocate(/obj/structure/table)
 	var/obj/item/storage/bag/tray/test_tray = allocate(/obj/item/storage/bag/tray)

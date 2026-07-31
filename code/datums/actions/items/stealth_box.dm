@@ -13,6 +13,8 @@
 
 ///Handles opening and closing the box.
 /datum/action/item_action/agent_box/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -33,16 +35,22 @@
 	owner.playsound_local(box, 'sound/misc/box_deploy.ogg', 50, TRUE)
 
 /datum/action/item_action/agent_box/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(owner)
 		RegisterSignal(owner, COMSIG_LIVING_SUICIDE_ACT, PROC_REF(suicide_act))
 
 /datum/action/item_action/agent_box/Remove(mob/M)
+	procstart = null
+	src.procstart = null
 	if(owner)
 		UnregisterSignal(owner, COMSIG_LIVING_SUICIDE_ACT)
 	return ..()
 
 /datum/action/item_action/agent_box/proc/suicide_act(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(owner.loc, /obj/structure/closet/cardboard/agent))

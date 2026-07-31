@@ -33,6 +33,8 @@
 	var/datum/callback/post_hatch
 
 /datum/component/fertile_egg/Initialize(embryo_type, minimum_growth_rate, maximum_growth_rate, total_growth_required, current_growth, location_allowlist, spoilable, examine_message, post_hatch)
+	procstart = null
+	src.procstart = null
 	// Quite how an _area_ can be a fertile egg is an open question, but it still has a location. Technically.
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -49,10 +51,14 @@
 	START_PROCESSING(SSobj, src)
 
 /datum/component/fertile_egg/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
 /datum/component/fertile_egg/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/atom/parent_atom = parent
 
 	if(location_allowlist && !is_type_in_typecache(parent_atom.loc, location_allowlist))

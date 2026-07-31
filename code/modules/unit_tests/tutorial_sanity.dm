@@ -2,6 +2,8 @@
 /datum/unit_test/tutorial_sanity
 
 /datum/unit_test/tutorial_sanity/Run()
+	procstart = null
+	src.procstart = null
 	var/regex/regex_valid_date = regex(@"\d{4}-\d{2}-\d{2}")
 	var/list/keys = list()
 

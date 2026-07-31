@@ -40,6 +40,8 @@ GLOBAL_LIST_INIT(high_priority_sentience, typecacheof(list(
 	fakeable = TRUE
 
 /datum/round_event/ghost_role/sentience/announce(fake)
+	procstart = null
+	src.procstart = null
 	var/sentience_report = ""
 
 	var/data = pick("scans from our long-range sensors", "our sophisticated probabilistic models", "our omnipotence", "the communications traffic on your station", "energy emissions we detected", "\[REDACTED\]")
@@ -51,6 +53,8 @@ GLOBAL_LIST_INIT(high_priority_sentience, typecacheof(list(
 	priority_announce(sentience_report,"[command_name()] Medium-Priority Update")
 
 /datum/round_event/ghost_role/sentience/spawn_role()
+	procstart = null
+	src.procstart = null
 	var/list/mob/dead/observer/candidates = SSpolling.poll_ghost_candidates(check_jobban = ROLE_SENTIENCE, role = ROLE_SENTIENCE, alert_pic = /obj/item/slimepotion/sentience, role_name_text = role_name)
 	if(!length(candidates))
 		return NOT_ENOUGH_PLAYERS
@@ -112,6 +116,8 @@ GLOBAL_LIST_INIT(high_priority_sentience, typecacheof(list(
 
 /// Adds a mob to either the high or low priority event list
 /datum/round_event/ghost_role/sentience/proc/set_mob_priority(mob/living/checked_mob, list/high, list/low)
+	procstart = null
+	src.procstart = null
 	var/turf/mob_turf = get_turf(checked_mob)
 	if(!mob_turf || !is_station_level(mob_turf.z))
 		return

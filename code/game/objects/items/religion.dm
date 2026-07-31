@@ -21,11 +21,15 @@
 	var/warcry
 
 /obj/item/banner/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(inspiration_available)
 		. += span_notice("Activate it in your hand to inspire nearby allies of this banner's allegiance!")
 
 /obj/item/banner/attack_self(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!inspiration_available || flags_1 & HOLOGRAM_1)
 		return
 	if(morale_time > world.time)
@@ -63,10 +67,14 @@
 		inspiration(H)
 		special_inspiration(H)
 
-/obj/item/banner/proc/check_inspiration(mob/living/carbon/human/H) //Banner-specific conditions for being eligible
+/obj/item/banner/proc/check_inspiration(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null //Banner-specific conditions for being eligible
 	return
 
 /obj/item/banner/proc/inspiration(mob/living/carbon/human/inspired_human)
+	procstart = null
+	src.procstart = null
 	var/need_mob_update = FALSE
 	need_mob_update += inspired_human.adjust_brute_loss(-15, updating_health = FALSE)
 	need_mob_update += inspired_human.adjust_fire_loss(-15, updating_health = FALSE)
@@ -79,7 +87,9 @@
 	inspired_human.AdjustUnconscious(-4 SECONDS)
 	playsound(inspired_human, 'sound/effects/magic/staff_healing.ogg', 25, FALSE)
 
-/obj/item/banner/proc/special_inspiration(mob/living/carbon/human/H) //Any banner-specific inspiration effects go here
+/obj/item/banner/proc/special_inspiration(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null //Any banner-specific inspiration effects go here
 	return
 
 /obj/item/banner/security
@@ -90,6 +100,8 @@
 	warcry = "EVERYONE DOWN ON THE GROUND!!"
 
 /obj/item/banner/security/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	job_loyalties = DEPARTMENT_BITFLAG_SECURITY
 
@@ -112,6 +124,8 @@
 	warcry = "No wounds cannot be healed!"
 
 /obj/item/banner/medical/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	job_loyalties = DEPARTMENT_BITFLAG_MEDICAL
 
@@ -119,6 +133,8 @@
 	inspiration_available = FALSE
 
 /obj/item/banner/medical/check_inspiration(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	return H.stat //Meditopia is moved to help those in need
 
 /datum/crafting_recipe/medical_banner
@@ -130,6 +146,8 @@
 	category = CAT_MISC
 
 /obj/item/banner/medical/special_inspiration(mob/living/carbon/human/inspired_human)
+	procstart = null
+	src.procstart = null
 	var/need_mob_update = FALSE
 	need_mob_update += inspired_human.adjust_tox_loss(-15, updating_health = FALSE)
 	need_mob_update += inspired_human.set_oxy_loss(0, updating_health = FALSE)
@@ -145,6 +163,8 @@
 	warcry = "For Cuban Pete!"
 
 /obj/item/banner/science/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	job_loyalties = DEPARTMENT_BITFLAG_SCIENCE
 
@@ -152,6 +172,8 @@
 	inspiration_available = FALSE
 
 /obj/item/banner/science/check_inspiration(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	return H.on_fire //Sciencia is pleased by dedication to the art of Ordnance
 
 /datum/crafting_recipe/science_banner
@@ -170,6 +192,8 @@
 	warcry = "Hail Cargonia!"
 
 /obj/item/banner/cargo/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	job_loyalties = DEPARTMENT_BITFLAG_CARGO
 
@@ -192,6 +216,8 @@
 	warcry = "All hail lord Singuloth!!"
 
 /obj/item/banner/engineering/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	job_loyalties = DEPARTMENT_BITFLAG_ENGINEERING
 
@@ -199,6 +225,8 @@
 	inspiration_available = FALSE
 
 /obj/item/banner/engineering/special_inspiration(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	qdel(H.GetComponent(/datum/component/irradiated))
 
 /datum/crafting_recipe/engineering_banner
@@ -216,6 +244,8 @@
 	warcry = "Hail Nanotrasen!"
 
 /obj/item/banner/command/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	job_loyalties = DEPARTMENT_BITFLAG_COMMAND
 
@@ -223,6 +253,8 @@
 	inspiration_available = FALSE
 
 /obj/item/banner/command/check_inspiration(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(H, TRAIT_MINDSHIELD) //Command is stalwart but rewards their allies.
 
 /datum/crafting_recipe/command_banner
@@ -251,6 +283,8 @@
 	icon_state = "backpack-banner"
 
 /obj/item/storage/backpack/bannerpack/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	atom_storage.max_total_storage = 27 //6 more then normal, for the tradeoff of declaring yourself an antag at all times.
 
@@ -338,15 +372,21 @@
 	var/staffwait = 30
 
 /obj/item/godstaff/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/walking_aid)
 
 /obj/item/godstaff/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(SHOULD_SKIP_INTERACTION(interacting_with, src, user))
 		return NONE
 	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/godstaff/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(staffcooldown + staffwait > world.time)
 		return ITEM_INTERACT_BLOCKING
 
@@ -418,6 +458,8 @@
 	armour_penetration = 15
 
 /obj/item/claymore/weak/make_stabby()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/alternative_sharpness, SHARP_POINTY, alt_continuous, alt_simple, -9)
 
 /obj/item/claymore/weak/ceremonial
@@ -427,4 +469,6 @@
 	armour_penetration = 5
 
 /obj/item/claymore/weak/ceremonial/make_stabby()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/alternative_sharpness, SHARP_POINTY, alt_continuous, alt_simple, -5)

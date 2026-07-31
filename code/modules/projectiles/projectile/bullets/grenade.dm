@@ -15,6 +15,8 @@
 	var/ex_flame_range = 3
 
 /obj/projectile/bullet/a40mm/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ex_light_range || ex_flame_range)
 		explosion(target, devastation_range = ex_dev_range, light_impact_range = ex_light_range, flame_range = ex_flame_range, flash_range = 1, adminlog = FALSE, explosion_cause = src)
@@ -22,6 +24,8 @@
 	return BULLET_ACT_HIT
 
 /obj/projectile/bullet/a40mm/proc/grenade_extra_effect(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!prob(1))
 		return
 
@@ -38,6 +42,8 @@
 	ex_flame_range = 4
 
 /obj/projectile/bullet/a40mm/incendiary/grenade_extra_effect(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(target))
 		var/mob/living/carbon/i_want_them_to_burn = target
 		i_want_them_to_burn.adjust_fire_stacks(damage*2)
@@ -53,6 +59,8 @@
 	ex_flame_range = 0
 
 /obj/projectile/bullet/a40mm/tear_gas/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/projectile_drop, /obj/item/grenade/chem_grenade/teargas/instant)
 

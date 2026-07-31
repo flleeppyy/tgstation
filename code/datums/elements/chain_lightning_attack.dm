@@ -10,6 +10,8 @@
 	var/chain_limit
 
 /datum/element/chain_lightning_attack/Attach(datum/target, shock_damage = 10, shock_range = 2, chain_limit = 3)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -20,10 +22,14 @@
 	RegisterSignal(target, COMSIG_ITEM_AFTERATTACK, PROC_REF(try_chain))
 
 /datum/element/chain_lightning_attack/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_ITEM_AFTERATTACK)
 
 /datum/element/chain_lightning_attack/proc/try_chain(obj/item/source, atom/hit, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(hit))
@@ -31,6 +37,8 @@
 	do_chain(source, hit, user, list(user))
 
 /datum/element/chain_lightning_attack/proc/do_chain(obj/item/source, mob/living/next_target, atom/last_target, list/dont_hit = list())
+	procstart = null
+	src.procstart = null
 	if(!next_target.electrocute_act(shock_damage, source, flags = SHOCK_NOGLOVES|SHOCK_NOSTUN))
 		return
 	if(last_target != next_target)

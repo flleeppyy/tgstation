@@ -21,6 +21,8 @@
 	var/current_health = 2
 
 /datum/component/curse_of_hunger/Initialize(add_dropdel = FALSE, max_health = 2)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -29,12 +31,16 @@
 	src.current_health = max_health
 
 /datum/component/curse_of_hunger/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/cursed_item = parent
 	RegisterSignal(cursed_item, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 	RegisterSignal(cursed_item, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equip))
 
 /datum/component/curse_of_hunger/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, list(
 		COMSIG_ATOM_EXAMINE,
@@ -44,6 +50,8 @@
 
 ///signal called on parent being examined
 /datum/component/curse_of_hunger/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!awakened)
 		return //we should not reveal we are cursed until equipped
@@ -54,6 +62,8 @@
 
 ///signal called from equipping parent
 /datum/component/curse_of_hunger/proc/on_equip(datum/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/item/at_least_item = parent
 	// Items with no slot flags curse on pickup (because hand slot)
@@ -63,11 +73,15 @@
 
 ///signal called from dropping parent
 /datum/component/curse_of_hunger/proc/on_drop(datum/source, mob/dropper)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	the_curse_ends(dropper)
 
 /datum/component/curse_of_hunger/proc/the_curse_begins(mob/cursed)
+	procstart = null
+	src.procstart = null
 	var/obj/item/cursed_item = parent
 	awakened = TRUE
 	START_PROCESSING(SSobj, src)
@@ -79,6 +93,8 @@
 	RegisterSignal(cursed_item, COMSIG_ITEM_DROPPED, PROC_REF(on_drop))
 
 /datum/component/curse_of_hunger/proc/the_curse_ends(mob/uncursed)
+	procstart = null
+	src.procstart = null
 	var/obj/item/cursed_item = parent
 	STOP_PROCESSING(SSobj, src)
 	REMOVE_TRAIT(cursed_item, TRAIT_NODROP, CURSED_ITEM_TRAIT(cursed_item.type))
@@ -96,6 +112,8 @@
 
 ///proc called after a timer to awaken the AI in the cursed item if it doesn't have a target already.
 /datum/component/curse_of_hunger/proc/seek_new_target()
+	procstart = null
+	src.procstart = null
 	var/obj/item/cursed_item = parent
 	if(iscarbon(cursed_item.loc))
 		return
@@ -106,6 +124,8 @@
 	cursed_item.visible_message(span_warning("[cursed_item] begins to move on [cursed_item.p_their()] own..."))
 
 /datum/component/curse_of_hunger/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/obj/item/cursed_item = parent
 	var/mob/living/carbon/cursed = cursed_item.loc
 	///check hp

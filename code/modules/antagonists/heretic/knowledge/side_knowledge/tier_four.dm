@@ -20,14 +20,20 @@
 	var/seconds_in_eva = 0
 
 /datum/heretic_knowledge/spell/space_phase/on_gain(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(user, COMSIG_MOB_CRUSHED_BLUESPACE_CRYSTAL, PROC_REF(on_crystal_crushed))
 
 /datum/heretic_knowledge/spell/space_phase/on_lose(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, COMSIG_MOB_CRUSHED_BLUESPACE_CRYSTAL)
 
 /datum/heretic_knowledge/spell/space_phase/proc/on_crystal_crushed(mob/living/source, obj/item/crystal)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/effect/heretic_rune/rune = locate() in view(1, source)
@@ -97,6 +103,8 @@
 	holywater_drain_amount = 0.33
 
 /datum/heretic_knowledge/spell/crimson_cleave/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/rag/rag in atoms)
 		if(!GET_ATOM_BLOOD_DNA_LENGTH(rag))
@@ -153,6 +161,8 @@
 	)
 
 /datum/heretic_knowledge/rifle_ammo/pre_research(mob/user, datum/antagonist/heretic/our_heretic)
+	procstart = null
+	src.procstart = null
 	if(!our_heretic.get_knowledge(/datum/heretic_knowledge/rifle))
 		tgui_alert(user, "You must research the Lionhunter's Rifle knowledge before you can research its ammunition.")
 		return FALSE
@@ -160,6 +170,8 @@
 	return TRUE
 
 /datum/heretic_knowledge/rifle_ammo/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/ammo_casing/casing in atoms)
 		if(!(casing.caliber in caliber_blacklist))
 			continue

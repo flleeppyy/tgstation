@@ -4,6 +4,8 @@
 	var/mob/living/silicon/robot
 
 /datum/component/borg_item_offered_when_pulled/Initialize(mob/living/silicon/robot/borg)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -15,10 +17,14 @@
 	robot = borg
 
 /datum/component/borg_item_offered_when_pulled/Destroy(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(robot, COMSIG_LIVING_GET_PULLED)
 	robot = null
 	return ..()
 
 /datum/component/borg_item_offered_when_pulled/proc/on_pulled(mob/living/holder, mob/living/puller)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	holder.give(puller, parent)

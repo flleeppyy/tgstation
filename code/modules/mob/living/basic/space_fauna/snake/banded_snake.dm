@@ -26,11 +26,15 @@
 		)
 
 /mob/living/basic/snake/banded/Initialize(mapload, special_reagent)
+	procstart = null
+	src.procstart = null
 	special_reagent = src.poison_reagent
 	AddComponent(/datum/component/swarming)
 	return ..()
 
 /mob/living/basic/snake/banded/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("<i>You examine the bands on the snake very closely...</i>")
 	if(src.poison_reagent == (/datum/reagent/consumable/milk))

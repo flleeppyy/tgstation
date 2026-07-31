@@ -9,11 +9,15 @@
 	var/allowAtomsOnSpace = FALSE
 
 /datum/map_generator_module/Destroy(force)
+	procstart = null
+	src.procstart = null
 	mother = null
 	return ..()
 
 //Syncs the module up with its mother
 /datum/map_generator_module/proc/sync(datum/map_generator/mum)
+	procstart = null
+	src.procstart = null
 	mother = null
 	if(mum)
 		mother = mum
@@ -21,6 +25,8 @@
 
 //Generates its spawnable atoms and turfs
 /datum/map_generator_module/proc/generate()
+	procstart = null
+	src.procstart = null
 	if(!mother)
 		return
 	var/list/map = mother.map
@@ -30,6 +36,8 @@
 
 //Place a spawnable atom or turf on this turf
 /datum/map_generator_module/proc/place(turf/T)
+	procstart = null
+	src.procstart = null
 	if(!T)
 		return 0
 
@@ -108,6 +116,8 @@
 
 //Checks and Rejects dense turfs
 /datum/map_generator_module/proc/checkPlaceAtom(turf/T)
+	procstart = null
+	src.procstart = null
 	if(!T || (T.turf_flags & TURF_BLOCKS_POPULATE_TERRAIN_FLORAFEATURES))
 		return FALSE
 	if(T.density)

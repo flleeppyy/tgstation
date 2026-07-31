@@ -6,6 +6,8 @@
 	var/aid_name
 
 /datum/element/surgery_aid/Attach(datum/target, aid_name = "things")
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -18,10 +20,14 @@
 	realtarget.item_flags |= ITEM_HAS_CONTEXTUAL_SCREENTIPS
 
 /datum/element/surgery_aid/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, list(COMSIG_ITEM_INTERACTING_WITH_ATOM, COMSIG_ITEM_REQUESTING_CONTEXT_FOR_TARGET))
 
 /datum/element/surgery_aid/proc/on_context(obj/item/source, list/context, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(target))
@@ -37,6 +43,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /datum/element/surgery_aid/proc/on_item_interaction(datum/source, mob/living/user, atom/target, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(target))
@@ -48,6 +56,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /datum/element/surgery_aid/proc/surgery_prep(mob/living/target_mob, mob/living/surgeon, body_zone)
+	procstart = null
+	src.procstart = null
 	var/datum/status_effect/surgery_prepped/prep = target_mob.has_status_effect(__IMPLIED_TYPE__)
 	if(isnull(prep) || !(body_zone in prep.zones))
 		target_mob.apply_status_effect(/datum/status_effect/surgery_prepped, body_zone, aid_name)
@@ -72,28 +82,38 @@
 	var/movement_counter = 0
 
 /datum/status_effect/surgery_prepped/on_creation(mob/living/new_owner, target_zone, aid_name = "things")
+	procstart = null
+	src.procstart = null
 	. = ..()
 	track_surgery(target_zone)
 	LAZYOR(surgical_aids, aid_name)
 	ADD_TRAIT(owner, TRAIT_READY_TO_OPERATE, TRAIT_STATUS_EFFECT(id)) // needs to happen after tracking starts
 
 /datum/status_effect/surgery_prepped/refresh(mob/living/new_owner, target_zone, aid_name = "things")
+	procstart = null
+	src.procstart = null
 	track_surgery(target_zone)
 	LAZYOR(surgical_aids, aid_name)
 
 /datum/status_effect/surgery_prepped/on_apply()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
 	RegisterSignal(owner, COMSIG_CARBON_POST_ATTACH_LIMB, PROC_REF(on_attach_limb))
 	RegisterSignal(owner, COMSIG_CARBON_POST_REMOVE_LIMB, PROC_REF(on_detach_limb))
 	return TRUE
 
 /datum/status_effect/surgery_prepped/on_remove()
+	procstart = null
+	src.procstart = null
 	for(var/zone in zones)
 		untrack_surgery(zone)
 	REMOVE_TRAIT(owner, TRAIT_READY_TO_OPERATE, TRAIT_STATUS_EFFECT(id))
 	UnregisterSignal(owner, list(COMSIG_MOVABLE_MOVED, COMSIG_CARBON_POST_ATTACH_LIMB, COMSIG_CARBON_POST_REMOVE_LIMB))
 
 /datum/status_effect/surgery_prepped/get_examine_text()
+	procstart = null
+	src.procstart = null
 	var/list/zones_readable = list()
 	// give the body zones a consistent order, the same order as GLOB.all_body_zones
 	for(var/zone in GLOB.all_body_zones & zones)
@@ -107,6 +127,8 @@
 	return "[owner.p_They()] [owner.p_have()] [english_list(aid_readable)] adorning [owner.p_their()] [english_list(zones_readable)]."
 
 /datum/status_effect/surgery_prepped/proc/on_move(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(owner.body_position == STANDING_UP)
@@ -118,21 +140,29 @@
 	qdel(src)
 
 /datum/status_effect/surgery_prepped/proc/on_attach_limb(datum/source, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(limb.body_zone in zones)
 		ADD_TRAIT(limb, TRAIT_READY_TO_OPERATE, TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/surgery_prepped/proc/on_detach_limb(datum/source, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	REMOVE_TRAIT(limb, TRAIT_READY_TO_OPERATE, TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/surgery_prepped/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(owner.body_position == LYING_DOWN && movement_counter > 0)
 		movement_counter -= 1
 
 /datum/status_effect/surgery_prepped/proc/track_surgery(body_zone)
+	procstart = null
+	src.procstart = null
 	LAZYADD(zones, body_zone)
 	if(iscarbon(owner))
 		var/obj/item/bodypart/precise_part = owner.get_bodypart(body_zone)
@@ -142,6 +172,8 @@
 		stack_trace("Attempting to track surgery on a non-carbon mob with a non-chest body zone! This should not happen.")
 
 /datum/status_effect/surgery_prepped/proc/untrack_surgery(body_zone)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(zones, body_zone)
 	if(iscarbon(owner))
 		var/obj/item/bodypart/precise_part = owner.get_bodypart(body_zone)

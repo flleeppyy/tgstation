@@ -12,15 +12,21 @@
 	suicide_cry = "FOR THE SUN!!"
 
 /datum/antagonist/sunwalker/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.announce_objectives()
 
 /datum/antagonist/sunwalker/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	forge_objectives()
 
 /datum/antagonist/sunwalker/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/sunwalker/objective = new
 	objective.owner = owner
 	objectives += objective
@@ -28,6 +34,8 @@
 /datum/objective/sunwalker
 
 /datum/objective/sunwalker/New()
+	procstart = null
+	src.procstart = null
 	var/list/explanation_texts = list(
 		"Teach them to fear the void. Overhwelm them with your brilliance, then impart the truth of immolation. Seek to destroy, not enlighten.",
 	)
@@ -38,4 +46,6 @@
 	..()
 
 /datum/objective/sunwalker/check_completion()
+	procstart = null
+	src.procstart = null
 	return owner.current.stat != DEAD

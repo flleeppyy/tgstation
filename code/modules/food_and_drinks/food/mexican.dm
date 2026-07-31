@@ -13,6 +13,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/tortilla/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/hard_taco_shell, rand(15 SECONDS, 30 SECONDS), TRUE, TRUE)
 
 /obj/item/food/burrito
@@ -262,6 +264,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/hard_taco_shell/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ingredients_holder, /obj/item/food/hard_taco_shell/empty, CUSTOM_INGREDIENT_ICON_FILL, max_ingredients = 6)
 

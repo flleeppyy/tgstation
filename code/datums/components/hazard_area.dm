@@ -15,6 +15,8 @@
 	VAR_PRIVATE/last_parent_area
 
 /datum/component/hazard_area/Initialize(area_blacklist, area_whitelist)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismob(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -26,6 +28,8 @@
 	area_created = new
 
 /datum/component/hazard_area/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	var/mob/parent_mob = parent
 	parent_mob.become_area_sensitive(type)
 	RegisterSignal(parent_mob, COMSIG_ENTER_AREA, PROC_REF(handle_parent_area_change))
@@ -34,12 +38,16 @@
 	RegisterSignal(SSdcs, COMSIG_AREA_CREATED, PROC_REF(on_area_creation))
 
 /datum/component/hazard_area/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	var/mob/parent_mob = parent
 	UnregisterSignal(parent_mob, list(COMSIG_ENTER_AREA, COMSIG_LADDER_TRAVEL, COMSIG_VEHICLE_RIDDEN))
 	UnregisterSignal(SSdcs, COMSIG_AREA_CREATED)
 	parent_mob.lose_area_sensitivity(type)
 
 /datum/component/hazard_area/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	area_created = null
 
@@ -47,6 +55,8 @@
  * This signal handler checks the area the target ladder is in and if hazardous prevents them from using it
  */
 /datum/component/hazard_area/proc/reject_ladder_movement(mob/source, obj/entrance_ladder, exit_ladder, going_up)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(check_area_hazardous(get_area(exit_ladder)))
@@ -57,6 +67,8 @@
  * A simple signal handler that informs the parent they cannot ride a vehicle and ejects them
  */
 /datum/component/hazard_area/proc/reject_vehicle(mob/source, obj/vehicle/vehicle)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!check_area_hazardous(last_parent_area))
@@ -75,6 +87,8 @@
  * * checking - This should be the typepath of the area being checked, but there is a conversion handler if you pass in a reference instead
  */
 /datum/component/hazard_area/proc/check_area_hazardous(area/checking)
+	procstart = null
+	src.procstart = null
 	if(LAZYFIND(area_created, checking))
 		return FALSE
 	if(!ispath(checking))
@@ -91,6 +105,8 @@
  * If there aren't any overwritten area's it assumes it to be non-hazardous, abuse it and you will weep -ZephyrTFA
  */
 /datum/component/hazard_area/proc/on_area_creation(datum/source, area/created, list/area/overwritten, mob/creator)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(created.type in area_whitelist)
@@ -115,6 +131,8 @@
  * This proc handles the status effect applied to the parent, most noteably applying or removing it as required
  */
 /datum/component/hazard_area/proc/update_parent_status_effect()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(parent))
 		return
 
@@ -136,6 +154,8 @@
  * This signal should be called whenever our parent moves.
  */
 /datum/component/hazard_area/proc/handle_parent_area_change(mob/source, area/new_area)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(new_area.type == last_parent_area)
@@ -151,19 +171,27 @@
 	alert_type = /atom/movable/screen/alert/status_effect/hazard_area
 
 /datum/status_effect/hazard_area/nextmove_modifier()
+	procstart = null
+	src.procstart = null
 	return 4
 
 /datum/status_effect/hazard_area/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.add_movespeed_modifier(/datum/movespeed_modifier/status_effect/hazard_area, update=TRUE)
 	owner.add_actionspeed_modifier(/datum/actionspeed_modifier/status_effect/hazard_area, update=TRUE)
 
 /datum/status_effect/hazard_area/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/hazard_area, update=TRUE)
 	owner.remove_actionspeed_modifier(/datum/actionspeed_modifier/status_effect/hazard_area, update=TRUE)
 
 /datum/status_effect/hazard_area/get_examine_text()
+	procstart = null
+	src.procstart = null
 	return span_notice("[owner.p_They()] appear[owner.p_s()] to be largely immobilized through unknown means.")
 
 /atom/movable/screen/alert/status_effect/hazard_area

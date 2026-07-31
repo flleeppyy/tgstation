@@ -24,12 +24,16 @@
 	var/drift_force = 1.5 NEWTONS
 
 /obj/item/tank/jetpack/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_SUITSTORE)
 	thrust_callback = CALLBACK(src, PROC_REF(allow_thrust), 0.01)
 	configure_jetpack(stabilize)
 
 /obj/item/tank/jetpack/Destroy()
+	procstart = null
+	src.procstart = null
 	thrust_callback = null
 	return ..()
 
@@ -40,6 +44,8 @@
  * stabilize - Should this jetpack be stabalized
  */
 /obj/item/tank/jetpack/proc/configure_jetpack(stabilize, mob/user = null)
+	procstart = null
+	src.procstart = null
 	src.stabilize = stabilize
 
 	AddComponent( \
@@ -61,21 +67,29 @@
 			REMOVE_TRAIT(user, TRAIT_NOGRAV_ALWAYS_DRIFT, JETPACK_TRAIT)
 
 /obj/item/tank/jetpack/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(on && !(slot & slot_flags))
 		turn_off(user)
 
 /obj/item/tank/jetpack/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(on)
 		turn_off(user)
 
 /obj/item/tank/jetpack/populate_gas()
+	procstart = null
+	src.procstart = null
 	if(gas_type)
 		var/datum/gas_mixture/our_mix = return_air()
 		our_mix.set_gas(gas_type,  ((6 * ONE_ATMOSPHERE) * volume / (R_IDEAL_GAS_EQUATION * T20C)))
 
 /obj/item/tank/jetpack/ui_action_click(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(istype(action, /datum/action/item_action/toggle_jetpack))
 		cycle(user)
 	else if(istype(action, /datum/action/item_action/jetpack_stabilization))
@@ -86,6 +100,8 @@
 		toggle_internals(user)
 
 /obj/item/tank/jetpack/proc/cycle(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated)
 		return
 
@@ -102,10 +118,14 @@
 	update_item_action_buttons()
 
 /obj/item/tank/jetpack/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[initial(icon_state)][on ? "-on" : ""]"
 
 /obj/item/tank/jetpack/proc/turn_on(mob/user)
+	procstart = null
+	src.procstart = null
 	if(disabled)
 		return FALSE
 	if(SEND_SIGNAL(src, COMSIG_JETPACK_ACTIVATED, user) & JETPACK_ACTIVATION_FAILED)
@@ -119,6 +139,8 @@
 	return TRUE
 
 /obj/item/tank/jetpack/proc/turn_off(mob/user)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_JETPACK_DEACTIVATED, user)
 	on = FALSE
 	update_icon(UPDATE_ICON_STATE)
@@ -127,6 +149,8 @@
 		REMOVE_TRAIT(user, TRAIT_NOGRAV_ALWAYS_DRIFT, JETPACK_TRAIT)
 
 /obj/item/tank/jetpack/proc/allow_thrust(num, use_fuel = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!ismob(loc))
 		return FALSE
 	var/mob/user = loc
@@ -149,6 +173,8 @@
 	return TRUE
 
 /obj/item/tank/jetpack/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (!ishuman(user))
 		return
 	var/mob/living/carbon/human/suffocater = user
@@ -157,6 +183,8 @@
 	return OXYLOSS
 
 /obj/item/tank/jetpack/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_CONTENTS)
 		return
@@ -171,6 +199,8 @@
 
 ///Removes the disabled flag after getting EMPd
 /obj/item/tank/jetpack/proc/remove_emp()
+	procstart = null
+	src.procstart = null
 	disabled = FALSE
 
 /obj/item/tank/jetpack/improvised
@@ -187,6 +217,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5.8, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 3)
 
 /obj/item/tank/jetpack/improvised/allow_thrust(num)
+	procstart = null
+	src.procstart = null
 	if(!ismob(loc))
 		return FALSE
 

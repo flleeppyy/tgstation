@@ -11,6 +11,8 @@
 	max_charges = 10
 
 /obj/item/gun/magic/wand/animate/zap_self(mob/living/user, suicide = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(user, span_warning("You animate one of your own possessions!"))
 	charges--
@@ -24,6 +26,8 @@
 	some_item.animate_atom_living(user)
 
 /obj/item/gun/magic/wand/animate/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	charges--
 	if (!iscarbon(user))
 		user.visible_message(span_suicide("... but [user] is already animate!"))
@@ -50,6 +54,8 @@
 	return MANUAL_SUICIDE
 
 /obj/item/gun/magic/wand/animate/animate_atom_living(mob/living/owner)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/mimic/copy/ranged/living_wand = new(drop_location(), src, owner, FALSE, TRUE) // It's already got eyes
 	QDEL_NULL(living_wand.ai_controller)
 	living_wand.ai_controller = new /datum/ai_controller/basic_controller/mimic_copy/gun/animator(living_wand)

@@ -7,6 +7,8 @@
 	custom_materials = null
 
 /obj/item/ammo_casing/syringegun/ready_proj(atom/target, mob/living/user, quiet, zone_override = "")
+	procstart = null
+	src.procstart = null
 	if(!loaded_projectile)
 		return
 
@@ -43,6 +45,8 @@
 	return ..()
 
 /obj/item/ammo_casing/syringegun/proc/insert_syringe(obj/item/reagent_containers/syringe/syringe)
+	procstart = null
+	src.procstart = null
 	var/obj/projectile/bullet/dart/syringe/dart = loaded_projectile
 	dart.set_embed(syringe.get_embed()?.create_copy())
 	dart.get_embed().embed_chance = 100 // Don't want to fail the shot here
@@ -56,6 +60,8 @@
 	firing_effect_type = null
 
 /obj/item/ammo_casing/chemgun/ready_proj(atom/target, mob/living/user, quiet, zone_override = "")
+	procstart = null
+	src.procstart = null
 	if(!loaded_projectile)
 		return
 	if(istype(loc, /obj/item/gun/chem))
@@ -74,6 +80,8 @@
 	firing_effect_type = null
 
 /obj/item/ammo_casing/dnainjector/ready_proj(atom/target, mob/living/user, quiet, zone_override = "")
+	procstart = null
+	src.procstart = null
 	if(!loaded_projectile)
 		return
 	if(istype(loc, /obj/item/gun/syringe/dna))

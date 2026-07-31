@@ -104,6 +104,8 @@
 	var/datum/changeling_profile/current_profile
 
 /datum/antagonist/changeling/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	hive_name = hive_name()
 	for(var/datum/antagonist/changeling/other_ling in GLOB.antagonists)
@@ -113,12 +115,16 @@
 		break
 
 /datum/antagonist/changeling/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(emporium_action)
 	QDEL_NULL(cellular_emporium)
 	current_profile = null
 	return ..()
 
 /datum/antagonist/changeling/on_gain()
+	procstart = null
+	src.procstart = null
 	generate_name()
 	create_emporium()
 	create_innate_actions()
@@ -129,6 +135,8 @@
 	return ..()
 
 /datum/antagonist/changeling/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/mob_to_tweak = mob_override || owner.current
 	if(!isliving(mob_to_tweak))
 		return
@@ -151,6 +159,8 @@
 	make_brain_decoy(living_mob)
 
 /datum/antagonist/changeling/proc/make_brain_decoy(mob/living/ling)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/our_ling_brain = ling.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(isnull(our_ling_brain) || our_ling_brain.decoy_override)
 		return
@@ -160,6 +170,8 @@
 	our_ling_brain.AddComponent(/datum/component/ling_decoy_brain, src)
 
 /datum/antagonist/changeling/proc/generate_name()
+	procstart = null
+	src.procstart = null
 	var/honorific
 	if(owner.current.gender == FEMALE)
 		honorific = "Ms."
@@ -176,6 +188,8 @@
 		changelingID = "[honorific] [rand(1,999)]"
 
 /datum/antagonist/changeling/proc/on_hud_created(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/hud/ling_hud = owner.current.hud_used
@@ -183,6 +197,8 @@
 	ling_hud.add_screen_object(/atom/movable/screen/ling/sting, HUD_CHANGELING_STING, HUD_GROUP_INFO, update_screen = TRUE)
 
 /datum/antagonist/changeling/proc/new_brain(mob/living/carbon/ling, obj/item/organ/new_brain)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(new_brain, /obj/item/organ/brain))
@@ -190,6 +206,8 @@
 	make_brain_decoy(ling)
 
 /datum/antagonist/changeling/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_mob = mob_override || owner.current
 	handle_clown_mutation(living_mob, removing = FALSE)
 	UnregisterSignal(living_mob, list(
@@ -217,10 +235,14 @@
 	// The old body's brain still remains a decoy, I guess?
 
 /datum/antagonist/changeling/on_removal()
+	procstart = null
+	src.procstart = null
 	remove_changeling_powers(include_innate = TRUE)
 	return ..()
 
 /datum/antagonist/changeling/farewell()
+	procstart = null
+	src.procstart = null
 	if(owner.current)
 		to_chat(owner.current, span_userdanger("You grow weak and lose your powers! You are no longer a changeling and are stuck in your current form!"))
 
@@ -228,6 +250,8 @@
  * Instantiate the cellular emporium for the changeling.
  */
 /datum/antagonist/changeling/proc/create_emporium()
+	procstart = null
+	src.procstart = null
 	cellular_emporium = new(src)
 	emporium_action = new(cellular_emporium)
 	emporium_action.Grant(owner.current)
@@ -237,6 +261,8 @@
  * Any Changeling action with dna_cost = CHANGELING_POWER_INNATE will be added here automatically
  */
 /datum/antagonist/changeling/proc/create_innate_actions()
+	procstart = null
+	src.procstart = null
 	for(var/datum/action/changeling/path as anything in all_powers)
 		if(initial(path.dna_cost) != CHANGELING_POWER_INNATE)
 			continue
@@ -250,6 +276,8 @@
  * Gives us back our action buttons if we lose them on log-in.
  */
 /datum/antagonist/changeling/proc/on_login(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(source))
@@ -265,6 +293,8 @@
  * Handles regenerating chemicals on life ticks.
  */
 /datum/antagonist/changeling/proc/on_life(datum/source, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/delta_time = DELTA_WORLD_TIME(SSmobs)
@@ -285,6 +315,8 @@
  * Signal proc for [COMSIG_LIVING_POST_FULLY_HEAL]
  */
 /datum/antagonist/changeling/proc/on_fullhealed(mob/living/source, heal_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Aheal restores all chemicals
@@ -299,6 +331,8 @@
  * Allows the changeling to sting people with a click.
  */
 /datum/antagonist/changeling/proc/on_click_sting(mob/living/ling, atom/clicked)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// nothing to handle
@@ -321,6 +355,8 @@
  * and clamp it between 0 and override_cap (if supplied) or total_chem_storage (if no override supplied)
  */
 /datum/antagonist/changeling/proc/adjust_chemicals(amount, override_cap)
+	procstart = null
+	src.procstart = null
 	if(!isnum(amount))
 		return
 	var/cap_to = isnum(override_cap) ? override_cap : total_chem_storage
@@ -329,6 +365,8 @@
 
 ///Updates the Changeling's chemical HUD to display the information we want it to (chem charges, or max if hovered over).
 /datum/antagonist/changeling/proc/update_chemical_hud(amount)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/screen/ling/chems/chems = owner.current?.hud_used?.screen_objects[HUD_CHANGELING_CHEMS]
 	if(isnull(chems))
 		return
@@ -343,6 +381,8 @@
  * if [include_innate] = TRUE, will also remove all powers from the Changeling's innate_powers list.
  */
 /datum/antagonist/changeling/proc/remove_changeling_powers(include_innate = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!isliving(owner.current))
 		return
 
@@ -362,6 +402,8 @@
  * For resetting all of the changeling's action buttons. (IE, re-granting them all.)
  */
 /datum/antagonist/changeling/proc/regain_powers()
+	procstart = null
+	src.procstart = null
 	emporium_action.Grant(owner.current)
 	for(var/datum/action/changeling/power as anything in innate_powers)
 		power.on_purchase(owner.current)
@@ -377,6 +419,8 @@
  * [sting_path] - the power that's being purchased / evolved.
  */
 /datum/antagonist/changeling/proc/purchase_power(datum/action/changeling/sting_path)
+	procstart = null
+	src.procstart = null
 	if(!ispath(sting_path, /datum/action/changeling))
 		CRASH("Changeling purchase_power attempted to purchase an invalid typepath! (got: [sting_path])")
 
@@ -421,6 +465,8 @@
  */
 
 /datum/antagonist/changeling/proc/give_power(power_path)
+	procstart = null
+	src.procstart = null
 	var/datum/action/changeling/new_action = new power_path()
 
 	if(!new_action)
@@ -438,6 +484,8 @@
  * Changeling's ability to re-adapt all of their learned powers.
  */
 /datum/antagonist/changeling/proc/readapt()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(owner.current) || ismonkey(owner.current))
 		to_chat(owner.current, span_warning("We can't remove our evolutions in this form!"))
 		return FALSE
@@ -461,6 +509,8 @@
  * Get the corresponding changeling profile for the passed name.
  */
 /datum/antagonist/changeling/proc/get_dna(searched_dna_name)
+	procstart = null
+	src.procstart = null
 	for(var/datum/changeling_profile/found_profile as anything in stored_profiles)
 		if(searched_dna_name == found_profile.name)
 			return found_profile
@@ -469,6 +519,8 @@
  * Checks if we have a changeling profile with the passed DNA.
  */
 /datum/antagonist/changeling/proc/has_profile_with_dna(datum/dna/searched_dna)
+	procstart = null
+	src.procstart = null
 	for(var/datum/changeling_profile/found_profile as anything in stored_profiles)
 		if(searched_dna.is_same_as(found_profile.dna))
 			return TRUE
@@ -479,6 +531,8 @@
  * if [verbose] = TRUE, give feedback as to why they cannot absorb the DNA.
  */
 /datum/antagonist/changeling/proc/can_absorb_dna(mob/living/carbon/human/target, verbose = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return FALSE
 	if(!iscarbon(owner.current))
@@ -527,6 +581,8 @@
  * protect - if TRUE, set the new profile to protected, preventing it from being removed (without force).
  */
 /datum/antagonist/changeling/proc/create_profile(mob/living/carbon/human/target, protect = 0)
+	procstart = null
+	src.procstart = null
 	var/datum/changeling_profile/new_profile = new()
 
 	target.dna.real_name = target.real_name //Set this again, just to be sure that it's properly set.
@@ -599,6 +655,8 @@
  * new_profile - the profile being added.
  */
 /datum/antagonist/changeling/proc/add_profile(datum/changeling_profile/new_profile)
+	procstart = null
+	src.procstart = null
 	if(stored_profiles.len > dna_max)
 		if(!push_out_profile())
 			return
@@ -618,6 +676,8 @@
  * protect - if TRUE, mark the new profile as protected. If protected, it cannot be removed / popped from the profile list (without force).
  */
 /datum/antagonist/changeling/proc/add_new_profile(mob/living/carbon/human/profile_target, protect = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/changeling_profile/new_profile = create_profile(profile_target, protect)
 	add_profile(new_profile)
 	return new_profile
@@ -629,6 +689,8 @@
  * force - if TRUE, removes the profile even if it's protected.
  */
 /datum/antagonist/changeling/proc/remove_profile(mob/living/carbon/human/profile_target, force = FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/datum/changeling_profile/found_profile as anything in stored_profiles)
 		if(profile_target.real_name == found_profile.name)
 			if(found_profile.protected && !force)
@@ -643,6 +705,8 @@
  * Returns TRUE if a profile was removed, FALSE otherwise.
  */
 /datum/antagonist/changeling/proc/push_out_profile()
+	procstart = null
+	src.procstart = null
 	var/datum/changeling_profile/profle_to_remove
 	for(var/datum/changeling_profile/found_profile as anything in stored_profiles)
 		if(!found_profile.protected)
@@ -658,12 +722,16 @@
  * Create a profile based on the changeling's initial appearance.
  */
 /datum/antagonist/changeling/proc/create_initial_profile()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(owner.current))
 		return
 
 	add_new_profile(owner.current)
 
 /datum/antagonist/changeling/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/escape_objective_possible = TRUE
 
 	switch(competitive_objectives ? rand(1,3) : 1)
@@ -731,6 +799,8 @@
 		escape_objective_possible = FALSE
 
 /datum/antagonist/changeling/get_admin_commands()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stored_profiles.len && (owner.current.real_name != first_profile.name))
 		.["Transform to initial appearance."] = CALLBACK(src, PROC_REF(admin_restore_appearance))
@@ -739,6 +809,8 @@
  * Restores the appearance of the changeling to the original DNA.
  */
 /datum/antagonist/changeling/proc/admin_restore_appearance(mob/admin)
+	procstart = null
+	src.procstart = null
 	if(!stored_profiles.len || !iscarbon(owner.current))
 		to_chat(admin, span_danger("Resetting DNA failed!"))
 		return
@@ -753,6 +825,8 @@
  * Transform the currentc hangeing [user] into the [chosen_profile].
  */
 /datum/antagonist/changeling/proc/transform(mob/living/carbon/human/user, datum/changeling_profile/chosen_profile)
+	procstart = null
+	src.procstart = null
 	var/static/list/slot2slot = list(
 		"head" = ITEM_SLOT_HEAD,
 		"wear_mask" = ITEM_SLOT_MASK,
@@ -933,6 +1007,8 @@
 	var/voice_filter = ""
 
 /datum/changeling_profile/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(dna)
 	LAZYCLEARLIST(stored_scars)
 	QDEL_LAZYLIST(quirks)
@@ -943,6 +1019,8 @@
  * Must be suppied with an instance.
  */
 /datum/changeling_profile/proc/copy_profile(datum/changeling_profile/new_profile)
+	procstart = null
+	src.procstart = null
 	new_profile.name = name
 	new_profile.protected = protected
 	new_profile.dna = new dna.type()
@@ -972,6 +1050,8 @@
 	new_profile.voice_filter = voice_filter
 
 /datum/antagonist/changeling/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 
 	var/changeling_win = TRUE
@@ -997,6 +1077,8 @@
 	return parts.Join("<br>")
 
 /datum/antagonist/changeling/get_preview_icon()
+	procstart = null
+	src.procstart = null
 	var/datum/universal_icon/final_icon = render_preview_outfit(/datum/outfit/changeling)
 	var/datum/universal_icon/split_icon = render_preview_outfit(/datum/outfit/job/engineer)
 
@@ -1011,6 +1093,8 @@
 	return finish_preview_icon(final_icon)
 
 /datum/antagonist/changeling/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/memories = list()
 
@@ -1038,6 +1122,8 @@
 	total_chem_storage = 50
 
 /datum/antagonist/changeling/headslug/greet()
+	procstart = null
+	src.procstart = null
 	play_stinger()
 	to_chat(owner, span_bolddanger("You are a fresh changeling birthed from a headslug! \
 		You aren't as strong as a normal changeling, as you are newly born."))
@@ -1047,10 +1133,14 @@
 	name = "\improper Space Changeling"
 
 /datum/antagonist/changeling/space/get_preview_icon()
+	procstart = null
+	src.procstart = null
 	var/datum/universal_icon/final_icon = render_preview_outfit(/datum/outfit/changeling_space)
 	return finish_preview_icon(final_icon)
 
 /datum/antagonist/changeling/space/greet()
+	procstart = null
+	src.procstart = null
 	play_stinger()
 	to_chat(src, span_changeling("Our mind stirs to life, from the depths of an endless slumber..."))
 

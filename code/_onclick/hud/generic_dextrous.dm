@@ -6,6 +6,8 @@
 
 //Used for normal mobs that have hands.
 /datum/hud/dextrous/initialize_screen_objects()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/movable/screen/using
 	add_screen_object(/atom/movable/screen/drop, HUD_MOB_DROP, HUD_GROUP_STATIC, ui_style, ui_swaphand_position(mymob, 1))

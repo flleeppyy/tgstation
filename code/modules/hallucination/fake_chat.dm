@@ -9,12 +9,16 @@
 	var/specific_message
 
 /datum/hallucination/chat/New(mob/living/hallucinator, force_radio = FALSE, specific_message)
+	procstart = null
+	src.procstart = null
 	src.force_radio = force_radio
 	src.specific_message = specific_message
 	return ..()
 
 /// When passed a mob, returns a list of languages that mob could theoretically speak IF a blank slate.
 /datum/hallucination/chat/proc/get_hallucinating_spoken_languages(atom/movable/who)
+	procstart = null
+	src.procstart = null
 	var/override_typepath
 	if(iscarbon(who))
 		var/mob/living/carbon/human_who = who
@@ -24,6 +28,8 @@
 	return what_they_speak?.spoken_languages?.Copy() || list()
 
 /datum/hallucination/chat/start()
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS(hallucinator))
 		return FALSE
 

@@ -22,6 +22,8 @@
 	immunity_proof = TRUE
 
 /datum/symptom/youth/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

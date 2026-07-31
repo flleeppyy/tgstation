@@ -18,6 +18,8 @@
 	acid = 100
 
 /obj/item/disk/nuclear/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/bed_tuckable, mapload, 6, -6, 0)
 
@@ -31,9 +33,13 @@
 		AddComponent(/datum/component/keep_me_secure)
 
 /obj/item/disk/nuclear/setup_reskins()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/disk/nuclear/proc/secured_process(last_move)
+	procstart = null
+	src.procstart = null
 	var/turf/new_turf = get_turf(src)
 	var/datum/round_event_control/operative/loneop = locate(/datum/round_event_control/operative) in SSevents.control
 	if(istype(loneop) && loneop.occurrences < loneop.max_occurrences && prob(loneop.weight))
@@ -43,6 +49,8 @@
 		log_game("[src] being secured has reduced the weight of the Lone Operative event to [loneop.weight].")
 
 /obj/item/disk/nuclear/proc/unsecured_process(last_move)
+	procstart = null
+	src.procstart = null
 	var/turf/new_turf = get_turf(src)
 	/// How comfy is our disk?
 	var/disk_comfort_level = 0
@@ -63,6 +71,8 @@
 			log_game("[src] was left unsecured in [loc_name(new_turf)]. Weight of the Lone Operative event increased to [loneop.weight].")
 
 /obj/item/disk/nuclear/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!fake)
 		return
@@ -74,12 +84,16 @@
  * You can't accidentally eat the nuke disk, bro
  */
 /obj/item/disk/nuclear/on_accidental_consumption(mob/living/carbon/M, mob/living/carbon/user, obj/item/source_item, discover_after = TRUE)
+	procstart = null
+	src.procstart = null
 	M.visible_message(span_warning("[M] looks like [M.p_theyve()] just bitten into something important."), \
 						span_warning("Wait, is this the nuke disk?"))
 
 	return discover_after
 
 /obj/item/disk/nuclear/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/claymore/highlander) || fake)
 		return ..()
 
@@ -99,6 +113,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/disk/nuclear/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is going delta! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(src, 'sound/announcer/alarm/nuke_alarm.ogg', 50, -1, TRUE)
 	for(var/i in 1 to 100)
@@ -107,6 +123,8 @@
 	return MANUAL_SUICIDE
 
 /obj/item/disk/nuclear/proc/manual_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.remove_atom_colour(ADMIN_COLOUR_PRIORITY)
 	user.visible_message(span_suicide("[user] is destroyed by the nuclear blast!"))
 	user.adjust_oxy_loss(200)

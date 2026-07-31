@@ -9,4 +9,6 @@
 	merge_type = /obj/item/stack/ammonia_crystals
 
 /obj/item/stack/ammonia_crystals/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/ammonia = 10)

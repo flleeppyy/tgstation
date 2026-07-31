@@ -21,6 +21,8 @@
 	var/datum/armor/given_armor = /datum/armor/roach_internal_armor
 
 /datum/status_effect/organ_set_bonus/roach/enable_bonus(obj/item/organ/inserted_organ)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(owner))
 		return
@@ -29,6 +31,8 @@
 	human_owner.physiology.armor = human_owner.physiology.armor.add_other_armor(given_armor)
 
 /datum/status_effect/organ_set_bonus/roach/disable_bonus(obj/item/organ/removed_organ)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(owner) || QDELETED(owner))
 		return
@@ -56,6 +60,8 @@
 	COOLDOWN_DECLARE(harden_effect_cd)
 
 /obj/item/organ/heart/roach/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_They %PRONOUN_have hardened, somewhat translucent skin.")
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/roach)
@@ -63,10 +69,14 @@
 	roach_shell = new()
 
 /obj/item/organ/heart/roach/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(roach_shell)
 	return ..()
 
 /obj/item/organ/heart/roach/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(organ_owner))
 		return
@@ -78,10 +88,14 @@
 	human_owner.physiology.knockdown_mod *= 3
 
 /obj/item/organ/heart/roach/on_bodypart_insert(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	limb.add_bodypart_overlay(roach_shell)
 
 /obj/item/organ/heart/roach/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(organ_owner) || QDELETED(organ_owner))
 		return
@@ -92,6 +106,8 @@
 	human_owner.physiology.knockdown_mod /= 3
 
 /obj/item/organ/heart/roach/on_bodypart_remove(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	limb.remove_bodypart_overlay(roach_shell)
@@ -102,6 +118,8 @@
  * Adds a 0.5 modifier to attacks from the back
  */
 /obj/item/organ/heart/roach/proc/modify_damage(mob/living/carbon/human/source, list/damage_mods, damage_amount, damagetype, def_zone, sharpness, attack_direction, obj/item/attacking_item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!is_blocking(source, damage_amount, damagetype, attack_direction))
@@ -115,6 +133,8 @@
  * Does a special effect if we blocked damage with our back
  */
 /obj/item/organ/heart/roach/proc/do_block_effect(mob/living/carbon/human/source, damage_dealt, damagetype, def_zone, blocked, wound_bonus, exposed_wound_bonus, sharpness, attack_direction, obj/item/attacking_item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!is_blocking(source, damage_dealt, damagetype, attack_direction))
@@ -128,6 +148,8 @@
 
 /// Checks if the passed mob is in a valid state to be blocking damage with the roach shell
 /obj/item/organ/heart/roach/proc/is_blocking(mob/living/carbon/human/blocker, damage_amount, damagetype, attack_direction)
+	procstart = null
+	src.procstart = null
 	if(damage_amount < 5 || damagetype != BRUTE || !attack_direction)
 		return
 	if(!ishuman(blocker) || IS_UNCONSCIOUS(blocker))
@@ -150,6 +172,8 @@
 	offset_location = ENTIRE_BODY
 
 /datum/bodypart_overlay/simple/roach_shell/get_image(obj/item/bodypart/limb, layer_index, layer_real)
+	procstart = null
+	src.procstart = null
 	return image(
 		icon = icon,
 		icon_state = "[icon_state]_[layer_index]",
@@ -174,6 +198,8 @@
 	greyscale_colors = ROACH_COLORS
 
 /obj/item/organ/stomach/roach/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/roach)
 
@@ -193,10 +219,14 @@
 	greyscale_colors = ROACH_COLORS
 
 /obj/item/organ/liver/roach/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/roach)
 
 /obj/item/organ/liver/roach/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(organ_owner))
 		return
@@ -205,6 +235,8 @@
 	human_owner.physiology.tox_mod *= 2
 
 /obj/item/organ/liver/roach/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(organ_owner) || QDELETED(organ_owner))
 		return
@@ -226,10 +258,14 @@
 	greyscale_colors = ROACH_COLORS
 
 /obj/item/organ/appendix/roach/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/roach)
 
 /obj/item/organ/appendix/roach/become_inflamed()
+	procstart = null
+	src.procstart = null
 	return
 
 #undef ROACH_ORGAN_COLOR

@@ -4,6 +4,8 @@
 	hallucination_tier = HALLUCINATION_TIER_RARE
 
 /datum/hallucination/xeno_attack/start()
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS(hallucinator))
 		return FALSE
 
@@ -25,6 +27,8 @@
 
 /// Leaps from the vent to the hallucinator.
 /datum/hallucination/xeno_attack/proc/leap_at_target(obj/effect/client_image_holder/hallucination/xeno/fake_xeno, turf/attack_source)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	if(QDELETED(fake_xeno))
@@ -37,6 +41,8 @@
 
 /// Leaps from the hallucinator back to the vent.
 /datum/hallucination/xeno_attack/proc/leap_back_to_pump(obj/effect/client_image_holder/hallucination/xeno/fake_xeno, turf/attack_source)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	if(QDELETED(fake_xeno) || !attack_source)
@@ -49,6 +55,8 @@
 
 /// Mimics ventcrawling into the vent.
 /datum/hallucination/xeno_attack/proc/begin_crawling(obj/effect/client_image_holder/hallucination/xeno/fake_xeno)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	if(QDELETED(fake_xeno))
@@ -60,6 +68,8 @@
 
 /// Disappears into the vent, ending the hallucination.
 /datum/hallucination/xeno_attack/proc/disappear(obj/effect/client_image_holder/hallucination/xeno/fake_xeno)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	if(!QDELETED(fake_xeno))
@@ -73,11 +83,15 @@
 	image_state = "alienh_pounce"
 
 /obj/effect/client_image_holder/hallucination/xeno/Initialize(mapload, list/mobs_which_see_us, datum/hallucination/parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "alien hunter ([rand(1, 1000)])"
 
 // The hallucination "throws" us at the hallucinator, so whenever we impact, we're actually landing a "leap".
 /obj/effect/client_image_holder/hallucination/xeno/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	set_unleaping()
 	if(!isliving(hit_atom))
 		return
@@ -92,6 +106,8 @@
 
 /// Sets our icon to look like we're leaping.
 /obj/effect/client_image_holder/hallucination/xeno/proc/set_leaping()
+	procstart = null
+	src.procstart = null
 	image_icon = 'icons/mob/nonhuman-player/alienleap.dmi'
 	image_state = "alienh_leap"
 	image_pixel_x = -32
@@ -100,6 +116,8 @@
 
 /// Resets our icon to our initial state.
 /obj/effect/client_image_holder/hallucination/xeno/proc/set_unleaping()
+	procstart = null
+	src.procstart = null
 	image_icon = initial(image_icon)
 	image_state = initial(image_state)
 	image_pixel_x = initial(image_pixel_x)

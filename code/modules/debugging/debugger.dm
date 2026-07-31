@@ -14,6 +14,8 @@ GLOBAL_REAL(Debugger, /datum/debugger)
 	VAR_FINAL/dll_path
 
 /datum/debugger/New(dll_path)
+	procstart = null
+	src.procstart = null
 	if(!isnull(Debugger))
 		CRASH("Attempted to initialize /datum/debugger when global.Debugger is already set!")
 	Debugger = src
@@ -23,6 +25,8 @@ GLOBAL_REAL(Debugger, /datum/debugger)
 #endif
 
 /datum/debugger/Destroy()
+	procstart = null
+	src.procstart = null
 #ifndef OPENDREAM_REAL
 	if(enabled)
 		call_ext(dll_path, "auxtools_shutdown")()
@@ -31,6 +35,8 @@ GLOBAL_REAL(Debugger, /datum/debugger)
 
 /// Attempt to enable the debugger.
 /datum/debugger/proc/enable()
+	procstart = null
+	src.procstart = null
 #ifndef OPENDREAM_REAL
 	if(enabled)
 		CRASH("Attempted to enable debugger while its already enabled, somehow.")
@@ -48,7 +54,11 @@ GLOBAL_REAL(Debugger, /datum/debugger)
 #endif
 
 /datum/debugger/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	return FALSE // no.
 
 /datum/debugger/CanProcCall(procname)
+	procstart = null
+	src.procstart = null
 	return FALSE // double no.

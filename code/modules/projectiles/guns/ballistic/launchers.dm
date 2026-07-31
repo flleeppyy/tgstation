@@ -22,6 +22,8 @@
 	spawn_magazine_type = /obj/item/ammo_box/magazine/internal/grenadelauncher/tear
 
 /obj/item/gun/ballistic/revolver/grenadelauncher/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((. = ITEM_INTERACT_SUCCESS) && (istype(tool, /obj/item/ammo_box) || isammocasing(tool)))
 		chamber_round()
@@ -32,6 +34,8 @@
 	pin = null
 
 /obj/item/gun/ballistic/revolver/grenadelauncher/underbarrel/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/gun/gun = loc
 	if (!istype(gun))
@@ -41,10 +45,14 @@
 	RegisterSignal(gun, COMSIG_GUN_PIN_REMOVED, PROC_REF(on_pin_removed))
 
 /obj/item/gun/ballistic/revolver/grenadelauncher/underbarrel/proc/on_pin_inserted(obj/item/gun/source, obj/item/firing_pin/new_pin, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	pin = new_pin
 
 /obj/item/gun/ballistic/revolver/grenadelauncher/underbarrel/proc/on_pin_removed(obj/item/gun/source, obj/item/firing_pin/old_pin, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	pin = null
 
@@ -57,6 +65,8 @@
 	pin = /obj/item/firing_pin
 
 /obj/item/gun/ballistic/revolver/grenadelauncher/cyborg/attack_self()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/ballistic/automatic/gyropistol
@@ -101,6 +111,8 @@
 	var/backblast = TRUE
 
 /obj/item/gun/ballistic/rocketlauncher/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(backblast)
 		AddElement(/datum/element/backblast)
@@ -119,20 +131,28 @@
 	backblast = FALSE
 
 /obj/item/gun/ballistic/rocketlauncher/try_fire_gun(atom/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	magazine.get_round() //Hack to clear the mag after it's fired
 
 /obj/item/gun/ballistic/rocketlauncher/attack_self_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	return //too difficult to remove the rocket with TK
 
 /obj/item/gun/ballistic/rocketlauncher/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(get_ammo())
 		. += "rocketlauncher_loaded"
 
 /obj/item/gun/ballistic/rocketlauncher/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_warning("[user] aims [src] at the ground! It looks like [user.p_theyre()] performing a sick rocket jump!"), \
 		span_userdanger("You aim [src] at the ground to perform a bisnasty rocket jump..."))
 	if(can_shoot())

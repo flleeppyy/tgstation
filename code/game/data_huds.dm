@@ -8,10 +8,14 @@
 /* DATA HUD DATUMS */
 
 /atom/proc/add_to_all_human_data_huds()
+	procstart = null
+	src.procstart = null
 	for(var/hud_key, hud_type in GLOB.huds)
 		astype(hud_type, /datum/atom_hud/data/human)?.add_atom_to_hud(src)
 
 /atom/proc/remove_from_all_data_huds()
+	procstart = null
+	src.procstart = null
 	for(var/hud_key, hud_type in GLOB.huds)
 		astype(hud_type, /datum/atom_hud/data)?.remove_atom_from_hud(src)
 
@@ -24,6 +28,8 @@
 /datum/atom_hud/data/human/medical/basic
 
 /datum/atom_hud/data/human/medical/basic/add_atom_to_single_mob_hud(mob/requesting_mob, atom/hud_atom)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(hud_atom, TRAIT_BASIC_HEALTH_HUD_VISIBLE))
 		return ..()
 
@@ -59,6 +65,8 @@
 	hud_icons = list(AI_DETECT_HUD)
 
 /datum/atom_hud/ai_detector/show_to(mob/new_viewer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!new_viewer || hud_users_all_z_levels.len != 1)
 		return
@@ -85,6 +93,8 @@ Medical HUD! Basic mode needs suit sensors on.
 
 //called when a carbon changes virus
 /mob/living/carbon/proc/check_virus()
+	procstart = null
+	src.procstart = null
 	var/threat
 	var/severity
 	if(HAS_TRAIT(src, TRAIT_DISEASELIKE_SEVERITY_MEDIUM))
@@ -105,6 +115,8 @@ Medical HUD! Basic mode needs suit sensors on.
 
 //helper for getting the appropriate health status
 /proc/RoundHealth(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(IS_DEAD_OR_FAKING(M))
 		return "health-100" //what's our health? it doesn't matter, we're dead, or faking
 	var/maxi_health = M.maxHealth
@@ -155,6 +167,8 @@ Medical HUD! Basic mode needs suit sensors on.
 
 /// A helper for getting the appropriate icon state for the blood hud.
 /proc/round_blood_for_hud(mob/living/bloodbag)
+	procstart = null
+	src.procstart = null
 	var/blood_level = (bloodbag.get_blood_volume(apply_modifiers = TRUE) / BLOOD_VOLUME_NORMAL) * 100
 	switch(blood_level)
 		if(87.5 to INFINITY)
@@ -172,11 +186,15 @@ Medical HUD! Basic mode needs suit sensors on.
 
 //called when a living mob changes health
 /mob/living/proc/med_hud_set_health()
+	procstart = null
+	src.procstart = null
 	set_hud_image_state(HEALTH_HUD, "hud[RoundHealth(src)]")
 
 // Called when a carbon changes stat, virus or XENO_HOST
 // Returns TRUE if the mob is considered "perfectly healthy", FALSE otherwise
 /mob/living/proc/med_hud_set_status()
+	procstart = null
+	src.procstart = null
 	if(IS_DEAD_OR_FAKING(src))
 		set_hud_image_state(STATUS_HUD, "huddead")
 		return FALSE
@@ -185,6 +203,8 @@ Medical HUD! Basic mode needs suit sensors on.
 	return TRUE
 
 /mob/living/carbon/med_hud_set_status()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_XENO_HOST))
 		set_hud_image_state(STATUS_HUD, "hudxeno")
 		return FALSE
@@ -223,6 +243,8 @@ Medical HUD! Basic mode needs suit sensors on.
 	return FALSE
 
 /mob/living/carbon/human/med_hud_set_status()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -239,6 +261,8 @@ FAN HUDs! For identifying other fans on-sight.
 //HOOKS
 
 /mob/living/carbon/human/proc/fan_hud_set_fandom()
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/under/undershirt = w_uniform
 	if(!istype(undershirt))
 		set_hud_image_inactive(FAN_HUD)
@@ -263,6 +287,8 @@ Security HUDs! Basic mode shows only the job.
 //HOOKS
 
 /mob/living/carbon/human/proc/update_ID_card()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/sechud_icon_state = wear_id?.get_sechud_job_icon_state()
@@ -273,6 +299,8 @@ Security HUDs! Basic mode shows only the job.
 	update_visible_name()
 
 /mob/living/proc/sec_hud_set_implants()
+	procstart = null
+	src.procstart = null
 	for(var/hud_type in (list(IMPSEC_FIRST_HUD, IMPLOYAL_HUD, IMPSEC_SECOND_HUD) & hud_list))
 		set_hud_image_inactive(hud_type)
 
@@ -294,6 +322,8 @@ Security HUDs! Basic mode shows only the job.
 		set_hud_image_active(IMPLOYAL_HUD)
 
 /mob/living/carbon/human/proc/sec_hud_set_security_status()
+	procstart = null
+	src.procstart = null
 	if(!hud_list)
 		// We haven't finished initializing yet, huds will be updated once we are
 		return
@@ -334,6 +364,8 @@ Security HUDs! Basic mode shows only the job.
  * Updates the visual security huds on all mobs in GLOB.human_list that match the name passed to it.
  */
 /proc/update_matching_security_huds(perp_name)
+	procstart = null
+	src.procstart = null
 	for (var/mob/living/carbon/human/h as anything in GLOB.human_list)
 		if (h.get_face_name(h.get_id_name("")) == perp_name)
 			h.sec_hud_set_security_status()
@@ -342,6 +374,8 @@ Security HUDs! Basic mode shows only the job.
  * Updates the visual security huds on all mobs in GLOB.human_list
  */
 /proc/update_all_security_huds()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/human/h as anything in GLOB.human_list)
 		h.sec_hud_set_security_status()
 
@@ -351,6 +385,8 @@ Diagnostic HUDs!
 
 //For Diag health and cell bars!
 /proc/RoundDiagBar(value)
+	procstart = null
+	src.procstart = null
 	switch(value * 100)
 		if(95 to INFINITY)
 			return "max"
@@ -369,12 +405,16 @@ Diagnostic HUDs!
 
 //Sillycone hooks
 /mob/living/silicon/proc/diag_hud_set_health()
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		set_hud_image_state(DIAG_HUD, "huddiagdead")
 	else
 		set_hud_image_state(DIAG_HUD, "huddiag[RoundDiagBar(health/maxHealth)]")
 
 /mob/living/silicon/proc/diag_hud_set_status()
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS(src))
 		set_hud_image_state(DIAG_STAT_HUD, "hudoffline")
 		return
@@ -385,6 +425,8 @@ Diagnostic HUDs!
 
 //Borgie battery tracking!
 /mob/living/silicon/robot/proc/diag_hud_set_borgcell()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(cell) || (cell.maxcharge == 0))
 		set_hud_image_state(DIAG_BATT_HUD, "hudnobatt")
 	else
@@ -392,7 +434,9 @@ Diagnostic HUDs!
 		set_hud_image_state(DIAG_BATT_HUD, "hudbatt[RoundDiagBar(chargelvl)]")
 
 //borg-AI shell tracking
-/mob/living/silicon/robot/proc/diag_hud_set_aishell() //Shows if AI is controlling a cyborg via a BORIS module
+/mob/living/silicon/robot/proc/diag_hud_set_aishell()
+	procstart = null
+	src.procstart = null //Shows if AI is controlling a cyborg via a BORIS module
 	if(!shell) //Not an AI shell
 		set_hud_image_inactive(DIAG_TRACK_HUD)
 		return
@@ -403,7 +447,9 @@ Diagnostic HUDs!
 	set_hud_image_active(DIAG_TRACK_HUD)
 
 //AI side tracking of AI shell control
-/mob/living/silicon/ai/proc/diag_hud_set_deployed() //Shows if AI is currently shunted into a BORIS borg
+/mob/living/silicon/ai/proc/diag_hud_set_deployed()
+	procstart = null
+	src.procstart = null //Shows if AI is currently shunted into a BORIS borg
 	if(!deployed_shell)
 		set_hud_image_inactive(DIAG_TRACK_HUD)
 		return
@@ -415,9 +461,13 @@ Diagnostic HUDs!
 	BIG STOMPY MECHS
 ~~~~~~~~~~~~~~~~~~~~~*/
 /obj/vehicle/sealed/mecha/proc/diag_hud_set_mechhealth()
+	procstart = null
+	src.procstart = null
 	set_hud_image_state(DIAG_MECH_HUD, "huddiag[RoundDiagBar(atom_integrity/max_integrity)]")
 
 /obj/vehicle/sealed/mecha/proc/diag_hud_set_mechcell()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(cell) || (cell.maxcharge == 0))
 		set_hud_image_state(DIAG_BATT_HUD, "hudnobatt")
 	else
@@ -425,6 +475,8 @@ Diagnostic HUDs!
 		set_hud_image_state(DIAG_BATT_HUD, "hudbatt[RoundDiagBar(chargelvl)]")
 
 /obj/vehicle/sealed/mecha/proc/diag_hud_set_mechstat()
+	procstart = null
+	src.procstart = null
 	if(!internal_damage)
 		set_hud_image_inactive(DIAG_STAT_HUD)
 		return
@@ -434,6 +486,8 @@ Diagnostic HUDs!
 
 ///Shows tracking beacons on the mech
 /obj/vehicle/sealed/mecha/proc/diag_hud_set_mechtracking()
+	procstart = null
+	src.procstart = null
 	var/new_icon_state //This var exists so that the holder's icon state is set only once in the event of multiple mech beacons.
 	for(var/obj/item/mecha_parts/mecha_tracking/tracker in trackers)
 		if(tracker.ai_beacon) //Beacon with AI uplink
@@ -445,6 +499,8 @@ Diagnostic HUDs!
 
 ///Shows inbuilt camera on the mech; if the camera's view range was affected by an EMP, shows a red blip while it's affected
 /obj/vehicle/sealed/mecha/proc/diag_hud_set_camera()
+	procstart = null
+	src.procstart = null
 	if(!chassis_camera)
 		set_hud_image_inactive(DIAG_CAMERA_HUD)
 		return
@@ -459,6 +515,8 @@ Diagnostic HUDs!
 	Airlocks!
 ~~~~~~~~~~~~~*/
 /obj/machinery/door/airlock/proc/diag_hud_set_electrified()
+	procstart = null
+	src.procstart = null
 	if(secondsElectrified == MACHINE_NOT_ELECTRIFIED)
 		set_hud_image_inactive(DIAG_AIRLOCK_HUD)
 		return
@@ -469,6 +527,8 @@ Diagnostic HUDs!
 
 /// Applies hacked overlay for malf AIs
 /obj/machinery/power/apc/proc/set_hacked_hud()
+	procstart = null
+	src.procstart = null
 	var/image/holder = hud_list[MALF_APC_HUD]
 	holder.loc = get_turf(src)
 	SET_PLANE(holder,ABOVE_LIGHTING_PLANE,src)
@@ -479,6 +539,8 @@ Diagnostic HUDs!
 ~~~~~~~~~~~~~*/
 
 /mob/living/proc/blood_hud_set_status()
+	procstart = null
+	src.procstart = null
 	if (CAN_HAVE_BLOOD(src))
 		set_hud_image_state(BLOOD_HUD, round_blood_for_hud(src))
 
@@ -486,24 +548,32 @@ Diagnostic HUDs!
 #define CACHED_HEIGHT_INDEX "height"
 
 /atom/proc/get_cached_width()
+	procstart = null
+	src.procstart = null
 	if (isnull(icon))
 		return 0
 	var/list/dimensions = get_icon_dimensions(icon)
 	return dimensions[CACHED_WIDTH_INDEX]
 
 /atom/proc/get_cached_height()
+	procstart = null
+	src.procstart = null
 	if (isnull(icon))
 		return 0
 	var/list/dimensions = get_icon_dimensions(icon)
 	return dimensions[CACHED_HEIGHT_INDEX]
 
 /image/proc/get_cached_width()
+	procstart = null
+	src.procstart = null
 	if (isnull(icon))
 		return 0
 	var/list/dimensions = get_icon_dimensions(icon)
 	return dimensions[CACHED_WIDTH_INDEX]
 
 /image/proc/get_cached_height()
+	procstart = null
+	src.procstart = null
 	if (isnull(icon))
 		return 0
 	var/list/dimensions = get_icon_dimensions(icon)
@@ -513,6 +583,8 @@ Diagnostic HUDs!
 #undef CACHED_HEIGHT_INDEX
 
 /atom/proc/get_visual_width()
+	procstart = null
+	src.procstart = null
 	var/width = get_cached_width()
 	var/height = get_cached_height()
 	var/scale_list = list(
@@ -524,6 +596,8 @@ Diagnostic HUDs!
 	return max(scale_list) - min(scale_list)
 
 /atom/proc/get_visual_height()
+	procstart = null
+	src.procstart = null
 	var/width = get_cached_width()
 	var/height = get_cached_height()
 	var/scale_list = list(
@@ -535,12 +609,18 @@ Diagnostic HUDs!
 	return max(scale_list) - min(scale_list)
 
 /atom/proc/get_hud_x_offset()
+	procstart = null
+	src.procstart = null
 	return -(get_cached_width() - ICON_SIZE_X) / 2
 
 /atom/proc/get_hud_y_offset()
+	procstart = null
+	src.procstart = null
 	return get_cached_height() - ICON_SIZE_Y
 
 /atom/proc/adjust_hud_position(image/holder, animate_time = null)
+	procstart = null
+	src.procstart = null
 	if (animate_time)
 		animate(holder, pixel_w = get_hud_x_offset(), pixel_z = get_hud_y_offset(), time = animate_time)
 		return
@@ -548,6 +628,8 @@ Diagnostic HUDs!
 	holder.pixel_z = get_hud_y_offset()
 
 /atom/proc/set_hud_image_state(hud_type, hud_state, x_offset = 0, y_offset = 0)
+	procstart = null
+	src.procstart = null
 	if (!hud_list) // Still initializing
 		return
 	var/image/holder = hud_list[hud_type]

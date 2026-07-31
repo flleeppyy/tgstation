@@ -2,6 +2,8 @@
 /datum/element/only_pull_living
 
 /datum/element/only_pull_living/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isliving(target))
@@ -10,6 +12,8 @@
 	RegisterSignal(target, COMSIG_LIVING_TRY_PULL, PROC_REF(try_pull))
 
 /datum/element/only_pull_living/proc/try_pull(mob/living/owner, atom/movable/pulled)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(pulled))

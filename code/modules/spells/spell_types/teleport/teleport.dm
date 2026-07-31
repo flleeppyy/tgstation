@@ -40,9 +40,13 @@
 	invocation_says_area = FALSE
 
 /datum/action/cooldown/spell/teleport/area_teleport/wizard/scroll/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	return ..() && owner.is_holding(target)
 
 /datum/action/cooldown/spell/teleport/area_teleport/wizard/scroll/before_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & SPELL_CANCEL_CAST)
 		return

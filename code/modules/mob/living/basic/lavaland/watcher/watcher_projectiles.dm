@@ -8,10 +8,14 @@
 	temperature = -50
 
 /obj/projectile/temp/watcher/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/parriable_projectile)
 
 /obj/projectile/temp/watcher/on_hit(mob/living/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(target))
 		return
@@ -19,6 +23,8 @@
 
 /// Apply an additional on-hit effect
 /obj/projectile/temp/watcher/proc/apply_status(mob/living/target)
+	procstart = null
+	src.procstart = null
 	target.apply_status_effect(/datum/status_effect/freezing_blast)
 
 /// Lava projectile, ignites you
@@ -29,6 +35,8 @@
 	temperature = 200
 
 /obj/projectile/temp/watcher/magma_wing/apply_status(mob/living/target)
+	procstart = null
+	src.procstart = null
 	target.adjust_fire_stacks(0.1)
 	target.ignite_mob()
 
@@ -38,6 +46,8 @@
 	damage = 5
 
 /obj/projectile/temp/watcher/ice_wing/apply_status(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(target, TRAIT_RESISTCOLD))
 		return
 	target.apply_status_effect(/datum/status_effect/freon/watcher)

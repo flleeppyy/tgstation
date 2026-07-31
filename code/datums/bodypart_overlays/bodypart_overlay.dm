@@ -24,17 +24,23 @@
 	var/offset_location = NO_MODIFY
 
 /datum/bodypart_overlay/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_layers(layers)
 
 /// Used for adding a layer at runtime
 /datum/bodypart_overlay/proc/set_layer(layer_postfix, layer_number)
+	procstart = null
+	src.procstart = null
 	var/list/existing_layers = layers.Copy()
 	existing_layers[layer_postfix] = layer_number
 	layers = string_assoc_list(existing_layers)
 
 /// Used for adding layers at runtime
 /datum/bodypart_overlay/proc/set_layers(list/layer_list)
+	procstart = null
+	src.procstart = null
 	if(!length(layer_list))
 		return
 
@@ -42,6 +48,8 @@
 
 /// Used for removing layers at runtime
 /datum/bodypart_overlay/proc/clear_layer(layer_postfix)
+	procstart = null
+	src.procstart = null
 	var/list/existing_layers = layers.Copy()
 	existing_layers -= layer_postfix
 	if(!length(existing_layers))
@@ -58,6 +66,8 @@
  * Returns a list of images/mutable appearances
  */
 /datum/bodypart_overlay/proc/get_all_overlays(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	var/list/overlays = list()
 	for(var/overlay_postfix, overlay_layer in layers)
 		overlays += get_overlay(limb, overlay_postfix, -overlay_layer)
@@ -73,6 +83,8 @@
  * Returns a list of images/mutable appearances, usually just one, but can be two if we need an emissive blocker
  */
 /datum/bodypart_overlay/proc/get_overlay(obj/item/bodypart/limb, layer_index, layer_real)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	var/image/main_image = get_image(limb, layer_index, layer_real)
 
@@ -90,6 +102,8 @@
 /// Helper to make an image look like a husk.
 /// Returns the husk-ified image, doesn't modify the original image.
 /datum/bodypart_overlay/proc/huskify_image(image/main_image, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	var/icon/husk_icon = new(main_image.icon)
 	husk_icon.ColorTone(HUSK_COLOR_TONE)
@@ -110,6 +124,8 @@
  * Returns an image/mutable appearance to draw on the mob.
  */
 /datum/bodypart_overlay/proc/get_image(obj/item/bodypart/limb, layer_index, layer_real)
+	procstart = null
+	src.procstart = null
 	CRASH("Get image needs to be overridden")
 
 /**
@@ -121,14 +137,20 @@
  * * layer_index: the index of the layer we're drawing on, used for generating the image.
  */
 /datum/bodypart_overlay/proc/color_image(image/overlay, obj/item/bodypart/limb, layer_index)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called on being added to a limb.
 /datum/bodypart_overlay/proc/added_to_limb(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called on being removed from a limb.
 /datum/bodypart_overlay/proc/removed_from_limb(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -136,6 +158,8 @@
  * Typically implemented in tandem with a sprite accessory.
  */
 /datum/bodypart_overlay/proc/set_appearance()
+	procstart = null
+	src.procstart = null
 	CRASH("Update appearance needs to be overridden")
 
 /**
@@ -149,6 +173,8 @@
  * Returns FALSE if we can't draw
  */
 /datum/bodypart_overlay/proc/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner, mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	return !bodypart_owner.is_husked || draw_on_husks != HUSK_OVERLAY_NONE
 
@@ -162,4 +188,6 @@
  * Returns a list of strings/numbers/whatever that represents the unique appearance of the overlay.
  */
 /datum/bodypart_overlay/proc/icon_render_key(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	return list()

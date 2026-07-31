@@ -1,5 +1,7 @@
 ///This proc is used to initialize holochips, cash and coins inside our persistent piggy bank.
 /datum/controller/subsystem/persistence/proc/load_piggy_bank(obj/item/piggy_bank/piggy)
+	procstart = null
+	src.procstart = null
 	if(isnull(piggy_banks_database))
 		piggy_banks_database = new("data/piggy_banks.json")
 
@@ -33,6 +35,8 @@
 
 ///This proc is used to save money stored inside our persistent the piggy bank for the next time it's loaded.
 /datum/controller/subsystem/persistence/proc/save_piggy_bank(obj/item/piggy_bank/piggy)
+	procstart = null
+	src.procstart = null
 	if(isnull(piggy_banks_database))
 		return
 

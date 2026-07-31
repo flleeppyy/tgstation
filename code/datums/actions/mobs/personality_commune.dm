@@ -11,18 +11,24 @@
 	var/fluff_text = span_boldnotice("You hear an echoing voice in the back of your head...")
 
 /datum/action/personality_commune/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(target, /datum/brain_trauma/severe/split_personality))
 		stack_trace("[type] was created on a target that isn't a /datum/brain_trauma/severe/split_personality, this doesn't work.")
 		qdel(src)
 
 /datum/action/personality_commune/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	if(!istype(grant_to, /mob/living/split_personality))
 		return
 
 	return ..()
 
 /datum/action/personality_commune/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

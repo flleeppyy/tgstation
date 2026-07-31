@@ -28,6 +28,8 @@
 	var/max_power_use_in_minute = 20 * STANDARD_CELL_CHARGE
 
 /datum/component/shell/Initialize(unremovable_circuit_components, capacity, shell_flags, starting_circuit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -40,6 +42,8 @@
 		attach_circuit(starting_circuit)
 
 /datum/component/shell/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 	RegisterSignal(parent, COMSIG_ATOM_ATTACK_GHOST, PROC_REF(on_attack_ghost))
 	if(!(shell_flags & SHELL_FLAG_CIRCUIT_UNMODIFIABLE))
@@ -54,6 +58,8 @@
 	RegisterSignal(parent, COMSIG_MOVABLE_CIRCUIT_LOADED, PROC_REF(on_load))
 
 /datum/component/shell/proc/set_unremovable_circuit_components(list/components)
+	procstart = null
+	src.procstart = null
 	if(unremovable_circuit_components)
 		QDEL_LIST(unremovable_circuit_components)
 
@@ -63,6 +69,8 @@
 		add_unremovable_circuit_component(circuit_component)
 
 /datum/component/shell/proc/add_unremovable_circuit_component(obj/item/circuit_component/component)
+	procstart = null
+	src.procstart = null
 	if(ispath(component))
 		component = new component()
 	component.removable = FALSE
@@ -71,10 +79,14 @@
 	unremovable_circuit_components += component
 
 /datum/component/shell/proc/save_component(datum/source, list/objects)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	objects += parent
 
 /datum/component/shell/proc/on_load(datum/source, obj/item/integrated_circuit/circuit, list/components)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/list/components_in_list = list()
 	for(var/obj/item/circuit_component/component as anything in components)
@@ -90,6 +102,8 @@
 
 
 /datum/component/shell/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ATOM_ITEM_INTERACTION,
 		COMSIG_ATOM_TOOL_ACT(TOOL_SCREWDRIVER),
@@ -105,10 +119,14 @@
 	QDEL_NULL(attached_circuit)
 
 /datum/component/shell/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(unremovable_circuit_components)
 	return ..()
 
 /datum/component/shell/proc/on_object_deconstruct()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!attached_circuit)
 		return
@@ -119,6 +137,8 @@
 	remove_circuit()
 
 /datum/component/shell/proc/on_attack_ghost(datum/source, mob/dead/observer/ghost)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!is_authorized(ghost))
 		return
@@ -127,6 +147,8 @@
 		INVOKE_ASYNC(attached_circuit, TYPE_PROC_REF(/datum, ui_interact), ghost)
 
 /datum/component/shell/proc/on_examine(atom/movable/source, mob/user, list/examine_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!is_authorized(user))
 		return
@@ -156,6 +178,8 @@
  * Disables the integrated circuit if unanchored, otherwise enable the circuit.
  */
 /datum/component/shell/proc/on_set_anchored(atom/movable/source, previous_value)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	attached_circuit?.set_on(source.anchored)
 
@@ -163,6 +187,8 @@
  * Called when interacting with the parent using an item. This is the method to add the circuitboard to the component.
  */
 /datum/component/shell/proc/on_item_interaction(atom/source, mob/living/user, obj/item/item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!is_authorized(user))
 		return
@@ -213,11 +239,15 @@
 
 /// Sets whether the shell is locked or not
 /datum/component/shell/proc/set_locked(new_value)
+	procstart = null
+	src.procstart = null
 	locked = new_value
 	attached_circuit?.set_locked(new_value)
 
 
 /datum/component/shell/proc/on_multitool_act(atom/source, mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!is_authorized(user))
 		return
@@ -238,6 +268,8 @@
  * Called when a screwdriver is used on the parent. Removes the circuitboard from the component.
  */
 /datum/component/shell/proc/on_screwdriver_act(atom/source, mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!is_authorized(user))
 		return
@@ -260,6 +292,8 @@
  * Checks for when the circuitboard moves. If it moves, removes it from the component.
  */
 /datum/component/shell/proc/on_circuit_moved(obj/item/integrated_circuit/circuit, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(circuit.loc != parent)
 		remove_circuit()
@@ -268,10 +302,14 @@
  * Checks for when the circuitboard deletes so that it can be unassigned.
  */
 /datum/component/shell/proc/on_circuit_delete(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	remove_circuit()
 
 /datum/component/shell/proc/on_circuit_add_component_manually(atom/source, obj/item/circuit_component/added_comp, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(locked)
 		source.balloon_alert(user, "it's locked!")
@@ -282,6 +320,8 @@
 		return COMPONENT_CANCEL_ADD_COMPONENT
 
 /datum/component/shell/proc/override_power_usage(datum/source, power_to_use)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(COOLDOWN_FINISHED(src, power_used_cooldown))
 		COOLDOWN_START(src, power_used_cooldown, 1 MINUTES)
@@ -305,6 +345,8 @@
  * Attaches a circuit to the parent. Doesn't do any checks to see for any existing circuits so that should be done beforehand.
  */
 /datum/component/shell/proc/attach_circuit(obj/item/integrated_circuit/circuitboard, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/parent_atom = parent
 	if(user && !user.transferItemToLoc(circuitboard, parent_atom))
 		return
@@ -338,6 +380,8 @@
  * Removes the circuit from the component. Doesn't do any checks to see for an existing circuit so that should be done beforehand.
  */
 /datum/component/shell/proc/remove_circuit()
+	procstart = null
+	src.procstart = null
 	// remove_current_shell() also turns off the circuit
 	attached_circuit.remove_current_shell()
 	UnregisterSignal(attached_circuit, list(
@@ -362,6 +406,8 @@
 	attached_circuit = null
 
 /datum/component/shell/proc/on_atom_usb_cable_try_attach(atom/source, obj/item/usb_cable/usb_cable, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!is_authorized(user))
 		return
@@ -388,6 +434,8 @@
  * * user - The user to check if they are authorized
  */
 /datum/component/shell/proc/is_authorized(mob/user)
+	procstart = null
+	src.procstart = null
 	if((shell_flags & SHELL_FLAG_CIRCUIT_UNREMOVABLE) && (shell_flags & SHELL_FLAG_CIRCUIT_UNMODIFIABLE))
 		return FALSE
 

@@ -86,6 +86,8 @@
 	var/mob/living/carbon/human/wearer
 
 /obj/item/mod/control/Initialize(mapload, datum/mod_theme/new_theme, new_skin, obj/item/mod/core/new_core)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!movedelay)
 		movedelay = CONFIG_GET(number/movedelay/run_delay)
@@ -113,6 +115,8 @@
 	AddElement(/datum/element/drag_pickup)
 
 /obj/item/mod/control/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	for(var/obj/item/mod/module/module as anything in modules)
 		uninstall(module, deleting = TRUE)
@@ -126,6 +130,8 @@
 	return ..()
 
 /obj/item/mod/control/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	var/atom/visible_atom = wearer || src
 	if(wearer)
 		clean_up()
@@ -143,6 +149,8 @@
 	return ..()
 
 /obj/item/mod/control/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		. += span_notice("Charge: [core ? "[get_charge_percent()]%" : "No core"].")
@@ -169,10 +177,14 @@
 	. += span_notice("<i>You could examine it more thoroughly...</i>")
 
 /obj/item/mod/control/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "<i>[extended_desc]</i>"
 
 /obj/item/mod/control/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(seconds_electrified > MACHINE_NOT_ELECTRIFIED)
 		seconds_electrified--
 	if(mod_link.link_call)
@@ -191,7 +203,9 @@
 			module.deactivate(display_message = TRUE)
 		module.on_process(seconds_per_tick)
 
-/obj/item/mod/control/visual_equipped(mob/user, slot, initial = FALSE) //needs to be visual because we wanna show it in select equipment
+/obj/item/mod/control/visual_equipped(mob/user, slot, initial = FALSE)
+	procstart = null
+	src.procstart = null //needs to be visual because we wanna show it in select equipment
 	if(slot & slot_flags)
 		set_wearer(user)
 	else if(wearer)
@@ -199,6 +213,8 @@
 	return ..()
 
 /obj/item/mod/control/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!wearer)
 		return
@@ -206,18 +222,24 @@
 
 // Grant pinned actions to pin owners, gives AI pinned actions to the AI and not the wearer
 /obj/item/mod/control/grant_action_to_bearer(datum/action/action)
+	procstart = null
+	src.procstart = null
 	if (!istype(action, /datum/action/item_action/mod/pinnable))
 		return ..()
 	var/datum/action/item_action/mod/pinnable/pinned = action
 	give_item_action(action, pinned.pinner, slot_flags)
 
 /obj/item/mod/control/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!wearer || old_loc != wearer || loc == wearer)
 		return
 	clean_up()
 
 /obj/item/mod/control/can_mob_unequip(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user != wearer)
 		return ..()
 
@@ -235,6 +257,8 @@
 	return ..()
 
 /obj/item/mod/control/wrench_act(mob/living/user, obj/item/wrench)
+	procstart = null
+	src.procstart = null
 	if(seconds_electrified && get_charge() && shock(user, 100))
 		return ITEM_INTERACT_BLOCKING
 	if(open)
@@ -253,6 +277,8 @@
 	return NONE
 
 /obj/item/mod/control/screwdriver_act(mob/living/user, obj/item/screwdriver)
+	procstart = null
+	src.procstart = null
 	if(active || activating || ai_controller)
 		balloon_alert(user, "unit active!")
 		playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
@@ -271,6 +297,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/mod/control/crowbar_act(mob/living/user, obj/item/crowbar)
+	procstart = null
+	src.procstart = null
 	if(!open)
 		balloon_alert(user, "cover closed!")
 		playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
@@ -302,6 +330,8 @@
 
 // Makes use of tool act to prevent shoving stuff into our internal storage
 /obj/item/mod/control/tool_act(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/pai_card))
 		if(!open)
 			balloon_alert(user, "cover closed!")
@@ -360,23 +390,31 @@
 	return ..()
 
 /obj/item/mod/control/get_cell()
+	procstart = null
+	src.procstart = null
 	var/obj/item/stock_parts/power_store/cell = get_charge_source()
 	if(!istype(cell))
 		return null
 	return cell
 
 /obj/item/mod/control/GetAccess()
+	procstart = null
+	src.procstart = null
 	if(ai_controller && req_access)
 		return req_access.Copy()
 	else
 		return ..()
 
 /obj/item/mod/control/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	locked = !locked
 	balloon_alert(user, "access [locked ? "locked" : "unlocked"]")
 	return TRUE
 
 /obj/item/mod/control/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!active || !wearer)
 		return
@@ -390,10 +428,14 @@
 		wearer.emote("scream")
 
 /obj/item/mod/control/on_outfit_equip(mob/living/carbon/human/outfit_wearer, visuals_only, item_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	quick_activation()
 
 /obj/item/mod/control/doStrip(mob/stripper, mob/owner)
+	procstart = null
+	src.procstart = null
 	if(active && !toggle_activate(stripper, force_deactivate = TRUE))
 		return
 	for(var/obj/item/part as anything in get_parts())
@@ -403,10 +445,14 @@
 	return ..()
 
 /obj/item/mod/control/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[skin]-[base_icon_state][active ? "-sealed" : ""]"
 	return ..()
 
 /obj/item/mod/control/proc/get_strippable_alternate_actions(obj/item/source, atom/owner, mob/user, list/alt_actions)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(active)
 		alt_actions += "deactivate_mod"
@@ -419,6 +465,8 @@
 
 
 /obj/item/mod/control/proc/do_strippable_action(obj/item/source, atom/owner, mob/user, action_key)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isliving(user))
 		return NONE
@@ -448,6 +496,8 @@
 			return NONE
 
 /obj/item/mod/control/proc/attempt_strip_deploy(atom/owner, mob/user, message)
+	procstart = null
+	src.procstart = null
 	if(!do_after(user, strip_delay, owner))
 		return
 	owner.visible_message(
@@ -458,6 +508,8 @@
 	quick_deploy(user)
 
 /obj/item/mod/control/proc/attempt_strip_activate(atom/owner, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!do_after(user, strip_delay, owner))
 		return
 	owner.visible_message(
@@ -469,6 +521,8 @@
 
 
 /obj/item/mod/control/proc/get_parts(all = FALSE)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/key in mod_parts)
 		var/datum/mod_part/part = mod_parts[key]
@@ -477,6 +531,8 @@
 		. += part.part_item
 
 /obj/item/mod/control/proc/get_part_datums(all = FALSE)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/key in mod_parts)
 		var/datum/mod_part/part = mod_parts[key]
@@ -485,6 +541,8 @@
 		. += part
 
 /obj/item/mod/control/proc/get_part_datum(obj/item/part)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/mod_part)
 	var/datum/mod_part/potential_part = mod_parts["[part.slot_flags]"]
 	if(potential_part?.part_item == part)
@@ -495,16 +553,22 @@
 	CRASH("get_part_datum called with incorrect item [part] passed.")
 
 /obj/item/mod/control/proc/get_part_from_slot(slot)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/obj/item)
 	return get_part_datum_from_slot(slot)?.part_item
 
 /obj/item/mod/control/proc/get_part_datum_from_slot(slot)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/mod_part)
 	for (var/part_key in mod_parts)
 		if (text2num(part_key) & slot)
 			return mod_parts[part_key]
 
 /obj/item/mod/control/proc/set_wearer(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(wearer == user)
 		CRASH("set_wearer() was called with the new wearer being the current wearer: [wearer]")
 	else if(!isnull(wearer))
@@ -520,6 +584,8 @@
 		module.on_equip()
 
 /obj/item/mod/control/proc/unset_wearer()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/mod/module/module as anything in modules)
 		module.on_unequip()
 	UnregisterSignal(wearer, list(COMSIG_ATOM_EXITED, COMSIG_SPECIES_GAIN, COMSIG_MOB_CLICKON))
@@ -530,6 +596,8 @@
 	wearer = null
 
 /obj/item/mod/control/proc/get_sealed_slots(list/parts)
+	procstart = null
+	src.procstart = null
 	var/covered_slots = NONE
 	for(var/obj/item/part as anything in parts)
 		if(!get_part_datum(part).sealed)
@@ -539,6 +607,8 @@
 	return covered_slots
 
 /obj/item/mod/control/proc/clean_up()
+	procstart = null
+	src.procstart = null
 	if(QDELING(src))
 		unset_wearer()
 		return
@@ -561,6 +631,8 @@
 	old_wearer.temporarilyRemoveItemFromInventory(src)
 
 /obj/item/mod/control/proc/on_species_gain(datum/source, datum/species/new_species, datum/species/old_species, pref_load, regenerate_icons)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/obj/item/part in get_parts(all = TRUE))
@@ -570,6 +642,8 @@
 		return
 
 /obj/item/mod/control/proc/click_on(mob/source, atom/A, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (LAZYACCESS(modifiers, CTRL_CLICK) && LAZYACCESS(modifiers, source.client?.prefs.read_preference(/datum/preference/choiced/mod_select) || MIDDLE_CLICK))
@@ -577,6 +651,8 @@
 		return COMSIG_MOB_CANCEL_CLICKON
 
 /obj/item/mod/control/proc/quick_module(mob/user, anchor_override = null)
+	procstart = null
+	src.procstart = null
 	if(!length(modules))
 		return
 	var/list/display_names = list()
@@ -610,6 +686,8 @@
 	picked_module.on_select()
 
 /obj/item/mod/control/shock(mob/living/shocking, chance, shock_source, siemens_coeff)
+	procstart = null
+	src.procstart = null
 	if(get_charge() < 1)
 		return FALSE
 	if(isnull(siemens_coeff))
@@ -617,6 +695,8 @@
 	return ..()
 
 /obj/item/mod/control/proc/install(obj/item/mod/module/new_module, mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/mod/module/old_module as anything in modules)
 		if(is_type_in_list(new_module, old_module.incompatible_modules) || is_type_in_list(old_module, new_module.incompatible_modules))
 			if(user)
@@ -647,6 +727,8 @@
 	finish_install(new_module, user)
 
 /obj/item/mod/control/proc/finish_install(obj/item/mod/module/new_module, mob/user)
+	procstart = null
+	src.procstart = null
 	new_module.forceMove(src)
 	modules += new_module
 	complexity += new_module.complexity
@@ -662,6 +744,8 @@
 		playsound(src, 'sound/machines/click.ogg', 50, TRUE, SILENCED_SOUND_EXTRARANGE)
 
 /obj/item/mod/control/proc/uninstall(obj/item/mod/module/old_module, deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	modules -= old_module
 	complexity -= old_module.complexity
 	if(wearer)
@@ -676,9 +760,13 @@
 
 /// Intended for callbacks, don't use normally, just get wearer by itself.
 /obj/item/mod/control/proc/get_wearer()
+	procstart = null
+	src.procstart = null
 	return wearer
 
 /obj/item/mod/control/proc/update_access(mob/user, obj/item/card/id/card)
+	procstart = null
+	src.procstart = null
 	if(!allowed(user))
 		balloon_alert(user, "insufficient access!")
 		playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
@@ -687,36 +775,56 @@
 	balloon_alert(user, "access updated")
 
 /obj/item/mod/control/proc/get_charge_source()
+	procstart = null
+	src.procstart = null
 	return core?.charge_source()
 
 /obj/item/mod/control/proc/get_charge()
+	procstart = null
+	src.procstart = null
 	return core?.charge_amount() || 0
 
 /obj/item/mod/control/proc/get_max_charge()
+	procstart = null
+	src.procstart = null
 	return core?.max_charge_amount() || 1 //avoid dividing by 0
 
 /obj/item/mod/control/proc/get_charge_percent()
+	procstart = null
+	src.procstart = null
 	return ROUND_UP((get_charge() / get_max_charge()) * 100)
 
 /obj/item/mod/control/proc/add_charge(amount)
+	procstart = null
+	src.procstart = null
 	return core?.add_charge(amount) || FALSE
 
 /obj/item/mod/control/proc/subtract_charge(amount)
+	procstart = null
+	src.procstart = null
 	return core?.subtract_charge(amount) || FALSE
 
 /obj/item/mod/control/proc/check_charge(amount)
+	procstart = null
+	src.procstart = null
 	return core?.check_charge(amount) || FALSE
 
 /obj/item/mod/control/proc/get_chargebar_color()
+	procstart = null
+	src.procstart = null
 	return core?.get_chargebar_color() || "transparent"
 
 /obj/item/mod/control/proc/get_chargebar_string()
+	procstart = null
+	src.procstart = null
 	return core?.get_chargebar_string() || "No Core Detected"
 
 /**
  * Updates the wearer's hud according to the current state of the MODsuit
  */
 /obj/item/mod/control/proc/update_charge_alert()
+	procstart = null
+	src.procstart = null
 	if(isnull(wearer) || isnull(wearer.client))
 		return
 	var/state_to_use
@@ -732,6 +840,8 @@
 		spacesuit_hud.update_spacesuit_hud_icon(state_to_use || SPACESUIT_NO_ICON)
 
 /obj/item/mod/control/proc/update_speed()
+	procstart = null
+	src.procstart = null
 	var/total_slowdown = 0
 	var/prevent_slowdown = HAS_TRAIT(src, TRAIT_SPEED_POTIONED)
 	if (!prevent_slowdown)
@@ -750,16 +860,22 @@
 	wearer?.update_equipment_speed_mods()
 
 /obj/item/mod/control/proc/power_off()
+	procstart = null
+	src.procstart = null
 	balloon_alert(wearer, "no power!")
 	toggle_activate(wearer, force_deactivate = TRUE)
 
 /obj/item/mod/control/proc/set_mod_color(new_color)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/part as anything in get_parts(all = TRUE))
 		part.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
 		part.add_atom_colour(new_color, FIXED_COLOUR_PRIORITY)
 	wearer?.regenerate_icons()
 
 /obj/item/mod/control/proc/on_exit(datum/source, atom/movable/part, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(part.loc == src)
@@ -787,6 +903,8 @@
 		INVOKE_ASYNC(src, PROC_REF(retract), wearer, part, /* instant = */ TRUE) // async to appease spaceman DMM because the branch we don't run has a do_after
 
 /obj/item/mod/control/proc/on_part_destruction(obj/item/part, damage_flag)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(QDELING(src))
@@ -794,6 +912,8 @@
 	atom_destruction(damage_flag)
 
 /obj/item/mod/control/proc/on_overslot_exit(obj/item/part, atom/movable/overslot, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/mod_part/part_datum = get_part_datum(part)
@@ -803,6 +923,8 @@
 	part_datum.overslotting = null
 
 /obj/item/mod/control/proc/on_potion(atom/movable/source, obj/item/slimepotion/speed/speed_potion, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT(src, TRAIT_SPEED_POTIONED))
@@ -822,6 +944,8 @@
 
 /// Disables the mod link frequency attached to this unit.
 /obj/item/mod/control/proc/disable_modlink()
+	procstart = null
+	src.procstart = null
 	if(isnull(mod_link))
 		return
 
@@ -829,6 +953,8 @@
 	mod_link.frequency = null
 
 /obj/item/mod/control/proc/get_visor_overlay(mutable_appearance/standing)
+	procstart = null
+	src.procstart = null
 	var/list/overrides = list()
 	SEND_SIGNAL(src, COMSIG_MOD_GET_VISOR_OVERLAY, standing, overrides)
 	if (length(overrides))

@@ -1,4 +1,6 @@
 /mob/living/carbon/human/get_movespeed_modifiers()
+	procstart = null
+	src.procstart = null
 	var/list/considering = ..()
 	if(HAS_TRAIT(src, TRAIT_IGNORESLOWDOWN))
 		. = list()
@@ -10,6 +12,8 @@
 	return considering
 
 /mob/living/carbon/human/slip(knockdown_amount, obj/slipped_on, lube_flags, paralyze, daze, force_drop = FALSE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NO_SLIP_ALL))
 		return FALSE
 
@@ -22,9 +26,13 @@
 	return ..()
 
 /mob/living/carbon/human/mob_negates_gravity()
+	procstart = null
+	src.procstart = null
 	return dna.species.negates_gravity(src) || ..()
 
 /mob/living/carbon/human/Move(NewLoc, direct)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(shoes && body_position == STANDING_UP && has_gravity(loc))
 		if((. && !moving_diagonally) || (!. && moving_diagonally == SECOND_DIAG_STEP))

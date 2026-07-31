@@ -15,10 +15,14 @@
 	var/rat_heal = 0
 
 /obj/item/food/cheese/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_RAT_INTERACT, PROC_REF(on_rat_eat))
 
 /obj/item/food/cheese/proc/on_rat_eat(datum/source, mob/living/basic/regal_rat/king)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	king.cheese_heal(src, rat_heal, span_green("You eat [src], restoring some health."))
@@ -38,6 +42,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/cheese/wedge/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/food_storage)
 
@@ -55,13 +61,19 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/cheese/wheel/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/food_storage)
 
 /obj/item/food/cheese/wheel/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/cheese/wedge, 5, 3 SECONDS, table_required = TRUE, screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/cheese/wheel/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/baked_cheese, rand(20 SECONDS, 25 SECONDS), TRUE, TRUE)
 
 /**
@@ -69,6 +81,8 @@
  * Used in wizard grand rituals' optional cheesy alternative.
  */
 /obj/item/food/cheese/wheel/proc/consume_cheese()
+	procstart = null
+	src.procstart = null
 	visible_message(span_revenwarning("...and is consumed in a vortex of chaos!"))
 	do_sparks(number = 1, cardinal_only = TRUE, source = get_turf(src))
 	qdel(src)
@@ -105,9 +119,13 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/cheese/curd_cheese/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/cheese/cheese_curds, rand(15 SECONDS, 20 SECONDS), TRUE, TRUE)
 
 /obj/item/food/cheese/curd_cheese/make_microwaveable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/microwavable, /obj/item/food/cheese/cheese_curds)
 
 /obj/item/food/cheese/cheese_curds
@@ -119,6 +137,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/cheese/cheese_curds/make_dryable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/dryable,  /obj/item/food/cheese/firm_cheese)
 
 /obj/item/food/cheese/firm_cheese
@@ -131,6 +151,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/cheese/firm_cheese/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/cheese/firm_cheese_slice, 3, 3 SECONDS, screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/cheese/firm_cheese_slice
@@ -143,10 +165,14 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/cheese/firm_cheese_slice/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/food_storage)
 
 /obj/item/food/cheese/firm_cheese_slice/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/grilled_cheese, rand(25 SECONDS, 35 SECONDS), TRUE, TRUE)
 
 /obj/item/food/cheese/mozzarella

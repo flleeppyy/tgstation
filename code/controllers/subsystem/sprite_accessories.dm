@@ -44,7 +44,9 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 	//All features, indexed by feature key, then name of the sprite accessory to the datum iteslf
 	var/list/list/feature_list
 
-/datum/controller/subsystem/accessories/PreInit() // this stuff NEEDS to be set up before GLOB for preferences and stuff to work so this must go here. sorry
+/datum/controller/subsystem/accessories/PreInit()
+	procstart = null
+	src.procstart = null // this stuff NEEDS to be set up before GLOB for preferences and stuff to work so this must go here. sorry
 	setup_lists()
 	init_hair_gradients()
 	init_hair_masks()
@@ -54,6 +56,8 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 /// where this subsystem will initialize BEFORE statics, it's just not feasible since this all needs to be ready for actual subsystems to use.
 /// Sorry.
 /datum/controller/subsystem/accessories/proc/setup_lists()
+	procstart = null
+	src.procstart = null
 	var/hair_lists = init_sprite_accessory_subtypes(/datum/sprite_accessory/hair)
 	hairstyles_list = hair_lists[DEFAULT_SPRITE_LIST]
 	hairstyles_male_list = hair_lists[MALE_SPRITE_LIST]
@@ -104,6 +108,8 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 
 /// This proc just initializes all /datum/sprite_accessory/hair_gradient into an list indexed by gradient-style name
 /datum/controller/subsystem/accessories/proc/init_hair_gradients()
+	procstart = null
+	src.procstart = null
 	hair_gradients_list = list()
 	facial_hair_gradients_list = list()
 	for(var/path in subtypesof(/datum/sprite_accessory/gradient))
@@ -114,6 +120,8 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 			facial_hair_gradients_list[gradient.name] = gradient
 
 /datum/controller/subsystem/accessories/proc/init_hair_masks()
+	procstart = null
+	src.procstart = null
 	hair_masks_list = list()
 	for(var/path in subtypesof(/datum/hair_mask))
 		var/datum/hair_mask/mask = new path
@@ -122,6 +130,8 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 /// This reads the applicable sprite accessory datum's subtypes and adds it to the subsystem's list of sprite accessories.
 /// The boolean `add_blank` argument just adds a "None" option to the list of sprite accessories, like if a felinid doesn't want a tail or something, typically good for gated-off things.
 /datum/controller/subsystem/accessories/proc/init_sprite_accessory_subtypes(prototype, add_blank = FALSE)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 	var/returnable_list = list(
 		DEFAULT_SPRITE_LIST = list(),

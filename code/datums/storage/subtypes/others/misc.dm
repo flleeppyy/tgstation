@@ -9,6 +9,8 @@
 	allow_quick_empty = TRUE
 
 /datum/storage/test_tube_rack/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/reagent_containers/cup/tube)
 
@@ -19,6 +21,8 @@
 	animated = FALSE
 
 /datum/storage/surgery_tray/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/autopsy_scanner,
@@ -46,6 +50,8 @@
 	max_total_storage = 21
 
 /datum/storage/organ_box/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/organ,
@@ -54,11 +60,15 @@
 	))
 
 /datum/storage/organ_box/handle_enter(obj/item/storage/organbox/source, obj/item/arrived)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(arrived) && istype(source) && source.coolant_to_spend())
 		arrived.freeze()
 
 /datum/storage/organ_box/handle_exit(datum/source, obj/item/gone)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(gone))
 		gone.unfreeze()
@@ -69,6 +79,8 @@
 	max_slots = 50
 
 /datum/storage/portable_chem_mixer/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/reagent_containers/cup/beaker,
@@ -86,6 +98,8 @@
 	allow_big_nesting = TRUE
 
 /datum/storage/implant/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(cant_hold_list = /obj/item/disk/nuclear)
 
@@ -96,6 +110,8 @@
 	do_rustle = FALSE
 
 /datum/storage/drone/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/crowbar/drone,
@@ -111,6 +127,8 @@
 	))
 
 /datum/storage/drone/dump_content_at(atom/dest_object, dump_loc, mob/user)
+	procstart = null
+	src.procstart = null
 	return //no dumping of contents allowed
 
 ///Basket
@@ -119,6 +137,8 @@
 
 ///Easter basket
 /datum/storage/basket/easter/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/food/egg,
@@ -128,15 +148,21 @@
 	))
 
 /datum/storage/basket/easter/handle_enter(datum/source, obj/item/arrived)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	countEggs(source)
 
 /datum/storage/basket/easter/proc/countEggs(obj/item/storage/basket/easter/basket)
+	procstart = null
+	src.procstart = null
 	basket.cut_overlays()
 	basket.add_overlay("basket-grass")
 	basket.add_overlay("basket-egg[min(basket.contents.len, 5)]")
 
 /datum/storage/basket/easter/handle_exit(datum/source, obj/item/gone)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	countEggs(source)
 
@@ -151,6 +177,8 @@
 	var/max_weapon_weight = WEAPON_MEDIUM
 
 /datum/storage/briefcase/gun/can_insert(obj/item/to_insert, mob/user, messages, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -171,6 +199,8 @@
 	open_sound_vary = FALSE
 
 /datum/storage/pillbottle/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/reagent_containers/applicator,
@@ -184,6 +214,8 @@
 	max_slots = 6
 
 /datum/storage/sixcan/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(list(
 		/obj/item/reagent_containers/cup/soda_cans,
@@ -198,6 +230,8 @@
 	max_slots = 4
 
 /datum/storage/wallet/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(
 		can_hold_list = list(
@@ -239,6 +273,8 @@
 
 ///Crayons storage
 /datum/storage/crayons/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(
 		can_hold_list = /obj/item/toy/crayon,
@@ -254,6 +290,8 @@
 	allow_quick_gather = TRUE
 
 /datum/storage/dice/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/dice)
 
@@ -279,6 +317,8 @@
 	max_slots = 60
 
 /datum/storage/card_binder/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/tcgcard)
 
@@ -291,6 +331,8 @@
 	animated = FALSE
 
 /datum/storage/toiletbong/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_holdable(/obj/item/food)
 

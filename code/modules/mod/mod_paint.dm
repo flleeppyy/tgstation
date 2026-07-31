@@ -16,15 +16,21 @@
 	var/list/current_color
 
 /obj/item/mod/paint/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	current_color = COLOR_MATRIX_IDENTITY
 
 /obj/item/mod/paint/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("<b>Left-click</b> a MODsuit to change skin.")
 	. += span_notice("<b>Right-click</b> a MODsuit to recolor.")
 
 /obj/item/mod/paint/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(!editing_mod)
 		return
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -34,30 +40,42 @@
 		proxy_view.display_to(user, ui.window)
 
 /obj/item/mod/paint/ui_host()
+	procstart = null
+	src.procstart = null
 	return editing_mod
 
 /obj/item/mod/paint/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	editing_mod = null
 	QDEL_NULL(proxy_view)
 	current_color = COLOR_MATRIX_IDENTITY
 
 /obj/item/mod/paint/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(check_menu(editing_mod, user))
 		return ..()
 	return UI_CLOSE
 
 /obj/item/mod/paint/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["mapRef"] = proxy_view.assigned_map
 	return data
 
 /obj/item/mod/paint/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["currentColor"] = current_color
 	return data
 
 /obj/item/mod/paint/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -114,6 +132,8 @@
 			SStgui.close_uis(src)
 
 /obj/item/mod/paint/proc/paint_skin(obj/item/mod/control/mod, mob/user)
+	procstart = null
+	src.procstart = null
 	if(length(mod.theme.variants) <= 1)
 		balloon_alert(user, "no alternate skins!")
 		return
@@ -128,6 +148,8 @@
 	mod.theme.set_skin(mod, pick)
 
 /obj/item/mod/paint/proc/check_menu(obj/item/mod/control/mod, mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated || !user.is_holding(src) || !mod || mod.active || mod.activating)
 		return FALSE
 	return TRUE
@@ -147,10 +169,14 @@
 	var/skin = "civilian"
 
 /obj/item/mod/skin_applier/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "MOD [skin] skin applier"
 
 /obj/item/mod/skin_applier/interact_with_atom(atom/attacked_atom, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(!istype(attacked_atom, /obj/item/mod/control))
 		return NONE
 	var/obj/item/mod/control/mod = attacked_atom
@@ -170,6 +196,8 @@
 	skin = "honkerative"
 
 /obj/item/mod/skin_applier/honkerative/interact_with_atom(obj/item/mod/control/controlunit, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(. & ITEM_INTERACT_SUCCESS))
 		return

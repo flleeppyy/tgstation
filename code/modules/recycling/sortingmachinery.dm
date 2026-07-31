@@ -8,6 +8,8 @@
 	var/obj/item/barcode/sticker
 
 /obj/item/delivery/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_MOVABLE_DISPOSING, PROC_REF(disposal_handling))
 
@@ -15,6 +17,8 @@
  * Initial check if manually unwrapping
  */
 /obj/item/delivery/proc/attempt_pre_unwrap_contents(mob/user, time = 1.5 SECONDS)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You start to unwrap the package..."))
 	return do_after(user, time, target = user)
 
@@ -22,6 +26,8 @@
  * Signals for unwrapping.
  */
 /obj/item/delivery/proc/unwrap_contents()
+	procstart = null
+	src.procstart = null
 	if(!sticker)
 		return
 	for(var/atom/movable/movable_content as anything in contents)
@@ -31,6 +37,8 @@
  * Effects after completing unwrapping
  */
 /obj/item/delivery/proc/post_unwrap_contents(mob/user, rip_open = TRUE)
+	procstart = null
+	src.procstart = null
 	var/turf/turf_loc = get_turf(user || src)
 	if(rip_open)
 		playsound(loc, 'sound/items/poster/poster_ripped.ogg', 50, TRUE)
@@ -44,6 +52,8 @@
 	qdel(src)
 
 /obj/item/delivery/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
 			SSexplosions.high_mov_atom += contents
@@ -53,10 +63,14 @@
 			SSexplosions.low_mov_atom += contents
 
 /obj/item/delivery/atom_deconstruct(dissambled = TRUE)
+	procstart = null
+	src.procstart = null
 	unwrap_contents()
 	post_unwrap_contents()
 
 /obj/item/delivery/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(note)
 		if(!in_range(user, src))
@@ -70,11 +84,15 @@
 		. += span_notice("There's a [EXAMINE_HINT("sorting tag")] with the destination set to [EXAMINE_HINT("[GLOB.TAGGERLOCATIONS[sort_tag]].")]")
 
 /obj/item/delivery/proc/disposal_handling(disposal_source, obj/structure/disposalholder/disposal_holder, obj/machinery/disposal/disposal_machine, hasmob)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!hasmob)
 		disposal_holder.destinationTag = sort_tag
 
 /obj/item/delivery/relay_container_resist_act(mob/living/user, obj/container)
+	procstart = null
+	src.procstart = null
 	if(ismovable(loc))
 		var/atom/movable/movable_loc = loc //can't unwrap the wrapped container if it's inside something.
 		movable_loc.relay_container_resist_act(user, container)
@@ -92,10 +110,14 @@
 			to_chat(user, span_warning("You fail to remove [container]'s wrapping!"))
 
 /obj/item/delivery/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = giftwrapped ? "gift[base_icon_state]" : base_icon_state
 
 /obj/item/delivery/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(sort_tag)
 		. += "[base_icon_state]_sort"
@@ -105,6 +127,8 @@
 		. += "[base_icon_state]_barcode"
 
 /obj/item/delivery/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/dest_tagger))
 		var/relevant_tag = astype(tool, /obj/item/dest_tagger).currTag
 		if(sort_tag == relevant_tag)
@@ -201,6 +225,8 @@
 	return NONE
 
 /obj/item/delivery/nameformat(input, user)
+	procstart = null
+	src.procstart = null
 	playsound(src, SFX_WRITING_PEN, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, SOUND_FALLOFF_EXPONENT + 3, ignore_walls = FALSE)
 	return "[name] ([input])" // This just repeatedly adds new labels, but i think that's intentional?
 
@@ -219,6 +245,8 @@
 	w_class = WEIGHT_CLASS_GIGANTIC
 
 /obj/item/delivery/big/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!attempt_pre_unwrap_contents(user))
 		return
 	unwrap_contents()
@@ -233,6 +261,8 @@
 	icon_state = "deliverypackage3"
 
 /obj/item/delivery/small/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!attempt_pre_unwrap_contents(user))
 		return
 	user.temporarilyRemoveItemFromInventory(src, TRUE)
@@ -242,6 +272,8 @@
 	post_unwrap_contents(user)
 
 /obj/item/delivery/small/attack_self_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ismob(loc))
 		var/mob/M = loc
 		M.temporarilyRemoveItemFromInventory(src, TRUE)
@@ -279,6 +311,8 @@
 	desc = "Used to fool the disposal mail network into thinking that you're a harmless parcel. Does actually work as a regular destination tagger as well."
 
 /obj/item/dest_tagger/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins tagging [user.p_their()] final destination! It looks like [user.p_theyre()] trying to commit suicide!"))
 	if (islizard(user))
 		to_chat(user, span_notice("*HELL*"))//lizard nerf
@@ -289,6 +323,8 @@
 
 /** Standard TGUI actions */
 /obj/item/dest_tagger/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -298,16 +334,22 @@
 
 /** If the user dropped the tagger */
 /obj/item/dest_tagger/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.inventory_state
 
 /** User activates in hand */
 /obj/item/dest_tagger/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!locked_destination)
 		ui_interact(user)
 		return
 
 /** Data sent to TGUI window */
 /obj/item/dest_tagger/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["locations"] = GLOB.TAGGERLOCATIONS
 	data["currentTag"] = currTag
@@ -315,6 +357,8 @@
 
 /** User clicks a button on the tagger */
 /obj/item/dest_tagger/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -349,6 +393,8 @@
 	var/cut_min = 0.01
 
 /obj/item/sales_tagger/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("[src] has [paper_count]/[max_paper_count] available barcodes. Refill with paper.")
 	. += span_notice("Profit split on sale is currently set to [round(cut_multiplier*100)]%. <b>Alt-click</b> to change.")
@@ -356,6 +402,8 @@
 		. += span_notice("<b>Ctrl-click</b> to clear the registered account.")
 
 /obj/item/sales_tagger/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isidcard(tool))
 		var/obj/item/card/id/potential_acc = tool
 		if(!potential_acc.registered_account)
@@ -385,6 +433,8 @@
 	return NONE
 
 /obj/item/sales_tagger/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(paper_count <= 0)
 		to_chat(user, span_warning("You're out of paper!'."))
@@ -401,11 +451,15 @@
 	user.put_in_hands(new_barcode)
 
 /obj/item/sales_tagger/item_ctrl_click(mob/user)
+	procstart = null
+	src.procstart = null
 	payments_acc = null
 	to_chat(user, span_notice("You clear the registered account."))
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/sales_tagger/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	var/potential_cut = input("How much would you like to pay out to the registered card?","Percentage Profit ([round(cut_min*100)]% - [round(cut_max*100)]%)") as num|null
 	if(!potential_cut)
 		cut_multiplier = initial(cut_multiplier)

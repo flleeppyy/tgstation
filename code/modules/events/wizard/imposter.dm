@@ -9,6 +9,8 @@
 	max_wizard_trigger_potency = 7
 
 /datum/round_event/wizard/imposter/start()
+	procstart = null
+	src.procstart = null
 	for(var/datum/mind/M as anything in get_antag_minds(/datum/antagonist/wizard))
 		if(!ishuman(M.current))
 			continue

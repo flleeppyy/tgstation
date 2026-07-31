@@ -20,6 +20,8 @@
 	var/tilt_tile
 
 /datum/element/undertile/Attach(datum/target, invisibility_trait, invisibility_level = INVISIBILITY_MAXIMUM, tile_overlay, use_alpha = TRUE, use_anchor = FALSE, tilt_tile = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!ismovable(target))
@@ -36,6 +38,8 @@
 
 ///called when a tile has been covered or uncovered
 /datum/element/undertile/proc/hide(atom/movable/source, underfloor_accessibility)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(underfloor_accessibility < UNDERFLOOR_VISIBLE)
@@ -103,6 +107,8 @@
 	SEND_SIGNAL(source, COMSIG_UNDERTILE_UPDATED)
 
 /datum/element/undertile/Detach(atom/movable/source, visibility_trait, invisibility_level = INVISIBILITY_MAXIMUM)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	hide(source, UNDERFLOOR_INTERACTABLE)

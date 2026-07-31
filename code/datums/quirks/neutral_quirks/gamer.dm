@@ -13,6 +13,8 @@
 	var/gaming_withdrawal_timer = TIMER_ID_NULL
 
 /datum/quirk/gamer/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/tongue/tongue = quirk_holder.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(tongue)
 		// Gamer diet
@@ -22,10 +24,14 @@
 	RegisterSignal(quirk_holder, COMSIG_MOB_PLAYED_VIDEOGAME, PROC_REF(gamed))
 
 /datum/quirk/gamer/post_add()
+	procstart = null
+	src.procstart = null
 	// The gamer starts off quelled
 	gaming_withdrawal_timer = addtimer(CALLBACK(src, PROC_REF(enter_withdrawal)), GAMING_WITHDRAWAL_TIME, TIMER_STOPPABLE)
 
 /datum/quirk/gamer/remove()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/tongue/tongue = quirk_holder.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(tongue)
 		tongue.liked_foodtypes = initial(tongue.liked_foodtypes)
@@ -41,6 +47,8 @@
  * (E.g. Orion Trail)
  */
 /datum/quirk/gamer/proc/won_game()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Epic gamer victory
 	var/mob/living/carbon/human/human_holder = quirk_holder
@@ -54,6 +62,8 @@
  * (E.g. Orion Trail)
  */
 /datum/quirk/gamer/proc/lost_game()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Executed when a gamer has lost
 	var/mob/living/carbon/human/human_holder = quirk_holder
@@ -67,6 +77,8 @@
  * This signal should be called whenever a player interacts with a video game.
  */
 /datum/quirk/gamer/proc/gamed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/carbon/human/human_holder = quirk_holder
@@ -79,11 +91,15 @@
 
 
 /datum/quirk/gamer/proc/gamer_moment()
+	procstart = null
+	src.procstart = null
 	// It was a heated gamer moment...
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	human_holder.say(";[pick("SHIT", "PISS", "FUCK", "CUNT", "COCKSUCKER", "MOTHERFUCKER")]!!", forced = name)
 
 /datum/quirk/gamer/proc/enter_withdrawal()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	human_holder.add_mood_event("gamer_withdrawal", /datum/mood_event/gamer_withdrawal)
 

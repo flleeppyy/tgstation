@@ -7,6 +7,8 @@
 	crate_type = /obj/structure/closet/crate/critter/stasis
 
 /datum/supply_pack/critter/stasis/fill(obj/container)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/mob/living/stasis_mob in container)
 		stasis_mob.apply_status_effect(/datum/status_effect/grouped/stasis, STASIS_CRATE_EFFECT)
@@ -19,6 +21,8 @@
 	crate_name = "parrot crate"
 
 /datum/supply_pack/critter/parrot/generate(atom/A, datum/bank_account/paying_account, crate_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in 1 to 4)
 		new /mob/living/basic/parrot(.)
@@ -32,6 +36,8 @@
 	crate_name = "entomology samples crate"
 
 /datum/supply_pack/critter/butterfly/generate(atom/A, datum/bank_account/paying_account, crate_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in 1 to 49)
 		new /mob/living/basic/butterfly(.)
@@ -48,6 +54,8 @@
 	crate_name = "cat crate"
 
 /datum/supply_pack/critter/cat/generate(atom/A, datum/bank_account/paying_account, crate_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!prob(50))
 		return
@@ -75,6 +83,8 @@
 	crate_name = "corgi crate"
 
 /datum/supply_pack/critter/corgi/generate(atom/A, datum/bank_account/paying_account, crate_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(50))
 		var/mob/living/basic/pet/dog/corgi/D = locate() in .
@@ -125,6 +135,8 @@
 	order_flags = ORDER_POD_ONLY
 
 /datum/supply_pack/critter/crab/generate(atom/A, datum/bank_account/paying_account, crate_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in 1 to 49)
 		new /mob/living/basic/crab(.)
@@ -234,6 +246,8 @@
 	discountable = SUPPLY_PACK_RARE_DISCOUNTABLE
 
 /datum/supply_pack/critter/garden_gnome/generate(atom/A, datum/bank_account/paying_account, crate_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in 1 to 2)
 		new /mob/living/basic/garden_gnome(.)

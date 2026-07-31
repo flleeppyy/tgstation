@@ -11,6 +11,8 @@
 	var/var_string
 
 /datum/unit_test/json_savefiles/proc/setup()
+	procstart = null
+	src.procstart = null
 	var/path_byond_file = "data/json_savefile_test.sav"
 	var/path_json_file = "data/json_savefile_test.json"
 	if(fexists(path_byond_file))
@@ -34,6 +36,8 @@
 	test_savefile["var_string"] << var_string
 
 /datum/unit_test/json_savefiles/Run()
+	procstart = null
+	src.procstart = null
 	setup()
 
 	// first, we import the file to json

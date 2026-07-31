@@ -9,13 +9,19 @@
 	var/turf/bottom_of_the_hill
 
 /datum/component/sisyphus_awarder/Initialize()
+	procstart = null
+	src.procstart = null
 	if (!istype(parent, /obj/item/boulder))
 		return COMPONENT_INCOMPATIBLE
 
 /datum/component/sisyphus_awarder/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ITEM_POST_EQUIPPED, PROC_REF(on_picked_up))
 
 /datum/component/sisyphus_awarder/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ITEM_POST_EQUIPPED, COMSIG_MOVABLE_MOVED))
 	if (!isnull(sisyphus))
 		UnregisterSignal(sisyphus, list(COMSIG_ENTER_AREA, COMSIG_QDELETING))
@@ -23,6 +29,8 @@
 
 /// Called when we're picked up, check if we're in the right place to start our epic journey
 /datum/component/sisyphus_awarder/proc/on_picked_up(atom/source, mob/living/the_taker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!istype(get_area(the_taker), /area/lavaland))
 		qdel(src)
@@ -36,11 +44,15 @@
 
 /// If you ever drop this shit you fail the challenge
 /datum/component/sisyphus_awarder/proc/on_dropped()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src) // Your quest ends here
 
 /// If we changed area see if we arrived
 /datum/component/sisyphus_awarder/proc/on_bearer_changed_area(mob/living/chosen_one, area/entered_area)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/atom_parent = parent
 	if (atom_parent.loc != chosen_one)
@@ -56,6 +68,8 @@
 
 /// Sends the player back to the Lavaland and plays a funny sound
 /datum/component/sisyphus_awarder/proc/play_reward_scene()
+	procstart = null
+	src.procstart = null
 	if(isnull(bottom_of_the_hill))
 		return // This probably shouldn't happen, but...
 

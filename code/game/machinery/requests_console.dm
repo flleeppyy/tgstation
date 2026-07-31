@@ -61,6 +61,8 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 	acid = 90
 
 /obj/machinery/requests_console/update_appearance(updates=ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & NOPOWER)
 		set_light(0)
@@ -68,6 +70,8 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 	set_light(1.5, 0.7, "#34D352")//green light
 
 /obj/machinery/requests_console/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!open)
 		. += span_notice("It looks like you can pry open the panel with <b>a crowbar</b>.")
@@ -78,6 +82,8 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 		. += span_warning("The console seems to have been tampered with!")
 
 /obj/machinery/requests_console/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(open)
@@ -101,6 +107,8 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 	. += emissive_appearance(icon, screen_state, src, alpha = src.alpha)
 
 /obj/machinery/requests_console/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Init by checking our area, stolen from APC code
@@ -132,6 +140,8 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 		find_and_mount_on_atom()
 
 /obj/machinery/requests_console/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(messages)
 	GLOB.req_console_all -= src
 
@@ -143,6 +153,8 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 	return ..()
 
 /obj/machinery/requests_console/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(open)
 		return
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -152,6 +164,8 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 		ui.open()
 
 /obj/machinery/requests_console/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -347,6 +361,8 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 
 ///Sends the message from the request console
 /obj/machinery/requests_console/proc/send_message(recipient, message, priority, request_type)
+	procstart = null
+	src.procstart = null
 	var/radio_channel
 	// They all naming them wrong, all the time... I'll probably rewrite this later in separate PR.
 	// Automatically from areas or via mapping helpers. (ther is no "Cargobay Request Console" in any map)
@@ -388,6 +404,8 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 	message_verified_by = ""
 
 /obj/machinery/requests_console/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["is_admin_ghost_ai"] = isAdminGhostAI(user)
 	data["can_send_announcements"] = can_send_announcements
@@ -423,6 +441,8 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 
 
 /obj/machinery/requests_console/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["assistance_consoles"] = GLOB.req_console_assistance - department
@@ -432,6 +452,8 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 	return data
 
 /obj/machinery/requests_console/say_mod(input, list/message_mods = list())
+	procstart = null
+	src.procstart = null
 	if(spantext_char(input, "!", -3))
 		return "blares"
 	else
@@ -439,15 +461,21 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 
 /// Turns the emergency console back to its normal sprite once the emergency has timed out
 /obj/machinery/requests_console/proc/clear_emergency()
+	procstart = null
+	src.procstart = null
 	emergency = null
 	update_appearance()
 
 /// Updates the UI for all viewers
 /obj/machinery/requests_console/proc/ui_update()
+	procstart = null
+	src.procstart = null
 	SStgui.update_uis(src)
 
 /// From message_server.dm: Console.create_message(data)
 /obj/machinery/requests_console/proc/create_message(data)
+	procstart = null
+	src.procstart = null
 
 	var/datum/request_message/new_message = new(data)
 
@@ -494,6 +522,8 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 			), null, list(new_message.radio_channel), announcement_line, new_message.priority == REQ_EXTREME_MESSAGE_PRIORITY)
 
 /obj/machinery/requests_console/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(src, 50)
 	if(open)
 		to_chat(user, span_notice("You close the maintenance panel."))
@@ -505,6 +535,8 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 	return TRUE
 
 /obj/machinery/requests_console/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(open)
 		hack_state = !hack_state
 		if(hack_state)
@@ -518,6 +550,8 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 	return TRUE
 
 /obj/machinery/requests_console/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/id/card = tool.GetID()
 	if(card)
 		message_verified_by = "[card.registered_name] ([card.assignment])"
@@ -531,6 +565,8 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 	return NONE
 
 /obj/machinery/requests_console/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	new /obj/item/wallframe/requests_console(loc)
 
 /obj/machinery/requests_console/auto_name // Register an autoname variant and then make the directional helpers before undefing all the magic bits
@@ -562,6 +598,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console/auto_name, 30)
 	)
 
 /datum/aas_config_entry/rc_emergency/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// If RETA enabled change config lines to include RETA info
 	if(CONFIG_GET(flag/reta_enabled))
@@ -585,6 +623,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console/auto_name, 30)
 		)
 
 /datum/aas_config_entry/rc_emergency/compile_announce(list/variables_map, announcement_line)
+	procstart = null
+	src.procstart = null
 	if (!variables_map["CALLER"])
 		variables_map["CALLER"] = "(Caller placeholder)"
 
@@ -615,6 +655,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console/auto_name, 30)
 	)
 
 /datum/aas_config_entry/rc_reta_announcement/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// If RETA disabled - we should be down
 	if(!CONFIG_GET(flag/reta_enabled))
@@ -623,6 +665,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console/auto_name, 30)
 		modifiable = FALSE
 
 /datum/aas_config_entry/rc_reta_announcement/compile_announce(list/variables_map, announcement_line)
+	procstart = null
+	src.procstart = null
 	if (!variables_map["CALLER"])
 		variables_map["CALLER"] = "(Caller placeholder)"
 	var/list/exploded_string = splittext_char(..(), "(Caller placeholder)")

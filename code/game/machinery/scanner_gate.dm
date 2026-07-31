@@ -81,6 +81,8 @@
 	var/obj/effect/overlay/scanline = null
 
 /obj/machinery/scanner_gate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_wires(new /datum/wires/scanner_gate(src))
 	set_scanline("passive")
@@ -92,19 +94,27 @@
 	register_context()
 
 /obj/machinery/scanner_gate/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(scanline)
 	return ..()
 
 /obj/machinery/scanner_gate/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/stock_part/scanning_module/scanning_module in component_parts)
 		minus_false_beep = scanning_module.tier //The better are scanninning modules - the lower is chance of False Positives
 
 /obj/machinery/scanner_gate/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	scanline?.setDir(newdir)
 
 /obj/machinery/scanner_gate/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	. += span_notice("It's set to scan for [span_boldnotice(scangate_mode)].")
@@ -114,14 +124,20 @@
 		. += span_notice("The control panel is unlocked. Swipe an ID to lock it.")
 
 /obj/machinery/scanner_gate/proc/on_entered(datum/source, atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(auto_scan), thing)
 
 /obj/machinery/scanner_gate/proc/auto_scan(atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	if(!(machine_stat & (BROKEN|NOPOWER)) && anchored && !panel_open)
 		perform_scan(thing)
 
 /obj/machinery/scanner_gate/proc/set_scanline(scanline_type, duration)
+	procstart = null
+	src.procstart = null
 	if (!isnull(scanline))
 		vis_contents -= scanline
 	else
@@ -140,6 +156,8 @@
 		scanline_timer = addtimer(CALLBACK(src, PROC_REF(set_scanline), "passive"), duration, TIMER_STOPPABLE)
 
 /obj/machinery/scanner_gate/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (machine_stat & (NOPOWER | BROKEN))
 		set_scanline(null)
@@ -147,6 +165,8 @@
 	set_scanline("passive")
 
 /obj/machinery/scanner_gate/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(panel_open && is_wire_tool(tool))
 		wires.interact(user)
 		return ITEM_INTERACT_SUCCESS
@@ -174,13 +194,19 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/scanner_gate/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return locked ? NONE : default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/scanner_gate/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]_open" : base_icon_state
 
 /obj/machinery/scanner_gate/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	locked = FALSE
@@ -190,6 +216,8 @@
 	return TRUE
 
 /obj/machinery/scanner_gate/proc/perform_scan(atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	var/beep = FALSE
 	var/color = null
 	var/detected_thing = null
@@ -286,6 +314,8 @@
 	use_energy(active_power_usage)
 
 /obj/machinery/scanner_gate/proc/alarm_beep(detected_thing)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, next_beep))
 		return
 
@@ -297,17 +327,23 @@
 	set_scanline("alarm", 2 SECONDS)
 
 /obj/machinery/scanner_gate/can_interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		return FALSE
 	return ..()
 
 /obj/machinery/scanner_gate/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ScannerGate", name)
 		ui.open()
 
 /obj/machinery/scanner_gate/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/species_id in available_species)
 		var/datum/species/specie = GLOB.species_list[species_id]
@@ -317,6 +353,8 @@
 		))
 
 /obj/machinery/scanner_gate/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["locked"] = locked
 	data["scan_mode"] = scangate_mode
@@ -328,6 +366,8 @@
 	return data
 
 /obj/machinery/scanner_gate/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

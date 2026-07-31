@@ -4,6 +4,8 @@ GLOBAL_PROTECT(exp_to_update)
 #define IS_XP_LOCKED(job) (exp_requirements && ((exp_required_type_department && CONFIG_GET(flag/use_exp_restrictions_heads)) || (exp_required_type && CONFIG_GET(flag/use_exp_restrictions_other))))
 // Procs
 /datum/job/proc/required_playtime_remaining(client/C)
+	procstart = null
+	src.procstart = null
 	if(!C)
 		return 0
 	if(!CONFIG_GET(flag/use_exp_tracking))
@@ -27,6 +29,8 @@ GLOBAL_PROTECT(exp_to_update)
 
 
 /datum/job/proc/get_exp_req_amount()
+	procstart = null
+	src.procstart = null
 	if(exp_required_type_department)
 		var/uerhh = CONFIG_GET(number/use_exp_restrictions_heads_hours)
 		if(uerhh)
@@ -35,12 +39,16 @@ GLOBAL_PROTECT(exp_to_update)
 
 
 /datum/job/proc/get_exp_req_type()
+	procstart = null
+	src.procstart = null
 	if(exp_required_type_department && CONFIG_GET(flag/use_exp_restrictions_heads_department))
 		return exp_required_type_department
 	return exp_required_type
 
 
 /client/proc/calc_exp_type(exptype)
+	procstart = null
+	src.procstart = null
 	var/list/job_list = SSjob.experience_jobs_map[exptype]
 	if(!job_list)
 		return -1
@@ -51,12 +59,16 @@ GLOBAL_PROTECT(exp_to_update)
 
 
 /client/proc/get_exp_living(pure_numeric = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!prefs.exp || !prefs.exp[EXP_TYPE_LIVING])
 		return pure_numeric ? 0 : "No data"
 	var/exp_living = text2num(prefs.exp[EXP_TYPE_LIVING])
 	return pure_numeric ? exp_living : get_exp_format(exp_living)
 
 /proc/get_exp_format(expnum)
+	procstart = null
+	src.procstart = null
 	if(expnum > 60)
 		return num2text(round(expnum / 60)) + "h"
 	else if(expnum > 0)
@@ -65,6 +77,8 @@ GLOBAL_PROTECT(exp_to_update)
 		return "0h"
 
 /datum/controller/subsystem/blackbox/proc/update_exp(mins)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		return -1
 	for(var/client/L in GLOB.clients)
@@ -73,6 +87,8 @@ GLOBAL_PROTECT(exp_to_update)
 		L.update_exp_list(mins)
 
 /datum/controller/subsystem/blackbox/proc/update_exp_db()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	var/list/old_minutes = GLOB.exp_to_update
 	GLOB.exp_to_update = null
@@ -80,6 +96,8 @@ GLOBAL_PROTECT(exp_to_update)
 
 //resets a client's exp to what was in the db.
 /client/proc/set_exp_from_db()
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(flag/use_exp_tracking))
 		return -1
 	if(!SSdbcore.Connect())
@@ -107,6 +125,8 @@ GLOBAL_PROTECT(exp_to_update)
 
 //updates player db flags
 /client/proc/update_flag_db(newflag, state = FALSE)
+	procstart = null
+	src.procstart = null
 
 	if(!SSdbcore.Connect())
 		return -1
@@ -144,6 +164,8 @@ GLOBAL_PROTECT(exp_to_update)
  * * minutes - The number of minutes to add to the playtime tally.
  */
 /client/proc/update_exp_list(minutes)
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(flag/use_exp_tracking))
 		return -1
 	if(!SSdbcore.Connect())
@@ -188,6 +210,8 @@ GLOBAL_PROTECT(exp_to_update)
 
 //ALWAYS call this at beginning to any proc touching player flags, or your database admin will probably be mad
 /client/proc/set_db_player_flags()
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		return FALSE
 

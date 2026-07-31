@@ -14,6 +14,8 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/e
 	var/particle_type
 
 /datum/component/burning/Initialize(fire_overlay = GLOB.fire_overlay, fire_particles = /particles/smoke/burning)
+	procstart = null
+	src.procstart = null
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 	var/atom/atom_parent = parent
@@ -38,6 +40,8 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/e
 	START_PROCESSING(SSburning, src)
 
 /datum/component/burning/Destroy(force)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSburning, src)
 	fire_overlay = null
 	if(particle_effect)
@@ -48,6 +52,8 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/e
 	return ..()
 
 /datum/component/burning/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_ATTACK_HAND, PROC_REF(on_attack_hand))
 	RegisterSignal(parent, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(on_update_overlays))
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
@@ -57,6 +63,8 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/e
 	atom_parent.update_appearance()
 
 /datum/component/burning/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ATOM_ATTACK_HAND,
 		COMSIG_ATOM_UPDATE_OVERLAYS,
@@ -69,6 +77,8 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/e
 		atom_parent.update_appearance()
 
 /datum/component/burning/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/atom/atom_parent = parent
 	// Check if the parent somehow became fireproof, remove component if so
 	if(atom_parent.resistance_flags & FIRE_PROOF)
@@ -78,12 +88,16 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/e
 
 /// Alerts any examiners that the parent is on fire (even though it should be rather obvious)
 /datum/component/burning/proc/on_examine(atom/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += span_danger("[source.p_Theyre()] burning!")
 
 /// Handles searing the hand of anyone who tries to touch parent without protection.
 /datum/component/burning/proc/on_attack_hand(atom/source, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!iscarbon(user) || user.can_touch_burning(source))
@@ -99,6 +113,8 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/e
 
 /// Maintains the burning overlay on the parent atom
 /datum/component/burning/proc/on_update_overlays(atom/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	//most likely means the component is being removed
@@ -110,6 +126,8 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/e
 
 /// Deletes the component when the atom gets extinguished
 /datum/component/burning/proc/on_extinguish(atom/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(src)

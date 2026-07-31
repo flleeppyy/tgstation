@@ -20,6 +20,8 @@
 	VAR_PRIVATE/datum/component/chained_together/link_effect
 
 /datum/status_effect/cuffed_item/on_creation(mob/living/new_owner, obj/item/cuffed, obj/item/restraints/handcuffs/cuffs)
+	procstart = null
+	src.procstart = null
 	src.cuffed = cuffed
 	src.cuffs = cuffs
 	. = ..() //throws the alert and all
@@ -28,6 +30,8 @@
 	linked_alert.update_appearance(UPDATE_OVERLAYS)
 
 /datum/status_effect/cuffed_item/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.temporarilyRemoveItemFromInventory(cuffs, force = TRUE)
 	cuffed_to = owner.get_inactive_hand()
 	if(isnull(cuffed_to) || !update_link())
@@ -60,6 +64,8 @@
 	return TRUE
 
 /datum/status_effect/cuffed_item/on_remove()
+	procstart = null
+	src.procstart = null
 	//Prevent possible recursions from these signals
 	UnregisterSignal(cuffed, list(
 		COMSIG_ATOM_EXAMINE,
@@ -103,6 +109,8 @@
 
 ///Called when someone examines the owner twice, so they can know if someone has a cuffed item
 /datum/status_effect/cuffed_item/proc/on_examine_more(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += span_warning("There's [cuffed.examine_title(user)] bound to [owner.p_their()] \
@@ -110,6 +118,8 @@
 
 /// What happens if the limb we're cuffed to is removed?
 /datum/status_effect/cuffed_item/proc/cuffed_to_removed(datum/source, mob/living/carbon/owner, special)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// if special we will just wait for the new limb
 	if(special)
@@ -123,6 +133,8 @@
 
 /// Specifically if our cuffed limb is removed "specially", change it to the newly applied arm
 /datum/status_effect/cuffed_item/proc/new_cuffed_to_attached(datum/source, obj/item/bodypart/limb, special)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(limb, /obj/item/bodypart/arm))
@@ -136,6 +148,8 @@
 
 /// Check if we need to spawn the tether effect or not
 /datum/status_effect/cuffed_item/proc/check_for_link(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!update_link())
 		qdel(src)
@@ -143,6 +157,8 @@
 /// Updates our link and beam effect based on our state
 /// Returns TRUE if we are in a valid link state, FALSE otherwise
 /datum/status_effect/cuffed_item/proc/update_link()
+	procstart = null
+	src.procstart = null
 	// when held, we need no tether
 	if(cuffed.loc == owner)
 		return break_leash()
@@ -160,6 +176,8 @@
 
 /// Inits the leash and beam effect to the given target, cleaning up old ones if necessary
 /datum/status_effect/cuffed_item/proc/init_leash(atom/movable/leash_to)
+	procstart = null
+	src.procstart = null
 	if(link_effect)
 		if(link_effect.parent == leash_to)
 			return TRUE
@@ -178,6 +196,8 @@
 	return FALSE
 
 /datum/status_effect/cuffed_item/proc/break_leash()
+	procstart = null
+	src.procstart = null
 	link_effect?.parent.RemoveComponentSource(REF(src), /datum/component/chained_together)
 	if(QDELETED(link_effect))
 		link_effect = null
@@ -185,6 +205,8 @@
 
 // Delayed unequip after an invalid pickup. This sucks but I can't think of a better way around due to move order shenanigans
 /datum/status_effect/cuffed_item/proc/eject_item(mob/leash_to_mob)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || cuffed.loc != leash_to_mob)
 		return
 	if(!leash_to_mob.dropItemToGround(cuffed))
@@ -194,6 +216,8 @@
 
 /// Stops it from being stored anywhere
 /datum/status_effect/cuffed_item/proc/block_storage_insert(obj/item/source, atom/target_storage, mob/user, force, messages)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(messages)
 		target_storage.balloon_alert(user, "can't store [source.name] while cuffed!")
@@ -201,17 +225,23 @@
 
 /// Stops double cuff
 /datum/status_effect/cuffed_item/proc/block_item_cuff(obj/item/source, mob/cuffer, obj/item/cuffs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	source.balloon_alert(cuffer, "cuffed to someone else!")
 	return BLOCK_ITEM_CUFF
 
 ///What happens if one of the items is moved away from the mob
 /datum/status_effect/cuffed_item/proc/cleanup_effect(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 ///Tell the player that the item is stuck to their hands someway. Also another way to trigger the try_remove_cuffs proc.
 /datum/status_effect/cuffed_item/proc/cuffed_reminder(obj/item/item, mob/user, list/examine_texts)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(user == owner)
@@ -219,16 +249,22 @@
 
 /// This mainly exists as a fallback in the rare case the alert icon is not reachable (too many alerts?). You should be somewhat able to examine items while blind so all good.
 /datum/status_effect/cuffed_item/proc/topic_handler(atom/source, user, href_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(user == owner && href_list["remove_cuffs_item"])
 		INVOKE_ASYNC(src, PROC_REF(try_remove_cuffs), user)
 
 /datum/status_effect/cuffed_item/proc/get_strippable_action(obj/item/source, atom/owner, mob/user, list/alt_actions)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	alt_actions += "remove_item_cuffs"
 
 /datum/status_effect/cuffed_item/proc/do_strippable_action(obj/item/source, atom/owner, mob/user, action_key)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(action_key != "remove_item_cuffs")
 		return NONE
@@ -240,6 +276,8 @@
 
 ///The main proc responsible for attempting to remove the hancfuss.
 /datum/status_effect/cuffed_item/proc/try_remove_cuffs(mob/living/user)
+	procstart = null
+	src.procstart = null
 
 	var/interaction_key = REF(src)
 	if(LAZYACCESS(user.do_afters, interaction_key))
@@ -273,6 +311,8 @@
 
 ///Whenever the appearance of one of either cuffed or cuffs is updated, update the alert appearance
 /datum/status_effect/cuffed_item/proc/on_item_update_appearance(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	linked_alert.update_appearance(UPDATE_OVERLAYS)
 
@@ -285,6 +325,8 @@
 	click_master = FALSE
 
 /atom/movable/screen/alert/status_effect/cuffed_item/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!attached_effect)
 		return
@@ -295,6 +337,8 @@
 	. += cuffs_appearance
 
 /atom/movable/screen/alert/status_effect/cuffed_item/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		var/datum/status_effect/cuffed_item/effect = attached_effect
@@ -311,11 +355,15 @@
 	VAR_PRIVATE/datum/beam/beam_effect
 
 /datum/component/chained_together/on_source_add(source, atom/movable/chained_to)
+	procstart = null
+	src.procstart = null
 	// more sources are only allowed if they're chaining to the same thing
 	// having something linked to two different things is not supported now, and will break horribly
 	return chained_to_weakref?.resolve() == chained_to ? ..() : COMPONENT_REDUNDANT
 
 /datum/component/chained_together/Initialize(atom/movable/chained_to)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(parent) || !ismovable(chained_to))
 		return COMPONENT_INCOMPATIBLE
 
@@ -329,6 +377,8 @@
 	RegisterSignal(beam_effect, COMSIG_QDELETING, PROC_REF(recreate_beam))
 
 /datum/component/chained_together/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(beam_effect, COMSIG_QDELETING)
 	UnregisterSignal(link_effect, COMSIG_QDELETING)
 	UnregisterSignal(tug_effect, COMSIG_QDELETING)
@@ -341,6 +391,8 @@
 	return ..()
 
 /datum/component/chained_together/proc/recreate_beam(datum/beam/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(beam_effect, COMSIG_QDELETING)
@@ -349,5 +401,7 @@
 	RegisterSignal(beam_effect, COMSIG_QDELETING, PROC_REF(recreate_beam))
 
 /datum/component/chained_together/proc/delete_self(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)

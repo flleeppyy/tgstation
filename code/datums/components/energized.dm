@@ -17,6 +17,8 @@
 	var/datum/weakref/transport_ref
 
 /datum/component/energized/Initialize(plate_inbound, plate_outbound, plate_transport_id)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isnull(plate_inbound))
@@ -34,21 +36,29 @@
 	find_tram()
 
 /datum/component/energized/proc/find_tram()
+	procstart = null
+	src.procstart = null
 	for(var/datum/transport_controller/linear/transport as anything in SStransport.transports_by_type[TRANSPORT_TYPE_TRAM])
 		if(transport.specific_transport_id == specific_transport_id)
 			transport_ref = WEAKREF(transport)
 			break
 
 /datum/component/energized/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_ATOM_ENTERED, PROC_REF(toast))
 
 /datum/component/energized/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_ATOM_ENTERED)
 	return ..()
 
 
 /datum/component/energized/proc/toast(turf/open/floor/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(arrived))

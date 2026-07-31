@@ -55,6 +55,8 @@
 	var/is_mirror = FALSE
 
 /mob/living/simple_animal/hostile/asteroid/elite/herald/death()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!is_mirror)
 		addtimer(CALLBACK(src, PROC_REF(become_ghost)), 0.8 SECONDS)
@@ -62,9 +64,13 @@
 		qdel(my_mirror)
 
 /mob/living/simple_animal/hostile/asteroid/elite/herald/proc/become_ghost()
+	procstart = null
+	src.procstart = null
 	icon_state = "herald_ghost"
 
 /mob/living/simple_animal/hostile/asteroid/elite/herald/send_speech(message_raw, message_range, obj/source, bubble_type, list/spans, datum/language/message_language, list/message_mods, forced, tts_message, list/tts_filter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_UNCONSCIOUS_OR_CRIT(src))
 		return
@@ -95,6 +101,8 @@
 	chosen_attack_num = HERALD_MIRROR
 
 /mob/living/simple_animal/hostile/asteroid/elite/herald/OpenFire()
+	procstart = null
+	src.procstart = null
 	if(client)
 		switch(chosen_attack)
 			if(HERALD_TRISHOT)
@@ -130,6 +138,8 @@
 			herald_mirror()
 
 /mob/living/simple_animal/hostile/asteroid/elite/herald/proc/shoot_projectile(turf/marker, set_angle, is_teleshot, is_trishot)
+	procstart = null
+	src.procstart = null
 	var/turf/startloc = get_turf(src)
 	var/obj/projectile/herald/H = null
 	if(!is_teleshot)
@@ -146,6 +156,8 @@
 		shoot_projectile(marker, set_angle - 15, FALSE, FALSE)
 
 /mob/living/simple_animal/hostile/asteroid/elite/herald/proc/herald_trishot(target)
+	procstart = null
+	src.procstart = null
 	ranged_cooldown = world.time + 30
 	playsound(get_turf(src), 'sound/effects/magic/clockwork/invoke_general.ogg', 20, TRUE)
 	var/target_turf = get_turf(target)
@@ -160,16 +172,22 @@
 		addtimer(CALLBACK(src, PROC_REF(shoot_projectile), target_turf, angle_to_target, FALSE, TRUE), 1.4 SECONDS)
 
 /mob/living/simple_animal/hostile/asteroid/elite/herald/proc/herald_circleshot(offset)
+	procstart = null
+	src.procstart = null
 	var/static/list/directional_shot_angles = list(0, 45, 90, 135, 180, 225, 270, 315)
 	for(var/i in directional_shot_angles)
 		shoot_projectile(get_turf(src), i + offset, FALSE, FALSE)
 
 /mob/living/simple_animal/hostile/asteroid/elite/herald/proc/unenrage()
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD || is_mirror)
 		return
 	icon_state = "herald"
 
 /mob/living/simple_animal/hostile/asteroid/elite/herald/proc/herald_directionalshot()
+	procstart = null
+	src.procstart = null
 	ranged_cooldown = world.time + 3 SECONDS
 	if(!is_mirror)
 		icon_state = "herald_enraged"
@@ -181,6 +199,8 @@
 	addtimer(CALLBACK(src, PROC_REF(unenrage)), 2 SECONDS)
 
 /mob/living/simple_animal/hostile/asteroid/elite/herald/proc/herald_teleshot(target)
+	procstart = null
+	src.procstart = null
 	ranged_cooldown = world.time + 30
 	playsound(get_turf(src), 'sound/effects/magic/clockwork/invoke_general.ogg', 20, TRUE)
 	var/target_turf = get_turf(target)
@@ -188,6 +208,8 @@
 	shoot_projectile(target_turf, angle_to_target, TRUE, FALSE)
 
 /mob/living/simple_animal/hostile/asteroid/elite/herald/proc/herald_mirror()
+	procstart = null
+	src.procstart = null
 	ranged_cooldown = world.time + 4 SECONDS
 	playsound(get_turf(src), 'sound/effects/magic/clockwork/invoke_general.ogg', 20, TRUE)
 	if(my_mirror != null)
@@ -215,11 +237,15 @@
 	var/mob/living/simple_animal/hostile/asteroid/elite/herald/my_master = null
 
 /mob/living/simple_animal/hostile/asteroid/elite/herald/mirror/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_flying)
 	toggle_ai(AI_OFF)
 
 /mob/living/simple_animal/hostile/asteroid/elite/herald/mirror/Destroy()
+	procstart = null
+	src.procstart = null
 	if(my_master != null)
 		my_master.my_mirror = null
 	. = ..()
@@ -234,10 +260,14 @@
 	pass_flags = PASSTABLE
 
 /obj/projectile/herald/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/parriable_projectile)
 
 /obj/projectile/herald/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	if(ismob(target) && ismob(firer))
 		var/mob/living/mob_target = target
 		if(mob_target.faction_check_atom(firer))
@@ -254,6 +284,8 @@
 	color = rgb(255,255,102)
 
 /obj/projectile/herald/teleshot/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!QDELETED(firer))
 		firer.forceMove(get_turf(src))
@@ -269,11 +301,15 @@
 	hit_reaction_chance = 20
 
 /obj/item/clothing/neck/cloak/herald_cloak/proc/reactionshot(mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	var/static/list/directional_shot_angles = list(0, 45, 90, 135, 180, 225, 270, 315)
 	for(var/i in directional_shot_angles)
 		shoot_projectile(get_turf(owner), i, owner)
 
 /obj/item/clothing/neck/cloak/herald_cloak/proc/shoot_projectile(turf/marker, set_angle, mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	var/turf/startloc = get_turf(owner)
 	var/obj/projectile/herald/H = null
 	H = new /obj/projectile/herald(startloc)
@@ -282,6 +318,8 @@
 	H.fire(set_angle)
 
 /obj/item/clothing/neck/cloak/herald_cloak/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(hit_reaction_chance))
 		return

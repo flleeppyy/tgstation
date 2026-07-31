@@ -13,6 +13,8 @@
 
 //The code execution of the emote datum is located at code/datums/emotes.dm
 /mob/proc/emote(act, type_override =  NONE, message = null, intentional = FALSE, force_silence = FALSE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	var/param = message
 	var/custom_param = findchar(act, " ")
 	if(custom_param)
@@ -49,6 +51,8 @@
 	mob_type_ignore_stat_typecache = list(/mob/dead/observer, /mob/living/silicon/ai, /mob/eye/imaginary_friend)
 
 /datum/emote/help/run_emote(mob/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/keys = list()
 	var/list/message = list("Available emotes, you can use them with say [span_bold("\"*emote\"")]: \n")
@@ -86,10 +90,14 @@
 	var/clockwise_spin = TRUE
 
 /datum/emote/flip/run_emote(mob/user, params , type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.SpinAnimation(FLIP_EMOTE_DURATION, 1, clockwise = clockwise_spin)
 
 /datum/emote/flip/check_cooldown(mob/user, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -125,10 +133,14 @@
 	mob_type_ignore_stat_typecache = list(/mob/dead/observer, /mob/eye/imaginary_friend)
 
 /datum/emote/spin/run_emote(mob/user, params,  type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.spin(20, 1)
 
 /datum/emote/spin/check_cooldown(mob/living/carbon/user, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -163,6 +175,8 @@
 	affected_by_pitch = FALSE
 
 /datum/emote/jump/run_emote(mob/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	jump_animation(user)
@@ -173,15 +187,21 @@
 		squeeze_box.flatten_box()
 
 /datum/emote/jump/proc/jump_animation(mob/user)
+	procstart = null
+	src.procstart = null
 	var/original_transform = user.transform
 	animate(user, transform = user.transform.Translate(0, 4), time = 0.1 SECONDS, flags = ANIMATION_PARALLEL)
 	animate(transform = original_transform, time = 0.1 SECONDS)
 
 /datum/emote/jump/get_sound(mob/user)
+	procstart = null
+	src.procstart = null
 	return 'sound/items/weapons/thudswoosh.ogg'
 
 // Avoids playing sounds if we're a ghost
 /datum/emote/jump/should_play_sound(mob/user, intentional)
+	procstart = null
+	src.procstart = null
 	if(isliving(user))
 		return ..()
 	return FALSE

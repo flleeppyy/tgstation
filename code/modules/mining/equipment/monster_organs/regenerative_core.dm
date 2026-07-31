@@ -13,6 +13,8 @@
 	icon_state_inert = "hivelord_core_decayed"
 
 /obj/item/organ/monster_core/regenerative_core/preserve(implanted = FALSE)
+	procstart = null
+	src.procstart = null
 	if (implanted)
 		SSblackbox.record_feedback("nested tally", "hivelord_core", 1, list("[type]", "implanted"))
 	else
@@ -20,22 +22,30 @@
 	return ..()
 
 /obj/item/organ/monster_core/regenerative_core/go_inert()
+	procstart = null
+	src.procstart = null
 	. = .. ()
 	if (!.)
 		return
 	SSblackbox.record_feedback("nested tally", "hivelord_core", 1, list("[type]", "inert"))
 
 /obj/item/organ/monster_core/regenerative_core/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (owner.health <= owner.crit_threshold)
 		trigger_organ_action(TRIGGER_FORCE_AVAILABLE)
 
 /obj/item/organ/monster_core/regenerative_core/on_triggered_internal()
+	procstart = null
+	src.procstart = null
 	owner.revive(HEAL_ALL & ~HEAL_REFRESH_ORGANS)
 	qdel(src)
 
 /// Log applications and apply moodlet.
 /obj/item/organ/monster_core/regenerative_core/apply_to(mob/living/target, mob/user)
+	procstart = null
+	src.procstart = null
 	target.add_mood_event("legion_core", /datum/mood_event/healsbadman)
 	if (target != user)
 		target.visible_message(span_notice("[user] forces [target] to apply [src]... Black tendrils entangle and reinforce [target.p_them()]!"))

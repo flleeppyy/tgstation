@@ -11,6 +11,8 @@
 	priority = TEST_LONGER
 
 /datum/unit_test/firedoor_regions/Run()
+	procstart = null
+	src.procstart = null
 	var/list/detected_turfs = list()
 	var/any_fail = FALSE
 	var/datum/callback/room_cb = CALLBACK(src, PROC_REF(check_fire_area_callback))
@@ -25,6 +27,8 @@
 		Add a fire alarm, or mark the region as ignored with a firealarm_sanity landmark if intentional.")
 
 /datum/unit_test/firedoor_regions/proc/check_fire_area(obj/machinery/door/firedoor/firedoor, datum/callback/room_cb, list/already_detected_turfs)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	for(var/turf/open/nearby as anything in get_adjacent_open_turfs(firedoor))
 		if(nearby in already_detected_turfs)
@@ -49,12 +53,16 @@
 	return .
 
 /datum/unit_test/firedoor_regions/proc/is_fire_alarm_in_list_of_turfs(list/all_turfs)
+	procstart = null
+	src.procstart = null
 	for(var/turf/open/turf_to_check as anything in all_turfs)
 		if(locate(/obj/machinery/firealarm) in turf_to_check)
 			return TRUE
 	return FALSE
 
 /datum/unit_test/firedoor_regions/proc/check_fire_area_callback(turf/checking)
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/effect/landmark/firealarm_sanity) in checking)
 		return EXTRA_ROOM_CHECK_FAIL
 	if(locate(/obj/machinery/door/firedoor) in checking)

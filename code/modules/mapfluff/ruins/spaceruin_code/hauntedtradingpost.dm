@@ -88,6 +88,8 @@
 	init_mode = AQUARIUM_MODE_SAFE
 
 /obj/structure/aquarium/donkfish/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/aquarium_prop/rocks(src)
 	new /obj/item/aquarium_prop/seaweed(src)
@@ -119,6 +121,8 @@
 	desc = "A fragile holographic energy field projected by an AI core. It keeps unwanted humanoids at safe distance."
 
 /obj/structure/holosign/barrier/cyborg/cybersun_ai_shield/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload) //shouldnt queue when we arent even part of a ruin, probably admin shitspawned
 		SSqueuelinks.add_to_queue(src, SELFDESTRUCT_QUEUE)
@@ -131,6 +135,8 @@
 	var/donk_ai_slave = FALSE
 
 /obj/machinery/power/smes/magical/cybersun/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(donk_ai_slave)
 		SSqueuelinks.add_to_queue(src, SELFDESTRUCT_QUEUE)
@@ -159,6 +165,8 @@
 	var/suicide_pact_id
 
 /obj/machinery/button/door/invisible_tripwire/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(donk_ai_slave)
 		SSqueuelinks.add_to_queue(src, SELFDESTRUCT_QUEUE)
@@ -171,21 +179,29 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/machinery/button/door/invisible_tripwire/find_and_mount_on_atom(mark_for_late_init, late_init)
+	procstart = null
+	src.procstart = null
 	return //these exist independently on an turf
 
 /obj/machinery/button/door/invisible_tripwire/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!suicide_pact || isnull(SSqueuelinks.queues[suicide_pact_id]))
 		return // we got beat to it
 	SSqueuelinks.pop_link(suicide_pact_id)
 
 /obj/machinery/button/door/invisible_tripwire/MatchedLinks(id, list/partners)
+	procstart = null
+	src.procstart = null
 	if(id != suicide_pact_id)
 		return
 	for(var/partner in partners)
 		RegisterSignal(partner, COMSIG_PUZZLE_COMPLETED, TYPE_PROC_REF(/datum, selfdelete))
 
 /obj/machinery/button/door/invisible_tripwire/proc/on_entered(atom/source, atom/movable/victim)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isliving(victim))
 		return
@@ -198,6 +214,8 @@
 			addtimer(CALLBACK(src, PROC_REF(tripwire_triggered), victim), reset_timer)
 
 /obj/machinery/button/door/invisible_tripwire/proc/tripwire_triggered(atom/victim)
+	procstart = null
+	src.procstart = null
 	INVOKE_ASYNC(src, TYPE_PROC_REF(/atom, interact), victim)
 	if(multiuse && uses_remaining != 1)
 		return
@@ -211,6 +229,8 @@
 	skin = "-warning"
 
 /obj/machinery/button/door/selfdestructs/attempt_press(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	do_sparks(rand(1,3), src)
 	playsound(src, SFX_SPARKS, 100, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
@@ -263,6 +283,8 @@
 	var/machine_overload_damage = 80 //machine integrity is usually 200 or 300
 
 /obj/effect/overloader_trap/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	proximity_monitor = new(src, 0)
 	proximity_monitor?.set_range(trigger_range)
@@ -272,6 +294,8 @@
 		SSqueuelinks.add_to_queue(src, SELFDESTRUCT_QUEUE)
 
 /obj/effect/overloader_trap/HasProximity(mob/living/target as mob)
+	procstart = null
+	src.procstart = null
 	if(!locate(host_machine) in loc) //muh machine's gone, delete myself because im disarmed
 		qdel(src)
 		return
@@ -289,6 +313,8 @@
 		trap_alerted()
 
 /obj/effect/overloader_trap/proc/trap_alerted()
+	procstart = null
+	src.procstart = null
 	if(host_machine in loc) //if someone breaks or moves the machine before the trap goes off, this should fail to do anything
 		visible_message(span_boldwarning("Sparks fly from [host_machine] as it shakes vigorously!"))
 		do_sparks(number = 3, source = host_machine)
@@ -296,6 +322,8 @@
 		addtimer(CALLBACK(src, PROC_REF(trap_effect)), trigger_delay)
 
 /obj/effect/overloader_trap/proc/trap_effect()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/living_mob in range(shock_range, src))
 		if(faction_check_atom(living_mob))
 			continue

@@ -20,10 +20,14 @@
 	var/max_range = 1
 
 /obj/item/circuit_component/id_info_reader/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("Maximum Range: [max_range] tiles.", "orange", "info")
 
 /obj/item/circuit_component/id_info_reader/populate_ports()
+	procstart = null
+	src.procstart = null
 	target = add_input_port("Target", PORT_TYPE_ATOM)
 	name_port = add_output_port("Name", PORT_TYPE_STRING)
 	rank_port = add_output_port("Rank", PORT_TYPE_STRING)
@@ -31,6 +35,8 @@
 
 
 /obj/item/circuit_component/id_info_reader/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/id/target_item = target.value
 	var/turf/current_turf = get_location()
 	var/turf/target_turf = get_turf(target_item)

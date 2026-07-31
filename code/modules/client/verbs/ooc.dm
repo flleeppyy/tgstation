@@ -128,6 +128,8 @@ GAME_VERB(/client, ooc, VERB_OOC, null, msg as text)
 
 
 /proc/toggle_ooc(toggle = null)
+	procstart = null
+	src.procstart = null
 	if(toggle != null) //if we're specifically en/disabling ooc
 		if(toggle != GLOB.ooc_allowed)
 			GLOB.ooc_allowed = toggle
@@ -138,6 +140,8 @@ GAME_VERB(/client, ooc, VERB_OOC, null, msg as text)
 	to_chat(world, "<span class='oocplain'><B>The OOC channel has been globally [GLOB.ooc_allowed ? "enabled" : "disabled"].</B></span>")
 
 /proc/toggle_dooc(toggle = null)
+	procstart = null
+	src.procstart = null
 	if(toggle != null)
 		if(toggle != GLOB.dooc_allowed)
 			GLOB.dooc_allowed = toggle
@@ -385,6 +389,8 @@ GAME_VERB_DESC(/client, fit_viewport, "Fit Viewport", "Fit the width of the map 
 
 /// Attempt to automatically fit the viewport, assuming the user wants it
 /client/proc/attempt_auto_fit_viewport()
+	procstart = null
+	src.procstart = null
 	if (!prefs?.read_preference(/datum/preference/toggle/auto_fit_viewport))
 		return
 	// No need to attempt to fit the viewport on non-initialized clients as they'll auto-fit viewport right before finishing init
@@ -451,6 +457,8 @@ GAME_VERB_DESC(/client, linkforumaccount, "Link Forum Account", "Validates your 
 	src << link("[uri]?token=[token]")
 
 /client/proc/generate_account_link_token()
+	procstart = null
+	src.procstart = null
 	var/static/entropychain
 	if (!entropychain)
 		if (fexists("data/entropychain.txt"))
@@ -477,7 +485,11 @@ GAME_VERB_DESC(/client, linkforumaccount, "Link Forum Account", "Validates your 
 
 
 /client/proc/random_string()
+	procstart = null
+	src.procstart = null
 	return "SHA2(CONCAT(RAND(),UUID(),?,RAND(),UUID()), 512)"
 
 /client/proc/random_string_args(entropychain)
+	procstart = null
+	src.procstart = null
 	return "[entropychain][GUID()][rand()*rand(999999)][world.time][GUID()][rand()*rand(999999)][world.timeofday][GUID()][rand()*rand(999999)][world.realtime][GUID()][rand()*rand(999999)][time2text(world.timeofday)][GUID()][rand()*rand(999999)][world.tick_usage][computer_id][address][ckey][key][GUID()][rand()*rand(999999)]"

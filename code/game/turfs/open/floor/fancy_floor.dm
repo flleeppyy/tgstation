@@ -20,18 +20,26 @@
 	rust_resistance = RUST_RESISTANCE_BASIC
 
 /turf/open/floor/wood/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("wood-broken", "wood-broken2", "wood-broken3", "wood-broken4", "wood-broken5", "wood-broken6", "wood-broken7")
 
 /turf/open/floor/wood/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("There's a few <b>screws</b> and a <b>small crack</b> visible.")
 
 /turf/open/floor/wood/screwdriver_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 	return pry_tile(I, user) ? TRUE : FALSE
 
 /turf/open/floor/wood/try_replace_tile(obj/item/stack/tile/newtile, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(newtile.turf_type == type)
 		return
 	var/obj/item/tool = user.is_holding_tool_quality(TOOL_SCREWDRIVER)
@@ -45,10 +53,14 @@
 	bare_floor.base_item_interaction(user, newtile, modifiers)
 
 /turf/open/floor/wood/pry_tile(obj/item/C, mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	C.play_tool_sound(src, 80)
 	return remove_tile(user, silent, (C.tool_behaviour == TOOL_SCREWDRIVER))
 
 /turf/open/floor/wood/remove_tile(mob/user, silent = FALSE, make_tile = TRUE, force_plating)
+	procstart = null
+	src.procstart = null
 	if(broken || burnt)
 		broken = FALSE
 		burnt = FALSE
@@ -82,6 +94,8 @@
 	floor_tile = /obj/item/stack/tile/wood/tile
 
 /turf/open/floor/wood/tile/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("wood_tile-broken", "wood_tile-broken2", "wood_tile-broken3")
 
 /turf/open/floor/wood/parquet
@@ -89,6 +103,8 @@
 	floor_tile = /obj/item/stack/tile/wood/parquet
 
 /turf/open/floor/wood/parquet/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("wood_parquet-broken", "wood_parquet-broken2", "wood_parquet-broken3", "wood_parquet-broken4", "wood_parquet-broken5", "wood_parquet-broken6", "wood_parquet-broken7")
 
 /turf/open/floor/wood/large
@@ -96,6 +112,8 @@
 	floor_tile = /obj/item/stack/tile/wood/large
 
 /turf/open/floor/wood/large/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("wood_large-broken", "wood_large-broken2", "wood_large-broken3")
 
 /turf/open/floor/bamboo
@@ -114,6 +132,8 @@
 	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 
 /turf/open/floor/bamboo/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("bamboodamaged")
 
 /turf/open/floor/bamboo/tatami
@@ -124,6 +144,8 @@
 	smoothing_flags = NONE
 
 /turf/open/floor/bamboo/tatami/broken_states()
+	procstart = null
+	src.procstart = null
 	// This state doesn't exist why is it here?
 	return list("tatami-damaged")
 
@@ -152,9 +174,13 @@
 	rust_resistance = RUST_RESISTANCE_ORGANIC
 
 /turf/open/floor/grass/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("[initial(icon_state)]_damaged")
 
 /turf/open/floor/grass/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spawniconchange()
 	AddElement(/datum/element/diggable, /obj/item/stack/ore/glass, 2, worm_chance = 50, \
@@ -164,11 +190,15 @@
 	initial_gas_mix = AIRLESS_ATMOS
 
 /turf/open/floor/grass/proc/spawniconchange()
+	procstart = null
+	src.procstart = null
 	icon_state = "grass[rand(0,3)]"
 
 /turf/open/floor/grass/norandomicon
 
 /turf/open/floor/grass/norandomicon/spawniconchange()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/floor/grass/lavaland
@@ -180,6 +210,8 @@
 	damaged_dmi = 'icons/turf/damaged.dmi'
 
 /turf/open/floor/grass/lavaland/spawniconchange()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/floor/grass/fairy //like grass but fae-er
@@ -192,6 +224,8 @@
 	light_color = COLOR_BLUE_LIGHT
 
 /turf/open/floor/grass/fairy/spawniconchange()
+	procstart = null
+	src.procstart = null
 	icon_state = "fairygrass[rand(0,3)]"
 
 /turf/open/floor/hay
@@ -232,16 +266,24 @@
 
 
 /turf/open/floor/fake_snow/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/diggable, /obj/item/stack/tile/mineral/snow, 1, worm_chance = 0)
 
 /turf/open/floor/fake_snow/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("snow_dug")
 
 /turf/open/floor/fake_snow/try_replace_tile(obj/item/stack/tile/T, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/floor/fake_snow/crowbar_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/floor/fakebasalt
@@ -259,6 +301,8 @@
 	tiled_turf = FALSE
 
 /turf/open/floor/fakebasalt/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/diggable, /obj/item/stack/ore/glass/basalt, 2, worm_chance = 0)
 	if(prob(15))
@@ -289,14 +333,20 @@
 	rust_resistance = RUST_RESISTANCE_BASIC
 
 /turf/open/floor/carpet/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("There's a <b>small crack</b> on the edge of it.")
 
 /turf/open/floor/carpet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /turf/open/floor/carpet/update_icon(updates=ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !(updates & UPDATE_SMOOTHING))
 		return
@@ -453,6 +503,8 @@
 	initial_gas_mix = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/narsie_act(force, ignore_mobs, probability = 20)
+	procstart = null
+	src.procstart = null
 	. = (prob(probability) || force)
 	for(var/I in src)
 		var/atom/A = I
@@ -462,14 +514,20 @@
 			A.narsie_act()
 
 /turf/open/floor/carpet/break_tile()
+	procstart = null
+	src.procstart = null
 	broken = TRUE
 	update_appearance()
 
 /turf/open/floor/carpet/burn_tile()
+	procstart = null
+	src.procstart = null
 	burnt = TRUE
 	update_appearance()
 
 /turf/open/floor/carpet/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// An emissive turf used to test emissive turfs.
@@ -479,10 +537,14 @@
 	floor_tile = /obj/item/stack/tile/emissive_test
 
 /turf/open/floor/emissive_test/smooth_icon()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(~UPDATE_SMOOTHING)
 
 /turf/open/floor/emissive_test/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance(icon, icon_state, src, alpha = src.alpha)
 
@@ -511,6 +573,8 @@
 	var/emissive_alpha = 150
 
 /turf/open/floor/carpet/neon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/decal, neon_icon || icon, neon_icon_state || base_icon_state, dir, null, null, alpha, neon_color, smoothing_junction)
 	AddElement(/datum/element/decal, neon_icon || icon, neon_icon_state || base_icon_state, dir, EMISSIVE_PLANE, null, emissive_alpha, null, smoothing_junction)
@@ -875,6 +939,8 @@
 	tiled_turf = FALSE
 
 /turf/open/floor/fakepit/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	underlay_appearance.icon = 'icons/turf/floors.dmi'
 	underlay_appearance.icon_state = "basalt"
 	return TRUE
@@ -889,6 +955,8 @@
 	desc = "Somehow, it is not melting under these conditions. Must be some very thick ice. Just as slippery too."
 
 /turf/open/floor/fakeice/slippery/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	MakeSlippery(TURF_WET_PERMAFROST, INFINITY, 0, INFINITY, TRUE)
 
@@ -902,8 +970,12 @@
 	damaged_dmi = 'icons/turf/space.dmi'
 
 /turf/open/floor/fakespace/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("damaged")
 
 /turf/open/floor/fakespace/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	generate_space_underlay(underlay_appearance, asking_turf)
 	return TRUE

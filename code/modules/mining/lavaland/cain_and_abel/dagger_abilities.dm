@@ -9,6 +9,8 @@
 	check_flags = AB_CHECK_INCAPACITATED | AB_CHECK_HANDS_BLOCKED | AB_CHECK_CONSCIOUS
 
 /datum/action/cooldown/dagger_swing/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_owner = owner
 	var/obj/item/cain_and_abel/cain_and_abel = target
 

@@ -2,6 +2,8 @@
 /datum/unit_test/oxyloss_suffocation
 
 /datum/unit_test/oxyloss_suffocation/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 
 	dummy.set_oxy_loss(75)

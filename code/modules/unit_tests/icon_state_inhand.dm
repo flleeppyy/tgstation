@@ -5,6 +5,8 @@
 	var/unset_inhand_var_message
 
 /datum/unit_test/missing_icons/inhand_icon_state/Run()
+	procstart = null
+	src.procstart = null
 	compile_icon_state_locations()
 
 	for(var/obj/item/item_path as anything in subtypesof(/obj/item))

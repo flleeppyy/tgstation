@@ -8,6 +8,8 @@
 	caliber = CALIBER_50BMG
 
 /obj/item/ammo_box/magazine/sniper_rounds/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state][ammo_count() ? "-ammo" : ""]"
 

@@ -4,6 +4,8 @@
  * Gets the flat list that can be passed in a `new /type(argslist(retval))` expression to recreate the datum. Must only return a list containing values that can be JATUM serialized
  */
 /datum/proc/jatum_new_arglist()
+	procstart = null
+	src.procstart = null
 	return null
 
 /// The JATUM version used for serializing and deserializing
@@ -15,6 +17,8 @@
  * * value - The var to serialize.
  */
 /world/proc/jatum_serialize(value)
+	procstart = null
+	src.procstart = null
 	var/list/json_structure
 	try
 		json_structure = _jatum_serialize_value(value, list())
@@ -27,6 +31,8 @@
 	))
 
 /world/proc/_jatum_serialize_value(value, list/seen_references)
+	procstart = null
+	src.procstart = null
 	if(isnull(value))
 		return null
 
@@ -138,6 +144,8 @@
  * * json - The JSON to deserialize.
  */
 /world/proc/jatum_deserialize(json)
+	procstart = null
+	src.procstart = null
 	if(!istext(json))
 		CRASH("Non-text passed!")
 
@@ -158,6 +166,8 @@
 		CRASH(e)
 
 /world/proc/_jatum_deserialize_value(list/structure, list/active_references)
+	procstart = null
+	src.procstart = null
 	if(!structure)
 		return null
 

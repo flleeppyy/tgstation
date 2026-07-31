@@ -11,28 +11,40 @@
 	var/static/gl_uid = 1
 
 /obj/machinery/atmospherics/components/unary/set_init_directions()
+	procstart = null
+	src.procstart = null
 	initialize_directions = dir
 
 /obj/machinery/atmospherics/components/unary/on_construction(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	update_appearance()
 
 /obj/machinery/atmospherics/components/unary/click_alt(mob/living/beno)
+	procstart = null
+	src.procstart = null
 	beno.handle_ventcrawl(src)
 	return CLICK_ACTION_SUCCESS
 
 
 /obj/machinery/atmospherics/components/unary/proc/assign_uid_vents()
+	procstart = null
+	src.procstart = null
 	uid = num2text(gl_uid++)
 	return uid
 
 /obj/machinery/atmospherics/components/unary/proc/change_pipe_connection(disconnect)
+	procstart = null
+	src.procstart = null
 	if(disconnect)
 		disconnect_pipes()
 		return
 	connect_pipes()
 
 /obj/machinery/atmospherics/components/unary/proc/connect_pipes()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/atmospherics/node1 = nodes[1]
 	atmos_init()
 	node1 = nodes[1]
@@ -42,6 +54,8 @@
 	SSair.add_to_rebuild_queue(src)
 
 /obj/machinery/atmospherics/components/unary/proc/disconnect_pipes()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/atmospherics/node1 = nodes[1]
 	if(node1)
 		if(src in node1.nodes) //Only if it's actually connected. On-pipe version would is one-sided.

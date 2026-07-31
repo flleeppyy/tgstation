@@ -31,6 +31,8 @@
 	var/escape_timer
 
 /obj/item/melee/sickly_blade/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!check_usability(user))
 		return
@@ -39,9 +41,13 @@
 
 /// Checks if the passed mob can use this blade without being stunned
 /obj/item/melee/sickly_blade/proc/check_usability(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return IS_HERETIC_OR_MONSTER(user)
 
 /obj/item/melee/sickly_blade/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -56,6 +62,8 @@
 	return .
 
 /obj/item/melee/sickly_blade/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/heretic/heretic_datum = GET_HERETIC(user)
 	if(heretic_datum?.unlimited_blades)
 		return
@@ -78,11 +86,15 @@
 	seek_safety(user)
 
 /obj/item/melee/sickly_blade/proc/reset_attempts()
+	procstart = null
+	src.procstart = null
 	escape_attempts = 0
 	deltimer(escape_timer)
 
 /// Attempts to teleport the passed mob to somewhere safe on the station, if they can use the blade.
 /obj/item/melee/sickly_blade/proc/seek_safety(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/safe_turf = find_safe_turf(z, extended_safety_checks = TRUE)
 	if(check_usability(user))
 		if(do_teleport(user, safe_turf, channel = TELEPORT_CHANNEL_MAGIC))
@@ -95,9 +107,13 @@
 	qdel(src)
 
 /obj/item/melee/sickly_blade/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(user, COMSIG_HERETIC_BLADE_ATTACK, target, src)
 
 /obj/item/melee/sickly_blade/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(user, COMSIG_HERETIC_RANGED_BLADE_ATTACK, interacting_with, src)
 	return ITEM_INTERACT_BLOCKING
 
@@ -130,6 +146,8 @@
 	after_use_message = "The Marshal hears your call..."
 
 /obj/item/melee/sickly_blade/flesh/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddComponent(
@@ -167,6 +185,8 @@
 	var/infused = FALSE
 
 /obj/item/melee/sickly_blade/dark/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!infused || target == user || !isliving(target) || QDELETED(target))
 		return
@@ -193,12 +213,16 @@
 	playsound(living_target, 'sound/items/weapons/guillotine.ogg', 100, TRUE)
 
 /obj/item/melee/sickly_blade/dark/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(infused)
 		infused = FALSE
 		update_appearance(UPDATE_ICON)
 
 /obj/item/melee/sickly_blade/dark/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(infused)
 		icon_state = base_icon_state + "_infused"
@@ -253,6 +277,8 @@
 	inhand_icon_state = "cursed_blade"
 
 /obj/item/melee/sickly_blade/cursed/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/examine_text = {"Allows the scribing of blood runes of the cult of Nar'Sie.
@@ -263,14 +289,20 @@
 	AddComponent(/datum/component/cult_ritual_item, span_cult(examine_text), turfs_that_boost_us = /turf) // Always fast to draw!
 
 /obj/item/melee/sickly_blade/cursed/attack_self_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	seek_safety(user, TRUE)
 
 /obj/item/melee/sickly_blade/cursed/seek_safety(mob/user, secondary_attack = FALSE)
+	procstart = null
+	src.procstart = null
 	if(IS_CULTIST(user) && !secondary_attack)
 		return FALSE
 	return ..()
 
 /obj/item/melee/sickly_blade/cursed/check_usability(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(IS_HERETIC_OR_MONSTER(user) || IS_CULTIST(user))
 		return TRUE
 	if(prob(15))
@@ -285,6 +317,8 @@
 	return TRUE
 
 /obj/item/melee/sickly_blade/cursed/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_HERETIC_OR_MONSTER(user))
 		after_use_message = "The Mansus hears your call..."
@@ -294,6 +328,8 @@
 		after_use_message = null
 
 /obj/item/melee/sickly_blade/cursed/interact_with_atom(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/datum/antagonist/heretic/heretic_datum = GET_HERETIC(user)
@@ -307,6 +343,8 @@
 	return NONE
 
 /obj/item/melee/sickly_blade/cursed/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(attack_type == OVERWHELMING_ATTACK)
 		return FALSE
 	return ..()
@@ -320,4 +358,6 @@
 	armour_penetration = 0
 
 /obj/item/melee/sickly_blade/training/check_usability(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return TRUE // If you can hold this, you can use it

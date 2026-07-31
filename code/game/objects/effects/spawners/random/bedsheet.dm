@@ -50,6 +50,8 @@
 	var/spawn_type = BEDSHEET_SINGLE
 
 /obj/effect/spawner/random/bedsheet/any/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(isnull(bedsheet_list[spawn_type]))
 		var/list/spawn_list = list()
 		for(var/obj/item/bedsheet/sheet as anything in typesof(/obj/item/bedsheet))

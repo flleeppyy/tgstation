@@ -13,6 +13,8 @@
 	max_charges = 6
 
 /obj/item/gun/magic/wand/rebel/zap_self(mob/living/user, suicide = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	charges--
 	var/obj/projectile/magic/rebellion/blast = new()
@@ -22,6 +24,8 @@
 	qdel(blast)
 
 /obj/item/gun/magic/wand/rebel/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (user.stat != DEAD)
 		return SHAME // God damn dullahans
@@ -39,10 +43,14 @@
 	var/list/valid_zones
 
 /obj/projectile/magic/rebellion/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	valid_zones = GLOB.limb_zones.Copy() // We don't want to mutate the global list
 
 /obj/projectile/magic/rebellion/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/carbon/victim = target
 	if (!istype(victim))

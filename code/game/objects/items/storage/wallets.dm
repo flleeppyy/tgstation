@@ -13,6 +13,8 @@
 	var/overlay_icon_state = "wallet_overlay"
 
 /obj/item/storage/wallet/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isidcard(gone))
 		refreshID()
@@ -23,6 +25,8 @@
  * Picks the ID card that has the most combined command or higher tier accesses.
  */
 /obj/item/storage/wallet/proc/refreshID()
+	procstart = null
+	src.procstart = null
 	LAZYCLEARLIST(combined_access)
 
 	front_id = null
@@ -58,11 +62,15 @@
 	update_slot_icon()
 
 /obj/item/storage/wallet/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isidcard(arrived))
 		refreshID()
 
 /obj/item/storage/wallet/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cached_flat_icon = null
 	if(!front_id)
@@ -72,39 +80,55 @@
 	. += mutable_appearance(icon, overlay_icon_state)
 
 /obj/item/storage/wallet/proc/get_cached_flat_icon()
+	procstart = null
+	src.procstart = null
 	if(!cached_flat_icon)
 		cached_flat_icon = getFlatIcon(src)
 	return cached_flat_icon
 
 /obj/item/storage/wallet/get_examine_icon(mob/user)
+	procstart = null
+	src.procstart = null
 	return icon2html(get_cached_flat_icon(), user)
 
 /obj/item/storage/wallet/proc/update_label()
+	procstart = null
+	src.procstart = null
 	if(front_id)
 		name = "[src::name] displaying [front_id]"
 	else
 		name = src::name
 
 /obj/item/storage/wallet/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(front_id)
 		. += span_notice("Alt-click to remove the id.")
 
 /obj/item/storage/wallet/get_id_examine_strings(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(front_id)
 		. += front_id.get_id_examine_strings(user)
 
 /obj/item/storage/wallet/GetID()
+	procstart = null
+	src.procstart = null
 	return front_id
 
 /obj/item/storage/wallet/remove_id()
+	procstart = null
+	src.procstart = null
 	if(!front_id)
 		return
 	. = front_id
 	front_id.forceMove(get_turf(src))
 
 /obj/item/storage/wallet/insert_id(obj/item/inserting_item)
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/inserting_id = inserting_item.remove_id()
 	if(!inserting_id)
 		return FALSE
@@ -114,6 +138,8 @@
 	return FALSE
 
 /obj/item/storage/wallet/GetAccess()
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(combined_access))
 		return combined_access
 	else
@@ -124,10 +150,14 @@
 	worn_icon_state = "wallet"
 
 /obj/item/storage/wallet/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "wallet"
 
 /obj/item/storage/wallet/random/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/holochip(src, rand(5, 30))
 	new /obj/effect/spawner/random/entertainment/wallet_storage(src)
 
@@ -136,5 +166,7 @@
 	desc = "It can hold a few small and personal things. This one reeks of toilet water."
 
 /obj/item/storage/wallet/money/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/iteration in 1 to pick(3, 4))
 		new /obj/item/holochip(src, rand(50, 450))

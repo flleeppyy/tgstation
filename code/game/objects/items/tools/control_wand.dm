@@ -42,24 +42,32 @@
 	var/action_sound = SFX_REMOTE_ACTION
 
 /obj/item/door_remote/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon_state()
 	// initialize late to make sure job accesses are fully configured
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/item/door_remote/LateInitialize()
+	procstart = null
+	src.procstart = null
 	access_list = SSid_access.get_region_access_list(list(region_access))
 	if(!isnull(owner_trim))
 		var/datum/id_trim/job/trim_singlet = SSid_access.trim_singletons_by_path[owner_trim]
 		access_list |= trim_singlet.access
 
 /obj/item/door_remote/proc/is_my_domain(area/restricted_area)
+	procstart = null
+	src.procstart = null
 	for(var/area/dominion as anything in our_domain)
 		if(istype(restricted_area, dominion))
 			return TRUE
 	return FALSE
 
 /obj/item/door_remote/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(obj_flags & EMAGGED)
 		return FALSE
@@ -69,6 +77,8 @@
 	return TRUE
 
 /obj/item/door_remote/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/static/list/ops = list(WAND_OPEN = "Open Door", WAND_BOLT = "Toggle Bolts", WAND_EMERGENCY = "Toggle Emergency Access", WAND_SHOCK = "Shock Door", WAND_DEPOWER = "Depower Door")
 	switch(mode)
 		if(WAND_OPEN)
@@ -90,6 +100,8 @@
 		playsound(src, mode_switch_sound, 50, TRUE)
 
 /obj/item/door_remote/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(interacting_with, /obj/machinery/door) && !isturf(interacting_with))
 		return NONE
 	return ranged_interact_with_atom(interacting_with, user, modifiers)
@@ -165,6 +177,8 @@
 	owner_trim = /datum/id_trim/job/head_of_personnel
 
 /obj/item/door_remote/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/door/door
 	if(action_sound)
 		playsound(src, action_sound, 50, TRUE)
@@ -251,6 +265,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/door_remote/update_icon_state()
+	procstart = null
+	src.procstart = null
 	var/icon_state_mode
 	if(!(obj_flags & EMAGGED))
 		switch(mode)

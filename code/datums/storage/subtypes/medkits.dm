@@ -84,6 +84,8 @@
 	)
 
 /datum/storage/medkit/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound, list/holdables = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(holdables))
 		set_holdable(holdables)
@@ -95,6 +97,8 @@
 	max_specific_storage = WEIGHT_CLASS_NORMAL //holds the same equipment as a medibelt
 
 /datum/storage/medkit/surgery/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound, list/holdables)
+	procstart = null
+	src.procstart = null
 	holdables = list_of_everything_medkits_can_hold
 	return ..()
 
@@ -105,6 +109,8 @@
 	max_specific_storage = WEIGHT_CLASS_NORMAL
 
 /datum/storage/medkit/tactical/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound, list/holdables)
+	procstart = null
+	src.procstart = null
 	holdables = list_of_everything_medkits_can_hold
 	return ..()
 
@@ -120,6 +126,8 @@
 	max_specific_storage = WEIGHT_CLASS_NORMAL
 
 /datum/storage/medkit/coroner/New(atom/parent, max_slots, max_specific_storage, max_total_storage, rustle_sound, remove_rustle_sound, list/holdables)
+	procstart = null
+	src.procstart = null
 	holdables = list(
 		/obj/item/reagent_containers,
 		/obj/item/bodybag,

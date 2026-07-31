@@ -22,6 +22,8 @@
 	COOLDOWN_DECLARE(reset_hud_cooldown)
 
 /mob/dead/new_player/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(client && SSticker.state == GAME_STATE_STARTUP)
 		var/atom/movable/screen/splash/fade_out = new(null, null, client, TRUE)
 		fade_out.fade(TRUE)
@@ -37,17 +39,25 @@
 	ASSIGN_GAME_VERB(src, /mob/dead/new_player, reset_menu_hud)
 
 /mob/dead/new_player/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.new_player_list -= src
 
 	return ..()
 
 /mob/dead/new_player/mob_negates_gravity()
+	procstart = null
+	src.procstart = null
 	return TRUE //no need to calculate if they have gravity.
 
 /mob/dead/new_player/prepare_huds()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/dead/new_player/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if (usr != src)
 		return
 
@@ -69,10 +79,14 @@
 /// The assertion is that readiness must be an opted in TRUE, while all other states (e.g. not ready, broken, etc) are FALSE.
 /// We organize it this way to ensure the system is extensible for other possible ready states.
 /mob/dead/new_player/proc/is_ready_to_play()
+	procstart = null
+	src.procstart = null
 	return ready == PLAYER_READY_TO_PLAY
 
 //When you cop out of the round (NB: this HAS A SLEEP FOR PLAYER INPUT IN IT)
 /mob/dead/new_player/proc/make_me_an_observer()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || !src.client)
 		ready = PLAYER_NOT_READY
 		return FALSE
@@ -115,6 +129,8 @@
 	return TRUE
 
 /proc/get_job_unavailable_error_message(retval, jobtitle)
+	procstart = null
+	src.procstart = null
 	switch(retval)
 		if(JOB_AVAILABLE)
 			return "[jobtitle] is available."
@@ -136,6 +152,8 @@
 	return GENERIC_JOB_UNAVAILABLE_ERROR
 
 /mob/dead/new_player/proc/IsJobUnavailable(rank, latejoin = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/job/job = SSjob.get_job(rank)
 	if(!(job.job_flags & JOB_NEW_PLAYER_JOINABLE))
 		return JOB_UNAVAILABLE_GENERIC
@@ -158,6 +176,8 @@
 	return JOB_AVAILABLE
 
 /mob/dead/new_player/proc/AttemptLateSpawn(rank)
+	procstart = null
+	src.procstart = null
 	// Check that they're picking someone new for new character respawning
 	if(CONFIG_GET(flag/allow_respawn) == RESPAWN_FLAG_NEW_CHARACTER)
 		if("[client.prefs.default_slot]" in persistent_client.joined_as_slots)
@@ -260,6 +280,8 @@
 	log_manifest(character.mind.key, character.mind, character, latejoin = TRUE)
 
 /mob/dead/new_player/proc/AddEmploymentContract(mob/living/carbon/human/employee)
+	procstart = null
+	src.procstart = null
 	//TODO:  figure out a way to exclude wizards/nukeops/demons from this.
 	for(var/C in GLOB.employmentCabinets)
 		var/obj/structure/filingcabinet/employment/employmentCabinet = C
@@ -274,6 +296,8 @@
  * * forced_slot - if provided, will load whatever character is in that slot instead of their active slot
  */
 /mob/dead/new_player/proc/create_character(atom/destination, forced_slot)
+	procstart = null
+	src.procstart = null
 	spawning = TRUE
 
 	var/spawned_slot = isnum(forced_slot) ? forced_slot : LAZYACCESS(client.prefs.job_assigned_profiles, mind.assigned_role.title)
@@ -304,6 +328,8 @@
 
 
 /mob/dead/new_player/proc/transfer_character()
+	procstart = null
+	src.procstart = null
 	. = new_character
 	if(!.)
 		return
@@ -317,11 +343,15 @@
 	qdel(src)
 
 /mob/dead/new_player/proc/ViewManifest()
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return
 	GLOB.manifest.ui_interact(src)
 
 /mob/dead/new_player/Move()
+	procstart = null
+	src.procstart = null
 	return 0
 
 // Used to make sure that a player has a valid job preference setup, used to knock players out of eligibility for anything if their prefs don't make sense.
@@ -330,6 +360,8 @@
 // Doing so would previously allow you to roll for antag, then send you back to lobby if you didn't get an antag role
 // This also does some admin notification and logging as well, as well as some extra logic to make sure things don't go wrong
 /mob/dead/new_player/proc/check_job_preferences(warn = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return FALSE //Not sure how this would get run without the mob having a client, but let's just be safe.
 	if(client.prefs.read_preference(/datum/preference/choiced/jobless_role) != RETURNTOLOBBY)
@@ -357,6 +389,8 @@
  * giving them the interview form and forcing it to appear.
  */
 /mob/dead/new_player/proc/register_for_interview()
+	procstart = null
+	src.procstart = null
 	// First we detain them by removing all the verbs they have on client
 	for (var/procpath/verb_path as anything in client.verbs)
 		remove_verb(client, verb_path)
@@ -390,6 +424,8 @@ GAME_VERB_PROC(/mob/dead/new_player, reset_menu_hud, "Reset Lobby Menu HUD", "OO
 
 ///Auto deadmins an admin when they click to toggle the ready button or join game button in the menu
 /mob/dead/new_player/proc/auto_deadmin_on_ready_or_latejoin()
+	procstart = null
+	src.procstart = null
 	if(!client?.holder) //If they aren't an admin we dont care
 		return TRUE
 	if(CONFIG_GET(flag/auto_deadmin_on_ready_or_latejoin) || (client.prefs.read_preference(/datum/preference/toggle/auto_deadmin_on_ready_or_latejoin)) || (client.prefs?.toggles & DEADMIN_ALWAYS))

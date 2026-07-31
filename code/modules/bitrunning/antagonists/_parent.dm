@@ -16,11 +16,15 @@
 	var/threat = 0
 
 /datum/antagonist/bitrunning_glitch/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	owner.announce_objectives()
 
 /datum/antagonist/bitrunning_glitch/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	forge_objectives()
@@ -31,6 +35,8 @@
 		carbon_mob.make_virtual_mob()
 
 /datum/antagonist/bitrunning_glitch/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/bitrunning_glitch_fluff/objective = new()
 	objective.owner = owner
 	objectives += objective
@@ -38,6 +44,8 @@
 /datum/objective/bitrunning_glitch_fluff
 
 /datum/objective/bitrunning_glitch_fluff/New()
+	procstart = null
+	src.procstart = null
 	var/list/explanation_texts = list(
 		"Execute termination protocol on unauthorized entities.",
 		"Initialize system purge of irregular anomalies.",
@@ -55,6 +63,8 @@
 	return ..()
 
 /datum/objective/bitrunning_glitch_fluff/check_completion()
+	procstart = null
+	src.procstart = null
 	if(locate(/mob/living/carbon) in (GLOB.alive_player_list - owner.current))
 		return FALSE
 
@@ -63,6 +73,8 @@
 
 /// Sets up the agent so that they look like cyber police && don't have an account ID
 /datum/antagonist/bitrunning_glitch/proc/convert_agent()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(owner.current))
 		return
 
@@ -76,6 +88,8 @@
 
 /// Resets the agent's ID and name. Needed so this doesn't show as "unknown"
 /datum/antagonist/bitrunning_glitch/proc/fix_agent_id()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(owner.current))
 		return
 

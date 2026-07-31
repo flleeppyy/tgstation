@@ -9,9 +9,13 @@ GLOBAL_DATUM(meteor_mode, /datum/meteor_mode_controller)
 	var/rampupdelta = 5
 
 /datum/meteor_mode_controller/proc/start_meteor()
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSprocessing, src)
 
 /datum/meteor_mode_controller/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(meteordelay > world.time - SSticker.round_start_time)
 		return
 

@@ -11,6 +11,8 @@ SUBSYSTEM_DEF(asset_loading)
 	var/last_queue_len = 0
 
 /datum/controller/subsystem/asset_loading/fire(resumed)
+	procstart = null
+	src.procstart = null
 	while(length(generate_queue))
 		var/datum/asset/to_load = generate_queue[generate_queue.len]
 
@@ -28,10 +30,14 @@ SUBSYSTEM_DEF(asset_loading)
 		rustg_iconforge_cleanup()
 
 /datum/controller/subsystem/asset_loading/proc/queue_asset(datum/asset/queue)
+	procstart = null
+	src.procstart = null
 #ifdef DO_NOT_DEFER_ASSETS
 	stack_trace("We queued an instance of [queue.type] for lateloading despite not allowing it")
 #endif
 	generate_queue += queue
 
 /datum/controller/subsystem/asset_loading/proc/dequeue_asset(datum/asset/queue)
+	procstart = null
+	src.procstart = null
 	generate_queue -= queue

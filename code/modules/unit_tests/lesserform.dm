@@ -2,6 +2,8 @@
 /datum/unit_test/lesserform
 
 /datum/unit_test/lesserform/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/changeling = allocate(/mob/living/carbon/human/consistent)
 	var/name = changeling.name
 	changeling.mind_initialize()

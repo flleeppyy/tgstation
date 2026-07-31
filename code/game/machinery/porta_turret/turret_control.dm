@@ -24,6 +24,8 @@
 	var/list/turrets = list()
 
 /obj/machinery/turretid/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(mapload)
@@ -46,10 +48,14 @@
 		turrets |= WEAKREF(T)
 
 /obj/machinery/turretid/Destroy()
+	procstart = null
+	src.procstart = null
 	turrets.Cut()
 	return ..()
 
 /obj/machinery/turretid/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & NOPOWER)
 		if(enabled)
@@ -72,16 +78,22 @@
 	. += emissive_appearance(icon, "emissive_screen", src)
 
 /obj/machinery/turretid/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/turretid/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. += ..()
 	if(issilicon(user) && !(machine_stat & BROKEN))
 		. += span_notice("Ctrl-click [src] to [ enabled ? "disable" : "enable"] turrets.")
 		. += span_notice("Alt-click [src] to set turrets to [ lethal ? "stun" : "kill"].")
 
 /obj/machinery/turretid/multitool_act(mob/living/user, obj/item/multitool/multi_tool)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(machine_stat & BROKEN)
 		return
@@ -92,6 +104,8 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/turretid/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & BROKEN)
 		return NONE
 
@@ -117,6 +131,8 @@
 
 
 /obj/machinery/turretid/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	balloon_alert(user, "access analysis module shorted")
@@ -125,18 +141,24 @@
 	return TRUE
 
 /obj/machinery/turretid/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ailock || isAdminGhostAI(user))
 		return attack_hand(user)
 	else
 		to_chat(user, span_warning("There seems to be a firewall preventing you from accessing this device!"))
 
 /obj/machinery/turretid/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "TurretControl", name)
 		ui.open()
 
 /obj/machinery/turretid/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["locked"] = locked
 	data["siliconUser"] = HAS_SILICON_ACCESS(user)
@@ -146,6 +168,8 @@
 	return data
 
 /obj/machinery/turretid/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -172,6 +196,8 @@
 			return TRUE
 
 /obj/machinery/turretid/proc/toggle_lethal(mob/user)
+	procstart = null
+	src.procstart = null
 	lethal = !lethal
 	if (user)
 		var/enabled_or_disabled = lethal ? "disabled" : "enabled"
@@ -181,6 +207,8 @@
 	updateTurrets()
 
 /obj/machinery/turretid/proc/toggle_on(mob/user)
+	procstart = null
+	src.procstart = null
 	enabled = !enabled
 	if (user)
 		var/enabled_or_disabled = enabled ? "enabled" : "disabled"
@@ -190,6 +218,8 @@
 	updateTurrets()
 
 /obj/machinery/turretid/proc/shoot_silicons(mob/user)
+	procstart = null
+	src.procstart = null
 	shoot_cyborgs = !shoot_cyborgs
 	if (user)
 		var/status = shoot_cyborgs ? "Shooting Borgs" : "Not Shooting Borgs"
@@ -199,6 +229,8 @@
 	updateTurrets()
 
 /obj/machinery/turretid/proc/updateTurrets()
+	procstart = null
+	src.procstart = null
 	for (var/datum/weakref/turret_ref in turrets)
 		var/obj/machinery/porta_turret/turret = turret_ref.resolve()
 		if(!turret)

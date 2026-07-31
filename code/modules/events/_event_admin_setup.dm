@@ -5,13 +5,19 @@
 	var/datum/round_event_control/event_control
 
 /datum/event_admin_setup/New(event_control)
+	procstart = null
+	src.procstart = null
 	src.event_control = event_control
 
 /datum/event_admin_setup/proc/prompt_admins()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Unimplemented prompt_admins() on [event_control]'s admin setup.")
 
 /datum/event_admin_setup/proc/apply_to_event(datum/round_event/event)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Unimplemented apply_to_event() on [event_control]'s admin setup.")
 
@@ -29,10 +35,14 @@
 	var/chosen
 
 /datum/event_admin_setup/listed_options/proc/get_list()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Unimplemented get_list() on [event_control]'s admin setup.")
 
 /datum/event_admin_setup/listed_options/prompt_admins()
+	procstart = null
+	src.procstart = null
 	var/list/options = get_list()
 	if(special_run_option)
 		options.Insert(1, special_run_option)
@@ -54,9 +64,13 @@
 /// Returns a string to suggest to the admin, which would be what the event would have chosen.
 /// No suggestion if an empty string, which is default behavior.
 /datum/event_admin_setup/text_input/proc/get_text_suggestion()
+	procstart = null
+	src.procstart = null
 	return ""
 
 /datum/event_admin_setup/text_input/prompt_admins()
+	procstart = null
+	src.procstart = null
 	var/suggestion = get_text_suggestion()
 	chosen = tgui_input_text(usr, input_text, event_control.name, suggestion)
 	if(!chosen)
@@ -71,6 +85,8 @@
 	var/snitch_text = "Unset snitching text (be mad at coders AND the admin responsible)"
 
 /datum/event_admin_setup/warn_admin/prompt_admins()
+	procstart = null
+	src.procstart = null
 	if(!should_warn())
 		return
 	var/mob/admin = usr
@@ -82,10 +98,14 @@
 
 /// Returns whether the admin should get an alert.
 /datum/event_admin_setup/warn_admin/proc/should_warn()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Unimplemented should_warn() on [event_control]'s admin setup.")
 
 /datum/event_admin_setup/warn_admin/apply_to_event(datum/round_event/event)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/event_admin_setup/set_location
@@ -95,6 +115,8 @@
 	var/atom/chosen_turf
 
 /datum/event_admin_setup/set_location/prompt_admins()
+	procstart = null
+	src.procstart = null
 	var/set_location = tgui_alert(usr, input_text, event_control.name, list("Yes", "No", "Cancel"))
 	switch(set_location)
 		if("Yes")
@@ -117,6 +139,8 @@
 	var/chosen_value
 
 /datum/event_admin_setup/input_number/prompt_admins()
+	procstart = null
+	src.procstart = null
 	chosen_value = tgui_input_number(usr, input_text, event_control.name, default_value, max_value, min_value)
 	if(isnull(chosen_value))
 		return ADMIN_CANCEL_EVENT
@@ -129,6 +153,8 @@
 	var/min_candidates = 1
 
 /datum/event_admin_setup/minimum_candidate_requirement/prompt_admins()
+	procstart = null
+	src.procstart = null
 	var/candidate_count = count_candidates()
 	if(candidate_count < min_candidates)
 		tgui_alert(usr, output_text, "Error")
@@ -137,10 +163,14 @@
 
 /// Checks for candidates. Should return the total number of candidates
 /datum/event_admin_setup/minimum_candidate_requirement/proc/count_candidates()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Unimplemented count_candidates() on [event_control]'s admin setup.")
 
 /datum/event_admin_setup/minimum_candidate_requirement/apply_to_event(datum/round_event/event)
+	procstart = null
+	src.procstart = null
 	return
 
 ///For events that require a true/false question
@@ -151,6 +181,8 @@
 	var/chosen
 
 /datum/event_admin_setup/question/prompt_admins()
+	procstart = null
+	src.procstart = null
 	var/response = tgui_alert(usr, input_text , event_control.name , list("Yes", "No", "Cancel"))
 	switch(response)
 		if("Yes")
@@ -171,10 +203,14 @@
 	var/list/choices = list()
 
 /datum/event_admin_setup/multiple_choice/proc/get_options()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Unimplemented get_options() on [event_control]'s admin setup.")
 
 /datum/event_admin_setup/multiple_choice/prompt_admins()
+	procstart = null
+	src.procstart = null
 	var/list/options = get_options()
 	choices = tgui_input_checkboxes(usr, input_text, event_control.name, options, min_choices, max_choices)
 	if(isnull(choices))

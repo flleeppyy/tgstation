@@ -13,6 +13,8 @@ SUBSYSTEM_DEF(achievements)
 	var/list/datum/award/awards = list()
 
 /datum/controller/subsystem/achievements/Initialize()
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		return SS_INIT_NO_NEED
 	achievements_enabled = TRUE
@@ -65,9 +67,13 @@ SUBSYSTEM_DEF(achievements)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/achievements/Shutdown()
+	procstart = null
+	src.procstart = null
 	save_achievements_to_db()
 
 /datum/controller/subsystem/achievements/proc/save_achievements_to_db()
+	procstart = null
+	src.procstart = null
 	var/list/cheevos_to_save = list()
 	for(var/ckey in GLOB.persistent_clients_by_ckey)
 		var/datum/persistent_client/PD = GLOB.persistent_clients_by_ckey[ckey]
@@ -82,6 +88,8 @@ SUBSYSTEM_DEF(achievements)
 
 //Update the metadata if any are behind
 /datum/controller/subsystem/achievements/proc/update_metadata()
+	procstart = null
+	src.procstart = null
 	var/list/current_metadata = list()
 	//select metadata here
 	var/datum/db_query/Q = SSdbcore.NewQuery("SELECT achievement_key,achievement_version FROM [format_table_name("achievement_metadata")]")
@@ -108,6 +116,8 @@ SUBSYSTEM_DEF(achievements)
 
 /// returns list of metadata keys and versions in db with no matching achievement datum, either deleted achievements, or from server with code ahead of us.
 /datum/controller/subsystem/achievements/proc/get_orphaned_keys(include_archived = TRUE)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/list/current_metadata = list()
 	// Fetch all keys from the db

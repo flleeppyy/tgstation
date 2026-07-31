@@ -6,6 +6,8 @@
 /datum/unit_test/stack_singular_name
 
 /datum/unit_test/stack_singular_name/Run()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/stack/stack_check as anything in valid_subtypesof(/obj/item/stack))
 		if(!initial(stack_check.singular_name))
 			TEST_FAIL("[stack_check] is missing a singular name!")

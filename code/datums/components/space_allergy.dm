@@ -4,6 +4,8 @@
 	var/datum/status_effect/planet_allergy/allergy
 
 /datum/component/planet_allergy/Initialize(...)
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -11,10 +13,14 @@
 	entered_area(parent, get_area(parent))
 
 /datum/component/planet_allergy/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(allergy)
 	return ..()
 
 /datum/component/planet_allergy/proc/entered_area(mob/living/parent, area/new_area)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(is_on_a_planet(parent) && parent.has_gravity())

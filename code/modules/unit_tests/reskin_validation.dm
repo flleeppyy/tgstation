@@ -1,6 +1,8 @@
 /datum/unit_test/reskin_validation
 
 /datum/unit_test/reskin_validation/Run()
+	procstart = null
+	src.procstart = null
 	var/list/known_names = list()
 	for(var/atom_skin_path, atom_skin in get_atom_skins())
 		var/datum/atom_skin/skin = atom_skin

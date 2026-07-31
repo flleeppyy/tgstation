@@ -25,13 +25,19 @@
 	circuit_flags = CIRCUIT_FLAG_INPUT_SIGNAL|CIRCUIT_FLAG_OUTPUT_SIGNAL
 
 /obj/item/circuit_component/format/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	param_regex = list_param_regex
 
 /obj/item/circuit_component/format/proc/make_params_port()
+	procstart = null
+	src.procstart = null
 	param_list_port = add_input_port("Params", PORT_TYPE_LIST(PORT_TYPE_ANY))
 
 /obj/item/circuit_component/format/populate_ports()
+	procstart = null
+	src.procstart = null
 	format_port = add_input_port("Format", PORT_TYPE_STRING)
 	make_params_port()
 
@@ -45,6 +51,8 @@
  * * index_string - The raw list index, as a string.
  */
 /obj/item/circuit_component/format/proc/get_list_item(list/param_list, index_string)
+	procstart = null
+	src.procstart = null
 	var/index = text2num(index_string)
 	if(index < 1 || index > length(param_list))
 		return null
@@ -52,6 +60,8 @@
 	return param_list[index]
 
 /obj/item/circuit_component/format/input_received(datum/port/input/port, list/return_values)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Inject the parameters.
@@ -72,13 +82,19 @@
 	var/static/regex/format_component/assoc_param_regex = new(@"%([a-zA-Z0-9_]+)", "g")
 
 /obj/item/circuit_component/format/assoc/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	param_regex = assoc_param_regex
 
 /obj/item/circuit_component/format/assoc/get_list_item(list/param_list, index_string)
+	procstart = null
+	src.procstart = null
 	return param_list[index_string]
 
 /obj/item/circuit_component/format/assoc/make_params_port()
+	procstart = null
+	src.procstart = null
 	param_list_port = add_input_port("Params", PORT_TYPE_ASSOC_LIST(PORT_TYPE_STRING, PORT_TYPE_ANY))
 
 /**
@@ -94,6 +110,8 @@
  * * index_string - Just the "1" of the %1 format, actually used.
  */
 /regex/format_component/proc/process_format_component_param(match, index_string)
+	procstart = null
+	src.procstart = null
 	REGEX_REPLACE_HANDLER
 	// The static regex_context var is what you'd expect src to be, but src is actually the regex instance.
 	var/list/param_list = context.param_list_port.value

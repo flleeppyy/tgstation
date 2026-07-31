@@ -9,6 +9,8 @@
 
 
 /datum/component/infective/Initialize(list/datum/disease/diseases, expire_in, weak = FALSE, weak_infection_chance = 10)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -37,10 +39,14 @@
 	src.weak_infection_chance = weak_infection_chance
 
 /datum/component/infective/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(diseases)
 	return ..()
 
 /datum/component/infective/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	if(is_weak && isitem(parent))
 		RegisterSignal(parent, COMSIG_FOOD_EATEN, PROC_REF(try_infect_eat))
 		RegisterSignal(parent, COMSIG_PILL_CONSUMED, PROC_REF(try_infect_eat))
@@ -66,6 +72,8 @@
 			RegisterSignal(parent, COMSIG_ORGAN_IMPLANTED, PROC_REF(on_organ_insertion))
 
 /datum/component/infective/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, list(
 		COMSIG_FOOD_EATEN,
@@ -82,6 +90,8 @@
 	qdel(GetComponent(/datum/component/connect_loc_behalf))
 
 /datum/component/infective/proc/on_organ_insertion(obj/item/organ/target, mob/living/carbon/receiver)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/datum/disease/disease in diseases)
@@ -90,6 +100,8 @@
 	qdel(src) // once organ is implanted delete the infective component
 
 /datum/component/infective/proc/try_infect_eat(datum/source, mob/living/eater, mob/living/feeder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT(eater, TRAIT_STRONG_STOMACH))
@@ -109,6 +121,8 @@
 		try_infect(feeder, BODY_ZONE_L_ARM)
 
 /datum/component/infective/proc/try_infect_drink(datum/source, mob/living/drinker, mob/living/feeder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT(drinker, TRAIT_STRONG_STOMACH))
@@ -128,6 +142,8 @@
 		drinker.ForceContractDisease(disease)
 
 /datum/component/infective/proc/clean(datum/source, clean_types)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	. = NONE
@@ -136,12 +152,16 @@
 		return COMPONENT_CLEANED|COMPONENT_CLEANED_GAIN_XP
 
 /datum/component/infective/proc/try_infect_buckle(datum/source, mob/M, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isliving(M))
 		try_infect(M)
 
 /datum/component/infective/proc/try_infect_collide(datum/source, atom/A)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/movable/P = parent
@@ -152,22 +172,30 @@
 		try_infect(A)
 
 /datum/component/infective/proc/try_infect_impact_zone(datum/source, mob/living/target, hit_zone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	try_infect(target, hit_zone)
 
 /datum/component/infective/proc/try_infect_attack_zone(obj/item/source, mob/living/carbon/target, mob/living/user, hit_zone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	try_infect(target, hit_zone)
 
 /datum/component/infective/proc/try_infect_attack(obj/item/source, mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(source.loc == user)
 		var/obj/item/bodypart/hand = user.get_active_hand()
 		try_infect(user, hand.body_zone)
 
 /datum/component/infective/proc/try_infect_equipped(datum/source, mob/living/L, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/old_bio_armor
@@ -184,12 +212,16 @@
 		equipped_item.set_armor_rating(BIO, old_bio_armor)
 
 /datum/component/infective/proc/try_infect_crossed(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isliving(arrived))
 		try_infect(arrived, BODY_ZONE_PRECISE_L_FOOT)
 
 /datum/component/infective/proc/try_infect_streak(datum/source, list/directions, list/output_diseases)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// This blood is not infectable / does not have a diseases list
@@ -199,5 +231,7 @@
 	output_diseases |= diseases
 
 /datum/component/infective/proc/try_infect(mob/living/L, target_zone)
+	procstart = null
+	src.procstart = null
 	for(var/V in diseases)
 		L.ContactContractDisease(V, target_zone)

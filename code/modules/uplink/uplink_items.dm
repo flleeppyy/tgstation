@@ -1,6 +1,8 @@
 // TODO: Work into reworked uplinks.
 /// Selects a set number of unique items from the uplink, and deducts a percentage discount from them
 /proc/create_uplink_sales(num, datum/uplink_category/category, limited_stock, list/sale_items)
+	procstart = null
+	src.procstart = null
 	var/list/sales = list()
 	var/list/per_category = list()
 
@@ -114,6 +116,8 @@
 	var/list/relevant_child_items
 
 /datum/uplink_item/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stock_key != UPLINK_SHARED_STOCK_UNIQUE)
 		return
@@ -127,6 +131,8 @@
 
 /// Returns by how much percentage do we reduce the price of the selected item
 /datum/uplink_item/proc/get_discount()
+	procstart = null
+	src.procstart = null
 
 	var/static/list/discount_types = list(
 		TRAITOR_DISCOUNT_SMALL = 4,
@@ -138,6 +144,8 @@
 
 /// Receives a traitor discount type value, returns the amount by which we will reduce the price
 /datum/uplink_item/proc/get_discount_value(discount_type)
+	procstart = null
+	src.procstart = null
 	switch(discount_type)
 		if(TRAITOR_DISCOUNT_BIG)
 			return 0.75
@@ -148,6 +156,8 @@
 
 /// Spawns an item and logs its purchase
 /datum/uplink_item/proc/purchase(mob/user, datum/uplink_handler/uplink_handler, atom/movable/source)
+	procstart = null
+	src.procstart = null
 	var/atom/spawned_item = spawn_item(item, user, uplink_handler, source)
 	log_uplink("[key_name(user)] purchased [src] for [cost] telecrystals from [source]'s uplink")
 	user.playsound_local(get_turf(user), 'sound/effects/kaching.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
@@ -158,6 +168,8 @@
 
 /// Spawns an item in the world
 /datum/uplink_item/proc/spawn_item(spawn_path, mob/user, datum/uplink_handler/uplink_handler, atom/movable/source)
+	procstart = null
+	src.procstart = null
 	if(!spawn_path)
 		return
 	var/atom/spawned_item
@@ -184,6 +196,8 @@
 /// Used to create the uplink's item for generic use, rather than use by a Syndie specifically
 /// Can be used to "de-restrict" some items, such as Nukie guns spawning with Syndicate pins
 /datum/uplink_item/proc/spawn_item_for_generic_use(mob/user)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/created = new item(user.loc)
 	if(uplink_item_flags & SYNDIE_TRIPS_CONTRABAND) // Things that shouldn't be detectable as contraband on the station.
 		ADD_TRAIT(created, TRAIT_CONTRABAND, INNATE_TRAIT)
@@ -205,6 +219,8 @@
 
 /// Used by spawn_item_for_generic_use to replace the pin of a gun with a normal one
 /datum/uplink_item/proc/replace_pin(obj/item/gun/gun_reward)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(!istype(gun_reward.pin, /obj/item/firing_pin/implant/pindicate))
@@ -216,6 +232,8 @@
 
 ///For special overrides if an item can be bought or not.
 /datum/uplink_item/proc/can_be_bought(datum/uplink_handler/source)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/uplink_category/discounts
@@ -249,6 +267,8 @@
 	purchasable_from = parent_type::purchasable_from & ~UPLINK_SPY // Ditto
 
 /datum/uplink_item/special_equipment/purchase(mob/user, datum/component/uplink/U)
+	procstart = null
+	src.procstart = null
 	..()
 	if(user?.mind?.failed_special_equipment)
 		user.mind.failed_special_equipment -= item

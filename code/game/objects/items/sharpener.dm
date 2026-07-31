@@ -24,6 +24,8 @@
 	var/requires_sharpness = TRUE
 
 /obj/item/sharpener/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(uses == 0)
 		to_chat(user, span_warning("The sharpening block is too worn to use again!"))
 		return ITEM_INTERACT_BLOCKING
@@ -65,6 +67,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/sharpener/update_name()
+	procstart = null
+	src.procstart = null
 	name = "[!uses ? "worn out " : null][initial(name)]"
 	return ..()
 

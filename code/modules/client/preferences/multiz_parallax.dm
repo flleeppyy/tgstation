@@ -5,6 +5,8 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/toggle/multiz_parallax/apply_to_client(client/client, value)
+	procstart = null
+	src.procstart = null
 	// Update the plane master group's Z transforms.
 
 	var/datum/hud/my_hud = client.mob?.hud_used

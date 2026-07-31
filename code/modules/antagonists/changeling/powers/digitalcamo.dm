@@ -9,6 +9,8 @@
 
 //Prevents AIs tracking you but makes you easily detectable to the human-eye.
 /datum/action/changeling/digitalcamo/sting_action(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(active)
 		to_chat(user, span_notice("We return to normal."))
@@ -20,5 +22,7 @@
 	return TRUE
 
 /datum/action/changeling/digitalcamo/Remove(mob/user)
+	procstart = null
+	src.procstart = null
 	user.RemoveElement(/datum/element/digitalcamo)
 	..()

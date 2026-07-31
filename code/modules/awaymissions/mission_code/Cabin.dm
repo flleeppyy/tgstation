@@ -42,15 +42,21 @@
 	var/active = TRUE
 
 /obj/structure/firepit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	toggleFirepit()
 
 /obj/structure/firepit/interact(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(active)
 		active = FALSE
 		toggleFirepit()
 
 /obj/structure/firepit/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(active)
 		tool.fire_act()
 		return ITEM_INTERACT_SUCCESS
@@ -65,6 +71,8 @@
 
 
 /obj/structure/firepit/proc/toggleFirepit()
+	procstart = null
+	src.procstart = null
 	active = !active
 	if(active)
 		set_light(8)
@@ -74,12 +82,16 @@
 		icon_state = "firepit"
 
 /obj/structure/firepit/extinguish()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		active = FALSE
 		toggleFirepit()
 
 /obj/structure/firepit/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(!active)
 		active = TRUE
 		toggleFirepit()
@@ -95,6 +107,8 @@
 	item_recycle_sound = 'sound/items/weapons/chainsawhit.ogg'
 
 /obj/machinery/recycler/lumbermill/recycle_item(obj/item/grown/log/L)
+	procstart = null
+	src.procstart = null
 	if(!istype(L))
 		return
 	else
@@ -110,10 +124,14 @@
 	color = rgb(0,0,255)
 
 /obj/structure/ladder/unbreakable/rune/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/update_icon_blocker)
 	return ..()
 
 /obj/structure/ladder/unbreakable/rune/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(up)
 		context[SCREENTIP_CONTEXT_LMB] = "Warp up"
 	if(down)
@@ -121,13 +139,19 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/ladder/unbreakable/rune/show_initial_fluff_message(mob/user, going_up)
+	procstart = null
+	src.procstart = null
 	user.balloon_alert_to_viewers("activating...")
 
 /obj/structure/ladder/unbreakable/rune/show_final_fluff_message(mob/user, going_up)
+	procstart = null
+	src.procstart = null
 	visible_message(span_notice("[user] activates [src] and teleports away."))
 	user.balloon_alert_to_viewers("warped in")
 
 /obj/structure/ladder/unbreakable/rune/use(mob/user, going_up = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!IS_WIZARD(user))
 		..()
 
@@ -141,6 +165,8 @@
 	/datum/map_generator_module/snow/bunnies)
 
 /datum/map_generator_module/snow/checkPlaceAtom(turf/T)
+	procstart = null
+	src.procstart = null
 	if(istype(T, /turf/open/misc/asteroid/snow))
 		return ..()
 	return FALSE

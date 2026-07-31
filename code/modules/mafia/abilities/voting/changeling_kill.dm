@@ -12,11 +12,15 @@
 	var/static/ling_sent = FALSE
 
 /datum/mafia_ability/changeling_kill/clean_action_refs(datum/mafia_controller/game)
+	procstart = null
+	src.procstart = null
 	ling_sent = FALSE
 	game.reset_votes("Mafia")
 	return ..()
 
 /datum/mafia_ability/changeling_kill/perform_action_target(datum/mafia_controller/game, datum/mafia_role/day_target)
+	procstart = null
+	src.procstart = null
 	var/datum/mafia_role/victim = game.get_vote_winner("Mafia")
 	if(!victim)
 		return FALSE
@@ -35,6 +39,8 @@
 	return TRUE
 
 /datum/mafia_ability/changeling_kill/set_target(datum/mafia_role/new_target)
+	procstart = null
+	src.procstart = null
 	if(new_target.team & MAFIA_TEAM_MAFIA)
 		return FALSE
 	if(!validate_action_target(new_target))
@@ -48,6 +54,8 @@
  * During the night, Changelings talking will instead redirect it to Changeling chat.
  */
 /datum/mafia_ability/changeling_kill/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (host_role.mafia_game_controller.phase != MAFIA_PHASE_NIGHT)
 		return FALSE

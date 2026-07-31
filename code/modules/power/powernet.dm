@@ -16,9 +16,13 @@
 	VAR_PRIVATE/flickering = FALSE
 
 /datum/powernet/New()
+	procstart = null
+	src.procstart = null
 	SSmachines.powernets += src
 
 /datum/powernet/Destroy()
+	procstart = null
+	src.procstart = null
 	//Go away references, you suck!
 	for(var/obj/structure/cable/C in cables)
 		cables -= C
@@ -31,12 +35,16 @@
 	return ..()
 
 /datum/powernet/proc/is_empty()
+	procstart = null
+	src.procstart = null
 	return !cables.len && !nodes.len
 
 //remove a cable from the current powernet
 //if the powernet is then empty, delete it
 //Warning : this proc DON'T check if the cable exists
 /datum/powernet/proc/remove_cable(obj/structure/cable/C)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(C, COMSIG_CABLE_REMOVED_FROM_POWERNET)
 	cables -= C
 	C.powernet = null
@@ -46,6 +54,8 @@
 //add a cable to the current powernet
 //Warning : this proc DON'T check if the cable exists
 /datum/powernet/proc/add_cable(obj/structure/cable/C)
+	procstart = null
+	src.procstart = null
 	if(C.powernet)// if C already has a powernet...
 		if(C.powernet == src)
 			return
@@ -59,6 +69,8 @@
 //if the powernet is then empty, delete it
 //Warning : this proc DON'T check if the machine exists
 /datum/powernet/proc/remove_machine(obj/machinery/power/M)
+	procstart = null
+	src.procstart = null
 	nodes -=M
 	M.powernet = null
 	if(is_empty())//the powernet is now empty...
@@ -68,6 +80,8 @@
 //add a power machine to the current powernet
 //Warning : this proc DON'T check if the machine exists
 /datum/powernet/proc/add_machine(obj/machinery/power/M)
+	procstart = null
+	src.procstart = null
 	if(M.powernet)// if M already has a powernet...
 		if(M.powernet == src)
 			return
@@ -79,6 +93,8 @@
 //handles the power changes in the powernet
 //called every ticks by the powernet controller
 /datum/powernet/proc/reset()
+	procstart = null
+	src.procstart = null
 	//see if there's a surplus of power remaining in the powernet and stores unused power in the SMES
 	netexcess = avail - load
 
@@ -93,10 +109,14 @@
 	newavail = 0
 
 /datum/powernet/proc/get_electrocute_damage()
+	procstart = null
+	src.procstart = null
 	return ELECTROCUTE_DAMAGE(energy_to_power(avail)) // Assuming 1 second of contact.
 
 // Mostly just a wrapper for sending the COMSIG_POWERNET_CIRCUIT_TRANSMISSION signal, but could be retooled in the future to give it other uses
 /datum/powernet/proc/data_transmission(list/data, encryption_key, datum/weakref/port)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_POWERNET_CIRCUIT_TRANSMISSION, list("data" = data, "enc_key" = encryption_key, "port" = port))
 
 /**
@@ -106,6 +126,8 @@
  * * falloff_distance - Only relevant if you passed a source. Areas beyond this distance will be less and less likely to flicker.
  */
 /datum/powernet/proc/propagate_light_flicker(atom/flicker_source, falloff_distance = 32)
+	procstart = null
+	src.procstart = null
 	if(flickering || !length(nodes))
 		return
 

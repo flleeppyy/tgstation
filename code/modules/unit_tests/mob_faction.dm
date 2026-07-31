@@ -2,6 +2,8 @@
 /datum/unit_test/mob_faction
 
 /datum/unit_test/mob_faction/Run()
+	procstart = null
+	src.procstart = null
 	/// Right now taken from create_and_destroy
 	var/list/ignored = list(
 		/mob/living/carbon,

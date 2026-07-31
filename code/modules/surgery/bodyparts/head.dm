@@ -87,11 +87,15 @@
 	VAR_PROTECTED/can_dismember = FALSE
 
 /obj/item/bodypart/head/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/toy_talk)
 	RegisterSignals(src, list(SIGNAL_ADDTRAIT(TRAIT_DISFIGURED), SIGNAL_REMOVETRAIT(TRAIT_DISFIGURED)), PROC_REF(update_owner_name))
 
 /obj/item/bodypart/head/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(worn_ears_offset)
 	QDEL_NULL(worn_glasses_offset)
 	QDEL_NULL(worn_mask_offset)
@@ -100,6 +104,8 @@
 	return ..()
 
 /obj/item/bodypart/head/get_butcher_drops(force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!isnull(butcher_drops) && !force)
 		return butcher_drops
 	if (butcher_drop_cache[type] && !force)
@@ -110,6 +116,8 @@
 	return list(species.skinned_type = 1)
 
 /obj/item/bodypart/head/animate_atom_living(mob/living/owner)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/animated = ..()
 	animated.attack_vis_effect = ATTACK_EFFECT_BITE
 	animated.attack_verb_continuous = "bites"
@@ -117,9 +125,13 @@
 	return animated
 
 /obj/item/bodypart/head/grind_results()
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/item/bodypart/head/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!show_organs_on_examine || !IS_ORGANIC_LIMB(src))
 		return
@@ -151,11 +163,15 @@
 		. += span_info("[shown_name]'s tongue has been removed.")
 
 /obj/item/bodypart/head/proc/get_face_name()
+	procstart = null
+	src.procstart = null
 	if (HAS_TRAIT(src, TRAIT_DISFIGURED))
 		return "Unknown"
 	return real_name
 
 /obj/item/bodypart/head/can_dismember(obj/item/item)
+	procstart = null
+	src.procstart = null
 	if (!can_dismember)
 		return FALSE
 
@@ -165,6 +181,8 @@
 	return ..()
 
 /obj/item/bodypart/head/drop_organs(mob/user, violent_removal)
+	procstart = null
+	src.procstart = null
 	if(user)
 		user.visible_message(span_warning("[user] saws [src] open and pulls out a brain!"), span_notice("You saw [src] open and pull out a brain."))
 	var/obj/item/organ/brain/brain = locate(/obj/item/organ/brain) in src
@@ -174,6 +192,8 @@
 	return ..()
 
 /obj/item/bodypart/head/update_limb(dropping_limb, is_creating)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(owner))
 		return
@@ -188,6 +208,8 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /obj/item/bodypart/head/get_limb_icon(dropped)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(dropped) // These overlays are applied as standing overlays so we only need them if dropped
 		. += get_hair_overlays(dropped)
@@ -196,9 +218,13 @@
 	. += get_lips_overlays(dropped)
 
 /obj/item/bodypart/head/get_voice(add_id_name)
+	procstart = null
+	src.procstart = null
 	return "The head of [get_face_name()]"
 
 /obj/item/bodypart/head/update_bodypart_damage_state()
+	procstart = null
+	src.procstart = null
 	if (head_flags & HEAD_NO_DISFIGURE)
 		return ..()
 
@@ -211,6 +237,8 @@
 		REMOVE_TRAIT(src, TRAIT_DISFIGURED, BODYPART_TRAIT)
 
 /obj/item/bodypart/head/proc/update_owner_name(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (ishuman(owner))

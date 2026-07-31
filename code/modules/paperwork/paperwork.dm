@@ -35,11 +35,15 @@
 	var/detailed_desc
 
 /obj/item/paperwork/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	detailed_desc = span_notice("<i>As you sift through the papers, you slowly start to piece together what you're reading.</i>")
 
 /obj/item/paperwork/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stamp))
 		return NONE
 
@@ -62,6 +66,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/paperwork/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(ishuman(user))
@@ -77,6 +83,8 @@
 				. += span_info("Trying to read through it makes your head spin. Judging by the few words you can make out, this looks like a job for the [title].")
 
 /obj/item/paperwork/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins insulting the inefficiency of paperwork and bureaucracy. It looks like [user.p_theyre()] trying to commit suicide!"))
 
 	var/obj/item/paper/new_paper = new /obj/item/paper(get_turf(src))
@@ -99,6 +107,8 @@
  * Handled as a proc so that an object may be marked as "stamped" even when a stamp isn't present (like the photocopier)
  */
 /obj/item/paperwork/proc/add_stamp()
+	procstart = null
+	src.procstart = null
 	stamp_overlay = mutable_appearance('icons/obj/service/bureaucracy.dmi', stamp_icon)
 	add_overlay(stamp_overlay)
 	stamped = TRUE
@@ -110,6 +120,8 @@
  * Used to mutate photocopied/ancient paperwork into behaving like their subtype counterparts without the extra details
  */
 /obj/item/paperwork/proc/copy_stamp_info(obj/item/paperwork/paperwork_type)
+	procstart = null
+	src.procstart = null
 	stamp_requested = initial(paperwork_type.stamp_requested)
 	stamp_job = initial(paperwork_type.stamp_job)
 	stamp_icon = initial(paperwork_type.stamp_icon)
@@ -122,6 +134,8 @@
 	stamp_icon = "paper_stamp-qm"
 
 /obj/item/paperwork/cargo/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	detailed_desc += span_info(" The papers are a mess of shipping order paperwork. There's no rhyme or reason to how these documents are sorted at all.")
@@ -135,6 +149,8 @@
 	stamp_icon = "paper_stamp-hos"
 
 /obj/item/paperwork/security/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	detailed_desc += span_info(" The stack of documents is related to a civil case being processed by a neighboring installation.")
@@ -148,6 +164,8 @@
 	stamp_icon = "paper_stamp-hop"
 
 /obj/item/paperwork/service/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	detailed_desc += span_info(" You begin scanning over the document. This is a standard Nanotrasen NT-435Z3 form used for requests to Central Command.")
@@ -161,6 +179,8 @@
 	stamp_icon = "paper_stamp-cmo"
 
 /obj/item/paperwork/medical/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	detailed_desc += span_info(" The stack of documents appears to be a medical report from a nearby station, detailing the autopsy of an unknown xenofauna.")
@@ -175,6 +195,8 @@
 	stamp_icon = "paper_stamp-ce"
 
 /obj/item/paperwork/engineering/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	detailed_desc += span_info(" These papers are a power output report from a neighboring station. It details the power output and other engineering data regarding the station during a typical shift.")
@@ -188,6 +210,8 @@
 	stamp_icon = "paper_stamp-rd"
 
 /obj/item/paperwork/research/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	detailed_desc += span_info(" The documents detail the results of a standard ordnance test that occured on a nearby station.")
@@ -201,6 +225,8 @@
 	stamp_icon = "paper_stamp-cap"
 
 /obj/item/paperwork/captain/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	detailed_desc += span_info(" The documents are an unsigned correspondence from the captain's desk of a nearby station.")
@@ -218,11 +244,15 @@
 	var/voided = FALSE
 
 /obj/item/paperwork/photocopy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	detailed_desc = span_notice("The print job on this paperwork has rendered it almost entirely unreadable.")
 
 /obj/item/paperwork/photocopy/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(stamped)
@@ -234,6 +264,8 @@
 		. += span_notice("These appear to just be a photocopy of the original documents.")
 
 /obj/item/paperwork/photocopy/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stamp/void) || stamped || voided)
 		return ..()
 	to_chat(user, span_notice("You plant the [tool] firmly onto the front of the documents."))
@@ -251,6 +283,8 @@
 	desc = "A dusty, ugly mess of paper scraps. You can't recognize a single name, date, or topic mentioned within. How old are these?"
 
 /obj/item/paperwork/ancient/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	detailed_desc = span_notice("It's impossible to really tell how old these are or what they're for, but Central Command might appreciate them anyway.")

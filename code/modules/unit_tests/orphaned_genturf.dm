@@ -4,5 +4,7 @@
 	test_flags = UNIT_TEST_MAP_TEST
 
 /datum/unit_test/orphaned_genturf/Run()
+	procstart = null
+	src.procstart = null
 	for(var/turf/open/genturf/orphaned in ALL_TURFS())
 		TEST_FAIL("Floating genturf ([orphaned.type]) detected at ([orphaned.x], [orphaned.y], [orphaned.z]) : [orphaned.loc.type]. Why was it not replaced?")

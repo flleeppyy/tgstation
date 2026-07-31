@@ -75,6 +75,8 @@
 	timeout = 4 MINUTES
 
 /datum/mood_event/disgust/dirty_food/add_effects(...)
+	procstart = null
+	src.procstart = null
 	if(HAS_PERSONALITY(owner, /datum/personality/ascetic))
 		mood_change *= 0.25
 		description = "That food was dirty, but edible."
@@ -89,6 +91,8 @@
 	timeout = 5 MINUTES
 
 /datum/mood_event/shower/add_effects(shower_reagent)
+	procstart = null
+	src.procstart = null
 	if(istype(shower_reagent, /datum/reagent/blood))
 		if(HAS_TRAIT(owner, TRAIT_MORBID) || HAS_TRAIT(owner, TRAIT_EVIL) || (owner.mob_biotypes & MOB_UNDEAD))
 			description = "The sensation of a lovely blood shower felt good."

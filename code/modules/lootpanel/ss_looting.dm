@@ -13,11 +13,15 @@ SUBSYSTEM_DEF(looting)
 
 
 /datum/controller/subsystem/looting/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg = "P:[length(backlog)]"
 	return ..()
 
 
 /datum/controller/subsystem/looting/fire(resumed)
+	procstart = null
+	src.procstart = null
 	if(!length(backlog) && !length(processing))
 		return
 

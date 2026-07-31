@@ -12,6 +12,8 @@
 	circuit_comp_type = /obj/item/circuit_component/mod_program/ntnetmonitor
 
 /datum/computer_file/program/ntnetmonitor/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(action)
 		if("resetIDS")
@@ -37,6 +39,8 @@
 			return TRUE
 
 /datum/computer_file/program/ntnetmonitor/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["ntnetrelays"] = list()
@@ -89,6 +93,8 @@
 	var/datum/port/input/get_pdas
 
 /obj/item/circuit_component/mod_program/ntnetmonitor/populate_ports()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	target = add_input_port("Target Messenger/Relay", PORT_TYPE_ATOM)
 	toggle_ids = add_input_port("Toggle IDS Status", PORT_TYPE_SIGNAL, trigger = PROC_REF(toggle_ids))
@@ -100,6 +106,8 @@
 	all_messengers = add_output_port("List of PDAs", PORT_TYPE_LIST(PORT_TYPE_ATOM))
 
 /obj/item/circuit_component/mod_program/ntnetmonitor/proc/get_pdas(datum/port/port)
+	procstart = null
+	src.procstart = null
 	var/list/computers_with_messenger = list()
 	for(var/messenger_ref in GLOB.pda_messengers)
 		var/datum/computer_file/program/messenger/messenger = GLOB.pda_messengers[messenger_ref]
@@ -107,18 +115,26 @@
 	all_messengers.set_output(computers_with_messenger)
 
 /obj/item/circuit_component/mod_program/ntnetmonitor/proc/toggle_ids(datum/port/port)
+	procstart = null
+	src.procstart = null
 	SSmodular_computers.intrusion_detection_enabled = !SSmodular_computers.intrusion_detection_enabled
 
 /obj/item/circuit_component/mod_program/ntnetmonitor/proc/toggle_relay(datum/port/port)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/ntnet_relay/target_relay = target.value
 	if(!istype(target_relay))
 		return
 	target_relay.set_relay_enabled(!target_relay.relay_enabled)
 
 /obj/item/circuit_component/mod_program/ntnetmonitor/proc/purge_logs(datum/port/port)
+	procstart = null
+	src.procstart = null
 	SSmodular_computers.purge_logs()
 
 /obj/item/circuit_component/mod_program/ntnetmonitor/proc/toggle_pda_stuff(datum/port/port)
+	procstart = null
+	src.procstart = null
 	var/obj/item/modular_computer/computer = target.value
 	if(!istype(computer))
 		return

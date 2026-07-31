@@ -12,6 +12,8 @@
 	var/cost_per_order = 10
 
 /datum/orderable_item/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!category_index)
 		CRASH("[type] doesn't have a category_index assigned!")

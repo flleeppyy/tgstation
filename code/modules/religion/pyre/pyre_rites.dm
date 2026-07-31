@@ -1,6 +1,8 @@
 
 ///apply a bunch of fire immunity effect to clothing
 /datum/religion_rites/fireproof/proc/apply_fireproof(obj/item/clothing/fireproofed)
+	procstart = null
+	src.procstart = null
 	fireproofed.name = "unmelting [fireproofed.name]"
 	fireproofed.max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
 	fireproofed.heat_protection = chosen_clothing.body_parts_covered
@@ -19,6 +21,8 @@
 	var/obj/item/clothing/chosen_clothing
 
 /datum/religion_rites/fireproof/perform_rite(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/clothing/apparel in get_turf(religious_tool))
 		if(apparel.max_heat_protection_temperature >= FIRE_IMMUNITY_MAX_TEMP_PROTECT)
 			continue //we ignore anything that is already fireproof
@@ -27,6 +31,8 @@
 	return FALSE
 
 /datum/religion_rites/fireproof/invoke_effect(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!QDELETED(chosen_clothing) && get_turf(religious_tool) == chosen_clothing.loc) //check if the same clothing is still there
 		if(istype(chosen_clothing,/obj/item/clothing/suit/hooded))
@@ -54,6 +60,8 @@
 	var/mob/living/carbon/chosen_sacrifice
 
 /datum/religion_rites/burning_sacrifice/perform_rite(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(religious_tool))
 		to_chat(user, span_warning("This rite requires a religious device that individuals can be buckled to."))
 		return FALSE
@@ -77,6 +85,8 @@
 		return ..()
 
 /datum/religion_rites/burning_sacrifice/invoke_effect(mob/living/user, atom/movable/religious_tool)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!(chosen_sacrifice in religious_tool.buckled_mobs)) //checks one last time if the right corpse is still buckled
 		to_chat(user, span_warning("The right sacrifice is no longer on the altar!"))
@@ -106,6 +116,8 @@
 	favor_cost = 200
 
 /datum/religion_rites/infinite_candle/invoke_effect(mob/living/user, atom/movable/religious_tool)
+	procstart = null
+	src.procstart = null
 	..()
 	var/altar_turf = get_turf(religious_tool)
 	for(var/i in 1 to 5)
@@ -128,6 +140,8 @@
 	var/obj/item/ammo_casing/arrow/holy/enchant_target
 
 /datum/religion_rites/blazing_star/perform_rite(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/ammo_casing/arrow/holy/can_enchant in get_turf(religious_tool))
 		if(istype(can_enchant, /obj/item/ammo_casing/arrow/holy/blazing))
 			continue
@@ -137,6 +151,8 @@
 	return FALSE
 
 /datum/religion_rites/blazing_star/invoke_effect(mob/living/user, atom/movable/religious_tool)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/ammo_casing/arrow/holy/enchanting = enchant_target
 	var/turf/tool_turf = get_turf(religious_tool)

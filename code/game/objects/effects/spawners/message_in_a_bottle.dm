@@ -6,6 +6,8 @@
 	var/probability = 100
 
 /obj/effect/spawner/message_in_a_bottle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!prob(probability))
 		return INITIALIZE_HINT_QDEL
@@ -16,6 +18,8 @@
 		return INITIALIZE_HINT_QDEL
 
 /obj/effect/spawner/message_in_a_bottle/proc/on_persistence_init(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(SSpersistence, COMSIG_SUBSYSTEM_POST_INITIALIZE)
 	SSpersistence.load_message_bottle(loc)

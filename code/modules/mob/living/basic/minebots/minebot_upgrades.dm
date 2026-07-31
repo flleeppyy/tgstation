@@ -6,12 +6,16 @@
 	item_flags = NOBLUDGEON
 
 /obj/item/mine_bot_upgrade/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(interacting_with, /mob/living/basic/mining_drone))
 		return NONE
 	upgrade_bot(interacting_with, user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/mine_bot_upgrade/proc/upgrade_bot(mob/living/basic/mining_drone/minebot, mob/user)
+	procstart = null
+	src.procstart = null
 	if(minebot.melee_damage_upper != initial(minebot.melee_damage_upper))
 		user.balloon_alert(user, "already has armor!")
 		return
@@ -26,6 +30,8 @@
 	name = "minebot armor upgrade"
 
 /obj/item/mine_bot_upgrade/health/upgrade_bot(mob/living/basic/mining_drone/minebot, mob/user)
+	procstart = null
+	src.procstart = null
 	if(minebot.maxHealth != initial(minebot.maxHealth))
 		to_chat(user, span_warning("[minebot] already has reinforced armor!"))
 		return
@@ -52,6 +58,8 @@
 	var/base_cooldown_add = 10
 
 /obj/item/slimepotion/sentience/mining/after_success(mob/living/user, mob/living/basic_mob)
+	procstart = null
+	src.procstart = null
 	if(!istype(basic_mob, /mob/living/basic/mining_drone))
 		return
 	var/mob/living/basic/mining_drone/minebot = basic_mob
@@ -65,6 +73,8 @@
 	desc = "Allows your minebot to tank many hits before going down!"
 
 /obj/item/mine_bot_upgrade/regnerative_shield/upgrade_bot(mob/living/basic/mining_drone/minebot, mob/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(minebot, TRAIT_REGEN_SHIELD))
 		user.balloon_alert(minebot, "already has it!")
 		return

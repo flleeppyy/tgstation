@@ -29,6 +29,8 @@
 	src.on_contact = on_contact
 
 /datum/component/magnet/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSdcs, src)
 	if (!isliving(parent))
@@ -36,11 +38,15 @@
 	RegisterSignal(parent, COMSIG_MOB_STATCHANGE, PROC_REF(toggle_on_stat_change))
 
 /datum/component/magnet/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	STOP_PROCESSING(SSdcs, src)
 	UnregisterSignal(parent, COMSIG_MOB_STATCHANGE)
 
 /datum/component/magnet/Destroy(force)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSdcs, src)
 	on_pulled = null
 	on_contact = null
@@ -48,6 +54,8 @@
 
 /// If a mob dies we stop attracting stuff
 /datum/component/magnet/proc/toggle_on_stat_change(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (source.stat == DEAD)
 		STOP_PROCESSING(SSdcs, src)
@@ -55,6 +63,8 @@
 		START_PROCESSING(SSdcs, src)
 
 /datum/component/magnet/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	for (var/atom/movable/thing in orange(pull_range, parent))
 		if (!is_type_in_typecache(thing, attracted_typecache))
 			continue

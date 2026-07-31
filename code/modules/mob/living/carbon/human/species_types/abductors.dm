@@ -30,14 +30,20 @@
 	)
 
 /datum/species/abductor/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "Abductors do not need to breathe, eat, do not have blood, a heart, stomach, or lungs and cannot be infected by human viruses. \
 		Their hardy physique prevents their skin from being wounded or dismembered, but their chunky tridactyl hands make it hard to operate human equipment."
 
 /datum/species/abductor/get_species_description()
+	procstart = null
+	src.procstart = null
 	return "Abductors, colloquially known as \"Greys\" (or \"Grays\"), \
 		are, three fingered, pale skinned inquisitive aliens who can't communicate well to the average crew-member."
 
 /datum/species/abductor/get_species_lore()
+	procstart = null
+	src.procstart = null
 	return list(
 		"Little are known about Abductors. \
 		While they (as a species) have been known to abduct other species of 'lesser intellect' for experimentation, \
@@ -45,6 +51,8 @@
 	)
 
 /datum/species/abductor/create_pref_traits_perks()
+	procstart = null
+	src.procstart = null
 	var/list/perks = list()
 	perks += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
@@ -62,6 +70,8 @@
 	return perks
 
 /datum/species/abductor/create_pref_unique_perks()
+	procstart = null
+	src.procstart = null
 	var/list/perks = list()
 	perks += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,

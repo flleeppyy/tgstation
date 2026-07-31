@@ -31,14 +31,20 @@
 	var/uses = 100
 
 /obj/item/soap/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/slippery, 80)
 	AddComponent(/datum/component/cleaner, cleanspeed, 0.1, pre_clean_callback=CALLBACK(src, PROC_REF(should_clean)), on_cleaned_callback=CALLBACK(src, PROC_REF(decreaseUses))) //less scaling for soapies
 
 /obj/item/soap/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/lye = 10)
 
 /obj/item/soap/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/max_uses = initial(uses)
 	var/msg = "It looks like it just came out of the package."
@@ -65,6 +71,8 @@
 	cleanspeed = 3 SECONDS // faster than base soap to reward chemists for going to the effort
 
 /obj/item/soap/homemade/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/liquidgibs = 9, /datum/reagent/lye = 9)
 
 /obj/item/soap/nanotrasen
@@ -76,6 +84,8 @@
 	uses = 300
 
 /obj/item/soap/nanotrasen/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/toxin/plasma = 10, /datum/reagent/lye = 10)
 
 /obj/item/soap/deluxe
@@ -86,6 +96,8 @@
 	cleanspeed = 2 SECONDS //captain gets one of these
 
 /obj/item/soap/deluxe/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/aloejuice = 10, /datum/reagent/lye = 10)
 
 /obj/item/soap/syndie
@@ -96,6 +108,8 @@
 	cleanspeed = 0.5 SECONDS //faster than mops so it's useful for traitors who want to clean crime scenes
 
 /obj/item/soap/syndie/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/toxin/acid = 10, /datum/reagent/lye = 10)
 
 /obj/item/soap/drone
@@ -115,10 +129,14 @@
 	uses = 800 //In the Greek numeric system, Omega has a value of 800
 
 /obj/item/soap/omega/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/slippery, 120) //Same slipperiness as Super Lube
 
 /obj/item/soap/omega/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(
 		/datum/reagent/consumable/potato_juice = 9,
 		/datum/reagent/consumable/ethanol/lizardwine = 9,
@@ -134,6 +152,8 @@
 	)
 
 /obj/item/soap/omega/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is using [src] to scrub themselves from the timeline! It looks like [user.p_theyre()] trying to commit suicide!"))
 	new /obj/structure/chrono_field(user.loc, user)
 	return MANUAL_SUICIDE
@@ -144,12 +164,16 @@
 	default_raw_text = "<h1><b>The Legend of the Omega Soap</b></h1><br><br>Essence of <b>potato</b>, juice, not grind.<br>A <b>lizard's</b> tail, turned into wine.<br><b>Powder of monkey</b>, to help the workload.<br>Some <b>Krokodil</b>, because meth would explode.<br><b>Nitric acid</b> and <b>Baldium</b>, for organic dissolving.<br>A cup full of <b>hooch</b>, for sins' absolving.<br>A dash of <b>bluespace dust</b>, for removal of stains.<br>A syringe of <b>Pump-Up</b>, Security's worst of pains.<br>A can of <b>Space Cola</b>, to watch the dirt fade.<br><b>Heat</b> as hot as possible, let the soap be your blade.<br>With <b>ten</b> units of each, the soap that topples all will be made."
 
 /obj/item/soap/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.say(";FFFFFFFFFFFFFFFFUUUUUUUDGE!!", forced="soap suicide")
 	user.visible_message(span_suicide("[user] lifts [src] to [user.p_their()] mouth and gnaws on it furiously, producing a thick froth! [user.p_They()]'ll never get that BB gun now!"))
 	do_foam(1, src, get_turf(user))
 	return TOXLOSS
 
 /obj/item/soap/proc/should_clean(datum/cleaning_source, atom/atom_to_clean, mob/living/cleaner)
+	procstart = null
+	src.procstart = null
 	. = CLEAN_ALLOWED
 	if(!check_allowed_items(atom_to_clean))
 		. |= CLEAN_NO_XP|CLEAN_NO_WASH
@@ -164,6 +188,8 @@
  * * user - The mob that is using the soap to clean.
  */
 /obj/item/soap/proc/decreaseUses(datum/source, atom/target, mob/living/user, clean_succeeded)
+	procstart = null
+	src.procstart = null
 	if(!clean_succeeded)
 		return
 	var/skillcheck = 1
@@ -175,6 +201,8 @@
 		noUses(user)
 
 /obj/item/soap/proc/noUses(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("[src] crumbles into tiny bits!"))
 	qdel(src)
 
@@ -182,9 +210,13 @@
 	name = "built-in soap"
 
 /obj/item/soap/nanotrasen/cyborg/noUses(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("[src] has ran out of chemicals! Head to a recharger to refill it."))
 
 /obj/item/soap/nanotrasen/cyborg/should_clean(datum/cleaning_source, atom/atom_to_clean, mob/living/cleaner)
+	procstart = null
+	src.procstart = null
 	if(uses <= 0)
 		return CLEAN_BLOCKED
 	return ..()
@@ -214,12 +246,16 @@
 	var/sound_file = 'sound/items/bikehorn.ogg'
 
 /obj/item/bikehorn/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/sound_list = list()
 	sound_list[sound_file] = 1
 	AddComponent(/datum/component/squeak, sound_list, 50, falloff_exponent = 20)
 
 /obj/item/bikehorn/attack(mob/living/carbon/M, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(user != M && ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if (HAS_TRAIT(H, TRAIT_CLUMSY)) //only clowns can unlock its true powers
@@ -227,6 +263,8 @@
 	return ..()
 
 /obj/item/bikehorn/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] solemnly points [src] at [user.p_their()] temple! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(src, 'sound/items/bikehorn.ogg', 50, TRUE)
 	return BRUTELOSS
@@ -260,14 +298,20 @@
 	custom_materials = list(/datum/material/bananium = SHEET_MATERIAL_AMOUNT * 5)
 
 /obj/item/bikehorn/golden/attack()
+	procstart = null
+	src.procstart = null
 	flip_mobs()
 	return ..()
 
 /obj/item/bikehorn/golden/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	flip_mobs()
 	..()
 
 /obj/item/bikehorn/golden/proc/flip_mobs(mob/living/carbon/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, golden_horn_cooldown))
 		return
 	var/turf/T = get_turf(src)
@@ -324,11 +368,15 @@
 	custom_materials = list(/datum/material/plastic = SHEET_MATERIAL_AMOUNT * 10.8)
 
 /obj/item/balloon_mallet/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(user,TRAIT_BALLOON_SUTRA))
 		. += "A sacred weapon of the higher castes from the clown planet, used to strike fear into the hearts of their foes. Wield it with care."
 
 /obj/item/balloon_mallet/attack(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	playsound(loc, 'sound/mobs/non-humanoids/clown/hehe.ogg', 20)
 	if (!isliving(target))
 		return

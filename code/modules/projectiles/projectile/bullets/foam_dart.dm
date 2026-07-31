@@ -22,10 +22,14 @@
 	rip_time = 0.5 SECONDS
 
 /obj/projectile/bullet/foam_dart/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignals(src, list(COMSIG_PROJECTILE_ON_SPAWN_DROP, COMSIG_PROJECTILE_ON_SPAWN_EMBEDDED), PROC_REF(handle_drop))
 
 /obj/projectile/bullet/foam_dart/proc/handle_drop(datum/source, obj/item/ammo_casing/foam_dart/newcasing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	newcasing.modified = modified
 	newcasing.update_appearance()

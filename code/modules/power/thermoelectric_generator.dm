@@ -30,6 +30,8 @@
 	var/last_pressure_overlay = "00"
 
 /obj/machinery/power/thermoelectric_generator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_rotation)
 	find_circulators()
@@ -38,14 +40,20 @@
 	update_appearance()
 
 /obj/machinery/power/thermoelectric_generator/Destroy()
+	procstart = null
+	src.procstart = null
 	null_circulators()
 	SSair.stop_processing_machine(src)
 	return ..()
 
 /obj/machinery/power/thermoelectric_generator/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	null_circulators()
 
 /obj/machinery/power/thermoelectric_generator/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & (NOPOWER|BROKEN))
 		return
@@ -57,6 +65,8 @@
 		. += "[base_icon_state]-oc[last_pressure_overlay]"
 
 /obj/machinery/power/thermoelectric_generator/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		balloon_alert(user, "open the panel!")
 		return
@@ -70,6 +80,8 @@
 	return TRUE
 
 /obj/machinery/power/thermoelectric_generator/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!anchored)
 		return
@@ -78,6 +90,8 @@
 	return TRUE
 
 /obj/machinery/power/thermoelectric_generator/screwdriver_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		balloon_alert(user, "anchor it down!")
 		return
@@ -87,9 +101,13 @@
 	return TRUE
 
 /obj/machinery/power/thermoelectric_generator/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/power/thermoelectric_generator/process()
+	procstart = null
+	src.procstart = null
 	//Setting this number higher just makes the change in power output slower, it doesnt actualy reduce power output cause **math**
 	var/power_output = round(lastgen / 10)
 	add_avail(power_output)
@@ -97,6 +115,8 @@
 	lastgen -= power_output
 
 /obj/machinery/power/thermoelectric_generator/process_atmos()
+	procstart = null
+	src.procstart = null
 	if(!cold_circ || !hot_circ)
 		return
 	if(!powernet)
@@ -132,12 +152,16 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/machinery/power/thermoelectric_generator/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ThermoElectricGenerator", name)
 		ui.open()
 
 /obj/machinery/power/thermoelectric_generator/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["error_message"] = null
 	if(!powernet)
@@ -179,6 +203,8 @@
 
 ///Finds and connects nearby valid circulators to the machine, nulling out previous ones.
 /obj/machinery/power/thermoelectric_generator/proc/find_circulators()
+	procstart = null
+	src.procstart = null
 	null_circulators()
 	var/list/valid_circulators = list()
 
@@ -211,6 +237,8 @@
 
 ///Removes hot and cold circulators from the generator, nulling them.
 /obj/machinery/power/thermoelectric_generator/proc/null_circulators()
+	procstart = null
+	src.procstart = null
 	if(hot_circ)
 		hot_circ.generator = null
 		hot_circ = null

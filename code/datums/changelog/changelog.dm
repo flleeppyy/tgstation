@@ -2,15 +2,21 @@
 	var/static/list/changelog_items = list()
 
 /datum/changelog/ui_state()
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 /datum/changelog/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		ui = new(user, src, "Changelog")
 		ui.open()
 
 /datum/changelog/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -22,6 +28,8 @@
 		return ui.send_asset(changelog_item)
 
 /datum/changelog/ui_static_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list( "dates" = list() )
 	var/regex/ymlRegex = regex(@"\.yml", "g")
 

@@ -8,6 +8,8 @@
 	var/active = FALSE
 
 /datum/terror_handler/simple_source/tick(seconds_per_tick, terror_buildup)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (check_condition(seconds_per_tick, terror_buildup) && terror_buildup < TERROR_BUILDUP_PASSIVE_MAXIMUM)
 		if (!active)
@@ -18,14 +20,20 @@
 
 /// Proc that children should override with their conditions
 /datum/terror_handler/simple_source/proc/check_condition(seconds_per_tick, terror_buildup)
+	procstart = null
+	src.procstart = null
 	return !HAS_TRAIT(owner, TRAIT_FEARLESS) && !HAS_TRAIT(owner, TRAIT_MIND_TEMPORARILY_GONE) && !IS_UNCONSCIOUS(owner)
 
 /// Proc that's called when the effect is first applied, for moodlets and alike
 /datum/terror_handler/simple_source/proc/on_activation(terror_buildup)
+	procstart = null
+	src.procstart = null
 	active = TRUE
 
 /// Proc that's called when the effect stops working, for moodlets and alike
 /datum/terror_handler/simple_source/proc/on_deactivation(terror_buildup)
+	procstart = null
+	src.procstart = null
 	active = FALSE
 
 /// Makes the owner terrified of darkness
@@ -35,10 +43,14 @@
 	var/meson_negated = TRUE
 
 /datum/terror_handler/simple_source/nyctophobia/Destroy(force)
+	procstart = null
+	src.procstart = null
 	owner.clear_mood_event("nyctophobia")
 	return ..()
 
 /datum/terror_handler/simple_source/nyctophobia/check_condition(seconds_per_tick, terror_buildup)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -64,10 +76,14 @@
 	return lit_tiles < unlit_tiles
 
 /datum/terror_handler/simple_source/nyctophobia/on_activation(terror_buildup)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.add_mood_event("nyctophobia", /datum/mood_event/nyctophobia)
 
 /datum/terror_handler/simple_source/nyctophobia/on_deactivation(terror_buildup)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.clear_mood_event("nyctophobia")
 
@@ -80,6 +96,8 @@
 	meson_negated = FALSE
 
 /datum/terror_handler/simple_source/nyctophobia/terrified/tick(seconds_per_tick, terror_buildup)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (terror_buildup == 0 && !.)
 		owner.RemoveComponentSource("terrified", /datum/component/fearful)
@@ -90,10 +108,14 @@
 	COOLDOWN_DECLARE(message_cd)
 
 /datum/terror_handler/simple_source/claustrophobia/Destroy(force)
+	procstart = null
+	src.procstart = null
 	owner.clear_mood_event("claustrophobia")
 	return ..()
 
 /datum/terror_handler/simple_source/claustrophobia/check_condition(seconds_per_tick, terror_buildup)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -108,10 +130,14 @@
 	return TRUE
 
 /datum/terror_handler/simple_source/claustrophobia/on_activation(terror_buildup)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.add_mood_event("claustrophobia", /datum/mood_event/claustrophobia)
 
 /datum/terror_handler/simple_source/claustrophobia/on_deactivation(terror_buildup)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.clear_mood_event("claustrophobia")
 
@@ -121,6 +147,8 @@
 	COOLDOWN_DECLARE(message_cd)
 
 /datum/terror_handler/simple_source/clausophobia/check_condition(seconds_per_tick, terror_buildup)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -157,6 +185,8 @@
 	COOLDOWN_DECLARE(message_cd)
 
 /datum/terror_handler/simple_source/monophobia/check_condition(seconds_per_tick, terror_buildup)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return

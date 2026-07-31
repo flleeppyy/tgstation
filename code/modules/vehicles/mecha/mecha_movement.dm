@@ -1,11 +1,15 @@
 /// Sets the direction of the mecha and all of its occcupents, required for FOV. Alternatively one could make a recursive contents registration and register topmost direction changes in the fov component
 /obj/vehicle/sealed/mecha/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/mob/living/occupant as anything in occupants)
 		occupant.setDir(newdir)
 
 ///Called when the mech moves
 /obj/vehicle/sealed/mecha/proc/on_move()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	collect_ore()
@@ -13,6 +17,8 @@
 
 ///Collects ore when we move, if there is an orebox and it is functional
 /obj/vehicle/sealed/mecha/proc/collect_ore()
+	procstart = null
+	src.procstart = null
 	if(isnull(ore_box) || !HAS_TRAIT(src, TRAIT_OREBOX_FUNCTIONAL))
 		return
 	for(var/obj/item/stack/ore/ore in range(1, src))
@@ -27,6 +33,8 @@
 
 ///Plays the mech step sound effect. Split from movement procs so that other mechs (HONK) can override this one specific part.
 /obj/vehicle/sealed/mecha/proc/play_stepsound()
+	procstart = null
+	src.procstart = null
 	if(mecha_flags & QUIET_STEPS)
 		return
 
@@ -38,6 +46,8 @@
 
 // Do whatever you do to mobs to these fuckers too
 /obj/vehicle/sealed/mecha/Process_Spacemove(movement_dir = 0, continuous_move = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -61,10 +71,14 @@
 
 ///Called when the driver turns with the movement lock key
 /obj/vehicle/sealed/mecha/proc/on_turn(mob/living/driver, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return COMSIG_IGNORE_MOVEMENT_LOCK
 
 /obj/vehicle/sealed/mecha/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	if(!canmove || !(user in return_drivers()))
 		return
@@ -73,6 +87,8 @@
 	SEND_SIGNAL(user, COMSIG_MOB_DROVE_MECH, src)
 
 /obj/vehicle/sealed/mecha/vehicle_move(direction, forcerotate = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, cooldown_vehicle_move))
 		return FALSE
 
@@ -128,6 +144,8 @@
 
 /// Check if anything is blocking our movement
 /obj/vehicle/sealed/mecha/proc/can_move(direction)
+	procstart = null
+	src.procstart = null
 	if(toppled)
 		return FALSE
 
@@ -160,12 +178,16 @@
 	return TRUE
 
 /obj/vehicle/sealed/mecha/Bump(atom/obstacle)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.) //mech was thrown/door/whatever
 		return
 	try_bumpsmash(obstacle)
 
 /obj/vehicle/sealed/mecha/proc/try_bumpsmash(atom/obstacle)
+	procstart = null
+	src.procstart = null
 	// Whether or not we're on our mecha melee cooldown
 	var/on_cooldown = TIMER_COOLDOWN_RUNNING(src, COOLDOWN_MECHA_MELEE_ATTACK)
 
@@ -190,6 +212,8 @@
 
 //We only call a camera static update if we have successfully moved and have a camera installed
 /obj/vehicle/sealed/mecha/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!chassis_camera?.can_use())
 		return
@@ -198,6 +222,8 @@
 	SScameras.camera_moved(chassis_camera, get_turf(old_loc), get_turf(chassis_camera), 0.5 SECONDS)
 
 /obj/vehicle/sealed/mecha/proc/right_self(fallen_angle)
+	procstart = null
+	src.procstart = null
 	if(!toppled)
 		return
 	toppled = FALSE

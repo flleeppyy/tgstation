@@ -57,6 +57,8 @@
 		RegisterSignals(parent, additional_triggers, PROC_REF(trigger_explosive))
 
 /datum/component/interaction_booby_trap/Destroy(force)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ATOM_ATTACK_HAND, COMSIG_ATOM_TOOL_ACT(defuse_tool), COMSIG_ATOM_EXAMINE_MORE) + additional_triggers)
 	QDEL_NULL(active_sound_loop)
 	on_triggered_callback = null
@@ -65,12 +67,16 @@
 
 /// Called when someone touches the parent atom with their hands, we want to blow up
 /datum/component/interaction_booby_trap/proc/on_touched(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	trigger_explosive(source)
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /// Start a countdown until destruction
 /datum/component/interaction_booby_trap/proc/trigger_explosive(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (explode_timer)
 		return
@@ -81,6 +87,8 @@
 
 /// Blow up the parent atom and delete ourselves
 /datum/component/interaction_booby_trap/proc/explode(atom/source)
+	procstart = null
+	src.procstart = null
 	on_triggered_callback?.Invoke(source)
 	var/turf/origin_turf = get_turf(source)
 	new /obj/effect/temp_visual/explosion/fast(origin_turf)
@@ -90,6 +98,8 @@
 
 /// Defuse the bomb and delete ourselves
 /datum/component/interaction_booby_trap/proc/on_defused(atom/source, mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	on_defused_callback?.Invoke(source, user, tool)
 	qdel(src)
@@ -97,6 +107,8 @@
 
 /// Give people a little hint
 /datum/component/interaction_booby_trap/proc/on_examine(atom/source, mob/examiner, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/defuse_hint = (defuse_tool) ? "Perhaps [tool_behaviour_name(defuse_tool)] could help..." : ""
 	examine_list += span_warning("There's a light flashing red inside the maintenance panel. [defuse_hint]")

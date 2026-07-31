@@ -37,21 +37,29 @@
 	acid = 80
 
 /obj/vehicle/sealed/car/clowncar/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj,src)
 	RegisterSignal(src, COMSIG_MOVABLE_CROSS_OVER, PROC_REF(check_crossed))
 
 /obj/vehicle/sealed/car/clowncar/process()
+	procstart = null
+	src.procstart = null
 	if(light_on && (obj_flags & EMAGGED))
 		set_light_color(pick(headlight_colors))
 
 /obj/vehicle/sealed/car/clowncar/generate_actions()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	initialize_controller_action_type(/datum/action/vehicle/sealed/horn, VEHICLE_CONTROL_DRIVE)
 	initialize_controller_action_type(/datum/action/vehicle/sealed/headlights, VEHICLE_CONTROL_DRIVE)
 	initialize_controller_action_type(/datum/action/vehicle/sealed/thank, VEHICLE_CONTROL_KIDNAPPED)
 
 /obj/vehicle/sealed/car/clowncar/auto_assign_occupant_flags(mob/M)
+	procstart = null
+	src.procstart = null
 	if(ishuman(M) && driver_amount() < max_drivers)
 		var/mob/living/carbon/human/H = M
 		if(is_clown_job(H.mind?.assigned_role) || !enforce_clown_role) //Ensures only clowns can drive the car. (Including more at once)
@@ -63,6 +71,8 @@
 	add_control_flags(M, VEHICLE_CONTROL_KIDNAPPED)
 
 /obj/vehicle/sealed/car/clowncar/mob_forced_enter(mob/M, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(M))
 		var/mob/living/carbon/forced_mob = M
@@ -76,30 +86,42 @@
 				addtimer(CALLBACK(src, PROC_REF(irish_car_bomb)), 5 SECONDS)
 
 /obj/vehicle/sealed/car/clowncar/proc/irish_car_bomb()
+	procstart = null
+	src.procstart = null
 	dump_mobs()
 	explosion(src, light_impact_range = 1)
 
 /obj/vehicle/sealed/car/clowncar/after_add_occupant(mob/M, control_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(return_controllers_with_flag(VEHICLE_CONTROL_KIDNAPPED).len >= 30)
 		for(var/mob/voreman as anything in return_drivers())
 			voreman.client.give_award(/datum/award/achievement/misc/round_and_full, voreman)
 
 /obj/vehicle/sealed/car/clowncar/attack_animal(mob/living/simple_animal/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if((user.loc != src) || user.environment_smash >= ENVIRONMENT_SMASH_WALLS)
 		return ..()
 
 /obj/vehicle/sealed/car/clowncar/mob_exit(mob/M, silent = FALSE, randomstep = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(M, COMSIG_MOB_CLICKON)
 
 /obj/vehicle/sealed/car/clowncar/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(33))
 		visible_message(span_danger("[src] spews out a ton of space lube!"))
 		do_foam(4, src, loc, /datum/reagent/lube, 25)
 
 /obj/vehicle/sealed/car/clowncar/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/food/grown/banana))
 		return ..()
 	var/obj/item/food/grown/banana/banana = tool
@@ -109,6 +131,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/vehicle/sealed/car/clowncar/Bump(atom/bumped)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isclosedturf(bumped))
 		visible_message(span_warning("[src] rams into [bumped] and crashes!"))
@@ -161,6 +185,8 @@
 	playsound(src, 'sound/vehicles/car_crash.ogg', 100)
 
 /obj/vehicle/sealed/car/clowncar/proc/check_crossed(datum/source, atom/movable/crossed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!has_gravity())
 		return
@@ -178,6 +204,8 @@
 	log_combat(src, crossed, "ran over")
 
 /obj/vehicle/sealed/car/clowncar/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -189,6 +217,8 @@
 	return TRUE
 
 /obj/vehicle/sealed/car/clowncar/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/vehicles/clown_car/clowncar_fart.ogg', 100)
 	STOP_PROCESSING(SSobj,src)
 	return ..()
@@ -205,6 +235,8 @@
  * * Fart and make everyone nearby laugh
  */
 /obj/vehicle/sealed/car/clowncar/proc/roll_the_dice(mob/user)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/vehicles/clown_car/button_press.ogg', 50, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE)
 	if(TIMER_COOLDOWN_RUNNING(src, COOLDOWN_CLOWNCAR_RANDOMNESS))
 		to_chat(user, span_notice("The button panel is currently recharging."))
@@ -240,20 +272,28 @@
 
 ///resets the icon and iconstate of the clowncar after it was set to singulo states
 /obj/vehicle/sealed/car/clowncar/proc/reset_icon()
+	procstart = null
+	src.procstart = null
 	icon = initial(icon)
 	icon_state = initial(icon_state)
 
 ///Deploys oil when the clowncar moves in oil deploy mode
 /obj/vehicle/sealed/car/clowncar/proc/cover_in_oil()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	new /obj/effect/decal/cleanable/blood/oil/slippery(loc)
 
 ///Stops dropping oil after the time has run up
 /obj/vehicle/sealed/car/clowncar/proc/stop_dropping_oil()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(src, COMSIG_MOVABLE_MOVED)
 
 ///Toggles the on and off state of the clown cannon that shoots random kidnapped people
 /obj/vehicle/sealed/car/clowncar/proc/toggle_cannon(mob/user)
+	procstart = null
+	src.procstart = null
 	if(cannonmode == CLOWN_CANNON_BUSY)
 		to_chat(user, span_notice("Please wait for the vehicle to finish its current action first."))
 		return
@@ -274,6 +314,8 @@
 
 ///Finalizes canon activation
 /obj/vehicle/sealed/car/clowncar/proc/activate_cannon()
+	procstart = null
+	src.procstart = null
 	mouse_pointer = 'icons/effects/mouse_pointers/mecha_mouse.dmi'
 	cannonmode = CLOWN_CANNON_READY
 	for(var/mob/living/driver as anything in return_controllers_with_flag(VEHICLE_CONTROL_DRIVE))
@@ -281,6 +323,8 @@
 
 ///Finalizes canon deactivation
 /obj/vehicle/sealed/car/clowncar/proc/deactivate_cannon()
+	procstart = null
+	src.procstart = null
 	canmove = TRUE
 	mouse_pointer = null
 	cannonmode = CLOWN_CANNON_INACTIVE
@@ -289,6 +333,8 @@
 
 ///Fires the cannon where the user clicks
 /obj/vehicle/sealed/car/clowncar/proc/fire_cannon_at(mob/user, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(cannonmode != CLOWN_CANNON_READY || !length(return_controllers_with_flag(VEHICLE_CONTROL_KIDNAPPED)))
 		return
@@ -309,6 +355,8 @@
 
 ///Increments the thanks counter every time someone thats been kidnapped thanks the driver
 /obj/vehicle/sealed/car/clowncar/proc/increment_thanks_counter()
+	procstart = null
+	src.procstart = null
 	thankscount++
 	if(thankscount < 100)
 		return

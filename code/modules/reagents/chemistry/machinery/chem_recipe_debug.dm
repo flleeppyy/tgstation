@@ -68,6 +68,8 @@
 	var/obj/item/reagent_containers/required_container
 
 /obj/machinery/chem_recipe_debug/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	create_reagents(MAXIMUM_HOLDER_VOLUME)
@@ -81,6 +83,8 @@
 			all_reaction_list[extract_reaction_name(datum)] = datum
 
 /obj/machinery/chem_recipe_debug/Destroy()
+	procstart = null
+	src.procstart = null
 	reactions_to_test.Cut()
 	target_reagents = null
 	edit_reaction = null
@@ -89,6 +93,8 @@
 	return ..()
 
 /obj/machinery/chem_recipe_debug/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(held_item) || (held_item.item_flags & ABSTRACT) || (held_item.flags_1 & HOLOGRAM_1))
 		return NONE
@@ -102,6 +108,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/chem_recipe_debug/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!QDELETED(container))
 		. += span_notice("A container of [container.reagents.maximum_volume]u capacity is inside.")
@@ -109,11 +117,15 @@
 		. += span_notice("No container is present. A new will be created when ejecting.")
 
 /obj/machinery/chem_recipe_debug/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == container)
 		container = null
 
 /obj/machinery/chem_recipe_debug/item_interaction(mob/living/user, obj/item/held_item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if((held_item.item_flags & ABSTRACT) || (held_item.flags_1 & HOLOGRAM_1))
 		return
@@ -133,6 +145,8 @@
  * * datum/chemical_reaction/reaction - the reaction who's name we have to decode
  */
 /obj/machinery/chem_recipe_debug/proc/extract_reaction_name(datum/chemical_reaction/reaction)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	SHOULD_BE_PURE(TRUE)
 
@@ -143,6 +157,8 @@
 
 ///Retrives the target temperature to be imposed on the test reaction based on temp_mode
 /obj/machinery/chem_recipe_debug/proc/decode_target_temperature()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	SHOULD_BE_PURE(TRUE)
 
@@ -168,6 +184,8 @@
  * * seconds_per_tick - passed from on_reaction_step or process
  */
 /obj/machinery/chem_recipe_debug/proc/adjust_environment(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/target_temperature = decode_target_temperature()
@@ -184,6 +202,8 @@
 	target_reagents.update_total()
 
 /obj/machinery/chem_recipe_debug/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!target_reagents.is_reacting)
 		adjust_environment(seconds_per_tick)
 		target_reagents.handle_reactions()
@@ -193,6 +213,8 @@
 		ui.send_update()
 
 /obj/machinery/chem_recipe_debug/proc/on_reaction_step(datum/reagents/holder, num_reactions, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	adjust_environment(seconds_per_tick)
@@ -208,6 +230,8 @@
  * * variable - the name of the variable as seen in the UI
  */
 /obj/machinery/chem_recipe_debug/proc/decode_var(variable)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	. = null
@@ -237,12 +261,16 @@
 		. = value
 
 /obj/machinery/chem_recipe_debug/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ChemRecipeDebug", name)
 		ui.open()
 
 /obj/machinery/chem_recipe_debug/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	.["forced_temp"] = forced_temp
@@ -365,6 +393,8 @@
 	.["beaker"] = beaker_data
 
 /obj/machinery/chem_recipe_debug/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

@@ -28,6 +28,8 @@
 
 
 /datum/component/squeak/Initialize(custom_sounds, volume_override, chance_override, step_delay_override, use_delay_override, extrarange, falloff_exponent, fallof_distance)
+	procstart = null
+	src.procstart = null
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 	RegisterSignals(parent, list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_BLOB_ACT, COMSIG_ATOM_HULK_ATTACK, COMSIG_ATOM_ATTACKBY), PROC_REF(play_squeak))
@@ -67,10 +69,14 @@
 		sound_falloff_distance = fallof_distance
 
 /datum/component/squeak/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(GetComponent(/datum/component/connect_loc_behalf))
 
 /datum/component/squeak/proc/play_squeak()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(prob(squeak_chance))
@@ -80,6 +86,8 @@
 			playsound(parent, pick_weight(override_squeak_sounds), volume, TRUE, sound_extra_range, sound_falloff_exponent, falloff_distance = sound_falloff_distance)
 
 /datum/component/squeak/proc/step_squeak(obj/item/clothing/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/carbon/human/owner = source.loc
@@ -94,6 +102,8 @@
 		steps++
 
 /datum/component/squeak/proc/play_squeak_crossed(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isitem(arrived))
@@ -113,6 +123,8 @@
 		play_squeak()
 
 /datum/component/squeak/proc/use_squeak()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(COOLDOWN_FINISHED(src, spam_cooldown))
@@ -120,6 +132,8 @@
 		play_squeak()
 
 /datum/component/squeak/proc/on_equip(datum/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	holder = equipper
 	RegisterSignal(holder, COMSIG_MOVABLE_DISPOSING, PROC_REF(disposing_react), override=TRUE)
@@ -129,6 +143,8 @@
 	//will always runtime without override = TRUE
 
 /datum/component/squeak/proc/on_drop(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(user, COMSIG_MOVABLE_DISPOSING)
 	UnregisterSignal(user, COMSIG_QDELETING)
@@ -136,18 +152,24 @@
 
 ///just gets rid of the reference to holder in the case that they're qdeleted
 /datum/component/squeak/proc/holder_deleted(datum/source, datum/possible_holder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(possible_holder == holder)
 		holder = null
 
 // Disposal pipes related shits
 /datum/component/squeak/proc/disposing_react(datum/source, obj/structure/disposalholder/disposal_holder, obj/machinery/disposal/disposal_source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	//We don't need to worry about unregistering this signal as it will happen for us automatically when the holder is qdeleted
 	RegisterSignal(disposal_holder, COMSIG_ATOM_DIR_CHANGE, PROC_REF(holder_dir_change))
 
 /datum/component/squeak/proc/holder_dir_change(datum/source, old_dir, new_dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	//If the dir changes it means we're going through a bend in the pipes, let's pretend we bumped the wall
@@ -155,6 +177,8 @@
 		play_squeak()
 
 /datum/component/squeak/proc/on_comedy_metabolism_removal(datum/source, trait)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(src)

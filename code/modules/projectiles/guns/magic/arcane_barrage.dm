@@ -17,10 +17,14 @@
 	ammo_type = /obj/item/ammo_casing/magic/arcane_barrage
 
 /obj/item/gun/magic/wand/arcane_barrage/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/automatic_fire, 0.2 SECONDS)
 
 /obj/item/gun/magic/wand/arcane_barrage/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

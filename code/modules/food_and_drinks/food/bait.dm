@@ -11,6 +11,8 @@
 	var/show_on_wiki = TRUE
 
 /obj/item/food/bait/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, bait_quality, INNATE_TRAIT)
 
@@ -44,6 +46,8 @@
 	tastes = list("hypocrisy" = 1)
 
 /obj/item/food/bait/natural/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(src, bait_quality, INNATE_TRAIT)
 
@@ -68,6 +72,8 @@
 	show_on_wiki = FALSE //It's an abstract item.
 
 /obj/item/food/bait/doughball/synthetic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_OMNI_BAIT, INNATE_TRAIT)
 
@@ -88,6 +94,8 @@
 /obj/item/food/bait/doughball/synthetic/unconsumable
 
 /obj/item/food/bait/doughball/synthetic/unconsumable/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_BAIT_UNCONSUMABLE, INNATE_TRAIT)
 

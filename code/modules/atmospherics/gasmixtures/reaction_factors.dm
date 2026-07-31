@@ -1,4 +1,6 @@
 /datum/gas_reaction/water_vapor/init_factors()
+	procstart = null
+	src.procstart = null
 	factor = list(
 		/datum/gas/water_vapor = "Condensation will consume [MOLES_GAS_VISIBLE] moles, freezing will not consume any. Both needs a minimum of [MOLES_GAS_VISIBLE] moles to occur.",
 		"Temperature" = "Freezes a turf at [WATER_VAPOR_DEPOSITION_POINT] Kelvins or below, wets it at [WATER_VAPOR_CONDENSATION_POINT] Kelvins or below.",
@@ -6,6 +8,8 @@
 	)
 
 /datum/gas_reaction/miaster/init_factors()
+	procstart = null
+	src.procstart = null
 	factor = list(
 		/datum/gas/miasma = "Miasma is sterilized at a rate that scales with the difference between the temperature and [MIASTER_STERILIZATION_TEMP]K.",
 		/datum/gas/oxygen = "One mole of oxygen is released per mole of miasma consumed.",
@@ -14,6 +18,8 @@
 	)
 
 /datum/gas_reaction/plasmafire/init_factors()
+	procstart = null
+	src.procstart = null
 	factor = list(
 		/datum/gas/oxygen = "Oxygen consumption is determined by the temperature, ranging from [OXYGEN_BURN_RATIO_BASE] moles per mole of plasma consumed at [PLASMA_MINIMUM_BURN_TEMPERATURE] Kelvins to [OXYGEN_BURN_RATIO_BASE-1] moles per mole of plasma consumed at [PLASMA_UPPER_TEMPERATURE] Kelvins. Higher oxygen concentration up to [PLASMA_OXYGEN_FULLBURN] times the plasma increases the speed of plasma consumption.",
 		/datum/gas/plasma = "Plasma is consumed at a rate that scales with the difference between the temperature and [PLASMA_MINIMUM_BURN_TEMPERATURE]K, with maximum scaling at [PLASMA_UPPER_TEMPERATURE]K.",
@@ -25,6 +31,8 @@
 	)
 
 /datum/gas_reaction/h2fire/init_factors()
+	procstart = null
+	src.procstart = null
 	factor = list(
 		/datum/gas/oxygen = "Oxygen is consumed at 0.5 moles per mole of hydrogen consumed. Higher oxygen concentration up to [HYDROGEN_OXYGEN_FULLBURN] times the hydrogen increases the hydrogen consumption rate.",
 		/datum/gas/hydrogen = "Hydrogen is consumed rapidly fast as long as there's enough oxygen to allow combustion.",
@@ -34,6 +42,8 @@
 	)
 
 /datum/gas_reaction/tritfire/init_factors()
+	procstart = null
+	src.procstart = null
 	factor = list(
 		/datum/gas/oxygen = "Oxygen is consumed at 0.5 moles per mole of tritium consumed. Higher oxygen concentration up to [TRITIUM_OXYGEN_FULLBURN] times the tritium increases the tritium consumption rate.",
 		/datum/gas/tritium = "Tritium is consumed at rapidly fast as long as there's enough oxygen to allow combustion.",
@@ -44,6 +54,8 @@
 	)
 
 /datum/gas_reaction/freonfire/init_factors()
+	procstart = null
+	src.procstart = null
 	factor = list(
 		/datum/gas/oxygen = "Oxygen consumption is determined by the temperature, ranging from [OXYGEN_BURN_RATIO_BASE] moles per mole of freon consumed at [FREON_LOWER_TEMPERATURE] Kelvins to [OXYGEN_BURN_RATIO_BASE-1] moles per mole of freon consumed at [FREON_MAXIMUM_BURN_TEMPERATURE] Kelvins. Higher oxygen concentration up to [FREON_OXYGEN_FULLBURN] times the freon increases freon consumption rate.",
 		/datum/gas/freon = "Freon is consumed at a rate that scales with the distance of the temperature from [FREON_MAXIMUM_BURN_TEMPERATURE]K. Its relationship with oxygen also determines consumption rate.",
@@ -55,6 +67,8 @@
 
 
 /datum/gas_reaction/nitrousformation/init_factors()
+	procstart = null
+	src.procstart = null
 	factor = list(
 		/datum/gas/oxygen = "10 moles of Oxygen needs to be present for the reaction to occur. Oxygen is consumed at 0.5 moles per mole of nitrous oxide formed.",
 		/datum/gas/nitrogen = " 20 moles of Nitrogen needs to be present for the reaction to occur. Nitrogen is consumed at 1 mole per mole of nitrous oxide formed.",
@@ -65,6 +79,8 @@
 	)
 
 /datum/gas_reaction/nitrous_decomp/init_factors()
+	procstart = null
+	src.procstart = null
 	factor = list(
 		/datum/gas/nitrous_oxide = "Nitrous Oxide is decomposed at a rate that scales negatively with the distance between the temperature and average of the minimum and maximum temperature of the reaction. Minimum of [MINIMUM_MOLE_COUNT * 2] to occur.", //okay this one isn't made into a define yet.
 		/datum/gas/oxygen = "Oxygen is formed at 0.5 moles per mole of nitrous oxide decomposed.",
@@ -74,6 +90,8 @@
 	)
 
 /datum/gas_reaction/bzformation/init_factors()
+	procstart = null
+	src.procstart = null
 	factor = list(
 		/datum/gas/plasma = "Each mole of BZ made consumes 0.8 moles of plasma. If there is more plasma than nitrous oxide, bz formation rate gets slowed down.",
 		/datum/gas/nitrous_oxide = "Each mole of bz made consumes 0.4 moles of Nitrous oxide. If there is less nitrous oxide than plasma the reaction rate is slowed down. At three times the amount of plasma to Nitrous oxide it will start breaking down into Nitrogen and Oxygen, the lower the ratio the more Nitrous oxide decomposes.",
@@ -84,6 +102,8 @@
 	)
 
 /datum/gas_reaction/pluox_formation/init_factors()
+	procstart = null
+	src.procstart = null
 	factor = list(
 		/datum/gas/carbon_dioxide = "1 mole of carbon dioxide gets consumed per mole of pluoxium formed.",
 		/datum/gas/oxygen = "Oxygen is consumed at 0.5 moles per mole of pluoxium formed.",
@@ -95,6 +115,8 @@
 	)
 
 /datum/gas_reaction/nitrium_formation/init_factors()
+	procstart = null
+	src.procstart = null
 	factor = list(
 		/datum/gas/bz = "5 moles of BZ needs to be present for the reaction to occur. BZ is consumed at 0.05 moles per mole of nitrium formed.",
 		/datum/gas/tritium = "20 moles of tritium needs to be present for the reaction to occur. Tritium is consumed at 1 mole per mole of nitroum formed.",
@@ -105,6 +127,8 @@
 	)
 
 /datum/gas_reaction/nitrium_decomposition/init_factors()
+	procstart = null
+	src.procstart = null
 	factor = list(
 		/datum/gas/oxygen = "[MINIMUM_MOLE_COUNT] moles of oxygen need to be present for the reaction to occur. Not consumed.",
 		/datum/gas/nitrium = "Nitrium is consumed at a rate that scales with the temperature.",
@@ -115,6 +139,8 @@
 	)
 
 /datum/gas_reaction/freonformation/init_factors()
+	procstart = null
+	src.procstart = null
 	factor = list(
 		/datum/gas/plasma = "At least 0.06 moles of plasma needs to be present. Plasma is consumed at 0.6 moles per mole of freon formed.",
 		/datum/gas/carbon_dioxide = "At least 0.03 moles of CO2 needs to be present. CO2 is consumed at 0.3 moles per mole of freon formed.",
@@ -125,6 +151,8 @@
 	)
 
 /datum/gas_reaction/nobliumformation/init_factors()
+	procstart = null
+	src.procstart = null
 	factor = list(
 		/datum/gas/nitrogen = "10 moles of nitrogen needs to be present for the reaction to occur. Nitrogen is consumed at 10 moles per mole of hypernoblium formed.",
 		/datum/gas/tritium = "5 moles of tritium needs to be present for the reaction to occur. Tritium is consumed at 5 moles per mole of hypernoblium formed. The relative consumption rate of tritium decreases in the exposure of BZ.",
@@ -135,6 +163,8 @@
 	)
 
 /datum/gas_reaction/halon_o2removal/init_factors()
+	procstart = null
+	src.procstart = null
 	factor = list(
 		/datum/gas/halon = "Halon is consumed at a rate that scales with temperature.",
 		/datum/gas/oxygen = "20 moles of oxygen is consumed per mole of halon combusted.",
@@ -144,6 +174,8 @@
 	)
 
 /datum/gas_reaction/healium_formation/init_factors()
+	procstart = null
+	src.procstart = null
 	factor = list(
 		/datum/gas/bz = "BZ is consumed at 1/12th of a mole per mole of healium formed.",
 		/datum/gas/freon = "Freon is consumed at 11/12th of a mole per mole of healium formed.",
@@ -153,6 +185,8 @@
 	)
 
 /datum/gas_reaction/zauker_formation/init_factors()
+	procstart = null
+	src.procstart = null
 	factor = list(
 		/datum/gas/hypernoblium = "Hyper-Noblium is consumed at 0.02 moles per mole of zauker formed.",
 		/datum/gas/nitrium = "Nitrium is consumed at 1 mole per mole of zauker formed.",
@@ -161,7 +195,9 @@
 		"Energy" = "[2 * ZAUKER_FORMATION_ENERGY] joules of energy is absorbed per mole of zauker formed.",
 	)
 
-/datum/gas_reaction/zauker_decomp/init_factors() //Fixed reaction rate
+/datum/gas_reaction/zauker_decomp/init_factors()
+	procstart = null
+	src.procstart = null //Fixed reaction rate
 	factor = list(
 		/datum/gas/zauker = "Zauker is consumed at [ZAUKER_DECOMPOSITION_MAX_RATE SECONDS / SSair.wait] moles per second in any unique gas mixture.",
 		/datum/gas/nitrogen = "At least [MINIMUM_MOLE_COUNT] moles of Nitrogen needs to be present for this reaction to occur. Nitrogen is produced at 0.7 moles per mole of Zauker decomposed.",
@@ -170,6 +206,8 @@
 	)
 
 /datum/gas_reaction/proto_nitrate_formation/init_factors()
+	procstart = null
+	src.procstart = null
 	factor = list(
 		/datum/gas/pluoxium = "Pluoxium is consumed at 1/11th of a mole per mole of proto-nitrate formed.",
 		/datum/gas/hydrogen = "Hydrogen is consumed at 10/11th of a mole per mole of proto-nitrate formed.",
@@ -178,7 +216,9 @@
 		"Temperature" = "Can only occur between [PN_FORMATION_MIN_TEMPERATURE] - [PN_FORMATION_MAX_TEMPERATURE] kelvin. Higher temperature increases proto-nitrate formation rate.",
 	)
 
-/datum/gas_reaction/proto_nitrate_hydrogen_response/init_factors() // Fixed reaction rate
+/datum/gas_reaction/proto_nitrate_hydrogen_response/init_factors()
+	procstart = null
+	src.procstart = null // Fixed reaction rate
 	factor = list(
 		/datum/gas/hydrogen = "[PN_HYDROGEN_CONVERSION_THRESHOLD] moles of hydrogen needs to be present for the reaction to occur. Hydrogen is consumed at 2 moles per mole of proto-nitrate formed.",
 		/datum/gas/proto_nitrate = "[MINIMUM_MOLE_COUNT] moles of proto-nitrate needs to be present for the reaction to occur. Proto nitrate is produced a rate that scales with its mole count, up to a max of [PN_HYDROGEN_CONVERSION_MAX_RATE * 0.5 SECONDS / SSair.wait] moles per second.",
@@ -186,6 +226,8 @@
 	)
 
 /datum/gas_reaction/proto_nitrate_tritium_response/init_factors()
+	procstart = null
+	src.procstart = null
 	factor = list(
 		/datum/gas/tritium = "Tritium radiates its neutrons at a rate that scales with the temperature and proto-nitrate mole count.",
 		/datum/gas/proto_nitrate = "Proto nitrate is consumed at 0.005 moles per mole of neutrons released.",
@@ -195,6 +237,8 @@
 	)
 
 /datum/gas_reaction/proto_nitrate_bz_response/init_factors()
+	procstart = null
+	src.procstart = null
 	factor = list(
 		/datum/gas/proto_nitrate = "[MINIMUM_MOLE_COUNT] moles of proto-nitrate needs to be present for the reaction to occur. Proto-nitrate accelerates the BZ decomposition.",
 		/datum/gas/bz = "BZ gets decomposed into plasma and nitrous oxide. The nitrous oxide then decomposes into nitrogen and oxygen, with the oxygen then decaying into helium.",
@@ -209,6 +253,8 @@
 	)
 
 /datum/gas_reaction/antinoblium_replication/init_factors()
+	procstart = null
+	src.procstart = null
 	factor = list(
 		/datum/gas/antinoblium = "[MOLES_GAS_VISIBLE] moles of antinoblium is needed to replicate itself. Requires other gases to be converted to antinoblium.",
 		"Temperature" = "Can only occur above [REACTION_OPPRESSION_MIN_TEMP] Kelvin."

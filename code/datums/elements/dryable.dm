@@ -6,6 +6,8 @@
 	var/dry_result
 
 /datum/element/dryable/Attach(datum/target, atom/dry_result)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
@@ -27,11 +29,15 @@
 
 
 /datum/element/dryable/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_ITEM_FINISH_DRYING)
 	REMOVE_TRAIT(target, TRAIT_DRYABLE, ELEMENT_TRAIT(type))
 
 /datum/element/dryable/proc/finish_drying(atom/source, datum/weakref/drying_user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/static/list/dried_color
 	if (isnull(dried_color))
@@ -61,6 +67,8 @@
 	qdel(source)
 
 /datum/element/dryable/proc/apply_dried_status(atom/target, datum/weakref/drying_user, atom/source)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(target, TRAIT_DRIED, ELEMENT_TRAIT(type))
 	var/datum/mind/user_mind = drying_user?.resolve()
 	if(drying_user && istype(target, /obj/item/food))

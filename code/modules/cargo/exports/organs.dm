@@ -6,6 +6,8 @@
 	include_subtypes = FALSE //CentCom doesn't need organs from non-humans.
 
 /datum/export/organ/get_base_cost(obj/exported_item)
+	procstart = null
+	src.procstart = null
 	// Multiply value for organs that started in a player
 	// Unaffected by price elasticity as there's a limited amount of these in play
 	var/multiplier = 1

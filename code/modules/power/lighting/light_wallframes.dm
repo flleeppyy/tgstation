@@ -7,9 +7,13 @@
 	wall_external = TRUE
 
 /obj/item/wallframe/light_fixture/find_support_structure(atom/structure)
+	procstart = null
+	src.procstart = null
 	return istype(structure, /obj/structure/window) ? structure : ..()
 
 /obj/item/wallframe/light_fixture/try_build(atom/support, mob/user)
+	procstart = null
+	src.procstart = null
 	var/area/A = get_area(user)
 	if(A.always_unpowered)
 		balloon_alert(user, "cannot place in this area!")
@@ -23,6 +27,8 @@
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT)
 
 /obj/item/wallframe/light_fixture/try_build(turf/on_wall, user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/area/local_area = get_area(user)
@@ -32,6 +38,8 @@
 	return TRUE
 
 /obj/item/wallframe/light_fixture/small/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/local_turf = get_turf(user)
 	var/area/local_area = get_area(user)
 	if(!isturf(user.loc) || !isfloorturf(local_turf))

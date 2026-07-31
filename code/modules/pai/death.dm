@@ -1,4 +1,6 @@
 /mob/living/silicon/pai/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		return
 	set_stat(DEAD)

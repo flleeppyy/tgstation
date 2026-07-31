@@ -24,6 +24,8 @@
 	)
 
 /obj/machinery/gizmo/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	name = pick(possible_names)
@@ -39,6 +41,8 @@
 	RegisterSignal(src, COMSIG_GIZMO_STOP_MOVING, PROC_REF(stop_moving))
 
 /obj/machinery/gizmo/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 
 	if(is_wire_tool(tool))
@@ -47,24 +51,34 @@
 	return NONE
 
 /obj/machinery/gizmo/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_BLOCKING
 	if(default_unfasten_wrench(user, tool) == SUCCESSFUL_UNFASTEN)
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/gizmo/proc/start_moving(datum/source, datum/gizpulse/pulse)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	on_start_moving(pulse)
 
 /obj/machinery/gizmo/proc/stop_moving(datum/source, datum/gizpulse/pulse)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	on_stop_moving(pulse)
 
 /obj/machinery/gizmo/proc/on_start_moving(datum/gizpulse/pulse)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/gizmo/proc/on_stop_moving(datum/gizpulse/pulse)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Gizmo that comes with a gizmo interface to start moving
@@ -77,17 +91,23 @@
 	var/moving = FALSE
 
 /obj/machinery/gizmo/beyblade/update_icon(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	icon_state = base_icon_state + (moving ? "_spinning" : "")
 
 /obj/machinery/gizmo/beyblade/on_start_moving(datum/gizpulse/pulse)
+	procstart = null
+	src.procstart = null
 	density = TRUE
 
 	moving = TRUE
 	update_appearance(UPDATE_ICON)
 
 /obj/machinery/gizmo/beyblade/on_stop_moving(datum/gizpulse/pulse)
+	procstart = null
+	src.procstart = null
 	density = FALSE
 
 	moving = FALSE
@@ -102,12 +122,16 @@
 	var/on_state = FALSE
 
 /obj/machinery/gizmo/toggle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	RegisterSignal(src, COMSIG_GIZMO_ON_STATE, PROC_REF(on_state))
 	RegisterSignal(src, COMSIG_GIZMO_OFF_STATE, PROC_REF(off_state))
 
 /obj/machinery/gizmo/toggle/update_icon(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	icon_state = base_icon_state + (on_state ? "_on" : "")
@@ -118,6 +142,8 @@
 	anchored = TRUE
 
 /obj/machinery/gizmo/toggle/proc/on_state(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	on_state = TRUE
@@ -125,6 +151,8 @@
 	visible_message(span_smallnoticeital("[src] hums to life."))
 
 /obj/machinery/gizmo/toggle/proc/off_state(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	on_state = FALSE

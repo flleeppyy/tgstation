@@ -4,10 +4,14 @@
 	var/datum/callback/listener
 
 /datum/movement_detector/New(atom/movable/target, datum/callback/listener)
+	procstart = null
+	src.procstart = null
 	if(target)
 		track(target, listener)
 
 /datum/movement_detector/Destroy()
+	procstart = null
+	src.procstart = null
 	untrack()
 	tracked = null
 	listener = null
@@ -15,6 +19,8 @@
 
 /// Sets up tracking of the given movable atom
 /datum/movement_detector/proc/track(atom/movable/target, datum/callback/listener)
+	procstart = null
+	src.procstart = null
 	untrack()
 	tracked = target
 	src.listener = listener
@@ -25,6 +31,8 @@
 
 /// Stops tracking
 /datum/movement_detector/proc/untrack()
+	procstart = null
+	src.procstart = null
 	if(!tracked)
 		return
 	var/atom/movable/target = tracked
@@ -37,6 +45,8 @@
  * This works by detecting movement of either the tracked object, or anything it is inside, recursively
  */
 /datum/movement_detector/proc/move_react(atom/movable/mover, atom/oldloc, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/turf/newturf = get_turf(tracked)

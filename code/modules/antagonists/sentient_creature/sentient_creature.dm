@@ -6,6 +6,8 @@
 	ui_name = "AntagInfoSentient"
 
 /datum/antagonist/sentient_creature/get_preview_icon()
+	procstart = null
+	src.procstart = null
 	var/datum/universal_icon/final_icon = uni_icon('icons/mob/simple/pets.dmi', "corgi")
 
 	var/datum/universal_icon/pandora = uni_icon('icons/mob/simple/lavaland/lavaland_elites.dmi', "pandora")
@@ -20,6 +22,8 @@
 	return final_icon
 
 /datum/antagonist/sentient_creature/on_gain()
+	procstart = null
+	src.procstart = null
 	var/mob/living/master = owner.enslaved_to?.resolve()
 	if(master)
 		owner.current.copy_languages(master, LANGUAGE_MASTER)
@@ -27,10 +31,14 @@
 	return ..()
 
 /datum/antagonist/sentient_creature/on_removal()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_UNCONVERTABLE, REF(src))
 	return ..()
 
 /datum/antagonist/sentient_creature/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/mob/living/master = owner.enslaved_to?.resolve()
 	if(master)

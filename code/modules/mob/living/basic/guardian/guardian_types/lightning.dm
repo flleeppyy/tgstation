@@ -19,29 +19,41 @@
 	var/list/enemy_chains
 
 /mob/living/basic/guardian/lightning/death(gibbed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	clear_chains()
 
 /mob/living/basic/guardian/lightning/Destroy()
+	procstart = null
+	src.procstart = null
 	clear_chains()
 	return ..()
 
 /mob/living/basic/guardian/lightning/manifest_effects()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isnull(summoner))
 		return
 	summoner_chain = chain_to(summoner, max_range = INFINITY) // Functionally it's actually our leash range but admins might fuck with it
 
 /mob/living/basic/guardian/lightning/recall_effects()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	clear_chains()
 
 /// Remove all of our chains
 /mob/living/basic/guardian/lightning/proc/clear_chains()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(summoner_chain)
 	QDEL_LIST_ASSOC_VAL(enemy_chains)
 
 /mob/living/basic/guardian/lightning/melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!. || !validate_target(target) || (target in enemy_chains))
 		return
@@ -55,6 +67,8 @@
 
 /// Create a damaging lightning chain between ourselves and a target
 /mob/living/basic/guardian/lightning/proc/chain_to(atom/target, max_range = 7)
+	procstart = null
+	src.procstart = null
 	var/datum/component/chain = AddComponent(\
 		/datum/component/damage_chain, \
 		linked_to = target, \
@@ -68,6 +82,8 @@
 
 /// Handle losing our reference when we delete a chain
 /mob/living/basic/guardian/lightning/proc/on_chain_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for (var/target in enemy_chains)
 		if (enemy_chains[target] != source)
@@ -77,10 +93,14 @@
 
 /// Confirm whether something is valid to zap with lightning
 /mob/living/basic/guardian/lightning/proc/validate_target(atom/target)
+	procstart = null
+	src.procstart = null
 	return isliving(target) && target != src && target != summoner && !shares_summoner(target)
 
 /// Called every few zaps by a chain
 /mob/living/basic/guardian/lightning/proc/on_chain_zap(mob/living/target)
+	procstart = null
+	src.procstart = null
 	target.electrocute_act(shock_damage = 0, source = "lightning chain")
 	target.visible_message(
 		span_danger("[target] was shocked by the lightning chain!"),

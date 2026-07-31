@@ -7,6 +7,8 @@
 	color = /datum/blood_type/xeno::color // For mapper sanity
 
 /obj/effect/decal/cleanable/blood/xeno/get_default_blood_type()
+	procstart = null
+	src.procstart = null
 	return get_blood_type(BLOOD_TYPE_XENO)
 
 /obj/effect/decal/cleanable/blood/splatter/xeno
@@ -14,6 +16,8 @@
 	color = /datum/blood_type/xeno::color // For mapper sanity
 
 /obj/effect/decal/cleanable/blood/splatter/xeno/get_default_blood_type()
+	procstart = null
+	src.procstart = null
 	return get_blood_type(BLOOD_TYPE_XENO)
 
 /obj/effect/decal/cleanable/blood/gibs/xeno
@@ -24,6 +28,8 @@
 	color = /datum/blood_type/xeno::color // For mapper sanity
 
 /obj/effect/decal/cleanable/blood/gibs/xeno/get_default_blood_type()
+	procstart = null
+	src.procstart = null
 	return get_blood_type(BLOOD_TYPE_XENO)
 
 /obj/effect/decal/cleanable/blood/gibs/xeno/up
@@ -62,4 +68,6 @@
 	color = /datum/blood_type/xeno::color // For mapper sanity
 
 /obj/effect/decal/cleanable/blood/tracks/xeno/get_default_blood_type()
+	procstart = null
+	src.procstart = null
 	return get_blood_type(BLOOD_TYPE_XENO)

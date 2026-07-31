@@ -22,12 +22,16 @@
 	var/biggest_w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/plate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(fragile)
 		AddElement(/datum/element/can_shatter)
 
 /obj/item/plate/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!IS_EDIBLE(tool))
 		return NONE
 	if(tool.w_class > biggest_w_class)
@@ -48,6 +52,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/plate/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(target))
 		return
 	if(!contents.len)
@@ -57,10 +63,14 @@
 	return TRUE //No normal attack
 
 /obj/item/plate/IsContainedAtomAccessible(atom/contained, atom/movable/user)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 ///This proc adds the food to viscontents and makes sure it can deregister if this changes.
 /obj/item/plate/proc/AddToPlate(obj/item/item_to_plate)
+	procstart = null
+	src.procstart = null
 	vis_contents += item_to_plate
 	item_to_plate.vis_flags |= VIS_INHERIT_PLANE
 	RegisterSignal(item_to_plate, COMSIG_MOVABLE_MOVED, PROC_REF(ItemMoved))
@@ -77,6 +87,8 @@
 
 ///This proc cleans up any signals on the item when it is removed from a plate, and ensures it has the correct state again.
 /obj/item/plate/proc/ItemRemovedFromPlate(obj/item/removed_item)
+	procstart = null
+	src.procstart = null
 	removed_item.vis_flags &= ~VIS_INHERIT_PLANE
 	vis_contents -= removed_item
 	UnregisterSignal(removed_item, list(COMSIG_MOVABLE_MOVED, COMSIG_QDELETING))
@@ -97,6 +109,8 @@
 
 ///This proc is called by signals that remove the food from the plate.
 /obj/item/plate/proc/ItemMoved(obj/item/moved_item, atom/OldLoc, Dir, Forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	ItemRemovedFromPlate(moved_item)
 
@@ -139,6 +153,8 @@
 	var/variants = 5
 
 /obj/item/plate_shard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddComponent(/datum/component/caltrop, min_damage = force, paralyze_duration = 2 SECONDS, soundfile = hitsound)

@@ -22,6 +22,8 @@
 	var/hijack_announce = TRUE
 
 /obj/machinery/computer/emergency_shuttle/Destroy()
+	procstart = null
+	src.procstart = null
 	// Our fake IDs that the emag generated are just there for colour
 	// They're not supposed to be accessible
 
@@ -34,6 +36,8 @@
 	. = ..()
 
 /obj/machinery/computer/emergency_shuttle/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(hijack_announce)
 		. += span_danger("Security systems present on console. Any unauthorized tampering will result in an emergency announcement.")
@@ -44,15 +48,21 @@
 			. += span_warning("It is probably best to fortify your position as to be uninterrupted during the attempt, given the automatic announcements..")
 
 /obj/machinery/computer/emergency_shuttle/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isidcard(tool))
 		return NONE
 	say("Please equip your ID card into your ID slot to authenticate.")
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/computer/emergency_shuttle/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.human_adjacent_state
 
 /obj/machinery/computer/emergency_shuttle/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -60,6 +70,8 @@
 		ui.open()
 
 /obj/machinery/computer/emergency_shuttle/ui_data(user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["timer_str"] = SSshuttle.emergency.getTimerStr()
@@ -82,6 +94,8 @@
 	return data
 
 /obj/machinery/computer/emergency_shuttle/ui_act(action, params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -158,6 +172,8 @@
 	return .
 
 /obj/machinery/computer/emergency_shuttle/proc/authorize(mob/living/user, source)
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/id/ID = user.get_idcard(TRUE)
 
 	if(ID in authorized)
@@ -176,11 +192,15 @@
 	process(SSMACHINES_DT)
 
 /obj/machinery/computer/emergency_shuttle/proc/clear_recent_action(mob/user)
+	procstart = null
+	src.procstart = null
 	acted_recently -= user
 	if (!QDELETED(user))
 		SStgui.update_user_uis(user, src)
 
 /obj/machinery/computer/emergency_shuttle/process()
+	procstart = null
+	src.procstart = null
 	// Launch check is in process in case auth_need changes for some reason
 	// probably external.
 	. = FALSE
@@ -204,6 +224,8 @@
 		. = TRUE
 
 /obj/machinery/computer/emergency_shuttle/proc/increase_hijack_stage()
+	procstart = null
+	src.procstart = null
 	var/obj/docking_port/mobile/emergency/shuttle = SSshuttle.emergency
 	// Begin loading this early, prevents a delay when the shuttle goes to land
 	INVOKE_ASYNC(SSmapping, TYPE_PROC_REF(/datum/controller/subsystem/mapping, lazy_load_template), LAZY_TEMPLATE_KEY_NUKIEBASE)
@@ -221,12 +243,16 @@
 	return shuttle.hijack_status
 
 /obj/machinery/computer/emergency_shuttle/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		return NONE
 	attempt_hijack_stage(user)
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/computer/emergency_shuttle/proc/attempt_hijack_stage(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!IsReachableBy(user))
 		return
 	if(HAS_TRAIT(user, TRAIT_HANDS_BLOCKED))
@@ -273,6 +299,8 @@
 	hijack_hacking = FALSE
 
 /obj/machinery/computer/emergency_shuttle/proc/announce_hijack_stage()
+	procstart = null
+	src.procstart = null
 	var/msg
 	switch(SSshuttle.emergency.hijack_status)
 		if(HIJACK_NOT_BEGUN)
@@ -294,6 +322,8 @@
 	minor_announce(scramble_message_replace_chars(msg, replaceprob = 10), "Emergency Shuttle", TRUE)
 
 /obj/machinery/computer/emergency_shuttle/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	// How did you even get on the shuttle before it go to the station?
 	if(!IS_DOCKED)
 		return FALSE

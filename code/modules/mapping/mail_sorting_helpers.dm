@@ -4,6 +4,8 @@
 	var/sort_type = SORT_TYPE_WASTE
 
 /obj/effect/mapping_helpers/mail_sorting/LateInitialize()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/disposalpipe/sorting/mail/mail_sorter = locate(/obj/structure/disposalpipe/sorting/mail) in loc
 	if(mail_sorter)
 		mail_sorter.sortTypes |= sort_type

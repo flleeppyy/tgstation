@@ -3,6 +3,8 @@
 	element_flags = ELEMENT_DETACH_ON_HOST_DESTROY
 
 /datum/element/point_of_interest/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	if (!isatom(target))
 		return ELEMENT_INCOMPATIBLE
 
@@ -16,5 +18,7 @@
 	return ..()
 
 /datum/element/point_of_interest/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	SSpoints_of_interest.on_poi_element_removed(target)
 	return ..()

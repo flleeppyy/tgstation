@@ -26,6 +26,8 @@ GLOBAL_DATUM_INIT(move_manager, /datum/move_manager, new)
 
 ///Adds a movable thing to a movement subsystem. Returns TRUE if it all worked, FALSE if it failed somehow
 /datum/move_manager/proc/add_to_loop(atom/movable/thing_to_add, datum/controller/subsystem/movement/subsystem = SSmovement, datum/move_loop/loop_type, priority = MOVEMENT_DEFAULT_PRIORITY, flags, datum/extra_info)
+	procstart = null
+	src.procstart = null
 	var/datum/movement_packet/our_data = thing_to_add.move_packet
 	if(!our_data)
 		our_data = new(thing_to_add)
@@ -35,6 +37,8 @@ GLOBAL_DATUM_INIT(move_manager, /datum/move_manager, new)
 
 ///Returns the subsystem's loop if we're processing on it, null otherwise
 /datum/move_manager/proc/processing_on(atom/movable/packet_owner, datum/controller/subsystem/movement/subsystem)
+	procstart = null
+	src.procstart = null
 	var/datum/movement_packet/packet = packet_owner.move_packet
 	if(!packet)
 		return
@@ -64,10 +68,14 @@ GLOBAL_DATUM_INIT(move_manager, /datum/move_manager, new)
 	var/list/existing_loops = list()
 
 /datum/movement_packet/New(atom/movable/parent)
+	procstart = null
+	src.procstart = null
 	src.parent = parent
 	parent.move_packet = src
 
 /datum/movement_packet/Destroy(force)
+	procstart = null
+	src.procstart = null
 	parent.move_packet = null
 	parent = null
 	for(var/datum/controller/subsystem/processor as anything in existing_loops)
@@ -81,6 +89,8 @@ GLOBAL_DATUM_INIT(move_manager, /datum/move_manager, new)
 
 ///Adds a loop to our parent. Returns the created loop if a success, null otherwise
 /datum/movement_packet/proc/add_loop(datum/controller/subsystem/movement/subsystem, datum/move_loop/loop_type, priority, flags, datum/extra_info)
+	procstart = null
+	src.procstart = null
 	var/datum/move_loop/existing_loop = existing_loops[subsystem]
 
 	if(existing_loop && existing_loop.priority > priority)
@@ -106,6 +116,8 @@ GLOBAL_DATUM_INIT(move_manager, /datum/move_manager, new)
 
 ///Attempts to contest the current running move loop. Returns TRUE if the loop is active, FALSE otherwise
 /datum/movement_packet/proc/contest_running_loop(datum/move_loop/contestant)
+	procstart = null
+	src.procstart = null
 	var/datum/controller/subsystem/movement/contesting_subsystem = contestant.controller
 
 	if(contestant.flags & MOVEMENT_LOOP_IGNORE_PRIORITY)
@@ -130,6 +142,8 @@ GLOBAL_DATUM_INIT(move_manager, /datum/move_manager, new)
 
 ///Tries to figure out the current favorite loop to run. More complex then just deciding between two different loops, assumes no running loop currently exists
 /datum/movement_packet/proc/decide_on_running_loop()
+	procstart = null
+	src.procstart = null
 	if(running_loop)
 		return
 	if(!length(existing_loops)) //Die
@@ -153,6 +167,8 @@ GLOBAL_DATUM_INIT(move_manager, /datum/move_manager, new)
 	favorite_subsystem.add_loop(running_loop)
 
 /datum/movement_packet/proc/remove_loop(datum/controller/subsystem/movement/remove_from, datum/move_loop/loop_to_remove)
+	procstart = null
+	src.procstart = null
 	if(loop_to_remove == running_loop)
 		running_loop = null
 		remove_from.remove_loop(loop_to_remove)
@@ -166,6 +182,8 @@ GLOBAL_DATUM_INIT(move_manager, /datum/move_manager, new)
 	return
 
 /datum/movement_packet/proc/remove_subsystem(datum/controller/subsystem/movement/remove)
+	procstart = null
+	src.procstart = null
 	var/datum/move_loop/our_loop = existing_loops[remove]
 	if(!our_loop)
 		return FALSE

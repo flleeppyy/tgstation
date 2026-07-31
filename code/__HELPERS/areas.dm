@@ -9,6 +9,8 @@
 // extra_check is an optional callback to invoke on each turf checked, and can specify whether to skip processing the turf or return false
 // Please keep this proc type agnostic. If you need to restrict it do it elsewhere or add an arg.
 /proc/detect_room(turf/origin, list/break_if_found = list(), max_size=INFINITY, datum/callback/extra_check)
+	procstart = null
+	src.procstart = null
 	if(origin.blocks_air)
 		return list(origin)
 
@@ -53,6 +55,8 @@
  * Returns a list of turfs, which is an area of isolated atmos
  */
 /proc/create_atmos_zone(turf/source, range = INFINITY)
+	procstart = null
+	src.procstart = null
 	var/counter = 1 // a counter which increment each loop
 	var/loops = 0
 	if(source.blocks_air)
@@ -81,10 +85,14 @@
 		counter += 1 //increment by one so the next loop will start at the next position in the list
 
 /proc/set_turfs_to_area(list/turf/turfs, area/new_area, list/area/affected_areas = list())
+	procstart = null
+	src.procstart = null
 	for(var/turf/the_turf as anything in turfs)
 		set_turf_to_area(the_turf, new_area, affected_areas)
 
 /proc/set_turf_to_area(turf/the_turf, area/new_area, list/area/affected_areas = list())
+	procstart = null
+	src.procstart = null
 	var/area/old_area = the_turf.loc
 
 	//keep rack of all areas affected by turf changes
@@ -106,6 +114,8 @@
 			SEND_SIGNAL(stuff, COMSIG_ENTER_AREA, new_area)
 
 /proc/create_area(mob/creator, new_area_type = /area)
+	procstart = null
+	src.procstart = null
 	// Passed into the above proc as list/break_if_found
 	var/static/list/area_or_turf_fail_types = typecacheof(list(
 		/turf/open/space,
@@ -209,10 +219,14 @@
 #undef BP_MAX_ROOM_SIZE
 
 /proc/require_area_resort()
+	procstart = null
+	src.procstart = null
 	GLOB.sortedAreas = null
 
 /// Returns a sorted version of GLOB.areas, by name
 /proc/get_sorted_areas()
+	procstart = null
+	src.procstart = null
 	if(!GLOB.sortedAreas)
 		GLOB.sortedAreas = sortTim(GLOB.areas.Copy(), /proc/cmp_name_asc)
 	return GLOB.sortedAreas
@@ -220,6 +234,8 @@
 //Takes: Area type as a text string from a variable.
 //Returns: Instance for the area in the world.
 /proc/get_area_instance_from_text(areatext)
+	procstart = null
+	src.procstart = null
 	if(istext(areatext))
 		areatext = text2path(areatext)
 	return GLOB.areas_by_type[areatext]
@@ -227,6 +243,8 @@
 //Takes: Area type as text string or as typepath OR an instance of the area.
 //Returns: A list of all areas of that type in the world.
 /proc/get_areas(areatype, subtypes=TRUE)
+	procstart = null
+	src.procstart = null
 	if(istext(areatype))
 		areatype = text2path(areatype)
 	else if(isarea(areatype))
@@ -249,6 +267,8 @@
 
 /// Iterates over all turfs in the target area and returns the first non-dense one
 /proc/get_first_open_turf_in_area(area/target)
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return
 	for(var/turf/turf in target)
@@ -258,6 +278,8 @@
 //Takes: Area type as text string or as typepath OR an instance of the area.
 //Returns: A list of all turfs in areas of that type of that type in the world.
 /proc/get_area_turfs(areatype, target_z = 0, subtypes=FALSE)
+	procstart = null
+	src.procstart = null
 	if(istext(areatype))
 		areatype = text2path(areatype)
 	else if(isarea(areatype))
@@ -293,6 +315,8 @@
 ///Takes: list of area types
 ///Returns: all mobs that are in an area type
 /proc/mobs_in_area_type(list/area/checked_areas)
+	procstart = null
+	src.procstart = null
 	var/list/mobs_in_area = list()
 	for(var/mob/living/mob as anything in GLOB.mob_living_list)
 		if(QDELETED(mob))
@@ -312,6 +336,8 @@
  * - new_name: The name we're changing said area to.
  */
 /proc/rename_area(area/area_to_rename, new_name)
+	procstart = null
+	src.procstart = null
 	var/prevname = "[area_to_rename.name]"
 	set_area_machinery_title(area_to_rename, new_name, prevname)
 	area_to_rename.name = new_name
@@ -332,6 +358,8 @@
  * - oldtitle: The old name of the area that we're replacing text from.
  */
 /proc/set_area_machinery_title(area/area_renaming, title, oldtitle)
+	procstart = null
+	src.procstart = null
 	if(!oldtitle) // or replacetext goes to infinite loop
 		return
 

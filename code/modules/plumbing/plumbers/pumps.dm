@@ -19,11 +19,15 @@
 	var/volume = 200
 
 /obj/machinery/plumbing/liquid_pump/Initialize(mapload, layer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/plumbing/simple_supply, layer)
 
 ///please note that the component has a hook in the parent call, wich handles activating and deactivating
 /obj/machinery/plumbing/liquid_pump/default_unfasten_wrench(mob/user, obj/item/I, time = 20)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SUCCESSFUL_UNFASTEN)
 		geyser = null
@@ -31,6 +35,8 @@
 		geyserless = FALSE //we switched state, so lets just set this back aswell
 
 /obj/machinery/plumbing/liquid_pump/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!anchored || panel_open || geyserless)
 		return
 
@@ -48,11 +54,15 @@
 
 ///pump up that sweet geyser nectar
 /obj/machinery/plumbing/liquid_pump/proc/pump(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!geyser || !geyser.reagents)
 		return
 	geyser.reagents.trans_to(src, pump_power * seconds_per_tick)
 
 /obj/machinery/plumbing/liquid_pump/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(geyser)
 		icon_state = "[base_icon_state]-on"
 		return ..()

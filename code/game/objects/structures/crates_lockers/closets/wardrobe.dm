@@ -4,6 +4,8 @@
 	icon_door = "blue"
 
 /obj/structure/closet/wardrobe/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/under/color/blue(src)
@@ -18,6 +20,8 @@
 	icon_door = "pink"
 
 /obj/structure/closet/wardrobe/pink/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/under/color/pink(src)
 	for(var/i in 1 to 3)
@@ -31,6 +35,8 @@
 	icon_door = "black"
 
 /obj/structure/closet/wardrobe/black/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/under/color/black(src)
 	for(var/i in 1 to 3)
@@ -56,6 +62,8 @@
 	icon_door = "green"
 
 /obj/structure/closet/wardrobe/green/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/under/color/green(src)
 	for(var/i in 1 to 3)
@@ -72,6 +80,8 @@
 	icon_door = "orange"
 
 /obj/structure/closet/wardrobe/orange/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/under/rank/prisoner(src)
 	for(var/i in 1 to 3)
@@ -85,6 +95,8 @@
 	icon_door = "yellow"
 
 /obj/structure/closet/wardrobe/yellow/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/under/color/yellow(src)
 	for(var/i in 1 to 3)
@@ -100,6 +112,8 @@
 	icon_door = "white"
 
 /obj/structure/closet/wardrobe/white/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/under/color/white(src)
 	for(var/i in 1 to 3)
@@ -117,6 +131,8 @@
 	icon_door = "white"
 
 /obj/structure/closet/wardrobe/pjs/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/misc/pj/red(src)
 	new /obj/item/clothing/under/misc/pj/red(src)
 	new /obj/item/clothing/head/costume/nightcap/red(src)
@@ -134,6 +150,8 @@
 	icon_door = "grey"
 
 /obj/structure/closet/wardrobe/grey/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/under/color/grey(src)
 	for(var/i in 1 to 3)
@@ -163,6 +181,8 @@
 	icon_door = "mixed"
 
 /obj/structure/closet/wardrobe/mixed/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(prob(40))
 		new /obj/item/clothing/suit/jacket/bomber(src)
 	new /obj/item/clothing/under/color/white(src)

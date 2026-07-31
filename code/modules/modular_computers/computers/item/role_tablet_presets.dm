@@ -19,6 +19,8 @@
 	)
 
 /obj/item/modular_computer/pda/heads/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/programs in head_programs)
 		var/datum/computer_file/program/program_type = new programs
@@ -39,12 +41,16 @@
 	fax_type = /obj/machinery/fax/heads/captain
 
 /obj/item/modular_computer/pda/heads/captain/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_TABLET_CHECK_DETONATE, PROC_REF(tab_no_detonate))
 	for(var/datum/computer_file/program/messenger/messenger_app in stored_files)
 		messenger_app.spam_mode = TRUE
 
 /obj/item/modular_computer/pda/heads/captain/proc/tab_no_detonate()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return COMPONENT_TABLET_NO_DETONATE
 
@@ -317,6 +323,8 @@
 	)
 
 /obj/item/modular_computer/pda/lawyer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/computer_file/program/messenger/messenger_app in stored_files)
 		messenger_app.spam_mode = TRUE
@@ -352,6 +360,8 @@
 	inserted_item = /obj/item/toy/crayon/rainbow
 
 /obj/item/modular_computer/pda/clown/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(\
 		/datum/component/slippery,\
@@ -365,6 +375,8 @@
 
 /// Returns whether the PDA can slip or not, if we have a wearer then check if they are in a position to slip someone.
 /obj/item/modular_computer/pda/clown/proc/try_slip(mob/living/slipper, mob/living/slippee)
+	procstart = null
+	src.procstart = null
 	if(isnull(slipper))
 		return TRUE
 	if(!istype(slipper.get_item_by_slot(ITEM_SLOT_FEET), /obj/item/clothing/shoes/clown_shoes))
@@ -373,10 +385,14 @@
 	return TRUE
 
 /obj/item/modular_computer/pda/clown/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += mutable_appearance(icon, "pda_stripe_clown") // clowns have eyes that go over their screen, so it needs to be compiled last
 
 /obj/item/modular_computer/pda/clown/proc/AfterSlip(mob/living/carbon/human/M)
+	procstart = null
+	src.procstart = null
 	if (istype(M) && (M.real_name != saved_identification))
 		var/obj/item/disk/computer/virus/clown/cart = inserted_disk
 		if(istype(cart) && cart.charges < 5)
@@ -384,6 +400,8 @@
 			playsound(src,'sound/machines/ping.ogg',30,TRUE)
 
 /obj/item/modular_computer/pda/clown/proc/after_sitcom_laugh(mob/victim)
+	procstart = null
+	src.procstart = null
 	victim.visible_message("[src] lets out a burst of laughter!")
 
 /obj/item/modular_computer/pda/mime
@@ -398,6 +416,8 @@
 	)
 
 /obj/item/modular_computer/pda/mime/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/computer_file/program/messenger/msg in stored_files)
 		msg.mime_mode = TRUE
@@ -420,6 +440,8 @@
 	)
 
 /obj/item/modular_computer/pda/curator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/computer_file/program/messenger/msg in stored_files)
 		msg.alert_silenced = TRUE
@@ -502,6 +524,8 @@
 	device_theme = PDA_THEME_SYNDICATE
 
 /obj/item/modular_computer/pda/syndicate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/computer_file/program/messenger/msg = locate() in stored_files
 	if(msg)
@@ -517,6 +541,8 @@
 	long_ranged = TRUE
 
 /obj/item/modular_computer/pda/clear/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/computer_file/program/themeify/theme_app = locate() in stored_files
 	if(theme_app)
@@ -524,4 +550,6 @@
 			LAZYADD(theme_app.imported_themes, theme_key)
 
 /obj/item/modular_computer/pda/clear/get_messenger_ending()
+	procstart = null
+	src.procstart = null
 	return "Sent from my crystal PDA"

@@ -18,14 +18,20 @@
 	var/inflammation_reduction = 75
 
 /datum/surgery_operation/organ/asthmatic_bypass/all_required_strings()
+	procstart = null
+	src.procstart = null
 	return list("the patient must be asthmatic") + ..()
 
 /datum/surgery_operation/organ/asthmatic_bypass/state_check(obj/item/organ/organ)
+	procstart = null
+	src.procstart = null
 	if(!organ.owner.has_quirk(/datum/quirk/item_quirk/asthma))
 		return FALSE
 	return TRUE
 
 /datum/surgery_operation/organ/asthmatic_bypass/on_preop(obj/item/organ/lungs/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		organ.owner,
@@ -36,6 +42,8 @@
 	display_pain(organ.owner, "You feel an agonizing stretching sensation in your neck!")
 
 /datum/surgery_operation/organ/asthmatic_bypass/on_success(obj/item/organ/lungs/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	var/datum/quirk/item_quirk/asthma/asthma = organ.owner.get_quirk(/datum/quirk/item_quirk/asthma)
 	if(isnull(asthma))
 		return
@@ -51,6 +59,8 @@
 	)
 
 /datum/surgery_operation/organ/asthmatic_bypass/on_failure(obj/item/organ/lungs/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	var/datum/quirk/item_quirk/asthma/asthma = organ.owner.get_quirk(/datum/quirk/item_quirk/asthma)
 	if(isnull(asthma))
 		return

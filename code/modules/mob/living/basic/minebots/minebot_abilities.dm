@@ -10,6 +10,8 @@
 	button_icon_state = "mech_lights_off"
 
 /datum/action/cooldown/mob_cooldown/minedrone/Activate()
+	procstart = null
+	src.procstart = null
 	owner.set_light_on(!owner.light_on)
 	owner.balloon_alert(owner, "lights [owner.light_on ? "on" : "off"]!")
 
@@ -18,6 +20,8 @@
 	button_icon_state = "mech_eject"
 
 /datum/action/cooldown/mob_cooldown/minedrone/dump_ore/IsAvailable(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/item/stack/ore) in owner.contents)
 		return TRUE
 
@@ -26,6 +30,8 @@
 	return FALSE
 
 /datum/action/cooldown/mob_cooldown/minedrone/dump_ore/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/mining_drone/user = owner
 	user.drop_ore()
 
@@ -34,6 +40,8 @@
 	button_icon_state = "meson"
 
 /datum/action/cooldown/mob_cooldown/minedrone/toggle_meson_vision/Activate()
+	procstart = null
+	src.procstart = null
 	if(owner.sight & SEE_TURFS)
 		owner.clear_sight(SEE_TURFS)
 		owner.lighting_cutoff_red += 5
@@ -62,6 +70,8 @@
 	var/wind_up_timer = 1 SECONDS
 
 /datum/action/cooldown/mob_cooldown/missile_launcher/IsAvailable(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -72,6 +82,8 @@
 	return FALSE
 
 /datum/action/cooldown/mob_cooldown/missile_launcher/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(target)
 	if(isnull(target_turf) || !can_see(owner, target_turf, 7))
 		return FALSE
@@ -81,11 +93,15 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/missile_launcher/proc/launch_missile(turf/target_turf)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/mook_dust(get_turf(owner))
 	var/obj/effect/temp_visual/rising_rocket/new_rocket = new(get_turf(owner))
 	addtimer(CALLBACK(src, PROC_REF(drop_missile), target_turf), new_rocket.duration)
 
 /datum/action/cooldown/mob_cooldown/missile_launcher/proc/drop_missile(turf/target_turf)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/falling_rocket(target_turf)
 	var/obj/effect/temp_visual/falling_shadow = new /obj/effect/temp_visual/shadow_telegraph(target_turf)
 	animate(falling_shadow, transform = matrix().Scale(0.1, 0.1), time = falling_shadow.duration)
@@ -102,6 +118,8 @@
 	click_to_activate = FALSE
 
 /datum/action/cooldown/mob_cooldown/drop_landmine/IsAvailable(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -112,6 +130,8 @@
 	return FALSE
 
 /datum/action/cooldown/mob_cooldown/drop_landmine/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	var/turf/my_turf = get_turf(owner)
 	if(isgroundlessturf(my_turf))
 		return FALSE
@@ -129,6 +149,8 @@
 	duration = 2 SECONDS
 
 /obj/effect/temp_visual/rising_rocket/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(src, 'sound/items/weapons/minebot_rocket.ogg', 100, FALSE)
 	animate(src, pixel_y = base_pixel_y + 500, time = duration, easing = QUAD_EASING|EASE_IN)
@@ -146,12 +168,16 @@
 	var/explosion_damage = 100
 
 /obj/effect/temp_visual/falling_rocket/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transform = transform.Turn(180)
 	addtimer(CALLBACK(src, PROC_REF(create_explosion)), duration)
 	animate(src, pixel_y = 0, time = duration)
 
 /obj/effect/temp_visual/falling_rocket/proc/create_explosion()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/items/weapons/minebot_rocket.ogg', 100, FALSE)
 	do_smoke(1, src, loc)
 	for(var/mob/living/living_target in oview(explosion_radius, src))
@@ -167,6 +193,8 @@
 	var/damage_to_apply = 50
 
 /obj/effect/mine/minebot/mineEffect(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	if(!istype(victim))
 		return
 	do_smoke(0, src, loc)
@@ -174,6 +202,8 @@
 	victim.apply_damage(damage_to_apply)
 
 /obj/effect/mine/minebot/can_trigger(atom/movable/on_who)
+	procstart = null
+	src.procstart = null
 	if(REF(on_who) in ignore_list)
 		return FALSE
 	if(!isliving(on_who))

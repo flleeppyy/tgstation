@@ -42,6 +42,8 @@
 
 /// Applies relevant visual properties to our guardian
 /datum/guardian_fluff/proc/apply(mob/living/basic/guardian/guardian)
+	procstart = null
+	src.procstart = null
 	guardian.name = name
 	guardian.real_name = name
 	guardian.bubble_icon = bubble_icon
@@ -58,6 +60,8 @@
 
 /// Output an appropriate fluff string for our guardian when it is created
 /datum/guardian_fluff/proc/get_fluff_string(guardian_type)
+	procstart = null
+	src.procstart = null
 	return span_holoparasite(guardian_fluff[guardian_type] || "You bring forth a glitching abomination, something which should not be! Please contact a coder about it.")
 
 /// Used by holoparasites in the Traitor uplink

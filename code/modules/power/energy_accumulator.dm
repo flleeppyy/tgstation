@@ -26,6 +26,8 @@
 	var/processed_energy = 0
 
 /obj/machinery/power/energy_accumulator/proc/get_stored_joules()
+	procstart = null
+	src.procstart = null
 	return stored_energy
 
 /**
@@ -36,6 +38,8 @@
  * Returns: The amount of energy it would release in the timespan.
  */
 /obj/machinery/power/energy_accumulator/proc/calculate_energy_output(time = 0)
+	procstart = null
+	src.procstart = null
 	// dE/dt = -[ACCUMULATOR_PROPORTIONAL_COEFFICIENT] * E - [ACCUMULATOR_CONSTANT_COEFFICIENT]
 	return min(stored_energy, stored_energy - ((ACCUMULATOR_PROPORTIONAL_COEFFICIENT * stored_energy + ACCUMULATOR_CONSTANT_COEFFICIENT) * NUM_E ** (-ACCUMULATOR_PROPORTIONAL_COEFFICIENT * time) - ACCUMULATOR_CONSTANT_COEFFICIENT) / ACCUMULATOR_PROPORTIONAL_COEFFICIENT)
 
@@ -43,9 +47,13 @@
  * Calculates the power needed to sustain the energy accumulator at its current energy.
  */
 /obj/machinery/power/energy_accumulator/proc/calculate_sustainable_power()
+	procstart = null
+	src.procstart = null
 	return ACCUMULATOR_PROPORTIONAL_COEFFICIENT * stored_energy + ACCUMULATOR_CONSTANT_COEFFICIENT
 
 /obj/machinery/power/energy_accumulator/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	release_energy(calculate_energy_output(seconds_per_tick))
 
 /**
@@ -55,6 +63,8 @@
  * Returns: Whether it successfully released its energy or not.
  */
 /obj/machinery/power/energy_accumulator/proc/release_energy(joules = 0)
+	procstart = null
+	src.procstart = null
 	if(wants_powernet)
 		add_avail(joules)
 		stored_energy -= joules
@@ -63,9 +73,13 @@
 	return FALSE
 
 /obj/machinery/power/energy_accumulator/should_have_node()
+	procstart = null
+	src.procstart = null
 	return wants_powernet && anchored
 
 /obj/machinery/power/energy_accumulator/set_anchored(anchorvalue)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.))
 		return //no need to process if we didn't change anything.

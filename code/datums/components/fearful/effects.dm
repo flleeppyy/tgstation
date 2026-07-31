@@ -9,6 +9,8 @@
 	COOLDOWN_DECLARE(message_cd)
 
 /datum/terror_handler/jittering/tick(seconds_per_tick, terror_buildup)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (IS_UNCONSCIOUS(owner))
 		return
@@ -38,6 +40,8 @@
 	default = TRUE
 
 /datum/terror_handler/stuttering/tick(seconds_per_tick, terror_buildup)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (IS_UNCONSCIOUS(owner))
 		return
@@ -55,6 +59,8 @@
 	COOLDOWN_DECLARE(message_cd)
 
 /datum/terror_handler/heart_problems/tick(seconds_per_tick, terror_buildup)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (IS_UNCONSCIOUS(owner))
 		return
@@ -89,6 +95,8 @@
 	handler_type = TERROR_HANDLER_EFFECT
 
 /datum/terror_handler/vomiting/tick(seconds_per_tick, terror_buildup)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (IS_UNCONSCIOUS(owner))
 		return
@@ -115,16 +123,22 @@
 	var/panic_end_timer = null
 
 /datum/terror_handler/panic/New(mob/living/new_owner, datum/component/fearful/new_component)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	breath_loop = new(owner, _direct = TRUE)
 
 /datum/terror_handler/panic/Destroy(force)
+	procstart = null
+	src.procstart = null
 	owner.remove_fov_trait(type, FOV_270_DEGREES)
 	QDEL_NULL(breath_loop)
 	deltimer(panic_end_timer)
 	return ..()
 
 /datum/terror_handler/panic/tick(seconds_per_tick, terror_buildup)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (IS_UNCONSCIOUS(owner))
 		stop_panic_attack()
@@ -156,6 +170,8 @@
 		. += panic_attack(terror_buildup)
 
 /datum/terror_handler/panic/proc/panic_attack(terror_buildup)
+	procstart = null
+	src.procstart = null
 	active_attack = TRUE
 	owner.emote("gasp")
 	owner.Knockdown(0.5 SECONDS)
@@ -165,6 +181,8 @@
 	return PANIC_ATTACK_TERROR_AMOUNT
 
 /datum/terror_handler/panic/proc/stop_panic_attack()
+	procstart = null
+	src.procstart = null
 	breath_loop.stop()
 	active_attack = FALSE
 	deltimer(panic_end_timer)
@@ -175,6 +193,8 @@
 	COOLDOWN_DECLARE(startle_cd)
 
 /datum/terror_handler/startle/tick(seconds_per_tick, terror_buildup)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (IS_UNCONSCIOUS(owner) || !COOLDOWN_FINISHED(src, startle_cd))
 		return
@@ -212,6 +232,8 @@
 			addtimer(CALLBACK(src, PROC_REF(speed_up)), 3 SECONDS, TIMER_STOPPABLE | TIMER_DELETE_ME)
 
 /datum/terror_handler/startle/proc/speed_up()
+	procstart = null
+	src.procstart = null
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/spooked)
 
 #undef FEAR_SCALING

@@ -29,6 +29,8 @@
 	var/obj/item/stock_parts/power_store/battery/gizmo/power
 
 /datum/gizmodes/electric/activate(atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	if(!power)
 		power = new(holder)
 
@@ -40,6 +42,8 @@
 
 /// Get the total charge
 /datum/gizpulse/electric/proc/get_power(atom/movable/holder, datum/gizmodes/master)
+	procstart = null
+	src.procstart = null
 	if(istype(master, /datum/gizmodes/electric))
 		var/datum/gizmodes/electric/electromaster = master
 		return electromaster.power.charge()
@@ -47,6 +51,8 @@
 
 /// Use some charge
 /datum/gizpulse/electric/proc/use_power(amount, atom/movable/holder, datum/gizmodes/master)
+	procstart = null
+	src.procstart = null
 	if(istype(master, /datum/gizmodes/electric))
 		var/datum/gizmodes/electric/electromaster = master
 		return electromaster.power.use(amount)
@@ -59,6 +65,8 @@
 
 /// Do an EMP blast using the cell of our gizmode
 /datum/gizpulse/electric/emp/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	var/charge = get_power(holder, master)
 	if(charge < min_power)
 		return
@@ -68,6 +76,8 @@
 
 /// Shoot our current charge away as lightning
 /datum/gizpulse/electric/discharge/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	var/charge = get_power(holder, master)
 	if(charge)
 		return
@@ -77,6 +87,8 @@
 
 /// Look for an object with a cell, and CHARGE IT!!!
 /datum/gizpulse/electric/charge/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	if(!istype(master, /datum/gizmodes/electric))
 		return
 
@@ -105,6 +117,8 @@
 	var/defib_cost = STANDARD_CELL_CHARGE * 0.5
 
 /datum/gizpulse/electric/revive/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	if(!istype(master, /datum/gizmodes/electric))
 		return
 
@@ -129,6 +143,8 @@
 
 /// Look for the nearest power-containing object and suck the power out
 /datum/gizpulse/electric/draw/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	if(!istype(master, /datum/gizmodes/electric))
 		return
 
@@ -157,6 +173,8 @@
 	var/recharge = STANDARD_BATTERY_CHARGE * 0.001
 
 /datum/gizpulse/electric/passive_charge/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	if(!istype(master, /datum/gizmodes/electric))
 		return
 

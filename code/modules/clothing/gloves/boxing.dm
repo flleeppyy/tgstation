@@ -13,6 +13,8 @@
 	var/extrapower = FALSE
 
 /obj/item/clothing/gloves/boxing/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/extendohand_l, /datum/crafting_recipe/extendohand_r)
 
@@ -26,6 +28,8 @@
 	RegisterSignal(src, COMSIG_ITEM_IN_UNWRAPPED_TRAITOR_MAIL, PROC_REF(on_mail_unwrap))
 
 /obj/item/clothing/gloves/boxing/proc/on_mail_unwrap(atom/source, mob/user, obj/item/mail/traitor/letter)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	to_chat(user, span_danger("As you open [letter], boxing gloves spring out and deliver you a swift uppercut!"))
 	var/mob/living/userasliving = user
@@ -65,5 +69,7 @@
 	extrapower = TRUE
 
 /obj/item/clothing/gloves/boxing/golden/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/skill_reward, /datum/skill/athletics)

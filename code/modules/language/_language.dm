@@ -94,6 +94,8 @@
 
 // Primarily for debugging, allows for easy iteration and testing of languages.
 /datum/language/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/delete_cache = list(
 		NAMEOF(src, additional_syllable_high),
@@ -112,6 +114,8 @@
 
 /// Returns what icon to display when speaking this language
 /datum/language/proc/display_icon_type(atom/movable/hearer, list/message_mods)
+	procstart = null
+	src.procstart = null
 	if(hearer.has_language(type))
 		if(flags & LANGUAGE_HIDE_ICON_IF_UNDERSTOOD)
 			return DISPLAY_LANGUAGE_ICON_NONE
@@ -126,6 +130,8 @@
 
 /// Simple helper for getting a default firstname lastname
 /datum/language/proc/default_name(gender = NEUTER)
+	procstart = null
+	src.procstart = null
 	if(gender != MALE && gender != FEMALE)
 		gender = pick(MALE, FEMALE)
 	if(gender == FEMALE)
@@ -166,6 +172,8 @@
 
 /// Generates a random name, and attempts to ensure it is unique (IE, no other mob in the world has it)
 /datum/language/proc/get_random_unique_name(...)
+	procstart = null
+	src.procstart = null
 	var/result = get_random_name(arglist(args))
 	for(var/i in 1 to 10)
 		if(!findname(result))
@@ -176,6 +184,8 @@
 
 /// Checks the word cache for a word
 /datum/language/proc/read_word_cache(input)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	// we generally want "The" and "the" to translate to the same thing.
 	// so we lowercase everything, making it case insensitive.
@@ -192,6 +202,8 @@
 
 /// Adds a word to the cache
 /datum/language/proc/write_word_cache(input, scrambled_text)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	var/lowertext_input = LOWER_TEXT(input)
 	// The most common words are always cached
@@ -205,6 +217,8 @@
 
 /// Checks the sentence cache for a sentence
 /datum/language/proc/read_sentence_cache(input)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	// the only handling we do is capitalizing the first word, as say auto-capitalizes the first word anyway
 	// the actual structure of the sentence is otherwise case sensitive so it's preserved
@@ -218,6 +232,8 @@
 
 /// Adds a sentence to the cache, though the sentence should be modified with a key
 /datum/language/proc/write_sentence_cache(input, key, result_scramble)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	var/input_capitalized = capitalize(input)
 	// Add to the cache (the cache being an assoc list of assoc lists), cutting old entries if the list is too long
@@ -231,6 +247,8 @@
  * Takes into account any languages the hearer knows that has mutual understanding with this language.
  */
 /datum/language/proc/scramble_paragraph(input, list/mutual_languages)
+	procstart = null
+	src.procstart = null
 	// perfect understanding, no need to scramble
 	if(mutual_languages?[type] >= 100)
 		return input
@@ -247,6 +265,8 @@
  * Takes into account any languages the hearer knows that has mutual understanding with this language.
  */
 /datum/language/proc/scramble_sentence(input, list/mutual_languages)
+	procstart = null
+	src.procstart = null
 	var/cache_key = "[mutual_languages?[type] || 0]-understanding"
 	var/list/cache = read_sentence_cache(input)
 	if(cache?[cache_key])
@@ -305,6 +325,8 @@
  * Scrambles a single word in this language.
  */
 /datum/language/proc/scramble_word(input)
+	procstart = null
+	src.procstart = null
 	// If the input is cached already, move it to the end of the cache and return it
 	var/word = read_word_cache(input)
 	if(word)

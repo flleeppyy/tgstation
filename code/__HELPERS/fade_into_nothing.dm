@@ -1,5 +1,7 @@
 /// Deletes the atom with a little fading out animation after a specified time
 /atom/proc/fade_into_nothing(life_time = 5 SECONDS, fade_time = 3 SECONDS)
+	procstart = null
+	src.procstart = null
 	QDEL_IN(src, life_time)
 	if (fade_time <= 0)
 		return
@@ -11,4 +13,6 @@
 
 /// Actually does the fade out, used by fade_into_nothing()
 /atom/proc/fade_into_nothing_animate(fade_time)
+	procstart = null
+	src.procstart = null
 	animate(src, alpha = 0, time = fade_time, flags = ANIMATION_PARALLEL)

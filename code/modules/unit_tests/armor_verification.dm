@@ -2,6 +2,8 @@
 /datum/unit_test/armor_verification
 
 /datum/unit_test/armor_verification/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/dummy = allocate(/obj)
 
 	dummy.set_armor(/datum/armor/none)
@@ -27,6 +29,8 @@
 	TEST_ASSERT_EQUAL(armor_totals(dummy.get_armor()), wanted, "modified armor type had incorrect values")
 
 /datum/unit_test/armor_verification/proc/armor_totals(datum/armor/armor)
+	procstart = null
+	src.procstart = null
 	var/total = 0
 	for(var/key in ARMOR_LIST_ALL)
 		total += armor.vars[key]

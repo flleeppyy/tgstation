@@ -13,17 +13,23 @@
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 
 /obj/structure/urinal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		hidden_item = new /obj/item/food/urinalcake(src)
 		find_and_mount_on_atom()
 
 /obj/structure/urinal/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == hidden_item)
 		hidden_item = null
 
 /obj/structure/urinal/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -52,6 +58,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 	return ..()
 
 /obj/structure/urinal/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!exposed)
 		return NONE
 
@@ -72,6 +80,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/urinal/screwdriver_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 	to_chat(user, span_notice("You start to [exposed ? "screw the cap back into place" : "unscrew the cap to the drain protector"]..."))
@@ -84,12 +94,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 	return TRUE
 
 /obj/structure/urinal/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(user)
 	deconstruct(TRUE)
 	balloon_alert(user, "removed urinal")
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/urinal/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/wallframe/urinal(loc)
 	hidden_item?.forceMove(drop_location())
 
@@ -115,6 +129,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 	preserved_food = TRUE
 
 /obj/item/food/urinalcake/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_notice("[user] squishes [src]!"), span_notice("You squish [src]."), "<i>You hear a squish.</i>")
 	icon_state = "urinalcake_squish"
 	addtimer(VARSET_CALLBACK(src, icon_state, "urinalcake"), 0.8 SECONDS)

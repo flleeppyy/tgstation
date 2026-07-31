@@ -2,6 +2,8 @@
 /mob/living/basic/illusion/shover
 
 /mob/living/basic/illusion/shover/on_preattack(mob/living/source, atom/attacked_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(disarm(attacked_target))
 		return COMPONENT_HOSTILE_NO_ATTACK
@@ -12,6 +14,8 @@
 	ai_controller = /datum/ai_controller/basic_controller/illusion/escape
 
 /mob/living/basic/illusion/escape/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/ai_retaliate)
 
@@ -20,6 +24,8 @@
 	ai_controller = /datum/ai_controller/basic_controller/illusion/escape/retaliate
 
 /mob/living/basic/illusion/escape/on_preattack(mob/living/source, atom/attacked_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/parent_mob = parent_mob_ref?.resolve()
 	if(attacked_target == parent_mob) // we don't want to get our wires crossed and attack our owner ever.
@@ -31,5 +37,7 @@
 	density = FALSE
 
 /mob/living/basic/illusion/mirage/death(gibbed)
+	procstart = null
+	src.procstart = null
 	do_sparks(rand(3, 6), FALSE, src)
 	return ..()

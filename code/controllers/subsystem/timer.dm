@@ -50,15 +50,21 @@ SUBSYSTEM_DEF(timer)
 	var/bucket_reset_count = 0
 
 /datum/controller/subsystem/timer/PreInit()
+	procstart = null
+	src.procstart = null
 	bucket_list.len = BUCKET_LEN
 	head_offset = world.time
 	bucket_resolution = world.tick_lag
 
 /datum/controller/subsystem/timer/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg = "\n  B:[bucket_count] P:[length(second_queue)] H:[length(hashes)] C:[length(clienttime_timers)] S:[length(timer_id_dict)] RST:[bucket_reset_count]"
 	return ..()
 
 /datum/controller/subsystem/timer/proc/dump_timer_buckets(full = TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/to_log = list("Timer bucket reset. world.time: [world.time], head_offset: [head_offset], practical_offset: [practical_offset]")
 	if (full)
 		for (var/i in 1 to length(bucket_list))
@@ -83,6 +89,8 @@ SUBSYSTEM_DEF(timer)
 	log_world(to_log.Join("\n"))
 
 /datum/controller/subsystem/timer/fire(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	// Store local references to datum vars as it is faster to access them
 	var/lit = last_invoke_tick
 	var/list/bucket_list = src.bucket_list
@@ -219,6 +227,8 @@ SUBSYSTEM_DEF(timer)
  * Generates a string with details about the timed event for debugging purposes
  */
 /datum/controller/subsystem/timer/proc/get_timer_debug_string(datum/timedevent/TE)
+	procstart = null
+	src.procstart = null
 	. = "Timer: [TE]"
 	. += "Prev: [TE.prev ? TE.prev : "NULL"], Next: [TE.next ? TE.next : "NULL"]"
 	if(TE.spent)
@@ -232,6 +242,8 @@ SUBSYSTEM_DEF(timer)
  * Destroys the existing buckets and creates new buckets from the existing timed events
  */
 /datum/controller/subsystem/timer/proc/reset_buckets()
+	procstart = null
+	src.procstart = null
 	WARNING("Timer buckets has been reset, this may cause timer to lag")
 	bucket_reset_count++
 
@@ -333,6 +345,8 @@ SUBSYSTEM_DEF(timer)
 
 
 /datum/controller/subsystem/timer/Recover()
+	procstart = null
+	src.procstart = null
 	// Find the current timer sub-subsystem in global and recover its buckets etc
 	var/datum/controller/subsystem/timer/timerSS = null
 	for(var/global_var in global.vars)
@@ -389,6 +403,8 @@ SUBSYSTEM_DEF(timer)
 	var/bucket_pos = -1
 
 /datum/timedevent/New(datum/callback/callBack, wait, flags, datum/controller/subsystem/timer/timer_subsystem, hash, source)
+	procstart = null
+	src.procstart = null
 	var/static/nextid = 1
 	id = TIMER_ID_NULL
 	src.callBack = callBack
@@ -423,6 +439,8 @@ SUBSYSTEM_DEF(timer)
 	bucketJoin()
 
 /datum/timedevent/Destroy()
+	procstart = null
+	src.procstart = null
 	..()
 	if (flags & TIMER_UNIQUE && hash)
 		timer_subsystem.hashes -= hash
@@ -458,6 +476,8 @@ SUBSYSTEM_DEF(timer)
  * Removes this timed event from any relevant buckets, or the secondary queue
  */
 /datum/timedevent/proc/bucketEject()
+	procstart = null
+	src.procstart = null
 	// Store local references for the bucket list and secondary queue
 	// This is faster than referencing them from the datum itself
 	var/list/bucket_list = timer_subsystem.bucket_list
@@ -493,6 +513,8 @@ SUBSYSTEM_DEF(timer)
 	bucket_joined = FALSE
 
 /datum/timedevent/proc/operator""()
+	procstart = null
+	src.procstart = null
 	if(!length(timer_info))
 		return "Event not filled"
 	var/static/list/bitfield_flags = list("TIMER_UNIQUE", "TIMER_OVERRIDE", "TIMER_CLIENT_TIME", "TIMER_STOPPABLE", "TIMER_NO_HASH_WAIT", "TIMER_LOOP")
@@ -516,6 +538,8 @@ SUBSYSTEM_DEF(timer)
  * If the timed event is tracking client time, it will be added to a special bucket.
  */
 /datum/timedevent/proc/bucketJoin()
+	procstart = null
+	src.procstart = null
 #if defined(TIMER_DEBUG)
 	// Generate debug-friendly list for timer, more complex but also more expensive
 	timer_info = list(
@@ -592,6 +616,8 @@ SUBSYSTEM_DEF(timer)
  * Returns a string of the type of the callback for this timer
  */
 /datum/timedevent/proc/getcallingtype()
+	procstart = null
+	src.procstart = null
 	. = "ERROR"
 	if (callBack.object == GLOBAL_PROC)
 		. = "GLOBAL_PROC"
@@ -609,6 +635,8 @@ SUBSYSTEM_DEF(timer)
  * * timer_subsystem the subsystem to insert this timer into
  */
 /proc/_addtimer(datum/callback/callback, wait = 0, flags = 0, datum/controller/subsystem/timer/timer_subsystem, file, line)
+	procstart = null
+	src.procstart = null
 	ASSERT(istype(callback), "addtimer called [callback ? "with an invalid callback ([callback])" : "without a callback"]")
 	ASSERT(isnum(wait), "addtimer called with a non-numeric wait ([wait])")
 
@@ -663,6 +691,8 @@ SUBSYSTEM_DEF(timer)
  * * id a timerid or a /datum/timedevent
  */
 /proc/deltimer(id, datum/controller/subsystem/timer/timer_subsystem)
+	procstart = null
+	src.procstart = null
 	if (!id)
 		return FALSE
 	if (id == TIMER_ID_NULL)
@@ -685,6 +715,8 @@ SUBSYSTEM_DEF(timer)
  * * id a timerid or a /datum/timedevent
  */
 /proc/timeleft(id, datum/controller/subsystem/timer/timer_subsystem)
+	procstart = null
+	src.procstart = null
 	if (!id)
 		return null
 	if (id == TIMER_ID_NULL)
@@ -708,6 +740,8 @@ SUBSYSTEM_DEF(timer)
  * * new_wait the new wait to give this looping timer
  */
 /proc/updatetimedelay(id, new_wait, datum/controller/subsystem/timer/timer_subsystem)
+	procstart = null
+	src.procstart = null
 	if (!id)
 		return
 	if (id == TIMER_ID_NULL)

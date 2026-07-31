@@ -32,6 +32,8 @@
 	var/off_cooldown_sneezed = FALSE
 
 /datum/symptom/sneeze/Start(datum/disease/advance/active_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -43,6 +45,8 @@
 		cartoon_sneezing = TRUE //for a really fun time, distribute a disease with this threshold met while the gravity generator is down
 
 /datum/symptom/sneeze/Activate(datum/disease/advance/active_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

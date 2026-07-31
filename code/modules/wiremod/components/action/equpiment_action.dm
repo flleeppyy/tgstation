@@ -19,6 +19,8 @@
 	var/list/granted_to = list()
 
 /obj/item/circuit_component/equipment_action/Initialize(mapload, default_icon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (!isnull(default_icon))
@@ -30,10 +32,14 @@
 	signal = add_output_port("Signal", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/equipment_action/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST_ASSOC_VAL(granted_to)
 	return ..()
 
 /obj/item/circuit_component/equipment_action/populate_options()
+	procstart = null
+	src.procstart = null
 	var/static/action_options = list(
 		"Blank",
 
@@ -74,18 +80,26 @@
 	icon_options = add_option_port("Icon", action_options)
 
 /obj/item/circuit_component/equipment_action/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SEND_SIGNAL(shell, COMSIG_CIRCUIT_ACTION_COMPONENT_REGISTERED, src)
 
 /obj/item/circuit_component/equipment_action/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SEND_SIGNAL(shell, COMSIG_CIRCUIT_ACTION_COMPONENT_UNREGISTERED, src)
 
 /obj/item/circuit_component/equipment_action/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if (length(granted_to))
 		update_actions()
 
 /obj/item/circuit_component/equipment_action/proc/update_actions()
+	procstart = null
+	src.procstart = null
 	for(var/target in granted_to)
 		var/datum/action/granted_action = granted_to[target]
 		granted_action.name = button_name.value || "Action"
@@ -100,16 +114,22 @@
 	var/obj/item/circuit_component/equipment_action/action_comp
 
 /datum/action/innate/circuit_equipment_action/New(datum/target, obj/item/circuit_component/equipment_action/action_comp)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	action_comp.granted_to[REF(target)] = src
 	src.action_comp = action_comp
 
 /datum/action/innate/circuit_equipment_action/Destroy()
+	procstart = null
+	src.procstart = null
 	action_comp.granted_to -= REF(target)
 	action_comp = null
 
 	return ..()
 
 /datum/action/innate/circuit_equipment_action/Activate()
+	procstart = null
+	src.procstart = null
 	action_comp.user.set_output(owner)
 	action_comp.signal.set_output(COMPONENT_SIGNAL)

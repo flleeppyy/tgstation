@@ -6,13 +6,19 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 11)
 
 /obj/vehicle/ridden/scooter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	make_ridable()
 
 /obj/vehicle/ridden/scooter/proc/make_ridable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/scooter)
 
 /obj/vehicle/ridden/scooter/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, span_notice("You begin to remove the handlebars..."))
 	if(!tool.use_tool(src, user, 40, volume=50))
@@ -28,6 +34,8 @@
 	return TRUE
 
 /obj/vehicle/ridden/scooter/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/mob/living/buckled_mob as anything in buckled_mobs)
 		if(buckled_mob.num_legs > 0)
@@ -57,6 +65,8 @@
 	var/obj/item/melee/skateboard/board_item
 
 /obj/vehicle/ridden/scooter/skateboard/Initialize(mapload, obj/item/melee/skateboard/board_item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	sparks = new(src, 1, FALSE)
 	sparks.attach(src)
@@ -66,32 +76,46 @@
 		src.board_item = board_item
 
 /obj/vehicle/ridden/scooter/skateboard/make_ridable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/scooter/skateboard)
 
 /obj/vehicle/ridden/scooter/skateboard/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(sparks)
 	return ..()
 
 /obj/vehicle/ridden/scooter/skateboard/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if (grinding || world.time < next_crash)
 		return FALSE
 	return ..()
 
 /obj/vehicle/ridden/scooter/skateboard/generate_actions()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	initialize_controller_action_type(/datum/action/vehicle/ridden/scooter/skateboard/ollie, VEHICLE_CONTROL_DRIVE)
 	initialize_controller_action_type(/datum/action/vehicle/ridden/scooter/skateboard/kickflip, VEHICLE_CONTROL_DRIVE)
 
-/obj/vehicle/ridden/scooter/skateboard/post_buckle_mob(mob/living/M)//allows skateboards to be non-dense but still allows 2 skateboarders to collide with each other
+/obj/vehicle/ridden/scooter/skateboard/post_buckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null//allows skateboards to be non-dense but still allows 2 skateboarders to collide with each other
 	set_density(TRUE)
 	return ..()
 
 /obj/vehicle/ridden/scooter/skateboard/post_unbuckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(!has_buckled_mobs())
 		set_density(FALSE)
 	return ..()
 
 /obj/vehicle/ridden/scooter/skateboard/Bump(atom/bumped_thing)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!bumped_thing.density || !has_buckled_mobs() || world.time < next_crash)
 		return
@@ -131,6 +155,8 @@
 
 ///Moves the vehicle forward and if it lands on a table, repeats
 /obj/vehicle/ridden/scooter/skateboard/proc/grind()
+	procstart = null
+	src.procstart = null
 	step(src, dir)
 	if(!has_buckled_mobs() || !(locate(/obj/structure/table) in loc.contents) && !(locate(/obj/structure/fluff/tram_rail) in loc.contents))
 		obj_flags = CAN_BE_HIT
@@ -168,6 +194,8 @@
 	addtimer(CALLBACK(src, PROC_REF(grind)), 0.1 SECONDS)
 
 /obj/vehicle/ridden/scooter/skateboard/mouse_drop_dragged(atom/over_object, mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/skater = user
 	if(!istype(skater))
 		return
@@ -175,6 +203,8 @@
 		pick_up_board(skater)
 
 /obj/vehicle/ridden/scooter/skateboard/proc/pick_up_board(mob/living/carbon/skater, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if ((skater.incapacitated || !Adjacent(skater)) && !forced)
 		return
 	if(has_buckled_mobs())
@@ -191,6 +221,8 @@
 	instability = 6
 
 /obj/vehicle/ridden/scooter/skateboard/pro/make_ridable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/scooter/skateboard/pro)
 
 /obj/vehicle/ridden/scooter/skateboard/hoverboard
@@ -201,9 +233,13 @@
 	icon_state = "hoverboard_red"
 
 /obj/vehicle/ridden/scooter/skateboard/hoverboard/make_ridable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/scooter/skateboard/hover)
 
 /obj/vehicle/ridden/scooter/skateboard/hoverboard/can_z_move(direction, turf/start, turf/destination, z_move_flags = ZMOVE_FLIGHT_FLAGS, mob/living/rider)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -220,9 +256,13 @@
 	icon_state = "hoverboard_holy"
 
 /obj/vehicle/ridden/scooter/skateboard/hoverboard/holyboarded/make_ridable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/scooter/skateboard/hover/holy)
 
 /obj/vehicle/ridden/scooter/skateboard/hoverboard/holyboarded/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/anti_magic, MAGIC_RESISTANCE|MAGIC_RESISTANCE_HOLY)
 
@@ -249,6 +289,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5)
 
 /obj/item/scooter_frame/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stack/sheet/iron))
 		return NONE
 	if(!tool.tool_start_check(user, amount=5))
@@ -262,6 +304,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/scooter_frame/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You deconstruct [src]."))
 	new /obj/item/stack/rods(drop_location(), 10)
 	tool.play_tool_sound(src)
@@ -269,9 +313,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/vehicle/ridden/scooter/skateboard/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/vehicle/ridden/scooter/skateboard/improvised/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -292,6 +340,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/vehicle/ridden/scooter/skateboard/improvised/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -322,9 +372,13 @@
 	var/component_type = /datum/component/riding/vehicle/scooter/skateboard/wheelys
 
 /obj/vehicle/ridden/scooter/skateboard/wheelys/make_ridable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/ridable, component_type)
 
 /obj/vehicle/ridden/scooter/skateboard/wheelys/post_unbuckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(!has_buckled_mobs())
 		to_chat(M, span_notice("You pop the [wheel_name] back into place."))
 		moveToNullspace()
@@ -332,15 +386,21 @@
 	return ..()
 
 /obj/vehicle/ridden/scooter/skateboard/wheelys/pick_up_board(mob/living/carbon/Skater)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/vehicle/ridden/scooter/skateboard/wheelys/post_buckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	to_chat(M, span_notice("You pop out the [wheel_name]."))
 	shoes.toggle_wheels(TRUE)
 	return ..()
 
 ///Sets the shoes that the vehicle is associated with, called when the shoes are initialized
 /obj/vehicle/ridden/scooter/skateboard/wheelys/proc/link_shoes(newshoes)
+	procstart = null
+	src.procstart = null
 	shoes = newshoes
 
 /obj/vehicle/ridden/scooter/skateboard/wheelys/rollerskates

@@ -20,6 +20,8 @@
 	symptom_cure = /datum/reagent/water/salt
 
 /datum/symptom/polyvitiligo/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

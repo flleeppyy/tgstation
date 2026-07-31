@@ -5,6 +5,8 @@
 	var/datum/action/changeling_expel_worm/expel_worm_action
 
 /mob/living/blood_worm_host/Login()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return

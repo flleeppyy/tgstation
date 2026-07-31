@@ -5,6 +5,8 @@
 	button_icon_state = "sting_null" //This must be equal to the icon state for `/atom/movable/screen/ling/sting`
 
 /datum/action/changeling/sting/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE) //We are snowflaked from parent
 	var/mob/user = owner
 	if(!user || !user.mind)
@@ -19,6 +21,8 @@
 	return
 
 /datum/action/changeling/sting/proc/set_sting(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("We prepare our sting. Alt+click or click the middle mouse button on a target to sting them."))
 	var/datum/antagonist/changeling/changeling = IS_CHANGELING(user)
 	changeling.chosen_sting = src
@@ -29,6 +33,8 @@
 		sting.SetInvisibility(0, id=type)
 
 /datum/action/changeling/sting/proc/unset_sting(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("We retract our sting, we can't sting anyone for now."))
 	var/datum/antagonist/changeling/changeling = IS_CHANGELING(user)
 	changeling.chosen_sting = null
@@ -39,12 +45,16 @@
 		sting.RemoveInvisibility(type)
 
 /mob/living/carbon/proc/unset_sting()
+	procstart = null
+	src.procstart = null
 	if(mind)
 		var/datum/antagonist/changeling/changeling = mind.has_antag_datum(/datum/antagonist/changeling)
 		if(changeling?.chosen_sting)
 			changeling.chosen_sting.unset_sting(src)
 
 /datum/action/changeling/sting/can_sting(mob/user, mob/target)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/datum/antagonist/changeling/changeling = IS_CHANGELING(user)
@@ -62,6 +72,8 @@
 	return 1
 
 /datum/action/changeling/sting/sting_feedback(mob/user, mob/target)
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return
 	to_chat(user, span_notice("We stealthily sting [target.name]."))
@@ -88,19 +100,27 @@
 	var/verify_valid_species = TRUE
 
 /datum/action/changeling/sting/transformation/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	build_all_button_icons(UPDATE_BUTTON_NAME)
 
 /datum/action/changeling/sting/transformation/update_button_name(atom/movable/screen/movable/action_button/button, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	button.desc += " Lasts [DisplayTimeText(sting_duration)] for humans, but duration is paused while dead or in stasis."
 	button.desc += " Costs [chemical_cost] chemicals."
 
 /datum/action/changeling/sting/transformation/Destroy()
+	procstart = null
+	src.procstart = null
 	selected_dna = null
 	return ..()
 
 /datum/action/changeling/sting/transformation/set_sting(mob/user)
+	procstart = null
+	src.procstart = null
 	selected_dna = null
 	var/datum/antagonist/changeling/changeling = IS_CHANGELING(user)
 	var/datum/changeling_profile/new_selected_dna = changeling.select_dna()
@@ -115,6 +135,8 @@
 	return ..()
 
 /datum/action/changeling/sting/transformation/can_sting(mob/user, mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -133,6 +155,8 @@
 	return TRUE
 
 /datum/action/changeling/sting/transformation/sting_action(mob/living/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	var/final_duration = sting_duration
 	var/final_message = span_notice("We transform [target] into [selected_dna.dna.real_name].")
 	if(ismonkey(target))
@@ -160,6 +184,8 @@
 	fake = TRUE
 
 /datum/action/changeling/sting/false_armblade/can_sting(mob/user, mob/target)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(isliving(target))
@@ -170,6 +196,8 @@
 	return TRUE
 
 /datum/action/changeling/sting/false_armblade/sting_action(mob/user, mob/target)
+	procstart = null
+	src.procstart = null
 
 	var/obj/item/held = target.get_active_held_item()
 	if(held && !target.dropItemToGround(held))
@@ -190,6 +218,8 @@
 	return TRUE
 
 /datum/action/changeling/sting/false_armblade/proc/remove_fake(mob/target, obj/item/melee/arm_blade/false/blade)
+	procstart = null
+	src.procstart = null
 	playsound(target, 'sound/effects/blob/blobattack.ogg', 30, TRUE)
 	target.visible_message(span_warning("With a sickening crunch, [target] reforms [target.p_their()] [blade.name] into an arm!"),
 	span_warning("[blade] reforms back to normal."), span_italics("You hear organic matter ripping and tearing!"))
@@ -206,11 +236,15 @@
 	dna_cost = 0
 
 /datum/action/changeling/sting/extract_dna/can_sting(mob/user, mob/target)
+	procstart = null
+	src.procstart = null
 	if(..())
 		var/datum/antagonist/changeling/changeling = IS_CHANGELING(user)
 		return changeling.can_absorb_dna(target)
 
 /datum/action/changeling/sting/extract_dna/sting_action(mob/user, mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	..()
 	log_combat(user, target, "stung", "extraction sting")
 	var/datum/antagonist/changeling/changeling = IS_CHANGELING(user)
@@ -227,6 +261,8 @@
 	dna_cost = 2
 
 /datum/action/changeling/sting/mute/sting_action(mob/user, mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	..()
 	log_combat(user, target, "stung", "mute sting")
 	target.adjust_silence(1 MINUTES)
@@ -241,6 +277,8 @@
 	dna_cost = 1
 
 /datum/action/changeling/sting/blind/sting_action(mob/user, mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/eyes/eyes = target.get_organ_slot(ORGAN_SLOT_EYES)
 	if(!eyes)
 		user.balloon_alert(user, "no eyes!")
@@ -268,12 +306,16 @@
 	dna_cost = 1
 
 /datum/action/changeling/sting/lsd/sting_action(mob/user, mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	..()
 	log_combat(user, target, "stung", "LSD sting")
 	addtimer(CALLBACK(src, PROC_REF(hallucination_time), target), rand(30 SECONDS, 60 SECONDS))
 	return TRUE
 
 /datum/action/changeling/sting/lsd/proc/hallucination_time(mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || QDELETED(target))
 		return
 	target.adjust_hallucinations(180 SECONDS)
@@ -287,6 +329,8 @@
 	dna_cost = 2
 
 /datum/action/changeling/sting/cryo/sting_action(mob/user, mob/target)
+	procstart = null
+	src.procstart = null
 	..()
 	log_combat(user, target, "stung", "cryo sting")
 	if(target.reagents)

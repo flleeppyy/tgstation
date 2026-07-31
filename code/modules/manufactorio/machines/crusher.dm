@@ -13,19 +13,27 @@
 	var/list/obj/item/stack/held_mats = list()
 
 /obj/machinery/power/manufacturing/crusher/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += generate_io_overlays(dir, COLOR_ORANGE) // OUT - stuff in it
 	. += generate_io_overlays(REVERSE_DIR(dir), COLOR_MODERATE_BLUE) // IN - to crush
 
 /obj/machinery/power/manufacturing/crusher/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(withholding)
 
 /obj/machinery/power/manufacturing/crusher/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	withholding?.Move(drop_location())
 	return ..()
 
 /obj/machinery/power/manufacturing/crusher/receive_resource(obj/receiving, atom/from, receive_dir)
+	procstart = null
+	src.procstart = null
 	if(istype(receiving, /obj/item/stack/ore) || receiving.resistance_flags & INDESTRUCTIBLE || !isitem(receiving) || surplus() < crush_cost  || receive_dir != REVERSE_DIR(dir))
 		return MANUFACTURING_FAIL
 	if(length(contents - circuit) >= capacity && may_merge_in_contents_and_do_so(receiving))
@@ -35,11 +43,15 @@
 	return MANUFACTURING_SUCCESS
 
 /obj/machinery/power/manufacturing/crusher/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == withholding)
 		withholding = null
 
 /obj/machinery/power/manufacturing/crusher/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!isnull(withholding) && !send_resource(withholding, dir))
 		return
 	for(var/material in held_mats)

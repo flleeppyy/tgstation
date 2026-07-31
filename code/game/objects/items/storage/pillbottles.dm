@@ -23,10 +23,14 @@
 	VAR_PROTECTED/obj/item/reagent_containers/applicator/pill/spawn_type
 
 /obj/item/storage/pill_bottle/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is trying to get the cap off [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return TOXLOSS
 
 /obj/item/storage/pill_bottle/PopulateContents()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(!spawn_count)
@@ -152,6 +156,8 @@
 	spawn_type = /obj/item/reagent_containers/applicator/pill/maintenance
 
 /obj/item/storage/pill_bottle/maintenance_pill/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(!spawn_count)
 		spawn_count = rand(1,7)
 	. = ..()

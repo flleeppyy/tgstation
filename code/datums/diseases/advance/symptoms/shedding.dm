@@ -22,6 +22,8 @@
 	symptom_delay = 67.5
 
 /datum/symptom/shedding/Activate(datum/disease/advance/disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -45,6 +47,8 @@
 					addtimer(CALLBACK(src, PROC_REF(baldify), affected_human, TRUE), 3 SECONDS)
 
 /datum/symptom/shedding/proc/baldify(mob/living/carbon/human/baldie, fully_bald)
+	procstart = null
+	src.procstart = null
 	if(fully_bald)
 		baldie.set_facial_hairstyle("Shaved", update = FALSE)
 		baldie.set_hairstyle("Bald") //this will call update_body_parts()

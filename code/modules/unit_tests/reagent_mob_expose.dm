@@ -4,6 +4,8 @@
 	name = "method patch test"
 
 /datum/reagent/method_patch_test/expose_mob(mob/living/target, methods = PATCH, reac_volume, show_message = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(methods & PATCH)
 		target.set_brute_loss(20)
@@ -11,6 +13,8 @@
 		target.set_brute_loss(10)
 
 /datum/unit_test/reagent_mob_expose/Run()
+	procstart = null
+	src.procstart = null
 	// Life() is handled just by tests
 	SSmobs.pause()
 
@@ -68,5 +72,7 @@
 	TEST_ASSERT_NOTNULL(human.has_status_effect(/datum/status_effect/hallucination), "Human is not hallucinating after exposure to vapors")
 
 /datum/unit_test/reagent_mob_expose/Destroy()
+	procstart = null
+	src.procstart = null
 	SSmobs.ignite()
 	return ..()

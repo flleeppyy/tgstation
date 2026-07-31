@@ -54,6 +54,8 @@
 	preinstall_reagents = FALSE
 
 /obj/machinery/icecream_vat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!cone_prototypes)
@@ -86,11 +88,15 @@
 			reagents.add_reagent(reagent, icecream_vat_reagents[reagent] * (ice_cream_day ? 2.5 : 1), reagtemp = T0C)
 
 /obj/machinery/icecream_vat/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == custom_ice_cream_beaker)
 		custom_ice_cream_beaker = null
 
 /obj/machinery/icecream_vat/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(held_item)
 		if(is_reagent_container(held_item))
 			context[SCREENTIP_CONTEXT_LMB] = "Insert beaker"
@@ -111,10 +117,14 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/icecream_vat/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "You can use a [EXAMINE_HINT("spoon")] or [EXAMINE_HINT("soup ladle")] to spill reagents."
 
 /obj/machinery/icecream_vat/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/kitchen/spoon) || istype(tool, /obj/item/kitchen/spoon/soup_ladle))
 		spill_reagents(user)
 		return ITEM_INTERACT_SUCCESS
@@ -141,6 +151,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/icecream_vat/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/obj/item/reagent_containers/beaker = tool
 	if(!istype(beaker) || !beaker.reagents || (beaker.item_flags & ABSTRACT) || !beaker.is_open_container())
 		return NONE
@@ -160,16 +172,22 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/icecream_vat/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(swap_modes(user))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	return ..()
 
 /obj/machinery/icecream_vat/attack_robot_secondary(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null
 	if(swap_modes(user))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	return ..()
 
 /obj/machinery/icecream_vat/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!custom_ice_cream_beaker)
 		return CLICK_ACTION_BLOCKING
 	balloon_alert(user, "removed beaker")
@@ -177,6 +195,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/icecream_vat/interact(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -220,6 +240,8 @@
 
 ///Lets the user select a reagent in the vat to spill out.
 /obj/machinery/icecream_vat/proc/spill_reagents(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/datum/reagent/reagent_to_remove = tgui_input_list(user, "Select a reagent to purge from the vat.", "Remove reagent", reagents.reagent_list, ui_state = GLOB.conscious_state)
 	if(isnull(reagent_to_remove) || !user.can_perform_action(src, action_bitflags = ALLOW_RESTING))
 		return
@@ -227,6 +249,8 @@
 	reagents.remove_reagent(reagent_to_remove.type, reagent_to_remove.volume)
 
 /obj/machinery/icecream_vat/proc/make_ice_cream_color(datum/ice_cream_flavour/flavor)
+	procstart = null
+	src.procstart = null
 	if(!flavor.color)
 		return
 	var/image/ice_cream_icon = image('icons/obj/service/kitchen.dmi', "icecream_custom")
@@ -234,6 +258,8 @@
 	return ice_cream_icon
 
 /obj/machinery/icecream_vat/on_deconstruction(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/atom/drop_location = drop_location()
 
 	new /obj/item/stack/sheet/iron(drop_location, 4)
@@ -241,6 +267,8 @@
 
 ///Makes an ice cream cone of the make_type, using ingredients list as reagents used to make it. Puts in user's hand if possible.
 /obj/machinery/icecream_vat/proc/make_cone(mob/user, make_type, list/ingredients)
+	procstart = null
+	src.procstart = null
 	for(var/reagents_needed in ingredients)
 		if(!reagents.has_reagent(reagents_needed, CONE_REAGENT_NEEDED))
 			balloon_alert(user, "not enough ingredients!")
@@ -257,6 +285,8 @@
 
 ///Makes ice cream if it can, then puts it in the ice cream cone we're being attacked with.
 /obj/machinery/icecream_vat/proc/add_flavor_to_cone(datum/component/ice_cream_holder/source, mob/user, obj/item/food/icecream/cone)
+	procstart = null
+	src.procstart = null
 	var/datum/ice_cream_flavour/flavor = GLOB.ice_cream_flavours[selected_flavour]
 	if(!flavor)
 		CRASH("[user] was making ice cream of [selected_flavour] but had no flavor datum for it!")
@@ -280,6 +310,8 @@
 
 ///Swaps the mode to the next one meant to be selected, then tells the user who changed it.
 /obj/machinery/icecream_vat/proc/swap_modes(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.can_perform_action(src))
 		return FALSE
 	switch(vat_mode)
@@ -292,6 +324,8 @@
 
 ///Allows any user to see what reagents are in the ice cream vat regardless of special gear.
 /obj/machinery/icecream_vat/proc/allow_reagent_scan(datum/source, mob/user, list/examine_list, can_see_insides = FALSE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return ALLOW_GENERIC_REAGENT_EXAMINE
 

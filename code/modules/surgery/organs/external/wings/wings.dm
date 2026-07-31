@@ -14,10 +14,14 @@
 
 ///Checks if the wings can soften short falls
 /obj/item/organ/wings/proc/can_soften_fall()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 ///Implement as needed to play a sound effect on *flap emote
 /obj/item/organ/wings/proc/make_flap_sound(mob/living/carbon/wing_owner)
+	procstart = null
+	src.procstart = null
 	return
 
 ///Bodypart overlay of default wings. Does not have any wing functionality
@@ -33,4 +37,6 @@
 	var/slot_blocker = HIDEJUMPSUIT
 
 /datum/bodypart_overlay/mutant/wings/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner, mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	return ..() && !(bodypart_owner.owner?.obscured_slots & slot_blocker)

@@ -97,6 +97,8 @@
 	announce_channels = list(RADIO_CHANNEL_SERVICE)
 
 /datum/techweb_node/consoles/New()
+	procstart = null
+	src.procstart = null
 	var/has_monastery = CHECK_MAP_JOB_CHANGE(JOB_CHAPLAIN, "has_monastery")
 	if(has_monastery)
 		design_ids += "telescreen_monastery"

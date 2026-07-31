@@ -20,6 +20,8 @@
 	var/infinite = FALSE
 
 /obj/item/anomaly_releaser/interact_with_atom(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(target, /obj/item/assembly/signaler/anomaly))
 		return NONE
 

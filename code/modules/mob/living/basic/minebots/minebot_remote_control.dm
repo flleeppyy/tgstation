@@ -13,10 +13,14 @@
 	COOLDOWN_DECLARE(bomb_timer)
 
 /obj/item/minebot_remote_control/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	clear_priming()
 
 /obj/item/minebot_remote_control/proc/clear_priming()
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_user = last_user?.resolve()
 	last_user = null
 	primed = FALSE
@@ -26,6 +30,8 @@
 	living_user.update_mouse_pointer()
 
 /obj/item/minebot_remote_control/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -38,17 +44,23 @@
 	return TRUE
 
 /obj/item/minebot_remote_control/proc/prime_bomb(mob/user)
+	procstart = null
+	src.procstart = null
 	primed = TRUE
 	last_user = WEAKREF(user)
 	user.client?.mouse_override_icon = 'icons/effects/mouse_pointers/weapon_pointer.dmi'
 	user.update_mouse_pointer()
 
 /obj/item/minebot_remote_control/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(interacting_with, TRAIT_COMBAT_MODE_SKIP_INTERACTION))
 		return NONE
 	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/minebot_remote_control/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!primed)
 		user.balloon_alert(user, "not primed!")
 		return ITEM_INTERACT_BLOCKING

@@ -10,16 +10,24 @@
 	var/overlay_priority = 0
 
 /datum/bodypart_texture/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cached_texture_icon = icon(texture_icon, texture_icon_state)
 
 /datum/bodypart_texture/proc/modify_bodypart_appearance(image/appearance)
+	procstart = null
+	src.procstart = null
 	appearance.add_filter("bodypart_texture_[texture_icon_state]", 1, layering_filter(icon = cached_texture_icon, blend_mode = BLEND_INSET_OVERLAY))
 
 /datum/bodypart_texture/proc/icon_render_key()
+	procstart = null
+	src.procstart = null
 	return type
 
 /datum/bodypart_texture/proc/can_texture_bodypart(obj/item/bodypart/bodypart_owner)
+	procstart = null
+	src.procstart = null
 	for (var/datum/bodypart_texture/other_texture as anything in bodypart_owner.bodypart_textures)
 		if (other_texture.overlay_priority > overlay_priority)
 			return FALSE
@@ -41,6 +49,8 @@
 	overlay_priority = BODYPART_OVERLAY_CSS_SUICIDE
 
 /datum/bodypart_texture/checkered/modify_bodypart_appearance(image/appearance)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	appearance.color = COLOR_WHITE
 

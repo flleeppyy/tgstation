@@ -1,6 +1,8 @@
 #define VV_HTML_ENCODE(thing) ( sanitize ? html_encode(thing) : thing )
 /// Get displayed variable in VV variable list
-/proc/debug_variable(name, value, level, datum/owner, sanitize = TRUE, display_flags = NONE) //if D is a list, name will be index, and value will be assoc value.
+/proc/debug_variable(name, value, level, datum/owner, sanitize = TRUE, display_flags = NONE)
+	procstart = null
+	src.procstart = null //if D is a list, name will be index, and value will be assoc value.
 	if(owner)
 		if(isalist(owner))
 			. = "<li style='backgroundColor:white'>(READ ONLY) "
@@ -33,6 +35,8 @@
 
 // This is split into a separate proc mostly to make errors that happen not break things too much
 /proc/_debug_variable_value(name, value, level, datum/owner, sanitize, display_flags)
+	procstart = null
+	src.procstart = null
 	if(isappearance(value))
 		value = get_vv_appearance(value)
 
@@ -113,16 +117,22 @@
 	return "<span class='value'>[VV_HTML_ENCODE(value)]</span>"
 
 /datum/proc/debug_variable_value(name, level, datum/owner, sanitize, display_flags)
+	procstart = null
+	src.procstart = null
 	if("[src]" != "[type]") // If we have a name var, let's use it.
 		return "<a href='byond://?_src_=vars;[HrefToken()];Vars=[REF(src)]'>[src] [type] [REF(src)]</a>"
 	else
 		return "<a href='byond://?_src_=vars;[HrefToken()];Vars=[REF(src)]'>[type] [REF(src)]</a>"
 
 /datum/weakref/debug_variable_value(name, level, datum/owner, sanitize, display_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return "[.] <a href='byond://?_src_=vars;[HrefToken()];Vars=[reference]'>(Resolve)</a>"
 
 /matrix/debug_variable_value(name, level, datum/owner, sanitize, display_flags)
+	procstart = null
+	src.procstart = null
 	return {"<span class='value'>
 			<table class='matrixbrak'><tbody><tr><td class='lbrak'>&nbsp;</td><td>
 			<table class='matrix'>

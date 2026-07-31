@@ -15,6 +15,8 @@
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /obj/effect/dummy/lighting_obj/Initialize(mapload, range, power, color, duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(range))
 		set_light_range(range)
@@ -29,6 +31,8 @@
 	name = "mob lighting"
 
 /obj/effect/dummy/lighting_obj/moblight/Initialize(mapload, range, power, color, duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismob(loc))
 		return INITIALIZE_HINT_QDEL

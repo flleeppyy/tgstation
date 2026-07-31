@@ -9,6 +9,8 @@
 	screen_loc = ui_inventory
 
 /atom/movable/screen/human/toggle/Click()
+	procstart = null
+	src.procstart = null
 	var/mob/targetmob = usr
 
 	if(isobserver(usr))
@@ -26,6 +28,8 @@
 	update_appearance()
 
 /atom/movable/screen/human/toggle/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][hud?.inventory_shown ? "_active" : ""]"
 	return ..()
 
@@ -40,10 +44,14 @@
 	var/hovering = FALSE
 
 /atom/movable/screen/ling/chems/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(usr, span_notice("Shows you how many chemicals you have. While hovering over this, it will show the max amount of chemicals you can hold."))
 
 /atom/movable/screen/ling/chems/MouseEntered(location,control,params)
+	procstart = null
+	src.procstart = null
 	if(usr != get_mob())
 		return
 	var/datum/antagonist/changeling/antagonist_datum = IS_CHANGELING(hud.mymob)
@@ -54,6 +62,8 @@
 	antagonist_datum.update_chemical_hud()
 
 /atom/movable/screen/ling/chems/MouseExited(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(usr != get_mob())
 		return
 	var/datum/antagonist/changeling/antagonist_datum = IS_CHANGELING(hud.mymob)
@@ -70,6 +80,8 @@
 	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/ling/sting/Click()
+	procstart = null
+	src.procstart = null
 	if(isobserver(usr))
 		return
 	var/mob/living/carbon/carbon_user = usr

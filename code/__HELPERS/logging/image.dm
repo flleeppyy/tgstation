@@ -1,9 +1,13 @@
 /proc/log_image(text, list/data)
+	procstart = null
+	src.procstart = null
 	logger.Log(LOG_CATEGORY_IMAGE, text, data)
 	logger.Log(LOG_CATEGORY_COMPAT_GAME, "IMAGE: [text]")
 
 /// Log the creation of an image by a player
 /proc/log_player_image_creation(message, mob/author = usr, icon/created_icon)
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(flag/log_image))
 		return
 	GLOB.sprite_auditor.add_entry(created_icon, author)

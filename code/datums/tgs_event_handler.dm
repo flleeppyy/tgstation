@@ -2,6 +2,8 @@
 	var/datum/timedevent/reattach_timer
 
 /datum/tgs_event_handler/impl/HandleEvent(event_code, ...)
+	procstart = null
+	src.procstart = null
 	switch(event_code)
 		if(TGS_EVENT_REBOOT_MODE_CHANGE)
 			var/list/reboot_mode_lookup = list ("[TGS_REBOOT_MODE_NORMAL]" = "be normal", "[TGS_REBOOT_MODE_SHUTDOWN]" = "shutdown the server", "[TGS_REBOOT_MODE_RESTART]" = "hard restart the server")
@@ -38,4 +40,6 @@
 			to_chat_immediate(world, span_boldannounce("Server is shutting down!"))
 
 /datum/tgs_event_handler/impl/proc/LateOnReattach()
+	procstart = null
+	src.procstart = null
 	message_admins("Warning: TGS hasn't notified us of it coming back for a full minute! Is there a problem?")

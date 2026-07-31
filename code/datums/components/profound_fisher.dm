@@ -6,6 +6,8 @@
 	var/delete_rod_when_deleted = TRUE
 
 /datum/component/profound_fisher/Initialize(our_rod, delete_rod_when_deleted = TRUE)
+	procstart = null
+	src.procstart = null
 	var/isgloves = istype(parent, /obj/item/clothing/gloves)
 	if(!isliving(parent) && !isgloves)
 		return COMPONENT_INCOMPATIBLE
@@ -31,18 +33,24 @@
 			RegisterSignal(wearer, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(on_unarmed_attack))
 
 /datum/component/profound_fisher/proc/on_requesting_context_from_item(datum/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isnull(held_item) && user.contains(parent))
 		context[SCREENTIP_CONTEXT_RMB] = "Open rod UI"
 		return CONTEXTUAL_SCREENTIP_SET
 
 /datum/component/profound_fisher/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_list += span_info("When [EXAMINE_HINT("held")] or [EXAMINE_HINT("equipped")], [EXAMINE_HINT("right-click")] with a empty hand to open the integrated fishing rod interface.")
 	examine_list += span_tinynoticeital("To fish, you need to turn combat mode off.")
 
 ///Handles replacing the fishing rod if somehow removed from the parent movable if delete_rod_when_deleted is TRUE, otherwise delete the component.
 /datum/component/profound_fisher/proc/on_rod_moved(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(QDELETED(src) || our_rod.loc == parent)
 		return
@@ -55,6 +63,8 @@
 		qdel(src)
 
 /datum/component/profound_fisher/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(our_rod, COMSIG_MOVABLE_MOVED)
 	if(!delete_rod_when_deleted)
 		our_rod.internal = FALSE
@@ -65,6 +75,8 @@
 	return ..()
 
 /datum/component/profound_fisher/proc/on_equip(obj/item/source, atom/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(slot != ITEM_SLOT_GLOVES)
 		return
@@ -72,16 +84,22 @@
 	RegisterSignal(equipper, COMSIG_MOB_COMPLETE_FISHING, PROC_REF(stop_fishing))
 
 /datum/component/profound_fisher/proc/open_rod_menu(datum/source, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(our_rod, TYPE_PROC_REF(/datum, ui_interact), user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /datum/component/profound_fisher/proc/on_drop(datum/source, atom/dropper)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(dropper, list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_MOB_COMPLETE_FISHING))
 	REMOVE_TRAIT(dropper, TRAIT_PROFOUND_FISHER, TRAIT_GENERIC) //this will cancel the current minigame if the fishing rod was internal.
 
 /datum/component/profound_fisher/proc/on_unarmed_attack(mob/living/source, atom/attack_target, proximity_flag, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!should_fish_on(source, attack_target))
 		return
@@ -92,6 +110,8 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/component/profound_fisher/proc/pre_attack(mob/living/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!should_fish_on(source, target))
@@ -103,6 +123,8 @@
 	return COMPONENT_HOSTILE_NO_ATTACK
 
 /datum/component/profound_fisher/proc/should_fish_on(mob/living/user, atom/target)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(target, TRAIT_FISHING_SPOT) || GLOB.fishing_challenges_by_user[user])
 		return FALSE
 	if(user.combat_mode || !target.IsReachableBy(user))
@@ -110,14 +132,20 @@
 	return TRUE
 
 /datum/component/profound_fisher/proc/begin_fishing(mob/living/user, atom/target)
+	procstart = null
+	src.procstart = null
 	our_rod.melee_attack_chain(user, target)
 	ADD_TRAIT(user, TRAIT_PROFOUND_FISHER, TRAIT_GENERIC)
 
 /datum/component/profound_fisher/proc/stop_fishing(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	REMOVE_TRAIT(source, TRAIT_PROFOUND_FISHER, TRAIT_GENERIC)
 
 /datum/component/profound_fisher/proc/pretend_fish(mob/living/source, atom/target)
+	procstart = null
+	src.procstart = null
 	if(DOING_INTERACTION_WITH_TARGET(source, target))
 		return
 	var/list/fish_spot_container[NPC_FISHING_SPOT]

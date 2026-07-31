@@ -28,6 +28,8 @@
 	var/fake_healthy = FALSE
 
 /datum/symptom/hallucigen/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -38,6 +40,8 @@
 		power = 2
 
 /datum/symptom/hallucigen/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

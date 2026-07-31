@@ -45,11 +45,15 @@
 	var/color_choice = "#ffffff"
 
 /obj/item/construction/rld/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/option in original_options)
 		display_options[option] = icon(original_options[option])
 
 /obj/item/construction/rld/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if((construction_upgrades & RCD_UPGRADE_SILO_LINK) && display_options["Silo Link"] == null) //silo upgrade instaled but option was not updated then update it just one
@@ -89,11 +93,15 @@
 			toggle_silo(user)
 
 /obj/item/construction/rld/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!range_check(interacting_with, user))
 		return NONE
 	return try_lighting(interacting_with, user)
 
 /obj/item/construction/rld/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -107,6 +115,8 @@
  * * mob/user - the player doing this action
  */
 /obj/item/construction/rld/proc/try_lighting(atom/interacting_with, mob/user)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(HAS_TRAIT(interacting_with, TRAIT_COMBAT_MODE_SKIP_INTERACTION))

@@ -10,6 +10,8 @@
 	var/datum/movespeed_modifier/off_web_slowdown
 
 /datum/element/web_walker/Attach(datum/target, datum/movespeed_modifier/off_web_slowdown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -18,11 +20,15 @@
 	RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved))
 
 /datum/element/web_walker/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_MOVABLE_MOVED)
 
 /// When we move, check if we're still on a web
 /datum/element/web_walker/proc/on_moved(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/structure/spider/stickyweb/web = locate() in get_turf(source)

@@ -2,6 +2,8 @@ GLOBAL_LIST_INIT(adventure_loot_generator_index,generate_generator_index())
 
 /// Creates generator__id => type map.
 /proc/generate_generator_index()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/type in typesof(/datum/adventure_loot_generator))
 		var/datum/adventure_loot_generator/generator = type
@@ -14,10 +16,14 @@ GLOBAL_LIST_INIT(adventure_loot_generator_index,generate_generator_index())
 	var/id
 
 /datum/adventure_loot_generator/proc/generate()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Helper to transfer loot while respecting cargo space
 /datum/adventure_loot_generator/proc/transfer_loot(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	for(var/obj/loot in generate())
 		drone.try_transfer(loot)
 
@@ -27,6 +33,8 @@ GLOBAL_LIST_INIT(adventure_loot_generator_index,generate_generator_index())
 	var/amount = 1
 
 /datum/adventure_loot_generator/maintenance/generate()
+	procstart = null
+	src.procstart = null
 	var/list/all_loot = list()
 	for(var/i in 1 to amount)
 		var/lootspawn = pick_weight(GLOB.maintenance_loot)
@@ -42,6 +50,8 @@ GLOBAL_LIST_INIT(adventure_loot_generator_index,generate_generator_index())
 	var/static/list/unlockable_packs = list(/datum/supply_pack/exploration/scrapyard,/datum/supply_pack/exploration/catering,/datum/supply_pack/exploration/shrubbery)
 
 /datum/adventure_loot_generator/cargo/generate()
+	procstart = null
+	src.procstart = null
 	var/list/still_locked_packs = list()
 	for(var/pack_type in unlockable_packs)
 		var/datum/supply_pack/pack_singleton = SSshuttle.supply_packs[pack_type]
@@ -58,6 +68,8 @@ GLOBAL_LIST_INIT(adventure_loot_generator_index,generate_generator_index())
 	var/loot_list
 
 /datum/adventure_loot_generator/simple/generate()
+	procstart = null
+	src.procstart = null
 	var/loot_type = pick(loot_list)
 	return list(new loot_type())
 
@@ -103,6 +115,8 @@ GLOBAL_LIST_INIT(adventure_loot_generator_index,generate_generator_index())
 	)
 
 /datum/adventure_loot_generator/pet/generate()
+	procstart = null
+	src.procstart = null
 	var/obj/item/pet_carrier/carrier = new carrier_type()
 	var/chosen_pet_type = pick(possible_pets)
 	var/mob/living/basic/pet/pet = new chosen_pet_type()
@@ -125,6 +139,8 @@ GLOBAL_LIST_INIT(adventure_loot_generator_index,generate_generator_index())
 	var/unlocked_pack_type
 
 /obj/item/trade_chip/Initialize(mapload, pack_type)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(pack_type)
 		unlocked_pack_type = pack_type
@@ -132,6 +148,8 @@ GLOBAL_LIST_INIT(adventure_loot_generator_index,generate_generator_index())
 		name += "- [initial(typed_pack_type.name)]"
 
 /obj/item/trade_chip/proc/try_to_unlock_contract(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/supply_pack/pack_singleton = SSshuttle.supply_packs[unlocked_pack_type]
 	if(!unlocked_pack_type || !pack_singleton || !(pack_singleton.order_flags & ORDER_SPECIAL))
 		to_chat(user,span_danger("This chip is invalid!"))
@@ -155,19 +173,27 @@ GLOBAL_LIST_INIT(adventure_loot_generator_index,generate_generator_index())
 	var/obj/item/stock_parts/power_store/cell
 
 /obj/item/firelance/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cell = new /obj/item/stock_parts/power_store/cell(src)
 	AddComponent(/datum/component/two_handed)
 
 /obj/item/firelance/attack(mob/living/M, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!user.combat_mode)
 		return
 	. = ..()
 
 /obj/item/firelance/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/item/firelance/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_BLOCKING
 	if(!HAS_TRAIT(src, TRAIT_WIELDED))
 		to_chat(user, span_notice("You need to wield [src] in two hands before you can fire it."))
@@ -196,4 +222,6 @@ GLOBAL_LIST_INIT(adventure_loot_generator_index,generate_generator_index())
 
 /// Additional windup checks
 /obj/item/firelance/proc/windup_checks()
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(src,TRAIT_WIELDED)

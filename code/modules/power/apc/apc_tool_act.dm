@@ -1,6 +1,8 @@
 //attack with an item - open/close cover, insert cell, or (un)lock interface
 
 /obj/machinery/power/apc/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(HAS_TRAIT(tool, TRAIT_APC_SHOCKING))
 		. = fork_outlet_act(user, tool)
@@ -32,6 +34,8 @@
 
 /// Called when we interact with the APC with an item with which we can get shocked when we stuff it into an APC
 /obj/machinery/power/apc/proc/fork_outlet_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	var/metal = 0
 	var/shock_source = null
 	metal += LAZYACCESS(tool.custom_materials, SSmaterials.get_material(/datum/material/iron))//This prevents wooden rolling pins from shocking the user
@@ -53,6 +57,8 @@
 
 /// Called when we interact with the APC with a cell, attempts to insert it
 /obj/machinery/power/apc/proc/cell_act(mob/living/user, obj/item/stock_parts/power_store/new_cell)
+	procstart = null
+	src.procstart = null
 	if(!opened)
 		return NONE
 
@@ -72,6 +78,8 @@
 
 /// Checks if we can place a terminal on the APC
 /obj/machinery/power/apc/proc/can_place_terminal(mob/living/user, obj/item/stack/cable_coil/installing_cable, silent = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!opened)
 		return FALSE
 	var/turf/host_turf = get_turf(src)
@@ -99,6 +107,8 @@
 
 /// Called when we interact with the APC with a cable, attempts to wire the APC and create a terminal
 /obj/machinery/power/apc/proc/cable_act(mob/living/user, obj/item/stack/cable_coil/installing_cable, is_right_clicking)
+	procstart = null
+	src.procstart = null
 	if(!opened)
 		return NONE
 	if(!can_place_terminal(user, installing_cable, silent = FALSE))
@@ -138,6 +148,8 @@
 
 /// Called when we interact with the APC with APC electronics, attempts to install the board
 /obj/machinery/power/apc/proc/electronics_act(mob/living/user, obj/item/electronics/apc/installing_board)
+	procstart = null
+	src.procstart = null
 	if(!opened)
 		return NONE
 
@@ -164,6 +176,8 @@
 
 /// Called when we interact with the APC with an electroadaptive pseudocircuit, used by cyborgs to install a board or weak cell
 /obj/machinery/power/apc/proc/pseudocircuit_act(mob/living/user, obj/item/electroadaptive_pseudocircuit/pseudocircuit)
+	procstart = null
+	src.procstart = null
 	if(!has_electronics)
 		if(machine_stat & BROKEN)
 			balloon_alert(user, "frame is too damaged!")
@@ -199,6 +213,8 @@
 
 /// Called when we interact with the APC with and APC frame, used for replacing a damaged cover/frame
 /obj/machinery/power/apc/proc/wallframe_act(mob/living/user, obj/item/wallframe/apc/wallframe)
+	procstart = null
+	src.procstart = null
 	if(!opened)
 		return NONE
 
@@ -234,6 +250,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/apc/crowbar_act(mob/user, obj/item/crowbar)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 
 	//Prying off broken cover
@@ -301,6 +319,8 @@
 	return
 
 /obj/machinery/power/apc/screwdriver_act(mob/living/user, obj/item/W)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 	. = TRUE
@@ -342,12 +362,16 @@
 	update_appearance()
 
 /obj/machinery/power/apc/wirecutter_act(mob/living/user, obj/item/W)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(terminal && opened)
 		terminal.dismantle(user, W)
 		return TRUE
 
 /obj/machinery/power/apc/welder_act(mob/living/user, obj/item/welder)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	//repairing the cover
@@ -388,6 +412,8 @@
 	return TRUE
 
 /obj/machinery/power/apc/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	if(!(the_rcd.construction_upgrades & RCD_UPGRADE_SIMPLE_CIRCUITS))
 		return FALSE
 
@@ -407,6 +433,8 @@
 	return FALSE
 
 /obj/machinery/power/apc/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	procstart = null
+	src.procstart = null
 	if(!(the_rcd.construction_upgrades & RCD_UPGRADE_SIMPLE_CIRCUITS) || rcd_data[RCD_DESIGN_MODE] != RCD_WALLFRAME)
 		return FALSE
 
@@ -434,6 +462,8 @@
 	return FALSE
 
 /obj/machinery/power/apc/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if((obj_flags & EMAGGED) || malfhack)
 		return FALSE
 
@@ -458,6 +488,8 @@
 
 // damage and destruction acts
 /obj/machinery/power/apc/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(. & EMP_PROTECT_CONTENTS))
 		if(cell)
@@ -474,6 +506,8 @@
 	addtimer(CALLBACK(src, PROC_REF(reset), APC_RESET_EMP), 60 SECONDS)
 
 /obj/machinery/power/apc/proc/togglelock(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		balloon_alert(user, "interface is broken!")
 	else if(opened)

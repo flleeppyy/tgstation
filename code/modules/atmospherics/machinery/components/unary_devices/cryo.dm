@@ -25,6 +25,8 @@
 	var/mob/living/occupant
 
 /atom/movable/visual/cryo_occupant/Initialize(mapload, obj/machinery/cryo_cell/parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Alpha masking
 	// It will follow this as the animation goes, but that's no problem as the "mask" icon state
@@ -35,6 +37,8 @@
 
 /// COMSIG_MACHINERY_SET_OCCUPANT callback
 /atom/movable/visual/cryo_occupant/proc/on_set_occupant(datum/source, mob/living/new_occupant)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(occupant)
@@ -56,6 +60,8 @@
 
 /// COMSIG_CRYO_SET_ON callback
 /atom/movable/visual/cryo_occupant/proc/on_set_on(datum/source, on)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(on)
@@ -111,6 +117,8 @@
 	acid = 30
 
 /obj/machinery/cryo_cell/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	occupant_vis = new(mapload, src)
@@ -121,6 +129,8 @@
 	register_context()
 
 /obj/machinery/cryo_cell/Destroy()
+	procstart = null
+	src.procstart = null
 	on = FALSE
 
 	vis_contents.Cut()
@@ -132,6 +142,8 @@
 	return ..()
 
 /obj/machinery/cryo_cell/handle_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(!QDELETED(occupant))
@@ -142,10 +154,14 @@
 	return ..()
 
 /obj/machinery/cryo_cell/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	if(beaker)
 		beaker.forceMove(drop_location())
 
 /obj/machinery/cryo_cell/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!beaker)
 		return
@@ -159,11 +175,15 @@
 			SSexplosions.low_mov_atom += beaker
 
 /obj/machinery/cryo_cell/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == beaker)
 		beaker = null
 
 /obj/machinery/cryo_cell/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	context[SCREENTIP_CONTEXT_CTRL_LMB] = "Turn [on ? "off" : "on"]"
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "[state_open ? "Close" : "Open"] door"
 	if(isnull(held_item))
@@ -185,7 +205,9 @@
 			context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Rotate" : ""]"
 	return CONTEXTUAL_SCREENTIP_SET
 
-/obj/machinery/cryo_cell/examine(mob/user) //this is leaving out everything but efficiency since they follow the same idea of "better beaker, better results"
+/obj/machinery/cryo_cell/examine(mob/user)
+	procstart = null
+	src.procstart = null //this is leaving out everything but efficiency since they follow the same idea of "better beaker, better results"
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
 		. += span_notice("The status display reads: Efficiency at <b>[efficiency * 100]</b>%.")
@@ -212,14 +234,20 @@
 			. += span_notice("[src] can be [EXAMINE_HINT("pried")] open.")
 
 /obj/machinery/cryo_cell/update_icon()
+	procstart = null
+	src.procstart = null
 	SET_PLANE_IMPLICIT(src, initial(plane))
 	return ..()
 
 /obj/machinery/cryo_cell/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = state_open ? "pod-open" : ((on && is_operational) ? "pod-on" : "pod-off")
 	return ..()
 
 /obj/machinery/cryo_cell/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(panel_open)
 		. += "pod-panel"
@@ -228,6 +256,8 @@
 	. += mutable_appearance('icons/obj/medical/cryogenics.dmi', "cover-[on && is_operational ? "on" : "off"]", ABOVE_ALL_MOB_LAYER, src, plane = ABOVE_GAME_PLANE)
 
 /obj/machinery/cryo_cell/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(user.combat_mode || (tool.item_flags & ABSTRACT) || (tool.flags_1 & HOLOGRAM_1) || !user.can_perform_action(src, ALLOW_SILICON_REACH | FORBID_TELEKINESIS_REACH))
 		return ITEM_INTERACT_SKIP_TO_ATTACK
@@ -246,6 +276,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/cryo_cell/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_BLOCKING
 	if(on)
 		balloon_alert(user, "turn off!")
@@ -257,6 +289,8 @@
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/cryo_cell/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(on)
 		balloon_alert(user, "turn off!")
 		return ITEM_INTERACT_BLOCKING
@@ -302,6 +336,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/cryo_cell/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_BLOCKING
 	if(on)
 		balloon_alert(user, "turn off!")
@@ -318,16 +354,22 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/cryo_cell/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(same_z_layer)
 		return
 	SET_PLANE(occupant_vis, PLANE_TO_TRUE(occupant_vis.plane), new_turf)
 
 /obj/machinery/cryo_cell/set_occupant(atom/movable/new_occupant)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_ICON)
 
 /obj/machinery/cryo_cell/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/max_tier = 0
@@ -339,6 +381,8 @@
 	conduction_coefficient = initial(conduction_coefficient) * max_tier
 
 /obj/machinery/cryo_cell/dump_inventory_contents(list/subset = list())
+	procstart = null
+	src.procstart = null
 	//only drop mobs when opening the machine
 	for (var/mob/living/living_guy in contents)
 		subset += living_guy
@@ -351,6 +395,8 @@
  * * active - TRUE to turn the machine on, FALSE to turn it off
  */
 /obj/machinery/cryo_cell/proc/set_on(active)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(on == active)
@@ -368,23 +414,31 @@
 		end_processing()
 
 /obj/machinery/cryo_cell/begin_processing()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSair.start_processing_machine(src)
 	if(soundloop)
 		soundloop.start()
 
 /obj/machinery/cryo_cell/end_processing()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSair.stop_processing_machine(src)
 	if(soundloop)
 		soundloop.stop()
 
 /obj/machinery/cryo_cell/on_set_is_operational(old_value)
+	procstart = null
+	src.procstart = null
 	//Turned off
 	if(old_value)
 		set_on(FALSE)
 
 /obj/machinery/cryo_cell/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!on || QDELETED(occupant))
 		//somehow an deleting mob is inside us. dump everything out
 		if(!isnull(occupant) && QDELING(occupant))
@@ -439,6 +493,8 @@
 		)
 
 /obj/machinery/cryo_cell/process_atmos()
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return PROCESS_KILL
 
@@ -482,6 +538,8 @@
 	internal_connector.gas_connector.update_parents()
 
 /obj/machinery/cryo_cell/handle_internal_lifeform(mob/lifeform_inside_me, breath_request)
+	procstart = null
+	src.procstart = null
 	if(breath_request <= 0)
 		return null
 
@@ -494,20 +552,28 @@
 	internal_connector.gas_connector.update_parents()
 
 /obj/machinery/cryo_cell/assume_air(datum/gas_mixture/giver)
+	procstart = null
+	src.procstart = null
 	internal_connector.gas_connector.airs[1].merge(giver)
 
 /obj/machinery/cryo_cell/return_temperature()
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/internal_air = internal_connector.gas_connector.airs[1]
 
 	return internal_air.total_moles() > CRYO_MIN_GAS_MOLES ? internal_air.temperature : ..()
 
 /obj/machinery/cryo_cell/open_machine(drop = TRUE, density_to_set = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!state_open && !panel_open)
 		set_on(FALSE)
 	flick("pod-open-anim", src)
 	return ..()
 
 /obj/machinery/cryo_cell/close_machine(mob/living/carbon/user, density_to_set = TRUE)
+	procstart = null
+	src.procstart = null
 	treating_wounds = FALSE
 	if(state_open && !panel_open)
 		flick("pod-close-anim", src)
@@ -516,6 +582,8 @@
 			set_on(TRUE)
 
 /obj/machinery/cryo_cell/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_BREAKOUT)
 	user.last_special = world.time + CLICK_CD_BREAKOUT
 	user.visible_message(span_notice("You see [user] kicking against the glass of [src]!"), \
@@ -529,19 +597,27 @@
 		open_machine()
 
 /obj/machinery/cryo_cell/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.notcontained_state
 
 /obj/machinery/cryo_cell/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Cryo", name)
 		ui.open()
 
 /obj/machinery/cryo_cell/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["T0C"] = T0C
 
 /obj/machinery/cryo_cell/ui_data()
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["isOperating"] = on
 	.["isOpen"] = state_open
@@ -586,6 +662,8 @@
 	.["beaker"] = beaker_data
 
 /obj/machinery/cryo_cell/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -619,12 +697,16 @@
 				return TRUE
 
 /obj/machinery/cryo_cell/can_interact(mob/user)
+	procstart = null
+	src.procstart = null
 	//must not be in the machine or on its turf to interact
 	if(get_turf(user) == get_turf(src))
 		return FALSE
 	return ..()
 
 /obj/machinery/cryo_cell/click_ctrl(mob/user)
+	procstart = null
+	src.procstart = null
 	if(is_operational && !state_open)
 		set_on(!on)
 		balloon_alert(user, "turned [on ? "on" : "off"]")
@@ -632,6 +714,8 @@
 	return CLICK_ACTION_BLOCKING
 
 /obj/machinery/cryo_cell/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	//Required so players don't close the cryo on themselves without a doctor's help
 	if(get_turf(user) == get_turf(src))
 		return CLICK_ACTION_BLOCKING
@@ -644,6 +728,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/cryo_cell/mouse_drop_receive(mob/target, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(target))
 		return
 
@@ -658,6 +744,8 @@
 		close_machine(target)
 
 /obj/machinery/cryo_cell/get_remote_view_fullscreens(mob/user)
+	procstart = null
+	src.procstart = null
 	user.overlay_fullscreen("remote_view", /atom/movable/screen/fullscreen/impaired, 1)
 
 /datum/aas_config_entry/medical_cryo_announcements
@@ -674,6 +762,8 @@
 	)
 
 /datum/aas_config_entry/medical_cryo_announcements/compile_announce(list/variables_map, announcement_line)
+	procstart = null
+	src.procstart = null
 	variables_map["AUTOEJECTING"] = variables_map["EJECTING"] ? announcement_lines_map["Autoejecting"] : ""
 	var/list/exploded_string = splittext_char(..(), "\[NO DATA\]")
 	var/list/trimed_message = list()

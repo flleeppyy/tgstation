@@ -7,6 +7,8 @@ GLOBAL_LIST_EMPTY_TYPED(pda_messengers_by_name, /datum/computer_file/program/mes
 
 /// Registers an NTMessenger instance to the list of pda_messengers.
 /proc/add_messenger(datum/computer_file/program/messenger/messenger)
+	procstart = null
+	src.procstart = null
 	var/obj/item/modular_computer/messenger_device = messenger.computer
 	// a bunch of empty PDAs are normally allocated, we don't want that clutter
 	if(!messenger_device.saved_identification || !messenger_device.saved_job)
@@ -26,6 +28,8 @@ GLOBAL_LIST_EMPTY_TYPED(pda_messengers_by_name, /datum/computer_file/program/mes
 
 /// Unregisters an NTMessenger instance from the pda_messengers table.
 /proc/remove_messenger(datum/computer_file/program/messenger/messenger)
+	procstart = null
+	src.procstart = null
 	if(!istype(messenger))
 		return
 
@@ -40,6 +44,8 @@ GLOBAL_LIST_EMPTY_TYPED(pda_messengers_by_name, /datum/computer_file/program/mes
 
 /// Get the display name of a messenger instance
 /proc/get_messenger_name(datum/computer_file/program/messenger/messenger)
+	procstart = null
+	src.procstart = null
 	if(!istype(messenger))
 		return null
 	var/obj/item/modular_computer/computer = messenger.computer
@@ -71,12 +77,16 @@ GLOBAL_LIST_EMPTY_TYPED(pda_messengers_by_name, /datum/computer_file/program/mes
 	var/unread_messages = 0
 
 /datum/pda_chat/New(datum/computer_file/program/messenger/recipient)
+	procstart = null
+	src.procstart = null
 	src.recipient = WEAKREF(recipient)
 	src.can_reply = !isnull(recipient)
 
 /// Adds a message to the chat log and optionally shows the chat in recents.
 /// Call this instead of adding to messages directly.
 /datum/pda_chat/proc/add_message(datum/pda_message/message, show_in_recents = TRUE)
+	procstart = null
+	src.procstart = null
 	messages += message
 	if(!visible_in_recents && show_in_recents)
 		visible_in_recents = TRUE
@@ -84,6 +94,8 @@ GLOBAL_LIST_EMPTY_TYPED(pda_messengers_by_name, /datum/computer_file/program/mes
 
 /// Returns this datum as an associative list, used for ui_data calls.
 /datum/pda_chat/proc/get_ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/list/recipient_data = list()
@@ -109,6 +121,8 @@ GLOBAL_LIST_EMPTY_TYPED(pda_messengers_by_name, /datum/computer_file/program/mes
 
 /// Returns the messenger's name, caches the name in case the recipient becomes invalid later.
 /datum/pda_chat/proc/get_recipient_name()
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/program/messenger/messenger = recipient?.resolve()
 	if(istype(messenger) && (recipient.reference in GLOB.pda_messengers))
 		cached_name = messenger.computer.saved_identification
@@ -116,6 +130,8 @@ GLOBAL_LIST_EMPTY_TYPED(pda_messengers_by_name, /datum/computer_file/program/mes
 
 /// Returns the messenger's job, caches the job in case the recipient becomes invalid later.
 /datum/pda_chat/proc/get_recipient_job()
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/program/messenger/messenger = recipient?.resolve()
 	if(istype(messenger) && (recipient.reference in GLOB.pda_messengers))
 		cached_job = messenger.computer.saved_job
@@ -137,6 +153,8 @@ GLOBAL_LIST_EMPTY_TYPED(pda_messengers_by_name, /datum/computer_file/program/mes
 	var/timestamp
 
 /datum/pda_message/New(message, outgoing, timestamp, photo_name = null, everyone = FALSE)
+	procstart = null
+	src.procstart = null
 	src.message = message
 	src.outgoing = outgoing
 	src.timestamp = timestamp
@@ -145,6 +163,8 @@ GLOBAL_LIST_EMPTY_TYPED(pda_messengers_by_name, /datum/computer_file/program/mes
 
 /// Returns an associative list of the message's data, used for ui_data calls.
 /datum/pda_message/proc/get_ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["message"] = message
 	data["outgoing"] = outgoing

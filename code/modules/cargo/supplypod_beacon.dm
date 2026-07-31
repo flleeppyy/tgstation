@@ -25,6 +25,8 @@
 		fire = 100
 
 /obj/item/supplypod_beacon/proc/update_status(consoleStatus)
+	procstart = null
+	src.procstart = null
 	switch(consoleStatus)
 		if (SP_LINKED)
 			linked = TRUE
@@ -44,6 +46,8 @@
 	update_appearance()
 
 /obj/item/supplypod_beacon/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(launched)
 		. += "sp_green"
@@ -56,10 +60,14 @@
 		return
 
 /obj/item/supplypod_beacon/proc/end_launch()
+	procstart = null
+	src.procstart = null
 	launched = FALSE
 	update_status()
 
 /obj/item/supplypod_beacon/examine(user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It looks like it has a few anchoring bolts.")
 	if(!express_console)
@@ -68,11 +76,15 @@
 		. += span_notice("Alt-click to unlink it from the Express Supply console.")
 
 /obj/item/supplypod_beacon/Destroy()
+	procstart = null
+	src.procstart = null
 	if(express_console)
 		express_console.beacon = null
 	return ..()
 
 /obj/item/supplypod_beacon/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (default_unfasten_wrench(user, tool) == SUCCESSFUL_UNFASTEN)
 		pixel_x = 0
@@ -80,6 +92,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/supplypod_beacon/proc/unlink_console()
+	procstart = null
+	src.procstart = null
 	if(express_console)
 		express_console.beacon = null
 		express_console = null
@@ -87,6 +101,8 @@
 	update_status(SP_UNREADY)
 
 /obj/item/supplypod_beacon/proc/link_console(obj/machinery/computer/cargo/express/C, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (C.beacon)//if new console has a beacon, then...
 		C.beacon.unlink_console()//unlink the old beacon from new console
 	if (express_console)//if this beacon has an express console
@@ -99,6 +115,8 @@
 	to_chat(user, span_notice("[src] linked to [C]."))
 
 /obj/item/supplypod_beacon/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!express_console)
 		to_chat(user, span_alert("There is no linked console."))
 		return CLICK_ACTION_BLOCKING

@@ -5,11 +5,15 @@
 	initial_duration = 15 SECONDS
 
 /obj/effect/forcefield/wizard/heretic/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	if(istype(mover.throwing?.get_thrower(), /obj/effect/forcefield/wizard/heretic))
 		return TRUE
 	return ..()
 
 /obj/effect/forcefield/wizard/heretic/Bumped(mob/living/bumpee)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(bumpee) || IS_HERETIC_OR_MONSTER(bumpee))
 		return
@@ -46,6 +50,8 @@
 	var/charge_time = 15 SECONDS
 
 /obj/item/heretic_labyrinth_handbook/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!IS_HERETIC_OR_MONSTER(user))
 		return
@@ -53,11 +59,15 @@
 	. += span_notice("It has <b>[charges]</b> charge\s remaining.")
 
 /obj/item/heretic_labyrinth_handbook/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(interacting_with, TRAIT_COMBAT_MODE_SKIP_INTERACTION))
 		return NONE
 	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/heretic_labyrinth_handbook/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!IS_HERETIC(user))
 		if(ishuman(user))
 			var/mob/living/carbon/human/human_user = user
@@ -84,4 +94,6 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/heretic_labyrinth_handbook/proc/recharge()
+	procstart = null
+	src.procstart = null
 	charges = min(charges+1, max_charges)

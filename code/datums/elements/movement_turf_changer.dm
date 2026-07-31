@@ -10,6 +10,8 @@
 	var/turf_type
 
 /datum/element/movement_turf_changer/Attach(datum/target, turf_type)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!ismovable(target))
@@ -19,10 +21,14 @@
 	RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved))
 
 /datum/element/movement_turf_changer/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, COMSIG_MOVABLE_MOVED)
 	. = ..()
 
 /datum/element/movement_turf_changer/proc/on_moved(atom/movable/target, atom/origin, direction, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/turf/destination = target.loc

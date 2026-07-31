@@ -9,6 +9,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2)
 
 /obj/structure/chess/wrench_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(flags_1 & HOLOGRAM_1)
 		balloon_alert(user, "it goes right through!")
 		return TRUE

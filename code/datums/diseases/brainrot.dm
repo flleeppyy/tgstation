@@ -13,7 +13,9 @@
 	severity = DISEASE_SEVERITY_HARMFUL
 	bypasses_immunity = TRUE
 
-/datum/disease/brainrot/stage_act(seconds_per_tick) //Removed toxloss because damaging diseases are pretty horrible. Last round it killed the entire station because the cure didn't work -- Urist -ACTUALLY Removed rather than commented out, I don't see it returning - RR
+/datum/disease/brainrot/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null //Removed toxloss because damaging diseases are pretty horrible. Last round it killed the entire station because the cure didn't work -- Urist -ACTUALLY Removed rather than commented out, I don't see it returning - RR
 	. = ..()
 	if(!.)
 		return

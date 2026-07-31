@@ -30,6 +30,8 @@
 	var/longest_deathstreak = 0
 
 /mob/living/basic/parrot/poly/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!memory_saved)
@@ -52,11 +54,15 @@
 		voice_filter = "rubberband=pitch=1.5" // Use the filter to pitch up if we can't naturally pitch up.
 
 /mob/living/basic/parrot/poly/Destroy()
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(SSticker.round_end_events, roundend_callback) // we do the memory writing stuff on death, but this is important to yeet as fast as we can if we need to destroy
 	roundend_callback = null
 	return ..()
 
 /mob/living/basic/parrot/poly/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_DONT_WRITE_MEMORY))
 		return ..() // Don't read memory either.
 	if(!memory_saved)
@@ -70,7 +76,9 @@
 			specter.PossessByPlayer(key)
 	return ..()
 
-/mob/living/basic/parrot/poly/get_static_list_of_phrases() // there's only one poly, so there should only be one ongoing list of phrases. i guess
+/mob/living/basic/parrot/poly/get_static_list_of_phrases()
+	procstart = null
+	src.procstart = null // there's only one poly, so there should only be one ongoing list of phrases. i guess
 	var/static/list/phrases_to_return = list()
 	if(length(phrases_to_return))
 		return phrases_to_return
@@ -97,6 +105,8 @@
 	return phrases_to_return
 
 /mob/living/basic/parrot/poly/update_desc()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(determine_special_poly())
 		if(POLY_LONGEST_SURVIVAL)
@@ -107,6 +117,8 @@
 			desc += " Over [rounds_survived] shifts without a \"terrible\" \"accident\"!"
 
 /mob/living/basic/parrot/poly/update_icon()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(determine_special_poly())
 		if(POLY_LONGEST_SURVIVAL)
@@ -116,6 +128,8 @@
 
 /// Reads the memory of the parrot, and updates the necessary variables. Returns a list of phrases to add to the parrot's speech buffer.
 /mob/living/basic/parrot/poly/proc/read_memory()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 	var/list/returnable_list = list()
 	if(fexists("data/npc_saves/Poly.sav")) //legacy compatability to convert old format to new
@@ -140,6 +154,8 @@
 
 /// Determines the type of Poly we might have here based on the statistics we got from the memory.
 /mob/living/basic/parrot/poly/proc/determine_special_poly()
+	procstart = null
+	src.procstart = null
 	if(rounds_survived == longest_survival)
 		return POLY_LONGEST_SURVIVAL
 	else if(rounds_survived == longest_deathstreak)
@@ -150,6 +166,8 @@
 		return POLY_DEFAULT
 
 /mob/living/basic/parrot/poly/Write_Memory(dead, gibbed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || memory_saved) // if we die, no more memory
 		return FALSE
@@ -185,6 +203,8 @@
 	return TRUE
 
 /mob/living/basic/parrot/poly/setup_headset()
+	procstart = null
+	src.procstart = null
 	ears = new /obj/item/radio/headset/headset_eng(src)
 
 /mob/living/basic/parrot/poly/ghost
@@ -200,6 +220,8 @@
 	resistance_flags = parent_type::resistance_flags | SHUTTLE_CRUSH_PROOF
 
 /mob/living/basic/parrot/poly/ghost/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	// block anything and everything that could possibly happen with writing memory for ghosts
 	memory_saved = TRUE
 	add_traits(list(TRAIT_GODMODE, TRAIT_DONT_WRITE_MEMORY), INNATE_TRAIT)
@@ -208,6 +230,8 @@
 
 //we perch on human souls
 /mob/living/basic/parrot/poly/ghost/perch_on_human(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	if(loc == target) //dismount
 		forceMove(get_turf(target))
 		return FALSE
@@ -218,6 +242,8 @@
 	return TRUE
 
 /mob/living/basic/parrot/poly/ghost/proc/on_moved(atom/movable/movable, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(ishuman(old_loc))

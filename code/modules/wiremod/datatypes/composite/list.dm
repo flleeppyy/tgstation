@@ -4,6 +4,8 @@
 	expected_types = 1
 
 /datum/circuit_composite_template/list/generate_name(list/composite_datatypes)
+	procstart = null
+	src.procstart = null
 	return "[composite_datatypes[1]] [datatype]"
 
 /datum/circuit_datatype/composite_instance/list
@@ -11,6 +13,8 @@
 	datatype_flags = DATATYPE_FLAG_COMPOSITE
 
 /datum/circuit_datatype/composite_instance/list/convert_value_extensive(datum/port/port, value_to_convert, force)
+	procstart = null
+	src.procstart = null
 	var/datum/circuit_datatype/datatype_handler = GLOB.circuit_datatypes[composite_datatypes[1]]
 
 	var/list/converted_list = list()

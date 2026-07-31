@@ -2,6 +2,8 @@
  * Get all non admin_only instruments as a list of text ids.
  */
 /proc/get_allowed_instrument_ids()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/id in SSinstruments.instrument_data)
 		var/datum/instrument/I = SSinstruments.instrument_data[id]
@@ -47,6 +49,8 @@
 	var/volume_multiplier = 0.33
 
 /datum/instrument/New()
+	procstart = null
+	src.procstart = null
 	if(isnull(id))
 		id = "[type]"
 
@@ -54,6 +58,8 @@
  * Initializes the instrument, calculating its samples if necessary.
  */
 /datum/instrument/proc/Initialize()
+	procstart = null
+	src.procstart = null
 	if(instrument_flags & (INSTRUMENT_LEGACY | INSTRUMENT_DO_NOT_AUTOSAMPLE))
 		return
 	calculate_samples()
@@ -62,6 +68,8 @@
  * Checks if this instrument is ready to play.
  */
 /datum/instrument/proc/ready()
+	procstart = null
+	src.procstart = null
 	if(instrument_flags & INSTRUMENT_LEGACY)
 		return legacy_instrument_path && legacy_instrument_ext
 	else if(instrument_flags & INSTRUMENT_DO_NOT_AUTOSAMPLE)
@@ -69,6 +77,8 @@
 	return (length(samples) >= 128)
 
 /datum/instrument/Destroy()
+	procstart = null
+	src.procstart = null
 	SSinstruments.instrument_data -= id
 	for(var/i in songs_using)
 		var/datum/song/S = i
@@ -83,6 +93,8 @@
  * Calculating them on the fly would be unperformant, so we do it during init and keep it all cached in a list.
  */
 /datum/instrument/proc/calculate_samples()
+	procstart = null
+	src.procstart = null
 	if(!length(real_samples))
 		CRASH("No real samples defined for [id] [type] on calculate_samples() call.")
 	var/list/real_keys = list()

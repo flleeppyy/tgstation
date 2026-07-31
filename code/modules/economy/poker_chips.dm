@@ -9,9 +9,13 @@
 	var/redeem_value = 0
 
 /obj/item/poker_chip/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/plastic_polymers = COIN_MATERIAL_AMOUNT * 0.2)
 
 /obj/item/poker_chip/get_item_credit_value()
+	procstart = null
+	src.procstart = null
 	return redeem_value
 
 /obj/item/poker_chip/white_black

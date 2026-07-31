@@ -76,6 +76,8 @@
 
 
 /datum/techweb/New()
+	procstart = null
+	src.procstart = null
 	SSresearch.techwebs += src
 	for(var/i in SSresearch.techweb_nodes_starting)
 		var/datum/techweb_node/DN = SSresearch.techweb_node_by_id(i)
@@ -85,6 +87,8 @@
 	return ..()
 
 /datum/techweb/Destroy()
+	procstart = null
+	src.procstart = null
 	researched_nodes = null
 	researched_designs = null
 	available_nodes = null
@@ -94,6 +98,8 @@
 	return ..()
 
 /datum/techweb/proc/recalculate_nodes(recalculate_designs = FALSE, wipe_custom_designs = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/datum/techweb_node/processing = list()
 	for(var/id in researched_nodes)
 		processing[id] = TRUE
@@ -110,39 +116,53 @@
 		CHECK_TICK
 
 /datum/techweb/proc/add_point_list(list/pointlist)
+	procstart = null
+	src.procstart = null
 	for(var/i in pointlist)
 		if((i in SSresearch.point_types) && pointlist[i] > 0)
 			research_points[i] = FLOOR(research_points[i] + pointlist[i], 0.1)
 
 /datum/techweb/proc/add_points_all(amount)
+	procstart = null
+	src.procstart = null
 	var/list/l = SSresearch.point_types.Copy()
 	for(var/i in l)
 		l[i] = amount
 	add_point_list(l)
 
 /datum/techweb/proc/remove_point_list(list/pointlist)
+	procstart = null
+	src.procstart = null
 	for(var/i in pointlist)
 		if((i in SSresearch.point_types) && pointlist[i] > 0)
 			research_points[i] = FLOOR(max(0, research_points[i] - pointlist[i]), 0.1)
 
 /datum/techweb/proc/remove_points_all(amount)
+	procstart = null
+	src.procstart = null
 	var/list/l = SSresearch.point_types.Copy()
 	for(var/i in l)
 		l[i] = amount
 	remove_point_list(l)
 
 /datum/techweb/proc/modify_point_list(list/pointlist)
+	procstart = null
+	src.procstart = null
 	for(var/i in pointlist)
 		if((i in SSresearch.point_types) && pointlist[i] != 0)
 			research_points[i] = FLOOR(max(0, research_points[i] + pointlist[i]), 0.1)
 
 /datum/techweb/proc/modify_points_all(amount)
+	procstart = null
+	src.procstart = null
 	var/list/l = SSresearch.point_types.Copy()
 	for(var/i in l)
 		l[i] = amount
 	modify_point_list(l)
 
-/datum/techweb/proc/copy_research_to(datum/techweb/receiver) //Adds any missing research to theirs.
+/datum/techweb/proc/copy_research_to(datum/techweb/receiver)
+	procstart = null
+	src.procstart = null //Adds any missing research to theirs.
 	for(var/i in receiver.hidden_nodes)
 		CHECK_TICK
 		if(get_available_nodes()[i] || get_researched_nodes()[i] || get_visible_nodes()[i])
@@ -156,6 +176,8 @@
 	receiver.recalculate_nodes()
 
 /datum/techweb/proc/copy()
+	procstart = null
+	src.procstart = null
 	var/datum/techweb/returned = new()
 	returned.researched_nodes = researched_nodes.Copy()
 	returned.visible_nodes = visible_nodes.Copy()
@@ -164,28 +186,40 @@
 	returned.hidden_nodes = hidden_nodes.Copy()
 	return returned
 
-/datum/techweb/proc/get_visible_nodes() //The way this is set up is shit but whatever.
+/datum/techweb/proc/get_visible_nodes()
+	procstart = null
+	src.procstart = null //The way this is set up is shit but whatever.
 	return visible_nodes - hidden_nodes
 
 /datum/techweb/proc/get_available_nodes()
+	procstart = null
+	src.procstart = null
 	return available_nodes - hidden_nodes
 
 /datum/techweb/proc/get_researched_nodes()
+	procstart = null
+	src.procstart = null
 	return researched_nodes - hidden_nodes
 
 /datum/techweb/proc/add_point_type(type, amount)
+	procstart = null
+	src.procstart = null
 	if(!(type in SSresearch.point_types) || (amount <= 0))
 		return FALSE
 	research_points[type] += amount
 	return TRUE
 
 /datum/techweb/proc/modify_point_type(type, amount)
+	procstart = null
+	src.procstart = null
 	if(!(type in SSresearch.point_types))
 		return FALSE
 	research_points[type] = max(0, research_points[type] + amount)
 	return TRUE
 
 /datum/techweb/proc/remove_point_type(type, amount)
+	procstart = null
+	src.procstart = null
 	if(!(type in SSresearch.point_types) || (amount <= 0))
 		return FALSE
 	research_points[type] = max(0, research_points[type] - amount)
@@ -201,9 +235,13 @@
  * add_to - A custom list to add the node to, overwriting research_designs.
  */
 /datum/techweb/proc/add_design_by_id(id, custom = FALSE, list/add_to)
+	procstart = null
+	src.procstart = null
 	return add_design(SSresearch.techweb_design_by_id(id), custom, add_to)
 
 /datum/techweb/proc/add_design(datum/design/design, custom = FALSE, list/add_to)
+	procstart = null
+	src.procstart = null
 	if(!istype(design))
 		return FALSE
 	SEND_SIGNAL(src, COMSIG_TECHWEB_ADD_DESIGN, design, custom)
@@ -221,9 +259,13 @@
 	return TRUE
 
 /datum/techweb/proc/remove_design_by_id(id, custom = FALSE)
+	procstart = null
+	src.procstart = null
 	return remove_design(SSresearch.techweb_design_by_id(id), custom)
 
 /datum/techweb/proc/remove_design(datum/design/design, custom = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(design))
 		return FALSE
 	if(custom_designs[design.id] && !custom)
@@ -234,10 +276,14 @@
 	return TRUE
 
 /datum/techweb/proc/get_point_total(list/pointlist)
+	procstart = null
+	src.procstart = null
 	for(var/i in pointlist)
 		. += pointlist[i]
 
 /datum/techweb/proc/can_afford(list/pointlist)
+	procstart = null
+	src.procstart = null
 	for(var/i in pointlist)
 		if(research_points[i] < pointlist[i])
 			return FALSE
@@ -250,6 +296,8 @@
  * * node - the node to check
  */
 /datum/techweb/proc/have_experiments_for_node(datum/techweb_node/node)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	for (var/experiment_type in node.required_experiments)
 		if (!completed_experiments[experiment_type])
@@ -262,6 +310,8 @@
  * * node - the node to check
  */
 /datum/techweb/proc/can_unlock_node(datum/techweb_node/node)
+	procstart = null
+	src.procstart = null
 	return can_afford(node.get_price(src)) && have_experiments_for_node(node)
 
 /**
@@ -271,6 +321,8 @@
  * * experiment_type - the type of the experiment to add
  */
 /datum/techweb/proc/add_experiment(experiment_type)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	// check active experiments for experiment of this type
 	for (var/available_experiment in available_experiments)
@@ -291,6 +343,8 @@
  * * experiment_list - the list of types of experiments to add
  */
 /datum/techweb/proc/add_experiments(list/experiment_list)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	for (var/datum/experiment/experiment as anything in experiment_list)
 		. = . && add_experiment(experiment)
@@ -302,6 +356,8 @@
  * * completed_experiment - the experiment which was completed
  */
 /datum/techweb/proc/complete_experiment(datum/experiment/completed_experiment)
+	procstart = null
+	src.procstart = null
 	available_experiments -= completed_experiment
 	completed_experiments[completed_experiment.type] = completed_experiment
 
@@ -324,9 +380,13 @@
 	return result_text
 
 /datum/techweb/proc/printout_points()
+	procstart = null
+	src.procstart = null
 	return techweb_point_display_generic(research_points)
 
 /datum/techweb/proc/enqueue_node(id, mob/user)
+	procstart = null
+	src.procstart = null
 	var/queue_first = FALSE
 	if(istype(user, /mob/living/carbon/human))
 		var/mob/living/carbon/human/human_user = user
@@ -351,6 +411,8 @@
 	return TRUE
 
 /datum/techweb/proc/dequeue_node(id, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!(id in research_queue_nodes))
 		return FALSE
 	if(research_queue_nodes[id] != user)
@@ -361,9 +423,13 @@
 	return TRUE
 
 /datum/techweb/proc/research_node_id(id, force, auto_update_points, get_that_dosh_id, atom/research_source)
+	procstart = null
+	src.procstart = null
 	return research_node(SSresearch.techweb_node_by_id(id), force, auto_update_points, get_that_dosh_id, research_source)
 
 /datum/techweb/proc/research_node(datum/techweb_node/node, force = FALSE, auto_adjust_cost = TRUE, get_that_dosh = TRUE, atom/research_source)
+	procstart = null
+	src.procstart = null
 	if(!istype(node))
 		return FALSE
 	update_node_status(node)
@@ -419,9 +485,13 @@
 	return TRUE
 
 /datum/techweb/proc/unresearch_node_id(id)
+	procstart = null
+	src.procstart = null
 	return unresearch_node(SSresearch.techweb_node_by_id(id))
 
 /datum/techweb/proc/unresearch_node(datum/techweb_node/node)
+	procstart = null
+	src.procstart = null
 	if(!istype(node))
 		return FALSE
 	researched_nodes -= node.id
@@ -429,6 +499,8 @@
 
 /// Boosts a techweb node.
 /datum/techweb/proc/boost_techweb_node(datum/techweb_node/node, list/pointlist)
+	procstart = null
+	src.procstart = null
 	if(!istype(node))
 		return FALSE
 	LAZYINITLIST(node.discount_boosts)
@@ -441,6 +513,8 @@
 
 ///Removes a node from the hidden_nodes list, making it viewable and researchable (if no experiments are required).
 /datum/techweb/proc/unhide_node(datum/techweb_node/node)
+	procstart = null
+	src.procstart = null
 	if(!istype(node))
 		return FALSE
 	hidden_nodes -= node.id
@@ -449,6 +523,8 @@
 	return TRUE
 
 /datum/techweb/proc/update_tiers(datum/techweb_node/base)
+	procstart = null
+	src.procstart = null
 	var/list/current = list(base)
 	while (current.len)
 		var/list/next = list()
@@ -467,6 +543,8 @@
 		current = next
 
 /datum/techweb/proc/update_node_status(datum/techweb_node/node)
+	procstart = null
+	src.procstart = null
 	var/researched = FALSE
 	var/available = FALSE
 	var/visible = FALSE
@@ -498,6 +576,8 @@
 
 //Laggy procs to do specific checks, just in case. Don't use them if you can just use the vars that already store all this!
 /datum/techweb/proc/designHasReqs(datum/design/D)
+	procstart = null
+	src.procstart = null
 	for(var/i in researched_nodes)
 		var/datum/techweb_node/N = SSresearch.techweb_node_by_id(i)
 		if(N.design_ids[D.id])
@@ -505,31 +585,49 @@
 	return FALSE
 
 /datum/techweb/proc/isDesignResearched(datum/design/D)
+	procstart = null
+	src.procstart = null
 	return isDesignResearchedID(D.id)
 
 /datum/techweb/proc/isDesignResearchedID(id)
+	procstart = null
+	src.procstart = null
 	return researched_designs[id]? SSresearch.techweb_design_by_id(id) : FALSE
 
 /datum/techweb/proc/isNodeResearched(datum/techweb_node/N)
+	procstart = null
+	src.procstart = null
 	return isNodeResearchedID(N.id)
 
 /datum/techweb/proc/isNodeResearchedID(id)
+	procstart = null
+	src.procstart = null
 	return researched_nodes[id]? SSresearch.techweb_node_by_id(id) : FALSE
 
 /datum/techweb/proc/isNodeVisible(datum/techweb_node/N)
+	procstart = null
+	src.procstart = null
 	return isNodeResearchedID(N.id)
 
 /datum/techweb/proc/isNodeVisibleID(id)
+	procstart = null
+	src.procstart = null
 	return visible_nodes[id]? SSresearch.techweb_node_by_id(id) : FALSE
 
 /datum/techweb/proc/isNodeAvailable(datum/techweb_node/N)
+	procstart = null
+	src.procstart = null
 	return isNodeAvailableID(N.id)
 
 /datum/techweb/proc/isNodeAvailableID(id)
+	procstart = null
+	src.procstart = null
 	return available_nodes[id]? SSresearch.techweb_node_by_id(id) : FALSE
 
 /// Fill published_papers with nulls.
 /datum/techweb/proc/initialize_published_papers()
+	procstart = null
+	src.procstart = null
 	published_papers = list()
 	scientific_cooperation = list()
 	for (var/datum/experiment/ordnance/ordnance_experiment as anything in SSresearch.ordnance_experiments)
@@ -541,6 +639,8 @@
 
 /// Publish the paper into our techweb. Cancel if we are not allowed to.
 /datum/techweb/proc/add_scientific_paper(datum/scientific_paper/paper_to_add)
+	procstart = null
+	src.procstart = null
 	if(!paper_to_add.allowed_to_publish(src))
 		return FALSE
 	paper_to_add.publish_paper(src)
@@ -564,6 +664,8 @@
 
 /// Returns a flat list of all design datums this techweb has researched.
 /datum/techweb/proc/get_researched_design_datums()
+	procstart = null
+	src.procstart = null
 	var/list/designs = list()
 	for(var/id in researched_designs)
 		designs += SSresearch.techweb_design_by_id(id)

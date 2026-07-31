@@ -1,5 +1,7 @@
 /// Returns TRUE if the vending machine pawn is currently tilted.
 /datum/bt_node/decorator/vending_is_tilted/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/vending/vendor_pawn = controller.pawn
 	return vendor_pawn.tilted
 
@@ -11,6 +13,8 @@
 	var/search_cooldown = 2 SECONDS
 
 /datum/bt_node/ai_behavior/find_vendor_target/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/living_target in oview(vision_range, controller.pawn))
 		if(living_target.stat || living_target.incorporeal_move)
 			continue
@@ -29,6 +33,8 @@
 	var/untilt_cooldown = 1 SECONDS
 
 /datum/bt_node/ai_behavior/vendor_crush/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/vending/vendor_pawn = controller.pawn
 	if(vendor_pawn.tilted)
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
@@ -42,6 +48,8 @@
 	return AI_BEHAVIOR_DELAY
 
 /datum/bt_node/ai_behavior/vendor_crush/proc/tiltonmob(datum/ai_controller/controller, turf/target_turf)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(controller) || QDELETED(controller.pawn))
 		return
 	var/obj/machinery/vending/vendor_pawn = controller.pawn
@@ -57,6 +65,8 @@
 	controller.set_blackboard_key(BB_VENDING_BUSY_TILTING, FALSE)
 
 /datum/bt_node/ai_behavior/vendor_crush/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.set_blackboard_key(BB_VENDING_BUSY_TILTING, FALSE)
 
@@ -66,6 +76,8 @@
 	var/success_tilt_cooldown = 5 SECONDS
 
 /datum/bt_node/ai_behavior/vendor_rise_up/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/vending/vendor_pawn = controller.pawn
 	vendor_pawn.visible_message(span_warning("[vendor_pawn] untilts itself!"))
 	if(controller.blackboard[BB_VENDING_LAST_HIT_SUCCESSFUL])

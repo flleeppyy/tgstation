@@ -106,5 +106,7 @@
 	var/list/recipes
 
 /datum/stack_recipe_list/New(title, recipes)
+	procstart = null
+	src.procstart = null
 	src.title = title
 	src.recipes = recipes

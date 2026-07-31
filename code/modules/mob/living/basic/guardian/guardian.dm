@@ -91,6 +91,8 @@
 	)
 
 /mob/living/basic/guardian/Initialize(mapload, datum/guardian_fluff/theme)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.parasites += src
 	src.theme = theme
@@ -103,6 +105,8 @@
 	create_actions()
 
 /mob/living/basic/guardian/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.parasites -= src
 	if (is_deployed())
 		recall_effects()
@@ -112,6 +116,8 @@
 ///Creates the guardian's default action buttons and sets them to go in their proper location.
 ///Subtypes overwrite this for special ability types and whatnot.
 /mob/living/basic/guardian/proc/create_actions()
+	procstart = null
+	src.procstart = null
 	for (var/action_type in self_actions + toggle_button_type)
 		if(isnull(action_type)) //no toggle button type
 			continue
@@ -122,10 +128,14 @@
 	update_action_buttons()
 
 /mob/living/basic/guardian/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += overlay
 
-/mob/living/basic/guardian/Login() //if we have a mind, set its name to ours when it logs in
+/mob/living/basic/guardian/Login()
+	procstart = null
+	src.procstart = null //if we have a mind, set its name to ours when it logs in
 	. = ..()
 	if (!. || isnull(client))
 		return FALSE
@@ -145,6 +155,8 @@
 	locked = FALSE
 
 /mob/living/basic/guardian/mind_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isnull(summoner))
 		to_chat(src, span_boldholoparasite("For some reason, somehow, you have no summoner. Please report this bug immediately."))
@@ -153,6 +165,8 @@
 
 /// Pick a new colour for our guardian
 /mob/living/basic/guardian/proc/guardian_recolour()
+	procstart = null
+	src.procstart = null
 	if (isnull(client))
 		return
 	var/chosen_guardian_colour = tgui_color_picker(src, "What would you like your colour to be?", "Choose Your Colour", COLOR_WHITE)
@@ -163,12 +177,16 @@
 
 /// Apply a new colour to our guardian
 /mob/living/basic/guardian/proc/set_guardian_colour(colour)
+	procstart = null
+	src.procstart = null
 	guardian_colour = colour
 	set_light_color(guardian_colour)
 	overlay?.color = guardian_colour
 	update_appearance(UPDATE_ICON)
 
 /mob/living/basic/guardian/proc/guardian_rename()
+	procstart = null
+	src.procstart = null
 	if (isnull(client))
 		return
 
@@ -181,6 +199,8 @@
 
 /// Picks a random name as a suggestion
 /mob/living/basic/guardian/proc/generate_random_name()
+	procstart = null
+	src.procstart = null
 	var/list/surname_options = list("Guardian") // Fallback in case you define a guardian with no theme
 	switch(theme?.fluff_type)
 		if (GUARDIAN_MAGIC)
@@ -191,18 +211,24 @@
 	return "[pick(GLOB.guardian_first_names)] [pick(surname_options)]"
 
 /mob/living/basic/guardian/melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	if (!is_deployed())
 		balloon_alert(src, "not tangible!")
 		return FALSE
 	return ..()
 
 /mob/living/basic/guardian/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if (!QDELETED(summoner))
 		to_chat(summoner, span_bolddanger("Your [name] died somehow!"))
 		summoner.dust()
 	return ..()
 
 /mob/living/basic/guardian/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if (EXPLODE_DEVASTATE)
 			investigate_log("has been gibbed by an explosion.", INVESTIGATE_DEATHS)
@@ -216,13 +242,19 @@
 	return TRUE
 
 /mob/living/basic/guardian/gib()
+	procstart = null
+	src.procstart = null
 	death(TRUE)
 
 /mob/living/basic/guardian/dust(just_ash, drop_items, give_moodlet, force)
+	procstart = null
+	src.procstart = null
 	death(TRUE)
 
 /// Link up with a summoner mob.
 /mob/living/basic/guardian/proc/set_summoner(mob/living/to_who, different_person = FALSE)
+	procstart = null
+	src.procstart = null
 	if (QDELETED(src))
 		return // Just in case
 	if (QDELETED(to_who))
@@ -260,6 +292,8 @@
 
 /// Remove all references to our summoner
 /mob/living/basic/guardian/proc/cut_summoner(different_person = FALSE)
+	procstart = null
+	src.procstart = null
 	if (isnull(summoner))
 		return
 	if (is_deployed())
@@ -283,6 +317,8 @@
 
 /// Connects these two mobs by a leash
 /mob/living/basic/guardian/proc/leash_to(atom/movable/leashed, atom/movable/leashed_to)
+	procstart = null
+	src.procstart = null
 	leashed.AddComponent(\
 		/datum/component/leash,\
 		owner = leashed_to,\
@@ -293,10 +329,14 @@
 
 /// Removes the leash from this guardian
 /mob/living/basic/guardian/proc/unleash()
+	procstart = null
+	src.procstart = null
 	qdel(GetComponent(/datum/component/leash))
 
 /// Called when our owner dies. We fucked up, so now neither of us get to exist.
 /mob/living/basic/guardian/proc/on_summoner_death(mob/living/source, mob/living/former_owner)
+	procstart = null
+	src.procstart = null
 	cut_summoner()
 	if (!isnull(former_owner.loc))
 		forceMove(former_owner.loc)
@@ -307,6 +347,8 @@
 
 /// Called when our health changes, inform our owner of why they are getting hurt (if they are)
 /mob/living/basic/guardian/proc/on_harm(mob/living/source, mob/living/summoner, amount)
+	procstart = null
+	src.procstart = null
 	if (QDELETED(src) || QDELETED(summoner) || amount <= 2)
 		return
 	to_chat(summoner, span_bolddanger("[name] is under attack! You take damage!"))
@@ -317,6 +359,8 @@
 
 /// When our owner is deleted, we go too.
 /mob/living/basic/guardian/proc/on_summoner_deletion(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	cut_summoner()
 	to_chat(src, span_danger("Your summoner is gone, you feel yourself fading!"))
@@ -325,28 +369,40 @@
 
 /// Signal proc for [COMSIG_LIVING_ON_WABBAJACKED], when our summoner is wabbajacked we should be alerted.
 /mob/living/basic/guardian/proc/on_summoner_wabbajacked(mob/living/source, mob/living/new_mob)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_summoner(new_mob)
 	to_chat(src, span_holoparasite("Your summoner has changed form!"))
 
 /// Signal proc for [COMSIG_LIVING_SHAPESHIFTED], when our summoner is shapeshifted we should change to the new mob
 /mob/living/basic/guardian/proc/on_summoner_shapeshifted(mob/living/source, mob/living/new_shape)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_summoner(new_shape)
 	to_chat(src, span_holoparasite("Your summoner has shapeshifted into that of a [new_shape]!"))
 
 /// Signal proc for [COMSIG_LIVING_UNSHAPESHIFTED], when our summoner unshapeshifts go back to that mob
 /mob/living/basic/guardian/proc/on_summoner_unshapeshifted(mob/living/source, mob/living/old_summoner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_summoner(old_summoner)
 	to_chat(src, span_holoparasite("Your summoner has shapeshifted back into their normal form!"))
 
 /mob/living/basic/guardian/wabbajack(what_to_randomize, change_flags = WABBAJACK)
+	procstart = null
+	src.procstart = null
 	visible_message(span_warning("[src] resists the polymorph!")) // Ha, no
 
 /mob/living/basic/guardian/can_suicide()
+	procstart = null
+	src.procstart = null
 	return FALSE // You gotta persuade your boss to end it instead, sorry
 
 /// Returns true if you are out and about
 /mob/living/basic/guardian/proc/is_deployed()
+	procstart = null
+	src.procstart = null
 	return isnull(summoner) || loc != summoner

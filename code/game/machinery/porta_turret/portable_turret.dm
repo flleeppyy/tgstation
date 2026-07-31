@@ -120,6 +120,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	acid = 90
 
 /obj/machinery/porta_turret/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!base)
 		base = src
@@ -142,6 +144,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	AddElement(/datum/element/hostile_machine)
 
 /obj/machinery/porta_turret/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(tracker)
 	//deletes its own cover with it
 	QDEL_NULL(cover)
@@ -153,6 +157,8 @@ DEFINE_BITFIELD(turret_flags, list(
 
 ///Toggles the turret on or off depending on the value of the turn_on arg.
 /obj/machinery/porta_turret/proc/toggle_on(turn_on = TRUE)
+	procstart = null
+	src.procstart = null
 	if(on == turn_on)
 		return
 	if(turn_on && !COOLDOWN_FINISHED(src, disabled_time))
@@ -164,12 +170,16 @@ DEFINE_BITFIELD(turret_flags, list(
 
 ///Prevents turned from being turned on for a duration, then restarts them after that if the second ard is true.
 /obj/machinery/porta_turret/proc/set_disabled(duration = 6 SECONDS, will_restart = on)
+	procstart = null
+	src.procstart = null
 	COOLDOWN_START(src, disabled_time, duration)
 	if(will_restart)
 		addtimer(CALLBACK(src, PROC_REF(toggle_on), TRUE), duration + 1) //the cooldown isn't over until the tick after its end.
 	toggle_on(FALSE)
 
 /obj/machinery/porta_turret/on_saboteur(datum/source, disrupt_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	INVOKE_ASYNC(src, PROC_REF(set_disabled), disrupt_duration)
 	return TRUE
@@ -177,6 +187,8 @@ DEFINE_BITFIELD(turret_flags, list(
 /// Checks to see if this should be processing, and starts/stops processing if so.
 /// Returns TRUE if processing began, FALSE if processing ended, or null if the processing state was not changed.
 /obj/machinery/porta_turret/proc/check_should_process()
+	procstart = null
+	src.procstart = null
 	if (datum_flags & DF_ISPROCESSING)
 		if (!on || !anchored || !LAZYLEN(tracker.tracking) || (machine_stat & BROKEN) || !powered())
 			end_processing()
@@ -188,6 +200,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	return null
 
 /obj/machinery/porta_turret/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		icon_state = "turretCover"
 		return ..()
@@ -208,6 +222,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	return ..()
 
 /obj/machinery/porta_turret/proc/setup(obj/item/gun/turret_gun)
+	procstart = null
+	src.procstart = null
 	if(stored_gun)
 		qdel(stored_gun)
 		stored_gun = null
@@ -239,16 +255,22 @@ DEFINE_BITFIELD(turret_flags, list(
 
 ///destroys reference to stored_gun to prevent hard deletions
 /obj/machinery/porta_turret/proc/null_gun()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	stored_gun = null
 
 /obj/machinery/porta_turret/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PortableTurret", name)
 		ui.open()
 
 /obj/machinery/porta_turret/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list(
 		"locked" = locked,
 		"on" = on,
@@ -273,6 +295,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	return data
 
 /obj/machinery/porta_turret/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -312,6 +336,8 @@ DEFINE_BITFIELD(turret_flags, list(
 			return TRUE
 
 /obj/machinery/porta_turret/ui_host(mob/user)
+	procstart = null
+	src.procstart = null
 	if(has_cover && cover)
 		return cover
 	if(base)
@@ -319,6 +345,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	return src
 
 /obj/machinery/porta_turret/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!anchored || (machine_stat & BROKEN) || !powered())
 		update_appearance()
@@ -326,6 +354,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	check_should_process()
 
 /obj/machinery/porta_turret/multitool_act(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(locked)
 		return
@@ -335,6 +365,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/porta_turret/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!(machine_stat & BROKEN))
 		return NONE
 
@@ -358,6 +390,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/porta_turret/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(on || raised)
 		return NONE
 
@@ -379,6 +413,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/porta_turret/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!tool.GetID())
 		return NONE
 
@@ -391,6 +427,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/porta_turret/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	balloon_alert(user, "threat assessment circuits shorted")
@@ -403,6 +441,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	return TRUE
 
 /obj/machinery/porta_turret/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. & EMP_PROTECT_SELF)
 		return
@@ -420,6 +460,8 @@ DEFINE_BITFIELD(turret_flags, list(
 		remove_control()
 
 /obj/machinery/porta_turret/take_damage(damage_amount, damage_type = BRUTE, damage_flag = "", sound_effect = TRUE, attack_dir, armour_penetration = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && atom_integrity > 0) //damage received
 		if(prob(30))
@@ -429,9 +471,13 @@ DEFINE_BITFIELD(turret_flags, list(
 			addtimer(CALLBACK(src, PROC_REF(reset_attacked)), 6 SECONDS)
 
 /obj/machinery/porta_turret/proc/reset_attacked()
+	procstart = null
+	src.procstart = null
 	turret_flags &= ~TURRET_FLAG_SHOOT_ALL_REACT
 
 /obj/machinery/porta_turret/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		power_change()
@@ -441,6 +487,8 @@ DEFINE_BITFIELD(turret_flags, list(
 		qdel(cover) //deletes the cover - no need on keeping it there!
 
 /obj/machinery/porta_turret/atom_fix()
+	procstart = null
+	src.procstart = null
 	set_machine_stat(machine_stat & ~BROKEN)
 	has_cover = initial(has_cover)
 	check_should_process()
@@ -448,6 +496,8 @@ DEFINE_BITFIELD(turret_flags, list(
 
 
 /obj/machinery/porta_turret/process()
+	procstart = null
+	src.procstart = null
 	//the main machinery process
 	if(has_cover && cover == null && anchored && !(machine_stat & BROKEN)) //if it has no cover and is anchored
 		cover = new /obj/machinery/porta_turret_cover(loc) //if the turret has no cover and is anchored, give it a cover
@@ -539,13 +589,17 @@ DEFINE_BITFIELD(turret_flags, list(
 		popDown() // no valid targets, close the cover
 
 /obj/machinery/porta_turret/proc/tryToShootAt(list/atom/movable/targets)
+	procstart = null
+	src.procstart = null
 	while(targets.len > 0)
 		var/atom/movable/M = pick(targets)
 		targets -= M
 		if(target(M))
 			return 1
 
-/obj/machinery/porta_turret/proc/popUp() //pops the turret up
+/obj/machinery/porta_turret/proc/popUp()
+	procstart = null
+	src.procstart = null //pops the turret up
 	if(!anchored)
 		return
 	if(raising || raised)
@@ -563,7 +617,9 @@ DEFINE_BITFIELD(turret_flags, list(
 	raised = 1
 	layer = MOB_LAYER
 
-/obj/machinery/porta_turret/proc/popDown() //pops the turret down
+/obj/machinery/porta_turret/proc/popDown()
+	procstart = null
+	src.procstart = null //pops the turret down
 	if(raising || !raised)
 		return
 	if(machine_stat & BROKEN)
@@ -581,6 +637,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	update_appearance()
 
 /obj/machinery/porta_turret/proc/assess_perp(mob/living/carbon/human/perp)
+	procstart = null
+	src.procstart = null
 	var/threatcount = 0 //the integer returned
 
 	if(obj_flags & EMAGGED)
@@ -620,9 +678,13 @@ DEFINE_BITFIELD(turret_flags, list(
 	return threatcount
 
 /obj/machinery/porta_turret/proc/in_faction(mob/target)
+	procstart = null
+	src.procstart = null
 	return faction_check_atom(target)
 
 /obj/machinery/porta_turret/proc/target(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	if(target)
 		popUp() //pop the turret up if it's not already up.
 		setDir(get_dir(base, target))//even if you can't shoot, follow the target
@@ -631,6 +693,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	return
 
 /obj/machinery/porta_turret/proc/shootAt(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	if(!raised) //the turret has to be raised in order to fire - makes sense, right?
 		return
 
@@ -681,6 +745,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	return A
 
 /obj/machinery/porta_turret/proc/setState(on, mode, shoot_cyborgs)
+	procstart = null
+	src.procstart = null
 	if(controllock)
 		return
 
@@ -695,6 +761,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	button_icon_state = "mech_cycle_equip_off"
 
 /datum/action/turret_toggle/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -709,6 +777,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	button_icon_state = "mech_eject"
 
 /datum/action/turret_quit/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -718,6 +788,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	P.remove_control(FALSE)
 
 /obj/machinery/porta_turret/proc/give_control(mob/A)
+	procstart = null
+	src.procstart = null
 	if(manual_control || !can_interact(A))
 		return FALSE
 	remote_controller = A
@@ -735,6 +807,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	return TRUE
 
 /obj/machinery/porta_turret/proc/remove_control(warning_message = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!manual_control)
 		return FALSE
 	if(remote_controller)
@@ -750,6 +824,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	return TRUE
 
 /obj/machinery/porta_turret/proc/InterceptClickOn(mob/living/clicker, params, atom/A)
+	procstart = null
+	src.procstart = null
 	if(!manual_control)
 		return FALSE
 	if(!can_interact(clicker))
@@ -779,27 +855,37 @@ DEFINE_BITFIELD(turret_flags, list(
 	desc = "A ballistic machine gun auto-turret."
 
 /obj/machinery/porta_turret/syndicate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_SELF | EMP_PROTECT_WIRES)
 	AddElement(/datum/element/nav_computer_icon, 'icons/effects/nav_computer_indicators.dmi', "turret", FALSE)
 	add_minimap_blip(src, MINIMAP_SYNDIE_TURRET_BLIP, "sentry_passive")
 
 /obj/machinery/porta_turret/syndicate/proc/update_turret_minimap_icon(new_icon_state)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/screen/minimap_element/blip/blip = get_minimap_blip(MINIMAP_SYNDIE_TURRET_BLIP, src)
 	if(isnull(blip))
 		return
 	blip.icon_state = new_icon_state
 
 /obj/machinery/porta_turret/syndicate/shootAt(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(raised && (obj_flags & EMAGGED || last_fired == world.time))
 		update_turret_minimap_icon("sentry_firing")
 		addtimer(CALLBACK(src, PROC_REF(update_turret_minimap_icon), "sentry_passive"), shot_delay + 1 SECONDS, TIMER_UNIQUE | TIMER_OVERRIDE)
 
 /obj/machinery/porta_turret/syndicate/setup()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/porta_turret/syndicate/assess_perp(mob/living/carbon/human/perp)
+	procstart = null
+	src.procstart = null
 	return 10 //Syndicate turrets shoot everything not in their faction
 
 /obj/machinery/porta_turret/syndicate/energy
@@ -813,6 +899,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	armor_type = /datum/armor/syndicate_turret
 
 /obj/machinery/porta_turret/syndicate/energy/ruin/assess_perp(mob/living/carbon/human/perp)
+	procstart = null
+	src.procstart = null
 	if (!check_access(perp.wear_id?.GetID()))
 		return 10
 	return 0
@@ -873,6 +961,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	acid = 90
 
 /obj/machinery/porta_turret/syndicate/shuttle/target(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	if(target)
 		setDir(get_dir(base, target))//even if you can't shoot, follow the target
 		shootAt(target)
@@ -886,6 +976,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	turret_flags = TURRET_FLAG_SHOOT_CRIMINALS | TURRET_FLAG_SHOOT_ANOMALOUS | TURRET_FLAG_SHOOT_HEADS
 
 /obj/machinery/porta_turret/ai/assess_perp(mob/living/carbon/human/perp)
+	procstart = null
+	src.procstart = null
 	return 10 //AI turrets shoot at everything not in their faction
 
 /obj/machinery/porta_turret/aux_base
@@ -899,15 +991,23 @@ DEFINE_BITFIELD(turret_flags, list(
 	faction = list(FACTION_NEUTRAL,FACTION_SILICON,FACTION_TURRET) //Minebots, medibots, etc that should not be shot.
 
 /obj/machinery/porta_turret/aux_base/assess_perp(mob/living/carbon/human/perp)
+	procstart = null
+	src.procstart = null
 	return 0 //Never shoot humanoids. You are on your own if Ashwalkers or the like attack!
 
 /obj/machinery/porta_turret/aux_base/setup()
+	procstart = null
+	src.procstart = null
 	return
 
-/obj/machinery/porta_turret/aux_base/interact(mob/user) //Controlled solely from the base console.
+/obj/machinery/porta_turret/aux_base/interact(mob/user)
+	procstart = null
+	src.procstart = null //Controlled solely from the base console.
 	return
 
 /obj/machinery/porta_turret/aux_base/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cover.name = name
 	cover.desc = desc
@@ -929,13 +1029,19 @@ DEFINE_BITFIELD(turret_flags, list(
 	mode = TURRET_LETHAL
 
 /obj/machinery/porta_turret/centcom_shuttle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_SELF | EMP_PROTECT_WIRES)
 
 /obj/machinery/porta_turret/centcom_shuttle/assess_perp(mob/living/carbon/human/perp)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/machinery/porta_turret/centcom_shuttle/setup()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/porta_turret/centcom_shuttle/weak
@@ -955,6 +1061,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	stun_projectile_sound = 'sound/items/weapons/kinetic_accel.ogg'
 
 /obj/item/gun/proc/get_turret_properties()
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["lethal_projectile"] = null
 	.["lethal_projectile_sound"] = null
@@ -963,6 +1071,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	.["base_icon_state"] = "standard"
 
 /obj/item/gun/energy/get_turret_properties()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/obj/item/ammo_casing/primary_ammo = ammo_type[1]
@@ -979,6 +1089,8 @@ DEFINE_BITFIELD(turret_flags, list(
 		.["lethal_projectile_sound"] = .["stun_projectile_sound"]
 
 /obj/item/gun/ballistic/get_turret_properties()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/ammo_box/mag = spawn_magazine_type
 	var/obj/item/ammo_casing/primary_ammo = initial(mag.ammo_type)
@@ -991,6 +1103,8 @@ DEFINE_BITFIELD(turret_flags, list(
 
 
 /obj/item/gun/energy/laser/bluetag/get_turret_properties()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["stun_projectile"] = /obj/projectile/beam/lasertag/bluetag
 	.["lethal_projectile"] = /obj/projectile/beam/lasertag/bluetag
@@ -999,6 +1113,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	.["team_color"] = "blue"
 
 /obj/item/gun/energy/laser/redtag/get_turret_properties()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["stun_projectile"] = /obj/projectile/beam/lasertag/redtag
 	.["lethal_projectile"] = /obj/projectile/beam/lasertag/redtag
@@ -1007,6 +1123,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	.["team_color"] = "red"
 
 /obj/item/gun/energy/e_gun/turret/get_turret_properties()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 /obj/machinery/porta_turret/lasertag
@@ -1015,6 +1133,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	var/team_color
 
 /obj/machinery/porta_turret/lasertag/assess_perp(mob/living/carbon/human/perp)
+	procstart = null
+	src.procstart = null
 	. = 0
 	if(team_color == "blue") //Lasertag turrets target the opposing team, how great is that? -Sieve
 		. = 0 //But does not target anyone else
@@ -1035,11 +1155,15 @@ DEFINE_BITFIELD(turret_flags, list(
 			. += 2
 
 /obj/machinery/porta_turret/lasertag/setup(obj/item/gun/gun)
+	procstart = null
+	src.procstart = null
 	var/list/properties = ..()
 	if(properties["team_color"])
 		team_color = properties["team_color"]
 
 /obj/machinery/porta_turret/lasertag/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(team_color == "blue" && istype(H.wear_suit, /obj/item/clothing/suit/redtag))
@@ -1058,6 +1182,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	team_color = "blue"
 
 /obj/machinery/porta_turret/lasertag/bullet_act(obj/projectile/projectile)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!on || . != BULLET_ACT_HIT)
 		return

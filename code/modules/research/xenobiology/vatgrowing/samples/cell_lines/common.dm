@@ -646,6 +646,8 @@
 	resulting_atom = /mob/living/basic/vatbeast
 
 /datum/micro_organism/cell_line/vat_beast/succeed_growing(obj/machinery/vatgrower/vat)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(vat)
 
@@ -673,12 +675,16 @@
 	virus_suspectibility = 0
 
 /datum/micro_organism/cell_line/netherworld/succeed_growing(obj/machinery/vatgrower/vat)
+	procstart = null
+	src.procstart = null
 	resulting_atom = pick(/mob/living/basic/creature, /mob/living/basic/migo, /mob/living/basic/blankbody) //i looked myself, pretty much all of them are reasonably strong and somewhat on the same level. except migo is the jackpot and the blank body is whiff.
 	return ..()
 
 /datum/micro_organism/cell_line/clown
 
 /datum/micro_organism/cell_line/clown/succeed_growing(obj/machinery/vatgrower/vat)
+	procstart = null
+	src.procstart = null
 	if(vat.reagents.has_reagent(/datum/reagent/toxin/mutagen) && prob(CYTO_SHINY_CHANCE))
 		resulting_atom = pick(/mob/living/basic/clown/mutant, /mob/living/basic/clown/fleshclown)
 		vat.visible_message(span_warning("The biological sample in [vat] mutates into something horrific!"))
@@ -687,6 +693,8 @@
 	return ..()
 
 /datum/micro_organism/cell_line/clown/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// all clown mutations get a huge boost from mutagen, at the cost of causing occasional mutations
 	supplementary_reagents[/datum/reagent/toxin/mutagen] = 8
@@ -858,6 +866,8 @@
 	resulting_atom = /obj/item/queen_bee/bought
 
 /datum/micro_organism/cell_line/queen_bee/succeed_growing(obj/machinery/vatgrower/vat)
+	procstart = null
+	src.procstart = null
 	if(grow_count % 2) // every other growth cycle spawns a horde of bees insteads
 		resulting_atom_count = 5
 		resulting_atom = /mob/living/basic/bee

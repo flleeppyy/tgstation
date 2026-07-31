@@ -4,6 +4,8 @@
 	early = TRUE
 
 /datum/asset/json/icon_ref_map/generate()
+	procstart = null
+	src.procstart = null
 	var/list/data = list() //"icons/obj/drinks.dmi" => "[0xc000020]"
 
 	//var/start = "0xc000000"

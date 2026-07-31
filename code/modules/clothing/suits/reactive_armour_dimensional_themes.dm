@@ -21,6 +21,8 @@
  * * dangerous - If true this will pick a 'dangerous' theme.
  */
 /datum/armour_dimensional_theme/proc/apply_random(turf/source, dangerous = FALSE)
+	procstart = null
+	src.procstart = null
 	var/theme_type
 	if (dangerous)
 		theme_type = pick(subtypesof(/datum/armour_dimensional_theme/dangerous))
@@ -38,6 +40,8 @@
  * * source - The central turf to apply outwards from.
 */
 /datum/armour_dimensional_theme/proc/apply(turf/source)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/particle_effect/fluid/smoke/poof = new(source)
 	poof.lifetime = 2 SECONDS
 	var/list/target_area = get_target_area(source)
@@ -52,6 +56,8 @@
  * * source - The central turf to check outwards from.
  */
 /datum/armour_dimensional_theme/proc/get_target_area(turf/source)
+	procstart = null
+	src.procstart = null
 	var/list/target_area = RANGE_TURFS(1, source)
 	for (var/turf/check_turf as anything in target_area)
 		if (isspaceturf(check_turf))
@@ -76,6 +82,8 @@
  * * to_convert - Turf to convert.
  */
 /datum/armour_dimensional_theme/proc/convert_turf(turf/to_convert)
+	procstart = null
+	src.procstart = null
 	if (isfloorturf(to_convert))
 		var/turf/open/open_turf = to_convert
 		open_turf.replace_floor(replace_floor, flags = CHANGETURF_INHERIT_AIR | CHANGETURF_INHERIT_MOUNTS)
@@ -94,6 +102,8 @@
  * * target_area - Tiles which have had their materials converted, needs further culling to remove dense tiles.
  */
 /datum/armour_dimensional_theme/proc/place_barriers(turf/source, list/target_area)
+	procstart = null
+	src.procstart = null
 	target_area -= source
 	for (var/turf/check_turf as anything in target_area)
 		if (!check_turf.is_blocked_turf(exclude_mobs = TRUE))
@@ -119,6 +129,8 @@
  * * materials - Custom material data to apply to the barrier.
  */
 /datum/armour_dimensional_theme/proc/place_barrier(turf/source, list/materials)
+	procstart = null
+	src.procstart = null
 	var/obj/placed_barricade = new barricade(source)
 	if (barricade_anchored)
 		placed_barricade.anchored = TRUE
@@ -185,6 +197,8 @@
 
 /// Replace the barrier spawning to instead create weak lava.
 /datum/armour_dimensional_theme/dangerous/lavaland/place_barrier(turf/source, list/materials)
+	procstart = null
+	src.procstart = null
 	source.ChangeTurf(/turf/open/lava/smooth/weak, flags = CHANGETURF_INHERIT_AIR)
 
 #undef MAX_BARRIERS

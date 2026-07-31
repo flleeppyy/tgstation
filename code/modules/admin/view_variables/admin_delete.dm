@@ -1,4 +1,6 @@
 /client/proc/admin_delete(datum/D)
+	procstart = null
+	src.procstart = null
 	var/atom/A = D
 	var/coords = ""
 	var/jmp_coords = ""

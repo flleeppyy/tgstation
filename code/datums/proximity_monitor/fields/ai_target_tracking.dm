@@ -21,6 +21,8 @@
 // Initially, run the check manually
 // If that fails, set up a field and have it manage the behavior fully
 /datum/proximity_monitor/advanced/ai_target_tracking/New(atom/_host, range, _ignore_if_not_on_turf = TRUE, datum/bt_node/ai_behavior/acquire_target/update_combat_targets/owning_behavior, datum/ai_controller/controller, target_key, targeting_strategy, hiding_location_key)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.owning_behavior = owning_behavior
 	src.controller = controller
@@ -40,6 +42,8 @@
 	recalculate_field(full_recalc = TRUE)
 
 /datum/proximity_monitor/advanced/ai_target_tracking/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owning_behavior = null
 	controller = null
@@ -49,16 +53,22 @@
 	filter = null
 
 /datum/proximity_monitor/advanced/ai_target_tracking/recalculate_field(full_recalc = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	first_build = FALSE
 
 /datum/proximity_monitor/advanced/ai_target_tracking/setup_field_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(first_build)
 		return
 	owning_behavior.new_turf_found(target, controller, filter)
 
 /datum/proximity_monitor/advanced/ai_target_tracking/field_turf_crossed(atom/movable/movable, turf/location, turf/old_location)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!owning_behavior.atom_allowed(movable, filter, controller.pawn))
@@ -68,16 +78,22 @@
 
 /// React to controller planning
 /datum/proximity_monitor/advanced/ai_target_tracking/proc/controller_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /// React to the pawn goin byebye
 /datum/proximity_monitor/advanced/ai_target_tracking/proc/pawn_changed(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /// Ensure our args and locals are up to date
 /datum/proximity_monitor/advanced/ai_target_tracking/proc/check_new_args(target_key, targeting_strategy, hiding_location_key)
+	procstart = null
+	src.procstart = null
 	var/update_filter = FALSE
 	if(src.target_key != target_key)
 		src.target_key = target_key
@@ -90,6 +106,8 @@
 		targeting_datum_changed(null)
 
 /datum/proximity_monitor/advanced/ai_target_tracking/proc/targeting_datum_changed(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(ispath(targeting_strategy))
 		filter = GET_TARGETING_STRATEGY(targeting_strategy)
@@ -101,6 +119,8 @@
 		owning_behavior.new_turf_found(in_field, controller, filter)
 
 /datum/proximity_monitor/advanced/ai_target_tracking/proc/targeting_datum_cleared(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Go fuckin home bros
 	qdel(src)

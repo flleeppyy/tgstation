@@ -6,17 +6,25 @@
 	antagpanel_category = ANTAG_GROUP_HORRORS
 
 /datum/antagonist/revenant/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.announce_objectives()
 
 /datum/antagonist/revenant/on_gain()
+	procstart = null
+	src.procstart = null
 	forge_objectives()
 	. = ..()
 
 /datum/antagonist/revenant/get_preview_icon()
+	procstart = null
+	src.procstart = null
 	return finish_preview_icon(uni_icon('icons/mob/simple/mob.dmi', "revenant_idle"))
 
 /datum/antagonist/revenant/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/revenant/objective = new
 	objective.owner = owner
 	objectives += objective

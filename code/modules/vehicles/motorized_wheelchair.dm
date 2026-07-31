@@ -27,11 +27,15 @@
 	var/list/component_parts = list()
 
 /obj/vehicle/ridden/wheelchair/motorized/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_component_parts()
 	refresh_parts()
 
 /obj/vehicle/ridden/wheelchair/motorized/proc/add_component_parts()
+	procstart = null
+	src.procstart = null
 	// Add tier 1 stock parts so that non-crafted wheelchairs aren't empty
 	component_parts += GLOB.stock_part_datums[/datum/stock_part/capacitor]
 	component_parts += GLOB.stock_part_datums[/datum/stock_part/servo]
@@ -39,9 +43,13 @@
 	power_cell = new /obj/item/stock_parts/power_store/cell(src)
 
 /obj/vehicle/ridden/wheelchair/motorized/make_ridable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/wheelchair/motorized)
 
 /obj/vehicle/ridden/wheelchair/motorized/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// This wheelchair was crafted, so clean out default parts
@@ -63,6 +71,8 @@
 	refresh_parts()
 
 /obj/vehicle/ridden/wheelchair/motorized/proc/refresh_parts()
+	procstart = null
+	src.procstart = null
 	speed = 1 // Should never be under 1
 	for(var/datum/stock_part/servo/servo in component_parts)
 		speed += servo.tier
@@ -76,9 +86,13 @@
 		power_efficiency = capacitor.tier
 
 /obj/vehicle/ridden/wheelchair/motorized/get_cell()
+	procstart = null
+	src.procstart = null
 	return power_cell
 
 /obj/vehicle/ridden/wheelchair/motorized/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(!power_cell)
 		to_chat(user, span_warning("There seems to be no cell installed in [src]."))
 		canmove = FALSE
@@ -92,6 +106,8 @@
 	return ..()
 
 /obj/vehicle/ridden/wheelchair/motorized/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!power_cell || !panel_open)
 		return ..()
 	to_chat(user, span_notice("You remove [power_cell] from [src]."))
@@ -99,6 +115,8 @@
 	power_cell = null
 
 /obj/vehicle/ridden/wheelchair/motorized/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -151,6 +169,8 @@
 	return replacement_occured ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 
 /obj/vehicle/ridden/wheelchair/motorized/handle_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!disassembled)
 		return
@@ -165,12 +185,16 @@
 		power_cell = null
 
 /obj/vehicle/ridden/wheelchair/motorized/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(src)
 	panel_open = !panel_open
 	user.visible_message(span_notice("[user] [panel_open ? "opens" : "closes"] the maintenance panel on [src]."), span_notice("You [panel_open ? "open" : "close"] the maintenance panel."))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/vehicle/ridden/wheelchair/motorized/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((obj_flags & EMAGGED) && panel_open)
 		. += "There is a bomb under the maintenance panel."
@@ -182,6 +206,8 @@
 	. += "Power: [display_energy(power_cell.charge)] out of [display_energy(power_cell.maxcharge)]"
 
 /obj/vehicle/ridden/wheelchair/motorized/Move(newloc, direct)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -193,12 +219,16 @@
 
 /// Detonate an armed explosive on this wheelchair
 /obj/vehicle/ridden/wheelchair/motorized/detonate_bomb()
+	procstart = null
+	src.procstart = null
 	if (obj_flags & EMAGGED)
 		visible_message(span_boldwarning("[src] explodes!!"))
 		explosion(src, devastation_range = -1, heavy_impact_range = 1, light_impact_range = 3, flash_range = 2, adminlog = FALSE)
 	return ..()
 
 /obj/vehicle/ridden/wheelchair/motorized/Bump(atom/bumped_atom)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Here is the shitty emag functionality.
 	if((obj_flags & EMAGGED) && (isclosedturf(bumped_atom) || isliving(bumped_atom)))
@@ -224,6 +254,8 @@
 		playsound(src, 'sound/effects/bang.ogg', 50, 1)
 
 /obj/vehicle/ridden/wheelchair/motorized/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if (obj_flags & EMAGGED)
 		return FALSE
 
@@ -242,6 +274,8 @@
 /obj/vehicle/ridden/wheelchair/motorized/improved
 
 /obj/vehicle/ridden/wheelchair/motorized/improved/add_component_parts()
+	procstart = null
+	src.procstart = null
 	component_parts += GLOB.stock_part_datums[/datum/stock_part/capacitor]
 	component_parts += GLOB.stock_part_datums[/datum/stock_part/servo/tier2]
 	component_parts += GLOB.stock_part_datums[/datum/stock_part/servo]

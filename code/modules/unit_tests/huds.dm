@@ -2,6 +2,8 @@
 /datum/unit_test/huds
 
 /datum/unit_test/huds/Run()
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/testhud = GLOB.huds[GLOB.trait_to_hud[TRAIT_SECURITY_HUD]]
 	var/mob/living/carbon/human/consistent/dummy = allocate(__IMPLIED_TYPE__)
 
@@ -22,6 +24,8 @@
 /datum/unit_test/verify_basic_huds
 
 /datum/unit_test/verify_basic_huds/Run()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/basic/mobs as anything in subtypesof(/mob/living/basic))
 		if(mobs::abstract_type == mobs)
 			continue

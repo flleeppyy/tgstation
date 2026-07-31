@@ -13,6 +13,8 @@
 	var/obj/item/surgery_tray/tray_type = /obj/item/surgery_tray
 
 /obj/item/storage/toolbox/medical/PopulateContents()
+	procstart = null
+	src.procstart = null
 	atom_storage.max_slots = 0
 	atom_storage.max_total_storage = 0
 
@@ -40,5 +42,7 @@
 	tray_type = /obj/item/surgery_tray/full/morgue
 
 /obj/item/storage/toolbox/medical/coroner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/bane, affected_biotypes = MOB_UNDEAD, damage_multiplier = 2) //Just in case one of the tennants get uppity

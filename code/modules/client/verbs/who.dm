@@ -80,6 +80,8 @@ GAME_VERB(/client, adminwho, "Adminwho", "Admin")
 
 /// Proc that generates the applicable string to dispatch to the client for adminwho.
 /client/proc/generate_adminwho_string()
+	procstart = null
+	src.procstart = null
 	var/list/list_of_admins = get_list_of_admins()
 	if(isnull(list_of_admins))
 		return NO_ADMINS_ONLINE_MESSAGE
@@ -96,6 +98,8 @@ GAME_VERB(/client, adminwho, "Adminwho", "Admin")
 /// Proc that returns a list of cliented admins. Remember that this list can contain nulls!
 /// Also, will return null if we don't have any admins.
 /proc/get_list_of_admins()
+	procstart = null
+	src.procstart = null
 	var/returnable_list = list()
 
 	for(var/client/admin in GLOB.admins)
@@ -108,12 +112,16 @@ GAME_VERB(/client, adminwho, "Adminwho", "Admin")
 
 /// Proc that will return the applicable display name, linkified or not, based on the input client reference.
 /proc/get_linked_admin_name(client/admin)
+	procstart = null
+	src.procstart = null
 	var/feedback_link = admin.holder.feedback_link()
 	return isnull(feedback_link) ? admin : "<a href=[feedback_link]>[admin]</a>"
 
 /// Proc that gathers adminwho information for a general player, which will only give information if an admin isn't AFK, and handles potential fakekeying.
 /// Will return a list of strings.
 /proc/get_general_adminwho_information(list/checkable_admins)
+	procstart = null
+	src.procstart = null
 	var/returnable_list = list()
 
 	for(var/client/admin in checkable_admins)
@@ -127,6 +135,8 @@ GAME_VERB(/client, adminwho, "Adminwho", "Admin")
 /// Proc that gathers adminwho information for admins, which will contain information on if the admin is AFK, readied to join, etc. Only arg is a list of clients to use.
 /// Will return a list of strings.
 /proc/get_sensitive_adminwho_information(list/checkable_admins)
+	procstart = null
+	src.procstart = null
 	var/returnable_list = list()
 
 	for(var/client/admin in checkable_admins)

@@ -88,6 +88,8 @@
 	inhand_icon_state = null
 
 /obj/item/clothing/head/costume/bearpelt/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!ishuman(user) || !(slot & ITEM_SLOT_HEAD))
 		return
@@ -122,6 +124,8 @@
 	var/deflect_chance = 2
 
 /obj/item/clothing/head/cowboy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(\
 		/datum/component/bullet_intercepting,\
@@ -132,6 +136,8 @@
 
 /// When we catch a bullet, fling away
 /obj/item/clothing/head/cowboy/proc/on_intercepted_bullet(mob/living/victim, obj/projectile/bullet)
+	procstart = null
+	src.procstart = null
 	victim.visible_message(span_warning("\The [bullet] sends [victim]'s hat flying!"))
 	victim.dropItemToGround(src, force = TRUE, silent = TRUE)
 	throw_at(get_edge_target_turf(loc, pick(GLOB.alldirs)), range = 3, speed = 3)
@@ -240,6 +246,8 @@
 	var/reversed = FALSE
 
 /obj/item/clothing/head/costume/rice_hat/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	reversed = !reversed
 	worn_icon_state = "[base_icon_state][reversed ? "_kim" : ""]"
 	to_chat(user, span_notice("You [reversed ? "lower" : "raise"] the hat."))
@@ -256,6 +264,8 @@
 	greyscale_colors = "#859333"
 
 /obj/item/clothing/head/costume/lizard/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/sheet/animalhide/carbon/lizard/skin = locate() in components
 	if (isnull(skin) || !length(skin.skin_color)) // what
 		return ..()
@@ -363,6 +373,8 @@
 	var/downsprite = "ushanka_gagdown"
 
 /obj/item/clothing/head/costume/ushanka/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(earflaps)
 		icon_state = upsprite
 		inhand_icon_state = upsprite

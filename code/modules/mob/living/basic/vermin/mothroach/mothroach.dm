@@ -52,6 +52,8 @@
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 
 /mob/living/basic/mothroach/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/food_types = list(/obj/item/clothing)
 	AddElement(/datum/element/basic_eating, food_types = food_types)
@@ -65,6 +67,8 @@
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 
 /mob/living/basic/mothroach/toggle_resting()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat == DEAD)
 		return
@@ -75,6 +79,8 @@
 	regenerate_icons()
 
 /mob/living/basic/mothroach/attack_hand(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(src.stat == DEAD)
 		return
@@ -82,6 +88,8 @@
 		playsound(loc, 'sound/mobs/humanoids/moth/scream_moth.ogg', 50, TRUE)
 
 /mob/living/basic/mothroach/attackby(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(src.stat == DEAD)
 		return

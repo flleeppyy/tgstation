@@ -27,6 +27,8 @@
 	var/spawn_fast = FALSE //if TRUE, ignores checking for mobs on loc before spawning
 
 /obj/item/veilrender/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(charges > 0)
 		new /obj/effect/rend(get_turf(user), spawn_type, spawn_amt, rend_desc, spawn_fast)
 		charges--
@@ -46,6 +48,8 @@
 	var/spawn_fast = FALSE
 
 /obj/effect/rend/Initialize(mapload, spawn_type, spawn_amt, desc, spawn_fast)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.spawn_path = spawn_type
 	src.spawn_amt_left = spawn_amt
@@ -54,6 +58,8 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/effect/rend/process()
+	procstart = null
+	src.procstart = null
 	if(!spawn_fast)
 		if(locate(/mob) in loc)
 			return
@@ -64,6 +70,8 @@
 		return PROCESS_KILL
 
 /obj/effect/rend/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(tool, TRAIT_NULLROD_ITEM))
 		return NONE
 
@@ -72,9 +80,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/effect/rend/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/rend/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/veilrender/vealrender
@@ -126,6 +138,8 @@
 	obj_flags = CAN_BE_HIT | DANGEROUS_POSSESSION
 
 /obj/tear_in_reality/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddComponent(
@@ -137,6 +151,8 @@
 	)
 
 /obj/tear_in_reality/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user))
 		return
 	. = COMPONENT_CANCEL_ATTACK_CHAIN
@@ -150,6 +166,8 @@
 	addtimer(CALLBACK(src, PROC_REF(deranged), jedi), 10 SECONDS)
 
 /obj/tear_in_reality/proc/deranged(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	if(!C || C.stat == DEAD)
 		return
 	C.vomit(VOMIT_CATEGORY_BLOOD, lost_nutrition = 0, distance = 3)
@@ -177,14 +195,20 @@
 	var/mob/current_owner
 
 /obj/item/scrying/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/scrying/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/scrying/process()
+	procstart = null
+	src.procstart = null
 	var/mob/holder = get(loc, /mob)
 	if(current_owner && current_owner != holder)
 
@@ -202,6 +226,8 @@
 		current_owner.add_traits(list(TRAIT_SIXTHSENSE, TRAIT_XRAY_VISION), SCRYING_ORB)
 
 /obj/item/scrying/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	visible_message(span_danger("[user] stares into [src], their eyes glazing over."))
 	user.ghostize(1)
 
@@ -230,6 +256,8 @@
 	unlimited = 1
 
 /obj/item/necromantic_stone/attack(mob/living/carbon/human/target, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(target))
 		return ..()
 
@@ -268,11 +296,15 @@
 	equip_revived_servant(target)
 
 /obj/item/necromantic_stone/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!unlimited)
 		. += span_notice("[spooky_scaries.len]/[max_thralls] active thralls.")
 
 /obj/item/necromantic_stone/proc/check_spooky()
+	procstart = null
+	src.procstart = null
 	if(unlimited) //no point, the list isn't used.
 		return
 
@@ -288,6 +320,8 @@
 	list_clear_nulls(spooky_scaries)
 
 /obj/item/necromantic_stone/proc/equip_revived_servant(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	if(!applied_outfit)
 		return
 	for(var/obj/item/worn_item in human)
@@ -306,6 +340,8 @@
 	l_hand = /obj/item/shield/roman
 
 /datum/outfit/roman/pre_equip(mob/living/carbon/human/H, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	head = pick(/obj/item/clothing/head/helmet/roman, /obj/item/clothing/head/helmet/roman/legionnaire)
 
@@ -327,6 +363,8 @@
 	var/mob/living/whistler
 
 /obj/item/warp_whistle/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(whistler)
 		to_chat(user, span_warning("[src] is on cooldown."))
 		return
@@ -355,6 +393,8 @@
 	var/list/pickedup_mobs = list()
 
 /obj/effect/temp_visual/teleporting_tornado/Initialize(mapload, obj/item/warp_whistle/whistle)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.whistle = whistle
 	if(!whistle)
@@ -365,6 +405,8 @@
 
 /// Check if anything the tornado crosses is the creator.
 /obj/effect/temp_visual/teleporting_tornado/proc/check_teleport(datum/source, atom/movable/crossed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(crossed != whistle.whistler || (crossed in pickedup_mobs))
 		return
@@ -377,6 +419,8 @@
 	addtimer(CALLBACK(src, PROC_REF(send_away)), 2 SECONDS)
 
 /obj/effect/temp_visual/teleporting_tornado/proc/send_away()
+	procstart = null
+	src.procstart = null
 	var/turf/ending_turfs = get_safe_random_station_turf_equal_weight()
 	for(var/mob/stored_mobs as anything in pickedup_mobs)
 		do_teleport(stored_mobs, ending_turfs, channel = TELEPORT_CHANNEL_MAGIC)
@@ -386,6 +430,8 @@
 
 /// Destroy the tornado and teleport everyone on it away.
 /obj/effect/temp_visual/teleporting_tornado/Destroy()
+	procstart = null
+	src.procstart = null
 	if(whistle)
 		whistle.whistler = null
 		whistle = null
@@ -424,6 +470,8 @@
 	var/summon_vendor_charges = RUNIC_SCEPTER_MAX_CHARGES
 
 /obj/item/runic_vendor_scepter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	RegisterSignal(src, COMSIG_ITEM_MAGICALLY_CHARGED, PROC_REF(on_magic_charge))
@@ -432,9 +480,13 @@
 	)
 
 /obj/item/runic_vendor_scepter/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/runic_vendor_scepter/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(scepter_is_busy_recharging)
 		user.balloon_alert(user, "busy!")
 		return ITEM_INTERACT_BLOCKING
@@ -481,6 +533,8 @@
 	return NONE
 
 /obj/item/runic_vendor_scepter/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.balloon_alert(user, "recharging...")
 	scepter_is_busy_recharging = TRUE
@@ -492,9 +546,13 @@
 	summon_vendor_charges = RUNIC_SCEPTER_MAX_CHARGES
 
 /obj/item/runic_vendor_scepter/ranged_interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return interact_with_atom_secondary(interacting_with, user, modifiers)
 
 /obj/item/runic_vendor_scepter/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/turf/afterattack_secondary_turf = get_turf(interacting_with)
 	var/obj/machinery/vending/runic_vendor/vendor_on_turf = locate() in afterattack_secondary_turf
 	if(istype(interacting_with, /obj/machinery/vending/runic_vendor))
@@ -507,6 +565,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/runic_vendor_scepter/proc/on_magic_charge(datum/source, datum/action/cooldown/spell/charge/spell, mob/living/caster)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!ismovable(loc))

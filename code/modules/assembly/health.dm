@@ -12,10 +12,14 @@
 	var/health_target = HEALTH_THRESHOLD_CRIT
 
 /obj/item/assembly/health/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "[src.scanning ? "The sensor is on and you can see [health_scan] displayed on the screen" : "The sensor is off"]."
 
 /obj/item/assembly/health/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(old_loc))
 		UnregisterSignal(old_loc, COMSIG_LIVING_HEALTH_UPDATE)
@@ -25,12 +29,16 @@
 		on_health_changed(loc)
 
 /obj/item/assembly/health/activate()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE//Cooldown check
 	toggle_scan()
 	return TRUE
 
 /obj/item/assembly/health/toggle_secure()
+	procstart = null
+	src.procstart = null
 	secured = !secured
 	if(secured && scanning)
 		START_PROCESSING(SSobj, src)
@@ -41,6 +49,8 @@
 	return secured
 
 /obj/item/assembly/health/process()
+	procstart = null
+	src.procstart = null
 	//not ready yet
 	if(!scanning || !secured)
 		return
@@ -67,6 +77,8 @@
 	toggle_scan()
 
 /obj/item/assembly/health/proc/toggle_scan()
+	procstart = null
+	src.procstart = null
 	if(!secured)
 		return 0
 	scanning = !scanning
@@ -77,6 +89,8 @@
 	return
 
 /obj/item/assembly/health/proc/toggle_target()
+	procstart = null
+	src.procstart = null
 	if(health_target == HEALTH_THRESHOLD_CRIT)
 		health_target = HEALTH_THRESHOLD_DEAD
 	else
@@ -84,19 +98,27 @@
 	return
 
 /obj/item/assembly/health/proc/on_health_changed(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	maptext = MAPTEXT("HP: [round((source.health / source.maxHealth) * 100)]%")
 
 /obj/item/assembly/health/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	return is_secured(user) ? ..() : UI_CLOSE
 
 /obj/item/assembly/health/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "HealthSensor", name)
 		ui.open()
 
 /obj/item/assembly/health/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["health"] = health_scan
 	data["scanning"] = scanning
@@ -104,6 +126,8 @@
 	return data
 
 /obj/item/assembly/health/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .

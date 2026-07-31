@@ -24,6 +24,8 @@
 //item you want to equip to the hand, and set its slots_flags = null. Only items equiped to hands need do this.
 
 /datum/round_event/wizard/cursed_items/start()
+	procstart = null
+	src.procstart = null
 	var/item_set = pick(
 		BIG_FAT_DOOBIE,
 		BOXING,

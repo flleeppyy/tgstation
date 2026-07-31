@@ -15,6 +15,8 @@
 	var/alpha_on_deaggro
 
 /datum/component/appearance_on_aggro/Initialize(aggro_state, overlay_icon, overlay_state, alpha_on_aggro, alpha_on_deaggro)
+	procstart = null
+	src.procstart = null
 	if (!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 	src.aggro_state = aggro_state
@@ -24,6 +26,8 @@
 		aggro_overlay = mutable_appearance(overlay_icon, overlay_state)
 
 /datum/component/appearance_on_aggro/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_AI_BLACKBOARD_KEY_SET(target_key), PROC_REF(on_set_target))
 	RegisterSignals(parent, list(COMSIG_AI_BLACKBOARD_KEY_CLEARED(target_key), COMSIG_LIVING_DEATH, COMSIG_MOB_LOGIN), PROC_REF(revert_appearance))
 	if (!isnull(aggro_state))
@@ -32,6 +36,8 @@
 		RegisterSignal(parent, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(on_overlays_updated))
 
 /datum/component/appearance_on_aggro/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, list(
 		COMSIG_AI_BLACKBOARD_KEY_SET(target_key),
@@ -41,6 +47,8 @@
 	))
 
 /datum/component/appearance_on_aggro/proc/on_set_target(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/target = source.ai_controller?.blackboard[target_key]
@@ -53,10 +61,14 @@
 		animate(source, alpha = alpha_on_aggro, time = 2 SECONDS)
 
 /datum/component/appearance_on_aggro/Destroy()
+	procstart = null
+	src.procstart = null
 	revert_appearance(parent)
 	return ..()
 
 /datum/component/appearance_on_aggro/proc/revert_appearance(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!isnull(aggro_overlay) || !isnull(aggro_state))
 		source.update_appearance(UPDATE_ICON)
@@ -64,11 +76,15 @@
 		animate(source, alpha = alpha_on_deaggro, time = 2 SECONDS)
 
 /datum/component/appearance_on_aggro/proc/on_icon_state_updated(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (source.stat != DEAD)
 		source.icon_state = source.ai_controller?.blackboard_key_exists(target_key) ? aggro_state : initial(source.icon_state)
 
 /datum/component/appearance_on_aggro/proc/on_overlays_updated(mob/living/basic/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(source.ai_controller?.blackboard_key_exists(target_key) && source.stat != DEAD)
 		overlays += aggro_overlay

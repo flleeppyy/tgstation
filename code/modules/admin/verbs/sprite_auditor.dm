@@ -5,6 +5,8 @@ GLOBAL_DATUM_INIT(sprite_auditor, /datum/sprite_auditor, new)
 	var/list/entries
 
 /datum/sprite_auditor/proc/add_entry(icon/created_icon, mob/author)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/icon_appearance = mutable_appearance(created_icon)
 	LAZYADD(entries, list(list(
 		"ref" = REF(icon_appearance.appearance),
@@ -16,18 +18,26 @@ GLOBAL_DATUM_INIT(sprite_auditor, /datum/sprite_auditor, new)
 	SStgui.update_uis(src)
 
 /datum/sprite_auditor/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SpriteAuditor")
 		ui.open()
 
 /datum/sprite_auditor/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_ADMIN)
 
 /datum/sprite_auditor/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list("entries" = entries)
 
 /datum/sprite_auditor/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

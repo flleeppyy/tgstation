@@ -12,12 +12,16 @@
  * You can sleep in this - say, if you wanted to poll players.
  */
 /datum/dynamic_ruleset/midround/proc/collect_candidates()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /**
  * Called when the ruleset is selected for false alarm
  */
 /datum/dynamic_ruleset/midround/proc/false_alarm()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/dynamic_ruleset/midround/spiders
@@ -38,9 +42,13 @@
 	var/egg_count = 2
 
 /datum/dynamic_ruleset/midround/spiders/can_be_selected()
+	procstart = null
+	src.procstart = null
 	return ..() && (GLOB.ghost_role_flags & GHOSTROLE_MIDROUND_EVENT) && !isnull(find_maintenance_spawn(atmos_sensitive = TRUE, require_darkness = TRUE))
 
 /datum/dynamic_ruleset/midround/spiders/execute()
+	procstart = null
+	src.procstart = null
 	var/num_egg = get_antag_cap(length(GLOB.alive_player_list), egg_count)
 	while(num_egg > 0)
 		var/turf/spawn_loc = find_maintenance_spawn(atmos_sensitive = TRUE, require_darkness = TRUE)
@@ -53,9 +61,13 @@
 	addtimer(CALLBACK(src, PROC_REF(announce_spiders)), rand(375, 600) SECONDS)
 
 /datum/dynamic_ruleset/midround/spiders/proc/announce_spiders()
+	procstart = null
+	src.procstart = null
 	priority_announce("Unidentified lifesigns detected coming aboard [station_name()]. Secure any exterior access, including ducting and ventilation.", "Lifesign Alert", ANNOUNCER_ALIENS)
 
 /datum/dynamic_ruleset/midround/spiders/false_alarm()
+	procstart = null
+	src.procstart = null
 	announce_spiders()
 
 /datum/dynamic_ruleset/midround/pirates
@@ -72,19 +84,27 @@
 	var/list/datum/pirate_gang/pirate_pool
 
 /datum/dynamic_ruleset/midround/pirates/New(list/dynamic_config)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pirate_pool = default_pirate_pool()
 
 /datum/dynamic_ruleset/midround/pirates/can_be_selected()
+	procstart = null
+	src.procstart = null
 	return ..() && !SSmapping.is_planetary() && (GLOB.ghost_role_flags & GHOSTROLE_MIDROUND_EVENT) && length(default_pirate_pool()) > 0
 
 // An abornmal ruleset that selects no players, but just spawns a pirate ship
 /datum/dynamic_ruleset/midround/pirates/execute()
+	procstart = null
+	src.procstart = null
 	send_pirate_threat(pirate_pool)
 
 /// Returns what pool of pirates to drawn from
 /// Returned list is mutated by the ruleset
 /datum/dynamic_ruleset/midround/pirates/proc/default_pirate_pool()
+	procstart = null
+	src.procstart = null
 	return GLOB.light_pirate_gangs
 
 /datum/dynamic_ruleset/midround/pirates/heavy
@@ -98,11 +118,15 @@
 	min_antag_cap = 0 // ship will spawn if there are no ghosts around
 
 /datum/dynamic_ruleset/midround/pirates/heavy/default_pirate_pool()
+	procstart = null
+	src.procstart = null
 	return GLOB.heavy_pirate_gangs
 
 #define RANDOM_PIRATE_POOL "Random"
 
 /datum/dynamic_ruleset/midround/pirates/configure_ruleset(mob/admin)
+	procstart = null
+	src.procstart = null
 	var/list/admin_pool = list("[RULESET_CONFIG_CANCEL]" = TRUE, "[RANDOM_PIRATE_POOL]" = TRUE)
 	for(var/datum/pirate_gang/gang as anything in default_pirate_pool())
 		admin_pool[gang.name] = gang
@@ -122,6 +146,8 @@
 #define NEGATIVE_ANSWER 2
 
 /datum/dynamic_ruleset/midround/pirates/proc/send_pirate_threat(list/pirate_selection)
+	procstart = null
+	src.procstart = null
 	var/datum/pirate_gang/chosen_gang = pick_n_take(pirate_selection)
 	///If there was nothing to pull from our requested list, stop here.
 	if(!chosen_gang)
@@ -140,6 +166,8 @@
 	GLOB.communications_controller.send_message(threat, unique = TRUE)
 
 /datum/dynamic_ruleset/midround/pirates/proc/pirates_answered(datum/comm_message/threat, datum/pirate_gang/chosen_gang, payoff, initial_send_time)
+	procstart = null
+	src.procstart = null
 	if(world.time > initial_send_time + RESPONSE_MAX_TIME)
 		priority_announce(chosen_gang.response_too_late, sender_override = chosen_gang.ship_name, color_override = chosen_gang.announcement_color)
 		return
@@ -158,6 +186,8 @@
 			priority_announce(chosen_gang.response_not_enough, sender_override = chosen_gang.ship_name, color_override = chosen_gang.announcement_color)
 
 /datum/dynamic_ruleset/midround/pirates/proc/spawn_pirates(datum/comm_message/threat, datum/pirate_gang/chosen_gang)
+	procstart = null
+	src.procstart = null
 	if(chosen_gang.paid_off)
 		return
 
@@ -226,14 +256,20 @@
 	var/candidate_role
 
 /datum/dynamic_ruleset/midround/from_ghosts/can_be_selected()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	return ..() && (GLOB.ghost_role_flags & GHOSTROLE_MIDROUND_EVENT)
 
 /datum/dynamic_ruleset/midround/from_ghosts/get_candidate_mind(mob/dead/candidate)
+	procstart = null
+	src.procstart = null
 	// Ghost roles will always get a fresh mind
 	return new /datum/mind(candidate.key)
 
 /datum/dynamic_ruleset/midround/from_ghosts/prepare_for_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	var/mob/living/body = create_ruleset_body()
 	if(isnull(body))
 		return
@@ -249,9 +285,13 @@
  * Returning null will skip body creation entirely, though you will be expected to do it yourself in assign_role
  */
 /datum/dynamic_ruleset/midround/from_ghosts/proc/create_ruleset_body()
+	procstart = null
+	src.procstart = null
 	return new /mob/living/carbon/human
 
 /datum/dynamic_ruleset/midround/from_ghosts/collect_candidates()
+	procstart = null
+	src.procstart = null
 	var/readable_poll_role = candidate_role || pref_flag
 	if(isnull(readable_poll_role))
 		stack_trace("[config_tag]: No candidate role or pref_flag set, give it a human readable candidate roll at the bare minimum.")
@@ -274,6 +314,8 @@
  * Returns TRUE if prefs were applied
  */
 /datum/dynamic_ruleset/midround/from_ghosts/proc/apply_prefs_to_body(mob/living/carbon/human/body)
+	procstart = null
+	src.procstart = null
 	body.client?.prefs.safe_transfer_prefs_to(body)
 	body.dna.remove_all_mutations()
 	body.dna.update_dna_identity()
@@ -283,6 +325,8 @@
  * Handles anything extra you want to happen after applying prefs
  */
 /datum/dynamic_ruleset/midround/from_ghosts/proc/on_prefs_applied(mob/living/carbon/human/body)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/dynamic_ruleset/midround/from_ghosts/wizard
@@ -306,6 +350,8 @@
 	signup_atom_appearance = /obj/item/clothing/head/wizard
 
 /datum/dynamic_ruleset/midround/from_ghosts/wizard/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	candidate.add_antag_datum(/datum/antagonist/wizard) // moves to lair for us
 
 /datum/dynamic_ruleset/midround/from_ghosts/nukies
@@ -330,18 +376,24 @@
 	signup_atom_appearance = /obj/machinery/nuclearbomb/syndicate
 
 /datum/dynamic_ruleset/midround/from_ghosts/nukies/create_execute_args()
+	procstart = null
+	src.procstart = null
 	return list(
 		new /datum/team/nuclear(),
 		get_most_experienced(selected_minds, pref_flag),
 	)
 
 /datum/dynamic_ruleset/midround/from_ghosts/nukies/assign_role(datum/mind/candidate, datum/team/nuclear/nuke_team, datum/mind/most_experienced)
+	procstart = null
+	src.procstart = null
 	if(most_experienced == candidate)
 		candidate.add_antag_datum(/datum/antagonist/nukeop/leader, nuke_team) // moves to nuke base for us
 	else
 		candidate.add_antag_datum(/datum/antagonist/nukeop, nuke_team) // moves to nuke base for us
 
 /datum/dynamic_ruleset/midround/from_ghosts/nukies/round_result()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/nukeop/nukie = selected_minds[1].has_antag_datum(/datum/antagonist/nukeop)
 	var/datum/team/nuclear/nuke_team = nukie.get_team()
 	var/result = nuke_team.get_result()
@@ -388,6 +440,8 @@
 	signup_atom_appearance = /obj/machinery/nuclearbomb/syndicate/bananium
 
 /datum/dynamic_ruleset/midround/from_ghosts/nukies/clown/assign_role(datum/mind/candidate, datum/team/nuclear/nuke_team, datum/mind/most_experienced)
+	procstart = null
+	src.procstart = null
 	if(most_experienced == candidate)
 		candidate.add_antag_datum(/datum/antagonist/nukeop/leader/clownop, nuke_team) // moves to nuke base for us
 	else
@@ -415,12 +469,18 @@
 	var/starting_points = OVERMIND_STARTING_POINTS
 
 /datum/dynamic_ruleset/midround/from_ghosts/blob/create_ruleset_body()
+	procstart = null
+	src.procstart = null
 	return new /mob/eye/blob(get_blobspawn(), starting_points)
 
 /datum/dynamic_ruleset/midround/from_ghosts/blob/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	return // everything is handled by blob new()
 
 /datum/dynamic_ruleset/midround/from_ghosts/blob/proc/get_blobspawn()
+	procstart = null
+	src.procstart = null
 	if(!length(GLOB.blobstart))
 		var/obj/effect/landmark/observer_start/default = locate() in GLOB.landmarks_list
 		return get_turf(default)
@@ -428,6 +488,8 @@
 	return pick(GLOB.blobstart)
 
 /datum/dynamic_ruleset/midround/from_ghosts/blob/false_alarm()
+	procstart = null
+	src.procstart = null
 	priority_announce("Confirmed outbreak of level 5 biohazard aboard [station_name()]. All personnel must contain the outbreak.", "Biohazard Alert", ANNOUNCER_OUTBREAK5)
 
 	// Set status displays to biohazard alert even for false alarm
@@ -454,29 +516,45 @@
 	signup_atom_appearance = /mob/living/basic/alien
 
 /datum/dynamic_ruleset/midround/from_ghosts/xenomorph/New(list/dynamic_config)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	max_antag_cap += prob(50) // 50% chance to get a second xeno, free!
 
 /datum/dynamic_ruleset/midround/from_ghosts/xenomorph/can_be_selected()
+	procstart = null
+	src.procstart = null
 	return ..() && length(find_vent_spawns()) > 0
 
 /datum/dynamic_ruleset/midround/from_ghosts/xenomorph/execute()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(announce_xenos)), rand(375, 600) SECONDS)
 
 /datum/dynamic_ruleset/midround/from_ghosts/xenomorph/proc/announce_xenos()
+	procstart = null
+	src.procstart = null
 	priority_announce("Unidentified lifesigns detected coming aboard [station_name()]. Secure any exterior access, including ducting and ventilation.", "Lifesign Alert", ANNOUNCER_ALIENS)
 
 /datum/dynamic_ruleset/midround/from_ghosts/xenomorph/false_alarm()
+	procstart = null
+	src.procstart = null
 	announce_xenos()
 
 /datum/dynamic_ruleset/midround/from_ghosts/xenomorph/create_ruleset_body()
+	procstart = null
+	src.procstart = null
 	return new /mob/living/carbon/alien/larva
 
 /datum/dynamic_ruleset/midround/from_ghosts/xenomorph/create_execute_args()
+	procstart = null
+	src.procstart = null
 	return list(find_vent_spawns())
 
 /datum/dynamic_ruleset/midround/from_ghosts/xenomorph/assign_role(datum/mind/candidate, list/vent_list)
+	procstart = null
+	src.procstart = null
 	// xeno login gives antag datums
 	var/obj/vent = length(vent_list) >= 2 ? pick_n_take(vent_list) : vent_list[1]
 	candidate.current.move_into_vent(vent)
@@ -500,27 +578,41 @@
 	signup_atom_appearance = /mob/living/basic/blood_worm/juvenile
 
 /datum/dynamic_ruleset/midround/from_ghosts/blood_worms/can_be_selected()
+	procstart = null
+	src.procstart = null
 	return ..() && length(find_vent_spawns()) > 0
 
 /datum/dynamic_ruleset/midround/from_ghosts/blood_worms/execute()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(announce_worms)), rand(450, 750) SECONDS)
 
 /datum/dynamic_ruleset/midround/from_ghosts/blood_worms/create_ruleset_body()
+	procstart = null
+	src.procstart = null
 	return new /mob/living/basic/blood_worm/hatchling
 
 /datum/dynamic_ruleset/midround/from_ghosts/blood_worms/create_execute_args()
+	procstart = null
+	src.procstart = null
 	return list(find_vent_spawns())
 
 /datum/dynamic_ruleset/midround/from_ghosts/blood_worms/assign_role(datum/mind/candidate, list/vent_list)
+	procstart = null
+	src.procstart = null
 	candidate.add_antag_datum(/datum/antagonist/blood_worm)
 	var/obj/vent = length(vent_list) >= 2 ? pick_n_take(vent_list) : vent_list[1]
 	candidate.current.move_into_vent(vent)
 
 /datum/dynamic_ruleset/midround/from_ghosts/blood_worms/proc/announce_worms()
+	procstart = null
+	src.procstart = null
 	priority_announce("Unidentified lifesigns detected coming aboard [station_name()]. Secure any exterior access, including ducting and ventilation.", "Lifesign Alert", ANNOUNCER_ALIENS)
 
 /datum/dynamic_ruleset/midround/from_ghosts/blood_worms/false_alarm()
+	procstart = null
+	src.procstart = null
 	announce_worms()
 
 /datum/dynamic_ruleset/midround/from_ghosts/nightmare
@@ -536,12 +628,18 @@
 	signup_atom_appearance = /obj/item/light_eater
 
 /datum/dynamic_ruleset/midround/from_ghosts/nightmare/apply_prefs_to_body(mob/living/carbon/human/body)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /datum/dynamic_ruleset/midround/from_ghosts/nightmare/can_be_selected()
+	procstart = null
+	src.procstart = null
 	return ..() && !isnull(find_maintenance_spawn(atmos_sensitive = TRUE, require_darkness = TRUE))
 
 /datum/dynamic_ruleset/midround/from_ghosts/nightmare/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	candidate.add_antag_datum(/datum/antagonist/nightmare)
 	candidate.current.set_species(/datum/species/shadow/nightmare)
 	candidate.current.forceMove(find_maintenance_spawn(atmos_sensitive = TRUE, require_darkness = TRUE))
@@ -567,24 +665,36 @@
 	signup_atom_appearance = /mob/living/basic/space_dragon
 
 /datum/dynamic_ruleset/midround/from_ghosts/space_dragon/can_be_selected()
+	procstart = null
+	src.procstart = null
 	return ..() && !isnull(find_space_spawn())
 
 /datum/dynamic_ruleset/midround/from_ghosts/space_dragon/create_ruleset_body()
+	procstart = null
+	src.procstart = null
 	return new /mob/living/basic/space_dragon
 
 /datum/dynamic_ruleset/midround/from_ghosts/space_dragon/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	candidate.add_antag_datum(/datum/antagonist/space_dragon)
 	candidate.current.forceMove(find_space_spawn())
 	playsound(candidate.current, 'sound/effects/magic/ethereal_exit.ogg', 50, TRUE, -1)
 
 /datum/dynamic_ruleset/midround/from_ghosts/space_dragon/execute()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(announce_space_dragon)), rand(5, 10) SECONDS)
 
 /datum/dynamic_ruleset/midround/from_ghosts/space_dragon/proc/announce_space_dragon()
+	procstart = null
+	src.procstart = null
 	priority_announce("A large organic energy flux has been recorded near of [station_name()], please stand-by.", "Lifesign Alert")
 
 /datum/dynamic_ruleset/midround/from_ghosts/space_dragon/false_alarm()
+	procstart = null
+	src.procstart = null
 	announce_space_dragon()
 
 /datum/dynamic_ruleset/midround/from_ghosts/abductors
@@ -602,6 +712,8 @@
 	signup_atom_appearance = /obj/item/melee/baton/abductor
 
 /datum/dynamic_ruleset/midround/from_ghosts/abductors/can_be_selected()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/num_abductors = 0
@@ -610,9 +722,13 @@
 	return num_abductors < 4
 
 /datum/dynamic_ruleset/midround/from_ghosts/abductors/create_execute_args()
+	procstart = null
+	src.procstart = null
 	return list(new /datum/team/abductor_team())
 
 /datum/dynamic_ruleset/midround/from_ghosts/abductors/assign_role(datum/mind/candidate, datum/team/abductor_team/team)
+	procstart = null
+	src.procstart = null
 	if(candidate == selected_minds[1])
 		candidate.add_antag_datum(/datum/antagonist/abductor/scientist, team) // sets species and moves to spawn point
 	else
@@ -638,9 +754,13 @@
 	signup_atom_appearance = /obj/item/energy_katana
 
 /datum/dynamic_ruleset/midround/from_ghosts/space_ninja/can_be_selected()
+	procstart = null
+	src.procstart = null
 	return ..() && !isnull(find_space_spawn())
 
 /datum/dynamic_ruleset/midround/from_ghosts/space_ninja/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/new_ninja = candidate.current
 	new_ninja.forceMove(find_space_spawn()) // ninja antag datum needs the mob to be in place first
 	randomize_human_normie(new_ninja)
@@ -667,6 +787,8 @@
 	var/required_station_corpses = 10
 
 /datum/dynamic_ruleset/midround/from_ghosts/revenant/can_be_selected()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/num_station_corpses = 0
@@ -678,12 +800,18 @@
 	return num_station_corpses > required_station_corpses
 
 /datum/dynamic_ruleset/midround/from_ghosts/revenant/create_ruleset_body()
+	procstart = null
+	src.procstart = null
 	return new /mob/living/basic/revenant(pick(get_revenant_spawns()))
 
 /datum/dynamic_ruleset/midround/from_ghosts/revenant/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	return // revenant new() handles everything
 
 /datum/dynamic_ruleset/midround/from_ghosts/revenant/proc/get_revenant_spawns()
+	procstart = null
+	src.procstart = null
 	var/list/spawn_locs = list()
 	for(var/mob/deceased in GLOB.dead_mob_list)
 		var/turf/deceased_turf = get_turf(deceased)
@@ -715,9 +843,13 @@
 	signup_atom_appearance = /obj/effect/meteor/meaty/changeling
 
 /datum/dynamic_ruleset/midround/from_ghosts/space_changeling/create_ruleset_body()
+	procstart = null
+	src.procstart = null
 	return // handled by generate_changeling_meteor() entirely
 
 /datum/dynamic_ruleset/midround/from_ghosts/space_changeling/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	generate_changeling_meteor(candidate)
 
 /datum/dynamic_ruleset/midround/from_ghosts/space_changeling/mass
@@ -752,10 +884,14 @@
 	var/datum/weakref/clone_target_ref
 
 /datum/dynamic_ruleset/midround/from_ghosts/paradox_clone/New(list/dynamic_config)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	max_antag_cap += prob(bonus_clone_chance)
 
 /datum/dynamic_ruleset/midround/from_ghosts/paradox_clone/can_be_selected()
+	procstart = null
+	src.procstart = null
 	if(clone_target_ref && isnull(clone_target_ref.resolve())) // our chosen original was deleted while we were polling, bail
 		return FALSE
 	return ..() && !isnull(find_clone()) && !isnull(find_maintenance_spawn(atmos_sensitive = TRUE, require_darkness = FALSE))
@@ -763,6 +899,8 @@
 #define RANDOM_CLONE_TARGET "Random"
 
 /datum/dynamic_ruleset/midround/from_ghosts/paradox_clone/configure_ruleset(mob/admin)
+	procstart = null
+	src.procstart = null
 	var/list/admin_pool = list("[RULESET_CONFIG_CANCEL]" = TRUE, "[RANDOM_CLONE_TARGET]" = TRUE)
 	for(var/mob/living/carbon/human/target as anything in find_clone_candidates())
 		admin_pool["[target.real_name], the [target.mind.assigned_role.title]"] = target
@@ -776,6 +914,8 @@
 #undef RANDOM_CLONE_TARGET
 
 /datum/dynamic_ruleset/midround/from_ghosts/paradox_clone/collect_candidates()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/original = clone_target_ref?.resolve() || find_clone()
 	if(isnull(original))
 		return list()
@@ -784,12 +924,18 @@
 	return ..()
 
 /datum/dynamic_ruleset/midround/from_ghosts/paradox_clone/create_execute_args()
+	procstart = null
+	src.procstart = null
 	return list(clone_target_ref.resolve())
 
 /datum/dynamic_ruleset/midround/from_ghosts/paradox_clone/create_ruleset_body()
+	procstart = null
+	src.procstart = null
 	return // handled by assign_role() entirely
 
 /datum/dynamic_ruleset/midround/from_ghosts/paradox_clone/assign_role(datum/mind/candidate, mob/living/carbon/human/good_version)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/bad_version = good_version.make_full_human_copy(find_maintenance_spawn(atmos_sensitive = TRUE, require_darkness = FALSE))
 	candidate.transfer_to(bad_version, force_key_move = TRUE)
 
@@ -800,6 +946,8 @@
 	bad_version.put_in_hands(new /obj/item/storage/toolbox/mechanical()) //so they dont get stuck in maints
 
 /datum/dynamic_ruleset/midround/from_ghosts/paradox_clone/proc/find_clone()
+	procstart = null
+	src.procstart = null
 	var/list/possible_targets = find_clone_candidates()
 	if(length(possible_targets))
 		return pick(possible_targets)
@@ -807,6 +955,8 @@
 
 /// Returns every crewmember currently valid to be cloned
 /datum/dynamic_ruleset/midround/from_ghosts/paradox_clone/proc/find_clone_candidates()
+	procstart = null
+	src.procstart = null
 	var/list/possible_targets = list()
 
 	for(var/mob/living/carbon/human/player in GLOB.player_list)
@@ -834,12 +984,18 @@
 	signup_atom_appearance = /obj/item/clothing/head/helmet/skull/cosmic
 
 /datum/dynamic_ruleset/midround/from_ghosts/voidwalker/can_be_selected()
+	procstart = null
+	src.procstart = null
 	return ..() && !SSmapping.is_planetary() && !isnull(find_space_spawn())
 
 /datum/dynamic_ruleset/midround/from_ghosts/voidwalker/create_ruleset_body()
+	procstart = null
+	src.procstart = null
 	return new /mob/living/basic/voidwalker
 
 /datum/dynamic_ruleset/midround/from_ghosts/voidwalker/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	candidate.add_antag_datum(/datum/antagonist/voidwalker)
 	candidate.current.forceMove(find_space_spawn())
 	playsound(candidate.current, 'sound/effects/magic/ethereal_exit.ogg', 50, TRUE, -1)
@@ -863,16 +1019,22 @@
 	VAR_FINAL/hunter_backstory
 
 /datum/dynamic_ruleset/midround/from_ghosts/fugitives/can_be_selected()
+	procstart = null
+	src.procstart = null
 	return ..() && !SSmapping.is_planetary() && !isnull(find_maintenance_spawn(atmos_sensitive = TRUE, require_darkness = FALSE))
 
 // If less than a certain number of candidates accept the poll, it varies how many antags are spawned
 /datum/dynamic_ruleset/midround/from_ghosts/fugitives/collect_candidates()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(length(.) <= 1 || prob(30 - (length(.) * 2)))
 		min_antag_cap = 1
 		max_antag_cap = 1
 
 /datum/dynamic_ruleset/midround/from_ghosts/fugitives/create_execute_args()
+	procstart = null
+	src.procstart = null
 	return list(
 		new /datum/team/fugitive(),
 		find_maintenance_spawn(atmos_sensitive = TRUE, require_darkness = FALSE),
@@ -881,6 +1043,8 @@
 #define RANDOM_BACKSTORY "Random"
 
 /datum/dynamic_ruleset/midround/from_ghosts/fugitives/configure_ruleset(mob/admin)
+	procstart = null
+	src.procstart = null
 	var/list/fugitive_backstories = list(
 		FUGITIVE_BACKSTORY_CULTIST,
 		FUGITIVE_BACKSTORY_INVISIBLE,
@@ -917,6 +1081,8 @@
 #undef RANDOM_BACKSTORY
 
 /datum/dynamic_ruleset/midround/from_ghosts/fugitives/execute()
+	procstart = null
+	src.procstart = null
 	if(length(selected_minds) == 1)
 		fugitive_backstory ||= pick(
 			FUGITIVE_BACKSTORY_INVISIBLE,
@@ -940,6 +1106,8 @@
 	addtimer(CALLBACK(src, PROC_REF(check_spawn_hunters), 10 MINUTES), 1 MINUTES)
 
 /datum/dynamic_ruleset/midround/from_ghosts/fugitives/assign_role(datum/mind/candidate, datum/team/fugitive/team, turf/team_spawn)
+	procstart = null
+	src.procstart = null
 	candidate.current.forceMove(team_spawn)
 	equip_fugitive(candidate.current, team)
 	if(candidate == selected_minds[1])
@@ -947,6 +1115,8 @@
 	playsound(candidate.current, 'sound/items/weapons/emitter.ogg', 50, TRUE)
 
 /datum/dynamic_ruleset/midround/from_ghosts/fugitives/proc/equip_fugitive(mob/living/carbon/human/fugitive, datum/team/fugitive/team)
+	procstart = null
+	src.procstart = null
 	fugitive.set_species(/datum/species/human)
 	randomize_human_normie(fugitive)
 
@@ -967,6 +1137,8 @@
 			fugitive.equipOutfit(/datum/outfit/invisible_man)
 
 /datum/dynamic_ruleset/midround/from_ghosts/fugitives/proc/equip_fugitive_leader(mob/living/carbon/human/fugitive)
+	procstart = null
+	src.procstart = null
 	var/turf/leader_turf = get_turf(fugitive)
 	var/obj/item/storage/toolbox/mechanical/toolbox = new(leader_turf)
 	fugitive.put_in_hands(toolbox)
@@ -977,6 +1149,8 @@
 			new /obj/item/autosurgeon(leader_turf)
 
 /datum/dynamic_ruleset/midround/from_ghosts/fugitives/proc/check_spawn_hunters(remaining_time)
+	procstart = null
+	src.procstart = null
 	//if the emergency shuttle has been called, spawn hunters now to give them a chance
 	if(remaining_time == 0 || !EMERGENCY_IDLE_OR_RECALLED)
 		spawn_hunters()
@@ -984,6 +1158,8 @@
 	addtimer(CALLBACK(src, PROC_REF(check_spawn_hunters), remaining_time - 1 MINUTES), 1 MINUTES)
 
 /datum/dynamic_ruleset/midround/from_ghosts/fugitives/proc/spawn_hunters()
+	procstart = null
+	src.procstart = null
 	var/list/candidates = SSpolling.poll_ghost_candidates("Do you wish to be considered for a group of [span_notice(hunter_backstory)]?", check_jobban = list(ROLE_FUGITIVE_HUNTER, ROLE_SYNDICATE), alert_pic = /obj/machinery/sleeper, role_name_text = hunter_backstory)
 	shuffle_inplace(candidates)
 
@@ -1075,12 +1251,18 @@
 	signup_atom_appearance = /mob/living/basic/morph
 
 /datum/dynamic_ruleset/midround/from_ghosts/morph/can_be_selected()
+	procstart = null
+	src.procstart = null
 	return ..() && !isnull(find_maintenance_spawn(atmos_sensitive = TRUE, require_darkness = FALSE))
 
 /datum/dynamic_ruleset/midround/from_ghosts/morph/create_ruleset_body()
+	procstart = null
+	src.procstart = null
 	return new /mob/living/basic/morph(find_maintenance_spawn(atmos_sensitive = TRUE, require_darkness = FALSE))
 
 /datum/dynamic_ruleset/midround/from_ghosts/morph/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	candidate.set_assigned_role(SSjob.get_job_type(/datum/job/morph))
 	candidate.add_antag_datum(/datum/antagonist/morph)
 
@@ -1098,14 +1280,20 @@
 	signup_atom_appearance = /mob/living/basic/demon/slaughter
 
 /datum/dynamic_ruleset/midround/from_ghosts/slaughter_demon/can_be_selected()
+	procstart = null
+	src.procstart = null
 	return ..() && !isnull(find_space_spawn())
 
 /datum/dynamic_ruleset/midround/from_ghosts/slaughter_demon/create_ruleset_body()
+	procstart = null
+	src.procstart = null
 	var/turf/spawnloc = find_space_spawn()
 	. = new /mob/living/basic/demon/slaughter(spawnloc)
 	new /obj/effect/dummy/phased_mob/blood(spawnloc, .)
 
 /datum/dynamic_ruleset/midround/from_ghosts/slaughter_demon/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	return // handled by new() entirely
 
 /datum/dynamic_ruleset/midround/from_living
@@ -1114,19 +1302,27 @@
 	repeatable = TRUE
 
 /datum/dynamic_ruleset/midround/from_living/set_config_value(nvar, nval)
+	procstart = null
+	src.procstart = null
 	if(nvar == NAMEOF(src, min_antag_cap) || nvar == NAMEOF(src, max_antag_cap))
 		return FALSE
 	return ..()
 
 /datum/dynamic_ruleset/midround/from_living/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	if(var_name == NAMEOF(src, min_antag_cap) || var_name == NAMEOF(src, max_antag_cap))
 		return FALSE
 	return ..()
 
 /datum/dynamic_ruleset/midround/from_living/collect_candidates()
+	procstart = null
+	src.procstart = null
 	return GLOB.alive_player_list
 
 /datum/dynamic_ruleset/midround/from_living/is_valid_candidate(mob/candidate, client/candidate_client)
+	procstart = null
+	src.procstart = null
 	if(candidate.stat == DEAD || isnull(candidate.mind))
 		return FALSE
 	// only pick members of the crew
@@ -1143,6 +1339,8 @@
 
 /// Checks if the candidate is a valid job for this ruleset - by default you probably only want crew members. (Return FALSE to mark the candidate invalid)
 /datum/dynamic_ruleset/midround/from_living/proc/job_check(mob/candidate)
+	procstart = null
+	src.procstart = null
 	if(!(candidate.mind.assigned_role.job_flags & JOB_CREW_MEMBER))
 		return FALSE
 	if(candidate.mind.assigned_role.title in get_blacklisted_roles())
@@ -1151,6 +1349,8 @@
 
 /// Checks if the candidate is an antag - most of the time you don't want to double dip. (Return FALSE to mark the candidate invalid)
 /datum/dynamic_ruleset/midround/from_living/proc/antag_check(mob/candidate)
+	procstart = null
+	src.procstart = null
 	return !candidate.is_antag()
 
 /datum/dynamic_ruleset/midround/from_living/traitor
@@ -1169,9 +1369,13 @@
 	)
 
 /datum/dynamic_ruleset/midround/from_living/traitor/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	candidate.add_antag_datum(/datum/antagonist/traitor)
 
 /datum/dynamic_ruleset/midround/from_living/traitor/false_alarm()
+	procstart = null
+	src.procstart = null
 	priority_announce(
 		"Attention crew, it appears that someone on your station has hijacked your telecommunications and broadcasted an unknown signal.",
 		"[command_name()] High-Priority Update",
@@ -1211,12 +1415,18 @@
 	repeatable = FALSE
 
 /datum/dynamic_ruleset/midround/from_living/malf_ai/get_always_blacklisted_roles()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /datum/dynamic_ruleset/midround/from_living/malf_ai/job_check(mob/candidate)
+	procstart = null
+	src.procstart = null
 	return istype(candidate.mind.assigned_role, /datum/job/ai)
 
 /datum/dynamic_ruleset/midround/from_living/malf_ai/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	candidate.add_antag_datum(/datum/antagonist/malf_ai)
 	if(!prob(33) || !isAI(candidate.current))
 		return
@@ -1230,6 +1440,8 @@
 	)
 
 /datum/dynamic_ruleset/midround/from_living/malf_ai/can_be_selected()
+	procstart = null
+	src.procstart = null
 	return ..() && !HAS_TRAIT(SSstation, STATION_TRAIT_HUMAN_AI)
 
 /datum/dynamic_ruleset/midround/from_living/blob
@@ -1249,6 +1461,8 @@
 	repeatable_weight_decrease = 3
 
 /datum/dynamic_ruleset/midround/from_living/blob/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	candidate.add_antag_datum(/datum/antagonist/blob/infection)
 	notify_ghosts(
 		"[candidate.current.real_name] has become a blob host!",
@@ -1272,13 +1486,19 @@
 	min_pop = 5
 
 /datum/dynamic_ruleset/midround/from_living/obsesed/is_valid_candidate(mob/candidate, client/candidate_client)
+	procstart = null
+	src.procstart = null
 	return ..() && !!candidate.get_organ_by_type(/obj/item/organ/brain)
 
 /datum/dynamic_ruleset/midround/from_living/obsesed/antag_check(mob/candidate)
+	procstart = null
+	src.procstart = null
 	// Obsessed is a special case, it can select other antag players
 	return !candidate.mind.has_antag_datum(/datum/antagonist/obsessed)
 
 /datum/dynamic_ruleset/midround/from_living/obsesed/assign_role(datum/mind/candidate)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/brain = candidate.current.get_organ_by_type(__IMPLIED_TYPE__)
 	brain.brain_gain_trauma(/datum/brain_trauma/special/obsessed)
 	notify_ghosts(

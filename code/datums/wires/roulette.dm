@@ -4,6 +4,8 @@
 	randomize = TRUE
 
 /datum/wires/roulette/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(
 		WIRE_RESETOWNER,
 		WIRE_PRIZEVEND,
@@ -13,6 +15,8 @@
 	..()
 
 /datum/wires/roulette/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	. = FALSE
@@ -21,6 +25,8 @@
 		. = TRUE
 
 /datum/wires/roulette/get_status()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/roulette/R = holder
 	var/list/status = list()
 	status += "The machines bolts [R.anchored ? "have engaged!" : "have disengaged."]"
@@ -30,6 +36,8 @@
 	return status
 
 /datum/wires/roulette/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/roulette/R = holder
 	switch(wire)
 		if(WIRE_SHOCK)
@@ -50,6 +58,8 @@
 			R.prize_theft(0.20)
 
 /datum/wires/roulette/on_cut(wire, mend, source)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/roulette/R = holder
 	switch(wire)
 		if(WIRE_SHOCK)

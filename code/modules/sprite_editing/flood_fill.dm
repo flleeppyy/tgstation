@@ -10,6 +10,8 @@
 	coord_cache[CANVAS_COORD(x, y)] = TRUE
 
 /proc/flood_fill(list/grid, x, y, width, height)
+	procstart = null
+	src.procstart = null
 	var/target_color = grid[y][x]
 	var/list/coord_cache = list()
 	var/list/points = list()

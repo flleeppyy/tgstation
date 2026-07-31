@@ -45,6 +45,8 @@
 	var/has_visor = FALSE
 
 /obj/item/clothing/head/helmet/space/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(visor_dirt)
 		AddComponent(/datum/component/clothing_dirt, visor_dirt)
@@ -53,9 +55,13 @@
 	add_stabilizer()
 
 /obj/item/clothing/head/helmet/space/proc/add_stabilizer(loose_hat = TRUE)
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/hat_stabilizer, loose_hat = loose_hat)
 
 /obj/item/clothing/head/helmet/space/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !has_visor)
 		return
@@ -63,12 +69,16 @@
 	return adjust_visor(user)
 
 /obj/item/clothing/head/helmet/space/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!has_visor)
 		return NONE
 
 	return adjust_visor(user) ? CLICK_ACTION_SUCCESS : CLICK_ACTION_BLOCKING
 
 /obj/item/clothing/head/helmet/space/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[initial(icon_state)][up ? "-novisor" : ""]"
 
@@ -125,6 +135,8 @@
 	acid = 70
 
 /obj/item/clothing/suit/space/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ispath(cell))
 		cell = new cell(src)
@@ -133,6 +145,8 @@
 		AddElement(/datum/element/adjust_fishing_difficulty, fishing_modifier)
 
 /obj/item/clothing/suit/space/on_outfit_equip(mob/living/carbon/human/outfit_wearer, visuals_only, item_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(cell))
 		return
@@ -140,6 +154,8 @@
 
 /// Start Processing on the space suit when it is worn to heat the wearer
 /obj/item/clothing/suit/space/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot & ITEM_SLOT_OCLOTHING) // Check that the slot is valid
 		START_PROCESSING(SSobj, src)
@@ -147,6 +163,8 @@
 
 // On removal stop processing, save battery
 /obj/item/clothing/suit/space/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
 	var/mob/living/carbon/human/human_user = user
@@ -157,6 +175,8 @@
 
 // Space Suit temperature regulation and power usage
 /obj/item/clothing/suit/space/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/user = loc
 	if(!user || !ishuman(user) || user.wear_suit != src)
 		return
@@ -185,6 +205,8 @@
 
 // Clean up the cell on destroy
 /obj/item/clothing/suit/space/Destroy()
+	procstart = null
+	src.procstart = null
 	if(isatom(cell))
 		QDEL_NULL(cell)
 	var/mob/living/carbon/human/human = src.loc
@@ -197,6 +219,8 @@
 
 // Clean up the cell on destroy
 /obj/item/clothing/suit/space/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == cell)
 		cell = null
@@ -204,6 +228,8 @@
 
 // support for items that interact with the cell
 /obj/item/clothing/suit/space/get_cell(atom/movable/interface, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(interface, /obj/item/inducer))
 		to_chat(user, span_alert("Error: unable to interface with [interface]."))
 		return null
@@ -211,6 +237,8 @@
 
 // Show the status of the suit and the cell
 /obj/item/clothing/suit/space/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(in_range(src, user) || isobserver(user))
 		. += "The thermal regulator is [thermal_on ? "on" : "off"] and the temperature is set to \
@@ -224,10 +252,14 @@
 				. += "\The [cell] is firmly in place."
 
 /obj/item/clothing/suit/space/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	toggle_spacesuit_cell(user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/clothing/suit/space/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	var/range_low = 20 // Default min temp c
 	var/range_high = 45 // default max temp c
 	if(obj_flags & EMAGGED)
@@ -243,6 +275,8 @@
 
 // object handling for accessing features of the suit
 /obj/item/clothing/suit/space/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!cell_cover_open || !istype(tool, /obj/item/stock_parts/power_store/cell))
 		return ..()
 
@@ -259,11 +293,15 @@
 
 /// Open the cell cover when ALT+Click on the suit
 /obj/item/clothing/suit/space/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	toggle_spacesuit_cell(user)
 	return CLICK_ACTION_SUCCESS
 
 /// Remove the cell whent he cover is open on CTRL+Click
 /obj/item/clothing/suit/space/item_ctrl_click(mob/user)
+	procstart = null
+	src.procstart = null
 	. = CLICK_ACTION_BLOCKING
 	if(cell_cover_open && cell)
 		remove_cell(user)
@@ -271,10 +309,14 @@
 
 // Remove the cell when using the suit on its self
 /obj/item/clothing/suit/space/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	remove_cell(user)
 
 /// Remove the cell from the suit if the cell cover is open
 /obj/item/clothing/suit/space/proc/remove_cell(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!cell_cover_open || isnull(cell))
 		return
 	user.visible_message(span_notice("[user] removes \the [cell] from [src]!"), \
@@ -286,6 +328,8 @@
 
 /// Toggle the space suit's cell cover
 /obj/item/clothing/suit/space/proc/toggle_spacesuit_cell(mob/user)
+	procstart = null
+	src.procstart = null
 	cell_cover_open = !cell_cover_open
 	to_chat(user, span_notice("You [cell_cover_open ? "open" : "close"] the cell cover on \the [src]."))
 
@@ -299,6 +343,8 @@
  * * manual_toggle - If false get a differently-flavored message about it being disabled by itself
  */
 /obj/item/clothing/suit/space/proc/toggle_spacesuit(mob/toggler, manual_toggle = TRUE)
+	procstart = null
+	src.procstart = null
 	// If we're turning thermal protection on, check for valid cell and for enough
 	// charge that cell. If it's too low, we shouldn't bother with setting the
 	// thermal protection value and should just return out early.
@@ -322,10 +368,14 @@
 		to_chat(toggler, span_danger("You feel [src]'s thermal regulator switch [thermal_on ? "on" : "off"] by itself!"))
 
 /obj/item/clothing/suit/space/ui_action_click(mob/user, actiontype)
+	procstart = null
+	src.procstart = null
 	toggle_spacesuit(user)
 
 // let emags override the temperature settings
 /obj/item/clothing/suit/space/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -337,6 +387,8 @@
 
 // update the HUD icon
 /obj/item/clothing/suit/space/proc/update_hud_icon(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human = user
 	if(!show_hud || human.wear_suit != src || isnull(human.hud_used))
 		return
@@ -368,6 +420,8 @@
 
 // zap the cell if we get hit with an emp
 /obj/item/clothing/suit/space/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_CONTENTS)
 		return
@@ -375,6 +429,8 @@
 		cell.emp_act(severity)
 
 /obj/item/clothing/head/helmet/space/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/environment = user.loc.return_air()
 	if(HAS_TRAIT(user, TRAIT_RESISTCOLD) || !environment || environment.return_temperature() >= user.get_body_temp_cold_damage_limit())
 		user.visible_message(span_suicide("[user] is beating [user.p_them()]self with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))

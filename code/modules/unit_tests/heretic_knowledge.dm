@@ -7,6 +7,8 @@
 /datum/unit_test/heretic_knowledge
 
 /datum/unit_test/heretic_knowledge/Run()
+	procstart = null
+	src.procstart = null
 	GLOB.heretic_path_knowledges = generate_global_heretic_tree()
 
 
@@ -49,6 +51,8 @@
 
 /// Expects a flat list of knowledge nodes. Returns a list of all HKT_ID entries
 /datum/unit_test/heretic_knowledge/proc/get_knowledge_ids(list/knowledges)
+	procstart = null
+	src.procstart = null
 	var/list/ids = list()
 	for(var/list/knowledge_node as anything in knowledges)
 		ids += knowledge_node[HKT_ID]
@@ -56,6 +60,8 @@
 
 /// Gets all unique HKT_NEXT entries from a list of knowledges. both lists must be flat lists of knowledge nodes
 /datum/unit_test/heretic_knowledge/proc/get_knowledge_unlockables(list/starting_point, list/all_knowledges)
+	procstart = null
+	src.procstart = null
 	// Now, let's build a list of all researchable knowledge
 	// from the ground up. We start with all starting knowledge,
 	// then add the next possible knowledges back into the list
@@ -78,12 +84,16 @@
 	return list_to_check
 
 /datum/unit_test/heretic_knowledge/proc/find_knowledge_node_by_id(list/knowledges, id)
+	procstart = null
+	src.procstart = null
 	for(var/list/knowledge_node as anything in knowledges)
 		if(knowledge_node[HKT_ID] == id)
 			return knowledge_node
 	return null
 
 /datum/unit_test/heretic_knowledge/proc/flatten_list(list/knowledge_nodes)
+	procstart = null
+	src.procstart = null
 	var/list/flat_list = list()
 	for(var/datum/heretic_knowledge/knowledge_path as anything in knowledge_nodes)
 		var/list/knowledge_node = knowledge_nodes[knowledge_path]

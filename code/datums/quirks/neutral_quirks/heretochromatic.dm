@@ -8,6 +8,8 @@
 	mail_goodies = list(/obj/item/clothing/glasses/eyepatch)
 
 /datum/quirk/heterochromatic/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/color = client_source?.prefs.read_preference(/datum/preference/color/heterochromatic)
 	if(!color)
 		return
@@ -16,6 +18,8 @@
 
 /// Applies the passed color to this mob's eyes
 /datum/quirk/heterochromatic/proc/apply_heterochromatic_eyes(color)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	var/was_not_hetero = !human_holder.eye_color_heterochromatic
 	human_holder.eye_color_heterochromatic = TRUE
@@ -33,12 +37,16 @@
 		RegisterSignal(human_holder, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(check_eye_removal))
 
 /datum/quirk/heterochromatic/remove()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	human_holder.eye_color_heterochromatic = FALSE
 	human_holder.eye_color_right = human_holder.eye_color_left
 	UnregisterSignal(human_holder, COMSIG_CARBON_LOSE_ORGAN)
 
 /datum/quirk/heterochromatic/proc/check_eye_removal(datum/source, obj/item/organ/eyes/removed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(removed))

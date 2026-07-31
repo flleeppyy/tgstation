@@ -20,20 +20,28 @@
 	circuit_flags = CIRCUIT_FLAG_INPUT_SIGNAL|CIRCUIT_FLAG_OUTPUT_SIGNAL
 
 /obj/item/circuit_component/variable/list/listadd/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("Max List Size: [max_list_size]", "orange", "sitemap")
 
 /obj/item/circuit_component/variable/list/listadd/populate_ports()
+	procstart = null
+	src.procstart = null
 	to_add = add_input_port("To Add", PORT_TYPE_ANY)
 	allow_duplicate = add_input_port("Allow Duplicate", PORT_TYPE_NUMBER, default = 0)
 	failed = add_output_port("Failed", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/variable/list/listadd/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(current_variable)
 		to_add.set_datatype(current_variable.datatype_handler.get_datatype(1))
 
 /obj/item/circuit_component/variable/list/listadd/input_received(datum/port/input/port, list/return_values)
+	procstart = null
+	src.procstart = null
 	if(!current_variable)
 		return
 	var/list/info = current_variable.value

@@ -26,6 +26,8 @@
 	var/hidden = FALSE
 
 /datum/symptom/bleeding/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -35,6 +37,8 @@
 		hidden = TRUE
 
 /datum/symptom/bleeding/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -48,6 +52,8 @@
 			return
 
 /datum/symptom/bleeding/on_stage_change(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -62,6 +68,8 @@
 
 
 /datum/symptom/bleeding/End(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

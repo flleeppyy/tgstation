@@ -2,6 +2,8 @@
 /datum/unit_test/gloves_and_shoes_armor
 
 /datum/unit_test/gloves_and_shoes_armor/Run()
+	procstart = null
+	src.procstart = null
 	for (var/obj/item/clothing/gloves/gloves as anything in subtypesof(/obj/item/clothing/gloves))
 		var/datum/armor/armor = gloves::armor_type
 		if (!armor)

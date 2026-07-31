@@ -23,18 +23,26 @@
 	var/datum/port/input/enc_key
 
 /obj/item/circuit_component/nfc_receive/populate_options()
+	procstart = null
+	src.procstart = null
 	list_options = add_option_port("List Type", GLOB.wiremod_basic_types)
 
 /obj/item/circuit_component/nfc_receive/populate_ports()
+	procstart = null
+	src.procstart = null
 	data_package = add_output_port("Data Package", PORT_TYPE_LIST(PORT_TYPE_ANY))
 	enc_key = add_input_port("Encryption Key", PORT_TYPE_STRING)
 
 /obj/item/circuit_component/nfc_receive/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(shell, COMSIG_CIRCUIT_NFC_DATA_SENT, PROC_REF(nfc_receive))
 	RegisterSignal(shell, COMSIG_ORGAN_IMPLANTED, PROC_REF(on_organ_implanted))
 	RegisterSignal(shell, COMSIG_ORGAN_REMOVED, PROC_REF(on_organ_removed))
 
 /obj/item/circuit_component/nfc_receive/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(shell, list(
 		COMSIG_CIRCUIT_NFC_DATA_SENT,
 		COMSIG_ORGAN_IMPLANTED,
@@ -42,23 +50,31 @@
 	))
 
 /obj/item/circuit_component/nfc_receive/proc/on_organ_implanted(datum/source, mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	RegisterSignal(owner, COMSIG_CIRCUIT_NFC_DATA_SENT, PROC_REF(nfc_receive))
 
 /obj/item/circuit_component/nfc_receive/proc/on_organ_removed(datum/source, mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(owner, COMSIG_CIRCUIT_NFC_DATA_SENT)
 
 
 /obj/item/circuit_component/nfc_receive/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(port == list_options)
 		var/new_datatype = list_options.value
 		data_package.set_datatype(PORT_TYPE_LIST(new_datatype))
 
 
 /obj/item/circuit_component/nfc_receive/proc/nfc_receive(obj/item/circuit_component/source,obj/sender, list/data)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(get_dist(sender,parent) >= 10)

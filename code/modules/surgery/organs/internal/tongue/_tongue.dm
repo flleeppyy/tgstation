@@ -48,6 +48,8 @@
 	var/modifies_speech = FALSE
 
 /obj/item/organ/tongue/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Setup the possible languages list
 	// - get_possible_languages gives us a list of language paths
@@ -60,6 +62,8 @@
 		add_organ_trait(TRAIT_AGEUSIA)
 
 /obj/item/organ/tongue/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_MIND_TRAIT(user, TRAIT_ENTRAILS_READER)|| isobserver(user))
 		if(liked_foodtypes)
@@ -79,6 +83,8 @@
  * UNLESS they have a tongue with that language possible, UNLESS UNLESS they have omnitongue enabled.
  */
 /obj/item/organ/tongue/proc/get_possible_languages()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 	// This is the default list of languages most humans should be capable of speaking
 	. = list(
@@ -102,12 +108,16 @@
 		. |= languages_native
 
 /obj/item/organ/tongue/proc/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(should_modify_speech(source, speech_args))
 		modify_speech(source, speech_args)
 
 /obj/item/organ/tongue/proc/should_modify_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	if(speech_args[SPEECH_LANGUAGE] in languages_native) // Speaking a native language?
 		return FALSE // Don't modify speech
 	if(HAS_TRAIT(source, TRAIT_SIGN_LANG)) // No modifiers for signers - I hate this but I simply cannot get these to combine into one statement
@@ -115,6 +125,8 @@
 	return TRUE
 
 /obj/item/organ/tongue/proc/modify_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	return speech_args[SPEECH_MESSAGE]
 
 /**
@@ -125,6 +137,8 @@
  * Does not get called if the owner has ageusia.
  **/
 /obj/item/organ/tongue/proc/get_food_taste_reaction(obj/item/food, foodtypes = NONE)
+	procstart = null
+	src.procstart = null
 	var/food_taste_reaction
 	if(foodtypes & toxic_foodtypes)
 		food_taste_reaction = FOOD_TOXIC
@@ -135,6 +149,8 @@
 	return food_taste_reaction
 
 /obj/item/organ/tongue/on_mob_insert(mob/living/carbon/receiver, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(modifies_speech)
@@ -148,6 +164,8 @@
 	REMOVE_TRAIT(receiver, TRAIT_AGEUSIA, NO_TONGUE_TRAIT)
 
 /obj/item/organ/tongue/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	temp_say_mod = ""
@@ -157,22 +175,32 @@
 	organ_owner.voice_filter = initial(organ_owner.voice_filter)
 
 /obj/item/organ/tongue/on_begin_failure()
+	procstart = null
+	src.procstart = null
 	remove_organ_trait(TRAIT_SPEAKS_CLEARLY)
 	add_organ_trait(TRAIT_AGEUSIA)
 
 /obj/item/organ/tongue/on_failure_recovery()
+	procstart = null
+	src.procstart = null
 	if(speakable_with)
 		add_organ_trait(TRAIT_SPEAKS_CLEARLY)
 	if(sense_of_taste)
 		remove_organ_trait(TRAIT_AGEUSIA)
 
 /obj/item/organ/tongue/could_speak_language(datum/language/language_path)
+	procstart = null
+	src.procstart = null
 	return (language_path in languages_possible)
 
 /obj/item/organ/tongue/get_availability(datum/species/owner_species, mob/living/owner_mob)
+	procstart = null
+	src.procstart = null
 	return owner_species.mutanttongue
 
 /obj/item/organ/tongue/feel_for_damage(self_aware)
+	procstart = null
+	src.procstart = null
 	// No effect
 	return ""
 
@@ -197,6 +225,8 @@
 	)
 
 /obj/item/organ/tongue/lizard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/speechmod, replacements = speech_replacements, should_modify_speech = CALLBACK(src, PROC_REF(should_modify_speech)))
 
@@ -219,6 +249,8 @@
 	var/obj/structure/statue/custom/statue
 
 /datum/action/cooldown/turn_to_statue/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(Target, /obj/item/organ/tongue/lizard/silver))
 		stack_trace("Non-silverscale tongue initialized a turn to statue action.")
@@ -228,10 +260,14 @@
 	init_statue()
 
 /datum/action/cooldown/turn_to_statue/Destroy()
+	procstart = null
+	src.procstart = null
 	clean_up_statue()
 	return ..()
 
 /datum/action/cooldown/turn_to_statue/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -254,6 +290,8 @@
 	return TRUE
 
 /datum/action/cooldown/turn_to_statue/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	StartCooldown(3 SECONDS)
 
 	var/is_statue = owner.loc == statue
@@ -294,6 +332,8 @@
 
 /// Somehow they used an exploit/teleportation to leave statue, lets clean up
 /datum/action/cooldown/turn_to_statue/proc/human_left_statue(atom/movable/mover, atom/oldloc, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	statue.moveToNullspace()
@@ -301,6 +341,8 @@
 
 /// Statue was destroyed via IC means (destruction / deconstruction), dust the owner and drop their stuff
 /datum/action/cooldown/turn_to_statue/proc/statue_destroyed(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(statue.loc))
@@ -318,12 +360,16 @@
 
 /// Statue was qdeleted outright, do nothing but clear refs.
 /datum/action/cooldown/turn_to_statue/proc/statue_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	clean_up_statue() // Note that if the lizard is in the statue when they're raw deleted, they too will be raw deleted. This is fine
 
 /// Initializes the statue we're going to hang around inside
 /datum/action/cooldown/turn_to_statue/proc/init_statue()
+	procstart = null
+	src.procstart = null
 	statue = new()
 	statue.set_custom_materials(list(/datum/material/silver = SHEET_MATERIAL_AMOUNT * 5))
 	statue.max_integrity = 100 // statues already have 100 max integrity, so this is a safety net
@@ -334,6 +380,8 @@
 
 /// Cleans up the reference to the statue and unregisters signals
 /datum/action/cooldown/turn_to_statue/proc/clean_up_statue()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(statue))
 		statue = null
 		return
@@ -368,6 +416,8 @@
 	var/mothership
 
 /obj/item/organ/tongue/abductor/attack_self(mob/living/carbon/human/tongue_holder)
+	procstart = null
+	src.procstart = null
 	if(!istype(tongue_holder))
 		return
 
@@ -384,6 +434,8 @@
 		mothership = tongue.mothership
 
 /obj/item/organ/tongue/abductor/examine(mob/examining_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_MIND_TRAIT(examining_mob, TRAIT_ABDUCTOR_TRAINING) || isobserver(examining_mob))
 		. += span_notice("It can be attuned to a different channel by using it inhand.")
@@ -393,6 +445,8 @@
 			. += span_notice("It is attuned to [mothership].")
 
 /obj/item/organ/tongue/abductor/modify_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	//Hacks
 	var/message = speech_args[SPEECH_MESSAGE]
 	var/mob/living/carbon/human/user = source
@@ -432,6 +486,8 @@
 	)
 
 /obj/item/organ/tongue/zombie/proc/add_word_to_translations(english_word, zombie_word)
+	procstart = null
+	src.procstart = null
 	english_to_zombie[english_word] = zombie_word
 	// zombies don't care about grammar (any tense or form is all translated to the same word)
 	english_to_zombie[english_word + plural_s(english_word)] = zombie_word
@@ -439,6 +495,8 @@
 	english_to_zombie[english_word + "ed"] = zombie_word
 
 /obj/item/organ/tongue/zombie/proc/load_zombie_translations()
+	procstart = null
+	src.procstart = null
 	var/list/zombie_translation = strings("zombie_replacement.json", "zombie")
 	for(var/zombie_word in zombie_translation)
 		// since zombie words are a reverse list, we gotta do this backwards
@@ -448,6 +506,8 @@
 	english_to_zombie = sort_list(english_to_zombie) // Alphabetizes the list (for debugging)
 
 /obj/item/organ/tongue/zombie/modify_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	var/message = speech_args[SPEECH_MESSAGE]
 	if(message[1] != "*")
 		// setup the global list for translation if it hasn't already been done
@@ -486,6 +546,8 @@
 		speech_args[SPEECH_MESSAGE] = message
 
 /obj/item/organ/tongue/zombie/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!IS_UNCONSCIOUS_OR_CRIT(owner) && SPT_PROB(2, seconds_per_tick))
 		playsound(owner, pick(spooks), 50, TRUE, 10)
@@ -501,6 +563,8 @@
 
 // Aliens can only speak alien and a few other languages.
 /obj/item/organ/tongue/alien/get_possible_languages()
+	procstart = null
+	src.procstart = null
 	return list(
 		/datum/language/xenocommon,
 		/datum/language/common,
@@ -510,6 +574,8 @@
 	)
 
 /obj/item/organ/tongue/alien/modify_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	var/datum/saymode/xeno/hivemind = speech_args[SPEECH_SAYMODE]
 	if(hivemind)
 		return
@@ -532,14 +598,20 @@
 	var/list/phomeme_types = list("sans", "papyrus")
 
 /obj/item/organ/tongue/bone/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	phomeme_type = pick(phomeme_types)
 
 // Bone tongues can speak all default + calcic
 /obj/item/organ/tongue/bone/get_possible_languages()
+	procstart = null
+	src.procstart = null
 	return ..() + /datum/language/calcic
 
 /obj/item/organ/tongue/bone/modify_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	if (chattering)
 		chatter(speech_args[SPEECH_MESSAGE], phomeme_type, source)
 	switch(phomeme_type)
@@ -572,17 +644,25 @@
 	voice_filter = "alimiter=0.9,acompressor=threshold=0.2:ratio=20:attack=10:release=50:makeup=2,highpass=f=1000"
 
 /obj/item/organ/tongue/robot/could_speak_language(datum/language/language_path)
+	procstart = null
+	src.procstart = null
 	return TRUE // THE MAGIC OF ELECTRONICS
 
 /obj/item/organ/tongue/robot/modify_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	speech_args[SPEECH_SPANS] |= SPAN_ROBOT
 
 /obj/item/organ/tongue/robot/on_mob_insert(mob/living/carbon/receiver)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	receiver.grant_language(/datum/language/machine, source = LANGUAGE_TONGUE)
 	to_chat(receiver, span_boldnotice("You gain a new understanding of [/datum/language/machine::name]."))
 
 /obj/item/organ/tongue/robot/on_mob_remove(mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELING(owner))
 		return
@@ -597,6 +677,8 @@
 	voice_filter = "atempo=0.5" // makes them talk really slow
 
 /obj/item/organ/tongue/snail/modify_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	var/new_message
 	var/message = speech_args[SPEECH_MESSAGE]
 	for(var/i in 1 to length(message))
@@ -632,6 +714,8 @@
 	var/feral_mode = FALSE
 
 /obj/item/organ/tongue/cat/on_bodypart_insert(obj/item/bodypart/head)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	head.unarmed_damage_low += 4
 	head.unarmed_damage_high += 7
@@ -643,6 +727,8 @@
 		add_organ_trait(TRAIT_FERAL_BITER)
 
 /obj/item/organ/tongue/cat/on_bodypart_remove(obj/item/bodypart/head)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	head.unarmed_damage_low -= 4
 	head.unarmed_damage_high -= 7
@@ -653,6 +739,8 @@
 	remove_organ_trait(TRAIT_FERAL_BITER)
 
 /obj/item/organ/tongue/cat/proc/toggle_feral()
+	procstart = null
+	src.procstart = null
 	feral_mode = !feral_mode
 	if(feral_mode)
 		add_organ_trait(TRAIT_FERAL_BITER)
@@ -669,6 +757,8 @@
 	languages_native = list(/datum/language/slime)
 
 /obj/item/organ/tongue/jelly/get_food_taste_reaction(obj/item/food, foodtypes = NONE)
+	procstart = null
+	src.procstart = null
 	// a silver slime created this? what a delicacy!
 	if(HAS_TRAIT(food, TRAIT_FOOD_SILVER))
 		return FOOD_LIKED

@@ -37,6 +37,8 @@
 	)
 
 /mob/living/basic/pet/gondola/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_MUTE, INNATE_TRAIT)
 	AddElement(/datum/element/pet_bonus, "smile")
@@ -46,6 +48,8 @@
 	create_gondola()
 
 /mob/living/basic/pet/gondola/proc/create_gondola()
+	procstart = null
+	src.procstart = null
 	icon_state = null
 	icon_living = null
 	var/height = GONDOLA_HEIGHT

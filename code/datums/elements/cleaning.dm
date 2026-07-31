@@ -1,16 +1,22 @@
 /datum/element/cleaning
 
 /datum/element/cleaning/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(target))
 		return ELEMENT_INCOMPATIBLE
 	RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(clean))
 
 /datum/element/cleaning/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_MOVABLE_MOVED)
 
 /datum/element/cleaning/proc/clean(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/movable/atom_movable = source

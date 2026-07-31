@@ -6,6 +6,8 @@
 /datum/element/cult_eyes
 
 /datum/element/cult_eyes/Attach(datum/target, initial_delay = 20 SECONDS)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -19,6 +21,8 @@
  * * Changes the eye color, and adds the glowing eye trait to the mob.
  */
 /datum/element/cult_eyes/proc/set_eyes(mob/living/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!IS_CULTIST(target))
@@ -38,6 +42,8 @@
  * Removes the eye color, and trait from the mob
  */
 /datum/element/cult_eyes/Detach(mob/living/target, ...)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(target, TRAIT_UNNATURAL_RED_GLOWY_EYES, CULT_TRAIT)
 	if (ishuman(target))
 		var/mob/living/carbon/human/human_parent = target

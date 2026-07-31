@@ -9,7 +9,11 @@
 	step = 0.5
 
 /datum/preference/numeric/pixel_size/create_default_value()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /datum/preference/numeric/pixel_size/apply_to_client(client/client, value)
+	procstart = null
+	src.procstart = null
 	client?.view_size?.resetFormat()

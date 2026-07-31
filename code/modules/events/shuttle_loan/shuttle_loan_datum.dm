@@ -14,6 +14,8 @@
 	var/logging_desc
 
 /datum/shuttle_loan_situation/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!logging_desc)
 		stack_trace("No logging blurb set for [src.type]!")
@@ -22,6 +24,8 @@
 
 /// Spawns paths added to `spawn_list`, and passes empty shuttle turfs so you can spawn more complicated things like dead bodies.
 /datum/shuttle_loan_situation/proc/spawn_items(list/spawn_list, list/empty_shuttle_turfs, list/blocked_shutte_turfs)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Unimplemented get_spawned_items() on [src.type].")
 
@@ -32,6 +36,8 @@
 	logging_desc = "Virus shuttle"
 
 /datum/shuttle_loan_situation/antidote/spawn_items(list/spawn_list, list/empty_shuttle_turfs, list/blocked_shutte_turfs)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/mob_spawn/corpse/human/assistant/infected_assistant = pick(list(
 		/obj/effect/mob_spawn/corpse/human/assistant/beesease_infection,
 		/obj/effect/mob_spawn/corpse/human/assistant/brainrot_infection,
@@ -59,6 +65,8 @@
 	logging_desc = "Resupply packages"
 
 /datum/shuttle_loan_situation/department_resupply/spawn_items(list/spawn_list, list/empty_shuttle_turfs, list/blocked_shutte_turfs)
+	procstart = null
+	src.procstart = null
 	var/list/crate_types = list(
 		/datum/supply_pack/emergency/equipment,
 		/datum/supply_pack/security/supplies,
@@ -85,6 +93,8 @@
 	logging_desc = "Syndicate boarding party"
 
 /datum/shuttle_loan_situation/syndiehijacking/spawn_items(list/spawn_list, list/empty_shuttle_turfs, list/blocked_shutte_turfs)
+	procstart = null
+	src.procstart = null
 	var/datum/supply_pack/pack = SSshuttle.supply_packs[/datum/supply_pack/imports/specialops]
 	pack.generate(pick_n_take(empty_shuttle_turfs))
 
@@ -103,6 +113,8 @@
 	logging_desc = "Shuttle full of bees"
 
 /datum/shuttle_loan_situation/lots_of_bees/spawn_items(list/spawn_list, list/empty_shuttle_turfs, list/blocked_shutte_turfs)
+	procstart = null
+	src.procstart = null
 	var/datum/supply_pack/pack = SSshuttle.supply_packs[/datum/supply_pack/organic/hydroponics/beekeeping_fullkit]
 	pack.generate(pick_n_take(empty_shuttle_turfs))
 
@@ -139,6 +151,8 @@
 	logging_desc = "Shuttle with a ticking bomb"
 
 /datum/shuttle_loan_situation/jc_a_bomb/spawn_items(list/spawn_list, list/empty_shuttle_turfs, list/blocked_shutte_turfs)
+	procstart = null
+	src.procstart = null
 	spawn_list.Add(/obj/machinery/syndicatebomb/shuttle_loan)
 	if(prob(95))
 		spawn_list.Add(/obj/item/paper/fluff/cargo/bomb)
@@ -154,6 +168,8 @@
 	logging_desc = "Paperwork shipment"
 
 /datum/shuttle_loan_situation/papers_please/spawn_items(list/spawn_list, list/empty_shuttle_turfs, list/blocked_shutte_turfs)
+	procstart = null
+	src.procstart = null
 	spawn_list += subtypesof(/obj/item/paperwork) - typesof(/obj/item/paperwork/photocopy) - typesof(/obj/item/paperwork/ancient)
 
 /datum/shuttle_loan_situation/pizza_delivery
@@ -165,6 +181,8 @@
 	logging_desc = "Pizza delivery"
 
 /datum/shuttle_loan_situation/pizza_delivery/spawn_items(list/spawn_list, list/empty_shuttle_turfs, list/blocked_shutte_turfs)
+	procstart = null
+	src.procstart = null
 	var/naughtypizza = list(/obj/item/pizzabox/bomb, /obj/item/pizzabox/margherita/robo) //oh look another blacklist, for pizza nonetheless!
 	var/nicepizza = list(/obj/item/pizzabox/margherita, /obj/item/pizzabox/meat, /obj/item/pizzabox/vegetable, /obj/item/pizzabox/mushroom)
 	for(var/i in 1 to 6)
@@ -177,6 +195,8 @@
 	logging_desc = "Russian party squad"
 
 /datum/shuttle_loan_situation/russian_party/spawn_items(list/spawn_list, list/empty_shuttle_turfs, list/blocked_shutte_turfs)
+	procstart = null
+	src.procstart = null
 	var/datum/supply_pack/pack = SSshuttle.supply_packs[/datum/supply_pack/service/party]
 	pack.generate(pick_n_take(empty_shuttle_turfs))
 
@@ -195,6 +215,8 @@
 	logging_desc = "Shuttle full of spiders"
 
 /datum/shuttle_loan_situation/spider_gift/spawn_items(list/spawn_list, list/empty_shuttle_turfs, list/blocked_shutte_turfs)
+	procstart = null
+	src.procstart = null
 	var/datum/supply_pack/pack = SSshuttle.supply_packs[/datum/supply_pack/imports/specialops]
 	pack.generate(pick_n_take(empty_shuttle_turfs))
 
@@ -235,6 +257,8 @@
 	logging_desc = "Shuttle full of shady mail"
 
 /datum/shuttle_loan_situation/mail_strike/spawn_items(list/spawn_list, list/empty_shuttle_turfs, list/blocked_shutte_turfs)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to rand(7, 12))
 		var/turf/closed/wall/wall = pick_n_take(blocked_shutte_turfs)
 		if(!istype(wall))

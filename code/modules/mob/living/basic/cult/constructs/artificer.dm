@@ -32,6 +32,8 @@
 	smashes_walls = TRUE
 
 /mob/living/basic/construct/artificer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/ai_retaliate)
 	ADD_TRAIT(src, TRAIT_MEDICAL_HUD, INNATE_TRAIT)
@@ -55,6 +57,8 @@
 	)
 
 /mob/living/basic/construct/artificer/angelic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_ANGELIC, INNATE_TRAIT)
 

@@ -4,12 +4,16 @@
 	var/rating = null
 
 /datum/buildmode_mode/tweakcomps/show_help(client/builder)
+	procstart = null
+	src.procstart = null
 	to_chat(builder, span_purple(boxed_message(
 		"[span_bold("Choose the rating of the components")] -> Right Mouse Button on buildmode button\n\
 		[span_bold("Sets the chosen rating of the components on the machinery")] -> Left Mouse Button on machinery"))
 	)
 
 /datum/buildmode_mode/tweakcomps/change_settings(client/target_client)
+	procstart = null
+	src.procstart = null
 	var/rating_to_choose = input(target_client, "Enter number of rating", "Number", "1")
 	rating_to_choose = text2num(rating_to_choose)
 	if(!isnum(rating_to_choose))
@@ -19,6 +23,8 @@
 	rating = rating_to_choose
 
 /datum/buildmode_mode/tweakcomps/handle_click(client/target_client, params, obj/machinery/object)
+	procstart = null
+	src.procstart = null
 	if(!ismachinery(object))
 		to_chat(target_client, span_warning("This isn't machinery!"))
 		return

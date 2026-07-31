@@ -15,6 +15,8 @@
 	bypasses_immunity = TRUE
 
 /datum/disease/dna_retrovirus/New()
+	procstart = null
+	src.procstart = null
 	..()
 	agent = "Virus class [pick("A","B","C","D","E","F")][pick("A","B","C","D","E","F")]-[rand(50,300)]"
 	if(prob(40))
@@ -23,11 +25,15 @@
 		restcure = 1
 
 /datum/disease/dna_retrovirus/Copy()
+	procstart = null
+	src.procstart = null
 	var/datum/disease/dna_retrovirus/D = ..()
 	D.restcure = restcure
 	return D
 
 /datum/disease/dna_retrovirus/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

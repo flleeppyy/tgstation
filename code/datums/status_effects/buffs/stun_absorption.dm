@@ -73,6 +73,8 @@
 	return ..()
 
 /datum/status_effect/stun_absorption/on_apply()
+	procstart = null
+	src.procstart = null
 	if(owner.mind || owner.client)
 		owner.log_message("gained stun absorption (from: [source || "Unknown"])", LOG_ATTACK)
 
@@ -81,6 +83,8 @@
 	return TRUE
 
 /datum/status_effect/stun_absorption/on_remove()
+	procstart = null
+	src.procstart = null
 	if(owner.mind || owner.client)
 		owner.log_message("lost stun absorption (from: [source || "Unknown"])", LOG_ATTACK)
 
@@ -88,6 +92,8 @@
 	UnregisterSignal(owner, COMSIG_LIVING_GENERIC_STUN_CHECK)
 
 /datum/status_effect/stun_absorption/get_examine_text()
+	procstart = null
+	src.procstart = null
 	if(can_absorb_stun())
 		return replacetext(examine_message, "%EFFECT_OWNER_THEYRE", owner.p_Theyre())
 	return null // no message if we can't absorb stuns, duh.
@@ -98,6 +104,8 @@
  * When we get stunned, we will try to absorb a number of seconds from the stun, and return [COMPONENT_NO_STUN] if we succeed.
  */
 /datum/status_effect/stun_absorption/proc/try_absorb_incapacitating_effect(mob/living/source, amount = 0, ignore_canstun = FALSE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// we blocked a stun this tick that resulting is us qdeling, so stop
@@ -120,6 +128,8 @@
  * This prevents spam us from showing feedback messages, and is for the generic "can be stunned" check.
  */
 /datum/status_effect/stun_absorption/proc/try_absorb_generic_effect(mob/living/source, check_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(QDELING(src))
@@ -133,6 +143,8 @@
 
 /// Simply checks if the owner of the effect is in a valid state to absorb stuns.
 /datum/status_effect/stun_absorption/proc/can_absorb_stun()
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(owner))
 		return FALSE
 	if(seconds_of_stuns_absorbed > max_seconds_of_stuns_blocked)
@@ -148,6 +160,8 @@
  * Returns TRUE on successful absorption, or FALSE otherwise.
  */
 /datum/status_effect/stun_absorption/proc/absorb_stun(amount)
+	procstart = null
+	src.procstart = null
 	if(!can_absorb_stun())
 		return FALSE
 
@@ -191,6 +205,8 @@
 
 /// Used in callbacks to "recharge" the effect after passing the max seconds of stuns blocked.
 /datum/status_effect/stun_absorption/proc/recharge_absorption(amount)
+	procstart = null
+	src.procstart = null
 	seconds_of_stuns_absorbed = max(seconds_of_stuns_absorbed - amount, 0)
 
 /**
@@ -260,6 +276,8 @@
  * Returns TRUE if an effect was deleted, FALSE otherwise
  */
 /mob/living/proc/remove_stun_absorption(source)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	for(var/datum/status_effect/stun_absorption/effect in status_effects)
 		if(effect.source != source)

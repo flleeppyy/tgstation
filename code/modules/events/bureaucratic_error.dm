@@ -10,9 +10,13 @@
 	announce_when = 1
 
 /datum/round_event/bureaucratic_error/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("A recent bureaucratic error in the Organic Resources Department may result in personnel shortages in some departments and redundant staffing in others.", "Paperwork Mishap Alert")
 
 /datum/round_event/bureaucratic_error/start()
+	procstart = null
+	src.procstart = null
 	var/list/jobs = SSjob.get_valid_overflow_jobs()
 	if(prob(33)) // Only allows latejoining as a single role.
 		var/datum/job/overflow = pick_n_take(jobs)

@@ -16,6 +16,8 @@
 	var/command_distance = 5
 
 /datum/bt_node/ai_behavior/issue_pet_command/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -26,6 +28,8 @@
 	return !QDELETED(target)
 
 /datum/bt_node/ai_behavior/issue_pet_command/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/living_pawn = controller.pawn
 	var/atom/target = controller.blackboard[target_key]
 	if(QDELETED(target))

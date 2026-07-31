@@ -9,6 +9,8 @@ MOVEMENT_SUBSYSTEM_DEF(cliff_falling)
 	var/list/cliff_grinders = list()
 
 /datum/controller/subsystem/movement/cliff_falling/proc/start_falling(atom/movable/faller, turf/open/cliff/cliff)
+	procstart = null
+	src.procstart = null
 	// Make them move
 	var/mover = GLOB.move_manager.move(moving = faller, direction = cliff.fall_direction, delay = cliff.fall_speed, subsystem = src, priority = MOVEMENT_ABOVE_SPACE_PRIORITY, flags = MOVEMENT_LOOP_OUTSIDE_CONTROL | MOVEMENT_LOOP_NO_DIR_UPDATE)
 
@@ -20,6 +22,8 @@ MOVEMENT_SUBSYSTEM_DEF(cliff_falling)
 
 /// We just moved, so check if we're still moving right
 /datum/controller/subsystem/movement/cliff_falling/proc/on_moved(atom/movable/mover, turf/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/turf/open/cliff/new_cliff = mover.loc
@@ -38,17 +42,23 @@ MOVEMENT_SUBSYSTEM_DEF(cliff_falling)
 	fall.set_delay(new_cliff.fall_speed) //different cliff, so set the speed
 
 /datum/controller/subsystem/movement/cliff_falling/proc/on_qdel(atom/movable/deletee)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	clear_references(deletee)
 
 /datum/controller/subsystem/movement/cliff_falling/proc/clear_references(atom/movable/deletee)
+	procstart = null
+	src.procstart = null
 	cliff_grinders -= deletee
 
 	UnregisterSignal(deletee, list(COMSIG_MOVABLE_MOVED, COMSIG_QDELETING, COMSIG_MOVABLE_PRE_MOVE))
 
 /// Check if we can move! We do this mostly to determine falling behaviour and make sure we're moving to valid tiles
 /datum/controller/subsystem/movement/cliff_falling/proc/check_move(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/turf/open/cliff/cliff_turf = get_turf(mover)

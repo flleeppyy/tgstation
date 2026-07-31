@@ -15,12 +15,18 @@
 	var/scribble //Scribble on the back.
 
 /obj/item/photo/grind_results()
+	procstart = null
+	src.procstart = null
 	return LAZYACCESS(custom_materials, /datum/material/hauntium) ? list(/datum/reagent/hauntium = 20) : list(/datum/reagent/iodine = 4)
 
 /obj/item/photo/get_save_vars()
+	procstart = null
+	src.procstart = null
 	return ..() - NAMEOF(src, icon)
 
 /obj/item/photo/Initialize(mapload, datum/picture/P, datum_name = TRUE, datum_desc = TRUE, override_name = TRUE)
+	procstart = null
+	src.procstart = null
 	set_picture(P, datum_name, datum_desc, override_name)
 	//Photos are quite rarer than papers, so they're more likely to be added to the queue to make things even.
 	if(!mapload && prob(MESSAGE_BOTTLE_CHANCE * 5) && picture?.id)
@@ -29,10 +35,14 @@
 	AddElement(/datum/element/burn_on_item_ignition)
 
 /obj/item/photo/Destroy()
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(SSpersistence.queued_message_bottles, src)
 	return ..()
 
 /obj/item/photo/proc/set_picture(datum/picture/P, setname, setdesc, name_override = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(P))
 		return
 	picture = P
@@ -61,6 +71,8 @@
 		break
 
 /obj/item/photo/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!istype(picture) || !picture.picture_image)
 		return ..()
 	var/icon/I = picture.get_small_icon(initial(icon_state))
@@ -69,14 +81,20 @@
 	return ..()
 
 /obj/item/photo/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is taking one last look at \the [src]! It looks like [user.p_theyre()] giving in to death!"))//when you wanna look at photo of waifu one last time before you die...
 	user.emote("laugh", intentional = FALSE, forced = TRUE) // EVERY TIME I DO IT MAKES ME LAUGH
 	return OXYLOSS
 
 /obj/item/photo/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	user.examinate(src)
 
 /obj/item/photo/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!IS_WRITING_UTENSIL(tool))
 		return NONE
 	if(!user.can_write(tool))
@@ -89,6 +107,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/photo/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(in_range(src, user) || isobserver(user))
@@ -97,6 +117,8 @@
 		. += span_warning("You need to get closer to get a good look at this photo!")
 
 /obj/item/photo/proc/show(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(picture) || !picture.picture_image)
 		to_chat(user, span_warning("[src] seems to be blank..."))
 		return

@@ -22,4 +22,6 @@
 	)
 
 /datum/quirk/item_quirk/mime_fan/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	give_item_to_holder(/obj/item/clothing/accessory/mime_fan_pin, list(LOCATION_BACKPACK, LOCATION_HANDS))

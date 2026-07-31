@@ -4,11 +4,15 @@
 	custom_price = PAYCHECK_CREW * 2
 
 /obj/item/storage/box/fishing_hooks/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/fishing_hook/magnet(src)
 	new /obj/item/fishing_hook/shiny(src)
 	new /obj/item/fishing_hook/weighted(src)
 
 /obj/item/storage/box/fishing_hooks/master/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/fishing_hook/stabilized(src)
 	new /obj/item/fishing_hook/jaws(src)
@@ -19,11 +23,15 @@
 	custom_price = PAYCHECK_CREW * 2
 
 /obj/item/storage/box/fishing_lines/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/fishing_line/bouncy(src)
 	new /obj/item/fishing_line/reinforced(src)
 	new /obj/item/fishing_line/cloaked(src)
 
 /obj/item/storage/box/fishing_lines/master/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/fishing_line/auto_reel(src)
 
@@ -34,6 +42,8 @@
 	illustration = "fish"
 
 /obj/item/storage/box/fish_revival_kit/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/lazarus_injector(src)
 	new /obj/item/reagent_containers/cup/bottle/fishy_reagent(src)
 	new /obj/item/reagent_containers/cup(src) //to splash the reagents on the fish.
@@ -50,6 +60,8 @@
 	storage_type = /datum/storage/box/fishing_lures
 
 /obj/item/storage/box/fishing_lures/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/paper/lures_instructions(src)
 	var/list/typesof = subtypesof(/obj/item/fishing_lure)
 	for(var/type in typesof)
@@ -62,5 +74,7 @@
 	custom_price = PAYCHECK_LOWER
 
 /obj/item/storage/box/aquarium_props/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/prop_type in subtypesof(/obj/item/aquarium_prop))
 		new prop_type(src)

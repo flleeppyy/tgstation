@@ -11,6 +11,8 @@ GLOBAL_LIST_EMPTY_TYPED(tracked_implants, /obj/item/implant)
 	circuit = /obj/item/circuitboard/computer/prisoner
 
 /obj/machinery/computer/prisoner/management/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -18,6 +20,8 @@ GLOBAL_LIST_EMPTY_TYPED(tracked_implants, /obj/item/implant)
 		ui.open()
 
 /obj/machinery/computer/prisoner/management/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["authorized"] = (authenticated && isliving(user)) || HAS_SILICON_ACCESS(user)
@@ -44,6 +48,8 @@ GLOBAL_LIST_EMPTY_TYPED(tracked_implants, /obj/item/implant)
 	return data
 
 /obj/machinery/computer/prisoner/management/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

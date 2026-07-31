@@ -28,6 +28,8 @@
 	var/max_list_count = 100
 
 /obj/item/circuit_component/assoc_literal/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(port == list_options)
 		var/new_datatype = list_options.value
 		list_output.set_datatype(PORT_TYPE_ASSOC_LIST(PORT_TYPE_STRING, new_datatype))
@@ -35,9 +37,13 @@
 			port_to_set.set_datatype(new_datatype)
 
 /obj/item/circuit_component/assoc_literal/populate_options()
+	procstart = null
+	src.procstart = null
 	list_options = add_option_port("List Type", GLOB.wiremod_basic_types)
 
 /obj/item/circuit_component/assoc_literal/populate_ports()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/circuit_component_add_port, \
 		port_list = key_ports, \
 		add_action = "add", \
@@ -59,6 +65,8 @@
 	list_output = add_output_port("Value", PORT_TYPE_ASSOC_LIST(PORT_TYPE_STRING, PORT_TYPE_ANY), order = 1.1)
 
 /obj/item/circuit_component/assoc_literal/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	var/list/new_literal = list()
 	var/datum/circuit_datatype/value_handler = GLOB.circuit_datatypes[list_options.value]
 	var/datum/circuit_datatype/key_handler = GLOB.circuit_datatypes[PORT_TYPE_STRING]

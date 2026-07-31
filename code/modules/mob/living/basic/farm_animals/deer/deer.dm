@@ -26,6 +26,8 @@
 
 
 /mob/living/basic/deer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/ai_retaliate)
 	AddElement(/datum/element/footstep, footstep_type = FOOTSTEP_MOB_SHOE)

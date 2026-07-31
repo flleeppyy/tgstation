@@ -30,6 +30,8 @@
 	var/crusher_drop_mod = 25
 
 /mob/living/simple_animal/hostile/asteroid/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(crusher_loot)
 		AddElement(/datum/element/crusher_loot, crusher_loot, crusher_drop_mod, del_on_death)
@@ -49,11 +51,15 @@
 	RegisterSignals(src, list(COMSIG_PROJECTILE_PREHIT, COMSIG_ATOM_PREHITBY), PROC_REF(Aggro))
 
 /mob/living/simple_animal/hostile/asteroid/Aggro()
+	procstart = null
+	src.procstart = null
 	..()
 	if(vision_range == aggro_vision_range && icon_aggro)
 		icon_state = icon_aggro
 
 /mob/living/simple_animal/hostile/asteroid/LoseAggro()
+	procstart = null
+	src.procstart = null
 	..()
 	if(stat == DEAD)
 		return

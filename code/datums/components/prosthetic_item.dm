@@ -9,6 +9,8 @@
 	var/drop_prob = 100
 
 /datum/component/item_as_prosthetic_limb/Initialize(obj/item/prosthetic_item, drop_prob = 100)
+	procstart = null
+	src.procstart = null
 	if(!isbodypart(parent))
 		return COMPONENT_INCOMPATIBLE
 	var/obj/item/bodypart/bodyparent = parent
@@ -22,6 +24,8 @@
 	src.drop_prob = drop_prob
 
 /datum/component/item_as_prosthetic_limb/InheritComponent(datum/component/new_comp, i_am_original, obj/item/prosthetic_item, drop_prob = 100)
+	procstart = null
+	src.procstart = null
 	if(prosthetic_item)
 		unregister_item(item_limb)
 		register_item(prosthetic_item)
@@ -29,6 +33,8 @@
 	src.drop_prob = drop_prob
 
 /datum/component/item_as_prosthetic_limb/proc/register_item(obj/item/prosthetic_item)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(prosthetic_item, COMSIG_ITEM_PRE_USED_AS_PROSTHETIC, parent)
 	item_limb = prosthetic_item
 	RegisterSignal(prosthetic_item, COMSIG_QDELETING, PROC_REF(qdel_limb))
@@ -52,6 +58,8 @@
 	SEND_SIGNAL(prosthetic_item, COMSIG_ITEM_POST_USED_AS_PROSTHETIC, parent)
 
 /datum/component/item_as_prosthetic_limb/proc/unregister_item(obj/item/prosthetic_item)
+	procstart = null
+	src.procstart = null
 	item_limb = null
 	UnregisterSignal(prosthetic_item, list(COMSIG_QDELETING, COMSIG_MOVABLE_MOVED))
 	// nothing to be done if it's being thrown away
@@ -67,24 +75,34 @@
 	SEND_SIGNAL(prosthetic_item, COMSIG_ITEM_DROPPED_FROM_PROSTHETIC, parent)
 
 /datum/component/item_as_prosthetic_limb/proc/register_limb(obj/item/bodypart/bodyparent)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(bodyparent, COMSIG_BODYPART_REMOVED, PROC_REF(clear_comp))
 	RegisterSignals(bodyparent.owner, list(COMSIG_MOB_ITEM_ATTACK, COMSIG_LIVING_UNARMED_ATTACK), PROC_REF(pop_limb))
 
 /datum/component/item_as_prosthetic_limb/proc/unregister_limb(obj/item/bodypart/bodyparent)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(bodyparent, COMSIG_BODYPART_REMOVED)
 	if(bodyparent.owner) // may be null frim removal
 		UnregisterSignal(bodyparent.owner, list(COMSIG_MOB_ITEM_ATTACK, COMSIG_LIVING_UNARMED_ATTACK))
 
 /datum/component/item_as_prosthetic_limb/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	register_limb(parent)
 	register_item(item_limb)
 
 /datum/component/item_as_prosthetic_limb/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	unregister_limb(parent)
 	unregister_item(item_limb)
 
 /// If the fake limb (the item) is deleted, the real limb goes with it.
 /datum/component/item_as_prosthetic_limb/proc/qdel_limb(obj/item/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(QDELING(parent))
@@ -93,6 +111,8 @@
 
 /// If the item is removed from our hands somehow, the real limb has to go
 /datum/component/item_as_prosthetic_limb/proc/limb_moved(obj/item/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(QDELING(parent))
@@ -104,6 +124,8 @@
 
 /// When the bodypart is removed, we will drop the item on the ground, and then delete the the real limb.
 /datum/component/item_as_prosthetic_limb/proc/clear_comp(datum/source, mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(owner, list(COMSIG_MOB_ITEM_ATTACK, COMSIG_LIVING_UNARMED_ATTACK))
@@ -115,6 +137,8 @@
 
 /// Attacking with the fake limb (the item) can cause it to fall off, which in turn will result in the real limb being deleted.
 /datum/component/item_as_prosthetic_limb/proc/pop_limb(mob/living/source, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source.get_active_hand() != parent)
@@ -137,6 +161,8 @@
  * Returns the created pseudopart
  */
 /mob/living/carbon/proc/make_item_prosthetic(obj/item/some_thing, target_zone = BODY_ZONE_R_ARM, fall_prob = 0)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT_FROM(some_thing, TRAIT_NODROP, HAND_REPLACEMENT_TRAIT))
 		CRASH("make_item_prosthetic given an item that is already a prosthetic limb!")
 

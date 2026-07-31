@@ -198,6 +198,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	var/time_passed_on_safe_turf = 0
 
 /obj/item/fish/Initialize(mapload, apply_qualities = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	base_icon_state = icon_state
 	//It's important that we register the signals before the component is attached.
@@ -250,6 +252,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 			Either increase its stable population or add one of these traits to it.")
 
 /obj/item/fish/grind_results()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	var/list/grind_results = fish_grind_results()
@@ -259,11 +263,15 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	return grind_results
 
 /obj/item/fish/proc/fish_grind_results()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list/datum/reagent)
 
 	return list()
 
 /obj/item/fish/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(force == 0)
 		user.visible_message(span_suicide("[user] slaps [user.p_them()]self with [src], but nothing happens!"))
 		return SHAME
@@ -278,11 +286,15 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	return SHAME
 
 /obj/item/fish/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(attack_type == OVERWHELMING_ATTACK)
 		return FALSE
 	return ..()
 
 /obj/item/fish/proc/slapperoni(mob/living/user, iteration)
+	procstart = null
+	src.procstart = null
 	stoplag(0.1 SECONDS)
 	user.visible_message(span_bolddanger(suicide_slap_text))
 	user.attackby(src, user)
@@ -293,12 +305,16 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	slapperoni(user, iteration++)
 
 /obj/item/fish/add_item_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(source, TRAIT_CATCH_AND_RELEASE))
 		context[SCREENTIP_CONTEXT_RMB] = "Release"
 		return CONTEXTUAL_SCREENTIP_SET
 	return NONE
 
 /obj/item/fish/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(src == held_item)
 		context[SCREENTIP_CONTEXT_LMB] = "Pet"
 		return CONTEXTUAL_SCREENTIP_SET
@@ -314,6 +330,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	return NONE
 
 /obj/item/fish/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/clothing/neck/stethoscope))
 		return NONE
 	user.balloon_alert_to_viewers("checking pulse")
@@ -329,6 +347,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/fish/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(interacting_with, TRAIT_CATCH_AND_RELEASE))
 		return NONE
 	if(HAS_TRAIT(src, TRAIT_NODROP))
@@ -348,12 +368,16 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/fish/proc/released(atom/location, mob/living/user)
+	procstart = null
+	src.procstart = null
 	playsound(location, 'sound/effects/splash.ogg', 50)
 	SEND_SIGNAL(location, COMSIG_FISH_RELEASED_INTO, src, user)
 	qdel(src)
 
 ///Main proc that makes the fish edible.
 /obj/item/fish/proc/make_edible()
+	procstart = null
+	src.procstart = null
 	var/foodtypes = get_food_types()
 	if(foodtypes & RAW)
 		AddComponent(/datum/component/infective, GLOB.floor_diseases.Copy(), weak = TRUE, weak_infection_chance = PERFORM_ALL_TESTS(edible_fish) ? 100 : 15)
@@ -379,10 +403,14 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 ///A proc that returns the food types the edible component has when initialized.
 /obj/item/fish/proc/get_food_types()
+	procstart = null
+	src.procstart = null
 	return SEAFOOD|MEAT|RAW|GORE
 
 ///Kill the fish, remove the raw and gore food types, and the infectiveness too if not under-cooked.
 /obj/item/fish/proc/on_fish_cooked(datum/source, cooking_time)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SHOULD_NOT_OVERRIDE(TRUE)
 	damage_fish(max_integrity)
@@ -416,6 +444,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 ///Just kill the fish, again, and perhaps remove the infective comp.
 /obj/item/fish/proc/on_fish_cooked_again(datum/source, cooking_time)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!HAS_TRAIT(src, TRAIT_FISH_SURVIVE_COOKING))
 		damage_fish(max_integrity)
@@ -424,6 +454,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 ///The fish is well cooked. Change how the fish tastes, remove the infective comp and add the relative trait.
 /obj/item/fish/proc/well_cooked()
+	procstart = null
+	src.procstart = null
 	qdel(GetComponent(/datum/component/infective))
 	AddComponent(/datum/component/germ_sensitive)
 	ADD_TRAIT(src, TRAIT_FISH_WELL_COOKED, INNATE_TRAIT)
@@ -433,6 +465,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 ///Checks if the fish is liked or not when eaten by a human.
 /obj/item/fish/proc/check_liked(mob/living/eater)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(eater, TRAIT_PACIFISM) && (status == FISH_ALIVE ||HAS_MIND_TRAIT(eater, TRAIT_NAIVE)))
 		eater.add_mood_event("eating_fish", /datum/mood_event/pacifist_eating_fish_item)
 		return FOOD_TOXIC
@@ -446,6 +480,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
  * which means it has its own way of handling being bitten, which is defined here.
  */
 /obj/item/fish/proc/after_eat(mob/living/eater, mob/living/feeder)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(!reagents.total_volume)
 		return
@@ -455,6 +491,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	flinch_on_eat(eater, feeder)
 
 /obj/item/fish/proc/flinch_on_eat(mob/living/eater, mob/living/feeder)
+	procstart = null
+	src.procstart = null
 	if(status == FISH_ALIVE && prob(50) && feeder.is_holding(src) && feeder.dropItemToGround(src))
 		to_chat(feeder, span_warning("[src] slips out of your hands in pain!"))
 		var/turf/target_turf = get_ranged_target_turf(get_turf(src), pick(GLOB.alldirs), 2)
@@ -462,6 +500,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 ///A proc that returns a static reagent holder with a set reagents that you'd get when eating this fish.
 /obj/item/fish/proc/generate_fish_reagents(multiplier = 1)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	var/list/reagents_to_add = get_base_edible_reagents_to_add()
 	SEND_SIGNAL(src, COMSIG_GENERATE_REAGENTS_TO_ADD, reagents_to_add)
@@ -474,13 +514,19 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 		protein.data = HAS_TRAIT(src, TRAIT_FISH_WELL_COOKED) ? get_fish_taste_cooked() : get_fish_taste()
 
 /obj/item/fish/proc/get_fish_taste()
+	procstart = null
+	src.procstart = null
 	return list("raw fish" = 2.5, "scales" = 1)
 
 /obj/item/fish/proc/get_fish_taste_cooked()
+	procstart = null
+	src.procstart = null
 	return list("cooked fish" = 2)
 
 ///The proc that adds in the main reagents this fish has when eaten (without accounting for traits)
 /obj/item/fish/proc/get_base_edible_reagents_to_add()
+	procstart = null
+	src.procstart = null
 	var/return_list = list(
 		/datum/reagent/consumable/nutriment/protein = 2,
 		/datum/reagent/blood = 1,
@@ -495,6 +541,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 ///adjusts the maximum volume of the fish reagents holder and update the amount of food to bite
 /obj/item/fish/proc/adjust_reagents_capacity(amount_to_add)
+	procstart = null
+	src.procstart = null
 	if(!reagents)
 		return
 	reagents.maximum_volume += amount_to_add
@@ -505,6 +553,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 ///Grinding a fish replaces some the protein it has with blood and gibs. You ain't getting a clean smoothie out of it.
 /obj/item/fish/on_grind()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!reagents)
 		return
@@ -513,6 +563,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 ///When processed, the reagents inside this fish will be passed to the created atoms.
 /obj/item/fish/UsedforProcessing(mob/living/user, obj/item/used_item, list/chosen_option, list/created_atoms)
+	procstart = null
+	src.procstart = null
 	var/created_len = length(created_atoms)
 	for(var/atom/movable/created as anything in created_atoms)
 		if(!created.reagents)
@@ -527,6 +579,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	return ..()
 
 /obj/item/fish/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if((status == FISH_DEAD || HAS_TRAIT(src, TRAIT_FISH_STASIS)) && icon_state_dead)
 		icon_state = icon_state_dead
 	else
@@ -534,6 +588,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	return ..()
 
 /obj/item/fish/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/reagent_containers/cup/fish_feed))
 		return NONE
 
@@ -550,6 +606,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/fish/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(catcher_name && catch_date)
 		. += span_boldnicegreen("Caught by [catcher_name] on [catch_date].")
@@ -570,6 +628,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 		. += span_warning("[p_Theyve()] been bitten by someone.")
 
 /obj/item/fish/proc/get_health_warnings(mob/user, always_deep = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!HAS_MIND_TRAIT(user, TRAIT_EXAMINE_DEEPER_FISH) && !always_deep)
 		return
 	if(status == FISH_DEAD)
@@ -602,6 +662,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
  * Mainly used to determinate the size and weight of caught fish.
  */
 /obj/item/fish/proc/randomize_size_and_weight(base_size = average_size, base_weight = average_weight, deviation = weight_size_deviation, update = TRUE)
+	procstart = null
+	src.procstart = null
 	var/size_deviation = 0.2 * base_size
 	temp_size = round(clamp(gaussian(base_size, size_deviation), average_size * 1/MAX_FISH_DEVIATION_COEFF, average_size * MAX_FISH_DEVIATION_COEFF))
 
@@ -614,6 +676,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 ///Set the maximum size and weight a fish can reach from base size and weight args if they have't been set already.
 /obj/item/fish/proc/set_max_size_and_weight(base_size, base_weight)
+	procstart = null
+	src.procstart = null
 	if(!maximum_size)
 		maximum_size = min(base_size * 2, average_size * MAX_FISH_DEVIATION_COEFF)
 	if(!maximum_weight)
@@ -621,6 +685,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 ///Updates weight and size, along with weight class, number of fillets you can get and grind results.
 /obj/item/fish/proc/update_size_and_weight(new_size = average_size, new_weight = average_weight, update_materials = TRUE)
+	procstart = null
+	src.procstart = null
 	fish_flags |= FISH_FLAG_UPDATING_SIZE_AND_WEIGHT
 	SEND_SIGNAL(src, COMSIG_FISH_UPDATE_SIZE_AND_WEIGHT, new_size, new_weight)
 
@@ -720,6 +786,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	fish_flags &= ~FISH_FLAG_UPDATING_SIZE_AND_WEIGHT
 
 /obj/item/fish/proc/remove_fillet_type()
+	procstart = null
+	src.procstart = null
 	if(!fillet_type)
 		return
 	var/amount = max(round(num_fillets * size / FISH_FILLET_NUMBER_SIZE_DIVISOR, 1), 1)
@@ -727,6 +795,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	RemoveElement(/datum/element/processable, TOOL_KNIFE, fillet_type, amount, time, screentip_verb = "Cut")
 
 /obj/item/fish/proc/add_fillet_type()
+	procstart = null
+	src.procstart = null
 	if(!fillet_type)
 		return
 	var/amount = max(round(num_fillets * size / FISH_FILLET_NUMBER_SIZE_DIVISOR, 1), 1)
@@ -736,6 +806,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 ///Reset weapon-related variables of this items and recalculates those values based on the fish weight and size.
 /obj/item/fish/proc/update_fish_force()
+	procstart = null
+	src.procstart = null
 	if(force >= 15 && hitsound == SFX_ALT_FISH_SLAP)
 		hitsound = SFX_DEFAULT_FISH_SLAP
 	force = initial(force)
@@ -787,11 +859,15 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 ///A proc that makes the fish slightly stronger or weaker if there's a noticeable discrepancy between size and weight.
 /obj/item/fish/proc/calculate_fish_force_bonus(bonus_malus)
+	procstart = null
+	src.procstart = null
 	demolition_mod += bonus_malus * 0.1
 	attack_speed += bonus_malus * 0.1
 	force = round(force * (1 + bonus_malus * 0.1), 0.1)
 
 /obj/item/fish/proc/get_force_rank()
+	procstart = null
+	src.procstart = null
 	switch(w_class)
 		if(WEIGHT_CLASS_TINY)
 			force -= 3
@@ -811,12 +887,16 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 			demolition_mod += 0.4
 
 /obj/item/fish/apply_single_mat_effect(datum/material/custom_material, amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//The materials are being increased/decreased along with the weight.
 	if(!(fish_flags & FISH_FLAG_UPDATING_SIZE_AND_WEIGHT))
 		material_weight_mult *= GET_MATERIAL_MODIFIER(1 + (custom_material.get_property(MATERIAL_DENSITY) - 4) * 0.1, multiplier)
 
 /obj/item/fish/apply_material_effects()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//Either effects aren't applied of he materials are simply being increased/decreased along with the weight. Avoids recursion.
 	if(!(material_flags & MATERIAL_EFFECTS) || (fish_flags & FISH_FLAG_UPDATING_SIZE_AND_WEIGHT) )
@@ -825,6 +905,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	update_size_and_weight(size, (temp_weight || weight) * material_weight_mult, update_materials = FALSE)
 
 /obj/item/fish/remove_material_effects(replace_mats = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(replace_mats || !(material_flags & MATERIAL_EFFECTS) )
 		return
@@ -842,6 +924,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
  * and hasn't had inherited traits already.
  */
 /obj/item/fish/proc/inherit_traits(list/x_traits, list/y_traits, list/fixed_traits, list/removed_traits)
+	procstart = null
+	src.procstart = null
 
 	fish_traits = fixed_traits?.Copy() || list()
 
@@ -891,16 +975,22 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	apply_traits()
 
 /obj/item/fish/proc/apply_traits()
+	procstart = null
+	src.procstart = null
 	for(var/fish_trait_type in fish_traits)
 		var/datum/fish_trait/trait = GLOB.fish_traits[fish_trait_type]
 		trait.apply_to_fish(src)
 
 /obj/item/fish/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	check_flopping()
 
 /// Stop processing once the stasis trait is added
 /obj/item/fish/proc/enter_stasis(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	stop_flopping()
 	update_appearance()
@@ -908,6 +998,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 /// Start processing again when the stasis trait is removed
 /obj/item/fish/proc/exit_stasis(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(status == FISH_DEAD)
 		return
@@ -916,16 +1008,22 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 ///Returns the value for hunger ranging from 0 to the cap (by default 1)
 /obj/item/fish/proc/get_hunger(cap = FISH_STARVING_THRESHOLD)
+	procstart = null
+	src.procstart = null
 	. = clamp((world.time - last_feeding) / feeding_frequency, 0, cap)
 	if(HAS_TRAIT(src, TRAIT_FISH_NO_HUNGER))
 		return min(., FISH_STARVING_THRESHOLD * 0.2)
 
 /obj/item/fish/proc/get_starvation_mult()
+	procstart = null
+	src.procstart = null
 	var/hunger = get_hunger(cap = FISH_STARVING_THRESHOLD * 2)
 	return hunger >= FISH_STARVING_THRESHOLD ? hunger : 0
 
 ///Feed the fishes with the contents of the fish feed
 /obj/item/fish/proc/feed(datum/reagents/fed_reagents)
+	procstart = null
+	src.procstart = null
 	if(status != FISH_ALIVE)
 		return
 
@@ -957,6 +1055,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 ///Proc that should be called when the fish is fed. By default, it grows the fish depending on various variables.
 /obj/item/fish/proc/sate_hunger()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(loc, TRAIT_STOP_FISH_REPRODUCTION_AND_GROWTH))
 		last_feeding = world.time
 		return
@@ -987,6 +1087,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 		update_size_and_weight(new_size, new_weight)
 
 /obj/item/fish/proc/check_flopping()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src)) //we don't care anymore
 		return
 
@@ -1003,6 +1105,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 		stop_flopping()
 
 /obj/item/fish/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_FISH_STASIS) || status != FISH_ALIVE)
 		return
 	do_fish_process(seconds_per_tick)
@@ -1015,6 +1119,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 		released(loc)
 
 /obj/item/fish/proc/do_fish_process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	//safe mode, don't do much except a few things that don't involve growing or reproducing.
 	if(loc && HAS_TRAIT_FROM(loc, TRAIT_STOP_FISH_REPRODUCTION_AND_GROWTH, AQUARIUM_TRAIT))
 		last_feeding += seconds_per_tick SECONDS
@@ -1030,6 +1136,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	SEND_SIGNAL(src, COMSIG_FISH_LIFE, seconds_per_tick)
 
 /obj/item/fish/proc/set_status(new_status, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(status == new_status)
 		return
 	switch(new_status)
@@ -1057,6 +1165,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	SEND_SIGNAL(src, COMSIG_FISH_STATUS_CHANGED)
 
 /obj/item/fish/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	switch(var_name)
 		if(NAMEOF(src, status))
 			if(var_value != FISH_DEAD && var_value != FISH_ALIVE)
@@ -1098,6 +1208,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	return TRUE
 
 /obj/item/fish/expose_reagents(list/reagents, datum/reagents/source, methods = TOUCH, volume_modifier = 1, show_message = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & COMPONENT_NO_EXPOSE_REAGENTS || status != FISH_DEAD)
 		return
@@ -1112,6 +1224,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 		animate(pixel_x = -1, flags = ANIMATION_RELATIVE)
 
 /obj/item/fish/proc/use_lazarus(datum/source, obj/item/lazarus_injector/injector, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(injector.revive_type != SENTIENCE_ORGANIC)
 		balloon_alert(user, "invalid creature!")
@@ -1124,11 +1238,15 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	return LAZARUS_INJECTOR_USED
 
 /obj/item/fish/proc/update_aquarium_appearance(datum/source, obj/effect/aquarium/visual)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	visual.icon = dedicated_in_aquarium_icon || icon
 	visual.icon_state = dedicated_in_aquarium_icon_state || "[initial(icon_state)]_small"
 
 /obj/item/fish/proc/randomize_aquarium_position(datum/source, atom/movable/current_aquarium, obj/effect/aquarium/visual)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/avg_width = round(sprite_width * 0.5)
 	var/avg_height = round(sprite_height * 0.5)
@@ -1141,6 +1259,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	visual.pixel_z = visual.base_pixel_z = rand(pz_min,pz_max)
 
 /obj/item/fish/proc/update_aquarium_animation(datum/source, current_animation, obj/effect/visual, fluid_type)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/animation = get_aquarium_animation(fluid_type)
 	if(animation == current_animation)
@@ -1152,6 +1272,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 			dead_animation(visual)
 
 /obj/item/fish/proc/get_aquarium_animation(fluid_type)
+	procstart = null
+	src.procstart = null
 	if(fluid_type == AQUARIUM_FLUID_AIR || status == FISH_DEAD)
 		return AQUARIUM_ANIMATION_FISH_DEAD
 	else
@@ -1159,6 +1281,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 /// Create looping random path animation, pixel offsets parameters include offsets already
 /obj/item/fish/proc/swim_animation(obj/effect/aquarium/visual)
+	procstart = null
+	src.procstart = null
 	var/avg_width = round(sprite_width / 2)
 	var/avg_height = round(sprite_height / 2)
 
@@ -1191,6 +1315,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 		animate(pixel_w = target_w, pixel_z = target_z, time = eyeballed_time, loop = -1)
 
 /obj/item/fish/proc/dead_animation(obj/effect/aquarium/visual)
+	procstart = null
+	src.procstart = null
 	//Set base_pixel_y to lowest possible value
 	var/avg_height = round(sprite_height / 2)
 	var/pz_min = visual.aquarium_zone_min_pz + avg_height - 16
@@ -1205,6 +1331,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 #define MIN_DEAD_FISH_BEAUTY -600
 
 /obj/item/fish/proc/get_aquarium_beauty(datum/source, list/beauty_holder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/actual_beauty = beauty
 	if(status == FISH_DEAD)
@@ -1218,6 +1346,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 /// Checks if our current environment lets us live.
 /obj/item/fish/proc/proper_environment(temp_range_min = required_temperature_min, temp_range_max = required_temperature_max)
+	procstart = null
+	src.procstart = null
 	if(!loc)
 		return TRUE
 
@@ -1243,6 +1373,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	return TRUE
 
 /obj/item/fish/proc/process_health(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/health_change = 0
 	if(!proper_environment())
 		health_change -= 2.5 //Dying here
@@ -1265,6 +1397,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 ///Used to damage this fish while it's still alive. Prevents the fish from taking damage beyond the integrity_failure threshold
 /obj/item/fish/proc/damage_fish(amount)
+	procstart = null
+	src.procstart = null
 	if(status == FISH_DEAD || amount <= 0)
 		return
 	var/current_integrity = get_integrity()
@@ -1272,10 +1406,14 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 /// fish dies when its integrity reaches 50%
 /obj/item/fish/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_status(FISH_DEAD)
 
 /obj/item/fish/repair_damage(amount)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !bites_amount)
 		return
@@ -1287,6 +1425,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	regenerate_bites(bites_to_recover)
 
 /obj/item/fish/proc/regenerate_bites(amount)
+	procstart = null
+	src.procstart = null
 	amount = min(amount, bites_amount)
 	if(amount <= 0)
 		return
@@ -1295,12 +1435,16 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 /// returns a value between 0 and 1 representing how much integrity the fish has before dying (atom_break)
 /obj/item/fish/proc/get_health_percentage()
+	procstart = null
+	src.procstart = null
 	var/max_health = max_integrity * (1 - integrity_failure)
 	var/death_thres = max_integrity - max_health
 	return CLAMP01((get_integrity() - death_thres) / max_health)
 
 /// Returns tracked_fish_by_type but flattened and without the items in the blacklist, also shuffled if shuffle is TRUE.
 /obj/item/fish/proc/get_aquarium_fishes(shuffle = FALSE, blacklist)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/obj/item/fish/fish in loc)
 		. += fish
@@ -1310,6 +1454,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	return .
 
 /obj/item/fish/proc/ready_to_reproduce(being_targeted = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!loc || !HAS_TRAIT(loc, TRAIT_IS_AQUARIUM))
 		return FALSE
 	if(being_targeted && HAS_TRAIT(src, TRAIT_FISH_NO_MATING))
@@ -1319,6 +1465,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	return !HAS_TRAIT(loc, TRAIT_STOP_FISH_REPRODUCTION_AND_GROWTH) && get_health_percentage() >= 0.8 && world.time >= breeding_wait
 
 /obj/item/fish/proc/try_to_reproduce()
+	procstart = null
+	src.procstart = null
 	if(!loc || !HAS_TRAIT(loc, TRAIT_IS_AQUARIUM))
 		return FALSE
 
@@ -1387,6 +1535,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 /// A product of fish breeding is spawned, and it's inherited traits are handled here.
 /obj/item/fish/proc/create_offspring(chosen_type, obj/item/fish/partner, datum/fish_evolution/evolution)
+	procstart = null
+	src.procstart = null
 	var/obj/item/fish/new_fish = new chosen_type (loc, FALSE)
 	//Try to pass down compatible traits based on inheritability
 	new_fish.inherit_traits(fish_traits, partner?.fish_traits, evolution?.new_traits, evolution?.removed_traits)
@@ -1447,6 +1597,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 /// This flopping animation played while the fish is alive.
 /obj/item/fish/proc/flop_animation()
+	procstart = null
+	src.procstart = null
 	var/pause_between = PAUSE_BETWEEN_PHASES + rand(1, 5) //randomized a bit so fish are not in sync
 	animate(src, time = pause_between, loop = -1)
 	//move nose down and up
@@ -1480,6 +1632,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 /// Starts flopping animation
 /obj/item/fish/proc/start_flopping()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_FISH_FLOPPING))  //Requires update_transform/animate_wrappers to be less restrictive.
 		return
 	ADD_TRAIT(src, TRAIT_FISH_FLOPPING, TRAIT_GENERIC)
@@ -1487,20 +1641,28 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 /// Stops flopping animation
 /obj/item/fish/proc/stop_flopping()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_FISH_FLOPPING))
 		REMOVE_TRAIT(src, TRAIT_FISH_FLOPPING, TRAIT_GENERIC)
 		animate(src, transform = matrix()) //stop animation
 
 /// Refreshes flopping animation after temporary animation finishes
 /obj/item/fish/proc/on_temp_animation(datum/source, animation_duration)
+	procstart = null
+	src.procstart = null
 	if(animation_duration > 0)
 		addtimer(CALLBACK(src, PROC_REF(refresh_flopping)), animation_duration)
 
 /obj/item/fish/proc/refresh_flopping()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_FISH_FLOPPING))
 		flop_animation()
 
 /obj/item/fish/proc/try_electrogenesis()
+	procstart = null
+	src.procstart = null
 	if(status == FISH_DEAD || get_starvation_mult())
 		return
 	COOLDOWN_START(src, electrogenesis_cooldown, ELECTROGENESIS_DURATION + ELECTROGENESIS_VARIANCE)
@@ -1530,6 +1692,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 ///Returns the price of this fish, for the fish export.
 /obj/item/fish/proc/get_export_price(price)
+	procstart = null
+	src.procstart = null
 	var/size_weight_exponentation = (size * weight * FISH_PRICE_MULTIPLIER)**FISH_PRICE_CURVE_EXPONENT
 	var/raw_price = price + size_weight_exponentation
 	if(raw_price >= FISH_PRICE_SOFT_CAP_THRESHOLD + 1)
@@ -1545,6 +1709,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 #undef FISH_PRICE_SOFT_CAP_EXPONENT
 
 /obj/item/fish/proc/get_happiness_value()
+	procstart = null
+	src.procstart = null
 	var/happiness_value = 0
 	if(fish_flags & FISH_FLAG_PETTED)
 		happiness_value++
@@ -1564,10 +1730,14 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	return clamp(happiness_value, FISH_SAD, FISH_VERY_HAPPY)
 
 /obj/item/fish/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	try_pet_fish(user)
 
 /obj/item/fish/proc/try_pet_fish(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/in_aquarium = loc && HAS_TRAIT(loc, TRAIT_IS_AQUARIUM)
 	if(status == FISH_DEAD)
 		to_chat(user, span_warning("You try to pet [src], but [p_theyre()] motionless!"))
@@ -1579,6 +1749,8 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	return pet_fish(user, in_aquarium)
 
 /obj/item/fish/proc/pet_fish(mob/living/user, in_aquarium)
+	procstart = null
+	src.procstart = null
 	if(fish_flags & FISH_FLAG_PETTED)
 		if(in_aquarium)
 			to_chat(user, span_warning("[src] runs away from your finger as you dip it into the water!"))
@@ -1616,18 +1788,26 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	return TRUE
 
 /obj/item/fish/proc/undo_petted()
+	procstart = null
+	src.procstart = null
 	fish_flags &= ~FISH_FLAG_PETTED
 
 ///Proc called in trophy_fishes.dm, when a fish is mounted on persistent trophy mounts
 /obj/item/fish/proc/persistence_save(list/data)
+	procstart = null
+	src.procstart = null
 	return
 
 ///Proc called in trophy_fishes.dm, when a persistent fishing trophy mount is spawned and the fish instantiated
 /obj/item/fish/proc/persistence_load(list/data)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Returns random fish, using random_case_rarity probabilities.
 /proc/random_fish_type(required_fluid)
+	procstart = null
+	src.procstart = null
 	var/static/probability_table
 	var/argkey = "fish_[required_fluid]" //If this expands more extract bespoke element arg generation to some common helper.
 	if(!probability_table || !probability_table[argkey])

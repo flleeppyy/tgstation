@@ -3,6 +3,8 @@
  * IMPORTANT: Multiple animate() calls do not stack well, so try to do them all at once if you can.
  */
 /mob/living/proc/update_transform(resize = RESIZE_DEFAULT_SIZE)
+	procstart = null
+	src.procstart = null
 	var/matrix/ntransform = matrix(transform)
 	var/current_translate = get_transform_translation_size(current_size)
 	var/final_dir = dir
@@ -59,6 +61,8 @@
 	return TRUE
 
 /mob/living/proc/readjust_atom_huds(animate_time = null)
+	procstart = null
+	src.procstart = null
 	for (var/hud_key in hud_list)
 		var/image/hud_image = hud_list[hud_key]
 		if (istype(hud_image))
@@ -66,6 +70,8 @@
 
 /// Calculates how far vertically the mob's transform should translate according to its size (1 being "default")
 /mob/living/proc/get_transform_translation_size(value)
+	procstart = null
+	src.procstart = null
 	return (value - 1) * 16
 
 /**
@@ -79,6 +85,8 @@
  * * animate: If TRUE, the mob will animate to the new position. If FALSE, it will instantly move.
  */
 /mob/living/proc/add_offsets(source, w_add, x_add, y_add, z_add, animate = TRUE)
+	procstart = null
+	src.procstart = null
 	LAZYINITLIST(offsets)
 	if(isnum(w_add))
 		LAZYSET(offsets[PIXEL_W_OFFSET], source, w_add)
@@ -97,6 +105,8 @@
  * * animate: If TRUE, the mob will animate to the position with any offsets removed. If FALSE, it will instantly move.
  */
 /mob/living/proc/remove_offsets(source, animate = TRUE)
+	procstart = null
+	src.procstart = null
 	for(var/offset in offsets)
 		LAZYREMOVE(offsets[offset], source)
 		ASSOC_UNSETEMPTY(offsets, offset)
@@ -111,6 +121,8 @@
  * Returns TRUE if the mob's position has changed, FALSE otherwise.
  */
 /mob/living/proc/update_offsets(animate = FALSE)
+	procstart = null
+	src.procstart = null
 	var/new_w = base_pixel_w
 	var/new_x = base_pixel_x
 	var/new_y = base_pixel_y
@@ -163,6 +175,8 @@
  * Returns the offset if we are, 0 otherwise.
  */
 /mob/living/proc/has_offset(source, pixel)
+	procstart = null
+	src.procstart = null
 	if(isnull(source) && isnull(pixel))
 		stack_trace("has_offset() requires at least one argument.")
 		return 0
@@ -189,9 +203,13 @@
 // Updates offsets if base pixel changes
 // Future TODO: move base pixel onto /obj and make mobs just set a base pixel using a source
 /mob/living/set_base_pixel_x(new_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_offsets()
 
 /mob/living/set_base_pixel_y(new_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_offsets()

@@ -7,6 +7,8 @@
 	var/receive_water = FALSE
 
 /datum/component/plumbing/hydroponics/Initialize(ducting_layer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!istype(parent, /obj/machinery/hydroponics/constructable))
@@ -18,13 +20,19 @@
 	water_reagents.my_atom = hydro_parent
 
 /datum/component/plumbing/hydroponics/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(water_reagents)
 	return ..()
 
 /datum/component/plumbing/hydroponics/recipient_reagents_holder()
+	procstart = null
+	src.procstart = null
 	return receive_water ? water_reagents : reagents
 
 /datum/component/plumbing/hydroponics/send_request(dir)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/hydroponics/constructable/hydro_parent = parent
 
 	var/initial_nutri_amount = reagents.total_volume

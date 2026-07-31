@@ -20,6 +20,8 @@
 	var/reagent_flags = TRANSPARENT | NO_REACT
 
 /obj/machinery/plumbing/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_anchored(mapload)
 	if(mapload)
@@ -29,12 +31,16 @@
 	register_context()
 
 /obj/machinery/plumbing/create_reagents(max_vol, flags)
+	procstart = null
+	src.procstart = null
 	if(!ispath(reagents))
 		qdel(reagents)
 	reagents = new reagents(max_vol, flags)
 	reagents.my_atom = src
 
 /obj/machinery/plumbing/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(isnull(held_item))
 		return
@@ -50,6 +56,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/plumbing/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isobserver(user) || !in_range(src, user))
 		return
@@ -70,6 +78,8 @@
 	. += span_notice("A [EXAMINE_HINT("plunger")] can be used to flush out reagents.")
 
 /obj/machinery/plumbing/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 
@@ -82,6 +92,8 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/plumbing/welder_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 
@@ -99,6 +111,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/machinery/plumbing/plunger_act(obj/item/plunger/attacking_plunger, mob/living/user, reinforced)
+	procstart = null
+	src.procstart = null
 	user.balloon_alert_to_viewers("furiously plunging...")
 	if(!do_after(user, 3 SECONDS, target = src))
 		return TRUE

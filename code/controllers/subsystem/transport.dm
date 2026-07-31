@@ -31,10 +31,14 @@ PROCESSING_SUBSYSTEM_DEF(transport)
  *            id_tag: a unique identifier for this device, set on init
  */
 /datum/controller/subsystem/processing/transport/proc/hello(atom/new_unit, unit_name, id_tag)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(new_unit, COMSIG_TRANSPORT_REQUEST, PROC_REF(incoming_request))
 	log_transport("Sub: Registered new transport component [unit_name] [id_tag].")
 
 /datum/controller/subsystem/processing/transport/Recover()
+	procstart = null
+	src.procstart = null
 	_listen_lookup = SStransport._listen_lookup
 
 /**
@@ -54,6 +58,8 @@ PROCESSING_SUBSYSTEM_DEF(transport)
  *            options: additional flags for the request (ie: bypass doors, emagged request)
  */
 /datum/controller/subsystem/processing/transport/proc/incoming_request(obj/source, transport_id, platform, options)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	log_transport("Sub: Received request from [source.name] [source.id_tag]. Contents: [transport_id] [platform] [options]")
@@ -147,6 +153,8 @@ PROCESSING_SUBSYSTEM_DEF(transport)
  *            request_flags: additional flags for the request (ie: bypass doors, emagged request)
  */
 /datum/controller/subsystem/processing/transport/proc/dispatch_transport(datum/transport_controller/linear/tram/transport_controller, destination, request_flags)
+	procstart = null
+	src.procstart = null
 	log_transport("Sub: Sending dispatch request to [transport_controller.specific_transport_id]. [request_flags ? "Contents: [request_flags]." : "No request flags."]")
 
 	// This will generally be caught in the request validation, however an admin may try to force move the tram, or other actions bypassing the request process.
@@ -168,6 +176,8 @@ PROCESSING_SUBSYSTEM_DEF(transport)
  *            request_flags: additional flags for the request (ie: bypass doors, emagged request)
  */
 /datum/controller/subsystem/processing/transport/proc/pre_departure(datum/transport_controller/linear/tram/transport_controller, request_flags)
+	procstart = null
+	src.procstart = null
 	log_transport("Sub: [transport_controller.specific_transport_id] start pre-departure. Info: [SUB_TS_STATUS]")
 
 	// Lock the physical controls of the tram
@@ -200,6 +210,8 @@ PROCESSING_SUBSYSTEM_DEF(transport)
  *            attempt: how many attempts to start moving we've made
  */
 /datum/controller/subsystem/processing/transport/proc/validate_and_dispatch(datum/transport_controller/linear/tram/transport_controller, attempt)
+	procstart = null
+	src.procstart = null
 	log_transport("Sub: [transport_controller.specific_transport_id] start pre-departure validation. Attempts: [attempt ? attempt : 0].")
 	var/current_attempt
 	if(attempt)
@@ -225,6 +237,8 @@ PROCESSING_SUBSYSTEM_DEF(transport)
 
 /// Give a list of destinations to the tram controls
 /datum/controller/subsystem/processing/transport/proc/detailed_destination_list(specific_transport_id)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/obj/effect/landmark/transport/nav_beacon/tram/platform/destination as anything in SStransport.nav_beacons[specific_transport_id])
 		var/list/this_destination = list()

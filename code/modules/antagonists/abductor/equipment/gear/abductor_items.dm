@@ -5,6 +5,8 @@
 	abstract_type = /obj/item/abductor
 
 /obj/item/proc/AbductorCheck(mob/user)
+	procstart = null
+	src.procstart = null
 	if (HAS_MIND_TRAIT(user, TRAIT_ABDUCTOR_TRAINING))
 		return TRUE
 
@@ -12,6 +14,8 @@
 	return FALSE
 
 /obj/item/abductor/proc/ScientistCheck(mob/user)
+	procstart = null
+	src.procstart = null
 	var/training = HAS_MIND_TRAIT(user, TRAIT_ABDUCTOR_TRAINING)
 	var/sci_training = HAS_MIND_TRAIT(user, TRAIT_ABDUCTOR_SCIENTIST_TRAINING)
 
@@ -35,6 +39,8 @@
 	var/obj/machinery/abductor/console/console
 
 /obj/item/abductor/gizmo/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ScientistCheck(user))
 		return
 	if(!console)
@@ -50,6 +56,8 @@
 	to_chat(user, span_notice("You switch the device to [mode == GIZMO_SCAN? "SCAN": "MARK"] MODE"))
 
 /obj/item/abductor/gizmo/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!ScientistCheck(user))
 		return ITEM_INTERACT_SKIP_TO_ATTACK // So you slap them with it
 	if(!console)
@@ -65,16 +73,22 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/abductor/gizmo/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!ismob(interacting_with))
 		return NONE
 	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/abductor/gizmo/proc/scan(atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(target))
 		console.AddSnapshot(target)
 		to_chat(user, span_notice("You scan [target] and add [target.p_them()] to the database."))
 
 /obj/item/abductor/gizmo/proc/mark(atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/marked = marked_target_weakref?.resolve()
 	if(marked == target)
 		to_chat(user, span_warning("This specimen is already marked!"))
@@ -86,6 +100,8 @@
 		prepare(target,user)
 
 /obj/item/abductor/gizmo/proc/prepare(atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(get_dist(target,user)>1)
 		to_chat(user, span_warning("You need to be next to the specimen to prepare it for transport!"))
 		return
@@ -95,6 +111,8 @@
 		to_chat(user, span_notice("You finish preparing [target] for transport."))
 
 /obj/item/abductor/gizmo/Destroy()
+	procstart = null
+	src.procstart = null
 	if(console)
 		console.gizmo = null
 		console = null
@@ -109,6 +127,8 @@
 	icon_angle = -45
 
 /obj/item/abductor/silencer/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!AbductorCheck(user))
 		return ITEM_INTERACT_SKIP_TO_ATTACK // So you slap them with it
 
@@ -116,11 +136,15 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/abductor/silencer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!ismob(interacting_with))
 		return NONE
 	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/abductor/silencer/proc/radio_off(atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if( !(user in (viewers(7,target))) )
 		return
 
@@ -134,6 +158,8 @@
 		radio_off_mob(human_target)
 
 /obj/item/abductor/silencer/proc/radio_off_mob(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	var/list/all_items = target.get_all_contents()
 
 	for(var/obj/item/radio/radio in all_items)
@@ -151,6 +177,8 @@
 	var/mode = MIND_DEVICE_MESSAGE
 
 /obj/item/abductor/mind_device/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ScientistCheck(user))
 		return
 
@@ -163,11 +191,15 @@
 	to_chat(user, span_notice("You switch the device to [mode == MIND_DEVICE_MESSAGE? "TRANSMISSION": "COMMAND"] MODE"))
 
 /obj/item/abductor/mind_device/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!ismob(interacting_with))
 		return NONE
 	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/abductor/mind_device/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!ScientistCheck(user))
 		return ITEM_INTERACT_BLOCKING
 
@@ -179,6 +211,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/abductor/mind_device/proc/mind_control(atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(target))
 		var/mob/living/carbon/carbon_target = target
 		var/obj/item/organ/heart/gland/target_gland = carbon_target.get_organ_slot("heart")
@@ -217,6 +251,8 @@
 		to_chat(user, span_notice("You send the command to your target."))
 
 /obj/item/abductor/mind_device/proc/mind_message(atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isliving(target))
 		var/mob/living/living_target = target
 		if(living_target.stat == DEAD)
@@ -241,6 +277,8 @@
 	fail_message = span_abductor("Firing error, please contact Command.")
 
 /obj/item/firing_pin/abductor/pin_auth(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = isabductor(user)
 
 /obj/item/gun/energy/alien
@@ -266,6 +304,8 @@
 	trigger_guard = TRIGGER_GUARD_ALLOW_ALL// variable-size trigger, get it? (abductors need this to be set so the gun is usable for them)
 
 /obj/item/gun/energy/shrink_ray/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.visible_message(span_suicide("[user] points [src] at [user.p_their()] head, it looks like [user.p_theyre()] going to commit suicide!"))
 	// we want an animation, so lets manually handle suicide.
@@ -273,6 +313,8 @@
 	return MANUAL_SUICIDE
 
 /obj/item/gun/energy/shrink_ray/proc/shrink_death(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/shrink = user.transform.Scale(0.1,0.1)
 	animate(user, 30 SECONDS, transform=shrink)
 	// Have to wait until the animate is done
@@ -315,6 +357,8 @@ Addendum for more exotic biomechanical specimens:<br>
 Return to step 11 of normal process."}
 
 /obj/item/paper/guides/antag/abductor/click_alt()
+	procstart = null
+	src.procstart = null
 	return CLICK_ACTION_BLOCKING //otherwise it would fold into a paperplane.
 
 /obj/item/melee/baton/abductor
@@ -346,10 +390,14 @@ Return to step 11 of normal process."}
 	var/time_to_cuff = 3 SECONDS
 
 /obj/item/melee/baton/abductor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 
 /obj/item/melee/baton/abductor/proc/toggle(mob/living/user=usr)
+	procstart = null
+	src.procstart = null
 	if(!AbductorCheck(user))
 		return
 	mode = (mode+1)%BATON_MODES
@@ -375,6 +423,8 @@ Return to step 11 of normal process."}
 	update_appearance()
 
 /obj/item/melee/baton/abductor/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(mode)
 		if(BATON_STUN)
@@ -391,9 +441,13 @@ Return to step 11 of normal process."}
 			inhand_icon_state = "wonderprodProbe"
 
 /obj/item/melee/baton/abductor/try_stun(mob/living/target, mob/living/user, harmbatonning)
+	procstart = null
+	src.procstart = null
 	return AbductorCheck(user) && ..()
 
 /obj/item/melee/baton/abductor/baton_effect(mob/living/target, mob/living/user, modifiers, stun_override, clumsy)
+	procstart = null
+	src.procstart = null
 	switch (mode)
 		if(BATON_STUN)
 			target.visible_message(span_danger("[user] stuns [target] with [src]!"),
@@ -411,16 +465,24 @@ Return to step 11 of normal process."}
 			ProbeAttack(target,user)
 
 /obj/item/melee/baton/abductor/get_stun_description(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	return // chat messages are handled in their own procs.
 
 /obj/item/melee/baton/abductor/get_cyborg_stun_description(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	return // same as above.
 
 /obj/item/melee/baton/abductor/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	toggle(user)
 
 /obj/item/melee/baton/abductor/proc/SleepAttack(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	playsound(src, on_stun_sound, 50, TRUE, -1)
 	if(INCAPACITATED_IGNORING(target, INCAPABLE_RESTRAINTS|INCAPABLE_GRAB))
 		if(target.can_block_magic(MAGIC_RESISTANCE_MIND))
@@ -445,6 +507,8 @@ Return to step 11 of normal process."}
 							span_userdanger("You suddenly feel drowsy!"))
 
 /obj/item/melee/baton/abductor/proc/CuffAttack(mob/living/victim, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(victim))
 		return
 	var/mob/living/carbon/carbon_victim = victim
@@ -464,6 +528,8 @@ Return to step 11 of normal process."}
 			to_chat(user, span_warning("[carbon_victim] doesn't have two hands..."))
 
 /obj/item/melee/baton/abductor/proc/ProbeAttack(mob/living/victim, mob/living/user)
+	procstart = null
+	src.procstart = null
 	victim.visible_message(span_danger("[user] probes [victim] with [src]!"), \
 						span_userdanger("[user] probes you!"))
 
@@ -495,12 +561,16 @@ Return to step 11 of normal process."}
 	flags_1 = NONE
 
 /obj/item/restraints/handcuffs/energy/on_uncuffed(datum/source, mob/living/wearer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	wearer.visible_message(span_danger("[wearer]'s [name] breaks in a discharge of energy!"), span_userdanger("[wearer]'s [name] breaks in a discharge of energy!"))
 	do_sparks(4, FALSE, wearer.loc)
 	qdel(src)
 
 /obj/item/melee/baton/abductor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(AbductorCheck(user))
 		switch(mode)
@@ -521,12 +591,16 @@ Return to step 11 of normal process."}
 	keyslot2 = /obj/item/encryptionkey/heads/captain
 
 /obj/item/radio/headset/abductor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/wearertargeting/earprotection)
 	make_syndie()
 
 // Stops humans from disassembling abductor headsets.
 /obj/item/radio/headset/abductor/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/abductor_machine_beacon
@@ -538,6 +612,8 @@ Return to step 11 of normal process."}
 	var/obj/machinery/spawned_machine
 
 /obj/item/abductor_machine_beacon/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	user.visible_message(span_notice("[user] places down [src] and activates it."), span_notice("You place down [src] and activate it."))
 	user.dropItemToGround(src)
@@ -545,6 +621,8 @@ Return to step 11 of normal process."}
 	addtimer(CALLBACK(src, PROC_REF(try_spawn_machine)), 3 SECONDS)
 
 /obj/item/abductor_machine_beacon/proc/try_spawn_machine()
+	procstart = null
+	src.procstart = null
 	var/viable = FALSE
 	if(isfloorturf(loc))
 		var/turf/T = loc
@@ -631,6 +709,8 @@ Return to step 11 of normal process."}
 	drop_sound = 'sound/items/handling/helmet/helmet_drop1.ogg'
 
 /obj/item/clothing/head/helmet/abductor/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot_flags & slot)
 		RegisterSignal(user, COMSIG_LIVING_CAN_TRACK, PROC_REF(can_track))
@@ -638,10 +718,14 @@ Return to step 11 of normal process."}
 		UnregisterSignal(user, COMSIG_LIVING_CAN_TRACK)
 
 /obj/item/clothing/head/helmet/abductor/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, COMSIG_LIVING_CAN_TRACK)
 
 /obj/item/clothing/head/helmet/abductor/proc/can_track(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return COMPONENT_CANT_TRACK
@@ -661,6 +745,8 @@ Return to step 11 of normal process."}
 	var/active_toolset = TOOLSET_MEDICAL
 
 /obj/item/abductor/alien_omnitool/get_all_tool_behaviours()
+	procstart = null
+	src.procstart = null
 	return list(
 	TOOL_BLOODFILTER,
 	TOOL_BONESET,
@@ -679,14 +765,20 @@ Return to step 11 of normal process."}
 	)
 
 /obj/item/abductor/alien_omnitool/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_toolset() //This populates the tool list, and sets it to the hacking configuration.
 
 /obj/item/abductor/alien_omnitool/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += " The mode is: [tool_behaviour]"
 
 /obj/item/abductor/alien_omnitool/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return
 
@@ -725,7 +817,9 @@ Return to step 11 of normal process."}
 
 	playsound(loc, 'sound/machines/click.ogg', 50, TRUE)
 
-/obj/item/abductor/alien_omnitool/attack_self_secondary(mob/user, modifiers) //ADD SFX FOR USING THE TOOL
+/obj/item/abductor/alien_omnitool/attack_self_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null //ADD SFX FOR USING THE TOOL
 	if(!user)
 		return
 
@@ -733,6 +827,8 @@ Return to step 11 of normal process."}
 	playsound(loc, 'sound/machines/click.ogg', 50, TRUE)
 
 /obj/item/abductor/alien_omnitool/proc/check_menu(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated || !user.Adjacent(src))
@@ -740,6 +836,8 @@ Return to step 11 of normal process."}
 	return TRUE
 
 /obj/item/abductor/alien_omnitool/proc/set_toolset(mob/user)
+	procstart = null
+	src.procstart = null
 	if(active_toolset == TOOLSET_MEDICAL)
 		tool_list = list(
 			"Crowbar" = image(icon = 'icons/obj/antags/abductor.dmi', icon_state = "crowbar"),

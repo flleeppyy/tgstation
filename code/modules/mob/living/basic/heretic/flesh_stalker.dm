@@ -19,6 +19,8 @@
 	)
 
 /mob/living/basic/heretic_summon/stalker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ai_target_timer)
 	grant_actions_by_list(actions_to_add)

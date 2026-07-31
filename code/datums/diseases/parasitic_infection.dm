@@ -16,6 +16,8 @@
 	bypasses_immunity = TRUE
 
 /datum/disease/parasite/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

@@ -3,6 +3,8 @@
 	gender = MALE
 
 /mob/living/basic/goat/pete/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/area/goat_area = get_area(src)
 	if((bodytemperature < T20C) || istype(goat_area, /area/station/service/kitchen/coldroom))

@@ -1,4 +1,6 @@
 /mob/living/carbon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_carbon_reagents()
 	update_body(is_creating = TRUE) //to update the carbon's new bodyparts appearance
@@ -12,6 +14,8 @@
 	breathing_loop = new(src, _direct = TRUE)
 
 /mob/living/carbon/Destroy()
+	procstart = null
+	src.procstart = null
 	//This must be done first, so the mob ghosts correctly before DNA etc is nulled
 	. = ..()
 
@@ -31,6 +35,8 @@
 	GLOB.carbon_list -= src
 
 /mob/living/carbon/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/hurt = TRUE
 	var/extra_speed = 0
@@ -92,15 +98,21 @@
 		playsound(src,'sound/items/weapons/punch1.ogg',50,TRUE)
 
 /mob/living/carbon/proc/canBeHandcuffed()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/carbon/proc/create_carbon_reagents()
+	procstart = null
+	src.procstart = null
 	if (!isnull(reagents))
 		return
 
 	create_reagents(1000, REAGENT_HOLDER_ALIVE)
 
 /mob/living/carbon/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(href_list["embedded_object"])
 		var/obj/item/bodypart/limb = locate(href_list["embedded_limb"]) in bodyparts
@@ -136,10 +148,14 @@
 		paper_note.show_through_camera(usr)
 
 /mob/living/carbon/on_fall()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	loc?.handle_fall(src) //it's loc so it doesn't call the mob's handle_fall which does nothing
 
 /mob/living/carbon/resist_buckle()
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_RESTRAINED))
 		buckled.user_unbuckle_mob(src, src)
 		return
@@ -168,9 +184,13 @@
 
 
 /mob/living/carbon/resist_fire()
+	procstart = null
+	src.procstart = null
 	return !!apply_status_effect(/datum/status_effect/stop_drop_roll)
 
 /mob/living/carbon/resist_restraints()
+	procstart = null
+	src.procstart = null
 	var/obj/item/I = null
 	var/type = 0
 	if(handcuffed)
@@ -196,6 +216,8 @@
  * @param {number} cuff_break - Speed multiplier, 0 is default, see _DEFINES\combat.dm
  */
 /mob/living/carbon/proc/cuff_resist(obj/item/cuffs, breakouttime = null, cuff_break = 0)
+	procstart = null
+	src.procstart = null
 	if((cuff_break != INSTANT_CUFFBREAK) && (SEND_SIGNAL(src, COMSIG_MOB_REMOVING_CUFFS, cuffs) & COMSIG_MOB_BLOCK_CUFF_REMOVAL))
 		return //The blocking object should sent a fluff-appropriate to_chat about cuff removal being blocked
 	if(cuffs.item_flags & BEING_REMOVED)
@@ -226,6 +248,8 @@
 	cuffs.item_flags &= ~BEING_REMOVED
 
 /mob/living/carbon/proc/uncuff()
+	procstart = null
+	src.procstart = null
 	if (handcuffed)
 		dropItemToGround(handcuffed, TRUE)
 		changeNext_move(0)
@@ -234,6 +258,8 @@
 		changeNext_move(0)
 
 /mob/living/carbon/proc/clear_cuffs(obj/item/I, cuff_break)
+	procstart = null
+	src.procstart = null
 	if(!I.loc || buckled)
 		return FALSE
 	if(I != handcuffed && I != legcuffed)
@@ -255,6 +281,8 @@
 			return TRUE
 
 /mob/living/carbon/proc/accident(obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(!I || (I.item_flags & ABSTRACT) || HAS_TRAIT(I, TRAIT_NODROP))
 		return
 
@@ -283,12 +311,16 @@
 			I.safe_throw_at(target,I.throw_range,I.throw_speed,src, force = move_force)
 
 /mob/living/carbon/attack_ui(slot, params)
+	procstart = null
+	src.procstart = null
 	if(!has_hand_for_held_index(active_hand_index))
 		return 0
 	return ..()
 
 /// Proc that compels the mob to throw up. Returns TRUE if the mob actually threw up.
 /mob/living/carbon/proc/vomit(vomit_flags = VOMIT_CATEGORY_DEFAULT, vomit_type = /obj/effect/decal/cleanable/vomit/toxic, lost_nutrition = 10, distance = 1, purge_ratio = 0.1)
+	procstart = null
+	src.procstart = null
 	var/force = (vomit_flags & MOB_VOMIT_FORCE)
 	if((HAS_TRAIT(src, TRAIT_NOHUNGER) || HAS_TRAIT(src, TRAIT_TOXINLOVER)) && !force)
 		return FALSE
@@ -382,6 +414,8 @@
  * * amount: int The amount of reagent
  */
 /mob/living/carbon/proc/expel_ingested(atom/bite, amount)
+	procstart = null
+	src.procstart = null
 	visible_message(span_danger("[src] throws up all over [p_them()]self!"), \
 					span_userdanger("You are unable to keep the [bite] down without a stomach!"))
 
@@ -390,6 +424,8 @@
 	bite.reagents.trans_to(spew, amount, transferred_by = src)
 
 /mob/living/carbon/proc/spew_organ(power = 5, amt = 1)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to amt)
 		if(!organs.len)
 			break //Guess we're out of organs!
@@ -402,6 +438,8 @@
 
 
 /mob/living/carbon/fully_replace_character_name(oldname, newname, log_new_name = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -412,6 +450,8 @@
 
 
 /mob/living/carbon/set_body_position(new_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.))
 		return
@@ -423,6 +463,8 @@
 
 //Updates the mob's health from bodyparts and mob damage variables
 /mob/living/carbon/updatehealth()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_GODMODE))
 		return
 	var/total_burn = 0
@@ -447,6 +489,8 @@
 	SEND_SIGNAL(src, COMSIG_LIVING_HEALTH_UPDATE)
 
 /mob/living/carbon/update_sight()
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return
 	if(stat == DEAD && !HAS_TRAIT(src, TRAIT_CORPSELOCKED))
@@ -487,6 +531,8 @@
 
 /// Modifies lighting_cutoff/lighting_color_cutoffs/see_invisible and returns additional sight flags to apply
 /mob/living/carbon/proc/get_sight_and_cutoffs()
+	procstart = null
+	src.procstart = null
 	var/new_sight = NONE
 	if(HAS_TRAIT(src, TRAIT_TRUE_NIGHT_VISION))
 		lighting_cutoff = max(lighting_cutoff, LIGHTING_CUTOFF_HIGH)
@@ -519,6 +565,8 @@
  * This is where clothing adds its various vision limiting effects, such as welding helmets
  */
 /mob/living/carbon/proc/update_tint()
+	procstart = null
+	src.procstart = null
 	var/tint = 0
 	for(var/obj/item/clothing/worn_item in get_equipped_items(INCLUDE_ABSTRACT))
 		tint += worn_item.tint
@@ -544,6 +592,8 @@
 
 //this handles hud updates
 /mob/living/carbon/update_damage_hud()
+	procstart = null
+	src.procstart = null
 
 	if(!client)
 		return
@@ -638,6 +688,8 @@
 		clear_fullscreen("brute")
 
 /mob/living/carbon/update_health_hud(shown_health_amount)
+	procstart = null
+	src.procstart = null
 	if(!client || !hud_used)
 		return
 
@@ -664,6 +716,8 @@
 		health_hud.icon_state = "health6"
 
 /mob/living/carbon/set_health(new_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(CONFIG_GET(flag/near_death_experience))
 		if(. > HEALTH_THRESHOLD_NEARDEATH)
@@ -674,6 +728,8 @@
 
 
 /mob/living/carbon/update_stat()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_GODMODE))
 		return
 	if(stat != DEAD)
@@ -694,6 +750,8 @@
 
 //called when we get cuffed/uncuffed
 /mob/living/carbon/proc/update_handcuffed()
+	procstart = null
+	src.procstart = null
 	if(handcuffed)
 		drop_all_held_items()
 		stop_pulling()
@@ -706,6 +764,8 @@
 	update_worn_handcuffs()
 
 /mob/living/carbon/revive(full_heal_flags = NONE, excess_healing = 0, force_grab_ghost = FALSE)
+	procstart = null
+	src.procstart = null
 	if(excess_healing)
 		adjust_blood_volume(excess_healing * 2)
 
@@ -718,6 +778,8 @@
 	return ..()
 
 /mob/living/carbon/heal_and_revive(heal_to = 75, revive_message)
+	procstart = null
+	src.procstart = null
 	// We can't heal them if they're missing a heart
 	if(needs_heart() && !get_organ_slot(ORGAN_SLOT_HEART))
 		return FALSE
@@ -737,6 +799,8 @@
 	return .
 
 /mob/living/carbon/fully_heal(heal_flags = HEAL_ALL)
+	procstart = null
+	src.procstart = null
 
 	// Should be handled via signal on embedded, or via heal on bodypart
 	// Otherwise I don't care to give it a separate flag
@@ -772,10 +836,14 @@
 	return ..()
 
 /mob/living/carbon/do_strange_reagent_revival(healing_amount)
+	procstart = null
+	src.procstart = null
 	set_heartattack(FALSE)
 	return ..()
 
 /mob/living/carbon/can_be_revived()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_HUSK))
 		return FALSE
 	if(!HAS_TRAIT(src, TRAIT_BRAINLESS_CARBON) && !get_organ_by_type(/obj/item/organ/brain))
@@ -783,6 +851,8 @@
 	return ..()
 
 /mob/living/carbon/proc/can_defib()
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 	if (HAS_TRAIT(src, TRAIT_SUICIDED))
 		return DEFIB_FAIL_SUICIDE
@@ -811,6 +881,8 @@
 
 /// Return a defib status based on the heart organ provided
 /mob/living/carbon/proc/can_defib_heart(obj/item/organ/heart/heart_organ)
+	procstart = null
+	src.procstart = null
 	if (!needs_heart())
 		return NONE
 
@@ -824,6 +896,8 @@
 
 /// Return a defib status based on the brain organ provided
 /mob/living/carbon/proc/can_defib_brain(obj/item/organ/brain/brain_organ)
+	procstart = null
+	src.procstart = null
 	if (QDELETED(brain_organ))
 		return DEFIB_FAIL_NO_BRAIN
 
@@ -836,9 +910,13 @@
 	return NONE
 
 /mob/living/carbon/proc/can_defib_client()
+	procstart = null
+	src.procstart = null
 	return (HAS_TRAIT(src, TRAIT_MIND_TEMPORARILY_GONE) || client || get_ghost(FALSE, TRUE)) && (can_defib() & DEFIB_REVIVABLE_STATES)
 
 /mob/living/carbon/harvest(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	var/organs_amt = 0
@@ -854,6 +932,8 @@
 /// Creates body parts for this carbon completely from scratch.
 /// Optionally takes a map of body zones to what type to instantiate instead of them.
 /mob/living/carbon/proc/create_bodyparts(list/overrides)
+	procstart = null
+	src.procstart = null
 	var/list/bodyparts_paths = overrides?.Copy() || bodyparts.Copy()
 	bodyparts = list()
 	for(var/obj/item/bodypart/bodypart_path as anything in bodyparts_paths)
@@ -865,16 +945,22 @@
 
 /// Called when a new hand is added
 /mob/living/carbon/proc/on_added_hand(obj/item/bodypart/arm/new_hand, hand_index)
+	procstart = null
+	src.procstart = null
 	if(hand_index > hand_bodyparts.len)
 		hand_bodyparts.len = hand_index
 	hand_bodyparts[hand_index] = new_hand
 
 /// Cleans up references to a hand when it is dismembered or deleted
 /mob/living/carbon/proc/on_lost_hand(obj/item/bodypart/arm/lost_hand)
+	procstart = null
+	src.procstart = null
 	hand_bodyparts[lost_hand.held_index] = null
 
 ///Proc to hook behavior on bodypart additions. Do not directly call. You're looking for [/obj/item/bodypart/proc/try_attach_limb()].
 /mob/living/carbon/proc/add_bodypart(obj/item/bodypart/new_bodypart)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	new_bodypart.on_adding(src)
@@ -908,6 +994,8 @@
 
 ///Proc to hook behavior on bodypart removals.  Do not directly call. You're looking for [/obj/item/bodypart/proc/drop_limb()].
 /mob/living/carbon/proc/remove_bodypart(obj/item/bodypart/old_bodypart, special)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(special)
@@ -951,18 +1039,26 @@
 
 ///Updates the bodypart speed modifier based on our bodyparts.
 /mob/living/carbon/proc/update_bodypart_speed_modifier()
+	procstart = null
+	src.procstart = null
 	var/final_modification = 0
 	for(var/obj/item/bodypart/leg/bodypart in get_bodyparts())
 		final_modification += bodypart.speed_modifier
 	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/bodypart, update = TRUE, multiplicative_slowdown = final_modification)
 
 /proc/cmp_organ_slot_asc(slot_a, slot_b)
+	procstart = null
+	src.procstart = null
 	return GLOB.organ_process_order.Find(slot_a) - GLOB.organ_process_order.Find(slot_b)
 
 /mob/living/carbon/proc/get_footprint_sprite()
+	procstart = null
+	src.procstart = null
 	return FOOTPRINT_SPRITE_PAWS
 
 /mob/living/carbon/vv_get_dropdown()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	VV_DROPDOWN_OPTION("", "--- /carbon ---")
 	VV_DROPDOWN_OPTION(VV_HK_MODIFY_BODYPART, "Modify bodypart")
@@ -972,6 +1068,8 @@
 	VV_DROPDOWN_OPTION(VV_HK_CURE_TRAUMA, "Cure Brain Traumas")
 
 /mob/living/carbon/vv_do_topic(list/href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)
@@ -1085,9 +1183,13 @@
 		message_admins(span_notice("[key_name_admin(usr)] has cured all traumas from [key_name_admin(src)]."))
 
 /mob/living/carbon/can_resist()
+	procstart = null
+	src.procstart = null
 	return bodyparts.len > 2 && ..()
 
 /mob/living/carbon/wash(clean_types)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Wash equipped stuff that cannot be covered
 	for(var/obj/item/held_thing in held_items)
@@ -1106,6 +1208,8 @@
 
 /// if any of our bodyparts are bleeding
 /mob/living/carbon/proc/is_bleeding()
+	procstart = null
+	src.procstart = null
 	if(!CAN_HAVE_BLOOD(src))
 		return FALSE
 	for(var/obj/item/bodypart/part as anything in get_bodyparts())
@@ -1114,6 +1218,8 @@
 
 /// get our total bleedrate
 /mob/living/carbon/proc/get_total_bleed_rate()
+	procstart = null
+	src.procstart = null
 	if(!CAN_HAVE_BLOOD(src))
 		return FALSE
 
@@ -1133,6 +1239,8 @@
  * * forced_type- Which wound or category of wounds you want to choose from, WOUND_LIST_BLUNT, WOUND_LIST_SLASH, or WOUND_LIST_BURN (or some combination). If passed a list, picks randomly from the listed wounds. Defaults to all 3 types
  */
 /mob/living/carbon/proc/generate_fake_scars(num_scars, forced_type)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to num_scars)
 		var/datum/scar/scaries = new
 		var/obj/item/bodypart/scar_part = pick(bodyparts)
@@ -1158,6 +1266,8 @@
 
 /// Returns whether or not the carbon should be able to be shocked
 /mob/living/carbon/proc/should_electrocute(power_source)
+	procstart = null
+	src.procstart = null
 	if (ismecha(loc))
 		return FALSE
 
@@ -1171,6 +1281,8 @@
 
 /// Modifies max_skillchip_count and updates active skillchips
 /mob/living/carbon/proc/adjust_skillchip_complexity_modifier(delta)
+	procstart = null
+	src.procstart = null
 	skillchip_complexity_modifier += delta
 
 	var/obj/item/organ/brain/brain = get_organ_slot(ORGAN_SLOT_BRAIN)
@@ -1183,6 +1295,8 @@
 
 /// Modifies the handcuffed value if a different value is passed, returning FALSE otherwise. The variable should only be changed through this proc.
 /mob/living/carbon/proc/set_handcuffed(new_value)
+	procstart = null
+	src.procstart = null
 	if(handcuffed == new_value)
 		return FALSE
 	. = handcuffed
@@ -1195,6 +1309,8 @@
 	update_handcuffed()
 
 /mob/living/carbon/on_lying_down(new_lying_angle)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!buckled || (buckled.buckle_lying != 0 && buckled.buckle_lying != NO_BUCKLE_LYING))
 		lying_angle_on_lying_down(new_lying_angle)
@@ -1202,6 +1318,8 @@
 
 /// Special carbon interaction on lying down, to transform its sprite by a rotation.
 /mob/living/carbon/proc/lying_angle_on_lying_down(new_lying_angle)
+	procstart = null
+	src.procstart = null
 	if(new_lying_angle)
 		set_lying_angle(new_lying_angle)
 	else if (buckled && buckled.buckle_lying != NO_BUCKLE_LYING)
@@ -1210,6 +1328,8 @@
 		set_lying_angle(pick(LYING_ANGLE_EAST, LYING_ANGLE_WEST))
 
 /mob/living/carbon/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	switch(var_name)
 		if(NAMEOF(src, disgust))
 			set_disgust(var_value)
@@ -1225,12 +1345,16 @@
 	return ..()
 
 /mob/living/carbon/get_attack_type()
+	procstart = null
+	src.procstart = null
 	if(has_active_hand())
 		var/obj/item/bodypart/arm/active_arm = get_active_hand()
 		return active_arm.attack_type
 	return ..()
 
 /mob/living/carbon/proc/attach_rot()
+	procstart = null
+	src.procstart = null
 	if(flags_1 & HOLOGRAM_1)
 		return
 	if(!(mob_biotypes & (MOB_ORGANIC|MOB_UNDEAD)))
@@ -1238,6 +1362,8 @@
 	AddComponent(/datum/component/rot, 6 MINUTES, 10 MINUTES, 1)
 
 /mob/living/carbon/get_photo_description(obj/item/camera/camera)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_INVISIBLE_TO_CAMERA))
 		if(camera.see_ghosts)
 			return /mob/dead/observer::photo_description
@@ -1248,6 +1374,8 @@
  * This proc is used to determine whether or not the mob can handle touching an acid affected object.
  */
 /mob/living/carbon/proc/can_touch_acid(atom/acided_atom, acid_power, acid_volume)
+	procstart = null
+	src.procstart = null
 	// So people can take their own clothes off
 	if((acided_atom == src) || (acided_atom.loc == src))
 		return TRUE
@@ -1259,6 +1387,8 @@
  * This proc is used to determine whether or not the mob can handle touching a burning object.
  */
 /mob/living/carbon/proc/can_touch_burning(atom/burning_atom, acid_power, acid_volume)
+	procstart = null
+	src.procstart = null
 	// So people can take their own clothes off
 	if((burning_atom == src) || (burning_atom.loc == src))
 		return TRUE
@@ -1268,6 +1398,8 @@
 
 /// Goes through the organs and bodyparts of the mob and updates their blood_dna_info, in case their blood type has changed (via set_species() or otherwise)
 /mob/living/carbon/proc/update_cached_blood_dna_info()
+	procstart = null
+	src.procstart = null
 	var/list/blood_dna_info = get_blood_dna_list()
 	for(var/obj/item/organ/organ as anything in organs)
 		organ.blood_dna_info = blood_dna_info
@@ -1276,6 +1408,8 @@
 
 /// Setter for changing a mob's blood type
 /mob/living/carbon/proc/set_blood_type(datum/blood_type/new_blood_type, update_cached_blood_dna_info = TRUE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(isnull(dna))
@@ -1295,6 +1429,8 @@
 	SEND_SIGNAL(src, COMSIG_CARBON_CHANGED_BLOOD_TYPE, new_blood_type, update_cached_blood_dna_info)
 
 /mob/living/carbon/dropItemToGround(obj/item/to_drop, force = FALSE, silent = FALSE, invdrop = TRUE, turf/newloc = null)
+	procstart = null
+	src.procstart = null
 	if(to_drop && (organs.Find(to_drop) || bodyparts.Find(to_drop))) //let's not do this, aight?
 		return FALSE
 	return ..()
@@ -1303,6 +1439,8 @@
 /// Accepts an optional timeout after which we remove the tail wagging
 /// Returns true if successful, false otherwise
 /mob/living/carbon/proc/wag_tail(timeout = INFINITY)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/tail/wagged = get_organ_slot(ORGAN_SLOT_EXTERNAL_TAIL)
 	if(!wagged)
 		return FALSE
@@ -1310,13 +1448,17 @@
 
 /// Helper to cleanly stop all tail wagging
 /// Returns true if successful, false otherwise
-/mob/living/carbon/proc/unwag_tail() // can't unwag a tail
+/mob/living/carbon/proc/unwag_tail()
+	procstart = null
+	src.procstart = null // can't unwag a tail
 	var/obj/item/organ/tail/unwagged = get_organ_slot(ORGAN_SLOT_EXTERNAL_TAIL)
 	if(!unwagged)
 		return FALSE
 	return unwagged.stop_wag(src)
 
 /mob/living/carbon/itch(obj/item/bodypart/target_part = null, damage = 0.5, can_scratch = TRUE, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if (isnull(target_part))
 		target_part = get_bodypart(get_random_valid_zone(even_weights = TRUE))
 	if (!IS_ORGANIC_LIMB(target_part) || (target_part.bodypart_flags & BODYPART_PSEUDOPART))
@@ -1324,6 +1466,8 @@
 	return ..()
 
 /mob/living/carbon/ominous_nosebleed()
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/head = get_bodypart(BODY_ZONE_HEAD)
 	if(isnull(head))
 		return ..()
@@ -1335,18 +1479,24 @@
 	visible_message(span_notice("[src] gets a nosebleed."), span_warning("You get a nosebleed."))
 
 /mob/living/carbon/check_hit_limb_zone_name(hit_zone)
+	procstart = null
+	src.procstart = null
 	if(get_bodypart(hit_zone))
 		return hit_zone
 	// When a limb is missing the damage is actually passed to the chest
 	return BODY_ZONE_CHEST
 
 /mob/living/carbon/get_bloodtype()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/blood_type)
 	if(!CAN_HAVE_BLOOD(src))
 		return
 	return dna?.blood_type
 
 /mob/living/carbon/update_nutrition()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Force a weight update in case we're stasis'd and don't tick
 	if (HAS_TRAIT_FROM(src, TRAIT_FAT, OBESITY))

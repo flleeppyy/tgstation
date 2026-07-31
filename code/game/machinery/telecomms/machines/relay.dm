@@ -22,6 +22,8 @@
 	var/receiving = TRUE
 
 /obj/machinery/telecomms/relay/receive_information(datum/signal/subspace/signal, obj/machinery/telecomms/machine_from)
+	procstart = null
+	src.procstart = null
 	// Add our level and send it back
 	var/turf/relay_turf = get_turf(src)
 	if(can_send(signal) && relay_turf)
@@ -41,6 +43,8 @@
  * Returns `TRUE` if it can listen to the signal, `FALSE` if not.
  */
 /obj/machinery/telecomms/relay/proc/can_listen_to_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return FALSE
 	if(!is_freq_listening(signal))
@@ -54,6 +58,8 @@
  * Returns `TRUE` if it can send the signal, `FALSE` if not.
  */
 /obj/machinery/telecomms/relay/proc/can_send(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	if(!can_listen_to_signal(signal))
 		return FALSE
 	return broadcasting
@@ -65,6 +71,8 @@
  * Returns `TRUE` if it can receive the signal, `FALSE` if not.
  */
 /obj/machinery/telecomms/relay/proc/can_receive(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	if(!can_listen_to_signal(signal))
 		return FALSE
 	return receiving
@@ -74,6 +82,8 @@
 	network = "tcommsat"
 
 /obj/machinery/telecomms/relay/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(autolinkers.len) //We want lateloaded presets to autolink (lateloaded aways/ruins/shuttles)
 		return INITIALIZE_HINT_LATELOAD

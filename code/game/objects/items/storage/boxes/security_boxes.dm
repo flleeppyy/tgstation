@@ -7,6 +7,8 @@
 	illustration = "flashbang"
 
 /obj/item/storage/box/flashbangs/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/grenade/flashbang(src)
 
@@ -17,6 +19,8 @@
 	illustration = "flashbang"
 
 /obj/item/storage/box/stingbangs/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 5)
 		new /obj/item/grenade/stingbang(src)
 
@@ -27,6 +31,8 @@
 	illustration = "flash"
 
 /obj/item/storage/box/flashes/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		new /obj/item/assembly/flash/handheld(src)
 
@@ -37,6 +43,8 @@
 	illustration = "flash"
 
 /obj/item/storage/box/wall_flash/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/id = rand(1000, 9999)
 	// FIXME what if this conflicts with an existing one?
 
@@ -57,6 +65,8 @@
 	illustration = "grenade"
 
 /obj/item/storage/box/teargas/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/grenade/chem_grenade/teargas(src)
 
@@ -66,6 +76,8 @@
 	illustration = "emp"
 
 /obj/item/storage/box/emps/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 5)
 		new /obj/item/grenade/empgrenade(src)
 
@@ -76,6 +88,8 @@
 	illustration = "id"
 
 /obj/item/storage/box/prisoner/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/card/id/advanced/prisoner/one(src)
 	new /obj/item/card/id/advanced/prisoner/two(src)
@@ -92,6 +106,8 @@
 	illustration = "pda"
 
 /obj/item/storage/box/seccarts/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		new /obj/item/disk/computer/security(src)
 
@@ -102,6 +118,8 @@
 	illustration = "firingpin"
 
 /obj/item/storage/box/firingpins/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 5)
 		new /obj/item/firing_pin(src)
 
@@ -110,6 +128,8 @@
 	desc = "A box full of paywall firing pins, to allow newly-developed firearms to operate behind a custom-set paywall."
 
 /obj/item/storage/box/firingpins/paywall/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 5)
 		new /obj/item/firing_pin/paywall(src)
 
@@ -118,6 +138,8 @@
 	desc = "A box full of special syndicate firing pins which allow only syndicate operatives to use weapons with those firing pins."
 
 /obj/item/storage/box/firingpins/syndicate/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 5)
 		new /obj/item/firing_pin/implant/pindicate(src)
 
@@ -127,6 +149,8 @@
 	illustration = "firingpin"
 
 /obj/item/storage/box/lasertagpins/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/firing_pin/tag/red(src)
 		new /obj/item/firing_pin/tag/blue(src)
@@ -138,6 +162,8 @@
 	illustration = "handcuff"
 
 /obj/item/storage/box/handcuffs/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/restraints/handcuffs(src)
 
@@ -148,6 +174,8 @@
 	illustration = "handcuff"
 
 /obj/item/storage/box/zipties/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/restraints/handcuffs/cable/zipties(src)
 
@@ -158,6 +186,8 @@
 	illustration = "handcuff"
 
 /obj/item/storage/box/alienhandcuffs/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/restraints/handcuffs/alien(src)
 
@@ -168,6 +198,8 @@
 	illustration = null
 
 /obj/item/storage/box/rubbershot/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/ammo_casing/shotgun/rubbershot(src)
 
@@ -178,12 +210,16 @@
 	illustration = null
 
 /obj/item/storage/box/lethalshot/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/ammo_casing/shotgun/buckshot(src)
 
 /obj/item/storage/box/lethalshot/old
 
 /obj/item/storage/box/lethalshot/old/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/ammo_casing/shotgun/buckshot/old(src)
 
@@ -194,6 +230,8 @@
 	illustration = null
 
 /obj/item/storage/box/slugs/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/ammo_casing/shotgun(src)
 
@@ -204,6 +242,8 @@
 	illustration = null
 
 /obj/item/storage/box/beanbag/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		new /obj/item/ammo_casing/shotgun/beanbag(src)
 
@@ -214,6 +254,8 @@
 	illustration = null
 
 /obj/item/storage/box/breacherslug/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/ammo_casing/shotgun/breacher(src)
 
@@ -224,6 +266,8 @@
 	illustration = null
 
 /obj/item/storage/box/large_dart/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/ammo_casing/shotgun/dart/large(src)
 
@@ -232,6 +276,8 @@
 	illustration = "sandbag"
 
 /obj/item/storage/box/emptysandbags/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/emptysandbag(src)
 
@@ -241,6 +287,8 @@
 	illustration = "grenade"
 
 /obj/item/storage/box/holy_grenades/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new/obj/item/grenade/chem_grenade/holy(src)
 
@@ -250,6 +298,8 @@
 	illustration = "sparkler"
 
 /obj/item/storage/box/fireworks/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new/obj/item/sparkler(src)
 		new/obj/item/grenade/firecracker(src)
@@ -259,6 +309,8 @@
 	desc = "This box has a small label on it stating that it's from the Gorlex Marauders. Contains an assortment of \"fireworks\"."
 
 /obj/item/storage/box/fireworks/dangerous/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new/obj/item/sparkler(src)
 		new/obj/item/grenade/firecracker(src)
@@ -274,6 +326,8 @@
 	illustration = "firecracker"
 
 /obj/item/storage/box/firecrackers/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new/obj/item/grenade/firecracker(src)
 
@@ -283,6 +337,8 @@
 	illustration = "sparkler"
 
 /obj/item/storage/box/sparklers/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new/obj/item/sparkler(src)
 
@@ -291,5 +347,7 @@
 	desc = "A box claiming to contain evidence bags."
 
 /obj/item/storage/box/evidence/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		new /obj/item/evidencebag(src)

@@ -6,6 +6,8 @@
  * we check that the target is actually in the nullrod_variants global list
  */
 /datum/element/nullrod_core/Attach(obj/item/target, chaplain_spawnable = TRUE, rune_remove_line = "BEGONE FOUL MAGIKS!!")
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(target))
 		return ELEMENT_INCOMPATIBLE
@@ -30,6 +32,8 @@
 
 /// Callback for effect remover, invoked when a cult rune is cleared
 /datum/element/nullrod_core/proc/on_cult_rune_removed(obj/item/nullrod, obj/effect/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(target, /obj/effect/rune))
 		return
 

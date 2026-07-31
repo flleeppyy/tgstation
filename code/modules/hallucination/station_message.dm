@@ -8,6 +8,8 @@
 	var/require_hearing = TRUE
 
 /datum/hallucination/station_message/start()
+	procstart = null
+	src.procstart = null
 	if(require_hearing && HAS_TRAIT(hallucinator, TRAIT_DEAF))
 		return FALSE
 	if(do_fake_alert() == CANCEL_FAKE_ALERT)
@@ -17,18 +19,24 @@
 	return TRUE
 
 /datum/hallucination/station_message/proc/do_fake_alert()
+	procstart = null
+	src.procstart = null
 	return CANCEL_FAKE_ALERT
 
 /datum/hallucination/station_message/blob_alert
 	require_hearing = TRUE
 
 /datum/hallucination/station_message/blob_alert/do_fake_alert()
+	procstart = null
+	src.procstart = null
 	priority_announce("Confirmed outbreak of level 5 biohazard aboard [station_name()]. All personnel must contain the outbreak.", \
 		"Biohazard Alert", ANNOUNCER_OUTBREAK5, players = list(hallucinator))
 
 /datum/hallucination/station_message/shuttle_dock
 
 /datum/hallucination/station_message/shuttle_dock/do_fake_alert()
+	procstart = null
+	src.procstart = null
 	priority_announce(
 		text = "[SSshuttle.emergency] has docked with the station. You have [DisplayTimeText(SSshuttle.emergency_dock_time)] to board the emergency shuttle.",
 		title = "Emergency Shuttle Arrival",
@@ -42,6 +50,8 @@
 	require_hearing = TRUE
 
 /datum/hallucination/station_message/malf_ai/do_fake_alert()
+	procstart = null
+	src.procstart = null
 	if(!(locate(/mob/living/silicon/ai) in GLOB.silicon_mobs))
 		return CANCEL_FAKE_ALERT
 
@@ -76,6 +86,8 @@
 	)
 
 /datum/hallucination/station_message/heretic/do_fake_alert()
+	procstart = null
+	src.procstart = null
 	// Unfortunately, this will not be synced if mass hallucinated
 	var/mob/living/carbon/human/totally_real_heretic = random_non_sec_crewmember()
 	if(!totally_real_heretic)
@@ -95,6 +107,8 @@
 	require_hearing = TRUE
 
 /datum/hallucination/station_message/cult_summon/do_fake_alert()
+	procstart = null
+	src.procstart = null
 	// Same, will not be synced if mass hallucinated
 	var/mob/living/carbon/human/totally_real_cult_leader = random_non_sec_crewmember()
 	if(!totally_real_cult_leader)
@@ -118,11 +132,15 @@
 	require_hearing = TRUE
 
 /datum/hallucination/station_message/meteors/do_fake_alert()
+	procstart = null
+	src.procstart = null
 	priority_announce("Meteors have been detected on collision course with the station.", "Meteor Alert", ANNOUNCER_METEORS, players = list(hallucinator))
 
 /datum/hallucination/station_message/supermatter_delam
 
 /datum/hallucination/station_message/supermatter_delam/do_fake_alert()
+	procstart = null
+	src.procstart = null
 	SEND_SOUND(hallucinator, 'sound/effects/magic/charge.ogg')
 	to_chat(hallucinator, span_bolddanger("You feel reality distort for a moment..."))
 
@@ -131,12 +149,16 @@
 	random_hallucination_weight = 0
 
 /datum/hallucination/station_message/clock_cult_ark/start()
+	procstart = null
+	src.procstart = null
 	hallucinator.playsound_local(hallucinator, 'sound/machines/clockcult/ark_deathrattle.ogg', 50, FALSE, pressure_affected = FALSE)
 	hallucinator.playsound_local(hallucinator, 'sound/effects/clockcult_gateway_disrupted.ogg', 50, FALSE, pressure_affected = FALSE)
 	addtimer(CALLBACK(src, PROC_REF(play_distant_explosion_sound)), 2.7 SECONDS)
 	return TRUE // does not call parent to finish up the sound in a few seconds
 
 /datum/hallucination/station_message/clock_cult_ark/proc/play_distant_explosion_sound()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 

@@ -35,13 +35,19 @@
 	src.pre_hit_callback = pre_hit_callback
 
 /datum/component/amputating_limbs/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignals(parent, list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_HOSTILE_PRE_ATTACKINGTARGET), PROC_REF(try_amputate))
 
 /datum/component/amputating_limbs/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_HOSTILE_PRE_ATTACKINGTARGET))
 
 /// Called when you click on literally anything with your hands, see if it is an injured carbon and then try to cut it up
 /datum/component/amputating_limbs/proc/try_amputate(mob/living/surgeon, atom/victim, proximity, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!proximity || !iscarbon(victim) || HAS_TRAIT(victim, TRAIT_NODISMEMBER) || !prob(snip_chance))
 		return
@@ -73,6 +79,8 @@
 
 /// Chop one off
 /datum/component/amputating_limbs/proc/amputate(mob/living/surgeon, mob/living/carbon/victim, obj/item/bodypart/to_remove)
+	procstart = null
+	src.procstart = null
 	if(surgery_time > 0 SECONDS)
 		surgeon.visible_message(span_warning("[surgeon] is [surgery_verb] the [to_remove] off of [victim]!"))
 	if (surgery_time > 0 && !do_after(surgeon, delay = surgery_time, target = victim))

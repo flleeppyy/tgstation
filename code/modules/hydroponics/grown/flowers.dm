@@ -204,6 +204,8 @@
 	throw_range = 3
 
 /obj/item/food/grown/flower/sunflower/make_dryable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/dryable, /obj/item/food/semki/healthy) //yum
 
 // Moonflower
@@ -269,6 +271,8 @@
 	attack_verb_simple = list("roast", "scorch", "burn")
 
 /obj/item/grown/novaflower/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/capsaicin = 0, /datum/reagent/consumable/condensedcapsaicin = 0)
 
 // Rose
@@ -308,6 +312,8 @@
 	foodtypes = VEGETABLES | GROSS
 
 /obj/item/food/grown/flower/rose/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot & ITEM_SLOT_MASK)
 		worn_icon_state = "[base_icon_state]_mouth"

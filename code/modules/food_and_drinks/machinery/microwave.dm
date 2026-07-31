@@ -89,6 +89,8 @@
 	var/static/list/ai_radial_options = list("eject" = radial_eject, "cook" = radial_cook, "charge" = radial_charge, "examine" = radial_examine)
 
 /obj/machinery/microwave/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 	set_wires(new /datum/wires/microwave(src))
@@ -97,6 +99,8 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/machinery/microwave/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if(gone in ingredients)
 		ingredients -= gone
 		if(!QDELING(gone) && ingredients.len && isitem(gone))
@@ -107,10 +111,14 @@
 	return ..()
 
 /obj/machinery/microwave/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	eject()
 	return ..()
 
 /obj/machinery/microwave/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(ingredients)
 	QDEL_NULL(soundloop)
 	remove_shared_particles(/particles/smoke)
@@ -119,6 +127,8 @@
 	return ..()
 
 /obj/machinery/microwave/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cell_powered)
 		if(!isnull(cell))
@@ -154,6 +164,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/microwave/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	efficiency = 0
 	vampire_charging_capable = FALSE
@@ -169,6 +181,8 @@
 			break
 
 /obj/machinery/microwave/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vampire_charging_capable)
 		. += span_info("This model features Wave™: a Nanotrasen exclusive. Our latest and greatest, Wave™ allows your PDA to be charged wirelessly through microwave frequencies! You can Wave-charge your device by placing it inside and selecting the charge mode.")
@@ -220,6 +234,8 @@
 #define MICROWAVE_INGREDIENT_OVERLAY_SIZE 24
 
 /obj/machinery/microwave/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// All of these will use a full icon state instead
@@ -297,6 +313,8 @@
 #undef MICROWAVE_INGREDIENT_OVERLAY_SIZE
 
 /obj/machinery/microwave/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(broken)
 		icon_state = "[base_icon_state]mwb"
 	else if(dirty_anim_playing)
@@ -315,17 +333,25 @@
 	return ..()
 
 /obj/machinery/microwave/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(default_unfasten_wrench(user, tool))
 		update_appearance()
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/microwave/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/microwave/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/microwave/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(broken != REALLY_BROKEN)
 		return NONE
 
@@ -346,6 +372,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/microwave/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(broken != KINDA_BROKEN)
 		return NONE
 
@@ -366,6 +394,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/microwave/tool_act(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!tool.tool_behaviour)
 		return ..()
 	if(operating)
@@ -378,6 +408,8 @@
 	return ..()
 
 /obj/machinery/microwave/item_interaction(mob/living/user, obj/item/item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(operating)
 		return NONE
 
@@ -437,12 +469,16 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/microwave/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (isnull(tool.atom_storage))
 		return
 	handle_dumping(user, tool)
 	return ITEM_INTERACT_BLOCKING
 
 /obj/machinery/microwave/proc/handle_dumping(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(isnull(tool.atom_storage))
 		return
 
@@ -469,11 +505,15 @@
 		update_appearance()
 
 /obj/machinery/microwave/mouse_drop_receive(obj/item/tool, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (!istype(tool) || isnull(tool.atom_storage))
 		return
 	handle_dumping(user, tool)
 
 /obj/machinery/microwave/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.can_perform_action(src, ALLOW_SILICON_REACH))
 		if(!length(ingredients))
 			balloon_alert(user, "it's empty!")
@@ -484,6 +524,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/microwave/click_alt(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!vampire_charging_capable)
 		return NONE
 
@@ -495,6 +537,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/microwave/click_ctrl(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		return NONE
 
@@ -508,6 +552,8 @@
 	return CLICK_ACTION_BLOCKING
 
 /obj/machinery/microwave/ui_interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!anchored)
@@ -546,6 +592,8 @@
 			user.examinate(src)
 
 /obj/machinery/microwave/wash(clean_types)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(operating || !(clean_types & CLEAN_SCRUB))
 		return .
@@ -555,6 +603,8 @@
 	. |= COMPONENT_CLEANED|COMPONENT_CLEANED_GAIN_XP
 
 /obj/machinery/microwave/proc/eject()
+	procstart = null
+	src.procstart = null
 	var/atom/drop_loc = drop_location()
 	for(var/obj/item/item_ingredient as anything in ingredients)
 		item_ingredient.forceMove(drop_loc)
@@ -562,6 +612,8 @@
 	open(autoclose = 1.4 SECONDS)
 
 /obj/machinery/microwave/proc/start_cycle(mob/user)
+	procstart = null
+	src.procstart = null
 	if(wire_mode_swap)
 		spark()
 		if(vampire_charging_enabled)
@@ -580,6 +632,8 @@
  * * cooker - The mob that initiated the cook cycle, can be null if no apparent mob triggered it (such as via emp)
  */
 /obj/machinery/microwave/proc/cook(mob/cooker)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (NOPOWER|BROKEN))
 		return
 
@@ -626,6 +680,8 @@
 	start(cooker)
 
 /obj/machinery/microwave/proc/wzhzhzh()
+	procstart = null
+	src.procstart = null
 	if(cell_powered && !isnull(cell))
 		if(!cell.use(TIER_1_CELL_CHARGE_RATE * efficiency))
 			playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50, FALSE)
@@ -638,6 +694,8 @@
 	update_appearance()
 
 /obj/machinery/microwave/proc/spark()
+	procstart = null
+	src.procstart = null
 	visible_message(span_warning("Sparks fly around [src]!"))
 	do_sparks(2, TRUE, src)
 
@@ -647,6 +705,8 @@
  * * cooker - The mob that initiated the cook cycle, can be null if no apparent mob triggered it (such as via emp)
  */
 /obj/machinery/microwave/proc/start(mob/cooker)
+	procstart = null
+	src.procstart = null
 	wzhzhzh()
 	cook_loop(type = MICROWAVE_NORMAL, cycles = 10, cooker = cooker)
 
@@ -656,10 +716,14 @@
  * * cooker - The mob that initiated the cook cycle, can be null if no apparent mob triggered it (such as via emp)
  */
 /obj/machinery/microwave/proc/start_can_fail(mob/cooker)
+	procstart = null
+	src.procstart = null
 	wzhzhzh()
 	cook_loop(type = MICROWAVE_PRE, cycles = 4, cooker = cooker)
 
 /obj/machinery/microwave/proc/muck()
+	procstart = null
+	src.procstart = null
 	wzhzhzh()
 	playsound(loc, 'sound/effects/splat.ogg', 50, TRUE)
 	dirty_anim_playing = TRUE
@@ -674,7 +738,9 @@
  * * wait - deciseconds between loops
  * * cooker - The mob that initiated the cook cycle, can be null if no apparent mob triggered it (such as via emp)
  */
-/obj/machinery/microwave/proc/cook_loop(type, cycles, wait = max(12 - 2 * efficiency, 2), mob/cooker) // standard wait is 10
+/obj/machinery/microwave/proc/cook_loop(type, cycles, wait = max(12 - 2 * efficiency, 2), mob/cooker)
+	procstart = null
+	src.procstart = null // standard wait is 10
 	if((machine_stat & BROKEN) && type == MICROWAVE_PRE)
 		pre_fail()
 		return
@@ -714,6 +780,8 @@
 	addtimer(CALLBACK(src, PROC_REF(cook_loop), type, cycles, wait, cooker), wait)
 
 /obj/machinery/microwave/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cell_powered)
 		return
@@ -728,6 +796,8 @@
  * * cooker - The mob that initiated the cook cycle, can be null if no apparent mob triggered it (such as via emp)
  */
 /obj/machinery/microwave/proc/loop_finish(mob/cooker)
+	procstart = null
+	src.procstart = null
 	operating = FALSE
 	if(pda_failure)
 		spark()
@@ -762,15 +832,21 @@
 	after_finish_loop()
 
 /obj/machinery/microwave/proc/pre_fail()
+	procstart = null
+	src.procstart = null
 	broken = REALLY_BROKEN
 	operating = FALSE
 	spark()
 	after_finish_loop()
 
 /obj/machinery/microwave/proc/pre_success(mob/cooker)
+	procstart = null
+	src.procstart = null
 	cook_loop(type = MICROWAVE_NORMAL, cycles = 10, cooker = cooker)
 
 /obj/machinery/microwave/proc/muck_finish()
+	procstart = null
+	src.procstart = null
 	visible_message(span_warning("\The [src] gets covered in muck!"))
 
 	dirty = MAX_MICROWAVE_DIRTINESS
@@ -780,18 +856,24 @@
 	after_finish_loop()
 
 /obj/machinery/microwave/proc/after_finish_loop()
+	procstart = null
+	src.procstart = null
 	set_light(l_on = FALSE)
 	soundloop.stop()
 	eject()
 	open(autoclose = 2 SECONDS)
 
 /obj/machinery/microwave/proc/open(autoclose = 2 SECONDS)
+	procstart = null
+	src.procstart = null
 	open = TRUE
 	playsound(loc, 'sound/machines/click.ogg', 15, TRUE, -3)
 	update_appearance()
 	addtimer(CALLBACK(src, PROC_REF(close)), autoclose)
 
 /obj/machinery/microwave/proc/close()
+	procstart = null
+	src.procstart = null
 	open = FALSE
 	update_appearance()
 
@@ -801,6 +883,8 @@
  * * cooker - The mob that initiated the cook cycle, can be null if no apparent mob triggered it (such as via emp)
  */
 /obj/machinery/microwave/proc/vampire(mob/cooker)
+	procstart = null
+	src.procstart = null
 	var/obj/item/modular_computer/vampire_pda = LAZYACCESS(ingredients, 1)
 	if(isnull(vampire_pda))
 		playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50, FALSE)
@@ -818,6 +902,8 @@
 	charge_loop(vampire_charge_amount, cooker = cooker)
 
 /obj/machinery/microwave/proc/charge(mob/cooker)
+	procstart = null
+	src.procstart = null
 	if(!vampire_charging_capable)
 		balloon_alert(cooker, "needs upgrade!")
 		playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50, FALSE)
@@ -849,7 +935,9 @@
  * * wait - deciseconds between loops
  * * cooker - The mob that initiated the cook cycle, can be null if no apparent mob triggered it (such as via emp)
  */
-/obj/machinery/microwave/proc/charge_loop(vampire_charge_amount, wait = max(12 - 2 * efficiency, 2), mob/cooker) // standard wait is 10
+/obj/machinery/microwave/proc/charge_loop(vampire_charge_amount, wait = max(12 - 2 * efficiency, 2), mob/cooker)
+	procstart = null
+	src.procstart = null // standard wait is 10
 	if(machine_stat & BROKEN)
 		pre_fail()
 		return
@@ -875,6 +963,8 @@
 	addtimer(CALLBACK(src, PROC_REF(charge_loop), vampire_charge_amount, wait, cooker), wait)
 
 /obj/machinery/microwave/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((machine_stat & NOPOWER) && operating)
 		pre_fail()
@@ -886,6 +976,8 @@
  * * cooker - The mob that initiated the cook cycle, can be null if no apparent mob triggered it (such as via emp)
  */
 /obj/machinery/microwave/proc/charge_loop_finish(mob/cooker)
+	procstart = null
+	src.procstart = null
 	operating = FALSE
 	var/cursed_chef = cooker && HAS_TRAIT(cooker, TRAIT_CURSED)
 	if(cursed_chef && prob(5))
@@ -905,6 +997,8 @@
 	active_power_usage = 0
 
 /obj/machinery/microwave/hell/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//We want there to be some chance of them getting a working microwave (eventually).
 	if(prob(95))
@@ -936,12 +1030,16 @@
 	)
 
 /obj/machinery/microwave/engineering/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		cell = new /obj/item/stock_parts/power_store/cell/upgraded/plus
 	update_appearance()
 
 /obj/machinery/microwave/engineering/cell_included/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cell = new /obj/item/stock_parts/power_store/cell/upgraded/plus
 	update_appearance()

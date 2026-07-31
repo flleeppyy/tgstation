@@ -20,20 +20,28 @@
 	var/obj/item/skillchip/inserted_skillchip
 
 /obj/machinery/skill_station/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 //Only usable by the person inside
 /obj/machinery/skill_station/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.contained_state
 
 /obj/machinery/skill_station/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SkillStation", name)
 		ui.open()
 
 /obj/machinery/skill_station/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = initial(icon_state)
 	if(state_open)
 		icon_state += "_open"
@@ -42,34 +50,48 @@
 	return ..()
 
 /obj/machinery/skill_station/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(working)
 		. += "working"
 
 /obj/machinery/skill_station/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	open_machine()
 
 /obj/machinery/skill_station/open_machine(drop = TRUE, density_to_set = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	interrupt_operation()
 
 /obj/machinery/skill_station/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == inserted_skillchip)
 		inserted_skillchip = null
 		interrupt_operation()
 
 /obj/machinery/skill_station/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(working)
 		interrupt_operation()
 
 /obj/machinery/skill_station/close_machine(atom/movable/target, density_to_set = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(occupant)
 		ui_interact(occupant)
 
 /obj/machinery/skill_station/proc/interrupt_operation()
+	procstart = null
+	src.procstart = null
 	working = FALSE
 	if(work_timer)
 		deltimer(work_timer)
@@ -77,6 +99,8 @@
 	update_appearance()
 
 /obj/machinery/skill_station/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user == occupant)
 		ui_interact(user)
@@ -84,6 +108,8 @@
 		toggle_open()
 
 /obj/machinery/skill_station/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool,/obj/item/skillchip))
 		return NONE
 	if(inserted_skillchip)
@@ -95,20 +121,28 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/skill_station/dump_contents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	inserted_skillchip = null
 
 /obj/machinery/skill_station/dump_inventory_contents(list/subset = null)
+	procstart = null
+	src.procstart = null
 	// Don't drop the skillchip, it's directly inserted into the machine.
 	// dump_contents() will drop everything including the skillchip as an alternative to this.
 	return ..(contents - inserted_skillchip)
 
 /obj/machinery/skill_station/proc/toggle_open(mob/user)
+	procstart = null
+	src.procstart = null
 	state_open ? close_machine() : open_machine()
 
 // Functions below do not validate occupant exists - should be handled outer wrappers.
 /// Start implanting.
 /obj/machinery/skill_station/proc/start_implanting()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/carbon_occupant = occupant
 
 	if(inserted_skillchip.has_mob_incompatibility(carbon_occupant))
@@ -120,6 +154,8 @@
 
 /// Finish implanting.
 /obj/machinery/skill_station/proc/implant()
+	procstart = null
+	src.procstart = null
 	working = FALSE
 	work_timer = null
 	var/mob/living/carbon/carbon_occupant = occupant
@@ -134,6 +170,8 @@
 
 /// Start removal.
 /obj/machinery/skill_station/proc/start_removal(obj/item/skillchip/to_be_removed)
+	procstart = null
+	src.procstart = null
 	if(!to_be_removed)
 		return
 
@@ -147,6 +185,8 @@
 
 /// Finish removal.
 /obj/machinery/skill_station/proc/remove_skillchip(obj/item/skillchip/to_be_removed)
+	procstart = null
+	src.procstart = null
 	working = FALSE
 	work_timer = null
 	update_appearance()
@@ -173,6 +213,8 @@
 	to_chat(carbon_occupant, span_notice("Operation complete!"))
 
 /obj/machinery/skill_station/proc/toggle_chip_active(obj/item/skillchip/to_be_toggled)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/carbon_occupant = occupant
 
 	if(to_be_toggled.is_on_cooldown())
@@ -195,6 +237,8 @@
 		to_chat(carbon_occupant,span_notice("Failed to activate skillchip! [active_msg]"))
 
 /obj/machinery/skill_station/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["working"] = working
 	.["timeleft"] = work_timer ? timeleft(work_timer) : null
@@ -253,6 +297,8 @@
 	.["current"] = current_skills
 
 /obj/machinery/skill_station/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

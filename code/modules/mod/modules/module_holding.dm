@@ -16,6 +16,8 @@
 	var/list/possible_bag_bombs = list()
 
 /obj/item/mod/module/storage/holding/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	anomalock = AddComponent(/datum/component/anomaly_locked_module,\
 		list(/obj/item/assembly/signaler/anomaly/bluespace),\
@@ -28,10 +30,14 @@
 	RegisterSignal(src, COMSIG_MODULE_TRY_INSTALL, PROC_REF(try_install))
 
 /obj/item/mod/module/storage/holding/Destroy()
+	procstart = null
+	src.procstart = null
 	possible_bag_bombs.Cut()
 	return ..()
 
 /obj/item/mod/module/storage/holding/proc/pre_core_inserted(mob/user, obj/item/core, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(possible_bag_bombs[core] == HOLDING_MODULE_PREVENT_DUPLICATE_CHECK)
 		return ITEM_INTERACT_FAILURE
 	var/datum/storage/bag_of_holding/other_bag
@@ -44,12 +50,16 @@
 		return ITEM_INTERACT_BLOCKING
 
 /obj/item/mod/module/storage/holding/proc/recursive_core_insertion(datum/storage/bag_of_holding/bag_storage, mob/user, obj/item/core, list/modifiers)
+	procstart = null
+	src.procstart = null
 	possible_bag_bombs[core] = HOLDING_MODULE_PREVENT_DUPLICATE_CHECK
 	if(bag_storage.confirm_recursive_insertion(core, user) && !QDELETED(core) && user.is_holding(core) && IsReachableBy(user))
 		anomalock.insert_core(src, user, core, modifiers)
 	possible_bag_bombs -= core
 
 /obj/item/mod/module/storage/holding/proc/on_core_inserted(obj/item/core, mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/atom/nested_loc in get_nested_locs(src))
 		var/datum/storage/bag_of_holding/boh = nested_loc.atom_storage
 		if(istype(boh))
@@ -62,11 +72,15 @@
 	item_flags |= BLUESPACE_INTERFERENCE
 
 /obj/item/mod/module/storage/holding/proc/on_core_removed()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(atom_storage)
 	storage_type = null
 	item_flags &= ~BLUESPACE_INTERFERENCE
 
 /obj/item/mod/module/storage/holding/proc/try_install(_source, obj/item/mod/control/suit, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(possible_bag_bombs[suit] == HOLDING_MODULE_PREVENT_DUPLICATE_CHECK)
 		return MOD_ABORT_INSTALL
@@ -87,6 +101,8 @@
 		return MOD_ABORT_INSTALL
 
 /obj/item/mod/module/storage/holding/proc/recursive_installation(datum/storage/bag_of_holding/bag_storage, obj/item/mod/control/suit, mob/user)
+	procstart = null
+	src.procstart = null
 	possible_bag_bombs[suit] = HOLDING_MODULE_PREVENT_DUPLICATE_CHECK
 	if(bag_storage.confirm_recursive_insertion(src, user) && !QDELETED(suit) && user.is_holding(src) && suit.IsReachableBy(user))
 		possible_bag_bombs[suit] = HOLDING_MODULE_CHECK_CONFIRMED

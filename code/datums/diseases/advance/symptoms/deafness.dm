@@ -27,6 +27,8 @@
 	var/causes_permanent_deafness = FALSE
 
 /datum/symptom/deafness/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -36,10 +38,14 @@
 		causes_permanent_deafness = TRUE
 
 /datum/symptom/deafness/End(datum/disease/advance/advanced_disease)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(advanced_disease.affected_mob, TRAIT_DEAF, DISEASE_TRAIT)
 	return ..()
 
 /datum/symptom/deafness/Activate(datum/disease/advance/advanced_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -66,6 +72,8 @@
 					ears.adjust_temporary_deafness(deafness_to_add)
 
 /datum/symptom/deafness/on_stage_change(datum/disease/advance/advanced_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

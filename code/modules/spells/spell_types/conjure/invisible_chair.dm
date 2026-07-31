@@ -23,6 +23,8 @@
 	summon_lifespan = 25 SECONDS
 
 /datum/action/cooldown/spell/conjure/invisible_chair/post_summon(atom/summoned_object, mob/living/carbon/human/cast_on)
+	procstart = null
+	src.procstart = null
 	if(!isobj(summoned_object))
 		return
 

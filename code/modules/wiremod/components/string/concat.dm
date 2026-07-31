@@ -20,6 +20,8 @@
 	)
 
 /obj/item/circuit_component/concat/populate_ports()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/circuit_component_add_port, \
 		port_list = concat_ports, \
 		add_action = "add", \
@@ -32,6 +34,8 @@
 	output = add_output_port("Output", PORT_TYPE_STRING, order = 1.1)
 
 /obj/item/circuit_component/concat/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 
 	var/result = ""
 	for(var/datum/port/input/input_port as anything in concat_ports)

@@ -1,4 +1,6 @@
 /mob/living/carbon/human/Initialize(mapload, datum/species/species)
+	procstart = null
+	src.procstart = null
 	ASSIGN_GAME_VERB(src, /mob/living, mob_sleep)
 	add_verb(src, /mob/living/proc/toggle_resting)
 
@@ -40,26 +42,38 @@
 	ADD_TRAIT(src, TRAIT_CAN_MOUNT_CYBORGS, INNATE_TRAIT)
 
 /mob/living/carbon/human/proc/setup_physiology()
+	procstart = null
+	src.procstart = null
 	physiology = new()
 
 /mob/living/carbon/human/get_unconscious_appearance()
+	procstart = null
+	src.procstart = null
 	return get_generic_humanoid_static_appearance()
 
 /mob/living/carbon/human/proc/setup_mood()
+	procstart = null
+	src.procstart = null
 	if (CONFIG_GET(flag/disable_human_mood))
 		return
 	mob_mood = new /datum/mood(src)
 
 /mob/living/carbon/human/dummy/get_unconscious_appearance()
+	procstart = null
+	src.procstart = null
 	return null
 
 /mob/living/carbon/human/dummy/setup_mood()
+	procstart = null
+	src.procstart = null
 	return
 
 /// This proc is for holding effects applied when a mob is missing certain organs
 /// It is called very, very early in human init because all humans innately spawn with no organs and gain them during init
 /// Gaining said organs removes these effects
 /mob/living/carbon/human/proc/setup_organless_effects()
+	procstart = null
+	src.procstart = null
 	// All start without eyes, and get them via set species
 	become_blind(NO_EYES)
 	// And no ears, and get them via set species
@@ -68,9 +82,13 @@
 	ADD_TRAIT(src, TRAIT_AGEUSIA, NO_TONGUE_TRAIT)
 
 /mob/living/carbon/human/proc/setup_human_dna()
+	procstart = null
+	src.procstart = null
 	randomize_human_normie(src, randomize_mutations = TRUE, update_body = FALSE)
 
 /mob/living/carbon/human/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(physiology)
 	GLOB.human_list -= src
 
@@ -80,6 +98,8 @@
 	return ..()
 
 /mob/living/carbon/human/prepare_data_huds()
+	procstart = null
+	src.procstart = null
 	//Update med hud images...
 	..()
 	//...sec hud images...
@@ -92,6 +112,8 @@
 	add_to_all_human_data_huds()
 
 /mob/living/carbon/human/reset_perspective(atom/new_eye, force_reset = FALSE)
+	procstart = null
+	src.procstart = null
 	if(dna?.species?.prevent_perspective_change && !force_reset) // This is in case a species needs to prevent perspective changes in certain cases, like Dullahans preventing perspective changes when they're looking through their head.
 		update_fullscreen()
 		return
@@ -99,6 +121,8 @@
 
 
 /mob/living/carbon/human/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 
 	if(href_list["see_id"])
 		var/mob/viewer = usr
@@ -377,13 +401,19 @@
 
 //called when something steps onto a human
 /mob/living/carbon/human/proc/on_entered(datum/source, atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	spreadFire(AM)
 
 /mob/living/carbon/human/proc/canUseHUD()
+	procstart = null
+	src.procstart = null
 	return (mobility_flags & MOBILITY_USE)
 
 /mob/living/carbon/human/can_inject(mob/user, target_zone, injection_flags)
+	procstart = null
+	src.procstart = null
 	. = TRUE // Default to returning true.
 	// we may choose to ignore species trait pierce immunity in case we still want to check skellies for thick clothing without insta failing them (wounds)
 	if(injection_flags & INJECT_CHECK_IGNORE_SPECIES)
@@ -402,21 +432,29 @@
 				break
 
 /mob/living/carbon/human/try_inject(mob/user, target_zone, injection_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. && (injection_flags & INJECT_TRY_SHOW_ERROR_MESSAGE) && user)
 		balloon_alert(user, "no exposed skin on [parse_zone(target_zone || check_zone(user.zone_selected))]!")
 
 /mob/living/carbon/human/get_butt_sprite()
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/chest/chest = get_bodypart(BODY_ZONE_CHEST)
 	return chest?.get_butt_sprite()
 
 /mob/living/carbon/human/get_footprint_sprite()
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/leg/leg = get_bodypart(BODY_ZONE_R_LEG) || get_bodypart(BODY_ZONE_L_LEG)
 	return astype(get_item_by_slot(ITEM_SLOT_FEET), /obj/item/clothing/shoes)?.footprint_sprite || leg?.footprint_sprite
 
 #define CHECK_PERMIT(item) (item && item.item_flags & NEEDS_PERMIT)
 
 /mob/living/carbon/human/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null)
+	procstart = null
+	src.procstart = null
 	if(judgement_criteria & JUDGE_EMAGGED || HAS_TRAIT(src, TRAIT_ALWAYS_WANTED))
 		return 10 //Everyone is a criminal!
 
@@ -490,6 +528,8 @@
 
 //Used for new human mobs created by cloning/goleming/podding
 /mob/living/carbon/human/proc/set_cloned_appearance()
+	procstart = null
+	src.procstart = null
 	if(gender == MALE)
 		set_facial_hairstyle("Full Beard", update = FALSE)
 	else
@@ -499,6 +539,8 @@
 	update_body(is_creating = TRUE)
 
 /mob/living/carbon/human/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_size >= STAGE_THREE)
 		for(var/obj/item/hand in held_items)
@@ -510,6 +552,8 @@
 
 /// Performs CPR on the target after a delay.
 /mob/living/carbon/human/proc/do_cpr(mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	if(target == src)
 		return
 
@@ -581,6 +625,8 @@
 #undef CPR_PANIC_SPEED
 
 /mob/living/carbon/human/cuff_resist(obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_HULK))
 		say(pick(";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!" ), forced = "hulk")
 		if(..(I, cuff_break = FAST_CUFFBREAK))
@@ -595,6 +641,8 @@
  * Returns false if we couldn't wash our hands due to them being obscured, otherwise true
  */
 /mob/living/carbon/human/proc/wash_hands(clean_types)
+	procstart = null
+	src.procstart = null
 	if(covered_slots & HIDEGLOVES)
 		return FALSE
 
@@ -611,6 +659,8 @@
  * Called on the COMSIG_COMPONENT_CLEAN_FACE_ACT signal
  */
 /mob/living/carbon/human/proc/clean_face(datum/source, clean_types)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!is_mouth_covered() && clean_lips())
 		. = TRUE
@@ -625,6 +675,8 @@
  * Called when this human should be washed
  */
 /mob/living/carbon/human/wash(clean_types)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!is_mouth_covered() && clean_lips())
 		. |= COMPONENT_CLEANED
@@ -638,6 +690,8 @@
 //Turns a mob black, flashes a skeleton overlay
 //Just like a cartoon!
 /mob/living/carbon/human/proc/electrocution_animation(anim_duration)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/zap_appearance
 
 	// If we have a species, we need to handle mutant parts and stuff
@@ -659,10 +713,14 @@
 	addtimer(CALLBACK(src, PROC_REF(end_electrocution_animation), zap_appearance), anim_duration)
 
 /mob/living/carbon/human/proc/end_electrocution_animation(mutable_appearance/MA)
+	procstart = null
+	src.procstart = null
 	remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, COLOR_BLACK)
 	cut_overlay(MA)
 
 /mob/living/carbon/human/resist_restraints()
+	procstart = null
+	src.procstart = null
 	if(wear_suit?.breakouttime)
 		changeNext_move(CLICK_CD_BREAKOUT)
 		last_special = world.time + CLICK_CD_BREAKOUT
@@ -671,6 +729,8 @@
 		..()
 
 /mob/living/carbon/human/clear_cuffs(obj/item/I, cuff_break)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -681,7 +741,9 @@
 		to_chat(src, span_notice("You successfully [cuff_break ? "break" : "remove"] [I]."))
 		return TRUE
 
-/mob/living/carbon/human/replace_records_name(oldname, newname) // Only humans have records right now, move this up if changed.
+/mob/living/carbon/human/replace_records_name(oldname, newname)
+	procstart = null
+	src.procstart = null // Only humans have records right now, move this up if changed.
 	var/datum/record/crew/crew_record = find_record(oldname)
 	var/datum/record/locked/locked_record = find_record(oldname, locked_only = TRUE)
 
@@ -691,6 +753,8 @@
 		locked_record.name = newname
 
 /mob/living/carbon/human/update_health_hud()
+	procstart = null
+	src.procstart = null
 	if(!client || !hud_used)
 		return
 	// Updates the health bar, also sends signal
@@ -700,6 +764,8 @@
 		hud_used.screen_objects[HUD_MOB_HEALTHDOLL]?.update_appearance()
 
 /mob/living/carbon/human/fully_heal(heal_flags = HEAL_ALL)
+	procstart = null
+	src.procstart = null
 	if(heal_flags & HEAL_NEGATIVE_MUTATIONS)
 		for(var/datum/mutation/existing_mutation in dna.mutations)
 			if(existing_mutation.quality != POSITIVE && existing_mutation.remove_on_aheal)
@@ -713,6 +779,8 @@
 	return ..()
 
 /mob/living/carbon/human/vomit(vomit_flags = VOMIT_CATEGORY_DEFAULT, vomit_type = /obj/effect/decal/cleanable/vomit/toxic, lost_nutrition = 10, distance = 1, purge_ratio = 0.1)
+	procstart = null
+	src.procstart = null
 	if(!((vomit_flags & MOB_VOMIT_BLOOD) && !CAN_HAVE_BLOOD(src) && !HAS_TRAIT(src, TRAIT_TOXINLOVER)))
 		return ..()
 
@@ -729,6 +797,8 @@
 	return TRUE
 
 /mob/living/carbon/human/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	if(var_name == NAMEOF(src, mob_height))
 		// you wanna edit this one not that one
 		var_name = NAMEOF(src, base_mob_height)
@@ -739,6 +809,8 @@
 		update_mob_height()
 
 /mob/living/carbon/human/vv_get_dropdown()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	VV_DROPDOWN_OPTION("", "--- /human ---")
 	VV_DROPDOWN_OPTION(VV_HK_COPY_OUTFIT, "Copy Outfit")
@@ -750,6 +822,8 @@
 	VV_DROPDOWN_OPTION(VV_HK_TURN_INTO_MMI, "Turn into MMI")
 
 /mob/living/carbon/human/vv_do_topic(list/href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)
@@ -876,12 +950,16 @@
 
 
 /mob/living/carbon/human/limb_attack_self()
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/arm = hand_bodyparts[active_hand_index]
 	if(arm)
 		arm.attack_self(src)
 	return ..()
 
 /mob/living/carbon/human/mouse_buckle_handling(mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(pulling != M || grab_state != GRAB_AGGRESSIVE || IS_UNCONSCIOUS_OR_CRIT(src))
 		return FALSE
 
@@ -897,12 +975,18 @@
 
 //src is the user that will be carrying, target is the mob to be carried
 /mob/living/carbon/human/proc/can_piggyback(mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	return (istype(target) && !IS_UNCONSCIOUS_OR_CRIT(target))
 
 /mob/living/carbon/human/proc/can_be_firemanned(mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	return ishuman(target) && target.body_position == LYING_DOWN
 
 /mob/living/carbon/human/proc/fireman_carry(mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	if(!can_be_firemanned(target) || INCAPACITATED_IGNORING(src, INCAPABLE_GRAB))
 		to_chat(src, span_warning("You can't fireman carry [target] while [target.p_they()] [target.p_are()] standing!"))
 		return
@@ -947,6 +1031,8 @@
 	return buckle_mob(target, TRUE, TRUE, CARRIER_NEEDS_ARM)
 
 /mob/living/carbon/human/proc/piggyback(mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	if(!can_piggyback(target))
 		to_chat(target, span_warning("You can't piggyback ride [src] right now!"))
 		return
@@ -963,6 +1049,8 @@
 	return buckle_mob(target, TRUE, TRUE, RIDER_NEEDS_ARMS)
 
 /mob/living/carbon/human/is_buckle_possible(mob/living/target, force, check_loc)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(target, TRAIT_CAN_MOUNT_HUMANS))
 		target.visible_message(span_warning("[target] really can't seem to mount [src]..."))
 		return FALSE
@@ -972,6 +1060,8 @@
 	return ..()
 
 /mob/living/carbon/human/updatehealth()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/health_deficiency = max((maxHealth - health), staminaloss)
 	if(health_deficiency >= 40)
@@ -980,34 +1070,48 @@
 		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown)
 
 /mob/living/carbon/human/get_exp_list(minutes)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mind.assigned_role.title in SSjob.name_occupations)
 		.[mind.assigned_role.title] = minutes
 
 /mob/living/carbon/human/proc/add_eye_color_left(color, color_priority, update_body = TRUE)
+	procstart = null
+	src.procstart = null
 	LAZYSET(eye_color_left_overrides, "[color_priority]", color)
 	if (update_body)
 		update_eyes()
 
 /mob/living/carbon/human/proc/add_eye_color_right(color, color_priority, update_body = TRUE)
+	procstart = null
+	src.procstart = null
 	LAZYSET(eye_color_right_overrides, "[color_priority]", color)
 	if (update_body)
 		update_eyes()
 
 /mob/living/carbon/human/proc/add_eye_color(color, color_priority, update_body = TRUE)
+	procstart = null
+	src.procstart = null
 	add_eye_color_left(color, color_priority, update_body = FALSE)
 	add_eye_color_right(color, color_priority, update_body = update_body)
 
 /mob/living/carbon/human/proc/remove_eye_color(color_priority, update_body = TRUE)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(eye_color_left_overrides, "[color_priority]")
 	LAZYREMOVE(eye_color_right_overrides, "[color_priority]")
 	if (update_body)
 		update_eyes()
 
 /mob/living/carbon/proc/get_right_eye_color()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/get_right_eye_color()
+	procstart = null
+	src.procstart = null
 	if (!LAZYLEN(eye_color_right_overrides))
 		return eye_color_right
 
@@ -1021,9 +1125,13 @@
 	return eye_color
 
 /mob/living/carbon/proc/get_left_eye_color()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/get_left_eye_color()
+	procstart = null
+	src.procstart = null
 	if (!LAZYLEN(eye_color_left_overrides))
 		return eye_color_left
 
@@ -1045,15 +1153,21 @@
 	var/use_random_name = TRUE
 
 /mob/living/carbon/human/species/create_dna(datum/species/species)
+	procstart = null
+	src.procstart = null
 	..(race) //Kind of shit but I'm brainfarting how to do this better right now.
 
 /mob/living/carbon/human/species/set_species(datum/species/mrace, icon_update, pref_load, replace_missing)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(use_random_name)
 		fully_replace_character_name(newname = generate_random_mob_name())
 
 ///Proc used to make monkey roles able to function like crew, but not be able to shift into humans easily.
 /mob/living/carbon/human/proc/crewlike_monkify()
+	procstart = null
+	src.procstart = null
 	if(!ismonkey(src))
 		set_species(/datum/species/monkey)
 	// Can't make them human or nonclever. At least not with the easy and boring way out.
@@ -1063,6 +1177,8 @@
 	add_traits(list(TRAIT_NO_DNA_SCRAMBLE, TRAIT_BADDNA, TRAIT_BORN_MONKEY), SPECIES_TRAIT)
 
 /mob/living/carbon/human/proc/is_atmos_sealed(additional_flags = null, check_hands = FALSE)
+	procstart = null
+	src.procstart = null
 	var/chest_covered = FALSE
 	var/head_covered = FALSE
 	var/hands_covered = FALSE
@@ -1081,16 +1197,22 @@
 	return head_covered || HAS_TRAIT(src, TRAIT_HEAD_ATMOS_SEALED)
 
 /mob/living/carbon/human/should_electrocute(power_source)
+	procstart = null
+	src.procstart = null
 	if (gloves?.siemens_coefficient == 0)
 		return FALSE
 	return ..()
 
 /mob/living/carbon/human/can_touch_acid(atom/acided_atom, acid_power, acid_volume)
+	procstart = null
+	src.procstart = null
 	if(gloves?.resistance_flags & (UNACIDABLE | ACID_PROOF))
 		return TRUE
 	return ..()
 
 /mob/living/carbon/human/can_touch_burning(atom/burning_atom, acid_power, acid_volume)
+	procstart = null
+	src.procstart = null
 	if(gloves?.max_heat_protection_temperature >= BURNING_ITEM_MINIMUM_TEMPERATURE)
 		return TRUE
 	return ..()

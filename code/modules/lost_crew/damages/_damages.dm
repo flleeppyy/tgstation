@@ -30,6 +30,8 @@
 
 /// Generate and apply a possible character (species etc)
 /datum/corpse_damage_class/proc/apply_character(mob/living/carbon/human/fashion_corpse, list/protected_objects, list/recovered_items, list/datum/callback/on_revive_and_player_occupancy, list/body_data)
+	procstart = null
+	src.procstart = null
 	var/datum/corpse_character/character = pick_weight(possible_character_types)
 	character = new character()
 	character.apply_character(fashion_corpse, protected_objects, recovered_items, on_revive_and_player_occupancy)
@@ -52,6 +54,8 @@
 
 /// Set up injuries
 /datum/corpse_damage_class/proc/apply_injuries(mob/living/carbon/human/victim, list/saved_objects, list/datum/callback/on_revive_and_player_occupancy, list/body_data)
+	procstart = null
+	src.procstart = null
 	var/bonus_roll = prob(80) //do an extra turn for cause of death or post mortum effect
 	var/bonus_roll_used = FALSE
 	var/list/used_damage_types = list()
@@ -95,6 +99,8 @@
 
 /// Wrapped pickweight so we can have a bit more controle over how we pick our rules
 /datum/corpse_damage_class/proc/pick_damage_type(list/damages, list/used_damage_types, bonus_roll_used)
+	procstart = null
+	src.procstart = null
 	var/list/possible_damages = list()
 
 	for(var/datum/corpse_damage/damage as anything in damages)
@@ -114,6 +120,8 @@
 
 /// Soulfully give a date of death for health analyzers
 /datum/corpse_damage_class/proc/set_death_date(mob/living/carbon/body)
+	procstart = null
+	src.procstart = null
 	var/died_how_long_ago = rand(lore_death_time_min, lore_death_time_max)
 	body.timeofdeath = world.time - died_how_long_ago
 
@@ -131,6 +139,8 @@
 
 /// Tear IT UPPP!!! Apply any damages to the body that we need to
 /datum/corpse_damage/proc/apply_to_body(mob/living/carbon/human/body, severity, list/storage)
+	procstart = null
+	src.procstart = null
 	return
 
 /// This is the reason we died

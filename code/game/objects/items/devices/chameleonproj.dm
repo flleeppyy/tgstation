@@ -18,37 +18,51 @@
 	var/saved_appearance = null
 
 /obj/item/chameleon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/cigbutt/butt = /obj/item/cigbutt
 	saved_appearance = initial(butt.appearance)
 
 /obj/item/chameleon/dropped()
+	procstart = null
+	src.procstart = null
 	..()
 	disrupt()
 
 /obj/item/chameleon/equipped()
+	procstart = null
+	src.procstart = null
 	..()
 	disrupt()
 
 /obj/item/chameleon/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if (isturf(user.loc) || istype(user.loc, /obj/structure) || active_dummy)
 		toggle(user)
 	else
 		to_chat(user, span_warning("You can't use [src] while inside something!"))
 
 /obj/item/chameleon/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!can_copy(interacting_with) || SHOULD_SKIP_INTERACTION(interacting_with, src, user))
 		return NONE
 	make_copy(interacting_with, user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/chameleon/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!can_copy(interacting_with)) // RMB scan works on storage items, LMB scan does not
 		return NONE
 	make_copy(interacting_with, user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/chameleon/proc/can_copy(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!check_sprite(target))
 		return FALSE
 	if(active_dummy)//I now present you the blackli(f)st
@@ -68,6 +82,8 @@
 	return TRUE
 
 /obj/item/chameleon/proc/make_copy(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(src), 'sound/items/weapons/flash.ogg', 100, TRUE, -6)
 	to_chat(user, span_notice("Scanned [target]."))
 	var/obj/temp = new /obj()
@@ -77,9 +93,13 @@
 	saved_appearance = temp.appearance
 
 /obj/item/chameleon/proc/check_sprite(atom/target)
+	procstart = null
+	src.procstart = null
 	return icon_exists(target.icon, target.icon_state)
 
 /obj/item/chameleon/proc/toggle(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!can_use || !saved_appearance)
 		return
 	if(active_dummy)
@@ -98,6 +118,8 @@
 	user.cancel_camera()
 
 /obj/item/chameleon/proc/disrupt(delete_dummy = 1)
+	procstart = null
+	src.procstart = null
 	if(active_dummy)
 		for(var/mob/M in active_dummy)
 			to_chat(M, span_danger("Your chameleon projector deactivates."))
@@ -110,6 +132,8 @@
 		addtimer(VARSET_CALLBACK(src, can_use, TRUE), 5 SECONDS)
 
 /obj/item/chameleon/proc/eject_all()
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/A in active_dummy)
 		A.forceMove(active_dummy.loc)
 		if(ismob(A))
@@ -124,6 +148,8 @@
 	var/obj/item/chameleon/master = null
 
 /obj/effect/dummy/chameleon/proc/activate(mob/M, saved_appearance, obj/item/chameleon/C)
+	procstart = null
+	src.procstart = null
 	appearance = saved_appearance
 	if(istype(M.buckled, /obj/vehicle))
 		var/obj/vehicle/V = M.buckled
@@ -133,27 +159,41 @@
 	master.active_dummy = src
 
 /obj/effect/dummy/chameleon/attackby()
+	procstart = null
+	src.procstart = null
 	master.disrupt()
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/effect/dummy/chameleon/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	master.disrupt()
 
 /obj/effect/dummy/chameleon/attack_animal(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	master.disrupt()
 
 /obj/effect/dummy/chameleon/attack_alien(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	master.disrupt()
 
 /obj/effect/dummy/chameleon/ex_act(S, T)
+	procstart = null
+	src.procstart = null
 	master.disrupt()
 	return TRUE
 
 /obj/effect/dummy/chameleon/bullet_act()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	master.disrupt()
 
 /obj/effect/dummy/chameleon/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(!isturf(loc) || isspaceturf(loc) || !direction)
 		return //No magical movement! Trust me, this bad boy can do things like leap out of pipes if you're not careful
 
@@ -176,6 +216,8 @@
 	return
 
 /obj/effect/dummy/chameleon/Destroy()
+	procstart = null
+	src.procstart = null
 	if(master)
 		master.disrupt(0)
 		master = null

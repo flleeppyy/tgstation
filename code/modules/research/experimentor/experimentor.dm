@@ -33,6 +33,8 @@
 	COOLDOWN_DECLARE(run_experiment)
 
 /obj/machinery/rnd/experimentor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_wires(new /datum/wires/experimentor(src))
 
@@ -66,6 +68,8 @@
 				valid_items["[item_path]"] += rand(1,4)
 
 /obj/machinery/rnd/experimentor/proc/load_handlers()
+	procstart = null
+	src.procstart = null
 	for(var/datum/experimentor_result_handler/scan/handler_type as anything in valid_subtypesof(/datum/experimentor_result_handler/scan))
 		var/datum/experimentor_result_handler/scan/handler = new handler_type()
 		experimentor_result_handlers[handler.scantype] = handler
@@ -73,6 +77,8 @@
 	experimentor_result_handlers[FAIL] = new /datum/experimentor_result_handler/fail
 
 /obj/machinery/rnd/experimentor/proc/get_available_reactions()
+	procstart = null
+	src.procstart = null
 	var/list/all_reactions = list()
 	for(var/scantype in experimentor_result_handlers)
 		var/datum/experimentor_result_handler/handler = experimentor_result_handlers[scantype]
@@ -83,10 +89,14 @@
 	return all_reactions
 
 /obj/machinery/rnd/experimentor/proc/is_special_reaction(reaction_type)
+	procstart = null
+	src.procstart = null
 	var/datum/experimentor_result_handler/handler = experimentor_result_handlers[reaction_type]
 	return handler.is_special
 
 /obj/machinery/rnd/experimentor/proc/run_experiment(experiment_type)
+	procstart = null
+	src.procstart = null
 	if(!loaded_item)
 		return
 
@@ -103,6 +113,8 @@
 	COOLDOWN_START(src, run_experiment, cooldown)
 
 /obj/machinery/rnd/experimentor/proc/show_start_message(message, type)
+	procstart = null
+	src.procstart = null
 	switch(type)
 		if(MSG_TYPE_NOTICE)
 			visible_message(span_notice("[src] [message]"))
@@ -114,17 +126,25 @@
 			visible_message(span_notice("[src] [message]"))
 
 /obj/machinery/rnd/experimentor/proc/is_critical_reaction()
+	procstart = null
+	src.procstart = null
 	return is_type_in_typecache(loaded_item, critical_items_typecache)
 
 /obj/machinery/rnd/experimentor/proc/get_malfunction_chance()
+	procstart = null
+	src.procstart = null
 	return (100 - malfunction_probability_coeff) * 0.01
 
 /obj/machinery/rnd/experimentor/proc/fail_experiment()
+	procstart = null
+	src.procstart = null
 	var/datum/experimentor_result_handler/fail_handler = experimentor_result_handlers[FAIL]
 	if(fail_handler)
 		fail_handler.execute(src, loaded_item)
 
 /obj/machinery/rnd/experimentor/proc/try_generate_reaction_for_item(obj/item/some_item)
+	procstart = null
+	src.procstart = null
 	if(is_type_in_typecache(some_item.type, banned_typecache) || item_reactions["[some_item.type]"])
 		return
 
@@ -134,6 +154,8 @@
 		item_reactions["[some_item.type]"] = pick(get_available_reactions())
 
 /obj/machinery/rnd/experimentor/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/stock_part/servo/servo in component_parts)
 		cooldown = clamp((EXPERIMENT_COOLDOWN_BASE / servo.tier), 0.5, 2)
@@ -145,6 +167,8 @@
 		malfunction_probability_coeff += micro_laser.tier
 
 /obj/machinery/rnd/experimentor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
 		. += span_notice("The status display reads:<br>")
@@ -152,16 +176,22 @@
 		. += span_notice("Cooldown interval between experiments at [span_bold("[cooldown]")] seconds.")
 
 /obj/machinery/rnd/experimentor/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	item_eject()
 
 /obj/machinery/rnd/experimentor/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new (user, src, "Experimentor")
 		ui.open()
 
 /obj/machinery/rnd/experimentor/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["hasItem"] = !!loaded_item
@@ -215,6 +245,8 @@
 	return data
 
 /obj/machinery/rnd/experimentor/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -233,6 +265,8 @@
 			return TRUE
 
 /obj/machinery/rnd/experimentor/proc/item_eject(should_clone = FALSE)
+	procstart = null
+	src.procstart = null
 	if(isnull(loaded_item))
 		return
 
@@ -246,6 +280,8 @@
 	loaded_item = null
 
 /obj/machinery/rnd/experimentor/proc/match_reaction(obj/item/matching, target_reaction)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	if(isnull(matching) || isnull(target_reaction) || target_reaction == SCANTYPE_DISCOVER)
 		return FAIL
@@ -255,6 +291,8 @@
 	return FAIL
 
 /obj/machinery/rnd/experimentor/proc/try_perform_experiment(reaction)
+	procstart = null
+	src.procstart = null
 	if(!stored_research || !loaded_item || !COOLDOWN_FINISHED(src, run_experiment))
 		return FALSE
 
@@ -271,6 +309,8 @@
 	use_energy(750 JOULES)
 
 /obj/machinery/rnd/experimentor/proc/handle_global_reactions()
+	procstart = null
+	src.procstart = null
 	if(!prob(EFFECT_PROBABILITY * (100 - malfunction_probability_coeff) * 0.01) || !loaded_item)
 		return
 
@@ -323,14 +363,20 @@
 
 
 /obj/machinery/rnd/experimentor/proc/boom()
+	procstart = null
+	src.procstart = null
 	explosion(src, devastation_range = 1, heavy_impact_range = 5, light_impact_range = 10, flash_range = 5, adminlog = TRUE)
 
 /obj/machinery/rnd/experimentor/proc/honk()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/items/bikehorn.ogg', 500)
 	new /obj/item/grown/bananapeel(loc)
 
 
 /obj/machinery/rnd/experimentor/item_interaction(mob/living/user, obj/item/weapon, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 
@@ -352,6 +398,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/rnd/experimentor/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
@@ -362,21 +410,29 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/rnd/experimentor/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/rnd/experimentor/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		wires.interact(user)
 		return ITEM_INTERACT_SUCCESS
 	return NONE
 
 /obj/machinery/rnd/experimentor/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		wires.interact(user)
 		return ITEM_INTERACT_SUCCESS
 	return NONE
 
 /obj/machinery/rnd/experimentor/proc/warn_admins(user, ReactionName)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(user)
 	message_admins("Experimentor reaction: [ReactionName] generated by [ADMIN_LOOKUPFLW(user)] at [ADMIN_VERBOSEJMP(T)]")
 	log_game("Experimentor reaction: [ReactionName] generated by [key_name(user)] in [AREACOORD(T)]")

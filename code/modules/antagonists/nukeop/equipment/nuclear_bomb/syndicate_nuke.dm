@@ -1,6 +1,8 @@
 /obj/machinery/nuclearbomb/syndicate
 
 /obj/machinery/nuclearbomb/syndicate/get_cinematic_type(detonation_status)
+	procstart = null
+	src.procstart = null
 	switch(detonation_status)
 		// The nuke detonated on station
 		if(DETONATION_HIT_STATION)

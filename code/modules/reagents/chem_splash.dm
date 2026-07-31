@@ -20,6 +20,8 @@
  * - adminlog: Whether to alert the admins that this has occured.
  */
 /proc/chem_splash(turf/epicenter, datum/reagents/holder = null, affected_range = 3, list/datum/reagents/reactants = list(), extra_heat = 0, threatscale = 1, adminlog = 1)
+	procstart = null
+	src.procstart = null
 	if(!isturf(epicenter) || !reactants.len || threatscale <= 0)
 		return
 
@@ -78,6 +80,8 @@
  * - spread_range: The range in which to spread the reagents. Will not go over 20
  */
 /proc/spread_reagents(datum/reagents/source, atom/epicenter, spread_range)
+	procstart = null
+	src.procstart = null
 	spread_range = min(spread_range, 20) // Fuck off with trying to do more then this
 	var/datum/effect_system/basic/steam_spread/steam = new /datum/effect_system/basic/steam_spread(epicenter, 10, FALSE)
 	steam.attach(epicenter).start()

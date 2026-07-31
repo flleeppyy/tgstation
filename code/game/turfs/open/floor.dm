@@ -27,6 +27,8 @@
 	var/rcd_proof = FALSE
 
 /turf/open/floor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload && prob(33))
 		MakeDirty()
@@ -35,17 +37,25 @@
 		GLOB.station_turfs += src
 
 /turf/open/floor/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("damaged1", "damaged2", "damaged3", "damaged4", "damaged5")
 
 /turf/open/floor/burnt_states()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /turf/open/floor/Destroy()
+	procstart = null
+	src.procstart = null
 	if(is_station_level(z))
 		GLOB.station_turfs -= src
 	return ..()
 
 /turf/open/floor/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(target == src)
@@ -87,6 +97,8 @@
 	return FALSE
 
 /turf/open/floor/is_explosion_shielded(severity)
+	procstart = null
+	src.procstart = null
 	if(severity >= EXPLODE_DEVASTATE)
 		return FALSE
 	for(var/obj/blocker in src)
@@ -95,12 +107,18 @@
 	return FALSE
 
 /turf/open/floor/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/floor/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /turf/open/floor/proc/break_tile_to_plating()
+	procstart = null
+	src.procstart = null
 	var/turf/open/floor/plating/T = make_plating()
 	if(!istype(T))
 		return
@@ -108,13 +126,19 @@
 
 /// Things seem to rely on this actually returning plating. Override it if you have other baseturfs.
 /turf/open/floor/proc/make_plating(force = FALSE)
+	procstart = null
+	src.procstart = null
 	return ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
 
 ///For when the floor is placed under heavy load. Calls break_tile(), but exists to be overridden by floor types that should resist crushing force.
 /turf/open/floor/proc/crush()
+	procstart = null
+	src.procstart = null
 	break_tile()
 
 /turf/open/floor/ChangeTurf(path, new_baseturfs, flags)
+	procstart = null
+	src.procstart = null
 	if(!isfloorturf(src))
 		return ..() //fucking turfs switch the fucking src of the fucking running procs
 	if(!ispath(path, /turf/open/floor))
@@ -126,6 +150,8 @@
 	return W
 
 /turf/open/floor/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ITEM_INTERACT_ANY_BLOCKER & .)
 		return .
@@ -142,10 +168,14 @@
 		return ITEM_INTERACT_SUCCESS
 
 /turf/open/floor/crowbar_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(overfloor_placed && pry_tile(I, user))
 		return TRUE
 
 /turf/open/floor/proc/try_replace_tile(obj/item/stack/tile/tile, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(tile.turf_type == type && tile.turf_dir == dir)
 		return
 	var/obj/item/crowbar/crowbar = user.is_holding_tool_quality(TOOL_CROWBAR)
@@ -157,10 +187,14 @@
 	plating.base_item_interaction(user, tile, modifiers)
 
 /turf/open/floor/proc/pry_tile(obj/item/I, mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	I.play_tool_sound(src, 80)
 	return remove_tile(user, silent)
 
 /turf/open/floor/proc/remove_tile(mob/user, silent = FALSE, make_tile = TRUE, force_plating)
+	procstart = null
+	src.procstart = null
 	if(broken || burnt)
 		broken = FALSE
 		burnt = FALSE
@@ -174,14 +208,20 @@
 	return make_plating(force_plating)
 
 /turf/open/floor/proc/has_tile()
+	procstart = null
+	src.procstart = null
 	return floor_tile
 
 /turf/open/floor/proc/spawn_tile()
+	procstart = null
+	src.procstart = null
 	if(!has_tile())
 		return null
 	return new floor_tile(src)
 
 /turf/open/floor/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	var/sheer = FALSE
 	switch(current_size)
@@ -200,14 +240,20 @@
 
 
 /turf/open/floor/narsie_act(force, ignore_mobs, probability = 20)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		ChangeTurf(/turf/open/floor/engine/cult, flags = CHANGETURF_INHERIT_AIR)
 
 /turf/open/floor/acid_melt()
+	procstart = null
+	src.procstart = null
 	ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
 
 /turf/open/floor/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	switch(the_rcd.mode)
 		if(RCD_TURF)
 			var/obj/structure/girder/girder = locate() in src
@@ -270,6 +316,8 @@
 	return FALSE
 
 /turf/open/floor/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	procstart = null
+	src.procstart = null
 	switch(rcd_data[RCD_DESIGN_MODE])
 		if(RCD_TURF)
 			var/obj/structure/girder/girder = locate() in src
@@ -365,6 +413,8 @@
 	return FALSE
 
 /turf/open/floor/rust_turf(magic = FALSE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_RUSTY))
 		return FALSE
 	ChangeTurf(/turf/open/floor/plating)
@@ -377,9 +427,13 @@
 	floor_tile = /obj/item/stack/tile/material
 
 /turf/open/floor/material/has_tile()
+	procstart = null
+	src.procstart = null
 	return LAZYLEN(custom_materials)
 
 /turf/open/floor/material/spawn_tile()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		var/obj/item/stack/tile = .

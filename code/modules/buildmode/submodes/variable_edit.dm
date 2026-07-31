@@ -5,11 +5,15 @@
 	var/valueholder = null
 
 /datum/buildmode_mode/varedit/Destroy()
+	procstart = null
+	src.procstart = null
 	varholder = null
 	valueholder = null
 	return ..()
 
 /datum/buildmode_mode/varedit/show_help(client/builder)
+	procstart = null
+	src.procstart = null
 	to_chat(builder, span_purple(boxed_message(
 		"[span_bold("Select var(type) & value")] -> Right Mouse Button on buildmode button\n\
 		[span_bold("Set var(type) & value")] -> Left Mouse Button on turf/obj/mob\n\
@@ -17,11 +21,15 @@
 	)
 
 /datum/buildmode_mode/varedit/Reset()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	varholder = null
 	valueholder = null
 
 /datum/buildmode_mode/varedit/change_settings(client/c)
+	procstart = null
+	src.procstart = null
 	varholder = input(c, "Enter variable name:" ,"Name", "name")
 
 	if(!vv_varname_lockcheck(varholder))
@@ -35,6 +43,8 @@
 	valueholder = temp_value["value"]
 
 /datum/buildmode_mode/varedit/handle_click(client/c, params, obj/object)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 
 	if(isnull(varholder))

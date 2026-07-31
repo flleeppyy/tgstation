@@ -14,6 +14,8 @@
 	deactive_msg = "You refocus your eyes..."
 
 /datum/action/cooldown/spell/pointed/terrorize/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(cast_on))
 		cast_on.balloon_alert(owner, "cannot be terrorized!")
@@ -34,5 +36,7 @@
 		return FALSE //Having a light on you will usually block this, meaning you'll probably need to get an initial hit on the victim with the light eater
 
 /datum/action/cooldown/spell/pointed/terrorize/cast(mob/living/carbon/human/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cast_on.apply_status_effect(/datum/status_effect/terrified) //Effect stacks, adding bonus terror to the victim if cast again

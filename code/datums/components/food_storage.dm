@@ -15,6 +15,8 @@
 	var/good_chance_of_discovery = 100
 
 /datum/component/food_storage/Initialize(_minimum_weight_class = WEIGHT_CLASS_SMALL, _bad_chance = 0, _good_chance = 100)
+	procstart = null
+	src.procstart = null
 
 	RegisterSignal(parent, COMSIG_ATOM_ITEM_INTERACTION_SECONDARY, PROC_REF(try_inserting_item))
 	RegisterSignal(parent, COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM, PROC_REF(on_requesting_context_from_item))
@@ -32,6 +34,8 @@
 	food.flags_1 |= HAS_CONTEXTUAL_SCREENTIPS_1
 
 /datum/component/food_storage/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ATOM_ITEM_INTERACTION_SECONDARY,
 		COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM,
@@ -54,6 +58,8 @@
  * user - the person inserting the item
  */
 /datum/component/food_storage/proc/try_inserting_item(datum/source, mob/living/user, obj/item/inserted_item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// No matryoshka-ing food storage
@@ -88,6 +94,8 @@
  * user - the person removing the item.
  */
 /datum/component/food_storage/proc/try_removing_item(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/food = parent
@@ -108,6 +116,8 @@
  * user - the person inserting the item.
  */
 /datum/component/food_storage/proc/insert_item(obj/item/inserted_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!do_after(user, 1.5 SECONDS, target = parent))
 		return
 	if(!user.temporarilyRemoveItemFromInventory(inserted_item))
@@ -129,6 +139,8 @@
  * user - person removing the item.
  */
 /datum/component/food_storage/proc/begin_remove_item(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!do_after(user, 10 SECONDS, target = parent))
 		return
 	if(QDELETED(stored_item))
@@ -140,6 +152,8 @@
  * Removes the stored item, putting it in user's hands or on the ground, then updates the reference.
  */
 /datum/component/food_storage/proc/remove_item(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.put_in_hands(stored_item))
 		user.visible_message(span_warning("[user] slowly pulls [stored_item] out of [parent]."), \
 							span_warning("You slowly pull [stored_item] out of [parent]."))
@@ -162,6 +176,8 @@
  * bitesize - how large bties are for this food
  */
 /datum/component/food_storage/proc/consume_food_storage(datum/source, mob/living/target, mob/living/user, bitecount, bitesize)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(QDELETED(stored_item)) //if the stored item was deleted/null...
@@ -188,6 +204,8 @@
 
 /// When fully consumed, just drop the item out on the ground.
 /datum/component/food_storage/proc/storage_consumed(datum/source, mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(QDELETED(stored_item))
 		return
@@ -203,6 +221,8 @@
  * Returns FALSE if the ref is nulled, or TRUE is another item replaced it.
  */
 /datum/component/food_storage/proc/update_stored_item()
+	procstart = null
+	src.procstart = null
 	var/atom/food = parent
 	if(!food?.contents.len) //if there's no items in the food or food is deleted somehow
 		stored_item = null
@@ -231,6 +251,8 @@
  */
 
 /datum/component/food_storage/proc/on_requesting_context_from_item(datum/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	. = NONE
 

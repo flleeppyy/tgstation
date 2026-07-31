@@ -1,10 +1,14 @@
 /// Handle the migrations necessary from pre-tgui prefs to post-tgui prefs
 /datum/preferences/proc/migrate_preferences_to_tgui_prefs_menu()
+	procstart = null
+	src.procstart = null
 	migrate_antagonists()
 	migrate_key_bindings()
 
 /// Handle the migrations necessary from pre-tgui prefs to post-tgui prefs, for characters
 /datum/preferences/proc/migrate_character_to_tgui_prefs_menu()
+	procstart = null
+	src.procstart = null
 	migrate_randomization()
 
 // Key bindings used to be "key" -> list("action"),
@@ -13,6 +17,8 @@
 // hotkey would produce non-deterministic order.
 // tgui prefs menu moves this over to "swap_hands" -> list("X").
 /datum/preferences/proc/migrate_key_bindings()
+	procstart = null
+	src.procstart = null
 	var/new_key_bindings = list()
 
 	for (var/unbound_hotkey in key_bindings[UNBOUND_KEY])
@@ -33,6 +39,8 @@
 // Before tgui preferences menu, "traitor" would handle both roundstart, midround, and latejoin.
 // These were split apart.
 /datum/preferences/proc/migrate_antagonists()
+	procstart = null
+	src.procstart = null
 	migrate_antagonist(ROLE_MALF, list(ROLE_MALF_MIDROUND))
 	migrate_antagonist(ROLE_OPERATIVE, list(ROLE_OPERATIVE_MIDROUND, ROLE_LONE_OPERATIVE))
 	migrate_antagonist(ROLE_REV_HEAD, list(ROLE_PROVOCATEUR))
@@ -43,6 +51,8 @@
 // If you have an antagonist enabled, it will add the alternative preferences for said antag in be_special.
 // will_exist is the role we check if enabled, to_add list is the antagonists we add onto the be_special list.
 /datum/preferences/proc/migrate_antagonist(will_exist, list/to_add)
+	procstart = null
+	src.procstart = null
 	if (will_exist in be_special)
 		for (var/add in to_add)
 			be_special += add
@@ -53,6 +63,8 @@
 // to list("socks" = "enabled", "name" = "antag")
 // as well as removing anything that was set to FALSE, as this can be extrapolated.
 /datum/preferences/proc/migrate_randomization()
+	procstart = null
+	src.procstart = null
 	var/static/list/random_settings = list(
 		"random_age" = "age",
 		"random_backpack" = "backpack",

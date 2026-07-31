@@ -18,14 +18,20 @@
 	acid = 60
 
 /obj/vehicle/ridden/secway/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/secway)
 
 /obj/vehicle/ridden/secway/atom_break()
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/vehicle/ridden/secway/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(atom_integrity >= integrity_failure * max_integrity)
 		return PROCESS_KILL
 	if(SPT_PROB(10, seconds_per_tick))
@@ -33,6 +39,8 @@
 	do_smoke(0, src, src)
 
 /obj/vehicle/ridden/secway/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 
@@ -66,6 +74,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /obj/vehicle/ridden/secway/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -82,6 +92,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/vehicle/ridden/secway/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!eddie_murphy)
 		return ..()
 	user.visible_message(span_warning("[user] begins cleaning [eddie_murphy] out of [src]."), span_warning("You begin cleaning [eddie_murphy] out of [src]..."))
@@ -92,20 +104,28 @@
 	eddie_murphy = null
 
 /obj/vehicle/ridden/secway/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(eddie_murphy)
 		. += span_warning("Something appears to be stuck in its exhaust...")
 
 /obj/vehicle/ridden/secway/atom_destruction()
+	procstart = null
+	src.procstart = null
 	explosion(src, devastation_range = -1, light_impact_range = 2, flame_range = 3, flash_range = 4)
 	return ..()
 
 /obj/vehicle/ridden/secway/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj,src)
 	return ..()
 
 //bullets will have a 60% chance to hit any riders
 /obj/vehicle/ridden/secway/projectile_hit(obj/projectile/hitting_projectile, def_zone, piercing_hit, blocked)
+	procstart = null
+	src.procstart = null
 	if(!buckled_mobs || prob(40))
 		return ..()
 	for(var/mob/rider as anything in buckled_mobs)

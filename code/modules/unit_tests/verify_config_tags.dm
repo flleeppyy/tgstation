@@ -2,6 +2,8 @@
 /datum/unit_test/verify_config_tags
 
 /datum/unit_test/verify_config_tags/Run()
+	procstart = null
+	src.procstart = null
 	var/job_tag
 	var/list/collected_tags = list()
 	var/number_of_jobs = length(SSjob.joinable_occupations)

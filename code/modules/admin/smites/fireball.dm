@@ -3,5 +3,7 @@
 	name = "Fireball"
 
 /datum/smite/fireball/effect(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/temp_visual/target(get_turf(target))

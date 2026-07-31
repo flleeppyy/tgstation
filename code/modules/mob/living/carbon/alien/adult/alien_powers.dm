@@ -18,12 +18,16 @@ Doesn't work on other aliens/AI.*/
 	var/plasma_cost = 0
 
 /datum/action/cooldown/alien/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//not free
 	if(plasma_cost != 0)
 		name = "[initial(name)] ([plasma_cost]P)"
 
 /datum/action/cooldown/alien/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -36,6 +40,8 @@ Doesn't work on other aliens/AI.*/
 	return TRUE
 
 /datum/action/cooldown/alien/PreActivate(atom/target)
+	procstart = null
+	src.procstart = null
 	// Parent calls Activate(), so if parent returns TRUE,
 	// it means the activation happened successfuly by this point
 	. = ..()
@@ -60,6 +66,8 @@ Doesn't work on other aliens/AI.*/
 	var/obj/structure/made_structure_type
 
 /datum/action/cooldown/alien/make_structure/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -69,6 +77,8 @@ Doesn't work on other aliens/AI.*/
 	return TRUE
 
 /datum/action/cooldown/alien/make_structure/PreActivate(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!check_for_duplicate())
 		return FALSE
 
@@ -78,11 +88,15 @@ Doesn't work on other aliens/AI.*/
 	return ..()
 
 /datum/action/cooldown/alien/make_structure/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	new made_structure_type(owner.loc)
 	return TRUE
 
 /// Checks if there's a duplicate structure in the owner's turf
 /datum/action/cooldown/alien/make_structure/proc/check_for_duplicate()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/existing_thing = locate(made_structure_type) in owner.loc
 	if(existing_thing)
 		to_chat(owner, span_warning("There is already \a [existing_thing] here!"))
@@ -92,6 +106,8 @@ Doesn't work on other aliens/AI.*/
 
 /// Checks if there's an atmos machine (vent) in the owner's turf
 /datum/action/cooldown/alien/make_structure/proc/check_for_vents()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/atmospherics/components/unary/atmos_thing = locate() in owner.loc
 	if(atmos_thing)
 		var/are_you_sure = tgui_alert(owner, "Laying eggs and shaping resin here would block access to [atmos_thing]. Do you want to continue?", "Blocking Atmospheric Component", list("Yes", "No"))
@@ -110,6 +126,8 @@ Doesn't work on other aliens/AI.*/
 	made_structure_type = /obj/structure/alien/weeds/node
 
 /datum/action/cooldown/alien/make_structure/plant_weeds/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	owner.visible_message(span_alertalien("[owner] plants some alien weeds!"))
 	return ..()
 
@@ -120,6 +138,8 @@ Doesn't work on other aliens/AI.*/
 	plasma_cost = 10
 
 /datum/action/cooldown/alien/whisper/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	var/list/possible_recipients = list()
 	for(var/mob/living/recipient in oview(owner))
 		possible_recipients += recipient
@@ -158,6 +178,8 @@ Doesn't work on other aliens/AI.*/
 	button_icon_state = "alien_transfer"
 
 /datum/action/cooldown/alien/transfer/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/carbon_owner = owner
 	var/list/mob/living/carbon/aliens_around = list()
 	for(var/mob/living/carbon/alien in view(owner))
@@ -203,6 +225,8 @@ Doesn't work on other aliens/AI.*/
 	var/corrosion_acid_volume = 1000
 
 /datum/action/cooldown/alien/acid/corrosion/set_click_ability(mob/on_who)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -211,6 +235,8 @@ Doesn't work on other aliens/AI.*/
 	on_who.update_icons()
 
 /datum/action/cooldown/alien/acid/corrosion/unset_click_ability(mob/on_who, refund_cooldown = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -220,6 +246,8 @@ Doesn't work on other aliens/AI.*/
 	on_who.update_icons()
 
 /datum/action/cooldown/alien/acid/corrosion/PreActivate(atom/target)
+	procstart = null
+	src.procstart = null
 	if(get_dist(owner, target) > 1)
 		return FALSE
 	if(ismob(target)) //If it could corrode mobs, it would one-shot them.
@@ -229,6 +257,8 @@ Doesn't work on other aliens/AI.*/
 	return ..()
 
 /datum/action/cooldown/alien/acid/corrosion/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	if(isturf(target))
 		target.AddComponent(/datum/component/acid, corrosion_acid_power, corrosion_acid_volume, GLOB.acid_overlay, /particles/acid, turf_acid_ignores_mobs = TRUE)
 	else if(!target.acid_act(corrosion_acid_power, corrosion_acid_volume))
@@ -248,6 +278,8 @@ Doesn't work on other aliens/AI.*/
 	plasma_cost = 50
 
 /datum/action/cooldown/alien/acid/neurotoxin/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/as_carbon = owner
 	if(istype(as_carbon) && as_carbon.is_mouth_covered(ITEM_SLOT_MASK))
 		return FALSE
@@ -256,6 +288,8 @@ Doesn't work on other aliens/AI.*/
 	return ..()
 
 /datum/action/cooldown/alien/acid/neurotoxin/set_click_ability(mob/on_who)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -267,6 +301,8 @@ Doesn't work on other aliens/AI.*/
 	on_who.update_icons()
 
 /datum/action/cooldown/alien/acid/neurotoxin/unset_click_ability(mob/on_who, refund_cooldown = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -282,6 +318,8 @@ Doesn't work on other aliens/AI.*/
 // because we use the click parameters for aiming the projectile
 // (or something like that)
 /datum/action/cooldown/alien/acid/neurotoxin/InterceptClickOn(mob/living/clicker, params, atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		unset_click_ability(clicker, refund_cooldown = FALSE)
@@ -301,6 +339,8 @@ Doesn't work on other aliens/AI.*/
 
 // Has to return TRUE, otherwise is skipped.
 /datum/action/cooldown/alien/acid/neurotoxin/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/action/cooldown/alien/make_structure/resin
@@ -317,6 +357,8 @@ Doesn't work on other aliens/AI.*/
 
 // Snowflake to check for multiple types of alien resin structures
 /datum/action/cooldown/alien/make_structure/resin/check_for_duplicate()
+	procstart = null
+	src.procstart = null
 	for(var/blocker_name in structures)
 		var/obj/structure/blocker_type = structures[blocker_name]
 		if(locate(blocker_type) in owner.loc)
@@ -326,6 +368,8 @@ Doesn't work on other aliens/AI.*/
 	return TRUE
 
 /datum/action/cooldown/alien/make_structure/resin/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	var/choice = tgui_input_list(owner, "Select a shape to build", "Resin building", structures)
 	if(isnull(choice) || QDELETED(src) || QDELETED(owner) || !check_for_duplicate() || !IsAvailable(feedback = TRUE))
 		return FALSE
@@ -360,6 +404,8 @@ Doesn't work on other aliens/AI.*/
 	var/spit_speed = 1
 
 /datum/action/cooldown/alien/regurgitate/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(owner))
 		return
 	var/mob/living/carbon/alien/adult/alieninated_owner = owner
@@ -380,6 +426,8 @@ Doesn't work on other aliens/AI.*/
 
 /// Gets the plasma level of this carbon's plasma vessel, or -1 if they don't have one
 /mob/living/carbon/proc/getPlasma()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/alien/plasmavessel/vessel = get_organ_by_type(/obj/item/organ/alien/plasmavessel)
 	if(!vessel)
 		return -1
@@ -387,6 +435,8 @@ Doesn't work on other aliens/AI.*/
 
 /// Adjusts the plasma level of the carbon's plasma vessel if they have one
 /mob/living/carbon/proc/adjustPlasma(amount)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/alien/plasmavessel/vessel = get_organ_by_type(/obj/item/organ/alien/plasmavessel)
 	if(!vessel)
 		return FALSE

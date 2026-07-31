@@ -32,6 +32,8 @@
 	var/left_headrest_dirs = NORTHEAST
 
 /obj/structure/bed/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/soft_landing)
 	if(elevation)
@@ -40,6 +42,8 @@
 	register_context()
 
 /obj/structure/bed/buckle_feedback(mob/living/being_buckled, mob/buckler)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(being_buckled, TRAIT_RESTRAINED))
 		return ..()
 
@@ -57,6 +61,8 @@
 		)
 
 /obj/structure/bed/unbuckle_feedback(mob/living/being_unbuckled, mob/unbuckler)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(being_unbuckled, TRAIT_RESTRAINED))
 		return ..()
 
@@ -74,11 +80,15 @@
 		)
 
 /obj/structure/bed/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (can_deconstruct)
 		. += span_notice("It's held together by a couple of <b>bolts</b>.")
 
 /obj/structure/bed/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(held_item)
 		if(held_item.tool_behaviour != TOOL_WRENCH)
 			return
@@ -91,20 +101,30 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/bed/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_buckle_vars(newdir)
 
 /obj/structure/bed/proc/update_buckle_vars(newdir)
+	procstart = null
+	src.procstart = null
 	buckle_lying = newdir & left_headrest_dirs ? 270 : 90
 
 /obj/structure/bed/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(build_stack_type)
 		new build_stack_type(loc, build_stack_amount)
 
 /obj/structure/bed/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/structure/bed/wrench_act_secondary(mob/living/user, obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	if (!can_deconstruct)
 		return NONE
 	..()
@@ -143,12 +163,16 @@
 	foldable_type = /obj/item/emergency_bed
 
 /obj/structure/bed/medical/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/noisy_movement)
 	if(anchored)
 		update_appearance()
 
 /obj/structure/bed/medical/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "[anchored ? "Release brakes" : "Apply brakes"]"
 	if(!isnull(foldable_type) && !has_buckled_mobs())
@@ -157,6 +181,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/bed/medical/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(anchored)
 		. += span_notice("The brakes are applied. They can be released with an Alt-click.")
@@ -167,6 +193,8 @@
 		. += span_notice("You can fold it up with a Right-click.")
 
 /obj/structure/bed/medical/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(has_buckled_mobs() && (user in buckled_mobs))
 		return CLICK_ACTION_BLOCKING
 
@@ -176,16 +204,22 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/structure/bed/medical/post_buckle_mob(mob/living/buckled)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_density(TRUE)
 	update_appearance()
 
 /obj/structure/bed/medical/post_unbuckle_mob(mob/living/buckled)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_density(FALSE)
 	update_appearance()
 
 /obj/structure/bed/medical/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(has_buckled_mobs())
 		icon_state = "[base_icon_state]_up"
@@ -199,6 +233,8 @@
 		icon_state = "[base_icon_state]_down"
 
 /obj/structure/bed/medical/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!anchored)
 		return
@@ -211,6 +247,8 @@
 		. += emissive_appearance(icon, "brakes_down", src, alpha = src.alpha)
 
 /obj/structure/bed/medical/emergency/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/emergency_bed/silicon))
 		return NONE
 	var/obj/item/emergency_bed/silicon/silicon_bed = tool
@@ -234,6 +272,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/bed/medical/emergency/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
@@ -260,6 +300,8 @@
 	custom_materials = list(/datum/material/titanium = SHEET_MATERIAL_AMOUNT * 2.7, /datum/material/plastic = SHEET_MATERIAL_AMOUNT * 1.7)
 
 /obj/item/emergency_bed/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/emergency_bed/silicon))
 		return NONE
 
@@ -275,9 +317,13 @@
 
 
 /obj/item/emergency_bed/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	deploy_bed(user, user.loc)
 
 /obj/item/emergency_bed/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isopenturf(interacting_with))
 		deploy_bed(user, interacting_with)
 		return ITEM_INTERACT_SUCCESS
@@ -285,6 +331,8 @@
 
 
 /obj/item/emergency_bed/proc/deploy_bed(mob/user, atom/location)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/bed/medical/emergency/deployed = new /obj/structure/bed/medical/emergency(location)
 	deployed.add_fingerprint(user)
 	qdel(src)
@@ -295,14 +343,20 @@
 	var/obj/structure/bed/medical/emergency/loaded = null
 
 /obj/item/emergency_bed/silicon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	loaded = new(src)
 
 /obj/item/emergency_bed/silicon/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "The dock is [loaded ? "loaded" : "empty"]."
 
 /obj/item/emergency_bed/silicon/deploy_bed(mob/user, atom/location)
+	procstart = null
+	src.procstart = null
 	if(loaded)
 		loaded.forceMove(location)
 		user.visible_message(span_notice("[user] deploys [loaded]."), span_notice("You deploy [loaded]."))
@@ -358,6 +412,8 @@
 
 ///Used to set the owner of a dogbed, returns FALSE if called on an owned bed or an invalid one, TRUE if the possesion succeeds
 /obj/structure/bed/dogbed/proc/update_owner(mob/living/furball)
+	procstart = null
+	src.procstart = null
 	if(owned || type != /obj/structure/bed/dogbed) //Only marked beds work, this is hacky but I'm a hacky man
 		return FALSE //Failed
 
@@ -367,6 +423,8 @@
 	return TRUE // Let any callers know that this bed is ours now
 
 /obj/structure/bed/dogbed/buckle_mob(mob/living/furball, force, check_loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_owner(furball)
 
@@ -377,6 +435,8 @@
 	elevation = 7
 
 /obj/structure/bed/maint/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MOLD, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 25)
 
@@ -392,12 +452,16 @@
 	var/mob/living/goldilocks
 
 /obj/structure/bed/double/post_buckle_mob(mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(buckled_mobs.len > 1 && !goldilocks) // Push the second buckled mob a bit higher from the normal lying position
 		target.pixel_y += 6
 		goldilocks = target
 
 /obj/structure/bed/double/post_unbuckle_mob(mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(target == goldilocks)
 		target.pixel_y -= 6

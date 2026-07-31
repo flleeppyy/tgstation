@@ -16,6 +16,8 @@
 	COOLDOWN_DECLARE(announcement_cooldown)
 
 /datum/ai_controller/basic_controller/bot/firebot/TryPossessPawn(atom/new_pawn)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & AI_CONTROLLER_INCOMPATIBLE)
 		return
@@ -25,6 +27,8 @@
 /datum/bt_node/ai_behavior/announce_fire_detected
 
 /datum/bt_node/ai_behavior/announce_fire_detected/perform(seconds_per_tick, datum/ai_controller/basic_controller/bot/firebot/controller)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(controller, announcement_cooldown))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_SUCCEEDED
 	var/datum/action/cooldown/bot_announcement/announcement = controller.blackboard[BB_ANNOUNCE_ABILITY]
@@ -40,6 +44,8 @@
 
 /// Firebot skips blacklisting unreachable targets while stationary, matching the old set_if_can_reach bypass.
 /datum/ai_controller/basic_controller/bot/firebot/note_unreachable_target(atom/target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bot/firebot/bot_pawn = pawn
 	if(bot_pawn.firebot_mode_flags & FIREBOT_STATIONARY_MODE)
 		return
@@ -49,6 +55,8 @@
 /datum/target_source/firebot_targets
 
 /datum/target_source/firebot_targets/collect_candidates(mob/living/pawn, datum/ai_controller/controller, range)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bot/firebot/bot_pawn = pawn
 	if(!(bot_pawn.firebot_mode_flags & FIREBOT_EXTINGUISH_PEOPLE))
 		return list()
@@ -61,6 +69,8 @@
 
 /// Valid if the mob is on fire (or anyone, while emagged) and is a type this firebot is allowed to extinguish.
 /datum/targeting_strategy/extinguishable_person/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -77,6 +87,8 @@
 /datum/target_source/range_turfs/firebot_hotspots
 
 /datum/target_source/range_turfs/firebot_hotspots/collect_candidates(mob/living/pawn, datum/ai_controller/controller, range)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bot/firebot/bot_pawn = pawn
 	if(!(bot_pawn.firebot_mode_flags & FIREBOT_EXTINGUISH_FLAMES))
 		return list()
@@ -84,6 +96,8 @@
 
 /// Valid if the turf is an open turf with an active fire.
 /datum/targeting_strategy/burning_hotspot/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -97,6 +111,8 @@
 /datum/bt_node/ai_behavior/bot_interact/extinguish
 
 /datum/bt_node/ai_behavior/bot_interact/extinguish/finish_action(datum/ai_controller/basic_controller/bot/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// if we couldn't reach OR we emagged a living target, blacklist them
 	var/atom/target = controller.blackboard[target_key]
@@ -111,6 +127,8 @@
 	var/speech_prob = 3
 
 /datum/bt_node/ai_behavior/handle_firebot_speech/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(!SPT_PROB(speech_prob, seconds_per_tick))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED
 	var/mob/living/basic/bot/living_bot = controller.pawn

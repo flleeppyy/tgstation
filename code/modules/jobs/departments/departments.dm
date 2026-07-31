@@ -31,11 +31,15 @@
 
 /// Handles adding jobs to the department and setting up the job bitflags.
 /datum/job_department/proc/add_job(datum/job/job)
+	procstart = null
+	src.procstart = null
 	department_jobs += job
 	job.departments_bitflags |= department_bitflags
 
 /// Handles removing jobs from the department and removing job bitflags.
 /datum/job_department/proc/remove_job(datum/job/job_type)
+	procstart = null
+	src.procstart = null
 	for(var/datum/job/job_datum as anything in department_jobs)
 		if(job_datum.type == job_type)
 			department_jobs -= job_datum
@@ -46,15 +50,21 @@
 
 /// Returns all jobs that are in this category for jobbans
 /datum/job_department/proc/get_jobban_jobs()
+	procstart = null
+	src.procstart = null
 	return department_jobs.Copy()
 
 /// Returns a nation name for this department.
 /datum/job_department/proc/generate_nation_name()
+	procstart = null
+	src.procstart = null
 	var/static/list/nation_suffixes = list("stan", "topia", "land", "nia", "ca", "tova", "dor", "ador", "tia", "sia", "ano", "tica", "tide", "cis", "marea", "co", "taoide", "slavia", "stotzka")
 	return pick(nation_prefixes) + pick(nation_suffixes)
 
 /// Returns a simplifed spaceless string for use in stuff like CSS.
 /datum/job_department/proc/get_label_class()
+	procstart = null
+	src.procstart = null
 	return LOWER_TEXT(replacetext(department_name, " ", "_"))
 
 /// A special assistant only department, primarily for use by the preferences menu
@@ -66,6 +76,8 @@
 	// Don't add department_head! Assistants names should not be in bold.
 
 /datum/job_department/assistant/generate_nation_name()
+	procstart = null
+	src.procstart = null
 	var/nomadic_name = pick("roving clans", "barbaric tribes", "tides", "bandit kingdom", "tribal society", "marauder clans", "horde")
 	return "The [nomadic_name] of [..()]"
 
@@ -105,6 +117,8 @@
 	department_access = REGION_ACCESS_SECURITY
 
 /datum/job_department/security/get_jobban_jobs()
+	procstart = null
+	src.procstart = null
 	// Captains often fulfill security duties so they are considered part of the security department for jobbans
 	return ..() | SSjob.get_job_type(/datum/job/captain)
 
@@ -198,6 +212,8 @@
 	ui_color = "#d9268e"
 
 /datum/job_department/silicon/generate_nation_name()
+	procstart = null
+	src.procstart = null
 	return "United Nations" //For nations ruleset specifically, because all other sources of nation creation cannot choose silicons
 
 /// Catch-all department for undefined jobs.

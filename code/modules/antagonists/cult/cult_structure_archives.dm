@@ -17,6 +17,8 @@
 	custom_materials = list(/datum/material/runedmetal = SHEET_MATERIAL_AMOUNT * 3)
 
 /obj/structure/destructible/cult/item_dispenser/archives/setup_options()
+	procstart = null
+	src.procstart = null
 	var/static/list/archive_items = list(
 		CULT_BLINDFOLD = list(
 			PREVIEW_IMAGE = image(icon = 'icons/obj/clothing/glasses.dmi', icon_state = "blindfold"),
@@ -45,6 +47,8 @@
 		options += extra_item
 
 /obj/structure/destructible/cult/item_dispenser/archives/extra_options()
+	procstart = null
+	src.procstart = null
 	if(!cult_team?.unlocked_heretic_items[CRIMSON_MEDALLION_UNLOCKED])
 		return
 	return list(CRIMSON_MEDALLION = list(
@@ -56,6 +60,8 @@
 	)
 
 /obj/structure/destructible/cult/item_dispenser/archives/succcess_message(mob/living/user, obj/item/spawned_item)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_cult_italic("You summon [spawned_item] from [src]!"))
 
 // Preset for the library that doesn't spawn runed metal on destruction, or glow.

@@ -9,6 +9,8 @@
 	var/collar_resting_icon_state
 
 /datum/element/wears_collar/Attach(datum/target, collar_icon = 'icons/mob/simple/pets.dmi', collar_resting_icon_state = FALSE, collar_icon_state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isliving(target))
@@ -26,6 +28,8 @@
 	RegisterSignal(target, COMSIG_MOB_STATCHANGE, PROC_REF(on_stat_change))
 
 /datum/element/wears_collar/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, list(
 		COMSIG_ATOM_ATTACKBY,
@@ -37,12 +41,16 @@
 	))
 
 /datum/element/wears_collar/proc/on_stat_change(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(collar_icon_state)
 		source.update_icon(UPDATE_OVERLAYS)
 
 /datum/element/wears_collar/proc/on_content_exit(mob/living/source, atom/moved)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(moved, /obj/item/clothing/neck/petcollar))
@@ -52,6 +60,8 @@
 		source.update_appearance()
 
 /datum/element/wears_collar/proc/on_content_enter(mob/living/source, obj/item/clothing/neck/petcollar/new_collar)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(new_collar) || !new_collar.tagname)
@@ -62,6 +72,8 @@
 		source.update_appearance()
 
 /datum/element/wears_collar/proc/attach_collar(atom/source, atom/movable/attacking_item, atom/user, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(attacking_item, /obj/item/clothing/neck/petcollar))
@@ -73,6 +85,8 @@
 	return COMPONENT_NO_AFTERATTACK
 
 /datum/element/wears_collar/proc/on_overlays_updated(mob/living/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!locate(/obj/item/clothing/neck/petcollar) in source)
@@ -90,6 +104,8 @@
 
 
 /datum/element/wears_collar/proc/on_rest(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	source.update_icon(UPDATE_OVERLAYS)

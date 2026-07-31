@@ -11,6 +11,8 @@ GLOBAL_DATUM_INIT(manifest, /datum/manifest, new)
 
 /// Builds the list of crew records for all crew members.
 /datum/manifest/proc/build()
+	procstart = null
+	src.procstart = null
 	// List of mobs we want to mass insert into the manifest table at round start
 	var/list/players_to_log = list()
 	for(var/mob/dead/new_player/readied_player as anything in GLOB.new_player_list)
@@ -25,6 +27,8 @@ GLOBAL_DATUM_INIT(manifest, /datum/manifest, new)
 
 /// Gets the current manifest.
 /datum/manifest/proc/get_manifest()
+	procstart = null
+	src.procstart = null
 	// First we build up the order in which we want the departments to appear in.
 	var/list/manifest_out = list()
 	for(var/datum/job_department/department as anything in SSjob.joinable_departments)
@@ -74,6 +78,8 @@ GLOBAL_DATUM_INIT(manifest, /datum/manifest, new)
 
 /// Returns the manifest as an html.
 /datum/manifest/proc/get_html(monochrome = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/manifest = get_manifest()
 	var/dat = {"
 	<head><style>
@@ -104,6 +110,8 @@ GLOBAL_DATUM_INIT(manifest, /datum/manifest, new)
 
 /// Injects a record into the manifest.
 /datum/manifest/proc/inject(mob/living/carbon/human/person, atom/appearance_proxy)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(!(person.mind?.assigned_role.job_flags & JOB_CREW_MANIFEST))
 		return
@@ -161,6 +169,8 @@ GLOBAL_DATUM_INIT(manifest, /datum/manifest, new)
 
 /// Edits the rank and trim of the found record.
 /datum/manifest/proc/modify(name, assignment, trim)
+	procstart = null
+	src.procstart = null
 	var/datum/record/crew/target = find_record(name)
 	if(!target)
 		return
@@ -170,6 +180,8 @@ GLOBAL_DATUM_INIT(manifest, /datum/manifest, new)
 
 ///Removes a record based on its name.
 /datum/manifest/proc/remove(name)
+	procstart = null
+	src.procstart = null
 	var/datum/record/crew/target = find_record(name)
 	if(!target)
 		return
@@ -184,6 +196,8 @@ GLOBAL_DATUM_INIT(manifest, /datum/manifest, new)
  * - add_height_chart - If we should add a height chart to the background of the photo.
  */
 /datum/manifest/proc/change_pictures(name, mob/living/person, add_height_chart = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/record/crew/target = find_record(name)
 	if(!target)
 		return FALSE
@@ -193,18 +207,26 @@ GLOBAL_DATUM_INIT(manifest, /datum/manifest, new)
 	return TRUE
 
 /datum/manifest/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 /datum/manifest/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	return (isnewplayer(user) || isobserver(user) || isAI(user) || ispAI(user) || user.client?.holder) ? UI_INTERACTIVE : UI_CLOSE
 
 /datum/manifest/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		ui = new(user, src, "CrewManifest")
 		ui.open()
 
 /datum/manifest/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/positions = list()
 	for(var/datum/job_department/department as anything in SSjob.joinable_departments)
 		var/open = 0

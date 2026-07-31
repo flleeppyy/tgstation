@@ -17,11 +17,15 @@
 	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/experi_scanner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	return INITIALIZE_HINT_LATELOAD
 
 // Late initialize to allow for the rnd servers to initialize first
 /obj/item/experi_scanner/LateInitialize()
+	procstart = null
+	src.procstart = null
 	var/static/list/handheld_signals = list(
 		COMSIG_ITEM_PRE_ATTACK = TYPE_PROC_REF(/datum/component/experiment_handler, try_run_handheld_experiment),
 		COMSIG_ITEM_AFTERATTACK = TYPE_PROC_REF(/datum/component/experiment_handler, ignored_handheld_experiment_attempt),
@@ -34,6 +38,8 @@
 	)
 
 /obj/item/experi_scanner/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is giving in to the Great Toilet Beyond! It looks like [user.p_theyre()] trying to commit suicide!"))
 
 	forceMove(drop_location())
@@ -50,6 +56,8 @@
 	return MANUAL_SUICIDE
 
 /obj/item/experi_scanner/proc/make_meat_toilet(mob/living/user)
+	procstart = null
+	src.procstart = null
 	///The toilet we're about to unleash unto this cursed plane of existence
 	new /obj/structure/toilet/greyscale/flesh (drop_location(), user) //the toilet's Initialize proc will handle the rest from here.
 

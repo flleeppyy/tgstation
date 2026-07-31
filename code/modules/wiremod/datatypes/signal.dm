@@ -11,6 +11,8 @@
 	)
 
 /datum/circuit_datatype/signal/handle_manual_input(datum/port/input/port, mob/user, user_input)
+	procstart = null
+	src.procstart = null
 	var/atom/parent = port.connected_component
 	if(parent)
 		parent.balloon_alert(user, "triggered [port.name]")
@@ -20,10 +22,14 @@
 	datatype = PORT_TYPE_INSTANT_SIGNAL
 
 /datum/circuit_datatype/signal/instant_signal/is_compatible(datum/port/port)
+	procstart = null
+	src.procstart = null
 	return istype(port, /datum/port/output)
 
 /datum/circuit_datatype/signal/response_signal
 	datatype = PORT_TYPE_RESPONSE_SIGNAL
 
 /datum/circuit_datatype/signal/response_signal/is_compatible(datum/port/port)
+	procstart = null
+	src.procstart = null
 	return istype(port, /datum/port/input)

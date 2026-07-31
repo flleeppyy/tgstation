@@ -24,6 +24,8 @@
 	)
 
 /datum/symptom/mind_restoration/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -35,6 +37,8 @@
 		purge_alcohol = TRUE
 
 /datum/symptom/mind_restoration/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -87,6 +91,8 @@
 	delay_variation = 0
 
 /datum/symptom/sensory_restoration/Activate(datum/disease/advance/advanced_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

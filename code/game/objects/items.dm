@@ -242,6 +242,8 @@
 	var/resist_cooldown = CLICK_CD_BREAKOUT
 
 /obj/item/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(attack_verb_continuous)
 		attack_verb_continuous = string_list(attack_verb_continuous)
 	if(attack_verb_simple)
@@ -274,6 +276,8 @@
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NEW_ITEM, src)
 
 /obj/item/Destroy(force)
+	procstart = null
+	src.procstart = null
 	// This var exists as a weird proxy "owner" ref
 	// It's used in a few places. Stop using it, and optimially replace all uses please
 	master = null
@@ -288,6 +292,8 @@
 	return ..()
 
 /obj/item/click_ctrl(mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	//If the item is on the ground & not anchored we allow the player to drag it
@@ -297,11 +303,15 @@
 
 /// Subtypes only override this proc for ctrl click purposes. obeys same principles as ctrl_click()
 /obj/item/proc/item_ctrl_click(mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	return NONE
 
 /// Called when an action associated with our item is deleted
 /obj/item/proc/on_action_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(source in actions))
@@ -314,6 +324,8 @@
 /// This also ensures that the actions are properly tracked in the actions list and removed if they're deleted.
 /// Can be be passed a typepath of an action or an instance of an action.
 /obj/item/proc/add_item_action(action_or_action_type)
+	procstart = null
+	src.procstart = null
 
 	var/datum/action/action
 	if(ispath(action_or_action_type, /datum/action))
@@ -330,6 +342,8 @@
 
 /// Grant the action to anyone who has this item equipped to an appropriate slot
 /obj/item/proc/grant_action_to_bearer(datum/action/action)
+	procstart = null
+	src.procstart = null
 	if(!ismob(loc))
 		return
 	var/mob/holder = loc
@@ -337,6 +351,8 @@
 
 /// Removes an instance of an action from our list of item actions.
 /obj/item/proc/remove_item_action(datum/action/action)
+	procstart = null
+	src.procstart = null
 	if(!action)
 		return
 
@@ -346,10 +362,14 @@
 
 /// Called if this item is supposed to be a steal objective item objective.
 /obj/item/proc/add_stealing_item_objective()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Adds the weapon_description element, which shows the 'warning label' for especially dangerous objects. Override this for item types with special notes.
 /obj/item/proc/add_weapon_description()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/weapon_description)
 
 /**
@@ -361,6 +381,8 @@
  * not_inside - Whether target (or target's loc) has to be a turf.
  */
 /obj/item/proc/check_allowed_items(atom/target, not_inside = FALSE, target_self = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!target_self && (src in target))
 		return FALSE
 	if(not_inside && !isturf(target.loc) && !isturf(target))
@@ -368,6 +390,8 @@
 	return TRUE
 
 /obj/item/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if(B && B.loc == loc && !(resistance_flags & INDESTRUCTIBLE))
 		atom_destruction(MELEE)
 
@@ -378,9 +402,13 @@
  * * user: The mob that is suiciding
  */
 /obj/item/proc/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/set_greyscale(list/colors, new_config, new_worn_config, new_inhand_left, new_inhand_right)
+	procstart = null
+	src.procstart = null
 	if(new_worn_config)
 		greyscale_config_worn = new_worn_config
 	if(new_inhand_left)
@@ -391,6 +419,8 @@
 
 /// Checks if this atom uses the GAGS system and if so updates the worn and inhand icons
 /obj/item/update_greyscale()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!greyscale_colors)
 		return
@@ -416,6 +446,8 @@ GAME_VERB_SRC(/obj/item, move_to_top, oview(1), "Move To Top", null)
 	forceMove(T)
 
 /obj/item/examine_tags(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/parent_tags = ..()
 	parent_tags.Insert(1, weight_class_to_text(w_class)) // To make size display first, otherwise it looks goofy
 	. = parent_tags
@@ -431,9 +463,13 @@ GAME_VERB_SRC(/obj/item, move_to_top, oview(1), "Move To Top", null)
 		.["partially insulated"] = "It is made from a poor insulator that will dampen (but not fully block) electric shocks passing through it."
 
 /obj/item/examine_descriptor(mob/user)
+	procstart = null
+	src.procstart = null
 	return "item"
 
 /obj/item/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	// lazily initialize the weapon description element if it hasn't been already
 	if(!(item_flags & WEAPON_DESCRIPTION_INITIALIZED))
 		add_weapon_description()
@@ -441,11 +477,15 @@ GAME_VERB_SRC(/obj/item, move_to_top, oview(1), "Move To Top", null)
 	return ..()
 
 /obj/item/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(user, TRAIT_RESEARCH_SCANNER))
 		. += research_scan(user)
 
 /obj/item/proc/research_scan(mob/user)
+	procstart = null
+	src.procstart = null
 	/// Research prospects, including boostable nodes and point values. Deliver to a console to know whether the boosts have already been used.
 	var/list/research_msg = list("<font color='purple'>Research prospects:</font> ")
 	///Separator between the items on the list
@@ -482,10 +522,14 @@ GAME_VERB_SRC(/obj/item, move_to_top, oview(1), "Move To Top", null)
 	return research_msg.Join()
 
 /obj/item/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(usr)
 	return ..()
 
 /obj/item/vv_do_topic(list/href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)
@@ -538,12 +582,16 @@ GAME_VERB_SRC(/obj/item, move_to_top, oview(1), "Move To Top", null)
 		message_admins(span_notice("[key_name(usr)] has added [picked_affix_name] fantasy affix to [before_name]"))
 
 /obj/item/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !user || anchored)
 		return
 	return attempt_pickup(user)
 
 /obj/item/proc/attempt_pickup(mob/living/user, skip_grav = FALSE)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 
 	if(!(interaction_flags_item & INTERACT_ITEM_ATTACK_HAND_PICKUP)) //See if we're supposed to auto pickup.
@@ -592,15 +640,21 @@ GAME_VERB_SRC(/obj/item, move_to_top, oview(1), "Move To Top", null)
 /// Called when a mob is manually attempting to unequip the item
 /// Returning FALSE will prevent the unequip from happening
 /obj/item/proc/can_mob_unequip(mob/user)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/item/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !user || anchored)
 		return
 	return attempt_pickup(user)
 
 /obj/item/attack_alien(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/alien/ayy = user
 
 	if(!ayy.can_hold_items(src))
@@ -611,6 +665,8 @@ GAME_VERB_SRC(/obj/item, move_to_top, oview(1), "Move To Top", null)
 	attack_paw(ayy, modifiers)
 
 /obj/item/attack_robot(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(loc, /obj/item/robot_model))
 		return
 	if(user.low_power_mode) //can't equip modules with an empty cell.
@@ -620,6 +676,8 @@ GAME_VERB_SRC(/obj/item, move_to_top, oview(1), "Move To Top", null)
 // afterattack() and attack() prototypes moved to _onclick/item_attack.dm for consistency
 
 /obj/item/proc/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_ITEM_HIT_REACT, owner, hitby, attack_text, final_block_chance, damage, attack_type, damage_type) & COMPONENT_HIT_REACTION_BLOCK)
 		return TRUE
 
@@ -646,12 +704,16 @@ GAME_VERB_SRC(/obj/item, move_to_top, oview(1), "Move To Top", null)
  * Return a flag that modifies the original message
  */
 /obj/item/proc/talk_into(atom/movable/speaker, message, channel, list/spans, datum/language/language, list/message_mods)
+	procstart = null
+	src.procstart = null
 	return SEND_SIGNAL(src, COMSIG_ITEM_TALK_INTO, speaker, message, channel, spans, language, message_mods) || (ITALICS|REDUCE_RANGE)
 
 /* sound procs, made so they can be overriden on subtypes */
 
 /// executed when this item is thrown and hits a mob
 /obj/item/proc/mob_throw_hit_sound_chain(target, volume)
+	procstart = null
+	src.procstart = null
 	if(play_mob_throw_hit_sound(target, volume))
 		return TRUE
 	if(play_hit_sound(target, volume))
@@ -661,6 +723,8 @@ GAME_VERB_SRC(/obj/item, move_to_top, oview(1), "Move To Top", null)
 
 /// executed when this item is thrown and lands on a turf
 /obj/item/proc/throw_drop_sound_chain(volume)
+	procstart = null
+	src.procstart = null
 	if(play_throw_drop_sound(volume))
 		return TRUE
 	if(play_drop_sound(volume))
@@ -668,6 +732,8 @@ GAME_VERB_SRC(/obj/item, move_to_top, oview(1), "Move To Top", null)
 	return FALSE
 
 /obj/item/proc/sound_chain(sound_to_play, volume = HALFWAY_SOUND_VOLUME, target = src)
+	procstart = null
+	src.procstart = null
 	if(sound_to_play)
 		playsound(target, sound_to_play, volume, sound_vary, ignore_walls = FALSE)
 		return TRUE
@@ -675,31 +741,45 @@ GAME_VERB_SRC(/obj/item, move_to_top, oview(1), "Move To Top", null)
 
 /// plays the pickup sound of this item.
 /obj/item/proc/play_pickup_sound(volume = PICKUP_SOUND_VOLUME)
+	procstart = null
+	src.procstart = null
 	return sound_chain(pickup_sound, volume)
 
 /// plays the drop sound
 /obj/item/proc/play_drop_sound(volume = DROP_SOUND_VOLUME)
+	procstart = null
+	src.procstart = null
 	return sound_chain(drop_sound, volume)
 
 /// plays the throw drop sound
 /obj/item/proc/play_throw_drop_sound(volume = YEET_SOUND_VOLUME)
+	procstart = null
+	src.procstart = null
 	return sound_chain(throw_drop_sound, volume)
 
 /// plays the mob throw hit sound
 /obj/item/proc/play_mob_throw_hit_sound(target, volume = DROP_SOUND_VOLUME)
+	procstart = null
+	src.procstart = null
 	return sound_chain(mob_throw_hit_sound, volume, target)
 
 /// plays when a mob is hit with this item
 /obj/item/proc/play_hit_sound(target, volume = HALFWAY_SOUND_VOLUME)
+	procstart = null
+	src.procstart = null
 	return sound_chain(hitsound, volume, target)
 
 /obj/item/proc/play_equip_sound(volume = EQUIP_SOUND_VOLUME)
+	procstart = null
+	src.procstart = null
 	return sound_chain(equip_sound, volume)
 
 /* sound procs over */
 
 /// Called when a mob drops an item.
 /obj/item/proc/dropped(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	// Remove any item actions we temporary gave out.
@@ -716,12 +796,16 @@ GAME_VERB_SRC(/obj/item, move_to_top, oview(1), "Move To Top", null)
 
 /// called just as an item is picked up (loc is not yet changed)
 /obj/item/proc/pickup(mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_ITEM_PICKUP, user)
 	SEND_SIGNAL(user, COMSIG_LIVING_PICKED_UP_ITEM, src)
 
 /// called when "found" in pockets and storage items. Returns 1 if the search should end.
 /obj/item/proc/on_found(mob/finder)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -734,6 +818,8 @@ GAME_VERB_SRC(/obj/item, move_to_top, oview(1), "Move To Top", null)
  * * initial is used to indicate whether or not this is the initial equipment (job datums etc) or just a player doing it
  */
 /obj/item/proc/on_equipped(mob/user, slot, initial = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	equipped(user, slot, initial)
 	if(SEND_SIGNAL(src, COMSIG_ITEM_POST_EQUIPPED, user, slot) & COMPONENT_EQUIPPED_FAILED)
@@ -748,6 +834,8 @@ GAME_VERB_SRC(/obj/item, move_to_top, oview(1), "Move To Top", null)
  * polling ghosts while it's just being equipped as a visual preview for a dummy.
  */
 /obj/item/proc/visual_equipped(mob/user, slot, initial = FALSE)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /**
@@ -761,6 +849,8 @@ GAME_VERB_SRC(/obj/item, move_to_top, oview(1), "Move To Top", null)
  * * initial is used to indicate whether or not this is the initial equipment (job datums etc) or just a player doing it
  */
 /obj/item/proc/equipped(mob/user, slot, initial = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	PROTECTED_PROC(TRUE)
 	visual_equipped(user, slot, initial)
@@ -781,6 +871,8 @@ GAME_VERB_SRC(/obj/item, move_to_top, oview(1), "Move To Top", null)
 
 /// Gives one of our item actions to a mob, when equipped to a certain slot
 /obj/item/proc/give_item_action(datum/action/action, mob/to_who, slot)
+	procstart = null
+	src.procstart = null
 	// Some items only give their actions buttons when in a specific slot.
 	if(!item_action_slot_check(slot, to_who, action) || SEND_SIGNAL(src, COMSIG_ITEM_UI_ACTION_SLOT_CHECKED, to_who, action, slot) & COMPONENT_ITEM_ACTION_SLOT_INVALID)
 		// There is a chance we still have our item action currently,
@@ -793,6 +885,8 @@ GAME_VERB_SRC(/obj/item, move_to_top, oview(1), "Move To Top", null)
 
 /// Sometimes we only want to grant the item's action if it's equipped in a specific slot.
 /obj/item/proc/item_action_slot_check(slot, mob/user, datum/action/action)
+	procstart = null
+	src.procstart = null
 	if(!slot) // Equipped into storage
 		return FALSE
 	if(slot & (ITEM_SLOT_HANDCUFFED|ITEM_SLOT_LEGCUFFED)) // These aren't true slots, so avoid granting actions there
@@ -815,6 +909,8 @@ GAME_VERB_SRC(/obj/item, move_to_top, oview(1), "Move To Top", null)
  * * indirect_action allows inserting into "soft locked" bags, things that can be easily opened by the owner
  */
 /obj/item/proc/mob_can_equip(mob/living/M, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE, ignore_equipped = FALSE, indirect_action = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!M)
 		return FALSE
 
@@ -839,6 +935,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
  *Checks before we get to here are: mob is alive, mob is not restrained, stunned, asleep, resting, laying, item is on the mob.
  */
 /obj/item/proc/ui_action_click(mob/user, actiontype)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_ITEM_UI_ACTION_CLICK, user, actiontype) & COMPONENT_ACTION_HANDLED)
 		return
 
@@ -846,9 +944,13 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 ///This proc determines if and at what an object will reflect energy projectiles if it's in l_hand,r_hand or wear_suit
 /obj/item/proc/IsReflect(def_zone)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/item/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_size >= STAGE_FOUR)
 		throw_at(singularity, 14, 3, spin=0)
@@ -856,10 +958,14 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 		return
 
 /obj/item/on_exit_storage(datum/storage/master_storage)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	do_drop_animation(master_storage.parent)
 
 /obj/item/pre_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	get_embed() // Ensure that embedding is lazyloaded before we impact the target, if we can have it
 	var/impact_flags = ..()
 	if(w_class < WEIGHT_CLASS_BULKY)
@@ -870,6 +976,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 	return impact_flags
 
 /obj/item/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isliving(hit_atom)) //Living mobs handle hit sounds differently.
@@ -888,12 +996,16 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 		playsound(hit_atom, 'sound/items/weapons/throwtap.ogg', volume, TRUE, -1)
 
 /obj/item/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback, force, gentle = FALSE, quickstart = TRUE, throw_type_path = /datum/thrownthing)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NODROP))
 		return
 	callback = CALLBACK(src, PROC_REF(after_throw), callback) //replace their callback with our own
 	. = ..(target, range, speed, thrower, spin, diagonals_first, callback, force, gentle, quickstart = quickstart)
 
 /obj/item/proc/after_throw(datum/callback/callback)
+	procstart = null
+	src.procstart = null
 	if (callback) //call the original callback
 		. = callback.Invoke()
 	item_flags &= ~IN_INVENTORY
@@ -905,6 +1017,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 /// If no mob is provided, we'll pass in the location, assuming it is a mob
 /// Please use this if you're going to snowflake an item out of a obj/item/storage
 /obj/item/proc/remove_item_from_storage(atom/newLoc, mob/removing)
+	procstart = null
+	src.procstart = null
 	if(!newLoc)
 		return FALSE
 	if(!removing)
@@ -919,6 +1033,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 /// Returns the icon used for overlaying the object on a belt
 /obj/item/proc/get_belt_overlay()
+	procstart = null
+	src.procstart = null
 	var/icon_state_to_use = inside_belt_icon_state || icon_state
 	if(greyscale_config_belt && greyscale_colors)
 		return mutable_appearance(SSgreyscale.GetColoredIconByType(greyscale_config_belt, greyscale_colors), icon_state_to_use)
@@ -929,9 +1045,13 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
  * * tray_extended - If true, the surgical tray the item is placed on is in "table mode"
  */
 /obj/item/proc/get_surgery_tool_overlay(tray_extended)
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/item/proc/update_slot_icon()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!ismob(loc) || QDELETED(loc))
 		return
@@ -940,15 +1060,21 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 ///Returns the temperature of src. If you want to know if an item is hot use this proc.
 /obj/item/proc/get_temperature()
+	procstart = null
+	src.procstart = null
 	if(resistance_flags & ON_FIRE)
 		return max(heat, BURNING_ITEM_MINIMUM_TEMPERATURE)
 	return heat
 
 ///Returns the sharpness of src. If you want to get the sharpness of an item use this.
 /obj/item/proc/get_sharpness()
+	procstart = null
+	src.procstart = null
 	return sharpness
 
 /obj/item/proc/get_dismember_sound()
+	procstart = null
+	src.procstart = null
 	if(damtype == BURN)
 		. = SFX_SEAR
 	else
@@ -956,6 +1082,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 /// Creates an ignition hotspot if item is lit and located on turf, in mask, or in hand
 /obj/item/proc/open_flame(flame_heat = 700, mob_slots = ITEM_SLOT_MASK|ITEM_SLOT_HANDS)
+	procstart = null
+	src.procstart = null
 	var/turf/location = loc
 	if(ismob(location))
 		var/mob/pyromanic = location
@@ -966,23 +1094,33 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 /// If an object can successfully be used as a fire starter it will return a message
 /obj/item/proc/ignition_effect(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	if(get_temperature() >= FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
 		. = span_notice("[user] lights [A] with [src].")
 	else
 		. = ""
 
 /obj/item/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	return SEND_SIGNAL(src, COMSIG_ATOM_HITBY, AM, skipcatch, hitpush, blocked, throwingdatum)
 
 /obj/item/attack_hulk(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/item/attack_animal(mob/living/simple_animal/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (obj_flags & CAN_BE_HIT)
 		return ..()
 	return 0
 
 /obj/item/burn()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(src))
 		var/turf/T = get_turf(src)
 		var/ash_type = /obj/effect/decal/cleanable/ash
@@ -993,6 +1131,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 		..()
 
 /obj/item/acid_melt()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(src))
 		var/turf/T = get_turf(src)
 		var/obj/effect/decal/cleanable/molten_object/MO = new(T)
@@ -1002,16 +1142,22 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 		..()
 
 /obj/item/proc/microwave_act(obj/machinery/microwave/microwave_source, mob/microwaver, randomize_pixel_offset)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	return SEND_SIGNAL(src, COMSIG_ITEM_MICROWAVE_ACT, microwave_source, microwaver, randomize_pixel_offset)
 
 ///Used to check for extra requirements for blending(grinding or juicing) an object
 /obj/item/proc/blend_requirements(atom/movable/grinder, mob/living/user)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 ///Returns a reagent list containing the reagents this item produces when ground up in a grinder
 /obj/item/proc/grind_results()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list/datum/reagent)
 	if (!length(custom_materials) || (material_flags & MATERIAL_NO_REAGENTS))
 		return null
@@ -1030,12 +1176,16 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 ///Called BEFORE the object is ground up - use this to change grind results based on conditions. Return "-1" to prevent the grinding from occurring
 /obj/item/proc/on_grind()
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	return SEND_SIGNAL(src, COMSIG_ITEM_ON_GRIND)
 
 ///Grind item, adding grind_results to item's reagents and transfering to target_holder if specified
 /obj/item/proc/grind(datum/reagents/target_holder, mob/user, atom/movable/grinder = loc)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	. = FALSE
@@ -1059,6 +1209,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 ///Subtypes override his proc for custom grinding
 /obj/item/proc/grind_atom(datum/reagents/target_holder, mob/user)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	var/list/datum/reagent/grind_reagents = grind_results()
@@ -1072,12 +1224,16 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 ///Returns A reagent the nutriments are converted into when the item is juiced.
 /obj/item/proc/juice_typepath()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/reagent)
 
 	return null
 
 ///Called BEFORE the object is ground up - use this to change grind results based on conditions. Return "-1" to prevent the grinding from occurring
 /obj/item/proc/on_juice()
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	if(!juice_typepath())
@@ -1087,6 +1243,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 ///Juice item, converting nutriments into juice_typepath and transfering to target_holder if specified
 /obj/item/proc/juice(datum/reagents/target_holder, mob/user, atom/movable/juicer = loc)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	. = FALSE
@@ -1110,6 +1268,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 ///Subtypes override his proc for custom juicing
 /obj/item/proc/juice_atom(datum/reagents/target_holder, mob/user)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	. = FALSE
@@ -1126,11 +1286,15 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 ///What should The atom that blended an object do with it afterwards? Default behaviour is to delete it
 /atom/movable/proc/blended(obj/item/blended_item, grinded)
+	procstart = null
+	src.procstart = null
 	qdel(blended_item)
 
 	return TRUE
 
 /obj/item/proc/set_force_string()
+	procstart = null
+	src.procstart = null
 	switch(force)
 		if(0 to 4)
 			force_string = "very low"
@@ -1149,6 +1313,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 	last_force_string_check = force
 
 /obj/item/proc/openTip(location, control, params, user)
+	procstart = null
+	src.procstart = null
 	if(last_force_string_check != force && !(item_flags & FORCE_STRING_OVERRIDE))
 		set_force_string()
 	if(!(item_flags & FORCE_STRING_OVERRIDE))
@@ -1157,6 +1323,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 		openToolTip(user,src,params,title = name,content = "[desc]<br><b>Force:</b> [force_string]",theme = "")
 
 /obj/item/MouseEntered(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(((get(src, /mob) == usr) || loc?.atom_storage || (item_flags & IN_STORAGE)) && !QDELETED(src)) //nullspace exists.
 		var/mob/living/L = usr
@@ -1170,6 +1338,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 				apply_outline() //if the player's alive and well we send the command with no color set, so it uses the theme's color
 
 /obj/item/base_mouse_drop_handler(atom/over, src_location, over_location, params)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	. = ..()
@@ -1177,11 +1347,15 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 	remove_filter(HOVER_OUTLINE_FILTER) //get rid of the hover effect in case the mouse exit isn't called if someone drags and drops an item and somthing goes wrong
 
 /obj/item/MouseExited()
+	procstart = null
+	src.procstart = null
 	deltimer(tip_timer) //delete any in-progress timer if the mouse is moved off the item before it finishes
 	closeToolTip(usr)
 	remove_filter(HOVER_OUTLINE_FILTER)
 
 /obj/item/proc/apply_outline(outline_color = null)
+	procstart = null
+	src.procstart = null
 	if(((get(src, /mob) != usr) && !loc?.atom_storage && !(item_flags & IN_STORAGE)) || QDELETED(src) || isobserver(usr)) //cancel if the item isn't in an inventory, is being deleted, or if the person hovering is a ghost (so that people spectating you don't randomly make your items glow)
 		return FALSE
 	var/theme = LOWER_TEXT(usr.client?.prefs?.read_preference(/datum/preference/choiced/ui_style))
@@ -1214,6 +1388,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 /// Called when a mob tries to use the item as a tool. Handles most checks.
 /obj/item/proc/use_tool(atom/target, mob/living/user, delay, amount=0, volume=0, datum/callback/extra_checks)
+	procstart = null
+	src.procstart = null
 	// No delay means there is no start message, and no reason to call tool_start_check before use_tool.
 	// Run the start check here so we wouldn't have to call it manually.
 	if(!delay && !tool_start_check(user, amount))
@@ -1261,20 +1437,28 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 /// Called before [obj/item/proc/use_tool] if there is a delay, or by [obj/item/proc/use_tool] if there isn't. Only ever used by welding tools and stacks, so it's not added on any other [obj/item/proc/use_tool] checks.
 /obj/item/proc/tool_start_check(mob/living/user, amount=0, heat_required=0)
+	procstart = null
+	src.procstart = null
 	. = tool_use_check(user, amount, heat_required)
 	if(.)
 		SEND_SIGNAL(src, COMSIG_TOOL_START_USE, user)
 
 /// A check called by [/obj/item/proc/tool_start_check] once, and by use_tool on every tick of delay.
 /obj/item/proc/tool_use_check(mob/living/user, amount, heat_required)
+	procstart = null
+	src.procstart = null
 	return !amount
 
 /// Generic use proc. Depending on the item, it uses up fuel, charges, sheets, etc. Returns TRUE on success, FALSE on failure.
 /obj/item/proc/use(used)
+	procstart = null
+	src.procstart = null
 	return !used
 
 /// Plays item's usesound, if any.
 /obj/item/proc/play_tool_sound(atom/target, volume=50)
+	procstart = null
+	src.procstart = null
 	if(target && usesound && volume)
 		var/played_sound = usesound
 
@@ -1285,6 +1469,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 ///Play item's operating sound
 /obj/item/proc/play_tool_operating_sound(atom/target, volume=50)
+	procstart = null
+	src.procstart = null
 	if(target && operating_sound && volume)
 		var/played_sound = operating_sound
 
@@ -1298,6 +1484,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 /// Used in a callback that is passed by use_tool into do_after call. Do not override, do not call manually.
 /obj/item/proc/tool_check_callback(mob/living/user, amount, datum/callback/extra_checks)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	. = tool_use_check(user, amount) && (!extra_checks || extra_checks.Invoke())
 	if(.)
@@ -1305,6 +1493,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 /// Returns a numeric value for sorting items used as parts in machines, so they can be replaced by the rped
 /obj/item/proc/get_part_rating()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /**
@@ -1316,6 +1506,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
  * INVENTORY MANAGEMENT HAS A LOT MORE TO IT THAN JUST CALLING A PROC OR TWO MANUALLY.
  */
 /obj/item/doMove(atom/destination)
+	procstart = null
+	src.procstart = null
 	if (!(item_flags & IN_INVENTORY))
 		return ..()
 
@@ -1329,14 +1521,20 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 	owner.transferItemToLoc(src, destination, force = TRUE, silent = TRUE, animated = FALSE)
 
 /obj/item/proc/canStrip(mob/stripper, mob/owner)
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 	return !HAS_TRAIT(src, TRAIT_NODROP) && !(item_flags & ABSTRACT)
 
 /obj/item/proc/doStrip(mob/stripper, mob/owner)
+	procstart = null
+	src.procstart = null
 	return owner.dropItemToGround(src)
 
 ///Called by the carbon throw_item() proc. Returns null if the item negates the throw, or a reference to the thing to suffer the throw else.
 /obj/item/proc/on_thrown(mob/living/carbon/user, atom/target)
+	procstart = null
+	src.procstart = null
 	if((item_flags & ABSTRACT) || HAS_TRAIT(src, TRAIT_NODROP))
 		return
 	user.dropItemToGround(src, silent = TRUE)
@@ -1366,6 +1564,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
  * * discover_after - if the item will be discovered after being chomped (FALSE will usually mean it was swallowed, TRUE will usually mean it was bitten into and discovered)
  */
 /obj/item/proc/on_accidental_consumption(mob/living/carbon/victim, mob/living/carbon/user, obj/item/source_item, discover_after = TRUE)
+	procstart = null
+	src.procstart = null
 	if(get_sharpness() && force >= 5) //if we've got something sharp with a decent force (ie, not plastic)
 		INVOKE_ASYNC(victim, TYPE_PROC_REF(/mob, emote), "scream")
 		victim.visible_message(span_warning("[victim] looks like [victim.p_theyve()] just bit something they shouldn't have!"), \
@@ -1450,11 +1650,15 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
  * * force - Force buttons update even if the given button icon state has not changed
  */
 /obj/item/proc/update_item_action_buttons(update_flags = ALL, force = FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/datum/action/current_action as anything in actions)
 		current_action.build_all_button_icons(update_flags, force)
 
 // Update icons if this is being carried by a mob
 /obj/item/wash(clean_types)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.) // we don't need mob updates when the item was already clean
 		return
@@ -1464,6 +1668,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 /// Called on [/datum/element/openspace_item_click_handler/proc/on_afterattack]. Check the relative file for information.
 /obj/item/proc/handle_openspace_click(turf/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	stack_trace("Undefined handle_openspace_click() behaviour. Ascertain the openspace_item_click_handler element has been attached to the right item and that its proc override doesn't call parent.")
 
 /**
@@ -1476,6 +1682,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
  * * offered - The living mob being offered the item.
  */
 /obj/item/proc/on_offered(mob/living/offerer, mob/living/offered)
+	procstart = null
+	src.procstart = null
 	if(!offered) // item has just been offered to anyone around
 		if(!(HAS_TRAIT(offerer, TRAIT_CAN_HOLD_ITEMS)))
 			return TRUE
@@ -1494,6 +1702,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
  * * taker - the living mob trying to accept the offer
  */
 /obj/item/proc/on_offer_taken(mob/living/offerer, mob/living/taker)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(offerer, TRAIT_CAN_HOLD_ITEMS) && !HAS_TRAIT(src, TRAIT_BORG_GIVE) && HAS_TRAIT(taker, TRAIT_CAN_HOLD_ITEMS))
 		return TRUE // both must be able to hold items for this to make sense
 	if(SEND_SIGNAL(src, COMSIG_ITEM_OFFER_TAKEN, offerer, taker) & COMPONENT_OFFER_INTERRUPT)
@@ -1501,10 +1711,14 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 /// Special stuff you want to do when an outfit equips this item.
 /obj/item/proc/on_outfit_equip(mob/living/carbon/human/outfit_wearer, visuals_only, item_slot)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_ITEM_EQUIPPED_AS_OUTFIT, outfit_wearer, visuals_only, item_slot)
 
 /obj/item/proc/do_pickup_animation(atom/target, turf/source)
+	procstart = null
+	src.procstart = null
 	if(!source)
 		if(!istype(loc, /turf))
 			return
@@ -1540,6 +1754,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 	animate(alpha = 0, transform = matrix().Scale(0.7), time = 0.1 SECONDS)
 
 /obj/item/proc/do_drop_animation(atom/moving_from)
+	procstart = null
+	src.procstart = null
 	if(!istype(loc, /turf))
 		return
 
@@ -1583,6 +1799,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 	animate(src, alpha = old_alpha, pixel_x = old_x, pixel_y = old_y, transform = old_transform, time = 3, easing = CUBIC_EASING)
 
 /atom/movable/proc/do_item_attack_animation(atom/attacked_atom, visual_effect_icon, obj/item/used_item, animation_type)
+	procstart = null
+	src.procstart = null
 	if (!visual_effect_icon)
 		if (used_item)
 			used_item.animate_attack(src, attacked_atom, animation_type)
@@ -1601,6 +1819,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 	animate(alpha = 0, time = 0.3 SECONDS, easing = CIRCULAR_EASING|EASE_OUT)
 
 /obj/item/proc/animate_attack(atom/movable/attacker, atom/attacked_atom, animation_type)
+	procstart = null
+	src.procstart = null
 	var/list/image_override = list()
 	var/list/animation_override = list()
 	var/used_icon_angle = icon_angle
@@ -1768,12 +1988,16 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 /// Common proc used by painting tools like spraycans and palettes that can access the entire 24 bits color space.
 /obj/item/proc/pick_painting_tool_color(mob/user, default_color)
+	procstart = null
+	src.procstart = null
 	var/chosen_color = tgui_color_picker(user, "Pick new color", "[src]", default_color)
 	if(!chosen_color || QDELETED(src) || user.incapacitated || !user.is_holding(src))
 		return
 	set_painting_tool_color(chosen_color)
 
 /obj/item/proc/set_painting_tool_color(chosen_color)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_PAINTING_TOOL_SET_COLOR, chosen_color)
 
 /**
@@ -1781,6 +2005,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
  * Returns a list of key attributes for this object interacting with paper otherwise.
  */
 /obj/item/proc/get_writing_implement_details()
+	procstart = null
+	src.procstart = null
 	return null
 
 /**
@@ -1788,6 +2014,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
  * Currently supports the jumpsuit, outersuit, backpack, belt, gloves, hat, ears, neck, mask, eyes, and feet slots. All other slots will auto return FALSE.
  */
 /obj/item/proc/compare_zone_to_item_slot(zone)
+	procstart = null
+	src.procstart = null
 	switch(slot_flags)
 		if(ITEM_SLOT_ICLOTHING, ITEM_SLOT_OCLOTHING, ITEM_SLOT_BACK)
 			return (zone == BODY_ZONE_CHEST)
@@ -1810,6 +2038,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
  * It handles initial messages, AFK stripping, and initial logging.
  */
 /obj/item/proc/item_start_equip(atom/target, obj/item/equipping, mob/user, show_visible_message = TRUE)
+	procstart = null
+	src.procstart = null
 
 	if(show_visible_message)
 		if(HAS_TRAIT(equipping, TRAIT_DANGEROUS_OBJECT))
@@ -1843,11 +2073,15 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 	target.log_message("is having [equipping] put on them by [key_name(user)]", LOG_VICTIM, color="orange", log_globally=FALSE)
 
 /obj/item/update_atom_colour()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_slot_icon()
 
 /// Modifies the fantasy variable
 /obj/item/proc/modify_fantasy_variable(variable_key, value, bonus, minimum = 0)
+	procstart = null
+	src.procstart = null
 	var/result = LAZYACCESS(fantasy_modifications, variable_key)
 	if(!isnull(result))
 		if(HAS_TRAIT(src, TRAIT_INNATELY_FANTASTICAL_ITEM))
@@ -1865,6 +2099,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 /// Returns the original fantasy variable value
 /obj/item/proc/reset_fantasy_variable(variable_key, current_value)
+	procstart = null
+	src.procstart = null
 	var/modification = LAZYACCESS(fantasy_modifications, variable_key)
 
 	if(isnum(modification) && HAS_TRAIT(src, TRAIT_INNATELY_FANTASTICAL_ITEM))
@@ -1877,6 +2113,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 	return current_value - modification
 
 /obj/item/proc/apply_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_ITEM_APPLY_FANTASY_BONUSES, bonus)
 	force = modify_fantasy_variable("force", force, bonus)
@@ -1886,6 +2124,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 	toolspeed = modify_fantasy_variable("toolspeed", toolspeed, -bonus/10, minimum = 0.1)
 
 /obj/item/proc/remove_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	force = reset_fantasy_variable("force", force)
 	throwforce = reset_fantasy_variable("throwforce", throwforce)
@@ -1896,11 +2136,15 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 //automatically finds tool behavior if there is only one. requires an extension of the proc if a tool has multiple behaviors
 /obj/item/proc/get_all_tool_behaviours()
+	procstart = null
+	src.procstart = null
 	if (!isnull(tool_behaviour))
 		return list(tool_behaviour)
 	return null
 
 /obj/item/animate_atom_living(mob/living/owner)
+	procstart = null
+	src.procstart = null
 	return new /mob/living/basic/mimic/copy(drop_location(), src, owner)
 
 /**
@@ -1914,6 +2158,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
  * * FALSE otherwise
  */
 /obj/item/proc/update_weight_class(new_w_class)
+	procstart = null
+	src.procstart = null
 	if(w_class == new_w_class)
 		return FALSE
 
@@ -1929,6 +2175,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
  * Returns true when an item has the contraband trait, or is included in the traitor uplink.
  */
 /obj/item/proc/is_contraband()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_CONTRABAND))
 		return TRUE
 	for(var/datum/uplink_item/traitor_item as anything in SStraitor.uplink_items)
@@ -1939,6 +2187,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 	return FALSE
 
 /obj/item/apply_main_material_effects(datum/material/main_material, amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (material_flags & MATERIAL_GREYSCALE)
 		var/main_mat_type = main_material.type
@@ -1968,6 +2218,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 	drop_sound = main_material.item_sound_override
 
 /obj/item/remove_main_material_effects(datum/material/main_material, amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (material_flags & MATERIAL_GREYSCALE)
 		set_greyscale(
@@ -1993,6 +2245,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 	drop_sound = initial(drop_sound)
 
 /obj/item/apply_single_mat_effect(datum/material/material, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!(material_flags & MATERIAL_AFFECT_STATISTICS))
 		return
@@ -2011,6 +2265,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 		change_material_slowdown(material, mat_amount, multiplier)
 
 /obj/item/remove_single_mat_effect(datum/material/material, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!(material_flags & MATERIAL_AFFECT_STATISTICS))
 		return
@@ -2031,6 +2287,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 		change_material_slowdown(material, mat_amount, multiplier, removing = TRUE)
 
 /obj/item/proc/change_material_slowdown(datum/material/material, mat_amount, multiplier, removing = FALSE)
+	procstart = null
+	src.procstart = null
 	// Density above 6 adds slowdown, density below 3 can reduce existing slowdown
 	var/density = material.get_property(MATERIAL_DENSITY)
 	var/slowdown_change = 0
@@ -2053,6 +2311,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 		slowdown = min(initial(slowdown), slowdown - slowdown_change * multiplier)
 
 /obj/item/finalize_remove_material_effects(list/materials)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!(material_flags & MATERIAL_AFFECT_STATISTICS) || initial(siemens_coefficient) == 0 || siemens_coefficient != 0)
 		return
@@ -2062,6 +2322,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 		obj_flags |= CONDUCTS_ELECTRICITY
 
 /obj/item/change_material_strength(datum/material/material, mat_amount, multiplier, remove = FALSE)
+	procstart = null
+	src.procstart = null
 	var/force_mod = get_material_force_modifier(material)
 	var/throwforce_mod = get_material_throwforce_modifier(material)
 
@@ -2074,6 +2336,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 /// Returns a force multiplier from a material for a given sharpness
 /obj/item/proc/get_material_force_modifier(datum/material/material, item_sharpness = get_sharpness())
+	procstart = null
+	src.procstart = null
 	var/density = material.get_property(MATERIAL_DENSITY)
 	var/hardness = material.get_property(MATERIAL_HARDNESS)
 	var/flexibility = material.get_property(MATERIAL_FLEXIBILITY)
@@ -2106,6 +2370,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 /// Returns a force multiplier from a material for a given sharpness
 /obj/item/proc/get_material_throwforce_modifier(datum/material/material, item_sharpness = get_sharpness())
+	procstart = null
+	src.procstart = null
 	var/density = material.get_property(MATERIAL_DENSITY)
 	var/hardness = material.get_property(MATERIAL_HARDNESS)
 	var/flexibility = material.get_property(MATERIAL_FLEXIBILITY)
@@ -2145,12 +2411,16 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
  * Currently used only in the object melee attack chain but can be used anywhere else or even moved up to the atom level if required
  */
 /obj/item/proc/get_proxy_attacker_for(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/obj/item)
 
 	return src
 
 /// Checks if the bait is liked by the fish type or not. Returns a multiplier that affects the chance of catching it.
 /obj/item/proc/check_bait(obj/item/fish/fish)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_OMNI_BAIT))
 		return 1
 	var/catch_multiplier = 1
@@ -2170,6 +2440,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 /// Helper proc that checks if a bait matches identifier from fav/disliked bait list
 /proc/is_matching_bait(obj/item/bait, identifier)
+	procstart = null
+	src.procstart = null
 	if(ispath(identifier)) //Just a path
 		return istype(bait, identifier)
 	if(!islist(identifier))
@@ -2185,6 +2457,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 			CRASH("Unknown bait identifier in fish favourite/disliked list")
 
 /obj/item/vv_get_header()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += {"
 		<br><font size='1'>
@@ -2197,6 +2471,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 /// Fetches, or lazyloads, our embedding datum
 /obj/item/proc/get_embed()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/embedding)
 	// Something may call this during qdeleting, which would cause a harddel
 	if (QDELETED(src))
@@ -2209,6 +2485,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 /// Sets our embedding datum to a different one. Can also take types
 /obj/item/proc/set_embed(datum/embedding/new_embed)
+	procstart = null
+	src.procstart = null
 	if (new_embed == embed_data)
 		return
 
@@ -2224,6 +2502,8 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 /// Embed ourselves into an object if we possess embedding data
 /obj/item/proc/force_embed(mob/living/carbon/victim, obj/item/bodypart/target_limb)
+	procstart = null
+	src.procstart = null
 	if (!istype(victim))
 		return FALSE
 
@@ -2234,8 +2514,12 @@ GAME_VERB_SRC(/obj/item, verb_pickup, oview(1), "Pick up", null)
 
 /// Checks if user can insert a valid container into the chemistry machine.
 /obj/item/proc/can_insert_container(mob/living/user, obj/machinery/chem_machine)
+	procstart = null
+	src.procstart = null
 	return is_chem_container() && chem_machine.can_interact(user) && user.can_perform_action(chem_machine, ALLOW_SILICON_REACH | FORBID_TELEKINESIS_REACH)
 
 /// Checks if this container is valid for use with chemistry machinery.
 /obj/item/proc/is_chem_container()
+	procstart = null
+	src.procstart = null
 	return FALSE

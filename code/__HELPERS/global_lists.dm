@@ -4,6 +4,8 @@
 
 /// Legacy procs that really should be replaced with proper _INIT macros
 /proc/make_datum_reference_lists()
+	procstart = null
+	src.procstart = null
 	// I tried to eliminate this proc but I couldn't untangle their init-order interdependencies -Dominion/Cyberboss
 	init_keybindings()
 	GLOB.emote_list = init_emote_list() // WHY DOES THIS NEED TO GO HERE? IT JUST INITS DATUMS
@@ -12,6 +14,8 @@
 
 /// Inits crafting recipe lists
 /proc/init_crafting_recipes()
+	procstart = null
+	src.procstart = null
 	for(var/datum/crafting_recipe_path as anything in valid_subtypesof(/datum/crafting_recipe))
 		var/datum/crafting_recipe/recipe = new crafting_recipe_path()
 		if(recipe.name == "" || !recipe.result)
@@ -102,6 +106,8 @@
 
 /// Inits atoms used in crafting recipes
 /proc/init_crafting_recipes_atoms()
+	procstart = null
+	src.procstart = null
 	var/list/recipe_lists = list(
 		GLOB.crafting_recipes,
 		GLOB.cooking_recipes,
@@ -141,6 +147,8 @@
 /// Creates every subtype of prototype (excluding prototype and abstract types) and adds it to list L.
 /// If no list/L is provided, one is created.
 /proc/init_subtypes(prototype, list/L)
+	procstart = null
+	src.procstart = null
 	if(!istype(L))
 		L = list()
 	for(var/path in valid_subtypesof(prototype))
@@ -150,6 +158,8 @@
 /// Functions like init_subtypes, but uses the subtype's path as a key for easy access
 /// If no list/L is provided, one is created.
 /proc/init_subtypes_w_path_keys(prototype, list/L)
+	procstart = null
+	src.procstart = null
 	if(!istype(L))
 		L = list()
 	for(var/path in valid_subtypesof(prototype))
@@ -211,6 +221,8 @@ GLOBAL_LIST_INIT(allowed_money, typecacheof(list(
 
 /// Inits GLOB.plant_traits
 /proc/init_plant_traits()
+	procstart = null
+	src.procstart = null
 	var/traits = list()
 	for(var/trait_path in subtypesof(/datum/plant_gene))
 		traits += new trait_path

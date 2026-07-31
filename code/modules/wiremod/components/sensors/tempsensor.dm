@@ -14,9 +14,13 @@
 	var/datum/port/output/result
 
 /obj/item/circuit_component/tempsensor/populate_ports()
+	procstart = null
+	src.procstart = null
 	result = add_output_port("Result", PORT_TYPE_NUMBER)
 
 /obj/item/circuit_component/tempsensor/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	//Get current turf
 	var/turf/location = get_location()
 	if(!location)

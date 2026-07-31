@@ -17,9 +17,13 @@
 	return ..()
 
 /datum/memory/surgery/get_names()
+	procstart = null
+	src.procstart = null
 	return list("The [surgery_type] of [deuteragonist_name] by [protagonist_name].")
 
 /datum/memory/surgery/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] carefully performing [surgery_type] on [deuteragonist_name]",
 		"[protagonist_name] using a bone saw on [deuteragonist_name]",
@@ -27,6 +31,8 @@
 	)
 
 /datum/memory/surgery/get_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] [mood_verb] after finishing [surgery_type].",
 		"[protagonist_name] [mood_verb] as a blood splatter lands on [protagonist_name]'s face.",
@@ -42,9 +48,13 @@
 	// Antaognist - The bomb that was armed
 
 /datum/memory/bomb_planted/get_names()
+	procstart = null
+	src.procstart = null
 	return list("The arming of [antagonist_name] by [protagonist_name].")
 
 /datum/memory/bomb_planted/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] pressing an ominous button, causing [antagonist_name] to begin beeping",
 		"[protagonist_name] slapping down [antagonist_name]",
@@ -52,6 +62,8 @@
 	)
 
 /datum/memory/bomb_planted/get_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] [mood_verb] and begins to walk away from it.",
 		"[protagonist_name] [mood_verb] as it begins to tick.",
@@ -60,6 +72,8 @@
 	)
 
 /datum/memory/bomb_planted/get_happy_moods()
+	procstart = null
+	src.procstart = null
 	return list("feels too cool to look at [antagonist_name]")
 
 /// Planted a SYNDICATE bomb.
@@ -91,9 +105,13 @@
 	return ..()
 
 /datum/memory/high_five/get_names()
+	procstart = null
+	src.procstart = null
 	return list("The [high_five_type] between [protagonist_name] and [deuteragonist_name].")
 
 /datum/memory/high_five/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] and [deuteragonist_name] having a legendary [high_five_type]",
 		"[protagonist_name] giving [deuteragonist_name] a [high_five_type]",
@@ -101,6 +119,8 @@
 	)
 
 /datum/memory/high_five/get_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] [mood_verb] as the [high_five_type] connects.",
 		"[protagonist_name] [mood_verb] at all the compatriotism going on.",
@@ -115,9 +135,13 @@
 	// Protagonist - The mind of who was just cyborgized
 
 /datum/memory/was_cyborged/get_names()
+	procstart = null
+	src.procstart = null
 	return list("The borging of [protagonist_name].")
 
 /datum/memory/was_cyborged/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] having their brain put into a robot",
 		"[protagonist_name] getting turned into a bucket of bolts",
@@ -130,9 +154,13 @@
 	// Protagonist - Who died
 
 /datum/memory/witnessed_death/get_names()
+	procstart = null
+	src.procstart = null
 	return list("The death of [protagonist_name].")
 
 /datum/memory/witnessed_death/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] having perished",
 		"[protagonist_name] seizing up and falling limp, their eyes appearing dead and lifeless",
@@ -147,15 +175,21 @@
 	// Protagonist - The mob that got pied
 
 /datum/memory/witnessed_creampie/get_names()
+	procstart = null
+	src.procstart = null
 	return list("The creaming of [protagonist_name].")
 
 /datum/memory/witnessed_creampie/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name]'s face being covered in cream",
 		"[protagonist_name] getting cream-pied",
 	)
 
 /datum/memory/witnessed_creampie/get_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] [mood_verb] as the cream drips off their face",
 		"[protagonist_name] [mood_verb] because of their now expanded laundry task.",
@@ -169,15 +203,21 @@
 	// Protagonist - The mob that got pied
 
 /datum/memory/witnessed_inking/get_names()
+	procstart = null
+	src.procstart = null
 	return list("The inking of [protagonist_name].")
 
 /datum/memory/witnessed_inking/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name]'s face being covered in squid ink",
 		"[protagonist_name] getting squid-inked",
 	)
 
 /datum/memory/witnessed_inking/get_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] [mood_verb] as ink drips off their face",
 		"[protagonist_name] [mood_verb] because of their now expanded laundry task.",
@@ -191,9 +231,13 @@
 	// Antagonist - The thing that did the slipping (banana peel, etc)
 
 /datum/memory/was_slipped/get_names()
+	procstart = null
+	src.procstart = null
 	return list("The slipping of [protagonist_name].")
 
 /datum/memory/was_slipped/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] not being able to keep standing when faced with [antagonist_name]",
 		"[protagonist_name] tumbling right over [antagonist_name]",
@@ -201,15 +245,21 @@
 	)
 
 /datum/memory/was_slipped/get_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] [mood_verb] as they crawl up from the ground.",
 		"[protagonist_name] [mood_verb] while on the ground.",
 	)
 
 /datum/memory/was_slipped/get_sad_moods()
+	procstart = null
+	src.procstart = null
 	return list("doesn't even want to get up and looks depressed")
 
 /datum/memory/was_slipped/build_story_character(character)
+	procstart = null
+	src.procstart = null
 	// We can slip on turfs, so we should account for it
 	if(isturf(character))
 		var/turf/place = character
@@ -224,15 +274,21 @@
 	// Protagonist - The mob losing their spaghet
 
 /datum/memory/lost_spaghetti/get_names()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name]'s spaghetti blunder.")
 
 /datum/memory/lost_spaghetti/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name]'s spaghetti pouring out of their pockets",
 		"[protagonist_name]'s pockets not being able to contain their spaghetti",
 	)
 
 /datum/memory/lost_spaghetti/get_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] [mood_verb] as the spaghetti poured out.",
 		"[protagonist_name] [mood_verb] as they try to pick up the scraps.",
@@ -247,15 +303,21 @@
 	// Deuteragonist - The mob doing the kissing
 
 /datum/memory/kissed/get_names()
+	procstart = null
+	src.procstart = null
 	return list("the kiss blown to [protagonist_name]")
 
 /datum/memory/kissed/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name]'s receiving a blown kiss from [deuteragonist_name]",
 		"[deuteragonist_name] blowing a kiss to [protagonist_name]",
 	)
 
 /datum/memory/kissed/get_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] [mood_verb] as the kiss lands on their cheek.",
 		"[protagonist_name] [mood_verb] as it happen.",
@@ -279,9 +341,13 @@
 	return ..()
 
 /datum/memory/good_food/get_names()
+	procstart = null
+	src.procstart = null
 	return list("A delicious [food] [protagonist_name] ate")
 
 /datum/memory/good_food/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[food] changing [protagonist_name]'s outlook on food",
 		"[food] is leaving [protagonist_name] round and full",
@@ -291,6 +357,8 @@
 	)
 
 /datum/memory/good_food/get_moods()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] [mood_verb] as they take another bite.")
 
 /// Had a good drink.
@@ -311,9 +379,13 @@
 	return ..()
 
 /datum/memory/good_drink/get_names()
+	procstart = null
+	src.procstart = null
 	return list("a delicious [drink] [protagonist_name] consumed")
 
 /datum/memory/good_drink/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[drink] changing [protagonist_name]'s outlook on classy drinking",
 		"[drink] leaving a long lasting impression on [protagonist_name]",
@@ -322,6 +394,8 @@
 	)
 
 /datum/memory/good_drink/get_moods()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] [mood_verb] as they take another sip.")
 
 /// Was set on fire and started to burn.
@@ -330,9 +404,13 @@
 	// Protagonist - The mob burning
 
 /datum/memory/was_burning/get_names()
+	procstart = null
+	src.procstart = null
 	return list("The burning of [protagonist_name].")
 
 /datum/memory/was_burning/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] bursting into flames",
 		"[protagonist_name] turning into a human torch",
@@ -340,6 +418,8 @@
 	)
 
 /datum/memory/was_burning/get_moods()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] [mood_verb] as their skin melts.")
 
 /// Got a limb removed by force.
@@ -360,9 +440,13 @@
 	return ..()
 
 /datum/memory/was_dismembered/get_names()
+	procstart = null
+	src.procstart = null
 	return list("The loss of [protagonist_name]'s [lost_limb].")
 
 /datum/memory/was_dismembered/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] becoming eligible for handicapped parking",
 		"[protagonist_name]'s [lost_limb] being shot into the abyss",
@@ -370,6 +454,8 @@
 	)
 
 /datum/memory/was_dismembered/get_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] [mood_verb] after losing [lost_limb].",
 		"Without [lost_limb], [protagonist_name] [mood_verb].",
@@ -383,9 +469,13 @@
 	// Deuteragonist - The pet which died
 
 /datum/memory/pet_died/get_names()
+	procstart = null
+	src.procstart = null
 	return list("The death of [deuteragonist_name].")
 
 /datum/memory/pet_died/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"honoring [deuteragonist_name], the station's pet",
 		"[deuteragonist_name]'s funeral, which is attended by a group of crew members",
@@ -393,6 +483,8 @@
 	)
 
 /datum/memory/pet_died/get_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] [mood_verb] without [deuteragonist_name].",
 		"Without [deuteragonist_name], [protagonist_name] [mood_verb].",
@@ -406,9 +498,13 @@
 	// Protagonist - The head revolutionary that won the revolution
 
 /datum/memory/revolution_rev_victory/get_names()
+	procstart = null
+	src.procstart = null
 	return list("The revolution of [station_name()] by [protagonist_name].")
 
 /datum/memory/revolution_rev_victory/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] raising the flag of the revolution over the corpses of the former dictators",
 		"a flag waving above a pile of corpses with [protagonist_name] standing over it",
@@ -417,6 +513,8 @@
 	)
 
 /datum/memory/revolution_rev_victory/get_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] [mood_verb] at the fall of [station_name()].",
 		"[protagonist_name] [mood_verb] at the idea of the new era.",
@@ -429,9 +527,13 @@
 	// Protagonist - The head of staff that lost the revolution
 
 /datum/memory/revolution_heads_defeated/get_names()
+	procstart = null
+	src.procstart = null
 	return list("The defeat of [protagonist_name] at the hands of the revolution")
 
 /datum/memory/revolution_heads_defeated/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] fleeing [station_name()] in shame due to the success of the revolution",
 		"[protagonist_name] looking at a camera feed of rampaging revolutionaries",
@@ -439,6 +541,8 @@
 	)
 
 /datum/memory/revolution_heads_defeated/get_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] [mood_verb] at the fall of [station_name()].",
 		"[protagonist_name] [mood_verb] at their defeat.",
@@ -451,15 +555,21 @@
 	// Protagonist - The head revolutionary that lost the revolution
 
 /datum/memory/revolution_rev_defeat/get_names()
+	procstart = null
+	src.procstart = null
 	return list(
 		"The defeat of [protagonist_name] at the hands of the Nanotrasen",
 		"The end of [protagonist_name]'s glorious revolution",
 	)
 
 /datum/memory/revolution_rev_defeat/get_starts()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] fleeing [station_name()] in shame due to the failure of their revolution")
 
 /datum/memory/revolution_rev_defeat/get_moods()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] [mood_verb] at their defeat.")
 
 /// Given to heads of staff, and those around them, upon defeating the revolutionaries.
@@ -469,15 +579,21 @@
 	// Protagonist - The head of staff that won the revolution
 
 /datum/memory/revolution_heads_victory/get_names()
+	procstart = null
+	src.procstart = null
 	return list("The success of [protagonist_name] and Nanotrasen over the hateful revolution")
 
 /datum/memory/revolution_heads_victory/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] dusting off their hands in victory over the revoution",
 		"the banner of Nanotrasen flying on the bridge of [station_name()] with [protagonist_name] proudly beside it",
 	)
 
 /datum/memory/revolution_rev_defeat/get_moods()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] [mood_verb] over the defeat of the revolution by the hands of Nanotrasen.")
 
 /// Watched someone receive a commendation medal
@@ -504,9 +620,13 @@
 	return ..()
 
 /datum/memory/received_medal/get_names()
+	procstart = null
+	src.procstart = null
 	return list("The award ceremony of [medal_type] to [protagonist_name].")
 
 /datum/memory/received_medal/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] accepting a [medal_type] inscribed with \"[medal_text]\" from [deuteragonist_name]",
 		"[protagonist_name] receiving a [medal_type] with the inscription \"[medal_text]\"",
@@ -514,6 +634,8 @@
 	)
 
 /datum/memory/received_medal/get_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] [mood_verb] as they receive their medal.",
 		"[protagonist_name] [mood_verb] with their newly received award.",
@@ -526,9 +648,13 @@
 	// Antagonist - The megafauna
 
 /datum/memory/megafauna_slayer/get_names()
+	procstart = null
+	src.procstart = null
 	return list("The slaughter of [antagonist_name].")
 
 /datum/memory/megafauna_slayer/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] performing the final strike on [antagonist_name], taking it down",
 		"[protagonist_name] standing with the head of [antagonist_name] in their hand",
@@ -536,6 +662,8 @@
 	)
 
 /datum/memory/megafauna_slayer/get_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] [mood_verb] as the blood lust fades from their eyes.",
 		"[protagonist_name] [mood_verb] as they search the corpse for valuables.",
@@ -550,15 +678,21 @@
 	// Antagonist - The gun
 
 /datum/memory/held_at_gunpoint/get_names()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] being held at gunpoint.")
 
 /datum/memory/held_at_gunpoint/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] with [antagonist_name] pressed to their skull by [deuteragonist_name]",
 		"[deuteragonist_name] whipping out [antagonist_name] and pointing it at [protagonist_name]",
 	)
 
 /datum/memory/held_at_gunpoint/get_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] [mood_verb] as they are faced with the situation.",
 		"[protagonist_name] [mood_verb] as they stare down [antagonist_name]'s barrel.",
@@ -569,15 +703,21 @@
 	story_value = STORY_VALUE_AMAZING
 
 /datum/memory/won_jackpot/get_names()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] winning it big.")
 
 /datum/memory/won_jackpot/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] hits [deuteragonist_name]'s lever, with money symbols in their eyes.",
 		"[deuteragonist_name] plays a jingle as [protagonist_name] pulls the lever.",
 	)
 
 /datum/memory/won_jackpot/get_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] [mood_verb] as they collect the money from the [deuteragonist_name].",
 		"[protagonist_name] [mood_verb] as [deuteragonist_name] starts spitting out money with a blare.",
@@ -590,9 +730,13 @@
 	// Protagonist - Who got gibbed
 
 /datum/memory/witness_gib/get_names()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] exploding into bits.")
 
 /datum/memory/witness_gib/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] exploding into little fleshy bits",
 		"[protagonist_name] becoming flesh paste in the blink of an eye",
@@ -606,9 +750,13 @@
 	// Antagonist - The vendor that crushed them
 
 /datum/memory/witness_vendor_crush/get_names()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] being crushed by [antagonist_name].")
 
 /datum/memory/witness_vendor_crush/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] being crushed by the [antagonist_name]",
 		"the [antagonist_name] that crashed on top of [protagonist_name]",
@@ -616,6 +764,8 @@
 	)
 
 /datum/memory/witness_vendor_crush/get_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] [mood_verb] as they lie under the machine.",
 		"[protagonist_name] [mood_verb] as a goodie falls out of the [antagonist_name]."
@@ -629,9 +779,13 @@
 	// Antagonist - The supermatter
 
 /datum/memory/witness_supermatter_dusting/get_names()
+	procstart = null
+	src.procstart = null
 	return list("The dusting of [protagonist_name] by the [antagonist_name].")
 
 /datum/memory/witness_supermatter_dusting/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] turning into a pile of bones after touching the [antagonist_name]",
 		"The [antagonist_name] turning [protagonist_name] into ash",
@@ -639,6 +793,8 @@
 	)
 
 /datum/memory/witness_supermatter_dusting/get_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] [mood_verb] as they faded way.",
 		"[protagonist_name] [mood_verb] as they are reduced to atoms.",
@@ -680,9 +836,13 @@
 	return ..()
 
 /datum/memory/playing_cards/get_names()
+	procstart = null
+	src.procstart = null
 	return list("The [game] of [protagonist_name] with [formatted_players_list].")
 
 /datum/memory/playing_cards/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[formatted_players_list] waiting for [protagonist_name] to start the [game]",
 		"The [game] has been setup by [deuteragonist_name]",
@@ -690,6 +850,8 @@
 	)
 
 /datum/memory/playing_cards/get_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] [mood_verb] as they hold the [protagonist_held_card] for the [game].",
 		"[protagonist_name] [mood_verb] as they pickup the [protagonist_held_card].",
@@ -705,15 +867,21 @@
 	// Antagonist - The deck of cards
 
 /datum/memory/playing_card_pickup/get_names()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] tricking [deuteragonist_name] into playing 52 pickup with [antagonist_name].")
 
 /datum/memory/playing_card_pickup/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] tossing the [antagonist_name] at [deuteragonist_name] spilling cards all over the floor",
 		"A [antagonist_name] thrown by [protagonist_name] splatters across [deuteragonist_name] face",
 	)
 
 /datum/memory/playing_card_pickup/get_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] [mood_verb] as they taunt [deuteragonist_name].",
 		"[deuteragonist_name] [mood_verb] as they shamefully pickup the cards.",
@@ -753,9 +921,13 @@
 	return ..()
 
 /datum/memory/witnessed_russian_roulette/get_names()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] playing a game of russian roulette.")
 
 /datum/memory/witnessed_russian_roulette/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] aiming at their [aimed_at] right before they pull the trigger.",
 		"The revolver has [rounds_loaded] rounds loaded in the chamber.",
@@ -763,6 +935,8 @@
 	)
 
 /datum/memory/witnessed_russian_roulette/get_moods()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] [mood_verb] as they [result] the deadly game of roulette.")
 
 /// When a heretic finishes their ritual of knowledge
@@ -771,9 +945,13 @@
 	// Protagonist = heretic
 
 /datum/memory/heretic_knowledge_ritual/get_names()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] absorbing boundless knowledge through eldritch research.")
 
 /datum/memory/heretic_knowledge_ritual/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] laying out a circle of green tar and candles",
 		"multiple books around [protagonist_name] flipping open",
@@ -784,15 +962,23 @@
 	)
 
 /datum/memory/heretic_knowledge_ritual/get_moods()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] [mood_verb] as their hand glows with power.")
 
 /datum/memory/heretic_knowledge_ritual/get_happy_moods()
+	procstart = null
+	src.procstart = null
 	return list("cackling madly")
 
 /datum/memory/heretic_knowledge_ritual/get_neutral_moods()
+	procstart = null
+	src.procstart = null
 	return list("staring blankly with a wide grin")
 
 /datum/memory/heretic_knowledge_ritual/get_sad_moods()
+	procstart = null
+	src.procstart = null
 	return list("cackling insanely")
 
 /// Failed to defuse a bomb, by triggering it early.
@@ -803,9 +989,13 @@
 	// Antagonist = bomb
 
 /datum/memory/bomb_defuse_failure/get_names()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] failing to defuse [antagonist_name].")
 
 /datum/memory/bomb_defuse_failure/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] cutting the wrong wire on [antagonist_name]",
 		"[protagonist_name] sweating nervously and shielding their face as [antagonist_name] makes a loud noise",
@@ -813,6 +1003,8 @@
 	)
 
 /datum/memory/bomb_defuse_failure/get_moods()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] [mood_verb] as they snip a wire on [antagonist_name].")
 
 /// Succeeded in defusing a bomb!
@@ -835,9 +1027,13 @@
 	return ..()
 
 /datum/memory/bomb_defuse_success/get_names()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] successfully defusing [antagonist_name].")
 
 /datum/memory/bomb_defuse_success/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] cutting the right wire on [antagonist_name]",
 		"[protagonist_name] sweating nervously and shielding their face as [antagonist_name] makes a shrill beep",
@@ -845,6 +1041,8 @@
 	)
 
 /datum/memory/bomb_defuse_success/get_moods()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] [mood_verb] as they snip a wire on [antagonist_name].")
 
 
@@ -852,9 +1050,13 @@
 	story_value = STORY_VALUE_OKAY
 
 /datum/memory/helped_up/get_names()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] gentlemanly helping up [deuteragonist_name].")
 
 /datum/memory/helped_up/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] helping up [deuteragonist_name]",
 		"[deuteragonist_name] taking the hand offered graciously by [protagonist_name] to get up",
@@ -865,12 +1067,16 @@
 	story_value = STORY_VALUE_OKAY
 
 /datum/memory/caught_fish/get_names()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] catching an absolute honker.",
 		"[protagonist_name] caught a [deuteragonist_name].",
 	)
 
 /datum/memory/caught_fish/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] reels in the line",
 		"[protagonist_name]'s eye glints, and they begin reeling",
@@ -880,6 +1086,8 @@
 	)
 
 /datum/memory/caught_fish/get_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] [mood_verb] as a [deuteragonist_name] flies out of the water!",
 		"[protagonist_name] [mood_verb] as they catch a [deuteragonist_name]!",
@@ -887,6 +1095,8 @@
 	)
 
 /datum/memory/caught_fish/get_sad_moods()
+	procstart = null
+	src.procstart = null
 	return list("partakes in therapy fishing")
 
 /// Becoming a mutant via infusion
@@ -906,12 +1116,16 @@
 	return ..()
 
 /datum/memory/dna_infusion/get_names()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] infusing with a [deuteragonist_name].",
 		"[protagonist_name] infusing a [deuteragonist_name] into themselves.",
 	)
 
 /datum/memory/dna_infusion/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] enters a creepy DNA machine",
 		"[protagonist_name]'s partakes in some mad science",
@@ -920,6 +1134,8 @@
 	)
 
 /datum/memory/dna_infusion/get_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] [mood_verb] as they infuse with a [deuteragonist_name]!",
 		"[protagonist_name] [mood_verb] as they become one the [deuteragonist_name].",
@@ -930,27 +1146,37 @@
 	)
 
 /datum/memory/dna_infusion/get_happy_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"endures the pain for science",
 		"confidently winces through the pain"
 	)
 
 /datum/memory/dna_infusion/get_neutral_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"screams with pain",
 		"begins to have second thoughts"
 	)
 
 /datum/memory/dna_infusion/get_sad_moods()
+	procstart = null
+	src.procstart = null
 	return list("bitterly rejects their humanity")
 
 /// Who rev'd me, so if a mindreader reads a rev, they have a clue on who to hunt down
 /datum/memory/recruited_by_headrev
 
 /datum/memory/recruited_by_headrev/get_names()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] is converted into a revolutionary by [antagonist_name]")
 
 /datum/memory/recruited_by_headrev/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name]'s mind sets itself on a singular, violent purpose as they're flashed by [antagonist_name]: Kill the heads.",
 		"[antagonist_name] lifts an odd device to [protagonist_name]'s eyes and flashes him, imprinting murderous instructions.",
@@ -960,9 +1186,13 @@
 /datum/memory/recruited_by_blood_brother
 
 /datum/memory/recruited_by_blood_brother/get_names()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] is converted into a blood brother by [antagonist_name]")
 
 /datum/memory/recruited_by_blood_brother/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[antagonist_name] acts just a bit too friendly with [protagonist_name], moments away from converting them into a blood brother.",
 		"[protagonist_name] is brought into [antagonist_name]'s life of crime and espionage.",
@@ -981,9 +1211,13 @@
 )
 
 /datum/memory/witnessed_gods_wrath/get_names()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] suffering the wrath of [antagonist_name].")
 
 /datum/memory/witnessed_gods_wrath/get_starts()
+	procstart = null
+	src.procstart = null
 	return list(
 		"[protagonist_name] burns [deuteragonist_name], and [antagonist_name] turns [protagonist_name] into a fine red mist.",
 		"[antagonist_name] explodes [protagonist_name] into a million pieces for defiling [deuteragonist_name].",
@@ -991,9 +1225,13 @@
 	)
 
 /datum/memory/witnessed_gods_wrath/get_moods()
+	procstart = null
+	src.procstart = null
 	return list("[protagonist_name] [mood_verb] as they get annihilated by [antagonist_name].")
 
 /datum/memory/witnessed_gods_wrath/get_happy_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"cackles hysterically",
 		"laughs maniacally",
@@ -1001,6 +1239,8 @@
 	)
 
 /datum/memory/witnessed_gods_wrath/get_neutral_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"appears concerned",
 		"reconsiders their life decisions",
@@ -1008,6 +1248,8 @@
 	)
 
 /datum/memory/witnessed_gods_wrath/get_sad_moods()
+	procstart = null
+	src.procstart = null
 	return list(
 		"appears dejected",
 		"is filled with regret",

@@ -11,6 +11,8 @@
 	var/grinding = TRUE
 
 /obj/machinery/plumbing/grinder_chemical/Initialize(mapload, layer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/plumbing/simple_supply, layer)
 	var/static/list/loc_connections = list(
@@ -19,6 +21,8 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/machinery/plumbing/grinder_chemical/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	. += span_notice("Use empty hand to change operation mode. Currently [grinding ? "Grinding" : "Juicing"]")
@@ -30,11 +34,15 @@
  * * mob/user - the player we are checking for
  */
 /obj/machinery/plumbing/grinder_chemical/proc/check_interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	return can_interact(user)
 
 /obj/machinery/plumbing/grinder_chemical/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode || !user.can_perform_action(src, ALLOW_SILICON_REACH | FORBID_TELEKINESIS_REACH))
 		return FALSE
 
@@ -59,6 +67,8 @@
 	return TRUE
 
 /obj/machinery/plumbing/grinder_chemical/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(user.combat_mode || !user.can_perform_action(src, ALLOW_SILICON_REACH | FORBID_TELEKINESIS_REACH))
 		return ITEM_INTERACT_SKIP_TO_ATTACK
@@ -87,6 +97,8 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/plumbing/grinder_chemical/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!anchored)
 		return
@@ -95,6 +107,8 @@
 	return TRUE
 
 /obj/machinery/plumbing/grinder_chemical/proc/on_entered(datum/source, atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isitem(AM))
@@ -104,6 +118,8 @@
 
 
 /obj/machinery/plumbing/grinder_chemical/blended(obj/item/slime_extract/blended_item, grinded)
+	procstart = null
+	src.procstart = null
 	//don't delete slime extracts
 	if(istype(blended_item))
 		//so you can't regrind them for extra stuff
@@ -121,6 +137,8 @@
  * * [AM][atom] - the atom to grind or juice
  */
 /obj/machinery/plumbing/grinder_chemical/proc/blend(obj/item/item_to_blend)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(!is_operational || !anchored)

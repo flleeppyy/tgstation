@@ -9,11 +9,15 @@
 	obj_flags = CONDUCTS_ELECTRICITY
 
 /obj/item/assembly/shock_kit/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(helmet_part)
 	QDEL_NULL(electropack_part)
 	return ..()
 
 /obj/item/assembly/shock_kit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!helmet_part)
 		helmet_part = new(src)
@@ -23,6 +27,8 @@
 		electropack_part.master = src
 
 /obj/item/assembly/shock_kit/wrench_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, span_notice("You disassemble [src]."))
 	if(helmet_part)
@@ -37,6 +43,8 @@
 	return TRUE
 
 /obj/item/assembly/shock_kit/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	helmet_part.attack_self(user)
 	electropack_part.attack_self(user)
 	add_fingerprint(user)

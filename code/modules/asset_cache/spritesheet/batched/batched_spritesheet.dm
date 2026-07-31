@@ -48,6 +48,8 @@
 	var/cache_result = null
 
 /datum/asset/spritesheet_batched/proc/should_load_immediately()
+	procstart = null
+	src.procstart = null
 #ifdef DO_NOT_DEFER_ASSETS
 	return TRUE
 #else
@@ -56,6 +58,8 @@
 
 /// Returns true if the cache should be invalidated/doesn't exist.
 /datum/asset/spritesheet_batched/should_refresh(yield)
+	procstart = null
+	src.procstart = null
 	. = CACHE_INVALID // in the case of any errors, we need to regenerate.
 	if(!fexists("[ASSET_CROSS_ROUND_SMART_CACHE_DIRECTORY]/spritesheet_cache.[name].json"))
 		return CACHE_INVALID
@@ -123,6 +127,8 @@
 	return CACHE_VALID
 
 /datum/asset/spritesheet_batched/proc/insert_icon(sprite_name, datum/universal_icon/entry)
+	procstart = null
+	src.procstart = null
 	if(!istext(sprite_name) || !length(sprite_name))
 		CRASH("Invalid sprite_name \"[sprite_name]\" given to insert_icon()! Providing non-strings will break icon generation.")
 	if(!istype(entry))
@@ -130,6 +136,8 @@
 	entries[sprite_name] = entry.to_list()
 
 /datum/asset/spritesheet_batched/register()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if (!name)
@@ -144,13 +152,19 @@
 		SSasset_loading.queue_asset(src)
 
 /datum/asset/spritesheet_batched/unregister()
+	procstart = null
+	src.procstart = null
 	CRASH("unregister() called on batched spritesheet! Bad!")
 
 /// Call insert_icon or insert_all_icons here, building a spritesheet!
 /datum/asset/spritesheet_batched/proc/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	CRASH("create_spritesheets() not implemented for [type]!")
 
 /datum/asset/spritesheet_batched/proc/insert_all_icons(prefix, icon/I, list/directions, prefix_with_dirs = TRUE)
+	procstart = null
+	src.procstart = null
 	if (length(prefix))
 		prefix = "[prefix]-"
 
@@ -163,6 +177,8 @@
 			insert_icon("[prefix][prefix2][icon_state_name]", uni_icon(I, icon_state_name, direction))
 
 /datum/asset/spritesheet_batched/proc/realize_spritesheets(yield)
+	procstart = null
+	src.procstart = null
 	if(fully_generated)
 		return
 	if(!length(entries))
@@ -234,14 +250,20 @@
 		CRASH("Error during spritesheet generation for [name]: [data["error"]]")
 
 /datum/asset/spritesheet_batched/queued_generation()
+	procstart = null
+	src.procstart = null
 	INVOKE_ASYNC(src, PROC_REF(realize_spritesheets), TRUE) // The proc is called inside a subsystem and waits with an UNTIL
 
 /datum/asset/spritesheet_batched/ensure_ready()
+	procstart = null
+	src.procstart = null
 	if(!fully_generated)
 		realize_spritesheets(yield = FALSE)
 	return ..()
 
 /datum/asset/spritesheet_batched/send(client/client)
+	procstart = null
+	src.procstart = null
 	if (!name)
 		return
 
@@ -251,6 +273,8 @@
 	. = SSassets.transport.send_assets(client, all)
 
 /datum/asset/spritesheet_batched/get_url_mappings()
+	procstart = null
+	src.procstart = null
 	if (!name)
 		return
 
@@ -259,6 +283,8 @@
 		.["[name]_[size_id].png"] = SSassets.transport.get_asset_url("[name]_[size_id].png")
 
 /datum/asset/spritesheet_batched/proc/generate_css()
+	procstart = null
+	src.procstart = null
 	var/list/out = list()
 
 	for (var/size_id in sizes)
@@ -282,6 +308,8 @@
 	return out.Join("\n")
 
 /datum/asset/spritesheet_batched/proc/read_from_cache()
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(flag/smart_cache_assets) && !force_cache)
 		return FALSE
 	// this is already guaranteed to exist.
@@ -308,9 +336,13 @@
 
 /// Returns the URL to put in the background:url of the CSS asset
 /datum/asset/spritesheet_batched/proc/get_background_url(asset)
+	procstart = null
+	src.procstart = null
 	return SSassets.transport.get_asset_url(asset)
 
 /datum/asset/spritesheet_batched/proc/write_cache_meta(input_hash, dmi_hashes)
+	procstart = null
+	src.procstart = null
 	var/list/cache_data = list(
 		"input_hash" = input_hash,
 		"dmi_hashes" = dmi_hashes,
@@ -327,12 +359,18 @@
  */
 
 /datum/asset/spritesheet_batched/proc/css_tag()
+	procstart = null
+	src.procstart = null
 	return {"<link rel="stylesheet" href="[css_filename()]" />"}
 
 /datum/asset/spritesheet_batched/proc/css_filename()
+	procstart = null
+	src.procstart = null
 	return SSassets.transport.get_asset_url("spritesheet_[name].css")
 
 /datum/asset/spritesheet_batched/proc/icon_tag(sprite_name)
+	procstart = null
+	src.procstart = null
 	var/sprite = sprites[sprite_name]
 	if (!sprite)
 		return null
@@ -340,6 +378,8 @@
 	return "<span class='[name][size_id] [sprite_name]'></span>"
 
 /datum/asset/spritesheet_batched/proc/icon_class_name(sprite_name)
+	procstart = null
+	src.procstart = null
 	var/sprite = sprites[sprite_name]
 	if (!sprite)
 		return null
@@ -353,6 +393,8 @@
  * * sprite_name - The sprite to get the size of
  */
 /datum/asset/spritesheet_batched/proc/icon_size_id(sprite_name)
+	procstart = null
+	src.procstart = null
 	var/sprite = sprites[sprite_name]
 	if (!sprite)
 		return null

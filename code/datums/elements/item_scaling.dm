@@ -29,6 +29,8 @@
  * * storage_scaling - Integer or float to scale the item in storage/inventory.
  */
 /datum/element/item_scaling/Attach(atom/target, overworld_scaling, storage_scaling)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
@@ -53,6 +55,8 @@
  * * target - Datum which the element is attached to.
  */
 /datum/element/item_scaling/Detach(atom/target)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, COMSIG_MOVABLE_MOVED)
 
 	REMOVE_KEEP_TOGETHER(target, ITEM_SCALING_TRAIT)
@@ -70,12 +74,16 @@
  * * scaling - Integer or float to scale the item's matrix.
  */
 /datum/element/item_scaling/proc/scale(datum/source, scaling)
+	procstart = null
+	src.procstart = null
 	var/atom/scalable_object = source
 	var/matrix/M = matrix()
 	scalable_object.transform = M.Scale(scaling)
 
 //Grabs any move signals and checks its loc, properly scaling it when in storage,inhand, or in world.
 /datum/element/item_scaling/proc/scale_by_loc(atom/scale)
+	procstart = null
+	src.procstart = null
 	if(isturf(scale.loc))
 		scale_overworld(scale)
 	else
@@ -90,6 +98,8 @@
  * * source - Source datum which sent the signal.
  */
 /datum/element/item_scaling/proc/scale_overworld(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	scale(source, overworld_scaling)
@@ -103,6 +113,8 @@
  * * source - Source datum which sent the signal.
  */
 /datum/element/item_scaling/proc/scale_storage(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	scale(source, storage_scaling)

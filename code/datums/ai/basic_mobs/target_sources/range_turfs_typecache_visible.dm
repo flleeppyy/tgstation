@@ -3,6 +3,8 @@
 	var/list/typecache
 
 /datum/target_source/range_turfs/typecache_visible/collect_candidates(mob/living/pawn, datum/ai_controller/controller, range)
+	procstart = null
+	src.procstart = null
 	var/list/found = RANGE_TURFS(range, pawn)
 	var/list/valid = list()
 	for(var/turf/candidate as anything in found)
@@ -16,6 +18,8 @@
 	typecache = list(/turf/open/floor/grass, /turf/open/misc/grass)
 
 /datum/target_source/range_turfs/typecache_visible/deer_grass/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	typecache = typecacheof(typecache)
 
@@ -23,6 +27,8 @@
 	typecache = list(/turf/open/water)
 
 /datum/target_source/range_turfs/typecache_visible/deer_water/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	typecache = typecacheof(typecache)
 
@@ -30,5 +36,7 @@
 	typecache = list(/turf/open/misc/ice)
 
 /datum/target_source/range_turfs/typecache_visible/ice/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	typecache = typecacheof(typecache)

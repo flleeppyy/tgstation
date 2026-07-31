@@ -16,6 +16,8 @@
 	custom_materials = list(/datum/material/runedmetal = SHEET_MATERIAL_AMOUNT * 3)
 
 /obj/structure/destructible/cult/item_dispenser/forge/setup_options()
+	procstart = null
+	src.procstart = null
 	var/static/list/forge_items = list(
 		NARSIE_ARMOR = list(
 			PREVIEW_IMAGE = image(icon = 'icons/obj/clothing/suits/armor.dmi', icon_state = "cult_armor"),
@@ -36,6 +38,8 @@
 		options += extra_item
 
 /obj/structure/destructible/cult/item_dispenser/forge/extra_options()
+	procstart = null
+	src.procstart = null
 	if(!cult_team?.unlocked_heretic_items[CURSED_BLADE_UNLOCKED])
 		return
 	return list(CURSED_BLADE = list(
@@ -47,6 +51,8 @@
 
 
 /obj/structure/destructible/cult/item_dispenser/forge/succcess_message(mob/living/user, obj/item/spawned_item)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_cult_italic("You work [src] as dark knowledge guides your hands, creating [spawned_item]!"))
 
 /obj/structure/destructible/cult/item_dispenser/forge/engine

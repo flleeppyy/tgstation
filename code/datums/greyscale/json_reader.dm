@@ -4,20 +4,28 @@
 
 /// Takes a value read directly from json and verifies/converts as needed to a result
 /datum/json_reader/proc/ReadJson(value)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/json_reader/text/ReadJson(value)
+	procstart = null
+	src.procstart = null
 	if(!istext(value))
 		CRASH("Text value expected but got '[value]'")
 	return value
 
 /datum/json_reader/number/ReadJson(value)
+	procstart = null
+	src.procstart = null
 	var/newvalue = text2num(value)
 	if(!isnum(newvalue))
 		CRASH("Number expected but got [newvalue]")
 	return newvalue
 
 /datum/json_reader/number_color_list/ReadJson(list/value)
+	procstart = null
+	src.procstart = null
 	if(!istype(value))
 		CRASH("Expected a list but got [value]")
 	var/list/new_values = list()
@@ -32,6 +40,8 @@
 	return new_values
 
 /datum/json_reader/color_matrix/ReadJson(list/value)
+	procstart = null
+	src.procstart = null
 	if(!istype(value))
 		CRASH("Expected a list but got [value]")
 	if(length(value) > 5 || length(value) < 4)
@@ -63,12 +73,16 @@
 	)
 
 /datum/json_reader/blend_mode/ReadJson(value)
+	procstart = null
+	src.procstart = null
 	var/new_value = blend_modes[LOWER_TEXT(value)]
 	if(isnull(new_value))
 		CRASH("Blend mode expected but got '[value]'")
 	return new_value
 
 /datum/json_reader/greyscale_config/ReadJson(value)
+	procstart = null
+	src.procstart = null
 	var/newvalue = SSgreyscale.configurations[value]
 	if(!newvalue)
 		CRASH("Greyscale configuration type expected but got '[value]'")

@@ -28,6 +28,8 @@
 	var/list/datum/computer_file/program/chatclient/muted_clients = list()
 
 /datum/ntnet_conversation/New(title, strong = FALSE)
+	procstart = null
+	src.procstart = null
 	src.title = title
 	src.strong = strong
 
@@ -40,29 +42,39 @@
 	return ..()
 
 /datum/ntnet_conversation/Destroy()
+	procstart = null
+	src.procstart = null
 	SSmodular_computers.chat_channels.Remove(src)
 	for(var/datum/computer_file/program/chatclient/chatterbox as anything in (active_clients | offline_clients))
 		purge_client(chatterbox)
 	return ..()
 
 /datum/ntnet_conversation/proc/add_message(message, username)
+	procstart = null
+	src.procstart = null
 	message = "[round_timestamp(format = "hh:mm")] [username]: [message]"
 	messages["[next_message_id]"] = message
 	next_message_id++
 	trim_message_list()
 
 /datum/ntnet_conversation/proc/add_status_message(message)
+	procstart = null
+	src.procstart = null
 	message = "[round_timestamp(format = "hh:mm")] -!- [message]"
 	messages["[next_message_id]"] = message
 	next_message_id++
 	trim_message_list()
 
 /datum/ntnet_conversation/proc/trim_message_list()
+	procstart = null
+	src.procstart = null
 	if(messages.len <= 50)
 		return
 	messages = messages.Copy(messages.len-50 ,0)
 
 /datum/ntnet_conversation/proc/add_client(datum/computer_file/program/chatclient/new_user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(new_user))
 		return
 	new_user.conversations |= src
@@ -75,10 +87,14 @@
 
 //Clear all of our references to a client, used for client deletion
 /datum/ntnet_conversation/proc/purge_client(datum/computer_file/program/chatclient/forget)
+	procstart = null
+	src.procstart = null
 	remove_client(forget)
 	forget.conversations -= src
 
 /datum/ntnet_conversation/proc/remove_client(datum/computer_file/program/chatclient/leaving)
+	procstart = null
+	src.procstart = null
 	if(!istype(leaving))
 		return
 	if(leaving in active_clients)
@@ -95,12 +111,16 @@
 			changeop(newop)
 
 /datum/ntnet_conversation/proc/go_offline(datum/computer_file/program/chatclient/offline)
+	procstart = null
+	src.procstart = null
 	if(!istype(offline) || !(offline in active_clients))
 		return
 	active_clients.Remove(offline)
 	offline_clients.Add(offline)
 
 /datum/ntnet_conversation/proc/mute_user(datum/computer_file/program/chatclient/op, datum/computer_file/program/chatclient/muted)
+	procstart = null
+	src.procstart = null
 	if(!op.netadmin_mode && (channel_operator != op)) //sanity even if the person shouldn't be able to see the mute button
 		return
 	if(muted in muted_clients)
@@ -111,12 +131,16 @@
 		muted.computer.alert_call(muted, "You have been muted from [title]!")
 
 /datum/ntnet_conversation/proc/ping_user(datum/computer_file/program/chatclient/pinger, datum/computer_file/program/chatclient/pinged)
+	procstart = null
+	src.procstart = null
 	if(pinger in muted_clients) //oh my god fuck off
 		return
 	add_status_message("[pinger.username] pinged [pinged.username].")
 	pinged.computer.alert_call(pinged, "You have been pinged in [title] by [pinger.username]!", 'sound/machines/ping.ogg')
 
 /datum/ntnet_conversation/proc/changeop(datum/computer_file/program/chatclient/newop, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(newop))
 		CRASH("[src] is attempting to add [newop] as the operator, but it isn't a chat client.")
 	channel_operator = newop
@@ -124,6 +148,8 @@
 		add_status_message("Channel operator status transferred to [newop.username].")
 
 /datum/ntnet_conversation/proc/change_title(newtitle, datum/computer_file/program/chatclient/renamer)
+	procstart = null
+	src.procstart = null
 	if((channel_operator != renamer) || strong) // Not Authorised or channel cannot be editted
 		return FALSE
 	add_status_message("[renamer.username] has changed channel title from [title] to [newtitle]")

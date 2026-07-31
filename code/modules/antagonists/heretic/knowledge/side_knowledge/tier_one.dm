@@ -141,6 +141,8 @@
 	))
 
 /datum/heretic_knowledge/codex_cicatrix/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -158,6 +160,8 @@
 	return FALSE
 
 /datum/heretic_knowledge/codex_cicatrix/cleanup_atoms(list/selected_atoms)
+	procstart = null
+	src.procstart = null
 	var/mob/living/body = locate() in selected_atoms
 	if(!body)
 		return ..()
@@ -216,6 +220,8 @@
 	research_tree_icon_state = "eldritch"
 
 /datum/heretic_knowledge/bookworm/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/card/id/used_id in atoms)
 		selected_atoms += used_id
@@ -224,6 +230,8 @@
 		selected_atoms += user_card
 
 /datum/heretic_knowledge/bookworm/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/card/id/improved_id in selected_atoms)
 		improved_id.add_access(list(ACCESS_MAINT_TUNNELS, ACCESS_EXTERNAL_AIRLOCKS, ACCESS_HERETIC), mode = FORCE_ADD_ALL)
@@ -282,6 +290,8 @@
 	is_shop_only = TRUE
 
 /datum/heretic_knowledge/miraculous_mirror/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/organ/eyes/eye in atoms)
 		if(!IS_ORGANIC_ORGAN(eye))
@@ -299,6 +309,8 @@
 	is_shop_only = TRUE // not actually but it's got special requirements
 
 /datum/heretic_knowledge/spell/cloak_of_shadows/spell_check(datum/action/the_spell, feedback)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/heretic/heretic_datum = GET_HERETIC(the_spell.owner)
 	if(heretic_datum?.has_living_heart())
 		return ..()

@@ -5,6 +5,8 @@
 #define HUMAN_DEFAULT_MODE_SUICIDE_MESSAGE "default mode message"
 
 /mob/living/carbon/human/perform_basic_suicide()
+	procstart = null
+	src.procstart = null
 	// if no specific item or damage type we want to deal, default to doing the deed with our own bare hands.
 	if(combat_mode)
 		send_applicable_messages(HUMAN_COMBAT_MODE_SUICIDE_MESSAGE)
@@ -19,6 +21,8 @@
 
 /// Any "special" suicide messages are handled by the related item that the mob uses to kill itself. This is just messages for when it's done with the bare hands.
 /mob/living/carbon/human/send_applicable_messages(message_type)
+	procstart = null
+	src.procstart = null
 	var/suicide_message = ""
 	switch(message_type)
 		if(HUMAN_BRAIN_DAMAGE_SUICIDE_MESSAGE) // god damn this message is fucking stupid
@@ -47,6 +51,8 @@
 	visible_message(span_danger(suicide_message), span_userdanger(suicide_message), span_hear(get_blind_suicide_message()))
 
 /mob/living/carbon/human/suicide_log(obj/item/suicide_tool)
+	procstart = null
+	src.procstart = null
 	var/suicide_tool_type = suicide_tool?.type
 	var/list/suicide_data = null // log_message() is nullsafe for the data field
 	if(!isnull(suicide_tool))

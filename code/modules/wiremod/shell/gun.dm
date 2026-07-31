@@ -34,6 +34,8 @@
 	maxcharge = 0.1 * STANDARD_CELL_CHARGE
 
 /obj/item/gun/energy/wiremod_gun/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/component/shell/shell = AddComponent(/datum/component/shell, list(
 		new /obj/item/circuit_component/wiremod_gun()
@@ -52,20 +54,28 @@
 	var/datum/port/output/shot
 
 /obj/item/circuit_component/wiremod_gun/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	shooter = add_output_port("Shooter", PORT_TYPE_ATOM)
 	shot = add_output_port("Shot Entity", PORT_TYPE_ATOM)
 	signal = add_output_port("Shot", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/wiremod_gun/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(shell, COMSIG_PROJECTILE_ON_HIT, PROC_REF(handle_shot))
 	if(istype(shell, /obj/item/gun/energy))
 		RegisterSignal(shell, COMSIG_GUN_CHAMBER_PROCESSED, PROC_REF(handle_chamber))
 
 /obj/item/circuit_component/wiremod_gun/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(shell, list(COMSIG_PROJECTILE_ON_HIT, COMSIG_GUN_CHAMBER_PROCESSED))
 
 /obj/item/gun/energy/wiremod_gun/proc/on_circuit_attached(datum/component/shell/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (istype(source, /datum/component/shell))
@@ -81,6 +91,8 @@
  * Called when the shell item shoots something
  */
 /obj/item/circuit_component/wiremod_gun/proc/handle_shot(atom/source, mob/firer, atom/target, angle)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	playsound(source, SFX_TERMINAL_TYPE, 25, FALSE)
@@ -92,6 +104,8 @@
  * Called when the shell item processes a new chamber
  */
 /obj/item/circuit_component/wiremod_gun/proc/handle_chamber(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!parent?.cell)

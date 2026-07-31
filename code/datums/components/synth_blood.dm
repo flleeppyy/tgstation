@@ -9,6 +9,8 @@
 	var/synth_content = 0
 
 /datum/component/synth_blood/Initialize(new_synth_content = 0)
+	procstart = null
+	src.procstart = null
 	if (!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 	if (new_synth_content <= 0)
@@ -19,6 +21,8 @@
 	RegisterSignal(parent, COMSIG_LIVING_LIFE, PROC_REF(on_life))
 
 /datum/component/synth_blood/InheritComponent(datum/component/synth_blood/new_component, i_am_original, new_synth_content)
+	procstart = null
+	src.procstart = null
 	if (new_component)
 		new_synth_content = new_component.synth_content
 	if (new_synth_content <= 0)
@@ -27,10 +31,14 @@
 	synth_content = min(new_synth_content, 1)
 
 /datum/component/synth_blood/Destroy(force)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_LIVING_LIFE)
 	return ..()
 
 /datum/component/synth_blood/proc/on_life(mob/living/living_parent, seconds_per_tick, times_fired)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (synth_content <= 0)
 		qdel(src)

@@ -55,21 +55,29 @@ SUBSYSTEM_DEF(tts)
 	var/computer_voice = null
 
 /datum/controller/subsystem/tts/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	// tts being enabled depends on whether it actually exists
 	if(NAMEOF(src, tts_enabled) == var_name)
 		return FALSE
 	return ..()
 
 /datum/controller/subsystem/tts/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg = "\n  Active:[length(in_process_http_messages)]|Standby:[length(queued_http_messages?.L)]|Avg:[average_tts_messages_time]"
 	return ..()
 
 /proc/cmp_word_length_asc(datum/tts_request/a, datum/tts_request/b)
+	procstart = null
+	src.procstart = null
 	return length(b.message) - length(a.message)
 
 /// Establishes (or re-establishes) a connection to the TTS server and updates the list of available speakers.
 /// This is blocking, so be careful when calling.
 /datum/controller/subsystem/tts/proc/establish_connection_to_tts()
+	procstart = null
+	src.procstart = null
 	var/datum/http_request/request = new()
 	var/list/headers = list()
 	headers["Authorization"] = CONFIG_GET(string/tts_http_token)
@@ -114,6 +122,8 @@ SUBSYSTEM_DEF(tts)
 	return TRUE
 
 /datum/controller/subsystem/tts/Initialize()
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(string/tts_http_url))
 		return SS_INIT_NO_NEED
 
@@ -124,6 +134,8 @@ SUBSYSTEM_DEF(tts)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/tts/proc/play_tts(datum/weakref/target, list/listeners, sound/audio, sound/audio_blips, datum/language/language, range = 7, volume_offset = 0, ignore_observers = FALSE, source_speaker = null, audio_length = 10 SECONDS, audio_length_blips = 10 SECONDS, volume_preference = /datum/preference/numeric/volume/sound_tts_volume, volume_signal = COMSIG_MOB_TTS_VOLUME_PREFERENCE_APPLIED)
+	procstart = null
+	src.procstart = null
 	var/atom/actual_target = target?.resolve()
 	var/turf/turf_source
 	if(actual_target)
@@ -229,6 +241,8 @@ SUBSYSTEM_DEF(tts)
 
 // Need to wait for all HTTP requests to complete here because of a rustg crash bug that causes crashes when dd restarts whilst HTTP requests are ongoing.
 /datum/controller/subsystem/tts/Shutdown()
+	procstart = null
+	src.procstart = null
 	tts_enabled = FALSE
 	for(var/datum/tts_request/data in in_process_http_messages)
 		var/datum/http_request/request = data.request
@@ -246,6 +260,8 @@ SUBSYSTEM_DEF(tts)
 #define TTS_ARBRITRARY_DELAY "arbritrary delay"
 
 /datum/controller/subsystem/tts/fire(resumed)
+	procstart = null
+	src.procstart = null
 	if(!tts_enabled)
 		ss_flags |= SS_NO_FIRE
 		return
@@ -444,6 +460,8 @@ SUBSYSTEM_DEF(tts)
 #undef TTS_ARBRITRARY_DELAY
 
 /datum/controller/subsystem/tts/proc/queue_tts_message(datum/target, message, datum/language/language, speaker, filter, list/listeners, local = FALSE, message_range = 7, volume_offset = 0, pitch = 0, special_filters = "", blip_base = "male", blip_number = "1", force_blips = FALSE, identifier = "invalid")
+	procstart = null
+	src.procstart = null
 	if(!tts_enabled)
 		return
 
@@ -494,6 +512,8 @@ SUBSYSTEM_DEF(tts)
 		queued_http_messages.insert(current_request)
 
 /datum/controller/subsystem/tts/proc/clear_radio_message(identifier)
+	procstart = null
+	src.procstart = null
 	completed_tts_messages[identifier] -= TTS_REQUEST_REF // don't stick around
 	completed_tts_messages -= identifier
 	queued_radio_messages -= identifier
@@ -501,6 +521,8 @@ SUBSYSTEM_DEF(tts)
 
 /// Helper to get a random TTS voice for a certain gender. Passing no gender just results in a random voice.
 /datum/controller/subsystem/tts/proc/random_tts_voice(gender = NEUTER)
+	procstart = null
+	src.procstart = null
 	if(!tts_enabled)
 		return null
 
@@ -578,6 +600,8 @@ SUBSYSTEM_DEF(tts)
 
 
 /datum/tts_request/New(identifier, datum/http_request/request, datum/http_request/request_blips, datum/http_request/request_radio, datum/http_request/request_blips_radio, datum/http_request/request_radio_gibberish, message, target, local, datum/language/language, message_range, volume_offset, list/listeners, pitch, force_blips = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.identifier = identifier
 	src.request = request
@@ -597,6 +621,8 @@ SUBSYSTEM_DEF(tts)
 	start_time = world.time
 
 /datum/tts_request/proc/start_requests()
+	procstart = null
+	src.procstart = null
 	if(istype(target, /client))
 		var/client/current_client = target
 		use_blips = (current_client?.prefs.read_preference(/datum/preference/choiced/sound_tts) == TTS_SOUND_BLIPS)
@@ -615,6 +641,8 @@ SUBSYSTEM_DEF(tts)
 		request_radio_gibberish.begin_async()
 
 /datum/tts_request/proc/get_primary_request()
+	procstart = null
+	src.procstart = null
 	if(local)
 		if(use_blips || force_blips)
 			return request_blips
@@ -624,6 +652,8 @@ SUBSYSTEM_DEF(tts)
 		return request
 
 /datum/tts_request/proc/get_primary_response()
+	procstart = null
+	src.procstart = null
 	if(local)
 		if(use_blips || force_blips)
 			return request_blips.into_response()
@@ -633,6 +663,8 @@ SUBSYSTEM_DEF(tts)
 		return request.into_response()
 
 /datum/tts_request/proc/requests_errored()
+	procstart = null
+	src.procstart = null
 	if(local)
 		var/datum/http_response/response
 		if(use_blips || force_blips)
@@ -649,6 +681,8 @@ SUBSYSTEM_DEF(tts)
 		return response.errored || response_blips.errored || response_radio.errored || response_blips_radio.errored || response_radio_gibberish.errored
 
 /datum/tts_request/proc/requests_completed()
+	procstart = null
+	src.procstart = null
 	if(local)
 		if(use_blips || force_blips)
 			return request_blips.is_complete()
@@ -667,6 +701,8 @@ SUBSYSTEM_DEF(tts)
  * * radio_frequency - The frequency of the radio TTS message
  */
 /proc/can_hear_radio_tts(mob/hearer, radio_frequency)
+	procstart = null
+	src.procstart = null
 	if(!SStts.tts_enabled)
 		return FALSE
 

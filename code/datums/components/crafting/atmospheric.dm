@@ -47,6 +47,8 @@
 	var/pipe_type
 
 /datum/crafting_recipe/spec_pipe/check_requirements(mob/user, list/collected_requirements)
+	procstart = null
+	src.procstart = null
 	var/obj/item/pipe/required_pipe = collected_requirements[/obj/item/pipe][1]
 	if(ispath(required_pipe.pipe_type, /obj/machinery/atmospherics/pipe/smart))
 		return TRUE

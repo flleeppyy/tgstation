@@ -2,6 +2,8 @@
 GLOBAL_LIST_INIT(vine_mutations_list, init_vine_mutation_list())
 
 /proc/init_vine_mutation_list()
+	procstart = null
+	src.procstart = null
 	var/list/mutation_list = list()
 
 	for(var/datum/spacevine_mutation/subtype as anything in valid_subtypesof(/datum/spacevine_mutation))
@@ -29,6 +31,8 @@ GLOBAL_LIST_INIT(vine_mutations_list, init_vine_mutation_list())
 	var/minimum_spread_rate = 1
 
 /datum/spacevine_controller/New(turf/location, list/muts, potency, production, datum/round_event/event = null)
+	procstart = null
+	src.procstart = null
 	vines = list()
 	growth_queue = list()
 	queue_end = list()
@@ -47,11 +51,15 @@ GLOBAL_LIST_INIT(vine_mutations_list, init_vine_mutation_list())
 		minimum_spread_rate = 3
 
 /datum/spacevine_controller/vv_get_dropdown()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	VV_DROPDOWN_OPTION("", "--- /spacevine_controller ---")
 	VV_DROPDOWN_OPTION(VV_HK_SPACEVINE_PURGE, "Delete Vines")
 
 /datum/spacevine_controller/vv_do_topic(href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)
@@ -61,10 +69,14 @@ GLOBAL_LIST_INIT(vine_mutations_list, init_vine_mutation_list())
 		if(tgui_alert(usr, "Are you sure you want to delete this spacevine cluster?", "Delete Vines", list("Yes", "No")) == "Yes")
 			DeleteVines()
 
-/datum/spacevine_controller/proc/DeleteVines() //this is kill
+/datum/spacevine_controller/proc/DeleteVines()
+	procstart = null
+	src.procstart = null //this is kill
 	QDEL_LIST(vines) //this will also qdel us
 
 /datum/spacevine_controller/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	vines.Cut()
 	growth_queue.Cut()
@@ -72,6 +84,8 @@ GLOBAL_LIST_INIT(vine_mutations_list, init_vine_mutation_list())
 	return ..()
 
 /datum/spacevine_controller/proc/spawn_spacevine_piece(turf/location, obj/structure/spacevine/parent, list/muts)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/spacevine/vine = new(location)
 	growth_queue += vine
 	vines += vine
@@ -101,6 +115,8 @@ GLOBAL_LIST_INIT(vine_mutations_list, init_vine_mutation_list())
 	return vine
 
 /datum/spacevine_controller/proc/VineDestroyed(obj/structure/spacevine/vine)
+	procstart = null
+	src.procstart = null
 	vine.master = null
 	vines -= vine
 	growth_queue -= vine
@@ -119,6 +135,8 @@ GLOBAL_LIST_INIT(vine_mutations_list, init_vine_mutation_list())
 
 /// Life cycle of a space vine
 /datum/spacevine_controller/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/vine_count = length(vines)
 	if(!vine_count)
 		qdel(src) //space vines exterminated. Remove the controller
@@ -160,6 +178,8 @@ GLOBAL_LIST_INIT(vine_mutations_list, init_vine_mutation_list())
  * Use cases: Stops vine from attacking itself, other plants.
  */
 /proc/isvineimmune(atom/target)
+	procstart = null
+	src.procstart = null
 	if(isliving(target))
 		var/mob/living/victim = target
 		if(victim.has_faction(FACTION_VINES, FACTION_PLANTS))

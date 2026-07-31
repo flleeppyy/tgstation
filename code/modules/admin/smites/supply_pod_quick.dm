@@ -9,6 +9,8 @@
 	var/target_path
 
 /datum/smite/supply_pod_quick/configure(client/user)
+	procstart = null
+	src.procstart = null
 	var/attempted_target_path = input(
 		user,
 		"Enter typepath of an atom you'd like to send with the pod (type \"empty\" to send an empty pod):",
@@ -33,6 +35,8 @@
 	target_path = delivery
 
 /datum/smite/supply_pod_quick/effect(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	podspawn(list(
 		"target" = get_turf(target),

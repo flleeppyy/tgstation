@@ -19,11 +19,15 @@
 	var/quality = 0
 
 /datum/reagent/consumable/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// All food reagents function at a fixed rate
 	chemical_flags |= REAGENT_UNAFFECTED_BY_METABOLISM
 
 /datum/reagent/consumable/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(affected_mob) || HAS_TRAIT(affected_mob, TRAIT_NOHUNGER))
 		return
@@ -32,6 +36,8 @@
 	affected_human.adjust_nutrition(0.5 * get_nutriment_factor(affected_mob) * metabolization_ratio * seconds_per_tick)
 
 /datum/reagent/consumable/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(methods & INGEST) || !quality || HAS_TRAIT(exposed_mob, TRAIT_AGEUSIA))
 		return
@@ -56,6 +62,8 @@
 
 /// Gets just how much nutrition this reagent supplies per server tick to the eater
 /datum/reagent/consumable/proc/get_nutriment_factor(mob/living/carbon/eater)
+	procstart = null
+	src.procstart = null
 	return nutriment_factor * REAGENTS_METABOLISM * purity * 2
 
 /datum/reagent/consumable/nutriment
@@ -73,9 +81,13 @@
 	var/burn_heal = 0
 
 /datum/reagent/consumable/nutriment/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 	mytray.adjust_plant_health(round(volume * 0.2))
 
 /datum/reagent/consumable/nutriment/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(SPT_PROB(30, seconds_per_tick))
 		var/heal = 0.5 * brute_heal * metabolization_ratio
@@ -83,6 +95,8 @@
 			return UPDATE_MOB_HEALTH
 
 /datum/reagent/consumable/nutriment/on_new(list/supplied_data)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!data)
 		return
@@ -98,6 +112,8 @@
 	data = counterlist_normalise(supplied_data)
 
 /datum/reagent/consumable/nutriment/on_merge(list/mix_data, amount)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!islist(mix_data) || !mix_data.len)
 		return
@@ -121,6 +137,8 @@
 	data = taste_amounts
 
 /datum/reagent/consumable/nutriment/get_taste_description(mob/living/taster)
+	procstart = null
+	src.procstart = null
 	if(length(data))
 		return data
 	return ..()
@@ -135,6 +153,8 @@
 	burn_heal = 1
 
 /datum/reagent/consumable/nutriment/vitamin/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(affected_mob.satiety < MAX_SATIETY)
 		affected_mob.satiety += 15 * metabolization_ratio * seconds_per_tick
@@ -163,6 +183,8 @@
 	var/fry_temperature = 450 //Around ~350 F (117 C) which deep fryers operate around in the real world
 
 /datum/reagent/consumable/nutriment/fat/expose_obj(obj/exposed_obj, reac_volume, methods=TOUCH, show_message=TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!holder || (holder.chem_temp <= fry_temperature))
 		return
@@ -180,6 +202,8 @@
 	exposed_obj.reagents.add_reagent(type, reac_volume, data, holder.chem_temp)
 
 /datum/reagent/consumable/nutriment/fat/expose_mob(mob/living/exposed_mob, methods = TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(methods & (VAPOR|TOUCH)) || isnull(holder) || (holder.chem_temp < fry_temperature)) //Directly coats the mob, and doesn't go into their bloodstream
 		return
@@ -201,6 +225,8 @@
 	addtimer(CALLBACK(exposed_mob, TYPE_PROC_REF(/mob/living, unfry_mob)), 2 SECONDS)
 
 /datum/reagent/consumable/nutriment/fat/expose_turf(turf/open/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(exposed_turf))
 		return
@@ -267,12 +293,16 @@
 	var/delayed_satiety_drain = 2 * CLOTHING_NUTRITION_GAIN
 
 /datum/reagent/consumable/nutriment/cloth_fibers/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(affected_mob.satiety < MAX_SATIETY)
 		affected_mob.adjust_nutrition(CLOTHING_NUTRITION_GAIN)
 		delayed_satiety_drain += CLOTHING_NUTRITION_GAIN
 
 /datum/reagent/consumable/nutriment/cloth_fibers/on_mob_delete(mob/living/carbon/affected_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(affected_mob))
 		return
@@ -290,6 +320,8 @@
 	burn_heal = 0
 
 /datum/reagent/consumable/nutriment/mineral/get_nutriment_factor(mob/living/carbon/eater)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(eater, TRAIT_ROCK_EATER))
 		return ..()
 
@@ -312,19 +344,27 @@
 
 // Plants should not have sugar, they can't use it and it prevents them getting water/ nutients, it is good for mold though...
 /datum/reagent/consumable/sugar/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 	mytray.adjust_weedlevel(rand(1, 2))
 	mytray.adjust_pestlevel(rand(1, 2))
 
 /datum/reagent/consumable/sugar/overdose_start(mob/living/affected_mob, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(affected_mob, span_userdanger("You go into hyperglycemic shock! Lay off the twinkies!"))
 	affected_mob.AdjustSleeping(20 SECONDS)
 
 /datum/reagent/consumable/sugar/overdose_process(mob/living/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.adjust_drowsiness_up_to((0.5 SECONDS * metabolization_ratio * seconds_per_tick), 60 SECONDS)
 
 /datum/reagent/consumable/sugar/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(methods & INGEST)
 		exposed_mob.check_allergic_reaction(SUGAR, chance = reac_volume * 10, histamine_add = min(10, reac_volume * 2))
@@ -340,6 +380,8 @@
 
 // Compost for EVERYTHING
 /datum/reagent/consumable/virus_food/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 	mytray.adjust_plant_health(-round(volume * 0.5))
 
 /datum/reagent/consumable/soysauce
@@ -382,6 +424,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/consumable/capsaicin/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/heating = 0
 	switch(current_cycle)
@@ -410,6 +454,8 @@
 	default_container = /obj/item/reagent_containers/cup/bottle/frostoil
 
 /datum/reagent/consumable/frostoil/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/cooling = 0
 	switch(current_cycle)
@@ -430,6 +476,8 @@
 	affected_mob.adjust_bodytemperature(0.5 * TEMPERATURE_DAMAGE_COEFFICIENT * cooling * metabolization_ratio * seconds_per_tick, 50)
 
 /datum/reagent/consumable/frostoil/expose_turf(turf/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(reac_volume < 1)
 		return
@@ -456,6 +504,8 @@
 	default_container = /obj/item/reagent_containers/cup/bottle/capsaicin
 
 /datum/reagent/consumable/condensedcapsaicin/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(exposed_mob))
 		return
 
@@ -489,6 +539,8 @@
 	return ..()
 
 /datum/reagent/consumable/condensedcapsaicin/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!holder.has_reagent(/datum/reagent/consumable/milk))
 		if(SPT_PROB(5, seconds_per_tick))
@@ -504,13 +556,17 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 	default_container = /obj/item/reagent_containers/condiment/saltshaker
 
-/datum/reagent/consumable/salt/expose_turf(turf/exposed_turf, reac_volume) //Creates an umbra-blocking salt pile
+/datum/reagent/consumable/salt/expose_turf(turf/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null //Creates an umbra-blocking salt pile
 	. = ..()
 	if(!istype(exposed_turf) || (reac_volume < 1))
 		return
 	exposed_turf.spawn_unique_cleanable(/obj/effect/decal/cleanable/food/salt)
 
 /datum/reagent/consumable/salt/expose_mob(mob/living/exposed_mob, methods, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(exposed_mob))
 		return
@@ -523,21 +579,29 @@
 // Salt can help with wounds by soaking up fluid, but undiluted salt will also cause irritation from the loose crystals, and it might soak up the body's water as well!
 // A saltwater mixture would be best, but we're making improvised chems here, not real ones.
 /datum/wound/proc/on_salt(reac_volume, mob/living/carbon/carbies)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/wound/pierce/bleed/on_salt(reac_volume, mob/living/carbon/carbies)
+	procstart = null
+	src.procstart = null
 	adjust_blood_flow(-0.06 * reac_volume, initial_flow * 0.6) // 20u of a salt shacker * 0.1 = -1.6~ blood flow, but is always clamped to, at best, third blood loss from that wound.
 	// Crystal irritation worsening recovery.
 	gauzed_clot_rate *= 0.65
 	to_chat(carbies, span_notice("The salt bits seep in and stick to [LOWER_TEXT(src)], painfully irritating the skin but soaking up most of the blood."))
 
 /datum/wound/slash/flesh/on_salt(reac_volume, mob/living/carbon/carbies)
+	procstart = null
+	src.procstart = null
 	adjust_blood_flow(-0.1 * reac_volume, initial_flow * 0.5) // 20u of a salt shacker * 0.1 = -2~ blood flow, but is always clamped to, at best, halve blood loss from that wound.
 	// Crystal irritation worsening recovery.
 	clot_rate *= 0.75
 	to_chat(carbies, span_notice("The salt bits seep in and stick to [LOWER_TEXT(src)], painfully irritating the skin but soaking up most of the blood."))
 
 /datum/wound/burn/flesh/on_salt(reac_volume)
+	procstart = null
+	src.procstart = null
 	// Slightly sanitizes and disinfects, but also increases infestation rate (some bacteria are aided by salt), and decreases flesh healing (can damage the skin from moisture absorption)
 	sanitization += VALUE_PER(0.4, 30) * reac_volume
 	infection -= max(VALUE_PER(0.3, 30) * reac_volume, 0)
@@ -574,6 +638,8 @@
 	added_traits = list(TRAIT_GARLIC_BREATH)
 
 /datum/reagent/consumable/garlic/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isvampire(affected_mob)) //incapacitating but not lethal. Unfortunately, vampires cannot vomit.
 		if(SPT_PROB(min((current_cycle-1)/2, 12.5), seconds_per_tick))
@@ -598,6 +664,8 @@
 	ph = 5
 
 /datum/reagent/consumable/tearjuice/expose_mob(mob/living/exposed_mob, methods = INGEST, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(exposed_mob))
 		return
@@ -619,6 +687,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/consumable/sprinkles/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/organ/liver/liver = affected_mob.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(liver && HAS_TRAIT(liver, TRAIT_LAW_ENFORCEMENT_METABOLISM))
@@ -663,6 +733,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/consumable/hot_ramen/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.adjust_bodytemperature(5 * TEMPERATURE_DAMAGE_COEFFICIENT * metabolization_ratio * seconds_per_tick, 0, affected_mob.get_body_temp_normal())
 
@@ -676,6 +748,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/consumable/hell_ramen/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	affected_mob.adjust_bodytemperature(5 * TEMPERATURE_DAMAGE_COEFFICIENT * metabolization_ratio * seconds_per_tick)
 
@@ -689,6 +763,8 @@
 	default_container = /obj/item/reagent_containers/condiment/flour
 
 /datum/reagent/consumable/flour/expose_mob(mob/living/exposed_mob, methods, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(exposed_mob))
 		return
@@ -699,14 +775,20 @@
 		iter_wound.on_flour(reac_volume, carbies)
 
 /datum/wound/proc/on_flour(reac_volume, mob/living/carbon/carbies)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/wound/pierce/bleed/on_flour(reac_volume, mob/living/carbon/carbies)
+	procstart = null
+	src.procstart = null
 	adjust_blood_flow(-0.015 * reac_volume) // 30u of a flour sack * 0.015 = -0.45~ blood flow, prettay good
 	to_chat(carbies, span_notice("The flour seeps into [LOWER_TEXT(src)], painfully drying it up and absorbing some of the blood."))
 	// When some nerd adds infection for wounds, make this increase the infection
 
 /datum/wound/slash/flesh/on_flour(reac_volume, mob/living/carbon/carbies)
+	procstart = null
+	src.procstart = null
 	adjust_blood_flow(-0.04 * reac_volume) // 30u of a flour sack * 0.04 = -1.25~ blood flow, pretty good!
 	to_chat(carbies, span_notice("The flour seeps into [LOWER_TEXT(src)], painfully drying some of it up and absorbing a little blood."))
 	// When some nerd adds infection for wounds, make this increase the infection
@@ -714,12 +796,16 @@
 // Don't pour flour onto burn wounds, it increases infection risk! Very unwise. Backed up by REAL info from REAL professionals.
 // https://www.reuters.com/article/uk-factcheck-flour-burn-idUSKCN26F2N3
 /datum/wound/burn/flesh/on_flour(reac_volume)
+	procstart = null
+	src.procstart = null
 	to_chat(victim, span_notice("The flour seeps into [LOWER_TEXT(src)], spiking you with intense pain! That probably wasn't a good idea..."))
 	sanitization -= min(0, 1)
 	infection += 0.2
 	return
 
 /datum/reagent/consumable/flour/expose_turf(turf/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isspaceturf(exposed_turf))
 		return
@@ -800,6 +886,8 @@
 
 // Starch has similar absorbing properties to flour (Stronger here because it's rarer)
 /datum/reagent/consumable/corn_starch/expose_mob(mob/living/exposed_mob, methods, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(exposed_mob))
 		return
@@ -810,21 +898,29 @@
 		iter_wound.on_starch(reac_volume, carbies)
 
 /datum/wound/proc/on_starch(reac_volume, mob/living/carbon/carbies)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/wound/pierce/bleed/on_starch(reac_volume, mob/living/carbon/carbies)
+	procstart = null
+	src.procstart = null
 	adjust_blood_flow(-0.03 * reac_volume)
 	to_chat(carbies, span_notice("The slimey starch seeps into [LOWER_TEXT(src)], painfully drying some of it up and absorbing a little blood."))
 	// When some nerd adds infection for wounds, make this increase the infection
 	return
 
 /datum/wound/slash/flesh/on_starch(reac_volume, mob/living/carbon/carbies)
+	procstart = null
+	src.procstart = null
 	adjust_blood_flow(-0.06 * reac_volume)
 	to_chat(carbies, span_notice("The slimey starch seeps into [LOWER_TEXT(src)], painfully drying it up and absorbing some of the blood."))
 	// When some nerd adds infection for wounds, make this increase the infection
 	return
 
 /datum/wound/burn/flesh/on_starch(reac_volume, mob/living/carbon/carbies)
+	procstart = null
+	src.procstart = null
 	to_chat(carbies, span_notice("The slimey starch seeps into [LOWER_TEXT(src)], spiking you with intense pain! That probably wasn't a good idea..."))
 	sanitization -= min(0, 0.5)
 	infection += 0.1
@@ -840,6 +936,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/consumable/corn_syrup/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	holder.add_reagent(/datum/reagent/consumable/sugar, 0.5 * metabolization_ratio * seconds_per_tick)
 
@@ -855,6 +953,8 @@
 
 // On the other hand, honey has been known to carry pollen with it rarely. Can be used to take in a lot of plant qualities all at once, or harm the plant.
 /datum/reagent/consumable/honey/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isnull(mytray.myseed) && prob(20))
 		mytray.pollinate(range = 1)
 		return
@@ -863,6 +963,8 @@
 	mytray.adjust_pestlevel(rand(1, 2))
 
 /datum/reagent/consumable/honey/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	holder.add_reagent(/datum/reagent/consumable/sugar, 1.5 * metabolization_ratio * seconds_per_tick)
 	var/need_mob_update
@@ -876,6 +978,8 @@
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/consumable/honey/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(methods & (TOUCH|VAPOR|PATCH)))
 		return
@@ -912,6 +1016,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/consumable/moltobeso/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/reagent/consumable/food in affected_mob.reagents.reagent_list)
 		if(food == src)
@@ -938,6 +1044,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/consumable/nutriment/stabilized/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(affected_mob.nutrition > NUTRITION_LEVEL_FULL - 25)
 		affected_mob.adjust_nutrition(-1.5 * metabolization_ratio * get_nutriment_factor(affected_mob) * seconds_per_tick)
@@ -955,6 +1063,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/consumable/entpoly/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/need_mob_update
 	if(current_cycle > 10)
@@ -980,6 +1090,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/consumable/tinlux/expose_mob(mob/living/exposed_mob, methods = TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!exposed_mob.reagents) // they won't process the reagent, but still benefit from its effects for a duration.
 		var/amount = round(reac_volume * clamp(1 - touch_protection, 0, 1))
@@ -988,10 +1100,14 @@
 			exposed_mob.adjust_timed_status_effect(duration, /datum/status_effect/tinlux_light)
 
 /datum/reagent/consumable/tinlux/on_mob_add(mob/living/living_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	living_mob.apply_status_effect(/datum/status_effect/tinlux_light) //infinite duration
 
 /datum/reagent/consumable/tinlux/on_mob_delete(mob/living/living_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	living_mob.remove_status_effect(/datum/status_effect/tinlux_light)
 
@@ -1006,6 +1122,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/consumable/vitfro/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/need_mob_update
 	if(SPT_PROB(55, seconds_per_tick))
@@ -1026,7 +1144,9 @@
 /datum/reagent/consumable/liquidelectricity/enriched
 	name = "Enriched Liquid Electricity"
 
-/datum/reagent/consumable/liquidelectricity/enriched/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume) //can't be on life because of the way blood works.
+/datum/reagent/consumable/liquidelectricity/enriched/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
+	procstart = null
+	src.procstart = null //can't be on life because of the way blood works.
 	. = ..()
 	if(!(methods & (INGEST|INJECT|PATCH|INHALE)) || !iscarbon(exposed_mob))
 		return
@@ -1037,6 +1157,8 @@
 		stomach.adjust_charge(reac_volume * 30 * ETHEREAL_DISCHARGE_RATE)
 
 /datum/reagent/consumable/liquidelectricity/enriched/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isethereal(affected_mob))
 		affected_mob.adjust_blood_volume(1 * seconds_per_tick)
@@ -1057,6 +1179,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/consumable/astrotame/overdose_process(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(affected_mob.disgust < 80)
 		affected_mob.adjust_disgust(2.5 * metabolization_ratio * seconds_per_tick)
@@ -1095,6 +1219,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/consumable/caramel/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(methods & INGEST)
 		exposed_mob.check_allergic_reaction(SUGAR, chance = reac_volume * 10, histamine_add = min(10, reac_volume * 2))
@@ -1111,6 +1237,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/consumable/char/overdose_process(mob/living/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(SPT_PROB(13, seconds_per_tick))
 		affected_mob.say(pick_list_replacements(BOOMER_FILE, "boomer"), forced = /datum/reagent/consumable/char)
@@ -1232,7 +1360,9 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 	default_container = /obj/item/reagent_containers/condiment/peanut_butter
 
-/datum/reagent/consumable/peanut_butter/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio) //ET loves peanut butter
+/datum/reagent/consumable/peanut_butter/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null //ET loves peanut butter
 	. = ..()
 	if(isabductor(affected_mob))
 		affected_mob.add_mood_event("ET_pieces", /datum/mood_event/et_pieces, name)
@@ -1301,6 +1431,8 @@
 	randomized_spawns = REAGENT_SPAWN_ALL_RANDOM_SPAWNS
 
 /datum/reagent/consumable/mintextract/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(affected_mob, TRAIT_FAT))
 		affected_mob.investigate_log("has been gibbed by consuming [src] while fat.", INVESTIGATE_DEATHS)

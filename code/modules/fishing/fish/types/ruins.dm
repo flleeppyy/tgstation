@@ -27,22 +27,34 @@
 	beauty = FISH_BEAUTY_BAD
 
 /obj/item/fish/mastodon/Initialize(mapload, apply_qualities = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_FISH_MADE_OF_BONE, INNATE_TRAIT)
 
 /obj/item/fish/mastodon/fish_grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/bone_dust = 5, /datum/reagent/consumable/liquidgibs = 5)
 
 /obj/item/fish/mastodon/make_edible(weight_val)
+	procstart = null
+	src.procstart = null
 	return //it's all bones and gibs.
 
 /obj/item/fish/mastodon/get_export_price(price, elasticity_percent)
+	procstart = null
+	src.procstart = null
 	return ..() * 1.2 //This should push its soft-capped (it's pretty big) price a bit above the rest
 
 /obj/item/fish/mastodon/get_health_warnings(mob/user, always_deep = FALSE)
+	procstart = null
+	src.procstart = null
 	return list(span_deadsay("It's bones."))
 
 /obj/item/fish/mastodon/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] swallows [src] whole (somehow)! It looks like user.p_theyre()] trying to commit suicide!"))
 	forceMove(user)
 	user.update_transform(1.25) // become BIG from eating BIG fish
@@ -50,6 +62,8 @@
 	return MANUAL_SUICIDE_NONLETHAL // chance not to die
 
 /obj/item/fish/mastodon/proc/skeleton_appears(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_warning("[user]'s skin melts off!"), span_boldwarning("Your skin melts off!"))
 	user.spawn_gibs()
 	user.drop_everything(del_on_drop = FALSE, force = FALSE, del_if_nodrop = FALSE)
@@ -87,15 +101,23 @@
 	random_case_rarity = FISH_RARITY_NOPE
 
 /obj/item/fish/soul/get_food_types()
+	procstart = null
+	src.procstart = null
 	return MEAT|RAW|GORE //Not-so-quite-seafood
 
 /obj/item/fish/soul/get_fish_taste()
+	procstart = null
+	src.procstart = null
 	return list("meat" = 2, "soulfulness" = 1)
 
 /obj/item/fish/soul/get_fish_taste_cooked()
+	procstart = null
+	src.procstart = null
 	return list("cooked meat" = 2)
 
 /obj/item/fish/soul/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] swallows [src] whole! It looks like [user.p_theyre()] trying to commit soulcide!"))
 	src.forceMove(user)
 	addtimer(CALLBACK(src, PROC_REF(good_ending), user), 2.5 SECONDS)
@@ -104,6 +126,8 @@
 	return MANUAL_SUICIDE
 
 /obj/item/fish/soul/proc/good_ending(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/spaceman/soulman = new(get_turf(user))
 	soulman.fully_replace_character_name(user.real_name)
 	addtimer(CALLBACK(soulman, TYPE_PROC_REF(/atom, visible_message), span_notice("[soulman] was too pure for this world...")), 5 SECONDS, TIMER_DELETE_ME)
@@ -115,6 +139,8 @@
 	qdel(src)
 
 /obj/item/fish/soul/proc/soul_attack(mob/user, iteration)
+	procstart = null
+	src.procstart = null
 	var/obj/item/storage/toolbox/mechanical/old/soulbox = pick(/obj/item/storage/toolbox/mechanical/old, /obj/item/storage/toolbox/mechanical/old/cleaner)
 	soulbox = new soulbox(get_turf(user))
 	var/yeet_direction = pick(GLOB.alldirs)
@@ -151,12 +177,18 @@
 	random_case_rarity = FISH_RARITY_NOPE
 
 /obj/item/fish/skin_crab/get_fish_taste()
+	procstart = null
+	src.procstart = null
 	return list("raw crab" = 2)
 
 /obj/item/fish/skin_crab/get_fish_taste_cooked()
+	procstart = null
+	src.procstart = null
 	return list("cooked crab" = 2)
 
 /obj/item/fish/skin_crab/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] puts [user.p_their()] hand on [src] and focuses intently! It looks like [user.p_theyre()] trying to transfer [user.p_their()] skin to [src]!"))
 	if(HAS_TRAIT(user, TRAIT_UNHUSKABLE))
 		user.visible_message(span_suicide("[user] has no skin! How embarrassing!"))

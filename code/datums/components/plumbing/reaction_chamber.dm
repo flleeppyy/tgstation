@@ -3,11 +3,15 @@
 	supply_connects = SOUTH
 
 /datum/component/plumbing/reaction_chamber/Initialize(ducting_layer)
+	procstart = null
+	src.procstart = null
 	if(!istype(parent, /obj/machinery/plumbing/reaction_chamber))
 		return COMPONENT_INCOMPATIBLE
 	return ..()
 
 /datum/component/plumbing/reaction_chamber/can_give(amount, reagent, datum/ductnet/net)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 
 	var/obj/machinery/plumbing/reaction_chamber/reaction_chamber = parent
@@ -33,6 +37,8 @@
 		return TRUE
 
 /datum/component/plumbing/reaction_chamber/send_request(dir)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/plumbing/reaction_chamber/chamber = parent
 
 	if(chamber.emptying)
@@ -73,18 +79,26 @@
 	VAR_PRIVATE/datum/reagents/buffer
 
 /datum/component/plumbing/buffered/Initialize(ducting_layer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	buffer = new (maximum = 50, new_flags = NO_REACT)
 	buffer.my_atom = parent
 
 /datum/component/plumbing/buffered/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(buffer)
 	return ..()
 
 /datum/component/plumbing/buffered/recipient_reagents_holder()
+	procstart = null
+	src.procstart = null
 	return buffer
 
 /datum/component/plumbing/buffered/send_request(dir)
+	procstart = null
+	src.procstart = null
 	process_request(reagent = request, dir = dir)
 
 ///Special connect that we currently use for reaction chambers. Being used so we can keep certain inputs separate, like into a special internal acid container

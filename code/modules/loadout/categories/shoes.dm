@@ -9,6 +9,8 @@
 	abstract_type = /datum/loadout_item/shoes
 
 /datum/loadout_item/shoes/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	outfit.shoes = item_path
 
 /datum/loadout_item/shoes/sneakers

@@ -1,6 +1,8 @@
 /datum/unit_test/mecha_construction_icons
 
 /datum/unit_test/mecha_construction_icons/Run()
+	procstart = null
+	src.procstart = null
 	for(var/chassis_type in subtypesof(/obj/item/mecha_parts/chassis))
 		var/obj/item/mecha_parts/chassis/chassis = allocate(chassis_type)
 		var/datum/component/construction/unordered/mecha_chassis/chassis_comp = chassis.GetComponent(/datum/component/construction/unordered/mecha_chassis)

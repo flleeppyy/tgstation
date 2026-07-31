@@ -24,6 +24,8 @@
 	availability_prob = 80
 
 /datum/market_item/consumable/donk_pocket_box/spawn_item(loc)
+	procstart = null
+	src.procstart = null
 	var/static/list/choices
 	if(isnull(choices))
 		choices = list()
@@ -45,6 +47,8 @@
 	availability_prob = 50
 
 /datum/market_item/consumable/suspicious_pills/spawn_item(loc)
+	procstart = null
+	src.procstart = null
 	item = pick(list(/obj/item/storage/pill_bottle/zoom,
 		/obj/item/storage/pill_bottle/happy,
 		/obj/item/storage/pill_bottle/lsd,

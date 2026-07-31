@@ -33,10 +33,14 @@
 	var/datum/component/lock_on_cursor/lockon_component
 
 /datum/action/cooldown/spell/pointed/projectile/spell_cards/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(lockon_component)
 	return ..()
 
 /datum/action/cooldown/spell/pointed/projectile/spell_cards/on_activation(mob/on_who)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -51,6 +55,8 @@
 	)
 
 /datum/action/cooldown/spell/pointed/projectile/spell_cards/proc/on_lockon_component(list/locked_weakrefs)
+	procstart = null
+	src.procstart = null
 	if(!length(locked_weakrefs))
 		current_target_weakref = null
 		return
@@ -60,10 +66,14 @@
 		owner.face_atom(real_target)
 
 /datum/action/cooldown/spell/pointed/projectile/spell_cards/on_deactivation(mob/on_who, refund_cooldown = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(lockon_component)
 
 /datum/action/cooldown/spell/pointed/projectile/spell_cards/ready_projectile(obj/projectile/to_fire, atom/target, mob/user, iteration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(current_target_weakref)
 		var/atom/real_target = current_target_weakref?.resolve()

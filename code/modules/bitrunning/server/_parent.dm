@@ -56,16 +56,22 @@
 	COOLDOWN_DECLARE(polling_cooldown)
 
 /obj/machinery/quantum_server/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/machinery/quantum_server/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	RegisterSignals(src, list(COMSIG_MACHINERY_BROKEN, COMSIG_MACHINERY_POWER_LOST), PROC_REF(on_broken))
 	RegisterSignal(src, COMSIG_QDELETING, PROC_REF(on_delete))
 
 /obj/machinery/quantum_server/Destroy(force)
+	procstart = null
+	src.procstart = null
 	mutation_candidate_refs.Cut()
 	avatar_connection_refs.Cut()
 	spawned_threat_refs.Cut()
@@ -74,6 +80,8 @@
 	return ..()
 
 /obj/machinery/quantum_server/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(isnull(held_item))
 		return
@@ -86,6 +94,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/quantum_server/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	. += span_infoplain("Can be resource intensive to run. Ensure adequate power supply.")
@@ -115,6 +125,8 @@
 
 
 /obj/machinery/quantum_server/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(obj_flags & EMAGGED)
@@ -130,6 +142,8 @@
 
 
 /obj/machinery/quantum_server/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	if(isnull(generated_domain) || !is_operational)
 		set_light(l_on = FALSE)
 		return ..()
@@ -139,6 +153,8 @@
 
 
 /obj/machinery/quantum_server/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(isnull(generated_domain) || !is_operational)
 		icon_state = base_icon_state
 		return ..()
@@ -151,6 +167,8 @@
 
 
 /obj/machinery/quantum_server/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/bitrunning_debug))
 		return NONE
 
@@ -162,6 +180,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/quantum_server/crowbar_act(mob/living/user, obj/item/crowbar)
+	procstart = null
+	src.procstart = null
 	if(!is_ready)
 		balloon_alert(user, "it's scalding hot!")
 		return ITEM_INTERACT_FAILURE
@@ -171,12 +191,16 @@
 	return default_deconstruction_crowbar(user, crowbar)
 
 /obj/machinery/quantum_server/screwdriver_act(mob/living/user, obj/item/screwdriver)
+	procstart = null
+	src.procstart = null
 	if(!is_ready)
 		balloon_alert(user, "it's scalding hot!")
 		return ITEM_INTERACT_FAILURE
 	return default_deconstruction_screwdriver(user, screwdriver)
 
 /obj/machinery/quantum_server/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/capacitor_rating = 1.15
 	var/datum/stock_part/capacitor/cap = locate() in component_parts
 	capacitor_rating -= cap.tier * 0.15

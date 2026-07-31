@@ -17,21 +17,29 @@
 	preserved_food = TRUE
 
 /obj/item/food/canned/make_germ_sensitive(mapload)
+	procstart = null
+	src.procstart = null
 	return // It's in a can
 
 /obj/item/food/canned/proc/open_can(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You pull back the tab of \the [src]."))
 	playsound(user.loc, 'sound/items/foodcanopen.ogg', 50)
 	reagents.flags |= OPENCONTAINER
 	preserved_food = FALSE
 
 /obj/item/food/canned/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!is_drainable())
 		open_can(user)
 		icon_state = "[icon_state]_open"
 	return ..()
 
 /obj/item/food/canned/attack(mob/living/target, mob/user, def_zone)
+	procstart = null
+	src.procstart = null
 	if (!is_drainable())
 		to_chat(user, span_warning("[src]'s lid hasn't been opened!"))
 		return FALSE
@@ -109,17 +117,23 @@
 	custom_materials = list(/datum/material/meat = MEATSLAB_MATERIAL_AMOUNT * 2)
 
 /obj/item/food/canned/envirochow/attack_animal(mob/living/simple_animal/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!check_buffability(user))
 		return ..()
 	apply_buff(user)
 
 /obj/item/food/canned/envirochow/attack_basic_mob(mob/living/basic/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!check_buffability(user))
 		return ..()
 	apply_buff(user)
 	return TRUE
 
 /obj/item/food/canned/envirochow/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!check_buffability(interacting_with))
 		return NONE
 	apply_buff(interacting_with, user)
@@ -127,6 +141,8 @@
 
 ///This proc checks if the mob is able to receive the buff.
 /obj/item/food/canned/envirochow/proc/check_buffability(mob/living/hungry_pet)
+	procstart = null
+	src.procstart = null
 	if(!isanimal_or_basicmob(hungry_pet)) // Not a pet
 		return FALSE
 	if(!is_drainable()) // Can is not open
@@ -140,6 +156,8 @@
 
 ///This makes the animal eat the food, and applies the buff status effect to them.
 /obj/item/food/canned/envirochow/proc/apply_buff(mob/living/simple_animal/hungry_pet, mob/living/dog_mom)
+	procstart = null
+	src.procstart = null
 	hungry_pet.apply_status_effect(/datum/status_effect/limited_buff/health_buff) //the status effect keeps track of the stacks
 	hungry_pet.visible_message(
 		span_notice("[hungry_pet] chows down on [src]."),
@@ -159,6 +177,8 @@
 	foodtypes = SEAFOOD
 
 /obj/item/food/canned/squid_ink/open_can(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/splat, \
 		memory_type = /datum/memory/witnessed_inking, \
@@ -169,6 +189,8 @@
 	)
 
 /obj/item/food/canned/squid_ink/proc/blind_em(mob/living/victim, can_splat_on)
+	procstart = null
+	src.procstart = null
 	if(can_splat_on)
 		victim.adjust_temp_blindness_up_to(2.5 SECONDS, 3 SECONDS)
 		victim.adjust_confusion_up_to(2.5 SECONDS, 3 SECONDS)
@@ -185,6 +207,8 @@
 	foodtypes = MEAT
 
 /obj/item/food/canned/chap/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE,  /obj/item/food/chapslice, 5, 3 SECONDS, table_required = TRUE, screentip_verb = "Cut")
 
 /obj/item/food/chapslice
@@ -200,6 +224,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/food/chapslice/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/grilled_chapslice, rand(20 SECONDS, 40 SECONDS), TRUE, TRUE)
 
 /obj/item/food/grilled_chapslice
@@ -233,12 +259,18 @@
 	var/static/list/added_reagents = list(/datum/reagent/medicine/omnizine = 3)
 
 /obj/item/food/ready_donk/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, warm_type, rand(15 SECONDS, 20 SECONDS), TRUE, TRUE, added_reagents)
 
 /obj/item/food/ready_donk/make_microwaveable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/microwavable, warm_type, added_reagents)
 
 /obj/item/food/ready_donk/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("<i>You browse the back of the box...</i>")
 	. += "\t[span_info("Ready-Donk: a product of Donk Co.")]"
@@ -371,8 +403,12 @@
 
 ///Override for checkliked callback
 /obj/item/food/rationpack/make_edible()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponentFrom(SOURCE_EDIBLE_INNATE, /datum/component/edible, check_liked = CALLBACK(src, PROC_REF(check_liked)))
 
-/obj/item/food/rationpack/proc/check_liked(mob/mob) //Nobody likes rationpacks. Nobody.
+/obj/item/food/rationpack/proc/check_liked(mob/mob)
+	procstart = null
+	src.procstart = null //Nobody likes rationpacks. Nobody.
 	return FOOD_DISLIKED

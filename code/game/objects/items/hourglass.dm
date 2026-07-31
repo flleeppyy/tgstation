@@ -12,15 +12,21 @@
 	icon_state = "hourglass_idle"
 
 /obj/item/hourglass/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	countdown = new(src)
 
 /obj/item/hourglass/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(hand_activated)
 		toggle(user)
 
 /obj/item/hourglass/proc/toggle(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!timing_id)
 		to_chat(user,span_notice("You flip the [src]."))
 		start()
@@ -30,22 +36,30 @@
 		stop()
 
 /obj/item/hourglass/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "hourglass_[timing_id ? "active" : "idle"]"
 	return ..()
 
 /obj/item/hourglass/proc/start()
+	procstart = null
+	src.procstart = null
 	finish_time = world.time + time
 	timing_id = addtimer(CALLBACK(src, PROC_REF(finish)), time, TIMER_STOPPABLE)
 	countdown.start()
 	timing_animation()
 
 /obj/item/hourglass/proc/timing_animation()
+	procstart = null
+	src.procstart = null
 	var/step_time = time / HOURGLASS_STATES
 	animate(src, time = step_time, icon_state = "hourglass_1")
 	for(var/i in 2 to HOURGLASS_STATES)
 		animate(time = step_time, icon_state = "hourglass_[i]")
 
 /obj/item/hourglass/proc/stop()
+	procstart = null
+	src.procstart = null
 	if(timing_id)
 		deltimer(timing_id)
 		timing_id = null
@@ -55,10 +69,14 @@
 	update_appearance()
 
 /obj/item/hourglass/proc/finish()
+	procstart = null
+	src.procstart = null
 	visible_message(span_notice("[src] stops."))
 	stop()
 
 /obj/item/hourglass/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(countdown)
 	. = ..()
 
@@ -69,11 +87,15 @@
 	hand_activated = FALSE
 
 /obj/item/hourglass/admin/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(user.client && user.client.holder)
 		toggle(user)
 
 /obj/item/hourglass/admin/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.client && user.client.holder)
 		toggle(user)
 

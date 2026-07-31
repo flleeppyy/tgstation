@@ -20,6 +20,8 @@
 	)
 
 /datum/status_effect/grouped/blindness/on_apply()
+	procstart = null
+	src.procstart = null
 	if (!CAN_BE_BLIND(owner))
 		return FALSE
 
@@ -27,13 +29,19 @@
 	return ..()
 
 /datum/status_effect/grouped/blindness/source_added(source, ...)
+	procstart = null
+	src.procstart = null
 	update_blindness()
 
 /datum/status_effect/grouped/blindness/source_removed(source, removing)
+	procstart = null
+	src.procstart = null
 	if (!removing)
 		update_blindness()
 
 /datum/status_effect/grouped/blindness/proc/update_blindness()
+	procstart = null
+	src.procstart = null
 	if (!CAN_BE_BLIND(owner)) // future proofing
 		qdel(src)
 		return
@@ -50,6 +58,8 @@
 	make_unblind()
 
 /datum/status_effect/grouped/blindness/proc/make_blind()
+	procstart = null
+	src.procstart = null
 	if(!GET_CLIENT(owner))
 		RegisterSignal(owner, COMSIG_MOB_LOGIN, PROC_REF(make_blind_on_login), override = TRUE)
 		return
@@ -66,17 +76,23 @@
 	owner.add_client_colour(/datum/client_colour/blindness, id)
 
 /datum/status_effect/grouped/blindness/proc/make_blind_on_login(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(owner, COMSIG_MOB_LOGIN)
 	make_blind()
 
 /datum/status_effect/grouped/blindness/proc/make_unblind()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_MOB_LOGIN)
 	owner.clear_fullscreen(id)
 	owner.remove_client_colour(id)
 
 /datum/status_effect/grouped/blindness/on_remove()
+	procstart = null
+	src.procstart = null
 	make_unblind()
 	UnregisterSignal(owner, update_signals)
 	UnregisterSignal(owner, COMSIG_MOB_LOGIN)
@@ -96,10 +112,14 @@
 	remove_on_fullheal = TRUE
 
 /datum/status_effect/temporary_blindness/on_creation(mob/living/new_owner, duration = 10 SECONDS)
+	procstart = null
+	src.procstart = null
 	src.duration = duration
 	return ..()
 
 /datum/status_effect/temporary_blindness/on_apply()
+	procstart = null
+	src.procstart = null
 	if(!CAN_BE_BLIND(owner))
 		return FALSE
 
@@ -107,9 +127,13 @@
 	return TRUE
 
 /datum/status_effect/temporary_blindness/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.cure_blind(id)
 
 /datum/status_effect/temporary_blindness/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(owner.stat == DEAD)
 		return
 

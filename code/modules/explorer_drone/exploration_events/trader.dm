@@ -11,6 +11,8 @@
 	var/requires_translator = TRUE
 
 /datum/exploration_event/simple/trader/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(islist(required_path))
 		required_path = pick(required_path)
@@ -18,6 +20,8 @@
 		traded_path = pick(traded_path)
 
 /datum/exploration_event/simple/trader/get_discovery_message(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	if(requires_translator && !drone.has_tool(EXODRONE_TOOL_TRANSLATOR))
 		return "You encountered [name] but could not understand what they want without a translator."
 	var/obj/want = required_path
@@ -25,6 +29,8 @@
 	return "Encountered [name] willing to trade [initial(gives.name)] for [initial(want.name)]"
 
 /datum/exploration_event/simple/trader/get_description(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	if(requires_translator && !drone.has_tool(EXODRONE_TOOL_TRANSLATOR))
 		return "You encounter [name] but cannot understand what they want without a translator."
 	var/obj/want = required_path
@@ -32,13 +38,19 @@
 	return "You encounter [name] willing to trade [initial(want.name)] for [initial(gives.name)] [amount > 1 ? "[amount] times":""]."
 
 /datum/exploration_event/simple/trader/is_targetable()
+	procstart = null
+	src.procstart = null
 	return visited && (amount > 0)
 
 /datum/exploration_event/simple/trader/action_enabled(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	var/obj/trade_good = locate(required_path) in drone.contents
 	return (amount > 0) && trade_good && (!requires_translator || drone.has_tool(EXODRONE_TOOL_TRANSLATOR))
 
 /datum/exploration_event/simple/trader/fire(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	if(!action_enabled(drone))
 		end(drone)
 		return
@@ -47,6 +59,8 @@
 	end(drone)
 
 /datum/exploration_event/simple/trader/proc/trade(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	var/obj/trade_good = locate(required_path) in drone.contents
 	var/obj/loot = new traded_path()
 	drone.drone_log("Traded [trade_good] for [loot].")
@@ -114,12 +128,18 @@
 	var/static/list/possible_card_states = list("card_flames","card_carp","card_rainbow")
 
 /datum/exploration_event/simple/trader/flame_card/get_discovery_message(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	return "Encountered [name] willing to customise any ID card you bring them."
 
 /datum/exploration_event/simple/trader/flame_card/get_description(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	return "You encounter a local craftsman willing to customise an ID card for you, free of charge."
 
 /datum/exploration_event/simple/trader/flame_card/trade(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/id/card = locate(required_path) in drone.contents
 	card.icon_state = pick(possible_card_states)
 	card.update_icon() //Refresh cached helper image

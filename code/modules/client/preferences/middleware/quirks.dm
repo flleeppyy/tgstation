@@ -14,6 +14,8 @@
 		"remove_quirk" = PROC_REF(remove_quirk),
 	)
 /datum/preference_middleware/quirks/pre_set_preference(mob/user, preference, value)
+	procstart = null
+	src.procstart = null
 	if(preference != "species")
 		return
 	var/list/incompatible_quirks
@@ -35,6 +37,8 @@
 		return TRUE
 
 /datum/preference_middleware/quirks/post_set_preference(mob/user, preference, value)
+	procstart = null
+	src.procstart = null
 	if(preference != "species" || value == previous_species_value)
 		return
 
@@ -43,6 +47,8 @@
 	preferences.validate_quirks()
 
 /datum/preference_middleware/quirks/proc/get_species_compatibility()
+	procstart = null
+	src.procstart = null
 	var/list/species_blacklist = list()
 	var/datum/species/mob_species = preferences.read_preference(/datum/preference/choiced/species)
 	for(var/datum/quirk/quirk_type as anything in SSquirks.quirk_prototypes)
@@ -51,6 +57,8 @@
 	return species_blacklist
 
 /datum/preference_middleware/quirks/get_ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	if (preferences.current_window != PREFERENCE_TAB_CHARACTER_PREFERENCES)
 		return list()
 
@@ -61,6 +69,8 @@
 	return data
 
 /datum/preference_middleware/quirks/get_ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	if (tainted || isnull(cached_selected_quirks)) // if one of these is null, both are null
@@ -74,6 +84,8 @@
 	return data
 
 /datum/preference_middleware/quirks/get_constant_data()
+	procstart = null
+	src.procstart = null
 	var/list/quirk_info = list()
 
 	var/list/quirks = SSquirks.get_quirks()
@@ -105,10 +117,14 @@
 	)
 
 /datum/preference_middleware/quirks/on_new_character(mob/user)
+	procstart = null
+	src.procstart = null
 	tainted = TRUE
 	previous_species_value = null
 
 /datum/preference_middleware/quirks/proc/give_quirk(list/params, mob/user)
+	procstart = null
+	src.procstart = null
 	var/quirk_name = params["quirk"]
 
 	preferences.validate_quirks()
@@ -128,6 +144,8 @@
 	return TRUE
 
 /datum/preference_middleware/quirks/proc/remove_quirk(list/params, mob/user)
+	procstart = null
+	src.procstart = null
 	var/quirk_name = params["quirk"]
 
 	var/list/new_quirks = preferences.all_quirks - quirk_name
@@ -149,6 +167,8 @@
 	return TRUE
 
 /datum/preference_middleware/quirks/proc/get_selected_quirks()
+	procstart = null
+	src.procstart = null
 	var/list/selected_quirks = list()
 
 	for (var/quirk in preferences.all_quirks)

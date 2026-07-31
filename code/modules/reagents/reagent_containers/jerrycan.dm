@@ -70,11 +70,15 @@
 	var/highlight_strenght = 1.0
 
 /obj/item/reagent_containers/cup/jerrycan/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/cuffable_item)
 	update_appearance()
 
 /obj/item/reagent_containers/cup/jerrycan/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/mutable_appearance/highlight = mutable_appearance(icon, "[base_icon_state]_highlight")
@@ -88,6 +92,8 @@
 		. += mutable_appearance(icon, "[base_icon_state]_cap_[cap_type]")
 
 /obj/item/reagent_containers/cup/jerrycan/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isinhands)
 		return

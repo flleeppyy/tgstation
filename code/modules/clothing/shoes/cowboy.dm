@@ -17,6 +17,8 @@
 	bio = 90
 
 /obj/item/clothing/shoes/cowboy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_storage(storage_type = /datum/storage/pockets/shoes)
 	if(prob(2)) //There's a snake in my boot
@@ -26,6 +28,8 @@
 	AddElement(/datum/element/ignites_matches)
 
 /obj/item/clothing/shoes/cowboy/equipped(mob/living/carbon/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(user, COMSIG_LIVING_SLAM_TABLE, PROC_REF(table_slam), override = TRUE)
 	if(slot & ITEM_SLOT_FEET)
@@ -39,18 +43,26 @@
 			occupant.UnarmedAttack(user, proximity_flag = TRUE)
 
 /obj/item/clothing/shoes/cowboy/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, COMSIG_LIVING_SLAM_TABLE)
 
 /obj/item/clothing/shoes/cowboy/proc/table_slam(mob/living/source, obj/structure/table/the_table)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(handle_table_slam), source)
 
 /obj/item/clothing/shoes/cowboy/proc/handle_table_slam(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.say(pick("Hot damn!", "Hoo-wee!", "Got-dang!"), spans = list(SPAN_YELL), forced=TRUE)
 	user.client?.give_award(/datum/award/achievement/misc/hot_damn, user)
 
 /obj/item/clothing/shoes/cowboy/mouse_drop_receive(mob/living/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(user.mobility_flags & MOBILITY_USE) || !isliving(target))
 		return
@@ -62,6 +74,8 @@
 		to_chat(user, span_notice("[target] slithers into [src]."))
 
 /obj/item/clothing/shoes/cowboy/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!do_after(user, 1 SECONDS, target = user))
 		return
 	user.forceMove(drop_location())
@@ -100,6 +114,8 @@
 	fire = 40
 
 /obj/item/clothing/shoes/cowboy/lizard/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/sheet/animalhide/carbon/lizard/skin = locate() in components
 	if (isnull(skin) || !length(skin.skin_color)) // what
 		return ..()

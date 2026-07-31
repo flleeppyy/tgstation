@@ -98,6 +98,8 @@
 	var/randomized_spawns = REAGENT_SPAWN_NO_RANDOM
 
 /datum/reagent/New()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	. = ..()
 
@@ -110,11 +112,15 @@
 
 /// This should only be called by the holder, so it's already handled clearing its references
 /datum/reagent/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	holder = null
 
 /// Applies this reagent to an [/atom]
 /datum/reagent/proc/expose_atom(atom/exposed_atom, reac_volume, methods = TOUCH)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	. = 0
@@ -123,6 +129,8 @@
 
 /// Applies this reagent to a [/mob/living]
 /datum/reagent/proc/expose_mob(mob/living/exposed_mob, methods = TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(SEND_SIGNAL(src, COMSIG_REAGENT_EXPOSE_MOB, exposed_mob, methods, reac_volume, show_message, touch_protection) & COMPONENT_NO_EXPOSE_REAGENTS)
@@ -141,23 +149,31 @@
 
 /// Applies this reagent to an [/obj]
 /datum/reagent/proc/expose_obj(obj/exposed_obj, reac_volume, methods=TOUCH, show_message=TRUE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	return SEND_SIGNAL(src, COMSIG_REAGENT_EXPOSE_OBJ, exposed_obj, reac_volume, methods, show_message)
 
 /// Applies this reagent to a [/turf]
 /datum/reagent/proc/expose_turf(turf/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	return SEND_SIGNAL(src, COMSIG_REAGENT_EXPOSE_TURF, exposed_turf, reac_volume)
 
 ///Called whenever a reagent is on fire, or is in a holder that is on fire. (WIP)
 /datum/reagent/proc/burn(datum/reagents/holder)
+	procstart = null
+	src.procstart = null
 	return
 
 
 ///Called to begin metabolization and return the volume of reagent to metabolize
 /datum/reagent/proc/compute_metabolization(mob/living/carbon/affected_mob, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/metabolizing_out = metabolization_rate * seconds_per_tick
 	if(!(chemical_flags & REAGENT_UNAFFECTED_BY_METABOLISM))
 		if(chemical_flags & REAGENT_REVERSE_METABOLISM)
@@ -187,10 +203,14 @@
  *
  */
 /datum/reagent/proc/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 ///Metabolizes a portion of the reagent after on_mob_life() is called
 /datum/reagent/proc/metabolize_reagent(mob/living/carbon/affected_mob, seconds_per_tick, metabolized_volume)
+	procstart = null
+	src.procstart = null
 	if(isnull(holder))
 		return
 	volume -= metabolized_volume
@@ -198,6 +218,8 @@
 
 /// Called in burns.dm *if* the reagent has the REAGENT_AFFECTS_WOUNDS process flag
 /datum/reagent/proc/on_burn_wound_processing(datum/wound/burn/flesh/burn_wound)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -211,10 +233,14 @@
  * * copy_only - if TRUE we don't remove ourself from the holder because its a reagent copy & not transfer operation
 */
 /datum/reagent/proc/intercept_reagents_transfer(datum/reagents/target, amount, copy_only)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// Called when this reagent is first added to a mob
 /datum/reagent/proc/on_mob_add(mob/living/affected_mob, amount)
+	procstart = null
+	src.procstart = null
 	// Scale the overdose threshold of the chem by the difference between the default and creation purity.
 	overdose_threshold += (src.creation_purity - initial(purity)) * overdose_threshold
 	if(added_traits)
@@ -222,17 +248,23 @@
 
 /// Called when this reagent is removed while inside a mob
 /datum/reagent/proc/on_mob_delete(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	affected_mob.clear_mood_event("[type]_overdose")
 	REMOVE_TRAITS_IN(affected_mob, "base:[type]")
 
 /// Called when this reagent first starts being metabolized by a liver
 /datum/reagent/proc/on_mob_metabolize(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(metabolized_traits)
 		affected_mob.add_traits(metabolized_traits, METABOLIZATION_TRAIT(type))
 
 /// Called when this reagent stops being metabolized by a liver
 /datum/reagent/proc/on_mob_end_metabolize(mob/living/affected_mob, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	REMOVE_TRAITS_IN(affected_mob, METABOLIZATION_TRAIT(type))
 
@@ -241,6 +273,8 @@
  * Returning UPDATE_MOB_HEALTH will cause updatehealth() to be called on the holder mob by /datum/reagents/proc/metabolize.
  */
 /datum/reagent/proc/on_mob_dead(mob/living/carbon/affected_mob, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 /*
@@ -252,6 +286,8 @@
  * * spark_flags - Flags specific to the interaction, is it in an enclosed space, should we nerf common reagents, etc.
  */
 /datum/reagent/proc/on_spark_act(power_charge = 0, spark_flags = NONE)
+	procstart = null
+	src.procstart = null
 	return NONE
 
 /**
@@ -262,20 +298,28 @@
  */
 
 /datum/reagent/proc/on_new(data)
+	procstart = null
+	src.procstart = null
 	if(data)
 		src.data = data
 
 /// Called when two reagents of the same are mixing.
 /datum/reagent/proc/on_merge(list/mix_data, amount)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_REAGENT_ON_MERGE, mix_data, amount)
 
 /// Called if the reagent has passed the overdose threshold and is set to be triggering overdose effects. Returning UPDATE_MOB_HEALTH will cause updatehealth() to be called on the holder mob by /datum/reagents/proc/metabolize.
 /datum/reagent/proc/overdose_process(mob/living/affected_mob, seconds_per_tick, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called when an overdose starts. Returning UPDATE_MOB_HEALTH will cause updatehealth() to be called on the holder mob by /datum/reagents/proc/metabolize.
 /datum/reagent/proc/overdose_start(mob/living/affected_mob, metabolization_ratio)
+	procstart = null
+	src.procstart = null
 	to_chat(affected_mob, span_userdanger("You feel like you took too much of [name]!"))
 	affected_mob.add_mood_event("[type]_overdose", /datum/mood_event/overdose, name)
 	return
@@ -286,10 +330,14 @@
  * Can affect plant's health, stats, or cause the plant to react in certain ways.
  */
 /datum/reagent/proc/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Should return a associative list where keys are taste descriptions and values are strength ratios
 /datum/reagent/proc/get_taste_description(mob/living/taster)
+	procstart = null
+	src.procstart = null
 	if(isnull(taster) || !HAS_TRAIT(taster, TRAIT_DETECTIVES_TASTE))
 		return list("[taste_description]" = 1)
 	return list("[LOWER_TEXT(name)]" = 1)
@@ -303,6 +351,8 @@
  * * creation_purity - creation_purity override, if desired. This is the purity of the reagent that you're normalising from.
  */
 /datum/reagent/proc/normalise_creation_purity(normalise_num_to, creation_purity)
+	procstart = null
+	src.procstart = null
 	if(!normalise_num_to)
 		normalise_num_to = initial(purity)
 	if(!creation_purity)
@@ -316,6 +366,8 @@
  * * purity - Overrides the purity used for determining the inverse purity.
  */
 /datum/reagent/proc/get_inverse_purity(purity)
+	procstart = null
+	src.procstart = null
 	if(!inverse_chem || !inverse_chem_val)
 		return 0
 	if(!purity)
@@ -324,6 +376,8 @@
 
 ///Called when feeding a fish. If TRUE is returned, a portion of reagent will be consumed.
 /datum/reagent/proc/used_on_fish(obj/item/fish/fish)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /**
@@ -348,6 +402,8 @@
  * * * Water, Silicon, Soup, and Space Lube
  */
 /proc/pretty_string_from_reagent_list(list/reagent_list, names_only, join_text = " | ", final_and, capitalize_names)
+	procstart = null
+	src.procstart = null
 	//Convert reagent list to a printable string for logging etc
 	var/list/reagent_strings = list()
 	var/reagents_left = reagent_list.len

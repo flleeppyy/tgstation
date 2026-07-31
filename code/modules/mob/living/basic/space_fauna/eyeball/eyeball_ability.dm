@@ -6,6 +6,8 @@
 	cooldown_time = 10 SECONDS
 
 /datum/action/cooldown/spell/pointed/death_glare/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	if(!isliving(cast_on))
 		to_chat(owner, span_warning("Only living things are affected by our glare!"))
 		return FALSE
@@ -25,6 +27,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/pointed/death_glare/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cast_on.add_filter("glare", 2, list("type" = "outline", "color" = glare_outline, "size" = 1))
 	cast_on.add_movespeed_modifier(/datum/movespeed_modifier/glare_slowdown)
@@ -33,6 +37,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/pointed/death_glare/proc/remove_effect(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	cast_on.remove_movespeed_modifier(/datum/movespeed_modifier/glare_slowdown)
 	cast_on.remove_filter("glare")
 

@@ -19,6 +19,8 @@
 	clothing_flags = SNUG_FIT | STACKABLE_HELMET_EXEMPT
 
 /obj/item/clothing/head/utility/welding/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!up)
 		AddElement(/datum/element/adjust_fishing_difficulty, 8)
@@ -29,9 +31,13 @@
 	acid = 60
 
 /obj/item/clothing/head/utility/welding/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	adjust_visor(user)
 
 /obj/item/clothing/head/utility/welding/adjust_visor(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(up)
 		RemoveElement(/datum/element/adjust_fishing_difficulty)
@@ -39,6 +45,8 @@
 		AddElement(/datum/element/adjust_fishing_difficulty, 8)
 
 /obj/item/clothing/head/utility/welding/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[initial(icon_state)][up ? "up" : ""]"
 	inhand_icon_state = "[initial(inhand_icon_state)][up ? "off" : ""]"

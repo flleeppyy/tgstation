@@ -14,15 +14,21 @@
 	var/expanding = FALSE
 
 /obj/item/food/monkeycube/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ITEM_IN_UNWRAPPED_TRAITOR_MAIL, PROC_REF(on_mail_unwrap))
 
 /obj/item/food/monkeycube/attempt_pickup(mob/user)
+	procstart = null
+	src.procstart = null
 	if(expanding)
 		return FALSE
 	return ..()
 
 /obj/item/food/monkeycube/proc/Expand()
+	procstart = null
+	src.procstart = null
 	if(expanding)
 		return
 
@@ -64,6 +70,8 @@
 	QDEL_IN(src, 0.5 SECONDS)
 
 /obj/item/food/monkeycube/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is putting [src] in [user.p_their()] mouth! It looks like [user.p_theyre()] trying to commit suicide!"))
 	var/eating_success = do_after(user, 1 SECONDS, src)
 	if(QDELETED(user)) //qdeletion: the nuclear option of self-harm
@@ -80,7 +88,9 @@
 	addtimer(CALLBACK(src, PROC_REF(finish_suicide), user), 15) //you've eaten it, you can run now
 	return MANUAL_SUICIDE
 
-/obj/item/food/monkeycube/proc/finish_suicide(mob/living/user) ///internal proc called by a monkeycube's suicide_act using a timer and callback. takes as argument the mob/living who activated the suicide
+/obj/item/food/monkeycube/proc/finish_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null ///internal proc called by a monkeycube's suicide_act using a timer and callback. takes as argument the mob/living who activated the suicide
 	if(QDELETED(user) || QDELETED(src))
 		return
 	if(src.loc != user) //how the hell did you manage this
@@ -91,6 +101,8 @@
 	user.gib(DROP_BRAIN|DROP_BODYPARTS|DROP_ITEMS) // just remove the organs
 
 /obj/item/food/monkeycube/proc/on_mail_unwrap(atom/source, mob/user, obj/item/mail/traitor/letter)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	to_chat(user, span_danger("As you open [letter], its contents rapidly expand!"))
 	Expand()
@@ -153,6 +165,8 @@
 	)
 
 /obj/item/food/monkeycube/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spawned_mob = pick_weight(list(
 		/mob/living/basic/bear = 4,

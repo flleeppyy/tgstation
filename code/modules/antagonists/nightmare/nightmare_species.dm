@@ -36,9 +36,13 @@
 	)
 
 /datum/species/shadow/nightmare/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load, regenerate_icons)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	C.fully_replace_character_name(null, pick(GLOB.nightmare_names))
 
 /datum/species/shadow/nightmare/check_roundstart_eligible()
+	procstart = null
+	src.procstart = null
 	return FALSE

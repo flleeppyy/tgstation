@@ -11,6 +11,8 @@
 	var/turf/location
 
 /datum/status_effect/crucible_soul/on_apply()
+	procstart = null
+	src.procstart = null
 	to_chat(owner,span_notice("You phase through reality, nothing is out of bounds!"))
 	owner.alpha = 180
 	owner.pass_flags |= PASSCLOSEDTURF | PASSGLASS | PASSGRILLE | PASSMACHINE | PASSSTRUCTURE | PASSTABLE | PASSMOB | PASSDOORS | PASSVEHICLE
@@ -20,6 +22,8 @@
 	return TRUE
 
 /datum/status_effect/crucible_soul/on_remove()
+	procstart = null
+	src.procstart = null
 	to_chat(owner,span_notice("You regain your physicality, returning you to your original location..."))
 	owner.alpha = initial(owner.alpha)
 	owner.pass_flags &= ~(PASSCLOSEDTURF | PASSGLASS | PASSGRILLE | PASSMACHINE | PASSSTRUCTURE | PASSTABLE | PASSMOB | PASSDOORS | PASSVEHICLE)
@@ -28,6 +32,8 @@
 	location = null
 
 /datum/status_effect/crucible_soul/get_examine_text()
+	procstart = null
+	src.procstart = null
 	return span_notice("[owner.p_They()] [owner.p_do()]n't seem to be all here.")
 
 /datum/action/cancel_crucible_soul
@@ -37,6 +43,8 @@
 	button_icon_state = "crucible_soul"
 
 /datum/action/cancel_crucible_soul/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -61,10 +69,14 @@
 	alert_type =/atom/movable/screen/alert/status_effect/duskndawn
 
 /datum/status_effect/duskndawn/on_apply()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(owner, TRAIT_XRAY_VISION, TRAIT_STATUS_EFFECT(id))
 	return TRUE
 
 /datum/status_effect/duskndawn/on_remove()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_XRAY_VISION, TRAIT_STATUS_EFFECT(id))
 
 // WOUNDED SOLDIER
@@ -77,10 +89,14 @@
 	alert_type = /atom/movable/screen/alert/status_effect/marshal
 
 /datum/status_effect/marshal/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.add_movespeed_mod_immunities(id, /datum/movespeed_modifier/damage_slowdown)
 	return TRUE
 
 /datum/status_effect/marshal/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_movespeed_mod_immunities(id, /datum/movespeed_modifier/damage_slowdown)
 	if(!iscarbon(owner))
 		return
@@ -94,6 +110,8 @@
 	playsound(drinker, 'sound/effects/chemistry/ahaha.ogg', 50, TRUE, -1, extrarange = SILENCED_SOUND_EXTRARANGE, frequency = 0.5)
 
 /datum/status_effect/marshal/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(owner))
 		return
 	var/mob/living/carbon/carbie = owner
@@ -180,6 +198,8 @@
 	return ..()
 
 /datum/status_effect/protective_blades/on_apply()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(owner, COMSIG_LIVING_CHECK_BLOCK, PROC_REF(on_shield_reaction))
 	for(var/blade_num in 1 to max_num_blades)
 		var/time_until_created = (blade_num - 1) * time_between_initial_blades
@@ -191,6 +211,8 @@
 	return TRUE
 
 /datum/status_effect/protective_blades/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_LIVING_CHECK_BLOCK)
 	QDEL_LIST(blades)
 
@@ -198,6 +220,8 @@
 
 /// Creates a floating blade, adds it to our blade list, and makes it orbit our owner.
 /datum/status_effect/protective_blades/proc/create_blade()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || QDELETED(owner))
 		return
 
@@ -246,6 +270,8 @@
 
 /// Remove deleted blades from our blades list properly.
 /datum/status_effect/protective_blades/proc/remove_blade(obj/effect/floating_blade/to_remove)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(to_remove in blades))
@@ -280,6 +306,8 @@
 	return ..()
 
 /datum/status_effect/protective_blades/recharging/remove_blade(obj/effect/floating_blade/to_remove)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -295,6 +323,8 @@
 	var/static/list/caretaking_traits = list(TRAIT_GODMODE, TRAIT_HANDS_BLOCKED, TRAIT_IGNORESLOWDOWN, TRAIT_SECLUDED_LOCATION)
 
 /datum/status_effect/caretaker_refuge/on_apply()
+	procstart = null
+	src.procstart = null
 	animate(owner, alpha = 45, time = 0.5 SECONDS)
 	owner.set_density(FALSE)
 	RegisterSignal(owner, COMSIG_MOB_BEFORE_SPELL_CAST, PROC_REF(prevent_spell_usage))
@@ -305,6 +335,8 @@
 	return TRUE
 
 /datum/status_effect/caretaker_refuge/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_traits(caretaking_traits, TRAIT_STATUS_EFFECT(id))
 	owner.alpha = initial(owner.alpha)
 	owner.density = initial(owner.density)
@@ -318,26 +350,36 @@
 	)
 
 /datum/status_effect/caretaker_refuge/get_examine_text()
+	procstart = null
+	src.procstart = null
 	return span_warning("[owner.p_Theyre()] enveloped in an unholy haze!")
 
 /datum/status_effect/caretaker_refuge/proc/nullrod_handler(datum/source, obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	playsound(get_turf(owner), 'sound/effects/curse/curse1.ogg', 80, TRUE)
 	owner.visible_message(span_warning("[weapon] repels the haze around [owner]!"))
 	owner.remove_status_effect(type)
 
 /datum/status_effect/caretaker_refuge/proc/no_strip(atom/source, mob/user, obj/item/equipping)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	to_chat(user, span_warning("You fail to put anything on [source] as they are incorporeal!"))
 	return COMPONENT_CANT_STRIP
 
 /datum/status_effect/caretaker_refuge/proc/prevent_spell_usage(datum/source, datum/spell)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(spell, /datum/action/cooldown/spell/caretaker))
 		owner.balloon_alert(owner, "may not cast spells in refuge!")
 		return SPELL_CANCEL_CAST
 
 /datum/status_effect/caretaker_refuge/proc/prevent_cuff(datum/source, mob/attemptee)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return COMSIG_CARBON_CUFF_PREVENT
 
@@ -350,10 +392,14 @@
 	alert_type = /atom/movable/screen/alert/status_effect/moon_grasp_hide
 
 /datum/status_effect/moon_grasp_hide/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.add_traits(list(TRAIT_UNKNOWN_APPEARANCE, TRAIT_UNKNOWN_VOICE, TRAIT_SILENT_FOOTSTEPS), TRAIT_STATUS_EFFECT(id))
 	return TRUE
 
 /datum/status_effect/moon_grasp_hide/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_traits(list(TRAIT_UNKNOWN_APPEARANCE, TRAIT_UNKNOWN_VOICE, TRAIT_SILENT_FOOTSTEPS), TRAIT_STATUS_EFFECT(id))
 
 /atom/movable/screen/alert/status_effect/moon_grasp_hide
@@ -375,9 +421,13 @@
 	icon_state = "lastresort"
 
 /datum/status_effect/heretic_lastresort/on_apply()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(owner, TRAIT_IGNORESLOWDOWN, TRAIT_STATUS_EFFECT(id))
 	to_chat(owner, span_userdanger("You won't give up that easily!"))
 	return TRUE
 
 /datum/status_effect/heretic_lastresort/on_remove()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_IGNORESLOWDOWN, TRAIT_STATUS_EFFECT(id))

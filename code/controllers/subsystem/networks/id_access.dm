@@ -36,6 +36,8 @@ SUBSYSTEM_DEF(id_access)
 	var/spare_id_safe_code = ""
 
 /datum/controller/subsystem/id_access/Initialize()
+	procstart = null
+	src.procstart = null
 	// We use this because creating the trim singletons requires the config to be loaded.
 	setup_access_flags()
 	setup_region_lists()
@@ -55,6 +57,8 @@ SUBSYSTEM_DEF(id_access)
  * appropriate config entries.
  */
 /datum/controller/subsystem/id_access/proc/refresh_job_trim_singletons()
+	procstart = null
+	src.procstart = null
 	for(var/trim in typesof(/datum/id_trim/job))
 		var/datum/id_trim/job/job_trim = trim_singletons_by_path[trim]
 
@@ -67,6 +71,8 @@ SUBSYSTEM_DEF(id_access)
 
 /// Build access flag lists.
 /datum/controller/subsystem/id_access/proc/setup_access_flags()
+	procstart = null
+	src.procstart = null
 	accesses_by_flag["[ACCESS_FLAG_COMMON]"] = COMMON_ACCESS
 	for(var/access in accesses_by_flag["[ACCESS_FLAG_COMMON]"])
 		flags_by_access |= list("[access]" = ACCESS_FLAG_COMMON)
@@ -110,6 +116,8 @@ SUBSYSTEM_DEF(id_access)
 
 /// Populates the region lists with data about which accesses correspond to which regions.
 /datum/controller/subsystem/id_access/proc/setup_region_lists()
+	procstart = null
+	src.procstart = null
 	accesses_by_region[REGION_ALL_STATION] = REGION_ACCESS_ALL_STATION
 	accesses_by_region[REGION_ALL_GLOBAL] = REGION_ACCESS_ALL_GLOBAL
 	accesses_by_region[REGION_GENERAL] = REGION_ACCESS_GENERAL
@@ -125,11 +133,15 @@ SUBSYSTEM_DEF(id_access)
 
 /// Instantiate trim singletons and add them to a list.
 /datum/controller/subsystem/id_access/proc/setup_trim_singletons()
+	procstart = null
+	src.procstart = null
 	for(var/trim in typesof(/datum/id_trim))
 		trim_singletons_by_path[trim] = new trim()
 
 /// Creates various data structures that primarily get fed to tgui interfaces, although these lists are used in other places.
 /datum/controller/subsystem/id_access/proc/setup_tgui_lists()
+	procstart = null
+	src.procstart = null
 	for(var/region in accesses_by_region)
 		var/list/region_access = accesses_by_region[region]
 
@@ -236,6 +248,8 @@ SUBSYSTEM_DEF(id_access)
 
 /// Set up dictionary to convert wildcard names to flags.
 /datum/controller/subsystem/id_access/proc/setup_wildcard_dict()
+	procstart = null
+	src.procstart = null
 	wildcard_flags_by_wildcard[WILDCARD_NAME_ALL] = WILDCARD_FLAG_ALL
 	wildcard_flags_by_wildcard[WILDCARD_NAME_COMMON] = WILDCARD_FLAG_COMMON
 	wildcard_flags_by_wildcard[WILDCARD_NAME_COMMAND] = WILDCARD_FLAG_COMMAND
@@ -249,6 +263,8 @@ SUBSYSTEM_DEF(id_access)
 
 /// Setup dictionary that converts access levels to text descriptions.
 /datum/controller/subsystem/id_access/proc/setup_access_descriptions()
+	procstart = null
+	src.procstart = null
 	desc_by_access[ACCESS_CARGO] = "Cargo Bay"
 	desc_by_access[ACCESS_SECURITY] = "Security"
 	desc_by_access[ACCESS_BRIG] = "Holding Cells"
@@ -341,6 +357,8 @@ SUBSYSTEM_DEF(id_access)
  * * access - Access as either pure number or as a string representation of the number.
  */
 /datum/controller/subsystem/id_access/proc/get_access_flag(access)
+	procstart = null
+	src.procstart = null
 	var/flag = flags_by_access["[access]"]
 	return flag
 
@@ -352,6 +370,8 @@ SUBSYSTEM_DEF(id_access)
  * * access - Access as either pure number or as a string representation of the number.
  */
 /datum/controller/subsystem/id_access/proc/get_access_desc(access)
+	procstart = null
+	src.procstart = null
 	return desc_by_access["[access]"]
 
 /**
@@ -361,6 +381,8 @@ SUBSYSTEM_DEF(id_access)
  * * regions - A list of region defines.
  */
 /datum/controller/subsystem/id_access/proc/get_region_access_list(list/regions)
+	procstart = null
+	src.procstart = null
 	if(!length(regions))
 		return
 
@@ -379,6 +401,8 @@ SUBSYSTEM_DEF(id_access)
  * * flag - The flag to get access for as either a pure number of string representation of the flag.
  */
 /datum/controller/subsystem/id_access/proc/get_flag_access_list(flag)
+	procstart = null
+	src.procstart = null
 	return accesses_by_flag["[flag]"]
 
 /**
@@ -393,6 +417,8 @@ SUBSYSTEM_DEF(id_access)
  * * copy_access - Boolean value. If true, the trim's access is also copied to the card.
  */
 /datum/controller/subsystem/id_access/proc/apply_trim_to_card(obj/item/card/id/id_card, trim_path, copy_access = TRUE)
+	procstart = null
+	src.procstart = null
 	var/datum/id_trim/trim = trim_singletons_by_path[trim_path]
 
 	if(!id_card.can_add_wildcards(trim.wildcard_access))
@@ -432,6 +458,8 @@ SUBSYSTEM_DEF(id_access)
  * * id_card - The ID card to remove the trim from.
  */
 /datum/controller/subsystem/id_access/proc/remove_trim_from_card(obj/item/card/id/id_card)
+	procstart = null
+	src.procstart = null
 	id_card.trim = null
 	id_card.clear_access()
 	id_card.update_label()
@@ -446,6 +474,8 @@ SUBSYSTEM_DEF(id_access)
  * * check_forged - Boolean value. If TRUE, will not overwrite the card's assignment if the card has been forged.
  */
 /datum/controller/subsystem/id_access/proc/apply_trim_override(obj/item/card/id/advanced/id_card, trim_path, check_forged = TRUE)
+	procstart = null
+	src.procstart = null
 	var/datum/id_trim/trim = trim_singletons_by_path[trim_path]
 	id_card.trim_icon_override = trim.trim_icon
 	id_card.trim_state_override = trim.trim_state
@@ -475,6 +505,8 @@ SUBSYSTEM_DEF(id_access)
  * * id_card - The ID card to remove the trim from.
  */
 /datum/controller/subsystem/id_access/proc/remove_trim_override(obj/item/card/id/advanced/id_card)
+	procstart = null
+	src.procstart = null
 	id_card.trim_icon_override = null
 	id_card.trim_state_override = null
 	id_card.trim_assignment_override = null
@@ -500,6 +532,8 @@ SUBSYSTEM_DEF(id_access)
  * * id_card - The ID card to remove the trim from.
  */
 /datum/controller/subsystem/id_access/proc/add_trim_access_to_card(obj/item/card/id/id_card, trim_path)
+	procstart = null
+	src.procstart = null
 	var/datum/id_trim/trim = trim_singletons_by_path[trim_path]
 
 	id_card.clear_access()
@@ -522,6 +556,8 @@ SUBSYSTEM_DEF(id_access)
  * * access_flag - The minimum access flag required for an access to be tallied up.
  */
 /datum/controller/subsystem/id_access/proc/tally_access(obj/item/card/id/id_card, access_flag = NONE)
+	procstart = null
+	src.procstart = null
 	var/tally = 0
 
 	var/list/id_card_access = id_card.access

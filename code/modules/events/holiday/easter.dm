@@ -9,6 +9,8 @@
 	description = "Hides surprise filled easter eggs in maintenance."
 
 /datum/round_event/easter/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce(pick("Hip-hop into Easter!","Find some Bunny's stash!","Today is National 'Hunt a Wabbit' Day.","Be kind, give Chocolate Eggs!"))
 
 
@@ -22,10 +24,14 @@
 	description = "Summons a wave of cute rabbits."
 
 /datum/round_event/rabbitrelease/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("Unidentified furry objects detected coming aboard [station_name()]. Beware of Adorable-ness.", "Fluffy Alert", ANNOUNCER_ALIENS)
 
 
 /datum/round_event/rabbitrelease/start()
+	procstart = null
+	src.procstart = null
 
 	for(var/obj/effect/landmark/event_spawn/spawn_point as anything in GLOB.generic_event_spawns) //Common public bunnies
 		if(prob(35))
@@ -90,11 +96,15 @@
 	obj_flags = UNIQUE_RENAME
 
 /obj/item/surprise_egg/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/eggcolor = pick("blue","green","mime","orange","purple","rainbow","red","yellow")
 	icon_state = "egg-[eggcolor]"
 
 /obj/item/surprise_egg/proc/dispensePrize(turf/where)
+	procstart = null
+	src.procstart = null
 	var/static/list/prize_list = list(/obj/item/clothing/head/costume/bunnyhead,
 		/obj/item/clothing/suit/costume/bunnysuit,
 		/obj/item/storage/backpack/satchel/bunnysatchel,
@@ -119,6 +129,8 @@
 	new/obj/item/food/chocolateegg(where)
 
 /obj/item/surprise_egg/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, span_notice("You unwrap [src] and find a prize inside!"))
 	dispensePrize(get_turf(src))

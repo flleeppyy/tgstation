@@ -18,6 +18,8 @@
 
 /// Teleport... stuff...
 /datum/gizpulse/teleport/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	var/list/targets = get_teleport_targets(holder)
 	var/range = rand(offset_min, offset_max)
 	var/dir = pick(GLOB.alldirs)
@@ -27,19 +29,27 @@
 		do_teleport(target, new_turf, asoundin = 'sound/effects/cartoon_sfx/cartoon_pop.ogg', channel = TELEPORT_CHANNEL_BLUESPACE)
 
 /datum/gizpulse/teleport/proc/get_teleport_targets(atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	return list()
 
 /// Teleport yourself
 /datum/gizpulse/teleport/self/get_teleport_targets(atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	return list(holder)
 
 /// Teleport someone else
 /datum/gizpulse/teleport/other/get_teleport_targets(atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/mob/living/living in view(2, holder))
 		. += living
 
 /// Teleport yourself and someone else
 /datum/gizpulse/teleport/other/and_self/get_teleport_targets(atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	return ..() + holder
 

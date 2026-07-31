@@ -7,11 +7,15 @@ SUBSYSTEM_DEF(profiler)
 	var/write_cost = 0
 
 /datum/controller/subsystem/profiler/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg += "F:[round(fetch_cost,1)]ms"
 	msg += "|W:[round(write_cost,1)]ms"
 	return msg
 
 /datum/controller/subsystem/profiler/Initialize()
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/auto_profile))
 		StartProfiling()
 	else
@@ -20,6 +24,8 @@ SUBSYSTEM_DEF(profiler)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/profiler/OnConfigLoad()
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/auto_profile))
 		StartProfiling()
 		can_fire = TRUE
@@ -28,23 +34,33 @@ SUBSYSTEM_DEF(profiler)
 		can_fire = FALSE
 
 /datum/controller/subsystem/profiler/fire()
+	procstart = null
+	src.procstart = null
 	DumpFile()
 
 /datum/controller/subsystem/profiler/Shutdown()
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/auto_profile))
 		DumpFile(allow_yield = FALSE)
 		world.Profile(PROFILE_CLEAR, type = "sendmaps")
 	return ..()
 
 /datum/controller/subsystem/profiler/proc/StartProfiling()
+	procstart = null
+	src.procstart = null
 	world.Profile(PROFILE_START)
 	world.Profile(PROFILE_START, type = "sendmaps")
 
 /datum/controller/subsystem/profiler/proc/StopProfiling()
+	procstart = null
+	src.procstart = null
 	world.Profile(PROFILE_STOP)
 	world.Profile(PROFILE_STOP, type = "sendmaps")
 
 /datum/controller/subsystem/profiler/proc/DumpFile(allow_yield = TRUE)
+	procstart = null
+	src.procstart = null
 	var/timer = TICK_USAGE_REAL
 	var/current_profile_data = world.Profile(PROFILE_REFRESH, format = "json")
 	var/current_sendmaps_data = world.Profile(PROFILE_REFRESH, type = "sendmaps", format="json")

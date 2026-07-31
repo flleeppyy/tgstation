@@ -22,14 +22,20 @@ GLOBAL_LIST_INIT(target_interested_atoms, typecacheof(list(/mob, /obj/machinery/
 	var/priority_refresh_cooldown = 6 SECONDS
 
 /datum/bt_node/ai_behavior/acquire_target/update_combat_targets/get_cooldown(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(controller.blackboard[BB_FIND_TARGETS_FIELD(type)])
 		return 60 SECONDS
 	return ..()
 
 /datum/bt_node/ai_behavior/acquire_target/update_combat_targets/can_search(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	return !(controller.blackboard[BB_FIND_TARGETS_FIELD(type)])
 
 /datum/bt_node/ai_behavior/acquire_target/update_combat_targets/should_keep_target(datum/ai_controller/controller, datum/targeting_strategy/strategy, atom/current_target)
+	procstart = null
+	src.procstart = null
 	if(!current_target)
 		return FALSE
 	if(!strategy.is_valid_target(controller.pawn, current_target, vision_range))
@@ -40,6 +46,8 @@ GLOBAL_LIST_INIT(target_interested_atoms, typecacheof(list(/mob, /obj/machinery/
 	return controller.blackboard[BB_BASIC_MOB_TARGET_REFRESH_COOLDOWN] > world.time
 
 /datum/bt_node/ai_behavior/acquire_target/update_combat_targets/on_no_candidates(datum/ai_controller/controller, atom/current_target, datum/targeting_strategy/strategy, range)
+	procstart = null
+	src.procstart = null
 	if(current_target && strategy.can_keep_target(controller.pawn, current_target, target_loss_distance))
 		return list(current_target)
 	if(!current_target)
@@ -47,10 +55,14 @@ GLOBAL_LIST_INIT(target_interested_atoms, typecacheof(list(/mob, /obj/machinery/
 	return list()
 
 /datum/bt_node/ai_behavior/acquire_target/update_combat_targets/on_no_valid_candidates(datum/ai_controller/controller, atom/current_target)
+	procstart = null
+	src.procstart = null
 	if(!current_target)
 		failed_to_find_anyone(controller, target_key, targeting_strategy, hiding_location_key)
 
 /datum/bt_node/ai_behavior/acquire_target/update_combat_targets/filter_candidates(datum/ai_controller/controller, list/candidates, datum/targeting_strategy/strategy, atom/current_target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/pawn = controller.pawn
 	var/datum/target_priority_strategy/priority_strategy = GET_TARGET_PRIORITY_STRATEGY(controller.blackboard[priority_strategy_key])
 	var/current_priority = priority_strategy ? priority_strategy.get_target_priority(controller, current_target) : 0
@@ -64,12 +76,16 @@ GLOBAL_LIST_INIT(target_interested_atoms, typecacheof(list(/mob, /obj/machinery/
 	return filtered
 
 /datum/bt_node/ai_behavior/acquire_target/update_combat_targets/on_target_found(datum/ai_controller/controller, atom/target, datum/targeting_strategy/strategy)
+	procstart = null
+	src.procstart = null
 	controller.set_blackboard_key(BB_BASIC_MOB_TARGET_REFRESH_COOLDOWN, world.time + priority_refresh_cooldown)
 	var/atom/potential_hiding_location = strategy.find_hidden_mobs(controller.pawn, target)
 	if(potential_hiding_location)
 		controller.set_blackboard_key(hiding_location_key, potential_hiding_location)
 
 /datum/bt_node/ai_behavior/acquire_target/update_combat_targets/proc/failed_to_find_anyone(datum/ai_controller/controller, target_key, targeting_strategy, hiding_location_key)
+	procstart = null
+	src.procstart = null
 	// TEMP DISABLED nuke this if performance improves
 	/*
 	var/aggro_range = controller.blackboard[aggro_range_key] || vision_range
@@ -95,6 +111,8 @@ GLOBAL_LIST_INIT(target_interested_atoms, typecacheof(list(/mob, /obj/machinery/
 
 
 /datum/bt_node/ai_behavior/acquire_target/update_combat_targets/proc/new_turf_found(turf/found, datum/ai_controller/controller, datum/targeting_strategy/strategy)
+	procstart = null
+	src.procstart = null
 	var/valid_found = FALSE
 	var/mob/pawn = controller.pawn
 	for(var/maybe_target in found)
@@ -115,6 +133,8 @@ GLOBAL_LIST_INIT(target_interested_atoms, typecacheof(list(/mob, /obj/machinery/
 	modify_cooldown(world.time)
 
 /datum/bt_node/ai_behavior/acquire_target/update_combat_targets/proc/atom_allowed(atom/movable/checking, datum/targeting_strategy/strategy, mob/pawn)
+	procstart = null
+	src.procstart = null
 	if(checking == pawn)
 		return FALSE
 	if(!ismob(checking) && !is_type_in_typecache(checking, GLOB.target_interested_atoms))
@@ -124,6 +144,8 @@ GLOBAL_LIST_INIT(target_interested_atoms, typecacheof(list(/mob, /obj/machinery/
 	return TRUE
 
 /datum/bt_node/ai_behavior/acquire_target/update_combat_targets/proc/new_atoms_found(list/atom/movable/found, datum/ai_controller/controller, target_key, datum/targeting_strategy/strategy, hiding_location_key)
+	procstart = null
+	src.procstart = null
 	var/mob/pawn = controller.pawn
 	var/list/accepted_targets = list()
 	for(var/maybe_target in found)
@@ -146,6 +168,8 @@ GLOBAL_LIST_INIT(target_interested_atoms, typecacheof(list(/mob, /obj/machinery/
 	finish_action(controller, succeeded = TRUE)
 
 /datum/bt_node/ai_behavior/acquire_target/update_combat_targets/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (succeeded)
 		var/datum/proximity_monitor/field = controller.blackboard[BB_FIND_TARGETS_FIELD(type)]
@@ -154,6 +178,8 @@ GLOBAL_LIST_INIT(target_interested_atoms, typecacheof(list(/mob, /obj/machinery/
 
 /// Picks the final target, preferring higher-priority candidates when a priority strategy is set.
 /datum/bt_node/ai_behavior/acquire_target/update_combat_targets/pick_final_target(datum/ai_controller/controller, list/filtered_targets)
+	procstart = null
+	src.procstart = null
 	var/datum/target_priority_strategy/priority_strategy = GET_TARGET_PRIORITY_STRATEGY(controller.blackboard[priority_strategy_key])
 	if(!priority_strategy)
 		return filtered_targets[1]
@@ -163,6 +189,8 @@ GLOBAL_LIST_INIT(target_interested_atoms, typecacheof(list(/mob, /obj/machinery/
 /datum/bt_node/ai_behavior/acquire_target/update_combat_targets/most_wounded
 
 /datum/bt_node/ai_behavior/acquire_target/update_combat_targets/most_wounded/pick_final_target(datum/ai_controller/controller, list/filtered_targets)
+	procstart = null
+	src.procstart = null
 	var/list/living_targets = list()
 	for(var/mob/living/living_target in filtered_targets)
 		living_targets += living_target
@@ -177,6 +205,8 @@ GLOBAL_LIST_INIT(target_interested_atoms, typecacheof(list(/mob, /obj/machinery/
 	var/trait_key = BB_TARGET_PRIORITY_TRAIT
 
 /datum/bt_node/ai_behavior/acquire_target/update_combat_targets/prioritize_trait/pick_final_target(datum/ai_controller/controller, list/filtered_targets)
+	procstart = null
+	src.procstart = null
 	var/list/priority_targets = list()
 	var/priority_trait = controller.blackboard[trait_key]
 	for(var/atom/target as anything in filtered_targets)

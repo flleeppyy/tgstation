@@ -73,10 +73,14 @@
 	drag_slowdown = 3.5
 
 /obj/item/golfcart_kit/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("The instructions say that it needs to be [EXAMINE_HINT("screwed")] together.")
 
 /obj/item/golfcart_kit/proc/play_building_noises(mob/living/user, duration)
+	procstart = null
+	src.procstart = null
 	duration = max(duration - (1 SECONDS), 0.5 SECONDS)
 	playsound(src, 'sound/items/poster/poster_ripped.ogg', 50, TRUE)
 	sleep(1 SECONDS)
@@ -93,6 +97,8 @@
 	playsound(src, 'sound/items/tools/screwdriver.ogg', 50, TRUE)
 
 /obj/item/golfcart_kit/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if (!isturf(loc))
 		user.balloon_alert(user, "set down first!")
 		return ITEM_INTERACT_BLOCKING
@@ -108,22 +114,30 @@
 	qdel(src)
 
 /obj/vehicle/ridden/golfcart/atom_break()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (smoke)
 		return
 	smoke = new(src, /particles/smoke/ash)
 
 /obj/vehicle/ridden/golfcart/atom_fix()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (smoke)
 		QDEL_NULL(smoke)
 
 /obj/vehicle/ridden/golfcart/atom_destruction()
+	procstart = null
+	src.procstart = null
 	explosion(src, devastation_range = -1, light_impact_range = 2, flame_range = 3, flash_range = 4)
 	return ..()
 
 ///Jiggles the cargo_image up and down.
 /obj/vehicle/ridden/golfcart/proc/shake_cargo(pixelshiftx = 2, pixelshifty = 2, duration)
+	procstart = null
+	src.procstart = null
 	if (!cargo_image)
 		return
 	var/inital_pixel_x = cargo_image.pixel_x
@@ -132,10 +146,14 @@
 	animate(pixel_x = inital_pixel_x, pixel_y = inital_pixel_y, time=duration)
 
 /obj/vehicle/ridden/golfcart/proc/is_hotrod()
+	procstart = null
+	src.procstart = null
 	return engine && engine_state == ENGINE_WELDED
 
 ///Called when something we crash into lands after being flinged
 /obj/vehicle/ridden/golfcart/proc/thrown_mob_landed(atom/thrown_atom)
+	procstart = null
+	src.procstart = null
 	if (!isliving(thrown_atom))
 		UnregisterSignal(thrown_atom, COMSIG_MOVABLE_THROW_LANDED)
 		return
@@ -144,6 +162,8 @@
 	UnregisterSignal(thrown_atom, COMSIG_MOVABLE_THROW_LANDED)
 
 /obj/vehicle/ridden/golfcart/Bump(atom/bumped_atom)
+	procstart = null
+	src.procstart = null
 	if (..())
 		return
 	if (!is_hotrod())
@@ -162,6 +182,8 @@
 
 ///Called when a resting victim is run over
 /obj/vehicle/ridden/golfcart/proc/run_over(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	if (!has_gravity())
 		victim.throw_at(get_edge_target_turf(victim, dir), 4, 3)
 		RegisterSignal(victim, COMSIG_MOVABLE_THROW_LANDED, PROC_REF(thrown_mob_landed))
@@ -197,6 +219,8 @@
 				max_blood = 4)
 
 /obj/vehicle/ridden/golfcart/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!is_hotrod())
 		return
@@ -205,11 +229,15 @@
 			run_over(future_pancake)
 
 /obj/vehicle/ridden/golfcart/mouse_drop_receive(atom/dropped, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (child.can_load(dropped))
 		return child.mouse_drop_receive(dropped, user, params)
 	return ..()
 
 /obj/vehicle/ridden/golfcart/item_interaction(mob/living/user, obj/item/attacking_item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!hood_open)
 		return ..()
 	if (istype(attacking_item, /obj/item/v8_engine))
@@ -232,6 +260,8 @@
 	return ..()
 
 /obj/vehicle/ridden/golfcart/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!hood_open)
 		return ..()
 	if (engine && engine_state == ENGINE_UNWRENCHED)
@@ -253,12 +283,18 @@
 	cell_to_take.forceMove(drop_location())
 
 /obj/vehicle/ridden/golfcart/proc/can_wrench_engine()
+	procstart = null
+	src.procstart = null
 	return hood_open && engine && (engine_state == ENGINE_UNWRENCHED || engine_state == ENGINE_WRENCHED)
 
 /obj/vehicle/ridden/golfcart/proc/can_weld_engine()
+	procstart = null
+	src.procstart = null
 	return hood_open && engine && (engine_state == ENGINE_WRENCHED || engine_state == ENGINE_WELDED)
 
 /obj/vehicle/ridden/golfcart/proc/set_engine_state(state)
+	procstart = null
+	src.procstart = null
 	engine_state = state
 	if (engine_state == ENGINE_WELDED && icon != 'icons/obj/toys/golfcart_hotrod_split.dmi')
 		icon = 'icons/obj/toys/golfcart_hotrod_split.dmi'
@@ -267,6 +303,8 @@
 		icon = initial(icon)
 
 /obj/vehicle/ridden/golfcart/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if (!can_wrench_engine())
 		return ..()
 	tool.play_tool_sound(src, 50)
@@ -280,6 +318,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/vehicle/ridden/golfcart/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if (user.combat_mode)
 		return
 	if(!tool.tool_start_check(user, heat_required = HIGH_TEMPERATURE_REQUIRED, amount = 1))
@@ -309,10 +349,14 @@
 	return
 
 /obj/vehicle/ridden/golfcart/proc/toggle_hood()
+	procstart = null
+	src.procstart = null
 	hood_open = !hood_open
 	update_appearance(UPDATE_ICON)
 
 /obj/vehicle/ridden/golfcart/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if (user in buckled_mobs)
 		return ..()
 	else
@@ -325,6 +369,8 @@
 		to_chat(user, span_notice("You shut \the [src]'s hood."))
 
 /obj/vehicle/ridden/golfcart/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!child.cargo)
 		return
@@ -332,6 +378,8 @@
 	. += child.cargo.examine(user)
 
 /obj/vehicle/ridden/golfcart/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Pop the hood by alt-clicking while not riding it.")
 	if (child.cargo)
@@ -361,12 +409,16 @@
 
 ///Called when something tries to pass us. Returns TRUE if it is trying to crawl past us.
 /obj/vehicle/ridden/golfcart/proc/allow_crawler_through(atom/crawler)
+	procstart = null
+	src.procstart = null
 	if (!isliving(crawler))
 		return FALSE
 	var/mob/living/living_crawler = crawler
 	return living_crawler.body_position == LYING_DOWN
 
 /obj/vehicle/ridden/golfcart/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (mover == child)
 		return TRUE
@@ -377,6 +429,8 @@
 
 ///Called for COMSIG_MOVABLE_PRE_MOVE on the golfcart front. If the rear of the cart doesn't fit where we want to go, block movement.
 /obj/vehicle/ridden/golfcart/proc/pre_move(atom/source, atom/new_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// see if space behind new loc is free
@@ -388,6 +442,8 @@
 
 ///Makes movedelay a factor of base_movedelay
 /obj/vehicle/ridden/golfcart/proc/set_movedelay_effect(modification)
+	procstart = null
+	src.procstart = null
 	var/base_movedelay_effect = base_movedelay
 	if (is_hotrod())
 		base_movedelay_effect = hotrod_base_movedelay
@@ -396,6 +452,8 @@
 
 ///Sets perform_extra_step to TRUE if we are going up stairs.
 /obj/vehicle/ridden/golfcart/zMove(dir, turf/target, z_move_flags)
+	procstart = null
+	src.procstart = null
 	var/can_do_extra_step = FALSE
 	if (currently_z_moving == CURRENTLY_Z_ASCENDING)
 		can_do_extra_step = TRUE
@@ -406,6 +464,8 @@
 
 ///Creates a fake glide effect on the golfcart and anything buckled to it. Called when moving up stairs as moving up stairs creates a two-tile move.
 /obj/vehicle/ridden/golfcart/proc/fake_glide(direct)
+	procstart = null
+	src.procstart = null
 	var/px = 0
 	var/py = 0
 	if (direct & NORTH)
@@ -437,6 +497,8 @@
 			animate(client, movedelay, pixel_x=initial_client_pixel_x, pixel_y=initial_client_pixel_y)
 
 /obj/vehicle/ridden/golfcart/Move(atom/newloc, direct, glide_size_override = 0, update_dir = TRUE)
+	procstart = null
+	src.procstart = null
 	perform_extra_step = FALSE
 	var/atom/old_loc = get_turf(src)
 	var/old_dir = dir
@@ -462,12 +524,16 @@
 
 ///Called for COMSIG_ATOM_TRIED_PASS on the golfcart front. Allows mobs buckled to the rear of the cart to not get blocked by the front of the cart.
 /obj/vehicle/ridden/golfcart/proc/allow_movement_between_passengers(atom/source, atom/mover)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (mover in child.buckled_mobs)
 		return COMSIG_COMPONENT_PERMIT_PASSAGE
 
 /obj/vehicle/ridden/golfcart/Initialize(mapload, direction = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/golfcart)
 	RegisterSignal(src, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(pre_move))
@@ -489,20 +555,28 @@
 	update_appearance()
 
 /obj/vehicle/ridden/golfcart/loaded/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cell = new /obj/item/stock_parts/power_store/cell/lead(src)
 
 /obj/vehicle/ridden/golfcart/hotrod/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	engine = new /obj/item/v8_engine(src)
 	set_engine_state(ENGINE_WELDED)
 
 /obj/vehicle/ridden/golfcart/update_appearance(updates=ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	child.setDir(dir)
 	child.update_appearance(updates)
 
 /obj/vehicle/ridden/golfcart/proc/get_cargo_offsets()
+	procstart = null
+	src.procstart = null
 	var/crate_x_offset = 0
 	var/crate_y_offset = 0
 	if (dir & NORTH)
@@ -517,6 +591,8 @@
 
 ///Flattens the attached cargo into a list of mutable_appearances with proper layering to fit between layer and max_layer
 /obj/vehicle/ridden/golfcart/proc/generate_cargo_overlay(crate_x_offset = 0, crate_y_offset = 0, layer=null, max_layer=null, shift_all=TRUE)
+	procstart = null
+	src.procstart = null
 	if (!child.cargo)
 		return
 	var/obj/cargo = child.cargo
@@ -558,6 +634,8 @@
 
 ///Gets the pixel offsets of the rear part of the golf cart
 /obj/vehicle/ridden/golfcart/proc/get_rear_offset()
+	procstart = null
+	src.procstart = null
 	var/x = 0
 	var/y = 0
 	if (dir & NORTH)
@@ -571,6 +649,8 @@
 	return vector(x, y)
 
 /obj/vehicle/ridden/golfcart/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// the overlays for the cart are fairly complicated.
 	// the main three are the front, rear, and lower overlays
@@ -636,6 +716,8 @@
 
 ///Allows mobs sitting in the rear of the cart to not shoot either the front of the cart or the driver of the cart.
 /obj/vehicle/ridden/golfcart/proc/dodge_friendly_fire(mob/source, obj/projectile/projectile)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!projectile.firer)
@@ -647,6 +729,8 @@
 		return PROJECTILE_INTERRUPT_HIT_PHASE
 
 /obj/vehicle/ridden/golfcart/post_buckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if (M.pulling)
 		M.stop_pulling()
 	RegisterSignal(M, COMSIG_PROJECTILE_PREHIT, PROC_REF(dodge_friendly_fire))
@@ -654,12 +738,16 @@
 	return ..()
 
 /obj/vehicle/ridden/golfcart/post_unbuckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	update_appearance(UPDATE_ICON) // because for some reason the overlays aren't properly redrawn
 	UnregisterSignal(M, COMSIG_ATOM_TRIED_PASS)
 	UnregisterSignal(M, COMSIG_PROJECTILE_PREHIT)
 	return ..()
 
 /obj/vehicle/ridden/golfcart/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(src, COMSIG_MOVABLE_PRE_MOVE)
 	if (!QDELETED(child))
 		qdel(child)

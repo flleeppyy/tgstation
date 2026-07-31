@@ -2,6 +2,8 @@
 
 ///Find the mob at the bottom of a buckle chain
 /mob/proc/lowest_buckled_mob()
+	procstart = null
+	src.procstart = null
 	. = src
 	if(buckled && ismob(buckled))
 		var/mob/Buckled = buckled
@@ -9,6 +11,8 @@
 
 ///Convert a PRECISE ZONE into the BODY_ZONE
 /proc/check_zone(zone)
+	procstart = null
+	src.procstart = null
 	if(!zone)
 		return BODY_ZONE_CHEST
 	switch(zone)
@@ -35,6 +39,8 @@
  * defaults to 80
  */
 /proc/ran_zone(zone, probability = 80, list/weighted_list)
+	procstart = null
+	src.procstart = null
 	if(prob(probability))
 		zone = check_zone(zone)
 	else
@@ -58,9 +64,13 @@
  *
  */
 /mob/proc/get_random_valid_zone(base_zone, base_probability = 80, list/blacklisted_parts, even_weights, bypass_warning)
+	procstart = null
+	src.procstart = null
 	return BODY_ZONE_CHEST //even though they don't really have a chest, let's just pass the default of check_zone to be safe.
 
 /mob/living/carbon/get_random_valid_zone(base_zone, base_probability = 80, list/blacklisted_parts, even_weights, bypass_warning)
+	procstart = null
+	src.procstart = null
 	var/list/limbs = list()
 	for(var/obj/item/bodypart/part as anything in get_bodyparts())
 		var/limb_zone = part.body_zone //cache the zone since we're gonna check it a ton.
@@ -86,6 +96,8 @@
 
 ///Would this zone be above the neck
 /proc/above_neck(zone)
+	procstart = null
+	src.procstart = null
 	var/list/zones = list(BODY_ZONE_HEAD, BODY_ZONE_PRECISE_MOUTH, BODY_ZONE_PRECISE_EYES)
 	if(zones.Find(zone))
 		return TRUE
@@ -101,6 +113,8 @@
  * This proc is dangerously laggy, avoid it or die
  */
 /proc/stars(phrase, probability = 25)
+	procstart = null
+	src.procstart = null
 	if(probability <= 0)
 		return phrase
 	phrase = html_decode(phrase)
@@ -121,6 +135,8 @@
  * definitive_limit - the amount of words to limit the phrase to, optional
 */
 /proc/stifled(phrase, definitive_limit = null)
+	procstart = null
+	src.procstart = null
 	phrase = html_decode(phrase)
 	var/num_words = 0
 	var/words = splittext(phrase, " ")
@@ -142,6 +158,8 @@
  * text is the inputted message, replace_characters will cause original letters to be replaced and chance are the odds that a character gets modified.
  */
 /proc/Gibberish(text, replace_characters = FALSE, chance = 50)
+	procstart = null
+	src.procstart = null
 	text = html_decode(text)
 	. = ""
 	var/rawchar = ""
@@ -162,6 +180,8 @@
 ///Takes the mob to shake, the time span to shake for, and the amount of tiles we're allowed to shake by in tiles
 ///Duration isn't taken as a strict limit, since we don't trust our coders to not make things feel shitty. So it's more like a soft cap.
 /proc/shake_camera(mob/M, duration, strength=1)
+	procstart = null
+	src.procstart = null
 	if(!M || !M.client || duration < 1)
 		return
 	var/client/C = M.client
@@ -210,6 +230,8 @@
 
 /// Helper proc for a similar function to shake_camera, expect this one kicks the camera back at an opposite angle rather then skake_camera's irratic jittering.
 /proc/recoil_camera(mob/recoiled_mob, duration, backtime_duration, strength, angle)
+	procstart = null
+	src.procstart = null
 	if(!recoiled_mob || !recoiled_mob.client || duration < 1)
 		return
 	var/client/my_client = recoiled_mob.client
@@ -235,6 +257,8 @@
 
 ///Find if the message has the real name of any user mob in the mob_list
 /proc/findname(msg)
+	procstart = null
+	src.procstart = null
 	if(!istext(msg))
 		msg = "[msg]"
 	for(var/i in GLOB.mob_list)
@@ -245,6 +269,8 @@
 
 ///Returns a mob's real name between brackets. Useful when you want to display a mob's name alongside their real name
 /mob/proc/get_realname_string()
+	procstart = null
+	src.procstart = null
 	if(real_name && real_name != name)
 		return " \[[real_name]\]"
 	return ""
@@ -254,6 +280,8 @@
  * By default excludes antags like Valentines, which are "fake antags"
  */
 /mob/proc/is_antag(blacklisted_antag_flags = ANTAG_FAKE)
+	procstart = null
+	src.procstart = null
 	for(var/datum/antagonist/antag_datum as anything in mind?.antag_datums)
 		if(!blacklisted_antag_flags || !(antag_datum.antag_flags & blacklisted_antag_flags))
 			return TRUE
@@ -261,9 +289,13 @@
 	return FALSE
 
 /mob/living/silicon/robot/is_antag(blacklisted_antag_flags)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/silicon/ai/is_antag(blacklisted_antag_flags)
+	procstart = null
+	src.procstart = null
 	return ..() && !!(laws?.zeroth) // AIs only count as antags if they have a zeroth law (apparently)
 
 /**
@@ -341,6 +373,8 @@
 
 ///Is the passed in mob a ghost with admin powers, doesn't check for AI interact like isAdminGhost() used to
 /proc/isAdminObserver(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user) //Are they a mob? Auto interface updates call this with a null src
 		return
 	if(!user.client) // Do they have a client?
@@ -355,6 +389,8 @@
 ///This requires this snowflake check because AI interact gives the access to the mob's client, rather
 ///than the mob like everyone else, and we keep it that way so they can't accidentally give someone Admin AI access.
 /proc/isAdminGhostAI(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isAdminObserver(user))
 		return FALSE
 	if(!HAS_TRAIT_FROM(user.client, TRAIT_AI_ACCESS, ADMIN_TRAIT)) // Do they have it enabled?
@@ -367,6 +403,8 @@
  * Automatic logging and uses poll_candidates_for_mob, how convenient
  */
 /proc/offer_control(mob/M)
+	procstart = null
+	src.procstart = null
 	if(isdead(M))
 		to_chat(usr, "You can't give ghosts control of a ghost. They're already ghosts.")
 		return FALSE
@@ -396,6 +434,8 @@
 
 ///Clicks a random nearby mob with the source from this mob
 /mob/proc/click_random_mob()
+	procstart = null
+	src.procstart = null
 	var/list/nearby_mobs = list()
 	for(var/mob/living/L in range(1, src))
 		if(L != src)
@@ -411,6 +451,8 @@
  * to send the user relevant headadmin policy config
  */
 /mob/proc/get_policy_keywords()
+	procstart = null
+	src.procstart = null
 	. = list()
 	. += "[type]"
 	if(isnull(mind))
@@ -427,20 +469,28 @@
 
 ///Can the mob see reagents inside of containers?
 /mob/proc/can_see_reagents()
+	procstart = null
+	src.procstart = null
 	return stat == DEAD || HAS_TRAIT(src, TRAIT_REAGENT_SCANNER) //Dead guys and silicons can always see reagents
 
 ///Can this mob hold items
 /mob/proc/can_hold_items(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return length(held_items)
 
 /// Returns this mob's default lighting alpha
 /mob/proc/default_lighting_cutoff()
+	procstart = null
+	src.procstart = null
 	if(client?.combo_hud_enabled && (client?.prefs?.toggles & COMBOHUD_LIGHTING))
 		return LIGHTING_CUTOFF_FULLBRIGHT
 	return initial(lighting_cutoff)
 
 /// Returns a generic path of the object based on the slot
 /proc/get_path_by_slot(slot_id)
+	procstart = null
+	src.procstart = null
 	switch(slot_id)
 		if(ITEM_SLOT_BACK)
 			return /obj/item/storage/backpack
@@ -480,6 +530,8 @@
 
 /// Returns a client from a mob, mind or client
 /proc/get_player_client(player)
+	procstart = null
+	src.procstart = null
 	if(ismob(player))
 		var/mob/player_mob = player
 		player = player_mob.client
@@ -491,6 +543,8 @@
 	return player
 
 /proc/health_percentage(mob/living/mob)
+	procstart = null
+	src.procstart = null
 	var/divided_health = mob.health / mob.maxHealth
 	if(iscyborg(mob) || islarva(mob))
 		divided_health = (mob.health + mob.maxHealth) / (mob.maxHealth * 2)
@@ -503,6 +557,8 @@
  * Only need to one of new_target or old_target, and the other will be auto populated with the current selected zone.
  */
 /mob/proc/log_manual_zone_selected_update(source, new_target, old_target)
+	procstart = null
+	src.procstart = null
 	if(!new_target && !old_target)
 		CRASH("Called log_manual_zone_selected_update without specifying a new or old target")
 
@@ -547,6 +603,8 @@
  * line_chance - chance to return a line, if you don't want just the most recent x lines
  */
 /mob/proc/copy_recent_speech(copy_amount = LING_ABSORB_RECENT_SPEECH, line_chance = 100)
+	procstart = null
+	src.procstart = null
 	var/list/recent_speech = list()
 	var/list/say_log = list()
 	var/log_source = logging
@@ -576,6 +634,8 @@
 /// You can set the value to null if you don't want to add it to the blackboard (like in player controlled instances). Is also safe with null AI controllers.
 /// Assumes that the action will be initialized and held in the mob itself, which is typically standard.
 /mob/proc/grant_actions_by_list(list/input)
+	procstart = null
+	src.procstart = null
 	if(length(input) <= 0)
 		return
 
@@ -591,6 +651,8 @@
 
 /// Returns true if the mob is on a rusty tile, really low level just because we call it in a bunch of unrelated places
 /mob/proc/is_touching_rust(check_flying = FALSE)
+	procstart = null
+	src.procstart = null
 	if (check_flying && (movement_type & MOVETYPES_NOT_TOUCHING_GROUND))
 		return FALSE
 	if (HAS_TRAIT(src, TRAIT_MAGICALLY_PHASED) || (movement_type & VENTCRAWLING))

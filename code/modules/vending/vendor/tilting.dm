@@ -5,6 +5,8 @@
  * * atom/atom_target - the atom we are checking for
 */
 /proc/check_atom_crushable(atom/atom_target)
+	procstart = null
+	src.procstart = null
 	/// Contains structures and items that vendors shouldn't crush when we land on them.
 	var/static/list/vendor_uncrushable_objects = list(
 		/obj/structure/chair,
@@ -39,6 +41,8 @@
  * Returns: A collection of bitflags defined in crushing.dm. Read that file's documentation for info.
  */
 /atom/movable/proc/fall_and_crush(turf/target, damage, chance_to_crit = 0, forced_crit_case = null, paralyze_time, crush_dir = get_dir(get_turf(src), target), damage_type = BRUTE, damage_flag = MELEE, rotation = 90)
+	procstart = null
+	src.procstart = null
 
 	ASSERT(!isnull(target))
 
@@ -116,6 +120,8 @@
  * Use with pickweight to acquire a random critcase.
  */
 /atom/movable/proc/get_crit_crush_chances()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 
 	return list(
@@ -134,6 +140,8 @@
  * * was_alive: Boolean. True if the mob was alive before the crushing.
  */
 /atom/movable/proc/post_crush_living(mob/living/crushed, was_alive)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -141,6 +149,8 @@
  * Called directly after src actually rotates and falls over.
  */
 /atom/movable/proc/post_tilt()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -153,6 +163,8 @@
  * TRUE if a crit case is successfully applied, FALSE otherwise.
  */
 /atom/movable/proc/apply_crit_crush(crit_case, atom/atom_target)
+	procstart = null
+	src.procstart = null
 	switch (crit_case)
 		if(CRUSH_CRIT_SHATTER_LEGS) // shatter their legs and bleed 'em
 			if (!iscarbon(atom_target))
@@ -210,6 +222,8 @@
  * range - the range of the machine when thrown if not adjacent
 */
 /obj/machinery/vending/proc/tilt(atom/fatty, local_crit_chance = crit_chance, forced_crit, range = 1)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || !has_gravity(src))
 		return
 
@@ -229,6 +243,8 @@
 		throw_at(get_turf(fatty), range, 1, spin = FALSE, quickstart = FALSE)
 
 /obj/machinery/vending/post_crush_living(mob/living/crushed, was_alive)
+	procstart = null
+	src.procstart = null
 
 	if(was_alive && crushed.stat == DEAD && crushed.client)
 		crushed.client.give_award(/datum/award/achievement/misc/vendor_squish, crushed) // good job losing a fight with an inanimate object idiot
@@ -243,6 +259,8 @@
  * * crit_case: The critical case chosen.
  */
 /atom/movable/proc/fall_and_crush_crit_rebate_table(crit_case)
+	procstart = null
+	src.procstart = null
 	ASSERT(!isnull(crit_case))
 
 	switch(crit_case)
@@ -252,15 +270,21 @@
 			return 1
 
 /obj/machinery/vending/fall_and_crush_crit_rebate_table(crit_case)
+	procstart = null
+	src.procstart = null
 	return crit_case == VENDOR_CRUSH_CRIT_GLASSCANDY ? 0.33 : ..()
 
 /obj/machinery/vending/get_crit_crush_chances()
+	procstart = null
+	src.procstart = null
 	return list(
 		VENDOR_CRUSH_CRIT_GLASSCANDY = 100,
 		VENDOR_CRUSH_CRIT_PIN = 100
 	)
 
 /obj/machinery/vending/apply_crit_crush(crit_case, atom_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return TRUE
@@ -298,6 +322,8 @@
  * user - mob that has untilted the vendor
  */
 /obj/machinery/vending/proc/untilt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user)
 		user.visible_message(span_notice("[user] rights [src]."), \
 			span_notice("You right [src]."))
@@ -312,6 +338,8 @@
 	tilted_rotation = 0
 
 /obj/machinery/vending/onZImpact(turf/impacted_turf, levels, impact_flags)
+	procstart = null
+	src.procstart = null
 	impact_flags |= ZIMPACT_NO_MESSAGE
 	if(fall_and_crush(impacted_turf, squish_damage, paralyze_time = 6 SECONDS, crush_dir = UP, rotation = pick(90, 270)) & SUCCESSFULLY_FELL_OVER)
 		impact_flags |= ZIMPACT_NO_SPIN

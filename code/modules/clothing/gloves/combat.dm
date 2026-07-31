@@ -26,6 +26,8 @@
 	inhand_icon_state = null
 
 /obj/item/clothing/gloves/combat/wizard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -5) //something something wizard casting
 
@@ -36,5 +38,7 @@
 	inhand_icon_state = "greyscale_gloves"
 
 /obj/item/clothing/gloves/combat/floortile/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -5) //tacticool

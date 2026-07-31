@@ -9,6 +9,8 @@
 	sound_effect = 'sound/items/weapons/slice.ogg'
 
 /datum/wound/slash/get_self_check_description(self_aware)
+	procstart = null
+	src.procstart = null
 	if(!limb.can_bleed())
 		return ..()
 
@@ -54,11 +56,15 @@
 	var/datum/scar/highest_scar
 
 /datum/wound/slash/flesh/Destroy()
+	procstart = null
+	src.procstart = null
 	highest_scar = null
 
 	return ..()
 
 /datum/wound/slash/flesh/wound_injury(datum/wound/slash/flesh/old_wound = null, attack_direction = null)
+	procstart = null
+	src.procstart = null
 	if(old_wound)
 		set_blood_flow(max(old_wound.blood_flow, initial_flow))
 		if(old_wound.severity > severity && old_wound.highest_scar)
@@ -77,6 +83,8 @@
 	return ..()
 
 /datum/wound/slash/flesh/proc/set_highest_scar(datum/scar/new_scar)
+	procstart = null
+	src.procstart = null
 	if(highest_scar)
 		UnregisterSignal(highest_scar, COMSIG_QDELETING)
 	if(new_scar)
@@ -84,16 +92,22 @@
 	highest_scar = new_scar
 
 /datum/wound/slash/flesh/proc/clear_highest_scar(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_highest_scar(null)
 
 /datum/wound/slash/flesh/remove_wound(ignore_limb, replaced, destroying)
+	procstart = null
+	src.procstart = null
 	if(!replaced && highest_scar)
 		already_scarred = TRUE
 		highest_scar.lazy_attach(limb)
 	return ..()
 
 /datum/wound/slash/flesh/get_wound_description(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
 	if(!current_gauze)
 		return ..()
@@ -114,6 +128,8 @@
 	return "<B>[msg.Join()]</B>"
 
 /datum/wound/slash/flesh/receive_damage(wounding_type, wounding_dmg, wound_bonus)
+	procstart = null
+	src.procstart = null
 	if (!victim) // if we are dismembered, we can still take damage, its fine to check here
 		return
 
@@ -123,6 +139,8 @@
 	return ..()
 
 /datum/wound/slash/flesh/drag_bleed_amount()
+	procstart = null
+	src.procstart = null
 	// say we have 3 severe cuts with 3 blood flow each, pretty reasonable
 	// compare with being at 100 brute damage before, where you bled (brute/100 * 2), = 2 blood per tile
 	var/bleed_amt = min(blood_flow * 0.1, 1) // 3 * 3 * 0.1 = 0.9 blood total, less than before! the share here is .3 blood of course.
@@ -133,6 +151,8 @@
 	return bleed_amt
 
 /datum/wound/slash/flesh/get_bleed_rate_of_change()
+	procstart = null
+	src.procstart = null
 	//basically if a species doesn't bleed, the wound is stagnant and will not heal on its own (nor get worse)
 	if(!limb.can_bleed())
 		return BLOOD_FLOW_STEADY
@@ -144,6 +164,8 @@
 		return BLOOD_FLOW_INCREASING
 
 /datum/wound/slash/flesh/handle_process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if (!victim || HAS_TRAIT(victim, TRAIT_STASIS))
 		return
 
@@ -166,6 +188,8 @@
 /* BEWARE, THE BELOW NONSENSE IS MADNESS. bones.dm looks more like what I have in mind and is sufficiently clean, don't pay attention to this messiness */
 
 /datum/wound/slash/flesh/check_grab_treatments(obj/item/tool, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/gun/energy/laser))
 		return TRUE
 	if(tool.get_temperature() >= FIRE_MINIMUM_TEMPERATURE_TO_EXIST) // if we're using something hot but not a cautery, we need to be aggro grabbing them first, so we don't try treating someone we're eswording
@@ -173,12 +197,16 @@
 	return FALSE
 
 /datum/wound/slash/flesh/treat(obj/item/tool, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/gun/energy/laser))
 		las_cauterize(tool, user)
 	else if(tool.tool_behaviour == TOOL_CAUTERY || tool.get_temperature() >= FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
 		tool_cauterize(tool, user)
 
 /datum/wound/slash/flesh/try_handling(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.pulling != victim || !HAS_TRAIT(user, TRAIT_WOUND_LICKER) || !victim.try_inject(user, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE))
 		return FALSE
 	if(!isnull(user.hud_used?.screen_objects[HUD_MOB_ZONE_SELECTOR]) && user.zone_selected != limb.body_zone)
@@ -201,6 +229,8 @@
 
 /// if a felinid is licking this cut to reduce bleeding
 /datum/wound/slash/flesh/proc/lick_wounds(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	// transmission is one way patient -> felinid since google said cat saliva is antiseptic or whatever, and also because felinids are already risking getting beaten for this even without people suspecting they're spreading a deathvirus
 	for(var/datum/disease/iter_disease as anything in victim.diseases)
 		if(iter_disease.spread_flags & (DISEASE_SPREAD_SPECIAL | DISEASE_SPREAD_NON_CONTAGIOUS))
@@ -223,6 +253,8 @@
 		to_chat(user, span_green("You successfully lower the severity of [user == victim_stored ? "your" : "[victim_stored]'s"] cuts."))
 
 /datum/wound/slash/flesh/adjust_blood_flow(adjust_by, minimum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(blood_flow > WOUND_MAX_BLOODFLOW)
 		blood_flow = WOUND_MAX_BLOODFLOW
@@ -234,15 +266,21 @@
 			qdel(src)
 
 /datum/wound/slash/flesh/on_xadone(power)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	adjust_blood_flow(-0.03 * power) // i think it's like a minimum of 3 power, so .09 blood_flow reduction per tick is pretty good for 0 effort
 
 /datum/wound/slash/flesh/on_synthflesh(reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	adjust_blood_flow(-0.075 * reac_volume) // 20u * 0.075 = -1.5 blood flow, pretty good for how little effort it is
 
 /// If someone's putting a laser gun up to our cut to cauterize it
 /datum/wound/slash/flesh/proc/las_cauterize(obj/item/gun/energy/laser/lasgun, mob/user)
+	procstart = null
+	src.procstart = null
 	var/self_penalty_mult = (user == victim ? 1.25 : 1)
 	user.visible_message(span_warning("[user] begins aiming [lasgun] directly at [victim]'s [limb.plaintext_zone]..."), span_userdanger("You begin aiming [lasgun] directly at [user == victim ? "your" : "[victim]'s"] [limb.plaintext_zone]..."))
 	if(!do_after(user, base_treat_time  * self_penalty_mult, target = victim, extra_checks = CALLBACK(src, PROC_REF(still_exists))))
@@ -258,6 +296,8 @@
 
 /// If someone is using either a cautery tool or something with heat to cauterize this cut
 /datum/wound/slash/flesh/proc/tool_cauterize(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	var/improv_penalty_mult = (I.tool_behaviour == TOOL_CAUTERY ? 1 : 1.25) // 25% longer and less effective if you don't use a real cautery
 	var/self_penalty_mult = (user == victim ? 1.5 : 1) // 50% longer and less effective if you do it to yourself
 
@@ -292,6 +332,8 @@
 		to_chat(user, span_green("You successfully lower the severity of [user == victim_stored ? "your" : "[victim_stored]'s"] cuts."))
 
 /datum/wound/slash/get_limb_examine_description()
+	procstart = null
+	src.procstart = null
 	return span_warning("The flesh on this limb appears badly lacerated.")
 
 /datum/wound/slash/flesh/moderate
@@ -315,6 +357,8 @@
 	homemade_treat_text = "<b>Tea</b> stimulates the body's natural healing systems, slightly fastening clotting. The wound itself can be rinsed off on a sink or shower as well. Other remedies are unnecessary."
 
 /datum/wound/slash/flesh/moderate/update_descriptions()
+	procstart = null
+	src.procstart = null
 	if(!limb.can_bleed())
 		occur_text = "is cut open"
 
@@ -356,6 +400,8 @@
 	threshold_minimum = 50
 
 /datum/wound/slash/flesh/severe/update_descriptions()
+	procstart = null
+	src.procstart = null
 	if(!limb.can_bleed())
 		occur_text = "is ripped open"
 
@@ -383,6 +429,8 @@
 	homemade_treat_text = "Bed sheets can be ripped up to make <b>makeshift gauze</b>. <b>Flour, salt, and saltwater</b> topically applied will help. Dropping to the ground and grabbing your wound will reduce blood flow."
 
 /datum/wound/slash/flesh/critical/update_descriptions()
+	procstart = null
+	src.procstart = null
 	if (!limb.can_bleed())
 		occur_text = "is torn open"
 
@@ -411,6 +459,8 @@
 	clot_rate = 0.01
 
 /datum/wound/slash/flesh/critical/cleave/update_descriptions()
+	procstart = null
+	src.procstart = null
 	if(!limb.can_bleed())
 		occur_text = "is ruptured"
 

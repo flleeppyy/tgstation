@@ -50,6 +50,8 @@
 	actions_types = list(/datum/action/cooldown/alien/transfer)
 
 /obj/item/organ/alien/plasmavessel/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/delta_time = DELTA_WORLD_TIME(SSmobs)
@@ -73,10 +75,14 @@
 	owner.adjust_oxy_loss(-heal_amt * delta_time_capped)
 
 /obj/item/organ/alien/plasmavessel/proc/adjust_plasma(amount)
+	procstart = null
+	src.procstart = null
 	stored_plasma = clamp(stored_plasma + amount, 0, max_plasma)
 	update_plasma_display()
 
 /obj/item/organ/alien/plasmavessel/proc/on_hud_created(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!owner.hud_used.screen_objects[HUD_ALIEN_PLASMA_DISPLAY])
@@ -84,17 +90,23 @@
 	update_plasma_display()
 
 /obj/item/organ/alien/plasmavessel/on_mob_insert(mob/living/carbon/organ_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(organ_owner, COMSIG_MOB_HUD_CREATED, PROC_REF(on_hud_created))
 	if (organ_owner.hud_used)
 		on_hud_created()
 
 /obj/item/organ/alien/plasmavessel/on_mob_remove(mob/living/carbon/organ_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(organ_owner, COMSIG_MOB_GET_STATUS_TAB_ITEMS)
 	organ_owner.hud_used?.remove_screen_object(HUD_ALIEN_PLASMA_DISPLAY)
 
 /obj/item/organ/alien/plasmavessel/proc/update_plasma_display()
+	procstart = null
+	src.procstart = null
 	owner.hud_used?.screen_objects[HUD_ALIEN_PLASMA_DISPLAY]?.maptext = MAPTEXT( \
 		"<div align='center' valign='middle' style='position:relative; top:0px; left:6px'><font color='magenta'>[round(owner.getPlasma())]</font></div>" \
 	)
@@ -113,16 +125,22 @@
 	var/recent_queen_death = FALSE
 
 /obj/item/organ/alien/hivenode/on_mob_insert(mob/living/carbon/organ_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	organ_owner.add_faction(ROLE_ALIEN)
 
 /obj/item/organ/alien/hivenode/on_mob_remove(mob/living/carbon/organ_owner, special = FALSE, movement_flags)
+	procstart = null
+	src.procstart = null
 	if(organ_owner)
 		organ_owner.remove_faction(ROLE_ALIEN)
 	return ..()
 
 //When the alien queen dies, all aliens suffer a penalty as punishment for failing to protect her.
 /obj/item/organ/alien/hivenode/proc/queen_death()
+	procstart = null
+	src.procstart = null
 	if(!owner || owner.stat == DEAD)
 		return
 	if(isalien(owner)) //Different effects for aliens than humans
@@ -146,6 +164,8 @@
 
 
 /obj/item/organ/alien/hivenode/proc/clear_queen_death()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src)) //In case the node is deleted
 		return
 	recent_queen_death = FALSE
@@ -197,38 +217,54 @@
 	organ_traits = list(TRAIT_STRONG_STOMACH)
 
 /obj/item/organ/stomach/alien/stomach_acid_power(atom/movable/nomnom)
+	procstart = null
+	src.procstart = null
 	return 75
 
 /obj/item/organ/stomach/alien/consume_thing(atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(thing))
 		RegisterSignal(thing, COMSIG_LIVING_DEATH, PROC_REF(content_died))
 
 /obj/item/organ/stomach/alien/content_moved(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(source.loc == src || source.loc == owner)
 		return
 	UnregisterSignal(source, COMSIG_LIVING_DEATH)
 
 /obj/item/organ/stomach/alien/proc/content_died(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Can fully digest corpses
 	qdel(source)
 
 /obj/item/organ/stomach/alien/on_mob_insert(mob/living/carbon/stomach_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(stomach_owner, COMSIG_ATOM_RELAYMOVE, PROC_REF(something_moved))
 	return ..()
 
 /obj/item/organ/stomach/alien/on_mob_remove(mob/living/carbon/stomach_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(stomach_owner, COMSIG_ATOM_RELAYMOVE)
 	return ..()
 
 /obj/item/organ/stomach/alien/proc/something_moved(mob/living/source, mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	relaymove(user, direction)
 	return COMSIG_BLOCK_RELAYMOVE
 
 /obj/item/organ/stomach/alien/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(!(user in src.stomach_contents))
 		return
 	if(!prob(40))
@@ -313,14 +349,20 @@
 	qdel(src)
 
 /obj/item/organ/stomach/alien/empty_contents(chance = 100, damaging = FALSE, min_amount = 0)
+	procstart = null
+	src.procstart = null
 	// Under high pressure from all the acid!
 	return eject_stomach(border_diamond_range_turfs(get_turf(src), 3), 3, 1, 1, 4)
 
 /obj/item/organ/stomach/alien/on_vomit(mob/living/carbon/vomiter, distance, force)
+	procstart = null
+	src.procstart = null
 	// If you get a xeno to vomit, you may be able to recover your comrades' corpses
 	empty_contents(chance = 100)
 
 /obj/item/organ/stomach/alien/proc/eject_stomach(list/turf/targets, spit_range, content_speed, particle_delay, particle_count = 4)
+	procstart = null
+	src.procstart = null
 	var/atom/spit_as = owner || src
 	var/ejected = length(stomach_contents)
 	// Throw out the stuff in our stomach

@@ -24,6 +24,8 @@
 //Hunter verbs
 
 /mob/living/carbon/alien/adult/hunter/proc/toggle_leap(message = 1)
+	procstart = null
+	src.procstart = null
 	leap_on_click = !leap_on_click
 	var/atom/movable/screen/leap_icon = hud_used?.screen_objects[HUD_ALIEN_HUNTER_LEAP]
 	leap_icon?.icon_state = "leap_[leap_on_click ? "on":"off"]"
@@ -34,6 +36,8 @@
 		return
 
 /mob/living/carbon/alien/adult/hunter/ClickOn(atom/A, params)
+	procstart = null
+	src.procstart = null
 	face_atom(A)
 	if(leap_on_click)
 		leap_at(A)
@@ -43,6 +47,8 @@
 #define MAX_ALIEN_LEAP_DIST 7
 
 /mob/living/carbon/alien/adult/hunter/proc/leap_at(atom/A)
+	procstart = null
+	src.procstart = null
 	if(body_position == LYING_DOWN || HAS_TRAIT(src, TRAIT_IMMOBILIZED) || leaping)
 		return
 
@@ -64,12 +70,16 @@
 		throw_at(A, MAX_ALIEN_LEAP_DIST, pounce_speed, src, FALSE, TRUE, callback = CALLBACK(src, PROC_REF(leap_end)))
 
 /mob/living/carbon/alien/adult/hunter/proc/leap_end()
+	procstart = null
+	src.procstart = null
 	leaping = FALSE
 	remove_offsets(LEAPING_TRAIT, animate = FALSE)
 	REMOVE_TRAIT(src, TRAIT_MOVE_FLOATING, LEAPING_TRAIT)
 	update_icons()
 
 /mob/living/carbon/alien/adult/hunter/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 
 	if(!leaping)
 		return ..()

@@ -12,20 +12,28 @@
 	var/allow_intruder_use = FALSE
 
 /obj/item/gun/magic/staff/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/walking_aid)
 
 /obj/item/gun/magic/staff/proc/is_wizard_or_friend(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!HAS_MIND_TRAIT(user, TRAIT_MAGICALLY_GIFTED) && !allow_intruder_use)
 		return FALSE
 	return TRUE
 
 /obj/item/gun/magic/staff/can_trigger_gun(mob/living/user, akimbo_usage)
+	procstart = null
+	src.procstart = null
 	if(akimbo_usage && !is_wizard_or_friend(user))
 		return FALSE
 	return ..()
 
 /obj/item/gun/magic/staff/check_botched(mob/living/user, atom/target)
+	procstart = null
+	src.procstart = null
 	if(!is_wizard_or_friend(user))
 		return !on_intruder_use(user, target)
 	return ..()
@@ -33,6 +41,8 @@
 /// Called when someone who isn't a wizard or magician uses this staff.
 /// Return TRUE to allow usage.
 /obj/item/gun/magic/staff/proc/on_intruder_use(mob/living/user, atom/target)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Turns mobs into other mobs
@@ -53,6 +63,8 @@
 	allow_intruder_use = TRUE
 
 /obj/item/gun/magic/staff/change/pickup(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!is_wizard_or_friend(user))
 		to_chat(user, span_hypnophrase("<span style='font-size: 24px'>You don't feel strong enough to properly wield this staff!</span>"))
@@ -60,6 +72,8 @@
 
 /// Transforms the user
 /obj/item/gun/magic/staff/change/proc/transform_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.dropItemToGround(src, TRUE)
 	var/wabbajack_into = preset_wabbajack_type || pick(WABBAJACK_MONKEY, WABBAJACK_HUMAN, WABBAJACK_ANIMAL)
 	var/mob/living/new_body = user.wabbajack(wabbajack_into, preset_wabbajack_changeflag)
@@ -69,9 +83,13 @@
 	return new_body
 
 /obj/item/gun/magic/staff/change/on_intruder_use(mob/living/user, atom/target)
+	procstart = null
+	src.procstart = null
 	transform_self(user)
 
 /obj/item/gun/magic/staff/change/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	playsound(loc, fire_sound, 50, TRUE, -1)
 	var/mob/living/transformed = transform_self(user)
 	transformed.death()
@@ -89,6 +107,8 @@
 	school = SCHOOL_EVOCATION
 
 /obj/item/gun/magic/staff/animate/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.Stun(20 SECONDS, ignore_canstun = TRUE)
 	var/list/my_shit = user.unequip_everything()
 	my_shit -= src
@@ -118,6 +138,8 @@
 	return MANUAL_SUICIDE
 
 /obj/item/gun/magic/staff/animate/animate_atom_living(mob/living/owner)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/mimic/copy/ranged/living_staff = new(drop_location(), src, owner)
 	QDEL_NULL(living_staff.ai_controller)
 	living_staff.ai_controller = new /datum/ai_controller/basic_controller/mimic_copy/gun/animator(living_staff)
@@ -136,22 +158,30 @@
 	var/obj/item/gun/medbeam/healing_beam
 
 /obj/item/gun/magic/staff/healing/pickup(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!is_wizard_or_friend(user))
 		to_chat(user, span_hypnophrase("<span style='font-size: 24px'>The staff feels weaker as you touch it</span>"))
 		user.balloon_alert(user, "the staff feels weaker as you touch it")
 
 /obj/item/gun/magic/staff/healing/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!is_wizard_or_friend(user))
 		. += span_notice("On the handle you notice a beautiful engraving in High Spaceman, \"Thou shalt not crosseth thy beams.\"")
 
 /obj/item/gun/magic/staff/healing/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	healing_beam = new(src)
 	healing_beam.mounted = TRUE
 
 /obj/item/gun/magic/staff/healing/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(healing_beam)
 	return ..()
 
@@ -159,19 +189,27 @@
 	allow_intruder_use = TRUE
 
 /obj/item/gun/magic/staff/healing/on_intruder_use(mob/living/user, atom/target)
+	procstart = null
+	src.procstart = null
 	if(target == user)
 		return FALSE
 	healing_beam.process_fire(target, user)
 	return FALSE
 
 /obj/item/gun/magic/staff/healing/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	healing_beam.LoseTarget()
 	return ..()
 
 /obj/item/gun/magic/staff/healing/handle_suicide(mob/living/carbon/human/user, mob/living/carbon/human/target, params, bypass_timer)
+	procstart = null
+	src.procstart = null
 	return //Stops people clicking on themselves for self-healing
 
 /obj/item/gun/magic/staff/healing/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	playsound(loc, fire_sound, 50, TRUE, -1)
 	if(user.mob_biotypes & MOB_UNDEAD)
 		user.dust(drop_items = TRUE)
@@ -226,10 +264,14 @@
 	allow_intruder_use = TRUE
 
 /obj/item/gun/magic/staff/chaos/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+	procstart = null
+	src.procstart = null
 	chambered.projectile_type = pick(allowed_projectile_types)
 	return ..()
 
 /obj/item/gun/magic/staff/chaos/on_intruder_use(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user.can_cast_magic()) // Don't let people with antimagic use the staff of chaos.
 		balloon_alert(user, "the staff refuses to fire!")
 		return FALSE
@@ -242,6 +284,8 @@
 	return FALSE
 
 /obj/item/gun/magic/staff/chaos/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	charges++ // We already subtracted one
 	for (var/i in 1 to 5)
 		if (!charges || user.stat == DEAD || QDELETED(user))
@@ -269,6 +313,8 @@
 	allow_intruder_use = TRUE
 
 /obj/item/gun/magic/staff/chaos/true_wabbajack/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed_projectile_types |= subtypesof(/obj/projectile/bullet/cannonball)
 	allowed_projectile_types |= subtypesof(/obj/projectile/bullet/rocket)
@@ -306,6 +352,8 @@
 	school = SCHOOL_TRANSMUTATION
 
 /obj/item/gun/magic/staff/door/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/machinery/door/airlock/material/door = new(user.drop_location())
 	door.set_custom_materials(list(SSmaterials.get_material(/datum/material/meat) = SHEET_MATERIAL_AMOUNT))
@@ -330,6 +378,8 @@
 	school = SCHOOL_EVOCATION
 
 /obj/item/gun/magic/staff/honk/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/decal/cleanable/food/pie_smudge(user.drop_location())
 	user.AddComponent(\
@@ -360,6 +410,8 @@
 	school = SCHOOL_EVOCATION
 
 /obj/item/gun/magic/staff/spellblade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/butchering, \
 		speed = 1.5 SECONDS, \
@@ -369,11 +421,15 @@
 	)
 
 /obj/item/gun/magic/staff/spellblade/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(attack_type == PROJECTILE_ATTACK || attack_type == LEAP_ATTACK || attack_type == OVERWHELMING_ATTACK)
 		final_block_chance = 0 //Don't bring a sword to a gunfight, and also you aren't going to really block someone full body tackling you with a sword. Or a road roller, if one happened to hit you.
 	return ..()
 
 /obj/item/gun/magic/staff/spellblade/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!iscarbon(user))
 		return BRUTELOSS
@@ -398,6 +454,8 @@
 	school = SCHOOL_TRANSMUTATION //in a way
 
 /obj/item/gun/magic/staff/locker/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/structure/closet/decay/locker = new(user.drop_location())
 	locker.insert(user)
@@ -417,6 +475,8 @@
 	school = SCHOOL_EVOCATION
 
 /obj/item/gun/magic/staff/flying/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/throw_target = get_edge_target_turf(user, pick(GLOB.alldirs))
 	user.throw_at(throw_target, 200, 4)
@@ -434,6 +494,8 @@
 	school = SCHOOL_FORBIDDEN //evil
 
 /obj/item/gun/magic/staff/babel/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	process_fire(user, user, FALSE)
 	user.say("I wish I was dead.", forced = "failed babel staff suicide")
@@ -451,6 +513,8 @@
 	school = SCHOOL_NECROMANCY //REALLY evil
 
 /obj/item/gun/magic/staff/necropotence/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.unequip_everything()
 	var/obj/item/soulstone/anybody/stone = new(user.drop_location())
@@ -470,6 +534,8 @@
 	school = SCHOOL_FORBIDDEN //arguably the worst staff in the entire game effect wise
 
 /obj/item/gun/magic/staff/wipe/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	process_fire(user, user, FALSE)
 	return MANUAL_SUICIDE_NONLETHAL // Someone else is you now
@@ -490,6 +556,8 @@
 	w_class = WEIGHT_CLASS_NORMAL //but small enough for a bag
 
 /obj/item/gun/magic/staff/shrink/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(user, fire_sound, 50, TRUE)
 	user.unequip_everything()

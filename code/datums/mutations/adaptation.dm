@@ -11,6 +11,8 @@
 	offset_location = ENTIRE_BODY
 
 /datum/mutation/adaptation/New(datum/mutation/copymut)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	conflicts = typesof(/datum/mutation/adaptation)
 

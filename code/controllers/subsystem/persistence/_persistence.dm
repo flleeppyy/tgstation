@@ -66,6 +66,8 @@ SUBSYSTEM_DEF(persistence)
 	var/list/queued_message_bottles
 
 /datum/controller/subsystem/persistence/Initialize()
+	procstart = null
+	src.procstart = null
 	load_poly()
 	load_wall_engravings()
 	load_prisoner_tattoos()
@@ -80,6 +82,8 @@ SUBSYSTEM_DEF(persistence)
 
 ///Collects all data to persist.
 /datum/controller/subsystem/persistence/proc/collect_data()
+	procstart = null
+	src.procstart = null
 	save_wall_engravings()
 	save_prisoner_tattoos()
 	collect_trophies()
@@ -97,6 +101,8 @@ SUBSYSTEM_DEF(persistence)
 
 ///Loads up Poly's speech buffer.
 /datum/controller/subsystem/persistence/proc/load_poly()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/basic/parrot/poly/bird in GLOB.alive_mob_list)
 		var/list/list_to_read = bird.get_static_list_of_phrases()
 		twitterize(list_to_read, "polytalk")
@@ -104,6 +110,8 @@ SUBSYSTEM_DEF(persistence)
 
 /// Loads up the amount of times maps appeared to alter their appearance in voting and rotation.
 /datum/controller/subsystem/persistence/proc/load_recent_maps()
+	procstart = null
+	src.procstart = null
 	var/map_sav = FILE_RECENT_MAPS
 	if(!fexists(FILE_RECENT_MAPS))
 		return
@@ -126,6 +134,8 @@ SUBSYSTEM_DEF(persistence)
 
 ///Updates the list of the most recent maps.
 /datum/controller/subsystem/persistence/proc/collect_maps()
+	procstart = null
+	src.procstart = null
 	//Clear the list when everyone has gone to bed so we can start fresh tomorrow
 	if(GLOB.clients.len < CONFIG_GET(number/map_vote_minimum_pop_to_remember_maps))
 		saved_maps = list()

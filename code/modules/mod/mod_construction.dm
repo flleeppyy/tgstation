@@ -9,6 +9,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2.5)
 
 /obj/item/mod/construction/helmet/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You could insert it into a <b>MOD shell</b>...")
 
@@ -18,6 +20,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2.5)
 
 /obj/item/mod/construction/chestplate/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You could insert it into a <b>MOD shell</b>...")
 
@@ -27,6 +31,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2.5)
 
 /obj/item/mod/construction/gauntlets/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You could insert these into a <b>MOD shell</b>...")
 
@@ -36,6 +42,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2.5)
 
 /obj/item/mod/construction/boots/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You could insert these into a <b>MOD shell</b>...")
 
@@ -45,10 +53,14 @@
 	desc = "An internal power source for a Modular Outerwear Device. You don't seem to be able to source any power from this one, though."
 
 /obj/item/mod/construction/broken_core/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You could repair it with a <b>screwdriver</b>...")
 
 /obj/item/mod/construction/broken_core/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	balloon_alert(user, "repairing...")
 	if(!tool.use_tool(src, user, 5 SECONDS, volume = 30))
@@ -68,10 +80,14 @@
 	light_power = 1.5
 
 /obj/item/mod/construction/lavalandcore/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You could probably attach some <b>wires</b> to it...")
 
 /obj/item/mod/construction/lavalandcore/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stack/cable_coil))
 		return NONE
 
@@ -95,6 +111,8 @@
 	var/datum/mod_theme/theme = /datum/mod_theme
 
 /obj/item/mod/construction/plating/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/mod_theme/used_theme = GLOB.mod_themes[theme]
 	name = "MOD [used_theme.name] external plating"
@@ -151,6 +169,8 @@
 	var/step = START_STEP
 
 /obj/item/mod/construction/shell/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/display_text
 	switch(step)
@@ -175,6 +195,8 @@
 	. += span_notice(display_text)
 
 /obj/item/mod/construction/shell/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	switch(step)
 		if(START_STEP)
 			if(!istype(tool, /obj/item/mod/core))
@@ -272,6 +294,8 @@
 	return NONE
 
 /obj/item/mod/construction/shell/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	switch(step)
 
 		if(CORE_STEP)
@@ -313,6 +337,8 @@
 	return NONE
 
 /obj/item/mod/construction/shell/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	switch(step)
 		if(CORE_STEP)
 			if(!tool.use_tool(src, user, 0, volume = 30))
@@ -371,6 +397,8 @@
 	return NONE
 
 /obj/item/mod/construction/shell/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	switch(step)
 		if(BOOTS_STEP)
 			if(!tool.use_tool(src, user, 0, volume = 30))
@@ -393,10 +421,14 @@
 	return NONE
 
 /obj/item/mod/construction/shell/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "mod-construction_[step]"
 
 /obj/item/mod/construction/shell/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(core)
 	QDEL_NULL(helmet)
 	QDEL_NULL(chestplate)
@@ -405,6 +437,8 @@
 	return ..()
 
 /obj/item/mod/construction/shell/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == core)
 		core = null

@@ -7,6 +7,8 @@
 // Mutable appearances erase template vars on new, because they accept an appearance to copy as an arg
 // If we have nothin to copy, we set the float plane
 /mutable_appearance/New(mutable_appearance/to_copy)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!to_copy)
 		plane = FLOAT_PLANE
@@ -24,6 +26,8 @@
  * offset_const - A constant to offset our plane by, so it renders on the right "z layer"
 **/
 /proc/mutable_appearance(icon, icon_state = "", layer = FLOAT_LAYER, atom/offset_spokesman, plane = FLOAT_PLANE, alpha = 255, appearance_flags = NONE, offset_const)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/appearance = new()
 	appearance.icon = icon
 	appearance.icon_state = icon_state
@@ -53,6 +57,8 @@
 /// Takes an input mutable appearance, returns a copy of it with the hidden flag flipped to avoid inheriting dir from what it's drawn on
 /// This inheriting thing is handled by a hidden flag on the /image (MAs are subtypes of /image)
 /proc/make_mutable_appearance_directional(mutable_appearance/to_process, dir = NORTH)
+	procstart = null
+	src.procstart = null
 	// We use the image() proc in combo with a manually set dir to flip this flag
 	// We can then copy the image's appearance to retain the flag, even on MAs and such
 	var/image/holder = image(to_process, dir = dir)

@@ -18,11 +18,15 @@
 	oxygentanks = 0
 
 /obj/structure/tank_dispenser/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/contextual_screentip_bare_hands, lmb_text = "Take Plasma Tank", rmb_text = "Take Oxygen Tank")
 	update_appearance()
 
 /obj/structure/tank_dispenser/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(oxygentanks)
 		if(1 to 3)
@@ -36,6 +40,8 @@
 			. += "plasma-5"
 
 /obj/structure/tank_dispenser/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!plasmatanks)
 		balloon_alert(user, "no plasma tanks!")
@@ -45,6 +51,8 @@
 	update_appearance()
 
 /obj/structure/tank_dispenser/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!oxygentanks)
 		balloon_alert(user, "no oxygen tanks!")
@@ -55,11 +63,15 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/structure/tank_dispenser/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/tank_dispenser/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/tank/internals/plasma))
 		if(plasmatanks == TANK_DISPENSER_CAPACITY)
 			balloon_alert(user, "it is full!")
@@ -84,12 +96,16 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/tank_dispenser/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	for(var/X in src)
 		var/obj/item/I = X
 		I.forceMove(loc)
 	new /obj/item/stack/sheet/iron (loc, 2)
 
 /obj/structure/tank_dispenser/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(plasmatanks && oxygentanks)
 		. += span_notice("It has <b>[plasmatanks]</b> plasma tank\s and <b>[oxygentanks]</b> oxygen tank\s left.")
@@ -97,6 +113,8 @@
 		. += span_notice("It has <b>[plasmatanks ? "[plasmatanks]</b> plasma" : "[oxygentanks]</b> oxygen"] tank\s left.")
 
 /obj/structure/tank_dispenser/proc/dispense(tank_type, mob/receiver)
+	procstart = null
+	src.procstart = null
 	var/existing_tank = locate(tank_type) in src
 	if (isnull(existing_tank))
 		existing_tank = new tank_type

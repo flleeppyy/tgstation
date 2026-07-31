@@ -19,6 +19,8 @@ PROCESSING_SUBSYSTEM_DEF(station)
 	var/list/datum/station_goal/goals_by_type = list()
 
 /datum/controller/subsystem/processing/station/Initialize()
+	procstart = null
+	src.procstart = null
 	//If doing unit tests we don't do none of that trait shit ya know?
 	// Autowiki also wants consistent outputs, for example making sure the vending machine page always reports the normal products
 	#if !defined(UNIT_TESTS) && !defined(AUTOWIKI)
@@ -32,6 +34,8 @@ PROCESSING_SUBSYSTEM_DEF(station)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/processing/station/Recover()
+	procstart = null
+	src.procstart = null
 	station_traits = SSstation.station_traits
 	selectable_traits_by_types = SSstation.selectable_traits_by_types
 	announcer = SSstation.announcer
@@ -43,6 +47,8 @@ PROCESSING_SUBSYSTEM_DEF(station)
 /// This gets called by SSdynamic during initial gamemode setup.
 /// This is done because for a greenshift we want all goals to be generated
 /datum/controller/subsystem/processing/station/proc/generate_station_goals(goal_budget)
+	procstart = null
+	src.procstart = null
 	var/list/possible = subtypesof(/datum/station_goal)
 
 	var/goal_weights = 0
@@ -61,6 +67,8 @@ PROCESSING_SUBSYSTEM_DEF(station)
 
 /// Returns all station goals that are currently active
 /datum/controller/subsystem/processing/station/proc/get_station_goals()
+	procstart = null
+	src.procstart = null
 	var/list/goals = list()
 	for(var/goal_type in goals_by_type)
 		goals += goals_by_type[goal_type]
@@ -68,10 +76,14 @@ PROCESSING_SUBSYSTEM_DEF(station)
 
 /// Returns a specific station goal by type
 /datum/controller/subsystem/processing/station/proc/get_station_goal(goal_type)
+	procstart = null
+	src.procstart = null
 	return goals_by_type[goal_type]
 
 ///Rolls for the amount of traits and adds them to the traits list
 /datum/controller/subsystem/processing/station/proc/SetupTraits()
+	procstart = null
+	src.procstart = null
 	if (CONFIG_GET(flag/forbid_station_traits))
 		return
 
@@ -140,6 +152,8 @@ PROCESSING_SUBSYSTEM_DEF(station)
  * All until the whole budget is spent or no more traits can be picked with it.
  */
 /datum/controller/subsystem/processing/station/proc/pick_traits(trait_sign, budget)
+	procstart = null
+	src.procstart = null
 	if(!budget)
 		return
 	///A list of traits of the same trait sign
@@ -160,6 +174,8 @@ PROCESSING_SUBSYSTEM_DEF(station)
 
 ///Creates a given trait of a specific type, while also removing any blacklisted ones from the future pool.
 /datum/controller/subsystem/processing/station/proc/setup_trait(datum/station_trait/trait_type)
+	procstart = null
+	src.procstart = null
 	if(locate(trait_type) in station_traits)
 		return
 	var/datum/station_trait/trait_instance = new trait_type()
@@ -173,6 +189,8 @@ PROCESSING_SUBSYSTEM_DEF(station)
 
 /// Update station trait lobby buttons for clients who joined before we initialised this subsystem
 /datum/controller/subsystem/processing/station/proc/display_lobby_traits()
+	procstart = null
+	src.procstart = null
 	for (var/mob/dead/new_player/player as anything in GLOB.new_player_list)
 		var/datum/hud/new_player/observer_hud = player.hud_used
 		if (!istype(observer_hud))

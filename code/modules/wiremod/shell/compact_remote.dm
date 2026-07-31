@@ -17,6 +17,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2.5, /datum/material/glass = SHEET_MATERIAL_AMOUNT)
 
 /obj/item/compact_remote/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/shell, list(
 		new /obj/item/circuit_component/compact_remote()
@@ -32,19 +34,27 @@
 	var/datum/port/output/entity
 
 /obj/item/circuit_component/compact_remote/populate_ports()
+	procstart = null
+	src.procstart = null
 	entity = add_output_port("User", PORT_TYPE_ATOM)
 	signal = add_output_port("Signal", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/compact_remote/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(shell, COMSIG_ITEM_ATTACK_SELF, PROC_REF(send_trigger))
 
 /obj/item/circuit_component/compact_remote/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(shell, COMSIG_ITEM_ATTACK_SELF)
 
 /**
  * Called when the shell item is used in hand.
  */
 /obj/item/circuit_component/compact_remote/proc/send_trigger(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	source.balloon_alert(user, "clicked primary button")
 	playsound(source, SFX_TERMINAL_TYPE, 25, FALSE)

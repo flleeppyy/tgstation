@@ -5,6 +5,8 @@
 #define PERMANENT_TRANSFORMATION_TRAIT "permanent_transformation"
 
 /mob/living/carbon/proc/monkeyize(instant = FALSE)
+	procstart = null
+	src.procstart = null
 	if (transformation_timer || HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
 
@@ -28,6 +30,8 @@
 	transformation_timer = addtimer(CALLBACK(src, PROC_REF(finish_monkeyize)), TRANSFORMATION_DURATION, TIMER_UNIQUE)
 
 /mob/living/carbon/proc/finish_monkeyize()
+	procstart = null
+	src.procstart = null
 	transformation_timer = null
 	REMOVE_TRAIT(src, TRAIT_NO_TRANSFORM, TEMPORARY_TRANSFORMATION_TRAIT)
 	icon = initial(icon)
@@ -45,6 +49,8 @@
 //Could probably be merged with monkeyize but other transformations got their own procs, too
 
 /mob/living/carbon/proc/humanize(species = /datum/species/human, instant = FALSE)
+	procstart = null
+	src.procstart = null
 	if (transformation_timer || HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
 
@@ -69,6 +75,8 @@
 
 
 /mob/living/carbon/proc/finish_humanize(species = /datum/species/human)
+	procstart = null
+	src.procstart = null
 	transformation_timer = null
 	REMOVE_TRAIT(src, TRAIT_NO_TRANSFORM, TEMPORARY_TRANSFORMATION_TRAIT)
 	icon = initial(icon)
@@ -79,12 +87,16 @@
 	return src
 
 /mob/living/carbon/human/finish_humanize(species = /datum/species/human)
+	procstart = null
+	src.procstart = null
 	underwear = "Nude"
 	undershirt = "Nude"
 	socks = "Nude"
 	return ..()
 
 /mob/proc/AIize(client/preference_source, move = TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/turf/landmark_loc = list()
 
 	if(!move)
@@ -121,6 +133,8 @@
 	qdel(src)
 
 /mob/living/carbon/AIize(client/preference_source, transfer_after = TRUE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
 	ADD_TRAIT(src, TRAIT_NO_TRANSFORM, PERMANENT_TRANSFORMATION_TRAIT)
@@ -133,12 +147,16 @@
 	return ..()
 
 /mob/living/carbon/human/AIize(client/preference_source, transfer_after = TRUE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
 
 	return ..()
 
 /mob/proc/Robotize(delete_items = 0, transfer_after = TRUE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
 	ADD_TRAIT(src, TRAIT_NO_TRANSFORM, PERMANENT_TRANSFORMATION_TRAIT)
@@ -175,6 +193,8 @@
 	qdel(src)
 
 /mob/living/Robotize(delete_items = 0, transfer_after = TRUE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
 	ADD_TRAIT(src, TRAIT_NO_TRANSFORM, TEMPORARY_TRANSFORMATION_TRAIT)
@@ -190,6 +210,8 @@
 	return ..()
 
 /mob/living/silicon/robot/proc/replace_banned_cyborg()
+	procstart = null
+	src.procstart = null
 	to_chat(src, "<b>You are job banned from cyborg! Appeal your job ban if you want to avoid this in the future!</b>")
 	ghostize(FALSE)
 
@@ -200,6 +222,8 @@
 
 //human -> alien
 /mob/living/carbon/human/proc/Alienize()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
 	ADD_TRAIT(src, TRAIT_NO_TRANSFORM, PERMANENT_TRANSFORMATION_TRAIT)
@@ -230,6 +254,8 @@
 	return new_xeno
 
 /mob/living/carbon/human/proc/slimeize(reproduce as num)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
 	ADD_TRAIT(src, TRAIT_NO_TRANSFORM, PERMANENT_TRANSFORMATION_TRAIT)
@@ -262,6 +288,8 @@
 	return new_slime
 
 /mob/proc/become_overmind(starting_points = OVERMIND_STARTING_POINTS)
+	procstart = null
+	src.procstart = null
 	var/mob/eye/blob/B = new /mob/eye/blob(get_turf(src), starting_points)
 	B.PossessByPlayer(key)
 	. = B
@@ -269,6 +297,8 @@
 
 
 /mob/living/carbon/human/proc/corgize()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
 	ADD_TRAIT(src, TRAIT_NO_TRANSFORM, PERMANENT_TRANSFORMATION_TRAIT)
@@ -293,6 +323,8 @@
  * Turns the source atom into a crab crab, the peak of evolutionary design.
  */
 /mob/living/carbon/human/proc/crabize()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
 	ADD_TRAIT(src, TRAIT_NO_TRANSFORM, PERMANENT_TRANSFORMATION_TRAIT)
@@ -313,6 +345,8 @@
 	return new_crab
 
 /mob/living/carbon/proc/gorillize(genetics_gorilla = FALSE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
 	ADD_TRAIT(src, TRAIT_NO_TRANSFORM, PERMANENT_TRANSFORMATION_TRAIT)
@@ -340,6 +374,8 @@
 	return new_gorilla
 
 /mob/living/carbon/human/Animalize()
+	procstart = null
+	src.procstart = null
 
 	var/list/mobtypes = typesof(/mob/living/simple_animal) + typesof(/mob/living/basic)
 	var/mobpath = tgui_input_list(usr, "Which type of mob should [src] turn into?", "Choose a type", sort_list(mobtypes, GLOBAL_PROC_REF(cmp_typepaths_asc)))
@@ -374,6 +410,8 @@
 	return new_mob
 
 /mob/proc/Animalize()
+	procstart = null
+	src.procstart = null
 
 	var/list/mobtypes = typesof(/mob/living/simple_animal) + typesof(/mob/living/basic)
 	var/mobpath = tgui_input_list(usr, "Which type of mob should [src] turn into?", "Choose a type", sort_list(mobtypes, GLOBAL_PROC_REF(cmp_typepaths_asc)))
@@ -398,6 +436,8 @@
  * This also gives a place to explain -why- players shouldn't be turn into certain mobs and hopefully someone can fix them.
  */
 /mob/proc/safe_animal(MP)
+	procstart = null
+	src.procstart = null
 
 //Bad mobs! - Remember to add a comment explaining what's wrong with the mob
 	if(!MP)

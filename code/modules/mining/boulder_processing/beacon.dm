@@ -8,6 +8,8 @@
 	var/uses = 3
 
 /obj/item/boulder_beacon/attack_self()
+	procstart = null
+	src.procstart = null
 	visible_message(span_warning("\The [src] begins to beep loudly!"))
 	addtimer(CALLBACK(src, PROC_REF(launch_payload)), 1 SECONDS)
 
@@ -16,6 +18,8 @@
  * Use one spawns a BRM teleporter, then a refinery, and lastly a smelter.
  */
 /obj/item/boulder_beacon/proc/launch_payload()
+	procstart = null
+	src.procstart = null
 	playsound(src, SFX_SPARKS, 80, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	switch(uses)
 		if(3)

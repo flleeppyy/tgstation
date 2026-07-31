@@ -2,6 +2,8 @@
 /datum/targeting_strategy/parrot_hoard_location
 
 /datum/targeting_strategy/parrot_hoard_location/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -16,6 +18,8 @@
 /datum/targeting_strategy/parrot_hoard_item
 
 /datum/targeting_strategy/parrot_hoard_item/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -41,6 +45,8 @@
 	return holding_valuable(controller, target)
 
 /datum/targeting_strategy/parrot_hoard_item/proc/holding_valuable(datum/ai_controller/controller, mob/living/human_target)
+	procstart = null
+	src.procstart = null
 	var/list/ignore_items = controller.blackboard[BB_IGNORE_ITEMS]
 	for(var/obj/item/potential_item in human_target.held_items)
 		if(is_type_in_typecache(potential_item, ignore_items))
@@ -56,6 +62,8 @@
 	time_between_perform = 5 SECONDS
 
 /datum/bt_node/ai_behavior/acquire_target/parrot_hoard_item/on_target_found(datum/ai_controller/controller, atom/target, datum/targeting_strategy/strategy)
+	procstart = null
+	src.procstart = null
 	if(ishuman(target))
 		controller.set_blackboard_key(BB_ALWAYS_IGNORE_FACTION, TRUE)
 
@@ -63,6 +71,8 @@
 /datum/bt_node/ai_behavior/basic_melee_attack/interact_once/parrot
 
 /datum/bt_node/ai_behavior/basic_melee_attack/interact_once/parrot/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.set_blackboard_key(BB_ALWAYS_IGNORE_FACTION, FALSE)
 

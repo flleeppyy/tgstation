@@ -44,6 +44,8 @@
 
 /// Try and irradiate them. If we chance fail, we come back harder
 /datum/component/radioactive_exposure/proc/attempt_irradiate()
+	procstart = null
+	src.procstart = null
 	if(!SSradiation.wearing_rad_protected_clothing(parent) && SSradiation.can_irradiate_basic(parent))
 		if(prob(irradiation_chance))
 			SSradiation.irradiate(parent)
@@ -59,6 +61,8 @@
 	addtimer(CALLBACK(src, PROC_REF(attempt_irradiate)), irradiation_interval)
 
 /datum/component/radioactive_exposure/proc/on_exited(atom/movable/also_parent, area/old_area, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(get_area(parent), radioactive_areas)) //we left to another area that is also radioactive, so dont do anything
@@ -67,6 +71,8 @@
 	qdel(src)
 
 /datum/component/radioactive_exposure/Destroy(force)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_parent = parent
 	human_parent.clear_alert(ALERT_RADIOACTIVE_AREA)
 

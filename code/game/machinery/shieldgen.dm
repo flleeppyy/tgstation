@@ -13,20 +13,28 @@
 	can_atmos_pass = ATMOS_PASS_DENSITY
 
 /obj/structure/emergency_shield/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	setDir(pick(GLOB.cardinals))
 	air_update_turf(TRUE, TRUE)
 
 /obj/structure/emergency_shield/Destroy()
+	procstart = null
+	src.procstart = null
 	air_update_turf(TRUE, FALSE)
 	. = ..()
 
 /obj/structure/emergency_shield/Move()
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 	. = ..()
 	move_update_air(T)
 
 /obj/structure/emergency_shield/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. & EMP_PROTECT_SELF)
 		return
@@ -37,6 +45,8 @@
 			take_damage(50, BRUTE, ENERGY, 0)
 
 /obj/structure/emergency_shield/play_attack_sound(damage, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BURN)
 			playsound(loc, 'sound/effects/empulse.ogg', 75, TRUE)
@@ -44,6 +54,8 @@
 			playsound(loc, 'sound/effects/empulse.ogg', 75, TRUE)
 
 /obj/structure/emergency_shield/take_damage(damage, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.) //damage was dealt
 		new /obj/effect/temp_visual/impact_effect/ion(loc)
@@ -57,20 +69,28 @@
 	var/heal_rate_per_second = 5
 
 /obj/structure/emergency_shield/regenerating/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_NO_EXAMINE)
 
 /obj/structure/emergency_shield/regenerating/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/structure/emergency_shield/regenerating/take_damage(damage, damage_type, damage_flag, sound_effect, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		// We took some damage so we'll start processing to heal said damage.
 		START_PROCESSING(SSobj, src)
 
 /obj/structure/emergency_shield/regenerating/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/repaired_amount = repair_damage(heal_rate_per_second * seconds_per_tick)
 	if(repaired_amount <= 0)
 		// 0 damage repaired means we're at the max integrity, so don't need to process anymore
@@ -83,6 +103,8 @@
 	icon_state = "shield-red"
 
 /obj/structure/emergency_shield/cult/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_NO_EXAMINE)
 
@@ -106,15 +128,21 @@
 	var/obj/effect/rune/parent_rune
 
 /obj/structure/emergency_shield/cult/barrier/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	parent_rune.attack_hand(user, modifiers)
 
 /obj/structure/emergency_shield/cult/barrier/attack_animal(mob/living/simple_animal/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(IS_CULTIST(user))
 		parent_rune.attack_animal(user)
 	else
 		..()
 
 /obj/structure/emergency_shield/cult/barrier/Destroy()
+	procstart = null
+	src.procstart = null
 	if(parent_rune)
 		if(QDELING(parent_rune))
 			parent_rune = null
@@ -131,6 +159,8 @@
 *The barrier itself is not intended to interact with the conceal runes cult spell for balance purposes.
 */
 /obj/structure/emergency_shield/cult/barrier/proc/Toggle()
+	procstart = null
+	src.procstart = null
 	set_density(!density)
 	air_update_turf(TRUE, !density)
 	if(!density)
@@ -155,17 +185,23 @@
 	var/shield_range = 4
 
 /obj/machinery/shieldgen/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	deployed_shields = list()
 	if(mapload && active && anchored)
 		shields_up()
 
 /obj/machinery/shieldgen/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(deployed_shields)
 	return ..()
 
 
 /obj/machinery/shieldgen/proc/shields_up()
+	procstart = null
+	src.procstart = null
 	active = TRUE
 	update_appearance()
 	move_resist = INFINITY
@@ -176,17 +212,23 @@
 				deployed_shields += new /obj/structure/emergency_shield(target_tile)
 
 /obj/machinery/shieldgen/proc/shields_down()
+	procstart = null
+	src.procstart = null
 	active = FALSE
 	move_resist = initial(move_resist)
 	update_appearance()
 	QDEL_LIST(deployed_shields)
 
 /obj/machinery/shieldgen/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if((machine_stat & BROKEN) && active)
 		if(deployed_shields.len && SPT_PROB(2.5, seconds_per_tick))
 			qdel(pick(deployed_shields))
 
 /obj/machinery/shieldgen/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -213,6 +255,8 @@
 	return
 
 /obj/machinery/shieldgen/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(src, 100)
 	toggle_panel_open()
 	if(panel_open)
@@ -222,6 +266,8 @@
 	return TRUE
 
 /obj/machinery/shieldgen/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	if(locked)
 		to_chat(user, span_warning("The bolts are covered! Unlocking this would retract the covers."))
@@ -240,6 +286,8 @@
 
 
 /obj/machinery/shieldgen/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/stack/cable_coil) && (machine_stat & BROKEN) && panel_open)
 		var/obj/item/stack/cable_coil/coil = tool
 		if (coil.get_amount() < 1)
@@ -271,6 +319,8 @@
 	return NONE
 
 /obj/machinery/shieldgen/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		to_chat(user, span_warning("The access controller is damaged!"))
 		return FALSE
@@ -281,6 +331,8 @@
 	return TRUE
 
 /obj/machinery/shieldgen/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "shield[active ? "on" : "off"][(machine_stat & BROKEN) ? "br" : null]"
 	return ..()
 
@@ -329,6 +381,8 @@
 	anchored = TRUE
 
 /obj/machinery/power/shieldwallgen/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//Add to the early process queue to prioritize power draw
 	SSmachines.processing_early += src
@@ -338,33 +392,47 @@
 	set_wires(new /datum/wires/shieldwallgen(src))
 
 /obj/machinery/power/shieldwallgen/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light(l_on = !!active)
 
 /obj/machinery/power/shieldwallgen/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][active ? "_on" : ""]"
 	return ..()
 
 /obj/machinery/power/shieldwallgen/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!panel_open)
 		return
 	. += "shieldgen_wires"
 
 /obj/machinery/power/shieldwallgen/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/d in GLOB.cardinals)
 		cleanup_field(d)
 	return ..()
 
 /obj/machinery/power/shieldwallgen/should_have_node()
+	procstart = null
+	src.procstart = null
 	return anchored
 
 /obj/machinery/power/shieldwallgen/connect_to_network()
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		return FALSE
 	. = ..()
 
 /obj/machinery/power/shieldwallgen/process_early()
+	procstart = null
+	src.procstart = null
 	if(active)
 		if(active == ACTIVE_SETUPFIELDS)
 			var/fields = 0
@@ -389,6 +457,8 @@
 
 /// Constructs the actual field walls in the specified direction, cleans up old/stuck shields before doing so
 /obj/machinery/power/shieldwallgen/proc/setup_field(direction)
+	procstart = null
+	src.procstart = null
 	if(!direction)
 		return
 
@@ -418,6 +488,8 @@
 
 /// cleans up fields in the specified direction if they belong to this generator
 /obj/machinery/power/shieldwallgen/proc/cleanup_field(direction)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/shieldwall/F
 	var/obj/machinery/power/shieldwallgen/G
 	var/turf/T = loc
@@ -434,12 +506,16 @@
 			qdel(F)
 
 /obj/machinery/power/shieldwallgen/proc/block_singularity_if_active()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (active)
 		return SINGULARITY_TRY_MOVE_BLOCK
 
 /obj/machinery/power/shieldwallgen/can_be_unfasten_wrench(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	if(active)
 		if(!silent)
 			to_chat(user, span_warning("Turn off the shield generator first!"))
@@ -448,6 +524,8 @@
 
 
 /obj/machinery/power/shieldwallgen/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	var/unfasten_result = default_unfasten_wrench(user, tool, time = 0)
 	update_cable_icons_on_turf(get_turf(src))
 	if(unfasten_result == SUCCESSFUL_UNFASTEN && anchored)
@@ -455,6 +533,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/shieldwallgen/screwdriver_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!panel_open && locked)
 		balloon_alert(user, "unlock first!")
 		return ITEM_INTERACT_BLOCKING
@@ -462,12 +542,16 @@
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/power/shieldwallgen/crowbar_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(active)
 		return ITEM_INTERACT_BLOCKING
 
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/power/shieldwallgen/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(tool.GetID())
 		if(obj_flags & EMAGGED)
 			balloon_alert(user, "malfunctioning!")
@@ -488,6 +572,8 @@
 
 
 /obj/machinery/power/shieldwallgen/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -519,6 +605,8 @@
 	add_fingerprint(user)
 
 /obj/machinery/power/shieldwallgen/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		to_chat(user, span_warning("The access controller is damaged!"))
 		return FALSE
@@ -530,11 +618,15 @@
 
 /// Turn the machine on with side effects
 /obj/machinery/power/shieldwallgen/proc/activate()
+	procstart = null
+	src.procstart = null
 	active = ACTIVE_SETUPFIELDS
 	AddElement(/datum/element/give_turf_traits, string_list(list(TRAIT_CONTAINMENT_FIELD)))
 
 /// Turn the machine off with side effects
 /obj/machinery/power/shieldwallgen/proc/deactivate()
+	procstart = null
+	src.procstart = null
 	active = FALSE
 	for(var/d in GLOB.cardinals)
 		cleanup_field(d)
@@ -558,6 +650,8 @@
 	var/obj/machinery/power/shieldwallgen/gen_secondary
 
 /obj/machinery/shieldwall/Initialize(mapload, obj/machinery/power/shieldwallgen/first_gen, obj/machinery/power/shieldwallgen/second_gen)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	gen_primary = first_gen
 	gen_secondary = second_gen
@@ -572,15 +666,21 @@
 	AddElement(/datum/element/give_turf_traits, string_list(list(TRAIT_CONTAINMENT_FIELD)))
 
 /obj/machinery/shieldwall/Destroy()
+	procstart = null
+	src.procstart = null
 	gen_primary = null
 	gen_secondary = null
 	return ..()
 
 /obj/machinery/shieldwall/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance(icon, icon_state, src, alpha = 200)
 
 /obj/machinery/shieldwall/process()
+	procstart = null
+	src.procstart = null
 	if(needs_power)
 		if(!gen_primary || !gen_primary.active || !gen_secondary || !gen_secondary.active)
 			qdel(src)
@@ -589,6 +689,8 @@
 		drain_power(10)
 
 /obj/machinery/shieldwall/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BURN)
 			playsound(loc, 'sound/effects/empulse.ogg', 75, TRUE)
@@ -597,23 +699,31 @@
 
 //the shield wall is immune to damage but it drains the stored power of the generators.
 /obj/machinery/shieldwall/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(damage_type == BRUTE || damage_type == BURN)
 		drain_power(damage_amount)
 
 /// succs power from the connected shield wall generator
 /obj/machinery/shieldwall/proc/drain_power(drain_amount)
+	procstart = null
+	src.procstart = null
 	if(needs_power && gen_primary)
 		gen_primary.add_load(drain_amount * 0.5)
 		if(gen_secondary) //using power may cause us to be destroyed
 			gen_secondary.add_load(drain_amount * 0.5)
 
 /obj/machinery/shieldwall/proc/block_singularity()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return SINGULARITY_TRY_MOVE_BLOCK
 
 /obj/machinery/shieldwall/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(mover) && (mover.pass_flags & PASSGLASS))
 		return prob(20)

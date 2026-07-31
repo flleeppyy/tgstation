@@ -85,18 +85,26 @@
 	var/custom_description
 
 /obj/item/disk/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/item/disk/setup_reskins()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/reskinable_item, /datum/atom_skin/floppy_disk, infinite = TRUE)
 
 /obj/item/disk/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(sticker_icon_state)
 		. += sticker_icon_state
 
 /obj/item/disk/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("The write-protect tab is set to [span_bold("[read_only ? "protected" : "unprotected"]")].")
 
@@ -105,6 +113,8 @@
 		. += span_notice(span_italics("\"[custom_description]\""))
 
 /obj/item/disk/tool_act(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/pen))
 		if(sticker_icon_state != STARTING_STICKER)
 			to_chat(user, span_warning("You can't add anything else!"))
@@ -127,6 +137,8 @@
 	. = ..()
 
 /obj/item/disk/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(read_only_locked)
 		to_chat(user, span_warning("The write-protect tab seems to be stuck in place!"))
 		return
@@ -134,6 +146,8 @@
 	to_chat(user, span_notice("You flip the write-protect tab to [span_bold("[read_only ? "protected" : "unprotected"]")]."))
 
 /obj/item/disk/click_alt_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	if(sticker_icon_state != STARTING_STICKER)
 		return CLICK_ACTION_BLOCKING
 
@@ -161,6 +175,8 @@
 
 /// Can we select a new sticker?
 /obj/item/disk/proc/check_sticker_menu(mob/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return FALSE
 	if(sticker_icon_state != STARTING_STICKER)
@@ -173,10 +189,14 @@
 
 /// Sets the sticker icon state and updates the appearance
 /obj/item/disk/proc/set_sticker_icon_state(new_icon_state)
+	procstart = null
+	src.procstart = null
 	sticker_icon_state = new_icon_state
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/item/disk/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/disk_stack))
 		var/obj/item/disk_stack/held_stack = tool
 		var/obj/item/disk_stack/new_stack = new(get_turf(src))
@@ -217,18 +237,26 @@
 	var/list/stacked_disks = list()
 
 /obj/item/disk_stack/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_MOVABLE_THROW_LANDED, PROC_REF(on_throw_land))
 
 /obj/item/disk_stack/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(stacked_disks)
 	return ..()
 
 /obj/item/disk_stack/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("There are [span_bold("[length(stacked_disks)]")] disks in the stack.")
 
 /obj/item/disk_stack/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/disk_stack))
 		return merge_stacks(user, tool)
 
@@ -236,6 +264,8 @@
 		return add_to_stack(user, tool)
 
 /obj/item/disk_stack/proc/add_to_stack(mob/living/user, obj/item/disk/newdisk)
+	procstart = null
+	src.procstart = null
 	if(length(stacked_disks) >= MAX_DISK_STACK_SIZE)
 		balloon_alert(user, "can't add more!")
 		return ITEM_INTERACT_BLOCKING
@@ -247,6 +277,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/disk_stack/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/iteration_count = 1
 	for(var/obj/item/disk/disk_in_stack in stacked_disks)
@@ -259,6 +291,8 @@
 		iteration_count++
 
 /obj/item/disk_stack/proc/pop_top_disk(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!length(stacked_disks))
 		return FALSE
 
@@ -285,6 +319,8 @@
 	return TRUE
 
 /obj/item/disk_stack/proc/merge_stacks(mob/user, obj/item/disk_stack/diskstack)
+	procstart = null
+	src.procstart = null
 	var/amount_counter = 0
 	var/list/moved_disks = list()
 
@@ -312,10 +348,14 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/disk_stack/proc/on_throw_land()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(spread))
 
 /obj/item/disk_stack/proc/spread()
+	procstart = null
+	src.procstart = null
 	if(!length(stacked_disks))
 		return
 
@@ -328,12 +368,16 @@
 	qdel(src)
 
 /obj/item/disk_stack/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(pop_top_disk(user))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	return ..()
 
 /// Handle disks leaving the stack through other means
 /obj/item/disk_stack/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(gone, /obj/item/disk))
 		return
@@ -343,9 +387,13 @@
 		qdel(src)
 
 /obj/item/disk/can_be_package_wrapped()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/item/disk_stack/can_be_package_wrapped()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/item/delivery/small/floppy
@@ -355,6 +403,8 @@
 	base_icon_state = "deliveryfloppy"
 
 /obj/item/delivery/small/floppy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/disk/data(src)
 
@@ -365,12 +415,16 @@
 	var/list/tasks_data = list()
 
 /obj/item/disk/manipulator/proc/set_tasks(list/new_tasks_data)
+	procstart = null
+	src.procstart = null
 	if(read_only)
 		return FALSE
 	tasks_data = islist(new_tasks_data) ? new_tasks_data : list()
 	return TRUE
 
 /obj/item/disk/manipulator/proc/get_tasks()
+	procstart = null
+	src.procstart = null
 	return tasks_data?.Copy() || list()
 
 #undef STARTING_STICKER

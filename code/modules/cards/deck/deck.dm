@@ -30,6 +30,8 @@
 	var/deckstyle = "nanotrasen"
 
 /obj/item/toy/cards/deck/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/drag_pickup)
 	AddComponent(/datum/component/two_handed, attacksound='sound/items/cards/cardflip.ogg')
@@ -42,6 +44,8 @@
 
 /// Generates the cards in this deck. If not overridden, generates a standard 52-card deck (and 2 jokers).
 /obj/item/toy/cards/deck/proc/initialize_cards()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE) // you should be overriding this for subtypes, probably
 	initial_cards += "Joker Clown"
 	initial_cards += "Joker Mime"
@@ -53,11 +57,15 @@
 			initial_cards += "[person] of [suit]"
 
 /obj/item/toy/cards/deck/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is slitting [user.p_their()] wrists with \the [src]! It looks like their luck ran out!"))
 	playsound(src, 'sound/items/cards/cardshuffle.ogg', 50, TRUE)
 	return BRUTELOSS
 
 /obj/item/toy/cards/deck/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(HAS_TRAIT(user, TRAIT_XRAY_VISION) && count_cards() > 0)
@@ -74,6 +82,8 @@
 	. += span_notice("Click and drag the deck to yourself to pickup.") // This should be a context screentip
 
 /obj/item/toy/cards/deck/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(src == held_item)
 		var/obj/item/toy/cards/deck/dealer_deck = held_item
 		context[SCREENTIP_CONTEXT_LMB] = HAS_TRAIT(dealer_deck, TRAIT_WIELDED) ? "Recycle mode" : "Dealer mode"
@@ -103,6 +113,8 @@
  * * user - The person shuffling the cards.
  */
 /obj/item/toy/cards/deck/proc/shuffle_cards(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, shuffle_cooldown))
 		return
 	COOLDOWN_START(src, shuffle_cooldown, shuffle_time)
@@ -115,6 +127,8 @@
  * Grabs the top card in the deck, but does not actually manipulate the deck.
  */
 /obj/item/toy/cards/deck/proc/get_top_card(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(count_cards() == 0)
 		to_chat(user, span_warning("There are no more cards to draw!"))
 		return
@@ -123,6 +137,8 @@
 
 /// This checks if nearby mobs are playing a cardgame and triggers a mood and memory
 /obj/item/toy/cards/deck/proc/CardgameEvent(mob/living/dealer)
+	procstart = null
+	src.procstart = null
 	var/card_players = list()
 	for(var/mob/living/carbon/person in viewers(COMBAT_MESSAGE_RANGE, loc))
 		var/obj/item/toy/held_card_item = person.is_holding_item_of_type(/obj/item/toy/singlecard) || person.is_holding_item_of_type(/obj/item/toy/cards/deck) || person.is_holding_item_of_type(/obj/item/toy/cards/cardhand)
@@ -144,6 +160,8 @@
 			)
 
 /obj/item/toy/cards/deck/attack_hand(mob/living/user, list/modifiers, flip_card = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user) || !user.can_perform_action(src, NEED_DEXTERITY|FORBID_TELEKINESIS_REACH))
 		return
 
@@ -157,10 +175,14 @@
 	user.balloon_alert_to_viewers("draws a card")
 
 /obj/item/toy/cards/deck/attack_hand_secondary(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	attack_hand(user, modifiers, flip_card = TRUE)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/toy/cards/deck/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_WIELDED))
 		to_chat(user, span_notice("You must hold the [src] with both hands to shuffle."))
 		return CLICK_ACTION_BLOCKING
@@ -169,6 +191,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/toy/cards/deck/update_icon_state()
+	procstart = null
+	src.procstart = null
 	switch(count_cards())
 		if(27 to INFINITY)
 			icon_state = "[deck_base_icon][deckstyle]_full"
@@ -181,6 +205,8 @@
 	return ..()
 
 /obj/item/toy/cards/deck/insert(obj/item/toy/card_item)
+	procstart = null
+	src.procstart = null
 	var/list/cards = ..()
 	if (!length(cards))
 		return null
@@ -190,6 +216,8 @@
 	return cards
 
 /obj/item/toy/cards/deck/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/toy/singlecard) && !istype(tool, /obj/item/toy/cards/cardhand))
 		return NONE
 
@@ -203,6 +231,8 @@
 
 /// This is how we play 52 card pickup
 /obj/item/toy/cards/deck/throw_impact(mob/living/target, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !istype(target)) // was it caught or is the target not a living mob
 		return .
@@ -245,6 +275,8 @@
 	deckstyle = "" // no deck style because it wouldn't matter
 
 /obj/item/toy/cards/deck/cardshoe/initialize_cards()
+	procstart = null
+	src.procstart = null
 	return
 
 #undef DECK_SHUFFLE_TIME

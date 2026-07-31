@@ -49,6 +49,8 @@
 	sound = 'sound/mobs/non-humanoids/chicken/chick_peep.ogg'
 
 /mob/living/basic/chick/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = base_pixel_x + rand(-6, 6)
 	pixel_y = base_pixel_y + rand(0, 10)
@@ -74,6 +76,8 @@
 
 /// We don't grow into a chicken if we're not conscious.
 /mob/living/basic/chick/proc/ready_to_grow()
+	procstart = null
+	src.procstart = null
 	return !IS_UNCONSCIOUS_OR_CRIT(src) && !istype(loc, /obj/item/mob_holder)
 
 /// Variant of chick that just spawns in the holodeck so you can pet it. Doesn't grow up.

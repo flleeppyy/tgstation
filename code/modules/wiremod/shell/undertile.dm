@@ -9,6 +9,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2.5, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/undertile_circuit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/undertile, TRAIT_T_RAY_VISIBLE, INVISIBILITY_OBSERVER, use_anchor = TRUE)
 	AddComponent(/datum/component/shell, null, SHELL_CAPACITY_SMALL, SHELL_FLAG_REQUIRE_ANCHOR|SHELL_FLAG_USB_PORT)

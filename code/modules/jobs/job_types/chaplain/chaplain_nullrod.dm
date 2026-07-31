@@ -3,6 +3,8 @@
 GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 
 /proc/init_nullrod_variants()
+	procstart = null
+	src.procstart = null
 	var/list/rods = list()
 	for(var/obj/item/nullrod/nullrod_type as anything in typesof(/obj/item/nullrod))
 		if(!nullrod_type::chaplain_spawnable)
@@ -51,6 +53,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	var/station_holy_item = TRUE
 
 /obj/item/nullrod/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/nullrod_core, chaplain_spawnable)
 
@@ -60,6 +64,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 
 /// Callback for subtype picker, invoked when the chaplain picks a new nullrod
 /obj/item/nullrod/proc/on_holy_weapon_picked(obj/item/nullrod/new_holy_weapon, mob/living/picker)
+	procstart = null
+	src.procstart = null
 	if(!station_holy_item)
 		return
 	GLOB.holy_weapon_type = new_holy_weapon.type
@@ -67,6 +73,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	SSblackbox.record_feedback("tally", "chaplain_weapon", 1, "[new_holy_weapon.name]")
 
 /obj/item/nullrod/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is killing [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to get closer to god!"))
 	return (BRUTELOSS|FIRELOSS)
 
@@ -101,12 +109,16 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	var/list/alt_simple = list("stab", "pierce", "impale")
 
 /obj/item/nullrod/claymore/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	alt_continuous = string_list(alt_continuous)
 	alt_simple = string_list(alt_simple)
 	AddComponent(/datum/component/alternative_sharpness, SHARP_POINTY, alt_continuous, alt_simple, -3)
 
 /obj/item/nullrod/claymore/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(attack_type == PROJECTILE_ATTACK || attack_type == LEAP_ATTACK || attack_type == OVERWHELMING_ATTACK)
 		final_block_chance = 0 //Don't bring a sword to a gunfight, and also you aren't going to really block someone full body tackling you with a sword. Or a road roller, if one happened to hit you.
 	return ..()
@@ -168,6 +180,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	menu_description = "An odd sharp blade which provides a low chance of blocking incoming melee attacks and deals a random amount of damage, which can range from almost nothing to very high. Can be worn on the back."
 
 /obj/item/nullrod/claymore/multiverse/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	SET_ATTACK_FORCE(attack_modifiers, rand(max(force - 15, 1), force + 15))
 	return ..()
 
@@ -201,6 +215,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	menu_description = "A sharp blade which provides a low chance of blocking incoming melee attacks. Able to awaken a friendly spirit to provide guidance. Can be worn on the back."
 
 /obj/item/nullrod/claymore/talking/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/spirit_holding)
 
@@ -220,6 +236,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	chaplain_spawnable = FALSE //prevents being pickable as a chaplain weapon (it has 30 force)
 
 /obj/item/nullrod/claymore/talking/chainsword/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/cuffable_item) //Thanks goodness it cannot be selected by chappies
 	AddComponent(
@@ -272,6 +290,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	var/list/alt_simple = list("stab", "pierce", "impale")
 
 /obj/item/nullrod/vibro/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	alt_continuous = string_list(alt_continuous)
 	alt_simple = string_list(alt_simple)
@@ -287,12 +307,16 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	)
 
 /obj/item/nullrod/vibro/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(prob(final_block_chance * (HAS_TRAIT(src, TRAIT_WIELDED) ? 2 : 1)) && attack_type == OVERWHELMING_ATTACK)
 		owner.visible_message(span_danger("[owner] parries [attack_text] with [src]!"))
 		return TRUE
 	return FALSE
 
 /obj/item/nullrod/vibro/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = inhand_icon_state = "[base_icon_state][HAS_TRAIT(src, TRAIT_WIELDED)]"
 	return ..()
 
@@ -317,6 +341,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	menu_description = "An undroppable god hand dealing burn damage. Disappears if the arm holding it is cut off."
 
 /obj/item/nullrod/godhand/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, HAND_REPLACEMENT_TRAIT)
 
@@ -341,10 +367,14 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	var/shield_icon = "shield-red"
 
 /obj/item/nullrod/staff/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/walking_aid)
 
 /obj/item/nullrod/staff/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isinhands)
 		. += mutable_appearance('icons/effects/effects.dmi', shield_icon, MOB_SHIELD_LAYER)
@@ -377,6 +407,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	menu_description = "An odd s(w)ord dealing a laughable amount of damage. Fits in pockets. Can be worn on the belt."
 
 /obj/item/nullrod/sord/suicide_act(mob/living/user) //a near-exact copy+paste of the actual sord suicide_act()
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is trying to impale [user.p_them()]self with [src]! It might be a suicide attempt if it weren't so HOLY."), \
 	span_suicide("You try to impale yourself with [src], but it's TOO HOLY..."))
 	return SHAME
@@ -399,6 +431,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	menu_description = "A war hammer. Capable of tapping knees to measure brain health. Can be worn on the belt."
 
 /obj/item/nullrod/hammer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/kneejerk)
 
@@ -425,6 +459,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	menu_description = "An undroppable sharp chainsaw hand. Can be used as a very slow saw tool. Capable of slowly butchering bodies. Disappears if the arm holding it is cut off."
 
 /obj/item/nullrod/chainsaw/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/prosthetic_icon, "mounted", 180)
 	AddComponent(/datum/component/butchering, \
@@ -436,6 +472,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	RegisterSignal(src, COMSIG_ITEM_SUBTYPE_PICKER_SELECTED, PROC_REF(on_selected))
 
 /obj/item/nullrod/chainsaw/proc/on_selected(datum/source, obj/item/nullrod/old_weapon, mob/living/picker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!iscarbon(picker))
 		return
@@ -445,6 +483,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	new_hero.make_item_prosthetic(src, active.body_zone)
 
 /obj/item/nullrod/chainsaw/equipped(mob/living/carbon/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(user) || HAS_TRAIT_FROM(src, TRAIT_NODROP, HAND_REPLACEMENT_TRAIT))
 		return
@@ -496,6 +536,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	menu_description = "A hammer dealing a little less damage due to its user's pride. Has a low chance of transferring some of the user's reagents to the target. Capable of tapping knees to measure brain health. Can be worn on the back."
 
 /obj/item/nullrod/pride_hammer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/kneejerk)
 	AddElement(
@@ -550,6 +592,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	menu_description = "A sharp fedora dealing a very high amount of throw damage, but none of melee. Fits in pockets. Can be worn on the head, obviously."
 
 /obj/item/nullrod/fedora/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is killing [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to get further from god!"))
 	return (BRUTELOSS|FIRELOSS)
 
@@ -574,6 +618,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	menu_description = "An undroppable sharp armblade capable of inflicting deep wounds. Capable of an ineffective butchering of bodies. Disappears if the arm holding it is cut off."
 
 /obj/item/nullrod/armblade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, HAND_REPLACEMENT_TRAIT)
 	AddComponent(/datum/component/butchering, \
@@ -603,6 +649,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	divine = TRUE
 
 /obj/item/toy/plush/carpplushie/nullrod/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/nullrod_core)
 	AddComponent(/datum/component/faction_granter, FACTION_CARP, holy_role_required = HOLY_ROLE_PRIEST, grant_message = span_boldnotice("You are blessed by Carp-Sie. Wild space carp will no longer attack you."))
@@ -631,6 +679,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	menu_description = "A staff which provides a medium-low chance of blocking incoming melee attacks and deals less damage, unless dual-wielded. Can be worn on the back."
 
 /obj/item/nullrod/bostaff/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/two_handed, \
 		force_unwielded = 14, \
@@ -639,10 +689,14 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	AddComponent(/datum/component/walking_aid)
 
 /obj/item/nullrod/bostaff/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = inhand_icon_state = "[base_icon_state][HAS_TRAIT(src, TRAIT_WIELDED)]"
 	return ..()
 
 /obj/item/nullrod/bostaff/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(attack_type == PROJECTILE_ATTACK || attack_type == LEAP_ATTACK || attack_type == OVERWHELMING_ATTACK)
 		final_block_chance = 0 //Don't bring a stick to a gunfight, and also you aren't going to really block someone full body tackling you with a stick. Or a road roller, if one happened to hit you.
 	return ..()
@@ -670,6 +724,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	var/list/alt_simple = list("stab", "pierce", "impale")
 
 /obj/item/nullrod/tribal_knife/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 	alt_continuous = string_list(alt_continuous)
@@ -681,10 +737,14 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	)
 
 /obj/item/nullrod/tribal_knife/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
 /obj/item/nullrod/tribal_knife/process()
+	procstart = null
+	src.procstart = null
 	slowdown = rand(-10, 10)/10
 	if(iscarbon(loc))
 		var/mob/living/carbon/wielder = loc
@@ -712,6 +772,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	menu_description = "A sharp pitchfork. Can be worn on the back."
 
 /obj/item/nullrod/pitchfork/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/walking_aid)
 
@@ -734,6 +796,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 
 
 /obj/item/nullrod/egyptian/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/walking_aid)
 
@@ -778,6 +842,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	menu_description = "A pointy spear which penetrates armor a little. Can be worn only on the belt."
 
 /obj/item/nullrod/spear/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/walking_aid)
 
@@ -805,6 +871,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	hitsound = 'sound/items/weapons/bladeslice.ogg'
 
 /obj/item/brass_spear/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/walking_aid)
 
@@ -838,12 +906,16 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	var/list/alt_simple = list("stab", "pierce", "impale", "puncture")
 
 /obj/item/nullrod/nullblade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	alt_continuous = string_list(alt_continuous)
 	alt_simple = string_list(alt_simple)
 	AddComponent(/datum/component/alternative_sharpness, SHARP_POINTY, alt_continuous, alt_simple)
 
 /obj/item/nullrod/nullblade/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	//Check for our user's potential 'strength' value. As a baseline, we'll use a default value of 4 for the sake of nonhuman users.
 	var/strength_value = 4
 	// We can use our human wielder's arm strength to determine their 'strength'. We add unarmed lower and upper, then divide by four.
@@ -857,6 +929,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 	return ..()
 
 /obj/item/nullrod/nullblade/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isliving(target))
 		return
 
@@ -872,6 +946,8 @@ GLOBAL_LIST_INIT(nullrod_variants, init_nullrod_variants())
 
 /// If our target is incapacitated, unable to protect themselves, or we attack them from behind, we sneak attack!
 /obj/item/nullrod/nullblade/proc/sneak_attack(mob/living/living_target, mob/user)
+	procstart = null
+	src.procstart = null
 	// Did we successfully meet the criteria for a sneak attack?
 	var/successful_sneak_attack = FALSE
 

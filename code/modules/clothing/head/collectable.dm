@@ -10,6 +10,8 @@
 	abstract_type = /obj/item/clothing/head/collectable
 
 /obj/item/clothing/head/collectable/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/series, /obj/item/clothing/head/collectable, "Super duper collectable hats")
 
@@ -116,6 +118,8 @@
 	dog_fashion = /datum/dog_fashion/head/pirate
 
 /obj/item/clothing/head/collectable/pirate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -4)
 
@@ -142,6 +146,8 @@
 	dog_fashion = /datum/dog_fashion/head/blue_wizard
 
 /obj/item/clothing/head/collectable/wizard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -2)
 
@@ -191,5 +197,7 @@
 	flags_inv = HIDEHAIR
 
 /obj/item/clothing/head/collectable/swat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, 2)

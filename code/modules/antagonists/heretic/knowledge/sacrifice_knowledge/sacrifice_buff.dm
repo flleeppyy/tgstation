@@ -17,20 +17,28 @@
 	var/heal_per_second = 0.25
 
 /datum/status_effect/unholy_determination/on_creation(mob/living/new_owner, set_duration)
+	procstart = null
+	src.procstart = null
 	if(isnum(set_duration))
 		duration = set_duration
 	return ..()
 
 /datum/status_effect/unholy_determination/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.add_traits(list(TRAIT_COAGULATING, TRAIT_NOCRITDAMAGE, TRAIT_NOSOFTCRIT), TRAIT_STATUS_EFFECT(id))
 	if(owner.get_blood_volume() < BLOOD_VOLUME_OKAY)
 		owner.set_blood_volume(BLOOD_VOLUME_OKAY)
 	return TRUE
 
 /datum/status_effect/unholy_determination/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_traits(list(TRAIT_COAGULATING, TRAIT_NOCRITDAMAGE, TRAIT_NOSOFTCRIT), TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/unholy_determination/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	// The amount we heal of each damage type per tick. If we're missing legs we heal better because we can't dodge.
 	var/healing_amount = (heal_per_second * seconds_between_ticks) + (heal_per_second * (2 - owner.usable_legs))
 
@@ -61,6 +69,8 @@
  * Heals up all the owner a bit, fire stacks and losebreath included.
  */
 /datum/status_effect/unholy_determination/proc/adjust_all_damages(amount, seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 
 	owner.adjust_fire_stacks(-1)
 	owner.losebreath = max(owner.losebreath - (0.5 * seconds_between_ticks), 0)
@@ -77,6 +87,8 @@
  * Adjust the owner's temperature up or down to standard body temperatures.
  */
 /datum/status_effect/unholy_determination/proc/adjust_temperature(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	var/target_temp = owner.get_body_temp_normal(apply_change = FALSE)
 	if(owner.bodytemperature > target_temp)
 		owner.adjust_bodytemperature(-50 * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_between_ticks, target_temp)
@@ -94,11 +106,15 @@
  * Slow and stop any blood loss the owner's experiencing.
  */
 /datum/status_effect/unholy_determination/proc/adjust_bleed_wounds(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	owner.adjust_blood_volume(2 * seconds_between_ticks, maximum = BLOOD_VOLUME_NORMAL)
 	owner.coagulant_effect(0.5 * seconds_between_ticks)
 
 /// Torment the target with a frightening hand
 /proc/fire_curse_hand(mob/living/carbon/victim, turf/forced_turf, range = 8, projectile_type = /obj/projectile/curse_hand/hel)
+	procstart = null
+	src.procstart = null
 	var/grab_dir = turn(victim.dir, pick(-90, 90, 180, 180)) // Not in front, favour behind
 	var/turf/spawn_turf = get_ranged_target_turf(victim, grab_dir, range)
 	spawn_turf = forced_turf ? forced_turf : spawn_turf

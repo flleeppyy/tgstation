@@ -23,6 +23,8 @@
 	greyscale_colors = "#2e2e2e"
 
 /obj/item/clothing/mask/bandana/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(up)
 		. += "Use in-hand to untie it to wear as a mask!"
@@ -34,15 +36,21 @@
 		. += "Alt-click to tie it up to wear on your neck!"
 
 /obj/item/clothing/mask/bandana/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	adjust_visor(user)
 
 /obj/item/clothing/mask/bandana/adjust_visor(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(slot_flags & ITEM_SLOT_NECK)
 		to_chat(user, span_warning("You must undo [src] in order to push it into a hat!"))
 		return FALSE
 	return ..()
 
 /obj/item/clothing/mask/bandana/visor_toggling()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(up)
 		undyeable = TRUE
@@ -50,6 +58,8 @@
 		undyeable = initial(undyeable)
 
 /obj/item/clothing/mask/bandana/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user))
 		return NONE
 
@@ -251,13 +261,19 @@
 	interaction_flags_click = NEED_DEXTERITY|ALLOW_RESTING
 
 /obj/item/clothing/mask/facescarf/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	adjust_visor(user)
 
 /obj/item/clothing/mask/facescarf/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	adjust_visor(user)
 	return CLICK_ACTION_SUCCESS
 
 
 /obj/item/clothing/mask/facescarf/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Alt-click [src] to adjust it.")

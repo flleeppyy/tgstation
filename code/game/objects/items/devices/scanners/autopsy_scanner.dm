@@ -18,6 +18,8 @@
 	drop_sound = SFX_GENERIC_DEVICE_DROP
 
 /obj/item/autopsy_scanner/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isliving(interacting_with))
 		return NONE
 	if(!user.can_read(src) || user.is_blind())
@@ -49,6 +51,8 @@
 	add_fingerprint(user)
 
 /obj/item/autopsy_scanner/proc/scan_cadaver(mob/living/carbon/human/user, mob/living/carbon/scanned)
+	procstart = null
+	src.procstart = null
 	if(scanned.stat != DEAD)
 		return
 

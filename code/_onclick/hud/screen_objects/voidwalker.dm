@@ -12,6 +12,8 @@
 	var/invisibility_toggle = TRUE
 
 /atom/movable/screen/space_camo/Click()
+	procstart = null
+	src.procstart = null
 	if(!isliving(usr))
 		return
 
@@ -24,6 +26,8 @@
 		ADD_TRAIT(usr, TRAIT_INVISIBILITY_BLOCKED, type)
 
 /atom/movable/screen/space_camo/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = initial(icon_state) + (invisibility_toggle ? "" : "_off")
 	return ..()
 
@@ -36,12 +40,16 @@
 	var/index = 1
 
 /atom/movable/screen/vomit_jump/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/icon/vomit_overlay = icon(/obj/effect/decal/cleanable/vomit/nebula::icon, pick(/obj/effect/decal/cleanable/vomit/nebula::random_icon_states))
 	add_overlay(vomit_overlay)
 
 /atom/movable/screen/vomit_jump/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/list/vomits = get_valid_vomits()
@@ -52,6 +60,8 @@
 
 
 /atom/movable/screen/vomit_jump/proc/get_valid_vomits()
+	procstart = null
+	src.procstart = null
 	var/list/valid_vomits = list()
 
 	for(var/atom/movable/vomit as anything in GLOB.nebula_vomits)
@@ -62,6 +72,8 @@
 	return valid_vomits
 
 /atom/movable/screen/vomit_jump/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 	if(LAZYACCESS(modifiers, RIGHT_CLICK) || LAZYACCESS(modifiers, SHIFT_CLICK))
 		usr.examinate(src)

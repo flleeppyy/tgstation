@@ -7,6 +7,8 @@
 	skill_item_path = /obj/item/clothing/neck/cloak/skill_reward/gaming
 
 /datum/skill/gaming/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	levelUpMessages[1] = span_nicegreen("I'm starting to get a hang of the controls of these games...")
 	levelUpMessages[4] = span_nicegreen("I'm starting to pick up the meta of these arcade games. If I were to minmax the optimal strat and accentuate my playstyle around well-refined tech...")

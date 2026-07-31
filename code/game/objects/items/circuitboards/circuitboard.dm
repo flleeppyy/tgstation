@@ -23,6 +23,8 @@
 	var/specific_parts = FALSE
 
 /obj/item/circuitboard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(name_extension)
 		name = "[initial(name)] [name_extension]"
 	if(icon_state == "circuit_map") // some circuitboards have cool custom sprites
@@ -30,9 +32,13 @@
 	return ..()
 
 /obj/item/circuitboard/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/silicon = 20)
 
 /obj/item/circuitboard/proc/apply_default_parts(obj/machinery/machine)
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(machine.component_parts))
 		// This really shouldn't happen. If it somehow does, print out a stack trace and gracefully handle it.
 		stack_trace("apply_defauly_parts called on machine that already had component_parts: [machine]")
@@ -62,6 +68,8 @@
  * * machine - The machine to attempt to configure.
  */
 /obj/item/circuitboard/proc/configure_machine(obj/machinery/machine)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -70,6 +78,8 @@
  * * install_frame - The frame the circuit has been installed into for reference.
  */
 /obj/item/circuitboard/proc/completion_requirements(obj/structure/frame/install_frame, mob/living/user)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 // Circuitboard/machine
@@ -100,6 +110,8 @@ micro-manipulator, console screen, beaker, Microlaser, matter bin, power cells.
  * * obj/machinery/machine - if not null adds the parts to the machine directly & will not return anything
 */
 /obj/item/circuitboard/machine/proc/flatten_component_list(obj/machinery/machine)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	. = NONE
@@ -139,6 +151,8 @@ micro-manipulator, console screen, beaker, Microlaser, matter bin, power cells.
  * * obj/machinery/machine - the machine to apply the default parts to
 */
 /obj/item/circuitboard/machine/apply_default_parts(obj/machinery/machine)
+	procstart = null
+	src.procstart = null
 	if(!req_components && !length(replacement_parts))
 		return
 
@@ -159,6 +173,8 @@ micro-manipulator, console screen, beaker, Microlaser, matter bin, power cells.
 	machine.RefreshParts()
 
 /obj/item/circuitboard/machine/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!LAZYLEN(req_components))
 		. += span_info("It requires no components.")

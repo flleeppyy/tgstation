@@ -9,6 +9,8 @@
 	abstract_type = /datum/unit_test/lungs
 
 /datum/unit_test/lungs/lungs_sanity/Run()
+	procstart = null
+	src.procstart = null
 	// "Standard" form of breathing.
 	// 2500 Litres of O2/N2 gas mix, ideal for life.
 	var/datum/gas_mixture/test_mix = create_standard_mix()
@@ -41,6 +43,8 @@
 /datum/unit_test/lungs/lungs_sanity_plasmaman
 
 /datum/unit_test/lungs/lungs_sanity_plasmaman/Run()
+	procstart = null
+	src.procstart = null
 	// 2500 Litres of pure Plasma.
 	var/datum/gas_mixture/plasma_test_mix = create_plasma_mix()
 	var/mob/living/carbon/human/lab_rat = allocate(/mob/living/carbon/human/consistent)
@@ -60,6 +64,8 @@
 /datum/unit_test/lungs/lungs_sanity_ashwalker
 
 /datum/unit_test/lungs/lungs_sanity_ashwalker/Run()
+	procstart = null
+	src.procstart = null
 	// Gas mix resembling one cell of lavaland's atmosphere.
 	var/datum/gas_mixture/lavaland_test_mix = create_lavaland_mix()
 	var/obj/item/organ/lungs/lavaland/test_lungs = allocate(/obj/item/organ/lungs/lavaland)
@@ -71,6 +77,8 @@
 /// If "expect_failure" is set to TRUE, the test ensures the given Human suffocated.
 /// A "test_name" string is required to contextualize test logs. Describe the gas you're testing.
 /datum/unit_test/lungs/proc/lungs_test_check_breath(test_name, mob/living/carbon/human/lab_rat, obj/item/organ/lungs/test_lungs, datum/gas_mixture/test_mix, expect_failure = FALSE)
+	procstart = null
+	src.procstart = null
 	// Setup a small volume of gas which represents one "breath" from test_mix.
 	var/datum/gas_mixture/test_breath
 
@@ -156,6 +164,8 @@
 
 /// Tests minimum gas alerts by comparing gas pressure.
 /datum/unit_test/lungs/proc/lungs_test_alert_min(mob/living/carbon/human/lab_rat, obj/item/organ/lungs/test_lungs, alert_name, min_pressure, pressure)
+	procstart = null
+	src.procstart = null
 	var/alert_thrown = lab_rat.has_alert(alert_name)
 	var/pressure_safe = (pressure >= min_pressure) || (min_pressure == 0)
 	TEST_ASSERT(!pressure_safe && alert_thrown || pressure_safe, TEST_ALERT_THROW_MESSAGE(test_lungs, alert_name))
@@ -163,6 +173,8 @@
 
 /// Tests maximum gas alerts by comparing gas pressure.
 /datum/unit_test/lungs/proc/lungs_test_alert_max(mob/living/carbon/human/lab_rat, obj/item/organ/lungs/test_lungs, alert_name, max_pressure, pressure)
+	procstart = null
+	src.procstart = null
 	var/alert_thrown = lab_rat.has_alert(alert_name)
 	var/pressure_safe = (pressure <= max_pressure) || (max_pressure == 0)
 	TEST_ASSERT(!pressure_safe && alert_thrown || pressure_safe, TEST_ALERT_THROW_MESSAGE(test_lungs, alert_name))
@@ -170,6 +182,8 @@
 
 /// Set up a 2500-Litre gas mixture with the given gases and percentages.
 /datum/unit_test/lungs/proc/create_gas_mix(list/gas_to_percent)
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/test_mix = allocate(/datum/gas_mixture, 2500)
 	test_mix.temperature = T20C
 	for(var/datum/gas/gas_type as anything in gas_to_percent)
@@ -179,18 +193,26 @@
 
 /// Set up an O2/N2 gas mix which is "ideal" for organic life.
 /datum/unit_test/lungs/proc/create_standard_mix()
+	procstart = null
+	src.procstart = null
 	return create_gas_mix(list(/datum/gas/oxygen = O2STANDARD, /datum/gas/nitrogen = N2STANDARD))
 
 /// Set up a pure Nitrogen gas mix.
 /datum/unit_test/lungs/proc/create_nitrogen_mix()
+	procstart = null
+	src.procstart = null
 	return create_gas_mix(list(/datum/gas/nitrogen = 1))
 
 /// Set up an O2/N2 gas mix which is "ideal" for plasmamen.
 /datum/unit_test/lungs/proc/create_plasma_mix()
+	procstart = null
+	src.procstart = null
 	return create_gas_mix(list(/datum/gas/plasma = 1))
 
 /// Set up an Lavaland gas mix which is "ideal" for Ashwalker life.
 /datum/unit_test/lungs/proc/create_lavaland_mix()
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/immutable/planetary/lavaland_mix = SSair.parse_gas_string(LAVALAND_DEFAULT_ATMOS, /datum/gas_mixture/immutable/planetary)
 	var/datum/gas_mixture/test_mix = allocate(/datum/gas_mixture, 2500)
 	test_mix.copy_from(lavaland_mix)

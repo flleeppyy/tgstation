@@ -34,10 +34,14 @@
 	COOLDOWN_DECLARE(batch_start_cooldown)
 
 /obj/machinery/brm/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/machinery/brm/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 
 	if(isnull(held_item))
@@ -57,6 +61,8 @@
 			return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/brm/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("The small screen reads there are [span_boldnotice("[SSore_generation.available_boulders.len] boulders")] available to teleport.")
 	. += span_notice("Can collect up to <b>[boulders_processing_max] boulders</b> at a time.")
@@ -73,6 +79,8 @@
 		. += span_notice("The whole machine can be [EXAMINE_HINT("pried")] apart.")
 
 /obj/machinery/brm/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = base_icon_state
 
 	if(!anchored || !is_operational || machine_stat & (BROKEN | NOPOWER) || panel_open)
@@ -86,19 +94,27 @@
 	return ..()
 
 /obj/machinery/brm/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_BLOCKING
 	if(default_unfasten_wrench(user, tool, time = 1.5 SECONDS) == SUCCESSFUL_UNFASTEN)
 		update_appearance(UPDATE_ICON_STATE)
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/brm/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/brm/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 ///To allow boulders on a conveyor belt to move unobstructed if multiple machines are made on a single line
 /obj/machinery/brm/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		return FALSE
 	if(istype(mover, /obj/item/boulder))
@@ -106,6 +122,8 @@
 	return ..()
 
 /obj/machinery/brm/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	boulders_processing_max = 0
@@ -115,6 +133,8 @@
 	boulders_processing_max = ROUND_UP((boulders_processing_max / 12) * 7)
 
 /obj/machinery/brm/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || panel_open)
 		return
@@ -138,6 +158,8 @@
  * * mob/user - the mob to inform if conditions aren't met
  */
 /obj/machinery/brm/proc/handle_teleport_conditions(mob/user)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(!COOLDOWN_FINISHED(src, manual_teleport_cooldown))
@@ -152,6 +174,8 @@
 	return TRUE
 
 /obj/machinery/brm/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || panel_open)
 		return
@@ -169,6 +193,8 @@
 	return TRUE
 
 /obj/machinery/brm/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || panel_open)
 		return
@@ -186,6 +212,8 @@
 	return TRUE
 
 /obj/machinery/brm/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN || panel_open)
 		return
@@ -203,6 +231,8 @@
  * * mob/user - the player who has toggled us
  */
 /obj/machinery/brm/proc/toggle_auto_on(mob/user)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(panel_open)
@@ -222,6 +252,8 @@
 	update_appearance(UPDATE_ICON_STATE)
 
 /obj/machinery/brm/attack_ai_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN || panel_open)
 		return
@@ -233,6 +265,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/brm/attack_robot_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN || panel_open)
 		return
@@ -246,6 +280,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/brm/process()
+	procstart = null
+	src.procstart = null
 	if(!toggled_on)
 		return PROCESS_KILL
 
@@ -265,6 +301,8 @@
  * * boulders_remaining - how many boulders we want to try & collect spawning a boulder every TELEPORTATION_TIME seconds
  */
 /obj/machinery/brm/proc/pre_collect_boulder(feedback = TRUE, boulders_remaining = 1)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	batch_processing = TRUE

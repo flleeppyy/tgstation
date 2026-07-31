@@ -36,27 +36,37 @@
 	var/medium_range = 16
 
 /obj/item/pinpointer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.pinpointer_list += src
 
 /obj/item/pinpointer/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	GLOB.pinpointer_list -= src
 	target = null
 	return ..()
 
 /obj/item/pinpointer/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!process_scan) //since it's not scanning on process, it scans here.
 		scan_for_target()
 	toggle_on()
 	user.visible_message(span_notice("[user] [active ? "" : "de"]activates [user.p_their()] pinpointer."), span_notice("You [active ? "" : "de"]activate your pinpointer."))
 
 /obj/item/pinpointer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(target)
 		. += "It is currently tracking [target]."
 
 /obj/item/pinpointer/proc/toggle_on()
+	procstart = null
+	src.procstart = null
 	active = !active
 	playsound(src, 'sound/items/tools/screwdriver2.ogg', 50, TRUE)
 	if(active)
@@ -67,6 +77,8 @@
 	update_appearance()
 
 /obj/item/pinpointer/process()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return PROCESS_KILL
 	if(process_scan)
@@ -74,9 +86,13 @@
 	update_appearance()
 
 /obj/item/pinpointer/proc/scan_for_target()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/pinpointer/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!active)
 		return
@@ -92,6 +108,8 @@
 
 ///Called by update_icon after sanity. There is a target
 /obj/item/pinpointer/proc/get_direction_icon(here, there)
+	procstart = null
+	src.procstart = null
 	if(get_dist_euclidean(here,there) <= minimum_range)
 		return "pinon[alert ? "alert" : ""]direct[icon_suffix]"
 	else
@@ -118,10 +136,14 @@
 	var/ignore_suit_sensor_level = FALSE
 
 /obj/item/pinpointer/crew/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pinpointer_owner = null
 
 /obj/item/pinpointer/crew/proc/trackable(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	var/turf/here = get_turf(src)
 	var/turf/there = get_turf(H)
 	if(here && there && (there.z == here.z || (is_station_level(here.z) && is_station_level(there.z)))) // Device and target should be on the same level or different levels of the same station
@@ -132,6 +154,8 @@
 	return FALSE
 
 /obj/item/pinpointer/crew/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(active)
 		toggle_on()
 		user.visible_message(span_notice("[user] deactivates [user.p_their()] pinpointer."), span_notice("You deactivate your pinpointer."))
@@ -179,6 +203,8 @@
 	user.visible_message(span_notice("[user] activates [user.p_their()] pinpointer."), span_notice("You activate your pinpointer."))
 
 /obj/item/pinpointer/crew/scan_for_target()
+	procstart = null
+	src.procstart = null
 	if(target)
 		if(ishuman(target))
 			var/mob/living/carbon/human/H = target
@@ -194,13 +220,19 @@
 	var/other_pair
 
 /obj/item/pinpointer/pair/Destroy()
+	procstart = null
+	src.procstart = null
 	other_pair = null
 	. = ..()
 
 /obj/item/pinpointer/pair/scan_for_target()
+	procstart = null
+	src.procstart = null
 	target = other_pair
 
 /obj/item/pinpointer/pair/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!active || !target)
 		return
@@ -219,15 +251,21 @@
 	var/obj/docking_port/mobile/shuttleport
 
 /obj/item/pinpointer/shuttle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	shuttleport = SSshuttle.getShuttle("huntership")
 
 /obj/item/pinpointer/shuttle/scan_for_target()
+	procstart = null
+	src.procstart = null
 	if(!shuttleport)
 		shuttleport = SSshuttle.getShuttle("huntership")
 	target = shuttleport
 
 /obj/item/pinpointer/shuttle/Destroy()
+	procstart = null
+	src.procstart = null
 	shuttleport = null
 	. = ..()
 
@@ -242,6 +280,8 @@ GLOBAL_LIST_EMPTY(sniffable_sheets)
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 0.8, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 0.7)
 
 /obj/item/pinpointer/material_sniffer/scan_for_target()
+	procstart = null
+	src.procstart = null
 	if(target || !GLOB.sniffable_sheets.len)
 		return
 	var/obj/item/stack/sheet/new_sheet_target

@@ -134,6 +134,8 @@
  * It can be piloted into the station's area.
  */
 /proc/summon_battlecruiser(datum/team/battlecruiser/team)
+	procstart = null
+	src.procstart = null
 
 	var/list/candidates = SSpolling.poll_ghost_candidates("Do you wish to be considered for [span_notice("battlecruiser crew")]?", check_jobban = ROLE_TRAITOR, alert_pic = /obj/machinery/sleeper/syndie, role_name_text = "battlecruiser crew")
 	shuffle_inplace(candidates)

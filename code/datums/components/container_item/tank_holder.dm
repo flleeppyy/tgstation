@@ -4,6 +4,8 @@
 	var/make_density
 
 /datum/component/container_item/tank_holder/Initialize(state, density = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -12,6 +14,8 @@
 	return ..()
 
 /datum/component/container_item/tank_holder/try_attach(datum/source, obj/structure/tank_holder/container, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!container || !istype(container))
 		return FALSE
 	var/obj/item/I = parent

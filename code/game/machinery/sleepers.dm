@@ -54,6 +54,8 @@
 	)
 
 /obj/machinery/sleeper/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload && !deconstructable)
 		LAZYREMOVE(component_parts, circuit)
@@ -63,6 +65,8 @@
 	reset_chem_buttons()
 
 /obj/machinery/sleeper/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/matterbin_rating
 	for(var/datum/stock_part/matter_bin/matterbins in component_parts)
@@ -78,29 +82,41 @@
 	reset_chem_buttons()
 
 /obj/machinery/sleeper/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][state_open ? "-open" : panel_open ? "-o" : ""]"
 	return ..()
 
 /obj/machinery/sleeper/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	visible_message(span_notice("[occupant] emerges from [src]!"),
 		span_notice("You climb out of [src]!"))
 	open_machine()
 
 /obj/machinery/sleeper/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!state_open && gone == occupant)
 		container_resist_act(gone)
 
 /obj/machinery/sleeper/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if (!state_open)
 		container_resist_act(user)
 
 /obj/machinery/sleeper/open_machine(drop = TRUE, density_to_set = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!state_open && !panel_open)
 		flick("[initial(icon_state)]-anim", src)
 	return ..()
 
 /obj/machinery/sleeper/close_machine(mob/user, density_to_set = TRUE)
+	procstart = null
+	src.procstart = null
 	if((isnull(user) || istype(user)) && state_open && !panel_open)
 		flick("[initial(icon_state)]-anim", src)
 		..()
@@ -109,6 +125,8 @@
 			to_chat(mob_occupant, "[enter_message]")
 
 /obj/machinery/sleeper/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. & EMP_PROTECT_SELF)
 		return
@@ -116,11 +134,15 @@
 		open_machine()
 
 /obj/machinery/sleeper/mouse_drop_receive(atom/target, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(target))
 		return
 	close_machine(target)
 
 /obj/machinery/sleeper/screwdriver_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(occupant)
 		to_chat(user, span_warning("[src] is currently occupied!"))
 		return ITEM_INTERACT_BLOCKING
@@ -130,26 +152,38 @@
 	return default_deconstruction_screwdriver(user, I)
 
 /obj/machinery/sleeper/wrench_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	return default_change_direction_wrench(user, I)
 
 /obj/machinery/sleeper/crowbar_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	return default_pry_open(user, I, deconstruct_on_fail = TRUE)
 
 /obj/machinery/sleeper/can_crowbar_pry_open()
+	procstart = null
+	src.procstart = null
 	return !state_open && !panel_open
 
 /obj/machinery/sleeper/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!controls_inside)
 		return GLOB.notcontained_state
 	return GLOB.default_state
 
 /obj/machinery/sleeper/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Sleeper", name)
 		ui.open()
 
 /obj/machinery/sleeper/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(state_open)
 		close_machine()
 	else
@@ -157,13 +191,19 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/sleeper/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Alt-click [src] to [state_open ? "close" : "open"] it.")
 
 /obj/machinery/sleeper/process()
+	procstart = null
+	src.procstart = null
 	use_energy(idle_power_usage)
 
 /obj/machinery/sleeper/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["occupied"] = !!occupant
 	data["open"] = state_open
@@ -233,6 +273,8 @@
 	return data
 
 /obj/machinery/sleeper/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -257,6 +299,8 @@
 					to_chat(usr, span_warning("Chemical system re-route detected, results may not be as expected!"))
 
 /obj/machinery/sleeper/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 
@@ -269,6 +313,8 @@
 	return TRUE
 
 /obj/machinery/sleeper/proc/inject_chem(chem, mob/user)
+	procstart = null
+	src.procstart = null
 	if((chem in available_chems) && chem_allowed(chem))
 		occupant.reagents.add_reagent(chem_buttons[chem], 10) //emag effect kicks in here so that the "intended" chem is used for all checks, for extra FUUU
 		if(user)
@@ -276,6 +322,8 @@
 		return TRUE
 
 /obj/machinery/sleeper/proc/chem_allowed(chem)
+	procstart = null
+	src.procstart = null
 	var/mob/living/mob_occupant = occupant
 	if(!mob_occupant || !mob_occupant.reagents)
 		return
@@ -284,6 +332,8 @@
 	return amount && occ_health
 
 /obj/machinery/sleeper/proc/reset_chem_buttons()
+	procstart = null
+	src.procstart = null
 	obj_flags &= ~EMAGGED
 	LAZYINITLIST(chem_buttons)
 	for(var/chem in available_chems)
@@ -358,6 +408,8 @@
 	)
 
 /obj/machinery/sleeper/party/inject_chem(chem, mob/user)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		occupant.reagents.add_reagent(/datum/reagent/toxin/leadacetate, 4)
 	else if (prob(20)) //You're injecting chemicals into yourself from a recalled, decrepit medical machine. What did you expect?

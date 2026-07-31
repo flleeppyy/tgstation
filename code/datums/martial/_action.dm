@@ -8,14 +8,20 @@
 	var/datum/martial_art/current_used_art
 
 /datum/action/swap_arts/Destroy()
+	procstart = null
+	src.procstart = null
 	current_used_art = null
 	return ..()
 
 /datum/action/swap_arts/New(Target, datum/martial_art/starting_style)
+	procstart = null
+	src.procstart = null
 	current_used_art = starting_style
 	return ..()
 
 /datum/action/swap_arts/update_button_name(atom/movable/screen/movable/action_button/button, force, datum/martial_art/new_art)
+	procstart = null
+	src.procstart = null
 	if(new_art)
 		current_used_art = new_art
 	name = "[current_used_art.help_verb]"
@@ -25,6 +31,8 @@
 	return ..()
 
 /datum/action/swap_arts/Trigger(mob/living/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/living_owner = owner
 	if(trigger_flags & TRIGGER_SECONDARY_ACTION && (LAZYLEN(living_owner.martial_arts) >= 2))

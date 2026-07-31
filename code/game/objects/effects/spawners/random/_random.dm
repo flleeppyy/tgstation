@@ -33,11 +33,15 @@
 	var/remove_if_cant_spawn = TRUE
 
 /obj/effect/spawner/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spawn_loot()
 
 ///If the spawner has any loot defined, randomly picks some and spawns it. Does not cleanup the spawner.
 /obj/effect/spawner/random/proc/spawn_loot(lootcount_override)
+	procstart = null
+	src.procstart = null
 	if(!prob(spawn_loot_chance))
 		return
 
@@ -93,6 +97,8 @@
 
 ///Levels out the weights of loot if lower than 1, or makes rarer spawns even more rare.
 /obj/effect/spawner/random/proc/skew_loot_weights(list/loot_list, exponent)
+	procstart = null
+	src.procstart = null
 	///This helps keeping the modified weights more or less correct, since pick_weight doesn't appreciate decimals.
 	var/precision = 1
 	if(exponent < 1)
@@ -114,10 +120,14 @@
  * type_path_to_make - what are we spawning?
  **/
 /obj/effect/spawner/random/proc/make_item(spawn_loc, type_path_to_make)
+	procstart = null
+	src.procstart = null
 	return new type_path_to_make(spawn_loc)
 
 ///If the spawner has a spawn_scatter_radius set, this creates a list of nearby turfs available that are in view and have an unblocked line to them.
 /obj/effect/spawner/random/proc/get_spawn_locations(radius)
+	procstart = null
+	src.procstart = null
 	var/list/scatter_locations = list()
 
 	if(!radius)
@@ -134,6 +144,8 @@
 	return scatter_locations
 
 /obj/effect/spawner/random/proc/has_unblocked_line(destination)
+	procstart = null
+	src.procstart = null
 	for(var/turf/potential_blockage as anything in get_line(get_turf(src), destination))
 		if(!potential_blockage.is_blocked_turf(exclude_mobs = TRUE))
 			continue
@@ -151,14 +163,20 @@
 	var/list/stat_table //list of all items "spawned" and their occurrance probability
 
 /obj/item/loot_table_maker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	make_table()
 
 /obj/item/loot_table_maker/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "Loot pool re-rolled.")
 	make_table()
 
 /obj/item/loot_table_maker/proc/make_table()
+	procstart = null
+	src.procstart = null
 	spawned_table = list()
 	stat_table = list()
 	var/obj/effect/spawner/random/spawner_to_table = new spawner_to_test

@@ -9,6 +9,8 @@
 	var/signal_lost = FALSE
 
 /obj/machinery/computer/exodrone_control_console/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -16,6 +18,8 @@
 		ui.open()
 
 /obj/machinery/computer/exodrone_control_console/proc/start_drone_control(obj/item/exodrone/drone)
+	procstart = null
+	src.procstart = null
 	if(!drone.controlled)//Only one controller per drone at once to make it saner
 		///End control if we had previous drone
 		end_drone_control()
@@ -27,18 +31,24 @@
 		playsound(src, 'sound/machines/terminal/terminal_on.ogg', 20, vary = TRUE)
 
 /obj/machinery/computer/exodrone_control_console/proc/on_exodrone_status_changed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	//Notify we need human action and switch screeb icon to alert.
 	playsound(src, 'sound/machines/terminal/terminal_processing.ogg', 20, vary = TRUE)
 	update_icon()
 
 /obj/machinery/computer/exodrone_control_console/proc/drone_destroyed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	signal_lost = TRUE
 	playsound(src, 'sound/machines/terminal/terminal_alert.ogg', 20, vary = TRUE)
 	end_drone_control()
 
 /obj/machinery/computer/exodrone_control_console/proc/end_drone_control()
+	procstart = null
+	src.procstart = null
 	if(controlled_drone)
 		controlled_drone.controlled = FALSE
 		UnregisterSignal(controlled_drone,list(COMSIG_QDELETING,COMSIG_EXODRONE_STATUS_CHANGED))
@@ -47,15 +57,21 @@
 		playsound(src, 'sound/machines/terminal/terminal_off.ogg', 20, vary = TRUE)
 
 /obj/machinery/computer/exodrone_control_console/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	end_drone_control()
 
 /obj/machinery/computer/exodrone_control_console/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["all_tools"] = GLOB.exodrone_tool_metadata
 	.["all_bands"] = GLOB.exoscanner_bands
 
 /obj/machinery/computer/exodrone_control_console/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["signal_lost"] = signal_lost
 	.["drone"] = controlled_drone
@@ -94,6 +110,8 @@
 		.["all_drones"] = exodrones
 
 /obj/machinery/computer/exodrone_control_console/update_overlays()
+	procstart = null
+	src.procstart = null
 	/// Show alert screen if the drone is in a mode that requires decisionmaking
 	if(controlled_drone && (controlled_drone.drone_status == EXODRONE_IDLE || controlled_drone.drone_status == EXODRONE_EXPLORATION || controlled_drone.drone_status == EXODRONE_ADVENTURE))
 		icon_screen = "alert:2"
@@ -102,6 +120,8 @@
 	. = ..()
 
 /obj/machinery/computer/exodrone_control_console/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -177,4 +197,6 @@
 			return TRUE
 
 /obj/machinery/computer/exodrone_control_console/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(get_asset_datum(/datum/asset/simple/adventure)) //preset screens

@@ -2,10 +2,14 @@
 #define STEALTH_MODE_TRAIT "stealth_mode"
 
 /client/proc/add_admin_verbs()
+	procstart = null
+	src.procstart = null
 	control_freak = CONTROL_FREAK_SKIN | CONTROL_FREAK_MACROS
 	SSadmin_verbs.assosciate_admin(src)
 
 /client/proc/remove_admin_verbs()
+	procstart = null
+	src.procstart = null
 	control_freak = initial(control_freak)
 	SSadmin_verbs.deassosciate_admin(src)
 
@@ -167,10 +171,14 @@ ADMIN_VERB(poll_panel, R_POLL, "Server Poll Management", "View and manage polls.
 
 /// Returns this client's stealthed ckey
 /client/proc/getStealthKey()
+	procstart = null
+	src.procstart = null
 	return GLOB.stealthminID[ckey]
 
 /// Takes a stealthed ckey as input, returns the true key it represents
 /proc/findTrueKey(stealth_key)
+	procstart = null
+	src.procstart = null
 	if(!stealth_key)
 		return
 	for(var/potentialKey in GLOB.stealthminID)
@@ -179,6 +187,8 @@ ADMIN_VERB(poll_panel, R_POLL, "Server Poll Management", "View and manage polls.
 
 /// Hands back a stealth ckey to use, guarenteed to be unique
 /proc/generateStealthCkey()
+	procstart = null
+	src.procstart = null
 	var/guess = rand(0, 1000)
 	var/text_guess
 	var/valid_found = FALSE
@@ -196,6 +206,8 @@ ADMIN_VERB(poll_panel, R_POLL, "Server Poll Management", "View and manage polls.
 	return text_guess
 
 /client/proc/createStealthKey()
+	procstart = null
+	src.procstart = null
 	GLOB.stealthminID["[ckey]"] = generateStealthCkey()
 
 ADMIN_VERB(stealth, R_STEALTH, "Stealth Mode", "Toggle stealth.", ADMIN_CATEGORY_MAIN)
@@ -207,6 +219,8 @@ ADMIN_VERB(stealth, R_STEALTH, "Stealth Mode", "Toggle stealth.", ADMIN_CATEGORY
 	BLACKBOX_LOG_ADMIN_VERB("Stealth Mode")
 
 /client/proc/enable_stealth_mode()
+	procstart = null
+	src.procstart = null
 	var/new_key = ckeyEx(stripped_input(usr, "Enter your desired display name.", "Fake Key", key, 26))
 	if(!new_key)
 		return
@@ -225,6 +239,8 @@ ADMIN_VERB(stealth, R_STEALTH, "Stealth Mode", "Toggle stealth.", ADMIN_CATEGORY
 	message_admins("[key_name_admin(usr)] has turned stealth mode ON")
 
 /client/proc/disable_stealth_mode()
+	procstart = null
+	src.procstart = null
 	holder.fakekey = null
 	if(isobserver(mob))
 		mob.RemoveInvisibility(INVISIBILITY_SOURCE_STEALTHMODE)

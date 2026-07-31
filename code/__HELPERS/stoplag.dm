@@ -5,6 +5,8 @@
 
 ///returns the number of ticks slept
 /proc/stoplag(initial_delay)
+	procstart = null
+	src.procstart = null
 	if (!Master || Master.init_stage_completed < INITSTAGE_MAX)
 		sleep(world.tick_lag)
 		return 1

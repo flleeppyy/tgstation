@@ -5,6 +5,8 @@
 	var/emote_key
 
 /datum/keybinding/emote/proc/link_to_emote(datum/emote/faketype)
+	procstart = null
+	src.procstart = null
 	hotkey_keys = list(UNBOUND_KEY)
 	classic_keys = list(UNBOUND_KEY)
 	emote_key = initial(faketype.key)
@@ -12,6 +14,8 @@
 	full_name = capitalize(initial(faketype.key))
 
 /datum/keybinding/emote/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

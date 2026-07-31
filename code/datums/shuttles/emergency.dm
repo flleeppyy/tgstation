@@ -14,6 +14,8 @@
 	var/events_override = FALSE
 
 /datum/map_template/shuttle/emergency/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!occupancy_limit && who_can_purchase)
 		CRASH("The [name] needs an occupancy limit!")
@@ -25,6 +27,8 @@
 
 ///on post_load use our variables to change shuttle events
 /datum/map_template/shuttle/emergency/post_load(obj/docking_port/mobile/mobile)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!events)
 		return
@@ -154,6 +158,8 @@
 	occupancy_limit = "30"
 
 /datum/map_template/shuttle/emergency/medisim/prerequisites_met()
+	procstart = null
+	src.procstart = null
 	return SSshuttle.shuttle_purchase_requirements_met[SHUTTLE_UNLOCK_MEDISIM]
 
 /datum/map_template/shuttle/emergency/discoinferno
@@ -177,9 +183,13 @@
 	var/arena_loaded = FALSE
 
 /datum/map_template/shuttle/emergency/arena/prerequisites_met()
+	procstart = null
+	src.procstart = null
 	return SSshuttle.shuttle_purchase_requirements_met[SHUTTLE_UNLOCK_BUBBLEGUM]
 
 /datum/map_template/shuttle/emergency/arena/post_load(obj/docking_port/mobile/M)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!arena_loaded)
 		arena_loaded = TRUE
@@ -295,6 +305,8 @@
 	prerequisites = "This shuttle is only offered for purchase when the station is low on funds."
 
 /datum/map_template/shuttle/emergency/scrapheap/prerequisites_met()
+	procstart = null
+	src.procstart = null
 	return SSshuttle.shuttle_purchase_requirements_met[SHUTTLE_UNLOCK_SCRAPHEAP]
 
 /obj/modular_map_root/scrapheapchallenge
@@ -311,6 +323,8 @@
 	occupancy_limit = "666"
 
 /datum/map_template/shuttle/emergency/narnar/prerequisites_met()
+	procstart = null
+	src.procstart = null
 	return SSshuttle.shuttle_purchase_requirements_met[SHUTTLE_UNLOCK_NARNAR]
 
 /datum/map_template/shuttle/emergency/pubby
@@ -395,6 +409,8 @@
 	prerequisites = "This shuttle requires an act of magical polymorphism to occur before it can be purchased."
 
 /datum/map_template/shuttle/emergency/wabbajack/prerequisites_met()
+	procstart = null
+	src.procstart = null
 	return SSshuttle.shuttle_purchase_requirements_met[SHUTTLE_UNLOCK_WABBAJACK]
 
 /datum/map_template/shuttle/emergency/omega
@@ -521,6 +537,8 @@
 	occupancy_limit = "xxx"
 
 /datum/map_template/shuttle/emergency/zeta/prerequisites_met()
+	procstart = null
+	src.procstart = null
 	return SSshuttle.shuttle_purchase_requirements_met[SHUTTLE_UNLOCK_ALIENTECH]
 
 /datum/map_template/shuttle/emergency/tombstone
@@ -533,6 +551,8 @@
 	prerequisites = "This shuttle requires a biohazard outbreak to occur before it can be purchased."
 
 /datum/map_template/shuttle/emergency/tombstone/prerequisites_met()
+	procstart = null
+	src.procstart = null
 	return SSshuttle.shuttle_purchase_requirements_met[SHUTTLE_UNLOCK_TOMBSTONE]
 
 #undef EMAG_LOCKED_SHUTTLE_COST

@@ -32,14 +32,20 @@
 	var/extra_desc = ""
 
 /datum/map_template/shuttle/proc/prerequisites_met()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/map_template/shuttle/New()
+	procstart = null
+	src.procstart = null
 	shuttle_id = "[port_id]_[suffix]"
 	mappath = "[prefix][shuttle_id].dmm"
 	. = ..()
 
 /datum/map_template/shuttle/preload_size(path, cache)
+	procstart = null
+	src.procstart = null
 	. = ..(path, TRUE) // Done this way because we still want to know if someone actually wanted to cache the map
 	if(!cached_map)
 		return
@@ -53,6 +59,8 @@
 		cached_map = null
 
 /datum/map_template/shuttle/load(turf/T, centered, register=TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -63,6 +71,8 @@
 	dispatch(turfs, register)
 
 /datum/map_template/shuttle/proc/dispatch(list/turfs, register=TRUE)
+	procstart = null
+	src.procstart = null
 	while(TRUE)
 		var/found = FALSE
 		for(var/turf/current_turf in turfs)
@@ -93,6 +103,8 @@
 
 //Whatever special stuff you want
 /datum/map_template/shuttle/post_load(obj/docking_port/mobile/M)
+	procstart = null
+	src.procstart = null
 	if(movement_force)
 		M.movement_force = movement_force.Copy()
 	M.linkup()

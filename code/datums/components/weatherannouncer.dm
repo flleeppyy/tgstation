@@ -53,11 +53,15 @@
 	update_light_color()
 
 /datum/component/weather_announcer/Destroy(force)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSprocessing, src)
 	return ..()
 
 /// Add appropriate overlays
 /datum/component/weather_announcer/proc/on_update_overlays(atom/parent_atom, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!enabled || !state_normal || !state_warning || !state_danger)
 		return
@@ -72,6 +76,8 @@
 
 /// If powered, receive updates
 /datum/component/weather_announcer/proc/on_powered()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	enabled = TRUE
 	var/atom/speaker = parent
@@ -79,12 +85,16 @@
 
 /// If no power, don't receive updates
 /datum/component/weather_announcer/proc/on_power_lost()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	enabled = FALSE
 	var/atom/speaker = parent
 	speaker.update_appearance(UPDATE_ICON)
 
 /datum/component/weather_announcer/proc/check_accuracy()
+	procstart = null
+	src.procstart = null
 	for(var/z_level in SSmapping.levels_by_trait(radar_z_trait))
 		for(var/obj/machinery/power/weather_tower/radar as anything in GLOB.weather_towers["[z_level]"])
 			if(radar.active)
@@ -93,6 +103,8 @@
 	return FALSE
 
 /datum/component/weather_announcer/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if (!enabled)
 		return
 
@@ -115,6 +127,8 @@
 	update_light_color()
 
 /datum/component/weather_announcer/proc/update_light_color()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/light = parent
 	switch(warning_level)
 		if(WEATHER_ALERT_CLEAR)
@@ -130,6 +144,8 @@
 
 /// Returns a string we should display to communicate what you should be doing
 /datum/component/weather_announcer/proc/get_warning_message()
+	procstart = null
+	src.procstart = null
 	switch(warning_level)
 		if(WEATHER_ALERT_CLEAR)
 			return "All clear, no weather alerts to report."
@@ -142,6 +158,8 @@
 	return "Error in meteorological calculation. Please report this deviation to a trained programmer."
 
 /datum/component/weather_announcer/proc/time_till_storm()
+	procstart = null
+	src.procstart = null
 	var/list/mining_z_levels = SSmapping.levels_by_trait(radar_z_trait)
 	if(!length(mining_z_levels))
 		return // No problems if there are no mining z levels
@@ -185,6 +203,8 @@
 
 /// Polls existing weather for what kind of warnings we should be displaying.
 /datum/component/weather_announcer/proc/set_current_alert_level()
+	procstart = null
+	src.procstart = null
 	var/time_until_next = time_till_storm()
 	is_weather_dangerous = FALSE
 
@@ -217,6 +237,8 @@
 				return
 
 /datum/component/weather_announcer/proc/on_examine(atom/radio, mob/examiner, list/examine_texts)
+	procstart = null
+	src.procstart = null
 	var/time_until_next = time_till_storm()
 	if(isnull(time_until_next))
 		return
@@ -229,9 +251,13 @@
 		examine_texts += span_smallnoticeital("Due to insufficient radar coverage, the timing of this forecast may be inaccurate.")
 
 /datum/component/weather_announcer/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/component/weather_announcer/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	.=..()
 	UnregisterSignal(parent, COMSIG_ATOM_EXAMINE)
 
@@ -246,6 +272,8 @@
 	)
 
 /datum/aas_config_entry/weather/act_up()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return

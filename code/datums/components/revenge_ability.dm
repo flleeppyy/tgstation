@@ -19,6 +19,8 @@
 	var/activate_with_mind
 
 /datum/component/revenge_ability/Initialize(datum/action/cooldown/ability, datum/targeting_strategy/targeting, min_range = 0, max_range = INFINITY, target_self = FALSE, activate_with_mind = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -32,10 +34,14 @@
 	RegisterSignal(ability, COMSIG_QDELETING, PROC_REF(ability_destroyed))
 
 /datum/component/revenge_ability/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_ATOM_WAS_ATTACKED, PROC_REF(on_attacked))
 
 /datum/component/revenge_ability/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_ATOM_WAS_ATTACKED)
 	if (ability)
 		UnregisterSignal(ability, COMSIG_QDELETING)
@@ -43,6 +49,8 @@
 
 /// If we were attacked, get revenge
 /datum/component/revenge_ability/proc/on_attacked(mob/living/victim, atom/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (victim.mind && !activate_with_mind)
 		return // This is mostly a component for the use of AI
@@ -56,5 +64,7 @@
 
 /// For whatever reason we lost our linked ability so we can drop this behaviour
 /datum/component/revenge_ability/proc/ability_destroyed(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)

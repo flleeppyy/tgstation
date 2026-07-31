@@ -17,6 +17,8 @@
 	var/static/list/power_use_override_types = list(/obj/machinery, /obj/vehicle/sealed/mecha, /obj/item/mod/control, /obj/item/pressure_plate, /mob/living/silicon/robot)
 
 /obj/item/assembly/wiremod/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/component/shell/shell = AddComponent(/datum/component/shell, list(
 		new /obj/item/circuit_component/assembly_input(),
@@ -29,14 +31,20 @@
 	RegisterSignals(src, list(COMSIG_ASSEMBLY_DETACHED, COMSIG_ASSEMBLY_REMOVED_FROM_BUTTON, COMSIG_ASSEMBLY_REMOVED_FROM_PRESSURE_PLATE), PROC_REF(on_detached))
 
 /obj/item/assembly/wiremod/proc/on_circuit_attached(datum/component/shell/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	RegisterSignal(source.attached_circuit, COMSIG_CIRCUIT_PRE_POWER_USAGE, PROC_REF(override_circuit_power_usage))
 
 /obj/item/assembly/wiremod/proc/on_circuit_removed(datum/component/shell/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(source.attached_circuit, COMSIG_CIRCUIT_PRE_POWER_USAGE)
 
 /obj/item/assembly/wiremod/proc/on_pre_attach(obj/item/circuit_component/wire_bundle/source, atom/holder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(source))
 		return
@@ -49,15 +57,21 @@
 		return COMPONENT_CANCEL_ATTACH
 
 /obj/item/assembly/wiremod/proc/on_attached(source, atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(is_type_in_list(holder, power_use_override_types))
 		power_use_proxy = holder
 
 /obj/item/assembly/wiremod/proc/on_detached(source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	power_use_proxy = null
 
 /obj/item/assembly/wiremod/proc/override_circuit_power_usage(obj/item/integrated_circuit/source, power_to_use)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(ismachinery(power_use_proxy))
 		var/obj/machinery/machine = power_use_proxy
@@ -85,11 +99,15 @@
 			return COMPONENT_OVERRIDE_POWER_USAGE
 
 /obj/item/assembly/wiremod/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("You can also [secured && "un"]secure [src] by right-clicking it with a screwdriver, even if an integrated circuit is attached.")
 
 // This is to bypass removing the circuit with a screwdriver left-click
 /obj/item/assembly/wiremod/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	screwdriver_act(user, tool)
 
 /obj/item/circuit_component/assembly_input
@@ -99,15 +117,23 @@
 	var/datum/port/output/signal
 
 /obj/item/circuit_component/assembly_input/populate_ports()
+	procstart = null
+	src.procstart = null
 	signal = add_output_port("Signal", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/assembly_input/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	RegisterSignals(shell, list(COMSIG_ASSEMBLY_PULSED, COMSIG_ITEM_ATTACK_SELF), PROC_REF(on_pulsed))
 
 /obj/item/circuit_component/assembly_input/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(shell, list(COMSIG_ASSEMBLY_PULSED, COMSIG_ITEM_ATTACK_SELF))
 
 /obj/item/circuit_component/assembly_input/proc/on_pulsed(datum/source, mob/pulser)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	signal.set_output(COMPONENT_SIGNAL)
 
@@ -120,16 +146,24 @@
 	var/datum/port/input/signal
 
 /obj/item/circuit_component/assembly_output/populate_ports()
+	procstart = null
+	src.procstart = null
 	signal = add_input_port("Signal", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/assembly_output/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isassembly(shell))
 		attached_assembly = shell
 
 /obj/item/circuit_component/assembly_output/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	attached_assembly = null
 	return ..()
 
 /obj/item/circuit_component/assembly_output/input_received(datum/port/input/port, list/return_values)
+	procstart = null
+	src.procstart = null
 	attached_assembly.pulse()

@@ -21,6 +21,8 @@
 	var/eye_blur_duration = 40 SECONDS
 
 /datum/action/cooldown/spell/pointed/blind/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -31,6 +33,8 @@
 	return !human_target.is_blind()
 
 /datum/action/cooldown/spell/pointed/blind/cast(mob/living/carbon/human/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cast_on.can_block_magic(antimagic_flags))
 		to_chat(cast_on, span_notice("Your eye itches, but it passes momentarily."))

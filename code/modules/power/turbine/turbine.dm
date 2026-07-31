@@ -21,6 +21,8 @@
 	var/datum/gas_mixture/machine_gasmix
 
 /obj/machinery/power/turbine/Initialize(mapload, gas_theoretical_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	machine_gasmix = new
@@ -37,11 +39,15 @@
 	register_context()
 
 /obj/machinery/power/turbine/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	activate_parts()
 
 /obj/machinery/power/turbine/Destroy()
+	procstart = null
+	src.procstart = null
 	air_update_turf(TRUE)
 
 	if(installed_part)
@@ -54,10 +60,14 @@
 	return ..()
 
 /obj/machinery/power/turbine/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	installed_part?.forceMove(loc)
 	return ..()
 
 /obj/machinery/power/turbine/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item))
 		return NONE
 
@@ -88,6 +98,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/power/turbine/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(installed_part)
 		. += span_notice("Currently at tier [installed_part.current_tier].")
@@ -103,6 +115,8 @@
 
 ///Is this machine currently running
 /obj/machinery/power/turbine/proc/is_active()
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 	PROTECTED_PROC(TRUE)
 
@@ -115,11 +129,15 @@
  * * list/overlays - the list of overlays to add to
  */
 /obj/machinery/power/turbine/proc/set_overlays(list/overlays)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	overlays += "[base_icon_state]_[is_active() ? "on" : "off"]"
 
 /obj/machinery/power/turbine/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(panel_open)
@@ -140,6 +158,8 @@
  * * intake_size - the percentage of gas to be fed into an turbine part, controlled by turbine computer for inlet compressor only
  */
 /obj/machinery/power/turbine/proc/transfer_gases(datum/gas_mixture/input_mix, datum/gas_mixture/output_mix, work_amount_to_remove, intake_size = 1)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	//pump gases. if no gases were transferred then no work was done
@@ -162,9 +182,13 @@
 	return work_done
 
 /obj/machinery/power/turbine/block_superconductivity()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/machinery/power/turbine/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_BLOCKING
 	if(is_active())
 		balloon_alert(user, "turn it off!")
@@ -184,14 +208,20 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/turbine/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_BLOCKING
 	if(default_change_direction_wrench(user, tool))
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/turbine/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/power/turbine/crowbar_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_BLOCKING
 	if(!panel_open)
 		balloon_alert(user, "panel is closed!")
@@ -214,6 +244,8 @@
  * * check_only - if TRUE it will not activate the machine but will only check if it can be activated
  */
 /obj/machinery/power/turbine/proc/activate_parts(mob/user, check_only = FALSE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	set_machine_stat(machine_stat & ~MAINT)
@@ -227,6 +259,8 @@
  * * mob/user - the player who deactivated the parts
  */
 /obj/machinery/power/turbine/proc/deactivate_parts(mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	set_machine_stat(machine_stat | MAINT)
@@ -234,6 +268,8 @@
 	return TRUE
 
 /obj/machinery/power/turbine/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_panel_open(TRUE)
 	update_appearance(UPDATE_OVERLAYS)
@@ -242,11 +278,15 @@
 	air_update_turf(TRUE)
 
 /obj/machinery/power/turbine/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == installed_part)
 		installed_part = null
 
 /obj/machinery/power/turbine/item_interaction(mob/living/user, obj/item/turbine_parts/object, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(!istype(object, part_path))
 		return
@@ -293,13 +333,19 @@
 	var/intake_regulator = 0.5
 
 /obj/machinery/power/turbine/inlet_compressor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	//Volume of gas mixture is 1000
 	return ..(mapload, gas_theoretical_volume = 1000)
 
 /obj/machinery/power/turbine/inlet_compressor/is_active()
+	procstart = null
+	src.procstart = null
 	return QDELETED(rotor) ? FALSE : rotor.is_active()
 
 /obj/machinery/power/turbine/inlet_compressor/deactivate_parts(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!QDELETED(rotor))
 		rotor.deactivate_parts()
@@ -311,6 +357,8 @@
  * Returns temperature of the gas mix absorbed only if some work was done
  */
 /obj/machinery/power/turbine/inlet_compressor/proc/compress_gases()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	compressor_work = 0
@@ -346,13 +394,19 @@
 	var/turf/open/output_turf
 
 /obj/machinery/power/turbine/turbine_outlet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	//Volume of gas mixture is 6000
 	return ..(mapload, gas_theoretical_volume = 6000)
 
 /obj/machinery/power/turbine/turbine_outlet/is_active()
+	procstart = null
+	src.procstart = null
 	return QDELETED(rotor) ? FALSE : rotor.is_active()
 
 /obj/machinery/power/turbine/turbine_outlet/deactivate_parts(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!QDELETED(rotor))
 		rotor.deactivate_parts()
@@ -361,6 +415,8 @@
 
 /// push gases from its gas mix to output turf
 /obj/machinery/power/turbine/turbine_outlet/proc/expel_gases()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(QDELETED(output_turf))
@@ -414,12 +470,16 @@
 	COOLDOWN_DECLARE(turbine_damage_alert)
 
 /obj/machinery/power/turbine/core_rotor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	//Volume of gas mixture is 3000
 	. = ..(mapload, gas_theoretical_volume = 3000)
 
 	new /obj/item/paper/guides/jobs/atmos/turbine(loc)
 
 /obj/machinery/power/turbine/core_rotor/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == NONE)
 		return
@@ -432,6 +492,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/power/turbine/core_rotor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!panel_open)
 		. += span_notice("[EXAMINE_HINT("screw")] open its panel to change cable layer.")
@@ -440,20 +502,28 @@
 
 ///Adds overlays to this turbines appearance
 /obj/machinery/power/turbine/core_rotor/set_overlays(list/overlays)
+	procstart = null
+	src.procstart = null
 	if(active)
 		overlays += "[base_icon_state]_on"
 		overlays += emissive_appearance(icon, "[base_icon_state]_on", src)
 
 /obj/machinery/power/turbine/core_rotor/is_active()
+	procstart = null
+	src.procstart = null
 	return active
 
 /obj/machinery/power/turbine/core_rotor/cable_layer_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		balloon_alert(user, "open panel first!")
 		return ITEM_INTERACT_BLOCKING
 	return ..()
 
 /obj/machinery/power/turbine/core_rotor/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	//allow cable layer changing
 	if(panel_open)
 		return ..()
@@ -472,6 +542,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/turbine/core_rotor/multitool_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	//allow cable layer changing
 	if(panel_open)
 		return ..()
@@ -487,6 +559,8 @@
  * * text - the message
  */
 /obj/machinery/power/turbine/core_rotor/proc/feedback(mob/viewer, text)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(isnull(viewer))
@@ -495,6 +569,8 @@
 
 ///Called to activate the complete machine, checks for part presence, correct orientation and installed parts
 /obj/machinery/power/turbine/core_rotor/activate_parts(mob/user, check_only = FALSE)
+	procstart = null
+	src.procstart = null
 	//if this is not a checkup and all parts are connected then we have nothing to do
 	if(!check_only && all_parts_connected)
 		return TRUE
@@ -573,6 +649,8 @@
 
 ///Allows to null the various machines and references from the main core
 /obj/machinery/power/turbine/core_rotor/deactivate_parts()
+	procstart = null
+	src.procstart = null
 	toggle_power(force_off = TRUE)
 	compressor?.rotor = null
 	compressor = null
@@ -586,11 +664,15 @@
 	return ..()
 
 /obj/machinery/power/turbine/core_rotor/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	deactivate_parts()
 	return ..()
 
 /// Toggle power on and off, not safe
 /obj/machinery/power/turbine/core_rotor/proc/toggle_power(force_off)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	//toggle status
@@ -618,11 +700,15 @@
 
 /// Getter for turbine integrity, return the amount in %
 /obj/machinery/power/turbine/core_rotor/proc/get_turbine_integrity()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	return max(round(100 - (damage / 500) * 100, 0.01), 0)
 
 /obj/machinery/power/turbine/core_rotor/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!active || !activate_parts(check_only = TRUE) || !powered(ignore_use_power = TRUE))
 		deactivate_parts()
 		return PROCESS_KILL

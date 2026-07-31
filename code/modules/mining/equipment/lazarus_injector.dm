@@ -26,6 +26,8 @@
 	var/revive_type = SENTIENCE_ORGANIC
 
 /obj/item/lazarus_injector/interact_with_atom(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!loaded)
 		return NONE
 	if(SEND_SIGNAL(target, COMSIG_ATOM_ON_LAZARUS_INJECTOR, src, user) & LAZARUS_INJECTOR_USED)
@@ -46,6 +48,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/lazarus_injector/proc/expend(atom/revived_target, mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_notice("[user] injects [revived_target] with [src], reviving it."))
 	SSblackbox.record_feedback("tally", "lazarus_injector", 1, revived_target.type)
 	loaded = FALSE
@@ -53,6 +57,8 @@
 	icon_state = "lazarus_empty"
 
 /obj/item/lazarus_injector/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -60,6 +66,8 @@
 		malfunctioning = TRUE
 
 /obj/item/lazarus_injector/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!loaded)
 		. += span_info("[src] is empty.")

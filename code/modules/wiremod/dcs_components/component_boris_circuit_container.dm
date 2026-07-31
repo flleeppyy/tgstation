@@ -4,15 +4,21 @@
 	var/datum/weakref/indicator_weakref
 
 /datum/component/boris_circuit_container/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
 
 /datum/component/boris_circuit_container/Destroy(force)
+	procstart = null
+	src.procstart = null
 	mmi_components = null
 	return ..()
 
 /datum/component/boris_circuit_container/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_ATOM_ATTACK_AI, PROC_REF(on_ai_click))
 	var/atom/parent_atom = parent
@@ -26,10 +32,14 @@
 	))
 
 /datum/component/boris_circuit_container/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(indicator_weakref)
 	return ..()
 
 /datum/component/boris_circuit_container/on_source_add(source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/circuit_component/mmi/source_comp = locate(source)
 	if(!istype(source_comp))
@@ -37,12 +47,16 @@
 	LAZYADD(mmi_components, source_comp)
 
 /datum/component/boris_circuit_container/on_source_remove(source)
+	procstart = null
+	src.procstart = null
 	var/obj/item/circuit_component/mmi/source_comp = locate(source)
 	if(source_comp)
 		LAZYREMOVE(mmi_components, source_comp)
 	return ..()
 
 /datum/component/boris_circuit_container/proc/on_ai_click(atom/movable/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!length(mmi_components))
 		return
@@ -57,6 +71,8 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/component/boris_circuit_container/proc/select_circuit(atom/movable/source, mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/choices = list()
 	var/list/choice_map = list()
 	var/source_in_choices = FALSE

@@ -51,12 +51,16 @@
 	acid = 50
 
 /obj/machinery/portable_atmospherics/canister/get_save_vars()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += NAMEOF(src, valve_open)
 	. += NAMEOF(src, release_pressure)
 	return .
 
 /obj/machinery/portable_atmospherics/canister/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(mapload)
@@ -79,6 +83,8 @@
 	AddComponent(/datum/component/gas_leaker, leak_rate=0.01)
 
 /obj/machinery/portable_atmospherics/canister/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!allowed(user))
 		to_chat(user, span_alert("Error - Unauthorized User."))
@@ -86,6 +92,8 @@
 		return
 
 /obj/machinery/portable_atmospherics/canister/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(holding)
 		context[SCREENTIP_CONTEXT_ALT_LMB] = "Remove tank"
@@ -106,6 +114,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/portable_atmospherics/canister/examine(user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(atom_integrity < max_integrity)
 		. += span_notice("Integrity compromised, repair hull with a welding tool.")
@@ -308,6 +318,8 @@
 	pressure_limit = 1e14
 
 /obj/machinery/portable_atmospherics/canister/fusion_test/create_gas()
+	procstart = null
+	src.procstart = null
 	air_contents.adjust_gas(/datum/gas/hydrogen, 300)
 	air_contents.adjust_gas(/datum/gas/tritium, 300)
 	air_contents.temperature = 10000
@@ -322,6 +334,8 @@
 	greyscale_colors = "#9fba6c#3d4680"
 
 /obj/machinery/portable_atmospherics/canister/anesthetic_mix/create_gas()
+	procstart = null
+	src.procstart = null
 	air_contents.adjust_gas(/datum/gas/oxygen, (O2_ANESTHETIC * maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature))
 	air_contents.adjust_gas(/datum/gas/nitrous_oxide, (N2O_ANESTHETIC * maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature))
 	SSair.start_processing_machine(src)
@@ -331,22 +345,30 @@
  * Used for canisters spawned in maps and by admins
  */
 /obj/machinery/portable_atmospherics/canister/proc/create_gas()
+	procstart = null
+	src.procstart = null
 	if(!gas_type)
 		return
 	air_contents.adjust_gas(gas_type, (maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature))
 	SSair.start_processing_machine(src)
 
 /obj/machinery/portable_atmospherics/canister/air/create_gas()
+	procstart = null
+	src.procstart = null
 	air_contents.adjust_gas(/datum/gas/oxygen, (O2STANDARD * maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature))
 	air_contents.adjust_gas(/datum/gas/nitrogen, (N2STANDARD * maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature))
 	SSair.start_processing_machine(src)
 
 /obj/machinery/portable_atmospherics/canister/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & BROKEN)
 		icon_state = "[base_icon_state]-1"
 	return ..()
 
 /obj/machinery/portable_atmospherics/canister/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(shielding_powered)
@@ -372,11 +394,15 @@
 	update_window()
 
 /obj/machinery/portable_atmospherics/canister/update_greyscale()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_window()
 
 ///Updates the overlays of this canister based on its air contents
 /obj/machinery/portable_atmospherics/canister/proc/update_window()
+	procstart = null
+	src.procstart = null
 	if(!air_contents)
 		return
 
@@ -396,12 +422,18 @@
 
 // Both of these procs handle the external temperature damage.
 /obj/machinery/portable_atmospherics/canister/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return (exposed_temperature > TEMPERATURE_RESISTANCE && !shielding_powered)
 
 /obj/machinery/portable_atmospherics/canister/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	take_damage(5, BURN, 0)
 
 /obj/machinery/portable_atmospherics/canister/on_deconstruction(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(machine_stat & BROKEN))
 		canister_break()
 	if(!disassembled)
@@ -413,6 +445,8 @@
 		internal_cell.forceMove(drop_location())
 
 /obj/machinery/portable_atmospherics/canister/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stock_parts/power_store/cell))
 		return ..()
 
@@ -433,9 +467,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/portable_atmospherics/canister/screwdriver_act(mob/living/user, obj/item/screwdriver)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, screwdriver)
 
 /obj/machinery/portable_atmospherics/canister/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!panel_open || !internal_cell)
 		return ITEM_INTERACT_BLOCKING
 
@@ -444,6 +482,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/portable_atmospherics/canister/welder_act_secondary(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(!I.tool_start_check(user, amount=1, heat_required = HIGH_TEMPERATURE_REQUIRED))
 		return ITEM_INTERACT_BLOCKING
 
@@ -460,17 +500,23 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/portable_atmospherics/canister/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == internal_cell)
 		internal_cell = null
 
 /obj/machinery/portable_atmospherics/canister/take_damage(damage_amount, damage_type = BRUTE, damage_flag = "", sound_effect = TRUE, attack_dir, armour_penetration = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || QDELETED(src))
 		return
 	SSair.start_processing_machine(src)
 
 /obj/machinery/portable_atmospherics/canister/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -478,6 +524,8 @@
 
 ///Handle canisters disassemble, releases the gas content in the turf
 /obj/machinery/portable_atmospherics/canister/proc/canister_break()
+	procstart = null
+	src.procstart = null
 	disconnect()
 	var/datum/gas_mixture/expelled_gas = air_contents.remove(air_contents.total_moles())
 	var/turf/T = get_turf(src)
@@ -496,6 +544,8 @@
 	animate(src, 0.5 SECONDS, transform=turn(transform, rand(-179, 180)), easing=BOUNCE_EASING)
 
 /obj/machinery/portable_atmospherics/canister/replace_tank(mob/living/user, close_valve)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -508,6 +558,8 @@
 		user.investigate_log("started a transfer into [holding].", INVESTIGATE_ATMOS)
 
 /obj/machinery/portable_atmospherics/canister/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!shielding_powered)
 		return
 
@@ -529,6 +581,8 @@
 
 ///return the icon_state component for the canister's indicator light based on its current pressure reading
 /obj/machinery/portable_atmospherics/canister/proc/get_pressure_state()
+	procstart = null
+	src.procstart = null
 	var/air_pressure = air_contents.return_pressure()
 	switch(air_pressure)
 		if((40 * ONE_ATMOSPHERE) to INFINITY)
@@ -543,6 +597,8 @@
 			return null
 
 /obj/machinery/portable_atmospherics/canister/process_atmos()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & BROKEN)
 		return PROCESS_KILL
 
@@ -570,15 +626,21 @@
 	return ..()
 
 /obj/machinery/portable_atmospherics/canister/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.physical_state
 
 /obj/machinery/portable_atmospherics/canister/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Canister", name)
 		ui.open()
 
 /obj/machinery/portable_atmospherics/canister/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		"defaultReleasePressure" = round(CAN_DEFAULT_RELEASE_PRESSURE),
 		"minReleasePressure" = round(CAN_MIN_RELEASE_PRESSURE),
@@ -589,6 +651,8 @@
 	)
 
 /obj/machinery/portable_atmospherics/canister/ui_data()
+	procstart = null
+	src.procstart = null
 	. = list(
 		"portConnected" = !!connected_port,
 		"tankPressure" = round(air_contents.return_pressure()),
@@ -614,6 +678,8 @@
 	)
 
 /obj/machinery/portable_atmospherics/canister/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -690,6 +756,8 @@
 
 /// Opens/closes the canister valve
 /obj/machinery/portable_atmospherics/canister/proc/toggle_valve(mob/user, wire_pulsed = FALSE)
+	procstart = null
+	src.procstart = null
 	valve_open = !valve_open
 	playsound(src, 'sound/effects/valve_opening.ogg', 50, TRUE)
 	if(!valve_open)
@@ -737,6 +805,8 @@
 
 /// Turns canister shielding on or off
 /obj/machinery/portable_atmospherics/canister/proc/toggle_shielding(mob/user, wire_pulsed = FALSE)
+	procstart = null
+	src.procstart = null
 	shielding_powered = !shielding_powered
 	SSair.start_processing_machine(src)
 	message_admins("[ADMIN_LOOKUPFLW(user)] turned [shielding_powered ? "on" : "off"][wire_pulsed ? " via wire pulse" : ""] \the [src] powered shielding.")
@@ -745,6 +815,8 @@
 
 /// Ejects tank from canister, if any
 /obj/machinery/portable_atmospherics/canister/proc/eject_tank(mob/user, wire_pulsed = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!holding)
 		return FALSE
 	if(valve_open)
@@ -755,6 +827,8 @@
 
 /// Turns hyper-noblium crystal reaction suppression in the canister on or off
 /obj/machinery/portable_atmospherics/canister/proc/toggle_reaction_suppression(mob/user, wire_pulsed = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!nob_crystal_inserted)
 		if(!wire_pulsed)
 			stack_trace("[user] tried to toggle reaction suppression on a canister without a noblium crystal inside and without pulsing wires, possible href exploit attempt.")
@@ -765,13 +839,19 @@
 	user.investigate_log("turned [suppress_reactions ? "on" : "off"][wire_pulsed ? "via wire pulse" : ""] \the [src] reaction suppression.", INVESTIGATE_ATMOS)
 
 /obj/machinery/portable_atmospherics/canister/proc/recolor(datum/greyscale_modify_menu/menu)
+	procstart = null
+	src.procstart = null
 	set_greyscale(menu.split_colors, menu.config.type)
 
 /obj/machinery/portable_atmospherics/canister/unregister_holding()
+	procstart = null
+	src.procstart = null
 	valve_open = FALSE
 	return ..()
 
 /obj/machinery/portable_atmospherics/canister/take_atmos_damage()
+	procstart = null
+	src.procstart = null
 	return shielding_powered ? FALSE : ..()
 
 #undef CAN_DEFAULT_RELEASE_PRESSURE

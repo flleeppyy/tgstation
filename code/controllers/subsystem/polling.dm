@@ -9,6 +9,8 @@ SUBSYSTEM_DEF(polling)
 	var/total_polls = 0
 
 /datum/controller/subsystem/polling/fire()
+	procstart = null
+	src.procstart = null
 	if(!currently_polling) // if polls_active is TRUE then this shouldn't happen, but still..
 		currently_polling = list()
 
@@ -284,6 +286,8 @@ SUBSYSTEM_DEF(polling)
 	return candidate_list
 
 /datum/controller/subsystem/polling/proc/is_eligible(mob/potential_candidate, role, check_jobban, the_ignore_category)
+	procstart = null
+	src.procstart = null
 	if(isnull(potential_candidate.key) || isnull(potential_candidate.client))
 		return FALSE
 	if(the_ignore_category)
@@ -302,6 +306,8 @@ SUBSYSTEM_DEF(polling)
 	return TRUE
 
 /datum/controller/subsystem/polling/proc/polling_finished(datum/candidate_poll/finishing_poll)
+	procstart = null
+	src.procstart = null
 	currently_polling -= finishing_poll
 	// Trim players who aren't eligible anymore
 	var/length_pre_trim = length(finishing_poll.signed_up)
@@ -328,6 +334,8 @@ SUBSYSTEM_DEF(polling)
 	QDEL_IN(finishing_poll, 0.5 SECONDS)
 
 /datum/controller/subsystem/polling/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg = "\n  Active: [length(currently_polling)] | Total: [total_polls]"
 	var/datum/candidate_poll/soonest_to_complete = get_next_poll_to_finish()
 	if(soonest_to_complete)
@@ -336,12 +344,16 @@ SUBSYSTEM_DEF(polling)
 
 ///Is there a multiple of the given event type running right now?
 /datum/controller/subsystem/polling/proc/duplicate_message_check(datum/candidate_poll/poll_to_check)
+	procstart = null
+	src.procstart = null
 	for(var/datum/candidate_poll/running_poll as anything in currently_polling)
 		if((running_poll.poll_key == poll_to_check.poll_key && running_poll != poll_to_check) && running_poll.time_left() > 0)
 			return TRUE
 	return FALSE
 
 /datum/controller/subsystem/polling/proc/get_next_poll_to_finish()
+	procstart = null
+	src.procstart = null
 	var/lowest_time_left = INFINITY
 	var/next_poll_to_finish
 	for(var/datum/candidate_poll/poll as anything in currently_polling)

@@ -4,6 +4,8 @@
 /// Creates a global initializer with a given InitValue expression, do not use
 #define GLOBAL_MANAGED(X, InitValue)\
 /datum/controller/global_vars/proc/InitGlobal##X(){\
+	procstart = null;\
+	src.procstart = null;\
 	##X = ##InitValue;\
 	gvars_datum_init_order += #X;\
 }
@@ -14,6 +16,8 @@
 #ifndef TESTING
 #define GLOBAL_PROTECT(X)\
 /datum/controller/global_vars/InitGlobal##X(){\
+	procstart = null;\
+	src.procstart = null;\
 	..();\
 	gvars_datum_protected_varlist[#X] = TRUE;\
 }

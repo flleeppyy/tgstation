@@ -14,6 +14,8 @@
 	var/can_move = FALSE
 
 /datum/action/cooldown/mob_cooldown/ground_slam/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	disable_cooldown_actions()
 	RegisterSignal(owner, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(on_move), override = TRUE)
 	do_slam(target_atom)
@@ -24,9 +26,13 @@
 
 /// Slams the ground around the source throwing back enemies caught nearby, delay is for the radius increase
 /datum/action/cooldown/mob_cooldown/ground_slam/proc/do_slam(atom/target)
+	procstart = null
+	src.procstart = null
 	wendigo_slam(owner, range, delay, throw_range)
 
 /datum/action/cooldown/mob_cooldown/ground_slam/proc/on_move(atom/source, atom/new_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!can_move)
 		return COMPONENT_MOVABLE_BLOCK_PRE_MOVE

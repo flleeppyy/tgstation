@@ -18,6 +18,8 @@
 	)
 
 /datum/lazy_template/virtual_domain/island_brawl/setup_domain(list/created_atoms)
+	procstart = null
+	src.procstart = null
 	for(var/obj/effect/mob_spawn/ghost_role/human/virtual_domain/islander/spawner in created_atoms)
 		custom_spawns += spawner
 
@@ -26,6 +28,8 @@
 
 
 /datum/lazy_template/virtual_domain/island_brawl/proc/on_spawner_qdeleted(obj/effect/mob_spawn/ghost_role/human/virtual_domain/islander/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	custom_spawns -= source
@@ -34,6 +38,8 @@
 
 /// Someone has spawned in, so we check for their death
 /datum/lazy_template/virtual_domain/island_brawl/proc/on_spawn(datum/source, mob/living/spawned_mob)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	RegisterSignals(spawned_mob, list(COMSIG_LIVING_DEATH), PROC_REF(on_death))
@@ -41,6 +47,8 @@
 
 /// Mob has died, so we add a point to the domain
 /datum/lazy_template/virtual_domain/island_brawl/proc/on_death(datum/source, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	add_points(1)

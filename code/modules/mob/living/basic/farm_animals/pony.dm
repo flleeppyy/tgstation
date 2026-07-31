@@ -47,6 +47,8 @@
 	sound = 'sound/mobs/non-humanoids/pony/snort.ogg'
 
 /mob/living/basic/pony/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	apply_colour()
@@ -60,6 +62,8 @@
 	AddComponent(/datum/component/tameable, food_types = food_types, tame_chance = 25, bonus_tame_chance = 15, unique = unique_tamer)
 
 /mob/living/basic/pony/tamed(mob/living/tamer, atom/food)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(src, 'sound/mobs/non-humanoids/pony/snort.ogg', 50)
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/pony)
@@ -78,12 +82,16 @@
 		RegisterSignal(src, COMSIG_MOVABLE_PREBUCKLE, PROC_REF(on_prebuckle))
 
 /mob/living/basic/pony/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(src, COMSIG_MOVABLE_PREBUCKLE)
 	my_owner = null
 	return ..()
 
 /// Only let us get ridden if the buckler is our owner, if we have a unique owner.
 /mob/living/basic/pony/proc/on_prebuckle(mob/source, mob/living/buckler, force, buckle_mob_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/tamer = my_owner?.resolve()
 	if(!unique_tamer || (isnull(tamer) && unique_tamer))
@@ -93,11 +101,15 @@
 		return COMPONENT_BLOCK_BUCKLE
 
 /mob/living/basic/pony/proc/apply_colour()
+	procstart = null
+	src.procstart = null
 	if(!greyscale_config)
 		return
 	set_greyscale(colors = ponycolors)
 
 /mob/living/basic/pony/proc/whinny_angrily()
+	procstart = null
+	src.procstart = null
 	manual_emote("whinnies ANGRILY!")
 
 	playsound(src, pick(list(
@@ -107,12 +119,16 @@
 	)), 50)
 
 /mob/living/basic/pony/take_damage(damage_amount, damage_type, damage_flag, sound_effect, attack_dir, armour_penetration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (prob(33))
 		whinny_angrily()
 
 /mob/living/basic/pony/melee_attack(atom/target, list/modifiers, ignore_cooldown = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (!.)
@@ -121,6 +137,8 @@
 	whinny_angrily()
 
 /mob/living/basic/pony/get_shove_flags(mob/living/shover, obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. |= SHOVE_CAN_STAGGER
 
@@ -153,6 +171,8 @@
 	unique_tamer = TRUE
 
 /mob/living/basic/pony/syndicate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Help discern your horse from your allies
 	var/mane_colors = list(
@@ -190,6 +210,8 @@
 	gold_core_spawnable = NO_SPAWN
 
 /mob/living/basic/pony/dangerous/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mane_colors = list(COLOR_RED, COLOR_ORANGE, COLOR_YELLOW)
 	ponycolors = list("#666666", pick(mane_colors))

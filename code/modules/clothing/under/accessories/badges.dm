@@ -5,22 +5,32 @@
 	icon_state = "lawyerbadge"
 
 /obj/item/clothing/accessory/lawyers_badge/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/bubble_icon_override, "lawyer", BUBBLE_ICON_PRIORITY_ACCESSORY)
 
 /obj/item/clothing/accessory/lawyers_badge/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(1))
 		user.say("The testimony contradicts the evidence!", forced = "[src]")
 	user.point_at(src)
 
 /obj/item/clothing/accessory/lawyers_badge/accessory_equipped(obj/item/clothing/under/clothes, mob/living/user)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(user, COMSIG_LIVING_SLAM_TABLE, PROC_REF(table_slam))
 
 /obj/item/clothing/accessory/lawyers_badge/accessory_dropped(obj/item/clothing/under/clothes, mob/living/user)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(user, COMSIG_LIVING_SLAM_TABLE)
 
 /obj/item/clothing/accessory/lawyers_badge/proc/table_slam(mob/living/source, obj/structure/table/the_table)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	ASYNC
@@ -32,6 +42,8 @@
 	icon_state = "clown_enjoyer_pin"
 
 /obj/item/clothing/accessory/clown_enjoyer_pin/can_attach_accessory(obj/item/clothing/under/attach_to, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -42,6 +54,8 @@
 	return TRUE
 
 /obj/item/clothing/accessory/clown_enjoyer_pin/accessory_equipped(obj/item/clothing/under/clothes, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(user, TRAIT_CLOWN_ENJOYER))
 		user.add_mood_event("clown_enjoyer_pin", /datum/mood_event/clown_enjoyer_pin)
 	if(ishuman(user))
@@ -49,6 +63,8 @@
 		human_equipper.fan_hud_set_fandom()
 
 /obj/item/clothing/accessory/clown_enjoyer_pin/accessory_dropped(obj/item/clothing/under/clothes, mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.clear_mood_event("clown_enjoyer_pin")
 	if(ishuman(user))
 		var/mob/living/carbon/human/human_equipper = user
@@ -60,6 +76,8 @@
 	icon_state = "mime_fan_pin"
 
 /obj/item/clothing/accessory/mime_fan_pin/can_attach_accessory(obj/item/clothing/under/attach_to, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -70,6 +88,8 @@
 	return TRUE
 
 /obj/item/clothing/accessory/mime_fan_pin/accessory_equipped(obj/item/clothing/under/clothes, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(user, TRAIT_MIME_FAN))
 		user.add_mood_event("mime_fan_pin", /datum/mood_event/mime_fan_pin)
 	if(ishuman(user))
@@ -77,6 +97,8 @@
 		human_equipper.fan_hud_set_fandom()
 
 /obj/item/clothing/accessory/mime_fan_pin/accessory_dropped(obj/item/clothing/under/clothes, mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.clear_mood_event("mime_fan_pin")
 	if(ishuman(user))
 		var/mob/living/carbon/human/human_equipper = user
@@ -88,10 +110,14 @@
 	icon_state = "pocketprotector"
 
 /obj/item/clothing/accessory/pocketprotector/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_storage(storage_type = /datum/storage/pockets/pocketprotector)
 
 /obj/item/clothing/accessory/pocketprotector/can_attach_accessory(obj/item/clothing/under/attach_to, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -105,6 +131,8 @@
 /obj/item/clothing/accessory/pocketprotector/full
 
 /obj/item/clothing/accessory/pocketprotector/full/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/pen/red(src)
 	new /obj/item/pen(src)
@@ -113,6 +141,8 @@
 /obj/item/clothing/accessory/pocketprotector/cosmetology
 
 /obj/item/clothing/accessory/pocketprotector/cosmetology/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in 1 to 3)
 		new /obj/item/lipstick/random(src)
@@ -127,27 +157,39 @@
 	var/display = "Nothing!"
 
 /obj/item/clothing/accessory/dogtag/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += display
 
 // Examining the clothes will display the examine message of the dogtag
 /obj/item/clothing/accessory/dogtag/attach(obj/item/clothing/under/attached_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(attached_to, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /obj/item/clothing/accessory/dogtag/detach(obj/item/clothing/under/detach_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(detach_from, COMSIG_ATOM_EXAMINE)
 
 // Double examining the person wearing the clothes will display the examine message of the dogtag
 /obj/item/clothing/accessory/dogtag/accessory_equipped(obj/item/clothing/under/clothes, mob/living/user)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(user, COMSIG_ATOM_EXAMINE_MORE, PROC_REF(on_examine))
 
 /obj/item/clothing/accessory/dogtag/accessory_dropped(obj/item/clothing/under/clothes, mob/living/user)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(user, COMSIG_ATOM_EXAMINE_MORE)
 
 /// Adds the examine message to the clothes and mob.
 /obj/item/clothing/accessory/dogtag/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Only show the examine message if we're close (2 tiles)
@@ -165,6 +207,8 @@
 	desc = "A dogtag with a listing of allergies."
 
 /obj/item/clothing/accessory/dogtag/allergy/Initialize(mapload, allergy_string)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(allergy_string)
 		display = span_notice("The dogtag has a listing of allergies: [allergy_string]")
@@ -222,6 +266,8 @@
 	obj_flags = UNIQUE_RENAME
 
 /obj/item/clothing/accessory/pride/setup_reskins()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/reskinable_item, /datum/atom_skin/pride_pin, infinite = TRUE)
 
 /obj/item/clothing/accessory/deaf_pin
@@ -243,10 +289,14 @@
 	clothing_traits = list(TRAIT_ALWAYS_WANTED)
 
 /obj/item/clothing/accessory/anti_sec_pin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/pinnable_accessory, silent = TRUE, pinning_time = 5 SECONDS)
 
 /obj/item/clothing/accessory/anti_sec_pin/try_attach(obj/item/clothing/under/attach_to, mob/living/attacher)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!. || isnull(attacher))
 		return
@@ -256,12 +306,16 @@
 	return TRUE
 
 /obj/item/clothing/accessory/anti_sec_pin/accessory_equipped(obj/item/clothing/under/clothes, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (ishuman(user))
 		var/mob/living/carbon/human/human_wearer = user
 		human_wearer.sec_hud_set_security_status()
 
 /obj/item/clothing/accessory/anti_sec_pin/accessory_dropped(obj/item/clothing/under/clothes, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (ishuman(user))
 		var/mob/living/carbon/human/human_wearer = user
@@ -279,6 +333,8 @@
 	var/press_name
 
 /obj/item/clothing/accessory/press_badge/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!journalist_name || !press_name)
 		. += span_notice("Use it in hand to input information")
@@ -287,6 +343,8 @@
 	. += span_notice("It belongs to <b>[journalist_name]</b>, <b>[press_name]</b>")
 
 /obj/item/clothing/accessory/press_badge/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!journalist_name)
 		journalist_name = tgui_input_text(user, "What is your name?", "Journalist Name", "[user.name]", max_length = MAX_NAME_LEN)
@@ -294,6 +352,8 @@
 		press_name = tgui_input_text(user, "For what organization you work?", "Press Name", "Nanotrasen", max_length = MAX_CHARTER_LEN)
 
 /obj/item/clothing/accessory/press_badge/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(interacting_with))
 		return

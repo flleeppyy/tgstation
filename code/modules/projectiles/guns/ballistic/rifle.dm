@@ -20,6 +20,8 @@
 	var/need_bolt_lock_to_interact = FALSE
 
 /obj/item/gun/ballistic/rifle/rack(mob/user = null)
+	procstart = null
+	src.procstart = null
 	if (bolt_locked == FALSE)
 		balloon_alert(user, "bolt opened")
 		playsound(src, rack_sound, rack_sound_volume, rack_sound_vary)
@@ -31,6 +33,8 @@
 
 
 /obj/item/gun/ballistic/rifle/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(need_bolt_lock_to_interact && !bolt_locked && !istype(tool, /obj/item/knife))
 		balloon_alert(user, "bolt closed!")
 		return
@@ -38,11 +42,15 @@
 	return ..()
 
 /obj/item/gun/ballistic/rifle/can_shoot()
+	procstart = null
+	src.procstart = null
 	if (bolt_locked)
 		return FALSE
 	return ..()
 
 /obj/item/gun/ballistic/rifle/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "The bolt is [bolt_locked ? "open" : "closed"]."
 
@@ -76,6 +84,8 @@
 	SET_BASE_PIXEL(-8, 0)
 
 /obj/item/gun/ballistic/rifle/boltaction/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/examine_lore, \
 		lore = "The Sakhno Precision Rifle's origins are closely tied to the Sakhno Concern, one of the Third Soviet Union's \
 			state-ran weapons manufacturing concerns before the Union's collapse in the February Revolution, and subsequently \
@@ -93,9 +103,13 @@
 		)
 
 /obj/item/gun/ballistic/rifle/boltaction/add_bayonet_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bayonet_attachable, offset_x = 41, offset_y = 14, bayonet_overlay = "bayonet_thin")
 
 /obj/item/gun/ballistic/rifle/boltaction/sawoff(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		spread = 36
@@ -103,6 +117,8 @@
 		update_appearance()
 
 /obj/item/gun/ballistic/rifle/boltaction/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(jammed)
 		if(prob(unjam_chance))
 			jammed = FALSE
@@ -115,6 +131,8 @@
 	return ..()
 
 /obj/item/gun/ballistic/rifle/boltaction/process_fire(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
+	procstart = null
+	src.procstart = null
 	if(can_jam)
 		if(chambered.loaded_projectile)
 			if(prob(jamming_chance))
@@ -124,6 +142,8 @@
 	return ..()
 
 /obj/item/gun/ballistic/rifle/boltaction/blow_up(mob/user)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(chambered?.loaded_projectile)
 		process_fire(user, user, FALSE)
@@ -143,6 +163,8 @@
 	SET_BASE_PIXEL(0, 0)
 
 /obj/item/gun/ballistic/rifle/boltaction/harpoon/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/examine_lore, \
 		lore = "Breech-loaded spearguns aren't a common sight around Nanotrasen stations, because \
 			everything you could reasonably need a speargun for, like carp hunting, is better served \
@@ -172,6 +194,8 @@
 	can_jam = TRUE
 
 /obj/item/gun/ballistic/rifle/boltaction/surplus/add_bayonet_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bayonet_attachable, offset_x = 41, offset_y = 14, bayonet_overlay = "bayonet_thin_surplus")
 
 /obj/item/gun/ballistic/rifle/boltaction/prime
@@ -191,10 +215,14 @@
 	accepted_magazine_type = /obj/item/ammo_box/magazine/internal/boltaction/phasic
 
 /obj/item/gun/ballistic/rifle/boltaction/prime/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/scope, range_modifier = 1.5)
 
 /obj/item/gun/ballistic/rifle/boltaction/prime/sawoff(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		name = "\improper Obrez Moderna" // wear it loud and proud
@@ -219,6 +247,8 @@
 		Its barrel has been cut off, so its power and accuracy have been impaired."
 
 /obj/item/gun/ballistic/rifle/boltaction/donkrifle/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/examine_lore, \
 		lore = "Donk Co.'s Jezail line of bolt-action sporting rifles is, admittedly, a strange, almost archaic design, \
 			coming from an even stranger place, as most people would not expect a logistics and food processing company to \
@@ -230,7 +260,9 @@
 			no risk of receiving a refurbished, poorly-kept surplus arm that jams more than it shoots." \
 	)
 
-/obj/item/gun/ballistic/rifle/boltaction/donkrifle/sawoff(mob/user) //the heavy price one pays for fitting this in a backpack
+/obj/item/gun/ballistic/rifle/boltaction/donkrifle/sawoff(mob/user)
+	procstart = null
+	src.procstart = null //the heavy price one pays for fitting this in a backpack
 	. = ..()
 	if(.)
 		projectile_damage_multiplier = 0.75
@@ -269,6 +301,8 @@
 	SET_BASE_PIXEL(0, 0)
 
 /obj/item/gun/ballistic/rifle/rebarxbow/rack(mob/user = null)
+	procstart = null
+	src.procstart = null
 	if (bolt_locked)
 		drop_bolt(user)
 		return
@@ -279,6 +313,8 @@
 	update_appearance()
 
 /obj/item/gun/ballistic/rifle/rebarxbow/drop_bolt(mob/user = null)
+	procstart = null
+	src.procstart = null
 	if(!do_after(user, draw_time, target = src,timed_action_flags = src.doafter_flags))
 		return
 	playsound(src, bolt_drop_sound, bolt_drop_sound_volume, FALSE)
@@ -288,24 +324,34 @@
 	update_appearance()
 
 /obj/item/gun/ballistic/rifle/rebarxbow/shoot_live_shot(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	rack()
 
 /obj/item/gun/ballistic/rifle/rebarxbow/can_shoot()
+	procstart = null
+	src.procstart = null
 	if (bolt_locked)
 		return FALSE
 	return ..()
 
 /obj/item/gun/ballistic/rifle/rebarxbow/shoot_with_empty_chamber(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(chambered || !magazine || !length(magazine.contents))
 		return ..()
 	drop_bolt(user)
 
 /obj/item/gun/ballistic/rifle/rebarxbow/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "The crossbow is [bolt_locked ? "not ready" : "ready"] to fire."
 
 /obj/item/gun/ballistic/rifle/rebarxbow/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!magazine)
 		. += "[initial(icon_state)]" + "_empty"
@@ -339,6 +385,8 @@
 	accepted_magazine_type = /obj/item/ammo_box/magazine/internal/boltaction/rebarxbow/syndie
 
 /obj/item/gun/ballistic/rifle/rebarxbow/syndie/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/scope, range_modifier = 2) //enough range to at least be useful for stealth
 
@@ -363,6 +411,8 @@
 	SET_BASE_PIXEL(-8, 0)
 
 /obj/item/gun/ballistic/rifle/boltaction/pipegun/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/examine_lore, \
 		lore_hint = span_notice("You can [EXAMINE_HINT("look closer")] to recall a tale about [src]."), \
 		lore = "<b>You were told this story, in hushed tones, from a wizened man in a grey jumpsuit...</b><br><br>\
@@ -377,9 +427,13 @@
 	)
 
 /obj/item/gun/ballistic/rifle/boltaction/pipegun/add_bayonet_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bayonet_attachable, offset_x = 35, offset_y = 10)
 
 /obj/item/gun/ballistic/rifle/boltaction/pipegun/handle_chamber(empty_chamber = TRUE, from_firing = TRUE, chamber_next_round = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	do_sparks(1, TRUE, src)
 
@@ -407,6 +461,8 @@
 	SET_BASE_PIXEL(0, 0)
 
 /obj/item/gun/ballistic/rifle/boltaction/pipegun/pistol/add_bayonet_point()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/ballistic/rifle/boltaction/pipegun/pistol/empty
@@ -460,18 +516,26 @@
 	SET_BASE_PIXEL(-8, 0)
 
 /obj/item/gun/ballistic/rifle/enchanted/dropped()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	guns_left = 0
 	magazine = null
 	chambered = null
 
 /obj/item/gun/ballistic/rifle/enchanted/proc/discard_gun(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.throw_item(pick(oview(7,get_turf(user))))
 
 /obj/item/gun/ballistic/rifle/enchanted/attack_self()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/ballistic/rifle/enchanted/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -519,14 +583,20 @@
 	suppressor_y_offset = 3
 
 /obj/item/gun/ballistic/rifle/sniper_rifle/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_warning("<b>It seems to have a warning label:</b> Do NOT, under any circumstances, attempt to 'quickscope' with this rifle.")
 
 /obj/item/gun/ballistic/rifle/sniper_rifle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/scope, range_modifier = 4) //enough range to at least make extremely good use of the penetrator rounds
 
 /obj/item/gun/ballistic/rifle/sniper_rifle/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/examine_lore, \
 		lore = "Modern arms and armor technology has come a long way since man's first strides into space, \
 			from high-throughput directed energy weaponry to advanced energy shielding and everything in between. \
@@ -542,6 +612,8 @@
 	)
 
 /obj/item/gun/ballistic/rifle/sniper_rifle/reset_fire_cd()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(suppressed)
 		playsound(src, 'sound/machines/eject.ogg', 25, TRUE, ignore_walls = FALSE, extrarange = SILENCED_SOUND_EXTRARANGE, falloff_distance = 0)
@@ -578,6 +650,8 @@
 	SET_BASE_PIXEL(-8, 0)
 
 /obj/item/gun/ballistic/rifle/sks/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/examine_lore, \
 		lore = "The Sakhno Concern's modernized reproductions of the SKS were commissioned by the \
 			leadership of the Third Soviet Union to celebrate their establishment in the Spinward Sector.<br>\
@@ -591,6 +665,8 @@
 	)
 
 /obj/item/gun/ballistic/rifle/sks/add_bayonet_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bayonet_attachable, offset_x = 38, offset_y = 12)
 
 /obj/item/gun/ballistic/rifle/sks/chekhov

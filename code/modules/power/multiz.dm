@@ -6,12 +6,16 @@
 	cable_layer = CABLE_LAYER_1|CABLE_LAYER_2|CABLE_LAYER_3
 
 /obj/structure/cable/multilayer/multiz/get_cable_connections(powernetless_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/T = get_turf(src)
 	. += locate(/obj/structure/cable/multilayer/multiz) in (GET_TURF_BELOW(T))
 	. += locate(/obj/structure/cable/multilayer/multiz) in (GET_TURF_ABOVE(T))
 
 /obj/structure/cable/multilayer/multiz/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/T = get_turf(src)
 	. += span_notice("[locate(/obj/structure/cable/multilayer/multiz) in (GET_TURF_BELOW(T)) ? "Detected" : "Undetected"] hub UP.")

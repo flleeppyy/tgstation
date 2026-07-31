@@ -8,15 +8,21 @@
 	valid_slots = ITEM_SLOT_EARS | ITEM_SLOT_HEAD
 
 /datum/component/wearertargeting/earprotection/Initialize(protection_amount = EAR_PROTECTION_NORMAL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.protection_amount = protection_amount
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE_TAGS, PROC_REF(get_examine_tags))
 
 /datum/component/wearertargeting/earprotection/proc/reducebang(datum/source, list/reflist)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	reflist[EAR_PROTECTION_ARG] += protection_amount
 
 /datum/component/wearertargeting/earprotection/proc/get_examine_tags(atom/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(protection_amount == EAR_PROTECTION_NORMAL)
 		examine_list["sound-proof"] = "It protects the ears from flashbangs and other loud noises."

@@ -3,6 +3,8 @@
 	var/mob/host_mob
 
 /datum/unit_test/get_message_mods/Run()
+	procstart = null
+	src.procstart = null
 	host_mob = allocate(/mob/living/carbon/human/consistent)
 
 	test("Hello", "Hello", list())
@@ -12,6 +14,8 @@
 	test("...What", "...What", list())
 
 /datum/unit_test/get_message_mods/proc/test(message, expected_message, list/expected_mods)
+	procstart = null
+	src.procstart = null
 	var/list/mods = list()
 	TEST_ASSERT_EQUAL(host_mob.get_message_mods(message, mods), expected_message, "Chopped message was not what we expected. Message: [message]")
 
@@ -28,6 +32,8 @@
 	var/list/handle_speech_result = null
 
 /datum/unit_test/speech_modifiers/proc/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	TEST_ASSERT(speech_args[SPEECH_MESSAGE], "Handle speech signal does not have a message arg")
@@ -40,6 +46,8 @@
 	handle_speech_result += speech_args
 
 /datum/unit_test/speech_modifiers/Run()
+	procstart = null
+	src.procstart = null
 	talking_lizard = allocate(/mob/living/carbon/human/consistent)
 	talking_lizard.set_species(/datum/species/lizard)
 	var/hissed_quote = "SSShe isss ssso sssasssy"
@@ -66,12 +74,16 @@
 /datum/unit_test/say_signal
 
 /datum/unit_test/say_signal/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/dummy = allocate(/mob/living)
 
 	RegisterSignal(dummy, COMSIG_MOB_SAY, PROC_REF(check_say))
 	dummy.say("Make sure the say signal gets the arglist say is past, no copies!")
 
 /datum/unit_test/say_signal/proc/check_say(mob/living/source, list/say_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	TEST_ASSERT_EQUAL(REF(say_args), source.last_say_args_ref, "Say signal didn't get the argslist of say as a reference. \
@@ -86,6 +98,8 @@
 	var/mob/host_mob
 
 /datum/unit_test/translate_language/Run()
+	procstart = null
+	src.procstart = null
 	host_mob = allocate(/mob/living/carbon/human/consistent)
 	var/surfer_quote = "surfing in the USA"
 
@@ -109,6 +123,8 @@
 	var/listener_radio_received_message = FALSE
 
 /datum/unit_test/speech/proc/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	TEST_ASSERT(speech_args[SPEECH_MESSAGE], "Handle speech signal does not have a message arg")
@@ -123,6 +139,8 @@
 	handle_speech_result += speech_args
 
 /datum/unit_test/speech/proc/handle_hearing(datum/source, list/hearing_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	TEST_ASSERT(hearing_args[HEARING_SPEAKER], "Handle hearing signal does not have a speaker arg")
@@ -140,16 +158,22 @@
 	handle_hearing_result += hearing_args
 
 /datum/unit_test/speech/proc/handle_radio_hearing(datum/source, mob/living/user, message, channel)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	speaker_radio_heard_message = TRUE
 
 /datum/unit_test/speech/proc/handle_radio_speech(datum/source, list/data)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	listener_radio_received_message = TRUE
 
 /datum/unit_test/speech/Run()
+	procstart = null
+	src.procstart = null
 	speaker = allocate(/mob/living/carbon/human/consistent)
 	// Name changes to make understanding breakpoints easier
 	speaker.name = "SPEAKER"
@@ -194,6 +218,8 @@
 #define WHISPER_HEARING_RANGE 1
 
 /datum/unit_test/speech/proc/conversation(distance = 0)
+	procstart = null
+	src.procstart = null
 	speaker.forceMove(run_loc_floor_bottom_left)
 	listener.forceMove(locate((run_loc_floor_bottom_left.x + distance), run_loc_floor_bottom_left.y, run_loc_floor_bottom_left.z))
 
@@ -222,6 +248,8 @@
 	handle_hearing_result = null
 
 /datum/unit_test/speech/proc/radio_test()
+	procstart = null
+	src.procstart = null
 	speaker_radio_heard_message = FALSE
 	listener_radio_received_message = FALSE
 

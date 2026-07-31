@@ -35,6 +35,8 @@
 	var/victor_memory_type = null
 
 /mob/living/basic/boss/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/wall_tearer, tear_time = 1 SECONDS)
 	if(gps_name)
@@ -48,21 +50,29 @@
 	handle_achievements()
 
 /mob/living/basic/boss/gib()
+	procstart = null
+	src.procstart = null
 	if(health > 0)
 		return
 	return ..()
 
 /mob/living/basic/boss/dust(just_ash, drop_items, give_moodlet, force)
+	procstart = null
+	src.procstart = null
 	if(!force && health > 0)
 		return
 	return ..()
 
 /mob/living/basic/boss/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if (health > 0 && !gibbed) // prevents instakills
 		return
 	return ..()
 
 /mob/living/basic/boss/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	switch (severity)
 		if (EXPLODE_DEVASTATE)
 			adjust_brute_loss(250)
@@ -76,6 +86,8 @@
 	return TRUE
 
 /mob/living/basic/boss/early_melee_attack(mob/living/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !istype(target))
 		return
@@ -86,10 +98,14 @@
 
 /// Determines if this mob is worth devouring
 /mob/living/basic/boss/proc/should_devour(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	return victim.stat == DEAD || (victim.health <= HEALTH_THRESHOLD_DEAD && HAS_TRAIT(victim, TRAIT_NODEATH))
 
 /// Devours a target and restores health to the megafauna
 /mob/living/basic/boss/proc/devour(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	if(isnull(victim) || victim.has_status_effect(/datum/status_effect/gutted))
 		return FALSE
 	celebrate_kill(victim)
@@ -107,6 +123,8 @@
 
 /// Small little taunt when we epically troll someone
 /mob/living/basic/boss/proc/celebrate_kill(mob/living/poor_sap)
+	procstart = null
+	src.procstart = null
 	visible_message(
 		span_danger("[src] disembowels [poor_sap]!"),
 		span_userdanger("You feast on [poor_sap]'s organs, restoring your health!"),
@@ -115,12 +133,16 @@
 /// Handles adding all relevant achievements when applicable (probably when we are defeated)
 /// Achievements being null/no length is handled in the element itself.
 /mob/living/basic/boss/proc/handle_achievements()
+	procstart = null
+	src.procstart = null
 	if(length(achievements) <= 0)
 		return
 	AddElement(/datum/element/kill_achievement, string_list(achievements), crusher_achievement_type, victor_memory_type)
 
 /// Handles adding crusher loot when applicable (probably when we are defeated)
 /mob/living/basic/boss/proc/handle_crusher_loot()
+	procstart = null
+	src.procstart = null
 	if(isnull(crusher_loot))
 		return
 	AddElement(\

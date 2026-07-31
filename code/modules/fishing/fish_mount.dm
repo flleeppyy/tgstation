@@ -10,6 +10,8 @@
 	var/persistence_id
 
 /obj/item/wallframe/fish/after_attach(obj/structure/fish_mount/mount)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	mount.persistence_id = persistence_id
 
@@ -35,6 +37,8 @@
 	var/persistence_loaded_fish = FALSE
 
 /obj/structure/fish_mount/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//Mounted fish shouldn't flop. It should also show size and weight to everyone.
 	add_traits(list(TRAIT_STOP_FISH_FLOPPING, TRAIT_EXAMINE_FISH), INNATE_TRAIT)
@@ -48,10 +52,14 @@
 		RegisterSignal(SSfishing, COMSIG_SUBSYSTEM_POST_INITIALIZE, PROC_REF(load_trophy_fish))
 
 /obj/structure/fish_mount/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(mounted_fish)
 	return ..()
 
 /obj/structure/fish_mount/proc/load_trophy_fish(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SSpersistence.load_trophy_fish(src)
 	UnregisterSignal(SSfishing, COMSIG_SUBSYSTEM_POST_INITIALIZE)
@@ -59,6 +67,8 @@
 		add_first_fish()
 
 /obj/structure/fish_mount/screwdriver_act(mob/living/user, obj/item/item)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	balloon_alert(user, "removing mount...")
 	if(!item.use_tool(src, user, 3 SECONDS, volume = 50))
@@ -69,6 +79,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/fish_mount/proc/add_first_fish()
+	procstart = null
+	src.procstart = null
 	var/list/valid_picks = subtypesof(/obj/item/fish) - typesof(/obj/item/fish/holo) - /obj/item/fish/starfish/chrystarfish // chrystarfish immediately shatters when placed
 	var/obj/item/fish/fish_path = pick(valid_picks)
 	if(fish_path.fish_id_redirect_path)
@@ -80,6 +92,8 @@
 	SSpersistence.save_trophy_fish(src)
 
 /obj/structure/fish_mount/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(disassembled)
 		var/obj/item/wallframe/fish/frame = new (loc)
@@ -87,6 +101,8 @@
 	mounted_fish?.forceMove(loc)
 
 /obj/structure/fish_mount/item_interaction(mob/living/user, obj/item/item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isfish(item) || user.combat_mode)
 		return ..()
 	if(mounted_fish)
@@ -104,9 +120,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/fish_mount/IsContainedAtomAccessible(atom/contained, atom/movable/user)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/structure/fish_mount/proc/add_fish(obj/item/fish/fish, from_persistence = FALSE, catcher)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src)) // don't ever try to add a fish to one of these that's already been deleted - and get rid of the one that was created
 		qdel(fish)
 		return
@@ -137,6 +157,8 @@
 		SSpersistence.save_trophy_fish(src)
 
 /obj/structure/fish_mount/proc/get_fish_beauty()
+	procstart = null
+	src.procstart = null
 	var/beauty = 100 + mounted_fish.beauty * 1.2
 	var/datum/material/main_material = mounted_fish.get_master_material()
 	if(main_material)
@@ -144,11 +166,15 @@
 	return round(beauty)
 
 /obj/structure/fish_mount/proc/on_fish_attack_hand(datum/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(remove_fish), user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/structure/fish_mount/attack_hand_secondary(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mounted_fish)
 		balloon_alert(user, "no fish mounted!")
@@ -157,6 +183,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/structure/fish_mount/proc/remove_fish(mob/living/user)
+	procstart = null
+	src.procstart = null
 	balloon_alert(user, "removing fish...")
 	if(!do_after(user, (persistence_loaded_fish ? 6 : 3) SECONDS, src) || !mounted_fish)
 		return
@@ -176,6 +204,8 @@
 	balloon_alert_to_viewers("fish removed")
 
 /obj/structure/fish_mount/Exited(atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	if(gone != mounted_fish)
 		return ..()
 	RemoveElement(/datum/element/beauty, get_fish_beauty())
@@ -191,6 +221,8 @@
 	return ..()
 
 /obj/structure/fish_mount/proc/roll_for_safe_removal(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(mounted_fish))
 		return FALSE
 

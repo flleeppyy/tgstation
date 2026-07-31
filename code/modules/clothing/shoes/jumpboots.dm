@@ -16,11 +16,15 @@
 	bio = 90
 
 /obj/item/clothing/shoes/bhop/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	create_storage(storage_type = /datum/storage/pockets/shoes)
 
 /obj/item/clothing/shoes/bhop/ui_action_click(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		return
 
@@ -58,6 +62,8 @@
 	var/flight_active = FALSE
 
 /obj/item/clothing/shoes/bhop/rocket/jet/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(flight_active)
 		icon_state = "jetboots_active"
 	else

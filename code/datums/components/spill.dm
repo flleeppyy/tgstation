@@ -12,6 +12,8 @@
 // droptext is an arglist for visible_message
 // dropsound is a list of potential sounds that gets picked from
 /datum/component/spill/Initialize(list/_droptext, list/_dropsound, _drop_memory)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -26,10 +28,14 @@
 	drop_memory = _drop_memory
 
 /datum/component/spill/PostTransfer(datum/new_parent)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 
 /datum/component/spill/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(equip_react))
 	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(drop_react))
 	var/obj/item/master = parent
@@ -37,12 +43,16 @@
 	master.slot_flags |= ITEM_SLOT_POCKETS
 
 /datum/component/spill/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED))
 	var/obj/item/master = parent
 	if(!(preexisting_slot_flags & ITEM_SLOT_POCKETS))
 		master.slot_flags &= ~ITEM_SLOT_POCKETS
 
 /datum/component/spill/proc/equip_react(obj/item/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(slot & (ITEM_SLOT_LPOCKET|ITEM_SLOT_RPOCKET))
@@ -51,11 +61,15 @@
 		UnregisterSignal(equipper, COMSIG_LIVING_STATUS_KNOCKDOWN)
 
 /datum/component/spill/proc/drop_react(obj/item/source, mob/dropper)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(dropper, COMSIG_LIVING_STATUS_KNOCKDOWN)
 
 /datum/component/spill/proc/knockdown_react(mob/living/fool, amount)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(amount <= 0)

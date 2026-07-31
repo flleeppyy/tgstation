@@ -2,6 +2,8 @@
 /datum/unit_test/buckling_self
 
 /datum/unit_test/buckling_self/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/dummy = EASY_ALLOCATE()
 	dummy.mock_client = new()
 	var/obj/structure/chair/chair = EASY_ALLOCATE()
@@ -20,6 +22,8 @@
 /datum/unit_test/buckling_others
 
 /datum/unit_test/buckling_others/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/dummy = EASY_ALLOCATE()
 	dummy.mock_client = new()
 	var/mob/living/carbon/human/consistent/victim = EASY_ALLOCATE()

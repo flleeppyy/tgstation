@@ -23,6 +23,8 @@
 	var/mutable_appearance/cable_overlay
 
 /obj/item/transfer_valve/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/cuffable_item)
 	RegisterSignal(src, COMSIG_ITEM_FRIED, PROC_REF(on_fried))
@@ -30,10 +32,14 @@
 	register_item_context()
 
 /obj/item/transfer_valve/Destroy()
+	procstart = null
+	src.procstart = null
 	attached_device = null
 	return ..()
 
 /obj/item/transfer_valve/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(tank_one)
 		. += span_notice("A [tank_one] is attached to the primary port.")
@@ -48,6 +54,8 @@
 		. += span_notice("You could cut off the straps with [EXAMINE_HINT(TOOL_WIRECUTTER)].")
 
 /obj/item/transfer_valve/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(tank_one || tank_two)
@@ -60,6 +68,8 @@
 	return . || NONE
 
 /obj/item/transfer_valve/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(istype(target, /obj/vehicle/ridden/wheelchair))
 		var/obj/vehicle/ridden/wheelchair/chair = target
@@ -68,6 +78,8 @@
 			return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/transfer_valve/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(tank_one)
 		split_gases()
 		valve_open = FALSE
@@ -80,9 +92,13 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/transfer_valve/IsAssemblyHolder()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/item/transfer_valve/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == tank_one)
 		tank_one = null
@@ -92,6 +108,8 @@
 		update_appearance()
 
 /obj/item/transfer_valve/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(interacting_with, /obj/vehicle/ridden/wheelchair))
 		var/obj/vehicle/ridden/wheelchair/chair = interacting_with
@@ -119,6 +137,8 @@
 	return NONE
 
 /obj/item/transfer_valve/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/tank))
 		try_attach_tank(tool, user)
 		return ITEM_INTERACT_SUCCESS
@@ -143,6 +163,8 @@
 	return NONE
 
 /obj/item/transfer_valve/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!wired)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 	tool.play_tool_sound(src)
@@ -156,6 +178,8 @@
 
 
 /obj/item/transfer_valve/proc/try_attach_tank(obj/item/tank/new_tank, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!tank_one)
 		if(!user.transferItemToLoc(new_tank, src))
 			return FALSE
@@ -174,6 +198,8 @@
 	return TRUE
 
 /obj/item/transfer_valve/proc/try_attach_assembly(obj/item/assembly/A, mob/user)
+	procstart = null
+	src.procstart = null
 	if(A.secured)
 		to_chat(user, span_notice("The [A] is secured; unsecure it first."))
 		return FALSE
@@ -193,21 +219,29 @@
 
 //These keep attached devices synced up, for example a TTV with a mouse trap being found in a bag so it's triggered, or moving the TTV with an infrared beam sensor to update the beam's direction.
 /obj/item/transfer_valve/Move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(attached_device)
 		attached_device.holder_movement()
 
 /obj/item/transfer_valve/dropped()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(attached_device)
 		attached_device.dropped()
 
 /obj/item/transfer_valve/on_found(mob/finder)
+	procstart = null
+	src.procstart = null
 	if(attached_device)
 		attached_device.on_found(finder)
 
 //Triggers mousetraps
 /obj/item/transfer_valve/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -215,19 +249,27 @@
 		attached_device.attack_hand()
 
 /obj/item/transfer_valve/proc/process_activation(obj/item/D)
+	procstart = null
+	src.procstart = null
 	if(toggle)
 		toggle = FALSE
 		toggle_valve()
 		addtimer(CALLBACK(src, PROC_REF(toggle_off)), 5) //To stop a signal being spammed from a proxy sensor constantly going off or whatever
 
 /obj/item/transfer_valve/proc/toggle_off()
+	procstart = null
+	src.procstart = null
 	toggle = TRUE
 
 /obj/item/transfer_valve/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][(!tank_one && !tank_two && !attached_device) ? "_1" : null]"
 	return ..()
 
 /obj/item/transfer_valve/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(tank_one)
 		. += "[tank_one.icon_state]"
@@ -267,6 +309,8 @@
 
 /// Merge both gases into a single tank. Combine the volume by default. If target tank isn't specified default to tank_two
 /obj/item/transfer_valve/proc/merge_gases(obj/item/tank/target, change_volume = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!target)
 		target = tank_two
 
@@ -290,6 +334,8 @@
 	return TRUE
 
 /obj/item/transfer_valve/proc/split_gases()
+	procstart = null
+	src.procstart = null
 	if (!valve_open || !tank_one || !tank_two)
 		return
 	var/datum/gas_mixture/mix_one = tank_one.return_air()
@@ -306,6 +352,8 @@
 	it explodes properly when it gets a signal (and it does).
 */
 /obj/item/transfer_valve/proc/toggle_valve(obj/item/tank/target, change_volume = TRUE)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/valve_opening.ogg', 50)
 	if(!valve_open && tank_one && tank_two)
 		var/turf/bombturf = get_turf(src)
@@ -361,24 +409,34 @@
 	eventually maybe have it update icon to show state (timer, prox etc.) like old bombs
 */
 /obj/item/transfer_valve/proc/c_state()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Signal when deep fried, so it can have an explosive reaction!
 /obj/item/transfer_valve/proc/on_fried(datum/source, fry_time)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	log_bomber(null, "TTV valve opened via deepfrying", src, "last fingerprints = [fingerprintslast]")
 	toggle_valve()
 
 /obj/item/transfer_valve/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.hands_state
 
 /obj/item/transfer_valve/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "TransferValve", name)
 		ui.open()
 
 /obj/item/transfer_valve/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["tank_one"] = tank_one ? tank_one.name : null
 	data["tank_two"] = tank_two ? tank_two.name : null
@@ -387,6 +445,8 @@
 	return data
 
 /obj/item/transfer_valve/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -423,9 +483,13 @@
  * Returns if this is ready to be detonated. Checks if both tanks are in place.
  */
 /obj/item/transfer_valve/proc/ready()
+	procstart = null
+	src.procstart = null
 	return tank_one && tank_two
 
 /obj/item/transfer_valve/fake/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	tank_one = new /obj/item/tank/internals/plasma (src)

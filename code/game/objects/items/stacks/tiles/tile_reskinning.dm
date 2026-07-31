@@ -16,6 +16,8 @@ GLOBAL_LIST_EMPTY(tile_dir_lists)
  * Caches associative lists with type path index keys and images of said type's initial icon state (typepath -> image).
  */
 /obj/item/stack/tile/proc/tile_reskin_list(list/values)
+	procstart = null
+	src.procstart = null
 	var/string_id = values.Join("-")
 	. = GLOB.tile_reskin_lists[string_id]
 	if(.)
@@ -26,6 +28,8 @@ GLOBAL_LIST_EMPTY(tile_dir_lists)
 	return GLOB.tile_reskin_lists[string_id] = values
 
 /obj/item/stack/tile/proc/tile_dir_list(list/values, atom/type_cast_path)
+	procstart = null
+	src.procstart = null
 	. = GLOB.tile_dir_lists[type]
 	if(.)
 		return
@@ -36,6 +40,8 @@ GLOBAL_LIST_EMPTY(tile_dir_lists)
 	return GLOB.tile_dir_lists[type] = values
 
 /obj/item/stack/tile/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/radial_options = list()
 	if(tile_reskin_types && tile_rotate_dirs)
 		radial_options["Reskin"] = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_reskin")
@@ -54,6 +60,8 @@ GLOBAL_LIST_EMPTY(tile_dir_lists)
 	return ..()
 
 /obj/item/stack/tile/proc/tile_reskin(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/tile/choice = show_radial_menu(user, src, tile_reskin_types, radius = 48, require_near = TRUE)
 	if(!choice || choice == type)
 		return
@@ -64,6 +72,8 @@ GLOBAL_LIST_EMPTY(tile_dir_lists)
 	qdel(src)
 
 /obj/item/stack/tile/proc/tile_rotate(mob/user)
+	procstart = null
+	src.procstart = null
 	var/choice = show_radial_menu(user, src, tile_rotate_dirs, radius = 56, require_near = TRUE)
 	if(!choice)
 		return

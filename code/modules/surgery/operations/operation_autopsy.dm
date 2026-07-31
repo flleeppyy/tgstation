@@ -10,9 +10,13 @@
 	all_surgery_states_required = SURGERY_SKIN_OPEN
 
 /datum/surgery_operation/limb/autopsy/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(/obj/item/autopsy_scanner)
 
 /datum/surgery_operation/limb/autopsy/all_required_strings()
+	procstart = null
+	src.procstart = null
 	. = list()
 	. += "operate on chest (target chest)"
 	. += ..()
@@ -20,6 +24,8 @@
 	. += "the patient must not have been autopsied prior"
 
 /datum/surgery_operation/limb/autopsy/state_check(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	if(limb.body_zone != BODY_ZONE_CHEST)
 		return FALSE
 	if(limb.owner.stat != DEAD)
@@ -29,6 +35,8 @@
 	return TRUE
 
 /datum/surgery_operation/limb/autopsy/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/autopsy_scanner/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -38,6 +46,8 @@
 	)
 
 /datum/surgery_operation/limb/autopsy/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/autopsy_scanner/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(limb.owner, TRAIT_DISSECTED, AUTOPSY_TRAIT)
 	ADD_TRAIT(limb.owner, TRAIT_SURGICALLY_ANALYZED, AUTOPSY_TRAIT)
 	tool.scan_cadaver(surgeon, limb.owner)

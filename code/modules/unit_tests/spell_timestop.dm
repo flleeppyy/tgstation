@@ -2,6 +2,8 @@
 /datum/unit_test/timestop
 
 /datum/unit_test/timestop/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dio = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/kakyoin = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/jotaro = allocate(/mob/living/carbon/human/consistent)

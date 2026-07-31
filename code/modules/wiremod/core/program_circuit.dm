@@ -21,12 +21,16 @@
 	var/datum/port/output/running
 
 /obj/item/circuit_component/mod_program/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(associated_program)
 		display_name = initial(associated_program.filedesc)
 		desc = initial(associated_program.extended_desc)
 	return ..() // Set the name correctly
 
 /obj/item/circuit_component/mod_program/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/modular_computer/computer
 	if(istype(shell, /obj/item/modular_computer))
@@ -48,11 +52,15 @@
 	RegisterSignal(associated_program, COMSIG_COMPUTER_PROGRAM_KILL, PROC_REF(on_kill))
 
 /obj/item/circuit_component/mod_program/unregister_shell()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(associated_program, list(COMSIG_COMPUTER_PROGRAM_START, COMSIG_COMPUTER_PROGRAM_KILL))
 	associated_program = initial(associated_program)
 	return ..()
 
 /obj/item/circuit_component/mod_program/populate_ports()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	. = ..()
 	start = add_input_port("Start", PORT_TYPE_SIGNAL, trigger = PROC_REF(start_prog))
@@ -61,6 +69,8 @@
 
 ///For most programs, triggers only work if they're open (either active or idle).
 /obj/item/circuit_component/mod_program/should_receive_input(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -76,20 +86,30 @@
 	return FALSE
 
 /obj/item/circuit_component/mod_program/proc/start_prog(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	associated_program.computer.open_program(program = associated_program)
 
 /obj/item/circuit_component/mod_program/proc/on_start(mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	running.set_output(TRUE)
 
 /obj/item/circuit_component/mod_program/proc/kill_prog(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	associated_program.kill_program()
 
 /obj/item/circuit_component/mod_program/proc/on_kill(mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	running.set_output(FALSE)
 
 /obj/item/circuit_component/mod_program/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(associated_program.program_flags & PROGRAM_CIRCUITS_RUN_WHEN_CLOSED))
 		. += create_ui_notice("Requires open program for inputs", "purple")

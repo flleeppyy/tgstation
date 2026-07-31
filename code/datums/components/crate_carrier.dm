@@ -10,6 +10,8 @@
 	var/list/atom/movable/crates_in_hand
 
 /datum/component/crate_carrier/Initialize(crate_limit = 3, list/carriable_types)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isanimal_or_basicmob(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -24,19 +26,27 @@
 		src.carriable_cache = default_cache
 
 /datum/component/crate_carrier/Destroy(force)
+	procstart = null
+	src.procstart = null
 	LAZYCLEARLIST(crates_in_hand)
 	return ..()
 
 /datum/component/crate_carrier/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 	RegisterSignal(parent, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(on_unarm_attack))
 	RegisterSignal(parent, COMSIG_LIVING_DEATH, PROC_REF(on_death))
 
 /datum/component/crate_carrier/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_LIVING_DEATH, COMSIG_ATOM_EXAMINE))
 
 /// Signal proc for [COMSIG_ATOM_EXAMINE] to show when we're carrying crates
 /datum/component/crate_carrier/proc/on_examine(mob/living/source, mob/examiner, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/num_crates = LAZYLEN(crates_in_hand)
@@ -45,6 +55,8 @@
 
 /// Signal proc for [COMSIG_LIVING_UNARMED_ATTACK] to allow mobs to pick up or drop crates
 /datum/component/crate_carrier/proc/on_unarm_attack(mob/living/source, atom/target, proximity, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source.combat_mode)
@@ -74,12 +86,16 @@
 
 /// Signal proc for [COMSIG_LIVING_DEATH], so we drop crates on death or gib
 /datum/component/crate_carrier/proc/on_death(mob/living/source, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	drop_all_crates(source.drop_location())
 
 /// Drops all the crates in our crate list.
 /datum/component/crate_carrier/proc/drop_all_crates(atom/drop_to)
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/closet/crate/held_crate as anything in crates_in_hand)
 		held_crate.forceMove(drop_to)
 		LAZYREMOVE(crates_in_hand, held_crate)

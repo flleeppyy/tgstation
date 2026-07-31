@@ -10,17 +10,25 @@
 	invisibility = INVISIBILITY_ABSTRACT
 
 /obj/effect/holodeck_effect/proc/activate(obj/machinery/computer/holodeck/HC)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/holodeck_effect/proc/deactivate(obj/machinery/computer/holodeck/HC)
+	procstart = null
+	src.procstart = null
 	qdel(src)
 	return
 
 // Called by the holodeck computer as long as the program is running
 /obj/effect/holodeck_effect/proc/tick(obj/machinery/computer/holodeck/HC)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/holodeck_effect/proc/safety(active)
+	procstart = null
+	src.procstart = null
 	return
 
 // Generates a holodeck-tracked card deck
@@ -29,11 +37,15 @@
 	icon_state = "deck_syndicate_full"
 
 /obj/effect/holodeck_effect/cards/activate(obj/machinery/computer/holodeck/holodeck)
+	procstart = null
+	src.procstart = null
 	var/obj/item/toy/cards/deck/syndicate/holographic/deck = new(loc, holodeck)
 	deck.flags_1 |= HOLOGRAM_1
 	return deck
 
 /obj/effect/holodeck_effect/sparks/activate(obj/machinery/computer/holodeck/HC)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(T)
 		do_sparks(3, TRUE, T)
@@ -44,6 +56,8 @@
 
 
 /obj/effect/holodeck_effect/random_book/activate(obj/machinery/computer/holodeck/father_holodeck)
+	procstart = null
+	src.procstart = null
 	var/newtype = get_random_manual()
 	var/obj/item/book/manual/to_spawn = new newtype(loc)
 	to_spawn.flags_1 |= HOLOGRAM_1
@@ -55,6 +69,8 @@
 	var/mob/our_mob = null
 
 /obj/effect/holodeck_effect/mobspawner/activate(obj/machinery/computer/holodeck/HC)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	if(islist(mobtype))
@@ -80,6 +96,8 @@
 	return .
 
 /obj/effect/holodeck_effect/mobspawner/deactivate(obj/machinery/computer/holodeck/HC)
+	procstart = null
+	src.procstart = null
 	if(our_mob)
 		for(var/atom/holo_atom as anything in our_mob.contents)
 			if(holo_atom.flags_1 & HOLOGRAM_1)
@@ -95,12 +113,16 @@
 	qdel(src)
 
 /obj/effect/holodeck_effect/mobspawner/proc/handle_mob_delete(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	our_mob = null
 
 /obj/effect/holodeck_effect/mobspawner/pet
 
 /obj/effect/holodeck_effect/mobspawner/pet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	mobtype = list(
 		/mob/living/basic/butterfly,
@@ -128,6 +150,8 @@
 	mobtype = /mob/living/basic/pet/penguin/emperor/neuter
 
 /obj/effect/holodeck_effect/mobspawner/penguin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(prob(1))
 		mobtype = /mob/living/basic/pet/penguin/emperor/shamebrero/neuter
 	return ..()

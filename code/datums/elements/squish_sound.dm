@@ -15,6 +15,8 @@
 
 ///Plays the set sound upon being entered, as long as the person walking into it can actually walk.
 /datum/element/squish_sound/proc/on_cross(atom/movable/source, atom/movable/crossed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(crossed) || (crossed.movement_type & MOVETYPES_NOT_TOUCHING_GROUND) || crossed.throwing)

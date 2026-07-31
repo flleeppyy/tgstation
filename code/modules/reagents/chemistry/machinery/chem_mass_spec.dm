@@ -31,6 +31,8 @@
 	var/cms_coefficient = 1
 
 /obj/machinery/chem_mass_spec/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(mapload)
@@ -39,16 +41,22 @@
 	register_context()
 
 /obj/machinery/chem_mass_spec/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(beaker1)
 	QDEL_NULL(beaker2)
 	return ..()
 
 /obj/machinery/chem_mass_spec/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	var/location = drop_location()
 	beaker1?.forceMove(location)
 	beaker2?.forceMove(location)
 
 /obj/machinery/chem_mass_spec/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 
 	if(!QDELETED(beaker1))
@@ -85,6 +93,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/chem_mass_spec/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!QDELETED(beaker1))
@@ -107,6 +117,8 @@
 		. += span_notice("It can be [EXAMINE_HINT("pried")] apart.")
 
 /obj/machinery/chem_mass_spec/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(panel_open)
@@ -125,6 +137,8 @@
 			. += "HPLC_graph_idle"
 
 /obj/machinery/chem_mass_spec/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(is_operational && !panel_open && anchored && !(machine_stat & (BROKEN | NOPOWER)))
 		icon_state = "HPLC_on"
 	else
@@ -132,6 +146,8 @@
 	return ..()
 
 /obj/machinery/chem_mass_spec/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == beaker1)
 		beaker1 = null
@@ -139,6 +155,8 @@
 		beaker2 = null
 
 /obj/machinery/chem_mass_spec/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	cms_coefficient = 1
@@ -146,6 +164,8 @@
 		cms_coefficient /= laser.tier
 
 /obj/machinery/chem_mass_spec/item_interaction(mob/living/user, obj/item/item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(processing_reagents)
 		balloon_alert(user, "still processing!")
 		return ITEM_INTERACT_BLOCKING
@@ -164,6 +184,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/chem_mass_spec/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_BLOCKING
 	if(processing_reagents)
 		balloon_alert(user, "still processing!")
@@ -173,6 +195,8 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/chem_mass_spec/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(processing_reagents)
 		balloon_alert(user, "still processing!")
 		return ITEM_INTERACT_BLOCKING
@@ -180,6 +204,8 @@
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/chem_mass_spec/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(processing_reagents)
 		balloon_alert(user, "still processing!")
 		return ITEM_INTERACT_BLOCKING
@@ -194,6 +220,8 @@
  * * smallest - TRUE to find lightest reagent, FALSE to find heaviest reagent
  */
 /obj/machinery/chem_mass_spec/proc/calculate_mass(smallest = TRUE)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	SHOULD_BE_PURE(TRUE)
 
@@ -221,6 +249,8 @@
  * * new beaker - the new beaker to add/replace the slot with
  */
 /obj/machinery/chem_mass_spec/proc/replace_beaker(mob/living/user, is_input, obj/item/reagent_containers/new_beaker)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(is_input) //replace input beaker
@@ -252,6 +282,8 @@
 
 ///Computes time to purity reagents
 /obj/machinery/chem_mass_spec/proc/estimate_time()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	delay_time = 0
@@ -278,12 +310,16 @@
 	delay_time *= cms_coefficient
 
 /obj/machinery/chem_mass_spec/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "MassSpec", name)
 		ui.open()
 
 /obj/machinery/chem_mass_spec/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["lowerRange"] = lower_mass_range
 	.["upperRange"] = upper_mass_range
@@ -352,6 +388,8 @@
 	.["beaker2"] = beaker2Data
 
 /obj/machinery/chem_mass_spec/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || processing_reagents)
 		return
@@ -446,6 +484,8 @@
 			return TRUE
 
 /obj/machinery/chem_mass_spec/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(processing_reagents)
 		balloon_alert(user, "still processing!")
 		return CLICK_ACTION_BLOCKING
@@ -453,12 +493,16 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/chem_mass_spec/click_alt_secondary(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(processing_reagents)
 		balloon_alert(user, "still processing!")
 		return
 	replace_beaker(user, FALSE)
 
 /obj/machinery/chem_mass_spec/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!processing_reagents)
 		return PROCESS_KILL
 

@@ -13,15 +13,21 @@
 	volume = 1000
 
 /obj/machinery/portable_atmospherics/pump/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	var/turf/local_turf = get_turf(src)
 	local_turf.assume_air(air_contents)
 	return ..()
 
 /obj/machinery/portable_atmospherics/pump/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)]_[on]"
 	return ..()
 
 /obj/machinery/portable_atmospherics/pump/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(holding)
 		. += "siphon-open"
@@ -29,6 +35,8 @@
 		. += "siphon-connector"
 
 /obj/machinery/portable_atmospherics/pump/process_atmos()
+	procstart = null
+	src.procstart = null
 	if(take_atmos_damage())
 		excited = TRUE
 		return ..()
@@ -56,6 +64,8 @@
 	return ..()
 
 /obj/machinery/portable_atmospherics/pump/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -71,6 +81,8 @@
 	update_appearance()
 
 /obj/machinery/portable_atmospherics/pump/replace_tank(mob/living/user, close_valve)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -82,12 +94,16 @@
 		user.investigate_log("started a transfer into [holding].", INVESTIGATE_ATMOS)
 
 /obj/machinery/portable_atmospherics/pump/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PortablePump", name)
 		ui.open()
 
 /obj/machinery/portable_atmospherics/pump/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["on"] = on
 	data["direction"] = direction
@@ -110,6 +126,8 @@
 	return data
 
 /obj/machinery/portable_atmospherics/pump/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -168,6 +186,8 @@
 	update_appearance()
 
 /obj/machinery/portable_atmospherics/pump/unregister_holding()
+	procstart = null
+	src.procstart = null
 	on = FALSE
 	return ..()
 
@@ -175,6 +195,8 @@
 	name = "Lil' Pump"
 
 /obj/machinery/portable_atmospherics/pump/lil_pump/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//25% chance to occur
 	if(prob(25))

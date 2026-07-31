@@ -33,10 +33,14 @@
 	src.butcher_callback = butcher_callback
 
 /datum/component/butchering/Destroy(force)
+	procstart = null
+	src.procstart = null
 	butcher_callback = null
 	return ..()
 
 /datum/component/butchering/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	if (!isitem(parent))
 		return
 	var/obj/item/item_parent = parent
@@ -46,9 +50,13 @@
 	RegisterSignal(parent, COMSIG_ITEM_REQUESTING_CONTEXT_FOR_TARGET, PROC_REF(add_item_context))
 
 /datum/component/butchering/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ITEM_ATTACK, COMSIG_ITEM_INTERACTING_WITH_ATOM))
 
 /datum/component/butchering/proc/on_item_attack(obj/item/source, mob/living/victim, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!source.get_sharpness() && !can_be_blunt)
@@ -84,6 +92,8 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/component/butchering/proc/on_item_interaction(obj/item/source, mob/living/user, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!source.get_sharpness() && !can_be_blunt)
@@ -97,6 +107,8 @@
 		return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/component/butchering/proc/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!source.get_sharpness() && !can_be_blunt)
@@ -124,6 +136,8 @@
 	return NONE
 
 /datum/component/butchering/proc/butcher_limb(obj/item/source, obj/item/bodypart/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	target.add_fingerprint(user)
 	if (LIMB_HAS_SKIN(target) && !HAS_ANY_SURGERY_STATE(target.surgery_state, SURGERY_SKIN_CUT | SURGERY_SKIN_OPEN))
 		to_chat(user, span_warning("[target]'s skin is still intact!"))
@@ -307,6 +321,8 @@
 
 /// Creates a replacement (usually skeleton) limb for the butchered one
 /datum/component/butchering/proc/create_replacement_limb(obj/item/bodypart/target, drop_loc)
+	procstart = null
+	src.procstart = null
 	var/drop_type = target.butcher_replacement
 	var/obj/item/bodypart/replacement = new drop_type(drop_loc)
 	replacement.bodyshape = target.bodyshape
@@ -322,12 +338,16 @@
 	return replacement
 
 /datum/component/butchering/proc/start_butcher(obj/item/source, mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You begin to butcher [target]..."))
 	playsound(target.loc, butcher_sound, 50, TRUE, -1)
 	if (do_after(user, speed, target) && target.Adjacent(source))
 		on_butchering(user, target)
 
 /datum/component/butchering/proc/butcher_human(obj/item/source, mob/living/carbon/human/victim, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (DOING_INTERACTION_WITH_TARGET(user, victim))
 		to_chat(user, span_warning("You're already interacting with [victim]!"))
 		return
@@ -357,6 +377,8 @@
 	butcher_limb(source, limb, user)
 
 /datum/component/butchering/proc/start_neck_slice(obj/item/source, mob/living/carbon/human/victim, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (DOING_INTERACTION_WITH_TARGET(user, victim))
 		to_chat(user, span_warning("You're already interacting with [victim]!"))
 		return
@@ -393,6 +415,8 @@
  * - [target][/mob/living]: The mob being butchered
  */
 /datum/component/butchering/proc/on_butchering(atom/butcher, mob/living/target)
+	procstart = null
+	src.procstart = null
 	var/list/results = list()
 	var/turf/location = target.drop_location()
 	var/final_effectiveness = effectiveness - target.butcher_difficulty
@@ -508,6 +532,8 @@
 	AddComponent(/datum/component/connect_loc_behalf, parent, loc_connections)
 
 /datum/component/butchering/recycler/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!isliving(arrived))
@@ -522,12 +548,16 @@
 /datum/component/butchering/mecha
 
 /datum/component/butchering/mecha/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_MECHA_EQUIPMENT_ATTACHED, PROC_REF(enable_butchering))
 	RegisterSignal(parent, COMSIG_MECHA_EQUIPMENT_DETACHED, PROC_REF(disable_butchering))
 	RegisterSignal(parent, COMSIG_MECHA_DRILL_MOB, PROC_REF(on_drill))
 
 /datum/component/butchering/mecha/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, list(
 		COMSIG_MECHA_DRILL_MOB,
@@ -537,27 +567,37 @@
 
 /// Enables the butchering mechanic for the mecha who has equipped us.
 /datum/component/butchering/mecha/proc/enable_butchering(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	butchering_enabled = TRUE
 
 /// Disables the butchering mechanic for the mecha who has dropped us.
 /datum/component/butchering/mecha/proc/disable_butchering(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	butchering_enabled = FALSE
 
 ///When we are ready to drill through a mob
 /datum/component/butchering/mecha/proc/on_drill(datum/source, obj/vehicle/sealed/mecha/chassis, mob/living/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(on_butchering), chassis, target)
 
 /datum/component/butchering/wearable
 
 /datum/component/butchering/wearable/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(worn_enable_butchering))
 	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(worn_disable_butchering))
 
 /datum/component/butchering/wearable/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, list(
 		COMSIG_ITEM_EQUIPPED,
@@ -566,6 +606,8 @@
 
 /// Same as enable_butchering but for worn items
 /datum/component/butchering/wearable/proc/worn_enable_butchering(obj/item/source, mob/user, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	//check if the item is being not worn
 	if (!(slot & source.slot_flags))
@@ -575,11 +617,15 @@
 
 /// Same as disable_butchering but for worn items
 /datum/component/butchering/wearable/proc/worn_disable_butchering(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	butchering_enabled = FALSE
 	UnregisterSignal(user, COMSIG_LIVING_UNARMED_ATTACK)
 
 /datum/component/butchering/wearable/proc/butcher_target(mob/user, atom/target, proximity)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!isliving(target))
 		return NONE

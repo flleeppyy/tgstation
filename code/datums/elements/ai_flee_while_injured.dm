@@ -10,6 +10,8 @@
 	var/start_fleeing_below
 
 /datum/element/ai_flee_while_injured/Attach(datum/target, stop_fleeing_at = 1, start_fleeing_below = 0.5)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -22,11 +24,15 @@
 	on_health_changed(target)
 
 /datum/element/ai_flee_while_injured/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_LIVING_HEALTH_UPDATE)
 
 /// When the mob's health changes, check what the blackboard state should be
 /datum/element/ai_flee_while_injured/proc/on_health_changed(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (isnull(source.ai_controller))

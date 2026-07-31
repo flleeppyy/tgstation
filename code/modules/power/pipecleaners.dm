@@ -77,6 +77,8 @@ By design, d1 is the smallest direction and d2 is the highest
 
 // the power pipe_cleaner object
 /obj/structure/pipe_cleaner/Initialize(mapload, param_color)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// ensure d1 & d2 reflect the icon_state for entering and exiting pipe_cleaner
@@ -100,7 +102,9 @@ By design, d1 is the smallest direction and d2 is the highest
 		var/turf/turf_loc = loc
 		turf_loc.add_blueprints_preround(src)
 
-/obj/structure/pipe_cleaner/Destroy() // called when a pipe_cleaner is deleted
+/obj/structure/pipe_cleaner/Destroy()
+	procstart = null
+	src.procstart = null // called when a pipe_cleaner is deleted
 	//If we have a stored item at this point, lets just delete it, since that should be
 	//handled by deconstruction
 	if(stored)
@@ -108,6 +112,8 @@ By design, d1 is the smallest direction and d2 is the highest
 	return ..() // then go ahead and delete the pipe_cleaner
 
 /obj/structure/pipe_cleaner/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/turf/location = get_turf(loc)
 	if(location)
 		stored.forceMove(location)
@@ -120,10 +126,14 @@ By design, d1 is the smallest direction and d2 is the highest
 ///////////////////////////////////
 
 /obj/structure/pipe_cleaner/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[d1]-[d2]"
 	return ..()
 
 /obj/structure/pipe_cleaner/update_icon()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_atom_colour(color, FIXED_COLOUR_PRIORITY)
 
@@ -132,6 +142,8 @@ By design, d1 is the smallest direction and d2 is the highest
 //   - pipe cleaner coil : merge pipe cleaners
 //
 /obj/structure/pipe_cleaner/proc/handlecable(obj/item/tool, mob/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(!istype(tool, /obj/item/stack/pipe_cleaner_coil))
 		return ITEM_INTERACT_BLOCKING
@@ -143,29 +155,41 @@ By design, d1 is the smallest direction and d2 is the highest
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/pipe_cleaner/proc/cut_pipe_cleaner(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_notice("[user] pulls up the pipe cleaner."), span_notice("You pull up the pipe cleaner."))
 	stored.add_fingerprint(user)
 	investigate_log("was pulled up by [key_name(usr)] in [AREACOORD(src)]", INVESTIGATE_WIRES)
 	deconstruct()
 
 /obj/structure/pipe_cleaner/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return handlecable(tool, user, modifiers)
 
 /obj/structure/pipe_cleaner/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	cut_pipe_cleaner(user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/pipe_cleaner/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_size >= STAGE_FIVE)
 		deconstruct()
 
 /obj/structure/pipe_cleaner/proc/update_stored(length = 1, colorC = COLOR_RED)
+	procstart = null
+	src.procstart = null
 	stored.amount = length
 	stored.color = colorC
 	stored.update_appearance()
 
 /obj/structure/pipe_cleaner/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	cut_pipe_cleaner(user)
 	return CLICK_ACTION_SUCCESS
 
@@ -210,9 +234,13 @@ By design, d1 is the smallest direction and d2 is the highest
 	var/pipecleaner_color = CABLE_COLOR_RED
 
 /obj/item/stack/pipe_cleaner_coil/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/copper = 2)
 
 /obj/item/stack/pipe_cleaner_coil/cyborg/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/pipe_cleaner_colors = GLOB.cable_colors
 	var/list/possible_colors = list()
 	for(var/color in pipe_cleaner_colors)
@@ -232,6 +260,8 @@ By design, d1 is the smallest direction and d2 is the highest
  * * user The mob interacting with the menu
  */
 /obj/item/stack/pipe_cleaner_coil/cyborg/proc/check_menu(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(!user.is_holding(src))
@@ -241,11 +271,15 @@ By design, d1 is the smallest direction and d2 is the highest
 	return TRUE
 
 /obj/item/stack/pipe_cleaner_coil/proc/set_pipecleaner_color(new_color)
+	procstart = null
+	src.procstart = null
 	color = GLOB.cable_colors[new_color]
 	pipecleaner_color = new_color
 	update_appearance()
 
 /obj/item/stack/pipe_cleaner_coil/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/structure/chair/stool) in get_turf(user))
 		user.visible_message(span_suicide("[user] is making a noose with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	else
@@ -253,6 +287,8 @@ By design, d1 is the smallest direction and d2 is the highest
 	return OXYLOSS
 
 /obj/item/stack/pipe_cleaner_coil/Initialize(mapload, new_amount = null, list/mat_override=null, mat_amt=1, param_color = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddElement(/datum/element/update_icon_updates_onmob)
@@ -272,19 +308,27 @@ By design, d1 is the smallest direction and d2 is the highest
 ///////////////////////////////////
 
 /obj/item/stack/pipe_cleaner_coil/update_name()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "pipe cleaner [amount < 3 ? "piece" : "coil"]"
 
 /obj/item/stack/pipe_cleaner_coil/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[initial(icon_state)][amount < 3 ? amount : ""]"
 	inhand_icon_state = "coil_[pipecleaner_color]"
 
 /obj/item/stack/pipe_cleaner_coil/update_icon()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_atom_colour(color, FIXED_COLOUR_PRIORITY)
 
 /obj/item/stack/pipe_cleaner_coil/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -294,6 +338,8 @@ By design, d1 is the smallest direction and d2 is the highest
 
 //add pipe_cleaners to the stack
 /obj/item/stack/pipe_cleaner_coil/proc/give(extra)
+	procstart = null
+	src.procstart = null
 	if(amount + extra > max_amount)
 		amount = max_amount
 	else
@@ -305,10 +351,14 @@ By design, d1 is the smallest direction and d2 is the highest
 //////////////////////////////////////////////
 
 /obj/item/stack/pipe_cleaner_coil/proc/get_new_pipe_cleaner(location)
+	procstart = null
+	src.procstart = null
 	return new /obj/structure/pipe_cleaner(location, pipecleaner_color)
 
 // called when pipe_cleaner_coil is clicked on a turf
 /obj/item/stack/pipe_cleaner_coil/proc/place_turf(turf/T, mob/user, dirnew)
+	procstart = null
+	src.procstart = null
 	if(!isturf(user.loc))
 		return
 
@@ -353,6 +403,8 @@ By design, d1 is the smallest direction and d2 is the highest
 // called when pipe_cleaner_coil is click on an installed obj/pipe_cleaner
 // or click on a turf that already contains a "node" pipe_cleaner
 /obj/item/stack/pipe_cleaner_coil/proc/pipe_cleaner_join(obj/structure/pipe_cleaner/C, mob/user, showerror = TRUE, forceddir)
+	procstart = null
+	src.procstart = null
 	var/turf/U = user.loc
 	if(!isturf(U))
 		return
@@ -492,6 +544,8 @@ By design, d1 is the smallest direction and d2 is the highest
 	icon_state = "pipecleaner2"
 
 /obj/item/stack/pipe_cleaner_coil/cut/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(!amount)
 		amount = rand(1,2)
 	. = ..()

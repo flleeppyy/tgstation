@@ -11,11 +11,15 @@
 	var/obj/structure/weightmachine/weightpress
 
 /datum/action/push_weights/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	if(DOING_INTERACTION(owner, weightpress))
 		return FALSE
 	return TRUE
 
 /datum/action/push_weights/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

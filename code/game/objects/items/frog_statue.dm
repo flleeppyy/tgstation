@@ -15,6 +15,8 @@
 	COOLDOWN_DECLARE(summon_cooldown)
 
 /obj/item/frog_statue/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(.)
@@ -35,6 +37,8 @@
 	return TRUE
 
 /obj/item/frog_statue/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!IS_WIZARD(user))
 		return
@@ -45,6 +49,8 @@
 
 ///resummon the frog into its home
 /obj/item/frog_statue/proc/recall_frog(mob/user)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/items/frog_statue_release.ogg', 20)
 	user.Beam(contained_frog, icon_state = "lichbeam", time = RECALL_DURATION)
 	animate(contained_frog, transform = matrix().Scale(0.3, 0.3), time = RECALL_DURATION)
@@ -52,6 +58,8 @@
 
 ///release the frog to wreak havoc
 /obj/item/frog_statue/proc/release_frog(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/possible_turfs = list()
 	for(var/turf/possible_turf in oview(2, user))
 		if(possible_turf.is_blocked_turf() || isopenspaceturf(possible_turf))
@@ -66,6 +74,8 @@
 
 ///set this frog as our inhabitor
 /obj/item/frog_statue/proc/set_new_frog(mob/living/frog)
+	procstart = null
+	src.procstart = null
 	frog.transform = frog.transform.Scale(0.3, 0.3)
 	contained_frog = frog
 	animate_filter()
@@ -73,6 +83,8 @@
 
 /// we have lost our frog, let out a scream!
 /obj/item/frog_statue/proc/render_obsolete(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	contained_frog = null
@@ -80,6 +92,8 @@
 	UnregisterSignal(source, COMSIG_QDELETING)
 
 /obj/item/frog_statue/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(arrived != contained_frog)
 		return
@@ -89,6 +103,8 @@
 		START_PROCESSING(SSobj, src)
 
 /obj/item/frog_statue/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(isnull(contained_frog))
 		return
 	if(contained_frog.health == contained_frog.maxHealth)
@@ -99,12 +115,16 @@
 	contained_frog.adjust_brute_loss(-5)
 
 /obj/item/frog_statue/proc/animate_filter(mob/living/frog)
+	procstart = null
+	src.procstart = null
 	add_filter(STATUE_FILTER, 2, list("type" = "outline", "color" = FILTER_COLOR, "size" = 1))
 	var/filter = get_filter(STATUE_FILTER)
 	animate(filter, alpha = 230, time = 2 SECONDS, loop = -1)
 	animate(alpha = 30, time = 0.5 SECONDS)
 
 /obj/item/frog_statue/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone != contained_frog)
 		return
@@ -117,6 +137,8 @@
 	icon_state = "scroll"
 
 /obj/item/frog_contract/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -125,6 +147,8 @@
 
 ///customize our own frog and trap it into the statue
 /obj/item/frog_contract/proc/create_frog(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/frog_statue/statue = new(null)
 	var/mob/living/basic/leaper/new_frog = new(statue)
 	statue.set_new_frog(new_frog)
@@ -138,6 +162,8 @@
 
 
 /obj/item/frog_contract/proc/select_frog_name(mob/user, mob/new_frog)
+	procstart = null
+	src.procstart = null
 	var/frog_name = sanitize_name(tgui_input_text(user, "Choose your frog's name!", "Name pet toad", "leaper", MAX_NAME_LEN), allow_numbers = TRUE)
 	if(!frog_name)
 		to_chat(user, span_warning("Please enter a valid name."))
@@ -146,6 +172,8 @@
 	new_frog.name = frog_name
 
 /obj/item/frog_contract/proc/select_frog_color(mob/user, mob/living/basic/leaper/new_frog)
+	procstart = null
+	src.procstart = null
 	var/frog_color = tgui_color_picker(user, "Select your frog's color!" , "Pet toad color", COLOR_GREEN)
 	if(isnull(frog_color))
 		to_chat(user, span_warning("Please choose a valid color."))

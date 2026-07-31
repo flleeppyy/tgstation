@@ -5,6 +5,8 @@
 	var/language_iterator = 1
 
 /datum/wires/vending/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(
 		WIRE_THROW, WIRE_SHOCK, WIRE_SPEAKER,
 		WIRE_CONTRABAND, WIRE_IDSCAN
@@ -25,6 +27,8 @@
 	..()
 
 /datum/wires/vending/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/vending/vending_machine = holder
 	if (!HAS_SILICON_ACCESS(user) && vending_machine.seconds_electrified && vending_machine.shock(user, 100))
 		return
@@ -32,6 +36,8 @@
 	return ..()
 
 /datum/wires/vending/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/obj/machinery/vending/vending_machine = holder
@@ -43,6 +49,8 @@
 		return TRUE
 
 /datum/wires/vending/get_status()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/vending/vending_machine = holder
 	var/datum/language_holder/vending_languages = vending_machine.get_language_holder()
 	var/datum/language/current_language = GLOB.language_datum_instances[vending_languages.get_selected_language()]
@@ -56,6 +64,8 @@
 	return status
 
 /datum/wires/vending/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/vending/vending_machine = holder
 	var/datum/language_holder/vending_languages = vending_machine.get_language_holder()
 
@@ -77,6 +87,8 @@
 			vending_machine.age_restrictions = !vending_machine.age_restrictions
 
 /datum/wires/vending/on_cut(wire, mend, source)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/vending/vending_machine = holder
 	switch(wire)
 		if(WIRE_THROW)
@@ -95,6 +107,8 @@
 			vending_machine.shut_up = mend
 
 /obj/machinery/vending/shock(mob/living/shocking, chance, shock_source, siemens_coeff)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (BROKEN|NOPOWER))
 		return FALSE
 	if(isnull(siemens_coeff))

@@ -2,6 +2,8 @@
 /datum/element/sideway_movement
 
 /datum/element/sideway_movement/Attach(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(target))
 		return ELEMENT_INCOMPATIBLE
@@ -9,16 +11,22 @@
 	RegisterSignal(target, COMSIG_MOVABLE_MOVED_FROM_LOOP, PROC_REF(on_moved_from_loop))
 
 /datum/element/sideway_movement/proc/on_client_move(atom/movable/source, direction, old_dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	on_move(source, direction, old_dir)
 
 /datum/element/sideway_movement/proc/on_moved_from_loop(atom/movable/source, datum/move_loop/loop, old_dir, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!CHECK_MOVE_LOOP_FLAGS(source, MOVEMENT_LOOP_OUTSIDE_CONTROL|MOVEMENT_LOOP_NO_DIR_UPDATE))
 		on_move(source, direction, old_dir)
 
 ///retain the old dir unless walking straight ahead or backward, in which case rotate the dir left or right by a 90°
 /datum/element/sideway_movement/proc/on_move(atom/movable/source, direction, old_dir)
+	procstart = null
+	src.procstart = null
 	if(!source.set_dir_on_move)
 		return
 	var/new_dir = old_dir

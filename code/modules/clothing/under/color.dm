@@ -26,6 +26,8 @@
 
 /// Returns a random, acceptable jumpsuit typepath
 /proc/get_random_jumpsuit()
+	procstart = null
+	src.procstart = null
 	return pick(
 		subtypesof(/obj/item/clothing/under/color) \
 			- typesof(/obj/item/clothing/under/color/jumpskirt) \
@@ -41,6 +43,8 @@
 	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/item/clothing/under/color/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/clothing/under/color/C = get_random_jumpsuit()
 	if(ishuman(loc))
@@ -52,6 +56,8 @@
 
 /// Returns a random, acceptable jumpskirt typepath
 /proc/get_random_jumpskirt()
+	procstart = null
+	src.procstart = null
 	return pick(
 		subtypesof(/obj/item/clothing/under/color/jumpskirt) \
 			- /obj/item/clothing/under/color/jumpskirt/random \
@@ -64,6 +70,8 @@
 	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/item/clothing/under/color/jumpskirt/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/clothing/under/color/jumpskirt/C = get_random_jumpskirt()
 	if(ishuman(loc))
@@ -86,6 +94,8 @@
 	item_flags = DROPDEL
 
 /obj/item/clothing/under/color/black/ghost/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CULT_TRAIT)
 
@@ -271,6 +281,8 @@
 	flags_1 = NONE
 
 /obj/item/clothing/under/color/rainbow/get_general_color(icon/base_icon)
+	procstart = null
+	src.procstart = null
 	return "#3f3f3f"
 
 /obj/item/clothing/under/color/jumpskirt/rainbow

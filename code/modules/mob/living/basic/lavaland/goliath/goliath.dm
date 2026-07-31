@@ -49,6 +49,8 @@
 	var/static/list/goliath_foods = list(/obj/item/food/grown/ash_flora, /obj/item/food/bait/worm)
 
 /mob/living/basic/mining/goliath/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_TENTACLE_IMMUNE, INNATE_TRAIT)
 	AddElement(/datum/element/footstep, FOOTSTEP_MOB_HEAVY)
@@ -81,21 +83,29 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /mob/living/basic/mining/goliath/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(tentacles)
 	QDEL_NULL(melee_tentacles)
 	QDEL_NULL(tentacle_line)
 	return ..()
 
 /mob/living/basic/mining/goliath/get_hud_x_offset()
+	procstart = null
+	src.procstart = null
 	return -4
 
 /mob/living/basic/mining/goliath/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (saddled)
 		. += span_info("Someone appears to have attached a saddle to this one.")
 
 // Goliaths can summon tentacles more frequently as they take damage, scary.
 /mob/living/basic/mining/goliath/apply_damage(damage, damagetype, def_zone, blocked, forced, spread_damage, wound_bonus, exposed_wound_bonus, sharpness, attack_direction, attacking_item, wound_clothing)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. <= 0)
 		return
@@ -103,6 +113,8 @@
 		tentacles.cooldown_time -= 1 SECONDS
 
 /mob/living/basic/mining/goliath/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!istype(tool, /obj/item/goliath_saddle))
 		return ..()
 
@@ -128,12 +140,16 @@
 	return ITEM_INTERACT_SUCCESS
 
 /mob/living/basic/mining/goliath/proc/make_rideable()
+	procstart = null
+	src.procstart = null
 	saddled = TRUE
 	add_overlay("goliath_saddled")
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/goliath)
 
 /// When we use an ability, activate some kind of visual tell
 /mob/living/basic/mining/goliath/proc/used_ability(mob/living/source, datum/action/cooldown/ability)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (stat == DEAD || ability.IsAvailable())
 		return // We died or the action failed for some reason like being out of range
@@ -151,24 +167,34 @@
 
 /// Called slightly before tentacles ability comes off cooldown, as a warning
 /mob/living/basic/mining/goliath/proc/tentacles_ready()
+	procstart = null
+	src.procstart = null
 	if (stat == DEAD)
 		return
 	icon_state = tentacle_warning_state
 
 // Copy entire faction rather than just placing user into faction, to avoid tentacle peril on station
 /mob/living/basic/mining/goliath/befriend(mob/living/new_friend)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.))
 		return
 	SET_FACTION_AND_ALLIES_FROM(src, new_friend)
 
 /mob/living/basic/mining/goliath/RangedAttack(atom/atom_target, modifiers)
+	procstart = null
+	src.procstart = null
 	tentacles?.Trigger(target = atom_target)
 
 /mob/living/basic/mining/goliath/ranged_secondary_attack(atom/atom_target, modifiers)
+	procstart = null
+	src.procstart = null
 	tentacle_line?.Trigger(target = atom_target)
 
 /mob/living/basic/mining/goliath/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (stat != DEAD)
 		. += emissive_appearance(icon, "[icon_living]_e", src, effect_type = EMISSIVE_NO_BLOOM)
@@ -179,10 +205,14 @@
 	buckle_lying = 0
 
 /mob/living/basic/mining/goliath/deathmatch/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	make_rideable()
 
 /mob/living/basic/mining/goliath/deathmatch/make_rideable()
+	procstart = null
+	src.procstart = null
 	add_overlay("goliath_saddled")
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/goliath/deathmatch)
 
@@ -210,6 +240,8 @@
 	var/list/tentacle_target_turfs
 
 /mob/living/basic/mining/goliath/ancient/immortal/Life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!. || !isturf(loc))
 		return
@@ -223,6 +255,8 @@
 			new /obj/effect/goliath_tentacle(target_turf, src)
 
 /mob/living/basic/mining/goliath/ancient/immortal/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (loc == old_loc || stat == DEAD || !isturf(loc))
 		return
@@ -230,6 +264,8 @@
 
 /// Store nearby turfs in our list so we can pop them out later
 /mob/living/basic/mining/goliath/ancient/immortal/proc/cache_nearby_turfs()
+	procstart = null
+	src.procstart = null
 	COOLDOWN_START(src, retarget_turfs_cooldown, 5 SECONDS)
 	LAZYCLEARLIST(tentacle_target_turfs)
 	for(var/turf/open/floor in orange(4, loc))

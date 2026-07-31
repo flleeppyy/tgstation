@@ -12,22 +12,30 @@
 	var/bite_sound = 'sound/items/weapons/bite.ogg'
 
 /obj/effect/decal/cleanable/ants/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(mapload && reagent_amount > 2)
 		reagent_amount = rand((reagent_amount - 2), reagent_amount)
 	. = ..()
 	update_ant_damage()
 
 /obj/effect/decal/cleanable/ants/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vname == NAMEOF(src, bite_sound))
 		update_ant_damage()
 
 /obj/effect/decal/cleanable/ants/handle_merge_decal(obj/effect/decal/cleanable/merger)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/effect/decal/cleanable/ants/ants = merger
 	ants.update_ant_damage()
 
 /obj/effect/decal/cleanable/ants/proc/update_ant_damage(ant_min_damage, ant_max_damage)
+	procstart = null
+	src.procstart = null
 	if(!ant_max_damage)
 		ant_max_damage = min(10, round((reagents ? reagents.get_reagent_amount(/datum/reagent/ants) : reagent_amount) * 0.1,0.1)) // 100u ants = 10 max_damage
 	if(!ant_min_damage)
@@ -48,6 +56,8 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/effect/decal/cleanable/ants/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(istype(src, /obj/effect/decal/cleanable/ants/fire)) //i fucking hate this but you're forced to call parent in update_icon_state()
 		return ..()
 	if(!(flags_1 & INITIALIZED_1))
@@ -69,10 +79,14 @@
 	return ..()
 
 /obj/effect/decal/cleanable/ants/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance(icon, "[icon_state]_light", src, alpha = src.alpha, effect_type = EMISSIVE_NO_BLOOM)
 
 /obj/effect/decal/cleanable/ants/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/decal/cleanable/ants/fire(loc)
 	qdel(src)
 
@@ -84,7 +98,11 @@
 	mergeable_decal = FALSE
 
 /obj/effect/decal/cleanable/ants/fire/update_ant_damage(ant_min_damage, ant_max_damage)
+	procstart = null
+	src.procstart = null
 	return ..(15, 25)
 
 /obj/effect/decal/cleanable/ants/fire/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	return

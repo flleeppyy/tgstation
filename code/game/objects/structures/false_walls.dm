@@ -27,11 +27,15 @@
 	var/opening = FALSE
 
 /obj/structure/falsewall/get_save_vars()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. -= NAMEOF(src, icon)
 	return .
 
 /obj/structure/falsewall/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// minerals are only applied to fake mineral walls
 	// ...yes, real iron walls are not actually made of iron
@@ -44,6 +48,8 @@
 	update_appearance()
 
 /obj/structure/falsewall/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(opening)
 		return
 	. = ..()
@@ -59,6 +65,8 @@
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/structure/falsewall, toggle_open)), 0.5 SECONDS)
 
 /obj/structure/falsewall/proc/toggle_open()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(src))
 		set_density(!density)
 		set_opacity(density)
@@ -66,7 +74,9 @@
 		update_appearance()
 		air_update_turf(TRUE, !density)
 
-/obj/structure/falsewall/update_icon(updates=ALL)//Calling icon_update will refresh the smoothwalls if it's closed, otherwise it will make sure the icon is correct if it's open
+/obj/structure/falsewall/update_icon(updates=ALL)
+	procstart = null
+	src.procstart = null//Calling icon_update will refresh the smoothwalls if it's closed, otherwise it will make sure the icon is correct if it's open
 	. = ..()
 	if(!density || !(updates & UPDATE_SMOOTHING))
 		return
@@ -78,6 +88,8 @@
 		QUEUE_SMOOTH(src)
 
 /obj/structure/falsewall/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(opening)
 		icon = initial(icon)
 		icon_state = "[base_icon_state]-[density ? "opening" : "closing"]"
@@ -91,6 +103,8 @@
 	return ..()
 
 /obj/structure/falsewall/proc/ChangeToWall(delete = 1)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	T.place_on_top(walltype)
 	if(delete)
@@ -98,12 +112,16 @@
 	return T
 
 /obj/structure/falsewall/tool_act(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!opening || !tool.tool_behaviour)
 		return ..()
 	to_chat(user, span_warning("You must wait until the door has stopped moving!"))
 	return ITEM_INTERACT_BLOCKING
 
 /obj/structure/falsewall/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!density)
 		to_chat(user, span_warning("You can't reach, close it first!"))
 		return
@@ -120,18 +138,24 @@
 
 
 /obj/structure/falsewall/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!tool.use_tool(src, user, 0 SECONDS, volume=50))
 		return ITEM_INTERACT_BLOCKING
 	dismantle(user, TRUE)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/falsewall/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(opening)
 		to_chat(user, span_warning("You must wait until the door has stopped moving!"))
 		return ITEM_INTERACT_BLOCKING // honest to god no idea what the point of this blocker is, I'm just the messenger
 	return NONE
 
 /obj/structure/falsewall/proc/dismantle(mob/user, disassembled=TRUE, obj/item/tool = null)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_notice("[user] dismantles the false wall."), span_notice("You dismantle the false wall."))
 	if(tool)
 		tool.play_tool_sound(src, 100)
@@ -140,6 +164,8 @@
 	deconstruct(disassembled)
 
 /obj/structure/falsewall/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(disassembled)
 		new girder_type(loc)
 	if(mineral_amount)
@@ -147,15 +173,23 @@
 			new mineral(loc)
 
 /obj/structure/falsewall/get_dumping_location()
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/structure/falsewall/examine_descriptor(mob/user)
+	procstart = null
+	src.procstart = null
 	return "wall"
 
-/obj/structure/falsewall/examine_status(mob/user) //So you can't detect falsewalls by examine.
+/obj/structure/falsewall/examine_status(mob/user)
+	procstart = null
+	src.procstart = null //So you can't detect falsewalls by examine.
 	return span_notice("The outer plating is <b>welded</b> firmly in place.")
 
 /obj/structure/falsewall/mouse_drop_receive(mob/living/dropping, mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	LoadComponent(/datum/component/leanable, dropping)
 
@@ -174,13 +208,19 @@
 	smoothing_flags = SMOOTH_BITMASK
 
 /obj/structure/falsewall/reinforced/examine_status(mob/user)
+	procstart = null
+	src.procstart = null
 	return span_notice("The outer <b>grille</b> is fully intact.")
 
 /obj/structure/falsewall/reinforced/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	dismantle(user, TRUE, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/falsewall/reinforced/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return NONE
 
 /*
@@ -206,18 +246,26 @@
 	var/last_event = 0
 
 /obj/structure/falsewall/uranium/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ATOM_PROPAGATE_RAD_PULSE, PROC_REF(radiate))
 
 /obj/structure/falsewall/uranium/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	radiate()
 	return ..()
 
 /obj/structure/falsewall/uranium/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	radiate()
 	return ..()
 
 /obj/structure/falsewall/uranium/proc/radiate()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(active)
 		return
@@ -440,6 +488,8 @@
 	material_flags = MATERIAL_EFFECTS | MATERIAL_ADD_PREFIX | MATERIAL_COLOR | MATERIAL_AFFECT_STATISTICS
 
 /obj/structure/falsewall/material/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(disassembled)
 		new girder_type(loc)
 	for(var/material in custom_materials)
@@ -447,10 +497,14 @@
 		new material_datum.sheet_type(loc, FLOOR(custom_materials[material_datum] / SHEET_MATERIAL_AMOUNT, 1))
 
 /obj/structure/falsewall/material/finalize_material_effects(list/materials)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = "A huge chunk of [get_material_english_list(materials)] used to separate rooms."
 
 /obj/structure/falsewall/material/toggle_open()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(src))
 		set_density(!density)
 		var/mat_opacity = TRUE
@@ -464,6 +518,8 @@
 		air_update_turf(TRUE, !density)
 
 /obj/structure/falsewall/material/ChangeToWall(delete = 1)
+	procstart = null
+	src.procstart = null
 	var/turf/current_turf = get_turf(src)
 	var/turf/closed/wall/material/new_wall = current_turf.place_on_top(/turf/closed/wall/material)
 	new_wall.set_custom_materials(custom_materials)
@@ -472,6 +528,8 @@
 	return current_turf
 
 /obj/structure/falsewall/material/update_icon(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/material/mat in custom_materials)
 		if(mat.alpha < 255)
@@ -479,6 +537,8 @@
 			return
 
 /obj/structure/falsewall/material/proc/update_transparency_underlays()
+	procstart = null
+	src.procstart = null
 	underlays.Cut()
 	var/girder_icon_state = "displaced"
 	if(opening)

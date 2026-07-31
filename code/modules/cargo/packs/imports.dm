@@ -90,6 +90,8 @@
 	crate_type = /obj/structure/closet/crate/trashcart
 
 /datum/supply_pack/imports/dumpstercorpse/generate(atom/A, datum/bank_account/paying_account, crate_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/carbon/human/corpse = locate() in .
 	corpse.death()
@@ -136,6 +138,8 @@
 	order_flags = ORDER_CONTRABAND
 
 /datum/supply_pack/imports/mafia/fill(obj/structure/closet/crate/our_crate)
+	procstart = null
+	src.procstart = null
 	for(var/items in 1 to 4)
 		new /obj/effect/spawner/random/clothing/mafia_outfit(our_crate)
 		new /obj/item/virgin_mary(our_crate)
@@ -242,6 +246,8 @@
 	discountable = SUPPLY_PACK_RARE_DISCOUNTABLE
 
 /datum/supply_pack/imports/russian/fill(obj/structure/closet/crate/our_crate)
+	procstart = null
+	src.procstart = null
 	for(var/items in 1 to 10)
 		var/item = pick(contains)
 		new item(our_crate)
@@ -378,6 +384,8 @@
 	)
 
 /datum/supply_pack/imports/fan_upgrade/generate(atom/A, datum/bank_account/paying_account, crate_override)
+	procstart = null
+	src.procstart = null
 	if(SSshuttle.renew_cargo_air)
 		return ..()
 

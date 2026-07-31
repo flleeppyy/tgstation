@@ -17,14 +17,20 @@ Reproductive extracts:
 	var/last_produce = 0
 
 /obj/item/slimecross/reproductive/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_danger("It appears to have eaten [length(contents)] Monkey Cube[p_s()]")
 
 /obj/item/slimecross/reproductive/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_storage(storage_type = /datum/storage/extract_inventory)
 
 /obj/item/slimecross/reproductive/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/datum/storage/extract_inventory/slime_storage = atom_storage
 	if(!istype(slime_storage)) // what
 		return NONE

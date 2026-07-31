@@ -8,17 +8,25 @@
 	var/datum/weakref/navigation_console
 
 /obj/docking_port/mobile/custom/Initialize(mapload, list/areas)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_area = areas[1]
 
 /obj/docking_port/mobile/custom/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(default_area)
 
 /obj/docking_port/mobile/custom/canMove()
+	procstart = null
+	src.procstart = null
 	return ..() && (current_engine_power > 0)
 
 /obj/docking_port/mobile/custom/get_engine_coeff(mod)
+	procstart = null
+	src.procstart = null
 	var/thrust_ratio = ((current_engine_power + mod) * CUSTOM_ENGINE_POWER_MULTIPLIER)/(turf_count + CUSTOM_ENGINE_POWER_TURF_COUNT_OFFSET)
 	var/calculated_multiplier = 2*(1-(NUM_E ** -thrust_ratio))
 	return calculated_multiplier ? clamp(1/calculated_multiplier, CUSTOM_ENGINE_COEFF_MIN, CUSTOM_ENGINE_COEFF_MAX) : CUSTOM_ENGINE_COEFF_MAX

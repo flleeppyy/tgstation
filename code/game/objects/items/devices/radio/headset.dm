@@ -42,10 +42,14 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	overlay_mic_active = null
 
 /obj/item/radio/headset/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins putting \the [src]'s antenna up [user.p_their()] nose! It looks like [user.p_theyre()] trying to give [user.p_them()]self cancer!"))
 	return TOXLOSS
 
 /obj/item/radio/headset/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!(item_flags & IN_INVENTORY) || loc != user)
@@ -75,6 +79,8 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 		. += span_info("<b>Alt-click</b> to toggle the high-volume mode.")
 
 /obj/item/radio/headset/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ispath(keyslot2))
 		keyslot2 = new keyslot2()
@@ -84,30 +90,42 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	possibly_deactivate_in_loc()
 
 /obj/item/radio/headset/proc/possibly_deactivate_in_loc()
+	procstart = null
+	src.procstart = null
 	if(ismob(loc))
 		set_listening(should_be_listening)
 	else
 		set_listening(FALSE, actual_setting = FALSE)
 
 /obj/item/radio/headset/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	possibly_deactivate_in_loc()
 
 /obj/item/radio/headset/Destroy()
+	procstart = null
+	src.procstart = null
 	if(istype(keyslot2))
 		QDEL_NULL(keyslot2)
 	return ..()
 
 /obj/item/radio/headset/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["headset"] = TRUE
 
 /obj/item/radio/headset/mouse_drop_dragged(atom/over, mob/user, src_location, over_location, params)
+	procstart = null
+	src.procstart = null
 	if(user == over)
 		return attack_self(user)
 
 /// Grants all the languages this headset allows the mob to understand via installed chips.
 /obj/item/radio/headset/proc/grant_headset_languages(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	var/list/language_list = keyslot?.language_data?.Copy()
 
 	if(keyslot2)
@@ -130,12 +148,16 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 
 /// Clears all radio related languages from the mob.
 /obj/item/radio/headset/proc/remove_headset_languages(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(remove_from)) //This can be called as a part of destroy
 		return
 	remove_from.remove_all_languages(source = LANGUAGE_RADIOKEY)
 	remove_from.remove_all_partial_languages(source = LANGUAGE_RADIOKEY)
 
 /obj/item/radio/headset/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(slot_flags & slot))
 		return
@@ -143,11 +165,15 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	grant_headset_languages(user)
 
 /obj/item/radio/headset/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	remove_headset_languages(user)
 
 // Headsets do not become hearing sensitive as broadcasting instead controls their talk_into capabilities
 /obj/item/radio/headset/set_broadcasting(new_broadcasting, actual_setting = TRUE)
+	procstart = null
+	src.procstart = null
 	broadcasting = new_broadcasting
 	if(actual_setting)
 		should_be_broadcasting = broadcasting
@@ -158,6 +184,8 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 		should_update_icon = TRUE
 
 /obj/item/radio/headset/talk_into_impl(atom/movable/talking_movable, message, channel, list/spans, datum/language/language, list/message_mods)
+	procstart = null
+	src.procstart = null
 	if (!broadcasting)
 		return
 	return ..()
@@ -165,6 +193,8 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 /obj/item/radio/headset/syndicate //disguised to look like a normal headset for stealth ops
 
 /obj/item/radio/headset/syndicate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	make_syndie()
 
@@ -175,6 +205,8 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	worn_icon_state = "syndie_headset"
 
 /obj/item/radio/headset/syndicate/alt/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/wearertargeting/earprotection)
 
@@ -199,6 +231,8 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	worn_icon_state = "sec_headset_alt"
 
 /obj/item/radio/headset/headset_sec/alt/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/wearertargeting/earprotection)
 
@@ -282,6 +316,8 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	worn_icon_state = "com_headset_alt"
 
 /obj/item/radio/headset/heads/captain/alt/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/wearertargeting/earprotection)
 
@@ -308,6 +344,8 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	worn_icon_state = "com_headset_alt"
 
 /obj/item/radio/headset/heads/hos/alt/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/wearertargeting/earprotection)
 
@@ -349,15 +387,21 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	keyslot = /obj/item/encryptionkey/headset_mining
 
 /obj/item/radio/headset/headset_cargo/mining/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/callouts, ITEM_SLOT_EARS, examine_text = span_info("Use ctrl-click to enable or disable callouts."), active = FALSE)
 
 /obj/item/radio/headset/headset_cargo/mining/equipped(mob/living/carbon/human/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot & ITEM_SLOT_EARS)
 		ADD_TRAIT(user, TRAIT_SPEECH_BOOSTER, CLOTHING_TRAIT)
 
 /obj/item/radio/headset/headset_cargo/mining/dropped(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(user, TRAIT_SPEECH_BOOSTER, CLOTHING_TRAIT)
 
@@ -392,6 +436,8 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	keyslot2 = null
 
 /obj/item/radio/headset/headset_cent/alt/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/wearertargeting/earprotection)
 
@@ -416,10 +462,14 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	command = TRUE
 
 /obj/item/radio/headset/silicon/human_ai/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(user, TRAIT_LOUD_BINARY, REF(src))
 
 /obj/item/radio/headset/silicon/human_ai/dropped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(user, TRAIT_LOUD_BINARY, REF(src))
 
@@ -429,10 +479,14 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	command = FALSE
 
 /obj/item/radio/headset/silicon/ai/evil/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	make_syndie()
 
 /obj/item/radio/headset/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == keyslot2)
 		keyslot2 = null
@@ -440,6 +494,8 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 			recalculateChannels()
 
 /obj/item/radio/headset/remove_keys(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!keyslot2)
 		return
@@ -448,6 +504,8 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	user.put_in_hands(keyslot2) // null via Exited
 
 /obj/item/radio/headset/install_key(mob/living/user, obj/item/encryptionkey/key)
+	procstart = null
+	src.procstart = null
 	if(!keyslot)
 		return ..()
 
@@ -466,6 +524,8 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/radio/headset/recalculateChannels()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(keyslot2)
 		for(var/channel_name in keyslot2.channels)
@@ -484,6 +544,8 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 		grant_headset_languages(mob_loc)
 
 /obj/item/radio/headset/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) || !command)
 		return CLICK_ACTION_BLOCKING
 	use_command = !use_command

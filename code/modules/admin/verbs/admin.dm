@@ -50,6 +50,8 @@ ADMIN_VERB(cmd_admin_check_player_exp, R_ADMIN, "Player Playtime", "View player 
 	user << browse(msg.Join(), "window=Player_playtime_check")
 
 /client/proc/trigger_centcom_recall()
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_ADMIN))
 		return
 	var/message = pick(GLOB.admiral_messages)
@@ -66,6 +68,8 @@ ADMIN_VERB(cmd_admin_check_player_exp, R_ADMIN, "Player Playtime", "View player 
 
 
 /datum/admins/proc/cmd_show_exp_panel(client/client_to_check)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_ADMIN))
 		return
 	if(!client_to_check)
@@ -78,6 +82,8 @@ ADMIN_VERB(cmd_admin_check_player_exp, R_ADMIN, "Player Playtime", "View player 
 	new /datum/job_report_menu(client_to_check, usr)
 
 /datum/admins/proc/toggle_exempt_status(client/C)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_ADMIN))
 		return
 	if(!C)
@@ -101,6 +107,8 @@ ADMIN_VERB(cmd_admin_check_player_exp, R_ADMIN, "Player Playtime", "View player 
 
 /// Allow admin to add or remove traits of datum
 /datum/admins/proc/modify_traits(datum/D)
+	procstart = null
+	src.procstart = null
 	if(!D)
 		return
 	if(!check_rights(R_VAREDIT))
@@ -164,6 +172,8 @@ ADMIN_VERB(drop_everything, R_ADMIN, "Drop Everything", ADMIN_VERB_NO_DESCRIPTIO
 	BLACKBOX_LOG_ADMIN_VERB("Drop Everything")
 
 /proc/cmd_admin_mute(whom, mute_type, automute = 0)
+	procstart = null
+	src.procstart = null
 	if(!whom)
 		return
 
@@ -242,6 +252,8 @@ ADMIN_VERB(drop_everything, R_ADMIN, "Drop Everything", ADMIN_VERB_NO_DESCRIPTIO
 	SSblackbox.record_feedback("nested tally", "admin_toggle", 1, list("Mute [feedback_string]", "[P.muted & mute_type]")) // If you are copy-pasting this, ensure the 4th parameter is unique to the new proc!
 
 /proc/immerse_player(mob/living/carbon/target, toggle=TRUE, remove=FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/immersion_components = list(/datum/component/manual_breathing, /datum/component/manual_blinking)
 
 	for(var/immersies in immersion_components)
@@ -253,5 +265,7 @@ ADMIN_VERB(drop_everything, R_ADMIN, "Drop Everything", ADMIN_VERB_NO_DESCRIPTIO
 			target.AddComponent(immersies)
 
 /proc/mass_immerse(remove=FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/M in GLOB.mob_list)
 		immerse_player(M, toggle=FALSE, remove=remove)

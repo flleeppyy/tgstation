@@ -66,10 +66,14 @@
 	var/auto_lock_range = 2
 
 /obj/item/ammo_casing/c160smart/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/caseless)
 
 /obj/item/ammo_casing/c160smart/ready_proj(atom/target, mob/living/user, quiet, zone_override, atom/fired_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isturf(target))
 		loaded_projectile.set_homing_target(target)

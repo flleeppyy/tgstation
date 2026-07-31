@@ -13,6 +13,8 @@
 	var/list/heart_attack_candidates = list()
 
 /datum/round_event_control/heart_attack/can_spawn_event(players_amt, allow_magic = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -28,6 +30,8 @@
  * later, at the round_event level, so this proc mostly just checks users for whether or not a heart attack should be possible.
  */
 /datum/round_event_control/heart_attack/proc/generate_candidates()
+	procstart = null
+	src.procstart = null
 	heart_attack_candidates.Cut()
 	for(var/mob/living/carbon/human/candidate in shuffle(GLOB.player_list))
 		if(IS_UNCONSCIOUS_OR_CRIT(candidate) || !candidate.can_heartattack() || candidate.has_status_effect(/datum/status_effect/heart_attack) || candidate.undergoing_cardiac_arrest())
@@ -47,6 +51,8 @@
 
 
 /datum/round_event/heart_attack/start()
+	procstart = null
+	src.procstart = null
 	var/datum/round_event_control/heart_attack/heart_control = control
 	victims += heart_control.heart_attack_candidates
 	heart_control.heart_attack_candidates.Cut()
@@ -63,6 +69,8 @@
  * FALSE if something blocks it.
  */
 /datum/round_event/heart_attack/proc/attack_heart()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/winner = pick_weight(victims)
 	// Our fitness level can potentially block a heart attack outright.
 	var/fitness_protection_probability = winner.mind?.get_skill_modifier(/datum/skill/athletics, SKILL_RANDS_MODIFIER)
@@ -87,6 +95,8 @@
 	output_text = "There are no candidates eligible to receive a heart attack!"
 
 /datum/event_admin_setup/minimum_candidate_requirement/heart_attack/count_candidates()
+	procstart = null
+	src.procstart = null
 	var/datum/round_event_control/heart_attack/heart_control = event_control
 	heart_control.generate_candidates() //can_spawn_event() is bypassed by admin_setup, so this makes sure that the candidates are still generated
 	return length(heart_control.heart_attack_candidates)
@@ -98,9 +108,13 @@
 	min_value = 0
 
 /datum/event_admin_setup/input_number/heart_attack/prompt_admins()
+	procstart = null
+	src.procstart = null
 	var/datum/round_event_control/heart_attack/heart_control = event_control
 	max_value = length(heart_control.heart_attack_candidates)
 	return ..()
 
 /datum/event_admin_setup/input_number/heart_attack/apply_to_event(datum/round_event/heart_attack/event)
+	procstart = null
+	src.procstart = null
 	event.quantity = chosen_value

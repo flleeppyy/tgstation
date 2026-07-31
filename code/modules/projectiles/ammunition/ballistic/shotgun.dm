@@ -102,6 +102,8 @@
 	integrity_damage = 4
 
 /obj/item/ammo_casing/shotgun/buckshot/old/fire_casing(atom/target, mob/living/user, params, distro, quiet, zone_override, spread, atom/fired_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(fired_from)
 		do_smoke(0, fired_from, fired_from)
@@ -176,6 +178,8 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 3, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 2, /datum/material/gold = SMALL_MATERIAL_AMOUNT * 2)
 
 /obj/item/ammo_casing/shotgun/scatterlaser/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(loaded_projectile) || !prob(40/severity))
 		return
@@ -192,6 +196,8 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 3, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 2)
 
 /obj/item/ammo_casing/shotgun/techshell/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/meteorslug, /datum/crafting_recipe/pulseslug, /datum/crafting_recipe/dragonsbreath, /datum/crafting_recipe/ionslug)
@@ -210,11 +216,15 @@
 	var/reagent_amount = 15
 
 /obj/item/ammo_casing/shotgun/dart/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(reagent_amount, OPENCONTAINER)
 
 // Can't be collected into an ammo box from the floor, for whatever reason.
 /obj/item/ammo_casing/shotgun/dart/collect_into_box(mob/living/user, obj/item/ammo_box/box)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/item/ammo_casing/shotgun/dart/large
@@ -230,6 +240,8 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 5)
 
 /obj/item/ammo_casing/shotgun/dart/bioterror/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent(/datum/reagent/consumable/ethanol/neurotoxin, 6)
 	reagents.add_reagent(/datum/reagent/toxin/spore, 6)

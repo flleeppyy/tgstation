@@ -22,15 +22,21 @@
 	var/status_message = null
 
 /obj/machinery/computer/telecomms/monitor/Initialize(mapload, obj/item/circuitboard/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	LAZYINITLIST(machine_refs)
 
 /obj/machinery/computer/telecomms/monitor/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/telecomms),
 	)
 
 /obj/machinery/computer/telecomms/monitor/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -39,6 +45,8 @@
 		ui.open()
 
 /obj/machinery/computer/telecomms/monitor/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["screen"] = screen
@@ -82,6 +90,8 @@
 	return data
 
 /obj/machinery/computer/telecomms/monitor/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

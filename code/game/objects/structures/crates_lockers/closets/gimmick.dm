@@ -29,6 +29,8 @@
 	desc = "It's a storage unit for Russian standard-issue surplus."
 
 /obj/structure/closet/gimmick/russian/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 5)
 		new /obj/item/clothing/head/costume/ushanka(src)
@@ -40,6 +42,8 @@
 	desc = "It's a storage unit for Tacticool gear."
 
 /obj/structure/closet/gimmick/tacticool/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/glasses/eyepatch(src)
 	new /obj/item/clothing/gloves/tackler/combat(src)
@@ -56,6 +60,8 @@
 	new /obj/item/clothing/under/syndicate/tacticool(src)
 
 /obj/structure/closet/gimmick/tacticool/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/glasses/sunglasses(src)
 
 /obj/structure/closet/thunderdome
@@ -68,6 +74,8 @@
 	icon_door = "red"
 
 /obj/structure/closet/thunderdome/tdred/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/suit/armor/tdome/red(src)
@@ -81,6 +89,8 @@
 		new /obj/item/clothing/head/helmet/thunderdome(src)
 
 /obj/structure/closet/thunderdome/tdred/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/gun/energy/laser(src)
 
@@ -89,6 +99,8 @@
 	icon_door = "green"
 
 /obj/structure/closet/thunderdome/tdgreen/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/suit/armor/tdome/green(src)
@@ -102,6 +114,8 @@
 		new /obj/item/clothing/head/helmet/thunderdome(src)
 
 /obj/structure/closet/thunderdome/tdgreen/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/gun/energy/laser(src)
 
@@ -110,6 +124,8 @@
 	icon_state = "syndicate"
 
 /obj/structure/closet/malf/suits/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/tank/jetpack/void(src)
 	new /obj/item/clothing/mask/breath(src)
@@ -131,6 +147,8 @@
 	storage_capacity = 10
 
 /obj/structure/closet/mini_fridge/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/spawner/random/food_or_drink/refreshing_beverage(src)
 	new /obj/effect/spawner/random/food_or_drink/refreshing_beverage(src)
@@ -144,6 +162,8 @@
 	desc = "A small contraption designed to imbue a few drinks with a pleasant chill. This antiquated unit however seems to serve no purpose other than keeping the roaches company."
 
 /obj/structure/closet/mini_fridge/grimy/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(40))
 		if(prob(50))

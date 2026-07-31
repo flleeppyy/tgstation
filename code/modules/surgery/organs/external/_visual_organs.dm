@@ -30,6 +30,8 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 * I'm sorry
 */
 /obj/item/organ/proc/setup_bodypart_overlay(accessory_type)
+	procstart = null
+	src.procstart = null
 	bodypart_overlay = new bodypart_overlay(src)
 
 	accessory_type ||= sprite_accessory_override
@@ -50,6 +52,8 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 
 /// Some sanity checks, but mostly to check if the person has their preference/dna set to load
 /proc/should_visual_organ_apply_to(obj/item/organ/organpath, mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	if(!initial(organpath.bodypart_overlay))
 		return TRUE
 
@@ -68,6 +72,8 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 
 ///Update our features after something changed our appearance
 /obj/item/organ/proc/mutate_feature(features, mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	if(!dna_block)
 		return
 
@@ -78,6 +84,8 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 
 ///If you need to change an external_organ for simple one-offs, use this. Pass the accessory type : /datum/accessory/something
 /obj/item/organ/proc/simple_change_sprite(accessory_type)
+	procstart = null
+	src.procstart = null
 	var/datum/sprite_accessory/typed_accessory = accessory_type //we only take types for maintainability
 
 	bodypart_overlay.set_appearance(typed_accessory)
@@ -88,6 +96,8 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 		bodypart_owner?.update_icon_dropped() //are we in a limb?
 
 /obj/item/organ/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!use_mob_sprite_as_obj_sprite || isnull(bodypart_owner) || isnull(bodypart_overlay))
@@ -119,6 +129,8 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 	offset_location = UPPER_BODY
 
 /datum/bodypart_overlay/mutant/horns/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner, mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	return ..() && !(bodypart_owner.owner?.obscured_slots & HIDEHAIR)
 
 ///The frills of a lizard (like weird fin ears)
@@ -143,14 +155,20 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 	offset_location = UPPER_BODY
 
 /datum/bodypart_overlay/mutant/frills/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner, mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	return ..() && !(bodypart_owner.owner?.obscured_slots & HIDEHAIR)
 
 /datum/bodypart_overlay/mutant/frills/icon_render_key(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(LAZYLEN(limb?.owner?.hair_masks))
 		. += jointext(limb.owner.hair_masks, ",")
 
 /datum/bodypart_overlay/mutant/frills/get_image(obj/item/bodypart/limb, layer_index, layer_real)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(limb?.owner?.hair_masks))
 		return ..()
 
@@ -192,6 +210,8 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 	var/datum/worn_feature_offset/worn_mask_offset
 
 /obj/item/organ/snout/on_bodypart_insert(obj/item/bodypart/head/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(limb.worn_mask_offset))
 		worn_mask_offset = limb.worn_mask_offset = new(
@@ -201,6 +221,8 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 		)
 
 /obj/item/organ/snout/on_bodypart_remove(obj/item/bodypart/head/limb, movement_flags)
+	procstart = null
+	src.procstart = null
 	if(worn_mask_offset)
 		QDEL_NULL(worn_mask_offset)
 		limb.worn_mask_offset = null
@@ -213,6 +235,8 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 	offset_location = UPPER_BODY
 
 /datum/bodypart_overlay/mutant/snout/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner, mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	return ..() && !(bodypart_owner.owner?.obscured_slots & HIDESNOUT)
 
 ///A moth's antennae
@@ -237,18 +261,24 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 	var/original_sprite_datum
 
 /obj/item/organ/antennae/on_mob_insert(mob/living/carbon/receiver, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	RegisterSignal(receiver, COMSIG_HUMAN_BURNING, PROC_REF(try_burn_antennae))
 	RegisterSignal(receiver, COMSIG_LIVING_POST_FULLY_HEAL, PROC_REF(heal_antennae))
 
 /obj/item/organ/antennae/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	UnregisterSignal(organ_owner, list(COMSIG_HUMAN_BURNING, COMSIG_LIVING_POST_FULLY_HEAL))
 
 ///check if our antennae can burn off ;_;
 /obj/item/organ/antennae/proc/try_burn_antennae(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!burnt && human.bodytemperature >= 800 && human.fire_stacks > 0) //do not go into the extremely hot light. you will not survive
@@ -259,12 +289,16 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 
 ///Burn our antennae off ;_;
 /obj/item/organ/antennae/proc/burn_antennae()
+	procstart = null
+	src.procstart = null
 	var/datum/bodypart_overlay/mutant/antennae/antennae = bodypart_overlay
 	antennae.burnt = TRUE
 	burnt = TRUE
 
 ///heal our antennae back up!!
 /obj/item/organ/antennae/proc/heal_antennae(datum/source, heal_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!burnt)
@@ -290,14 +324,20 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 	var/burnt = FALSE
 
 /datum/bodypart_overlay/mutant/antennae/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	burn_datum = fetch_sprite_datum(burn_datum) //turn the path into the singleton instance
 
 /datum/bodypart_overlay/mutant/antennae/get_base_icon_state()
+	procstart = null
+	src.procstart = null
 	return burnt ? burn_datum.icon_state : sprite_datum.icon_state
 
 /datum/bodypart_overlay/mutant/antennae/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner, mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	return ..() && !(bodypart_owner.owner?.obscured_slots & HIDEANTENNAE)
 
 ///The leafy hair of a podperson
@@ -333,6 +373,8 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 	var/color_inverse_base = 255
 
 /datum/bodypart_overlay/mutant/pod_hair/color_image(image/overlay, obj/item/bodypart/limb, layer_index)
+	procstart = null
+	src.procstart = null
 	if(layer_index != color_swapped_layer)
 		return ..()
 
@@ -344,4 +386,6 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 		overlay.color = null
 
 /datum/bodypart_overlay/mutant/pod_hair/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner, mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	return ..() && !(bodypart_owner.owner?.obscured_slots & HIDEHAIR)

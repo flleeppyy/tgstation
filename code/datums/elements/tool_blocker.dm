@@ -8,6 +8,8 @@
 	var/action_type
 
 /datum/element/tool_blocker/Attach(datum/target, tool_type, action_type = TOOL_ACT_ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(tool_type) || !(action_type & TOOL_ACT_ALL))
 		return ELEMENT_INCOMPATIBLE
@@ -27,6 +29,8 @@
 	RegisterSignals(target, signals_to_register, PROC_REF(block_tool))
 
 /datum/element/tool_blocker/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	var/list/signals_to_unregister = list()
 
 	if(action_type & TOOL_ACT_PRIMARY)
@@ -40,9 +44,13 @@
 	return ..()
 
 /datum/element/tool_blocker/proc/block_tool(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return ITEM_INTERACT_SKIP_TO_ATTACK
 
 /datum/element/tool_blocker/proc/on_turf_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	Detach(source)

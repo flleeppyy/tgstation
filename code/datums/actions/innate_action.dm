@@ -13,6 +13,8 @@
 	var/disable_text
 
 /datum/action/innate/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	// We're a click action, trigger just sets it as active or not
@@ -38,15 +40,21 @@
 	return TRUE
 
 /datum/action/innate/is_action_active(atom/movable/screen/movable/action_button/current_button)
+	procstart = null
+	src.procstart = null
 	if(click_action)
 		return current_button.our_hud?.mymob?.click_intercept == src
 	else
 		return active
 
 /datum/action/innate/proc/Activate()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/action/innate/proc/Deactivate()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -59,6 +67,8 @@
 
 /// Sets this action as the active ability for the passed mob
 /datum/action/innate/proc/set_ranged_ability(mob/living/on_who, text_to_show)
+	procstart = null
+	src.procstart = null
 	if(ranged_mousepointer)
 		on_who.client?.mouse_override_icon = ranged_mousepointer
 		on_who.update_mouse_pointer()
@@ -68,6 +78,8 @@
 
 /// Removes this action as the active ability of the passed mob
 /datum/action/innate/proc/unset_ranged_ability(mob/living/on_who, text_to_show)
+	procstart = null
+	src.procstart = null
 	if(ranged_mousepointer)
 		on_who.client?.mouse_override_icon = initial(owner.client?.mouse_pointer_icon)
 		on_who.update_mouse_pointer()
@@ -77,6 +89,8 @@
 
 /// Handles whenever a mob clicks on something
 /datum/action/innate/proc/InterceptClickOn(mob/living/clicker, params, atom/clicked_on)
+	procstart = null
+	src.procstart = null
 	if(!IsAvailable(feedback = TRUE))
 		unset_ranged_ability(clicker)
 		return FALSE
@@ -87,9 +101,13 @@
 
 /// Actually goes through and does the click ability
 /datum/action/innate/proc/do_ability(mob/living/clicker, atom/clicked_on)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /datum/action/innate/Remove(mob/removed_from)
+	procstart = null
+	src.procstart = null
 	if(removed_from.click_intercept == src)
 		unset_ranged_ability(removed_from)
 	return ..()

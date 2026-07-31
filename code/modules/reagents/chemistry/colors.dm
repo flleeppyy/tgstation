@@ -1,4 +1,6 @@
 /proc/mix_color_from_reagents(list/reagent_list)
+	procstart = null
+	src.procstart = null
 	if(!istype(reagent_list))
 		return
 
@@ -21,6 +23,8 @@
 	return mixcolor
 
 /proc/reagent_threshold_overlay(datum/reagents/reagents, fill_icon, fill_prefix, list/fill_icon_thresholds)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/mutable_appearance)
 
 	var/threshold = null

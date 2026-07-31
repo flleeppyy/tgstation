@@ -5,14 +5,20 @@
 	remove_on_fullheal = TRUE
 
 /datum/status_effect/dizziness/on_creation(mob/living/new_owner, duration = 10 SECONDS)
+	procstart = null
+	src.procstart = null
 	src.duration = duration
 	return ..()
 
 /datum/status_effect/dizziness/on_apply()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(owner, COMSIG_LIVING_DEATH, PROC_REF(clear_dizziness))
 	return TRUE
 
 /datum/status_effect/dizziness/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_LIVING_DEATH)
 	// In case our client's offset is somewhere wacky from the dizziness effect
 	owner.client?.pixel_x = initial(owner.client?.pixel_x)
@@ -20,11 +26,15 @@
 
 /// Signal proc that self deletes our dizziness effect
 /datum/status_effect/dizziness/proc/clear_dizziness(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(src)
 
 /datum/status_effect/dizziness/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	// How much time is left, in seconds
 	var/amount = duration / 10
 	if(amount <= 0)

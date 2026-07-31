@@ -114,6 +114,8 @@ GLOBAL_LIST_INIT(floor_designs, list(
 
 /// Lazy-initialize the datum field on all the designs
 /proc/populate_rtd_datums()
+	procstart = null
+	src.procstart = null
 	for(var/main_root in GLOB.floor_designs)
 		for(var/sub_category in GLOB.floor_designs[main_root])
 			for(var/list/design in GLOB.floor_designs[main_root][sub_category])

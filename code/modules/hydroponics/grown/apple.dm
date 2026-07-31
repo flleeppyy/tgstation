@@ -26,12 +26,18 @@
 	distill_reagent = /datum/reagent/consumable/ethanol/hcider
 
 /obj/item/food/grown/apple/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/applejuice
 
 /obj/item/food/grown/apple/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/appleslice, 5, 20, screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/grown/apple/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.) //it's been caught.
 		return
@@ -47,6 +53,8 @@
 		gravity_reminder(einstein)
 
 /obj/item/food/grown/apple/onZImpact(turf/impacted_turf, levels, impact_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/carbon/human/einstein = locate(/mob/living/carbon/human) in impacted_turf
 	if (isnull(einstein))
@@ -57,6 +65,8 @@
 
 /// Provide an important insight
 /obj/item/food/grown/apple/proc/gravity_reminder(mob/living/einstein)
+	procstart = null
+	src.procstart = null
 	einstein.do_alert_animation()
 	playsound(einstein, 'sound/machines/chime.ogg', 50, TRUE)
 	einstein.say(pick_list_replacements(VISTA_FILE, "ballmer_good_msg"), forced = "apple inspiration")
@@ -77,6 +87,8 @@
 	rarity = 40 // Alchemy!
 
 /obj/item/food/grown/apple/gold/make_processable()
+	procstart = null
+	src.procstart = null
 	return // You're going to break your knife!
 
 /obj/item/food/grown/apple/gold

@@ -21,6 +21,8 @@
 	acid = 90
 
 /obj/structure/blob/special/core/Initialize(mapload, client/new_overmind = null, placed = 0)
+	procstart = null
+	src.procstart = null
 	GLOB.blob_cores += src
 	START_PROCESSING(SSobj, src)
 	SSpoints_of_interest.make_point_of_interest(src)
@@ -35,6 +37,8 @@
 	return ..()
 
 /obj/structure/blob/special/core/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.blob_cores -= src
 	if(overmind)
 		overmind.blob_core = null
@@ -43,9 +47,13 @@
 	return ..()
 
 /obj/structure/blob/special/core/scannerreport()
+	procstart = null
+	src.procstart = null
 	return "Directs the blob's expansion, gradually expands, and sustains nearby blob spores and blobbernauts."
 
 /obj/structure/blob/special/core/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/blob_overlay = mutable_appearance('icons/mob/nonhuman-player/blob.dmi', "blob")
 	if(overmind)
@@ -54,21 +62,29 @@
 	. += mutable_appearance('icons/mob/nonhuman-player/blob.dmi', "blob_core_overlay")
 
 /obj/structure/blob/special/core/update_icon()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	color = null
 
 /obj/structure/blob/special/core/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	var/damage = 10 * (severity + 1) //remember, the core takes half brute damage, so this is 20/15/10 damage based on severity
 	take_damage(damage, BRUTE, BOMB, 0)
 	return TRUE
 
 /obj/structure/blob/special/core/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir, overmind_reagent_trigger = 1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(atom_integrity > 0)
 		if(overmind) //we should have an overmind, but...
 			overmind.update_health_hud()
 
 /obj/structure/blob/special/core/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	if(!overmind)
@@ -81,6 +97,8 @@
 	..()
 
 /obj/structure/blob/special/core/on_changed_z_level(turf/old_turf, turf/new_turf)
+	procstart = null
+	src.procstart = null
 	if(overmind && is_station_level(new_turf?.z))
 		overmind.forceMove(get_turf(src))
 	return ..()

@@ -15,6 +15,8 @@
 	assembly_pixel_y = 4
 
 /obj/item/reagent_containers/cup/bottle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!icon_state)
 		icon_state = "bottle"
@@ -160,6 +162,8 @@
 	var/extra_reagent = null
 
 /obj/item/reagent_containers/cup/bottle/traitor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	extra_reagent = pick(/datum/reagent/toxin/polonium, /datum/reagent/toxin/histamine, /datum/reagent/toxin/formaldehyde, /datum/reagent/toxin/venom, /datum/reagent/toxin/fentanyl, /datum/reagent/toxin/cyanide)
 	reagents.add_reagent(extra_reagent, 3)
@@ -254,6 +258,8 @@
 	desc = "A small bottle of chemical buffer."
 
 /obj/item/reagent_containers/cup/bottle/random_buffer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(50))
 		name = "Acidic buffer bottle"
@@ -522,16 +528,22 @@
 	custom_materials = list(/datum/material/plastic = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/reagent_containers/cup/bottle/syrup_bottle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// this is not done via initial_reagent_flags because it represents state
 	update_container_flags(SEALED_CONTAINER | TRANSPARENT)
 
 /obj/item/reagent_containers/cup/bottle/syrup_bottle/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Alt-click to toggle the pump cap.")
 	. += span_notice("Use a pen on it to rename it.")
 
 /obj/item/reagent_containers/cup/bottle/syrup_bottle/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	context[SCREENTIP_CONTEXT_ALT_LMB] = (is_open_container() ? "Add Pump Cap" : "Remove Pump Cap")
@@ -544,16 +556,22 @@
 
 //when you attack the syrup bottle with a container it refills it
 /obj/item/reagent_containers/cup/bottle/syrup_bottle/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(is_open_container() && tool.is_refillable())
 		return refillable_act(user, tool)
 	return ..()
 
 /obj/item/reagent_containers/cup/bottle/syrup_bottle/nameformat(input, user)
+	procstart = null
+	src.procstart = null
 	playsound(src, SFX_WRITING_PEN, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, SOUND_FALLOFF_EXPONENT + 3, ignore_walls = FALSE)
 	return "[input? "[input] " : null]bottle"
 
 
 /obj/item/reagent_containers/cup/bottle/syrup_bottle/proc/refillable_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!reagents.total_volume)
 		balloon_alert(user, "bottle empty!")
 		return ITEM_INTERACT_BLOCKING
@@ -570,6 +588,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/cup/bottle/syrup_bottle/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_open_container())
 		icon_state = "syrup_open"
@@ -577,6 +597,8 @@
 		icon_state = "syrup"
 
 /obj/item/reagent_containers/cup/bottle/syrup_bottle/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(is_open_container())
 		balloon_alert(user, "put pump cap on")
 		update_container_flags(SEALED_CONTAINER | TRANSPARENT)

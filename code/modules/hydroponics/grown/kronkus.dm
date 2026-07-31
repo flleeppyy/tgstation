@@ -16,6 +16,8 @@
 	reagents_add = list(/datum/reagent/consumable/nutriment = 0.05)
 
 /obj/item/seeds/kronkus/Initialize(mapload, nogenes)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CONTRABAND, INNATE_TRAIT)
 
@@ -29,5 +31,7 @@
 	distill_reagent = /datum/reagent/kronkus_extract
 
 /obj/item/food/grown/kronkus/Initialize(mapload, nogenes)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CONTRABAND, INNATE_TRAIT)

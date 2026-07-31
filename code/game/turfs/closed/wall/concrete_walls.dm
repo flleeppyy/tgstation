@@ -25,10 +25,14 @@
 	var/harden_lvl = 1
 
 /turf/closed/wall/concrete/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	check_harden()
 
 /turf/closed/wall/concrete/deconstruction_hints(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	. += span_notice("[p_They()] look[p_s()] like you could smash [p_them()] with <b>[tool_behaviour_name(TOOL_MINING)]</b>.")
 	switch(harden_lvl)
@@ -41,10 +45,14 @@
 	return
 
 /turf/closed/wall/concrete/try_clean(obj/item/W, mob/living/user)
+	procstart = null
+	src.procstart = null
 	// You can't weld dents on concrete wall
 	return FALSE
 
 /turf/closed/wall/concrete/try_decon(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if (I.tool_behaviour == TOOL_MINING)
 		to_chat(user, span_notice("You begin breaking the wall..."))
 		if(I.use_tool(src, user, slicing_duration, volume=100))
@@ -63,11 +71,15 @@
 	return FALSE
 
 /turf/closed/wall/concrete/break_wall()
+	procstart = null
+	src.procstart = null
 	var/atom/girder = ..()
 	girder.atom_break()
 	return girder
 
 /turf/closed/wall/concrete/update_icon(updates=ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -82,12 +94,16 @@
 	return
 
 /turf/closed/wall/concrete/proc/check_harden()
+	procstart = null
+	src.procstart = null
 	harden_lvl = clamp(harden_lvl, 0, 1)
 	if(harden_lvl < 1)
 		START_PROCESSING(SSobj, src)
 		update_icon(UPDATE_ICON_STATE)
 
 /turf/closed/wall/concrete/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/time_per_tick = seconds_per_tick SECONDS
 	harden_lvl = min(harden_lvl + (time_per_tick / time_to_harden), 1)
 	if(harden_lvl == 1)
@@ -110,11 +126,17 @@
 	time_to_harden = 60 SECONDS
 
 /turf/closed/wall/concrete/reinforced/rcd_vals(...)
+	procstart = null
+	src.procstart = null
 	return call(src, /turf/closed/wall/r_wall::rcd_vals())(arglist(args))
 
 /turf/closed/wall/concrete/reinforced/rcd_act(...)
+	procstart = null
+	src.procstart = null
 	return call(src, /turf/closed/wall/r_wall::rcd_act())(arglist(args))
 
 /turf/closed/wall/concrete/reinforced/rust_turf(magic = FALSE)
+	procstart = null
+	src.procstart = null
 	return call(src, /turf/closed/wall/r_wall::rust_turf())(magic)
 

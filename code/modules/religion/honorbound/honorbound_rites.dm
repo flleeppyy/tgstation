@@ -6,6 +6,8 @@
 	var/mob/living/who
 
 /datum/religion_rites/forgive/perform_rite(mob/living/carbon/human/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return FALSE
 	var/datum/brain_trauma/special/honorbound/honor = user.has_trauma_type(/datum/brain_trauma/special/honorbound)
@@ -21,6 +23,8 @@
 	return ..()
 
 /datum/religion_rites/forgive/invoke_effect(mob/living/carbon/human/user, atom/movable/religious_tool)
+	procstart = null
+	src.procstart = null
 	..()
 	if(in_range(user, religious_tool))
 		return FALSE
@@ -40,6 +44,8 @@
 	var/obj/item/paper/writ_target
 
 /datum/religion_rites/summon_rules/perform_rite(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/paper/could_writ in get_turf(religious_tool))
 		if(istype(could_writ, /obj/item/paper/holy_writ))
 			continue
@@ -51,6 +57,8 @@
 	return FALSE
 
 /datum/religion_rites/summon_rules/invoke_effect(mob/living/user, atom/movable/religious_tool)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/paper/autograph = writ_target
 	var/turf/tool_turf = get_turf(religious_tool)
@@ -72,6 +80,8 @@
 
 //info set in here because we need GLOB.deity
 /obj/item/paper/holy_writ/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	add_filter("holy_outline", 9, list("type" = "outline", "color" = "#fdff6c"))
 	name = "[GLOB.deity]'s honorbound rules"
 	default_raw_text = {"[GLOB.deity]'s honorbound rules:
@@ -131,16 +141,22 @@
 	rite_flags = RITE_ALLOW_MULTIPLE_PERFORMS
 
 /datum/religion_rites/deaconize/crusader/post_invoke_effects(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.religious_sect.adjust_favor(DEACONIZE_FAVOR_GAIN, user)
 
 /datum/religion_rites/deaconize/crusader/is_valid_for_deacon(mob/living/carbon/human/possible_deacon, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(TRAIT_GENELESS in possible_deacon.dna.species.inherent_traits)
 		to_chat(user, span_warning("This species disgusts [GLOB.deity]! They would never be allowed to join the crusade!"))
 		return FALSE
 	return ..()
 
 /datum/religion_rites/deaconize/crusader/invite_deacon(mob/living/carbon/human/invited)
+	procstart = null
+	src.procstart = null
 	var/ask = tgui_alert(invited, "Join [GLOB.deity]? You will be bound to a code of honor.", "Invitation", list("Yes", "No"), 60 SECONDS)
 	if(ask != "Yes")
 		return

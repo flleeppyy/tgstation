@@ -58,10 +58,14 @@
 	var/can_be_shared = TRUE
 
 /datum/action/New(Target)
+	procstart = null
+	src.procstart = null
 	link_to(Target)
 
 /// Links the passed target to our action, registering any relevant signals
 /datum/action/proc/link_to(Target)
+	procstart = null
+	src.procstart = null
 	target = Target
 	RegisterSignal(target, COMSIG_QDELETING, PROC_REF(clear_ref), override = TRUE)
 
@@ -72,6 +76,8 @@
 		RegisterSignal(target, COMSIG_MIND_TRANSFERRED, PROC_REF(on_target_mind_swapped))
 
 /datum/action/Destroy()
+	procstart = null
+	src.procstart = null
 	if(owner)
 		Remove(owner)
 	target = null
@@ -81,6 +87,8 @@
 /// Signal proc that clears any references based on the owner or target deleting
 /// If the owner's deleted, we will simply remove from them, but if the target's deleted, we will self-delete
 /datum/action/proc/clear_ref(datum/ref)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(ref == owner)
 		Remove(owner)
@@ -89,6 +97,8 @@
 
 /// Grants the action to the passed mob, making it the owner
 /datum/action/proc/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	if(isnull(grant_to))
 		Remove(owner)
 		return
@@ -124,6 +134,8 @@
 
 /// Remove the passed mob from being owner of our action
 /datum/action/proc/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	for(var/datum/hud/hud in viewers)
@@ -163,6 +175,8 @@
 /// Actually triggers the effects of the action.
 /// Called when the on-screen button is clicked, for example.
 /datum/action/proc/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(!(trigger_flags & TRIGGER_FORCE_AVAILABLE) && !IsAvailable(feedback = TRUE))
 		return FALSE
@@ -175,6 +189,8 @@
  * * feedback - If true this is being called to check if we have any messages to show to the owner
  */
 /datum/action/proc/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return FALSE
 	if(action_disabled)
@@ -218,6 +234,8 @@
 
 /// Builds / updates all buttons we have shared or given out
 /datum/action/proc/build_all_button_icons(update_flags = ALL, force)
+	procstart = null
+	src.procstart = null
 	for(var/datum/hud/hud as anything in viewers)
 		build_button_icon(viewers[hud], update_flags, force)
 
@@ -234,6 +252,8 @@
  * force - whether we're forcing a full update
  */
 /datum/action/proc/build_button_icon(atom/movable/screen/movable/action_button/button, update_flags = ALL, force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!button)
 		return
 
@@ -261,6 +281,8 @@
  * force - whether an update is forced regardless of existing status
  */
 /datum/action/proc/update_button_name(atom/movable/screen/movable/action_button/button, force = FALSE)
+	procstart = null
+	src.procstart = null
 	button.name = name
 	if(desc)
 		button.desc = desc
@@ -272,6 +294,8 @@
  * force - whether an update is forced regardless of existing status
  */
 /datum/action/proc/apply_button_background(atom/movable/screen/movable/action_button/current_button, force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!background_icon || !background_icon_state || (current_button.active_underlay_icon_state == background_icon_state && !force))
 		return
 
@@ -304,6 +328,8 @@
  * force - whether an update is forced regardless of existing status
  */
 /datum/action/proc/apply_button_icon(atom/movable/screen/movable/action_button/current_button, force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!button_icon || !button_icon_state || (current_button.icon_state == button_icon_state && !force))
 		return
 
@@ -317,6 +343,8 @@
  * force - whether an update is forced regardless of existing status
  */
 /datum/action/proc/apply_button_overlay(atom/movable/screen/movable/action_button/current_button, force = FALSE)
+	procstart = null
+	src.procstart = null
 
 	SEND_SIGNAL(src, COMSIG_ACTION_OVERLAY_APPLY, current_button, force)
 
@@ -336,6 +364,8 @@
  * force - whether an update is forced regardless of existing status
  */
 /datum/action/proc/update_button_status(atom/movable/screen/movable/action_button/current_button, force = FALSE)
+	procstart = null
+	src.procstart = null
 	current_button.update_keybind_maptext(full_key)
 	if(IsAvailable())
 		current_button.color = rgb(255,255,255,255)
@@ -346,6 +376,8 @@
 /// Gives our action to the passed viewer.
 /// Puts our action in their actions list and shows them the button.
 /datum/action/proc/GiveAction(mob/viewer)
+	procstart = null
+	src.procstart = null
 	var/datum/hud/our_hud = viewer.hud_used
 	if(viewers[our_hud]) // Already have a copy of us? go away
 		return
@@ -355,6 +387,8 @@
 
 /// Adds our action button to the screen of the passed viewer.
 /datum/action/proc/ShowTo(mob/viewer)
+	procstart = null
+	src.procstart = null
 	var/datum/hud/our_hud = viewer.hud_used
 	if(!our_hud || viewers[our_hud]) // There's no point in this if you have no hud in the first place
 		return
@@ -372,6 +406,8 @@
 
 /// Removes our action from the passed viewer.
 /datum/action/proc/HideFrom(mob/viewer)
+	procstart = null
+	src.procstart = null
 	var/datum/hud/our_hud = viewer.hud_used
 	var/atom/movable/screen/movable/action_button/button = viewers[our_hud]
 	LAZYREMOVE(viewer.actions, src)
@@ -380,6 +416,8 @@
 
 /// Creates an action button movable for the passed mob, and returns it.
 /datum/action/proc/create_button(mob/viewer)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/screen/movable/action_button/button = viewer.hud_used.add_screen_object(/atom/movable/screen/movable/action_button)
 	button.linked_action = src
 	button.allow_observer_click = allow_observer_click
@@ -387,6 +425,8 @@
 	return button
 
 /datum/action/proc/SetId(atom/movable/screen/movable/action_button/our_button, mob/owner)
+	procstart = null
+	src.procstart = null
 	//button id generation
 	var/bitfield = 0
 	for(var/datum/action/action in owner.actions)
@@ -405,6 +445,8 @@
 
 /// Updates our buttons if our target's icon was updated
 /datum/action/proc/on_target_icon_update(datum/source, updates, updated)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/update_flag = NONE
@@ -424,12 +466,16 @@
 
 /// A general use signal proc that reacts to an event and updates JUST our button's status
 /datum/action/proc/update_status_on_signal(datum/source, new_stat, old_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	build_all_button_icons(UPDATE_BUTTON_STATUS)
 
 /// Signal proc for COMSIG_MIND_TRANSFERRED - for minds, transfers our action to our new mob on mind transfer
 /datum/action/proc/on_target_mind_swapped(datum/mind/source, mob/old_current)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Grant() calls Remove() from the existing owner so we're covered on that
@@ -437,9 +483,13 @@
 
 /// Checks if our action is actively selected. Used for selecting icons primarily.
 /datum/action/proc/is_action_active(atom/movable/screen/movable/action_button/current_button)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /datum/action/proc/begin_creating_bind(atom/movable/screen/movable/action_button/current_button, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!current_button || user != owner)
 		return
 	if(!isnull(full_key))
@@ -450,6 +500,8 @@
 	update_button_status(current_button)
 
 /datum/action/proc/keydown(mob/source, key, client/client, full_key)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isnull(full_key) || full_key != src.full_key)
 		return
@@ -462,5 +514,7 @@
 
 /// Used for setting the keybind via external sources.
 /datum/action/proc/set_key(new_full_key)
+	procstart = null
+	src.procstart = null
 	full_key = new_full_key
 	build_all_button_icons(UPDATE_BUTTON_STATUS)

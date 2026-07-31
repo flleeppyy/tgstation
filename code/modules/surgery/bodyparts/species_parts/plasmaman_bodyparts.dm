@@ -25,6 +25,8 @@
 	bodypart_effects = list(/datum/status_effect/grouped/bodypart_effect/plasma_based)
 
 /obj/item/bodypart/chest/plasmaman/get_butt_sprite()
+	procstart = null
+	src.procstart = null
 	return icon('icons/mob/butts.dmi', BUTT_SPRITE_PLASMA)
 
 /obj/item/bodypart/arm/left/plasmaman

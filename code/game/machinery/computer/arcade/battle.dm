@@ -109,6 +109,8 @@
 	var/bomb_cooldown = 19
 
 /obj/machinery/computer/arcade/battle/Initialize(mapload, obj/item/circuitboard/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(battle_arcade_gear_list))
 		var/list/all_gear = list()
@@ -121,6 +123,8 @@
 	name = make_boss_name_with_verb()
 
 /obj/machinery/computer/arcade/battle/emag_act(mob/living/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -132,6 +136,8 @@
 	return TRUE
 
 /obj/machinery/computer/arcade/battle/reset_cabinet(mob/living/user)
+	procstart = null
+	src.procstart = null
 	enemy_name = null
 	player_turn = initial(player_turn)
 	feedback_message = initial(feedback_message)
@@ -147,6 +153,8 @@
 	return ..()
 
 /obj/machinery/computer/arcade/battle/proc/make_boss_name_with_verb(boss_verb)
+	procstart = null
+	src.procstart = null
 	if(check_holidays(HALLOWEEN))
 		boss_verb ||= pick_list(ARCADE_FILE, "rpg_action_halloween")
 	else if(check_holidays(CHRISTMAS))
@@ -159,6 +167,8 @@
 	return "[boss_verb] [make_boss_name()]"
 
 /obj/machinery/computer/arcade/battle/proc/make_boss_name(boss_name, boss_adjective)
+	procstart = null
+	src.procstart = null
 	if(check_holidays(HALLOWEEN))
 		boss_adjective ||= pick_list(ARCADE_FILE, "rpg_adjective_halloween")
 		boss_name ||= pick_list(ARCADE_FILE, "rpg_enemy_halloween")
@@ -176,6 +186,8 @@
 
 ///Sets up a new opponent depending on what stage they are at.
 /obj/machinery/computer/arcade/battle/proc/setup_new_opponent(mob/living/user, enemy_gets_first_move = FALSE)
+	procstart = null
+	src.procstart = null
 	enemy_hp = round(rand(90, 125) * all_worlds[player_current_world], 1)
 	enemy_mp = round(rand(20, 30) * all_worlds[player_current_world], 1)
 	enemy_gold_reward = rand((DEFAULT_ITEM_PRICE / 2), DEFAULT_ITEM_PRICE)
@@ -211,6 +223,8 @@
  * We stop at BATTLE_WORLD_NINE because it is the last stage, and has infinite bosses.
  */
 /obj/machinery/computer/arcade/battle/proc/on_battle_win(mob/living/user)
+	procstart = null
+	src.procstart = null
 	enemy_name = null
 	feedback_message = null
 	player_turn = TRUE
@@ -245,6 +259,8 @@
 
 ///Called when a mob loses at the battle arcade.
 /obj/machinery/computer/arcade/battle/proc/lose_game(mob/living/user)
+	procstart = null
+	src.procstart = null
 	SSblackbox.record_feedback("nested tally", "arcade_results", 1, list("loss", "hp", (obj_flags & EMAGGED ? "emagged":"normal")))
 	SStgui.update_uis(src)
 	if (!user)
@@ -256,6 +272,8 @@
 
 ///Called when the enemy attacks you.
 /obj/machinery/computer/arcade/battle/proc/user_take_damage(mob/user, base_damage_taken)
+	procstart = null
+	src.procstart = null
 	var/datum/battle_arcade_gear/armor = equipped_gear[ARMOR_SLOT]
 	var/damage_taken = (base_damage_taken * all_worlds[player_current_world]) / (!isnull(armor) ? armor.bonus_modifier : 1)
 	player_current_hp -= round(max(0, damage_taken), 1)
@@ -273,6 +291,8 @@
 
 ///Called when you attack the enemy.
 /obj/machinery/computer/arcade/battle/proc/process_player_attack(mob/user, attack_type)
+	procstart = null
+	src.procstart = null
 	var/damage_dealt
 	switch(attack_type)
 		if(BATTLE_ARCADE_PLAYER_ATTACK)
@@ -299,6 +319,8 @@
 
 ///Called when you successfully counterattack the enemy.
 /obj/machinery/computer/arcade/battle/proc/successful_counterattack(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/battle_arcade_gear/weapon = equipped_gear[WEAPON_SLOT]
 	var/damage_dealt = (rand(20, 30) * (!isnull(weapon) ? weapon.bonus_modifier : 1))
 	enemy_hp -= round(max(0, damage_dealt), 1)
@@ -310,6 +332,8 @@
 
 ///Handles the delay between the user's and enemy's turns to process what's going on.
 /obj/machinery/computer/arcade/battle/proc/process_enemy_turn(mob/user, defending_flags = NONE)
+	procstart = null
+	src.procstart = null
 	if(enemy_hp <= 0)
 		return on_battle_win(user)
 	//if emagged, cuban pete will set up a bomb acting up as a timer. when it reaches 0 the player fucking dies
@@ -340,6 +364,8 @@
  * After, we will roll to see if the player counterattacks the enemy (if set), otherwise we will attack normally.
  */
 /obj/machinery/computer/arcade/battle/proc/perform_enemy_turn(mob/living/user, defending_flags = NONE)
+	procstart = null
+	src.procstart = null
 	player_turn = TRUE
 	var/chance_to_magic = round(max((-(enemy_hp - enemy_max_hp) / 2), 75), 1)
 	if((enemy_hp != enemy_max_hp) && prob(chance_to_magic))
@@ -368,6 +394,8 @@
 	return user_take_damage(user, damage_dealt)
 
 /obj/machinery/computer/arcade/battle/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 
 	data["feedback_message"] = feedback_message
@@ -403,6 +431,8 @@
 	return data
 
 /obj/machinery/computer/arcade/battle/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 
 	data["all_worlds"] = list()
@@ -418,11 +448,15 @@
 	return data
 
 /obj/machinery/computer/arcade/battle/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/simple/arcade),
 	)
 
 /obj/machinery/computer/arcade/battle/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -431,6 +465,8 @@
 		ui.open()
 
 /obj/machinery/computer/arcade/battle/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

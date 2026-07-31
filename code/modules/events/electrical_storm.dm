@@ -15,10 +15,14 @@
 	announce_when = 1
 
 /datum/round_event/electrical_storm/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("An electrical storm has been detected in your area, please repair potential electronic overloads.", "Electrical Storm Alert")
 
 
 /datum/round_event/electrical_storm/start()
+	procstart = null
+	src.procstart = null
 	var/list/epicentreList = list()
 
 	for(var/i in 1 to lightsoutAmount)

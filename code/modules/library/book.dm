@@ -33,6 +33,8 @@
 	var/datum/book_info/book_data
 
 /obj/item/book/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	book_data = new(starting_title, starting_author, starting_content)
 
@@ -41,11 +43,15 @@
 	register_context()
 
 /obj/item/book/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(carved)
 		. += span_notice("[src] has been hollowed out.")
 
 /obj/item/book/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item))
 		return NONE
 
@@ -69,9 +75,13 @@
 
 /// Gets the context to add for clicking the book inhand. Returns null if none.
 /obj/item/book/proc/get_attack_self_context(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return "Read"
 
 /obj/item/book/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["author"] = book_data.get_author()
 	data["title"] = book_data.get_title()
@@ -79,6 +89,8 @@
 	return data
 
 /obj/item/book/ui_interact(mob/living/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "MarkdownViewer", name)
@@ -86,10 +98,14 @@
 
 /// Proc that handles sending the book information to the user, as well as some housekeeping stuff.
 /obj/item/book/proc/display_content(mob/living/user)
+	procstart = null
+	src.procstart = null
 	ui_interact(user)
 
 /// Proc that checks if the user is capable of reading the book, for UI interactions and otherwise. Returns TRUE if they can, FALSE if they can't.
 /obj/item/book/proc/can_read_book(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.is_blind())
 		to_chat(user, span_warning("You are blind and can't read anything!"))
 		return FALSE
@@ -109,6 +125,8 @@
 
 /// Proc that adds the book to a list on the user's mind so we know what works of art they've been catching up on.
 /obj/item/book/proc/credit_book_to_reader(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user) || isnull(user.mind))
 		return
 
@@ -120,6 +138,8 @@
 	user.mind.book_titles_read[starting_title] = TRUE
 
 /obj/item/book/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!can_read_book(user))
 		return
 
@@ -129,6 +149,8 @@
 	display_content(user)
 
 /obj/item/book/proc/is_carving_tool(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	if(tool.get_sharpness() & SHARP_EDGED)
 		return TRUE
@@ -139,6 +161,8 @@
 /// Checks for whether we can vandalize this book, to ensure we still can after each input.
 /// Uses to_chat over balloon alerts to give more detailed information as to why.
 /obj/item/book/proc/can_vandalize(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!user.can_perform_action(src) || !user.can_write(tool, TRUE))
 		return FALSE
 	if(user.is_blind())
@@ -153,6 +177,8 @@
 	return TRUE
 
 /obj/item/book/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// Items can both be carving tools and writing utensils.
 	// Because of this, we flip interaction priority on secondary.
 	// This means pure writing utensils have writing as their primary action,
@@ -165,6 +191,8 @@
 	return NONE
 
 /obj/item/book/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(is_carving_tool(tool))
 		return carving_act(user, tool)
 	if(IS_WRITING_UTENSIL(tool))
@@ -173,6 +201,8 @@
 
 /// Called when user clicks on the book with a writing utensil. Attempts to vandalize the book.
 /obj/item/book/proc/writing_utensil_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!can_vandalize(user, tool))
 		return ITEM_INTERACT_BLOCKING
 
@@ -193,6 +223,8 @@
 	return NONE
 
 /obj/item/book/proc/vandalize_title(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	var/newtitle = reject_bad_text(tgui_input_text(user, "Write a new title", "Book Title", max_length = 30))
 	if(!newtitle)
 		balloon_alert(user, "invalid input!")
@@ -209,6 +241,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/book/proc/vandalize_contents(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	var/content = tgui_input_text(user, "Write your book's contents (HTML NOT allowed)", "Book Contents", max_length = MAX_PAPER_LENGTH, multiline = TRUE)
 	if(!content)
 		balloon_alert(user, "invalid input!")
@@ -221,6 +255,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/book/proc/vandalize_author(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	var/author = tgui_input_text(user, "Write the author's name", "Author Name", max_length = MAX_NAME_LEN)
 	if(!author)
 		balloon_alert(user, "invalid input!")
@@ -234,6 +270,8 @@
 
 /// Called when user clicks on the book with a carving utensil. Attempts to carve the book.
 /obj/item/book/proc/carving_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(carved)
 		balloon_alert(user, "already carved!")
 		return ITEM_INTERACT_BLOCKING
@@ -250,11 +288,15 @@
 
 /// Handles setting everything a carved book needs.
 /obj/item/book/proc/carve_out()
+	procstart = null
+	src.procstart = null
 	carved = TRUE
 	create_storage(storage_type = carved_storage_type)
 
 /// Generates a random icon state for the book
 /obj/item/book/proc/gen_random_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "book[rand(1, maximum_book_state)]"
 
 /// Base type for a book that opens a bespoke TUGI
@@ -278,6 +320,8 @@
 	var/ui_name
 
 /obj/item/tgui_book/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, ui_name)
@@ -285,6 +329,8 @@
 		playsound(src, SFX_PAGE_TURN, 30, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 
 /obj/item/tgui_book/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -292,6 +338,8 @@
 		playsound(src, SFX_PAGE_TURN, 30, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 
 /obj/item/tgui_book/manual/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.book_state
 
 // For guides
@@ -311,6 +359,8 @@
 	ui_name = "DSMBook"
 
 /obj/item/tgui_book/manual/dsm/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/static/list/trauma_info
@@ -389,6 +439,8 @@
 	ui_name = "IDCBook"
 
 /obj/item/tgui_book/manual/idc/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/static/list/disease_info

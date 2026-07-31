@@ -34,14 +34,20 @@
 	var/move_delay = FALSE
 
 /obj/structure/closet/cardboard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_SPEED_POTION_APPLIED, PROC_REF(on_speed_potioned))
 
 /obj/structure/closet/cardboard/proc/on_speed_potioned(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	move_speed_multiplier *= 0.2
 
 /obj/structure/closet/cardboard/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(opened || move_delay || user.incapacitated || !isturf(loc) || !has_gravity(loc))
 		return
 	move_delay = TRUE
@@ -54,9 +60,13 @@
 		move_delay = FALSE
 
 /obj/structure/closet/cardboard/proc/ResetMoveDelay()
+	procstart = null
+	src.procstart = null
 	move_delay = FALSE
 
 /obj/structure/closet/cardboard/before_open(mob/living/user, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -74,6 +84,8 @@
 	return TRUE
 
 /obj/structure/closet/cardboard/after_open(mob/living/user, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!length(alerted))
 		return
@@ -92,6 +104,8 @@
 
 /// Does the MGS ! animation
 /atom/proc/do_alert_animation(duration = 1 SECONDS)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/alert = mutable_appearance('icons/obj/storage/closet.dmi', "cardboard_special")
 	SET_PLANE_EXPLICIT(alert, ABOVE_LIGHTING_PLANE, src)
 	var/atom/movable/flick_visual/exclamation = flick_overlay_view(alert, duration)
@@ -107,6 +121,8 @@
 	addtimer(CALLBACK(src, PROC_REF(forget_alert), exclamation), max(0.05 SECONDS, duration - 0.1 SECONDS), TIMER_CLIENT_TIME)
 
 /atom/proc/forget_alert(atom/movable/flick_visual/exclamation)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(update_on_z, exclamation)
 
 /obj/structure/closet/cardboard/metal

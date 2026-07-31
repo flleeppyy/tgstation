@@ -9,14 +9,20 @@
 	COOLDOWN_DECLARE(consequence_cooldown)
 
 /datum/status_effect/heretic_curse/on_creation(mob/living/new_owner, mob/living/the_curser)
+	procstart = null
+	src.procstart = null
 	src.the_curser = the_curser
 	return ..()
 
 /datum/status_effect/heretic_curse/Destroy()
+	procstart = null
+	src.procstart = null
 	the_curser = null
 	return ..()
 
 /datum/status_effect/heretic_curse/on_apply()
+	procstart = null
+	src.procstart = null
 	if (isnull(the_curser) || !iscarbon(owner))
 		return FALSE
 
@@ -30,6 +36,8 @@
 	return TRUE
 
 /datum/status_effect/heretic_curse/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_ATOM_WAS_ATTACKED)
 	UnregisterSignal(the_curser, COMSIG_ATOM_WAS_ATTACKED)
 	the_curser = null
@@ -37,11 +45,15 @@
 
 /// If the heretic that cursed us is destroyed this thing is useless now
 /datum/status_effect/heretic_curse/proc/on_curser_destroyed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /// If we attack the guy who cursed us, that's no good
 /datum/status_effect/heretic_curse/proc/on_curser_attacked(datum/source, mob/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (attacker != owner)
 		return
@@ -50,6 +62,8 @@
 
 /// If we are attacked by the guy who cursed us, that's also no good
 /datum/status_effect/heretic_curse/proc/on_owner_attacked(datum/source, mob/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (attacker != the_curser)
 		return
@@ -58,6 +72,8 @@
 
 /// Experience something you may not enjoy which may also significantly shorten your lifespan
 /datum/status_effect/heretic_curse/proc/experience_the_consequences()
+	procstart = null
+	src.procstart = null
 	if (!COOLDOWN_FINISHED(src, consequence_cooldown) || IS_UNCONSCIOUS_OR_CRIT(owner))
 		return
 

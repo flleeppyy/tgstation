@@ -12,6 +12,8 @@
 
 ///This proc adds the rotate component, overwrite this if you for some reason want to change some specific args.
 /obj/structure/chair/pew/MakeRotate()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/simple_rotation, ROTATION_REQUIRE_WRENCH|ROTATION_IGNORE_ANCHORED)
 
 /obj/structure/chair/pew/left

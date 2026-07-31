@@ -4,6 +4,8 @@
 	var/feedback_message
 
 /datum/adventure_browser/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -11,15 +13,21 @@
 		ui.open()
 
 /datum/adventure_browser/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_DEBUG)
 
 /// Handles finishing adventure
 /datum/adventure_browser/proc/resolve_adventure(datum/source,result)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	feedback_message = "Adventure ended with result : [result]"
 	QDEL_NULL(temp_adventure)
 
 /datum/adventure_browser/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -49,6 +57,8 @@
 			return TRUE
 
 /datum/adventure_browser/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/adventure_data = list()
 	for(var/datum/adventure_db_entry/db_entry in GLOB.explorer_drone_adventure_db_entries)
@@ -73,13 +83,19 @@
 		.["delay_message"] = ""
 
 /datum/adventure_browser/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(src)
 
 /datum/adventure_browser/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(get_asset_datum(/datum/asset/simple/adventure))
 
 /datum/adventure_browser/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(temp_adventure)
 

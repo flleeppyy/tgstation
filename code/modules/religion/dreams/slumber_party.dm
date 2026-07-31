@@ -8,6 +8,8 @@
 	ritual_length = 20 SECONDS
 
 /datum/religion_rites/slumber_party/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ritual_invocations = list(
 		"Sleep now, flock of [GLOB.deity], and share in each other's dreams...",
@@ -16,6 +18,8 @@
 	)
 
 /datum/religion_rites/slumber_party/post_invoke_effects(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/dream/random/base_dream = new()
 	for(var/mob/living/carbon/nearby_guy in view(5, get_turf(religious_tool)))
@@ -32,10 +36,14 @@
 	var/healing = 2
 
 /datum/status_effect/slumber_party/on_creation(mob/living/new_owner, list/shared_dream)
+	procstart = null
+	src.procstart = null
 	src.shared_dream = shared_dream
 	return ..()
 
 /datum/status_effect/slumber_party/on_apply()
+	procstart = null
+	src.procstart = null
 	if(IS_CULTIST(owner))
 		var/datum/antagonist/cult/cultist = GET_CULTIST(owner)
 		if(cultist.cult_team?.cult_ascendent)
@@ -66,6 +74,8 @@
 	return TRUE
 
 /datum/status_effect/slumber_party/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_PRE_DREAMING)
 	UnregisterSignal(owner, COMSIG_START_DREAMING)
 	UnregisterSignal(owner, COMSIG_MOB_APPLY_DAMAGE)
@@ -73,6 +83,8 @@
 	owner.adjust_drowsiness(20 SECONDS)
 
 /datum/status_effect/slumber_party/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(!IS_UNCONSCIOUS_AND_ALIVE(owner))
 		qdel(src)
 		return
@@ -82,20 +94,28 @@
 	owner.adjust_oxy_loss(healing * seconds_between_ticks * 0.25, required_biotype = MOB_ORGANIC)
 
 /datum/status_effect/slumber_party/proc/force_dream()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/dreamer = owner
 	if(HAS_TRAIT(dreamer, TRAIT_DREAMING))
 		return // dreamed naturally already
 	dreamer.dream()
 
 /datum/status_effect/slumber_party/proc/add_shared_dream(datum/source, list/dream_pool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	dream_pool[new /datum/dream/shared(shared_dream)] = 2000
 
 /datum/status_effect/slumber_party/proc/start_shared_dream(datum/source, datum/dream/current_dream)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	ADD_TRAIT(owner, TRAIT_DREAMING, TRAIT_STATUS_EFFECT(id)) // so they don't have any OTHER dreams
 
 /datum/status_effect/slumber_party/proc/damage_applied(mob/living/source, damage_amount, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	owner.AdjustSleeping(-damage_amount * 0.5 SECONDS)
 
@@ -105,10 +125,14 @@
 	var/list/generated_dream
 
 /datum/dream/shared/New(list/shared_dream)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	generated_dream = LAZYLISTDUPLICATE(shared_dream)
 
 /datum/dream/shared/GenerateDream(mob/living/carbon/dreamer)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(generated_dream))
 		CRASH("Shared dream has no generated dream fragments!")
 	return generated_dream

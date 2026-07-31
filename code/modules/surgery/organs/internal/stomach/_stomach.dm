@@ -47,6 +47,8 @@
 	var/cut_open_damage = 0
 
 /obj/item/organ/stomach/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//None edible organs do not get a reagent holder by default
 	if(!reagents)
@@ -55,10 +57,14 @@
 		reagents.flags |= REAGENT_HOLDER_ALIVE
 
 /obj/item/organ/stomach/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LAZYLIST(stomach_contents)
 	return ..()
 
 /obj/item/organ/stomach/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	//Manage species digestion
@@ -135,6 +141,8 @@
 		to_chat(body, span_warning("Your stomach reels in pain as you're incapable of holding down all that food!"))
 
 /obj/item/organ/stomach/proc/handle_hunger(mob/living/carbon/human/human, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(human, TRAIT_NOHUNGER))
 		return //hunger is for BABIES
 
@@ -201,6 +209,8 @@
 
 ///for when mood is disabled and hunger should handle slowdowns
 /obj/item/organ/stomach/proc/handle_hunger_slowdown(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	var/hungry = (500 - human.nutrition) / 5 //So overeat would be 100 and default level would be 80
 	if(hungry >= 70)
 		human.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/hunger, multiplicative_slowdown = (hungry / 50))
@@ -208,13 +218,19 @@
 		human.remove_movespeed_modifier(/datum/movespeed_modifier/hunger)
 
 /obj/item/organ/stomach/get_availability(datum/species/owner_species, mob/living/owner_mob)
+	procstart = null
+	src.procstart = null
 	return owner_species.mutantstomach
 
 ///This gets called after the owner takes a bite of food
 /obj/item/organ/stomach/proc/after_eat(atom/edible)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/organ/stomach/proc/consume_thing(atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(thing, COMSIG_MOVABLE_MOVED, PROC_REF(content_moved))
 	RegisterSignal(thing, COMSIG_QDELETING, PROC_REF(content_deleted))
 	LAZYADD(stomach_contents, thing)
@@ -222,10 +238,14 @@
 	return TRUE
 
 /obj/item/organ/stomach/proc/content_deleted(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	LAZYREMOVE(stomach_contents, source)
 
 /obj/item/organ/stomach/proc/content_moved(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(source.loc == src || source.loc == owner) // not in us? out da list then
 		return
@@ -233,6 +253,8 @@
 	UnregisterSignal(source, list(COMSIG_MOVABLE_MOVED, COMSIG_QDELETING))
 
 /obj/item/organ/stomach/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(loc == null && owner)
 		for(var/atom/movable/thing as anything in stomach_contents)
@@ -243,6 +265,8 @@
 
 /// Empties stomach contents on our current turf
 /obj/item/organ/stomach/proc/empty_contents(chance = 100, damaging = FALSE, min_amount = 0)
+	procstart = null
+	src.procstart = null
 	var/emptied = 0
 	var/atom/movable/drop_as = owner || src
 	var/drop_loc = drop_as.drop_location()
@@ -269,6 +293,8 @@
 	return emptied
 
 /obj/item/organ/stomach/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!owner || SSmobs.times_fired % 3 != 0)
 		return
@@ -332,6 +358,8 @@
 
 /// Acid power of whatever we're digesting
 /obj/item/organ/stomach/proc/stomach_acid_power(atom/movable/nomnom, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if (isliving(nomnom)) // NO VORE ALLOWED
 		return 0
 	// Yeah maybe don't, if something edible ended up here it should either handle itself or not be digested
@@ -342,6 +370,8 @@
 	return 0
 
 /obj/item/organ/stomach/proc/handle_disgust(mob/living/carbon/human/disgusted, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/old_disgust = disgusted.old_disgust
 	var/disgust = disgusted.disgust
 
@@ -389,6 +419,8 @@
 			disgusted.add_mood_event("disgust", /datum/mood_event/disgusted)
 
 /obj/item/organ/stomach/on_mob_insert(mob/living/carbon/receiver, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/movable/screen/hunger/hunger_bar = receiver.hud_used?.screen_objects[HUD_MOB_HUNGER]
 	if(hunger_bar)
@@ -397,6 +429,8 @@
 	RegisterSignal(receiver, COMSIG_HUMAN_GOT_PUNCHED, PROC_REF(on_punched))
 
 /obj/item/organ/stomach/on_mob_remove(mob/living/carbon/stomach_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	if(ishuman(stomach_owner))
 		var/mob/living/carbon/human/human_owner = stomach_owner
 		human_owner.clear_alert(ALERT_DISGUST)
@@ -408,6 +442,8 @@
 	return ..()
 
 /obj/item/organ/stomach/feel_for_damage(self_aware)
+	procstart = null
+	src.procstart = null
 	if(damage < low_threshold)
 		return ""
 	if(damage < high_threshold)
@@ -416,6 +452,8 @@
 
 /// If damage is high enough, we may end up vomiting out whatever we had stored
 /obj/item/organ/stomach/proc/on_punched(datum/source, mob/living/carbon/human/attacker, damage, attack_type, obj/item/bodypart/affecting, final_armor_block, kicking, limb_sharpness)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!LAZYLEN(stomach_contents) || damage < 9 || final_armor_block || kicking)
 		return
@@ -425,11 +463,15 @@
 
 /// 60% chance to spew out each item when vomiting
 /obj/item/organ/stomach/proc/on_vomit(mob/living/carbon/vomiter, distance, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// If we're forced to vomit, try to spew out at least one item
 	empty_contents(chance = 60, damaging = TRUE, min_amount = (force ? 1 : 0))
 
 /obj/item/organ/stomach/tool_act(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (tool.tool_behaviour == TOOL_SCALPEL)
 		if (cut_open_damage > 0)
 			balloon_alert(user, "already cut open!")
@@ -471,12 +513,16 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/organ/stomach/apply_organ_damage(damage_amount, maximum, required_organ_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// So after a while, or a bunch of stomach meds, even a cut stomach can recover
 	if (. > 0)
 		cut_open_damage = max(0, cut_open_damage - .)
 
 /obj/item/organ/stomach/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (cut_open_damage)
 		. += span_danger("It has a sizeable cut in it, exposing its insides!")
@@ -507,6 +553,8 @@
 	var/emp_vulnerability = 80 //Chance of permanent effects if emp-ed.
 
 /obj/item/organ/stomach/cybernetic/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -526,6 +574,8 @@
 	metabolism_efficiency = 0.07
 
 /obj/item/organ/stomach/cybernetic/tier2/stomach_acid_power(atom/movable/nomnom)
+	procstart = null
+	src.procstart = null
 	if (isliving(nomnom))
 		return 0
 	if (IS_EDIBLE(nomnom))
@@ -543,6 +593,8 @@
 	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/silver = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/organ/stomach/cybernetic/tier3/stomach_acid_power(atom/movable/nomnom)
+	procstart = null
+	src.procstart = null
 	if (isliving(nomnom))
 		return 0
 	if (IS_EDIBLE(nomnom))
@@ -561,6 +613,8 @@
 
 //surplus organs are so awful that they explode when removed, unless failing
 /obj/item/organ/stomach/cybernetic/surplus/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/dangerous_organ_removal, /*surgical = */ TRUE)
 

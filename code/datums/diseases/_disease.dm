@@ -60,6 +60,8 @@
 	var/half_stage = FALSE // Acts as a counter for half stages
 
 /datum/disease/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(affected_mob)
 		remove_disease()
@@ -67,11 +69,15 @@
 
 //add this disease if the host does not already have too many
 /datum/disease/proc/try_infect(mob/living/infectee, make_copy = TRUE)
+	procstart = null
+	src.procstart = null
 	infect(infectee, make_copy)
 	return TRUE
 
 //add the disease with no checks
 /datum/disease/proc/infect(mob/living/infectee, make_copy = TRUE)
+	procstart = null
+	src.procstart = null
 	var/datum/disease/D = make_copy ? Copy() : src
 	LAZYADD(infectee.diseases, D)
 	D.affected_mob = infectee
@@ -89,6 +95,8 @@
 
 /// Updates the spread flags set, ensuring signals are updated as necessary
 /datum/disease/proc/update_spread_flags(new_flags)
+	procstart = null
+	src.procstart = null
 	if(spread_flags == new_flags)
 		return
 
@@ -98,6 +106,8 @@
 
 /// Register any relevant signals for the disease
 /datum/disease/proc/register_disease_signals()
+	procstart = null
+	src.procstart = null
 	if(isnull(affected_mob))
 		return
 	RegisterSignal(affected_mob, COMSIG_LIVING_LIFE, PROC_REF(on_life))
@@ -106,15 +116,21 @@
 
 /// Unregister any relevant signals for the disease
 /datum/disease/proc/unregister_disease_signals()
+	procstart = null
+	src.procstart = null
 	if(isnull(affected_mob))
 		return
 	UnregisterSignal(affected_mob, list(COMSIG_LIVING_LIFE, COMSIG_CARBON_PRE_BREATHE))
 
 // Proc to determine if the virus can resist natural recovery
 /datum/disease/proc/get_recovery_failure_chance()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /datum/disease/proc/on_life(datum/source, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	PRIVATE_PROC(TRUE)
 
@@ -125,6 +141,8 @@
 
 ///Proc to process the disease and decide on whether to advance, cure or make the symptoms appear. Returns a boolean on whether to continue acting on the symptoms or not.
 /datum/disease/proc/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/slowdown = HAS_TRAIT(affected_mob, TRAIT_VIRUS_RESISTANCE) ? 0.5 : 1 // spaceacillin slows stage speed by 50%
 	var/recovery_prob = 0
 	var/cure_mod
@@ -269,6 +287,8 @@
 	return !carrier
 
 /datum/disease/proc/update_stage(new_stage)
+	procstart = null
+	src.procstart = null
 	stage = new_stage
 	if(new_stage == max_stages && !(stage_peaked)) //once a virus has hit its peak, set it to have done so
 		stage_peaked = TRUE
@@ -278,6 +298,8 @@
 	return TRUE
 
 /datum/disease/proc/has_cure()
+	procstart = null
+	src.procstart = null
 	if(!(disease_flags & (CURABLE | CHRONIC)))
 		return FALSE
 
@@ -298,6 +320,8 @@
  * * require_facing - If TRUE, the disease will only spread if the source mob is facing the target mob
  */
 /datum/disease/proc/airborne_spread(spread_range = 2, force_spread = TRUE, require_facing = FALSE)
+	procstart = null
+	src.procstart = null
 	if(isnull(affected_mob))
 		return FALSE
 	if(!(spread_flags & DISEASE_SPREAD_AIRBORNE) && !force_spread)
@@ -324,6 +348,8 @@
 
 /// Helper for checking if there is an air path between two turfs
 /proc/disease_air_spread_walk(turf/start, turf/end)
+	procstart = null
+	src.procstart = null
 	if(!start || !end)
 		return FALSE
 	while(TRUE)
@@ -335,6 +361,8 @@
 		end = Temp
 
 /datum/disease/proc/cure(add_resistance = TRUE)
+	procstart = null
+	src.procstart = null
 	if(severity == DISEASE_SEVERITY_UNCURABLE) //aw man :(
 		return
 	if(affected_mob)
@@ -346,12 +374,16 @@
 	qdel(src)
 
 /datum/disease/proc/IsSame(datum/disease/D)
+	procstart = null
+	src.procstart = null
 	if(istype(D, type))
 		return TRUE
 	return FALSE
 
 
 /datum/disease/proc/Copy()
+	procstart = null
+	src.procstart = null
 	//note that stage is not copied over - the copy starts over at stage 1
 	var/static/list/copy_vars = list("name", "visibility_flags", "disease_flags", "spread_flags", "form", "desc", "agent", "spread_text",
 									"cure_text", "max_stages", "stage_prob", "incubation_time", "viable_mobtypes", "cures", "infectivity", "cure_chance",
@@ -368,13 +400,19 @@
 	return D
 
 /datum/disease/proc/after_add()
+	procstart = null
+	src.procstart = null
 	return
 
 
 /datum/disease/proc/GetDiseaseID()
+	procstart = null
+	src.procstart = null
 	return "[type]"
 
 /datum/disease/proc/remove_disease()
+	procstart = null
+	src.procstart = null
 	unregister_disease_signals()
 	LAZYREMOVE(affected_mob.diseases, src) //remove the datum from the list
 	affected_mob.med_hud_set_status()
@@ -390,6 +428,8 @@
  * * mob_type - Type path to check against the viable_mobtypes list.
  */
 /datum/disease/proc/is_viable_mobtype(mob_type)
+	procstart = null
+	src.procstart = null
 	for(var/viable_type in viable_mobtypes)
 		if(ispath(mob_type, viable_type))
 			return TRUE
@@ -402,6 +442,8 @@
 
 /// Checks if the mob has the required organ and it's not robotic or affected by inorganic biology
 /datum/disease/proc/has_required_infectious_organ(mob/living/carbon/target, required_organ_slot)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(target))
 		return FALSE
 
@@ -417,6 +459,8 @@
 
 /// Handles spreading via air when our mob breathes
 /datum/disease/proc/on_breath(datum/source, seconds_per_tick, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(SPT_PROB(infectivity * 4, seconds_per_tick))
@@ -424,10 +468,14 @@
 
 // Increases natural recovery based on prior immunities
 /datum/disease/proc/get_immunity_recovery()
+	procstart = null
+	src.procstart = null
 	return 0
 
 //Use this to compare severities
 /proc/get_disease_severity_value(severity)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(DISEASE_SEVERITY_UNCURABLE)
 			return 0
@@ -447,6 +495,8 @@
 			return 7
 
 /proc/get_disease_spread_text(spread_flags)
+	procstart = null
+	src.procstart = null
 	if(spread_flags & DISEASE_SPREAD_AIRBORNE)
 		return "Airborne"
 	if(spread_flags & DISEASE_SPREAD_CONTACT_SKIN)

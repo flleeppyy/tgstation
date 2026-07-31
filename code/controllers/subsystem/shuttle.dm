@@ -156,6 +156,8 @@ SUBSYSTEM_DEF(shuttle)
 	var/renew_cargo_air = FALSE
 
 /datum/controller/subsystem/shuttle/Initialize()
+	procstart = null
+	src.procstart = null
 	order_number = rand(1, 9000)
 
 	var/list/pack_processing = subtypesof(/datum/supply_pack)
@@ -201,11 +203,15 @@ SUBSYSTEM_DEF(shuttle)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/shuttle/proc/setup_shuttles(list/stationary)
+	procstart = null
+	src.procstart = null
 	for(var/obj/docking_port/stationary/port as anything in stationary)
 		port.load_roundstart()
 		CHECK_TICK
 
 /datum/controller/subsystem/shuttle/fire()
+	procstart = null
+	src.procstart = null
 	for(var/thing in mobile_docking_ports)
 		if(!thing)
 			mobile_docking_ports.Remove(thing)
@@ -251,6 +257,8 @@ SUBSYSTEM_DEF(shuttle)
 				break
 
 /datum/controller/subsystem/shuttle/proc/CheckAutoEvac()
+	procstart = null
+	src.procstart = null
 	if(emergency_no_escape || admin_emergency_no_recall || emergency_no_recall || !emergency || !SSticker.HasRoundStarted())
 		return
 
@@ -284,6 +292,8 @@ SUBSYSTEM_DEF(shuttle)
 			emergency.request(null, set_coefficient = ALERT_COEFF_AUTOEVAC_CRITICAL)
 
 /datum/controller/subsystem/shuttle/proc/block_recall(lockout_timer)
+	procstart = null
+	src.procstart = null
 	if(isnull(lockout_timer))
 		CRASH("Emergency shuttle block was called, but missing a value for the lockout duration")
 	if(admin_emergency_no_recall)
@@ -300,6 +310,8 @@ SUBSYSTEM_DEF(shuttle)
 	addtimer(CALLBACK(src, PROC_REF(unblock_recall)), lockout_timer)
 
 /datum/controller/subsystem/shuttle/proc/unblock_recall()
+	procstart = null
+	src.procstart = null
 	if(admin_emergency_no_recall)
 		priority_announce(
 			text= "Emergency shuttle uplink services are now back online.",
@@ -312,12 +324,16 @@ SUBSYSTEM_DEF(shuttle)
 	emergency_no_recall = FALSE
 
 /datum/controller/subsystem/shuttle/proc/getShuttle(id)
+	procstart = null
+	src.procstart = null
 	for(var/obj/docking_port/mobile/M in mobile_docking_ports)
 		if(M.shuttle_id == id)
 			return M
 	WARNING("couldn't find shuttle with id: [id]")
 
 /datum/controller/subsystem/shuttle/proc/getDock(id)
+	procstart = null
+	src.procstart = null
 	for(var/obj/docking_port/stationary/S in stationary_docking_ports)
 		if(S.shuttle_id == id)
 			return S
@@ -326,6 +342,8 @@ SUBSYSTEM_DEF(shuttle)
 /// Check if we can call the evac shuttle.
 /// Returns TRUE if we can. Otherwise, returns a string detailing the problem.
 /datum/controller/subsystem/shuttle/proc/canEvac()
+	procstart = null
+	src.procstart = null
 	var/shuttle_refuel_delay = CONFIG_GET(number/shuttle_refuel_delay)
 	if(world.time - SSticker.round_start_time < shuttle_refuel_delay)
 		return "The emergency shuttle is refueling. Please wait [DisplayTimeText(shuttle_refuel_delay - (world.time - SSticker.round_start_time))] before attempting to call."
@@ -347,6 +365,8 @@ SUBSYSTEM_DEF(shuttle)
 	return TRUE
 
 /datum/controller/subsystem/shuttle/proc/check_backup_emergency_shuttle()
+	procstart = null
+	src.procstart = null
 	if(emergency)
 		return TRUE
 
@@ -373,6 +393,8 @@ SUBSYSTEM_DEF(shuttle)
  * * call_reason - The reason the shuttle was called, which should be non-html-encoded text.
  */
 /datum/controller/subsystem/shuttle/proc/requestEvac(mob/user, call_reason)
+	procstart = null
+	src.procstart = null
 	if (!check_backup_emergency_shuttle())
 		return
 
@@ -400,6 +422,8 @@ SUBSYSTEM_DEF(shuttle)
 /// If you are doing this on behalf of a player, use requestEvac instead.
 /// `signal_origin` is fluff occasionally provided to players.
 /datum/controller/subsystem/shuttle/proc/call_evac_shuttle(call_reason, signal_origin)
+	procstart = null
+	src.procstart = null
 	if (!check_backup_emergency_shuttle())
 		return
 
@@ -423,6 +447,8 @@ SUBSYSTEM_DEF(shuttle)
 /// Does a fluffy CentCom recall of the emergency shuttle with additional message as desired.
 /// Returns TRUE on success, FALSE otherwise.
 /datum/controller/subsystem/shuttle/proc/centcom_recall(mob/user, old_timer, admiral_message)
+	procstart = null
+	src.procstart = null
 	if(emergency.timer != old_timer)
 		return FALSE
 
@@ -449,6 +475,8 @@ SUBSYSTEM_DEF(shuttle)
 // Called when an emergency shuttle mobile docking port is
 // destroyed, which will only happen with admin intervention
 /datum/controller/subsystem/shuttle/proc/emergencyDeregister()
+	procstart = null
+	src.procstart = null
 	// When a new emergency shuttle is created, it will override the
 	// backup shuttle.
 	src.emergency = src.backup_shuttle
@@ -456,6 +484,8 @@ SUBSYSTEM_DEF(shuttle)
 /// Actually work on canceling the emergency shuttle recall. Returns TRUE if successful, FALSE otherwise.
 /// If hide_origin is TRUE, the recaller's area will not be revealed in announcements (used by admin tools)
 /datum/controller/subsystem/shuttle/proc/cancel_evac(mob/user, hide_origin = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!can_recall(user))
 		return FALSE
 
@@ -469,6 +499,8 @@ SUBSYSTEM_DEF(shuttle)
 
 /// Can this user recall the emergency shuttle? Returns TRUE if they can, otherwise returns FALSE.
 /datum/controller/subsystem/shuttle/proc/can_recall(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(emergency) || emergency.mode != SHUTTLE_CALL)
 		return FALSE
 
@@ -483,6 +515,8 @@ SUBSYSTEM_DEF(shuttle)
 
 /// Are we past the restriction point (i.e. more than half of the shuttle timer has elapsed) for recalling the shuttle? Returns TRUE if we are, FALSE otherwise.
 /datum/controller/subsystem/shuttle/proc/past_restriction_point()
+	procstart = null
+	src.procstart = null
 	var/security_num = SSsecurity_level.get_current_level_as_number()
 	switch(security_num)
 		if(SEC_LEVEL_GREEN)
@@ -500,6 +534,8 @@ SUBSYSTEM_DEF(shuttle)
 /// Handle admin level overrides of recalling the shuttle. We assume that the user passed is an admin.
 /// If a special state exists, we prompt the admin to confirm they want to override the wishes of other admins/game code. Returns TRUE if they elect to do so, FALSE otherwise.
 /datum/controller/subsystem/shuttle/proc/admin_recall(mob/user)
+	procstart = null
+	src.procstart = null
 	if(admin_emergency_no_recall)
 		var/admin_no_recall_alert = tgui_alert(
 			user,
@@ -528,6 +564,8 @@ SUBSYSTEM_DEF(shuttle)
 	return TRUE // we assume that they've seen other warnings at earlier points if they got here from a verb or something like that
 
 /datum/controller/subsystem/shuttle/proc/autoEvac()
+	procstart = null
+	src.procstart = null
 	if (!SSticker.IsRoundInProgress() || supermatter_cascade)
 		return
 
@@ -557,24 +595,34 @@ SUBSYSTEM_DEF(shuttle)
 			message_admins("All the communications consoles were destroyed and all AIs are inactive. Shuttle called.")
 
 /datum/controller/subsystem/shuttle/proc/registerHostileEnvironment(datum/bad)
+	procstart = null
+	src.procstart = null
 	hostile_environments[bad] = TRUE
 	checkHostileEnvironment()
 
 /datum/controller/subsystem/shuttle/proc/clearHostileEnvironment(datum/bad)
+	procstart = null
+	src.procstart = null
 	hostile_environments -= bad
 	checkHostileEnvironment()
 
 
 /datum/controller/subsystem/shuttle/proc/registerTradeBlockade(datum/bad)
+	procstart = null
+	src.procstart = null
 	trade_blockade[bad] = TRUE
 	checkTradeBlockade()
 
 /datum/controller/subsystem/shuttle/proc/clearTradeBlockade(datum/bad)
+	procstart = null
+	src.procstart = null
 	trade_blockade -= bad
 	checkTradeBlockade()
 
 
 /datum/controller/subsystem/shuttle/proc/checkTradeBlockade()
+	procstart = null
+	src.procstart = null
 	for(var/datum/d in trade_blockade)
 		if(!istype(d) || QDELETED(d))
 			trade_blockade -= d
@@ -589,6 +637,8 @@ SUBSYSTEM_DEF(shuttle)
 		//Make all cargo consoles speak up
 
 /datum/controller/subsystem/shuttle/proc/checkHostileEnvironment()
+	procstart = null
+	src.procstart = null
 	for(var/datum/hostile_environment_source in hostile_environments)
 		if(QDELETED(hostile_environment_source))
 			hostile_environments -= hostile_environment_source
@@ -618,6 +668,8 @@ SUBSYSTEM_DEF(shuttle)
 
 //try to move/request to dock_home if possible, otherwise dock_away. Mainly used for admin buttons
 /datum/controller/subsystem/shuttle/proc/toggleShuttle(shuttle_id, dock_home, dock_away, timed)
+	procstart = null
+	src.procstart = null
 	var/obj/docking_port/mobile/shuttle_port = getShuttle(shuttle_id)
 	if(!shuttle_port)
 		return DOCKING_BLOCKED
@@ -642,6 +694,8 @@ SUBSYSTEM_DEF(shuttle)
  * * timed - If true, have the shuttle follow normal spool-up, jump, dock process. If false, immediately move to the new location.
  */
 /datum/controller/subsystem/shuttle/proc/moveShuttle(shuttle_id, dock_id, timed)
+	procstart = null
+	src.procstart = null
 	var/obj/docking_port/mobile/shuttle_port = getShuttle(shuttle_id)
 	var/obj/docking_port/stationary/docking_target = getDock(dock_id)
 
@@ -656,6 +710,8 @@ SUBSYSTEM_DEF(shuttle)
 	return DOCKING_SUCCESS //dock successful
 
 /datum/controller/subsystem/shuttle/proc/request_transit_dock(obj/docking_port/mobile/M)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		CRASH("[M] is not a mobile docking port")
 
@@ -666,6 +722,8 @@ SUBSYSTEM_DEF(shuttle)
 			transit_requesters += M
 
 /datum/controller/subsystem/shuttle/proc/generate_transit_dock(obj/docking_port/mobile/M)
+	procstart = null
+	src.procstart = null
 	// First, determine the size of the needed zone
 	// Because of shuttle rotation, the "width" of the shuttle is not
 	// always x.
@@ -770,10 +828,14 @@ SUBSYSTEM_DEF(shuttle)
 
 /// Gotta manage our space brother
 /datum/controller/subsystem/shuttle/proc/transit_space_clearing(datum/turf_reservation/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	transit_utilized -= (source.width + 2) * (source.height + 2)
 
 /datum/controller/subsystem/shuttle/Recover()
+	procstart = null
+	src.procstart = null
 	initialized = SSshuttle.initialized
 	if (istype(SSshuttle.mobile_docking_ports))
 		mobile_docking_ports = SSshuttle.mobile_docking_ports
@@ -835,6 +897,8 @@ SUBSYSTEM_DEF(shuttle)
 	preview_reservation = SSshuttle.preview_reservation
 
 /datum/controller/subsystem/shuttle/proc/is_in_shuttle_bounds(atom/A)
+	procstart = null
+	src.procstart = null
 	var/area/current = get_area(A)
 	if(istype(current, /area/shuttle) && !istype(current, /area/shuttle/transit))
 		return TRUE
@@ -843,6 +907,8 @@ SUBSYSTEM_DEF(shuttle)
 			return TRUE
 
 /datum/controller/subsystem/shuttle/proc/get_containing_shuttle(atom/A)
+	procstart = null
+	src.procstart = null
 	var/list/mobile_docking_ports_cache = mobile_docking_ports
 	for(var/i in 1 to mobile_docking_ports_cache.len)
 		var/obj/docking_port/port = mobile_docking_ports_cache[i]
@@ -850,6 +916,8 @@ SUBSYSTEM_DEF(shuttle)
 			return port
 
 /datum/controller/subsystem/shuttle/proc/get_containing_dock(atom/A)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/list/stationary_docking_ports_cache = stationary_docking_ports
 	for(var/i in 1 to stationary_docking_ports_cache.len)
@@ -858,6 +926,8 @@ SUBSYSTEM_DEF(shuttle)
 			. += port
 
 /datum/controller/subsystem/shuttle/proc/get_dock_overlap(x0, y0, x1, y1, z)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/list/stationary_docking_ports_cache = stationary_docking_ports
 	for(var/i in 1 to stationary_docking_ports_cache.len)
@@ -872,6 +942,8 @@ SUBSYSTEM_DEF(shuttle)
 			.[port] = overlap
 
 /datum/controller/subsystem/shuttle/proc/update_hidden_docking_ports(list/remove_turfs, list/add_turfs)
+	procstart = null
+	src.procstart = null
 	var/list/remove_images = list()
 	var/list/add_images = list()
 
@@ -916,6 +988,8 @@ SUBSYSTEM_DEF(shuttle)
  * * replace - Whether to replace the shuttle or create a new one
 */
 /datum/controller/subsystem/shuttle/proc/action_load(datum/map_template/shuttle/loading_template, obj/docking_port/stationary/destination_port, replace = FALSE)
+	procstart = null
+	src.procstart = null
 	// Check for an existing preview
 	if(preview_shuttle && (loading_template != preview_template))
 		preview_shuttle.jumpToNullSpace()
@@ -987,6 +1061,8 @@ SUBSYSTEM_DEF(shuttle)
  * * loading_template - The shuttle template to load
  */
 /datum/controller/subsystem/shuttle/proc/load_template(datum/map_template/shuttle/loading_template)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	// Load shuttle template to a fresh block reservation.
 	preview_reservation = SSmapping.request_turf_block_reservation(
@@ -1036,6 +1112,8 @@ SUBSYSTEM_DEF(shuttle)
  * Removes the preview_shuttle from the transit Z-level
  */
 /datum/controller/subsystem/shuttle/proc/unload_preview()
+	procstart = null
+	src.procstart = null
 	if(preview_shuttle)
 		preview_shuttle.jumpToNullSpace()
 	preview_shuttle = null
@@ -1043,15 +1121,21 @@ SUBSYSTEM_DEF(shuttle)
 		QDEL_NULL(preview_reservation)
 
 /datum/controller/subsystem/shuttle/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_ADMIN)
 
 /datum/controller/subsystem/shuttle/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ShuttleManipulator")
 		ui.open()
 
 /datum/controller/subsystem/shuttle/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["tabs"] = list("Status", "Templates", "Modification")
 
@@ -1115,6 +1199,8 @@ SUBSYSTEM_DEF(shuttle)
 	return data
 
 /datum/controller/subsystem/shuttle/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -1207,6 +1293,8 @@ SUBSYSTEM_DEF(shuttle)
 						SSshuttle.shuttle_purchased = SHUTTLEPURCHASE_FORCED
 
 /datum/controller/subsystem/shuttle/proc/init_has_purchase_shuttle_access()
+	procstart = null
+	src.procstart = null
 	var/list/has_purchase_shuttle_access = list()
 
 	for (var/shuttle_id in SSmapping.shuttle_templates)

@@ -34,7 +34,11 @@
 	wine_power = 40
 
 /obj/item/food/grown/pineapple/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/pineappleslice, 3, 15, screentip_verb = "Cut")
 
 /obj/item/food/grown/pineapple/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/pineapplejuice

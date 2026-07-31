@@ -8,6 +8,8 @@
 	var/steal_from_others
 
 /datum/element/mob_grabber/Attach(datum/target, minimum_stat = SOFT_CRIT, steal_from_others = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -16,11 +18,15 @@
 	RegisterSignals(target, list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_HOSTILE_PRE_ATTACKINGTARGET), PROC_REF(grab_mob))
 
 /datum/element/mob_grabber/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_HOSTILE_PRE_ATTACKINGTARGET))
 	. = ..()
 
 /// Try and grab something we attacked
 /datum/element/mob_grabber/proc/grab_mob(mob/living/source, mob/living/target, proximity, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!isliving(target) || !proximity || target.stat < minimum_stat)
 		return NONE

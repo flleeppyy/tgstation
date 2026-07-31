@@ -22,24 +22,34 @@
 	var/index_type = PORT_TYPE_NUMBER
 
 /obj/item/circuit_component/index/populate_options()
+	procstart = null
+	src.procstart = null
 	list_options = add_option_port("List Type", GLOB.wiremod_basic_types)
 
 /obj/item/circuit_component/index/proc/make_list_port()
+	procstart = null
+	src.procstart = null
 	list_port = add_input_port("List", PORT_TYPE_LIST(PORT_TYPE_ANY))
 
 /obj/item/circuit_component/index/populate_ports()
+	procstart = null
+	src.procstart = null
 	index_port = add_input_port("Index", index_type)
 	make_list_port()
 
 	output = add_output_port("Value", PORT_TYPE_ANY)
 
 /obj/item/circuit_component/index/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(port == list_options)
 		var/new_type = list_options.value
 		list_port.set_datatype(PORT_TYPE_LIST(new_type))
 		output.set_datatype(new_type)
 
 /obj/item/circuit_component/index/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 
 	var/index = index_port.value
 	var/list/list_input = list_port.value
@@ -61,9 +71,13 @@
 	index_type = PORT_TYPE_STRING
 
 /obj/item/circuit_component/index/assoc_string/make_list_port()
+	procstart = null
+	src.procstart = null
 	list_port = add_input_port("List", PORT_TYPE_ASSOC_LIST(PORT_TYPE_STRING, PORT_TYPE_ANY))
 
 /obj/item/circuit_component/index/assoc_string/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(port == list_options)
 		var/new_type = list_options.value
 		list_port.set_datatype(PORT_TYPE_ASSOC_LIST(PORT_TYPE_STRING, new_type))

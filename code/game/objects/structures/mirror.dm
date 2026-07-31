@@ -40,15 +40,21 @@
 	var/list/selectable_races = list()
 
 /obj/structure/mirror/Destroy()
+	procstart = null
+	src.procstart = null
 	mirror_options = null
 	selectable_races = null
 	return ..()
 
 /obj/structure/mirror/proc/update_choices()
+	procstart = null
+	src.procstart = null
 	for(var/i in mirror_options)
 		mirror_options[i] = icon('icons/hud/radial.dmi', i)
 
 /obj/structure/mirror/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/reflection_filter = alpha_mask_filter(icon = icon('icons/obj/watercloset.dmi', "mirror_mask"))
 	var/static/matrix/reflection_matrix = matrix(0.75, 0, 0, 0, 0.75, 0)
@@ -67,6 +73,8 @@
 	register_context()
 
 /obj/structure/mirror/proc/can_reflect(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	// I'm doing it this way too, because the signal is sent before the broken variable is set to TRUE.
 	if(atom_integrity <= integrity_failure * max_integrity || broken)
 		return FALSE
@@ -83,11 +91,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror, 28)
 	desc = "Oh no, seven years of bad luck!"
 
 /obj/structure/mirror/broken/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 
 /obj/structure/mirror/attack_hand(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !ishuman(user) || broken)
 		return TRUE
@@ -96,6 +108,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 	return TRUE
 
 /obj/structure/mirror/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!deconstructable)
 		balloon_alert(user, "magic prevents detaching!")
 		return NONE
@@ -109,6 +123,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 	return ITEM_INTERACT_BLOCKING
 
 /obj/structure/mirror/proc/display_radial_menu(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!can_use_mirror(user))
 		return
 
@@ -134,13 +150,19 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 
 /// Ran before we dive into any changes, can be used to block changes by returning FALSE
 /obj/structure/mirror/proc/pre_change(mob/living/carbon/human/user, picked)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Checks if the mob can continue to use the mirror
 /obj/structure/mirror/proc/can_use_mirror(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	return !QDELETED(src) && !QDELETED(user) && !broken && user.can_perform_action(src, FORBID_TELEKINESIS_REACH)
 
 /obj/structure/mirror/proc/change_beard(mob/living/carbon/human/beard_dresser)
+	procstart = null
+	src.procstart = null
 	if(beard_dresser.physique == FEMALE)
 		if(beard_dresser.facial_hairstyle == "Shaved")
 			balloon_alert(beard_dresser, "nothing to shave!")
@@ -163,6 +185,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 	beard_dresser.set_facial_hairstyle(new_style, update = TRUE)
 
 /obj/structure/mirror/proc/change_hair(mob/living/carbon/human/hairdresser)
+	procstart = null
+	src.procstart = null
 	var/new_style = tgui_input_list(hairdresser, "Select a hairstyle", "Grooming", SSaccessories.hairstyles_list)
 	if(isnull(new_style) || !can_use_mirror(hairdresser))
 		return
@@ -174,6 +198,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 	hairdresser.set_hairstyle(new_style, update = TRUE)
 
 /obj/structure/mirror/proc/change_name(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	var/newname = sanitize_name(tgui_input_text(user, "Who are we again?", "Name change", user.name, MAX_NAME_LEN), allow_numbers = TRUE) //It's magic so whatever.
 	if(!newname || !can_use_mirror(user))
 		return
@@ -186,6 +212,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 
 // Erm ackshually the proper term is species. Get it right??
 /obj/structure/mirror/proc/change_race(mob/living/carbon/human/race_changer)
+	procstart = null
+	src.procstart = null
 	var/racechoice = tgui_input_list(race_changer, "What are we again?", "Race change", selectable_races)
 	if(isnull(racechoice) || !can_use_mirror(race_changer))
 		return
@@ -225,12 +253,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 
 /// Hook for mirrors to do stuff on species change
 /obj/structure/mirror/proc/on_species_change(mob/living/carbon/human/race_changer, datum/species/newrace)
+	procstart = null
+	src.procstart = null
 	return
 
 // possible Genders: MALE, FEMALE, PLURAL, NEUTER
 // possible Physique: MALE, FEMALE
 // saved you a click (many)
 /obj/structure/mirror/proc/change_sex(mob/living/carbon/human/sexy)
+	procstart = null
+	src.procstart = null
 
 	var/chosen_sex = tgui_input_list(sexy, "Become a..", "Confirmation", list("Warlock", "Witch", "Wizard", "Itzard")) // YOU try coming up with the 'it' version of wizard
 	if(!chosen_sex || !can_use_mirror(sexy))
@@ -260,6 +292,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 	sexy.update_clothing(ITEM_SLOT_ICLOTHING) // update gender shaped clothing
 
 /obj/structure/mirror/proc/change_eyes(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	var/new_eye_color = tgui_color_picker(user, "Choose your eye color", "Eye Color", user.eye_color_left)
 	if(isnull(new_eye_color) || !can_use_mirror(user))
 		return
@@ -269,16 +303,22 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 	to_chat(user, span_notice("You gaze at your new eyes with your new eyes. Perfect!"))
 
 /obj/structure/mirror/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(deconstructable)
 		. += span_notice("It's mounted to the wall with a couple of <b>bolts</b>.")
 
 /obj/structure/mirror/examine_status(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(broken)
 		return list()// no message spam
 	return ..()
 
 /obj/structure/mirror/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(held_item))
 		context[SCREENTIP_CONTEXT_LMB] = "Open Customize Radial"
@@ -289,6 +329,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 	return .
 
 /obj/structure/mirror/attacked_by(obj/item/I, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(broken || . <= 0) // breaking a mirror truly gets you bad luck!
 		return
@@ -296,6 +338,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 	user.AddComponent(/datum/component/omen, incidents_left = 7)
 
 /obj/structure/mirror/bullet_act(obj/projectile/proj)
+	procstart = null
+	src.procstart = null
 	if(broken || !isliving(proj.firer) || !proj.damage)
 		return ..()
 
@@ -306,6 +350,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 		unlucky_dude.AddComponent(/datum/component/omen, incidents_left = 7)
 
 /obj/structure/mirror/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(broken)
 		return
@@ -316,6 +362,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 	broken = TRUE
 
 /obj/structure/mirror/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!disassembled)
 		new /obj/item/shard(loc)
 	else if(broken)
@@ -324,6 +372,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 		new /obj/item/wallframe/mirror(loc)
 
 /obj/structure/mirror/welder_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	..()
 	if(user.combat_mode)
 		return FALSE
@@ -344,6 +394,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 	return TRUE
 
 /obj/structure/mirror/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			playsound(src, 'sound/effects/hit_on_shattered_glass.ogg', 70, TRUE)
@@ -381,6 +433,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 	cursable = FALSE
 
 /obj/structure/mirror/magic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(length(selectable_races))
@@ -390,7 +444,9 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 			selectable_races[initial(species_type.name)] = species_type
 	selectable_races = sort_list(selectable_races)
 
-/obj/structure/mirror/magic/change_beard(mob/living/carbon/human/beard_dresser) // magical mirrors do nothing but give you the damn beard
+/obj/structure/mirror/magic/change_beard(mob/living/carbon/human/beard_dresser)
+	procstart = null
+	src.procstart = null // magical mirrors do nothing but give you the damn beard
 	var/new_style = tgui_input_list(beard_dresser, "Select a facial hairstyle", "Grooming", SSaccessories.facial_hairstyles_list)
 	if(isnull(new_style) || !can_use_mirror(beard_dresser))
 		return
@@ -399,6 +455,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 
 //Magic mirrors can change hair color as well
 /obj/structure/mirror/magic/change_hair(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	var/hairchoice = tgui_alert(user, "Hairstyle or hair color?", "Change Hair", list("Style", "Color"))
 	if(!can_use_mirror(user))
 		return
@@ -419,6 +477,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 
 /// Hook for mirrors to do stuff on species change
 /obj/structure/mirror/magic/on_species_change(mob/living/carbon/human/race_changer, datum/species/newrace)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(race_changer, TRAIT_ADVANCEDTOOLUSER) && HAS_TRAIT(race_changer, TRAIT_LITERATE))
 		return
 
@@ -430,6 +490,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 /obj/structure/mirror/magic/lesser
 
 /obj/structure/mirror/magic/lesser/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	// Roundstart species don't have a flag, so it has to be set on Initialize.
 	selectable_races = get_selectable_species().Copy()
 	return ..()
@@ -440,19 +502,27 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 	mirror_options = PRIDE_MIRROR_OPTIONS
 
 /obj/structure/mirror/magic/lesser/heretic/on_species_change(mob/living/carbon/human/race_changer, datum/species/newrace)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(race_changer.dna?.species?.type == newrace.type)
 		return
 	atom_break(null)
 
 /obj/structure/mirror/magic/lesser/heretic/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	new /obj/item/shard(loc) // never gives the frame back
 
 /obj/structure/mirror/magic/lesser/heretic/welder_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_alert("Trying to find where to start fixing [src] proves nigh impossible."))
 	return ITEM_INTERACT_BLOCKING
 
 /obj/structure/mirror/magic/lesser/heretic/pre_change(mob/living/carbon/human/user, picked)
+	procstart = null
+	src.procstart = null
 	if(IS_HERETIC(user))
 		return TRUE
 
@@ -462,6 +532,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 	return FALSE
 
 /obj/structure/mirror/magic/lesser/heretic/proc/change_something(mob/living/carbon/human/user, picked)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || QDELETED(user))
 		return
 
@@ -509,10 +581,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 	var/changed = FALSE
 
 /obj/structure/mirror/magic/pride/pre_change(mob/living/carbon/human/user, picked)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	changed = TRUE
 
 /obj/structure/mirror/magic/pride/attack_hand(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	changed = FALSE
 	. = ..()
 	if (!changed || QDELETED(user) || !IN_GIVEN_RANGE(user, src, 3)) // 3 range gives a tiny bit of leeway if you try to run away after using it

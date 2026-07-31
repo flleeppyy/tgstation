@@ -27,15 +27,21 @@
 	)
 
 /datum/species/fly/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "These hideous creatures suffer from pesticide immensely, eat waste, and are incredibly vulnerable to bright lights. They do have wings though."
 
 /datum/species/fly/get_species_description()
+	procstart = null
+	src.procstart = null
 	return "With no official documentation or knowledge of the origin of \
 		this species, they remain a mystery to most. Any and all rumours among \
 		Nanotrasen staff regarding flypeople are often quickly silenced by high \
 		ranking staff or officials."
 
 /datum/species/fly/get_species_lore()
+	procstart = null
+	src.procstart = null
 	return list(
 		"Flypeople are a curious species with a striking resemblance to the insect order of Diptera, \
 		commonly known as flies. With no publically known origin, flypeople are rumored to be a side effect of bluespace travel, \
@@ -50,6 +56,8 @@
 	)
 
 /datum/species/fly/create_pref_unique_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 
 	to_add += list(

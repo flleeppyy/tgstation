@@ -12,25 +12,35 @@
 	var/atom/holder
 
 /datum/component/holderloving/Initialize(holder)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent) || !holder)
 		return COMPONENT_INCOMPATIBLE
 	src.holder = holder
 
 /datum/component/holderloving/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(holder, COMSIG_QDELETING, PROC_REF(holder_deleting))
 	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(check_my_loc))
 	RegisterSignal(parent, COMSIG_ITEM_PRE_UNEQUIP, PROC_REF(can_be_moved))
 
 /datum/component/holderloving/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(holder, list(COMSIG_QDELETING))
 	UnregisterSignal(parent, list(COMSIG_ITEM_DROPPED, COMSIG_ITEM_PRE_UNEQUIP))
 
 /datum/component/holderloving/proc/holder_deleting(datum/source, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(parent)
 
 /datum/component/holderloving/proc/is_valid_location(atom/location)
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 
 	if(location == holder || ( location == holder.loc && ismob(holder.loc)))
@@ -39,6 +49,8 @@
 	return FALSE
 
 /datum/component/holderloving/proc/check_my_loc(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/item_parent = parent
@@ -46,6 +58,8 @@
 		item_parent.forceMove(holder)
 
 /datum/component/holderloving/proc/can_be_moved(obj/item/I, force, atom/newloc, no_move, invdrop, silent)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	//allow the item to be dropped on the turf so it can be later moved back into the holder as a convinience tool

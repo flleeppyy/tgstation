@@ -25,12 +25,16 @@
 	announcement_line = "A bitrunner has ordered equipment which will arrive on the cargo shuttle! Please make sure it gets to them as soon as possible!"
 
 /obj/machinery/computer/order_console/bitrunning/subtract_points(final_cost, obj/item/card/id/card)
+	procstart = null
+	src.procstart = null
 	if(final_cost <= card.registered_account.bitrunning_points)
 		card.registered_account.bitrunning_points -= final_cost
 		return TRUE
 	return FALSE
 
 /obj/machinery/computer/order_console/bitrunning/order_groceries(mob/living/purchaser, obj/item/card/id/card, list/groceries)
+	procstart = null
+	src.procstart = null
 	var/list/things_to_order = list()
 	for(var/datum/orderable_item/item as anything in groceries)
 		things_to_order[item.purchase_path] = groceries[item]
@@ -60,14 +64,20 @@
 	SSshuttle.shopping_list += new_order
 
 /obj/machinery/computer/order_console/bitrunning/retrieve_points(obj/item/card/id/id_card)
+	procstart = null
+	src.procstart = null
 	return round(id_card.registered_account.bitrunning_points)
 
 /obj/machinery/computer/order_console/bitrunning/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		flick("vendor_off", src)
 
 /obj/machinery/computer/order_console/bitrunning/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)][powered() ? null : "_off"]"
 	return ..()
 
@@ -79,6 +89,8 @@
 	test_ignored = TRUE
 
 /datum/supply_pack/bitrunning/New(purchaser, cost, list/contains)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[purchaser]'s Bitrunning Order"
 	src.cost = cost

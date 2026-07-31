@@ -14,18 +14,26 @@
 	var/qdel_on_empty = FALSE
 
 /obj/item/mecha_ammo/update_name()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[rounds ? null : "empty "][initial(name)]"
 
 /obj/item/mecha_ammo/update_desc()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = rounds ? initial(desc) : "An exosuit ammuniton box that has since been emptied. It can be safely folded for recycling."
 
 /obj/item/mecha_ammo/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = rounds ? initial(icon_state) : "[initial(icon_state)]_e"
 	return ..()
 
 /obj/item/mecha_ammo/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(rounds)
 		to_chat(user, span_warning("You cannot flatten the ammo box until it's empty!"))
@@ -37,6 +45,8 @@
 	user.put_in_hands(trash)
 
 /obj/item/mecha_ammo/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(rounds)
 		. += "There [rounds > 1?"are":"is"] [rounds] [ammo_type][rounds > 1?"s":""] left."

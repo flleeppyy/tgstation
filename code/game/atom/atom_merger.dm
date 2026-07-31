@@ -4,6 +4,8 @@
 
 /// Gets a merger datum representing the connected blob of objects in the allowed_types argument
 /atom/proc/GetMergeGroup(id, list/allowed_types)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/merger)
 	var/datum/merger/candidate
 	if(mergers)

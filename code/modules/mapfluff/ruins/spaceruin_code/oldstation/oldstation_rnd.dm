@@ -4,11 +4,15 @@
 	req_access = list(ACCESS_AWAY_SCIENCE)
 
 /obj/machinery/rnd/server/oldstation/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	var/datum/techweb/oldstation_web = locate(/datum/techweb/oldstation) in SSresearch.techwebs
 	stored_research = oldstation_web
 	return ..()
 
 /obj/machinery/rnd/server/oldstation/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(istype(held_item, /obj/item/research_notes))
@@ -16,6 +20,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/rnd/server/oldstation/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!in_range(user, src) && !isobserver(user))
@@ -24,6 +30,8 @@
 	. += span_notice("Insert [EXAMINE_HINT("Research Notes")] to generate points.")
 
 /obj/machinery/rnd/server/oldstation/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/research_notes) && stored_research)
 		var/obj/item/research_notes/research_notes = tool
 		stored_research.add_point_list(list(TECHWEB_POINT_TYPE_GENERIC = research_notes.value))

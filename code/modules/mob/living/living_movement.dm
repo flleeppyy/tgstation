@@ -1,4 +1,6 @@
 /mob/living/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_turf_movespeed(loc)
 	if(HAS_TRAIT(src, TRAIT_NEGATES_GRAVITY))
@@ -27,6 +29,8 @@
 		refresh_gravity()
 
 /mob/living/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!old_turf || !new_turf || SSmapping.gravity_by_z_level[old_turf.z] != SSmapping.gravity_by_z_level[new_turf.z])
@@ -35,11 +39,15 @@
 /// Living Mob use event based gravity
 /// We check here to ensure we haven't dropped any gravity changes
 /mob/living/proc/gravity_setup()
+	procstart = null
+	src.procstart = null
 	on_negate_gravity(src)
 	refresh_gravity()
 
 /// Handles gravity effects. Call if something about our gravity has potentially changed!
 /mob/living/proc/refresh_gravity()
+	procstart = null
+	src.procstart = null
 	var/old_grav_state = gravity_state
 	gravity_state = has_gravity()
 	if(gravity_state == old_grav_state)
@@ -53,9 +61,13 @@
 		remove_filter("gravity")
 
 /mob/living/mob_negates_gravity()
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT_FROM(src, TRAIT_IGNORING_GRAVITY, IGNORING_GRAVITY_NEGATION)
 
 /mob/living/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -69,18 +81,26 @@
 	return !mover.density || body_position == LYING_DOWN
 
 /mob/living/update_config_movespeed()
+	procstart = null
+	src.procstart = null
 	update_move_intent_slowdown()
 	return ..()
 
 /mob/living/proc/update_move_intent_slowdown()
+	procstart = null
+	src.procstart = null
 	add_movespeed_modifier(get_move_intent_slowdown())
 
 /mob/living/proc/get_move_intent_slowdown()
+	procstart = null
+	src.procstart = null
 	if(move_intent == MOVE_INTENT_WALK)
 		return /datum/movespeed_modifier/config_walk_run/walk
 	return /datum/movespeed_modifier/config_walk_run/run
 
 /mob/living/proc/update_turf_movespeed(turf/open/turf)
+	procstart = null
+	src.procstart = null
 	if(isopenturf(turf) && !HAS_TRAIT(turf, TRAIT_TURF_IGNORE_SLOWDOWN))
 		if(turf.slowdown != current_turf_slowdown)
 			add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/turf_slowdown, multiplicative_slowdown = turf.slowdown)
@@ -90,6 +110,8 @@
 		current_turf_slowdown = 0
 
 /mob/living/proc/update_pull_movespeed()
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_LIVING_UPDATING_PULL_MOVESPEED)
 
 	if(pulling)
@@ -115,6 +137,8 @@
  * This way we can avoid esoteric bugs, copypasta and inconsistencies.
  */
 /mob/living/zMove(dir, turf/target, z_move_flags = ZMOVE_FLIGHT_FLAGS)
+	procstart = null
+	src.procstart = null
 	if(buckled)
 		if(buckled.currently_z_moving)
 			return FALSE
@@ -129,6 +153,8 @@
 	return ..()
 
 /mob/living/can_z_move(direction, turf/start, turf/destination, z_move_flags = ZMOVE_FLIGHT_FLAGS, mob/living/rider)
+	procstart = null
+	src.procstart = null
 	if(z_move_flags & ZMOVE_INCAPACITATED_CHECKS && incapacitated)
 		if(z_move_flags & ZMOVE_FEEDBACK)
 			to_chat(rider || src, span_warning("[rider ? src : "You"] can't do that right now!"))
@@ -153,11 +179,15 @@
 			return FALSE
 
 /mob/set_currently_z_moving(value)
+	procstart = null
+	src.procstart = null
 	if(buckled)
 		return buckled.set_currently_z_moving(value)
 	return ..()
 
 /mob/living/keybind_face_direction(direction)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS(src))
 		return
 	return ..()

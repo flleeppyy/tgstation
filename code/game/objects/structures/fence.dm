@@ -25,11 +25,15 @@
 	var/invulnerable = FALSE
 
 /obj/structure/fence/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	update_cut_status()
 
 /obj/structure/fence/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	switch(hole_size)
@@ -59,6 +63,8 @@
 	hole_size = LARGE_HOLE
 
 /obj/structure/fence/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!cuttable)
 		to_chat(user, span_warning("This section of the fence can't be cut!"))
 		return ITEM_INTERACT_BLOCKING
@@ -92,6 +98,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/fence/proc/update_cut_status()
+	procstart = null
+	src.procstart = null
 	if(!cuttable)
 		return
 	var/new_density = TRUE
@@ -114,6 +122,8 @@
 	cuttable = FALSE
 
 /obj/structure/fence/door/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	update_icon_state()
@@ -123,22 +133,30 @@
 	density = FALSE
 
 /obj/structure/fence/door/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(can_open(user))
 		toggle(user)
 
 	return TRUE
 
 /obj/structure/fence/door/proc/toggle(mob/user)
+	procstart = null
+	src.procstart = null
 	visible_message(span_notice("\The [user] [density ? "opens" : "closes"] \the [src]."))
 	set_density(!density)
 	update_icon_state()
 	playsound(src, 'sound/machines/click.ogg', 100, TRUE)
 
 /obj/structure/fence/door/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = density ? "door_closed" : "door_opened"
 	return ..()
 
 /obj/structure/fence/door/proc/can_open(mob/user)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 #undef CUT_TIME

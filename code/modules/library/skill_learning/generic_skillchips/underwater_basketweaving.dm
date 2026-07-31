@@ -9,6 +9,8 @@
 	deactivate_message = span_notice("Higher mysteries of underwater basketweaving leave your mind.")
 
 /obj/item/skillchip/basketweaving/has_mob_incompatibility(mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -17,6 +19,8 @@
 		return "Target incapable of learning recipe."
 
 /obj/item/skillchip/basketweaving/on_activate(mob/living/carbon/user, silent=FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!user.mind)
 		return
@@ -26,16 +30,22 @@
 	RegisterSignal(user, COMSIG_MOB_MIND_TRANSFERRED_INTO, PROC_REF(learn_recipes))
 
 /obj/item/skillchip/basketweaving/proc/learn_recipes(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/recipe_type in typesof(/datum/crafting_recipe/underwater_basket))
 		source.mind.teach_crafting_recipe(recipe_type)
 
 /obj/item/skillchip/basketweaving/proc/forget_recipes(datum/mind/source, mob/previous_body)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/recipe_type in typesof(/datum/crafting_recipe/underwater_basket))
 		source.forget_crafting_recipe(recipe_type)
 
 /obj/item/skillchip/basketweaving/on_deactivate(mob/living/carbon/user, silent=FALSE)
+	procstart = null
+	src.procstart = null
 	if(user.mind)
 		forget_recipes(user.mind)
 		UnregisterSignal(user.mind, COMSIG_MIND_TRANSFERRED)

@@ -11,9 +11,13 @@
 	denied_type = /obj/item/crusher_trophy/miner_eye
 
 /obj/item/crusher_trophy/miner_eye/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "mark detonation to grant stun immunity and <b>90%</b> damage reduction for <b>1</b> second"
 
 /obj/item/crusher_trophy/miner_eye/on_mark_detonation(mob/living/target, mob/living/user, obj/item/kinetic_crusher/pkc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.apply_status_effect(/datum/status_effect/blooddrunk)
 
@@ -25,9 +29,13 @@
 	bonus_value = 5
 
 /obj/item/crusher_trophy/tail_spike/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "mark detonation to do <b>[bonus_value]</b> damage to nearby creatures and push them back"
 
 /obj/item/crusher_trophy/tail_spike/on_mark_detonation(mob/living/target, mob/living/user, obj/item/kinetic_crusher/pkc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/mob/living/living_target in oview(2, user))
 		if(user.faction_check_atom(living_target) || living_target.stat == DEAD)
@@ -38,6 +46,8 @@
 		living_target.adjust_fire_loss(bonus_value, forced = TRUE)
 
 /obj/item/crusher_trophy/tail_spike/proc/pushback(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(target) && !QDELETED(user) && (!target.anchored || ismegafauna(target)) && target.move_resist < INFINITY) //megafauna will always be pushed
 		step(target, get_dir(user, target))
 
@@ -53,9 +63,13 @@
 	var/static/list/damage_heal_order = list(BRUTE, BURN, OXY)
 
 /obj/item/crusher_trophy/demon_claws/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "melee hits to do <b>[bonus_value * 0.2]</b> more damage and heal you for <b>[bonus_value * 0.1]</b>, with <b>5X</b> effect on mark detonation"
 
 /obj/item/crusher_trophy/demon_claws/add_to(obj/item/kinetic_crusher/pkc, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -64,6 +78,8 @@
 	pkc.update_wielding()
 
 /obj/item/crusher_trophy/demon_claws/remove_from(obj/item/kinetic_crusher/pkc, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -72,9 +88,13 @@
 	pkc.update_wielding()
 
 /obj/item/crusher_trophy/demon_claws/on_melee_hit(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.heal_ordered_damage(bonus_value * 0.1, damage_heal_order)
 
 /obj/item/crusher_trophy/demon_claws/on_mark_detonation(mob/living/target, mob/living/user, obj/item/kinetic_crusher/pkc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.heal_ordered_damage(bonus_value * 0.4, damage_heal_order)
 
@@ -89,9 +109,13 @@
 	trophy_id = TROPHY_BLASTER_TUBES
 
 /obj/item/crusher_trophy/blaster_tubes/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "destabilizer shots to be fire-able freely inbetween swings"
 
 /obj/item/crusher_trophy/blaster_tubes/add_to(obj/item/kinetic_crusher/crusher, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -101,22 +125,30 @@
 		RegisterSignal(user, COMSIG_MOB_CLICKON, PROC_REF(try_crusher_fire))
 
 /obj/item/crusher_trophy/blaster_tubes/remove_from(obj/item/kinetic_crusher/crusher, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(crusher, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED))
 	if (ismob(crusher.loc))
 		UnregisterSignal(crusher.loc, COMSIG_MOB_CLICKON)
 
 /obj/item/crusher_trophy/blaster_tubes/proc/on_crusher_equipped(obj/item/kinetic_crusher/source, mob/user, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (slot == ITEM_SLOT_HANDS && isliving(user))
 		RegisterSignal(user, COMSIG_MOB_CLICKON, PROC_REF(try_crusher_fire))
 
 /obj/item/crusher_trophy/blaster_tubes/proc/on_crusher_dropped(obj/item/kinetic_crusher/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(user, COMSIG_MOB_CLICKON)
 
 /obj/item/crusher_trophy/blaster_tubes/proc/try_crusher_fire(mob/living/user, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Only trigger on normal RMB when on cooldown
@@ -139,9 +171,13 @@
 	denied_type = /obj/item/crusher_trophy/vortex_talisman
 
 /obj/item/crusher_trophy/vortex_talisman/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "mark detonation to create a homing hierophant chaser"
 
 /obj/item/crusher_trophy/vortex_talisman/on_mark_detonation(mob/living/target, mob/living/user, obj/item/kinetic_crusher/pkc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(target))
 		var/obj/effect/temp_visual/hierophant/chaser/chaser = new(get_turf(user), user, target, 3, TRUE)
@@ -158,9 +194,13 @@
 	denied_type = /obj/item/crusher_trophy/ice_block_talisman
 
 /obj/item/crusher_trophy/ice_block_talisman/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "mark detonation to freeze a creature in a block of ice for a period, preventing them from moving"
 
 /obj/item/crusher_trophy/ice_block_talisman/on_mark_detonation(mob/living/target, mob/living/user, obj/item/kinetic_crusher/pkc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	target.apply_status_effect(/datum/status_effect/ice_block_talisman)
 
@@ -172,9 +212,13 @@
 	denied_type = /obj/item/crusher_trophy/wendigo_horn
 
 /obj/item/crusher_trophy/wendigo_horn/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "melee hits to inflict twice as much damage"
 
 /obj/item/crusher_trophy/wendigo_horn/add_to(obj/item/kinetic_crusher/crusher, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -182,6 +226,8 @@
 	crusher.update_wielding()
 
 /obj/item/crusher_trophy/wendigo_horn/remove_from(obj/item/kinetic_crusher/crusher, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -201,14 +247,20 @@
 	var/use_time
 
 /obj/item/crusher_trophy/broodmother_tongue/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "mark detonation to have a <b>[bonus_value]%</b> chance to summon a patch of goliath tentacles at the target's location"
 
 /obj/item/crusher_trophy/broodmother_tongue/on_mark_detonation(mob/living/target, mob/living/user, obj/item/kinetic_crusher/pkc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(bonus_value) && target.stat != DEAD)
 		new /obj/effect/goliath_tentacle/broodmother/patch(get_turf(target), user)
 
 /obj/item/crusher_trophy/broodmother_tongue/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		return
 	var/mob/living/living_user = user
@@ -236,9 +288,13 @@
 	var/next_use_time
 
 /obj/item/crusher_trophy/legionnaire_spine/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "mark detonation to have a <b>[bonus_value]%</b> chance to summon a loyal legion skull"
 
 /obj/item/crusher_trophy/legionnaire_spine/on_mark_detonation(mob/living/target, mob/living/user, obj/item/kinetic_crusher/pkc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!prob(bonus_value) || target.stat == DEAD)
 		return
@@ -247,6 +303,8 @@
 	minion.ai_controller.set_blackboard_key(BB_CURRENT_TARGET, target)
 
 /obj/item/crusher_trophy/legionnaire_spine/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		return
 	var/mob/living/LivingUser = user
@@ -271,11 +329,17 @@
 	var/static/list/damage_heal_order = list(BRUTE, BURN, OXY, TOX)
 
 /obj/item/crusher_trophy/flesh_glob/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "melee hits heal you for <b>[bonus_value * 0.2]</b>, and for <b>[bonus_value * 0.5]</b> on mark detonation"
 
 /obj/item/crusher_trophy/flesh_glob/on_melee_hit(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.heal_ordered_damage(bonus_value * 0.2, damage_heal_order)
 
 /obj/item/crusher_trophy/flesh_glob/on_mark_detonation(mob/living/target, mob/living/user, obj/item/kinetic_crusher/pkc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.heal_ordered_damage(bonus_value * 0.5, damage_heal_order)

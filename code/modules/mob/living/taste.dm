@@ -11,9 +11,13 @@
  * with a lower number being able to pick up more distinct flavours.
  */
 /mob/living/proc/get_taste_sensitivity()
+	procstart = null
+	src.procstart = null
 	return DEFAULT_TASTE_SENSITIVITY
 
 /mob/living/carbon/get_taste_sensitivity()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(istype(tongue))
 		. = tongue.taste_sensitivity
@@ -28,6 +32,8 @@
  * * datum/reagents/from - Reagent holder to taste from.
  **/
 /mob/living/proc/taste_container(datum/reagents/from)
+	procstart = null
+	src.procstart = null
 	if(check_tasting_blocks())
 		return
 
@@ -42,6 +48,8 @@
  * * list/from - List of reagents to taste from.
  **/
 /mob/living/proc/taste_list(list/from)
+	procstart = null
+	src.procstart = null
 	if(check_tasting_blocks())
 		return
 
@@ -54,6 +62,8 @@
  * Returns TRUE on a block, FALSE if not.
  **/
 /mob/living/proc/check_tasting_blocks()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_AGEUSIA))
 		return TRUE
 	if(last_taste_time + 50 >= world.time)
@@ -73,6 +83,8 @@
  * Attempt to send a taste message using given tastes text.
  **/
 /mob/living/proc/send_taste_message(tastes_text)
+	procstart = null
+	src.procstart = null
 	if(tastes_text == last_taste_text && last_taste_time + 100 >= world.time)
 		return
 
@@ -86,9 +98,13 @@
  * Gets food flags that this mob likes
  **/
 /mob/living/proc/get_liked_foodtypes()
+	procstart = null
+	src.procstart = null
 	return NONE
 
 /mob/living/carbon/get_liked_foodtypes()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_AGEUSIA))
 		return NONE
 	// Handled in here since the brain trauma can't modify taste directly (/datum/brain_trauma/severe/flesh_desire)
@@ -103,11 +119,15 @@
  * Gets food flags that this mob dislikes
  **/
 /mob/living/proc/get_disliked_foodtypes()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_VEGETARIAN))
 		return MEAT
 	return NONE
 
 /mob/living/carbon/get_disliked_foodtypes()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_AGEUSIA))
 		return NONE
 	var/obj/item/organ/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
@@ -120,9 +140,13 @@
  * Toxic food is the only category that ignores ageusia, KEEP IT LIKE THAT!
  **/
 /mob/living/proc/get_toxic_foodtypes()
+	procstart = null
+	src.procstart = null
 	return TOXIC
 
 /mob/living/carbon/get_toxic_foodtypes()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!tongue)
 		return ..()
@@ -135,6 +159,8 @@
  * Essentially toxic food+, not only disgusting but outright lethal
  */
 /mob/living/proc/get_allergic_foodtypes()
+	procstart = null
+	src.procstart = null
 	var/datum/quirk/item_quirk/food_allergic/allergy = get_quirk(/datum/quirk/item_quirk/food_allergic)
 	return allergy?.target_foodtypes || NONE
 
@@ -149,6 +175,8 @@
  * Returns TRUE if the mob had an allergic reaction, FALSE otherwise.
  */
 /mob/living/proc/check_allergic_reaction(to_foodtype = NONE, chance = 100, histamine_add = 0)
+	procstart = null
+	src.procstart = null
 	if(!(get_allergic_foodtypes() & to_foodtype))
 		return FALSE
 	if(!prob(chance))
@@ -167,6 +195,8 @@
  * Does not get called if the owner has ageusia.
  **/
 /mob/living/proc/get_food_taste_reaction(obj/item/food, foodtypes)
+	procstart = null
+	src.procstart = null
 	var/food_taste_reaction
 	if(foodtypes & get_toxic_foodtypes())
 		food_taste_reaction = FOOD_TOXIC
@@ -177,6 +207,8 @@
 	return food_taste_reaction
 
 /mob/living/carbon/get_food_taste_reaction(obj/item/food, foodtypes)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
 	// No tongue, no tastin'
 	if(!tongue?.sense_of_taste || HAS_TRAIT(src, TRAIT_AGEUSIA))

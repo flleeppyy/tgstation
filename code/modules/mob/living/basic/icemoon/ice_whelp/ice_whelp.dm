@@ -42,6 +42,8 @@
 	)
 
 /mob/living/basic/mining/ice_whelp/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_GLIDE, INNATE_TRAIT)
 
@@ -49,6 +51,8 @@
 	grant_actions_by_list(innate_actions)
 
 /mob/living/basic/mining/ice_whelp/early_melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -69,6 +73,8 @@
 
 /// Carve a stone into a beautiful self-portrait
 /mob/living/basic/mining/ice_whelp/proc/create_sculpture(atom/target)
+	procstart = null
+	src.procstart = null
 	balloon_alert(src, "sculpting...")
 	if(!do_after(src, 5 SECONDS, target = target))
 		return
@@ -81,6 +87,8 @@
 
 /// Gib and consume our fellow ice drakes
 /mob/living/basic/mining/ice_whelp/proc/cannibalize_victim(mob/living/target)
+	procstart = null
+	src.procstart = null
 	start_pulling(target)
 	balloon_alert(src, "devouring...")
 	if(!do_after(src, 5 SECONDS, target))

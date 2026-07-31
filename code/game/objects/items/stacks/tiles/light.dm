@@ -12,6 +12,8 @@
 	var/state = 0
 
 /obj/item/stack/tile/light/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	new/obj/item/stack/sheet/iron(user.loc)
 	amount--
 	new/obj/item/stack/light_w(user.loc)
@@ -21,6 +23,8 @@
 
 
 /obj/item/stack/tile/light/place_tile(turf/open/target_plating, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/open/floor/light/floor = .
 	floor?.state = state

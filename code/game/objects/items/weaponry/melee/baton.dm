@@ -73,15 +73,21 @@
 	var/context_living_rmb_inactive = "Attack"
 
 /obj/item/melee/baton/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	register_item_context()
 	add_deep_lore()
 
 /obj/item/melee/baton/add_weapon_description()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/weapon_description, attached_proc = PROC_REF(add_baton_notes))
 
 /obj/item/melee/baton/proc/add_baton_notes()
+	procstart = null
+	src.procstart = null
 	var/list/readout = list()
 
 	if(affect_cyborg)
@@ -101,6 +107,8 @@
 	return readout.Join("\n")
 
 /obj/item/melee/baton/proc/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	return
 
 #define STUN_ATTACK "stun attack"
@@ -118,6 +126,8 @@
  * Returns TRUE if we can stun the target, FALSE if we cannot.
  */
 /obj/item/melee/baton/proc/try_stun(mob/living/target, mob/living/user, harmbatonning)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	if(!active)
 		return FALSE
@@ -139,6 +149,8 @@
 
 // Stun attack
 /obj/item/melee/baton/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -187,6 +199,8 @@
 
 // This is where stun gets applied
 /obj/item/melee/baton/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target) || !LAZYACCESS(attack_modifiers, STUN_ATTACK))
 		return
 
@@ -204,14 +218,20 @@
 		target.visible_message(desc["visible"], desc["local"], visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE)
 
 /obj/item/melee/baton/apply_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	stamina_damage = modify_fantasy_variable("stamina_damage", stamina_damage, bonus * 4)
 
 /obj/item/melee/baton/remove_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	stamina_damage = reset_fantasy_variable("stamina_damage", stamina_damage)
 	return ..()
 
 /obj/item/melee/baton/add_item_context(datum/source, list/context, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (isturf(target))
 		return NONE
 
@@ -237,6 +257,8 @@
 
 /// Wrapper for calling "stun()" and doing relevant vfx/sfx
 /obj/item/melee/baton/proc/finalize_baton_attack(mob/living/target, mob/living/user, clumsy = FALSE)
+	procstart = null
+	src.procstart = null
 	COOLDOWN_START(src, cooldown_check, cooldown)
 	if(on_stun_sound)
 		playsound(src, on_stun_sound, on_stun_volume, TRUE, -1)
@@ -246,6 +268,8 @@
 
 /// The actual "stun()" of the stun baton
 /obj/item/melee/baton/proc/baton_effect(mob/living/target, mob/living/user, stun_override, clumsy)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	var/trait_check = HAS_TRAIT(target, TRAIT_BATON_RESISTANCE)
 	if(iscyborg(target))
@@ -269,6 +293,8 @@
 
 /// Default message for stunning a living, non-cyborg mob.
 /obj/item/melee/baton/proc/get_stun_description(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	. = list()
 	.["visible"] = span_danger("[user] knocks [target] down with [src]!")
@@ -276,6 +302,8 @@
 
 /// Default message for stunning a cyborg.
 /obj/item/melee/baton/proc/get_cyborg_stun_description(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	. = list()
 	if(affect_cyborg)
@@ -287,16 +315,22 @@
 
 /// Contains any special effects that we apply to living, non-cyborg mobs we stun. Does not include applying a knockdown, dealing stamina damage, etc.
 /obj/item/melee/baton/proc/additional_effects_non_cyborg(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	return
 
 /// Contains any special effects that we apply to cyborgs we stun. Does not include flashing the cyborg's screen, hardstunning them, etc.
 /obj/item/melee/baton/proc/additional_effects_cyborg(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	return
 
 /// Used in marking a target as being hit by a baton
 /obj/item/melee/baton/proc/set_batoned(mob/living/target, mob/living/user, cooldown)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	if(!cooldown)
 		return
@@ -348,6 +382,8 @@
 	var/active_force = 10
 
 /obj/item/melee/baton/telescopic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/transforming, \
@@ -361,9 +397,13 @@
 	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
 /obj/item/melee/baton/telescopic/additional_effects_non_cyborg(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	target.apply_status_effect(/datum/status_effect/dazed)
 
 /obj/item/melee/baton/telescopic/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_user = user
 	var/obj/item/organ/brain/our_brain = human_user.get_organ_by_type(/obj/item/organ/brain)
 
@@ -389,6 +429,8 @@
  * Gives feedback to the user and makes it show up inhand.
  */
 /obj/item/melee/baton/telescopic/proc/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	src.active = active
@@ -450,6 +492,8 @@
 	active_force = 16
 
 /obj/item/melee/baton/telescopic/contractor_baton/additional_effects_non_cyborg(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	target.set_jitter_if_lower(40 SECONDS * (HAS_TRAIT(target, TRAIT_BATON_RESISTANCE) ? 0.5 : 1))
 	target.set_stutter_if_lower(40 SECONDS * (HAS_TRAIT(target, TRAIT_BATON_RESISTANCE) ? 0.5 : 1))
@@ -513,6 +557,8 @@
 	acid = 80
 
 /obj/item/melee/baton/security/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(preload_cell_type)
 		if(!ispath(preload_cell_type, /obj/item/stock_parts/power_store/cell))
@@ -523,9 +569,13 @@
 	update_appearance()
 
 /obj/item/melee/baton/security/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/item/melee/baton/security/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(cell?.charge && active)
 		user.visible_message(span_suicide("[user] is putting the live [name] in [user.p_their()] mouth! It looks like [user.p_theyre()] trying to commit suicide!"))
 		finalize_baton_attack(user, user)
@@ -535,12 +585,16 @@
 		return OXYLOSS
 
 /obj/item/melee/baton/security/Destroy()
+	procstart = null
+	src.procstart = null
 	if(cell)
 		QDEL_NULL(cell)
 	UnregisterSignal(src, COMSIG_ATOM_ATTACKBY)
 	return ..()
 
 /obj/item/melee/baton/security/proc/convert(datum/source, obj/item/item, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(item, /obj/item/conversion_kit) || !convertible)
@@ -555,6 +609,8 @@
 	qdel(src)
 
 /obj/item/melee/baton/security/on_saboteur(datum/source, disrupt_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!active)
 		return
@@ -563,6 +619,8 @@
 	return TRUE
 
 /obj/item/melee/baton/security/Exited(atom/movable/mov_content)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mov_content == cell)
 		cell = null
@@ -570,6 +628,8 @@
 		update_appearance()
 
 /obj/item/melee/baton/security/update_icon_state()
+	procstart = null
+	src.procstart = null
 	var/base_inhand = base_inhand_state || base_icon_state
 	if(active)
 		icon_state = "[base_icon_state]_active"
@@ -585,6 +645,8 @@
 	return ..()
 
 /obj/item/melee/baton/security/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cell)
 		. += span_notice("\The [src] is [round(cell.percent())]% charged.")
@@ -592,11 +654,15 @@
 		. += span_warning("\The [src] does not have a power source installed.")
 
 /obj/item/melee/baton/security/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(tryremovecell(user))
 		tool.play_tool_sound(src)
 	return TRUE
 
 /obj/item/melee/baton/security/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stock_parts/power_store/cell))
 		return NONE
 	if(cell)
@@ -616,6 +682,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/melee/baton/security/proc/tryremovecell(mob/user)
+	procstart = null
+	src.procstart = null
 	if(cell && can_remove_cell)
 		cell.forceMove(drop_location())
 		to_chat(user, span_notice("You remove the cell from [src]."))
@@ -623,6 +691,8 @@
 	return FALSE
 
 /obj/item/melee/baton/security/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(cell?.charge >= cell_hit_cost && !active)
 		turn_on(user)
 		balloon_alert(user, "turned on")
@@ -638,9 +708,13 @@
 
 /// Toggles the stun baton's light
 /obj/item/melee/baton/security/proc/toggle_light()
+	procstart = null
+	src.procstart = null
 	set_light_on(!light_on)
 
 /obj/item/melee/baton/security/proc/turn_on(mob/user)
+	procstart = null
+	src.procstart = null
 	active = TRUE
 	playsound(src, SFX_SPARKS, 75, TRUE, -1)
 	update_appearance()
@@ -650,6 +724,8 @@
 	pickup_sound = active_pickup_sound
 
 /obj/item/melee/baton/security/proc/turn_off()
+	procstart = null
+	src.procstart = null
 	active = FALSE
 	set_light_on(FALSE)
 	update_appearance()
@@ -658,6 +734,8 @@
 	pickup_sound = inactive_pickup_sound
 
 /obj/item/melee/baton/security/proc/deductcharge(deducted_charge)
+	procstart = null
+	src.procstart = null
 	if(!cell)
 		return
 	//Note this value returned is significant, as it will determine
@@ -668,6 +746,8 @@
 		turn_off()
 
 /obj/item/melee/baton/security/try_stun(mob/living/target, mob/living/user, harmbatonning)
+	procstart = null
+	src.procstart = null
 	if(!active && !harmbatonning && !user.combat_mode)
 		target.visible_message(
 			span_warning("[user] prods [target] with [src]. Luckily it was off."),
@@ -679,6 +759,8 @@
 	return ..()
 
 /obj/item/melee/baton/security/baton_effect(mob/living/target, mob/living/user, stun_override, clumsy)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(loc))
 		var/mob/living/silicon/robot/robot = loc
 		if(!robot || !robot.cell || !robot.cell.use(cell_hit_cost))
@@ -693,6 +775,8 @@
  * After a period of time, we then check to see what stun duration we give.
  */
 /obj/item/melee/baton/security/additional_effects_non_cyborg(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	target.set_jitter_if_lower(40 SECONDS * (HAS_TRAIT(target, TRAIT_BATON_RESISTANCE) ? 0.5 : 1))
 	target.set_confusion_if_lower(10 SECONDS * (HAS_TRAIT(target, TRAIT_BATON_RESISTANCE) ? 0.5 : 1))
 	target.set_stutter_if_lower(16 SECONDS * (HAS_TRAIT(target, TRAIT_BATON_RESISTANCE) ? 0.5 : 1))
@@ -702,6 +786,8 @@
 
 /// After the initial stun period, we check to see if the target needs to have the stun applied.
 /obj/item/melee/baton/security/proc/apply_stun_effect_end(mob/living/target)
+	procstart = null
+	src.procstart = null
 	var/trait_check = HAS_TRAIT(target, TRAIT_BATON_RESISTANCE) //var since we check it in out to_chat as well as determine stun duration
 	if(!target.IsKnockdown())
 		to_chat(target, span_warning("Your muscles seize, making you collapse[trait_check ? ", but your body quickly recovers..." : "!"]"))
@@ -710,23 +796,31 @@
 		target.Knockdown(knockdown_time)
 
 /obj/item/melee/baton/security/get_stun_description(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	.["visible"] = span_danger("[user] stuns [target] with [src]!")
 	.["local"] = span_userdanger("[user] stuns you with [src]!")
 
 /obj/item/melee/baton/security/get_cyborg_stun_description(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!affect_cyborg)
 		.["visible"] = span_danger("[user] tries to stun [target] with [src], and predictably fails!")
 		.["local"] = span_userdanger("[user] tries to... stun you with [src]?")
 
 /obj/item/melee/baton/security/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. && active && prob(throw_stun_chance) && isliving(hit_atom))
 		finalize_baton_attack(hit_atom, throwingdatum?.get_thrower())
 
 /obj/item/melee/baton/security/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!cell)
 		return
@@ -741,6 +835,8 @@
 			addtimer(CALLBACK(src, PROC_REF(scramble_mode)), scramble_time*loops * (1 SECONDS))
 
 /obj/item/melee/baton/security/proc/scramble_mode()
+	procstart = null
+	src.procstart = null
 	if (!cell || cell.charge < cell_hit_cost)
 		return
 	active = !active
@@ -797,9 +893,13 @@
 	obj_flags = UNIQUE_RENAME
 
 /obj/item/melee/baton/security/stunsword/setup_reskins()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/reskinable_item, /datum/atom_skin/stunsword)
 
 /obj/item/melee/baton/security/stunsword/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/melee/baton/security/stunsword/loaded
@@ -833,13 +933,19 @@
 	var/can_upgrade = TRUE
 
 /obj/item/melee/baton/security/cattleprod/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	sparkler = new (src)
 
 /obj/item/melee/baton/security/cattleprod/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	return
 
-/obj/item/melee/baton/security/cattleprod/item_interaction(mob/living/user, obj/item/tool, list/modifiers)//handles sticking a crystal onto a stunprod to make an improved cattleprod
+/obj/item/melee/baton/security/cattleprod/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null//handles sticking a crystal onto a stunprod to make an improved cattleprod
 	if(!istype(tool, /obj/item/stack))
 		return ..()
 
@@ -873,9 +979,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/melee/baton/security/cattleprod/try_stun(mob/living/target, mob/living/user, harmbatonning)
+	procstart = null
+	src.procstart = null
 	return ..() && sparkler.activate()
 
 /obj/item/melee/baton/security/cattleprod/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(sparkler)
 	return ..()
 
@@ -900,10 +1010,14 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5, /datum/material/glass = SHEET_MATERIAL_AMOUNT*2, /datum/material/silver = SHEET_MATERIAL_AMOUNT*5, /datum/material/gold = SHEET_MATERIAL_AMOUNT)
 
 /obj/item/melee/baton/security/boomerang/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/boomerang, throw_range + 2, TRUE)
 
 /obj/item/melee/baton/security/boomerang/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/melee/baton/security/boomerang/loaded //Same as above, comes with a cell.
@@ -921,6 +1035,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 1.15, /datum/material/bluespace = SHEET_MATERIAL_AMOUNT, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 2)
 
 /obj/item/melee/baton/security/cattleprod/teleprod/baton_effect(mob/living/target, mob/living/user, stun_override, clumsy)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || target.move_resist >= MOVE_FORCE_OVERPOWERING)
 		return
@@ -939,6 +1055,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 1.15, /datum/material/telecrystal = SHEET_MATERIAL_AMOUNT, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 2)
 
 /obj/item/melee/baton/security/cattleprod/telecrystalprod/baton_effect(mob/living/target, mob/living/user, stun_override, clumsy)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -977,18 +1095,26 @@
 	exposed_wound_bonus = 5
 
 /obj/item/melee/baton/nunchaku/proc/randomize_state()
+	procstart = null
+	src.procstart = null
 	icon_state = pick(list("nunchaku", "nunchaku_x", "nunchaku_y"))
 	update_appearance()
 
 /obj/item/melee/baton/nunchaku/after_throw(datum/callback/callback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	randomize_state()
 
 /obj/item/melee/baton/nunchaku/afterattack(atom/target, mob/user, click_parameters)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	randomize_state()
 
 /obj/item/melee/baton/nunchaku/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text, final_block_chance, damage, attack_type, damage_type)
+	procstart = null
+	src.procstart = null
 	if(attack_type == PROJECTILE_ATTACK || !owner.throw_mode)
 		return ..()
 
@@ -1009,6 +1135,8 @@
 // Deep Lore //
 
 /obj/item/melee/baton/security/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/examine_lore, \
 		lore_hint = span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [src]."), \
 		lore = "The Secure Apprehension Device (sometimes referred to as the SAD in the officer training manuals) is \
@@ -1030,6 +1158,8 @@
 // Contractor Baton
 
 /obj/item/melee/baton/telescopic/contractor_baton/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/examine_lore, \
 		lore_hint = span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [src]."), \
 		lore = "The Contract Acquisition Device (sometimes referred to as the CAD in encrypted correspondence) is \

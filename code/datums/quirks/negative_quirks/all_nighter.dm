@@ -30,12 +30,16 @@
 
 ///adds the corresponding moodlet and visual effects
 /datum/quirk/all_nighter/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(quirk_holder, COMSIG_CARBON_REMOVE_LIMB, PROC_REF(on_removed_limb))
 	quirk_holder.add_mood_event("all_nighter", /datum/mood_event/all_nighter)
 	add_bags()
 
 ///removes the corresponding moodlet and visual effects
 /datum/quirk/all_nighter/remove(client/client_source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(quirk_holder, COMSIG_CARBON_REMOVE_LIMB)
 	quirk_holder.clear_mood_event("all_nighter", /datum/mood_event/all_nighter)
 	if(bodypart_overlay)
@@ -43,6 +47,8 @@
 
 ///if we have bags and lost a head, remove them
 /datum/quirk/all_nighter/proc/on_removed_limb(datum/source, obj/item/bodypart/removed_limb, special, dismembered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(bodypart_overlay && istype(removed_limb, /obj/item/bodypart/head))
@@ -50,6 +56,8 @@
 
 ///adds the bag overlay
 /datum/quirk/all_nighter/proc/add_bags()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/sleepy_head = quirk_holder
 	var/obj/item/bodypart/head/face = sleepy_head?.get_bodypart(BODY_ZONE_HEAD)
 	if(isnull(face))
@@ -59,6 +67,8 @@
 
 ///removes the bag overlay
 /datum/quirk/all_nighter/proc/remove_bags()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/sleepy_head = quirk_holder
 	var/obj/item/bodypart/head/face = sleepy_head?.get_bodypart(BODY_ZONE_HEAD)
 	face?.remove_bodypart_overlay(bodypart_overlay)
@@ -78,6 +88,8 @@
 **beauty_sleep - FALSE if we should have bags
 */
 /datum/quirk/all_nighter/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/happy_camper = TRUE
 	var/beauty_sleep = TRUE
 	var/all_nighter = quirk_holder.mob_mood?.get_mood_event("all_nighter")

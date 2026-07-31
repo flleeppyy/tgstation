@@ -2,6 +2,8 @@
 /datum/bt_node/decorator/bot_is_emagged
 
 /datum/bt_node/decorator/bot_is_emagged/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bot/bot_pawn = controller.pawn
 	return !!(bot_pawn.bot_access_flags & BOT_COVER_EMAGGED)
 
@@ -10,13 +12,19 @@
 	var/flag
 
 /datum/bt_node/decorator/bot_mode_flag/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(pawn, COMSIG_BOT_MODE_FLAGS_SET, PROC_REF(on_signal_changed))
 	return TRUE
 
 /datum/bt_node/decorator/bot_mode_flag/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(pawn, COMSIG_BOT_MODE_FLAGS_SET)
 
 /datum/bt_node/decorator/bot_mode_flag/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bot/bot_pawn = controller.pawn
 	return !!(bot_pawn.bot_mode_flags & flag)
 
@@ -25,6 +33,8 @@
 	var/mode
 
 /datum/bt_node/decorator/bot_mode/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bot/bot_pawn = controller.pawn
 	return bot_pawn.mode == mode
 
@@ -33,6 +43,8 @@
 	var/wire
 
 /datum/bt_node/decorator/bot_wire_cut/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bot/bot_pawn = controller.pawn
 	return !!(bot_pawn.wires?.is_cut(wire))
 
@@ -41,5 +53,7 @@
 	var/flag
 
 /datum/bt_node/decorator/bot_medical_flag/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bot/medbot/bot_pawn = controller.pawn
 	return !!(bot_pawn.medical_mode_flags & flag)

@@ -28,6 +28,8 @@
 	var/datum/status_effect/protective_blades/blade_effect
 
 /datum/action/cooldown/spell/pointed/projectile/furious_steel/InterceptClickOn(mob/living/clicker, params, atom/target)
+	procstart = null
+	src.procstart = null
 	// Let the caster prioritize using items like guns over blade casts
 	if(clicker.get_active_held_item())
 		return FALSE
@@ -38,6 +40,8 @@
 	return ..()
 
 /datum/action/cooldown/spell/pointed/projectile/furious_steel/on_activation(mob/on_who)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -57,6 +61,8 @@
 	RegisterSignal(blade_effect, COMSIG_BLADE_BARRIER_TRIGGERED, PROC_REF(on_status_effect_triggered))
 
 /datum/action/cooldown/spell/pointed/projectile/furious_steel/on_deactivation(mob/on_who, refund_cooldown = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(blade_effect)
 		UnregisterSignal(blade_effect, COMSIG_QDELETING)
@@ -64,6 +70,8 @@
 		QDEL_NULL(blade_effect)
 
 /datum/action/cooldown/spell/pointed/projectile/furious_steel/before_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	if(isnull(blade_effect) || !current_amount)
 		unset_click_ability(owner, refund_cooldown = FALSE)
 		return SPELL_CANCEL_CAST
@@ -71,15 +79,21 @@
 	return ..() | SPELL_NO_IMMEDIATE_COOLDOWN // all CD handling will be done by the status effect being deleted
 
 /datum/action/cooldown/spell/pointed/projectile/furious_steel/fire_projectile(mob/living/user, atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(blade_effect.blades[1])
 
 /datum/action/cooldown/spell/pointed/projectile/furious_steel/ready_projectile(obj/projectile/to_launch, atom/target, mob/user, iteration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_launch.def_zone = check_zone(user.zone_selected)
 
 /// If our blade status effect is deleted, clear our refs and deactivate
 /datum/action/cooldown/spell/pointed/projectile/furious_steel/proc/on_status_effect_deleted(datum/status_effect/protective_blades/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	blade_effect = null
@@ -92,6 +106,8 @@
 
 /// Reduce our projectile amount when our blade status effect is triggered
 /datum/action/cooldown/spell/pointed/projectile/furious_steel/proc/on_status_effect_triggered(datum/status_effect/protective_blades/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(blade_effect == source)
@@ -111,10 +127,14 @@
 	var/outline_color = "#f8f8ff"
 
 /obj/projectile/floating_blade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_filter("dio_knife", 2, list("type" = "outline", "color" = outline_color, "size" = 1))
 
 /obj/projectile/floating_blade/prehit_pierce(atom/hit)
+	procstart = null
+	src.procstart = null
 	if(isliving(hit) && isliving(firer))
 		var/mob/living/caster = firer
 		var/mob/living/victim = hit

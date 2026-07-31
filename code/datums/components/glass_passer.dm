@@ -6,6 +6,8 @@
 	var/deform_glass = 0 SECONDS
 
 /datum/component/glass_passer/Initialize(pass_time, deform_glass)
+	procstart = null
+	src.procstart = null
 	if(!ismob(parent)) //if its not a mob then just directly use passwindow
 		return COMPONENT_INCOMPATIBLE
 
@@ -13,6 +15,8 @@
 	src.deform_glass = deform_glass
 
 /datum/component/glass_passer/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	if(!pass_time)
 		ADD_TRAIT(parent, TRAIT_PASSWINDOW, type)
 	else
@@ -26,10 +30,14 @@
 		RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved))
 
 /datum/component/glass_passer/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	if(parent)
 		REMOVE_TRAIT(parent, TRAIT_PASSWINDOW, type)
 
 /datum/component/glass_passer/proc/on_cross_over(mob/passer, atom/crosser)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(crosser, /obj/structure/grille))
@@ -41,6 +49,8 @@
 	return null
 
 /datum/component/glass_passer/proc/on_moved(mob/living/phaser, atom/old_loc, dir, forced, list/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/obj/structure/structure as anything in old_loc)
@@ -51,6 +61,8 @@
 
 /// Make the window temporarily passable
 /datum/component/glass_passer/proc/blomperize(obj/structure/structure)
+	procstart = null
+	src.procstart = null
 	structure.density = FALSE
 	apply_wibbly_filters(structure)
 
@@ -58,10 +70,14 @@
 
 /// Reset the windows passability
 /datum/component/glass_passer/proc/unblomperize(obj/structure/structure)
+	procstart = null
+	src.procstart = null
 	structure.density = initial(structure.density)
 	remove_wibbly_filters(structure, 0.5 SECONDS)
 
 /datum/component/glass_passer/proc/bumped(mob/living/owner, atom/bumpee)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(bumpee, /obj/structure/window))
@@ -70,6 +86,8 @@
 	INVOKE_ASYNC(src, PROC_REF(phase_through_glass), owner, bumpee)
 
 /datum/component/glass_passer/proc/phase_through_glass(mob/living/owner, atom/bumpee)
+	procstart = null
+	src.procstart = null
 	if(!do_after(owner, pass_time, bumpee))
 		return
 	ADD_TRAIT(owner, TRAIT_PASSWINDOW, type)

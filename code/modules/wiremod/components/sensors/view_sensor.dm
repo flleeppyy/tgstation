@@ -25,15 +25,21 @@
 	var/maximum_range = 5 //Variablised incase admins want to increase it.
 
 /obj/item/circuit_component/view_sensor/populate_ports()
+	procstart = null
+	src.procstart = null
 	range = add_input_port("Range", PORT_TYPE_NUMBER, default = maximum_range)
 	result = add_output_port("Result", PORT_TYPE_LIST(PORT_TYPE_ATOM))
 	cooldown = add_output_port("Scan On Cooldown", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/view_sensor/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("Scan Cooldown: [DisplayTimeText(view_cooldown)]", "orange", "stopwatch")
 
 /obj/item/circuit_component/view_sensor/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!parent.shell)
 		return
 

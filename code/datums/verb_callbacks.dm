@@ -5,11 +5,15 @@
 	var/creation_time = 0
 
 /datum/callback/verb_callback/New(thingtocall, proctocall, ...)
+	procstart = null
+	src.procstart = null
 	creation_time = DS2TICKS(world.time)
 	. = ..()
 
 #ifndef UNIT_TESTS
 /datum/callback/verb_callback/Invoke(...)
+	procstart = null
+	src.procstart = null
 	var/mob/our_user = user?.resolve()
 	if(QDELETED(our_user) || isnull(our_user.client))
 		return
@@ -18,6 +22,8 @@
 	usr = temp
 
 /datum/callback/verb_callback/InvokeAsync(...)
+	procstart = null
+	src.procstart = null
 	var/mob/our_user = user?.resolve()
 	if(QDELETED(our_user) || isnull(our_user.client))
 		return

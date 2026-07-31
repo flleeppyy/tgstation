@@ -7,20 +7,28 @@
 	var/cmp
 
 /datum/heap/New(compare)
+	procstart = null
+	src.procstart = null
 	L = new()
 	cmp = compare
 
 /datum/heap/Destroy(force)
+	procstart = null
+	src.procstart = null
 	for(var/i in L) // because this is before the list helpers are loaded
 		qdel(i)
 	L = null
 	return ..()
 
 /datum/heap/proc/is_empty()
+	procstart = null
+	src.procstart = null
 	return !length(L)
 
 //insert and place at its position a new node in the heap
 /datum/heap/proc/insert(A)
+	procstart = null
+	src.procstart = null
 
 	L.Add(A)
 	swim(length(L))
@@ -28,6 +36,8 @@
 //removes and returns the first element of the heap
 //(i.e the max or the min dependent on the comparison function)
 /datum/heap/proc/pop()
+	procstart = null
+	src.procstart = null
 	if(!length(L))
 		return 0
 	. = L[1]
@@ -39,6 +49,8 @@
 
 //Get a node up to its right position in the heap
 /datum/heap/proc/swim(index)
+	procstart = null
+	src.procstart = null
 	var/parent = round(index * 0.5)
 
 	while(parent > 0 && (call(cmp)(L[index],L[parent]) > 0))
@@ -48,6 +60,8 @@
 
 //Get a node down to its right position in the heap
 /datum/heap/proc/sink(index)
+	procstart = null
+	src.procstart = null
 	var/g_child = get_greater_child(index)
 
 	while(g_child > 0 && (call(cmp)(L[index],L[g_child]) < 0))
@@ -58,6 +72,8 @@
 //Returns the greater (relative to the comparison proc) of a node children
 //or 0 if there's no child
 /datum/heap/proc/get_greater_child(index)
+	procstart = null
+	src.procstart = null
 	if(index * 2 > length(L))
 		return 0
 
@@ -71,10 +87,14 @@
 
 //Replaces a given node so it verify the heap condition
 /datum/heap/proc/resort(A)
+	procstart = null
+	src.procstart = null
 	var/index = L.Find(A)
 
 	swim(index)
 	sink(index)
 
 /datum/heap/proc/List()
+	procstart = null
+	src.procstart = null
 	. = L.Copy()

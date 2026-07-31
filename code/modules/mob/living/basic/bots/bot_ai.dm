@@ -20,6 +20,8 @@
 	)
 
 /datum/targeting_strategy/basic/bot/is_valid_target(mob/living/living_mob, atom/the_target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	var/datum/ai_controller/basic_controller/bot/my_controller = living_mob.ai_controller
 	if(isnull(my_controller))
 		return FALSE
@@ -36,6 +38,8 @@
 	return ..()
 
 /datum/ai_controller/basic_controller/bot/TryPossessPawn(atom/new_pawn)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & AI_CONTROLLER_INCOMPATIBLE)
 		return
@@ -44,6 +48,8 @@
 	RegisterSignal(new_pawn, COMSIG_MOB_AI_MOVEMENT_STARTED, PROC_REF(on_movement_start))
 
 /datum/ai_controller/basic_controller/bot/proc/on_movement_start(mob/living/basic/bot/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(target == blackboard[BB_BEACON_TARGET])
@@ -53,6 +59,8 @@
 	source.clear_path_hud(remove_hud = FALSE)
 
 /datum/ai_controller/basic_controller/bot/proc/add_to_blacklist(atom/target, duration)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target))
 		return
 	var/final_duration = duration || blackboard[BB_UNREACHABLE_LIST_COOLDOWN]
@@ -61,38 +69,54 @@
 
 /// Unreachable targets get added to the temporary ignore list so we stop pathing to them. Subtypes override to skip blacklisting in stationary mode.
 /datum/ai_controller/basic_controller/bot/note_unreachable_target(atom/target)
+	procstart = null
+	src.procstart = null
 	add_to_blacklist(target)
 
 /datum/ai_controller/basic_controller/bot/proc/remove_from_blacklist(atom/target)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target))
 		return
 	remove_from_blackboard_lazylist_key(BB_TEMPORARY_IGNORE_LIST, target)
 
 /datum/ai_controller/basic_controller/bot/proc/clear_summon()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/basic/bot/bot_pawn = pawn
 	bot_pawn.bot_reset()
 
 /datum/ai_controller/basic_controller/bot/setup_able_to_run()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(pawn, COMSIG_BOT_MODE_FLAGS_SET, PROC_REF(update_able_to_run))
 
 /datum/ai_controller/basic_controller/bot/clear_able_to_run()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(pawn, list(COMSIG_BOT_MODE_FLAGS_SET))
 	return ..()
 
 /datum/ai_controller/basic_controller/bot/get_able_to_run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bot/bot_pawn = pawn
 	if(!(bot_pawn.bot_mode_flags & BOT_MODE_ON))
 		return AI_UNABLE_TO_RUN
 	return ..()
 
 /datum/ai_controller/basic_controller/bot/get_access()
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bot/basic_bot = pawn
 	return basic_bot.access_card?.access
 
 /datum/ai_controller/basic_controller/bot/proc/reset_bot()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	cancel_current_plan()
 	if(!length(reset_keys))
@@ -102,6 +126,8 @@
 
 ///set the target if we can reach them
 /datum/ai_controller/basic_controller/bot/proc/set_if_can_reach(key, target, duration, distance = 10, bypass_add_to_blacklist = FALSE, minimum_distance = 0)
+	procstart = null
+	src.procstart = null
 	if(can_reach_target(target, distance, minimum_distance))
 		EVLOG_MAPTEXT(src, EVLOG_CATEGORY_AI_TARGETING, "[pawn] has selected [target] as a target for blackboard key [key]!", get_turf(target), "Target: [target]")
 		EVLOG_LINES(src, EVLOG_CATEGORY_AI_TARGETING, "Line to target", get_turf(pawn), get_turf(target))

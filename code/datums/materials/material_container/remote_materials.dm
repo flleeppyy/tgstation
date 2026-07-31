@@ -63,6 +63,8 @@ handles linking back and forth.
  * only if allow_standalone = TRUE, else you a null mat_container
  */
 /datum/remote_materials/proc/_PrepareStorage(connect_to_silo)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	connection = null
@@ -78,6 +80,8 @@ handles linking back and forth.
 		_MakeLocal()
 
 /datum/remote_materials/Destroy()
+	procstart = null
+	src.procstart = null
 	if(connection)
 		LAZYREMOVE(SSticker.round_start_events, connection)
 		connection = null
@@ -89,6 +93,8 @@ handles linking back and forth.
 	return ..()
 
 /datum/remote_materials/proc/_MakeLocal()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	silo = null
@@ -104,6 +110,8 @@ handles linking back and forth.
 
 /// Adds/Removes this connection from the silo
 /datum/remote_materials/proc/toggle_holding()
+	procstart = null
+	src.procstart = null
 	if(isnull(silo))
 		return
 
@@ -119,12 +127,16 @@ handles linking back and forth.
  * * size - the new size for local storage. measured in SHEET_MATERIAL_SIZE units
  */
 /datum/remote_materials/proc/set_local_size(size)
+	procstart = null
+	src.procstart = null
 	local_size = size
 	if (!silo && mat_container)
 		mat_container.max_amount = size
 
 ///Disconnects this component from the silo
 /datum/remote_materials/proc/disconnect()
+	procstart = null
+	src.procstart = null
 	if(isnull(silo))
 		return
 
@@ -135,6 +147,8 @@ handles linking back and forth.
 		_MakeLocal()
 
 /datum/remote_materials/proc/OnMultitool(datum/source, mob/user, obj/item/multitool/M)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	. = NONE
@@ -168,17 +182,23 @@ handles linking back and forth.
 		return ITEM_INTERACT_SUCCESS
 
 /datum/remote_materials/proc/on_item_insert(datum/source, mob/living/user, obj/item/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Only insert stacks with left click
 	if(isstack(target))
 		return attempt_insert(user, target)
 
 /datum/remote_materials/proc/on_secondary_insert(datum/source, mob/living/user, obj/item/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return attempt_insert(user, target)
 
 /// Insert mats into silo
 /datum/remote_materials/proc/attempt_insert(mob/living/user, obj/item/target)
+	procstart = null
+	src.procstart = null
 	if(!(mat_container_flags & MATCONTAINER_ANY_INTENT) && user.combat_mode)
 		return
 
@@ -196,6 +216,8 @@ handles linking back and forth.
  * Returns true if both are on the station or same z level
  */
 /datum/remote_materials/proc/check_z_level(obj/silo_to_check = silo)
+	procstart = null
+	src.procstart = null
 	if(isnull(silo_to_check))
 		return FALSE
 
@@ -203,6 +225,8 @@ handles linking back and forth.
 
 /// returns TRUE if this connection put on hold by the silo
 /datum/remote_materials/proc/on_hold()
+	procstart = null
+	src.procstart = null
 	return check_z_level() ? silo.holds[src] : FALSE
 
 /**
@@ -216,6 +240,8 @@ handles linking back and forth.
  * * user_data - in the form rendered by ID_DATA(user); used as a reference for silo bans and access checks
  */
 /datum/remote_materials/proc/can_use_resource(check_hold = TRUE, alist/user_data)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/movable_parent = parent
 	if (!istype(movable_parent))
 		return FALSE
@@ -242,6 +268,8 @@ handles linking back and forth.
  * user_data - in the form rendered by ID_DATA(user), for material logging and (if this component is connected to a silo), permission checking
  */
 /datum/remote_materials/proc/use_materials(list/mats, coefficient = 1, multiplier = 1, action = "processed", name = "design", alist/user_data)
+	procstart = null
+	src.procstart = null
 	if(!can_use_resource(user_data = user_data))
 		return 0
 
@@ -265,6 +293,8 @@ handles linking back and forth.
  * user_data - in the form rendered by ID_DATA(user), for material logging and (if this component is connected to a silo), permission checking
  */
 /datum/remote_materials/proc/eject_sheets(datum/material/material_ref, eject_amount, atom/drop_target = null, alist/user_data)
+	procstart = null
+	src.procstart = null
 	if(!can_use_resource(user_data = user_data))
 		return 0
 
@@ -283,6 +313,8 @@ handles linking back and forth.
  * * user_data - an alist in the form rendered by ID_DATA(user), for logging who/where/when the item was inserted
  */
 /datum/remote_materials/proc/insert_item(obj/item/weapon, multiplier = 1, alist/user_data)
+	procstart = null
+	src.procstart = null
 	// Inserting materials automatically shouldn't be permission-restricted
 	if(!islist(user_data))
 		user_data = ID_DATA(null)

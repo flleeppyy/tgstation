@@ -40,6 +40,8 @@
 	inhand_icon_state = null
 
 /obj/item/clothing/suit/toggle/labcoat/cmo/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -3) //FISH DOCTOR?!
 
@@ -49,6 +51,8 @@
 	acid = 50
 
 /obj/item/clothing/suit/toggle/labcoat/cmo/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += list(
 		/obj/item/melee/baton/telescopic,
@@ -61,6 +65,8 @@
 	inhand_icon_state = null
 
 /obj/item/clothing/suit/toggle/labcoat/paramedic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -3) //FISH DOCTOR?!
 	allowed += /obj/item/crowbar/power/paramedic
@@ -82,6 +88,8 @@
 	greyscale_colors = "#EEEEEE#4A77A1#4A77A1#7095C2"
 
 /obj/item/clothing/suit/toggle/labcoat/genetics/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += /obj/item/sequence_scanner
 
@@ -96,6 +104,8 @@
 	greyscale_colors = "#EEEEEE#F17420#F17420#EB6F2C"
 
 /obj/item/clothing/suit/toggle/labcoat/chemist/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += /obj/item/storage/bag/chemistry
 
@@ -110,6 +120,8 @@
 	greyscale_colors = "#EEEEEE#198019#198019#40992E"
 
 /obj/item/clothing/suit/toggle/labcoat/virologist/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += /obj/item/storage/bag/bio
 
@@ -124,6 +136,8 @@
 	greyscale_colors = "#EEEEEE#2D2D33#2D2D33#39393F"
 
 /obj/item/clothing/suit/toggle/labcoat/coroner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += list(
 		/obj/item/autopsy_scanner,
@@ -144,6 +158,8 @@
 	greyscale_colors = "#EEEEEE#7E1980#7E1980#B347A1"
 
 /obj/item/clothing/suit/toggle/labcoat/science/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += /obj/item/storage/bag/xeno
 
@@ -182,6 +198,8 @@
 	acid = 75
 
 /obj/item/clothing/suit/toggle/labcoat/research_director/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += list(
 		/obj/item/storage/bag/xeno,

@@ -17,6 +17,8 @@
 	var/datum/bank_account/associated_account
 
 /datum/coupon_code/New(discount, discounted_pack, expires_in)
+	procstart = null
+	src.procstart = null
 	..()
 	src.discounted_pack = discounted_pack
 	src.discount = discount
@@ -24,12 +26,16 @@
 		src.expires_in = world.time + expires_in
 
 /datum/coupon_code/Destroy()
+	procstart = null
+	src.procstart = null
 	if(associated_account)
 		associated_account.redeemed_coupons -= src
 		associated_account = null
 	return ..()
 
 /datum/coupon_code/proc/copy(datum/bank_account/account)
+	procstart = null
+	src.procstart = null
 	var/datum/coupon_code/copy = new(discount, discounted_pack, expires_in)
 	copy.associated_account = account
 	if(account)
@@ -38,6 +44,8 @@
 		copy.timerid = QDEL_IN_STOPPABLE(copy, expires_in - world.time)
 
 /datum/coupon_code/proc/generate()
+	procstart = null
+	src.procstart = null
 	var/obj/item/coupon/coupon = new()
 	coupon.generate(discount, discounted_pack)
 	printed = TRUE
@@ -57,6 +65,8 @@
 	var/obj/machinery/computer/cargo/inserted_console
 
 /obj/item/coupon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(discounted_pack)
@@ -64,6 +74,8 @@
 
 /// Choose what our prize is :D
 /obj/item/coupon/proc/generate(discount, datum/supply_pack/discounted_pack, mob/user)
+	procstart = null
+	src.procstart = null
 	src.discounted_pack = discounted_pack || pick(GLOB.discountable_packs[pick_weight(GLOB.pack_discount_odds)])
 	var/static/list/chances = list("0.10" = 4, "0.15" = 8, "0.20" = 10, "0.25" = 8, "0.50" = 4, COUPON_OMEN = 1)
 	discount_pct_off = discount || pick_weight(chances)
@@ -91,11 +103,15 @@
 	addtimer(CALLBACK(src, PROC_REF(curse_heart), cursed), 5 SECONDS, TIMER_UNIQUE | TIMER_STOPPABLE)
 
 /obj/item/coupon/update_name()
+	procstart = null
+	src.procstart = null
 	name = "coupon - [round(discount_pct_off * 100)]% off [initial(discounted_pack.name)]"
 	return ..()
 
 /// Play stupid games, win stupid prizes
 /obj/item/coupon/proc/curse_heart(mob/living/cursed)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(cursed))
 		cursed.gib(DROP_ALL_REMAINS)
 		burn_evilly()
@@ -109,10 +125,14 @@
 	burn_evilly()
 
 /obj/item/coupon/proc/burn_evilly()
+	procstart = null
+	src.procstart = null
 	visible_message(span_warning("[src] burns up in a sinister flash, taking an evil energy with it..."))
 	burn()
 
 /obj/item/coupon/attack_atom(obj/attacked_obj, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(attacked_obj, /obj/machinery/computer/cargo))
 		return ..()
 	if(discount_pct_off == COUPON_OMEN)
@@ -126,6 +146,8 @@
 	forceMove(inserted_console)
 
 /obj/item/coupon/Destroy()
+	procstart = null
+	src.procstart = null
 	if(inserted_console)
 		LAZYREMOVE(inserted_console.loaded_coupons, src)
 		inserted_console = null

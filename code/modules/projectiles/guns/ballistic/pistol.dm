@@ -36,6 +36,8 @@
 /obj/item/gun/ballistic/automatic/pistol/contraband
 
 /obj/item/gun/ballistic/automatic/pistol/contraband/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(prob(10))
 		pin = pick(
 		list(
@@ -48,6 +50,8 @@
 
 
 /obj/item/gun/ballistic/automatic/pistol/suppressed/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/suppressor/S = new(src)
 	install_suppressor(S)
@@ -61,6 +65,8 @@
 	suppressor_x_offset = 12
 
 /obj/item/gun/ballistic/automatic/pistol/clandestine/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/examine_lore, \
 		lore = "Manufactured by Scarborough Arms, the Ansem is regarded as one of the best sidearms on the market. Minimal recoil combined with \
 		high stopping power makes it a favourite amongst soldiers of fortune across known space.<br> \
@@ -83,10 +89,14 @@
 	var/obj/item/gun/energy/recharge/fisher/underbarrel
 
 /obj/item/gun/ballistic/automatic/pistol/clandestine/fisher/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	underbarrel = new /obj/item/gun/energy/recharge/fisher(src)
 
 /obj/item/gun/ballistic/automatic/pistol/clandestine/fisher/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/examine_lore, \
 		lore = "The Ansem/SC is a Scarborough Arms overhaul suite for their own Ansem handgun, designed for special operators who operate operationally, \
 		especially against people who like using lightbulbs.<br>\
@@ -102,16 +112,22 @@
 	)
 
 /obj/item/gun/ballistic/automatic/pistol/clandestine/fisher/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(underbarrel)
 	return ..()
 
 /obj/item/gun/ballistic/automatic/pistol/clandestine/fisher/try_fire_gun(atom/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(LAZYACCESS(params2list(params), RIGHT_CLICK))
 		underbarrel.try_fire_gun(target, user, params)
 		return
 	return ..()
 
 /obj/item/gun/ballistic/automatic/pistol/clandestine/fisher/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target))
 		return
 	var/obj/projectile/energy/fisher/melee/simulated_hit = new
@@ -119,6 +135,8 @@
 	simulated_hit.on_hit(target)
 
 /obj/item/gun/ballistic/automatic/pistol/clandestine/fisher/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -139,6 +157,8 @@
 	bolt_drop_sound = 'sound/items/weapons/gun/pistol/slide_drop.ogg'
 
 /obj/item/gun/ballistic/automatic/pistol/m1911/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/examine_lore, \
 		lore = "The Colt M1911, created by John Moses Browning centuries ago, is the primordial ancestor of modern automatic firearms. \
 		Somehow, to this day, there are still officers who refuse to utilize anything that isn't chambered in 'God's Caliber'.<br>\
@@ -162,6 +182,8 @@
 	pin = /obj/item/firing_pin/monkey
 
 /obj/item/gun/ballistic/automatic/pistol/m1911/chimpgun/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/ballistic/automatic/pistol/m1911/no_mag
@@ -183,6 +205,8 @@
 /obj/item/gun/ballistic/automatic/pistol/deagle/contraband
 
 /obj/item/gun/ballistic/automatic/pistol/deagle/contraband/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(prob(10))
 		pin = pick(
 		list(
@@ -222,6 +246,8 @@
 	spawnwithmagazine = FALSE
 
 /obj/item/gun/ballistic/automatic/pistol/deagle/regal/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/examine_lore, \
 		lore = "One of the Culling Arms of the Tiger Cooperative, a collection of relic weapons said to have come to Martinson in a frenzied vision from \
 		God to enact holy retribution upon the enemies of the faith. Almost all examples of these guns are replicas of the original pattern. This one is no \
@@ -255,6 +281,8 @@
 	show_bolt_icon = FALSE
 
 /obj/item/gun/ballistic/automatic/pistol/stickman/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, span_notice("As you try to manipulate [src], it slips out of your possession.."))
 	if(prob(50))
@@ -286,6 +314,8 @@
 	spread = 10
 
 /obj/item/gun/ballistic/automatic/pistol/doohickey/unload_ammo(mob/living/user, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if (forced)
 		return ..()
 
@@ -297,6 +327,8 @@
 	. = ..()
 
 /obj/item/gun/ballistic/automatic/pistol/doohickey/load_gun(obj/item/ammo, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -311,6 +343,8 @@
 	return FALSE
 
 /obj/item/gun/ballistic/automatic/pistol/doohickey/process_fire(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
+	procstart = null
+	src.procstart = null
 	var/dmg_multiplier = 1
 
 	if (get_dist(target, user) <= 1)
@@ -330,6 +364,8 @@
 	projectile_damage_multiplier /= dmg_multiplier
 
 /obj/item/gun/ballistic/automatic/pistol/doohickey/shoot_live_shot(mob/living/user, pointblank = FALSE, atom/pbtarget = null, message = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -369,6 +405,8 @@
 	take_damage(damage_to_take)
 
 /obj/item/gun/ballistic/automatic/pistol/doohickey/add_deep_lore()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/examine_lore, \
 		lore = "The Liberator pattern, according to digital historians, was first posted to a fringe imageboard on the NTNet. The post included a now dead \
 		link to a defuncting hosting service through which board members were encouraged to download and 'admire' the design. The thread's author began their \
@@ -392,6 +430,8 @@
 	name = "illegal 3D printer design disk"
 
 /obj/item/disk/design_disk/liberator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	blueprints += new /datum/design/liberator_gun
 

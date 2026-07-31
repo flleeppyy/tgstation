@@ -12,11 +12,15 @@
 	var/screen_icon = "gulag_on"
 
 /obj/machinery/gulag_item_reclaimer/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/person in stored_items)
 		stored_items[person] -= gone
 
 /obj/machinery/gulag_item_reclaimer/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & (NOPOWER|BROKEN))
 		return
@@ -25,6 +29,8 @@
 	. += emissive_appearance(icon, screen_icon, src)
 
 /obj/machinery/gulag_item_reclaimer/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/i in contents)
 		var/obj/item/I = i
 		I.forceMove(get_turf(src))
@@ -34,6 +40,8 @@
 	return ..()
 
 /obj/machinery/gulag_item_reclaimer/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED) // emagging lets anyone reclaim all the items
 		return FALSE
 	req_access = list()
@@ -44,12 +52,16 @@
 	return TRUE
 
 /obj/machinery/gulag_item_reclaimer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "GulagItemReclaimer", name)
 		ui.open()
 
 /obj/machinery/gulag_item_reclaimer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/can_reclaim = FALSE
 
@@ -83,6 +95,8 @@
 	return data
 
 /obj/machinery/gulag_item_reclaimer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -97,6 +111,8 @@
 			. = TRUE
 
 /obj/machinery/gulag_item_reclaimer/proc/drop_items(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!stored_items[user])
 		return
 	if(!use_energy(active_power_usage, force = FALSE))

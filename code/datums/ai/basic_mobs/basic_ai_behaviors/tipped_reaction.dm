@@ -6,6 +6,8 @@
 	var/reacting_key = BB_BASIC_MOB_TIP_REACTING
 
 /datum/bt_node/ai_behavior/tipped_reaction/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/tipper = controller.blackboard[tipper_key]
 
 	var/mob/living/carbon/savior
@@ -29,6 +31,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/tipped_reaction/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//I'VE SAID MY PEACE...
 	controller.set_blackboard_key(reacting_key, FALSE)

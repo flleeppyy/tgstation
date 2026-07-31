@@ -2,6 +2,8 @@
 /datum/unit_test/spy_bounty
 
 /datum/unit_test/spy_bounty/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/james_bond = allocate(/mob/living/carbon/human/consistent)
 	james_bond.mind_initialize()
 	james_bond.equipOutfit(/datum/outfit/job/assistant/consistent)

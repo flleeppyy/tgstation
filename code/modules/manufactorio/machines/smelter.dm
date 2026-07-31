@@ -9,11 +9,15 @@
 	var/atom/movable/withheld
 
 /obj/machinery/power/manufacturing/smelter/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += generate_io_overlays(dir, COLOR_ORANGE) // OUT - stuff in it
 	. += generate_io_overlays(REVERSE_DIR(dir), COLOR_MODERATE_BLUE) // IN - to crush
 
 /obj/machinery/power/manufacturing/smelter/receive_resource(obj/receiving, atom/from, receive_dir)
+	procstart = null
+	src.procstart = null
 	if(!isitem(receiving) || surplus() < power_cost  || receive_dir != REVERSE_DIR(dir))
 		return MANUFACTURING_FAIL
 	var/list/stacks = contents - circuit
@@ -24,14 +28,20 @@
 	return MANUFACTURING_SUCCESS
 
 /obj/machinery/power/manufacturing/smelter/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(withheld)
 
 /obj/machinery/power/manufacturing/smelter/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	withheld?.Move(drop_location())
 	return ..()
 
 /obj/machinery/power/manufacturing/smelter/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/list/stacks = contents - circuit
 	if(!length(stacks))
 		return

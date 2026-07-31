@@ -49,6 +49,8 @@ SUBSYSTEM_DEF(dbcore)
 	var/db_daemon_started = FALSE
 
 /datum/controller/subsystem/dbcore/Initialize()
+	procstart = null
+	src.procstart = null
 	Connect()
 
 	//We send warnings to the admins during subsystem init, as the clients will be New'd and messages
@@ -62,6 +64,8 @@ SUBSYSTEM_DEF(dbcore)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/dbcore/OnConfigLoad()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/config_entry/min_config_datum = config.entries_by_type[/datum/config_entry/number/pooling_min_sql_connections]
 	var/datum/config_entry/max_config_datum = config.entries_by_type[/datum/config_entry/number/pooling_max_sql_connections]
@@ -88,16 +92,22 @@ SUBSYSTEM_DEF(dbcore)
 			log_config("ERROR: POOLING_MAX_SQL_CONNECTIONS ([max_sql_connections]) is set lower than POOLING_MIN_SQL_CONNECTIONS ([min_sql_connections]). Please check your config or the code defaults for sanity")
 
 /datum/controller/subsystem/dbcore/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg = "\n  P:[length(all_queries)]|Active:[length(queries_active)]|Standby:[length(queries_standby)]"
 	return ..()
 
 /// Resets the tracking numbers on the subsystem. Used by SStime_track.
 /datum/controller/subsystem/dbcore/proc/reset_tracking()
+	procstart = null
+	src.procstart = null
 	all_queries_num = 0
 	queries_active_num = 0
 	queries_standby_num = 0
 
 /datum/controller/subsystem/dbcore/fire(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!IsConnected())
 		return
 
@@ -133,6 +143,8 @@ SUBSYSTEM_DEF(dbcore)
 
 /// Helper proc for handling activating queued queries
 /datum/controller/subsystem/dbcore/proc/create_active_query(datum/db_query/query)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	SHOULD_NOT_SLEEP(TRUE)
 	if(IsAdminAdvancedProcCall())
@@ -143,6 +155,8 @@ SUBSYSTEM_DEF(dbcore)
 	return query
 
 /datum/controller/subsystem/dbcore/proc/process_query(datum/db_query/query)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	SHOULD_NOT_SLEEP(TRUE)
 	if(IsAdminAdvancedProcCall())
@@ -155,6 +169,8 @@ SUBSYSTEM_DEF(dbcore)
 	return TRUE
 
 /datum/controller/subsystem/dbcore/proc/run_query_sync(datum/db_query/query)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		return
 	run_query(query)
@@ -162,11 +178,15 @@ SUBSYSTEM_DEF(dbcore)
 	return query
 
 /datum/controller/subsystem/dbcore/proc/run_query(datum/db_query/query)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		return
 	query.job_id = rustg_sql_query_async(connection, query.sql, json_encode(query.arguments))
 
 /datum/controller/subsystem/dbcore/proc/queue_query(datum/db_query/query)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		return
 
@@ -178,9 +198,13 @@ SUBSYSTEM_DEF(dbcore)
 	queries_standby |= query
 
 /datum/controller/subsystem/dbcore/Recover()
+	procstart = null
+	src.procstart = null
 	connection = SSdbcore.connection
 
 /datum/controller/subsystem/dbcore/Shutdown()
+	procstart = null
+	src.procstart = null
 	shutting_down = TRUE
 	var/initial_msg = "Clearing DB Queries. (Standby: [length(queries_standby)]; Active: [length(queries_active)]; All: [length(all_queries)])"
 	to_chat(world, span_boldannounce(initial_msg))
@@ -221,6 +245,8 @@ SUBSYSTEM_DEF(dbcore)
 
 //nu
 /datum/controller/subsystem/dbcore/can_vv_get(var_name)
+	procstart = null
+	src.procstart = null
 	if(var_name == NAMEOF(src, connection))
 		return FALSE
 	if(var_name == NAMEOF(src, all_queries))
@@ -235,6 +261,8 @@ SUBSYSTEM_DEF(dbcore)
 	return ..()
 
 /datum/controller/subsystem/dbcore/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	if(var_name == NAMEOF(src, connection))
 		return FALSE
 	if(var_name == NAMEOF(src, all_queries))
@@ -248,6 +276,8 @@ SUBSYSTEM_DEF(dbcore)
 	return ..()
 
 /datum/controller/subsystem/dbcore/proc/Connect()
+	procstart = null
+	src.procstart = null
 	if(IsConnected())
 		return TRUE
 
@@ -302,6 +332,8 @@ SUBSYSTEM_DEF(dbcore)
 			failed_connection_timeout = world.time + ((2 ** failed_connection_timeout_count) SECONDS)
 
 /datum/controller/subsystem/dbcore/proc/CheckSchemaVersion()
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/sql_enabled))
 		if(Connect())
 			log_world("Database connection established.")
@@ -323,6 +355,8 @@ SUBSYSTEM_DEF(dbcore)
 		log_sql("Database is not enabled in configuration.")
 
 /datum/controller/subsystem/dbcore/proc/InitializeRound()
+	procstart = null
+	src.procstart = null
 	CheckSchemaVersion()
 
 	if(!Connect())
@@ -338,6 +372,8 @@ SUBSYSTEM_DEF(dbcore)
 	log_world("Round ID: [GLOB.round_id]")
 
 /datum/controller/subsystem/dbcore/proc/SetRoundStart()
+	procstart = null
+	src.procstart = null
 	if(!Connect())
 		return
 	var/datum/db_query/query_round_start = SSdbcore.NewQuery(
@@ -348,6 +384,8 @@ SUBSYSTEM_DEF(dbcore)
 	qdel(query_round_start)
 
 /datum/controller/subsystem/dbcore/proc/SetRoundEnd()
+	procstart = null
+	src.procstart = null
 	if(!Connect())
 		return
 	var/datum/db_query/query_round_end = SSdbcore.NewQuery(
@@ -358,12 +396,16 @@ SUBSYSTEM_DEF(dbcore)
 	qdel(query_round_end)
 
 /datum/controller/subsystem/dbcore/proc/Disconnect()
+	procstart = null
+	src.procstart = null
 	failed_connections = 0
 	if (connection)
 		rustg_sql_disconnect_pool(connection)
 	connection = null
 
 /datum/controller/subsystem/dbcore/proc/IsConnected()
+	procstart = null
+	src.procstart = null
 	if (!CONFIG_GET(flag/sql_enabled))
 		return FALSE
 	if (!connection)
@@ -371,14 +413,20 @@ SUBSYSTEM_DEF(dbcore)
 	return json_decode(rustg_sql_connected(connection))["status"] == "online"
 
 /datum/controller/subsystem/dbcore/proc/ErrorMsg()
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(flag/sql_enabled))
 		return "Database disabled by configuration"
 	return last_error
 
 /datum/controller/subsystem/dbcore/proc/ReportError(error)
+	procstart = null
+	src.procstart = null
 	last_error = error
 
 /datum/controller/subsystem/dbcore/proc/NewQuery(sql_query, arguments, allow_during_shutdown=FALSE)
+	procstart = null
+	src.procstart = null
 	//If the subsystem is shutting down, disallow new queries
 	if(!allow_during_shutdown && shutting_down)
 		CRASH("Attempting to create a new db query during the world shutdown")
@@ -399,6 +447,8 @@ SUBSYSTEM_DEF(dbcore)
  * * allow_during_shutdown - If TRUE, allows query to be created during subsystem shutdown. Generally, only cleanup queries should set this.
  */
 /datum/controller/subsystem/dbcore/proc/FireAndForget(sql_query, arguments, allow_during_shutdown = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/db_query/query = NewQuery(sql_query, arguments, allow_during_shutdown)
 	if(!query)
 		return
@@ -415,6 +465,8 @@ SUBSYSTEM_DEF(dbcore)
 		however you should probably just use FireAndForget instead if it's just a single query.
 */
 /datum/controller/subsystem/dbcore/proc/QuerySelect(list/queries, warn = FALSE, qdel = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!islist(queries))
 		if (!istype(queries, /datum/db_query))
 			CRASH("Invalid query passed to QuerySelect: [queries]")
@@ -448,6 +500,8 @@ Ignore_errors instructes mysql to continue inserting rows if some of them have e
 	the erroneous row(s) aren't inserted and there isn't really any way to know why or why errored
 */
 /datum/controller/subsystem/dbcore/proc/MassInsert(table, list/rows, duplicate_key = FALSE, ignore_errors = FALSE, warn = FALSE, async = TRUE, special_columns = null)
+	procstart = null
+	src.procstart = null
 	if (!table || !rows || !istype(rows))
 		return
 
@@ -506,6 +560,8 @@ Ignore_errors instructes mysql to continue inserting rows if some of them have e
 	qdel(Query)
 
 /datum/controller/subsystem/dbcore/proc/start_db_daemon()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	if (db_daemon_started)
@@ -527,6 +583,8 @@ Ignore_errors instructes mysql to continue inserting rows if some of them have e
 	stack_trace("Failed to start DB daemon: [result_code]\n[result[3]]")
 
 /datum/controller/subsystem/dbcore/proc/stop_db_daemon()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	if (!db_daemon_started)
@@ -573,6 +631,8 @@ Ignore_errors instructes mysql to continue inserting rows if some of them have e
 	var/list/item  //list of data values populated by NextRow()
 
 /datum/db_query/New(connection, sql, arguments)
+	procstart = null
+	src.procstart = null
 	SSdbcore.all_queries += src
 	SSdbcore.all_queries_num++
 	Activity("Created")
@@ -583,6 +643,8 @@ Ignore_errors instructes mysql to continue inserting rows if some of them have e
 	src.arguments = arguments
 
 /datum/db_query/Destroy()
+	procstart = null
+	src.procstart = null
 	Close()
 	SSdbcore.all_queries -= src
 	SSdbcore.queries_standby -= src
@@ -590,19 +652,27 @@ Ignore_errors instructes mysql to continue inserting rows if some of them have e
 	return ..()
 
 /datum/db_query/CanProcCall(proc_name)
+	procstart = null
+	src.procstart = null
 	//fuck off kevinz
 	return FALSE
 
 /datum/db_query/proc/Activity(activity)
+	procstart = null
+	src.procstart = null
 	last_activity = activity
 	last_activity_time = world.time
 
 /datum/db_query/proc/warn_execute(async = TRUE)
+	procstart = null
+	src.procstart = null
 	. = Execute(async)
 	if(!.)
 		to_chat(usr, span_danger("A SQL error occurred during this operation, check the server logs."))
 
 /datum/db_query/proc/Execute(async = TRUE, log_error = TRUE)
+	procstart = null
+	src.procstart = null
 	Activity("Execute")
 	if(status == DB_QUERY_STARTED)
 		CRASH("Attempted to start a new query while waiting on the old one")
@@ -645,10 +715,14 @@ Ignore_errors instructes mysql to continue inserting rows if some of them have e
 
 /// Sleeps until execution of the query has finished.
 /datum/db_query/proc/sync()
+	procstart = null
+	src.procstart = null
 	while(status < DB_QUERY_FINISHED)
 		stoplag()
 
 /datum/db_query/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(status >= DB_QUERY_FINISHED)
 		return TRUE // we are done processing after all
 
@@ -661,6 +735,8 @@ Ignore_errors instructes mysql to continue inserting rows if some of them have e
 	return TRUE
 
 /datum/db_query/proc/store_data(result)
+	procstart = null
+	src.procstart = null
 	switch(result["status"])
 		if("ok")
 			rows = result["rows"]
@@ -679,9 +755,13 @@ Ignore_errors instructes mysql to continue inserting rows if some of them have e
 
 
 /datum/db_query/proc/slow_query_check()
+	procstart = null
+	src.procstart = null
 	message_admins("HEY! A database query timed out. Did the server just hang? <a href='byond://?_src_=holder;[HrefToken()];slowquery=yes'>\[YES\]</a>|<a href='byond://?_src_=holder;[HrefToken()];slowquery=no'>\[NO\]</a>")
 
 /datum/db_query/proc/NextRow(async = TRUE)
+	procstart = null
+	src.procstart = null
 	Activity("NextRow")
 
 	if (rows && next_row_to_take <= rows.len)
@@ -692,9 +772,13 @@ Ignore_errors instructes mysql to continue inserting rows if some of them have e
 		return FALSE
 
 /datum/db_query/proc/ErrorMsg()
+	procstart = null
+	src.procstart = null
 	return last_error
 
 /datum/db_query/proc/Close()
+	procstart = null
+	src.procstart = null
 	rows = null
 	item = null
 #undef SHUTDOWN_QUERY_TIMELIMIT

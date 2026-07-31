@@ -38,16 +38,22 @@
 	var/revelation = FALSE
 
 /obj/item/food/candy/bronx/make_edible()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponentFrom(SOURCE_EDIBLE_INNATE, /datum/component/edible, on_consume = CALLBACK(src, PROC_REF(on_consume)))
 
 /obj/item/food/candy/bronx/proc/on_consume(mob/living/eater)
+	procstart = null
+	src.procstart = null
 	if(ishuman(eater))
 		var/mob/living/carbon/human/carl = eater
 		var/datum/disease/disease = new /datum/disease/parasite()
 		carl.ForceContractDisease(disease, make_copy = FALSE, del_on_fail = TRUE)
 
 /obj/item/food/candy/bronx/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!revelation && !isobserver(user))
 		. += span_notice("Geeze, you need to get to get your eyes checked. You should look again...")
@@ -101,6 +107,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/food/chips/make_leave_trash()
+	procstart = null
+	src.procstart = null
 	if(trash_type)
 		AddElement(/datum/element/food_trash, trash_type, FOOD_TRASH_POPABLE)
 
@@ -239,6 +247,8 @@
 	var/safe_for_consumption = TRUE
 
 /obj/item/food/peanuts/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/peanut_butter = 5, /datum/reagent/consumable/nutriment/fat/oil = 2)
 
 /obj/item/food/peanuts/salted
@@ -296,6 +306,8 @@
 GLOBAL_LIST_INIT(safe_peanut_types, populate_safe_peanut_types())
 
 /proc/populate_safe_peanut_types()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/obj/item/food/peanuts/peanut_type as anything in subtypesof(/obj/item/food/peanuts))
 		if(!initial(peanut_type.safe_for_consumption))
@@ -303,6 +315,8 @@ GLOBAL_LIST_INIT(safe_peanut_types, populate_safe_peanut_types())
 		. += peanut_type
 
 /obj/item/food/peanuts/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	// Generate a sample p
 	var/peanut_type = pick(GLOB.safe_peanut_types)
 	var/obj/item/food/sample = new peanut_type(loc)
@@ -332,6 +346,8 @@ GLOBAL_LIST_INIT(safe_peanut_types, populate_safe_peanut_types())
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/food/cnds/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is letting [src] melt in [user.p_their()] hand! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return TOXLOSS
 
@@ -381,6 +397,8 @@ GLOBAL_LIST_INIT(safe_peanut_types, populate_safe_peanut_types())
 	desc = "Filled with one of four delicious flavours!"
 
 /obj/item/food/cnds/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	var/random_flavour = pick(subtypesof(/obj/item/food/cnds) - /obj/item/food/cnds/random)
 	var/obj/item/food/sample = new random_flavour(loc)
 	name = sample.name
@@ -409,6 +427,8 @@ GLOBAL_LIST_INIT(safe_peanut_types, populate_safe_peanut_types())
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/food/pistachios/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/peanut_butter = 5, /datum/reagent/consumable/nutriment/fat/oil = 2)
 
 /obj/item/food/semki
@@ -461,6 +481,8 @@ GLOBAL_LIST_INIT(safe_peanut_types, populate_safe_peanut_types())
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/food/cornchips/make_leave_trash()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/food_trash, trash_type, FOOD_TRASH_POPABLE)
 
 /obj/item/food/cornchips/blue
@@ -524,6 +546,8 @@ GLOBAL_LIST_INIT(safe_peanut_types, populate_safe_peanut_types())
 	desc = "Filled with one of four delicious flavours!"
 
 /obj/item/food/cornchips/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	var/random_flavour = pick(subtypesof(/obj/item/food/cornchips) - /obj/item/food/cornchips/random)
 
 	var/obj/item/food/sample = new random_flavour(loc)
@@ -555,6 +579,8 @@ GLOBAL_LIST_INIT(safe_peanut_types, populate_safe_peanut_types())
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/food/hot_shots/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/nutriment/fat/oil = 3, /datum/reagent/consumable/caramel = 2)
 
 /obj/item/food/sticko
@@ -627,6 +653,8 @@ GLOBAL_LIST_INIT(safe_peanut_types, populate_safe_peanut_types())
 	desc = "A classic treat for all ages, it's Sticko, the original chocolate-coated biscuit stick! This one's got an obscuring paper sheath, to hide the true flavour..."
 
 /obj/item/food/sticko/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	var/random_flavour = pick(subtypesof(/obj/item/food/sticko) - /obj/item/food/sticko/random)
 	var/obj/item/food/sample = new random_flavour(loc)
 	name = sample.name
@@ -683,6 +711,8 @@ GLOBAL_LIST_INIT(safe_peanut_types, populate_safe_peanut_types())
 	desc = "You've heard of Snap-Roks, now get ready for Shok-Roks: the popping candy for Ethereals! Available in 5 exciting flavours, any of which could be in this bag!"
 
 /obj/item/food/shok_roks/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	var/random_flavour = pick(subtypesof(/obj/item/food/shok_roks) - /obj/item/food/shok_roks/random)
 	var/obj/item/food/sample = new random_flavour(loc)
 	name = sample.name

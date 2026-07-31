@@ -19,16 +19,22 @@
 	var/forecast_overlay_state = "ice_whelp_telegraph_dir"
 
 /datum/action/cooldown/mob_cooldown/fire_breath/ice/New(Target, original)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	forecast_overlay = image('icons/mob/simple/icemoon/icemoon_monsters.dmi', forecast_overlay_state)
 
 /// Apply our specific fire breathing shape, in proc form so we can override it in subtypes
 /datum/action/cooldown/mob_cooldown/fire_breath/ice/attack_sequence(atom/target)
+	procstart = null
+	src.procstart = null
 	target_turf = get_turf(target)
 	INVOKE_ASYNC(src, PROC_REF(attack_forecast))
 
 /// Charge up before we breathe fire
 /datum/action/cooldown/mob_cooldown/fire_breath/ice/proc/attack_forecast()
+	procstart = null
+	src.procstart = null
 	owner.face_atom(target_turf)
 	owner.Shake(pixelshiftx = 1, pixelshifty = 0, duration = forecast_delay)
 	forecast_overlay.setDir(get_dir(owner, target_turf))
@@ -41,6 +47,8 @@
 
 /// Actually breathe fire
 /datum/action/cooldown/mob_cooldown/fire_breath/ice/proc/breath_attack()
+	procstart = null
+	src.procstart = null
 	owner.face_atom(target_turf)
 	fire_line(target_turf)
 	target_turf = null
@@ -59,6 +67,8 @@
 	forecast_overlay_state = "ice_whelp_telegraph_all"
 
 /datum/action/cooldown/mob_cooldown/fire_breath/ice/eruption/breath_attack()
+	procstart = null
+	src.procstart = null
 	target_turf = null
 
 	var/list/hit_list = list(owner)

@@ -34,6 +34,8 @@
 	COOLDOWN_DECLARE(check_turfs_cooldown)
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(!id_tag)
 		id_tag = assign_random_name()
 	. = ..()
@@ -47,11 +49,15 @@
 	AddElement(/datum/element/atmos_sensitive, mapload)
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/Destroy()
+	procstart = null
+	src.procstart = null
 	disconnect_from_area()
 	adjacent_turfs.Cut()
 	return ..()
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/area/old_area = get_area(old_loc)
@@ -64,10 +70,14 @@
 	assign_to_area(new_area)
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on_enter_area(datum/source, area/area_to_register)
+	procstart = null
+	src.procstart = null
 	assign_to_area(area_to_register)
 	. = ..()
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/proc/assign_to_area(area/target_area = get_area(src))
+	procstart = null
+	src.procstart = null
 	//this scrubber is already assigned to an area. Unassign it from here first before reassigning it to an new area
 	if(isnull(target_area) || !isnull(assigned_area))
 		return
@@ -76,6 +86,8 @@
 	update_appearance(UPDATE_NAME)
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/proc/disconnect_from_area(area/target_area = get_area(src))
+	procstart = null
+	src.procstart = null
 	//you cannot unassign from an area we never were assigned to
 	if(isnull(target_area) || assigned_area != target_area)
 		return
@@ -83,11 +95,15 @@
 	assigned_area = null
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on_exit_area(datum/source, area/area_to_unregister)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	disconnect_from_area(area_to_unregister)
 
 ///remove a gas or list of gases from our filter_types.used so that the scrubber can check if its supposed to be processing after each change
 /obj/machinery/atmospherics/components/unary/vent_scrubber/proc/remove_filters(filter_or_filters)
+	procstart = null
+	src.procstart = null
 	if(!islist(filter_or_filters))
 		filter_or_filters = list(filter_or_filters)
 
@@ -103,6 +119,8 @@
 
 // WARNING: This proc takes untrusted user input from toggle_filter in air alarm's ui_act
 /obj/machinery/atmospherics/components/unary/vent_scrubber/proc/toggle_filters(filter_or_filters)
+	procstart = null
+	src.procstart = null
 	if(!islist(filter_or_filters))
 		filter_or_filters = list(filter_or_filters)
 
@@ -119,6 +137,8 @@
 	return TRUE
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(underfloor_state)
 		var/image/cap = get_pipe_image(icon, "scrub_cap", initialize_directions)
@@ -143,6 +163,8 @@
 		icon_state = "scrub_purge"
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/proc/update_power_usage()
+	procstart = null
+	src.procstart = null
 	idle_power_usage = initial(idle_power_usage)
 	active_power_usage = initial(idle_power_usage)
 
@@ -160,6 +182,8 @@
 	update_mode_power_usage(scrubbing == ATMOS_DIRECTION_SCRUBBING ? IDLE_POWER_USE : ACTIVE_POWER_USE, new_power_usage)
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/proc/set_scrubbing(scrubbing, mob/user)
+	procstart = null
+	src.procstart = null
 	if (src.scrubbing != scrubbing)
 		investigate_log("was toggled to [scrubbing ? "scrubbing" : "siphon"] mode by [isnull(user) ? "the game" : key_name(user)]", INVESTIGATE_ATMOS)
 
@@ -169,17 +193,23 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/proc/set_widenet(widenet)
+	procstart = null
+	src.procstart = null
 	src.widenet = widenet
 	update_power_usage()
 	update_appearance(UPDATE_ICON)
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/update_name()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(override_naming)
 		return
 	name = "\proper [get_area_name(src)] [name] [id_tag]"
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	if(welded || !is_operational)
 		return FALSE
 	if(!nodes[1] || !on || (!filter_types && scrubbing != ATMOS_DIRECTION_SIPHONING))
@@ -195,6 +225,8 @@
 	return FALSE
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	if(welded || !is_operational)
 		return FALSE
 	if(!nodes[1] || !on)
@@ -219,6 +251,8 @@
 #define MINIMUM_MOLES_TO_SCRUB (MOLAR_ACCURACY*100)
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/proc/scrub(turf/tile)
+	procstart = null
+	src.procstart = null
 	if(!istype(tile))
 		return FALSE
 	var/datum/gas_mixture/environment = tile.return_air()
@@ -276,15 +310,21 @@
 ///we populate a list of turfs with nonatmos-blocked cardinal turfs AND
 /// diagonal turfs that can share atmos with *both* of the cardinal turfs
 /obj/machinery/atmospherics/components/unary/vent_scrubber/proc/check_turfs()
+	procstart = null
+	src.procstart = null
 	adjacent_turfs.Cut()
 	var/turf/local_turf = get_turf(src)
 	adjacent_turfs = local_turf.get_atmos_adjacent_turfs(alldir = TRUE)
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon_nopipes()
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/welder_act(mob/living/user, obj/item/welder)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!welder.tool_start_check(user, amount=1))
 		return TRUE
@@ -304,17 +344,23 @@
 	return TRUE
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/can_unwrench(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && on && is_operational)
 		to_chat(user, span_warning("You cannot unwrench [src], turn it off first!"))
 		return FALSE
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(welded)
 		. += "It seems welded shut."
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/attack_alien(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!welded || !(do_after(user, 2 SECONDS, target = src)))
 		return
 	user.visible_message(span_warning("[user] furiously claws at [src]!"), span_notice("You manage to clear away the stuff blocking the scrubber."), span_hear("You hear loud scraping noises."))
@@ -346,5 +392,7 @@
 	icon_state = "scrub_map_on-4"
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/disconnect()
+	procstart = null
+	src.procstart = null
 	..()
 	set_on(FALSE)

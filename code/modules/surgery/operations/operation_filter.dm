@@ -11,25 +11,37 @@
 	any_surgery_states_blocked = SURGERY_VESSELS_UNCLAMPED
 
 /datum/surgery_operation/limb/filter_blood/all_required_strings()
+	procstart = null
+	src.procstart = null
 	. = list()
 	. += "operate on chest (target chest)"
 	. += ..()
 	. += "the patient must not be husked"
 
 /datum/surgery_operation/limb/filter_blood/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(/obj/item/blood_filter)
 
 /datum/surgery_operation/limb/filter_blood/state_check(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	return limb.body_zone == BODY_ZONE_CHEST && !HAS_TRAIT(limb.owner, TRAIT_HUSK)
 
 /datum/surgery_operation/limb/filter_blood/can_loop(mob/living/patient, obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	return ..() && has_filterable_chems(limb.owner, tool)
 
 /datum/surgery_operation/limb/filter_blood/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	display_pain(limb.owner, "You feel a throbbing pain in your chest!")
 
 /datum/surgery_operation/limb/filter_blood/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/blood_filter/bloodfilter = tool
 	for(var/datum/reagent/chem as anything in limb.owner.reagents?.reagent_list)
@@ -48,6 +60,8 @@
 		chemscan(surgeon, limb.owner)
 
 /datum/surgery_operation/limb/filter_blood/on_failure(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -58,6 +72,8 @@
 	limb.receive_damage(5, damage_source = tool)
 
 /datum/surgery_operation/limb/filter_blood/proc/has_filterable_chems(mob/living/carbon/target, obj/item/blood_filter/bloodfilter)
+	procstart = null
+	src.procstart = null
 	if(!length(target.reagents?.reagent_list))
 		bloodfilter.audible_message(span_notice("[bloodfilter] pings as it reports no chemicals detected in [target]'s blood."))
 		playsound(target, 'sound/machines/ping.ogg', 75, TRUE, falloff_exponent = 12, falloff_distance = 1)

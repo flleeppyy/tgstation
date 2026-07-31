@@ -6,6 +6,8 @@ GLOBAL_LIST_INIT(rune_types, generate_cult_rune_types())
 
 /// Returns an associated list of rune types. [rune.cultist_name] = [typepath]
 /proc/generate_cult_rune_types()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 
 	var/list/runes = list()
@@ -76,6 +78,8 @@ Runes can either be invoked by one's self or with many different cultists. Each 
 	var/failed_to_create
 
 /obj/effect/rune/Initialize(mapload, set_keyword)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(set_keyword)
 		keyword = set_keyword
@@ -85,6 +89,8 @@ Runes can either be invoked by one's self or with many different cultists. Each 
 	ADD_TRAIT(src, TRAIT_MOPABLE, INNATE_TRAIT)
 
 /obj/effect/rune/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_CULTIST(user) || user.stat == DEAD) //If they're a cultist or a ghost, tell them the effects
 		. += "<b>Name:</b> [cultist_name]\n"+\
@@ -94,9 +100,13 @@ Runes can either be invoked by one's self or with many different cultists. Each 
 			. += "<b>Keyword:</b> [keyword]"
 
 /obj/effect/rune/attack_paw(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/effect/rune/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -112,6 +122,8 @@ Runes can either be invoked by one's self or with many different cultists. Each 
 		fail_invoke()
 
 /obj/effect/rune/attack_animal(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isshade(user) && !isconstruct(user))
 		return
 	if(HAS_TRAIT(user, TRAIT_ANGELIC))
@@ -122,12 +134,16 @@ Runes can either be invoked by one's self or with many different cultists. Each 
 	else
 		to_chat(user, span_warning("You are unable to invoke the rune!"))
 
-/obj/effect/rune/proc/conceal() //for talisman of revealing/hiding
+/obj/effect/rune/proc/conceal()
+	procstart = null
+	src.procstart = null //for talisman of revealing/hiding
 	visible_message(span_danger("[src] fades away."))
 	SetInvisibility(INVISIBILITY_OBSERVER, id=type)
 	alpha = 100 //To help ghosts distinguish hidden runes
 
-/obj/effect/rune/proc/reveal() //for talisman of revealing/hiding
+/obj/effect/rune/proc/reveal()
+	procstart = null
+	src.procstart = null //for talisman of revealing/hiding
 	RemoveInvisibility(type)
 	visible_message(span_danger("[src] suddenly appears!"))
 	alpha = initial(alpha)
@@ -143,6 +159,8 @@ structure_check() searches for nearby cultist structures required for the invoca
 */
 
 /obj/effect/rune/proc/can_invoke(mob/living/user=null)
+	procstart = null
+	src.procstart = null
 	//This proc determines if the rune can be invoked at the time. If there are multiple required cultists, it will find all nearby cultists.
 	var/list/invokers = list() //people eligible to invoke the rune
 	if(user)
@@ -165,6 +183,8 @@ structure_check() searches for nearby cultist structures required for the invoca
 	return invokers
 
 /obj/effect/rune/proc/invoke(list/invokers)
+	procstart = null
+	src.procstart = null
 	//This proc contains the effects of the rune as well as things that happen afterwards. If you want it to spawn an object and then delete itself, have both here.
 	for(var/atom/invoker in invokers)
 		if(istype(invoker, /obj/item/toy/plush/narplush))
@@ -182,12 +202,16 @@ structure_check() searches for nearby cultist structures required for the invoca
 	do_invoke_glow()
 
 /obj/effect/rune/proc/do_invoke_glow()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	animate(src, transform = matrix()*2, alpha = 0, time = 5, flags = ANIMATION_END_NOW) //fade out
 	sleep(0.5 SECONDS)
 	animate(src, transform = matrix(), alpha = 255, time = 0, flags = ANIMATION_END_NOW)
 
 /obj/effect/rune/proc/fail_invoke()
+	procstart = null
+	src.procstart = null
 	//This proc contains the effects of a rune if it is not invoked correctly, through either invalid wording or not enough cultists. By default, it's just a basic fizzle.
 	visible_message(span_warning("The markings pulse with a small flash of red light, then fall dark."))
 	var/oldcolor = color
@@ -205,6 +229,8 @@ structure_check() searches for nearby cultist structures required for the invoca
 	var/randomized = TRUE
 
 /obj/effect/rune/malformed/Initialize(mapload, set_keyword)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!randomized)
 		return
@@ -213,6 +239,8 @@ structure_check() searches for nearby cultist structures required for the invoca
 
 
 /obj/effect/rune/malformed/invoke(list/invokers)
+	procstart = null
+	src.procstart = null
 	..()
 	qdel(src)
 
@@ -231,9 +259,13 @@ structure_check() searches for nearby cultist structures required for the invoca
 	rune_in_use = FALSE
 
 /obj/effect/rune/convert/do_invoke_glow()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/rune/convert/invoke(list/invokers)
+	procstart = null
+	src.procstart = null
 	if(rune_in_use)
 		return
 
@@ -278,6 +310,8 @@ structure_check() searches for nearby cultist structures required for the invoca
 	return ..()
 
 /obj/effect/rune/convert/proc/do_convert(mob/living/convertee, list/invokers, datum/team/cult/cult_team)
+	procstart = null
+	src.procstart = null
 	ASSERT(convertee.mind)
 
 	if(length(invokers) < 2)
@@ -334,6 +368,8 @@ structure_check() searches for nearby cultist structures required for the invoca
 	return TRUE
 
 /obj/effect/rune/convert/proc/do_sacrifice(mob/living/sacrificial, list/invokers, datum/team/cult/cult_team)
+	procstart = null
+	src.procstart = null
 	var/target_sac = FALSE
 	if((((ishuman(sacrificial) || iscyborg(sacrificial)) && sacrificial.stat != DEAD) || cult_team.is_sacrifice_target(sacrificial.mind)) && length(invokers) < 3)
 		for(var/invoker in invokers)
@@ -404,6 +440,8 @@ structure_check() searches for nearby cultist structures required for the invoca
 
 /// Tries to convert a valid item over the rune to something else
 /obj/effect/rune/convert/proc/try_sacrifice_item()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/checked_item in loc)
 		if(checked_item.anchored || (checked_item.resistance_flags & INDESTRUCTIBLE))
 			continue
@@ -415,6 +453,8 @@ structure_check() searches for nearby cultist structures required for the invoca
 
 /// Does an animation of a sacrificable item transforming into something else
 /obj/effect/rune/convert/proc/animate_convert_item(obj/item/old_item, new_movable_typepath)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/magic.ogg', 33, vary = TRUE, extrarange = SILENCED_SOUND_EXTRARANGE, frequency = 0.66)
 	old_item.anchored = TRUE
 	old_item.Shake()
@@ -440,6 +480,8 @@ structure_check() searches for nearby cultist structures required for the invoca
 	construct_invoke = FALSE
 
 /obj/effect/rune/empower/invoke(list/invokers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/user = invokers[1] //the first invoker is always the user
 	for(var/datum/action/innate/cult/blood_magic/BM in user.actions)
@@ -459,6 +501,8 @@ structure_check() searches for nearby cultist structures required for the invoca
 
 
 /obj/effect/rune/teleport/Initialize(mapload, set_keyword)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/area/A = get_area(src)
 	var/locname = initial(A.name)
@@ -466,6 +510,8 @@ structure_check() searches for nearby cultist structures required for the invoca
 	LAZYADD(GLOB.teleport_runes, src)
 
 /obj/effect/rune/teleport/Destroy()
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(GLOB.teleport_runes, src)
 	if(inner_portal)
 		QDEL_NULL(inner_portal)
@@ -474,6 +520,8 @@ structure_check() searches for nearby cultist structures required for the invoca
 	return ..()
 
 /obj/effect/rune/teleport/invoke(list/invokers)
+	procstart = null
+	src.procstart = null
 	var/mob/living/user = invokers[1] //the first invoker is always the user
 	var/list/potential_runes = list()
 	var/list/teleportnames = list()
@@ -555,6 +603,8 @@ structure_check() searches for nearby cultist structures required for the invoca
 		fail_invoke()
 
 /obj/effect/rune/teleport/proc/handle_portal(portal_type, turf/origin)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	close_portal() // To avoid stacking descriptions/animations
 	playsound(T, SFX_PORTAL_CREATED, 100, TRUE, 14)
@@ -572,6 +622,8 @@ structure_check() searches for nearby cultist structures required for the invoca
 	addtimer(CALLBACK(src, PROC_REF(close_portal)), 600, TIMER_UNIQUE)
 
 /obj/effect/rune/teleport/proc/close_portal()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(inner_portal)
 	QDEL_NULL(outer_portal)
 	desc = initial(desc)
@@ -602,20 +654,28 @@ structure_check() searches for nearby cultist structures required for the invoca
 	var/used = FALSE
 
 /obj/effect/rune/narsie/Initialize(mapload, set_keyword)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSpoints_of_interest.make_point_of_interest(src)
 
-/obj/effect/rune/narsie/conceal() //can't hide this, and you wouldn't want to
+/obj/effect/rune/narsie/conceal()
+	procstart = null
+	src.procstart = null //can't hide this, and you wouldn't want to
 	return
 
 GLOBAL_VAR_INIT(narsie_effect_last_modified, 0)
 GLOBAL_VAR_INIT(narsie_summon_count, 0)
 /proc/set_narsie_count(new_count)
+	procstart = null
+	src.procstart = null
 	GLOB.narsie_summon_count = new_count
 	SEND_GLOBAL_SIGNAL(COMSIG_NARSIE_SUMMON_UPDATE, GLOB.narsie_summon_count)
 
 /// When narsie begins to be summoned, slowly dim the saturation of parallax and starlight
 /proc/started_narsie_summon()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	set_narsie_count(GLOB.narsie_summon_count + 1)
@@ -640,6 +700,8 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 
 /// Summon failed, time to work backwards
 /proc/failed_narsie_summon()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	set_narsie_count(GLOB.narsie_summon_count - 1)
 
@@ -658,6 +720,8 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 		sleep(8 SECONDS)
 
 /obj/effect/rune/narsie/invoke(list/invokers)
+	procstart = null
+	src.procstart = null
 	if(used)
 		return
 	if(!is_station_level(z))
@@ -705,11 +769,15 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 	color = RUNE_COLOR_MEDIUMRED
 
 /obj/effect/rune/raise_dead/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_CULTIST(user) || user.stat == DEAD)
 		. += "<b>Sacrifices unrewarded:</b> [LAZYLEN(GLOB.sacrificed) - GLOB.sacrifices_used]"
 
 /obj/effect/rune/raise_dead/invoke(list/invokers)
+	procstart = null
+	src.procstart = null
 	if(rune_in_use)
 		return
 	rune_in_use = TRUE
@@ -768,6 +836,8 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 	return ..()
 
 /obj/effect/rune/raise_dead/proc/validness_checks(mob/living/target_mob, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(user))
 		return FALSE
 	if(!Adjacent(user) || user.incapacitated)
@@ -781,6 +851,8 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 	return TRUE
 
 /obj/effect/rune/raise_dead/fail_invoke()
+	procstart = null
+	src.procstart = null
 	..()
 	rune_in_use = FALSE
 	for(var/mob/living/cultist in loc)
@@ -798,6 +870,8 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 	var/obj/structure/emergency_shield/cult/barrier/barrier //barrier is the path and variable name.... i am not a clever man
 
 /obj/effect/rune/wall/Destroy()
+	procstart = null
+	src.procstart = null
 	if(barrier)
 		if(!QDELING(barrier))
 			qdel(barrier)
@@ -805,6 +879,8 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 	return ..()
 
 /obj/effect/rune/wall/invoke(list/invokers)
+	procstart = null
+	src.procstart = null
 	var/mob/living/user = invokers[1]
 	..()
 	if(!barrier)
@@ -826,6 +902,8 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 	color = RUNE_COLOR_SUMMON
 
 /obj/effect/rune/summon/invoke(list/invokers)
+	procstart = null
+	src.procstart = null
 	var/mob/living/user = invokers[1]
 	var/list/cultists = list()
 	for(var/datum/mind/M as anything in get_antag_minds(/datum/antagonist/cult))
@@ -899,9 +977,13 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 	rune_in_use = FALSE
 
 /obj/effect/rune/blood_boil/do_invoke_glow()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/rune/blood_boil/invoke(list/invokers)
+	procstart = null
+	src.procstart = null
 	if(rune_in_use)
 		return
 	..()
@@ -934,6 +1016,8 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 	qdel(src)
 
 /obj/effect/rune/blood_boil/proc/do_area_burn(turf/T, multiplier)
+	procstart = null
+	src.procstart = null
 	set_light(6, 1, color)
 	for(var/mob/living/target in viewers(T))
 		if(!IS_CULTIST(target) && target.get_blood_volume())
@@ -955,6 +1039,8 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 	var/ghosts = 0
 
 /obj/effect/rune/manifest/can_invoke(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!(user in get_turf(src)))
 		to_chat(user, span_cult_italic("You must be standing on [src]!"))
 		fail_invoke()
@@ -968,6 +1054,8 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 	return ..()
 
 /obj/effect/rune/manifest/invoke(list/invokers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/user = invokers[1]
 	var/turf/T = get_turf(src)
@@ -1073,10 +1161,14 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 		rune_in_use = FALSE
 
 /mob/living/carbon/human/cult_ghost/spill_organs(drop_bitflags=NONE)
+	procstart = null
+	src.procstart = null
 	drop_bitflags &= ~DROP_BRAIN //cult ghosts never drop a brain
 	. = ..()
 
 /mob/living/carbon/human/cult_ghost/get_organs_for_zone(zone, include_children)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/organ/brain/B in .) //they're not that smart, really
 		. -= B
@@ -1096,6 +1188,8 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 	scribe_delay = 100
 
 /obj/effect/rune/apocalypse/invoke(list/invokers)
+	procstart = null
+	src.procstart = null
 	if(rune_in_use)
 		return
 	. = ..()
@@ -1200,6 +1294,8 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 	qdel(src)
 
 /obj/effect/rune/apocalypse/proc/image_handler(list/images, duration)
+	procstart = null
+	src.procstart = null
 	var/end = world.time + duration
 	set waitfor = 0
 	while(end>world.time)

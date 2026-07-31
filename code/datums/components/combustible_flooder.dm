@@ -6,6 +6,8 @@
 	var/temp_amount
 
 /datum/component/combustible_flooder/Initialize(initialize_gas_id, initialize_gas_amount, initialize_temp_amount)
+	procstart = null
+	src.procstart = null
 
 	src.gas_id = initialize_gas_id
 	src.gas_amount = initialize_gas_amount
@@ -24,6 +26,8 @@
 #endif
 
 /datum/component/combustible_flooder/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_ATOM_ATTACKBY)
 	UnregisterSignal(parent, COMSIG_ATOM_FIRE_ACT)
 	UnregisterSignal(parent, COMSIG_ATOM_BULLET_ACT)
@@ -33,6 +37,8 @@
 
 /// Do the flooding. Trigger temperature is the temperature we will flood at if we dont have a temp set at the start. Trigger referring to whatever triggered it.
 /datum/component/combustible_flooder/proc/flood(mob/user, trigger_temperature)
+	procstart = null
+	src.procstart = null
 	var/delete_parent = TRUE
 	var/turf/open/flooded_turf = get_turf(parent)
 
@@ -66,6 +72,8 @@
 
 /// fire_act reaction.
 /datum/component/combustible_flooder/proc/flame_react(datum/source, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(exposed_temperature > FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
@@ -73,6 +81,8 @@
 
 /// sparks_touched reaction.
 /datum/component/combustible_flooder/proc/sparks_react(datum/source, obj/effect/particle_effect/sparks/sparks)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(sparks) // this shouldn't ever be false but existence is mysterious
@@ -80,6 +90,8 @@
 
 /// Hotspot reaction.
 /datum/component/combustible_flooder/proc/hotspots_react(datum/source, air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(exposed_temperature >= FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
@@ -87,6 +99,8 @@
 
 /// Being attacked by something
 /datum/component/combustible_flooder/proc/attackby_react(datum/source, obj/item/thing, mob/user, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(thing.get_temperature() >= FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
@@ -94,6 +108,8 @@
 
 /// Shot by something
 /datum/component/combustible_flooder/proc/projectile_react(datum/source, obj/projectile/shot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(shot.damage_type == BURN && shot.damage > 0)
@@ -101,6 +117,8 @@
 
 /// Welder check. Here because tool_act is higher priority than attackby.
 /datum/component/combustible_flooder/proc/welder_react(datum/source, mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(tool.get_temperature() >= FIRE_MINIMUM_TEMPERATURE_TO_EXIST)

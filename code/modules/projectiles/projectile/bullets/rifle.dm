@@ -88,6 +88,8 @@
 	rip_time = 1 SECONDS
 
 /obj/projectile/bullet/rebar/proc/handle_drop(datum/source, obj/item/ammo_casing/rebar/newcasing)
+	procstart = null
+	src.procstart = null
 
 /obj/projectile/bullet/rebar/syndie
 	name = "rebar"
@@ -156,6 +158,8 @@
 	accurate_range = 205 //15 tiles before falloff starts to kick in
 
 /obj/projectile/bullet/rebar/hydrogen/impact(atom/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	def_zone = ran_zone(def_zone, clamp(205-(7*get_dist(get_turf(A), starting)), 5, 100))
 
@@ -163,6 +167,8 @@
 	embed_chance = 0
 
 /obj/projectile/bullet/rebar/hydrogen/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	if(isAI(target))
 		return BULLET_ACT_FORCE_PIERCE
 	return ..()
@@ -183,10 +189,14 @@
 	var/heals_left = 6 SECONDS
 
 /obj/projectile/bullet/rebar/healium/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignals(src, list(COMSIG_PROJECTILE_ON_SPAWN_DROP, COMSIG_PROJECTILE_ON_SPAWN_EMBEDDED), PROC_REF(on_spawn_embedded))
 
 /obj/projectile/bullet/rebar/healium/proc/on_spawn_embedded(datum/source, obj/item/ammo_casing/rebar/healium/rebar)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	rebar.heals_left = heals_left
 
@@ -201,6 +211,8 @@
 	shrapnel_type = /obj/item/ammo_casing/rebar/supermatter
 
 /obj/projectile/bullet/rebar/supermatter/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(target))
 		var/mob/living/victim = target
@@ -215,6 +227,8 @@
 	return BULLET_ACT_HIT
 
 /obj/projectile/bullet/rebar/supermatter/proc/dust_feedback(atom/target)
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(src), 'sound/effects/supermatter.ogg', 10, TRUE)
 	visible_message(span_danger("[target] is hit by [src], turning [target.p_them()] to dust in a brilliant flash of light!"))
 

@@ -11,6 +11,8 @@
 
 
 /datum/component/swarming/Initialize(max_x = 24, max_y = 24)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
 	offset_x = rand(-max_x, max_x)
@@ -19,6 +21,8 @@
 	AddComponent(/datum/component/connect_loc_behalf, parent, swarming_loc_connections)
 
 /datum/component/swarming/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/other in swarm_members)
 		var/datum/component/swarming/other_swarm = other
 		other_swarm.swarm_members -= src
@@ -28,6 +32,8 @@
 	return ..()
 
 /datum/component/swarming/proc/join_swarm(datum/source, atom/movable/arrived)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/component/swarming/other_swarm = arrived.GetComponent(/datum/component/swarming)
@@ -39,6 +45,8 @@
 	other_swarm.swarm_members |= src
 
 /datum/component/swarming/proc/leave_swarm(datum/source, atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/component/swarming/other_swarm = gone.GetComponent(/datum/component/swarming)
@@ -52,12 +60,16 @@
 		other_swarm.unswarm()
 
 /datum/component/swarming/proc/swarm()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/owner = parent
 	if(!is_swarming)
 		is_swarming = TRUE
 		animate(owner, pixel_x = owner.pixel_x + offset_x, pixel_y = owner.pixel_y + offset_y, time = 2)
 
 /datum/component/swarming/proc/unswarm()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/owner = parent
 	if(is_swarming)
 		animate(owner, pixel_x = owner.pixel_x - offset_x, pixel_y = owner.pixel_y - offset_y, time = 2)

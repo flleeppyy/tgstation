@@ -7,10 +7,14 @@
 	button_icon_state = "snail_shell"
 
 /datum/action/cooldown/mob_cooldown/shell_retreat/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	HAS_TRAIT(owner, TRAIT_SHELL_RETREATED) ? unretreat_from_shell() : retreat_into_shell()
 
 /datum/action/cooldown/mob_cooldown/shell_retreat/proc/unretreat_from_shell()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	owner.visible_message(
@@ -22,6 +26,8 @@
 	owner.update_appearance(UPDATE_ICON_STATE)
 
 /datum/action/cooldown/mob_cooldown/shell_retreat/proc/retreat_into_shell()
+	procstart = null
+	src.procstart = null
 	owner.visible_message(
 		span_danger("[owner] quickly escapes into its shell!"),
 		span_userdanger("You hide in your shell.."),

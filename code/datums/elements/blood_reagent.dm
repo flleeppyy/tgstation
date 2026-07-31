@@ -12,6 +12,8 @@
  * * blood_type - blood type datum we grab data and behavior from, cannot be null
  */
 /datum/element/blood_reagent/Attach(datum/reagent/target, mob/living/blood_source, datum/blood_type/blood_type)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!istype(target) || !istype(blood_type))
 		return ELEMENT_INCOMPATIBLE
@@ -60,6 +62,8 @@
 
 // Shouldn't realistically happen but just in case
 /datum/element/blood_reagent/Detach(datum/reagent/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, list(
 		COMSIG_REAGENT_EXPOSE_MOB,
@@ -120,6 +124,8 @@
 
 /// Create or mix in a blood splatter and transfer our diseases to it
 /datum/element/blood_reagent/proc/on_turf_expose(datum/reagent/source, turf/exposed_turf, reac_volume)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (reac_volume < 3 || !(blood_type.blood_flags & (BLOOD_ADD_DNA | BLOOD_COVER_TURFS)))
@@ -150,6 +156,8 @@
 		splatter.AddComponent(/datum/component/infective, viruses_to_add)
 
 /datum/element/blood_reagent/proc/on_obj_expose(datum/reagent/source, obj/exposed_obj, reac_volume, methods = TOUCH, show_message = TRUE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (reac_volume < 3 || !(methods & (VAPOR | TOUCH)))
@@ -170,6 +178,8 @@
 		exposed_obj.AddComponent(/datum/component/infective, viruses_to_add)
 
 /datum/element/blood_reagent/proc/on_merge(datum/reagent/source, list/mix_data, amount)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Proportionally mix synth contents
@@ -235,5 +245,7 @@
 			source.data["trace_chem"] = list2params(params2list(source.data["trace_chem"]) | params2list(mix_data["trace_chem"]))
 
 /datum/element/blood_reagent/proc/on_transfer(datum/reagent/reagent, datum/reagents/target_holder, datum/reagent/new_reagent)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	new_reagent.AddElement(/datum/element/blood_reagent, null, blood_type)

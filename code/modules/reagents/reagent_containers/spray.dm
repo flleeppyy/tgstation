@@ -29,14 +29,20 @@
 	reagent_container_liquid_sound = SFX_DEFAULT_LIQUID_SLOSH
 
 /obj/item/reagent_containers/spray/Initialize(mapload, vol)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/reagents_item_heatable)
 	RegisterSignal(src, COMSIG_ITEM_IN_UNWRAPPED_TRAITOR_MAIL, PROC_REF(on_mail_unwrap))
 
 /obj/item/reagent_containers/spray/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return try_spray(interacting_with, user) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 
 /obj/item/reagent_containers/spray/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// This is a hack to make spray bottles fillable from / transferable to these sources
 	// However it can be completely removed when these objects are updated to use the new interaction system
 	// (because the desired effect will just work out of the box)
@@ -49,6 +55,8 @@
 	return try_spray(interacting_with, user) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 
 /obj/item/reagent_containers/spray/proc/try_spray(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	var/adjacent = user.Adjacent(target)
 	if((target.is_drainable() && !target.is_refillable()) && adjacent && can_fill_from_container)
 		if(!target.reagents.total_volume)
@@ -81,6 +89,8 @@
 
 /// Handles creating a chem puff that travels towards the target atom, exposing reagents to everything it hits on the way.
 /obj/item/reagent_containers/spray/proc/spray(atom/target, mob/user, turf/start_turf = get_turf(src))
+	procstart = null
+	src.procstart = null
 	var/range = max(min(current_range, get_dist(src, target)), 1)
 
 	var/obj/effect/decal/chempuff/reagent_puff = new(start_turf)
@@ -104,6 +114,8 @@
 
 /// Handles exposing atoms to the reagents contained in a spray's chempuff. Deletes the chempuff when it's completed.
 /obj/item/reagent_containers/spray/proc/do_spray(atom/target, wait_step, obj/effect/decal/chempuff/reagent_puff, range, puff_reagent_left, mob/user)
+	procstart = null
+	src.procstart = null
 	reagent_puff.user = user
 	reagent_puff.sprayer = src
 	reagent_puff.stream = stream_mode
@@ -121,14 +133,20 @@
 	reagent_puff.RegisterSignal(our_loop, COMSIG_MOVELOOP_POSTPROCESS, TYPE_PROC_REF(/obj/effect/decal/chempuff, check_move))
 
 /obj/item/reagent_containers/spray/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	toggle_stream_mode(user)
 
 /obj/item/reagent_containers/spray/attack_self_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	toggle_stream_mode(user)
 
 /obj/item/reagent_containers/spray/proc/toggle_stream_mode(mob/user)
+	procstart = null
+	src.procstart = null
 	if(stream_range == spray_range || !stream_range || !spray_range || possible_transfer_amounts.len > 2 || !can_toggle_range)
 		return
 	stream_mode = !stream_mode
@@ -151,6 +169,8 @@ GAME_VERB_SRC(/obj/item/reagent_containers/spray, empty, usr, "Empty Spray Bottl
 		src.reagents.clear_reagents()
 
 /obj/item/reagent_containers/spray/proc/on_mail_unwrap(atom/source, mob/user, obj/item/mail/traitor/letter)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(reagents.total_volume < amount_per_transfer_from_this)
 		return
@@ -162,6 +182,8 @@ GAME_VERB_SRC(/obj/item/reagent_containers/spray, empty, usr, "Empty Spray Bottl
 
 /// Handles updating the spray distance when the reagents change.
 /obj/item/reagent_containers/spray/on_reagent_change(datum/reagents/holder, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/total_reagent_weight = 0
 	var/number_of_reagents = 0
@@ -191,6 +213,8 @@ GAME_VERB_SRC(/obj/item/reagent_containers/spray, empty, usr, "Empty Spray Bottl
 	possible_transfer_amounts = list(2,5)
 
 /obj/item/reagent_containers/spray/cleaner/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is putting the nozzle of \the [src] in [user.p_their()] mouth. It looks like [user.p_theyre()] trying to commit suicide!"))
 	if(do_after(user, 3 SECONDS, user))
 		if(reagents.total_volume >= amount_per_transfer_from_this)//if not empty
@@ -233,6 +257,8 @@ GAME_VERB_SRC(/obj/item/reagent_containers/spray, empty, usr, "Empty Spray Bottl
 	list_reagents = null
 
 /obj/item/reagent_containers/spray/pepper/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins huffing \the [src]! It looks like [user.p_theyre()] getting a dirty high!"))
 	return OXYLOSS
 
@@ -254,6 +280,8 @@ GAME_VERB_SRC(/obj/item/reagent_containers/spray, empty, usr, "Empty Spray Bottl
 	list_reagents = list(/datum/reagent/water = 10)
 
 /obj/item/reagent_containers/spray/waterflower/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum, do_splash)
+	procstart = null
+	src.procstart = null
 	return ..(hit_atom, throwingdatum, do_splash = FALSE)
 
 ///Subtype used for the lavaland clown ruin.
@@ -285,24 +313,34 @@ GAME_VERB_SRC(/obj/item/reagent_containers/spray, empty, usr, "Empty Spray Bottl
 	generate_delay = 40 //deciseconds
 
 /obj/item/reagent_containers/spray/waterflower/cyborg/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSfastprocess, src)
 
 /obj/item/reagent_containers/spray/waterflower/cyborg/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	return ..()
 
 /obj/item/reagent_containers/spray/waterflower/cyborg/process()
+	procstart = null
+	src.procstart = null
 	if(world.time < last_generate + generate_delay)
 		return
 	last_generate = world.time
 	generate_reagents()
 
 /obj/item/reagent_containers/spray/waterflower/cyborg/empty()
+	procstart = null
+	src.procstart = null
 	to_chat(usr, span_warning("You can not empty this!"))
 	return
 
 /obj/item/reagent_containers/spray/waterflower/cyborg/proc/generate_reagents()
+	procstart = null
+	src.procstart = null
 	reagents.add_reagent(generate_type, generate_amount)
 
 //chemsprayer
@@ -324,6 +362,8 @@ GAME_VERB_SRC(/obj/item/reagent_containers/spray, empty, usr, "Empty Spray Bottl
 	volume = 600
 
 /obj/item/reagent_containers/spray/chemsprayer/spray(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	var/direction = get_dir(src, A)
 	var/turf/T = get_turf(A)
 	var/turf/T1 = get_step(T,turn(direction, 90))
@@ -356,14 +396,20 @@ GAME_VERB_SRC(/obj/item/reagent_containers/spray, empty, usr, "Empty Spray Bottl
 	var/generate_delay = 10 //deciseconds
 
 /obj/item/reagent_containers/spray/chemsprayer/janitor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSfastprocess, src)
 
 /obj/item/reagent_containers/spray/chemsprayer/janitor/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	return ..()
 
 /obj/item/reagent_containers/spray/chemsprayer/janitor/process()
+	procstart = null
+	src.procstart = null
 	if(world.time < last_generate + generate_delay)
 		return
 	last_generate = world.time
@@ -391,6 +437,8 @@ GAME_VERB_SRC(/obj/item/reagent_containers/spray, empty, usr, "Empty Spray Bottl
 	reagent_container_liquid_sound = null
 
 /obj/item/reagent_containers/spray/chemsprayer/party/spray(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[icon_state]_used"
 
@@ -421,6 +469,8 @@ GAME_VERB_SRC(/obj/item/reagent_containers/spray, empty, usr, "Empty Spray Bottl
 	custom_premium_price = PAYCHECK_COMMAND * 2
 
 /obj/item/reagent_containers/spray/syndicate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = pick("sprayer_sus_1", "sprayer_sus_2", "sprayer_sus_3", "sprayer_sus_4", "sprayer_sus_5","sprayer_sus_6", "sprayer_sus_7", "sprayer_sus_8")
 
@@ -452,6 +502,8 @@ GAME_VERB_SRC(/obj/item/reagent_containers/spray, empty, usr, "Empty Spray Bottl
 	custom_materials = list(/datum/material/plastic = SHEET_MATERIAL_AMOUNT)
 
 /obj/item/reagent_containers/spray/medical/setup_reskins()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/reskinable_item, /datum/atom_skin/med_spray)
 
 /obj/item/reagent_containers/spray/hercuri

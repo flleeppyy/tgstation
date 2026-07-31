@@ -1,8 +1,12 @@
 /mob/living/basic/bot/mulebot/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /mob/living/basic/bot/mulebot/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!(bot_access_flags & BOT_COVER_MAINTS_OPEN) || user.combat_mode)
 		return
 	if(!cell)
@@ -20,6 +24,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /mob/living/basic/bot/mulebot/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/stock_parts/power_store/cell) && (bot_access_flags & BOT_COVER_MAINTS_OPEN))
 		if(cell)
 			to_chat(user, span_warning("[src] already has a power cell!"))
@@ -38,6 +44,8 @@
 
 
 /mob/living/basic/bot/mulebot/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(bot_access_flags & BOT_COVER_EMAGGED))
 		return

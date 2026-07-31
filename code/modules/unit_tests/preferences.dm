@@ -2,6 +2,8 @@
 /datum/unit_test/preferences_implement_everything
 
 /datum/unit_test/preferences_implement_everything/Run()
+	procstart = null
+	src.procstart = null
 	var/datum/preferences/preferences = new(new /datum/client_interface)
 	var/mob/living/carbon/human/human = allocate(/mob/living/carbon/human/consistent)
 
@@ -24,6 +26,8 @@
 /datum/unit_test/preferences_valid_savefile_key
 
 /datum/unit_test/preferences_valid_savefile_key/Run()
+	procstart = null
+	src.procstart = null
 	var/list/known_savefile_keys = list()
 
 	for (var/preference_type in GLOB.preference_entries)
@@ -40,6 +44,8 @@
 /datum/unit_test/preferences_valid_main_feature_name
 
 /datum/unit_test/preferences_valid_main_feature_name/Run()
+	procstart = null
+	src.procstart = null
 	for (var/preference_type in GLOB.preference_entries)
 		var/datum/preference/choiced/preference = GLOB.preference_entries[preference_type]
 		if (!istype(preference))
@@ -55,6 +61,8 @@
 /datum/unit_test/preferences_should_generate_icons_sanity
 
 /datum/unit_test/preferences_should_generate_icons_sanity/Run()
+	procstart = null
+	src.procstart = null
 	for (var/preference_type in GLOB.preference_entries)
 		var/datum/preference/choiced/choiced_preference = GLOB.preference_entries[preference_type]
 		if (!istype(choiced_preference) || choiced_preference.abstract_type == preference_type)

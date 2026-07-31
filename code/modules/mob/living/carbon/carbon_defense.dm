@@ -1,6 +1,8 @@
 #define SHAKE_ANIMATION_OFFSET 4
 
 /mob/living/carbon/get_eye_protection()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_blind() && !is_blind_from(list(TRAIT_STATUS_EFFECT(/datum/status_effect/knocked_out::id), HYPNOCHAIR_TRAIT)))
 		return INFINITY //For all my homies that can not see in the world
@@ -10,6 +12,8 @@
 	. += eyes.flash_protect
 
 /mob/living/carbon/sound_damage(damage, deafen)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_GODMODE))
 		return
 	var/obj/item/organ/ears/ears = get_organ_slot(ORGAN_SLOT_EARS)
@@ -21,20 +25,28 @@
 		ears.adjust_temporary_deafness(deafen)
 
 /mob/living/carbon/get_ear_protection(ignore_deafness = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/ears/ears = get_organ_slot(ORGAN_SLOT_EARS)
 	return ..() + ears?.bang_protect
 
 /mob/living/carbon/is_pepper_proof(check_flags = ALL)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/eyes/eyes = get_organ_by_type(/obj/item/organ/eyes)
 	if(eyes && eyes.pepperspray_protect)
 		return eyes
 
 /mob/living/carbon/is_ears_covered()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/worn_thing as anything in get_equipped_items(INCLUDE_ABSTRACT))
 		if(worn_thing.flags_cover & EARS_COVERED)
 			return worn_thing
 
 /mob/living/carbon/check_projectile_dismemberment(obj/projectile/proj, def_zone)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/affecting = get_bodypart(def_zone)
 	if(affecting && affecting.can_dismember() && !(affecting.bodypart_flags & BODYPART_UNREMOVABLE) && affecting.get_damage() >= (affecting.max_damage - proj.dismemberment))
 		if(!affecting.dismember(proj.damtype) || !proj.catastropic_dismemberment)
@@ -42,21 +54,29 @@
 		apply_damage(proj.damage, proj.damtype, BODY_ZONE_CHEST, wound_bonus = proj.wound_bonus) //stops a projectile blowing off a limb effectively doing no damage. Mostly relevant for sniper rifles.
 
 /mob/living/carbon/try_catch_item(obj/item/item, skip_throw_mode_check = FALSE, try_offhand = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		throw_mode_off(THROW_MODE_TOGGLE)
 
 /mob/living/carbon/can_catch_item(skip_throw_mode_check = FALSE, try_offhand = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!skip_throw_mode_check && !throw_mode)
 		return FALSE
 	return ..()
 
 /mob/living/carbon/hitby(atom/movable/movable, skipcatch, hitpush = TRUE, blocked = FALSE, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(!skipcatch && try_catch_item(movable))
 		return TRUE
 	return ..()
 
 /mob/living/carbon/send_item_attack_message(obj/item/weapon, mob/living/user, hit_area, def_zone)
+	procstart = null
+	src.procstart = null
 	// In the future replace these with parent call if the item attack message proc is ever unshittified
 	if(SEND_SIGNAL(weapon, COMSIG_SEND_ITEM_ATTACK_MESSAGE_OBJECT, src, user) & SIGNAL_MESSAGE_MODIFIED)
 		return TRUE
@@ -115,12 +135,18 @@
 
 
 /mob/living/carbon/attack_drone(mob/living/basic/drone/user)
+	procstart = null
+	src.procstart = null
 	return //so we don't call the carbon's attack_hand().
 
 /mob/living/carbon/attack_drone_secondary(mob/living/basic/drone/user)
+	procstart = null
+	src.procstart = null
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /mob/living/carbon/attack_hand(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	for(var/thing in diseases)
@@ -143,6 +169,8 @@
 	return FALSE
 
 /mob/living/carbon/attack_animal(mob/living/simple_animal/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!user.combat_mode)
 		for (var/datum/wound/wounds as anything in all_wounds)
 			if (wounds.try_handling(user))
@@ -151,6 +179,8 @@
 	return ..()
 
 /mob/living/carbon/attack_paw(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 
 	if(try_inject(user, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE))
 		for(var/thing in diseases)
@@ -184,9 +214,13 @@
  * Returns a falsy value (null) on success, and a truthy value (the hit zone) on failure
  */
 /mob/living/proc/dismembering_strike(mob/living/attacker, dam_zone)
+	procstart = null
+	src.procstart = null
 	return dam_zone
 
 /mob/living/carbon/dismembering_strike(mob/living/attacker, dam_zone)
+	procstart = null
+	src.procstart = null
 	if(!attacker.limb_destroyer)
 		return dam_zone
 	var/obj/item/bodypart/affecting
@@ -208,6 +242,8 @@
 	return dam_zone
 
 /mob/living/carbon/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if (stat == DEAD)
 		return
 	else
@@ -216,6 +252,8 @@
 
 ///Adds to the parent by also adding functionality to propagate shocks through pulling and doing some fluff effects.
 /mob/living/carbon/electrocute_act(shock_damage, source, siemens_coeff = 1, flags = NONE, jitter_time = 20 SECONDS, stutter_time = 4 SECONDS, stun_duration = 4 SECONDS)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -262,6 +300,8 @@
 
 ///Called slightly after electrocute act to apply a secondary stun.
 /mob/living/carbon/proc/secondary_shock(stun, stun_duration)
+	procstart = null
+	src.procstart = null
 	if (stun)
 		Paralyze(stun_duration)
 	else
@@ -269,9 +309,13 @@
 
 /// When another mob touches us, they may messy us up.
 /mob/living/carbon/proc/share_blood_on_touch(mob/living/carbon/human/who_touched_us)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/share_blood_on_touch(mob/living/carbon/human/who_touched_us, messy_slots = ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING)
+	procstart = null
+	src.procstart = null
 	if(!istype(who_touched_us) || !messy_slots)
 		return
 
@@ -285,6 +329,8 @@
 		who_touched_us.blood_in_hands -= 1
 
 /mob/living/carbon/proc/help_shake_act(mob/living/carbon/helper, force_friendly)
+	procstart = null
+	src.procstart = null
 	if(on_fire)
 		to_chat(helper, span_warning("You can't put [p_them()] out with just your bare hands!"))
 		return
@@ -402,6 +448,8 @@
 		shake_up_animation()
 
 /mob/proc/shake_up_animation()
+	procstart = null
+	src.procstart = null
 		var/direction = prob(50) ? -1 : 1
 		animate(src, pixel_w = SHAKE_ANIMATION_OFFSET * direction, time = 0.1 SECONDS, easing = QUAD_EASING | EASE_OUT, flags = ANIMATION_PARALLEL|ANIMATION_RELATIVE)
 		animate(pixel_w = SHAKE_ANIMATION_OFFSET * -2 * direction, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE)
@@ -409,6 +457,8 @@
 
 /// Check ourselves to see if we've got any shrapnel, return true if we do. This is a much simpler version of what humans do, we only indicate we're checking ourselves if there's actually shrapnel
 /mob/living/carbon/proc/check_self_for_injuries()
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS(src))
 		return
 
@@ -430,6 +480,8 @@
 	return embeds
 
 /mob/living/carbon/flash_act(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0, type = /atom/movable/screen/fullscreen/flash, length = 25)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_MOB_FLASH_OVERRIDE_CHECK, src) & FLASH_OVERRIDDEN) //Check for behavior overrides before doing the act itself. If we have a behavior override, we handle everything there and skip the rest
 		return FLASH_COMPLETED
 
@@ -479,6 +531,8 @@
 		to_chat(src, span_notice("Something bright flashes in the corner of your vision!"))
 
 /mob/living/carbon/adjust_oxy_loss(amount, updating_health = TRUE, forced, required_biotype)
+	procstart = null
+	src.procstart = null
 	if(!forced && HAS_TRAIT(src, TRAIT_NOBREATH))
 		amount = min(amount, 0) //Prevents oxy damage but not healing
 
@@ -486,11 +540,15 @@
 	check_passout()
 
 /mob/living/carbon/proc/get_interaction_efficiency(zone)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/limb = get_bodypart(zone)
 	if(!limb)
 		return
 
 /mob/living/carbon/set_oxy_loss(amount, updating_health = TRUE, forced, required_biotype)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	check_passout()
 
@@ -498,6 +556,8 @@
 * Check to see if we should be passed out from oxyloss
 */
 /mob/living/carbon/proc/check_passout()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(HAS_TRAIT(src, TRAIT_NO_OXYLOSS_PASSOUT))
 		REMOVE_TRAIT(src, TRAIT_KNOCKEDOUT, OXYLOSS_TRAIT)
@@ -510,12 +570,16 @@
 		REMOVE_TRAIT(src, TRAIT_KNOCKEDOUT, OXYLOSS_TRAIT)
 
 /mob/living/carbon/get_organic_health()
+	procstart = null
+	src.procstart = null
 	. = health
 	for (var/obj/item/bodypart/limb as anything in get_bodyparts())
 		if (!IS_ORGANIC_LIMB(limb))
 			. += (limb.brute_dam * limb.body_damage_coeff) + (limb.burn_dam * limb.body_damage_coeff)
 
 /mob/living/carbon/grabbedby(mob/living/user, supress_message = FALSE)
+	procstart = null
+	src.procstart = null
 	if(user != src)
 		return ..()
 
@@ -543,6 +607,8 @@
 
 /// If TRUE, the owner of this bodypart can try grabbing it to slow bleeding, as well as various other effects.
 /obj/item/bodypart/proc/can_be_grasped()
+	procstart = null
+	src.procstart = null
 	if (cached_bleed_rate)
 		return TRUE
 
@@ -566,6 +632,8 @@
 	var/mob/living/carbon/user
 
 /obj/item/hand_item/self_grasp/Destroy()
+	procstart = null
+	src.procstart = null
 	if(user)
 		to_chat(user, span_warning("You stop holding onto your[grasped_part ? " [grasped_part.name]" : "self"]."))
 		UnregisterSignal(user, COMSIG_QDELETING)
@@ -579,11 +647,15 @@
 
 /// The limb or the whole damn person we were grasping got deleted or dismembered, so we don't care anymore
 /obj/item/hand_item/self_grasp/proc/qdel_void()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /// We've already cleared that the bodypart in question is bleeding in [the place we create this][/mob/living/carbon/proc/grabbedby], so set up the connections
 /obj/item/hand_item/self_grasp/proc/grasp_limb(obj/item/bodypart/grasping_part)
+	procstart = null
+	src.procstart = null
 	user = grasping_part.owner
 	if(!istype(user))
 		stack_trace("[src] attempted to try_grasp() with [isdatum(user) ? user.type : isnull(user) ? "null" : user] user")
@@ -604,6 +676,8 @@
 
 /// Randomise a body part and organ of this mob
 /mob/living/carbon/proc/bioscramble(scramble_source)
+	procstart = null
+	src.procstart = null
 	if(!(mob_biotypes & MOB_ORGANIC))
 		return FALSE
 
@@ -648,6 +722,8 @@
 
 /// Fill in the lists of things we can bioscramble into people
 /mob/living/carbon/proc/init_bioscrambler_lists()
+	procstart = null
+	src.procstart = null
 	var/list/body_parts = typesof(/obj/item/bodypart/chest) + typesof(/obj/item/bodypart/head) + subtypesof(/obj/item/bodypart/arm) + subtypesof(/obj/item/bodypart/leg)
 	for(var/obj/item/bodypart/part as anything in body_parts)
 		if(!is_type_in_typecache(part, GLOB.bioscrambler_parts_blacklist) && BODYPART_CAN_BE_BIOSCRAMBLED(part))
@@ -663,6 +739,8 @@
 	GLOB.bioscrambler_valid_organs = organs
 
 /mob/living/carbon/get_shove_flags(mob/living/shover, obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. |= SHOVE_CAN_STAGGER
 	if(IsKnockdown() && !IsParalyzed() && HAS_TRAIT(src, TRAIT_DAZED))

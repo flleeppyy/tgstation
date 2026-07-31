@@ -33,6 +33,8 @@
 	var/spread_range = 1
 
 /datum/symptom/cough/Start(datum/disease/advance/active_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -48,6 +50,8 @@
 		symptom_delay = 6
 
 /datum/symptom/cough/Activate(datum/disease/advance/active_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

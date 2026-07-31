@@ -56,6 +56,8 @@
 	SSpoints_of_interest.make_point_of_interest(obj_parent)
 
 /datum/component/phylactery/Destroy()
+	procstart = null
+	src.procstart = null
 	var/obj/obj_parent = parent
 	obj_parent.name = initial(obj_parent.name)
 	obj_parent.remove_atom_colour(ADMIN_COLOUR_PRIORITY, phylactery_color)
@@ -76,6 +78,8 @@
  * Gives some flavor for the phylactery on examine.
  */
 /datum/component/phylactery/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(IS_WIZARD(user) || isobserver(user))
@@ -100,6 +104,8 @@
  * we don't have a reason to exist anymore.
  */
 /datum/component/phylactery/proc/on_lich_mind_lost(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(src)
@@ -117,6 +123,8 @@
  * we need to make sure WHOEVER has our mind is dead
  */
 /datum/component/phylactery/proc/check_if_lich_died(datum/source, mob/living/died, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!died.mind)
@@ -142,6 +150,8 @@
  * If our lich's mob is revived at some point before returning, stop the timer
  */
 /datum/component/phylactery/proc/stop_timer(mob/living/source, full_heal_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	deltimer(revive_timer)
@@ -156,6 +166,8 @@
  * * corpse - optional, the old body of the lich. Can be QDELETED or null.
  */
 /datum/component/phylactery/proc/revive_lich(mob/living/corpse)
+	procstart = null
+	src.procstart = null
 	// If we have a current, and it's not dead, don't yoink their mind
 	// But if we don't have a current (body destroyed) move on like normal
 	if(lich_mind.current && lich_mind.current.stat != DEAD)

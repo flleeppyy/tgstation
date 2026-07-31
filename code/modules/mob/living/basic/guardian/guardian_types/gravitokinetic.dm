@@ -18,6 +18,8 @@
 	var/turf_gravity = 3
 
 /mob/living/basic/guardian/gravitokinetic/Initialize(mapload, datum/guardian_fluff/theme)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/forced_gravity, 1)
 
@@ -28,26 +30,36 @@
 	RegisterSignal(src, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved))
 
 /mob/living/basic/guardian/gravitokinetic/set_summoner(mob/living/to_who, different_person)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!QDELETED(src))
 		return
 	to_who.AddElement(/datum/element/forced_gravity, 1)
 
 /mob/living/basic/guardian/gravitokinetic/cut_summoner(different_person)
+	procstart = null
+	src.procstart = null
 	summoner?.RemoveElement(/datum/element/forced_gravity, 1)
 	return ..()
 
 /mob/living/basic/guardian/gravitokinetic/death(gibbed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	clear_gravity()
 
 /mob/living/basic/guardian/gravitokinetic/recall_effects()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (length(gravity_targets))
 		to_chat(src, span_bolddanger("You have released your gravitokinetic powers!"))
 	clear_gravity()
 
 /mob/living/basic/guardian/gravitokinetic/melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!. || !isliving(target) || target == src || target == summoner || shares_summoner(target) || gravity_targets[target])
 		return
@@ -57,6 +69,8 @@
 	return TRUE
 
 /mob/living/basic/guardian/gravitokinetic/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (LAZYACCESS(modifiers, RIGHT_CLICK) && proximity_flag && !gravity_targets[attack_target] && can_unarmed_attack())
 		slam_turf(attack_target)
 		return
@@ -64,6 +78,8 @@
 
 /// Apply forced gravity to the floor
 /mob/living/basic/guardian/gravitokinetic/proc/slam_turf(turf/open/slammed)
+	procstart = null
+	src.procstart = null
 	if (!isopenturf(slammed) || isgroundlessturf(slammed))
 		return
 	visible_message(span_danger("[src] slams their fist into the [slammed]!"), span_notice("You amplify gravity around the [slammed]."))
@@ -72,11 +88,15 @@
 
 /// Remove our forced gravity from all targets
 /mob/living/basic/guardian/gravitokinetic/proc/clear_gravity()
+	procstart = null
+	src.procstart = null
 	for(var/gravity_target in gravity_targets)
 		remove_gravity(gravity_target)
 
 /// Make something heavier
 /mob/living/basic/guardian/gravitokinetic/proc/add_gravity(atom/target, new_gravity = 3)
+	procstart = null
+	src.procstart = null
 	if (gravity_targets[target])
 		return
 	target.AddElement(/datum/element/forced_gravity, new_gravity)
@@ -86,6 +106,8 @@
 
 /// Stop making something heavier
 /mob/living/basic/guardian/gravitokinetic/proc/remove_gravity(atom/target, too_far = FALSE)
+	procstart = null
+	src.procstart = null
 	if (isnull(gravity_targets[target]))
 		return
 	if (too_far)
@@ -96,12 +118,16 @@
 
 /// When we or something we are inside move check if we are now too far away
 /mob/living/basic/guardian/gravitokinetic/proc/on_moved()
+	procstart = null
+	src.procstart = null
 	for(var/gravity_target in gravity_targets)
 		if (get_dist(src, gravity_target) > gravity_power_range)
 			remove_gravity(gravity_target, too_far = TRUE)
 
 /// When something we put gravity on moves check if it's too far away
 /mob/living/basic/guardian/gravitokinetic/proc/on_target_moved(atom/movable/moving_target, old_loc, dir, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (get_dist(src, moving_target) > gravity_power_range)
 		remove_gravity(moving_target, too_far = TRUE)

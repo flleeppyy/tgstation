@@ -9,6 +9,8 @@
 	cooldown_time = 5 SECONDS
 
 /datum/action/cooldown/mob_cooldown/charge_apc/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	if(!istype(target_atom,/obj/machinery/power/apc))
 		return
 	var/obj/machinery/power/apc/target_apc = target_atom

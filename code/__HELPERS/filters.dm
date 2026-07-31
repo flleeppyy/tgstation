@@ -174,6 +174,8 @@ GLOBAL_LIST_INIT(master_filter_info, list(
 //Helpers to generate lists for filter helpers
 //This is the only practical way of writing these that actually produces sane lists
 /proc/alpha_mask_filter(x, y, icon/icon, render_source, flags)
+	procstart = null
+	src.procstart = null
 	. = list("type" = "alpha")
 	if(!isnull(x))
 		.["x"] = x
@@ -187,6 +189,8 @@ GLOBAL_LIST_INIT(master_filter_info, list(
 		.["flags"] = flags
 
 /proc/angular_blur_filter(x, y, size)
+	procstart = null
+	src.procstart = null
 	. = list("type" = "angular_blur")
 	if(!isnull(x))
 		.["x"] = x
@@ -196,12 +200,16 @@ GLOBAL_LIST_INIT(master_filter_info, list(
 		.["size"] = size
 
 /proc/color_matrix_filter(matrix/in_matrix, space)
+	procstart = null
+	src.procstart = null
 	. = list("type" = "color")
 	.["color"] = in_matrix
 	if(!isnull(space))
 		.["space"] = space
 
 /proc/displacement_map_filter(icon, render_source, x, y, size = ICON_SIZE_ALL)
+	procstart = null
+	src.procstart = null
 	. = list("type" = "displace")
 	if(!isnull(icon))
 		.["icon"] = icon
@@ -215,6 +223,8 @@ GLOBAL_LIST_INIT(master_filter_info, list(
 		.["size"] = size
 
 /proc/drop_shadow_filter(x, y, size, offset, color)
+	procstart = null
+	src.procstart = null
 	. = list("type" = "drop_shadow")
 	if(!isnull(x))
 		.["x"] = x
@@ -228,11 +238,15 @@ GLOBAL_LIST_INIT(master_filter_info, list(
 		.["color"] = color
 
 /proc/gauss_blur_filter(size)
+	procstart = null
+	src.procstart = null
 	. = list("type" = "blur")
 	if(!isnull(size))
 		.["size"] = size
 
 /proc/bloom_filter(threshold, size, offset, alpha)
+	procstart = null
+	src.procstart = null
 	. = list("type" = "bloom")
 	if(!isnull(threshold))
 		.["threshold"] = threshold
@@ -244,6 +258,8 @@ GLOBAL_LIST_INIT(master_filter_info, list(
 		.["alpha"] = alpha
 
 /proc/layering_filter(icon, render_source, x, y, flags, color, transform, blend_mode)
+	procstart = null
+	src.procstart = null
 	. = list("type" = "layer")
 	if(!isnull(icon))
 		.["icon"] = icon
@@ -263,6 +279,8 @@ GLOBAL_LIST_INIT(master_filter_info, list(
 		.["blend_mode"] = blend_mode
 
 /proc/motion_blur_filter(x, y)
+	procstart = null
+	src.procstart = null
 	. = list("type" = "motion_blur")
 	if(!isnull(x))
 		.["x"] = x
@@ -270,6 +288,8 @@ GLOBAL_LIST_INIT(master_filter_info, list(
 		.["y"] = y
 
 /proc/outline_filter(size, color, flags)
+	procstart = null
+	src.procstart = null
 	. = list("type" = "outline")
 	if(!isnull(size))
 		.["size"] = size
@@ -279,6 +299,8 @@ GLOBAL_LIST_INIT(master_filter_info, list(
 		.["flags"] = flags
 
 /proc/radial_blur_filter(size, x, y)
+	procstart = null
+	src.procstart = null
 	. = list("type" = "radial_blur")
 	if(!isnull(size))
 		.["size"] = size
@@ -288,6 +310,8 @@ GLOBAL_LIST_INIT(master_filter_info, list(
 		.["y"] = y
 
 /proc/rays_filter(size, color, offset, density, threshold, factor, x, y, flags)
+	procstart = null
+	src.procstart = null
 	. = list("type" = "rays")
 	if(!isnull(size))
 		.["size"] = size
@@ -309,6 +333,8 @@ GLOBAL_LIST_INIT(master_filter_info, list(
 		.["flags"] = flags
 
 /proc/ripple_filter(radius, size, falloff, repeat, x, y, flags)
+	procstart = null
+	src.procstart = null
 	. = list("type" = "ripple")
 	if(!isnull(radius))
 		.["radius"] = radius
@@ -326,6 +352,8 @@ GLOBAL_LIST_INIT(master_filter_info, list(
 		.["y"] = y
 
 /proc/wave_filter(x, y, size, offset, flags)
+	procstart = null
+	src.procstart = null
 	. = list("type" = "wave")
 	if(!isnull(size))
 		.["size"] = size
@@ -339,6 +367,8 @@ GLOBAL_LIST_INIT(master_filter_info, list(
 		.["flags"] = flags
 
 /proc/apply_wibbly_filters(atom/in_atom, length)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		//This is a very baffling and strange way of doing this but I am just preserving old functionality
 		var/X
@@ -356,6 +386,8 @@ GLOBAL_LIST_INIT(master_filter_info, list(
 		animate(offset = random_roll - 1, time = rand() * 20 + 10)
 
 /proc/remove_wibbly_filters(atom/in_atom, remove_duration = 0)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(in_atom))
 		return
 	var/filter
@@ -369,6 +401,8 @@ GLOBAL_LIST_INIT(master_filter_info, list(
 		addtimer(CALLBACK(in_atom, TYPE_PROC_REF(/datum, remove_filter), "wibbly-[i]"), remove_duration)
 
 /proc/convert_list_to_filter(list/list_filter)
+	procstart = null
+	src.procstart = null
 	var/list/arguments = list_filter.Copy()
 	arguments -= "priority"
 	return filter(arglist(arguments))

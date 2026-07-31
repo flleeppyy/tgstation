@@ -21,6 +21,8 @@
 	bio = 10
 
 /obj/item/clothing/suit/hooded/wintercoat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += list(
 		/obj/item/flashlight,
@@ -35,21 +37,29 @@
 	)
 
 /obj/item/clothing/suit/hooded/wintercoat/on_hood_up(obj/item/clothing/head/hooded/hood)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	zipped = TRUE
 
 /// Called when the hood is hidden
 /obj/item/clothing/suit/hooded/wintercoat/on_hood_down(obj/item/clothing/head/hooded/hood)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	zipped = FALSE
 
 /obj/item/clothing/suit/hooded/wintercoat/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(can_altclick_zip)
 		. += span_notice("<b>Alt-click</b> to [zipped ? "un" : ""]zip.")
 
 
 /obj/item/clothing/suit/hooded/wintercoat/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!can_altclick_zip)
 		return CLICK_ACTION_BLOCKING
 	zipped = !zipped
@@ -104,6 +114,8 @@
 	acid = 20
 
 /obj/item/clothing/suit/hooded/wintercoat/eva/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += /obj/item/tank/internals
 
@@ -145,6 +157,8 @@
 	acid = 60
 
 /obj/item/clothing/suit/hooded/wintercoat/centcom/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += GLOB.security_wintercoat_allowed
 
@@ -182,6 +196,8 @@
 	acid = 50
 
 /obj/item/clothing/suit/hooded/wintercoat/captain/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += GLOB.security_wintercoat_allowed
 
@@ -219,6 +235,8 @@
 	acid = 35
 
 /obj/item/clothing/suit/hooded/wintercoat/hop/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += GLOB.security_wintercoat_allowed
 
@@ -279,6 +297,8 @@
 	acid = 45
 
 /obj/item/clothing/suit/hooded/wintercoat/security/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += GLOB.security_wintercoat_allowed
 
@@ -349,6 +369,8 @@
 	acid = 30
 
 /obj/item/clothing/suit/hooded/wintercoat/medical/cmo/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += list(
 		/obj/item/melee/baton/telescopic,
@@ -368,6 +390,8 @@
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/medical/chemistry
 
 /obj/item/clothing/suit/hooded/wintercoat/medical/chemistry/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += /obj/item/storage/bag/chemistry
 
@@ -384,6 +408,8 @@
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/medical/coroner
 
 /obj/item/clothing/suit/hooded/wintercoat/medical/coroner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += list(
 		/obj/item/autopsy_scanner,
@@ -406,6 +432,8 @@
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/medical/viro
 
 /obj/item/clothing/suit/hooded/wintercoat/medical/viro/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += /obj/item/storage/bag/bio
 
@@ -422,6 +450,8 @@
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/medical/paramedic
 
 /obj/item/clothing/suit/hooded/wintercoat/medical/paramedic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -3) //mirrored from jacket
 	allowed += /obj/item/crowbar/power/paramedic
@@ -481,6 +511,8 @@
 	fire = 30
 
 /obj/item/clothing/suit/hooded/wintercoat/science/rd/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += list(
 		/obj/item/melee/baton/telescopic,
@@ -512,6 +544,8 @@
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/science/genetics
 
 /obj/item/clothing/suit/hooded/wintercoat/science/genetics/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += /obj/item/sequence_scanner
 
@@ -544,6 +578,8 @@
 	fire = 20
 
 /obj/item/clothing/suit/hooded/wintercoat/engineering/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "[icon_state]-emissive", src, alpha = src.alpha, effect_type = EMISSIVE_SPECULAR)
@@ -557,6 +593,8 @@
 	fire = 20
 
 /obj/item/clothing/head/hooded/winterhood/engineering/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "[icon_state]-emissive", src, alpha = src.alpha, effect_type = EMISSIVE_SPECULAR)
@@ -575,6 +613,8 @@
 	acid = 10
 
 /obj/item/clothing/suit/hooded/wintercoat/engineering/ce/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += list(
 		/obj/item/melee/baton/telescopic,
@@ -623,6 +663,8 @@
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/cargo/qm
 
 /obj/item/clothing/suit/hooded/wintercoat/cargo/qm/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += list(
 		/obj/item/melee/baton/telescopic,
@@ -678,6 +720,8 @@
 
 //In case colors are changed after initialization
 /obj/item/clothing/suit/hooded/wintercoat/custom/set_greyscale(list/colors, new_config, new_worn_config, new_inhand_left, new_inhand_right)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!hood)
 		return
@@ -688,6 +732,8 @@
 
 //But also keep old method in case the hood is (re-)created later
 /obj/item/clothing/suit/hooded/wintercoat/custom/on_hood_created(obj/item/clothing/head/hooded/hood)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/coat_colors = (SSgreyscale.ParseColorString(greyscale_colors))
 	var/list/new_coat_colors = coat_colors.Copy(1,4)
@@ -716,9 +762,13 @@
 	can_altclick_zip = FALSE
 
 /obj/item/clothing/suit/hooded/wintercoat/pullover/on_hood_up(obj/item/clothing/head/hooded/hood)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/clothing/suit/hooded/wintercoat/pullover/on_hood_down(obj/item/clothing/head/hooded/hood)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/clothing/head/hooded/winterhood/pullover
@@ -733,6 +783,8 @@
 	flags_1 = NO_NEW_GAGS_PREVIEW_1
 
 /obj/item/clothing/suit/hooded/wintercoat/pullover/set_greyscale(list/colors, new_config, new_worn_config, new_inhand_left, new_inhand_right)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!hood)
 		return
@@ -741,6 +793,8 @@
 	hood.update_slot_icon()
 
 /obj/item/clothing/suit/hooded/wintercoat/pullover/on_hood_created(obj/item/clothing/head/hooded/hood)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/coat_colors = SSgreyscale.ParseColorString(greyscale_colors)
 	hood.set_greyscale(coat_colors)
@@ -760,6 +814,8 @@
 	hood_up_affix = "_t"
 
 /obj/item/clothing/suit/hooded/wintercoat/zipup/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isinhands || (hood && hood.loc != src))
 		return
@@ -780,6 +836,8 @@
 	flags_1 = NO_NEW_GAGS_PREVIEW_1
 
 /obj/item/clothing/suit/hooded/wintercoat/zipup/set_greyscale(list/colors, new_config, new_worn_config, new_inhand_left, new_inhand_right)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!hood)
 		return
@@ -788,6 +846,8 @@
 	hood.update_slot_icon()
 
 /obj/item/clothing/suit/hooded/wintercoat/zipup/on_hood_created(obj/item/clothing/head/hooded/hood)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/coat_colors = SSgreyscale.ParseColorString(greyscale_colors)
 	hood.set_greyscale(coat_colors)

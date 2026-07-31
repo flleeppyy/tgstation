@@ -15,19 +15,27 @@
 	var/id = 0
 
 /obj/machinery/satellite/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	id = global_id++
 
 /obj/machinery/satellite/Destroy()
+	procstart = null
+	src.procstart = null
 	if(active)
 		//should not be setting this directly but the satellite won't exist so we don't want the setter's effects
 		active = FALSE
 	return ..()
 
 /obj/machinery/satellite/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	toggle(user)
 
 /obj/machinery/satellite/set_anchored(anchorvalue)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.))
 		return //no need to process if we didn't change anything.
@@ -41,6 +49,8 @@
 	update_appearance()
 
 /obj/machinery/satellite/proc/toggle(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!active && !isinspace())
 		if(user)
 			to_chat(user, span_warning("You can only activate [src] in space."))
@@ -51,10 +61,14 @@
 	return TRUE
 
 /obj/machinery/satellite/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state]_[active ? "active" : "inactive"]"
 	return ..()
 
 /obj/machinery/satellite/multitool_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, span_notice("// NTSAT-[id] // Mode : [active ? "PRIMARY" : "STANDBY"] //[(obj_flags & EMAGGED) ? "DEBUG_MODE //" : ""]"))
 	return TRUE

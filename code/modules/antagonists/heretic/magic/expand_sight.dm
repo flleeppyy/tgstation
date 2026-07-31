@@ -12,15 +12,21 @@
 	COOLDOWN_DECLARE(last_toggle)
 
 /datum/action/innate/expand_sight/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	return ..() && COOLDOWN_FINISHED(src, last_toggle)
 
 /datum/action/innate/expand_sight/Activate()
+	procstart = null
+	src.procstart = null
 	active = TRUE
 	owner.client?.view_size.setTo(boost_to)
 	playsound(owner, SFX_HALLUCINATION_I_SEE_YOU, 50, TRUE, ignore_walls = FALSE)
 	COOLDOWN_START(src, last_toggle, 8 SECONDS)
 
 /datum/action/innate/expand_sight/Deactivate()
+	procstart = null
+	src.procstart = null
 	active = FALSE
 	owner.client?.view_size.resetToDefault()
 	COOLDOWN_START(src, last_toggle, 4 SECONDS)

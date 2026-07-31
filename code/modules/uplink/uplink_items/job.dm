@@ -39,6 +39,8 @@
 	restricted_roles = list(JOB_HEAD_OF_PERSONNEL, JOB_QUARTERMASTER)
 
 /datum/uplink_item/role_restricted/bureaucratic_error/spawn_item(spawn_path, mob/user, datum/uplink_handler/uplink_handler, atom/movable/source)
+	procstart = null
+	src.procstart = null
 	force_event(/datum/round_event_control/bureaucratic_error, "a syndicate virus")
 	return source
 
@@ -275,6 +277,8 @@
 	surplus = 10
 
 /datum/uplink_item/role_restricted/clown_bomb/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = replacetext(desc, "%MIN_BOMB_TIMER", SYNDIEBOMB_MIN_TIMER_SECONDS)
 
@@ -292,6 +296,8 @@
 	surplus = 10
 
 /datum/uplink_item/role_restricted/clowncar/spawn_item_for_generic_use(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/vehicle/sealed/car/clowncar/car = ..()
 	car.enforce_clown_role = FALSE
 	var/obj/item/key = new car.key_type(user.loc)

@@ -14,6 +14,8 @@
 	button_icon_state = "carp_rift"
 
 /datum/action/innate/summon_rift/Activate()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/space_dragon/dragon = owner.mind?.has_antag_datum(/datum/antagonist/space_dragon)
 	if(!dragon)
 		return
@@ -62,6 +64,8 @@
 	button_icon_state = "locate_carp_rift"
 
 /datum/action/innate/locate_rift/Activate()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/space_dragon/dragon_datum = owner.mind?.has_antag_datum(/datum/antagonist/space_dragon)
 	var/mob/living/dragon_mob = dragon_datum?.owner.current
 	if(!dragon_mob)
@@ -146,9 +150,13 @@
 	acid = 100
 
 /obj/structure/carp_rift/hulk_damage()
+	procstart = null
+	src.procstart = null
 	return 30
 
 /obj/structure/carp_rift/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddComponent( \
@@ -171,6 +179,8 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/carp_rift/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(gravity_aura)
 	return ..()
 
@@ -178,9 +188,13 @@
 // and favours more weaker explosives to destroy the portal
 // as they have the same effect on the portal.
 /obj/structure/carp_rift/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	return ..(min(EXPLODE_HEAVY, severity))
 
 /obj/structure/carp_rift/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(time_charged < max_charge)
 		. += span_notice("It seems to be [(time_charged / max_charge) * 100]% charged.")
@@ -191,9 +205,13 @@
 		. += span_notice("It has [carp_stored] carp available to spawn as.")
 
 /obj/structure/carp_rift/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/magic/lightningshock.ogg', 50, TRUE)
 
 /obj/structure/carp_rift/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	if(charge_state != CHARGE_COMPLETED)
 		if(dragon)
@@ -203,6 +221,8 @@
 	return ..()
 
 /obj/structure/carp_rift/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	// If we're fully charged, just start mass spawning carp and move around.
 	if(charge_state == CHARGE_COMPLETED)
 		if(SPT_PROB(1.25, seconds_per_tick) && dragon)
@@ -219,6 +239,8 @@
 	update_check()
 
 /obj/structure/carp_rift/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -233,6 +255,8 @@
  * If we're fully charged, tell the crew we are, change our color to yellow, become invulnerable, and give Space Dragon the ability to make another rift, if he hasn't summoned 3 total.
  */
 /obj/structure/carp_rift/proc/update_check()
+	procstart = null
+	src.procstart = null
 	// If the rift is fully charged, there's nothing to do here anymore.
 	if(charge_state == CHARGE_COMPLETED)
 		return
@@ -293,6 +317,8 @@
  * * mob/user - The ghost which will take control of the carp.
  */
 /obj/structure/carp_rift/proc/summon_carp(mob/user)
+	procstart = null
+	src.procstart = null
 	if(carp_stored <= 0)//Not enough carp points
 		return FALSE
 	var/is_listed = FALSE
@@ -332,6 +358,8 @@
 	return TRUE
 
 /obj/structure/carp_rift/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(attacking_item, TRAIT_TELEKINESIS_CONTROLLED))
 		if(user)
 			to_chat(user, span_warning("The gravitational field of [src] interferes with the telekenetic control of [user], nullifying the hit!"))
@@ -339,6 +367,8 @@
 	. = ..()
 
 /obj/structure/carp_rift/hitby(atom/movable/hit_by, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(hit_by, TRAIT_TELEKINESIS_CONTROLLED))
 		var/mob/thrower = throwingdatum.thrower?.resolve()
 		if(thrower && ismob(thrower))

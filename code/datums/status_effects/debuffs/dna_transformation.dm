@@ -13,11 +13,15 @@
 	VAR_PRIVATE/datum/dna/old_dna
 
 /datum/status_effect/temporary_transformation/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..() // parent must be called first, so we clear DNA refs AFTER transforming back... yeah i know
 	QDEL_NULL(new_dna)
 	QDEL_NULL(old_dna)
 
 /datum/status_effect/temporary_transformation/on_creation(mob/living/new_owner, new_duration = 1 MINUTES, datum/dna/dna_to_copy)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(new_owner) || isnull(dna_to_copy))
 		qdel(src)
 		return
@@ -29,6 +33,8 @@
 	return ..()
 
 /datum/status_effect/temporary_transformation/on_apply()
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(owner))
 		return FALSE
 
@@ -41,6 +47,8 @@
 	return TRUE
 
 /datum/status_effect/temporary_transformation/on_remove()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/transforming = owner
 
 	if(!QDELING(owner)) // Don't really need to do appearance stuff if we're being deleted
@@ -53,15 +61,21 @@
 
 /// Called when initializing the DNA that the mob is transforming into
 /datum/status_effect/temporary_transformation/proc/init_dna(mob/living/carbon/new_owner, datum/dna/dna_to_copy)
+	procstart = null
+	src.procstart = null
 	dna_to_copy.copy_dna(new_dna, copy_dna_flags)
 
 /// Called when saving the mob's DNA before transformation
 /datum/status_effect/temporary_transformation/proc/save_dna()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/transforming = owner
 	transforming.dna.copy_dna(old_dna, copy_dna_flags)
 
 /// Applies the DNA to the mob
 /datum/status_effect/temporary_transformation/proc/apply_dna()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/transforming = owner
 	new_dna.copy_dna(transforming.dna, copy_dna_flags)
 	transforming.real_name = new_dna.real_name
@@ -82,6 +96,8 @@
 	)
 
 /datum/status_effect/temporary_transformation/trans_sting/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -89,10 +105,14 @@
 	pause_effect(owner) // for if we sting a dead guy
 
 /datum/status_effect/temporary_transformation/trans_sting/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(owner, update_on_signals)
 
 /datum/status_effect/temporary_transformation/trans_sting/proc/pause_effect(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Pause if we're dead, appear dead, or in stasis
@@ -115,6 +135,8 @@
 
 // when initting dna, any unset fields are copied from the mob's dna (so nothing changes effectively)
 /datum/status_effect/temporary_transformation/dna_injector/init_dna(mob/living/carbon/new_owner, datum/dna/dna_to_copy)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new_dna.real_name ||= new_owner.dna.real_name
 	new_dna.unique_enzymes ||= new_owner.dna.unique_enzymes
@@ -126,6 +148,8 @@
 
 // ensure secondary transformation make a copy of the original dna (to prevent latter effects that expire earlier from returning to the wrong dna)
 /datum/status_effect/temporary_transformation/dna_injector/save_dna()
+	procstart = null
+	src.procstart = null
 	for(var/datum/status_effect/temporary_transformation/dna_injector/other_effect in owner.status_effects)
 		other_effect.old_dna.copy_dna(src.old_dna, copy_dna_flags)
 		return
@@ -134,6 +158,8 @@
 
 // when the effect ends, see if there's any other active effects, and re-apply them if necessary
 /datum/status_effect/temporary_transformation/dna_injector/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELING(owner))
 		return

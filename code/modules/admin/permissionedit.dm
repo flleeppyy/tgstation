@@ -16,6 +16,8 @@ GLOBAL_LIST_INIT(permission_action_types, list(
 ))
 
 /datum/admins/proc/edit_admin_permissions(action, log_target, log_actor, log_operation, log_page)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_PERMISSIONS))
 		return
 	var/datum/asset/asset_cache_datum = get_asset_datum(/datum/asset/group/permissions)
@@ -384,6 +386,8 @@ GLOBAL_LIST_INIT(permission_action_types, list(
 	usr << browse("<!DOCTYPE html><html>[jointext(output, "")]</html>","window=editrights;size=1000x650")
 
 /datum/admins/proc/edit_rights_topic(list/href_list)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_PERMISSIONS))
 		message_admins("[key_name_admin(usr)] attempted to edit admin permissions without sufficient rights.")
 		log_admin("[key_name(usr)] attempted to edit admin permissions without sufficient rights.")
@@ -470,6 +474,8 @@ GLOBAL_LIST_INIT(permission_action_types, list(
 	edit_admin_permissions(PERMISSIONS_PAGE_PERMISSIONS)
 
 /datum/admins/proc/add_admin(admin_ckey, admin_key, use_db)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_PERMISSIONS) || (use_db && !check_rights(R_DBRANKS)))
 		return
 	if(IsAdminAdvancedProcCall())
@@ -518,6 +524,8 @@ GLOBAL_LIST_INIT(permission_action_types, list(
 	QDEL_NULL(query_add_admin_log)
 
 /datum/admins/proc/remove_admin(admin_ckey, admin_key, use_db, datum/admins/target_holder)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_PERMISSIONS) || (use_db && !check_rights(R_DBRANKS)))
 		return
 	if(IsAdminAdvancedProcCall())
@@ -557,6 +565,8 @@ GLOBAL_LIST_INIT(permission_action_types, list(
 	sync_lastadminrank(admin_ckey, admin_key)
 
 /datum/admins/proc/force_readmin(admin_key, datum/admins/target_holder)
+	procstart = null
+	src.procstart = null
 	if(!target_holder || !target_holder.deadmined)
 		return
 	target_holder.activate()
@@ -564,6 +574,8 @@ GLOBAL_LIST_INIT(permission_action_types, list(
 	log_admin("[key_name(usr)] forcefully readmined [admin_key]")
 
 /datum/admins/proc/force_deadmin(admin_key, datum/admins/target_holder)
+	procstart = null
+	src.procstart = null
 	if(!target_holder || target_holder.deadmined)
 		return
 	message_admins("[key_name_admin(usr)] forcefully deadmined [admin_key]")
@@ -571,6 +583,8 @@ GLOBAL_LIST_INIT(permission_action_types, list(
 	target_holder.deactivate() //after logs so the deadmined admin can see the message.
 
 /datum/admins/proc/auto_deadmin()
+	procstart = null
+	src.procstart = null
 	if(owner.is_localhost())
 		return FALSE
 	if(owner.prefs.read_preference(/datum/preference/toggle/bypass_deadmin_in_centcom) && is_centcom_level(owner.mob.z) && !istype(owner.mob, /mob/dead/new_player))
@@ -586,6 +600,8 @@ GLOBAL_LIST_INIT(permission_action_types, list(
 #define RANK_DONE ":) I'm Done"
 
 /datum/admins/proc/change_admin_rank(admin_ckey, admin_key, use_db, datum/admins/target_holder, legacy_only)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_PERMISSIONS) || (use_db && !check_rights(R_DBRANKS)))
 		return
 	if(IsAdminAdvancedProcCall())
@@ -755,6 +771,8 @@ GLOBAL_LIST_INIT(permission_action_types, list(
 
 /// Changes, for this round only, the flags a particular admin gets to use
 /datum/admins/proc/change_admin_flags(admin_ckey, admin_key, datum/admins/admin_holder)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_PERMISSIONS))
 		return
 	if(IsAdminAdvancedProcCall())
@@ -804,6 +822,8 @@ GLOBAL_LIST_INIT(permission_action_types, list(
 
 /// Polls usr for a new rank to add to either JUST this round, or the DB
 /datum/admins/proc/add_rank()
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_PERMISSIONS))
 		to_chat(usr, span_adminprefix("You don't have the permissions for this."), confidential = TRUE)
 		return
@@ -920,6 +940,8 @@ GLOBAL_LIST_INIT(permission_action_types, list(
 
 /// Removes a rank from the db/temp loading
 /datum/admins/proc/remove_rank(admin_rank)
+	procstart = null
+	src.procstart = null
 	if(!admin_rank)
 		return
 	if(!check_rights(R_PERMISSIONS))
@@ -1013,6 +1035,8 @@ GLOBAL_LIST_INIT(permission_action_types, list(
 
 /// Changes the flags on either a DB or local rank
 /datum/admins/proc/change_rank(admin_rank)
+	procstart = null
+	src.procstart = null
 	if(!admin_rank)
 		return
 	if(!check_rights(R_PERMISSIONS))
@@ -1199,6 +1223,8 @@ GLOBAL_LIST_INIT(permission_action_types, list(
 		QDEL_NULL(query_update_rank_log)
 
 /datum/admins/proc/sync_lastadminrank(admin_ckey, admin_key, datum/admins/target_holder)
+	procstart = null
+	src.procstart = null
 	var/sqlrank = "Player"
 	if (target_holder)
 		sqlrank = target_holder.rank_names()

@@ -2,6 +2,8 @@
 	name = "Ghost Control"
 
 /datum/smite/ghost_control/effect(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	target.AddComponent(/datum/component/deadchat_control/cardinal_movement, ANARCHY_MODE, list(
 		"clap" = CALLBACK(target, TYPE_PROC_REF(/mob, emote), "clap"),
 		"cry" = CALLBACK(target, TYPE_PROC_REF(/mob, emote), "cry"),
@@ -24,6 +26,8 @@
 
 
 /datum/smite/ghost_control/proc/ghost_shove(mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	if(!istype(target) || target.get_active_held_item())
 		return
 	var/list/shoveables = list()
@@ -35,6 +39,8 @@
 	target.UnarmedAttack(shove_me, proximity_flag = TRUE, modifiers = list("right" = TRUE))
 
 /datum/smite/ghost_control/proc/ghost_sit(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(target, TRAIT_IMMOBILIZED))
 		return
 	var/list/chairs = list()
@@ -46,6 +52,8 @@
 	sitting_chair.buckle_mob(target, check_loc = FALSE)
 
 /datum/smite/ghost_control/proc/ghost_speed(mob/living/target, new_speed)
+	procstart = null
+	src.procstart = null
 	if(target.move_intent == new_speed)
 		return
 	target.toggle_move_intent()

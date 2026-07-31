@@ -97,6 +97,8 @@
 	)
 
 /obj/machinery/chem_dispenser/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(dispensable_reagents != null && !dispensable_reagents.len)
 		dispensable_reagents = default_dispensable_reagents
 	if(dispensable_reagents)
@@ -119,11 +121,15 @@
 	update_appearance()
 
 /obj/machinery/chem_dispenser/Destroy()
+	procstart = null
+	src.procstart = null
 	cell = null
 	QDEL_NULL(beaker)
 	return ..()
 
 /obj/machinery/chem_dispenser/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(panel_open)
 		. += span_notice("[src]'s maintenance hatch is open!")
@@ -134,12 +140,16 @@
 	. += span_notice("Use <b>RMB</b> to eject a stored beaker.")
 
 /obj/machinery/chem_dispenser/on_set_is_operational(old_value)
+	procstart = null
+	src.procstart = null
 	if(old_value) //Turned off
 		end_processing()
 	else //Turned on
 		begin_processing()
 
 /obj/machinery/chem_dispenser/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(cell.maxcharge == cell.charge)
 		return
 	use_energy(active_power_usage * seconds_per_tick) //Additional power cost before charging the cell.
@@ -147,20 +157,28 @@
 
 
 /obj/machinery/chem_dispenser/proc/display_beaker()
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/b_o = beaker_overlay || mutable_appearance(icon, "disp_beaker")
 	b_o.pixel_w = -7
 	b_o.pixel_z = -4
 	return b_o
 
 /obj/machinery/chem_dispenser/proc/work_animation()
+	procstart = null
+	src.procstart = null
 	if(working_state)
 		flick(working_state,src)
 
 /obj/machinery/chem_dispenser/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[(nopower_state && !powered()) ? nopower_state : base_icon_state]"
 	return ..()
 
 /obj/machinery/chem_dispenser/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(has_panel_overlay && panel_open)
 		. += mutable_appearance(icon, "[base_icon_state]_panel-o")
@@ -170,6 +188,8 @@
 		. += beaker_overlay
 
 /obj/machinery/chem_dispenser/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		balloon_alert(user, "already emagged!")
 		return FALSE
@@ -179,9 +199,13 @@
 	return TRUE
 
 /obj/machinery/chem_dispenser/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	return severity <= EXPLODE_LIGHT ? FALSE : ..()
 
 /obj/machinery/chem_dispenser/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!beaker)
 		return
@@ -195,12 +219,16 @@
 			SSexplosions.low_mov_atom += beaker
 
 /obj/machinery/chem_dispenser/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == beaker)
 		beaker = null
 		cut_overlays()
 
 /obj/machinery/chem_dispenser/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ChemDispenser", name)
@@ -213,6 +241,8 @@
 	ui.set_autoupdate(!is_hallucinating) //to not ruin the immersion by constantly changing the fake chemicals
 
 /obj/machinery/chem_dispenser/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["amount"] = amount
 	.["energy"] = cell.charge ? cell.charge : 0 //To prevent NaN in the UI.
@@ -263,6 +293,8 @@
 	.["beaker"] = beaker_data
 
 /obj/machinery/chem_dispenser/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["reaction_list"] = get_reaction_list()
@@ -275,6 +307,8 @@
 	return data
 
 /obj/machinery/chem_dispenser/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -407,20 +441,30 @@
 
 /// Same as ui_act() but to be used by subtypes exclusively
 /obj/machinery/chem_dispenser/proc/handle_ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/machinery/chem_dispenser/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(default_unfasten_wrench(user, tool) == SUCCESSFUL_UNFASTEN)
 		return ITEM_INTERACT_SUCCESS
 	return ITEM_INTERACT_BLOCKING
 
 /obj/machinery/chem_dispenser/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/chem_dispenser/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/chem_dispenser/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!tool.can_insert_container(user, src))
 		return NONE
 	if(!replace_beaker(user, tool))
@@ -430,9 +474,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/chem_dispenser/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/machinery/chem_dispenser/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -453,6 +501,8 @@
 	visible_message(span_danger("[src] malfunctions, spraying chemicals everywhere!"))
 
 /obj/machinery/chem_dispenser/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	recharge_amount = initial(recharge_amount)
 	var/new_power_cost = initial(power_cost)
@@ -481,6 +531,8 @@
  * * obj/item/reagent_containers/new_beaker - the beaker we are trying to insert, swap with existing or remove if null
  */
 /obj/machinery/chem_dispenser/proc/replace_beaker(mob/living/user, obj/item/reagent_containers/new_beaker)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(beaker))
 		try_put_in_hand(beaker, user)
 	if(!QDELETED(new_beaker))
@@ -495,6 +547,8 @@
 	return TRUE
 
 /obj/machinery/chem_dispenser/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	cell = null
 	if(beaker)
 		beaker.forceMove(drop_location())
@@ -502,6 +556,8 @@
 	return ..()
 
 /obj/machinery/chem_dispenser/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -511,12 +567,18 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/chem_dispenser/attack_robot_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand_secondary(user, modifiers)
 
 /obj/machinery/chem_dispenser/attack_ai_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand_secondary(user, modifiers)
 
 /obj/machinery/chem_dispenser/proc/get_reaction_list()
+	procstart = null
+	src.procstart = null
 	var/static/list/reaction_list
 	if(reaction_list?[type])
 		return reaction_list[type]
@@ -551,6 +613,8 @@
 	return reaction_list[type]
 
 /obj/machinery/chem_dispenser/proc/get_reaction_info(datum/chemical_reaction/reaction)
+	procstart = null
+	src.procstart = null
 	var/list/info = list()
 	info["id"] = reaction.type
 	info["lower_temperature"] = reaction.required_temp
@@ -563,6 +627,8 @@
 	return info
 
 /obj/machinery/chem_dispenser/proc/reagent_list_to_info(list/reagent_list)
+	procstart = null
+	src.procstart = null
 	var/list/info = list()
 	for(var/datum/reagent/reagent_typepath as anything in reagent_list)
 		info += list(list(
@@ -628,6 +694,8 @@
 	base_reagent_purity = 0.5
 
 /obj/machinery/chem_dispenser/drinks/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(dispensable_reagents != null && !dispensable_reagents.len)
 		dispensable_reagents = drinks_dispensable_reagents
 	if(emagged_reagents != null && !emagged_reagents.len)
@@ -636,12 +704,16 @@
 	AddElement(/datum/element/simple_rotation)
 
 /obj/machinery/chem_dispenser/drinks/setDir()
+	procstart = null
+	src.procstart = null
 	var/old = dir
 	. = ..()
 	if(dir != old)
 		update_appearance()  // the beaker needs to be re-positioned if we rotate
 
 /obj/machinery/chem_dispenser/drinks/display_beaker()
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/b_o = beaker_overlay || mutable_appearance(icon, "disp_beaker")
 	switch(dir)
 		if(NORTH)
@@ -664,6 +736,8 @@
 	circuit = /obj/item/circuitboard/machine/chem_dispenser/drinks/fullupgrade
 
 /obj/machinery/chem_dispenser/drinks/fullupgrade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	dispensable_reagents |= emagged_reagents //adds emagged reagents
 
@@ -714,6 +788,8 @@
 	)
 
 /obj/machinery/chem_dispenser/drinks/beer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	dispensable_reagents = beer_dispensable_reagents
 	emagged_reagents = beer_emagged_reagents
 	. = ..()
@@ -724,6 +800,8 @@
 	circuit = /obj/item/circuitboard/machine/chem_dispenser/drinks/beer/fullupgrade
 
 /obj/machinery/chem_dispenser/drinks/beer/fullupgrade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	dispensable_reagents |= emagged_reagents //adds emagged reagents
 
@@ -737,6 +815,8 @@
 	var/static/list/mutagen_emagged_reagents = list(/datum/reagent/toxin/plasma)
 
 /obj/machinery/chem_dispenser/mutagen/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	dispensable_reagents = mutagen_dispensable_reagents
 	emagged_reagents = mutagen_emagged_reagents
 	. = ..()
@@ -768,6 +848,8 @@
 	upgrade_reagents = null
 
 /obj/machinery/chem_dispenser/mutagensaltpeter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	dispensable_reagents = mutagensaltpeter_dispensable_reagents
 	. = ..()
 
@@ -777,6 +859,8 @@
 	circuit = /obj/item/circuitboard/machine/chem_dispenser/fullupgrade
 
 /obj/machinery/chem_dispenser/fullupgrade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	dispensable_reagents |= emagged_reagents //adds emagged reagents
 
@@ -837,5 +921,7 @@
 	)
 
 /obj/machinery/chem_dispenser/abductor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	dispensable_reagents = abductor_dispensable_reagents
 	. = ..()

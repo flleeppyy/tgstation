@@ -6,6 +6,8 @@
 #define SELF_HEAL_PENALTY 1.65
 
 /datum/action/innate/cult/blood_magic //Blood magic handles the creation of blood spells (formerly talismans)
+	procstart = null
+	src.procstart = null
 	name = "Prepare Blood Magic"
 	button_icon_state = "carve"
 	desc = "Prepare blood magic by carving runes into your flesh. This is easier with an <b>empowering rune</b>."
@@ -16,16 +18,22 @@
 	var/magic_enhanced = FALSE
 
 /datum/action/innate/cult/blood_magic/Remove()
+	procstart = null
+	src.procstart = null
 	for(var/X in spells)
 		qdel(X)
 	..()
 
 /datum/action/innate/cult/blood_magic/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!IS_CULTIST(owner))
 		return FALSE
 	return ..()
 
 /datum/action/innate/cult/blood_magic/proc/Positioning()
+	procstart = null
+	src.procstart = null
 	for(var/datum/hud/hud as anything in viewers)
 		var/our_view = hud.mymob?.canon_client?.view || "15x15"
 		var/atom/movable/screen/movable/action_button/button = viewers[hud]
@@ -46,6 +54,8 @@
 			blood_spell.positioned = first_available_slot
 
 /datum/action/innate/cult/blood_magic/Activate()
+	procstart = null
+	src.procstart = null
 	var/rune = FALSE
 	var/limit = RUNELESS_MAX_BLOODCHARGE
 	for(var/obj/effect/rune/empower/R in range(1, owner))
@@ -121,6 +131,8 @@
 	var/deletes_on_empty = TRUE
 
 /datum/action/innate/cult/blood_spell/Grant(mob/living/owner, datum/action/innate/cult/blood_magic/BM)
+	procstart = null
+	src.procstart = null
 	if(health_cost)
 		desc += "<br>Deals <u>[health_cost] damage</u> to your arm per use."
 	base_desc = desc
@@ -129,6 +141,8 @@
 	return ..()
 
 /datum/action/innate/cult/blood_spell/Remove()
+	procstart = null
+	src.procstart = null
 	if(all_magic)
 		all_magic.spells -= src
 	if(hand_magic)
@@ -137,11 +151,15 @@
 	..()
 
 /datum/action/innate/cult/blood_spell/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!IS_CULTIST(owner) || owner.incapacitated || (!charges && deletes_on_empty))
 		return FALSE
 	return ..()
 
 /datum/action/innate/cult/blood_spell/Activate()
+	procstart = null
+	src.procstart = null
 	if(!magic_path) // only concerned with spells that flow from the hand
 		return
 	if(hand_magic)
@@ -180,6 +198,8 @@
 	invocation = "Ta'gh fara'qha fel d'amar det!"
 
 /datum/action/innate/cult/blood_spell/emp/Activate()
+	procstart = null
+	src.procstart = null
 	owner.whisper(invocation, language = /datum/language/common, forced = "cult invocation")
 	owner.visible_message(span_warning("[owner]'s hand flashes a bright blue!"), \
 		span_cult_italic("You speak the cursed words, emitting an EMP blast from your hand."))
@@ -218,6 +238,8 @@
 	var/obj/item/summoned_type = /obj/item/melee/cultblade/dagger
 
 /datum/action/innate/cult/blood_spell/dagger/Activate()
+	procstart = null
+	src.procstart = null
 	var/turf/owner_turf = get_turf(owner)
 	owner.whisper(invocation, language = /datum/language/common, forced = "cult invocation")
 	owner.visible_message(span_warning("[owner]'s hand glows red for a moment."), \
@@ -244,6 +266,8 @@
 	disable_text = span_cult("You dispel the magic...")
 
 /datum/action/innate/cult/blood_spell/horror/InterceptClickOn(mob/living/clicker, params, atom/clicked_on)
+	procstart = null
+	src.procstart = null
 	var/turf/caller_turf = get_turf(clicker)
 	if(!isturf(caller_turf))
 		return FALSE
@@ -258,6 +282,8 @@
 	return ..()
 
 /datum/action/innate/cult/blood_spell/horror/do_ability(mob/living/clicker, mob/living/carbon/human/clicked_on)
+	procstart = null
+	src.procstart = null
 
 	clicked_on.set_hallucinations_if_lower(240 SECONDS)
 	SEND_SOUND(clicker, sound('sound/effects/ghost.ogg', FALSE, TRUE, 50))
@@ -288,6 +314,8 @@
 	var/revealing = FALSE //if it reveals or not
 
 /datum/action/innate/cult/blood_spell/veiling/Activate()
+	procstart = null
+	src.procstart = null
 	if(!revealing)
 		owner.visible_message(span_warning("Thin grey dust falls from [owner]'s hand!"), \
 			span_cult_italic("You invoke the veiling spell, hiding nearby runes."))
@@ -362,6 +390,8 @@
 	var/datum/action/innate/cult/blood_spell/source
 
 /obj/item/melee/blood_magic/Initialize(mapload, spell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(spell)
 		source = spell
@@ -369,6 +399,8 @@
 		health_cost = source.health_cost
 
 /obj/item/melee/blood_magic/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(source))
 		if(uses <= 0 && source.deletes_on_empty)
 			source.hand_magic = null
@@ -383,9 +415,13 @@
 	return ..()
 
 /obj/item/melee/blood_magic/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	cast_spell(user, user)
 
 /obj/item/melee/blood_magic/attack(mob/living/M, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!cast_spell(M, user))
 		return
 	log_combat(user, M, "used a cult spell on", src, "")
@@ -395,6 +431,8 @@
 	user.do_attack_animation(M)
 
 /obj/item/melee/blood_magic/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user) || !IS_CULTIST(user))
 		uses = 0
 		qdel(src)
@@ -414,6 +452,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/melee/blood_magic/proc/cast_spell(atom/target, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(invocation)
 		user.whisper(invocation, language = /datum/language/common, forced = "cult invocation")
 	if(health_cost)
@@ -438,6 +478,8 @@
 	invocation = "Fuu ma'jin!"
 
 /obj/item/melee/blood_magic/stun/cast_spell(mob/living/target, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(target) || IS_CULTIST(target))
 		return
 	var/datum/antagonist/cult/cultist = GET_CULTIST(user)
@@ -502,6 +544,8 @@
 	invocation = "Sas'so c'arta forbici!"
 
 /obj/item/melee/blood_magic/teleport/cast_spell(mob/living/target, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(target) || !IS_CULTIST(target))
 		to_chat(user, span_warning("You can only teleport cultists with this spell!"))
 		return
@@ -556,6 +600,8 @@
 	color = COLOR_BLACK // black
 
 /obj/item/melee/blood_magic/shackles/cast_spell(atom/target, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(target))
 		return
 	var/mob/living/carbon/C = target
@@ -568,6 +614,8 @@
 	return ..()
 
 /obj/item/melee/blood_magic/shackles/proc/CuffAttack(mob/living/carbon/C, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!C.handcuffed)
 		playsound(loc, 'sound/items/weapons/cablecuff.ogg', 30, TRUE, -2)
 		C.visible_message(span_danger("[user] begins restraining [C] with dark magic!"), \
@@ -595,6 +643,8 @@
 	var/channeling = FALSE
 
 /obj/item/melee/blood_magic/construction/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += {"<u>A sinister spell used to convert:</u>\n
 	Plasteel into runed metal\n
@@ -605,6 +655,8 @@
 	Airlocks into brittle runed airlocks after a delay (harm intent)"}
 
 /obj/item/melee/blood_magic/construction/cast_spell(atom/target, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(channeling)
 		to_chat(user, span_cult_italic("You are already invoking twisted construction!"))
 		return
@@ -695,6 +747,8 @@
 	to_chat(user, span_warning("The spell will not work on [target]!"))
 
 /obj/item/melee/blood_magic/construction/proc/check_menu(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		CRASH("The cult construct selection radial menu was accessed by something other than a valid user.")
 	if(user.incapacitated || !user.Adjacent(src))
@@ -709,6 +763,8 @@
 	color = "#33cc33" // green
 
 /obj/item/melee/blood_magic/armor/cast_spell(mob/living/target, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(target) || !IS_CULTIST(target))
 		return
 	uses--
@@ -730,6 +786,8 @@
 	color = "#7D1717"
 
 /obj/item/melee/blood_magic/manipulator/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "Bloody halberd, blood bolt barrage, and blood beam cost [BLOOD_HALBERD_COST], [BLOOD_BARRAGE_COST], and [BLOOD_BEAM_COST] charges respectively."
 
@@ -744,6 +802,8 @@
  * '/obj/item/melee/blood_magic/manipulator/proc/blood_draw' handles blood pools/trails and does not affect parent proc
  */
 /obj/item/melee/blood_magic/manipulator/cast_spell(mob/living/target, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(isconstruct(target) || isshade(target))
 		if (heal_construct(target, user))
 			return ..()
@@ -772,6 +832,8 @@
  * will only return TRUE if some amount healing is done
  */
 /obj/item/melee/blood_magic/manipulator/proc/heal_construct(atom/target, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/construct_thing = target
 	if(!IS_CULTIST(construct_thing))
 		return FALSE
@@ -801,6 +863,8 @@
  * returns TRUE if some amount of blood is restored and/or damage is healed
  */
 /obj/item/melee/blood_magic/manipulator/proc/heal_cultist(mob/living/carbon/human/human_bloodbag, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(uses <= 0)
 		human_bloodbag.balloon_alert(user, "out of blood!")
 		return FALSE
@@ -858,6 +922,8 @@
  * returns TRUE if blood is successfully drained from the victim
  */
 /obj/item/melee/blood_magic/manipulator/proc/drain_victim(mob/living/carbon/human/human_bloodbag, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(human_bloodbag.has_status_effect(/datum/status_effect/speech/slurring/cult))
 		to_chat(user,span_danger("[human_bloodbag.p_Their()] blood has been tainted by an even stronger form of blood magic, it's no use to us like this!"))
 		return FALSE
@@ -877,6 +943,8 @@
  * handles blood rites use on turfs, blood pools, and blood trails
  */
 /obj/item/melee/blood_magic/manipulator/proc/blood_draw(atom/target, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	var/blood_to_gain = 0
 	var/turf/our_turf = get_turf(target)
 	if(!our_turf)
@@ -901,6 +969,8 @@
  * allows user to trade in spell uses for equipment or spells
  */
 /obj/item/melee/blood_magic/manipulator/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/static/list/spells = list(
 		"Bloody Halberd (150)" = image(icon = 'icons/obj/weapons/spear.dmi', icon_state = "occultpoleaxe0"),
 		"Blood Bolt Barrage (300)" = image(icon = 'icons/obj/weapons/guns/ballistic.dmi', icon_state = "arcane_barrage"),
@@ -956,6 +1026,8 @@
 				qdel(rite)
 
 /obj/item/melee/blood_magic/manipulator/proc/check_menu(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		CRASH("The Blood Rites manipulator radial menu was accessed by something other than a valid user.")
 	if(user.incapacitated || !user.Adjacent(src))

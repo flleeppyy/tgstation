@@ -18,6 +18,8 @@
 	var/subject = "human being"
 
 /obj/item/ai_module/law/core/full/asimov/configure(mob/user)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	var/targName = tgui_input_text(user, "Enter a new subject that Asimov is concerned with.", "Asimov", subject, max_length = MAX_NAME_LEN)
 	if(!targName || !user.is_holding(src))
@@ -33,6 +35,8 @@
 	var/subject = "human being"
 
 /obj/item/ai_module/law/core/full/asimovpp/configure(mob/user)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	var/target_name = tgui_input_text(user, "Enter a new subject that Asimov++ is concerned with.", "Asimov++", subject, max_length = MAX_NAME_LEN)
 	if(!target_name || !user.is_holding(src))

@@ -15,11 +15,15 @@
 	var/list/banned_objects = list()
 
 /datum/map_template/shelter/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	blacklisted_turfs = typecacheof(/turf/closed)
 	banned_areas = typecacheof(list(/area/shuttle, /area/station/holodeck))
 
 /datum/map_template/shelter/proc/check_deploy(turf/deploy_location, obj/item/survivalcapsule/capsule, ignore_flags = NONE)
+	procstart = null
+	src.procstart = null
 	var/affected = get_affected_turfs(deploy_location, centered=TRUE)
 	for(var/turf/turf in affected)
 		var/area/area = get_area(turf)
@@ -55,6 +59,8 @@
 	mappath = "_maps/templates/shelter_1.dmm"
 
 /datum/map_template/shelter/alpha/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	blacklisted_turfs -= typesof(/turf/closed/mineral)
 	banned_objects = typecacheof(/obj/structure/stone_tile)
@@ -70,6 +76,8 @@
 	mappath = "_maps/templates/shelter_2.dmm"
 
 /datum/map_template/shelter/beta/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	blacklisted_turfs -= typesof(/turf/closed/mineral)
 	banned_objects = typecacheof(/obj/structure/stone_tile)
@@ -85,6 +93,8 @@
 	mappath = "_maps/templates/shelter_3.dmm"
 
 /datum/map_template/shelter/charlie/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	blacklisted_turfs -= typesof(/turf/closed/mineral)
 	banned_objects = typecacheof(/obj/structure/stone_tile)
@@ -98,6 +108,8 @@
 	mappath = "_maps/templates/shelter_t.dmm"
 
 /datum/map_template/shelter/toilet/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	blacklisted_turfs -= typesof(/turf/closed/mineral)
 	banned_objects = typecacheof(/obj/structure/stone_tile)
@@ -118,6 +130,8 @@
 	var/safe = TRUE
 
 /datum/map_template/shelter/fishing/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	blacklisted_turfs -= typesof(/turf/closed/mineral)
 	blacklisted_turfs += typecacheof(/turf/open/openspace)

@@ -8,6 +8,8 @@
 /// Irradiates mobs around 20 tiles of the sm.
 /// Just the mobs apparently.
 /datum/sm_delam/proc/effect_irradiate(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	var/turf/sm_turf = get_turf(sm)
 	for (var/mob/living/victim in range(DETONATION_RADIATION_RANGE, sm))
 		if(!is_valid_z_level(get_turf(victim), sm_turf))
@@ -19,6 +21,8 @@
 
 /// Hallucinates and makes mobs in Z level sad.
 /datum/sm_delam/proc/effect_demoralize(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	var/turf/sm_turf = get_turf(sm)
 	for(var/mob/living/victim as anything in GLOB.alive_mob_list)
 		if(!istype(victim) || !is_valid_z_level(get_turf(victim), sm_turf))
@@ -53,6 +57,8 @@
 
 /// Spawns anomalies all over the station. Half instantly, the other half over time.
 /datum/sm_delam/proc/effect_anomaly(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	var/anomalies = 10
 	var/list/anomaly_types = list(GRAVITATIONAL_ANOMALY = 55, HALLUCINATION_ANOMALY = 45, DIMENSIONAL_ANOMALY = 35, BIOSCRAMBLER_ANOMALY = 35, FLUX_ANOMALY = 25, PYRO_ANOMALY = 5, VORTEX_ANOMALY = 1)
 	var/list/anomaly_places = GLOB.generic_event_spawns
@@ -78,6 +84,8 @@
 
 /// Explodes
 /datum/sm_delam/proc/effect_explosion(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	var/turf/sm_turf = get_turf(sm)
 	explosion(origin = sm_turf,
 		devastation_range = calculate_explosion(sm) * 0.5, // max 17.5
@@ -90,10 +98,14 @@
 	return TRUE
 
 /datum/sm_delam/proc/calculate_explosion(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	return sm.explosion_power * max(sm.gas_heat_power_generation, 0.205)
 
 /// Spawns a scrung and eat the SM.
 /datum/sm_delam/proc/effect_singulo(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	var/turf/sm_turf = get_turf(sm)
 	if(!sm_turf)
 		stack_trace("Supermatter [sm] failed to spawn singularity, cant get current turf.")
@@ -105,6 +117,8 @@
 
 /// Teslas
 /datum/sm_delam/proc/effect_tesla(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	var/turf/sm_turf = get_turf(sm)
 	if(!sm_turf)
 		stack_trace("Supermatter [sm] failed to spawn tesla, cant get current turf.")
@@ -115,6 +129,8 @@
 
 /// Mail the shuttle off to buy milk.
 /datum/sm_delam/proc/effect_strand_shuttle()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	// set timer to infinity, so shuttle never arrives
 	SSshuttle.emergency.setTimer(INFINITY)
@@ -161,6 +177,8 @@
 			mob.Paralyze(3 SECONDS, TRUE)
 
 /datum/sm_delam/proc/effect_cascade_demoralize()
+	procstart = null
+	src.procstart = null
 	for(var/mob/player as anything in GLOB.player_list)
 		if(!isdead(player))
 			var/mob/living/living_player = player
@@ -169,6 +187,8 @@
 		SEND_SOUND(player, 'sound/effects/magic/charge.ogg')
 
 /datum/sm_delam/proc/effect_emergency_state()
+	procstart = null
+	src.procstart = null
 	if(SSsecurity_level.get_current_level_as_number() != SEC_LEVEL_DELTA)
 		SSsecurity_level.set_level(SEC_LEVEL_DELTA) // skip the announcement and shuttle timer adjustment in set_security_level()
 	make_maint_all_access()
@@ -180,6 +200,8 @@
 
 /// Spawn an evacuation rift for people to go through.
 /datum/sm_delam/proc/effect_evac_rift_start()
+	procstart = null
+	src.procstart = null
 	var/obj/cascade_portal/rift = new /obj/cascade_portal(get_turf(pick(GLOB.generic_event_spawns)))
 	priority_announce("We have been hit by a sector-wide electromagnetic pulse. All of our systems are heavily damaged, including those \
 		required for shuttle navigation. We can only reasonably conclude that a supermatter cascade is occurring on or near your station.\n\n\
@@ -191,6 +213,8 @@
 
 /// Announce the destruction of the rift and end the round.
 /datum/sm_delam/proc/effect_evac_rift_end()
+	procstart = null
+	src.procstart = null
 	priority_announce("[Gibberish("The rift has been destroyed, we can no longer help you.", FALSE, 5)]")
 
 	sleep(25 SECONDS)
@@ -223,6 +247,8 @@
 
 /// Scatters crystal mass over the event spawns as long as they are at least 30 tiles away from whatever we want to avoid.
 /datum/sm_delam/proc/effect_crystal_mass(obj/machinery/power/supermatter_crystal/sm, avoid)
+	procstart = null
+	src.procstart = null
 	new /obj/crystal_mass(get_turf(sm))
 	var/list/possible_spawns = GLOB.generic_event_spawns.Copy()
 	for(var/i in 1 to rand(4,6))

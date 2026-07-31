@@ -26,17 +26,23 @@
 	ADD_TRAIT(target, TRAIT_CLIMBABLE, ELEMENT_TRAIT(type))
 
 /datum/element/climbable/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, list(COMSIG_ATOM_ATTACK_HAND, COMSIG_ATOM_EXAMINE_TAGS, COMSIG_MOUSEDROPPED_ONTO, COMSIG_ATOM_BUMPED))
 	REMOVE_TRAIT(target, TRAIT_CLIMBABLE, ELEMENT_TRAIT(type))
 	return ..()
 
 ///Someone inspected our embeddable item
 /datum/element/climbable/proc/get_examine_tags(atom/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list["climbable"] = "It looks like it can be climbed on."
 
 /datum/element/climbable/proc/can_climb(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	if (!source.IsReachableBy(user))
 		return FALSE
 	var/dir_step = get_dir(user, source.loc)
@@ -46,6 +52,8 @@
 	return TRUE
 
 /datum/element/climbable/proc/attack_hand(atom/climbed_thing, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/list/climbers = LAZYACCESS(current_climbers, climbed_thing)
 	for(var/i in climbers)
@@ -59,6 +67,8 @@
 
 
 /datum/element/climbable/proc/climb_structure(atom/climbed_thing, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(!can_climb(climbed_thing, user))
 		return
 	climbed_thing.add_fingerprint(user)
@@ -108,6 +118,8 @@
 
 
 /datum/element/climbable/proc/do_climb(atom/climbed_thing, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(!can_climb(climbed_thing, user))
 		return
 	climbed_thing.set_density(FALSE)
@@ -130,6 +142,8 @@
 
 ///Handles climbing onto the atom when you click-drag
 /datum/element/climbable/proc/mousedrop_receive(atom/climbed_thing, atom/movable/dropped_atom, mob/user, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(user != dropped_atom || !isliving(dropped_atom))

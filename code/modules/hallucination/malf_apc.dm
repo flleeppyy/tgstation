@@ -11,6 +11,8 @@
 	VAR_PRIVATE/image/hacked_image
 
 /datum/hallucination/malf_apc/start()
+	procstart = null
+	src.procstart = null
 	if(!hallucinator.client || IS_UNCONSCIOUS(hallucinator))
 		return FALSE
 
@@ -44,6 +46,8 @@
 	return TRUE
 
 /datum/hallucination/malf_apc/Destroy()
+	procstart = null
+	src.procstart = null
 	hallucinator.client?.images -= hacked_image
 	hacked_image = null
 	return ..()

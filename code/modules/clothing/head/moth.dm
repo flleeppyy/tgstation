@@ -13,6 +13,8 @@
 	desc = "An authentic, padded leather cap with magnifying goggles, standard issue aboard the moth fleet. Keeps your head warm and debris away from those big eyes."
 
 /obj/item/clothing/head/mothcap/original/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/scope, range_modifier = 1.2, zoom_method = ZOOM_METHOD_ITEM_ACTION, item_action_type = /datum/action/item_action/hands_free/moth_googles)
 	AddElement(/datum/element/adjust_fishing_difficulty, -4)

@@ -21,6 +21,8 @@
 	var/list/spans = list("colossus", "yell")
 
 /datum/action/cooldown/spell/voice_of_god/before_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & SPELL_CANCEL_CAST)
 		return
@@ -33,12 +35,16 @@
 		return . | SPELL_CANCEL_CAST
 
 /datum/action/cooldown/spell/voice_of_god/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/command_cooldown = voice_of_god(uppertext(command), cast_on, spans, base_multiplier = power_mod)
 	cooldown_time = (command_cooldown * cooldown_mod)
 
 // "Invocation" is done by the actual voice of god proc
 /datum/action/cooldown/spell/voice_of_god/invocation(mob/living/invoker)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/action/cooldown/spell/voice_of_god/clown

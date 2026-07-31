@@ -15,6 +15,8 @@ GLOBAL_LIST_INIT(glass_style_singletons, create_glass_styles())
  * Returns the list.
  */
 /proc/create_glass_styles()
+	procstart = null
+	src.procstart = null
 	var/list/final_list = list()
 	for(var/datum/glass_style/style as anything in typesof(/datum/glass_style))
 		if(!initial(style.required_drink_type) || !initial(style.required_container_type))
@@ -66,20 +68,28 @@ GLOBAL_LIST_INIT(glass_style_singletons, create_glass_styles())
 
 /// Helper to apply the entire style to something.
 /datum/glass_style/proc/set_all(obj/item/thing)
+	procstart = null
+	src.procstart = null
 	set_name(thing)
 	set_desc(thing)
 	set_appearance(thing)
 
 /// Sets the passed item to our name.
 /datum/glass_style/proc/set_name(obj/item/thing)
+	procstart = null
+	src.procstart = null
 	thing.name = name
 
 /// Sets the passed item to our description.
 /datum/glass_style/proc/set_desc(obj/item/thing)
+	procstart = null
+	src.procstart = null
 	thing.desc = desc
 
 /// Sets the passed item to our icon and icon state.
 /datum/glass_style/proc/set_appearance(obj/item/thing)
+	procstart = null
+	src.procstart = null
 	thing.icon = icon
 	thing.icon_state = icon_state
 
@@ -108,6 +118,8 @@ GLOBAL_LIST_INIT(glass_style_singletons, create_glass_styles())
 	icon = 'icons/obj/food/soupsalad.dmi'
 
 /datum/glass_style/has_foodtype/soup/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// By default: If name or description is unset, it will inherent from the soup reagent set
 	if(!name)

@@ -96,6 +96,8 @@
 	rip_time = 1.5 SECONDS
 
 /obj/projectile/bullet/pellet/stingball/on_ricochet(atom/A)
+	procstart = null
+	src.procstart = null
 	hit_prone_targets = TRUE // ducking will save you from the first wave, but not the rebounds
 	ignore_range_hit_prone_targets = TRUE
 

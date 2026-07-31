@@ -9,15 +9,21 @@
 	var/obj/item/radio/mech/radio
 
 /obj/item/mecha_parts/mecha_equipment/radio/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	radio = new(src)
 	RegisterSignal(radio, COMSIG_QDELETING, PROC_REF(radio_deleted))
 
 /obj/item/mecha_parts/mecha_equipment/radio/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(radio)
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/radio/get_snowflake_data()
+	procstart = null
+	src.procstart = null
 	return list(
 		"snowflake_id" = MECHA_SNOWFLAKE_ID_RADIO,
 		"microphone" = radio.get_broadcasting(),
@@ -28,6 +34,8 @@
 	)
 
 /obj/item/mecha_parts/mecha_equipment/radio/handle_ui_act(action, list/params)
+	procstart = null
+	src.procstart = null
 	switch(action)
 		if("toggle_microphone")
 			radio.set_broadcasting(!radio.get_broadcasting())
@@ -43,6 +51,8 @@
 
 ///Internal radio got deleted, somehow
 /obj/item/mecha_parts/mecha_equipment/radio/proc/radio_deleted()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!QDELETED(src))
 		qdel(src)

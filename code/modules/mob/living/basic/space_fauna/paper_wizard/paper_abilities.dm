@@ -20,6 +20,8 @@
 
 
 /datum/action/cooldown/spell/conjure/wizard_summon_minions/can_cast_spell(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -28,11 +30,15 @@
 	return TRUE
 
 /datum/action/cooldown/spell/conjure/wizard_summon_minions/post_summon(atom/summoned_object, atom/cast_on)
+	procstart = null
+	src.procstart = null
 	var/mob/living/chosen_minion = summoned_object
 	RegisterSignals(chosen_minion, list(COMSIG_QDELETING, COMSIG_LIVING_DEATH), PROC_REF(lost_minion))
 	summoned_minions++
 
 /datum/action/cooldown/spell/conjure/wizard_summon_minions/proc/lost_minion(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(source, list(COMSIG_QDELETING, COMSIG_LIVING_DEATH))
@@ -52,17 +58,23 @@
 	var/list/copies = list()
 
 /datum/action/cooldown/spell/pointed/wizard_mimic/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!owner)
 		return
 	RegisterSignal(owner, COMSIG_LIVING_HEALTH_UPDATE, PROC_REF(delete_clones))
 
 /datum/action/cooldown/spell/pointed/wizard_mimic/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	if(!isliving(cast_on))
 		return FALSE
 	return TRUE
 
 /datum/action/cooldown/spell/pointed/wizard_mimic/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/directions = GLOB.cardinals.Copy()
 	for(var/i in 1 to 3)
@@ -74,17 +86,23 @@
 	owner.forceMove(get_step(cast_on, pick_n_take(directions)))
 
 /datum/action/cooldown/spell/pointed/wizard_mimic/proc/lost_minion(mob/living/basic/paper_wizard/copy/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	copies -= source
 	UnregisterSignal(source, list(COMSIG_QDELETING, COMSIG_LIVING_DEATH), PROC_REF(lost_minion))
 
 /datum/action/cooldown/spell/pointed/wizard_mimic/proc/delete_clones(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	QDEL_LIST(copies)
 
 /datum/action/cooldown/spell/pointed/wizard_mimic/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(copies)
 	return ..()
 

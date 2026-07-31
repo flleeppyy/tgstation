@@ -42,11 +42,15 @@
 	acid = 70
 
 /obj/item/shield/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/disarm_attack)
 	AddElement(/datum/element/cuffable_item)
 
 /obj/item/shield/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	var/effective_block_chance = final_block_chance
 	if(transparent && (hitby.pass_flags & PASSGLASS))
 		return FALSE
@@ -62,6 +66,8 @@
 		on_shield_block(owner, hitby, attack_text, damage, attack_type, damage_type)
 
 /obj/item/shield/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/healthpercent = round((atom_integrity/max_integrity) * 100, 1)
 	switch(healthpercent)
@@ -73,6 +79,8 @@
 			. += span_warning("It's falling apart!")
 
 /obj/item/shield/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -87,6 +95,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/shield/proc/on_shield_block(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(!breakable_by_damage || (damage_type != BRUTE && damage_type != BURN))
 		return TRUE
 	var/penetration = 0
@@ -107,6 +117,8 @@
 	take_damage(damage, damage_type, armor_flag, armour_penetration = penetration)
 
 /obj/item/shield/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	playsound(src, shield_break_sound, 50)
 	new shield_break_leftover(get_turf(src))
 	if(isliving(loc))
@@ -179,6 +191,8 @@
 	drop_sound = 'sound/items/handling/shield/plastic_shield_drop.ogg'
 
 /obj/item/shield/riot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/strobeshield)
 
@@ -188,6 +202,8 @@
 	)
 
 /obj/item/shield/riot/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stack/sheet/mineral/titanium))
 		return NONE
 
@@ -210,6 +226,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5.55, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 4.8)
 
 /obj/item/shield/riot/flash/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 	if(embedded_flash)
@@ -218,6 +236,8 @@
 		update_appearance(UPDATE_ICON)
 
 /obj/item/shield/riot/flash/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	if(istype(arrived, /obj/item/assembly/flash/handheld))
 		embedded_flash = arrived
 		embedded_flash.set_light_flags(embedded_flash.light_flags | LIGHT_ATTACHED)
@@ -225,6 +245,8 @@
 	return ..()
 
 /obj/item/shield/riot/flash/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if(gone == embedded_flash)
 		embedded_flash.set_light_flags(embedded_flash.light_flags & ~LIGHT_ATTACHED)
 		embedded_flash = null
@@ -232,29 +254,41 @@
 	return ..()
 
 /obj/item/shield/riot/flash/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vname == NAMEOF(src, embedded_flash))
 		update_appearance(UPDATE_ICON)
 
 /obj/item/shield/riot/flash/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(embedded_flash)
 	return ..()
 
 /obj/item/shield/riot/flash/attack(mob/living/target_mob, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return ..()
 	flash_away(user, target_mob)
 
 /obj/item/shield/riot/flash/attack_self(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	flash_away(user)
 
 /obj/item/shield/riot/flash/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		flash_away(owner)
 
 ///Handles calls for the actual flash object + plays the flashing animations.
 /obj/item/shield/riot/flash/proc/flash_away(mob/owner, mob/target, animation_only)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(embedded_flash) || (embedded_flash.burnt_out && !animation_only))
 		return
 	var/flick = animation_only ? TRUE : (target ? embedded_flash.attack(target, owner) : embedded_flash.AOE_flash(user = owner))
@@ -266,6 +300,8 @@
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, update_appearance)), 0.5 SECONDS, (TIMER_UNIQUE|TIMER_OVERRIDE)) //.5 second delay so the inhands sprite finishes its anim since inhands don't support flick().
 
 /obj/item/shield/riot/flash/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/assembly/flash/handheld))
 		return ..()
 
@@ -287,6 +323,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/shield/riot/flash/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(embedded_flash) || embedded_flash.burnt_out)
 		return
@@ -295,6 +333,8 @@
 		flash_away((ismob(loc) ? loc : null), animation_only = TRUE)
 
 /obj/item/shield/riot/flash/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(embedded_flash) || embedded_flash.burnt_out)
 		icon_state = "riot"
 		inhand_icon_state = "riot"
@@ -304,6 +344,8 @@
 	return ..()
 
 /obj/item/shield/riot/flash/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (embedded_flash?.burnt_out)
 		. += span_info("The mounted bulb has burnt out. You can try replacing it with a new <b>flash</b>.")
@@ -336,6 +378,8 @@
 	var/reflection_probability = 50
 
 /obj/item/shield/energy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/transforming, \
@@ -349,6 +393,8 @@
 	RegisterSignal(src, COMSIG_ITEM_CAN_DISARM_ATTACK, PROC_REF(can_disarm_attack))
 
 /obj/item/shield/energy/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		return FALSE
 
@@ -365,12 +411,16 @@
 	return ..()
 
 /obj/item/shield/energy/IsReflect()
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE) && prob(reflection_probability)
 
 /*
  * Signal proc for [COMSIG_TRANSFORMING_ON_TRANSFORM].
  */
 /obj/item/shield/energy/proc/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(user)
@@ -380,6 +430,8 @@
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
 /obj/item/shield/energy/proc/can_disarm_attack(datum/source, mob/living/victim, mob/living/user, send_message = TRUE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		if(send_message)
@@ -409,6 +461,8 @@
 	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/shield/riot/tele/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/transforming, \
@@ -425,6 +479,8 @@
 	RegisterSignal(src, COMSIG_ITEM_CAN_DISARM_ATTACK, PROC_REF(can_disarm_attack))
 
 /obj/item/shield/riot/tele/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		return ..()
 	return FALSE
@@ -435,6 +491,8 @@
  * Allows it to be placed on back slot when active.
  */
 /obj/item/shield/riot/tele/proc/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	slot_flags = active ? ITEM_SLOT_BACK : null
@@ -444,6 +502,8 @@
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
 /obj/item/shield/riot/tele/proc/can_disarm_attack(datum/source, mob/living/victim, mob/living/user, send_message = TRUE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		if(send_message)
@@ -467,6 +527,8 @@
 	armor_type = /datum/armor/item_shield/ballistic
 
 /obj/item/shield/ballistic/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stack/sheet/mineral/titanium))
 		return NONE
 

@@ -16,6 +16,8 @@
 	var/turf/affected_turf
 
 /atom/movable/lighting_object/Initialize(mapload, turf/affected_turf)
+	procstart = null
+	src.procstart = null
 	if(!isnull(loc))
 		if(isturf(loc))
 			affected_turf = loc
@@ -57,6 +59,8 @@
 	SSlighting.objects_queue += src
 
 /atom/movable/lighting_object/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if (!force)
 		return QDEL_HINT_LETMELIVE
 	SSlighting.objects_queue -= src
@@ -68,6 +72,8 @@
 	return ..()
 
 /atom/movable/lighting_object/proc/update()
+	procstart = null
+	src.procstart = null
 	var/turf/affected_turf = src.affected_turf
 
 	// To the future coder who sees this and thinks
@@ -120,29 +126,45 @@
 // Variety of overrides so the overlays don't get affected by weird things.
 
 /atom/movable/lighting_object/ex_act(severity)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /atom/movable/lighting_object/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/movable/lighting_object/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/movable/lighting_object/blob_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/movable/lighting_object/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents = TRUE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	return
 
 /atom/movable/lighting_object/wash(clean_types)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE) // lighting objects are dirty, confirmed
 	return
 
 // Override here to prevent things accidentally moving around overlays.
 /atom/movable/lighting_object/forceMove(atom/destination, no_tp = FALSE, harderforce = FALSE)
+	procstart = null
+	src.procstart = null
 	if(harderforce)
 		return ..()
 
 /atom/movable/lighting_object/ref_search_details()
+	procstart = null
+	src.procstart = null
 	return "[text_ref(src)] (turf: [affected_turf ? "[affected_turf.type] @ [AREACOORD(affected_turf)]" : "null"] needs_update: [needs_update ? "true" : "false"])"

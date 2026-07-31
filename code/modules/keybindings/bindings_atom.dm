@@ -2,6 +2,8 @@
 // Only way to do that is to tie the behavior into the focus's keyLoop().
 
 /atom/movable/keyLoop(client/user)
+	procstart = null
+	src.procstart = null
 	// Clients don't go null randomly. They do go null unexpectedly though, when they're poked in particular ways
 	// keyLoop is called by a for loop over mobs. We're guarenteed that all the mobs have clients at the START
 	// But the move of one mob might poke the client of another, so we do this
@@ -38,6 +40,8 @@
 	return FALSE
 
 /client/proc/calculate_move_dir()
+	procstart = null
+	src.procstart = null
 	var/movement_dir = NONE
 	for(var/_key in keys_held)
 		movement_dir |= movement_keys[_key]

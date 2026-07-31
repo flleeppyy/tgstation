@@ -24,6 +24,8 @@
 	var/drill_level = DRILL_BASIC
 
 /obj/item/mecha_parts/mecha_equipment/drill/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/butchering/mecha, \
 	speed = 5 SECONDS, \
@@ -36,6 +38,8 @@
 	ADD_TRAIT(src, TRAIT_BOULDER_BREAKER, INNATE_TRAIT)
 
 /obj/item/mecha_parts/mecha_equipment/drill/handle_ui_act(action, list/params)
+	procstart = null
+	src.procstart = null
 	if(action != "toggle")
 		return
 	if(active)
@@ -47,20 +51,28 @@
 	return TRUE
 
 /obj/item/mecha_parts/mecha_equipment/drill/attach(obj/vehicle/sealed/mecha/new_mecha, attach_right)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(chassis, COMSIG_MOVABLE_BUMP, PROC_REF(bump_mine))
 
 /obj/item/mecha_parts/mecha_equipment/drill/detach(atom/moveto)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(chassis, COMSIG_MOVABLE_BUMP)
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/drill/Destroy()
+	procstart = null
+	src.procstart = null
 	if(chassis)
 		UnregisterSignal(chassis, COMSIG_MOVABLE_BUMP)
 	return ..()
 
 ///Called whenever the mech bumps into something; action() handles checking if it is a mineable turf
 /obj/item/mecha_parts/mecha_equipment/drill/proc/bump_mine(obj/vehicle/sealed/mecha/bumper, atom/bumped_into)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/list/drivers = chassis.return_drivers()
 	if(!LAZYLEN(drivers))	//I don't know if this is possible but just in case
@@ -70,6 +82,8 @@
 	INVOKE_ASYNC(src, PROC_REF(action), drivers[1], bumped_into, null, TRUE)
 
 /obj/item/mecha_parts/mecha_equipment/drill/do_after_checks(atom/target)
+	procstart = null
+	src.procstart = null
 	// Gotta be close to the target
 	if(!loc.Adjacent(target))
 		return FALSE
@@ -80,6 +94,8 @@
 
 ///Redirects clicks to use the drill if possible when enabled
 /obj/item/mecha_parts/mecha_equipment/drill/proc/on_mech_click(atom/mech, mob/source, atom/target, on_cooldown, adjacent)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(on_cooldown || !adjacent)
 		return
@@ -87,6 +103,8 @@
 	return COMPONENT_CANCEL_MELEE_CLICK
 
 /obj/item/mecha_parts/mecha_equipment/drill/action(mob/source, atom/target, list/modifiers, bumped)
+	procstart = null
+	src.procstart = null
 	//If bumped, only bother drilling mineral turfs
 	if(bumped)
 		if(!ismineralturf(target))
@@ -155,19 +173,27 @@
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/drill/get_equip_cooldown(atom/target)
+	procstart = null
+	src.procstart = null
 	if (isturf(target))
 		return equip_cooldown * 0.1
 	return equip_cooldown
 
 /turf/proc/drill_act(obj/item/mecha_parts/mecha_equipment/drill/drill, mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/closed/wall/drill_act(obj/item/mecha_parts/mecha_equipment/drill/drill, mob/user)
+	procstart = null
+	src.procstart = null
 	if(drill.do_after_mecha(src, user, 60 / drill.drill_level))
 		drill.log_message("Drilled through [src]", LOG_MECHA)
 		dismantle_wall(TRUE, FALSE)
 
 /turf/closed/wall/r_wall/drill_act(obj/item/mecha_parts/mecha_equipment/drill/drill, mob/user)
+	procstart = null
+	src.procstart = null
 	if(drill.drill_level >= DRILL_HARDENED)
 		if(drill.do_after_mecha(src, user, 120 / drill.drill_level))
 			drill.log_message("Drilled through [src]", LOG_MECHA)
@@ -176,6 +202,8 @@
 		to_chat(user, "[icon2html(src, user)][span_danger("[src] is too durable to drill through.")]")
 
 /turf/closed/mineral/drill_act(obj/item/mecha_parts/mecha_equipment/drill/drill, mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/turf/closed/mineral/wall in range(drill.chassis, 1))
 		if(get_dir(drill.chassis, wall) & drill.chassis.dir)
 			wall.gets_drilled()
@@ -183,6 +211,8 @@
 	drill.move_ores()
 
 /turf/open/misc/asteroid/drill_act(obj/item/mecha_parts/mecha_equipment/drill/drill)
+	procstart = null
+	src.procstart = null
 	for(var/turf/open/misc/asteroid/floor in range(1, drill.chassis))
 		if((get_dir(drill.chassis, floor) & drill.chassis.dir) && floor.can_dig())
 			floor.getDug()
@@ -190,9 +220,13 @@
 	drill.move_ores()
 
 /obj/item/mecha_parts/mecha_equipment/drill/proc/move_ores()
+	procstart = null
+	src.procstart = null
 	chassis.collect_ore()
 
 /obj/item/mecha_parts/mecha_equipment/drill/proc/drill_mob(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	target.visible_message(span_danger("[chassis] is drilling [target] with [src]!"), \
 						span_userdanger("[chassis] is drilling you with [src]!"))
 	log_combat(user, target, "drilled", "[name]", "Combat mode: [user.combat_mode ? "On" : "Off"])(DAMTYPE: [uppertext(damtype)])")
@@ -243,10 +277,14 @@
 	COOLDOWN_DECLARE(area_scan_cooldown)
 
 /obj/item/mecha_parts/mecha_equipment/mining_scanner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSfastprocess, src)
 
 /obj/item/mecha_parts/mecha_equipment/mining_scanner/process()
+	procstart = null
+	src.procstart = null
 	if(!loc)
 		STOP_PROCESSING(SSfastprocess, src)
 		qdel(src)
@@ -260,12 +298,16 @@
 	mineral_scan_pulse(get_turf(src), scanner = src)
 
 /obj/item/mecha_parts/mecha_equipment/mining_scanner/get_snowflake_data()
+	procstart = null
+	src.procstart = null
 	return list(
 		"snowflake_id" = MECHA_SNOWFLAKE_ID_ORE_SCANNER,
 		"cooldown" = COOLDOWN_TIMELEFT(src, area_scan_cooldown),
 	)
 
 /obj/item/mecha_parts/mecha_equipment/mining_scanner/handle_ui_act(action, list/params)
+	procstart = null
+	src.procstart = null
 	switch(action)
 		if("area_scan")
 			if(!COOLDOWN_FINISHED(src, area_scan_cooldown))

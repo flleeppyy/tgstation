@@ -13,6 +13,8 @@
 	var/tguitheme = "hackerman"
 
 /obj/machinery/computer/terminal/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -20,6 +22,8 @@
 		ui.open()
 
 /obj/machinery/computer/terminal/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		"messages" = content,
 		"uppertext" = upperinfo,

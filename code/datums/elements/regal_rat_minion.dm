@@ -10,6 +10,8 @@
 	var/list/pet_commands
 
 /datum/element/regal_rat_minion/Attach(datum/target, converted_path, success_balloon = "squeak", list/pet_commands)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -21,17 +23,23 @@
 	RegisterSignal(target, COMSIG_REGAL_RAT_RIOTED, PROC_REF(on_rioted))
 
 /datum/element/regal_rat_minion/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_REGAL_RAT_RIOTED)
 
 /// Makes a mob into a minion
 /datum/element/regal_rat_minion/proc/on_rioted(mob/living/minion, mob/living/master)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(do_conversion), minion, master)
 
 /// Actually turn the mob into a different mob
 /datum/element/regal_rat_minion/proc/do_conversion(mob/living/minion, mob/living/master)
+	procstart = null
+	src.procstart = null
 	if (minion.stat == DEAD)
 		return
 

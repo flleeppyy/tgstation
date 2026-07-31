@@ -15,12 +15,16 @@
 	var/crash_all = FALSE
 
 /obj/vehicle/sealed/car/speedwagon/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/cover_overlay = mutable_appearance(icon, "speedwagon_cover", ABOVE_MOB_LAYER, src, appearance_flags = KEEP_APART)
 	cover_overlay = color_atom_overlay(cover_overlay)
 	. += cover_overlay
 
 /obj/vehicle/sealed/car/speedwagon/Bump(atom/bumped)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!bumped.density || occupant_amount() == 0)
 		return
@@ -43,6 +47,8 @@
 		playsound(src, 'sound/effects/bang.ogg', 50, TRUE)
 
 /obj/vehicle/sealed/car/speedwagon/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(occupant_amount() == 0)
 		return

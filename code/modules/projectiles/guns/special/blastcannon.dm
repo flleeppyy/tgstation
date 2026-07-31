@@ -48,11 +48,15 @@
 
 
 /obj/item/gun/blastcannon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ATOM_INTERNAL_EXPLOSION, PROC_REF(channel_blastwave))
 	AddElement(/datum/element/update_icon_updates_onmob)
 
 /obj/item/gun/blastcannon/Destroy()
+	procstart = null
+	src.procstart = null
 	if(bomb)
 		QDEL_NULL(bomb)
 	UnregisterSignal(src, COMSIG_ATOM_INTERNAL_EXPLOSION)
@@ -61,21 +65,29 @@
 	return ..()
 
 /obj/item/gun/blastcannon/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == bomb)
 		bomb = null
 		update_appearance()
 
 /obj/item/gun/blastcannon/assume_air(datum/gas_mixture/giver)
+	procstart = null
+	src.procstart = null
 	qdel(giver)
 	return null // Required to make the TTV not vent gas directly into the firer.
 
 /obj/item/gun/blastcannon/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(bomb)
 		. += span_notice("A bomb is loaded inside.")
 
 /obj/item/gun/blastcannon/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(bomb)
 		bomb.forceMove(user.loc)
 		user.put_in_hands(bomb)
@@ -85,11 +97,15 @@
 	return ..()
 
 /obj/item/gun/blastcannon/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state]_[bomb ? "loaded" : "empty"]"
 	inhand_icon_state = icon_state
 	return ..()
 
 /obj/item/gun/blastcannon/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/transfer_valve))
 		return NONE
 	var/obj/item/transfer_valve/bomb_to_attach = tool
@@ -110,6 +126,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/gun/blastcannon/try_fire_gun(atom/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if((!bomb && bombcheck) || isnull(target) || (get_dist(get_turf(target), get_turf(user)) <= 2))
 		return ..()
 
@@ -147,6 +165,8 @@
  * - [blastwave_data][/list]: A list containing all of the data for the blastwave.
  */
 /obj/item/gun/blastcannon/proc/channel_blastwave(atom/source, list/arguments)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	. = COMSIG_CANCEL_EXPLOSION
 
@@ -182,6 +202,8 @@
  * - spread: How inaccurate the blastwave is.
  */
 /obj/item/gun/blastcannon/proc/fire_blastwave(atom/target, heavy, medium, light, modifiers, spread = 0)
+	procstart = null
+	src.procstart = null
 	var/turf/start_turf = get_turf(src)
 
 	var/cap_multiplier = SSmapping.level_trait(start_turf.z, ZTRAIT_BOMBCAP_MULTIPLIER)
@@ -212,6 +234,8 @@
  * - modifiers: The modifier string to use when preparing the blastwave.
  */
 /obj/item/gun/blastcannon/proc/fire_intentionally(atom/target, mob/firer, heavy, medium, light, modifiers)
+	procstart = null
+	src.procstart = null
 	firer.visible_message(
 		span_danger("[firer] fires a blast wave at [target]!"),
 		span_danger("You fire a blast wave at [target]!")
@@ -234,6 +258,8 @@
  * - light: The light impact range of the blastwave.
  */
 /obj/item/gun/blastcannon/proc/fire_accidentally(mob/holder, heavy, medium, light)
+	procstart = null
+	src.procstart = null
 	var/turf/target
 	var/holding
 	if(holder.is_holding(src))
@@ -262,6 +288,8 @@
  * - light: The light impact range of the blastwave.
  */
 /obj/item/gun/blastcannon/proc/fire_dropped(heavy, medium, light)
+	procstart = null
+	src.procstart = null
 	src.visible_message(span_danger("[src] suddenly goes off!"))
 	var/turf/target = get_edge_target_turf(src, dir)
 	var/mob/firer = cached_firer.resolve()
@@ -279,6 +307,8 @@
  * - modifiers: A string containing click data.
  */
 /obj/item/gun/blastcannon/proc/fire_debug(atom/target, mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	fire_intentionally(target, user, debug_power * 0.25, debug_power * 0.5, debug_power, modifiers)
 	return
 
@@ -302,6 +332,8 @@
 	var/reactionary
 
 /obj/projectile/blastwave/Initialize(mapload, heavy_ex_range, medium_ex_range, light_ex_range, reactionary = CONFIG_GET(flag/reactionary_explosions))
+	procstart = null
+	src.procstart = null
 	range = max(heavy_ex_range, medium_ex_range, light_ex_range, 0)
 	src.heavy_ex_range = heavy_ex_range
 	src.medium_ex_range = medium_ex_range
@@ -311,9 +343,13 @@
 
 // Though the projectile itself is not damaging its effects are
 /obj/projectile/blastwave/is_hostile_projectile()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/projectile/blastwave/reduce_range()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(src))
 		return
@@ -339,6 +375,8 @@
 		return
 
 /obj/projectile/blastwave/ex_act()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 #undef BLASTCANNON_RANGE_EXP

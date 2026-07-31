@@ -12,6 +12,8 @@
 
 
 /datum/element/weather_listener/Attach(datum/target, w_type, trait, weather_playlist)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!weather_type)
 		weather_type = w_type
@@ -31,10 +33,14 @@
 	handle_z_level_change(target_mob, null, target_mob.loc)
 
 /datum/element/weather_listener/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, list(COMSIG_MOVABLE_Z_CHANGED, COMSIG_MOB_LOGOUT))
 
 /datum/element/weather_listener/proc/handle_z_level_change(datum/source, turf/old_loc, turf/new_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/list/fitting_z_levels = SSmapping.levels_by_trait(weather_trait)
 	if(!(new_loc?.z in fitting_z_levels))
@@ -48,5 +54,7 @@
 	our_comp.RegisterSignals(SSdcs, sound_change_signals, TYPE_PROC_REF(/datum/component/area_sound_manager, handle_change))
 
 /datum/element/weather_listener/proc/handle_logout(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	source.RemoveElement(/datum/element/weather_listener, weather_type, weather_trait, playlist)

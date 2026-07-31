@@ -1,10 +1,14 @@
 /obj/item/mod/control/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "MODsuit", name)
 		ui.open()
 
 /obj/item/mod/control/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	// Suit information
 	var/suit_status = list(
@@ -72,17 +76,23 @@
 	return data
 
 /obj/item/mod/control/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["ui_theme"] = ui_theme
 	data["complexity_max"] = complexity_max
 	return data
 
 /obj/item/mod/control/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user == ai_assistant)
 		return GLOB.contained_state
 	return ..()
 
 /obj/item/mod/control/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

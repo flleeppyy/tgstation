@@ -15,6 +15,8 @@
 	)
 
 /obj/item/book/granter/chuunibyou/can_learn(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (!isliving(user))
 		return
 	if (user.GetComponent(/datum/component/chuunibyou))
@@ -23,9 +25,13 @@
 	return TRUE
 
 /obj/item/book/granter/chuunibyou/recoil(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("You just can't bring yourself to read it... it's just not worth the cringe..."))
 
 /obj/item/book/granter/chuunibyou/on_reading_finished(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, span_notice("You've learned how to cast spells in a more chuunibyou-like style!"))
 	user.AddComponent(/datum/component/chuunibyou/no_healing)

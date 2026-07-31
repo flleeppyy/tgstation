@@ -7,17 +7,23 @@
 	var/polymorph_type
 
 /datum/component/curse_of_polymorph/Initialize(polymorph_type)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 	src.polymorph_type = polymorph_type
 
 /datum/component/curse_of_polymorph/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/cursed_item = parent
 	RegisterSignal(cursed_item, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equip))
 
 /datum/component/curse_of_polymorph/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, list(
 		COMSIG_ITEM_EQUIPPED,
@@ -25,6 +31,8 @@
 
 ///signal called from equipping parent
 /datum/component/curse_of_polymorph/proc/on_equip(datum/source, mob/living/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/item/polymorpher_item = parent
 	// Items with no slot flags curse on pickup (because hand slot)

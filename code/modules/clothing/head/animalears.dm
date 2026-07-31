@@ -7,12 +7,16 @@
 	dog_fashion = /datum/dog_fashion/head/kitty
 
 /obj/item/clothing/head/costume/kitty/visual_equipped(mob/living/carbon/human/user, slot)
+	procstart = null
+	src.procstart = null
 	if(ishuman(user) && (slot & ITEM_SLOT_HEAD))
 		update_icon(ALL, user)
 		user.update_worn_head() //Color might have been changed by update_appearance.
 	return ..()
 
 /obj/item/clothing/head/costume/kitty/update_icon(updates=ALL, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ishuman(user))
 		add_atom_colour(user.hair_color, FIXED_COLOUR_PRIORITY)

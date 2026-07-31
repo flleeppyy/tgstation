@@ -3,6 +3,8 @@
 /datum/unit_test/closet_contents
 
 /datum/unit_test/closet_contents/Run()
+	procstart = null
+	src.procstart = null
 	var/list/all_closets = subtypesof(/obj/structure/closet)
 	//Supply pods. They are sent, crashed, opened and never closed again. They also cause exceptions in nullspace.
 	all_closets -= typesof(/obj/structure/closet/supplypod)
@@ -30,6 +32,8 @@
 /datum/unit_test/closet_opening
 
 /datum/unit_test/closet_opening/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/placer = EASY_ALLOCATE()
 	var/obj/structure/closet/crate/secure/locked_crate = allocate(/obj/structure/closet/crate/secure, get_step(run_loc_floor_bottom_left, NORTH))
 	var/obj/structure/closet/body_bag/corpse_bag = allocate(/obj/structure/closet/body_bag, get_step(run_loc_floor_bottom_left, EAST))

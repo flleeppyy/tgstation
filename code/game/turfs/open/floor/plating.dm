@@ -23,12 +23,18 @@
 	var/upgradable = TRUE
 
 /turf/open/floor/plating/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("damaged1", "damaged2", "damaged4")
 
 /turf/open/floor/plating/burnt_states()
+	procstart = null
+	src.procstart = null
 	return list("floorscorched1", "floorscorched2")
 
 /turf/open/floor/plating/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(broken || burnt)
 		. += span_notice("It looks like the dents could be <i>welded</i> smooth.")
@@ -43,6 +49,8 @@
 #define PLATE_REINFORCE_COST 2
 
 /turf/open/floor/plating/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ITEM_INTERACT_ANY_BLOCKER & .)
 		return .
@@ -139,6 +147,8 @@
 		return ITEM_INTERACT_SUCCESS
 
 /turf/open/floor/plating/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if((!broken && !burnt) || !tool.use_tool(src, user, 0, volume=80))
 		return NONE
 	to_chat(user, span_danger("You fix some dents on the broken plating."))
@@ -153,6 +163,8 @@
 
 
 /turf/open/floor/plating/make_plating(force = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/floor/plating/foam
@@ -163,16 +175,24 @@
 	attachment_holes = FALSE
 
 /turf/open/floor/plating/foam/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/tool_blocker, TOOL_WELDER, TOOL_ACT_PRIMARY)
 
 /turf/open/floor/plating/foam/burn_tile()
+	procstart = null
+	src.procstart = null
 	return //jetfuel can't melt steel foam
 
 /turf/open/floor/plating/foam/break_tile()
+	procstart = null
+	src.procstart = null
 	return //jetfuel can't break steel foam...
 
 /turf/open/floor/plating/foam/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!ismetaltile(tool))
 		return NONE
 
@@ -188,6 +208,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /turf/open/floor/plating/foam/attackby(obj/item/attacking_item, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/items/weapons/tap.ogg', 100, TRUE) //The attack sound is muffled by the foam itself
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.do_attack_animation(src)
@@ -199,16 +221,22 @@
 		to_chat(user, span_danger("You hit [src], to no effect!"))
 
 /turf/open/floor/plating/foam/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	if(the_rcd.mode == RCD_TURF && the_rcd.rcd_design_path == /turf/open/floor/plating/rcd)
 		return list("delay" = 0, "cost" = 1)
 
 /turf/open/floor/plating/foam/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	procstart = null
+	src.procstart = null
 	if(rcd_data[RCD_DESIGN_MODE] == RCD_TURF && rcd_data[RCD_DESIGN_PATH] == /turf/open/floor/plating/rcd)
 		ChangeTurf(/turf/open/floor/plating, flags = CHANGETURF_INHERIT_AIR)
 		return TRUE
 	return FALSE
 
 /turf/open/floor/plating/foam/ex_act()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
 	return TRUE
@@ -235,10 +263,14 @@
 	var/deconstruction_state = PLATE_INTACT
 
 /turf/open/floor/plating/reinforced/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. += ..()
 	. += deconstruction_hints(user)
 
 /turf/open/floor/plating/reinforced/proc/deconstruction_hints(mob/user)
+	procstart = null
+	src.procstart = null
 	switch(deconstruction_state)
 		if(PLATE_INTACT)
 			return span_notice("The plating reinforcements are securely <b>bolted</b> in place.")
@@ -248,10 +280,14 @@
 			return span_notice("The plating reinforcements have been <i>sliced through</i> but are still <b>loosely</b> held in place.")
 
 /turf/open/floor/plating/reinforced/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "r_plate-[deconstruction_state]"
 	return ..()
 
 /turf/open/floor/plating/reinforced/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE)
 	if (!ISADVANCEDTOOLUSER(user))
 		to_chat(user, span_warning("You don't have the dexterity to do this!"))
@@ -269,6 +305,8 @@
 	return ..()
 
 /turf/open/floor/plating/reinforced/proc/deconstruct_steps(obj/item/tool_used, mob/user)
+	procstart = null
+	src.procstart = null
 	switch(deconstruction_state)
 		if(PLATE_INTACT)
 			if(tool_used.tool_behaviour == TOOL_WRENCH)
@@ -333,7 +371,9 @@
 			return FALSE
 	return FALSE
 
-/turf/open/floor/plating/reinforced/proc/drop_screws() //When you start dismantling R-Plates they'll drop their bolts on the Z-level below, a little visible warning.
+/turf/open/floor/plating/reinforced/proc/drop_screws()
+	procstart = null
+	src.procstart = null //When you start dismantling R-Plates they'll drop their bolts on the Z-level below, a little visible warning.
 	var/turf/below_turf = get_step_multiz(src, DOWN)
 	while(istype(below_turf, /turf/open/openspace))
 		below_turf = get_step_multiz(below_turf, DOWN)

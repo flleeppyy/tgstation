@@ -22,6 +22,8 @@
 	var/list/charging = list()
 
 /datum/action/cooldown/mob_cooldown/charge/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	disable_cooldown_actions()
 	// No charging and meleeing (overridded by StartCooldown after charge ends)
 	next_melee_use_time = world.time + 100 SECONDS
@@ -31,9 +33,13 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/charge/proc/charge_sequence(atom/movable/charger, atom/target_atom, delay, past)
+	procstart = null
+	src.procstart = null
 	do_charge(owner, target_atom, charge_delay, charge_past)
 
 /datum/action/cooldown/mob_cooldown/charge/proc/do_charge(atom/movable/charger, atom/target_atom, delay, past)
+	procstart = null
+	src.procstart = null
 	if(!target_atom || target_atom == owner)
 		return
 	var/chargeturf = get_turf(target_atom)
@@ -76,15 +82,21 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/charge/proc/pre_move(datum)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// If you sleep in Move() you deserve what's coming to you
 	actively_moving = TRUE
 
 /datum/action/cooldown/mob_cooldown/charge/proc/post_move(datum)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	actively_moving = FALSE
 
 /datum/action/cooldown/mob_cooldown/charge/proc/charge_end(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/movable/charger = source
 	if(istype(source, /datum/move_loop))
@@ -96,11 +108,15 @@
 	charging -= charger
 
 /datum/action/cooldown/mob_cooldown/charge/update_status_on_signal(mob/source, new_stat, old_stat)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(new_stat == DEAD)
 		GLOB.move_manager.stop_looping(source) //This will cause the loop to qdel, triggering an end to our charging
 
 /datum/action/cooldown/mob_cooldown/charge/proc/do_charge_indicator(atom/charger, atom/charge_target)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(charge_target)
 	if(!target_turf)
 		return
@@ -109,6 +125,8 @@
 	animate(D, alpha = 0, color = COLOR_RED, transform = matrix()*2, time = 3)
 
 /datum/action/cooldown/mob_cooldown/charge/proc/on_move(atom/source, atom/new_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!actively_moving)
 		return COMPONENT_MOVABLE_BLOCK_PRE_MOVE
@@ -116,11 +134,15 @@
 	INVOKE_ASYNC(src, PROC_REF(DestroySurroundings), source)
 
 /datum/action/cooldown/mob_cooldown/charge/proc/on_moved(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	playsound(source, 'sound/effects/meteorimpact.ogg', 200, TRUE, 2, TRUE)
 	INVOKE_ASYNC(src, PROC_REF(DestroySurroundings), source)
 
 /datum/action/cooldown/mob_cooldown/charge/proc/DestroySurroundings(atom/movable/charger)
+	procstart = null
+	src.procstart = null
 	if(!destroy_objects)
 		return
 	if(!isanimal(charger))
@@ -149,6 +171,8 @@
 			break
 
 /datum/action/cooldown/mob_cooldown/charge/proc/on_bump(atom/movable/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(owner == target)
 		return
@@ -165,15 +189,21 @@
 
 /// Attempt to hit someone with our charge
 /datum/action/cooldown/mob_cooldown/charge/proc/try_hit_target(atom/movable/source, atom/target)
+	procstart = null
+	src.procstart = null
 	if (can_hit_target(source, target))
 		hit_target(source, target, charge_damage)
 
 /// Returns true if we're allowed to charge into this target
 /datum/action/cooldown/mob_cooldown/charge/proc/can_hit_target(atom/movable/source, atom/target)
+	procstart = null
+	src.procstart = null
 	return isliving(target)
 
 /// Actually hit someone
 /datum/action/cooldown/mob_cooldown/charge/proc/hit_target(atom/movable/source, mob/living/target, damage_dealt)
+	procstart = null
+	src.procstart = null
 	target.visible_message(span_danger("[source] slams into [target]!"), span_userdanger("[source] tramples you into the ground!"))
 	target.apply_damage(damage_dealt, BRUTE, wound_bonus = CANT_WOUND)
 	playsound(get_turf(target), 'sound/effects/meteorimpact.ogg', 100, TRUE)
@@ -196,9 +226,13 @@
 	var/knockdown_duration = 0.6 SECONDS
 
 /datum/action/cooldown/mob_cooldown/charge/basic_charge/do_charge_indicator(atom/charger, atom/charge_target)
+	procstart = null
+	src.procstart = null
 	charger.Shake(shake_pixel_shift, shake_pixel_shift, shake_duration)
 
 /datum/action/cooldown/mob_cooldown/charge/basic_charge/can_hit_target(atom/movable/source, atom/target)
+	procstart = null
+	src.procstart = null
 	if(!isliving(target))
 		if(!target.density || target.CanPass(source, get_dir(target, source)))
 			return FALSE
@@ -206,6 +240,8 @@
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/charge/basic_charge/hit_target(atom/movable/source, atom/target, damage_dealt)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_source
 	if(isliving(source))
 		living_source = source
@@ -235,10 +271,14 @@
 	var/tired_movespeed = /datum/movespeed_modifier/status_effect/tired_post_charge
 
 /datum/status_effect/tired_post_charge/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.add_movespeed_modifier(tired_movespeed)
 
 /datum/status_effect/tired_post_charge/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.remove_movespeed_modifier(tired_movespeed)
 
@@ -252,6 +292,8 @@
 	charge_delay = 0.6 SECONDS
 
 /datum/action/cooldown/mob_cooldown/charge/triple_charge/charge_sequence(atom/movable/charger, atom/target_atom, delay, past)
+	procstart = null
+	src.procstart = null
 	for(var/i in 0 to 2)
 		do_charge(owner, target_atom, charge_delay - 2 * i, charge_past)
 
@@ -270,6 +312,8 @@
 	var/spawn_blood = FALSE
 
 /datum/action/cooldown/mob_cooldown/charge/hallucination_charge/charge_sequence(atom/movable/charger, atom/target_atom, delay, past)
+	procstart = null
+	src.procstart = null
 	if(!enraged || prob(33))
 		hallucination_charge(target_atom, 6, 8, 0, 6, TRUE)
 		return
@@ -279,11 +323,15 @@
 		do_charge(owner, target_atom, charge_delay - 2 * i, charge_past)
 
 /datum/action/cooldown/mob_cooldown/charge/hallucination_charge/do_charge(atom/movable/charger, atom/target_atom, delay, past)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(charger != owner)
 		qdel(charger)
 
 /datum/action/cooldown/mob_cooldown/charge/hallucination_charge/proc/hallucination_charge(atom/target_atom, clone_amount, delay, past, radius, use_self)
+	procstart = null
+	src.procstart = null
 	var/starting_angle = rand(1, 360)
 	if(!radius)
 		return
@@ -309,6 +357,8 @@
 		do_charge(owner, target_atom, delay, past)
 
 /datum/action/cooldown/mob_cooldown/charge/hallucination_charge/hit_target(atom/movable/source, atom/A, damage_dealt)
+	procstart = null
+	src.procstart = null
 	var/applied_damage = charge_damage
 	if(source != owner)
 		applied_damage = hallucination_damage
@@ -323,6 +373,8 @@
 	charge_past = 2
 
 /datum/action/cooldown/mob_cooldown/charge/hallucination_charge/hallucination_surround/charge_sequence(atom/movable/charger, atom/target_atom, delay, past)
+	procstart = null
+	src.procstart = null
 	for(var/i in 0 to 4)
 		hallucination_charge(target_atom, 2, 8, 2, 2, FALSE)
 		do_charge(owner, target_atom, charge_delay, charge_past)

@@ -29,6 +29,8 @@
 	var/obj/item/assembly/prox_sensor/landminemode = null
 
 /obj/item/grenade/chem_grenade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_WIRES)
 	create_reagents(casing_holder_volume)
@@ -36,17 +38,25 @@
 	update_appearance()
 
 /obj/item/grenade/chem_grenade/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(landminemode)
 	QDEL_LIST(beakers)
 	return ..()
 
 /obj/item/grenade/chem_grenade/apply_grenade_fantasy_bonuses(quality)
+	procstart = null
+	src.procstart = null
 	threatscale = modify_fantasy_variable("threatscale", threatscale, quality/10)
 
 /obj/item/grenade/chem_grenade/remove_grenade_fantasy_bonuses(quality)
+	procstart = null
+	src.procstart = null
 	threatscale = reset_fantasy_variable("threatscale", threatscale)
 
 /obj/item/grenade/chem_grenade/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	display_timer = (stage == GRENADE_READY) //show/hide the timer based on assembly state
 	. = ..()
 	if (!user.can_see_reagents())
@@ -73,6 +83,8 @@
 		. += span_notice("You detect no second beaker in the grenade.")
 
 /obj/item/grenade/chem_grenade/update_name(updates)
+	procstart = null
+	src.procstart = null
 	switch (stage)
 		if (GRENADE_EMPTY)
 			name = "[initial(name)] casing"
@@ -83,6 +95,8 @@
 	return ..()
 
 /obj/item/grenade/chem_grenade/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	switch (stage)
 		if (GRENADE_EMPTY)
 			desc = "A do it yourself [initial(name)]! [initial(casedesc)]"
@@ -94,6 +108,8 @@
 
 
 /obj/item/grenade/chem_grenade/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if (active)
 		icon_state = "[base_icon_state]_active"
 		return ..()
@@ -109,6 +125,8 @@
 
 
 /obj/item/grenade/chem_grenade/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if (stage == GRENADE_READY && !active)
 		return ..()
 
@@ -116,6 +134,8 @@
 		wires.interact(user)
 
 /obj/item/grenade/chem_grenade/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if (dud_flags & GRENADE_USED)
 		balloon_alert(user, "resetting trigger...")
 		if (!do_after(user, 2 SECONDS, src))
@@ -155,6 +175,8 @@
 	return TRUE
 
 /obj/item/grenade/chem_grenade/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if (stage != GRENADE_READY || active)
 		return NONE
 
@@ -164,6 +186,8 @@
 	return TRUE
 
 /obj/item/grenade/chem_grenade/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if (stage != GRENADE_WIRED)
 		return NONE
 
@@ -185,6 +209,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/grenade/chem_grenade/item_interaction(mob/living/user, obj/item/item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (isassembly(item) && stage == GRENADE_WIRED)
 		wires.interact(user)
 		return ITEM_INTERACT_SUCCESS
@@ -224,18 +250,26 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/grenade/chem_grenade/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	beakers -= gone
 
 /obj/item/grenade/chem_grenade/proc/stage_change(new_stage)
+	procstart = null
+	src.procstart = null
 	stage = new_stage
 	update_appearance()
 
 /obj/item/grenade/chem_grenade/on_found(mob/finder)
+	procstart = null
+	src.procstart = null
 	var/obj/item/assembly/assembly = wires.get_attached(wires.get_wire(1))
 	assembly?.on_found(finder)
 
 /obj/item/grenade/chem_grenade/log_grenade(mob/user)
+	procstart = null
+	src.procstart = null
 	var/reagent_string = ""
 	var/beaker_number = 1
 	for(var/obj/item/exploded_beaker as anything in beakers)
@@ -248,6 +282,8 @@
 		log_bomber(user, "primed a", src, "containing:[reagent_string]", message_admins = !dud_flags)
 
 /obj/item/grenade/chem_grenade/arm_grenade(mob/user, delayoverride, msg = TRUE, volume = 60)
+	procstart = null
+	src.procstart = null
 	log_grenade(user) //Inbuilt admin procs already handle null users
 	if (user)
 		add_fingerprint(user)
@@ -267,6 +303,8 @@
 		addtimer(CALLBACK(src, PROC_REF(detonate)), isnull(delayoverride)? det_time : delayoverride)
 
 /obj/item/grenade/chem_grenade/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	if(stage != GRENADE_READY)
 		return
 
@@ -301,6 +339,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 1.5)
 
 /obj/item/grenade/chem_grenade/large/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	if(stage != GRENADE_READY || dud_flags)
 		active = FALSE
 		update_appearance()
@@ -379,6 +419,8 @@
 	var/unit_spread = 10 // Amount of units per repeat. Can be altered with a multitool.
 
 /obj/item/grenade/chem_grenade/adv_release/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if (active)
 		return ITEM_INTERACT_BLOCKING
 
@@ -391,6 +433,8 @@
 	return ..()
 
 /obj/item/grenade/chem_grenade/adv_release/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	if(stage != GRENADE_READY || dud_flags)
 		active = FALSE
 		update_appearance()
@@ -429,6 +473,8 @@
 	stage = GRENADE_READY
 
 /obj/item/grenade/chem_grenade/metalfoam/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/cup/beaker/beaker_one = new(src)
 	var/obj/item/reagent_containers/cup/beaker/beaker_two = new(src)
@@ -447,6 +493,8 @@
 	stage = GRENADE_READY
 
 /obj/item/grenade/chem_grenade/smart_metal_foam/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/cup/beaker/large/beaker_one = new(src)
 	var/obj/item/reagent_containers/cup/beaker/beaker_two = new(src)
@@ -465,6 +513,8 @@
 	stage = GRENADE_READY
 
 /obj/item/grenade/chem_grenade/incendiary/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/cup/beaker/beaker_one = new(src)
 	var/obj/item/reagent_containers/cup/beaker/beaker_two = new(src)
@@ -483,6 +533,8 @@
 	stage = GRENADE_READY
 
 /obj/item/grenade/chem_grenade/antiweed/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/cup/beaker/beaker_one = new(src)
 	var/obj/item/reagent_containers/cup/beaker/beaker_two = new(src)
@@ -502,6 +554,8 @@
 	stage = GRENADE_READY
 
 /obj/item/grenade/chem_grenade/cleaner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/cup/beaker/beaker_one = new(src)
 	var/obj/item/reagent_containers/cup/beaker/beaker_two = new(src)
@@ -520,6 +574,8 @@
 	stage = GRENADE_READY
 
 /obj/item/grenade/chem_grenade/ez_clean/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/cup/beaker/large/beaker_one = new(src)
 	var/obj/item/reagent_containers/cup/beaker/large/beaker_two = new(src)
@@ -539,6 +595,8 @@
 	stage = GRENADE_READY
 
 /obj/item/grenade/chem_grenade/teargas/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/cup/beaker/large/beaker_one = new(src)
 	var/obj/item/reagent_containers/cup/beaker/large/beaker_two = new(src)
@@ -552,6 +610,8 @@
 	beakers += beaker_two
 
 /obj/item/grenade/chem_grenade/teargas/instant/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(detonate())
 		return INITIALIZE_HINT_QDEL
@@ -562,6 +622,8 @@
 	stage = GRENADE_READY
 
 /obj/item/grenade/chem_grenade/facid/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/cup/beaker/bluespace/beaker_one = new(src)
 	var/obj/item/reagent_containers/cup/beaker/bluespace/beaker_two = new(src)
@@ -582,6 +644,8 @@
 	stage = GRENADE_READY
 
 /obj/item/grenade/chem_grenade/colorful/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/cup/beaker/beaker_one = new(src)
 	var/obj/item/reagent_containers/cup/beaker/beaker_two = new(src)
@@ -601,6 +665,8 @@
 	var/glitter_colors = list(COLOR_WHITE = 100)
 
 /obj/item/grenade/chem_grenade/glitter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/cup/beaker/beaker_one = new(src)
 	var/obj/item/reagent_containers/cup/beaker/beaker_two = new(src)
@@ -629,6 +695,8 @@
 	stage = GRENADE_READY
 
 /obj/item/grenade/chem_grenade/clf3/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/cup/beaker/bluespace/beaker_one = new(src)
 	var/obj/item/reagent_containers/cup/beaker/bluespace/beaker_two = new(src)
@@ -647,6 +715,8 @@
 	stage = GRENADE_READY
 
 /obj/item/grenade/chem_grenade/bioterrorfoam/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/cup/beaker/bluespace/beaker_one = new(src)
 	var/obj/item/reagent_containers/cup/beaker/bluespace/beaker_two = new(src)
@@ -667,6 +737,8 @@
 	stage = GRENADE_READY
 
 /obj/item/grenade/chem_grenade/tuberculosis/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/cup/beaker/bluespace/beaker_one = new(src)
 	var/obj/item/reagent_containers/cup/beaker/bluespace/beaker_two = new(src)
@@ -688,6 +760,8 @@
 	stage = GRENADE_READY
 
 /obj/item/grenade/chem_grenade/holy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/cup/beaker/meta/beaker_one = new(src)
 	var/obj/item/reagent_containers/cup/beaker/meta/beaker_two = new(src)

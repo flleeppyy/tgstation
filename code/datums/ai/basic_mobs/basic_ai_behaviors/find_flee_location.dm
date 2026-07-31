@@ -7,6 +7,8 @@
 	var/destination_key
 
 /datum/bt_node/ai_behavior/find_flee_location/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/run_distance = controller.blackboard[BB_BASIC_MOB_FLEE_DISTANCE] || DEFAULT_BASIC_FLEE_DISTANCE
 	var/atom/target = controller.blackboard[hiding_location_key] || controller.blackboard[target_key]
 	if(QDELETED(target) || !can_see(controller.pawn, target, run_distance))
@@ -20,6 +22,8 @@
 	return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/find_flee_location/proc/get_flee_step(datum/ai_controller/controller, atom/target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/pawn = controller.pawn
 	var/turf/pawn_turf = get_turf(pawn)
 	var/datum/can_pass_info/pass_info = new(pawn, controller.get_access())

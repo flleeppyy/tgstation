@@ -155,19 +155,27 @@ GLOBAL_LIST_INIT(wiremod_flag_info, list(
 	var/datum/port/output/output_params
 
 /obj/item/circuit_component/filter_helper/populate_options()
+	procstart = null
+	src.procstart = null
 	filter_type_port = add_option_port("Filter Type", assoc_to_keys(GLOB.wiremod_filter_info))
 
 /obj/item/circuit_component/filter_helper/populate_ports()
+	procstart = null
+	src.procstart = null
 	current_filter_type = filter_type_port.value
 	output_params = add_output_port("Parameters", PORT_TYPE_ASSOC_LIST(PORT_TYPE_STRING, PORT_TYPE_ANY))
 	handle_filter_type_changed()
 
 /obj/item/circuit_component/filter_helper/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if((port == filter_type_port) && filter_type_port.value != current_filter_type)
 		current_filter_type = filter_type_port.value
 		handle_filter_type_changed()
 
 /obj/item/circuit_component/filter_helper/proc/handle_filter_type_changed()
+	procstart = null
+	src.procstart = null
 	for(var/param_name in filter_params)
 		remove_input_port(filter_params[param_name])
 	filter_params.Cut()
@@ -177,6 +185,8 @@ GLOBAL_LIST_INIT(wiremod_flag_info, list(
 			default = GLOB.master_filter_info?[current_filter_type]["defaults"][param_name])
 
 /obj/item/circuit_component/filter_helper/input_received(datum/port/input/port, list/return_values)
+	procstart = null
+	src.procstart = null
 	var/list/new_params = list()
 	for(var/param_name in filter_params)
 		var/datum/port/input/param_port = filter_params[param_name]
@@ -200,9 +210,13 @@ GLOBAL_LIST_INIT(wiremod_flag_info, list(
 	var/list/filter_params = list()
 
 /obj/item/circuit_component/filter_adder/populate_options()
+	procstart = null
+	src.procstart = null
 	filter_type_port = add_option_port("Filter Type", assoc_to_keys(GLOB.wiremod_filter_info))
 
 /obj/item/circuit_component/filter_adder/populate_ports()
+	procstart = null
+	src.procstart = null
 	current_filter_type = filter_type_port.value
 	target_port = add_input_port("Target", PORT_TYPE_ATOM)
 	filter_name = add_input_port("Filter Name", PORT_TYPE_STRING)
@@ -210,11 +224,15 @@ GLOBAL_LIST_INIT(wiremod_flag_info, list(
 	handle_filter_type_changed()
 
 /obj/item/circuit_component/filter_adder/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if((port == filter_type_port) && filter_type_port.value != current_filter_type)
 		current_filter_type = filter_type_port.value
 		handle_filter_type_changed()
 
 /obj/item/circuit_component/filter_adder/proc/handle_filter_type_changed()
+	procstart = null
+	src.procstart = null
 	for(var/param_name in filter_params)
 		remove_input_port(filter_params[param_name])
 	filter_params.Cut()
@@ -225,6 +243,8 @@ GLOBAL_LIST_INIT(wiremod_flag_info, list(
 			default = GLOB.master_filter_info?[current_filter_type]["defaults"][param_name])
 
 /obj/item/circuit_component/filter_adder/input_received(datum/port/input/port, list/return_values)
+	procstart = null
+	src.procstart = null
 	var/atom/target_atom = target_port.value
 	if(!target_atom)
 		return
@@ -247,10 +267,14 @@ GLOBAL_LIST_INIT(wiremod_flag_info, list(
 	var/datum/port/input/filter_name
 
 /obj/item/circuit_component/filter_remover/populate_ports()
+	procstart = null
+	src.procstart = null
 	target_port = add_input_port("Target", PORT_TYPE_ATOM)
 	filter_name = add_input_port("Filter Name", PORT_TYPE_STRING)
 
 /obj/item/circuit_component/filter_remover/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	var/atom/target_atom = target_port.value
 	if(!target_atom)
 		return
@@ -272,19 +296,27 @@ GLOBAL_LIST_INIT(wiremod_flag_info, list(
 	var/datum/port/output/output_bitflag
 
 /obj/item/circuit_component/bitflag_helper/populate_options()
+	procstart = null
+	src.procstart = null
 	bitflag_port = add_option_port("Bitflag Type", assoc_to_keys(GLOB.wiremod_flag_info))
 
 /obj/item/circuit_component/bitflag_helper/populate_ports()
+	procstart = null
+	src.procstart = null
 	current_bitflag = bitflag_port.value
 	handle_bitflag_type_changed()
 	output_bitflag = add_output_port("Output", PORT_TYPE_NUMBER)
 
 /obj/item/circuit_component/bitflag_helper/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(port == bitflag_port && bitflag_port.value != current_bitflag)
 		current_bitflag = bitflag_port.value
 		handle_bitflag_type_changed()
 
 /obj/item/circuit_component/bitflag_helper/proc/handle_bitflag_type_changed()
+	procstart = null
+	src.procstart = null
 	for(var/flag_name in flag_ports)
 		remove_input_port(flag_ports[flag_name])
 	flag_ports.Cut()
@@ -297,6 +329,8 @@ GLOBAL_LIST_INIT(wiremod_flag_info, list(
 			flag_ports[flag] = add_input_port(flag, PORT_TYPE_NUMBER)
 
 /obj/item/circuit_component/bitflag_helper/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	var/new_output = 0
 	var/list/flags = GLOB.wiremod_flag_info[current_bitflag]
 	for(var/flag in flags)

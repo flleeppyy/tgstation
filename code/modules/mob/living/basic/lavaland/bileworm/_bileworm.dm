@@ -40,6 +40,8 @@
 	var/jumping = FALSE
 
 /mob/living/basic/mining/bileworm/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_IMMOBILIZED, INNATE_TRAIT)
 
@@ -60,11 +62,15 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /mob/living/basic/mining/bileworm/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (stat != DEAD && !jumping)
 		. += emissive_appearance(icon, emissive_state, src)
 
 /mob/living/basic/mining/bileworm/on_attacked(datum/source, atom/attacker, attack_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!(attack_flags & (ATTACKER_STAMINA_ATTACK | ATTACKER_SHOVING)))
 		ai_controller?.set_blackboard_key(BB_BILEWORM_SCARED, TRUE)

@@ -13,6 +13,8 @@
  * Produces a signal [COMSIG_ATOM_EXAMINE], for modifying the list returned from this proc
  */
 /atom/proc/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	. += get_name_chaser(user)
 	if(desc)
@@ -61,6 +63,8 @@
 
 /// Returns an examine string describing what the contents of this atom smell like
 /atom/proc/get_sniff_examine(mob/living/carbon/sniffer)
+	procstart = null
+	src.procstart = null
 	if(!istype(sniffer) || HAS_TRAIT(sniffer, TRAIT_ANOSMIA))
 		return
 	if(!is_open_container() || !reagents?.total_volume)
@@ -96,6 +100,8 @@
  * where "item" is pulled from [/atom/proc/examine_descriptor]
  */
 /atom/proc/examine_tags(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(abstract_type == type)
 		.[span_hypnophrase("abstract")] = "This is an abstract concept, you should report this to a strange entity called GITHUB!"
@@ -125,10 +131,14 @@
 
 /// What this atom should be called in examine tags
 /atom/proc/examine_descriptor(mob/user)
+	procstart = null
+	src.procstart = null
 	return "object"
 
 /// Returns a list of strings to be displayed after the descriptor
 /atom/proc/examine_post_descriptor(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(!custom_materials)
 		return
@@ -147,6 +157,8 @@
  * Produces a signal [COMSIG_ATOM_EXAMINE_MORE]
  */
 /atom/proc/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	RETURN_TYPE(/list)
 
@@ -179,6 +191,8 @@
  * [COMSIG_ATOM_GET_EXAMINE_NAME] signal
  */
 /atom/proc/get_examine_name(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/override = list(article, null, "<em>[get_visible_name()]</em>")
 	SEND_SIGNAL(src, COMSIG_ATOM_GET_EXAMINE_NAME, user, override)
 
@@ -191,6 +205,8 @@
 	return "\a [src]"
 
 /mob/living/get_examine_name(mob/user)
+	procstart = null
+	src.procstart = null
 	var/visible_name = get_visible_name()
 	var/list/name_override = list(visible_name)
 	if(SEND_SIGNAL(user, COMSIG_LIVING_PERCEIVE_EXAMINE_NAME, src, visible_name, name_override) & COMPONENT_EXAMINE_NAME_OVERRIDEN)
@@ -199,6 +215,8 @@
 
 /// Icon displayed in examine
 /atom/proc/get_examine_icon(mob/user)
+	procstart = null
+	src.procstart = null
 	return icon2html(src, user)
 
 /**
@@ -208,6 +226,8 @@
  * * thats - whether to include "That's", or similar (mobs use "This is") before the name
  */
 /atom/proc/examine_title(mob/user, thats = FALSE)
+	procstart = null
+	src.procstart = null
 	var/examine_icon = get_examine_icon(user)
 	return "[examine_icon ? "[examine_icon] " : ""][thats ? "[examine_thats] ":""]<em>[get_examine_name(user)]</em>"
 
@@ -218,10 +238,14 @@
  * * user - The user who is doing the examining.
  */
 /atom/proc/get_id_examine_strings(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 ///Used to insert text after the name but before the description in examine()
 /atom/proc/get_name_chaser(mob/user, list/name_chaser = list())
+	procstart = null
+	src.procstart = null
 	return name_chaser
 
 /**
@@ -232,4 +256,6 @@
  * * force_real_name - If TRUE, will always return real_name and add (as face_name/id_name) if it doesn't match their appearance
  */
 /atom/proc/get_visible_name(add_id_name = TRUE, force_real_name = FALSE)
+	procstart = null
+	src.procstart = null
 	return name

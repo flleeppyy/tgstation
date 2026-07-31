@@ -18,17 +18,23 @@
 	)
 
 /datum/antagonist/highlander/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/subject = owner.current || mob_override
 	subject.add_traits(applicable_traits, HIGHLANDER_TRAIT)
 	REMOVE_TRAIT(subject, TRAIT_PACIFISM, ROUNDSTART_TRAIT)
 
 /datum/antagonist/highlander/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/subject = owner.current || mob_override
 	subject.remove_traits(applicable_traits, HIGHLANDER_TRAIT)
 	if(subject.has_quirk(/datum/quirk/nonviolent))
 		ADD_TRAIT(subject, TRAIT_PACIFISM, ROUNDSTART_TRAIT)
 
 /datum/antagonist/highlander/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/steal/steal_objective = new
 	steal_objective.owner = owner
 	steal_objective.set_target(new /datum/objective_item/steal/nukedisc)
@@ -38,17 +44,23 @@
 	objectives += elimination_objective
 
 /datum/antagonist/highlander/on_gain()
+	procstart = null
+	src.procstart = null
 	forge_objectives()
 	give_equipment()
 	. = ..()
 
 /datum/antagonist/highlander/greet()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_bolddanger("Your [sword.name] cries out for blood. Claim the lives of others, and your own will be restored!\n\
 	Activate it in your hand, and it will lead to the nearest target. Attack the nuclear authentication disk with it, and you will store it."))
 
 	owner.announce_objectives()
 
 /datum/antagonist/highlander/proc/give_equipment()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = owner.current
 	if(!istype(H))
 		return
@@ -88,10 +100,14 @@
 	name = "\improper highlander"
 
 /datum/antagonist/highlander/robot/greet()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_bolddanger("Your integrated claymore cries out for blood. Claim the lives of others, and your own will be restored!\n\
 	Activate it in your hand, and it will lead to the nearest target. Attack the nuclear authentication disk with it, and you will store it."))
 
 /datum/antagonist/highlander/robot/give_equipment()
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/robotlander = owner.current
 	if(!istype(robotlander))
 		return ..()

@@ -22,6 +22,8 @@
 	var/list/blood_dna
 
 /datum/material/meat/on_main_applied(atom/source, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	make_edible(source, mat_amount, multiplier)
 	ADD_TRAIT(source, TRAIT_ROD_REMOVE_FISHING_DUD, REF(src)) //The rod itself is the bait... sorta.
@@ -35,11 +37,15 @@
 			organ.organ_flags |= ORGAN_ORGANIC
 
 /datum/material/meat/on_applied(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_EDIBLE(source))
 		make_edible(source, mat_amount, multiplier)
 
 /datum/material/meat/on_edible_applied(atom/source, datum/component/edible/edible)
+	procstart = null
+	src.procstart = null
 	source.reagents.convert_reagent(/datum/reagent/consumable/nutriment, /datum/reagent/consumable/nutriment/protein, keep_data = TRUE)
 	var/datum/reagent/meaty_chem = source.reagents.has_reagent(/datum/reagent/consumable/nutriment/protein)
 	if(meaty_chem)
@@ -51,6 +57,8 @@
 	source.AddComponentFrom(SOURCE_EDIBLE_MEAT_MAT, /datum/component/edible, foodtypes = MEAT)
 
 /datum/material/meat/on_edible_removed(atom/source, datum/component/edible/edible)
+	procstart = null
+	src.procstart = null
 	source.reagents.convert_reagent(/datum/reagent/consumable/nutriment/protein, /datum/reagent/consumable/nutriment, keep_data = TRUE)
 	var/datum/reagent/unmeaty_chem = source.reagents.has_reagent(/datum/reagent/consumable/nutriment)
 	if(unmeaty_chem)
@@ -62,6 +70,8 @@
 	//the edible source is removed by on_removed()
 
 /datum/material/meat/proc/make_edible(atom/source, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	if(source.material_flags & MATERIAL_NO_EDIBILITY)
 		return
 	var/protein_count = 3 * (mat_amount / SHEET_MATERIAL_AMOUNT) * multiplier
@@ -94,6 +104,8 @@
 	)
 
 /datum/material/meat/on_removed(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	source.RemoveComponentSource(SOURCE_EDIBLE_MEAT_MAT, /datum/component/edible)
 	qdel(source.GetComponent(/datum/component/blood_walk))
@@ -101,6 +113,8 @@
 	source.RemoveComponentSource(SOURCE_EDIBLE_MEAT_MAT, /datum/component/edible)
 
 /datum/material/meat/on_main_removed(atom/source, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(source, TRAIT_ROD_REMOVE_FISHING_DUD, REF(src))
 	if(isbodypart(source))
@@ -118,6 +132,8 @@
 	var/subjectjob = null
 
 /datum/material/meat/mob_meat/Initialize(_id, mob/living/source)
+	procstart = null
+	src.procstart = null
 	if(!istype(source))
 		return FALSE
 
@@ -144,6 +160,8 @@
 	init_flags = MATERIAL_INIT_BESPOKE
 
 /datum/material/meat/species_meat/Initialize(_id, datum/species/source)
+	procstart = null
+	src.procstart = null
 	if(!istype(source))
 		return FALSE
 
@@ -162,6 +180,8 @@
 	init_flags = MATERIAL_INIT_BESPOKE
 
 /datum/material/meat/blood_meat/Initialize(_id, datum/reagent/source)
+	procstart = null
+	src.procstart = null
 	if(!istype(source))
 		return FALSE
 

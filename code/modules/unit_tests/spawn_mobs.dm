@@ -2,6 +2,8 @@
 /datum/unit_test/spawn_mobs
 
 /datum/unit_test/spawn_mobs/Run()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/simple_animal/animal as anything in subtypesof(/mob/living/simple_animal))
 		if (initial(animal.gold_core_spawnable))
 			allocate(animal)

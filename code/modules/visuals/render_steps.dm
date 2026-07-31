@@ -13,6 +13,8 @@
 	appearance_flags = KEEP_APART|KEEP_TOGETHER|RESET_TRANSFORM
 
 /atom/movable/render_step/Initialize(mapload, atom/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	verbs.Cut() //Cargo cultttttt
 
@@ -24,23 +26,35 @@
 	RegisterSignal(source, COMSIG_QDELETING, PROC_REF(on_source_deleting))
 
 /atom/movable/render_step/ex_act(severity)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /atom/movable/render_step/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/movable/render_step/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/movable/render_step/blob_act()
+	procstart = null
+	src.procstart = null
 	return
 
 //Prevents people from moving these after creation, because they shouldn't be.
 /atom/movable/render_step/forceMove(atom/destination, no_tp=FALSE, harderforce = FALSE)
+	procstart = null
+	src.procstart = null
 	if(harderforce)
 		return ..()
 
 /atom/movable/render_step/proc/on_source_deleting(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!QDELING(src))
@@ -57,6 +71,8 @@
 	appearance_flags = KEEP_APART|KEEP_TOGETHER|RESET_COLOR|RESET_TRANSFORM
 
 /atom/movable/render_step/color/Initialize(mapload, atom/source, color)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.color = color
 
@@ -74,6 +90,8 @@
 	appearance_flags = EMISSIVE_APPEARANCE_FLAGS|RESET_TRANSFORM
 
 /atom/movable/render_step/emissive_blocker/Initialize(mapload, atom/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.color = GLOB.em_block_color
 
@@ -88,5 +106,7 @@
 	appearance_flags = EMISSIVE_APPEARANCE_FLAGS|RESET_TRANSFORM
 
 /atom/movable/render_step/emissive/Initialize(mapload, source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.color = GLOB.emissive_color

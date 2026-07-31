@@ -10,12 +10,16 @@
 
 /// Called when the transport is loaded by the config controller, not called on the default transport unless it gets loaded by a config change.
 /datum/asset_transport/proc/Load()
+	procstart = null
+	src.procstart = null
 	if (CONFIG_GET(flag/asset_simple_preload))
 		for(var/client/C in GLOB.clients)
 			addtimer(CALLBACK(src, PROC_REF(send_assets_slow), C, preload), 1 SECONDS)
 
 /// Initialize - Called when SSassets initializes.
 /datum/asset_transport/proc/Initialize(list/assets)
+	procstart = null
+	src.procstart = null
 	preload = assets.Copy()
 	if (!CONFIG_GET(flag/asset_simple_preload))
 		return
@@ -35,6 +39,8 @@
  * * dmi_file_path - optional, means that the given asset is from the rsc and thus we dont need to do some expensive operations
  */
 /datum/asset_transport/proc/register_asset(asset_name, asset, file_hash, dmi_file_path)
+	procstart = null
+	src.procstart = null
 	var/datum/asset_cache_item/ACI = asset
 	if (!istype(ACI))
 		ACI = new(asset_name, asset, file_hash, dmi_file_path)
@@ -59,6 +65,8 @@
 
 /// Immediately removes an asset from the asset cache.
 /datum/asset_transport/proc/unregister_asset(asset_name)
+	procstart = null
+	src.procstart = null
 	SSassets.cache[asset_name] = null
 	SSassets.cache.Remove(null)
 
@@ -66,6 +74,8 @@
 /// asset_name - Name of the asset.
 /// asset_cache_item - asset cache item datum for the asset, optional, overrides asset_name
 /datum/asset_transport/proc/get_asset_url(asset_name, datum/asset_cache_item/asset_cache_item)
+	procstart = null
+	src.procstart = null
 	if (!istype(asset_cache_item))
 		asset_cache_item = SSassets.cache[asset_name]
 	// To ensure code that breaks on cdns breaks in local testing, we only
@@ -84,6 +94,8 @@
 /// asset_list - A list of asset filenames to be sent to the client. Can optionally be assoicated with the asset's asset_cache_item datum.
 /// Returns TRUE if any assets were sent.
 /datum/asset_transport/proc/send_assets(client/client, list/asset_list)
+	procstart = null
+	src.procstart = null
 #if defined(UNIT_TESTS)
 	return
 #endif
@@ -150,6 +162,8 @@
 
 /// Precache files without clogging up the browse() queue, used for passively sending files on connection start.
 /datum/asset_transport/proc/send_assets_slow(client/client, list/files, filerate = SLOW_ASSET_SEND_RATE)
+	procstart = null
+	src.procstart = null
 	var/startingfilerate = filerate
 	for (var/file in files)
 		if (!client)
@@ -163,6 +177,8 @@
 /// Check the config is valid to load this transport
 /// Returns TRUE or FALSE
 /datum/asset_transport/proc/validate_config(log = TRUE)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 #undef ASSET_CACHE_TELL_CLIENT_AMOUNT

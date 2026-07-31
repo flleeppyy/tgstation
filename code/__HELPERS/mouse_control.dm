@@ -1,5 +1,7 @@
 ///Returns an angle in degrees relative to the position of the mouse and that of the client eye.
 /proc/mouse_angle_from_client(client/client, params)
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return
 	var/list/modifiers = params2list(params)
@@ -20,6 +22,8 @@
 
 //Wow, specific name!
 /proc/mouse_absolute_datum_map_position_from_client(client/client)
+	procstart = null
+	src.procstart = null
 	if(!isloc(client.mob.loc))
 		return
 	var/list/modifiers = params2list(client.mouseParams)

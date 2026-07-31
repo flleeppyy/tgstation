@@ -1,4 +1,6 @@
 /proc/get_step_multiz(ref, dir)
+	procstart = null
+	src.procstart = null
 	var/turf/us = get_turf(ref)
 	if(dir & UP)
 		dir &= ~UP
@@ -9,6 +11,8 @@
 	return get_step(ref, dir)
 
 /proc/get_dir_multiz(turf/us, turf/them)
+	procstart = null
+	src.procstart = null
 	us = get_turf(us)
 	them = get_turf(them)
 	if(!us || !them)
@@ -29,6 +33,8 @@
 		return (dir | get_dir(us, them))
 
 /proc/get_lowest_turf(atom/ref)
+	procstart = null
+	src.procstart = null
 	var/turf/us = get_turf(ref)
 	var/turf/next = GET_TURF_BELOW(us)
 	while(next)
@@ -38,6 +44,8 @@
 
 // I wish this was lisp
 /proc/get_highest_turf(atom/ref)
+	procstart = null
+	src.procstart = null
 	var/turf/us = get_turf(ref)
 	var/turf/next = GET_TURF_ABOVE(us)
 	while(next)

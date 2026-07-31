@@ -12,12 +12,18 @@
 	)
 
 /datum/quirk/monochromatic/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	quirk_holder.add_client_colour(/datum/client_colour/monochrome, QUIRK_TRAIT)
 
 /datum/quirk/monochromatic/post_add()
+	procstart = null
+	src.procstart = null
 	if(is_detective_job(quirk_holder.mind.assigned_role))
 		to_chat(quirk_holder, span_bolddanger("Mmm. Nothing's ever clear on this station. It's all shades of gray..."))
 		quirk_holder.playsound_local(quirk_holder, 'sound/ambience/security/ambidet1.ogg', 50, FALSE)
 
 /datum/quirk/monochromatic/remove()
+	procstart = null
+	src.procstart = null
 	quirk_holder.remove_client_colour(QUIRK_TRAIT)

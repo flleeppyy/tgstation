@@ -9,6 +9,8 @@
 	var/drop_type
 
 /datum/element/projectile_drop/Attach(datum/target, drop_type)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isprojectile(target))
 		return ELEMENT_INCOMPATIBLE
@@ -17,10 +19,14 @@
 	RegisterSignal(target, COMSIG_PROJECTILE_SELF_ON_HIT, PROC_REF(spawn_drop_if_not_embeddable))
 
 /datum/element/projectile_drop/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, list(COMSIG_PROJECTILE_RANGE_OUT, COMSIG_PROJECTILE_SELF_ON_HIT))
 	return ..()
 
 /datum/element/projectile_drop/proc/spawn_drop(obj/projectile/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/turf/turf = get_turf(source)
 	var/atom/new_drop = new drop_type(turf)
@@ -29,6 +35,8 @@
 	Detach(source)
 
 /datum/element/projectile_drop/proc/spawn_drop_if_not_embeddable(obj/projectile/source, atom/movable/firer, atom/hit, angle, hit_zone, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (pierce_hit)
 		return

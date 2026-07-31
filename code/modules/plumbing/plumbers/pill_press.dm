@@ -23,6 +23,8 @@
 	var/packaging_category
 
 /obj/machinery/plumbing/pill_press/Initialize(mapload, layer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!packaging_types)
@@ -56,6 +58,8 @@
 	AddComponent(/datum/component/plumbing/pill_press, layer)
 
 /obj/machinery/plumbing/pill_press/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!is_operational || reagents.total_volume < current_volume)
 		return
 
@@ -78,17 +82,23 @@
 	use_energy(active_power_usage * seconds_per_tick)
 
 /obj/machinery/plumbing/pill_press/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/chemmaster)
 	)
 
 /obj/machinery/plumbing/pill_press/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ChemPress", name)
 		ui.open()
 
 /obj/machinery/plumbing/pill_press/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["min_volume"] = MIN_VOLUME
@@ -97,6 +107,8 @@
 	return data
 
 /obj/machinery/plumbing/pill_press/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["current_volume"] = current_volume
@@ -110,6 +122,8 @@
 	return data
 
 /obj/machinery/plumbing/pill_press/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

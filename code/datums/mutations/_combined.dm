@@ -4,6 +4,8 @@
 	var/result = null
 
 /proc/get_mixed_mutation(mutation1, mutation2)
+	procstart = null
+	src.procstart = null
 	if(!mutation1 || !mutation2)
 		return FALSE
 	if(mutation1 == mutation2) //this could otherwise be bad

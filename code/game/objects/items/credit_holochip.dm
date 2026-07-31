@@ -12,6 +12,8 @@
 	var/credits = 0
 
 /obj/item/holochip/Initialize(mapload, amount = 1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!credits && amount)
 		credits = amount
@@ -23,24 +25,34 @@
 	register_context()
 
 /obj/item/holochip/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "[span_notice("It's loaded with [credits] [MONEY_NAME_AUTOPURAL(credits)]")]\n"+\
 	span_notice("Alt-Click to split.")
 
 /obj/item/holochip/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(istype(held_item, /obj/item/holochip))
 		context[SCREENTIP_CONTEXT_LMB] = "Merge Into"
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "Extract [MONEY_NAME_CAPITALIZED]"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/holochip/get_item_credit_value()
+	procstart = null
+	src.procstart = null
 	return credits
 
 /obj/item/holochip/update_name()
+	procstart = null
+	src.procstart = null
 	name = "\improper [credits] [MONEY_NAME_SINGULAR] holochip"
 	return ..()
 
 /obj/item/holochip/update_icon_state()
+	procstart = null
+	src.procstart = null
 	var/icon_suffix = ""
 	switch(credits)
 		if(1e3 to (1e6 - 1))
@@ -54,6 +66,8 @@
 	return ..()
 
 /obj/item/holochip/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/rounded_credits
 	switch(credits)
@@ -90,6 +104,8 @@
 	. += holochip_overlay
 
 /obj/item/holochip/proc/spend(amount, pay_anyway = FALSE)
+	procstart = null
+	src.procstart = null
 	if(credits >= amount)
 		credits -= amount
 		if(credits == 0)
@@ -103,6 +119,8 @@
 		return 0
 
 /obj/item/holochip/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/holochip))
 		return NONE
 
@@ -114,6 +132,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/holochip/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(loc != user)
 		to_chat(user, span_warning("You must be holding the holochip to continue!"))
 		return CLICK_ACTION_BLOCKING
@@ -130,6 +150,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/holochip/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return

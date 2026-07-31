@@ -7,6 +7,8 @@
 	threshold_penalty = 5
 
 /datum/wound/pierce/get_self_check_description(self_aware)
+	procstart = null
+	src.procstart = null
 	if(!limb.can_bleed())
 		return ..()
 
@@ -45,6 +47,8 @@
 	VAR_FINAL/mend_state = FALSE
 
 /datum/wound/pierce/bleed/wound_injury(datum/wound/old_wound = null, attack_direction = null)
+	procstart = null
+	src.procstart = null
 	set_blood_flow(initial_flow)
 	if(limb.can_bleed() && attack_direction && victim.get_blood_volume() > BLOOD_VOLUME_OKAY)
 		victim.spray_blood(attack_direction, severity)
@@ -52,6 +56,8 @@
 	return ..()
 
 /datum/wound/pierce/bleed/receive_damage(wounding_type, wounding_dmg, wound_bonus, attack_direction, damage_source)
+	procstart = null
+	src.procstart = null
 	if(victim.stat == DEAD || wounding_dmg < 5 || !limb.can_bleed() || !victim.get_blood_volume() || !prob(internal_bleeding_chance + wounding_dmg))
 		return
 	// 20 force attack ~=  5-16 blood loss ~= 1%-3% of blood volume
@@ -84,6 +90,8 @@
 		victim.spray_blood(attack_direction)
 
 /datum/wound/pierce/bleed/get_bleed_rate_of_change()
+	procstart = null
+	src.procstart = null
 	//basically if a species doesn't bleed, the wound is stagnant and will not heal on its own (nor get worse)
 	if(!limb.can_bleed())
 		return BLOOD_FLOW_STEADY
@@ -96,6 +104,8 @@
 	return BLOOD_FLOW_STEADY
 
 /datum/wound/pierce/bleed/handle_process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if (!victim || HAS_TRAIT(victim, TRAIT_STASIS))
 		return
 
@@ -122,6 +132,8 @@
 		adjust_blood_flow(-clot_rate * seconds_per_tick)
 
 /datum/wound/pierce/bleed/adjust_blood_flow(adjust_by, minimum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(blood_flow > WOUND_MAX_BLOODFLOW)
 		blood_flow = WOUND_MAX_BLOODFLOW
@@ -130,26 +142,36 @@
 		qdel(src)
 
 /datum/wound/pierce/bleed/check_grab_treatments(obj/item/tool, mob/user)
+	procstart = null
+	src.procstart = null
 	// if we're using something hot but not a cautery, we need to be aggro grabbing them first,
 	// so we don't try treating someone we're eswording
 	return tool.get_temperature() >= FIRE_MINIMUM_TEMPERATURE_TO_EXIST
 
 /datum/wound/pierce/bleed/treat(obj/item/tool, mob/user)
+	procstart = null
+	src.procstart = null
 	if(tool.tool_behaviour == TOOL_CAUTERY || tool.get_temperature() >= FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
 		tool_cauterize(tool, user)
 
 /datum/wound/pierce/bleed/on_xadone(power)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (limb) // parent can cause us to be removed, so its reasonable to check if we're still applied
 		adjust_blood_flow(-0.03 * power) // i think it's like a minimum of 3 power, so .09 blood_flow reduction per tick is pretty good for 0 effort
 
 /datum/wound/pierce/bleed/on_synthflesh(reac_volume)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	adjust_blood_flow(-0.025 * reac_volume) // 20u * 0.05 = -1 blood flow, less than with slashes but still good considering smaller bleed rates
 
 /// If someone is using either a cautery tool or something with heat to cauterize this pierce
 /datum/wound/pierce/bleed/proc/tool_cauterize(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 
 	var/improv_penalty_mult = (I.tool_behaviour == TOOL_CAUTERY ? 1 : 1.25) // 25% longer and less effective if you don't use a real cautery
 	var/self_penalty_mult = (user == victim ? 1.5 : 1) // 50% longer and less effective if you do it to yourself
@@ -189,6 +211,8 @@
 	wound_series = WOUND_SERIES_FLESH_PUNCTURE_BLEED
 
 /datum/wound/pierce/get_limb_examine_description()
+	procstart = null
+	src.procstart = null
 	return span_warning("The flesh on this limb appears badly perforated.")
 
 /datum/wound/pierce/bleed/moderate
@@ -215,6 +239,8 @@
 	homemade_treat_text = "<b>Tea</b> stimulates the body's natural healing systems, slightly fastening clotting. The wound itself can be rinsed off on a sink or shower as well. Other remedies are unnecessary."
 
 /datum/wound/pierce/bleed/moderate/update_descriptions()
+	procstart = null
+	src.procstart = null
 	if(!limb.can_bleed())
 		examine_desc = "has a small, torn hole"
 		occur_text = "splits a small hole open"
@@ -227,6 +253,8 @@
 	threshold_minimum = 30
 
 /datum/wound_pregen_data/flesh_pierce/breakage/get_weight(obj/item/bodypart/limb, woundtype, damage, attack_direction, damage_source)
+	procstart = null
+	src.procstart = null
 	if (isprojectile(damage_source))
 		return 0
 	return weight
@@ -257,6 +285,8 @@
 	clot_rate = 0
 
 /datum/wound/pierce/bleed/moderate/projectile/update_descriptions()
+	procstart = null
+	src.procstart = null
 	if(!limb.can_bleed())
 		examine_desc = "has a small, circular hole"
 		occur_text = "splits a small hole open"
@@ -265,6 +295,8 @@
 	wound_path_to_generate = /datum/wound/pierce/bleed/moderate/projectile
 
 /datum/wound_pregen_data/flesh_pierce/breakage/projectile/get_weight(obj/item/bodypart/limb, woundtype, damage, attack_direction, damage_source)
+	procstart = null
+	src.procstart = null
 	if (!isprojectile(damage_source))
 		return 0
 	return weight
@@ -293,6 +325,8 @@
 	homemade_treat_text = "Bed sheets can be ripped up to make <b>makeshift gauze</b>. <b>Flour, table salt, or salt mixed with water</b> can be applied directly to stem the flow, though unmixed salt will irritate the skin and worsen natural healing. Resting and grabbing your wound will also reduce bleeding."
 
 /datum/wound/pierce/bleed/severe/update_descriptions()
+	procstart = null
+	src.procstart = null
 	if(!limb.can_bleed())
 		occur_text = "tears a hole open"
 
@@ -304,6 +338,8 @@
 	threshold_minimum = 50
 
 /datum/wound_pregen_data/flesh_pierce/open_puncture/get_weight(obj/item/bodypart/limb, woundtype, damage, attack_direction, damage_source)
+	procstart = null
+	src.procstart = null
 	if (isprojectile(damage_source))
 		return 0
 	return weight
@@ -317,6 +353,8 @@
 	wound_path_to_generate = /datum/wound/pierce/bleed/severe/projectile
 
 /datum/wound_pregen_data/flesh_pierce/open_puncture/projectile/get_weight(obj/item/bodypart/limb, woundtype, damage, attack_direction, damage_source)
+	procstart = null
+	src.procstart = null
 	if (!isprojectile(damage_source))
 		return 0
 	return weight
@@ -328,6 +366,8 @@
 	var/right_side = FALSE
 
 /datum/wound/pierce/bleed/severe/eye/apply_wound(obj/item/bodypart/limb, silent, datum/wound/old_wound, smited, attack_direction, wound_source, replacing, right_side)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/eyes/eyes = locate() in limb
 	if (!istype(eyes))
 		return FALSE
@@ -338,11 +378,15 @@
 	limb.update_part_wound_overlay()
 
 /datum/wound/pierce/bleed/severe/eye/remove_wound(ignore_limb, replaced, destroying)
+	procstart = null
+	src.procstart = null
 	if (!isnull(limb))
 		UnregisterSignal(limb, COMSIG_BODYPART_UPDATE_WOUND_OVERLAY)
 	return ..()
 
 /datum/wound/pierce/bleed/severe/eye/proc/wound_overlay(obj/item/bodypart/source, limb_bleed_rate)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (limb_bleed_rate <= BLEED_OVERLAY_LOW || limb_bleed_rate > BLEED_OVERLAY_GUSH)
@@ -360,6 +404,8 @@
 	can_be_randomly_generated = FALSE
 
 /datum/wound_pregen_data/flesh_pierce/open_puncture/eye/can_be_applied_to(obj/item/bodypart/limb, list/suggested_wounding_types, datum/wound/old_wound, random_roll, duplicates_allowed, care_about_existing_wounds)
+	procstart = null
+	src.procstart = null
 	if (isnull(locate(/obj/item/organ/eyes) in limb))
 		return FALSE
 	return ..()
@@ -377,6 +423,8 @@
 	can_be_randomly_generated = FALSE
 
 /datum/wound/pierce/bleed/severe/magicalearpain/apply_wound(obj/item/bodypart/limb, silent, datum/wound/old_wound, smited, attack_direction, wound_source, replacing)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/ears/ears = locate() in limb
 	if (!istype(ears))
 		return FALSE

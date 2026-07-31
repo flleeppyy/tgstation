@@ -8,6 +8,8 @@ GLOBAL_VAR(string_filename_current_key)
 
 
 /proc/strings_replacement(filepath, key)
+	procstart = null
+	src.procstart = null
 	filepath = sanitize_filepath(filepath)
 	load_strings_file(filepath)
 
@@ -20,6 +22,8 @@ GLOBAL_VAR(string_filename_current_key)
 		CRASH("strings list not found: [STRING_DIRECTORY]/[filepath], index=[key]")
 
 /proc/strings(filepath as text, key as text, directory = STRING_DIRECTORY)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		return
 
@@ -31,9 +35,13 @@ GLOBAL_VAR(string_filename_current_key)
 		CRASH("strings list not found: [directory]/[filepath], index=[key]")
 
 /proc/strings_subkey_lookup(match, group1)
+	procstart = null
+	src.procstart = null
 	return pick_list(GLOB.string_filename_current_key, group1)
 
 /proc/load_strings_file(filepath, directory = STRING_DIRECTORY)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		return
 

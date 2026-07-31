@@ -1,4 +1,6 @@
 /proc/generate_icon_with_head_accessory(datum/sprite_accessory/sprite_accessory, y_offset = 0)
+	procstart = null
+	src.procstart = null
 	var/static/datum/universal_icon/head_icon
 	if (isnull(head_icon))
 		head_icon = uni_icon('icons/mob/human/bodyparts_greyscale.dmi', "human_head_m")
@@ -27,6 +29,8 @@
 	relevant_head_flag = HEAD_EYECOLOR
 
 /datum/preference/color/eye_color/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	var/hetero = target.eye_color_heterochromatic
 	target.eye_color_left = value
 	if(!hetero)
@@ -47,6 +51,8 @@
 	eyes_organ.refresh()
 
 /datum/preference/color/eye_color/create_default_value()
+	procstart = null
+	src.procstart = null
 	return random_eye_color()
 
 /datum/preference/choiced/facial_hairstyle
@@ -59,18 +65,28 @@
 	relevant_head_flag = HEAD_FACIAL_HAIR
 
 /datum/preference/choiced/facial_hairstyle/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return assoc_to_keys_features(SSaccessories.facial_hairstyles_list)
 
 /datum/preference/choiced/facial_hairstyle/icon_for(value)
+	procstart = null
+	src.procstart = null
 	return generate_icon_with_head_accessory(SSaccessories.facial_hairstyles_list[value])
 
 /datum/preference/choiced/facial_hairstyle/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	target.set_facial_hairstyle(value, update = FALSE)
 
 /datum/preference/choiced/facial_hairstyle/create_default_value()
+	procstart = null
+	src.procstart = null
 	return /datum/sprite_accessory/facial_hair/shaved::name
 
 /datum/preference/choiced/facial_hairstyle/create_informed_default_value(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	var/gender = preferences.read_preference(/datum/preference/choiced/gender)
 	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
 	var/datum/species/species_real = GLOB.species_prototypes[species_type]
@@ -85,6 +101,8 @@
 	return picked_beard
 
 /datum/preference/choiced/facial_hairstyle/compile_constant_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 
 	data[SUPPLEMENTAL_FEATURE_KEY] = /datum/preference/color/facial_hair_color::savefile_key
@@ -99,9 +117,13 @@
 	relevant_head_flag = HEAD_FACIAL_HAIR
 
 /datum/preference/color/facial_hair_color/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	target.set_facial_haircolor(value, update = FALSE)
 
 /datum/preference/color/facial_hair_color/create_informed_default_value(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	return preferences.read_preference(/datum/preference/color/hair_color) || random_hair_color()
 
 /datum/preference/choiced/facial_hair_gradient
@@ -113,12 +135,18 @@
 	can_randomize = FALSE
 
 /datum/preference/choiced/facial_hair_gradient/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return assoc_to_keys_features(SSaccessories.facial_hair_gradients_list)
 
 /datum/preference/choiced/facial_hair_gradient/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	target.set_facial_hair_gradient_style(new_style = value, update = FALSE)
 
 /datum/preference/choiced/facial_hair_gradient/create_default_value()
+	procstart = null
+	src.procstart = null
 	return /datum/sprite_accessory/gradient/none::name
 
 /datum/preference/color/facial_hair_gradient
@@ -129,9 +157,13 @@
 	relevant_head_flag = HEAD_FACIAL_HAIR
 
 /datum/preference/color/facial_hair_gradient/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	target.set_facial_hair_gradient_color(new_color = value, update = FALSE)
 
 /datum/preference/color/facial_hair_gradient/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if (!..(preferences))
 		return FALSE
 	return preferences.read_preference(/datum/preference/choiced/facial_hair_gradient) != /datum/sprite_accessory/gradient/none::name
@@ -144,12 +176,18 @@
 	relevant_head_flag = HEAD_HAIR
 
 /datum/preference/color/hair_color/has_relevant_feature(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	return ..() || (/datum/quirk/item_quirk/bald::name in preferences.all_quirks)
 
 /datum/preference/color/hair_color/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	target.set_haircolor(value, update = FALSE)
 
 /datum/preference/color/hair_color/create_informed_default_value(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	return random_hair_color()
 
 /datum/preference/choiced/hairstyle
@@ -162,22 +200,34 @@
 	relevant_head_flag = HEAD_HAIR
 
 /datum/preference/choiced/hairstyle/has_relevant_feature(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	return ..() || (/datum/quirk/item_quirk/bald::name in preferences.all_quirks)
 
 /datum/preference/choiced/hairstyle/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return assoc_to_keys_features(SSaccessories.hairstyles_list)
 
 /datum/preference/choiced/hairstyle/icon_for(value)
+	procstart = null
+	src.procstart = null
 	var/datum/sprite_accessory/hair/hairstyle = SSaccessories.hairstyles_list[value]
 	return generate_icon_with_head_accessory(hairstyle, hairstyle?.y_offset)
 
 /datum/preference/choiced/hairstyle/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	target.set_hairstyle(value, update = FALSE)
 
 /datum/preference/choiced/hairstyle/create_default_value()
+	procstart = null
+	src.procstart = null
 	return /datum/sprite_accessory/hair/bald::name
 
 /datum/preference/choiced/hairstyle/create_informed_default_value(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	var/gender = preferences.read_preference(/datum/preference/choiced/gender)
 	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
 	var/datum/species/species_real = GLOB.species_prototypes[species_type]
@@ -192,6 +242,8 @@
 	return picked_hair
 
 /datum/preference/choiced/hairstyle/compile_constant_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 
 	data[SUPPLEMENTAL_FEATURE_KEY] = /datum/preference/color/hair_color::savefile_key
@@ -207,12 +259,18 @@
 	can_randomize = FALSE
 
 /datum/preference/choiced/hair_gradient/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return assoc_to_keys_features(SSaccessories.hair_gradients_list)
 
 /datum/preference/choiced/hair_gradient/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	target.set_hair_gradient_style(new_style = value, update = FALSE)
 
 /datum/preference/choiced/hair_gradient/create_default_value()
+	procstart = null
+	src.procstart = null
 	return /datum/sprite_accessory/gradient/none::name
 
 /datum/preference/color/hair_gradient
@@ -223,9 +281,13 @@
 	relevant_head_flag = HEAD_HAIR
 
 /datum/preference/color/hair_gradient/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	target.set_hair_gradient_color(new_color = value, update = FALSE)
 
 /datum/preference/color/hair_gradient/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if (!..(preferences))
 		return FALSE
 	return preferences.read_preference(/datum/preference/choiced/hair_gradient) != /datum/sprite_accessory/gradient/none::name

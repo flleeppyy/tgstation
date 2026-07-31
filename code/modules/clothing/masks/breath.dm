@@ -20,20 +20,28 @@
 	bio = 50
 
 /obj/item/clothing/mask/breath/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is wrapping \the [src]'s tube around [user.p_their()] neck! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return OXYLOSS
 
 /obj/item/clothing/mask/breath/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(adjustable)
 		adjust_visor(user)
 
 /obj/item/clothing/mask/breath/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!adjustable)
 		return
 	adjust_visor(user)
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/clothing/mask/breath/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(adjustable)
 		. += span_notice("Alt-click [src] to adjust it.")
@@ -64,16 +72,22 @@
 	adjustable = FALSE
 
 /obj/item/clothing/mask/breath/muzzle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/muffles_speech)
 
 /obj/item/clothing/mask/breath/muzzle/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.get_item_by_slot(ITEM_SLOT_MASK) == src)
 		to_chat(user, span_warning("You need help taking this off!"))
 		return
 	return ..()
 
 /obj/item/clothing/mask/breath/muzzle/examine_tags(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["surgical"] = "Does not block surgery on covered bodyparts."
 

@@ -15,12 +15,16 @@
 	)
 
 /datum/quirk/pineapple_hater/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/tongue/tongue = quirk_holder.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!tongue)
 		return
 	tongue.disliked_foodtypes |= PINEAPPLE
 
 /datum/quirk/pineapple_hater/remove()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/tongue/tongue = quirk_holder.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!tongue)
 		return

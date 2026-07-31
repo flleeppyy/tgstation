@@ -11,6 +11,8 @@
 	var/sound_threshold
 
 /datum/component/debris_bleeder/Initialize(list/debris_to_damage, damage_type = BRUTE, sound = null, sound_threshold = 0)
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -22,6 +24,8 @@
 	RegisterSignal(parent, COMSIG_MOB_APPLY_DAMAGE, PROC_REF(on_apply_damage))
 
 /datum/component/debris_bleeder/proc/on_apply_damage(mob/living/liver, amount, damage_type)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(src.damage_type != damage_type)

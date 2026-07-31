@@ -4,6 +4,8 @@
 	var/target_key = BB_BASIC_MOB_ESCAPE_TARGET
 
 /datum/bt_node/decorator/buckle_target_dangerous/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(pacifist)
 		return FALSE
 	var/atom/target = controller.blackboard[target_key]

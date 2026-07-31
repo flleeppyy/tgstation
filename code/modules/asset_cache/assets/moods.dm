@@ -2,6 +2,8 @@
 	name = "moods"
 
 /datum/asset/spritesheet_batched/moods/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	var/list/mood_colors = list(
 		"mood1" = "#f15d36",
 		"mood2" = "#f38943",

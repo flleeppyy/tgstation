@@ -15,4 +15,6 @@
 	bio = 100
 
 /obj/item/clothing/mask/surgical/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	adjust_visor(user)

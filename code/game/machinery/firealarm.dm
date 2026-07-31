@@ -11,6 +11,8 @@
 	pixel_shift = 26
 
 /obj/item/wallframe/firealarm/try_build(atom/support, mob/user)
+	procstart = null
+	src.procstart = null
 	var/area/A = get_area(user)
 	if(A.always_unpowered)
 		balloon_alert(user, "cannot place in this area!")
@@ -57,6 +59,8 @@
 	acid = 30
 
 /obj/machinery/firealarm/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	id_tag = assign_random_name()
 	if(!mapload)
@@ -88,6 +92,8 @@
 	update_appearance()
 
 /obj/machinery/firealarm/Destroy()
+	procstart = null
+	src.procstart = null
 	if(my_area)
 		LAZYREMOVE(my_area.firealarms, src)
 		my_area = null
@@ -97,6 +103,8 @@
 // Area sensitivity is traditionally tied directly to power use, as an optimization
 // But since we want it for fire reacting, we disregard that
 /obj/machinery/firealarm/setup_area_power_relationship()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -105,6 +113,8 @@
 	handle_fire(our_area, our_area.fire)
 
 /obj/machinery/firealarm/on_enter_area(datum/source, area/area_to_register)
+	procstart = null
+	src.procstart = null
 	//were already registered to an area. exit from here first before entering into an new area
 	if(!isnull(my_area))
 		return
@@ -118,10 +128,14 @@
 	update_appearance()
 
 /obj/machinery/firealarm/update_name(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[get_area_name(my_area)] [initial(name)] [id_tag]"
 
 /obj/machinery/firealarm/on_exit_area(datum/source, area/area_to_unregister)
+	procstart = null
+	src.procstart = null
 	//we cannot unregister from an area we never registered to in the first place
 	if(my_area != area_to_unregister)
 		return
@@ -132,6 +146,8 @@
 	my_area = null
 
 /obj/machinery/firealarm/proc/handle_fire(area/source, new_fire)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_status()
 
@@ -143,11 +159,15 @@
  * the alarm sound based on the state of an area variable.
  */
 /obj/machinery/firealarm/proc/set_status()
+	procstart = null
+	src.procstart = null
 	if(!(my_area.fire || LAZYLEN(my_area.active_firelocks)) || (obj_flags & EMAGGED))
 		soundloop.stop()
 	update_appearance()
 
 /obj/machinery/firealarm/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(buildstage != FIRE_ALARM_BUILD_SECURED)
 		set_light(l_on = FALSE)
@@ -157,6 +177,8 @@
 		set_light(l_on = TRUE, l_range = 1.6, l_power = 1)
 
 /obj/machinery/firealarm/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		icon_state = "fire_b[buildstage]"
 		return ..()
@@ -167,6 +189,8 @@
 	return ..()
 
 /obj/machinery/firealarm/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & NOPOWER)
 		return
@@ -205,6 +229,8 @@
 		set_light(l_color = LIGHT_COLOR_INTENSE_RED)
 
 /obj/machinery/firealarm/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (. & EMP_PROTECT_SELF)
@@ -215,6 +241,8 @@
 
 // Stops AI from toggling auto-fire detection, also disables the sound and lighting
 /obj/machinery/firealarm/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -235,6 +263,8 @@
  * * new_level The new security level that is in effect
  */
 /obj/machinery/firealarm/proc/check_security_level(datum/source, new_level)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(is_station_level(z))
@@ -247,6 +277,8 @@
  * * mob/user is the user that pulled the alarm.
  */
 /obj/machinery/firealarm/proc/alarm(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!is_operational || !can_trigger || my_area?.fire)
 		return
 	my_area.alarm_manager.send_alarm(ALARM_FIRE, my_area)
@@ -270,6 +302,8 @@
  * * mob/user is the user that reset the alarm.
  */
 /obj/machinery/firealarm/proc/reset(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!is_operational || !can_reset)
 		return
 	my_area.alarm_manager.clear_alarm(ALARM_FIRE, my_area)
@@ -286,6 +320,8 @@
 	update_use_power(IDLE_POWER_USE)
 
 /obj/machinery/firealarm/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || buildstage != FIRE_ALARM_BUILD_SECURED)
 		return .
@@ -293,6 +329,8 @@
 	return TRUE
 
 /obj/machinery/firealarm/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN || buildstage != FIRE_ALARM_BUILD_SECURED)
 		return .
@@ -301,18 +339,28 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/firealarm/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/firealarm/attack_ai_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand_secondary(user)
 
 /obj/machinery/firealarm/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/firealarm/attack_robot_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand_secondary(user)
 
 /obj/machinery/firealarm/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(issilicon(user))
 		context[SCREENTIP_CONTEXT_CTRL_LMB] = "Toggle automatic fire detection"
 		return CONTEXTUAL_SCREENTIP_SET
@@ -360,6 +408,8 @@
 	return .
 
 /obj/machinery/firealarm/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(buildstage != FIRE_ALARM_BUILD_SECURED)
 		return NONE
 	toggle_panel_open()
@@ -369,9 +419,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/firealarm/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return screwdriver_act(user, tool)
 
 /obj/machinery/firealarm/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		return NONE
 	if(atom_integrity >= max_integrity)
@@ -387,6 +441,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/firealarm/wirecutter_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		return NONE
 	if(buildstage != FIRE_ALARM_BUILD_SECURED)
@@ -401,6 +457,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/firealarm/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		return NONE
 	if(buildstage != FIRE_ALARM_BUILD_NO_WIRES)
@@ -420,9 +478,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/firealarm/crowbar_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return crowbar_act(user, tool)
 
 /obj/machinery/firealarm/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		return NONE
 	if(buildstage != FIRE_ALARM_BUILD_NO_CIRCUIT)
@@ -436,9 +498,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/firealarm/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return wrench_act(user, tool)
 
 /obj/machinery/firealarm/tool_act(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
@@ -451,6 +517,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/firealarm/proc/cable_act(mob/living/user, obj/item/stack/cable_coil/coil)
+	procstart = null
+	src.procstart = null
 	if(buildstage != FIRE_ALARM_BUILD_NO_WIRES)
 		return NONE
 	if(!coil.use(5))
@@ -463,6 +531,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/firealarm/proc/electronics_act(mob/living/user, obj/item/electronics/firealarm/circuit)
+	procstart = null
+	src.procstart = null
 	if(buildstage != FIRE_ALARM_BUILD_NO_CIRCUIT)
 		return NONE
 	if(!user.transferItemToLoc(circuit, src))
@@ -476,6 +546,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/firealarm/proc/pseudocircuit_act(mob/living/user, obj/item/electroadaptive_pseudocircuit/pseudocircuit)
+	procstart = null
+	src.procstart = null
 	if(buildstage != FIRE_ALARM_BUILD_NO_CIRCUIT)
 		return NONE
 	if(!pseudocircuit.adapt_circuit(user, circuit_cost = 0.015 * STANDARD_CELL_CHARGE))
@@ -487,6 +559,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/firealarm/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		return NONE
 
@@ -502,15 +576,21 @@
 	return NONE
 
 /obj/machinery/firealarm/proc/state_callback(desired_build_state, desired_panel_state)
+	procstart = null
+	src.procstart = null
 	return (isnull(desired_build_state) || buildstage == desired_build_state) \
 		&& (isnull(desired_panel_state) || panel_open == desired_panel_state)
 
 /obj/machinery/firealarm/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	if((buildstage == FIRE_ALARM_BUILD_NO_CIRCUIT) && (the_rcd.construction_upgrades & RCD_UPGRADE_SIMPLE_CIRCUITS))
 		return list("delay" = 2 SECONDS, "cost" = 1)
 	return FALSE
 
 /obj/machinery/firealarm/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	procstart = null
+	src.procstart = null
 	switch(rcd_data[RCD_DESIGN_MODE])
 		if(RCD_WALLFRAME)
 			balloon_alert_to_viewers("circuit installed")
@@ -521,6 +601,8 @@
 
 // Taking melee damage always triggers the alarm if panel is open
 /obj/machinery/firealarm/attacked_by(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. <= 0 || !panel_open || buildstage != FIRE_ALARM_BUILD_SECURED)
 		return
@@ -528,6 +610,8 @@
 
 // Taking any damage has a rng chance of triggering the alarm regardless of panel state
 /obj/machinery/firealarm/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.) // no damage received
 		return
@@ -537,16 +621,22 @@
 		alarm()
 
 /obj/machinery/firealarm/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	if (current_size >= STAGE_FIVE) // If the singulo is strong enough to pull anchored objects, the fire alarm experiences integrity failure
 		deconstruct()
 	return ..()
 
 /obj/machinery/firealarm/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(buildstage == FIRE_ALARM_BUILD_NO_CIRCUIT) //can't break the electronics if there isn't any inside.
 		return
 	return ..()
 
 /obj/machinery/firealarm/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/iron(loc)
 	if(buildstage > FIRE_ALARM_BUILD_NO_CIRCUIT)
 		var/obj/item/item = new /obj/item/electronics/firealarm(loc)
@@ -557,6 +647,8 @@
 
 // Allows users to examine the state of the thermal sensor
 /obj/machinery/firealarm/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((my_area?.fire || LAZYLEN(my_area?.active_firelocks)))
 		. += "The local area hazard light is flashing."
@@ -573,12 +665,16 @@
 
 // Allows Silicons to disable thermal sensor
 /obj/machinery/firealarm/BorgCtrlClick(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null
 	if(get_dist(src,user) <= user.interaction_range && !(user.control_disabled))
 		AICtrlClick(user)
 		return
 	return ..()
 
 /obj/machinery/firealarm/AICtrlClick(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		balloon_alert(user, "control circuitry malfunctioning!")
 		return
@@ -586,6 +682,8 @@
 
 /// Toggles automatic fire detection on or off
 /obj/machinery/firealarm/proc/toggle_fire_detect(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!can_toggle_detection)
 		if(user && !silent)
 			balloon_alert(user, "thermal sensors unresponsive!")
@@ -599,6 +697,8 @@
 
 /// Stops the area from automatically activating firelocks
 /obj/machinery/firealarm/proc/disable_fire_detect(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!my_area.fire_detect)
 		return
 	my_area.fire_detect = FALSE
@@ -611,6 +711,8 @@
 
 /// Enables the area to automatically activate firelocks
 /obj/machinery/firealarm/proc/enable_fire_detect(mob/user)
+	procstart = null
+	src.procstart = null
 	if(my_area.fire_detect)
 		return
 	my_area.fire_detect = TRUE
@@ -636,12 +738,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/firealarm, 26)
 	var/static/party_overlay
 
 /obj/machinery/firealarm/partyalarm/reset(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!is_operational || !can_reset)
 		return
 	my_area.party = FALSE
 	my_area.cut_overlay(party_overlay)
 
 /obj/machinery/firealarm/partyalarm/alarm(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!is_operational || !can_trigger)
 		return
 	if (my_area.party || is_area_nearby_station(my_area))
@@ -667,6 +773,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/firealarm, 26)
 	var/obj/machinery/firealarm/attached_alarm
 
 /obj/item/circuit_component/firealarm/populate_ports()
+	procstart = null
+	src.procstart = null
 	alarm_trigger = add_input_port("Set", PORT_TYPE_SIGNAL)
 	reset_trigger = add_input_port("Reset", PORT_TYPE_SIGNAL)
 
@@ -675,6 +783,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/firealarm, 26)
 	reset = add_output_port("Reset", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/firealarm/register_usb_parent(atom/movable/parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(parent, /obj/machinery/firealarm))
 		attached_alarm = parent
@@ -682,23 +792,31 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/firealarm, 26)
 		RegisterSignal(parent, COMSIG_FIREALARM_ON_RESET, PROC_REF(on_firealarm_reset))
 
 /obj/item/circuit_component/firealarm/unregister_usb_parent(atom/movable/parent)
+	procstart = null
+	src.procstart = null
 	attached_alarm = null
 	UnregisterSignal(parent, COMSIG_FIREALARM_ON_TRIGGER)
 	UnregisterSignal(parent, COMSIG_FIREALARM_ON_RESET)
 	return ..()
 
 /obj/item/circuit_component/firealarm/proc/on_firealarm_triggered(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	is_on.set_output(1)
 	triggered.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/firealarm/proc/on_firealarm_reset(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	is_on.set_output(0)
 	reset.set_output(COMPONENT_SIGNAL)
 
 
 /obj/item/circuit_component/firealarm/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(COMPONENT_TRIGGERED_BY(alarm_trigger, port))
 		attached_alarm?.alarm()
 

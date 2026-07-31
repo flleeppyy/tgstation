@@ -12,17 +12,23 @@
 	rust_resistance = RUST_RESISTANCE_BASIC
 
 /turf/closed/wall/material/break_wall()
+	procstart = null
+	src.procstart = null
 	for(var/i in custom_materials)
 		var/datum/material/M = i
 		new M.sheet_type(src, FLOOR(custom_materials[M] / SHEET_MATERIAL_AMOUNT, 1))
 	return new girder_type(src)
 
 /turf/closed/wall/material/devastate_wall()
+	procstart = null
+	src.procstart = null
 	for(var/i in custom_materials)
 		var/datum/material/M = i
 		new M.sheet_type(src, FLOOR(custom_materials[M] / SHEET_MATERIAL_AMOUNT, 1))
 
 /turf/closed/wall/material/finalize_material_effects(list/materials)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = "A huge chunk of [get_material_english_list(materials)] used to separate rooms."
 

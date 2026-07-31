@@ -76,26 +76,38 @@
 	src.check_blocking = check_blocking
 
 /datum/component/anti_magic/Destroy(force)
+	procstart = null
+	src.procstart = null
 	block_magic = null
 	expiration = null
 	return ..()
 
 /datum/component/anti_magic/proc/register_antimagic_signals(datum/on_what)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(on_what, COMSIG_MOB_RECEIVE_MAGIC, PROC_REF(block_receiving_magic), override = TRUE)
 	RegisterSignal(on_what, COMSIG_MOB_RESTRICT_MAGIC, PROC_REF(restrict_casting_magic), override = TRUE)
 
 /datum/component/anti_magic/proc/unregister_antimagic_signals(datum/on_what)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(on_what, list(COMSIG_MOB_RECEIVE_MAGIC, COMSIG_MOB_RESTRICT_MAGIC))
 
 /datum/component/anti_magic/proc/on_buckle(atom/movable/source, mob/living/bucklee)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	register_antimagic_signals(bucklee)
 
 /datum/component/anti_magic/proc/on_unbuckle(atom/movable/source, mob/living/bucklee)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	unregister_antimagic_signals(bucklee)
 
 /datum/component/anti_magic/proc/get_examine_tags(atom/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(antimagic_flags == ALL_MAGIC_RESISTANCE)
@@ -110,6 +122,8 @@
 		examine_list["blessed"] = "It is protected by a divine shield against unholy and dark forms of magic."
 
 /datum/component/anti_magic/proc/on_equip(atom/movable/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(inventory_flags & slot)) //Check that the slot is valid for antimagic
@@ -133,6 +147,8 @@
 		break
 
 /datum/component/anti_magic/proc/on_drop(atom/movable/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Reset alert
@@ -141,6 +157,8 @@
 	unregister_antimagic_signals(user)
 
 /datum/component/anti_magic/proc/block_receiving_magic(mob/living/carbon/source, casted_magic_flags, charge_cost, list/antimagic_sources)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(check_blocking && !check_blocking.Invoke())
@@ -168,6 +186,8 @@
 
 /// cannot cast magic with the same type of antimagic present
 /datum/component/anti_magic/proc/restrict_casting_magic(mob/user, magic_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(magic_flags & antimagic_flags)
@@ -178,5 +198,7 @@
 	return NONE
 
 /datum/component/anti_magic/proc/on_attack(atom/movable/source, atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SEND_SIGNAL(target, COMSIG_ATOM_HOLYATTACK, source, user, antimagic_flags)

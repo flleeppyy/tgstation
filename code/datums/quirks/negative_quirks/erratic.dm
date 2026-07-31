@@ -18,15 +18,21 @@
 	var/random_index = 0
 
 /datum/quirk/erratic/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	base_personalities = LAZYCOPY(quirk_holder.personalities)
 	COOLDOWN_START(src, randomize_cooldown, rand(5, 10) MINUTES)
 
 /datum/quirk/erratic/remove()
+	procstart = null
+	src.procstart = null
 	replace_personalities(base_personalities)
 	if(!QDELING(quirk_holder))
 		announce_personality_change()
 
 /datum/quirk/erratic/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, randomize_cooldown))
 		return
 	if(HAS_TRAIT(quirk_holder, TRAIT_FEARLESS) || IS_UNCONSCIOUS(quirk_holder))
@@ -36,6 +42,8 @@
 	randomize_personalities()
 
 /datum/quirk/erratic/proc/randomize_personalities()
+	procstart = null
+	src.procstart = null
 	random_index += 1
 	if(random_index % 2 == 0)
 		random_index = 0
@@ -51,10 +59,14 @@
 	announce_personality_change()
 
 /datum/quirk/erratic/proc/replace_personalities(list/new_personalities)
+	procstart = null
+	src.procstart = null
 	quirk_holder.clear_personalities()
 	quirk_holder.add_personalities(new_personalities)
 
 /datum/quirk/erratic/proc/announce_personality_change()
+	procstart = null
+	src.procstart = null
 	var/list/new_personality = list()
 	for(var/datum/personality/personality_type as anything in quirk_holder.personalities)
 		new_personality += initial(personality_type.name)

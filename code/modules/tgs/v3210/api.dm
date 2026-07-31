@@ -41,21 +41,29 @@
 	var/warned_custom_commands = FALSE
 
 /datum/tgs_api/v3210/ApiVersion()
+	procstart = null
+	src.procstart = null
 	return new /datum/tgs_version("3.2.1.3")
 
 /datum/tgs_api/v3210/proc/trim_left(text)
+	procstart = null
+	src.procstart = null
 	for (var/i = 1 to length(text))
 		if (text2ascii(text, i) > 32)
 			return copytext(text, i)
 	return ""
 
 /datum/tgs_api/v3210/proc/trim_right(text)
+	procstart = null
+	src.procstart = null
 	for (var/i = length(text), i > 0, i--)
 		if (text2ascii(text, i) > 32)
 			return copytext(text, 1, i + 1)
 	return ""
 
 /datum/tgs_api/v3210/OnWorldNew(minimum_required_security_level)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 
 	comms_key = world.params[SERVICE_WORLD_PARAM]
@@ -89,12 +97,18 @@
 
 //nothing to do for v3
 /datum/tgs_api/v3210/OnInitializationComplete()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/tgs_api/v3210/InstanceName()
+	procstart = null
+	src.procstart = null
 	return world.params[SERVICE_INSTANCE_PARAM]
 
 /datum/tgs_api/v3210/proc/ExportService(command, skip_compat_check = FALSE)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(skip_compat_check && !fexists(SERVICE_INTERFACE_DLL))
 		TGS_ERROR_LOG("Service parameter present but no interface DLL detected. This is symptomatic of running a service less than version 3.1! Please upgrade.")
@@ -107,6 +121,8 @@
 	return TRUE
 
 /datum/tgs_api/v3210/OnTopic(T)
+	procstart = null
+	src.procstart = null
 	var/list/params = params2list(T)
 	var/their_sCK = params[SERVICE_CMD_PARAM_KEY]
 	if(!their_sCK)
@@ -149,6 +165,8 @@
 	return "Unknown command: [command]"
 
 /datum/tgs_api/v3210/OnReboot()
+	procstart = null
+	src.procstart = null
 	switch(reboot_mode)
 		if(REBOOT_MODE_HARD)
 			TGS_WORLD_ANNOUNCE("Hard reboot triggered, you will automatically reconnect...")
@@ -160,6 +178,8 @@
 			ExportService(SERVICE_REQUEST_WORLD_REBOOT) //just let em know
 
 /datum/tgs_api/v3210/TestMerges()
+	procstart = null
+	src.procstart = null
 	//do the best we can here as the datum can't be completed using the v3 api
 	. = list()
 	if(!fexists(SERVICE_PR_TEST_JSON))
@@ -177,6 +197,8 @@
 		. += tm
 
 /datum/tgs_api/v3210/Revision()
+	procstart = null
+	src.procstart = null
 	if(!warned_revison)
 		var/datum/tgs_version/api_version = ApiVersion()
 		TGS_WARNING_LOG("Use of TgsRevision on [api_version.deprefixed_parameter] origin_commit only points to master!")
@@ -187,13 +209,19 @@
 	return ri
 
 /datum/tgs_api/v3210/EndProcess()
+	procstart = null
+	src.procstart = null
 	sleep(world.tick_lag) //flush the buffers
 	ExportService(SERVICE_REQUEST_KILL_PROCESS)
 
 /datum/tgs_api/v3210/ChatChannelInfo()
+	procstart = null
+	src.procstart = null
 	return list() // :omegalul:
 
 /datum/tgs_api/v3210/ChatBroadcast(datum/tgs_message_content/message, list/channels)
+	procstart = null
+	src.procstart = null
 	if(channels)
 		return TGS_UNIMPLEMENTED
 	message = UpgradeDeprecatedChatMessage(message)
@@ -201,14 +229,20 @@
 	ChatTargetedBroadcast(message, FALSE)
 
 /datum/tgs_api/v3210/ChatTargetedBroadcast(datum/tgs_message_content/message, admin_only)
+	procstart = null
+	src.procstart = null
 	message = UpgradeDeprecatedChatMessage(message)
 	ExportService("[admin_only ? SERVICE_REQUEST_IRC_ADMIN_CHANNEL_MESSAGE : SERVICE_REQUEST_IRC_BROADCAST] [message.text]")
 
 /datum/tgs_api/v3210/ChatPrivateMessage(message, datum/tgs_chat_user/user)
+	procstart = null
+	src.procstart = null
 	UpgradeDeprecatedChatMessage(message)
 	return TGS_UNIMPLEMENTED
 
 /datum/tgs_api/v3210/SecurityLevel()
+	procstart = null
+	src.procstart = null
 	return TGS_SECURITY_TRUSTED
 
 #undef REBOOT_MODE_NORMAL

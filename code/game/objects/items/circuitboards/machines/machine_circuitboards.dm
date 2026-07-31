@@ -37,6 +37,8 @@
 		/obj/item/stack/cable_coil = 2)
 
 /obj/item/circuitboard/machine/dna_vault/completion_requirements(obj/structure/frame/install_frame, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/turf/center = get_turf(install_frame)
 	var/blocked = FALSE
 	for(var/turf/potential_turf as anything in CORNER_BLOCK_OFFSET(center, 3, 3, -1, -2))
@@ -300,12 +302,16 @@
 	var/high_production_profile = FALSE
 
 /obj/item/circuitboard/machine/pacman/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/message = high_production_profile ? "high-power uranium mode" : "medium-power plasma mode"
 	. += span_notice("It's set to [message].")
 	. += span_notice("You can switch the mode by using a screwdriver on [src].")
 
 /obj/item/circuitboard/machine/pacman/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	high_production_profile = !high_production_profile
 	var/message = high_production_profile ? "high-power uranium mode" : "medium-power plasma mode"
 	to_chat(user, span_notice("You set the board for [message]"))
@@ -415,11 +421,15 @@
 		/obj/item/stack/sheet/glass = 1)
 
 /obj/item/circuitboard/machine/thermomachine/multitool_act(mob/living/user, obj/item/multitool/multitool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pipe_layer = (pipe_layer >= PIPING_LAYER_MAX) ? PIPING_LAYER_MIN : (pipe_layer + 1)
 	to_chat(user, span_notice("You change the circuitboard to layer [pipe_layer]."))
 
 /obj/item/circuitboard/machine/thermomachine/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It is set to layer [pipe_layer].")
 
@@ -524,6 +534,8 @@
 	var/secure = FALSE
 
 /obj/item/circuitboard/machine/holopad/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(secure)
 		build_path = /obj/machinery/holopad
 		secure = FALSE
@@ -534,6 +546,8 @@
 	return TRUE
 
 /obj/item/circuitboard/machine/holopad/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "There is a connection port on this board that could be <b>pulsed</b>"
 	if(secure)
@@ -593,6 +607,8 @@
 	var/is_special_type = FALSE
 
 /obj/item/circuitboard/machine/smartfridge/apply_default_parts(obj/machinery/smartfridge/smartfridge)
+	procstart = null
+	src.procstart = null
 	build_path = smartfridge.base_build_path
 	if(!fridges_name_paths.Find(build_path))
 		name = "[initial(smartfridge.name)]" //if it's a unique type, give it a unique name.
@@ -600,6 +616,8 @@
 	return ..()
 
 /obj/item/circuitboard/machine/smartfridge/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if (is_special_type)
 		return FALSE
 	var/position = fridges_name_paths.Find(build_path, fridges_name_paths)
@@ -609,6 +627,8 @@
 	return TRUE
 
 /obj/item/circuitboard/machine/smartfridge/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_special_type)
 		return
@@ -667,6 +687,8 @@
 	var/static/list/valid_vendor_names_paths
 
 /obj/item/circuitboard/machine/vendor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!valid_vendor_names_paths)
 		valid_vendor_names_paths = list()
@@ -675,6 +697,8 @@
 				valid_vendor_names_paths[vendor_type::name] = vendor_type
 
 /obj/item/circuitboard/machine/vendor/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_FAILURE
 	if(all_products_free)
 		return
@@ -693,12 +717,16 @@
  * * obj/machinery/vending/typepath - the vending machine type to create
 */
 /obj/item/circuitboard/machine/vendor/proc/set_type(obj/machinery/vending/typepath)
+	procstart = null
+	src.procstart = null
 	build_path = typepath
 	name = "[typepath::name] Vendor"
 	req_components = list(initial(typepath.refill_canister) = 1)
 	flatpack_components = list(initial(typepath.refill_canister))
 
 /obj/item/circuitboard/machine/vendor/apply_default_parts(obj/machinery/machine)
+	procstart = null
+	src.procstart = null
 	set_type(machine.type)
 	return ..()
 
@@ -828,6 +856,8 @@
 	needs_anchored = FALSE
 
 /obj/item/circuitboard/machine/chem_master/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	var/new_name = "ChemMaster"
 	var/new_path = /obj/machinery/chem_master
 
@@ -872,6 +902,8 @@
 		/datum/stock_part/scanning_module = 1)
 
 /obj/item/circuitboard/machine/medical_kiosk/multitool_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/new_cost = tgui_input_number(user, "New cost for using this medical kiosk", "Pricing", custom_cost, 1000, 10)
 	if(!new_cost || QDELETED(user) || QDELETED(src) || !user.can_perform_action(src, FORBID_TELEKINESIS_REACH))
@@ -883,6 +915,8 @@
 	to_chat(user, span_notice("The cost is now set to [custom_cost]."))
 
 /obj/item/circuitboard/machine/medical_kiosk/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "The cost to use this kiosk is set to [custom_cost]."
 
@@ -1285,15 +1319,21 @@
 	needs_anchored = FALSE
 
 /obj/item/circuitboard/machine/dish_drive/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Its suction function is [suction ? "enabled" : "disabled"]. Use it in-hand to switch.")
 	. += span_notice("Its disposal auto-transmit function is [transmit ? "enabled" : "disabled"]. Alt-click it to switch.")
 
 /obj/item/circuitboard/machine/dish_drive/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	suction = !suction
 	to_chat(user, span_notice("You [suction ? "enable" : "disable"] the board's suction function."))
 
 /obj/item/circuitboard/machine/dish_drive/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	transmit = !transmit
 	to_chat(user, span_notice("You [transmit ? "enable" : "disable"] the board's automatic disposal transmission."))
 	return CLICK_ACTION_SUCCESS
@@ -1318,6 +1358,8 @@
 	needs_anchored = FALSE
 
 /obj/item/circuitboard/machine/hydroponics/proc/changeindicators(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(build_path == /obj/machinery/hydroponics/constructable/oldstyle)
 		name = "Hydroponics Tray [name_extension]"
 		build_path = /obj/machinery/hydroponics/constructable
@@ -1328,12 +1370,16 @@
 		balloon_alert(user, "moved indicators location")
 
 /obj/item/circuitboard/machine/hydroponics/item_interaction(mob/living/user, obj/item/I, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/plant_analyzer))
 		changeindicators(user)
 		return ITEM_INTERACT_SUCCESS
 	return ..()
 
 /obj/item/circuitboard/machine/hydroponics/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	changeindicators(user)
 	return ITEM_INTERACT_SUCCESS
 
@@ -1379,6 +1425,8 @@
 	needs_anchored = FALSE
 
 /obj/item/circuitboard/machine/processor/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(build_path == /obj/machinery/processor)
 		name = "Slime Processor"
 		build_path = /obj/machinery/processor/slime
@@ -1533,6 +1581,8 @@
 	var/venue_type = /datum/venue/restaurant
 
 /obj/item/circuitboard/machine/restaurant_portal/multitool_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/list/radial_items = list()
 	var/list/radial_results = list()
 
@@ -1551,12 +1601,16 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/circuitboard/machine/restaurant_portal/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (venue_type)
 		var/datum/venue/as_venue = venue_type
 		. += span_notice("[src] is linked to \a [initial(as_venue.name)] venue.")
 
 /obj/item/circuitboard/machine/restaurant_portal/configure_machine(obj/machinery/restaurant_portal/machine)
+	procstart = null
+	src.procstart = null
 	if(!istype(machine))
 		CRASH("Cargo board attempted to configure incorrect machine type: [machine] ([machine?.type])")
 	machine.linked_venue = SSrestaurant.all_venues[venue_type]
@@ -1972,11 +2026,15 @@
 	)
 
 /obj/item/circuitboard/machine/wall_healer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(obj_flags & EMAGGED)
 		. += span_warning("The safety chip looks fried.")
 
 /obj/item/circuitboard/machine/wall_healer/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 
@@ -1988,6 +2046,8 @@
 
 // Someone please add generic support for constructing wall mounted objects thanks
 /obj/item/circuitboard/machine/wall_healer/completion_requirements(obj/structure/frame/install_frame, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/machinery/wall_healer) in install_frame.loc) // for subtypes support
 		install_frame.balloon_alert(user, "identical machine present!")
 		return FALSE

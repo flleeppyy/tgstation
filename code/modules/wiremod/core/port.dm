@@ -26,6 +26,8 @@
 	var/order = 1
 
 /datum/port/New(obj/item/circuit_component/to_connect, name, datatype, order = 1)
+	procstart = null
+	src.procstart = null
 	if(!to_connect)
 		qdel(src)
 		return
@@ -36,6 +38,8 @@
 	set_datatype(datatype)
 
 /datum/port/Destroy(force)
+	procstart = null
+	src.procstart = null
 	disconnect_all()
 	connected_component = null
 	datatype_handler = null
@@ -46,6 +50,8 @@
  * Casts to the port's datatype (e.g. number -> string), and assumes this can be done.
  */
 /datum/port/proc/set_value(value, force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(isweakref(value))
 		var/datum/weakref/reference_to_obj = value
 		value = reference_to_obj.resolve()
@@ -65,6 +71,8 @@
  * Updates the value of the input and calls input_received on the connected component
  */
 /datum/port/input/proc/set_input(value, list/return_values)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src)) //Pain
 		return
 	set_value(value)
@@ -72,6 +80,8 @@
 		connected_component.trigger_component(src, return_values)
 
 /datum/port/output/proc/set_output(value)
+	procstart = null
+	src.procstart = null
 	set_value(value)
 
 /**
@@ -81,6 +91,8 @@
  * * new_type - The type this port is to be set to.
  */
 /datum/port/proc/set_datatype(type_to_set)
+	procstart = null
+	src.procstart = null
 	if(type_to_set == datatype)
 		return
 
@@ -105,6 +117,8 @@
 		SStgui.update_uis(connected_component.parent)
 
 /datum/port/input/set_datatype(new_type)
+	procstart = null
+	src.procstart = null
 	for(var/datum/port/output/output as anything in connected_ports)
 		check_type(output)
 	..()
@@ -113,6 +127,8 @@
  * Returns the data from the datatype
  */
 /datum/port/proc/datatype_ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return datatype_handler.datatype_ui_data(src)
 
 /**
@@ -131,15 +147,21 @@
  * an integrated circuit
  */
 /datum/port/proc/disconnect_all()
+	procstart = null
+	src.procstart = null
 	value = null
 	SEND_SIGNAL(src, COMSIG_PORT_DISCONNECT)
 
 /datum/port/input/disconnect_all()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/datum/port/output/output as anything in connected_ports)
 		disconnect(output)
 
 /datum/port/input/proc/disconnect(datum/port/output/output)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	LAZYREMOVE(connected_ports, output)
 	UnregisterSignal(output, COMSIG_PORT_SET_VALUE)
@@ -148,6 +170,8 @@
 
 /// Do our part in setting all source references anywhere to null.
 /datum/port/proc/on_value_qdeleting(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(value == source)
 		value = null
@@ -170,6 +194,8 @@
 	var/list/datum/port/output/connected_ports
 
 /datum/port/input/New(obj/item/circuit_component/to_connect, name, datatype, order = 1, trigger = null, default = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_value(default)
 	if(trigger)
@@ -182,6 +208,8 @@
  * * output - The output port to connect to.
  */
 /datum/port/input/proc/connect(datum/port/output/output)
+	procstart = null
+	src.procstart = null
 	if(output in connected_ports)
 		return
 	LAZYADD(connected_ports, output)
@@ -193,6 +221,8 @@
 		set_input(output.value)
 
 /datum/port/input/set_datatype(new_type)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/port/output/port as anything in connected_ports)
 		check_type(port)
@@ -204,6 +234,8 @@
  * * other_datatype - The datatype to check
  */
 /datum/port/input/proc/can_receive_from_datatype(datatype_to_check)
+	procstart = null
+	src.procstart = null
 	return datatype_handler.can_receive_from_datatype(datatype_to_check)
 
 /**
@@ -213,6 +245,8 @@
  * * other_datatype - The datatype to check
  */
 /datum/port/input/proc/handle_manual_input(mob/user, manual_input)
+	procstart = null
+	src.procstart = null
 	if(datatype_handler.datatype_flags & DATATYPE_FLAG_ALLOW_MANUAL_INPUT)
 		return datatype_handler.handle_manual_input(src, user, manual_input)
 	return null
@@ -221,11 +255,15 @@
  * Mirror value updates from connected output ports after an input_receive_delay.
  */
 /datum/port/input/proc/receive_value(datum/port/output/output, value)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SScircuit_component.add_callback(src, CALLBACK(src, PROC_REF(set_input), value))
 
 /// Signal handler proc to null the input if an atom is deleted. An update is not sent because this was not set by anything.
 /datum/port/proc/null_value(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(value == source)
 		value = null
@@ -234,6 +272,8 @@
  * Handle type updates from connected output ports, breaking uncastable connections.
  */
 /datum/port/input/proc/check_type(datum/port/output/output)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!can_receive_from_datatype(output.datatype))
 		disconnect(output)

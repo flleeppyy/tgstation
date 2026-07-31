@@ -13,6 +13,8 @@
 	var/is_in_use = FALSE
 
 /obj/effect/heretic_rune/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/image/silicon_image = image(icon = 'icons/effects/eldritch.dmi', icon_state = null, loc = src)
 	silicon_image.override = TRUE
@@ -20,6 +22,8 @@
 	ADD_TRAIT(src, TRAIT_MOPABLE, INNATE_TRAIT)
 
 /obj/effect/heretic_rune/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!IS_HERETIC(user))
 		return
@@ -28,9 +32,13 @@
 	. += span_notice("You can use your <i>Mansus Grasp</i> on the rune to remove it.")
 
 /obj/effect/heretic_rune/attack_paw(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/effect/heretic_rune/can_interact(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -41,6 +49,8 @@
 	return TRUE
 
 /obj/effect/heretic_rune/interact(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	INVOKE_ASYNC(src, PROC_REF(try_rituals), user)
 	return TRUE
@@ -50,6 +60,8 @@
  * Also ensures is_in_use is enabled and disabled before and after.
  */
 /obj/effect/heretic_rune/proc/try_rituals(mob/living/user)
+	procstart = null
+	src.procstart = null
 	is_in_use = TRUE
 
 	var/datum/antagonist/heretic/heretic_datum = GET_HERETIC(user)
@@ -110,6 +122,8 @@
  * returns TRUE if any rituals passed succeeded, FALSE if they all failed.
  */
 /obj/effect/heretic_rune/proc/do_ritual(mob/living/user, datum/heretic_knowledge/ritual)
+	procstart = null
+	src.procstart = null
 
 	// Collect all nearby valid atoms over the rune for processing in rituals.
 	var/list/atom/movable/atoms_in_range = list()
@@ -255,6 +269,8 @@
 	return ritual_result
 
 /obj/effect/heretic_rune/proc/ritual_animation()
+	procstart = null
+	src.procstart = null
 	flick("[icon_state]_active", src)
 	playsound(src, 'sound/effects/magic/castsummon.ogg', 50, TRUE, extrarange = SILENCED_SOUND_EXTRARANGE, falloff_exponent = 10, ignore_walls = FALSE)
 
@@ -268,6 +284,8 @@
 	greyscale_config = /datum/greyscale_config/heretic_rune
 
 /obj/effect/heretic_rune/big/Initialize(mapload, path_colour)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (path_colour)
 		set_greyscale(colors = list(path_colour))
@@ -286,6 +304,8 @@
 	var/animation_state = "transmutation_rune_draw"
 
 /obj/effect/temp_visual/drawing_heretic_rune/Initialize(mapload, path_colour = COLOR_WHITE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_greyscale(colors = list(path_colour))
 	icon_state = animation_state

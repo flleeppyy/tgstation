@@ -61,11 +61,15 @@ RSF
 	var/cooldowndelay = 0 SECONDS
 
 /obj/item/rsf/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_dispense = cost_by_item[1]
 	dispense_cost = cost_by_item[to_dispense]
 
 /obj/item/rsf/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It currently holds [matter]/[max_matter] [discriptor].")
 
@@ -73,6 +77,8 @@ RSF
 	matter = 30
 
 /obj/item/rsf/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!is_type_in_list(tool, matter_by_item))//If the thing we got hit by is in our matter list
 		return NONE
 
@@ -93,6 +99,8 @@ RSF
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/rsf/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	playsound(src.loc, 'sound/effects/pop.ogg', 50, FALSE)
 	var/target = cost_by_item
 	var/cost = 0
@@ -115,6 +123,8 @@ RSF
 
 ///Forms a radial menu based off an object in a list, or a list's associated object
 /obj/item/rsf/proc/formRadial(from)
+	procstart = null
+	src.procstart = null
 	var/list/radial_list = list()
 	for(var/meme in from)//We iterate through all of targets entrys
 		var/atom/temp = OBJECT_OR_LIST_ELEMENT(from, meme)
@@ -123,11 +133,15 @@ RSF
 	return radial_list
 
 /obj/item/rsf/proc/check_menu(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated || !user.Adjacent(src))
 		return FALSE
 	return TRUE
 
 /obj/item/rsf/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(cooldown > world.time)
 		return NONE
 	if (!is_allowed(interacting_with))
@@ -142,6 +156,8 @@ RSF
 
 ///A helper proc. checks to see if we can afford the amount of charge that is passed, and if we can docs the charge from our base, and returns TRUE. If we can't we return FALSE
 /obj/item/rsf/proc/use_matter(charge, mob/user)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(user))
 		var/mob/living/silicon/robot/R = user
 		var/end_charge = R.cell.charge - charge
@@ -162,6 +178,8 @@ RSF
 
 ///Helper proc that iterates through all the things we are allowed to spawn on, and sees if the passed atom is one of them
 /obj/item/rsf/proc/is_allowed(atom/to_check)
+	procstart = null
+	src.procstart = null
 	return is_type_in_list(to_check, allowed_surfaces)
 
 /obj/item/rsf/cookiesynth
@@ -180,6 +198,8 @@ RSF
 	var/toxin = FALSE //This might be better suited to some initialize fuckery, but I don't have a good "poisoned" sprite
 
 /obj/item/rsf/cookiesynth/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	obj_flags ^= EMAGGED
 	if(obj_flags & EMAGGED)
 		balloon_alert(user, "reagent safety checker shorted out")
@@ -188,6 +208,8 @@ RSF
 	return TRUE
 
 /obj/item/rsf/cookiesynth/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/P = null
 	if(iscyborg(user))
 		P = user

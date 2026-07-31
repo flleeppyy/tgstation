@@ -1,11 +1,15 @@
 
 /obj/item/bodypart/proc/can_dismember(obj/item/item)
+	procstart = null
+	src.procstart = null
 	if(bodypart_flags & BODYPART_UNREMOVABLE || (owner && HAS_TRAIT(owner, TRAIT_NODISMEMBER)))
 		return FALSE
 	return TRUE
 
 ///Remove target limb from its owner, with side effects.
 /obj/item/bodypart/proc/dismember(dam_type = BRUTE, silent=TRUE, wounding_type)
+	procstart = null
+	src.procstart = null
 	if(!owner || (bodypart_flags & BODYPART_UNREMOVABLE))
 		return FALSE
 	var/mob/living/carbon/limb_owner = owner
@@ -52,6 +56,8 @@
 	return TRUE
 
 /obj/item/bodypart/chest/dismember(dam_type = BRUTE, silent=TRUE, wounding_type)
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return FALSE
 	var/mob/living/carbon/chest_owner = owner
@@ -81,6 +87,8 @@
 
 ///limb removal. The "special" argument is used for swapping a limb with a new one without the effects of losing a limb kicking in.
 /obj/item/bodypart/proc/drop_limb(special, dismembered, move_to_floor = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return
 	var/atom/drop_loc = owner.drop_location()
@@ -146,6 +154,8 @@
  * * exposed_wound_bonus: ditto above
  */
 /obj/item/bodypart/proc/try_dismember(wounding_type, wounding_dmg, wound_bonus, exposed_wound_bonus)
+	procstart = null
+	src.procstart = null
 	if (!can_dismember())
 		return
 
@@ -163,12 +173,16 @@
 		return dismembering.apply_dismember(src, wounding_type)
 
 /obj/item/bodypart/chest/drop_limb(special, dismembered, move_to_floor = TRUE)
+	procstart = null
+	src.procstart = null
 	if(special)
 		return ..()
 	//if this is not a special drop, this is a mistake
 	return FALSE
 
 /obj/item/bodypart/arm/drop_limb(special, dismembered, move_to_floor = TRUE)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/arm_owner = owner
 	if(special || !arm_owner)
 		return ..()
@@ -187,6 +201,8 @@
 	arm_owner.update_worn_gloves() //to remove the bloody hands overlay
 
 /obj/item/bodypart/leg/drop_limb(special, dismembered, move_to_floor = TRUE)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/leg_owner = owner
 	. = ..()
 	if(special || !leg_owner)
@@ -195,6 +211,8 @@
 	leg_owner.dropItemToGround(leg_owner.get_item_by_slot(ITEM_SLOT_FEET), force = TRUE)
 
 /obj/item/bodypart/head/drop_limb(special, dismembered, move_to_floor = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!special)
 		//Drop all worn head items
 		for(var/obj/item/head_item as anything in owner.get_items_by_slots(ITEM_SLOT_EYES | ITEM_SLOT_EARS | ITEM_SLOT_MASK | ITEM_SLOT_HEAD))
@@ -218,6 +236,8 @@
 
 ///Try to attach this bodypart to a mob, while replacing one if it exists, does nothing if it fails. Returns TRUE on success, FALSE on failure.
 /obj/item/bodypart/proc/replace_limb(mob/living/carbon/limb_owner)
+	procstart = null
+	src.procstart = null
 	if(!istype(limb_owner))
 		return FALSE
 	var/obj/item/bodypart/old_limb = limb_owner.get_bodypart(body_zone)
@@ -230,6 +250,8 @@
 
 ///Checks if a limb qualifies as a BODYPART_IMPLANTED
 /obj/item/bodypart/proc/check_for_frankenstein(mob/living/carbon/human/monster)
+	procstart = null
+	src.procstart = null
 	if(!istype(monster))
 		return FALSE
 	var/obj/item/bodypart/original_type = monster.dna.species.bodypart_overrides[body_zone]
@@ -239,6 +261,8 @@
 
 ///Checks if you can attach a limb, returns TRUE if you can.
 /obj/item/bodypart/proc/can_attach_limb(mob/living/carbon/new_limb_owner, special)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(new_limb_owner, COMSIG_ATTEMPT_CARBON_ATTACH_LIMB, src, special) & COMPONENT_NO_ATTACH)
 		return FALSE
 
@@ -254,6 +278,8 @@
  * lazy - The owner is currently initializing, so we don't need to call any update procs
  */
 /obj/item/bodypart/proc/try_attach_limb(mob/living/carbon/new_limb_owner, special, lazy)
+	procstart = null
+	src.procstart = null
 	if(!can_attach_limb(new_limb_owner, special))
 		return FALSE
 
@@ -313,6 +339,8 @@
 	return TRUE
 
 /obj/item/bodypart/head/try_attach_limb(mob/living/carbon/new_head_owner, special, lazy)
+	procstart = null
+	src.procstart = null
 	// These are stored before calling super. This is so that if the head is from a different body, it persists its appearance.
 	var/old_real_name = real_name
 	. = ..()
@@ -352,11 +380,15 @@
 	new_head_owner.update_damage_overlays()
 
 /obj/item/bodypart/arm/try_attach_limb(mob/living/carbon/new_arm_owner, special, lazy)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && !lazy)
 		new_arm_owner.update_worn_gloves() // To apply bloody hands overlay
 
 /mob/living/carbon/proc/regenerate_limbs(list/excluded_zones = list())
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_CARBON_REGENERATE_LIMBS, excluded_zones)
 	var/list/zone_list = get_all_limbs()
 
@@ -368,6 +400,8 @@
 		regenerate_limb(limb_zone, dismembered_by_copy)
 
 /mob/living/carbon/proc/regenerate_limb(limb_zone, list/dismembered_by_copy = body_zone_dismembered_by?.Copy())
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/limb
 	if(get_bodypart(limb_zone))
 		return FALSE

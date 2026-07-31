@@ -17,6 +17,8 @@
 	var/datum/port/input/thing_to_check
 
 /obj/item/circuit_component/compare/typecheck/populate_options()
+	procstart = null
+	src.procstart = null
 	var/static/component_options = list(
 		PORT_TYPE_STRING,
 		PORT_TYPE_NUMBER,
@@ -28,9 +30,13 @@
 	typecheck_options = add_option_port("Typecheck Options", component_options)
 
 /obj/item/circuit_component/compare/typecheck/populate_custom_ports()
+	procstart = null
+	src.procstart = null
 	thing_to_check = add_input_port("Value", PORT_TYPE_ANY)
 
 /obj/item/circuit_component/compare/typecheck/do_comparisons()
+	procstart = null
+	src.procstart = null
 	var/input_val = thing_to_check.value
 	switch(typecheck_options.value)
 		if(PORT_TYPE_STRING)

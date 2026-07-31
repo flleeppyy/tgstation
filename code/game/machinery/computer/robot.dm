@@ -12,6 +12,8 @@
 
 
 /obj/machinery/computer/robotics/proc/can_control(mob/user, mob/living/silicon/robot/R)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(!istype(R))
 		return
@@ -26,6 +28,8 @@
 	return TRUE
 
 /obj/machinery/computer/robotics/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -33,6 +37,8 @@
 		ui.open()
 
 /obj/machinery/computer/robotics/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["can_hack"] = FALSE
@@ -83,6 +89,8 @@
 	return data
 
 /obj/machinery/computer/robotics/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -164,6 +172,8 @@
 
 // I feel like this should be changed, but I have no idea in what way exactly, so I just extracted it to make the code less of a mess
 /obj/machinery/computer/robotics/proc/lock_unlock_borg(mob/living/silicon/robot/R, console_location = null)
+	procstart = null
+	src.procstart = null
 	if(R.lockcharge && locked_down_borg == R)
 		UnregisterSignal(locked_down_borg, COMSIG_QDELETING)
 		locked_down_borg = null
@@ -178,21 +188,29 @@
 		to_chat(R.connected_ai, "[!R.lockcharge ? span_notice("NOTICE - Cyborg lockdown lifted") : span_alert("ALERT - Cyborg lockdown detected")]: <a href='byond://?src=[REF(R.connected_ai)];track=[html_encode(R.name)]'>[R.name]</a><br>")
 
 /obj/machinery/computer/robotics/proc/borg_destroyed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	locked_down_borg = null
 
-/obj/machinery/computer/robotics/on_set_machine_stat(old_value)  //depowering the console unlocks the borg
+/obj/machinery/computer/robotics/on_set_machine_stat(old_value)
+	procstart = null
+	src.procstart = null  //depowering the console unlocks the borg
 	if(!isnull(locked_down_borg))
 		if(machine_stat & (NOPOWER|BROKEN|MAINT) && locked_down_borg.lockcharge)
 			src.lock_unlock_borg(locked_down_borg)
 	return ..()
 
-/obj/machinery/computer/robotics/atom_break() // This shouldnt be needed, but hitting console doesnt trigger destroy apparently
+/obj/machinery/computer/robotics/atom_break()
+	procstart = null
+	src.procstart = null // This shouldnt be needed, but hitting console doesnt trigger destroy apparently
 	if(!isnull(locked_down_borg))
 		lock_unlock_borg(locked_down_borg)
 	return ..()
 
 /obj/machinery/computer/robotics/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!isnull(locked_down_borg))
 		lock_unlock_borg(locked_down_borg)
 	return ..()

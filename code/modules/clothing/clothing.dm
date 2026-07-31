@@ -65,6 +65,8 @@
 	var/is_laundered = FALSE
 
 /obj/item/clothing/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(clothing_flags & VOICEBOX_TOGGLABLE)
 		actions_types += list(/datum/action/item_action/toggle_voice_box)
 	if(LAZYLEN(clothing_traits))
@@ -93,10 +95,14 @@
 	var/datum/weakref/clothing
 
 /obj/item/food/clothing/make_edible()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponentFrom(SOURCE_EDIBLE_INNATE, /datum/component/edible, after_eat = CALLBACK(src, PROC_REF(after_eat)))
 
 /obj/item/food/clothing/proc/after_eat(mob/eater)
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/resolved_clothing = clothing.resolve()
 	if (resolved_clothing)
 		resolved_clothing.take_damage(MOTH_EATING_CLOTHING_DAMAGE, sound_effect = FALSE, damage_flag = CONSUME)
@@ -104,6 +110,8 @@
 		qdel(src)
 
 /obj/item/clothing/attack(mob/living/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode || !ismoth(target) || ispickedupmob(src))
 		return ..()
 	if((clothing_flags & INEDIBLE_CLOTHING) || (resistance_flags & INDESTRUCTIBLE))
@@ -114,11 +122,15 @@
 
 /// Creates a food object in null space which we can eat and imagine we're eating this pair of shoes
 /obj/item/clothing/proc/create_moth_snack()
+	procstart = null
+	src.procstart = null
 	moth_snack = new
 	moth_snack.name = name
 	moth_snack.clothing = WEAKREF(src)
 
 /obj/item/clothing/item_interaction(mob/living/user, obj/item/weapon, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(!istype(weapon, repairable_by))
 		return
@@ -146,6 +158,8 @@
 
 /// Set the clothing's integrity back to 100%, remove all damage to bodyparts, and generally fix it up
 /obj/item/clothing/proc/repair(mob/user)
+	procstart = null
+	src.procstart = null
 	update_clothes_damaged_state(CLOTHING_PRISTINE)
 	atom_integrity = max_integrity
 	name = initial(name) // remove "tattered" or "shredded" if there's a prefix
@@ -171,6 +185,8 @@
  * * armour_penetration: If the attack had armour_penetration
  */
 /obj/item/clothing/proc/take_damage_zone(def_zone, damage_amount, damage_type, armour_penetration)
+	procstart = null
+	src.procstart = null
 	if(!def_zone || !limb_integrity || (initial(body_parts_covered) in GLOB.bitflags)) // the second check sees if we only cover one bodypart anyway and don't need to bother with this
 		return
 	var/list/covered_limbs = cover_flags2body_zones(body_parts_covered) // what do we actually cover?
@@ -195,6 +211,8 @@
  * * damage_type: Only really relevant for the verb for describing the breaking, and maybe atom_destruction()
  */
 /obj/item/clothing/proc/disable_zone(def_zone, damage_type)
+	procstart = null
+	src.procstart = null
 	var/list/covered_limbs = cover_flags2body_zones(body_parts_covered)
 	if(!(def_zone in covered_limbs))
 		return
@@ -230,11 +248,15 @@
 	update_appearance()
 
 /obj/item/clothing/Destroy()
+	procstart = null
+	src.procstart = null
 	user_vars_remembered = null //Oh god somebody put REFERENCES in here? not to worry, we'll clean it up
 	QDEL_NULL(moth_snack)
 	return ..()
 
 /obj/item/clothing/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!istype(user))
 		return
@@ -252,6 +274,8 @@
 		user_vars_remembered = initial(user_vars_remembered) // Effectively this sets it to null.
 
 /obj/item/clothing/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!istype(user))
 		return
@@ -271,6 +295,8 @@
 
 // If the item is a piece of clothing and is being worn, make sure it updates on the player
 /obj/item/clothing/update_greyscale()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/mob/living/carbon/human/wearer = loc
@@ -288,6 +314,8 @@
  * This is so you can add clothing traits without worrying about needing to equip or unequip them to gain effects
  */
 /obj/item/clothing/proc/attach_clothing_traits(trait_or_traits)
+	procstart = null
+	src.procstart = null
 	if(!islist(trait_or_traits))
 		trait_or_traits = list(trait_or_traits)
 
@@ -309,6 +337,8 @@
  * This is so you can add clothing traits without worrying about needing to equip or unequip them to gain effects
  */
 /obj/item/clothing/proc/detach_clothing_traits(trait_or_traits)
+	procstart = null
+	src.procstart = null
 	if(!islist(trait_or_traits))
 		trait_or_traits = list(trait_or_traits)
 
@@ -323,6 +353,8 @@
 			REMOVE_CLOTHING_TRAIT(wearer, new_trait)
 
 /obj/item/clothing/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(damaged_clothes == CLOTHING_SHREDDED)
 		. += span_warning("<b>[p_Theyre()] completely shredded and require[p_s()] mending before [p_they()] can be worn again!</b>")
@@ -363,6 +395,8 @@
 		. += "[src] looks crisp and pristine."
 
 /obj/item/clothing/examine_tags(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (clothing_flags & THICKMATERIAL)
 		.["thick"] = "Protects from most injections and sprays."
@@ -398,9 +432,13 @@
 		.["secure"] = "Increases the speed at which you apply restraints."
 
 /obj/item/clothing/examine_descriptor(mob/user)
+	procstart = null
+	src.procstart = null
 	return "clothing"
 
 /obj/item/clothing/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(href_list["list_armor"])
@@ -480,12 +518,16 @@
  * * armor_value - Number we're converting
  */
 /obj/item/clothing/proc/armor_to_protection_class(armor_value)
+	procstart = null
+	src.procstart = null
 	if (armor_value < 0)
 		. = "-"
 	. += "\Roman[round(abs(armor_value), 10) / 10]"
 	return .
 
 /obj/item/clothing/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_clothes_damaged_state(CLOTHING_DAMAGED)
 
@@ -498,6 +540,8 @@
 
 // you just dont get the same feeling with handwashed clothes
 /obj/item/clothing/machine_wash()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stubborn_stains) //Just can't make it feel right
 		return
@@ -507,9 +551,13 @@
 
 //This mostly exists so subtypes can call appriopriate update icon calls on the wearer.
 /obj/item/clothing/proc/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
+	procstart = null
+	src.procstart = null
 	damaged_clothes = damaged_state
 
 /obj/item/clothing/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!damaged_clothes)
 		return
@@ -536,6 +584,8 @@ BLIND     // can't see anything
 */
 
 /proc/generate_female_clothing(index, t_color, icon, type)
+	procstart = null
+	src.procstart = null
 	var/icon/female_clothing_icon = icon("icon"=icon, "icon_state"=t_color)
 	var/female_icon_state = "female[type == FEMALE_UNIFORM_FULL ? "_full" : ((!type || type & FEMALE_UNIFORM_TOP_ONLY) ? "_top" : "")][type & FEMALE_UNIFORM_NO_BREASTS ? "_no_breasts" : ""]"
 	var/icon/female_cropping_mask = icon("icon" = 'icons/mob/clothing/under/masking_helpers.dmi', "icon_state" = female_icon_state)
@@ -545,6 +595,8 @@ BLIND     // can't see anything
 
 /// Proc that adjusts the clothing item, used by things like breathing masks, welding helmets, welding goggles etc.
 /obj/item/clothing/proc/adjust_visor(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!can_use(user))
 		return FALSE
 
@@ -581,7 +633,9 @@ BLIND     // can't see anything
 		carbon_user.cutoff_internals()
 	return TRUE
 
-/obj/item/clothing/proc/visor_toggling() //handles all the actual toggling of flags
+/obj/item/clothing/proc/visor_toggling()
+	procstart = null
+	src.procstart = null //handles all the actual toggling of flags
 	up = !up
 	clothing_flags ^= visor_flags
 	flags_inv ^= visor_flags_inv
@@ -594,12 +648,18 @@ BLIND     // can't see anything
 	update_appearance() //most of the time the sprite changes
 
 /obj/item/clothing/proc/can_use(mob/user)
+	procstart = null
+	src.procstart = null
 	return istype(user) && !user.incapacitated
 
 /obj/item/clothing/proc/spawn_shreds()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/decal/cleanable/shreds(get_turf(src), name)
 
 /obj/item/clothing/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(damage_flag in list(ACID, FIRE))
 		return ..()
 	if(damage_flag == BOMB)
@@ -630,6 +690,8 @@ BLIND     // can't see anything
 
 /// If we're a clothing with at least 1 shredded/disabled zone, give the wearer a periodic heads up letting them know their clothes are damaged
 /obj/item/clothing/proc/bristle(mob/living/L)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(L))
@@ -638,15 +700,21 @@ BLIND     // can't see anything
 		to_chat(L, span_warning("The damaged threads on your [src.name] chafe!"))
 
 /obj/item/clothing/apply_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_armor(get_armor().generate_new_with_modifiers(list(ARMOR_ALL = bonus)))
 
 /obj/item/clothing/remove_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	set_armor(get_armor().generate_new_with_modifiers(list(ARMOR_ALL = -bonus)))
 	return ..()
 
 /// Returns a list of overlays with our blood, if we're bloodied
 /obj/item/clothing/proc/get_blood_overlay(blood_state, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	if (!GET_ATOM_BLOOD_DECAL_LENGTH(src))
 		return
 

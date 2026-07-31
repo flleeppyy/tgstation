@@ -19,6 +19,8 @@ GLOBAL_DATUM_INIT(interviews, /datum/interview_manager, new)
 	var/list/cooldown_ckeys = list()
 
 /datum/interview_manager/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(open_interviews)
 	QDEL_LIST(interview_queue)
 	QDEL_LIST(closed_interviews)
@@ -34,6 +36,8 @@ GLOBAL_DATUM_INIT(interviews, /datum/interview_manager, new)
  * * C - The client who is logging in
  */
 /datum/interview_manager/proc/client_login(client/C)
+	procstart = null
+	src.procstart = null
 	for(var/ckey in open_interviews)
 		var/datum/interview/I = open_interviews[ckey]
 		if (I && !I.owner && C.ckey == I.owner_ckey)
@@ -47,6 +51,8 @@ GLOBAL_DATUM_INIT(interviews, /datum/interview_manager, new)
  * * C - The client who is logging out
  */
 /datum/interview_manager/proc/client_logout(client/C)
+	procstart = null
+	src.procstart = null
 	for(var/ckey in open_interviews)
 		var/datum/interview/I = open_interviews[ckey]
 		if (I?.owner && C.ckey == I.owner_ckey)
@@ -60,6 +66,8 @@ GLOBAL_DATUM_INIT(interviews, /datum/interview_manager, new)
  * * C - The client to get the interview for
  */
 /datum/interview_manager/proc/interview_for_client(client/C)
+	procstart = null
+	src.procstart = null
 	if (!C)
 		return
 	if (open_interviews[C.ckey])
@@ -76,6 +84,8 @@ GLOBAL_DATUM_INIT(interviews, /datum/interview_manager, new)
  * * id - The ID of the interview to find
  */
 /datum/interview_manager/proc/interview_by_id(id)
+	procstart = null
+	src.procstart = null
 	if (!id)
 		return
 	for (var/ckey in open_interviews)
@@ -94,6 +104,8 @@ GLOBAL_DATUM_INIT(interviews, /datum/interview_manager, new)
  * * to_queue - The interview to enqueue
  */
 /datum/interview_manager/proc/enqueue(datum/interview/to_queue)
+	procstart = null
+	src.procstart = null
 	if (!to_queue || (to_queue in interview_queue))
 		return
 	to_queue.pos_in_queue = interview_queue.len + 1
@@ -118,6 +130,8 @@ GLOBAL_DATUM_INIT(interviews, /datum/interview_manager, new)
  * * ckey - The ckey to remove from the cooldown list
  */
 /datum/interview_manager/proc/release_from_cooldown(ckey)
+	procstart = null
+	src.procstart = null
 	cooldown_ckeys -= ckey
 
 /**
@@ -125,6 +139,8 @@ GLOBAL_DATUM_INIT(interviews, /datum/interview_manager, new)
  * interviews that follow it.
  */
 /datum/interview_manager/proc/dequeue()
+	procstart = null
+	src.procstart = null
 	if (interview_queue.len == 0)
 		return
 
@@ -146,6 +162,8 @@ GLOBAL_DATUM_INIT(interviews, /datum/interview_manager, new)
  * * to_dequeue - The interview to dequeue
  */
 /datum/interview_manager/proc/dequeue_specific(datum/interview/to_dequeue)
+	procstart = null
+	src.procstart = null
 	if (!to_dequeue)
 		return
 
@@ -167,6 +185,8 @@ GLOBAL_DATUM_INIT(interviews, /datum/interview_manager, new)
  * * to_close - The interview to dequeue
  */
 /datum/interview_manager/proc/close_interview(datum/interview/to_close)
+	procstart = null
+	src.procstart = null
 	if (!to_close)
 		return
 	dequeue_specific(to_close)
@@ -175,15 +195,21 @@ GLOBAL_DATUM_INIT(interviews, /datum/interview_manager, new)
 		closed_interviews += to_close
 
 /datum/interview_manager/ui_interact(mob/user, datum/tgui/ui = null)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		ui = new(user, src, "InterviewManager")
 		ui.open()
 
 /datum/interview_manager/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_ADMIN)
 
 /datum/interview_manager/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if (..())
 		return
 	switch(action)
@@ -194,6 +220,8 @@ GLOBAL_DATUM_INIT(interviews, /datum/interview_manager, new)
 
 
 /datum/interview_manager/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list(
 		"open_interviews" = list(),
 		"closed_interviews" = list())

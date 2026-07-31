@@ -1,4 +1,6 @@
 /datum/admins/proc/stickyban(action,data)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_BAN))
 		return
 	switch (action)
@@ -343,6 +345,8 @@
 
 
 /datum/admins/proc/stickyban_gethtml(ckey)
+	procstart = null
+	src.procstart = null
 	var/ban = get_stickyban_from_ckey(ckey)
 	if (!ban)
 		return
@@ -376,6 +380,8 @@
 	. += "</ol>\n"
 
 /datum/admins/proc/stickyban_show()
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_BAN))
 		return
 	var/list/bans = sticky_banned_ckeys()
@@ -397,6 +403,8 @@
 	usr << browse(html,"window=stickybans;size=700x400")
 
 /proc/sticky_banned_ckeys()
+	procstart = null
+	src.procstart = null
 	if (SSdbcore.Connect() || length(SSstickyban.dbcache))
 		if (SSstickyban.dbcacheexpire < world.time)
 			SSstickyban.Populatedbcache()
@@ -407,6 +415,8 @@
 
 
 /proc/get_stickyban_from_ckey(ckey)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if (!ckey)
 		return null
@@ -434,6 +444,8 @@
 		return null
 
 /proc/stickyban2list(ban, strictdb = TRUE)
+	procstart = null
+	src.procstart = null
 	if (!ban)
 		return null
 	. = params2list(ban)
@@ -458,6 +470,8 @@
 
 
 /proc/list2stickyban(list/ban)
+	procstart = null
+	src.procstart = null
 	if (!ban || !islist(ban))
 		return null
 	. = ban.Copy()

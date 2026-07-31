@@ -22,10 +22,14 @@
 	var/overwatch_duration = 3 SECONDS
 
 /datum/action/cooldown/mob_cooldown/watcher_overwatch/New(Target, original)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	melee_cooldown_time = overwatch_duration
 
 /datum/action/cooldown/mob_cooldown/watcher_overwatch/PreActivate(atom/target)
+	procstart = null
+	src.procstart = null
 	if (target == owner)
 		return
 	if (ismecha(target))
@@ -41,6 +45,8 @@
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/watcher_overwatch/Activate(mob/living/target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_owner = owner
 	living_owner.face_atom(target)
 	living_owner.Stun(overwatch_duration, ignore_canstun = TRUE)
@@ -81,6 +87,8 @@
 	)
 
 /datum/status_effect/overwatch/on_creation(mob/living/new_owner, set_duration, mob/living/watcher, projectile_type, projectile_sound)
+	procstart = null
+	src.procstart = null
 	if (isnull(watcher) || isnull(projectile_type))
 		return FALSE
 	if (HAS_TRAIT(new_owner, TRAIT_OVERWATCH_IMMUNE))
@@ -93,6 +101,8 @@
 	return ..()
 
 /datum/status_effect/overwatch/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -107,6 +117,8 @@
 	RegisterSignals(watcher, list(COMSIG_QDELETING, COMSIG_LIVING_DEATH), PROC_REF(on_participant_died))
 
 /datum/status_effect/overwatch/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, forbidden_actions + list(COMSIG_QDELETING, COMSIG_LIVING_DEATH))
 	QDEL_NULL(link)
 	owner.remove_traits(list(TRAIT_OVERWATCHED, TRAIT_OVERWATCH_IMMUNE), REF(src))
@@ -115,6 +127,8 @@
 	return ..()
 
 /datum/status_effect/overwatch/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(link)
 	if (!isnull(watcher))  // Side effects in Destroy? Well it turns out `on_remove` is also just called on Destroy. But only if the owner isn't deleting.
 		INVOKE_ASYNC(src, PROC_REF(unregister_watcher), watcher)
@@ -124,12 +138,16 @@
 
 /// Clean up our association with the caster of this ability.
 /datum/status_effect/overwatch/proc/unregister_watcher(mob/living/former_overwatcher)
+	procstart = null
+	src.procstart = null
 	if (!overwatch_triggered)
 		former_overwatcher.Stun(2 SECONDS, ignore_canstun = TRUE)
 	UnregisterSignal(former_overwatcher, list(COMSIG_QDELETING, COMSIG_LIVING_DEATH))
 
 /// Uh oh, you did something within my threat radius, now we're going to shoot you
 /datum/status_effect/overwatch/proc/opportunity_attack()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!can_see(watcher, owner, length = watch_range))
 		qdel(src)
@@ -140,6 +158,8 @@
 
 /// Can't overwatch you if I don't exist
 /datum/status_effect/overwatch/proc/on_participant_died()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
@@ -156,9 +176,13 @@
 	alert_type = null
 
 /datum/status_effect/overwatch_immune/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(owner, TRAIT_OVERWATCH_IMMUNE, TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/overwatch_immune/on_remove()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_OVERWATCH_IMMUNE, TRAIT_STATUS_EFFECT(id))
 	return ..()

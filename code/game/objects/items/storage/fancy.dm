@@ -32,6 +32,8 @@
 	var/has_open_closed_states = TRUE
 
 /obj/item/storage/fancy/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(!spawn_type)
 		return
 	for(var/i = 1 to spawn_count)
@@ -39,10 +41,14 @@
 		new thing_in_box(src)
 
 /obj/item/storage/fancy/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][has_open_closed_states && open_status ? contents.len : null]"
 	return ..()
 
 /obj/item/storage/fancy/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!open_status)
 		return
@@ -52,6 +58,8 @@
 		. += "There are [contents.len <= 0 ? "no" : "[contents.len]"] [contents_tag]s left."
 
 /obj/item/storage/fancy/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(open_status == FANCY_CONTAINER_CLOSED)
 		open_status = FANCY_CONTAINER_OPEN
 	else if(open_status == FANCY_CONTAINER_OPEN)
@@ -70,12 +78,16 @@
 	user.put_in_hands(result)
 
 /obj/item/storage/fancy/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(open_status == FANCY_CONTAINER_CLOSED)
 		open_status = FANCY_CONTAINER_OPEN
 	update_appearance()
 
 /obj/item/storage/fancy/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(open_status == FANCY_CONTAINER_CLOSED)
 		open_status = FANCY_CONTAINER_OPEN
@@ -102,14 +114,20 @@
 	storage_type = /datum/storage/donut_box
 
 /obj/item/storage/fancy/donut_box/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/item/storage/fancy/donut_box/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state][open_status ? "_inner" : null]"
 
 /obj/item/storage/fancy/donut_box/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!open_status)
 		return
@@ -212,6 +230,8 @@
 	var/display_cigs = TRUE
 
 /obj/item/storage/fancy/cigarettes/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(contents.len != 0 || !spawn_coupon)
 		return ..()
 
@@ -228,6 +248,8 @@
 	atom_storage.max_slots = 0
 
 /obj/item/storage/fancy/cigarettes/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	register_context()
@@ -235,17 +257,23 @@
 		update_appearance()
 
 /obj/item/storage/fancy/cigarettes/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(interacting_with != user) // you can quickly put a cigarette in your mouth only
 		return ..()
 	quick_remove_item(/obj/item/cigarette, user, equip_to_mouth = TRUE)
 
 /obj/item/storage/fancy/cigarettes/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	quick_remove_item(/obj/item/cigarette, user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/storage/fancy/cigarettes/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/lighter = locate(/obj/item/lighter) in contents
 	if(lighter)
 		quick_remove_item(lighter, user)
@@ -254,6 +282,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/storage/fancy/cigarettes/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(locate(/obj/item/lighter) in contents)
 		context[SCREENTIP_CONTEXT_ALT_LMB] = "Remove lighter"
@@ -261,19 +291,27 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/storage/fancy/cigarettes/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(spawn_coupon)
 		. += span_notice("There's a coupon on the back of the pack! You can tear it off once it's empty.")
 
 /obj/item/storage/fancy/cigarettes/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state][contents.len ? null : "_empty"]"
 
 /obj/item/storage/fancy/cigarettes/proc/open_icon_state()
+	procstart = null
+	src.procstart = null
 	return "[icon_state]_open"
 
 /obj/item/storage/fancy/cigarettes/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!open_status || !contents.len)
 		return
@@ -411,6 +449,8 @@
 	age_restricted = FALSE
 
 /obj/item/storage/fancy/cigarettes/cigpack_candy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(7))
 		spawn_type = /obj/item/cigarette/candy/nicotine //uh oh!
@@ -486,12 +526,16 @@
 	storage_type = /datum/storage/rolling_paper_pack
 
 /obj/item/storage/fancy/rollingpapers/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!spawn_count)
 		update_appearance()
 
 /obj/item/storage/fancy/rollingpapers/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!contents.len)
 		. += "[base_icon_state]_empty"
@@ -518,6 +562,8 @@
 	display_cigs = FALSE
 
 /obj/item/storage/fancy/cigarettes/cigars/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//reset any changes the parent call may have made
 	icon_state = base_icon_state
@@ -527,6 +573,8 @@
 	open_status = FANCY_CONTAINER_OPEN
 
 /obj/item/storage/fancy/cigarettes/cigars/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!open_status)
 		return
@@ -555,6 +603,8 @@
 
 
 /obj/item/storage/fancy/cigarettes/cigars/havana/open_icon_state()
+	procstart = null
+	src.procstart = null
 	return "cohibacase_open"
 
 /obj/item/storage/fancy/cigarettes/cigars/havana/empty
@@ -601,6 +651,8 @@
 	storage_type = /datum/storage/nugget_box
 
 /obj/item/storage/fancy/nugget_box/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// It's a safe place for the Fryish/Fritterish
 	AddElement(/datum/element/fish_safe_storage)
@@ -663,6 +715,8 @@
 	storage_type = /datum/storage/pickles_jar
 
 /obj/item/storage/fancy/pickles_jar/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!contents.len)
 		icon_state = "[base_icon_state]_empty"
@@ -691,6 +745,8 @@
 	storage_type = /datum/storage/coffee_condi_display
 
 /obj/item/storage/fancy/coffee_condi_display/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/has_sugar = FALSE
 	var/has_sweetener = FALSE
@@ -717,6 +773,8 @@
 		. += "condi_display_chocolate"
 
 /obj/item/storage/fancy/coffee_condi_display/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 4)
 		new /obj/item/reagent_containers/condiment/pack/sugar(src)
 	for(var/i in 1 to 3)

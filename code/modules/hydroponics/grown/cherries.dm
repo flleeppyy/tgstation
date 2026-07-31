@@ -32,6 +32,8 @@
 	distill_reagent = /datum/reagent/consumable/ethanol/maraschino
 
 /obj/item/food/grown/cherries/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/cherryjelly = 0)
 
 // Blue Cherries
@@ -57,6 +59,8 @@
 	wine_power = 50
 
 /obj/item/food/grown/bluecherries/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/bluecherryjelly = 0)
 
 //Cherry Bulbs
@@ -84,6 +88,8 @@
 	wine_power = 50
 
 /obj/item/food/grown/cherrybulbs/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/cherryjelly = 0)
 
 //Cherry Bombs

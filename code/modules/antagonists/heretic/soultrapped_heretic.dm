@@ -18,6 +18,8 @@
 	explanation_text = "Help the cult. Kill the cult. Help the crew. Kill the crew. Help your wielder. Kill your wielder. Kill everyone. Rattle your chains. Break your bindings."
 
 /datum/antagonist/soultrapped_heretic/on_gain()
+	procstart = null
+	src.procstart = null
 	..()
 	var/policy = get_policy(ROLE_SOULTRAPPED_HERETIC)
 	if(policy)

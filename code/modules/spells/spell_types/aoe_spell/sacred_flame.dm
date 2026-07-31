@@ -17,6 +17,8 @@
 	var/firestacks_to_give = 20
 
 /datum/action/cooldown/spell/aoe/sacred_flame/get_things_to_cast_on(atom/center)
+	procstart = null
+	src.procstart = null
 	var/list/things = list()
 	for(var/mob/living/nearby_mob in view(aoe_radius, center))
 		things += nearby_mob
@@ -24,6 +26,8 @@
 	return things
 
 /datum/action/cooldown/spell/aoe/sacred_flame/cast_on_thing_in_aoe(mob/living/victim, mob/living/caster)
+	procstart = null
+	src.procstart = null
 	if(victim.can_block_magic(antimagic_flags))
 		return
 
@@ -34,6 +38,8 @@
 		to_chat(victim, span_warning("You suddenly feel very flammable."))
 
 /datum/action/cooldown/spell/aoe/sacred_flame/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cast_on.ignite_mob()
 	to_chat(cast_on, span_danger("You feel a roaring flame build up inside you!"))

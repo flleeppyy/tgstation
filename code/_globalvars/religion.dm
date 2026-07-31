@@ -50,6 +50,8 @@ GLOBAL_LIST_INIT(prayer_type_to_message_box, list(
 
 /// Sets a new religious sect used by all chaplains int he round
 /proc/set_new_religious_sect(path, reset_existing = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ispath(path, /datum/religion_sect))
 		message_admins("[ADMIN_LOOKUPFLW(usr)] has tried to spawn an item when selecting a sect.")
 		return
@@ -71,6 +73,8 @@ GLOBAL_LIST_INIT(prayer_type_to_message_box, list(
 
 /// Removes any existing religious sect from chaplains, allowing another to be selected
 /proc/reset_religious_sect()
+	procstart = null
+	src.procstart = null
 	for(var/i in GLOB.player_list)
 		if(!isliving(i))
 			continue

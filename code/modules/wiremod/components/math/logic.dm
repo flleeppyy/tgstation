@@ -23,6 +23,8 @@
 	)
 
 /obj/item/circuit_component/compare/logic/populate_options()
+	procstart = null
+	src.procstart = null
 	var/static/component_options = list(
 		COMP_LOGIC_AND,
 		COMP_LOGIC_OR,
@@ -31,6 +33,8 @@
 	logic_options = add_option_port("Logic Options", component_options)
 
 /obj/item/circuit_component/compare/logic/populate_custom_ports()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/circuit_component_add_port, \
 		port_list = comparison_ports, \
 		add_action = "add", \
@@ -42,6 +46,8 @@
 	)
 
 /obj/item/circuit_component/compare/logic/do_comparisons()
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	var/current_option = logic_options.value
 

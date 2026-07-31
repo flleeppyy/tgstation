@@ -3,6 +3,8 @@
 /// This migration moves binary-gendered characters over to the "use gender" body type
 /// so that old characters are preserved.
 /datum/preferences/proc/migrate_body_types(list/save_data)
+	procstart = null
+	src.procstart = null
 	var/current_gender = save_data["gender"]
 	if (current_gender == MALE || current_gender == FEMALE)
 		save_data["body_type"] = "Use gender"
@@ -12,6 +14,8 @@
 /// Force non-binary characters to have a female physique
 // TODO: Remove this entire migration if we ever add non-binary physiques
 /datum/preferences/proc/migrate_gendered_nonbinary_physique(list/save_data)
+	procstart = null
+	src.procstart = null
 	var/current_gender = save_data["gender"]
 	if(current_gender == MALE || current_gender == FEMALE)
 		return

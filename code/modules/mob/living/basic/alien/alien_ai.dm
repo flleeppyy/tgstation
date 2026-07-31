@@ -42,6 +42,8 @@
 /datum/bt_node/ai_behavior/plant_alien_weeds
 
 /datum/bt_node/ai_behavior/plant_alien_weeds/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/alien/alien_pawn = controller.pawn
 	if(!alien_pawn.can_plant_weeds || !alien_pawn.place_weeds())
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED
@@ -51,6 +53,8 @@
 /datum/bt_node/ai_behavior/lay_alien_egg
 
 /datum/bt_node/ai_behavior/lay_alien_egg/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/alien/alien_pawn = controller.pawn
 	if(!alien_pawn.can_lay_eggs || !alien_pawn.lay_alien_egg())
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED

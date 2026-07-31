@@ -15,10 +15,14 @@
 	var/datum/port/input/enc_key
 
 /obj/item/circuit_component/list_literal/ntnet_send/populate_ports()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	enc_key = add_input_port("Encryption Key", PORT_TYPE_STRING)
 
 /obj/item/circuit_component/list_literal/ntnet_send/should_receive_input(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -26,5 +30,7 @@
 	return find_functional_ntnet_relay()
 
 /obj/item/circuit_component/list_literal/ntnet_send/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	send_ntnet_data(list_output, enc_key.value)

@@ -70,6 +70,8 @@ GLOBAL_LIST_INIT(blood_types, init_blood_types())
 
 /// Initializes the list of blood type singletons
 /proc/init_blood_types()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/datum/blood_type/blood_type_path as anything in valid_subtypesof(/datum/blood_type))
 		var/datum/blood_type/new_type = new blood_type_path()
@@ -81,12 +83,16 @@ GLOBAL_LIST_INIT(species_list, init_species_list())
 GLOBAL_LIST_INIT_TYPED(species_prototypes, /datum/species, init_species_prototypes())
 
 /proc/init_species_list()
+	procstart = null
+	src.procstart = null
 	var/list/species_list = list()
 	for(var/datum/species/species_path as anything in subtypesof(/datum/species))
 		species_list[initial(species_path.id)] = species_path
 	return species_list
 
 /proc/init_species_prototypes()
+	procstart = null
+	src.procstart = null
 	var/list/species_list = list()
 	for(var/species_type in subtypesof(/datum/species))
 		species_list[species_type] = new species_type()
@@ -105,6 +111,8 @@ GLOBAL_LIST_INIT(construct_radial_images, list(
 ))
 
 /proc/update_config_movespeed_type_lookup(update_mobs = TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/mob_types = list()
 	var/list/entry_value = CONFIG_GET(keyed_list/multiplicative_movespeed)
 	for(var/path in entry_value)
@@ -118,11 +126,15 @@ GLOBAL_LIST_INIT(construct_radial_images, list(
 		update_mob_config_movespeeds()
 
 /proc/update_mob_config_movespeeds()
+	procstart = null
+	src.procstart = null
 	for(var/i in GLOB.mob_list)
 		var/mob/M = i
 		M.update_config_movespeed()
 
 /proc/init_emote_list()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/path in valid_subtypesof(/datum/emote))
 		var/datum/emote/E = new path()
@@ -141,6 +153,8 @@ GLOBAL_LIST_INIT(construct_radial_images, list(
 				.[E.key_third_person] |= E
 
 /proc/get_crewmember_minds()
+	procstart = null
+	src.procstart = null
 	var/list/minds = list()
 	for(var/datum/record/locked/target in GLOB.manifest.locked)
 		var/datum/mind/mind = target.mind_ref.resolve()
@@ -152,6 +166,8 @@ GLOBAL_LIST_INIT(construct_radial_images, list(
 GLOBAL_LIST_INIT(dna_identity_blocks, init_identity_block_types())
 
 /proc/init_identity_block_types()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/datum/dna_block/identity/block_path as anything in valid_subtypesof(/datum/dna_block/identity))
 		var/datum/dna_block/identity/new_block = new block_path()
@@ -161,6 +177,8 @@ GLOBAL_LIST_INIT(dna_identity_blocks, init_identity_block_types())
 GLOBAL_LIST_INIT(dna_feature_blocks, init_feature_block_types())
 
 /proc/init_feature_block_types()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/datum/dna_block/feature/block_path as anything in valid_subtypesof(/datum/dna_block/feature))
 		var/datum/dna_block/feature/new_block = new block_path()

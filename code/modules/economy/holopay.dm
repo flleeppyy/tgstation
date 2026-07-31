@@ -25,16 +25,22 @@
 	acid = 20
 
 /obj/structure/holopay/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(force_fee)
 		. += span_boldnotice("This holopay forces a payment of <b>[force_fee]</b> [MONEY_NAME_AUTOPURAL(force_fee)] per swipe instead of a variable amount.")
 
 /obj/structure/holopay/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/holographic_nature)
 	register_context()
 
 /obj/structure/holopay/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isidcard(held_item))
@@ -49,6 +55,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/holopay/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -60,6 +68,8 @@
 	take_damage(5, BRUTE, MELEE, 1)
 
 /obj/structure/holopay/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			playsound(loc, 'sound/items/weapons/egloves.ogg', 80, TRUE)
@@ -67,14 +77,20 @@
 			playsound(loc, 'sound/items/weapons/egloves.ogg', 80, TRUE)
 
 /obj/structure/holopay/atom_deconstruct(dissambled = TRUE)
+	procstart = null
+	src.procstart = null
 	dissipate()
 
 /obj/structure/holopay/Destroy()
+	procstart = null
+	src.procstart = null
 	linked_card?.my_store = null
 	linked_card = null
 	return ..()
 
 /obj/structure/holopay/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	/// Users can pay with an ID to skip the UI
 	if(isidcard(tool))
 		if(istype(tool, /obj/item/card/id/departmental_budget))
@@ -117,6 +133,8 @@
 	return NONE
 
 /obj/structure/holopay/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	/// Can kill it by right-clicking with ID because it seems useful and intuitive, to me, at least
 	if(!isidcard(tool))
 		return NONE
@@ -127,6 +145,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/holopay/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return FALSE
@@ -139,11 +159,15 @@
 		ui.open()
 
 /obj/structure/holopay/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!in_range(user, src) && !isobserver(user))
 		return UI_CLOSE
 
 /obj/structure/holopay/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["available_logos"] = linked_card.available_logos
 	.["description"] = desc
@@ -152,6 +176,8 @@
 	.["shop_logo"] = shop_logo
 
 /obj/structure/holopay/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["force_fee"] = force_fee
 	.["name"] = name
@@ -166,6 +192,8 @@
 		.["user"]["balance"] = account.account_balance
 
 /obj/structure/holopay/ui_act(action, list/params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return FALSE
@@ -198,6 +226,8 @@
  * * TRUE - the card was linked
  */
 /obj/structure/holopay/proc/assign_card(turf/target, obj/item/card/id/card)
+	procstart = null
+	src.procstart = null
 	linked_card = card
 	desc = "Pays directly into [card.registered_account.account_holder]'s bank account."
 	force_fee = card.holopay_fee
@@ -211,12 +241,16 @@
 	return TRUE
 
 /obj/structure/holopay/proc/track(atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(thing, COMSIG_MOVABLE_MOVED, PROC_REF(handle_move))
 	var/list/locations = get_nested_locs(thing, include_turf = FALSE)
 	for(var/atom/movable/location in locations)
 		RegisterSignal(location, COMSIG_MOVABLE_MOVED, PROC_REF(handle_move))
 
 /obj/structure/holopay/proc/untrack(atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(thing, COMSIG_MOVABLE_MOVED)
 	var/list/locations = get_nested_locs(thing, include_turf = FALSE)
 	for(var/atom/movable/location in locations)
@@ -227,6 +261,8 @@
  * Deletes the holopay if not.
  */
 /obj/structure/holopay/proc/handle_move(atom/movable/source, atom/old_loc, dir, forced, list/old_locs)
+	procstart = null
+	src.procstart = null
 	if(ismovable(old_loc))
 		untrack(old_loc)
 	if(!IN_GIVEN_RANGE(src, linked_card, max_holo_range))
@@ -240,6 +276,8 @@
  * Deletes the holopay thereafter.
  */
 /obj/structure/holopay/proc/dissipate()
+	procstart = null
+	src.procstart = null
 	playsound(loc, 'sound/effects/empulse.ogg', 40, TRUE)
 	visible_message(span_notice("The pay stand vanishes."))
 	qdel(src)
@@ -253,6 +291,8 @@
  * * TRUE - transaction was successful
  */
 /obj/structure/holopay/proc/process_payment(mob/living/user)
+	procstart = null
+	src.procstart = null
 	/// Account checks
 	var/obj/item/card/id/id_card
 	id_card = user.get_idcard(TRUE)
@@ -292,6 +332,8 @@
  * * TRUE - alert was successful.
  */
 /obj/structure/holopay/proc/alert_buyer(payee, amount)
+	procstart = null
+	src.procstart = null
 	/// Pay the owner
 	linked_card.registered_account.adjust_money(amount, "Holopay: [name]")
 	/// Make alerts

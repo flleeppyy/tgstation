@@ -8,6 +8,8 @@
 	var/hazard_type = /obj/effect/client_image_holder/hallucination/danger
 
 /datum/hallucination/hazard/start()
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS(hallucinator))
 		return FALSE
 
@@ -37,6 +39,8 @@
 	image_plane = FLOOR_PLANE
 
 /obj/effect/client_image_holder/hallucination/danger/Initialize(mapload, list/mobs_which_see_us, datum/hallucination/parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(atom_touched_holder),
@@ -45,6 +49,8 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/effect/client_image_holder/hallucination/danger/proc/atom_touched_holder(datum/source, atom/movable/entered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(entered in who_sees_us))
@@ -54,6 +60,8 @@
 
 /// Applies effects whenever the hallucinator enters the turf with our hallucination present.
 /obj/effect/client_image_holder/hallucination/danger/proc/on_hallucinator_entered(mob/living/afflicted)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/client_image_holder/hallucination/danger/lava
@@ -61,11 +69,15 @@
 	image_icon = 'icons/turf/floors/lava.dmi'
 
 /obj/effect/client_image_holder/hallucination/danger/lava/generate_image()
+	procstart = null
+	src.procstart = null
 	var/turf/danger_turf = get_turf(src)
 	image_state = "lava-[danger_turf.smoothing_junction || 0]"
 	return ..()
 
 /obj/effect/client_image_holder/hallucination/danger/lava/on_hallucinator_entered(mob/living/afflicted)
+	procstart = null
+	src.procstart = null
 	afflicted.adjust_stamina_loss(20)
 	afflicted.cause_hallucination(/datum/hallucination/fire, "fake lava hallucination")
 
@@ -74,11 +86,15 @@
 	image_icon = 'icons/turf/floors/chasms.dmi'
 
 /obj/effect/client_image_holder/hallucination/danger/chasm/generate_image()
+	procstart = null
+	src.procstart = null
 	var/turf/danger_turf = get_turf(src)
 	image_state = "chasms-[danger_turf.smoothing_junction || 0]"
 	return ..()
 
 /obj/effect/client_image_holder/hallucination/danger/chasm/on_hallucinator_entered(mob/living/afflicted)
+	procstart = null
+	src.procstart = null
 	to_chat(afflicted, span_userdanger("You fall into the chasm!"))
 	afflicted.visible_message(span_warning("[afflicted] falls to the ground suddenly!"), ignored_mobs = afflicted)
 	afflicted.Paralyze(4 SECONDS)
@@ -92,20 +108,30 @@
 	image_layer = OBJ_LAYER + 0.01
 
 /obj/effect/client_image_holder/hallucination/danger/anomaly/generate_image()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	apply_wibbly_filters(.)
 
 /obj/effect/client_image_holder/hallucination/danger/anomaly/Initialize(mapload, list/mobs_which_see_us, datum/hallucination/parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/effect/client_image_holder/hallucination/danger/anomaly/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/effect/client_image_holder/hallucination/danger/anomaly/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(SPT_PROB(ANOMALY_MOVECHANCE, seconds_per_tick))
 		step(src, pick(GLOB.alldirs))
 
 /obj/effect/client_image_holder/hallucination/danger/anomaly/on_hallucinator_entered(mob/living/afflicted)
+	procstart = null
+	src.procstart = null
 	afflicted.cause_hallucination(/datum/hallucination/shock, "fake anomaly hallucination")

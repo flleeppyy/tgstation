@@ -12,10 +12,14 @@
 	attack_verb_simple = list("test", "jerk", "bonk", "tap")
 
 /obj/item/reflexhammer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/kneejerk)
 
 /obj/item/reflexhammer/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is beating [user.p_them()]self to death with [src]! Unfortunately, it's not a real hammer! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(loc, 'sound/items/gavel.ogg', 50, TRUE, -1)
 	return STAMINALOSS | SHAME

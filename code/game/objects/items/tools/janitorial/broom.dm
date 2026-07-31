@@ -21,6 +21,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT)
 
 /obj/item/pushbroom/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/jousting, damage_boost_per_tile = 1)
 	AddComponent(/datum/component/two_handed, \
@@ -33,6 +35,8 @@
 	AddComponent(/datum/component/walking_aid)
 
 /obj/item/pushbroom/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state]0"
 	return ..()
 
@@ -44,6 +48,8 @@
  * * user - The user which is wielding the broom
  */
 /obj/item/pushbroom/proc/on_wield(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You brace the [src] against the ground in a firm sweeping stance."))
 	RegisterSignal(user, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(sweep))
 
@@ -55,9 +61,13 @@
  * * user - The user which is unwielding the broom
  */
 /obj/item/pushbroom/proc/on_unwield(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(user, COMSIG_MOVABLE_PRE_MOVE)
 
 /obj/item/pushbroom/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	sweep(user, interacting_with)
 	return NONE // I guess
 
@@ -69,6 +79,8 @@
  * * A - The atom which is located at the location to push atoms from
  */
 /obj/item/pushbroom/proc/sweep(mob/user, atom/atom)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	do_sweep(src, user, atom, user.dir)
@@ -82,6 +94,8 @@
 * * sweep_dir - The directions in which we sweep objects
 */
 /proc/do_sweep(obj/broomer, mob/user, atom/target, sweep_dir)
+	procstart = null
+	src.procstart = null
 	var/turf/current_item_loc = isturf(target) ? target : target.loc
 	if (!isturf(current_item_loc))
 		return

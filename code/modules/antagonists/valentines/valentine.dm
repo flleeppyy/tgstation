@@ -10,12 +10,16 @@
 	VAR_FINAL/datum/mind/date
 
 /datum/antagonist/valentine/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/protect/valentine/objective = new()
 	objective.owner = owner
 	objective.target = date
 	objectives += objective
 
 /datum/antagonist/valentine/on_gain()
+	procstart = null
+	src.procstart = null
 	forge_objectives()
 
 	if(isAI(owner.current))
@@ -38,19 +42,27 @@
 	return ..()
 
 /datum/antagonist/valentine/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/lover = mob_override || owner.current
 	lover.apply_status_effect(/datum/status_effect/in_love, date.current)
 
 /datum/antagonist/valentine/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/lover = mob_override || owner.current
 	lover.remove_status_effect(/datum/status_effect/in_love)
 
 /datum/antagonist/valentine/greet()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_boldwarning("You're on a date with [date.name]! Protect [date.p_them()] at all costs. \
 		This takes priority over all other loyalties."))
 
 //Squashed up a bit
 /datum/antagonist/valentine/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/valentine/dates_valentine = date?.has_antag_datum(type)
 	if(isnull(dates_valentine))
 		return span_redtext("[owner.name] had no date!")
@@ -75,6 +87,8 @@
 	show_in_antagpanel = FALSE
 
 /datum/antagonist/valentine/third_wheel/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/protect/valentine/our_objective = locate() in objectives
 	if(our_objective?.check_completion())
 		return span_greentext("[owner.name] was a third wheel, but protected [date.name]!")
@@ -86,4 +100,6 @@
 	human_check = FALSE
 
 /datum/objective/protect/valentine/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	explanation_text = "Protect [target.name], your date."

@@ -17,11 +17,15 @@
 	var/rune_color
 
 /datum/action/innate/cult/create_rune/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!rune_type || cooldown > world.time)
 		return FALSE
 	return ..()
 
 /datum/action/innate/cult/create_rune/proc/turf_check(turf/T)
+	procstart = null
+	src.procstart = null
 	if(!T)
 		return FALSE
 	if(isspaceturf(T))
@@ -37,6 +41,8 @@
 
 
 /datum/action/innate/cult/create_rune/Activate()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(owner)
 	if(!turf_check(T))
 		return
@@ -85,6 +91,8 @@
 	owner.update_mob_action_buttons()
 
 /datum/action/innate/cult/create_rune/proc/check_health(mob/living/user, old_health)
+	procstart = null
+	src.procstart = null
 	if(user.health < old_health[1])
 		return FALSE
 

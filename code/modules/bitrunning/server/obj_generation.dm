@@ -1,5 +1,7 @@
 /// Attempts to spawn a crate twice based on the list of available locations
 /obj/machinery/quantum_server/proc/attempt_spawn_cache(list/possible_turfs)
+	procstart = null
+	src.procstart = null
 	if(!length(possible_turfs))
 		return TRUE
 
@@ -18,6 +20,8 @@
 
 /// Attempts to spawn a lootbox
 /obj/machinery/quantum_server/proc/attempt_spawn_curiosity(list/possible_turfs)
+	procstart = null
+	src.procstart = null
 	if(!length(possible_turfs)) // Out of turfs to place a curiosity
 		return FALSE
 
@@ -39,6 +43,8 @@
 
 /// Generates a new avatar for the bitrunner.
 /obj/machinery/quantum_server/proc/generate_avatar(turf/destination, datum/outfit/netsuit)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/avatar = new(destination)
 
 	var/outfit_path = generated_domain.forced_outfit || netsuit
@@ -97,6 +103,8 @@
 
 /// Loads in any mob segments of the map
 /obj/machinery/quantum_server/proc/load_mob_segments()
+	procstart = null
+	src.procstart = null
 	if(!length(generated_domain.mob_modules))
 		return TRUE
 
@@ -129,6 +137,8 @@
 
 /// Scans over neo's contents for bitrunning tech disks. Loads the items or abilities onto the avatar.
 /obj/machinery/quantum_server/proc/stock_gear(mob/living/carbon/human/avatar, mob/living/carbon/human/neo, datum/lazy_template/virtual_domain/generated_domain)
+	procstart = null
+	src.procstart = null
 	var/domain_forbids_flags = generated_domain.domain_flags
 
 	var/import_ban = list()

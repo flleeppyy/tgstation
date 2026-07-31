@@ -11,6 +11,8 @@ PROCESSING_SUBSYSTEM_DEF(greyscale)
 #endif
 
 /datum/controller/subsystem/processing/greyscale/Initialize()
+	procstart = null
+	src.procstart = null
 	for(var/datum/greyscale_layer/greyscale_layer as anything in subtypesof(/datum/greyscale_layer))
 		layer_types[initial(greyscale_layer.layer_type)] = greyscale_layer
 
@@ -43,6 +45,8 @@ PROCESSING_SUBSYSTEM_DEF(greyscale)
 
 #ifdef USE_RUSTG_ICONFORGE_GAGS
 /datum/controller/subsystem/processing/greyscale/proc/jobs_completed(list/job_ids)
+	procstart = null
+	src.procstart = null
 	for(var/job in job_ids)
 		var/result = rustg_iconforge_check(job)
 		if(result == RUSTG_JOB_NO_RESULTS_YET)
@@ -54,10 +58,14 @@ PROCESSING_SUBSYSTEM_DEF(greyscale)
 #endif
 
 /datum/controller/subsystem/processing/greyscale/proc/RefreshConfigsFromFile()
+	procstart = null
+	src.procstart = null
 	for(var/i in configurations)
 		configurations[i].Refresh(TRUE)
 
 /datum/controller/subsystem/processing/greyscale/proc/GetColoredIconByType(type, list/colors)
+	procstart = null
+	src.procstart = null
 	if(!ispath(type, /datum/greyscale_config))
 		CRASH("An invalid greyscale configuration was given to `GetColoredIconByType()`: [type]")
 	if(!initialized)
@@ -86,6 +94,8 @@ PROCESSING_SUBSYSTEM_DEF(greyscale)
 #endif
 
 /datum/controller/subsystem/processing/greyscale/proc/GetColoredIconByTypeUniversalIcon(type, list/colors, target_icon_state)
+	procstart = null
+	src.procstart = null
 	if(!ispath(type, /datum/greyscale_config))
 		CRASH("An invalid greyscale configuration was given to `GetColoredIconByTypeUniversalIcon()`: [type]")
 	type = "[type]"
@@ -96,6 +106,8 @@ PROCESSING_SUBSYSTEM_DEF(greyscale)
 	return configurations[type].GenerateUniversalIcon(colors, target_icon_state)
 
 /datum/controller/subsystem/processing/greyscale/proc/ParseColorString(color_string)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/list/split_colors = splittext(color_string, "#")
 	for(var/color in 2 to length(split_colors))

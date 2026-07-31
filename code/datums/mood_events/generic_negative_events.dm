@@ -78,6 +78,8 @@
 	timeout = 8 MINUTES
 
 /datum/mood_event/dismembered/add_effects(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	if(limb)
 		description = "AHH! MY [uppertext(limb.plaintext_zone)]! I WAS USING THAT!"
 
@@ -88,6 +90,8 @@
 	event_flags = MOOD_EVENT_PAIN
 
 /datum/mood_event/reattachment/add_effects(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	if(limb)
 		description = "Ouch! My [limb.plaintext_zone] feels like I fell asleep on it."
 
@@ -106,6 +110,8 @@
 	timeout = 2 MINUTES
 
 /datum/mood_event/table/add_effects()
+	procstart = null
+	src.procstart = null
 	if(isfelinid(owner)) //Holy snowflake batman!
 		var/mob/living/carbon/human/feline = owner
 		feline.wag_tail(3 SECONDS)
@@ -119,6 +125,8 @@
 	event_flags = MOOD_EVENT_PAIN
 
 /datum/mood_event/table_limbsmash/add_effects(obj/item/bodypart/banged_limb)
+	procstart = null
+	src.procstart = null
 	if(banged_limb)
 		description = "My fucking [banged_limb.plaintext_zone], man that hurts..."
 
@@ -126,6 +134,8 @@
 	mood_change = -3
 
 /datum/mood_event/brain_damage/add_effects()
+	procstart = null
+	src.procstart = null
 	var/damage_message = pick_list_replacements(BRAIN_DAMAGE_FILE, "brain_damage")
 	description = "Hurr durr... [damage_message]"
 
@@ -175,6 +185,8 @@
 	mood_change = -2
 
 /datum/mood_event/jittery/add_effects(...)
+	procstart = null
+	src.procstart = null
 	if(HAS_PERSONALITY(owner, /datum/personality/paranoid))
 		mood_change -= 1
 
@@ -229,6 +241,8 @@
 	timeout = 3 SECONDS
 
 /datum/mood_event/notcreepingsevere/add_effects(name)
+	procstart = null
+	src.procstart = null
 	var/list/unstable = list(name)
 	for(var/i in 1 to rand(3,5))
 		unstable += copytext_char(name, -1)
@@ -258,6 +272,8 @@
 	event_flags = MOOD_EVENT_ART
 
 /datum/mood_event/artbad/add_effects()
+	procstart = null
+	src.procstart = null
 	if(HAS_PERSONALITY(owner, /datum/personality/creative))
 		mood_change = 0
 		description = "Everyone has to start their art journey somewhere!"
@@ -303,6 +319,8 @@
 	timeout = 2 MINUTES
 
 /datum/mood_event/too_slow/add_effects(param)
+	procstart = null
+	src.procstart = null
 	var/people_laughing_at_you = 1 // start with 1 in case they're on the same tile or something
 	for(var/mob/living/carbon/iter_carbon in oview(owner, 7))
 		if(!IS_UNCONSCIOUS_OR_CRIT(iter_carbon))
@@ -398,6 +416,8 @@
 	timeout = 5 MINUTES
 
 /datum/mood_event/banished //when the chaplain is sus! (and gets forcably de-holy'd)
+	procstart = null
+	src.procstart = null
 	description = "I have been excommunicated!"
 	mood_change = -10
 	timeout = 10 MINUTES
@@ -445,6 +465,8 @@
 	timeout = 10 MINUTES
 
 /datum/mood_event/russian_roulette_lose/add_effects()
+	procstart = null
+	src.procstart = null
 	if(HAS_PERSONALITY(owner, /datum/personality/gambler))
 		mood_change *= 0.5
 		description = "I gambled my life and lost! Truth is, the game was rigged from the start..."
@@ -469,6 +491,8 @@
 	description = "I feel cybernetics attached to me, and I HATE IT!"
 
 /datum/mood_event/body_purist/add_effects(power)
+	procstart = null
+	src.procstart = null
 	mood_change = power
 
 /datum/mood_event/unsatisfied_nomad
@@ -482,6 +506,8 @@
 	event_flags = MOOD_EVENT_FEAR
 
 /datum/mood_event/moon_insanity/add_effects()
+	procstart = null
+	src.procstart = null
 	if(HAS_PERSONALITY(owner, /datum/personality/spiritual))
 		mood_change *= 2
 
@@ -525,6 +551,8 @@
 	timeout = 3 MINUTES
 
 /datum/mood_event/bapped/add_effects()
+	procstart = null
+	src.procstart = null
 	// Felinids apparently hate being hit over the head with cardboard
 	if(isfelinid(owner))
 		mood_change = -2
@@ -540,6 +568,8 @@
 	timeout = 30 SECONDS
 
 /datum/mood_event/smoke_in_face/add_effects(param)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(owner, TRAIT_ANOSMIA))
 		description = "Cigarette smoke is unpleasant."
 		mood_change = -1
@@ -554,6 +584,8 @@
 	event_flags = MOOD_EVENT_GAMING
 
 /datum/mood_event/slots/loss/add_effects()
+	procstart = null
+	src.procstart = null
 	if(HAS_PERSONALITY(owner, /datum/personality/gambler))
 		mood_change = 0
 		description = "Aww dang it."
@@ -624,12 +656,16 @@
 	timeout = 4 MINUTES
 
 /datum/mood_event/splattered_with_blood/can_effect_mob(datum/mood/home, mob/living/who, ...)
+	procstart = null
+	src.procstart = null
 	if(isvampire(who))
 		return FALSE
 
 	return ..()
 
 /datum/mood_event/splattered_with_blood/add_effects(...)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(owner, TRAIT_CULT_HALO))
 		mood_change = 2
 		description = "Blood, blood! The Geometer will be pleased."

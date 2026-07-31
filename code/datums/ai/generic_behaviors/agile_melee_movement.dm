@@ -31,6 +31,8 @@
 	VAR_PRIVATE/hold_until = 0
 
 /datum/bt_node/ai_behavior/agile_melee_movement/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[target_key]
 	if(QDELETED(target))
 		return FALSE
@@ -41,10 +43,14 @@
 	return TRUE
 
 /datum/bt_node/ai_behavior/agile_melee_movement/proc/on_movement_failed(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	movement_failed = TRUE
 
 /datum/bt_node/ai_behavior/agile_melee_movement/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(movement_failed)
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED
 
@@ -77,6 +83,8 @@
 	return AI_BEHAVIOR_INSTANT
 
 /datum/bt_node/ai_behavior/agile_melee_movement/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(controller.pawn, COMSIG_MOB_AI_MOVEMENT_FAILED)
 	movement_failed = FALSE
 	current_mode = AGILE_MELEE_MODE_NONE
@@ -88,6 +96,8 @@
 
 /// Whether our melee attack is off cooldown, meaning it's worth being adjacent right now.
 /datum/bt_node/ai_behavior/agile_melee_movement/proc/can_swing(mob/pawn)
+	procstart = null
+	src.procstart = null
 	if(!isliving(pawn))
 		return TRUE
 	var/mob/living/living_pawn = pawn
@@ -96,6 +106,8 @@
 
 ///Switches which mode is driving our movement, tearing the current moveloop down first.
 /datum/bt_node/ai_behavior/agile_melee_movement/proc/set_movement_mode(datum/ai_controller/controller, mode, datum/ai_movement/movement_type)
+	procstart = null
+	src.procstart = null
 	if(mode == current_mode)
 		return
 	controller.ai_movement.stop_moving_towards(controller)
@@ -104,11 +116,15 @@
 
 /// Beelines into melee range. Retargeting to a new target is handled inside start_moving_towards().
 /datum/bt_node/ai_behavior/agile_melee_movement/proc/close_in(datum/ai_controller/controller, atom/target)
+	procstart = null
+	src.procstart = null
 	set_movement_mode(controller, AGILE_MELEE_MODE_CLOSING, initial(controller.ai_movement))
 	controller.ai_movement.start_moving_towards(controller, target, 1)
 
 /// Steps one tile away from target using backstep avoidance, falling back to shuffled directions if blocked.
 /datum/bt_node/ai_behavior/agile_melee_movement/proc/retreat(datum/ai_controller/controller, atom/target)
+	procstart = null
+	src.procstart = null
 	set_movement_mode(controller, AGILE_MELEE_MODE_RETREATING, /datum/ai_movement/basic_avoidance/backstep)
 	var/mob/pawn = controller.pawn
 	pawn.face_atom(target)
@@ -129,6 +145,8 @@
 
 /// Takes one step to a random adjacent turf, anywhere that keeps us inside the standoff band.
 /datum/bt_node/ai_behavior/agile_melee_movement/proc/jitter(datum/ai_controller/controller, atom/target)
+	procstart = null
+	src.procstart = null
 	if(!prob(jitter_chance))
 		return
 

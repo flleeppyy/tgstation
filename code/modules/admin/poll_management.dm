@@ -71,6 +71,8 @@
  *
  */
 /datum/admins/proc/poll_list_panel()
+	procstart = null
+	src.procstart = null
 	var/list/output = list("Current and future polls<br>Note when editing polls or their options changes are not saved until you press Submit Poll.<br><a href='byond://?_src_=holder;[HrefToken()];newpoll=1'>New Poll</a><a href='byond://?_src_=holder;[HrefToken()];reloadpolls=1'>Reload Polls</a><hr>")
 	for(var/p in GLOB.polls)
 		var/datum/poll_question/poll = p
@@ -95,6 +97,8 @@
  *
  */
 /datum/admins/proc/poll_management_panel(datum/poll_question/poll)
+	procstart = null
+	src.procstart = null
 	var/list/output = list("<form method='get' action='?src=[REF(src)]'>[HrefTokenFormField()]")
 	output += {"<input type='hidden' name='src' value='[REF(src)]'>Poll type
 	<div class="select">
@@ -241,6 +245,8 @@
  *
  */
 /datum/admins/proc/poll_parse_href(list/href_list, datum/poll_question/poll)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_POLL))
 		return
 	if(!SSdbcore.Connect())
@@ -322,6 +328,8 @@
 	poll_management_panel(poll)
 
 /datum/poll_question/New(id, polltype, starttime, endtime, question, subtitle, adminonly, multiplechoiceoptions, dontshow, allow_revoting, vote_count, creator, future, dbload = FALSE)
+	procstart = null
+	src.procstart = null
 	poll_id = text2num(id)
 	poll_type = polltype
 	start_datetime = starttime
@@ -339,6 +347,8 @@
 	GLOB.polls += src
 
 /datum/poll_question/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.polls -= src
 	return ..()
 
@@ -350,6 +360,8 @@
  *
  */
 /datum/poll_question/proc/delete_poll()
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_POLL))
 		return
 	if(!SSdbcore.Connect())
@@ -379,6 +391,8 @@
  *
  */
 /datum/poll_question/proc/save_poll_data(clear_votes)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_POLL))
 		return
 	if(!SSdbcore.Connect())
@@ -444,6 +458,8 @@
  *
  */
 /datum/poll_question/proc/save_all_options()
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		to_chat(usr, span_danger("Failed to establish database connection."), confidential = TRUE)
 		return
@@ -456,6 +472,8 @@
  *
  */
 /datum/poll_question/proc/clear_poll_votes()
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_POLL))
 		return
 	if(!SSdbcore.Connect())
@@ -480,6 +498,8 @@
  *
  */
 /datum/admins/proc/poll_option_panel(datum/poll_question/poll, datum/poll_option/option)
+	procstart = null
+	src.procstart = null
 	var/list/output = list("<form method='get' action='?src=[REF(src)]'>[HrefTokenFormField()]")
 	output += {"<input type='hidden' name='src' value='[REF(src)]'> Option for poll [poll.question]
 	<br>
@@ -538,6 +558,8 @@
  *
  */
 /datum/admins/proc/poll_option_parse_href(list/href_list, datum/poll_question/poll, datum/poll_option/option)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_POLL))
 		return
 	if(!SSdbcore.Connect())
@@ -612,6 +634,8 @@
 	poll_management_panel(poll)
 
 /datum/poll_option/New(id, text, minval, maxval, descmin, descmid, descmax, default_percentage_calc)
+	procstart = null
+	src.procstart = null
 	option_id = text2num(id)
 	src.text = text
 	min_val = text2num(minval)
@@ -623,6 +647,8 @@
 	GLOB.poll_options += src
 
 /datum/poll_option/Destroy()
+	procstart = null
+	src.procstart = null
 	parent_poll.options -= src
 	parent_poll = null
 	GLOB.poll_options -= src
@@ -636,6 +662,8 @@
  *
  */
 /datum/poll_option/proc/save_option()
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_POLL))
 		return
 	if(!SSdbcore.Connect())
@@ -670,6 +698,8 @@
  *
  */
 /datum/poll_option/proc/delete_option()
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_POLL))
 		return
 	. = parent_poll
@@ -692,6 +722,8 @@
  *
  */
 /proc/load_poll_data()
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		to_chat(usr, span_danger("Failed to establish database connection."), confidential = TRUE)
 		return

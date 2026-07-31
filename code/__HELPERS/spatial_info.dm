@@ -33,6 +33,8 @@
 	var/list/references = list()
 
 /mob/oranges_ear/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	if(flags_1 & INITIALIZED_1)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
@@ -40,6 +42,8 @@
 	return INITIALIZE_HINT_NORMAL
 
 /mob/oranges_ear/Destroy(force)
+	procstart = null
+	src.procstart = null
 	var/old_length = length(SSspatial_grid.pregenerated_oranges_ears)
 	SSspatial_grid.pregenerated_oranges_ears -= src
 	if(length(SSspatial_grid.pregenerated_oranges_ears) < old_length)
@@ -52,21 +56,29 @@
 	. = ..()
 
 /mob/oranges_ear/Move()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	stack_trace("SOMEHOW A /mob/oranges_ear MOVED")
 	return FALSE
 
 /mob/oranges_ear/abstract_move(atom/destination)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	stack_trace("SOMEHOW A /mob/oranges_ear MOVED")
 	return FALSE
 
 /mob/oranges_ear/Bump()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	return FALSE
 
 ///clean this oranges_ear up for future use
 /mob/oranges_ear/proc/unassign()
+	procstart = null
+	src.procstart = null
 	var/turf/turf_loc = loc
 	turf_loc.assigned_oranges_ear = null//trollface. our loc should ALWAYS be a turf, no exceptions. if it isnt then this doubles as an error message ;)
 	loc = null
@@ -82,6 +94,8 @@
  * * contents_type - the type of contents we want to be looking for. defaults to hearing sensitive
  */
 /proc/get_hearers_in_view(view_radius, atom/source, contents_type=RECURSIVE_CONTENTS_HEARING_SENSITIVE)
+	procstart = null
+	src.procstart = null
 	var/turf/center_turf = get_turf(source)
 	if(!center_turf)
 		return
@@ -131,6 +145,8 @@
  * * contents_type - the type of contents we want to be looking for. defaults to hearing sensitive
  */
 /proc/get_hearers_in_range(range, atom/source, contents_type=RECURSIVE_CONTENTS_HEARING_SENSITIVE)
+	procstart = null
+	src.procstart = null
 	var/turf/center_turf = get_turf(source)
 	if(!center_turf)
 		return
@@ -165,6 +181,8 @@
  * * source - object at the center of our search area. everything in get_turf(source) is guaranteed to be part of the search area
  */
 /proc/get_hearers_in_LOS(view_radius, atom/source, contents_type=RECURSIVE_CONTENTS_HEARING_SENSITIVE)
+	procstart = null
+	src.procstart = null
 	var/turf/center_turf = get_turf(source)
 	if(!center_turf)
 		return
@@ -212,6 +230,8 @@
  * Returns a list of mobs who are in hearing range of every radio in the list of radios given
  */
 /proc/get_hearers_in_radio_ranges(list/obj/item/radio/radios)
+	procstart = null
+	src.procstart = null
 	. = list()
 	// Returns a list of mobs who can hear any of the radios given in @radios
 	for(var/obj/item/radio/radio as anything in radios)
@@ -222,6 +242,8 @@
  * More expensive than get_hearers_in_radio_ranges()
  */
 /proc/get_hearers_in_radio_ranges_track_radios(list/obj/item/radio/radios)
+	procstart = null
+	src.procstart = null
 	. = list()
 	// Returns a list of mobs who can hear any of the radios given in @radios, indexed by the radio. More expensive than get_hearers_in_radio_ranges()
 	for(var/obj/item/radio/radio as anything in radios)
@@ -232,6 +254,8 @@
 /// A filter to be applied to get_hearers_in_x, that removes any non-mob hearers, converting them to their relevant mob if one exists (such as dullahan heads).
 /// Modifies input list.
 /proc/mob_only_listeners(list/atom/movable/hearers)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list/mob)
 
 	var/hearers_length
@@ -251,6 +275,8 @@
 
 ///Calculate if two atoms are in sight, returns TRUE or FALSE
 /proc/inLineOfSight(X1,Y1,X2,Y2,Z=1,PX1=16.5,PY1=16.5,PX2=16.5,PY2=16.5)
+	procstart = null
+	src.procstart = null
 	var/turf/current_turf
 	if(X1 == X2)
 		if(Y1 == Y2)
@@ -290,6 +316,8 @@
 #undef OFFSET_Y
 
 /proc/is_in_sight(atom/first_atom, atom/second_atom)
+	procstart = null
+	src.procstart = null
 	var/turf/first_turf = get_turf(first_atom)
 	var/turf/second_turf = get_turf(second_atom)
 
@@ -300,6 +328,8 @@
 
 ///Returns all atoms present in a circle around the center
 /proc/circle_range(center = usr,radius = 3)
+	procstart = null
+	src.procstart = null
 
 	var/turf/center_turf = get_turf(center)
 	var/list/atoms = new/list()
@@ -315,6 +345,8 @@
 
 ///Returns all atoms present in a circle around the center but uses view() instead of range() (Currently not used)
 /proc/circle_view(center=usr,radius=3)
+	procstart = null
+	src.procstart = null
 
 	var/turf/center_turf = get_turf(center)
 	var/list/atoms = new/list()
@@ -330,6 +362,8 @@
 
 ///Returns the distance between two atoms
 /proc/get_dist_euclidean(atom/first_location, atom/second_location)
+	procstart = null
+	src.procstart = null
 	var/dx = first_location.x - second_location.x
 	var/dy = first_location.y - second_location.y
 
@@ -339,6 +373,8 @@
 
 ///Returns a list of turfs around a center based on RANGE_TURFS()
 /proc/circle_range_turfs(center = usr, radius = 3)
+	procstart = null
+	src.procstart = null
 
 	var/turf/center_turf = get_turf(center)
 	var/list/turfs = new/list()
@@ -352,7 +388,9 @@
 	return turfs
 
 ///Returns a list of turfs around a center based on view()
-/proc/circle_view_turfs(center=usr,radius=3) //Is there even a diffrence between this proc and circle_range_turfs()? // Yes
+/proc/circle_view_turfs(center=usr,radius=3) //Is there even a diffrence between this proc and circle_range_turfs()?
+	procstart = null
+	src.procstart = null // Yes
 	var/turf/center_turf = get_turf(center)
 	var/list/turfs = new/list()
 	var/rsq = radius * (radius + 0.5)
@@ -366,6 +404,8 @@
 
 ///Returns the list of turfs around the outside of a center based on RANGE_TURFS()
 /proc/border_diamond_range_turfs(atom/center = usr, radius = 3)
+	procstart = null
+	src.procstart = null
 	var/turf/center_turf = get_turf(center)
 	var/list/turfs = list()
 
@@ -379,6 +419,8 @@
 
 ///Returns a slice of a list of turfs, defined by the ones that are inside the inner/outer angle's bounds
 /proc/slice_off_turfs(atom/center, list/turf/turfs, inner_angle, outer_angle)
+	procstart = null
+	src.procstart = null
 	var/turf/center_turf = get_turf(center)
 	var/list/sliced_turfs = list()
 
@@ -398,6 +440,8 @@
  * Returns: list(x1, y1, x2, y2)
  */
 /proc/get_bbox_of_atoms(list/atoms)
+	procstart = null
+	src.procstart = null
 	var/list/list_x = list()
 	var/list/list_y = list()
 	for(var/_a in atoms)
@@ -412,6 +456,8 @@
 
 /// Like view but bypasses luminosity check
 /proc/get_hear(range, atom/source)
+	procstart = null
+	src.procstart = null
 	var/lum = source.luminosity
 	source.luminosity = 6
 
@@ -420,6 +466,8 @@
 
 /// get_hear that only gets turfs so we can use as_anything
 /proc/get_hear_turfs(range, atom/source)
+	procstart = null
+	src.procstart = null
 	var/lum = source.luminosity
 	source.luminosity = range + 2
 	. = list()
@@ -429,12 +477,16 @@
 
 ///Returns the open turf next to the center in a specific direction
 /proc/get_open_turf_in_dir(atom/center, dir)
+	procstart = null
+	src.procstart = null
 	var/turf/open/get_turf = get_step(center, dir)
 	if(istype(get_turf))
 		return get_turf
 
 ///Returns a list with all the adjacent open turfs. Clears the list of nulls in the end.
 /proc/get_adjacent_open_turfs(atom/center)
+	procstart = null
+	src.procstart = null
 	var/list/hand_back = list()
 	// Inlined get_open_turf_in_dir, just to be fast
 	var/turf/open/new_turf = get_step(center, NORTH)
@@ -453,6 +505,8 @@
 
 ///Returns a list with all the adjacent areas by getting the adjacent open turfs
 /proc/get_adjacent_open_areas(atom/center)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/list/adjacent_turfs = get_adjacent_open_turfs(center)
 	for(var/near_turf in adjacent_turfs)
@@ -464,6 +518,8 @@
  * Returns an empty list if the center is null
 **/
 /proc/get_areas_in_range(distance = 0, atom/center = usr)
+	procstart = null
+	src.procstart = null
 	if(!distance)
 		var/turf/center_turf = get_turf(center)
 		return center_turf ? list(center_turf.loc) : list()
@@ -478,6 +534,8 @@
 
 ///Returns a list of all areas that are adjacent to the center atom's area, clear the list of nulls at the end.
 /proc/get_adjacent_areas(atom/center)
+	procstart = null
+	src.procstart = null
 	. = list(
 		get_area(get_ranged_target_turf(center, NORTH, 1)),
 		get_area(get_ranged_target_turf(center, SOUTH, 1)),
@@ -488,6 +546,8 @@
 
 ///Returns a list of all turfs that are adjacent to the center atom's turf, clear the list of nulls at the end.
 /proc/get_adjacent_turfs(atom/center)
+	procstart = null
+	src.procstart = null
 	. = list(
 		get_step(center, NORTH),
 		get_step(center, SOUTH),
@@ -498,6 +558,8 @@
 
 ///Checks if the mob provided (must_be_alone) is alone in an area
 /proc/alone_in_area(area/the_area, mob/must_be_alone, check_type = /mob/living/carbon)
+	procstart = null
+	src.procstart = null
 	var/area/our_area = get_area(the_area)
 	for(var/carbon in GLOB.alive_mob_list)
 		if(!istype(carbon, check_type))
@@ -518,6 +580,8 @@
  * @params view_based - If TRUE, we'll use circle_view_turfs instead of circle_range_turfs procs.
  */
 /proc/turf_peel(outer_range, inner_range, center, view_based = FALSE)
+	procstart = null
+	src.procstart = null
 	if(inner_range > outer_range) // If the inner range is larger than the outer range, you're using this wrong.
 		CRASH("Turf peel inner range is larger than outer range!")
 	var/list/peel = list()
@@ -540,6 +604,8 @@
 
 ///check if 2 diagonal turfs are blocked by dense objects
 /proc/diagonally_blocked(turf/our_turf, turf/dest_turf)
+	procstart = null
+	src.procstart = null
 	if(get_dist(our_turf, dest_turf) != 1)
 		return FALSE
 	var/direction_to_turf = get_dir(dest_turf, our_turf)

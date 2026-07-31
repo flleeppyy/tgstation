@@ -19,14 +19,20 @@
 	var/status_effect_type = null
 
 /datum/action/cooldown/mob_cooldown/blood_worm/inject/New(Target, original)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(target, COMSIG_LIVING_HEALTH_UPDATE, PROC_REF(update_status_on_signal))
 
 /datum/action/cooldown/mob_cooldown/blood_worm/inject/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, COMSIG_LIVING_HEALTH_UPDATE)
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/inject/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	if (!ishuman(owner) && !istype(owner, /mob/living/basic/blood_worm))
 		return FALSE
 
@@ -40,6 +46,8 @@
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/inject/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/blood_worm/worm = src.target
 	var/mob/living/carbon/human/host = worm.host
 
@@ -80,6 +88,8 @@
 	var/last_tick_time = 0
 
 /datum/status_effect/blood_worm_transfuse/on_creation(mob/living/new_owner, mob/living/basic/blood_worm/new_worm)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -88,10 +98,14 @@
 	last_tick_time = world.time
 
 /datum/status_effect/blood_worm_transfuse/Destroy()
+	procstart = null
+	src.procstart = null
 	detach_from_worm()
 	return ..()
 
 /datum/status_effect/blood_worm_transfuse/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	var/need_mob_update = FALSE
 
 	need_mob_update |= heal_damage(seconds_between_ticks)
@@ -105,12 +119,16 @@
 	last_tick_time = world.time
 
 /datum/status_effect/blood_worm_transfuse/update_shown_duration()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (worm_alert && linked_alert)
 		worm_alert.maptext = linked_alert.maptext
 
 /datum/status_effect/blood_worm_transfuse/proc/heal_damage(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	var/healing_left = damage_regen_rate * seconds_between_ticks
 
 	if (owner.get_brute_loss() > 0 && healing_left > 0)
@@ -131,6 +149,8 @@
 // I tried to set this up reasonably with SPT_PROB(), but it was too inconsistent, especially for wounds with high severity.
 // So I switched to an accumulation system instead. This way, the blood worm gets a consistent return on their health investment.
 /datum/status_effect/blood_worm_transfuse/proc/heal_wounds(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/host = owner
 
 	if (length(host.all_wounds))
@@ -155,6 +175,8 @@
 		. = TRUE
 
 /datum/status_effect/blood_worm_transfuse/proc/heal_organs(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/host = owner
 
 	for (var/obj/item/organ/organ in host.organs)
@@ -163,6 +185,8 @@
 		. |= organ.apply_organ_damage(-organ_regen_rate * seconds_between_ticks)
 
 /datum/status_effect/blood_worm_transfuse/proc/heal_traumas(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/host = owner
 
 	if (host.has_trauma_type(resilience = TRAUMA_RESILIENCE_SURGERY))
@@ -176,6 +200,8 @@
 		trauma_regen_accumulation = max(0, trauma_regen_accumulation - 1)
 
 /datum/status_effect/blood_worm_transfuse/proc/attach_to_worm(mob/living/basic/blood_worm/new_worm)
+	procstart = null
+	src.procstart = null
 	worm = new_worm
 
 	if (!worm || !alert_type)
@@ -188,6 +214,8 @@
 	update_shown_duration()
 
 /datum/status_effect/blood_worm_transfuse/proc/detach_from_worm(datum/source, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(worm, COMSIG_QDELETING)
@@ -204,6 +232,8 @@
 	icon_state = "inject_blood"
 
 /atom/movable/screen/alert/status_effect/blood_worm_transfuse/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	underlays += mutable_appearance('icons/mob/actions/backgrounds.dmi', "bg_demon", layer = layer, offset_spokesman = src, plane = plane)
 

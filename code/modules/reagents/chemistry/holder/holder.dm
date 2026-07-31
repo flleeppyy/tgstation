@@ -33,10 +33,14 @@
 	var/ui_beaker_sync = FALSE
 
 /datum/reagents/New(maximum = 100, new_flags = 0)
+	procstart = null
+	src.procstart = null
 	maximum_volume = maximum
 	flags = new_flags
 
 /datum/reagents/Destroy()
+	procstart = null
+	src.procstart = null
 	//We're about to delete all reagents, so lets cleanup
 	for(var/datum/reagent/reagent as anything in reagent_list)
 		qdel(reagent)
@@ -58,6 +62,8 @@
  * * flags - flags to pass to the holder
  */
 /atom/proc/create_reagents(max_vol, flags)
+	procstart = null
+	src.procstart = null
 	if(reagents)
 		qdel(reagents)
 	reagents = new /datum/reagents(max_vol, flags)
@@ -197,6 +203,8 @@
  * * [added_purity][number] - an override to the default purity for each reagent to add.
  */
 /datum/reagents/proc/add_reagent_list(list/list_reagents, list/data = null, added_purity = null)
+	procstart = null
+	src.procstart = null
 	for(var/r_id in list_reagents)
 		var/amt = list_reagents[r_id]
 		add_reagent(r_id, amt, data, added_purity = added_purity)
@@ -210,6 +218,8 @@
  * * include_subtypes - if TRUE will remove the specified amount from all subtypes of reagent_type as well
  */
 /datum/reagents/proc/remove_reagent(datum/reagent/reagent_type, amount, include_subtypes = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ispath(reagent_type))
 		stack_trace("invalid reagent passed to remove reagent [reagent_type]")
 		return FALSE
@@ -260,6 +270,8 @@
  * * relative - if TRUE amount is treated as an percentage between 0->1. If FALSE amount is the direct volume to remove
  */
 /datum/reagents/proc/remove_all(amount = 1, relative = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!total_volume)
 		return FALSE
 
@@ -299,6 +311,8 @@
  * * [target_reagent_typepath][datum/reagent] - type typepath of the reagent to remove
  */
 /datum/reagents/proc/del_reagent(datum/reagent/target_reagent_typepath)
+	procstart = null
+	src.procstart = null
 	if(!ispath(target_reagent_typepath))
 		stack_trace("invalid reagent path passed to del reagent [target_reagent_typepath]")
 		return FALSE
@@ -395,6 +409,8 @@
 
 /// Removes all reagents
 /datum/reagents/proc/clear_reagents()
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 
 	//setting volume to 0 will allow update_total() to clean it up
@@ -536,6 +552,8 @@
 
 ///For internal purposes. Sends a signal when a new reagent has been created in the target reagent holder upon transfer
 /datum/reagents/proc/_on_transfer_creation(datum/reagent/reagent, datum/reagents/target_holder, datum/reagent/new_reagent)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	SEND_SIGNAL(reagent, COMSIG_REAGENT_ON_TRANSFER, target_holder, new_reagent)
@@ -549,6 +567,8 @@
  * * datum/reagent/target_id - multiply only this reagent in this holder leaving others untouched
  */
 /datum/reagents/proc/multiply(multiplier = 1, datum/reagent/target_id)
+	procstart = null
+	src.procstart = null
 	if(!total_volume)
 		return
 
@@ -582,6 +602,8 @@
 
 /// Updates [/datum/reagents/var/total_volume]
 /datum/reagents/proc/update_total()
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	var/list/deleted_reagents = list()
 	var/chem_index = 1
@@ -641,6 +663,8 @@
  * [current_reagent][datum/reagent] - the reagent(not typepath) to copy data from
  */
 /datum/reagents/proc/copy_data(datum/reagent/current_reagent)
+	procstart = null
+	src.procstart = null
 	if(!current_reagent || !current_reagent.data)
 		return null
 	if(!istype(current_reagent.data, /list))
@@ -716,6 +740,8 @@
 
 /// Get a reference to the reagent there is the most of in this holder
 /datum/reagents/proc/get_master_reagent()
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	var/datum/reagent/master
 	var/max_volume = 0
@@ -742,6 +768,8 @@
  * - list/datum/reagent/r_to_expose: map of[/datum/reagent -> amount] when you to want to expose specific reagents with precise amounts
  */
 /datum/reagents/proc/expose(atom/target, methods = TOUCH, volume_modifier = 1, show_message = 1, list/datum/reagent/r_to_expose = null)
+	procstart = null
+	src.procstart = null
 	if(isnull(target))
 		return
 
@@ -767,6 +795,8 @@
  * * coeff - multiplier to be applied on temp diff between param temp and current temp
  */
 /datum/reagents/proc/expose_temperature(temperature, coeff = 0.02)
+	procstart = null
+	src.procstart = null
 	if(flags & NO_REACT) //stasis holders IE cryobeaker
 		return
 	var/temp_delta = (temperature - chem_temp) * coeff
@@ -785,6 +815,8 @@
  * * banned_reagents - List of reagent types which we may want to have custom handling for and should avoid checking in here
  */
 /datum/reagents/proc/spark_act(power_charge, spark_flags, list/banned_reagents)
+	procstart = null
+	src.procstart = null
 	if (!islist(banned_reagents))
 		banned_reagents = list(banned_reagents)
 	var/result = NONE
@@ -809,6 +841,8 @@
 //===============================Logging==========================================
 /// Outputs a log-friendly list of reagents based on the internal reagent_list.
 /datum/reagents/proc/get_reagent_log_string()
+	procstart = null
+	src.procstart = null
 	if(!length(reagent_list))
 		return "no reagents"
 

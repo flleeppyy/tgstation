@@ -17,6 +17,8 @@
 	worn_icon_state = "kitchen_tool"
 
 /obj/item/kitchen/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_APC_SHOCKING, INNATE_TRAIT)
 
@@ -48,15 +50,21 @@
 	acid = 30
 
 /obj/item/kitchen/fork/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/eyestab)
 
 /obj/item/kitchen/fork/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] stabs \the [src] into [user.p_their()] chest! It looks like [user.p_theyre()] trying to take a bite out of [user.p_them()]self!"))
 	playsound(src, 'sound/items/eatfood.ogg', 50, TRUE)
 	return BRUTELOSS
 
 /obj/item/kitchen/fork/attack(mob/living/carbon/M, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return ..()
 
@@ -85,6 +93,8 @@
 	drop_sound = null
 
 /obj/item/kitchen/fork/plastic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/easily_fragmented, PLASTIC_BREAK_PROBABILITY)
 
@@ -110,6 +120,8 @@
 	drop_sound = null
 
 /obj/item/knife/plastic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/easily_fragmented, PLASTIC_BREAK_PROBABILITY)
 
@@ -128,13 +140,19 @@
 	tool_behaviour = TOOL_KNIFE
 
 /obj/item/knife/kitchen/silicon/get_all_tool_behaviours()
+	procstart = null
+	src.procstart = null
 	return list(TOOL_ROLLINGPIN, TOOL_KNIFE)
 
 /obj/item/knife/kitchen/silicon/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "It's fitted with a [tool_behaviour] head."
 
 /obj/item/knife/kitchen/silicon/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(user), 'sound/items/tools/change_drill.ogg', 50, TRUE)
 	if(tool_behaviour != TOOL_ROLLINGPIN)
 		tool_behaviour = TOOL_ROLLINGPIN
@@ -191,6 +209,8 @@
 	exposed_wound_bonus = 14
 
 /obj/item/kitchen/rollingpin/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins flattening [user.p_their()] head with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 /* Trays  moved to /obj/item/storage/bag */
@@ -220,20 +240,28 @@
 	var/spoon_sip_size = 5
 
 /obj/item/kitchen/spoon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(5, INJECTABLE|OPENCONTAINER|DUNKABLE)
 	register_item_context()
 
 /obj/item/kitchen/spoon/create_reagents(max_vol, flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(reagents, COMSIG_REAGENTS_HOLDER_UPDATED, PROC_REF(on_reagent_change))
 
 /obj/item/kitchen/spoon/proc/on_reagent_change(datum/reagents/reagents)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/item/kitchen/spoon/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(target.is_open_container())
 		context[SCREENTIP_CONTEXT_LMB] = "Empty spoonful"
 		context[SCREENTIP_CONTEXT_RMB] = "Grab spoonful"
@@ -244,6 +272,8 @@
 	return NONE
 
 /obj/item/kitchen/spoon/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(reagents.total_volume <= 0)
 		return
@@ -252,6 +282,8 @@
 	. += filled_overlay
 
 /obj/item/kitchen/spoon/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!target_mob.reagents || reagents.total_volume <= 0)
 		return  ..()
 
@@ -286,6 +318,8 @@
 	return TRUE
 
 /obj/item/kitchen/spoon/pre_attack(atom/attacked_atom, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -306,6 +340,8 @@
 	return TRUE
 
 /obj/item/kitchen/spoon/pre_attack_secondary(atom/attacked_atom, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -338,6 +374,8 @@
 	acid = 30
 
 /obj/item/kitchen/spoon/plastic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/easily_fragmented, PLASTIC_BREAK_PROBABILITY)
 
@@ -352,6 +390,8 @@
 	spoon_sip_size = 3 // just a taste
 
 /obj/item/kitchen/spoon/soup_ladle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(SOUP_SERVING_SIZE + 5, INJECTABLE|OPENCONTAINER)
 
@@ -377,19 +417,27 @@
 	COOLDOWN_DECLARE(clack_cooldown)
 
 /obj/item/kitchen/tongs/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(tonged)
 	return ..()
 
 /obj/item/kitchen/tongs/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isnull(tonged))
 		. += span_notice("It is holding [tonged].")
 
 /obj/item/kitchen/tongs/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	drop_tonged()
 
 /obj/item/kitchen/tongs/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -404,6 +452,8 @@
 
 /// Release the food we are holding
 /obj/item/kitchen/tongs/proc/drop_tonged()
+	procstart = null
+	src.procstart = null
 	if (isnull(tonged))
 		return
 	visible_message(span_notice("[tonged] falls to the ground!"))
@@ -413,6 +463,8 @@
 
 /// Play a clacking sound and appear closed, then open again
 /obj/item/kitchen/tongs/proc/click_clack()
+	procstart = null
+	src.procstart = null
 	COOLDOWN_START(src, clack_cooldown, clack_delay)
 	playsound(src, clack_sound, vol = 100, vary = FALSE)
 	icon_state = "[base_icon_state]_closed"
@@ -421,10 +473,14 @@
 
 /// Plays a clacking sound and appear open
 /obj/item/kitchen/tongs/proc/clack()
+	procstart = null
+	src.procstart = null
 	playsound(src, clack_sound, vol = 100, vary = FALSE)
 	icon_state = base_icon_state
 
 /obj/item/kitchen/tongs/Exited(atom/movable/leaving, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (leaving != tonged)
 		return
@@ -432,6 +488,8 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/item/kitchen/tongs/pre_attack(obj/item/attacked, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if (!isnull(tonged) && tonged.force <= 0) // prevents tongs from giving food-weapons extra range
 		attacked.attackby(tonged, user)
 		return TRUE
@@ -448,6 +506,8 @@
 	return TRUE
 
 /obj/item/kitchen/tongs/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isnull(tonged))
 		return

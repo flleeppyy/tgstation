@@ -44,6 +44,8 @@
 	RegisterSignal(SSdcs, COMSIG_RELIGIOUS_SECT_RESET, PROC_REF(on_sect_reset))
 
 /datum/component/religious_tool/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(performing_rite)
 	easy_access_sect = null
 	catalyst_type = null
@@ -51,16 +53,22 @@
 	return ..()
 
 /datum/component/religious_tool/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_ATTACKBY, PROC_REF(AttemptActions))
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/component/religious_tool/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ATOM_ATTACKBY, COMSIG_ATOM_EXAMINE))
 
 /**
  * Sets the easy access variable to the global if it exists.
  */
 /datum/component/religious_tool/proc/SetGlobalToLocal()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(easy_access_sect)
 		return TRUE
@@ -72,6 +80,8 @@
 
 /// Sets the easy access variable to null in case an admin needed to change it
 /datum/component/religious_tool/proc/on_sect_reset()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	easy_access_sect = null
 	after_sect_select_cb?.Invoke()
@@ -80,6 +90,8 @@
  * Since all of these involve attackby, we require mega proc. Handles Invocation, Sacrificing, And Selection of Sects.
  */
 /datum/component/religious_tool/proc/AttemptActions(datum/source, obj/item/the_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(the_item, catalyst_type))
@@ -93,6 +105,8 @@
 		return COMPONENT_NO_AFTERATTACK
 
 /datum/component/religious_tool/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ReligiousTool")
@@ -100,6 +114,8 @@
 	return COMPONENT_NO_AFTERATTACK
 
 /datum/component/religious_tool/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(usr))
 		return GLOB.never_state
 	var/mob/living/carbon/carbon = usr
@@ -108,6 +124,8 @@
 	return GLOB.default_state
 
 /datum/component/religious_tool/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	//cannot find global vars, so lets offer options
 	if(!SetGlobalToLocal())
@@ -134,6 +152,8 @@
 	return data
 
 /datum/component/religious_tool/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(action)
 		if("sect_select")
@@ -147,6 +167,8 @@
 
 /// Select the sect, called from [/datum/component/religious_tool/proc/AttemptActions]
 /datum/component/religious_tool/proc/select_sect(mob/living/user, path)
+	procstart = null
+	src.procstart = null
 	if(user.mind.holy_role != HOLY_ROLE_HIGHPRIEST)
 		to_chat(user, span_warning("You are not the high priest, and therefore cannot select a religious sect."))
 		return
@@ -157,6 +179,8 @@
 
 /// Perform the rite, called from [/datum/component/religious_tool/proc/AttemptActions]
 /datum/component/religious_tool/proc/perform_rite(mob/living/user, path)
+	procstart = null
+	src.procstart = null
 	if(user.mind.holy_role < HOLY_ROLE_PRIEST)
 		if(user.mind.holy_role == HOLY_ROLE_DEACON)
 			to_chat(user, span_warning("You are merely a deacon of [GLOB.deity], and therefore cannot perform rites."))
@@ -199,6 +223,8 @@
  * Generates a list of available sects to the user. Intended to support custom-availability sects.
  */
 /datum/component/religious_tool/proc/generate_available_sects(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/sects_to_pick = list()
 	for(var/path in subtypesof(/datum/religion_sect))
 		var/list/sect = list()
@@ -216,6 +242,8 @@
  * Generates available rites to pick from. It expects the sect to be picked by the time it was called (by tgui data)
  */
 /datum/component/religious_tool/proc/generate_available_rites()
+	procstart = null
+	src.procstart = null
 	var/list/rites_to_pick = list()
 	for(var/path in easy_access_sect.rites_list)
 		///checks to invalidate
@@ -234,6 +262,8 @@
  * Generates an english list (so string) of wanted sac items. Returns null if no targets!
  */
 /datum/component/religious_tool/proc/generate_sacrifice_list()
+	procstart = null
+	src.procstart = null
 	if(!length(easy_access_sect?.desired_items))
 		return //specifically null so the data sends as such
 	var/list/item_names = list()
@@ -247,6 +277,8 @@
  * Appends to examine so the user knows it can be used for religious purposes.
  */
 /datum/component/religious_tool/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/can_i_see = FALSE

@@ -17,10 +17,14 @@
 	var/range = 2
 
 /obj/effect/anomaly/bioscrambler/Initialize(mapload, new_lifespan)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pursuit_target = WEAKREF(find_nearest_target())
 
 /obj/effect/anomaly/bioscrambler/anomalyEffect(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!COOLDOWN_FINISHED(src, pulse_cooldown))
 		return
@@ -32,6 +36,8 @@
 		nearby.bioscramble(name)
 
 /obj/effect/anomaly/bioscrambler/move_anomaly()
+	procstart = null
+	src.procstart = null
 	update_target()
 	if (isnull(pursuit_target))
 		return ..()
@@ -41,6 +47,8 @@
 
 /// Select a new target if we need one
 /obj/effect/anomaly/bioscrambler/proc/update_target()
+	procstart = null
+	src.procstart = null
 	var/mob/living/current_target = pursuit_target?.resolve()
 	if (QDELETED(current_target))
 		pursuit_target = null
@@ -58,6 +66,8 @@
 
 /// Returns the closest conscious carbon on our z level or null if there somehow isn't one
 /obj/effect/anomaly/bioscrambler/proc/find_nearest_target()
+	procstart = null
+	src.procstart = null
 	var/closest_distance = INFINITY
 	var/mob/living/carbon/closest_target = null
 	for(var/mob/living/carbon/target in GLOB.player_list)
@@ -77,8 +87,12 @@
 /obj/effect/anomaly/bioscrambler/docile
 
 /obj/effect/anomaly/bioscrambler/docile/update_target()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/anomaly/bioscrambler/detonate()
+	procstart = null
+	src.procstart = null
 	COOLDOWN_RESET(src, pulse_cooldown)
 	anomalyEffect()

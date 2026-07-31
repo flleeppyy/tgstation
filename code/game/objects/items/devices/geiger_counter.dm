@@ -17,11 +17,15 @@
 	var/scanning = FALSE
 
 /obj/item/geiger_counter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	RegisterSignal(src, COMSIG_IN_RANGE_OF_IRRADIATION, PROC_REF(on_pre_potential_irradiation))
 
 /obj/item/geiger_counter/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!scanning)
 		return
@@ -39,6 +43,8 @@
 			. += span_suicide("Ambient radiation levels reaching critical level!")
 
 /obj/item/geiger_counter/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!scanning)
 		icon_state = "geiger_off"
 		return ..()
@@ -57,6 +63,8 @@
 	return ..()
 
 /obj/item/geiger_counter/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	scanning = !scanning
 
 	if (scanning)
@@ -68,11 +76,15 @@
 	balloon_alert(user, "switch [scanning ? "on" : "off"]")
 
 /obj/item/geiger_counter/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(SHOULD_SKIP_INTERACTION(interacting_with, src, user))
 		return NONE
 	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/geiger_counter/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!CAN_IRRADIATE(interacting_with))
 		return NONE
 
@@ -81,16 +93,22 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/geiger_counter/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	RegisterSignal(user, COMSIG_IN_RANGE_OF_IRRADIATION, PROC_REF(on_pre_potential_irradiation))
 
 /obj/item/geiger_counter/dropped(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	UnregisterSignal(user, COMSIG_IN_RANGE_OF_IRRADIATION)
 
 /obj/item/geiger_counter/proc/on_pre_potential_irradiation(datum/source, datum/radiation_pulse_information/pulse_information, insulation_to_target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	last_perceived_radiation_danger = get_perceived_radiation_danger(pulse_information, insulation_to_target)
@@ -100,17 +118,23 @@
 		update_appearance(UPDATE_ICON)
 
 /obj/item/geiger_counter/proc/reset_perceived_danger()
+	procstart = null
+	src.procstart = null
 	last_perceived_radiation_danger = null
 	if (scanning)
 		update_appearance(UPDATE_ICON)
 
 /obj/item/geiger_counter/proc/scan(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if (SEND_SIGNAL(target, COMSIG_GEIGER_COUNTER_SCAN, user, src) & COMSIG_GEIGER_COUNTER_SCAN_SUCCESSFUL)
 		return
 
 	to_chat(user, span_notice("[icon2html(src, user)] [isliving(target) ? "Subject" : "Target"] is free of radioactive contamination."))
 
 /obj/item/geiger_counter/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!scanning)
 		to_chat(user, span_warning("[src] must be on to reset its radiation level!"))
 		return CLICK_ACTION_BLOCKING

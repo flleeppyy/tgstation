@@ -43,6 +43,8 @@
 	)
 
 /mob/living/carbon/alien/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	ASSIGN_GAME_VERB(src, /mob/living, mob_sleep)
 	add_verb(src, /mob/living/proc/toggle_resting)
 
@@ -62,15 +64,21 @@
 		CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_has_trait), src, TRAIT_ADVANCEDTOOLUSER))
 
 /mob/living/carbon/alien/proc/create_internal_organs()
+	procstart = null
+	src.procstart = null
 	for(var/slot in default_organ_types_by_slot)
 		var/organ_type = default_organ_types_by_slot[slot]
 		var/obj/item/organ/organ = new organ_type()
 		organ.Insert(src, special = TRUE)
 
-/mob/living/carbon/alien/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null) // beepsky won't hunt aliums
+/mob/living/carbon/alien/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null)
+	procstart = null
+	src.procstart = null // beepsky won't hunt aliums
 	return -10
 
 /mob/living/carbon/alien/handle_environment(datum/gas_mixture/environment, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	// Run base mob body temperature proc before taking damage
 	// this balances body temp to the environment and natural stabilization
 	. = ..()
@@ -92,6 +100,8 @@
 				apply_damage(HEAT_DAMAGE_LEVEL_2 * seconds_per_tick, BURN)
 
 /mob/living/carbon/alien/get_bloodtype()
+	procstart = null
+	src.procstart = null
 	return get_blood_type(BLOOD_TYPE_XENO)
 
 /*----------------------------------------
@@ -99,6 +109,8 @@ Proc: AddInfectionImages()
 Des: Gives the client of the alien an image on each infected mob.
 ----------------------------------------*/
 /mob/living/carbon/alien/proc/AddInfectionImages()
+	procstart = null
+	src.procstart = null
 	if (!client)
 		return
 
@@ -113,6 +125,8 @@ Proc: RemoveInfectionImages()
 Des: Removes all infected images from the alien.
 ----------------------------------------*/
 /mob/living/carbon/alien/proc/RemoveInfectionImages()
+	procstart = null
+	src.procstart = null
 	if(client)
 		var/list/image/to_remove
 		for(var/image/client_image as anything in client.images)
@@ -123,17 +137,25 @@ Des: Removes all infected images from the alien.
 	return
 
 /mob/living/carbon/alien/canBeHandcuffed()
+	procstart = null
+	src.procstart = null
 	if(num_hands < 2)
 		return FALSE
 	return TRUE
 
 /mob/living/carbon/alien/get_visible_suicide_message()
+	procstart = null
+	src.procstart = null
 	return "[src] is thrashing wildly! It looks like [p_theyre()] trying to commit suicide."
 
 /mob/living/carbon/alien/get_blind_suicide_message()
+	procstart = null
+	src.procstart = null
 	return "You hear thrashing."
 
 /mob/living/carbon/alien/proc/alien_evolve(mob/living/carbon/alien/new_xeno)
+	procstart = null
+	src.procstart = null
 	visible_message(
 		span_alertalien("[src] begins to twist and contort!"),
 		span_noticealien("You begin to evolve!"),
@@ -173,6 +195,8 @@ Des: Removes all infected images from the alien.
 
 /// Changes the name of the xeno we are evolving into in order to keep the same numerical identifier the old xeno had.
 /mob/living/carbon/alien/proc/change_name(old_name, old_real_name, old_identifier)
+	procstart = null
+	src.procstart = null
 	if(!alien_name_regex.Find(old_name)) // check to make sure there's no admins doing funny stuff with naming these aliens
 		name = old_name
 		real_name = old_real_name
@@ -188,18 +212,28 @@ Des: Removes all infected images from the alien.
 	set_name()
 
 /mob/living/carbon/alien/on_lying_down(new_lying_angle)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icons()
 
 /mob/living/carbon/alien/on_standing_up()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icons()
 
 /mob/living/carbon/alien/proc/update_alien_speed()
+	procstart = null
+	src.procstart = null
 	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/alien_speed, multiplicative_slowdown = alien_speed)
 
 /mob/living/carbon/alien/get_footprint_sprite()
+	procstart = null
+	src.procstart = null
 	return FOOTPRINT_SPRITE_CLAWS
 
 /mob/living/carbon/alien/get_fire_overlay(stacks, on_fire)
+	procstart = null
+	src.procstart = null
 	return make_generic_fire_overlay()

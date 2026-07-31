@@ -1,5 +1,7 @@
 /// Init this specific atom
 /datum/controller/subsystem/atoms/proc/InitAtom(atom/A, from_template = FALSE, list/arguments)
+	procstart = null
+	src.procstart = null
 
 	var/the_type = A.type
 
@@ -63,6 +65,8 @@
  *
  */
 /atom/New(loc, ...)
+	procstart = null
+	src.procstart = null
 	//atom creation method that preloads variables at creation
 	if(GLOB.use_preloader && src.type == GLOB._preloader_path)//in case the instantiated atom is creating other atoms in New()
 		world.preloader_load(src)
@@ -113,6 +117,8 @@
  * * [/turf/open/space/proc/Initialize]
  */
 /atom/proc/Initialize(mapload, ...)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 
@@ -170,6 +176,8 @@
  * code has been run
  */
 /atom/proc/LateInitialize()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	SHOULD_CALL_PARENT(FALSE)
 	stack_trace("[src] ([type]) called LateInitialize but has nothing on it!")

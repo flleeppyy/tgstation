@@ -4,21 +4,29 @@
 
 // All cortex bioware removes the trauma boost as it is not granted via a status
 /datum/status_effect/bioware/cortex/bioware_gained()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_SPECIAL_TRAUMA_BOOST, BIOWARE_TRAIT)
 
 // Imprinted brain - Cures basic traumas continuously
 /datum/status_effect/bioware/cortex/imprinted
 
 /datum/status_effect/bioware/cortex/imprinted/bioware_gained()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/carbon/human/human_owner = owner
 	human_owner.cure_all_traumas(resilience = TRAUMA_RESILIENCE_BASIC)
 	RegisterSignal(human_owner, COMSIG_CARBON_GAIN_TRAUMA, PROC_REF(on_gain_trauma))
 
 /datum/status_effect/bioware/cortex/imprinted/bioware_lost()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_CARBON_GAIN_TRAUMA)
 
 /datum/status_effect/bioware/cortex/imprinted/proc/on_gain_trauma(datum/source, datum/brain_trauma/trauma, resilience)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isnull(resilience))
 		resilience = trauma.resilience

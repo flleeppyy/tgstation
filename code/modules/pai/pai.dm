@@ -119,10 +119,14 @@
 		"spider" = TRUE,
 	)
 
-/mob/living/silicon/pai/add_sensors() //pAIs have to buy their HUDs
+/mob/living/silicon/pai/add_sensors()
+	procstart = null
+	src.procstart = null //pAIs have to buy their HUDs
 	return
 
 /mob/living/silicon/pai/can_interact_with(atom/target)
+	procstart = null
+	src.procstart = null
 	if(target == signaler) // Bypass for signaler
 		return TRUE
 	if(target == modularInterface)
@@ -131,6 +135,8 @@
 
 // See software.dm for Topic()
 /mob/living/silicon/pai/can_perform_action(atom/target, action_bitflags)
+	procstart = null
+	src.procstart = null
 	if(!(action_bitflags & ALLOW_PAI))
 		to_chat(src, span_warning("Your holochasis does not allow you to do this!"))
 		return FALSE
@@ -139,6 +145,8 @@
 	return ..(target, action_bitflags)
 
 /mob/living/silicon/pai/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(messenger_ability)
 	QDEL_NULL(atmos_analyzer)
 	QDEL_NULL(hacking_cable)
@@ -152,23 +160,35 @@
 
 // Need to override parent here because the message we dispatch is turf-based, not based on the location of the object because that could be fuckin anywhere
 /mob/living/silicon/pai/send_applicable_messages()
+	procstart = null
+	src.procstart = null
 	var/turf/location = get_turf(src)
 	location.visible_message(span_danger(get_visible_suicide_message()), null, span_hear(get_blind_suicide_message())) // null in the second arg here because we're sending from the turf
 
 /mob/living/silicon/pai/get_visible_suicide_message()
+	procstart = null
+	src.procstart = null
 	return "[src] flashes a message across its screen, \"Wiping core files. Please acquire a new personality to continue using pAI device functions.\""
 
 /mob/living/silicon/pai/get_blind_suicide_message()
+	procstart = null
+	src.procstart = null
 	return "[src] bleeps electronically."
 
 /mob/living/silicon/pai/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	return handle_emag(user)
 
 /mob/living/silicon/pai/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "Its master ID string seems to be [(!master_name || emagged) ? "empty" : master_name]."
 
 /mob/living/silicon/pai/get_status_tab_items()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!stat)
 		. += "Emitter Integrity: [holochassis_health * (100 / HOLOCHASSIS_MAX_HEALTH)]."
@@ -176,6 +196,8 @@
 		. += "Systems nonfunctional."
 
 /mob/living/silicon/pai/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if(gone == atmos_analyzer)
 		atmos_analyzer = null
 	else if(gone == aicamera)
@@ -191,6 +213,8 @@
 	return ..()
 
 /mob/living/silicon/pai/proc/on_hacking_cable_del(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	untrack_pai()
 	untrack_thing(hacking_cable)
@@ -200,6 +224,8 @@
 		card.update_appearance()
 
 /mob/living/silicon/pai/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/holographic_nature)
 	AddElement(/datum/element/can_be_held)
@@ -226,6 +252,8 @@
 	RegisterSignal(src, COMSIG_MOB_TRIED_ACCESS, PROC_REF(on_tried_access))
 
 /mob/living/silicon/pai/proc/toggle_leash()
+	procstart = null
+	src.procstart = null
 	if(isnull(card))
 		return
 	if(leash)
@@ -234,18 +262,26 @@
 		leash = AddComponent(/datum/component/leash, card, HOLOFORM_DEFAULT_RANGE, force_teleport_out_effect = /obj/effect/temp_visual/guardian/phase/out)
 
 /mob/living/silicon/pai/create_modularInterface()
+	procstart = null
+	src.procstart = null
 	if(!modularInterface)
 		modularInterface = new /obj/item/modular_computer/pda/silicon/pai(src)
 	return ..()
 
 /mob/living/silicon/pai/make_laws()
+	procstart = null
+	src.procstart = null
 	laws = new /datum/ai_laws/pai()
 	laws.name = "PAI Directives"
 
 /mob/living/silicon/pai/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	holochassis_health = clamp((holochassis_health + (HOLOCHASSIS_REGEN_PER_SECOND * seconds_per_tick)), -50, HOLOCHASSIS_MAX_HEALTH)
 
 /mob/living/silicon/pai/Process_Spacemove(movement_dir = 0, continuous_move = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		add_movespeed_modifier(/datum/movespeed_modifier/pai_spacewalk)
@@ -254,9 +290,13 @@
 	return TRUE
 
 /mob/living/silicon/pai/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return radio.screwdriver_act(user, tool)
 
 /mob/living/silicon/pai/updatehealth()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_GODMODE))
 		return
 	set_health(maxHealth - get_brute_loss() - get_fire_loss())
@@ -264,10 +304,14 @@
 	SEND_SIGNAL(src, COMSIG_LIVING_HEALTH_UPDATE)
 
 /mob/living/silicon/pai/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	desc = "A hard-light holographic avatar representing a pAI. This one appears in the form of a [chassis]."
 	return ..()
 
 /mob/living/silicon/pai/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = resting ? "[chassis]_rest" : "[chassis]"
 	held_state = "[chassis]"
 	return ..()
@@ -280,6 +324,8 @@
  * 	FALSE if the master is gone.
  */
 /mob/living/silicon/pai/proc/find_master()
+	procstart = null
+	src.procstart = null
 	if(!master_ref)
 		return FALSE
 	var/mob/living/resolved_master = master_ref?.resolve()
@@ -294,6 +340,8 @@
  * @returns {boolean} - TRUE if successful.
  */
 /mob/living/silicon/pai/proc/fix_speech()
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/pai = src
 	balloon_alert(pai, "speech modulation corrected")
 	for(var/effect in typesof(/datum/status_effect/speech))
@@ -308,6 +356,8 @@
  * 	or FALSE if the pAI is not being carried.
  */
 /mob/living/silicon/pai/proc/get_holder()
+	procstart = null
+	src.procstart = null
 	var/mob/holder = recursive_loc_check(card, /mob/living/carbon)
 	if(isnull(holder))
 		return FALSE
@@ -322,6 +372,8 @@
  * @returns {boolean} - TRUE if successful, FALSE if not.
  */
 /mob/living/silicon/pai/proc/handle_emag(mob/living/carbon/attacker)
+	procstart = null
+	src.procstart = null
 	if(!isliving(attacker))
 		return FALSE
 	balloon_alert(attacker, "directive override complete")
@@ -339,6 +391,8 @@
 	return TRUE
 
 /mob/living/silicon/pai/on_saboteur(datum/source, disrupt_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_silence_if_lower(disrupt_duration)
 	balloon_alert(src, "muted!")
@@ -350,6 +404,8 @@
  * @returns {boolean} - TRUE if successful, FALSE if not.
  */
 /mob/living/silicon/pai/proc/reset_software()
+	procstart = null
+	src.procstart = null
 	emagged = FALSE
 	if(!master_ref)
 		return FALSE
@@ -368,6 +424,8 @@
  * @returns {boolean} - TRUE if successful, FALSE if not.
  */
 /mob/living/silicon/pai/proc/set_dna(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user))
 		balloon_alert(user, "incompatible DNA signature")
 		balloon_alert(src, "incompatible DNA signature")
@@ -390,6 +448,8 @@
  * @returns {boolean} - TRUE if successful, FALSE if not.
  */
 /mob/living/silicon/pai/proc/set_laws(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!master_ref)
 		balloon_alert(user, "access denied: no master")
 		return FALSE
@@ -413,6 +473,8 @@
  * @returns {boolean} - TRUE if successful, FALSE if not.
  */
 /mob/living/silicon/pai/proc/toggle_holo()
+	procstart = null
+	src.procstart = null
 	balloon_alert(src, "holomatrix [can_holo ? "disabled" : "enabled"]")
 	can_holo = !can_holo
 	return TRUE
@@ -423,6 +485,8 @@
  * @param {string} option - The option being toggled.
  */
 /mob/living/silicon/pai/proc/toggle_radio(option)
+	procstart = null
+	src.procstart = null
 	// it can't be both so if we know it's not transmitting it must be receiving.
 	var/transmitting = option == "transmit"
 	var/transmit_holder = (transmitting ? WIRE_TX : WIRE_RX)
@@ -443,6 +507,8 @@
  * @returns {boolean} - TRUE if successful, FALSE if not.
  */
 /mob/living/silicon/pai/proc/wipe_pai(mob/user)
+	procstart = null
+	src.procstart = null
 	if(tgui_alert(user, "Are you certain you wish to delete the current personality? This action cannot be undone.", "Personality Wipe", list("Yes", "No")) != "Yes")
 		return FALSE
 	to_chat(src, span_warning("You feel yourself slipping away from reality."))
@@ -456,6 +522,8 @@
 
 /// Signal proc for [COMSIG_LIVING_CULT_SACRIFICED] to give a funny message when a pai is attempted to be sac'd
 /mob/living/silicon/pai/proc/on_cult_sacrificed(datum/source, list/invokers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/mob/living/cultist as anything in invokers)
@@ -464,6 +532,8 @@
 
 /// Updates the distance we can be from our pai card
 /mob/living/silicon/pai/proc/increment_range(increment_amount)
+	procstart = null
+	src.procstart = null
 	var/new_distance = leash.distance + increment_amount
 	if (new_distance < HOLOFORM_MIN_RANGE || new_distance > HOLOFORM_MAX_RANGE)
 		return
@@ -471,19 +541,27 @@
 
 ///Gives the messenger ability to the pAI, creating a new one if it doesn't have one already.
 /mob/living/silicon/pai/proc/give_messenger_ability()
+	procstart = null
+	src.procstart = null
 	if(!messenger_ability)
 		messenger_ability = new(src)
 	messenger_ability.Grant(src)
 
 ///Removes the messenger ability from the pAI, but does not delete it.
 /mob/living/silicon/pai/proc/remove_messenger_ability()
+	procstart = null
+	src.procstart = null
 	if(messenger_ability)
 		messenger_ability.Remove(src)
 
 /mob/living/silicon/pai/get_access()
+	procstart = null
+	src.procstart = null
 	return list()
 
 ///Called when a pAI tries opening something that requires access.
 /mob/living/silicon/pai/proc/on_tried_access(datum/source, obj/door_attempt, list/player_access)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return ACCESS_DISALLOWED

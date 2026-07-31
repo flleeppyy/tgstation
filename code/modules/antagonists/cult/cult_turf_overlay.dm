@@ -9,17 +9,25 @@
 	var/atom/linked
 
 /obj/effect/cult_turf/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	if(linked)
 		return linked.examine(user)
 	return list()
 
 /obj/effect/cult_turf/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/cult_turf/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/cult_turf/Destroy()
+	procstart = null
+	src.procstart = null
 	if(linked)
 		linked = null
 	. = ..()

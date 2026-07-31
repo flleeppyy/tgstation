@@ -11,6 +11,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2)
 
 /obj/item/ammo_box/magazine/wt550m9/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state]-[round(ammo_count(), 4)]"
 
@@ -48,6 +50,8 @@
 	max_ammo = 32
 
 /obj/item/ammo_box/magazine/uzim9mm/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state]-[round(ammo_count(), 4)]"
 
@@ -61,6 +65,8 @@
 	max_ammo = 21
 
 /obj/item/ammo_box/magazine/smgm9mm/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state]-[LAZYLEN(stored_ammo) ? "full" : "empty"]"
 
@@ -86,6 +92,8 @@
 	max_ammo = 24
 
 /obj/item/ammo_box/magazine/smgm45/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state]-[round(ammo_count(), 2)]"
 

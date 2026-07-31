@@ -20,15 +20,21 @@
 	))
 
 /datum/action/cooldown/mob_cooldown/assume_form/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_LIVING_DEATH, PROC_REF(reset_appearances))
 
 /datum/action/cooldown/mob_cooldown/assume_form/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	reset_appearances()
 	UnregisterSignal(owner, COMSIG_LIVING_DEATH)
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/assume_form/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	disable_cooldown_actions()
 	determine_intent(target_atom)
 	StartCooldown()
@@ -37,6 +43,8 @@
 
 /// Rapid proc to test if we can assume the form of a given atom. Returns TRUE if we can, FALSE if we can't. Done like this so we can be nice and explicit.
 /datum/action/cooldown/mob_cooldown/assume_form/proc/can_assume_form(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	if(is_type_in_typecache(target_atom, blacklist_typecache) || (!isobj(target_atom) && !ismob(target_atom)))
 		return FALSE
 
@@ -44,6 +52,8 @@
 
 /// Determines what our user meant by their action. If they clicked on themselves, we reset our appearance. Otherwise, we assume the appearance of the clicked-on item.
 /datum/action/cooldown/mob_cooldown/assume_form/proc/determine_intent(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	if(!can_assume_form(target_atom))
 		return
 
@@ -55,6 +65,8 @@
 
 /// Assumes the appearance of a desired movable and applies it to our mob. Target is the movable in question.
 /datum/action/cooldown/mob_cooldown/assume_form/proc/assume_appearances(atom/movable/target_atom)
+	procstart = null
+	src.procstart = null
 	owner.appearance = target_atom.appearance
 	owner.copy_overlays(target_atom)
 	owner.alpha = max(target_atom.alpha, 150) //fucking chameleons
@@ -68,6 +80,8 @@
 
 /// Resets the appearances of the mob to the default.
 /datum/action/cooldown/mob_cooldown/assume_form/proc/reset_appearances()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!HAS_TRAIT(owner, TRAIT_DISGUISED))

@@ -3,6 +3,8 @@
 /datum/unit_test/market
 
 /datum/unit_test/market/Run()
+	procstart = null
+	src.procstart = null
 	for(var/datum/market_item/prototype as anything in subtypesof(/datum/market_item))
 		if(prototype::abstract_path == prototype) //skip abstract paths
 			continue

@@ -20,6 +20,8 @@
 	circuit_flags = CIRCUIT_FLAG_INPUT_SIGNAL|CIRCUIT_FLAG_OUTPUT_SIGNAL
 
 /obj/item/circuit_component/pinpointer/populate_ports()
+	procstart = null
+	src.procstart = null
 	target = add_input_port("Target entity", PORT_TYPE_ATOM, FALSE)
 
 	x_pos = add_output_port("X", PORT_TYPE_NUMBER)
@@ -28,6 +30,8 @@
 	on_error = add_output_port("Failed", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/pinpointer/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 
 	if(isnull(target.value))
 		x_pos.set_output(null)

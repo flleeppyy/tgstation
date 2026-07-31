@@ -4,6 +4,8 @@
 	description = "Hello! I am a bugged reagent. Please report me for my crimes. Thank you!!"
 
 /datum/reagent/reaction_agent/intercept_reagents_transfer(datum/reagents/target, amount, copy_only)
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return FALSE
 	if(target.flags & NO_REACT)
@@ -29,6 +31,8 @@
 
 //Consumes self on addition and shifts ph
 /datum/reagent/reaction_agent/acidic_buffer/intercept_reagents_transfer(datum/reagents/target, amount, copy_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -60,6 +64,8 @@
 	glass_price = DRINK_PRICE_HIGH
 
 /datum/reagent/reaction_agent/basic_buffer/intercept_reagents_transfer(datum/reagents/target, amount, copy_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -99,6 +105,8 @@
 	color = "#ffffff"
 
 /datum/reagent/reaction_agent/purity_tester/intercept_reagents_transfer(datum/reagents/target, amount, copy_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -126,6 +134,8 @@
 	color = "#e61f82"
 
 /datum/reagent/reaction_agent/speed_agent/intercept_reagents_transfer(datum/reagents/target, amount, copy_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -153,6 +163,8 @@
 	color = "#b60046"
 
 /datum/reagent/reaction_agent/inversing_buffer/intercept_reagents_transfer(datum/reagents/target, amount, copy_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

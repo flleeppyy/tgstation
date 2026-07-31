@@ -8,6 +8,8 @@
 	var/datum/component/speechmod
 
 /datum/status_effect/food/speech/italian/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	speechmod = AddComponent( \
 		/datum/component/speechmod, \
@@ -22,6 +24,8 @@
 		)
 
 /datum/status_effect/food/speech/italian/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(speechmod)
 
@@ -38,6 +42,8 @@
 	var/datum/component/speechmod
 
 /datum/status_effect/food/speech/french/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	speechmod = owner.AddComponent( \
 		/datum/component/speechmod, \
@@ -51,6 +57,8 @@
 		)
 
 /datum/status_effect/food/speech/french/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(speechmod)
 

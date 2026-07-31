@@ -15,6 +15,8 @@
 	var/atom/movable/field_effect_holder/my_movable
 
 /datum/proximity_monitor/advanced/bubble/New(atom/_host, range, _ignore_if_not_on_turf = TRUE, atom/projector)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	setup_effect_directions()
 	if(_host != projector)
@@ -26,6 +28,8 @@
 	draw_effect()
 
 /datum/proximity_monitor/advanced/bubble/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/coordinates in edgeturf_effects)
 		var/obj/effect/overlay/vis/field/effect_to_remove = edgeturf_effects[coordinates]
 		edgeturf_effects -= coordinates
@@ -36,6 +40,8 @@
 	return ..()
 
 /datum/proximity_monitor/advanced/bubble/proc/setup_effect_directions()
+	procstart = null
+	src.procstart = null
 	effect_direction_images = list(
 		"[SOUTH]" = image('icons/effects/fields.dmi', icon_state = "projectile_dampen_south"),
 		"[NORTH]" = image('icons/effects/fields.dmi', icon_state = "projectile_dampen_north"),
@@ -48,14 +54,20 @@
 	)
 
 /datum/proximity_monitor/advanced/bubble/on_moved(atom/movable/source, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	my_movable.forceMove(get_turf(source))
 
 /datum/proximity_monitor/advanced/bubble/on_z_change(datum/source)
+	procstart = null
+	src.procstart = null
 	recalculate_field(full_recalc = TRUE)
 
 ///rendering all the field visuals. first we render the corners, then we connect them
 /datum/proximity_monitor/advanced/bubble/proc/draw_effect()
+	procstart = null
+	src.procstart = null
 	var/max_pixel_offset = current_range * ICON_SIZE_ALL
 	var/top_right_corner = list(effect_direction_images["[NORTHEAST]"], max_pixel_offset, max_pixel_offset)
 	var/top_left_corner = list(effect_direction_images["[NORTHWEST]"], -max_pixel_offset, max_pixel_offset)
@@ -77,6 +89,8 @@
 
 ///rendering the corners
 /datum/proximity_monitor/advanced/bubble/proc/draw_corner(list/corner_data)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/overlay/vis/field/corner_effect = new()
 	var/image/image_overlay = corner_data[1]
 	corner_effect.icon = image_overlay.icon
@@ -88,6 +102,8 @@
 
 ///connecting the corners to one another
 /datum/proximity_monitor/advanced/bubble/proc/draw_edge(list/edge_data, target_offset)
+	procstart = null
+	src.procstart = null
 	var/starting_offset = edge_data[STARTING_POSITION]
 	var/current_offset = (-1 * target_offset) + ICON_SIZE_ALL
 	var/image/overlay = edge_data[OVERLAY_DATA]
@@ -108,6 +124,8 @@
 
 ///handles adding the visual effect's data
 /datum/proximity_monitor/advanced/bubble/proc/add_effect_to_host(obj/effect/overlay/vis/field/effect_to_add)
+	procstart = null
+	src.procstart = null
 	my_movable.vis_contents += effect_to_add
 	var/coordinate_x = effect_to_add.pixel_x / ICON_SIZE_ALL
 	var/coordinate_y = effect_to_add.pixel_y / ICON_SIZE_ALL
@@ -117,6 +135,8 @@
 	animate(effect_to_add, alpha = 255, time = ANIMATE_DAMPENER_TIME, flags = ANIMATION_PARALLEL)
 
 /datum/proximity_monitor/advanced/bubble/proc/on_projector_del(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
@@ -127,6 +147,8 @@
 	var/wobbling_effect = FALSE
 
 /obj/effect/overlay/vis/field/proc/set_wobbly(wobble_duration)
+	procstart = null
+	src.procstart = null
 	if(wobbling_effect)
 		return
 	wobbling_effect = TRUE
@@ -134,6 +156,8 @@
 	addtimer(CALLBACK(src, PROC_REF(remove_wobbly)), wobble_duration)
 
 /obj/effect/overlay/vis/field/proc/remove_wobbly()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	remove_wibbly_filters(src, remove_duration = 0.25 SECONDS)

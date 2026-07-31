@@ -4,6 +4,8 @@
 	datum_var_name = "spawn_positions"
 
 /datum/job_config_type/starting_positions/validate_value(value)
+	procstart = null
+	src.procstart = null
 	if(isnum(value))
 		return TRUE
 	return FALSE

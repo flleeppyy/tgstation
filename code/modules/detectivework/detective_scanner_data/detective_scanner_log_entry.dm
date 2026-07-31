@@ -11,6 +11,8 @@
 	var/list/data_entries = list()
 
 /datum/detective_scanner_log/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/ui_data = list()
 	ui_data["scanTarget"] = scan_target
 	ui_data["scanTime"] = scan_time
@@ -28,6 +30,8 @@
 /// Entries will be not sorted after using it
 /// Returns TRUE if `data_entries` can be unsorted
 /datum/detective_scanner_log/proc/add_data_entry(scan_category_id, data)
+	procstart = null
+	src.procstart = null
 	var/datum/detective_scan_category/category = GLOB.detective_scan_categories[scan_category_id]
 	if(isnull(category))
 		stack_trace("scan_category_id - `[scan_category_id]` with no corresponding `/datum/detective_scan_category`")
@@ -43,6 +47,8 @@
 
 /// Sorts the `data_entries` list if it's considered not sorted
 /datum/detective_scanner_log/proc/sort_data_entries()
+	procstart = null
+	src.procstart = null
 	if(!sorted)
 		sortTim(data_entries, GLOBAL_PROC_REF(cmp_detective_scanner_data_entry), TRUE)
 		sorted = TRUE
@@ -50,6 +56,8 @@
 /// Return text that will be used in printed paper report
 /// Called in `/obj/item/detective_scanner/proc/print_report()`
 /datum/detective_scanner_log/proc/generate_report_text()
+	procstart = null
+	src.procstart = null
 	var/list/report_text = list()
 	report_text += "<h2>[capitalize(scan_target)] scan at [scan_time]</h2><dr>"
 	if(!length(data_entries))

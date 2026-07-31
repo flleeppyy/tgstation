@@ -17,10 +17,14 @@
 	var/is_active = FALSE
 
 /datum/status_effect/grouped/bodypart_effect/source_added(source, obj/item/bodypart/bodypart)
+	procstart = null
+	src.procstart = null
 	add_bodypart(bodypart)
 
 /// Merge a bodypart into the effect
 /datum/status_effect/grouped/bodypart_effect/proc/add_bodypart(bodypart)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(bodypart, COMSIG_BODYPART_REMOVED, PROC_REF(on_bodypart_removed))
 	RegisterSignal(bodypart, COMSIG_QDELETING, PROC_REF(on_bodypart_destroyed))
 
@@ -31,6 +35,8 @@
 
 /// Remove a bodypart from the effect. Deleting = TRUE is used during clean-up phase
 /datum/status_effect/grouped/bodypart_effect/proc/remove_bodypart(mob/living/carbon/old_owner, obj/item/bodypart/bodypart, deleting)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(bodypart, COMSIG_BODYPART_REMOVED)
 
 	bodyparts.Remove(bodypart)
@@ -46,18 +52,24 @@
 
 /// Signal called when a bodypart is removed
 /datum/status_effect/grouped/bodypart_effect/proc/on_bodypart_removed(obj/item/bodypart/bodypart, special)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	remove_bodypart(owner, bodypart)
 
 /// Signal called when a bodypart is destroyed. Destruction of a bodypart doesn't necessarily drop it
 /datum/status_effect/grouped/bodypart_effect/proc/on_bodypart_destroyed(obj/item/bodypart/bodypart)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	remove_bodypart(bodypart.owner, bodypart)
 
 /// Activate some sort of effect when a threshold is reached
 /datum/status_effect/grouped/bodypart_effect/proc/activate()
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 
@@ -66,6 +78,8 @@
 
 /// Remove an effect whenever a threshold is no longer reached
 /datum/status_effect/grouped/bodypart_effect/proc/deactivate()
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 
@@ -73,6 +87,8 @@
 
 /// Clean up all references and self-destruct
 /datum/status_effect/grouped/bodypart_effect/Destroy()
+	procstart = null
+	src.procstart = null
 	deactivate()
 	for(var/obj/item/bodypart/bodypart as anything in bodyparts)
 		remove_bodypart(bodypart.owner, bodypart, deleting = TRUE)
@@ -86,6 +102,8 @@
 	id = "photosynthesis"
 
 /datum/status_effect/grouped/bodypart_effect/photosynthesis/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	var/light_amount = 0 // How much light there is in the place, affects receiving nutrition and healing
 	var/bodypart_coefficient = GET_BODYPART_COEFFICIENT(bodyparts)
 
@@ -119,6 +137,8 @@
 	id = "nyxosynthesis"
 
 /datum/status_effect/grouped/bodypart_effect/nyxosynthesis/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	var/turf/owner_turf = owner.loc
 	if(!isturf(owner_turf))
 		return
@@ -150,6 +170,8 @@
 	var/fire_stacks_loss = 1.66
 
 /datum/status_effect/grouped/bodypart_effect/plasma_based/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if (!ishuman(owner) || !owner.loc) // No xenos, sorry
 		return
 

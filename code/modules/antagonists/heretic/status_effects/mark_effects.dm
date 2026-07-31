@@ -12,14 +12,20 @@
 	var/effect_icon_state = ""
 
 /datum/status_effect/eldritch/on_creation(mob/living/new_owner, ...)
+	procstart = null
+	src.procstart = null
 	marked_underlay = mutable_appearance(effect_icon, effect_icon_state, BELOW_MOB_LAYER)
 	return ..()
 
 /datum/status_effect/eldritch/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(marked_underlay)
 	return ..()
 
 /datum/status_effect/eldritch/on_apply()
+	procstart = null
+	src.procstart = null
 	if(owner.mob_size >= MOB_SIZE_HUMAN)
 		RegisterSignal(owner, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(update_owner_underlay))
 		owner.update_icon(UPDATE_OVERLAYS)
@@ -27,12 +33,16 @@
 	return FALSE
 
 /datum/status_effect/eldritch/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_ATOM_UPDATE_OVERLAYS)
 	owner.update_icon(UPDATE_OVERLAYS)
 	return ..()
 
 // We WANT to call on_remove when replaced, else effects might not be cleaned up in the case where a mark is applied while a different mark is active.
 /datum/status_effect/eldritch/be_replaced()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /**
@@ -41,6 +51,8 @@
  * Adds the generated mark overlay to the afflicted.
  */
 /datum/status_effect/eldritch/proc/update_owner_underlay(atom/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	overlays += marked_underlay
@@ -49,6 +61,8 @@
  * Called when the mark is activated by the heretic.
  */
 /datum/status_effect/eldritch/proc/on_effect()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	playsound(owner, 'sound/effects/magic/repulse.ogg', 75, TRUE)
@@ -62,6 +76,8 @@
 	effect_icon_state = "emark1"
 
 /datum/status_effect/eldritch/flesh/on_effect()
+	procstart = null
+	src.procstart = null
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
 		var/obj/item/bodypart/bodypart = pick(human_owner.get_bodyparts())
@@ -77,10 +93,14 @@
 	var/repetitions = 1
 
 /datum/status_effect/eldritch/ash/on_creation(mob/living/new_owner, repetition = 5)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.repetitions = max(1, repetition)
 
 /datum/status_effect/eldritch/ash/on_effect()
+	procstart = null
+	src.procstart = null
 	if(iscarbon(owner))
 		var/mob/living/carbon/carbon_owner = owner
 		carbon_owner.adjust_stamina_loss(6 * repetitions) // first one = 30 stam
@@ -99,6 +119,8 @@
 	effect_icon_state = "emark3"
 
 /datum/status_effect/eldritch/rust/on_effect()
+	procstart = null
+	src.procstart = null
 	owner.adjust_disgust(100)
 	owner.adjust_confusion(10 SECONDS)
 	return ..()
@@ -109,6 +131,8 @@
 	effect_icon_state = "emark4"
 
 /datum/status_effect/eldritch/void/on_effect()
+	procstart = null
+	src.procstart = null
 	owner.apply_status_effect(/datum/status_effect/void_chill, 3)
 	owner.adjust_silence(10 SECONDS)
 	return ..()
@@ -121,16 +145,22 @@
 	var/area/locked_to
 
 /datum/status_effect/eldritch/blade/Destroy()
+	procstart = null
+	src.procstart = null
 	locked_to = null
 	return ..()
 
 /datum/status_effect/eldritch/blade/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_MOVABLE_PRE_THROW, PROC_REF(on_pre_throw))
 	RegisterSignal(owner, COMSIG_MOVABLE_TELEPORTING, PROC_REF(on_teleport))
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
 
 /datum/status_effect/eldritch/blade/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, list(
 		COMSIG_MOVABLE_PRE_THROW,
 		COMSIG_MOVABLE_TELEPORTING,
@@ -141,6 +171,8 @@
 
 /// Checks if the movement from moving_from to going_to leaves our [var/locked_to] area. Returns TRUE if so.
 /datum/status_effect/eldritch/blade/proc/is_escaping_locked_area(atom/moving_from, atom/going_to)
+	procstart = null
+	src.procstart = null
 	if(!locked_to)
 		return FALSE
 
@@ -158,6 +190,8 @@
 
 /// Signal proc for [COMSIG_MOVABLE_PRE_THROW] that prevents people from escaping our locked area via throw.
 /datum/status_effect/eldritch/blade/proc/on_pre_throw(mob/living/source, list/throw_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/throw_dest = throw_args[1]
@@ -174,6 +208,8 @@
 
 /// Signal proc for [COMSIG_MOVABLE_TELEPORTING] that blocks any teleports from our locked area.
 /datum/status_effect/eldritch/blade/proc/on_teleport(mob/living/source, atom/destination, channel)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!is_escaping_locked_area(source, destination))
@@ -186,6 +222,8 @@
 
 /// Signal proc for [COMSIG_MOVABLE_MOVED] that blocks any movement out of our locked area
 /datum/status_effect/eldritch/blade/proc/on_move(mob/living/source, turf/old_loc, movement_dir, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Let's not mess with heretics dragging a potential victim.
@@ -211,14 +249,20 @@
 	var/obj/effect/teleport_effect = /obj/effect/temp_visual/cosmic_cloud
 
 /datum/status_effect/eldritch/cosmic/on_creation(mob/living/new_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cosmic_diamond = new(get_turf(owner))
 
 /datum/status_effect/eldritch/cosmic/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(cosmic_diamond)
 	return ..()
 
 /datum/status_effect/eldritch/cosmic/on_effect()
+	procstart = null
+	src.procstart = null
 	new teleport_effect(get_turf(owner))
 	create_cosmic_field(get_turf(owner), owner)
 	do_teleport(
@@ -238,14 +282,20 @@
 	duration = 10 SECONDS
 
 /datum/status_effect/eldritch/lock/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_MOB_TRIED_ACCESS, PROC_REF(attempt_access))
 
 /datum/status_effect/eldritch/lock/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_MOB_TRIED_ACCESS)
 	return ..()
 
 /datum/status_effect/eldritch/lock/proc/attempt_access(datum/source, obj/door_attempt)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return ACCESS_DISALLOWED
 
@@ -257,6 +307,8 @@
 	var/damage_sustained = 0
 
 /datum/status_effect/eldritch/moon/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(owner.can_block_magic(MAGIC_RESISTANCE_MOON))
 		return FALSE
@@ -268,6 +320,8 @@
 
 /// Checks for damage so the heretic can't just attack them with another weapon whilst they are unable to fight back
 /datum/status_effect/eldritch/moon/proc/on_damaged(datum/source, damage, damagetype)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// The grasp itself deals stamina damage so we will ignore it
@@ -284,6 +338,8 @@
 	owner.balloon_alert(owner, "you feel able to once again strike!")
 
 /datum/status_effect/eldritch/moon/on_effect()
+	procstart = null
+	src.procstart = null
 	owner.adjust_confusion(30 SECONDS)
 	owner.adjust_organ_loss(ORGAN_SLOT_BRAIN, 25, 160)
 	owner.emote(pick("giggle", "laugh"))
@@ -291,6 +347,8 @@
 	return ..()
 
 /datum/status_effect/eldritch/moon/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(owner, COMSIG_MOB_APPLY_DAMAGE)
 

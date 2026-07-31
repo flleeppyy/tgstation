@@ -29,6 +29,8 @@
 
 // *extremely bad russian accent* no!
 /datum/component/gunpoint/Initialize(mob/living/targ, obj/item/gun/wep)
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -74,6 +76,8 @@
 	addtimer(CALLBACK(src, PROC_REF(update_stage), 2), GUNPOINT_DELAY_STAGE_2)
 
 /datum/component/gunpoint/Destroy(force)
+	procstart = null
+	src.procstart = null
 	var/mob/living/shooter = parent
 	shooter.remove_status_effect(/datum/status_effect/holdup)
 	target.remove_status_effect(/datum/status_effect/grouped/heldup, REF(shooter))
@@ -81,6 +85,8 @@
 	return ..()
 
 /datum/component/gunpoint/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(check_deescalate))
 	RegisterSignal(parent, COMSIG_MOB_APPLY_DAMAGE, PROC_REF(flinch))
 	RegisterSignal(parent, COMSIG_MOB_ATTACK_HAND, PROC_REF(check_shove))
@@ -91,6 +97,8 @@
 	RegisterSignal(parent, COMSIG_LIVING_DISARM_HIT, PROC_REF(cancel))
 
 /datum/component/gunpoint/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_MOVABLE_MOVED)
 	UnregisterSignal(parent, COMSIG_MOB_APPLY_DAMAGE)
 	UnregisterSignal(parent, COMSIG_MOB_UPDATE_SIGHT)
@@ -102,6 +110,8 @@
 
 ///If the shooter bumps the target, cancel the holdup to avoid cheesing and forcing the charged shot
 /datum/component/gunpoint/proc/check_bump(atom/B, atom/A)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(A != target)
@@ -114,6 +124,8 @@
 
 ///If the shooter shoves or grabs the target, cancel the holdup to avoid cheesing and forcing the charged shot
 /datum/component/gunpoint/proc/check_shove(mob/living/carbon/shooter, mob/shooter_again, mob/living/T, datum/martial_art/attacker_style, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(T != target || LAZYACCESS(modifiers, RIGHT_CLICK))
@@ -125,6 +137,8 @@
 
 ///Update the damage multiplier for whatever stage we're entering into
 /datum/component/gunpoint/proc/update_stage(new_stage)
+	procstart = null
+	src.procstart = null
 	if(check_deescalate())
 		return
 	stage = new_stage
@@ -140,6 +154,8 @@
 
 ///Cancel the holdup if the shooter moves out of sight or out of range of the target
 /datum/component/gunpoint/proc/check_deescalate()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!can_see(parent, target, GUNPOINT_SHOOTER_STRAY_RANGE))
@@ -148,10 +164,14 @@
 
 ///Bang bang, we're firing a charged shot off
 /datum/component/gunpoint/proc/trigger_reaction()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(async_trigger_reaction))
 
 /datum/component/gunpoint/proc/async_trigger_reaction()
+	procstart = null
+	src.procstart = null
 	var/mob/living/shooter = parent
 	shooter.remove_status_effect(/datum/status_effect/holdup) // try doing these before the trigger gets pulled since the target (or shooter even) may not exist after pulling the trigger, dig?
 	target.remove_status_effect(/datum/status_effect/grouped/heldup, REF(shooter))
@@ -178,6 +198,8 @@
 
 ///Shooter canceled their shot, either by dropping/equipping their weapon, leaving sight/range, or clicking on the alert
 /datum/component/gunpoint/proc/cancel()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/shooter = parent
@@ -188,6 +210,8 @@
 
 ///If the shooter is hit by an attack, they have a 50% chance to flinch and fire. If it hit the arm holding the trigger, it's an 80% chance to fire instead
 /datum/component/gunpoint/proc/flinch(mob/living/source, damage_amount, damagetype, def_zone, blocked, wound_bonus, exposed_wound_bonus, sharpness, attack_direction, attacking_item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!attack_direction) // No fliching from yourself
@@ -212,24 +236,32 @@
 
 ///Shows if the parent is holding someone at gunpoint
 /datum/component/gunpoint/proc/examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(user in viewers(target))
 		examine_list += span_boldwarning("[parent] [parent.p_are()] holding [target] at gunpoint with [weapon]!")
 
 ///Shows if the examine target is being held at gunpoint
 /datum/component/gunpoint/proc/examine_target(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(user in viewers(parent))
 		examine_list += span_boldwarning("[target] [target.p_are()] being held at gunpoint by [parent]!")
 
 ///Prevents bumping the shooter to break gunpoint since shove does that
 /datum/component/gunpoint/proc/block_bumps_parent(mob/bumped, mob/living/bumper)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	to_chat(bumper, span_warning("[bumped] [bumped.p_are()] holding [target] at gunpoint, you cannot push past."))
 	return COMPONENT_LIVING_BLOCK_PRE_MOB_BUMP
 
 ///Prevents bumping the target by an ally to cheese and force the charged shot
 /datum/component/gunpoint/proc/block_bumps_target(mob/bumped, mob/living/bumper)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	to_chat(bumper, span_warning("[bumped] [bumped.p_are()] being held at gunpoint, it's not wise to push [bumped.p_them()]!"))
 	return COMPONENT_LIVING_BLOCK_PRE_MOB_BUMP

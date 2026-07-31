@@ -4,6 +4,8 @@
 	var/atom/hanging_support_atom
 
 /datum/component/atom_mounted/Initialize(target_structure)
+	procstart = null
+	src.procstart = null
 	if(!isobj(parent) || !isatom(target_structure))
 		return COMPONENT_INCOMPATIBLE
 	. = ..()
@@ -16,12 +18,16 @@
 		RegisterSignal(hanging_support_atom, COMSIG_QDELETING, PROC_REF(on_structure_delete))
 
 /datum/component/atom_mounted/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(parent, TRAIT_WALLMOUNTED, INNATE_TRAIT)
 	if(is_area_shuttle(get_area(parent)))
 		RegisterSignal(parent, COMSIG_ATOM_BEFORE_SHUTTLE_MOVE, PROC_REF(detach))
 	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
 
 /datum/component/atom_mounted/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(parent, TRAIT_WALLMOUNTED, INNATE_TRAIT)
 	var/list/signals = list(COMSIG_MOVABLE_MOVED)
 	if(is_area_shuttle(get_area(parent)))
@@ -29,6 +35,8 @@
 	UnregisterSignal(parent, signals)
 
 /datum/component/atom_mounted/Destroy(force)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(hanging_support_atom, COMSIG_ATOM_EXAMINE)
 	hanging_support_atom = null
 	return ..()
@@ -37,6 +45,8 @@
  * When the wall is examined, explains that it's supporting the linked object.
  */
 /datum/component/atom_mounted/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(parent in view(user.client?.view || world.view, user))
@@ -44,6 +54,8 @@
 
 /// When the type of turf changes, if it is changing into a floor we should drop our contents
 /datum/component/atom_mounted/proc/on_turf_changing(turf/source, path, new_baseturfs, flags, post_change_callbacks)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/reload = FALSE
@@ -70,6 +82,8 @@
 
 ///When the atom the object is mounted on is destroyed deconstruct
 /datum/component/atom_mounted/proc/on_structure_delete(datum/source, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	PRIVATE_PROC(TRUE)
 
@@ -82,6 +96,8 @@
 
 /// If we get dragged from our wall (by a singulo for instance) we should deconstruct
 /datum/component/atom_mounted/proc/on_move(datum/source, atom/old_loc, dir, forced, list/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	PRIVATE_PROC(TRUE)
 
@@ -93,6 +109,8 @@
 
 ///Called when the object is about to be shuttle rotated so we have to delete ourself and mount again later
 /datum/component/atom_mounted/proc/detach(datum/source, newT, rotation, move_mode, moving_dock)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	PRIVATE_PROC(TRUE)
 
@@ -103,6 +121,8 @@
  * Except for intercoms, which are handled by creating a new wallframe intercom, as they're apparently items.
 */
 /datum/component/atom_mounted/proc/drop_wallmount()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/obj/hanging_parent = parent
@@ -111,6 +131,8 @@
 
 /// Returns a list of potential turfs to mount on. This should not check if those turfs are valid but only locate them
 /obj/proc/get_turfs_to_mount_on()
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	RETURN_TYPE(/list/turf)
 
@@ -137,6 +159,8 @@
  * * turf/target - the turf we are trying to mount on
 */
 /obj/proc/is_mountable_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	SHOULD_BE_PURE(TRUE)
 
@@ -144,6 +168,8 @@
 
 /// Returns an list of object types we can mount on if the turf is unmountable
 /obj/proc/get_mountable_objects()
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	SHOULD_BE_PURE(TRUE)
 	RETURN_TYPE(/list/obj)
@@ -168,6 +194,8 @@
  * * late_init - should only be passed as TRUE from inside LateInitialize()
 */
 /obj/proc/find_and_mount_on_atom(mark_for_late_init = FALSE, late_init = FALSE)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & MOUNT_ON_LATE_INITIALIZE)
 		obj_flags &= ~MOUNT_ON_LATE_INITIALIZE
 	else if(late_init)
@@ -208,6 +236,8 @@
 
 ///Used to remount an object in special cases
 /obj/proc/remount()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	PRIVATE_PROC(TRUE)
 

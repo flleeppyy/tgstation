@@ -7,6 +7,8 @@
  * Used in creating spooky-text for heretic ascension announcements.
  */
 /proc/generate_heretic_text(length = 25)
+	procstart = null
+	src.procstart = null
 	if(!isnum(length)) // stupid thing so we can use this directly in replacetext
 		length = 25
 	. = ""
@@ -90,10 +92,14 @@
 	var/points_to_aura = 8
 
 /datum/antagonist/heretic/Destroy()
+	procstart = null
+	src.procstart = null
 	LAZYNULL(sac_targets)
 	return ..()
 
 /datum/antagonist/heretic/proc/get_icon_of_knowledge(datum/heretic_knowledge/knowledge)
+	procstart = null
+	src.procstart = null
 	//basic icon parameters
 	var/icon_path = 'icons/mob/actions/actions_ecult.dmi'
 	var/icon_state = "eye"
@@ -140,6 +146,8 @@
 	return result_parameters
 
 /datum/antagonist/heretic/proc/get_knowledge_data(datum/heretic_knowledge/knowledge, list/source_list, done = FALSE, category = HERETIC_KNOWLEDGE_TREE)
+	procstart = null
+	src.procstart = null
 	if(!length(source_list))
 		CRASH("get_knowledge_data called without source_list! (Got: [source_list || "empty list"])")
 	var/list/knowledge_data = list()
@@ -177,10 +185,14 @@
 	return knowledge_data
 
 /datum/antagonist/heretic/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui?.set_autoupdate(FALSE)
 
 /datum/antagonist/heretic/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list("charges" = knowledge_points)
 
 	data["objectives"] = get_objectives()
@@ -265,6 +277,8 @@
 	return data
 
 /datum/antagonist/heretic/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -290,12 +304,16 @@
 			return TRUE
 
 /datum/antagonist/heretic/proc/researchable_knowledge(datum/heretic_knowledge/knowledge_path, shop_category = HERETIC_KNOWLEDGE_TREE)
+	procstart = null
+	src.procstart = null
 	var/list/knowledge_info = heretic_shops[shop_category][knowledge_path]
 	if(knowledge_info[HKT_ID] in get_researchable_knowledge())
 		return TRUE
 	return FALSE
 
 /datum/antagonist/heretic/submit_player_objective(retain_existing = FALSE, retain_escape = TRUE, force = FALSE)
+	procstart = null
+	src.procstart = null
 	if (isnull(owner) || isnull(owner.current))
 		return
 	var/confirmed = tgui_alert(
@@ -309,11 +327,15 @@
 	return ..()
 
 /datum/antagonist/heretic/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(isnull(owner.current) || owner.current.stat == DEAD) // If the owner is dead, we can't show the UI.
 		return UI_UPDATE
 	return ..()
 
 /datum/antagonist/heretic/get_preview_icon()
+	procstart = null
+	src.procstart = null
 	var/datum/universal_icon/icon = render_preview_outfit(preview_outfit)
 
 	// MOTHBLOCKS TODO: Copied and pasted from cult, make this its own proc
@@ -335,11 +357,15 @@
 	return finish_preview_icon(icon)
 
 /datum/antagonist/heretic/farewell()
+	procstart = null
+	src.procstart = null
 	if(!silent && owner.current)
 		to_chat(owner.current, span_userdanger("Your mind begins to flare as the otherwordly knowledge escapes your grasp!"))
 	return ..()
 
 /datum/antagonist/heretic/on_gain()
+	procstart = null
+	src.procstart = null
 	generate_heretic_starting_knowledge(heretic_shops[HERETIC_KNOWLEDGE_START])
 	if(!length(path_info))
 		for(var/datum/heretic_knowledge_tree_column/path as anything in subtypesof(/datum/heretic_knowledge_tree_column))
@@ -363,6 +389,8 @@
 	return ..()
 
 /datum/antagonist/heretic/on_removal()
+	procstart = null
+	src.procstart = null
 	if(owner.current)
 		for(var/knowledge_path in researched_knowledge)
 			var/datum/heretic_knowledge/knowledge = researched_knowledge[knowledge_path][HKT_INSTANCE]
@@ -376,6 +404,8 @@
 	return ..()
 
 /datum/antagonist/heretic/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/our_mob = mob_override || owner.current
 	handle_clown_mutation(our_mob, "Ancient knowledge described to you has allowed you to overcome your clownish nature, allowing you to wield weapons without harming yourself.")
 	our_mob.add_faction(FACTION_HERETIC)
@@ -399,6 +429,8 @@
 	our_mob.update_appearance(UPDATE_OVERLAYS)
 
 /datum/antagonist/heretic/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/our_mob = mob_override || owner.current
 	handle_clown_mutation(our_mob, removing = FALSE)
 	our_mob.remove_faction(FACTION_HERETIC)
@@ -424,6 +456,8 @@
 
 /// Removes the ability to blade break, removes cloak of shadows and removes the cap on how many blades you can craft
 /datum/antagonist/heretic/proc/disable_blade_breaking()
+	procstart = null
+	src.procstart = null
 	if(unlimited_blades)
 		return
 	var/mob/heretic_mob = owner.current
@@ -435,6 +469,8 @@
 	cloak_spell.Remove(heretic_mob)
 
 /datum/antagonist/heretic/proc/add_aura_overlay(mob/living/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!should_show_aura())
 		return
@@ -443,11 +479,15 @@
 
 /// Adds an overlay to the heretic
 /datum/antagonist/heretic/proc/update_heretic_aura()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!QDELETED(owner?.current))
 		owner.current.update_appearance(UPDATE_OVERLAYS)
 
 /datum/antagonist/heretic/proc/should_show_aura()
+	procstart = null
+	src.procstart = null
 	if(!can_assign_self_objectives)
 		return FALSE // We spurned the offer of the Mansus :(
 	if(!unlimited_blades || HAS_TRAIT(owner.current, TRAIT_HERETIC_AURA_HIDDEN))
@@ -459,6 +499,8 @@
 	return TRUE
 
 /datum/antagonist/heretic/proc/on_heretic_examine(datum/source, mob/user, text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!should_show_aura())
 		return
@@ -469,6 +511,8 @@
 	text += span_green(potential_string)
 
 /datum/antagonist/heretic/on_body_transfer(mob/living/old_body, mob/living/new_body)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(old_body == new_body) // if they were using a temporary body
 		return
@@ -486,6 +530,8 @@
  * they're able to draw a transmutation rune.
  */
 /datum/antagonist/heretic/proc/on_item_use(mob/living/source, atom/target, obj/item/weapon, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!IS_WRITING_UTENSIL(weapon))
 		return NONE
@@ -509,6 +555,8 @@
  * * additional checks - optional callbacks to be ran while drawing the rune
  */
 /datum/antagonist/heretic/proc/try_draw_rune(mob/living/user, turf/target_turf, drawing_time = 20 SECONDS, additional_checks)
+	procstart = null
+	src.procstart = null
 	for(var/turf/nearby_turf as anything in RANGE_TURFS(1, target_turf))
 		if(!isopenturf(nearby_turf) || is_type_in_typecache(nearby_turf, blacklisted_rune_turfs))
 			target_turf.balloon_alert(user, "invalid placement for rune!")
@@ -534,6 +582,8 @@
  * * additional checks - optional callbacks to be ran while drawing the rune
  */
 /datum/antagonist/heretic/proc/draw_rune(mob/living/user, turf/target_turf, drawing_time = 20 SECONDS, additional_checks)
+	procstart = null
+	src.procstart = null
 	drawing_rune = TRUE
 
 	var/rune_colour = GLOB.heretic_path_to_color[heretic_path?.route || PATH_START]
@@ -563,12 +613,16 @@
  * * user - the mob drawing the rune
  */
 /datum/antagonist/heretic/proc/check_mansus_grasp_offhand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/offhand = user.get_inactive_held_item()
 	return !QDELETED(offhand) && istype(offhand, /obj/item/melee/touch_attack/mansus_fist)
 
 /// Signal proc for [COMSIG_LIVING_POST_FULLY_HEAL],
 /// Gives the heretic aliving heart on aheal or organ refresh
 /datum/antagonist/heretic/proc/after_fully_healed(mob/living/source, heal_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(heal_flags & (HEAL_REFRESH_ORGANS|HEAL_ADMIN))
@@ -577,6 +631,8 @@
 
 /// Signal proc for [COMSIG_LIVING_CULT_SACRIFICED] to reward cultists for sacrificing a heretic
 /datum/antagonist/heretic/proc/on_cult_sacrificed(mob/living/source, list/invokers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/mob/dead/observer/ghost in GLOB.dead_mob_list) // uhh let's find the guy to shove him back in
@@ -684,6 +740,8 @@
  * Removes the non-animate effects from above proc
  */
 /obj/proc/remove_gender_reveal_fx(og_layer)
+	procstart = null
+	src.procstart = null
 	remove_filter(list("gender_reveal_outline", "gender_reveal_ray"))
 	layer = og_layer
 
@@ -691,6 +749,8 @@
  * Create our objectives for our heretic.
  */
 /datum/antagonist/heretic/proc/forge_primary_objectives()
+	procstart = null
+	src.procstart = null
 	for(var/datum/objective/pick_path/filler in objectives)
 		filler.owner = null
 		objectives -= filler
@@ -722,6 +782,8 @@
  * Generates a preview image and associates it with a weakref of the mob.
  */
 /datum/antagonist/heretic/proc/add_sacrifice_target(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 
 	var/image/target_image = image(icon = target.icon, icon_state = target.icon_state)
 	target_image.overlays = target.overlays
@@ -735,6 +797,8 @@
  * Returns FALSE if no one was removed, TRUE otherwise
  */
 /datum/antagonist/heretic/proc/remove_sacrifice_target(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	if(!(target in sac_targets))
 		return FALSE
 
@@ -747,6 +811,8 @@
  * if sacrifice targets are deleted (gibbed, dusted, whatever), free their slot and reference
  */
 /datum/antagonist/heretic/proc/on_target_deleted(mob/living/carbon/human/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	remove_sacrifice_target(source)
@@ -756,12 +822,16 @@
  * Used in callbacks for passive gain over time.
  */
 /datum/antagonist/heretic/proc/passive_influence_gain()
+	procstart = null
+	src.procstart = null
 	adjust_knowledge_points(1)
 	if(!IS_UNCONSCIOUS(owner?.current))
 		to_chat(owner.current, "[span_hear("You hear a whisper...")] [span_mansus(pick_list(HERETIC_INFLUENCE_FILE, "drain_message"))]")
 	addtimer(CALLBACK(src, PROC_REF(passive_influence_gain)), passive_gain_timer)
 
 /datum/antagonist/heretic/proc/adjust_knowledge_points(amount, update = TRUE)
+	procstart = null
+	src.procstart = null
 	knowledge_points = max(0, knowledge_points + amount) // Don't allow negative knowledge points
 	knowledge_gained += max(0, amount)
 	if(knowledge_gained > points_to_aura && !unlimited_blades)
@@ -770,6 +840,8 @@
 		update_data_for_all_viewers()
 
 /datum/antagonist/heretic/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 
 	var/succeeded = TRUE
@@ -809,6 +881,8 @@
 	return parts.Join("<br>")
 
 /datum/antagonist/heretic/get_admin_commands()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	switch(has_living_heart())
@@ -825,6 +899,8 @@
  * Admin proc for giving a heretic a Living Heart easily.
  */
 /datum/antagonist/heretic/proc/give_living_heart(mob/admin)
+	procstart = null
+	src.procstart = null
 	if(!admin.client?.holder)
 		to_chat(admin, span_warning("You shouldn't be using this!"))
 		return
@@ -840,6 +916,8 @@
  * Admin proc for adding a marked mob to a heretic's sac list.
  */
 /datum/antagonist/heretic/proc/add_marked_as_target(mob/admin)
+	procstart = null
+	src.procstart = null
 	if(!admin.client?.holder)
 		to_chat(admin, span_warning("You shouldn't be using this!"))
 		return
@@ -859,6 +937,8 @@
  * Admin proc for removing a mob from a heretic's sac list.
  */
 /datum/antagonist/heretic/proc/remove_target(mob/admin)
+	procstart = null
+	src.procstart = null
 	if(!admin.client?.holder)
 		to_chat(admin, span_warning("You shouldn't be using this!"))
 		return
@@ -885,6 +965,8 @@
  * Admin proc for easily adding / removing knowledge points.
  */
 /datum/antagonist/heretic/proc/admin_change_points(mob/admin)
+	procstart = null
+	src.procstart = null
 	if(!admin.client?.holder)
 		to_chat(admin, span_warning("You shouldn't be using this!"))
 		return
@@ -899,6 +981,8 @@
  * Admin proc for giving a heretic a focus.
  */
 /datum/antagonist/heretic/proc/admin_give_focus(mob/admin)
+	procstart = null
+	src.procstart = null
 	if(!admin.client?.holder)
 		to_chat(admin, span_warning("You shouldn't be using this!"))
 		return
@@ -908,6 +992,8 @@
 	to_chat(pawn, span_mansus("The Mansus has manifested you a focus."))
 
 /datum/antagonist/heretic/antag_panel_data()
+	procstart = null
+	src.procstart = null
 	var/list/string_of_knowledge = list()
 
 	for(var/knowledge_path in researched_knowledge)
@@ -920,6 +1006,8 @@
 	return "<br><b>Research Done:</b><br>[english_list(string_of_knowledge, and_text = ", and ")]<br>"
 
 /datum/antagonist/heretic/antag_panel_objectives()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	. += "<br>"
@@ -933,6 +1021,8 @@
 	. += "<br>"
 
 /datum/antagonist/heretic/proc/purchase_knowledge(datum/heretic_knowledge/knowledge_type, category = HERETIC_KNOWLEDGE_TREE, update = TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/shop_list = heretic_shops[category]
 	if(!shop_list)
 		stack_trace("Heretic attempted to learn knowledge from a non-existent category! (Got: [category])")
@@ -957,6 +1047,8 @@
  * Returns TRUE if the knowledge was added successfully. FALSE otherwise.
  */
 /datum/antagonist/heretic/proc/gain_knowledge(datum/heretic_knowledge/knowledge_type, category = HERETIC_KNOWLEDGE_TREE, update = TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/knowledge_list = heretic_shops[category]
 	if(!ispath(knowledge_type))
 		stack_trace("[type] gain_knowledge was given an invalid path! (Got: [knowledge_type])")
@@ -991,6 +1083,8 @@
  * Get a list of all knowledge IDs that we can currently research.
  */
 /datum/antagonist/heretic/proc/get_researchable_knowledge()
+	procstart = null
+	src.procstart = null
 	var/list/researchable_knowledge = list()
 	var/list/banned_knowledge = list()
 	for(var/knowledge_type in researched_knowledge)
@@ -1005,6 +1099,8 @@
  * Get a list of all knowledge datums that we've researched.
  */
 /datum/antagonist/heretic/proc/get_researched_knowledge()
+	procstart = null
+	src.procstart = null
 	var/list/knowledge_list = list()
 	for(var/knowledge_type in researched_knowledge)
 		knowledge_list += researched_knowledge[knowledge_type][HKT_INSTANCE]
@@ -1014,6 +1110,8 @@
  * Get a list of all knowledge datums that we've researched in a specific category.
  */
 /datum/antagonist/heretic/proc/get_researched_knowledge_by_category(category_type)
+	procstart = null
+	src.procstart = null
 	var/list/knowledge_list = list()
 	for(var/knowledge_type in researched_knowledge)
 		if(researched_knowledge[knowledge_type][HKT_CATEGORY] == category_type)
@@ -1025,6 +1123,8 @@
  * Check if the wanted type-path is in the list of research knowledge.
  */
 /datum/antagonist/heretic/proc/get_knowledge(wanted)
+	procstart = null
+	src.procstart = null
 	var/list/knowledge_data = researched_knowledge[wanted]
 	if(knowledge_data)
 		return knowledge_data[HKT_INSTANCE]
@@ -1033,6 +1133,8 @@
 /// Makes our heretic more able to rust things.
 /// if side_path_only is set to TRUE, this function does nothing for rust heretics.
 /datum/antagonist/heretic/proc/increase_rust_strength(side_path_only=FALSE)
+	procstart = null
+	src.procstart = null
 	if(side_path_only && get_knowledge(/datum/heretic_knowledge/limited_amount/starting/base_rust))
 		return
 
@@ -1045,6 +1147,8 @@
  * Returns an associated list of [knowledge name] to [knowledge datum] sorted by knowledge priority.
  */
 /datum/antagonist/heretic/proc/get_rituals()
+	procstart = null
+	src.procstart = null
 	var/list/rituals = list()
 
 	for(var/knowledge_path in researched_knowledge)
@@ -1061,6 +1165,8 @@
  * Returns FALSE if not all of our objectives are complete, or TRUE otherwise.
  */
 /datum/antagonist/heretic/proc/can_ascend()
+	procstart = null
+	src.procstart = null
 	if(feast_of_owls)
 		return "The owls have taken your right of ascension (denied ascension)." // We sold our ambition for immediate power :/
 	if(!can_assign_self_objectives)
@@ -1086,6 +1192,8 @@
  * and returns HERETIC_HAS_LIVING_HEART if they have a living heart
  */
 /datum/antagonist/heretic/proc/has_living_heart()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/our_living_heart = owner.current?.get_organ_slot(living_heart_organ_slot)
 	if(!our_living_heart)
 		return HERETIC_NO_HEART_ORGAN
@@ -1104,15 +1212,21 @@
 	name = "minor sacrifice"
 
 /datum/objective/minor_sacrifice/New(text)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	target_amount = 4
 	update_explanation_text()
 
 /datum/objective/minor_sacrifice/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	explanation_text = "Sacrifice at least [target_amount] crewmembers."
 
 /datum/objective/minor_sacrifice/check_completion()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/heretic/heretic_datum = owner?.has_antag_datum(/datum/antagonist/heretic)
 	if(!heretic_datum)
 		return FALSE
@@ -1125,6 +1239,8 @@
 	explanation_text = "Sacrifice 1 head of staff."
 
 /datum/objective/major_sacrifice/check_completion()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/heretic/heretic_datum = owner?.has_antag_datum(/datum/antagonist/heretic)
 	if(!heretic_datum)
 		return FALSE
@@ -1136,6 +1252,8 @@
 	target_amount = 1 // You spawn with 1 point
 
 /datum/objective/heretic_research/New(text, list/heretic_research_tree = list())
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Factor in the length of the main path
@@ -1151,10 +1269,14 @@
 	update_explanation_text()
 
 /datum/objective/heretic_research/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	explanation_text = "Research at least [target_amount] knowledge from the Mansus. You start with [length(GLOB.heretic_start_knowledge)] researched."
 
 /datum/objective/heretic_research/check_completion()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/heretic/heretic_datum = owner?.has_antag_datum(/datum/antagonist/heretic)
 	if(!heretic_datum)
 		return FALSE
@@ -1168,6 +1290,8 @@
 	var/num_summoned = 0
 
 /datum/objective/heretic_summon/check_completion()
+	procstart = null
+	src.procstart = null
 	return completed || (num_summoned >= target_amount)
 
 /datum/outfit/heretic

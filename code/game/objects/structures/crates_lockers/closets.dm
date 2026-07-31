@@ -109,6 +109,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	acid = 60
 
 /obj/structure/closet/get_save_vars()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += NAMEOF(src, welded)
 	. += NAMEOF(src, opened)
@@ -117,6 +119,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	return .
 
 /obj/structure/closet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/static/list/closet_paint_jobs
@@ -175,6 +179,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	update_appearance()
 
 /obj/structure/closet/LateInitialize()
+	procstart = null
+	src.procstart = null
 	if(is_maploaded)
 		// very rare chance that a maintenance closet gets linked to another closet at roundstart
 		// 0.1% chance -> metastation has ~36 maintenance closets -> P(links>=1) = 3.54% per round -> about once every 30 rounds
@@ -199,6 +205,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 		START_PROCESSING(SSobj, src)
 
 /obj/structure/closet/return_air()
+	procstart = null
+	src.procstart = null
 	if(sealed)
 		return internal_air
 	else
@@ -206,14 +214,20 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 
 //USE THIS TO FILL IT, NOT INITIALIZE OR NEW
 /obj/structure/closet/proc/PopulateContents()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Populate the closet with stuff that needs to be added before it is opened.
 /// This is useful for things like traitor objectives.
 /obj/structure/closet/proc/populate_contents_immediate()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/closet/Destroy()
+	procstart = null
+	src.procstart = null
 	id_card = null
 	QDEL_NULL(internal_air)
 	QDEL_NULL(door_obj)
@@ -222,11 +236,15 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	return ..()
 
 /obj/structure/closet/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!sealed)
 		return PROCESS_KILL
 	process_internal_air(seconds_per_tick)
 
 /obj/structure/closet/proc/process_internal_air(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(opened)
 		var/datum/gas_mixture/current_exposed_air = loc.return_air()
 		if(!current_exposed_air)
@@ -236,6 +254,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 			location.air_update_turf()
 
 /obj/structure/closet/update_appearance(updates=ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(opened || broken || !secure)
 		luminosity = 0
@@ -243,16 +263,22 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	luminosity = 1
 
 /obj/structure/closet/update_icon()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(issupplypod(src))
 		return
 	layer = opened ? BELOW_OBJ_LAYER : OBJ_LAYER
 
 /obj/structure/closet/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	closet_update_overlays(.)
 
 /obj/structure/closet/proc/closet_update_overlays(list/new_overlays)
+	procstart = null
+	src.procstart = null
 	. = new_overlays
 	if(enable_door_overlay && !is_animating_door)
 		var/overlay_state = isnull(base_icon_state) ? initial(icon_state) : base_icon_state
@@ -282,6 +308,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	. += locked ? "locked" : "unlocked"
 
 /obj/structure/closet/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	if(vname == NAMEOF(src, opened))
 		if(vval == opened)
 			return FALSE
@@ -307,6 +335,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 
 /// Animates the closet door opening and closing
 /obj/structure/closet/proc/animate_door(closing = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!door_anim_time)
 		return
 	if(!door_obj)
@@ -355,6 +385,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 
 /// Ends the door animation and removes the animated overlay
 /obj/structure/closet/proc/end_door_animation()
+	procstart = null
+	src.procstart = null
 	is_animating_door = FALSE
 	vis_contents -= door_obj
 	for(var/obj/effect/appearance_clone/closet_item/clone in vis_contents)
@@ -364,6 +396,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 
 /// Calculates the matrix to be applied to the animated door overlay
 /obj/structure/closet/proc/get_door_transform(angle)
+	procstart = null
+	src.procstart = null
 	var/matrix/door_matrix = matrix()
 	door_matrix.Translate(-door_hinge_x, 0)
 	door_matrix.Multiply(matrix(cos(angle), 0, 0, -sin(angle) * door_anim_squish, 1, 0))
@@ -371,6 +405,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	return door_matrix
 
 /obj/structure/closet/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(id_card)
 		. += span_notice("It can be [EXAMINE_HINT("marked")] with a pen.")
@@ -400,6 +436,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 			. += span_notice("Use multitool to [access_locked ? "unlock" : "lock"] the access panel.")
 
 /obj/structure/closet/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/screentip_change = FALSE
 
@@ -467,11 +505,15 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	return screentip_change ? CONTEXTUAL_SCREENTIP_SET : NONE
 
 /obj/structure/closet/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(wall_mounted)
 		return TRUE
 
 /obj/structure/closet/proc/can_open(mob/living/user, force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(force)
 		return TRUE
 	if(welded || locked)
@@ -491,6 +533,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	return TRUE
 
 /obj/structure/closet/proc/can_close(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	for(var/obj/structure/closet/closet in T)
 		if(closet != src && !closet.wall_mounted)
@@ -505,6 +549,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	return TRUE
 
 /obj/structure/closet/dump_contents()
+	procstart = null
+	src.procstart = null
 	if (!contents_initialized)
 		contents_initialized = TRUE
 		PopulateContents()
@@ -519,6 +565,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 		throwing.finalize(FALSE)
 
 /obj/structure/closet/proc/take_contents(mapload = FALSE)
+	procstart = null
+	src.procstart = null
 	var/atom/location = drop_location()
 	if(!location)
 		return
@@ -533,9 +581,13 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 
 ///Proc to write checks before opening a door
 /obj/structure/closet/proc/before_open(mob/living/user, force)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/structure/closet/proc/open(mob/living/user, force = FALSE, special_effects = TRUE)
+	procstart = null
+	src.procstart = null
 	if(opened || !can_open(user, force))
 		return FALSE
 	if(!before_open(user, force) || (SEND_SIGNAL(src, COMSIG_CLOSET_PRE_OPEN, user, force) & BLOCK_OPEN))
@@ -557,9 +609,13 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 
 ///Proc to override for effects after opening a door
 /obj/structure/closet/proc/after_open(mob/living/user, force = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/closet/proc/insert(atom/movable/inserted, mapload = FALSE)
+	procstart = null
+	src.procstart = null
 	if(length(contents) >= storage_capacity)
 		if(!mapload)
 			return LOCKER_FULL
@@ -573,6 +629,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	return TRUE
 
 /obj/structure/closet/proc/insertion_allowed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(ismob(AM))
 		if(!isliving(AM)) //let's not put ghosts or eye mobs inside closets...
 			return FALSE
@@ -607,9 +665,13 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 
 ///Proc to write checks before closing a door
 /obj/structure/closet/proc/before_close(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/structure/closet/proc/close(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!opened || !can_close(user))
 		return FALSE
 	if(!before_close(user) || (SEND_SIGNAL(src, COMSIG_CLOSET_PRE_CLOSE, user) & BLOCK_CLOSE))
@@ -626,18 +688,24 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 
 ///Proc to do effects after closet has closed
 /obj/structure/closet/proc/after_close(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
  * Toggles a closet open or closed, to the opposite state. Does not respect locked or welded states, however.
  */
 /obj/structure/closet/proc/toggle(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(opened)
 		return close(user)
 	else
 		return open(user)
 
 /obj/structure/closet/handle_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	dump_contents()
 	if(obj_flags & NO_DEBRIS_AFTER_DECONSTRUCTION)
 		return
@@ -655,11 +723,15 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 		new /obj/item/stock_parts/card_reader(drop_location())
 
 /obj/structure/closet/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!broken)
 		bust_open()
 
 /obj/structure/closet/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	var/obj/item/electronics/airlock/access_control = locate() in components
 	if(QDELETED(access_control))
 		return ..()
@@ -669,6 +741,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	return ..()
 
 /obj/structure/closet/proc/inherit_airlock_electronics_access(obj/item/electronics/airlock/access_control)
+	procstart = null
+	src.procstart = null
 	if (access_control.one_access)
 		req_one_access = access_control.accesses
 		req_access = null
@@ -677,6 +751,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 		req_one_access = null
 
 /obj/structure/closet/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!secure || !card_reader_installed || broken || locked || opened)
 		return
 	access_locked = !access_locked
@@ -685,6 +761,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 
 /// sets the access for the closets from the swiped ID card
 /obj/structure/closet/proc/set_access(list/accesses)
+	procstart = null
+	src.procstart = null
 	if(length(req_one_access))
 		req_one_access = accesses
 		req_access = null
@@ -693,6 +771,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 		req_one_access = null
 
 /obj/structure/closet/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user in contents)
 		return ITEM_INTERACT_BLOCKING // can't even attack it from inside
 
@@ -811,12 +891,16 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	return NONE
 
 /obj/structure/closet/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (attack_hand(user, modifiers))
 		return ITEM_INTERACT_SUCCESS
 	return NONE
 
 /// check if we can install airlock electronics in this closet
 /obj/structure/closet/proc/can_install_airlock_electronics(mob/user)
+	procstart = null
+	src.procstart = null
 	if(secure || !can_install_electronics || opened)
 		return FALSE
 
@@ -832,6 +916,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 
 /// check if we can unscrew airlock electronics from this closet
 /obj/structure/closet/proc/can_unscrew_airlock_electronics(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!secure || opened)
 		return FALSE
 	if(card_reader_installed)
@@ -845,6 +931,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 
 /// check if we can install card reader in this closet
 /obj/structure/closet/proc/can_install_card_reader(mob/user)
+	procstart = null
+	src.procstart = null
 	if(card_reader_installed || !can_install_electronics || !length(access_choices) || opened)
 		return FALSE
 
@@ -864,6 +952,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 
 /// check if we can pry out the card reader from this closet
 /obj/structure/closet/proc/can_pryout_card_reader(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!card_reader_installed || opened)
 		return FALSE
 
@@ -874,6 +964,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	return TRUE
 
 /obj/structure/closet/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user in contents)
 		return ITEM_INTERACT_BLOCKING
 
@@ -903,6 +995,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/closet/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user in contents)
 		return ITEM_INTERACT_BLOCKING
 
@@ -922,6 +1016,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/closet/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user in contents)
 		return ITEM_INTERACT_BLOCKING
 
@@ -970,6 +1066,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 
 
 /obj/structure/closet/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!anchorable)
 		balloon_alert(user, "no anchor bolts!")
 		return TRUE
@@ -982,9 +1080,13 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	return TRUE
 
 /obj/structure/closet/proc/after_weld(weld_state)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/closet/mouse_drop_receive(atom/movable/O, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(!istype(O) || O.anchored || istype(O, /atom/movable/screen))
 		return
 	if(user == O) //try to climb onto it
@@ -1022,6 +1124,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 		O.forceMove(T)
 
 /obj/structure/closet/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(user) || !isturf(loc))
 		return
 	if(locked)
@@ -1032,6 +1136,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	container_resist_act(user)
 
 /obj/structure/closet/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -1046,13 +1152,19 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 		return togglelock(user)
 
 /obj/structure/closet/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/structure/closet/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.Adjacent(src))
 		return attack_hand(user)
 
 /obj/structure/closet/attack_robot_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!user.Adjacent(src))
 		return SECONDARY_ATTACK_CONTINUE_CHAIN
 	togglelock(user)
@@ -1060,6 +1172,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 
 // tk grab then use on self
 /obj/structure/closet/attack_self_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(attack_hand(user))
 		return ITEM_INTERACT_BLOCKING
 
@@ -1077,12 +1191,16 @@ GAME_VERB_SRC(/obj/structure/closet, verb_toggleopen, view(1), "Toggle Open", nu
 // and due to an oversight in turf/Enter() were going through walls.  That
 // should be independently resolved, but this is also an interesting twist.
 /obj/structure/closet/Exit(atom/movable/leaving, direction)
+	procstart = null
+	src.procstart = null
 	open()
 	if(leaving.loc == src)
 		return FALSE
 	return TRUE
 
 /obj/structure/closet/container_resist_act(mob/living/user, loc_required = TRUE)
+	procstart = null
+	src.procstart = null
 	if(opened)
 		return
 	if(ismovable(loc))
@@ -1118,10 +1236,14 @@ GAME_VERB_SRC(/obj/structure/closet, verb_toggleopen, view(1), "Toggle Open", nu
 			to_chat(user, span_warning("You fail to break out of [src]!"))
 
 /obj/structure/closet/relay_container_resist_act(mob/living/user, obj/container)
+	procstart = null
+	src.procstart = null
 	container_resist_act(user)
 
 /// Check if someone is still resisting inside, and choose to either keep shaking or stop shaking the closet
 /obj/structure/closet/proc/check_if_shake()
+	procstart = null
+	src.procstart = null
 	// Assuming we decide to shake again, how long until we check to shake again
 	var/next_check_time = 1 SECONDS
 
@@ -1139,6 +1261,8 @@ GAME_VERB_SRC(/obj/structure/closet, verb_toggleopen, view(1), "Toggle Open", nu
 	return FALSE
 
 /obj/structure/closet/proc/bust_open()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	welded = FALSE //applies to all lockers
 	unlock() //applies to critter crates and secure lockers only
@@ -1146,6 +1270,8 @@ GAME_VERB_SRC(/obj/structure/closet, verb_toggleopen, view(1), "Toggle Open", nu
 	open(force = TRUE, special_effects = FALSE)
 
 /obj/structure/closet/attack_hand_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!user.can_perform_action(src) || !isturf(loc))
@@ -1162,11 +1288,15 @@ GAME_VERB_SRC(/obj/structure/closet, verb_toggleopen, view(1), "Toggle Open", nu
  * * registered_id: the id registered to this closet, null if no one registered
  */
 /obj/structure/closet/proc/can_unlock(mob/living/user, obj/item/card/id/player_id, obj/item/card/id/registered_id)
+	procstart = null
+	src.procstart = null
 	if(isnull(registered_id))
 		return allowed(user)
 	return player_id == registered_id
 
 /obj/structure/closet/proc/togglelock(mob/living/user, silent)
+	procstart = null
+	src.procstart = null
 	if(!secure || broken)
 		return FALSE
 
@@ -1203,6 +1333,8 @@ GAME_VERB_SRC(/obj/structure/closet, verb_toggleopen, view(1), "Toggle Open", nu
 
 /// toggles the lock state of a closet
 /obj/structure/closet/proc/lock()
+	procstart = null
+	src.procstart = null
 	if(locked)
 		return
 	locked = TRUE
@@ -1211,6 +1343,8 @@ GAME_VERB_SRC(/obj/structure/closet, verb_toggleopen, view(1), "Toggle Open", nu
 
 /// unlocks the closet
 /obj/structure/closet/proc/unlock()
+	procstart = null
+	src.procstart = null
 	if(!locked)
 		return
 	locked = FALSE
@@ -1219,9 +1353,13 @@ GAME_VERB_SRC(/obj/structure/closet, verb_toggleopen, view(1), "Toggle Open", nu
 
 /// plays the closet's lock/unlock sound, this should be placed AFTER you've changed the lock state
 /obj/structure/closet/proc/play_closet_lock_sound()
+	procstart = null
+	src.procstart = null
 	playsound(src, locked ? lock_sound : unlock_sound, 50, TRUE)
 
 /obj/structure/closet/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(secure && !broken)
 		visible_message(span_warning("Sparks fly from [src]!"), blind_message = span_hear("You hear a faint electrical spark."))
 		balloon_alert(user, "lock broken open")
@@ -1233,10 +1371,14 @@ GAME_VERB_SRC(/obj/structure/closet, verb_toggleopen, view(1), "Toggle Open", nu
 	return FALSE
 
 /obj/structure/closet/get_remote_view_fullscreens(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.stat == DEAD || !(user.sight & (SEEOBJS|SEEMOBS)))
 		user.overlay_fullscreen("remote_view", /atom/movable/screen/fullscreen/impaired, 1)
 
 /obj/structure/closet/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -1255,6 +1397,8 @@ GAME_VERB_SRC(/obj/structure/closet, verb_toggleopen, view(1), "Toggle Open", nu
 				req_access += pick(SSid_access.get_region_access_list(list(REGION_ALL_STATION)))
 
 /obj/structure/closet/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
 			SSexplosions.high_mov_atom += contents
@@ -1264,16 +1408,24 @@ GAME_VERB_SRC(/obj/structure/closet, verb_toggleopen, view(1), "Toggle Open", nu
 			SSexplosions.low_mov_atom += contents
 
 /obj/structure/closet/singularity_act()
+	procstart = null
+	src.procstart = null
 	dump_contents()
 	..()
 
 /obj/structure/closet/AllowDrop()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/structure/closet/return_temperature()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/closet/proc/locker_living(datum/source, mob/living/shover, mob/living/target, shove_flags, obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!opened && (locked || welded)) //Yes this could be less code, no I don't care
 		return
@@ -1297,6 +1449,8 @@ GAME_VERB_SRC(/obj/structure/closet, verb_toggleopen, view(1), "Toggle Open", nu
 
 /// Signal proc for [COMSIG_ATOM_MAGICALLY_UNLOCKED]. Unlock and open up when we get knock casted.
 /obj/structure/closet/proc/on_magic_unlock(datum/source, datum/action/cooldown/spell/aoe/knock/spell, atom/caster)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(unlock))
@@ -1307,9 +1461,13 @@ GAME_VERB_SRC(/obj/structure/closet, verb_toggleopen, view(1), "Toggle Open", nu
 
 ///Adds the closet to a global list. Placed in its own proc so that crates may be excluded.
 /obj/structure/closet/proc/add_to_roundstart_list()
+	procstart = null
+	src.procstart = null
 	GLOB.roundstart_station_closets += src
 
 /obj/structure/closet/rename_checks(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	if(locked)
 		src.balloon_alert(user, "unlock first!")
@@ -1321,6 +1479,8 @@ GAME_VERB_SRC(/obj/structure/closet, verb_toggleopen, view(1), "Toggle Open", nu
 
 ///Spears deal bonus damages to lockers
 /obj/structure/closet/secure_closet/attacked_by(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(attacking_item, /obj/item/spear))
 		HIDE_ATTACK_MESSAGES(attack_modifiers)
 		MODIFY_ATTACK_FORCE_MULTIPLIER(attack_modifiers, 2)
@@ -1334,6 +1494,8 @@ GAME_VERB_SRC(/obj/structure/closet, verb_toggleopen, view(1), "Toggle Open", nu
 	return ..()
 
 /obj/structure/closet/secure_closet/hitby(atom/movable/hit_by, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(!istype(hit_by, /obj/item/spear))
 		return ..()
 	// We have to manually tweak throwforce for now

@@ -24,7 +24,9 @@
 
 // Reminder, any behavior code written here needs to be duped to /turf/open/space/openspace
 // I am so sorry
-/turf/open/openspace/Initialize(mapload) // handle plane and layer here so that they don't cover other obs/turfs in Dream Maker
+/turf/open/openspace/Initialize(mapload)
+	procstart = null
+	src.procstart = null // handle plane and layer here so that they don't cover other obs/turfs in Dream Maker
 	. = ..()
 	if(PERFORM_ALL_TESTS(maptest_log_mapping) && !GET_TURF_BELOW(src))
 		log_mapping("[src] was inited as openspace with nothing below it at ([x], [y], [z])")
@@ -35,9 +37,13 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /turf/open/openspace/LateInitialize()
+	procstart = null
+	src.procstart = null
 	ADD_TURF_TRANSPARENCY(src, INNATE_TRAIT)
 
 /turf/open/openspace/ChangeTurf(path, list/new_baseturfs, flags)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(src, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON)
 	return ..()
 
@@ -47,6 +53,8 @@
  * if the latter was called by Move() or forceMove() while the former is only called by Move().
  */
 /turf/open/openspace/Enter(atom/movable/movable, atom/oldloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		//higher priority than CURRENTLY_Z_FALLING so the movable doesn't fall on Entered()
@@ -54,6 +62,8 @@
 
 ///Makes movables fall when forceMove()'d to this turf.
 /turf/open/openspace/Entered(atom/movable/movable)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(movable.set_currently_z_moving(CURRENTLY_Z_FALLING))
 		zFall(movable, falling_from_move = TRUE)
@@ -62,27 +72,39 @@
  * so that spawned movables that should fall to gravity, will fall.
  */
 /turf/open/openspace/proc/on_atom_created(datum/source, atom/created_atom)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(ismovable(created_atom))
 		zfall_if_on_turf(created_atom)
 
 /turf/open/openspace/proc/zfall_if_on_turf(atom/movable/movable)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(movable) || movable.loc != src)
 		return
 	zFall(movable)
 
 /turf/open/openspace/can_have_cabling()
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/structure/lattice/catwalk, src))
 		return TRUE
 	return FALSE
 
 /turf/open/openspace/zAirIn()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /turf/open/openspace/zAirOut()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /turf/open/openspace/zPassIn(direction)
+	procstart = null
+	src.procstart = null
 	if(direction == DOWN)
 		for(var/obj/contained_object in contents)
 			if(contained_object.obj_flags & BLOCK_Z_IN_DOWN)
@@ -96,6 +118,8 @@
 	return FALSE
 
 /turf/open/openspace/zPassOut(direction)
+	procstart = null
+	src.procstart = null
 	if(direction == DOWN)
 		for(var/obj/contained_object in contents)
 			if(contained_object.obj_flags & BLOCK_Z_OUT_DOWN)
@@ -109,12 +133,18 @@
 	return FALSE
 
 /turf/open/openspace/proc/CanCoverUp()
+	procstart = null
+	src.procstart = null
 	return can_cover_up
 
 /turf/open/openspace/CanBuildHere()
+	procstart = null
+	src.procstart = null
 	return can_build_on
 
 /turf/open/openspace/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ITEM_INTERACT_ANY_BLOCKER & .)
 		return .
@@ -139,11 +169,15 @@
 		return ITEM_INTERACT_SUCCESS
 
 /turf/open/openspace/build_with_floor_tiles(obj/item/stack/tile/iron/used_tiles)
+	procstart = null
+	src.procstart = null
 	if(!CanCoverUp())
 		return
 	return ..()
 
 /turf/open/openspace/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	if(the_rcd.mode == RCD_TURF && the_rcd.rcd_design_path == /turf/open/floor/plating/rcd)
 		var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
 		if(L)
@@ -154,18 +188,24 @@
 	return FALSE
 
 /turf/open/openspace/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	procstart = null
+	src.procstart = null
 	if(rcd_data[RCD_DESIGN_MODE] == RCD_TURF && rcd_data[RCD_DESIGN_PATH] == /turf/open/floor/plating/rcd)
 		place_on_top(/turf/open/floor/plating, flags = CHANGETURF_INHERIT_AIR)
 		return TRUE
 	return FALSE
 
 /turf/open/openspace/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/our_movable = pass_info.requester_ref?.resolve()
 	if(our_movable && !our_movable.can_z_move(DOWN, src, null, ZMOVE_FALL_FLAGS)) //If we can't fall here (flying/lattice), it's fine to path through
 		return TRUE
 	return FALSE
 
 /turf/open/openspace/replace_floor(turf/open/new_floor_path, flags)
+	procstart = null
+	src.procstart = null
 	if (!initial(new_floor_path.overfloor_placed))
 		ChangeTurf(new_floor_path, flags = flags)
 		return
@@ -174,6 +214,8 @@
 	place_on_top(new_floor_path, flags = flags)
 
 /turf/open/openspace/can_cross_safely(atom/movable/crossing)
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(crossing, TRAIT_MOVE_FLYING) || !crossing.can_z_move(DOWN, src, z_move_flags = ZMOVE_FALL_FLAGS)
 
 /turf/open/openspace/icemoon
@@ -189,6 +231,8 @@
 	var/drill_below = TRUE
 
 /turf/open/openspace/icemoon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/T = GET_TURF_BELOW(src)
 	//I wonder if I should error here

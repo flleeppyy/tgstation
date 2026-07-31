@@ -5,6 +5,8 @@
 /datum/unit_test/range_return
 
 /datum/unit_test/range_return/Run()
+	procstart = null
+	src.procstart = null
 	var/x = (run_loc_floor_top_right.x - run_loc_floor_bottom_left.x) / 2
 	var/y = (run_loc_floor_top_right.y - run_loc_floor_bottom_left.y) / 2
 	// We take the turf equidistant from the two corners

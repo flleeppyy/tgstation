@@ -12,6 +12,8 @@
 	attack_subtree = /datum/bt_node/subtree/pet_command/attack/dog
 
 /datum/pet_command/attack/dog/set_command_active(mob/living/parent, mob/living/commander)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	parent.ai_controller.set_blackboard_key(BB_DOG_HARASS_HARM, TRUE)
 
@@ -65,6 +67,8 @@
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 
 /mob/living/basic/pet/dog/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/cultist_pet, pet_cult_icon_state = cult_icon_state)
 	AddElement(/datum/element/wears_collar, collar_icon_state = collar_icon_state)
@@ -87,6 +91,8 @@
 
 ///Updates dog speech and emotes
 /mob/living/basic/pet/dog/proc/update_dog_speech(list/speech_data)
+	procstart = null
+	src.procstart = null
 	speech_data[BB_EMOTE_SAY] = string_list(list("YAP", "Woof!", "Bark!", "AUUUUUU"))
 	speech_data[BB_EMOTE_HEAR] = string_list(list("barks!", "woofs!", "yaps.","pants."))
 	speech_data[BB_EMOTE_SEE] = string_list(list("shakes [p_their()] head.", "chases [p_their()] tail.","shivers."))
@@ -95,6 +101,8 @@
 /// Populates BB_BASIC_MOB_SPEAK_LINES with the dog's current speech data for BT random speech.
 /// Subtypes override this to apply fashion accessories or variant speech.
 /mob/living/basic/pet/dog/proc/update_dog_speak_blackboard(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/list/speech_data = list()
 	speech_data[BB_EMOTE_SAY] = list("YAP", "Woof!", "Bark!", "AUUUUUU")
 	speech_data[BB_EMOTE_HEAR] = list("barks!", "woofs!", "yaps.", "pants.")
@@ -104,6 +112,8 @@
 
 ///Proc to run on a successful taming attempt
 /mob/living/basic/pet/dog/tamed(mob/living/tamer, atom/food)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	visible_message(span_notice("[src] licks at [tamer] in a friendly manner!"))
 
@@ -121,6 +131,8 @@
 	attack_verb_simple = list("attack", "bash", "batter", "bludgeon", "whack")
 
 /obj/item/dog_bone/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if (!isdog(target) || user.combat_mode)
 		return ..()
 	var/mob/living/basic/pet/dog/dog_target = target

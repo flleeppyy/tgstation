@@ -42,6 +42,8 @@
 	bomb = 20
 
 /obj/item/clothing/suit/hooded/berserker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/anti_magic, ALL, inventory_flags = ITEM_SLOT_OCLOTHING)
 	AddComponent(/datum/component/armor_plate, maxamount = 1, upgrade_item = /obj/item/drake_remains, armor_mod = /datum/armor/drake_empowerment, upgrade_prefix = "empowered")
@@ -71,16 +73,22 @@
 	var/berserk_active = FALSE
 
 /obj/item/clothing/head/hooded/berserker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, LOCKED_HELMET_TRAIT)
 	AddComponent(/datum/component/armor_plate, maxamount = 1, upgrade_item = /obj/item/drake_remains, armor_mod = /datum/armor/drake_empowerment, upgrade_prefix = "empowered")
 	AddComponent(/datum/component/item_equipped_movement_rustle, SFX_PLATE_ARMOR_RUSTLE, 8)
 
 /obj/item/clothing/head/hooded/berserker/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Berserk mode is [berserk_charge]% charged.")
 
 /obj/item/clothing/head/hooded/berserker/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(berserk_active)
 		berserk_charge = clamp(berserk_charge - CHARGE_DRAINED_PER_SECOND * seconds_per_tick, 0, MAX_BERSERK_CHARGE)
 
@@ -89,10 +97,14 @@
 			end_berserk(loc)
 
 /obj/item/clothing/head/hooded/berserker/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	end_berserk(user)
 
 /obj/item/clothing/head/hooded/berserker/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(berserk_active)
 		return
 	var/berserk_value = damage * DAMAGE_TO_CHARGE_SCALE
@@ -106,10 +118,14 @@
 		ragemode?.build_all_button_icons(UPDATE_BUTTON_STATUS)
 
 /obj/item/clothing/head/hooded/berserker/IsReflect()
+	procstart = null
+	src.procstart = null
 	return berserk_active
 
 /// Starts berserk, reducing incoming brute by 50%, doubled attacking speed, NOGUNS trait, adding a color and giving them the berserk movespeed modifier
 /obj/item/clothing/head/hooded/berserker/proc/berserk_mode(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	var/datum/action/item_action/berserk_mode/ragemode = locate() in actions
 	to_chat(user, span_cult("You enter berserk mode."))
 	playsound(user, 'sound/effects/magic/staff_healing.ogg', 50)
@@ -125,6 +141,8 @@
 
 /// Ends berserk, reverting the changes from the proc [berserk_mode]
 /obj/item/clothing/head/hooded/berserker/proc/end_berserk(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!berserk_active)
 		return
 	berserk_active = FALSE

@@ -29,21 +29,29 @@ ADMIN_VERB(access_news_network, R_ADMIN, "Access Newscaster Network", "Allows yo
 	var/comment_text
 
 /datum/newspanel/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_ADMIN)
 
 /datum/newspanel/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PhysicalNewscaster")
 		ui.open()
 
 /datum/newspanel/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!is_admin(user))
 		to_chat(usr, "Error: you are not an admin!", confidential = TRUE)
 		return
 
 /datum/newspanel/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/list/data = list()
 	var/list/channel_list = list()
@@ -135,6 +143,8 @@ ADMIN_VERB(access_news_network, R_ADMIN, "Access Newscaster Network", "Allows yo
 	return data
 
 /datum/newspanel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -268,6 +278,8 @@ ADMIN_VERB(access_news_network, R_ADMIN, "Access Newscaster Network", "Allows yo
  * Sends photo data to build the newscaster article.
  */
 /datum/newspanel/proc/send_photo_data()
+	procstart = null
+	src.procstart = null
 	if(!current_image)
 		return null
 	return current_image
@@ -277,6 +289,8 @@ ADMIN_VERB(access_news_network, R_ADMIN, "Access Newscaster Network", "Allows yo
  * *user: The mob who is being checked for a held photo object.
  */
 /datum/newspanel/proc/attach_photo(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "I didn't add this!")
 	return
 
@@ -285,6 +299,8 @@ ADMIN_VERB(access_news_network, R_ADMIN, "Access Newscaster Network", "Allows yo
  * *channel_locked: This variable determines if other users than the author can make comments and new feed_stories on this channel.
  */
 /datum/newspanel/proc/create_channel(channel_locked)
+	procstart = null
+	src.procstart = null
 	if(!channel_name)
 		return
 	var/datum/feed_channel/potential_channel = GLOB.news_network.network_channels_by_name[channel_name]
@@ -305,6 +321,8 @@ ADMIN_VERB(access_news_network, R_ADMIN, "Access Newscaster Network", "Allows yo
  * Constructs a comment to attach to the currently selected feed_message of choice, assuming that a user can be found and that a message body has been written.
  */
 /datum/newspanel/proc/create_comment()
+	procstart = null
+	src.procstart = null
 	if(!comment_text)
 		creating_comment = FALSE
 		return TRUE
@@ -323,6 +341,8 @@ ADMIN_VERB(access_news_network, R_ADMIN, "Access Newscaster Network", "Allows yo
  * Otherwise, sets creating_channel to TRUE.
  */
 /datum/newspanel/proc/start_creating_channel()
+	procstart = null
+	src.procstart = null
 	//This first block checks for pre-existing reasons to prevent you from making a new channel, like being censored, or if you have a channel already.
 	var/list/existing_authors = list()
 	for(var/datum/feed_channel/iterated_feed_channel as anything in GLOB.news_network.network_channels)
@@ -338,6 +358,8 @@ ADMIN_VERB(access_news_network, R_ADMIN, "Access Newscaster Network", "Allows yo
  * Finally, it submits the message to the network, is logged globally, and clears all message-specific variables from the machine.
  */
 /datum/newspanel/proc/create_story(channel_id)
+	procstart = null
+	src.procstart = null
 	var/datum/feed_channel/potential_channel = GLOB.news_network.network_channels_by_id["[channel_id]"]
 	if(isnull(potential_channel))
 		return
@@ -358,6 +380,8 @@ ADMIN_VERB(access_news_network, R_ADMIN, "Access Newscaster Network", "Allows yo
  * If a photo is still held in the newscaster, it will otherwise clear it from the machine.
  */
 /datum/newspanel/proc/toggle_photo()
+	procstart = null
+	src.procstart = null
 	if(current_image)
 		current_image = null
 		return TRUE
@@ -366,5 +390,7 @@ ADMIN_VERB(access_news_network, R_ADMIN, "Access Newscaster Network", "Allows yo
 		return TRUE
 
 /datum/newspanel/proc/clear_wanted_issue(user)
+	procstart = null
+	src.procstart = null
 	GLOB.news_network.wanted_issue.active = FALSE
 	return

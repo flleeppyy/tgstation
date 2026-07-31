@@ -44,10 +44,14 @@
 	acid = 100
 
 /obj/vehicle/sealed/mecha/clarke/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ore_box = new(src)
 
 /obj/vehicle/sealed/mecha/clarke/generate_actions()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	initialize_passenger_action_type(/datum/action/vehicle/sealed/mecha/mech_search_ruins)
 	initialize_passenger_action_type(/datum/action/vehicle/sealed/mecha/clarke_scoop_body)
@@ -62,14 +66,20 @@
 	detachable = FALSE
 
 /obj/item/mecha_parts/mecha_equipment/orebox_manager/attach(obj/vehicle/sealed/mecha/mecha, attach_right = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(chassis, TRAIT_OREBOX_FUNCTIONAL, TRAIT_MECH_EQUIPMENT(type))
 
 /obj/item/mecha_parts/mecha_equipment/orebox_manager/detach(atom/moveto)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(chassis, TRAIT_OREBOX_FUNCTIONAL, TRAIT_MECH_EQUIPMENT(type))
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/orebox_manager/get_snowflake_data()
+	procstart = null
+	src.procstart = null
 	var/list/contents = chassis.ore_box?.contents
 	var/list/contents_grouped = list()
 	for(var/atom/movable/item as anything in contents)
@@ -92,6 +102,8 @@
 	return data
 
 /obj/item/mecha_parts/mecha_equipment/orebox_manager/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -115,6 +127,8 @@
 	button_icon_state = "mecha_sleeper_miner"
 
 /datum/action/vehicle/sealed/mecha/clarke_scoop_body/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -135,6 +149,8 @@
 	COOLDOWN_DECLARE(search_cooldown)
 
 /datum/action/vehicle/sealed/mecha/mech_search_ruins/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -175,9 +191,13 @@
 	range_far = 50
 
 /datum/status_effect/agent_pinpointer/ruin/scan_for_target()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/status_effect/agent_pinpointer/ruin/proc/cancel_self(datum/source, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 

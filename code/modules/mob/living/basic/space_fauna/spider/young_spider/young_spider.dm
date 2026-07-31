@@ -22,6 +22,8 @@
 	player_speed_modifier = -1
 
 /mob/living/basic/spider/growing/young/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/ai_retaliate)
 	AddElement(/datum/element/ai_flee_while_injured)
@@ -42,5 +44,7 @@
 	ai_traits = PASSIVE_AI_FLAGS
 	ai_movement = /datum/ai_movement/basic_avoidance
 
-/mob/living/basic/spider/growing/young/start_pulling(atom/movable/pulled_atom, state, force = move_force, supress_message = FALSE) // we're TOO FUCKING WEAK
+/mob/living/basic/spider/growing/young/start_pulling(atom/movable/pulled_atom, state, force = move_force, supress_message = FALSE)
+	procstart = null
+	src.procstart = null // we're TOO FUCKING WEAK
 	return

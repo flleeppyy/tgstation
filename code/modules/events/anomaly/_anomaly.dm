@@ -19,6 +19,8 @@
 	var/turf/spawn_location
 
 /datum/round_event/anomaly/setup()
+	procstart = null
+	src.procstart = null
 
 	if(spawn_location)
 		impact_area = get_area(spawn_location)
@@ -26,11 +28,15 @@
 		impact_area = placer.findValidArea()
 
 /datum/round_event/anomaly/announce(fake)
+	procstart = null
+	src.procstart = null
 	if(isnull(impact_area))
 		impact_area = placer.findValidArea()
 	priority_announce("Energetic flux wave detected on [ANOMALY_ANNOUNCE_DANGEROUS_TEXT] [impact_area.name].", "Anomaly Alert")
 
 /datum/round_event/anomaly/start()
+	procstart = null
+	src.procstart = null
 	var/turf/anomaly_turf
 
 	if(spawn_location)
@@ -46,14 +52,20 @@
 		announce_to_ghosts(newAnomaly)
 
 /datum/round_event/anomaly/proc/make_anomaly(turf/anomaly_turf)
+	procstart = null
+	src.procstart = null
 	return new anomaly_path(anomaly_turf)
 
 /// Make any further post-creation modifications to the anomaly
 /datum/round_event/anomaly/proc/apply_anomaly_properties(obj/effect/anomaly/new_anomaly)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/event_admin_setup/set_location/anomaly
 	input_text = "Spawn anomaly at your current location?"
 
 /datum/event_admin_setup/set_location/anomaly/apply_to_event(datum/round_event/anomaly/event)
+	procstart = null
+	src.procstart = null
 	event.spawn_location = chosen_turf

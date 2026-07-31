@@ -18,6 +18,8 @@
 	var/obj/item/overslotting = null
 
 /datum/mod_part/Destroy()
+	procstart = null
+	src.procstart = null
 	// To avoid qdel loops in MOD control units, since they're also a part
 	if (!QDELING(part_item))
 		qdel(part_item)
@@ -26,11 +28,15 @@
 	return ..()
 
 /datum/mod_part/proc/set_item(obj/item/new_part)
+	procstart = null
+	src.procstart = null
 	part_item = new_part
 	RegisterSignal(part_item, COMSIG_ITEM_GET_SEPARATE_WORN_OVERLAYS, PROC_REF(get_separate_worn_overlays))
 
 // If we're overslotting an item, add its visual as an underlay
 /datum/mod_part/proc/get_separate_worn_overlays(obj/item/source, list/overlays, mutable_appearance/standing, mutable_appearance/draw_target, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!overslotting || sealed)

@@ -5,10 +5,14 @@
 	abstract_type = /obj/item/weaponcrafting
 
 /obj/item/weaponcrafting/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_slapcraft_component()
 
 /obj/item/weaponcrafting/proc/create_slapcraft_component()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/weaponcrafting/receiver
@@ -19,6 +23,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5.55, /datum/material/cardboard = SHEET_MATERIAL_AMOUNT, /datum/material/plastic = SMALL_MATERIAL_AMOUNT)
 
 /obj/item/weaponcrafting/receiver/create_slapcraft_component()
+	procstart = null
+	src.procstart = null
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/pipegun)
 
 	AddElement(
@@ -35,6 +41,8 @@
 	icon_state = "riflestock"
 
 /obj/item/weaponcrafting/stock/create_slapcraft_component()
+	procstart = null
+	src.procstart = null
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/smoothbore_disabler, /datum/crafting_recipe/laser_musket)
 
 	AddElement(
@@ -48,7 +56,9 @@
 	icon = 'icons/obj/weapons/improvised.dmi'
 	icon_state = "weaponkit_gw"
 
-/obj/item/weaponcrafting/giant_wrench/create_slapcraft_component() // slappycraft
+/obj/item/weaponcrafting/giant_wrench/create_slapcraft_component()
+	procstart = null
+	src.procstart = null // slappycraft
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/giant_wrench)
 
 	AddElement(

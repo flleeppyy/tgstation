@@ -33,6 +33,8 @@
 	var/zlink_range = 0
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	actions += new /datum/action/innate/shuttledocker_rotate(src)
 	actions += new /datum/action/innate/shuttledocker_place(src)
@@ -52,6 +54,8 @@
 	whitelist_turfs = typecacheof(whitelist_turfs)
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(my_port?.get_docked())
 		my_port.delete_after = TRUE
@@ -62,12 +66,16 @@
 		QDEL_NULL(my_port)
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vname in list(NAMEOF(src, view_range), NAMEOF(src, x_offset), NAMEOF(src, y_offset), NAMEOF(src, see_hidden)))
 		refresh_eye()
 
 /// Destroys the eyeobj of this console, safely refreshing it if the console is currently being used.
 /obj/machinery/computer/camera_advanced/shuttle_docker/proc/refresh_eye()
+	procstart = null
+	src.procstart = null
 	var/mob/living/user = current_user
 	if(user)
 		remove_eye_control(user)
@@ -77,17 +85,23 @@
 
 /// "Initializes" any default port ids we have, done so add_jumpable_port can be a proper setter
 /obj/machinery/computer/camera_advanced/shuttle_docker/proc/set_init_ports()
+	procstart = null
+	src.procstart = null
 	var/list/init_ports = jump_to_ports.Copy()
 	jump_to_ports = list() //Reset it so we don't get dupes
 	for(var/port_id in init_ports)
 		add_jumpable_port(port_id)
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/proc/add_jumpable_port(port_id)
+	procstart = null
+	src.procstart = null
 	if(!length(jump_to_ports))
 		actions += new /datum/action/innate/camera_jump/shuttle_docker(src)
 	jump_to_ports[port_id] = TRUE
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/proc/remove_jumpable_port(port_id)
+	procstart = null
+	src.procstart = null
 	jump_to_ports -= port_id
 	if(!length(jump_to_ports))
 		var/datum/action/to_remove = locate(/datum/action/innate/camera_jump/shuttle_docker) in actions
@@ -95,6 +109,8 @@
 		qdel(to_remove)
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(jammed)
 		to_chat(user, span_warning("The Syndicate is jamming the console!"))
 		return
@@ -104,6 +120,8 @@
 	return ..()
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/CreateEye()
+	procstart = null
+	src.procstart = null
 	shuttle_port = SSshuttle.getShuttle(shuttleId)
 	if(QDELETED(shuttle_port))
 		shuttle_port = null
@@ -131,6 +149,8 @@
 	return TRUE
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/give_eye_control(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!QDELETED(user) && user.client)
 		var/mob/eye/camera/remote/shuttle_docker/the_eye = eyeobj
@@ -145,6 +165,8 @@
 		user.client.view_size.setTo(view_range)
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/remove_eye_control(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!QDELETED(user) && user.client)
 		var/mob/eye/camera/remote/shuttle_docker/the_eye = eyeobj
@@ -159,6 +181,8 @@
 		user.client.view_size.resetToDefault()
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/proc/shuttle_turf_from_coords(list/coords)
+	procstart = null
+	src.procstart = null
 	var/mob/eye/camera/remote/shuttle_docker/the_eye = eyeobj
 	var/shuttleDir = shuttle_port.dir
 	var/curDir = the_eye.dir
@@ -181,6 +205,8 @@
 	return locate(shuttle_port.x + adjustedCoords[1], shuttle_port.y + adjustedCoords[2], shuttle_port.z)
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/proc/gatherNavComputerIcons()
+	procstart = null
+	src.procstart = null
 	var/mob/eye/camera/remote/shuttle_docker/the_eye = eyeobj
 	var/list/placement_image_cache = the_eye.placement_images
 	var/list/extra_image_cache = the_eye.extra_images
@@ -201,6 +227,8 @@
 			extra_image_cache[extra_image] = coords.Copy()
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/proc/placeLandingSpot()
+	procstart = null
+	src.procstart = null
 	if(designating_target_loc || !current_user)
 		return
 
@@ -267,11 +295,15 @@
 	return TRUE
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/proc/canDesignateTarget()
+	procstart = null
+	src.procstart = null
 	if(!designating_target_loc || !current_user || (eyeobj.loc != designating_target_loc) || (machine_stat & (NOPOWER|BROKEN)) )
 		return FALSE
 	return TRUE
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/proc/rotateLandingSpot()
+	procstart = null
+	src.procstart = null
 	var/mob/eye/camera/remote/shuttle_docker/the_eye = eyeobj
 	var/list/image_cache = the_eye.placement_images + the_eye.extra_images
 	the_eye.setDir(turn(the_eye.dir, -90))
@@ -289,6 +321,8 @@
 	checkLandingSpot()
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/proc/checkLandingSpot()
+	procstart = null
+	src.procstart = null
 	var/mob/eye/camera/remote/shuttle_docker/the_eye = eyeobj
 	var/turf/eyeturf = get_turf(the_eye)
 	if(!eyeturf)
@@ -323,6 +357,8 @@
 		image.loc = turf
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/proc/checkLandingTurf(turf/T, list/overlappers)
+	procstart = null
+	src.procstart = null
 	// Too close to the map edge is never allowed
 	if(!T || T.x <= 10 || T.y <= 10 || T.x >= world.maxx - 10 || T.y >= world.maxy - 10)
 		return SHUTTLE_DOCKER_BLOCKED
@@ -358,11 +394,15 @@
 				return SHUTTLE_DOCKER_BLOCKED
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/proc/update_hidden_docking_ports(list/remove_images, list/add_images)
+	procstart = null
+	src.procstart = null
 	if(!see_hidden && current_user?.client)
 		current_user.client.images -= remove_images
 		current_user.client.images += add_images
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
+	procstart = null
+	src.procstart = null
 	if(!mapload)
 		return FALSE
 	if(port)
@@ -379,11 +419,15 @@
 	var/list/image/extra_images = list()
 
 /mob/eye/camera/remote/shuttle_docker/setLoc(turf/destination, force_update = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/machinery/computer/camera_advanced/shuttle_docker/console = origin_ref?.resolve()
 	console.checkLandingSpot()
 
 /mob/eye/camera/remote/shuttle_docker/allow_z_transition(datum/space_level/from, datum/space_level/into)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -401,6 +445,8 @@
 
 
 /mob/eye/camera/remote/shuttle_docker/update_remote_sight(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.set_sight(BLIND|SEE_TURFS)
 	// Pale blue, should look nice I think
 	user.lighting_color_cutoffs = list(30, 40, 50)
@@ -413,6 +459,8 @@
 	button_icon_state = "mech_cycle_equip_off"
 
 /datum/action/innate/shuttledocker_rotate/Activate()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(owner) || !isliving(owner))
 		return
 	var/mob/eye/camera/remote/remote_eye = owner.remote_control
@@ -425,6 +473,8 @@
 	button_icon_state = "mech_zoom_off"
 
 /datum/action/innate/shuttledocker_place/Activate()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(owner) || !isliving(owner))
 		return
 	var/mob/eye/camera/remote/remote_eye = owner.remote_control
@@ -436,6 +486,8 @@
 	button_icon_state = "camera_jump"
 
 /datum/action/innate/camera_jump/shuttle_docker/Activate()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(owner) || !isliving(owner))
 		return
 	var/mob/eye/camera/remote/remote_eye = owner.remote_control

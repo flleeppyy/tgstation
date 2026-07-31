@@ -7,6 +7,8 @@
 	initial_gas_mix = OPENTURF_LOW_PRESSURE
 
 /turf/open/misc/basalt/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/diggable, /obj/item/stack/ore/glass/basalt, 2)
 	if(prob(15))

@@ -14,6 +14,8 @@
 	)
 
 /obj/item/book/granter/crafting_recipe/combat_baking/recoil(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("The book dissolves into burnt flour!"))
 	new /obj/effect/decal/cleanable/ash(get_turf(src))
 	qdel(src)

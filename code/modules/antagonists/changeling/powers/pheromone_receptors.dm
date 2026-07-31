@@ -14,6 +14,8 @@
 	var/receptors_active = FALSE
 
 /datum/action/changeling/pheromone_receptors/Remove(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(receptors_active)
 		var/datum/antagonist/changeling/changeling = IS_CHANGELING(user)
 		changeling.chem_recharge_slowdown -= 0.25
@@ -21,6 +23,8 @@
 	..()
 
 /datum/action/changeling/pheromone_receptors/sting_action(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	..()
 	var/datum/antagonist/changeling/changeling = IS_CHANGELING(user)
 	if(HAS_TRAIT(user, TRAIT_ANOSMIA)) //Anosmia quirk holders can't smell anything
@@ -46,6 +50,8 @@
 	range_fuzz_factor = 0
 
 /datum/status_effect/agent_pinpointer/changeling/scan_for_target()
+	procstart = null
+	src.procstart = null
 	var/turf/my_loc = get_turf(owner)
 
 	var/list/mob/living/carbon/changelings = list()

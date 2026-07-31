@@ -15,6 +15,8 @@
 	var/item_action_type
 
 /datum/component/scope/Initialize(range_modifier = 1, zoom_method = ZOOM_METHOD_RIGHT_CLICK, item_action_type)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 	src.range_modifier = range_modifier
@@ -22,11 +24,15 @@
 	src.item_action_type = item_action_type
 
 /datum/component/scope/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(tracker)
 		stop_zooming(tracker.owner)
 	return ..()
 
 /datum/component/scope/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
 	switch(zoom_method)
 		if(ZOOM_METHOD_RIGHT_CLICK)
@@ -43,6 +49,8 @@
 		RegisterSignal(parent, COMSIG_GUN_TRY_FIRE, PROC_REF(on_gun_fire))
 
 /datum/component/scope/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	if(item_action_type)
 		var/obj/item/parent_item = parent
 		var/datum/action/item_action/scope = locate(item_action_type) in parent_item.actions
@@ -57,6 +65,8 @@
 	))
 
 /datum/component/scope/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/mob/user_mob = tracker.owner
 	var/client/user_client = user_mob.client
 	if(!user_client)
@@ -68,6 +78,8 @@
 	animate(user_client, world.tick_lag, pixel_x = tracker.given_x, pixel_y = tracker.given_y)
 
 /datum/component/scope/proc/on_move(atom/movable/source, atom/oldloc, dir, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!tracker)
@@ -75,6 +87,8 @@
 	stop_zooming(tracker.owner)
 
 /datum/component/scope/proc/do_secondary_zoom(datum/source, mob/user, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(tracker)
@@ -84,6 +98,8 @@
 	return ITEM_INTERACT_BLOCKING
 
 /datum/component/scope/proc/on_action_trigger(datum/action/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/item/item = source.target
 	var/mob/living/user = item.loc
@@ -93,16 +109,22 @@
 		zoom(user)
 
 /datum/component/scope/proc/on_wielded(obj/item/source, trait)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/user = source.loc
 	zoom(user)
 
 /datum/component/scope/proc/on_unwielded(obj/item/source, trait)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/user = source.loc
 	stop_zooming(user)
 
 /datum/component/scope/proc/on_gun_fire(obj/item/gun/source, mob/living/user, atom/target, flag, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!tracker?.given_turf || target == get_target(tracker.given_turf))
@@ -111,6 +133,8 @@
 	return COMPONENT_CANCEL_GUN_FIRE
 
 /datum/component/scope/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/scope = isgun(parent) ? "scope in" : "zoom out"
@@ -127,6 +151,8 @@
  * * target_turf: The turf we are looking for targets on.
 */
 /datum/component/scope/proc/get_target(turf/target_turf)
+	procstart = null
+	src.procstart = null
 	var/list/object_targets = list()
 	var/list/non_dense_targets = list()
 	for(var/atom/movable/possible_target in target_turf)
@@ -159,6 +185,8 @@
  * * user: The mob we are starting zooming on.
 */
 /datum/component/scope/proc/zoom(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(user.client))
 		return
 	if(HAS_TRAIT(user, TRAIT_USER_SCOPED))
@@ -186,12 +214,16 @@
 
 ///Stop scoping if the `newloc` we move to is not a turf
 /datum/component/scope/proc/on_enter_new_loc(datum/source, atom/newloc, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isturf(newloc))
 		stop_zooming(tracker.owner)
 
 /datum/component/scope/proc/on_incapacitated(mob/living/source, amount = 0, ignore_canstun = FALSE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(amount > 0)
@@ -204,6 +236,8 @@
  * * user: The mob we are canceling zooming on.
 */
 /datum/component/scope/proc/stop_zooming(mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!HAS_TRAIT(user, TRAIT_USER_SCOPED))
@@ -242,15 +276,21 @@
 	var/range_modifier = 1
 
 /atom/movable/screen/fullscreen/cursor_catcher/scope/assign_to_mob(mob/new_owner, range_modifier)
+	procstart = null
+	src.procstart = null
 	src.range_modifier = range_modifier
 	return ..()
 
 /atom/movable/screen/fullscreen/cursor_catcher/scope/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(usr == owner)
 		calculate_params()
 	return ..()
 
 /atom/movable/screen/fullscreen/cursor_catcher/scope/calculate_params()
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(mouse_params)
 	var/icon_x = text2num(LAZYACCESS(modifiers, VIS_X))
 	if(isnull(icon_x))

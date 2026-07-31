@@ -1,5 +1,7 @@
 
 /client/proc/open_outfit_editor(datum/outfit/target)
+	procstart = null
+	src.procstart = null
 	var/datum/outfit_editor/ui = new(usr, target)
 	ui.ui_interact(usr)
 
@@ -12,6 +14,8 @@
 	var/datum/outfit/drip
 
 /datum/outfit_editor/New(user, datum/outfit/target)
+	procstart = null
+	src.procstart = null
 	owner = CLIENT_FROM_VAR(user)
 
 	if(ispath(target))
@@ -24,23 +28,33 @@
 		drip.name = "New Outfit"
 
 /datum/outfit_editor/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_NONE)
 
 /datum/outfit_editor/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(drip))
 		return UI_CLOSE
 	return ..()
 
 /datum/outfit_editor/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	clear_human_dummy(dummy_key)
 	qdel(src)
 
 /datum/outfit_editor/proc/init_dummy()
+	procstart = null
+	src.procstart = null
 	dummy_key = "outfit_editor_[owner]"
 	generate_dummy_lookalike(dummy_key, owner.mob)
 	unset_busy_human_dummy(dummy_key)
 
 /datum/outfit_editor/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "OutfitEditor", OUTFIT_EDITOR_NAME)
@@ -48,6 +62,8 @@
 		ui.set_autoupdate(FALSE)
 
 /datum/outfit_editor/proc/entry(data)
+	procstart = null
+	src.procstart = null
 	if(ispath(data, /obj/item))
 		var/obj/item/item = data
 		return list(
@@ -61,6 +77,8 @@
 	return data
 
 /datum/outfit_editor/proc/serialize_outfit()
+	procstart = null
+	src.procstart = null
 	var/list/outfit_slots = drip.get_json_data()
 	. = list()
 	for(var/key in outfit_slots)
@@ -68,6 +86,8 @@
 		. += list("[key]" = entry(val))
 
 /datum/outfit_editor/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["outfit"] = serialize_outfit()
@@ -87,6 +107,8 @@
 
 
 /datum/outfit_editor/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	. = TRUE
@@ -116,6 +138,8 @@
 
 
 /datum/outfit_editor/proc/set_item(slot, obj/item/choice)
+	procstart = null
+	src.procstart = null
 	if(!choice)
 		return
 	if(!ispath(choice))
@@ -130,6 +154,8 @@
 		drip.vars[slot] = choice
 
 /datum/outfit_editor/proc/choose_any_item(slot)
+	procstart = null
+	src.procstart = null
 	var/obj/item/choice = pick_closest_path(FALSE)
 
 	if(!choice)
@@ -142,6 +168,8 @@
 //most notably the hand and pocket slots because they accept pretty much anything
 //also stuff that fits in the belt and back slots are scattered pretty much all over the place
 /datum/outfit_editor/proc/choose_item(slot)
+	procstart = null
+	src.procstart = null
 	var/list/options = list()
 
 	switch(slot)

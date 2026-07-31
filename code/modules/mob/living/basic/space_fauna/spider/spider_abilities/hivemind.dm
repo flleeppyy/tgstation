@@ -18,6 +18,8 @@
 	var/current_directive = ""
 
 /datum/action/cooldown/mob_cooldown/set_spider_directive/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	var/new_directive = tgui_input_text(owner, "Enter the new directive", "Create directive", "[current_directive]", max_length = MAX_MESSAGE_LEN)
 	if(isnull(new_directive) || QDELETED(src) || QDELETED(owner) || !IsAvailable(feedback = TRUE))
 		return
@@ -44,6 +46,8 @@
 	click_to_activate = FALSE
 
 /datum/action/cooldown/mob_cooldown/command_spiders/Activate(trigger_flags)
+	procstart = null
+	src.procstart = null
 	var/input = tgui_input_text(owner, "Input a command for your legions to follow.", "Command", max_length = MAX_MESSAGE_LEN)
 	if(!input || QDELETED(src) || QDELETED(owner) || !IsAvailable(feedback = TRUE))
 		return
@@ -59,6 +63,8 @@
  * * message - The message to be sent
  */
 /datum/action/cooldown/mob_cooldown/command_spiders/proc/spider_command(mob/living/user, message)
+	procstart = null
+	src.procstart = null
 	var/my_message = format_message(user,message)
 	for(var/mob/living/basic/spider as anything in GLOB.spidermobs)
 		to_chat(spider, my_message)
@@ -71,6 +77,8 @@
  * Formats the string to have an appropiate size and text color
  */
 /datum/action/cooldown/mob_cooldown/command_spiders/proc/format_message(mob/living/user, message)
+	procstart = null
+	src.procstart = null
 	return span_spiderbroodmother("<b>Command from [user]:</b> [message]")
 
 /**
@@ -83,6 +91,8 @@
 	button_icon_state = "message"
 
 /datum/action/cooldown/mob_cooldown/command_spiders/communication_spiders/format_message(mob/living/user, message)
+	procstart = null
+	src.procstart = null
 	return span_spiderscout("<b>Report from [user]:</b> [message]")
 
 /**
@@ -95,5 +105,7 @@
 	button_icon_state = "warning"
 
 /datum/action/cooldown/mob_cooldown/command_spiders/warning_spiders/format_message(mob/living/user, message)
+	procstart = null
+	src.procstart = null
 	return span_spiderbreacher("<b>Warning from [user]:</b> [message]")
 

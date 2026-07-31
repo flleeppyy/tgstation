@@ -1,4 +1,6 @@
 /mob/living/silicon/spawn_dust(just_ash)
+	procstart = null
+	src.procstart = null
 	if(just_ash)
 		return ..()
 
@@ -7,6 +9,8 @@
 	robones.pixel_w = rand(-1, 1)
 
 /mob/living/silicon/set_stat(new_stat)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. != DEAD || !hud_used)
 		return
@@ -14,6 +18,8 @@
 	hud_used.remove_screen_object(HUD_CYBORG_DEATH)
 
 /mob/living/silicon/death(gibbed)
+	procstart = null
+	src.procstart = null
 	diag_hud_set_status()
 	diag_hud_set_health()
 	update_health_hud()
@@ -23,13 +29,19 @@
 		death_sequence()
 
 /mob/living/silicon/get_visible_suicide_message()
+	procstart = null
+	src.procstart = null
 	return "[src] is powering down. It looks like [p_theyre()] trying to commit suicide."
 
 /mob/living/silicon/get_blind_suicide_message()
+	procstart = null
+	src.procstart = null
 	return "You hear a long, hissing electronic whine."
 
 /// Plays an animation of the player's hud flavored about their death somewhat
 /mob/living/silicon/proc/death_sequence()
+	procstart = null
+	src.procstart = null
 	var/cause_of_death
 	if(get_brute_loss() + get_fire_loss() > 100)
 		cause_of_death = "Critical damage sustained."
@@ -85,6 +97,8 @@
 	)
 
 /atom/movable/screen/cyborg_death/proc/run_animation(cause_of_death = "Unidentified kernel error.")
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	messages.Insert(1, WARNING_ROBOT("WARNING: [cause_of_death]"))

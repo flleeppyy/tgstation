@@ -20,20 +20,28 @@
 	var/jaunt_type = /obj/effect/dummy/phased_mob
 
 /datum/action/cooldown/spell/jaunt/get_caster_from_target(atom/target)
+	procstart = null
+	src.procstart = null
 	if(istype(target.loc, jaunt_type))
 		return target
 
 	return ..()
 
 /datum/action/cooldown/spell/jaunt/PreActivate(atom/target)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(target, COMSIG_MOB_PRE_JAUNT, target) & COMPONENT_BLOCK_JAUNT)
 		return FALSE
 	. = ..()
 
 /datum/action/cooldown/spell/jaunt/before_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return ..() | SPELL_NO_FEEDBACK // Don't do the feedback until after we're jaunting
 
 /datum/action/cooldown/spell/jaunt/can_cast_spell(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -63,6 +71,8 @@
  * Returns the holder mob that was created
  */
 /datum/action/cooldown/spell/jaunt/proc/enter_jaunt(mob/living/jaunter, turf/loc_override)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	var/obj/effect/dummy/phased_mob/jaunt = new jaunt_type(loc_override || get_turf(jaunter), jaunter)
@@ -87,6 +97,8 @@
  * Returns TRUE on successful exit, FALSE otherwise
  */
 /datum/action/cooldown/spell/jaunt/proc/exit_jaunt(mob/living/unjaunter, turf/loc_override)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	var/obj/effect/dummy/phased_mob/jaunt = unjaunter.loc
@@ -110,6 +122,8 @@
  * * unjaunter - The spellcaster who is no longer jaunting
  */
 /datum/action/cooldown/spell/jaunt/proc/on_jaunt_exited(obj/effect/dummy/phased_mob/jaunt, mob/living/unjaunter)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	check_flags |= AB_CHECK_PHASED
 	unjaunter.remove_traits(list(TRAIT_MAGICALLY_PHASED, TRAIT_RUNECHAT_HIDDEN, TRAIT_WEATHER_IMMUNE), REF(src))
@@ -117,6 +131,8 @@
 	SEND_SIGNAL(unjaunter, COMSIG_MOB_AFTER_EXIT_JAUNT, src)
 
 /datum/action/cooldown/spell/jaunt/Remove(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	exit_jaunt(remove_from)
 	if (!is_jaunting(remove_from)) // In case you have made exit_jaunt conditional, as in mirror walk
 		return ..()

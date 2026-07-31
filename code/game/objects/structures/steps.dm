@@ -9,6 +9,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2)
 
 /obj/structure/steps/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/static/list/loc_connections = list(
@@ -21,6 +23,8 @@
 	register_context()
 
 /obj/structure/steps/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!held_item)
 		return NONE
@@ -34,20 +38,28 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/steps/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/steps/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You start disassembling [src]..."))
 	if(tool.use_tool(src, user, 2 SECONDS, volume=50))
 		deconstruct(TRUE)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/steps/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/iron(drop_location(), 2)
 
 /// Watch your ankles
 /obj/structure/steps/proc/on_enter(turf/our_turf, mob/living/arrived, turf/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!isliving(arrived) || !isturf(old_loc) || !our_turf.Adjacent(old_loc) || !has_gravity(src) || HAS_TRAIT(arrived, TRAIT_MOB_ELEVATED) || (arrived.movement_type & MOVETYPES_NOT_TOUCHING_GROUND) || arrived.move_intent != MOVE_INTENT_RUN)
 		return

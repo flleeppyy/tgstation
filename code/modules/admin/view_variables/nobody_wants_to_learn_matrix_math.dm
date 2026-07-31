@@ -12,26 +12,38 @@
 	var/matrix/testing_matrix
 
 /datum/nobody_wants_to_learn_matrix_math/New(atom/target)
+	procstart = null
+	src.procstart = null
 	src.target = target
 	testing_matrix = matrix(target.transform)
 
 /datum/nobody_wants_to_learn_matrix_math/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(testing_matrix)
 	return ..()
 
 /datum/nobody_wants_to_learn_matrix_math/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_VAREDIT)
 
 /datum/nobody_wants_to_learn_matrix_math/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /datum/nobody_wants_to_learn_matrix_math/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "MatrixMathTester")
 		ui.open()
 
 /datum/nobody_wants_to_learn_matrix_math/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["matrix_a"] = testing_matrix.a
 	data["matrix_b"] = testing_matrix.b
@@ -43,6 +55,8 @@
 	return data
 
 /datum/nobody_wants_to_learn_matrix_math/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -71,10 +85,14 @@
 			target.appearance_flags ^= PIXEL_SCALE
 
 /datum/nobody_wants_to_learn_matrix_math/proc/set_transform()
+	procstart = null
+	src.procstart = null
 	animate(target, transform = testing_matrix, time = 0.5 SECONDS)
 	testing_matrix = matrix(target.transform)
 
 /client/proc/open_matrix_tester(atom/in_atom)
+	procstart = null
+	src.procstart = null
 	if(holder)
 		var/datum/nobody_wants_to_learn_matrix_math/matrix_tester = new(in_atom)
 		matrix_tester.ui_interact(mob)

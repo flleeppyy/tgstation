@@ -56,6 +56,8 @@
 	)
 
 /mob/living/basic/construct/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	throw_alert("bloodsense", /atom/movable/screen/alert/bloodsense)
 	AddElement(/datum/element/simple_flying)
@@ -102,12 +104,16 @@
 		add_overlay("glow_[icon_state]_[theme]")
 
 /mob/living/basic/construct/Login()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !client)
 		return FALSE
 	to_chat(src, span_bold(playstyle_string))
 
 /mob/living/basic/construct/get_examine_name(mob/user)
+	procstart = null
+	src.procstart = null
 	var/text_span
 	switch(theme)
 		if(THEME_CULT)
@@ -123,6 +129,8 @@
 	return "<span class='[text_span]'>[..()]</span>"
 
 /mob/living/basic/construct/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(health < maxHealth)
 		if(health >= maxHealth/2)
@@ -133,9 +141,13 @@
 	return .
 
 /mob/living/basic/construct/narsie_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/basic/construct/electrocute_act(shock_damage, source, siemens_coeff = 1, flags = NONE)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// Construct ectoplasm. Largely a placeholder, since the death drop element needs a unique list.

@@ -15,6 +15,8 @@
 	var/stashed_name = null
 
 /datum/component/object_possession/Initialize(obj/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isobj(target) || !ismob(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -30,6 +32,8 @@
 	RegisterSignals(parent, list(COMSIG_MOB_GHOSTIZED, COMSIG_KB_ADMIN_AGHOST_DOWN), PROC_REF(end_possession))
 
 /datum/component/object_possession/Destroy()
+	procstart = null
+	src.procstart = null
 	cleanup_object_binding()
 	UnregisterSignal(parent, list(
 		COMSIG_KB_ADMIN_AGHOST_DOWN,
@@ -46,6 +50,8 @@
 	return ..()
 
 /datum/component/object_possession/InheritComponent(datum/component/object_possession/old_component, i_am_original, obj/target)
+	procstart = null
+	src.procstart = null
 	cleanup_object_binding()
 	if(!bind_to_new_object(target))
 		qdel(src)
@@ -55,6 +61,8 @@
 /// Binds the mob to the object and sets up the naming and everything.
 /// Returns FALSE if we don't bind, TRUE if we succeed.
 /datum/component/object_possession/proc/bind_to_new_object(obj/target)
+	procstart = null
+	src.procstart = null
 	if((target.obj_flags & DANGEROUS_POSSESSION) && CONFIG_GET(flag/forbid_singulo_possession))
 		to_chat(parent, "[target] is too powerful for you to possess.", confidential = TRUE)
 		return FALSE
@@ -79,6 +87,8 @@
 
 /// Cleans up everything pertinent to the current possessed object.
 /datum/component/object_possession/proc/cleanup_object_binding()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(possessed))
 		return
 
@@ -110,6 +120,8 @@
  * We always want to return `COMPONENT_MOVABLE_BLOCK_PRE_MOVE` here regardless
  */
 /datum/component/object_possession/proc/on_move(datum/source, new_loc, direct)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	. = COMPONENT_MOVABLE_BLOCK_PRE_MOVE // both signals that invoke this are explicitly tied to listen for this define as the return value
 
@@ -129,5 +141,7 @@
 
 /// Just the overall "get me outta here" proc.
 /datum/component/object_possession/proc/end_possession(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)

@@ -48,6 +48,8 @@
 	var/list/stage_to_inflammation_per_second
 
 /datum/disease/asthma_attack/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	suffix_name()
@@ -55,6 +57,8 @@
 	time_to_start_remission = world.time + rand(min_time_til_remission, max_time_til_remission)
 
 /datum/disease/asthma_attack/try_infect(mob/living/infectee, make_copy)
+	procstart = null
+	src.procstart = null
 	if (!get_asthma_quirk())
 		return FALSE
 	if (HAS_TRAIT(infectee, TRAIT_NOBREATH))
@@ -64,15 +68,21 @@
 
 /// Adds our suffix via [severity_to_suffix] in the format of (suffix) to our name.
 /datum/disease/asthma_attack/proc/suffix_name()
+	procstart = null
+	src.procstart = null
 	name += " ([severity_to_suffix[severity]])"
 
 /// Returns the asthma quirk of our victim. As we can only be applied to asthmatics, this should never return null.
 /datum/disease/asthma_attack/proc/get_asthma_quirk(mob/living/target = affected_mob)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/quirk/item_quirk/asthma)
 
 	return (locate(/datum/quirk/item_quirk/asthma) in target.quirks)
 
 /datum/disease/asthma_attack/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -117,6 +127,8 @@
 	)
 
 /datum/disease/asthma_attack/minor/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -141,6 +153,8 @@
 	)
 
 /datum/disease/asthma_attack/moderate/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -175,6 +189,8 @@
 	alert_ghosts = TRUE
 
 /datum/disease/asthma_attack/severe/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -217,6 +233,8 @@
 	var/max_stage_reached = FALSE
 
 /datum/disease/asthma_attack/critical/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE

@@ -99,12 +99,16 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/list/cached_character_profiles
 
 /datum/preferences/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(character_preview_view)
 	QDEL_LIST(middleware)
 	value_cache = null
 	return ..()
 
 /datum/preferences/New(client/parent)
+	procstart = null
+	src.procstart = null
 	src.parent = parent
 
 	for (var/middleware_type in subtypesof(/datum/preference_middleware))
@@ -146,6 +150,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	save_character() //let's save this new random character so it doesn't keep generating new ones.
 
 /datum/preferences/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	// There used to be code here that readded the preview view if you "rejoined"
 	// I'm making the assumption that ui close will be called whenever a user logs out, or loses a window
 	// If this isn't the case, kill me and restore the code, thanks
@@ -164,14 +170,20 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		character_preview_view.display_to(user, ui.window)
 
 /datum/preferences/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 // Without this, a hacker would be able to edit other people's preferences if
 // they had the ref to Topic to.
 /datum/preferences/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	return user.client == parent ? UI_INTERACTIVE : UI_CLOSE
 
 /datum/preferences/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	if (tainted_character_profiles || isnull(cached_character_profiles))
@@ -190,6 +202,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	return data
 
 /datum/preferences/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["character_preview_view"] = character_preview_view.assigned_map
@@ -204,6 +218,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	return data
 
 /datum/preferences/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/assets = list(
 		get_asset_datum(/datum/asset/spritesheet_batched/preferences),
 		get_asset_datum(/datum/asset/json/preferences),
@@ -215,6 +231,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	return assets
 
 /datum/preferences/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -290,12 +308,16 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	return FALSE
 
 /datum/preferences/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	save_character()
 	save_preferences()
 	QDEL_NULL(character_preview_view)
 	cached_character_profiles = null
 
 /datum/preferences/Topic(href, list/href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -307,6 +329,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		return TRUE
 
 /datum/preferences/proc/create_character_preview_view(mob/user)
+	procstart = null
+	src.procstart = null
 	character_preview_view = new(null, null, src)
 	character_preview_view.generate_view("character_preview_[REF(character_preview_view)]")
 	character_preview_view.update_body()
@@ -314,6 +338,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	return character_preview_view
 
 /datum/preferences/proc/compile_character_preferences(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/preferences = list()
 
 	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
@@ -342,6 +368,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 /// Applies all PREFERENCE_PLAYER preferences
 /datum/preferences/proc/apply_all_client_preferences()
+	procstart = null
+	src.procstart = null
 	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
 		if (preference.savefile_identifier != PREFERENCE_PLAYER)
 			continue
@@ -361,10 +389,14 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/show_job_clothes = TRUE
 
 /atom/movable/screen/map_view/char_preview/Initialize(mapload, datum/hud/hud_owner, datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.preferences = preferences
 
 /atom/movable/screen/map_view/char_preview/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(body)
 	preferences?.character_preview_view = null
 	preferences = null
@@ -372,6 +404,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 /// Updates the currently displayed body
 /atom/movable/screen/map_view/char_preview/proc/update_body()
+	procstart = null
+	src.procstart = null
 	if (isnull(body))
 		create_body()
 	else
@@ -380,11 +414,15 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	appearance = preferences.render_new_preview_appearance(body, show_job_clothes)
 
 /atom/movable/screen/map_view/char_preview/proc/create_body()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(body)
 
 	body = new
 
 /datum/preferences/proc/create_character_profiles()
+	procstart = null
+	src.procstart = null
 	var/list/profiles = list()
 
 	for (var/index in 1 to max_save_slots)
@@ -406,6 +444,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	return profiles
 
 /datum/preferences/proc/set_job_preference_level(datum/job/job, level)
+	procstart = null
+	src.procstart = null
 	if (!job)
 		return FALSE
 
@@ -429,6 +469,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	return TRUE
 
 /datum/preferences/proc/GetQuirkBalance()
+	procstart = null
+	src.procstart = null
 	var/bal = SSquirks.default_quirk_points
 	for(var/V in all_quirks)
 		var/datum/quirk/T = SSquirks.quirks[V]
@@ -436,12 +478,16 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	return bal
 
 /datum/preferences/proc/GetPositiveQuirkCount()
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/q in all_quirks)
 		if(SSquirks.quirk_points[q] > 0)
 			.++
 
 /datum/preferences/proc/validate_quirks()
+	procstart = null
+	src.procstart = null
 	var/datum/species/species_type = read_preference(/datum/preference/choiced/species)
 	var/list/quirks_removed
 	for(var/quirk_name in all_quirks)
@@ -475,6 +521,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
  * * datum/preference/pref_to_read - the type of preference datum to read.
  */
 /proc/safe_read_pref(client/prefs_holder, datum/preference/pref_to_read)
+	procstart = null
+	src.procstart = null
 	if(!prefs_holder)
 		return FALSE
 	if(prefs_holder && !prefs_holder?.prefs)
@@ -496,6 +544,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
  * * client/prefs_holder - the client to get the chat_toggles pref from.
  */
 /proc/get_chat_toggles(client/target)
+	procstart = null
+	src.procstart = null
 	if(ismob(target))
 		var/mob/target_mob = target
 		target = target_mob.client
@@ -512,6 +562,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 /// Sanitizes the preferences, applies the randomization prefs, and then applies the preference to the human mob.
 /datum/preferences/proc/safe_transfer_prefs_to(mob/living/carbon/human/character, icon_updates = TRUE, is_antag = FALSE)
+	procstart = null
+	src.procstart = null
 	apply_character_randomization_prefs(is_antag)
 	apply_prefs_to(character, icon_updates)
 
@@ -525,6 +577,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
  * * do_not_apply - A list of preference types to skip when applying preferences.
  */
 /datum/preferences/proc/apply_prefs_to(mob/living/carbon/human/character, icon_updates = TRUE, list/do_not_apply)
+	procstart = null
+	src.procstart = null
 	character.dna.features = list()
 
 	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
@@ -545,6 +599,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 /// Returns whether the parent mob should have the random hardcore settings enabled. Assumes it has a mind.
 /datum/preferences/proc/should_be_random_hardcore(datum/job/job, datum/mind/mind)
+	procstart = null
+	src.procstart = null
 	if(!read_preference(/datum/preference/toggle/random_hardcore))
 		return FALSE
 	if(job.job_flags & JOB_HEAD_OF_STAFF) //No heads of staff
@@ -556,6 +612,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 /// Inverts the key_bindings list such that it can be used for key_bindings_by_key
 /datum/preferences/proc/get_key_bindings_by_key(list/key_bindings)
+	procstart = null
+	src.procstart = null
 	var/list/output = list()
 
 	for (var/action in key_bindings)
@@ -566,6 +624,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 /// Returns the default `randomise` variable ouptut
 /datum/preferences/proc/get_default_randomization()
+	procstart = null
+	src.procstart = null
 	var/list/default_randomization = list()
 
 	for (var/preference_key in GLOB.preference_entries_by_key)
@@ -576,6 +636,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	return default_randomization
 
 /datum/preferences/proc/refresh_membership()
+	procstart = null
+	src.procstart = null
 	var/byond_member = parent.IsByondMember()
 	if(isnull(byond_member)) // Connection failure, retry once
 		byond_member = parent.IsByondMember()

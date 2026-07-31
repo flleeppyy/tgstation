@@ -16,6 +16,8 @@
 	var/on = -1
 
 /turf/open/floor/circuit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	SSmapping.nuke_tiles += src
 	RegisterSignal(loc, COMSIG_AREA_POWER_CHANGE, PROC_REF(handle_powerchange))
 	var/area/cur_area = get_area(src)
@@ -24,6 +26,8 @@
 	. = ..()
 
 /turf/open/floor/circuit/Destroy()
+	procstart = null
+	src.procstart = null
 	SSmapping.nuke_tiles -= src
 	UnregisterSignal(loc, COMSIG_AREA_POWER_CHANGE)
 	var/area/cur_area = get_area(src)
@@ -32,6 +36,8 @@
 	return ..()
 
 /turf/open/floor/circuit/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!on)
 		set_light(0)
@@ -41,10 +47,14 @@
 	set_light(2, 1.5)
 
 /turf/open/floor/circuit/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = on ? (LAZYLEN(SSmapping.nuke_threats) ? "rcircuitanim" : initial(icon_state)) : "[base_icon_state]off"
 	return ..()
 
 /turf/open/floor/circuit/on_change_area(area/old_area, area/new_area)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(old_area, COMSIG_AREA_POWER_CHANGE)
 	RegisterSignal(new_area, COMSIG_AREA_POWER_CHANGE, PROC_REF(handle_powerchange))
@@ -54,6 +64,8 @@
 
 /// Enables/disables our lighting based off our source area
 /turf/open/floor/circuit/proc/handle_powerchange(area/source, mapload = FALSE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/old_on = on
 	if(always_off)
@@ -143,15 +155,23 @@
 	slowdown = -0.3
 
 /turf/open/floor/noslip/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("noslip-damaged1","noslip-damaged2","noslip-damaged3")
 
 /turf/open/floor/noslip/burnt_states()
+	procstart = null
+	src.procstart = null
 	return list("noslip-scorched1","noslip-scorched2")
 
 /turf/open/floor/noslip/MakeSlippery(wet_setting, min_wet_time, wet_time_to_add, max_wet_time, permanent)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/floor/noslip/tram/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/current_holiday_color = request_decoration_colors(src, PATTERN_VERTICAL_STRIPE)
 	if(current_holiday_color)
@@ -223,6 +243,8 @@
 	floor_tile = /obj/item/stack/tile/plastic
 
 /turf/open/floor/plastic/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("plastic-damaged1","plastic-damaged2")
 
 /turf/open/floor/eighties
@@ -233,6 +255,8 @@
 	rust_resistance = RUST_RESISTANCE_BASIC
 
 /turf/open/floor/eighties/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("eighties_damaged")
 
 /turf/open/floor/eighties/red
@@ -242,6 +266,8 @@
 	floor_tile = /obj/item/stack/tile/eighties/red
 
 /turf/open/floor/eighties/red/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("eightiesred_damaged")
 
 /turf/open/floor/plating/rust
@@ -250,6 +276,8 @@
 	color = COLOR_BROWN
 
 /turf/open/floor/plating/rust/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/rust)
 	color = null
@@ -261,6 +289,8 @@
 	color = COLOR_GREEN_GRAY
 
 /turf/open/floor/plating/heretic_rust/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/rust/heretic)
 	color = null
@@ -269,6 +299,8 @@
 	initial_gas_mix = ATMOS_TANK_PLASMA
 
 /turf/open/floor/plating/plasma/rust/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Because this is a fluff turf explicitly for KiloStation it doesn't make sense to ChangeTurf like usual
 	// Especially since it looks like we don't even change the default icon/iconstate???
@@ -321,9 +353,13 @@
 	floor_tile = /obj/item/stack/tile/cult
 
 /turf/open/floor/cult/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("cultdamage","cultdamage2","cultdamage3","cultdamage4","cultdamage5","cultdamage6","cultdamage7")
 
 /turf/open/floor/cult/narsie_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/floor/cult/airless
@@ -336,6 +372,8 @@
 	material_flags = MATERIAL_EFFECTS | MATERIAL_COLOR | MATERIAL_AFFECT_STATISTICS
 
 /turf/open/floor/material/meat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_custom_materials(list(SSmaterials.get_material(/datum/material/meat) = SHEET_MATERIAL_AMOUNT))
 

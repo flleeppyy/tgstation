@@ -35,17 +35,23 @@
 	COOLDOWN_DECLARE(ping_cooldown)
 
 /datum/computer_file/program/chatclient/on_install(datum/computer_file/source, obj/item/modular_computer/computer_installing, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!username)
 		username = "DefaultUser[rand(100, 999)]"
 
 /datum/computer_file/program/chatclient/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/datum/ntnet_conversation/discussion as anything in conversations)
 		discussion.purge_client(src)
 	conversations.Cut()
 	return ..()
 
 /datum/computer_file/program/chatclient/proc/create_new_channel(channel_title, strong = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/ntnet_conversation/new_converstaion = new /datum/ntnet_conversation(channel_title, strong)
 	new_converstaion.add_client(src)
 	new_converstaion.title = channel_title
@@ -53,6 +59,8 @@
 	return new_converstaion
 
 /datum/computer_file/program/chatclient/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/ntnet_conversation/channel = SSmodular_computers.get_chat_channel_by_id(active_channel)
 	var/authed = FALSE
@@ -182,6 +190,8 @@
 			return TRUE
 
 /datum/computer_file/program/chatclient/process_tick(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!(src in computer.idle_threads))
@@ -202,6 +212,8 @@
 	ui_header = "ntnrc_new.gif"
 
 /datum/computer_file/program/chatclient/on_start(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -211,12 +223,16 @@
 			channel.active_clients.Add(src)
 
 /datum/computer_file/program/chatclient/kill_program(mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/datum/ntnet_conversation/channel as anything in SSmodular_computers.chat_channels)
 		channel.go_offline(src)
 	active_channel = null
 	return ..()
 
 /datum/computer_file/program/chatclient/background_program(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/ntnet_conversation/open_channel = SSmodular_computers.get_chat_channel_by_id(active_channel)
 	if(isnull(open_channel) || !length(open_channel.messages))
@@ -229,6 +245,8 @@
 
 /// Converts active/idle/closed to a numerical status for sorting clients by.
 /datum/computer_file/program/chatclient/proc/get_numerical_status()
+	procstart = null
+	src.procstart = null
 	if(src == computer.active_program)
 		return STATUS_ONLINE
 	if(src in computer.idle_threads)
@@ -236,11 +254,15 @@
 	return STATUS_OFFLINE
 
 /datum/computer_file/program/chatclient/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["selfref"] = REF(src) //used to verify who is you, as usernames can be copied.
 	return data
 
 /datum/computer_file/program/chatclient/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/list/all_channels = list()

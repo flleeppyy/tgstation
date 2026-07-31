@@ -45,6 +45,8 @@
 	)
 
 /datum/action/cooldown/spell/conjure_item/clown_pockets/before_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. & SPELL_CANCEL_CAST)
 		return
@@ -58,13 +60,19 @@
 	casting = FALSE
 
 /datum/action/cooldown/spell/conjure_item/clown_pockets/make_item(atom/caster)
+	procstart = null
+	src.procstart = null
 	item_type = pick_weight(clown_items)
 	return ..()
 
 /datum/action/cooldown/spell/conjure_item/clown_pockets/post_created(atom/cast_on, atom/created)
+	procstart = null
+	src.procstart = null
 	cast_on.visible_message(span_notice("[cast_on] pulls out [created]!"), span_notice("You pull out [created]!"))
 
 /datum/action/cooldown/spell/conjure_item/clown_pockets/can_cast_spell(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -75,6 +83,8 @@
 
 /// Prints a funny message, exists so I can override it to print a different message
 /datum/action/cooldown/spell/conjure_item/clown_pockets/proc/cast_message(mob/cast_on)
+	procstart = null
+	src.procstart = null
 	cast_on.visible_message(span_notice("[cast_on] reaches far deeper into [cast_on.p_their()] pockets than you think \
 		should be possible and starts rummaging around for something."), span_notice("You reach further down into your \
 		pockets than you ever have before and feel around for something."))
@@ -85,6 +95,8 @@
 	cooldown_time = 60 SECONDS
 
 /datum/action/cooldown/spell/conjure_item/clown_pockets/enchantment/cast_message(mob/cast_on)
+	procstart = null
+	src.procstart = null
 	cast_on.visible_message(span_notice("[cast_on] starts rummaging around in [cast_on.p_their()] comically large pants."), span_notice("You \
 		start rummaging around in your comically large pants."))
 
@@ -93,6 +105,8 @@
 	name = "enchanted clown suit"
 
 /obj/item/clothing/under/rank/civilian/clown/magic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/action/cooldown/spell/conjure_item/clown_pockets/enchantment/big_pocket = new(src)
 	add_item_action(big_pocket)
@@ -102,6 +116,8 @@
 	name = "enchanted clown envirosuit"
 
 /obj/item/clothing/under/plasmaman/clown/magic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/action/cooldown/spell/conjure_item/clown_pockets/enchantment/big_pocket = new(src)
 	add_item_action(big_pocket)

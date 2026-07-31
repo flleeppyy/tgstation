@@ -2,6 +2,8 @@
 	reward = CARGO_CRATE_VALUE * 6
 
 /datum/bounty/item/slime/New()
+	procstart = null
+	src.procstart = null
 	..()
 	description = "Nanotrasen's science lead is hunting for the rare and exotic [name]. A bounty has been offered for finding it."
 	reward += rand(0, 4) * 500

@@ -20,6 +20,8 @@
 	var/give_premium_goods = TRUE
 
 /obj/item/storage/box/survival/create_storage(max_slots, max_specific_storage, max_total_storage, list/canhold, list/canthold, storage_type)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(crafted || !HAS_TRAIT(SSstation, STATION_TRAIT_PREMIUM_INTERNALS))
 		return
@@ -29,6 +31,8 @@
 	icon_state = "[icon_state]_large"
 
 /obj/item/storage/box/survival/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(crafted)
 		return
 	if(!isnull(mask_type))
@@ -51,10 +55,14 @@
 		new /obj/item/climbing_hook/emergency(src)
 
 /obj/item/storage/box/survival/radio/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..() // we want the survival stuff too.
 	new /obj/item/radio/off(src)
 
 /obj/item/storage/box/survival/proc/wardrobe_removal()
+	procstart = null
+	src.procstart = null
 	if(!isplasmaman(loc)) //We need to specially fill the box with plasmaman gear, since it's intended for one
 		return
 	var/obj/item/mask = locate(mask_type) in src
@@ -73,6 +81,8 @@
 	mask_type = /obj/item/clothing/mask/gas/explorer/folded
 
 /obj/item/storage/box/survival/mining/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/crowbar/red(src)
 	new /obj/item/healthanalyzer/simple/miner(src)
@@ -85,6 +95,8 @@
 	internal_type = /obj/item/tank/internals/emergency_oxygen/engi
 
 /obj/item/storage/box/survival/engineer/radio/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..() // we want the regular items too.
 	new /obj/item/radio/off(src)
 
@@ -99,6 +111,8 @@
 	medipen_type =  /obj/item/reagent_containers/hypospray/medipen/atropine
 
 /obj/item/storage/box/survival/syndie/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/crowbar/red(src)
 	new /obj/item/screwdriver/red(src)
@@ -112,6 +126,8 @@
 	internal_type = /obj/item/tank/internals/emergency_oxygen/double
 
 /obj/item/storage/box/survival/centcom/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/crowbar(src)
 
@@ -120,6 +136,8 @@
 	mask_type = /obj/item/clothing/mask/gas/sechailer
 
 /obj/item/storage/box/survival/security/radio/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..() // we want the regular stuff too
 	new /obj/item/radio/off(src)
 
@@ -144,11 +162,15 @@
 	alpha = 0
 
 /obj/item/storage/box/mime/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	..()
 	if(HAS_MIND_TRAIT(user, TRAIT_MIMING))
 		alpha = 255
 
 /obj/item/storage/box/mime/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	if (iscarbon(old_loc))
 		alpha = 0
 	return ..()
@@ -161,10 +183,14 @@
 	foldable_result = null
 
 /obj/item/storage/box/hug/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] clamps the box of hugs on [user.p_their()] jugular! Guess it wasn't such a hugbox after all.."))
 	return BRUTELOSS
 
 /obj/item/storage/box/hug/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	user.changeNext_move(CLICK_CD_MELEE)
 	playsound(loc, SFX_RUSTLE, 50, vary=TRUE, extrarange=-5)
@@ -181,6 +207,8 @@
 	illustration = "clown"
 
 /obj/item/storage/box/clown/tool_act(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/bodypart/arm/left/robot) && !istype(tool, /obj/item/bodypart/arm/right/robot))
 		return ..()
 	if(contents.len) //prevent accidently deleting contents
@@ -198,6 +226,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/storage/box/clown/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] opens [src] and gets consumed by [p_them()]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(user, 'sound/misc/scary_horn.ogg', 70, vary = TRUE)
 	forceMove(user.drop_location())
@@ -207,6 +237,8 @@
 
 // Special stuff for medical hugboxes.
 /obj/item/storage/box/hug/medical/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/medical/bruise_pack(src)
 	new /obj/item/stack/medical/ointment(src)
 	new /obj/item/reagent_containers/hypospray/medipen(src)
@@ -222,6 +254,8 @@
 	var/random_funny_internals = TRUE
 
 /obj/item/storage/box/survival/hug/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(!random_funny_internals)
 		return ..()
 	internal_type = pick(
@@ -239,10 +273,14 @@
 
 //Duplicated suicide/attack self procs, since the survival boxes are a subtype of box/survival
 /obj/item/storage/box/survival/hug/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] clamps the box of hugs on [user.p_their()] jugular! Guess it wasn't such a hugbox after all.."))
 	return BRUTELOSS
 
 /obj/item/storage/box/survival/hug/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	user.changeNext_move(CLICK_CD_MELEE)
 	playsound(loc, SFX_RUSTLE, 50, vary=TRUE, extrarange=-5)
@@ -254,6 +292,8 @@
 	for Medical Officers who just take the box for themselves."
 
 /obj/item/storage/box/hug/plushes/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		var/plush_path = /obj/effect/spawner/random/entertainment/plushie
 		new plush_path(src)
@@ -263,6 +303,8 @@
 	internal_type = /obj/item/tank/internals/emergency_oxygen/double
 
 /obj/item/storage/box/survival/mining/bonus/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/gps/mining(src)
 	new /obj/item/t_scanner/adv_mining_scanner(src)
@@ -272,6 +314,8 @@
 	desc = "Contains every modkit and trophy in the game."
 
 /obj/item/storage/box/miner_modkits/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	atom_storage.set_holdable(list(
 		/obj/item/borg/upgrade/modkit,
@@ -280,6 +324,8 @@
 	atom_storage.numerical_stacking = TRUE
 
 /obj/item/storage/box/miner_modkits/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/trophy in subtypesof(/obj/item/crusher_trophy))
 		new trophy(src)
 	for(var/modkit in subtypesof(/obj/item/borg/upgrade/modkit))
@@ -291,6 +337,8 @@
 	desc = "Contains one copy of every skillchip"
 
 /obj/item/storage/box/skillchips/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/skillchips = subtypesof(/obj/item/skillchip)
 
 	for(var/skillchip in skillchips)
@@ -301,6 +349,8 @@
 	desc = "Contains spares of every science job skillchip."
 
 /obj/item/storage/box/skillchips/science/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new/obj/item/skillchip/job/roboticist(src)
 	new/obj/item/skillchip/job/roboticist(src)
 
@@ -309,6 +359,8 @@
 	desc = "Contains spares of every engineering job skillchip."
 
 /obj/item/storage/box/skillchips/engineering/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new/obj/item/skillchip/job/engineer(src)
 	new/obj/item/skillchip/job/engineer(src)
 
@@ -318,5 +370,7 @@
 	illustration = "writing_syndie"
 
 /obj/item/storage/box/contractor/fulton_extraction/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/extraction_pack/syndicate(src)
 	new /obj/item/fulton_core(src)

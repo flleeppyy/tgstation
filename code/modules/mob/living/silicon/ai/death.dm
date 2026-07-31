@@ -1,4 +1,6 @@
 /mob/living/silicon/ai/death(gibbed, drop_mmi = TRUE)
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		return
 
@@ -65,5 +67,7 @@
 	SSblackbox.ReportDeath(src)
 
 /mob/living/silicon/ai/proc/ShutOffDoomsdayDevice()
+	procstart = null
+	src.procstart = null
 	nuking = FALSE
 	QDEL_NULL(doomsday_device)

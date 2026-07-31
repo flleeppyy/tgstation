@@ -26,6 +26,8 @@
 	)
 
 /datum/symptom/narcolepsy/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -35,6 +37,8 @@
 		symptom_delay = 32.5
 
 /datum/symptom/narcolepsy/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

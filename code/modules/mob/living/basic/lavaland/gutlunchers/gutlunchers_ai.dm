@@ -34,6 +34,8 @@
 	speech_commands = list("mine", "smash")
 
 /datum/pet_command/mine_walls/try_activate_command(mob/living/commander, radial_command)
+	procstart = null
+	src.procstart = null
 	var/mob/living/parent = weak_parent.resolve()
 	if(isnull(parent))
 		return
@@ -44,15 +46,21 @@
 	return ..()
 
 /datum/pet_command/mine_walls/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.set_behavior_tree_override(SUBPLAN_ID_PET_COMMAND, /datum/bt_node/subtree/pet_command/mine_walls)
 
 /datum/pet_command/mine_walls/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return "signals [living_pet] to start mining!"
 
 //pet commands
 /datum/pet_command/breed/gutlunch
 
 /datum/pet_command/breed/gutlunch/set_command_target(mob/living/parent, atom/target)
+	procstart = null
+	src.procstart = null
 	if(GLOB.gutlunch_count >= MAXIMUM_GUTLUNCH_POP)
 		parent.balloon_alert_to_viewers("can't reproduce anymore!")
 		return FALSE
@@ -64,6 +72,8 @@
 	behavior_combat_mode = FALSE
 
 /datum/bt_node/ai_behavior/hunt_target/interact_with_target/food_trough/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(succeeded)
 		controller.clear_blackboard_key(BB_CHECK_HUNGRY)
@@ -73,6 +83,8 @@
 	time_between_perform = 5 SECONDS
 
 /datum/bt_node/ai_behavior/befriend_ashwalkers/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	for(var/mob/living/potential_friend in oview(9, living_pawn))
 		if(!isashwalker(potential_friend) || living_pawn.has_ally(REF(potential_friend)))
@@ -89,6 +101,8 @@
 	var/found_mom_key
 
 /datum/bt_node/ai_behavior/find_parent/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living_pawn = controller.pawn
 	var/list/mom_types = controller.blackboard[mom_types_key]
 	if(!length(mom_types))

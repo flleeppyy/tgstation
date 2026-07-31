@@ -20,6 +20,8 @@
 	var/heat_diffusion = 0.5
 
 /obj/item/minigunpack/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	gun = new(src)
 	battery = new(src)
@@ -27,6 +29,8 @@
 	AddElement(/datum/element/drag_pickup)
 
 /obj/item/minigunpack/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(gun))
 		qdel(gun)
 	gun = null
@@ -35,10 +39,14 @@
 	return ..()
 
 /obj/item/minigunpack/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	overheat = max(0, overheat - heat_diffusion * seconds_per_tick)
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/minigunpack/attack_hand(mob/living/carbon/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(src.loc == user)
 		if(!armed)
 			if(user.get_item_by_slot(ITEM_SLOT_BACK) == src)
@@ -55,6 +63,8 @@
 		..()
 
 /obj/item/minigunpack/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(tool != gun) //Don't need armed check, because if you have the gun assume its armed.
 		return NONE
 	user.dropItemToGround(gun, TRUE)
@@ -62,15 +72,21 @@
 
 
 /obj/item/minigunpack/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(armed)
 		user.dropItemToGround(gun, TRUE)
 
 /obj/item/minigunpack/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = armed ? "notholstered" : "holstered"
 	return ..()
 
 /obj/item/minigunpack/proc/attach_gun(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!gun)
 		gun = new(src)
 	gun.forceMove(src)
@@ -102,6 +118,8 @@
 	var/obj/item/minigunpack/ammo_pack
 
 /obj/item/gun/energy/minigun/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(!istype(loc, /obj/item/minigunpack)) //We should spawn inside an ammo pack so let's use that one.
 		return INITIALIZE_HINT_QDEL //No pack, no gun
 	ammo_pack = loc
@@ -110,15 +128,21 @@
 	return ..()
 
 /obj/item/gun/energy/minigun/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(ammo_pack))
 		qdel(ammo_pack)
 	ammo_pack = null
 	return ..()
 
 /obj/item/gun/energy/minigun/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/energy/minigun/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	if(ammo_pack)
 		ammo_pack.attach_gun(user)
@@ -126,6 +150,8 @@
 		qdel(src)
 
 /obj/item/gun/energy/minigun/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+	procstart = null
+	src.procstart = null
 	if(ammo_pack && ammo_pack.overheat >= ammo_pack.overheat_max)
 		to_chat(user, span_warning("The gun's heat sensor locked the trigger to prevent lens damage!"))
 		return
@@ -139,6 +165,8 @@
 
 
 /obj/item/gun/energy/minigun/try_fire_gun(atom/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(!ammo_pack || ammo_pack.loc != user)
 		to_chat(user, span_warning("You need the backpack power source to fire the gun!"))
 		return FALSE

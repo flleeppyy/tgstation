@@ -52,6 +52,8 @@
 	acid = 30
 
 /obj/item/wirecutters/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(random_color)
 		set_greyscale(colors = list(pick(wirecutter_colors)))
 
@@ -60,6 +62,8 @@
 	return ..()
 
 /obj/item/wirecutters/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is cutting at [user.p_their()] arteries with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(loc, usesound, 50, TRUE, -1)
 	return BRUTELOSS

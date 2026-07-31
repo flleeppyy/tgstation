@@ -10,6 +10,8 @@
 	var/obj/item/storage/bag/trash/vacuum_bag
 
 /datum/component/vacuum/Initialize(obj/item/storage/bag/trash/connected_bag = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -26,6 +28,8 @@
  * * suckee - The source of the signal
  */
 /datum/component/vacuum/proc/suck(datum/suckee)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// get tile to suck on
@@ -48,6 +52,8 @@
  * * tile - The tile upon which to vacuum up items
  */
 /datum/component/vacuum/proc/suck_items(turf/tile)
+	procstart = null
+	src.procstart = null
 	var/sucked = FALSE
 	for (var/potential_item in tile)
 		if (!isitem(potential_item))
@@ -68,6 +74,8 @@
  * * new_bag - The new bag being installed
  */
 /datum/component/vacuum/proc/attach_bag(datum/source, obj/item/storage/bag/trash/new_bag)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	vacuum_bag = new_bag
@@ -80,6 +88,8 @@
  * * source - The source of the signal
  */
 /datum/component/vacuum/proc/detach_bag(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (vacuum_bag) // null check to avoid runtime on bag being deleted then sending detach as a result from parent
 		UnregisterSignal(vacuum_bag, COMSIG_QDELETING)

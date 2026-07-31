@@ -19,6 +19,8 @@
 	var/author_ckey
 
 /datum/computer_file/image/New(icon/stored_icon, image_name, display_name, source_photo_or_painting)
+	procstart = null
+	src.procstart = null
 	..()
 	if(isnull(stored_icon))
 		return
@@ -28,16 +30,22 @@
 	set_source(source_photo_or_painting)
 
 /datum/computer_file/image/Destroy(force)
+	procstart = null
+	src.procstart = null
 	source_photo_or_painting = null
 	return ..()
 
 /datum/computer_file/image/on_install(datum/computer_file/source, obj/item/modular_computer/computer_installing)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	assign_path()
 	assign_ref_appearance()
 
 /// Assigns an asset path to the stored image, for use in the UI.
 /datum/computer_file/image/proc/assign_path()
+	procstart = null
+	src.procstart = null
 	if(isnull(stored_icon))
 		return
 	if(!isnull(image_name))
@@ -46,14 +54,20 @@
 	SSassets.transport.register_asset(image_name, stored_icon)
 
 /datum/computer_file/image/proc/assign_ref_appearance()
+	procstart = null
+	src.procstart = null
 	if(!isnull(ref_appearance))
 		return
 	ref_appearance = mutable_appearance(stored_icon)
 
 /datum/computer_file/image/proc/get_image_ref()
+	procstart = null
+	src.procstart = null
 	return REF(ref_appearance.appearance)
 
 /datum/computer_file/image/clone(rename = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/image/temp = ..()
 	temp.stored_icon = stored_icon
 	temp.ref_appearance = ref_appearance
@@ -64,6 +78,8 @@
 
 /// Assign this file's backing datum
 /datum/computer_file/image/proc/set_source(new_source)
+	procstart = null
+	src.procstart = null
 	source_photo_or_painting = new_source
 	if(istype(new_source, /datum/picture))
 		var/datum/picture/source_picture = new_source

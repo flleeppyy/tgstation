@@ -42,6 +42,8 @@
 	circuit = /obj/item/circuitboard/computer/cyborg_mothership/bridge
 
 /obj/machinery/computer/shuttle/cyborg_mothership/bridge/Initialize(mapload, obj/item/circuitboard/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/gps, SPACE_SIGNAL_GPSTAG)
 
@@ -57,10 +59,14 @@
 	y_offset = -11
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/cyborg_mothership/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.jam_on_wardec += src
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/cyborg_mothership/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.jam_on_wardec -= src
 	return ..()
 

@@ -10,7 +10,10 @@ GLOBAL_PROTECT(log_directory)
 #define DECLARE_LOG_NAMED(log_var_name, log_file_name, start)\
 GLOBAL_VAR(##log_var_name);\
 GLOBAL_PROTECT(##log_var_name);\
-/world/_initialize_log_files(temp_log_override = null){\
+/world/_initialize_log_files(temp_log_override = null) \
+	{\
+	procstart = null; \
+	src.procstart = null; \
 	..();\
 	GLOB.##log_var_name = temp_log_override || "[GLOB.log_directory]/[##log_file_name].log";\
 	if(!temp_log_override && ##start){\
@@ -24,6 +27,8 @@ GLOBAL_PROTECT(##log_var_name);\
 
 /// Populated by log declaration macros to set log file names and start messages
 /world/proc/_initialize_log_files(temp_log_override = null)
+	procstart = null
+	src.procstart = null
 	// Needs to be here to avoid compiler warnings
 	SHOULD_CALL_PARENT(TRUE)
 	return
@@ -69,6 +74,8 @@ GLOBAL_PROTECT(investigate_signaler)
 /// Used to add a text log to the signaler investigation log.
 /// Do not add to the list directly; if the list is too large it can cause lag when an admin tries to view it.
 /proc/add_to_signaler_investigate_log(text)
+	procstart = null
+	src.procstart = null
 	var/log_length = length(GLOB.investigate_signaler)
 	if(log_length >= INVESTIGATE_SIGNALER_LOG_MAX_LENGTH)
 		GLOB.investigate_signaler = GLOB.investigate_signaler.Copy((INVESTIGATE_SIGNALER_LOG_MAX_LENGTH - log_length) + 2)
@@ -80,6 +87,8 @@ GLOBAL_PROTECT(lawchanges)
 
 /// Adds something to the law change log
 /proc/log_law_change(mob/living/changer, log_message)
+	procstart = null
+	src.procstart = null
 	GLOB.lawchanges += "[round_timestamp()] <b>:</b> [changer ? key_name(changer) : "(No mob)"] [log_message]"
 
 #undef DECLARE_LOG

@@ -4,6 +4,8 @@
 /datum/unit_test/recycler_hologram
 
 /datum/unit_test/recycler_hologram/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/recycler/recycler = allocate(/obj/machinery/recycler/deathtrap, get_step(run_loc_floor_bottom_left, EAST))
 	var/obj/structure/closet/hologram_closet = allocate(/obj/structure/closet, run_loc_floor_bottom_left)
 	// Hologram closet that could contain non-holographic objects.
@@ -29,6 +31,8 @@
 /datum/unit_test/recycler_indestructible_item
 
 /datum/unit_test/recycler_indestructible_item/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/recycler/recycler = allocate(/obj/machinery/recycler/deathtrap, get_step(run_loc_floor_bottom_left, EAST))
 	// Create indestructible cookie.
 	var/obj/item/food/cookie/indestructible_cookie = allocate(/obj/item/food/cookie, run_loc_floor_bottom_left)
@@ -42,6 +46,8 @@
 /datum/unit_test/recycler_abstract_item
 
 /datum/unit_test/recycler_abstract_item/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/recycler/recycler = allocate(/obj/machinery/recycler/deathtrap, get_step(run_loc_floor_bottom_left, EAST))
 	// Create abstract cookie.
 	var/obj/item/food/cookie/abstract_cookie = allocate(/obj/item/food/cookie, run_loc_floor_bottom_left)
@@ -55,6 +61,8 @@
 /datum/unit_test/recycler_brain_safety
 
 /datum/unit_test/recycler_brain_safety/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/recycler/recycler = allocate(/obj/machinery/recycler,  get_step(run_loc_floor_bottom_left, EAST))
 	var/mob/living/brain/test_brain = allocate(/mob/living/brain, run_loc_floor_bottom_left)
 	// Process brain - should trigger safety mode.
@@ -68,6 +76,8 @@
 /datum/unit_test/recycler_mmi_with_brain_safety
 
 /datum/unit_test/recycler_mmi_with_brain_safety/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/recycler/recycler = allocate(/obj/machinery/recycler,  get_step(run_loc_floor_bottom_left, EAST))
 	var/obj/item/mmi/test_mmi = allocate(/obj/item/mmi, run_loc_floor_bottom_left)
 	var/mob/living/brain/test_brain = allocate(/mob/living/brain, run_loc_floor_bottom_left)

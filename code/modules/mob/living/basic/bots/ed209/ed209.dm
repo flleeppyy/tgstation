@@ -38,6 +38,8 @@
 
 
 /mob/living/basic/bot/secbot/ed209/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_weapon()
 	bot_charge = new(src)
@@ -59,10 +61,14 @@
 	RegisterSignal(src, COMSIG_BASICMOB_POST_ATTACK_RANGED, PROC_REF(post_ranged_attack))
 
 /mob/living/basic/bot/secbot/ed209/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	sheriffized = (is_type_in_typecache(arrived, sherrif_hats)) //yeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeehawwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
 
 /mob/living/basic/bot/secbot/ed209/proc/post_ranged_attack()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!sheriffized || !COOLDOWN_FINISHED(src, shoot_cry))
 		return
@@ -70,15 +76,21 @@
 	INVOKE_ASYNC(src, TYPE_PROC_REF(/atom/movable, say), "YIPPIE-KI-YAY!")
 
 /mob/living/basic/bot/secbot/ed209/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	sheriffized = (is_type_in_typecache(gone, sherrif_hats))
 
 /mob/living/basic/bot/secbot/ed209/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(sheriffized)
 		. += span_notice("Fastest hand in the west.")
 
 /mob/living/basic/bot/secbot/ed209/bot_reset(bypass_ai_reset = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(bot_access_flags & BOT_COVER_EMAGGED && isnull(bot_charge.owner))
 		bot_charge.Grant(src)
@@ -87,6 +99,8 @@
 	set_weapon()
 
 /mob/living/basic/bot/secbot/ed209/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "ed209[bot_mode_flags & BOT_MODE_ON]"
 	set_weapon()
@@ -95,6 +109,8 @@
 	return TRUE
 
 /mob/living/basic/bot/secbot/ed209/proc/set_weapon()
+	procstart = null
+	src.procstart = null
 	qdel(GetComponent(/datum/component/ranged_attacks))
 	var/projectile = (bot_access_flags & BOT_COVER_EMAGGED) ? emagged_projectile_type : projectile_type
 	var/final_projectile_sound = (bot_access_flags & BOT_COVER_EMAGGED) ? emagged_projectile_sound : projectile_sound
@@ -105,6 +121,8 @@
 	)
 
 /mob/living/basic/bot/secbot/ed209/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 	if(!(bot_access_flags & BOT_COVER_LOCKED) || HAS_SILICON_ACCESS(user))
 		data["custom_controls"]["handcuff"] = security_mode_flags & SECBOT_HANDCUFF_TARGET
@@ -113,6 +131,8 @@
 	return data
 
 /mob/living/basic/bot/secbot/ed209/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/user = ui.user
 	if(. || !isliving(user) || (bot_access_flags & BOT_COVER_LOCKED) && !HAS_SILICON_ACCESS(user))
@@ -126,6 +146,8 @@
 			security_mode_flags ^= SECBOT_CHECK_RECORDS
 
 /mob/living/basic/bot/secbot/ed209/retrieve_secbot_drops(atom/drop_location)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bot_assembly/ed209/ed_assembly = new(drop_location)
 	ed_assembly.build_step = ASSEMBLY_FIRST_STEP
 	ed_assembly.add_overlay("hs_hole")
@@ -146,6 +168,8 @@
 		new /obj/item/clothing/suit/armor/vest(drop_location)
 
 /mob/living/basic/bot/secbot/ed209/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(bot_charge)
 

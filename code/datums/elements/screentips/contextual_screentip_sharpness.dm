@@ -12,6 +12,8 @@
 	var/rmb_text
 
 /datum/element/contextual_screentip_sharpness/Attach(datum/target, lmb_text, rmb_text)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isatom(target))
 		return ELEMENT_INCOMPATIBLE
@@ -24,6 +26,8 @@
 	RegisterSignal(atom_target, COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM, PROC_REF(on_requesting_context_from_item))
 
 /datum/element/contextual_screentip_sharpness/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM)
 
 	// We don't remove HAS_CONTEXTUAL_SCREENTIPS_1, since there could be other stuff still hooked to it,

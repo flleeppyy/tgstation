@@ -18,6 +18,8 @@
 	var/start_alert
 
 /datum/girder_wall_recipe/New(wall_type, stack_type, stack_amount, girder_type, girder_state, make_delay, start_alert)
+	procstart = null
+	src.procstart = null
 	src.wall_type = wall_type
 	src.stack_type = stack_type
 	src.stack_amount = stack_amount

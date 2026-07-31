@@ -164,6 +164,8 @@
 
 ///Needed by machine frame & flatpacker i.e the named arg board
 /obj/machinery/New(location, obj/item/circuitboard/board, ...)
+	procstart = null
+	src.procstart = null
 	if(istype(board))
 		circuit = board
 		//we don't want machines that override Initialize() have the board passed as a param e.g. atmos
@@ -172,6 +174,8 @@
 	return ..()
 
 /obj/machinery/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSmachines.register_machine(src)
 
@@ -200,6 +204,8 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/LateInitialize()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	post_machine_initialize()
 
@@ -210,6 +216,8 @@
  * This is the proc to override if you want to do anything in LateInitialize.
  */
 /obj/machinery/proc/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 
@@ -223,6 +231,8 @@
 
 
 /obj/machinery/Destroy(force)
+	procstart = null
+	src.procstart = null
 	SSmachines.unregister_machine(src)
 	end_processing()
 
@@ -240,6 +250,8 @@
  * We do this so machinery that want to sidestep the area sensitiveity optimization can
  */
 /obj/machinery/proc/setup_area_power_relationship()
+	procstart = null
+	src.procstart = null
 	var/area/our_area = get_area(src)
 	if(our_area)
 		RegisterSignal(our_area, COMSIG_AREA_POWER_CHANGE, PROC_REF(power_change))
@@ -258,6 +270,8 @@
  * does not affect power usage itself
  */
 /obj/machinery/proc/remove_area_power_relationship()
+	procstart = null
+	src.procstart = null
 	var/area/our_area = get_area(src)
 	if(our_area)
 		UnregisterSignal(our_area, COMSIG_AREA_POWER_CHANGE)
@@ -270,6 +284,8 @@
 	UnregisterSignal(src, COMSIG_EXIT_AREA)
 
 /obj/machinery/proc/on_enter_area(datum/source, area/area_to_register)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// If we're always area sensitive, and this is called while we have no power usage, do nothing and return
 	if(always_area_sensitive && use_power == NO_POWER_USE)
@@ -279,6 +295,8 @@
 	RegisterSignal(area_to_register, COMSIG_AREA_POWER_CHANGE, PROC_REF(power_change))
 
 /obj/machinery/proc/on_exit_area(datum/source, area/area_to_unregister)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// If we're always area sensitive, and this is called while we have no power usage, do nothing and return
 	if(always_area_sensitive && use_power == NO_POWER_USE)
@@ -287,6 +305,8 @@
 	UnregisterSignal(area_to_unregister, COMSIG_AREA_POWER_CHANGE)
 
 /obj/machinery/proc/set_occupant(atom/movable/new_occupant)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	SEND_SIGNAL(src, COMSIG_MACHINERY_SET_OCCUPANT, new_occupant)
@@ -294,24 +314,34 @@
 
 /// Helper proc for telling a machine to start processing
 /obj/machinery/proc/begin_processing()
+	procstart = null
+	src.procstart = null
 	var/datum/controller/subsystem/processing/subsystem = locate(subsystem_type) in Master.subsystems
 	START_PROCESSING(subsystem, src)
 
 /// Helper proc for telling a machine to stop processing
 /obj/machinery/proc/end_processing()
+	procstart = null
+	src.procstart = null
 	var/datum/controller/subsystem/processing/subsystem = locate(subsystem_type) in Master.subsystems
 	STOP_PROCESSING(subsystem, src)
 
 ///Early process for machines added to SSmachines.processing_early to prioritize power draw
 /obj/machinery/proc/process_early()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	return PROCESS_KILL
 
-/obj/machinery/process()//If you dont use process or power why are you here
+/obj/machinery/process()
+	procstart = null
+	src.procstart = null//If you dont use process or power why are you here
 	return PROCESS_KILL
 
 ///Late process for machines added to SSmachines.processing_late to gather accurate recordings
 /obj/machinery/proc/process_late()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	return PROCESS_KILL
 
@@ -319,12 +349,16 @@
  * Process but for machines interacting with atmospherics.
  * Like process, anything sensitive to changes in the wait time between process ticks should account for seconds_per_tick.
 **/
-/obj/machinery/proc/process_atmos(seconds_per_tick)//If you dont touch atmos why are you here
+/obj/machinery/proc/process_atmos(seconds_per_tick)
+	procstart = null
+	src.procstart = null//If you dont touch atmos why are you here
 	set waitfor = FALSE
 	return PROCESS_KILL
 
 ///Called when we want to change the value of the machine_stat variable. Holds bitflags.
 /obj/machinery/proc/set_machine_stat(new_value)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(new_value == machine_stat)
@@ -336,6 +370,8 @@
 
 ///Called when the value of `machine_stat` changes, so we can react to it.
 /obj/machinery/proc/on_set_machine_stat(old_value)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	//From off to on.
@@ -348,6 +384,8 @@
 
 
 /obj/machinery/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!use_power || machine_stat || (. & EMP_PROTECT_SELF))
 		return
@@ -370,6 +408,8 @@
  * * density - Boolean. Whether to make the object dense when it's open.
  */
 /obj/machinery/proc/open_machine(drop = TRUE, density_to_set = FALSE)
+	procstart = null
+	src.procstart = null
 	state_open = TRUE
 	set_density(density_to_set)
 	if(drop)
@@ -380,6 +420,8 @@
  * Drop every movable atom in the machine's contents list, including any components and circuit.
  */
 /obj/machinery/dump_contents()
+	procstart = null
+	src.procstart = null
 	// Start by calling the dump_inventory_contents proc. Will allow machines with special contents
 	// to handle their dropping.
 	dump_inventory_contents()
@@ -403,6 +445,8 @@
  * * subset - If this is not null, only atoms that are also contained within the subset list will be dropped.
  */
 /obj/machinery/proc/dump_inventory_contents(list/subset = null)
+	procstart = null
+	src.procstart = null
 	var/turf/this_turf = get_turf(src)
 	for(var/atom/movable/movable_atom in contents)
 		//so machines like microwaves dont dump out signalers after cooking
@@ -431,6 +475,8 @@
  * * user (mob/living) The user to recive the object
  */
 /obj/machinery/proc/try_put_in_hand(obj/item/object, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!issilicon(user) && in_range(src, user))
 		object.do_pickup_animation(user, src)
 		user.put_in_hands(object)
@@ -438,9 +484,13 @@
 		object.forceMove(drop_location())
 
 /obj/machinery/proc/can_be_occupant(atom/movable/occupant_atom)
+	procstart = null
+	src.procstart = null
 	return occupant_typecache ? is_type_in_typecache(occupant_atom, occupant_typecache) : isliving(occupant_atom)
 
 /obj/machinery/proc/close_machine(atom/movable/target, density_to_set = TRUE)
+	procstart = null
+	src.procstart = null
 	state_open = FALSE
 	set_density(density_to_set)
 	if (!density)
@@ -468,6 +518,8 @@
 
 ///updates the use_power var for this machine and updates its static power usage from its area to reflect the new value
 /obj/machinery/proc/update_use_power(new_use_power)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(new_use_power == use_power)
 		return FALSE
@@ -501,6 +553,8 @@
 
 ///updates the power channel this machine uses. removes the static power usage from the old channel and readds it to the new channel
 /obj/machinery/proc/update_power_channel(new_power_channel)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(new_power_channel == power_channel)
 		return FALSE
@@ -518,6 +572,8 @@
 
 ///internal proc that removes all static power usage from the current area
 /obj/machinery/proc/unset_static_power()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	var/old_usage = static_power_usage
@@ -539,6 +595,8 @@
  * * new_usage - the new value to set the specified power mode var to
  */
 /obj/machinery/proc/update_mode_power_usage(use_power_mode, new_usage)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(use_power_mode == NO_POWER_USE)
 		stack_trace("trying to set the power usage associated with NO_POWER_USE in update_mode_power_usage()!")
@@ -564,6 +622,8 @@
 
 ///Get a valid powered area to reference for power use, mainly for wall-mounted machinery that isn't always mapped directly in a powered location.
 /obj/machinery/proc/get_room_area()
+	procstart = null
+	src.procstart = null
 	var/area/machine_area = get_area(src)
 	if(isnull(machine_area))
 		return null // ??
@@ -584,6 +644,8 @@
 
 ///makes this machine draw power from its area according to which use_power mode it is set to
 /obj/machinery/proc/update_current_power_usage()
+	procstart = null
+	src.procstart = null
 	if(static_power_usage)
 		unset_static_power()
 
@@ -606,6 +668,8 @@
 
 ///Called when we want to change the value of the `is_operational` variable. Boolean.
 /obj/machinery/proc/set_is_operational(new_value)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(new_value == is_operational)
@@ -617,12 +681,16 @@
 
 ///Called when the value of `is_operational` changes, so we can react to it.
 /obj/machinery/proc/on_set_is_operational(old_value)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	return
 
 ///Called when we want to change the value of the `panel_open` variable. Boolean.
 /obj/machinery/proc/set_panel_open(new_value)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(panel_open == new_value)
@@ -637,17 +705,23 @@
 
 ///Called when the value of `panel_open` changes, so we can react to it.
 /obj/machinery/proc/on_set_panel_open(old_value)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	return
 
 /// Toggles the panel_open var. Defined for convienience
 /obj/machinery/proc/toggle_panel_open()
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	set_panel_open(!panel_open)
 
 /obj/machinery/can_interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(user))
 		return FALSE
 
@@ -705,10 +779,14 @@
 
 //Return a non FALSE value to interrupt attack_hand propagation to subtypes.
 /obj/machinery/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	update_last_used(user)
 	return ..()
 
 /obj/machinery/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	var/mob/user = ui.user
 	add_fingerprint(user)
 	update_last_used(user)
@@ -718,6 +796,8 @@
 	return ..()
 
 /obj/machinery/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!can_interact(usr))
 		return TRUE
@@ -730,6 +810,8 @@
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 /obj/machinery/attack_paw(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!user.combat_mode)
 		return attack_hand(user)
 
@@ -753,6 +835,8 @@
 	return TRUE
 
 /obj/machinery/attack_hulk(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/bodypart/arm = user.get_active_hand()
 	if(!arm || arm.bodypart_disabled)
@@ -760,6 +844,8 @@
 	user.apply_damage(damage_deflection * 0.1, BRUTE, arm, wound_bonus = CANT_WOUND)
 
 /obj/machinery/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!(interaction_flags_machine & INTERACT_MACHINE_ALLOW_SILICON) && !isAdminGhostAI(user))
 		return FALSE
 
@@ -779,6 +865,8 @@
 	return _try_interact(user)
 
 /obj/machinery/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!(interaction_flags_machine & INTERACT_MACHINE_ALLOW_SILICON) && !isAdminGhostAI(user))
 		return FALSE
 	if(!user.has_faction(ROLE_SYNDICATE))
@@ -791,18 +879,24 @@
 	return _try_interact(user)
 
 /obj/machinery/attackby(obj/item/weapon, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
 	update_last_used(user)
 
 /obj/machinery/attackby_secondary(obj/item/weapon, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
 	update_last_used(user)
 
 /obj/machinery/base_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(user, COMSIG_TRY_USE_MACHINE, src) & COMPONENT_CANT_USE_MACHINE_TOOLS)
 		return ITEM_INTERACT_BLOCKING
 
@@ -816,6 +910,8 @@
 		update_last_used(user)
 
 /obj/machinery/_try_interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if((interaction_flags_machine & INTERACT_MACHINE_WIRES_IF_OPEN) && panel_open && (attempt_wire_interaction(user) == WIRE_INTERACTION_BLOCK))
 		return TRUE
 	if(SEND_SIGNAL(user, COMSIG_TRY_USE_MACHINE, src) & COMPONENT_CANT_USE_MACHINE_INTERACT)
@@ -823,10 +919,14 @@
 	return ..()
 
 /obj/machinery/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RefreshParts()
 
 /obj/machinery/proc/RefreshParts()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	//reset to baseline
 	idle_power_usage = initial(idle_power_usage)
@@ -851,6 +951,8 @@
  * which is used by the default crowbar pry open method.
  */
 /obj/machinery/proc/can_crowbar_pry_open()
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	return !state_open && !panel_open && !is_operational
 
@@ -896,6 +998,8 @@
  * which is used by the default crowbar deconstruction method.
  */
 /obj/machinery/proc/can_crowbar_deconstruct()
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	return panel_open
 
@@ -910,6 +1014,8 @@
  * Returns ITEM_INTERACT_SUCCESS on success.
  */
 /obj/machinery/proc/default_deconstruction_crowbar(mob/living/user, obj/item/crowbar)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	if(crowbar.tool_behaviour != TOOL_CROWBAR)
@@ -923,6 +1029,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/handle_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(obj_flags & NO_DEBRIS_AFTER_DECONSTRUCTION)
@@ -968,6 +1076,8 @@
  * * disassembled - If FALSE, the machine was destroyed instead of disassembled and the frame spawns at reduced integrity.
  */
 /obj/machinery/proc/spawn_frame(disassembled)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/frame/machine/new_frame = new /obj/structure/frame/machine(loc)
 
 	new_frame.state = FRAME_STATE_WIRED
@@ -989,6 +1099,8 @@
 
 
 /obj/machinery/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(machine_stat & BROKEN))
 		set_machine_stat(machine_stat | BROKEN)
@@ -997,6 +1109,8 @@
 		return TRUE
 
 /obj/machinery/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	if(!occupant)
 		return
 
@@ -1009,6 +1123,8 @@
 			SSexplosions.low_mov_atom += occupant
 
 /obj/machinery/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == occupant)
 		set_occupant(null)
@@ -1028,6 +1144,8 @@
  * even a single component exiting the atom.
  */
 /obj/machinery/proc/clear_components()
+	procstart = null
+	src.procstart = null
 	if(!component_parts)
 		return
 	var/list/old_components = component_parts
@@ -1047,6 +1165,8 @@
  * Returns ITEM_INTERACT_SUCCESS on success
  */
 /obj/machinery/proc/default_deconstruction_screwdriver(mob/user, obj/item/screwdriver)
+	procstart = null
+	src.procstart = null
 	if(screwdriver.tool_behaviour != TOOL_SCREWDRIVER)
 		return NONE
 
@@ -1067,6 +1187,8 @@
  * Returns ITEM_INTERACT_SUCCESS on success
  */
 /obj/machinery/proc/default_change_direction_wrench(mob/user, obj/item/wrench)
+	procstart = null
+	src.procstart = null
 	if(!panel_open || wrench.tool_behaviour != TOOL_WRENCH)
 		return NONE
 
@@ -1077,6 +1199,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/proc/exchange_parts(mob/user, obj/item/storage/part_replacer/replacer_tool)
+	procstart = null
+	src.procstart = null
 	if(!istype(replacer_tool) || !component_parts)
 		return FALSE
 
@@ -1181,6 +1305,8 @@
 	return TRUE
 
 /obj/machinery/proc/display_parts(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/part_count = list()
 
 	for(var/component_part in component_parts)
@@ -1237,6 +1363,8 @@
 	return text
 
 /obj/machinery/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & BROKEN)
 		. += span_notice("It looks broken and non-functional.")
@@ -1251,15 +1379,21 @@
 				. += span_warning("It's falling apart!")
 
 /obj/machinery/examine_descriptor(mob/user)
+	procstart = null
+	src.procstart = null
 	return "machine"
 
 /obj/machinery/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(user, TRAIT_RESEARCH_SCANNER) && component_parts)
 		. += display_parts(user)
 
 //called on machinery construction (i.e from frame to machinery) but not on initialization
 /obj/machinery/proc/on_construction(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -1269,10 +1403,14 @@
  * * disassembled - if TRUE means we used tools to deconstruct it, FALSE means it got destroyed by other means
  */
 /obj/machinery/proc/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	return
 
 /obj/machinery/zap_act(power, zap_flags)
+	procstart = null
+	src.procstart = null
 	if(prob(85) && (zap_flags & ZAP_MACHINE_EXPLOSIVE) && !(resistance_flags & INDESTRUCTIBLE))
 		explosion(src, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 4, flame_range = 2, adminlog = TRUE, smoke = FALSE)
 	else if(zap_flags & ZAP_OBJ_DAMAGE)
@@ -1282,7 +1420,9 @@
 		power -= power * 5e-4
 	return ..()
 
-/obj/machinery/proc/adjust_item_drop_location(atom/movable/dropped_atom) // Adjust item drop location to a 3x3 grid inside the tile, returns slot id from 0 to 8
+/obj/machinery/proc/adjust_item_drop_location(atom/movable/dropped_atom)
+	procstart = null
+	src.procstart = null // Adjust item drop location to a 3x3 grid inside the tile, returns slot id from 0 to 8
 	var/md5 = md5(dropped_atom.name) // Oh, and it's deterministic too. A specific item will always drop from the same slot.
 	for (var/i in 1 to 32)
 		. += hex2num(md5[i])
@@ -1291,11 +1431,15 @@
 	dropped_atom.pixel_y = -8 + (round( . / 3)*8)
 
 /obj/machinery/rust_heretic_act(rust_strength)
+	procstart = null
+	src.procstart = null
 	var/damage = 500 + rust_strength * 200
 	take_damage(damage, BRUTE, BOMB, 1)
 	return TRUE
 
 /obj/machinery/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	if(vname == NAMEOF(src, occupant))
 		set_occupant(vval)
 		datum_flags |= DF_VAR_EDITED
@@ -1324,15 +1468,21 @@
  * However, the proc may also be used elsewhere.
  */
 /obj/machinery/proc/AI_notify_hack()
+	procstart = null
+	src.procstart = null
 	var/alertstr = span_userdanger("Network Alert: Hacking attempt detected[get_area(src)?" in [get_area_name(src, TRUE)]":". Unable to pinpoint location"].")
 	for(var/mob/living/silicon/ai/AI in GLOB.player_list)
 		to_chat(AI, alertstr)
 
 /obj/machinery/proc/update_last_used(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isliving(user))
 		last_used_time = world.time
 		last_user_mobtype = user.type
 
 /// Called if this machine is supposed to be a sabotage machine objective.
 /obj/machinery/proc/add_as_sabotage_target()
+	procstart = null
+	src.procstart = null
 	return

@@ -8,23 +8,33 @@ And the only victory you achieved was a lie. Now you understand Gotham is beyond
 	blackboard = list(BB_BANE_BATMAN = null)
 
 /datum/ai_controller/bane/TryPossessPawn(atom/new_pawn)
+	procstart = null
+	src.procstart = null
 	if(!isliving(new_pawn))
 		return AI_CONTROLLER_INCOMPATIBLE
 	return ..() //Run parent at end
 
 /datum/ai_controller/bane/on_stat_changed(mob/living/source, new_stat)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_able_to_run()
 
 /datum/ai_controller/bane/setup_able_to_run()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(pawn, COMSIG_MOB_INCAPACITATE_CHANGED, PROC_REF(update_able_to_run))
 
 /datum/ai_controller/bane/clear_able_to_run()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(pawn, list(COMSIG_MOB_INCAPACITATE_CHANGED, COMSIG_MOB_STATCHANGE))
 	return ..()
 
 /datum/ai_controller/bane/get_able_to_run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = pawn
 	if(living_pawn.incapacitated)
 		return AI_UNABLE_TO_RUN

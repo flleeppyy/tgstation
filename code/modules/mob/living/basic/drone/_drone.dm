@@ -102,6 +102,8 @@
 	"<span class='notice'>Prefix your message with :b to speak in Drone Chat.</span>\n"
 
 /mob/living/basic/drone/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.drones_list += src
 	AddElement(/datum/element/dextrous, hud_type = hud_type)
@@ -157,9 +159,13 @@
 	AddElement(/datum/element/can_be_held)
 
 /mob/living/basic/drone/med_hud_set_health()
+	procstart = null
+	src.procstart = null
 	set_hud_image_state(DIAG_HUD, "huddiag[RoundDiagBar(health/maxHealth)]")
 
 /mob/living/basic/drone/med_hud_set_status()
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		set_hud_image_state(DIAG_STAT_HUD, "huddead2")
 		return
@@ -171,12 +177,16 @@
 	set_hud_image_state(DIAG_STAT_HUD, "hudstat")
 
 /mob/living/basic/drone/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.drones_list -= src
 	QDEL_NULL(listener)
 	QDEL_NULL(built_in_camera)
 	return ..()
 
 /mob/living/basic/drone/Login()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !client)
 		return FALSE
@@ -189,6 +199,8 @@
 		pickVisualAppearance()
 
 /mob/living/basic/drone/auto_deadmin_on_login()
+	procstart = null
+	src.procstart = null
 	if(!client?.holder)
 		return TRUE
 	if(CONFIG_GET(flag/auto_deadmin_silicons) || (client.prefs?.toggles & DEADMIN_POSITION_SILICON))
@@ -196,6 +208,8 @@
 	return ..()
 
 /mob/living/basic/drone/death(gibbed)
+	procstart = null
+	src.procstart = null
 	..(gibbed)
 	if(internal_storage)
 		dropItemToGround(internal_storage)
@@ -205,12 +219,18 @@
 	alert_drones(DRONE_NET_DISCONNECT)
 
 /mob/living/basic/drone/gib()
+	procstart = null
+	src.procstart = null
 	dust()
 
 /mob/living/basic/drone/get_butt_sprite()
+	procstart = null
+	src.procstart = null
 	return icon('icons/mob/butts.dmi', BUTT_SPRITE_DRONE)
 
 /mob/living/basic/drone/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	//Hands
@@ -249,10 +269,14 @@
 		else
 			. += span_deadsay("A message repeatedly flashes on its display: \"ERROR -- OFFLINE\".")
 
-/mob/living/basic/drone/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null) //Secbots won't hunt maintenance drones.
+/mob/living/basic/drone/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null)
+	procstart = null
+	src.procstart = null //Secbots won't hunt maintenance drones.
 	return -10
 
 /mob/living/basic/drone/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -263,18 +287,26 @@
 		to_chat(src, span_userdanger("HeAV% DA%^MMA+G TO I/O CIR!%UUT!"))
 
 /mob/living/basic/drone/proc/alarm_triggered(datum/source, alarm_type, area/source_area)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	to_chat(src, "--- [alarm_type] alarm detected in [source_area.name]!")
 
 /mob/living/basic/drone/proc/alarm_cleared(datum/source, alarm_type, area/source_area)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	to_chat(src, "--- [alarm_type] alarm in [source_area.name] has been cleared.")
 
 /mob/living/basic/drone/proc/set_shy(new_shy)
+	procstart = null
+	src.procstart = null
 	shy = new_shy
 	shy_update()
 
 /mob/living/basic/drone/proc/shy_update()
+	procstart = null
+	src.procstart = null
 	if(shy)
 		REMOVE_TRAIT(src, TRAIT_CAN_STRIP, DRONE_SHY_TRAIT) // To shy to touch someone elses hat
 		ADD_TRAIT(src, TRAIT_PACIFISM, DRONE_SHY_TRAIT)
@@ -283,20 +315,30 @@
 		REMOVE_TRAIT(src, TRAIT_PACIFISM, DRONE_SHY_TRAIT)
 
 /mob/living/basic/drone/flash_act(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0, type = /atom/movable/screen/fullscreen/flash, length = 25)
+	procstart = null
+	src.procstart = null
 	if(affect_silicon)
 		return ..()
 
 /mob/living/basic/drone/bee_friendly()
+	procstart = null
+	src.procstart = null
 	// Why would bees pay attention to drones?
 	return TRUE
 
 /mob/living/basic/drone/electrocute_act(shock_damage, source, siemens_coeff, flags = NONE)
+	procstart = null
+	src.procstart = null
 	return FALSE //So they don't die trying to fix wiring
 
 /mob/living/basic/drone/can_track(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(built_in_camera?.can_use())
 		return TRUE
 	return ..()
 
 /mob/living/basic/drone/hypnosis_vulnerable()
+	procstart = null
+	src.procstart = null
 	return FALSE //It obeys its laws

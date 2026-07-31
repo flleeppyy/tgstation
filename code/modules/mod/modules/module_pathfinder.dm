@@ -32,26 +32,36 @@
 
 
 /obj/item/mod/module/pathfinder/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	implant = new(src)
 	jet_icon = image(icon = 'icons/obj/clothing/modsuit/mod_modules.dmi', icon_state = "mod_jet", layer = LOW_ITEM_LAYER)
 
 
 /obj/item/mod/module/pathfinder/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(implant)
 	return ..()
 
 /obj/item/mod/module/pathfinder/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if(gone == implant)
 		implant_inside = FALSE
 		update_icon_state()
 	return ..()
 
 /obj/item/mod/module/pathfinder/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = implant_inside ? "pathfinder" : "pathfinder_empty"
 
 /obj/item/mod/module/pathfinder/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(implant_inside)
 		. += span_notice("Use it on a human to implant them.")
@@ -59,6 +69,8 @@
 		. += span_warning("The implant is missing.")
 
 /obj/item/mod/module/pathfinder/attack(mob/living/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(target) || !implant_inside) // Not human, or no implant in module
 		return
 	if(!do_after(user, 1.5 SECONDS, target = target))
@@ -74,6 +86,8 @@
 	playsound(src, 'sound/effects/spray.ogg', 30, TRUE, -6)
 
 /obj/item/mod/module/pathfinder/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mod.wearer && implant_inside) // implant them
 		try_implant(activator)
@@ -86,6 +100,8 @@
 
 /// Assuming we have a wearer, attempt to implant them.
 /obj/item/mod/module/pathfinder/proc/try_implant(mob/activator)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(mod.wearer)) // Wearer isn't human
 		return
 	if(!implant.implant(mod.wearer, mod.wearer))
@@ -97,6 +113,8 @@
 	playsound(src, 'sound/effects/spray.ogg', 30, TRUE, -6)
 
 /obj/item/mod/module/pathfinder/proc/attach(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return
 	var/mob/living/carbon/human/human_user = user
@@ -110,6 +128,8 @@
 	drain_power(use_energy_cost)
 
 /obj/item/mod/module/pathfinder/proc/recall(mob/recaller)
+	procstart = null
+	src.procstart = null
 	if(!implant)
 		balloon_alert(recaller, "no implant!")
 		return FALSE
@@ -142,6 +162,8 @@
 
 /// Pod-transport the suit to its owner
 /obj/item/mod/module/pathfinder/proc/do_recall(mob/recaller)
+	procstart = null
+	src.procstart = null
 	var/container = get_atom_on_turf(mod)
 	if(ismob(container))
 		balloon_alert(recaller, "launch interrupted!")
@@ -175,11 +197,15 @@
 
 /// Track when pod has taken off so we don't falsely report the initial landing
 /obj/item/mod/module/pathfinder/proc/pod_takeoff(datum/pod)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	RegisterSignal(pod, COMSIG_SUPPLYPOD_LANDED, PROC_REF(pod_landed))
 
 /// When the pod landed, we can recall again
 /obj/item/mod/module/pathfinder/proc/pod_landed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	in_transit = FALSE
 	mod.cut_overlay(jet_icon)
@@ -207,12 +233,16 @@
 		which Nakamura Industries promises are actually present."
 
 /obj/item/implant/mod/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(loc, /obj/item/mod/module/pathfinder))
 		return INITIALIZE_HINT_QDEL
 	module = loc
 
 /obj/item/implant/mod/Destroy()
+	procstart = null
+	src.procstart = null
 	module = null
 	return ..()
 
@@ -228,12 +258,16 @@
 	COOLDOWN_DECLARE(recall_cooldown)
 
 /datum/action/item_action/mod_recall/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(Target, /obj/item/implant/mod))
 		qdel(src)
 		return
 
 /datum/action/item_action/mod_recall/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	var/obj/item/implant/mod/implant = target
 	if(!COOLDOWN_FINISHED(src, recall_cooldown))
 		implant.balloon_alert(owner, "on cooldown!")
@@ -246,6 +280,8 @@
 /obj/structure/closet/supplypod/transport/module_pathfinder
 
 /obj/structure/closet/supplypod/transport/module_pathfinder/insertion_allowed(atom/to_insert)
+	procstart = null
+	src.procstart = null
 	return istype(to_insert, /obj/item/mod/control)
 
 #undef PATHFINDER_PRE_ANIMATE_TIME

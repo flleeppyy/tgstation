@@ -4,6 +4,8 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/find_nearby/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/list/possible_targets = list()
 	for(var/atom/thing in view(2, controller.pawn))
 		if(!thing.mouse_opacity)

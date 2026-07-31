@@ -11,6 +11,8 @@
 	var/locking = TRUE
 
 /datum/hallucination/bolts/start()
+	procstart = null
+	src.procstart = null
 	var/door_number = rand(0, 4) //if 0, we bolt all visible doors
 	feedback_details += "Door amount: [door_number]"
 
@@ -28,6 +30,8 @@
 	return TRUE
 
 /datum/hallucination/bolts/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 
@@ -61,6 +65,8 @@
 	next_action = rand(4, 12)
 
 /datum/hallucination/bolts/Destroy()
+	procstart = null
+	src.procstart = null
 	// Clean up any locks we happen to have remaining on qdel.
 	// Hypothetically this shouldn't delete anything. But just in case.
 	for(var/datum/weakref/leftover_lock_ref as anything in locks)
@@ -80,6 +86,8 @@
 	var/obj/machinery/door/airlock/airlock
 
 /obj/effect/client_image_holder/hallucination/fake_door_lock/Initialize(mapload, list/mobs_which_see_us, datum/hallucination/parent, obj/machinery/door/airlock/airlock)
+	procstart = null
+	src.procstart = null
 	if(!airlock)
 		stack_trace("[type] was created somewhere without an associated airlock.")
 		return INITIALIZE_HINT_QDEL
@@ -93,29 +101,41 @@
 	return ..()
 
 /obj/effect/client_image_holder/hallucination/fake_door_lock/Destroy(force)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(airlock, COMSIG_QDELETING)
 	airlock = null
 	return ..()
 
 /obj/effect/client_image_holder/hallucination/fake_door_lock/generate_image()
+	procstart = null
+	src.procstart = null
 	var/image/created = ..()
 	created.layer = airlock.layer + 0.1
 	return created
 
 /obj/effect/client_image_holder/hallucination/fake_door_lock/show_image_to(mob/show_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	show_to.playsound_local(get_turf(src), 'sound/machines/airlock/boltsdown.ogg', 30, FALSE, 3)
 
 /obj/effect/client_image_holder/hallucination/fake_door_lock/hide_image_from(mob/show_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	show_to.playsound_local(get_turf(src), 'sound/machines/airlock/boltsup.ogg', 30, FALSE, 3)
 
 /obj/effect/client_image_holder/hallucination/fake_door_lock/proc/on_airlock_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(src)
 
 /obj/effect/client_image_holder/hallucination/fake_door_lock/proc/unlock()
+	procstart = null
+	src.procstart = null
 	for(var/mob/seer as anything in who_sees_us)
 		hide_image_from(seer)
 
@@ -123,6 +143,8 @@
 	qdel(src)
 
 /obj/effect/client_image_holder/hallucination/fake_door_lock/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	if((mover in who_sees_us) && airlock.density)
 		return FALSE
 

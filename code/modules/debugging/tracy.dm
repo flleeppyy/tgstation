@@ -13,11 +13,15 @@ GLOBAL_REAL(Tracy, /datum/tracy)
 	VAR_FINAL/trace_path
 
 /datum/tracy/New()
+	procstart = null
+	src.procstart = null
 	if(!isnull(Tracy))
 		CRASH("Attempted to initialize /datum/tracy when global.Tracy is already set!")
 	Tracy = src
 
 /datum/tracy/Destroy()
+	procstart = null
+	src.procstart = null
 #ifndef OPENDREAM_REAL
 	if(enabled)
 		call_ext(TRACY_DLL_PATH, "destroy")()
@@ -26,6 +30,8 @@ GLOBAL_REAL(Tracy, /datum/tracy)
 
 /// Tries to initialize byond-tracy.
 /datum/tracy/proc/enable(init_reason)
+	procstart = null
+	src.procstart = null
 #ifndef OPENDREAM_REAL
 	if(enabled)
 		return TRUE
@@ -59,7 +65,11 @@ GLOBAL_REAL(Tracy, /datum/tracy)
 #endif
 
 /datum/tracy/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	return FALSE // no.
 
 /datum/tracy/CanProcCall(procname)
+	procstart = null
+	src.procstart = null
 	return FALSE // double no.

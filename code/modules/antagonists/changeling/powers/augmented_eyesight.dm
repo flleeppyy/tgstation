@@ -15,7 +15,9 @@
 	// Inactive = Flash protection and no x-ray
 	active = FALSE
 
-/datum/action/changeling/augmented_eyesight/on_purchase(mob/user) //The ability starts inactive, so we should be protected from flashes.
+/datum/action/changeling/augmented_eyesight/on_purchase(mob/user)
+	procstart = null
+	src.procstart = null //The ability starts inactive, so we should be protected from flashes.
 	. = ..()
 	var/obj/item/organ/eyes/ling_eyes = user.get_organ_slot(ORGAN_SLOT_EYES)
 	RegisterSignal(user, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(eye_implanted))
@@ -25,6 +27,8 @@
 		to_chat(user, span_changeling("We adjust our eyes to protect them from bright lights."))
 
 /datum/action/changeling/augmented_eyesight/sting_action(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 
@@ -51,6 +55,8 @@
 	return TRUE
 
 /datum/action/changeling/augmented_eyesight/Remove(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/eyes/ling_eyes = user.get_organ_slot(ORGAN_SLOT_EYES)
 	if(!isnull(ling_eyes))
 		ling_eyes.flash_protect = initial(ling_eyes.flash_protect)
@@ -63,6 +69,8 @@
 
 /// Signal proc to grant the correct level of flash sensitivity
 /datum/action/changeling/augmented_eyesight/proc/eye_implanted(mob/living/source, obj/item/organ/gained, special)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/organ/eyes/ling_eyes = gained
@@ -75,6 +83,8 @@
 
 /// Signal proc to remove flash sensitivity when the eyes are removed
 /datum/action/changeling/augmented_eyesight/proc/eye_removed(mob/living/source, obj/item/organ/removed, special)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/organ/eyes/ling_eyes = removed

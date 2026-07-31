@@ -11,21 +11,29 @@
 	custom_materials = list(/datum/material/wood = SHEET_MATERIAL_AMOUNT * 4)
 
 /obj/structure/ore_box/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 ///Dumps all contents of this ore box on the turf
 /obj/structure/ore_box/proc/dump_box_contents()
+	procstart = null
+	src.procstart = null
 	var/drop = drop_location()
 	for(var/obj/item/weapon in src)
 		weapon.forceMove(drop)
 
 /obj/structure/ore_box/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/mineral/wood(loc, 4)
 
 	dump_box_contents()
 
 /obj/structure/ore_box/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(isnull(held_item))
 		return
@@ -42,12 +50,16 @@
 
 
 /obj/structure/ore_box/examine(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(in_range(src, user) || isobserver(user))
 		. += span_notice("Can be [EXAMINE_HINT("pried")] apart.")
 		ui_interact(user)
 
 /obj/structure/ore_box/crowbar_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_BLOCKING
 	if(I.use_tool(src, user, 50, volume = 50))
 		user.visible_message(span_notice("[user] pries \the [src] apart."),
@@ -57,6 +69,8 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/structure/ore_box/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/stack/ore) || istype(tool, /obj/item/boulder))
 		user.transferItemToLoc(tool, src)
 		return ITEM_INTERACT_SUCCESS
@@ -69,6 +83,8 @@
 	return NONE
 
 /obj/structure/ore_box/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(arrived, /obj/item/boulder) && ismecha(loc)) //Boulders being put into a mech's orebox get processed
 		var/obj/item/boulder/to_process = arrived
@@ -76,12 +92,16 @@
 		qdel(to_process)
 
 /obj/structure/ore_box/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "OreBox", name)
 		ui.open()
 
 /obj/structure/ore_box/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/materials = list()
 	var/name
 	var/amount
@@ -105,6 +125,8 @@
 	return list("materials" = materials)
 
 /obj/structure/ore_box/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -115,4 +137,6 @@
 
 /// Special override for notify_contents = FALSE.
 /obj/structure/ore_box/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents = FALSE)
+	procstart = null
+	src.procstart = null
 	return ..()

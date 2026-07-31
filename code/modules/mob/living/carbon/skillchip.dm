@@ -8,6 +8,8 @@
  * * force - Whether to force the implant to happen, including forcing activating if activate = TRUE. Ignores incompatibility checks. Used by changelings.
  */
 /mob/living/carbon/proc/implant_skillchip(obj/item/skillchip/skillchip, force = FALSE)
+	procstart = null
+	src.procstart = null
 	// Grab the brain.
 	var/obj/item/organ/brain/brain = get_organ_slot(ORGAN_SLOT_BRAIN)
 
@@ -36,6 +38,8 @@
  * * silent - Whether or not to display the removal message.
  */
 /mob/living/carbon/proc/remove_skillchip(obj/item/skillchip/skillchip, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	// Check the target's brain, making sure the target exists and has a brain.
 	var/obj/item/organ/brain/brain = get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(QDELETED(brain))
@@ -58,6 +62,8 @@
  * * not_removable - Special override, whether or not to force cloned chips to be non-removable, i.e. to delete on removal.
  */
 /mob/living/carbon/proc/clone_skillchip_list(not_removable = FALSE)
+	procstart = null
+	src.procstart = null
 	// Check the target's brain, making sure the target exists and has a brain.
 	var/obj/item/organ/brain/brain = get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(QDELETED(brain))
@@ -69,6 +75,8 @@
  * Destroys all skillchips in the brain, handling appropriate cleanup and event calls.
  */
 /mob/living/carbon/proc/destroy_all_skillchips(silent = FALSE)
+	procstart = null
+	src.procstart = null
 	// Check the target's brain, making sure the target exists and has a brain.
 	var/obj/item/organ/brain/brain = get_organ_slot(ORGAN_SLOT_BRAIN)
 

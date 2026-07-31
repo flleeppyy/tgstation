@@ -11,12 +11,16 @@
 	var/highest_rarity = 0
 
 /datum/export/seed/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/seeds/seed as anything in subtypesof(/obj/item/seeds))
 		if(seed::rarity > highest_rarity)
 			highest_rarity = seed::rarity
 
 /datum/export/seed/get_base_cost(obj/item/seeds/S)
+	procstart = null
+	src.procstart = null
 	var/discovered = discovered_plants[S.type]
 	if(!needs_discovery && discovered)
 		return 0
@@ -25,6 +29,8 @@
 	return ..() * (S.rarity /  highest_rarity) // That's right, no bonus for potency. Send a crappy sample first to "show improvement" later.
 
 /datum/export/seed/sell_object(obj/item/seeds/S, datum/export_report/report, dry_run, apply_elastic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && !dry_run)
 		discovered_plants[S.type] = S.potency
@@ -35,4 +41,6 @@
 	needs_discovery = TRUE // Only for already discovered species
 
 /datum/export/seed/potency/get_base_cost(obj/item/seeds/S)
+	procstart = null
+	src.procstart = null
 	return ..() * (S.potency - discovered_plants[S.type])

@@ -27,11 +27,15 @@
 	var/list/datum/weakref/zone_on_open
 
 /obj/machinery/computer/operating/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	find_table()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/computer/operating/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!CONFIG_GET(flag/no_default_techweb_link) && !linked_techweb)
 		CONNECT_TO_RND_SERVER_ROUNDSTART(linked_techweb, src)
@@ -56,6 +60,8 @@
 	)
 
 /obj/machinery/computer/operating/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/direction in GLOB.alldirs)
 		table = locate(/obj/structure/table/optable) in get_step(src, direction)
 		if(table && table.computer == src)
@@ -64,11 +70,15 @@
 	return ..()
 
 /obj/machinery/computer/operating/multitool_act(mob/living/user, obj/item/multitool/tool)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(tool.buffer) && istype(tool.buffer, /datum/techweb))
 		linked_techweb = tool.buffer
 	return TRUE
 
 /obj/machinery/computer/operating/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/disk/surgery))
 		user.visible_message(
 			span_notice("[user] begins to load [tool] in [src]..."),
@@ -91,9 +101,13 @@
 	return NONE
 
 /obj/machinery/computer/operating/on_set_is_operational(old_value)
+	procstart = null
+	src.procstart = null
 	update_static_data_for_all_viewers()
 
 /obj/machinery/computer/operating/proc/find_table()
+	procstart = null
+	src.procstart = null
 	for(var/direction in GLOB.alldirs)
 		table = locate(/obj/structure/table/optable) in get_step(src, direction)
 		if(table)
@@ -101,12 +115,16 @@
 			break
 
 /obj/machinery/computer/operating/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(user) && !issilicon(user))
 		. = min(., ui_check(user))
 
 /// Checks for special ui state conditions
 /obj/machinery/computer/operating/proc/ui_check(mob/living/user)
+	procstart = null
+	src.procstart = null
 	// lower states should be checked first
 
 	// normally machines revert to "disabled" when non-operational,
@@ -127,6 +145,8 @@
 	return UI_INTERACTIVE
 
 /obj/machinery/computer/operating/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(ui)
@@ -143,6 +163,8 @@
 	ui.open()
 
 /obj/machinery/computer/operating/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// reverts zone to whatever you had going into it, typically chest, so you don't have to mess around with it
 	var/zone_found = LAZYACCESS(zone_on_open, WEAKREF(user))
@@ -156,10 +178,14 @@
 		zone_on_open = initial(zone_on_open)
 
 /obj/machinery/computer/operating/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += get_asset_datum(/datum/asset/simple/body_zones)
 
 /obj/machinery/computer/operating/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["has_table"] = !!table
@@ -197,6 +223,8 @@
 	return data
 
 /obj/machinery/computer/operating/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["experiments"] = list()
@@ -249,6 +277,8 @@
 	return data
 
 /obj/machinery/computer/operating/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -264,6 +294,8 @@
 	return TRUE
 
 /obj/machinery/computer/operating/proc/on_techweb_research(datum/source, datum/design/surgery/design)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(design))
@@ -273,6 +305,8 @@
 	update_static_data_batched()
 
 /obj/machinery/computer/operating/proc/on_techweb_unresearch(datum/source, datum/design/surgery/design)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(design))
@@ -283,6 +317,8 @@
 
 /// Updates static data for all viewers after a miniscule delay (to batch multiple updates together)
 /obj/machinery/computer/operating/proc/update_static_data_batched(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/datum, update_static_data_for_all_viewers)), 0.1 SECONDS, TIMER_UNIQUE)

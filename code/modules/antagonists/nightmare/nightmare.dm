@@ -10,18 +10,26 @@
 	preview_outfit = /datum/outfit/nightmare
 
 /datum/antagonist/nightmare/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.announce_objectives()
 
 /datum/antagonist/nightmare/on_gain()
+	procstart = null
+	src.procstart = null
 	forge_objectives()
 	. = ..()
 
 /datum/antagonist/nightmare/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/nightmare = mob_override || owner.current
 	nightmare.mob_mood.mood_modifier -= 1
 
 /datum/antagonist/nightmare/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/nightmare = mob_override || owner.current
 	nightmare.mob_mood.mood_modifier += 1
 
@@ -29,11 +37,15 @@
 	name = "Nightmare (Preview only)"
 
 /datum/outfit/nightmare/post_equip(mob/living/carbon/human/human, visuals_only)
+	procstart = null
+	src.procstart = null
 	human.set_species(/datum/species/shadow/nightmare)
 
 /datum/objective/nightmare_fluff
 
 /datum/objective/nightmare_fluff/New()
+	procstart = null
+	src.procstart = null
 	var/list/explanation_texts = list(
 		"Consume the last glimmer of light from the space station.",
 		"Bring judgment upon the daywalkers.",
@@ -47,9 +59,13 @@
 	..()
 
 /datum/objective/nightmare_fluff/check_completion()
+	procstart = null
+	src.procstart = null
 	return owner.current && owner.current.stat != DEAD
 
 /datum/antagonist/nightmare/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/nightmare_fluff/objective = new
 	objective.owner = owner
 	objectives += objective

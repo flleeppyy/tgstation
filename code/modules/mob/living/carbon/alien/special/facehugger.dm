@@ -38,6 +38,8 @@
 	var/attached = 0
 
 /obj/item/clothing/mask/facehugger/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
@@ -50,14 +52,20 @@
 	RegisterSignal(src, COMSIG_ITEM_IN_UNWRAPPED_TRAITOR_MAIL, PROC_REF(on_mail_unwrap))
 
 /obj/item/clothing/mask/facehugger/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && atom_integrity < 90 && !QDELETED(src))
 		die()
 
 /obj/item/clothing/mask/facehugger/attackby(obj/item/attacked_item, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	return attacked_item.attack_atom(src, user, modifiers)
 
 /obj/item/clothing/mask/facehugger/proc/react_to_mob(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if((facehugger_state == FACEHUGGER_AWAKE && !sterile) && !isalien(user))
 		if(leap_to(user))
@@ -65,17 +73,23 @@
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/clothing/mask/facehugger/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if((facehugger_state == FACEHUGGER_AWAKE && !sterile) && !isalien(user))
 		if(leap_to(user))
 			return
 	. = ..()
 
 /obj/item/clothing/mask/facehugger/attack(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(user.transferItemToLoc(src, get_turf(M)))
 		leap_to(M)
 
 /obj/item/clothing/mask/facehugger/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!real)//So that giant red text about probisci doesn't show up.
 		return
@@ -88,28 +102,42 @@
 		. += span_bolddanger("It looks like the proboscis has been removed.")
 
 /obj/item/clothing/mask/facehugger/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return (exposed_temperature > 300)
 
 /obj/item/clothing/mask/facehugger/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	die()
 
 /obj/item/clothing/mask/facehugger/equipped(mob/M)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	attach_to_victim(M)
 
 /obj/item/clothing/mask/facehugger/proc/on_entered(datum/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	HasProximity(target)
 
 /obj/item/clothing/mask/facehugger/on_found(mob/finder)
+	procstart = null
+	src.procstart = null
 	if(facehugger_state == FACEHUGGER_AWAKE)
 		return HasProximity(finder)
 
 /obj/item/clothing/mask/facehugger/HasProximity(atom/movable/AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	if(CanHug(AM) && Adjacent(AM))
 		return leap_to(AM)
 
 /obj/item/clothing/mask/facehugger/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback, gentle, quickstart = TRUE, throw_type_path = /datum/thrownthing)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -118,16 +146,22 @@
 		addtimer(CALLBACK(src, PROC_REF(clear_throw_icon_state)), 1.5 SECONDS)
 
 /obj/item/clothing/mask/facehugger/proc/clear_throw_icon_state()
+	procstart = null
+	src.procstart = null
 	if(icon_state == "[base_icon_state]_thrown")
 		icon_state = "[base_icon_state]"
 
 /obj/item/clothing/mask/facehugger/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	..()
 	if(facehugger_state == FACEHUGGER_AWAKE)
 		icon_state = "[base_icon_state]"
 		leap_to(hit_atom)
 
 /obj/item/clothing/mask/facehugger/proc/valid_to_attach(mob/living/hit_mob)
+	procstart = null
+	src.procstart = null
 	// valid targets: carbons except aliens and devils
 	// facehugger state early exit checks (Note: Melbert does not want dead people to be huggable)
 	if(facehugger_state != FACEHUGGER_AWAKE)
@@ -147,6 +181,8 @@
 	return TRUE
 
 /obj/item/clothing/mask/facehugger/proc/leap_to(mob/living/hit_mob)
+	procstart = null
+	src.procstart = null
 	//check if not carbon/alien/has facehugger already/ect.
 	if(!valid_to_attach(hit_mob))
 		return FALSE
@@ -177,6 +213,8 @@
 	return TRUE // time for a smoke
 
 /obj/item/clothing/mask/facehugger/proc/attach_to_victim(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	if(!valid_to_attach(victim))
 		return
 
@@ -199,9 +237,13 @@
 	addtimer(CALLBACK(src, PROC_REF(impregnate_target), victim), rand(MIN_IMPREGNATION_TIME, MAX_IMPREGNATION_TIME))
 
 /obj/item/clothing/mask/facehugger/proc/detach()
+	procstart = null
+	src.procstart = null
 	attached = 0
 
 /obj/item/clothing/mask/facehugger/proc/impregnate_target(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(!target || target.stat == DEAD || target.get_item_by_slot(ITEM_SLOT_MASK) != src) //was taken off or something
 		return
 
@@ -226,6 +268,8 @@
 								span_userdanger("[src] violates your face!"))
 
 /obj/item/clothing/mask/facehugger/proc/go_active()
+	procstart = null
+	src.procstart = null
 	if(facehugger_state == FACEHUGGER_DEAD || facehugger_state == FACEHUGGER_AWAKE)
 		return
 
@@ -234,6 +278,8 @@
 	worn_icon_state = "[base_icon_state]"
 
 /obj/item/clothing/mask/facehugger/proc/go_idle()
+	procstart = null
+	src.procstart = null
 	if(facehugger_state == FACEHUGGER_DEAD || facehugger_state == FACEHUGGER_ASLEEP)
 		return
 
@@ -244,6 +290,8 @@
 	addtimer(CALLBACK(src, PROC_REF(go_active)), rand(MIN_ACTIVE_TIME, MAX_ACTIVE_TIME))
 
 /obj/item/clothing/mask/facehugger/proc/die()
+	procstart = null
+	src.procstart = null
 	if(facehugger_state == FACEHUGGER_DEAD)
 		return
 
@@ -258,6 +306,8 @@
 	AddComponent(/datum/component/knockoff, knockoff_chance = 40, target_zones = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST), slots_knockoffable = slot_flags)
 
 /obj/item/clothing/mask/facehugger/can_mob_unequip(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!real || sterile || facehugger_state == FACEHUGGER_DEAD || user.get_organ_by_type(/obj/item/organ/body_egg/alien_embryo))
 		return ..()
 	if(user.get_item_by_slot(slot_flags) == src)
@@ -266,6 +316,8 @@
 	return ..()
 
 /obj/item/clothing/mask/facehugger/mouse_drop_dragged(atom/over, mob/user, src_location, over_location, params)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/wearer = loc
 	if(!istype(wearer) || user != wearer)
 		return
@@ -277,6 +329,8 @@
 	return ..()
 
 /proc/CanHug(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return FALSE
 	if(M.stat == DEAD)
@@ -292,6 +346,8 @@
 	return FALSE
 
 /obj/item/clothing/mask/facehugger/proc/on_mail_unwrap(atom/source, mob/user, obj/item/mail/traitor/letter)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(facehugger_state != FACEHUGGER_AWAKE)
 		return NONE
@@ -327,6 +383,8 @@
 	integrity_failure = 0
 
 /obj/item/clothing/mask/facehugger/toy/die()
+	procstart = null
+	src.procstart = null
 	return
 
 #undef FACEHUGGER_AWAKE

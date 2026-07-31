@@ -103,6 +103,8 @@
 /// This check fails if the mob is nearsighted but is wearing glasses,
 /// While is_nearsighted will always succeed even if they are wearing glasses.
 /mob/proc/is_nearsighted_currently()
+	procstart = null
+	src.procstart = null
 	var/datum/status_effect/grouped/nearsighted/nearsight = has_status_effect(/datum/status_effect/grouped/nearsighted)
 	if(isnull(nearsight))
 		return FALSE

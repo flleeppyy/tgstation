@@ -30,6 +30,8 @@
 	custom_materials = null
 
 /obj/item/food/sandwich/cheese/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/sandwich/grilled_cheese, rand(30 SECONDS, 60 SECONDS), TRUE)
 
 /obj/item/food/sandwich/grilled_cheese
@@ -274,11 +276,15 @@
 	var/static/list/correct_clothing = list(/obj/item/clothing/under/rank/civilian/cookjorts, /obj/item/clothing/under/shorts/jeanshorts)
 
 /obj/item/food/sandwich/death/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	obj_flags &= ~UNIQUE_RENAME // You shouldn't be able to disguise this on account of how it kills you
 
 // Makes you feel disgusted if you look at it wrong.
 /obj/item/food/sandwich/death/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Only human mobs, not animals or silicons, can like/dislike by this.
 	if(!ishuman(user))
@@ -290,6 +296,8 @@
 
 // Override for after_eat and check_liked callbacks.
 /obj/item/food/sandwich/death/make_edible()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponentFrom(SOURCE_EDIBLE_INNATE, /datum/component/edible, after_eat = CALLBACK(src, PROC_REF(after_eat)), check_liked = CALLBACK(src, PROC_REF(check_liked)))
 
@@ -299,6 +307,8 @@
 * If you don't, you don't like it.
 */
 /obj/item/food/sandwich/death/proc/check_liked(mob/living/carbon/human/consumer)
+	procstart = null
+	src.procstart = null
 	// Closest thing to a mullet we have
 	if(consumer.hairstyle == "Gelled Back" && is_type_in_list(consumer.get_item_by_slot(ITEM_SLOT_ICLOTHING), correct_clothing))
 		return FOOD_LIKED
@@ -310,6 +320,8 @@
 * If you don't, you contract a deadly disease.
 */
 /obj/item/food/sandwich/death/proc/after_eat(mob/living/carbon/human/consumer)
+	procstart = null
+	src.procstart = null
 	// If you like it, you're eating it right.
 	if(check_liked(consumer) == FOOD_LIKED)
 		return
@@ -318,6 +330,8 @@
 	consumer.ForceContractDisease(new /datum/disease/death_sandwich_poisoning())
 
 /obj/item/food/sandwich/death/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] starts to shove [src] down [user.p_their()] throat the wrong way. It looks like [user.p_theyre()] trying to commit suicide!"))
 	qdel(src)
 	user.gib()

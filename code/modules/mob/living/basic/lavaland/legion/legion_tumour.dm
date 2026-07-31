@@ -28,17 +28,25 @@
 	)
 
 /obj/item/organ/legion_tumour/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate_pulse()
 
 /obj/item/organ/legion_tumour/on_begin_failure()
+	procstart = null
+	src.procstart = null
 	animate_pulse()
 
 /obj/item/organ/legion_tumour/on_failure_recovery()
+	procstart = null
+	src.procstart = null
 	animate_pulse()
 
 /// Do a heartbeat animation depending on if we're failing or not
 /obj/item/organ/legion_tumour/proc/animate_pulse()
+	procstart = null
+	src.procstart = null
 	animate(src, transform = matrix()) // Stop any current animation
 
 	var/speed_divider = organ_flags & ORGAN_FAILING ? 2 : 1
@@ -48,15 +56,21 @@
 	animate(transform = matrix(), time = 2 SECONDS / speed_divider)
 
 /obj/item/organ/legion_tumour/Remove(mob/living/carbon/egg_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	stage = 0
 	elapsed_time = 0
 
 /obj/item/organ/legion_tumour/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.log_message("has received [src] which will eventually turn them into a Legion.", LOG_VICTIM)
 
 /obj/item/organ/legion_tumour/attack(mob/living/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if (try_apply(target, user))
 		qdel(src)
 		return
@@ -64,6 +78,8 @@
 
 /// Smear it on someone like a regen core, why not. Make sure they're alive though.
 /obj/item/organ/legion_tumour/proc/try_apply(mob/living/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.Adjacent(target) || !isliving(target))
 		return FALSE
 
@@ -87,6 +103,8 @@
 	return TRUE
 
 /obj/item/organ/legion_tumour/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (QDELETED(src) || QDELETED(owner))
 		return
@@ -143,6 +161,8 @@
 
 /// Consume our host
 /obj/item/organ/legion_tumour/proc/infest()
+	procstart = null
+	src.procstart = null
 	if (QDELETED(src) || QDELETED(owner))
 		return
 	owner.log_message("has been turned into a Legion by their tumour.", LOG_VICTIM)
@@ -152,6 +172,8 @@
 	qdel(src)
 
 /obj/item/organ/legion_tumour/on_find(mob/living/finder)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(finder, span_warning("There's an enormous tumour in [owner]'s [zone]!"))
 	if(stage < 4)
@@ -162,5 +184,7 @@
 		infest()
 
 /obj/item/organ/legion_tumour/feel_for_damage(self_aware)
+	procstart = null
+	src.procstart = null
 	// keep stealthy for now, revisit later
 	return ""

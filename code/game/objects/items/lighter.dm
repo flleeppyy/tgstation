@@ -42,6 +42,8 @@
 	var/datum/light_middleman/middleman
 
 /obj/item/lighter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_OVERLAY_LIGHT_SYSTEM(light_system))
 		middleman = new(src, "lighter")
@@ -61,14 +63,20 @@
 	update_appearance()
 
 /obj/item/lighter/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(!isnull(middleman))
 		QDEL_NULL(middleman)
 	return ..()
 
 /obj/item/lighter/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/iron = 1, /datum/reagent/fuel = 5, /datum/reagent/fuel/oil = 5)
 
 /obj/item/lighter/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(get_fuel() <= 0)
 		. += span_warning("It is out of lighter fluid! Refill it with welder fuel.")
@@ -76,11 +84,15 @@
 		. += span_notice("It contains [get_fuel()] units of fuel out of [maximum_fuel].")
 
 /obj/item/lighter/proc/light_updated(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	fire_flicker_middleman(middleman)
 
 /// Destroy the lighter when it's shot by a bullet
 /obj/item/lighter/proc/on_intercepted_bullet(mob/living/victim, obj/projectile/bullet)
+	procstart = null
+	src.procstart = null
 	victim.visible_message(span_warning("\The [bullet] shatters on [victim]'s lighter!"))
 	playsound(victim, SFX_RICOCHET, 100, TRUE)
 	new /obj/effect/decal/cleanable/blood/oil(get_turf(src))
@@ -89,11 +101,15 @@
 	qdel(src)
 
 /obj/item/lighter/cyborg_unequip(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!lit)
 		return
 	set_lit(FALSE)
 
 /obj/item/lighter/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (lit)
 		user.visible_message(span_suicide("[user] begins holding \the [src]'s flame up to [user.p_their()] face! It looks like [user.p_theyre()] trying to commit suicide!"))
 		playsound(src, 'sound/items/tools/welder.ogg', 50, TRUE)
@@ -103,22 +119,32 @@
 		return BRUTELOSS
 
 /obj/item/lighter/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)][lit ? "-on" : ""]"
 	return ..()
 
 /obj/item/lighter/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_lighter_overlay()
 
 /// Generates an overlay used by this lighter.
 /obj/item/lighter/proc/create_lighter_overlay()
+	procstart = null
+	src.procstart = null
 	return mutable_appearance(icon, "lighter_overlay_[overlay_state][lit ? "-on" : ""]")
 
 /obj/item/lighter/ignition_effect(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	if(get_temperature())
 		. = span_infoplain(span_rose("With a single flick of [user.p_their()] wrist, [user] smoothly lights [A] with [src]. Damn [user.p_theyre()] cool."))
 
 /obj/item/lighter/proc/set_lit(new_lit)
+	procstart = null
+	src.procstart = null
 	if(lit == new_lit)
 		return
 
@@ -154,10 +180,14 @@
 	update_appearance()
 
 /obj/item/lighter/extinguish()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_lit(FALSE)
 
 /obj/item/lighter/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user.is_holding(src))
 		return ..()
 	if(lit)
@@ -213,6 +243,8 @@
 	user.add_mood_event("burnt_thumb", /datum/mood_event/burnt_thumb)
 
 /obj/item/lighter/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(lit)
 		use(0.5)
 		if(target_mob.ignite_mob())
@@ -235,6 +267,8 @@
 
 ///Checks if the lighter is able to perform a welding task.
 /obj/item/lighter/tool_use_check(mob/living/user, amount, heat_required)
+	procstart = null
+	src.procstart = null
 	if(!lit)
 		to_chat(user, span_warning("[src] has to be on to complete this task!"))
 		return FALSE
@@ -246,6 +280,8 @@
 	return TRUE
 
 /obj/item/lighter/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(lit)
 		open_flame(heat)
 		burned_fuel_for += seconds_per_tick
@@ -253,10 +289,14 @@
 			use(used = 0.25)
 
 /obj/item/lighter/get_temperature()
+	procstart = null
+	src.procstart = null
 	return lit * heat
 
 /// Uses fuel from the lighter.
 /obj/item/lighter/use(used = 0)
+	procstart = null
+	src.procstart = null
 	if(!lit)
 		return FALSE
 
@@ -276,6 +316,8 @@
 
 ///Returns the amount of fuel
 /obj/item/lighter/proc/get_fuel()
+	procstart = null
+	src.procstart = null
 	return reagents.get_reagent_amount(/datum/reagent/fuel) + reagents.get_reagent_amount(/datum/reagent/toxin/plasma)
 
 /obj/item/lighter/greyscale
@@ -314,17 +356,23 @@
 		)
 
 /obj/item/lighter/greyscale/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!lighter_color)
 		lighter_color = pick(color_list)
 	update_appearance()
 
 /obj/item/lighter/greyscale/create_lighter_overlay()
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/lighter_overlay = ..()
 	lighter_overlay.color = lighter_color
 	return lighter_overlay
 
 /obj/item/lighter/greyscale/ignition_effect(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	if(get_temperature())
 		. = span_notice("After some fiddling, [user] manages to light [A] with [src].")
 
@@ -338,6 +386,8 @@
 	overlay_state = "slime"
 
 /obj/item/lighter/slime/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/iron = 1, /datum/reagent/fuel = 5, /datum/reagent/medicine/pyroxadone = 5)
 
 /obj/item/lighter/skull
@@ -357,9 +407,13 @@
 	fancy = FALSE
 
 /obj/item/lighter/mime/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/iron = 1, /datum/reagent/toxin/mutetoxin = 5, /datum/reagent/consumable/nothing = 10)
 
 /obj/item/lighter/mime/ignition_effect(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	. = span_infoplain("[user] lifts \the [src] to the [A], which miraculously lights!")
 
 /obj/item/lighter/bright
@@ -373,9 +427,13 @@
 	fancy = FALSE
 
 /obj/item/lighter/bright/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/iron = 1, /datum/reagent/flash_powder = 10)
 
 /obj/item/lighter/bright/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(lit && isliving(user))
@@ -383,6 +441,8 @@
 		current_viewer.flash_act(4)
 
 /obj/item/lighter/bright/ignition_effect(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	if(get_temperature())
 		. = span_infoplain(span_rose("[user] lifts the [src] to the [A], igniting it with a brilliant flash of light!"))
 		var/mob/living/current_viewer = user

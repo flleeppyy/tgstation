@@ -31,6 +31,8 @@
 
 
 /mob/living/basic/drone/syndrone/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/component/uplink/hidden_uplink = internal_storage.GetComponent(/datum/component/uplink)
 	hidden_uplink.uplink_handler.set_telecrystals(telecrystal_count)
@@ -58,6 +60,8 @@
 	telecrystal_count = 30
 
 /mob/living/basic/drone/syndrone/badass/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/implant/weapons_auth/weapon_implant = new/obj/item/implant/weapons_auth(src)
 	weapon_implant.implant(src, force = TRUE)
@@ -89,6 +93,8 @@
 	flavortext = null
 
 /mob/living/basic/drone/polymorphed/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	liberate()
 	visualAppearance = pick(MAINTDRONE, REPAIRDRONE, SCOUTDRONE)
@@ -130,6 +136,8 @@
 	span_warning("<u>If you do not have the regular drone laws, follow your laws to the best of your ability.</u>")
 
 /mob/living/basic/drone/derelict/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/stationstuck, PUNISHMENT_GIB, "01000110 01010101 01000011 01001011 00100000 01011001 01001111 01010101<br>WARNING: Dereliction of KS13 detected. Self-destruct activated.")
 

@@ -5,6 +5,8 @@
 	button_icon_state = null
 
 /datum/action/item_action/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// If our button state is null, use the target's icon instead
@@ -12,6 +14,8 @@
 		AddComponent(/datum/component/action_item_overlay, target)
 
 /datum/action/item_action/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !target)
 		return
@@ -24,12 +28,16 @@
 			qdel(GetComponent(/datum/component/action_item_overlay))
 
 /datum/action/item_action/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
 	return do_effect(trigger_flags)
 
 /datum/action/item_action/proc/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return FALSE
 	var/obj/item/item_target = target

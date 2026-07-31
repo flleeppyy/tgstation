@@ -12,6 +12,8 @@
 	var/can_edit = TRUE
 
 /datum/keybinding/New()
+	procstart = null
+	src.procstart = null
 	if(!keybind_signal)
 		CRASH("Keybind [src] called unredefined down() without a keybind_signal.")
 
@@ -20,13 +22,19 @@
 		classic_keys = hotkey_keys.Copy()
 
 /datum/keybinding/proc/down(client/user, turf/target, mousepos_x, mousepos_y)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	return SEND_SIGNAL(user.mob, keybind_signal, target) & COMSIG_KB_ACTIVATED
 
 /datum/keybinding/proc/up(client/user, turf/target)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(user.mob, DEACTIVATE_KEYBIND(keybind_signal), target)
 	return FALSE
 
 /datum/keybinding/proc/can_use(client/user)
+	procstart = null
+	src.procstart = null
 	return TRUE

@@ -22,11 +22,15 @@
 	)
 
 /datum/action/cooldown/mob_cooldown/blood_worm/leech/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	if (!istype(owner, /mob/living/basic/blood_worm))
 		return FALSE
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/leech/InterceptClickOn(mob/living/clicker, params, atom/target)
+	procstart = null
+	src.procstart = null
 	var/modifiers = params2list(params)
 
 	// Don't block examines, grabs, etc.
@@ -36,6 +40,8 @@
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/leech/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	owner.face_atom(target)
 
 	if (!ismovable(target))
@@ -60,6 +66,8 @@
 	return TRUE // Prevents biting.
 
 /datum/action/cooldown/mob_cooldown/blood_worm/leech/proc/leech_living(mob/living/basic/blood_worm/leech, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if (!leech_living_start_check(leech, target))
 		return
 
@@ -142,6 +150,8 @@
 	StartCooldown()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/leech/proc/leech_living_start_check(mob/living/basic/blood_worm/leech, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if (target.get_blood_volume() <= 0)
 		target.balloon_alert(leech, "no blood!")
 		return FALSE
@@ -151,6 +161,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/blood_worm/leech/proc/leech_living_active_check(mob/living/basic/blood_worm/leech, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if (target.get_blood_volume() <= 0)
 		target.balloon_alert(leech, "no more blood!")
 		return FALSE
@@ -163,14 +175,20 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/blood_worm/leech/proc/incapacitate_leech_living_target(mob/living/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	ADD_TRAIT(target, TRAIT_INCAPACITATED, REF(src))
 
 /datum/action/cooldown/mob_cooldown/blood_worm/leech/proc/deincapacitate_leech_living_target(mob/living/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	REMOVE_TRAIT(target, TRAIT_INCAPACITATED, REF(src))
 
 /datum/action/cooldown/mob_cooldown/blood_worm/leech/proc/leech_container(mob/living/basic/blood_worm/leech, obj/item/reagent_containers/target)
+	procstart = null
+	src.procstart = null
 	if (!leech_container_start_check(leech, target, feedback = TRUE))
 		return
 
@@ -216,6 +234,8 @@
 	StartCooldown()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/leech/proc/leech_container_alert_synth_info(mob/living/basic/blood_worm/leech, obj/item/reagent_containers/target)
+	procstart = null
+	src.procstart = null
 	var/list/blood = get_blood_in_container(target)
 
 	var/total_volume = 0
@@ -233,6 +253,8 @@
 		target.balloon_alert(leech, "[ceil(synth_content * 100)]% synthetic")
 
 /datum/action/cooldown/mob_cooldown/blood_worm/leech/proc/leech_container_start_check(mob/living/basic/blood_worm/leech, obj/item/reagent_containers/target, feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!length(get_blood_in_container(target)))
 		if (feedback)
 			target.balloon_alert(leech, "no blood!")
@@ -240,6 +262,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/blood_worm/leech/proc/leech_container_active_check(mob/living/basic/blood_worm/leech, obj/item/reagent_containers/target)
+	procstart = null
+	src.procstart = null
 	if (!length(get_blood_in_container(target)))
 		target.balloon_alert(leech, "no more blood!")
 		return FALSE
@@ -247,6 +271,8 @@
 
 /// Returns all of the blood in the given container. Format is "list[reagent_type] = volume"
 /datum/action/cooldown/mob_cooldown/blood_worm/leech/proc/get_blood_in_container(obj/item/reagent_containers/target)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	if (target.reagents.total_volume <= 0)

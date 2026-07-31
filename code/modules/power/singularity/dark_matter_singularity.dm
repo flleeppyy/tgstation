@@ -19,6 +19,8 @@
 	COOLDOWN_DECLARE(initial_explosion_immunity)
 
 /obj/singularity/dark_matter/Initialize(mapload, starting_energy)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	COOLDOWN_START(src, initial_explosion_immunity, 5 SECONDS)
 	var/datum/component/singularity/resolved_singularity = singularity_component.resolve()
@@ -26,6 +28,8 @@
 	addtimer(CALLBACK(src, PROC_REF(normalize_tracking)), 20 SECONDS)
 
 /obj/singularity/dark_matter/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!COOLDOWN_FINISHED(src, initial_explosion_immunity))
 		. += span_warning("Protected by dark matter, [src] seems to be immune to explosions for [DisplayTimeText(COOLDOWN_TIMELEFT(src, initial_explosion_immunity))].")
@@ -42,11 +46,15 @@
 		methods, but received no response.\"</i><br>- Research Director Huey Knorr")
 
 /obj/singularity/dark_matter/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, initial_explosion_immunity))
 		return FALSE
 	return ..()
 
 /obj/singularity/dark_matter/supermatter_upgrade()
+	procstart = null
+	src.procstart = null
 	var/datum/component/singularity/resolved_singularity = singularity_component.resolve()
 	resolved_singularity.chance_to_move_to_target += DARK_MATTER_SUPERMATTER_CHANCE_BONUS
 	name = "Dark Lord Singuloth"
@@ -55,6 +63,8 @@
 
 ///For 20 seconds, the singularity has buffed tracking to ensure it actually makes its way to the station, normalizes after 20 seconds
 /obj/singularity/dark_matter/proc/normalize_tracking()
+	procstart = null
+	src.procstart = null
 	var/datum/component/singularity/resolved_singularity = singularity_component.resolve()
 	resolved_singularity.chance_to_move_to_target = consumed_supermatter ? initial(resolved_singularity.chance_to_move_to_target) + DARK_MATTER_SUPERMATTER_CHANCE_BONUS : initial(resolved_singularity.chance_to_move_to_target)
 

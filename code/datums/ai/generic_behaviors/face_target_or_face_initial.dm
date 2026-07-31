@@ -4,6 +4,8 @@
 	var/target_key = BB_CURRENT_TARGET
 
 /datum/bt_node/ai_behavior/face_target_or_face_initial/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/we = controller.pawn
 	if(!istype(we))
@@ -15,6 +17,8 @@
 	return TRUE
 
 /datum/bt_node/ai_behavior/face_target_or_face_initial/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/we = controller.pawn
 	var/atom/movable/target = controller.blackboard[target_key]
 	if(isnull(target) || get_dist(we, target) > 8)

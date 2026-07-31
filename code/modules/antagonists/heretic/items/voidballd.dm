@@ -7,10 +7,14 @@
 	drop_sound = 'sound/items/handling/materials/glass_drop.ogg'
 
 /obj/item/void_prison/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transform = transform.Scale(0.5)
 
 /obj/item/void_prison/attack_self(mob/living/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -62,6 +66,8 @@
 	var/obj/effect/abstract/voidball/stasis_overlay
 
 /datum/status_effect/void_prison/on_creation(mob/living/new_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	stasis_overlay = new /obj/effect/abstract/voidball(new_owner)
 	RegisterSignal(stasis_overlay, COMSIG_QDELETING, PROC_REF(clear_overlay))
@@ -70,6 +76,8 @@
 	addtimer(CALLBACK(src, PROC_REF(enter_prison), new_owner), 1 SECONDS)
 
 /datum/status_effect/void_prison/on_remove()
+	procstart = null
+	src.procstart = null
 	if(!IS_HERETIC(owner))
 		owner.apply_status_effect(/datum/status_effect/void_chill, 1)
 	if(stasis_overlay)
@@ -87,12 +95,16 @@
 
 ///Freezes our prisoner in place
 /datum/status_effect/void_prison/proc/enter_prison(mob/living/prisoner)
+	procstart = null
+	src.procstart = null
 	stasis_overlay.forceMove(prisoner.loc)
 	prisoner.forceMove(stasis_overlay)
 	prisoner.add_traits(list(TRAIT_GODMODE, TRAIT_NO_TRANSFORM, TRAIT_FORCE_WHISPER), TRAIT_STATUS_EFFECT(id))
 
 ///Makes sure to clear the ref in case the voidball ever suddenly disappears
 /datum/status_effect/void_prison/proc/clear_overlay()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	stasis_overlay = null
 
@@ -105,10 +117,14 @@
 
 ///Plays a opening animation
 /obj/effect/abstract/voidball/proc/animate_opening()
+	procstart = null
+	src.procstart = null
 	flick("voidball_opening", src)
 
 ///Plays a closing animation
 /obj/effect/abstract/voidball/proc/animate_closing()
+	procstart = null
+	src.procstart = null
 	flick("voidball_closing", src)
 
 //---- Screen alert

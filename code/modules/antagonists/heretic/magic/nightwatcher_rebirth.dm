@@ -19,6 +19,8 @@
 	var/victims_counter
 
 /datum/action/cooldown/spell/aoe/fiery_rebirth/before_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & SPELL_CANCEL_CAST)
 		return
@@ -26,10 +28,14 @@
 	return SPELL_NO_IMMEDIATE_COOLDOWN
 
 /datum/action/cooldown/spell/aoe/fiery_rebirth/cast(mob/living/carbon/human/cast_on)
+	procstart = null
+	src.procstart = null
 	cast_on.extinguish_mob()
 	return ..()
 
 /datum/action/cooldown/spell/aoe/fiery_rebirth/get_things_to_cast_on(atom/center)
+	procstart = null
+	src.procstart = null
 	victims_counter = 0
 	var/list/things = list()
 	for(var/mob/living/carbon/nearby_mob in range(aoe_radius, center))
@@ -46,6 +52,8 @@
 	return things
 
 /datum/action/cooldown/spell/aoe/fiery_rebirth/cast_on_thing_in_aoe(mob/living/carbon/victim, mob/living/carbon/human/caster)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/eldritch_smoke(get_turf(victim))
 	victim.Beam(caster, icon_state = "r_beam", time = 2 SECONDS)
 
@@ -67,6 +75,8 @@
 		caster.updatehealth()
 
 /datum/action/cooldown/spell/aoe/fiery_rebirth/after_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!victims_counter)
 		StartCooldown(cooldown_time)

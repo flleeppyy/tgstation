@@ -11,17 +11,23 @@
 	var/obj/machinery/botpad/connected_botpad
 
 /obj/item/botpad_remote/Destroy()
+	procstart = null
+	src.procstart = null
 	if(connected_botpad)
 		connected_botpad.connected_remote = null
 		connected_botpad = null
 	return ..()
 
 /obj/item/botpad_remote/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	playsound(src, SFX_TERMINAL_TYPE, 25, FALSE)
 	try_launch(user)
 	return
 
 /obj/item/botpad_remote/attack_self_secondary(mob/living/user)
+	procstart = null
+	src.procstart = null
 	playsound(src, SFX_TERMINAL_TYPE, 25, FALSE)
 	if(connected_botpad)
 		connected_botpad.recall(user)
@@ -30,6 +36,8 @@
 	return
 
 /obj/item/botpad_remote/multitool_act(mob/living/user, obj/item/multitool/multitool)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(!istype(multitool.buffer, /obj/machinery/botpad))
 		return
@@ -48,6 +56,8 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/item/botpad_remote/proc/try_launch(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!connected_botpad)
 		user?.balloon_alert(user, "no connected pad!")
 		return

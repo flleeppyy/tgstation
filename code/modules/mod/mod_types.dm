@@ -12,6 +12,8 @@
 	var/list/default_pins = list()
 
 /obj/item/mod/control/pre_equipped/Initialize(mapload, new_theme, new_skin, new_core)
+	procstart = null
+	src.procstart = null
 	for(var/module_to_pin in default_pins)
 		default_pins[module_to_pin] = list()
 	new_skin = applied_skin
@@ -25,6 +27,8 @@
 		install(module)
 
 /obj/item/mod/control/pre_equipped/set_wearer(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/item/mod/module/module as anything in modules)
 		if(!default_pins[module.type]) //this module isnt meant to be pinned by default
@@ -35,6 +39,8 @@
 		module.pin(wearer)
 
 /obj/item/mod/control/pre_equipped/uninstall(obj/item/mod/module/old_module, deleting)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_pins -= old_module.type
 
@@ -308,12 +314,16 @@
 /obj/item/mod/control/pre_equipped/nuclear/no_jetpack
 
 /obj/item/mod/control/pre_equipped/nuclear/no_jetpack/Initialize(mapload, new_theme, new_skin, new_core)
+	procstart = null
+	src.procstart = null
 	applied_modules -= list(/obj/item/mod/module/jetpack/advanced, /obj/item/mod/module/jump_jet)
 	return ..()
 
 /obj/item/mod/control/pre_equipped/nuclear/plasmaman
 
 /obj/item/mod/control/pre_equipped/nuclear/plasmaman/Initialize(mapload, new_theme, new_skin, new_core)
+	procstart = null
+	src.procstart = null
 	applied_modules += /obj/item/mod/module/plasma_stabilizer
 	return ..()
 
@@ -377,6 +387,8 @@
 	)
 
 /obj/item/mod/control/pre_equipped/infiltrator/Initialize(mapload, new_theme, new_skin, new_core)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CONTRABAND_BLOCKER, INNATE_TRAIT)
 
@@ -485,6 +497,8 @@
 	var/additional_modules
 
 /obj/item/mod/control/pre_equipped/responsory/Initialize(mapload, new_theme, new_skin, new_core)
+	procstart = null
+	src.procstart = null
 	applied_modules.Insert(1, insignia_type)
 	if(additional_modules)
 		applied_modules += additional_modules

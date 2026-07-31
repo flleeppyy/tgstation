@@ -88,9 +88,13 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 	acid = 30
 
 /obj/machinery/airalarm/get_save_vars()
+	procstart = null
+	src.procstart = null
 	return ..() - NAMEOF(src, name)
 
 /obj/machinery/airalarm/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_wires(new /datum/wires/airalarm(src))
 
@@ -137,6 +141,8 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 	check_enviroment()
 
 /obj/machinery/airalarm/process()
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, warning_cooldown))
 		return
 
@@ -144,6 +150,8 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 	COOLDOWN_START(src, warning_cooldown, AIRALARM_WARNING_COOLDOWN)
 
 /obj/machinery/airalarm/Destroy()
+	procstart = null
+	src.procstart = null
 	if(my_area)
 		my_area = null
 	if(connected_sensor)
@@ -157,6 +165,8 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 	return ..()
 
 /obj/machinery/airalarm/proc/check_enviroment()
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = connected_sensor ? get_turf(connected_sensor) : get_turf(src)
 	var/datum/gas_mixture/environment = our_turf.return_air()
 	if(isnull(environment))
@@ -164,14 +174,20 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 	check_danger(our_turf, environment, environment.temperature)
 
 /obj/machinery/airalarm/proc/get_enviroment()
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = connected_sensor ? get_turf(connected_sensor) : get_turf(src)
 	return our_turf.return_air()
 
 /obj/machinery/airalarm/power_change()
+	procstart = null
+	src.procstart = null
 	check_enviroment()
 	return ..()
 
 /obj/machinery/airalarm/on_enter_area(datum/source, area/area_to_register)
+	procstart = null
+	src.procstart = null
 	//were already registered to an area. exit from here first before entering into an new area
 	if(!isnull(my_area))
 		return
@@ -181,10 +197,14 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 	update_appearance()
 
 /obj/machinery/airalarm/update_name(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[get_area_name(my_area)] Air Alarm"
 
 /obj/machinery/airalarm/on_exit_area(datum/source, area/area_to_unregister)
+	procstart = null
+	src.procstart = null
 	//we cannot unregister from an area we never registered to in the first place
 	if(my_area != area_to_unregister)
 		return
@@ -193,6 +213,8 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 	my_area = connected_sensor ? get_area(connected_sensor) : null
 
 /obj/machinery/airalarm/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(buildstage)
 		if(AIR_ALARM_BUILD_NO_CIRCUIT)
@@ -203,6 +225,8 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 			. += span_notice("Right-click to [locked ? "unlock" : "lock"] the interface.")
 
 /obj/machinery/airalarm/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(HAS_SILICON_ACCESS(user) && aidisabled)
 		to_chat(user, "AI control has been disabled.")
 	else if(!shorted)
@@ -210,6 +234,8 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 	return UI_CLOSE
 
 /obj/machinery/airalarm/multitool_act(mob/living/user, obj/item/multitool/multi_tool)
+	procstart = null
+	src.procstart = null
 	.= ..()
 
 	if (!istype(multi_tool) || locked)
@@ -230,12 +256,16 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/airalarm/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AirAlarm", name)
 		ui.open()
 
 /obj/machinery/airalarm/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["thresholdTypeMap"] = list(
 		"warning_min" = TLV_VAR_WARNING_MIN,
@@ -247,6 +277,8 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 	return data
 
 /obj/machinery/airalarm/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/data = list()
 
 	data["locked"] = locked
@@ -363,6 +395,8 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 	return data
 
 /obj/machinery/airalarm/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(. || buildstage != AIR_ALARM_BUILD_COMPLETE)
@@ -521,6 +555,8 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 	return TRUE
 
 /obj/machinery/airalarm/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(panel_open || (machine_stat & (NOPOWER|BROKEN)) || shorted)
@@ -538,6 +574,8 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 	set_light(1.5, 1, color)
 
 /obj/machinery/airalarm/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		switch(buildstage)
 			if(AIR_ALARM_BUILD_COMPLETE)
@@ -552,6 +590,8 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 	return ..()
 
 /obj/machinery/airalarm/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(panel_open || (machine_stat & (NOPOWER|BROKEN)) || shorted)
@@ -571,6 +611,8 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 /// Check the current air and update our danger level.
 /// [/obj/machinery/airalarm/var/danger_level]
 /obj/machinery/airalarm/proc/check_danger(turf/location, datum/gas_mixture/environment, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if((machine_stat & (NOPOWER|BROKEN)) || shorted)
 		return
@@ -639,6 +681,8 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 	selected_mode.replace(my_area, pressure)
 
 /obj/machinery/airalarm/proc/select_mode(atom/source, datum/air_alarm_mode/mode_path, should_apply = TRUE)
+	procstart = null
+	src.procstart = null
 	var/datum/air_alarm_mode/new_mode = GLOB.air_alarm_modes[mode_path]
 	if(!new_mode)
 		return
@@ -652,6 +696,8 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 27)
 
 /obj/machinery/airalarm/proc/speak(warning_message)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (BROKEN|NOPOWER))
 		return
 	if(!speaker_enabled)
@@ -663,18 +709,26 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 27)
 
 /// Used for unlocked air alarm helper, which unlocks the air alarm.
 /obj/machinery/airalarm/proc/unlock()
+	procstart = null
+	src.procstart = null
 	locked = FALSE
 
 /// Used for syndicate_access air alarm helper, which sets air alarm's required access to syndicate_access.
 /obj/machinery/airalarm/proc/give_syndicate_access()
+	procstart = null
+	src.procstart = null
 	req_access = list(ACCESS_SYNDICATE)
 
 ///Used for away_general_access air alarm helper, which set air alarm's required access to away_general_access.
 /obj/machinery/airalarm/proc/give_away_general_access()
+	procstart = null
+	src.procstart = null
 	req_access = list(ACCESS_AWAY_GENERAL)
 
 ///Used for engine_access air alarm helper, which set air alarm's required access to away_general_access.
 /obj/machinery/airalarm/proc/give_engine_access()
+	procstart = null
+	src.procstart = null
 	name = "engine air alarm"
 	locked = FALSE
 	req_access = null
@@ -682,6 +736,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 27)
 
 ///Used for mixingchamber_access air alarm helper, which set air alarm's required access to away_general_access.
 /obj/machinery/airalarm/proc/give_mixingchamber_access()
+	procstart = null
+	src.procstart = null
 	name = "chamber air alarm"
 	locked = FALSE
 	req_access = null
@@ -689,6 +745,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 27)
 
 ///Used for all_access air alarm helper, which set air alarm's required access to null.
 /obj/machinery/airalarm/proc/give_all_access()
+	procstart = null
+	src.procstart = null
 	name = "all-access air alarm"
 	desc = "This particular atmos control unit appears to have no access restrictions."
 	locked = FALSE
@@ -697,15 +755,21 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 27)
 
 ///Used for air alarm cold room tlv helper, which sets cold room temperature and pressure alarm thresholds
 /obj/machinery/airalarm/proc/set_tlv_cold_room()
+	procstart = null
+	src.procstart = null
 	tlv_collection["temperature"] = new /datum/tlv/cold_room_temperature
 	tlv_collection["pressure"] = new /datum/tlv/cold_room_pressure
 
 ///Used for air alarm kitchen tlv helper, which ensures that kitchen air alarm doesn't trigger from cold room air
 /obj/machinery/airalarm/proc/set_tlv_kitchen()
+	procstart = null
+	src.procstart = null
 	tlv_collection["temperature"] = new /datum/tlv/kitchen_temperature
 
 ///Used for air alarm no tlv helper, which removes alarm thresholds
 /obj/machinery/airalarm/proc/set_tlv_no_checks()
+	procstart = null
+	src.procstart = null
 	tlv_collection["temperature"] = new /datum/tlv/no_checks
 	tlv_collection["pressure"] = new /datum/tlv/no_checks
 
@@ -714,6 +778,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 27)
 
 ///Used for air alarm link helper, which connects air alarm to a sensor with corresponding chamber_id
 /obj/machinery/airalarm/proc/setup_chamber_link()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/air_sensor/sensor = null
 	for(var/obj/machinery/air_sensor/target as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/air_sensor))
 		if(target.z == z && target.chamber_id == air_sensor_chamber_id)
@@ -729,6 +795,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 27)
 
 ///Used to connect air alarm with a sensor
 /obj/machinery/airalarm/proc/connect_sensor(obj/machinery/air_sensor/sensor)
+	procstart = null
+	src.procstart = null
 	sensor.connected_airalarm = src
 	connected_sensor = sensor
 
@@ -747,6 +815,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 27)
 
 ///Used to reset the air alarm to default configuration after disconnecting from air sensor
 /obj/machinery/airalarm/proc/disconnect_sensor()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(connected_sensor, COMSIG_QDELETING)
 
 	// Transfer signal from sensor to air alarm

@@ -22,17 +22,23 @@
 	var/atom/movable/screen/action_landing/landing
 
 /datum/action_group/New(datum/hud/owner)
+	procstart = null
+	src.procstart = null
 	..()
 	actions = list()
 	src.owner = owner
 
 /datum/action_group/Destroy()
+	procstart = null
+	src.procstart = null
 	owner = null
 	QDEL_NULL(landing)
 	QDEL_LIST(actions)
 	return ..()
 
 /datum/action_group/proc/insert_action(atom/movable/screen/action, index)
+	procstart = null
+	src.procstart = null
 	if(action in actions)
 		if(actions[index] == action)
 			return
@@ -44,10 +50,14 @@
 	refresh_actions()
 
 /datum/action_group/proc/remove_action(atom/movable/screen/action)
+	procstart = null
+	src.procstart = null
 	actions -= action
 	refresh_actions()
 
 /datum/action_group/proc/refresh_actions()
+	procstart = null
+	src.procstart = null
 
 	// We don't use size() here because landings are not canon
 	var/total_rows = ROUND_UP(length(actions) / column_max)
@@ -67,6 +77,8 @@
 
 /// Accepts a number represeting our position in the group, indexes at 0 to make the math nicer
 /datum/action_group/proc/ButtonNumberToScreenCoords(number, landing = FALSE)
+	procstart = null
+	src.procstart = null
 	var/row = round(number / column_max)
 	row -= row_offset // If you're less then 0, you don't get to render, this lets us "scroll" rows ya feel?
 	if(row < 0)
@@ -92,6 +104,8 @@
 	return "WEST[coord_col]:[coord_col_offset],NORTH[coord_row]:-[pixel_north_offset]"
 
 /datum/action_group/proc/check_against_view()
+	procstart = null
+	src.procstart = null
 	var/owner_view = owner?.mymob?.canon_client?.view
 	if(!owner_view)
 		return
@@ -117,16 +131,22 @@
 
 /// Returns the amount of objects we're storing at the moment
 /datum/action_group/proc/size()
+	procstart = null
+	src.procstart = null
 	var/amount = length(actions)
 	if(landing)
 		amount += 1
 	return amount
 
 /datum/action_group/proc/index_of(atom/movable/screen/get_location)
+	procstart = null
+	src.procstart = null
 	return actions.Find(get_location)
 
 /// Generates a landing object that can be dropped on to join this group
 /datum/action_group/proc/generate_landing()
+	procstart = null
+	src.procstart = null
 	if(landing)
 		return
 	landing = new()
@@ -135,14 +155,20 @@
 
 /// Clears any landing objects we may currently have
 /datum/action_group/proc/clear_landing()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(landing)
 
 /datum/action_group/proc/update_landing()
+	procstart = null
+	src.procstart = null
 	if(!landing)
 		return
 	landing.refresh_owner()
 
 /datum/action_group/proc/scroll(amount)
+	procstart = null
+	src.procstart = null
 	row_offset += amount
 	refresh_actions()
 
@@ -153,11 +179,15 @@
 	location = SCRN_OBJ_IN_PALETTE
 
 /datum/action_group/palette/insert_action(atom/movable/screen/action, index)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/movable/screen/button_palette/palette = owner.screen_objects[HUD_MOB_TOGGLE_PALETTE]
 	palette.play_item_added()
 
 /datum/action_group/palette/remove_action(atom/movable/screen/action)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/movable/screen/button_palette/palette = owner.screen_objects[HUD_MOB_TOGGLE_PALETTE]
 	palette.play_item_removed()
@@ -165,6 +195,8 @@
 		palette.set_expanded(FALSE)
 
 /datum/action_group/palette/refresh_actions()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/screen/button_palette/palette = owner.screen_objects[HUD_MOB_TOGGLE_PALETTE]
 	var/atom/movable/screen/palette_scroll/scroll_down = owner.screen_objects[HUD_MOB_PALETTE_DOWN]
 	var/atom/movable/screen/palette_scroll/scroll_up = owner.screen_objects[HUD_MOB_PALETTE_UP]
@@ -188,6 +220,8 @@
 	return ..()
 
 /datum/action_group/palette/ButtonNumberToScreenCoords(number, landing)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/screen/button_palette/palette = owner.screen_objects[HUD_MOB_TOGGLE_PALETTE]
 	if(palette.expanded)
 		return ..()
@@ -205,5 +239,7 @@
 	location = SCRN_OBJ_IN_LIST
 
 /datum/action_group/listed/refresh_actions()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner?.palette_actions.refresh_actions() // We effect them, so we gotta refresh em

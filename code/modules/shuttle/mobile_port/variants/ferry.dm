@@ -9,15 +9,21 @@
 	var/allow_emag = FALSE
 
 /obj/machinery/computer/shuttle/ferry/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(!allow_emag)
 		balloon_alert(user, "firewall too powerful!")
 		return FALSE
 	return ..()
 
 /obj/machinery/computer/shuttle/ferry/attack_ai()
+	procstart = null
+	src.procstart = null
 	return allow_silicons ? ..() : FALSE
 
 /obj/machinery/computer/shuttle/ferry/attack_robot()
+	procstart = null
+	src.procstart = null
 	return allow_silicons ? ..() : FALSE
 
 /obj/machinery/computer/shuttle/ferry/request

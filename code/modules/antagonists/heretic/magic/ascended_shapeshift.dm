@@ -16,6 +16,8 @@
 	)
 
 /datum/action/cooldown/spell/shapeshift/eldritch/ascension/do_shapeshift(mob/living/caster)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -31,5 +33,7 @@
 	monster.AddElement(/datum/element/wall_tearer)
 
 /datum/action/cooldown/spell/shapeshift/eldritch/ascension/do_unshapeshift(mob/living/caster)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	shapeshift_type = null //pick another loser

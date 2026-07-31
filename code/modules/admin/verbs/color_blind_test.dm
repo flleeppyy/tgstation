@@ -23,21 +23,29 @@
 	var/selected_type = ""
 
 /datum/colorblind_tester/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_DEBUG)
 
 /datum/colorblind_tester/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ColorBlindTester")
 		ui.open()
 
 /datum/colorblind_tester/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["details"] = descriptions
 	data["selected"] = selected_type
 	return data
 
 /datum/colorblind_tester/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -55,6 +63,8 @@
 			return TRUE
 
 /datum/colorblind_tester/proc/set_selected_type(selected, datum/hud/remove_from)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/plane_master_controller/colorblind_planes = remove_from.plane_master_controllers[PLANE_MASTERS_COLORBLIND]
 	// This is dumb, but well
 	// The parralax plane has a blend mode of 4, or BLEND_MULTIPLY

@@ -60,13 +60,19 @@
 	var/bluespace_toggle = FALSE
 
 /obj/item/lightreplacer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += status_string()
 
 /obj/item/lightreplacer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return do_action(interacting_with, user) ? ITEM_INTERACT_SUCCESS : NONE
 
 /obj/item/lightreplacer/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// has no bluespace capabilities
 	if(!bluespace_toggle)
 		return NONE
@@ -78,6 +84,8 @@
 	return do_action(interacting_with, user) ? ITEM_INTERACT_SUCCESS : NONE
 
 /obj/item/lightreplacer/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(uses >= max_uses)
 		user.balloon_alert(user, "already full!")
 		return ITEM_INTERACT_BLOCKING
@@ -155,6 +163,8 @@
 	return NONE
 
 /obj/item/lightreplacer/proc/attempt_insert_shard(mob/living/user, obj/item/shard/tool)
+	procstart = null
+	src.procstart = null
 	if(tool.type != /obj/item/shard) //we don't want to insert plasma, titanium or other types of shards
 		user.balloon_alert(user, "too impure!")
 		return ITEM_INTERACT_BLOCKING
@@ -169,6 +179,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/lightreplacer/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -178,14 +190,20 @@
 	return FALSE
 
 /obj/item/lightreplacer/update_name(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = (obj_flags & EMAGGED) ? "shortcircuited [initial(name)]" : initial(name)
 
 /obj/item/lightreplacer/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)][(obj_flags & EMAGGED ? "-emagged" : "")]"
 	return ..()
 
 /obj/item/lightreplacer/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	if(vname == NAMEOF(src, obj_flags))
 		update_appearance()
 	else if(vname == NAMEOF(src, uses))
@@ -206,6 +224,8 @@
 	return ..()
 
 /obj/item/lightreplacer/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/on_a_light = FALSE //For if we are on the same tile as a light when we do this
 	for(var/obj/machinery/light/target in user.loc)
 		replace_light(target, user)
@@ -221,6 +241,8 @@
  * returns TRUE if the target was valid[light, floodlight or turf] regardless if any light's were fixed or not
  */
 /obj/item/lightreplacer/proc/do_action(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	// if we are attacking an light fixture then replace it directly
 	if(istype(target, /obj/machinery/light))
 		if(replace_light(target, user) && bluespace_toggle)
@@ -254,9 +276,13 @@
 	return FALSE
 
 /obj/item/lightreplacer/proc/status_string()
+	procstart = null
+	src.procstart = null
 	return "It has [uses] light\s remaining (plus [bulb_shards]/[BULB_SHARDS_REQUIRED] fragment\s)."
 
 /obj/item/lightreplacer/proc/Use(mob/user)
+	procstart = null
+	src.procstart = null
 	if(uses <= 0)
 		return FALSE
 
@@ -268,9 +294,13 @@
 
 // Negative numbers will subtract
 /obj/item/lightreplacer/proc/add_uses(amount = 1)
+	procstart = null
+	src.procstart = null
 	uses = clamp(uses + amount, 0, max_uses)
 
 /obj/item/lightreplacer/proc/add_shard(user)
+	procstart = null
+	src.procstart = null
 	bulb_shards += 1
 	if(bulb_shards >= BULB_SHARDS_REQUIRED)
 		bulb_shards = 0
@@ -282,6 +312,8 @@
 
 #define LIGHT_CHARGE_COEFF 30000
 /obj/item/lightreplacer/proc/Charge(mob/user, coeff)
+	procstart = null
+	src.procstart = null
 	charge += coeff
 	if(charge > LIGHT_CHARGE_COEFF)
 		add_uses(floor(charge / LIGHT_CHARGE_COEFF))
@@ -290,6 +322,8 @@
 #undef LIGHT_CHARGE_COEFF
 
 /obj/item/lightreplacer/proc/replace_light(obj/machinery/light/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	//Confirm that it's a light we're testing, because afterattack runs this for everything on a given turf and will runtime
 	if(!istype(target))
 		return FALSE
@@ -344,9 +378,13 @@
 	COOLDOWN_DECLARE(lightreplacer_spot_cooldown)
 
 /obj/item/lightreplacer/blue/emag_act()
+	procstart = null
+	src.procstart = null
 	return FALSE  // balancing against longrange explosions
 
 /obj/item/lightreplacer/blue/ui_action_click(mob/user, actiontype)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, lightreplacer_spot_cooldown))
 		balloon_alert(user, "on cooldown!")
 		return
@@ -355,6 +393,8 @@
 
 /// Scans the area in search of fixtures with broken bulbs in the BLIGHTREPLACER_SPOT_RANGE range, and also marks them with the blue_firefly effect.
 /obj/item/lightreplacer/blue/proc/lightreplacer_scan()
+	procstart = null
+	src.procstart = null
 	var/turf/source_turf = get_turf(src)
 	for(var/obj/machinery/light/broken_light in dview(BLIGHTREPLACER_SPOT_RANGE, source_turf))
 		if(broken_light.status == LIGHT_OK)
@@ -376,10 +416,14 @@
 	duration = BLIGHTREPLACER_SPOT_LIFE
 
 /obj/effect/temp_visual/blue_firefly/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/effect/temp_visual/blue_firefly/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance(icon, icon_state, src, alpha = src.alpha)
 

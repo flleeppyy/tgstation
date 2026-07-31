@@ -8,6 +8,8 @@
 	var/bonus_damage
 
 /datum/element/tiny_mob_hunter/Attach(datum/target, target_size = MOB_SIZE_TINY, bonus_damage = 10)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isanimal_or_basicmob(target)) // No post-attack signal for carbons, you can add one if you really want to put this on one
 		return ELEMENT_INCOMPATIBLE
@@ -17,11 +19,15 @@
 	RegisterSignal(target, COMSIG_HOSTILE_POST_ATTACKINGTARGET, PROC_REF(on_attacked_target))
 
 /datum/element/tiny_mob_hunter/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, COMSIG_HOSTILE_POST_ATTACKINGTARGET)
 	return ..()
 
 /// Applies a bonus following the attack
 /datum/element/tiny_mob_hunter/proc/on_attacked_target(mob/living/hunter, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!isliving(target))
 		return

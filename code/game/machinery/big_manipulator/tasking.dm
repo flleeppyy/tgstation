@@ -3,10 +3,14 @@
 
 /// Returns the next task to run, or null if nothing is available.
 /datum/tasking_strategy/proc/get_next_task(list/tasks)
+	procstart = null
+	src.procstart = null
 	return null
 
 /// Picks a next candidate from a list of eligible atoms.
 /datum/tasking_strategy/proc/get_next_candidate(list/candidates)
+	procstart = null
+	src.procstart = null
 	if(!length(candidates))
 		return null
 	return candidates[1]
@@ -17,6 +21,8 @@
 	var/candidate_index = 1
 
 /datum/tasking_strategy/sequential/get_next_task(list/tasks, obj/machinery/big_manipulator/manipulator)
+	procstart = null
+	src.procstart = null
 	if(!length(tasks))
 		return null
 	if(current_index < 1 || current_index > length(tasks))
@@ -33,6 +39,8 @@
 			return null
 
 /datum/tasking_strategy/sequential/get_next_candidate(list/candidates)
+	procstart = null
+	src.procstart = null
 	if(!length(candidates))
 		return null
 	if(candidate_index < 1 || candidate_index > length(candidates))
@@ -49,6 +57,8 @@
 	var/candidate_index = 1
 
 /datum/tasking_strategy/strict/get_next_task(list/tasks, obj/machinery/big_manipulator/manipulator)
+	procstart = null
+	src.procstart = null
 	if(!length(tasks))
 		return null
 	if(current_index < 1 || current_index > length(tasks))
@@ -62,6 +72,8 @@
 	return task
 
 /datum/tasking_strategy/strict/get_next_candidate(list/candidates)
+	procstart = null
+	src.procstart = null
 	if(!length(candidates))
 		return null
 	if(candidate_index < 1 || candidate_index > length(candidates))

@@ -4,10 +4,14 @@
 	holder_type = /obj/machinery/power/shieldwallgen
 
 /datum/wires/shieldwallgen/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(WIRE_ACTIVATE)
 	..()
 
 /datum/wires/shieldwallgen/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/power/shieldwallgen/generator = holder
 	if(generator.anchored && generator.powernet)
 		generator.active = generator.active ? FALSE : TRUE //shield gens use some silly defines here but its usually just a true or false

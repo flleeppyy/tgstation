@@ -27,10 +27,14 @@
 	var/max_range = 7
 
 /obj/item/circuit_component/direction/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("Maximum Range: [max_range] tiles", "orange", "info")
 
 /obj/item/circuit_component/direction/populate_ports()
+	procstart = null
+	src.procstart = null
 	input_port = add_input_port("Targeted Entity", PORT_TYPE_ATOM)
 
 	output = add_output_port("Direction", PORT_TYPE_STRING)
@@ -42,6 +46,8 @@
 	west = add_output_port("West", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/direction/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 
 	var/atom/object = input_port.value
 	if(!object)

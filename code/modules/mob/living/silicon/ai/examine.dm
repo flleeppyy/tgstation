@@ -1,4 +1,6 @@
 /mob/living/silicon/ai/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(stat == DEAD)
 		. += span_warning("[p_They()] appear[p_s()] to be non functional.")

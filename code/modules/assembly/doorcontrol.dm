@@ -16,16 +16,22 @@
 	var/copyable = FALSE
 
 /obj/item/assembly/control/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/item/assembly/control/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(istype(held_item, type) && copyable)
 		context[SCREENTIP_CONTEXT_LMB] = "Copy ID"
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/assembly/control/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(generically_adjustable)
 		. += span_notice("You can use a [EXAMINE_HINT("multitool")] to adjust its ID.")
@@ -40,6 +46,8 @@
 		. += span_notice("Its channel ID is '[id]'.")
 
 /obj/item/assembly/control/multitool_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!generically_adjustable)
 		return
 
@@ -50,6 +58,8 @@
 	to_chat(user, span_notice("You change the ID to [id]."))
 
 /obj/item/assembly/control/interact_with_atom(obj/item/assembly/control/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(!copyable)
 		return
@@ -65,11 +75,15 @@
 	copyable = TRUE
 
 /obj/item/assembly/control/blast_door/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(id && id == -1)
 		. += span_notice("Interact with a blast door or shutter to generate a new ID")
 
 /obj/item/assembly/control/blast_door/multitool_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/list/door_ids = list()
 	var/list/display_ids = list("UNIQUE")
 	for(var/obj/machinery/door/poddoor/M as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/door/poddoor))
@@ -101,6 +115,8 @@
 		to_chat(user, span_notice("You now must interact with a pod door to generate a unique ID."))
 
 /obj/item/assembly/control/blast_door/activate()
+	procstart = null
+	src.procstart = null
 	var/openclose
 	if(cooldown)
 		return
@@ -117,6 +133,8 @@
 	desc = "A small electronic device able to control a mechanical curtain remotely."
 
 /obj/item/assembly/control/curtain/activate()
+	procstart = null
+	src.procstart = null
 	var/openclose
 	if(cooldown)
 		return
@@ -143,6 +161,8 @@
 	*/
 
 /obj/item/assembly/control/airlock/activate()
+	procstart = null
+	src.procstart = null
 	if(cooldown)
 		return
 	cooldown = TRUE
@@ -182,6 +202,8 @@
 	desc = "A small electronic device able to control a mass driver."
 
 /obj/item/assembly/control/massdriver/activate()
+	procstart = null
+	src.procstart = null
 	if(cooldown)
 		return
 	cooldown = TRUE
@@ -192,6 +214,8 @@
 	addtimer(CALLBACK(src, PROC_REF(activate_stage2)), 1 SECONDS)
 
 /obj/item/assembly/control/massdriver/proc/activate_stage2()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/mass_driver/M as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/mass_driver))
 		if(M.id == src.id)
 			M.drive()
@@ -199,6 +223,8 @@
 	addtimer(CALLBACK(src, PROC_REF(activate_stage3)), 6 SECONDS)
 
 /obj/item/assembly/control/massdriver/proc/activate_stage3()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/door/poddoor/M as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/door/poddoor))
 		if (M.id == src.id)
 			INVOKE_ASYNC(M, TYPE_PROC_REF(/obj/machinery/door/poddoor, close))
@@ -214,6 +240,8 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 0.5)
 
 /obj/item/assembly/control/igniter/activate()
+	procstart = null
+	src.procstart = null
 	if(cooldown)
 		return
 	cooldown = TRUE
@@ -232,6 +260,8 @@
 	desc = "A remote controller for a mounted flasher."
 
 /obj/item/assembly/control/flasher/activate()
+	procstart = null
+	src.procstart = null
 	if(cooldown)
 		return
 	cooldown = TRUE
@@ -247,6 +277,8 @@
 	desc = "An evil-looking remote controller for a crematorium."
 
 /obj/item/assembly/control/crematorium/activate()
+	procstart = null
+	src.procstart = null
 	if(cooldown)
 		return
 	cooldown = TRUE

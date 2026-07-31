@@ -15,6 +15,8 @@
 	var/extra_damage_type = BRUTE
 
 /obj/projectile/bullet/junk/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isliving(target))
@@ -52,6 +54,8 @@
 	inject_flags = INJECT_CHECK_PENETRATE_THICK // Fuck your modsuit.
 
 /obj/projectile/bullet/dart/ants/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent(/datum/reagent/ants, damage) // Get fucked, asshole. Ants.
 
@@ -70,6 +74,8 @@
 	extra_damage_type = BURN
 
 /obj/projectile/bullet/junk/shock/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(target))
 		var/mob/living/victim = target

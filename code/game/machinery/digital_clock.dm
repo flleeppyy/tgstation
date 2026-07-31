@@ -21,6 +21,8 @@
 	pixel_shift = 28
 
 /obj/machinery/digital_clock/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	balloon_alert(user, "[anchored ? "un" : ""]securing...")
 	tool.play_tool_sound(src)
@@ -31,6 +33,8 @@
 		return TRUE
 
 /obj/machinery/digital_clock/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return
 	if(atom_integrity >= max_integrity)
@@ -46,6 +50,8 @@
 	return TRUE
 
 /obj/machinery/digital_clock/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return
 	if(!(obj_flags & EMAGGED))
@@ -59,6 +65,8 @@
 		return TRUE
 
 /obj/machinery/digital_clock/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	playsound(src, SFX_SPARKS, 100, vary = TRUE, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
@@ -67,10 +75,14 @@
 	return TRUE
 
 /obj/machinery/digital_clock/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	emag_act()
 
 /obj/machinery/digital_clock/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	if(disassembled)
 		new /obj/item/wallframe/digital_clock(drop_location())
 	else
@@ -79,18 +91,24 @@
 		new /obj/item/shard(drop_location())
 
 /obj/machinery/digital_clock/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		find_and_mount_on_atom()
 	AddElement(/datum/element/beauty, 200)
 
 /obj/machinery/digital_clock/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & NOPOWER)
 		return
 	update_appearance()
 
 
 /obj/machinery/digital_clock/update_appearance(updates=ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & (NOPOWER|BROKEN))
 		set_light(0)
@@ -98,6 +116,8 @@
 	set_light(l_range = 1.5, l_power = 0.7, l_color = LIGHT_COLOR_BLUE) // blue light
 
 /obj/machinery/digital_clock/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(machine_stat & (NOPOWER|BROKEN))
@@ -106,6 +126,8 @@
 	return .
 
 /obj/machinery/digital_clock/proc/update_time()
+	procstart = null
+	src.procstart = null
 	var/station_minutes
 	if(obj_flags & EMAGGED)
 		station_minutes = rand(0, 99)

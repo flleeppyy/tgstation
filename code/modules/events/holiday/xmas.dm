@@ -8,6 +8,8 @@
 	var/cracked = FALSE
 
 /obj/item/toy/xmas_cracker/attack(mob/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if( !cracked && ishuman(target) && (!IS_UNCONSCIOUS_OR_CRIT(target)) && !target.get_active_held_item() )
 		target.visible_message(span_notice("[user] and [target] pop \an [src]! *pop*"), span_notice("You pull \an [src] with [target]! *pop*"), span_hear("You hear a pop."))
 		var/obj/item/paper/joke_paper = new /obj/item/paper(user.loc)
@@ -56,6 +58,8 @@
 	var/christmas_tree = /obj/structure/flora/tree/pine/xmas/presents
 
 /obj/effect/spawner/xmastree/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(check_holidays(CHRISTMAS) && christmas_tree)
 		new christmas_tree(get_turf(src))
@@ -82,9 +86,13 @@
 	var/mob/living/carbon/human/santa //who is our santa?
 
 /datum/round_event/ghost_role/santa/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("Santa is coming to town!", "Unknown Transmission")
 
 /datum/round_event/ghost_role/santa/start()
+	procstart = null
+	src.procstart = null
 	var/mob/chosen_one = SSpolling.poll_ghost_candidates("Santa is coming to town! Do you want to be [span_notice("Santa")]?", poll_time = 15 SECONDS, alert_pic = /obj/item/clothing/head/costume/santa, role_name_text = "Santa", amount_to_pick = 1)
 	if(isnull(chosen_one))
 		return NOT_ENOUGH_PLAYERS

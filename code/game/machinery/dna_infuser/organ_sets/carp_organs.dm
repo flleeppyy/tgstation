@@ -31,6 +31,8 @@
 	organ_traits = list(TRAIT_NODROWN, TRAIT_NO_BREATHLESS_DAMAGE)
 
 /obj/item/organ/lungs/carp/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_Their neck has odd gills.", BODY_ZONE_HEAD)
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/carp)
@@ -49,11 +51,15 @@
 	greyscale_colors = CARP_COLORS
 
 /obj/item/organ/tongue/carp/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_Their teeth are big and sharp.", BODY_ZONE_PRECISE_MOUTH)
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/carp)
 
 /obj/item/organ/tongue/carp/on_mob_insert(mob/living/carbon/tongue_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(tongue_owner))
 		return
@@ -64,6 +70,8 @@
 	rec_species.update_no_equip_flags(tongue_owner, rec_species.no_equip_flags | ITEM_SLOT_MASK)
 
 /obj/item/organ/tongue/carp/on_bodypart_insert(obj/item/bodypart/head)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	head.unarmed_damage_low = 10
 	head.unarmed_damage_high = 15
@@ -72,6 +80,8 @@
 	head.unarmed_sharpness = SHARP_POINTY
 
 /obj/item/organ/tongue/carp/on_mob_remove(mob/living/carbon/tongue_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(tongue_owner))
 		return
@@ -82,6 +92,8 @@
 	rec_species.update_no_equip_flags(tongue_owner, initial(rec_species.no_equip_flags))
 
 /obj/item/organ/tongue/carp/on_bodypart_remove(obj/item/bodypart/head)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	head.unarmed_damage_low = initial(head.unarmed_damage_low)
 	head.unarmed_damage_high = initial(head.unarmed_damage_high)
@@ -90,6 +102,8 @@
 	head.unarmed_sharpness = initial(head.unarmed_sharpness)
 
 /obj/item/organ/tongue/carp/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_UNCONSCIOUS_OR_CRIT(owner) || !prob(0.1))
 		return
@@ -99,6 +113,8 @@
 		new /obj/item/knife/carp(tooth_fairy)
 
 /obj/item/organ/tongue/carp/get_possible_languages()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += /datum/language/carptongue
 
@@ -128,28 +144,40 @@
 	var/cooldown_time = 10 MINUTES
 
 /obj/item/organ/brain/carp/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/carp)
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_They seem%PRONOUN_s unable to stay still.")
 
 /obj/item/organ/brain/carp/on_mob_insert(mob/living/carbon/brain_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cooldown_timer = addtimer(CALLBACK(src, PROC_REF(unsatisfied_nomad)), cooldown_time, TIMER_STOPPABLE|TIMER_OVERRIDE|TIMER_UNIQUE)
 	RegisterSignal(brain_owner, COMSIG_MOVABLE_Z_CHANGED, PROC_REF(satisfied_nomad))
 
 //technically you could get around the mood issue by extracting and reimplanting the brain but it will be far easier to just go one z there and back
 /obj/item/organ/brain/carp/on_mob_remove(mob/living/carbon/brain_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(brain_owner, COMSIG_MOVABLE_Z_CHANGED)
 	deltimer(cooldown_timer)
 
 /obj/item/organ/brain/carp/get_attacking_limb(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	return owner.get_bodypart(BODY_ZONE_HEAD)
 
 /obj/item/organ/brain/carp/proc/unsatisfied_nomad()
+	procstart = null
+	src.procstart = null
 	owner.add_mood_event("nomad", /datum/mood_event/unsatisfied_nomad)
 
 /obj/item/organ/brain/carp/proc/satisfied_nomad()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	owner.clear_mood_event("nomad")
 	cooldown_timer = addtimer(CALLBACK(src, PROC_REF(unsatisfied_nomad)), cooldown_time, TIMER_STOPPABLE|TIMER_OVERRIDE|TIMER_UNIQUE)
@@ -168,6 +196,8 @@
 	organ_traits = list(TRAIT_RESISTCOLD, TRAIT_RESISTLOWPRESSURE)
 
 /obj/item/organ/heart/carp/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_Their skin has small patches of scales growing on it.", BODY_ZONE_CHEST)
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/carp)

@@ -58,6 +58,8 @@ GLOBAL_LIST_INIT(available_depts, list(SEC_DEPT_ENGINEERING, SEC_DEPT_MEDICAL, S
 GLOBAL_LIST_EMPTY(security_officer_distribution)
 
 /datum/job/security_officer/after_spawn(mob/living/spawned, client/player_client)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(spawned) || !prob(PIG_COP_PROBABILITY))
 		return
@@ -73,12 +75,16 @@ GLOBAL_LIST_EMPTY(security_officer_distribution)
 		ham.butcher_drops = string_list(ham.butcher_drops)
 
 /datum/job/security_officer/after_roundstart_spawn(mob/living/spawning, client/player_client)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ishuman(spawning))
 		setup_department(spawning, player_client, move_to = TRUE)
 
 
 /datum/job/security_officer/after_latejoin_spawn(mob/living/spawning)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ishuman(spawning))
 		var/department = setup_department(spawning, spawning.client)
@@ -88,6 +94,8 @@ GLOBAL_LIST_EMPTY(security_officer_distribution)
 
 /// Returns the department this mob was assigned to, if any.
 /datum/job/security_officer/proc/setup_department(mob/living/carbon/human/spawning, client/player_client, move_to = FALSE)
+	procstart = null
+	src.procstart = null
 	var/department = player_client?.prefs?.read_preference(/datum/preference/choiced/security_department)
 	if (!isnull(department))
 		department = get_my_department(spawning, department)
@@ -214,6 +222,8 @@ GLOBAL_LIST_EMPTY(security_officer_distribution)
 	signal.send_to_receivers()
 
 /datum/job/security_officer/proc/get_my_department(mob/character, preferred_department)
+	procstart = null
+	src.procstart = null
 	var/department = GLOB.security_officer_distribution[REF(character)]
 
 	// This passes when they are a round start security officer.
@@ -270,6 +280,8 @@ GLOBAL_LIST_EMPTY(security_officer_distribution)
 	internals_slot = ITEM_SLOT_SUITSTORE
 
 /obj/item/radio/headset/headset_sec/alt/department/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_wires(new/datum/wires/radio(src))
 
@@ -291,6 +303,8 @@ GLOBAL_LIST_EMPTY(security_officer_distribution)
 /// Returns the distribution of splitting the given security officers into departments.
 /// Return value is an assoc list of candidate => SEC_DEPT_*.
 /proc/get_officer_departments(list/preferences, list/departments)
+	procstart = null
+	src.procstart = null
 	if (!preferences.len)
 		return list()
 
@@ -443,6 +457,8 @@ GLOBAL_LIST_EMPTY(security_officer_distribution)
 	return selection
 
 /proc/get_distribution(candidates, departments)
+	procstart = null
+	src.procstart = null
 	var/number_of_twos = min(departments, round(candidates / 2))
 	var/redistribute = candidates - (2 * number_of_twos)
 

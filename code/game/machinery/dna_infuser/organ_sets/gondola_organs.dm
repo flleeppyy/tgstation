@@ -30,12 +30,16 @@ Fluoride Stare: After someone says 5 words, blah blah blah...
 	var/list/factions_to_remove
 
 /obj/item/organ/heart/gondola/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/gondola)
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_They radiate%PRONOUN_s an aura of serenity.")
 	AddElement(/datum/element/update_icon_blocker)
 
 /obj/item/organ/heart/gondola/on_mob_insert(mob/living/carbon/receiver, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!receiver.has_faction(FACTION_HOSTILE))
 		LAZYADD(factions_to_remove, FACTION_HOSTILE)
@@ -44,6 +48,8 @@ Fluoride Stare: After someone says 5 words, blah blah blah...
 	receiver.add_faction(list(FACTION_HOSTILE, FACTION_MINING))
 
 /obj/item/organ/heart/gondola/on_mob_remove(mob/living/carbon/heartless, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(LAZYLEN(factions_to_remove))
 		heartless.remove_faction(factions_to_remove)
@@ -61,15 +67,21 @@ Fluoride Stare: After someone says 5 words, blah blah blah...
 	organ_traits = list(TRAIT_MUTE)
 
 /obj/item/organ/tongue/gondola/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_Their mouth is permanently affixed into a relaxed smile.", BODY_ZONE_PRECISE_MOUTH)
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/gondola)
 
 /obj/item/organ/tongue/gondola/on_mob_insert(mob/living/carbon/tongue_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tongue_owner.add_mood_event("gondola_zen", /datum/mood_event/gondola_serenity)
 
 /obj/item/organ/tongue/gondola/on_mob_remove(mob/living/carbon/tongue_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	tongue_owner.clear_mood_event("gondola_zen")
 	return ..()
 
@@ -84,12 +96,16 @@ Fluoride Stare: After someone says 5 words, blah blah blah...
 	greyscale_colors = GONDOLA_COLORS
 
 /obj/item/organ/liver/gondola/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/gondola)
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_Their left arm has small needles breaching the skin all over it.", BODY_ZONE_L_ARM)
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_Their right arm has small needles breaching the skin all over it.", BODY_ZONE_R_ARM)
 
 /obj/item/organ/liver/gondola/on_mob_insert(mob/living/carbon/liver_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/has_left = liver_owner.has_left_hand(check_disabled = FALSE)
 	var/has_right = liver_owner.has_right_hand(check_disabled = FALSE)
@@ -105,11 +121,15 @@ Fluoride Stare: After someone says 5 words, blah blah blah...
 	RegisterSignal(liver_owner, COMSIG_CARBON_HELPED, PROC_REF(on_hug))
 
 /obj/item/organ/liver/gondola/on_mob_remove(mob/living/carbon/liver_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(liver_owner, list(COMSIG_HUMAN_EQUIPPING_ITEM, COMSIG_LIVING_TRY_PULL, COMSIG_CARBON_HELPED))
 
 /// signal sent when prompting if an item can be equipped
 /obj/item/organ/liver/gondola/proc/on_owner_equipping_item(mob/living/carbon/human/owner, obj/item/equip_target, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(equip_target.w_class > WEIGHT_CLASS_TINY)
 		equip_target.balloon_alert(owner, "too weak to hold this!")
@@ -117,6 +137,8 @@ Fluoride Stare: After someone says 5 words, blah blah blah...
 
 /// signal sent when owner tries to pull an item
 /obj/item/organ/liver/gondola/proc/on_owner_try_pull(mob/living/carbon/owner, atom/movable/target, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isliving(target))
 		var/mob/living/living_target = target
@@ -130,6 +152,8 @@ Fluoride Stare: After someone says 5 words, blah blah blah...
 			return COMSIG_LIVING_CANCEL_PULL
 
 /obj/item/organ/liver/gondola/proc/on_hug(mob/living/carbon/human/source, mob/living/carbon/hugged)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/list/covered_body_zones = source.get_covered_body_zones()

@@ -3,6 +3,8 @@
 	var/mode = TRACK_NUKE_DISK
 
 /obj/item/pinpointer/nuke/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/msg = "Its tracking indicator reads "
 	switch(mode)
@@ -20,6 +22,8 @@
 			. += "Extreme danger. Arming signal detected. Time remaining: [bomb.get_time_left()]."
 
 /obj/item/pinpointer/nuke/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!active || alert)
 		return
@@ -34,6 +38,8 @@
 		return
 
 /obj/item/pinpointer/nuke/scan_for_target()
+	procstart = null
+	src.procstart = null
 	target = null
 	switch(mode)
 		if(TRACK_NUKE_DISK)
@@ -55,6 +61,8 @@
 	..()
 
 /obj/item/pinpointer/nuke/proc/switch_mode_to(new_mode)
+	procstart = null
+	src.procstart = null
 	if(isliving(loc))
 		var/mob/living/L = loc
 		to_chat(L, span_userdanger("Your [name] beeps as it reconfigures its tracking algorithms."))
@@ -75,11 +83,15 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 
 /obj/item/pinpointer/syndicate_cyborg/cyborg_unequip(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return
 	toggle_on()
 
 /obj/item/pinpointer/syndicate_cyborg/scan_for_target()
+	procstart = null
+	src.procstart = null
 	target = null
 	var/list/possible_targets = list()
 	var/turf/here = get_turf(src)

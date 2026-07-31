@@ -22,6 +22,8 @@
 	var/works_in_containers
 
 /datum/component/connect_range/Initialize(atom/tracked, list/connections, range, works_in_containers = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!isatom(tracked) || isarea(tracked) || range < 0)
 		return COMPONENT_INCOMPATIBLE
 	src.connections = connections
@@ -30,10 +32,14 @@
 	set_tracked(tracked)
 
 /datum/component/connect_range/Destroy()
+	procstart = null
+	src.procstart = null
 	set_tracked(null)
 	return ..()
 
 /datum/component/connect_range/InheritComponent(datum/component/component, original, atom/tracked, list/connections, range, works_in_containers)
+	procstart = null
+	src.procstart = null
 	// Not equivalent. Checks if they are not the same list via shallow comparison.
 	if(!compare_list(src.connections, connections))
 		stack_trace("connect_range component attached to [parent] tried to inherit another connect_range component with different connections")
@@ -50,6 +56,8 @@
 	update_signals(src.tracked)
 
 /datum/component/connect_range/proc/set_tracked(atom/new_tracked)
+	procstart = null
+	src.procstart = null
 	if(tracked) //Unregister the signals from the old tracked and its surroundings
 		unregister_signals(isturf(tracked) ? tracked : tracked.loc, turfs)
 		UnregisterSignal(tracked, list(
@@ -65,10 +73,14 @@
 	update_signals(tracked)
 
 /datum/component/connect_range/proc/handle_tracked_qdel()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /datum/component/connect_range/proc/update_signals(atom/target, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	var/turf/current_turf = get_turf(target)
 	if(isnull(current_turf))
 		unregister_signals(old_loc, turfs)
@@ -99,6 +111,8 @@
 			parent.RegisterSignal(target_turf, signal, connections[signal])
 
 /datum/component/connect_range/proc/unregister_signals(atom/location, list/remove_from)
+	procstart = null
+	src.procstart = null
 	//The location is null or is a container and the component shouldn't have register signals on it
 	if(isnull(location) || (!works_in_containers && !isturf(location)))
 		return
@@ -113,6 +127,8 @@
 		parent.UnregisterSignal(target_turf, connections)
 
 /datum/component/connect_range/proc/on_moved(atom/movable/movable, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(QDELETED(src)) //Basically, if a mob moves it will trigger the movable signal on its own field. If the mob finds a target when moving it will qdel this, but because it also moved into the field this will run, crash, and burn. so we're checking qdeleted.
 		return

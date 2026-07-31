@@ -5,6 +5,8 @@
 	icon_state = "ethdisco"
 
 /obj/item/etherealballdeployer/attack_self(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	.=..()
 	to_chat(user, span_notice("You deploy the Ethereal Disco Ball."))
 	new /obj/structure/etherealball(user.loc)
@@ -24,12 +26,16 @@
 	var/power = 3
 
 /obj/structure/etherealball/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 	if(TurnedOn)
 		TurnOn()
 
 /obj/structure/etherealball/attack_hand(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!can_interact(user))
 		return
@@ -42,15 +48,21 @@
 		to_chat(user, span_notice("You turn the disco ball on!"))
 
 /obj/structure/etherealball/click_alt(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	set_anchored(!anchored)
 	to_chat(user, span_notice("You [anchored ? null : "un"]lock the disco ball."))
 	return CLICK_ACTION_SUCCESS
 
 /obj/structure/etherealball/proc/TurnOn()
+	procstart = null
+	src.procstart = null
 	TurnedOn = TRUE //Same
 	DiscoFever()
 
 /obj/structure/etherealball/proc/TurnOff()
+	procstart = null
+	src.procstart = null
 	TurnedOn = FALSE
 	set_light(0)
 	remove_atom_colour(TEMPORARY_COLOUR_PRIORITY)
@@ -59,6 +71,8 @@
 		deltimer(TimerID)
 
 /obj/structure/etherealball/proc/DiscoFever()
+	procstart = null
+	src.procstart = null
 	remove_atom_colour(TEMPORARY_COLOUR_PRIORITY)
 	current_color = random_color()
 	set_light(range, power, "#[current_color]")
@@ -67,9 +81,13 @@
 	TimerID = addtimer(CALLBACK(src, PROC_REF(DiscoFever)), 5, TIMER_STOPPABLE)  //Call ourselves every 0.5 seconds to change colors
 
 /obj/structure/etherealball/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "ethdisco_head_[TurnedOn]"
 	return ..()
 
 /obj/structure/etherealball/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += mutable_appearance(icon, "ethdisco_base", appearance_flags = RESET_COLOR|KEEP_APART)

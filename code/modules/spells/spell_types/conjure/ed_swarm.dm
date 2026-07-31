@@ -8,6 +8,8 @@
 	summon_amount = 10
 
 /datum/action/cooldown/spell/conjure/summon_ed_swarm/post_summon(atom/summoned_object, atom/cast_on)
+	procstart = null
+	src.procstart = null
 	if(!istype(summoned_object, /mob/living/basic/bot/secbot/ed209))
 		return
 

@@ -12,6 +12,8 @@
 	var/amount_of_gas
 
 /datum/element/death_gases/Attach(datum/target, datum/gas/gas_type, amount_of_gas = 10)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -22,11 +24,15 @@
 	RegisterSignal(target, COMSIG_LIVING_DEATH, PROC_REF(on_death))
 
 /datum/element/death_gases/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_LIVING_DEATH)
 
 ///signal called by the stat of the target changing
 /datum/element/death_gases/proc/on_death(mob/living/target, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/datum/gas_mixture/mix_to_spawn = new()
 	mix_to_spawn.add_gas(gas_type)

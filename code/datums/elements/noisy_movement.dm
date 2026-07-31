@@ -5,6 +5,8 @@
 	var/volume
 
 /datum/element/noisy_movement/Attach(datum/target, movement_sound = 'sound/effects/roll.ogg', volume = 100)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(target))
 		return ELEMENT_INCOMPATIBLE
@@ -15,6 +17,8 @@
 	RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(play_sound))
 
 /datum/element/noisy_movement/proc/play_sound(atom/movable/source, old_loc, movement_dir, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!forced && !CHECK_MOVE_LOOP_FLAGS(source, MOVEMENT_LOOP_OUTSIDE_CONTROL) && source.has_gravity())
 		playsound(source, movement_sound, volume, TRUE)

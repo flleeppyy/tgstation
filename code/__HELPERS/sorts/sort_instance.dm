@@ -32,6 +32,8 @@ GLOBAL_DATUM_INIT(sortInstance, /datum/sort_instance, new())
 
 
 /datum/sort_instance/proc/timSort(start, end)
+	procstart = null
+	src.procstart = null
 	runBases.Cut()
 	runLens.Cut()
 
@@ -97,6 +99,8 @@ GLOBAL_DATUM_INIT(sortInstance, /datum/sort_instance, new())
 	start the index of the first element in the range that is not already known to be sorted
 	*/
 /datum/sort_instance/proc/binarySort(lo, hi, start)
+	procstart = null
+	src.procstart = null
 	//ASSERT(lo <= start && start <= hi)
 	if(start <= lo)
 		start = lo + 1
@@ -135,6 +139,8 @@ GLOBAL_DATUM_INIT(sortInstance, /datum/sort_instance, new())
 	reverse a descending sequence without violating stability.
 	*/
 /datum/sort_instance/proc/countRunAndMakeAscending(lo, hi)
+	procstart = null
+	src.procstart = null
 	//ASSERT(lo < hi)
 
 	var/runHi = lo + 1
@@ -166,6 +172,8 @@ GLOBAL_DATUM_INIT(sortInstance, /datum/sort_instance, new())
 	//Returns the minimum acceptable run length for an array of the specified length.
 	//Natural runs shorter than this will be extended with binarySort
 /datum/sort_instance/proc/minRunLength(n)
+	procstart = null
+	src.procstart = null
 	//ASSERT(n >= 0)
 	var/r = 0 //becomes 1 if any bits are shifted off
 	while(n >= MIN_MERGE)
@@ -179,6 +187,8 @@ GLOBAL_DATUM_INIT(sortInstance, /datum/sort_instance, new())
 	//This method is called each time a new run is pushed onto the stack.
 	//So the invariants are guaranteed to hold for i<stackSize upon entry to the method
 /datum/sort_instance/proc/mergeCollapse()
+	procstart = null
+	src.procstart = null
 	while(runBases.len >= 2)
 		var/n = runBases.len - 1
 		if(n > 1 && runLens[n-1] <= runLens[n] + runLens[n+1])
@@ -194,6 +204,8 @@ GLOBAL_DATUM_INIT(sortInstance, /datum/sort_instance, new())
 	//Merges all runs on the stack until only one remains.
 	//Called only once, to finalise the sort
 /datum/sort_instance/proc/mergeForceCollapse()
+	procstart = null
+	src.procstart = null
 	while(runBases.len >= 2)
 		var/n = runBases.len - 1
 		if(n > 1 && runLens[n-1] < runLens[n+1])
@@ -205,6 +217,8 @@ GLOBAL_DATUM_INIT(sortInstance, /datum/sort_instance, new())
 	//Run i must be the penultimate or antepenultimate run on the stack
 	//In other words, i must be equal to stackSize-2 or stackSize-3
 /datum/sort_instance/proc/mergeAt(i)
+	procstart = null
+	src.procstart = null
 	//ASSERT(runBases.len >= 2)
 	//ASSERT(i >= 1)
 	//ASSERT(i == runBases.len - 1 || i == runBases.len - 2)
@@ -258,6 +272,8 @@ GLOBAL_DATUM_INIT(sortInstance, /datum/sort_instance, new())
 		Returns the index at which to insert element 'key'
 	*/
 /datum/sort_instance/proc/gallopLeft(key, base, len, hint)
+	procstart = null
+	src.procstart = null
 	//ASSERT(len > 0 && hint >= 0 && hint < len)
 
 	var/list/L = src.L
@@ -318,6 +334,8 @@ GLOBAL_DATUM_INIT(sortInstance, /datum/sort_instance, new())
 	 * @return the int k,  0 <= k <= n such that `a[b + k - 1] <= key < a[b + k]`
 	 */
 /datum/sort_instance/proc/gallopRight(key, base, len, hint)
+	procstart = null
+	src.procstart = null
 	//ASSERT(len > 0 && hint >= 0 && hint < len)
 
 	var/list/L = src.L
@@ -367,6 +385,8 @@ GLOBAL_DATUM_INIT(sortInstance, /datum/sort_instance, new())
 	//Merges two adjacent runs in-place in a stable fashion.
 	//For performance this method should only be called when len1 <= len2!
 /datum/sort_instance/proc/mergeLo(base1, len1, base2, len2)
+	procstart = null
+	src.procstart = null
 	//ASSERT(len1 > 0 && len2 > 0 && base1 + len1 == base2)
 
 	var/list/L = src.L
@@ -470,6 +490,8 @@ GLOBAL_DATUM_INIT(sortInstance, /datum/sort_instance, new())
 
 
 /datum/sort_instance/proc/mergeHi(base1, len1, base2, len2)
+	procstart = null
+	src.procstart = null
 	//ASSERT(len1 > 0 && len2 > 0 && base1 + len1 == base2)
 
 	var/list/L = src.L
@@ -571,6 +593,8 @@ GLOBAL_DATUM_INIT(sortInstance, /datum/sort_instance, new())
 
 
 /datum/sort_instance/proc/mergeSort(start, end)
+	procstart = null
+	src.procstart = null
 	var/remaining = end - start
 
 	//If array is small, do an insertion sort
@@ -615,6 +639,8 @@ GLOBAL_DATUM_INIT(sortInstance, /datum/sort_instance, new())
 	return L
 
 /datum/sort_instance/proc/mergeAt2(i)
+	procstart = null
+	src.procstart = null
 	var/list/L = src.L
 	var/cursor1 = runBases[i]
 	var/cursor2 = runBases[i+1]

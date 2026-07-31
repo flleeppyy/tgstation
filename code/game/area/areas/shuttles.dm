@@ -19,6 +19,8 @@
 
 
 /area/shuttle/place_on_top_react(list/new_baseturfs, turf/added_layer, flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ispath(added_layer, /turf/open/floor/plating))
 		new_baseturfs.Add(/turf/baseturf_skipover/shuttle)
@@ -126,6 +128,8 @@
 	area_flags_mapping = UNIQUE_AREA // SSjob refers to this area for latejoiners
 
 /area/shuttle/arrival/on_joining_game(mob/living/boarder)
+	procstart = null
+	src.procstart = null
 	if(SSshuttle.arrivals?.mode == SHUTTLE_CALL)
 		var/atom/movable/screen/splash/Spl = new(null, null, boarder.client, TRUE)
 		Spl.fade(TRUE)
@@ -268,11 +272,15 @@
 	var/list/warp_points = list()
 
 /obj/effect/forcefield/arena_shuttle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/effect/landmark/shuttle_arena_safe/exit in GLOB.landmarks_list)
 		warp_points += exit
 
 /obj/effect/forcefield/arena_shuttle/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(!isliving(AM))
 		return
 
@@ -305,6 +313,8 @@
 	var/list/warp_points = list()
 
 /obj/effect/forcefield/arena_shuttle_entrance/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(!isliving(AM))
 		return
 

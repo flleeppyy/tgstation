@@ -26,11 +26,15 @@
 	var/datum/looping_sound/spectre_meter/soundloop
 
 /datum/computer_file/program/maintenance/spectre_meter/on_start(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		soundloop = new()
 
 /datum/computer_file/program/maintenance/spectre_meter/kill_program()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(soundloop)
 	auto_mode = FALSE
 	last_spook_value = 0
@@ -40,6 +44,8 @@
 	return ..()
 
 /datum/computer_file/program/maintenance/spectre_meter/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["spook_value"] = last_spook_value
 	data["auto_mode"] = auto_mode
@@ -47,6 +53,8 @@
 	return data
 
 /datum/computer_file/program/maintenance/spectre_meter/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(action)
 		if("manual_scan")
@@ -65,11 +73,15 @@
 			return TRUE
 
 /datum/computer_file/program/maintenance/spectre_meter/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(auto_mode)
 		INVOKE_ASYNC(src, PROC_REF(scan_surroundings), FALSE)
 
 ///Return the "spook level" of the area the computer is in.
 /datum/computer_file/program/maintenance/spectre_meter/proc/scan_surroundings(manual = TRUE)
+	procstart = null
+	src.procstart = null
 	if(manual && !COOLDOWN_FINISHED(src, manual_scan_cd))
 		return
 
@@ -118,6 +130,8 @@
 	var/last_spook_value = 0
 
 /datum/looping_sound/spectre_meter/get_sound()
+	procstart = null
+	src.procstart = null
 	var/index = 1
 	switch(last_spook_value)
 		if(0 to 14)
@@ -133,6 +147,8 @@
 	return ..(mid_sounds[index])
 
 /datum/looping_sound/spectre_meter/stop(null_parent = FALSE)
+	procstart = null
+	src.procstart = null
 	last_spook_value = 0
 	return ..()
 
@@ -147,27 +163,39 @@
 	var/datum/port/output/scanned
 
 /obj/item/circuit_component/mod_program/spectre_meter/populate_ports()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	scan_results = add_output_port("Scan Results", PORT_TYPE_NUMBER)
 	scanned = add_output_port("Scaned", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/mod_program/spectre_meter/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(associated_program.computer, COMSIG_MODULAR_COMPUTER_SPECTRE_SCAN, PROC_REF(on_scan))
 
 /obj/item/circuit_component/mod_program/spectre_meter/unregister_shell()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(associated_program.computer, COMSIG_MODULAR_COMPUTER_SPECTRE_SCAN)
 	return ..()
 
 /obj/item/circuit_component/mod_program/spectre_meter/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("Scan Coooldown: [SPOOK_COOLDOWN]", "orange", "stopwatch")
 
 /obj/item/circuit_component/mod_program/spectre_meter/input_received(datum/port/port)
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/program/maintenance/spectre_meter/meter = associated_program
 	INVOKE_ASYNC(meter,  TYPE_PROC_REF(/datum/computer_file/program/maintenance/spectre_meter, scan_surroundings))
 
 /obj/item/circuit_component/mod_program/spectre_meter/proc/on_scan(datum/source, spook_value)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	scan_results.set_output(spook_value)
 	scanned.set_output(COMPONENT_SIGNAL)

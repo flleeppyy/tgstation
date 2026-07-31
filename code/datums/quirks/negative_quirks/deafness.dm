@@ -11,4 +11,6 @@
 	mail_goodies = list(/obj/item/clothing/mask/whistle)
 
 /datum/quirk/item_quirk/deafness/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	give_item_to_holder(/obj/item/clothing/accessory/deaf_pin, list(LOCATION_BACKPACK, LOCATION_HANDS))

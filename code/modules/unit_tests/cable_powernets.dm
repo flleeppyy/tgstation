@@ -3,6 +3,8 @@
 	test_flags = UNIT_TEST_MAP_TEST
 
 /datum/unit_test/cable_powernets/Run()
+	procstart = null
+	src.procstart = null
 	for(var/datum/powernet/powernets as anything in SSmachines.powernets)
 
 		//nodes (machines, which includes APCs and SMES)

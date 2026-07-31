@@ -13,6 +13,8 @@
 	var/minimum_exposure_time
 
 /datum/component/radiation_countdown/Initialize(minimum_exposure_time)
+	procstart = null
+	src.procstart = null
 	if (!CAN_IRRADIATE(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -25,21 +27,31 @@
 	start_deletion_timer()
 
 /datum/component/radiation_countdown/proc/start_deletion_timer()
+	procstart = null
+	src.procstart = null
 	addtimer(CALLBACK(src, PROC_REF(remove_self)), TIME_UNTIL_DELETION, TIMER_UNIQUE | TIMER_OVERRIDE)
 
 /datum/component/radiation_countdown/proc/remove_self()
+	procstart = null
+	src.procstart = null
 	if (!HAS_TRAIT(parent, TRAIT_IRRADIATED))
 		to_chat(parent, span_notice("The air here feels safer."))
 
 	qdel(src)
 
 /datum/component/radiation_countdown/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_IN_THRESHOLD_OF_IRRADIATION, PROC_REF(on_pre_potential_irradiation_within_range))
 
 /datum/component/radiation_countdown/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_IN_THRESHOLD_OF_IRRADIATION)
 
 /datum/component/radiation_countdown/proc/on_pre_potential_irradiation_within_range(datum/source, datum/radiation_pulse_information/pulse_information)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	minimum_exposure_time = min(minimum_exposure_time, pulse_information.minimum_exposure_time)

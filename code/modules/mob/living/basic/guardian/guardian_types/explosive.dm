@@ -13,15 +13,21 @@
 	var/datum/action/cooldown/mob_cooldown/explosive_booby_trap/bomb
 
 /mob/living/basic/guardian/explosive/Initialize(mapload, datum/guardian_fluff/theme)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	bomb = new(src)
 	bomb.Grant(src)
 
 /mob/living/basic/guardian/explosive/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(bomb)
 	return ..()
 
 /mob/living/basic/guardian/explosive/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(LAZYACCESS(modifiers, RIGHT_CLICK) && proximity_flag && isobj(attack_target) && can_unarmed_attack())
 		bomb.Trigger(target = attack_target)
 		return
@@ -44,6 +50,8 @@
 	var/static/list/boom_signals = list(COMSIG_ATOM_ATTACKBY, COMSIG_ATOM_BUMPED, COMSIG_ATOM_ATTACK_HAND)
 
 /datum/action/cooldown/mob_cooldown/explosive_booby_trap/PreActivate(atom/target)
+	procstart = null
+	src.procstart = null
 	if (!isobj(target))
 		return FALSE
 	if (!owner.Adjacent(target))
@@ -51,6 +59,8 @@
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/explosive_booby_trap/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	var/glow_colour = COLOR_RED
 	var/mob/living/basic/guardian/guardian_owner = owner
 	if (istype(guardian_owner))
@@ -69,6 +79,8 @@
 
 /// Validate that we should blow up on this thing, preferably not on one of our allies
 /datum/action/cooldown/mob_cooldown/explosive_booby_trap/proc/validate_target(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if (target == owner)
 		return FALSE
 	var/mob/living/basic/guardian/guardian_owner = owner

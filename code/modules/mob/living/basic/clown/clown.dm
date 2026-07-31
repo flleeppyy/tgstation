@@ -41,6 +41,8 @@
 	var/waddles = TRUE
 
 /mob/living/basic/clown/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NAIVE, INNATE_TRAIT)
 	AddElement(/datum/element/footstep, footstep_type = FOOTSTEP_MOB_SHOE)
@@ -54,12 +56,16 @@
 		AddElement(/datum/element/death_drops, loot)
 
 /mob/living/basic/clown/proc/retaliate_callback(mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	if (!istype(attacker))
 		return
 	for (var/mob/living/basic/clown/harbringer in oview(src, 7))
 		harbringer.ai_controller.set_blackboard_key_assoc_lazylist(BB_BASIC_MOB_RETALIATE_LIST, attacker, world.time)
 
 /mob/living/basic/clown/melee_attack(atom/target, list/modifiers, ignore_cooldown = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(target, /obj/item/food/grown/banana/bunch))
 		return ..()
 	var/obj/item/food/grown/banana/bunch/unripe_bunch = target
@@ -67,6 +73,8 @@
 	log_combat(src, target, "explosively ripened")
 
 /mob/living/basic/clown/get_bloodtype()
+	procstart = null
+	src.procstart = null
 	if (check_holidays(APRIL_FOOLS))
 		return get_blood_type(BLOOD_TYPE_CLOWN)
 	return ..()
@@ -95,6 +103,8 @@
 	)
 
 /mob/living/basic/clown/lube/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/lube_walking)
 
@@ -116,6 +126,8 @@
 	)
 
 /mob/living/basic/clown/honkling/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/injection_range
 	if(!injection_range)
@@ -167,6 +179,8 @@
 	)
 
 /mob/living/basic/clown/fleshclown/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 
@@ -202,6 +216,8 @@
 	)
 
 /mob/living/basic/clown/longface/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_LONGFACE, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
@@ -298,6 +314,8 @@
 	)
 
 /mob/living/basic/clown/clownhulk/honkmunculus/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/injection_range
 	if(!injection_range)
@@ -411,6 +429,8 @@
 	var/list/prank_pouch = list()
 
 /mob/living/basic/clown/mutant/glutton/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GRANT_ACTION(/datum/action/cooldown/regurgitate)
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_GLUTTON, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
@@ -422,18 +442,24 @@
 	AddElement(/datum/element/damage_threshold, 10) //lots of fat to cushion blows.
 
 /mob/living/basic/clown/mutant/glutton/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!check_edible(tool))
 		return NONE
 	eat_atom(tool)
 	return ITEM_INTERACT_SUCCESS
 
 /mob/living/basic/clown/mutant/glutton/resolve_unarmed_attack(atom/attack_target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!check_edible(attack_target))
 		return ..()
 	eat_atom(attack_target)
 
 ///Returns whether or not the supplied movable atom is edible.
 /mob/living/basic/clown/mutant/glutton/proc/check_edible(atom/movable/potential_food)
+	procstart = null
+	src.procstart = null
 	if(isliving(potential_food))
 		var/mob/living/living_morsel = potential_food
 		if(living_morsel.mob_size > MOB_SIZE_SMALL)
@@ -449,6 +475,8 @@
 
 ///This proc eats the atom, certain funny items are stored directly in the prank pouch while bananas grant a heal based on their potency and the peels are retained in the pouch.
 /mob/living/basic/clown/mutant/glutton/proc/eat_atom(atom/movable/eaten_atom)
+	procstart = null
+	src.procstart = null
 
 	var/static/funny_items = list(
 		/obj/item/food/pie/cream,
@@ -481,11 +509,15 @@
 	flick("glutton_mouth", src)
 
 /mob/living/basic/clown/mutant/glutton/tamed(mob/living/tamer, atom/food)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	buckle_lying = 0
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/glutton)
 
 /mob/living/basic/clown/mutant/glutton/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	prank_pouch -= gone
 
@@ -501,6 +533,8 @@
 	click_to_activate = TRUE
 
 /datum/action/cooldown/regurgitate/set_click_ability(mob/on_who)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -510,6 +544,8 @@
 	on_who.update_appearance(UPDATE_ICON)
 
 /datum/action/cooldown/regurgitate/unset_click_ability(mob/on_who, refund_cooldown = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -520,6 +556,8 @@
 	on_who.update_appearance(UPDATE_ICON)
 
 /datum/action/cooldown/regurgitate/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -528,6 +566,8 @@
 	return istype(owner, /mob/living/basic/clown/mutant/glutton)
 
 /datum/action/cooldown/regurgitate/Activate(atom/spit_at)
+	procstart = null
+	src.procstart = null
 	StartCooldown(cooldown_time / 4)
 
 	var/mob/living/basic/clown/mutant/glutton/pouch_owner = owner
@@ -572,6 +612,8 @@
 	)
 
 /mob/living/basic/clown/banana/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CLOWNANA, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 	var/static/list/innate_actions = list(
@@ -596,6 +638,8 @@
 	var/peel_amount = 3
 
 /datum/action/cooldown/rustle/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/reachable_turfs = list()
 	for(var/turf/adjacent_turf in RANGE_TURFS(1, owner.loc))
@@ -625,6 +669,8 @@
 	var/activating = FALSE
 
 /datum/action/cooldown/exquisite_bunch/Trigger(mob/clicker, trigger_flags, atom/target)
+	procstart = null
+	src.procstart = null
 	if(activating)
 		return
 	if(!IsAvailable(feedback = TRUE))
@@ -647,6 +693,8 @@
 	return ..()
 
 /datum/action/cooldown/exquisite_bunch/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/food/grown/banana/bunch(get_step(owner.loc, owner.dir))
 	playsound(owner, 'sound/items/bikehorn.ogg', 60)

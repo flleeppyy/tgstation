@@ -26,19 +26,27 @@
 	var/mob/listeningTo
 
 /obj/item/rcl/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 	AddComponent(/datum/component/two_handed, wield_callback = CALLBACK(src, PROC_REF(on_wield)), unwield_callback = CALLBACK(src, PROC_REF(on_unwield)))
 
 /// triggered on wield of two handed item
 /obj/item/rcl/proc/on_wield(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	active = TRUE
 
 /// triggered on unwield of two handed item
 /obj/item/rcl/proc/on_unwield(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	active = FALSE
 
 /obj/item/rcl/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!loaded)
 		return FALSE
 	. = TRUE
@@ -73,6 +81,8 @@
 	update_appearance()
 
 /obj/item/rcl/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stack/pipe_cleaner_coil))
 		return NONE
 
@@ -102,11 +112,15 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/rcl/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(loaded)
 		. += span_info("It contains [loaded.amount]/[max_amount] pipe cleaners.")
 
 /obj/item/rcl/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(loaded)
 	last = null
 	listeningTo = null
@@ -114,6 +128,8 @@
 	return ..()
 
 /obj/item/rcl/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!loaded)
 		icon_state = "rcl-0"
@@ -134,6 +150,8 @@
 			inhand_icon_state = "rcl-0"
 
 /obj/item/rcl/proc/is_empty(mob/user, loud = 1)
+	procstart = null
+	src.procstart = null
 	update_appearance()
 	if(!loaded || !loaded.amount)
 		if(loud)
@@ -146,11 +164,15 @@
 	return FALSE
 
 /obj/item/rcl/pickup(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	getMobhook(user)
 
 
 /obj/item/rcl/dropped(mob/wearer)
+	procstart = null
+	src.procstart = null
 	..()
 	UnregisterSignal(wearer, COMSIG_MOVABLE_MOVED)
 	listeningTo = null
@@ -158,6 +180,8 @@
 	QDEL_NULL(wiring_gui_menu)
 
 /obj/item/rcl/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!active)
 		last = null
@@ -168,6 +192,8 @@
 				break
 
 /obj/item/rcl/proc/getMobhook(mob/to_hook)
+	procstart = null
+	src.procstart = null
 	if(listeningTo == to_hook)
 		return
 	if(listeningTo)
@@ -176,6 +202,8 @@
 	listeningTo = to_hook
 
 /obj/item/rcl/proc/trigger(mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(active)
@@ -186,6 +214,8 @@
 
 //previous contents of trigger(), lays pipe_cleaner each time the player moves
 /obj/item/rcl/proc/layCable(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isturf(user.loc))
 		return
 	if(is_empty(user, 0))
@@ -219,6 +249,8 @@
 
 //searches the current tile for a stub pipe_cleaner of the same colour
 /obj/item/rcl/proc/findLinkingCable(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/T
 	if(!isturf(user.loc))
 		return
@@ -236,6 +268,8 @@
 			return C
 
 /obj/item/rcl/proc/wiringGuiGenerateChoices(mob/user)
+	procstart = null
+	src.procstart = null
 	var/fromdir = 0
 	var/obj/structure/pipe_cleaner/linkingCable = findLinkingCable(user)
 	if(linkingCable)
@@ -253,11 +287,15 @@
 	return wiredirs
 
 /obj/item/rcl/proc/showWiringGui(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/choices = wiringGuiGenerateChoices(user)
 
 	wiring_gui_menu = show_radial_menu_persistent(user, src , choices, select_proc = CALLBACK(src, PROC_REF(wiringGuiReact), user), radius = 42)
 
 /obj/item/rcl/proc/wiringGuiUpdate(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!wiring_gui_menu)
 		return
 
@@ -267,6 +305,8 @@
 
 //Callback used to respond to interactions with the wiring menu
 /obj/item/rcl/proc/wiringGuiReact(mob/living/user,choice)
+	procstart = null
+	src.procstart = null
 	if(!choice) //close on a null choice (the center button)
 		QDEL_NULL(wiring_gui_menu)
 		return
@@ -295,7 +335,9 @@
 
 	wiringGuiUpdate(user)
 
-/obj/item/rcl/pre_loaded/Initialize(mapload) //Comes preloaded with pipe_cleaner, for testing stuff
+/obj/item/rcl/pre_loaded/Initialize(mapload)
+	procstart = null
+	src.procstart = null //Comes preloaded with pipe_cleaner, for testing stuff
 	. = ..()
 	loaded = new()
 	loaded.max_amount = max_amount
@@ -303,10 +345,14 @@
 	update_appearance()
 
 /obj/item/rcl/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/item/rcl/ui_action_click(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(istype(action, /datum/action/item_action/rcl_col))
 		current_color_index++;
 		if (current_color_index > colors.len)
@@ -331,6 +377,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 15)
 
 /obj/item/rcl/ghetto/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!loaded)
 		icon_state = "rclg-0"
 		inhand_icon_state = "rclg-0"

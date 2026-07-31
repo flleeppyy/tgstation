@@ -13,6 +13,8 @@
 	cooldown_time = 16 SECONDS
 
 /datum/action/cooldown/fugu_expand/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -27,6 +29,8 @@
 	return TRUE
 
 /datum/action/cooldown/fugu_expand/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/living_owner = owner
 	living_owner.apply_status_effect(/datum/status_effect/inflated)
@@ -47,11 +51,15 @@
 	overlay_state = "gross"
 
 /datum/status_effect/inflated/on_creation(mob/living/new_owner, ...)
+	procstart = null
+	src.procstart = null
 	if (!istype(new_owner, /mob/living/basic/wumborian_fugu))
 		return FALSE
 	return ..()
 
 /datum/status_effect/inflated/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/basic/wumborian_fugu/fugu = owner
 	if (!istype(fugu))
@@ -69,6 +77,8 @@
 	fugu.ai_controller.cancel_current_plan()
 
 /datum/status_effect/inflated/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/basic/wumborian_fugu/fugu = owner
 	if (!istype(fugu))
@@ -88,6 +98,8 @@
 
 /// Remove status effect if we die
 /datum/status_effect/inflated/proc/check_death(mob/living/source, new_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (new_stat == DEAD)
 		qdel(src)

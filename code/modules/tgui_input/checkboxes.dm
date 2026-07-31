@@ -11,6 +11,8 @@
  * timeout - The timeout for the input (optional)
  */
 /proc/tgui_input_checkboxes(mob/user, message, title = "Select", list/items, min_checked = 1, max_checked = 50, timeout = 0, ui_state = GLOB.always_state)
+	procstart = null
+	src.procstart = null
 	if (!user)
 		user = usr
 	if(!length(items))
@@ -58,6 +60,8 @@
 	var/datum/ui_state/state
 
 /datum/tgui_checkbox_input/New(mob/user, message, title, list/items, min_checked, max_checked, timeout, ui_state)
+	procstart = null
+	src.procstart = null
 	src.title = title
 	src.message = message
 	src.items = items.Copy()
@@ -71,29 +75,41 @@
 		QDEL_IN(src, timeout)
 
 /datum/tgui_checkbox_input/Destroy(force)
+	procstart = null
+	src.procstart = null
 	SStgui.close_uis(src)
 	state = null
 	items?.Cut()
 	return ..()
 
 /datum/tgui_checkbox_input/proc/wait()
+	procstart = null
+	src.procstart = null
 	while (!closed && !QDELETED(src))
 		stoplag(1)
 
 /datum/tgui_checkbox_input/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "CheckboxInput")
 		ui.open()
 
 /datum/tgui_checkbox_input/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	closed = TRUE
 
 /datum/tgui_checkbox_input/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return state
 
 /datum/tgui_checkbox_input/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	if(timeout)
@@ -102,6 +118,8 @@
 	return data
 
 /datum/tgui_checkbox_input/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["items"] = items
@@ -115,6 +133,8 @@
 	return data
 
 /datum/tgui_checkbox_input/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -136,4 +156,6 @@
 	return FALSE
 
 /datum/tgui_checkbox_input/proc/set_choices(list/selections)
+	procstart = null
+	src.procstart = null
 	src.choices = selections.Copy()

@@ -8,20 +8,30 @@
 	var/idSelf
 
 /obj/machinery/door_buttons/attackby(obj/O, mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/door_buttons/proc/find_objects_by_tag()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/door_buttons/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/door_buttons/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	find_objects_by_tag()
 
 /obj/machinery/door_buttons/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -43,6 +53,8 @@
 	var/busy
 
 /obj/machinery/door_buttons/access_button/find_objects_by_tag()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/door_buttons/airlock_controller/A as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/door_buttons/airlock_controller))
 		if(A.idSelf == idSelf)
 			controller = A
@@ -55,6 +67,8 @@
 			break
 
 /obj/machinery/door_buttons/access_button/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(busy)
 		return
 	if(!allowed(user))
@@ -79,10 +93,14 @@
 		addtimer(CALLBACK(src, PROC_REF(not_busy)), 2 SECONDS)
 
 /obj/machinery/door_buttons/access_button/proc/not_busy()
+	procstart = null
+	src.procstart = null
 	busy = FALSE
 	update_appearance()
 
 /obj/machinery/door_buttons/access_button/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & NOPOWER)
 		icon_state = "[base_icon_state]_off"
 		return ..()
@@ -90,6 +108,8 @@
 	return ..()
 
 /obj/machinery/door_buttons/access_button/proc/remove_object(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source == door)
@@ -99,6 +119,8 @@
 		controller = null
 
 /obj/machinery/door_buttons/access_button/Destroy()
+	procstart = null
+	src.procstart = null
 	door = null
 	controller = null
 	return ..()
@@ -124,6 +146,8 @@
 
 ///set our doors to null upon deletion
 /obj/machinery/door_buttons/airlock_controller/proc/remove_door(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source == interior_airlock)
@@ -135,6 +159,8 @@
 
 ///proc called when we want to open doors without any cycling involved
 /obj/machinery/door_buttons/airlock_controller/proc/only_open(obj/machinery/door/airlock/target_door)
+	procstart = null
+	src.procstart = null
 	if(isnull(target_door))
 		return
 	busy = TRUE
@@ -143,6 +169,8 @@
 
 ///proc called when we want to close doors without any cycling involved
 /obj/machinery/door_buttons/airlock_controller/proc/only_close(obj/machinery/door/airlock/target_door)
+	procstart = null
+	src.procstart = null
 	if(isnull(target_door))
 		return
 	busy = TRUE
@@ -150,6 +178,8 @@
 
 ///proc that handles closing doors
 /obj/machinery/door_buttons/airlock_controller/proc/close_door(obj/machinery/door/airlock/target_door, turn_idle_on_terminate = TRUE)
+	procstart = null
+	src.procstart = null
 	busy = TRUE
 	if(isnull(target_door) || target_door.density)
 		go_idle()
@@ -169,6 +199,8 @@
 
 ///proc called when we want to close doors with cycling
 /obj/machinery/door_buttons/airlock_controller/proc/cycle_close(obj/machinery/door/airlock/target_door)
+	procstart = null
+	src.procstart = null
 	if(isnull(exterior_airlock) || isnull(interior_airlock))
 		return
 	if(exterior_airlock.density == interior_airlock.density || !target_door.density)
@@ -184,6 +216,8 @@
 
 ///proc called when we want to open doors with cycling
 /obj/machinery/door_buttons/airlock_controller/proc/cycle_open(obj/machinery/door/airlock/target_door)
+	procstart = null
+	src.procstart = null
 	if(isnull(target_door))
 		return go_idle()
 	var/obj/machinery/door/airlock/opposite_airlock = (target_door == exterior_airlock ? interior_airlock : exterior_airlock)
@@ -194,6 +228,8 @@
 
 ///proc that handles opening and unbolting the door
 /obj/machinery/door_buttons/airlock_controller/proc/open_door(obj/machinery/door/airlock/target_door)
+	procstart = null
+	src.procstart = null
 	if(!target_door.density)
 		return go_idle()
 
@@ -207,10 +243,14 @@
 
 ///unsets our busy state and update our appearance
 /obj/machinery/door_buttons/airlock_controller/proc/go_idle()
+	procstart = null
+	src.procstart = null
 	busy = FALSE
 	update_appearance()
 
 /obj/machinery/door_buttons/airlock_controller/find_objects_by_tag()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/door/door as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/door))
 		if(isnull(idInterior) || isnull(idExterior))
 			break
@@ -222,6 +262,8 @@
 			RegisterSignal(exterior_airlock, COMSIG_PREQDELETED, PROC_REF(remove_door))
 
 /obj/machinery/door_buttons/airlock_controller/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & NOPOWER)
 		icon_state = "[base_icon_state]_off"
 		return ..()
@@ -229,6 +271,8 @@
 	return ..()
 
 /obj/machinery/door_buttons/airlock_controller/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -236,6 +280,8 @@
 		ui.open()
 
 /obj/machinery/door_buttons/airlock_controller/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["interior_door"] = interior_airlock ? REF(interior_airlock) : null
 	data["exterior_door"] = exterior_airlock ? REF(exterior_airlock) : null
@@ -245,6 +291,8 @@
 	return data
 
 /obj/machinery/door_buttons/airlock_controller/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || busy)
 		return TRUE

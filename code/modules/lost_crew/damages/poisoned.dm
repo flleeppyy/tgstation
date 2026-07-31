@@ -11,6 +11,8 @@
 	var/metabolisations_per_unit = 1
 
 /datum/corpse_damage/cause_of_death/poison/apply_to_body(mob/living/carbon/human/body, severity, list/storage)
+	procstart = null
+	src.procstart = null
 	var/reagents_to_add = round(min_reagents + (max_reagents - min_reagents) * severity)
 
 	body.reagents.add_reagent(poison, reagents_to_add)

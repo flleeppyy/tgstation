@@ -8,6 +8,8 @@
  * Read the documentation on the aforementioned procs to learn the difference
  */
 /obj/vehicle/proc/generate_actions()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -19,6 +21,8 @@
  * returns created and set up action instance
  */
 /obj/vehicle/proc/generate_action_type(actiontype)
+	procstart = null
+	src.procstart = null
 	var/datum/action/vehicle/A = new actiontype
 	if(!istype(A))
 		return
@@ -34,6 +38,8 @@
  * * actiontype: typepath of the action you want to give occupants.
  */
 /obj/vehicle/proc/initialize_passenger_action_type(actiontype)
+	procstart = null
+	src.procstart = null
 	autogrant_actions_passenger += actiontype
 	for(var/i in occupants)
 		grant_passenger_actions(i) //refresh
@@ -46,6 +52,8 @@
  * * actiontype: typepath of the action you want to remove from occupants and the autogrant list.
  */
 /obj/vehicle/proc/destroy_passenger_action_type(actiontype)
+	procstart = null
+	src.procstart = null
 	autogrant_actions_passenger -= actiontype
 	for(var/i in occupants)
 		remove_action_type_from_mob(actiontype, i)
@@ -59,6 +67,8 @@
  * * actiontype: typepath of the action you want to give occupants.
  */
 /obj/vehicle/proc/initialize_controller_action_type(actiontype, control_flag)
+	procstart = null
+	src.procstart = null
 	LAZYINITLIST(autogrant_actions_controller["[control_flag]"])
 	autogrant_actions_controller["[control_flag]"] += actiontype
 	for(var/i in occupants)
@@ -72,6 +82,8 @@
  * * actiontype: typepath of the action you want to remove from occupants and autogrant.
  */
 /obj/vehicle/proc/destroy_controller_action_type(actiontype, control_flag)
+	procstart = null
+	src.procstart = null
 	autogrant_actions_controller["[control_flag]"] -= actiontype
 	UNSETEMPTY(autogrant_actions_controller["[control_flag]"])
 	for(var/i in occupants)
@@ -88,6 +100,8 @@
  * returns TRUE if successfully granted
  */
 /obj/vehicle/proc/grant_action_type_to_mob(actiontype, mob/grant_to)
+	procstart = null
+	src.procstart = null
 	if(isnull(LAZYACCESS(occupants, grant_to)) || !actiontype)
 		return FALSE
 	LAZYINITLIST(occupant_actions[grant_to])
@@ -109,6 +123,8 @@
  * returns TRUE if successfully removed
  */
 /obj/vehicle/proc/remove_action_type_from_mob(actiontype, mob/take_from)
+	procstart = null
+	src.procstart = null
 	if(isnull(LAZYACCESS(occupants, take_from)) || !actiontype)
 		return FALSE
 	LAZYINITLIST(occupant_actions[take_from])
@@ -129,6 +145,8 @@
  * * grant_to: mob that needs to get every action the vehicle grants
  */
 /obj/vehicle/proc/grant_passenger_actions(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	for(var/v in autogrant_actions_passenger)
 		grant_action_type_to_mob(v, grant_to)
 
@@ -141,10 +159,14 @@
  * * take_from: mob that needs to get every action the vehicle grants
  */
 /obj/vehicle/proc/remove_passenger_actions(mob/take_from)
+	procstart = null
+	src.procstart = null
 	for(var/v in autogrant_actions_passenger)
 		remove_action_type_from_mob(v, take_from)
 
 /obj/vehicle/proc/grant_controller_actions(mob/M)
+	procstart = null
+	src.procstart = null
 	if(!istype(M) || isnull(LAZYACCESS(occupants, M)))
 		return FALSE
 	for(var/i in GLOB.bitflags)
@@ -153,6 +175,8 @@
 	return TRUE
 
 /obj/vehicle/proc/remove_controller_actions(mob/M)
+	procstart = null
+	src.procstart = null
 	if(!istype(M) || isnull(LAZYACCESS(occupants, M)))
 		return FALSE
 	for(var/i in GLOB.bitflags)
@@ -160,6 +184,8 @@
 	return TRUE
 
 /obj/vehicle/proc/grant_controller_actions_by_flag(mob/M, flag)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return FALSE
 	for(var/v in autogrant_actions_controller["[flag]"])
@@ -167,6 +193,8 @@
 	return TRUE
 
 /obj/vehicle/proc/remove_controller_actions_by_flag(mob/M, flag)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return FALSE
 	for(var/v in autogrant_actions_controller["[flag]"])
@@ -174,6 +202,8 @@
 	return TRUE
 
 /obj/vehicle/proc/cleanup_actions_for_mob(mob/M)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return FALSE
 	for(var/path in occupant_actions[M])
@@ -193,6 +223,8 @@
 	var/obj/vehicle/vehicle_target
 
 /datum/action/vehicle/Destroy()
+	procstart = null
+	src.procstart = null
 	vehicle_target = null
 	return ..()
 
@@ -201,6 +233,8 @@
 	var/obj/vehicle/sealed/vehicle_entered_target
 
 /datum/action/vehicle/sealed/Destroy()
+	procstart = null
+	src.procstart = null
 	vehicle_entered_target = null
 	return ..()
 
@@ -210,6 +244,8 @@
 	button_icon_state = "car_eject"
 
 /datum/action/vehicle/sealed/climb_out/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	if(..() && istype(vehicle_entered_target))
 		vehicle_entered_target.mob_try_exit(owner, owner)
 
@@ -222,6 +258,8 @@
 	button_icon_state = "car_removekey"
 
 /datum/action/vehicle/sealed/remove_key/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -235,6 +273,8 @@
 	var/hornsound = 'sound/items/carhorn.ogg'
 
 /datum/action/vehicle/sealed/horn/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -254,6 +294,8 @@
 	button_icon_state = "car_headlights"
 
 /datum/action/vehicle/sealed/headlights/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -269,6 +311,8 @@
 	button_icon_state = "car_dump"
 
 /datum/action/vehicle/sealed/dump_kidnapped_mobs/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -282,6 +326,8 @@
 	button_icon_state = "car_rtd"
 
 /datum/action/vehicle/sealed/roll_the_dice/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -296,6 +342,8 @@
 	button_icon_state = "car_cannon"
 
 /datum/action/vehicle/sealed/cannon/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -313,6 +361,8 @@
 
 
 /datum/action/vehicle/sealed/thank/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -339,6 +389,8 @@
 	var/bell_cooldown
 
 /datum/action/vehicle/ridden/wheelchair/bell/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -355,6 +407,8 @@
 	check_flags = AB_CHECK_CONSCIOUS
 
 /datum/action/vehicle/ridden/scooter/skateboard/ollie/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -400,6 +454,8 @@
 	check_flags = AB_CHECK_CONSCIOUS
 
 /datum/action/vehicle/ridden/scooter/skateboard/kickflip/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -455,6 +511,8 @@
 	var/sound_message = "makes a sound."
 
 /datum/action/vehicle/sealed/noise/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

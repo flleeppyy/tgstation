@@ -9,6 +9,8 @@
 	var/alist/test_alist = alist()
 
 /atom/movable/ref_holder/Destroy()
+	procstart = null
+	src.procstart = null
 	test = null
 	static_test = null
 	test_list.Cut()
@@ -22,10 +24,14 @@
 	var/atom/movable/ref_test/self_ref
 
 /atom/movable/ref_test/Destroy(force)
+	procstart = null
+	src.procstart = null
 	self_ref = null
 	return ..()
 
 /datum/unit_test/find_reference_sanity/Run()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/ref_test/victim = allocate(/atom/movable/ref_test)
 	var/atom/movable/ref_holder/testbed = allocate(/atom/movable/ref_holder)
 	SSgarbage.should_save_refs = TRUE
@@ -39,6 +45,8 @@
 	SSgarbage.should_save_refs = FALSE
 
 /datum/unit_test/find_reference_baseline/Run()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/ref_test/victim = allocate(/atom/movable/ref_test)
 	var/atom/movable/ref_holder/testbed = allocate(/atom/movable/ref_holder)
 	SSgarbage.should_save_refs = TRUE
@@ -60,6 +68,8 @@
 	SSgarbage.should_save_refs = FALSE
 
 /datum/unit_test/find_reference_exotic/Run()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/ref_test/victim = allocate(/atom/movable/ref_test)
 	var/atom/movable/ref_holder/testbed = allocate(/atom/movable/ref_holder)
 	SSgarbage.should_save_refs = TRUE
@@ -82,6 +92,8 @@
 	SSgarbage.should_save_refs = FALSE
 
 /datum/unit_test/find_reference_esoteric/Run()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/ref_test/victim = allocate(/atom/movable/ref_test)
 	var/atom/movable/ref_holder/testbed = allocate(/atom/movable/ref_holder)
 	SSgarbage.should_save_refs = TRUE
@@ -107,6 +119,8 @@
 	SSgarbage.should_save_refs = FALSE
 
 /datum/unit_test/find_reference_null_key_entry/Run()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/ref_test/victim = allocate(/atom/movable/ref_test)
 	var/atom/movable/ref_holder/testbed = allocate(/atom/movable/ref_holder)
 	SSgarbage.should_save_refs = TRUE
@@ -122,6 +136,8 @@
 	TEST_ASSERT(LAZYACCESS(victim.found_refs, testbed.test_alist), "The ref-tracking tool failed to find a null key'd alist entry")
 
 /datum/unit_test/find_reference_assoc_investigation/Run()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/ref_test/victim = allocate(/atom/movable/ref_test)
 	var/atom/movable/ref_holder/testbed = allocate(/atom/movable/ref_holder)
 	SSgarbage.should_save_refs = TRUE
@@ -141,6 +157,8 @@
 	SSgarbage.should_save_refs = FALSE
 
 /datum/unit_test/find_reference_alist_investigation/Run()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/ref_test/victim = allocate(/atom/movable/ref_test)
 	var/atom/movable/ref_holder/testbed = allocate(/atom/movable/ref_holder)
 	SSgarbage.should_save_refs = TRUE
@@ -163,6 +181,8 @@
 	SSgarbage.should_save_refs = FALSE
 
 /datum/unit_test/find_reference_static_investigation/Run()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/ref_test/victim = allocate(/atom/movable/ref_test)
 	var/atom/movable/ref_holder/testbed = allocate(/atom/movable/ref_holder)
 	pass(testbed)

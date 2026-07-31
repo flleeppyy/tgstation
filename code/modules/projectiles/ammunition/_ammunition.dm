@@ -52,6 +52,8 @@
 	loaded_projectile = null
 
 /obj/item/ammo_casing/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(projectile_type)
 		loaded_projectile = new projectile_type(src)
@@ -61,6 +63,8 @@
 	update_appearance()
 
 /obj/item/ammo_casing/Destroy()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(T && !loaded_projectile && is_station_level(T.z))
 		SSblackbox.record_feedback("tally", "station_mess_destroyed", 1, name)
@@ -68,6 +72,8 @@
 	return ..()
 
 /obj/item/ammo_casing/add_weapon_description()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/weapon_description, attached_proc = PROC_REF(add_notes_ammo))
 
 /**
@@ -77,6 +83,8 @@
  *
  */
 /obj/item/ammo_casing/proc/add_notes_ammo()
+	procstart = null
+	src.procstart = null
 	// Try to get a projectile to derive stats from
 	var/obj/projectile/exam_proj = projectile_type
 	var/initial_damage = initial(exam_proj.damage)
@@ -110,10 +118,14 @@
 	return readout.Join("\n") // Sending over a single string, rather than the whole list
 
 /obj/item/ammo_casing/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)][loaded_projectile ? "-live" : null]"
 	return ..()
 
 /obj/item/ammo_casing/update_desc()
+	procstart = null
+	src.procstart = null
 	desc = "[initial(desc)][loaded_projectile ? null : " This one is spent."]"
 	return ..()
 
@@ -121,6 +133,8 @@
  * On accidental consumption, 'spend' the ammo, and add in some gunpowder
  */
 /obj/item/ammo_casing/on_accidental_consumption(mob/living/carbon/victim, mob/living/carbon/user, obj/item/source_item,  discover_after = TRUE)
+	procstart = null
+	src.procstart = null
 	if(loaded_projectile)
 		loaded_projectile = null
 		update_appearance()
@@ -131,10 +145,14 @@
 
 //proc to magically refill a casing with a new projectile
 /obj/item/ammo_casing/proc/newshot() //For energy weapons, syringe gun, shotgun shells and wands (!).
+	procstart = null
+	src.procstart = null
 	if(!loaded_projectile)
 		loaded_projectile = new projectile_type(src, src)
 
 /obj/item/ammo_casing/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/ammo_box))
 		return NONE
 	if(!isturf(loc))
@@ -145,6 +163,8 @@
 
 /// Collects the casing and its like on its tile into the passed box, TRUE if anything collected.
 /obj/item/ammo_casing/proc/collect_into_box(mob/living/user, obj/item/ammo_box/box)
+	procstart = null
+	src.procstart = null
 	var/boolets = 0
 	for(var/obj/item/ammo_casing/bullet in loc)
 		if (box.stored_ammo.len >= box.max_ammo)
@@ -162,10 +182,14 @@
 	return TRUE
 
 /obj/item/ammo_casing/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	bounce_away(FALSE, NONE)
 	return ..()
 
 /obj/item/ammo_casing/proc/bounce_away(still_warm = FALSE, bounce_delay = 3)
+	procstart = null
+	src.procstart = null
 	update_appearance()
 	SpinAnimation(10, 1)
 	var/turf/T = get_turf(src)

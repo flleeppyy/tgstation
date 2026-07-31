@@ -19,19 +19,27 @@
 	var/toxin_damage_per_second = 1 / 3
 
 /datum/status_effect/genetic_damage/on_creation(mob/living/new_owner, total_damage)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.total_damage = total_damage
 	RegisterSignal(new_owner, COMSIG_LIVING_HEALTHSCAN, PROC_REF(on_healthscan))
 
 /datum/status_effect/genetic_damage/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(owner, COMSIG_LIVING_HEALTHSCAN)
 
 /datum/status_effect/genetic_damage/refresh(effect, total_damage)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.total_damage += total_damage
 
 /datum/status_effect/genetic_damage/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(ismonkey(owner) && total_damage >= GORILLA_MUTATION_MINIMUM_DAMAGE && SPT_PROB(GORILLA_MUTATION_CHANCE_PER_SECOND, seconds_between_ticks))
 		var/mob/living/carbon/carbon_owner = owner
 		carbon_owner.gorillize(genetics_gorilla = TRUE)
@@ -47,6 +55,8 @@
 		return
 
 /datum/status_effect/genetic_damage/proc/on_healthscan(datum/source, list/render_list, scanpower, mob/user, mode, tochat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/message = ""

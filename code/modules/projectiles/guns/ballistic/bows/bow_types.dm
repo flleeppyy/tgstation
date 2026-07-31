@@ -31,11 +31,15 @@
 	ammo_type = /obj/item/ammo_casing/arrow/holy
 
 /obj/item/gun/ballistic/bow/divine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/nullrod_core)
 	RegisterSignal(src, COMSIG_ITEM_SUBTYPE_PICKER_SELECTED, PROC_REF(on_selected))
 
 /obj/item/gun/ballistic/bow/divine/proc/on_selected(datum/source, obj/item/nullrod/old_weapon, mob/picker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	new /obj/item/storage/bag/quiver/holy(loc)
 

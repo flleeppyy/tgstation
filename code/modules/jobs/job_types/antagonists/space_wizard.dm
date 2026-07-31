@@ -3,7 +3,11 @@
 	faction = ROLE_WIZARD
 
 /datum/job/space_wizard/get_roundstart_spawn_point()
+	procstart = null
+	src.procstart = null
 	return pick(GLOB.wizardstart)
 
 /datum/job/space_wizard/get_latejoin_spawn_point()
+	procstart = null
+	src.procstart = null
 	return pick(GLOB.wizardstart)

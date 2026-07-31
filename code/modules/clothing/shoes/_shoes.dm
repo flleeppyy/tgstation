@@ -31,15 +31,21 @@
 	var/footprint_sprite = FOOTPRINT_SPRITE_SHOES
 
 /obj/item/clothing/shoes/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/item/clothing/shoes/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	context[SCREENTIP_CONTEXT_ALT_RMB] = "Toggle shoes under uniforms"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/clothing/shoes/click_alt_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	alternate_worn_layer = (alternate_worn_layer == UNDER_UNIFORM_LAYER) ? NONE : UNDER_UNIFORM_LAYER
 
 	update_slot_icon()
@@ -50,6 +56,8 @@
 	bio = 50
 
 /obj/item/clothing/shoes/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(prob(50))
 		user.visible_message(span_suicide("[user] begins fastening \the [src] up waaay too tightly! It looks like [user.p_theyre()] trying to commit suicide!"))
 		var/obj/item/bodypart/leg/left = user.get_bodypart(BODY_ZONE_L_LEG)
@@ -68,6 +76,8 @@
 		return BRUTELOSS
 
 /obj/item/clothing/shoes/worn_overlays(mutable_appearance/standing, isinhands = FALSE, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isinhands)
 		return
@@ -75,6 +85,8 @@
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damagedshoe")
 
 /obj/item/clothing/shoes/separate_worn_overlays(mutable_appearance/standing, mutable_appearance/draw_target, isinhands = FALSE, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isinhands)
 		return
@@ -83,6 +95,8 @@
 		. += blood_overlay
 
 /obj/item/clothing/shoes/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!ishuman(loc))
@@ -94,6 +108,8 @@
 		. += "The [fastening_type] are all knotted together."
 
 /obj/item/clothing/shoes/visual_equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(offset && (slot_flags & slot))
 		user.pixel_z += offset
@@ -102,17 +118,23 @@
 		equipped_before_drop = TRUE
 
 /obj/item/clothing/shoes/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(fastening_type != SHOES_SLIPON && tied == SHOES_UNTIED)
 		our_alert_ref = WEAKREF(user.throw_alert(ALERT_SHOES_KNOT, /atom/movable/screen/alert/shoes/untied))
 		RegisterSignal(src, COMSIG_SHOES_STEP_ACTION, PROC_REF(check_trip), override=TRUE)
 
 /obj/item/clothing/shoes/proc/restore_offsets(mob/user)
+	procstart = null
+	src.procstart = null
 	equipped_before_drop = FALSE
 	user.pixel_z -= offset
 	worn_y_dimension = ICON_SIZE_Y
 
 /obj/item/clothing/shoes/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/screen/alert/our_alert = our_alert_ref?.resolve()
 	if(!our_alert)
 		our_alert_ref = null
@@ -123,12 +145,16 @@
 	. = ..()
 
 /obj/item/clothing/shoes/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ismob(loc))
 		var/mob/M = loc
 		M.update_worn_shoes()
 
 /obj/item/clothing/shoes/generate_digitigrade_icons(icon/base_icon, greyscale_colors)
+	procstart = null
+	src.procstart = null
 	return icon(SSgreyscale.GetColoredIconByType(/datum/greyscale_config/digitigrade, greyscale_colors), "boots_worn")
 
 /**
@@ -143,6 +169,8 @@
  * * force_lacing: boolean. if TRUE, ignores whether we actually have laces
  */
 /obj/item/clothing/shoes/proc/adjust_laces(state, mob/user, force_lacing = FALSE)
+	procstart = null
+	src.procstart = null
 	if(fastening_type == SHOES_SLIPON && !force_lacing)
 		return
 
@@ -170,6 +198,8 @@
  * * user: who is the person interacting with the shoes?
  */
 /obj/item/clothing/shoes/proc/handle_tying(mob/living/user)
+	procstart = null
+	src.procstart = null
 	///our_guy here is the wearer, if one exists (and he must exist, or we don't care)
 	var/mob/living/carbon/human/our_guy = loc
 	if(!istype(our_guy))
@@ -227,10 +257,14 @@
 
 ///checking to make sure we're still on the person we're supposed to be, for lacing do_after's
 /obj/item/clothing/shoes/proc/still_shoed(mob/living/carbon/our_guy)
+	procstart = null
+	src.procstart = null
 	return (loc == our_guy)
 
 ///check_trip runs on each step to see if we fall over as a result of our lace status. Knotted laces are a guaranteed trip, while untied shoes are just a chance to stumble
 /obj/item/clothing/shoes/proc/check_trip()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/carbon/human/our_guy = loc
 	if(!istype(our_guy)) // are they REALLY /our guy/?
@@ -275,6 +309,8 @@
 
 
 /obj/item/clothing/shoes/attack_hand(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return ..()
 	if(loc == user && tied != SHOES_TIED && (user.mobility_flags & MOBILITY_USE))
@@ -283,6 +319,8 @@
 	..()
 
 /obj/item/clothing/shoes/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (fastening_type == SHOES_SLIPON)
@@ -299,6 +337,8 @@
 		adjust_laces(tied ? SHOES_UNTIED : SHOES_TIED, user)
 
 /obj/item/clothing/shoes/apply_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	slowdown = modify_fantasy_variable("slowdown", slowdown, -bonus * 0.1, 0)
 	if(ismob(loc))
@@ -306,6 +346,8 @@
 		wearer.update_equipment_speed_mods()
 
 /obj/item/clothing/shoes/remove_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	slowdown = reset_fantasy_variable("slowdown", slowdown)
 	if(ismob(loc))
 		var/mob/wearer = loc
@@ -314,6 +356,8 @@
 
 /// Returns appropriate description for unfastened shoes
 /obj/item/clothing/shoes/proc/untied_adjective()
+	procstart = null
+	src.procstart = null
 	switch(fastening_type)
 		if (SHOES_LACED)
 			return "untied"
@@ -324,6 +368,8 @@
 
 /// Returns appropriate verb for how to fasten shoes
 /obj/item/clothing/shoes/proc/fasten_verb()
+	procstart = null
+	src.procstart = null
 	switch(fastening_type)
 		if (SHOES_LACED)
 			return "tie"
@@ -334,6 +380,8 @@
 
 /// Returns appropriate verb for fastening shoes
 /obj/item/clothing/shoes/proc/fastening_verb()
+	procstart = null
+	src.procstart = null
 	switch(fastening_type)
 		if (SHOES_LACED)
 			return "tying"

@@ -6,27 +6,39 @@
 	interaction_flags_click = ALLOW_SILICON_REACH
 
 /obj/machinery/computer/prisoner/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	contained_id?.forceMove(drop_location())
 
 /obj/machinery/computer/prisoner/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(contained_id)
 	return ..()
 
 /obj/machinery/computer/prisoner/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == contained_id)
 		contained_id = null
 
 /obj/machinery/computer/prisoner/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(contained_id)
 		. += span_notice("<b>Alt-click</b> to eject the ID card.")
 
 /obj/machinery/computer/prisoner/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	id_eject(user)
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/computer/prisoner/proc/id_insert(mob/user, obj/item/card/id/advanced/prisoner/new_id)
+	procstart = null
+	src.procstart = null
 	if(!istype(new_id))
 		return
 	if(!isnull(contained_id))
@@ -39,6 +51,8 @@
 	playsound(src, 'sound/machines/terminal/terminal_insert_disc.ogg', 50, FALSE)
 
 /obj/machinery/computer/prisoner/proc/id_eject(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(contained_id))
 		balloon_alert(user, "no id!")
 		return
@@ -52,6 +66,8 @@
 	playsound(src, 'sound/machines/terminal/terminal_insert_disc.ogg', 50, FALSE)
 
 /obj/machinery/computer/prisoner/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/card/id/advanced/prisoner))
 		return NONE
 	id_insert(user, tool)

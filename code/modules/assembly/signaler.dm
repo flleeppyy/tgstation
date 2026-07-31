@@ -30,6 +30,8 @@
 	var/range = 0 //Everywhere
 
 /obj/item/assembly/signaler/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] eats \the [src]! If it is signaled, [user.p_they()] will die!"))
 	playsound(src, 'sound/items/eatfood.ogg', 50, TRUE)
 	moveToNullspace()
@@ -38,6 +40,8 @@
 	return MANUAL_SUICIDE_NONLETHAL
 
 /obj/item/assembly/signaler/proc/manual_suicide()
+	procstart = null
+	src.procstart = null
 	var/mob/living/user = suicider.current
 	if(!istype(user))
 		return
@@ -51,37 +55,51 @@
 	qdel(src)
 
 /obj/item/assembly/signaler/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_frequency(frequency)
 	RegisterSignal(src, COMSIG_ITEM_IN_UNWRAPPED_TRAITOR_MAIL, PROC_REF(on_mail_unwrap))
 
 /obj/item/assembly/signaler/Destroy()
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src,frequency)
 	suicider = null
 	. = ..()
 
 /obj/item/assembly/signaler/activate()
+	procstart = null
+	src.procstart = null
 	if(!..())//cooldown processing
 		return FALSE
 	signal()
 	return TRUE
 
 /obj/item/assembly/signaler/update_appearance()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	holder?.update_appearance()
 
 /obj/item/assembly/signaler/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(is_secured(user))
 		return ..()
 	return UI_CLOSE
 
 /obj/item/assembly/signaler/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Signaler", name)
 		ui.open()
 
 /obj/item/assembly/signaler/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["frequency"] = frequency
 	data["cooldown"] = cooldown_length
@@ -91,6 +109,8 @@
 	return data
 
 /obj/item/assembly/signaler/ui_act(action, params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -123,6 +143,8 @@
 	update_appearance()
 
 /obj/item/assembly/signaler/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!issignaler(tool))
 		return ..()
 
@@ -136,6 +158,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/assembly/signaler/attack_self_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!can_interact(user))
 		return
@@ -149,6 +173,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/assembly/signaler/proc/signal()
+	procstart = null
+	src.procstart = null
 	if(!radio_connection)
 		return
 
@@ -162,6 +188,8 @@
 	radio_connection.post_signal(src, signal, range = range)
 
 /obj/item/assembly/signaler/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(!signal)
 		return
@@ -181,12 +209,16 @@
 	return TRUE
 
 /obj/item/assembly/signaler/proc/set_frequency(new_frequency)
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	radio_connection = SSradio.add_object(src, frequency, RADIO_SIGNALER)
 	return
 
 /obj/item/assembly/signaler/proc/on_mail_unwrap(atom/source, mob/user, obj/item/mail/traitor/letter)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	to_chat(user, span_danger("As you open [letter], you accidentally press a button on [src]!"))
 	INVOKE_ASYNC(src, PROC_REF(signal)) // No need to check for cooldown, the cooldown is shorter than the do_after for opening mail
@@ -195,24 +227,36 @@
 /obj/item/assembly/signaler/cyborg
 
 /obj/item/assembly/signaler/cyborg/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/assembly/signaler/cyborg/screwdriver_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/assembly/signaler/internal
 	name = "internal remote signaling device"
 
 /obj/item/assembly/signaler/internal/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.inventory_state
 
 /obj/item/assembly/signaler/internal/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/assembly/signaler/internal/screwdriver_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/assembly/signaler/internal/can_interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ispAI(user))
 		return TRUE
 	. = ..()

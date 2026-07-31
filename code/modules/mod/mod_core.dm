@@ -11,55 +11,79 @@
 	var/obj/item/mod/control/mod
 
 /obj/item/mod/core/Destroy()
+	procstart = null
+	src.procstart = null
 	if(mod)
 		uninstall()
 	return ..()
 
 /obj/item/mod/core/proc/install(obj/item/mod/control/mod_unit)
+	procstart = null
+	src.procstart = null
 	mod = mod_unit
 	mod.core = src
 	forceMove(mod)
 	mod.update_charge_alert()
 
 /obj/item/mod/core/proc/uninstall()
+	procstart = null
+	src.procstart = null
 	mod.core = null
 	mod.update_charge_alert()
 	mod = null
 
 /// Returns the item responsible for charging the suit, like a power cell, an ethereal's stomach, the core itself, etc.
 /obj/item/mod/core/proc/charge_source()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Returns the amount of charge in the core.
 /obj/item/mod/core/proc/charge_amount()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /// Returns the max amount of charge stored in the core.
 /obj/item/mod/core/proc/max_charge_amount()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /// Adds a set amount of charge to the core.
 /obj/item/mod/core/proc/add_charge(amount)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// Subtracts a set amount of charge from the core.
 /obj/item/mod/core/proc/subtract_charge(amount)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// Checks if there's enough charge in the core to use an amount of energy.
 /obj/item/mod/core/proc/check_charge(amount)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// Returns what icon state to display on the HUD for the charge level of this core
 /obj/item/mod/core/proc/get_charge_icon_state()
+	procstart = null
+	src.procstart = null
 	return SPACESUIT_NO_ICON
 
 /// Gets what the UI should use for the charge bar color.
 /obj/item/mod/core/proc/get_chargebar_color()
+	procstart = null
+	src.procstart = null
 	return "bad"
 
 /// Gets what the UI should use for the charge bar text.
 /obj/item/mod/core/proc/get_chargebar_string()
+	procstart = null
+	src.procstart = null
 	var/charge_amount = charge_amount()
 	var/max_charge_amount = max_charge_amount()
 	return "[display_energy(charge_amount)] of [display_energy(max_charge_amount())] \
@@ -72,30 +96,48 @@
 		This might be because of the slowly killing poison inside, but those are just rumors."
 
 /obj/item/mod/core/infinite/charge_source()
+	procstart = null
+	src.procstart = null
 	return src
 
 /obj/item/mod/core/infinite/charge_amount()
+	procstart = null
+	src.procstart = null
 	return INFINITY
 
 /obj/item/mod/core/infinite/max_charge_amount()
+	procstart = null
+	src.procstart = null
 	return INFINITY
 
 /obj/item/mod/core/infinite/add_charge(amount)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/item/mod/core/infinite/subtract_charge(amount)
+	procstart = null
+	src.procstart = null
 	return amount
 
 /obj/item/mod/core/infinite/check_charge(amount)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/item/mod/core/infinite/get_charge_icon_state()
+	procstart = null
+	src.procstart = null
 	return SPACESUIT_CELL_HIGH
 
 /obj/item/mod/core/infinite/get_chargebar_color()
+	procstart = null
+	src.procstart = null
 	return "teal"
 
 /obj/item/mod/core/infinite/get_chargebar_string()
+	procstart = null
+	src.procstart = null
 	return "Infinite"
 
 /obj/item/mod/core/standard
@@ -110,10 +152,14 @@
 	var/obj/item/stock_parts/power_store/cell
 
 /obj/item/mod/core/standard/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(cell)
 	return ..()
 
 /obj/item/mod/core/standard/install(obj/item/mod/control/mod_unit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cell)
 		install_cell(cell)
@@ -125,6 +171,8 @@
 		on_wearer_set(mod, mod.wearer)
 
 /obj/item/mod/core/standard/uninstall()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(cell))
 		cell.forceMove(drop_location())
 	UnregisterSignal(mod, list(
@@ -138,17 +186,25 @@
 	return ..()
 
 /obj/item/mod/core/standard/charge_source()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/item/mod/core/standard/charge_amount()
+	procstart = null
+	src.procstart = null
 	var/obj/item/stock_parts/power_store/charge_source = charge_source()
 	return charge_source?.charge || 0
 
 /obj/item/mod/core/standard/max_charge_amount(amount)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stock_parts/power_store/charge_source = charge_source()
 	return charge_source?.maxcharge || 1
 
 /obj/item/mod/core/standard/add_charge(amount)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stock_parts/power_store/charge_source = charge_source()
 	if(isnull(charge_source))
 		return FALSE
@@ -158,6 +214,8 @@
 	return .
 
 /obj/item/mod/core/standard/subtract_charge(amount)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stock_parts/power_store/charge_source = charge_source()
 	if(isnull(charge_source))
 		return FALSE
@@ -167,9 +225,13 @@
 	return .
 
 /obj/item/mod/core/standard/check_charge(amount)
+	procstart = null
+	src.procstart = null
 	return charge_amount() >= amount
 
 /obj/item/mod/core/standard/get_charge_icon_state()
+	procstart = null
+	src.procstart = null
 	if(isnull(charge_source()))
 		return SPACESUIT_CELL_MISSING
 
@@ -186,6 +248,8 @@
 	return SPACESUIT_CELL_EMPTY
 
 /obj/item/mod/core/standard/get_chargebar_color()
+	procstart = null
+	src.procstart = null
 	if(isnull(charge_source()))
 		return "transparent"
 	switch(round(charge_amount() / max_charge_amount(), 0.01))
@@ -197,27 +261,37 @@
 			return "good"
 
 /obj/item/mod/core/standard/get_chargebar_string()
+	procstart = null
+	src.procstart = null
 	if(isnull(charge_source()))
 		return "Power Cell Missing"
 	return ..()
 
 /obj/item/mod/core/standard/proc/install_cell(new_cell)
+	procstart = null
+	src.procstart = null
 	cell = new_cell
 	cell.forceMove(src)
 	mod.update_charge_alert()
 
 /obj/item/mod/core/standard/proc/uninstall_cell()
+	procstart = null
+	src.procstart = null
 	if(!cell)
 		return
 	cell = null
 	mod.update_charge_alert()
 
 /obj/item/mod/core/standard/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == cell)
 		uninstall_cell()
 
 /obj/item/mod/core/standard/proc/on_examine(datum/source, mob/examiner, list/examine_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!mod.open)
@@ -225,6 +299,8 @@
 	examine_text += cell ? "You could remove the cell with an empty hand." : "You could use a cell on it to install one."
 
 /obj/item/mod/core/standard/proc/on_attack_hand(datum/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(mod.seconds_electrified && charge_amount() && mod.shock(user, 100))
@@ -235,6 +311,8 @@
 	return NONE
 
 /obj/item/mod/core/standard/proc/mod_uninstall_cell(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!cell)
 		mod.balloon_alert(user, "no cell!")
 		return
@@ -249,14 +327,20 @@
 	user.put_in_hands(cell_to_move)
 
 /obj/item/mod/core/standard/proc/on_mod_interaction(datum/source, mob/living/user, obj/item/thing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return item_interaction(user, thing)
 
 /obj/item/mod/core/standard/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return replace_cell(tool, user) ? ITEM_INTERACT_SUCCESS : NONE
 
 /obj/item/mod/core/standard/proc/replace_cell(obj/item/attacking_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(attacking_item, /obj/item/stock_parts/power_store/cell))
 		return FALSE
 	if(!mod.open)
@@ -273,18 +357,24 @@
 	return TRUE
 
 /obj/item/mod/core/standard/proc/on_wearer_set(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	RegisterSignal(mod.wearer, COMSIG_PROCESS_BORGCHARGER_OCCUPANT, PROC_REF(on_borg_charge))
 	RegisterSignal(mod, COMSIG_MOD_WEARER_UNSET, PROC_REF(on_wearer_unset))
 
 /obj/item/mod/core/standard/proc/on_wearer_unset(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(mod.wearer, COMSIG_PROCESS_BORGCHARGER_OCCUPANT)
 	UnregisterSignal(mod, COMSIG_MOD_WEARER_UNSET)
 
 /obj/item/mod/core/standard/proc/on_borg_charge(datum/source, datum/callback/charge_cell, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/stock_parts/power_store/target_cell = charge_source()
@@ -306,19 +396,27 @@
 	var/charge_modifier = 0.1
 
 /obj/item/mod/core/ethereal/charge_source()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/stomach/ethereal/ethereal_stomach = mod.wearer.get_organ_slot(ORGAN_SLOT_STOMACH)
 	if(!istype(ethereal_stomach))
 		return
 	return ethereal_stomach
 
 /obj/item/mod/core/ethereal/charge_amount()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/stomach/ethereal/charge_source = charge_source()
 	return charge_source?.cell.charge() || ETHEREAL_CHARGE_NONE
 
 /obj/item/mod/core/ethereal/max_charge_amount()
+	procstart = null
+	src.procstart = null
 	return ETHEREAL_CHARGE_FULL
 
 /obj/item/mod/core/ethereal/add_charge(amount)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/stomach/ethereal/charge_source = charge_source()
 	if(isnull(charge_source))
 		return FALSE
@@ -326,18 +424,26 @@
 	return TRUE
 
 /obj/item/mod/core/ethereal/subtract_charge(amount)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/stomach/ethereal/charge_source = charge_source()
 	if(isnull(charge_source))
 		return FALSE
 	return -charge_source.adjust_charge(-amount * charge_modifier)
 
 /obj/item/mod/core/ethereal/check_charge(amount)
+	procstart = null
+	src.procstart = null
 	return charge_amount() >= amount * charge_modifier
 
 /obj/item/mod/core/ethereal/get_charge_icon_state()
+	procstart = null
+	src.procstart = null
 	return isnull(charge_source()) ? SPACESUIT_CELL_MISSING : SPACESUIT_NO_ICON
 
 /obj/item/mod/core/ethereal/get_chargebar_color()
+	procstart = null
+	src.procstart = null
 	if(isnull(charge_source()))
 		return "transparent"
 	switch(charge_amount())
@@ -351,6 +457,8 @@
 			return "teal"
 
 /obj/item/mod/core/ethereal/get_chargebar_string()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/stomach/ethereal/charge_source = charge_source()
 	if(isnull(charge_source()) || isnull(charge_source.cell))
 		return "Biological Battery Missing"
@@ -372,37 +480,55 @@
 	var/list/charger_list = list(/obj/item/stack/ore/plasma = PLASMA_CORE_ORE_CHARGE, /obj/item/stack/sheet/mineral/plasma = PLASMA_CORE_SHEET_CHARGE)
 
 /obj/item/mod/core/plasma/install(obj/item/mod/control/mod_unit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(mod, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(on_mod_interaction))
 
 /obj/item/mod/core/plasma/uninstall()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(mod, COMSIG_ATOM_ITEM_INTERACTION)
 	return ..()
 
 /obj/item/mod/core/plasma/charge_source()
+	procstart = null
+	src.procstart = null
 	return src
 
 /obj/item/mod/core/plasma/charge_amount()
+	procstart = null
+	src.procstart = null
 	return charge
 
 /obj/item/mod/core/plasma/max_charge_amount()
+	procstart = null
+	src.procstart = null
 	return maxcharge
 
 /obj/item/mod/core/plasma/add_charge(amount)
+	procstart = null
+	src.procstart = null
 	charge = min(maxcharge, charge + amount)
 	mod.update_charge_alert()
 	return TRUE
 
 /obj/item/mod/core/plasma/subtract_charge(amount)
+	procstart = null
+	src.procstart = null
 	amount = min(amount, charge)
 	charge -= amount
 	mod.update_charge_alert()
 	return amount
 
 /obj/item/mod/core/plasma/check_charge(amount)
+	procstart = null
+	src.procstart = null
 	return charge_amount() >= amount
 
 /obj/item/mod/core/plasma/get_charge_icon_state()
+	procstart = null
+	src.procstart = null
 	switch(round(charge_amount() / max_charge_amount(), 0.01))
 		if(0.75 to INFINITY)
 			return SPACESUIT_CELL_HIGH
@@ -416,6 +542,8 @@
 	return SPACESUIT_CELL_EMPTY
 
 /obj/item/mod/core/plasma/get_chargebar_color()
+	procstart = null
+	src.procstart = null
 	switch(round(charge_amount() / max_charge_amount(), 0.01))
 		if(-INFINITY to 0.33)
 			return "bad"
@@ -423,14 +551,20 @@
 			return "purple"
 
 /obj/item/mod/core/plasma/proc/on_mod_interaction(datum/source, mob/living/user, obj/item/thing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return item_interaction(user, thing)
 
 /obj/item/mod/core/plasma/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return charge_plasma(tool, user) ? ITEM_INTERACT_SUCCESS : NONE
 
 /obj/item/mod/core/plasma/proc/charge_plasma(obj/item/stack/plasma, mob/user)
+	procstart = null
+	src.procstart = null
 	var/charge_given = is_type_in_list(plasma, charger_list, zebra = TRUE)
 	if(!charge_given)
 		return FALSE
@@ -461,18 +595,26 @@
 	var/obj/effect/abstract/particle_holder/particle_effect
 
 /obj/item/mod/core/plasma/lavaland/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(particle_effect)
 	return ..()
 
 /obj/item/mod/core/plasma/lavaland/install(obj/item/mod/control/mod_unit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(mod_unit, COMSIG_MOD_TOGGLED, PROC_REF(on_toggle))
 
 /obj/item/mod/core/plasma/lavaland/uninstall(obj/item/mod/control/mod_unit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(mod_unit, COMSIG_MOD_TOGGLED)
 
 /obj/item/mod/core/plasma/lavaland/proc/on_toggle()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(mod.active)
 		particle_effect = new(mod.wearer, /particles/pollen/modsuit, PARTICLE_ATTACH_MOB)
@@ -483,6 +625,8 @@
 	UnregisterSignal(mod.wearer, COMSIG_MOVABLE_MOVED)
 
 /obj/item/mod/core/plasma/lavaland/proc/spread_flowers(atom/source, atom/oldloc, dir, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!isturf(oldloc))
 		return
@@ -510,11 +654,15 @@
 	greyscale_colors = "#ff0000"
 
 /obj/item/mod/core/soul/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	base_desc = desc
 	update_appearance(UPDATE_DESC)
 
 /obj/item/mod/core/soul/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = base_desc
 	switch(theme)
@@ -530,6 +678,8 @@
 			desc += " Or at least, that's what it should be. <i>Somebody</i> must have set a variable incorrectly."
 
 /obj/item/mod/core/soul/update_greyscale()
+	procstart = null
+	src.procstart = null
 	switch(theme)
 		if(THEME_CULT)
 			greyscale_colors = "#ff0000"
@@ -542,6 +692,8 @@
 	return ..()
 
 /obj/item/mod/core/soul/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	var/obj/item/soulstone/stone = locate() in components
 	set_theme(stone.theme)
 	for(var/mob/living/basic/shade/shade in stone)
@@ -550,17 +702,25 @@
 	return ..()
 
 /obj/item/mod/core/soul/proc/set_theme(new_theme)
+	procstart = null
+	src.procstart = null
 	theme = new_theme
 	update_appearance(UPDATE_DESC)
 	update_greyscale()
 
 /obj/item/mod/core/soul/charge_source()
+	procstart = null
+	src.procstart = null
 	return CONFIG_GET(flag/disable_human_mood) ? src : mod.wearer?.mob_mood
 
 /obj/item/mod/core/soul/max_charge_amount()
+	procstart = null
+	src.procstart = null
 	return CONFIG_GET(flag/disable_human_mood) ? INFINITY : SANITY_MAXIMUM
 
 /obj/item/mod/core/soul/charge_amount()
+	procstart = null
+	src.procstart = null
 	var/mob/living/wearer = mod.wearer
 	if(!wearer)
 		return 0
@@ -572,11 +732,15 @@
 	return source?.sanity
 
 /obj/item/mod/core/soul/check_charge(amount)
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/disable_human_mood))
 		return !!mod.wearer
 	return charge_amount() >= amount * 10 / STANDARD_CELL_CHARGE
 
 /obj/item/mod/core/soul/subtract_charge(amount)
+	procstart = null
+	src.procstart = null
 	var/mob/living/wearer = mod.wearer
 	if(CONFIG_GET(flag/disable_human_mood))
 		return !!wearer
@@ -590,6 +754,8 @@
 	return TRUE
 
 /obj/item/mod/core/soul/get_chargebar_string()
+	procstart = null
+	src.procstart = null
 	var/mob/living/wearer = mod.wearer
 	if(!wearer || HAS_TRAIT(wearer, TRAIT_NO_SOUL))
 		return "No power source detected."
@@ -598,6 +764,8 @@
 	return "[round(charge_amount() / max_charge_amount() * 100, 0.1)]%"
 
 /obj/item/mod/core/soul/get_chargebar_color()
+	procstart = null
+	src.procstart = null
 	switch(theme)
 		if(THEME_CULT)
 			return "red"
@@ -609,6 +777,8 @@
 			return "green"
 
 /obj/item/mod/core/soul/proc/get_backlash_type(mob/living/checked)
+	procstart = null
+	src.procstart = null
 	switch(theme)
 		if(THEME_CULT)
 			if(!(IS_CULTIST(checked) || IS_HERETIC(checked) || HAS_MIND_TRAIT(checked, TRAIT_MAGICALLY_GIFTED)))
@@ -623,6 +793,8 @@
 				return /datum/mood_event/soul_core_discomfort
 
 /obj/item/mod/core/soul/get_charge_icon_state()
+	procstart = null
+	src.procstart = null
 	switch(round(charge_amount() / max_charge_amount(), 0.01))
 		if(0.75 to INFINITY)
 			return SPACESUIT_CELL_HIGH
@@ -636,6 +808,8 @@
 	return SPACESUIT_CELL_EMPTY
 
 /obj/item/mod/core/soul/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vname == NAMEOF(src, theme))
 		update_appearance(UPDATE_DESC)

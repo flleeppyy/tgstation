@@ -12,13 +12,19 @@
 	VAR_PRIVATE/timerid
 
 /datum/bt_node/ai_behavior/meteor_heart_deaggro/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	timerid = addtimer(CALLBACK(src, PROC_REF(finish_action), controller, TRUE), deaggro_delay, TIMER_UNIQUE | TIMER_STOPPABLE)
 
 /datum/bt_node/ai_behavior/meteor_heart_deaggro/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	return AI_BEHAVIOR_DELAY
 
 /datum/bt_node/ai_behavior/meteor_heart_deaggro/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	deltimer(timerid)
 	timerid = null

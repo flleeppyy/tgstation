@@ -19,6 +19,8 @@
 	var/mob/living/hallucinator
 
 /datum/hallucination/New(mob/living/hallucinator)
+	procstart = null
+	src.procstart = null
 	if(!isliving(hallucinator))
 		stack_trace("[type] was created without a hallucinating mob.")
 		qdel(src)
@@ -30,16 +32,22 @@
 
 /// Signal proc for [COMSIG_QDELETING], if the mob hallucinating us is deletes, we should delete too.
 /datum/hallucination/proc/target_deleting()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(src)
 
 /// Starts the hallucination.
 /datum/hallucination/proc/start()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	stack_trace("[type] didn't implement any hallucination effects in start.")
 
 /datum/hallucination/Destroy()
+	procstart = null
+	src.procstart = null
 	if(hallucinator)
 		UnregisterSignal(hallucinator, COMSIG_QDELETING)
 		hallucinator = null
@@ -50,6 +58,8 @@
 /// Returns a random turf in a ring around the hallucinator mob.
 /// Useful for sound hallucinations.
 /datum/hallucination/proc/random_far_turf()
+	procstart = null
+	src.procstart = null
 	var/first_offset = pick(-8, -7, -6, -5, 5, 6, 7, 8)
 	var/second_offset = rand(-8, 8)
 	var/x_offset
@@ -65,6 +75,8 @@
 
 /// Gets a random non-security member of the crew that is at least 8 tiles away.
 /datum/hallucination/proc/random_non_sec_crewmember()
+	procstart = null
+	src.procstart = null
 	var/list/possible_fakes = list()
 	for(var/datum/mind/possible_fake as anything in get_crewmember_minds())
 		// Sec won't make sense. (Neither will cap but we'll just let it slide)
@@ -113,6 +125,8 @@
 	var/persist_without_seers = FALSE
 
 /obj/effect/client_image_holder/Initialize(mapload, list/mobs_which_see_us)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(mobs_which_see_us))
 		stack_trace("Client image holder was created with no mobs to see it.")
@@ -128,6 +142,8 @@
 		add_seer(seer)
 
 /obj/effect/client_image_holder/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(shown_image)
 		for(var/mob/seer as anything in who_sees_us)
 			remove_seer(seer)
@@ -137,12 +153,16 @@
 	return ..()
 
 /obj/effect/client_image_holder/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(src) || same_z_layer)
 		return
 	SET_PLANE(shown_image, PLANE_TO_TRUE(shown_image.plane), new_turf)
 
 /obj/effect/client_image_holder/proc/add_seer(mob/new_seer)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(new_seer, COMSIG_MOB_LOGIN, PROC_REF(show_image_to))
 	RegisterSignal(new_seer, COMSIG_QDELETING, PROC_REF(remove_seer))
 	who_sees_us += new_seer
@@ -150,6 +170,8 @@
 
 /// Signal proc to clean up references if people who see us are deleted.
 /obj/effect/client_image_holder/proc/remove_seer(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(source, list(COMSIG_MOB_LOGIN, COMSIG_QDELETING))
@@ -162,6 +184,8 @@
 
 /// Generates the image which we take on.
 /obj/effect/client_image_holder/proc/generate_image()
+	procstart = null
+	src.procstart = null
 	var/image/created = image(image_icon, src, image_state, image_layer, dir = src.dir)
 	SET_PLANE_EXPLICIT(created, image_plane, src)
 	created.pixel_w = image_pixel_x
@@ -172,18 +196,24 @@
 
 /// Shows the image we generated to the passed mob
 /obj/effect/client_image_holder/proc/show_image_to(mob/show_to)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	show_to.client?.images |= shown_image
 
 /// Hides the image we generated from the passed mob
 /obj/effect/client_image_holder/proc/hide_image_from(mob/hide_from)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	hide_from.client?.images -= shown_image
 
 /// Simple helper for refreshing / showing the image to everyone in our list.
 /obj/effect/client_image_holder/proc/regenerate_image()
+	procstart = null
+	src.procstart = null
 	for(var/mob/seer as anything in who_sees_us)
 		hide_image_from(seer)
 
@@ -194,20 +224,28 @@
 
 // Whenever we perform icon updates, regenerate our image
 /obj/effect/client_image_holder/update_icon(updates = ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	regenerate_image()
 
 // If we move for some reason, regenerate our image
 /obj/effect/client_image_holder/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!loc)
 		return
 	regenerate_image()
 
 /obj/effect/client_image_holder/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/client_image_holder/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -220,6 +258,8 @@
 	var/datum/hallucination/parent
 
 /obj/effect/client_image_holder/hallucination/Initialize(mapload, list/mobs_which_see_us, datum/hallucination/parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!parent)
 		stack_trace("[type] was created without a parent hallucination.")
@@ -229,12 +269,16 @@
 	src.parent = parent
 
 /obj/effect/client_image_holder/hallucination/Destroy(force)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_QDELETING)
 	parent = null
 	return ..()
 
 /// Signal proc for [COMSIG_QDELETING], if our associated hallucination deletes, we should too
 /obj/effect/client_image_holder/hallucination/proc/parent_deleting(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(src)

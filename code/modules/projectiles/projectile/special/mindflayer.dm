@@ -2,6 +2,8 @@
 	name = "flayer ray"
 
 /obj/projectile/beam/mindflayer/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ishuman(target))
 		var/mob/living/carbon/human/human_hit = target

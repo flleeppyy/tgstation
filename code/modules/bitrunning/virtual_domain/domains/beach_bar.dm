@@ -9,6 +9,8 @@
 	domain_flags = DOMAIN_NO_NOHIT_BONUS
 
 /datum/lazy_template/virtual_domain/beach_bar/setup_domain(list/created_atoms)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	for(var/obj/item/reagent_containers/cup/glass/drink in created_atoms)
@@ -18,12 +20,16 @@
 
 
 /datum/lazy_template/virtual_domain/beach_bar/proc/on_vended_item(obj/machinery/vending/vending_machine, obj/item/vended_item)
+	procstart = null
+	src.procstart = null
 	if(istype(vended_item, /obj/item/reagent_containers/cup/glass))
 		RegisterSignal(vended_item, COMSIG_GLASS_DRANK, PROC_REF(on_drink_drank))
 
 
 /// Eventually reveal the cache
 /datum/lazy_template/virtual_domain/beach_bar/proc/on_drink_drank(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	add_points(0.5)

@@ -31,10 +31,14 @@
 	acid = 30
 
 /obj/item/crowbar/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/falling_hazard, damage = force, wound_bonus = wound_bonus, hardhat_safety = TRUE, crushes = FALSE, impact_sound = hitsound)
 
 /obj/item/crowbar/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is beating [user.p_them()]self to death with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(loc, 'sound/items/weapons/genhit.ogg', 50, TRUE, -1)
 	return BRUTELOSS
@@ -91,6 +95,8 @@
 	wound_bonus = 35
 
 /obj/item/crowbar/hammer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/kneejerk)
 
@@ -108,6 +114,8 @@
 	throw_speed = 2
 
 /obj/item/crowbar/large/old/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(50))
 		icon_state = "crowbar_powergame"
@@ -157,9 +165,13 @@
 	var/alert_cooldown_time = 1 MINUTES
 
 /obj/item/crowbar/power/get_all_tool_behaviours()
+	procstart = null
+	src.procstart = null
 	return list(first_tool_behavior, second_tool_behavior)
 
 /obj/item/crowbar/power/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/transforming, \
@@ -174,6 +186,8 @@
 	RegisterSignal(src, COMSIG_TOOL_FORCE_OPEN_AIRLOCK, PROC_REF(on_force_open))
 
 /obj/item/crowbar/power/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "It's fitted with a [tool_behaviour == first_tool_behavior ? inactive_text : active_text] head."
 
@@ -183,6 +197,8 @@
  * Toggles between crowbar and wirecutters and gives feedback to the user.
  */
 /obj/item/crowbar/power/proc/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	tool_behaviour = (active ? second_tool_behavior : first_tool_behavior)
@@ -203,6 +219,8 @@
  */
 
 /obj/item/crowbar/power/proc/on_force_open(obj/item/source, mob/user, obj/machinery/door/airlock/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/list/collective_access = list()
@@ -231,6 +249,8 @@
 
 ///Our alert for our jaws of life.
 /obj/item/crowbar/power/proc/sound_the_alarms(mob/user, obj/machinery/door/airlock/target)
+	procstart = null
+	src.procstart = null
 		aas_config_announce(/datum/aas_config_entry/jaws_entry_alert, list(
 			"PERSON" = user.name,
 			"LOCATION" = get_area_name(target),
@@ -249,6 +269,8 @@
 	)
 
 /obj/item/crowbar/power/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(tool_behaviour == TOOL_CROWBAR)
 		user.visible_message(span_suicide("[user] is putting [user.p_their()] head in [src], it looks like [user.p_theyre()] trying to commit suicide!"))
 		playsound(loc, 'sound/items/tools/jaws_pry.ogg', 50, TRUE, -1)
@@ -309,6 +331,8 @@
 	radio_alert = TRUE
 
 /obj/item/crowbar/power/paramedic/sound_the_alarms(mob/user, obj/machinery/door/airlock/target)
+	procstart = null
+	src.procstart = null
 		aas_config_announce(/datum/aas_config_entry/jaws_entry_alert_paramedic, list(
 			"PERSON" = user.name,
 			"LOCATION" = get_area_name(target),
@@ -371,15 +395,21 @@
 	fire = 100
 
 /obj/item/crowbar/mechremoval/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transform = transform.Translate(0, -8)
 	AddComponent(/datum/component/two_handed, force_unwielded = 5, force_wielded = 19, icon_wielded = "[base_icon_state]1")
 
 /obj/item/crowbar/mechremoval/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state]0"
 	return ..()
 
 /obj/item/crowbar/mechremoval/proc/empty_mech(obj/vehicle/sealed/mecha/mech, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_WIELDED))
 		mech.balloon_alert(user, "not wielded!")
 		return
@@ -409,4 +439,6 @@
 	playsound(mech, 'sound/machines/airlock/airlockforced.ogg', 75, TRUE)
 
 /obj/item/crowbar/mechremoval/proc/extra_checks(obj/vehicle/sealed/mecha/mech, mech_dir, obj/item/mecha_parts/mecha_equipment/sleeper/mech_sleeper)
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(src, TRAIT_WIELDED) && (LAZYLEN(mech.occupants) || mech_sleeper?.patient) && (mech.dir == mech_dir)

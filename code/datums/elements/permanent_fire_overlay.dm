@@ -2,6 +2,8 @@
 /datum/element/perma_fire_overlay
 
 /datum/element/perma_fire_overlay/Attach(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -10,11 +12,15 @@
 	target.update_appearance(UPDATE_OVERLAYS)
 
 /datum/element/perma_fire_overlay/Detach(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_ATOM_UPDATE_OVERLAYS)
 	target.update_appearance(UPDATE_OVERLAYS)
 
 /datum/element/perma_fire_overlay/proc/add_fire_overlay(mob/living/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mutable_appearance/created_overlay = source.get_fire_overlay(stacks = MAX_FIRE_STACKS, on_fire = TRUE)

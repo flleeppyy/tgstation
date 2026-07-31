@@ -24,6 +24,8 @@
 	var/uncarveable = FALSE
 
 /obj/structure/statue/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(art_type, impressiveness)
 	AddElement(/datum/element/beauty, impressiveness * 75)
@@ -31,15 +33,21 @@
 	AddComponent(/datum/component/marionette)
 
 /obj/structure/statue/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/statue/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	return ..()
 
 /obj/structure/statue/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(!tool.tool_start_check(user, amount=1, heat_required = HIGH_TEMPERATURE_REQUIRED))
 		return ITEM_INTERACT_BLOCKING
@@ -52,6 +60,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/statue/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/amount_mod = disassembled ? 0 : -2
 	for(var/mat in custom_materials)
 		var/datum/material/custom_material = SSmaterials.get_material(mat)
@@ -68,6 +78,8 @@
 	anchored = TRUE
 
 /obj/structure/statue/drake/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (prob(25))
 		icon_state = "drake_headless"
@@ -75,6 +87,8 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/statue/drake/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (icon_state == "drake")
 		. += emissive_appearance(icon, "drake_emissive", src)
@@ -86,10 +100,14 @@
 	anchored = TRUE
 
 /obj/structure/statue/dragonman/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/statue/dragonman/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance(icon, "dragonman_emissive", src)
 
@@ -333,18 +351,24 @@
 	var/sculpting = FALSE
 
 /obj/item/chisel/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/eyestab)
 	AddElement(/datum/element/wall_engraver)
 	AddComponent(/datum/component/bane, damage_multiplier = 40, should_bane_callback = CALLBACK(src, PROC_REF(bane_check)), label_text = "statues")
 
 /obj/item/chisel/Destroy()
+	procstart = null
+	src.procstart = null
 	prepared_block = null
 	tracked_user = null
 	return ..()
 
 /// Bane component callback
 /obj/item/chisel/proc/bane_check(mob/living/target)
+	procstart = null
+	src.procstart = null
 	return istype(target, /mob/living/basic/statue)
 
 /*
@@ -354,6 +378,8 @@ Hit block again to start sculpting.
 Moving interrupts
 */
 /obj/item/chisel/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(sculpting)
 		return ITEM_INTERACT_BLOCKING
 
@@ -383,6 +409,8 @@ Moving interrupts
 
 // We aim at something distant.
 /obj/item/chisel/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!sculpting && prepared_block && ismovable(interacting_with) && prepared_block.completion == 0)
 		prepared_block.set_target(interacting_with, user)
 		return ITEM_INTERACT_SUCCESS
@@ -390,6 +418,8 @@ Moving interrupts
 
 /// Starts or continues the sculpting action on the carving block material
 /obj/item/chisel/proc/start_sculpting(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.balloon_alert(user, "sculpting block...")
 	playsound(src, pick(usesound), 75, TRUE)
 	sculpting = TRUE
@@ -423,6 +453,8 @@ Moving interrupts
 
 /// To setup the sculpting target for the carving block
 /obj/item/chisel/proc/set_block(obj/structure/carving_block/B, mob/living/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	prepared_block = B
 	tracked_user = user
 	RegisterSignal(tracked_user, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved))
@@ -430,11 +462,15 @@ Moving interrupts
 		user.balloon_alert(user, "select sculpt target")
 
 /obj/item/chisel/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	stop_sculpting()
 
 /// Cancel the sculpting action
 /obj/item/chisel/proc/stop_sculpting(silent = FALSE)
+	procstart = null
+	src.procstart = null
 	sculpting = FALSE
 	if(prepared_block && prepared_block.completion == 0)
 		prepared_block.reset_target()
@@ -448,11 +484,15 @@ Moving interrupts
 		tracked_user = null
 
 /obj/item/chisel/proc/on_moved()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	stop_sculpting()
 
 /obj/item/chisel/proc/show_generic_statues_prompt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/list/choices = list()
 	for(var/statue_path in prepared_block.get_possible_statues())
 		var/obj/structure/statue/abstract_statue = statue_path
@@ -491,11 +531,15 @@ Moving interrupts
 	var/static/list/greyscale_with_value_bump = list(0,0,0, 0,0,0, 0,0,1, 0,0,-0.05)
 
 /obj/structure/carving_block/Destroy()
+	procstart = null
+	src.procstart = null
 	current_target = null
 	target_appearance_with_filters = null
 	return ..()
 
 /obj/structure/carving_block/proc/set_target(atom/movable/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!is_viable_target(user, target))
 		return
 	if(istype(target,/obj/structure/statue/custom))
@@ -507,11 +551,15 @@ Moving interrupts
 	user.balloon_alert(user, "sculpt target is [ma.name]")
 
 /obj/structure/carving_block/proc/reset_target()
+	procstart = null
+	src.procstart = null
 	current_target = null
 	current_preset_type = null
 	target_appearance_with_filters = null
 
 /obj/structure/carving_block/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!target_appearance_with_filters)
 		return
@@ -520,6 +568,8 @@ Moving interrupts
 	. += clone
 
 /obj/structure/carving_block/proc/is_viable_target(mob/living/user, atom/movable/target)
+	procstart = null
+	src.procstart = null
 	//Only things on turfs
 	if(!isturf(target.loc))
 		user.balloon_alert(user, "no sculpt target!")
@@ -532,6 +582,8 @@ Moving interrupts
 	return TRUE
 
 /obj/structure/carving_block/proc/create_statue()
+	procstart = null
+	src.procstart = null
 	if(current_preset_type)
 		var/obj/structure/statue/preset_statue = new current_preset_type(get_turf(src))
 		preset_statue.set_custom_materials(custom_materials)
@@ -546,6 +598,8 @@ Moving interrupts
 		qdel(src)
 
 /obj/structure/carving_block/proc/set_completion(value)
+	procstart = null
+	src.procstart = null
 	if(!current_target)
 		return
 	if(!target_appearance_with_filters)
@@ -571,6 +625,8 @@ Moving interrupts
 
 /// Returns a list of preset statues carvable from this block depending on the custom materials
 /obj/structure/carving_block/proc/get_possible_statues()
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(!statue_costs)
 		statue_costs = build_statue_cost_table()
@@ -585,6 +641,8 @@ Moving interrupts
 			. += statue_path
 
 /obj/structure/carving_block/proc/build_statue_cost_table()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/statue_type in subtypesof(/obj/structure/statue) - /obj/structure/statue/custom)
 		var/obj/structure/statue/fake_statue = new statue_type()
@@ -604,10 +662,14 @@ Moving interrupts
 	var/static/list/greyscale_with_value_bump = list(0,0,0, 0,0,0, 0,0,1, 0,0,-0.05)
 
 /obj/structure/statue/custom/Destroy()
+	procstart = null
+	src.procstart = null
 	content_ma = null
 	return ..()
 
 /obj/structure/statue/custom/proc/set_visuals(model_appearance)
+	procstart = null
+	src.procstart = null
 	if(content_ma)
 		QDEL_NULL(content_ma)
 	content_ma = copy_appearance_filter_overlays(model_appearance)
@@ -620,12 +682,16 @@ Moving interrupts
 	update_appearance()
 
 /obj/structure/statue/custom/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	if(same_z_layer)
 		return ..()
 	update_content_planes()
 	update_appearance()
 
 /obj/structure/statue/custom/proc/update_content_planes()
+	procstart = null
+	src.procstart = null
 	if(!content_ma)
 		return
 	var/turf/our_turf = get_turf(src)
@@ -635,6 +701,8 @@ Moving interrupts
 	content_ma = created[1]
 
 /obj/structure/statue/custom/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(content_ma)
 		. += content_ma

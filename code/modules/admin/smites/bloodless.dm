@@ -3,6 +3,8 @@
 	name = ":B:loodless"
 
 /datum/smite/bloodless/effect(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!iscarbon(target))
 		to_chat(user, span_warning("This must be used on a carbon mob."), confidential = TRUE)

@@ -22,6 +22,8 @@
 	COOLDOWN_DECLARE(on_hit_cooldown)
 
 /datum/action/cooldown/mob_cooldown/hivelord_spawn/Grant(mob/granted_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isnull(owner))
 		return
@@ -29,10 +31,14 @@
 		RegisterSignal(owner, COMSIG_ATOM_WAS_ATTACKED, PROC_REF(on_attacked))
 
 /datum/action/cooldown/mob_cooldown/hivelord_spawn/Remove(mob/removed_from)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(removed_from, COMSIG_ATOM_WAS_ATTACKED)
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/hivelord_spawn/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!spawn_brood(target, target_turf = get_turf(target)))
 		StartCooldown(0.5 SECONDS)
@@ -41,6 +47,8 @@
 
 /// Called when someone whacks us
 /datum/action/cooldown/mob_cooldown/hivelord_spawn/proc/on_attacked(atom/victim, atom/attacker, attack_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!trigger_on_hit || !(attack_flags & ATTACKER_DAMAGING_ATTACK) || !COOLDOWN_FINISHED(src, on_hit_cooldown))
 		return
@@ -49,6 +57,8 @@
 
 /// Spawn a funny little worm
 /datum/action/cooldown/mob_cooldown/hivelord_spawn/proc/spawn_brood(target, turf/target_turf, feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	var/ai_target = isliving(target) ? target : null
 	if (isnull(ai_target))
 		ai_target = owner.ai_controller?.blackboard[ai_target_key]
@@ -78,6 +88,8 @@
 
 /// Actually create a mob
 /datum/action/cooldown/mob_cooldown/hivelord_spawn/proc/complete_spawn(turf/spawn_turf, target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/brood = new spawn_type(spawn_turf)
 	SET_FACTION_AND_ALLIES_FROM(brood, owner)
 	brood.ai_controller?.set_blackboard_key(ai_target_key, target)
@@ -94,6 +106,8 @@
 
 /// Set up our visuals and start a timer for a callback
 /obj/effect/temp_visual/hivebrood_spawn/proc/create_from(mob/living/spawn_type, turf/spawn_from, datum/callback/on_completed)
+	procstart = null
+	src.procstart = null
 	addtimer(on_completed, duration, TIMER_DELETE_ME)
 
 	var/turf/my_turf = get_turf(src)

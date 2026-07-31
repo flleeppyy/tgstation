@@ -9,12 +9,16 @@
 	var/mobtype = /mob/living
 
 /datum/component/wearertargeting/Initialize()
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equip))
 	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(on_drop))
 
 /datum/component/wearertargeting/proc/on_equip(datum/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if((valid_slots & slot) && istype(equipper, mobtype))
@@ -23,6 +27,8 @@
 		UnregisterSignal(equipper, signals)
 
 /datum/component/wearertargeting/proc/on_drop(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(user, signals)

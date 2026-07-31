@@ -14,6 +14,8 @@
 	icon_state = "keysec"
 
 /obj/item/key/security/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user.emote("spin")) //In the off chance that someone attempts this suicide while under the effects of mime's bane they deserve the silliness.
 		user.visible_message(span_suicide("[user] is putting \the [src] in [user.p_their()] ear and starts [user.p_their()] motor! It looks like [user.p_theyre()] trying to commit suicide... But [user.p_they()] sputters and stalls out! "))
 		playsound(src, 'sound/misc/sadtrombone.ogg', 50, TRUE, -1)
@@ -44,6 +46,8 @@
 	fall_chance = 70
 
 /obj/item/key/janitor/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	switch(user.mind?.get_skill_level(/datum/skill/cleaning))
 		if(SKILL_LEVEL_APPRENTICE to SKILL_LEVEL_JOURNEYMAN) //At least they tried
 			user.visible_message(span_suicide("[user] is putting \the [src] in [user.p_their()] mouth and has inefficiently become one with the janicart! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -73,6 +77,8 @@
 	return MANUAL_SUICIDE
 
 /obj/item/key/proc/manual_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user)
 		user.remove_atom_colour(ADMIN_COLOUR_PRIORITY)
 		user.visible_message(span_suicide("[user] forgot [user.p_they()] [user.p_are()]n't actually a janicart! That's a paddlin'!"))

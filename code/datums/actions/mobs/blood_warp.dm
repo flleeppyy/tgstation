@@ -12,6 +12,8 @@
 	var/remove_inner_pools = TRUE
 
 /datum/action/cooldown/mob_cooldown/blood_warp/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	disable_cooldown_actions()
 	blood_warp(target_atom)
 	StartCooldown()
@@ -19,6 +21,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/blood_warp/proc/blood_warp(atom/target)
+	procstart = null
+	src.procstart = null
 	if(owner.Adjacent(target))
 		return FALSE
 
@@ -67,11 +71,15 @@
 	return FALSE
 
 /datum/action/cooldown/mob_cooldown/blood_warp/proc/get_pick_range()
+	procstart = null
+	src.procstart = null
 	if(owner.client)
 		return client_pick_range
 	return pick_range
 
 /proc/get_bloodcrawlable_pools(turf/T, range)
+	procstart = null
+	src.procstart = null
 	if(range < 0)
 		return list()
 	. = list()

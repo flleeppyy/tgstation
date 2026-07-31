@@ -13,6 +13,8 @@
 	var/list/tools = list()
 
 /datum/unit_test/crafting/Run()
+	procstart = null
+	src.procstart = null
 	crafter = allocate(__IMPLIED_TYPE__)
 
 	clear_trash()
@@ -37,12 +39,16 @@
 
 ///Allocate a reagent container with infinite capacity and no reaction to use in crafting
 /datum/unit_test/crafting/proc/allocate_bottomless_cup()
+	procstart = null
+	src.procstart = null
 	var/obj/item/reagent_containers/cup/bottomless_cup = allocate(__IMPLIED_TYPE__)
 	bottomless_cup.reagents.flags |= NO_REACT|DRAINABLE
 	bottomless_cup.reagents.maximum_volume = INFINITY
 	return bottomless_cup
 
 /datum/unit_test/crafting/proc/process_recipe(datum/component/personal_crafting/unit_test/craft_comp, datum/crafting_recipe/recipe)
+	procstart = null
+	src.procstart = null
 	var/turf/turf = crafter.loc
 	//Warn if uncreatables were found in the recipe if it fails
 	//If it doesn't fail, then it was already handled, maybe through `unit_test_spawn_extras`
@@ -182,6 +188,8 @@
 
 ///Clear the area around our crafting movable of objects that may mess with the unit test
 /datum/unit_test/crafting/proc/clear_trash()
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/trash in (range(1, crafter) - list(crafter, bottomless_cup)))
 		qdel(trash)
 

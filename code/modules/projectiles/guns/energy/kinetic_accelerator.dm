@@ -18,9 +18,13 @@
 	var/max_mod_capacity = 100
 
 /obj/item/gun/energy/recharge/kinetic_accelerator/add_bayonet_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bayonet_attachable, offset_x = 20, offset_y = 12)
 
 /obj/item/gun/energy/recharge/kinetic_accelerator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Only actual KAs can be converted
 	if(type != /obj/item/gun/energy/recharge/kinetic_accelerator)
@@ -33,14 +37,20 @@
 	)
 
 /obj/item/gun/energy/recharge/kinetic_accelerator/apply_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	max_mod_capacity = modify_fantasy_variable("max_mod_capacity", max_mod_capacity, bonus * 10)
 
 /obj/item/gun/energy/recharge/kinetic_accelerator/remove_fantasy_bonuses(bonus)
+	procstart = null
+	src.procstart = null
 	max_mod_capacity = reset_fantasy_variable("max_mod_capacity", max_mod_capacity)
 	return ..()
 
 /obj/item/gun/energy/recharge/kinetic_accelerator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddElement( \
@@ -56,10 +66,14 @@
 	AddElement(/datum/element/contextual_screentip_tools, tool_behaviors)
 
 /obj/item/gun/energy/recharge/kinetic_accelerator/shoot_with_empty_chamber(mob/living/user)
+	procstart = null
+	src.procstart = null
 	playsound(src, dry_fire_sound, 30, TRUE) //click sound but no to_chat message to cut on spam
 	return
 
 /obj/item/gun/energy/recharge/kinetic_accelerator/add_seclight_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/seclite_attachable, \
 		light_overlay_icon = 'icons/obj/weapons/guns/flashlights.dmi', \
 		light_overlay = "flight", \
@@ -67,6 +81,8 @@
 		overlay_y = 9)
 
 /obj/item/gun/energy/recharge/kinetic_accelerator/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(max_mod_capacity)
 		. += "<b>[get_remaining_mod_capacity()]%</b> mod capacity remaining."
@@ -75,6 +91,8 @@
 			. += span_notice("There is \a [modkit_upgrade] installed, using <b>[modkit_upgrade.cost]%</b> capacity.")
 
 /obj/item/gun/energy/recharge/kinetic_accelerator/crowbar_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	if(modkits.len)
 		to_chat(user, span_notice("You pry all the modifications out."))
@@ -86,9 +104,13 @@
 		to_chat(user, span_notice("There are no modifications currently installed."))
 
 /obj/item/gun/energy/recharge/kinetic_accelerator/try_fire_gun(atom/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	return fire_gun(target, user, user.Adjacent(target) && !isturf(target), params)
 
 /obj/item/gun/energy/recharge/kinetic_accelerator/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
@@ -124,6 +146,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/gun/energy/recharge/kinetic_accelerator/proc/check_menu(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated)
@@ -131,29 +155,39 @@
 	return TRUE
 
 /obj/item/gun/energy/recharge/kinetic_accelerator/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if(gone in modkits)
 		var/obj/item/borg/upgrade/modkit/MK = gone
 		MK.uninstall(src)
 	return ..()
 
 /obj/item/gun/energy/recharge/kinetic_accelerator/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(arrived, /obj/item/borg/upgrade/modkit))
 		modkits |= arrived
 
 /obj/item/gun/energy/recharge/kinetic_accelerator/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/borg/upgrade/modkit))
 		return NONE
 	astype(tool, /obj/item/borg/upgrade/modkit).install(src, user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/gun/energy/recharge/kinetic_accelerator/proc/get_remaining_mod_capacity()
+	procstart = null
+	src.procstart = null
 	var/current_capacity_used = 0
 	for(var/obj/item/borg/upgrade/modkit/modkit_upgrade as anything in modkits)
 		current_capacity_used += modkit_upgrade.cost
 	return max_mod_capacity - current_capacity_used
 
 /obj/item/gun/energy/recharge/kinetic_accelerator/proc/modify_projectile(obj/projectile/kinetic/kinetic_projectile)
+	procstart = null
+	src.procstart = null
 	kinetic_projectile.kinetic_gun = src //do something special on-hit, easy!
 	for(var/obj/item/borg/upgrade/modkit/modkit_upgrade as anything in modkits)
 		modkit_upgrade.modify_projectile(kinetic_projectile)
@@ -164,6 +198,8 @@
 	inhand_icon_state = "kineticgun_evil"
 
 /obj/item/gun/energy/recharge/kinetic_accelerator/bdm/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/borg/upgrade/modkit/cooldown/repeater/bdm/repeater_mod = new()
 	repeater_mod.install(src)
@@ -189,6 +225,8 @@
 	newtonian_force = 1
 
 /obj/item/ammo_casing/energy/kinetic/ready_proj(atom/target, mob/living/user, quiet, zone_override = "")
+	procstart = null
+	src.procstart = null
 	..()
 	if(loc && istype(loc, /obj/item/gun/energy/recharge/kinetic_accelerator))
 		var/obj/item/gun/energy/recharge/kinetic_accelerator/KA = loc
@@ -209,14 +247,20 @@
 	var/obj/item/gun/energy/recharge/kinetic_accelerator/kinetic_gun
 
 /obj/projectile/kinetic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/parriable_projectile, parry_callback = CALLBACK(src, PROC_REF(on_parry)))
 
 /obj/projectile/kinetic/Destroy()
+	procstart = null
+	src.procstart = null
 	kinetic_gun = null
 	return ..()
 
 /obj/projectile/kinetic/prehit_pierce(atom/target)
+	procstart = null
+	src.procstart = null
 	if(is_type_in_typecache(target, kinetic_gun?.ignored_mob_types))
 		return PROJECTILE_PIERCE_PHASE
 	. = ..()
@@ -230,6 +274,8 @@
 		pressure_decrease_active = TRUE
 
 /obj/projectile/kinetic/proc/on_parry(mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Ensure that if the user doesn't have tracer mod we're still visible
@@ -237,6 +283,8 @@
 	update_appearance()
 
 /obj/projectile/kinetic/on_range()
+	procstart = null
+	src.procstart = null
 	if(!pressure_decrease_active && !lavaland_equipment_pressure_check(get_turf(src)))
 		name = "weakened [name]"
 		damage = damage * pressure_decrease
@@ -246,10 +294,14 @@
 	..()
 
 /obj/projectile/kinetic/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	strike_thing(target)
 	. = ..()
 
 /obj/projectile/kinetic/proc/strike_thing(atom/target)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(target)
 	if(!target_turf)
 		target_turf = get_turf(src)
@@ -278,6 +330,8 @@
 	damage = 50
 
 /obj/projectile/kinetic/mech/strike_thing(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/temp_visual/explosion/fast(get_turf(target))
 
@@ -315,22 +369,30 @@
 	var/removable = TRUE
 
 /obj/item/borg/upgrade/modkit/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Occupies <b>[cost]%</b> of mod capacity.")
 
 /obj/item/borg/upgrade/modkit/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/gun/energy/recharge/kinetic_accelerator) || issilicon(user))
 		return NONE
 	install(tool, user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/borg/upgrade/modkit/action(mob/living/silicon/robot/R)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		for(var/obj/item/gun/energy/recharge/kinetic_accelerator/cyborg/H in R.model.modules)
 			return install(H, usr, FALSE)
 
 /obj/item/borg/upgrade/modkit/proc/install(obj/item/gun/energy/recharge/kinetic_accelerator/KA, mob/user, transfer_to_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	if(minebot_upgrade)
 		if(minebot_exclusive && !istype(KA.loc, /mob/living/basic/mining_drone))
@@ -373,22 +435,34 @@
 	KA.modkits |= src
 
 /obj/item/borg/upgrade/modkit/deactivate(mob/living/silicon/robot/R, user = usr)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		for(var/obj/item/gun/energy/recharge/kinetic_accelerator/cyborg/KA in R.model.modules)
 			uninstall(KA)
 
 /obj/item/borg/upgrade/modkit/proc/uninstall(obj/item/gun/energy/recharge/kinetic_accelerator/KA)
+	procstart = null
+	src.procstart = null
 	KA.modkits -= src
 
 /obj/item/borg/upgrade/modkit/proc/modify_projectile(obj/projectile/kinetic/K)
+	procstart = null
+	src.procstart = null
 
 //use this one for effects you want to trigger before any damage is done at all and before damage is decreased by pressure
 /obj/item/borg/upgrade/modkit/proc/projectile_prehit(obj/projectile/kinetic/K, atom/target, obj/item/gun/energy/recharge/kinetic_accelerator/KA)
+	procstart = null
+	src.procstart = null
 //use this one for effects you want to trigger before mods that do damage
 /obj/item/borg/upgrade/modkit/proc/projectile_strike_predamage(obj/projectile/kinetic/K, turf/target_turf, atom/target, obj/item/gun/energy/recharge/kinetic_accelerator/KA)
+	procstart = null
+	src.procstart = null
 //and this one for things that don't need to trigger before other damage-dealing mods
 /obj/item/borg/upgrade/modkit/proc/projectile_strike(obj/projectile/kinetic/K, turf/target_turf, atom/target, obj/item/gun/energy/recharge/kinetic_accelerator/KA)
+	procstart = null
+	src.procstart = null
 
 //Range
 /obj/item/borg/upgrade/modkit/range
@@ -399,6 +473,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 0.75, /datum/material/gold = SHEET_MATERIAL_AMOUNT * 0.75, /datum/material/uranium = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/borg/upgrade/modkit/range/modify_projectile(obj/projectile/kinetic/K)
+	procstart = null
+	src.procstart = null
 	K.range += modifier
 
 
@@ -410,6 +486,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 0.75, /datum/material/gold = SHEET_MATERIAL_AMOUNT * 0.75, /datum/material/uranium = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/borg/upgrade/modkit/damage/modify_projectile(obj/projectile/kinetic/K)
+	procstart = null
+	src.procstart = null
 	K.damage += modifier
 
 
@@ -423,6 +501,8 @@
 
 // Recalculate recharge time after adding or removing cooldown mods.
 /obj/item/borg/upgrade/modkit/cooldown/proc/get_recharge_time(obj/item/gun/energy/recharge/kinetic_accelerator/KA)
+	procstart = null
+	src.procstart = null
 	var/new_recharge_time = initial(KA.recharge_time)
 	for(var/obj/item/borg/upgrade/modkit/modkit_upgrade as anything in KA.modkits)
 		if(istype(modkit_upgrade, src))
@@ -431,11 +511,15 @@
 	return new_recharge_time
 
 /obj/item/borg/upgrade/modkit/cooldown/install(obj/item/gun/energy/recharge/kinetic_accelerator/KA, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		KA.recharge_time = get_recharge_time(KA)
 
 /obj/item/borg/upgrade/modkit/cooldown/uninstall(obj/item/gun/energy/recharge/kinetic_accelerator/KA)
+	procstart = null
+	src.procstart = null
 	..()
 	KA.recharge_time = get_recharge_time(KA)
 
@@ -465,6 +549,8 @@
 	var/damage_modifier = 0
 
 /obj/item/borg/upgrade/modkit/cooldown/aoe/install(obj/item/gun/energy/recharge/kinetic_accelerator/KA, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -480,6 +566,8 @@
 		AOE.stats_stolen = TRUE
 
 /obj/item/borg/upgrade/modkit/cooldown/aoe/uninstall(obj/item/gun/energy/recharge/kinetic_accelerator/KA)
+	procstart = null
+	src.procstart = null
 	..()
 	modifier = initial(modifier) //get our modifiers back
 	damage_modifier = initial(damage_modifier)
@@ -487,9 +575,13 @@
 	stats_stolen = FALSE
 
 /obj/item/borg/upgrade/modkit/cooldown/aoe/modify_projectile(obj/projectile/kinetic/K)
+	procstart = null
+	src.procstart = null
 	K.name = "kinetic explosion"
 
 /obj/item/borg/upgrade/modkit/cooldown/aoe/projectile_strike(obj/projectile/kinetic/kinetic_blast, turf/target_turf, atom/target, obj/item/gun/energy/recharge/kinetic_accelerator/KA)
+	procstart = null
+	src.procstart = null
 	if(stats_stolen)
 		return
 	new /obj/effect/temp_visual/explosion/fast(target_turf)
@@ -537,10 +629,14 @@
 	cost = 0
 
 /obj/item/borg/upgrade/modkit/minebot_passthrough/install(obj/item/gun/energy/recharge/kinetic_accelerator/KA, mob/user, transfer_to_loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	LAZYADD(KA.ignored_mob_types, typecacheof(/mob/living/basic/mining_drone))
 
 /obj/item/borg/upgrade/modkit/minebot_passthrough/uninstall(obj/item/gun/energy/recharge/kinetic_accelerator/KA)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	LAZYREMOVE(KA.ignored_mob_types, typecacheof(/mob/living/basic/mining_drone))
 
@@ -551,10 +647,14 @@
 	cost = 0
 
 /obj/item/borg/upgrade/modkit/human_passthrough/install(obj/item/gun/energy/recharge/kinetic_accelerator/KA, mob/user, transfer_to_loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	LAZYADD(KA.ignored_mob_types, typecacheof(/mob/living/carbon/human))
 
 /obj/item/borg/upgrade/modkit/human_passthrough/uninstall(obj/item/gun/energy/recharge/kinetic_accelerator/KA)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	LAZYREMOVE(KA.ignored_mob_types, typecacheof(/mob/living/carbon/human))
 
@@ -568,6 +668,8 @@
 	custom_materials = list(/datum/material/uranium = SHEET_MATERIAL_AMOUNT * 4, /datum/material/iron = SHEET_MATERIAL_AMOUNT * 2.5, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 2.5, /datum/material/bluespace = SHEET_MATERIAL_AMOUNT)
 
 /obj/item/borg/upgrade/modkit/cooldown/repeater/projectile_strike_predamage(obj/projectile/kinetic/K, turf/target_turf, atom/target, obj/item/gun/energy/recharge/kinetic_accelerator/KA)
+	procstart = null
+	src.procstart = null
 	var/valid_repeat = FALSE
 	if(isliving(target))
 		var/mob/living/L = target
@@ -594,6 +696,8 @@
 	var/static/list/damage_heal_order = list(BRUTE, BURN, OXY)
 
 /obj/item/borg/upgrade/modkit/lifesteal/projectile_prehit(obj/projectile/kinetic/K, atom/target, obj/item/gun/energy/recharge/kinetic_accelerator/KA)
+	procstart = null
+	src.procstart = null
 	if(isliving(target) && isliving(K.firer))
 		var/mob/living/L = target
 		if(L.stat == DEAD)
@@ -610,6 +714,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2.5, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 2.5, /datum/material/silver = SHEET_MATERIAL_AMOUNT * 2.5, /datum/material/uranium = SHEET_MATERIAL_AMOUNT * 2.5)
 
 /obj/item/borg/upgrade/modkit/resonator_blasts/projectile_strike(obj/projectile/kinetic/K, turf/target_turf, atom/target, obj/item/gun/energy/recharge/kinetic_accelerator/KA)
+	procstart = null
+	src.procstart = null
 	if(target_turf && !ismineralturf(target_turf)) //Don't make fields on mineral turfs.
 		var/obj/effect/temp_visual/resonance/R = locate(/obj/effect/temp_visual/resonance) in target_turf
 		if(R)
@@ -629,6 +735,8 @@
 	var/list/bounties_reaped = list()
 
 /obj/item/borg/upgrade/modkit/bounty/projectile_prehit(obj/projectile/kinetic/K, atom/target, obj/item/gun/energy/recharge/kinetic_accelerator/KA)
+	procstart = null
+	src.procstart = null
 	if(isliving(target))
 		var/mob/living/L = target
 		var/list/existing_marks = L.has_status_effect_list(/datum/status_effect/syphon_mark)
@@ -640,6 +748,8 @@
 		L.apply_status_effect(/datum/status_effect/syphon_mark, src)
 
 /obj/item/borg/upgrade/modkit/bounty/projectile_strike(obj/projectile/kinetic/K, turf/target_turf, atom/target, obj/item/gun/energy/recharge/kinetic_accelerator/KA)
+	procstart = null
+	src.procstart = null
 	if(isliving(target))
 		var/mob/living/L = target
 		if(bounties_reaped[L.type])
@@ -650,6 +760,8 @@
 			L.apply_damage(bounties_reaped[L.type]*kill_modifier, K.damage_type, K.def_zone, armor)
 
 /obj/item/borg/upgrade/modkit/bounty/proc/get_kill(mob/living/L)
+	procstart = null
+	src.procstart = null
 	var/bonus_mod = 1
 	if(ismegafauna(L)) //megafauna reward
 		bonus_mod = 4
@@ -667,6 +779,8 @@
 	cost = 35
 
 /obj/item/borg/upgrade/modkit/indoors/modify_projectile(obj/projectile/kinetic/K)
+	procstart = null
+	src.procstart = null
 	K.pressure_decrease *= modifier
 
 
@@ -679,11 +793,15 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 0.75, /datum/material/gold = SHEET_MATERIAL_AMOUNT * 0.75, /datum/material/uranium = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/borg/upgrade/modkit/trigger_guard/install(obj/item/gun/energy/recharge/kinetic_accelerator/KA, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		KA.trigger_guard = TRIGGER_GUARD_ALLOW_ALL
 
 /obj/item/borg/upgrade/modkit/trigger_guard/uninstall(obj/item/gun/energy/recharge/kinetic_accelerator/KA)
+	procstart = null
+	src.procstart = null
 	KA.trigger_guard = TRIGGER_GUARD_NORMAL
 	..()
 
@@ -699,6 +817,8 @@
 	var/chassis_name = "super-kinetic accelerator"
 
 /obj/item/borg/upgrade/modkit/chassis_mod/install(obj/item/gun/energy/recharge/kinetic_accelerator/KA, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		KA.icon_state = chassis_icon
@@ -709,6 +829,8 @@
 			holder.update_held_items()
 
 /obj/item/borg/upgrade/modkit/chassis_mod/uninstall(obj/item/gun/energy/recharge/kinetic_accelerator/KA)
+	procstart = null
+	src.procstart = null
 	KA.icon_state = initial(KA.icon_state)
 	KA.inhand_icon_state = initial(KA.inhand_icon_state)
 	KA.name = initial(KA.name)
@@ -731,6 +853,8 @@
 	var/bolt_color = COLOR_WHITE
 
 /obj/item/borg/upgrade/modkit/tracer/modify_projectile(obj/projectile/kinetic/K)
+	procstart = null
+	src.procstart = null
 	K.icon_state = "ka_tracer"
 	K.color = bolt_color
 
@@ -739,10 +863,14 @@
 	desc = "Causes kinetic accelerator bolts to have an adjustable-colored tracer trail and explosion. Use in-hand to change color."
 
 /obj/item/borg/upgrade/modkit/tracer/adjustable/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	choose_bolt_color(user)
 
 /obj/item/borg/upgrade/modkit/tracer/adjustable/proc/choose_bolt_color(mob/user)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	var/new_color = tgui_color_picker(user, "", "Choose Color", bolt_color)

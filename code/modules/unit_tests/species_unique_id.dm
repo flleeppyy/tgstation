@@ -5,6 +5,8 @@
 /datum/unit_test/species_unique_id
 
 /datum/unit_test/species_unique_id/Run()
+	procstart = null
+	src.procstart = null
 	var/list/gathered_species_ids = list()
 	for(var/datum/species/species as anything in subtypesof(/datum/species))
 		var/species_id = initial(species.id)

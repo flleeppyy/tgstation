@@ -13,10 +13,14 @@
 	role_unique_actions = list(/datum/mafia_ability/vest)
 
 /datum/mafia_role/fugitive/New(datum/mafia_controller/game)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(game, COMSIG_MAFIA_GAME_END, PROC_REF(survived))
 
 /datum/mafia_role/fugitive/proc/survived(datum/mafia_controller/game)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(game_status == MAFIA_ALIVE)

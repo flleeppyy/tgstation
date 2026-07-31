@@ -40,6 +40,8 @@
 	var/static/list/target_foods = list(/obj/item/bodypart/arm, /obj/item/fish/lavaloop)
 
 /mob/living/basic/mining/lobstrosity/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_NODROWN, TRAIT_SWIMMER), INNATE_TRAIT)
 	AddComponent(/datum/component/profound_fisher)
@@ -61,18 +63,26 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /mob/living/basic/mining/lobstrosity/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(charge)
 	return ..()
 
 /mob/living/basic/mining/lobstrosity/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (stat != DEAD)
 		. += emissive_appearance(icon, "[icon_living]_e", src, effect_type = EMISSIVE_NO_BLOOM)
 
 /mob/living/basic/mining/lobstrosity/ranged_secondary_attack(atom/atom_target, modifiers)
+	procstart = null
+	src.procstart = null
 	charge.Trigger(target = atom_target)
 
 /mob/living/basic/mining/lobstrosity/tamed(mob/living/tamer, obj/item/food)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/temp_visual/heart(loc)
 	/// Pet commands for this mob, however you'll have to tame juvenile lobstrosities to a trained adult one.
@@ -94,6 +104,8 @@
 	response_disarm_simple = "gently push aside"
 
 /mob/living/basic/mining/lobstrosity/befriend(mob/living/new_friend)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.))
 		return
@@ -101,6 +113,8 @@
 	remove_faction(FACTION_MINING)
 
 /mob/living/basic/mining/lobstrosity/mind_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mind.get_skill_level(/datum/skill/fishing) < base_fishing_level)
 		mind.set_level(/datum/skill/fishing, base_fishing_level, TRUE)
@@ -120,6 +134,8 @@
 	knockdown_duration = 2.5 SECONDS
 
 /datum/action/cooldown/mob_cooldown/charge/basic_charge/lobster/hit_target(atom/movable/source, atom/target, damage_dealt)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isbasicmob(source) || !isliving(target))
 		return
@@ -130,12 +146,16 @@
 	basic_source.start_pulling(living_target)
 
 /datum/action/cooldown/mob_cooldown/charge/basic_charge/lobster/do_charge(atom/movable/charger, atom/target_atom, delay, past)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(charger))
 		return
 	apply_post_charge(charger)
 
 /datum/action/cooldown/mob_cooldown/charge/basic_charge/lobster/proc/apply_post_charge(mob/living/charger)
+	procstart = null
+	src.procstart = null
 	charger.apply_status_effect(/datum/status_effect/tired_post_charge)
 
 ///A weaker, yet somewhat faster lobstrosity. Sources include aquarium chasm chrabs, chasms, plasma rivers and perhaps xenobio.
@@ -180,6 +200,8 @@
 	sound = 'sound/mobs/non-humanoids/insect/chitter.ogg'
 
 /mob/living/basic/mining/lobstrosity/juvenile/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/growth_step = 1000/(7 MINUTES) //It should take 7-ish minutes if you keep the happiness above 40% and at most 12
 	AddComponent(\
@@ -197,6 +219,8 @@
 	ADD_TRAIT(src, TRAIT_MOB_HIDE_HAPPINESS, INNATE_TRAIT) //Do not let strangers know it gets happy when poked if stray.
 
 /mob/living/basic/mining/lobstrosity/juvenile/add_ranged_armour(list/vulnerable_projectiles)
+	procstart = null
+	src.procstart = null
 	AddElement(\
 		/datum/element/ranged_armour,\
 		minimum_projectile_force = 30,\
@@ -210,6 +234,8 @@
 
 ///Juvenile lobstrosities can swarm and pass through each other, but only 3 at most can stand the same turf.
 /mob/living/basic/mining/lobstrosity/juvenile/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	if(!istype(mover, /mob/living/basic/mining/lobstrosity/juvenile))
 		return ..()
 	var/juveniles_count = 0
@@ -222,15 +248,21 @@
 #undef MAX_JUVENILES_ALLOWED_ON_TURF
 
 /mob/living/basic/mining/lobstrosity/juvenile/tamed(mob/living/tamer, obj/item/food)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// They are more pettable I guess
 	AddElement(/datum/element/pet_bonus, "chitter")
 	REMOVE_TRAIT(src, TRAIT_MOB_HIDE_HAPPINESS, INNATE_TRAIT)
 
 /mob/living/basic/mining/lobstrosity/juvenile/proc/ready_to_grow()
+	procstart = null
+	src.procstart = null
 	return isturf(loc)
 
 /mob/living/basic/mining/lobstrosity/juvenile/proc/grow_up()
+	procstart = null
+	src.procstart = null
 	var/name_to_use = name == initial(name) ? grow_type::name : name
 	var/mob/living/basic/mining/lobstrosity/grown = change_mob_type(grow_type, get_turf(src), name_to_use)
 	if(HAS_TRAIT(src, TRAIT_TAMED))
@@ -258,6 +290,8 @@
 	charge_damage = 13
 
 /datum/action/cooldown/mob_cooldown/charge/basic_charge/lobster/apply_post_charge(mob/living/charger)
+	procstart = null
+	src.procstart = null
 	charger.apply_status_effect(/datum/status_effect/tired_post_charge/lesser)
 
 ///Command the lobster to charge at someone.
@@ -272,6 +306,8 @@
 	pet_ability_key = BB_TARGETED_ACTION
 
 /datum/pet_command/use_ability/lob_charge/set_command_target(mob/living/parent, atom/target)
+	procstart = null
+	src.procstart = null
 	if (!target)
 		return FALSE
 	var/datum/targeting_strategy/targeter = GET_TARGETING_STRATEGY(parent.ai_controller.blackboard[targeting_strategy_key])

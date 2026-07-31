@@ -6,6 +6,8 @@
 	material_flags = NONE
 
 /obj/item/storage/toolbox/drone/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/pickedcolor = pick("red","yellow","green","blue","pink","orange","cyan","white")
 	new /obj/item/screwdriver(src)
 	new /obj/item/wrench(src)
@@ -25,6 +27,8 @@
 	storage_type = /datum/storage/toolbox/artistic
 
 /obj/item/storage/toolbox/artistic/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/storage/crayons(src)
 	new /obj/item/toy/crayon/spraycan(src)
 	new /obj/item/toy/crayon/spraycan(src)
@@ -47,6 +51,8 @@
 	storage_type = /datum/storage/toolbox/crafter
 
 /obj/item/storage/toolbox/crafter/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/storage/crayons(src)
 	new /obj/item/camera(src)
 	new /obj/item/camera_film(src)

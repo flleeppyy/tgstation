@@ -17,6 +17,8 @@
 	species_exception = list(/datum/species/golem)
 
 /obj/item/clothing/suit/jacket/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += GLOB.personal_carry_allowed
 
@@ -40,6 +42,8 @@
 	species_exception = list(/datum/species/golem)
 
 /obj/item/clothing/suit/toggle/jacket/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += GLOB.personal_carry_allowed
 
@@ -69,6 +73,8 @@
 	clothing_flags = parent_type::clothing_flags | CARP_STYLE_FACTOR // I know kung-fu
 
 /obj/item/clothing/suit/toggle/jacket/trenchcoat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += GLOB.improvised_firearm_allowed
 
@@ -117,6 +123,8 @@
 	inhand_icon_state = "brownjsuit"
 
 /obj/item/clothing/suit/jacket/bomber/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += GLOB.improvised_firearm_allowed
 
@@ -129,6 +137,8 @@
 	max_heat_protection_temperature = ARMOR_MAX_TEMP_PROTECT
 
 /obj/item/clothing/suit/jacket/leather/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += GLOB.improvised_firearm_allowed
 
@@ -166,6 +176,8 @@
 	inhand_icon_state = null
 
 /obj/item/clothing/suit/jacket/miljacket/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += GLOB.improvised_firearm_allowed
 
@@ -177,6 +189,8 @@
 	species_exception = list(/datum/species/golem)
 
 /obj/item/clothing/suit/jacket/letterman/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += GLOB.improvised_firearm_allowed
 
@@ -188,6 +202,8 @@
 	species_exception = list(/datum/species/golem)
 
 /obj/item/clothing/suit/jacket/letterman_red/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += GLOB.improvised_firearm_allowed
 
@@ -199,6 +215,8 @@
 	species_exception = list(/datum/species/golem)
 
 /obj/item/clothing/suit/jacket/letterman_syndie/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += GLOB.improvised_firearm_allowed
 
@@ -210,5 +228,7 @@
 	species_exception = list(/datum/species/golem)
 
 /obj/item/clothing/suit/jacket/letterman_nanotrasen/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed += GLOB.improvised_firearm_allowed

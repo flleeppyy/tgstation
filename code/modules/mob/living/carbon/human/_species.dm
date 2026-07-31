@@ -180,6 +180,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 
 /datum/species/New()
+	procstart = null
+	src.procstart = null
 	if(!plural_form)
 		plural_form = "[name]\s"
 	if(!examine_limb_id)
@@ -191,6 +193,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 /// Gets a list of all species id's available to choose in roundstart.
 /proc/get_selectable_species()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 
 	if (!GLOB.roundstart_races.len)
@@ -205,6 +209,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * If there are no available roundstart species, defaults to human.
  */
 /proc/generate_selectable_species_and_languages()
+	procstart = null
+	src.procstart = null
 	var/list/selectable_species = list()
 
 	for(var/species_type in subtypesof(/datum/species))
@@ -228,6 +234,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Used by [/proc/generate_selectable_species_and_languages].
  */
 /datum/species/proc/check_roundstart_eligible()
+	procstart = null
+	src.procstart = null
 	if(id in (CONFIG_GET(keyed_list/roundstart_races)))
 		return TRUE
 	return FALSE
@@ -240,12 +248,16 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * * old_species - The species that the carbon used to be before copying
  */
 /datum/species/proc/copy_properties_from(datum/species/old_species, pref_load, regenerate_icons)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
  * Gets the default mutant organ for the species based on the provided slot.
  */
 /datum/species/proc/get_mutant_organ_type_for_slot(slot)
+	procstart = null
+	src.procstart = null
 	switch(slot)
 		if(ORGAN_SLOT_BRAIN)
 			return mutantbrain
@@ -286,6 +298,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * * replace_missing - Whether or not to replace missing organs
  */
 /datum/species/proc/regenerate_organs(mob/living/carbon/organ_holder, datum/species/old_species, replace_current = TRUE, list/excluded_zones, visual_only = FALSE, replace_missing = TRUE)
+	procstart = null
+	src.procstart = null
 	for(var/slot in get_all_slots())
 		var/obj/item/organ/existing_organ = organ_holder.get_organ_slot(slot)
 		var/obj/item/organ/new_organ = get_mutant_organ_type_for_slot(slot)
@@ -330,12 +344,16 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			QDEL_NULL(new_organ)
 
 /datum/species/proc/worn_items_fit_body_check(mob/living/carbon/wearer)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/equipped_item in wearer.get_equipped_items(INCLUDE_POCKETS))
 		var/equipped_item_slot = wearer.get_slot_by_item(equipped_item)
 		if(!equipped_item.mob_can_equip(wearer, equipped_item_slot, bypass_equip_delay_self = TRUE, ignore_equipped = TRUE))
 			wearer.dropItemToGround(equipped_item, force = TRUE)
 
 /datum/species/proc/update_no_equip_flags(mob/living/carbon/wearer, new_flags)
+	procstart = null
+	src.procstart = null
 	no_equip_flags = new_flags
 	wearer.hud_used?.update_locked_slots()
 	worn_items_fit_body_check(wearer)
@@ -344,6 +362,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Normalizes blood in a human if it is excessive. If it is above BLOOD_VOLUME_NORMAL, this will clamp it to that value. It will not give the human more blodo than they have less than this value.
  */
 /datum/species/proc/normalize_blood(mob/living/carbon/human/blood_possessing_human)
+	procstart = null
+	src.procstart = null
 	blood_possessing_human.set_blood_volume(min(blood_possessing_human.get_blood_volume(), BLOOD_VOLUME_NORMAL))
 
 /**
@@ -359,6 +379,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * * replace_missing - Whether or not to replace missing organs
  */
 /datum/species/proc/on_species_gain(mob/living/carbon/human/human_who_gained_species, datum/species/old_species, pref_load, regenerate_icons = TRUE, replace_missing = TRUE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	human_who_gained_species.living_flags |= STOP_OVERLAY_UPDATE_BODY_PARTS //Don't call update_body_parts() for every single bodypart overlay added.
@@ -435,6 +457,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * * pref_load - Preferences to be loaded from character setup, loads in preferred mutant things like bodyparts, digilegs, skin color, etc.
  */
 /datum/species/proc/on_species_loss(mob/living/carbon/human/human, datum/species/new_species, pref_load)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	human.living_flags |= STOP_OVERLAY_UPDATE_BODY_PARTS //Don't call update_body_parts() for every single bodypart overlay removed.
@@ -477,21 +501,29 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 ///Proc that will randomise the hair, or primary appearance element (i.e. for moths wings) of a species' associated mob
 /datum/species/proc/randomize_main_appearance_element(mob/living/carbon/human/human_mob)
+	procstart = null
+	src.procstart = null
 	human_mob.set_hairstyle(random_hairstyle(human_mob.gender), update = FALSE)
 
 ///Proc that will randomise the underwear (i.e. top, pants and socks) of a species' associated mob,
 /// but will not update the body right away.
 /datum/species/proc/randomize_active_underwear_only(mob/living/carbon/human/human_mob)
+	procstart = null
+	src.procstart = null
 	human_mob.undershirt = random_undershirt(human_mob.gender)
 	human_mob.underwear = random_underwear(human_mob.gender)
 	human_mob.socks = random_socks(human_mob.gender)
 
 ///Proc that will randomise the underwear (i.e. top, pants and socks) of a species' associated mob
 /datum/species/proc/randomize_active_underwear(mob/living/carbon/human/human_mob)
+	procstart = null
+	src.procstart = null
 	randomize_active_underwear_only(human_mob)
 	human_mob.update_body()
 
 /datum/species/proc/randomize_active_features(mob/living/carbon/human/human_mob)
+	procstart = null
+	src.procstart = null
 	var/list/new_features = randomize_features()
 	for(var/feature_key in new_features)
 		human_mob.dna.features[feature_key] = new_features[feature_key]
@@ -501,6 +533,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Returns a list of features, randomized, to be used by DNA
  */
 /datum/species/proc/randomize_features()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	var/list/new_features = list()
@@ -519,6 +553,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	return new_features
 
 /datum/species/proc/can_equip(obj/item/I, slot, disable_warning, mob/living/carbon/human/H, bypass_equip_delay_self = FALSE, ignore_equipped = FALSE, indirect_action = FALSE)
+	procstart = null
+	src.procstart = null
 	if(no_equip_flags & slot)
 		if(!I.species_exception || !is_type_in_list(src, I.species_exception))
 			return FALSE
@@ -660,6 +696,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	return FALSE //Unsupported slot
 
 /datum/species/proc/equip_delay_self_check(obj/item/I, mob/living/carbon/human/H, bypass_equip_delay_self)
+	procstart = null
+	src.procstart = null
 	if(!I.equip_delay_self || bypass_equip_delay_self)
 		return TRUE
 	H.visible_message(span_notice("[H] start putting on [I]..."), span_notice("You start putting on [I]..."))
@@ -668,12 +706,16 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 /// Equips the necessary species-relevant gear before putting on the rest of the uniform.
 /datum/species/proc/pre_equip_species_outfit(datum/job/job, mob/living/carbon/human/equipping, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
  * Equip the outfit required for life. Replaces items currently worn.
  */
 /datum/species/proc/give_important_for_life(mob/living/carbon/human/human_to_equip)
+	procstart = null
+	src.procstart = null
 	if(!outfit_important_for_life)
 		return
 
@@ -688,6 +730,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * - seconds_per_tick: The amount of time that has passed since the last tick
  */
 /datum/species/proc/handle_radiation(mob/living/carbon/human/source, time_since_irradiated, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(time_since_irradiated > RAD_MOB_KNOCKDOWN && SPT_PROB(RAD_MOB_KNOCKDOWN_PROB, seconds_per_tick))
 		if(!source.IsParalyzed())
 			source.emote("collapse")
@@ -716,6 +760,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * - [target][/mob/living/carbon/human]: The mob to make go bald.
  */
 /datum/species/proc/go_bald(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target)) //may be called from a timer
 		return
 	target.set_facial_hairstyle("Shaved", update = FALSE)
@@ -726,6 +772,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 //////////////////
 
 /datum/species/proc/help(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(target, COMSIG_CARBON_PRE_HELP, user, attacker_style) & COMPONENT_BLOCK_HELP_ACT)
 		return TRUE
 
@@ -743,6 +791,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 ///This proc handles punching damage. IMPORTANT: Our owner is the TARGET and not the USER in this proc. For whatever reason...
 /datum/species/proc/harm(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(user, TRAIT_PACIFISM) && !attacker_style?.pacifist_style)
 		to_chat(user, span_warning("You don't want to harm [target]!"))
 		return FALSE
@@ -923,6 +973,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 /// Handles the stagger combo effect of our punch. Follows the same logic as the above proc, target is our owner, user is our attacker.
 /datum/species/proc/stagger_combo(mob/living/carbon/human/user, mob/living/carbon/human/target, atk_verb = "hit", limb_accuracy = 0, armor_block = 0)
+	procstart = null
+	src.procstart = null
 	// Randomly determines the effects of our punch. Limb accuracy is a bonus, armor block is a defense, attacker athletics provides a minor to significant bonus.
 	var/roll_them_bones = rand(-20, 20) + limb_accuracy - armor_block + ((user.mind?.get_skill_modifier(/datum/skill/athletics, SKILL_RANDS_MODIFIER) / 2) || 0)
 
@@ -971,6 +1023,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 
 /datum/species/proc/disarm(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
+	procstart = null
+	src.procstart = null
 	if(user.body_position != STANDING_UP)
 		return FALSE
 	if(user == target)
@@ -980,6 +1034,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	user.disarm(target)
 
 /datum/species/proc/spec_attack_hand(mob/living/carbon/human/owner, mob/living/carbon/human/target, datum/martial_art/attacker_style, modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(owner))
 		return
 	CHECK_DNA_AND_SPECIES(owner)
@@ -1018,6 +1074,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * * humi (required)(type: /mob/living/carbon/human) The mob we will target
  */
 /datum/species/proc/handle_environment(mob/living/carbon/human/humi, datum/gas_mixture/environment, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	handle_environment_pressure(humi, environment, seconds_per_tick)
 	handle_gas_interaction(humi, environment, seconds_per_tick)
 
@@ -1030,6 +1088,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * * humi (required)(type: /mob/living/carbon/human) The mob we will target
  */
 /datum/species/proc/handle_body_temperature(mob/living/carbon/human/humi, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	// When in a cryo unit we suspend all natural body regulation
 	if(istype(humi.loc, /obj/machinery/cryo_cell))
 		return
@@ -1054,6 +1114,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * * humi (required) The mob we will stabilize
  */
 /datum/species/proc/body_temperature_core(mob/living/carbon/human/humi, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/natural_change = get_temp_change_amount(humi.get_body_temp_normal() - humi.coretemperature, 0.06 * seconds_per_tick)
 	humi.adjust_coretemperature(humi.metabolism_efficiency * natural_change)
 
@@ -1068,6 +1130,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * - times_fired: The number of times SSmobs has fired
  */
 /datum/species/proc/body_temperature_skin(mob/living/carbon/human/humi, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 
 	// change the core based on the skin temp
 	var/skin_core_diff = humi.bodytemperature - humi.coretemperature
@@ -1127,6 +1191,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * * humi (required) The mob we will targeting
  */
 /datum/species/proc/body_temperature_alerts(mob/living/carbon/human/humi)
+	procstart = null
+	src.procstart = null
 	var/old_bodytemp = humi.old_bodytemperature
 	var/bodytemp = humi.bodytemperature
 	// Body temperature is too hot, and we do not have resist traits
@@ -1180,6 +1246,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * * humi (required) The mob we will targeting
  */
 /datum/species/proc/body_temperature_damage(mob/living/carbon/human/humi, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 
 	//If the body temp is above the wound limit start adding exposure stacks
 	if(humi.bodytemperature > BODYTEMP_HEAT_WOUND_LIMIT)
@@ -1241,6 +1309,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * * humi (required) The mob we will targeting
  */
 /datum/species/proc/apply_burn_wounds(mob/living/carbon/human/humi, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	// If we are resistant to heat exit
 	if(HAS_TRAIT(humi, TRAIT_RESISTHEAT))
 		return
@@ -1283,6 +1353,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 /// Handle the air pressure of the environment
 /datum/species/proc/handle_environment_pressure(mob/living/carbon/human/H, datum/gas_mixture/environment, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/pressure = environment.return_pressure()
 	var/adjusted_pressure = H.calculate_affecting_pressure(pressure)
 
@@ -1330,6 +1402,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  *	Handles exposure to the skin of various gases.
  */
 /datum/species/proc/handle_gas_interaction(mob/living/carbon/human/human, datum/gas_mixture/environment, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	/// Some non-clothing items may end up in these slots, e.g. flowers worn on the head, so we should consider clothing_flags as potentially nonexistant as a var.
 	/// Otherwise we will get a very spammy runtime.
 	var/suit_flags = astype(human?.wear_suit, /obj/item/clothing)?.clothing_flags
@@ -1347,6 +1421,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 ////////////
 
 /datum/species/proc/spec_stun(mob/living/carbon/human/H,amount)
+	procstart = null
+	src.procstart = null
 	if((H.movement_type & FLYING) && !H.buckled)
 		var/obj/item/organ/wings/functional/wings = H.get_organ_slot(ORGAN_SLOT_EXTERNAL_WINGS)
 		if(wings)
@@ -1355,6 +1431,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	. = stunmod * H.physiology.stun_mod * amount
 
 /datum/species/proc/negates_gravity(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(H.movement_type & FLYING)
 		return TRUE
 	return FALSE
@@ -1369,6 +1447,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * former_tail_owner - the mob that was once a species with a tail and now is a different species
  */
 /datum/species/proc/clear_tail_moodlets(mob/living/carbon/human/former_tail_owner)
+	procstart = null
+	src.procstart = null
 	former_tail_owner.clear_mood_event("tail_lost")
 	former_tail_owner.clear_mood_event("tail_balance_lost")
 	former_tail_owner.clear_mood_event("tail_regained")
@@ -1376,6 +1456,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /// Returns a list of strings representing features this species has.
 /// Used by the preferences UI to know what buttons to show.
 /datum/species/proc/get_features()
+	procstart = null
+	src.procstart = null
 	var/cached_features = GLOB.features_by_species[type]
 	if (!isnull(cached_features))
 		return cached_features
@@ -1400,46 +1482,68 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /// Given a human, will adjust it before taking a picture for the preferences UI.
 /// This should create a CONSISTENT result, so the icons don't randomly change.
 /datum/species/proc/prepare_human_for_preview(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Returns the species' scream sound.
 /datum/species/proc/get_scream_sound(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Returns the species' cry sound.
 /datum/species/proc/get_cry_sound(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Returns the species' sigh sound.
 /datum/species/proc/get_sigh_sound(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Returns the species' sniff sound.
 /datum/species/proc/get_sniff_sound(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Returns the species' cough sound.
 /datum/species/proc/get_cough_sound(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Returns the species' laugh sound
 /datum/species/proc/get_laugh_sound(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Returns the species' sneeze sound.
 /datum/species/proc/get_sneeze_sound(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Returns the species' snore sound.
 /datum/species/proc/get_snore_sound(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Returns the species' hiss sound
 /datum/species/proc/get_hiss_sound(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Returns a list of all organ typepaths this species probably has
 /datum/species/proc/get_organs(include_brain = TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/mut_organs = list()
 	mut_organs += mutant_organs
 	if (include_brain)
@@ -1456,6 +1560,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	return mut_organs
 
 /datum/species/proc/get_types_to_preload()
+	procstart = null
+	src.procstart = null
 	return get_organs(FALSE)
 
 
@@ -1470,6 +1576,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * * owner - The owner of our species.
  */
 /datum/species/proc/on_owner_login(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -1479,6 +1587,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  */
 
 /datum/species/proc/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "An unremarkable species."
 /**
  * Gets a short description for the specices. Should be relatively succinct.
@@ -1488,6 +1598,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  */
 
 /datum/species/proc/get_species_description()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 
 	stack_trace("Species [name] ([type]) did not have a description set, and is a selectable roundstart race! Override get_species_description.")
@@ -1501,6 +1613,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Between each entry in the list, a newline will be inserted, for formatting.
  */
 /datum/species/proc/get_species_lore()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	RETURN_TYPE(/list)
 
@@ -1514,6 +1628,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Returns a list, or null if they have no diet.
  */
 /datum/species/proc/get_species_diet()
+	procstart = null
+	src.procstart = null
 	if((TRAIT_NOHUNGER in inherent_traits) || !mutanttongue)
 		return null
 
@@ -1545,6 +1661,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * The innter list is a list of perks. Can be empty, but won't be null.
  */
 /datum/species/proc/get_species_perks()
+	procstart = null
+	src.procstart = null
 	var/list/species_perks = list()
 
 	// Let us get every perk we can conceive of in one big list.
@@ -1589,6 +1707,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Returns null by default. When overriding, return a list of perks.
  */
 /datum/species/proc/create_pref_unique_perks()
+	procstart = null
+	src.procstart = null
 	return null
 
 /**
@@ -1598,6 +1718,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Returns a list containing perks, or an empty list.
  */
 /datum/species/proc/create_pref_damage_perks()
+	procstart = null
+	src.procstart = null
 	// We use the chest to figure out brute and burn mod perks
 	var/obj/item/bodypart/chest/fake_chest = bodypart_overrides[BODY_ZONE_CHEST]
 
@@ -1670,6 +1792,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Returns a list containing perks, or an empty list.
  */
 /datum/species/proc/create_pref_temperature_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 
 	// Hot temperature tolerance
@@ -1714,6 +1838,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Returns a list containing perks, or an empty list.
  */
 /datum/species/proc/create_pref_blood_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 	var/datum/blood_type/blood_type = exotic_bloodtype ? get_blood_type(exotic_bloodtype) : null
 
@@ -1752,6 +1878,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Returns a list containing perks, or an empty list.
  */
 /datum/species/proc/create_pref_traits_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 
 	if(TRAIT_LIMBATTACHMENT in inherent_traits)
@@ -1812,6 +1940,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Returns a list containing perks, or an empty list.
  */
 /datum/species/proc/create_pref_biotypes_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 
 	if(inherent_biotypes & MOB_UNDEAD)
@@ -1832,6 +1962,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Returns a list containing perks, or an empty list.
  */
 /datum/species/proc/create_pref_organs_perks()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 
 	var/list/to_add = list()
@@ -1842,6 +1974,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	return to_add
 
 /datum/species/proc/create_pref_liver_perks()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 
 	if(isnull(mutantliver) || (TRAIT_LIVERLESS_METABOLISM in inherent_traits))
@@ -1885,6 +2019,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	return to_add
 
 /datum/species/proc/create_pref_lung_perks()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 
 	if(isnull(mutantlungs) || (TRAIT_NOBREATH in inherent_traits))
@@ -1910,6 +2046,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Returns a list containing perks, or an empty list.
  */
 /datum/species/proc/create_pref_language_perk()
+	procstart = null
+	src.procstart = null
 
 	// Grab galactic common as a path, for comparisons
 	var/datum/language/common_language = /datum/language/common
@@ -1946,6 +2084,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 ///Handles replacing all of the bodyparts with their species version during set_species()
 /datum/species/proc/replace_body(mob/living/carbon/target, datum/species/new_species)
+	procstart = null
+	src.procstart = null
 	new_species ||= target.dna.species //If no new species is provided, assume its src.
 	//Note for future: Potentionally add a new C.dna.species() to build a template species for more accurate limb replacement
 
@@ -1969,6 +2109,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 /// Creates body parts for the target completely from scratch based on the species
 /datum/species/proc/create_fresh_body(mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	var/list/override_limbs = list()
 	for(var/bodypart in bodypart_overrides)
 		override_limbs += bodypart_overrides[bodypart]
@@ -1981,10 +2123,14 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * or not they are accessible.
  **/
 /datum/species/proc/check_head_flags(check_flags = NONE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/head/fake_head = bodypart_overrides[BODY_ZONE_HEAD]
 	return (initial(fake_head.head_flags) & check_flags)
 
 /datum/species/dump_harddel_info()
+	procstart = null
+	src.procstart = null
 	if(harddel_deets_dumped)
 		return
 	harddel_deets_dumped = TRUE
@@ -1999,6 +2145,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Returns a color string or null.
  */
 /datum/species/proc/get_fixed_hair_color(mob/living/carbon/for_mob)
+	procstart = null
+	src.procstart = null
 	ASSERT(!isnull(for_mob))
 	switch(hair_color_mode)
 		if(USE_MUTANT_COLOR)
@@ -2010,6 +2158,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 /// Add species appropriate body markings
 /datum/species/proc/add_body_markings(mob/living/carbon/human/hooman)
+	procstart = null
+	src.procstart = null
 	for(var/markings_type in body_markings) //loop through possible species markings
 		var/datum/bodypart_overlay/simple/body_marking/markings = new markings_type() // made to die... mostly because we cant use initial on lists but its convenient and organized
 		var/accessory_name = hooman.dna.features[markings.dna_feature_key] || body_markings[markings_type] //get the accessory name from dna
@@ -2026,6 +2176,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 /// Remove body markings
 /datum/species/proc/remove_body_markings(mob/living/carbon/human/hooman)
+	procstart = null
+	src.procstart = null
 	var/needs_update = FALSE
 	for(var/obj/item/bodypart/part as anything in hooman.get_bodyparts())
 		for(var/datum/bodypart_overlay/simple/body_marking/marking in part.bodypart_overlays)
@@ -2040,6 +2192,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Returns what type of gas this species breathes
  */
 /datum/species/proc/get_breath_type()
+	procstart = null
+	src.procstart = null
 	if(isnull(mutantlungs))
 		return null
 

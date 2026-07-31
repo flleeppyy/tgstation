@@ -99,6 +99,8 @@
 	)
 
 /datum/spy_bounty_handler/New()
+	procstart = null
+	src.procstart = null
 	refresh_time = CONFIG_GET(number/spy_bounty_refresh_timer)
 	base_bounties_to_give = list(
 		SPY_DIFFICULTY_EASY = CONFIG_GET(number/spy_bounty_max_easy),
@@ -137,6 +139,8 @@
 
 /// Helper to attempt to add the passed uplink item datum to the possible bounty pool(s).
 /datum/spy_bounty_handler/proc/try_add_to_loot_pool(datum/uplink_item/item)
+	procstart = null
+	src.procstart = null
 	if(isnull(item.item) || item.item == ABSTRACT_UPLINK_ITEM || !(item.purchasable_from & UPLINK_SPY))
 		return FALSE
 
@@ -152,6 +156,8 @@
 
 /// Helper that returns a list of all active bounties in a single list, regardless of difficulty.
 /datum/spy_bounty_handler/proc/get_all_bounties() as /list
+	procstart = null
+	src.procstart = null
 	var/list/all_bounties = list()
 	for(var/difficulty in bounties)
 		all_bounties += bounties[difficulty]
@@ -161,6 +167,8 @@
 /// Refreshes all active bounties for each difficulty, no matter if they were complete or not.
 /// Then recursively calls itself via a timer.
 /datum/spy_bounty_handler/proc/refresh_bounty_list()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/list/bounties_to_give = base_bounties_to_give.Copy()
@@ -198,6 +206,8 @@
 /// Forces a refresh of the bounty list.
 /// Counts towards [num_refreshes].
 /datum/spy_bounty_handler/proc/force_refresh()
+	procstart = null
+	src.procstart = null
 	if(refresh_timer)
 		deltimer(refresh_timer)
 

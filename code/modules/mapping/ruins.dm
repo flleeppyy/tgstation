@@ -1,4 +1,6 @@
 /datum/map_template/ruin/proc/try_to_place(z, list/allowed_areas_typecache, turf/forced_turf, clear_below)
+	procstart = null
+	src.procstart = null
 	var/sanity = forced_turf ? 1 : PLACEMENT_TRIES
 	if(SSmapping.level_trait(z,ZTRAIT_ISOLATED_RUINS))
 		return reserve_isolated_level(z)
@@ -36,6 +38,8 @@
 		return central_turf
 
 /datum/map_template/ruin/proc/reserve_isolated_level(z)
+	procstart = null
+	src.procstart = null
 	var/datum/turf_reservation/reservation = SSmapping.request_turf_block_reservation(width, height, 1, z) //Make the new level creation work with different traits.
 	if(!reservation)
 		return
@@ -47,6 +51,8 @@
 
 ///Loads a specified ruin that was previously reserved.
 /datum/map_template/ruin/proc/load_reserved(turf/central_turf, clear_below)
+	procstart = null
+	src.procstart = null
 	var/list/affected_turfs = get_affected_turfs(central_turf, 1)
 
 	if(clear_below)
@@ -78,6 +84,8 @@
  * @param immediate_load If TRUE, loads the placed ruins' maps in right away instead of leaving them queued in SSmapping.reserved_ruins for terrain generation to run first. Only safe to use outside of the roundstart mapping init sequence, once terrain generation has already finished.
  */
 /proc/seedRuins(list/z_levels = null, budget = 0, whitelist = list(/area/space), list/potentialRuins, clear_below = FALSE, mineral_budget = 15, mineral_budget_update, ruins_type = ZTRAIT_STATION, immediate_load = FALSE)
+	procstart = null
+	src.procstart = null
 #if defined(CIBUILDING) && !defined(OPENDREAM)
 	if(SSmapping.current_map.is_unit_test_map && PERFORM_ALL_TESTS(maptest_log_mapping) )
 		return log_mapping("Skipping ruin seeding due to running on unit test map in workflow enviorment.")

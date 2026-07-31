@@ -16,6 +16,8 @@
 	var/tritium_burp_hot_chance = 10
 
 /datum/disease/gastritium/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -43,6 +45,8 @@
 	affected_mob.add_body_temperature_change("gastritium", min(15 * stage, change_limit))
 
 /datum/disease/gastritium/proc/tritium_burp(hot_chance = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/burp = new
 	burp.set_gas(/datum/gas/tritium, MOLES_GAS_VISIBLE)
 	burp.temperature = affected_mob.bodytemperature

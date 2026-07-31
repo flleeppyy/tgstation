@@ -22,6 +22,8 @@
 	fire = 40
 
 /obj/machinery/meter/Destroy()
+	procstart = null
+	src.procstart = null
 	SSair.stop_processing_machine(src)
 	if(!isnull(target))
 		UnregisterSignal(target, COMSIG_QDELETING)
@@ -29,6 +31,8 @@
 	return ..()
 
 /obj/machinery/meter/Initialize(mapload, new_piping_layer)
+	procstart = null
+	src.procstart = null
 	if(!isnull(new_piping_layer))
 		target_layer = new_piping_layer
 
@@ -44,6 +48,8 @@
 	return ..()
 
 /obj/machinery/meter/proc/reattach_to_layer()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/atmospherics/candidate
 	for(var/obj/machinery/atmospherics/pipe/pipe in loc)
 		if(pipe.piping_layer == target_layer)
@@ -55,14 +61,20 @@
 
 ///Called when the parent pipe is removed
 /obj/machinery/meter/proc/drop_meter()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	deconstruct(FALSE)
 
 /obj/machinery/meter/proc/setAttachLayer(new_layer)
+	procstart = null
+	src.procstart = null
 	target_layer = new_layer
 	PIPING_LAYER_DOUBLE_SHIFT(src, target_layer)
 
 /obj/machinery/meter/on_set_is_operational(old_value)
+	procstart = null
+	src.procstart = null
 	if(is_operational)
 		SSair.start_processing_machine(src)//dont set icon_state here because it will be reset on next process() if it ever happens
 	else
@@ -70,9 +82,13 @@
 		SSair.stop_processing_machine(src)
 
 /obj/machinery/meter/return_air()
+	procstart = null
+	src.procstart = null
 	return target?.return_air() || ..()
 
 /obj/machinery/meter/process_atmos()
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/pipe_air = target?.return_air()
 	if(isnull(pipe_air))
 		icon_state = "meter0"
@@ -121,6 +137,8 @@
 		set_greyscale(greyscale_colors)
 
 /obj/machinery/meter/proc/status()
+	procstart = null
+	src.procstart = null
 	if (target)
 		var/datum/gas_mixture/pipe_air = target.return_air()
 		if(pipe_air)
@@ -131,10 +149,14 @@
 		. = "The connect error light is blinking."
 
 /obj/machinery/meter/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += status()
 
 /obj/machinery/meter/wrench_act(mob/user, obj/item/wrench)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, span_notice("You begin to unfasten \the [src]..."))
 	if (wrench.use_tool(src, user, 40, volume=50))
@@ -146,16 +168,22 @@
 	return TRUE
 
 /obj/machinery/meter/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	var/obj/item/pipe_meter/meter_object = new /obj/item/pipe_meter(get_turf(src))
 	transfer_fingerprints_to(meter_object)
 
 /obj/machinery/meter/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (NOPOWER|BROKEN))
 		return
 	else
 		to_chat(user, status())
 
 /obj/machinery/meter/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_size >= STAGE_FIVE)
 		deconstruct()
@@ -176,21 +204,29 @@
 	var/obj/machinery/meter/connected_meter
 
 /obj/item/circuit_component/atmos_meter/populate_ports()
+	procstart = null
+	src.procstart = null
 	request_data = add_input_port("Request Meter Data", PORT_TYPE_SIGNAL, trigger = PROC_REF(request_meter_data))
 
 	pressure = add_output_port("Pressure", PORT_TYPE_NUMBER)
 	temperature = add_output_port("Temperature", PORT_TYPE_NUMBER)
 
 /obj/item/circuit_component/atmos_meter/register_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/machinery/meter))
 		connected_meter = shell
 
 /obj/item/circuit_component/atmos_meter/unregister_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	connected_meter = null
 	return ..()
 
 /obj/item/circuit_component/atmos_meter/proc/request_meter_data()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!connected_meter)
 		return
@@ -204,6 +240,8 @@
 	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/machinery/meter/turf/reattach_to_layer()
+	procstart = null
+	src.procstart = null
 	target = loc
 
 /obj/machinery/meter/layer2

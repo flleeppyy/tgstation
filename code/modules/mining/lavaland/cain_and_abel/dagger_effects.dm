@@ -13,6 +13,8 @@
 	duration = 1.75 SECONDS
 
 /obj/effect/temp_visual/dagger_slash/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, alpha = 0, time = 1.75 SECONDS)
 
@@ -45,6 +47,8 @@
 	var/effect_left = /obj/effect/temp_visual/dagger_engraved
 
 /obj/projectile/dagger/proc/dagger_effects(atom/target)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target))
 		return null
 	var/turf/target_turf = get_turf(target)
@@ -61,6 +65,8 @@
 	effect_left = /obj/effect/temp_visual/dagger_engraved/launch
 
 /obj/projectile/dagger/launch/dagger_effects(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(.))
 		return
@@ -87,6 +93,8 @@
 /obj/effect/temp_visual/dagger_engraved/launch
 
 /obj/effect/temp_visual/dagger_engraved/launch/proc/launch(mob/living/firer)
+	procstart = null
+	src.procstart = null
 	firer.throw_at(target = src, range = 9, speed = 1, spin = FALSE, gentle = TRUE, throw_type_path = /datum/thrownthing/dagger_launch)
 
 //throw datum the cain and abel applies
@@ -98,6 +106,8 @@
 	)
 
 /datum/thrownthing/dagger_launch/New(thrownthing, target, init_dir, maxrange, speed, thrower, diagonals_first, force, gentle, callback, target_zone)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(thrownthing))
 		return
@@ -106,11 +116,15 @@
 	new /obj/effect/temp_visual/mook_dust(get_turf(thrownthing))
 
 /datum/thrownthing/dagger_launch/finalize(hit, target)
+	procstart = null
+	src.procstart = null
 	if(thrownthing)
 		new /obj/effect/temp_visual/mook_dust(get_turf(thrownthing))
 	return ..()
 
 /datum/thrownthing/dagger_launch/Destroy()
+	procstart = null
+	src.procstart = null
 	if(thrownthing)
 		thrownthing.remove_traits(traits_on_launch, REF(src))
 	var/obj/effect/temp_visual/dagger_engraved/launch/target_dagger = initial_target?.resolve()
@@ -124,11 +138,15 @@
 	light_range = 1
 
 /obj/effect/temp_visual/dagger_engraved/crystals/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/index in 0 to 2)
 		addtimer(CALLBACK(src, PROC_REF(generate_crystals), index), index * 0.5 SECONDS)
 
 /obj/effect/temp_visual/dagger_engraved/crystals/proc/generate_crystals(range)
+	procstart = null
+	src.procstart = null
 	if(range == 0)
 		new /obj/effect/temp_visual/dagger_crystal(get_turf(src))
 		return
@@ -149,6 +167,8 @@
 	duration = 0.5 SECONDS
 
 /obj/effect/temp_visual/wisp_explosion/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(get_turf(src), 'sound/items/weapons/effects/blood_wisp_explode.ogg', 60, vary = TRUE, pressure_affected = FALSE)
 
@@ -164,6 +184,8 @@
 	var/applied_damage = 50
 
 /obj/effect/temp_visual/dagger_crystal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
@@ -177,16 +199,22 @@
 	addtimer(CALLBACK(src, PROC_REF(dissappear_gracefully)), duration - 1 SECONDS)
 
 /obj/effect/temp_visual/dagger_crystal/proc/on_entered(datum/source, mob/living/entered_living)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(istype(entered_living))
 		apply_crystal_effects(entered_living)
 
 /obj/effect/temp_visual/dagger_crystal/proc/apply_crystal_effects(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	victim.apply_status_effect(/datum/status_effect/dagger_stun)
 	playsound(victim, 'sound/items/weapons/bladeslice.ogg', 50, FALSE)
 	victim.apply_damage(victim.mob_size >= MOB_SIZE_LARGE ? applied_damage : applied_damage / 10, BRUTE)
 
 /obj/effect/temp_visual/dagger_crystal/proc/dissappear_gracefully()
+	procstart = null
+	src.procstart = null
 	animate(src, alpha = 0, time = 0.9 SECONDS)
 
 //wisp we hurl at monsters
@@ -201,9 +229,13 @@
 	icon_state = "blood_wisp"
 
 /obj/projectile/dagger_wisp/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transform = transform.Scale(1, -1)
 
 /obj/projectile/dagger_wisp/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/temp_visual/wisp_explosion(get_turf(target))

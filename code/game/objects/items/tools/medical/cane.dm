@@ -19,11 +19,15 @@
 	var/causes_waddling = FALSE
 
 /obj/item/cane/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/walking_aid, limbless_slowdown_modifier, get_walking_aid_required_trait(), causes_waddling)
 
 /// Determines if a trait is required to be used as a walking aid (ex. foldable canes)
 /obj/item/cane/proc/get_walking_aid_required_trait()
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/item/cane/crutch
@@ -45,6 +49,8 @@
 	causes_waddling = TRUE
 
 /obj/item/cane/crutch/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/cuffable_item)
 
@@ -68,6 +74,8 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 6)
 
 /obj/item/cane/white/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/cuffable_item)
 	AddComponent( \
@@ -83,6 +91,8 @@
 
 // White canes only provide support while extended
 /obj/item/cane/white/get_walking_aid_required_trait()
+	procstart = null
+	src.procstart = null
 	return TRAIT_TRANSFORM_ACTIVE
 
 /*
@@ -91,6 +101,8 @@
  * Gives feedback to the user and makes it show up inhand.
  */
 /obj/item/cane/white/proc/on_transform(obj/item/source, mob/living/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(user)

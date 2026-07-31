@@ -21,6 +21,8 @@
 	var/distinct_reagent_cap = INFINITY
 
 /datum/component/plumbing/Initialize(ducting_layer)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -51,6 +53,8 @@
 		enable()
 
 /datum/component/plumbing/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_TOOL_ACT(TOOL_WRENCH), PROC_REF(check_wrench))
 	RegisterSignal(parent, COMSIG_MOVABLE_SET_ANCHORED, PROC_REF(toggle_active))
 	RegisterSignal(parent, COMSIG_OBJ_HIDE, PROC_REF(hide))
@@ -60,6 +64,8 @@
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/component/plumbing/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ATOM_TOOL_ACT(TOOL_WRENCH),
 		COMSIG_MOVABLE_SET_ANCHORED,
@@ -71,6 +77,8 @@
 	))
 
 /datum/component/plumbing/Destroy()
+	procstart = null
+	src.procstart = null
 	disable()
 	ducts.Cut()
 	reagents = null
@@ -78,15 +86,21 @@
 
 ///Returns if the machine is active or not
 /datum/component/plumbing/proc/active()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/parent_movable = parent
 	return parent_movable.anchored
 
 ///Returns the reagent holder meant to receive the reagents. Can be different from the one that sends reagents to the network
 /datum/component/plumbing/proc/recipient_reagents_holder()
+	procstart = null
+	src.procstart = null
 	return reagents
 
 ///settle wherever we are, and start behaving like a piece of plumbing
 /datum/component/plumbing/proc/enable()
+	procstart = null
+	src.procstart = null
 	if(demand_connects)
 		START_PROCESSING(SSplumbing, src)
 
@@ -112,6 +126,8 @@
 						net.add_plumber(plumber, opposite_dir)
 
 /datum/component/plumbing/proc/disable()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	STOP_PROCESSING(SSplumbing, src)
@@ -130,6 +146,8 @@
 			qdel(net)
 
 /datum/component/plumbing/proc/check_wrench(obj/parent_obj, mob/user, tool, processing_recipes)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!active())
@@ -139,6 +157,8 @@
 			return ITEM_INTERACT_FAILURE
 
 /datum/component/plumbing/proc/toggle_active(obj/parent_obj, new_state)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Follow atmos's rule of exposing the connection if you unwrench it and only hiding again if tile is placed back down.
@@ -152,6 +172,8 @@
 		disable()
 
 /datum/component/plumbing/proc/hide(atom/movable/parent_obj, underfloor_accessibility)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/movable/parent_movable = parent
@@ -163,6 +185,8 @@
 		parent_obj.update_appearance()
 
 /datum/component/plumbing/proc/create_overlays(atom/movable/parent_movable, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(tile_covered)
@@ -201,6 +225,8 @@
 		overlays += overlay
 
 /datum/component/plumbing/proc/on_parent_dir_change(atom/movable/parent_obj, old_dir, new_dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	demand_connects = initial(demand_connects)
@@ -223,6 +249,8 @@
 		enable()
 
 /datum/component/plumbing/proc/change_ducting_layer(obj/source, obj/changer, new_layer = DUCT_LAYER_DEFAULT)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	ducting_layer = new_layer
@@ -236,6 +264,8 @@
 		enable()
 
 /datum/component/plumbing/process()
+	procstart = null
+	src.procstart = null
 	if(!demand_connects)
 		return PROCESS_KILL
 
@@ -249,6 +279,8 @@
 				send_request(dir)
 
 /datum/component/plumbing/proc/on_examine(atom/movable/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(distinct_reagent_cap != INFINITY)
@@ -256,6 +288,8 @@
 
 ///called from in process(). only calls process_request(), but can be overwritten for children with special behaviour
 /datum/component/plumbing/proc/send_request(dir)
+	procstart = null
+	src.procstart = null
 	var/amount_to_give = MACHINE_REAGENT_TRANSFER
 	// infinite cap means we need to special handling, process_request will just grab as much as it wants.
 	if(distinct_reagent_cap == INFINITY)
@@ -277,6 +311,8 @@
 /// Returns a list of all distinct reagent types available in the passed duct network.
 /// The passed net can be null, it is handled.
 /datum/component/plumbing/proc/get_all_network_reagents(datum/ductnet/net)
+	procstart = null
+	src.procstart = null
 	var/list/distinct_reagents = list()
 	for(var/datum/reagent/existing_regent as anything in reagents.reagent_list)
 		distinct_reagents |= existing_regent.type
@@ -287,6 +323,8 @@
 
 ///check who can give us what we want, and how many each of them will give us
 /datum/component/plumbing/proc/process_request(amount = MACHINE_REAGENT_TRANSFER, reagent, dir, round_robin = TRUE)
+	procstart = null
+	src.procstart = null
 	//find the duct to take from
 	var/dirtext = num2text(dir)
 	var/datum/ductnet/net = ducts[dirtext]
@@ -315,6 +353,8 @@
 
 ///returns TRUE when they can give the specified amount and reagent. called by process request
 /datum/component/plumbing/proc/can_give(amount, reagent, datum/ductnet/net)
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 
 	if(amount <= 0)
@@ -329,4 +369,6 @@
 
 ///this is where the reagent is actually transferred and is thus the finish point of our process()
 /datum/component/plumbing/proc/transfer_to(datum/component/plumbing/target, amount, reagent, datum/ductnet/net, round_robin = TRUE)
+	procstart = null
+	src.procstart = null
 	reagents.trans_to(target.recipient_reagents_holder(), amount, target_id = reagent, methods = round_robin ? LINEAR : NONE)

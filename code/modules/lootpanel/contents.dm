@@ -1,5 +1,7 @@
 /// Adds the item to contents and to_image (if needed)
 /datum/lootpanel/proc/add_to_index(datum/search_object/index)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(index, COMSIG_QDELETING, PROC_REF(on_searchable_deleted))
 	if(isnull(index.icon))
 		to_image += index
@@ -9,6 +11,8 @@
 
 /// Used to populate contents and start generating if needed
 /datum/lootpanel/proc/populate_contents()
+	procstart = null
+	src.procstart = null
 	if(length(contents))
 		reset_contents()
 
@@ -27,6 +31,8 @@
 	queue_update()
 
 /datum/lootpanel/proc/on_source_turf_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// async because the same move handler we register with this can trigger on the /datum/search_object later in this event
@@ -34,6 +40,8 @@
 	addtimer(CALLBACK(src, PROC_REF(add_new_searchable), arrived, TRUE), 0)
 
 /datum/lootpanel/proc/add_new_searchable(atom/movable/thing, from_signal)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(thing))
 		return
 	if(thing.mouse_opacity == MOUSE_OPACITY_TRANSPARENT)
@@ -53,6 +61,8 @@
 		queue_update()
 
 /datum/lootpanel/proc/queue_update()
+	procstart = null
+	src.procstart = null
 	var/datum/tgui/window = SStgui.get_open_ui(owner.mob, src)
 	window?.send_update()
 
@@ -62,6 +72,8 @@
 
 /// For: Resetting to empty. Ignores the searchable qdel event
 /datum/lootpanel/proc/reset_contents()
+	procstart = null
+	src.procstart = null
 	for(var/datum/search_object/index as anything in contents)
 		contents -= index
 		to_image -= index

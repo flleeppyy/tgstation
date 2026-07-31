@@ -11,6 +11,8 @@
 	var/found_mom_key = BB_FOUND_MOM
 
 /datum/bt_node/ai_behavior/find_mom/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living_pawn = controller.pawn
 	var/list/mom_types = controller.blackboard[mom_types_key]
 	if(!length(mom_types))
@@ -28,6 +30,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
 
 /datum/bt_node/ai_behavior/find_mom/proc/is_possible_mom(mob/mother, list/mom_types, list/ignore_types)
+	procstart = null
+	src.procstart = null
 	if(!is_type_in_list(mother, mom_types))
 		return FALSE
 	if(is_type_in_list(mother, ignore_types))
@@ -40,6 +44,8 @@
 	var/parent_key = BB_FOUND_MOM
 
 /datum/bt_node/ai_behavior/look_to_parent/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/parent = controller.blackboard[parent_key]
 	if(QDELETED(parent))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED

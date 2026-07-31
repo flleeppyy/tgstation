@@ -24,12 +24,16 @@
 	var/last_error
 
 /datum/lua_editor/New(state, _quick_log_index)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(state)
 		current_state = state
 		LAZYADDASSOCLIST(SSlua.editors, text_ref(current_state), src)
 
 /datum/lua_editor/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "LuaEditor", "Lua")
@@ -37,14 +41,20 @@
 		ui.open()
 
 /datum/lua_editor/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(current_state)
 		LAZYREMOVEASSOC(SSlua.editors, text_ref(current_state), src)
 
 /datum/lua_editor/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_DEBUG)
 
 /datum/lua_editor/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["ss_lua_init"] = SSlua.initialized
 	if(!SSlua.initialized)
@@ -93,6 +103,8 @@
 	return data
 
 /datum/lua_editor/proc/traverse_list(list/path, list/root, traversal_depth_offset = 0)
+	procstart = null
+	src.procstart = null
 	var/top_affected_list_depth = LAZYLEN(path)-traversal_depth_offset // The depth of the element to get
 	if(top_affected_list_depth)
 		var/list/current_list = root
@@ -122,6 +134,8 @@
 		return root
 
 /datum/lua_editor/proc/run_code(code)
+	procstart = null
+	src.procstart = null
 	var/ckey = usr.ckey
 	current_state.ckey_last_runner = ckey
 	var/result = current_state.load_script(code)
@@ -131,6 +145,8 @@
 	message_admins("[key_name(usr)] executed [length(code)] bytes of lua code. [ADMIN_LUAVIEW_CHUNK(current_state, index_with_result)]")
 
 /datum/lua_editor/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -278,6 +294,8 @@
 			return TRUE
 
 /datum/lua_editor/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(src)
 #endif

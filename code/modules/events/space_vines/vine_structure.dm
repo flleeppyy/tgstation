@@ -28,6 +28,8 @@
 	var/light_state = BLOCK_LIGHT
 
 /obj/structure/spacevine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CHASM_DESTROYED, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_INVERTED_DEMOLITION, INNATE_TRAIT)
@@ -41,6 +43,8 @@
 	block_sunlight()
 
 /obj/structure/spacevine/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!length(mutations))
 		. += "This vine has no mutations."
@@ -54,6 +58,8 @@
 	. += text
 
 /obj/structure/spacevine/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/datum/spacevine_mutation/mutation in mutations)
 		mutation.on_death(src)
 	if(master)
@@ -65,6 +71,8 @@
 	return ..()
 
 /obj/structure/spacevine/proc/on_chem_effect(datum/reagent/chem)
+	procstart = null
+	src.procstart = null
 	var/override = FALSE
 	for(var/datum/spacevine_mutation/mutation in mutations)
 		override += mutation.on_chem(src, chem)
@@ -72,6 +80,8 @@
 		qdel(src)
 
 /obj/structure/spacevine/proc/eat(mob/eater)
+	procstart = null
+	src.procstart = null
 	var/override = FALSE
 	for(var/datum/spacevine_mutation/mutation in mutations)
 		override += mutation.on_eat(src, eater)
@@ -79,6 +89,8 @@
 		qdel(src)
 
 /obj/structure/spacevine/attacked_by(obj/item/item, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	LAZYSET(attack_modifiers, SILENCE_DEFAULT_MESSAGES, TRUE)
 	LAZYSET(attack_modifiers, FORCE_MULTIPLIER, 1)
 	if(item.damtype == BURN)
@@ -88,6 +100,8 @@
 	return ..()
 
 /obj/structure/spacevine/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(damage_amount)
@@ -98,6 +112,8 @@
 			playsound(src.loc, 'sound/items/tools/welder.ogg', 100, TRUE)
 
 /obj/structure/spacevine/proc/on_entered(datum/source, atom/movable/movable)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isliving(movable))
 		return
@@ -106,21 +122,29 @@
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/structure/spacevine/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	for(var/datum/spacevine_mutation/mutation in mutations)
 		mutation.on_hit(src, user)
 	user_unbuckle_mob(user, user)
 	return ..()
 
 /obj/structure/spacevine/attack_paw(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	for(var/datum/spacevine_mutation/mutation in mutations)
 		mutation.on_hit(src, user)
 	user_unbuckle_mob(user,user)
 
 /obj/structure/spacevine/attack_alien(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	eat(user)
 
 /// Updates the icon as the space vine grows
 /obj/structure/spacevine/proc/grow()
+	procstart = null
+	src.procstart = null
 	if(!growth_stage)
 		src.icon_state = pick("Med1", "Med2", "Med3")
 		growth_stage = 1
@@ -134,6 +158,8 @@
 
 /// Buckles mobs trying to pass through it
 /obj/structure/spacevine/proc/entangle_mob()
+	procstart = null
+	src.procstart = null
 	if(has_buckled_mobs() || prob(75))
 		return
 
@@ -143,6 +169,8 @@
 			break //only capture one mob at a time
 
 /obj/structure/spacevine/proc/entangle(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	if(isnull(victim) || isvineimmune(victim))
 		return
 	for(var/datum/spacevine_mutation/mutation in mutations)
@@ -153,6 +181,8 @@
 
 /// Finds a target tile to spread to. If checks pass it will spread to it and also proc on_spread on target.
 /obj/structure/spacevine/proc/spread()
+	procstart = null
+	src.procstart = null
 	if(isnull(master)) //If we've lost our controller, something has gone terribly wrong.
 		return
 
@@ -187,6 +217,8 @@
 
 /// Destroying an explosive vine sets off a chain reaction
 /obj/structure/spacevine/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	var/index
 	for(var/datum/spacevine_mutation/mutation in mutations)
 		index += mutation.on_explosion(severity, target, src)
@@ -196,9 +228,13 @@
 	return TRUE
 
 /obj/structure/spacevine/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return (always_atmos_process || exposed_temperature > FIRE_MINIMUM_TEMPERATURE_TO_SPREAD || exposed_temperature < VINE_FREEZING_POINT || !can_spread)//if you're room temperature you're safe
 
 /obj/structure/spacevine/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	for(var/datum/spacevine_mutation/mutation in mutations)
 		mutation.additional_atmos_processes(src, air)
 	if(!can_spread && (exposed_temperature >= VINE_FREEZING_POINT || (trait_flags & SPACEVINE_COLD_RESISTANT)))
@@ -209,12 +245,18 @@
 		can_spread = FALSE
 
 /obj/structure/spacevine/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isvineimmune(mover))
 		return TRUE
 
 /obj/structure/spacevine/proc/block_sunlight()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/give_turf_traits, string_list(list(TRAIT_TURF_SUN_BLOCKED)))
 
 /obj/structure/spacevine/proc/unblock_sunlight()
+	procstart = null
+	src.procstart = null
 	RemoveElement(/datum/element/give_turf_traits, string_list(list(TRAIT_TURF_SUN_BLOCKED)))

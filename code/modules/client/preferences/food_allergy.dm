@@ -6,16 +6,24 @@
 	should_update_preview = FALSE
 
 /datum/preference/choiced/food_allergy/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list("Random") + assoc_to_keys(GLOB.possible_food_allergies)
 
 /datum/preference/choiced/food_allergy/create_default_value()
+	procstart = null
+	src.procstart = null
 	return "Random"
 
 /datum/preference/choiced/food_allergy/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if (!..())
 		return FALSE
 
 	return /datum/quirk/item_quirk/food_allergic::name in preferences.all_quirks
 
 /datum/preference/choiced/food_allergy/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return

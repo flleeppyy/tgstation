@@ -18,6 +18,8 @@
 	var/contract_TC_to_redeem = 0
 
 /datum/contractor_hub/proc/create_contracts(datum/mind/owner)
+	procstart = null
+	src.procstart = null
 	// 6 initial contracts
 	var/list/to_generate = list(
 		CONTRACT_PAYOUT_LARGE,

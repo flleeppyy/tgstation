@@ -80,9 +80,13 @@
 	foodtypes_added_when_cooked = BREAKFAST
 
 /obj/item/food/uncooked_rice/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/boiledrice, rand(15 SECONDS, 20 SECONDS), TRUE, TRUE)
 
 /obj/item/food/uncooked_rice/make_microwaveable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/microwavable, /obj/item/food/boiledrice)
 
 /obj/item/food/boiledrice
@@ -196,6 +200,8 @@
 	loop_drink = TRUE
 
 /obj/item/reagent_containers/cup/bowl/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ATOM_REAGENT_EXAMINE, PROC_REF(reagent_special_examine))
 	AddComponent(/datum/component/ingredients_holder, /obj/item/food/salad/empty, CUSTOM_INGREDIENT_ICON_FILL, max_ingredients = 6)
@@ -207,10 +213,14 @@
 	)
 
 /obj/item/reagent_containers/cup/bowl/on_cup_change(datum/glass_style/style)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	fill_icon_thresholds = null
 
 /obj/item/reagent_containers/cup/bowl/on_cup_reset()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	fill_icon_thresholds ||= list(0)
 
@@ -219,6 +229,8 @@
  * so that anyone examining a bowl of soup sees the soup but nothing else (unless they have sci goggles)
  */
 /obj/item/reagent_containers/cup/bowl/proc/reagent_special_examine(datum/source, mob/user, list/examine_list, can_see_insides = FALSE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(can_see_insides || reagents.total_volume <= 0)

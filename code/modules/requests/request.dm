@@ -24,6 +24,8 @@
 	var/timestamp
 
 /datum/request/New(client/requestee, type, request, additional_info)
+	procstart = null
+	src.procstart = null
 	if (!requestee)
 		qdel(src)
 		return

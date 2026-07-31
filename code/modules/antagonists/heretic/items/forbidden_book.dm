@@ -17,6 +17,8 @@
 
 
 /obj/item/codex_cicatrix/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/effect_remover, \
 		success_feedback = "You remove %THEEFFECT.", \
@@ -26,9 +28,13 @@
 
 /// Callback for effect_remover component after a rune is deleted
 /obj/item/codex_cicatrix/proc/after_clear_rune(obj/effect/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/drawing_heretic_rune/fail(target.loc, target.greyscale_colors)
 
 /obj/item/codex_cicatrix/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!IS_HERETIC(user))
 		return
@@ -37,6 +43,8 @@
 	. += span_notice("Can also be used to draw or remove transmutation runes with ease.")
 
 /obj/item/codex_cicatrix/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -53,10 +61,14 @@
 	grasp_knowledge?.add_charges(ceil(grasp_knowledge.max_charges * 0.5))
 
 /obj/item/codex_cicatrix/proc/close_book()
+	procstart = null
+	src.procstart = null
 	close_animation()
 	update_weight_class(WEIGHT_CLASS_SMALL)
 
 /obj/item/codex_cicatrix/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/heretic/heretic_datum = GET_HERETIC(user)
 	if(!heretic_datum)
 		return NONE
@@ -69,12 +81,16 @@
 
 /// Plays a little animation that shows the book opening and closing.
 /obj/item/codex_cicatrix/proc/open_animation()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state]_open"
 	flick("[base_icon_state]_opening", src)
 	book_open = TRUE
 
 /// Plays a closing animation and resets the icon state.
 /obj/item/codex_cicatrix/proc/close_animation()
+	procstart = null
+	src.procstart = null
 	icon_state = base_icon_state
 	flick("[base_icon_state]_closing", src)
 	book_open = FALSE
@@ -91,6 +107,8 @@
 	var/list/transmuted_victims = list()
 
 /obj/item/codex_cicatrix/morbus/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_HERETIC(user))
 		. += span_info("Can be used to cast a curse with blood in your offhand by right clicking a rune.")
@@ -104,9 +122,13 @@
 	human_user.add_mood_event("gates_of_mansus", /datum/mood_event/gates_of_mansus)
 
 /obj/item/codex_cicatrix/morbus/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..() // XANTODO - Add a summary of each curse to the description so that the curser knows what will happen the cursee
 
 /obj/item/codex_cicatrix/morbus/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(interacting_with, /obj/effect/heretic_rune/big))
 		return NONE
 
@@ -142,6 +164,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/codex_cicatrix/morbus/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	for(var/datum/weakref/to_uncurse_ref as anything in transmuted_victims)
 		var/mob/to_uncurse = to_uncurse_ref.resolve()
 		if(!to_uncurse || !ismob(to_uncurse))

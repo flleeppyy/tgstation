@@ -5,6 +5,8 @@
 	category = PREFERENCE_CATEGORY_GAME_PREFERENCES
 
 /datum/preference/choiced/parallax/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list(
 		PARALLAX_INSANE,
 		PARALLAX_HIGH,
@@ -15,12 +17,18 @@
 	)
 
 /datum/preference/choiced/parallax/create_default_value()
+	procstart = null
+	src.procstart = null
 	return PARALLAX_HIGH
 
 /datum/preference/choiced/parallax/apply_to_client(client/client, value)
+	procstart = null
+	src.procstart = null
 	client.mob?.hud_used?.update_parallax_pref()
 
 /datum/preference/choiced/parallax/deserialize(input, datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	// Old preferences were numbers, which causes annoyances when
 	// sending over as lists that isn't worth dealing with.
 	if (isnum(input))

@@ -18,11 +18,15 @@
 	var/ethereal_color = "#9c3030"
 
 /obj/item/organ/heart/ethereal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_atom_colour(ethereal_color, FIXED_COLOUR_PRIORITY)
 	update_appearance()
 
 /obj/item/organ/heart/ethereal/on_mob_insert(mob/living/carbon/heart_owner, special = FALSE, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	RegisterSignal(heart_owner, COMSIG_MOB_STATCHANGE, PROC_REF(on_stat_change))
@@ -30,6 +34,8 @@
 	RegisterSignal(heart_owner, COMSIG_QDELETING, PROC_REF(owner_deleted))
 
 /obj/item/organ/heart/ethereal/on_mob_remove(mob/living/carbon/heart_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(heart_owner, list(COMSIG_MOB_STATCHANGE, COMSIG_LIVING_POST_FULLY_HEAL, COMSIG_QDELETING))
 	REMOVE_TRAIT(heart_owner, TRAIT_CORPSELOCKED, SPECIES_TRAIT)
 	stop_crystalization_process(heart_owner)
@@ -37,16 +43,22 @@
 	return ..()
 
 /obj/item/organ/heart/ethereal/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += mutable_appearance(icon, icon_state = "[base_icon_state]_overlay-[beating ? "on" : "off"]", appearance_flags = RESET_COLOR|KEEP_APART)
 
 /obj/item/organ/heart/ethereal/proc/on_owner_fully_heal(mob/living/carbon/healed, heal_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	QDEL_NULL(current_crystal) //Kicks out the ethereal
 
 ///Ran when examined while crystalizing, gives info about the amount of time left
 /obj/item/organ/heart/ethereal/proc/on_examine(mob/living/carbon/human/examined_human, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!crystalize_timer_id)
@@ -62,6 +74,8 @@
 
 ///On stat changes, if the victim is no longer dead but they're crystalizing, cancel it, if they become dead, start the crystalizing process if possible
 /obj/item/organ/heart/ethereal/proc/on_stat_change(mob/living/victim, new_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(new_stat != DEAD)
@@ -92,6 +106,8 @@
 
 ///Ran when disarmed, prevents the ethereal from reviving
 /obj/item/organ/heart/ethereal/proc/reset_crystalizing(mob/living/defender, mob/living/attacker, zone, obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	defender.visible_message(
 		span_notice("The crystals on [defender] are gently broken off."),
@@ -102,6 +118,8 @@
 
 ///Actually spawns the crystal which puts the ethereal in it.
 /obj/item/organ/heart/ethereal/proc/crystalize(mob/living/ethereal)
+	procstart = null
+	src.procstart = null
 
 	var/location = ethereal.loc
 
@@ -118,6 +136,8 @@
 
 ///Stop the crystalization process, unregistering any signals and resetting any variables.
 /obj/item/organ/heart/ethereal/proc/stop_crystalization_process(mob/living/ethereal, successful = FALSE)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(ethereal, COMSIG_LIVING_DISARM_HIT)
 	UnregisterSignal(ethereal, COMSIG_ATOM_EXAMINE)
 	UnregisterSignal(ethereal, COMSIG_MOB_APPLY_DAMAGE)
@@ -133,6 +153,8 @@
 		crystalize_timer_id = null
 
 /obj/item/organ/heart/ethereal/proc/owner_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	stop_crystalization_process(owner)
@@ -140,6 +162,8 @@
 
 ///Lets you stop the process with enough brute damage
 /obj/item/organ/heart/ethereal/proc/on_take_damage(datum/source, damage, damagetype, def_zone, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(damagetype != BRUTE)
 		return
@@ -176,9 +200,13 @@
 	var/being_built = TRUE
 
 /obj/structure/ethereal_crystal/relaymove()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/ethereal_crystal/Initialize(mapload, obj/item/organ/heart/ethereal/ethereal_heart)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ethereal_heart)
 		stack_trace("Our crystal has no related heart")
@@ -198,14 +226,20 @@
 	addtimer(CALLBACK(src, PROC_REF(start_crystalization)), 1 SECONDS)
 
 /obj/structure/ethereal_crystal/proc/start_crystalization()
+	procstart = null
+	src.procstart = null
 	being_built = FALSE
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/ethereal_crystal/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(ethereal_heart.owner), 'sound/mobs/humanoids/ethereal/ethereal_revive_fail.ogg', 100)
 	return ..()
 
 /obj/structure/ethereal_crystal/Destroy()
+	procstart = null
+	src.procstart = null
 	set_light(0)
 	if(!ethereal_heart)
 		return ..()
@@ -222,11 +256,15 @@
 	return ..()
 
 /obj/structure/ethereal_crystal/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!being_built)
 		. += mutable_appearance(icon, icon_state = "[icon_state]_shine", appearance_flags = RESET_COLOR|KEEP_APART)
 
 /obj/structure/ethereal_crystal/proc/heal_ethereal()
+	procstart = null
+	src.procstart = null
 	// revive will regenerate organs, so our heart refence is going to be null'd. Unreliable
 	var/mob/living/carbon/regenerating = ethereal_heart.owner
 

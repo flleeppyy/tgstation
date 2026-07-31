@@ -19,6 +19,8 @@
 	customization_options = list(/datum/preference/choiced/chipped)
 
 /datum/quirk/chipped/add_to_holder(mob/living/new_holder, quirk_transfer, client/client_source, unique = TRUE, announce = FALSE)
+	procstart = null
+	src.procstart = null
 	var/chip_pref = client_source?.prefs?.read_preference(/datum/preference/choiced/chipped)
 
 	if(isnull(chip_pref))
@@ -29,6 +31,8 @@
 	return ..()
 
 /datum/quirk/chipped/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(quirk_holder))
 		return
 
@@ -38,5 +42,7 @@
 	installed_chip.try_activate_skillchip(silent = FALSE, force = TRUE)
 
 /datum/quirk/chipped/remove()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(installed_chip)
 	return ..()

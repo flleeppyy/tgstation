@@ -1,5 +1,7 @@
 /// Global proc that sets up all MOD themes as singletons in a list and returns it.
 /proc/setup_mod_themes()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/path in typesof(/datum/mod_theme))
 		var/datum/mod_theme/new_theme = new path()
@@ -87,6 +89,8 @@
 
 #ifdef UNIT_TESTS
 /datum/mod_theme/New()
+	procstart = null
+	src.procstart = null
 	var/list/skin_parts = list()
 	for(var/variant in variants)
 		skin_parts += list(assoc_to_keys(variants[variant]))
@@ -99,6 +103,8 @@
 
 /// Create parts of the suit and modify them using the theme's variables.
 /datum/mod_theme/proc/set_up_parts(obj/item/mod/control/mod, skin)
+	procstart = null
+	src.procstart = null
 	var/list/parts = list(mod)
 	mod.slot_flags = slot_flags
 	mod.extended_desc = extended_desc
@@ -137,6 +143,8 @@
 	set_skin(mod, skin || default_skin)
 
 /datum/mod_theme/proc/set_skin(obj/item/mod/control/mod, skin)
+	procstart = null
+	src.procstart = null
 	mod.skin = skin
 	var/list/used_skin = variants[skin]
 	var/list/parts = mod.get_parts()
@@ -577,6 +585,8 @@
 	)
 
 /datum/mod_theme/mining/New()
+	procstart = null
+	src.procstart = null
 	.=..()
 	allowed_suit_storage = GLOB.mining_suit_allowed
 

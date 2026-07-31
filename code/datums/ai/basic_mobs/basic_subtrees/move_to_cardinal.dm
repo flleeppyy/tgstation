@@ -14,6 +14,8 @@
 	var/movement_failed = FALSE
 
 /datum/bt_node/ai_behavior/move_to_cardinal/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[target_key]
 	if(QDELETED(target))
 		return FALSE
@@ -22,11 +24,15 @@
 	return TRUE
 
 /datum/bt_node/ai_behavior/move_to_cardinal/proc/on_movement_failed(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	movement_failed = TRUE
 
 /// Begin moving toward the closest unblocked cardinal tile of our target.
 /datum/bt_node/ai_behavior/move_to_cardinal/proc/move_towards_nearest_cardinal(datum/ai_controller/controller, atom/target)
+	procstart = null
+	src.procstart = null
 	var/atom/move_target
 	var/closest = INFINITY
 	for(var/dir in GLOB.cardinals)
@@ -44,6 +50,8 @@
 	destination = move_target
 
 /datum/bt_node/ai_behavior/move_to_cardinal/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(movement_failed)
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED
 	var/atom/target = controller.blackboard[target_key]
@@ -58,6 +66,8 @@
 	return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/move_to_cardinal/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(controller.pawn, COMSIG_MOB_AI_MOVEMENT_FAILED)
 	movement_failed = FALSE
 	controller.ai_movement.stop_moving_towards(controller)

@@ -15,6 +15,8 @@
 	var/new_inhandy
 
 /datum/atom_skin/crusher_skin/apply(obj/item/kinetic_crusher/apply_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	APPLY_VAR_OR_RESET_INITIAL(apply_to, projectile_icon, new_projectile_icon, reset_missing)
 	APPLY_VAR_OR_RESET_INITIAL(apply_to, projectile_icon_state, new_projectile_icon_state, reset_missing)
@@ -22,6 +24,8 @@
 	APPLY_VAR_OR_RESET_INITIAL(apply_to, inhand_y_dimension, new_inhandy, reset_missing)
 
 /datum/atom_skin/crusher_skin/clear_skin(obj/item/kinetic_crusher/clear_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RESET_INITIAL_IF_SET(clear_from, projectile_icon, new_projectile_icon)
 	RESET_INITIAL_IF_SET(clear_from, projectile_icon_state, new_projectile_icon_state)
@@ -42,14 +46,20 @@
 	new_projectile_icon_state = "pulse_harpoon"
 
 /datum/atom_skin/crusher_skin/harpoon/apply(atom/apply_to, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(apply_to, COMSIG_ITEM_ATTACK_ANIMATION, PROC_REF(on_attack_animation))
 
 /datum/atom_skin/crusher_skin/harpoon/clear_skin(atom/clear_from, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(clear_from, COMSIG_ITEM_ATTACK_ANIMATION)
 
 /datum/atom_skin/crusher_skin/harpoon/proc/on_attack_animation(obj/item/source, atom/movable/attacker, atom/attacked_atom, animation_type, list/image_override, list/animation_override)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// If nothing is forcing an animation type, attack with a piercing animation because we're a harpoon
@@ -63,16 +73,22 @@
 	new_inhand_icon_state = "crusher_dagger"
 
 /datum/atom_skin/crusher_skin/dagger/apply(atom/apply_to, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(apply_to, COMSIG_ITEM_ATTACK_ANIMATION, PROC_REF(on_attack_animation))
 	RegisterSignal(apply_to, COMSIG_CRUSHER_FIRED_BLAST, PROC_REF(on_fired_blast))
 
 /datum/atom_skin/crusher_skin/dagger/clear_skin(atom/clear_from, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(clear_from, COMSIG_ITEM_ATTACK_ANIMATION)
 	UnregisterSignal(clear_from, COMSIG_CRUSHER_FIRED_BLAST)
 
 /datum/atom_skin/crusher_skin/dagger/proc/on_attack_animation(obj/item/kinetic_crusher/source, atom/movable/attacker, atom/attacked_atom, animation_type, list/image_override, list/animation_override, list/angle_override)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// If we've been forcefully assigned an animation type already, we shouldn't do the custom attack animation logic
@@ -94,6 +110,8 @@
 	image_override += image(icon = 'icons/obj/mining.dmi', icon_state = "crusher_dagger_melee")
 
 /datum/atom_skin/crusher_skin/dagger/proc/on_fired_blast(obj/item/kinetic_crusher/source, atom/target, mob/living/user, obj/projectile/destabilizer/destabilizer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (isliving(target) && get_dist(target, user) <= 1)
@@ -131,9 +149,13 @@
 	var/datum/atom_skin/crusher_skin/forced_skin
 
 /obj/item/crusher_trophy/retool_kit/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "the crusher to have the appearance of \a [forced_skin::preview_name]"
 
 /obj/item/crusher_trophy/retool_kit/add_to(obj/item/kinetic_crusher/pkc, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -141,6 +163,8 @@
 	pkc.update_reskin(forced_skin)
 
 /obj/item/crusher_trophy/retool_kit/remove_from(obj/item/kinetic_crusher/pkc)
+	procstart = null
+	src.procstart = null
 	pkc.update_reskin(null) // resets reskin component
 	return ..()
 
@@ -151,4 +175,6 @@
 	forced_skin = /datum/atom_skin/crusher_skin/locked/ashen_skull
 
 /obj/item/crusher_trophy/retool_kit/ashenskull/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "the crusher to appear corrupted by infernal powers"

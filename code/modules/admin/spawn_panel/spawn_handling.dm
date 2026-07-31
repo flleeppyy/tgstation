@@ -14,6 +14,8 @@
 	Handles spawning an atom. See the call examples for the proper spawn parameters fetching.
 */
 /datum/spawnpanel/proc/spawn_atom(list/spawn_params, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_SPAWN) || !spawn_params)
 		return
 

@@ -6,10 +6,14 @@
 	var/image/contents_image
 
 /datum/closet_see_inside/New(obj/structure/closet/closet)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(closet, COMSIG_CLOSET_PRE_OPEN, PROC_REF(on_closet_pre_open))
 	RegisterSignal(closet, COMSIG_CLOSET_POST_CLOSE, PROC_REF(on_closet_closed))
 
 /datum/closet_see_inside/Destroy(force)
+	procstart = null
+	src.procstart = null
 	on_closet_pre_open(src)
 	return ..()
 
@@ -20,6 +24,8 @@
  * * obj/structure/closet/closet - the closet whose insides we are taking a snapshot of
 */
 /datum/closet_see_inside/proc/create_image(obj/structure/closet/closet)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(contents_image)
@@ -71,6 +77,8 @@
 		contents_image.vis_contents += movable
 
 /datum/closet_see_inside/proc/on_closet_pre_open(obj/structure/closet/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(contents_image)
@@ -83,6 +91,8 @@
 		contents_image.vis_contents.Cut()
 
 /datum/closet_see_inside/proc/on_closet_closed(obj/structure/closet/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/atom/movable/movable in source)

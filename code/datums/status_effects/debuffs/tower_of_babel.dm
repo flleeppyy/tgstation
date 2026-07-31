@@ -5,12 +5,16 @@
 	var/trait_source
 
 /datum/status_effect/tower_of_babel/on_creation(mob/living/new_owner, duration = 15 SECONDS)
+	procstart = null
+	src.procstart = null
 	src.duration = duration
 	if(isnull(trait_source))
 		trait_source = TRAIT_STATUS_EFFECT(id)
 	return ..()
 
 /datum/status_effect/tower_of_babel/on_apply()
+	procstart = null
+	src.procstart = null
 	var/random_language = pick(GLOB.all_languages)
 	owner.grant_language(random_language, source = LANGUAGE_BABEL)
 	// block every language except the randomized one
@@ -23,6 +27,8 @@
 	return ..()
 
 /datum/status_effect/tower_of_babel/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.clear_mood_event(id)
 	// if user is affected by tower of babel, we remove the blocked languages
 	owner.remove_blocked_language(GLOB.all_languages, source = LANGUAGE_BABEL)
@@ -38,6 +44,8 @@
 	trait_source = TRAUMA_TRAIT
 
 /datum/status_effect/tower_of_babel/magical/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -47,6 +55,8 @@
 	to_chat(owner, span_reallybig(span_hypnophrase("You feel a magical force affecting your speech patterns!")))
 
 /datum/status_effect/tower_of_babel/magical/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

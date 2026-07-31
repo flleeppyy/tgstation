@@ -13,12 +13,16 @@
 	var/mode = AB_UNREADY
 
 /obj/machinery/plumbing/buffer/Initialize(mapload, layer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/plumbing/buffer, layer)
 	RegisterSignal(reagents, COMSIG_REAGENTS_HOLDER_UPDATED, PROC_REF(on_reagent_change))
 
 ///Removes this buffer from the list of connected buffers
 /obj/machinery/plumbing/buffer/proc/disconnect()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	if(!connections)
 		return
@@ -29,10 +33,14 @@
 	connections = null
 
 /obj/machinery/plumbing/buffer/Destroy(force)
+	procstart = null
+	src.procstart = null
 	disconnect()
 	return ..()
 
 /obj/machinery/plumbing/buffer/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(held_item?.tool_behaviour == TOOL_SCREWDRIVER)
 		context[SCREENTIP_CONTEXT_LMB] = "Reset connections"
 		return CONTEXTUAL_SCREENTIP_SET
@@ -40,6 +48,8 @@
 	return ..()
 
 /obj/machinery/plumbing/buffer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It activates at a threshold of [activation_volume]u of reagents")
 	switch(mode)
@@ -53,6 +63,8 @@
 	. += span_notice("Its connections can be changed with a [EXAMINE_HINT("screwdriver")].")
 
 /obj/machinery/plumbing/buffer/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = initial(icon_state)
 	if(!anchored || !is_operational)
@@ -67,6 +79,8 @@
 			icon_state += "_green"
 
 /obj/machinery/plumbing/buffer/proc/on_reagent_change()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(mode == AB_UNREADY)
@@ -93,6 +107,8 @@
 			node.update_appearance(UPDATE_ICON_STATE)
 
 /obj/machinery/plumbing/buffer/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_SUCCESS
 
 	//clear existing connections and ourself to it for other machines
@@ -125,24 +141,32 @@
 		addtimer(CALLBACK(node, TYPE_PROC_REF(/atom/, update_appearance), UPDATE_ICON_STATE), 2.5 SECONDS)
 
 /obj/machinery/plumbing/buffer/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == ITEM_INTERACT_SUCCESS)
 		disconnect()
 		update_appearance(UPDATE_ICON_STATE)
 
 /obj/machinery/plumbing/buffer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ChemAutomaticBuffer", name)
 		ui.open()
 
 /obj/machinery/plumbing/buffer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		threshold = activation_volume,
 		connections = max(LAZYLEN(connections) - 1, 0)
 	)
 
 /obj/machinery/plumbing/buffer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

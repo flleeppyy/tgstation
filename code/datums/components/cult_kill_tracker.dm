@@ -8,10 +8,14 @@
 	var/last_stat = DEAD
 
 /datum/component/cult_kill_tracker/Initialize(...)
+	procstart = null
+	src.procstart = null
 	if(!istype(parent, /obj/item))
 		return COMPONENT_INCOMPATIBLE
 
 /datum/component/cult_kill_tracker/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_ITEM_ATTACK_ZONE, PROC_REF(on_attack_zone))
 	RegisterSignal(parent, COMSIG_ITEM_AFTERATTACK, PROC_REF(post_hit))
@@ -22,10 +26,14 @@
 		RegisterSignal(parent, COMSIG_PROJECTILE_POST_HIT_LIVING, PROC_REF(post_hit))
 
 /datum/component/cult_kill_tracker/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, list(COMSIG_ITEM_ATTACK_ZONE, COMSIG_ITEM_AFTERATTACK, COMSIG_ATOM_EXAMINE, COMSIG_ITEM_CULT_SACRIFICE, COMSIG_PROJECTILE_ON_HIT, COMSIG_PROJECTILE_POST_HIT_LIVING))
 
 /datum/component/cult_kill_tracker/proc/on_attack_zone(obj/item/source, mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!user.mind?.holy_role)
 		return
@@ -35,6 +43,8 @@
 	last_stat = target.stat
 
 /datum/component/cult_kill_tracker/proc/post_hit(source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!last_ref)
 		return
@@ -46,6 +56,8 @@
 	last_stat = DEAD
 
 /datum/component/cult_kill_tracker/proc/on_examine(obj/item/source, mob/viewer, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!IS_CULTIST(viewer) || !GET_ATOM_BLOOD_DNA_LENGTH(source))
 		return
@@ -55,6 +67,8 @@
 		<b>Offering</b> it to Nar'sie will transform it into a [num_slain >= 3 ? "powerful" : "standard"] cult weapon.")
 
 /datum/component/cult_kill_tracker/proc/on_sacrificed(obj/item/source, obj/effect/rune/convert/rune)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/num_slain = LAZYLEN(cultists_slain)
 	var/displayed_message = "[source] glows an unholy red and begins to transform..."
@@ -72,6 +86,8 @@
 	return COMPONENT_SACRIFICE_SUCCESSFUL
 
 /datum/component/cult_kill_tracker/proc/on_projectile_hit(obj/projectile/source, atom/movable/firer, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isliving(firer) || !isliving(target))
 		return

@@ -12,6 +12,8 @@
 	element_flags = ELEMENT_DETACH_ON_HOST_DESTROY
 
 /datum/element/squish/Attach(atom/target, duration=20 SECONDS, horizontal_squish=FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isatom(target))
@@ -29,6 +31,8 @@
 		target.transform = target.transform.Scale(TALL, SHORT)
 
 /datum/element/squish/Detach(atom/target, was_lying, horizontal_squish)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/is_lying = FALSE
 	if(iscarbon(target))

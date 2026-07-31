@@ -1,4 +1,6 @@
 /mob/living/brain/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		return
 	set_stat(DEAD)
@@ -12,6 +14,8 @@
 	return ..()
 
 /mob/living/brain/gib()
+	procstart = null
+	src.procstart = null
 	if(container)
 		qdel(container)//Gets rid of the MMI if there is one
 	if(loc)

@@ -19,6 +19,8 @@
 		would likely be useful for keeping especially slippery prisoners in place."
 
 /obj/item/implant/teleport_blocker/implant(mob/living/target, mob/user, silent = FALSE, force = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !isliving(target))
 		return FALSE
@@ -27,6 +29,8 @@
 	return TRUE
 
 /obj/item/implant/teleport_blocker/removed(mob/target, silent = FALSE, special = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !isliving(target))
 		return FALSE
@@ -36,6 +40,8 @@
 
 /// Signal for COMSIG_MOVABLE_TELEPORTING that blocks teleports and stuns the would-be-teleportee.
 /obj/item/implant/teleport_blocker/proc/on_teleport(mob/living/teleportee, atom/destination, channel)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	to_chat(teleportee, span_holoparasite("You feel yourself teleporting, but are suddenly flung back to where you just were!"))
@@ -46,6 +52,8 @@
 
 /// Signal for COMSIG_MOB_PRE_JAUNT that prevents a user from entering a jaunt.
 /obj/item/implant/teleport_blocker/proc/on_jaunt(mob/living/jaunter)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	to_chat(jaunter, span_holoparasite("As you attempt to jaunt, you slam directly into the barrier between realities and are sent crashing back into corporeality!"))

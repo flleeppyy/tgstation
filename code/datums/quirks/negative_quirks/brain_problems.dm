@@ -21,6 +21,8 @@
 	var/obj/item/medicine_to_get = /obj/item/storage/pill_bottle/mannitol/braintumor
 
 /datum/quirk/item_quirk/brainproblems/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	give_item_to_holder(
 		medicine_to_get,
 		list(
@@ -34,9 +36,13 @@
 	)
 
 /datum/quirk/item_quirk/brainproblems/is_species_appropriate(datum/species/mob_species)
+	procstart = null
+	src.procstart = null
 	if(ispath(mob_species, /datum/species/dullahan))
 		return FALSE
 	return ..()
 
 /datum/quirk/item_quirk/brainproblems/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	quirk_holder.adjust_organ_loss(ORGAN_SLOT_BRAIN, degradation_speed * seconds_per_tick)

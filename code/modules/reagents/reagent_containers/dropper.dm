@@ -13,6 +13,8 @@
 	custom_materials = list(/datum/material/plastic = SMALL_MATERIAL_AMOUNT * 0.3, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 0.1)
 
 /obj/item/reagent_containers/dropper/interact_with_atom(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!target.reagents)
 		return NONE
 
@@ -84,6 +86,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/dropper/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!reagents.total_volume)
 		return

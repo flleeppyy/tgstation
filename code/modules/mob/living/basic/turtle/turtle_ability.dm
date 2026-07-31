@@ -20,6 +20,8 @@
 	var/atom/movable/warp_effect/turtle_field/warp
 
 /datum/action/cooldown/mob_cooldown/turtle_tree/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	warp = new(owner)
 	RegisterSignal(warp, COMSIG_QDELETING, PROC_REF(remove_warp))
@@ -33,12 +35,16 @@
 	addtimer(CALLBACK(src, PROC_REF(warp_extinguish)), (time_between_intervals * maximum_intervals) + 3 SECONDS)
 
 /datum/action/cooldown/mob_cooldown/turtle_tree/proc/warp_extinguish()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(warp))
 		return
 	animate(warp, alpha = 0, time = WARP_ANIMATE_TIME)
 	addtimer(CALLBACK(src, PROC_REF(remove_warp)), WARP_ANIMATE_TIME)
 
 /datum/action/cooldown/mob_cooldown/turtle_tree/proc/remove_warp()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(warp, COMSIG_QDELETING)
@@ -46,11 +52,15 @@
 
 ///effect we apply on our trees
 /datum/action/cooldown/mob_cooldown/turtle_tree/proc/tree_effect()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	return (pre_effect_apply())
 
 ///things we should check for before applying our effects
 /datum/action/cooldown/mob_cooldown/turtle_tree/proc/pre_effect_apply()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(owner) || owner.stat == DEAD)
 		return FALSE
 	var/obj/effect/tree_effect = new effect_path
@@ -64,6 +74,8 @@
 	var/heal_amount = 5
 
 /datum/action/cooldown/mob_cooldown/turtle_tree/healer/tree_effect()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -86,6 +98,8 @@
 	var/weed_level_reduce = 2
 
 /datum/action/cooldown/mob_cooldown/turtle_tree/killer/tree_effect()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -112,6 +126,8 @@
 	var/mutator_boost = 1
 
 /datum/action/cooldown/mob_cooldown/turtle_tree/mutator/tree_effect()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

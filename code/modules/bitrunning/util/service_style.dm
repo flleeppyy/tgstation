@@ -1,5 +1,7 @@
 /// Gives the appearance of being an agent
 /mob/living/carbon/human/proc/set_service_style()
+	procstart = null
+	src.procstart = null
 	var/static/list/approved_hair_colors = list(
 		"#4B3D28",
 		COLOR_BLACK,

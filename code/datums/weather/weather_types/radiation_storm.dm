@@ -50,11 +50,15 @@
 	var/mutate_chance = 40
 
 /datum/weather/rad_storm/telegraph()
+	procstart = null
+	src.procstart = null
 	..()
 	status_alarm(TRUE)
 
 
 /datum/weather/rad_storm/weather_act_mob(mob/living/living)
+	procstart = null
+	src.procstart = null
 	if(!prob(mutate_chance))
 		return
 
@@ -80,19 +84,25 @@
 	return ..()
 
 /datum/weather/rad_storm/end()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	priority_announce("The radiation threat has passed. Please return to your workplaces.", "Anomaly Alert")
 	status_alarm(FALSE)
 
 /datum/weather/rad_storm/proc/do_mutate(mob/living/carbon/human/mutant)
+	procstart = null
+	src.procstart = null
 	if(prob(negative_mutation_chance))
 		mutant.easy_random_mutate(NEGATIVE+MINOR_NEGATIVE)
 	else
 		mutant.easy_random_mutate(POSITIVE)
 	mutant.domutcheck()
 
-/datum/weather/rad_storm/proc/status_alarm(active) //Makes the status displays show the radiation warning for those who missed the announcement.
+/datum/weather/rad_storm/proc/status_alarm(active)
+	procstart = null
+	src.procstart = null //Makes the status displays show the radiation warning for those who missed the announcement.
 	if (active)
 		send_status_display_radiation_alert()
 	else
@@ -111,6 +121,8 @@
 	var/radiation_chance = 5
 
 /datum/weather/rad_storm/nebula/weather_act_mob(mob/living/living)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(!prob(radiation_chance))
@@ -127,6 +139,8 @@
 	)
 
 /datum/weather/rad_storm/nebula/status_alarm(active)
+	procstart = null
+	src.procstart = null
 	if(!active) //we stay on
 		return
 	..()

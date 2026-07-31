@@ -10,6 +10,8 @@
 	var/charge_rate = 0.25 * STANDARD_CELL_RATE
 
 /obj/machinery/cell_charger/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!charging)
@@ -26,6 +28,8 @@
 		. += mutable_appearance('icons/obj/machines/cell_charger.dmi', "cell-[charging.charge_light_type]-o[(charging.percent() >= 99.5) ? 2 : 1]")
 
 /obj/machinery/cell_charger/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "There's [charging ? "\a [charging]" : "no cell"] in the charger."
 	if(charging)
@@ -34,6 +38,8 @@
 		. += span_notice("The status display reads: Charging power: <b>[display_power(charge_rate, convert = FALSE)]</b>.")
 
 /obj/machinery/cell_charger/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(charging)
 		return NONE
 	if(default_unfasten_wrench(user, tool))
@@ -41,15 +47,23 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/cell_charger/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return charging ? NONE : default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/cell_charger/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/cell_charger/can_crowbar_deconstruct()
+	procstart = null
+	src.procstart = null
 	return ..() && !charging
 
 /obj/machinery/cell_charger/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stock_parts/power_store/cell) || panel_open)
 		return NONE
 
@@ -81,18 +95,26 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/cell_charger/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	charging?.forceMove(drop_location())
 
 /obj/machinery/cell_charger/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == charging)
 		charging = null
 
 /obj/machinery/cell_charger/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(charging)
 	return ..()
 
 /obj/machinery/cell_charger/proc/removecell(new_loc)
+	procstart = null
+	src.procstart = null
 	. = charging
 	charging.update_appearance()
 	charging.forceMove(new_loc)
@@ -100,6 +122,8 @@
 	update_appearance()
 
 /obj/machinery/cell_charger/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !charging)
 		return
@@ -109,6 +133,8 @@
 	user.put_in_hands(removecell(drop_location()))
 
 /obj/machinery/cell_charger/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!charging)
 		return
 
@@ -117,9 +143,13 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/cell_charger/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/cell_charger/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(machine_stat & (BROKEN|NOPOWER) || . & EMP_PROTECT_CONTENTS)
@@ -129,12 +159,16 @@
 		charging.emp_act(severity)
 
 /obj/machinery/cell_charger/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	charge_rate = 0.25 * STANDARD_CELL_RATE
 	for(var/datum/stock_part/capacitor/capacitor in component_parts)
 		charge_rate *= capacitor.tier
 
 /obj/machinery/cell_charger/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!charging || charging.percent() >= 100 || !anchored || !is_operational)
 		return
 

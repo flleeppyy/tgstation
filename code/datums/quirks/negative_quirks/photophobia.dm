@@ -18,12 +18,16 @@
 	)
 
 /datum/quirk/photophobia/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(quirk_holder, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(check_eyes))
 	RegisterSignal(quirk_holder, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(restore_eyes))
 	RegisterSignal(quirk_holder, COMSIG_MOVABLE_MOVED, PROC_REF(on_holder_moved))
 	update_eyes(quirk_holder.get_organ_slot(ORGAN_SLOT_EYES))
 
 /datum/quirk/photophobia/remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(quirk_holder, list(
 		COMSIG_CARBON_GAIN_ORGAN,
 		COMSIG_CARBON_LOSE_ORGAN,
@@ -34,23 +38,31 @@
 		normal_eyes.flash_protect = initial(normal_eyes.flash_protect)
 
 /datum/quirk/photophobia/proc/check_eyes(datum/source, obj/item/organ/eyes/sensitive_eyes)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(sensitive_eyes))
 		return
 	update_eyes(sensitive_eyes)
 
 /datum/quirk/photophobia/proc/update_eyes(obj/item/organ/eyes/target_eyes)
+	procstart = null
+	src.procstart = null
 	if(!istype(target_eyes))
 		return
 	target_eyes.flash_protect = max(target_eyes.flash_protect - 1, FLASH_PROTECTION_HYPER_SENSITIVE)
 
 /datum/quirk/photophobia/proc/restore_eyes(datum/source, obj/item/organ/eyes/normal_eyes)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(normal_eyes))
 		return
 	normal_eyes.flash_protect = initial(normal_eyes.flash_protect)
 
 /datum/quirk/photophobia/proc/on_holder_moved(mob/living/source, atom/old_loc, dir, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(IS_UNCONSCIOUS(quirk_holder) || HAS_TRAIT(quirk_holder, TRAIT_FEARLESS))

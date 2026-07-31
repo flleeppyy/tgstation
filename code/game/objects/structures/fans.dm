@@ -11,10 +11,14 @@
 	can_atmos_pass = ATMOS_PASS_NO
 
 /obj/structure/fans/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(buildstacktype)
 		new buildstacktype(loc,buildstackamount)
 
 /obj/structure/fans/wrench_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_warning("[user] disassembles [src]."),
 		span_notice("You start to disassemble [src]..."), span_hear("You hear clanking and banging noises."))
 	if(I.use_tool(src, user, 20, volume=50))
@@ -30,10 +34,14 @@
 	buildstackamount = 2
 
 /obj/structure/fans/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	air_update_turf(TRUE, TRUE)
 
 /obj/structure/fans/Destroy()
+	procstart = null
+	src.procstart = null
 	air_update_turf(TRUE, FALSE)
 	. = ..()
 
@@ -52,4 +60,6 @@
 	light_range = 4
 
 /obj/structure/fans/tiny/shield/wrench_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	return ITEM_INTERACT_SKIP_TO_ATTACK //how you gonna wrench disassemble a shield?????????

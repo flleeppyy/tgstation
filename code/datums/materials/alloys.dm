@@ -7,6 +7,8 @@
 	var/list/composition = null
 
 /datum/material/alloy/return_composition(amount = 1, flags)
+	procstart = null
+	src.procstart = null
 	if(flags & MATCONTAINER_ACCEPT_ALLOYS)
 		return ..()
 
@@ -45,11 +47,15 @@
 	mat_rust_resistance = RUST_RESISTANCE_REINFORCED
 
 /datum/material/alloy/plasteel/on_applied(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(source, /obj/item/fishing_rod))
 		ADD_TRAIT(source, TRAIT_ROD_LAVA_USABLE, REF(src))
 
 /datum/material/alloy/plasteel/on_removed(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(source, /obj/item/fishing_rod))
 		REMOVE_TRAIT(source, TRAIT_ROD_LAVA_USABLE, REF(src))
@@ -79,11 +85,15 @@
 	mat_rust_resistance = RUST_RESISTANCE_TITANIUM
 
 /datum/material/alloy/plastitanium/on_applied(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(source, /obj/item/fishing_rod))
 		ADD_TRAIT(source, TRAIT_ROD_LAVA_USABLE, REF(src))
 
 /datum/material/alloy/plastitanium/on_removed(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(source, /obj/item/fishing_rod))
 		REMOVE_TRAIT(source, TRAIT_ROD_LAVA_USABLE, REF(src))
@@ -195,6 +205,8 @@
 	composition = list(/datum/material/iron = 2, /datum/material/plasma = 2)
 
 /datum/material/alloy/alien/on_applied(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isobj(source))
 		source.AddElement(/datum/element/obj_regen, _rate=0.02) // 2% regen per tick.
@@ -202,6 +214,8 @@
 		ADD_TRAIT(source, TRAIT_ROD_LAVA_USABLE, REF(src))
 
 /datum/material/alloy/alien/on_removed(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isobj(source))
 		source.RemoveElement(/datum/element/obj_regen, _rate=0.02)

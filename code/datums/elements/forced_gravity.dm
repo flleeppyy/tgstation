@@ -7,6 +7,8 @@
 	var/ignore_turf_gravity
 
 /datum/element/forced_gravity/Attach(datum/target, gravity = 1, ignore_turf_gravity = FALSE, can_override = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
@@ -25,12 +27,16 @@
 	ADD_TRAIT(target, TRAIT_FORCED_GRAVITY, our_ref)
 
 /datum/element/forced_gravity/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/signals_b_gone = list(COMSIG_ATOM_HAS_GRAVITY, COMSIG_TURF_HAS_GRAVITY)
 	UnregisterSignal(source, signals_b_gone)
 	REMOVE_TRAIT(source, TRAIT_FORCED_GRAVITY, REF(src))
 
 /datum/element/forced_gravity/proc/gravity_check(datum/source, turf/location, list/gravs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!ignore_turf_gravity && location.force_no_gravity)
@@ -40,5 +46,7 @@
 	return TRUE
 
 /datum/element/forced_gravity/proc/turf_gravity_check(datum/source, atom/checker, list/gravs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	gravity_check(null, source, gravs)

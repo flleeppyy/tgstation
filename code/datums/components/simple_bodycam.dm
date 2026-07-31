@@ -32,6 +32,8 @@
 	do_update_cam(null)
 
 /datum/component/simple_bodycam/Destroy()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(bodycam))
 		bodycam = null
 	else
@@ -50,20 +52,28 @@
 	return (network in bodycam.network)
 
 /datum/component/simple_bodycam/proc/update_cam(datum/source, atom/old_loc, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	do_update_cam(old_loc)
 
 /datum/component/simple_bodycam/proc/do_update_cam(atom/old_loc)
+	procstart = null
+	src.procstart = null
 	if(!bodycam?.can_use())
 		return
 	SScameras.camera_moved(bodycam, get_turf(old_loc), get_turf(bodycam), camera_update_time)
 
 /datum/component/simple_bodycam/proc/rotate_cam(datum/source, old_dir, new_dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// I don't actually think cameras care about dir but just in case
 	bodycam.setDir(new_dir)
 
 /datum/component/simple_bodycam/proc/camera_gone(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!QDELETED(src))
 		qdel(src)

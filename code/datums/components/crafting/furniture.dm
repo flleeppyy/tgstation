@@ -95,6 +95,8 @@
 	category = CAT_FURNITURE
 
 /datum/crafting_recipe/lamp/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	LAZYADD(blacklist, subtypesof(/obj/item/flashlight))
 

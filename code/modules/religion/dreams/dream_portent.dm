@@ -8,6 +8,8 @@
 	ritual_length = 6 SECONDS
 
 /datum/religion_rites/dream_portent/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ritual_invocations = list(
 		"O great shepherd [GLOB.deity], grant me a vision of the future!..",
@@ -15,6 +17,8 @@
 	)
 
 /datum/religion_rites/dream_portent/can_afford(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	if(!iscarbon(user))
@@ -23,6 +27,8 @@
 	return TRUE
 
 /datum/religion_rites/dream_portent/invoke_effect(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	if(!user.SetSleeping(10 SECONDS))
 		to_chat(user, span_warning("You fail to fall asleep."))
 		return FALSE
@@ -32,6 +38,8 @@
 	return ..()
 
 /datum/religion_rites/dream_portent/post_invoke_effects(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(user, COMSIG_PRE_DREAMING, PROC_REF(add_portent))
 	RegisterSignal(user, COMSIG_START_DREAMING, PROC_REF(check_portent))
@@ -40,11 +48,15 @@
 	addtimer(CALLBACK(src, PROC_REF(force_dream), user), rand(2, 5) SECONDS, TIMER_DELETE_ME) // force the dream to start immediately
 
 /datum/religion_rites/dream_portent/proc/force_dream(mob/living/carbon/dreamer)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(dreamer) || HAS_TRAIT(dreamer, TRAIT_DREAMING))
 		return // dreamed naturally already
 	dreamer.dream()
 
 /datum/religion_rites/dream_portent/proc/add_portent(mob/living/carbon/dreamer, list/dream_pool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// removes any pre-existing vague portents in the dream pool so we can give the real deal
@@ -54,6 +66,8 @@
 	dream_pool[new /datum/dream/specific_portent()] = 2000
 
 /datum/religion_rites/dream_portent/proc/check_portent(mob/living/carbon/dreamer, datum/dream/current_dream)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(current_dream, /datum/dream/specific_portent))
@@ -65,6 +79,8 @@
 	dreamer.add_mood_event("dream_failed", /datum/mood_event/dream_failed)
 
 /datum/religion_rites/dream_portent/proc/interrupt_portent(mob/living/carbon/dreamer, damage_amount)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!prob(damage_amount * 10)) // higher damage = higher chance to interrupt
@@ -76,6 +92,8 @@
 	dreamer.add_mood_event("dream_interrupted", /datum/mood_event/dream_interrupted)
 
 /datum/religion_rites/dream_portent/proc/end_portent(mob/living/carbon/dreamer, datum/dream/current_dream)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(src)
@@ -95,6 +113,8 @@
 	sleep_until_finished = TRUE
 
 /datum/dream/specific_portent/GenerateDream(mob/living/carbon/dreamer)
+	procstart = null
+	src.procstart = null
 	. = list()
 	. += span_cyan("a portent of the future")
 
@@ -120,6 +140,8 @@
 	. += span_cyan(portent_types[picked_portent])
 
 /datum/dream/specific_portent/proc/get_portent(mob/living/carbon/dreamer)
+	procstart = null
+	src.procstart = null
 	if(prob(1))
 		GLOB.religious_sect.adjust_favor(25, dreamer)
 		return pick(list(
@@ -362,6 +384,8 @@
 	sleep_until_finished = TRUE
 
 /datum/dream/random/vague_portent/get_dream_nouns(mob/living/carbon/dreamer)
+	procstart = null
+	src.procstart = null
 	var/list/antags = list()
 	for(var/datum/antagonist/antag as anything in GLOB.antagonists)
 		antags |= LOWER_TEXT(antag.jobban_flag || antag.pref_flag)

@@ -33,6 +33,8 @@
 	)
 
 /datum/martial_art/the_sleeping_carp/activate_style(mob/living/new_holder)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new_holder.add_traits(scarp_traits, SLEEPING_CARP_TRAIT)
 	RegisterSignal(new_holder, COMSIG_ATOM_ATTACKBY, PROC_REF(on_attackby))
@@ -42,6 +44,8 @@
 	new_holder.grant_language(/datum/language/carptongue, ALL, type)
 
 /datum/martial_art/the_sleeping_carp/deactivate_style(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	remove_from.remove_traits(scarp_traits, SLEEPING_CARP_TRAIT)
 	UnregisterSignal(remove_from, list(COMSIG_ATOM_ATTACKBY, COMSIG_ATOM_PRE_BULLET_ACT, COMSIG_LIVING_CHECK_BLOCK))
 	remove_from.remove_faction(FACTION_CARP) //:(
@@ -50,6 +54,8 @@
 	return ..()
 
 /datum/martial_art/the_sleeping_carp/proc/check_streak(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(findtext(streak,WRIST_WRENCH_COMBO))
 		reset_streak()
 		return wrist_wrench(attacker, defender)
@@ -70,6 +76,8 @@
 
 /// Gnashing Teeth: Harm Grab, twists and possibly breaks the target's arm, disarming them.
 /datum/martial_art/the_sleeping_carp/proc/wrist_wrench(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	// Determine if our defender is a carbon. If not, we don't wrist wrench
 	if(!iscarbon(defender))
 		return FALSE
@@ -97,6 +105,8 @@
 
 /// Crashing Wave Kick: Harm Disarm combo, throws people seven tiles backwards
 /datum/martial_art/the_sleeping_carp/proc/launch_kick(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	attacker.do_attack_animation(defender, ATTACK_EFFECT_KICK)
 	defender.visible_message(
 		span_warning("[attacker] kicks [defender] square in the chest, sending them flying!"),
@@ -114,6 +124,8 @@
 
 /// Keelhaul: Disarm Disarm combo, knocks people down and deals substantial stamina damage, and also discombobulates them. Knocks objects out of their hands if they're already on the ground.
 /datum/martial_art/the_sleeping_carp/proc/drop_kick(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	attacker.do_attack_animation(defender, ATTACK_EFFECT_KICK)
 	playsound(attacker, 'sound/effects/hit_kick.ogg', 50, TRUE, -1)
 	if(defender.body_position == STANDING_UP)
@@ -132,6 +144,8 @@
 
 /// Kraken Wrack: Grab Harm combo, causes them to be silenced and briefly stunned, as well as doing a moderate amount of stamina damage.
 /datum/martial_art/the_sleeping_carp/proc/knee_stomach(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	attacker.do_attack_animation(defender, ATTACK_EFFECT_KICK)
 	playsound(attacker, 'sound/effects/hit_kick.ogg', 50, TRUE, -1)
 	defender.visible_message(
@@ -150,6 +164,8 @@
 	return TRUE
 
 /datum/martial_art/the_sleeping_carp/grab_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(!can_deflect(attacker)) //allows for deniability
 		return MARTIAL_ATTACK_INVALID
 
@@ -175,6 +191,8 @@
 	return MARTIAL_ATTACK_INVALID // normal grab
 
 /datum/martial_art/the_sleeping_carp/harm_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(attacker.grab_state == GRAB_KILL \
 		&& attacker.zone_selected == BODY_ZONE_HEAD \
 		&& attacker.pulling == defender \
@@ -207,6 +225,8 @@
 	return MARTIAL_ATTACK_INVALID // normal punch
 
 /datum/martial_art/the_sleeping_carp/disarm_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(!can_deflect(attacker)) //allows for deniability
 		return MARTIAL_ATTACK_INVALID
 	if(defender.check_block(attacker, 0, attacker.name, UNARMED_ATTACK))
@@ -223,6 +243,8 @@
 	return MARTIAL_ATTACK_INVALID // normal disarm
 
 /datum/martial_art/the_sleeping_carp/proc/can_deflect(mob/living/carp_user)
+	procstart = null
+	src.procstart = null
 	if(!can_use(carp_user) || !carp_user.combat_mode)
 		return FALSE
 	if(INCAPACITATED_IGNORING(carp_user, INCAPABLE_GRAB)) //NO STUN
@@ -236,6 +258,8 @@
 	return TRUE
 
 /datum/martial_art/the_sleeping_carp/proc/hit_by_projectile(mob/living/carp_user, obj/projectile/hitting_projectile, def_zone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/determine_avoidance = 100
@@ -268,6 +292,8 @@
 
 /// Signal from getting attacked with an item, for a special interaction with touch spells
 /datum/martial_art/the_sleeping_carp/proc/on_attackby(mob/living/carp_user, obj/item/attack_weapon, mob/attacker, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(attack_weapon, /obj/item/melee/touch_attack))
@@ -283,6 +309,8 @@
 
 /// If our user has committed to being as martial arty as they can be, they may be able to avoid incoming attacks.
 /datum/martial_art/the_sleeping_carp/proc/check_dodge(mob/living/carp_user, atom/movable/hitby, damage, attack_text, attack_type, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/determine_avoidance = clamp(round(carp_style_check(carp_user) / (attack_type == OVERWHELMING_ATTACK ? 2 : 1), 1), 0, 75)
@@ -312,6 +340,8 @@
 * If there is anything in our hands, we're also less likely to avoid attacks.
 */
 /datum/martial_art/the_sleeping_carp/proc/carp_style_check(mob/living/carp_user)
+	procstart = null
+	src.procstart = null
 	// An evaluation of how 'carp' we are.
 	var/style_factor_points = 0
 
@@ -375,6 +405,8 @@
 
 /// Verb added to humans who learn the art of the sleeping carp.
 /datum/martial_art/the_sleeping_carp/get_style_help()
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	. += span_info("<b><i>You retreat inward and recall the teachings of the Sleeping Carp...</i></b>\n\
@@ -411,6 +443,8 @@
 	block_chance = 50
 
 /obj/item/staff/bostaff/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/two_handed, \
 		force_unwielded = 10, \
@@ -418,10 +452,14 @@
 	)
 
 /obj/item/staff/bostaff/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = inhand_icon_state = "[base_icon_state][HAS_TRAIT(src, TRAIT_WIELDED)]"
 	return ..()
 
 /obj/item/staff/bostaff/attack(mob/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if((HAS_TRAIT(user, TRAIT_CLUMSY)) && prob(50))
 		to_chat(user, span_warning("You club yourself over the head with [src]."))
@@ -468,6 +506,8 @@
 		return ..()
 
 /obj/item/staff/bostaff/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_WIELDED))
 		return ..()
 	return FALSE
@@ -484,6 +524,8 @@
 	resistance_flags = NONE
 
 /obj/item/clothing/gloves/the_sleeping_carp/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/martial_art_giver, /datum/martial_art/the_sleeping_carp)
 

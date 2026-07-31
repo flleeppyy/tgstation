@@ -24,6 +24,8 @@
 	exposed_wound_bonus = 25
 
 /obj/item/melee/sabre/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/cuffable_item) //closed sword guard
 	AddComponent(/datum/component/jousting)
@@ -42,10 +44,14 @@
 	)
 
 /obj/item/melee/sabre/proc/bane_check(mob/living/target)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/liver/liver = target.get_organ_slot(ORGAN_SLOT_LIVER)
 	return !isnull(liver) && HAS_TRAIT(liver, TRAIT_MAINTENANCE_METABOLISM)
 
 /obj/item/melee/sabre/proc/bane_message(mob/living/target, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	target.visible_message(
 		span_warning("[src] tears through [target] with unnatural ease!"),
 		span_boldwarning("As [src] tears into your body, you feel the weight of authority collapse into your wounds!"),
@@ -53,17 +59,25 @@
 	INVOKE_ASYNC(target, TYPE_PROC_REF(/mob, emote), "scream")
 
 /obj/item/melee/sabre/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(attack_type == PROJECTILE_ATTACK || attack_type == LEAP_ATTACK || attack_type == OVERWHELMING_ATTACK)
 		final_block_chance = 0 //Don't bring a sword to a gunfight, and also you aren't going to really block someone full body tackling you with a sword. Or a road roller, if one happened to hit you.
 	return ..()
 
 /obj/item/melee/sabre/on_exit_storage(datum/storage/container)
+	procstart = null
+	src.procstart = null
 	playsound(container.parent, 'sound/items/unsheath.ogg', 25, TRUE)
 
 /obj/item/melee/sabre/on_enter_storage(datum/storage/container)
+	procstart = null
+	src.procstart = null
 	playsound(container.parent, 'sound/items/sheath.ogg', 25, TRUE)
 
 /obj/item/melee/sabre/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is trying to cut off all [user.p_their()] limbs with [src]! it looks like [user.p_theyre()] trying to commit suicide!"))
 	var/i = 0
 	ADD_TRAIT(src, TRAIT_NODROP, SABRE_SUICIDE_TRAIT)
@@ -95,12 +109,16 @@
 	return MANUAL_SUICIDE
 
 /obj/item/melee/sabre/proc/suicide_dismember(mob/living/user, obj/item/bodypart/affecting)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(affecting) && !(affecting.bodypart_flags & BODYPART_UNREMOVABLE) && affecting.owner == user && !QDELETED(user))
 		playsound(user, hitsound, 25, TRUE)
 		affecting.dismember(BRUTE)
 		user.adjust_brute_loss(force * 1.25)
 
 /obj/item/melee/sabre/proc/manual_suicide(mob/living/user, originally_nodropped)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(user))
 		user.adjust_brute_loss(200)
 		user.death(FALSE)
@@ -132,19 +150,27 @@
 	exposed_wound_bonus = 15
 
 /obj/item/melee/parsnip_sabre/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/cuffable_item) //closed sword guard
 	AddComponent(/datum/component/jousting)
 
 /obj/item/melee/parsnip_sabre/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(attack_type == PROJECTILE_ATTACK || attack_type == LEAP_ATTACK || attack_type == OVERWHELMING_ATTACK)
 		final_block_chance = 0 //Don't bring a sword to a gunfight, and also you aren't going to really block someone full body tackling you with a sword. Or a road roller, if one happened to hit you.
 	return ..()
 
 /obj/item/melee/parsnip_sabre/on_exit_storage(datum/storage/container)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(container.parent, 'sound/items/unsheath.ogg', 25, TRUE)
 
 /obj/item/melee/parsnip_sabre/on_enter_storage(datum/storage/container)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(container.parent, 'sound/items/sheath.ogg', 25, TRUE)

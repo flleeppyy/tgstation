@@ -5,12 +5,18 @@
 	category = PREFERENCE_CATEGORY_GAME_PREFERENCES
 
 /datum/preference/choiced/ghost_accessories/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list(GHOST_ACCS_NONE, GHOST_ACCS_DIR, GHOST_ACCS_FULL)
 
 /datum/preference/choiced/ghost_accessories/create_default_value()
+	procstart = null
+	src.procstart = null
 	return GHOST_ACCS_DEFAULT_OPTION
 
 /datum/preference/choiced/ghost_accessories/apply_to_client(client/client, value)
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/ghost = client.mob
 	if (!istype(ghost))
 		return
@@ -19,6 +25,8 @@
 	ghost.update_appearance()
 
 /datum/preference/choiced/ghost_accessories/deserialize(input, datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	// Old ghost preferences used to be 1/50/100.
 	// Whoever did that wasted an entire day of my time trying to get those sent
 	// properly, so I'm going to buck them.
@@ -71,15 +79,23 @@
 	)
 
 /datum/preference/choiced/ghost_form/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return assoc_to_keys(ghost_forms)
 
 /datum/preference/choiced/ghost_form/icon_for(value)
+	procstart = null
+	src.procstart = null
 	return uni_icon('icons/mob/simple/mob.dmi', value)
 
 /datum/preference/choiced/ghost_form/create_default_value()
+	procstart = null
+	src.procstart = null
 	return "ghost"
 
 /datum/preference/choiced/ghost_form/apply_to_client(client/client, value)
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/ghost = client.mob
 	if (!istype(ghost))
 		return
@@ -90,6 +106,8 @@
 	ghost.update_icon(ALL, value)
 
 /datum/preference/choiced/ghost_form/compile_constant_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 
 	data[CHOICED_PREFERENCE_DISPLAY_NAMES] = ghost_forms
@@ -103,6 +121,8 @@
 	category = PREFERENCE_CATEGORY_GAME_PREFERENCES
 
 /datum/preference/toggle/ghost_hud/apply_to_client(client/client, value)
+	procstart = null
+	src.procstart = null
 	if (isobserver(client?.mob))
 		client?.mob.hud_used?.show_hud()
 
@@ -113,6 +133,8 @@
 	category = PREFERENCE_CATEGORY_GAME_PREFERENCES
 
 /datum/preference/choiced/ghost_orbit/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list(
 		GHOST_ORBIT_CIRCLE,
 		GHOST_ORBIT_TRIANGLE,
@@ -122,6 +144,8 @@
 	)
 
 /datum/preference/choiced/ghost_orbit/apply_to_client(client/client, value)
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/ghost = client.mob
 	if (!istype(ghost))
 		return
@@ -138,6 +162,8 @@
 	category = PREFERENCE_CATEGORY_GAME_PREFERENCES
 
 /datum/preference/choiced/ghost_others/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list(
 		GHOST_OTHERS_SIMPLE,
 		GHOST_OTHERS_DEFAULT_SPRITE,
@@ -145,9 +171,13 @@
 	)
 
 /datum/preference/choiced/ghost_others/create_default_value()
+	procstart = null
+	src.procstart = null
 	return GHOST_OTHERS_DEFAULT_OPTION
 
 /datum/preference/choiced/ghost_others/apply_to_client(client/client, value)
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/ghost = client.mob
 	if (!istype(ghost))
 		return
@@ -155,6 +185,8 @@
 	ghost.update_sight()
 
 /datum/preference/choiced/ghost_others/deserialize(input, datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	// Old ghost preferences used to be 1/50/100.
 	// Whoever did that wasted an entire day of my time trying to get those sent
 	// properly, so I'm going to buck them.

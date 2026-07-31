@@ -24,13 +24,19 @@
 	)
 
 /datum/mutation/hulk/New(datum/mutation/copymut)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_speechmod()
 
 /datum/mutation/hulk/proc/add_speechmod()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/speechmod, replacements = list("." = "!"), end_string = "!!", uppercase = TRUE)
 
 /datum/mutation/hulk/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -46,6 +52,8 @@
 	owner.add_movespeed_mod_immunities("hulk", /datum/movespeed_modifier/damage_slowdown)
 
 /datum/mutation/hulk/proc/on_attack_hand(mob/living/carbon/human/source, atom/target, proximity, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!source.combat_mode || !proximity || LAZYACCESS(modifiers, RIGHT_CLICK))
@@ -64,15 +72,21 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/mutation/hulk/proc/scream_attack(mob/living/carbon/human/source)
+	procstart = null
+	src.procstart = null
 	source.say("WAAAAAAAAAAAAAAGH!", forced="hulk")
 
 /datum/mutation/hulk/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(owner.health < owner.crit_threshold)
 		on_losing(owner)
 		to_chat(owner, span_danger("You suddenly feel very weak."))
 		qdel(src)
 
 /datum/mutation/hulk/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	for(var/obj/item/bodypart/part as anything in owner.get_bodyparts())
@@ -84,11 +98,15 @@
 	owner.remove_movespeed_mod_immunities("hulk", /datum/movespeed_modifier/damage_slowdown)
 
 /datum/mutation/hulk/proc/texture_limb(atom/source, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (limb.bodytype & BODYTYPE_ORGANIC)
 		limb.add_color_override(bodypart_color, LIMB_COLOR_HULK)
 
 /datum/mutation/hulk/proc/untexture_limb(atom/source, obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	limb.remove_color_override(LIMB_COLOR_HULK)
 
@@ -97,6 +115,8 @@
 
 /// Run a barrage of checks to see if any given click is actually able to swing
 /datum/mutation/hulk/proc/check_swing(mob/living/carbon/human/user, atom/clicked_atom, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	/// Basically, we only proceed if we're in throw mode with a tailed carbon in our grasp with at least a neck grab and we're not restrained in some way
@@ -123,6 +143,8 @@
 
 /// Do a short 2 second do_after before starting the actual swing
 /datum/mutation/hulk/proc/setup_swing(mob/living/carbon/human/the_hulk, mob/living/carbon/yeeted_person)
+	procstart = null
+	src.procstart = null
 	var/original_dir = the_hulk.dir // so no matter if the hulk tries to mess up their direction, they always face where they started when they throw
 
 	yeeted_person.forceMove(the_hulk.loc)
@@ -157,6 +179,8 @@
  * For each step of the swinging, with the delay getting shorter along the way. Checks to see we still have them in our grasp at each step.
  */
 /datum/mutation/hulk/proc/swing_loop(mob/living/carbon/human/the_hulk, mob/living/carbon/yeeted_person, step, original_dir)
+	procstart = null
+	src.procstart = null
 	if(!yeeted_person || !the_hulk || the_hulk.incapacitated)
 		return
 	if(get_dist(the_hulk, yeeted_person) > 1 || !isturf(the_hulk.loc) || !isturf(yeeted_person.loc))
@@ -228,6 +252,8 @@
 
 /// Time to toss the victim at high speed
 /datum/mutation/hulk/proc/finish_swing(mob/living/carbon/human/the_hulk, mob/living/carbon/yeeted_person, original_dir)
+	procstart = null
+	src.procstart = null
 	if(!yeeted_person || !the_hulk || the_hulk.incapacitated)
 		return
 	if(get_dist(the_hulk, yeeted_person) > 1 || !isturf(the_hulk.loc) || !isturf(yeeted_person.loc))
@@ -278,6 +304,8 @@
 	) // fight till your last breath
 
 /datum/mutation/hulk/superhuman/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/mutation/hulk/ork
@@ -288,6 +316,8 @@
 	conflicts = list(/datum/mutation/hulk)
 
 /datum/mutation/hulk/ork/add_speechmod()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/speechmod, replacements = strings("ork_replacement.json", "ork"), end_string = "!!", uppercase = TRUE)
 
 #undef HULK_TAILTHROW_STEPS

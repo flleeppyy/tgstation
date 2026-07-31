@@ -22,12 +22,16 @@
 	var/link_time = 6 SECONDS
 
 /datum/action/cooldown/spell/pointed/manse_link/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(Target, /datum/component/mind_linker))
 		stack_trace("[name] ([type]) was instantiated on a non-mind_linker target, this doesn't work.")
 		qdel(src)
 
 /datum/action/cooldown/spell/pointed/manse_link/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -35,6 +39,8 @@
 	return isliving(cast_on)
 
 /datum/action/cooldown/spell/pointed/manse_link/before_cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & SPELL_CANCEL_CAST)
 		return
@@ -47,6 +53,8 @@
  * The actual process of linking [linkee] to our network.
  */
 /datum/action/cooldown/spell/pointed/manse_link/proc/do_linking(mob/living/linkee)
+	procstart = null
+	src.procstart = null
 	var/datum/component/mind_linker/linker = target
 	if(linkee.stat == DEAD)
 		to_chat(owner, span_warning("They're dead!"))

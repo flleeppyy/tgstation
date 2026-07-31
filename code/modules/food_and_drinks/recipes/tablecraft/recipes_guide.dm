@@ -137,6 +137,8 @@
 	non_craftable = TRUE
 
 /datum/crafting_recipe/food/reaction/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ispath(reaction, /datum/chemical_reaction))
 		return
@@ -154,6 +156,8 @@
  * Sets up information for our recipe based on the chemical reaction we have set.
  */
 /datum/crafting_recipe/food/reaction/proc/setup_chemical_reaction_details(datum/chemical_reaction/chemical_reaction)
+	procstart = null
+	src.procstart = null
 	reqs = chemical_reaction.required_reagents?.Copy()
 	chem_catalysts = LAZYLISTDUPLICATE(chemical_reaction.required_catalysts)
 	if(isnull(result) && length(chemical_reaction.results))

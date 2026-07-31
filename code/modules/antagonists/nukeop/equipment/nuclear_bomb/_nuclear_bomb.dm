@@ -57,6 +57,8 @@ GLOBAL_VAR(station_nuke_source)
 	var/is_on_minimap = TRUE
 
 /obj/machinery/nuclearbomb/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	countdown = new(src)
 	core = new /obj/item/nuke_core(src)
@@ -67,6 +69,8 @@ GLOBAL_VAR(station_nuke_source)
 	update_minimap_blip()
 
 /obj/machinery/nuclearbomb/Destroy()
+	procstart = null
+	src.procstart = null
 	safety = FALSE
 	if(!exploding)
 		// If we're not exploding, set the alert level back to normal
@@ -76,6 +80,8 @@ GLOBAL_VAR(station_nuke_source)
 	return ..()
 
 /obj/machinery/nuclearbomb/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(deconstruction_state)
 		if(NUKESTATE_UNSCREWED)
@@ -105,6 +111,8 @@ GLOBAL_VAR(station_nuke_source)
 
 /// Checks if the disk inserted is a real nuke disk or not.
 /obj/machinery/nuclearbomb/proc/disk_check(obj/item/disk/nuclear/inserted_disk)
+	procstart = null
+	src.procstart = null
 	if(inserted_disk.fake)
 		say("Authentication failure; disk not recognised.")
 		return FALSE
@@ -112,6 +120,8 @@ GLOBAL_VAR(station_nuke_source)
 	return TRUE
 
 /obj/machinery/nuclearbomb/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (istype(tool, /obj/item/disk/nuclear))
 		if(!disk_check(tool))
 			return ITEM_INTERACT_BLOCKING
@@ -188,6 +198,8 @@ GLOBAL_VAR(station_nuke_source)
 	return NONE
 
 /obj/machinery/nuclearbomb/crowbar_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	switch(deconstruction_state)
 		if(NUKESTATE_UNSCREWED)
 			to_chat(user, span_notice("You start removing [src]'s front panel..."))
@@ -228,6 +240,8 @@ GLOBAL_VAR(station_nuke_source)
 	return ITEM_INTERACT_SKIP_TO_ATTACK
 
 /obj/machinery/nuclearbomb/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/screwdriver/nuke))
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 
@@ -258,6 +272,8 @@ GLOBAL_VAR(station_nuke_source)
 	return ITEM_INTERACT_SKIP_TO_ATTACK
 
 /obj/machinery/nuclearbomb/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(deconstruction_state != NUKESTATE_PANEL_REMOVED)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 
@@ -275,18 +291,24 @@ GLOBAL_VAR(station_nuke_source)
 
 
 /obj/machinery/nuclearbomb/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(deconstruction_state != NUKESTATE_CORE_EXPOSED)
 		return ..()
 	to_chat(user, span_danger("You can't hold [core] with your bare hands!"))
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/nuclearbomb/can_interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(user, TRAIT_CAN_USE_NUKE))
 		return TRUE
 
 	return ..()
 
 /obj/machinery/nuclearbomb/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(user, TRAIT_CAN_USE_NUKE))
 		return GLOB.physical_state
 
@@ -294,6 +316,8 @@ GLOBAL_VAR(station_nuke_source)
 
 /// Gets the current state of the nuke.
 /obj/machinery/nuclearbomb/proc/get_nuke_state()
+	procstart = null
+	src.procstart = null
 	if(exploding)
 		return NUKE_ON_EXPLODING
 	if(timing)
@@ -304,6 +328,8 @@ GLOBAL_VAR(station_nuke_source)
 		return NUKE_OFF_UNLOCKED
 
 /obj/machinery/nuclearbomb/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(deconstruction_state != NUKESTATE_INTACT)
 		icon_state = "nuclearbomb_base"
 		return ..()
@@ -319,6 +345,8 @@ GLOBAL_VAR(station_nuke_source)
 	return ..()
 
 /obj/machinery/nuclearbomb/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(lights)
@@ -353,6 +381,8 @@ GLOBAL_VAR(station_nuke_source)
 	add_overlay(interior)
 
 /obj/machinery/nuclearbomb/process()
+	procstart = null
+	src.procstart = null
 	if(!timing || exploding)
 		return
 
@@ -365,6 +395,8 @@ GLOBAL_VAR(station_nuke_source)
 
 /// Changes what mode the UI is depending on the state of the nuke.
 /obj/machinery/nuclearbomb/proc/update_ui_mode()
+	procstart = null
+	src.procstart = null
 	if(exploded)
 		ui_mode = NUKEUI_EXPLODED
 		return
@@ -388,12 +420,16 @@ GLOBAL_VAR(station_nuke_source)
 	ui_mode = NUKEUI_AWAIT_TIMER
 
 /obj/machinery/nuclearbomb/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "NuclearBomb", name)
 		ui.open()
 
 /obj/machinery/nuclearbomb/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["disk_present"] = auth
 
@@ -440,6 +476,8 @@ GLOBAL_VAR(station_nuke_source)
 	return data
 
 /obj/machinery/nuclearbomb/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -522,6 +560,8 @@ GLOBAL_VAR(station_nuke_source)
 
 /// Anchors the nuke, duh. Can only be done if the disk is inside.
 /obj/machinery/nuclearbomb/proc/set_anchor(mob/anchorer)
+	procstart = null
+	src.procstart = null
 	if(isinspace() && !anchored)
 		if(anchorer)
 			to_chat(anchorer, span_warning("There is nothing to anchor to!"))
@@ -531,6 +571,8 @@ GLOBAL_VAR(station_nuke_source)
 
 /// Toggles the safety of the nuke.
 /obj/machinery/nuclearbomb/proc/toggle_nuke_safety()
+	procstart = null
+	src.procstart = null
 	safety = !safety
 
 	// We're safe now, so stop any ongoing timers
@@ -545,6 +587,8 @@ GLOBAL_VAR(station_nuke_source)
 
 /// Arms the nuke, or disarms it if it's already active.
 /obj/machinery/nuclearbomb/proc/toggle_nuke_armed()
+	procstart = null
+	src.procstart = null
 	if(safety)
 		to_chat(usr, span_danger("The safety is still on."))
 		return
@@ -558,6 +602,8 @@ GLOBAL_VAR(station_nuke_source)
 
 /// Arms the nuke, making it active and triggering all pinpointers to start counting down (+delta alert)
 /obj/machinery/nuclearbomb/proc/arm_nuke(mob/armer)
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	message_admins("\The [src] was armed at [ADMIN_VERBOSEJMP(our_turf)] by [armer ? ADMIN_LOOKUPFLW(armer) : "an unknown user"].")
 	armer.log_message("armed \the [src].", LOG_GAME)
@@ -581,6 +627,8 @@ GLOBAL_VAR(station_nuke_source)
 
 /// Disarms the nuke, reverting all pinpointers and the security level
 /obj/machinery/nuclearbomb/proc/disarm_nuke(mob/disarmer)
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	message_admins("\The [src] at [ADMIN_VERBOSEJMP(our_turf)] was disarmed by [disarmer ? ADMIN_LOOKUPFLW(disarmer) : "an unknown user"].")
 	if(disarmer)
@@ -598,6 +646,8 @@ GLOBAL_VAR(station_nuke_source)
 	update_appearance()
 
 /obj/machinery/nuclearbomb/proc/update_minimap_blip()
+	procstart = null
+	src.procstart = null
 	if(!is_on_minimap)
 		return
 	var/blip_icon =  'icons/ui_icons/minimap/map_blips_large.dmi'
@@ -606,17 +656,23 @@ GLOBAL_VAR(station_nuke_source)
 /// If the nuke is active, gets how much time is left until it detonates, in seconds.
 /// If the nuke is not active, gets how much time the nuke is set for, in seconds.
 /obj/machinery/nuclearbomb/proc/get_time_left()
+	procstart = null
+	src.procstart = null
 	if(timing)
 		. = round(max(0, detonation_timer - world.time) / 10, 1)
 	else
 		. = timer_set
 
 /obj/machinery/nuclearbomb/blob_act(obj/structure/blob/attacking_blob)
+	procstart = null
+	src.procstart = null
 	if(exploding)
 		return
 	qdel(src)
 
 /obj/machinery/nuclearbomb/zap_act(power, zap_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(zap_flags & ZAP_MACHINE_EXPLOSIVE)
 		qdel(src)//like the singulo, tesla deletes it. stops it from exploding over and over
@@ -630,6 +686,8 @@ GLOBAL_VAR(station_nuke_source)
  * Goes through a few timers and plays a cinematic.
  */
 /obj/machinery/nuclearbomb/proc/explode()
+	procstart = null
+	src.procstart = null
 	if(safety)
 		timing = FALSE
 		return FALSE
@@ -648,6 +706,8 @@ GLOBAL_VAR(station_nuke_source)
 	return TRUE
 
 /obj/machinery/nuclearbomb/proc/actually_explode()
+	procstart = null
+	src.procstart = null
 	if(!core)
 		play_cinematic(/datum/cinematic/nuke/no_core, world)
 		SSticker.roundend_check_paused = FALSE
@@ -693,6 +753,8 @@ GLOBAL_VAR(station_nuke_source)
 	return detonation_status
 
 /obj/machinery/nuclearbomb/proc/really_actually_explode(detonation_status)
+	procstart = null
+	src.procstart = null
 	var/cinematic = get_cinematic_type(detonation_status)
 	if(!isnull(cinematic))
 		play_cinematic(cinematic, world)
@@ -731,10 +793,14 @@ GLOBAL_VAR(station_nuke_source)
 
 /// Cause nuke effects to the passed z-levels.
 /obj/machinery/nuclearbomb/proc/nuke_effects(list/affected_z_levels)
+	procstart = null
+	src.procstart = null
 	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(callback_on_everyone_on_z), affected_z_levels, CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(nuke_gib)), src)
 
 /// Gets what type of cinematic this nuke showcases depending on where we detonated.
 /obj/machinery/nuclearbomb/proc/get_cinematic_type(detonation_status)
+	procstart = null
+	src.procstart = null
 	if(isnull(detonation_status))
 		return /datum/cinematic/nuke/self_destruct_miss
 
@@ -746,6 +812,8 @@ GLOBAL_VAR(station_nuke_source)
  * Helper proc that handles gibbing someone who has been nuked.
  */
 /proc/nuke_gib(mob/living/gibbed, atom/source)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(gibbed, TRAIT_NUKEIMMUNE))
 		return FALSE
 
@@ -769,6 +837,8 @@ GLOBAL_VAR(station_nuke_source)
  * Invokes a callback on every living mob on the provided z level.
  */
 /proc/callback_on_everyone_on_z(list/z_levels, datum/callback/to_do, atom/optional_source)
+	procstart = null
+	src.procstart = null
 	if(!islist(z_levels))
 		CRASH("callback_on_everyone_on_z called [z_levels ? "with an invalid z-level list":"without any z-levels"].")
 

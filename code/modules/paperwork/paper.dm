@@ -70,6 +70,8 @@
 	VAR_FINAL/list/writers
 
 /obj/item/paper/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = base_pixel_x + rand(-9, 9)
 	pixel_y = base_pixel_y + rand(-8, 8)
@@ -86,26 +88,36 @@
 	RegisterSignal(src, COMSIG_ATOM_IGNITED_BY_ITEM, PROC_REF(close_paper_ui))
 
 /obj/item/paper/Destroy()
+	procstart = null
+	src.procstart = null
 	camera_holder = null
 	clear_paper()
 	LAZYREMOVE(SSpersistence.queued_message_bottles, src)
 	return ..()
 
 /obj/item/paper/custom_fire_overlay()
+	procstart = null
+	src.procstart = null
 	if (!custom_fire_overlay)
 		custom_fire_overlay = mutable_appearance('icons/obj/service/bureaucracy.dmi', "paper_onfire_overlay", appearance_flags = RESET_COLOR|KEEP_APART)
 	return custom_fire_overlay
 
 /obj/item/paper/proc/close_paper_ui()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SStgui.close_uis(src)
 
 /// Determines whether this paper has been written or stamped to.
 /obj/item/paper/proc/is_empty()
+	procstart = null
+	src.procstart = null
 	return !(LAZYLEN(raw_text_inputs) || LAZYLEN(raw_stamp_data))
 
 /// Returns a deep copy list of raw_text_inputs, or null if the list is empty or doesn't exist.
 /obj/item/paper/proc/copy_raw_text()
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(raw_text_inputs))
 		return null
 
@@ -118,6 +130,8 @@
 
 /// Returns a deep copy list of raw_field_input_data, or null if the list is empty or doesn't exist.
 /obj/item/paper/proc/copy_field_text()
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(raw_field_input_data))
 		return null
 
@@ -130,6 +144,8 @@
 
 /// Returns a deep copy list of raw_stamp_data, or null if the list is empty or doesn't exist. Does not copy overlays or stamp_cache, only the tgui rendered stamps.
 /obj/item/paper/proc/copy_raw_stamps()
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(raw_stamp_data))
 		return null
 
@@ -151,6 +167,8 @@
  * * greyscale_override - If set to a colour string and coloured is false, it will override the default of COLOR_WEBSAFE_DARK_GRAY when copying.
  */
 /obj/item/paper/proc/copy(paper_type = /obj/item/paper, atom/location = loc, colored = TRUE, greyscale_override = null)
+	procstart = null
+	src.procstart = null
 	var/obj/item/paper/new_paper
 	if(ispath(paper_type, /obj/item/paper))
 		new_paper = new paper_type(location)
@@ -193,6 +211,8 @@
  * * advanced_html - Boolean that is true when the writer has R_FUN permission, which sanitizes less HTML (such as images) from the new paper_input
  */
 /obj/item/paper/proc/add_raw_text(text, font, color, bold, advanced_html)
+	procstart = null
+	src.procstart = null
 	var/new_input_datum = new /datum/paper_input(
 		text,
 		font,
@@ -223,6 +243,8 @@
  * * overwrite - If TRUE, will overwrite existing field ID's data if it exists.
  */
 /obj/item/paper/proc/add_field_input(field_id, text, font, color, bold, signature_name, overwrite = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/paper_field/field_data_datum = null
 
 	var/is_signature = ((text == "%sign") || (text == "%s"))
@@ -287,6 +309,8 @@
 * * stamp_icon_state - An alternate Icon file can be passed for the stamp as part of overlay rendering if desired
  */
 /obj/item/paper/proc/add_stamp(stamp_class, stamp_x, stamp_y, rotation, stamp_icon_state, stamp_icon = 'icons/obj/service/bureaucracy.dmi')
+	procstart = null
+	src.procstart = null
 	var/new_stamp_datum = new /datum/paper_stamp(stamp_class, stamp_x, stamp_y, rotation)
 	LAZYADD(raw_stamp_data, new_stamp_datum);
 
@@ -301,6 +325,8 @@
 
 /// Removes all input and all stamps from the paper, clearing it completely.
 /obj/item/paper/proc/clear_paper()
+	procstart = null
+	src.procstart = null
 	LAZYNULL(raw_text_inputs)
 	LAZYNULL(raw_stamp_data)
 	LAZYNULL(raw_field_input_data)
@@ -310,6 +336,8 @@
 	update_appearance()
 
 /obj/item/paper/pickup(user)
+	procstart = null
+	src.procstart = null
 	if(contact_poison && ishuman(user))
 		var/mob/living/carbon/human/H = user
 		var/obj/item/clothing/gloves/G = H.gloves
@@ -319,6 +347,8 @@
 	. = ..()
 
 /obj/item/paper/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(raw_text_inputs) && show_written_words)
 		icon_state = "[initial(icon_state)]_words"
 	else
@@ -345,10 +375,14 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 	update_static_data()
 
 /obj/item/paper/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] scratches a grid on [user.p_their()] wrist with the paper! It looks like [user.p_theyre()] trying to commit sudoku..."))
 	return BRUTELOSS
 
 /obj/item/paper/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Alt-click [src] to fold it into a paper plane.")
 	if(!in_range(user, src) && !isobserver(user))
@@ -365,6 +399,8 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 	. += span_warning("You cannot read it!")
 
 /obj/item/paper/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	// Are we on fire?  Hard to read if so
 	if(resistance_flags & ON_FIRE)
 		return UI_CLOSE
@@ -386,11 +422,15 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 	return ..()
 
 /obj/item/paper/can_interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ismovable(loc) && loc.IsContainedAtomAccessible(src, user))
 		return TRUE
 	return ..()
 
 /obj/item/paper/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(user, TRAIT_PAPER_MASTER))
 		make_plane(user, /obj/item/paperplane/syndicate)
 		return CLICK_ACTION_SUCCESS
@@ -408,6 +448,8 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
  * * plane_type - what it will be folded into (path)
  */
 /obj/item/paper/proc/make_plane(mob/living/user, plane_type = /obj/item/paperplane)
+	procstart = null
+	src.procstart = null
 	loc.balloon_alert(user, "folded into a plane")
 	user.temporarilyRemoveItemFromInventory(src)
 	var/obj/item/paperplane/new_plane = new plane_type(loc, src)
@@ -416,6 +458,8 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 	return new_plane
 
 /obj/item/paper/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// Enable picking paper up by clicking on it with the clipboard or paper bin
 	if(istype(tool, /obj/item/clipboard) || istype(tool, /obj/item/paper_bin))
 		tool.item_interaction(user, src)
@@ -456,6 +500,8 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 
 /// Secondary right click interaction to quickly stamp things
 /obj/item/paper/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/list/writing_stats = tool.get_writing_implement_details()
 
 	if(!length(writing_stats))
@@ -479,12 +525,16 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
  * attached to it.
  */
 /obj/item/paper/proc/show_through_camera(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!can_show_to_mob_through_camera(user))
 		return
 
 	return ui_interact(user)
 
 /obj/item/paper/proc/can_show_to_mob_through_camera(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/camera/held_to_camera = camera_holder.resolve()
 
 	if(!held_to_camera)
@@ -503,12 +553,16 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 	return TRUE
 
 /obj/item/paper/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet/simple/stamps),
 		get_asset_datum(/datum/asset/simple/logos),
 	)
 
 /obj/item/paper/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(!user.client) //bro stop trying to open UI on AI man ur gonna drive me nuts man comeon man
 		return
 	if(resistance_flags & ON_FIRE)
@@ -539,6 +593,8 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 		ui.set_autoupdate(FALSE)
 
 /obj/item/paper/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(LAZYACCESS(writers, REF(user)))
 		remove_writer(user, update = FALSE)
@@ -551,6 +607,8 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 
 /// Generically check if we are holding a writing tool to update our writer status
 /obj/item/paper/proc/viewer_writing_state_change(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/list/writing_info = get_viewer_writing_implement_details(source)
@@ -564,6 +622,8 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 
 /// Add passed mob with passed writing info to the list of writers, then updates their ui
 /obj/item/paper/proc/add_writer(mob/living/user, list/writing_info, update = TRUE)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	set waitfor = FALSE
 
@@ -573,6 +633,8 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 
 /// Remove passed mob from the list of writers, then updates their ui
 /obj/item/paper/proc/remove_writer(mob/living/user, update = TRUE)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	set waitfor = FALSE
 
@@ -581,6 +643,8 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 		ui_interact(user)
 
 /obj/item/paper/proc/get_viewer_writing_implement_details(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(istype(loc, /obj/structure/noticeboard))
 		var/obj/structure/noticeboard/noticeboard = loc
 		if(!noticeboard.allowed(user))
@@ -597,6 +661,8 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 	return .
 
 /obj/item/paper/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["held_item_details"] = LAZYACCESS(writers, REF(user))
@@ -604,6 +670,8 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 	return data
 
 /obj/item/paper/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/static_data = list()
 
 	static_data["user_name"] = user.real_name
@@ -620,6 +688,8 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 	return static_data
 
 /obj/item/paper/proc/convert_to_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data[LIST_PAPER_RAW_TEXT_INPUT] = list()
@@ -640,6 +710,8 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 	return data
 
 /obj/item/paper/proc/write_from_data(list/data)
+	procstart = null
+	src.procstart = null
 	for(var/list/input as anything in data[LIST_PAPER_RAW_TEXT_INPUT])
 		add_raw_text(input[LIST_PAPER_RAW_TEXT], input[LIST_PAPER_FONT], input[LIST_PAPER_FIELD_COLOR], input[LIST_PAPER_BOLD], input[LIST_PAPER_ADVANCED_HTML])
 
@@ -657,6 +729,8 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 	name = data[LIST_PAPER_NAME]
 
 /obj/item/paper/ui_act(action, params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -789,6 +863,8 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 			return TRUE
 
 /obj/item/paper/proc/get_input_field_count(raw_text)
+	procstart = null
+	src.procstart = null
 	var/static/regex/field_regex = new(@"\[_+\]","g")
 
 	var/counter = 0
@@ -798,11 +874,15 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 	return counter
 
 /obj/item/paper/ui_host(mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(loc, /obj/structure/noticeboard))
 		return loc
 	return ..()
 
 /obj/item/paper/proc/get_total_length()
+	procstart = null
+	src.procstart = null
 	var/total_length = 0
 	for(var/datum/paper_input/entry as anything in raw_text_inputs)
 		total_length += length_char(entry.raw_text)
@@ -811,6 +891,8 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 
 /// Get a single string representing the text on a page
 /obj/item/paper/proc/get_raw_text()
+	procstart = null
+	src.procstart = null
 	var/paper_contents = ""
 	for(var/datum/paper_input/line as anything in raw_text_inputs)
 		paper_contents += line.raw_text + "/"
@@ -830,6 +912,8 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 	var/advanced_html = FALSE
 
 /datum/paper_input/New(_raw_text, _font, _colour, _bold, _advanced_html)
+	procstart = null
+	src.procstart = null
 	raw_text = _raw_text
 	font = _font
 	colour = _colour
@@ -837,9 +921,13 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 	advanced_html = _advanced_html
 
 /datum/paper_input/proc/make_copy()
+	procstart = null
+	src.procstart = null
 	return new /datum/paper_input(raw_text, font, colour, bold, advanced_html)
 
 /datum/paper_input/proc/to_list()
+	procstart = null
+	src.procstart = null
 	return list(
 		LIST_PAPER_RAW_TEXT = raw_text,
 		LIST_PAPER_FONT = font,
@@ -850,6 +938,8 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 
 /// Returns the raw contents of the input as html, with **ZERO SANITIZATION**
 /datum/paper_input/proc/to_raw_html()
+	procstart = null
+	src.procstart = null
 	var/final = raw_text
 	if(font || colour)
 		final = "<font[" color='[colour]'"][" face='[font]'"]>[final]</font>"
@@ -869,15 +959,21 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 	var/rotation = 0
 
 /datum/paper_stamp/New(_class, _stamp_x, _stamp_y, _rotation)
+	procstart = null
+	src.procstart = null
 	class = _class
 	stamp_x = _stamp_x
 	stamp_y = _stamp_y
 	rotation = _rotation
 
 /datum/paper_stamp/proc/make_copy()
+	procstart = null
+	src.procstart = null
 	return new /datum/paper_stamp(class, stamp_x, stamp_y, rotation)
 
 /datum/paper_stamp/proc/to_list()
+	procstart = null
+	src.procstart = null
 	return list(
 		LIST_PAPER_CLASS = class,
 		LIST_PAPER_STAMP_X = stamp_x,
@@ -895,14 +991,20 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 	var/is_signature = FALSE
 
 /datum/paper_field/New(_field_index, raw_text, font, colour, bold, _is_signature)
+	procstart = null
+	src.procstart = null
 	field_index = _field_index
 	field_data = new /datum/paper_input(raw_text, font, colour, bold)
 	is_signature = _is_signature
 
 /datum/paper_field/proc/make_copy()
+	procstart = null
+	src.procstart = null
 	return new /datum/paper_field(field_index, field_data.raw_text, field_data.font, field_data.colour, field_data.bold, is_signature)
 
 /datum/paper_field/proc/to_list()
+	procstart = null
+	src.procstart = null
 	return list(
 		LIST_PAPER_FIELD_INDEX = field_index,
 		LIST_PAPER_FIELD_DATA = field_data.to_list(),
@@ -914,6 +1016,8 @@ GAME_VERB_SRC(/obj/item/paper, rename, usr, "Rename paper", null)
 	icon = 'icons/effects/random_spawners.dmi'
 
 /obj/item/paper/construction/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon = 'icons/obj/service/bureaucracy.dmi'
 	color = pick(COLOR_RED, COLOR_LIME, COLOR_LIGHT_ORANGE, COLOR_DARK_PURPLE, COLOR_FADED_PINK, COLOR_BLUE_LIGHT)

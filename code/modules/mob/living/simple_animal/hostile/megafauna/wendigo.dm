@@ -70,6 +70,8 @@ Difficulty: Hard
 	COOLDOWN_DECLARE(scream_cooldown)
 
 /mob/living/simple_animal/hostile/megafauna/wendigo/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_FLOATING_ANIM, INNATE_TRAIT)
 	teleport = new(src)
@@ -86,10 +88,14 @@ Difficulty: Hard
 	wave.Grant(src)
 
 /mob/living/simple_animal/hostile/megafauna/wendigo/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	starting = get_turf(src)
 
 /mob/living/simple_animal/hostile/megafauna/wendigo/OpenFire()
+	procstart = null
+	src.procstart = null
 	update_cooldowns(list(COOLDOWN_UPDATE_SET_MELEE = 10 SECONDS, COOLDOWN_UPDATE_SET_RANGED = 10 SECONDS))
 	if(WENDIGO_ENRAGED)
 		speed = 4
@@ -136,18 +142,24 @@ Difficulty: Hard
 			update_cooldowns(list(COOLDOWN_UPDATE_SET_MELEE = 3 SECONDS, COOLDOWN_UPDATE_SET_RANGED = 3 SECONDS))
 
 /mob/living/simple_animal/hostile/megafauna/wendigo/Move(atom/newloc, direct)
+	procstart = null
+	src.procstart = null
 	stored_move_dirs |= direct
 	. = ..()
 	// Remove after anyways in case the movement was prevented
 	stored_move_dirs &= ~direct
 
 /mob/living/simple_animal/hostile/megafauna/wendigo/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	stored_move_dirs &= ~movement_dir
 	if(!stored_move_dirs)
 		INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(wendigo_slam), src, stomp_range, 1, 8)
 
 /proc/wendigo_scream(mob/owner)
+	procstart = null
+	src.procstart = null
 	SLEEP_CHECK_DEATH(5, owner)
 	playsound(owner.loc, 'sound/effects/magic/demon_dies.ogg', 600, FALSE, 10)
 	var/pixel_shift = rand(5, 15)
@@ -159,6 +171,8 @@ Difficulty: Hard
 	SLEEP_CHECK_DEATH(1 SECONDS, owner)
 
 /proc/wendigo_slam(mob/owner, range, delay, throw_range)
+	procstart = null
+	src.procstart = null
 	var/turf/origin = get_turf(owner)
 	if(!origin)
 		return
@@ -181,6 +195,8 @@ Difficulty: Hard
 		SLEEP_CHECK_DEATH(delay, owner)
 
 /mob/living/simple_animal/hostile/megafauna/wendigo/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(health > 0)
 		return
 
@@ -191,6 +207,8 @@ Difficulty: Hard
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/wendigo/proc/create_portal()
+	procstart = null
+	src.procstart = null
 	var/obj/effect/portal/permanent/one_way/exit = new /obj/effect/portal/permanent/one_way(starting)
 	exit.id = "wendigo arena exit"
 	exit.add_atom_colour(COLOR_RED_LIGHT, ADMIN_COLOUR_PRIORITY)
@@ -216,6 +234,8 @@ Difficulty: Hard
 	wave_speed = -0.3
 
 /obj/projectile/colossus/wendigo_shockwave/process_movement(pixels_to_move, hitscan, tile_limit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (QDELETED(src))
 		return
@@ -223,6 +243,8 @@ Difficulty: Hard
 	set_angle(original_angle + pixel_moves * wave_speed)
 
 /mob/living/simple_animal/hostile/megafauna/wendigo/noportal/create_portal()
+	procstart = null
+	src.procstart = null
 	return
 
 #undef WENDIGO_ENRAGED

@@ -11,6 +11,8 @@
 	fakeable = FALSE
 
 /datum/round_event/camera_failure/start()
+	procstart = null
+	src.procstart = null
 	var/iterations = 1
 	var/list/cameras = SScameras.cameras.Copy()
 	while(prob(round(100/iterations)))

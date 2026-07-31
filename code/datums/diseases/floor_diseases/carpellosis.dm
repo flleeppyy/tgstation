@@ -25,6 +25,8 @@
 	var/ability_granted = FALSE
 
 /datum/disease/carpellosis/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -54,11 +56,15 @@
 				affected_mob.visible_message("gnashes.", visible_message_flags = EMOTE_MESSAGE)
 
 /datum/disease/carpellosis/Destroy()
+	procstart = null
+	src.procstart = null
 	if(ability_granted)
 		QDEL_NULL(rift_ability)
 	return ..()
 
 /datum/disease/carpellosis/cure(add_resistance = TRUE)
+	procstart = null
+	src.procstart = null
 	if(ability_granted)
 		rift_ability.Remove(affected_mob)
 	if(max_stage_reached && prob(ella_spawn_chance))
@@ -67,6 +73,8 @@
 	return ..()
 
 /datum/disease/carpellosis/proc/grant_ability()
+	procstart = null
+	src.procstart = null
 	if(ability_granted)
 		return
 	rift_ability = new(src)
@@ -75,12 +83,16 @@
 	ability_granted = TRUE
 
 /datum/disease/carpellosis/proc/find_nearby_human()
+	procstart = null
+	src.procstart = null
 	var/list/surroundings = orange(GNASHING_RANGE, affected_mob)
 	for(var/mob/living/carbon/human/human as anything in typecache_filter_list(surroundings, typecacheof(/mob/living/carbon/human)))
 		if(!IS_DEAD_OR_FAKING(human))
 			return human
 
 /datum/disease/carpellosis/proc/gnash_someone()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/target = find_nearby_human()
 	if(isnull(target) || !affected_mob.get_bodypart(BODY_ZONE_HEAD)) // Need mouth to gnash
 		to_chat(affected_mob, span_warning("You want to gnash at someone..."))

@@ -7,6 +7,8 @@
 	favor_cost = 20 //you only need one
 
 /datum/religion_rites/holy_violin/invoke_effect(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/tool_turf = get_turf(religious_tool)
 	var/obj/item/instrument/violin/fidis = new /obj/item/instrument/violin/festival(get_turf(religious_tool))
@@ -24,6 +26,8 @@
 	var/obj/item/instrument/instrument_target
 
 /datum/religion_rites/portable_song_tuning/perform_rite(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/instrument/could_empower in get_turf(religious_tool))
 		instrument_target = could_empower
 		return ..()
@@ -31,6 +35,8 @@
 	return FALSE
 
 /datum/religion_rites/portable_song_tuning/invoke_effect(mob/living/user, atom/movable/religious_tool)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/instrument/empower_target = instrument_target
 	var/turf/tool_turf = get_turf(religious_tool)
@@ -71,6 +77,8 @@
 	var/glow_color = COLOR_BLACK
 
 /datum/religion_rites/song_tuner/invoke_effect(mob/living/user, obj/structure/altar/of_gods/altar)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(user, span_notice(song_invocation_message))
 	user.AddComponent(/datum/component/smooth_tunes, src, repeats_okay, particles_path, glow_color)
@@ -83,6 +91,8 @@
  * * song_source - parent of the smooth_tunes component. This is limited to the compatible items of said component, which currently includes mobs and objects so we'll have to type appropriately.
  */
 /datum/religion_rites/song_tuner/proc/performer_start_effect(mob/living/carbon/human/performer, atom/song_source)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -93,6 +103,8 @@
  * * song_source - parent of the smooth_tunes component. This is limited to the compatible items of said component, which currently includes mobs and objects so we'll have to type appropriately.
  */
 /datum/religion_rites/song_tuner/proc/song_effect(mob/living/carbon/human/listener, atom/song_source)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -105,6 +117,8 @@
  * * song_source - parent of the smooth_tunes component. This is limited to the compatible items of said component, which currently includes mobs and objects so we'll have to type appropriately.
  */
 /datum/religion_rites/song_tuner/proc/finish_effect(mob/living/carbon/human/listener, atom/song_source)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/religion_rites/song_tuner/evangelism
@@ -117,12 +131,16 @@
 	favor_cost = 0
 
 /datum/religion_rites/song_tuner/evangelism/song_effect(mob/living/carbon/human/listener, atom/song_source)
+	procstart = null
+	src.procstart = null
 	// A ckey requirement is good to have for gaining favor, to stop monkey farms and such.
 	if(!GLOB.religious_sect || listener.mind?.holy_role || !listener.ckey)
 		return
 	GLOB.religious_sect.adjust_favor(0.2)
 
 /datum/religion_rites/song_tuner/evangelism/finish_effect(mob/living/carbon/human/listener, atom/song_source)
+	procstart = null
+	src.procstart = null
 	listener.add_mood_event("blessing", /datum/mood_event/blessing)
 
 /datum/religion_rites/song_tuner/light
@@ -138,13 +156,19 @@
 	var/obj/effect/dummy/lighting_obj/moblight/performer_light_obj
 
 /datum/religion_rites/song_tuner/light/performer_start_effect(mob/living/carbon/human/performer, atom/song_source)
+	procstart = null
+	src.procstart = null
 	performer_light_obj = performer.mob_light(8, 1.5, color = LIGHT_COLOR_DIM_YELLOW)
 
 /datum/religion_rites/song_tuner/light/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(performer_light_obj)
 	return ..()
 
 /datum/religion_rites/song_tuner/light/finish_effect(mob/living/carbon/human/listener, atom/song_source)
+	procstart = null
+	src.procstart = null
 	listener.apply_status_effect(/datum/status_effect/song/light)
 
 /datum/religion_rites/song_tuner/nullwave
@@ -157,6 +181,8 @@
 	repeats_okay = FALSE
 
 /datum/religion_rites/song_tuner/nullwave/song_effect(mob/living/carbon/human/listener, atom/song_source)
+	procstart = null
+	src.procstart = null
 	listener.apply_status_effect(/datum/status_effect/song/antimagic)
 
 /datum/religion_rites/song_tuner/pain
@@ -169,6 +195,8 @@
 	repeats_okay = FALSE
 
 /datum/religion_rites/song_tuner/pain/song_effect(mob/living/carbon/human/listener, atom/song_source)
+	procstart = null
+	src.procstart = null
 	var/damage_dealt = 1
 	if(listener.mind?.holy_role)
 		damage_dealt *= 0.5
@@ -176,6 +204,8 @@
 	listener.adjust_brute_loss(damage_dealt)
 
 /datum/religion_rites/song_tuner/pain/finish_effect(mob/living/carbon/human/listener, atom/song_source)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/sliced_limb = pick(listener.get_bodyparts())
 	sliced_limb.force_wound_upwards(/datum/wound/slash/flesh/moderate/many_cuts)
 
@@ -192,10 +222,14 @@
 	var/list/listener_counter = list()
 
 /datum/religion_rites/song_tuner/lullaby/Destroy()
+	procstart = null
+	src.procstart = null
 	listener_counter.Cut()
 	return ..()
 
 /datum/religion_rites/song_tuner/lullaby/song_effect(mob/living/carbon/human/listener, atom/song_source)
+	procstart = null
+	src.procstart = null
 	if(listener.mind?.holy_role)
 		return
 
@@ -211,5 +245,7 @@
 	listener.set_eye_blur_if_lower(4 SECONDS)
 
 /datum/religion_rites/song_tuner/lullaby/finish_effect(mob/living/carbon/human/listener, atom/song_source)
+	procstart = null
+	src.procstart = null
 	to_chat(listener, span_danger("Wow, the ending of that song was... pretty..."))
 	listener.AdjustSleeping(5 SECONDS)

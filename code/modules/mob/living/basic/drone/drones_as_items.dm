@@ -23,6 +23,8 @@
 	spawner_job_path = /datum/job/maintenance_drone
 
 /obj/effect/mob_spawn/ghost_role/drone/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/area/area = get_area(src)
 	if(area)
@@ -36,6 +38,8 @@
 		)
 
 /obj/effect/mob_spawn/ghost_role/drone/allow_spawn(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	var/client/user_client = user.client
 	var/mob/living/basic/drone/drone_type = mob_type
 	if(!initial(drone_type.shy) || isnull(user_client) || !CONFIG_GET(flag/use_exp_restrictions_other))

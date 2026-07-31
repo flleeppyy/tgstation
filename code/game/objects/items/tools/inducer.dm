@@ -20,6 +20,8 @@
 	var/recharging = FALSE
 
 /obj/item/inducer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(ispath(powerdevice))
@@ -30,15 +32,21 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/item/inducer/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(powerdevice)
 	. = ..()
 
 /obj/item/inducer/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == powerdevice)
 		powerdevice = null
 
 /obj/item/inducer/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 
 	if(isnull(held_item))
@@ -61,6 +69,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/inducer/examine(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	. += examine_hints(user)
@@ -72,6 +82,8 @@
  * * mob/living/user - the mob we are returning the description to
  */
 /obj/item/inducer/proc/examine_hints(mob/living/user)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	SHOULD_BE_PURE(TRUE)
 
@@ -89,20 +101,28 @@
 	. += span_notice("Its battery compartment can be [EXAMINE_HINT("screwed")] [opened ? "shut" : "open"].")
 
 /obj/item/inducer/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!opened)
 		return
 	. += "inducer-[!QDELETED(powerdevice) ? "bat" : "nobat"]"
 
 /obj/item/inducer/get_cell()
+	procstart = null
+	src.procstart = null
 	return powerdevice
 
 /obj/item/inducer/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!QDELETED(powerdevice) && !(. & EMP_PROTECT_CONTENTS))
 		powerdevice.emp_act(severity)
 
 /obj/item/inducer/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = NONE
 
 	if(!tool.use_tool(src, user, delay = 0))
@@ -115,6 +135,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/inducer/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 
 	if(user.combat_mode || !istype(tool) || tool.flags_1 & HOLOGRAM_1 || tool.item_flags & ABSTRACT)
@@ -148,6 +170,8 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/item/inducer/interact_with_atom(atom/movable/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 
 	if(HAS_TRAIT(interacting_with, TRAIT_COMBAT_MODE_SKIP_INTERACTION))
@@ -220,6 +244,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/inducer/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(opened && !QDELETED(powerdevice))
 		user.visible_message(span_notice("[user] removes [powerdevice] from [src]!"), span_notice("You remove [powerdevice]."))
 		powerdevice.update_appearance()
@@ -256,6 +282,8 @@
 	icon_state = "inducer-engi"
 
 /obj/item/inducer/cyborg/examine_hints(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	var/obj/item/stock_parts/power_store/our_cell = get_cell(src, user)
@@ -268,9 +296,13 @@
 	. += span_notice("Its battery compartment can be [EXAMINE_HINT("screwed")] [opened ? "shut" : "open"].")
 
 /obj/item/inducer/cyborg/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	return NONE
 
 /obj/item/inducer/cyborg/interact_with_atom(atom/movable/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(user) && iscyborg(interacting_with))
 		balloon_alert(user, "can't charge this!")
 		return ITEM_INTERACT_FAILURE

@@ -16,10 +16,14 @@
 	var/tip_color = "blue"
 
 /obj/item/ammo_casing/foam_dart/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/caseless, TRUE)
 
 /obj/item/ammo_casing/foam_dart/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(modified)
 		icon_state = "[base_icon_state]_empty"
@@ -29,10 +33,14 @@
 	loaded_projectile?.icon_state = "[loaded_projectile.base_icon_state]_proj"
 
 /obj/item/ammo_casing/foam_dart/update_desc()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = "It's Donk or Don't! [modified ? "... Although, this one doesn't look too safe." : "Ages 8 and up."]"
 
 /obj/item/ammo_casing/foam_dart/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(src, TRAIT_DART_HAS_INSERT))
 		var/list/type_initial_names = list()
@@ -43,6 +51,8 @@
 			[length(type_initial_names) ? ", such as [english_list(type_initial_names, and_text = "or ", final_comma_text = ", ")]" : ""].")
 
 /obj/item/ammo_casing/foam_dart/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(modified)
 		return NONE
 	var/obj/projectile/bullet/foam_dart/dart = loaded_projectile

@@ -1,5 +1,7 @@
 /// Component to make an item temporarily break glass
 /datum/component/temporary_glass_shatterer/Initialize(...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isitem(parent))
@@ -8,6 +10,8 @@
 	RegisterSignal(parent, COMSIG_ITEM_INTERACTING_WITH_ATOM, PROC_REF(on_tap))
 
 /datum/component/temporary_glass_shatterer/proc/on_tap(obj/item/parent, mob/tapper, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(target, /obj/structure/window))

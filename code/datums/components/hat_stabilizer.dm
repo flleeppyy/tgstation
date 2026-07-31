@@ -16,6 +16,8 @@
 	var/head_angle = 1
 
 /datum/component/hat_stabilizer/Initialize(use_worn_icon = FALSE, pixel_z_offset = 0, loose_hat = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -45,6 +47,8 @@
 
 // Inherit the new values passed to the component
 /datum/component/hat_stabilizer/InheritComponent(datum/component/hat_stabilizer/new_comp, original, use_worn_icon, pixel_z_offset, loose_hat)
+	procstart = null
+	src.procstart = null
 	if(!original)
 		return
 
@@ -58,6 +62,8 @@
 		src.loose_hat = loose_hat
 
 /datum/component/hat_stabilizer/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	if (attached_hat)
 		remove_hat()
 	UnregisterSignal(parent, list(COMSIG_ATOM_EXAMINE, COMSIG_ATOM_ATTACKBY,
@@ -66,6 +72,8 @@
 	COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM, COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED))
 
 /datum/component/hat_stabilizer/proc/on_equip(datum/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!loose_hat)
@@ -78,10 +86,14 @@
 	RegisterSignal(equipper, COMSIG_LIVING_THUD, PROC_REF(drop_hat))
 
 /datum/component/hat_stabilizer/proc/on_drop(datum/source, mob/dropper)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(dropper, list(COMSIG_MOB_SLIPPED, COMSIG_LIVING_SLAPPED, COMSIG_MOVABLE_POST_THROW, COMSIG_LIVING_THUD))
 
 /datum/component/hat_stabilizer/proc/throw_hat(mob/hatless)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!loose_hat)
 		return
@@ -92,12 +104,16 @@
 	hat.throw_at(get_edge_target_turf(get_turf(hat), pick(GLOB.alldirs)), 2, 1, spin = TRUE)
 
 /datum/component/hat_stabilizer/proc/drop_hat(mob/hatless)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!loose_hat)
 		return
 	remove_hat()
 
 /datum/component/hat_stabilizer/proc/on_examine(datum/source, mob/user, list/base_examine)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(attached_hat)
 		base_examine += span_notice("There's \a [attached_hat] [loose_hat ? "loosely" : ""] placed on [parent].")
@@ -105,6 +121,8 @@
 		base_examine += span_notice("There's nothing placed on [parent]. Yet.")
 
 /datum/component/hat_stabilizer/proc/get_worn_overlays(atom/movable/source, list/overlays, mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isinhands)
 		return
@@ -122,6 +140,8 @@
 	overlays += worn_overlay
 
 /datum/component/hat_stabilizer/proc/get_separate_worn_overlays(atom/movable/source, list/overlays, mutable_appearance/standing, mutable_appearance/draw_target, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (isinhands)
 		return
@@ -140,12 +160,16 @@
 	overlays += worn_overlay
 
 /datum/component/hat_stabilizer/proc/on_qdel(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (attached_hat)
 		QDEL_NULL(attached_hat)
 
 /datum/component/hat_stabilizer/proc/on_attackby(datum/source, obj/item/hitting_item, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/atom/movable/movable_parent = parent
@@ -167,6 +191,8 @@
 	attach_hat(hitting_item, user)
 
 /datum/component/hat_stabilizer/proc/attach_hat(obj/item/hat, mob/user)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/movable_parent = parent
 	attached_hat = hat
 	RegisterSignal(hat, COMSIG_MOVABLE_MOVED, PROC_REF(on_hat_movement))
@@ -194,10 +220,14 @@
 		wearer.update_clothing(wearer.get_slot_by_item(apparel))
 
 /datum/component/hat_stabilizer/proc/on_hat_movement(obj/hat, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	remove_hat(ismob(user) ? user : null)
 
 /datum/component/hat_stabilizer/proc/on_secondary_attack_hand(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	. = COMPONENT_CANCEL_ATTACK_CHAIN
 	if(!attached_hat)
@@ -209,8 +239,12 @@
 		movable_parent.balloon_alert_to_viewers("the hat falls to the floor!")
 
 /datum/component/hat_stabilizer/proc/on_retraction()
+	procstart = null
+	src.procstart = null
 
 /datum/component/hat_stabilizer/proc/remove_hat(mob/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(attached_hat))
 		return
 
@@ -246,6 +280,8 @@
 		return former_hat
 
 /datum/component/hat_stabilizer/proc/on_requesting_context_from_item(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(attached_hat && !held_item)

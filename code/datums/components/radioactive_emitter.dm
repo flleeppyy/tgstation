@@ -42,13 +42,19 @@
 	START_PROCESSING(SSfastprocess, src)
 
 /datum/component/radioactive_emitter/Destroy(force)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	return ..()
 
 /datum/component/radioactive_emitter/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/component/radioactive_emitter/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_ATOM_EXAMINE)
 
 /datum/component/radioactive_emitter/InheritComponent(
@@ -70,6 +76,8 @@
 	// Don't touch examine text or whatever else.
 
 /datum/component/radioactive_emitter/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, rad_pulse_cooldown))
 		return
 
@@ -77,6 +85,8 @@
 	radiation_pulse(parent, range, threshold)
 
 /datum/component/radioactive_emitter/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!examine_text)

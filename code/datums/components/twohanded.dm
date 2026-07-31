@@ -77,6 +77,8 @@
 		ADD_TRAIT(parent, TRAIT_NEEDS_TWO_HANDS, ABSTRACT_ITEM_TRAIT)
 
 /datum/component/two_handed/Destroy(force)
+	procstart = null
+	src.procstart = null
 	offhand_item = null
 	wield_callback = null
 	unwield_callback = null
@@ -138,6 +140,8 @@
 
 // register signals withthe parent item
 /datum/component/two_handed/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ITEM_POST_EQUIPPED, PROC_REF(on_equip))
 	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(on_drop))
 	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, PROC_REF(on_attack_self))
@@ -154,6 +158,8 @@
 
 // Remove all siginals registered to the parent item
 /datum/component/two_handed/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ITEM_POST_EQUIPPED,
 		COMSIG_ITEM_DROPPED,
@@ -170,6 +176,8 @@
 
 /// Triggered on equip of the item containing the component
 /datum/component/two_handed/proc/on_equip(datum/source, mob/user, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT(parent, TRAIT_NEEDS_TWO_HANDS) && (slot & ITEM_SLOT_HANDS)) // force equip the item
@@ -179,6 +187,8 @@
 
 /// Triggered on drop of item containing the component
 /datum/component/two_handed/proc/on_drop(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT(parent, TRAIT_NEEDS_TWO_HANDS)) //Don't let the item fall to the ground and cause bugs if it's actually being equipped on another slot.
@@ -191,11 +201,15 @@
 
 /// Triggered on destroy of the component's offhand
 /datum/component/two_handed/proc/on_destroy(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	offhand_item = null
 
 /// Triggered on attack self of the item containing the component
 /datum/component/two_handed/proc/on_attack_self(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!HAS_TRAIT(parent, TRAIT_NEEDS_TWO_HANDS))
@@ -211,6 +225,8 @@
  * * user The mob/living/carbon that is wielding the item
  */
 /datum/component/two_handed/proc/wield(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(wielded)
 		return
 
@@ -283,6 +299,8 @@
  * * can_drop (option) whether 'dropItemToGround' can be called or not.
  */
 /datum/component/two_handed/proc/unwield(mob/living/carbon/user, show_message=TRUE, can_drop=TRUE)
+	procstart = null
+	src.procstart = null
 	if(!wielded)
 		return
 
@@ -346,6 +364,8 @@
  * on_attack triggers on attack with the parent item
  */
 /datum/component/two_handed/proc/on_attack(obj/item/source, mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(wielded && attacksound)
 		var/obj/item/parent_item = parent
@@ -357,6 +377,8 @@
  * Updates the icon using icon_wielded if set
  */
 /datum/component/two_handed/proc/on_update_icon(obj/item/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!wielded)
 		return NONE
@@ -369,6 +391,8 @@
  * on_moved Triggers on item moved
  */
 /datum/component/two_handed/proc/on_moved(datum/source, mob/user, dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	unwield(user, can_drop=FALSE)
@@ -377,6 +401,8 @@
  * on_swap_hands Triggers on swapping hands, blocks swap if the other hand is busy
  */
 /datum/component/two_handed/proc/on_swapping_hands(mob/user, obj/item/held_item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!held_item)
@@ -388,6 +414,8 @@
  * on_sharpen Triggers on usage of a sharpening stone on the item
  */
 /datum/component/two_handed/proc/on_sharpen(obj/item/item, amount, max_amount)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!item)
@@ -409,6 +437,8 @@
 	return COMPONENT_BLOCK_SHARPEN_APPLIED
 
 /datum/component/two_handed/proc/apply_fantasy_bonuses(obj/item/source, bonus)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	force_wielded = source.modify_fantasy_variable("force_wielded", force_wielded, bonus)
 	force_unwielded = source.modify_fantasy_variable("force_unwielded", force_unwielded, bonus)
@@ -418,6 +448,8 @@
 		force_multiplier = source.modify_fantasy_variable("force_multiplier", force_multiplier, bonus/10, minimum = 1)
 
 /datum/component/two_handed/proc/remove_fantasy_bonuses(obj/item/source, bonus)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	force_wielded = source.reset_fantasy_variable("force_wielded", force_wielded)
 	force_unwielded = source.reset_fantasy_variable("force_unwielded", force_unwielded)
@@ -426,6 +458,8 @@
 	force_multiplier = source.reset_fantasy_variable("force_multiplier", force_multiplier)
 
 /datum/component/two_handed/proc/on_materials_updated(obj/item/source, list/materials, datum/material/main_material)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// With materials assigned we need to update our forces.
 	if (wielded)
@@ -434,6 +468,8 @@
 		force_unwielded = source.force
 
 /datum/component/two_handed/proc/on_material_apply(obj/item/source, datum/material/material, amount, multiplier)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Opposite state's force needs to be calculated for each material's effect
 	if (wielded)
@@ -442,6 +478,8 @@
 		force_wielded *= GET_MATERIAL_MODIFIER(source.get_material_force_modifier(material, source.sharpness), multiplier)
 
 /datum/component/two_handed/proc/on_material_remove(obj/item/source, datum/material/material, amount, multiplier)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Same as appliation but inversed
 	if (wielded)
@@ -462,14 +500,20 @@
 	var/wielded = FALSE // Off Hand tracking of wielded status
 
 /obj/item/offhand/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, ABSTRACT_ITEM_TRAIT)
 
 /obj/item/offhand/Destroy()
+	procstart = null
+	src.procstart = null
 	wielded = FALSE
 	return ..()
 
 /obj/item/offhand/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(wielded && !user.is_holding(src) && !QDELETED(src))
 		qdel(src)

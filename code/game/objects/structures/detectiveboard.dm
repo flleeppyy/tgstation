@@ -27,6 +27,8 @@
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/detectiveboard, 32)
 
 /obj/structure/detectiveboard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(mapload)
@@ -41,6 +43,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/detectiveboard, 32)
 /// Attaching evidences: photo and papers
 
 /obj/structure/detectiveboard/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/paper) && !istype(tool, /obj/item/photo))
 		return NONE
 	if(!cases.len)
@@ -72,6 +76,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/detectiveboard, 32)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/detectiveboard/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	balloon_alert(user, "[anchored ? "un" : ""]securing...")
 	tool.play_tool_sound(src)
@@ -82,15 +88,21 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/detectiveboard, 32)
 		return TRUE
 
 /obj/structure/detectiveboard/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.physical_state
 
 /obj/structure/detectiveboard/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "DetectiveBoard", name, 1200, 800)
 		ui.open()
 
 /obj/structure/detectiveboard/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/data_cases = list()
 	for(var/datum/case/case in cases)
@@ -135,9 +147,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/detectiveboard, 32)
 	return data
 
 /obj/structure/detectiveboard/proc/get_pin_position(datum/evidence/evidence)
+	procstart = null
+	src.procstart = null
 	return list("x" =  evidence.x + 15, "y" =  evidence.y + 15)
 
 /obj/structure/detectiveboard/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -228,6 +244,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/detectiveboard, 32)
 	return FALSE
 
 /obj/structure/detectiveboard/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!cases.len)
 		return
@@ -243,6 +261,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/detectiveboard, 32)
  * * user - The mob that is trying to get the item removed, if there is one
  */
 /obj/structure/detectiveboard/proc/remove_item(obj/item/item, mob/user)
+	procstart = null
+	src.procstart = null
 	item.forceMove(drop_location())
 	if(user)
 		user.put_in_hands(item)
@@ -251,6 +271,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/detectiveboard, 32)
 	update_appearance(UPDATE_ICON)
 
 /obj/structure/detectiveboard/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!disassembled)
 		new /obj/item/stack/sheet/mineral/wood(loc)
 	else
@@ -280,6 +302,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/detectiveboard, 32)
 	var/obj/item/item = null
 
 /datum/evidence/New(param_name, param_desc, obj/item/param_item)
+	procstart = null
+	src.procstart = null
 	name = param_name
 	description = param_desc
 	item = param_item
@@ -295,6 +319,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/detectiveboard, 32)
 	var/list/datum/evidence/evidences = list()
 
 /datum/case/New(param_name, param_color)
+	procstart = null
+	src.procstart = null
 	name = param_name
 	color = param_color
 

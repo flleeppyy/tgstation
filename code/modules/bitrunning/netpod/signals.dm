@@ -1,5 +1,7 @@
 /// Machine has been broken - handles signals and reverting sprites
 /obj/machinery/netpod/proc/on_broken(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	sever_connection()
@@ -7,6 +9,8 @@
 
 /// Checks the integrity, alerts occupants
 /obj/machinery/netpod/proc/on_damage_taken(datum/source, damage_amount)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(occupant) || !connected)
@@ -22,6 +26,8 @@
 
 /// Puts points on the current occupant's card account
 /obj/machinery/netpod/proc/on_domain_complete(datum/source, atom/movable/crate, reward_points)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(occupant) || !connected)
@@ -38,6 +44,8 @@
 
 /// The domain has been fully purged, so we should double check our avatar is deleted
 /obj/machinery/netpod/proc/on_domain_scrubbed(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/avatar = avatar_ref?.resolve()
@@ -49,6 +57,8 @@
 
 /// Boots out anyone in the machine && opens it
 /obj/machinery/netpod/proc/on_power_loss(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(state_open)

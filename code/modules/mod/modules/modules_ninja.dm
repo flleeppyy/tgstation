@@ -21,6 +21,8 @@
 	var/stealth_alpha = 50
 
 /obj/item/mod/module/stealth/on_activation(mob/activator)
+	procstart = null
+	src.procstart = null
 	if(bumpoff)
 		RegisterSignal(mod.wearer, COMSIG_LIVING_MOB_BUMP, PROC_REF(unstealth))
 	RegisterSignal(mod.wearer, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(on_unarmed_attack))
@@ -30,12 +32,16 @@
 	drain_power(use_energy_cost)
 
 /obj/item/mod/module/stealth/on_deactivation(mob/activator, display_message = TRUE, deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	if(bumpoff)
 		UnregisterSignal(mod.wearer, COMSIG_LIVING_MOB_BUMP)
 	UnregisterSignal(mod.wearer, list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_MOB_ITEM_ATTACK, COMSIG_ATOM_ATTACKBY, COMSIG_ATOM_ATTACK_HAND, COMSIG_ATOM_BULLET_ACT, COMSIG_ATOM_HITBY, COMSIG_ATOM_HULK_ATTACK, COMSIG_ATOM_ATTACK_PAW, COMSIG_CARBON_CUFF_ATTEMPTED))
 	animate(mod.wearer, alpha = 255, time = 1.5 SECONDS)
 
 /obj/item/mod/module/stealth/proc/unstealth(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	to_chat(mod.wearer, span_warning("[src] gets discharged from contact!"))
@@ -44,6 +50,8 @@
 	deactivate()
 
 /obj/item/mod/module/stealth/proc/on_unarmed_attack(datum/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(target))
@@ -51,6 +59,8 @@
 	unstealth(source)
 
 /obj/item/mod/module/stealth/proc/on_bullet_act(datum/source, obj/projectile/projectile)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!projectile.is_hostile_projectile())
@@ -74,10 +84,14 @@
 
 
 /obj/item/mod/module/stealth/ninja/on_activation(mob/activator)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(mod.wearer, TRAIT_SILENT_FOOTSTEPS, REF(src))
 
 /obj/item/mod/module/stealth/ninja/on_deactivation(mob/activator, display_message = TRUE, deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(mod.wearer, TRAIT_SILENT_FOOTSTEPS, REF(src))
 
@@ -95,6 +109,8 @@
 	required_slots = list(ITEM_SLOT_HEAD|ITEM_SLOT_EYES|ITEM_SLOT_MASK)
 
 /obj/item/mod/module/welding/camera_vision/on_part_activation()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(mod.wearer, COMSIG_LIVING_CAN_TRACK, PROC_REF(can_track))
 	var/obj/item/clothing/head_cover = mod.get_part_from_slot(ITEM_SLOT_HEAD) || mod.get_part_from_slot(ITEM_SLOT_MASK) || mod.get_part_from_slot(ITEM_SLOT_EYES)
 	if(istype(head_cover))
@@ -103,6 +119,8 @@
 
 
 /obj/item/mod/module/welding/camera_vision/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	if(deleting)
 		return
 	var/obj/item/clothing/head_cover = mod.get_part_from_slot(ITEM_SLOT_HEAD) || mod.get_part_from_slot(ITEM_SLOT_MASK) || mod.get_part_from_slot(ITEM_SLOT_EYES)
@@ -111,6 +129,8 @@
 	UnregisterSignal(mod.wearer, COMSIG_LIVING_CAN_TRACK)
 
 /obj/item/mod/module/welding/camera_vision/proc/can_track(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return COMPONENT_CANT_TRACK
@@ -139,14 +159,20 @@
 	resistance_flags = FIRE_PROOF | ACID_PROOF | UNACIDABLE
 
 /obj/item/throwing_star/stamina/ninja/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_UNCATCHABLE, INNATE_TRAIT)
 
 /obj/item/throwing_star/stamina/ninja/on_thrown(mob/living/carbon/user, atom/target)
+	procstart = null
+	src.procstart = null
 	item_flags &= ~DROPDEL // Throwing = dropping = dropdel, not ideal. Remove it before that happens
 	return ..()
 
 /obj/item/throwing_star/stamina/ninja/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	item_flags |= DROPDEL // Just in case, re-apply drop del now
 	hit_atom.emp_act(EMP_HEAVY)
@@ -161,10 +187,14 @@
 	COOLDOWN_DECLARE(emp_cd)
 
 /datum/embedding/throwing_star/stamina/energy/on_successful_embed(mob/living/carbon/victim, obj/item/bodypart/target_limb)
+	procstart = null
+	src.procstart = null
 	COOLDOWN_START(src, emp_cd, 6 SECONDS)
 	parent.item_flags |= DROPDEL // Just in case again, re-apply drop del now
 
 /datum/embedding/throwing_star/stamina/energy/process_effect(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, emp_cd))
 		return
 
@@ -196,15 +226,23 @@
 #define NINJA_MAX_DRAIN (0.4 * STANDARD_CELL_CHARGE)
 
 /atom/proc/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	return NONE
 
 /obj/item/mod/module/hacker/on_part_activation()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(mod.wearer, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(hack))
 
 /obj/item/mod/module/hacker/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(mod.wearer, COMSIG_LIVING_UNARMED_ATTACK)
 
 /obj/item/mod/module/hacker/proc/hack(mob/living/carbon/human/source, atom/target, proximity, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!LAZYACCESS(modifiers, RIGHT_CLICK) || !proximity)
@@ -213,6 +251,8 @@
 	return target.ninjadrain_act(mod.wearer, src)
 
 /obj/item/mod/module/hacker/proc/charge_message(atom/drained_atom, drain_amount)
+	procstart = null
+	src.procstart = null
 	if(drain_amount)
 		to_chat(mod.wearer, span_notice("Gained <B>[drain_amount]</B> units of energy from [drained_atom]."))
 	else
@@ -220,6 +260,8 @@
 
 //Security Records, Ninja objective This notifies the AI and sets everyone on arrest.
 /obj/machinery/computer/records/security/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(!ninja || !hacking_module)
 		return NONE
 	if(!can_hack(ninja, feedback = TRUE))
@@ -230,6 +272,8 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/computer/records/security/proc/ninjadrain_charge(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(!do_after(ninja, 20 SECONDS, src, extra_checks = CALLBACK(src, PROC_REF(can_hack), ninja), cog_icon = null))
 		return
 	for(var/datum/record/crew/target in GLOB.manifest.general)
@@ -244,6 +288,8 @@
 		objective.completed = TRUE
 
 /obj/machinery/computer/records/security/proc/can_hack(mob/living/hacker, feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (NOPOWER|BROKEN))
 		if(feedback && hacker)
 			balloon_alert(hacker, "can't hack!")
@@ -257,12 +303,16 @@
 
 //APC, this drains emaggs the apc and drains power to supply your modsuit
 /obj/machinery/power/apc/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(!ninja || !hacking_module)
 		return NONE
 	INVOKE_ASYNC(src, PROC_REF(ninjadrain_charge), ninja, hacking_module)
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/power/apc/proc/ninjadrain_charge(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	var/maxcapacity = FALSE //Safety check for batteries
 	var/drain = 0 //Drain amount from batteries
 	var/drain_total = 0
@@ -295,12 +345,16 @@
 
 //SMES, Drains power to supply your modsuit
 /obj/machinery/power/smes/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(!ninja || !hacking_module)
 		return NONE
 	INVOKE_ASYNC(src, PROC_REF(ninjadrain_charge), ninja, hacking_module)
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/power/smes/proc/ninjadrain_charge(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	var/maxcapacity = FALSE //Safety check for batteries
 	var/drain = 0 //Drain amount from batteries
 	var/drain_total = 0
@@ -325,12 +379,16 @@
 
 //CELL, Drains power, to supply your modsuit
 /obj/item/stock_parts/power_store/cell/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(!ninja || !hacking_module)
 		return NONE
 	INVOKE_ASYNC(src, PROC_REF(ninjadrain_charge), ninja, hacking_module)
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /obj/item/stock_parts/power_store/cell/proc/ninjadrain_charge(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	var/drain_total = 0
 	if(charge && !do_after(ninja, 3 SECONDS, target = src, cog_icon = null))
 		drain_total = charge
@@ -344,6 +402,8 @@
 
 //RD SERVER, Ninja objective will download the RnD files and destroy source code hard drive.
 /obj/machinery/rnd/server/master/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(!ninja || !hacking_module)
 		return NONE
 	// If the traitor theft objective is still present, this will destroy it...
@@ -356,6 +416,8 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/rnd/server/master/ninjadrain_charge(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(!do_after(ninja, 30 SECONDS, target = src, cog_icon = null))
 		return
 	overload_source_code_hdd()
@@ -368,6 +430,8 @@
 		objective.completed = TRUE
 
 /obj/machinery/rnd/server/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(!ninja || !hacking_module)
 		return NONE
 	to_chat(ninja, span_notice("Research notes detected. Corrupting data..."))
@@ -375,6 +439,8 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/rnd/server/proc/ninjadrain_charge(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(!do_after(ninja, 30 SECONDS, target = src, cog_icon = null))
 		return
 	stored_research.modify_points_all(0)
@@ -389,6 +455,8 @@
 
 //COMMUNICATIONS CONSOLE, Ninja objective hacking it summons random threat.
 /obj/machinery/computer/communications/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(!ninja || !hacking_module)
 		return NONE
 	if(hacking_module.communication_console_hack_success)
@@ -397,6 +465,8 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/computer/communications/proc/ninjadrain_charge(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(!try_hack_console(ninja))
 		return
 
@@ -410,6 +480,8 @@
 
 //AIRLOCK, Ninja objective. Hacking it forces the airlock open and emaggs it
 /obj/machinery/door/airlock/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(!ninja || !hacking_module)
 		return NONE
 	if(!operating && density && hasPower() && !(obj_flags & EMAGGED) && hacking_module.mod.subtract_charge(DEFAULT_CHARGE_DRAIN * 5))
@@ -427,12 +499,16 @@
 
 //WIRE, Drains power from powernet and supplies your modsuit
 /obj/structure/cable/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(!ninja || !hacking_module)
 		return NONE
 	INVOKE_ASYNC(src, PROC_REF(ninjadrain_charge), ninja, hacking_module)
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /obj/structure/cable/proc/ninjadrain_charge(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	var/maxcapacity = FALSE //Safety check
 	var/drain = 0 //Drain amount
 	var/drain_total = 0
@@ -462,6 +538,8 @@
 
 //MECH, Drains power from the mech to supply your modsuit.
 /obj/vehicle/sealed/mecha/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(!ninja || !hacking_module)
 		return NONE
 	to_chat(occupants, "[icon2html(src, occupants)][span_danger("Warning: Unauthorized access through sub-route 4, block H, detected.")]")
@@ -469,6 +547,8 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /obj/vehicle/sealed/mecha/proc/ninjadrain_charge(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	var/maxcapacity = FALSE //Safety check
 	var/drain = 0 //Drain amount
 	var/drain_total = 0
@@ -492,6 +572,8 @@
 
 //BORG, Ninja objective converts a borg to a syndicate version
 /mob/living/silicon/robot/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(!ninja || !hacking_module || (has_faction(ROLE_NINJA)))
 		return NONE
 
@@ -500,6 +582,8 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /mob/living/silicon/robot/proc/ninjadrain_charge(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(!do_after(ninja, 6 SECONDS, target = src, cog_icon = null))
 		return
 	spark_system.start()
@@ -521,6 +605,8 @@
 
 //CARBON MOBS, shoving causes 3 second knockdown
 /mob/living/carbon/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(!ninja || !hacking_module)
 		return NONE
 	//20 uses for a standard cell. 200 for high capacity cells.
@@ -532,11 +618,15 @@
 	return NONE
 
 /mob/living/carbon/proc/ninja_knockdown()
+	procstart = null
+	src.procstart = null
 	Knockdown(3 SECONDS)
 	set_jitter_if_lower(3 SECONDS)
 
 //CAMERAS, emps cameras disabling AI vision
 /obj/machinery/camera/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(isEmpProof(TRUE))
 		balloon_alert(ninja, "camera is shielded!")
 		return COMPONENT_CANCEL_ATTACK_CHAIN
@@ -549,6 +639,8 @@
 
 //BOTS, overloads them and causes a explosion
 /mob/living/basic/bot/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	to_chat(src, span_boldwarning("Your circutry suddenly begins heating up!"))
 	if(!do_after(ninja, 1.5 SECONDS, target = src, cog_icon = null))
 		return COMPONENT_CANCEL_ATTACK_CHAIN
@@ -563,6 +655,8 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /mob/living/basic/bot/medbot/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	var/static/list/death_cry = list(
 		MEDIBOT_VOICED_NO_SAD,
 		MEDIBOT_VOICED_OH_FUCK,
@@ -572,6 +666,8 @@
 
 //ENERGY WEAPONS, drains power from the weapon to supply your modsuit
 /obj/item/gun/energy/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(cell.charge == 0)
 		balloon_alert(ninja, "no energy!")
 		return COMPONENT_CANCEL_ATTACK_CHAIN
@@ -589,6 +685,8 @@
 
 //VENDING MACHINES, overload vending machines to throw its suppy at people
 /obj/machinery/vending/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(shoot_inventory)
 		balloon_alert(ninja, "already hacked!")
 		return COMPONENT_CANCEL_ATTACK_CHAIN
@@ -606,6 +704,8 @@
 
 //RECYCLER, emaggs the recycler disabling its safety
 /obj/machinery/recycler/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		balloon_alert(ninja, "already hacked!")
 		return COMPONENT_CANCEL_ATTACK_CHAIN
@@ -621,6 +721,8 @@
 
 //ELEVATOR CONTROLS//
 /obj/machinery/elevator_control_panel/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		balloon_alert(ninja, "already hacked!")
 		return COMPONENT_CANCEL_ATTACK_CHAIN
@@ -635,6 +737,8 @@
 
 //TRAM CONTROLS, overloads the tram causing tram malfunction event only once per round
 /obj/machinery/computer/tram_controls/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	var/datum/round_event/tram_malfunction/malfunction_event = locate(/datum/round_event/tram_malfunction) in SSevents.running
 	if(malfunction_event)
 		balloon_alert(ninja, "tram is already malfunctioning!")
@@ -661,18 +765,24 @@
 
 //WINDOOR, emaggs the door open
 /obj/machinery/door/window/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(!operating && density && hasPower() && !(obj_flags & EMAGGED) && hacking_module.mod.subtract_charge(DEFAULT_CHARGE_DRAIN * 5))
 		INVOKE_ASYNC(src, TYPE_PROC_REF(/atom, emag_act))
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 //BUTTONS, emaggs the button removing access requirements
 /obj/machinery/button/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	if(is_operational && !(obj_flags & EMAGGED))
 		emag_act(ninja)
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 //FIRELOCKS, forces the firelock open.
 /obj/machinery/door/firedoor/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	procstart = null
+	src.procstart = null
 	crack_open()
 
 #undef NINJA_MIN_DRAIN
@@ -699,12 +809,18 @@
 	var/accepted_type = /obj/item/energy_katana
 
 /obj/item/mod/module/weapon_recall/on_part_activation()
+	procstart = null
+	src.procstart = null
 	mod.wearer.add_traits(list(TRAIT_NOGUNS, TRAIT_TOSS_GUN_HARD), REF(src))
 
 /obj/item/mod/module/weapon_recall/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	mod.wearer.remove_traits(list(TRAIT_NOGUNS, TRAIT_TOSS_GUN_HARD), REF(src))
 
 /obj/item/mod/module/weapon_recall/on_use()
+	procstart = null
+	src.procstart = null
 	if(!linked_weapon)
 		var/obj/item/weapon_to_link = mod.wearer.is_holding_item_of_type(accepted_type)
 		if(!weapon_to_link)
@@ -730,11 +846,15 @@
 		recall_weapon()
 
 /obj/item/mod/module/weapon_recall/proc/set_weapon(obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	linked_weapon = weapon
 	RegisterSignal(linked_weapon, COMSIG_MOVABLE_PRE_IMPACT, PROC_REF(catch_weapon))
 	RegisterSignal(linked_weapon, COMSIG_QDELETING, PROC_REF(deleted_weapon))
 
 /obj/item/mod/module/weapon_recall/proc/recall_weapon(caught = FALSE)
+	procstart = null
+	src.procstart = null
 	linked_weapon.forceMove(get_turf(src))
 	var/alert = ""
 	if(mod.wearer.put_in_hands(linked_weapon))
@@ -754,6 +874,8 @@
 		balloon_alert(mod.wearer, alert)
 
 /obj/item/mod/module/weapon_recall/proc/catch_weapon(obj/item/source, atom/hit_atom, datum/thrownthing/thrownthing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!mod)
@@ -764,6 +886,8 @@
 	return COMPONENT_MOVABLE_IMPACT_NEVERMIND
 
 /obj/item/mod/module/weapon_recall/proc/deleted_weapon(obj/item/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	linked_weapon = null
@@ -779,6 +903,8 @@
 	use_energy_cost = DEFAULT_CHARGE_DRAIN * 0.5
 
 /obj/item/mod/module/dna_lock/reinforced/on_mod_activation(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. != MOD_CANCEL_ACTIVATE || !isliving(user) || user != mod.wearer)
 		return
@@ -791,6 +917,8 @@
 	living_user.gib(DROP_ALL_REMAINS)
 
 /obj/item/mod/module/dna_lock/reinforced/on_emp(datum/source, severity)
+	procstart = null
+	src.procstart = null
 	return
 
 //EMP Pulse - In addition to normal shielding, can also launch an EMP itself.
@@ -805,6 +933,8 @@
 	cooldown_time = 8 SECONDS
 
 /obj/item/mod/module/emp_shield/pulse/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/empulse.ogg', 60, TRUE)
 	empulse(src, heavy_range = 4, light_range = 6, emp_source = src)
 	drain_power(use_energy_cost)
@@ -840,10 +970,14 @@
 	var/list/energy_nets = list()
 
 /obj/item/mod/module/energy_net/on_part_deactivation(deleting)
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/energy_net/net as anything in energy_nets)
 		net.atom_destruction(ENERGY)
 
 /obj/item/mod/module/energy_net/on_select_use(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -857,10 +991,14 @@
 	drain_power(use_energy_cost)
 
 /obj/item/mod/module/energy_net/proc/add_net(obj/structure/energy_net/net)
+	procstart = null
+	src.procstart = null
 	energy_nets += net
 	RegisterSignal(net, COMSIG_QDELETING, PROC_REF(remove_net))
 
 /obj/item/mod/module/energy_net/proc/remove_net(obj/structure/energy_net/net)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	energy_nets -= net
 
@@ -878,15 +1016,21 @@
 	var/datum/weakref/net_module
 
 /obj/projectile/energy_net/Initialize(mapload, net_module)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.net_module = WEAKREF(net_module)
 
 /obj/projectile/energy_net/fire(setAngle)
+	procstart = null
+	src.procstart = null
 	if(firer)
 		line = firer.Beam(src, "net_beam", 'icons/obj/clothing/modsuit/mod_modules.dmi')
 	return ..()
 
 /obj/projectile/energy_net/on_hit(mob/living/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(target))
 		return
@@ -902,6 +1046,8 @@
 	net.buckle_mob(target, force = TRUE)
 
 /obj/projectile/energy_net/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(line)
 	return ..()
 
@@ -920,6 +1066,8 @@
 	buckle_prevents_pull = TRUE
 
 /obj/structure/energy_net/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/image/underlay = image(icon, "energynet_underlay")
 	underlay.layer = BELOW_MOB_LAYER
@@ -928,21 +1076,31 @@
 	ADD_TRAIT(src, TRAIT_DANGEROUS_BUCKLE, INNATE_TRAIT)
 
 /obj/structure/energy_net/play_attack_sound(damage, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	if(damage_type == BRUTE || damage_type == BURN)
 		playsound(src, 'sound/items/weapons/slash.ogg', 80, TRUE)
 
 /obj/structure/energy_net/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	for(var/mob/recovered_mob as anything in buckled_mobs)
 		recovered_mob.visible_message(span_notice("[recovered_mob] is recovered from the energy net!"), span_notice("You are recovered from the energy net!"), span_hear("You hear a grunt."))
 	return ..()
 
 /obj/structure/energy_net/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/structure/energy_net/user_buckle_mob(mob/living/buckled_mob, mob/user, check_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	return//We only want our target to be buckled
 
 /obj/structure/energy_net/user_unbuckle_mob(mob/living/buckled_mob, mob/living/user)
+	procstart = null
+	src.procstart = null
 	return//The net must be destroyed to free the target
 
 ///Adrenaline Boost - Stops all stuns the ninja is affected with, increases his speed.
@@ -967,17 +1125,23 @@
 	var/reagent_required_amount = 20
 
 /obj/item/mod/module/adrenaline_boost/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(reagent_required_amount)
 	reagents.add_reagent(reagent_required, reagent_required_amount)
 
 /obj/item/mod/module/adrenaline_boost/used()
+	procstart = null
+	src.procstart = null
 	if(!reagents.has_reagent(reagent_required, reagent_required_amount))
 		balloon_alert(mod.wearer, "no charge!")
 		return FALSE
 	return ..()
 
 /obj/item/mod/module/adrenaline_boost/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	if(IS_SPACE_NINJA(mod.wearer))
 		mod.wearer.say(pick_list_replacements(NINJA_FILE, "lines"), forced = type)
 	to_chat(mod.wearer, span_notice("You have used the adrenaline boost."))
@@ -989,20 +1153,28 @@
 	addtimer(CALLBACK(src, PROC_REF(boost_aftereffects), mod.wearer), 7 SECONDS)
 
 /obj/item/mod/module/adrenaline_boost/on_install()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(mod, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(try_boost))
 
 /obj/item/mod/module/adrenaline_boost/on_uninstall(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(mod, COMSIG_ATOM_ITEM_INTERACTION)
 
 /obj/item/mod/module/adrenaline_boost/proc/try_boost(source, mob/user, obj/item/attacking_item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(charge_boost(attacking_item))
 		return COMPONENT_NO_AFTERATTACK
 	return NONE
 
 /obj/item/mod/module/adrenaline_boost/proc/charge_boost(obj/item/attacking_item)
+	procstart = null
+	src.procstart = null
 	if(!attacking_item.is_open_container())
 		return FALSE
 	if(reagents.has_reagent(reagent_required, reagent_required_amount))
@@ -1014,6 +1186,8 @@
 	return TRUE
 
 /obj/item/mod/module/adrenaline_boost/proc/boost_aftereffects(mob/affected_mob)
+	procstart = null
+	src.procstart = null
 	if(!affected_mob)
 		return
 	reagents.trans_to(affected_mob, reagents.total_volume)

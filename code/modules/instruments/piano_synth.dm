@@ -11,11 +11,15 @@
 	var/mouse_playable = TRUE
 
 /obj/item/instrument/piano_synth/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	song.allowed_instrument_ids = SSinstruments.synthesizer_instrument_ids
 	AddComponent(/datum/component/shell, list(new circuit_type), shell_capacity)
 
 /obj/item/instrument/piano_synth/attack_animal(mob/living/simple_animal/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!mouse_playable || !ismouse(user))
 		return ..()
 	song.ui_interact(user)
@@ -42,6 +46,8 @@
 	mouse_playable = FALSE
 
 /obj/item/instrument/piano_synth/headphones/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 	RegisterSignal(src, COMSIG_INSTRUMENT_START, PROC_REF(update_icon_for_playing_music))
@@ -49,10 +55,14 @@
 
 // Called by a component signal to update musical note VFX for songs playing while worn.
 /obj/item/instrument/piano_synth/headphones/proc/update_icon_for_playing_music(datum/source, datum/starting_song, atom/player)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_appearance()
 
 /obj/item/instrument/piano_synth/headphones/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[initial(icon_state)][song?.playing ? "_on" : null]"
 
@@ -106,6 +116,8 @@
 	var/obj/item/instrument/piano_synth/synth
 
 /obj/item/circuit_component/synth/populate_ports()
+	procstart = null
+	src.procstart = null
 	song = add_input_port("Song", PORT_TYPE_LIST(PORT_TYPE_STRING), trigger = PROC_REF(import_song))
 	play = add_input_port("Play", PORT_TYPE_SIGNAL, trigger = PROC_REF(start_playing))
 	stop = add_input_port("Stop", PORT_TYPE_SIGNAL, trigger = PROC_REF(stop_playing))
@@ -124,6 +136,8 @@
 	stopped_playing = add_output_port("Stopped Playing", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/synth/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	synth = shell
 	RegisterSignal(synth, COMSIG_INSTRUMENT_START, PROC_REF(on_song_start))
@@ -131,6 +145,8 @@
 	RegisterSignal(synth, COMSIG_INSTRUMENT_SHOULD_STOP_PLAYING, PROC_REF(continue_if_autoplaying))
 
 /obj/item/circuit_component/synth/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	if(synth.song.music_player == src)
 		synth.song.stop_playing()
 	UnregisterSignal(synth, list(COMSIG_INSTRUMENT_START, COMSIG_INSTRUMENT_END, COMSIG_INSTRUMENT_SHOULD_STOP_PLAYING))
@@ -138,9 +154,13 @@
 	return ..()
 
 /obj/item/circuit_component/synth/proc/start_playing(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	synth.song.start_playing(src)
 
 /obj/item/circuit_component/synth/proc/on_song_start(datum/source, datum/starting_song, atom/player)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	is_playing.set_output(TRUE)
 	started_playing.set_output(COMPONENT_SIGNAL)
@@ -148,46 +168,70 @@
 		synth.song.set_bpm(beats_per_min.value)
 
 /obj/item/circuit_component/synth/proc/continue_if_autoplaying(datum/source, atom/music_player)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(music_player == src)
 		return IGNORE_INSTRUMENT_CHECKS
 
 /obj/item/circuit_component/synth/proc/stop_playing(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	synth.song.stop_playing()
 
 /obj/item/circuit_component/synth/proc/on_song_end()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	is_playing.set_output(FALSE)
 	stopped_playing.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/synth/proc/import_song()
+	procstart = null
+	src.procstart = null
 	synth.song.ParseSong(new_song = song.value)
 
 /obj/item/circuit_component/synth/proc/set_repetitions()
+	procstart = null
+	src.procstart = null
 	synth.song.set_repeats(repetitions.value)
 
 /obj/item/circuit_component/synth/proc/set_bpm()
+	procstart = null
+	src.procstart = null
 	if (beats_per_min.value)
 		synth.song.set_bpm(beats_per_min.value)
 
 /obj/item/circuit_component/synth/proc/set_instrument()
+	procstart = null
+	src.procstart = null
 	synth.song.set_instrument(selected_instrument.value)
 
 /obj/item/circuit_component/synth/proc/set_volume()
+	procstart = null
+	src.procstart = null
 	synth.song.set_volume(volume.value)
 
 /obj/item/circuit_component/synth/proc/set_dropoff()
+	procstart = null
+	src.procstart = null
 	synth.song.set_dropoff_volume(volume_dropoff.value)
 
 /obj/item/circuit_component/synth/proc/set_note_shift()
+	procstart = null
+	src.procstart = null
 	synth.song.note_shift = clamp(note_shift.value, synth.song.note_shift_min, synth.song.note_shift_max)
 
 /obj/item/circuit_component/synth/proc/set_sustain_mode()
+	procstart = null
+	src.procstart = null
 	if(!(sustain_mode.value in SSinstruments.note_sustain_modes))
 		return
 	synth.song.sustain_mode = sustain_mode.value
 
 /obj/item/circuit_component/synth/proc/set_sustain_value()
+	procstart = null
+	src.procstart = null
 	switch(synth.song.sustain_mode)
 		if(SUSTAIN_LINEAR)
 			synth.song.set_linear_falloff_duration(sustain_value.value)
@@ -195,6 +239,8 @@
 			synth.song.set_exponential_drop_rate(sustain_value.value)
 
 /obj/item/circuit_component/synth/proc/set_sustain_decay()
+	procstart = null
+	src.procstart = null
 	synth.song.full_sustain_held_note = !!synth.song.full_sustain_held_note
 
 /obj/item/circuit_component/synth/headphones

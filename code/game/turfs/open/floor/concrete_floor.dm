@@ -31,6 +31,8 @@
 	)
 
 /turf/open/floor/concrete/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(has_variation)
 		icon_state = "[base_icon_state]_[rand(1,4)]"
@@ -38,9 +40,13 @@
 	update_icon(UPDATE_ICON_STATE)
 
 /turf/open/floor/concrete/broken_states()
+	procstart = null
+	src.procstart = null
 	return list("concdam_1", "concdam_2", "concdam_3", "concdam_4")
 
 /turf/open/floor/concrete/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("[p_They()] look[p_s()] like you could smash [p_them()] with <b>[tool_behaviour_name(TOOL_MINING)]</b>.")
 	switch(harden_lvl)
@@ -53,16 +59,22 @@
 	return
 
 /turf/open/floor/concrete/add_footprint(mob/living/carbon/human/walker, movement_direction)
+	procstart = null
+	src.procstart = null
 	if (harden_lvl <= 0.8)
 		..()
 
 /turf/open/floor/concrete/clear_footprints()
+	procstart = null
+	src.procstart = null
 	if (harden_lvl <= 0.8)
 		..()
 	else
 		update_appearance()
 
 /turf/open/floor/concrete/attackby(obj/item/I, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -78,12 +90,18 @@
 	return FALSE
 
 /turf/open/floor/concrete/try_replace_tile(obj/item/stack/tile/T, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/open/floor/concrete/pry_tile(obj/item/I, mob/user, silent)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/open/floor/concrete/update_icon(updates=ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -98,12 +116,16 @@
 	return
 
 /turf/open/floor/concrete/proc/check_harden()
+	procstart = null
+	src.procstart = null
 	harden_lvl = clamp(harden_lvl, 0, 1)
 	if(harden_lvl < 1)
 		START_PROCESSING(SSobj, src)
 		update_icon(UPDATE_ICON_STATE)
 
 /turf/open/floor/concrete/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/time_per_tick = seconds_per_tick SECONDS
 	harden_lvl = min(harden_lvl + (time_per_tick / time_to_harden), 1)
 	if(harden_lvl == 1)
@@ -111,6 +133,8 @@
 	update_icon(UPDATE_ICON_STATE)
 
 /turf/open/floor/concrete/proc/handle_shape(mob/user)
+	procstart = null
+	src.procstart = null
 	if(harden_lvl >= 0.8)
 		return FALSE
 	var/list/opts = list()
@@ -138,6 +162,8 @@
 	return TRUE
 
 /turf/open/floor/concrete/proc/check_menu(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated || !user.Adjacent(src))

@@ -9,6 +9,8 @@
 GLOBAL_LIST_INIT_TYPED(chasm_detritus_types, /datum/chasm_detritus, init_chasm_detritus())
 
 /proc/init_chasm_detritus()
+	procstart = null
+	src.procstart = null
 	//as the name suggests, init_subtypes_w_path_keys doesn't init the prototype, so here we go.
 	var/list/glob_list = list()
 	glob_list[/datum/chasm_detritus] = new /datum/chasm_detritus
@@ -44,6 +46,8 @@ GLOBAL_LIST_INIT_TYPED(chasm_detritus_types, /datum/chasm_detritus, init_chasm_d
 	)
 
 /datum/chasm_detritus/proc/dispense_detritus(atom/spawn_location, atom/fishing_spot)
+	procstart = null
+	src.procstart = null
 	if(prob(default_contents_chance))
 		var/default_spawn = pick(default_contents[default_contents_key])
 		return new default_spawn(spawn_location)
@@ -51,10 +55,14 @@ GLOBAL_LIST_INIT_TYPED(chasm_detritus_types, /datum/chasm_detritus, init_chasm_d
 
 /// Returns the chosen detritus from the given list of things to choose from
 /datum/chasm_detritus/proc/determine_detritus(list/chasm_stuff)
+	procstart = null
+	src.procstart = null
 	return pick(chasm_stuff)
 
 /// Returns an object which is currently inside of a nearby chasm.
 /datum/chasm_detritus/proc/find_chasm_contents(turf/fishing_spot, turf/fisher_turf)
+	procstart = null
+	src.procstart = null
 	var/list/chasm_contents = get_chasm_contents(fishing_spot)
 
 	if(!length(chasm_contents))
@@ -66,6 +74,8 @@ GLOBAL_LIST_INIT_TYPED(chasm_detritus_types, /datum/chasm_detritus, init_chasm_d
 	return detritus
 
 /datum/chasm_detritus/proc/get_chasm_contents(turf/fishing_spot)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/obj/effect/abstract/chasm_storage/storage in range(5, fishing_spot))
 		for (var/thing in storage.contents)
@@ -79,6 +89,8 @@ GLOBAL_LIST_INIT_TYPED(chasm_detritus_types, /datum/chasm_detritus, init_chasm_d
 	var/chasm_storage_restricted_type = /obj
 
 /datum/chasm_detritus/restricted/get_chasm_contents(turf/fishing_spot)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/obj/effect/abstract/chasm_storage/storage in range(5, fishing_spot))
 		for (var/thing in storage.contents)
@@ -97,6 +109,8 @@ GLOBAL_LIST_INIT_TYPED(chasm_detritus_types, /datum/chasm_detritus, init_chasm_d
 
 /// This also includes all mobs fallen into chasms, regardless of distance
 /datum/chasm_detritus/restricted/bodies/get_chasm_contents(turf/fishing_spot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. |= GLOB.chasm_fallen_mobs[get_chasm_category(fishing_spot)]
 
@@ -104,6 +118,8 @@ GLOBAL_LIST_INIT_TYPED(chasm_detritus_types, /datum/chasm_detritus, init_chasm_d
 /// The first sentient body found in the list of contents is returned, otherwise
 /// if none are sentient choose randomly.
 /datum/chasm_detritus/restricted/bodies/determine_detritus(list/chasm_stuff)
+	procstart = null
+	src.procstart = null
 	for(var/mob/fallen_mob as anything in chasm_stuff)
 		if(fallen_mob.mind)
 			return fallen_mob

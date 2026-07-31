@@ -23,6 +23,8 @@
 	var/outer_plating_amount
 
 /datum/component/construction/mecha/spawn_result()
+	procstart = null
+	src.procstart = null
 	if(!result)
 		return
 	// Remove default mech power cell, as we replace it with a new one.
@@ -39,6 +41,8 @@
 // Override if the mech needs an entirely custom process (See HONK mech)
 // Otherwise override specific steps as needed (Ripley, Clarke, Phazon)
 /datum/component/construction/mecha/proc/get_steps()
+	procstart = null
+	src.procstart = null
 	var/list/all_steps = \
 		get_frame_steps() + \
 		get_circuit_steps() + \
@@ -66,10 +70,14 @@
 	return all_steps
 
 /datum/component/construction/mecha/Initialize()
+	procstart = null
+	src.procstart = null
 	steps ||= get_steps()
 	return ..()
 
 /datum/component/construction/unordered/mecha_chassis/custom_action(obj/item/I, mob/living/user, typepath)
+	procstart = null
+	src.procstart = null
 	. = user.transferItemToLoc(I, parent)
 	if(.)
 		var/atom/parent_atom = parent
@@ -78,6 +86,8 @@
 		qdel(I)
 
 /datum/component/construction/unordered/mecha_chassis/spawn_result()
+	procstart = null
+	src.procstart = null
 	var/atom/parent_atom = parent
 	parent_atom.icon = 'icons/mob/rideables/mech_construction.dmi'
 	parent_atom.set_density(TRUE)
@@ -86,6 +96,8 @@
 
 // Default proc for the first steps of mech construction.
 /datum/component/construction/mecha/proc/get_frame_steps()
+	procstart = null
+	src.procstart = null
 	return list(
 		list(
 			"key" = TOOL_WRENCH,
@@ -119,6 +131,8 @@
 // Default proc for the circuit board steps of a mech.
 // Second set of steps by default.
 /datum/component/construction/mecha/proc/get_circuit_steps()
+	procstart = null
+	src.procstart = null
 	return list(
 		list(
 			"key" = circuit_control,
@@ -155,6 +169,8 @@
 // Default proc for weapon circuitboard steps
 // Used by combat mechs
 /datum/component/construction/mecha/proc/get_circuit_weapon_steps()
+	procstart = null
+	src.procstart = null
 	if(!circuit_weapon)
 		return list()
 
@@ -180,6 +196,8 @@
 // Default proc for stock part installation
 // Third set of steps by default
 /datum/component/construction/mecha/proc/get_stockpart_steps()
+	procstart = null
+	src.procstart = null
 	var/prevstep_text = circuit_weapon ? "Weapon control module is secured" : "Peripherals control module is secured"
 	prevstep_text += ", and the <b>scanning module</b> can be added."
 	var/backward_text = circuit_weapon ? "unsecured weapon control module" : "unsecured peripheral module"
@@ -249,6 +267,8 @@
 // Default proc for inner armor plating
 // Fourth set of steps by default
 /datum/component/construction/mecha/proc/get_inner_plating_steps()
+	procstart = null
+	src.procstart = null
 	var/list/first_step
 	if(ispath(inner_plating, /obj/item/stack/sheet))
 		first_step = list(
@@ -293,6 +313,8 @@
 // Default proc for outer armor plating
 // Fifth set of steps by default
 /datum/component/construction/mecha/proc/get_outer_plating_steps()
+	procstart = null
+	src.procstart = null
 	var/list/first_step
 	if(ispath(outer_plating, /obj/item/stack/sheet))
 		first_step = list(
@@ -336,6 +358,8 @@
 
 /// Generic mech construction messages
 /datum/component/construction/mecha/custom_action(obj/item/I, mob/living/user, diff)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 
@@ -378,6 +402,8 @@
 	outer_plating_amount = 10
 
 /datum/component/construction/mecha/ripley/get_outer_plating_steps()
+	procstart = null
+	src.procstart = null
 	// we yoink the first step of adding plating and modify the flavor a bit
 	var/list/first_step = ..()[1]
 	first_step["desc"] = "Plating is welded, and 10 <b>rods</b> can be used to install the cockpit."
@@ -423,6 +449,8 @@
 	outer_plating_amount=1
 
 /datum/component/construction/mecha/gygax/action(datum/source, atom/used_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	ASYNC //This proc will never actually sleep, it calls do_after with a time of 0.
 		. = check_step(used_atom, user)
 	return .
@@ -451,6 +479,8 @@
 	outer_plating_amount = 5
 
 /datum/component/construction/mecha/clarke/get_frame_steps()
+	procstart = null
+	src.procstart = null
 	return list(
 		list(
 			"key" = /obj/item/stack/conveyor,
@@ -602,10 +632,14 @@
 	)
 
 /datum/component/construction/mecha/honker/get_steps()
+	procstart = null
+	src.procstart = null
 	return steps
 
 // HONK doesn't have any construction step icons, so we just set an icon once.
 /datum/component/construction/mecha/honker/update_parent(step_index)
+	procstart = null
+	src.procstart = null
 	if(step_index == 1)
 		var/atom/parent_atom = parent
 		parent_atom.icon = 'icons/mob/rideables/mech_construct.dmi'
@@ -613,6 +647,8 @@
 	return ..()
 
 /datum/component/construction/mecha/honker/custom_action(obj/item/I, mob/living/user, diff)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/bikehorn))
 		playsound(parent, 'sound/items/bikehorn.ogg', 50, TRUE)
 		user.balloon_alert_to_hearers("*HONK*")
@@ -675,6 +711,8 @@
 	var/obj/item/required_core = /obj/item/assembly/signaler/anomaly/ectoplasm
 
 /datum/component/construction/mecha/phazon/custom_action(obj/item/I, mob/living/user, diff)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 
@@ -685,6 +723,8 @@
 	return TRUE
 
 /datum/component/construction/mecha/phazon/get_stockpart_steps()
+	procstart = null
+	src.procstart = null
 	return list(
 		list(
 			"key" = /obj/item/stock_parts/scanning_module,
@@ -776,6 +816,8 @@
 	)
 
 /datum/component/construction/mecha/phazon/get_outer_plating_steps()
+	procstart = null
+	src.procstart = null
 	return ..() + list(
 		list(
 			"key" = required_core,

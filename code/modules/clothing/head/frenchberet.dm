@@ -5,5 +5,7 @@
 	clothing_traits = list(TRAIT_GARLIC_BREATH)
 
 /obj/item/clothing/head/beret/frenchberet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/speechmod, replacements = strings("french_replacement.json", "french"), end_string = list(" Honh honh honh!"," Honh!"," Zut Alors!"), end_string_chance = 3, slots = ITEM_SLOT_HEAD)

@@ -24,6 +24,8 @@
 	var/datum/weakref/counter_appearance
 
 /obj/item/circuit_component/counter_overlay/populate_ports()
+	procstart = null
+	src.procstart = null
 	counter_number = add_input_port("Displayed Number", PORT_TYPE_NUMBER)
 
 	signal_update = add_input_port("Update Overlay", PORT_TYPE_SIGNAL)
@@ -32,11 +34,15 @@
 	image_pixel_y = add_input_port("Y-Axis Shift", PORT_TYPE_NUMBER)
 
 /obj/item/circuit_component/counter_overlay/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	if(istype(shell, /obj/item/organ/cyberimp/bci))
 		bci = shell
 		RegisterSignal(shell, COMSIG_ORGAN_REMOVED, PROC_REF(on_organ_removed))
 
 /obj/item/circuit_component/counter_overlay/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	bci = null
 	for(var/datum/weakref/number in numbers)
 		var/datum/atom_hud/number_overlay = number?.resolve()
@@ -48,6 +54,8 @@
 	UnregisterSignal(shell, COMSIG_ORGAN_REMOVED)
 
 /obj/item/circuit_component/counter_overlay/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!bci)
 		return
 
@@ -110,6 +118,8 @@
 		numbers += WEAKREF(number_alt_appearance)
 
 /obj/item/circuit_component/counter_overlay/proc/on_organ_removed(datum/source, mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/datum/weakref/number in numbers)
 		var/datum/atom_hud/number_overlay = number?.resolve()
@@ -121,6 +131,8 @@
 	QDEL_NULL(overlay)
 
 /obj/item/circuit_component/counter_overlay/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/datum/weakref/number in numbers)
 		var/datum/atom_hud/number_overlay = number?.resolve()
 		QDEL_NULL(number_overlay)

@@ -1,4 +1,6 @@
 /proc/get_abductor_console(team_number)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/abductor/console/C as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/abductor/console))
 		if(C.team_number == team_number)
 			return C
@@ -32,10 +34,14 @@
 	var/list/possible_gear
 
 /obj/machinery/abductor/console/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	possible_gear = get_abductor_gear()
 
 /obj/machinery/abductor/console/Destroy()
+	procstart = null
+	src.procstart = null
 	if(gizmo)
 		gizmo.console = null
 		gizmo = null
@@ -54,6 +60,8 @@
  * get_abductor_gear: Returns a list of a filtered abductor gear sorted by categories
  */
 /obj/machinery/abductor/console/proc/get_abductor_gear()
+	procstart = null
+	src.procstart = null
 	var/list/filtered_modules = list()
 	for(var/path in GLOB.abductor_gear)
 		var/datum/abductor_gear/AG = new path
@@ -63,6 +71,8 @@
 	return filtered_modules
 
 /obj/machinery/abductor/console/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -72,20 +82,28 @@
 			TeleporterSend()
 
 /obj/machinery/abductor/console/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(!isabductor(user) && !isobserver(user))
 		return UI_CLOSE
 	return ..()
 
 /obj/machinery/abductor/console/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.physical_state
 
 /obj/machinery/abductor/console/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AbductorConsole", name)
 		ui.open()
 
 /obj/machinery/abductor/console/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["categories"] = list()
 	for(var/category in possible_gear)
@@ -112,6 +130,8 @@
 	return data
 
 /obj/machinery/abductor/console/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["compactMode"] = compact_mode
 	data["experiment"] = experiment ? TRUE : FALSE
@@ -128,6 +148,8 @@
 	return data
 
 /obj/machinery/abductor/console/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -168,19 +190,27 @@
 			return TRUE
 
 /obj/machinery/abductor/console/proc/TeleporterRetrieve()
+	procstart = null
+	src.procstart = null
 	var/mob/living/marked = gizmo.marked_target_weakref?.resolve()
 	if(pad && marked)
 		pad.Retrieve(marked)
 
 /obj/machinery/abductor/console/proc/TeleporterSend()
+	procstart = null
+	src.procstart = null
 	if(pad)
 		pad.Send()
 
 /obj/machinery/abductor/console/proc/FlipVest()
+	procstart = null
+	src.procstart = null
 	if(vest)
 		vest.flip_mode()
 
 /obj/machinery/abductor/console/proc/SelectDisguise(remote = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/disguises2 = list()
 	for(var/name in disguises)
 		var/datum/icon_snapshot/snap = disguises[name]
@@ -199,6 +229,8 @@
 		vest.SetDisguise(chosen)
 
 /obj/machinery/abductor/console/proc/SetDroppoint(turf/open/location,user)
+	procstart = null
+	src.procstart = null
 	if(!istype(location))
 		to_chat(user, span_warning("That place is not safe for the specimen."))
 		return
@@ -208,6 +240,8 @@
 		to_chat(user, span_notice("Location marked as test subject release point."))
 
 /obj/machinery/abductor/console/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!team_number)
 		return
@@ -229,6 +263,8 @@
 			c.console = src
 
 /obj/machinery/abductor/console/proc/AddSnapshot(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	if(target.can_block_magic(MAGIC_RESISTANCE_MIND, charge_cost = 0))
 		say("Unable to get a proper scan of subject! Something is shielding [target]'s mind!")
 		return
@@ -244,6 +280,8 @@
 	disguises[entry.name] = entry
 
 /obj/machinery/abductor/console/proc/AddGizmo(obj/item/abductor/gizmo/G)
+	procstart = null
+	src.procstart = null
 	if(G == gizmo && G.console == src)
 		return FALSE
 
@@ -255,6 +293,8 @@
 	return TRUE
 
 /obj/machinery/abductor/console/proc/AddVest(obj/item/clothing/suit/armor/abductor/vest/V)
+	procstart = null
+	src.procstart = null
 	if(vest == V)
 		return FALSE
 
@@ -267,6 +307,8 @@
 	return TRUE
 
 /obj/machinery/abductor/console/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/abductor/gizmo) && AddGizmo(tool))
 		to_chat(user, span_notice("You link the tool to the console."))
 		return ITEM_INTERACT_SUCCESS
@@ -278,6 +320,8 @@
 	return NONE
 
 /obj/machinery/abductor/console/proc/Dispense(items_list, cost=1)
+	procstart = null
+	src.procstart = null
 	if(experiment && experiment.credits >= cost)
 		experiment.credits -=cost
 		say("Incoming supply!")

@@ -49,25 +49,37 @@
 
 /// Zombies do not stabilize body temperature they are the walking dead and are cold blooded
 /datum/species/zombie/body_temperature_core(mob/living/carbon/human/humi, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/species/zombie/check_roundstart_eligible()
+	procstart = null
+	src.procstart = null
 	if(check_holidays(HALLOWEEN))
 		return TRUE
 	return ..()
 
 /datum/species/zombie/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "Zombies are undead, and thus completely immune to any environmental hazard, or any physical threat besides blunt force trauma and burns. \
 		Their limbs are easy to pop off their joints, but they can somehow just slot them back in."
 
 /datum/species/zombie/get_species_description()
+	procstart = null
+	src.procstart = null
 	return "A rotting zombie! They descend upon Space Station Thirteen Every year to spook the crew! \"Sincerely, the Zombies!\""
 
 /datum/species/zombie/get_species_lore()
+	procstart = null
+	src.procstart = null
 	return list("Zombies have long lasting beef with Botanists. Their last incident involving a lawn with defensive plants has left them very unhinged.")
 
 // Override for the default temperature perks, so we can establish that they don't care about temperature very much
 /datum/species/zombie/create_pref_temperature_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 
 	to_add += list(list(
@@ -131,6 +143,8 @@
 	var/zombie_hand = /obj/item/mutant_hand/zombie
 
 /datum/species/zombie/infectious/on_species_gain(mob/living/carbon/human/new_zombie, datum/species/old_species, pref_load, regenerate_icons)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new_zombie.set_combat_mode(TRUE)
 	// Needs to be added after combat mode is set
@@ -160,6 +174,8 @@
 	)
 
 /datum/species/zombie/infectious/on_species_loss(mob/living/carbon/human/was_zombie, datum/species/new_species, pref_load)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(was_zombie, TRAIT_COMBAT_MODE_LOCK, SPECIES_TRAIT)
 	qdel(was_zombie.GetComponent(/datum/component/mutant_hands))
@@ -167,9 +183,13 @@
 	was_zombie.physiology.stamina_mod /= 0.33
 
 /datum/species/zombie/infectious/check_roundstart_eligible()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /datum/species/zombie/infectious/spec_stun(mob/living/carbon/human/H,amount)
+	procstart = null
+	src.procstart = null
 	return min(2 SECONDS, amount)
 
 // Weaker subtype - less healing, weaker attacks, etc
@@ -181,10 +201,14 @@
 	zombie_hand = /obj/item/mutant_hand/zombie/weak
 
 /datum/species/zombie/infectious/mindless/on_species_gain(mob/living/carbon/human/new_zombie, datum/species/old_species, pref_load, regenerate_icons)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new_zombie.add_movespeed_modifier(/datum/movespeed_modifier/mindless_zombie)
 
 /datum/species/zombie/infectious/mindless/on_species_loss(mob/living/carbon/human/was_zombie, datum/species/new_species, pref_load)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	was_zombie.remove_movespeed_modifier(/datum/movespeed_modifier/mindless_zombie)
 

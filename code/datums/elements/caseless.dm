@@ -9,6 +9,8 @@
 	var/reusable = FALSE
 
 /datum/element/caseless/Attach(datum/target, reusable = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isammocasing(target))
 		return ELEMENT_INCOMPATIBLE
@@ -18,6 +20,8 @@
 	RegisterSignal(target, COMSIG_FIRE_CASING, PROC_REF(on_fired_casing))
 
 /datum/element/caseless/proc/on_ready_projectile(obj/item/ammo_casing/shell, atom/target, mob/living/user, quiet, zone_override, atom/fired_from)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/projectile/proj = shell.loaded_projectile
 	if(isnull(proj))
@@ -27,6 +31,8 @@
 	proj.AddElement(/datum/element/projectile_drop, shell.type)
 
 /datum/element/caseless/proc/on_fired_casing(obj/item/ammo_casing/shell, atom/target, mob/living/user, fired_from, randomspread, spread, zone_override, params, distro, obj/projectile/proj)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isgun(fired_from))

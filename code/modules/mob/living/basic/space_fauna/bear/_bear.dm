@@ -42,6 +42,8 @@
 	var/armored = FALSE
 
 /mob/living/basic/bear/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_SPACEWALK, TRAIT_SWIMMER, TRAIT_FENCE_CLIMBER, TRAIT_SNOWSTORM_IMMUNE), INNATE_TRAIT)
 	AddElement(/datum/element/ai_retaliate)
@@ -49,6 +51,8 @@
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_BEAR, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /mob/living/basic/bear/Login()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !client)
 		return FALSE
@@ -56,11 +60,15 @@
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/bear)
 
 /mob/living/basic/bear/update_icons()
+	procstart = null
+	src.procstart = null
 	..()
 	if(armored)
 		add_overlay("armor_bear")
 
 /mob/living/basic/bear/proc/extract_combs(obj/structure/beebox/hive)
+	procstart = null
+	src.procstart = null
 	if(!length(hive.honeycombs))
 		return
 	var/obj/item/food/honeycomb/honey_food = pick_n_take(hive.honeycombs)
@@ -97,6 +105,8 @@
 	gold_core_spawnable = NO_SPAWN
 
 /mob/living/basic/bear/snow/ancient/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_GODMODE, INNATE_TRAIT)
 
@@ -143,6 +153,8 @@
 	custom_materials = list(/datum/material/meat = MEATSLAB_MATERIAL_AMOUNT * 5)
 
 /mob/living/basic/bear/butter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddComponent(/datum/component/regenerator,\
@@ -156,13 +168,17 @@
 	)
 	AddElement(/datum/element/consumable_mob, reagents_list = on_consume)
 
-/mob/living/basic/bear/butter/attack_hand(mob/living/user, list/modifiers) //Borrowed code from Cak, feeds people if they hit you. More nutriment but less vitamin to represent BUTTER.
+/mob/living/basic/bear/butter/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null //Borrowed code from Cak, feeds people if they hit you. More nutriment but less vitamin to represent BUTTER.
 	. = ..()
 	if(user.combat_mode && user.reagents && !stat)
 		user.reagents.add_reagent(/datum/reagent/consumable/nutriment, 1)
 		user.reagents.add_reagent(/datum/reagent/consumable/nutriment/vitamin, 0.1)
 
-/mob/living/basic/bear/butter/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter) //Borrowed code from Cak, allows the brain used to actually control the bear.
+/mob/living/basic/bear/butter/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null //Borrowed code from Cak, allows the brain used to actually control the bear.
 	. = ..()
 	var/obj/item/organ/brain/candidate = locate(/obj/item/organ/brain) in contents
 	if(!candidate || !candidate.brainmob || !candidate.brainmob.mind)
@@ -179,7 +195,9 @@
 		to_chat(src, span_notice("Your name is now <b>[new_name]</b>!"))
 		name = new_name
 
-/mob/living/basic/bear/butter/UnarmedAttack(atom/target, proximity_flag, list/modifiers) //Makes the butter bear's attacks against vertical targets slip said targets
+/mob/living/basic/bear/butter/UnarmedAttack(atom/target, proximity_flag, list/modifiers)
+	procstart = null
+	src.procstart = null //Makes the butter bear's attacks against vertical targets slip said targets
 	. = ..()
 	if(!. || !isliving(target))
 		return

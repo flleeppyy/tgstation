@@ -1,4 +1,6 @@
 /datum/unit_test/spawn_humans/Run()
+	procstart = null
+	src.procstart = null
 	var/locs = block(run_loc_floor_bottom_left, run_loc_floor_top_right)
 
 	for(var/I in 1 to 5)
@@ -10,6 +12,8 @@
 /datum/unit_test/human_default_traits
 
 /datum/unit_test/human_default_traits/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/dummy = allocate(/mob/living/carbon/human/consistent)
 	TEST_ASSERT(!HAS_TRAIT_FROM(dummy, TRAIT_AGEUSIA, NO_TONGUE_TRAIT), "Dummy has ageusia on init, when it should've been removed by its default tongue.")
 	TEST_ASSERT(!dummy.is_blind_from(NO_EYES), "Dummy is blind on init,  when it should've been removed by its default eyes.")
@@ -19,6 +23,8 @@
 /datum/unit_test/many_armed_humans
 
 /datum/unit_test/many_armed_humans/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/dummy = allocate(/mob/living/carbon/human/consistent)
 	dummy.change_number_of_hands(4)
 
@@ -26,6 +32,8 @@
 /datum/unit_test/human_bodypart_order
 
 /datum/unit_test/human_bodypart_order/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/dummy = allocate(/mob/living/carbon/human/consistent)
 	var/list/obj/item/bodypart/bodyparts = dummy.get_bodyparts()
 	TEST_ASSERT(bodyparts[1].body_zone == BODY_ZONE_CHEST, "First bodypart in bodyparts list is not the chest, this is important for human rendering")

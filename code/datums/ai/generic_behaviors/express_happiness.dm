@@ -30,6 +30,8 @@
 	)
 
 /datum/bt_node/ai_behavior/express_happiness/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(!SPT_PROB(emote_probability, seconds_per_tick))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_SUCCEEDED
 

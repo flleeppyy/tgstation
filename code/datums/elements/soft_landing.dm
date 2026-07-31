@@ -7,17 +7,23 @@
 	element_flags = ELEMENT_DETACH_ON_HOST_DESTROY // Detach for turfs
 
 /datum/element/soft_landing/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
 	RegisterSignal(target, COMSIG_ATOM_INTERCEPT_Z_FALL, PROC_REF(intercept_z_fall))
 
 /datum/element/soft_landing/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_ATOM_INTERCEPT_Z_FALL)
 
 ///signal called by the stat of the target changing
 /datum/element/soft_landing/proc/intercept_z_fall(atom/soft_object, falling_movables, levels)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/turf/falling_spot = get_turf(soft_object)

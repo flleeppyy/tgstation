@@ -29,6 +29,8 @@
 
 
 /datum/antagonist/ert/on_gain()
+	procstart = null
+	src.procstart = null
 	if(random_names)
 		update_name()
 	if(forge_objectives_for_ert)
@@ -38,13 +40,19 @@
 	. = ..()
 
 /datum/antagonist/ert/get_team()
+	procstart = null
+	src.procstart = null
 	return ert_team
 
 /datum/antagonist/ert/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name_source = GLOB.last_names
 
 /datum/antagonist/ert/proc/update_name()
+	procstart = null
+	src.procstart = null
 	owner.current.fully_replace_character_name(owner.current.real_name,"[role] [pick(name_source)]")
 
 /datum/antagonist/ert/official
@@ -56,6 +64,8 @@
 	outfit = /datum/outfit/centcom/centcom_official
 
 /datum/antagonist/ert/official/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (ert_team)
 		to_chat(owner, "<span class='warningplain'>Central Command is sending you to [station_name()] with the task: [ert_team.mission.explanation_text]</span>")
@@ -63,6 +73,8 @@
 		to_chat(owner, "<span class='warningplain'>Central Command is sending you to [station_name()] with the task: [mission.explanation_text]</span>")
 
 /datum/antagonist/ert/official/forge_objectives()
+	procstart = null
+	src.procstart = null
 	if (ert_team)
 		return ..()
 	if(mission)
@@ -117,6 +129,8 @@
 	rip_and_tear = TRUE
 
 /datum/antagonist/ert/deathsquad/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name_source = GLOB.commando_names
 
@@ -129,6 +143,8 @@
 	outfit = /datum/outfit/centcom/ert/medic/inquisitor
 
 /datum/antagonist/ert/medic/inquisitor/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.set_holy_role(HOLY_ROLE_PRIEST)
 
@@ -136,6 +152,8 @@
 	outfit = /datum/outfit/centcom/ert/security/inquisitor
 
 /datum/antagonist/ert/security/inquisitor/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.set_holy_role(HOLY_ROLE_PRIEST)
 
@@ -147,6 +165,8 @@
 	outfit = /datum/outfit/centcom/ert/chaplain/inquisitor
 
 /datum/antagonist/ert/chaplain/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.set_holy_role(HOLY_ROLE_PRIEST)
 
@@ -154,6 +174,8 @@
 	outfit = /datum/outfit/centcom/ert/commander/inquisitor
 
 /datum/antagonist/ert/commander/inquisitor/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.set_holy_role(HOLY_ROLE_PRIEST)
 
@@ -183,6 +205,8 @@
 	plasmaman_outfit = /datum/outfit/plasmaman/party_comedian
 
 /datum/antagonist/ert/clown/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name_source = GLOB.clown_names
 
@@ -210,6 +234,8 @@
 	outfit = /datum/outfit/centcom/ert/commander/party
 
 /datum/antagonist/ert/create_team(datum/team/ert/new_team)
+	procstart = null
+	src.procstart = null
 	if(istype(new_team))
 		ert_team = new_team
 
@@ -226,10 +252,14 @@
 	outfit = /datum/outfit/bountysynth/ert
 
 /datum/antagonist/ert/forge_objectives()
+	procstart = null
+	src.procstart = null
 	if(ert_team)
 		objectives |= ert_team.objectives
 
 /datum/antagonist/ert/proc/equipERT()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = owner.current
 	if(!istype(H))
 		return
@@ -246,6 +276,8 @@
 			our_modsuit.install(new /obj/item/mod/module/plasma_stabilizer)
 
 /datum/antagonist/ert/greet()
+	procstart = null
+	src.procstart = null
 	if(!ert_team)
 		return
 

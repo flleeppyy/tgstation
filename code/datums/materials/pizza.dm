@@ -19,16 +19,22 @@
 	mat_rust_resistance = RUST_RESISTANCE_REINFORCED
 
 /datum/material/pizza/on_main_applied(atom/source, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	make_edible(source, mat_amount)
 	ADD_TRAIT(source, TRAIT_ROD_REMOVE_FISHING_DUD, REF(src)) //the fishing rod itself is the bait... sorta.
 
 /datum/material/pizza/on_applied(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_EDIBLE(source))
 		make_edible(source, mat_amount, multiplier)
 
 /datum/material/pizza/on_edible_applied(atom/source, datum/component/edible/edible)
+	procstart = null
+	src.procstart = null
 	for(var/datum/reagent/consumable/nutriment/foodchem in source.reagents.reagent_list)
 		var/list/margherita_tastes = /obj/item/food/pizza/margherita::tastes
 		for(var/taste in margherita_tastes)
@@ -36,6 +42,8 @@
 	source.AddComponentFrom(SOURCE_EDIBLE_MEAT_MAT, /datum/component/edible, foodtypes = GRAIN | DAIRY | VEGETABLES)
 
 /datum/material/pizza/on_edible_removed(atom/source, datum/component/edible/edible)
+	procstart = null
+	src.procstart = null
 	for(var/datum/reagent/consumable/nutriment/foodchem in source.reagents.reagent_list)
 		var/list/margherita_tastes = /obj/item/food/pizza/margherita::tastes
 		for(var/taste in margherita_tastes)
@@ -43,6 +51,8 @@
 	//the edible source is removed by on_removed()
 
 /datum/material/pizza/proc/make_edible(atom/source, mat_amount)
+	procstart = null
+	src.procstart = null
 	if(source.material_flags & MATERIAL_NO_EDIBILITY)
 		return
 	var/nutriment_count = 3 * (mat_amount / SHEET_MATERIAL_AMOUNT)
@@ -56,9 +66,13 @@
 		handmade_complexity = /obj/item/food/pizzaslice/margherita::crafting_complexity)
 
 /datum/material/pizza/on_removed(atom/source, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	source.RemoveComponentSource(SOURCE_EDIBLE_PIZZA_MAT, /datum/component/edible)
 
 /datum/material/pizza/on_main_removed(atom/source, mat_amount, multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(source, TRAIT_ROD_REMOVE_FISHING_DUD, REF(src))

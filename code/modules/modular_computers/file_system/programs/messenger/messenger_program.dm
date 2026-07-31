@@ -50,6 +50,8 @@
 	var/sending_virus = FALSE
 
 /datum/computer_file/program/messenger/on_install()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(computer, COMSIG_MODULAR_COMPUTER_FILE_STORE, PROC_REF(check_new_photo))
 	RegisterSignal(computer, COMSIG_MODULAR_COMPUTER_FILE_DELETE, PROC_REF(check_image_removed))
@@ -57,21 +59,29 @@
 	RegisterSignal(computer, COMSIG_MODULAR_PDA_IMPRINT_RESET, PROC_REF(on_imprint_reset))
 
 /datum/computer_file/program/messenger/proc/check_new_photo(sender, datum/computer_file/image/storing_image)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(storing_image))
 		return
 	update_pictures_for_all()
 
 /datum/computer_file/program/messenger/proc/check_image_removed(sender, datum/computer_file/image/image_removed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(istype(image_removed) && selected_image == image_removed.image_name)
 		selected_image = null
 
 /datum/computer_file/program/messenger/proc/on_imprint_added(sender)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	add_messenger(src)
 
 /datum/computer_file/program/messenger/proc/on_imprint_reset(sender)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	remove_messenger(src)
 	LAZYNULL(saved_chats)
@@ -79,6 +89,8 @@
 	viewing_messages_of = null
 
 /datum/computer_file/program/messenger/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(computer))
 		stack_trace("Attempted to qdel messenger of [computer] without qdeling computer, this will cause problems later")
 	remove_messenger(src)
@@ -86,6 +98,8 @@
 
 /// Gets the list of available messengers
 /datum/computer_file/program/messenger/proc/get_messengers()
+	procstart = null
+	src.procstart = null
 	var/list/dictionary = list()
 
 	var/list/messengers_sorted = sort_by_job ? GLOB.pda_messengers_by_job : GLOB.pda_messengers_by_name
@@ -107,10 +121,14 @@
 
 /// Checks if the person can send an everyone message
 /datum/computer_file/program/messenger/proc/can_send_everyone_message()
+	procstart = null
+	src.procstart = null
 	return COOLDOWN_FINISHED(src, last_text) && COOLDOWN_FINISHED(src, last_text_everyone)
 
 /// Gets all currently relevant image asset keys
 /datum/computer_file/program/messenger/proc/get_picture_assets()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	for(var/datum/computer_file/image/image_file in computer.stored_files)
@@ -130,6 +148,8 @@
 
 /// Sends new datum/picture assets to everyone
 /datum/computer_file/program/messenger/proc/update_pictures_for_all()
+	procstart = null
+	src.procstart = null
 	var/list/data = get_picture_assets()
 
 	if(isnull(computer.open_uis))
@@ -140,6 +160,8 @@
 
 /// Set the ringtone if possible. Also handles encoding.
 /datum/computer_file/program/messenger/proc/set_ringtone(new_ringtone, mob/user)
+	procstart = null
+	src.procstart = null
 	new_ringtone = trim(html_encode(new_ringtone), MESSENGER_RINGTONE_MAX_LENGTH)
 	if(!new_ringtone)
 		return FALSE
@@ -151,15 +173,21 @@
 	return TRUE
 
 /datum/computer_file/program/messenger/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	var/list/data = get_picture_assets()
 	SSassets.transport.send_assets(user, data)
 
 /datum/computer_file/program/messenger/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	if(issilicon(user))
 		return GLOB.deep_inventory_state
 	return GLOB.default_state
 
 /datum/computer_file/program/messenger/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(action)
 		if("PDA_ringSet")
@@ -332,6 +360,8 @@
 			return TRUE
 
 /datum/computer_file/program/messenger/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/static_data = list()
 
 	static_data["can_spam"] = spam_mode
@@ -342,6 +372,8 @@
 	return static_data
 
 /datum/computer_file/program/messenger/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/list/chats_data = list()
@@ -383,6 +415,8 @@
 	return data
 
 /datum/computer_file/program/messenger/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += get_asset_datum(/datum/asset/spritesheet_batched/chat)
 
@@ -392,6 +426,8 @@
 
 /// Brings up the quick reply prompt to send a message.
 /datum/computer_file/program/messenger/proc/quick_reply_prompt(mob/living/user, datum/pda_chat/chat)
+	procstart = null
+	src.procstart = null
 	if(!istype(chat))
 		return
 	var/datum/computer_file/program/messenger/target = chat.recipient?.resolve()
@@ -406,6 +442,8 @@
 
 /// Helper proc that sends a message to everyone
 /datum/computer_file/program/messenger/proc/send_message_to_all(mob/living/user, message)
+	procstart = null
+	src.procstart = null
 	var/list/datum/pda_chat/chats = list()
 	var/list/messenger_targets = list()
 
@@ -428,6 +466,8 @@
 
 /// Creates a chat and adds it to saved_chats. Supports fake users. Returns the newly created chat.
 /datum/computer_file/program/messenger/proc/create_chat(recipient_ref, name, job)
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/program/messenger/recipient = null
 
 	if(isnull(name) && isnull(job))
@@ -449,6 +489,8 @@
 
 /// Gets the chat by the recipient, either by their name or messenger ref
 /datum/computer_file/program/messenger/proc/find_chat_by_recipient(recipient, fake_user = FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/chat_ref, data in saved_chats)
 		var/datum/pda_chat/chat = data
 		if(fake_user && chat.cached_name == recipient)
@@ -459,6 +501,8 @@
 
 /// Returns a message input, sanitized and checked against the filter
 /datum/computer_file/program/messenger/proc/sanitize_pda_message(message, mob/sender)
+	procstart = null
+	src.procstart = null
 	message = sanitize(trim(message, MAX_PDA_MESSAGE_LEN))
 
 	if(mime_mode)
@@ -472,6 +516,8 @@
 
 /// Sends a message to targets via PDA. When sending to everyone, set `everyone` to true so the message is formatted accordingly
 /datum/computer_file/program/messenger/proc/send_message(atom/source, message, list/targets, everyone = FALSE)
+	procstart = null
+	src.procstart = null
 	var/mob/living/sender
 	if(isliving(source))
 		sender = source
@@ -561,6 +607,8 @@
 
 /// Sends a rigged message that explodes when the recipient tries to reply or look at it.
 /datum/computer_file/program/messenger/proc/send_rigged_message(mob/sender, message, list/datum/computer_file/program/messenger/targets, fake_name, fake_job, attach_fake_photo)
+	procstart = null
+	src.procstart = null
 	message = sanitize_pda_message(message, sender)
 
 	if(!message)
@@ -571,6 +619,8 @@
 	return send_message_signal(sender, message, targets, fake_photo, FALSE, TRUE, fake_name, fake_job)
 
 /datum/computer_file/program/messenger/proc/send_message_signal(atom/source, message, list/datum/computer_file/program/messenger/targets, photo_path = null, everyone = FALSE, rigged = FALSE, fake_name = null, fake_job = null)
+	procstart = null
+	src.procstart = null
 	var/mob/sender
 	if(ismob(source))
 		sender = source
@@ -662,6 +712,8 @@
 	return TRUE
 
 /datum/computer_file/program/messenger/proc/receive_message(datum/signal/subspace/messaging/tablet_message/signal)
+	procstart = null
+	src.procstart = null
 	var/datum/pda_chat/chat = null
 
 	var/is_rigged = signal.data["rigged"]
@@ -733,6 +785,8 @@
 
 /// topic call that answers to people pressing "(Reply)" in chat
 /datum/computer_file/program/messenger/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(QDELETED(src))
@@ -767,9 +821,13 @@
 			comp.explode(usr, from_message_menu = TRUE)
 
 /datum/computer_file/program/messenger/proc/compare_name(datum/computer_file/program/messenger/rhs)
+	procstart = null
+	src.procstart = null
 	return sorttext(rhs.computer?.saved_identification, computer?.saved_identification)
 
 /datum/computer_file/program/messenger/proc/compare_job(datum/computer_file/program/messenger/rhs)
+	procstart = null
+	src.procstart = null
 	return sorttext(rhs.computer?.saved_job, computer?.saved_job)
 
 #undef PDA_MESSAGE_TIMESTAMP_FORMAT

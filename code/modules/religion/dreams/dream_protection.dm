@@ -7,6 +7,8 @@
 	ritual_length = 15 SECONDS
 
 /datum/religion_rites/dream_protection/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ritual_invocations = list(
 		"Protect our flock from harm, great shepherd [GLOB.deity]!..",
@@ -15,6 +17,8 @@
 	)
 
 /datum/religion_rites/dream_protection/post_invoke_effects(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(GLOB.religious_sect, /datum/religion_sect/dreams))
 		return
@@ -37,6 +41,8 @@
 	VAR_PRIVATE/has_filter = FALSE
 
 /datum/status_effect/dream_protection/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(owner, COMSIG_MOB_APPLY_DAMAGE_MODIFIERS, PROC_REF(modify_damage))
 	RegisterSignals(owner, list(
@@ -47,6 +53,8 @@
 	check_protection()
 
 /datum/status_effect/dream_protection/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(owner, COMSIG_MOB_APPLY_DAMAGE_MODIFIERS)
 	REMOVE_TRAIT(owner, TRAIT_HOLY, TRAIT_STATUS_EFFECT(id))
@@ -57,6 +65,8 @@
 		addtimer(CALLBACK(owner, TYPE_PROC_REF(/datum, remove_filter), id), 1 SECONDS) // delay the filter removal to let the transition finish
 
 /datum/status_effect/dream_protection/proc/check_protection()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(IS_UNCONSCIOUS_AND_ALIVE(owner) || HAS_TRAIT(owner, TRAIT_DREAMING))
@@ -76,6 +86,8 @@
 		REMOVE_TRAIT(owner, TRAIT_HOLY, TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/dream_protection/proc/modify_damage(mob/living/source, list/damage_mods, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(IS_UNCONSCIOUS_AND_ALIVE(owner))
 		damage_mods += damage_mod
@@ -83,6 +95,8 @@
 		damage_mods += damage_mod
 
 /datum/status_effect/dream_protection/get_examine_text()
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_AND_ALIVE(owner) || HAS_TRAIT(owner, TRAIT_DREAMING))
 		return "A soft cyan glow envelops [owner.p_them()], reflecting light."
 
@@ -93,6 +107,8 @@
 	damage_mod = 0.9
 
 /datum/status_effect/dream_protection/temporary/on_apply()
+	procstart = null
+	src.procstart = null
 	if(!IS_UNCONSCIOUS_AND_ALIVE(owner))
 		return FALSE
 	if(owner.has_status_effect(/datum/status_effect/dream_protection))
@@ -101,6 +117,8 @@
 	return ..()
 
 /datum/status_effect/dream_protection/temporary/check_protection()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!has_filter) // soon as it goes, we go
 		qdel(src)
@@ -111,6 +129,8 @@
 	duration = 3 MINUTES // lasts until they wake up or if they're an especially long sleeper
 
 /datum/status_effect/dream_protection/deceased/on_apply()
+	procstart = null
+	src.procstart = null
 	if(owner.stat != DEAD)
 		return FALSE
 	if(owner.has_status_effect(/datum/status_effect/dream_protection))
@@ -121,10 +141,14 @@
 	return ..()
 
 /datum/status_effect/dream_protection/deceased/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, COMSIG_LIVING_REVIVE)
 	REMOVE_TRAIT(owner, TRAIT_DREAMING, TRAIT_STATUS_EFFECT(id))
 	return ..()
 
 /datum/status_effect/dream_protection/deceased/proc/mob_revived()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)

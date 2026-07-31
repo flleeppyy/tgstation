@@ -7,10 +7,14 @@
 	icon_state = "nomod"
 
 /atom/movable/screen/robot/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(isobserver(usr))
 		return TRUE
 
 /atom/movable/screen/robot/module/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/silicon/robot/robot_owner = hud.mymob
 	if(robot_owner.model.type == /obj/item/robot_model)
@@ -39,6 +43,8 @@
 	var/slot_num = 1
 
 /atom/movable/screen/robot/module_slot/proc/set_slot(slot_num)
+	procstart = null
+	src.procstart = null
 	src.slot_num = slot_num
 	name = "module[slot_num]"
 	base_icon_state = "inv[slot_num]"
@@ -53,6 +59,8 @@
 			screen_loc = ui_inv3
 
 /atom/movable/screen/robot/module_slot/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/robot/R = usr
@@ -64,6 +72,8 @@
 	screen_loc = ui_borg_radio
 
 /atom/movable/screen/robot/radio/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/robot/R = usr
@@ -76,6 +86,8 @@
 	screen_loc = ui_borg_lamp
 
 /atom/movable/screen/robot/lamp/Click()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -84,6 +96,8 @@
 	update_appearance()
 
 /atom/movable/screen/robot/lamp/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state]_[astype(hud?.mymob, /mob/living/silicon/robot)?.lamp_enabled ? "on" : "off"]"
 	return ..()
 
@@ -93,6 +107,8 @@
 	screen_loc = ui_borg_tablet
 
 /atom/movable/screen/robot/modpc/Click()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -106,6 +122,8 @@
 	screen_loc = ui_borg_alerts
 
 /atom/movable/screen/robot/alerts/Click()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

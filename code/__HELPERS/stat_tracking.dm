@@ -1,5 +1,7 @@
 // For use with the stopwatch defines
 /proc/render_stats(list/stats, user, sort = GLOBAL_PROC_REF(cmp_generic_stat_item_time))
+	procstart = null
+	src.procstart = null
 	sortTim(stats, sort, TRUE)
 
 	var/list/lines = list()
@@ -15,6 +17,8 @@
 
 // For use with the set_cost defines
 /proc/stat_tracking_export_to_json_later(filename, costs, counts)
+	procstart = null
+	src.procstart = null
 	if (IsAdminAdvancedProcCall())
 		return
 
@@ -29,6 +33,8 @@
 	rustg_file_write(json_encode(output), "[GLOB.log_directory]/[filename]")
 
 /proc/stat_tracking_export_to_csv_later(filename, costs, counts)
+	procstart = null
+	src.procstart = null
 	if (IsAdminAdvancedProcCall())
 		return
 

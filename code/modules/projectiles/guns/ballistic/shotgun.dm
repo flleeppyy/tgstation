@@ -31,6 +31,8 @@
 	pb_knockback = 2
 
 /obj/item/gun/ballistic/shotgun/blow_up(mob/user)
+	procstart = null
+	src.procstart = null
 	. = 0
 	if(chambered?.loaded_projectile)
 		process_fire(user, user, FALSE)
@@ -54,6 +56,8 @@
 
 //component for seclight attachment
 /obj/item/gun/ballistic/shotgun/riot/add_seclight_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/seclite_attachable, \
 		light_overlay_icon = 'icons/obj/weapons/guns/flashlights.dmi', \
 		light_overlay = "flight", \
@@ -80,6 +84,8 @@
 // Automatic Shotguns//
 
 /obj/item/gun/ballistic/shotgun/automatic/shoot_live_shot(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	rack()
 
@@ -94,6 +100,8 @@
 
 //component for seclight attachment
 /obj/item/gun/ballistic/shotgun/automatic/combat/add_seclight_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/seclite_attachable, \
 		light_overlay_icon = 'icons/obj/weapons/guns/flashlights.dmi', \
 		light_overlay = "flight", \
@@ -110,6 +118,8 @@
 
 //component for seclight attachment
 /obj/item/gun/ballistic/shotgun/automatic/combat/compact/add_seclight_point()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/seclite_attachable, \
 		light_overlay_icon = 'icons/obj/weapons/guns/flashlights.dmi', \
 		light_overlay = "flight", \
@@ -148,25 +158,35 @@
 	alt_mag_type = /obj/item/ammo_box/magazine/internal/shot/tube/slug
 
 /obj/item/gun/ballistic/shotgun/automatic/dual_tube/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Alt-click to pump it.")
 
 /obj/item/gun/ballistic/shotgun/automatic/dual_tube/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	alt_mag_type = alt_mag_type || spawn_magazine_type
 	alternate_magazine = new alt_mag_type(src)
 
 /obj/item/gun/ballistic/shotgun/automatic/dual_tube/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(alternate_magazine)
 	return ..()
 
 /obj/item/gun/ballistic/shotgun/automatic/dual_tube/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!chambered && get_ammo())
 		rack()
 	else
 		toggle_tube(user)
 
 /obj/item/gun/ballistic/shotgun/automatic/dual_tube/proc/toggle_tube(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/current_mag = magazine
 	var/alt_mag = alternate_magazine
 	magazine = alt_mag
@@ -178,6 +198,8 @@
 		balloon_alert(user, "switched to tube A")
 
 /obj/item/gun/ballistic/shotgun/automatic/dual_tube/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	rack()
 	return CLICK_ACTION_SUCCESS
 
@@ -220,16 +242,22 @@
 	var/obj/item/ammo_box/magazine/secondary_magazine
 
 /obj/item/gun/ballistic/shotgun/bulldog/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	secondary_magazine_type = secondary_magazine_type || spawn_magazine_type
 	secondary_magazine = new secondary_magazine_type(src)
 	update_appearance()
 
 /obj/item/gun/ballistic/shotgun/bulldog/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(secondary_magazine)
 	return ..()
 
 /obj/item/gun/ballistic/shotgun/bulldog/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(secondary_magazine)
 		var/secondary_ammo_count = secondary_magazine.ammo_count()
@@ -242,6 +270,8 @@
 	. += "Right-click to swap the magazine to the secondary position, and vice versa."
 
 /obj/item/gun/ballistic/shotgun/bulldog/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(secondary_magazine)
 		. += "[icon_state]_secondary_mag_[initial(secondary_magazine.icon_state)]"
@@ -249,6 +279,8 @@
 			. += "[icon_state]_secondary_mag_empty"
 
 /obj/item/gun/ballistic/shotgun/bulldog/handle_chamber(empty_chamber = TRUE, from_firing = TRUE, chamber_next_round = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!secondary_magazine)
 		return ..()
 	var/secondary_shells_left = LAZYLEN(secondary_magazine.stored_ammo)
@@ -261,15 +293,21 @@
 	return ..()
 
 /obj/item/gun/ballistic/shotgun/bulldog/attack_self_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	toggle_magazine()
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/gun/ballistic/shotgun/bulldog/ranged_interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(secondary_magazine)
 		toggle_magazine()
 	return ..()
 
 /obj/item/gun/ballistic/shotgun/bulldog/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, secondary_magazine_type))
 		return ..()
 	if(!user.transferItemToLoc(tool, src))
@@ -284,6 +322,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/gun/ballistic/shotgun/bulldog/click_alt_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	if(secondary_magazine)
 		var/obj/item/ammo_box/magazine/old_mag = secondary_magazine
 		secondary_magazine = null
@@ -292,6 +332,8 @@
 		playsound(src, load_empty_sound, load_sound_volume, load_sound_vary)
 
 /obj/item/gun/ballistic/shotgun/bulldog/proc/toggle_magazine()
+	procstart = null
+	src.procstart = null
 	var/primary_magazine = magazine
 	var/alternative_magazine = secondary_magazine
 	magazine = alternative_magazine
@@ -356,9 +398,13 @@
 	pb_knockback = 3 // it's a super shotgun!
 
 /obj/item/gun/ballistic/shotgun/doublebarrel/setup_reskins()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/reskinable_item, /datum/atom_skin/bar_shotgun)
 
 /obj/item/gun/ballistic/shotgun/doublebarrel/sawoff(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		weapon_weight = WEAPON_MEDIUM
@@ -397,18 +443,26 @@
 	var/obj/item/gun/magic/hook/bounty/hook
 
 /obj/item/gun/ballistic/shotgun/hook/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	hook = new /obj/item/gun/magic/hook/bounty(src)
 
 /obj/item/gun/ballistic/shotgun/hook/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(hook)
 	return ..()
 
 /obj/item/gun/ballistic/shotgun/hook/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Right-click to shoot the hook.")
 
 /obj/item/gun/ballistic/shotgun/hook/try_fire_gun(atom/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(LAZYACCESS(params2list(params), RIGHT_CLICK))
 		return hook.try_fire_gun(target, user, params)
 	return ..()

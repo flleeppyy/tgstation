@@ -1,4 +1,6 @@
 /mob/proc/set_focus(datum/new_focus)
+	procstart = null
+	src.procstart = null
 	if(focus == new_focus)
 		return
 	focus = new_focus

@@ -33,6 +33,8 @@
 	gold_core_spawnable = NO_SPAWN
 
 /mob/living/basic/heretic_summon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/death_drops, /obj/effect/gibspawner/generic)
 	ADD_TRAIT(src, TRAIT_HERETIC_SUMMON, INNATE_TRAIT)

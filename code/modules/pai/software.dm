@@ -1,4 +1,6 @@
 /mob/living/silicon/pai/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PaiInterface", name)
@@ -6,6 +8,8 @@
 		ui.set_autoupdate(FALSE)
 
 /mob/living/silicon/pai/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["door_jack"] = hacking_cable
 	data["screen_image_interface_icon"] = card.screen_image.interface_icon
@@ -14,6 +18,8 @@
 	return data
 
 /mob/living/silicon/pai/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["available"] = available_software
 	data["directives"] = laws.inherent
@@ -24,6 +30,8 @@
 	return data
 
 /mob/living/silicon/pai/ui_act(action, list/params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -102,6 +110,8 @@
  * @returns {boolean} - TRUE if the software was purchased, FALSE otherwise.
  */
 /mob/living/silicon/pai/proc/buy_software(selection)
+	procstart = null
+	src.procstart = null
 	if(!available_software[selection] || installed_software.Find(selection))
 		return FALSE
 	var/cost = available_software[selection]
@@ -134,6 +144,8 @@
  * @returns {boolean} - TRUE if the image was changed, FALSE otherwise.
  */
 /mob/living/silicon/pai/proc/change_image()
+	procstart = null
+	src.procstart = null
 	var/list/possible_choices = list()
 	for(var/datum/pai_screen_image/screen_option as anything in subtypesof(/datum/pai_screen_image))
 		var/datum/radial_menu_choice/choice = new
@@ -156,6 +168,8 @@
  * @returns {boolean} - TRUE if a sample was taken, FALSE otherwise.
  */
 /mob/living/silicon/pai/proc/check_dna()
+	procstart = null
+	src.procstart = null
 	if(emagged) // Their master DNA signature is scrambled anyway
 		to_chat(src, span_syndradio("You are not at liberty to do this! All agents are clandestine."))
 		return FALSE
@@ -181,6 +195,8 @@
  * @returns {boolean} - TRUE if the languages were granted, FALSE otherwise.
  */
 /mob/living/silicon/pai/proc/grant_languages()
+	procstart = null
+	src.procstart = null
 	if(languages_granted)
 		return FALSE
 	grant_all_languages(source = LANGUAGE_SOFTWARE)
@@ -196,6 +212,8 @@
  * @returns {boolean} - TRUE if the scan was successful, FALSE otherwise.
  */
 /mob/living/silicon/pai/proc/host_scan(mode)
+	procstart = null
+	src.procstart = null
 	switch(mode)
 		if(PAI_SCAN_TARGET)
 			var/mob/living/carbon/target = get_holder()
@@ -228,6 +246,8 @@
  * @param {string} mode - The hud to toggle.
  */
 /mob/living/silicon/pai/proc/toggle_hud(mode)
+	procstart = null
+	src.procstart = null
 	if(isnull(mode))
 		return FALSE
 	if(mode == PAI_TOGGLE_MEDICAL_HUD)

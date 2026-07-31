@@ -7,21 +7,29 @@
 	var/mob/eye/camera/ai/pic_in_pic/aiEye
 
 /atom/movable/screen/movable/pic_in_pic/ai/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	aiEye = new /mob/eye/camera/ai/pic_in_pic()
 	aiEye.screen = src
 
 /atom/movable/screen/movable/pic_in_pic/ai/Destroy()
+	procstart = null
+	src.procstart = null
 	set_ai(null)
 	QDEL_NULL(aiEye)
 	return ..()
 
 /atom/movable/screen/movable/pic_in_pic/ai/Click()
+	procstart = null
+	src.procstart = null
 	..()
 	if(ai)
 		ai.select_main_multicam_window(src)
 
 /atom/movable/screen/movable/pic_in_pic/ai/make_backgrounds()
+	procstart = null
+	src.procstart = null
 	..()
 	highlighted_background = new /mutable_appearance()
 	highlighted_background.icon = 'icons/hud/pic_in_pic.dmi'
@@ -30,6 +38,8 @@
 	highlighted_background.appearance_flags = PIXEL_SCALE
 
 /atom/movable/screen/movable/pic_in_pic/ai/add_background()
+	procstart = null
+	src.procstart = null
 	if((width > 0) && (height > 0))
 		var/matrix/M = matrix()
 		M.Scale(width + 0.5, height + 0.5)
@@ -39,20 +49,28 @@
 		add_overlay(highlighted ? highlighted_background : standard_background)
 
 /atom/movable/screen/movable/pic_in_pic/ai/set_view_size(width, height, do_refresh = TRUE)
+	procstart = null
+	src.procstart = null
 	aiEye.static_visibility_range = (round(max(width, height) / 2) + 1)
 	if(ai)
 		ai.camera_visibility(aiEye)
 	..()
 
 /atom/movable/screen/movable/pic_in_pic/ai/set_view_center(atom/target, do_refresh = TRUE)
+	procstart = null
+	src.procstart = null
 	..()
 	aiEye.setLoc(get_turf(target))
 
 /atom/movable/screen/movable/pic_in_pic/ai/refresh_view()
+	procstart = null
+	src.procstart = null
 	..()
 	aiEye.setLoc(get_turf(center))
 
 /atom/movable/screen/movable/pic_in_pic/ai/proc/highlight()
+	procstart = null
+	src.procstart = null
 	if(highlighted)
 		return
 	highlighted = TRUE
@@ -60,6 +78,8 @@
 	add_overlay(highlighted_background)
 
 /atom/movable/screen/movable/pic_in_pic/ai/proc/unhighlight()
+	procstart = null
+	src.procstart = null
 	if(!highlighted)
 		return
 	highlighted = FALSE
@@ -67,6 +87,8 @@
 	add_overlay(standard_background)
 
 /atom/movable/screen/movable/pic_in_pic/ai/proc/set_ai(mob/living/silicon/ai/new_ai)
+	procstart = null
+	src.procstart = null
 	if(ai)
 		ai.multicam_screens -= src
 		ai.all_eyes -= aiEye
@@ -92,10 +114,14 @@
 	layer = SPACE_LAYER
 
 /turf/open/ai_visible/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSmapping, COMSIG_PLANE_OFFSET_INCREASE, PROC_REF(multiz_offset_increase))
 
 /turf/open/ai_visible/proc/multiz_offset_increase(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SET_PLANE_W_SCALAR(src, initial(plane), SSmapping.max_plane_offset)
 
@@ -117,11 +143,15 @@ GLOBAL_DATUM(ai_camera_room_landmark, /obj/effect/landmark/ai_multicam_room)
 	icon_state = "x"
 
 /obj/effect/landmark/ai_multicam_room/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(GLOB.ai_camera_room_landmark)
 	GLOB.ai_camera_room_landmark = src
 
 /obj/effect/landmark/ai_multicam_room/Destroy()
+	procstart = null
+	src.procstart = null
 	if(GLOB.ai_camera_room_landmark == src)
 		GLOB.ai_camera_room_landmark = null
 	return ..()
@@ -141,16 +171,22 @@ GLOBAL_DATUM(ai_camera_room_landmark, /obj/effect/landmark/ai_multicam_room)
 	var/telegraph_range = 7
 
 /mob/eye/camera/ai/pic_in_pic/GetViewerClient()
+	procstart = null
+	src.procstart = null
 	if(screen?.ai)
 		return screen.ai.client
 
 /mob/eye/camera/ai/pic_in_pic/update_visibility()
+	procstart = null
+	src.procstart = null
 	if(screen?.ai)
 		screen.ai.camera_visibility(src)
 	else
 		..()
 
 /mob/eye/camera/ai/pic_in_pic/setLoc(turf/destination, force_update = FALSE)
+	procstart = null
+	src.procstart = null
 	if (destination)
 		abstract_move(destination)
 	else
@@ -160,10 +196,14 @@ GLOBAL_DATUM(ai_camera_room_landmark, /obj/effect/landmark/ai_multicam_room)
 	update_ai_detect_hud()
 
 /mob/eye/camera/ai/pic_in_pic/get_visible_turfs()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE) //we do our own thing here
 	return screen ? screen.get_visible_turfs() : list()
 
 /mob/eye/camera/ai/pic_in_pic/proc/update_camera_telegraphing()
+	procstart = null
+	src.procstart = null
 	if(!telegraph_cameras)
 		return
 	var/list/obj/machinery/camera/add = list()
@@ -193,6 +233,8 @@ GLOBAL_DATUM(ai_camera_room_landmark, /obj/effect/landmark/ai_multicam_room)
 		C.update_appearance()
 
 /mob/eye/camera/ai/pic_in_pic/proc/disable_camera_telegraphing()
+	procstart = null
+	src.procstart = null
 	telegraph_cameras = FALSE
 	for (var/obj/machinery/camera/C as anything in cameras_telegraphed)
 		if(QDELETED(C))
@@ -202,12 +244,16 @@ GLOBAL_DATUM(ai_camera_room_landmark, /obj/effect/landmark/ai_multicam_room)
 	cameras_telegraphed.Cut()
 
 /mob/eye/camera/ai/pic_in_pic/Destroy()
+	procstart = null
+	src.procstart = null
 	disable_camera_telegraphing()
 	return ..()
 
 //AI procs
 
 /mob/living/silicon/ai/proc/drop_new_multicam(silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(flag/allow_ai_multicam))
 		if(!silent)
 			to_chat(src, span_warning("This action is currently disabled. Contact an administrator to enable this feature."))
@@ -228,6 +274,8 @@ GLOBAL_DATUM(ai_camera_room_landmark, /obj/effect/landmark/ai_multicam_room)
 	return C
 
 /mob/living/silicon/ai/proc/toggle_multicam()
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(flag/allow_ai_multicam))
 		to_chat(src, span_warning("This action is currently disabled. Contact an administrator to enable this feature."))
 		return
@@ -237,6 +285,8 @@ GLOBAL_DATUM(ai_camera_room_landmark, /obj/effect/landmark/ai_multicam_room)
 		start_multicam()
 
 /mob/living/silicon/ai/proc/start_multicam()
+	procstart = null
+	src.procstart = null
 	if(multicam_on || aiRestorePowerRoutine || !isturf(loc))
 		return
 	if(!GLOB.ai_camera_room_landmark)
@@ -247,6 +297,8 @@ GLOBAL_DATUM(ai_camera_room_landmark, /obj/effect/landmark/ai_multicam_room)
 	to_chat(src, span_notice("Multiple-camera viewing mode activated."))
 
 /mob/living/silicon/ai/proc/refresh_multicam()
+	procstart = null
+	src.procstart = null
 	reset_perspective(GLOB.ai_camera_room_landmark)
 	if(client)
 		for(var/V in multicam_screens)
@@ -254,6 +306,8 @@ GLOBAL_DATUM(ai_camera_room_landmark, /obj/effect/landmark/ai_multicam_room)
 			P.show_to(client)
 
 /mob/living/silicon/ai/proc/end_multicam()
+	procstart = null
+	src.procstart = null
 	if(!multicam_on)
 		return
 	multicam_on = FALSE
@@ -267,6 +321,8 @@ GLOBAL_DATUM(ai_camera_room_landmark, /obj/effect/landmark/ai_multicam_room)
 
 
 /mob/living/silicon/ai/proc/select_main_multicam_window(atom/movable/screen/movable/pic_in_pic/ai/P)
+	procstart = null
+	src.procstart = null
 	if(master_multicam == P)
 		return
 

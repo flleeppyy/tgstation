@@ -6,15 +6,23 @@
 	should_update_preview = FALSE
 
 /datum/preference/choiced/prisoner_crime/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return assoc_to_keys(GLOB.prisoner_crimes) + "Random"
 
 /datum/preference/choiced/prisoner_crime/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/preference/choiced/prisoner_crime/create_default_value()
+	procstart = null
+	src.procstart = null
 	return "Random"
 
 /datum/preference/choiced/prisoner_crime/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if (!..(preferences))
 		return FALSE
 
@@ -25,6 +33,8 @@
 GLOBAL_LIST_INIT(prisoner_crimes, init_prisoner_crimes())
 
 /proc/init_prisoner_crimes()
+	procstart = null
+	src.procstart = null
 	var/list/instances = list()
 	for(var/datum/prisoner_crime/crime as anything in subtypesof(/datum/prisoner_crime))
 		crime = new crime()
@@ -40,6 +50,8 @@ GLOBAL_LIST_INIT(prisoner_crimes, init_prisoner_crimes())
 	var/tattoos = -1
 
 /datum/prisoner_crime/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(tattoos == -1)
 		tattoos = 1

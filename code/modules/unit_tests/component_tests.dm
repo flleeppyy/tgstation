@@ -1,4 +1,6 @@
 /datum/unit_test/component_duping/Run()
+	procstart = null
+	src.procstart = null
 	var/list/bad_dms = list()
 	for(var/t in typesof(/datum/component))
 		var/datum/component/comp = t

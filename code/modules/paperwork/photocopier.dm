@@ -45,6 +45,8 @@
 GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 
 /proc/init_paper_blanks()
+	procstart = null
+	src.procstart = null
 	if(!fexists(BLANKS_FILE_NAME))
 		return null
 	var/list/blanks_json = json_decode(file2text(BLANKS_FILE_NAME))
@@ -120,11 +122,15 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	starting_paper = 30
 
 /obj/machinery/photocopier/get_save_vars()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += NAMEOF(src, paper_stack)
 	return .
 
 /obj/machinery/photocopier/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	setup_components()
 	AddElement(/datum/element/elevation, pixel_shift = 8) //enough to look like your bums are on the machine.
@@ -135,9 +141,13 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 
 /// Simply adds the necessary components for this to function.
 /obj/machinery/photocopier/proc/setup_components()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/payment, usage_cost, SSeconomy.get_dep_account(ACCOUNT_CIV), PAYMENT_CLINICAL)
 
 /obj/machinery/photocopier/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	max_paper_capacity = 0
 	for(var/datum/stock_part/matter_bin/matter_bin in component_parts)
@@ -152,6 +162,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 		time_to_print -= (scanning_module.tier SECONDS)
 
 /obj/machinery/photocopier/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == object_copy)
 		object_copy = null
@@ -159,6 +171,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 		toner_cartridge = null
 
 /obj/machinery/photocopier/dump_contents()
+	procstart = null
+	src.procstart = null
 	var/dump_location = drop_location()
 
 	// object_copy can be a traitor objective, don't qdel
@@ -183,6 +197,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	update_appearance()
 
 /obj/machinery/photocopier/Destroy()
+	procstart = null
+	src.procstart = null
 	// object_copy can be a traitor objective, don't qdel
 	object_copy?.forceMove(drop_location())
 
@@ -192,23 +208,31 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	return ..()
 
 /obj/machinery/photocopier/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	if(disassembled)
 		dump_contents()
 	return ..()
 
 /obj/machinery/photocopier/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(object_copy)
 		. += span_notice("There is something inside the scanner tray.")
 	. += span_notice("You can put any type of blank paper inside to print a form onto it or to copy something onto it.")
 
 /obj/machinery/photocopier/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Photocopier")
 		ui.open()
 
 /obj/machinery/photocopier/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/static_data = list()
 
 	var/list/blank_infos = list()
@@ -231,6 +255,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	return static_data
 
 /obj/machinery/photocopier/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["has_item"] = !copier_empty()
 	data["num_copies"] = num_copies
@@ -271,6 +297,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	return data
 
 /obj/machinery/photocopier/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -380,11 +408,15 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 
 /// Returns the color used for the printing operation. If the color is below TONER_LOW_PERCENTAGE, it returns a gray color.
 /obj/machinery/photocopier/proc/get_toner_color()
+	procstart = null
+	src.procstart = null
 	return toner_cartridge.charges > TONER_CHARGE_LOW_AMOUNT ? COLOR_FULL_TONER_BLACK : COLOR_GRAY
 
 
 /// Will invoke `do_copy_loop` asynchronously. Passes the supplied arguments on to it.
 /obj/machinery/photocopier/proc/do_copies(datum/callback/copy_cb, mob/user, paper_use, toner_use, copies_amount)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (BROKEN|NOPOWER))
 		return
 
@@ -394,6 +426,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	INVOKE_ASYNC(src, PROC_REF(do_copy_loop), user, copy_cb, paper_use, toner_use, copies_amount)
 
 /obj/machinery/photocopier/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -414,6 +448,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
  * * copies_amount - the amount of copies we should make
  */
 /obj/machinery/photocopier/proc/do_copy_loop(mob/user, datum/callback/copy_cb, paper_use, toner_use, copies_amount)
+	procstart = null
+	src.procstart = null
 	var/error_message = null
 	if(!toner_cartridge)
 		copies_amount = 0
@@ -474,11 +510,15 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 
 /// Sets busy to `FALSE`.
 /obj/machinery/photocopier/proc/reset_busy()
+	procstart = null
+	src.procstart = null
 	update_use_power(IDLE_POWER_USE)
 	busy = FALSE
 
 /// Determines if the printer is currently busy, informs the user if it is.
 /obj/machinery/photocopier/proc/check_busy(mob/user)
+	procstart = null
+	src.procstart = null
 	if(busy)
 		balloon_alert(user, "printer is busy!")
 		return TRUE
@@ -493,6 +533,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
  * * copied_item - The paper, document, or photo that was just spawned on top of the printer.
  */
 /obj/machinery/photocopier/proc/give_pixel_offset(obj/item/copied_item)
+	procstart = null
+	src.procstart = null
 	copied_item.pixel_x = copied_item.base_pixel_x + rand(-10, 10)
 	copied_item.pixel_y = copied_item.base_pixel_y + rand(-10, 10)
 
@@ -506,6 +548,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
  * * paper_type - The paper type to check to see quantity stored
  */
 /obj/machinery/photocopier/proc/get_paper_count(paper_type)
+	procstart = null
+	src.procstart = null
 	if(paper_type)
 		return paper_stack[paper_type] || 0
 
@@ -525,6 +569,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
  * Prioritizes `paper_stack`, creates new paper in case `paper_stack` is empty.
  */
 /obj/machinery/photocopier/proc/get_empty_paper(paper_type)
+	procstart = null
+	src.procstart = null
 	var/obj/item/paper/new_paper = new paper_type()
 	return new_paper
 
@@ -533,6 +579,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
  * This lets us pretend we actually consumed paper when we were actually printing something that wasn't paper.
  */
 /obj/machinery/photocopier/proc/delete_paper(number)
+	procstart = null
+	src.procstart = null
 	if(!paper_stack[created_paper] || (number > paper_stack[created_paper]))
 		CRASH("Trying to delete more paper than is stored in the photocopier")
 
@@ -546,6 +594,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
  * Checks first if `paper_copy` exists. Since this proc is called from a timer, it's possible that it was removed.
  */
 /obj/machinery/photocopier/proc/make_paper_copy(obj/item/paper/paper_copy)
+	procstart = null
+	src.procstart = null
 	if(isnull(paper_copy))
 		return null
 
@@ -565,6 +615,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
  * Checks first if `picture` exists. Since this proc is called from a timer, it's possible that it was removed.
  */
 /obj/machinery/photocopier/proc/make_photo_copy(datum/picture/photo, photo_color)
+	procstart = null
+	src.procstart = null
 	if(isnull(photo))
 		return null
 	var/obj/item/photo/copied_pic = new(src, photo.Copy(photo_color == PHOTO_GREYSCALE ? TRUE : FALSE))
@@ -578,6 +630,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
  * Checks first if `document_copy` exists. Since this proc is called from a timer, it's possible that it was removed.
  */
 /obj/machinery/photocopier/proc/make_document_copy(obj/item/documents/document_copy)
+	procstart = null
+	src.procstart = null
 	if(isnull(document_copy))
 		return null
 	var/obj/item/documents/photocopy/copied_doc = new(src, document_copy)
@@ -592,6 +646,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
  * Copies the stamp from a given piece of paperwork if it is already stamped, allowing for you to sell photocopied paperwork at the risk of losing budget money.
  */
 /obj/machinery/photocopier/proc/make_paperwork_copy(obj/item/paperwork/paperwork_copy)
+	procstart = null
+	src.procstart = null
 	if(isnull(paperwork_copy))
 		return null
 	var/obj/item/paperwork/photocopy/copied_paperwork = new(src, paperwork_copy)
@@ -605,6 +661,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 
 /// Handles the copying of blanks. No mutating state, so this should not fail.
 /obj/machinery/photocopier/proc/make_blank_print(list/blank)
+	procstart = null
+	src.procstart = null
 	var/copy_colour = get_toner_color()
 	var/obj/item/paper/printblank = get_empty_paper(created_paper)
 
@@ -626,6 +684,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
  * Additionally checks that the mob has their clothes off.
  */
 /obj/machinery/photocopier/proc/make_ass_copy()
+	procstart = null
+	src.procstart = null
 	if(!check_ass())
 		return null
 	var/icon/temp_img = ass.get_butt_sprite()
@@ -651,6 +711,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
  * * user - the user removing the item.
  */
 /obj/machinery/photocopier/proc/remove_photocopy(mob/user, obj/item/object)
+	procstart = null
+	src.procstart = null
 	if(issilicon(user))
 		object.forceMove(drop_location())
 		return
@@ -661,21 +723,31 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	to_chat(user, span_notice("You take [object] out of [src]. [busy ? "The [src] comes to a halt." : ""]"))
 
 /obj/machinery/photocopier/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = panel_open ? "[base_icon_state]2" : base_icon_state
 
 /obj/machinery/photocopier/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/photocopier/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/photocopier/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/photocopier/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// No infinite paper chain. You need the original paperwork to make more copies.
 	if(istype(tool, /obj/item/paperwork/photocopy))
 		balloon_alert(user, "too blurry!")
@@ -766,10 +838,14 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 
 /// Check if there is enough room to insert paper
 /obj/machinery/photocopier/proc/has_room_for_paper(mob/user, amount = 1)
+	procstart = null
+	src.procstart = null
 	return get_paper_count() < max_paper_capacity
 
 /// Proc that handles insertion of empty paper, useful for copying later.
 /obj/machinery/photocopier/proc/insert_empty_paper(mob/user, paper_type, amount = 1, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!paper_stack[paper_type])
 		paper_stack[paper_type] = 0
 	paper_stack[paper_type] += amount
@@ -777,6 +853,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 		balloon_alert(user, "paper inserted")
 
 /obj/machinery/photocopier/proc/insert_copy_object(mob/user, obj/item/object)
+	procstart = null
+	src.procstart = null
 	if(!copier_empty())
 		balloon_alert(user, "scanner tray occupied!")
 		return
@@ -788,12 +866,16 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	flick("photocopier1", src)
 
 /obj/machinery/photocopier/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && toner_cartridge?.charges)
 		new /obj/effect/decal/cleanable/blood/oil(get_turf(src))
 		toner_cartridge.charges = 0
 
 /obj/machinery/photocopier/mouse_drop_receive(mob/target, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!istype(target) || target.anchored || target.buckled || target == ass || copier_blocked())
 		return
 	add_fingerprint(user)
@@ -824,7 +906,9 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
  *
  * Returns FALSE if `ass` doesn't exist or is not at the copier's location. Returns TRUE otherwise.
  */
-/obj/machinery/photocopier/proc/check_ass() //I'm not sure wether I made this proc because it's good form or because of the name.
+/obj/machinery/photocopier/proc/check_ass()
+	procstart = null
+	src.procstart = null //I'm not sure wether I made this proc because it's good form or because of the name.
 	if(!isliving(ass))
 		return FALSE
 	if(ass.loc != loc)
@@ -836,6 +920,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
  * Checks if the copier is deleted, or has something dense at its location. Called in `mouse_drop_receive()`
  */
 /obj/machinery/photocopier/proc/copier_blocked()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	if(loc.density)
@@ -851,6 +937,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
  * Removes a certain amount of toner that is affected by the efficiency of stock parts
  */
 /obj/machinery/photocopier/proc/use_toner(amount)
+	procstart = null
+	src.procstart = null
 	toner_cartridge.charges -= (amount / toner_efficiency)
 
 /**
@@ -859,6 +947,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
  * Return `FALSE` is the copier has something inside of it. Returns `TRUE` if it doesn't.
  */
 /obj/machinery/photocopier/proc/copier_empty()
+	procstart = null
+	src.procstart = null
 	if(object_copy || check_ass())
 		return FALSE
 	else
@@ -887,9 +977,13 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	var/max_charges = 5
 
 /obj/item/toner/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/iodine = 40, /datum/reagent/iron = 10)
 
 /obj/item/toner/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("The ink level gauge on the side reads [round(charges / max_charges * 100)]%")
 
@@ -901,6 +995,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	max_charges = 25
 
 /obj/item/toner/large/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/iodine = 90, /datum/reagent/iron = 10)
 
 /obj/item/toner/extreme

@@ -48,6 +48,8 @@
 	var/minion_type = /mob/living/basic/frog/crazy
 
 /mob/living/basic/frog/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	add_traits(list(TRAIT_NODROWN, TRAIT_SWIMMER, TRAIT_VENTCRAWLER_ALWAYS), INNATE_TRAIT)
@@ -64,6 +66,8 @@
 		AddElement(/datum/element/regal_rat_minion, converted_path = minion_type, success_balloon = "ribbit", pet_commands = GLOB.regal_rat_minion_commands)
 
 /mob/living/basic/frog/proc/on_entered(datum/source, entered as mob|obj)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(IS_UNCONSCIOUS_OR_CRIT(src) || !isliving(entered))
 		return
@@ -142,6 +146,8 @@
 	var/existence_period = 15 SECONDS
 
 /mob/living/basic/frog/suicide/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/explode_on_attack, mob_type_dont_bomb = typecacheof(list(/mob/living/basic/frog, /mob/living/basic/leaper)))
 	addtimer(CALLBACK(src, PROC_REF(death)), existence_period)

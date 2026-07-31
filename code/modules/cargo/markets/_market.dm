@@ -15,6 +15,8 @@
 
 /// Adds item to the available items and add its category if it is not in categories yet.
 /datum/market/proc/add_item(datum/market_item/item)
+	procstart = null
+	src.procstart = null
 	if(ispath(item, /datum/market_item))
 		item = new item()
 
@@ -27,6 +29,8 @@
 	return TRUE
 
 /datum/market/proc/on_item_del(datum/market_item/item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	available_items[item.category] -= item.identifier
 	if(!length(available_items[item.category]))
@@ -43,6 +47,8 @@
  * @param user The mob that is buying the item.
  */
 /datum/market/proc/purchase(identifier, category, method, obj/item/market_uplink/uplink, user)
+	procstart = null
+	src.procstart = null
 	var/datum/market_item/item = available_items[category][identifier]
 	if(isnull(item))
 		return FALSE
@@ -79,6 +85,8 @@
  * If you want to selectively restock markets, call SSmarket.restock(market_or_list_of_markets) instead.
  */
 /datum/market/proc/restock(list/existing_items)
+	procstart = null
+	src.procstart = null
 	for(var/category in available_items)
 		var/category_list = available_items[category]
 		for(var/identifier in category_list)

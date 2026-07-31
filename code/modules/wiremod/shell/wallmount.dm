@@ -9,10 +9,14 @@
 	resistance_flags = LAVA_PROOF | FIRE_PROOF
 
 /obj/structure/wallmount_circuit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/shell, null, SHELL_CAPACITY_LARGE, SHELL_FLAG_REQUIRE_ANCHOR|SHELL_FLAG_USB_PORT)
 
 /obj/structure/wallmount_circuit/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	var/datum/component/shell/shell_comp = GetComponent(/datum/component/shell)
 	if(shell_comp.locked)
 		balloon_alert(user, "locked!")

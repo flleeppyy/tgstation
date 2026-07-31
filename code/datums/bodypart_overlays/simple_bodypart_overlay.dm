@@ -9,12 +9,18 @@
 	var/draw_color
 
 /datum/bodypart_overlay/simple/get_image(obj/item/bodypart/limb, layer_index, layer_real)
+	procstart = null
+	src.procstart = null
 	return mutable_appearance(icon, icon_state, layer = layer_real)
 
 /datum/bodypart_overlay/simple/color_image(image/overlay, obj/item/bodypart/limb, layer_index)
+	procstart = null
+	src.procstart = null
 	overlay.color = draw_color
 
 /datum/bodypart_overlay/simple/icon_render_key(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += icon_state
 

@@ -22,6 +22,8 @@ GAME_VERB_HIDDEN(/mob/living, navigate, "Navigate")
 	addtimer(CALLBACK(src, PROC_REF(create_navigation)), world.tick_lag)
 
 /mob/living/proc/create_navigation()
+	procstart = null
+	src.procstart = null
 	var/list/destination_list = list()
 	for(var/atom/destination as anything in GLOB.navigate_destinations)
 		if(get_dist(destination, src) > MAX_NAVIGATE_RANGE)
@@ -105,6 +107,8 @@ GAME_VERB_HIDDEN(/mob/living, navigate, "Navigate")
 	balloon_alert(src, "navigation path created")
 
 /mob/living/proc/shine_navigation()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to length(client.navigation_images))
 		if(!length(client.navigation_images))
 			return
@@ -113,6 +117,8 @@ GAME_VERB_HIDDEN(/mob/living, navigate, "Navigate")
 		stoplag(0.1 SECONDS)
 
 /mob/living/proc/cut_navigation()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/image/navigation_path in client.navigation_images)
 		client.images -= navigation_path
@@ -126,6 +132,8 @@ GAME_VERB_HIDDEN(/mob/living, navigate, "Navigate")
  * * direction - UP or DOWN.
  */
 /mob/living/proc/find_nearest_stair_or_ladder(direction)
+	procstart = null
+	src.procstart = null
 	if(!direction)
 		return
 	if(direction != UP && direction != DOWN)

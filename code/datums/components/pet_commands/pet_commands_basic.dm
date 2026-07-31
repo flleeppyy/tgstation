@@ -12,9 +12,13 @@
 	command_feedback = "sits"
 
 /datum/pet_command/idle/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.set_behavior_tree_override(SUBPLAN_ID_PET_COMMAND, /datum/bt_node/subtree/pet_command/stay)
 
 /datum/pet_command/idle/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return "signals [living_pet] to stay idle!"
 
 /**
@@ -29,10 +33,14 @@
 	command_feedback = "relaxes"
 
 /datum/pet_command/free/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.set_behavior_tree_override(SUBPLAN_ID_PET_COMMAND, null)
 	controller.clear_blackboard_key(BB_ACTIVE_PET_COMMAND)
 
 /datum/pet_command/free/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return "signals [living_pet] to go free!"
 
 /**
@@ -51,16 +59,24 @@
 	var/follow_subtree = /datum/bt_node/subtree/pet_command/follow
 
 /datum/pet_command/follow/set_command_active(mob/living/parent, mob/living/commander)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_command_target(parent, commander)
 
 /datum/pet_command/follow/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return "signals [living_pet] to follow!"
 
 /datum/pet_command/follow/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.set_behavior_tree_override(SUBPLAN_ID_PET_COMMAND, follow_subtree)
 
 /datum/pet_command/follow/add_new_friend(mob/living/tamer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/parent = weak_parent.resolve()
 	if (!parent)
@@ -83,9 +99,13 @@
 	speech_commands = list("play dead") // Don't get too creative here, people talk about dying pretty often
 
 /datum/pet_command/play_dead/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.set_behavior_tree_override(SUBPLAN_ID_PET_COMMAND, /datum/bt_node/subtree/pet_command/play_dead)
 
 /datum/pet_command/play_dead/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return "signals [living_pet] to play dead!"
 
 /**
@@ -98,6 +118,8 @@
 	hidden = TRUE
 
 /datum/pet_command/good_boy/New(mob/living/parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	speech_commands += "good [parent.name]"
 	switch (parent.gender)
@@ -110,6 +132,8 @@
 	// If we get past this point someone has finally added a non-binary dog
 
 /datum/pet_command/good_boy/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.set_behavior_tree_override(SUBPLAN_ID_PET_COMMAND, null)
 	controller.clear_blackboard_key(BB_ACTIVE_PET_COMMAND)
 	var/mob/living/parent = weak_parent.resolve()
@@ -127,6 +151,8 @@
 	var/ability_key
 
 /datum/pet_command/untargeted_ability/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/datum/action/cooldown/ability = controller.blackboard[ability_key]
 	if(!ability?.IsAvailable())
 		return
@@ -135,6 +161,8 @@
 	controller.clear_blackboard_key(BB_ACTIVE_PET_COMMAND)
 
 /datum/pet_command/untargeted_ability/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return "signals [living_pet] to use an ability!"
 
 /**
@@ -156,6 +184,8 @@
 
 // Refuse to target things we can't target, chiefly other friends
 /datum/pet_command/attack/set_command_target(mob/living/parent, atom/target)
+	procstart = null
+	src.procstart = null
 	if (!target)
 		return FALSE
 	var/mob/living/living_parent = parent
@@ -170,15 +200,21 @@
 	return ..()
 
 /datum/pet_command/attack/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return isnull(target) ? null : "signals [living_pet] to attack [target]!"
 
 /// Display feedback about not targeting something
 /datum/pet_command/attack/proc/refuse_target(mob/living/parent, atom/target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_parent = parent
 	living_parent.balloon_alert_to_viewers("[refuse_reaction]")
 	living_parent.visible_message(span_notice("[living_parent] refuses to attack [target]."))
 
 /datum/pet_command/attack/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.set_behavior_tree_override(SUBPLAN_ID_PET_COMMAND, attack_subtree)
 
 /**
@@ -192,6 +228,8 @@
 	speech_commands = list("breed", "consummate")
 
 /datum/pet_command/breed/set_command_target(mob/living/parent, atom/target)
+	procstart = null
+	src.procstart = null
 	if(isnull(target) || !isliving(target))
 		return FALSE
 	if(!HAS_TRAIT(parent, TRAIT_MOB_BREEDER) || !HAS_TRAIT(target, TRAIT_MOB_BREEDER))
@@ -206,9 +244,13 @@
 	return ..()
 
 /datum/pet_command/breed/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.set_behavior_tree_override(SUBPLAN_ID_PET_COMMAND, /datum/bt_node/subtree/pet_command/breed)
 
 /datum/pet_command/breed/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return isnull(target) ? null : "signals [living_pet] to breed with [target]!"
 
 /**
@@ -228,6 +270,8 @@
 	var/pet_ability_key
 
 /datum/pet_command/use_ability/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if (!pet_ability_key)
 		return
 	var/datum/action/cooldown/using_action = controller.blackboard[pet_ability_key]
@@ -238,6 +282,8 @@
 	controller.set_behavior_tree_override(SUBPLAN_ID_PET_COMMAND, /datum/bt_node/subtree/pet_command/targeted_ability)
 
 /datum/pet_command/use_ability/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return isnull(target) ? null : "signals [living_pet] to use an ability on [target]!"
 
 /datum/pet_command/protect_owner
@@ -252,24 +298,36 @@
 	var/datum/bt_node/subtree/protect_owner_subtree = /datum/bt_node/subtree/pet_command/protect_owner
 
 /datum/pet_command/protect_owner/add_new_friend(mob/living/tamer)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(tamer, COMSIG_ATOM_WAS_ATTACKED, PROC_REF(set_attacking_target))
 	if(!HAS_TRAIT(tamer, TRAIT_RELAYING_ATTACKER))
 		tamer.AddElement(/datum/element/relay_attackers)
 
 /datum/pet_command/protect_owner/remove_friend(mob/living/unfriended)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(unfriended, COMSIG_ATOM_WAS_ATTACKED)
 
 /datum/pet_command/protect_owner/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.set_behavior_tree_override(SUBPLAN_ID_PET_COMMAND, protect_owner_subtree)
 
 /datum/pet_command/protect_owner/set_command_active(mob/living/parent, mob/living/victim)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_command_target(parent, victim)
 
 /datum/pet_command/protect_owner/valid_callout_target(mob/living/speaker, datum/callout_option/callout, atom/target)
+	procstart = null
+	src.procstart = null
 	return target == speaker || get_dist(speaker, target) <= 1
 
 /datum/pet_command/protect_owner/proc/set_attacking_target(atom/source, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/basic/owner = weak_parent.resolve()
@@ -299,12 +357,16 @@
 	speech_commands = list("fish")
 
 /datum/pet_command/fish/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(!controller.blackboard_key_exists(BB_CURRENT_PET_TARGET))
 		controller.set_behavior_tree_override(SUBPLAN_ID_PET_COMMAND, /datum/bt_node/subtree/pet_command/stay)
 		return
 	controller.set_behavior_tree_override(SUBPLAN_ID_PET_COMMAND, /datum/bt_node/subtree/pet_command/fish)
 
 /datum/pet_command/fish/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return "signals [living_pet] to go fish!"
 
 /datum/pet_command/move
@@ -315,12 +377,18 @@
 	speech_commands = list("move", "walk")
 
 /datum/pet_command/move/set_command_target(mob/living/parent, atom/target)
+	procstart = null
+	src.procstart = null
 	if(isnull(target) || !can_see(parent, target, 9))
 		return FALSE
 	return ..()
 
 /datum/pet_command/move/execute_action(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	controller.set_behavior_tree_override(SUBPLAN_ID_PET_COMMAND, /datum/bt_node/subtree/pet_command/move_to)
 
 /datum/pet_command/move/retrieve_command_text(atom/living_pet, atom/target)
+	procstart = null
+	src.procstart = null
 	return "signals [living_pet] to move!"

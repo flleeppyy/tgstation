@@ -57,6 +57,8 @@
 * * input_holder - the reagents datum that the output will be put into
 */
 /datum/equilibrium/New(datum/chemical_reaction/input_reaction, datum/reagents/input_holder)
+	procstart = null
+	src.procstart = null
 	reaction = input_reaction
 	holder = input_holder
 	if(!check_inital_conditions()) //If we're outside of the scope of the reaction vars
@@ -66,6 +68,8 @@
 	SSblackbox.record_feedback("tally", "chemical_reaction", 1, "[reaction.type] attempts")
 
 /datum/equilibrium/Destroy()
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(holder.reaction_list, src)
 	holder = null
 	reaction = null
@@ -79,6 +83,8 @@
 * Don't call this unless you know what you're doing, this is an internal proc
 */
 /datum/equilibrium/proc/check_inital_conditions()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(QDELETED(holder))
@@ -122,6 +128,8 @@
  * otherwise, generally, don't call this directed except internally
  */
 /datum/equilibrium/proc/check_reagent_properties()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	//Have we exploded from on_reaction or did we run out of reagents?
@@ -151,6 +159,8 @@
 * Generally an internal proc
 */
 /datum/equilibrium/proc/calculate_yield()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	multiplier = INFINITY
@@ -184,6 +194,8 @@
 * step_volume_added is how much product (across all products) was added for this single step
 */
 /datum/equilibrium/proc/check_fail_states(step_volume_added)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	//Are we overheated?
@@ -217,6 +229,8 @@
 * * seconds_per_tick - the time between the last proc in world.time
 */
 /datum/equilibrium/proc/deal_with_time(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(seconds_per_tick > 1)
@@ -243,6 +257,8 @@
 * * purity_modifier - how much to modify the step's purity by (0 - 1)
 */
 /datum/equilibrium/proc/react_timestep(seconds_per_tick, purity_modifier = 1)
+	procstart = null
+	src.procstart = null
 	if(to_delete) //Sanity incase we try to complete a failed reaction
 		return FALSE
 	if(!check_reagent_properties()) //this is first because it'll call explosions first

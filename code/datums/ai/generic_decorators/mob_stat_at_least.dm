@@ -8,6 +8,8 @@
 	var/mob/observed_mob = null
 
 /datum/bt_node/decorator/mob_stat_at_least/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	var/mob/target = owning_controller?.blackboard[key]
 	if(target)
 		observed_mob = target
@@ -16,6 +18,8 @@
 	return TRUE
 
 /datum/bt_node/decorator/mob_stat_at_least/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	if(observed_mob)
 		UnregisterSignal(observed_mob, COMSIG_MOB_STATCHANGE)
 		observed_mob = null
@@ -24,6 +28,8 @@
 
 /// Fires when the blackboard key changes. Rebinds the stat observer to the new mob and re-evaluates.
 /datum/bt_node/decorator/mob_stat_at_least/proc/on_mob_key_changed(atom/source, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/target = owning_controller?.blackboard[key]
 	if(target == observed_mob)
@@ -39,6 +45,8 @@
 
 
 /datum/bt_node/decorator/mob_stat_at_least/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/target = controller.blackboard[key]
 	if(!ismob(target))
 		return FALSE

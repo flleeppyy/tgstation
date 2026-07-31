@@ -4,6 +4,8 @@
 	var/turf/target_turf
 
 /datum/unit_test/placing_on_space/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/engineer = EASY_ALLOCATE()
 	var/obj/item/stack/rods/two/lattice_material = EASY_ALLOCATE()
 	var/obj/item/stack/cable_coil/single_cable = EASY_ALLOCATE(1)
@@ -42,5 +44,7 @@
 	TEST_ASSERT(istype(target_turf, /turf/open/floor/plating), "Failed to use an RCD to place plating on space")
 
 /datum/unit_test/placing_on_space/Destroy()
+	procstart = null
+	src.procstart = null
 	target_turf.ChangeTurf(old_turf_type)
 	return ..()

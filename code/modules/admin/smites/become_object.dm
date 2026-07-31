@@ -7,6 +7,8 @@
 	var/atom/transform_path = /obj/item/food/bread/plain
 
 /datum/smite/objectify/configure(client/user)
+	procstart = null
+	src.procstart = null
 	var/attempted_target_path = input(
 		user,
 		"Enter typepath of an atom you'd like to turn your victim into.",
@@ -28,6 +30,8 @@
 	transform_path = desired_object
 
 /datum/smite/objectify/effect(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if (!isliving(target))
 		return // This doesn't work on ghosts
 	. = ..()

@@ -5,6 +5,8 @@
 	cooldown_time = 5 SECONDS
 
 /datum/action/cooldown/mob_cooldown/spit_ore/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	if(is_jaunting(owner))
 		if(feedback)
 			owner.balloon_alert(owner, "currently underground!")
@@ -17,6 +19,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/spit_ore/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/mining/goldgrub/grub_owner = owner
 	grub_owner.barf_contents()
 	StartCooldown()
@@ -29,6 +33,8 @@
 	click_to_activate = FALSE
 
 /datum/action/cooldown/mob_cooldown/burrow/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -42,6 +48,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/burrow/Activate()
+	procstart = null
+	src.procstart = null
 	var/obj/effect/dummy/phased_mob/grub_burrow/holder = null
 	var/turf/current_loc = get_turf(owner)
 	var/mob/living/grub = owner
@@ -73,12 +81,16 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/burrow/proc/health_check(health)
+	procstart = null
+	src.procstart = null
 	var/mob/living/grub = owner
 	return grub.health >= health
 
 /obj/effect/dummy/phased_mob/grub_burrow
 
 /obj/effect/dummy/phased_mob/grub_burrow/phased_check(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)

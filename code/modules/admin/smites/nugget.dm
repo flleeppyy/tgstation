@@ -3,6 +3,8 @@
 	name = "Nugget"
 
 /datum/smite/nugget/effect(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (!iscarbon(target))

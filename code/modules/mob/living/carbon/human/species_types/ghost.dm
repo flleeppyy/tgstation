@@ -41,17 +41,25 @@
 	var/halloween_exclusive = TRUE
 
 /datum/species/spirit/check_roundstart_eligible()
+	procstart = null
+	src.procstart = null
 	if(check_holidays(HALLOWEEN) && halloween_exclusive)
 		return TRUE
 	return ..()
 
 /datum/species/spirit/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "Spirits are the spiritual remains of long-passed entities. They lack legs, can fly, but still eat, breathe, hear and see."
 
 /datum/species/spirit/get_species_description()
+	procstart = null
+	src.procstart = null
 	return "Spirits are spirits of long-dead creatures whom, for one reason or another, still roam around."
 
 /datum/species/spirit/get_species_lore()
+	procstart = null
+	src.procstart = null
 	return list(
 		"Spirits are the non-physical remains that linger onto their mortal coil. \
 		They still need their protein and organs to keep themselves \"alive\", \
@@ -60,6 +68,8 @@
 	)
 
 /datum/species/spirit/create_pref_unique_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 
 	to_add += list(list(
@@ -115,10 +125,14 @@
 	var/datum/action/innate/toggle_passthrough/passthrough_ability
 
 /datum/species/spirit/ghost/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "Ghosts are the spiritual remains of long-passed entities. They lack legs, can fly, can choose at will to become incorporeal, \
 		but still eat, breathe, hear and see."
 
 /datum/species/spirit/ghost/get_species_lore()
+	procstart = null
+	src.procstart = null
 	return list(
 		"Ghosts are one of the spookiest creatures known in the galaxy. \
 		While they still need their protein to sustain themselves, they are able to control their own bodies, \
@@ -128,6 +142,8 @@
 	)
 
 /datum/species/spirit/ghost/on_species_gain(mob/living/carbon/human/new_ghost, datum/species/old_species, pref_load, regenerate_icons)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	passthrough_ability = new(src)
 	passthrough_ability.Grant(new_ghost)
@@ -135,6 +151,8 @@
 		blessed_hud.check_hud(new_ghost)
 
 /datum/species/spirit/ghost/on_species_loss(mob/living/carbon/human/former_ghost, datum/species/new_species, pref_load)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(passthrough_ability)
 	//this has to be called after parent so inherent traits is cleared before we update our HUDs
@@ -142,6 +160,8 @@
 		blessed_hud.check_hud(former_ghost)
 
 /datum/species/spirit/ghost/create_pref_unique_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = ..()
 
 	to_add += list(list(
@@ -168,21 +188,29 @@
 	button_icon_state = "ghost"
 
 /datum/action/innate/toggle_passthrough/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(grant_to, COMSIG_CARBON_POST_ATTACH_LIMB, PROC_REF(on_new_limb))
 
 /datum/action/innate/toggle_passthrough/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	swap_mode(force_off = TRUE)
 	UnregisterSignal(remove_from, COMSIG_CARBON_POST_ATTACH_LIMB)
 	return ..()
 
 /datum/action/innate/toggle_passthrough/Activate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(owner))
 		return
 	swap_mode()
 
 /datum/action/innate/toggle_passthrough/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	if(!isliving(owner))
 		return FALSE
 	var/mob/living/living_owner = owner
@@ -200,6 +228,8 @@
 ///Called when the owner of this action gets a new limb, if it isn't a ghost-limb
 ///the action will turn itself off, and you'll lose said limb if you try using this action again.
 /datum/action/innate/toggle_passthrough/proc/on_new_limb(mob/source, obj/item/bodypart/new_part, special)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!iscarbon(owner))
 		return
@@ -208,6 +238,8 @@
 
 ///Swaps the mode, allowing us to phase through stuff but drops everything. Optional 'force_off' arg to prevent being able to turn it on.
 /datum/action/innate/toggle_passthrough/proc/swap_mode(force_off)
+	procstart = null
+	src.procstart = null
 	//we can only turn off, early return if we're trying to turn it on instead.
 	if(force_off && HAS_TRAIT_FROM(owner, TRAIT_NO_FLOATING_ANIM, SPECIES_TRAIT))
 		return
@@ -250,6 +282,8 @@
 
 ///Called when attempting to move to a new tile while the action is active, returns to cancel moving.
 /datum/action/innate/toggle_passthrough/proc/attempt_move(mob/source, new_loc, direct)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(locate(/obj/effect/blessing) in new_loc)
 		to_chat(source, span_warning("Holy energies block your path!"))

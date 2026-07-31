@@ -12,6 +12,8 @@
 	var/obj/item/clothing/head/hooded/hood
 
 /obj/item/clothing/suit/hooded/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!hoodtype)
 		return
@@ -30,31 +32,43 @@
 	)
 
 /obj/item/clothing/suit/hooded/Destroy()
+	procstart = null
+	src.procstart = null
 	hood = null
 	return ..()
 
 /// Override to only create the hood conditionally
 /obj/item/clothing/suit/hooded/proc/can_create_hood()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Called when the hood is instantiated
 /obj/item/clothing/suit/hooded/proc/on_hood_created(obj/item/clothing/head/hooded/hood)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	src.hood = hood
 	RegisterSignal(hood, COMSIG_QDELETING, PROC_REF(on_hood_deleted))
 
 /// Called when hood is deleted
 /obj/item/clothing/suit/hooded/proc/on_hood_deleted()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SHOULD_CALL_PARENT(TRUE)
 	hood = null
 
 /// Called when the hood is worn
 /obj/item/clothing/suit/hooded/proc/on_hood_up(obj/item/clothing/head/hooded/hood)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called when the hood is hidden
 /obj/item/clothing/suit/hooded/proc/on_hood_down(obj/item/clothing/head/hooded/hood)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/clothing/suit/toggle
@@ -63,6 +77,8 @@
 	var/toggle_noun = "buttons"
 
 /obj/item/clothing/suit/toggle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/toggle_icon, toggle_noun)
 

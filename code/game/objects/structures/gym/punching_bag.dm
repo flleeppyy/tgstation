@@ -18,6 +18,8 @@
 	)
 
 /obj/structure/punching_bag/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddElement( \
@@ -39,6 +41,8 @@
 	AddElement(/datum/element/contextual_screentip_tools, tool_behaviors)
 
 /obj/structure/punching_bag/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -71,12 +75,16 @@
 	user.apply_status_effect(/datum/status_effect/exercised)
 
 /obj/structure/punching_bag/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(src)
 	balloon_alert(user, anchored ? "unsecured" : "secured")
 	anchored = !anchored
 	return TRUE
 
 /obj/structure/punching_bag/crowbar_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(anchored)
 		balloon_alert(user, "still secured!")
 		return FALSE

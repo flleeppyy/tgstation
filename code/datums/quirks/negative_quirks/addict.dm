@@ -17,6 +17,8 @@
 	COOLDOWN_DECLARE(next_process) //! ticker for processing
 
 /datum/quirk/item_quirk/addict/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_holder = quirk_holder
 
 	if(!reagent_type)
@@ -28,6 +30,8 @@
 		human_holder.last_mind?.add_addiction_points(addiction, 1000)
 
 /datum/quirk/item_quirk/addict/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/current_turf = get_turf(quirk_holder)
 
 	if(!drug_container_type)
@@ -64,6 +68,8 @@
 	)
 
 /datum/quirk/item_quirk/addict/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, next_process))
 		return
 	COOLDOWN_START(src, next_process, process_interval)
@@ -96,6 +102,8 @@
 	customization_options = list(/datum/preference/choiced/junkie)
 
 /datum/quirk/item_quirk/addict/junkie/add_to_holder(mob/living/new_holder, quirk_transfer = FALSE, client/client_source, unique = TRUE, announce = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!quirk_transfer)
 		var/addiction = client_source?.prefs.read_preference(/datum/preference/choiced/junkie)
 		if(addiction && (addiction != "Random"))
@@ -103,6 +111,8 @@
 	return ..()
 
 /datum/quirk/item_quirk/addict/remove()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(quirk_holder) && reagent_instance)
 		for(var/addiction_type in GLOB.addictions)
 			quirk_holder.mind.remove_addiction_points(addiction_type, MAX_ADDICTION_POINTS)
@@ -132,16 +142,22 @@
 	customization_options = list(/datum/preference/choiced/smoker)
 
 /datum/quirk/item_quirk/addict/smoker/New()
+	procstart = null
+	src.procstart = null
 	drug_container_type = GLOB.possible_smoker_addictions[pick(GLOB.possible_smoker_addictions)]
 	return ..()
 
 /datum/quirk/item_quirk/addict/smoker/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/addiction = client_source?.prefs.read_preference(/datum/preference/choiced/smoker)
 	if(addiction && (addiction != "Random"))
 		drug_container_type = GLOB.possible_smoker_addictions[addiction]
 	return ..()
 
 /datum/quirk/item_quirk/addict/smoker/post_add()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	quirk_holder.add_mob_memory(/datum/memory/key/quirk_smoker, protagonist = quirk_holder, preferred_brand = initial(drug_container_type.name))
 	// smoker lungs have 25% less health and healing
@@ -155,6 +171,8 @@
 		smoker_lungs.Insert(carbon_holder, special = TRUE, movement_flags = DELETE_IF_REPLACED)
 
 /datum/quirk/item_quirk/addict/smoker/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	var/obj/item/mask_item = human_holder.get_item_by_slot(ITEM_SLOT_MASK)
@@ -190,12 +208,16 @@
 	customization_options = list(/datum/preference/choiced/alcoholic)
 
 /datum/quirk/item_quirk/addict/alcoholic/New()
+	procstart = null
+	src.procstart = null
 	var/random_alcohol = pick(GLOB.possible_alcoholic_addictions)
 	drug_container_type = GLOB.possible_alcoholic_addictions[random_alcohol]["bottlepath"]
 	favorite_alcohol = GLOB.possible_alcoholic_addictions[random_alcohol]["reagent"]
 	return ..()
 
 /datum/quirk/item_quirk/addict/alcoholic/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/addiction = client_source?.prefs.read_preference(/datum/preference/choiced/alcoholic)
 	if(addiction && (addiction != "Random"))
 		drug_container_type = GLOB.possible_alcoholic_addictions[addiction]["bottlepath"]
@@ -203,6 +225,8 @@
 	return ..()
 
 /datum/quirk/item_quirk/addict/alcoholic/post_add()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(quirk_holder, COMSIG_MOB_REAGENT_TICK, PROC_REF(check_brandy))
 	var/obj/item/reagent_containers/brandy_container = drug_container_type
@@ -219,9 +243,13 @@
 		alcohol_liver.healing_factor = alcohol_liver.healing_factor * 0.75
 
 /datum/quirk/item_quirk/addict/alcoholic/remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(quirk_holder, COMSIG_MOB_REAGENT_TICK)
 
 /datum/quirk/item_quirk/addict/alcoholic/proc/check_brandy(mob/source, datum/reagent/booze)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	//we don't care if it is not alcohol

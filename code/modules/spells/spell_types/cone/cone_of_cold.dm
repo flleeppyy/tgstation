@@ -36,6 +36,8 @@
 	var/unfreeze_object_duration = 20 SECONDS
 
 /datum/action/cooldown/spell/cone/staggered/cone_of_cold/do_turf_cone_effect(turf/target_turf, atom/caster, level)
+	procstart = null
+	src.procstart = null
 	if(!turf_freeze_type || unfreeze_turf_duration <= 0 SECONDS) // 0 duration = don't apply the slip
 		return
 	if(!isopenturf(target_turf))
@@ -44,6 +46,8 @@
 	frozen_floor.MakeSlippery(turf_freeze_type, unfreeze_turf_duration, permanent = (unfreeze_turf_duration == INFINITY))
 
 /datum/action/cooldown/spell/cone/staggered/cone_of_cold/do_mob_cone_effect(mob/living/target_mob, atom/caster, level)
+	procstart = null
+	src.procstart = null
 	if(target_mob.can_block_magic(antimagic_flags) || target_mob == caster || HAS_TRAIT(target_mob, TRAIT_RESISTCOLD))
 		return
 
@@ -58,6 +62,8 @@
 	to_chat(target_mob, span_userdanger("You feel a bitter cold!"))
 
 /datum/action/cooldown/spell/cone/staggered/cone_of_cold/do_obj_cone_effect(obj/target_obj, atom/caster, level)
+	procstart = null
+	src.procstart = null
 	if(unfreeze_object_duration <= 0 SECONDS) // 0 duration = don't apply a freeze
 		return
 	if(!target_obj.freeze())

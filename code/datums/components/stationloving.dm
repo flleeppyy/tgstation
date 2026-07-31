@@ -9,6 +9,8 @@
 	var/datum/weakref/connect_ref
 
 /datum/component/stationloving/Initialize(inform_admins = FALSE, allow_item_destruction = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
 	src.inform_admins = inform_admins
@@ -19,6 +21,8 @@
 		relocate()
 
 /datum/component/stationloving/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_PREQDELETED, PROC_REF(on_parent_pre_qdeleted))
 	RegisterSignal(parent, COMSIG_ITEM_IMBUE_SOUL, PROC_REF(check_soul_imbue))
 	RegisterSignal(parent, COMSIG_ITEM_MARK_RETRIEVAL, PROC_REF(check_mark_retrieval))
@@ -32,6 +36,8 @@
 	connect_ref = WEAKREF(AddComponent(/datum/component/connect_containers, parent, loc_connections))
 
 /datum/component/stationloving/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_MOVABLE_Z_CHANGED,
 		COMSIG_PREQDELETED,
@@ -43,6 +49,8 @@
 	qdel(connect_ref)
 
 /datum/component/stationloving/InheritComponent(datum/component/stationloving/newc, original, inform_admins, allow_death)
+	procstart = null
+	src.procstart = null
 	if (original)
 		if (newc)
 			inform_admins = newc.inform_admins
@@ -52,6 +60,8 @@
 
 /// Teleports parent to a safe turf on the station z-level.
 /datum/component/stationloving/proc/relocate()
+	procstart = null
+	src.procstart = null
 
 	var/target_turf = length(GLOB.the_station_areas) ? get_safe_random_station_turf(GLOB.the_station_areas) : find_safe_turf() //Fallback. Mostly for debug maps.
 
@@ -76,6 +86,8 @@
 /// Signal proc for [COMSIG_MOVABLE_MOVED], called when our parent moves, or our parent's loc, or our parent's loc loc...
 /// To check if our disk is moving somewhere it shouldn't be, such as off Z level, or into an invalid area
 /datum/component/stationloving/proc/on_parent_moved(atom/movable/source, turf/old_turf)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(atom_in_bounds(source))
@@ -103,6 +115,8 @@
 
 /// Signal proc for [SIGNAL_ADDTRAIT], via [TRAIT_SECLUDED_LOCATION] on our locs, to ensure nothing funky happens
 /datum/component/stationloving/proc/on_loc_secluded(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/turf/new_destination = relocate()
@@ -114,18 +128,24 @@
 			Moving it to [ADMIN_VERBOSEJMP(new_destination)].")
 
 /datum/component/stationloving/proc/check_soul_imbue(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(disallow_soul_imbue)
 		return COMPONENT_BLOCK_IMBUE
 
 /datum/component/stationloving/proc/check_mark_retrieval(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return COMPONENT_BLOCK_MARK_RETRIEVAL
 
 /// Checks whether a given atom's turf is within bounds. Returns TRUE if it is, FALSE if it isn't.
 /datum/component/stationloving/proc/atom_in_bounds(atom/atom_to_check)
+	procstart = null
+	src.procstart = null
 	// Typecache of shuttles that we allow the disk to stay on
 	var/static/list/allowed_shuttles = typecacheof(list(
 		/area/shuttle/syndicate,
@@ -166,6 +186,8 @@
 
 /// Signal handler for before the parent is qdel'd. Can prevent the parent from being deleted where allow_item_destruction is FALSE and force is FALSE.
 /datum/component/stationloving/proc/on_parent_pre_qdeleted(datum/source, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/turf/current_turf = get_turf(parent)

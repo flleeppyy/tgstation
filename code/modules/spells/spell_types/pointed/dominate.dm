@@ -20,6 +20,8 @@
 	active_msg = "You prepare to dominate the mind of a target..."
 
 /datum/action/cooldown/spell/pointed/dominate/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	if(!isliving(cast_on))
 		return FALSE
 
@@ -38,6 +40,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/pointed/dominate/cast(mob/living/simple_animal/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cast_on.can_block_magic(antimagic_flags))
 		to_chat(cast_on, span_warning("Your feel someone attempting to subject your mind to terrible machinations!"))

@@ -10,6 +10,8 @@
 	subdepartment_color = COLOR_RED // I AM THE VIOLENCE
 
 /datum/id_trim/highlander/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	access = SSid_access.get_region_access_list(list(REGION_ALL_STATION))
 
@@ -23,6 +25,8 @@
 	assignment = "VR Participant"
 
 /datum/id_trim/vr/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	access |= SSid_access.get_region_access_list(list(REGION_ALL_STATION))
 
@@ -33,6 +37,8 @@
 	subdepartment_color = COLOR_RED
 
 /datum/id_trim/vr/operative/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	access |= list(ACCESS_SYNDICATE, ACCESS_MAINT_TUNNELS)
 
@@ -44,6 +50,8 @@
 	subdepartment_color = COLOR_MAGENTA
 
 /datum/id_trim/tunnel_clown/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	access |= SSid_access.get_region_access_list(list(REGION_ALL_STATION))
 
@@ -75,6 +83,8 @@
 	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_NONE
 
 /datum/id_trim/cyber_police/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	access |= SSid_access.get_region_access_list(list(REGION_ALL_GLOBAL))

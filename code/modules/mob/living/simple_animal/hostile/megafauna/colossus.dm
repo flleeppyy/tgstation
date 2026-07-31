@@ -71,6 +71,8 @@
 	var/final_available = TRUE
 
 /mob/living/simple_animal/hostile/megafauna/colossus/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_FLOATING_ANIM, INNATE_TRAIT) //we don't want this guy to float, messes up his animations.
 	spiral_shots = new(src)
@@ -88,6 +90,8 @@
 	AddElement(/datum/element/projectile_shield)
 
 /mob/living/simple_animal/hostile/megafauna/colossus/Destroy()
+	procstart = null
+	src.procstart = null
 	RemoveElement(/datum/element/projectile_shield)
 	spiral_shots = null
 	random_shots = null
@@ -97,6 +101,8 @@
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/colossus/OpenFire()
+	procstart = null
+	src.procstart = null
 	anger_modifier = clamp(((maxHealth - health) / 40), 0, 20)
 
 	if(client)
@@ -127,6 +133,8 @@
 			dir_shots.Trigger(target = target)
 
 /mob/living/simple_animal/hostile/megafauna/colossus/proc/telegraph()
+	procstart = null
+	src.procstart = null
 	for(var/mob/viewer as anything in viewers(10, src))
 		if(viewer.client)
 			flash_color(viewer.client, "#C80000", 1)
@@ -134,6 +142,8 @@
 	playsound(src, 'sound/effects/magic/clockwork/narsie_attack.ogg', 200, TRUE)
 
 /mob/living/simple_animal/hostile/megafauna/colossus/proc/start_attack(mob/living/owner, datum/action/cooldown/activated)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(activated == spiral_shots)
 		spiral_shots.enraged = COLOSSUS_ENRAGED
@@ -148,11 +158,15 @@
 		INVOKE_ASYNC(src, TYPE_PROC_REF(/atom/movable, say), "Lament.", null, list("colossus", "yell"))
 
 /mob/living/simple_animal/hostile/megafauna/colossus/proc/finished_attack(mob/living/owner, datum/action/cooldown/finished)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(finished == spiral_shots)
 		icon_state = initial(icon_state)
 
 /mob/living/simple_animal/hostile/megafauna/colossus/proc/enrage(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(victim))
 		return FALSE
 	if(isgolem(victim) && victim.has_status_effect(/datum/status_effect/golem/gold))
@@ -175,6 +189,8 @@
 	var/target
 
 /obj/effect/temp_visual/at_shield/Initialize(mapload, new_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	target = new_target
 	INVOKE_ASYNC(src, TYPE_PROC_REF(/atom/movable, orbit), target, 0, FALSE, 0, 0, FALSE, TRUE)
@@ -191,15 +207,21 @@
 	var/explode_hit_objects = TRUE
 
 /obj/projectile/colossus/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/parriable_projectile)
 
 /obj/projectile/colossus/can_hit_target(atom/target, direct_target = FALSE, ignore_loc = FALSE, cross_failed = FALSE)
+	procstart = null
+	src.procstart = null
 	if(isliving(target) && target != firer)
 		direct_target = TRUE
 	return ..(target, direct_target, ignore_loc, cross_failed)
 
 /obj/projectile/colossus/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(target))
 		var/mob/living/dust_mob = target

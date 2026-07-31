@@ -6,10 +6,14 @@
 	var/max_slot_stacking = 4
 
 /obj/item/implant/storage/activate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	atom_storage?.open_storage(imp_in)
 
 /obj/item/implant/storage/removed(source, silent = FALSE, special = FALSE)
+	procstart = null
+	src.procstart = null
 	if(special)
 		return ..()
 
@@ -23,6 +27,8 @@
 	return ..()
 
 /obj/item/implant/storage/implant(mob/living/target, mob/user, silent = FALSE, force = FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/X in target.implants)
 		if(istype(X, type))
 			var/obj/item/implant/storage/imp_e = X

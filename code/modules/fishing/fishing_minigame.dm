@@ -121,6 +121,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 	var/datum/fish_source/fish_source
 
 /datum/fishing_challenge/New(datum/component/fishing_spot/comp, obj/item/fishing_rod/rod, mob/living/user)
+	procstart = null
+	src.procstart = null
 	src.user = user
 	used_rod = rod
 	location = comp.parent
@@ -177,6 +179,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 	overlap_velocity_mult = overlap_velocity_mult ** rod.bait_speed_mult
 
 /datum/fishing_challenge/Destroy(force)
+	procstart = null
+	src.procstart = null
 	GLOB.fishing_challenges_by_user -= user
 	if(!completed)
 		complete(win = FALSE)
@@ -197,6 +201,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
  * Call this if you want to override the fish source from which we roll rewards (preferably before the minigame phase).
  */
 /datum/fishing_challenge/proc/register_reward_signals(datum/fish_source/new_fish_source)
+	procstart = null
+	src.procstart = null
 	if(fish_source)
 		fish_source.UnregisterSignal(src, list(
 			COMSIG_FISHING_CHALLENGE_ROLL_REWARD,
@@ -207,20 +213,28 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 	fish_source.RegisterSignal(user, COMSIG_MOB_COMPLETE_FISHING, TYPE_PROC_REF(/datum/fish_source, on_challenge_completed))
 
 /datum/fishing_challenge/proc/send_alert(message)
+	procstart = null
+	src.procstart = null
 	location?.balloon_alert(user, message)
 
 /datum/fishing_challenge/proc/on_spot_gone(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	send_alert("fishing spot gone!")
 	interrupt()
 
 /datum/fishing_challenge/proc/interrupt_challenge(datum/source, reason)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(reason)
 		send_alert(reason)
 	interrupt()
 
 /datum/fishing_challenge/proc/start(mob/living/user)
+	procstart = null
+	src.procstart = null
 	/// Create fishing line visuals
 	if(!used_rod.internal)
 		fishing_line = used_rod.create_fishing_line(float, user, target_py = float.pixel_y + 4)
@@ -244,12 +258,16 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 
 ///Set the timers for lure that need to be spun at intervals.
 /datum/fishing_challenge/proc/set_lure_timers()
+	procstart = null
+	src.procstart = null
 	float.spin_ready = FALSE
 	addtimer(CALLBACK(src, PROC_REF(set_lure_ready)), float.spin_frequency[1], TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_DELETE_ME)
 	addtimer(CALLBACK(src, PROC_REF(missed_lure)), float.spin_frequency[2], TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_DELETE_ME)
 	float.update_appearance(UPDATE_OVERLAYS)
 
 /datum/fishing_challenge/proc/set_lure_ready()
+	procstart = null
+	src.procstart = null
 	if(phase != WAIT_PHASE)
 		return
 	float.spin_ready = TRUE
@@ -259,6 +277,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 	playsound(float, 'sound/machines/ping.ogg', 20, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE)
 
 /datum/fishing_challenge/proc/auto_spin()
+	procstart = null
+	src.procstart = null
 	if(phase != WAIT_PHASE || !float.spin_ready)
 		return
 	float.spin_ready = FALSE
@@ -267,12 +287,16 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 	send_alert("spun")
 
 /datum/fishing_challenge/proc/missed_lure()
+	procstart = null
+	src.procstart = null
 	if(phase != WAIT_PHASE)
 		return
 	send_alert("miss!")
 	start_baiting_phase(TRUE) //Add in another 3 to 5 seconds for not spinning the lure.
 
 /datum/fishing_challenge/proc/on_line_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	fishing_line = null
 	///The float may be out of sight if the user has moed around a corner, so the message should be displayed over him instead.
@@ -280,6 +304,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 	interrupt()
 
 /datum/fishing_challenge/proc/on_float_or_user_move(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!location.IsReachableBy(user))
@@ -287,6 +313,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 		interrupt()
 
 /datum/fishing_challenge/proc/on_hands_blocked(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(completed) //the rod was dropped and therefore challenge already completed.
 		return
@@ -294,6 +322,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 	interrupt()
 
 /datum/fishing_challenge/proc/no_longer_fishing(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(completed) //we already won/lost
 		return
@@ -301,6 +331,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 	interrupt()
 
 /datum/fishing_challenge/proc/handle_click(mob/living/source, atom/target, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(HAS_TRAIT(source, TRAIT_HANDS_BLOCKED)) //blocked, can't do stuff
 		return
@@ -331,15 +363,21 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 
 /// Challenge interrupted by something external
 /datum/fishing_challenge/proc/interrupt()
+	procstart = null
+	src.procstart = null
 	if(!completed)
 		experience_multiplier *= 0.5
 		complete(FALSE)
 
 /datum/fishing_challenge/proc/on_attack_self(obj/item/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(stop_fishing), source, user)
 
 /datum/fishing_challenge/proc/stop_fishing(obj/item/rod, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if((phase != MINIGAME_PHASE || do_after(user, 3 SECONDS, rod)) && !QDELETED(src) && !completed)
 		experience_multiplier *= 0.5
 		send_alert("stopped fishing")
@@ -349,6 +387,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 #define EXPERIENCE_MALUS_MULT 0.08
 
 /datum/fishing_challenge/proc/complete(win = FALSE)
+	procstart = null
+	src.procstart = null
 	if(completed)
 		return
 	deltimer(next_phase_timer)
@@ -397,6 +437,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 #undef EXPERIENCE_MALUS_MULT
 
 /datum/fishing_challenge/proc/start_baiting_phase(penalty = FALSE)
+	procstart = null
+	src.procstart = null
 	reward_path = null //In case we missed the biting phase, set the path back to null
 	var/wait_time
 	last_baiting_click = world.time
@@ -416,6 +458,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 		set_lure_timers()
 
 /datum/fishing_challenge/proc/start_biting_phase()
+	procstart = null
+	src.procstart = null
 	phase = BITING_PHASE
 
 	var/list/rewards = list()
@@ -478,6 +522,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 	float.update_appearance(UPDATE_OVERLAYS)
 
 /datum/fishing_challenge/proc/automatically_start_minigame()
+	procstart = null
+	src.procstart = null
 	if(phase == BITING_PHASE)
 		start_minigame_phase(auto_reel = TRUE)
 
@@ -486,20 +532,28 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 
 ///The player is no longer around to play the minigame, so we interrupt it.
 /datum/fishing_challenge/proc/on_user_logout(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	interrupt()
 
 /datum/fishing_challenge/proc/on_reward_removed(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	send_alert("reward gone!")
 	interrupt()
 
 /datum/fishing_challenge/proc/on_fish_death(obj/item/fish/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(source.status == FISH_DEAD)
 		win_anyway()
 
 /datum/fishing_challenge/proc/win_anyway()
+	procstart = null
+	src.procstart = null
 	if(completed)
 		return
 	//winning by timeout / fish death shouldn't give as much experience.
@@ -507,12 +561,16 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 	complete(TRUE)
 
 /datum/fishing_challenge/proc/hurt_fish(datum/source, obj/item/fish/reward)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(istype(reward))
 		var/damage = CEILING((world.time - start_time)/10 * FISH_DAMAGE_PER_SECOND, 1)
 		reward.damage_fish(damage)
 
 /datum/fishing_challenge/proc/get_difficulty()
+	procstart = null
+	src.procstart = null
 	var/new_difficulty = fish_source?.calculate_difficulty_minigame(src, reward_path, used_rod, user) || initial(difficulty)
 	for(var/source, modifier in user?.fishing_difficulty_mods_by_source)
 		new_difficulty += modifier
@@ -526,6 +584,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 	return TRUE
 
 /datum/fishing_challenge/proc/update_difficulty()
+	procstart = null
+	src.procstart = null
 	if(phase != MINIGAME_PHASE)
 		return
 	var/old_difficulty = difficulty
@@ -538,6 +598,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 	adjust_to_difficulty()
 
 /datum/fishing_challenge/proc/adjust_to_difficulty()
+	procstart = null
+	src.procstart = null
 	mover.adjust_to_difficulty()
 	bait_height -= round(difficulty * BAIT_HEIGHT_DIFFICULTY_MALUS)
 	bait_pixel_height = round(MINIGAME_BAIT_HEIGHT * (bait_height/initial(bait_height)), 1)
@@ -546,6 +608,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 
 ///Get the difficulty and other variables, than start the minigame
 /datum/fishing_challenge/proc/start_minigame_phase(auto_reel = FALSE)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(user, COMSIG_MOB_BEGIN_FISHING_MINIGAME, src)
 	if(!get_difficulty()) //we totalized 0 or less difficulty, instant win.
 		return
@@ -610,6 +674,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 
 ///Throws a stack with prefixed text.
 /datum/fishing_challenge/proc/get_stack_trace(init_text)
+	procstart = null
+	src.procstart = null
 	var/text = "[init_text] "
 	text += "used rod: [used_rod || "null"], "
 	if(used_rod)
@@ -628,6 +694,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 
 ///Initialize the minigame hud and register some signals to make it work.
 /datum/fishing_challenge/proc/prepare_minigame_hud()
+	procstart = null
+	src.procstart = null
 	if(!user.client || user.incapacitated)
 		return FALSE
 	. = TRUE
@@ -643,11 +711,15 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 
 ///Stop processing and remove references to the minigame hud
 /datum/fishing_challenge/proc/remove_minigame_hud()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfishing, src)
 	QDEL_NULL(fishing_hud)
 
 ///While the mouse button is held down, the bait will be reeling up (or down on r-click if the bidirectional rule is enabled)
 /datum/fishing_challenge/proc/start_reeling(client/source, datum/object, location, control, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/bidirectional = special_effects & FISHING_MINIGAME_RULE_BIDIRECTIONAL
 	var/list/modifiers = params2list(params)
@@ -658,11 +730,15 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 
 ///Reset the reeling state to idle once the mouse button is released
 /datum/fishing_challenge/proc/stop_reeling(client/source, datum/object, location, control, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	reeling_state = REELING_STATE_IDLE
 
 ///Update the state of the fish, the bait and the hud
 /datum/fishing_challenge/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(length(active_effects) && COOLDOWN_FINISHED(src, active_effect_cd))
 		select_active_effect()
 	mover.move_fish(seconds_per_tick)
@@ -672,6 +748,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 
 ///The proc that handles fancy effects like flipping the hud or skewing movement
 /datum/fishing_challenge/proc/select_active_effect()
+	procstart = null
+	src.procstart = null
 	///bring forth an active effect
 	if(isnull(current_active_effect))
 		current_active_effect = pick(active_effects)
@@ -712,6 +790,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 
 ///The proc that moves the bait around, just like in the old TGUI, mostly.
 /datum/fishing_challenge/proc/move_bait(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/should_bounce = abs(bait_velocity) > BAIT_MIN_VELOCITY_BOUNCE
 	bait_position += bait_velocity * seconds_per_tick
 	// Hitting the top bound
@@ -792,6 +872,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 
 ///update the vertical pixel position of both fish and bait, and the icon state of the completion bar
 /datum/fishing_challenge/proc/update_visuals(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/bait_offset_mult = bait_position / FISHING_MINIGAME_AREA
 	animate(fishing_hud.hud_bait, pixel_z = MINIGAME_SLIDER_HEIGHT * bait_offset_mult, time = seconds_per_tick SECONDS)
 	var/fish_offset_mult = fish_position / FISHING_MINIGAME_AREA
@@ -813,6 +895,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 
 ///Initialize bait, fish and completion bar and add them to the visual appearance of this screen object.
 /atom/movable/screen/fishing_hud/proc/prepare_minigame(datum/fishing_challenge/challenge)
+	procstart = null
+	src.procstart = null
 	icon_state = challenge.background
 	add_overlay(challenge.used_rod?.get_frame(challenge) || "frame_wood")
 	hud_bait = new(null, null, challenge)
@@ -824,6 +908,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 	master_ref = WEAKREF(challenge)
 
 /atom/movable/screen/fishing_hud/Destroy()
+	procstart = null
+	src.procstart = null
 	var/datum/fishing_challenge/challenge = master_ref?.resolve()
 	if(!isnull(challenge))
 		challenge.user.client.screen -= src
@@ -839,6 +925,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 	var/cur_height = MINIGAME_BAIT_HEIGHT
 
 /atom/movable/screen/hud_bait/Initialize(mapload, datum/hud/hud_owner, datum/fishing_challenge/challenge)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!challenge || challenge.bait_pixel_height == MINIGAME_BAIT_HEIGHT)
 		update_icon()
@@ -847,10 +935,14 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 	adjust_to_difficulty(challenge)
 
 /atom/movable/screen/hud_bait/proc/adjust_to_difficulty(datum/fishing_challenge/challenge)
+	procstart = null
+	src.procstart = null
 	cur_height = challenge.bait_pixel_height
 	update_icon()
 
 /atom/movable/screen/hud_bait/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/bait_top = mutable_appearance(icon, "bait_top")
 	bait_top.pixel_z += cur_height - MINIGAME_BAIT_TOP_AND_BOTTOM_HEIGHT
@@ -866,6 +958,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 	vis_flags = VIS_INHERIT_ID
 
 /atom/movable/screen/hud_fish/Initialize(mapload, datum/hud/hud_owner, datum/fishing_challenge/challenge)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(challenge)
 		icon_state = challenge.fish_icon
@@ -876,10 +970,14 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 	vis_flags = VIS_INHERIT_ID
 
 /atom/movable/screen/hud_completion/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_filter("completion_mask", 1, alpha_mask_filter(icon = icon(icon, "completion_overlay")))
 
 /atom/movable/screen/hud_completion/proc/update_state(completion, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	animate(get_filter("completion_mask"), y = -MINIGAME_COMPLETION_BAR_HEIGHT * (1 - completion * 0.01), time = seconds_per_tick SECONDS)
 
 /// The visual that appears over the fishing spot
@@ -897,6 +995,8 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 	var/spin_ready = FALSE
 
 /obj/effect/fishing_float/Initialize(mapload, atom/spot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!spot)
 		return
@@ -914,12 +1014,16 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 		layer = spot.layer
 
 /obj/effect/fishing_float/proc/follow_movable(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	set_glide_size(source.glide_size)
 	forceMove(source.loc)
 
 /obj/effect/fishing_float/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!spin_frequency)
 		return

@@ -55,6 +55,8 @@
 	accessory = /obj/item/clothing/accessory/pocketprotector/full
 
 /datum/outfit/job/curator/pre_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visuals_only)
 		return ..()
 
@@ -67,6 +69,8 @@
 
 
 /datum/outfit/job/curator/post_equip(mob/living/carbon/human/translator, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(visuals_only)

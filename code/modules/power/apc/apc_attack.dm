@@ -7,6 +7,8 @@
 #define ETHEREAL_APC_ALERT_DELAY (0.75 SECONDS)
 
 /obj/machinery/power/apc/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!can_interact(user))
 		return
@@ -26,6 +28,8 @@
 
 /// Special behavior for when an ethereal interacts with an APC.
 /obj/machinery/power/apc/proc/ethereal_interact(mob/living/carbon/human/user, obj/item/organ/stomach/ethereal/used_stomach, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!LAZYACCESS(modifiers, RIGHT_CLICK))
 		return
 	if(isnull(cell))
@@ -39,6 +43,8 @@
 
 /// Handles discharging our internal cell to an ethereal and their stomach
 /obj/machinery/power/apc/proc/discharge_to_ethereal(mob/living/carbon/human/user, obj/item/organ/stomach/ethereal/used_stomach)
+	procstart = null
+	src.procstart = null
 	var/half_max_charge = cell.max_charge() / 2
 	// Ethereals can't drain APCs under half charge, so that they are forced to look to alternative power sources if the station is running low
 	if(cell.charge() < half_max_charge)
@@ -75,6 +81,8 @@
 
 /// Handles charging our internal cell from an ethereal and their stomach
 /obj/machinery/power/apc/proc/charge_from_ethereal(mob/living/carbon/human/user, obj/item/organ/stomach/ethereal/used_stomach)
+	procstart = null
+	src.procstart = null
 	if(cell.charge() >= cell.max_charge())
 		addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, balloon_alert), user, "apc full!"), ETHEREAL_APC_ALERT_DELAY)
 		return
@@ -111,6 +119,8 @@
 
 // attack with hand - remove cell (if cover open) or interact with the APC
 /obj/machinery/power/apc/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -125,9 +135,13 @@
 		return
 
 /obj/machinery/power/apc/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	atom_break()
 
 /obj/machinery/power/apc/take_damage(damage_amount, damage_type = BRUTE, damage_flag = "", sound_effect = TRUE, attack_dir, armor_penetration = 0)
+	procstart = null
+	src.procstart = null
 	// APC being at 0 integrity doesnt delete it outright. Combined with take_damage this might cause runtimes.
 	if(machine_stat & BROKEN && atom_integrity <= 0)
 		if(sound_effect)
@@ -136,11 +150,15 @@
 	return ..()
 
 /obj/machinery/power/apc/run_atom_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & BROKEN)
 		return damage_amount
 	. = ..()
 
 /obj/machinery/power/apc/proc/can_use(mob/user, loud = 0) //used by attack_hand() and Topic()
+	procstart = null
+	src.procstart = null
 	if(isAdminGhostAI(user))
 		return TRUE
 	if(!HAS_SILICON_ACCESS(user))
@@ -156,6 +174,8 @@
 	return .
 
 /obj/machinery/power/apc/shock(mob/living/shocking, chance, shock_source, siemens_coeff)
+	procstart = null
+	src.procstart = null
 	if(isalien(shocking))
 		return FALSE
 	shock_source = src

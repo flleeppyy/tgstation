@@ -23,6 +23,8 @@
 	var/static/list/random_plant_states
 
 /obj/item/kirbyplants/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/tactical)
 	AddComponent(/datum/component/two_handed, require_twohands = TRUE, force_unwielded = 10, force_wielded = 10)
@@ -32,25 +34,35 @@
 	update_appearance()
 
 /obj/item/kirbyplants/update_name(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(custom_plant_name)
 		return
 	name = "[dead ? "dead ":null][initial(name)]"
 
 /obj/item/kirbyplants/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = dead ? "The unidentifiable plant remnants make you feel like planting something new in the pot." : initial(desc)
 
 /obj/item/kirbyplants/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vname == NAMEOF(src, dead))
 		update_appearance()
 
 /obj/item/kirbyplants/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = dead ? "plant-25" : base_icon_state
 
 /obj/item/kirbyplants/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!dead && trimmable && HAS_TRAIT(user, TRAIT_BONSAI) && isturf(loc) && tool.get_sharpness())
 		to_chat(user,span_notice("You start trimming [src]."))
 		if(!do_after(user, 3 SECONDS, target = src))
@@ -70,6 +82,8 @@
 
 /// Cycle basic plant visuals
 /obj/item/kirbyplants/proc/change_visual()
+	procstart = null
+	src.procstart = null
 	if(isnull(random_plant_states))
 		random_plant_states = generate_states()
 	var/current = random_plant_states.Find(icon_state)
@@ -78,6 +92,8 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/item/kirbyplants/proc/generate_states()
+	procstart = null
+	src.procstart = null
 	var/list/plant_states = list()
 	for(var/i in 1 to 24)
 		var/number
@@ -95,12 +111,16 @@
 	icon_state = "random_plant"
 
 /obj/item/kirbyplants/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon = 'icons/obj/fluff/flora/plants.dmi'
 	randomize_base_icon_state()
 
 //Handles randomizing the icon during initialize()
 /obj/item/kirbyplants/random/proc/randomize_base_icon_state()
+	procstart = null
+	src.procstart = null
 	if(isnull(random_plant_states))
 		random_plant_states = generate_states()
 	base_icon_state = pick(random_plant_states)
@@ -116,6 +136,8 @@
 	custom_plant_name = TRUE
 
 /obj/item/kirbyplants/random/dead/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = "A gift from the botanical staff, presented after the RD's reassignment. There's a tag on it that says \"Y'all come back now, y'hear?\"[dead ? "\nIt doesn't look very healthy...":null]"
 
@@ -128,6 +150,8 @@
 
 //Handles randomizing the icon during initialize()
 /obj/item/kirbyplants/random/fullysynthetic/randomize_base_icon_state()
+	procstart = null
+	src.procstart = null
 	base_icon_state = "plant-[rand(26, 29)]"
 	update_appearance(UPDATE_ICON)
 
@@ -158,6 +182,8 @@
 
 //this is called by the action type as well
 /obj/item/kirbyplants/potty/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -167,6 +193,8 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/item/kirbyplants/potty/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(dead)
 		return .
@@ -180,5 +208,7 @@
 	trimmable = FALSE
 
 /obj/item/kirbyplants/fern/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_ALGAE, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 5)

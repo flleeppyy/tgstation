@@ -8,6 +8,8 @@
 	var/stamina_heal_amount
 
 /datum/element/rust_healing/Attach(atom/target, baton_resistance = TRUE, heal_amount = 3, stamina_heal_amount = 10)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -21,6 +23,8 @@
 	ADD_TRAIT(target, TRAIT_RUSTIMMUNE, ELEMENT_TRAIT(type))
 
 /datum/element/rust_healing/Detach(atom/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, list(COMSIG_MOVABLE_MOVED, COMSIG_LIVING_LIFE))
 	REMOVE_TRAIT(source, TRAIT_RUSTIMMUNE, ELEMENT_TRAIT(type))
@@ -31,6 +35,8 @@
  * Checks if we should have baton resistance on the new turf.
  */
 /datum/element/rust_healing/proc/on_move(mob/source, atom/old_loc, dir, forced, list/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source.is_touching_rust())
@@ -45,6 +51,8 @@
  * including baton knockdown and stamina damage.
  */
 /datum/element/rust_healing/proc/on_life(mob/living/source, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!source.is_touching_rust())
 		return

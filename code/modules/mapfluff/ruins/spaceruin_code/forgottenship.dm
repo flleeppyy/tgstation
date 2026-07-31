@@ -2,6 +2,8 @@
 GLOBAL_VAR_INIT(fscpassword, generate_password())
 
 /proc/generate_password()
+	procstart = null
+	src.procstart = null
 	return "[pick(GLOB.phonetic_alphabet)] [rand(1000,9999)]"
 
 /////////// forgottenship objects
@@ -10,6 +12,8 @@ GLOBAL_VAR_INIT(fscpassword, generate_password())
 	name = "Voice-activated Vault door"
 	desc = "You'll need special syndicate passcode to open this one."
 /obj/machinery/door/password/voice/sfc/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	password = "[GLOB.fscpassword]"
 
@@ -60,6 +64,8 @@ GLOBAL_VAR_INIT(fscpassword, generate_password())
 	name = "Old pamphlet"
 
 /obj/item/paper/fluff/ruins/forgottenship/password/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	default_raw_text = "Welcome to most advanced cruiser owned by Cyber Sun Industries!<br>You might notice, that this cruiser is equipped with 12 prototype laser turrets making any hostile boarding attempts futile.<br>Other facilities built on the ship are: Simple atmospheric system, Camera system with built-in X-ray visors and Safety module, enabling emergency engines in case of... you know, emergency.<br>Emergency system will bring you to nearest syndicate pod containing everything needed for human life.<br><br><b>In case of emergency, you must remember the pod-door activation code - [GLOB.fscpassword]</b><br><br>Cyber Sun Industries (C) 2484."
 	icon_state = "paper_words"
 	inhand_icon_state = "paper"
@@ -91,6 +97,8 @@ GLOBAL_VAR_INIT(fscpassword, generate_password())
 	deconstructible = FALSE
 
 /obj/structure/fluff/empty_sleeper/syndicate/captain/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/gps, "Old Encrypted Signal")
 

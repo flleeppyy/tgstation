@@ -3,6 +3,8 @@
 	var/sig_caught = 0
 
 /datum/unit_test/emp_flashlight/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/flashlighter = EASY_ALLOCATE()
 	var/mob/living/carbon/human/consistent/victim = EASY_ALLOCATE()
 	var/obj/item/flashlight/emp/debug/flashlight = EASY_ALLOCATE()
@@ -14,5 +16,7 @@
 	TEST_ASSERT_NOTEQUAL(sig_caught, 0, "EMP flashlight did not EMP the target on click.")
 
 /datum/unit_test/emp_flashlight/proc/sig_caught()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	sig_caught++

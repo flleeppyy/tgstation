@@ -34,6 +34,8 @@
 	var/datum/looping_sound/lathe_print/print_sound
 
 /obj/machinery/autolathe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	print_sound = new(src,  FALSE)
 	materials = new ( \
 		src, \
@@ -52,11 +54,15 @@
 	register_context()
 
 /obj/machinery/autolathe/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(print_sound)
 	QDEL_NULL(materials)
 	return ..()
 
 /obj/machinery/autolathe/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!in_range(user, src) && !isobserver(user))
 		return
@@ -73,6 +79,8 @@
 		. += span_notice("The machine can be [EXAMINE_HINT("pried")] apart.")
 
 /obj/machinery/autolathe/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(drop_direction)
 		context[SCREENTIP_CONTEXT_ALT_LMB] = "Reset Drop"
 		return CONTEXTUAL_SCREENTIP_SET
@@ -89,16 +97,24 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/autolathe/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/autolathe/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/autolathe/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = busy ? "[base_icon_state]_n" : panel_open ? "[base_icon_state]_t" : base_icon_state
 
 /obj/machinery/autolathe/proc/AfterMaterialInsert(container, obj/item/item_inserted, last_inserted_id, mats_consumed, amount_inserted, atom/context)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	//we use initial(active_power_usage) because higher tier parts will have higher active usage but we have no benefit from it
@@ -116,6 +132,8 @@
 		flick_overlay_view(material_insertion_animation(highest_mat_ref), 1 SECONDS)
 
 /obj/machinery/autolathe/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(!is_operational)
 		return
 
@@ -136,6 +154,8 @@
  * * list/designs - the list of techweb designs we are trying to send to the UI
  */
 /obj/machinery/autolathe/proc/handle_designs(list/designs)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	var/list/output = list()
@@ -191,6 +211,8 @@
 	return output
 
 /obj/machinery/autolathe/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = materials.ui_static_data()
 
 	data["designs"] = handle_designs(stored_research.researched_designs)
@@ -202,12 +224,16 @@
 	return data
 
 /obj/machinery/autolathe/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/sheetmaterials),
 		get_asset_datum(/datum/asset/spritesheet_batched/research_designs),
 	)
 
 /obj/machinery/autolathe/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["materials"] = materials.ui_data()
@@ -218,6 +244,8 @@
 	return data
 
 /obj/machinery/autolathe/ui_act(action, list/params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -376,6 +404,8 @@
  * * turf/target - the location to drop the printed item on
 */
 /obj/machinery/autolathe/proc/do_make_item(datum/design/design, items_remaining, build_time_per_item, material_cost_coefficient, charge_per_item, list/materials_needed, turf/target, list/slots_chosen)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	if(items_remaining <= 0) // how
@@ -446,6 +476,8 @@
  * Called at the end of do_make_item's timer loop
 */
 /obj/machinery/autolathe/proc/finalize_build()
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	print_sound.stop()
 	busy = FALSE
@@ -453,6 +485,8 @@
 	SStgui.update_uis(src)
 
 /obj/machinery/autolathe/mouse_drop_dragged(atom/over, mob/user, src_location, over_location, params)
+	procstart = null
+	src.procstart = null
 	if(!can_interact(user) || (!HAS_SILICON_ACCESS(user) && !isAdminGhostAI(user)) && !Adjacent(user))
 		return
 	if(busy)
@@ -465,6 +499,8 @@
 	balloon_alert(user, "dropping [dir2text(drop_direction)]")
 
 /obj/machinery/autolathe/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!drop_direction)
 		return CLICK_ACTION_BLOCKING
 	if(busy)
@@ -475,6 +511,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/autolathe/base_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return ..()
 
@@ -525,6 +563,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/autolathe/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mat_capacity = 0
 	for(var/datum/stock_part/matter_bin/new_matter_bin in component_parts)
@@ -543,6 +583,8 @@
  * * wire - the wire we are trying to cut
  */
 /obj/machinery/autolathe/proc/reset(wire)
+	procstart = null
+	src.procstart = null
 	switch(wire)
 		if(WIRE_HACK)
 			if(!wires.is_cut(wire))
@@ -555,6 +597,8 @@
 				disabled = FALSE
 
 /obj/machinery/autolathe/shock(mob/living/shocking, chance, shock_source, siemens_coeff)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (BROKEN|NOPOWER)) // unpowered, no shock
 		return FALSE
 	if(isnull(siemens_coeff))
@@ -568,9 +612,13 @@
  * state - TRUE/FALSE for is the autolathe hacked
  */
 /obj/machinery/autolathe/proc/adjust_hacked(state)
+	procstart = null
+	src.procstart = null
 	hacked = state
 	update_static_data_for_all_viewers()
 
 /obj/machinery/autolathe/hacked/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	adjust_hacked(TRUE)

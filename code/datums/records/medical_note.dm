@@ -10,6 +10,8 @@
 	var/time
 
 /datum/medical_note/New(author = "Anonymous", content = "No details provided.", time = "--:--:--")
+	procstart = null
+	src.procstart = null
 	src.author = author
 	src.content = content
 	src.time = time

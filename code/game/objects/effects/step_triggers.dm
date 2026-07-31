@@ -8,6 +8,8 @@
 	anchored = TRUE
 
 /obj/effect/step_trigger/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
@@ -15,9 +17,13 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/effect/step_trigger/proc/Trigger(atom/movable/A)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/effect/step_trigger/proc/on_entered(datum/source, atom/movable/entering)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!entering || entering == src || entering.invisibility >= INVISIBILITY_ABSTRACT || istype(entering, /atom/movable/mirage_holder)) //dont teleport ourselves, abstract objects, and mirage holders due to init shenanigans
 		return
@@ -29,9 +35,13 @@
 
 
 /obj/effect/step_trigger/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/step_trigger/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /* Sends a message to mob when triggered*/
@@ -42,6 +52,8 @@
 	mobs_only = TRUE
 
 /obj/effect/step_trigger/message/Trigger(mob/M)
+	procstart = null
+	src.procstart = null
 	if(M.client)
 		to_chat(M, span_info("[message]"))
 		if(once)
@@ -59,6 +71,8 @@
 	var/list/affecting = list()
 
 /obj/effect/step_trigger/thrower/Trigger(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!A || !ismovable(A))
 		return
 	var/atom/movable/AM = A
@@ -76,11 +90,15 @@
 	RegisterSignal(loop, COMSIG_QDELETING, PROC_REF(set_to_normal))
 
 /obj/effect/step_trigger/thrower/proc/pre_move(datum/move_loop/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/movable/being_moved = source.moving
 	affecting[being_moved] = being_moved.dir
 
 /obj/effect/step_trigger/thrower/proc/post_move(datum/move_loop/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/movable/being_moved = source.moving
 	if(!facedir)
@@ -100,6 +118,8 @@
 				return
 
 /obj/effect/step_trigger/thrower/proc/set_to_normal(datum/move_loop/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/movable/being_moved = source.moving
 	affecting -= being_moved
@@ -118,6 +138,8 @@
 	var/teleport_z = 0
 
 /obj/effect/step_trigger/teleporter/Trigger(atom/movable/A)
+	procstart = null
+	src.procstart = null
 	if(teleport_x && teleport_y && teleport_z)
 
 		var/turf/T = locate(teleport_x, teleport_y, teleport_z)
@@ -131,6 +153,8 @@
 	var/teleport_z_offset = 0
 
 /obj/effect/step_trigger/teleporter/random/Trigger(atom/movable/A)
+	procstart = null
+	src.procstart = null
 	if(teleport_x && teleport_y && teleport_z)
 		if(teleport_x_offset && teleport_y_offset && teleport_z_offset)
 
@@ -145,11 +169,15 @@
 	var/teleport_y_offset = 0
 
 /obj/effect/step_trigger/teleporter/offset/on_entered(datum/source, atom/movable/entered, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	if(!old_loc?.Adjacent(loc)) // prevents looping, if we were teleported into this then the old loc is usually not adjacent
 		return
 	return ..()
 
 /obj/effect/step_trigger/teleporter/offset/Trigger(atom/movable/poor_soul)
+	procstart = null
+	src.procstart = null
 	var/turf/destination = locate(x + teleport_x_offset, y + teleport_y_offset, z)
 	if(!destination)
 		return
@@ -170,6 +198,8 @@
 	var/exitsmoke = 0
 
 /obj/effect/step_trigger/teleport_fancy/Trigger(mob/M)
+	procstart = null
+	src.procstart = null
 	var/dest = locate(locationx, locationy, z)
 	M.Move(dest)
 
@@ -201,6 +231,8 @@
 
 
 /obj/effect/step_trigger/sound_effect/Trigger(atom/movable/A)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(A)
 
 	if(!T)
@@ -229,6 +261,8 @@
 	var/happens_once = FALSE
 
 /obj/effect/step_trigger/outfitter/Trigger(atom/movable/A)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(A))
 		return
 

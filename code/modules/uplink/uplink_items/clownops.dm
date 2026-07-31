@@ -84,6 +84,8 @@
 	purchasable_from = UPLINK_CLOWN_OPS | UPLINK_SPY
 
 /datum/uplink_item/explosives/clown_bomb_clownops/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc = replacetext(desc, "%MIN_BOMB_TIMER", SYNDIEBOMB_MIN_TIMER_SECONDS)
 

@@ -11,16 +11,22 @@
 	deactivate_message = span_notice("The urge to taunt goes away.")
 
 /obj/item/skillchip/matrix_taunt/on_activate(mob/living/carbon/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(user, COMSIG_MOB_EMOTED("taunt"), PROC_REF(on_taunt))
 	RegisterSignal(user, COMSIG_MOB_PRE_EMOTED, PROC_REF(check_if_we_can_taunt))
 
 /obj/item/skillchip/matrix_taunt/on_deactivate(mob/living/carbon/user, silent=FALSE)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(user, list(COMSIG_MOB_EMOTED("taunt"), COMSIG_MOB_PRE_EMOTED))
 	return ..()
 
 ///Prevent players from stamcritting from INTENTIONAL flips. 1.4s of bullet immunity isn't worth several secs of stun.
 /obj/item/skillchip/matrix_taunt/proc/check_if_we_can_taunt(mob/living/source, key, params, type_override, intentional, datum/emote/emote)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(key != "taunt" || !intentional)
 		return
@@ -29,6 +35,8 @@
 		return COMPONENT_CANT_EMOTE
 
 /obj/item/skillchip/matrix_taunt/proc/on_taunt(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(HAS_TRAIT_FROM(source, TRAIT_UNHITTABLE_BY_PROJECTILES, SKILLCHIP_TRAIT))
 		return

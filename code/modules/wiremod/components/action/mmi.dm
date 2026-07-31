@@ -7,6 +7,8 @@
 	button_icon_state = "ai_core"
 
 /datum/action/innate/mmi_comp_disconnect/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -74,10 +76,14 @@
 	var/datum/weakref/connected_ai_container_connections
 
 /obj/item/circuit_component/mmi/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	disconnect_action = new(src)
 
 /obj/item/circuit_component/mmi/populate_ports()
+	procstart = null
+	src.procstart = null
 	message = add_input_port("Message", PORT_TYPE_STRING)
 	send = add_input_port("Send Message", PORT_TYPE_SIGNAL)
 	eject = add_input_port("Eject", PORT_TYPE_SIGNAL)
@@ -92,11 +98,15 @@
 	clicked_atom = add_output_port("Target Entity", PORT_TYPE_ATOM)
 
 /obj/item/circuit_component/mmi/Destroy()
+	procstart = null
+	src.procstart = null
 	remove_occupant_item()
 	QDEL_NULL(disconnect_action)
 	return ..()
 
 /obj/item/circuit_component/mmi/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 
 	if(!brain && !boris)
 		return
@@ -119,15 +129,21 @@
 		COOLDOWN_START(src, message_cooldown, MMI_MESSAGE_COOLDOWN)
 
 /obj/item/circuit_component/mmi/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(shell, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(handle_interaction))
 
 /obj/item/circuit_component/mmi/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(shell, list(COMSIG_ATOM_ITEM_INTERACTION))
 	remove_occupant_item()
 	return ..()
 
 /obj/item/circuit_component/mmi/proc/handle_interaction(atom/movable/shell, mob/living/user, obj/item/item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/item/mmi/target_mmi
 	var/mob/living/new_occupant
@@ -161,6 +177,8 @@
 	RegisterSignal(item, COMSIG_MOVABLE_MOVED, PROC_REF(occupant_item_moved))
 
 /obj/item/circuit_component/mmi/proc/register_boris_circuit(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	var/static/list/connections = list(COMSIG_MOVABLE_MOVED = PROC_REF(boris_shell_or_container_moved))
 	boris_circuit_container_connections = WEAKREF(AddComponent(/datum/component/connect_containers, src, connections))
 	for(var/atom/movable/location as anything in get_nested_locs(shell) + shell)
@@ -168,12 +186,16 @@
 		AddComponentFrom(REF(location), /datum/component/shuttle_move_deferred_checks, PROC_REF(post_movement_checks))
 
 /obj/item/circuit_component/mmi/proc/unregister_boris_circuit(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(boris_circuit_container_connections)
 	for(var/atom/movable/location as anything in get_nested_locs(shell) + shell)
 		location.RemoveComponentSource(REF(src), /datum/component/boris_circuit_container)
 		RemoveComponentSource(REF(location), /datum/component/shuttle_move_deferred_checks)
 
 /obj/item/circuit_component/mmi/proc/boris_shell_or_container_moved(atom/movable/shell_or_container, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isturf(old_loc) && isturf(shell_or_container.loc))
 		return
@@ -189,12 +211,16 @@
 		AddComponentFrom(REF(loc_entered), /datum/component/shuttle_move_deferred_checks, PROC_REF(post_movement_checks))
 
 /obj/item/circuit_component/mmi/proc/occupant_item_moved(atom/movable/occupant_item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(occupant_item.loc != src)
 		remove_occupant_item(occupant_item)
 
 /obj/item/circuit_component/mmi/proc/remove_occupant_item(obj/item/removing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!removing)
 		removing = brain
@@ -217,6 +243,8 @@
 		removing.forceMove(drop_location())
 
 /obj/item/circuit_component/mmi/proc/confirm_ai_connect(mob/living/silicon/ai/user, atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	var/confirmation = tgui_alert(user, "Connect to [shell]?", buttons = list("Yes", "No"))
 	if(confirmation != "Yes")
 		return
@@ -225,6 +253,8 @@
 	do_ai_connect(user, shell)
 
 /obj/item/circuit_component/mmi/proc/do_ai_connect(mob/living/silicon/ai/user, atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	if(occupant)
 		if(occupant != user)
 			shell.balloon_alert(user, "occupied!")
@@ -232,6 +262,8 @@
 	set_occupant(user)
 
 /obj/item/circuit_component/mmi/proc/set_occupant(mob/living/new_occupant)
+	procstart = null
+	src.procstart = null
 	new_occupant.remote_control = src
 	RegisterSignal(new_occupant, COMSIG_MOB_CLICKON, PROC_REF(handle_occupant_attack))
 	RegisterSignal(new_occupant, COMSIG_QDELETING, PROC_REF(remove_occupant))
@@ -253,6 +285,8 @@
 	to_chat(ai, span_notice("Established connection with remote circuit."))
 
 /obj/item/circuit_component/mmi/proc/occupant_or_container_moved(atom/movable/occupant_or_container, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isturf(old_loc) && isturf(occupant_or_container.loc))
 		return
@@ -266,6 +300,8 @@
 		AddComponentFrom(REF(loc_entered), /datum/component/shuttle_move_deferred_checks, PROC_REF(post_movement_checks))
 
 /obj/item/circuit_component/mmi/proc/post_movement_checks()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/silicon/ai/ai = occupant
 	if(!istype(ai))
@@ -274,11 +310,15 @@
 		remove_occupant()
 
 /obj/item/circuit_component/mmi/proc/on_control_toggled(datum/_source, control_disabled)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(control_disabled)
 		remove_occupant()
 
 /obj/item/circuit_component/mmi/proc/remove_occupant()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!occupant)
 		return
@@ -299,6 +339,8 @@
 	occupant = null
 
 /obj/item/circuit_component/mmi/relaymove(mob/living/user, direct)
+	procstart = null
+	src.procstart = null
 	if(user != occupant)
 		return ..()
 
@@ -314,6 +356,8 @@
 	return TRUE
 
 /obj/item/circuit_component/mmi/proc/handle_occupant_attack(mob/living/source, atom/target, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(modifiers[RIGHT_CLICK])
 		clicked_atom.set_output(target)
@@ -325,12 +369,16 @@
 		. = COMSIG_MOB_CANCEL_CLICKON
 
 /obj/item/circuit_component/mmi/add_to(obj/item/integrated_circuit/add_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(add_to, TRAIT_COMPONENT_MMI))
 		return FALSE
 	ADD_TRAIT(add_to, TRAIT_COMPONENT_MMI, REF(src))
 
 /obj/item/circuit_component/mmi/removed_from(obj/item/integrated_circuit/removed_from)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(removed_from, TRAIT_COMPONENT_MMI, REF(src))
 	remove_occupant_item()
 	return ..()

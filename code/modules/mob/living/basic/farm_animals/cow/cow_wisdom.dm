@@ -10,6 +10,8 @@
 	var/granted_experience
 
 /mob/living/basic/cow/wisdom/Initialize(mapload, granted_wisdom, granted_experience = 500, milked_reagent = null)
+	procstart = null
+	src.procstart = null
 	src.milked_reagent = milked_reagent
 	. = ..()
 	ai_controller.set_blackboard_key(BB_BASIC_MOB_SPEAK_LINES, list(
@@ -24,9 +26,13 @@
 		name = "unwise cow"
 
 /mob/living/basic/cow/wisdom/setup_eating()
+	procstart = null
+	src.procstart = null
 	return //cannot tame me! and I don't care about eatin' nothing, neither!
 
 /mob/living/basic/cow/wisdom/setup_udder()
+	procstart = null
+	src.procstart = null
 	if (isnull(milked_reagent))
 		milked_reagent = get_random_reagent_id()
 	return ..()
@@ -42,6 +48,8 @@
 
 ///Give intense wisdom to the attacker if they're being friendly about it
 /mob/living/basic/cow/wisdom/attack_hand(mob/living/carbon/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!IS_UNCONSCIOUS_OR_CRIT(src) && !user.combat_mode)
 		to_chat(user, span_nicegreen("[src] whispers you some intense wisdoms and then disappears!"))
 		user.mind?.adjust_experience(granted_wisdom, granted_experience)

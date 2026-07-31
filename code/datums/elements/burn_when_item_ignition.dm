@@ -9,17 +9,23 @@
 	var/bypass_clumsy = FALSE
 
 /datum/element/burn_on_item_ignition/Attach(datum/target, bypass_clumsy = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.bypass_clumsy = bypass_clumsy
 	RegisterSignal(target, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(try_burn))
 	RegisterSignal(target, COMSIG_ITEM_INTERACTING_WITH_ATOM, PROC_REF(try_hold_burn))
 
 /datum/element/burn_on_item_ignition/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_ATOM_ITEM_INTERACTION)
 	UnregisterSignal(target, COMSIG_ITEM_INTERACTING_WITH_ATOM)
 
 /datum/element/burn_on_item_ignition/proc/try_burn(atom/source, mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	//can't be put on fire!
@@ -63,6 +69,8 @@
 
 // Represents holding a paper over a cigarette like a badass
 /datum/element/burn_on_item_ignition/proc/try_hold_burn(obj/item/source, mob/living/user, atom/interacting_with, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return try_burn(interacting_with, user, source, modifiers)

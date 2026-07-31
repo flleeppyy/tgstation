@@ -3,6 +3,8 @@ GLOBAL_LIST_INIT(potentialRandomZlevels, generateMapList(filename = "awaymission
 GLOBAL_LIST_INIT(potentialConfigRandomZlevels, generate_map_list_from_directory(directory = "[global.config.directory]/away_missions/"))
 
 /proc/createRandomZlevel(config_gateway = FALSE)
+	procstart = null
+	src.procstart = null
 	var/map
 	if(config_gateway && GLOB.potentialConfigRandomZlevels?.len)
 		map = pick_n_take(GLOB.potentialConfigRandomZlevels)
@@ -25,6 +27,8 @@ GLOBAL_LIST_INIT(potentialConfigRandomZlevels, generate_map_list_from_directory(
 	var/delay = TRUE // If the generated destination should be delayed by configured gateway delay
 
 /obj/effect/landmark/awaystart/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/gateway_destination/point/current
 	for(var/datum/gateway_destination/point/D in GLOB.gateway_destinations)
@@ -70,6 +74,8 @@ GLOBAL_LIST_INIT(potentialConfigRandomZlevels, generate_map_list_from_directory(
 	id = AWAYSTART_UNDERGROUND
 
 /proc/generateMapList(filename)
+	procstart = null
+	src.procstart = null
 	. = list()
 	filename = "[global.config.directory]/[SANITIZE_FILENAME(filename)]"
 	var/list/Lines = world.file2list(filename)
@@ -102,6 +108,8 @@ GLOBAL_LIST_INIT(potentialConfigRandomZlevels, generate_map_list_from_directory(
 
 /// Returns a list of all maps to be found in the directory that is passed in.
 /proc/generate_map_list_from_directory(directory)
+	procstart = null
+	src.procstart = null
 	var/list/config_maps = list()
 	var/list/maps = flist(directory)
 	for(var/map_file in maps)

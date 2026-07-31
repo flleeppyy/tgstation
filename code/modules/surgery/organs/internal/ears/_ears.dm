@@ -28,6 +28,8 @@
 	var/damage_multiplier = 1
 
 /obj/item/organ/ears/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	// only inform when things got worse, needs to happen before we heal
 	if((damage > low_threshold && prev_damage < low_threshold) || (damage > high_threshold && prev_damage < high_threshold))
 		to_chat(owner, span_warning("The ringing in your ears grows louder, blocking out any external noises for a moment."))
@@ -46,12 +48,16 @@
 		SEND_SOUND(owner, sound('sound/items/weapons/flash_ring.ogg'))
 
 /obj/item/organ/ears/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(temporary_deafness)
 		on_deafened()
 	REMOVE_TRAIT(organ_owner, TRAIT_DEAF, NO_EARS)
 
 /obj/item/organ/ears/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(temporary_deafness)
 		on_undeafened(organ_owner)
@@ -61,6 +67,8 @@
 		ADD_TRAIT(organ_owner, TRAIT_DEAF, NO_EARS)
 
 /obj/item/organ/ears/get_status_appendix(scanpower, add_tooltips)
+	procstart = null
+	src.procstart = null
 	if(owner.stat == DEAD || !HAS_TRAIT(owner, TRAIT_DEAF))
 		return
 	if(scanpower >= SCANPOWER_ADVANCED)
@@ -73,11 +81,15 @@
 	return "Subject is deaf."
 
 /obj/item/organ/ears/show_on_condensed_scans()
+	procstart = null
+	src.procstart = null
 	// Always show if we have an appendix
 	return ..() || (owner.stat != DEAD && HAS_TRAIT(owner, TRAIT_DEAF))
 
 ///Adjust the temporary deafness of the person, up or down
 /obj/item/organ/ears/proc/adjust_temporary_deafness(amount)
+	procstart = null
+	src.procstart = null
 	// organ failure makes us permanently deafened. Also, doesn't do anything if not in someone or during godmode
 	if(amount > 0 && owner && HAS_TRAIT(owner, TRAIT_GODMODE))
 		return
@@ -94,22 +106,32 @@
 
 ///Called when temporary deafness begins
 /obj/item/organ/ears/proc/on_deafened()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(owner, COMSIG_MOB_SAY, PROC_REF(adjust_speech))
 	ADD_TRAIT(owner, TRAIT_DEAF, EAR_DAMAGE)
 
 ///Called when temporary deafness reaches zero. Has to have an 'organ_owner' arg, because by the time it's called on 'on_mob_remove', owner is already null
 /obj/item/organ/ears/proc/on_undeafened(mob/living/organ_owner = owner)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(organ_owner, TRAIT_DEAF, EAR_DAMAGE)
 	UnregisterSignal(organ_owner, COMSIG_MOB_SAY)
 
 /obj/item/organ/ears/on_begin_failure()
+	procstart = null
+	src.procstart = null
 	add_organ_trait(TRAIT_DEAF)
 
 /obj/item/organ/ears/on_failure_recovery()
+	procstart = null
+	src.procstart = null
 	remove_organ_trait(TRAIT_DEAF)
 
 /// Being deafened by loud noises makes you shout
 /obj/item/organ/ears/proc/adjust_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT_NOT_FROM(owner, TRAIT_DEAF, EAR_DAMAGE) || HAS_TRAIT(owner, TRAIT_SIGN_LANG))
@@ -136,6 +158,8 @@
 	return COMPONENT_UPPERCASE_SPEECH
 
 /obj/item/organ/ears/feel_for_damage(self_aware)
+	procstart = null
+	src.procstart = null
 	// Ear damage has audible effects, so we don't really need to "feel" it when self-examining
 	return ""
 
@@ -171,9 +195,13 @@
 	var/inner_layer = EXTERNAL_FRONT
 
 /datum/bodypart_overlay/mutant/cat_ears/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner, mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	return ..() && !(bodypart_owner.owner?.obscured_slots & HIDEHAIR)
 
 /datum/bodypart_overlay/mutant/cat_ears/get_image(obj/item/bodypart/limb, layer_index, layer_real)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/base_ears = ..()
 	base_ears.color = (dye_color || draw_color)
 
@@ -191,6 +219,8 @@
 	return ear_holder
 
 /datum/bodypart_overlay/mutant/cat_ears/color_image(image/overlay, obj/item/bodypart/limb, layer_index)
+	procstart = null
+	src.procstart = null
 	return // We color base ears manually above in get_image
 
 /obj/item/organ/ears/cat/cybernetic
@@ -239,6 +269,8 @@
 	var/inner_color = "#F0004A"
 
 /datum/bodypart_overlay/mutant/cat_ears/cybernetic/get_image(obj/item/bodypart/limb, layer_index, layer_real)
+	procstart = null
+	src.procstart = null
 	if (layer_index != inner_layer)
 		return ..()
 	var/mutable_appearance/ear_holder = ..()
@@ -247,6 +279,8 @@
 	return ear_holder
 
 /datum/bodypart_overlay/mutant/cat_ears/cybernetic/get_overlay(obj/item/bodypart/limb, layer_index, layer_real)
+	procstart = null
+	src.procstart = null
 	if (layer_index != inner_layer)
 		return ..()
 	var/list/all_images = ..()
@@ -280,11 +314,15 @@
 	desc = "The source of a penguin's happy feet."
 
 /obj/item/organ/ears/penguin/on_mob_insert(mob/living/carbon/human/ear_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(ear_owner, span_notice("You suddenly feel like you've lost your balance."))
 	ear_owner.AddElementTrait(TRAIT_WADDLING, ORGAN_TRAIT, /datum/element/waddling)
 
 /obj/item/organ/ears/penguin/on_mob_remove(mob/living/carbon/human/ear_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(ear_owner, span_notice("Your sense of balance comes back to you."))
 	REMOVE_TRAIT(ear_owner, TRAIT_WADDLING, ORGAN_TRAIT)
@@ -335,6 +373,8 @@
 	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/silver = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/organ/ears/cybernetic/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return

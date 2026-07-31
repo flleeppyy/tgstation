@@ -60,6 +60,8 @@
 	COOLDOWN_DECLARE(warning_cd)
 
 /datum/species/golem/on_species_gain(mob/living/carbon/human/human_who_gained_species, datum/species/old_species, pref_load, regenerate_icons, replace_missing)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(human_who_gained_species, COMSIG_MOB_AFTER_APPLY_DAMAGE, PROC_REF(drain_nutrition))
 	RegisterSignal(human_who_gained_species, COMSIG_LIVING_UPDATE_NUTRITION, PROC_REF(check_nutrition))
@@ -75,6 +77,8 @@
 	human_who_gained_species.physiology.knockdown_mod *= 1.2
 
 /datum/species/golem/on_species_loss(mob/living/carbon/human/human_who_lost_species, datum/species/new_species, pref_load)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(human_who_lost_species, list(
 		COMSIG_MOB_AFTER_APPLY_DAMAGE,
@@ -90,6 +94,8 @@
 	human_who_lost_species.physiology.knockdown_mod /= 1.2
 
 /datum/species/golem/proc/on_life(mob/living/carbon/human/source, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source.nutrition <= 20)
@@ -108,6 +114,8 @@
 		source.set_nutrition(NUTRITION_LEVEL_FAT)
 
 /datum/species/golem/proc/on_examine(mob/living/carbon/human/source, mob/living/examiner, list/examine_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!IS_DEAD_OR_FAKING(source))
@@ -117,6 +125,8 @@
 		It may be possible to rebuild it by adding minerals into its form.")
 
 /datum/species/golem/proc/rebuild_check(mob/living/carbon/human/source, mob/living/user, obj/item/tool, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!IS_DEAD_OR_FAKING(source))
@@ -129,6 +139,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /datum/species/golem/proc/rebuild(mob/living/carbon/human/source, mob/living/user, obj/item/stack/mats)
+	procstart = null
+	src.procstart = null
 	source.notify_revival("You are being rebuilt by [user.real_name]!")
 	var/brute_ready = source.get_brute_loss() < 50
 	var/burn_ready = source.get_fire_loss() < 50
@@ -187,6 +199,8 @@
 		return
 
 /datum/species/golem/proc/check_rebuild(mob/living/carbon/human/source, mob/living/user, obj/item/stack/mats)
+	procstart = null
+	src.procstart = null
 	if(source.stat != DEAD)
 		return FALSE
 	if(QDELETED(user))
@@ -198,6 +212,8 @@
 	return TRUE
 
 /datum/species/golem/proc/defib_check(mob/living/carbon/human/source, mob/living/carbon/human/defib_user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// golems can't be defibrillated, they have no heart and aren't even alive in the traditional sense
@@ -205,6 +221,8 @@
 	return DEFIB_FAIL_GOLEM
 
 /datum/species/golem/proc/drain_nutrition(mob/living/carbon/human/source, damage_amt, damage_type, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// our brute and burn damage is more than halved by our limbs
@@ -215,6 +233,8 @@
 	source.adjust_nutrition(round(-3 * damage_amt, 0.01), forced = TRUE)
 
 /datum/species/golem/proc/check_nutrition(mob/living/carbon/human/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source.nutrition < NUTRITION_LEVEL_STARVING)
@@ -255,13 +275,19 @@
 		source.death()
 
 /datum/species/golem/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "Golems are hardy creatures made out of stone, which are thus naturally resistant to many dangers, including asphyxiation, fire, radiation, electricity, and viruses.\
 		They gain special abilities depending on the type of material consumed, but they need to consume material to keep their body animated."
 
 /datum/species/golem/get_species_description()
+	procstart = null
+	src.procstart = null
 	return "Golems are lithoid creatures who eat rocks and minerals to survive and adapt."
 
 /datum/species/golem/get_species_lore()
+	procstart = null
+	src.procstart = null
 	return list(
 		"While Golems have long been commonly found on frontier worlds, peacefully mining and otherwise living in harmony with the environment, \
 		it is believed they were originally constructed in Nanotrasen laboratories as a form of cheap labor. Whatever happened up to this point is unknown, \
@@ -269,6 +295,8 @@
 	)
 
 /datum/species/golem/create_pref_unique_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 
 	to_add += list(list(

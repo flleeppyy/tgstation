@@ -47,6 +47,8 @@
 	var/list/obj/item/clothing/starting_items = list()
 
 /obj/structure/mannequin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/slot_flag in slot_flags)
 		worn_items["[slot_flag]"] = null
@@ -68,10 +70,14 @@
 	update_appearance()
 
 /obj/structure/mannequin/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST_ASSOC_VAL(worn_items)
 	return ..()
 
 /obj/structure/mannequin/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	for(var/slot_flag in worn_items)
 		var/obj/item/worn_item = worn_items[slot_flag]
 		if(worn_item)
@@ -79,6 +85,8 @@
 	return ..()
 
 /obj/structure/mannequin/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/slot_flag in worn_items)
 		if(worn_items[slot_flag] == gone)
@@ -86,11 +94,15 @@
 	update_appearance()
 
 /obj/structure/mannequin/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/mannequin/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/pedestal = mutable_appearance(icon, "pedestal_[material]")
 	pedestal.pixel_z = -3
@@ -120,6 +132,8 @@
 		. += worn_item.build_worn_icon(default_layer, default_icon, female_uniform = female_icon)
 
 /obj/structure/mannequin/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -179,10 +193,14 @@ GLOBAL_LIST_INIT(strippable_mannequin_items, create_strippable_list(list(
 	var/item_slot
 
 /datum/strippable_item/mannequin_slot/get_item(atom/source)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/mannequin/mannequin_source = source
 	return istype(mannequin_source) ? mannequin_source.worn_items["[item_slot]"] : null
 
 /datum/strippable_item/mannequin_slot/try_equip(atom/source, obj/item/equipping, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -192,6 +210,8 @@ GLOBAL_LIST_INIT(strippable_mannequin_items, create_strippable_list(list(
 	return TRUE
 
 /datum/strippable_item/mannequin_slot/finish_equip(atom/source, obj/item/equipping, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/mannequin/mannequin_source = source
 	if(!istype(mannequin_source))
 		return
@@ -201,6 +221,8 @@ GLOBAL_LIST_INIT(strippable_mannequin_items, create_strippable_list(list(
 	mannequin_source.update_appearance()
 
 /datum/strippable_item/mannequin_slot/finish_unequip(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/mannequin/mannequin_source = source
 	if(!istype(mannequin_source))
 		return

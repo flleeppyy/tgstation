@@ -8,6 +8,8 @@
  * returns the net change in bruteloss after applying the damage amount
  */
 /mob/living/basic/proc/adjust_health(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(!forced && HAS_TRAIT(src, TRAIT_GODMODE))
 		return 0
@@ -18,12 +20,16 @@
 	return . - bruteloss
 
 /mob/living/basic/get_damage_mod(damage_type)
+	procstart = null
+	src.procstart = null
 	var/modifier = ..()
 	if (damage_type in damage_coeff)
 		return modifier * damage_coeff[damage_type]
 	return modifier
 
 /mob/living/basic/adjust_brute_loss(amount, updating_health = TRUE, forced = FALSE, required_bodytype)
+	procstart = null
+	src.procstart = null
 	if(!can_adjust_brute_loss(amount, forced, required_bodytype))
 		return 0
 	if(forced)
@@ -32,6 +38,8 @@
 		. = adjust_health(amount * damage_coeff[BRUTE] * CONFIG_GET(number/damage_multiplier), updating_health, forced)
 
 /mob/living/basic/adjust_fire_loss(amount, updating_health = TRUE, forced = FALSE, required_bodytype)
+	procstart = null
+	src.procstart = null
 	if(!can_adjust_fire_loss(amount, forced, required_bodytype))
 		return 0
 	if(forced)
@@ -40,6 +48,8 @@
 		. = adjust_health(amount * damage_coeff[BURN] * CONFIG_GET(number/damage_multiplier), updating_health, forced)
 
 /mob/living/basic/adjust_oxy_loss(amount, updating_health = TRUE, forced = FALSE, required_biotype)
+	procstart = null
+	src.procstart = null
 	if(!can_adjust_oxy_loss(amount, forced, required_biotype))
 		return 0
 	if(forced)
@@ -48,6 +58,8 @@
 		. = adjust_health(amount * damage_coeff[OXY] * CONFIG_GET(number/damage_multiplier), updating_health, forced)
 
 /mob/living/basic/adjust_tox_loss(amount, updating_health = TRUE, forced = FALSE, required_biotype)
+	procstart = null
+	src.procstart = null
 	if(!can_adjust_tox_loss(amount, forced, required_biotype))
 		return 0
 	if(forced)
@@ -56,6 +68,8 @@
 		. = adjust_health(amount * damage_coeff[TOX] * CONFIG_GET(number/damage_multiplier), updating_health, forced)
 
 /mob/living/basic/adjust_stamina_loss(amount, updating_stamina = TRUE, forced = FALSE, required_biotype)
+	procstart = null
+	src.procstart = null
 	if(!can_adjust_stamina_loss(amount, forced, required_biotype))
 		return 0
 	. = staminaloss
@@ -70,10 +84,14 @@
 	. -= staminaloss
 
 /mob/living/basic/received_stamina_damage(current_level, amount_actual, amount)
+	procstart = null
+	src.procstart = null
 	if (stamina_recovery == 0)
 		return ..()
 
 /mob/living/basic/received_stamina_damage(current_level, amount_actual, amount)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (stat == DEAD || stamina_crit_threshold == BASIC_MOB_NO_STAMCRIT)
 		return

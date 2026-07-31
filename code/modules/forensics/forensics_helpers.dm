@@ -1,5 +1,7 @@
 /// Adds a list of fingerprints to the atom
-/atom/proc/add_fingerprint_list(list/fingerprints_to_add) //ASSOC LIST FINGERPRINT = FINGERPRINT
+/atom/proc/add_fingerprint_list(list/fingerprints_to_add)
+	procstart = null
+	src.procstart = null //ASSOC LIST FINGERPRINT = FINGERPRINT
 	if (QDELETED(src))
 		return
 	if (isnull(fingerprints_to_add))
@@ -11,7 +13,9 @@
 	return TRUE
 
 /// Adds a single fingerprint to the atom
-/atom/proc/add_fingerprint(mob/suspect, ignoregloves = FALSE) //Set ignoregloves to add prints irrespective of the mob having gloves on.
+/atom/proc/add_fingerprint(mob/suspect, ignoregloves = FALSE)
+	procstart = null
+	src.procstart = null //Set ignoregloves to add prints irrespective of the mob having gloves on.
 	if (QDELETED(src))
 		return
 	if (isnull(forensics))
@@ -20,7 +24,9 @@
 	return TRUE
 
 /// Add a list of fibers to the atom
-/atom/proc/add_fiber_list(list/fibers_to_add) //ASSOC LIST FIBERTEXT = FIBERTEXT
+/atom/proc/add_fiber_list(list/fibers_to_add)
+	procstart = null
+	src.procstart = null //ASSOC LIST FIBERTEXT = FIBERTEXT
 	if (QDELETED(src))
 		return
 	if (isnull(fibers_to_add))
@@ -33,6 +39,8 @@
 
 /// Adds a single fiber to the atom
 /atom/proc/add_fibers(mob/living/carbon/human/suspect)
+	procstart = null
+	src.procstart = null
 	if (QDELETED(src))
 		return
 	var/old = 0
@@ -52,7 +60,9 @@
 	return TRUE
 
 /// Adds a list of hiddenprints to the atom
-/atom/proc/add_hiddenprint_list(list/hiddenprints_to_add) //NOTE: THIS IS FOR ADMINISTRATION FINGERPRINTS, YOU MUST CUSTOM SET THIS TO INCLUDE CKEY/REAL NAMES! CHECK FORENSICS.DM
+/atom/proc/add_hiddenprint_list(list/hiddenprints_to_add)
+	procstart = null
+	src.procstart = null //NOTE: THIS IS FOR ADMINISTRATION FINGERPRINTS, YOU MUST CUSTOM SET THIS TO INCLUDE CKEY/REAL NAMES! CHECK FORENSICS.DM
 	if (QDELETED(src))
 		return
 	if (isnull(hiddenprints_to_add))
@@ -65,6 +75,8 @@
 
 /// Adds a single hiddenprint to the atom
 /atom/proc/add_hiddenprint(mob/suspect)
+	procstart = null
+	src.procstart = null
 	if (QDELETED(src))
 		return
 	if (isnull(forensics))
@@ -74,6 +86,8 @@
 
 /// Fetch current blood color
 /atom/proc/get_blood_dna_color()
+	procstart = null
+	src.procstart = null
 	if (cached_blood_color)
 		return cached_blood_color
 
@@ -87,6 +101,8 @@
 /// Check if we have any emissive blood on us
 /// is_worn - When TRUE, we're fetching the value for mob overlays, in which case we bypass the cache
 /atom/proc/get_blood_emissive_alpha(is_worn = FALSE)
+	procstart = null
+	src.procstart = null
 	if (cached_blood_emissive && !is_worn)
 		return cached_blood_emissive
 
@@ -105,10 +121,14 @@
 	return blood_alpha
 
 /// Adds blood dna to the atom
-/atom/proc/add_blood_DNA(list/blood_DNA_to_add, list/datum/disease/diseases) //ASSOC LIST DNA = BLOODTYPE
+/atom/proc/add_blood_DNA(list/blood_DNA_to_add, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null //ASSOC LIST DNA = BLOODTYPE
 	return FALSE
 
 /obj/add_blood_DNA(list/blood_DNA_to_add, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	if (QDELETED(src))
 		return
 	. = ..()
@@ -128,6 +148,8 @@
 	return TRUE
 
 /obj/effect/decal/cleanable/blood/add_blood_DNA(list/blood_DNA_to_add, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	var/first_dna = GET_ATOM_BLOOD_DNA_LENGTH(src)
 	if(!..())
 		return FALSE
@@ -145,16 +167,22 @@
 	return TRUE
 
 /obj/item/add_blood_DNA(list/blood_DNA_to_add, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	if(item_flags & NO_BLOOD_ON_ITEM)
 		return FALSE
 	return ..()
 
 /obj/item/clothing/gloves/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. && has_blood_flag(blood_dna, BLOOD_COVER_ITEMS))
 		transfer_blood = min(transfer_blood, rand(2, 4))
 
 /turf/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/decal/cleanable/blood/splatter/blood_splatter = locate() in src
 	var/blood_flags = has_blood_flag(blood_dna, BLOOD_COVER_TURFS|BLOOD_ADD_DNA|BLOOD_TRANSFER_VIRAL_DATA)
 	if(!blood_splatter)
@@ -168,9 +196,13 @@
 	return !QDELETED(blood_splatter) ? blood_splatter : null
 
 /turf/closed/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/item/clothing/under/add_blood_DNA(list/blood_DNA_to_add, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -180,6 +212,8 @@
 		thing_accessory.add_blood_DNA(blood_DNA_to_add)
 
 /mob/living/carbon/human/add_blood_DNA(list/blood_DNA_to_add, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	return add_blood_DNA_to_items(blood_DNA_to_add, diseases = diseases)
 
 /// Adds blood DNA to certain slots the mob is wearing
@@ -235,6 +269,8 @@
 	return TRUE
 
 /mob/living/add_blood_DNA(list/blood_DNA_to_add, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	if(QDELING(src))
 		return FALSE
 	if(!length(blood_DNA_to_add))
@@ -250,6 +286,8 @@
  * Transfer all the fingerprints and hidden prints from [src] to [transfer_to].
  */
 /atom/proc/transfer_fingerprints_to(atom/transfer_to)
+	procstart = null
+	src.procstart = null
 	transfer_to.add_fingerprint_list(GET_ATOM_FINGERPRINTS(src))
 	transfer_to.add_hiddenprint_list(GET_ATOM_HIDDENPRINTS(src))
 	transfer_to.fingerprintslast = fingerprintslast
@@ -258,4 +296,6 @@
  * Transfer all the fibers from [src] to [transfer_to].
  */
 /atom/proc/transfer_fibers_to(atom/transfer_to)
+	procstart = null
+	src.procstart = null
 	transfer_to.add_fiber_list(GET_ATOM_FIBRES(src))

@@ -13,10 +13,14 @@
 	var/growth_time = 60 SECONDS
 
 /obj/item/organ/body_egg/alien_embryo/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	advance_embryo_stage()
 
 /obj/item/organ/body_egg/alien_embryo/on_find(mob/living/finder)
+	procstart = null
+	src.procstart = null
 	..()
 	if(stage < 5)
 		to_chat(finder, span_notice("It's small and weak, barely the size of a foetus."))
@@ -26,6 +30,8 @@
 			INVOKE_ASYNC(src, PROC_REF(attempt_grow), gib_on_success = FALSE)
 
 /obj/item/organ/body_egg/alien_embryo/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(src) || QDELETED(owner))
 		return
@@ -58,11 +64,15 @@
 			owner.adjust_tox_loss(5 * seconds_per_tick) // Why is this [TOX]?
 
 /obj/item/organ/body_egg/alien_embryo/get_status_appendix(scanpower, add_tooltips)
+	procstart = null
+	src.procstart = null
 	if(scanpower >= SCANPOWER_SUPER)
 		return "Stage: [stage]/6"
 
 /// Controls Xenomorph Embryo growth. If embryo is fully grown (or overgrown), stop the proc. If not, increase the stage by one and if it's not fully grown (stage 6), add a timer to do this proc again after however long the growth time variable is.
 /obj/item/organ/body_egg/alien_embryo/proc/advance_embryo_stage()
+	procstart = null
+	src.procstart = null
 	if(stage >= 6)
 		return
 	stage++
@@ -80,12 +90,16 @@
 		addtimer(CALLBACK(src, PROC_REF(advance_embryo_stage)), growth_time*slowdown)
 
 /obj/item/organ/body_egg/alien_embryo/egg_process()
+	procstart = null
+	src.procstart = null
 	if(stage == 6 && prob(50))
 		// If we are mid surgery we won't gib the mob, isn't that neat?
 		INVOKE_ASYNC(src, PROC_REF(attempt_grow), gib_on_success = !LIMB_HAS_SURGERY_STATE(bodypart_owner, SURGERY_SKIN_OPEN|SURGERY_BONE_SAWED))
 
 /// Attempt to burst an alien outside of the host, getting a ghost to play as the xeno.
 /obj/item/organ/body_egg/alien_embryo/proc/attempt_grow(gib_on_success = TRUE)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(owner) || bursting)
 		return
 
@@ -105,6 +119,8 @@
 
 /// Poll has concluded with a suitor
 /obj/item/organ/body_egg/alien_embryo/proc/on_poll_concluded(gib_on_success, mob/dead/observer/ghost)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(owner))
 		return
 
@@ -151,6 +167,8 @@ Proc: AddInfectionImages(C)
 Des: Adds the infection image to all aliens for this embryo
 ----------------------------------------*/
 /obj/item/organ/body_egg/alien_embryo/AddInfectionImages()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/alien/alien in GLOB.player_list)
 		var/I = image('icons/mob/nonhuman-player/alien.dmi', loc = owner, icon_state = "infected[stage]")
 		alien.client?.images += I
@@ -160,6 +178,8 @@ Proc: RemoveInfectionImage(C)
 Des: Removes all images from the mob infected by this embryo
 ----------------------------------------*/
 /obj/item/organ/body_egg/alien_embryo/RemoveInfectionImages()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/alien/alien in GLOB.player_list)
 		var/list/image/to_remove = list()
 		for(var/image/client_image in alien.client?.images)

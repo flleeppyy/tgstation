@@ -1,4 +1,6 @@
 /obj/item/bodypart/head/proc/copy_appearance_from(mob/living/carbon/human/target, overwrite_eyes = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/species/target_species = target.dna.species
 
 	lip_style = target.lip_style
@@ -33,6 +35,8 @@
 
 /// Returns a list of all overlays associated with the lips
 /obj/item/bodypart/head/proc/get_lips_overlays(dropped)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(!lip_style || is_husked || is_invisible || (owner?.obscured_slots & HIDEFACIALHAIR) || !(head_flags & HEAD_LIPS))
 		return .
@@ -45,6 +49,8 @@
 
 /// Returns a list of all hair/facial hair related overlays, or alternatively the debrained overlay if applicable
 /obj/item/bodypart/head/proc/get_hair_overlays(dropped)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/hair_hidden = is_husked || is_invisible || (owner?.obscured_slots & HIDEHAIR)
 	var/facial_hair_hidden = is_husked || is_invisible || (owner?.obscured_slots & HIDEFACIALHAIR)
@@ -63,6 +69,8 @@
 
 /// Used in constructing the hair overlays - handles just facial hair
 /obj/item/bodypart/head/proc/get_base_facial_hair_overlays(dropped)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	. = list()
 	var/datum/sprite_accessory/facial_hair/sprite_accessory = SSaccessories.facial_hairstyles_list[facial_hairstyle]
@@ -113,6 +121,8 @@
 
 /// Used in constructing the hair overlays - handles just the hair on top of the head
 /obj/item/bodypart/head/proc/get_base_hair_overlays(dropped)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	. = list()
 	var/datum/sprite_accessory/hair/hair_sprite_accessory = SSaccessories.hairstyles_list[hairstyle]
@@ -176,6 +186,8 @@
 
 /// Helper for setting hair color of an overlay appropriately
 /obj/item/bodypart/head/proc/set_overlay_hair_color(image/hair_overlay, hair_color_to_use = src.hair_color)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	if(override_hair_color)
 		hair_overlay.color = override_hair_color
@@ -186,6 +198,8 @@
 
 /// Returns a list of all eye related overlays, or an eyeless overlay if applicable
 /obj/item/bodypart/head/proc/get_eye_overlays(dropped)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	var/obj/item/organ/eyes/eyes = locate() in src
@@ -201,6 +215,8 @@
 
 /// Returns an appropriate debrained overlay
 /obj/item/bodypart/head/proc/get_debrain_overlay(dropped)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/image)
 	var/debrain_icon = 'icons/mob/human/human_face.dmi'
 	var/debrain_icon_state = "debrained"
@@ -222,6 +238,8 @@
 
 /// Returns an appropriate missing eyes overlay
 /obj/item/bodypart/head/proc/get_eyeless_overlay(dropped)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/image)
 	var/eyeless_icon = 'icons/mob/human/human_eyes.dmi'
 	var/eyeless_icon_state = "eyes_missing"
@@ -234,6 +252,8 @@
 
 /// Returns an appropriate hair/facial hair gradient overlay
 /obj/item/bodypart/head/proc/get_gradient_overlay(icon/base_icon, layer, datum/sprite_accessory/gradient, grad_color, dropped)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/mutable_appearance)
 
 	var/mutable_appearance/gradient_overlay = mutable_appearance(layer = layer)
@@ -251,9 +271,13 @@
  * Used to update the makeup on a human and apply/remove lipstick traits, then store/unstore them on the head object in case it gets severed
  **/
 /mob/living/proc/update_lips(new_style, new_color, apply_trait, update = TRUE)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/update_lips(new_style, new_color, apply_trait, update = TRUE)
+	procstart = null
+	src.procstart = null
 	lip_style = new_style
 	lip_color = new_color
 
@@ -274,9 +298,13 @@
  * A wrapper for [mob/living/carbon/human/proc/update_lips] that sets the lip style and color to null.
  **/
 /mob/living/proc/clean_lips()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/clean_lips()
+	procstart = null
+	src.procstart = null
 	if(!lip_style)
 		return FALSE
 	update_lips(null, null, update = TRUE)
@@ -287,9 +315,13 @@
  * Update calls update_body_parts().
  **/
 /mob/living/proc/set_hairstyle(new_style, update = TRUE)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/set_hairstyle(new_style, update = TRUE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/head/my_head = get_bodypart(BODY_ZONE_HEAD)
 
 	hairstyle = new_style
@@ -304,9 +336,13 @@
  * Update calls update_body_parts().
  **/
 /mob/living/proc/set_haircolor(hex_string, override, update = TRUE)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/set_haircolor(hex_string, override, update = TRUE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/head/my_head = get_bodypart(BODY_ZONE_HEAD)
 
 	if(override)
@@ -326,9 +362,13 @@
  * * key (optional) - corresponds to hair or facial hair index. If no key is provided returns whole list.
  **/
 /mob/living/proc/get_hair_gradient_style(key)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/get_hair_gradient_style(key)
+	procstart = null
+	src.procstart = null
 	if(key)
 		return LAZYACCESS(grad_style, key) || "None"
 
@@ -344,6 +384,8 @@
  * * key (optional) - corresponds to hair or facial hair index. If no key is provided returns whole list.
  **/
 /obj/item/bodypart/head/proc/get_hair_gradient_style(key)
+	procstart = null
+	src.procstart = null
 	if(key)
 		return LAZYACCESS(gradient_styles, key) || "None"
 
@@ -357,9 +399,13 @@
  * Update calls update_body_parts().
  **/
 /mob/living/proc/set_hair_gradient_style(new_style, update = TRUE)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/set_hair_gradient_style(new_style, update = TRUE)
+	procstart = null
+	src.procstart = null
 	if(LAZYACCESS(grad_style, GRADIENT_HAIR_KEY) == new_style)
 		return
 	var/obj/item/bodypart/head/my_head = get_bodypart(BODY_ZONE_HEAD)
@@ -379,9 +425,13 @@
  * * key (optional) - corresponds to hair or facial hair index. If no key is provided returns whole list.
  **/
 /mob/living/proc/get_hair_gradient_color(key)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/get_hair_gradient_color(key)
+	procstart = null
+	src.procstart = null
 	if(key)
 		return LAZYACCESS(grad_color, key) || COLOR_BLACK
 
@@ -398,6 +448,8 @@
  * * key (optional) - corresponds to hair or facial hair index. If no key is provided returns whole list.
  **/
 /obj/item/bodypart/head/proc/get_hair_gradient_color(key)
+	procstart = null
+	src.procstart = null
 	if(key)
 		return LAZYACCESS(gradient_colors, key) || COLOR_BLACK
 
@@ -411,9 +463,13 @@
  * Update calls update_body_parts().
  **/
 /mob/living/proc/set_hair_gradient_color(new_color, update = TRUE)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/set_hair_gradient_color(new_color, update = TRUE)
+	procstart = null
+	src.procstart = null
 	if(LAZYACCESS(grad_color, GRADIENT_HAIR_KEY) == new_color)
 		return
 	var/obj/item/bodypart/head/my_head = get_bodypart(BODY_ZONE_HEAD)
@@ -430,9 +486,13 @@
  * Update calls update_body_parts().
  **/
 /mob/living/proc/set_facial_hairstyle(new_style, update = TRUE)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/set_facial_hairstyle(new_style, update = TRUE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/head/my_head = get_bodypart(BODY_ZONE_HEAD)
 
 	facial_hairstyle = new_style
@@ -447,9 +507,13 @@
  * Update calls update_body_parts().
  **/
 /mob/living/proc/set_facial_haircolor(hex_string, override, update = TRUE)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/set_facial_haircolor(hex_string, override, update = TRUE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/head/my_head = get_bodypart(BODY_ZONE_HEAD)
 
 	if(override)
@@ -467,9 +531,13 @@
  * Update calls update_body_parts().
  **/
 /mob/living/proc/set_facial_hair_gradient_style(new_style, update = TRUE)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/set_facial_hair_gradient_style(new_style, update = TRUE)
+	procstart = null
+	src.procstart = null
 	if(LAZYACCESS(grad_style, GRADIENT_FACIAL_HAIR_KEY) == new_style)
 		return
 	var/obj/item/bodypart/head/my_head = get_bodypart(BODY_ZONE_HEAD)
@@ -486,9 +554,13 @@
  * Update calls update_body_parts().
  **/
 /mob/living/proc/set_facial_hair_gradient_color(new_color, update = TRUE)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/set_facial_hair_gradient_color(new_color, update = TRUE)
+	procstart = null
+	src.procstart = null
 	if(LAZYACCESS(grad_color, GRADIENT_FACIAL_HAIR_KEY) == new_color)
 		return
 	var/obj/item/bodypart/head/my_head = get_bodypart(BODY_ZONE_HEAD)

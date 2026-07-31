@@ -6,9 +6,13 @@
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/ui_style/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return assoc_to_keys(GLOB.available_ui_styles)
 
 /datum/preference/choiced/ui_style/icon_for(value)
+	procstart = null
+	src.procstart = null
 	var/ui_icons = GLOB.available_ui_styles[value]
 
 	var/datum/universal_icon/icon = uni_icon(ui_icons, "hand_l")
@@ -18,7 +22,11 @@
 	return icon
 
 /datum/preference/choiced/ui_style/create_default_value()
+	procstart = null
+	src.procstart = null
 	return GLOB.available_ui_styles[1]
 
 /datum/preference/choiced/ui_style/apply_to_client(client/client, value)
+	procstart = null
+	src.procstart = null
 	client.mob?.hud_used?.update_ui_style(ui_style2icon(value))

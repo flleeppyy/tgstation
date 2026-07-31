@@ -34,6 +34,8 @@
 
 
 /datum/component/automatic_fire/Initialize(autofire_shot_delay, windup_autofire, windup_autofire_reduction_multiplier, windup_autofire_cap, windup_spindown, allow_akimbo = TRUE, firing_sound_loop)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isgun(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -56,17 +58,23 @@
 
 
 /datum/component/automatic_fire/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(autofire_sound_loop)
 	autofire_off()
 	return ..()
 
 /datum/component/automatic_fire/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(autofire_stat != AUTOFIRE_STAT_FIRING)
 		STOP_PROCESSING(SSprojectiles, src)
 		return
 	process_shot()
 
 /datum/component/automatic_fire/proc/wake_up(datum/source, mob/user, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(autofire_stat == AUTOFIRE_STAT_ALERT)
@@ -79,6 +87,8 @@
 
 // There is a gun and there is a user wielding it. The component now waits for the mouse click.
 /datum/component/automatic_fire/proc/autofire_on(client/usercli)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(autofire_stat != AUTOFIRE_STAT_IDLE)
@@ -97,6 +107,8 @@
 
 
 /datum/component/automatic_fire/proc/autofire_off(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(autofire_stat == AUTOFIRE_STAT_IDLE)
 		return
@@ -118,6 +130,8 @@
 	parent.UnregisterSignal(src, COMSIG_AUTOFIRE_ONMOUSEDOWN)
 
 /datum/component/automatic_fire/proc/on_client_login(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!source.client)
 		return
@@ -125,6 +139,8 @@
 		autofire_on(source.client)
 
 /datum/component/automatic_fire/proc/on_mouse_down(client/source, atom/_target, turf/location, control, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/list/modifiers = params2list(params) //If they're shift+clicking, for example, let's not have them accidentally shoot.
 
@@ -171,6 +187,8 @@
 
 //Dakka-dakka
 /datum/component/automatic_fire/proc/start_autofiring()
+	procstart = null
+	src.procstart = null
 	if(autofire_stat == AUTOFIRE_STAT_FIRING)
 		return
 	autofire_stat = AUTOFIRE_STAT_FIRING
@@ -202,6 +220,8 @@
 		autofire_sound_loop.start(shooter)
 
 /datum/component/automatic_fire/proc/on_mouse_up(datum/source, atom/object, turf/location, control, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(clicker, COMSIG_CLIENT_MOUSEUP)
 	mouse_status = AUTOFIRE_MOUSEUP
@@ -210,6 +230,8 @@
 	return COMPONENT_CLIENT_MOUSEUP_INTERCEPT
 
 /datum/component/automatic_fire/proc/stop_autofiring(mob/living/source, obj/item/swapped_to, obj/item/swapped_from)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(autofire_stat != AUTOFIRE_STAT_FIRING)
 		return
@@ -229,6 +251,8 @@
 		autofire_sound_loop.stop()
 
 /datum/component/automatic_fire/proc/on_mouse_drag(client/source, atom/src_object, atom/over_object, turf/src_location, turf/over_location, src_control, over_control, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isnull(over_location)) //This happens when the mouse is over an inventory or screen object, or on entering deep darkness, for example.
 		var/list/modifiers = params2list(params)
@@ -250,6 +274,8 @@
 	mouse_parameters = params
 
 /datum/component/automatic_fire/proc/process_shot()
+	procstart = null
+	src.procstart = null
 	if(autofire_stat != AUTOFIRE_STAT_FIRING)
 		return FALSE
 	if(!COOLDOWN_FINISHED(src, next_shot_cd))
@@ -278,6 +304,8 @@
 
 /// Reset for our windup, resetting everything back to initial values after a variable set amount of time (determined by var/windup_spindown).
 /datum/component/automatic_fire/proc/windup_reset(deltimer)
+	procstart = null
+	src.procstart = null
 	current_windup_reduction = initial(current_windup_reduction)
 	if(deltimer && timerid)
 		deltimer(timerid)
@@ -285,6 +313,8 @@
 // Gun procs.
 
 /obj/item/gun/proc/on_autofire_start(mob/living/shooter)
+	procstart = null
+	src.procstart = null
 	if(fire_cd || shooter.incapacitated || !can_trigger_gun(shooter))
 		return FALSE
 	if(!can_shoot())
@@ -298,12 +328,16 @@
 
 
 /obj/item/gun/proc/autofire_bypass_check(datum/source, client/clicker, atom/target, turf/location, control, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(clicker.mob.get_active_held_item() != src)
 		return COMPONENT_AUTOFIRE_ONMOUSEDOWN_BYPASS
 
 
 /obj/item/gun/proc/do_autofire(datum/source, atom/target, mob/living/shooter, allow_akimbo, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(fire_cd || shooter.incapacitated)
 		return NONE
@@ -315,6 +349,8 @@
 
 
 /obj/item/gun/proc/do_autofire_shot(datum/source, atom/target, mob/living/shooter, allow_akimbo, params)
+	procstart = null
+	src.procstart = null
 	var/obj/item/gun/akimbo_gun = shooter.get_inactive_held_item()
 	var/bonus_spread = 0
 	if(istype(akimbo_gun) && weapon_weight < WEAPON_MEDIUM && allow_akimbo)

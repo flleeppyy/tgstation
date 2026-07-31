@@ -6,27 +6,39 @@ ADMIN_VERB(painting_manager, R_ADMIN, "Paintings Manager", "View and redact pain
 /datum/paintings_manager
 
 /datum/paintings_manager/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_ADMIN)
 
 /datum/paintings_manager/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /datum/paintings_manager/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PaintingAdminPanel")
 		ui.open()
 
 /datum/paintings_manager/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/simple/portraits)
 	)
 
 /datum/paintings_manager/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["paintings"] = SSpersistent_paintings.painting_ui_data(filter = NONE, admin = TRUE)
 
 /datum/paintings_manager/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if (!check_rights(R_ADMIN))

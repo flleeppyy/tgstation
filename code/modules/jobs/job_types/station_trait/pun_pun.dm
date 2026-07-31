@@ -27,6 +27,8 @@
 	job_flags = (STATION_JOB_FLAGS|STATION_TRAIT_JOB_FLAGS)&~JOB_ASSIGN_QUIRKS
 
 /datum/job/pun_pun/get_spawn_mob(client/player_client, atom/spawn_point)
+	procstart = null
+	src.procstart = null
 	if (!player_client)
 		return
 	var/mob/living/monky = new spawn_type(get_turf(spawn_point))
@@ -35,6 +37,8 @@
 	return monky
 
 /datum/job/pun_pun/after_spawn(mob/living/carbon/human/monkey, client/player_client)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	monkey.crewlike_monkify()
 

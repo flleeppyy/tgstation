@@ -3,6 +3,8 @@
 	name = "Petrify"
 
 /datum/smite/petrify/effect(client/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!ishuman(target))

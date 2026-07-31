@@ -14,6 +14,8 @@
 //rotation_segments: the resolution of the orbit circle, less = a more block circle, this can be used to produce hexagons (6 segments) triangles (3 segments), and so on, 36 is the best default.
 //pre_rotation: Chooses to rotate src 90 degress towards the orbit dir (clockwise/anticlockwise), useful for things to go "head first" like ghosts
 /datum/component/orbiter/Initialize(atom/movable/orbiter, radius, clockwise, rotation_speed, rotation_segments, pre_rotation)
+	procstart = null
+	src.procstart = null
 	if(!istype(orbiter) || !isatom(parent) || isarea(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -23,6 +25,8 @@
 	begin_orbit(orbiter, radius, clockwise, rotation_speed, rotation_segments, pre_rotation)
 
 /datum/component/orbiter/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	var/atom/target = parent
 
 	target.orbiters = src
@@ -32,12 +36,16 @@
 	RegisterSignal(parent, COMSIG_MOVABLE_UPDATE_GLIDE_SIZE, PROC_REF(orbiter_glide_size_update))
 
 /datum/component/orbiter/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_MOVABLE_UPDATE_GLIDE_SIZE)
 	var/atom/target = parent
 	target.orbiters = null
 	QDEL_NULL(tracker)
 
 /datum/component/orbiter/Destroy()
+	procstart = null
+	src.procstart = null
 	var/atom/master = parent
 	if(master.orbiters == src)
 		master.orbiters = null
@@ -48,6 +56,8 @@
 	return ..()
 
 /datum/component/orbiter/InheritComponent(datum/component/orbiter/newcomp, original, atom/movable/orbiter, radius, clockwise, rotation_speed, rotation_segments, pre_rotation)
+	procstart = null
+	src.procstart = null
 	if(!newcomp)
 		begin_orbit(arglist(args.Copy(3)))
 		return
@@ -66,11 +76,15 @@
 	newcomp.orbiter_params = null
 
 /datum/component/orbiter/PostTransfer(datum/new_parent)
+	procstart = null
+	src.procstart = null
 	if(!isatom(new_parent) || isarea(new_parent) || !get_turf(new_parent))
 		return COMPONENT_INCOMPATIBLE
 	move_react(new_parent)
 
 /datum/component/orbiter/proc/begin_orbit(atom/movable/orbiter, radius, clockwise, rotation_speed, rotation_segments, pre_rotation)
+	procstart = null
+	src.procstart = null
 	if(orbiter.orbiting)
 		if(orbiter.orbiting == src)
 			orbiter.orbiting.end_orbit(orbiter, TRUE)
@@ -116,17 +130,23 @@
 	to_chat(orbiter, span_notice("Now orbiting [parent]."))
 
 /datum/component/orbiter/proc/orbiter_before_shuttle_move(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// We need to detach ourselves before the shuttle moves and reattach afterwards
 	end_orbit(source, TRUE)
 	RegisterSignal(source, COMSIG_ATOM_AFTER_SHUTTLE_MOVE, PROC_REF(orbiter_after_shuttle_move))
 
 /datum/component/orbiter/proc/orbiter_after_shuttle_move(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(source, COMSIG_ATOM_AFTER_SHUTTLE_MOVE)
 	begin_orbit(arglist(list(source) + orbiter_params[source]))
 
 /datum/component/orbiter/proc/end_orbit(atom/movable/orbiter, refreshing = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!orbiter_list[orbiter])
 		return
 	UnregisterSignal(orbiter, list(COMSIG_MOVABLE_MOVED, COMSIG_ATOM_BEFORE_SHUTTLE_MOVE, COMSIG_ATOM_AFTER_SHUTTLE_MOVE))
@@ -156,6 +176,8 @@
 
 // This proc can receive signals by either the thing being directly orbited or anything holding it
 /datum/component/orbiter/proc/move_react(atom/movable/master, atom/mover, atom/oldloc, direction)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE // Transfer calls this directly and it doesnt care if the ghosts arent done moving
 
 	if(master.loc == oldloc)
@@ -176,6 +198,8 @@
 
 
 /datum/component/orbiter/proc/orbiter_move_react(atom/movable/orbiter, atom/oldloc, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(orbiter.loc == get_turf(parent))
@@ -183,6 +207,8 @@
 	end_orbit(orbiter)
 
 /datum/component/orbiter/proc/orbiter_glide_size_update(datum/source, target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/orbiter in orbiter_list)
 		var/atom/movable/movable_orbiter = orbiter
@@ -191,6 +217,8 @@
 /////////////////////
 
 /atom/movable/proc/orbit(atom/A, radius = 10, clockwise = FALSE, rotation_speed = 20, rotation_segments = 36, pre_rotation = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!istype(A) || !get_turf(A) || A == src)
 		return
 	if (HAS_TRAIT(A, TRAIT_ORBITING_FORBIDDEN))
@@ -201,12 +229,16 @@
 	return A.AddComponent(/datum/component/orbiter, src, radius, clockwise, rotation_speed, rotation_segments, pre_rotation)
 
 /atom/movable/proc/stop_orbit(datum/component/orbiter/orbits, refreshing = FALSE)
+	procstart = null
+	src.procstart = null
 	if(refreshing)
 		return //Only null the target if we're actually stopping the orbit for real, not if we're merely shuttle moving(or orbiting the same thing again). We will never get it back unless the orbit is fully deleted and reinstated.
 	orbit_target = null
 
 
 /atom/proc/transfer_observers_to(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!orbiters || !istype(target) || !get_turf(target) || target == src)
 		return
 	target.TakeComponent(orbiters)

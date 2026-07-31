@@ -3,6 +3,8 @@
 	copy_type = /datum/disease/advance
 
 /datum/disease/advance/cold/New()
+	procstart = null
+	src.procstart = null
 	name = "Cold"
 	symptoms = list(new/datum/symptom/sneeze)
 	..()
@@ -12,6 +14,8 @@
 	copy_type = /datum/disease/advance
 
 /datum/disease/advance/flu/New()
+	procstart = null
+	src.procstart = null
 	name = "Flu"
 	symptoms = list(new/datum/symptom/cough)
 	..()
@@ -22,6 +26,8 @@
 	copy_type = /datum/disease/advance
 
 /datum/disease/advance/random/New(max_symptoms, max_level = 8)
+	procstart = null
+	src.procstart = null
 	if(!max_symptoms)
 		max_symptoms = rand(1, VIRUS_SYMPTOM_LIMIT)
 	var/list/datum/symptom/possible_symptoms = list()

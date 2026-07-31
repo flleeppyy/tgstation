@@ -1,4 +1,6 @@
 /mob/living/carbon/human/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (!ishuman(user))

@@ -7,6 +7,8 @@
 	icon_state = "demonic_crystal"
 
 /obj/item/resurrection_crystal/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user))
 		to_chat(user, span_notice("A dark presence stops you from absorbing the crystal."))
 		return
@@ -16,6 +18,8 @@
 
 /// Resurrects the target when they die by moving them and dusting a clone in their place, one life for another
 /obj/item/resurrection_crystal/proc/resurrect(mob/living/carbon/user, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(gibbed)
 		to_chat(user, span_notice("This power cannot be used if your entire mortal body is disintegrated..."))
@@ -45,28 +49,40 @@
 	var/duration = 6 SECONDS
 
 /obj/item/clothing/shoes/winterboots/ice_boots/ice_trail/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_SHOES_STEP_ACTION, PROC_REF(on_step))
 
 /obj/item/clothing/shoes/winterboots/ice_boots/ice_trail/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot & ITEM_SLOT_FEET)
 		ADD_TRAIT(src, TRAIT_NODROP, CURSED_ITEM_TRAIT(type))
 
 /obj/item/clothing/shoes/winterboots/ice_boots/ice_trail/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Could have been blown off in an explosion from the previous owner
 	REMOVE_TRAIT(src, TRAIT_NODROP, CURSED_ITEM_TRAIT(type))
 
 /obj/item/clothing/shoes/winterboots/ice_boots/ice_trail/ui_action_click(mob/user)
+	procstart = null
+	src.procstart = null
 	on = !on
 	to_chat(user, span_notice("You [on ? "activate" : "deactivate"] [src]."))
 
 /obj/item/clothing/shoes/winterboots/ice_boots/ice_trail/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("The shoes are [on ? "enabled" : "disabled"].")
 
 /obj/item/clothing/shoes/winterboots/ice_boots/ice_trail/proc/on_step()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/turf/T = get_turf(loc)
@@ -84,11 +100,15 @@
 	toolspeed = 0
 
 /obj/item/pickaxe/drill/jackhammer/demonic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/knockback, 4, TRUE, FALSE)
 	AddElement(/datum/element/lifesteal, 5)
 
 /obj/item/pickaxe/drill/jackhammer/demonic/use_tool(atom/target, mob/living/user, delay, amount=0, volume=0, datum/callback/extra_checks)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(target)
 	mineral_scan_pulse(T, world.view + 1, src)
 	. = ..()

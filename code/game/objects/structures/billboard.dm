@@ -11,6 +11,8 @@
 	anchored = TRUE
 
 /obj/structure/billboard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddComponent(/datum/component/seethrough, SEE_THROUGH_MAP_BILLBOARD)

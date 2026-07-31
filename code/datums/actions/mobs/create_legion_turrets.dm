@@ -10,6 +10,8 @@
 	var/maximum_turrets = 2
 
 /datum/action/cooldown/mob_cooldown/create_legion_turrets/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	disable_cooldown_actions()
 	create(target_atom)
 	StartCooldown()
@@ -18,6 +20,8 @@
 
 /// Creates new legion turrets around the owner between the minimum and maximum
 /datum/action/cooldown/mob_cooldown/create_legion_turrets/proc/create(atom/target)
+	procstart = null
+	src.procstart = null
 	playsound(owner, 'sound/effects/magic/RATTLEMEBONES.ogg', 100, TRUE)
 	var/list/possible_locations = list()
 	for(var/turf/checked_turf in oview(owner, 4)) //Only place the turrets on open turfs
@@ -55,12 +59,16 @@
 	laser = 100
 
 /obj/structure/legionturret/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(set_up_shot)), initial_firing_time)
 	ADD_TRAIT(src, TRAIT_NO_FLOATING_ANIM, INNATE_TRAIT)
 
 /// Handles an extremely basic AI
 /obj/structure/legionturret/proc/set_up_shot()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/possible_target in oview(9, src))
 		if(IS_UNCONSCIOUS(possible_target))
 			continue
@@ -72,6 +80,8 @@
 
 /// Called when attacking a target. Shoots a projectile at the turf underneath the target.
 /obj/structure/legionturret/proc/fire(atom/target)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(target)
 	var/turf/our_turf = get_turf(src)
 	if(!target_turf || !our_turf)
@@ -84,6 +94,8 @@
 
 /// Called shot_delay after the turret shot the tracer. Shoots a projectile into the same direction.
 /obj/structure/legionturret/proc/fire_beam(angle)
+	procstart = null
+	src.procstart = null
 	var/obj/projectile/ouchie = new projectile_type(loc)
 	ouchie.firer = src
 	ouchie.fire(angle)

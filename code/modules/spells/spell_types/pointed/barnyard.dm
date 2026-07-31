@@ -16,6 +16,8 @@
 	deactive_msg = "You dispel the curse."
 
 /datum/action/cooldown/spell/pointed/barnyardcurse/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -29,6 +31,8 @@
 	return !(human_target.wear_mask.type in GLOB.cursed_animal_masks)
 
 /datum/action/cooldown/spell/pointed/barnyardcurse/cast(mob/living/carbon/human/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cast_on.can_block_magic(antimagic_flags))
 		cast_on.visible_message(

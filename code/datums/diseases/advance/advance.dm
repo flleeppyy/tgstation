@@ -41,15 +41,21 @@
  */
 
 /datum/disease/advance/New()
+	procstart = null
+	src.procstart = null
 	Refresh()
 
 /datum/disease/advance/Destroy()
+	procstart = null
+	src.procstart = null
 	if(processing)
 		for(var/datum/symptom/S in symptoms)
 			S.End(src)
 	return ..()
 
 /datum/disease/advance/try_infect(mob/living/infectee, make_copy = TRUE)
+	procstart = null
+	src.procstart = null
 	//see if we are more transmittable than enough diseases to replace them
 	//diseases replaced in this way do not confer immunity
 	var/list/advance_diseases = list()
@@ -71,10 +77,14 @@
 	return TRUE
 
 /datum/disease/advance/get_recovery_failure_chance()
+	procstart = null
+	src.procstart = null
 	return clamp((properties["resistance"] * 1.5), 0, 50)
 
 // Randomly pick a symptom to activate.
 /datum/disease/advance/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -98,12 +108,16 @@
 
 // Tell symptoms stage changed
 /datum/disease/advance/update_stage(new_stage)
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/datum/symptom/S in symptoms)
 		S.on_stage_change(src)
 
 // Compares type then ID.
 /datum/disease/advance/IsSame(datum/disease/advance/D)
+	procstart = null
+	src.procstart = null
 
 	if(!(istype(D, /datum/disease/advance)))
 		return FALSE
@@ -114,6 +128,8 @@
 
 // Returns the advance disease with a different reference memory.
 /datum/disease/advance/Copy()
+	procstart = null
+	src.procstart = null
 	var/datum/disease/advance/A = ..()
 	QDEL_LIST(A.symptoms)
 	for(var/datum/symptom/S in symptoms)
@@ -126,6 +142,8 @@
 	return A
 
 /datum/disease/advance/has_cure()
+	procstart = null
+	src.procstart = null
 	if(!(disease_flags & (CURABLE | CHRONIC)))
 		return FALSE
 	var/remedied_symptoms = 0
@@ -141,12 +159,16 @@
 
 // Mix the symptoms of two diseases (the src and the argument)
 /datum/disease/advance/proc/Mix(datum/disease/advance/D)
+	procstart = null
+	src.procstart = null
 	if(!(IsSame(D)))
 		var/list/possible_symptoms = shuffle(D.symptoms)
 		for(var/datum/symptom/S in possible_symptoms)
 			AddSymptom(S.Copy())
 
 /datum/disease/advance/proc/HasSymptom(datum/symptom/S)
+	procstart = null
+	src.procstart = null
 	for(var/datum/symptom/symp in symptoms)
 		if(symp.type == S.type)
 			return TRUE
@@ -154,6 +176,8 @@
 
 // Will generate new unique symptoms, use this if there are none. Returns a list of symptoms that were generated.
 /datum/disease/advance/proc/GenerateSymptoms(level_min, level_max, amount_get = 0)
+	procstart = null
+	src.procstart = null
 
 	. = list() // Symptoms we generated.
 
@@ -179,6 +203,8 @@
 		. += pick_n_take(possible_symptoms)
 
 /datum/disease/advance/proc/Refresh(new_name = FALSE)
+	procstart = null
+	src.procstart = null
 	GenerateProperties()
 	assign_properties()
 	if(processing && symptoms?.len)
@@ -196,6 +222,8 @@
 
 //Generate disease properties based on the effects. Returns an associated list.
 /datum/disease/advance/proc/GenerateProperties()
+	procstart = null
+	src.procstart = null
 	properties = list("resistance" = 0, "stealth" = 0, "stage_rate" = 0, "transmittable" = 0, "severity" = 0)
 
 	for(var/datum/symptom/S in symptoms)
@@ -215,6 +243,8 @@
 
 // Assign the properties that are in the list.
 /datum/disease/advance/proc/assign_properties()
+	procstart = null
+	src.procstart = null
 
 	if(properties?.len)
 		if(properties["stealth"] >= properties["severity"] && properties["severity"] > 0)
@@ -242,6 +272,8 @@
 
 // Assign the spread type and give it the correct description.
 /datum/disease/advance/proc/set_spread(spread_id)
+	procstart = null
+	src.procstart = null
 	switch(spread_id)
 		if(DISEASE_SPREAD_NON_CONTAGIOUS)
 			update_spread_flags(DISEASE_SPREAD_NON_CONTAGIOUS)
@@ -263,6 +295,8 @@
 			spread_text = "Respiration"
 
 /datum/disease/advance/proc/set_severity(level_sev)
+	procstart = null
+	src.procstart = null
 
 	switch(level_sev)
 
@@ -285,6 +319,8 @@
 
 // Randomly generate a symptom, has a chance to lose or gain a symptom.
 /datum/disease/advance/proc/Evolve(min_level, max_level, ignore_mutable = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!mutable && !ignore_mutable)
 		return
 	var/list/generated_symptoms = GenerateSymptoms(min_level, max_level, 1)
@@ -295,6 +331,8 @@
 
 // Randomly remove a symptom.
 /datum/disease/advance/proc/Devolve(ignore_mutable = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!mutable && !ignore_mutable)
 		return
 	if(length(symptoms) > 1)
@@ -305,6 +343,8 @@
 
 // Randomly neuter a symptom.
 /datum/disease/advance/proc/Neuter(ignore_mutable = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!mutable && !ignore_mutable)
 		return
 	if(length(symptoms))
@@ -315,11 +355,15 @@
 
 // Name the disease.
 /datum/disease/advance/proc/AssignName(name = "Unknown")
+	procstart = null
+	src.procstart = null
 	var/datum/disease/advance/A = SSdisease.archive_diseases[GetDiseaseID()]
 	A.name = name
 
 // Return a unique ID of the disease.
 /datum/disease/advance/GetDiseaseID()
+	procstart = null
+	src.procstart = null
 	if(!id)
 		var/list/L = list()
 		for(var/datum/symptom/S in symptoms)
@@ -335,6 +379,8 @@
 
 // Add a symptom, if it is over the limit we take a random symptom away and add the new one.
 /datum/disease/advance/proc/AddSymptom(datum/symptom/S)
+	procstart = null
+	src.procstart = null
 	if(HasSymptom(S))
 		return
 	if(symptoms.len >= VIRUS_SYMPTOM_LIMIT)
@@ -344,11 +390,15 @@
 
 // Simply removes the symptom.
 /datum/disease/advance/proc/RemoveSymptom(datum/symptom/S)
+	procstart = null
+	src.procstart = null
 	symptoms -= S
 	S.OnRemove(src)
 
 // Neuter a symptom, so it will only affect stats
 /datum/disease/advance/proc/NeuterSymptom(datum/symptom/S)
+	procstart = null
+	src.procstart = null
 	if(!S.neutered)
 		S.neutered = TRUE
 		S.name += " (neutered)"
@@ -362,6 +412,8 @@
 
 // Mix a list of advance diseases and return the mixed result.
 /proc/Advance_Mix(list/D_list)
+	procstart = null
+	src.procstart = null
 	var/list/diseases = list()
 
 	for(var/datum/disease/advance/A in D_list)
@@ -390,6 +442,8 @@
 	return to_return
 
 /proc/SetViruses(datum/reagent/R, list/data)
+	procstart = null
+	src.procstart = null
 	if(data)
 		var/list/preserve = list()
 		if(istype(data) && data["viruses"])
@@ -400,6 +454,8 @@
 			R.data["viruses"] = preserve
 
 /proc/AdminCreateVirus(client/user)
+	procstart = null
+	src.procstart = null
 
 	if(!user)
 		return
@@ -465,24 +521,36 @@
 
 
 /datum/disease/advance/proc/totalStageSpeed()
+	procstart = null
+	src.procstart = null
 	return properties["stage_rate"]
 
 /datum/disease/advance/proc/totalStealth()
+	procstart = null
+	src.procstart = null
 	return properties["stealth"]
 
 /datum/disease/advance/proc/totalResistance()
+	procstart = null
+	src.procstart = null
 	return properties["resistance"]
 
 /datum/disease/advance/proc/totalTransmittable()
+	procstart = null
+	src.procstart = null
 	return properties["transmittable"]
 
 /datum/disease/advance/proc/totalSeverity()
+	procstart = null
+	src.procstart = null
 	return properties["severity"]
 
 /**
  *  If the disease has an incubation time (such as event diseases) start the timer, let properties determine if there's no timer set.
  */
 /datum/disease/advance/after_add()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isnull(incubation_time))
@@ -499,10 +567,14 @@
  *  Make virus visible to heath scanners
  */
 /datum/disease/advance/proc/make_visible()
+	procstart = null
+	src.procstart = null
 	visibility_flags &= ~HIDDEN_SCANNER
 	affected_mob.med_hud_set_status()
 
 /datum/disease/advance/cure(add_resistance = TRUE)
+	procstart = null
+	src.procstart = null
 	if(severity == DISEASE_SEVERITY_UNCURABLE)
 		return
 	if(add_resistance == TRUE)
@@ -512,6 +584,8 @@
 	.=..()
 
 /datum/disease/advance/get_immunity_recovery()
+	procstart = null
+	src.procstart = null
 	var/recovery_bonus = 0
 	for(var/datum/symptom/each_symptom as anything in symptoms)
 		if((each_symptom.name in affected_mob.symptom_resistances) && !each_symptom.neutered)
@@ -519,6 +593,8 @@
 	return recovery_bonus
 
 /datum/disease/advance/proc/generate_cure_text(cure_count)
+	procstart = null
+	src.procstart = null
 	var/remedies = list()
 	for(var/datum/symptom/each_symptom as anything in symptoms)
 		if(length(remedies) >= cure_count)

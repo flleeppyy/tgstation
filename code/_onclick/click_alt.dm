@@ -1,5 +1,7 @@
 ///Main proc for primary alt click
 /mob/proc/AltClickOn(atom/target)
+	procstart = null
+	src.procstart = null
 	base_click_alt(target)
 
 /**
@@ -8,6 +10,8 @@
  * If you wish to add custom `click_alt` behavior for a single type, use that proc.
  */
 /mob/proc/base_click_alt(atom/target)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	// Check if they've hooked in to prevent src from alt clicking anything
@@ -25,6 +29,8 @@
 	return FALSE
 
 /mob/living/base_click_alt(atom/target)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	. = ..()
@@ -61,12 +67,16 @@
  * @param {mob} user - The person doing the alt clicking.
  */
 /atom/proc/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	return NONE
 
 
 ///Main proc for secondary alt click
 /mob/proc/AltClickSecondaryOn(atom/target)
+	procstart = null
+	src.procstart = null
 	base_click_alt_secondary(target)
 
 /**
@@ -75,6 +85,8 @@
  * If you wish to add custom `click_alt_secondary` behavior for a single type, use that proc.
  */
 /mob/proc/base_click_alt_secondary(atom/target)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	//Hook on the mob to intercept the click
@@ -97,6 +109,8 @@
  * Consider adding `interaction_flags_click` before adding unique guard clauses.
  **/
 /atom/proc/click_alt_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	return NONE
 
@@ -104,6 +118,8 @@
  * ## No-op for unambiguous loot panel bind as a non-living mob.
  **/
 /mob/proc/alt_shift_click_on(atom/target)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	return FALSE
 
@@ -112,6 +128,8 @@
  * This raises no signals and is not meant to have its behavior overridden.
  **/
 /mob/living/alt_shift_click_on(atom/target)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	return try_open_loot_panel_on(target)
 
@@ -119,6 +137,8 @@
 ///alt and alt-shift click.
 ///Returns FALSE if the mob is unable to open the loot panel at the target and TRUE if the loot panel was opened.
 /mob/living/proc/try_open_loot_panel_on(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!CAN_I_SEE(target) || (is_blind() && !IN_GIVEN_RANGE(src, target, 1)))
 		return FALSE
 

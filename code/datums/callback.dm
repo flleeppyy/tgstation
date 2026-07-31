@@ -60,6 +60,8 @@
  * * ... an optional list of extra arguments to pass to the proc
  */
 /datum/callback/New(thingtocall, proctocall, ...)
+	procstart = null
+	src.procstart = null
 	if (thingtocall)
 		object = thingtocall
 	delegate = proctocall
@@ -77,6 +79,8 @@
  * * ... an optional list of extra arguments to pass to the proc
  */
 /datum/callback/Destroy(force=FALSE, ...)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	if (force)
 		return ..()
@@ -92,6 +96,8 @@
  * If the datum being called on is varedited, the call is wrapped via [WrapAdminProcCall][/proc/WrapAdminProcCall]
  */
 /datum/callback/proc/Invoke(...)
+	procstart = null
+	src.procstart = null
 	if(!usr)
 		var/datum/weakref/W = user
 		if(W)
@@ -127,6 +133,8 @@
  * If the datum being called on is varedited, the call is wrapped via WrapAdminProcCall
  */
 /datum/callback/proc/InvokeAsync(...)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	if(!usr)
@@ -164,12 +172,16 @@
 	var/total
 
 /datum/callback_select/New(count, savereturns)
+	procstart = null
+	src.procstart = null
 	total = count
 	if (savereturns)
 		finished = new(count)
 
 
 /datum/callback_select/proc/invoke_callback(index, datum/callback/callback, list/callback_args, savereturn = TRUE)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if (!callback || !istype(callback))
 		//This check only exists because the alternative is callback_select would block forever if given invalid data
@@ -194,6 +206,8 @@
  * * resolution The number of byond ticks between each time you check if all callbacks are complete
  */
 /proc/callback_select(list/callbacks, list/callback_args, savereturns = TRUE, resolution = 1)
+	procstart = null
+	src.procstart = null
 	if (!callbacks)
 		return
 	var/count = length(callbacks)

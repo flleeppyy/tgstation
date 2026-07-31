@@ -11,6 +11,8 @@
 	var/word2
 
 /datum/status_effect/his_grace/on_creation(mob/living/new_owner, inputgender)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	gender = inputgender
 	if(gender == MALE)
@@ -29,6 +31,8 @@
 	alerttooltipstyle = "hisgrace"
 
 /atom/movable/screen/alert/status_effect/his_grace/MouseEntered(location,control,params)
+	procstart = null
+	src.procstart = null
 	desc = initial(desc)
 	var/datum/status_effect/his_grace/HG = attached_effect
 	var/His = HG.word
@@ -42,6 +46,8 @@
 	return ..()
 
 /datum/status_effect/his_grace/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.add_stun_absorption(
 		source = id,
 		priority = 3,
@@ -50,9 +56,13 @@
 	return ..()
 
 /datum/status_effect/his_grace/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_stun_absorption(id)
 
 /datum/status_effect/his_grace/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	bloodlust = 0
 	var/graces = 0
 	for(var/obj/item/his_grace/HG in owner.held_items)
@@ -79,10 +89,14 @@
 	alert_type = /atom/movable/screen/alert/status_effect/wish_granters_gift
 
 /datum/status_effect/wish_granters_gift/on_apply()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_notice("Death is not your end! The Wish Granter's energy suffuses you, and you begin to rise..."))
 	return ..()
 
 /datum/status_effect/wish_granters_gift/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.revive(ADMIN_HEAL_ALL)
 	owner.visible_message(span_warning("[owner] appears to wake from the dead, having healed all wounds!"), span_notice("You have regenerated."))
 
@@ -104,6 +118,8 @@
 	icon_state = "blooddrunk"
 
 /datum/status_effect/blooddrunk/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.add_movespeed_mod_immunities(id, /datum/movespeed_modifier/damage_slowdown)
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
@@ -117,6 +133,8 @@
 	return TRUE
 
 /datum/status_effect/blooddrunk/on_remove()
+	procstart = null
+	src.procstart = null
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
 		human_owner.physiology.brute_mod *= 10
@@ -137,6 +155,8 @@
 	show_duration = TRUE
 
 /datum/status_effect/fleshmend/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(owner))
 		var/mob/living/carbon/carbon_owner = owner
@@ -146,6 +166,8 @@
 	RegisterSignal(owner, COMSIG_LIVING_EXTINGUISHED, PROC_REF(on_extinguished))
 
 /datum/status_effect/fleshmend/on_creation(mob/living/new_owner, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !owner || !linked_alert)
 		return
@@ -153,9 +175,13 @@
 		linked_alert.icon_state = "fleshmend_fire"
 
 /datum/status_effect/fleshmend/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, list(COMSIG_LIVING_IGNITED, COMSIG_LIVING_EXTINGUISHED))
 
 /datum/status_effect/fleshmend/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(owner.on_fire)
 		return
 
@@ -167,11 +193,15 @@
 		owner.updatehealth()
 
 /datum/status_effect/fleshmend/proc/on_ignited(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	linked_alert?.icon_state = "fleshmend_fire"
 
 /datum/status_effect/fleshmend/proc/on_extinguished(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	linked_alert?.icon_state = "fleshmend"
@@ -209,6 +239,8 @@
 	)
 
 /datum/status_effect/exercised/proc/workout_duration(mob/living/new_owner, bonus_time)
+	procstart = null
+	src.procstart = null
 	if(!bonus_time || !new_owner.mind || !iscarbon(new_owner))
 		return 0 SECONDS
 
@@ -246,21 +278,29 @@
 	return bonus_time
 
 /datum/status_effect/exercised/on_creation(mob/living/new_owner, bonus_time)
+	procstart = null
+	src.procstart = null
 	duration += workout_duration(new_owner, bonus_time)
 	return ..()
 
 /datum/status_effect/exercised/refresh(effect, bonus_time)
+	procstart = null
+	src.procstart = null
 	duration += workout_duration(owner, bonus_time)
 	owner.clear_mood_event("exercise") // we need to reset the old mood event in case our fitness skill changes
 	owner.add_mood_event("exercise", /datum/mood_event/exercise, owner.mind.get_skill_level(/datum/skill/athletics))
 
 /datum/status_effect/exercised/on_apply()
+	procstart = null
+	src.procstart = null
 	if(!owner.mind)
 		return FALSE
 	owner.add_mood_event("exercise", /datum/mood_event/exercise, owner.mind.get_skill_level(/datum/skill/athletics))
 	return TRUE
 
 /datum/status_effect/exercised/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.clear_mood_event("exercise")
 
 /atom/movable/screen/alert/status_effect/exercised
@@ -282,6 +322,8 @@
 	var/deathTick = 0
 
 /datum/status_effect/hippocratic_oath/on_apply()
+	procstart = null
+	src.procstart = null
 	var/static/list/organ_healing = list(
 		ORGAN_SLOT_BRAIN = 1.4,
 	)
@@ -304,13 +346,19 @@
 	return ..()
 
 /datum/status_effect/hippocratic_oath/on_remove()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(aura_healing)
 	owner.remove_traits(list(TRAIT_PACIFISM, TRAIT_HIPPOCRATIC_OATH, TRAIT_MEDICAL_HUD), HIPPOCRATIC_OATH_TRAIT)
 
 /datum/status_effect/hippocratic_oath/get_examine_text()
+	procstart = null
+	src.procstart = null
 	return span_notice("[owner.p_They()] seem[owner.p_s()] to have an aura of healing and helpfulness about [owner.p_them()].")
 
 /datum/status_effect/hippocratic_oath/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(owner.stat == DEAD)
 		if(deathTick < 4)
 			deathTick += 1
@@ -350,6 +398,8 @@
 				itemUser.updatehealth()
 
 /datum/status_effect/hippocratic_oath/proc/consume_owner()
+	procstart = null
+	src.procstart = null
 	owner.visible_message(span_notice("[owner]'s soul is absorbed into the rod, relieving the previous snake of its duty."))
 	var/list/chems = list(/datum/reagent/medicine/sal_acid, /datum/reagent/medicine/c2/convermol, /datum/reagent/medicine/oxandrolone)
 	var/mob/living/basic/snake/spawned = new(owner.loc, pick(chems))
@@ -369,6 +419,8 @@
 	status_type = STATUS_EFFECT_REFRESH
 
 /datum/status_effect/good_music/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(owner, TRAIT_DEAF))
 		owner.adjust_dizzy(-4 SECONDS)
 		owner.adjust_jitter(-4 SECONDS)
@@ -390,6 +442,8 @@
 	show_duration = TRUE
 
 /datum/status_effect/regenerative_core/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.add_movespeed_mod_immunities(id, /datum/movespeed_modifier/damage_slowdown)
 	owner.adjust_brute_loss(-25)
 	owner.adjust_fire_loss(-25)
@@ -401,6 +455,8 @@
 	return TRUE
 
 /datum/status_effect/regenerative_core/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_movespeed_mod_immunities(id, /datum/movespeed_modifier/damage_slowdown)
 
 /datum/status_effect/lightningorb
@@ -410,11 +466,15 @@
 	show_duration = TRUE
 
 /datum/status_effect/lightningorb/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.add_movespeed_modifier(/datum/movespeed_modifier/status_effect/yellow_orb)
 	to_chat(owner, span_notice("You feel fast!"))
 
 /datum/status_effect/lightningorb/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/yellow_orb)
 	to_chat(owner, span_notice("You slow down."))
@@ -433,6 +493,8 @@
 	var/obj/item/chainsaw/doomslayer/chainsaw
 
 /datum/status_effect/mayhem/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(owner, "<span class='reallybig redtext'>RIP AND TEAR</span>")
 	SEND_SOUND(owner, sound('sound/effects/hallucinations/veryfar_noise.ogg'))
@@ -463,6 +525,8 @@
 	return TRUE
 
 /datum/status_effect/mayhem/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(owner, span_notice("Your bloodlust seeps back into the bog of your subconscious and you regain self control."))
 	owner.log_message("exited a blood frenzy", LOG_ATTACK)
@@ -479,6 +543,8 @@
 	var/action_datum = null
 
 /datum/status_effect/speed_boost/on_creation(mob/living/new_owner, set_duration)
+	procstart = null
+	src.procstart = null
 	if(isnum(set_duration))
 		duration = set_duration
 	new_owner.do_alert_animation()
@@ -486,6 +552,8 @@
 	. = ..()
 
 /datum/status_effect/speed_boost/on_apply()
+	procstart = null
+	src.procstart = null
 	if(move_datum)
 		owner.add_movespeed_modifier(move_datum, update = TRUE)
 	if(action_datum)
@@ -493,6 +561,8 @@
 	return ..()
 
 /datum/status_effect/speed_boost/on_remove()
+	procstart = null
+	src.procstart = null
 	if(move_datum)
 		owner.remove_movespeed_modifier(move_datum, update = TRUE)
 	if(action_datum)
@@ -515,10 +585,14 @@
 	var/fragile_mob_health_buff = 10
 
 /datum/status_effect/limited_buff/health_buff/on_creation(mob/living/new_owner)
+	procstart = null
+	src.procstart = null
 	historic_max_health = new_owner.maxHealth
 	. = ..()
 
 /datum/status_effect/limited_buff/health_buff/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/health_increase = round(max(fragile_mob_health_buff, historic_max_health * health_buff_modifier))
 	owner.maxHealth += health_increase
@@ -532,6 +606,8 @@
 		owner.adjust_brute_loss(-(health_increase * healing_modifier))
 
 /datum/status_effect/limited_buff/health_buff/maxed_out()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(owner, span_warning("You don't feel any healthier."))
 
@@ -542,6 +618,8 @@
 	alert_type = /atom/movable/screen/alert/status_effect/nest_sustenance
 
 /datum/status_effect/nest_sustenance/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(owner.stat == DEAD) //If the victim has died due to complications in the nest
@@ -575,6 +653,8 @@
 	alert_type = null
 
 /datum/status_effect/blessing_of_insanity/on_apply()
+	procstart = null
+	src.procstart = null
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
 		var/datum/physiology/owner_physiology = human_owner.physiology
@@ -593,6 +673,8 @@
 	return TRUE
 
 /datum/status_effect/blessing_of_insanity/on_remove()
+	procstart = null
+	src.procstart = null
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
 		var/datum/physiology/owner_physiology = human_owner.physiology
@@ -615,10 +697,14 @@
 	duration = 5 SECONDS
 
 /datum/status_effect/jump_jet/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.AddElement(/datum/element/forced_gravity, 0)
 	return TRUE
 
 /datum/status_effect/jump_jet/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.RemoveElement(/datum/element/forced_gravity, 0)
 
 /// Makes the mob immune to radiation for a short bit to help with safely spawning in hazardous areas
@@ -629,10 +715,14 @@
 	alert_type = null
 
 /datum/status_effect/radiation_immunity/on_apply()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(owner, TRAIT_RADIMMUNE, TRAIT_STATUS_EFFECT(id))
 	return TRUE
 
 /datum/status_effect/radiation_immunity/on_remove()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_RADIMMUNE, TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/radiation_immunity/radnebula
@@ -656,6 +746,8 @@
 	id = "shadow_regeneration"
 
 /datum/status_effect/shadow/regeneration/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE
@@ -663,11 +755,15 @@
 	return TRUE
 
 /datum/status_effect/shadow/regeneration/refresh(effect)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	heal_owner()
 
 /// Regenerate health whenever this status effect is applied or reapplied
 /datum/status_effect/shadow/regeneration/proc/heal_owner()
+	procstart = null
+	src.procstart = null
 	owner.heal_overall_damage(brute = 1, burn = 1, required_bodytype = BODYTYPE_ORGANIC)
 
 /atom/movable/screen/alert/status_effect/shadow_regeneration
@@ -688,21 +784,29 @@
 	var/effect_id
 
 /datum/status_effect/desensitized/on_creation(mob/living/new_owner, effect_id, magnitude)
+	procstart = null
+	src.procstart = null
 	src.effect_id = effect_id
 	src.magnitude = max(DESENSITIZED_MINIMUM, magnitude)
 	return ..()
 
 /datum/status_effect/desensitized/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.mind?.desensitized_level *= magnitude
 	RegisterSignal(owner, COMSIG_MOB_MIND_TRANSFERRED_INTO, PROC_REF(add_magnitude))
 	RegisterSignal(owner, COMSIG_MOB_MIND_TRANSFERRED_OUT_OF, PROC_REF(remove_magnitude))
 	return TRUE
 
 /datum/status_effect/desensitized/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.mind?.desensitized_level /= magnitude
 	UnregisterSignal(owner, list(COMSIG_MOB_MIND_TRANSFERRED_INTO, COMSIG_MOB_MIND_TRANSFERRED_OUT_OF))
 
 /datum/status_effect/desensitized/before_remove(effect_id, magnitude)
+	procstart = null
+	src.procstart = null
 	if(istext(src.effect_id) && istext(effect_id)) // if an id is set, they must match
 		return src.effect_id == effect_id
 	if(isnum(magnitude)) // otherwise if a magnitude is passed, it must match
@@ -710,10 +814,14 @@
 	return FALSE
 
 /datum/status_effect/desensitized/proc/add_magnitude(datum/source, mob/living/old_body, datum/mind/swapping)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	swapping.desensitized_level *= magnitude
 
 /datum/status_effect/desensitized/proc/remove_magnitude(datum/source, mob/living/old_body, datum/mind/swapping)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	swapping.desensitized_level /= magnitude
 
@@ -725,11 +833,15 @@
 	alert_type = null
 
 /datum/status_effect/rev_resilience/on_apply()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_warning("You feel your revolutionary spirit surging! You feel like nothing the oppressors could throw at you could wound your pride!"))
 	owner.add_traits(list(TRAIT_HARDLY_WOUNDED,TRAIT_ANALGESIA,TRAIT_FEARLESS), TRAIT_STATUS_EFFECT(id))
 	return TRUE
 
 /datum/status_effect/rev_resilience/on_remove()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_notice("You feel your surge of revolutionary zeal fade. You hope you don't get shot in the foot..."))
 	owner.remove_traits(list(TRAIT_HARDLY_WOUNDED,TRAIT_ANALGESIA,TRAIT_FEARLESS), TRAIT_STATUS_EFFECT(id))
 
@@ -741,15 +853,21 @@
 	alert_type = null
 
 /datum/status_effect/synthpax_immunity/on_creation(mob/living/new_owner, duration = 5 SECONDS)
+	procstart = null
+	src.procstart = null
 	src.duration = duration
 	return ..()
 
 /datum/status_effect/synthpax_immunity/on_apply()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(owner, TRAIT_SYNTHPAX_IMMUNE, TRAIT_STATUS_EFFECT(id))
 	REMOVE_TRAIT(owner, TRAIT_PACIFISM, METABOLIZATION_TRAIT(/datum/reagent/pax/peaceborg))
 	return TRUE
 
 /datum/status_effect/synthpax_immunity/on_remove()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_SYNTHPAX_IMMUNE, TRAIT_STATUS_EFFECT(id))
 	if(owner.reagents.has_reagent(/datum/reagent/pax/peaceborg))
 		ADD_TRAIT(owner, TRAIT_PACIFISM, METABOLIZATION_TRAIT(/datum/reagent/pax/peaceborg))

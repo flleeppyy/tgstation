@@ -15,5 +15,7 @@
 	var/datum/brain_trauma/hypnosis/trauma
 
 /datum/antagonist/hypnotized/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(trauma)
 	return ..()

@@ -7,6 +7,8 @@
 	time_between_perform = 3 SECONDS
 
 /datum/bt_node/ai_behavior/find_occupied_rune/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if((LAZYLEN(GLOB.sacrificed) - SOULS_TO_REVIVE - GLOB.sacrifices_used) < 0)
 		controller.clear_blackboard_key(BB_OCCUPIED_RUNE)
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
@@ -34,6 +36,8 @@
 	time_between_perform = 3 SECONDS
 
 /datum/bt_node/ai_behavior/activate_rune/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[BB_OCCUPIED_RUNE]
 	if(QDELETED(target))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
@@ -47,6 +51,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/activate_rune/finish_action(datum/ai_controller/controller, succeeded, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(BB_OCCUPIED_RUNE)
 
@@ -58,6 +64,8 @@
 /datum/bt_node/ai_behavior/find_dead_cultist
 
 /datum/bt_node/ai_behavior/find_dead_cultist/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if((LAZYLEN(GLOB.sacrificed) - SOULS_TO_REVIVE - GLOB.sacrifices_used) < 0)
 		controller.clear_blackboard_key(BB_DEAD_CULTIST)
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED

@@ -32,10 +32,14 @@
 	anchored = TRUE
 
 /obj/machinery/power/energy_accumulator/tesla_coil/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_wires(new /datum/wires/tesla_coil(src))
 
 /obj/machinery/power/energy_accumulator/tesla_coil/cable_layer_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		return NONE
 	if(anchored)
@@ -44,6 +48,8 @@
 	return ..()
 
 /obj/machinery/power/energy_accumulator/tesla_coil/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/power_multiplier = 0
 	zap_cooldown = 100
@@ -53,6 +59,8 @@
 	input_power_multiplier = max(1 * (power_multiplier / 8), 0.25) //Max out at 50% efficency.
 
 /obj/machinery/power/energy_accumulator/tesla_coil/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
 		. += span_notice("The status display reads:<br>" + \
@@ -62,30 +70,44 @@
 			"Processing <b>[display_power(processed_energy)]</b>.")
 
 /obj/machinery/power/energy_accumulator/tesla_coil/set_anchored(anchorvalue)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_cable_icons_on_turf(get_turf(src))
 
 /obj/machinery/power/energy_accumulator/tesla_coil/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/energy_accumulator/tesla_coil/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state][panel_open ? "_open" : ""][anchored]"
 
 /obj/machinery/power/energy_accumulator/tesla_coil/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/power/energy_accumulator/tesla_coil/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/power/energy_accumulator/tesla_coil/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	zap_sound_volume = min(energy_to_power(processed_energy) / (4 KILO WATTS), 100) // 1 sound volume per 4kW.
 	zap_sound_range = min(energy_to_power(processed_energy) / (80 KILO WATTS), 10) // 1 sound range per 80kW.
 
 /obj/machinery/power/energy_accumulator/tesla_coil/zap_act(power, zap_flags)
+	procstart = null
+	src.procstart = null
 	if(!anchored || panel_open)
 		return ..()
 	ADD_TRAIT(src, TRAIT_BEING_SHOCKED, WAS_SHOCKED)
@@ -101,6 +123,8 @@
 	return max(power - power_removed, 0) //You get back the amount we didn't use
 
 /obj/machinery/power/energy_accumulator/tesla_coil/proc/zap()
+	procstart = null
+	src.procstart = null
 	if((last_zap + zap_cooldown) > world.time || !powernet)
 		return FALSE
 	last_zap = world.time
@@ -131,6 +155,8 @@
 	anchored = TRUE
 
 /obj/machinery/power/energy_accumulator/grounding_rod/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
 		. += span_notice("The status display reads:<br>" + \
@@ -138,21 +164,31 @@
 			"This energy would sustainably release <b>[display_power(calculate_sustainable_power(), convert = FALSE)]</b>.")
 
 /obj/machinery/power/energy_accumulator/grounding_rod/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/energy_accumulator/grounding_rod/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state][panel_open ? "_open" : ""][anchored]"
 
 /obj/machinery/power/energy_accumulator/grounding_rod/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/power/energy_accumulator/grounding_rod/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/power/energy_accumulator/grounding_rod/zap_act(energy, zap_flags)
+	procstart = null
+	src.procstart = null
 	if(anchored && !panel_open)
 		flick("[base_icon_state]hit", src)
 		zap_buckle_check(energy)
@@ -161,6 +197,8 @@
 	return ..()
 
 /obj/machinery/power/energy_accumulator/grounding_rod/release_energy(joules = 0)
+	procstart = null
+	src.procstart = null
 	stored_energy -= joules
 	processed_energy = joules
 	return FALSE //Grounding rods don't release energy to the grid.

@@ -8,12 +8,18 @@
 	var/flashbang_range = 7
 
 /obj/item/grenade/hypnotic/apply_grenade_fantasy_bonuses(quality)
+	procstart = null
+	src.procstart = null
 	flashbang_range = modify_fantasy_variable("flashbang_range", flashbang_range, quality)
 
 /obj/item/grenade/hypnotic/remove_grenade_fantasy_bonuses(quality)
+	procstart = null
+	src.procstart = null
 	flashbang_range = reset_fantasy_variable("flashbang_range", flashbang_range)
 
 /obj/item/grenade/hypnotic/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -30,6 +36,8 @@
 	qdel(src)
 
 /obj/item/grenade/hypnotic/proc/bang(turf/turf, mob/living/living_mob)
+	procstart = null
+	src.procstart = null
 	if(living_mob.stat == DEAD) //They're dead!
 		return
 	var/distance = get_dist(get_turf(src), turf)

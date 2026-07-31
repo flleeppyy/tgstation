@@ -12,6 +12,8 @@
 
 // Phobia will follow you between transfers
 /datum/quirk/phobia/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/phobia = client_source?.prefs.read_preference(/datum/preference/choiced/phobia)
 	if(!phobia)
 		return
@@ -20,5 +22,7 @@
 	human_holder.gain_trauma(new /datum/brain_trauma/mild/phobia(phobia), TRAUMA_RESILIENCE_ABSOLUTE)
 
 /datum/quirk/phobia/remove()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	human_holder.cure_trauma_type(/datum/brain_trauma/mild/phobia, TRAUMA_RESILIENCE_ABSOLUTE)

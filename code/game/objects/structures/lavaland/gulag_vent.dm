@@ -21,6 +21,8 @@
 	icon_state = "ore_vent_ice_active"
 
 /obj/structure/gulag_vent/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(user))
 		return

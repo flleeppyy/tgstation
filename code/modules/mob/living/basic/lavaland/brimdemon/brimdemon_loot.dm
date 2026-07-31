@@ -23,6 +23,8 @@
 	COOLDOWN_DECLARE(ore_sensing_cooldown)
 
 /obj/item/ore_sensor/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot & ITEM_SLOT_EARS)
 		START_PROCESSING(SSobj, src)
@@ -30,10 +32,14 @@
 		STOP_PROCESSING(SSobj, src)
 
 /obj/item/ore_sensor/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
 
 /obj/item/ore_sensor/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, ore_sensing_cooldown))
 		return
 	COOLDOWN_START(src, ore_sensing_cooldown, cooldown)

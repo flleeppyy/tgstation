@@ -87,10 +87,14 @@
 // hijacking sound loop code to run loops of varying length
 // doing this because set_mid_length can't run DURING a soundloop, which means we can't variably adjust the length of the sound
 /datum/looping_sound/snowstorm/start_sound_loop()
+	procstart = null
+	src.procstart = null
 	loop_started = TRUE
 	sound_loop()
 
 /datum/looping_sound/snowstorm/sound_loop(start_time)
+	procstart = null
+	src.procstart = null
 	if(!loop_started)
 		return
 	var/picked_sound = get_sound()

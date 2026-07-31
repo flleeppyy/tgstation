@@ -12,6 +12,8 @@
 	var/wrings = 0
 
 /obj/item/rag/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(5, OPENCONTAINER)
 	AddComponent(/datum/component/cleaner, 3 SECONDS, \
@@ -22,6 +24,8 @@
 	AddElement(/datum/element/reagents_item_heatable)
 
 /obj/item/rag/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Adding [/datum/reagent/water::name] or [/datum/reagent/space_cleaner::name] to it would make it a fair bit better at scrubbing.")
 	switch(blood_level)
@@ -33,6 +37,8 @@
 			. += span_warning("This [name] is filthy! I couldn't clean a thing with it!")
 
 /obj/item/rag/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(loc != user || blood_level <= 4)
 		return
@@ -45,11 +51,15 @@
 	blood_level *= 0.75
 
 /obj/item/rag/pickup(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(5 * blood_level))
 		bloody_holder(user)
 
 /obj/item/rag/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/reagent_containers/spray))
 		if(tool.reagents.total_volume <= 0)
 			balloon_alert(user, "spray is empty!")
@@ -68,6 +78,8 @@
 	return ..()
 
 /obj/item/rag/proc/bloody_holder(mob/living/holder)
+	procstart = null
+	src.procstart = null
 	if(ishuman(holder))
 		var/mob/living/carbon/human/human_holder = holder
 		human_holder.add_blood_DNA_to_items(GET_ATOM_BLOOD_DNA(src), ITEM_SLOT_GLOVES)
@@ -75,10 +87,14 @@
 		holder.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
 
 /obj/item/rag/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is smothering [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return OXYLOSS
 
 /obj/item/rag/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(interacting_with) || !reagents?.total_volume)
 		return ..()
 	var/mob/living/carbon/carbon_target = interacting_with
@@ -97,6 +113,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/rag/wash(clean_types)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(clean_types & CLEAN_TYPE_BLOOD))
 		return
@@ -108,6 +126,8 @@
 
 ///Checks whether or not we should clean.
 /obj/item/rag/proc/should_clean(datum/cleaning_source, atom/atom_to_clean, mob/living/cleaner)
+	procstart = null
+	src.procstart = null
 	if(cleaner.combat_mode && ismob(atom_to_clean))
 		return CLEAN_BLOCKED|CLEAN_DONT_BLOCK_INTERACTION
 	if(blood_level >= 10)
@@ -122,6 +142,8 @@
 
 ///On cleaning, get the rag dirty
 /obj/item/rag/proc/on_cleaned(datum/cleaning_source, atom/clean_target, mob/living/cleaner, was_successful, list/all_cleaned)
+	procstart = null
+	src.procstart = null
 	if(!was_successful)
 		return
 
@@ -156,6 +178,8 @@
 
 /// Checks an atom and returns how "dirty" it is scaled to our rag
 /obj/item/rag/proc/get_blood_level_of_movable(atom/movable/what)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	if(istype(what, /obj/item/rag))
 		var/obj/item/rag/friend_rag = what
@@ -167,6 +191,8 @@
 
 /// Takes in a "dirty" amount and tries to "counteract" it with reagents, returning TRUE if successful
 /obj/item/rag/proc/remove_cleanable_reagents(how_dirty = 1)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	var/amount_to_remove = how_dirty * 0.2
 	// cleaner is the best at scrubbing blood
@@ -184,6 +210,8 @@
 	return FALSE
 
 /obj/item/rag/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Gets closer to the mixed blood color as we get dirtier
 	var/blood_color = get_blood_dna_color() || COLOR_RED

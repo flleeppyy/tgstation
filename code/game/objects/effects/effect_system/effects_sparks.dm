@@ -6,6 +6,8 @@
 /////////////////////////////////////////////
 
 /proc/do_sparks(number, cardinal_only, atom/source, atom/holder = null, spark_type = /datum/effect_system/basic/spark_spread)
+	procstart = null
+	src.procstart = null
 	var/datum/effect_system/basic/spark_spread/sparks = new spark_type(get_turf(source), number, cardinal_only)
 	if (holder)
 		sparks.attach(holder)
@@ -28,6 +30,8 @@
 	var/datum/light_middleman/middleman
 
 /obj/effect/particle_effect/sparks/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	if(animated)
 		middleman = new(src, "sparks")
@@ -35,6 +39,8 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/particle_effect/sparks/LateInitialize()
+	procstart = null
+	src.procstart = null
 	RegisterSignals(src, list(COMSIG_MOVABLE_CROSS, COMSIG_MOVABLE_CROSS_OVER), PROC_REF(sparks_touched))
 	flick(icon_state, src)
 	playsound(src, SFX_SPARKS, 100, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
@@ -44,12 +50,16 @@
 	decay_in(2 SECONDS)
 
 /obj/effect/particle_effect/sparks/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!isnull(middleman))
 		QDEL_NULL(middleman)
 	return ..()
 
 /// Sets up our death effects given the passed in duration
 /obj/effect/particle_effect/sparks/proc/decay_in(decay_time)
+	procstart = null
+	src.procstart = null
 	if(delete_timer_id != TIMER_ID_NULL)
 		deltimer(delete_timer_id)
 	delete_timer_id = QDEL_IN_STOPPABLE(src, decay_time + world.tick_lag)
@@ -66,12 +76,16 @@
 		animate(main_light, alpha = 0, time = decay_time)
 
 /obj/effect/particle_effect/sparks/Destroy()
+	procstart = null
+	src.procstart = null
 	var/turf/location = loc
 	if(isturf(location))
 		affect_location(location)
 	return ..()
 
 /obj/effect/particle_effect/sparks/Move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/location = loc
 	if(isturf(location))
@@ -91,6 +105,8 @@
 * just_initialized - If the spark is just being created, and we need to manually affect everything in the location
 */
 /obj/effect/particle_effect/sparks/proc/affect_location(turf/location, just_initialized = FALSE)
+	procstart = null
+	src.procstart = null
 	location.hotspot_expose(1000, 100)
 	SEND_SIGNAL(location, COMSIG_ATOM_TOUCHED_SPARKS, src) // for plasma floors; other floor types only have to worry about the mysterious HAZARDOUS sparks
 	if(just_initialized)
@@ -106,6 +122,8 @@
 * mob/living/singed - What was touched by the spark
 */
 /obj/effect/particle_effect/sparks/proc/sparks_touched(datum/source, atom/singed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	SEND_SIGNAL(singed, COMSIG_ATOM_TOUCHED_SPARKS, src)
@@ -125,13 +143,19 @@
 	step_delay = 0.35 SECONDS // chosen so we will always take at least the duration of our animation to finish
 
 /datum/effect_system/basic/spark_spread/generate_effect()
+	procstart = null
+	src.procstart = null
 	var/obj/effect/particle_effect/sparks/spark = ..()
 	spark.decay_in(last_loop_length)
 
 /datum/effect_system/basic/spark_spread/get_step_count()
+	procstart = null
+	src.procstart = null
 	return rand(2, 3) // never 1 cause 1 looks dumb
 
 /datum/effect_system/basic/spark_spread/move_failed(datum/move_loop/loop, obj/effect/failed)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(failed))
 		return
 	var/obj/effect/particle_effect/sparks/spark = failed

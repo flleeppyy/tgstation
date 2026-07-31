@@ -2,11 +2,15 @@
 #define SANITIZED_PATH(path)(replacetext(replacetext("[path]", "/obj/item/", ""), "/", "-"))
 
 /obj/machinery/vending/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/vending),
 	)
 
 /obj/machinery/vending/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_VENDING_UI_INTERACT, user, ui) & VENDING_DENIED)
 		if(icon_deny)
 			flick(icon_deny, src)
@@ -25,6 +29,8 @@
  * premium - bool of whether a record should be priced by a custom/premium price or not
  */
 /obj/machinery/vending/proc/collect_records_for_static_data(list/records, list/categories, premium)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	var/static/list/default_category = list(
@@ -67,6 +73,8 @@
 	return out_records
 
 /obj/machinery/vending/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	if(ad_list.len)
 		data["ad"] = ad_list[rand(1, ad_list.len)]
@@ -95,11 +103,15 @@
  * passed_id - the id card that will be billed for the product
  */
 /obj/machinery/vending/proc/fetch_balance_to_use(obj/item/card/id/passed_id)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 
 	return passed_id.registered_account.account_balance
 
 /obj/machinery/vending/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	var/obj/item/card/id/card_used
@@ -135,6 +147,8 @@
 	.["extended_inventory"] = extended_inventory
 
 /obj/machinery/vending/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -175,6 +189,8 @@
  * menu - greyscale config menu that has been used to vend the item
  */
 /obj/machinery/vending/proc/_vend_greyscale(list/params, mob/user, datum/greyscale_modify_menu/menu)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 
 	if(user != menu.user)

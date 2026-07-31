@@ -18,17 +18,23 @@
 	var/relay_loc = "1,1"
 
 /datum/plane_master_group/New(key, map = "")
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.key = key
 	src.map = map
 	build_plane_masters(0, SSmapping.max_plane_offset)
 
 /datum/plane_master_group/Destroy()
+	procstart = null
+	src.procstart = null
 	set_hud(null)
 	QDEL_LIST_ASSOC_VAL(plane_masters)
 	return ..()
 
 /datum/plane_master_group/proc/set_hud(datum/hud/new_hud)
+	procstart = null
+	src.procstart = null
 	if(new_hud == our_hud)
 		return
 	if(our_hud)
@@ -44,6 +50,8 @@
 
 /// Display a plane master group to some viewer, so show all our planes to it
 /datum/plane_master_group/proc/attach_to(datum/hud/viewing_hud)
+	procstart = null
+	src.procstart = null
 	if(viewing_hud.master_groups[key])
 		stack_trace("Hey brother, our key [key] is already in use by a plane master group on the passed in hud, belonging to [viewing_hud.mymob]. Ya fucked up, why are there dupes")
 		return
@@ -55,11 +63,15 @@
 
 /// Well, refresh our group, mostly useful for plane specific updates
 /datum/plane_master_group/proc/refresh_hud()
+	procstart = null
+	src.procstart = null
 	hide_hud()
 	show_hud()
 
 /// Fully regenerate our group, resetting our planes to their compile time values
 /datum/plane_master_group/proc/rebuild_hud()
+	procstart = null
+	src.procstart = null
 	hide_hud()
 	rebuild_plane_masters()
 	show_hud()
@@ -68,33 +80,47 @@
 
 /// Regenerate our plane masters, this is useful if we don't have a mob but still want to rebuild. Such in the case of changing the screen_loc of relays
 /datum/plane_master_group/proc/rebuild_plane_masters()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST_ASSOC_VAL(plane_masters)
 	build_plane_masters(0, SSmapping.max_plane_offset)
 
 /datum/plane_master_group/proc/hide_hud()
+	procstart = null
+	src.procstart = null
 	for(var/thing in plane_masters)
 		var/atom/movable/screen/plane_master/plane = plane_masters[thing]
 		plane.hide_from(our_hud.mymob)
 
 /datum/plane_master_group/proc/show_hud()
+	procstart = null
+	src.procstart = null
 	for(var/thing in plane_masters)
 		var/atom/movable/screen/plane_master/plane = plane_masters[thing]
 		show_plane(plane)
 
 /// This is mostly a proc so it can be overriden by popups, since they have unique behavior they want to do
 /datum/plane_master_group/proc/show_plane(atom/movable/screen/plane_master/plane)
+	procstart = null
+	src.procstart = null
 	plane.show_to(our_hud.mymob)
 
 /// Nice wrapper for the "[]"ing
 /datum/plane_master_group/proc/get_plane(plane)
+	procstart = null
+	src.procstart = null
 	return plane_masters["[plane]"]
 
 /// Returns a list of all the plane master types we want to create
 /datum/plane_master_group/proc/get_plane_types()
+	procstart = null
+	src.procstart = null
 	return subtypesof(/atom/movable/screen/plane_master) - /atom/movable/screen/plane_master/rendering_plate
 
 /// Actually generate our plane masters, in some offset range (where offset is the z layers to render to, because each "layer" in a multiz stack gets its own plane master cube)
 /datum/plane_master_group/proc/build_plane_masters(starting_offset, ending_offset)
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/screen/plane_master/mytype as anything in get_plane_types())
 		for(var/plane_offset in starting_offset to ending_offset)
 			if(plane_offset != 0 && (initial(mytype.offsetting_flags) & BLOCKS_PLANE_OFFSETTING))
@@ -105,12 +131,16 @@
 
 /// Similarly, exists so subtypes can do unique behavior to planes on creation
 /datum/plane_master_group/proc/prep_plane_instance(atom/movable/screen/plane_master/instance)
+	procstart = null
+	src.procstart = null
 	return
 
 // It would be nice to setup parallaxing for stairs and things when doing this
 // So they look nicer. if you can't it's all good, if you think you can sanely look at monster's work
 // It's hard, and potentially expensive. be careful
 /datum/plane_master_group/proc/build_planes_offset(datum/hud/source, new_offset, use_scale = TRUE)
+	procstart = null
+	src.procstart = null
 	// Check if this feature is disabled for the client, in which case don't use scale.
 	var/mob/our_mob = our_hud?.mymob
 	if(!our_mob?.client?.prefs?.read_preference(/datum/preference/toggle/multiz_parallax))
@@ -190,12 +220,16 @@
 /datum/plane_master_group/popup
 
 /datum/plane_master_group/popup/build_planes_offset(datum/hud/source, new_offset, use_scale = TRUE)
+	procstart = null
+	src.procstart = null
 	return ..(source, new_offset, FALSE)
 
 /// Holds the main plane master
 /datum/plane_master_group/main
 
 /datum/plane_master_group/main/build_planes_offset(datum/hud/source, new_offset, use_scale = TRUE)
+	procstart = null
+	src.procstart = null
 	if(use_scale)
 		return ..(source, new_offset, source.should_use_scale())
 	return ..()
@@ -205,14 +239,20 @@
 	var/mob/our_mob
 
 /datum/plane_master_group/hudless/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	our_mob = null
 
 /datum/plane_master_group/hudless/hide_hud()
+	procstart = null
+	src.procstart = null
 	for(var/thing in plane_masters)
 		var/atom/movable/screen/plane_master/plane = plane_masters[thing]
 		plane.hide_from(our_mob)
 
 /// This is mostly a proc so it can be overriden by popups, since they have unique behavior they want to do
 /datum/plane_master_group/hudless/show_plane(atom/movable/screen/plane_master/plane)
+	procstart = null
+	src.procstart = null
 	plane.show_to(our_mob)

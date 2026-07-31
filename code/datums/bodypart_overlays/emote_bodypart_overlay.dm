@@ -13,20 +13,28 @@
 	var/datum/weakref/attached_bodypart
 
 /datum/bodypart_overlay/simple/emote/get_image(obj/item/bodypart/limb, layer_index, layer_real)
+	procstart = null
+	src.procstart = null
 	var/image/image = ..()
 	feature_offset?.apply_offset(image)
 	return image
 
 /datum/bodypart_overlay/simple/emote/added_to_limb(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	attached_bodypart = WEAKREF(limb)
 	if (offset_key in limb.feature_offsets)
 		feature_offset = limb.feature_offsets[offset_key]
 
 /datum/bodypart_overlay/simple/emote/removed_from_limb(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	attached_bodypart = null
 
 ///Removes the overlay from the attached bodypart and updates the necessary sprites
 /datum/bodypart_overlay/simple/emote/Destroy()
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/referenced_bodypart = attached_bodypart?.resolve()
 	referenced_bodypart?.remove_bodypart_overlay(src)
 	return ..()
@@ -40,6 +48,8 @@
  * Returns the given overlay, which can be deleted to stop displaying it. Will return null if no bodypart matching the overlay's attached_body_zone field can be found.
  */
 /mob/living/carbon/human/proc/give_emote_overlay(datum/bodypart_overlay/simple/emote/overlay_typepath)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/bodypart = get_bodypart(overlay_typepath::attached_body_zone)
 	return bodypart?.add_bodypart_overlay(overlay_typepath)
 
@@ -56,6 +66,8 @@
 	attached_body_zone = BODY_ZONE_HEAD
 
 /datum/bodypart_overlay/simple/emote/blush/color_image(image/overlay, obj/item/bodypart/limb, layer_index)
+	procstart = null
+	src.procstart = null
 	var/base_color = limb.owner?.get_bloodtype()?.get_damage_color()
 	if(!base_color)
 		return ..()

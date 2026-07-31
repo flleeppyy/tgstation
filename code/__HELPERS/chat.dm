@@ -45,6 +45,8 @@ it will be sent to all connected chats.
  * admin_only - Determines if this communication can only be sent to admin only channels.
  */
 /proc/send2chat(datum/tgs_message_content/message, channel_tag, admin_only = FALSE)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(channel_tag == null || !world.TgsAvailable())
 		return
@@ -71,6 +73,8 @@ it will be sent to all connected chats.
  * message - The message to send.
  */
 /proc/send2adminchat(category, message, embed_links = FALSE)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	category = replacetext(replacetext(category, "\proper", ""), "\improper", "")
@@ -84,6 +88,8 @@ it will be sent to all connected chats.
 
 /// Sends a message to all dead and observing players, if a source is provided a follow link will be attached.
 /proc/send_to_observers(message, source, message_type = null)
+	procstart = null
+	src.procstart = null
 	var/list/all_observers = GLOB.dead_player_list + GLOB.current_observers_list
 	for(var/mob/observer as anything in all_observers)
 		if (isnull(source))
@@ -94,6 +100,8 @@ it will be sent to all connected chats.
 
 /// Sends a message to everyone within the list, as well as all observers.
 /proc/relay_to_list_and_observers(message, list/mob_list, source, message_type = null)
+	procstart = null
+	src.procstart = null
 	for(var/mob/creature as anything in mob_list)
 		to_chat(
 			creature,

@@ -78,6 +78,8 @@
 	var/static/list/ray_filter = list(type = "rays", y = 14, size = 40, density = 4, color = COLOR_RED_LIGHT, factor = 15, flags = FILTER_OVERLAY)
 
 /obj/machinery/computer/slot_machine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	jackpots = rand(1, 4) //false hope
 	plays = rand(75, 200)
@@ -102,18 +104,24 @@
 			qdel(C) //Sigh
 
 /obj/machinery/computer/slot_machine/Destroy()
+	procstart = null
+	src.procstart = null
 	house_bank_account = null
 	. = ..()
 
 /// Generates a randomised slot name by pulling an adjective and a noun
 /// Produces things like "Lucky Sevens", "Robust Payday", "Honking Bonanza", etc.
 /obj/machinery/computer/slot_machine/proc/make_machine_name()
+	procstart = null
+	src.procstart = null
 	var/adjective = pick(slot_adjectives)
 	var/noun = pick(slot_nouns)
 	return "[adjective] [noun]"
 
 /// Builds symbol_data from symbol_paths to be used for DmIcon in TGUI
 /obj/machinery/computer/slot_machine/proc/build_symbol_data()
+	procstart = null
+	src.procstart = null
 	symbol_data = list()
 	for(var/obj/symbol as anything in symbol_paths)
 		symbol_data += list(list(
@@ -122,10 +130,14 @@
 		))
 
 /obj/machinery/computer/slot_machine/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	if(balance)
 		give_payout(balance)
 
 /obj/machinery/computer/slot_machine/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..() //Sanity checks.
 	if(!.)
 		return .
@@ -133,6 +145,8 @@
 	money += round(seconds_per_tick / 2) //SPESSH MAJICKS
 
 /obj/machinery/computer/slot_machine/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & BROKEN)
 		icon_state = "slots_broken"
 	else
@@ -140,6 +154,8 @@
 	return ..()
 
 /obj/machinery/computer/slot_machine/update_overlays()
+	procstart = null
+	src.procstart = null
 	if(working)
 		icon_screen = "slots_screen_working"
 	else
@@ -148,6 +164,8 @@
 
 
 /obj/machinery/computer/slot_machine/item_interaction(mob/living/user, obj/item/inserted, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(inserted, /obj/item/coin))
 		var/obj/item/coin/inserted_coin = inserted
 		if(paymode == COIN)
@@ -215,6 +233,8 @@
 	return NONE
 
 /obj/machinery/computer/slot_machine/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(balance > 0)
 		say("ERROR! Please empty the machine balance before altering paymode.") //Prevents converting coins into holocredits and vice versa
 		return ITEM_INTERACT_BLOCKING
@@ -228,6 +248,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/computer/slot_machine/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -238,11 +260,15 @@
 	return TRUE
 
 /obj/machinery/computer/slot_machine/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/slot_machines),
 	)
 
 /obj/machinery/computer/slot_machine/ui_interact(mob/living/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -250,6 +276,8 @@
 		ui.open()
 
 /obj/machinery/computer/slot_machine/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["symbols"] = symbol_data
 	data["cost"] = SPIN_PRICE
@@ -260,6 +288,8 @@
 	return data
 
 /obj/machinery/computer/slot_machine/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/_reels = list()
 	for(var/reel in reels)
@@ -278,6 +308,8 @@
 
 
 /obj/machinery/computer/slot_machine/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -293,6 +325,8 @@
 				return TRUE
 
 /obj/machinery/computer/slot_machine/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & (NOPOWER|BROKEN) || . & EMP_PROTECT_SELF)
 		return
@@ -308,6 +342,8 @@
 
 /// Returns TRUE if the owner has enough funds to payout
 /obj/machinery/computer/slot_machine/proc/has_funds_to_pay(payout)
+	procstart = null
+	src.procstart = null
 	if(!house_bank_account) // no owner so NT is paying
 		return TRUE
 
@@ -319,6 +355,8 @@
 	return FALSE
 
 /obj/machinery/computer/slot_machine/proc/spin(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!can_spin(user))
 		return
 
@@ -365,12 +403,16 @@
 	addtimer(CALLBACK(src, PROC_REF(finish_spinning), user, the_name), SPIN_TIME)
 
 /obj/machinery/computer/slot_machine/proc/finish_spinning(mob/user, the_name)
+	procstart = null
+	src.procstart = null
 	working = FALSE
 	give_prizes(the_name, user)
 	update_appearance()
 
 /// Check if the machine can be spun
 /obj/machinery/computer/slot_machine/proc/can_spin(mob/user)
+	procstart = null
+	src.procstart = null
 	if(machine_stat & NOPOWER)
 		balloon_alert(user, "no power!")
 		return FALSE
@@ -387,6 +429,8 @@
 
 /// Randomize the states of all reels
 /obj/machinery/computer/slot_machine/proc/randomize_reels()
+	procstart = null
+	src.procstart = null
 	for(var/list/reel in reels)
 		reel[1] = "[pick(symbol_paths)]"
 		reel[2] = "[pick(symbol_paths)]"
@@ -394,6 +438,8 @@
 
 /// Triggers a negative effect for a slot machine if all trap icons are lined up in the middle
 /obj/machinery/computer/slot_machine/proc/activate_trap(mob/living/user)
+	procstart = null
+	src.procstart = null
 	say("Big Loser! Prepare for your special prize!")
 
 	switch(trap_path)
@@ -413,6 +459,8 @@
 
 /// Checks if any prizes have been won, and pays them out
 /obj/machinery/computer/slot_machine/proc/give_prizes(usrname, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/linelength = get_lines()
 	var/did_player_win = TRUE
 
@@ -474,10 +522,14 @@
 		playsound(src, 'sound/machines/roulette/roulettejackpot.ogg', 50, TRUE)
 
 /obj/machinery/computer/slot_machine/proc/clear_winning()
+	procstart = null
+	src.procstart = null
 	winning = WINNING_NOTHING
 
 /// Checks for a jackpot (5 matching symbols in the middle row) for the given symbol typepath
 /obj/machinery/computer/slot_machine/proc/check_middle_row_all(symbol_path)
+	procstart = null
+	src.procstart = null
 	var/symbol_id = "[symbol_path]"
 	for(var/list/reel in reels)
 		if(reel[2] != symbol_id)
@@ -486,6 +538,8 @@
 
 /// Finds the largest number of consecutive matching icons in a row
 /obj/machinery/computer/slot_machine/proc/get_lines()
+	procstart = null
+	src.procstart = null
 	var/amountthesame = 0
 
 	for(var/row in 1 to 3)
@@ -506,6 +560,8 @@
 
 /// Give the specified amount of money. If the amount is greater than the amount of prize money available, add the difference as balance
 /obj/machinery/computer/slot_machine/proc/give_money(amount)
+	procstart = null
+	src.procstart = null
 	var/amount_to_give = min(amount, money)
 	var/surplus = amount - give_payout(amount_to_give)
 	money -= amount_to_give
@@ -516,6 +572,8 @@
 
 /// Pay out the specified amount in either coins or holochips
 /obj/machinery/computer/slot_machine/proc/give_payout(amount)
+	procstart = null
+	src.procstart = null
 	if(paymode == HOLOCHIP)
 		cointype = /obj/item/holochip
 	else
@@ -534,6 +592,8 @@
 /// Dispense the given amount. If machine is set to use coins, will use the specified coin type.
 /// If throwit and target are set, will launch the payment at the target
 /obj/machinery/computer/slot_machine/proc/dispense(amount = 0, cointype = /obj/item/coin/silver, throwit = FALSE, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(paymode == HOLOCHIP)
 		var/obj/item/holochip/chip = new /obj/item/holochip(loc,amount)
 
@@ -570,6 +630,8 @@
 	trap_path = /obj/item/grenade/syndieminibomb
 
 /obj/machinery/computer/slot_machine/command/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	slot_adjectives += list("Royal", "Regal", "Golden", "Captain's", "Glorious")
 	slot_nouns += list("Medal", "Ransom", "Authority", "Command")
 	. = ..()
@@ -590,6 +652,8 @@
 	trap_path = /obj/item/grown/bananapeel
 
 /obj/machinery/computer/slot_machine/security/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	slot_adjectives += list("Stunned", "Flashed", "Confiscated", "Loyal", "Arrested")
 	slot_nouns += list("Baton", "Donut", "Contraband", "Brig", "Security")
 	. = ..()
@@ -610,6 +674,8 @@
 	trap_path = /obj/machinery/syndicatebomb
 
 /obj/machinery/computer/slot_machine/medical/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	slot_adjectives += list("Mutated", "Overdosed", "Infectious", "Healing", "Husked")
 	slot_nouns += list("Medkit", "Defib", "Patient", "Doctor", "Cure")
 	. = ..()
@@ -630,6 +696,8 @@
 	trap_path = /obj/singularity
 
 /obj/machinery/computer/slot_machine/engineering/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	slot_adjectives += list("Supercharged", "Pressurized", "Radioactive", "Overloaded", "Delaminating", "Insulated")
 	slot_nouns += list("Toolbox", "Emitter", "Supermatter")
 	. = ..()
@@ -650,6 +718,8 @@
 	trap_path = /obj/item/suspiciousphone
 
 /obj/machinery/computer/slot_machine/cargo/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	slot_adjectives += list("Express", "Smuggled", "Stolen", "Overdue", "Subsidized", "Manifested")
 	slot_nouns += list("Bounty", "Crate", "Manifest", "MULE", "Profit")
 	. = ..()
@@ -670,6 +740,8 @@
 	trap_path = /mob/living/basic/goat/pete
 
 /obj/machinery/computer/slot_machine/service/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	slot_adjectives += list("Fermented", "Seasoned", "Tipsy", "Cleaned", "Organic", "Culinary", "Refreshing", "Divine", "Holy")
 	slot_nouns += list("Recipe", "Cocktail", "Harvest", "Scrubber")
 	. = ..()
@@ -690,6 +762,8 @@
 	trap_path = /obj/item/gibtonite
 
 /obj/machinery/computer/slot_machine/science/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	slot_adjectives += list("Atomic", "Bluespace", "Cosmic", "Golden", "Diamond", "Silver", "Uranium", "Quantum", "Anomalous", "Plasma", "Experimental", "Robotic")
 	slot_nouns += list("Anomaly", "Artifact", "Slime", "Extract", "Circuit", "Discovery", "Explosion")
 	. = ..()
@@ -709,6 +783,8 @@
 	trap_path = /obj/item/restraints/handcuffs
 
 /obj/machinery/computer/slot_machine/clown/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	slot_adjectives += list("Honking", "Slippery", "Pranked", "Squeaky", "Hilarious", "Giggling")
 	slot_nouns += list("Banana", "Peel", "Prank", "Joke", "Punchline", "Candy", "Honk")
 	. = ..()
@@ -728,6 +804,8 @@
 	trap_path = /obj/item/restraints/handcuffs
 
 /obj/machinery/computer/slot_machine/mime/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	slot_adjectives += list("Silent", "Transparent", "Unspeakable", "Voiceless", "Quiet", "Hushed", "Invisible", "Imaginary", "Empty")
 	slot_nouns += list("Silence", "Mute", "Introvert", "Nothing", "Baguette")
 	. = ..()
@@ -748,6 +826,8 @@
 	trap_path = /obj/item/restraints/handcuffs
 
 /obj/machinery/computer/slot_machine/syndicate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	slot_adjectives += list("Covert", "Nuclear", "Suspicious", "Bloody", "Syndie", "Sabotaged", "Clandestine", "Illicit", "Traitorous")
 	slot_nouns += list("Telecrystal", "Uplink", "Bomb", "Operative", "Disk", "Nuke", "Syndicate", "Traitor")
 	. = ..()

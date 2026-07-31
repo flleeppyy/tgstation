@@ -22,10 +22,14 @@
 	var/mob/living/carbon/human/potential_deacon
 
 /datum/religion_rites/deaconize/Destroy()
+	procstart = null
+	src.procstart = null
 	potential_deacon = null
 	return ..()
 
 /datum/religion_rites/deaconize/perform_rite(mob/living/user, atom/religious_tool)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(religious_tool))
 		to_chat(user, span_warning("This rite requires a religious device that individuals can be buckled to."))
 		return FALSE
@@ -46,6 +50,8 @@
 	return ..()
 
 /datum/religion_rites/deaconize/invoke_effect(mob/living/carbon/human/user, atom/movable/religious_tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(potential_deacon in religious_tool.buckled_mobs)) //checks one last time if the right corpse is still buckled
 		to_chat(user, span_warning("[potential_deacon] is no longer on the altar!"))
@@ -72,6 +78,8 @@
 
 ///Helper if the passed possible_deacon is valid to become a deacon or not.
 /datum/religion_rites/deaconize/proc/is_valid_for_deacon(mob/living/carbon/human/possible_deacon, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(possible_deacon))
 		to_chat(user, span_warning("[possible_deacon] needs to be alive and conscious to join!"))
 		return FALSE
@@ -85,6 +93,8 @@
  * If they accept, the deaconize rite can now recruit them instead of just offering more invites.
  */
 /datum/religion_rites/deaconize/proc/invite_deacon(mob/living/carbon/human/invited)
+	procstart = null
+	src.procstart = null
 	var/ask = tgui_alert(invited, "Join [GLOB.deity]? You will be expected to follow the chaplain's order.", "Invitation", list("Yes", "No"), 60 SECONDS)
 	if(ask != "Yes")
 		return

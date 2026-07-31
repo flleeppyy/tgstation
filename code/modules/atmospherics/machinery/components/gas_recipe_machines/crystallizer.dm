@@ -36,17 +36,23 @@
 	acid = 30
 
 /obj/machinery/atmospherics/components/binary/crystallizer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	internal = new
 	register_context()
 
 /obj/machinery/atmospherics/components/binary/crystallizer/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	var/turf/local_turf = get_turf(loc)
 	if(internal.total_moles())
 		local_turf.assume_air(internal)
 	return ..()
 
 /obj/machinery/atmospherics/components/binary/crystallizer/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	context[SCREENTIP_CONTEXT_CTRL_LMB] = "Turn [on ? "off" : "on"]"
 	if(!held_item)
@@ -59,15 +65,23 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/atmospherics/components/binary/crystallizer/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return on ? NONE : default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/atmospherics/components/binary/crystallizer/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_change_direction_wrench(user, tool)
 
 /obj/machinery/atmospherics/components/binary/crystallizer/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return crowbar_deconstruction_act(user, tool, internal.return_pressure())
 
 /obj/machinery/atmospherics/components/binary/crystallizer/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/pipe_appearance1 = mutable_appearance('icons/obj/pipes_n_cables/pipe_underlays.dmi', "intact_[dir]_[piping_layer]", layer = GAS_SCRUBBER_LAYER)
 	pipe_appearance1.color = COLOR_LIME
@@ -77,6 +91,8 @@
 	. += pipe_appearance2
 
 /obj/machinery/atmospherics/components/binary/crystallizer/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(panel_open)
 		icon_state = "[base_icon_state]-open"
@@ -86,6 +102,8 @@
 		icon_state = "[base_icon_state]-off"
 
 /obj/machinery/atmospherics/components/binary/crystallizer/click_ctrl(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!is_operational)
 		return CLICK_ACTION_BLOCKING
 	if(panel_open)
@@ -98,12 +116,16 @@
 
 ///Checks if the reaction temperature is inside the range of temperature + a little deviation
 /obj/machinery/atmospherics/components/binary/crystallizer/proc/check_temp_requirements()
+	procstart = null
+	src.procstart = null
 	if(internal.temperature >= selected_recipe.min_temp * MIN_DEVIATION_RATE && internal.temperature <= selected_recipe.max_temp * MAX_DEVIATION_RATE)
 		return TRUE
 	return FALSE
 
 ///Injects the gases from the input inside the internal gasmix, the amount is dependent on the gas_input var
 /obj/machinery/atmospherics/components/binary/crystallizer/proc/inject_gases()
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/contents = airs[2]
 	for(var/gas_type in selected_recipe.requirements)
 		if(!contents.moles[gas_type])
@@ -114,6 +136,8 @@
 
 ///Checks if the gases required are all inside
 /obj/machinery/atmospherics/components/binary/crystallizer/proc/internal_check()
+	procstart = null
+	src.procstart = null
 	var/gas_check = 0
 	for(var/gas_type in selected_recipe.requirements)
 		if(!internal.moles[gas_type])
@@ -126,6 +150,8 @@
 
 ///Calculation for the heat of the various gas mixes and controls the quality of the item
 /obj/machinery/atmospherics/components/binary/crystallizer/proc/heat_calculations()
+	procstart = null
+	src.procstart = null
 	var/progress_amount_to_quality = MIN_PROGRESS_AMOUNT * 4.5 / (round(log(10, total_recipe_moles * 0.1), 0.01))
 	if((internal.temperature >= (selected_recipe.min_temp * MIN_DEVIATION_RATE) && internal.temperature <= selected_recipe.min_temp) || \
 		(internal.temperature >= selected_recipe.max_temp && internal.temperature <= (selected_recipe.max_temp * MAX_DEVIATION_RATE)))
@@ -140,6 +166,8 @@
 
 ///Conduction between the internal gasmix and the moderating (cooling/heating) gasmix.
 /obj/machinery/atmospherics/components/binary/crystallizer/proc/heat_conduction()
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/cooling_port = airs[1]
 	if(cooling_port.total_moles() > MINIMUM_MOLE_COUNT)
 		if(internal.total_moles() > 0)
@@ -153,6 +181,8 @@
 
 ///Calculate the total moles needed for the recipe
 /obj/machinery/atmospherics/components/binary/crystallizer/proc/moles_calculations()
+	procstart = null
+	src.procstart = null
 	var/amounts = 0
 	for(var/gas_type in selected_recipe.requirements)
 		amounts += selected_recipe.requirements[gas_type]
@@ -160,11 +190,15 @@
 
 ///Removes the gases from the internal gasmix when the recipe is changed
 /obj/machinery/atmospherics/components/binary/crystallizer/proc/dump_gases()
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/remove = internal.remove(internal.total_moles())
 	airs[2].merge(remove)
 	internal.garbage_collect()
 
 /obj/machinery/atmospherics/components/binary/crystallizer/process_atmos()
+	procstart = null
+	src.procstart = null
 	if(!on || !is_operational || selected_recipe == null)
 		return
 
@@ -232,12 +266,16 @@
 	update_parents()
 
 /obj/machinery/atmospherics/components/binary/crystallizer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Crystallizer", name)
 		ui.open()
 
 /obj/machinery/atmospherics/components/binary/crystallizer/ui_static_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["selected_recipes"] = list(list("name" = "Nothing", "id" = ""))
 	for(var/path in GLOB.gas_recipe_meta)
@@ -248,6 +286,8 @@
 	return data
 
 /obj/machinery/atmospherics/components/binary/crystallizer/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["on"] = on
 
@@ -299,6 +339,8 @@
 	return data
 
 /obj/machinery/atmospherics/components/binary/crystallizer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -328,6 +370,8 @@
 	update_icon()
 
 /obj/machinery/atmospherics/components/binary/crystallizer/update_layer()
+	procstart = null
+	src.procstart = null
 	return
 
 #undef MIN_PROGRESS_AMOUNT

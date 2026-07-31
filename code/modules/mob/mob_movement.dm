@@ -44,6 +44,8 @@ GAME_VERB_HIDDEN(/client, drop_item, "drop item")
  *
  */
 /client/Move(new_loc, direct)
+	procstart = null
+	src.procstart = null
 	if(world.time < move_delay) //do not move anything ahead of this check please
 		return FALSE
 	next_move_dir_add = NONE
@@ -149,6 +151,8 @@ GAME_VERB_HIDDEN(/client, drop_item, "drop item")
  * Called by client/Move()
  */
 /client/proc/Process_Grab()
+	procstart = null
+	src.procstart = null
 	if(!mob.pulledby)
 		return FALSE
 	if(mob.pulledby == mob.pulling && mob.pulledby.grab_state == GRAB_PASSIVE) //Don't autoresist passive grabs if we're grabbing them too.
@@ -177,6 +181,8 @@ GAME_VERB_HIDDEN(/client, drop_item, "drop item")
  * You'll note this is another mob living level proc living at the client level
  */
 /client/proc/Process_Incorpmove(direct)
+	procstart = null
+	src.procstart = null
 	var/turf/mobloc = get_turf(mob)
 	if(!isliving(mob))
 		return
@@ -261,6 +267,8 @@ GAME_VERB_HIDDEN(/client, drop_item, "drop item")
  * You can move in space if you have a spacewalk ability
  */
 /mob/Process_Spacemove(movement_dir = 0, continuous_move = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || HAS_TRAIT(src, TRAIT_SPACEWALK))
 		return TRUE
@@ -295,6 +303,8 @@ GAME_VERB_HIDDEN(/client, drop_item, "drop item")
 
 /// We handle lattices via backups
 /mob/handle_spacemove_grabbing()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -303,6 +313,8 @@ GAME_VERB_HIDDEN(/client, drop_item, "drop item")
  * If include_floors is TRUE, includes floors *with gravity*
  */
 /mob/get_spacemove_backup(moving_direction, continuous_move, include_floors = FALSE)
+	procstart = null
+	src.procstart = null
 	var/atom/secondary_backup
 	var/list/priority_dirs = (moving_direction in GLOB.cardinals) ? GLOB.cardinals : GLOB.diagonals
 	for(var/atom/pushover as anything in range(1, get_turf(src)))
@@ -358,12 +370,16 @@ GAME_VERB_HIDDEN(/client, drop_item, "drop item")
 	return secondary_backup
 
 /mob/has_gravity(turf/gravity_turf)
+	procstart = null
+	src.procstart = null
 	return mob_negates_gravity() || ..()
 
 /**
  * Does this mob ignore gravity
  */
 /mob/proc/mob_negates_gravity()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /**
@@ -377,9 +393,13 @@ GAME_VERB_HIDDEN(/client, drop_item, "drop item")
  * force_drop = the slip forces them to drop held items
  */
 /mob/proc/slip(knockdown_amount, obj/slipped_on, lube_flags, paralyze, daze, force_drop = FALSE)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_MOB_SLIPPED, knockdown_amount, slipped_on, lube_flags, paralyze, daze, force_drop)
 
 /mob/living/slip(knockdown_amount, obj/slipped_on, lube_flags, paralyze, daze, force_drop = FALSE)
+	procstart = null
+	src.procstart = null
 	add_mob_memory(/datum/memory/was_slipped, antagonist = slipped_on)
 	add_mood_event("slipped", /datum/mood_event/slipped)
 	add_personality_mood_to_viewers(src, "slip_observed", list(/datum/personality/whimsical = /datum/mood_event/whimsical_slip), range = 5)
@@ -393,6 +413,8 @@ GAME_VERB_HIDDEN(/client, drop_item, "drop item")
 
 ///Validate the client's mob has a valid zone selected
 /client/proc/check_has_body_select()
+	procstart = null
+	src.procstart = null
 	return istype(mob?.hud_used?.screen_objects[HUD_MOB_ZONE_SELECTOR], /atom/movable/screen/zone_sel)
 
 /**
@@ -512,6 +534,8 @@ GAME_VERB_HIDDEN_INSTANT(/client, toggle_walk_run, "toggle-walk-run")
  * triggers an update the move intent hud as well
  */
 /mob/living/proc/toggle_move_intent()
+	procstart = null
+	src.procstart = null
 	if(move_intent == MOVE_INTENT_RUN)
 		move_intent = MOVE_INTENT_WALK
 	else
@@ -523,6 +547,8 @@ GAME_VERB_HIDDEN_INSTANT(/client, toggle_walk_run, "toggle-walk-run")
 
 ///Moves a mob upwards in z level
 /mob/proc/up()
+	procstart = null
+	src.procstart = null
 	if(remote_control)
 		return remote_control.relaymove(src, UP)
 
@@ -547,6 +573,8 @@ GAME_VERB_HIDDEN_INSTANT(/client, toggle_walk_run, "toggle-walk-run")
 
 ///Moves a mob down a z level
 /mob/proc/down()
+	procstart = null
+	src.procstart = null
 	if(remote_control)
 		return remote_control.relaymove(src, DOWN)
 
@@ -571,12 +599,16 @@ GAME_VERB_HIDDEN_INSTANT(/client, toggle_walk_run, "toggle-walk-run")
 	return FALSE
 
 /mob/abstract_move(atom/destination)
+	procstart = null
+	src.procstart = null
 	var/turf/new_turf = get_turf(destination)
 	if(new_turf && (istype(new_turf, /turf/cordon/secret) || is_secret_level(new_turf.z)) && !client?.holder)
 		return
 	return ..()
 
 /mob/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(client && LAZYLEN(sound_tokens))
 		SSsound_tokens.clients_needing_update[client] = TRUE

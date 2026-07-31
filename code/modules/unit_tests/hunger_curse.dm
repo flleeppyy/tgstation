@@ -3,6 +3,8 @@
 /datum/unit_test/hunger_curse
 
 /datum/unit_test/hunger_curse/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/storage/backpack/duffelbag/cursed/cursed_bag = allocate(/obj/item/storage/backpack/duffelbag/cursed)
 

@@ -5,6 +5,8 @@
 	melee_cooldown_time = 0 SECONDS
 
 /datum/action/cooldown/mob_cooldown/bot/IsAvailable(feedback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -28,6 +30,8 @@
 	var/foam_range = 2
 
 /datum/action/cooldown/mob_cooldown/bot/foam/Activate(mob/living/firer, atom/target)
+	procstart = null
+	src.procstart = null
 	owner.visible_message(span_danger("[owner] whirs and bubbles violently, before releasing a plume of froth!"))
 	do_foam(foam_range, owner, owner.loc)
 	StartCooldown()

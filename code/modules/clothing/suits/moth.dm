@@ -18,6 +18,8 @@
 	greyscale_colors = "#dfa409"
 
 /obj/item/clothing/suit/mothcoat/original/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -5)
 	create_storage(storage_type = /datum/storage/pockets)

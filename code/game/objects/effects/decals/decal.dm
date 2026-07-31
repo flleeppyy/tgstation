@@ -7,6 +7,8 @@
 	resistance_flags = FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
 /obj/effect/decal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(NeverShouldHaveComeHere(loc))
 		if(mapload)
@@ -22,26 +24,38 @@
 	AddElement(/datum/element/force_move_pulled)
 
 /obj/effect/decal/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if(B && B.loc == loc)
 		qdel(src)
 
 ///Checks if we are allowed to be in `here_turf`, and returns that result. Subtypes should override this when necessary.
 /obj/effect/decal/proc/NeverShouldHaveComeHere(turf/here_turf)
+	procstart = null
+	src.procstart = null
 	return isclosedturf(here_turf) || (isgroundlessturf(here_turf) && !GET_TURF_BELOW(here_turf))
 
 /obj/effect/decal/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	qdel(src)
 	return TRUE
 
 /obj/effect/decal/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(!(resistance_flags & FIRE_PROOF)) //non fire proof decal or being burned by lava
 		qdel(src)
 
 /obj/effect/decal/proc/on_decal_move(turf/changed, path, list/new_baseturfs, flags, list/post_change_callbacks)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	post_change_callbacks += CALLBACK(src, PROC_REF(sanity_check_self))
 
 /obj/effect/decal/proc/sanity_check_self(turf/changed)
+	procstart = null
+	src.procstart = null
 	if(changed == loc && NeverShouldHaveComeHere(changed))
 		qdel(src)
 
@@ -62,6 +76,8 @@
 // See spawners for more details since we use the same pattern
 // Basically rather then creating and deleting ourselves, why not just do the bare minimum?
 /obj/effect/turf_decal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	if(flags_1 & INITIALIZED_1)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
@@ -82,6 +98,8 @@
 	return INITIALIZE_HINT_QDEL
 
 /obj/effect/turf_decal/Destroy(force)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 #ifdef UNIT_TESTS
 // If we don't do this, turf decals will end up stacking up on a tile, and break the overlay limit

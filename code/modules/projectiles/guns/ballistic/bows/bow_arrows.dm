@@ -16,11 +16,15 @@
 	var/reusable = TRUE
 
 /obj/item/ammo_casing/arrow/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/envenomable_casing)
 	AddElement(/datum/element/caseless, reusable)
 
 /obj/item/ammo_casing/arrow/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state]"
 
@@ -93,6 +97,8 @@
 	embed_type = /datum/embedding/arrow
 
 /obj/projectile/bullet/arrow/poison/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(target))
 		return
@@ -116,6 +122,8 @@
 	icon_state = "holy_arrow_projectile"
 
 /obj/projectile/bullet/arrow/holy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// 50 damage to revenants
 	AddComponent(/datum/component/bane, affected_biotypes = MOB_SPIRIT, added_damage = 30)
@@ -161,6 +169,8 @@
 	embed_type = null
 
 /obj/projectile/bullet/arrow/blazing/on_hit(atom/target, blocked, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(target))
 		return
@@ -189,5 +199,7 @@
 	icon_state = "ashen_arrow_projectile"
 
 /obj/projectile/bullet/arrow/ashen/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/bane, affected_biotypes = MOB_MINING, added_damage = 40)

@@ -7,6 +7,8 @@
 /datum/element/simple_flying
 
 /datum/element/simple_flying/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -15,12 +17,16 @@
 	RegisterSignal(target, COMSIG_MOB_STATCHANGE, PROC_REF(on_stat_change))
 
 /datum/element/simple_flying/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_MOB_STATCHANGE)
 	REMOVE_TRAIT(target, TRAIT_MOVE_FLYING, ELEMENT_TRAIT(type))
 
 ///signal called by the stat of the target changing
 /datum/element/simple_flying/proc/on_stat_change(mob/living/target, new_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(new_stat == STABLE)

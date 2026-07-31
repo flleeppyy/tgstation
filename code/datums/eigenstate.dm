@@ -15,6 +15,8 @@ GLOBAL_DATUM_INIT(closet_teleport_controller, /datum/closet_teleport_controller,
 
 ///Creates a new link of targets unique to their own id
 /datum/closet_teleport_controller/proc/create_new_link(targets, subtle = TRUE)
+	procstart = null
+	src.procstart = null
 	if(length(targets) <= 1)
 		return FALSE
 	for(var/atom/target as anything in targets) //Clear out any connected
@@ -60,6 +62,8 @@ GLOBAL_DATUM_INIT(closet_teleport_controller, /datum/closet_teleport_controller,
 
 ///reverts everything back to start
 /datum/closet_teleport_controller/eigenstates/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/index in 1 to id_counter)
 		for(var/entry in eigen_targets["[index]"])
 			remove_eigen_entry(entry)
@@ -70,6 +74,8 @@ GLOBAL_DATUM_INIT(closet_teleport_controller, /datum/closet_teleport_controller,
 
 ///removes an object reference from the master list
 /datum/closet_teleport_controller/proc/remove_eigen_entry(atom/entry)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/id = eigen_id[entry]
 	eigen_targets[id] -= entry
@@ -89,6 +95,8 @@ GLOBAL_DATUM_INIT(closet_teleport_controller, /datum/closet_teleport_controller,
 
 ///Finds the object within the master list, then sends the thing to the object's location
 /datum/closet_teleport_controller/proc/use_eigenlinked_atom(atom/object_sent_from, atom/movable/thing_to_send)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/tp_flags = SEND_SIGNAL(object_sent_from, COMSIG_CLOSET_TELEPORTER_PRE_SENDING, thing_to_send)
@@ -125,6 +133,8 @@ GLOBAL_DATUM_INIT(closet_teleport_controller, /datum/closet_teleport_controller,
 
 ///Prevents tool use on the item
 /datum/closet_teleport_controller/proc/tool_interact(atom/source, mob/user, obj/item/item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	to_chat(user, span_notice("The unstable nature of [source] makes it impossible to use [item] on [source.p_them()]!"))
 	return ITEM_INTERACT_BLOCKING
@@ -136,6 +146,8 @@ GLOBAL_DATUM_INIT(closet_teleport_controller, /datum/closet_teleport_controller,
 	var/subtle = FALSE
 
 /obj/structure/closet/eigenlinked/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		// i'm making no effort to ensure these link properly for mappers.

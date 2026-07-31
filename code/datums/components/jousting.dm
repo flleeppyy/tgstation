@@ -48,6 +48,8 @@
 	RegisterSignal(parent, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
 /datum/component/jousting/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, list(
 		COMSIG_ATOM_EXAMINE,
@@ -58,10 +60,14 @@
 	))
 
 /datum/component/jousting/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_list += span_notice("It can be used on a vehicle for jousting, dealing potential knockdowns and additional damage.")
 
 /datum/component/jousting/proc/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!user)
 		return
@@ -73,6 +79,8 @@
 
 ///Called when a mob equips the spear, registers them as the holder and checks their signals for moving.
 /datum/component/jousting/proc/on_equip(datum/source, mob/user, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(current_holder)
 		INVOKE_ASYNC(src, PROC_REF(on_drop), source, user)
@@ -81,6 +89,8 @@
 	RegisterSignal(current_holder, COMSIG_MOVABLE_MOVED, PROC_REF(mob_move), TRUE)
 
 /datum/component/jousting/proc/on_drop(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!current_holder)
 		return
@@ -95,6 +105,8 @@
  * So your charge will only get benefits from each extra tile after the minimum (and before the maximum).
  */
 /datum/component/jousting/proc/on_successful_attack(datum/source, mob/living/target, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(user != current_holder || !user.buckled)
 		return
@@ -122,6 +134,8 @@
  * Lastly, refreshes their charge reset timer, giving them a new one instead.
  */
 /datum/component/jousting/proc/mob_move(datum/source, newloc, dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!current_holder)
@@ -143,6 +157,8 @@
  * This is used when someone is no longer jousting and it should cleanup.
  */
 /datum/component/jousting/proc/reset_charge()
+	procstart = null
+	src.procstart = null
 	current_direction = initial(current_direction)
 	current_tile_charge = initial(current_tile_charge)
 

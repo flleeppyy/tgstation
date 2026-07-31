@@ -30,6 +30,8 @@
 	var/turf/node_goal
 
 /datum/jps_node/New(turf/our_tile, datum/jps_node/incoming_previous_node, jumps_taken, turf/incoming_goal)
+	procstart = null
+	src.procstart = null
 	tile = our_tile
 	jumps = jumps_taken
 	if(incoming_goal) // if we have the goal argument, this must be the first/starting node
@@ -43,10 +45,14 @@
 	// otherwise, no parent node means this is from a subscan lateral scan, so we just need the tile for now until we call [datum/jps/proc/update_parent] on it
 
 /datum/jps_node/Destroy(force)
+	procstart = null
+	src.procstart = null
 	previous_node = null
 	return ..()
 
 /datum/jps_node/proc/update_parent(datum/jps_node/new_parent)
+	procstart = null
+	src.procstart = null
 	previous_node = new_parent
 	node_goal = previous_node.node_goal
 	jumps = get_dist(tile, previous_node.tile)
@@ -55,6 +61,8 @@
 	f_value = number_tiles + heuristic
 
 /proc/HeapPathWeightCompare(datum/jps_node/a, datum/jps_node/b)
+	procstart = null
+	src.procstart = null
 	return b.f_value - a.f_value
 
 /datum/pathfind/jps
@@ -77,6 +85,8 @@
 	var/diagonal_handling = DIAGONAL_REMOVE_CLUNKY
 
 /datum/pathfind/jps/proc/setup(atom/movable/requester, list/access, max_distance, simulated_only, avoid, list/datum/callback/on_finish, atom/goal, mintargetdist, skip_first, diagonal_handling)
+	procstart = null
+	src.procstart = null
 	src.requester = requester
 	src.pass_info = new(requester, access)
 	src.max_distance = max_distance
@@ -91,12 +101,16 @@
 	found_turfs = list()
 
 /datum/pathfind/jps/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	requester = null
 	end = null
 	open = null
 
 /datum/pathfind/jps/start()
+	procstart = null
+	src.procstart = null
 	start = start || get_turf(requester)
 	. = ..()
 	if(!.)
@@ -116,6 +130,8 @@
 	return TRUE
 
 /datum/pathfind/jps/search_step()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -140,6 +156,8 @@
 	return TRUE
 
 /datum/pathfind/jps/finished()
+	procstart = null
+	src.procstart = null
 	//we're done! turn our reversed path (end to start) into a path (start to end)
 	found_turfs = null
 	QDEL_NULL(open)
@@ -158,6 +176,8 @@
 
 /// Called when we've hit the goal with the node that represents the last tile, then sets the path var to that path so it can be returned by [datum/pathfind/proc/search]
 /datum/pathfind/jps/proc/unwind_path(datum/jps_node/unwind_node)
+	procstart = null
+	src.procstart = null
 	path = new()
 	var/turf/iter_turf = unwind_node.tile
 	path.Add(iter_turf)
@@ -183,6 +203,8 @@
  * * parent_node: Only given for normal lateral scans, if we don't have one, we're a diagonal subscan.
 */
 /datum/pathfind/jps/proc/lateral_scan_spec(turf/original_turf, heading, datum/jps_node/parent_node)
+	procstart = null
+	src.procstart = null
 	var/steps_taken = 0
 
 	var/turf/current_turf = original_turf
@@ -250,6 +272,8 @@
  * * parent_node: We should always have a parent node for diagonals
 */
 /datum/pathfind/jps/proc/diag_scan_spec(turf/original_turf, heading, datum/jps_node/parent_node)
+	procstart = null
+	src.procstart = null
 	var/steps_taken = 0
 	var/turf/current_turf = original_turf
 	var/turf/lag_turf = original_turf

@@ -16,5 +16,7 @@
 	var/projectilesound = 'sound/items/weapons/pierce.ogg'
 
 /mob/living/basic/alien/sentinel/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ranged_attacks, projectile_type = projectiletype, projectile_sound = projectilesound, cooldown_time = 1 SECONDS)

@@ -31,6 +31,8 @@
 
 
 /datum/bt_node/decorator/Destroy()
+	procstart = null
+	src.procstart = null
 	if(observers_registered)
 		unregister_observe_signals(owning_controller?.pawn)
 		if(is_polled)
@@ -42,32 +44,46 @@
 	return ..()
 
 /datum/bt_node/decorator/get_children()
+	procstart = null
+	src.procstart = null
 	return child ? list(child) : null
 
 /datum/bt_node/decorator/has_active_descendants()
+	procstart = null
+	src.procstart = null
 	return child && child.has_active_descendants()
 
 /datum/bt_node/decorator/finalize_node(datum/ai_controller/controller, list/to_visit)
+	procstart = null
+	src.procstart = null
 	..()
 	if(child)
 		child.parent_node = src
 		to_visit += child
 
 /datum/bt_node/decorator/append_active_nodes(list/lines, indent)
+	procstart = null
+	src.procstart = null
 	if(child && child.has_active_descendants())
 		lines += "[indent][label]"
 		child.append_active_nodes(lines, "[indent]  ")
 
 /datum/bt_node/decorator/set_descriptor_children(list/children_descs, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/datum/bt_node/resolved = controller.get_or_build_node(children_descs[1])
 	if(!isnull(resolved))
 		child = resolved
 
 /datum/bt_node/decorator/collect_reset_children(list/to_visit)
+	procstart = null
+	src.procstart = null
 	if(child)
 		to_visit += child
 
 /datum/bt_node/decorator/append_full_tree_state(list/lines, indent)
+	procstart = null
+	src.procstart = null
 	var/observer_text = ""
 	if(observer_abort != BT_ABORT_NONE)
 		var/abort_name = ""
@@ -83,6 +99,8 @@
 		child.append_full_tree_state(lines, "[indent]  ")
 
 /datum/bt_node/decorator/tick(datum/ai_controller/controller, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!observers_registered)
 		observers_registered = TRUE
 		if(observer_abort != BT_ABORT_NONE)
@@ -121,12 +139,16 @@
  * NOT called when the condition gate blocks the child, or when the tree is cancelled mid-tick.
  */
 /datum/bt_node/decorator/proc/on_child_complete(datum/ai_controller/controller, result)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
  * Override to implement custom condition logic.
  */
 /datum/bt_node/decorator/proc/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /**
@@ -134,6 +156,8 @@
  * Return TRUE if the decorator's condition would pass, FALSE otherwise.
  */
 /datum/bt_node/decorator/proc/evaluate_for_observer(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	return !!check_condition(controller) != invert
 
 /**
@@ -146,6 +170,8 @@
 /// Called by the controller's polling loop for decorators that have no signal observers.
 /// Sets a baseline on first call, then fires on_observed_change() only when the result changes.
 /datum/bt_node/decorator/proc/poll_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(polling_rate && last_poll_time + polling_rate > world.time)
 		return
 	last_poll_time = world.time
@@ -158,6 +184,8 @@
 		on_observed_change(controller, null)
 
 /datum/bt_node/decorator/proc/on_observed_change(datum/ai_controller/controller, key)
+	procstart = null
+	src.procstart = null
 	var/condition_result = evaluate_for_observer(controller)
 
 	if(!condition_result && (observer_abort & BT_ABORT_SELF))
@@ -173,6 +201,8 @@
 			controller.cancel_current_plan()
 
 /datum/bt_node/decorator/reset_tick_state()
+	procstart = null
+	src.procstart = null
 	if(observers_registered)
 		unregister_observe_signals(owning_controller?.pawn)
 		if(is_polled)
@@ -186,6 +216,8 @@
 	..()
 
 /datum/bt_node/decorator/assign_execution_indices(counter)
+	procstart = null
+	src.procstart = null
 	execution_index = counter
 	counter++
 	if(child)
@@ -195,14 +227,20 @@
 
 /// Override to register all signal observers for this decorator. Return TRUE if any were registered. If a decorator does not handle this and we have an observer_abort mode that isn't BT_ABORT_NONE, the system will fall back to ticking the condition every tick, which is less efficient but allows for reactivity without signals.
 /datum/bt_node/decorator/proc/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// Override to unregister all observers registered by register_observe_signals().
 /datum/bt_node/decorator/proc/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Shared signal handler. Calls on_observed_change() with owning_controller.
 /datum/bt_node/decorator/proc/on_signal_changed(atom/source, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(owning_controller)
 		on_observed_change(owning_controller, null)
@@ -210,6 +248,8 @@
 
 /// Returns TRUE if the blackboard key holds a non-null, non-deleted value.
 /datum/bt_node/decorator/proc/bb_key_exists(datum/ai_controller/controller, key)
+	procstart = null
+	src.procstart = null
 	return controller.blackboard_key_exists(key)
 
 /// Gates on whether the named override slot currently has an active override installed.
@@ -219,23 +259,33 @@
 	var/override_id = null
 
 /datum/bt_node/decorator/override_id_set/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/datum/bt_node/subtree/potential_subtree = LAZYACCESS(controller.override_slots, override_id)
 	return !isnull(potential_subtree.override_node)
 
 /datum/bt_node/decorator/override_id_set/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	if(isnull(override_id))
 		return FALSE
 	RegisterSignal(pawn, COMSIG_AI_OVERRIDE_SLOT_CHANGED(override_id), PROC_REF(on_signal_changed))
 	return TRUE
 
 /datum/bt_node/decorator/override_id_set/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	if(!isnull(override_id))
 		UnregisterSignal(pawn, COMSIG_AI_OVERRIDE_SLOT_CHANGED(override_id))
 
 /// Returns TRUE if the blackboard value at key equals the given value.
 /datum/bt_node/decorator/proc/bb_key_equals(datum/ai_controller/controller, key, value)
+	procstart = null
+	src.procstart = null
 	return controller.blackboard[key] == value
 
 /// Returns TRUE if the blackboard value at key is strictly greater than threshold.
 /datum/bt_node/decorator/proc/bb_key_greater(datum/ai_controller/controller, key, threshold)
+	procstart = null
+	src.procstart = null
 	return controller.blackboard[key] > threshold

@@ -28,6 +28,8 @@
 	wound = 10
 
 /obj/item/clothing/head/helmet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 
@@ -42,10 +44,14 @@
 	hair_mask = /datum/hair_mask/standard_hat_low
 
 /obj/item/clothing/head/helmet/sec/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/seclite_attachable, light_icon_state = "flight")
 
 /obj/item/clothing/head/helmet/sec/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!issignaler(tool))
 		return ..()
 
@@ -71,6 +77,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/clothing/head/helmet/sec/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -82,6 +90,8 @@
 	return TRUE
 
 /obj/item/clothing/head/helmet/sec/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	flipped_visor = !flipped_visor
 	balloon_alert(user, "visor flipped")
 	// base_icon_state is modified for seclight attachment component
@@ -107,10 +117,14 @@
 	drop_sound = 'sound/items/handling/helmet/helmet_drop1.ogg'
 
 /obj/item/clothing/head/helmet/press/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/seclite_attachable, light_icon_state = "flight")
 
 /obj/item/clothing/head/helmet/press/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "[icon_state]-emissive", src, alpha = src.alpha, effect_type = EMISSIVE_SPECULAR)
@@ -139,6 +153,8 @@
 	wound = 5
 
 /obj/item/clothing/head/helmet/alt/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/seclite_attachable, light_icon_state = "flight")
 
@@ -170,6 +186,8 @@
 	wound = 20
 
 /obj/item/clothing/head/helmet/marine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/seclite_attachable, starting_light = new /obj/item/flashlight/seclite(src), light_icon_state = "flight")
 
@@ -222,9 +240,13 @@
 	dog_fashion = null
 
 /obj/item/clothing/head/helmet/toggleable/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	adjust_visor(user)
 
 /obj/item/clothing/head/helmet/toggleable/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	base_icon_state = "[initial(base_icon_state)]"
 	var/datum/component/seclite_attachable/light = GetComponent(/datum/component/seclite_attachable)
@@ -258,10 +280,14 @@
 	visor_toggle_down_sound = SFX_VISOR_DOWN
 
 /obj/item/clothing/head/helmet/toggleable/riot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/seclite_attachable, light_icon_state = "flight")
 
 /obj/item/clothing/head/helmet/toggleable/riot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, 2)
 
@@ -311,12 +337,16 @@
 	visor_toggle_down_sound = SFX_VISOR_DOWN
 
 /obj/item/clothing/head/helmet/toggleable/justice/adjust_visor(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, visor_toggle_cooldown))
 		return FALSE
 	COOLDOWN_START(src, visor_toggle_cooldown, 2 SECONDS)
 	return ..()
 
 /obj/item/clothing/head/helmet/toggleable/justice/visor_toggling()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(up)
 		weewooloop.start()
@@ -324,10 +354,14 @@
 		weewooloop.stop()
 
 /obj/item/clothing/head/helmet/toggleable/justice/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	weewooloop = new(src, FALSE, FALSE)
 
 /obj/item/clothing/head/helmet/toggleable/justice/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(weewooloop)
 	return ..()
 
@@ -358,6 +392,8 @@
 	drop_sound = 'sound/items/handling/helmet/helmet_drop1.ogg'
 
 /obj/item/clothing/head/helmet/swat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, 3)
 
@@ -386,6 +422,8 @@
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH | PEPPERPROOF
 
 /obj/item/clothing/head/helmet/swat/nanotrasen/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/seclite_attachable, light_icon_state = "flight")
 
@@ -509,6 +547,8 @@
 	clothing_traits = list(TRAIT_HEAD_INJURY_BLOCKED)
 
 /obj/item/clothing/head/helmet/knight/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, 3)
 
@@ -577,6 +617,8 @@
 	wound = 5
 
 /obj/item/clothing/head/helmet/rus_helmet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	create_storage(storage_type = /datum/storage/pockets/helmet)
@@ -671,6 +713,8 @@
 	wound = 30
 
 /obj/item/clothing/head/helmet/durability/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	take_damage(1, BRUTE, 0, 0)
 
 /obj/item/clothing/head/helmet/durability/watermelon
@@ -720,6 +764,8 @@
 	armor_type = /datum/armor/helmet_watermelon_fr
 
 /obj/item/clothing/head/helmet/durability/holymelon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddComponent(
@@ -732,9 +778,13 @@
 	)
 
 /obj/item/clothing/head/helmet/durability/holymelon/proc/drain_antimagic(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("[src] looses a bit of its shimmer and glossiness..."))
 
 /obj/item/clothing/head/helmet/durability/holymelon/proc/decay()
+	procstart = null
+	src.procstart = null
 	take_damage(8, BRUTE, 0, 0)
 
 /obj/item/clothing/head/helmet/durability/barrelmelon

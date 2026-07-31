@@ -12,6 +12,8 @@
 	VAR_PRIVATE/last_fall
 
 /datum/component/slippery_item/Initialize(fall_chance = 50, fall_catch_chance = 0, examine_msg, duration = INFINITY, wash_flags = NONE)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -23,6 +25,8 @@
 		QDEL_IN(src, duration)
 
 /datum/component/slippery_item/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 	RegisterSignal(parent, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(on_cleaned))
 	// bunch of generic "item used" triggers, feel free to expand
@@ -34,6 +38,8 @@
 	RegisterSignal(parent, COMSIG_ITEM_USED_IN_SURGERY, PROC_REF(on_surgery_started))
 
 /datum/component/slippery_item/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ATOM_EXAMINE,
 		COMSIG_COMPONENT_CLEAN_ACT,
@@ -46,11 +52,15 @@
 	))
 
 /datum/component/slippery_item/proc/on_examine(obj/item/source, mob/living/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += examine_msg
 
 /datum/component/slippery_item/proc/on_cleaned(obj/item/source, clean_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(wash_flags && (wash_flags & clean_flags))
@@ -58,35 +68,47 @@
 		return COMPONENT_CLEANED
 
 /datum/component/slippery_item/proc/on_equip(obj/item/source, mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(slot & ITEM_SLOT_HANDS)
 		try_fall(source, user)
 
 /datum/component/slippery_item/proc/on_preattack(obj/item/source, atom/target, mob/living/user, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(try_fall(source, user))
 		return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/component/slippery_item/proc/on_afterattack(obj/item/source, atom/target, mob/living/user, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	try_fall(source, user)
 
 /datum/component/slippery_item/proc/on_tryfire(obj/item/source, mob/living/user, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(try_fall(source, user))
 		return COMPONENT_CANCEL_GUN_FIRE
 
 /datum/component/slippery_item/proc/on_grenade_arm(obj/item/source, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isliving(source.loc))
 		try_fall(source, source.loc)
 
 /datum/component/slippery_item/proc/on_surgery_started(obj/item/source, datum/surgery_operation/surgery, atom/movable/operating_on, mob/living/surgeon)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(try_fall(source, surgeon))
@@ -95,6 +117,8 @@
 /// Check for falling and handle it if it happens.
 /// Returns TRUE if the item fell, FALSE otherwise
 /datum/component/slippery_item/proc/try_fall(obj/item/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	// prevents fall -> catch -> fall -> catch. even though that'd be funny, you wouldn't even be able to see it happening.
 	if(last_fall == world.time)

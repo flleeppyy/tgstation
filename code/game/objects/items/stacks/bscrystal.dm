@@ -29,15 +29,21 @@
 	pickup_sound = null
 
 /obj/item/stack/ore/bluespace_crystal/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(-5, 5)
 	pixel_y = rand(-5, 5)
 	AddElement(/datum/element/raptor_food, ability_modifier = 0.05, attack_modifier = 0.5, color_chances = string_list(list(/datum/raptor_color/black = 1)))
 
 /obj/item/stack/ore/bluespace_crystal/get_part_rating()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /obj/item/stack/ore/bluespace_crystal/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(user, COMSIG_MOB_CRUSHED_BLUESPACE_CRYSTAL, src)
 	user.visible_message(span_warning("[user] crushes [src]!"), span_danger("You crush [src]!"))
 	new /obj/effect/particle_effect/sparks(loc)
@@ -46,9 +52,13 @@
 	use(1)
 
 /obj/item/stack/ore/bluespace_crystal/proc/blink_mob(mob/living/L)
+	procstart = null
+	src.procstart = null
 	do_teleport(L, get_turf(L), blink_range, asoundin = 'sound/effects/phasein.ogg', channel = TELEPORT_CHANNEL_BLUESPACE)
 
 /obj/item/stack/ore/bluespace_crystal/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(!..()) // not caught in mid-air
 		visible_message(span_notice("[src] fizzles and disappears upon impact!"))
 		var/turf/T = get_turf(hit_atom)
@@ -59,6 +69,8 @@
 		use(1)
 
 /obj/item/stack/ore/bluespace_crystal/attack_self_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	interact(user)
 
 //Artificial bluespace crystal, doesn't give you much research.
@@ -92,6 +104,8 @@
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/stack/sheet/bluespace_crystal/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.get_inactive_held_item() != src)
 		return ..()
 

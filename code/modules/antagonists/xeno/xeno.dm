@@ -10,6 +10,8 @@
 
 //Simply lists them.
 /datum/team/xeno/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 	parts += span_header("The [name] were:")
 	parts += printplayerlist(members)
@@ -24,10 +26,14 @@
 	var/datum/team/xeno/xeno_team
 
 /datum/antagonist/xeno/on_gain()
+	procstart = null
+	src.procstart = null
 	forge_objectives()
 	. = ..()
 
 /datum/antagonist/xeno/create_team(datum/team/xeno/new_team)
+	procstart = null
+	src.procstart = null
 	if(!new_team)
 		for(var/datum/antagonist/xeno/X in GLOB.antagonists)
 			if(!X.owner || !X.xeno_team)
@@ -41,12 +47,18 @@
 		xeno_team = new_team
 
 /datum/antagonist/xeno/get_team()
+	procstart = null
+	src.procstart = null
 	return xeno_team
 
 /datum/antagonist/xeno/get_preview_icon()
+	procstart = null
+	src.procstart = null
 	return finish_preview_icon(uni_icon('icons/mob/nonhuman-player/alien.dmi', "alienh"))
 
 /datum/antagonist/xeno/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/advance_hive/objective = new
 	objective.owner = owner
 	objectives += objective
@@ -57,6 +69,8 @@
 	var/datum/team/xeno/captive/captive_team
 
 /datum/antagonist/xeno/captive/create_team(datum/team/xeno/captive/new_team)
+	procstart = null
+	src.procstart = null
 	if(!new_team)
 		for(var/datum/antagonist/xeno/captive/captive_xeno in GLOB.antagonists)
 			if(!captive_xeno.owner || !captive_xeno.captive_team)
@@ -71,9 +85,13 @@
 		captive_team = new_team
 
 /datum/antagonist/xeno/captive/get_team()
+	procstart = null
+	src.procstart = null
 	return captive_team
 
 /datum/antagonist/xeno/captive/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/escape_captivity/objective = new
 	objective.owner = owner
 	objectives += objective
@@ -83,18 +101,26 @@
 /datum/objective/escape_captivity
 
 /datum/objective/escape_captivity/New()
+	procstart = null
+	src.procstart = null
 	explanation_text = "Escape from captivity."
 
 /datum/objective/escape_captivity/check_completion()
+	procstart = null
+	src.procstart = null
 	if(!istype(get_area(owner), GLOB.communications_controller.captivity_area))
 		return TRUE
 
 /datum/objective/advance_hive
 
 /datum/objective/advance_hive/New()
+	procstart = null
+	src.procstart = null
 	explanation_text = "Survive and advance the Hive."
 
 /datum/objective/advance_hive/check_completion()
+	procstart = null
+	src.procstart = null
 	return owner.current && owner.current.stat != DEAD
 
 ///Captive Xenomorphs team
@@ -104,6 +130,8 @@
 	var/datum/mind/progenitor
 
 /datum/team/xeno/captive/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 	var/escape_count = 0 //counts the number of xenomorphs that were born in captivity who ended the round outside of it
 	var/captive_count = 0 //counts the number of xenomorphs born in captivity who remained there until the end of the round (losers)
@@ -142,6 +170,8 @@
 	return "<div class='panel redborder'>[parts.Join("<br>")]</div> <br>"
 
 /datum/team/xeno/captive/proc/check_captivity(mob/living/captive_alien)
+	procstart = null
+	src.procstart = null
 	if(!captive_alien || captive_alien.stat == DEAD)
 		return CAPTIVE_XENO_DEAD
 
@@ -152,6 +182,8 @@
 
 //XENO
 /mob/living/carbon/alien/mind_initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!mind.has_antag_datum(/datum/antagonist/xeno))
 		if(GLOB.communications_controller.xenomorph_egg_delivered && istype(get_area(src), GLOB.communications_controller.captivity_area))
@@ -162,6 +194,8 @@
 		mind.set_assigned_role(SSjob.get_job_type(/datum/job/xenomorph))
 
 /mob/living/carbon/alien/on_wabbajacked(mob/living/new_mob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mind)
 		return

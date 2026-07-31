@@ -27,6 +27,8 @@
 	var/edit_by_hand = FALSE
 
 /obj/structure/signboard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(sign_text)
 		set_text(sign_text, force = TRUE)
@@ -35,10 +37,14 @@
 	register_context()
 
 /obj/structure/signboard/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(text_image)
 	return ..()
 
 /obj/structure/signboard/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_locked(user))
 		return
@@ -52,6 +58,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/signboard/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!edit_by_hand)
 		. += span_notice("You can write on the sign with a <b>pen.</b>")
@@ -66,10 +74,14 @@
 		. += span_notice("\nIt's blank.")
 
 /obj/structure/signboard/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state][sign_text ? "" : "_blank"]"
 
 /obj/structure/signboard/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	if(var_name == NAMEOF(src, sign_text))
 		if(!set_text(var_value, force = TRUE))
 			return FALSE
@@ -78,12 +90,16 @@
 	return ..()
 
 /obj/structure/signboard/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/pen))
 		return NONE
 	try_set_text(user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/signboard/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -94,6 +110,8 @@
 		return TRUE
 
 /obj/structure/signboard/proc/try_set_text(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(!anchored && !show_while_unanchored)
 		return FALSE
@@ -126,6 +144,8 @@
 		return TRUE
 
 /obj/structure/signboard/click_alt_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!sign_text || !can_interact(user) || !user.can_perform_action(src, NEED_DEXTERITY))
 		return
@@ -139,31 +159,43 @@
 		investigate_log("([key_name(user)]) cleared the text", INVESTIGATE_SIGNBOARD)
 
 /obj/structure/signboard/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!anchored || !check_locked(user))
 		default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/signboard/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	if(!same_z_layer)
 		SET_PLANE_EXPLICIT(text_image, ABOVE_GAME_PLANE, src)
 	return ..()
 
 /obj/structure/signboard/set_anchored(anchorvalue)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_text()
 
 /obj/structure/signboard/proc/is_locked(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isAdminGhostAI(user))
 		return FALSE
 	return locked
 
 /obj/structure/signboard/proc/check_locked(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = is_locked(user)
 	if(. && !silent)
 		balloon_alert(user, "locked!")
 
 /obj/structure/signboard/proc/should_display_text()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || !isturf(loc) || !sign_text)
 		return FALSE
 	if(!anchored && !show_while_unanchored)
@@ -171,17 +203,23 @@
 	return TRUE
 
 /obj/structure/signboard/MouseEntered(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(src) || !should_display_text())
 		return
 	usr.client.images |= text_image
 
 /obj/structure/signboard/MouseExited(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	usr.client.images -= text_image
 
 /// Creates [text_image] if it doesn't exist, and sets its maptext to [sign_text]
 /obj/structure/signboard/proc/update_text()
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE) // Use set_text instead
 	var/safe_width = src.bound_width || ICON_SIZE_X
 	var/safe_height = src.bound_height || ICON_SIZE_Y
@@ -198,6 +236,8 @@
 	text_image.maptext = text_html
 
 /obj/structure/signboard/proc/set_text(new_text, force = FALSE)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(QDELETED(src) || (locked && !force))
 		return

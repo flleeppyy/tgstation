@@ -18,6 +18,8 @@
 	custom_materials = list(/datum/material/alloy/alien = SHEET_MATERIAL_AMOUNT)
 
 /obj/structure/table_frame/abductor/get_table_type(obj/item/stack/our_stack)
+	procstart = null
+	src.procstart = null
 	if(istype(our_stack, /obj/item/stack/sheet/mineral/abductor))
 		return /obj/structure/table/abductor
 	if(istype(our_stack, /obj/item/stack/sheet/mineral/silver))
@@ -59,6 +61,8 @@
 	var/static/list/injected_reagents = list(/datum/reagent/medicine/cordiolis_hepatico)
 
 /obj/structure/table/optable/abductor/Initialize(mapload, obj/structure/table_frame/frame_used, obj/item/stack/stack_used)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
@@ -66,12 +70,16 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/structure/table/optable/abductor/proc/on_entered(datum/source, atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(iscarbon(AM))
 		START_PROCESSING(SSobj, src)
 		to_chat(AM, span_danger("You feel a series of tiny pricks!"))
 
 /obj/structure/table/optable/abductor/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = PROCESS_KILL
 	for(var/mob/living/carbon/victim in get_turf(src))
 		. = TRUE
@@ -81,6 +89,8 @@
 	return .
 
 /obj/structure/table/optable/abductor/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 

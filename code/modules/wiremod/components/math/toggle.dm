@@ -16,11 +16,15 @@
 	var/toggle_state = FALSE
 
 /obj/item/circuit_component/compare/toggle/populate_custom_ports()
+	procstart = null
+	src.procstart = null
 	toggle_set = add_input_port("Set Toggle State", PORT_TYPE_BOOLEAN)
 	toggle_and_compare = add_input_port("Toggle And Compare", PORT_TYPE_SIGNAL)
 	toggle_state = FALSE
 
 /obj/item/circuit_component/compare/toggle/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(port == toggle_set)
 		toggle_state = !!port.value
 		return
@@ -33,4 +37,6 @@
 	return ..()
 
 /obj/item/circuit_component/compare/toggle/do_comparisons()
+	procstart = null
+	src.procstart = null
 	return toggle_state

@@ -5,6 +5,8 @@
 ///Returns true or false depending on if the target can be attacked by the mob.
 ///Base proc checks if target is within vision_range distance.
 /datum/targeting_strategy/proc/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target))
 		return FALSE
 
@@ -15,18 +17,24 @@
 
 /// Returns an atom the target might be hiding inside of, or null if none.
 /datum/targeting_strategy/proc/find_hidden_mobs(mob/living/living_mob, atom/target)
+	procstart = null
+	src.procstart = null
 	return null
 
 /// Returns TRUE if we should keep tracking an existing target when no new candidates are visible.
 /// Called with the loss range (typically larger than vision_range).
 /// Default delegates to is_valid_target so all normal checks still apply.
 /datum/targeting_strategy/proc/can_keep_target(mob/living/living_mob, atom/target, range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	return is_valid_target(living_mob, target, range, controller)
 
 /// Simply always returns true if you have a target, so only use this if you're pre-checking the targets somewhere else
 /datum/targeting_strategy/anything
 
 /datum/targeting_strategy/anything/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -36,6 +44,8 @@
 /datum/targeting_strategy/fishing
 
 /datum/targeting_strategy/fishing/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

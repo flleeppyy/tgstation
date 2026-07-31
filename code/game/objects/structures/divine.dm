@@ -8,6 +8,8 @@
 	can_buckle = 1
 
 /obj/structure/sacrificealtar/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!has_buckled_mobs())
 		return CLICK_ACTION_BLOCKING
 	var/mob/living/buckled_mob = locate() in buckled_mobs
@@ -30,6 +32,8 @@
 	var/last_process = 0
 
 /obj/structure/healingfountain/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -44,6 +48,8 @@
 
 
 /obj/structure/healingfountain/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(last_process + time_between_uses > world.time)
 		icon_state = "fountain"
 	else

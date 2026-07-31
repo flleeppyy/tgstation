@@ -52,6 +52,8 @@
 	)
 
 /mob/living/basic/bot/hygienebot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_ICON)
 
@@ -68,19 +70,27 @@
 	RegisterSignal(src, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(on_attack))
 
 /mob/living/basic/bot/hygienebot/explode()
+	procstart = null
+	src.procstart = null
 	do_foam(2, src, loc)
 	return ..()
 
 /mob/living/basic/bot/hygienebot/generate_speak_list()
+	procstart = null
+	src.procstart = null
 	var/static/list/finalized_speak_list = (found_announcements + threat_announcements + cleaned_announcements)
 	return finalized_speak_list
 
 /mob/living/basic/bot/hygienebot/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state][bot_mode_flags & BOT_MODE_ON ? "-on" : ""]"
 
 
 /mob/living/basic/bot/hygienebot/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(bot_mode_flags & BOT_MODE_ON)
 		. += mutable_appearance(icon, "hygienebot-flame")
@@ -91,12 +101,16 @@
 	. += (bot_access_flags & BOT_COVER_EMAGGED) ? fire_overlay : water_overlay
 
 /mob/living/basic/bot/hygienebot/proc/on_entered(datum/source, atom/movable/movable)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!washing)
 		return
 	commence_wash(movable)
 
 /mob/living/basic/bot/hygienebot/proc/on_attack(datum/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	. = COMPONENT_HOSTILE_NO_ATTACK
 	if(washing)
@@ -107,10 +121,14 @@
 	addtimer(CALLBACK(src, PROC_REF(set_washing_mode), FALSE), WASH_PERIOD)
 
 /mob/living/basic/bot/hygienebot/proc/set_washing_mode(new_mode)
+	procstart = null
+	src.procstart = null
 	washing = new_mode
 	update_appearance(UPDATE_OVERLAYS)
 
 /mob/living/basic/bot/hygienebot/proc/commence_wash(atom/target)
+	procstart = null
+	src.procstart = null
 	if(bot_access_flags & BOT_COVER_EMAGGED)
 		target.fire_act()
 		return
@@ -118,6 +136,8 @@
 	target.extinguish()
 
 /mob/living/basic/bot/hygienebot/on_bot_movement(atom/movable/source, atom/oldloc, dir, forced)
+	procstart = null
+	src.procstart = null
 
 	if(!washing || !isturf(loc))
 		return
@@ -126,6 +146,8 @@
 		commence_wash(human)
 
 /mob/living/basic/bot/hygienebot/proc/generate_ai_speech()
+	procstart = null
+	src.procstart = null
 	ai_controller.set_blackboard_key(BB_WASH_FOUND, found_announcements)
 	ai_controller.set_blackboard_key(BB_WASH_THREATS, threat_announcements)
 	ai_controller.set_blackboard_key(BB_WASH_DONE, cleaned_announcements)

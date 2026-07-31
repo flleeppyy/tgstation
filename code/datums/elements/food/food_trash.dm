@@ -10,6 +10,8 @@
 	var/generate_trash_procpath
 
 /datum/element/food_trash/Attach(datum/target, atom/trash, flags, generate_trash_proc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
@@ -32,6 +34,8 @@
 	), PROC_REF(generate_trash))
 
 /datum/element/food_trash/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, list(
 		COMSIG_FOOD_CONSUMED,
@@ -46,12 +50,16 @@
 	))
 
 /datum/element/food_trash/proc/generate_trash(datum/source, mob/living/eater, mob/living/feeder)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	///cringy signal_handler shouldnt be needed if you dont want to return but oh well
 	INVOKE_ASYNC(src, PROC_REF(async_generate_trash), source)
 
 /datum/element/food_trash/proc/async_generate_trash(datum/source)
+	procstart = null
+	src.procstart = null
 	var/atom/edible_object = source
 	var/obj/item/trash_item
 
@@ -70,6 +78,8 @@
 	Detach(source)
 
 /datum/element/food_trash/proc/food_crossed(datum/source, mob/crosser, bitecount)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(crosser) || bitecount) // can't pop opened chips
@@ -86,6 +96,8 @@
 
 
 /datum/element/food_trash/proc/open_trash(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	to_chat(user, span_notice("You open \the [source], revealing \a [initial(trash.name)]."))

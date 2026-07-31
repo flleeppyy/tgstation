@@ -19,6 +19,8 @@
 	compatible_types = list(/obj/item/fish/goldfish/gill, /obj/item/fish/goldfish/three_eyes, /obj/item/fish/goldfish/three_eyes/gill)
 
 /obj/item/fish/goldfish/Initialize(mapload, apply_qualities = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_FISHING_BAIT, TRAIT_GOOD_QUALITY_BAIT), INNATE_TRAIT)
 
@@ -34,6 +36,8 @@
 	fish_traits = list(/datum/fish_trait/recessive)
 
 /obj/item/fish/goldfish/gill/get_fish_taste()
+	procstart = null
+	src.procstart = null
 	return list("raw fish" = 2.5, "objection" = 1)
 
 /obj/item/fish/goldfish/three_eyes
@@ -57,6 +61,8 @@
 	)
 
 /obj/item/fish/goldfish/three_eyes/get_fish_taste()
+	procstart = null
+	src.procstart = null
 	return list("raw fish" = 2.5, "chemical waste" = 0.5)
 
 /obj/item/fish/goldfish/three_eyes/gill
@@ -70,6 +76,8 @@
 	random_case_rarity = FISH_RARITY_NOPE
 
 /obj/item/fish/goldfish/three_eyes/gill/get_fish_taste()
+	procstart = null
+	src.procstart = null
 	return list("raw fish" = 2.5, "objection" = 1)
 
 /obj/item/fish/angelfish
@@ -115,6 +123,8 @@
 	required_temperature_max = MIN_AQUARIUM_TEMP+28
 
 /obj/item/fish/plasmatetra/Initialize(mapload, apply_qualities = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_FISHING_BAIT, TRAIT_GOOD_QUALITY_BAIT), INNATE_TRAIT)
 
@@ -166,9 +176,13 @@
 	suicide_slap_text = "*ZAP!*"
 
 /obj/item/fish/zipzap/get_fish_taste()
+	procstart = null
+	src.procstart = null
 	return list("raw fish" = 2, "anxiety" = 1)
 
 /obj/item/fish/zipzap/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!electrocute_mob(user, power_source = get_area(src), source = src, siemens_coeff = 1, dist_check = FALSE))
 		user.visible_message(span_suicide("[user] tries to slap [user.p_them()]self with [src], but they're immune to electricity!"))
 		return SHAME
@@ -176,6 +190,8 @@
 
 // real suicide handled by og fish proc
 /obj/item/fish/zipzap/slapperoni(mob/living/user, iteration)
+	procstart = null
+	src.procstart = null
 	electrocute_mob(user, power_source = get_area(src), source = src, siemens_coeff = 1, dist_check = FALSE) // how do i make this use electrogenesis_power
 	return ..()
 
@@ -200,6 +216,8 @@
 	var/del_timerid
 
 /obj/item/fish/tadpole/Initialize(mapload, apply_qualities = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/output_path = prob(99) ? /mob/living/basic/frog : /mob/living/basic/frog/rare
 	AddComponent(/datum/component/fish_growth, output_path, rand(2 MINUTES, 3 MINUTES))
@@ -207,9 +225,13 @@
 	RegisterSignal(src, COMSIG_FISH_FINISH_GROWING, PROC_REF(on_growth))
 
 /obj/item/fish/tadpole/make_edible()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/fish/tadpole/set_status(new_status, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(status == FISH_DEAD)
 		if(!istype(loc, /obj/structure/fish_mount))
@@ -218,12 +240,16 @@
 		deltimer(del_timerid)
 
 /obj/item/fish/tadpole/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(src) || status != FISH_DEAD || !istype(old_loc, /obj/structure/fish_mount))
 		return
 	qdel(src)
 
 /obj/item/fish/tadpole/proc/growth_checks(datum/source, seconds_per_tick, growth, result_path)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/hunger = get_hunger()
 	if(hunger >= 0.7) //too hungry to grow
@@ -232,13 +258,19 @@
 		return COMPONENT_DONT_GROW
 
 /obj/item/fish/tadpole/proc/on_growth(datum/source, mob/living/basic/frog/result)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	playsound(result, result.attack_sound, 50, TRUE) // reeeeeeeeeeeeeee...
 
 /obj/item/fish/tadpole/get_export_price(price, elasticity_percent)
+	procstart = null
+	src.procstart = null
 	return 2 //two credits. Tadpoles aren't really that valueable.
 
 /obj/item/fish/tadpole/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] swallows [src] whole!"))
 	src.forceMove(user)
 	if(status == FISH_DEAD)
@@ -251,6 +283,8 @@
 	return MANUAL_SUICIDE
 
 /obj/item/fish/tadpole/proc/gestation(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(user) || QDELETED(src))
 		return
 	user.visible_message(span_suicide("A live frog bursts out of [user]!"))
@@ -307,4 +341,6 @@
 	fish_traits = list(/datum/fish_trait/necrophage, /datum/fish_trait/wary)
 
 /obj/item/fish/sacabambaspis/get_export_price(price, percent)
+	procstart = null
+	src.procstart = null
 	return ..() * 4.5

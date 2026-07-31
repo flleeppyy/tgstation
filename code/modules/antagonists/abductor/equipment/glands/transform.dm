@@ -9,6 +9,8 @@
 	mind_control_duration = 300
 
 /obj/item/organ/heart/gland/transform/activate()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_notice("You feel unlike yourself."))
 	randomize_human(owner)
 	var/species = pick(list(/datum/species/human, /datum/species/lizard, /datum/species/moth, /datum/species/fly))

@@ -9,10 +9,14 @@
 	var/list/amounts
 
 /obj/machinery/abductor/gland_dispenser/proc/random_color()
+	procstart = null
+	src.procstart = null
 	//TODO : replace with presets or spectrum
 	return rgb(rand(0,255),rand(0,255),rand(0,255))
 
 /obj/machinery/abductor/gland_dispenser/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	gland_types = subtypesof(/obj/item/organ/heart/gland)
 	gland_types = shuffle(gland_types)
@@ -23,20 +27,28 @@
 		amounts[i] = rand(1,5)
 
 /obj/machinery/abductor/gland_dispenser/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(!isabductor(user) && !isobserver(user))
 		return UI_CLOSE
 	return ..()
 
 /obj/machinery/abductor/gland_dispenser/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.physical_state
 
 /obj/machinery/abductor/gland_dispenser/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "GlandDispenser", name)
 		ui.open()
 
 /obj/machinery/abductor/gland_dispenser/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["glands"] = list()
 	for(var/gland_number in 1 to gland_colors.len)
@@ -49,6 +61,8 @@
 	return data
 
 /obj/machinery/abductor/gland_dispenser/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -62,6 +76,8 @@
 			return TRUE
 
 /obj/machinery/abductor/gland_dispenser/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/organ/heart/gland))
 		return NONE
 
@@ -74,6 +90,8 @@
 			return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/abductor/gland_dispenser/proc/Dispense(count)
+	procstart = null
+	src.procstart = null
 	if(amounts[count]>0)
 		amounts[count]--
 		var/T = gland_types[count]

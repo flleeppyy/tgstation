@@ -16,6 +16,8 @@
 	var/flipped = FALSE
 
 /obj/item/clothing/head/soft/dropped()
+	procstart = null
+	src.procstart = null
 	icon_state = "[soft_type][soft_suffix]"
 	flipped = FALSE
 	..()
@@ -26,11 +28,15 @@ GAME_VERB(/obj/item/clothing/head/soft, flipcap, "Flip cap", null)
 
 
 /obj/item/clothing/head/soft/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	flip(user)
 	return CLICK_ACTION_SUCCESS
 
 
 /obj/item/clothing/head/soft/proc/flip(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.incapacitated)
 		flipped = !flipped
 		if(flipped)
@@ -43,6 +49,8 @@ GAME_VERB(/obj/item/clothing/head/soft, flipcap, "Flip cap", null)
 		usr.update_worn_head() //so our mob-overlays update
 
 /obj/item/clothing/head/soft/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Alt-click the cap to flip it [flipped ? "forwards" : "backwards"].")
 
@@ -161,6 +169,8 @@ GAME_VERB(/obj/item/clothing/head/soft, flipcap, "Flip cap", null)
 	clothing_traits = list(TRAIT_SCARY_FISHERMAN) //Fish, carps, lobstrosities and frogs fear me.
 
 /obj/item/clothing/head/soft/fishing_hat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/speechmod, replacements = strings("crustacean_replacement.json", "crustacean")) //you asked for this.
 	AddElement(/datum/element/skill_reward, /datum/skill/fishing)
@@ -181,10 +191,14 @@ GAME_VERB(/obj/item/clothing/head/soft, flipcap, "Flip cap", null)
 	var/active = FALSE
 
 /obj/item/clothing/head/soft/propeller_hat/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	worn_icon_state = "[soft_type][flipped ? "_flipped" : null][active ? "_on" : null]"
 
 /obj/item/clothing/head/soft/propeller_hat/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	active = !active
 	balloon_alert(user, (active ? "started propeller" : "stopped propeller"))
 	update_icon()
@@ -192,11 +206,15 @@ GAME_VERB(/obj/item/clothing/head/soft, flipcap, "Flip cap", null)
 	add_fingerprint(user)
 
 /obj/item/clothing/head/soft/propeller_hat/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot & ITEM_SLOT_HEAD)
 		user.add_mood_event(PROPHAT_MOOD, /datum/mood_event/prophat)
 
 /obj/item/clothing/head/soft/propeller_hat/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.clear_mood_event(PROPHAT_MOOD)
 	active = FALSE

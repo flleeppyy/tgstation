@@ -14,23 +14,31 @@
 	var/pixel_shift
 
 /obj/item/wallframe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 	register_item_context()
 
 /obj/item/wallframe/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(held_item?.tool_behaviour == TOOL_WRENCH)
 		context[SCREENTIP_CONTEXT_LMB] = "Deconstruct"
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/wallframe/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(find_support_structure(target))
 		context[SCREENTIP_CONTEXT_LMB] = "Mount"
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/wallframe/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It can be [EXAMINE_HINT("wrenched")] apart.")
 
@@ -41,11 +49,15 @@
  * * atom/structure - the atom or something in this atom we are trying to mount on
 */
 /obj/item/wallframe/proc/find_support_structure(atom/structure)
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 
 	return isclosedturf(structure) ? structure : null
 
 /obj/item/wallframe/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/atom/support_structure = find_support_structure(interacting_with)
 	if(isnull(support_structure))
 		return NONE
@@ -84,6 +96,8 @@
  * * mob/user - the player attempting to do the mount
 */
 /obj/item/wallframe/proc/try_build(atom/support, mob/user)
+	procstart = null
+	src.procstart = null
 	if(get_dist(support, user) > 1)
 		balloon_alert(user, "you are too far!")
 		return FALSE
@@ -108,17 +122,25 @@
  * * obj/attached_to - the object that has been created on the atom
 */
 /obj/item/wallframe/proc/after_attach(obj/attached_to)
+	procstart = null
+	src.procstart = null
 	transfer_fingerprints_to(attached_to)
 
 /obj/item/wallframe/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return interact_with_atom(get_step(get_turf(user), user.dir), user)
 
 /obj/item/wallframe/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You dismantle [src]."))
 	deconstruct(TRUE)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/wallframe/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	var/atom/drop = drop_location()
 	for(var/datum/material/mat as anything in custom_materials)
 		new mat.sheet_type(drop, round(custom_materials[mat] / SHEET_MATERIAL_AMOUNT))
@@ -139,4 +161,6 @@
 	drop_sound = SFX_GENERIC_DEVICE_DROP
 
 /obj/item/electronics/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/iron = 10, /datum/reagent/silicon = 10)

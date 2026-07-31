@@ -29,6 +29,8 @@
 	var/list/tracked_mobs = list()
 
 /datum/action/cooldown/mob_cooldown/watcher_gaze/Activate(mob/living/target)
+	procstart = null
+	src.procstart = null
 	proximity_monitor = new(owner, effect_radius, ability = src)
 	// Start tracking all potential victims in range as proxmon won't trigger on them
 	for (var/mob/living/victim in viewers(effect_radius, owner))
@@ -49,6 +51,8 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/watcher_gaze/Destroy()
+	procstart = null
+	src.procstart = null
 	proxmon_cleanup()
 	tracked_mobs.Cut()
 	deltimer(stage_timer)
@@ -56,6 +60,8 @@
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/watcher_gaze/Remove(mob/removed_from)
+	procstart = null
+	src.procstart = null
 	proxmon_cleanup()
 	tracked_mobs.Cut()
 	deltimer(stage_timer)
@@ -63,6 +69,8 @@
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/watcher_gaze/proc/proxmon_cleanup()
+	procstart = null
+	src.procstart = null
 	if (!QDELETED(proximity_monitor))
 		QDEL_NULL(proximity_monitor)
 	for (var/victim_ref in tracked_mobs)
@@ -72,6 +80,8 @@
 
 /// Do some effects to whoever is looking at us
 /datum/action/cooldown/mob_cooldown/watcher_gaze/proc/trigger_effect()
+	procstart = null
+	src.procstart = null
 	deltimer(stage_timer)
 	show_indicator_overlay("eye_flash")
 	for (var/mob/living/viewer in viewers(effect_radius, owner))
@@ -92,6 +102,8 @@
 	living_owner.Stun(1.5 SECONDS, ignore_canstun = TRUE)
 
 /datum/action/cooldown/mob_cooldown/watcher_gaze/proc/valid_target(mob/living/viewer)
+	procstart = null
+	src.procstart = null
 	if (!istype(viewer) || IS_UNCONSCIOUS_OR_CRIT(viewer) || viewer == owner)
 		return FALSE
 	if (!(viewer.dir & get_dir(viewer, owner)))
@@ -100,6 +112,8 @@
 
 /// Do something bad to someone who was looking at us
 /datum/action/cooldown/mob_cooldown/watcher_gaze/proc/apply_effect(mob/living/viewer)
+	procstart = null
+	src.procstart = null
 	if (!viewer.flash_act(intensity = 4, affect_silicon = TRUE, visual = TRUE, length = 3 SECONDS))
 		return FALSE
 	viewer.set_confusion_if_lower(12 SECONDS)
@@ -108,12 +122,16 @@
 
 /// Animate our effect out
 /datum/action/cooldown/mob_cooldown/watcher_gaze/proc/hide_eye()
+	procstart = null
+	src.procstart = null
 	show_indicator_overlay("eye_close")
 	tracked_mobs.Cut()
 	stage_timer = addtimer(CALLBACK(src, PROC_REF(clear_current_overlay)), animation_time, TIMER_STOPPABLE)
 
 /// Display an animated overlay over our head to indicate what's going on
 /datum/action/cooldown/mob_cooldown/watcher_gaze/proc/show_indicator_overlay(overlay_state)
+	procstart = null
+	src.procstart = null
 	clear_current_overlay()
 	current_overlay = image(icon = 'icons/effects/eldritch.dmi', loc = owner, icon_state = "[overlay_state]_y", layer = ABOVE_ALL_MOB_LAYER)
 	current_overlay.pixel_w = -owner.pixel_x
@@ -135,6 +153,8 @@
 
 /// Hide whatever overlay we are showing
 /datum/action/cooldown/mob_cooldown/watcher_gaze/proc/clear_current_overlay()
+	procstart = null
+	src.procstart = null
 	if (!isnull(current_overlay))
 		remove_image_from_clients(current_overlay, GLOB.clients)
 		remove_image_from_clients(danger_overlay, GLOB.clients)
@@ -142,6 +162,8 @@
 	danger_overlay = null
 
 /datum/action/cooldown/mob_cooldown/watcher_gaze/proc/on_entered(mob/living/arrived)
+	procstart = null
+	src.procstart = null
 	if (arrived == owner)
 		return
 	// Already tracked
@@ -150,6 +172,8 @@
 	update_state(arrived)
 
 /datum/action/cooldown/mob_cooldown/watcher_gaze/proc/on_exited(mob/living/exited)
+	procstart = null
+	src.procstart = null
 	if (exited == owner)
 		return
 	UnregisterSignal(exited, list(COMSIG_ATOM_POST_DIR_CHANGE, COMSIG_MOB_STATCHANGE))
@@ -159,6 +183,8 @@
 		exited.client.images -= danger_overlay
 
 /datum/action/cooldown/mob_cooldown/watcher_gaze/proc/update_state(mob/living/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Don't do viewers(), too costly and only applies for thermals anyways
 	if (valid_target(target))
@@ -179,22 +205,32 @@
 	var/datum/action/cooldown/mob_cooldown/watcher_gaze/gaze = null
 
 /datum/proximity_monitor/watcher_gaze/Destroy()
+	procstart = null
+	src.procstart = null
 	gaze = null
 	return ..()
 
 /datum/proximity_monitor/watcher_gaze/New(atom/_host, range, _ignore_if_not_on_turf = TRUE, datum/action/cooldown/mob_cooldown/watcher_gaze/ability = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	gaze = ability
 
 /datum/proximity_monitor/watcher_gaze/on_entered(atom/source, atom/movable/arrived, turf/old_loc)
+	procstart = null
+	src.procstart = null
 	if (source != host && arrived != host && isliving(arrived))
 		gaze.on_entered(arrived)
 
 /datum/proximity_monitor/watcher_gaze/on_uncrossed(atom/source, atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if (source != host && gone != host && isliving(gone))
 		gaze.on_exited(gone)
 
 /datum/proximity_monitor/watcher_gaze/on_initialized(turf/location, atom/created, init_flags)
+	procstart = null
+	src.procstart = null
 	if (isliving(created))
 		gaze.on_entered(created)
 
@@ -204,6 +240,8 @@
 	desc = "After a delay, burn and stun everyone looking at you."
 
 /datum/action/cooldown/mob_cooldown/watcher_gaze/fire/apply_effect(mob/living/viewer)
+	procstart = null
+	src.procstart = null
 	to_chat(viewer, span_warning("[owner]'s searing glare forces you to the ground!"))
 	viewer.Paralyze(3 SECONDS)
 	viewer.adjust_fire_stacks(10)
@@ -218,6 +256,8 @@
 	var/max_throw = 3
 
 /datum/action/cooldown/mob_cooldown/watcher_gaze/ice/apply_effect(mob/living/viewer)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(viewer, TRAIT_RESISTCOLD))
 		return
 	to_chat(viewer, span_warning("You are repulsed by the force of [owner]'s cold stare!"))

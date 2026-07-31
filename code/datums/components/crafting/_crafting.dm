@@ -14,9 +14,13 @@
 	var/screen_loc_override
 
 /datum/component/personal_crafting/Initialize(screen_loc_override)
+	procstart = null
+	src.procstart = null
 	src.screen_loc_override = screen_loc_override
 
 /datum/component/personal_crafting/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	if(!ismob(parent))
 		return
 
@@ -26,6 +30,8 @@
 		on_hud_created()
 
 /datum/component/personal_crafting/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	if(!ismob(parent))
 		return
 	var/mob/user = parent
@@ -33,6 +39,8 @@
 	user.hud_used?.remove_screen_object(HUD_MOB_CRAFTING_MENU)
 
 /datum/component/personal_crafting/proc/on_hud_created(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/user = parent
@@ -89,6 +97,8 @@
  * contents: List of items to search for the recipe's reqs.
  */
 /datum/component/personal_crafting/proc/check_contents(atom/a, datum/crafting_recipe/recipe, list/contents)
+	procstart = null
+	src.procstart = null
 	var/list/item_instances = contents[CONTENTS_INSTANCES]
 	var/list/machines = contents[CONTENTS_MACHINERY]
 	var/list/structures = contents[CONTENTS_STRUCTURES]
@@ -157,6 +167,8 @@
 	return PERFORM_ALL_TESTS(crafting) || recipe.check_requirements(a, requirements_list)
 
 /datum/component/personal_crafting/proc/get_environment(atom/a, list/blacklist = null, radius_range = 1)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	if(!isturf(a.loc))
@@ -172,6 +184,8 @@
 		. += AM
 
 /datum/component/personal_crafting/proc/get_surroundings(atom/source, list/blacklist=null)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.[CONTENTS_TOOL_BEHAVIOUR] = list()
 	.[CONTENTS_REQS_COUNT] = list()
@@ -224,6 +238,8 @@
 
 /// Returns a boolean on whether the tool requirements of the input recipe are satisfied by the input source and surroundings.
 /datum/component/personal_crafting/proc/check_tools(atom/source, datum/crafting_recipe/recipe, list/surroundings, final_check = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!length(recipe.tool_behaviors) && !length(recipe.tool_paths))
 		return TRUE
 
@@ -239,6 +255,8 @@
 	return recipe.check_tools(source, possible_tool_instances, final_check)
 
 /datum/component/personal_crafting/proc/construct_item(atom/crafter, datum/crafting_recipe/recipe)
+	procstart = null
+	src.procstart = null
 	if(!crafter)
 		return ", unknown error!" // This should never happen, but in the event that it does...
 
@@ -335,6 +353,8 @@
 
 ///This proc performs all the necessary conditional control statement to ensure that the object is allowed to be crafted by the crafter.
 /datum/component/personal_crafting/proc/perform_all_checks(atom/crafter, datum/crafting_recipe/recipe, list/contents, check_tools_last = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!check_contents(crafter, recipe, contents))
 		return ", missing component."
 
@@ -416,6 +436,8 @@
 **/
 
 /datum/component/personal_crafting/proc/get_used_reqs(datum/crafting_recipe/recipe, atom/atom, list/total_materials = list())
+	procstart = null
+	src.procstart = null
 	var/list/return_list = list()
 
 	var/datum/reagents/holder
@@ -489,22 +511,30 @@
 	return return_list
 
 /datum/component/personal_crafting/proc/component_ui_interact(atom/movable/screen/craft/image, location, control, params, user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(user == parent)
 		INVOKE_ASYNC(src, PROC_REF(ui_interact), user)
 
 /datum/component/personal_crafting/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.not_incapacitated_turf_state
 
 //For the UI related things we're going to assume the user is a mob rather than typesetting it to an atom as the UI isn't generated if the parent is an atom
 /datum/component/personal_crafting/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PersonalCrafting", "Crafting")
 		ui.open()
 
 /datum/component/personal_crafting/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["busy"] = busy
 	data["mode"] = mode
@@ -521,6 +551,8 @@
 	return data
 
 /datum/component/personal_crafting/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/material_occurences = list()
 
@@ -581,6 +613,8 @@
 	return data
 
 /datum/component/personal_crafting/proc/make_action(datum/crafting_recipe/recipe, mob/user)
+	procstart = null
+	src.procstart = null
 	var/atom/result = construct_item(user, recipe)
 	if(istext(result)) //We failed to make an item and got a fail message
 		to_chat(user, span_warning("Construction failed[result]"))
@@ -596,6 +630,8 @@
 
 /// Returns a list of crafting recipe datums that are available given current crafting state and the user's learned recipes.
 /datum/component/personal_crafting/proc/get_visible_recipes(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/recipes_to_show = list()
 	switch(mode)
 		if(COOKING)
@@ -607,6 +643,8 @@
 	return recipes_to_show
 
 /datum/component/personal_crafting/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -640,12 +678,16 @@
 			. = TRUE
 
 /datum/component/personal_crafting/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/crafting),
 		get_asset_datum(/datum/asset/spritesheet_batched/crafting/cooking),
 	)
 
 /datum/component/personal_crafting/proc/build_crafting_data(datum/crafting_recipe/recipe)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/atoms = mode ? GLOB.cooking_recipes_atoms : GLOB.crafting_recipes_atoms
 
@@ -755,6 +797,8 @@
 
 /// proc that teaches user a non-standard crafting recipe
 /datum/mind/proc/teach_crafting_recipe(recipe)
+	procstart = null
+	src.procstart = null
 	if(!ispath(recipe, /datum/crafting_recipe))
 		stack_trace("Non-crafting recipe passed to teach_crafting_recipe")
 		return
@@ -773,10 +817,14 @@
 
 /// proc that makes user forget a specific crafting recipe
 /datum/mind/proc/forget_crafting_recipe(recipe)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(learned_cooking_recipes, GLOB.cooking_recipes_by_typepath[recipe])
 	LAZYREMOVE(learned_crafting_recipes, GLOB.crafting_recipes_by_typepath[recipe])
 
 /datum/mind/proc/has_crafting_recipe(potential_recipe)
+	procstart = null
+	src.procstart = null
 	ASSERT(ispath(potential_recipe, /datum/crafting_recipe), "Non-crafting recipe passed to has_crafting_recipe")
 	if(locate(potential_recipe) in learned_crafting_recipes)
 		return TRUE
@@ -788,6 +836,8 @@
 	ignored_flags = CRAFT_CHECK_DENSITY|CRAFT_IGNORE_DO_AFTER
 
 /datum/component/personal_crafting/machine/get_environment(atom/crafter, list/blacklist = null, radius_range = 1)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/turf/crafter_loc = get_turf(crafter)
 	for(var/atom/movable/content as anything in crafter_loc.contents)
@@ -800,6 +850,8 @@
 		. += content
 
 /datum/component/personal_crafting/machine/check_tools(atom/source, datum/crafting_recipe/recipe, list/surroundings, final_check = FALSE)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 #undef CONTENTS_INSTANCES

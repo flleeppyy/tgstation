@@ -18,6 +18,8 @@
  * - reset_criteria (list): Assoc signal-source list containing signals to be registered to. We will reset if any of them are sent.
  */
 /datum/component/atmos_reaction_recorder/Initialize(list/target_list=list(), list/reset_criteria = list())
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/atom/parent_atom = parent
@@ -45,15 +47,21 @@
 
 /// Fetches reaction_results and updates the list.
 /datum/component/atmos_reaction_recorder/proc/update_data(datum/gas_mixture/recorded_gasmix)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for (var/reaction in recorded_gasmix.reaction_results)
 		copied_reaction_results[reaction] += recorded_gasmix.reaction_results[reaction]
 
 /datum/component/atmos_reaction_recorder/proc/reset_data()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	copied_reaction_results.Cut()
 
 /datum/component/atmos_reaction_recorder/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/signal in registered_signals)
 		UnregisterSignal(registered_signals[signal], signal)

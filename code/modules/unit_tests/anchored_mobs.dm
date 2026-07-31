@@ -1,4 +1,6 @@
 /datum/unit_test/anchored_mobs/Run()
+	procstart = null
+	src.procstart = null
 	var/list/L = list()
 	for(var/i in typesof(/mob))
 		var/mob/M = i

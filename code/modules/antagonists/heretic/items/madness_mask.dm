@@ -13,10 +13,14 @@
 	var/mob/living/carbon/human/local_user
 
 /obj/item/clothing/mask/madness_mask/Destroy()
+	procstart = null
+	src.procstart = null
 	local_user = null
 	return ..()
 
 /obj/item/clothing/mask/madness_mask/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_HERETIC_OR_MONSTER(user))
 		. += span_notice("Actively drains the sanity and stamina of nearby non-heretics when worn.")
@@ -25,6 +29,8 @@
 		. += span_danger("The eyes fill you with dread... You best avoid it.")
 
 /obj/item/clothing/mask/madness_mask/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(slot & ITEM_SLOT_MASK))
 		return
@@ -41,12 +47,16 @@
 	to_chat(user, span_userdanger("[src] clamps tightly to your face as you feel your soul draining away!"))
 
 /obj/item/clothing/mask/madness_mask/dropped(mob/M)
+	procstart = null
+	src.procstart = null
 	local_user = null
 	STOP_PROCESSING(SSobj, src)
 	REMOVE_TRAIT(src, TRAIT_NODROP, CLOTHING_TRAIT)
 	return ..()
 
 /obj/item/clothing/mask/madness_mask/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!local_user)
 		return PROCESS_KILL
 

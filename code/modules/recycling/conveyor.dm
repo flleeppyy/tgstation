@@ -46,6 +46,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	var/powered_wire = FALSE
 
 /obj/machinery/conveyor/Initialize(mapload, new_dir, new_id)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/footstep_override, priority = STEP_SOUND_CONVEYOR_PRIORITY)
 	AddElement(/datum/element/give_turf_traits, string_list(list(TRAIT_TURF_IGNORE_SLOWDOWN)))
@@ -71,6 +73,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 		START_PROCESSING(SSmachines, src)
 
 /obj/machinery/conveyor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(inverted)
 		. += span_notice("It is currently set to go in reverse.")
@@ -82,6 +86,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	. += "Using another <b>conveyor belt assembly</b> on this will place a <b>new conveyor belt<b> in the direction this one is pointing."
 
 /obj/machinery/conveyor/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(held_item, /obj/item/stack/conveyor))
 		context[SCREENTIP_CONTEXT_LMB] = "Extend current conveyor belt"
@@ -106,6 +112,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	flipped = TRUE
 
 /obj/machinery/conveyor/inverted/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload && !(ISDIAGONALDIR(dir)))
 		log_mapping("[src] at [AREACOORD(src)] spawned without using a diagonal dir. Please replace with a normal version.")
@@ -116,11 +124,15 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	processing_flags = START_PROCESSING_ON_INIT
 
 /obj/machinery/conveyor/auto/Initialize(mapload, newdir)
+	procstart = null
+	src.procstart = null
 	last_command = CONVEYOR_FORWARD
 	. = ..()
 	set_operating(last_command)
 
 /obj/machinery/conveyor/auto/update()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		set_operating(last_command)
@@ -130,10 +142,14 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	flipped = TRUE
 
 /obj/machinery/conveyor/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	build_neighbors()
 
 /obj/machinery/conveyor/Destroy()
+	procstart = null
+	src.procstart = null
 	last_command = CONVEYOR_OFF
 	set_operating(FALSE)
 	LAZYREMOVE(GLOB.conveyors_by_id[id], src)
@@ -141,6 +157,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	return ..()
 
 /obj/machinery/conveyor/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	if (var_name == NAMEOF(src, id))
 		// if "id" is varedited, update our list membership
 		LAZYREMOVE(GLOB.conveyors_by_id[id], src)
@@ -150,10 +168,14 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 		return ..()
 
 /obj/machinery/conveyor/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_move_direction()
 
 /obj/machinery/conveyor/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -162,6 +184,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	build_neighbors()
 
 /obj/machinery/conveyor/proc/build_neighbors()
+	procstart = null
+	src.procstart = null
 	//This is acceptable because conveyor belts only move sometimes. Otherwise would be n^2 insanity
 	var/turf/our_turf = get_turf(src)
 	for(var/direction in GLOB.cardinals)
@@ -177,6 +201,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 		valid.RegisterSignal(src, COMSIG_QDELETING, PROC_REF(nearby_belt_changed), override=TRUE)
 
 /obj/machinery/conveyor/proc/nearby_belt_changed(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	neighbors = list()
 	build_neighbors()
@@ -185,6 +211,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
  * Proc to handle updating the directions in which the conveyor belt is moving items.
  */
 /obj/machinery/conveyor/proc/update_move_direction()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			forwards = NORTH
@@ -231,10 +259,14 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	update()
 
 /obj/machinery/conveyor/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][inverted ? -operating : operating ][flipped ? "-flipped" : ""]"
 	return ..()
 
 /obj/machinery/conveyor/proc/set_operating(new_value)
+	procstart = null
+	src.procstart = null
 	if(operating == new_value)
 		return
 	operating = new_value
@@ -246,6 +278,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 			stop_conveying(movable)
 
 /obj/machinery/conveyor/proc/update()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & NOPOWER)
 		set_operating(FALSE)
 		return FALSE
@@ -259,6 +293,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	return TRUE
 
 /obj/machinery/conveyor/proc/conveyable_enter(datum/source, atom/movable/convayable)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(convayable.loc != loc) // If we are not on the same turf (order of operations memes) go to hell
 		return
@@ -268,12 +304,16 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	start_conveying(convayable)
 
 /obj/machinery/conveyor/proc/conveyable_exit(datum/source, atom/convayable, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/has_conveyor = neighbors["[direction]"]
 	if(convayable.z != z || !has_conveyor || !isturf(convayable.loc)) //If you've entered something on us, stop moving
 		GLOB.move_manager.stop_looping(convayable, SSconveyors)
 
 /obj/machinery/conveyor/proc/start_conveying(atom/movable/moving)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(moving))
 		return
 	var/datum/move_loop/move/moving_loop = GLOB.move_manager.processing_on(moving, SSconveyors)
@@ -288,12 +328,16 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	moving.AddComponent(/datum/component/convey, movedir, speed * 1 SECONDS)
 
 /obj/machinery/conveyor/proc/stop_conveying(atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	if(!ismovable(thing))
 		return
 	GLOB.move_manager.stop_looping(thing, SSconveyors)
 
 // attack with item, place item on conveyor
 /obj/machinery/conveyor/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/stack/conveyor))
 		// We should place a new conveyor belt machine on the output turf the conveyor is pointing to.
 		var/turf/target_turf = get_step(get_turf(src), forwards)
@@ -315,6 +359,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	return NONE
 
 /obj/machinery/conveyor/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_notice("[user] struggles to pry up [src] with [tool]."), \
 	span_notice("You struggle to pry up [src] with [tool]."))
 
@@ -330,12 +376,16 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/conveyor/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(src)
 	setDir(turn(dir, -45))
 	to_chat(user, span_notice("You rotate [src]."))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/conveyor/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(src)
 	inverted = !inverted
 	update_move_direction()
@@ -343,6 +393,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/conveyor/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(src)
 	wire_mode = !wire_mode
 	update_cable()
@@ -355,12 +407,16 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/conveyor/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 	user.transferItemToLoc(tool, drop_location())
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/conveyor/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(src)
 	flipped = !flipped
 	update_move_direction()
@@ -368,12 +424,16 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/conveyor/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(src)
 	setDir(turn(dir, 45))
 	to_chat(user, span_notice("You rotate [src]."))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/conveyor/powered(chan = power_channel, ignore_use_power = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!wire_mode)
 		return ..()
 	var/datum/powernet/powernet = get_powernet()
@@ -382,10 +442,14 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	return ..()
 
 /obj/machinery/conveyor/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update()
 
 /obj/machinery/conveyor/process()
+	procstart = null
+	src.procstart = null
 	if(!wire_mode)
 		return PROCESS_KILL
 	if(isnull(attached_wire_ref))
@@ -405,6 +469,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 
 
 /obj/machinery/conveyor/proc/update_cable()
+	procstart = null
+	src.procstart = null
 	if(!wire_mode)
 		attached_wire_ref = null
 		return
@@ -414,6 +480,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 		return power_change()
 
 /obj/machinery/conveyor/proc/get_powernet()
+	procstart = null
+	src.procstart = null
 	if(!wire_mode)
 		return
 	var/obj/structure/cable/cable = attached_wire_ref.resolve()
@@ -443,6 +511,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	var/conveyor_speed = 0.2
 
 /obj/machinery/conveyor_switch/Initialize(mapload, newid)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (newid)
 		id = newid
@@ -454,10 +524,14 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	register_context()
 
 /obj/machinery/conveyor_switch/Destroy()
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(GLOB.conveyors_by_id[id], src)
 	return ..()
 
 /obj/machinery/conveyor_switch/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	if (var_name == NAMEOF(src, id))
 		// if "id" is varedited, update our list membership
 		LAZYREMOVE(GLOB.conveyors_by_id[id], src)
@@ -469,6 +543,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 
 // update the icon depending on the position
 /obj/machinery/conveyor_switch/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state]-off"
 	if(position < CONVEYOR_OFF)
 		icon_state = "[base_icon_state]-[invert_icon ? "fwd" : "rev"]"
@@ -477,6 +553,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	return ..()
 
 /obj/machinery/conveyor_switch/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!held_item)
 		context[SCREENTIP_CONTEXT_LMB] = "Toggle forwards"
@@ -499,6 +577,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 
 /// Updates all conveyor belts that are linked to this switch, and tells them to start processing.
 /obj/machinery/conveyor_switch/proc/update_linked_conveyors()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/conveyor/belt in GLOB.conveyors_by_id[id])
 		belt.last_command = position
 		belt.set_operating(position)
@@ -507,6 +587,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 
 /// Finds any switches with same `id` as this one, and set their position and icon to match us.
 /obj/machinery/conveyor_switch/proc/update_linked_switches()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/conveyor_switch/belt_switch in GLOB.conveyors_by_id[id])
 		belt_switch.invert_icon = invert_icon
 		belt_switch.position = position
@@ -516,6 +598,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 
 /// Updates the switch's `position` and `last_pos` variable. Useful so that the switch can properly cycle between the forwards, backwards and neutral positions.
 /obj/machinery/conveyor_switch/proc/update_position(direction)
+	procstart = null
+	src.procstart = null
 	if(position == CONVEYOR_OFF)
 		playsound(src, 'sound/machines/lever/lever_start.ogg', 40, TRUE)
 
@@ -531,6 +615,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 		position = CONVEYOR_OFF
 
 /obj/machinery/conveyor_switch/proc/on_user_activation(mob/user, direction)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	update_position(direction)
 	update_appearance()
@@ -539,32 +625,48 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 
 /// Called when a user clicks on this switch with an open hand.
 /obj/machinery/conveyor_switch/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	on_user_activation(user, CONVEYOR_FORWARD)
 
 /obj/machinery/conveyor_switch/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	on_user_activation(user, CONVEYOR_BACKWARDS)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/conveyor_switch/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/conveyor_switch/attack_ai_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand_secondary(user, modifiers)
 
 /obj/machinery/conveyor_switch/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/conveyor_switch/attack_robot_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand_secondary(user, modifiers)
 
 /obj/machinery/conveyor_switch/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!is_wire_tool(tool))
 		return NONE
 	wires.interact(user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/conveyor_switch/multitool_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	var/input_speed = tgui_input_number(user, "Set the speed of the conveyor belts in seconds", "Speed", conveyor_speed, 20, 0.2, round_value = FALSE)
 	if(!input_speed || QDELETED(user) || QDELETED(src) || !usr.can_perform_action(src, FORBID_TELEKINESIS_REACH))
 		return
@@ -574,6 +676,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	return TRUE
 
 /obj/machinery/conveyor_switch/crowbar_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(src, 50)
 	var/obj/item/conveyor_switch_construct/switch_construct = new/obj/item/conveyor_switch_construct(src.loc)
 	switch_construct.id = id
@@ -583,12 +687,16 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	return TRUE
 
 /obj/machinery/conveyor_switch/screwdriver_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(src, 50)
 	oneway = !oneway
 	to_chat(user, span_notice("You set [src] to [oneway ? "one way" : "default"] configuration."))
 	return TRUE
 
 /obj/machinery/conveyor_switch/wrench_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	tool.play_tool_sound(src, 50)
 	invert_icon = !invert_icon
 	update_appearance()
@@ -596,6 +704,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	return TRUE
 
 /obj/machinery/conveyor_switch/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("[src] is set to [oneway ? "one way" : "default"] configuration. It can be changed with a <b>screwdriver</b>.")
 	. += span_notice("[src] is set to [invert_icon ? "inverted": "normal"] position. It can be rotated with a <b>wrench</b>.")
@@ -607,6 +717,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	oneway = TRUE
 
 /obj/machinery/conveyor_switch/oneway/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((dir == NORTH) || (dir == WEST))
 		invert_icon = TRUE
@@ -622,15 +734,21 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	var/id = ""
 
 /obj/item/conveyor_switch_construct/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	id = "[rand()]" //this couldn't possibly go wrong
 
 /obj/item/conveyor_switch_construct/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/stack/conveyor/belt in view())
 		belt.id = id
 	to_chat(user, span_notice("You have linked all nearby conveyor belt assemblies to this switch."))
 
 /obj/item/conveyor_switch_construct/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isfloorturf(interacting_with))
 		return NONE
 
@@ -661,10 +779,14 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	var/id = ""
 
 /obj/item/stack/conveyor/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1, _id)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	id = _id
 
 /obj/item/stack/conveyor/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isfloorturf(interacting_with))
 		return NONE
 	var/belt_dir = get_dir(interacting_with, user)
@@ -677,6 +799,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/stack/conveyor/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/conveyor_switch_construct))
 		return NONE
 	to_chat(user, span_notice("You link the switch to the conveyor belt assembly."))
@@ -685,13 +809,19 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/stack/conveyor/update_weight()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/item/stack/conveyor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Use a conveyor switch assembly on this before placing to connect to a lever.")
 
 /obj/item/stack/conveyor/use(used, transfer, check)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(src, 'sound/items/weapons/genhit.ogg', 30, TRUE)
 
@@ -724,15 +854,21 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	var/obj/machinery/conveyor_switch/attached_switch
 
 /obj/item/circuit_component/conveyor_switch/populate_ports()
+	procstart = null
+	src.procstart = null
 	active = add_input_port("Activate", PORT_TYPE_SIGNAL, trigger = PROC_REF(activate))
 	stop = add_input_port("Stop", PORT_TYPE_SIGNAL, trigger = PROC_REF(stop))
 	direction = add_output_port("Conveyor Direction", PORT_TYPE_NUMBER)
 
 /obj/item/circuit_component/conveyor_switch/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("Conveyor direction 0 means that it is stopped, 1 means that it is active and -1 means that it is working in reverse mode", "orange", "info")
 
 /obj/item/circuit_component/conveyor_switch/register_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/machinery/conveyor_switch))
 		attached_switch = shell
@@ -740,26 +876,36 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 			reverse = add_input_port("Reverse", PORT_TYPE_SIGNAL, trigger = PROC_REF(reverse))
 
 /obj/item/circuit_component/conveyor_switch/unregister_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	attached_switch = null
 	return ..()
 
 /obj/item/circuit_component/conveyor_switch/proc/on_switch_changed()
+	procstart = null
+	src.procstart = null
 	attached_switch.update_appearance()
 	attached_switch.update_linked_conveyors()
 	attached_switch.update_linked_switches()
 	direction.set_output(attached_switch.position)
 
 /obj/item/circuit_component/conveyor_switch/proc/activate()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	attached_switch.position = CONVEYOR_FORWARD
 	INVOKE_ASYNC(src, PROC_REF(on_switch_changed))
 
 /obj/item/circuit_component/conveyor_switch/proc/stop()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	attached_switch.position = CONVEYOR_OFF
 	INVOKE_ASYNC(src, PROC_REF(on_switch_changed))
 
 /obj/item/circuit_component/conveyor_switch/proc/reverse()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	attached_switch.position = CONVEYOR_BACKWARDS
 	INVOKE_ASYNC(src, PROC_REF(on_switch_changed))

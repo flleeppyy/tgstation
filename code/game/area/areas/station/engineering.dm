@@ -18,6 +18,8 @@
 	icon_state = "engine"
 
 /area/station/engineering/main/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/block_area_power_fail)
 
@@ -75,6 +77,8 @@
 	area_flags = BLOBS_ALLOWED | CULT_PERMITTED
 
 /area/station/engineering/atmospherics_engine/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/block_area_power_fail)
 
@@ -93,6 +97,8 @@
 	sound_environment = SOUND_AREA_SMALL_ENCLOSED
 
 /area/station/engineering/supermatter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/block_area_power_fail)
 

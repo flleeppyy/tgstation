@@ -16,11 +16,15 @@
 	circuit_flags = CIRCUIT_FLAG_INPUT_SIGNAL|CIRCUIT_FLAG_OUTPUT_SIGNAL
 
 /obj/item/circuit_component/length/populate_ports()
+	procstart = null
+	src.procstart = null
 	input_port = add_input_port("Input", PORT_TYPE_ANY)
 
 	output = add_output_port("Length", PORT_TYPE_NUMBER)
 
 /obj/item/circuit_component/length/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 
 	output.set_output(length(input_port.value))
 

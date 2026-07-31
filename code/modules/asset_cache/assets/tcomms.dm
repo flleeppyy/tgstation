@@ -2,6 +2,8 @@
 	name = "tcomms"
 
 /datum/asset/spritesheet_batched/telecomms/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	var/list/inserted_states = list() // No need to send entire `telecomms.dmi`.
 	for(var/obj/machinery/telecomms/machine as anything in subtypesof(/obj/machinery/telecomms))
 		var/icon_state = machine::icon_state

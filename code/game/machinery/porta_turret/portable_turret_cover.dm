@@ -14,6 +14,8 @@
 	var/obj/machinery/porta_turret/parent_turret = null
 
 /obj/machinery/porta_turret_cover/Destroy()
+	procstart = null
+	src.procstart = null
 	if(parent_turret)
 		parent_turret.cover = null
 		parent_turret.RemoveInvisibility(type)
@@ -25,18 +27,28 @@
 //I'm not fixing it because i'm fucking bored of this code already, but someone should just reroute these to the parent turret's procs.
 
 /obj/machinery/porta_turret_cover/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return ..() || parent_turret.attack_ai(user)
 
 /obj/machinery/porta_turret_cover/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	return ..() || parent_turret.attack_robot(user)
 
 /obj/machinery/porta_turret_cover/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return ..() || parent_turret.attack_hand(user, modifiers)
 
 /obj/machinery/porta_turret_cover/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	return ..() || parent_turret.attack_ghost(user)
 
 /obj/machinery/porta_turret_cover/multitool_act(mob/living/user, obj/item/multitool/multi_tool)
+	procstart = null
+	src.procstart = null
 	if(parent_turret.locked)
 		user.balloon_alert(user, "controls locked")
 		return ITEM_INTERACT_BLOCKING
@@ -46,6 +58,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/porta_turret_cover/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(parent_turret.on || parent_turret.raised)
 		return NONE
 
@@ -64,6 +78,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/porta_turret_cover/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!tool.GetID())
 		return NONE
 	if(!parent_turret.allowed(user))
@@ -74,18 +90,28 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/porta_turret_cover/attacked_by(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	return parent_turret.attacked_by(I, user, modifiers)
 
 /obj/machinery/porta_turret_cover/attack_alien(mob/living/carbon/alien/adult/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	parent_turret.attack_alien(user, modifiers)
 
 /obj/machinery/porta_turret_cover/attack_animal(mob/living/simple_animal/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	parent_turret.attack_animal(user, modifiers)
 
 /obj/machinery/porta_turret_cover/attack_hulk(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	return parent_turret.attack_hulk(user)
 
 /obj/machinery/porta_turret_cover/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 
 	if((parent_turret.obj_flags & EMAGGED))
 		return FALSE

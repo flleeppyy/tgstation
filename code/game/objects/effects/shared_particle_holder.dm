@@ -17,6 +17,8 @@ GLOBAL_LIST_EMPTY(shared_particles)
 	var/particle_flags = NONE
 
 /obj/effect/abstract/shared_particle_holder/Initialize(mapload, particle_path = /particles/smoke, particle_flags = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Shouldn't exist outside of nullspace
 	loc = null
@@ -24,6 +26,8 @@ GLOBAL_LIST_EMPTY(shared_particles)
 	particles = new particle_path()
 
 /obj/effect/abstract/shared_particle_holder/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(particles)
 	return ..()
 
@@ -39,6 +43,8 @@ GLOBAL_LIST_EMPTY(shared_particles)
  * and don't have vis_contents, so to avoid copypaste code we do this weirdness
  */
 /atom/proc/add_shared_particles(particle_type, custom_key = null, particle_flags = NONE, pool_size = 3)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/play_pretend = src
 	var/particle_key = custom_key || "[particle_type]"
 	if (!GLOB.shared_particles[particle_key])
@@ -64,12 +70,16 @@ GLOBAL_LIST_EMPTY(shared_particles)
 	return particle_holder
 
 /area/add_shared_particles(particle_type, custom_key = null, particle_flags = NONE, pool_size = 3)
+	procstart = null
+	src.procstart = null
 	CRASH("add_shared_particles was called on an area [src] ([type]) trying to add [particle_type]! Only turfs and movables support shared particles.")
 
 /* Removes shared particles from object's vis_contents and disposes of it if nothing uses that type/key of particle
  * particle_key can be either a type (if no custom_key was passed) or said custom_key
  */
 /atom/proc/remove_shared_particles(particle_key, delete_on_empty = TRUE)
+	procstart = null
+	src.procstart = null
 	if (!particle_key)
 		return
 
@@ -94,6 +104,8 @@ GLOBAL_LIST_EMPTY(shared_particles)
 		return
 
 /area/remove_shared_particles(particle_key, delete_on_empty = TRUE)
+	procstart = null
+	src.procstart = null
 	CRASH("remove_shared_particles was called on an area [src] ([type]) trying to add [particle_key]! Only turfs and movables support shared particles.")
 
 #undef SHARED_PARTICLE_HOLDER_INDEX

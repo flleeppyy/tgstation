@@ -26,14 +26,20 @@
 	var/equip_blood_hands = TRUE
 
 /datum/action/cooldown/spell/jaunt/bloodcrawl/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(grant_to, COMSIG_MOVABLE_MOVED, PROC_REF(update_status_on_signal))
 
 /datum/action/cooldown/spell/jaunt/bloodcrawl/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(remove_from, COMSIG_MOVABLE_MOVED)
 
 /datum/action/cooldown/spell/jaunt/bloodcrawl/can_cast_spell(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -44,6 +50,8 @@
 	return FALSE
 
 /datum/action/cooldown/spell/jaunt/bloodcrawl/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Should always return something because we checked that in can_cast_spell before arriving here
 	var/obj/effect/decal/cleanable/blood_nearby = find_nearby_blood(get_turf(cast_on))
@@ -51,6 +59,8 @@
 
 /// Returns a nearby blood decal, or null if there aren't any
 /datum/action/cooldown/spell/jaunt/bloodcrawl/proc/find_nearby_blood(turf/origin)
+	procstart = null
+	src.procstart = null
 	for(var/obj/effect/decal/cleanable/blood_nearby in range(blood_radius, origin))
 		if(blood_nearby.can_bloodcrawl_in())
 			return blood_nearby
@@ -61,6 +71,8 @@
  * Returns TRUE if we successfully entered or exited said pool, FALSE otherwise
  */
 /datum/action/cooldown/spell/jaunt/bloodcrawl/proc/do_bloodcrawl(obj/effect/decal/cleanable/blood, mob/living/jaunter)
+	procstart = null
+	src.procstart = null
 	if(is_jaunting(jaunter))
 		. = try_exit_jaunt(blood, jaunter)
 	else
@@ -75,6 +87,8 @@
  * If forced is TRUE, it will override enter_blood_time.
  */
 /datum/action/cooldown/spell/jaunt/bloodcrawl/proc/try_enter_jaunt(obj/effect/decal/cleanable/blood, mob/living/jaunter, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!forced)
 		if(enter_blood_time > 0 SECONDS)
 			blood.visible_message(span_warning("[jaunter] starts to sink into [blood]!"))
@@ -114,6 +128,8 @@
  * If forced is TRUE, it will override exit_blood_time, and if we're currently consuming someone.
  */
 /datum/action/cooldown/spell/jaunt/bloodcrawl/proc/try_exit_jaunt(obj/effect/decal/cleanable/blood, mob/living/jaunter, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!forced)
 		if(HAS_TRAIT(jaunter, TRAIT_NO_TRANSFORM))
 			to_chat(jaunter, span_warning("You cannot exit yet!!"))
@@ -131,6 +147,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/jaunt/bloodcrawl/on_jaunt_exited(obj/effect/dummy/phased_mob/jaunt, mob/living/unjaunter)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(jaunt, COMSIG_MOVABLE_MOVED)
 	exit_blood_effect(unjaunter)
 	if(equip_blood_hands && iscarbon(unjaunter))
@@ -141,6 +159,8 @@
 
 /// Adds an coloring effect to mobs which exit blood crawl.
 /datum/action/cooldown/spell/jaunt/bloodcrawl/proc/exit_blood_effect(mob/living/exited)
+	procstart = null
+	src.procstart = null
 	var/turf/landing_turf = get_turf(exited)
 	playsound(landing_turf, 'sound/effects/magic/exit_blood.ogg', 50, TRUE, -1)
 
@@ -170,6 +190,8 @@
 	var/resist_jaunt_damage = TRUE
 
 /datum/action/cooldown/spell/jaunt/bloodcrawl/slaughter_demon/try_enter_jaunt(obj/effect/decal/cleanable/blood, mob/living/jaunter)
+	procstart = null
+	src.procstart = null
 	// Save this before the actual jaunt
 	var/atom/coming_with = jaunter.pulling
 
@@ -211,6 +233,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/jaunt/bloodcrawl/slaughter_demon/on_jaunt_exited(obj/effect/dummy/phased_mob/jaunt, mob/living/unjaunter)
+	procstart = null
+	src.procstart = null
 	deltimer(jaunt_damage_timer)
 	resist_jaunt_damage = FALSE
 	return ..()
@@ -220,6 +244,8 @@
  * Every 20 SECONDS check if demon still crawling and update timer.
  */
 /datum/action/cooldown/spell/jaunt/bloodcrawl/slaughter_demon/proc/damage_for_lazy_demon(mob/living/lazy_demon)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(lazy_demon))
 		return
 	if(resist_jaunt_damage)
@@ -237,6 +263,8 @@
  * and calling [proc/on_victim_consumed] if successful.)
  */
 /datum/action/cooldown/spell/jaunt/bloodcrawl/slaughter_demon/proc/consume_victim(mob/living/victim, mob/living/jaunter)
+	procstart = null
+	src.procstart = null
 	on_victim_start_consume(victim, jaunter)
 
 	for(var/i in 1 to 3)
@@ -267,6 +295,8 @@
  * Called when a victim starts to be consumed.
  */
 /datum/action/cooldown/spell/jaunt/bloodcrawl/slaughter_demon/proc/on_victim_start_consume(mob/living/victim, mob/living/jaunter)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(jaunter))
 		resist_jaunt_damage = TRUE
 		deltimer(jaunt_damage_timer)
@@ -276,6 +306,8 @@
  * Called when a victim is successfully consumed.
  */
 /datum/action/cooldown/spell/jaunt/bloodcrawl/slaughter_demon/proc/on_victim_consumed(mob/living/victim, mob/living/jaunter)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(jaunter))
 		resist_jaunt_damage = FALSE
 		jaunt_damage_timer = addtimer(CALLBACK(src, PROC_REF(damage_for_lazy_demon), jaunter), 20 SECONDS, TIMER_STOPPABLE)
@@ -296,22 +328,32 @@
 	var/list/mob/living/consumed_mobs = list()
 
 /datum/action/cooldown/spell/jaunt/bloodcrawl/slaughter_demon/funny/Destroy()
+	procstart = null
+	src.procstart = null
 	consumed_mobs.Cut()
 	return ..()
 
 /datum/action/cooldown/spell/jaunt/bloodcrawl/slaughter_demon/funny/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(owner)
 		RegisterSignal(owner, COMSIG_LIVING_DEATH, PROC_REF(on_death))
 
 /datum/action/cooldown/spell/jaunt/bloodcrawl/slaughter_demon/funny/Remove(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(remove_from, COMSIG_LIVING_DEATH)
 	return ..()
 
 /datum/action/cooldown/spell/jaunt/bloodcrawl/slaughter_demon/funny/on_victim_start_consume(mob/living/victim, mob/living/jaunter)
+	procstart = null
+	src.procstart = null
 	to_chat(jaunter, span_clown("You invite [victim] to your party! You can not move while you are doing this."))
 
 /datum/action/cooldown/spell/jaunt/bloodcrawl/slaughter_demon/funny/on_victim_consumed(mob/living/victim, mob/living/jaunter)
+	procstart = null
+	src.procstart = null
 	to_chat(jaunter, span_clown("[victim] joins your party! Your health is fully restored."))
 	consumed_mobs += victim
 	RegisterSignal(victim, COMSIG_MOB_STATCHANGE, PROC_REF(on_victim_statchange))
@@ -323,6 +365,8 @@
  * If our demon is deleted or destroyed, expel all of our consumed mobs
  */
 /datum/action/cooldown/spell/jaunt/bloodcrawl/slaughter_demon/funny/proc/on_death(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/turf/release_turf = get_turf(source)
@@ -347,6 +391,8 @@
  * swallowed), eject them so they can't rip their way out from the inside.
  */
 /datum/action/cooldown/spell/jaunt/bloodcrawl/slaughter_demon/funny/proc/on_victim_statchange(mob/living/victim, new_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(new_stat == DEAD)
@@ -363,6 +409,8 @@
  * Handle signal from a consumed mob being deleted. Clears any references.
  */
 /datum/action/cooldown/spell/jaunt/bloodcrawl/slaughter_demon/funny/proc/on_victim_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	consumed_mobs -= source
@@ -375,6 +423,8 @@
 	item_flags = ABSTRACT | DROPDEL
 
 /obj/item/bloodcrawl/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, ABSTRACT_ITEM_TRAIT)
 

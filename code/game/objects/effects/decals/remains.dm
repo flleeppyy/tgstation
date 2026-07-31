@@ -4,6 +4,8 @@
 	icon = 'icons/effects/blood.dmi'
 
 /obj/effect/decal/remains/acid_act()
+	procstart = null
+	src.procstart = null
 	visible_message(span_warning("[src] dissolve[gender == PLURAL?"":"s"] into a puddle of sizzling goop!"))
 	playsound(src, 'sound/items/tools/welder.ogg', 150, TRUE)
 	new /obj/effect/decal/cleanable/greenglow(drop_location())
@@ -15,6 +17,8 @@
 	icon_state = "remains"
 
 /obj/effect/decal/remains/human/NeverShouldHaveComeHere(turf/here_turf)
+	procstart = null
+	src.procstart = null
 	return !istype(here_turf, /obj/structure/closet/crate/grave/filled) && ..()
 
 /obj/effect/decal/remains/human/smokey
@@ -30,6 +34,8 @@
 	var/gas_cooldown_length = (20 SECONDS)
 
 /obj/effect/decal/remains/human/smokey/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	proximity_monitor = new(src, 1)
@@ -37,6 +43,8 @@
 	that_shit_that_killed_saddam = get_random_reagent_id(blacklist = blocked_reagents)
 
 /obj/effect/decal/remains/human/smokey/HasProximity(atom/movable/tomb_raider)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, gas_cooldown))
 		return
 
@@ -48,6 +56,8 @@
 
 ///Releases a cloud of smoke based on the randomly generated reagent in Initialize().
 /obj/effect/decal/remains/human/smokey/proc/release_smoke(mob/living/smoke_releaser)
+	procstart = null
+	src.procstart = null
 	visible_message(span_warning("[smoke_releaser] disturbs [src], which releases a huge cloud of gas!"))
 	do_chem_smoke(2, src, get_turf(src), that_shit_that_killed_saddam, 15)
 
@@ -57,6 +67,8 @@
 	desc = "They look like human remains. They have a strange, smokey aura about them... You should tread lightly when walking near this."
 
 /obj/effect/decal/remains/human/smokey/maintenance/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	gas_cooldown_length = rand(4 MINUTES, 6 MINUTES)
 
@@ -64,6 +76,8 @@
 	icon_state = "remainsplasma"
 
 /obj/effect/decal/remains/plasma/NeverShouldHaveComeHere(turf/here_turf)
+	procstart = null
+	src.procstart = null
 	return isclosedturf(here_turf)
 
 /obj/effect/decal/remains/xeno

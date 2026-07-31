@@ -10,17 +10,23 @@
 	)
 
 /datum/ai_controller/haunted/TryPossessPawn(atom/new_pawn)
+	procstart = null
+	src.procstart = null
 	if(!isitem(new_pawn))
 		return AI_CONTROLLER_INCOMPATIBLE
 	RegisterSignal(new_pawn, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equip))
 	return ..() //Run parent at end
 
 /datum/ai_controller/haunted/UnpossessPawn()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(pawn, COMSIG_ITEM_EQUIPPED)
 	return ..() //Run parent at end
 
 ///Signal response for when the item is picked up; stops listening for follow up equips, just waits for a drop.
 /datum/ai_controller/haunted/proc/on_equip(datum/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(pawn, COMSIG_ITEM_EQUIPPED)
@@ -39,6 +45,8 @@
 
 ///Flip it so we listen for equip again but not for drop.
 /datum/ai_controller/haunted/proc/on_dropped(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	set_blackboard_key(BB_LIKES_EQUIPPER, FALSE)

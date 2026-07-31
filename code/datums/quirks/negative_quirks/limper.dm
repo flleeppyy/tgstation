@@ -16,6 +16,8 @@
 	)
 
 /datum/quirk/item_quirk/limper/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	give_item_to_holder(new /obj/item/cane(get_turf(quirk_holder)), list(
 			LOCATION_HANDS,
 			LOCATION_BACKPACK,
@@ -23,8 +25,12 @@
 	return
 
 /datum/quirk/item_quirk/limper/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	quirk_holder.apply_status_effect(/datum/status_effect/limp/quirk)
 
 /datum/quirk/item_quirk/limper/remove(client/client_source)
+	procstart = null
+	src.procstart = null
 	quirk_holder.remove_status_effect(/datum/status_effect/limp/quirk)
 

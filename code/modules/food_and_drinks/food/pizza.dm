@@ -28,11 +28,15 @@
 	var/list/cutting_tools = list(TOOL_KNIFE, TOOL_SAW, TOOL_SCALPEL)
 
 /obj/item/food/pizza/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/drag_pickup)
 	register_context()
 
 /obj/item/food/pizza/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(istype(held_item) && (held_item.tool_behaviour in cutting_tools))
@@ -45,12 +49,16 @@
 		return TRUE
 
 /obj/item/food/pizza/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(slice_type) || !sliced)
 		return
 	. += span_notice("You can slice this to make it possible to take out slices with an empty hand!")
 
 /obj/item/food/pizza/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(isnull(slice_type) || !(tool.tool_behaviour in cutting_tools))
 		return
@@ -62,6 +70,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/food/pizza/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(isnull(slice_type) || !(tool.tool_behaviour in cutting_tools))
 		return
@@ -70,17 +80,23 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/food/pizza/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!sliced)
 		return
 	user.visible_message(span_notice("[user] takes a slice of [src]."), span_notice("You take a slice of [src]."))
 	produce_slice(user)
 
-/obj/item/food/pizza/proc/get_slices_filter() //to not repeat code
+/obj/item/food/pizza/proc/get_slices_filter()
+	procstart = null
+	src.procstart = null //to not repeat code
 	return alpha_mask_filter(icon = icon('icons/obj/food/pizza.dmi', "[slices_left]slices"))
 
 /// slices this pizza. all arguments optional.
 /obj/item/food/pizza/proc/slice(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(sliced)
 		return
 	tool?.play_tool_sound(src)
@@ -89,11 +105,15 @@
 	interaction_flags_item &= ~INTERACT_ITEM_ATTACK_HAND_PICKUP
 
 /obj/item/food/pizza/proc/cut_apart()
+	procstart = null
+	src.procstart = null
 	for(var/_ in 1 to slices_left)
 		produce_slice(no_update = TRUE)
 
 /// make a slice and give it to user. no_update means no filter work is done. user is optional
 /obj/item/food/pizza/proc/produce_slice(mob/user, no_update = FALSE)
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	var/obj/item/food/pizzaslice/slice = new slice_type(our_turf)
 	if(HAS_TRAIT(src, TRAIT_FOOD_SILVER))
@@ -130,6 +150,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/pizzaslice/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_ROLLINGPIN, /obj/item/stack/sheet/pizza, 1, 1 SECONDS, table_required = TRUE, screentip_verb = "Flatten", sound_to_play = SFX_ROLLING_PIN_ROLLING)
 
 /obj/item/food/pizza/custom
@@ -166,6 +188,8 @@
 	slice_type = null
 
 /obj/item/food/pizza/margherita/raw/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/pizza/margherita, rand(70 SECONDS, 80 SECONDS), TRUE, TRUE)
 
 /obj/item/food/pizza/margherita/robo
@@ -186,6 +210,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/pizzaslice/margherita/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ingredients_holder, null, CUSTOM_INGREDIENT_ICON_FILL, max_ingredients = 12)
 
@@ -212,6 +238,8 @@
 	slice_type = null
 
 /obj/item/food/pizza/meat/raw/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/pizza/meat, rand(70 SECONDS, 80 SECONDS), TRUE, TRUE)
 
 /obj/item/food/pizzaslice/meat
@@ -251,6 +279,8 @@
 	slice_type = null
 
 /obj/item/food/pizza/mushroom/raw/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/pizza/mushroom, rand(70 SECONDS, 80 SECONDS), TRUE, TRUE)
 
 /obj/item/food/pizzaslice/mushroom
@@ -285,6 +315,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/pizza/vegetable/raw/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/pizza/vegetable, rand(70 SECONDS, 80 SECONDS), TRUE, TRUE)
 
 /obj/item/food/pizzaslice/vegetable
@@ -320,6 +352,8 @@
 	slice_type = null
 
 /obj/item/food/pizza/donkpocket/raw/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/pizza/donkpocket, rand(70 SECONDS, 80 SECONDS), TRUE, TRUE)
 
 /obj/item/food/pizzaslice/donkpocket
@@ -353,6 +387,8 @@
 	slice_type = null
 
 /obj/item/food/pizza/dank/raw/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/pizza/dank, rand(70 SECONDS, 80 SECONDS), TRUE, TRUE)
 
 /obj/item/food/pizzaslice/dank
@@ -386,6 +422,8 @@
 	slice_type = null
 
 /obj/item/food/pizza/sassysage/raw/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/pizza/sassysage, rand(70 SECONDS, 80 SECONDS), TRUE, TRUE)
 
 /obj/item/food/pizzaslice/sassysage
@@ -421,6 +459,8 @@
 	slice_type = null
 
 /obj/item/food/pizza/pineapple/raw/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/pizza/pineapple, rand(70 SECONDS, 80 SECONDS), TRUE, TRUE)
 
 /obj/item/food/pizzaslice/pineapple
@@ -453,6 +493,8 @@
 	desc = "Not only is this once delicious pizza encrusted with a layer of spore-spewing fungus, it also seems to shift and slide when unattended, teeming with new life."
 
 /obj/item/food/pizzaslice/moldy/bacteria/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MOLD, CELL_VIRUS_TABLE_GENERIC, rand(2, 4), 25)
 
@@ -483,10 +525,14 @@
 	slice_type = null
 
 /obj/item/food/pizza/arnold/raw/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/pizza/arnold, rand(70 SECONDS, 80 SECONDS), TRUE, TRUE)
 
 //fuck it, i will leave this at the food level for now.
-/obj/item/food/proc/try_break_off(mob/living/attacker, mob/living/user) //maybe i give you a pizza maybe i break off your arm
+/obj/item/food/proc/try_break_off(mob/living/attacker, mob/living/user)
+	procstart = null
+	src.procstart = null //maybe i give you a pizza maybe i break off your arm
 	if(prob(50) || (attacker != user) || !iscarbon(user) || HAS_TRAIT(user, TRAIT_NODISMEMBER))
 		return
 	var/obj/item/bodypart/arm/left = user.get_bodypart(BODY_ZONE_L_ARM)
@@ -499,6 +545,8 @@
 	playsound(user, SFX_DESECRATION, 50, TRUE, -1)
 
 /obj/item/food/proc/i_kill_you(obj/item/item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(istype(item, /obj/item/food/pineappleslice))
 		to_chat(user, "<font color='red' size='7'>If you want something crazy like pineapple, I'll kill you.</font>") //this is in bigger text because it's hard to spam something that gibs you, and so that you're perfectly aware of the reason why you died
 		user.investigate_log("has been gibbed by putting pineapple on an arnold pizza.", INVESTIGATE_DEATHS)
@@ -514,10 +562,14 @@
 	return FALSE
 
 /obj/item/food/pizza/arnold/attack(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	try_break_off(target, user)
 
 /obj/item/food/pizza/arnold/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!i_kill_you(tool, user))
 		return ..()
 
@@ -532,10 +584,14 @@
 	crafting_complexity = FOOD_COMPLEXITY_4
 
 /obj/item/food/pizzaslice/arnold/attack(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. =..()
 	try_break_off(target, user)
 
 /obj/item/food/pizzaslice/arnold/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!i_kill_you(tool, user))
 		return ..()
 
@@ -576,6 +632,8 @@
 	slice_type = null
 
 /obj/item/food/pizza/energy/raw/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/pizza/energy, rand(70 SECONDS, 80 SECONDS), TRUE, TRUE)
 
 /obj/item/food/pizzaslice/energy
@@ -602,6 +660,8 @@
 	custom_materials = list(/datum/material/meat = MEATSLAB_MATERIAL_AMOUNT)
 
 /obj/item/food/raw_meat_calzone/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/meat_calzone, rand(20 SECONDS, 40 SECONDS), TRUE, TRUE)
 
 /obj/item/food/meat_calzone
@@ -633,6 +693,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/raw_vegetarian_calzone/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/vegetarian_calzone, rand(20 SECONDS, 40 SECONDS), TRUE, TRUE)
 
 /obj/item/food/vegetarian_calzone

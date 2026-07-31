@@ -24,6 +24,8 @@
 	var/resync_timer
 
 /obj/item/desynchronizer/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(world.time < next_use)
 		to_chat(user, span_warning("[src] is still recharging."))
 		return
@@ -33,6 +35,8 @@
 		resync()
 
 /obj/item/desynchronizer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(world.time < next_use)
 		. += span_warning("Time left to recharge: [DisplayTimeText(next_use - world.time)]")
@@ -40,6 +44,8 @@
 	. += span_notice("Can be used again to interrupt the effect early. The recharge time is the same as the time spent in desync.")
 
 /obj/item/desynchronizer/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/new_duration = tgui_input_number(user, "Set the duration", "Desynchronizer", duration / 10, max_duration, 5)
 	if(!new_duration || QDELETED(user) || QDELETED(src) || !user.can_perform_action(src, NEED_DEXTERITY))
 		return CLICK_ACTION_BLOCKING
@@ -48,6 +54,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/desynchronizer/proc/desync(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(sync_holder)
 		return
 	sync_holder = new(drop_location())
@@ -59,6 +67,8 @@
 	resync_timer = addtimer(CALLBACK(src, PROC_REF(resync)), duration , TIMER_STOPPABLE)
 
 /obj/item/desynchronizer/proc/resync()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/desynchronizer(sync_holder.drop_location())
 	QDEL_NULL(sync_holder)
 	if(resync_timer)
@@ -68,6 +78,8 @@
 	next_use = world.time + (world.time - last_use) // Could be 2*world.time-last_use but that would just be confusing
 
 /obj/item/desynchronizer/Destroy()
+	procstart = null
+	src.procstart = null
 	if(sync_holder)
 		resync()
 	return ..()
@@ -84,18 +96,26 @@
 	resistance_flags = INDESTRUCTIBLE
 
 /obj/effect/abstract/sync_holder/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_SECLUDED_LOCATION, INNATE_TRAIT)
 
 /obj/effect/abstract/sync_holder/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	// While faded out of spacetime, no, you cannot move.
 	return
 
 /obj/effect/abstract/sync_holder/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/I in contents)
 		var/atom/movable/AM = I
 		AM.forceMove(drop_location())
 	return ..()
 
 /obj/effect/abstract/sync_holder/AllowDrop()
+	procstart = null
+	src.procstart = null
 	return TRUE //no dropping spaghetti out of your spacetime pocket

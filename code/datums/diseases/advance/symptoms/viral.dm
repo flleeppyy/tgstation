@@ -18,6 +18,8 @@
 	symptom_cure = null
 
 /datum/symptom/viraladaptation/OnAdd(datum/disease/advance/our_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	our_disease.NeuterSymptom(src)
 
@@ -42,5 +44,7 @@
 	symptom_cure = null
 
 /datum/symptom/viralevolution/OnAdd(datum/disease/advance/our_disease)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	our_disease.NeuterSymptom(src)

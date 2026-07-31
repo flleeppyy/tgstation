@@ -15,6 +15,8 @@
 	var/list/atom/movable/neighbours
 
 /obj/machinery/duct/Initialize(mapload, color_of_duct, layer_of_duct)
+	procstart = null
+	src.procstart = null
 	if(GLOB.plumbing_layer_names["[layer_of_duct]"])
 		duct_layer = layer_of_duct
 
@@ -56,6 +58,8 @@
 	register_context()
 
 /obj/machinery/duct/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	//can be initialized already during map init by its neighbours
@@ -142,6 +146,8 @@
 
 ///we disconnect ourself from our neighbours. we also destroy our ductnet and tell our neighbours to make a new one
 /obj/machinery/duct/on_deconstruction()
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/ducts/duct_stack = new (drop_location())
 	duct_stack.duct_color = duct_color
 	duct_stack.duct_layer = duct_layer
@@ -149,6 +155,8 @@
 
 ///Removes duct from ductnet
 /obj/machinery/duct/proc/disconnect()
+	procstart = null
+	src.procstart = null
 	//remove ourself from the duct
 	net.ducts -= src
 	if(!net.ducts.len)
@@ -156,6 +164,8 @@
 	net = null
 
 /obj/machinery/duct/Destroy()
+	procstart = null
+	src.procstart = null
 	//object was early deleted
 	if(!net)
 		return ..()
@@ -215,17 +225,23 @@
 	return ..()
 
 /obj/machinery/duct/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(held_item?.tool_behaviour == TOOL_WRENCH)
 		context[SCREENTIP_CONTEXT_LMB] = "Destroy duct"
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/duct/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Its current color and layer are [GLOB.pipe_color_name[duct_color]] and [GLOB.plumbing_layer_names["[duct_layer]"]]. Use in-hand to change.")
 	. += span_notice("It can be [EXAMINE_HINT("wrenched")] apart.")
 
 /obj/machinery/duct/update_icon_state()
+	procstart = null
+	src.procstart = null
 	var/temp_icon = initial(icon_state)
 
 	//compute connections
@@ -246,7 +262,9 @@
 	icon_state = temp_icon
 	return ..()
 
-/obj/machinery/duct/wrench_act(mob/living/user, obj/item/wrench) //I can also be the RPD
+/obj/machinery/duct/wrench_act(mob/living/user, obj/item/wrench)
+	procstart = null
+	src.procstart = null //I can also be the RPD
 	wrench.play_tool_sound(src)
 
 	user.visible_message( \
@@ -276,6 +294,8 @@
 	var/duct_layer = THIRD_DUCT_LAYER
 
 /obj/item/stack/ducts/Initialize(mapload, new_amount, merge, list/mat_override, mat_amt)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	//when wrench is over us
@@ -285,23 +305,31 @@
 	register_item_context()
 
 /obj/item/stack/ducts/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(held_item?.tool_behaviour == TOOL_WRENCH && isopenturf(loc))
 		context[SCREENTIP_CONTEXT_LMB] = "Wrench duct"
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/stack/ducts/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(istype(target, /obj/machinery/duct))
 		context[SCREENTIP_CONTEXT_LMB] = "Pick duct"
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/stack/ducts/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Its current color and layer are [GLOB.pipe_color_name[duct_color]] and [GLOB.plumbing_layer_names["[duct_layer]"]]. Use in-hand to change.")
 	. += span_notice("Place on ground & [EXAMINE_HINT("wrench")] to create duct.")
 
 /obj/item/stack/ducts/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/new_layer = tgui_input_list(user, "Select a layer", "Layer", GLOB.plumbing_layers, GLOB.plumbing_layer_names["[duct_layer]"])
 	if(!user.is_holding(src))
 		return
@@ -315,9 +343,13 @@
 		add_atom_colour(duct_color, FIXED_COLOUR_PRIORITY)
 
 /obj/item/stack/ducts/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return check_attach_turf(loc)
 
 /obj/item/stack/ducts/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	// Turn into a duct stack and then merge to the in-hand stack.
 	if(istype(interacting_with, /obj/machinery/duct))
 		if(amount == max_amount)
@@ -330,6 +362,8 @@
 	return check_attach_turf(interacting_with, user)
 
 /obj/item/stack/ducts/proc/check_attach_turf(turf/open_turf, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(isopenturf(open_turf))
 		var/datum/overlap = ducting_layer_check(open_turf, duct_layer)

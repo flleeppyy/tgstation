@@ -29,6 +29,8 @@
 	var/datum/action/cooldown/spell/pointed/wizard_mimic/mimic
 
 /mob/living/basic/paper_wizard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	apply_dynamic_human_appearance(src, mob_spawn_path = /obj/effect/mob_spawn/corpse/human/wizard/paper)
 	grant_abilities()
@@ -36,9 +38,13 @@
 	AddElement(/datum/element/effect_trail, /obj/effect/temp_visual/paper_scatter)
 
 /mob/living/basic/paper_wizard/get_unconscious_appearance()
+	procstart = null
+	src.procstart = null
 	return get_generic_humanoid_static_appearance()
 
 /mob/living/basic/paper_wizard/proc/grant_abilities()
+	procstart = null
+	src.procstart = null
 	var/static/list/innate_actions = list(
 		/datum/action/cooldown/spell/conjure/wizard_summon_minions = BB_WIZARD_SUMMON_MINIONS,
 		/datum/action/cooldown/spell/pointed/wizard_mimic = BB_WIZARD_MIMICS,
@@ -47,6 +53,8 @@
 	grant_actions_by_list(innate_actions)
 
 /mob/living/basic/paper_wizard/proc/grant_loot()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/death_drops, /obj/effect/temp_visual/paperwiz_dying)
 
 /datum/ai_controller/basic_controller/paper_wizard
@@ -73,18 +81,26 @@
 	ai_controller = /datum/ai_controller/basic_controller/simple/simple_hostile
 
 /mob/living/basic/paper_wizard/copy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/relay_attackers)
 	RegisterSignal(src, COMSIG_ATOM_WAS_ATTACKED, PROC_REF(on_attacked))
 
 /mob/living/basic/paper_wizard/copy/grant_abilities()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/basic/paper_wizard/copy/grant_loot()
+	procstart = null
+	src.procstart = null
 	return
 
 //Hit a fake? eat pain!
 /mob/living/basic/paper_wizard/copy/proc/on_attacked(mob/source, mob/living/attacker, attack_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(attack_flags & (ATTACKER_STAMINA_ATTACK|ATTACKER_SHOVING)))
@@ -93,6 +109,8 @@
 
 
 /mob/living/basic/paper_wizard/copy/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isobserver(user))
 		. += span_notice("It's an illusion - what is it hiding?")
@@ -124,6 +142,8 @@
 	randomdir = FALSE
 
 /obj/effect/temp_visual/paperwiz_dying/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	visible_message(span_bolddanger("The wizard cries out in pain as a gate appears behind him, sucking him in!"))
 	playsound(get_turf(src), 'sound/effects/magic/mandswap.ogg', 50, vary = TRUE, pressure_affected = TRUE)
@@ -131,6 +151,8 @@
 	RegisterSignal(src, COMSIG_PREQDELETED, PROC_REF(on_delete))
 
 /obj/effect/temp_visual/paperwiz_dying/proc/on_delete()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/mob/nearby in range(7, src))

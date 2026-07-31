@@ -8,6 +8,8 @@
 	var/interaction_key
 
 /datum/element/poster_tearer/Attach(datum/target, tear_time = 2 SECONDS, interaction_key = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -18,11 +20,15 @@
 	RegisterSignals(target, list(COMSIG_HOSTILE_PRE_ATTACKINGTARGET, COMSIG_LIVING_UNARMED_ATTACK), PROC_REF(on_attacked_poster))
 
 /datum/element/poster_tearer/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, list(COMSIG_HOSTILE_PRE_ATTACKINGTARGET, COMSIG_LIVING_UNARMED_ATTACK))
 
 /// Try to tear up a poster on the wall
 /datum/element/poster_tearer/proc/on_attacked_poster(mob/living/user, atom/target, proximity_flag)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(target, /obj/structure/sign/poster))
 		return NONE // don't care we move on
@@ -36,6 +42,8 @@
 
 /// Actually work on tearing down that poster
 /datum/element/poster_tearer/proc/tear_it_down(mob/living/user, obj/structure/sign/poster/target)
+	procstart = null
+	src.procstart = null
 	if(!target.check_tearability(user)) // this proc will handle user feedback
 		return
 

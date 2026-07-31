@@ -25,6 +25,8 @@
 /// first > second or first < second are both respected, and the return order will reflect the arg order
 /// We return a list of turf -> distance, or null if we error
 /datum/path_map/proc/turfs_in_range(first, second)
+	procstart = null
+	src.procstart = null
 	var/list/hand_back = list()
 	var/list/distances = src.distances
 	var/smaller = min(first, second)
@@ -54,6 +56,8 @@
  * min_target_dist - How many, if any, turfs off the end of the path should we drop?
  */
 /datum/path_map/proc/get_path_to(turf/path_to, skip_first = FALSE, min_target_dist = 0)
+	procstart = null
+	src.procstart = null
 	return generate_path(path_to, skip_first, min_target_dist)
 
 /**
@@ -63,6 +67,8 @@
  * min_target_dist - How many, if any, turfs off the end of the path should we drop?
  */
 /datum/path_map/proc/get_path_from(turf/path_from, skip_first = FALSE, min_target_dist = 0)
+	procstart = null
+	src.procstart = null
 	return generate_path(path_from, skip_first, min_target_dist, reverse = TRUE)
 
 /**
@@ -73,6 +79,8 @@
  * reverse - If true, "reverses" the path generated. You'd want to use this for generating a path to the source node itself
  */
 /datum/path_map/proc/generate_path(turf/other_end, skip_first = FALSE, min_target_dist = 0, reverse = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/path = list()
 	var/turf/next_turf = other_end
 	// Cache for sonic speed
@@ -91,6 +99,8 @@
 	return path
 
 /datum/path_map/proc/display(delay = 10 SECONDS)
+	procstart = null
+	src.procstart = null
 	for(var/index in 1 to length(distances))
 		var/turf/next_turf = next_closest[index]
 		next_turf.maptext = "[distances[index]]"
@@ -101,6 +111,8 @@
 /// Copies the passed in path_map into this datum
 /// Saves some headache with updating refs if we want to modify a path_map
 /datum/path_map/proc/copy_from(datum/path_map/read_from)
+	procstart = null
+	src.procstart = null
 	// Copy all the relevant vars over. NOT any of the timer stuff, we want them to still count
 	src.next_closest = read_from.next_closest
 	src.distances = read_from.distances
@@ -112,11 +124,15 @@
 /// Returns true if the passed in pass_map's pass logic matches ours
 /// False otherwise
 /datum/path_map/proc/compare_against(datum/path_map/map)
+	procstart = null
+	src.procstart = null
 	return compare_against_args(map.pass_info, map.start, map.pass_space, map.avoid)
 
 /// Returns true if the passed in pass_info and start/pass_space/avoid match ours
 /// False otherwise
 /datum/path_map/proc/compare_against_args(datum/can_pass_info/pass_info, turf/start, pass_space, turf/avoid)
+	procstart = null
+	src.procstart = null
 	if(src.start != start)
 		return FALSE
 	if(src.pass_space != pass_space)
@@ -130,6 +146,8 @@
 /// Returns a new /datum/pathfind/sssp based off our settings
 /// Will have an invalid source mob, no max distance, and no ending callback
 /datum/path_map/proc/settings_to_path()
+	procstart = null
+	src.procstart = null
 	// Default creation to not set any vars incidentally
 	var/static/mob/jeremy = new()
 	var/datum/pathfind/sssp/based_on_what = new()
@@ -139,6 +157,8 @@
 /// Expands this pathmap to cover a new range, assuming the arg is greater then the current range
 /// Returns true if this succeeded or was not required, false otherwise
 /datum/path_map/proc/expand(new_range)
+	procstart = null
+	src.procstart = null
 	var/list/working_distances = distances
 	var/working_index = working_distances.len
 	var/max_dist = working_distances[working_distances.len]
@@ -178,6 +198,8 @@
 	return TRUE
 
 /datum/path_map/proc/sanity_check()
+	procstart = null
+	src.procstart = null
 	for(var/index in 1 to length(distances))
 		var/turf/next_turf = next_closest[index]
 		var/list/path = get_path_from(next_turf)
@@ -202,6 +224,8 @@
 	var/working_index
 
 /datum/pathfind/sssp/proc/setup(atom/movable/requester, list/access, turf/center, max_distance, simulated_only, turf/avoid, list/datum/callback/on_finish)
+	procstart = null
+	src.procstart = null
 	src.pass_info = new(requester, access)
 	src.start = center
 	src.max_distance = max_distance
@@ -210,6 +234,8 @@
 	src.on_finish = on_finish
 
 /datum/pathfind/sssp/proc/setup_from_canpass(datum/can_pass_info/info, turf/center, max_distance, simulated_only, turf/avoid, list/datum/callback/on_finish)
+	procstart = null
+	src.procstart = null
 	src.pass_info = info
 	src.start = center
 	src.max_distance = max_distance
@@ -218,6 +244,8 @@
 	src.on_finish = on_finish
 
 /datum/pathfind/sssp/start()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -229,6 +257,8 @@
 	return TRUE
 
 /datum/pathfind/sssp/search_step()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -288,6 +318,8 @@
 	return TRUE
 
 /datum/pathfind/sssp/finished()
+	procstart = null
+	src.procstart = null
 	var/datum/path_map/flow_map = new()
 	flow_map.start = start
 	flow_map.pass_info = pass_info

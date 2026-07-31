@@ -31,6 +31,8 @@
 	desc = "A small bottle. You don't remember what you put in it."
 
 /obj/item/reagent_containers/cup/bottle/alchemist_basic/add_initial_reagents()
+	procstart = null
+	src.procstart = null
 	/// List of possible reagents we may pick from
 	var/list/possible_reagents = list(
 		/datum/reagent/aluminium, // Basic chems
@@ -96,10 +98,14 @@
 	)
 
 /obj/item/reagent_containers/cup/bottle/alchemist_random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[pick(possible_adjectives)] bottle"
 
 /obj/item/reagent_containers/cup/bottle/alchemist_random/add_initial_reagents()
+	procstart = null
+	src.procstart = null
 	var/our_reagent = get_random_reagent_id()
 	var/our_amount = rand(20, 50)
 	reagents.add_reagent(our_reagent, our_amount)

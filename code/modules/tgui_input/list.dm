@@ -11,6 +11,8 @@
  * * timeout - The timeout of the input box, after which the menu will close and qdel itself. Set to zero for no timeout.
  */
 /proc/tgui_input_list(mob/user, message, title = "Select", list/items, default, timeout = 0, ui_state = GLOB.always_state)
+	procstart = null
+	src.procstart = null
 	if (!user)
 		user = usr
 	if(!length(items))
@@ -69,6 +71,8 @@
 	var/invalid = FALSE
 
 /datum/tgui_list_input/New(mob/user, message, title, list/items, default, timeout, ui_state)
+	procstart = null
+	src.procstart = null
 	src.title = title
 	src.message = message
 	src.items = list()
@@ -95,6 +99,8 @@
 		QDEL_IN(src, timeout)
 
 /datum/tgui_list_input/Destroy(force)
+	procstart = null
+	src.procstart = null
 	SStgui.close_uis(src)
 	state = null
 	items?.Cut()
@@ -106,23 +112,33 @@
  * the window was closed by the user.
  */
 /datum/tgui_list_input/proc/wait()
+	procstart = null
+	src.procstart = null
 	while (!choice && !closed)
 		stoplag(1)
 
 /datum/tgui_list_input/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ListInputWindow")
 		ui.open()
 
 /datum/tgui_list_input/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	closed = TRUE
 
 /datum/tgui_list_input/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return state
 
 /datum/tgui_list_input/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["init_value"] = default || items[1]
 	data["items"] = items
@@ -133,12 +149,16 @@
 	return data
 
 /datum/tgui_list_input/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	if(timeout)
 		data["timeout"] = clamp((timeout - (world.time - start_time) - 1 SECONDS) / (timeout - 1 SECONDS), 0, 1)
 	return data
 
 /datum/tgui_list_input/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -156,4 +176,6 @@
 			return TRUE
 
 /datum/tgui_list_input/proc/set_choice(choice)
+	procstart = null
+	src.procstart = null
 	src.choice = choice

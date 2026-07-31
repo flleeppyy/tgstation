@@ -39,6 +39,8 @@
 	var/datum/callback/on_hit_effects
 
 /datum/component/shielded/Initialize(max_charges = 3, recharge_start_delay = 20 SECONDS, charge_increment_delay = 1 SECONDS, charge_recovery = 1, lose_multiple_charges = FALSE, show_charge_as_alpha = FALSE, recharge_path = null, can_block_overwhelming = FALSE, starting_charges = null, shield_icon_file = 'icons/effects/effects.dmi', shield_icon = "shield-old", shield_inhand = FALSE, run_hit_callback)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent) || max_charges <= 0)
 		return COMPONENT_INCOMPATIBLE
 
@@ -62,6 +64,8 @@
 		START_PROCESSING(SSdcs, src)
 
 /datum/component/shielded/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(wearer)
 		shield_icon = "broken"
 		UnregisterSignal(wearer, COMSIG_ATOM_UPDATE_OVERLAYS)
@@ -71,6 +75,8 @@
 	return ..()
 
 /datum/component/shielded/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equipped))
 	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(lost_wearer))
 	RegisterSignal(parent, COMSIG_ITEM_HIT_REACT, PROC_REF(on_hit_react))
@@ -82,6 +88,8 @@
 		set_wearer(holder)
 
 /datum/component/shielded/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED, COMSIG_ITEM_HIT_REACT))
 	var/atom/shield = parent
 	if(shield.loc == wearer)
@@ -89,6 +97,8 @@
 
 // Handle recharging, if we want to
 /datum/component/shielded/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(current_charges >= max_charges)
 		STOP_PROCESSING(SSdcs, src)
 		return
@@ -106,12 +116,16 @@
 		playsound(item_parent, 'sound/machines/ding.ogg', 50, TRUE)
 
 /datum/component/shielded/proc/adjust_charge(change)
+	procstart = null
+	src.procstart = null
 	current_charges = clamp(current_charges + change, 0, max_charges)
 	if(wearer)
 		wearer.update_appearance(UPDATE_ICON)
 
 /// Check if we've been equipped to a valid slot to shield
 /datum/component/shielded/proc/on_equipped(datum/source, mob/user, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(user.is_holding(parent) && !shield_inhand)
@@ -121,6 +135,8 @@
 
 /// Either we've been dropped or our wearer has been QDEL'd. Either way, they're no longer our problem
 /datum/component/shielded/proc/lost_wearer(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(wearer)
@@ -129,6 +145,8 @@
 		wearer = null
 
 /datum/component/shielded/proc/set_wearer(mob/user)
+	procstart = null
+	src.procstart = null
 	if(wearer == user)
 		return
 	if(!isnull(wearer))
@@ -142,6 +160,8 @@
 
 /// Used to draw the shield overlay on the wearer
 /datum/component/shielded/proc/on_update_overlays(atom/parent_atom, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mutable_appearance/shield_appearance = mutable_appearance(shield_icon_file, (current_charges > 0 ? shield_icon : "broken"), MOB_SHIELD_LAYER)
@@ -154,6 +174,8 @@
  * It then runs the callback in [/datum/component/shielded/var/on_hit_effects] which handles the messages/sparks (so the visuals)
  */
 /datum/component/shielded/proc/on_hit_react(datum/source, mob/living/carbon/human/owner, atom/movable/hitby, attack_text, final_block_chance, damage, attack_type, damage_type)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	COOLDOWN_START(src, recently_hit_cd, recharge_start_delay)
@@ -197,10 +219,14 @@
 
 /// The wrapper to invoke the on_hit callback, so we don't have to worry about blocking in the signal handler
 /datum/component/shielded/proc/actually_run_hit_callback(mob/living/owner, attack_text, current_charges)
+	procstart = null
+	src.procstart = null
 	on_hit_effects.Invoke(owner, attack_text, current_charges)
 
 /// Default on_hit proc, since cult robes are stupid and have different descriptions/sparks
 /datum/component/shielded/proc/default_run_hit_callback(mob/living/owner, attack_text, current_charges)
+	procstart = null
+	src.procstart = null
 	do_sparks(2, TRUE, owner)
 	owner.visible_message(span_danger("[owner]'s shields deflect [attack_text] in a shower of sparks!"))
 	if(current_charges <= 0)

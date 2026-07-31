@@ -13,12 +13,16 @@
 	///The person the obsessed has to get lynched in order to win.
 	var/datum/mafia_role/obsession
 
-/datum/mafia_role/obsessed/New(datum/mafia_controller/game) //note: obsession is always a townie
+/datum/mafia_role/obsessed/New(datum/mafia_controller/game)
+	procstart = null
+	src.procstart = null //note: obsession is always a townie
 	. = ..()
 	desc = initial(desc) + " Obsessions are assigned on the first night."
 	RegisterSignal(game, COMSIG_MAFIA_SUNDOWN, PROC_REF(find_obsession))
 
 /datum/mafia_role/obsessed/proc/find_obsession(datum/mafia_controller/game)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/list/all_roles_shuffle = shuffle(game.living_roles) - src
@@ -39,6 +43,8 @@
 	UnregisterSignal(game, COMSIG_MAFIA_SUNDOWN)
 
 /datum/mafia_role/obsessed/proc/check_victory(datum/source,datum/mafia_controller/game,datum/mafia_role/attacker,lynch)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(source, COMSIG_MAFIA_ON_KILL)
@@ -64,10 +70,14 @@
 	winner_award = /datum/award/achievement/mafia/clown
 
 /datum/mafia_role/clown/New(datum/mafia_controller/game)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_MAFIA_ON_KILL, PROC_REF(prank))
 
 /datum/mafia_role/clown/proc/prank(datum/source,datum/mafia_controller/game, datum/mafia_role/attacker,lynch)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(lynch)

@@ -28,6 +28,8 @@
 	drafting_tier = 2
 
 /datum/heretic_knowledge/codex_morbus/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/carbon/human/to_fuck_up = locate() in selected_atoms
 	for(var/_limb in to_fuck_up.get_bodyparts())
@@ -137,6 +139,8 @@
 	drafting_tier = 2
 
 /datum/heretic_knowledge/painting/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/item/organ/eyes) in atoms)
 		src.result_atoms = list(/obj/item/wallframe/painting/eldritch/weeping)
 		src.required_atoms = list(
@@ -201,6 +205,8 @@
 	drafting_tier = 2
 
 /datum/heretic_knowledge/hypnosis_ritual/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/human/victim in atoms)
 		if(victim.stat == DEAD || IS_HERETIC(victim) || victim.has_trauma_type(/datum/brain_trauma/hypnosis))
 			atoms -= victim
@@ -219,6 +225,8 @@
 	return ..()
 
 /datum/heretic_knowledge/hypnosis_ritual/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
+	procstart = null
+	src.procstart = null
 	var/hypnosis_text = ""
 	for(var/obj/item/paper/paper in selected_atoms)
 		for(var/datum/paper_input/text as anything in paper.raw_text_inputs)

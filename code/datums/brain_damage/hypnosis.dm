@@ -13,6 +13,8 @@
 	var/regex/target_phrase
 
 /datum/brain_trauma/hypnosis/New(phrase)
+	procstart = null
+	src.procstart = null
 	if(!phrase)
 		qdel(src)
 		return
@@ -25,6 +27,8 @@
 	..()
 
 /datum/brain_trauma/hypnosis/on_gain()
+	procstart = null
+	src.procstart = null
 	message_admins("[ADMIN_LOOKUPFLW(owner)] was hypnotized with the phrase '[hypnotic_phrase]'.")
 	owner.log_message("was hypnotized with the phrase '[hypnotic_phrase]'.", LOG_GAME)
 	to_chat(owner, span_reallybig(span_hypnophrase("[hypnotic_phrase]")))
@@ -52,6 +56,8 @@
 	. = ..()
 
 /datum/brain_trauma/hypnosis/on_lose()
+	procstart = null
+	src.procstart = null
 	message_admins("[ADMIN_LOOKUPFLW(owner)] is no longer hypnotized with the phrase '[hypnotic_phrase]'.")
 	owner.log_message("is no longer hypnotized with the phrase '[hypnotic_phrase]'.", LOG_GAME)
 	to_chat(owner, span_userdanger("You suddenly snap out of your hypnosis. The phrase '[hypnotic_phrase]' no longer feels important to you."))
@@ -63,6 +69,8 @@
 	antagonist = null
 
 /datum/brain_trauma/hypnosis/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	..()
 	if(SPT_PROB(1, seconds_per_tick))
 		if(prob(50))
@@ -76,6 +84,8 @@
 			)
 
 /datum/brain_trauma/hypnosis/handle_hearing(datum/source, list/hearing_args)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(owner, TRAIT_DEAF) || owner == hearing_args[HEARING_SPEAKER])
 		return
 	hearing_args[HEARING_RAW_MESSAGE] = target_phrase.Replace(hearing_args[HEARING_RAW_MESSAGE], span_hypnophrase("$1"))

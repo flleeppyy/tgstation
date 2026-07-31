@@ -27,15 +27,21 @@
 	COOLDOWN_DECLARE(brimdust_auto_apply_cooldown)
 
 /obj/item/organ/monster_core/brimdust_sac/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/explodable, light_impact_range = 1)
 
 /obj/item/organ/monster_core/brimdust_sac/apply_to(mob/living/target, mob/user)
+	procstart = null
+	src.procstart = null
 	target.apply_status_effect(user_status, BRIMDUST_STACKS_ON_USE)
 	qdel(src)
 
 // Every x seconds, if on lavaland, add one stack
 /obj/item/organ/monster_core/brimdust_sac/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!COOLDOWN_FINISHED(src, brimdust_auto_apply_cooldown))
 		return
@@ -46,6 +52,8 @@
 
 /// Make a cloud which applies brimdust to everyone nearby
 /obj/item/organ/monster_core/brimdust_sac/on_triggered_internal()
+	procstart = null
+	src.procstart = null
 	var/turf/origin_turf = get_turf(owner)
 	do_smoke(2, owner, origin_turf, effect_type = /obj/effect/particle_effect/fluid/smoke/bad/brimdust)
 
@@ -55,6 +63,8 @@
 	color = "#383838"
 
 /obj/effect/particle_effect/fluid/smoke/bad/brimdust/smoke_mob(mob/living/carbon/smoker)
+	procstart = null
+	src.procstart = null
 	if(!istype(smoker))
 		return FALSE
 	if(lifetime < 1)
@@ -97,6 +107,8 @@
 	overlay_state = "brimdemon_1"
 
 /atom/movable/screen/alert/status_effect/brimdust_coating/MouseEntered(location,control,params)
+	procstart = null
+	src.procstart = null
 	desc = initial(desc)
 	var/datum/status_effect/stacking/brimdust_coating/dust = attached_effect
 	var/dust_amount_string
@@ -112,6 +124,8 @@
 	return ..()
 
 /atom/movable/screen/alert/status_effect/brimdust_coating/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -127,10 +141,14 @@
 		qdel(dust)
 
 /datum/status_effect/stacking/brimdust_coating/refresh(effect, stacks_to_add)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_stacks(stacks_to_add)
 
 /datum/status_effect/stacking/brimdust_coating/add_stacks(stacks_added)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (stacks == 0)
 		return
@@ -142,10 +160,14 @@
 		owner.add_overlay(dust_overlay)
 
 /datum/status_effect/stacking/brimdust_coating/on_creation(mob/living/new_owner, stacks_to_apply)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	linked_alert?.overlay_state = "brimdemon_[stacks]"
 
 /datum/status_effect/stacking/brimdust_coating/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/target_width = max(owner.get_cached_width(), ICON_SIZE_X)
 	var/target_height = max(owner.get_cached_height(), ICON_SIZE_Y)
@@ -183,6 +205,8 @@
 	RegisterSignal(owner, COMSIG_MOB_APPLY_DAMAGE, PROC_REF(on_take_damage))
 
 /datum/status_effect/stacking/brimdust_coating/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.cut_overlay(dust_overlay)
 	REMOVE_KEEP_TOGETHER(owner, REF(src))
@@ -191,6 +215,8 @@
 
 /// When you are cleaned, wash off the buff
 /datum/status_effect/stacking/brimdust_coating/proc/on_cleaned()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	. = NONE
@@ -199,6 +225,8 @@
 
 /// When you take brute damage, schedule an explosion
 /datum/status_effect/stacking/brimdust_coating/proc/on_take_damage(datum/source, damage, damagetype, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(damagetype != BRUTE)
 		return
@@ -212,6 +240,8 @@
  * Hurts everything in a circle around you. Hurts less if in a pressurised environment.
  */
 /datum/status_effect/stacking/brimdust_coating/proc/explode()
+	procstart = null
+	src.procstart = null
 	var/turf/origin_turf = get_turf(owner)
 	playsound(origin_turf, 'sound/effects/pop_expl.ogg', 50)
 	new /obj/effect/temp_visual/explosion/fast(origin_turf)
@@ -238,11 +268,15 @@
 	alert_type = null // Short lived enough not to matter
 
 /datum/status_effect/brimdust_concussion/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.add_movespeed_modifier(/datum/movespeed_modifier/status_effect/brimdust_concussion)
 	to_chat(owner, span_warning("You are knocked off balance by the explosion!"))
 
 /datum/status_effect/brimdust_concussion/on_remove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/brimdust_concussion)
 	to_chat(owner, span_notice("You find your balance."))

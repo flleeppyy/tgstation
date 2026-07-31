@@ -11,6 +11,8 @@
 	var/mutable_appearance/weed_overlay
 
 /obj/structure/toiletbong/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_rotation, post_rotation_proccall = PROC_REF(post_rotation))
 	create_storage(storage_type = /datum/storage/toiletbong)
@@ -19,6 +21,8 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/toiletbong/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/toilet/toilet = locate(/obj/structure/toilet) in components
 	if(toilet)
 		for(var/obj/item/cistern_item in toilet.contents)
@@ -34,11 +38,15 @@
 	return ..()
 
 /obj/structure/toiletbong/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (LAZYLEN(contents))
 		. += weed_overlay
 
 /obj/structure/toiletbong/attack_hand(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!anchored)
 		user.balloon_alert(user, "secure it first!")
@@ -79,14 +87,20 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/structure/toiletbong/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 ///Called in the simple rotation's post_rotation callback, playing a sound cue to players.
 /obj/structure/toiletbong/proc/post_rotation(mob/user, degrees)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/items/deconstruct.ogg', 50)
 
 /obj/structure/toiletbong/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(anchored)
 		return FALSE
 	tool.play_tool_sound(src)
@@ -101,6 +115,8 @@
 	return TRUE
 
 /obj/structure/toiletbong/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED

@@ -17,6 +17,8 @@
 	var/datum/port/output/result
 
 /obj/item/circuit_component/compare/populate_ports()
+	procstart = null
+	src.procstart = null
 	populate_custom_ports()
 	compare = add_input_port("Compare", PORT_TYPE_SIGNAL)
 
@@ -28,9 +30,13 @@
  * Used by derivatives to load their own ports in for custom use.
  */
 /obj/item/circuit_component/compare/proc/populate_custom_ports()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/circuit_component/compare/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 
 	var/logic_result = do_comparisons()
 	if(COMPONENT_TRIGGERED_BY(compare, port))
@@ -42,4 +48,6 @@
 
 /// Do the comparisons and return a result
 /obj/item/circuit_component/compare/proc/do_comparisons()
+	procstart = null
+	src.procstart = null
 	return FALSE

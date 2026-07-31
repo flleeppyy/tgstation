@@ -6,6 +6,8 @@
 	icon_state = "card_gold"
 
 /datum/grand_finale/usurp/trigger(mob/living/carbon/human/invoker)
+	procstart = null
+	src.procstart = null
 	message_admins("[key_name(invoker)] has replaced the Captain")
 	var/list/former_captains = list()
 	var/list/other_crew = list()
@@ -46,6 +48,8 @@
  * Anyone who thought they were Captain is in for a nasty surprise, and won't be very happy about it
  */
 /datum/grand_finale/usurp/proc/demote_to_assistant(mob/living/carbon/human/former_captain)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/particle_effect/fluid/smoke/exit_poof = new(get_turf(former_captain))
 	exit_poof.lifetime = 2 SECONDS
 
@@ -73,6 +77,8 @@
  * We could forcibly replace shoes and gloves too but people might miss their insuls or... meown shoes?
  */
 /datum/grand_finale/usurp/proc/dress_candidate(mob/living/carbon/human/invoker)
+	procstart = null
+	src.procstart = null
 	// Won't be needing these
 	var/obj/id = invoker.get_item_by_slot(ITEM_SLOT_ID)
 	QDEL_NULL(id)

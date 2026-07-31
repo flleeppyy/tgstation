@@ -50,6 +50,8 @@
 	var/obj/item/circuit_component/mod_program/circuit_comp_type
 
 /datum/computer_file/program/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(LAZYLEN(run_access))
 		run_access = string_list(run_access)
@@ -65,6 +67,8 @@
  * oddities like this.
  */
 /datum/computer_file/program/on_install(datum/computer_file/source, obj/item/modular_computer/computer_installing, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(circuit_comp_type) || isnull(computer.shell))
 		return
@@ -77,6 +81,8 @@
 
 ///Here we deal with killing the associated components instead.
 /datum/computer_file/program/Destroy()
+	procstart = null
+	src.procstart = null
 	if(isnull(circuit_comp_type) || isnull(computer?.shell))
 		return ..()
 	for(var/obj/item/circuit_component/mod_program/comp in computer.shell.unremovable_circuit_components)
@@ -86,6 +92,8 @@
 	return ..()
 
 /datum/computer_file/program/clone()
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/program/temp = ..()
 	temp.run_access = run_access
 	temp.filedesc = filedesc
@@ -105,15 +113,21 @@
  * This proc only serves as a callback.
  */
 /datum/computer_file/program/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 
 // Relays icon update to the computer.
 /datum/computer_file/program/proc/update_computer_icon()
+	procstart = null
+	src.procstart = null
 	if(computer)
 		computer.update_appearance()
 
 ///Attempts to generate an Ntnet log, returns the log on success, FALSE otherwise.
 /datum/computer_file/program/proc/generate_network_log(text)
+	procstart = null
+	src.procstart = null
 	if(!computer || computer.obj_flags & EMAGGED)
 		return FALSE
 	return computer.add_log(text)
@@ -131,10 +145,14 @@
  *modifiers is anything the pre_attack() proc had in the same-named variable.
 */
 /datum/computer_file/program/proc/tap(atom/tapped_atom, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 ///Makes sure a program can run on this hardware (for apps limited to tablets/computers/laptops)
 /datum/computer_file/program/proc/is_supported_by_hardware(hardware_flag = NONE, loud = FALSE, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!(hardware_flag & can_run_on_flags))
 		if(loud && computer && user)
 			to_chat(user, span_danger("\The [computer] flashes a \"Hardware Error - Incompatible software\" warning."))
@@ -143,6 +161,8 @@
 
 // Called by Process() on device that runs us, once every tick.
 /datum/computer_file/program/proc/process_tick(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /**
@@ -157,6 +177,8 @@
  * access can contain a list of access numbers to check against. If access is not empty, it will be used istead of checking any inserted ID.
  */
 /datum/computer_file/program/proc/can_run(mob/user, loud = FALSE, access_to_check, downloading = FALSE, list/access)
+	procstart = null
+	src.procstart = null
 	if(user)
 		if(issilicon(user) && !ispAI(user))
 			return TRUE
@@ -202,6 +224,8 @@
  * * user - The mob that started the program
  **/
 /datum/computer_file/program/proc/on_start(mob/living/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(!can_run(user, loud = TRUE))
 		return FALSE
@@ -220,6 +244,8 @@
  * - user - If there's a user, this is the person killing the program.
  **/
 /datum/computer_file/program/proc/kill_program(mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(src == computer.active_program)
@@ -241,6 +267,8 @@
 
 ///Sends the running program to the background/idle threads. Header programs can't be minimized and will kill instead.
 /datum/computer_file/program/proc/background_program(mob/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(program_flags & PROGRAM_HEADER || length(computer.idle_threads) > computer.max_idle_programs)
 		return kill_program()
@@ -255,4 +283,6 @@
 
 ///Called when the program is made the active program.
 /datum/computer_file/program/proc/on_made_active_program(mob/user)
+	procstart = null
+	src.procstart = null
 	return

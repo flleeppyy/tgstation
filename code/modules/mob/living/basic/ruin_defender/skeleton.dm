@@ -42,6 +42,8 @@
 	)
 
 /mob/living/basic/skeleton/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	apply_dynamic_human_appearance(src, outfit, species, r_hand = held_item)
 	AddElement(/datum/element/footstep, FOOTSTEP_MOB_SHOE)
@@ -55,6 +57,8 @@
 	ai_controller?.set_blackboard_key(BB_BASIC_FOODS, typecacheof(foods_list))
 
 /mob/living/basic/skeleton/get_unconscious_appearance()
+	procstart = null
+	src.procstart = null
 	return get_generic_humanoid_static_appearance()
 
 /mob/living/basic/skeleton/settler

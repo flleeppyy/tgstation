@@ -16,6 +16,8 @@
 	var/damage = 7
 
 /datum/element/eyestab/Attach(datum/target, damage)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (!isitem(target))
@@ -27,11 +29,15 @@
 	RegisterSignal(target, COMSIG_ITEM_ATTACK, PROC_REF(on_item_attack))
 
 /datum/element/eyestab/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	UnregisterSignal(source, COMSIG_ITEM_ATTACK)
 
 /datum/element/eyestab/proc/on_item_attack(datum/source, mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (user.zone_selected != BODY_ZONE_PRECISE_EYES)
@@ -51,6 +57,8 @@
 	return COMPONENT_SKIP_ATTACK
 
 /datum/element/eyestab/proc/perform_eyestab(obj/item/item, mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/target_limb = target.get_bodypart(BODY_ZONE_HEAD)
 	if (ishuman(target) && isnull(target_limb))
 		return

@@ -13,10 +13,14 @@
 	VAR_PRIVATE/atom/hunt_async_target
 
 /datum/bt_node/ai_behavior/hunt_target/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/hunted = controller.blackboard[target_key]
 	return !QDELETED(hunted)
 
 /datum/bt_node/ai_behavior/hunt_target/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/hunted = controller.blackboard[target_key]
 	if(QDELETED(hunted))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
@@ -24,6 +28,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/hunt_target/proc/target_caught(mob/living/hunter, atom/hunted)
+	procstart = null
+	src.procstart = null
 	if(isliving(hunted))
 		var/mob/living/living_target = hunted
 		hunter.manual_emote("chomps [living_target]!")
@@ -36,6 +42,8 @@
 		qdel(hunted)
 
 /datum/bt_node/ai_behavior/hunt_target/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	hunt_async_target = null
 	if(succeeded && cooldown_key)
@@ -52,6 +60,8 @@
 	var/behavior_combat_mode = TRUE
 
 /datum/bt_node/ai_behavior/hunt_target/interact_with_target/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/async_flags = handle_async()
 	if(async_flags)
 		return async_flags
@@ -64,12 +74,16 @@
 	return start_async()
 
 /datum/bt_node/ai_behavior/hunt_target/interact_with_target/perform_async(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	target_caught(controller.pawn, hunt_async_target)
 	if(!async_still_valid())
 		return
 	finish_async(AI_BEHAVIOR_SUCCEEDED)
 
 /datum/bt_node/ai_behavior/hunt_target/interact_with_target/target_caught(mob/living/hunter, atom/hunted)
+	procstart = null
+	src.procstart = null
 	hunter.ai_controller.ai_interact(target = hunted, combat_mode = behavior_combat_mode)
 
 /// Uses a cooldown ability from ability_key on the target.
@@ -81,6 +95,8 @@
 	VAR_PRIVATE/datum/action/cooldown/hunt_async_ability
 
 /datum/bt_node/ai_behavior/hunt_target/use_ability_on_target/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/async_flags = handle_async()
 	if(async_flags)
 		return async_flags
@@ -98,16 +114,22 @@
 	return start_async()
 
 /datum/bt_node/ai_behavior/hunt_target/use_ability_on_target/perform_async(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	target_caught(controller.pawn, hunt_async_target)
 	if(!async_still_valid())
 		return
 	finish_async(AI_BEHAVIOR_SUCCEEDED)
 
 /datum/bt_node/ai_behavior/hunt_target/use_ability_on_target/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	hunt_async_ability = null
 
 /datum/bt_node/ai_behavior/hunt_target/use_ability_on_target/target_caught(mob/living/hunter, atom/hunted)
+	procstart = null
+	src.procstart = null
 	hunt_async_ability.InterceptClickOn(hunter, null, hunted)
 
 /// Celebrates around the target with a spin animation.
@@ -115,6 +137,8 @@
 	always_reset_target = TRUE
 
 /datum/bt_node/ai_behavior/hunt_target/snail_people/target_caught(mob/living/hunter, atom/hunted)
+	procstart = null
+	src.procstart = null
 	hunter.manual_emote("Celebrates around [hunted]!")
 	hunter.SpinAnimation(speed = 1, loops = 3)
 
@@ -123,6 +147,8 @@
 	always_reset_target = TRUE
 
 /datum/bt_node/ai_behavior/hunt_target/pull_target/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/async_flags = handle_async()
 	if(async_flags)
 		return async_flags
@@ -135,12 +161,16 @@
 	return start_async()
 
 /datum/bt_node/ai_behavior/hunt_target/pull_target/perform_async(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	target_caught(controller.pawn, hunt_async_target)
 	if(!async_still_valid())
 		return
 	finish_async(AI_BEHAVIOR_SUCCEEDED)
 
 /datum/bt_node/ai_behavior/hunt_target/pull_target/target_caught(mob/living/hunter, obj/item/hunted)
+	procstart = null
+	src.procstart = null
 	hunter.start_pulling(hunted)
 
 /// Emotes enjoyment of the target's scent.
@@ -148,6 +178,8 @@
 	always_reset_target = TRUE
 
 /datum/bt_node/ai_behavior/hunt_target/sniff_flora/target_caught(mob/living/hunter, atom/hunted)
+	procstart = null
+	src.procstart = null
 	hunter.manual_emote("Enjoys the sweet scent eminating from [hunted::name]!")
 
 /// Playfully headbutts the target's legs.
@@ -155,18 +187,24 @@
 	always_reset_target = TRUE
 
 /datum/bt_node/ai_behavior/hunt_target/headbutt_leg/target_caught(mob/living/hunter, atom/hunted)
+	procstart = null
+	src.procstart = null
 	hunter.manual_emote("playfully headbutts [hunted]'s legs!")
 
 /// Attempts to buckle (latch onto) the target mob.
 /datum/bt_node/ai_behavior/hunt_target/latch_onto
 
 /datum/bt_node/ai_behavior/hunt_target/latch_onto/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/mob/living/living_pawn = controller.pawn
 	return !living_pawn.buckled
 
 /datum/bt_node/ai_behavior/hunt_target/latch_onto/target_caught(mob/living/hunter, obj/hunted)
+	procstart = null
+	src.procstart = null
 	if(hunter.buckled)
 		return FALSE
 	if(!hunted.buckle_mob(hunter, force = TRUE))
@@ -179,6 +217,8 @@
 	always_reset_target = TRUE
 
 /datum/bt_node/ai_behavior/hunt_target/play_with_owner/target_caught(mob/living/hunter, atom/hunted)
+	procstart = null
+	src.procstart = null
 	var/list/interactions_list = hunter.ai_controller.blackboard[BB_INTERACTIONS_WITH_OWNER]
 	var/interaction_message = length(interactions_list) ? pick(interactions_list) : "Plays with"
 	hunter.manual_emote("[interaction_message] [hunted]!")

@@ -5,6 +5,8 @@
 	var/list/access
 
 /datum/component/simple_access/Initialize(list/new_access, atom/donor_atom)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismob(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -19,9 +21,13 @@
 	RegisterSignal(donor_atom, COMSIG_QDELETING, PROC_REF(on_donor_removed))
 
 /datum/component/simple_access/proc/retrieve_access(datum/source, list/access_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	access_list += access
 
 /datum/component/simple_access/proc/on_donor_removed(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)

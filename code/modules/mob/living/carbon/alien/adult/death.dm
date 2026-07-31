@@ -1,4 +1,6 @@
 /mob/living/carbon/alien/adult/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		return
 
@@ -9,6 +11,8 @@
 
 //When the alien queen dies, all others must pay the price for letting her die.
 /mob/living/carbon/alien/adult/royal/queen/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		return
 

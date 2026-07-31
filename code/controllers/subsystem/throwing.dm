@@ -12,11 +12,15 @@ SUBSYSTEM_DEF(throwing)
 	var/list/processing = list()
 
 /datum/controller/subsystem/throwing/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg = "P:[length(processing)]"
 	return ..()
 
 
 /datum/controller/subsystem/throwing/fire(resumed = 0)
+	procstart = null
+	src.procstart = null
 	if (!resumed)
 		src.currentrun = processing.Copy()
 
@@ -93,6 +97,8 @@ SUBSYSTEM_DEF(throwing)
 	var/blocked = FALSE
 
 /datum/thrownthing/New(thrownthing, target, init_dir, maxrange, speed, thrower, diagonals_first, force, gentle, callback, target_zone)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.thrownthing = thrownthing
 	RegisterSignal(thrownthing, COMSIG_QDELETING, PROC_REF(on_thrownthing_qdel))
@@ -112,6 +118,8 @@ SUBSYSTEM_DEF(throwing)
 	src.target_zone = target_zone
 
 /datum/thrownthing/Destroy()
+	procstart = null
+	src.procstart = null
 	SSthrowing.processing -= thrownthing
 	SSthrowing.currentrun -= thrownthing
 	thrownthing.throwing = null
@@ -123,17 +131,23 @@ SUBSYSTEM_DEF(throwing)
 
 ///Defines the datum behavior on the thrownthing's qdeletion event.
 /datum/thrownthing/proc/on_thrownthing_qdel(atom/movable/source, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(src)
 
 /// Returns the thrower, or null
 /datum/thrownthing/proc/get_thrower()
+	procstart = null
+	src.procstart = null
 	. = thrower?.resolve()
 	if(isnull(.))
 		thrower = null
 
 /datum/thrownthing/proc/tick()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = thrownthing
 	if (!isturf(AM.loc) || !AM.throwing)
 		finalize()
@@ -199,6 +213,8 @@ SUBSYSTEM_DEF(throwing)
 			return
 
 /datum/thrownthing/proc/finalize(hit = FALSE, target=null)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	//done throwing, either because it hit something or it finished moving
 	if(!thrownthing)

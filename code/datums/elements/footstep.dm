@@ -16,6 +16,8 @@
 	var/sound_vary = FALSE
 
 /datum/element/footstep/Attach(datum/target, footstep_type = FOOTSTEP_MOB_BAREFOOT, volume = 0.5, e_range = -8, sound_vary = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismovable(target))
 		return ELEMENT_INCOMPATIBLE
@@ -58,12 +60,16 @@
 	steps_for_living[target] = 0
 
 /datum/element/footstep/Detach(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, COMSIG_MOVABLE_MOVED)
 	steps_for_living -= source
 	return ..()
 
 ///Prepares a footstep for living mobs. Determines if it should get played. Returns the turf it should get played on. Note that it is always a /turf/open
 /datum/element/footstep/proc/prepare_step(mob/living/source)
+	procstart = null
+	src.procstart = null
 	var/turf/open/turf = get_turf(source)
 	if(!istype(turf))
 		return
@@ -117,6 +123,8 @@
 	return footstep_data
 
 /datum/element/footstep/proc/play_simplestep(mob/living/source, atom/oldloc, direction, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source.moving_diagonally == SECOND_DIAG_STEP)
@@ -140,6 +148,8 @@
 	playsound(source.loc, pick(footstep_sounds[turf_footstep][1]), footstep_sounds[turf_footstep][2] * volume, TRUE, footstep_sounds[turf_footstep][3] + e_range, falloff_distance = 1, vary = sound_vary)
 
 /datum/element/footstep/proc/play_humanstep(mob/living/carbon/human/source, atom/oldloc, direction, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source.moving_diagonally == SECOND_DIAG_STEP)
@@ -218,6 +228,8 @@
 
 ///Prepares a footstep for machine walking
 /datum/element/footstep/proc/play_simplestep_machine(atom/movable/source, atom/oldloc, direction, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source.moving_diagonally == SECOND_DIAG_STEP)

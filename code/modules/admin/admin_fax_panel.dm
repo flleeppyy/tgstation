@@ -18,6 +18,8 @@ ADMIN_VERB(fax_panel, R_ADMIN, "Fax Panel", "View and respond to faxes sent to C
 	var/default_paper_name = "Standard Report"
 
 /datum/fax_panel_interface/New()
+	procstart = null
+	src.procstart = null
 	//Get all faxes, and save them to our list.
 	for(var/obj/machinery/fax/fax as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/fax))
 		if(istype(fax, /obj/machinery/fax/admin))
@@ -40,6 +42,8 @@ ADMIN_VERB(fax_panel, R_ADMIN, "Fax Panel", "View and respond to faxes sent to C
  * * name - Name of fax what we try to find.
  */
 /datum/fax_panel_interface/proc/get_fax_by_name(name)
+	procstart = null
+	src.procstart = null
 	if(!length(available_faxes))
 		return null
 
@@ -51,15 +55,21 @@ ADMIN_VERB(fax_panel, R_ADMIN, "Fax Panel", "View and respond to faxes sent to C
 	return null
 
 /datum/fax_panel_interface/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AdminFax")
 		ui.open()
 
 /datum/fax_panel_interface/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_ADMIN)
 
 /datum/fax_panel_interface/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["faxes"] = list()
@@ -76,6 +86,8 @@ ADMIN_VERB(fax_panel, R_ADMIN, "Fax Panel", "View and respond to faxes sent to C
 	return data
 
 /datum/fax_panel_interface/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 

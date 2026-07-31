@@ -7,6 +7,8 @@
 	var/mafia_game_started = FALSE
 
 /datum/unit_test/mafia/Run()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(SSdcs, COMSIG_MAFIA_GAME_START, PROC_REF(on_mafia_start))
 	var/datum/mafia_controller/controller = GLOB.mafia_game || new()
 
@@ -44,5 +46,7 @@
 	qdel(controller)
 
 /datum/unit_test/mafia/proc/on_mafia_start(datum/controller/subsystem/processing/dcs/source, datum/mafia_controller/game)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	mafia_game_started = TRUE

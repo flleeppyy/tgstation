@@ -53,6 +53,8 @@
 	var/light_mask = "elev-light-mask"
 
 /obj/machinery/elevator_control_panel/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/static/list/tool_behaviors = list(
@@ -70,6 +72,8 @@
 	link_with_lift(log_error = FALSE)
 
 /obj/machinery/elevator_control_panel/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// If we weren't maploaded, we probably already linked (or tried to link) in Initialize().
 	if(!maploaded)
@@ -81,6 +85,8 @@
 
 /// Link with associated transport controllers, only log failure to find a lift in LateInit because those are mapped in
 /obj/machinery/elevator_control_panel/proc/link_with_lift(log_error = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/transport_controller/linear/lift = get_associated_lift()
 	if(!lift)
 		if (log_error)
@@ -94,6 +100,8 @@
 		music.link_to_panel(src)
 
 /obj/machinery/elevator_control_panel/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 
@@ -122,6 +130,8 @@
 	return TRUE
 
 /obj/machinery/elevator_control_panel/multitool_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/datum/transport_controller/linear/lift = lift_weakref?.resolve()
 	if(!lift)
 		return
@@ -165,6 +175,8 @@
 
 /// Find the elevator associated with our lift button.
 /obj/machinery/elevator_control_panel/proc/get_associated_lift()
+	procstart = null
+	src.procstart = null
 	for(var/datum/transport_controller/linear/possible_match as anything in SStransport.transports_by_type[TRANSPORT_TYPE_ELEVATOR])
 		if(possible_match.specific_transport_id != linked_elevator_id)
 			continue
@@ -175,6 +187,8 @@
 
 /// Goes through and populates the linked_elevator_destination list with all possible destinations the lift can go.
 /obj/machinery/elevator_control_panel/proc/populate_destinations_list(datum/transport_controller/linear/linked_lift)
+	procstart = null
+	src.procstart = null
 	// This list will track all the raw z-levels which we found that we can travel to
 	var/list/raw_destinations = list()
 
@@ -210,6 +224,8 @@
  * until it fails to find a valid stopping point in the passed direction.
  */
 /obj/machinery/elevator_control_panel/proc/add_destinations_in_a_direction_recursively(list/turfs_to_check, direction, list/destinations)
+	procstart = null
+	src.procstart = null
 	// Only vertical elevators are supported -  use trams for horizontal ones.
 	if(direction != UP && direction != DOWN)
 		CRASH("[type] was given an invalid direction in add_destinations_in_a_direction_recursively!")
@@ -246,12 +262,16 @@
 	add_destinations_in_a_direction_recursively(checked_turfs, direction, destinations)
 
 /obj/machinery/elevator_control_panel/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ElevatorPanel", name)
 		ui.open()
 
 /obj/machinery/elevator_control_panel/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	// We moved up a z-level, probably via the elevator itself, so don't preserve the UI.
 	if(user.z != z)
 		return UI_CLOSE
@@ -268,6 +288,8 @@
 	return ..()
 
 /obj/machinery/elevator_control_panel/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["emergency_level"] = capitalize(SSsecurity_level.get_current_level_as_text())
@@ -289,6 +311,8 @@
 	return data
 
 /obj/machinery/elevator_control_panel/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["all_floor_data"] = list()
@@ -301,6 +325,8 @@
 	return data
 
 /obj/machinery/elevator_control_panel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -352,6 +378,8 @@
 
 /// Callback for move_to_zlevel to ensure the elevator can continue to move.
 /obj/machinery/elevator_control_panel/proc/check_panel()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return FALSE
 	if(machine_stat & (NOPOWER|BROKEN))
@@ -362,6 +390,8 @@
 /// Helper proc to go through all of our desetinations and reset all elevator doors,
 /// closing doors on z-levels the elevator is away from, and opening doors on the z the elevator is
 /obj/machinery/elevator_control_panel/proc/reset_doors()
+	procstart = null
+	src.procstart = null
 	var/datum/transport_controller/linear/lift = lift_weakref?.resolve()
 	if(!lift)
 		return
@@ -384,6 +414,8 @@
 	door_reset_timerid = null
 
 /obj/machinery/elevator_control_panel/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!light_mask)
 		return

@@ -9,6 +9,8 @@
 	var/range = 2
 
 /datum/bt_node/ai_behavior/find_furthest_turf_from_target/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_target = controller.blackboard[target_key]
 	if(QDELETED(living_target))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED

@@ -16,10 +16,14 @@
 	var/mutable_appearance/icon_overlay
 
 /obj/effect/big_manipulator_arm/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += update_item_overlay()
 
 /obj/effect/big_manipulator_arm/proc/update_item_overlay()
+	procstart = null
+	src.procstart = null
 	if(isnull(item_in_my_claw))
 		return icon_overlay = null
 	var/atom/movable/item_data = item_in_my_claw.resolve()
@@ -32,11 +36,15 @@
 
 /// Updates item that is in the claw.
 /obj/effect/big_manipulator_arm/proc/update_claw(clawed_item)
+	procstart = null
+	src.procstart = null
 	item_in_my_claw = clawed_item
 	update_appearance()
 
 /// Calculate x and y coordinates so that the item icon appears in the claw and not somewhere in the corner.
 /obj/effect/big_manipulator_arm/proc/calculate_item_offset(is_x = TRUE, pixels_to_offset = 32)
+	procstart = null
+	src.procstart = null
 	var/offset
 	switch(dir)
 		if(NORTH)

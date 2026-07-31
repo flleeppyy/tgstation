@@ -17,6 +17,8 @@
 	var/list/grey_tide_areas = list()
 
 /datum/round_event/grey_tide/setup()
+	procstart = null
+	src.procstart = null
 	announce_when = rand(50, 60)
 	end_when = rand(20, 30)
 	severity = rand(1,3)
@@ -33,16 +35,22 @@
 		grey_tide_areas += pick_n_take(potential_areas)
 
 /datum/round_event/grey_tide/announce(fake)
+	procstart = null
+	src.procstart = null
 	if(fake)
 		severity = rand(1,3)
 	priority_announce("Gr3y.T1d3 virus detected in [station_name()] secure locking encryption subroutines. Severity level of [severity]. Recommend station AI involvement.", "Security Alert")
 
 /datum/round_event/grey_tide/start()
+	procstart = null
+	src.procstart = null
 	if(!length(grey_tide_areas))
 		stack_trace("Could not initiate grey-tide. No areas in the list!")
 		kill()
 
 /datum/round_event/grey_tide/tick()
+	procstart = null
+	src.procstart = null
 	if(!ISMULTIPLE(activeFor, 12))
 		return
 
@@ -55,4 +63,6 @@
 // /obj/machinery/power/apc -- Signal turns the lighting channel off
 
 /datum/round_event/grey_tide/end()
+	procstart = null
+	src.procstart = null
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_GREY_TIDE, grey_tide_areas)

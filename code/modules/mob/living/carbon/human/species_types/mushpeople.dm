@@ -39,16 +39,22 @@
 	var/datum/martial_art/mushpunch/mush
 
 /datum/species/mush/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load, regenerate_icons)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	mush = new(src)
 	mush.locked_to_use = TRUE
 	mush.teach(C)
 
 /datum/species/mush/on_species_loss(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(mush)
 
 /datum/species/mush/get_fixed_hair_color(mob/living/carbon/human/for_mob)
+	procstart = null
+	src.procstart = null
 	return "#FF4B19" //cap color, spot color uses eye color
 
 /// A mushpersons mushroom cap organ
@@ -69,6 +75,8 @@
 	organ_flags = parent_type::organ_flags | ORGAN_EXTERNAL
 
 /obj/item/organ/mushroom_cap/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(organ_owner, COMSIG_MOB_STATCHANGE, PROC_REF(on_stat_change))
 
@@ -76,6 +84,8 @@
  * Checks to see if the owner of the mushroom cap has died, and if so, will randomly spore up the floors
  */
 /obj/item/organ/mushroom_cap/proc/on_stat_change(mob/living/victim, new_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(new_stat != DEAD)
@@ -93,6 +103,8 @@
  * This proc cleans up mushroom particles and spawns a new patch of brown mushrooms like glowshrooms do.
  */
 /obj/item/organ/mushroom_cap/proc/create_spores(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(victim))
 		return //can't leave more spores if there's no spores to spore
 
@@ -108,9 +120,13 @@
 	offset_location = UPPER_BODY
 
 /datum/bodypart_overlay/mutant/mushroom_cap/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner, mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	return ..() && !(bodypart_owner.owner?.obscured_slots & HIDEHAIR)
 
 /datum/bodypart_overlay/mutant/mushroom_cap/override_color(obj/item/bodypart/bodypart_owner)
+	procstart = null
+	src.procstart = null
 	//The mushroom cap is red by default (can still be dyed)
 	return "#FF4B19"
 

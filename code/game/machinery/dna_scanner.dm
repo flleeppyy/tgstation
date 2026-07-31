@@ -19,6 +19,8 @@
 	var/obj/machinery/computer/dna_console/linked_console = null
 
 /obj/machinery/dna_scannernew/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	scan_level = 0
 	damage_coeff = 0
@@ -31,11 +33,15 @@
 		damage_coeff = micro_laser.tier
 
 /obj/machinery/dna_scannernew/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
 		. += span_notice("The status display reads: Radiation pulse accuracy increased by factor <b>[precision_coeff**2]</b>.<br>Radiation pulse damage decreased by factor <b>[damage_coeff**2]</b>.")
 
 /obj/machinery/dna_scannernew/update_icon_state()
+	procstart = null
+	src.procstart = null
 	//no power or maintenance
 	if(machine_stat & (NOPOWER|BROKEN))
 		icon_state = "[base_icon_state][state_open ? "_open" : null]_unpowered"
@@ -55,6 +61,8 @@
 	return ..()
 
 /obj/machinery/dna_scannernew/proc/toggle_open(mob/user)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		to_chat(user, span_notice("Close the maintenance panel first."))
 		return
@@ -70,6 +78,8 @@
 	open_machine()
 
 /obj/machinery/dna_scannernew/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(user, TRAIT_PRIMITIVE) || user.ai_controller)
 		if(locked)
 			return //Your primitive brain cant escape a dna scanner noob
@@ -90,6 +100,8 @@
 		open_machine()
 
 /obj/machinery/dna_scannernew/proc/locate_computer(type_)
+	procstart = null
+	src.procstart = null
 	for(var/direction in GLOB.cardinals)
 		var/C = locate(type_, get_step(src, direction))
 		if(C)
@@ -97,6 +109,8 @@
 	return null
 
 /obj/machinery/dna_scannernew/close_machine(mob/living/carbon/user, density_to_set = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!state_open)
 		return FALSE
 
@@ -110,6 +124,8 @@
 	return TRUE
 
 /obj/machinery/dna_scannernew/open_machine(drop = TRUE, density_to_set = FALSE)
+	procstart = null
+	src.procstart = null
 	if(state_open)
 		return FALSE
 	if(locked) //haha bro u cant open it its locked xD
@@ -123,6 +139,8 @@
 	return TRUE
 
 /obj/machinery/dna_scannernew/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(user) || locked)
 		if(message_cooldown <= world.time)
 			message_cooldown = world.time + 50
@@ -131,21 +149,31 @@
 	open_machine()
 
 /obj/machinery/dna_scannernew/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return occupant ? NONE : default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/dna_scannernew/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_pry_open(user, tool, close_after_pry = FALSE, open_density = FALSE, closed_density = TRUE, deconstruct_on_fail = TRUE)
 
 /obj/machinery/dna_scannernew/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	toggle_open(user)
 
 /obj/machinery/dna_scannernew/mouse_drop_receive(atom/target, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(target))
 		return
 	close_machine(target)
 
 //This is only called by the scanner. if you ever want to use this outside of that context you'll need to refactor things a bit
 /obj/machinery/dna_scannernew/proc/set_linked_console(new_console)
+	procstart = null
+	src.procstart = null
 	if(linked_console)
 		UnregisterSignal(linked_console, COMSIG_QDELETING)
 	linked_console = new_console
@@ -153,6 +181,8 @@
 		RegisterSignal(linked_console, COMSIG_QDELETING, PROC_REF(react_to_console_del))
 
 /obj/machinery/dna_scannernew/proc/react_to_console_del(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_linked_console(null)
 
@@ -167,6 +197,8 @@
 	read_only = FALSE //Well,it's still a floppy disk
 
 /obj/item/disk/data/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "datadisk[rand(0,7)]"
 	set_sticker_icon_state(pick("o_dna1", "o_dna2"))
@@ -181,6 +213,8 @@
 	custom_materials = null
 
 /obj/item/disk/data/debug/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Grabs all instances of mutations and adds them to the disk
 	for(var/datum/mutation/mut as anything in subtypesof(/datum/mutation))

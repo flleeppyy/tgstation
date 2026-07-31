@@ -19,6 +19,8 @@
 	COOLDOWN_DECLARE(next_shot_cooldown)
 
 /datum/component/ranged_mob_full_auto/Initialize(autofire_shot_delay = 0.5 SECONDS)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -31,18 +33,26 @@
 	on_gained_client(parent)
 
 /datum/component/ranged_mob_full_auto/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_MOB_LOGIN, PROC_REF(on_gained_client))
 	RegisterSignal(parent, COMSIG_MOB_LOGOUT, PROC_REF(on_lost_client))
 
 /datum/component/ranged_mob_full_auto/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_MOB_LOGIN, COMSIG_MOB_LOGOUT))
 
 /datum/component/ranged_mob_full_auto/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if (!try_shooting())
 		return PROCESS_KILL
 
 /// Try and take a shot, returns false if we are unable to do so and should stop trying
 /datum/component/ranged_mob_full_auto/proc/try_shooting()
+	procstart = null
+	src.procstart = null
 	if (!is_firing)
 		return FALSE
 	if (!COOLDOWN_FINISHED(src, next_shot_cooldown))
@@ -67,6 +77,8 @@
 
 /// Setter for reference handling
 /datum/component/ranged_mob_full_auto/proc/set_target(atom/new_target)
+	procstart = null
+	src.procstart = null
 	if (!isnull(target))
 		UnregisterSignal(target, COMSIG_QDELETING)
 	target = new_target
@@ -75,17 +87,23 @@
 
 /// Don't hang references
 /datum/component/ranged_mob_full_auto/proc/on_target_deleted()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_target(null)
 
 /// When we gain a client, start tracking clicks
 /datum/component/ranged_mob_full_auto/proc/on_gained_client(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	clicker = source.client
 	RegisterSignal(clicker, COMSIG_CLIENT_MOUSEDOWN, PROC_REF(on_mouse_down))
 
 /// When we lose our client, stop functioning
 /datum/component/ranged_mob_full_auto/proc/on_lost_client(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!isnull(clicker))
 		UnregisterSignal(clicker, list(COMSIG_CLIENT_MOUSEDOWN, COMSIG_CLIENT_MOUSEDRAG, COMSIG_CLIENT_MOUSEUP))
@@ -94,6 +112,8 @@
 
 /// On mouse down start shooting!
 /datum/component/ranged_mob_full_auto/proc/on_mouse_down(client/source, atom/target, turf/location, control, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (awaiting_status != AUTOFIRE_MOUSEDOWN)
 		return // Avoid a double mousedown with no mouseup
@@ -132,6 +152,8 @@
 
 /// Start tracking mouse movement and processing our shots
 /datum/component/ranged_mob_full_auto/proc/start_firing()
+	procstart = null
+	src.procstart = null
 	if (is_firing)
 		return
 
@@ -149,6 +171,8 @@
 
 /// When the mouse moved let's try and shift our aim
 /datum/component/ranged_mob_full_auto/proc/on_mouse_drag(client/source, atom/src_object, atom/over_object, turf/src_location, turf/over_location, src_control, over_control, params)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!isnull(over_location))
 		set_target(over_object)
@@ -176,6 +200,8 @@
 
 /// When the mouse is released we should stop
 /datum/component/ranged_mob_full_auto/proc/on_mouse_up()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (awaiting_status != AUTOFIRE_MOUSEUP)
 		return
@@ -184,6 +210,8 @@
 
 /// Stop watching our mouse and processing shots
 /datum/component/ranged_mob_full_auto/proc/stop_firing()
+	procstart = null
+	src.procstart = null
 	if (!is_firing)
 		return
 

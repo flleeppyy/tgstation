@@ -23,19 +23,27 @@
 	var/active_mind_control = FALSE
 
 /obj/item/organ/heart/gland/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = pick(list("health", "spider", "slime", "emp", "species", "egg", "vent", "mindshock", "viral"))
 	AddElement(/datum/element/update_icon_blocker)
 
 /obj/item/organ/heart/gland/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_MIND_TRAIT(user, TRAIT_ABDUCTOR_SCIENTIST_TRAINING) || isobserver(user))
 		. += span_notice("It is \a [abductor_hint]")
 
 /obj/item/organ/heart/gland/Stop()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/item/organ/heart/gland/proc/ownerCheck()
+	procstart = null
+	src.procstart = null
 	if(ishuman(owner))
 		return TRUE
 	if(!human_only && iscarbon(owner))
@@ -43,10 +51,14 @@
 	return FALSE
 
 /obj/item/organ/heart/gland/proc/Start()
+	procstart = null
+	src.procstart = null
 	active = 1
 	COOLDOWN_START(src, activation_cooldown, rand(cooldown_low, cooldown_high))
 
 /obj/item/organ/heart/gland/proc/update_gland_hud()
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return
 	if(active_mind_control)
@@ -57,6 +69,8 @@
 		owner.set_hud_image_state(GLAND_HUD, "hudgland_spent")
 
 /obj/item/organ/heart/gland/proc/mind_control(command, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!ownerCheck() || !mind_control_uses || active_mind_control)
 		return FALSE
 	mind_control_uses--
@@ -73,6 +87,8 @@
 	return TRUE
 
 /obj/item/organ/heart/gland/proc/clear_mind_control()
+	procstart = null
+	src.procstart = null
 	if(!ownerCheck() || !active_mind_control)
 		return FALSE
 	owner.balloon_alert(owner, "compulsion forgotten")
@@ -82,6 +98,8 @@
 	return TRUE
 
 /obj/item/organ/heart/gland/on_mob_remove(mob/living/carbon/gland_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	active = FALSE
 	if(initial(uses) == 1)
@@ -91,6 +109,8 @@
 	clear_mind_control()
 
 /obj/item/organ/heart/gland/on_mob_insert(mob/living/carbon/gland_owner, special = FALSE, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!(movement_flags & FROM_ABDUCTOR_SURGERY) && uses)
@@ -100,6 +120,8 @@
 	update_gland_hud()
 
 /obj/item/organ/heart/gland/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!active)
@@ -115,4 +137,6 @@
 		active = FALSE
 
 /obj/item/organ/heart/gland/proc/activate()
+	procstart = null
+	src.procstart = null
 	return

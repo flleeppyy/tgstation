@@ -7,6 +7,8 @@
 /datum/unit_test/food_processor
 
 /datum/unit_test/food_processor/Run()
+	procstart = null
+	src.procstart = null
 	var/list/food_processes = subtypesof(/datum/food_processor_process)
 
 	for(var/datum/food_processor_process/recipe as anything in food_processes)

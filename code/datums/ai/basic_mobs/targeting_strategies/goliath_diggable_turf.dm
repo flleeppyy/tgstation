@@ -2,6 +2,8 @@
 /datum/targeting_strategy/goliath_diggable_turf
 
 /datum/targeting_strategy/goliath_diggable_turf/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

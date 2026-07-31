@@ -18,6 +18,8 @@
 	var/datum/weakref/fantasy_component
 
 /datum/element/curse_announcement/Attach(datum/target, announcement_message, filter_color, new_name, datum/component/fantasy/fantasy_component)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -32,19 +34,27 @@
 		RegisterSignal(cursed_item, COMSIG_ITEM_PICKUP, PROC_REF(on_pickup))
 
 /datum/element/curse_announcement/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_PICKUP))
 
 /datum/element/curse_announcement/proc/on_equipped(obj/item/cursed_item, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(cursed_item.slot_flags & slot)
 		announce(cursed_item, equipper)
 
 /datum/element/curse_announcement/proc/on_pickup(obj/item/cursed_item, mob/grabber)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	announce(cursed_item, grabber)
 
 /datum/element/curse_announcement/proc/announce(obj/item/cursed_item, mob/cursed)
+	procstart = null
+	src.procstart = null
 	//this is from rpgloot, remove the quality suffix to format the name correctly
 	var/quality_suffix_text
 	var/datum/component/fantasy/perchance_to_dream = fantasy_component.resolve()

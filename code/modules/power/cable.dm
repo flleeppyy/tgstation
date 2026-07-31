@@ -48,6 +48,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 	icon_state = "l4-1-2-4-8-node"
 
 /obj/structure/cable/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	GLOB.cable_list += src //add it to the global cable list
@@ -61,15 +63,21 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/cable/LateInitialize()
+	procstart = null
+	src.procstart = null
 	update_appearance(UPDATE_ICON)
 	is_fully_initialized = TRUE
 
 /obj/structure/cable/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isobserver(user))
 		. += get_power_info()
 
 /obj/structure/cable/proc/on_rat_eat(datum/source, mob/living/basic/regal_rat/king)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(avail())
@@ -81,6 +89,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 
 ///Set the linked indicator bitflags
 /obj/structure/cable/proc/connect_cable(clear_before_updating = FALSE)
+	procstart = null
+	src.procstart = null
 	var/under_thing = NONE
 	if(clear_before_updating)
 		linked_dirs = NONE
@@ -132,6 +142,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 
 ///Clear the linked indicator bitflags
 /obj/structure/cable/proc/disconnect_cable()
+	procstart = null
+	src.procstart = null
 	for(var/check_dir in GLOB.cardinals)
 		if(!(linked_dirs & check_dir))
 			continue
@@ -144,7 +156,9 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 			if (other_cable.is_fully_initialized)
 				other_cable.update_appearance()
 
-/obj/structure/cable/Destroy() // called when a cable is deleted
+/obj/structure/cable/Destroy()
+	procstart = null
+	src.procstart = null // called when a cable is deleted
 	disconnect_cable()
 
 	if(powernet)
@@ -154,10 +168,14 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 	return ..() // then go ahead and delete the cable
 
 /obj/structure/cable/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/cable_coil/cable = new(drop_location(), 1)
 	cable.set_cable_color(cable_color)
 
 /obj/structure/cable/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!powernet || damage_flag != BOMB)
 		return ..()
 
@@ -165,11 +183,15 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 	return ..()
 
 /obj/structure/cable/run_atom_armor(damage_amount, damage_type, damage_flag, attack_dir, armour_penetration)
+	procstart = null
+	src.procstart = null
 	if(damage_flag == BOMB && HAS_TRAIT(src, TRAIT_UNDERFLOOR))
 		damage_amount *= 0.25
 	return ..()
 
 /obj/structure/cable/proc/get_dir_string(links, node)
+	procstart = null
+	src.procstart = null
 	if(!links)
 		return "l[cable_layer]-noconnection"
 
@@ -184,6 +206,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 	return "l[cable_layer]-[dir_string]-node"
 
 /obj/structure/cable/update_icon_state()
+	procstart = null
+	src.procstart = null
 	var/node = !!banned_links
 	if (!node)
 		for(var/obj/connector in loc)
@@ -200,6 +224,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 	return ..()
 
 /obj/structure/cable/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!banned_links)
 		return
@@ -208,6 +234,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 			. += mutable_appearance(icon, "l[cable_layer]-clasp-[check_dir]", layer, src, appearance_flags = KEEP_APART | RESET_COLOR)
 
 /obj/structure/cable/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	if (our_turf.underfloor_accessibility < UNDERFLOOR_INTERACTABLE)
 		return NONE
@@ -221,6 +249,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/cable/wirecutter_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	if (our_turf.underfloor_accessibility < UNDERFLOOR_INTERACTABLE)
 		return NONE
@@ -264,6 +294,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/cable/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	if (our_turf.underfloor_accessibility < UNDERFLOOR_INTERACTABLE)
 		return NONE
@@ -273,6 +305,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/cable/proc/get_power_info()
+	procstart = null
+	src.procstart = null
 	if(powernet?.avail > 0)
 		return span_danger("Total power: [display_power(powernet.avail)]\nLoad: [display_power(powernet.load)]\nExcess power: [display_power(surplus())]")
 	else
@@ -280,10 +314,14 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 
 // shock the user with probability prb
 /obj/structure/cable/shock(mob/living/shocking, chance, shock_source, siemens_coeff)
+	procstart = null
+	src.procstart = null
 	shock_source = powernet
 	return ..()
 
 /obj/structure/cable/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_size >= STAGE_FIVE)
 		deconstruct()
@@ -297,36 +335,50 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 // Non-machines should use add_delayedload(), delayed_surplus(), newavail()
 
 /obj/structure/cable/proc/add_avail(amount)
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		powernet.newavail += amount
 
 /obj/structure/cable/proc/add_load(amount)
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		powernet.load += amount
 
 /obj/structure/cable/proc/surplus()
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		return clamp(powernet.avail-powernet.load, 0, powernet.avail)
 	else
 		return 0
 
 /obj/structure/cable/proc/avail(amount)
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		return amount ? powernet.avail >= amount : powernet.avail
 	else
 		return 0
 
 /obj/structure/cable/proc/add_delayedload(amount)
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		powernet.delayedload += amount
 
 /obj/structure/cable/proc/delayed_surplus()
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		return clamp(powernet.newavail - powernet.delayedload, 0, powernet.newavail)
 	else
 		return 0
 
 /obj/structure/cable/proc/newavail()
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		return powernet.newavail
 	else
@@ -338,6 +390,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 
 // merge with the powernets of power objects in the given direction
 /obj/structure/cable/proc/mergeConnectedNetworks(direction)
+	procstart = null
+	src.procstart = null
 
 	var/inverse_dir = (!direction)? 0 : REVERSE_DIR(direction) //flip the direction, to match with the source position on its turf
 
@@ -365,6 +419,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 
 // merge with the powernets of power objects in the source turf
 /obj/structure/cable/proc/mergeConnectedNetworksOnTurf()
+	procstart = null
+	src.procstart = null
 	var/list/to_connect = list()
 	if(!powernet) //if we somehow have no powernet, make one (should not happen for cables)
 		var/datum/powernet/newPN = new()
@@ -401,6 +457,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 //////////////////////////////////////////////
 
 /obj/structure/cable/proc/get_cable_connections(powernetless_only)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/turf/T = get_turf(src)
 	for(var/check_dir in GLOB.cardinals)
@@ -411,6 +469,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 					. += C
 
 /obj/structure/cable/proc/get_all_cable_connections(powernetless_only)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/turf/T
 	for(var/check_dir in GLOB.cardinals)
@@ -419,6 +479,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 			. += C
 
 /obj/structure/cable/proc/get_machine_connections(powernetless_only)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/obj/machinery/power/P in get_turf(src))
 		if(!powernetless_only || !P.powernet)
@@ -426,12 +488,16 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 				. += P
 
 /obj/structure/cable/proc/auto_propagate_cut_cable(obj/O)
+	procstart = null
+	src.procstart = null
 	if(O && !QDELETED(O))
 		var/datum/powernet/newPN = new()// creates a new powernet...
 		propagate_network(O, newPN)//... and propagates it to the other side of the cable
 
 //Makes a new network for the cable and propgates it. If we already have one, just die
 /obj/structure/cable/proc/propagate_if_no_network()
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		return
 	var/datum/powernet/newPN = new()
@@ -439,6 +505,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 
 // cut the cable's powernet at this cable and updates the powergrid
 /obj/structure/cable/proc/cut_cable_from_powernet(remove = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!powernet)
 		return
 
@@ -513,6 +581,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 	var/target_layer = CABLE_LAYER_2
 
 /obj/item/stack/cable_coil/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = base_pixel_x + rand(-2, 2)
 	pixel_y = base_pixel_y + rand(-2, 2)
@@ -522,30 +592,42 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 	update_appearance()
 
 /obj/item/stack/cable_coil/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/copper = 2)
 
 /obj/item/stack/cable_coil/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "<b>Use it in hand</b> to change the layer you are placing on, amongst other things."
 
 /obj/item/stack/cable_coil/update_name()
+	procstart = null
+	src.procstart = null
 	if(novariants)
 		return
 	. = ..()
 	name = "cable [(amount < 3) ? "piece" : "coil"]"
 
 /obj/item/stack/cable_coil/update_desc()
+	procstart = null
+	src.procstart = null
 	if(novariants)
 		return
 	. = ..()
 	desc = "A [(amount < 3) ? "piece" : "coil"] of insulated power cable."
 
 /obj/item/stack/cable_coil/proc/set_cable_color(new_color)
+	procstart = null
+	src.procstart = null
 	color = GLOB.cable_colors[new_color]
 	cable_color = new_color
 	update_appearance(UPDATE_ICON)
 
 /obj/item/stack/cable_coil/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(novariants)
 		return
 	. = ..()
@@ -553,6 +635,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 	inhand_icon_state = "coil_[cable_color]"
 
 /obj/item/stack/cable_coil/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/structure/chair/stool) in get_turf(user))
 		user.visible_message(span_suicide("[user] is making a noose with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	else
@@ -560,6 +644,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 	return OXYLOSS
 
 /obj/item/stack/cable_coil/proc/check_menu(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(!ISADVANCEDTOOLUSER(user))
@@ -570,6 +656,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 	return TRUE
 
 /obj/item/stack/cable_coil/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return
 
@@ -640,6 +728,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 //you can use wires to heal robotics
 
 /obj/item/stack/cable_coil/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(interacting_with))
 		return NONE
 
@@ -649,6 +739,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 	return try_heal_loop(interacting_with, user)
 
 /obj/item/stack/cable_coil/proc/try_heal_loop(atom/interacting_with, mob/living/user, repeating = FALSE)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/attacked_humanoid = interacting_with
 	var/obj/item/clothing/under/uniform = attacked_humanoid.w_uniform
 	if(!istype(uniform) || uniform.repair_sensors(user))
@@ -686,6 +778,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 
 // called when cable_coil is clicked on a turf
 /obj/item/stack/cable_coil/proc/place_turf(turf/target_turf, mob/user, dirnew)
+	procstart = null
+	src.procstart = null
 	if(!isturf(user.loc))
 		return
 
@@ -736,6 +830,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 	base_icon_state = "coil2"
 
 /obj/item/stack/cable_coil/cut/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
+	procstart = null
+	src.procstart = null
 	if(!amount)
 		amount = rand(1,2)
 	. = ..()
@@ -758,10 +854,14 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 	color = CABLE_COLOR_WHITE
 
 /obj/structure/cable/multilayer/update_icon_state()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	return
 
 /obj/structure/cable/multilayer/update_icon()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	underlays.Cut()
 	var/mutable_appearance/cable_node_3 = mutable_appearance('icons/obj/pipes_n_cables/layer_cable.dmi', "l4-1-2-4-8-node")
@@ -781,6 +881,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 	underlays += machinery_node
 
 /obj/structure/cable/multilayer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/T = get_turf(src)
 	for(var/obj/structure/cable/C in T.contents - src)
@@ -792,6 +894,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 	update_appearance()
 
 /obj/structure/cable/multilayer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. += ..()
 	. += span_notice("L1:[cable_layer & CABLE_LAYER_1 ? "Connect" : "Disconnect"].")
 	. += span_notice("L2:[cable_layer & CABLE_LAYER_2 ? "Connect" : "Disconnect"].")
@@ -800,9 +904,13 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(
 GLOBAL_LIST(hub_radial_layer_list)
 
 /obj/structure/cable/multilayer/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	attack_hand(user)
 
 /obj/structure/cable/multilayer/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return
 	if(!GLOB.hub_radial_layer_list)
@@ -838,6 +946,8 @@ GLOBAL_LIST(hub_radial_layer_list)
 	Reload()
 
 /obj/structure/cable/multilayer/proc/check_menu(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(!ISADVANCEDTOOLUSER(user))
@@ -849,6 +959,8 @@ GLOBAL_LIST(hub_radial_layer_list)
 
 ///Reset powernet in this hub.
 /obj/structure/cable/multilayer/proc/Reload()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	for(var/obj/structure/cable/C in T.contents - src)
 		if(C.cable_layer & cable_layer)
@@ -856,6 +968,8 @@ GLOBAL_LIST(hub_radial_layer_list)
 	auto_propagate_cut_cable(src) // update the powernets
 
 /obj/structure/cable/multilayer/click_ctrl(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("You push the reset button."))
 	addtimer(CALLBACK(src, PROC_REF(Reload)), 10, TIMER_UNIQUE) //spam protect
 	return CLICK_ACTION_SUCCESS

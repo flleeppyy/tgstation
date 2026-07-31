@@ -49,6 +49,8 @@
 	var/datum/action/cooldown/fugu_expand/expand
 
 /mob/living/basic/wumborian_fugu/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/seethrough_mob)
 	AddElement(/datum/element/death_drops, /obj/item/fugu_gland)
@@ -59,5 +61,7 @@
 	ai_controller.set_blackboard_key(BB_FUGU_INFLATE, expand)
 
 /mob/living/basic/wumborian_fugu/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(expand)
 	return ..()

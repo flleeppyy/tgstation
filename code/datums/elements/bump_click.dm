@@ -18,6 +18,8 @@
 	var/allow_any = TRUE
 
 /datum/element/bump_click/Attach(datum/target, list/tool_behaviours, list/tool_types, allow_unarmed = FALSE, allow_combat = FALSE, allow_any = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isatom(target) || isarea(target))
@@ -33,10 +35,14 @@
 	RegisterSignal(target, COMSIG_ATOM_BUMPED, PROC_REF(use_tool), override = TRUE)
 
 /datum/element/bump_click/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(target, COMSIG_ATOM_BUMPED)
 	return ..()
 
 /datum/element/bump_click/proc/check_tool(obj/item/held_item)
+	procstart = null
+	src.procstart = null
 	if(held_item.tool_behaviour in tool_behaviours)
 		return TRUE
 
@@ -46,6 +52,8 @@
 	return FALSE
 
 /datum/element/bump_click/proc/use_tool(atom/source, mob/living/bumper)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isliving(bumper))

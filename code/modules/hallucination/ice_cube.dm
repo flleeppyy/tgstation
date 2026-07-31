@@ -15,11 +15,15 @@
 	var/play_ice_sound
 
 /datum/hallucination/ice/New(mob/living/hallucinator, duration = 6 SECONDS, play_freeze_sound = TRUE)
+	procstart = null
+	src.procstart = null
 	src.ice_duration = duration
 	src.play_ice_sound = play_freeze_sound
 	return ..()
 
 /datum/hallucination/ice/start()
+	procstart = null
+	src.procstart = null
 	ice_overlay = image(ice_icon, hallucinator, ice_icon_state, ABOVE_MOB_LAYER)
 	SET_PLANE_EXPLICIT(ice_overlay, ABOVE_GAME_PLANE, hallucinator)
 	hallucinator.client?.images |= ice_overlay
@@ -36,10 +40,14 @@
 	return TRUE
 
 /datum/hallucination/ice/Destroy()
+	procstart = null
+	src.procstart = null
 	unfreeze()
 	return ..()
 
 /datum/hallucination/ice/proc/unfreeze()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(hallucinator, TRAIT_IMMOBILIZED, HALLUCINATION_TRAIT)
 	if(ice_overlay)
 		hallucinator.client?.images -= ice_overlay

@@ -39,19 +39,27 @@
 	src.end_spin_message = end_spin_message
 
 /datum/component/spin2win/Destroy(force)
+	procstart = null
+	src.procstart = null
 	on_spin_callback = null
 	on_unspin_callback = null
 	return ..()
 
 /datum/component/spin2win/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, PROC_REF(on_attack_self))
 
 /datum/component/spin2win/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ATOM_EXAMINE, COMSIG_ITEM_ATTACK_SECONDARY))
 
 ///signal called on parent being examined
 /datum/component/spin2win/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	examine_list += span_notice("Using [parent] in your hands will make you spin your weapon around for a few moments, attacking everyone near you repeatedly!")
@@ -64,6 +72,8 @@
 		examine_list += span_notice("It will be ready to spin again in [DisplayTimeText(COOLDOWN_TIMELEFT(src, spin_cooldown))].")
 
 /datum/component/spin2win/proc/on_attack_self(datum/source, mob/user, location, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(spinning)
@@ -76,6 +86,8 @@
 	start_spinning(user)
 
 /datum/component/spin2win/proc/start_spinning(mob/living/spinning_user)
+	procstart = null
+	src.procstart = null
 	//user will always exist for the start
 	spinning = TRUE
 	spinning_user.changeNext_move(spin_duration)
@@ -91,6 +103,8 @@
 	START_PROCESSING(SSprocessing, src)
 
 /datum/component/spin2win/proc/stop_spinning(mob/living/user)
+	procstart = null
+	src.procstart = null
 	//user might not exist for the end
 	STOP_PROCESSING(SSprocessing, src)
 	UnregisterSignal(parent, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED))
@@ -105,6 +119,8 @@
 	spinning = FALSE
 
 /datum/component/spin2win/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/obj/item/spinning_item = parent
 	if(!isliving(spinning_item.loc))
 		stop_spinning()
@@ -116,11 +132,15 @@
 		spinning_item.attack(victim, item_owner)
 
 /datum/component/spin2win/proc/on_spin_dropped(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	stop_spinning(user)
 
 /datum/component/spin2win/proc/on_spin_equipped(datum/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(slot != ITEM_SLOT_HANDS)

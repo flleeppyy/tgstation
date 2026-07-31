@@ -5,12 +5,16 @@
 
 /// Returns a list of candidate atoms for the behavior to filter and select from.
 /datum/target_source/proc/collect_candidates(mob/living/pawn, datum/ai_controller/controller, range)
+	procstart = null
+	src.procstart = null
 	return list()
 
 /// Gathers nearby atoms via oview(). No type pre-filtering.
 /datum/target_source/oview
 
 /datum/target_source/oview/collect_candidates(mob/living/pawn, datum/ai_controller/controller, range)
+	procstart = null
+	src.procstart = null
 	var/list/candidates = oview(range, pawn)
 	return candidates
 
@@ -20,6 +24,8 @@
 	var/list/typecache
 
 /datum/target_source/oview_typed/collect_candidates(mob/living/pawn, datum/ai_controller/controller, range)
+	procstart = null
+	src.procstart = null
 	if(isnull(typecache))
 		CRASH("[pawn] using [controller] ran [src] with no typecache.")
 	var/list/candidates = typecache_filter_list(oview(range, pawn), typecache)
@@ -32,6 +38,8 @@
 	var/typecache_key
 
 /datum/target_source/oview_typed/from_bb_key/collect_candidates(mob/living/pawn, datum/ai_controller/controller, range)
+	procstart = null
+	src.procstart = null
 	var/list/bb_typecache = controller.blackboard[typecache_key]
 	var/list/candidates
 	if(isnull(bb_typecache))
@@ -44,6 +52,8 @@
 /datum/target_source/hearers
 
 /datum/target_source/hearers/collect_candidates(mob/living/pawn, datum/ai_controller/controller, range)
+	procstart = null
+	src.procstart = null
 	var/list/candidates = hearers(range, get_turf(pawn)) - pawn
 	var/turf/mob_turf = get_turf(pawn)
 	if(mob_turf?.z)
@@ -57,12 +67,16 @@
 /datum/target_source/range_turfs
 
 /datum/target_source/range_turfs/collect_candidates(mob/living/pawn, datum/ai_controller/controller, range)
+	procstart = null
+	src.procstart = null
 	return RANGE_TURFS(range, pawn)
 
 /// Gathers items currently held in the pawn's hands.
 /datum/target_source/held_items
 
 /datum/target_source/held_items/collect_candidates(mob/living/pawn, datum/ai_controller/controller, range)
+	procstart = null
+	src.procstart = null
 	return pawn.held_items || list()
 
 /// Reads a typecache from BB_BASIC_FOODS and filters oview candidates by it.
@@ -78,6 +92,8 @@
 /datum/target_source/carried_huntable_prey
 
 /datum/target_source/carried_huntable_prey/collect_candidates(mob/living/pawn, datum/ai_controller/controller, range)
+	procstart = null
+	src.procstart = null
 	var/list/prey = controller.blackboard[BB_HUNTABLE_PREY]
 	if(isnull(prey))
 		return list()
@@ -88,6 +104,8 @@
 	var/list_key
 
 /datum/target_source/from_bb_list/collect_candidates(mob/living/pawn, datum/ai_controller/controller, range)
+	procstart = null
+	src.procstart = null
 	return controller.blackboard[list_key] || list()
 
 /// Reads from BB_BASIC_MOB_RETALIATE_LIST.
@@ -98,6 +116,8 @@
 /datum/target_source/oview_items
 
 /datum/target_source/oview_items/collect_candidates(mob/living/pawn, datum/ai_controller/controller, range)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/candidates = list()
 	for(var/obj/item/item_candidate in oview(range, pawn))

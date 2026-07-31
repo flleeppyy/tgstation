@@ -14,6 +14,8 @@
 	var/obj/item/seeds/plant_dna = /obj/item/seeds/apple
 
 /obj/item/graft/Initialize(mapload, obj/item/seeds/mother_plant)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//create our "plant dna" internal seed from the plant the cuttings are taken from.
 	if(mother_plant)

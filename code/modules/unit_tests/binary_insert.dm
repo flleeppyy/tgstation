@@ -1,5 +1,7 @@
 /// A test to ensure the sanity of BINARY_INSERT
 /datum/unit_test/binary_insert/Run()
+	procstart = null
+	src.procstart = null
 	var/list/datum/binary_insert_node/nodes = list()
 
 	var/datum/binary_insert_node/node_a = new /datum/binary_insert_node(10)
@@ -23,4 +25,6 @@
 	var/x
 
 /datum/binary_insert_node/New(_x)
+	procstart = null
+	src.procstart = null
 	x = _x

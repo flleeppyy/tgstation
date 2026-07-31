@@ -26,7 +26,9 @@
 	///the message given when you discover this geyser.
 	var/discovery_message = null
 
-/obj/structure/geyser/Initialize(mapload) //if xenobio wants to bother, nethermobs are around geysers.
+/obj/structure/geyser/Initialize(mapload)
+	procstart = null
+	src.procstart = null //if xenobio wants to bother, nethermobs are around geysers.
 	. = ..()
 
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_NETHER, CELL_VIRUS_TABLE_GENERIC, 1, 5)
@@ -45,6 +47,8 @@
 
 ///start making those CHHHHHEEEEEEMS. Called whenever chems are removed
 /obj/structure/geyser/proc/start_chemming()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(reagents, COMSIG_REAGENTS_HOLDER_UPDATED)
@@ -53,6 +57,8 @@
 
 ///Add reagents until we are full
 /obj/structure/geyser/process()
+	procstart = null
+	src.procstart = null
 	//create more
 	if(reagents.total_volume <= reagents.maximum_volume)
 		reagents.add_reagent(reagent_id, potency)
@@ -63,6 +69,8 @@
 	return PROCESS_KILL
 
 /obj/structure/geyser/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/mining_scanner) && !istype(tool, /obj/item/t_scanner/adv_mining_scanner))
 		playsound(src, SFX_INDUSTRIAL_SCAN, 20, TRUE, -2, TRUE, FALSE)
 		return NONE //this runs the plunger code
@@ -117,6 +125,8 @@
 	point_value = 500
 
 /obj/structure/geyser/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	reagent_id = get_random_reagent_id()
 
 	true_name = "[initial(reagent_id.name)] geyser"
@@ -150,6 +160,8 @@
 	var/target_layer = DUCT_LAYER_DEFAULT
 
 /obj/item/plunger/attack_atom(obj/attacked_obj, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(layer_mode)
 		SEND_SIGNAL(attacked_obj, COMSIG_MOVABLE_CHANGE_DUCT_LAYER, attacked_obj, target_layer)
 		return ..()
@@ -158,6 +170,8 @@
 			return ..()
 
 /obj/item/plunger/throw_impact(atom/hit_atom, datum/thrownthing/tt)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(tt.target_zone != BODY_ZONE_HEAD)
 		return
@@ -167,6 +181,8 @@
 			victim.visible_message(span_warning("The plunger slams into [victim]'s face!"), span_warning("The plunger suctions to your face!"))
 
 /obj/item/plunger/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	layer_mode = !layer_mode
@@ -181,6 +197,8 @@
 	playsound(src, 'sound/machines/click.ogg', 10, TRUE)
 
 /obj/item/plunger/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	var/new_layer = tgui_input_list(user, "Select a layer", "Layer", GLOB.plumbing_layers)
 	if(isnull(new_layer) || !user.can_perform_action(src))
 		return CLICK_ACTION_BLOCKING

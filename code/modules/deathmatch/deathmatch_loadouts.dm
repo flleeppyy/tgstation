@@ -13,6 +13,8 @@
 	var/list/mutations_to_add = list()
 
 /datum/outfit/deathmatch_loadout/pre_equip(mob/living/carbon/human/user, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isdummy(user))
 		return
@@ -917,12 +919,16 @@
 // We don't want them to just punch each other to death
 
 /datum/outfit/deathmatch_loadout/lattice_battles/pre_equip(mob/living/carbon/human/user, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(user, TRAIT_PACIFISM, REF(src))
 
 // Ragnarok: Fight between religions!
 
 /datum/outfit/deathmatch_loadout/cultish/pre_equip(mob/living/carbon/human/user, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(user, TRAIT_ACT_AS_CULTIST, REF(src))
 	user.apply_status_effect(/datum/status_effect/cult_halo, 0 SECONDS)
@@ -993,6 +999,8 @@
 	)
 
 /datum/outfit/deathmatch_loadout/cultish/artificer/post_equip(mob/living/carbon/human/user, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/action/innate/cult/blood_spell/manipulation/magick = locate() in user.get_all_contents()
 	magick.charges = 300
@@ -1002,6 +1010,8 @@
 	var/list/knowledge_to_grant
 
 /datum/outfit/deathmatch_loadout/heresy/pre_equip(mob/living/carbon/human/user, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(user, TRAIT_ACT_AS_HERETIC, REF(src))
 	user.AddElement(/datum/element/rust_healing)
@@ -1163,6 +1173,8 @@
 	id = /obj/item/card/id/advanced/black/syndicate_command/crew_id
 
 /datum/outfit/deathmatch_loadout/syndicate_spaceman/pre_equip(mob/living/carbon/human/user, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	if(user.jumpsuit_style == PREF_SKIRT)
 		uniform = /obj/item/clothing/under/syndicate/skirt
 	// pick a random syndicate spess suit
@@ -1170,6 +1182,8 @@
 	head = GLOB.syndicate_space_suits_to_helmets[suit]
 
 /datum/outfit/deathmatch_loadout/syndicate_spaceman/post_equip(mob/living/carbon/human/syndicate_spaceman, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/card/id/id_card = syndicate_spaceman.get_item_by_slot(ITEM_SLOT_ID)
 	var/obj/item/storage/belt/belt = syndicate_spaceman.get_item_by_slot(ITEM_SLOT_BELT)
@@ -1201,10 +1215,14 @@
 	id = /obj/item/card/id/advanced
 
 /datum/outfit/deathmatch_loadout/cargo_spaceman/pre_equip(mob/living/carbon/human/cargo_spaceman, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	if(cargo_spaceman.jumpsuit_style == PREF_SKIRT)
 		uniform = /obj/item/clothing/under/rank/cargo/tech/skirt
 
 /datum/outfit/deathmatch_loadout/cargo_spaceman/post_equip(mob/living/carbon/human/cargo_spaceman, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/card/id/id_card = cargo_spaceman.get_item_by_slot(ITEM_SLOT_ID)
 	if(id_card)
@@ -1235,10 +1253,14 @@
 	id = /obj/item/card/id/advanced
 
 /datum/outfit/deathmatch_loadout/spacetider/pre_equip(mob/living/carbon/human/spacetider, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	if(spacetider.jumpsuit_style == PREF_SKIRT)
 		uniform = /obj/item/clothing/under/color/jumpskirt/grey
 
 /datum/outfit/deathmatch_loadout/spacetider/post_equip(mob/living/carbon/human/spacetider, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spacetider.reagents.add_reagent(/datum/reagent/consumable/coffee, 30) //pre prime the coffee
 	var/obj/item/card/id/id_card = spacetider.get_item_by_slot(ITEM_SLOT_ID)

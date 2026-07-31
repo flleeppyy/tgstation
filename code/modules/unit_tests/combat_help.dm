@@ -4,6 +4,8 @@
 	var/helpee_times_helped = 0
 
 /datum/unit_test/help_click/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/helps_the_guy = EASY_ALLOCATE()
 	var/mob/living/carbon/human/consistent/gets_the_help = EASY_ALLOCATE()
 
@@ -25,9 +27,13 @@
 	TEST_ASSERT_EQUAL(helpee_times_helped, 1, "Helpee should have been helped once - helper clicked on helpee.")
 
 /datum/unit_test/help_click/proc/helper_help_received()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	helper_times_helped += 1
 
 /datum/unit_test/help_click/proc/helpee_help_received()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	helpee_times_helped += 1

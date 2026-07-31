@@ -7,6 +7,8 @@
 	var/target_key = BB_CURRENT_TARGET
 
 /datum/bt_node/ai_behavior/call_reinforcements/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/target = controller.blackboard[target_key]
 	if(!istype(target, /mob))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED
@@ -36,6 +38,8 @@
 	reinforcements_range = 7
 
 /datum/bt_node/ai_behavior/call_reinforcements/mining/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/target = controller.blackboard[target_key]
 	if(!istype(target, /mob))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED

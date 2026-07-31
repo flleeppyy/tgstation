@@ -10,6 +10,8 @@
 
 // set_color arg can be either a color string or a singleton /datum/blood_type to pull the color from
 /obj/effect/temp_visual/dir_setting/bloodsplatter/Initialize(mapload, set_dir, set_color = BLOOD_COLOR_RED)
+	procstart = null
+	src.procstart = null
 	if(set_color)
 		var/datum/blood_type/blood_type = set_color
 		if(istype(blood_type))
@@ -63,12 +65,16 @@
 	duration = 3
 
 /obj/effect/temp_visual/dir_setting/firing_effect/Initialize(mapload, set_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (ismovable(loc))
 		var/atom/movable/spawned_inside = loc
 		spawned_inside.vis_contents += src
 
 /obj/effect/temp_visual/dir_setting/firing_effect/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	switch(newdir)
 		if(NORTH)
 			layer = BELOW_MOB_LAYER
@@ -146,6 +152,8 @@
 	var/fades = TRUE
 
 /obj/effect/temp_visual/dir_setting/curse/Initialize(mapload, set_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(fades)
 		animate(src, alpha = 0, time = 32)
@@ -181,6 +189,8 @@
 	duration = 50
 
 /obj/effect/temp_visual/bsa_splash/Initialize(mapload, dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(dir)
 		if(WEST)
@@ -237,6 +247,8 @@
 	duration = 15
 
 /obj/effect/temp_visual/decoy/Initialize(mapload, atom/mimiced_atom)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	alpha = initial(alpha)
 	if(mimiced_atom)
@@ -246,6 +258,8 @@
 		mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /obj/effect/temp_visual/decoy/fading/Initialize(mapload, atom/mimiced_atom, start_alpha)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (start_alpha)
 		alpha = start_alpha
@@ -313,6 +327,8 @@
 	duration = 9
 
 /obj/effect/temp_visual/bluespace_fissure/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	apply_wibbly_filters(src)
 
@@ -321,6 +337,8 @@
 	duration = 15
 
 /obj/effect/temp_visual/gib_animation/Initialize(mapload, gib_icon)
+	procstart = null
+	src.procstart = null
 	icon_state = gib_icon // Needs to be before ..() so icon is correct
 	. = ..()
 
@@ -338,6 +356,8 @@
 	duration = 15
 
 /obj/effect/temp_visual/heal/Initialize(mapload, set_color)
+	procstart = null
+	src.procstart = null
 	if(set_color)
 		add_atom_colour(set_color, FIXED_COLOUR_PRIORITY)
 	. = ..()
@@ -381,6 +401,8 @@
 	duration = 5
 
 /obj/effect/temp_visual/impact_effect/Initialize(mapload, x, y)
+	procstart = null
+	src.procstart = null
 	pixel_x = x
 	pixel_y = y
 	return ..()
@@ -436,6 +458,8 @@
 	duration = 25
 
 /obj/effect/temp_visual/heart/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(-4,4)
 	pixel_y = rand(-4,4)
@@ -448,6 +472,8 @@
 	duration = 25
 
 /obj/effect/temp_visual/annoyed/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(-4,0)
 	pixel_y = rand(8,12)
@@ -461,6 +487,8 @@
 	var/shrink = TRUE
 
 /obj/effect/temp_visual/bleed/Initialize(mapload, atom/size_calc_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/size_matrix = matrix()
 	if(size_calc_target)
@@ -484,6 +512,8 @@
 	var/outgoing = TRUE
 
 /obj/effect/temp_visual/warp_cube/Initialize(mapload, atom/teleporting_atom, warp_color, new_outgoing)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(teleporting_atom)
 		outgoing = new_outgoing
@@ -527,6 +557,8 @@
 	var/delay = 0
 
 /obj/effect/constructing_effect/Initialize(mapload, rcd_delay, rcd_status, rcd_upgrades)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	status = rcd_status
 	delay = rcd_delay
@@ -550,6 +582,8 @@
 		obj_flags &= ~CAN_BE_HIT
 
 /obj/effect/constructing_effect/update_name(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (status == RCD_DECONSTRUCT)
@@ -558,6 +592,8 @@
 		name = "construction effect"
 
 /obj/effect/constructing_effect/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "rcd"
 	if(delay < 10)
 		icon_state += "_shortest"
@@ -573,6 +609,8 @@
 	return ..()
 
 /obj/effect/constructing_effect/proc/end_animation()
+	procstart = null
+	src.procstart = null
 	if (status == RCD_DECONSTRUCT)
 		qdel(src)
 	else
@@ -582,18 +620,26 @@
 		addtimer(CALLBACK(src, PROC_REF(end)), 1.5 SECONDS)
 
 /obj/effect/constructing_effect/proc/end()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /obj/effect/constructing_effect/proc/attacked(mob/user)
+	procstart = null
+	src.procstart = null
 	user.do_attack_animation(src, ATTACK_EFFECT_PUNCH)
 	user.changeNext_move(CLICK_CD_MELEE)
 	playsound(loc, 'sound/items/weapons/egloves.ogg', vol = 80, vary = TRUE)
 	end()
 
 /obj/effect/constructing_effect/attackby(obj/item/weapon, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	attacked(user)
 
 /obj/effect/constructing_effect/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	attacked(user)
 
 /obj/effect/temp_visual/electricity
@@ -627,6 +673,8 @@
 	var/follow_creature = TRUE
 
 /obj/effect/temp_visual/sonar_ping/Initialize(mapload, mob/living/looker, mob/living/creature, ping_state, follow_creatures = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!looker || !creature)
 		return INITIALIZE_HINT_QDEL
@@ -650,6 +698,8 @@
 
 /// If the user moves, we want to move the effect on top of them so they always see it
 /obj/effect/temp_visual/sonar_ping/proc/on_user_moved(atom/movable/source, atom/oldloc, direction, forced, list/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/looker = mod_man?.resolve()
@@ -665,6 +715,8 @@
 
 /// If the target moves & we have follow_creature = TRUE, then we want to also update the location of the ping when the creature moves
 /obj/effect/temp_visual/sonar_ping/proc/on_target_moved(atom/movable/source, atom/oldloc, direction, forced, list/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/looker = mod_man?.resolve()
@@ -677,6 +729,8 @@
 
 
 /obj/effect/temp_visual/sonar_ping/Destroy()
+	procstart = null
+	src.procstart = null
 	var/mob/living/previous_user = mod_man?.resolve()
 	if(previous_user)
 		previous_user?.client?.images -= modsuit_image
@@ -694,6 +748,8 @@
 	duration = 6.7
 
 /obj/effect/temp_visual/block/Initialize(mapload, set_color)
+	procstart = null
+	src.procstart = null
 	if(set_color)
 		add_atom_colour(set_color, FIXED_COLOUR_PRIORITY)
 	. = ..()
@@ -706,6 +762,8 @@
 	duration = 15
 
 /obj/effect/temp_visual/crit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, pixel_y = pixel_y + 16, alpha = 0, time = duration)
 
@@ -722,6 +780,8 @@
 	duration = 1 SECONDS
 
 /obj/effect/temp_visual/despawn_effect/Initialize(mapload, atom/copy_from)
+	procstart = null
+	src.procstart = null
 	if (isnull(copy_from))
 		. = ..()
 		return INITIALIZE_HINT_QDEL
@@ -750,6 +810,8 @@
 	duration = 0.4 SECONDS
 
 /obj/effect/temp_visual/mech_sparks/Initialize(mapload, set_color)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(-16, 16)
 	pixel_y = rand(-8, 8)
@@ -790,6 +852,8 @@
 	var/amount_to_scale = 2
 
 /obj/effect/temp_visual/circle_wave/Initialize(mapload, color)
+	procstart = null
+	src.procstart = null
 	transform = matrix().Scale(0.1)
 	animate(src, transform = matrix().Scale(amount_to_scale), time = duration, flags = ANIMATION_PARALLEL)
 	animate(src, alpha = max_alpha, time = duration * 0.6, flags = ANIMATION_PARALLEL)
@@ -830,10 +894,14 @@
 	alpha = 0
 
 /obj/effect/temp_visual/focus_ring/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, alpha = 100, time = 2 SECONDS, easing = QUAD_EASING|EASE_IN)
 	addtimer(CALLBACK(src, PROC_REF(dissipate)), 2 SECONDS)
 
 
 /obj/effect/temp_visual/focus_ring/proc/dissipate()
+	procstart = null
+	src.procstart = null
 	animate(src, alpha = 0, time = 0.5 SECONDS, easing = QUAD_EASING|EASE_OUT)

@@ -25,6 +25,8 @@
 	var/on = TRUE
 
 /obj/machinery/air_sensor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	id_tag = assign_random_name()
 
 	var/static/list/multitool_tips = list(
@@ -38,6 +40,8 @@
 	return ..()
 
 /obj/machinery/air_sensor/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	//auto connect to any inlet & outlet devices within a 4 diameter radius from this sensor
@@ -55,6 +59,8 @@
  * * reconfigure - if TRUE it will override existing ports if they are already registered
 */
 /obj/machinery/air_sensor/proc/configure(obj/machinery/atmospherics/components/unary/port, reconfigure = FALSE)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	if(!istype(port) || port.z != z)
 		return NONE
@@ -88,16 +94,22 @@
 	return NONE
 
 /obj/machinery/air_sensor/Destroy()
+	procstart = null
+	src.procstart = null
 	reset()
 	return ..()
 
 /obj/machinery/air_sensor/return_air()
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return
 	. = ..()
 	use_energy(active_power_usage) //use power for analyzing gases
 
 /obj/machinery/air_sensor/process()
+	procstart = null
+	src.procstart = null
 	//update appearance according to power state
 	if(machine_stat & NOPOWER)
 		if(on)
@@ -108,11 +120,15 @@
 		update_appearance()
 
 /obj/machinery/air_sensor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Use a multitool to link it to an injector, vent, or air alarm, or reset its ports.")
 	. += span_notice("Click with hand to turn it off.")
 
 /obj/machinery/air_sensor/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	//switched off version of this air sensor but still anchored to the ground
@@ -124,10 +140,14 @@
 	qdel(src)
 
 /obj/machinery/air_sensor/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "gsensor[on]"
 	return ..()
 
 /obj/machinery/air_sensor/proc/reset()
+	procstart = null
+	src.procstart = null
 	inlet_id = null
 	outlet_id = null
 	if(connected_airalarm)
@@ -138,11 +158,15 @@
 
 ///right click with multi tool to disconnect everything
 /obj/machinery/air_sensor/multitool_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	reset()
 	balloon_alert(user, "ports reset")
 	return TRUE
 
 /obj/machinery/air_sensor/multitool_act(mob/living/user, obj/item/multitool/multi_tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/type = configure(multi_tool.buffer, TRUE)
@@ -170,10 +194,14 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT + SMALL_MATERIAL_AMOUNT * 0.3, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 0.2)
 
 /obj/item/air_sensor/Initialize(mapload, inlet, outlet)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/item/air_sensor/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item))
 		return NONE
 
@@ -188,6 +216,8 @@
 	return NONE
 
 /obj/item/air_sensor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(anchored)
 		. += span_notice("It's [EXAMINE_HINT("wrenched")] in place")
@@ -197,6 +227,8 @@
 	. +=  span_notice("Click with hand to turn it on.")
 
 /obj/item/air_sensor/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!anchored)
 		return
@@ -240,10 +272,14 @@
 		break
 
 /obj/item/air_sensor/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(default_unfasten_wrench(user, tool) == SUCCESSFUL_UNFASTEN)
 		return ITEM_INTERACT_SUCCESS
 
 /obj/item/air_sensor/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!tool.tool_start_check(user, amount = 1))
 		return ITEM_INTERACT_BLOCKING
 
@@ -256,6 +292,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/air_sensor/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	new /obj/item/analyzer(loc)
 	new /obj/item/stack/sheet/iron(loc)
 

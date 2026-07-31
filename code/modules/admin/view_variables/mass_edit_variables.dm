@@ -1,4 +1,6 @@
 /client/proc/cmd_mass_modify_object_variables(datum/target, var_name)
+	procstart = null
+	src.procstart = null
 	if(tgui_alert(src, "Are you sure you'd like to mass-modify every instance of the [var_name] variable? This can break everything if you do not know what you are doing.", "Slow down, chief!", list("Yes", "No"), 60 SECONDS) != "Yes")
 		return
 
@@ -14,6 +16,8 @@
 	BLACKBOX_LOG_ADMIN_VERB("Mass Edit Variables")
 
 /client/proc/massmodify_variables(datum/target, var_name = "", strict_type = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_VAREDIT))
 		return
 	if(!istype(target))
@@ -198,6 +202,8 @@
 
 //not using global lists as vv is a debug function and debug functions should rely on as less things as possible.
 /proc/get_all_of_type(T, subtypes = TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/typecache = list()
 	typecache[T] = 1
 	if (subtypes)

@@ -14,6 +14,8 @@
 	)
 
 /obj/item/book/granter/action/spell/fireball/recoil(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	explosion(
 		user,

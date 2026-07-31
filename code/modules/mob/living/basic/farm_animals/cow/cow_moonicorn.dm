@@ -24,17 +24,23 @@
 	milked_reagent = /datum/reagent/drug/mushroomhallucinogen
 
 /mob/living/basic/cow/moonicorn/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/venomous, /datum/reagent/pax, 5, injection_flags = INJECT_CHECK_PENETRATE_THICK | INJECT_CHECK_IGNORE_SPECIES)
 	AddElement(/datum/element/movement_turf_changer, /turf/open/floor/grass/fairy)
 
 /mob/living/basic/cow/moonicorn/setup_eating()
+	procstart = null
+	src.procstart = null
 	var/static/list/food_types
 	if(!food_types)
 		food_types = src.food_types.Copy()
 	AddComponent(/datum/component/tameable, food_types = food_types, tame_chance = 25, bonus_tame_chance = 15)
 
 /mob/living/basic/cow/moonicorn/tamed(mob/living/tamer, atom/food)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	///stop killing my FRIENDS
 	APPLY_FACTION_AND_ALLIES_FROM(src, tamer)
@@ -58,6 +64,8 @@
 /datum/targeting_strategy/basic/allow_items/moonicorn
 
 /datum/targeting_strategy/basic/allow_items/moonicorn/is_valid_target(mob/living/living_mob, atom/the_target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

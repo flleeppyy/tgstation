@@ -21,6 +21,8 @@
 	var/obj/item/camera/camera
 
 /obj/item/circuit_component/camera/populate_ports()
+	procstart = null
+	src.procstart = null
 	picture_taken = add_output_port("Picture Taken", PORT_TYPE_SIGNAL)
 	photographed_atom = add_output_port("Photographed Entity", PORT_TYPE_ATOM)
 
@@ -31,25 +33,35 @@
 	adjust_size_y = add_input_port("Picture Size Y", PORT_TYPE_NUMBER, trigger = PROC_REF(sanitize_picture_size))
 
 /obj/item/circuit_component/camera/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	camera = shell
 	RegisterSignal(shell, COMSIG_CAMERA_IMAGE_CAPTURED, PROC_REF(on_image_captured))
 
 /obj/item/circuit_component/camera/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(shell, COMSIG_CAMERA_IMAGE_CAPTURED)
 	camera = null
 	return ..()
 
 ///Adjuts the zoom of the camera
 /obj/item/circuit_component/camera/proc/sanitize_picture_size()
+	procstart = null
+	src.procstart = null
 	camera.adjust_zoom(adjust_size_x.value, adjust_size_y.value)
 
 /obj/item/circuit_component/camera/proc/on_image_captured(obj/item/camera/source, atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	photographed_atom.set_output(target)
 	picture_taken.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/camera/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	var/atom/target = picture_target.value
 	if(!target)
 		var/turf/our_turf = get_location()
@@ -76,6 +88,8 @@
 	var/datum/port/output/photo_taken
 
 /obj/item/circuit_component/mod_program/camera/populate_ports()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	picture_target = add_input_port("Picture Target", PORT_TYPE_ATOM)
 	picture_size = add_input_port("Picture Size", PORT_TYPE_NUMBER)
@@ -83,16 +97,22 @@
 	photo_taken = add_output_port("Photo Taken", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/mod_program/camera/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/computer_file/program/maintenance/camera/cam = associated_program
 	RegisterSignal(cam.internal_camera, COMSIG_CAMERA_IMAGE_CAPTURED, PROC_REF(on_image_captured))
 
 /obj/item/circuit_component/mod_program/camera/unregister_shell()
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/program/maintenance/camera/cam = associated_program
 	UnregisterSignal(cam.internal_camera, COMSIG_CAMERA_IMAGE_CAPTURED)
 	return ..()
 
 /obj/item/circuit_component/mod_program/camera/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!COMPONENT_TRIGGERED_BY(port, trigger_input))
 		return
 	var/atom/target = picture_target.value
@@ -105,6 +125,8 @@
 	cam.internal_camera.attempt_picture(target)
 
 /obj/item/circuit_component/mod_program/camera/proc/on_image_captured(obj/item/camera/source, atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	photographed.set_output(target)
 	photo_taken.set_output(COMPONENT_SIGNAL)

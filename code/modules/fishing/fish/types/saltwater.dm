@@ -16,6 +16,8 @@
 	required_temperature_max = MIN_AQUARIUM_TEMP+30
 
 /obj/item/fish/clownfish/get_fish_taste()
+	procstart = null
+	src.procstart = null
 	return list("raw fish" = 2, "something funny" = 1)
 
 /obj/item/fish/clownfish/lube
@@ -33,6 +35,8 @@
 
 // become lubeman. but you suicide
 /obj/item/fish/clownfish/lube/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] covers themselves in [src]'s residue, then swallows it whole! It looks like [user.p_theyre()] trying to commit lubide!"))
 	user.AddComponent(/datum/component/slippery, 8 SECONDS, SLIDE|GALOSHES_DONT_HELP)
 	user.AddElement(/datum/element/lube_walking)
@@ -104,6 +108,8 @@
 	beauty = FISH_BEAUTY_GOOD
 
 /obj/item/fish/pufferfish/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] bites into [src] and starts sucking on it! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return TOXLOSS
 
@@ -184,6 +190,8 @@
 	fish_traits = list(/datum/fish_trait/carnivore, /datum/fish_trait/predator, /datum/fish_trait/stinger)
 
 /obj/item/fish/swordfish/get_force_rank()
+	procstart = null
+	src.procstart = null
 	switch(w_class)
 		if(WEIGHT_CLASS_TINY)
 			force -= 11
@@ -230,6 +238,8 @@
 		exposed_wound_bonus -= 10
 
 /obj/item/fish/swordfish/calculate_fish_force_bonus(bonus_malus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	armour_penetration += bonus_malus * 5
 	wound_bonus += bonus_malus * 3
@@ -253,6 +263,8 @@
 	fish_traits = list(/datum/fish_trait/heavy, /datum/fish_trait/carnivore, /datum/fish_trait/predator, /datum/fish_trait/ink, /datum/fish_trait/camouflage, /datum/fish_trait/wary)
 
 /obj/item/fish/squid/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] points [src]'s ink glands at their face and presses INCREDIBLY hard! It looks like [user.p_theyre()] trying to commit squidcide!"))
 
 	// No head? Bozo.
@@ -278,9 +290,13 @@
 	return MANUAL_SUICIDE
 
 /obj/item/fish/squid/get_fish_taste()
+	procstart = null
+	src.procstart = null
 	return list("raw mollusk" = 2)
 
 /obj/item/fish/squid/get_fish_taste_cooked()
+	procstart = null
+	src.procstart = null
 	return list("cooked mollusk" = 2, "tenderness" = 0.5)
 
 /obj/item/fish/monkfish
@@ -307,6 +323,8 @@
 	)
 
 /obj/item/fish/monkfish/Initialize(mapload, apply_qualities = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = pick("monkfish", "fishing-frog", "frog-fish", "sea-devil", "goosefish")
 

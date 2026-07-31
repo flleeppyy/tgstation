@@ -5,9 +5,13 @@
 	name = "singularity delamination"
 
 /datum/sm_delam/singularity/can_select(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	return (sm.absorbed_gasmix.total_moles() >= MOLE_PENALTY_THRESHOLD)
 
 /datum/sm_delam/singularity/delam_progress(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	sm.radio.talk_into(
@@ -18,6 +22,8 @@
 	return TRUE
 
 /datum/sm_delam/singularity/delaminate(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	log_delamination(sm)
 	effect_irradiate(sm)
 	effect_demoralize(sm)
@@ -28,6 +34,8 @@
 	return ..()
 
 /datum/sm_delam/singularity/filters(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	..()
 
 	sm.modify_filter(name = "ray", new_params = list(
@@ -50,13 +58,19 @@
 		sm.remove_filter("icon")
 
 /datum/sm_delam/singularity/on_deselect(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	sm.remove_filter(list("outline", "icon"))
 
 /datum/sm_delam/singularity/overlays(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	return list()
 
 /datum/sm_delam/singularity/lights(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	..()
 	sm.set_light_color(SUPERMATTER_SINGULARITY_LIGHT_COLOUR)
 
@@ -65,9 +79,13 @@
 	name = "tesla delamination"
 
 /datum/sm_delam/tesla/can_select(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	return (sm.internal_energy > POWER_PENALTY_THRESHOLD)
 
 /datum/sm_delam/tesla/delam_progress(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	sm.radio.talk_into(
@@ -78,6 +96,8 @@
 	return TRUE
 
 /datum/sm_delam/tesla/delaminate(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	log_delamination(sm)
 	effect_irradiate(sm)
 	effect_demoralize(sm)
@@ -89,6 +109,8 @@
 
 
 /datum/sm_delam/tesla/filters(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	..()
 
 	sm.modify_filter(name = "ray", new_params = list(
@@ -102,10 +124,14 @@
 	))
 
 /datum/sm_delam/tesla/on_deselect(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	sm.remove_filter(list("icon"))
 
 /datum/sm_delam/tesla/lights(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	..()
 	sm.set_light_color(SUPERMATTER_TESLA_COLOUR)
 
@@ -114,9 +140,13 @@
 	name = "explosive delamination"
 
 /datum/sm_delam/explosive/can_select(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/sm_delam/explosive/delaminate(obj/machinery/power/supermatter_crystal/sm)
+	procstart = null
+	src.procstart = null
 	log_delamination(sm)
 	effect_irradiate(sm)
 	effect_demoralize(sm)

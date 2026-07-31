@@ -17,22 +17,32 @@
 	)
 
 /datum/surgery_operation/limb/bionecrosis/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(get_dynamic_human_appearance(species_path = /datum/species/zombie))
 
 /datum/surgery_operation/limb/bionecrosis/all_required_strings()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "the limb must have a brain present"
 
 /datum/surgery_operation/limb/bionecrosis/any_required_strings()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/reagent/chem as anything in zombie_chems)
 		. += "the patient or tool must contain >1u [chem::name]"
 
 /datum/surgery_operation/limb/bionecrosis/all_blocked_strings()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "the limb must not already have a Romerol tumor"
 
 /datum/surgery_operation/limb/bionecrosis/state_check(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/item/organ/zombie_infection) in limb)
 		return FALSE
 	if(!(locate(/obj/item/organ/brain) in limb))
@@ -40,6 +50,8 @@
 	return TRUE
 
 /datum/surgery_operation/limb/bionecrosis/snowflake_check_availability(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, operated_zone)
+	procstart = null
+	src.procstart = null
 	for(var/chem in zombie_chems)
 		if(tool.reagents?.get_reagent_amount(chem) > 1)
 			return TRUE
@@ -48,6 +60,8 @@
 	return FALSE
 
 /datum/surgery_operation/limb/bionecrosis/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -58,6 +72,8 @@
 	display_pain(limb.owner, "Your head pounds with unimaginable pain!") // Same message as other brain surgeries
 
 /datum/surgery_operation/limb/bionecrosis/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,

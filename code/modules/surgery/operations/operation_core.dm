@@ -12,15 +12,23 @@
 	required_biotype = NONE
 
 /datum/surgery_operation/basic/core_removal/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(/mob/living/basic/slime)
 
 /datum/surgery_operation/basic/core_removal/all_required_strings()
+	procstart = null
+	src.procstart = null
 	return list("operate on a deceased slime") + ..()
 
 /datum/surgery_operation/basic/core_removal/state_check(mob/living/patient)
+	procstart = null
+	src.procstart = null
 	return isslime(patient) && patient.stat == DEAD
 
 /datum/surgery_operation/basic/core_removal/on_preop(mob/living/basic/slime/patient, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		patient,
@@ -30,6 +38,8 @@
 	)
 
 /datum/surgery_operation/basic/core_removal/on_success(mob/living/basic/slime/patient, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	var/core_count = patient.cores
 	if(core_count && patient.try_extract_cores(count = core_count))
 		display_results(

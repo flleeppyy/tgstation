@@ -1,8 +1,12 @@
 /obj/vehicle/sealed/mecha/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui_view.hide_from(user)
 
 /obj/vehicle/sealed/mecha/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Mecha", name)
@@ -10,6 +14,8 @@
 		ui_view.display_to(user, ui.window)
 
 /obj/vehicle/sealed/mecha/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	var/common_status = min(
 		ui_status_user_is_abled(user, src),
 		ui_status_only_living(user),
@@ -28,11 +34,15 @@
 	return min(common_status, mob_specific_status)
 
 /obj/vehicle/sealed/mecha/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/mecha_equipment),
 	)
 
 /obj/vehicle/sealed/mecha/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["ui_theme"] = ui_theme
 	//same thresholds as in air alarm
@@ -70,6 +80,8 @@
 	return data
 
 /obj/vehicle/sealed/mecha/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/isoperator = (user in occupants) //maintenance mode outside of mech
 	data["isoperator"] = isoperator
@@ -112,6 +124,8 @@
 	return data
 
 /obj/vehicle/sealed/mecha/proc/get_module_ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/module_index = 0
 	for(var/category in max_equip_by_category)
@@ -150,6 +164,8 @@
 	return data
 
 /obj/vehicle/sealed/mecha/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

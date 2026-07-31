@@ -1,4 +1,6 @@
 /mob/dead/observer/DblClickOn(atom/A, params)
+	procstart = null
+	src.procstart = null
 	if(check_click_intercept(params, A))
 		return
 
@@ -11,6 +13,8 @@
 		abstract_move(get_turf(A))
 
 /mob/dead/observer/ClickOn(atom/A, params)
+	procstart = null
+	src.procstart = null
 	if(check_click_intercept(params,A))
 		return
 
@@ -48,6 +52,8 @@
 
 // Oh by the way this didn't work with old click code which is why clicking shit didn't spam you
 /atom/proc/attack_ghost(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_GHOST, user) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return TRUE
 	if(user.client)
@@ -60,6 +66,8 @@
 	return FALSE
 
 /mob/living/attack_ghost(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(user.client))
 		return
@@ -74,6 +82,8 @@
 // Now you can click through portals, wormholes, gateways, and teleporters while observing. -Sayu
 
 /obj/machinery/teleport/hub/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!power_station?.engaged || !power_station.teleporter_console || !power_station.teleporter_console.target_ref)
 		return ..()
 

@@ -73,6 +73,8 @@
 	sound = 'sound/mobs/non-humanoids/insect/chitter.ogg'
 
 /mob/living/basic/spider/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_WEB_SURFER, TRAIT_FENCE_CLIMBER), INNATE_TRAIT)
 	AddElement(/datum/element/footstep, FOOTSTEP_MOB_CLAW)
@@ -102,6 +104,8 @@
 	AddComponent(/datum/component/tameable, food_types = food_types, tame_chance = 20, bonus_tame_chance = 10)
 
 /mob/living/basic/spider/Login()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !client)
 		return FALSE
@@ -111,25 +115,35 @@
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/spider)
 
 /mob/living/basic/spider/Logout()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	remove_movespeed_modifier(/datum/movespeed_modifier/player_spider_modifier)
 
 /mob/living/basic/spider/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.spidermobs -= src
 	return ..()
 
 /mob/living/basic/spider/tamed(mob/living/tamer, atom/food, feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/temp_visual/heart(src.loc)
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/spider)
 	AddComponent(/datum/component/obeys_commands, tamed_commands)
 
 /mob/living/basic/spider/mob_negates_gravity()
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/structure/spider/stickyweb) in loc)
 		return TRUE
 	return ..()
 
 /mob/living/basic/spider/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/reagent/toxin/pestkiller/current_reagent in reagents)
 		apply_damage(50 * volume_modifier, STAMINA, BODY_ZONE_CHEST)
@@ -142,6 +156,8 @@
 	var/spider_growth_time = 1 MINUTES
 
 /mob/living/basic/spider/growing/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(\
 		/datum/component/growth_and_differentiation,\
@@ -159,6 +175,8 @@
  * The component will automagically grow us when we return TRUE and that threshold has been met.
  */
 /mob/living/basic/spider/growing/proc/ready_to_grow()
+	procstart = null
+	src.procstart = null
 	if(isturf(loc))
 		return TRUE
 
@@ -169,6 +187,8 @@
  * Actually move to our next stage of life.
  */
 /mob/living/basic/spider/growing/proc/grow_up()
+	procstart = null
+	src.procstart = null
 	if(isnull(grow_as))
 		if(prob(3))
 			grow_as = pick(/mob/living/basic/spider/giant/tarantula, /mob/living/basic/spider/giant/viper, /mob/living/basic/spider/giant/midwife)
@@ -227,6 +247,8 @@
 	)
 
 /mob/living/basic/spider/maintenance/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 	AddElement(/datum/element/web_walker, /datum/movespeed_modifier/average_web)

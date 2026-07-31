@@ -24,6 +24,8 @@
 
 // only AI isn't allowed to move when this flag is set, sentient players can
 /datum/ai_movement/jps/bot/medbot/allowed_to_move(datum/move_loop/source)
+	procstart = null
+	src.procstart = null
 	var/datum/ai_controller/controller = source.extra_info
 	var/mob/living/basic/bot/medbot/bot_pawn = controller.pawn
 	if(bot_pawn.medical_mode_flags & MEDBOT_STATIONARY_MODE)
@@ -37,6 +39,8 @@
 
 /// Medbot's note_unreachable_target skips blacklisting while stationary, matching the old set_if_can_reach bypass.
 /datum/ai_controller/basic_controller/bot/medbot/note_unreachable_target(atom/target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bot/medbot/bot_pawn = pawn
 	if(bot_pawn.medical_mode_flags & MEDBOT_STATIONARY_MODE)
 		return
@@ -46,6 +50,8 @@
 /datum/target_source/oview_single_type/human_mob/medbot_patient
 
 /datum/target_source/oview_single_type/human_mob/medbot_patient/collect_candidates(mob/living/pawn, datum/ai_controller/controller, range)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bot/medbot/bot_pawn = pawn
 	if(bot_pawn.medical_mode_flags & MEDBOT_STATIONARY_MODE)
 		range = 1
@@ -53,6 +59,8 @@
 
 /// Valid if the patient needs the damage type this medbot heals (or is a conscious target while emagged).
 /datum/targeting_strategy/treatable_patient/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -70,6 +78,8 @@
 /datum/bt_node/ai_behavior/acquire_target/update_interaction_target/medbot_patient
 
 /datum/bt_node/ai_behavior/acquire_target/update_interaction_target/medbot_patient/on_target_found(datum/ai_controller/controller, atom/target, datum/targeting_strategy/strategy)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(controller.pawn) || get_dist(controller.pawn, target) <= 1)
 		return
 	var/datum/action/cooldown/bot_announcement/announcement = controller.blackboard[BB_ANNOUNCE_ABILITY]
@@ -81,6 +91,8 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/tend_to_patient/perform(seconds_per_tick, datum/ai_controller/basic_controller/bot/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/patient = controller.blackboard[target_key]
 	if(QDELETED(patient) || patient.stat == DEAD)
 		EVLOG_TEXT(controller, EVLOG_CATEGORY_AI_BEHAVIORS, "[controller.pawn] tend_to_patient: patient gone (deleted=[QDELETED(patient)], stat=[patient?.stat])")
@@ -99,6 +111,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/tend_to_patient/finish_action(datum/ai_controller/basic_controller/bot/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/basic/bot/medbot/bot_pawn = controller.pawn
 	var/atom/target = controller.blackboard[target_key]
@@ -115,6 +129,8 @@
 	controller.clear_blackboard_key(target_key)
 
 /datum/bt_node/ai_behavior/tend_to_patient/proc/check_if_healed(mob/living/carbon/human/patient, threshold, damage_type_healer, access_flags)
+	procstart = null
+	src.procstart = null
 	if(access_flags & BOT_COVER_EMAGGED)
 		return (patient.stat != STABLE)
 	var/patient_damage = (damage_type_healer == HEAL_ALL_DAMAGE) ? patient.get_total_damage() : patient.get_current_damage_of_type(damagetype = damage_type_healer)
@@ -127,6 +143,8 @@
 	time_between_perform = 20 SECONDS
 
 /datum/bt_node/ai_behavior/handle_medbot_speech/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/bot/medbot/bot_pawn = controller.pawn
 	var/currently_tipped = bot_pawn.medical_mode_flags & MEDBOT_TIPPED_MODE
 	var/speech_chance = ((bot_pawn.bot_access_flags & BOT_COVER_EMAGGED) || currently_tipped) ? 15 : 5
@@ -152,6 +170,8 @@
 
 /// Valid if the patient is at least unconscious, has a mind, and is visible  used to announce medical emergencies.
 /datum/targeting_strategy/crit_patient/is_valid_target(mob/living/living_mob, atom/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -165,6 +185,8 @@
 	time_between_perform = 3 MINUTES
 
 /datum/bt_node/ai_behavior/announce_patient/perform(seconds_per_tick, datum/ai_controller/basic_controller/bot/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_target = controller.blackboard[target_key]
 	if(QDELETED(living_target))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
@@ -176,6 +198,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/announce_patient/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(target_key)
 

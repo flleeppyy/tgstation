@@ -6,12 +6,16 @@
 	var/datum/motion_group/motion_group
 
 /datum/component/monitored_area/Initialize()
+	procstart = null
+	src.procstart = null
 	// By the way, this component should be added in LateInitialize().
 	if(!isarea(parent))
 		return COMPONENT_INCOMPATIBLE
 	motion_group = new()
 
 /datum/component/monitored_area/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_AREA_ENTERED, PROC_REF(on_entered))
 	RegisterSignal(parent, COMSIG_AREA_EXITED, PROC_REF(on_exited))
 	// FIXME: cameras will never be updated after registration
@@ -19,15 +23,21 @@
 		motion_group.track_camera(camera)
 
 /datum/component/monitored_area/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_AREA_ENTERED, COMSIG_AREA_EXITED))
 	for(var/obj/machinery/camera/camera as anything in motion_group.motion_cameras)
 		motion_group.untrack_camera(camera)
 
 /datum/component/monitored_area/proc/on_entered(area/_source, atom/movable/gain, area/_old_area)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	motion_group.track_mob(gain)
 
 /datum/component/monitored_area/proc/on_exited(area/_source, atom/movable/lost, _direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	motion_group.untrack_mob(lost)
 
@@ -40,6 +50,8 @@
 	var/list/datum/weakref/motion_targets = list()
 
 /datum/motion_group/proc/track_camera(obj/machinery/camera/gain_camera)
+	procstart = null
+	src.procstart = null
 	if(!gain_camera.isMotion())
 		return
 
@@ -48,6 +60,8 @@
 	LAZYOR(motion_cameras, gain_camera)
 
 /datum/motion_group/proc/untrack_camera(obj/machinery/camera/lost_camera)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	LAZYREMOVE(motion_cameras, lost_camera)
@@ -58,6 +72,8 @@
 		LAZYNULL(motion_targets)
 
 /datum/motion_group/proc/track_mob(mob/gain_mob)
+	procstart = null
+	src.procstart = null
 	if(!ismob(gain_mob) || !LAZYLEN(motion_cameras))
 		return
 
@@ -66,6 +82,8 @@
 		return //??
 
 /datum/motion_group/proc/untrack_mob(mob/lost_mob)
+	procstart = null
+	src.procstart = null
 	if(!ismob(lost_mob) || !LAZYLEN(motion_cameras))
 		return
 

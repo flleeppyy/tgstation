@@ -54,6 +54,8 @@
 	ai_controller = /datum/ai_controller/basic_controller/netguardian
 
 /mob/living/basic/netguardian/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_FLOATING_ANIM, INNATE_TRAIT)
 	AddComponent(/datum/component/ranged_attacks, \
@@ -70,11 +72,15 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /mob/living/basic/netguardian/death(gibbed)
+	procstart = null
+	src.procstart = null
 	do_sparks(number = 3, cardinal_only = TRUE, source = src)
 	playsound(src, 'sound/vehicles/mecha/weapdestr.ogg', 100)
 	return ..()
 
 /mob/living/basic/netguardian/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (stat == DEAD)
 		return
@@ -90,6 +96,8 @@
 	shot_count = 3
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/netguardian/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	var/mob/living/player = owner
 	playsound(player, 'sound/vehicles/mecha/skyfall_power_up.ogg', 120)
 	player.say("target acquired.", "machine")

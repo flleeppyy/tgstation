@@ -4,6 +4,8 @@
 /datum/bt_node/ai_behavior/parrot_repeat_speech
 
 /datum/bt_node/ai_behavior/parrot_repeat_speech/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/parrot/speaking_pawn = controller.pawn
 
 	var/switch_up_probability = controller.blackboard[BB_PARROT_PHRASE_CHANGE_PROBABILITY]
@@ -40,12 +42,16 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/parrot_repeat_speech/proc/modify_voice(mob/living/speaking_pawn, list/speech)
+	procstart = null
+	src.procstart = null
 	if(SStts.available_speakers.Find(speech["voice"]))
 		speaking_pawn.voice = speech["voice"]
 	if(speech["pitch"] && SStts.pitch_enabled)
 		speaking_pawn.pitch = min(speech["pitch"] + rand(6, 12), MAXIMUM_PARROT_PITCH)
 
 /datum/bt_node/ai_behavior/parrot_repeat_speech/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!succeeded)
 		return

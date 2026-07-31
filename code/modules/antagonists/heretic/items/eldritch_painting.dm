@@ -29,12 +29,16 @@
 	var/range = 7
 
 /obj/structure/sign/painting/eldritch/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ispath(applied_status_effect))
 		var/static/list/connections = list(COMSIG_ATOM_ENTERED = PROC_REF(apply_status_effect))
 		AddComponent(/datum/component/connect_range, tracked = src, connections = connections, range = range, works_in_containers = FALSE)
 
 /obj/structure/sign/painting/eldritch/proc/apply_status_effect(datum/source, mob/living/carbon/viewer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isliving(viewer) || !can_see(viewer, src, range))
 		return
@@ -54,6 +58,8 @@
 	to_chat(viewer, span_hypnophrase("Your mind is overcome! The painting leaves a mark on your psyche."))
 
 /obj/structure/sign/painting/eldritch/wirecutter_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(!user.can_block_magic(MAGIC_RESISTANCE_MOON))
 		user.add_mood_event("ripped_eldritch_painting", /datum/mood_event/eldritch_painting)
 		to_chat(user, span_hypnophrase("There's an itch in your brain. It's laughing at you..."))
@@ -62,6 +68,8 @@
 
 // On examine eldritch paintings give a trait so their effects can not be spammed
 /obj/structure/sign/painting/eldritch/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(user))
 		return
@@ -73,6 +81,8 @@
 	addtimer(CALLBACK(src, PROC_REF(examine_effects), user), 0.2 SECONDS)
 
 /obj/structure/sign/painting/eldritch/proc/examine_effects(mob/living/carbon/examiner)
+	procstart = null
+	src.procstart = null
 	if(IS_HERETIC(examiner))
 		to_chat(examiner, span_notice("What an engrossing painting!"))
 	else
@@ -93,6 +103,8 @@
 	text_to_display = "Such beauty! Such sorrow!"
 
 /obj/structure/sign/painting/eldritch/weeping/examine_effects(mob/living/carbon/examiner)
+	procstart = null
+	src.procstart = null
 	if(!IS_HERETIC(examiner))
 		to_chat(examiner, span_hypnophrase("Respite, for now...."))
 		examiner.mob_mood.mood_events.Remove("eldritch_weeping")
@@ -119,6 +131,8 @@
 
 // The special examine interaction for this painting
 /obj/structure/sign/painting/eldritch/desire/examine_effects(mob/living/carbon/examiner)
+	procstart = null
+	src.procstart = null
 	if(!IS_HERETIC(examiner))
 		// Gives them some nutrition
 		examiner.adjust_nutrition(50)
@@ -178,10 +192,14 @@
 	)
 
 /obj/structure/sign/painting/eldritch/vines/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /datum/spacevine_controller(get_turf(src), mutations, 0, 10)
 
 /obj/structure/sign/painting/eldritch/vines/examine_effects(mob/living/carbon/examiner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!IS_HERETIC(examiner))
 		new /datum/spacevine_controller(get_turf(examiner), mutations, 0, 10)
@@ -214,6 +232,8 @@
 
 // The special examine interaction for this painting
 /obj/structure/sign/painting/eldritch/beauty/examine_effects(mob/living/carbon/examiner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!examiner.has_dna())
 		return
@@ -242,6 +262,8 @@
 
 // The special examine interaction for this painting
 /obj/structure/sign/painting/eldritch/rust/examine_effects(mob/living/carbon/examiner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!IS_HERETIC(examiner))

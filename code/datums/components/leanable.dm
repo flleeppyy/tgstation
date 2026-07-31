@@ -8,11 +8,15 @@
 	var/is_currently_leanable = TRUE
 
 /datum/component/leanable/Initialize(mob/living/leaner, leaning_offset = 11)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.leaning_offset = leaning_offset
 	mousedrop_receive(parent, leaner, leaner)
 
 /datum/component/leanable/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_MOUSEDROPPED_ONTO, PROC_REF(mousedrop_receive))
 	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved))
 	RegisterSignal(parent, COMSIG_ATOM_DENSITY_CHANGED, PROC_REF(on_density_change))
@@ -20,6 +24,8 @@
 	is_currently_leanable = leanable_atom.density
 
 /datum/component/leanable/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, list(
 		COMSIG_MOVABLE_MOVED,
@@ -28,13 +34,19 @@
 	))
 
 /datum/component/leanable/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_MOUSEDROPPED_ONTO, COMSIG_MOVABLE_MOVED))
 
 /datum/component/leanable/Destroy(force)
+	procstart = null
+	src.procstart = null
 	stop_leaning_leaners()
 	return ..()
 
 /datum/component/leanable/proc/stop_leaning_leaners(fall)
+	procstart = null
+	src.procstart = null
 	for (var/mob/living/leaner as anything in leaning_mobs)
 		leaner.stop_leaning()
 		if(fall)
@@ -43,12 +55,16 @@
 	leaning_mobs.Cut()
 
 /datum/component/leanable/proc/on_moved(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for (var/mob/living/leaner as anything in leaning_mobs)
 		leaner.stop_leaning()
 
 /datum/component/leanable/proc/mousedrop_receive(atom/source, atom/movable/dropped, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (dropped != user)
 		return
 	if (!iscarbon(dropped) && !iscyborg(dropped))
@@ -69,6 +85,8 @@
 	return COMPONENT_CANCEL_MOUSEDROPPED_ONTO
 
 /datum/component/leanable/proc/stopped_leaning(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	leaning_mobs -= source
 	UnregisterSignal(source, list(COMSIG_LIVING_STOPPED_LEANING, COMSIG_QDELETING))
@@ -81,6 +99,8 @@
  * * leaning_offset - pixel offset to apply on the mob when leaning
  */
 /mob/living/proc/start_leaning(atom/lean_target, leaning_offset)
+	procstart = null
+	src.procstart = null
 	var/new_x = 0
 	var/new_y = 0
 	switch(dir)
@@ -111,6 +131,8 @@
 
 /// You fall on your face if you get teleported while leaning
 /mob/living/proc/teleported_away_while_leaning()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Make sure we unregister signal handlers and reset animation
@@ -120,6 +142,8 @@
 	Knockdown(3 SECONDS)
 
 /mob/living/proc/stop_leaning()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(src, list(
@@ -135,12 +159,16 @@
 	update_fov()
 
 /mob/living/proc/lean_dir_changed(atom/source, old_dir, new_dir)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (old_dir != new_dir)
 		INVOKE_ASYNC(src, PROC_REF(stop_leaning))
 
 /datum/component/leanable/proc/on_density_change()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	is_currently_leanable = !is_currently_leanable
 	if(!is_currently_leanable)

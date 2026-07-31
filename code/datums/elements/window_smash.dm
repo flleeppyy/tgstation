@@ -6,6 +6,8 @@
 /datum/element/window_smashing
 
 /datum/element/window_smashing/Attach(datum/target, duration = 1.5 SECONDS)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -16,6 +18,8 @@
 
 /// Smash any windows that the mob is flying through
 /datum/element/window_smashing/proc/flying_window_smash(atom/movable/flying_mob, atom/old_loc, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/turf/target_turf = get_turf(flying_mob)
 	for(var/obj/structure/tram/tram_wall in target_turf)
@@ -28,6 +32,8 @@
 		grille.smash_and_injure(flying_mob, old_loc, direction)
 
 /datum/element/window_smashing/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, COMSIG_MOVABLE_MOVED)
 	REMOVE_TRAIT(source, TRAIT_PASSWINDOW, TRAM_PASSENGER_TRAIT)
 	return ..()

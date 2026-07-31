@@ -31,6 +31,8 @@
 	var/datum/light_middleman/middleman
 
 /obj/structure/life_candle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_OVERLAY_LIGHT_SYSTEM(light_system))
 		middleman = new(src, "life_candle")
@@ -39,10 +41,14 @@
 	AddElement(/datum/element/movetype_handler)
 
 /obj/structure/life_candle/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(middleman)
 	return ..()
 
 /obj/structure/life_candle/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -68,10 +74,14 @@
 		set_light_on(FALSE)
 
 /obj/structure/life_candle/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = linked_minds.len ? icon_state_active : icon_state_inactive
 	return ..()
 
 /obj/structure/life_candle/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(linked_minds.len)
 		. += "[src] is active, and linked to [linked_minds.len] souls."
@@ -79,6 +89,8 @@
 		. += "It is static, still, unmoving."
 
 /obj/structure/life_candle/process()
+	procstart = null
+	src.procstart = null
 	if(!linked_minds.len)
 		STOP_PROCESSING(SSobj, src)
 		return
@@ -89,10 +101,14 @@
 			addtimer(CALLBACK(src, PROC_REF(respawn), mind), respawn_time, TIMER_UNIQUE)
 
 /obj/structure/life_candle/proc/light_updated(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	fire_flicker_middleman(middleman)
 
 /obj/structure/life_candle/proc/respawn(datum/mind/mind)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	var/mob/living/body
 	if(mind.current)

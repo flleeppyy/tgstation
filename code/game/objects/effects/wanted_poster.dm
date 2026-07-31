@@ -23,6 +23,8 @@
 
 
 /obj/item/poster/wanted/Initialize(mapload, obj/structure/sign/poster/new_poster_structure, icon/person_icon, wanted_name, description, headerText, posterHeaderColor)
+	procstart = null
+	src.procstart = null
 	if(posterHeaderColor)
 		postHeaderColor = posterHeaderColor
 
@@ -49,6 +51,8 @@
 	poster_item_type = /obj/item/poster/wanted
 
 /obj/structure/sign/poster/wanted/Initialize(mapload, icon/person_icon, person_name, description, postHeaderText, postHeaderColor, background, pname, pdesc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!person_icon)
 		return INITIALIZE_HINT_QDEL
@@ -88,6 +92,8 @@
 	color: This set the text color: #ff00ff
 */
 /obj/structure/sign/poster/wanted/proc/print_across_top(icon/poster_icon, text, color)
+	procstart = null
+	src.procstart = null
 	var/textLen = min(length(text), 7)
 	var/startX = 16 - (2*textLen)
 	var/i
@@ -102,4 +108,6 @@
 
 /// We have some additional params since we are doing icon shenanigans
 /obj/structure/sign/poster/wanted/return_to_poster_item(atom/location)
+	procstart = null
+	src.procstart = null
 	return new poster_item_type(location, src, original_icon, wanted_name, desc, posterHeaderText, posterHeaderColor)

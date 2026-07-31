@@ -50,6 +50,8 @@ GLOBAL_LIST_INIT(sandstone_recipes, list ( \
 	pickup_sound = SFX_STONE_PICKUP
 
 /obj/item/stack/sheet/mineral/sandstone/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.sandstone_recipes
 
@@ -73,6 +75,8 @@ GLOBAL_LIST_INIT(sandbag_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/mineral/sandbags/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.sandbag_recipes
 
@@ -87,6 +91,8 @@ GLOBAL_LIST_INIT(sandbag_recipes, list ( \
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/emptysandbag/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stack/ore/glass))
 		return NONE
 	var/obj/item/stack/ore/glass/sand = tool
@@ -120,6 +126,8 @@ GLOBAL_LIST_INIT(diamond_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/mineral/diamond/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.diamond_recipes
 
@@ -152,6 +160,8 @@ GLOBAL_LIST_INIT(uranium_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/mineral/uranium/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.uranium_recipes
 
@@ -183,6 +193,8 @@ GLOBAL_LIST_INIT(uranium_recipes, list ( \
 	walltype = /turf/closed/wall/mineral/plasma
 
 /obj/item/stack/sheet/mineral/plasma/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] begins licking \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return TOXLOSS//dont you kids know that stuff is toxic?
 
@@ -192,6 +204,8 @@ GLOBAL_LIST_INIT(plasma_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/mineral/plasma/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.plasma_recipes
 
@@ -229,6 +243,8 @@ GLOBAL_LIST_INIT(gold_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/mineral/gold/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.gold_recipes
 
@@ -259,6 +275,8 @@ GLOBAL_LIST_INIT(silver_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/mineral/silver/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.silver_recipes
 
@@ -287,6 +305,8 @@ GLOBAL_LIST_INIT(bananium_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/mineral/bananium/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.bananium_recipes
 
@@ -322,10 +342,14 @@ GLOBAL_LIST_INIT(titanium_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/mineral/titanium/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.titanium_recipes
 
 /obj/item/stack/sheet/mineral/titanium/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(!istype(tool, /obj/item/stack/rods))
 		return ..()
@@ -380,6 +404,8 @@ GLOBAL_LIST_INIT(plastitanium_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/mineral/plastitanium/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.plastitanium_recipes
 
@@ -411,10 +437,14 @@ GLOBAL_LIST_INIT(snow_recipes, list ( \
 ))
 
 /obj/item/stack/sheet/mineral/snow/Initialize(mapload, new_amount, merge, list/mat_override, mat_amt)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/storm_hating)
 
 /obj/item/stack/sheet/mineral/snow/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.snow_recipes
 
@@ -439,6 +469,8 @@ GLOBAL_LIST_INIT(adamantine_recipes, list(
 	merge_type = /obj/item/stack/sheet/mineral/adamantine
 
 /obj/item/stack/sheet/mineral/adamantine/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.adamantine_recipes
 
@@ -498,6 +530,8 @@ GLOBAL_LIST_INIT(abductor_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/mineral/abductor/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.abductor_recipes
 
@@ -515,9 +549,13 @@ GLOBAL_LIST_INIT(abductor_recipes, list ( \
 	novariants = TRUE
 
 /obj/item/stack/sheet/mineral/coal/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/carbon = 20)
 
 /obj/item/stack/sheet/mineral/coal/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(tool.get_temperature() < FIRE_MINIMUM_TEMPERATURE_TO_EXIST) //If the temperature of the object is hot enough to start a fire, then ignite
 		return ..()
 	var/turf/jumpturf = get_turf(src)
@@ -528,6 +566,8 @@ GLOBAL_LIST_INIT(abductor_recipes, list ( \
 
 
 /obj/item/stack/sheet/mineral/coal/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	atmos_spawn_air("[GAS_CO2]=[amount*10];[TURF_TEMPERATURE(exposed_temperature)]")
 	qdel(src)
 
@@ -562,6 +602,8 @@ GLOBAL_LIST_INIT(metalhydrogen_recipes, list(
 	armor_type = /datum/armor/metal_hydrogen_sheet
 
 /obj/item/stack/sheet/mineral/metal_hydrogen/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.metalhydrogen_recipes
 
@@ -592,5 +634,7 @@ GLOBAL_LIST_INIT(zaukerite_recipes, list(
 	material_type = /datum/material/zaukerite
 
 /obj/item/stack/sheet/mineral/zaukerite/get_main_recipes()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += GLOB.zaukerite_recipes

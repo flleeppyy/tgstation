@@ -2,6 +2,8 @@
 GLOBAL_LIST_INIT_TYPED(circuit_datatypes, /datum/circuit_datatype, generate_circuit_datatypes())
 
 /proc/generate_circuit_datatypes()
+	procstart = null
+	src.procstart = null
 	var/list/datatypes_by_key = list()
 	for(var/datum/circuit_datatype/type as anything in subtypesof(/datum/circuit_datatype))
 		if(!initial(type.datatype) || initial(type.abstract))
@@ -38,12 +40,16 @@ GLOBAL_LIST_INIT_TYPED(circuit_datatypes, /datum/circuit_datatype, generate_circ
  * and applying/removing signals on inputs
  */
 /datum/circuit_datatype/proc/convert_value(datum/port/port, value_to_convert, force = FALSE)
+	procstart = null
+	src.procstart = null
 	return value_to_convert
 
 /**
  * Similar to convert value, however it doesn't get called by a port when a value is set. Useful for extensive conversions that may only need to be done for player inputs (e.g. lists)
  */
 /datum/circuit_datatype/proc/convert_value_extensive(datum/port/port, value_to_convert, force = FALSE)
+	procstart = null
+	src.procstart = null
 	return convert_value(port, value_to_convert, force)
 
 /**
@@ -55,6 +61,8 @@ GLOBAL_LIST_INIT_TYPED(circuit_datatypes, /datum/circuit_datatype, generate_circ
  * * datatype_to_check - The datatype to check
  */
 /datum/circuit_datatype/proc/can_receive_from_datatype(datatype_to_check)
+	procstart = null
+	src.procstart = null
 	return datatype == datatype_to_check || (datatype_to_check in can_receive_from)
 
 /**
@@ -64,6 +72,8 @@ GLOBAL_LIST_INIT_TYPED(circuit_datatypes, /datum/circuit_datatype, generate_circ
  * * gained_port - The gained port.
  */
 /datum/circuit_datatype/proc/on_gain(datum/port/gained_port)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -73,6 +83,8 @@ GLOBAL_LIST_INIT_TYPED(circuit_datatypes, /datum/circuit_datatype, generate_circ
  * * lost_port - The removed port.
  */
 /datum/circuit_datatype/proc/on_loss(datum/port/lost_port)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -84,6 +96,8 @@ GLOBAL_LIST_INIT_TYPED(circuit_datatypes, /datum/circuit_datatype, generate_circ
  * * port - The port to check if it is compatible.
  */
 /datum/circuit_datatype/proc/is_compatible(datum/port/port)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /**
@@ -93,6 +107,8 @@ GLOBAL_LIST_INIT_TYPED(circuit_datatypes, /datum/circuit_datatype, generate_circ
  * * port - The port sending the data.
  */
 /datum/circuit_datatype/proc/datatype_ui_data(datum/port/port)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -103,16 +119,22 @@ GLOBAL_LIST_INIT_TYPED(circuit_datatypes, /datum/circuit_datatype, generate_circ
  * *
  */
 /datum/circuit_datatype/proc/handle_manual_input(datum/port/input/port, mob/user, user_input)
+	procstart = null
+	src.procstart = null
 	return user_input
 
 /**
  * Used by composite datatypes. Returns all the datatypes that build this datatype up.
  */
 /datum/circuit_datatype/proc/get_datatypes()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /**
  * Used by composite datatypes. Returns a single datatype from the list if it exists by index.
  */
 /datum/circuit_datatype/proc/get_datatype(index)
+	procstart = null
+	src.procstart = null
 	return

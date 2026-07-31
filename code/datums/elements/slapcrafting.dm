@@ -16,6 +16,8 @@
  * *
 **/
 /datum/element/slapcrafting/Attach(datum/target, slapcraft_recipes = null)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -33,10 +35,14 @@
 	src.slapcraft_recipes = slapcraft_recipes
 
 /datum/element/slapcrafting/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, list(COMSIG_ATOM_ATTACKBY, COMSIG_ATOM_EXAMINE, COMSIG_ATOM_EXAMINE_MORE))
 
 /datum/element/slapcrafting/proc/attempt_slapcraft(obj/item/parent_item, obj/item/slapper, mob/user)
+	procstart = null
+	src.procstart = null
 
 	if(isnull(slapcraft_recipes))
 		CRASH("NULL SLAPCRAFT RECIPES?")
@@ -69,6 +75,8 @@
 	INVOKE_ASYNC(src, PROC_REF(slapcraft_async), parent_item, valid_recipes, user, craft_sheet)
 
 /datum/element/slapcrafting/proc/slapcraft_async(obj/parent_item, list/valid_recipes, mob/user, datum/component/personal_crafting/craft_sheet)
+	procstart = null
+	src.procstart = null
 
 	var/list/recipe_choices = list()
 
@@ -107,6 +115,8 @@
 
 /// Alerts any examiners to the recipe, if they wish to know more.
 /datum/element/slapcrafting/proc/get_examine_info(atom/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/list/string_results = list()
@@ -124,6 +134,8 @@
 
 /// Alerts any examiners to the details of the recipe.
 /datum/element/slapcrafting/proc/get_examine_more_info(atom/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	for(var/datum/crafting_recipe/recipe as anything in slapcraft_recipes)
@@ -131,6 +143,8 @@
 		examine_list += "<a href='byond://?src=[REF(source)];check_recipe=[REF(recipe)]'>See Recipe For [initial(result.name)]</a>"
 
 /datum/element/slapcrafting/proc/topic_handler(atom/source, user, href_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!href_list["check_recipe"])

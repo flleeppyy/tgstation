@@ -23,26 +23,38 @@
 	var/message_cooldown = 0
 
 /obj/machinery/hypnochair/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	open_machine()
 	update_appearance()
 
 /obj/machinery/hypnochair/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return isnull(occupant) ? default_deconstruction_screwdriver(user, tool) : NONE
 
 /obj/machinery/hypnochair/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_pry_open(user, tool, deconstruct_on_fail = TRUE)
 
 /obj/machinery/hypnochair/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.notcontained_state
 
 /obj/machinery/hypnochair/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "HypnoChair", name)
 		ui.open()
 
 /obj/machinery/hypnochair/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/mob/living/mob_occupant = occupant
 
@@ -60,6 +72,8 @@
 	return data
 
 /obj/machinery/hypnochair/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -83,9 +97,13 @@
 			. = TRUE
 
 /obj/machinery/hypnochair/proc/set_phrase(phrase)
+	procstart = null
+	src.procstart = null
 	trigger_phrase = phrase
 
 /obj/machinery/hypnochair/proc/interrogate()
+	procstart = null
+	src.procstart = null
 	if(!trigger_phrase)
 		playsound(get_turf(src), 'sound/machines/buzz/buzz-sigh.ogg', 25, TRUE)
 		return
@@ -105,6 +123,8 @@
 	timerid = addtimer(CALLBACK(src, PROC_REF(finish_interrogation)), 450, TIMER_STOPPABLE)
 
 /obj/machinery/hypnochair/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/C = occupant
 	if(!istype(C) || C != victim)
 		interrupt_interrogation()
@@ -121,6 +141,8 @@
 	use_energy(active_power_usage * seconds_per_tick)
 
 /obj/machinery/hypnochair/proc/finish_interrogation()
+	procstart = null
+	src.procstart = null
 	interrogating = FALSE
 	STOP_PROCESSING(SSobj, src)
 	update_appearance()
@@ -143,6 +165,8 @@
 	victim = null
 
 /obj/machinery/hypnochair/proc/interrupt_interrogation()
+	procstart = null
+	src.procstart = null
 	deltimer(timerid)
 	interrogating = FALSE
 	STOP_PROCESSING(SSobj, src)
@@ -175,10 +199,14 @@
 	victim = null
 
 /obj/machinery/hypnochair/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][state_open ? "_open" : null][occupant ? "_[interrogating ? "active" : "occupied"]" : null]"
 	return ..()
 
 /obj/machinery/hypnochair/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_BREAKOUT)
 	user.last_special = world.time + CLICK_CD_BREAKOUT
 	user.visible_message(span_notice("You see [user] kicking against the door of [src]!"), \
@@ -192,12 +220,16 @@
 		open_machine()
 
 /obj/machinery/hypnochair/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(message_cooldown <= world.time)
 		message_cooldown = world.time + 50
 		to_chat(user, span_warning("[src]'s door won't budge!"))
 
 
 /obj/machinery/hypnochair/mouse_drop_receive(atom/target, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!isliving(target))
 		return
 	close_machine(target)

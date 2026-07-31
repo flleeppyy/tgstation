@@ -42,6 +42,8 @@
 	COOLDOWN_DECLARE(throw_cooldown)
 
 /obj/item/cain_and_abel/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (length(animation_steps))
 		return
@@ -56,11 +58,15 @@
 	)
 
 /obj/item/cain_and_abel/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(old_loc))
 		unset_user(old_loc)
 
 /obj/item/cain_and_abel/proc/unset_user(mob/living/source)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(source, TRAIT_RELAYING_ATTACKER))
 		source.RemoveElement(/datum/element/relay_attackers)
 
@@ -68,6 +74,8 @@
 	UnregisterSignal(source, list(COMSIG_ATOM_WAS_ATTACKED, COMSIG_MOB_UPDATE_HELD_ITEMS))
 
 /obj/item/cain_and_abel/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(slot & ITEM_SLOT_HANDS))
 		unset_user(user)
@@ -80,10 +88,14 @@
 	RegisterSignal(user, COMSIG_MOB_UPDATE_HELD_ITEMS, PROC_REF(on_updated_held_items))
 
 /obj/item/cain_and_abel/proc/on_attacked(datum/source, atom/attacker, attack_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_combo(new_value = 0, user = source)
 
 /obj/item/cain_and_abel/ranged_interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(get_dist(interacting_with, user) > 9 || interacting_with.z != user.z)
 		return NONE
 
@@ -100,6 +112,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/cain_and_abel/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -108,6 +122,8 @@
 		return TRUE
 
 /obj/item/cain_and_abel/attack(mob/living/target, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(target) || target.mob_size < MOB_SIZE_LARGE || target.stat == DEAD)
 		attack_speed = CLICK_CD_MELEE
 		return ..()
@@ -121,6 +137,8 @@
 	set_combo(new_value = combo_count + 1, user = user)
 
 /obj/item/cain_and_abel/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -129,6 +147,8 @@
 	return TRUE
 
 /obj/item/cain_and_abel/proc/set_combo(new_value, mob/living/user, instant = FALSE)
+	procstart = null
+	src.procstart = null
 	new_value = clamp(new_value, 0, max_combo)
 	if (new_value == combo_count)
 		return
@@ -143,13 +163,19 @@
 	combo_count = new_value
 
 /obj/item/cain_and_abel/proc/on_updated_held_items(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_dagger_icon()
 
 /obj/item/cain_and_abel/proc/update_dagger_icon()
+	procstart = null
+	src.procstart = null
 	inhand_icon_state = "[src::inhand_icon_state][(dagger_thrown || !check_wield(loc)) ? "_thrown" : ""]"
 
 /obj/item/cain_and_abel/proc/add_wisp(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/overlay/blood_wisp/new_wisp = new(src)
 	current_wisps += new_wisp
 	user.vis_contents += new_wisp
@@ -186,15 +212,21 @@
 			animate(time = 0.6 SECONDS, pixel_z = position.y, easing = SINE_EASING | position.y_easing)
 
 /obj/item/cain_and_abel/proc/on_wisp_delete(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	current_wisps -= source
 	UnregisterSignal(source, COMSIG_QDELETING)
 
 /obj/item/cain_and_abel/proc/fire_wisp(atom/user, atom/target)
+	procstart = null
+	src.procstart = null
 	user.fire_projectile(/obj/projectile/dagger_wisp, target)
 	set_combo(combo_count - 1, user, TRUE)
 
 /obj/item/cain_and_abel/proc/remove_wisp(obj/wisp_to_remove, instant = FALSE)
+	procstart = null
+	src.procstart = null
 	if (instant)
 		qdel(wisp_to_remove)
 		return
@@ -202,6 +234,8 @@
 	QDEL_IN(wisp_to_remove, 0.2 SECONDS)
 
 /obj/item/cain_and_abel/proc/check_wield(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (!istype(user))
 		return TRUE
 	var/active_item = (src == user.get_active_held_item())
@@ -222,6 +256,8 @@
 	var/y_easing = NONE
 
 /datum/abel_wisp_frame/New(x, y, layer, x_easing, y_easing)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.x = x
 	src.y = y

@@ -16,6 +16,8 @@
 	var/temp_stabilization_rate = 0.1
 
 /mob/living/basic/guardian/gaseous/Initialize(mapload, theme)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ATOM_PRE_PRESSURE_PUSH, PROC_REF(pre_pressure_moved))
 	gas = new(src)
@@ -23,13 +25,19 @@
 	gas.Grant(src)
 
 /mob/living/basic/guardian/gaseous/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(gas)
 	return ..()
 
 /mob/living/basic/guardian/gaseous/toggle_modes()
+	procstart = null
+	src.procstart = null
 	gas.Trigger()
 
 /mob/living/basic/guardian/gaseous/set_summoner(mob/living/to_who, different_person)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (QDELETED(src))
 		return
@@ -37,6 +45,8 @@
 	RegisterSignal(summoner, COMSIG_LIVING_LIFE, PROC_REF(on_summoner_life))
 
 /mob/living/basic/guardian/gaseous/cut_summoner(different_person)
+	procstart = null
+	src.procstart = null
 	if (!isnull(summoner))
 		REMOVE_TRAIT(summoner, TRAIT_NOFIRE, REF(src))
 		UnregisterSignal(summoner, COMSIG_LIVING_LIFE)
@@ -44,27 +54,37 @@
 
 /// Maintain our summoner at a stable body temperature
 /mob/living/basic/guardian/gaseous/proc/on_summoner_life(mob/living/source, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	source.adjust_bodytemperature(get_temp_change_amount((summoner.get_body_temp_normal() - summoner.bodytemperature), temp_stabilization_rate * seconds_per_tick))
 
 /mob/living/basic/guardian/gaseous/melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !isliving(target))
 		return
 	do_sparks(1, TRUE, target)
 
 /mob/living/basic/guardian/gaseous/recall_effects()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(summoner))
 		UnregisterSignal(summoner, COMSIG_ATOM_PRE_PRESSURE_PUSH)
 
 /mob/living/basic/guardian/gaseous/manifest_effects()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isnull(summoner))
 		RegisterSignal(summoner, COMSIG_ATOM_PRE_PRESSURE_PUSH, PROC_REF(pre_pressure_moved))
 
 /// We stand firm in the face of gas
 /mob/living/basic/guardian/gaseous/proc/pre_pressure_moved(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return COMSIG_ATOM_BLOCKS_PRESSURE
 
@@ -93,16 +113,22 @@
 	)
 
 /datum/action/cooldown/mob_cooldown/expel_gas/Grant(mob/granted_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (isnull(owner))
 		return
 	RegisterSignal(owner, COMSIG_GUARDIAN_RECALLED, PROC_REF(stop_gas))
 
 /datum/action/cooldown/mob_cooldown/expel_gas/Remove(mob/removed_from)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, list(COMSIG_GUARDIAN_RECALLED, COMSIG_LIVING_LIFE))
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/expel_gas/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	StartCooldown(360 SECONDS)
 	// Regeneated each time just in case someone fucks with our list
 	var/list/gas_selection = list("None")
@@ -138,6 +164,8 @@
 
 /// Turns off the gas
 /datum/action/cooldown/mob_cooldown/expel_gas/proc/stop_gas()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!isnull(active_gas))
 		to_chat(src, span_notice("You stop releasing gas."))
@@ -147,6 +175,8 @@
 
 /// Release gas every life tick while active
 /datum/action/cooldown/mob_cooldown/expel_gas/proc/on_life(datum/source, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (isnull(active_gas))
 		return // We shouldn't even be registered at this point but just in case

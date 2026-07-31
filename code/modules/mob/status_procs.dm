@@ -2,14 +2,20 @@
 
 ///Adjust the disgust level of a mob
 /mob/proc/adjust_disgust(amount)
+	procstart = null
+	src.procstart = null
 	return
 
 ///Set the disgust level of a mob
 /mob/proc/set_disgust(amount)
+	procstart = null
+	src.procstart = null
 	return
 
 ///Adjust the body temperature of a mob, with min/max settings
 /mob/proc/adjust_bodytemperature(amount,min_temp=0,max_temp=INFINITY)
+	procstart = null
+	src.procstart = null
 	if(bodytemperature >= min_temp && bodytemperature <= max_temp)
 		bodytemperature = clamp(bodytemperature + amount,min_temp,max_temp)
 		return TRUE
@@ -17,6 +23,8 @@
 /// Sight here is the mob.sight var, which tells byond what to actually show to our client
 /// See [code\__DEFINES\sight.dm] for more details
 /mob/proc/set_sight(new_value)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(sight == new_value)
 		return
@@ -26,15 +34,21 @@
 	SEND_SIGNAL(src, COMSIG_MOB_SIGHT_CHANGE, new_value, old_sight)
 
 /mob/proc/add_sight(new_value)
+	procstart = null
+	src.procstart = null
 	set_sight(sight | new_value)
 
 /mob/proc/clear_sight(new_value)
+	procstart = null
+	src.procstart = null
 	set_sight(sight & ~new_value)
 
 /// see invisibility is the mob's capability to see things that ought to be hidden from it
 /// Can think of it as a primitive version of changing the alpha of planes
 /// We mostly use it to hide ghosts, no real reason why
 /mob/proc/set_invis_see(new_sight)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(new_sight == see_invisible)
 		return

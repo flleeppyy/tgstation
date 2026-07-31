@@ -12,6 +12,8 @@
 	cooldown = 1.6 SECONDS //note when changing this- this is used by the matrix taunt to block projectiles.
 
 /datum/emote/living/taunt/run_emote(mob/living/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.spin(TAUNT_EMOTE_DURATION, 0.1 SECONDS)
 
@@ -21,6 +23,8 @@
 	message = "sticks their tongue out."
 
 /datum/emote/living/tongue/run_emote(mob/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_user = user
 	if(istype(human_user) && !human_user.get_organ_slot(ORGAN_SLOT_TONGUE))
 		to_chat(human_user, span_warning("You don't have a tongue!"))
@@ -34,6 +38,8 @@
 	message = "blushes."
 
 /datum/emote/living/blush/run_emote(mob/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(user))
 		return
@@ -86,6 +92,8 @@
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 
 /datum/emote/living/collapse/run_emote(mob/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(user))
 		var/mob/living/living = user
@@ -112,6 +120,8 @@
 	can_use_flags = EMOTE_CANUSE_UNCONSCIOUS | EMOTE_CANUSE_HARDCRIT | EMOTE_CANUSE_SOFTCRIT
 
 /datum/emote/living/deathgasp/run_emote(mob/living/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	if(!is_type_in_typecache(user, mob_type_allowed_typecache))
 		return
 	var/custom_message = user.death_message
@@ -139,6 +149,8 @@
 	message = "faints."
 
 /datum/emote/living/faint/run_emote(mob/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(user))
 		var/mob/living/living = user
@@ -152,6 +164,8 @@
 	var/wing_time = 0.35 SECONDS
 
 /datum/emote/living/flap/run_emote(mob/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(user))
 		return
@@ -204,6 +218,8 @@
 	can_use_flags = EMOTE_CANUSE_UNCONSCIOUS | EMOTE_CANUSE_HARDCRIT | EMOTE_CANUSE_SOFTCRIT
 
 /datum/emote/living/gasp/get_sound(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_MIND_TRAIT(user, TRAIT_MIMING))
 		return
 	if(!ishuman(user))
@@ -266,6 +282,8 @@
 	cooldown = 3 SECONDS
 
 /datum/emote/living/kiss/run_emote(mob/living/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/kiss_type = /obj/item/hand_item/kisser
 
@@ -306,9 +324,13 @@
 	vary = TRUE
 
 /datum/emote/living/laugh/can_run_emote(mob/living/user, status_check = TRUE , intentional, params)
+	procstart = null
+	src.procstart = null
 	return ..() && user.can_speak(allow_mimes = TRUE)
 
 /datum/emote/living/laugh/get_sound(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return
 	return user.dna.species.get_laugh_sound(user)
@@ -334,6 +356,8 @@
 	// don't put hands use check here, everything is handled in run_emote
 
 /datum/emote/living/point/run_emote(mob/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	message_param = initial(message_param) // reset
 	if(iscarbon(user))
 		var/mob/living/carbon/our_carbon = user
@@ -378,6 +402,8 @@
 	vary = TRUE
 
 /datum/emote/living/sneeze/get_sound(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return
 	return user.dna.species.get_sneeze_sound(user)
@@ -391,9 +417,13 @@
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE | EMOTE_RUNECHAT
 
 /datum/emote/living/cough/can_run_emote(mob/user, status_check = TRUE , intentional, params)
+	procstart = null
+	src.procstart = null
 	return !HAS_TRAIT(user, TRAIT_SOOTHED_THROAT) && ..()
 
 /datum/emote/living/cough/get_sound(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return
 	return user.dna.species.get_cough_sound(user)
@@ -424,16 +454,22 @@
 	vary = TRUE
 
 /datum/emote/living/scream/run_emote(mob/user, params, type_override, intentional = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!intentional && HAS_TRAIT(user, TRAIT_ANALGESIA))
 		return
 	return ..()
 
 /datum/emote/living/scream/select_message_type(mob/user, message, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!intentional && isanimal_or_basicmob(user))
 		return "makes a loud and pained whimper."
 
 /datum/emote/living/scream/get_sound(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return
 	var/mob/living/carbon/human/humie = user
@@ -456,6 +492,8 @@
 
 #define SHIVER_LOOP_DURATION (1 SECONDS)
 /datum/emote/living/shiver/run_emote(mob/living/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	animate(user, pixel_w = 1, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE|ANIMATION_PARALLEL)
@@ -474,6 +512,8 @@
 	vary = TRUE
 
 /datum/emote/living/sigh/run_emote(mob/living/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(user))
 		return
@@ -481,6 +521,8 @@
 	flick_overlay_global(emote_animation, GLOB.clients, 2.0 SECONDS)
 
 /datum/emote/living/sigh/get_sound(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return
 	return user.dna.species.get_sigh_sound(user)
@@ -509,6 +551,8 @@
 	vary = TRUE
 
 /datum/emote/living/sniff/get_sound(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return
 	return user.dna.species.get_sniff_sound(user)
@@ -523,6 +567,8 @@
 
 // eventually we want to give species their own "snoring" sounds
 /datum/emote/living/snore/get_sound(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return
 	return user.dna.species.get_snore_sound(user)
@@ -550,6 +596,8 @@
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 
 /datum/emote/living/surrender/run_emote(mob/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(user))
 		var/mob/living/living = user
@@ -562,6 +610,8 @@
 	message = "sways around dizzily."
 
 /datum/emote/living/sway/run_emote(mob/living/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	animate(user, pixel_w = 2, time = 0.5 SECONDS, flags = ANIMATION_RELATIVE|ANIMATION_PARALLEL)
@@ -582,6 +632,8 @@
 
 #define TREMBLE_LOOP_DURATION (4.4 SECONDS)
 /datum/emote/living/tremble/run_emote(mob/living/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	animate(user, pixel_w = 2, time = 0.2 SECONDS, flags = ANIMATION_RELATIVE|ANIMATION_PARALLEL)
@@ -597,6 +649,8 @@
 	message = "twitches violently."
 
 /datum/emote/living/twitch/run_emote(mob/living/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	animate(user, pixel_w = 1, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE|ANIMATION_PARALLEL)
@@ -611,6 +665,8 @@
 	message = "twitches."
 
 /datum/emote/living/twitch_s/run_emote(mob/living/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	animate(user, pixel_w = -1, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE|ANIMATION_PARALLEL)
@@ -650,6 +706,8 @@
 	cooldown = 5 SECONDS
 
 /datum/emote/living/yawn/run_emote(mob/user, params, type_override, intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(user))
 		return
@@ -682,6 +740,8 @@
 
 /// This yawn has been triggered by someone else yawning specifically, likely after a delay. Check again if they don't have the yawned recently trait
 /datum/emote/living/yawn/proc/propagate_yawn(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) || TIMER_COOLDOWN_RUNNING(user, COOLDOWN_YAWN_PROPAGATION))
 		return
 	user.emote("yawn")
@@ -703,6 +763,8 @@
 	message = null
 
 /datum/emote/living/custom/can_run_emote(mob/user, status_check, intentional, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !intentional)
 		return FALSE
@@ -719,6 +781,8 @@
 		return FALSE
 
 /datum/emote/living/custom/proc/emote_is_valid(mob/user, input)
+	procstart = null
+	src.procstart = null
 	// We're assuming clientless mobs custom emoting is something codebase-driven and not player-driven.
 	// If players ever get the ability to force clientless mobs to emote, we'd need to reconsider this.
 	if(!user.client)
@@ -758,13 +822,19 @@
 	return TRUE
 
 /datum/emote/living/custom/get_message_flags(intentional)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return .|WITH_EMPHASIS_MESSAGE
 
 /datum/emote/living/custom/proc/get_custom_emote_from_user()
+	procstart = null
+	src.procstart = null
 	return copytext(sanitize(input("Choose an emote to display.") as text|null), 1, MAX_MESSAGE_LEN)
 
 /datum/emote/living/custom/proc/get_custom_emote_type_from_user()
+	procstart = null
+	src.procstart = null
 	var/type = input("Is this a visible or hearable emote?") as null|anything in list("Visible", "Hearable", "Both")
 
 	switch(type)
@@ -779,6 +849,8 @@
 			return FALSE
 
 /datum/emote/living/custom/run_emote(mob/user, params, type_override = null, intentional = FALSE)
+	procstart = null
+	src.procstart = null
 	var/our_message = params ? params : get_custom_emote_from_user()
 
 	if(!emote_is_valid(user, our_message))
@@ -795,6 +867,8 @@
 	. = ..(user = user, params = our_message, type_override = type_override, intentional = intentional)
 
 /datum/emote/living/custom/replace_pronoun(mob/user, message)
+	procstart = null
+	src.procstart = null
 	return message
 
 /datum/emote/living/inhale
@@ -825,4 +899,6 @@
 	emote_type = EMOTE_AUDIBLE | EMOTE_VISIBLE
 
 /datum/emote/living/carbon/whistle/get_sound(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return 'sound/mobs/humanoids/human/whistle/whistle1.ogg'

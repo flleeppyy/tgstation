@@ -19,10 +19,14 @@
 	acid = 80
 
 /obj/structure/closet/secure_closet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSdcs, COMSIG_GLOB_GREY_TIDE, PROC_REF(grey_tide))
 
 /obj/structure/closet/secure_closet/proc/grey_tide(datum/source, list/grey_tide_areas)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!is_station_level(z))

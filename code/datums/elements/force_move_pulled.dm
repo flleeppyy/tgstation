@@ -2,16 +2,22 @@
 /datum/element/force_move_pulled
 
 /datum/element/force_move_pulled/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
 	. = ..()
 	RegisterSignal(target, COMSIG_ATOM_ATTACK_HAND, PROC_REF(on_click), override = TRUE)
 
 /datum/element/force_move_pulled/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_ATOM_ATTACK_HAND)
 
 /datum/element/force_move_pulled/proc/on_click(atom/moving_atom, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isnull(user.pulling))
 		return NONE

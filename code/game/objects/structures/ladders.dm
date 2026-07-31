@@ -18,6 +18,8 @@
 	var/travel_time = 1 SECONDS
 
 /obj/structure/ladder/Initialize(mapload, obj/structure/ladder/up, obj/structure/ladder/down)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.ladders += src
 	if(up)
@@ -29,6 +31,8 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/ladder/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(up)
 		context[SCREENTIP_CONTEXT_LMB] = "Climb up"
 	if(down)
@@ -36,10 +40,14 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/ladder/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info("[EXAMINE_HINT("Left-click")] it to start moving up; [EXAMINE_HINT("Right-click")] to start moving down.")
 
 /obj/structure/ladder/Destroy(force)
+	procstart = null
+	src.procstart = null
 	GLOB.ladders -= src
 	disconnect()
 	return ..()
@@ -57,6 +65,8 @@
 	VAR_FINAL/obj/structure/ladder/ladder
 
 /obj/effect/abstract/ladder_hole/Initialize(mapload, obj/structure/ladder/ladder)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(ladder) || !isopenturf(loc) || isopenspaceturf(loc))
 		return INITIALIZE_HINT_QDEL
@@ -84,6 +94,8 @@
 	loc.update_appearance(UPDATE_OVERLAYS)
 
 /obj/effect/abstract/ladder_hole/Destroy()
+	procstart = null
+	src.procstart = null
 	if(isnull(ladder))
 		return ..()
 
@@ -100,6 +112,8 @@
 	return ..()
 
 /obj/effect/abstract/ladder_hole/proc/cleanup()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// the ladder will qdel us in its Destroy regardless, when it unlinks
@@ -107,12 +121,16 @@
 	qdel(src)
 
 /obj/effect/abstract/ladder_hole/proc/turf_changing(datum/source, path, new_baseturfs, flags, list/datum/callback/post_change_callbacks)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	post_change_callbacks += CALLBACK(ladder, TYPE_PROC_REF(/obj/structure/ladder, make_base_transparent))
 	qdel(src)
 
 /obj/effect/abstract/ladder_hole/proc/add_ladder_rim(turf/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mutable_appearance/rim = mutable_appearance(
@@ -131,6 +149,8 @@
 
 /// Makes the base of the ladder transparent
 /obj/structure/ladder/proc/make_base_transparent()
+	procstart = null
+	src.procstart = null
 	if(!SSmapping.level_trait(z, ZTRAIT_DOWN)) // Ladders which are actually teleporting you to another z level
 		return
 	base_pixel_z = initial(base_pixel_z) + 12
@@ -139,6 +159,8 @@
 
 /// Clears any ladder holes created by this ladder
 /obj/structure/ladder/proc/clear_base_transparency()
+	procstart = null
+	src.procstart = null
 	base_pixel_z = initial(base_pixel_z)
 	pixel_z = base_pixel_z
 	for(var/obj/effect/abstract/ladder_hole/hole in loc)
@@ -149,6 +171,8 @@
 
 /// Links this ladder to passed ladder (which should generally be below it)
 /obj/structure/ladder/proc/link_down(obj/structure/ladder/down_ladder)
+	procstart = null
+	src.procstart = null
 	if(down)
 		return
 
@@ -160,6 +184,8 @@
 
 /// Unlinks this ladder from the ladder below it.
 /obj/structure/ladder/proc/unlink_down()
+	procstart = null
+	src.procstart = null
 	if(!down)
 		return
 
@@ -172,6 +198,8 @@
 
 /// Links this ladder to passed ladder (which should generally be above it)
 /obj/structure/ladder/proc/link_up(obj/structure/ladder/up_ladder)
+	procstart = null
+	src.procstart = null
 	if(up)
 		return
 
@@ -183,6 +211,8 @@
 
 /// Unlinks this ladder from the ladder above it.
 /obj/structure/ladder/proc/unlink_up()
+	procstart = null
+	src.procstart = null
 	if(!up)
 		return
 
@@ -195,15 +225,21 @@
 
 /// Helper to unlink everything
 /obj/structure/ladder/proc/disconnect()
+	procstart = null
+	src.procstart = null
 	unlink_down()
 	unlink_up()
 
 /obj/structure/ladder/proc/update_minimap_blip()
+	procstart = null
+	src.procstart = null
 	remove_minimap_blip(MINIMAP_LADDER_BLIP, src)
 	if(up || down)
 		add_minimap_blip(src, MINIMAP_LADDER_BLIP, "ladder")
 
 /obj/structure/ladder/LateInitialize()
+	procstart = null
+	src.procstart = null
 	// By default, discover ladders above and below us vertically
 	var/turf/base = get_turf(src)
 
@@ -223,15 +259,21 @@
 	update_minimap_blip()
 
 /obj/structure/ladder/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon_state][!!up][!!down]"
 	return ..()
 
 /obj/structure/ladder/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	if (!(resistance_flags & INDESTRUCTIBLE))
 		visible_message(span_danger("[src] is torn to pieces by the gravitational pull!"))
 		qdel(src)
 
 /obj/structure/ladder/proc/use(mob/user, going_up = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!in_range(src, user) || DOING_INTERACTION(user, DOAFTER_SOURCE_CLIMBING_LADDER))
 		return
 
@@ -251,6 +293,8 @@
 	add_fingerprint(user)
 
 /obj/structure/ladder/proc/start_travelling(mob/user, going_up)
+	procstart = null
+	src.procstart = null
 	show_initial_fluff_message(user, going_up)
 
 	// Our climbers athletics ability
@@ -270,10 +314,14 @@
 
 /// The message shown when the player starts climbing the ladder
 /obj/structure/ladder/proc/show_initial_fluff_message(mob/user, going_up)
+	procstart = null
+	src.procstart = null
 	var/up_down = going_up ? "up" : "down"
 	user.balloon_alert_to_viewers("climbing [up_down]...")
 
 /obj/structure/ladder/proc/travel(mob/user, going_up = TRUE, is_ghost = FALSE, grant_exp = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/ladder/ladder = going_up ? up : down
 	if(!ladder)
 		balloon_alert(user, "there's nothing that way!")
@@ -300,6 +348,8 @@
 
 /// The messages shown after the player has finished climbing. Players can see this happen from either src or the destination so we've 2 POVs here
 /obj/structure/ladder/proc/show_final_fluff_message(mob/user, obj/structure/ladder/destination, going_up)
+	procstart = null
+	src.procstart = null
 	var/up_down = going_up ? "up" : "down"
 
 	//POV of players around the source
@@ -309,6 +359,8 @@
 
 /// Shows a radial menu that players can use to climb up and down a stair.
 /obj/structure/ladder/proc/show_options(mob/user, is_ghost = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/tool_list = list()
 	tool_list["Up"] = image(icon = 'icons/testing/turf_analysis.dmi', icon_state = "red_arrow", dir = NORTH)
 	tool_list["Down"] = image(icon = 'icons/testing/turf_analysis.dmi', icon_state = "red_arrow", dir = SOUTH)
@@ -333,17 +385,23 @@
 		INVOKE_ASYNC(src, PROC_REF(start_travelling), user, going_up)
 
 /obj/structure/ladder/proc/check_menu(mob/user, is_ghost)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated || (!user.Adjacent(src)))
 		return FALSE
 	return TRUE
 
 /obj/structure/ladder/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
 	use(user)
 
 /obj/structure/ladder/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -352,14 +410,20 @@
 
 //Not be called when right clicking as a monkey. attack_hand_secondary() handles that.
 /obj/structure/ladder/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	use(user)
 	return TRUE
 
 /obj/structure/ladder/attack_alien(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	use(user)
 	return TRUE
 
 /obj/structure/ladder/attack_alien_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -367,10 +431,14 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/structure/ladder/attack_larva(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	use(user)
 	return TRUE
 
 /obj/structure/ladder/attack_larva_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -378,10 +446,14 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/structure/ladder/attack_animal(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	use(user)
 	return TRUE
 
 /obj/structure/ladder/attack_animal_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -389,23 +461,31 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/structure/ladder/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 	use(user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/ladder/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 	use(user, going_up = FALSE)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/ladder/attack_robot(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null
 	if(user.Adjacent(src))
 		use(user)
 	return TRUE
 
 /obj/structure/ladder/attack_robot_secondary(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN || !user.Adjacent(src))
 		return
@@ -413,10 +493,14 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/structure/ladder/attack_pai(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	use(user)
 	return TRUE
 
 /obj/structure/ladder/attack_pai_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -425,11 +509,15 @@
 
 //ATTACK GHOST IGNORING PARENT RETURN VALUE
 /obj/structure/ladder/attack_ghost(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	ghost_use(user)
 	return ..()
 
 ///Ghosts use the byond default popup menu function on right click, so this is going to work a little differently for them.
 /obj/structure/ladder/proc/ghost_use(mob/user)
+	procstart = null
+	src.procstart = null
 	if (!up && !down)
 		balloon_alert(user, "doesn't lead anywhere!")
 		return
@@ -449,6 +537,8 @@
 	var/height = 0  // higher numbers are considered physically higher
 
 /obj/structure/ladder/unbreakable/LateInitialize()
+	procstart = null
+	src.procstart = null
 	// Override the parent to find ladders based on being height-linked
 	if (!id || (up && down))
 		update_appearance()

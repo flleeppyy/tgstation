@@ -6,6 +6,8 @@
 
 ///Here, we have to maintain the list size, to emulate a cylinder with several chambers, empty or otherwise.
 /obj/item/ammo_box/magazine/internal/cylinder/remove_from_stored_ammo(atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	for(var/index in 1 to length(stored_ammo))
 		var/obj/item/ammo_casing/bullet = stored_ammo[index]
 		if(gone == bullet)
@@ -14,6 +16,8 @@
 			return
 
 /obj/item/ammo_box/magazine/internal/cylinder/get_round()
+	procstart = null
+	src.procstart = null
 	rotate()
 	var/casing = stored_ammo[1]
 	if (ispath(casing))
@@ -22,23 +26,33 @@
 	return casing
 
 /obj/item/ammo_box/magazine/internal/cylinder/get_and_shuffle_round()
+	procstart = null
+	src.procstart = null
 	return get_round()
 
 /obj/item/ammo_box/magazine/internal/cylinder/proc/rotate()
+	procstart = null
+	src.procstart = null
 	var/b = stored_ammo[1]
 	stored_ammo.Cut(1,2)
 	stored_ammo.Insert(0, b)
 
 /obj/item/ammo_box/magazine/internal/cylinder/proc/spin()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to rand(0, max_ammo*2))
 		rotate()
 
 /obj/item/ammo_box/magazine/internal/cylinder/ammo_list()
+	procstart = null
+	src.procstart = null
 	var/list/no_nulls_ammo = ..()
 	list_clear_nulls(no_nulls_ammo)
 	return no_nulls_ammo
 
 /obj/item/ammo_box/magazine/internal/cylinder/give_round(obj/item/ammo_casing/R, replace_spent = 0)
+	procstart = null
+	src.procstart = null
 	if(!R || !(caliber ? (caliber == R.caliber) : (ammo_type == R.type)))
 		return FALSE
 
@@ -56,6 +70,8 @@
 	return FALSE
 
 /obj/item/ammo_box/magazine/internal/cylinder/top_off(load_type, starting=FALSE)
+	procstart = null
+	src.procstart = null
 	if(starting) // nulls don't exist when we're starting off
 		return ..()
 

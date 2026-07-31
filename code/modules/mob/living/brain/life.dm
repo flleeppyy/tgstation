@@ -1,5 +1,7 @@
 
 /mob/living/brain/Life(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	if(isnull(loc) || HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
 
@@ -14,6 +16,8 @@
 	handle_emp_damage(seconds_per_tick)
 
 /mob/living/brain/update_stat()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_GODMODE))
 		return
 	if(health > HEALTH_THRESHOLD_DEAD)
@@ -29,6 +33,8 @@
 		BR.set_organ_damage(BRAIN_DAMAGE_DEATH) //beaten to a pulp
 
 /mob/living/brain/proc/handle_emp_damage(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!emp_damage)
 		return
 

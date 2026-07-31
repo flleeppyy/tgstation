@@ -20,6 +20,8 @@ PROCESSING_SUBSYSTEM_DEF(fishing)
 	var/list/fish_safe_turfs_by_type = list()
 
 /datum/controller/subsystem/processing/fishing/Initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	cached_fish_icons = list()
 	cached_unknown_fish_icons = list()

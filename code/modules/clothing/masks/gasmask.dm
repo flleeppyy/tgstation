@@ -42,6 +42,8 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	bio = 100
 
 /obj/item/clothing/mask/gas/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if((flags_cover & PEPPERPROOF) && pepper_tint)
@@ -59,25 +61,35 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	has_filter = TRUE
 
 /obj/item/clothing/mask/gas/separate_worn_overlays(mutable_appearance/standing, mutable_appearance/draw_target, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isinhands && cig)
 		. += cig.build_worn_icon(default_layer = FACEMASK_LAYER, default_icon_file = 'icons/mob/clothing/mask.dmi', bodyshape = bodyshape)
 
 /obj/item/clothing/mask/gas/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LAZYLIST(gas_filters)
 	return..()
 
 /obj/item/clothing/mask/gas/equipped(mob/equipee, slot)
+	procstart = null
+	src.procstart = null
 	cig?.equipped(equipee, slot)
 	return ..()
 
 /obj/item/clothing/mask/gas/adjust_visor(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!isnull(cig))
 		balloon_alert(user, "cig in the way!")
 		return FALSE
 	return ..()
 
 /obj/item/clothing/mask/gas/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cig)
 		. += span_notice("There is a [cig.name] jammed into the filter slot.")
@@ -88,6 +100,8 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 		. += span_notice("The filters can be removed by right-clicking with an empty hand on [src].")
 
 /obj/item/clothing/mask/gas/Exited(atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == cig)
 		cig = null
@@ -96,6 +110,8 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 			wearer.update_worn_mask()
 
 /obj/item/clothing/mask/gas/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/valid_wearer = ismob(loc)
 	var/mob/wearer = loc
 	if(istype(tool, /obj/item/cigarette))
@@ -136,6 +152,8 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/clothing/mask/gas/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(cig)
 		user.put_in_hands(cig)
 		cig = null
@@ -157,6 +175,8 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 
 ///Check _masks.dm for this one
 /obj/item/clothing/mask/gas/consume_filter(datum/gas_mixture/breath)
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(gas_filters) <= 0 || max_filters == 0)
 		return breath
 	var/obj/item/gas_filter/gas_filter = pick(gas_filters)
@@ -172,6 +192,8 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
  * Getter for overall filter durability, takes into consideration all filters filter_status
  */
 /obj/item/clothing/mask/gas/proc/get_filter_durability()
+	procstart = null
+	src.procstart = null
 	var/max_filters_durability = LAZYLEN(gas_filters) * 100
 	var/current_filters_durability
 	for(var/obj/item/gas_filter/gas_filter as anything in gas_filters)
@@ -243,9 +265,13 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	acid = 55
 
 /obj/item/clothing/mask/gas/welding/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	adjust_visor(user)
 
 /obj/item/clothing/mask/gas/welding/adjust_visor(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		playsound(src, up ? SFX_VISOR_UP : SFX_VISOR_DOWN, 50, TRUE)
@@ -257,10 +283,14 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 		AddElement(/datum/element/adjust_fishing_difficulty, fishing_modifier)
 
 /obj/item/clothing/mask/gas/welding/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[initial(icon_state)][up ? "up" : ""]"
 
 /obj/item/clothing/mask/gas/welding/up/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	visor_toggling()
 
@@ -323,6 +353,8 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	starting_filter_type = /obj/item/gas_filter/plasmaman
 
 /obj/item/clothing/mask/gas/clown_hat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	.=..()
 	clownmask_designs = list(
 		"True Form" = image(icon = src.icon, icon_state = "clown"),
@@ -334,6 +366,8 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CLOWN, CELL_VIRUS_TABLE_GENERIC, rand(2,3), 0)
 
 /obj/item/clothing/mask/gas/clown_hat/ui_action_click(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) || user.incapacitated)
 		return
 
@@ -388,6 +422,8 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	starting_filter_type = /obj/item/gas_filter/plasmaman
 
 /obj/item/clothing/mask/gas/mime/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	.=..()
 	mimemask_designs = list(
 		"Blanc" = image(icon = src.icon, icon_state = "mime"),
@@ -397,6 +433,8 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 		)
 
 /obj/item/clothing/mask/gas/mime/ui_action_click(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) || user.incapacitated)
 		return
 
@@ -480,6 +518,8 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	var/list/tikimask_designs = list()
 
 /obj/item/clothing/mask/gas/tiki_mask/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	.=..()
 	tikimask_designs = list(
 		"Original Tiki" = image(icon = src.icon, icon_state = "tiki_eyebrow"),
@@ -489,6 +529,8 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 		)
 
 /obj/item/clothing/mask/gas/tiki_mask/ui_action_click(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/M = usr
 	var/list/options = list()
 	options["Original Tiki"] = "tiki_eyebrow"

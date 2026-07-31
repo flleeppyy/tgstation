@@ -1,11 +1,17 @@
 
 /mob/living/silicon/grippedby(mob/living/carbon/user, instant = FALSE)
+	procstart = null
+	src.procstart = null
 	return //can't upgrade a simple pull into a more aggressive grab.
 
 /mob/living/silicon/get_ear_protection(ignore_deafness = FALSE)
+	procstart = null
+	src.procstart = null
 	return ..() + EAR_PROTECTION_HEAVY //no ears
 
 /mob/living/silicon/attack_alien(mob/living/carbon/alien/adult/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.) //if harm or disarm intent
 		return
@@ -27,6 +33,8 @@
 		log_combat(user, src, "attacked and missed")
 
 /mob/living/silicon/attack_animal(mob/living/simple_animal/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/damage_received = .
 	if(prob(damage_received))
@@ -41,13 +49,19 @@
 			to_chat(user, span_danger("You knock [buckled] off of [src]!"))
 
 /mob/living/silicon/attack_paw(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /mob/living/silicon/attack_larva(mob/living/carbon/alien/larva/L, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!L.combat_mode)
 		visible_message(span_notice("[L.name] rubs its head against [src]."))
 
 /mob/living/silicon/attack_hulk(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -58,6 +72,8 @@
 	to_chat(user, span_danger("You punch [src]!"))
 
 /mob/living/silicon/attack_hand(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -83,6 +99,8 @@
 		return TRUE
 
 /mob/living/silicon/check_block(atom/hitby, damage, attack_text, attack_type, armour_penetration, damage_type, attack_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SUCCESSFUL_BLOCK)
 		return SUCCESSFUL_BLOCK
@@ -93,16 +111,22 @@
 	return FAILED_BLOCK
 
 /mob/living/silicon/attack_drone(mob/living/basic/drone/user)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return
 	return ..()
 
 /mob/living/silicon/attack_drone_secondary(mob/living/basic/drone/user)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	return ..()
 
 /mob/living/silicon/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(src, span_danger("Warning: Electromagnetic pulse detected."))
 	if(. & EMP_PROTECT_SELF || QDELETED(src))
@@ -121,6 +145,8 @@
 	flash_act(affect_silicon = 1)
 
 /mob/living/silicon/bullet_act(obj/projectile/hitting_projectile, def_zone, piercing_hit = FALSE)
+	procstart = null
+	src.procstart = null
 	if(hitting_projectile.damage_type == BURN)
 		hitting_projectile.damage_type = BRUTE //Burn is for wire damage. Brute is the outer chassis.
 	. = ..()
@@ -140,6 +166,8 @@
 			buckled.Paralyze(4 SECONDS)
 
 /mob/living/silicon/flash_act(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0, type = /atom/movable/screen/fullscreen/flash/static, length = 25)
+	procstart = null
+	src.procstart = null
 	if(affect_silicon)
 		return ..()
 
@@ -147,12 +175,16 @@
 #define CYBORG_SLOWDOWN_THRESHOLD 10
 
 /mob/living/silicon/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || AM.throwforce < CYBORG_SLOWDOWN_THRESHOLD) // can cyborgs even catch things?
 		return
 	apply_status_effect(/datum/status_effect/borg_slow, AM.throwforce / 20)
 
 /mob/living/silicon/attack_effects(damage_done, hit_zone, armor_block, obj/item/attacking_item, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(damage_done < CYBORG_SLOWDOWN_THRESHOLD)
 		return
@@ -161,4 +193,6 @@
 #undef CYBORG_SLOWDOWN_THRESHOLD
 
 /mob/living/silicon/hypnosis_vulnerable()
+	procstart = null
+	src.procstart = null
 	return FALSE //It obeys its laws

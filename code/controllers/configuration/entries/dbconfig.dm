@@ -32,6 +32,8 @@
 	deprecated_by = /datum/config_entry/number/blocking_query_timeout
 
 /datum/config_entry/number/query_debug_log_timeout/DeprecationUpdate(value)
+	procstart = null
+	src.procstart = null
 	return value
 
 /datum/config_entry/number/async_query_timeout
@@ -50,6 +52,8 @@
 	deprecated_by = /datum/config_entry/number/pooling_max_sql_connections
 
 /datum/config_entry/number/bsql_thread_limit/DeprecationUpdate(value)
+	procstart = null
+	src.procstart = null
 	return value
 
 /datum/config_entry/number/pooling_min_sql_connections
@@ -65,6 +69,8 @@
 	min_val = 1
 
 /datum/config_entry/number/max_concurrent_queries/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		SSdbcore.max_concurrent_queries = config_entry_value

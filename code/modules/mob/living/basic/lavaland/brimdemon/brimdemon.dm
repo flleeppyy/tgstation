@@ -38,6 +38,8 @@
 	var/firing_icon_state = "brimdemon_firing"
 
 /mob/living/basic/mining/brimdemon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/footstep, FOOTSTEP_MOB_CLAW)
 	beam = new(src)
@@ -46,13 +48,19 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /mob/living/basic/mining/brimdemon/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(beam)
 	return ..()
 
 /mob/living/basic/mining/brimdemon/RangedAttack(atom/target, modifiers)
+	procstart = null
+	src.procstart = null
 	beam.Trigger(target = target)
 
 /mob/living/basic/mining/brimdemon/death(gibbed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (gibbed)
 		return
@@ -60,6 +68,8 @@
 	forceMove(bang)
 
 /mob/living/basic/mining/brimdemon/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (stat != DEAD)
 		. += emissive_appearance(icon, "[icon_living]_e", src, effect_type = EMISSIVE_NO_BLOOM)
@@ -72,6 +82,8 @@
 	duration = 1.9 SECONDS
 
 /obj/effect/temp_visual/brim_burst/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(bang)), duration - (1 DECISECONDS), TIMER_DELETE_ME)
 	animate(src, color = "#ff8888", transform = matrix().Scale(1.1), time = 0.7 SECONDS)
@@ -82,6 +94,8 @@
 
 /// Make an explosion
 /obj/effect/temp_visual/brim_burst/proc/bang()
+	procstart = null
+	src.procstart = null
 	var/turf/origin_turf = get_turf(src)
 	playsound(origin_turf, 'sound/effects/pop_expl.ogg', 50)
 	new /obj/effect/temp_visual/explosion/fast(origin_turf)

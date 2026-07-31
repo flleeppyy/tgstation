@@ -12,6 +12,8 @@
 	var/traits_prevent_checks
 
 /datum/element/hat_wearer/Attach(datum/target, offsets = list(), remove_hat_signals = list(), traits_prevent_checks = list())
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -26,6 +28,8 @@
 	RegisterSignals(target, remove_hat_signals, PROC_REF(remove_hat))
 
 /datum/element/hat_wearer/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	var/obj/item/hat = (locate(/obj/item/clothing/head) in target)
 	if(hat)
 		hat.forceMove(get_turf(target))
@@ -40,6 +44,8 @@
 	return ..()
 
 /datum/element/hat_wearer/proc/on_overlays_updated(atom/source, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/hat = (locate(/obj/item/clothing/head) in source)
@@ -51,6 +57,8 @@
 	overlays += hat_overlay
 
 /datum/element/hat_wearer/proc/exited(atom/movable/source, atom/movable/exited)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(exited, /obj/item/clothing/head))
@@ -58,6 +66,8 @@
 	source.update_appearance(UPDATE_OVERLAYS)
 
 /datum/element/hat_wearer/proc/on_entered(atom/movable/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(arrived, /obj/item/clothing/head))
@@ -69,6 +79,8 @@
 	source.update_appearance(UPDATE_OVERLAYS)
 
 /datum/element/hat_wearer/proc/on_attack_by(atom/movable/source, obj/item/item, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(item, /obj/item/clothing/head))
@@ -83,12 +95,16 @@
 	return COMPONENT_NO_AFTERATTACK
 
 /datum/element/hat_wearer/proc/place_hat(atom/movable/source, obj/item/item, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	if(!do_after(attacker, delay = 3 SECONDS, target = source))
 		source.balloon_alert(attacker, "must stay still!")
 		return
 	item.forceMove(source)
 
 /datum/element/hat_wearer/proc/remove_hat(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/our_hat = locate(/obj/item/clothing/head) in source

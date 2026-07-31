@@ -26,24 +26,32 @@
 	)
 
 /datum/component/heart_eater/Initialize(...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(parent))
 		return COMPONENT_INCOMPATIBLE
 	prepare_species(parent)
 
 /datum/component/heart_eater/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_SPECIES_GAIN, PROC_REF(on_species_change))
 	RegisterSignal(parent, COMSIG_LIVING_FINISH_EAT, PROC_REF(eat_eat_eat))
 	RegisterSignal(parent, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(try_rip_heart))
 
 /datum/component/heart_eater/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, COMSIG_LIVING_FINISH_EAT)
 	UnregisterSignal(parent, COMSIG_SPECIES_GAIN)
 	UnregisterSignal(parent, COMSIG_LIVING_UNARMED_ATTACK)
 
 /datum/component/heart_eater/proc/prepare_species(mob/living/carbon/human/eater)
+	procstart = null
+	src.procstart = null
 	if(eater.get_liked_foodtypes() & GORE)
 		return
 	var/obj/item/organ/tongue/eater_tongue = eater.get_organ_slot(ORGAN_SLOT_TONGUE)
@@ -53,6 +61,8 @@
 	eater_tongue.liked_foodtypes |= GORE
 
 /datum/component/heart_eater/proc/on_species_change(mob/living/carbon/human/eater, datum/species/new_species, datum/species/old_species, pref_load, regenerate_icons)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	eater.dna?.species?.damage_modifier += remember_modifier
@@ -60,6 +70,8 @@
 
 /// Proc called when we finish eat somthing.
 /datum/component/heart_eater/proc/eat_eat_eat(mob/living/carbon/human/eater, datum/what_we_ate)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(get_area(eater) == GLOB.areas_by_type[/area/centcom/wizard_station])
@@ -86,6 +98,8 @@
 
 ///Perfect heart give our +10 damage modifier(Max. 80).
 /datum/component/heart_eater/proc/perfect_heart(mob/living/carbon/human/eater)
+	procstart = null
+	src.procstart = null
 	if(eater.dna?.species?.damage_modifier >= 80)
 		healing_heart(eater)
 		return
@@ -96,6 +110,8 @@
 
 ///Not Perfect heart give random mutation.
 /datum/component/heart_eater/proc/not_perfect_heart(mob/living/carbon/human/eater)
+	procstart = null
+	src.procstart = null
 	var/datum/mutation/new_mutation
 	var/list/datum/mutation/shuffle_mutation_list = shuffle(mutations_list)
 	for(var/mutation_in_list in shuffle_mutation_list)
@@ -112,6 +128,8 @@
 
 ///Heart eater give also strong healing from hearts.
 /datum/component/heart_eater/proc/healing_heart(mob/living/carbon/human/eater)
+	procstart = null
+	src.procstart = null
 	for(var/heal_organ in eater.organs)
 		eater.adjust_organ_loss(heal_organ, -50)
 	for(var/datum/wound/heal_wound in eater.all_wounds)
@@ -123,6 +141,8 @@
 	eater.adjust_stamina_loss(-50)
 
 /datum/component/heart_eater/proc/try_rip_heart(mob/living/source, mob/living/carbon/target, proximity, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(target))
 		return
@@ -141,6 +161,8 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/component/heart_eater/proc/can_rip_heart(mob/living/user, mob/living/carbon/target, hand_index)
+	procstart = null
+	src.procstart = null
 	if(!target.incapacitated)
 		return FALSE
 	if(!user.has_hand_for_held_index(hand_index))
@@ -150,6 +172,8 @@
 	return TRUE
 
 /datum/component/heart_eater/proc/do_rip_heart(mob/living/user, mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	playsound(target, 'sound/items/weapons/slice.ogg', 50, TRUE)
 	var/hand_index = user.active_hand_index
 	if(!do_after(

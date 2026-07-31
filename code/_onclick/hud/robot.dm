@@ -2,6 +2,8 @@
 	ui_style = 'icons/hud/screen_cyborg.dmi'
 
 /datum/hud/robot/initialize_screen_objects()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// i, Robit
 	var/mob/living/silicon/robot/robit = mymob

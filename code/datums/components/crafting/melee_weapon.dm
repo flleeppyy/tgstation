@@ -99,6 +99,8 @@
 	category = CAT_WEAPON_MELEE
 
 /datum/crafting_recipe/balloon_mallet/check_requirements(mob/user, list/collected_requirements)
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(user, TRAIT_BALLOON_SUTRA)
 
 /datum/crafting_recipe/tailwhip

@@ -12,6 +12,8 @@
 	var/only_station_z = TRUE
 
 /datum/action/innate/construction/Activate()
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return TRUE
 	remote_eye = owner.remote_control
@@ -19,12 +21,16 @@
 
 ///Sanity check for any construction action that relies on an RCD being in the base console
 /datum/action/innate/construction/proc/check_rcd()
+	procstart = null
+	src.procstart = null
 	//The console must always have an RCD.
 	if(!base_console.internal_rcd)
 		CRASH("Base console is somehow missing an internal RCD!")
 
 ///Check a loction to see if it is inside the aux base at the station. Camera visbility checks omitted so as to not hinder construction.
 /datum/action/innate/construction/proc/check_spot()
+	procstart = null
+	src.procstart = null
 	var/turf/build_target = get_turf(remote_eye)
 	var/area/build_area = get_area(build_target)
 	var/area/area_constraint = base_console.allowed_area
@@ -44,6 +50,8 @@
 	button_icon_state = "build"
 
 /datum/action/innate/construction/build/Activate()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(!check_spot())
@@ -65,6 +73,8 @@
 	button_icon_state = "rcd"
 
 /datum/action/innate/construction/configure_mode/Activate()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	check_rcd()
@@ -79,6 +89,8 @@
 	var/place_sound
 
 /datum/action/innate/construction/place_structure/Activate()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/turf/place_turf = get_turf(remote_eye)
@@ -103,6 +115,8 @@
 
 ///Proc to handle additional behavior after placing an object
 /datum/action/innate/construction/place_structure/proc/after_place()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/action/innate/construction/place_structure/fan
@@ -113,6 +127,8 @@
 	place_sound = 'sound/machines/click.ogg'
 
 /datum/action/innate/construction/place_structure/fan/after_place(obj/placed_structure, remaining)
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_notice("Tiny fan placed. [remaining] fans remaining."))
 
 /datum/action/innate/construction/place_structure/turret
@@ -123,6 +139,8 @@
 	place_sound = 'sound/items/tools/drill_use.ogg'
 
 /datum/action/innate/construction/place_structure/turret/after_place(obj/placed_structure, remaining)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/computer/auxiliary_base/turret_controller = locate() in get_area(placed_structure)
 	if(!turret_controller)
 		to_chat(owner, span_notice("<b>Warning:</b> Aux base controller not found. Turrets might not work properly."))

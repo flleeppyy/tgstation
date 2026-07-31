@@ -9,12 +9,16 @@
 	var/datum/weakref/connect_ref
 
 /datum/component/loads_avatar_gear/Initialize(datum/callback/load_callback)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 
 	src.load_callback = load_callback
 
 /datum/component/loads_avatar_gear/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_ENTERING, PROC_REF(on_entered_loc))
 
 	var/static/list/loc_connections = list(
@@ -23,6 +27,8 @@
 	connect_ref = WEAKREF(AddComponent(/datum/component/connect_containers, parent, loc_connections))
 
 /datum/component/loads_avatar_gear/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(
 		COMSIG_ATOM_ENTERING,
 	))
@@ -30,12 +36,16 @@
 	qdel(connect_ref)
 
 /datum/component/loads_avatar_gear/Destroy(force)
+	procstart = null
+	src.procstart = null
 	load_callback = null
 	tracked_human_ref = null
 	return ..()
 
 
 /datum/component/loads_avatar_gear/proc/on_entered_loc(datum/source, atom/destination, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// No need to do checks if we're just moving turfs
@@ -55,6 +65,8 @@
 	switch_tracking(null)
 
 /datum/component/loads_avatar_gear/proc/switch_tracking(mob/living/carbon/human/to_track)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/tracked_human = tracked_human_ref?.resolve()
 	if(tracked_human == to_track)
 		return
@@ -65,5 +77,7 @@
 	RegisterSignal(to_track, COMSIG_BITRUNNER_STOCKING_GEAR, PROC_REF(load_onto_avatar))
 
 /datum/component/loads_avatar_gear/proc/load_onto_avatar(mob/living/carbon/human/neo, mob/living/carbon/human/avatar, domain_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return load_callback?.Invoke(neo, avatar, domain_flags)

@@ -21,6 +21,8 @@
 	COOLDOWN_DECLARE(callout_cooldown)
 
 /datum/component/callouts/Initialize(item_slot = null, voiceline = FALSE, radio_prefix = null, examine_text = null, active = TRUE)
+	procstart = null
+	src.procstart = null
 	if (!isitem(parent) && !ismob(parent))
 		return COMPONENT_INCOMPATIBLE
 	src.item_slot = item_slot
@@ -46,10 +48,14 @@
 	cur_user = atom_parent.loc
 
 /datum/component/callouts/Destroy(force)
+	procstart = null
+	src.procstart = null
 	cur_user = null
 	. = ..()
 
 /datum/component/callouts/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_MOB_CLICKON, PROC_REF(on_click))
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equipped))
 	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(on_dropped))
@@ -57,9 +63,13 @@
 	RegisterSignal(parent, COMSIG_CLICK_CTRL, PROC_REF(on_ctrl_click))
 
 /datum/component/callouts/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_MOB_CLICKON, COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED, COMSIG_ATOM_EXAMINE, COMSIG_CLICK_CTRL))
 
 /datum/component/callouts/proc/on_ctrl_click(datum/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!isitem(parent))
@@ -73,6 +83,8 @@
 	item_parent.balloon_alert(user, active ? "callouts enabled" : "callouts disabled")
 
 /datum/component/callouts/proc/on_equipped(datum/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (item_slot & slot)
@@ -83,6 +95,8 @@
 		cur_user = null
 
 /datum/component/callouts/proc/on_dropped(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (cur_user == user)
@@ -90,11 +104,15 @@
 		cur_user = null
 
 /datum/component/callouts/proc/on_examines(mob/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!isnull(examine_text))
 		examine_list += examine_text
 
 /datum/component/callouts/proc/on_click(mob/user, atom/clicked_atom, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!LAZYACCESS(modifiers, SHIFT_CLICK) || !LAZYACCESS(modifiers, MIDDLE_CLICK))
@@ -114,6 +132,8 @@
 	return COMSIG_MOB_CANCEL_CLICKON
 
 /datum/component/callouts/proc/callout_picker(mob/user, atom/clicked_atom)
+	procstart = null
+	src.procstart = null
 	var/list/callout_items = list()
 	for(var/datum/callout_option/callout_option as anything in callout_options)
 		callout_items[callout_option] = image(icon = 'icons/hud/radial.dmi', icon_state = callout_option::icon_state)
@@ -136,6 +156,8 @@
 	duration = CALLOUT_TIME
 
 /obj/effect/temp_visual/point/callout/proc/set_callout(mob/creator, datum/callout_option/callout)
+	procstart = null
+	src.procstart = null
 	if (isnull(creator))
 		return
 	icon_state = callout::icon_state

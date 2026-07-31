@@ -14,10 +14,14 @@
 	role_unique_actions = list(/datum/mafia_ability/attack_player)
 
 /datum/mafia_role/traitor/New(datum/mafia_controller/game)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_MAFIA_ON_KILL, PROC_REF(nightkill_immunity))
 
 /datum/mafia_role/traitor/proc/nightkill_immunity(datum/source,datum/mafia_controller/game,datum/mafia_role/attacker,lynch)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(game.phase == MAFIA_PHASE_NIGHT && !lynch)
@@ -40,5 +44,7 @@
 	role_unique_actions = list(/datum/mafia_ability/flicker_rampage)
 
 /datum/mafia_role/nightmare/special_reveal_equip()
+	procstart = null
+	src.procstart = null
 	body.set_species(/datum/species/shadow)
 	body.update_body()

@@ -48,21 +48,29 @@
 	material_amt = 8
 
 /obj/structure/door_assembly/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	obj_flags |= UNIQUE_RENAME | RENAME_NO_DESC
 	update_appearance()
 	update_name()
 
 /obj/structure/door_assembly/multi_tile/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_bounds()
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/door_assembly/multi_tile/Move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_bounds()
 
 /obj/structure/door_assembly/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(state)
 		if(AIRLOCK_ASSEMBLY_NEEDS_WIRES)
@@ -84,6 +92,8 @@
 		. += span_notice("There is a small <i>paper</i> placard on the assembly, written on it is '[created_name]'.")
 
 /obj/structure/door_assembly/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(anchored && state == AIRLOCK_ASSEMBLY_NEEDS_WIRES && istype(tool, /obj/item/stack/cable_coil))
 		if(!tool.tool_start_check(user, amount=1))
 			return ITEM_INTERACT_BLOCKING
@@ -191,6 +201,8 @@
 	return NONE
 
 /obj/structure/door_assembly/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!mineral && !glass && anchored)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 
@@ -238,6 +250,8 @@
 	// no return NONE at end because it's not possible we end up here
 
 /obj/structure/door_assembly/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(anchored)
 		user.visible_message(span_notice("[user] unsecures the airlock assembly from the floor."), \
 							span_notice("You start to unsecure the airlock assembly from the floor..."), \
@@ -283,6 +297,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/door_assembly/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(state != AIRLOCK_ASSEMBLY_NEEDS_ELECTRONICS)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 	user.visible_message(span_notice("[user] cuts the wires from the airlock assembly."), \
@@ -301,6 +317,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/door_assembly/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(state != AIRLOCK_ASSEMBLY_NEEDS_SCREWDRIVER)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 	user.visible_message(span_notice("[user] removes the electronics from the airlock assembly."), \
@@ -327,6 +345,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/door_assembly/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(state != AIRLOCK_ASSEMBLY_NEEDS_SCREWDRIVER)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 
@@ -342,6 +362,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/door_assembly/proc/finish_door()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/door/airlock/door
 	if(glass)
 		door = new glass_type( loc )
@@ -384,6 +406,8 @@
 	return door
 
 /obj/structure/door_assembly/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!glass)
 		. += get_airlock_overlay("fill_construction", icon, src, TRUE)
@@ -392,6 +416,8 @@
 	. += get_airlock_overlay("panel_c[state+1]", overlays_file, src, TRUE)
 
 /obj/structure/door_assembly/update_name()
+	procstart = null
+	src.procstart = null
 	name = ""
 	switch(state)
 		if(AIRLOCK_ASSEMBLY_NEEDS_WIRES)
@@ -405,6 +431,8 @@
 	return ..()
 
 /obj/structure/door_assembly/proc/transfer_assembly_vars(obj/structure/door_assembly/source, obj/structure/door_assembly/target, previous = FALSE)
+	procstart = null
+	src.procstart = null
 	target.glass = source.glass
 	target.heat_proof_finished = source.heat_proof_finished
 	target.created_name = source.created_name
@@ -420,6 +448,8 @@
 	qdel(source)
 
 /obj/structure/door_assembly/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(src)
 	if(!disassembled)
 		material_amt = rand(2,4)
@@ -437,19 +467,27 @@
 		new mineral_path(target_turf, 2)
 
 /obj/structure/door_assembly/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	if(the_rcd.mode == RCD_DECONSTRUCT)
 		return list("delay" = 5 SECONDS, "cost" = 16)
 	return FALSE
 
 /obj/structure/door_assembly/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	procstart = null
+	src.procstart = null
 	if(rcd_data[RCD_DESIGN_MODE] == RCD_DECONSTRUCT)
 		qdel(src)
 		return TRUE
 	return FALSE
 
 /obj/structure/door_assembly/nameformat(input, mob/living/user)
+	procstart = null
+	src.procstart = null
 	created_name = input
 	return input
 
 /obj/structure/door_assembly/rename_reset()
+	procstart = null
+	src.procstart = null
 	created_name = null

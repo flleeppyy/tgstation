@@ -23,12 +23,16 @@
 	var/can_change_cable_layer = FALSE
 
 /obj/machinery/power/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isturf(loc))
 		var/turf/turf_loc = loc
 		turf_loc.add_blueprints_preround(src)
 
 /obj/machinery/power/Destroy()
+	procstart = null
+	src.procstart = null
 	disconnect_from_network()
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(update_cable_icons_on_turf), get_turf(src)), 0.3 SECONDS)
 	return ..()
@@ -44,9 +48,13 @@
 
 //override this if the machine needs special functionality for making wire nodes appear, ie emitters, generators, etc.
 /obj/machinery/power/proc/should_have_node()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/power/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(can_change_cable_layer)
 		if(!QDELETED(powernet))
@@ -56,14 +64,20 @@
 		. += span_notice("Its power line can be changed with a [EXAMINE_HINT("multitool")].")
 
 /obj/machinery/power/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(can_change_cable_layer)
 		return cable_layer_act(user, tool)
 
 /obj/machinery/power/multitool_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return multitool_act(user, tool)
 
 /// Called on multitool_act when we can change cable layers, override to add more conditions
 /obj/machinery/power/proc/cable_layer_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	var/choice = tgui_input_list(user, "Select Power Line For Operation", "Select Cable Layer", GLOB.cable_name_to_layer)
 	if(isnull(choice) || QDELETED(src) || QDELETED(user) || QDELETED(tool) || !user.Adjacent(src) || !user.is_holding(tool))
 		return ITEM_INTERACT_BLOCKING
@@ -73,6 +87,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/proc/add_avail(amount)
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		powernet.newavail += amount
 		return TRUE
@@ -80,43 +96,59 @@
 		return FALSE
 
 /obj/machinery/power/proc/add_load(amount)
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		powernet.load += amount
 
 /obj/machinery/power/proc/surplus()
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		return clamp(powernet.avail-powernet.load, 0, powernet.avail)
 	else
 		return 0
 
 /obj/machinery/power/proc/avail(amount)
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		return amount ? powernet.avail >= amount : powernet.avail
 	else
 		return 0
 
 /obj/machinery/power/proc/add_delayedload(amount)
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		powernet.delayedload += amount
 
 /obj/machinery/power/proc/delayed_surplus()
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		return clamp(powernet.newavail - powernet.delayedload, 0, powernet.newavail)
 	else
 		return 0
 
 /obj/machinery/power/proc/newavail()
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		return powernet.newavail
 	else
 		return 0
 
-/obj/machinery/power/proc/disconnect_terminal() // machines without a terminal will just return, no harm no fowl.
+/obj/machinery/power/proc/disconnect_terminal()
+	procstart = null
+	src.procstart = null // machines without a terminal will just return, no harm no fowl.
 	return
 
 // returns true if the area has power on given channel (or doesn't require power).
 // defaults to power_channel
 /obj/machinery/proc/powered(chan = power_channel, ignore_use_power = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!use_power && !ignore_use_power)
 		return TRUE
 
@@ -133,6 +165,8 @@
  * Returns: The available energy the machine can access from the APC.
  */
 /obj/machinery/proc/available_energy(consider_cell = TRUE)
+	procstart = null
+	src.procstart = null
 	var/area/home = get_area(src)
 
 	if(isnull(home))
@@ -157,6 +191,8 @@
  * Returns: The amount of energy used.
  */
 /obj/machinery/proc/use_energy(amount, channel = power_channel, ignore_apc = FALSE, force = TRUE)
+	procstart = null
+	src.procstart = null
 	if(amount <= 0) //just in case
 		return FALSE
 	var/area/home = get_area(src)
@@ -194,6 +230,8 @@
  * Returns: The amount of energy that got used by the cell.
  */
 /obj/machinery/proc/directly_use_energy(amount, force = FALSE)
+	procstart = null
+	src.procstart = null
 	var/area/my_area = get_area(src)
 	if(isnull(my_area))
 		stack_trace("machinery is somehow not in an area, nullspace?")
@@ -218,6 +256,8 @@
  * - take_any, a bool of whether any amount of power is acceptable, instead of all or nothing. Defaults to FALSE
  */
 /obj/machinery/proc/use_power_from_net(amount, take_any = FALSE)
+	procstart = null
+	src.procstart = null
 	if(amount <= 0) //just in case
 		return FALSE
 	var/area/home = get_area(src)
@@ -251,16 +291,22 @@
  * Returns: The amount of energy the cell received.
  */
 /obj/machinery/proc/charge_cell(amount, obj/item/stock_parts/power_store/cell, grid_only = FALSE, channel = AREA_USAGE_EQUIP)
+	procstart = null
+	src.procstart = null
 	var/demand = use_energy(min(amount, cell.used_charge()), channel = channel, ignore_apc = grid_only)
 	var/power_given = cell.give(demand)
 	return power_given
 
 
 /obj/machinery/proc/addStaticPower(value, powerchannel)
+	procstart = null
+	src.procstart = null
 	var/area/A = get_area(src)
 	A?.addStaticPower(value, powerchannel)
 
 /obj/machinery/proc/removeStaticPower(value, powerchannel)
+	procstart = null
+	src.procstart = null
 	addStaticPower(-value, powerchannel)
 
 /**
@@ -271,6 +317,8 @@
  * Returns TRUE if the NOPOWER flag was toggled
  */
 /obj/machinery/proc/power_change()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	SHOULD_CALL_PARENT(TRUE)
 
@@ -294,11 +342,15 @@
 
 // Saves like 300ms of init by not duping calls in the above proc
 /obj/machinery/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	appearance_power_state = machine_stat & NOPOWER
 
 // connect the machine to a powernet if a node cable or a terminal is present on the turf
 /obj/machinery/power/proc/connect_to_network()
+	procstart = null
+	src.procstart = null
 	var/turf/T = src.loc
 	if(!T || !istype(T))
 		return FALSE
@@ -317,6 +369,8 @@
 
 // remove and disconnect the machine from its current powernet
 /obj/machinery/power/proc/disconnect_from_network()
+	procstart = null
+	src.procstart = null
 	if(!powernet)
 		return FALSE
 	powernet.remove_machine(src)
@@ -325,6 +379,8 @@
 // attach a wire to a power machine - leads from the turf you are standing on
 //almost never called, overwritten by all power machines but terminal and generator
 /obj/machinery/power/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stack/cable_coil))
 		return NONE
 	var/obj/item/stack/cable_coil/coil = tool
@@ -343,6 +399,8 @@
 //returns all the cables WITHOUT a powernet in neighbors turfs,
 //pointing towards the turf the machine is located at
 /obj/machinery/power/proc/get_connections()
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/turf/T
 
@@ -358,6 +416,8 @@
 //returns all the cables in neighbors turfs,
 //pointing towards the turf the machine is located at
 /obj/machinery/power/proc/get_marked_connections()
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/turf/T
 
@@ -370,6 +430,8 @@
 
 //returns all the NODES (O-X) cables WITHOUT a powernet in the turf the machine is located at
 /obj/machinery/power/proc/get_indirect_connections()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/obj/structure/cable/C in loc)
 		if(C.powernet)
@@ -378,6 +440,8 @@
 	return .
 
 /proc/update_cable_icons_on_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/cable/C in T.contents)
 		C.update_appearance()
 
@@ -387,6 +451,8 @@
 
 ///remove the old powernet and replace it with a new one throughout the network.
 /proc/propagate_network(obj/structure/cable/C, datum/powernet/PN, skip_assigned_powernets = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/found_machines = list()
 	var/list/cables = list()
 	var/index = 1
@@ -416,6 +482,8 @@
 
 //Merge two powernets, the bigger (in cable length term) absorbing the other
 /proc/merge_powernets(datum/powernet/net1, datum/powernet/net2)
+	procstart = null
+	src.procstart = null
 	if(!net1 || !net2) //if one of the powernet doesn't exist, return
 		return
 
@@ -440,6 +508,8 @@
 
 /// Extracts the powernet and cell of the provided power source
 /proc/get_powernet_info_from_source(power_source)
+	procstart = null
+	src.procstart = null
 	var/area/source_area
 	if (isarea(power_source))
 		source_area = power_source
@@ -476,6 +546,8 @@
 //dist_check - set to only shock mobs within 1 of source (vendors, airlocks, etc.)
 //No animations will be performed by this proc.
 /proc/electrocute_mob(mob/living/carbon/victim, power_source, obj/source, siemens_coeff = 1, dist_check = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(victim) || ismecha(victim.loc))
 		return FALSE //feckin mechs are dumb
 
@@ -527,6 +599,8 @@
 
 // return a cable able connect to machinery on layer if there's one on the turf, null if there isn't one
 /turf/proc/get_cable_node(cable_layer = CABLE_LAYER_ALL)
+	procstart = null
+	src.procstart = null
 	if(!can_have_cabling())
 		return null
 	for(var/obj/structure/cable/C in src)

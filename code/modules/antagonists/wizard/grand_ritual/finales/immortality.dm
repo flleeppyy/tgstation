@@ -18,6 +18,8 @@
 	minimum_time = 30 MINUTES // This is enormously disruptive but doesn't technically in of itself end the round.
 
 /datum/grand_finale/immortality/trigger(mob/living/carbon/human/invoker)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/immortality_blast(get_turf(invoker))
 	SEND_SOUND(world, sound('sound/effects/magic/teleport_diss.ogg'))
 	for (var/mob/living/alive_guy as anything in GLOB.mob_living_list)
@@ -29,6 +31,8 @@
 
 /// Called when something passes into the great beyond, make it not do that
 /datum/grand_finale/immortality/proc/something_died(datum/source, mob/living/died, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (died.stat != DEAD || HAS_TRAIT(died, TRAIT_PERMANENTLY_MORTAL) || died.flags_1 & HOLOGRAM_1)
 		return
@@ -60,6 +64,8 @@
 
 /// Create a ghost ready for revival
 /datum/grand_finale/immortality/proc/reverse_death(mob/living/died, datum/mind/dead_mind, turf/died_turf, body_type, datum/human_appearance_profile/human_appearance)
+	procstart = null
+	src.procstart = null
 	if (died.stat != DEAD)
 		return
 	var/ghost_type = ispath(body_type, /mob/living/carbon/human) ? /obj/effect/spectre_of_resurrection/human : /obj/effect/spectre_of_resurrection
@@ -95,10 +101,14 @@
 	var/voice_filter = ""
 
 /datum/human_appearance_profile/New(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	copy_from(target)
 
 /// Copy the appearance data of the target
 /datum/human_appearance_profile/proc/copy_from(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	target.dna.real_name = target.real_name
 	dna = new target.dna.type()
 	target.dna.copy_dna(dna)
@@ -114,6 +124,8 @@
 
 /// Make the targeted human look like this
 /datum/human_appearance_profile/proc/apply_to(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	target.real_name = name
 	target.age = age
 	target.physique = physique
@@ -150,11 +162,15 @@
 	var/datum/mind/dead_mind
 
 /obj/effect/spectre_of_resurrection/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, alpha = 150, time = 2 SECONDS)
 
 /// Prepare to revive someone
 /obj/effect/spectre_of_resurrection/proc/set_up_resurrection(mob/living/corpse, datum/mind/dead_mind, datum/human_appearance_profile/human_appearance)
+	procstart = null
+	src.procstart = null
 	if (isnull(corpse))
 		qdel(src)
 		return
@@ -173,15 +189,21 @@
 
 /// Copy appearance from ressurecting mob
 /obj/effect/spectre_of_resurrection/proc/setup_icon(mob/living/corpse)
+	procstart = null
+	src.procstart = null
 	icon = initial(corpse.icon)
 	icon_state = initial(corpse.icon_state)
 
 /obj/effect/spectre_of_resurrection/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(corpse)
 	dead_mind = null
 	return ..()
 
 /obj/effect/spectre_of_resurrection/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (gone != corpse)
 		return // Weird but ok
@@ -191,6 +213,8 @@
 
 /// Bring our body back to life
 /obj/effect/spectre_of_resurrection/proc/revive()
+	procstart = null
+	src.procstart = null
 	if (!isnull(dead_mind))
 		if (dead_mind.current == corpse)
 			dead_mind.grab_ghost(force = TRUE)
@@ -200,6 +224,8 @@
 
 /// Remove our stored corpse back to the living world
 /obj/effect/spectre_of_resurrection/proc/on_corpse_revived()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (isnull(corpse))
 		return
@@ -210,11 +236,15 @@
 
 /// If the body is destroyed then we can't come back, F
 /obj/effect/spectre_of_resurrection/proc/on_corpse_deleted()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /// If the mind is deleted somehow we just don't transfer it on revival
 /obj/effect/spectre_of_resurrection/proc/on_mind_lost()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	dead_mind = null
 
@@ -224,15 +254,21 @@
 	var/datum/human_appearance_profile/human_appearance
 
 /obj/effect/spectre_of_resurrection/human/set_up_resurrection(mob/living/corpse, datum/mind/dead_mind, datum/human_appearance_profile/human_appearance)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.human_appearance = human_appearance
 
 // We just use a generic floating human appearance to save unecessary costly icon operations
 /obj/effect/spectre_of_resurrection/human/setup_icon(mob/living/corpse)
+	procstart = null
+	src.procstart = null
 	return
 
 // Apply stored human details
 /obj/effect/spectre_of_resurrection/human/on_corpse_revived()
+	procstart = null
+	src.procstart = null
 	if (isnull(corpse))
 		return
 	human_appearance?.apply_to(corpse)
@@ -250,6 +286,8 @@
 	pixel_y = -32
 
 /obj/effect/temp_visual/immortality_blast/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transform *= 0
 	animate(src, transform = matrix(), time = 1.5 SECONDS, easing = ELASTIC_EASING)
@@ -265,6 +303,8 @@
 	color = COLOR_PALE_GREEN
 
 /obj/effect/temp_visual/immortality_pulse/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transform *= 0
 	animate(src, transform = matrix() * 1.5, alpha = 0, time = 1 SECONDS, easing = SINE_EASING | EASE_OUT)

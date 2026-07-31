@@ -20,16 +20,22 @@
 	var/unzip_sfx = 'sound/items/zip/un_zip.ogg'
 
 /obj/item/storage/backpack/duffelbag/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	slowdown += zip_slowdown
 	set_zipper(TRUE)
 	RegisterSignal(src, COMSIG_SPEED_POTION_APPLIED, PROC_REF(on_speed_potioned))
 
 /obj/item/storage/backpack/duffelbag/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "[zipped_up ? "It's zipped up, preventing you from accessing its contents." : "It's unzipped, and harder to move in."]"
 
 /obj/item/storage/backpack/duffelbag/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	if(loc != user) // God fuck TK
 		return ..()
 	if(zipped_up)
@@ -38,11 +44,15 @@
 		return attack_hand_secondary(user, modifiers)
 
 /obj/item/storage/backpack/duffelbag/attack_self_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	attack_self(user, modifiers)
 	return ..()
 
 // If we're zipped, click to unzip
 /obj/item/storage/backpack/duffelbag/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(loc != user)
 		// Hacky, but please don't be cringe yeah?
 		atom_storage.silent = TRUE
@@ -64,6 +74,8 @@
 
 // Vis versa
 /obj/item/storage/backpack/duffelbag/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(loc != user)
 		return ..()
 	if(zipped_up)
@@ -82,9 +94,13 @@
 /// Checks to see if the zipper matches the passed in state
 /// Returns true if so, false otherwise
 /obj/item/storage/backpack/duffelbag/proc/zipper_matches(matching_value)
+	procstart = null
+	src.procstart = null
 	return zipped_up == matching_value
 
 /obj/item/storage/backpack/duffelbag/proc/set_zipper(new_zip)
+	procstart = null
+	src.procstart = null
 	zipped_up = new_zip
 	SEND_SIGNAL(src, COMSIG_DUFFEL_ZIP_CHANGE, new_zip)
 	if(zipped_up)
@@ -102,6 +118,8 @@
 
 /// Signal handler for [COMSIG_SPEED_POTION_APPLIED]. Speed potion removes the unzipped slowdown
 /obj/item/storage/backpack/duffelbag/proc/on_speed_potioned(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Don't need to touch the actual slowdown here, since the speed potion does it for us
 	zip_slowdown = 0
@@ -117,6 +135,8 @@
 	max_integrity = 100
 
 /obj/item/storage/backpack/duffelbag/cursed/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/curse_of_hunger, add_dropdel = TRUE)
 
@@ -191,6 +211,8 @@
 	desc = "A large duffel bag for holding extra supplies - this one has a material inlay with space for various sharp-looking tools."
 
 /obj/item/storage/backpack/duffelbag/sec/surgery/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/scalpel(src)
 	new /obj/item/hemostat(src)
 	new /obj/item/retractor(src)
@@ -217,6 +239,8 @@
 	resistance_flags = FIRE_PROOF
 
 /obj/item/storage/backpack/duffelbag/drone/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/screwdriver(src)
 	new /obj/item/wrench(src)
 	new /obj/item/weldingtool(src)
@@ -232,6 +256,8 @@
 	inhand_icon_state = "duffel-clown"
 
 /obj/item/storage/backpack/duffelbag/clown/cream_pie/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 10)
 		new /obj/item/food/pie/cream(src)
 
@@ -257,6 +283,8 @@
 	inhand_icon_state = "duffel-syndieammo"
 
 /obj/item/storage/backpack/duffelbag/syndie/hitman/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/costume/buttondown/slacks/service(src)
 	new /obj/item/clothing/neck/tie/red/hitman(src)
 	new /obj/item/clothing/accessory/waistcoat(src)
@@ -279,6 +307,8 @@
 	inhand_icon_state = "duffel-syndiemed"
 
 /obj/item/storage/backpack/duffelbag/syndie/surgery/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/scalpel/advanced(src)
 	new /obj/item/retractor/advanced(src)
 	new /obj/item/cautery/advanced(src)
@@ -304,6 +334,8 @@
 	desc = "A large duffel bag, packed to the brim with ammunition for the scattershot exosuit weapon. Suited to equipping the standard loadout of a Dark Gygax."
 
 /obj/item/storage/backpack/duffelbag/syndie/ammo/darkgygax/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/mecha_ammo/scattershot(src)
 	new /obj/item/mecha_ammo/scattershot(src)
 	new /obj/item/mecha_ammo/scattershot(src)
@@ -317,6 +349,8 @@
 	desc = "A large duffel bag, packed to the brim with various exosuit ammo. Suited to equipping the standard loadout of a Dark Gygax."
 
 /obj/item/storage/backpack/duffelbag/syndie/ammo/mauler/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/mecha_ammo/lmg(src)
 	new /obj/item/mecha_ammo/lmg(src)
 	new /obj/item/mecha_ammo/lmg(src)
@@ -329,6 +363,8 @@
 	desc = "A large duffel bag containing a medical equipment, a Donksoft LMG, a big jumbo box of riot darts, and a magboot MODsuit module."
 
 /obj/item/storage/backpack/duffelbag/syndie/med/medicalbundle/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/mod/module/magboot(src)
 	new /obj/item/storage/medkit/tactical/premium(src)
 	new /obj/item/gun/ballistic/automatic/l6_saw/toy(src)
@@ -338,6 +374,8 @@
 	desc = "A large duffel bag containing deadly chemicals, a handheld chem sprayer, Bioterror foam grenade, a Donksoft assault rifle, box of riot grade darts, a dart pistol, and a box of syringes."
 
 /obj/item/storage/backpack/duffelbag/syndie/med/bioterrorbundle/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/reagent_containers/spray/chemsprayer/bioterror(src)
 	new /obj/item/storage/box/syndie_kit/chemical(src)
 	new /obj/item/gun/syringe/syndicate(src)
@@ -349,10 +387,14 @@
 		new /obj/item/food/pizza/pineapple(src)
 
 /obj/item/storage/backpack/duffelbag/syndie/c4/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 10)
 		new /obj/item/grenade/c4(src)
 
 /obj/item/storage/backpack/duffelbag/syndie/x4/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 10)
 		new /obj/item/grenade/c4/x4(src)
 
@@ -360,6 +402,8 @@
 	desc = "A large duffel bag containing a New Russian pyro backpack sprayer, Elite MODsuit, a Stechkin APS pistol, minibomb, ammo, and other equipment."
 
 /obj/item/storage/backpack/duffelbag/syndie/firestarter/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/syndicate/soviet(src)
 	new /obj/item/mod/control/pre_equipped/elite/flamethrower(src)
 	new /obj/item/gun/ballistic/automatic/pistol/aps(src)
@@ -374,6 +418,8 @@
 	storage_type = /datum/storage/duffel/syndicate
 
 /obj/item/storage/backpack/duffelbag/clown/syndie/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/modular_computer/pda/clown(src)
 	new /obj/item/clothing/under/rank/civilian/clown(src)
 	new /obj/item/clothing/shoes/clown_shoes(src)
@@ -398,6 +444,8 @@
 	inhand_icon_state = "duffel-explorer"
 
 /obj/item/storage/backpack/duffelbag/mining_conscript/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/glasses/meson(src)
 	new /obj/item/t_scanner/adv_mining_scanner/lesser(src)
 	new /obj/item/storage/bag/ore(src)

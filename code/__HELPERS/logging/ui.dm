@@ -1,4 +1,6 @@
 /proc/log_href(text, list/data)
+	procstart = null
+	src.procstart = null
 	logger.Log(LOG_CATEGORY_HREF, text, data)
 
 /**

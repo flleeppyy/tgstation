@@ -38,6 +38,8 @@
 	set_lock_code(lock_code)
 
 /datum/component/lockable_storage/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(can_hack_open)
 		RegisterSignal(parent, COMSIG_ATOM_TOOL_ACT(TOOL_SCREWDRIVER), PROC_REF(on_screwdriver_act))
@@ -54,6 +56,8 @@
 		RegisterSignal(parent, COMSIG_ATOM_ATTACK_HAND, PROC_REF(on_interact))
 
 /datum/component/lockable_storage/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	if(can_hack_open)
 		UnregisterSignal(parent, list(
 			COMSIG_ATOM_TOOL_ACT(TOOL_SCREWDRIVER),
@@ -81,6 +85,8 @@
  * * user - The user who is going to see the screentips.
  */
 /datum/component/lockable_storage/proc/on_requesting_context_from_item(datum/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isnull(held_item))
 		if(source in user.held_items)
@@ -102,6 +108,8 @@
 
 ///Called when examining the storage item.
 /datum/component/lockable_storage/proc/on_examine(atom/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(can_hack_open)
 		examine_list += "The service panel is currently <b>[panel_open ? "unscrewed" : "screwed shut"]</b>."
@@ -110,6 +118,8 @@
  * Called when a screwdriver is used on the parent, if it's hackable.
  */
 /datum/component/lockable_storage/proc/on_screwdriver_act(atom/source, mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!can_hack_open || !source.atom_storage.locked)
 		return NONE
@@ -124,6 +134,8 @@
  * Checks if we can start hacking and, if so, will begin the hacking process.
  */
 /datum/component/lockable_storage/proc/on_multitool_act(atom/source, mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!can_hack_open || !source.atom_storage.locked)
 		return NONE
@@ -136,12 +148,16 @@
 
 ///Does a do_after to hack the storage open, takes a long time cause idk.
 /datum/component/lockable_storage/proc/hack_open(atom/source, mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!tool.use_tool(parent, user, 40 SECONDS, volume = 50))
 		return
 	source.balloon_alert(user, "hacked")
 	set_lock_code(null)
 
 /datum/component/lockable_storage/proc/break_lock()
+	procstart = null
+	src.procstart = null
 	can_hack_open = FALSE // since it's broken for good
 	lock_code = null
 
@@ -152,6 +168,8 @@
 	source.update_appearance()
 
 /datum/component/lockable_storage/proc/on_emag(obj/source, mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!source.atom_storage.locked)
@@ -172,6 +190,8 @@
  * * new_code - The new lock code to set, can be null to remove the code
  */
 /datum/component/lockable_storage/proc/set_lock_code(new_code, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/source = parent
 
 	// Can't set lock code if the electronics are emagged
@@ -191,6 +211,8 @@
 
 ///Updates the icon state depending on if we're locked or not.
 /datum/component/lockable_storage/proc/on_update_icon_state(obj/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(source.obj_flags & EMAGGED)
@@ -200,10 +222,14 @@
 
 ///Called when interacted with in-hand or on attack, opens the UI.
 /datum/component/lockable_storage/proc/on_interact(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(ui_interact), user)
 
 /datum/component/lockable_storage/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	var/obj/source = parent
 	if(source.obj_flags & EMAGGED)
 		ui?.close()
@@ -215,6 +241,8 @@
 		ui.open()
 
 /datum/component/lockable_storage/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/atom/source = parent
 	data["input_code"] = numeric_input || "*****"
@@ -223,6 +251,8 @@
 	return data
 
 /datum/component/lockable_storage/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(action != "keypad")
 		return TRUE

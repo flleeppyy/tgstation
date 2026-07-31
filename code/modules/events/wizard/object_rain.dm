@@ -51,6 +51,8 @@
 	var/static/list/possible_regions = RAIN_TARGET_DEPARTMENTS
 
 /datum/round_event/wizard/object_rain/setup()
+	procstart = null
+	src.procstart = null
 	if (isnull(target_region))
 		target_region = pick(possible_regions) // can't use get_safe_random_turfs because it disqualifies some of my areas
 	target_turfs = list()
@@ -60,6 +62,8 @@
 		target_turfs += turf
 
 /datum/round_event/wizard/object_rain/tick()
+	procstart = null
+	src.procstart = null
 	var/to_spawn = rand(0, max_things_per_second)
 	while (to_spawn > 0)
 		to_spawn--
@@ -67,6 +71,8 @@
 
 /// Make something descend from above.
 /datum/round_event/wizard/object_rain/proc/drop_item()
+	procstart = null
+	src.procstart = null
 	if (length(target_turfs) == 0)
 		return
 	var/atom/landing_atom = get_item()
@@ -81,10 +87,14 @@
 		"effectQuiet" = TRUE,))
 
 /datum/round_event/wizard/object_rain/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("Anomalous weather patterns forecast in the [target_region].", "Janitorial alert")
 
 /// Return whatever it is you want to rain from the sky here.
 /datum/round_event/wizard/object_rain/proc/get_item()
+	procstart = null
+	src.procstart = null
 	// Return something you want to fall from the sky from here
 
 /// Spawns little animals
@@ -92,6 +102,8 @@
 	end_when = 10 // These are mobs so don't make too many.
 
 /datum/round_event/wizard/object_rain/animal/get_item()
+	procstart = null
+	src.procstart = null
 	var/static/list/possible_paths = list(
 		/mob/living/basic/pet/dog/corgi/puppy = 5,
 		/mob/living/basic/pet/cat/kitten = 5,
@@ -109,12 +121,16 @@
 /datum/round_event/wizard/object_rain/food
 
 /datum/round_event/wizard/object_rain/food/get_item()
+	procstart = null
+	src.procstart = null
 	return get_random_food()
 
 /// Spawns money
 /datum/round_event/wizard/object_rain/cash
 
 /datum/round_event/wizard/object_rain/cash/get_item()
+	procstart = null
+	src.procstart = null
 	// Sad that I have to remake this list but this doesn't work if I use a spawner object
 	var/static/list/possible_paths = list(
 		/obj/item/coin/iron = 100,
@@ -144,6 +160,8 @@
 /datum/round_event/wizard/object_rain/fish
 
 /datum/round_event/wizard/object_rain/fish/get_item()
+	procstart = null
+	src.procstart = null
 	var/fish_path = pick(subtypesof(/obj/item/fish))
 	return new fish_path()
 
@@ -153,9 +171,13 @@
 	normal_run_option = "Random"
 
 /datum/event_admin_setup/listed_options/object_rain/get_list()
+	procstart = null
+	src.procstart = null
 	return RAIN_TARGET_DEPARTMENTS // Have to keep making a new copy as this list gets mutated
 
 /datum/event_admin_setup/listed_options/object_rain/apply_to_event(datum/round_event/wizard/object_rain/event)
+	procstart = null
+	src.procstart = null
 	if (chosen != "Random")
 		event.target_region = chosen
 

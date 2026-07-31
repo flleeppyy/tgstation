@@ -24,6 +24,8 @@
 	light_color = COLOR_RED
 
 /obj/machinery/doppler_array/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSdcs, COMSIG_GLOB_EXPLOSION, PROC_REF(sense_explosion))
 	RegisterSignal(src, COMSIG_MACHINERY_POWER_LOST, PROC_REF(update_doppler_light))
@@ -45,10 +47,14 @@
 	var/explosion_identifier
 
 /obj/machinery/doppler_array/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It is currently facing [dir2text(dir)]")
 
 /obj/machinery/doppler_array/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/disk/computer))
 		return NONE
 	eject_disk(user)
@@ -59,19 +65,27 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/doppler_array/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/doppler_array/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = default_deconstruction_screwdriver(user, tool)
 	power_change()
 	return .
 
 /obj/machinery/doppler_array/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /// Printing of a record into a disk.
 /obj/machinery/doppler_array/proc/print(mob/user, datum/data/tachyon_record/record)
+	procstart = null
+	src.procstart = null
 	if(!record || !inserted_disk)
 		return
 
@@ -91,6 +105,8 @@
  * The score is the same for all explosive experiments (light radius).
  */
 /obj/machinery/doppler_array/proc/apply_experiments(datum/data/tachyon_record/record)
+	procstart = null
+	src.procstart = null
 	var/list/passed_experiments = list()
 	var/list/record_reactions = record.reaction_results
 
@@ -199,6 +215,8 @@
 	return TRUE
 
 /obj/machinery/doppler_array/proc/eject_disk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!inserted_disk)
 		return FALSE
 	if(!user || !Adjacent(user))
@@ -210,16 +228,22 @@
 
 /// We rely on exited to clear references.
 /obj/machinery/doppler_array/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if(gone == inserted_disk)
 		inserted_disk = null
 	return ..()
 
 /obj/machinery/doppler_array/powered()
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		return FALSE
 	return ..()
 
 /obj/machinery/doppler_array/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(panel_open)
 		. += mutable_appearance(icon, "[base_icon_state]_open")
@@ -232,26 +256,36 @@
 		. += mutable_appearance(icon, "[base_icon_state]_screen-off")
 
 /obj/machinery/doppler_array/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	eject_disk()
 	. = ..()
 
 /obj/machinery/doppler_array/Destroy()
+	procstart = null
+	src.procstart = null
 	inserted_disk = null
 	records.Cut() // We only want to clear the list itself, not delete its contents.
 	return ..()
 
 /obj/machinery/doppler_array/proc/update_doppler_light()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_light_on(!(machine_stat & NOPOWER))
 
 
 /obj/machinery/doppler_array/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "DopplerArray", name)
 		ui.open()
 
 /obj/machinery/doppler_array/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["records"] = list()
 	data["disk"] = inserted_disk?.name
@@ -285,6 +319,8 @@
 	return data
 
 /obj/machinery/doppler_array/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

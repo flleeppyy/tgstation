@@ -40,6 +40,8 @@
 
 
 /obj/structure/windoor_assembly/Initialize(mapload, set_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(set_dir)
 		setDir(set_dir)
@@ -53,20 +55,28 @@
 	AddElement(/datum/element/simple_rotation, ROTATION_NEEDS_ROOM)
 
 /obj/structure/windoor_assembly/Destroy()
+	procstart = null
+	src.procstart = null
 	set_density(FALSE)
 	air_update_turf(TRUE, FALSE)
 	return ..()
 
 /obj/structure/windoor_assembly/Move()
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 	. = ..()
 	move_update_air(T)
 
 /obj/structure/windoor_assembly/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[facing]_[secure ? "secure_" : ""]windoor_assembly[cables_added ? "02" : "01"]"
 	return ..()
 
 /obj/structure/windoor_assembly/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(border_dir == dir)
@@ -80,12 +90,16 @@
 		return valid_build_direction(loc, mover.dir, is_fulltile = FALSE)
 
 /obj/structure/windoor_assembly/can_atmos_pass(turf/T, vertical = FALSE)
+	procstart = null
+	src.procstart = null
 	if(get_dir(loc, T) == dir)
 		return !density
 	else
 		return TRUE
 
 /obj/structure/windoor_assembly/proc/on_exit(datum/source, atom/movable/leaving, direction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(leaving.movement_type & PHASING)
@@ -102,6 +116,8 @@
 		return COMPONENT_ATOM_BLOCK_EXIT
 
 /obj/structure/windoor_assembly/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	//I really should have spread this out across more states but thin little windoors are hard to sprite.
 	add_fingerprint(user)
 	if(!cables_added)
@@ -184,6 +200,8 @@
 
 //dissasemble entirely unworked assembly
 /obj/structure/windoor_assembly/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(cables_added)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 
@@ -212,6 +230,8 @@
 
 //secure or unsecure unworked assembly
 /obj/structure/windoor_assembly/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(cables_added)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 
@@ -260,6 +280,8 @@
 
 //Flips the windoor assembly, determines whether the door opens to the left or the right
 /obj/structure/windoor_assembly/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(anchored)
 		return NONE
 	if(facing == WINDOOR_LEFT)
@@ -274,6 +296,8 @@
 
 //remove cabling
 /obj/structure/windoor_assembly/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!cables_added)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 
@@ -297,6 +321,8 @@
 
 //remove airlock electronics
 /obj/structure/windoor_assembly/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!cables_added)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 
@@ -318,6 +344,8 @@
 
 //finishes door
 /obj/structure/windoor_assembly/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!cables_added)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 
@@ -336,6 +364,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/windoor_assembly/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!anchored)
 		. += span_notice("\The [src] can be [span_boldnotice("wrenched")] down.")
@@ -353,6 +383,8 @@
 	. += span_notice("\The [src] is ready to be [span_boldnotice("levered")] into place with a [span_boldnotice("crowbar")].")
 
 /obj/structure/windoor_assembly/proc/finish_door()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/door/window/windoor
 	if(secure)
 		windoor = new /obj/machinery/door/window/brigdoor(loc)
@@ -401,10 +433,14 @@
 	qdel(src)
 
 /obj/structure/windoor_assembly/nameformat(input, user)
+	procstart = null
+	src.procstart = null
 	created_name = input
 	return input
 
 /obj/structure/windoor_assembly/rename_reset()
+	procstart = null
+	src.procstart = null
 	created_name = initial(created_name)
 
 #undef WINDOOR_LEFT

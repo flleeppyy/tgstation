@@ -21,13 +21,19 @@
 	var/list/effects
 
 /datum/action/cooldown/spell/spacetime_dist/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LAZYLIST(effects)
 	return ..()
 
 /datum/action/cooldown/spell/spacetime_dist/can_cast_spell(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	return ..() && ready
 
 /datum/action/cooldown/spell/spacetime_dist/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/turf/to_switcharoo = get_targets_to_scramble(cast_on)
 	if(!length(to_switcharoo))
@@ -50,11 +56,15 @@
 		LAZYADD(effects, effect_b)
 
 /datum/action/cooldown/spell/spacetime_dist/after_cast()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(clean_turfs)), duration)
 
 /// Callback which cleans up our effects list after the duration expires.
 /datum/action/cooldown/spell/spacetime_dist/proc/clean_turfs()
+	procstart = null
+	src.procstart = null
 	QDEL_LAZYLIST(effects)
 	ready = TRUE
 
@@ -65,6 +75,8 @@
  * swapped between one another when the cast is done.
  */
 /datum/action/cooldown/spell/spacetime_dist/proc/get_targets_to_scramble(atom/center)
+	procstart = null
+	src.procstart = null
 	// Get turfs around the center
 	var/list/turfs = spiral_range_turfs(scramble_radius, center)
 	if(!length(turfs))
@@ -104,12 +116,18 @@
 	var/walks_left = 50 //prevents the game from hanging in extreme cases (such as minigun fire)
 
 /obj/effect/cross_action/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/cross_action/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/cross_action/spacetime_dist/Initialize(mapload, flags = MAGIC_RESISTANCE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	setDir(pick(GLOB.cardinals))
 	var/static/list/loc_connections = list(
@@ -119,6 +137,8 @@
 	antimagic_flags = flags
 
 /obj/effect/cross_action/spacetime_dist/proc/walk_link(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(ismob(AM))
 		var/mob/M = AM
 		if(M.can_block_magic(antimagic_flags, charge_cost = 0))
@@ -129,6 +149,8 @@
 		walks_left--
 
 /obj/effect/cross_action/spacetime_dist/proc/get_walker(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	busy = TRUE
 	flick("purplesparkles", src)
 	AM.forceMove(get_turf(src))
@@ -136,11 +158,15 @@
 	busy = FALSE
 
 /obj/effect/cross_action/spacetime_dist/proc/on_entered(datum/source, atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!busy)
 		walk_link(AM)
 
 /obj/effect/cross_action/spacetime_dist/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.temporarilyRemoveItemFromInventory(tool))
 		walk_link(tool)
 	else
@@ -149,12 +175,18 @@
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/effect/cross_action/spacetime_dist/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	walk_link(user)
 
 /obj/effect/cross_action/spacetime_dist/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	walk_link(user)
 
 /obj/effect/cross_action/spacetime_dist/Destroy()
+	procstart = null
+	src.procstart = null
 	busy = TRUE
 	linked_dist = null
 	return ..()

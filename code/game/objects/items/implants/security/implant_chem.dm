@@ -25,14 +25,20 @@
 		into their bloodstream."
 
 /obj/item/implant/chem/is_shown_on_console(obj/machinery/computer/prisoner/management/console)
+	procstart = null
+	src.procstart = null
 	return !frequency && is_valid_z_level(get_turf(console), get_turf(imp_in))
 
 /obj/item/implant/chem/get_management_console_data()
+	procstart = null
+	src.procstart = null
 	var/list/info_shown = ..()
 	info_shown["Volume"] = "[reagents.total_volume]u"
 	return info_shown
 
 /obj/item/implant/chem/get_management_console_buttons()
+	procstart = null
+	src.procstart = null
 	var/list/buttons = ..()
 	for(var/i in implant_sizes)
 		UNTYPED_LIST_ADD(buttons, list(
@@ -44,6 +50,8 @@
 	return buttons
 
 /obj/item/implant/chem/handle_management_console_action(mob/user, list/params, obj/machinery/computer/prisoner/management/console)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -59,24 +67,34 @@
 		return TRUE
 
 /obj/item/implant/chem/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(50, OPENCONTAINER)
 
 /obj/item/implant/chem/implant(mob/living/target, mob/user, silent = FALSE, force = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && !frequency)
 		RegisterSignal(target, COMSIG_LIVING_DEATH, PROC_REF(on_death))
 
 /obj/item/implant/chem/removed(mob/target, silent = FALSE, special = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		UnregisterSignal(target, COMSIG_LIVING_DEATH)
 
 /obj/item/implant/chem/proc/on_death(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, TYPE_PROC_REF(/obj/item/implant/chem, activate), reagents.total_volume)
 
 /obj/item/implant/chem/activate(cause)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!cause || !imp_in)
 		return
@@ -93,12 +111,16 @@
 		qdel(src)
 
 /obj/item/implant/chem/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/assembly/signaler))
 		signaler_sync(tool, user)
 		return ITEM_INTERACT_SUCCESS
 	return ..()
 
 /obj/item/implant/chem/proc/signaler_sync(obj/item/assembly/signaler/syncing_signaler, mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "You sync \the [src] to \the [syncing_signaler]'s code & frequency[frequency ? "" : ", disabling other methods of activation"].")
 	code = syncing_signaler.code
 	SSradio.remove_object(src, frequency)
@@ -106,6 +128,8 @@
 	SSradio.add_object(src, frequency, RADIO_SIGNALER)
 
 /obj/item/implant/chem/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	if(!signal || signal.data["code"] != code)
 		return
 	activate(reagents.total_volume)

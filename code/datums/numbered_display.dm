@@ -4,6 +4,8 @@
 	var/number
 
 /datum/numbered_display/New(obj/item/sample, _number = 1)
+	procstart = null
+	src.procstart = null
 	if(!istype(sample))
 		qdel(src)
 	sample_object = sample

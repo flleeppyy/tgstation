@@ -31,11 +31,15 @@
 	var/matrix/initial_matrix
 
 /obj/item/grapple_gun/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	zipline_sound = new(src)
 	update_appearance()
 
 /obj/item/grapple_gun/ranged_interact_with_atom(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isgroundlessturf(target))
 		return NONE
 	if(target == user || !hooked)
@@ -74,6 +78,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/grapple_gun/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(obj_flags & EMAGGED)
 		return FALSE
@@ -82,6 +88,8 @@
 	return TRUE
 
 /obj/item/grapple_gun/proc/on_grapple_hit(datum/source, atom/movable/firer, atom/target, Angle)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(source, list(COMSIG_PROJECTILE_SELF_ON_HIT, COMSIG_PREQDELETED))
@@ -97,10 +105,14 @@
 	grapple_timer_id = addtimer(CALLBACK(src, PROC_REF(launch_user), target), 1.5 SECONDS, TIMER_STOPPABLE)
 
 /obj/item/grapple_gun/proc/on_grapple_fail(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	cancel_hook()
 
 /obj/item/grapple_gun/proc/determine_distance(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(zipline))
@@ -112,6 +124,8 @@
 		cancel_hook()
 
 /obj/item/grapple_gun/proc/apply_throw_traits(mob/living/source, list/arguements)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/target_atom = arguements[1]
 	if(isnull(target_atom))
@@ -124,6 +138,8 @@
 	animate(source, transform = matrix().Turn(dir_to_turn), time = 0.1 SECONDS)
 
 /obj/item/grapple_gun/proc/launch_user(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	var/mob/living/my_user = zipliner?.resolve()
 	if(isnull(my_user) || isnull(target_atom) || my_user.buckled)
 		cancel_hook()
@@ -134,6 +150,8 @@
 	my_user.throw_at(target = target_atom, range = 9, speed = 1, spin = FALSE, gentle = TRUE, callback = CALLBACK(src, PROC_REF(post_land)))
 
 /obj/item/grapple_gun/proc/strike_target(mob/living/source, mob/living/victim, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(victim))
@@ -148,6 +166,8 @@
 
 
 /obj/item/grapple_gun/proc/post_land()
+	procstart = null
+	src.procstart = null
 	var/mob/living/my_user = zipliner?.resolve()
 	if(!isnull(my_user))
 		my_user.transform = initial_matrix
@@ -156,6 +176,8 @@
 	cancel_hook()
 
 /obj/item/grapple_gun/proc/cancel_hook()
+	procstart = null
+	src.procstart = null
 	var/atom/my_zipliner = zipliner?.resolve()
 	if(!isnull(my_zipliner))
 		UnregisterSignal(my_zipliner, list(COMSIG_MOVABLE_IMPACT, COMSIG_MOVABLE_MOVED, COMSIG_MOVABLE_PRE_THROW))
@@ -170,6 +192,8 @@
 	update_appearance()
 
 /obj/item/grapple_gun/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(hooked)
 		. += hook_overlay

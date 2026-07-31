@@ -15,6 +15,8 @@
 	var/list/obj/item/circuit_component/equipment_action/action_comps = list()
 
 /obj/item/mod/module/circuit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	RegisterSignal(src, COMSIG_CIRCUIT_ACTION_COMPONENT_REGISTERED, PROC_REF(action_comp_registered))
@@ -26,15 +28,21 @@
 	)
 
 /obj/item/mod/module/circuit/proc/override_power_usage(datum/source, amount)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(drain_power(amount))
 		. = COMPONENT_OVERRIDE_POWER_USAGE
 
 /obj/item/mod/module/circuit/proc/action_comp_registered(datum/source, obj/item/circuit_component/equipment_action/action_comp)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	action_comps += action_comp
 
 /obj/item/mod/module/circuit/proc/action_comp_unregistered(datum/source, obj/item/circuit_component/equipment_action/action_comp)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	action_comps -= action_comp
 	for(var/ref in action_comp.granted_to)
@@ -42,12 +50,16 @@
 	QDEL_LIST_ASSOC_VAL(action_comp.granted_to)
 
 /obj/item/mod/module/circuit/on_install()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!shell?.attached_circuit)
 		return
 	RegisterSignal(shell?.attached_circuit, COMSIG_CIRCUIT_PRE_POWER_USAGE, PROC_REF(override_power_usage))
 
 /obj/item/mod/module/circuit/on_uninstall(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!shell?.attached_circuit)
 		return
@@ -57,6 +69,8 @@
 	UnregisterSignal(shell?.attached_circuit, COMSIG_CIRCUIT_PRE_POWER_USAGE)
 
 /obj/item/mod/module/circuit/on_use()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -65,12 +79,16 @@
 	shell.attached_circuit?.interact(mod.wearer)
 
 /obj/item/mod/module/circuit/get_configuration(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/unnamed_action_index = 1
 	for(var/obj/item/circuit_component/equipment_action/action_comp in action_comps)
 		.[REF(action_comp)] = add_ui_configuration(action_comp.button_name.value || "Unnamed Action [unnamed_action_index++]", "pin", !!action_comp.granted_to[REF(user)])
 
 /obj/item/mod/module/circuit/configure_edit(key, value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/circuit_component/equipment_action/action_comp = locate(key) in action_comps
 	if(!istype(action_comp))
@@ -81,6 +99,8 @@
 		unpin_action(action_comp, usr)
 
 /obj/item/mod/module/circuit/proc/pin_action(obj/item/circuit_component/equipment_action/action_comp, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return
 	if(action_comp.granted_to[REF(user)]) // Sanity check - don't pin an action for a mob that has already pinned it
@@ -88,6 +108,8 @@
 	mod.add_item_action(new/datum/action/item_action/mod/pinnable/circuit(mod, user, src, action_comp))
 
 /obj/item/mod/module/circuit/proc/unpin_action(obj/item/circuit_component/equipment_action/action_comp, mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/action/item_action/mod/pinnable/circuit/action = action_comp.granted_to[REF(user)]
 	if(!istype(action))
 		return
@@ -104,6 +126,8 @@
 	var/obj/item/circuit_component/equipment_action/circuit_component
 
 /datum/action/item_action/mod/pinnable/circuit/New(Target, mob/user, obj/item/mod/module/circuit/linked_module, obj/item/circuit_component/equipment_action/action_comp)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	module = linked_module
 	action_comp.granted_to[REF(user)] = src
@@ -112,12 +136,16 @@
 	button_icon_state = "bci_[replacetextEx(LOWER_TEXT(action_comp.icon_options.value), " ", "_")]"
 
 /datum/action/item_action/mod/pinnable/circuit/Destroy()
+	procstart = null
+	src.procstart = null
 	circuit_component.granted_to -= REF(pinner)
 	circuit_component = null
 
 	return ..()
 
 /datum/action/item_action/mod/pinnable/circuit/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -133,6 +161,8 @@
 
 /// If the guy whose UI we are pinned to got deleted
 /datum/action/item_action/mod/pinnable/circuit/pinner_deleted()
+	procstart = null
+	src.procstart = null
 	module?.action_comps[circuit_component] -= REF(pinner)
 	. = ..()
 
@@ -180,9 +210,13 @@
 	var/datum/port/output/on_toggle_finish
 
 /obj/item/circuit_component/mod_adapter_core/populate_options()
+	procstart = null
+	src.procstart = null
 	module_to_select = add_option_port("Module to Select", list())
 
 /obj/item/circuit_component/mod_adapter_core/populate_ports()
+	procstart = null
+	src.procstart = null
 	// Input Signals
 	toggle_deploy = add_input_port("Toggle Deployment", PORT_TYPE_SIGNAL)
 	toggle_suit = add_input_port("Toggle Suit", PORT_TYPE_SIGNAL)
@@ -199,18 +233,24 @@
 	on_toggle_finish = add_output_port("Finished Toggling", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/mod_adapter_core/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/item/mod/module))
 		attached_module = shell
 		RegisterSignal(attached_module, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
 
 /obj/item/circuit_component/mod_adapter_core/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	if(attached_module)
 		UnregisterSignal(attached_module, COMSIG_MOVABLE_MOVED)
 		attached_module = null
 	return ..()
 
 /obj/item/circuit_component/mod_adapter_core/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!attached_module?.mod)
 		return
 	var/obj/item/mod/module/module
@@ -225,6 +265,8 @@
 		INVOKE_ASYNC(module, TYPE_PROC_REF(/obj/item/mod/module, on_select))
 
 /obj/item/circuit_component/mod_adapter_core/proc/on_move(atom/movable/source, atom/old_loc, dir, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(istype(source.loc, /obj/item/mod/control))
 		var/obj/item/mod/control/mod = source.loc
@@ -256,11 +298,15 @@
 		activated.set_output(FALSE)
 
 /obj/item/circuit_component/mod_adapter_core/proc/on_module_select(datum/source, obj/item/mod/module/module)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	selected_module.set_output(module.name)
 	on_module_selected.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/mod_adapter_core/proc/on_module_changed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/modules_list = list()
 	for(var/obj/item/mod/module/module in attached_module.mod.modules)
@@ -271,6 +317,8 @@
 		module_to_select.set_value(module_to_select.possible_options[1])
 
 /obj/item/circuit_component/mod_adapter_core/proc/on_mod_part_toggled()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/string_list = list()
 	var/is_deployed = TRUE
@@ -297,11 +345,15 @@
 	on_deploy.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/mod_adapter_core/proc/on_mod_toggled()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	activated.set_output(attached_module.mod.active)
 	on_toggle_finish.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/mod_adapter_core/proc/equip_check()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!attached_module.mod?.wearer)
 		return

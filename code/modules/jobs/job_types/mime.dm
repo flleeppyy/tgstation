@@ -36,6 +36,8 @@
 	job_tone = "silence"
 
 /datum/job/mime/after_spawn(mob/living/spawned, client/player_client)
+	procstart = null
+	src.procstart = null
 	if (ishuman(spawned))
 		spawned.apply_pref_name(/datum/preference/name/mime, player_client)
 	return ..()
@@ -66,6 +68,8 @@
 	chameleon_extras = /obj/item/stamp/mime
 
 /datum/outfit/job/mime/post_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(visuals_only)
@@ -85,6 +89,8 @@
 	reading_time = 0
 
 /obj/item/book/granter/action/spell/mime/mimery/on_reading_start(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/list/spell_icons = list()
 	var/list/name_to_spell = list()
 	for(var/datum/action/type as anything in list(/datum/action/cooldown/spell/conjure/invisible_wall, /datum/action/cooldown/spell/conjure/invisible_chair, /datum/action/cooldown/spell/conjure_item/invisible_box))
@@ -98,6 +104,8 @@
 	return TRUE
 
 /obj/item/book/granter/action/spell/mime/mimery/on_reading_finished(mob/living/user)
+	procstart = null
+	src.procstart = null
 	// Gives the user a vow ability too, if they don't already have one
 	var/datum/action/cooldown/spell/vow_of_silence/vow = locate() in user.actions
 	if(!vow && user.mind)
@@ -109,6 +117,8 @@
 	qdel(src)
 
 /obj/item/book/granter/action/spell/mime/mimery/can_learn(mob/living/user)
+	procstart = null
+	src.procstart = null
 	for(var/type in list(/datum/action/cooldown/spell/conjure/invisible_wall, /datum/action/cooldown/spell/conjure/invisible_chair, /datum/action/cooldown/spell/conjure_item/invisible_box))
 		if(!(locate(type) in user.actions))
 			return TRUE
@@ -122,6 +132,8 @@
  * * user The human mob interacting with the menu
  */
 /obj/item/book/granter/action/spell/mime/mimery/proc/check_menu(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return FALSE
 	if(!user.is_holding(src))

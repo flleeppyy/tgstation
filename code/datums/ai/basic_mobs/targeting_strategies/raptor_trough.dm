@@ -2,6 +2,8 @@
 /datum/targeting_strategy/raptor_trough
 
 /datum/targeting_strategy/raptor_trough/is_valid_target(mob/living/living_mob, obj/structure/ore_container/food_trough/raptor_trough/trough, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

@@ -11,6 +11,8 @@
  * Returns 'null' if unsuccessful.
  */
 /mob/living/proc/apply_status_effect(datum/status_effect/new_effect, ...)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/status_effect)
 
 	var/list/arguments = args.Copy()
@@ -53,6 +55,8 @@
  * Returns TRUE if at least one was removed.
  */
 /mob/living/proc/remove_status_effect(datum/status_effect/removed_effect, ...)
+	procstart = null
+	src.procstart = null
 	var/list/arguments = args.Copy(2)
 
 	. = FALSE
@@ -71,12 +75,16 @@
  * Returns an instance of a status effect, or NULL if none were found.
  */
 /mob/proc/has_status_effect(datum/status_effect/checked_effect)
+	procstart = null
+	src.procstart = null
 	// Yes I'm being cringe and putting this on the mob level even though status effects only apply to the living level
 	// There's quite a few places (namely examine and, bleh, cult code) where it's easier to not need to cast to living before checking
 	// for an effect such as blindness
 	return null
 
 /mob/living/has_status_effect(datum/status_effect/checked_effect)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/status_effect)
 
 	for(var/datum/status_effect/present_effect as anything in status_effects)
@@ -87,6 +95,8 @@
 
 ///Gets every status effect of an ID and returns all of them in a list, rather than the individual 'has_status_effect'
 /mob/living/proc/get_all_status_effect_of_id(datum/status_effect/checked_effect)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list/datum/status_effect)
 
 	var/list/all_effects_of_type = list()
@@ -105,10 +115,14 @@
  * Returns an instance of a status effect, or NULL if none were found.
  */
 /mob/proc/has_status_effect_from_source(datum/status_effect/grouped/checked_effect, sources)
+	procstart = null
+	src.procstart = null
 	// See [/mob/proc/has_status_effect] for reason behind having this on the mob level
 	return null
 
 /mob/living/has_status_effect_from_source(datum/status_effect/grouped/checked_effect, sources)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/datum/status_effect)
 
 	if(!ispath(checked_effect))
@@ -134,10 +148,14 @@
  * Returns a list
  */
 /mob/proc/has_status_effect_list(datum/status_effect/checked_effect)
+	procstart = null
+	src.procstart = null
 	// See [/mob/proc/has_status_effect] for reason behind having this on the mob level
 	return null
 
 /mob/living/has_status_effect_list(datum/status_effect/checked_effect)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 
 	var/list/effects_found = list()

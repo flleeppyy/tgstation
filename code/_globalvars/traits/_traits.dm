@@ -858,6 +858,8 @@ GLOBAL_LIST_INIT(traits_by_type, list(
 GLOBAL_LIST(global_trait_name_map)
 
 /proc/generate_global_trait_name_map()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/key in GLOB.traits_by_type)
 		for(var/tname in GLOB.traits_by_type[key])
@@ -879,6 +881,8 @@ GLOBAL_LIST_INIT(movement_type_addtrait_signals, set_movement_type_addtrait_sign
 GLOBAL_LIST_INIT(movement_type_removetrait_signals, set_movement_type_removetrait_signals())
 
 /proc/set_movement_type_addtrait_signals(signal_prefix)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/trait in GLOB.movement_type_trait_to_flag)
 		. += SIGNAL_ADDTRAIT(trait)
@@ -886,6 +890,8 @@ GLOBAL_LIST_INIT(movement_type_removetrait_signals, set_movement_type_removetrai
 	return .
 
 /proc/set_movement_type_removetrait_signals(signal_prefix)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/trait in GLOB.movement_type_trait_to_flag)
 		. += SIGNAL_REMOVETRAIT(trait)

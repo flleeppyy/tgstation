@@ -4,6 +4,8 @@
 	priority = TEST_LONGER
 
 /datum/unit_test/modify_fantasy_variable/Run()
+	procstart = null
+	src.procstart = null
 	var/list/applicable_types = valid_subtypesof(/obj/item) - uncreatables
 
 	for(var/obj/item/path as anything in applicable_types)
@@ -34,6 +36,8 @@
 
 /// Returns a string that we use to describe the failure of the test.
 /datum/unit_test/modify_fantasy_variable/proc/generate_failure_message(obj/item/failed_object)
+	procstart = null
+	src.procstart = null
 	var/list/cached_modifications = failed_object.fantasy_modifications
 	var/length_of_modifications = LAZYLEN(cached_modifications)
 	var/list/failure_messages = list("Error found when adding+removing fantasy bonuses for [failed_object.type].")

@@ -24,14 +24,20 @@
 	))
 
 /datum/action/cooldown/spell/jaunt/mirror_walk/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(grant_to, COMSIG_MOVABLE_MOVED, PROC_REF(update_status_on_signal))
 
 /datum/action/cooldown/spell/jaunt/mirror_walk/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(remove_from, COMSIG_MOVABLE_MOVED)
 
 /datum/action/cooldown/spell/jaunt/mirror_walk/can_cast_spell(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -51,6 +57,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/jaunt/mirror_walk/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_jaunting(cast_on))
 		return exit_jaunt(cast_on)
@@ -58,6 +66,8 @@
 		return enter_jaunt(cast_on)
 
 /datum/action/cooldown/spell/jaunt/mirror_walk/enter_jaunt(mob/living/jaunter, turf/loc_override)
+	procstart = null
+	src.procstart = null
 	var/atom/nearby_reflection = is_reflection_nearby(jaunter)
 	if(!nearby_reflection)
 		to_chat(jaunter, span_warning("There are no reflective surfaces nearby to enter the mirror's realm!"))
@@ -83,6 +93,8 @@
 	return jaunt
 
 /datum/action/cooldown/spell/jaunt/mirror_walk/exit_jaunt(mob/living/unjaunter, turf/loc_override)
+	procstart = null
+	src.procstart = null
 	var/turf/phase_turf = get_turf(unjaunter)
 	var/atom/nearby_reflection = is_reflection_nearby(phase_turf)
 	if(!nearby_reflection)
@@ -106,6 +118,8 @@
 
 // Play a spooky noise, provide textual feedback, and make the turf colder.
 /datum/action/cooldown/spell/jaunt/mirror_walk/on_jaunt_exited(obj/effect/dummy/phased_mob/jaunt, mob/living/unjaunter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(jaunt, COMSIG_MOVABLE_MOVED)
 	playsound(unjaunter, 'sound/effects/magic/ethereal_exit.ogg', 50, TRUE, -1)
@@ -132,6 +146,8 @@
  * or null if no object was found that was determined to be "reflective".
  */
 /datum/action/cooldown/spell/jaunt/mirror_walk/proc/is_reflection_nearby(atom/caster)
+	procstart = null
+	src.procstart = null
 	for(var/atom/thing as anything in view(2, caster))
 		if(isitem(thing))
 			var/obj/item/item_thing = thing
@@ -159,10 +175,14 @@
 	name = "reflection"
 
 /obj/effect/dummy/phased_mob/mirror_walk/Initialize(mapload, atom/movable/jaunter)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/effect/dummy/phased_mob/mirror_walk/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!isliving(jaunter))
 		STOP_PROCESSING(SSobj, src)
 		return ..()

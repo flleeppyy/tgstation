@@ -11,10 +11,14 @@
 	power_coeff = 1
 
 /datum/mutation/epilepsy/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(SPT_PROB(0.5 * GET_MUTATION_SYNCHRONIZER(src), seconds_per_tick))
 		trigger_seizure()
 
 /datum/mutation/epilepsy/proc/trigger_seizure()
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS_OR_CRIT(owner))
 		return
 	owner.visible_message(span_danger("[owner] starts having a seizure!"), span_userdanger("You have a seizure!"))
@@ -24,23 +28,31 @@
 	addtimer(CALLBACK(src, PROC_REF(jitter_less)), 9 SECONDS)
 
 /datum/mutation/epilepsy/proc/jitter_less()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(owner))
 		return
 
 	owner.set_jitter(20 SECONDS)
 
 /datum/mutation/epilepsy/on_acquiring(mob/living/carbon/human/acquirer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	RegisterSignal(owner, COMSIG_MOB_FLASHED, PROC_REF(get_flashed_nerd))
 
 /datum/mutation/epilepsy/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	UnregisterSignal(owner, COMSIG_MOB_FLASHED)
 
 /datum/mutation/epilepsy/proc/get_flashed_nerd()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!prob(30))
@@ -58,6 +70,8 @@
 	locked = TRUE
 
 /datum/mutation/bad_dna/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -90,6 +104,8 @@
 	power_coeff = 1
 
 /datum/mutation/cough/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(SPT_PROB(2.5 * GET_MUTATION_SYNCHRONIZER(src), seconds_per_tick) && !IS_UNCONSCIOUS_OR_CRIT(owner))
 		owner.drop_all_held_items()
 		owner.emote("cough")
@@ -107,6 +123,8 @@
 	text_lose_indication = span_notice("The screaming in your mind fades.")
 
 /datum/mutation/paranoia/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(SPT_PROB(2.5, seconds_per_tick) && !IS_UNCONSCIOUS_OR_CRIT(owner))
 		owner.emote("scream")
 		if(prob(25))
@@ -123,6 +141,8 @@
 	locked = TRUE // Default intert species for now, so locked from regular pool.
 
 /datum/mutation/dwarfism/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -130,6 +150,8 @@
 	owner.visible_message(span_danger("[owner] suddenly shrinks!"), span_notice("Everything around you seems to grow.."))
 
 /datum/mutation/dwarfism/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	REMOVE_TRAIT(owner, TRAIT_DWARF, GENETIC_MUTATION)
@@ -145,6 +167,8 @@
 	conflicts = list(/datum/mutation/dwarfism)
 
 /datum/mutation/acromegaly/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -154,6 +178,8 @@
 	owner.regenerate_icons()
 
 /datum/mutation/acromegaly/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	REMOVE_TRAIT(owner, TRAIT_TOO_TALL, GENETIC_MUTATION)
@@ -163,6 +189,8 @@
 
 // This is specifically happening because they're not used to their new height and are stumbling around into machinery made for normal humans
 /datum/mutation/acromegaly/proc/head_bonk(mob/living/parent)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/movable/whacked_by = (locate(/obj/machinery/door/airlock) in parent.loc) || (locate(/obj/machinery/door/firedoor) in parent.loc) || (locate(/obj/structure/mineral_door) in parent.loc)
 	if(!whacked_by || prob(100 - (8 *  GET_MUTATION_SYNCHRONIZER(src))))
@@ -182,6 +210,8 @@
 	conflicts = list(/datum/mutation/dwarfism)
 
 /datum/mutation/gigantism/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -190,6 +220,8 @@
 	owner.visible_message(span_danger("[owner] suddenly grows!"), span_notice("Everything around you seems to shrink.."))
 
 /datum/mutation/gigantism/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	REMOVE_TRAIT(owner, TRAIT_GIANT, GENETIC_MUTATION)
@@ -215,6 +247,8 @@
 	synchronizer_coeff = 1
 
 /datum/mutation/tourettes/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(SPT_PROB(5 * GET_MUTATION_SYNCHRONIZER(src), seconds_per_tick) && !IS_UNCONSCIOUS_OR_CRIT(owner) && !owner.IsStun())
 		switch(rand(1, 3))
 			if(1)
@@ -251,6 +285,8 @@
 	var/original_name
 
 /datum/mutation/race/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -261,6 +297,8 @@
 	owner.monkeyize()
 
 /datum/mutation/race/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(owner.stat == DEAD)
 		return
 	. = ..()
@@ -286,6 +324,8 @@
 	var/obj/effect/dummy/lighting_obj/moblight/glow
 
 /datum/mutation/glow/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -294,12 +334,16 @@
 
 // Override modify here without a parent call, because we don't actually give an action.
 /datum/mutation/glow/setup()
+	procstart = null
+	src.procstart = null
 	if(!glow)
 		return
 
 	glow.set_light_range_power_color(glow_range * GET_MUTATION_POWER(src), glow_power, glow_color)
 
 /datum/mutation/glow/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -307,6 +351,8 @@
 
 /// Returns a color for the glow effect
 /datum/mutation/glow/proc/get_glow_color()
+	procstart = null
+	src.procstart = null
 	return pick(COLOR_RED, COLOR_BLUE, COLOR_YELLOW, COLOR_GREEN, COLOR_PURPLE, COLOR_ORANGE)
 
 /datum/mutation/glow/anti
@@ -319,6 +365,8 @@
 	glow_power = -1.5
 
 /datum/mutation/glow/anti/get_glow_color()
+	procstart = null
+	src.procstart = null
 	return COLOR_BLACK
 
 /datum/mutation/strong
@@ -361,17 +409,23 @@
 	power_coeff = 1
 
 /datum/mutation/fire/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(SPT_PROB((0.05+(100-dna.stability)/19.5) * GET_MUTATION_SYNCHRONIZER(src), seconds_per_tick))
 		owner.adjust_fire_stacks(2 * GET_MUTATION_POWER(src))
 		owner.ignite_mob()
 
 /datum/mutation/fire/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	owner.physiology.burn_mod *= 0.5
 
 /datum/mutation/fire/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	owner.physiology.burn_mod *= 2
@@ -390,6 +444,8 @@
 	var/warpchance = 0
 
 /datum/mutation/badblink/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(SPT_PROB(warpchance, seconds_per_tick))
 		var/warpmessage = pick(
 		span_warning("With a sickening 720-degree twist of [owner.p_their()] back, [owner] vanishes into thin air."),
@@ -418,6 +474,8 @@
 	COOLDOWN_DECLARE(msgcooldown)
 
 /datum/mutation/acidflesh/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(SPT_PROB(13, seconds_per_tick))
 		if(COOLDOWN_FINISHED(src, msgcooldown))
 			to_chat(owner, span_danger("Your acid flesh bubbles..."))
@@ -437,12 +495,16 @@
 	difficulty = 16
 
 /datum/mutation/spastic/on_acquiring()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	owner.apply_status_effect(/datum/status_effect/spasms)
 
 /datum/mutation/spastic/on_losing()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	owner.remove_status_effect(/datum/status_effect/spasms)
@@ -457,12 +519,16 @@
 	difficulty = 16
 
 /datum/mutation/extrastun/on_acquiring()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
 
 /datum/mutation/extrastun/on_losing()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -470,6 +536,8 @@
 
 ///Triggers on moved(). Randomly makes the owner trip
 /datum/mutation/extrastun/proc/on_move()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(prob(99.5)) //The brawl mutation
@@ -490,18 +558,24 @@
 	text_lose_indication = span_notice("Your internal organs feel at ease.")
 
 /datum/mutation/martyrdom/on_acquiring()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	RegisterSignal(owner, COMSIG_MOB_STATCHANGE, PROC_REF(bloody_shower))
 
 /datum/mutation/martyrdom/on_losing()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
 	UnregisterSignal(owner, COMSIG_MOB_STATCHANGE)
 
 /datum/mutation/martyrdom/proc/bloody_shower(datum/source, new_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(new_stat < HARD_CRIT)
@@ -539,6 +613,8 @@
 	warn_admins_on_inject = TRUE
 
 /datum/mutation/headless/on_acquiring()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -559,6 +635,8 @@
 	RegisterSignal(owner, COMSIG_ATTEMPT_CARBON_ATTACH_LIMB, PROC_REF(abort_attachment))
 
 /datum/mutation/headless/on_losing()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -580,7 +658,9 @@
 	owner.visible_message(span_warning("[owner]'s head returns with a sickening crunch!"), span_warning("Your head regrows with a sickening crack! Ouch."))
 	new /obj/effect/gibspawner/generic(get_turf(owner), owner)
 
-/datum/mutation/headless/proc/abort_attachment(datum/source, obj/item/bodypart/new_limb, special) //you aren't getting your head back
+/datum/mutation/headless/proc/abort_attachment(datum/source, obj/item/bodypart/new_limb, special)
+	procstart = null
+	src.procstart = null //you aren't getting your head back
 	SIGNAL_HANDLER
 
 	if(istype(new_limb, /obj/item/bodypart/head))
@@ -606,6 +686,8 @@
 	VAR_PRIVATE/physiology_modified = FALSE
 
 /datum/mutation/bloodier/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -615,6 +697,8 @@
 		physiology_modified = TRUE
 
 /datum/mutation/bloodier/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -624,6 +708,8 @@
 		physiology_modified = FALSE // just in case
 
 /datum/mutation/bloodier/setup()
+	procstart = null
+	src.procstart = null
 	if(owner && physiology_modified)
 		owner.physiology.bleed_mod /= bleed_rate
 		owner.physiology.blood_regen_mod /= blood_regen_rate
@@ -663,6 +749,8 @@
 	locked = TRUE
 
 /datum/mutation/rock_absorber/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || QDELING(owner) || HAS_TRAIT(owner, TRAIT_ROCK_METAMORPHIC))
 		return
@@ -682,6 +770,8 @@
 	mutation_traits = list(TRAIT_NOSOFTCRIT, TRAIT_ANALGESIA)
 
 /datum/mutation/inexorable/on_acquiring(mob/living/carbon/human/acquirer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -689,6 +779,8 @@
 	check_health()
 
 /datum/mutation/inexorable/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -696,6 +788,8 @@
 	REMOVE_TRAIT(owner, TRAIT_FORCE_WHISPER, REF(src))
 
 /datum/mutation/inexorable/proc/check_health(...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(owner.health > owner.crit_threshold || IS_UNCONSCIOUS_OR_CRIT(owner))
 		REMOVE_TRAIT(owner, TRAIT_FORCE_WHISPER, REF(src))
@@ -703,6 +797,8 @@
 		ADD_TRAIT(owner, TRAIT_FORCE_WHISPER, REF(src))
 
 /datum/mutation/inexorable/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(owner.health > owner.crit_threshold || IS_UNCONSCIOUS_OR_CRIT(owner) || HAS_TRAIT(owner, TRAIT_STASIS))
 		return
 	if(HAS_TRAIT(owner, TRAIT_NOCRITDAMAGE) && owner.health <= owner.hardcrit_threshold + 10)
@@ -733,9 +829,13 @@
 	VAR_PRIVATE/notified_of_ability = FALSE
 
 /datum/mutation/limb_regeneration/can_acquire(mob/living/carbon/human/acquirer)
+	procstart = null
+	src.procstart = null
 	return !HAS_TRAIT(acquirer, TRAIT_NOHUNGER)
 
 /datum/mutation/limb_regeneration/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(owner.stat >= HARD_CRIT)
 		return
 	if(!SPT_PROB(5 * (notified_of_ability ? 4 : 1) * (GET_MUTATION_POWER(src) ** 2), seconds_per_tick))
@@ -809,6 +909,8 @@
 	VAR_PRIVATE/was_experiencing_allergy = FALSE
 
 /datum/mutation/chemical_allergy/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(length(danger_reagents))
 		return
@@ -822,18 +924,24 @@
 	)) - GLOB.allergy_reagent_blacklist
 
 /datum/mutation/chemical_allergy/on_acquiring(mob/living/carbon/human/acquirer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	RegisterSignal(acquirer, COMSIG_LIVING_HEALTHSCAN, PROC_REF(on_healthscan))
 
 /datum/mutation/chemical_allergy/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
 	UnregisterSignal(owner, COMSIG_LIVING_HEALTHSCAN)
 
 /datum/mutation/chemical_allergy/proc/on_healthscan(datum/source, list/render_list, advanced, mob/user, mode, tochat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	render_list += "<span class='alert ml-1'>"
@@ -842,6 +950,8 @@
 	render_list += "</span><br>"
 
 /datum/mutation/chemical_allergy/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!has_danger_reagent())
 		if(was_experiencing_allergy)
 			was_experiencing_allergy = FALSE
@@ -869,6 +979,8 @@
 		owner.losebreath = max(owner.losebreath, 4)
 
 /datum/mutation/chemical_allergy/proc/has_danger_reagent()
+	procstart = null
+	src.procstart = null
 	for(var/datum/reagent/reagent as anything in owner.reagents?.reagent_list)
 		if(!is_type_in_typecache(reagent, danger_reagents))
 			continue
@@ -892,6 +1004,8 @@
 	var/venom_amount = 3
 
 /datum/mutation/venomous_strikes/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	text_gain_indication = (owner.get_active_hand()?.unarmed_attack_effect == ATTACK_EFFECT_CLAW) ? span_notice("You teeth and claws feel sharper.") : initial(text_gain_indication)
 	. = ..()
 	if(!.)
@@ -899,6 +1013,8 @@
 	apply_venom()
 
 /datum/mutation/venomous_strikes/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	text_lose_indication = (owner.get_active_hand()?.unarmed_attack_effect == ATTACK_EFFECT_CLAW) ? span_notice("You teeth and claws feel duller.") : initial(text_lose_indication)
 	. = ..()
 	if(.)
@@ -906,6 +1022,8 @@
 	remove_venom()
 
 /datum/mutation/venomous_strikes/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	if(var_name != NAMEOF(src, venom_type) && var_name != NAMEOF(src, venom_amount))
 		return ..()
 
@@ -914,16 +1032,26 @@
 	apply_venom()
 
 /datum/mutation/venomous_strikes/pre_apply_chromosome()
+	procstart = null
+	src.procstart = null
 	apply_venom()
 
 /datum/mutation/venomous_strikes/post_apply_chromosome()
+	procstart = null
+	src.procstart = null
 	remove_venom()
 
 /datum/mutation/venomous_strikes/proc/apply_venom()
+	procstart = null
+	src.procstart = null
 	owner.AddElement(/datum/element/venomous, venom_type, venom_amount * GET_MUTATION_POWER(src), INJECT_CHECK_IGNORE_SPECIES)
 
 /datum/mutation/venomous_strikes/proc/remove_venom()
+	procstart = null
+	src.procstart = null
 	owner.RemoveElement(/datum/element/venomous, venom_type, venom_amount * GET_MUTATION_POWER(src), INJECT_CHECK_IGNORE_SPECIES)
 
 /datum/mutation/venomous_strikes/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	owner.reagents.remove_reagent(venom_type, round(venom_amount * 0.33, CHEMICAL_VOLUME_ROUNDING) * seconds_per_tick)

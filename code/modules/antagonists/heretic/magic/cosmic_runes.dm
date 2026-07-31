@@ -23,6 +23,8 @@
 	var/obj/effect/rune_remove_effect = /obj/effect/temp_visual/cosmic_rune_fade
 
 /datum/action/cooldown/spell/cosmic_rune/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/effect/cosmic_rune/first_rune_resolved = first_rune?.resolve()
 	var/obj/effect/cosmic_rune/second_rune_resolved = second_rune?.resolve()
@@ -43,6 +45,8 @@
 
 /// Returns a weak reference to a new rune, linked to an existing rune if provided
 /datum/action/cooldown/spell/cosmic_rune/proc/make_new_rune(turf/target_turf, obj/effect/cosmic_rune/other_rune)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/cosmic_rune/new_rune = new /obj/effect/cosmic_rune(target_turf)
 	if(other_rune)
 		other_rune.link_rune(new_rune)
@@ -65,6 +69,8 @@
 	var/obj/effect/rune_effect = /obj/effect/temp_visual/rune_light
 
 /obj/effect/cosmic_rune/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/image/silicon_image = image(icon = 'icons/obj/service/hand_of_god_structures.dmi', icon_state = null, loc = src)
 	silicon_image.override = TRUE
@@ -79,9 +85,13 @@
 		RegisterSignal(mobs, COMSIG_ATOM_ATTACK_HAND, PROC_REF(on_attack_self))
 
 /obj/effect/cosmic_rune/attack_paw(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/effect/cosmic_rune/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -100,6 +110,8 @@
 	invoke(user)
 
 /obj/effect/cosmic_rune/proc/on_entered(datum/source, atom/movable/arrived)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isliving(arrived))
 		return
@@ -107,17 +119,23 @@
 
 /// If something clicks on themselves while on top of the rune, we instead will act as if they clicked on the rune instead
 /obj/effect/cosmic_rune/proc/on_attack_self(datum/source, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(source == user)
 		INVOKE_ASYNC(src, TYPE_PROC_REF(/atom, attack_hand), user)
 		return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /obj/effect/cosmic_rune/proc/on_exited(datum/source, exiter)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(exiter, COMSIG_ATOM_ATTACK_HAND)
 
 /// For invoking the rune
 /obj/effect/cosmic_rune/proc/invoke(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/cosmic_rune/linked_rune_resolved = linked_rune?.resolve()
 	new rune_effect(get_turf(src))
 	var/atom/pulled_thing
@@ -144,6 +162,8 @@
 
 /// For if someone failed to invoke the rune
 /obj/effect/cosmic_rune/proc/fail_invoke()
+	procstart = null
+	src.procstart = null
 	visible_message(span_warning("The rune pulses with a small flash of purple light, then returns to normal."))
 	var/oldcolor = rgb(255, 255, 255)
 	color = rgb(150, 50, 200)
@@ -152,9 +172,13 @@
 
 /// For linking a new rune
 /obj/effect/cosmic_rune/proc/link_rune(datum/weakref/new_rune)
+	procstart = null
+	src.procstart = null
 	linked_rune = WEAKREF(new_rune)
 
 /obj/effect/cosmic_rune/Destroy()
+	procstart = null
+	src.procstart = null
 	var/obj/effect/cosmic_rune/linked_rune_resolved = linked_rune?.resolve()
 	if(linked_rune_resolved)
 		linked_rune_resolved.unlink_rune()
@@ -162,6 +186,8 @@
 
 /// Used for unlinking the other rune if this rune gets destroyed
 /obj/effect/cosmic_rune/proc/unlink_rune()
+	procstart = null
+	src.procstart = null
 	linked_rune = null
 
 /obj/effect/temp_visual/cosmic_rune_fade
@@ -174,6 +200,8 @@
 	duration = 5
 
 /obj/effect/temp_visual/cosmic_rune_fade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/image/silicon_image = image(icon = 'icons/obj/service/hand_of_god_structures.dmi', icon_state = null, loc = src)
 	silicon_image.override = TRUE
@@ -189,6 +217,8 @@
 	duration = 5
 
 /obj/effect/temp_visual/rune_light/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/image/silicon_image = image(icon = 'icons/obj/service/hand_of_god_structures.dmi', icon_state = null, loc = src)
 	silicon_image.override = TRUE

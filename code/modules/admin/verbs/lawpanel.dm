@@ -8,18 +8,26 @@ ADMIN_VERB(law_panel, R_ADMIN, "Law Panel", "View the AI laws.", ADMIN_CATEGORY_
 /datum/law_panel
 
 /datum/law_panel/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Lawpanel")
 		ui.open()
 
 /datum/law_panel/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_ADMIN)
 
 /datum/law_panel/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /datum/law_panel/proc/add_law_helper(mob/living/user, mob/living/silicon/borgo)
+	procstart = null
+	src.procstart = null
 	var/list/lawtypes = list(LAW_ZEROTH, LAW_HACKED, LAW_INHERENT, LAW_SUPPLIED) // in order of priority
 	var/lawtype = tgui_input_list(user, "Select law type", "Law type", lawtypes)
 	if(isnull(lawtype))
@@ -53,6 +61,8 @@ ADMIN_VERB(law_panel, R_ADMIN, "Law Panel", "View the AI laws.", ADMIN_CATEGORY_
 	return TRUE
 
 /datum/law_panel/proc/move_law_helper(mob/living/user, mob/living/silicon/borgo, direction, law)
+	procstart = null
+	src.procstart = null
 	var/list/relevant_laws = borgo.laws.inherent
 	var/lawindex = relevant_laws.Find(law)
 	if(!lawindex)
@@ -81,6 +91,8 @@ ADMIN_VERB(law_panel, R_ADMIN, "Law Panel", "View the AI laws.", ADMIN_CATEGORY_
 	return TRUE
 
 /datum/law_panel/proc/edit_law_text_helper(mob/living/user, mob/living/silicon/borgo, lawtype, oldlaw)
+	procstart = null
+	src.procstart = null
 	var/newlaw = tgui_input_text(user, "Edit this law's text.", "Edit law", oldlaw)
 	if(!newlaw || QDELETED(src) || QDELETED(borgo))
 		return FALSE
@@ -115,6 +127,8 @@ ADMIN_VERB(law_panel, R_ADMIN, "Law Panel", "View the AI laws.", ADMIN_CATEGORY_
 	return TRUE
 
 /datum/law_panel/proc/remove_law_helper(mob/living/user, mob/living/silicon/borgo, lawtype, law)
+	procstart = null
+	src.procstart = null
 	switch(lawtype)
 		if(LAW_INHERENT)
 			borgo.laws.remove_inherent_law(law)
@@ -133,6 +147,8 @@ ADMIN_VERB(law_panel, R_ADMIN, "Law Panel", "View the AI laws.", ADMIN_CATEGORY_
 	return TRUE
 
 /datum/law_panel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -188,6 +204,8 @@ ADMIN_VERB(law_panel, R_ADMIN, "Law Panel", "View the AI laws.", ADMIN_CATEGORY_
 
 
 /datum/law_panel/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	// Iterating over all silicons in existence every UI update is not exactly ideal,
 	// but considering this is an admin only UI, I'm considering it okay purely for better UX.
 	// If someone's copying this for player user or this becomes too laggy,

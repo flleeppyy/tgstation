@@ -11,20 +11,28 @@
  * good example of an exception to that.
  */
 /datum/custom_order/proc/dispense_order()
+	procstart = null
+	src.procstart = null
 	return src
 
 ///Whether or not the order is correct. Only relevant if dispense_order didn't return another object.
 /datum/custom_order/proc/is_correct_order(obj/item/object_used)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(object_used, COMSIG_ITEM_IS_CORRECT_CUSTOM_ORDER, src) & COMPONENT_CORRECT_ORDER)
 		return TRUE
 
 /// Returns the appearance of the order that appears when hovering over the mob with the cursor
 /datum/custom_order/proc/get_order_appearance()
+	procstart = null
+	src.procstart = null
 	stack_trace("[type]/get_order_appearance() not set")
 	return image(icon = 'icons/effects/effects.dmi' , icon_state = "thought_bubble") // empty thought bubble
 
 /// Returns the order line shout by the mob and also shown to the player when examining it.
 /datum/custom_order/proc/get_order_line()
+	procstart = null
+	src.procstart = null
 	stack_trace("[type]/get_order_line() not set")
 	return  "broken custom order pls call a coder"
 
@@ -35,6 +43,8 @@
  * Return [TRANSACTION_HANDLED] to not do any further handling of the order by the
  */
 /datum/custom_order/proc/handle_get_order(mob/living/basic/robot_customer/customer_pawn, obj/item/order_item)
+	procstart = null
+	src.procstart = null
 	return NONE
 
 /datum/custom_order/moth_clothing
@@ -42,6 +52,8 @@
 	var/wanted_clothing_type
 
 /datum/custom_order/moth_clothing/New(mob/living/basic/robot_customer/customer, datum/venue/our_venue)
+	procstart = null
+	src.procstart = null
 	var/datum/weakref/portal_ref = our_venue.current_visitors[customer]
 	var/obj/machinery/restaurant_portal/portal = portal_ref.resolve()
 	var/mob/living/carbon/human/buffet = portal?.turned_on_portal?.resolve()
@@ -75,12 +87,18 @@
 
 
 /datum/custom_order/moth_clothing/get_order_appearance(datum/venue/our_venue)
+	procstart = null
+	src.procstart = null
 	return our_venue.get_food_appearance(wanted_clothing_type)
 
 /datum/custom_order/moth_clothing/get_order_line(datum/venue/our_venue)
+	procstart = null
+	src.procstart = null
 	return our_venue.order_food_line(wanted_clothing_type)
 
 /datum/custom_order/moth_clothing/dispense_order()
+	procstart = null
+	src.procstart = null
 	. = wanted_clothing_type
 	qdel(src) // This datum is no longer needed.
 
@@ -93,6 +111,8 @@
 	var/icecream_name
 
 /datum/custom_order/icecream/New(mob/living/basic/robot_customer/customer)
+	procstart = null
+	src.procstart = null
 	if(prob(33))
 		cone_type = /obj/item/food/icecream/chocolate
 	var/static/list/possible_flavors = list()
@@ -113,9 +133,13 @@
 		icecream_name = "[english_list(wanted_flavors)] ice cream ([initial(cone_type.name)])"
 
 /datum/custom_order/icecream/get_order_line(datum/venue/our_venue)
+	procstart = null
+	src.procstart = null
 	return "I'll take \a [icecream_name]"
 
 /datum/custom_order/icecream/get_order_appearance(datum/venue/our_venue)
+	procstart = null
+	src.procstart = null
 	var/image/food_image = image(icon = 'icons/effects/effects.dmi' , icon_state = "thought_bubble")
 	var/image/i_scream = image('icons/obj/service/kitchen.dmi', initial(cone_type.icon_state))
 
@@ -139,13 +163,19 @@
 	var/reagents_needed = VENUE_BAR_MINIMUM_REAGENTS
 
 /datum/custom_order/reagent/New(mob/living/basic/robot_customer/customer, reagent_type)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.reagent_type = reagent_type
 
 /datum/custom_order/reagent/get_order_line(datum/venue/our_venue)
+	procstart = null
+	src.procstart = null
 	return "I'll take [reagents_needed]u of [initial(reagent_type.name)]"
 
 /datum/custom_order/reagent/get_order_appearance(datum/venue/our_venue)
+	procstart = null
+	src.procstart = null
 	var/image/food_image = image(icon = 'icons/effects/effects.dmi' , icon_state = "thought_bubble")
 	var/datum/glass_style/draw_as = GLOB.glass_style_singletons[container_needed][reagent_type]
 	var/image/drink_image = image(
@@ -156,6 +186,8 @@
 	return food_image
 
 /datum/custom_order/reagent/handle_get_order(mob/living/basic/robot_customer/customer_pawn, obj/item/order_item)
+	procstart = null
+	src.procstart = null
 	. = TRANSACTION_HANDLED
 
 	for(var/datum/reagent/reagent as anything in order_item.reagents?.reagent_list)
@@ -166,6 +198,8 @@
 	order_item.reagents.clear_reagents()
 
 /datum/custom_order/reagent/is_correct_order(obj/item/object_used)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 	if(!istype(object_used, container_needed) || isnull(object_used.reagents))
@@ -188,6 +222,8 @@
 	container_needed = /obj/item/reagent_containers/cup/glass/drinkingglass
 
 /datum/custom_order/reagent/drink/handle_get_order(mob/living/basic/robot_customer/customer_pawn, obj/item/order_item)
+	procstart = null
+	src.procstart = null
 	customer_pawn.visible_message(
 		span_danger("[customer_pawn] slurps up [order_item] in one go!"),
 		span_danger("You slurp up [order_item] in one go."),
@@ -201,6 +237,8 @@
 	var/picked_serving
 
 /datum/custom_order/reagent/soup/New(mob/living/basic/robot_customer/customer, reagent_type)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/serving_sizes = list(
 		"small serving (15u)" = 15,
@@ -211,9 +249,13 @@
 	reagents_needed = serving_sizes[picked_serving]
 
 /datum/custom_order/reagent/soup/get_order_line(datum/venue/our_venue)
+	procstart = null
+	src.procstart = null
 	return "I'll take a [picked_serving] of [initial(reagent_type.name)]"
 
 /datum/custom_order/reagent/soup/handle_get_order(mob/living/basic/robot_customer/customer_pawn, obj/item/order_item)
+	procstart = null
+	src.procstart = null
 	customer_pawn.visible_message(
 		span_danger("[customer_pawn] pours [order_item] right down [customer_pawn.p_their()] hatch!"),
 		span_danger("You pour [order_item] down your hatch in one go."),

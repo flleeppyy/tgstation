@@ -4,7 +4,9 @@
 	actions_types = list(/datum/action/item_action/activate_remote_view)
 	var/obj/item/clothing/accessory/spy_bug/linked_bug
 
-/obj/item/clothing/glasses/sunglasses/spy/proc/show_to_user(mob/user)//this is the meat of it. most of the map_popup usage is in this.
+/obj/item/clothing/glasses/sunglasses/spy/proc/show_to_user(mob/user)
+	procstart = null
+	src.procstart = null//this is the meat of it. most of the map_popup usage is in this.
 	var/client/cool_guy = user?.client
 	if(!cool_guy)
 		return
@@ -20,23 +22,33 @@
 	linked_bug.update_view()
 
 /obj/item/clothing/glasses/sunglasses/spy/proc/on_screen_clear(client/source, window)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	linked_bug.cam_screen.hide_from_client(source)
 	UnregisterSignal(source, COMSIG_POPUP_CLEARED)
 
 /obj/item/clothing/glasses/sunglasses/spy/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(slot & ITEM_SLOT_EYES))
 		user.client?.close_popup("spypopup")
 
 /obj/item/clothing/glasses/sunglasses/spy/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.client?.close_popup("spypopup")
 
 /obj/item/clothing/glasses/sunglasses/spy/ui_action_click(mob/user)
+	procstart = null
+	src.procstart = null
 	show_to_user(user)
 
 /obj/item/clothing/glasses/sunglasses/spy/Destroy()
+	procstart = null
+	src.procstart = null
 	if(linked_bug)
 		linked_bug.linked_glasses = null
 	. = ..()
@@ -60,6 +72,8 @@
 	var/datum/movement_detector/tracker
 
 /obj/item/clothing/accessory/spy_bug/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/pinnable_accessory)
 	tracker = new /datum/movement_detector(src, CALLBACK(src, PROC_REF(update_view)))
@@ -67,13 +81,17 @@
 	cam_screen.generate_view("spypopup_map")
 
 /obj/item/clothing/accessory/spy_bug/Destroy()
+	procstart = null
+	src.procstart = null
 	if(linked_glasses)
 		linked_glasses.linked_bug = null
 	QDEL_NULL(cam_screen)
 	QDEL_NULL(tracker)
 	. = ..()
 
-/obj/item/clothing/accessory/spy_bug/proc/update_view()//this doesn't do anything too crazy, just updates the vis_contents of its screen obj
+/obj/item/clothing/accessory/spy_bug/proc/update_view()
+	procstart = null
+	src.procstart = null//this doesn't do anything too crazy, just updates the vis_contents of its screen obj
 	cam_screen.vis_contents.Cut()
 	for(var/turf/visible_turf in view(cam_range, get_turf(src)))//fuck you usr
 		cam_screen.vis_contents += visible_turf

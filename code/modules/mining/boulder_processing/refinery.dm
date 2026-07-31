@@ -15,21 +15,29 @@
 	pixel_y = 1
 
 /obj/machinery/bouldertech/refinery/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/plumbing/boulder_reactions)
 	AddElement(/datum/element/simple_rotation)
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/bouldertech/refinery/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light_on(anchored && is_operational && !panel_open)
 
 /obj/machinery/bouldertech/refinery/create_reagents(max_vol, flags)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(reagents)
 	reagents = new /datum/reagents/plumbing(max_vol, flags)
 	reagents.my_atom = src
 
 /obj/machinery/bouldertech/refinery/get_booster_reagents()
+	procstart = null
+	src.procstart = null
 	var/static/list/booster_reagents
 	if(!length(booster_reagents))
 		booster_reagents = list(
@@ -41,6 +49,8 @@
 	return booster_reagents
 
 /obj/machinery/bouldertech/refinery/can_process_material(datum/material/possible_mat)
+	procstart = null
+	src.procstart = null
 	var/static/list/processable_materials
 	if(!length(processable_materials))
 		processable_materials = list(
@@ -54,6 +64,8 @@
 	return is_type_in_list(possible_mat, processable_materials)
 
 /obj/machinery/bouldertech/refinery/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	boulders_held_max = 0
@@ -74,6 +86,8 @@
 
 
 /obj/machinery/bouldertech/refinery/check_for_boosts()
+	procstart = null
+	src.procstart = null
 	. = ..() //resets to 1.00 efficiency in the parent
 
 	var/highest_boost = 0
@@ -95,6 +109,8 @@
 	reagents.add_reagent(waste_chemical, highest_boost)
 
 /obj/machinery/bouldertech/refinery/plunger_act(obj/item/plunger/attacking_plunger, mob/living/user, reinforced)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	balloon_alert(user, "emptying...")
 	if(do_after(user, 2 SECONDS, src))
@@ -122,11 +138,15 @@
 	pixel_x = -1
 
 /obj/machinery/bouldertech/refinery/smelter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_light_value()
 
 
 /obj/machinery/bouldertech/refinery/smelter/get_booster_reagents()
+	procstart = null
+	src.procstart = null
 	var/static/list/booster_reagents
 	if(!length(booster_reagents))
 		booster_reagents = list(
@@ -138,6 +158,8 @@
 	return booster_reagents
 
 /obj/machinery/bouldertech/refinery/smelter/can_process_material(datum/material/possible_mat)
+	procstart = null
+	src.procstart = null
 	var/static/list/processable_materials
 	if(!length(processable_materials))
 		processable_materials = list(
@@ -150,18 +172,28 @@
 	return is_type_in_list(possible_mat, processable_materials)
 
 /obj/machinery/bouldertech/refinery/smelter/proc/update_light_value()
+	procstart = null
+	src.procstart = null
 	set_light_on(!panel_open && anchored && is_operational)
 
 /obj/machinery/bouldertech/refinery/smelter/on_set_anchored(atom/movable/source, anchorvalue)
+	procstart = null
+	src.procstart = null
 	update_light_value()
 
 /obj/machinery/bouldertech/refinery/smelter/on_set_is_operational(old_value)
+	procstart = null
+	src.procstart = null
 	update_light_value()
 
 /obj/machinery/bouldertech/refinery/smelter/on_set_panel_open(old_value)
+	procstart = null
+	src.procstart = null
 	update_light_value()
 
 /obj/machinery/bouldertech/refinery/smelter/maim_golem(mob/living/carbon/human/rockman)
+	procstart = null
+	src.procstart = null
 	rockman.visible_message(span_warning("[rockman] is processed by [src]!"), span_userdanger("You get melted into rock by [src]!"))
 	rockman.investigate_log("was melted by [src] for being a golem", INVESTIGATE_DEATHS)
 	rockman.dust()

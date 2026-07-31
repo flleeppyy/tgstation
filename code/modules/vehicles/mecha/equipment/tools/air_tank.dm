@@ -30,6 +30,8 @@
 	custom_materials = null
 
 /obj/item/mecha_parts/mecha_equipment/air_tank/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	internal_tank = new(src)
 	internal_tank.air_contents.volume = volume
@@ -39,6 +41,8 @@
 		internal_tank.air_contents.set_gas(/datum/gas/oxygen, maximum_pressure * volume / (R_IDEAL_GAS_EQUATION * internal_tank.air_contents.temperature))
 
 /obj/item/mecha_parts/mecha_equipment/air_tank/Destroy()
+	procstart = null
+	src.procstart = null
 	if(chassis)
 		UnregisterSignal(chassis, COMSIG_MOVABLE_PRE_MOVE)
 	STOP_PROCESSING(SSobj, src)
@@ -46,11 +50,15 @@
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/air_tank/attach(obj/vehicle/sealed/mecha/new_mecha, attach_right)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 	RegisterSignal(new_mecha, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(disconnect_air))
 
 /obj/item/mecha_parts/mecha_equipment/air_tank/detach(atom/moveto)
+	procstart = null
+	src.procstart = null
 	disconnect_air()
 	if(tank_pump_active)
 		tank_pump_active = FALSE
@@ -59,6 +67,8 @@
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/air_tank/set_active(active)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		var/datum/action/action = locate(/datum/action/vehicle/sealed/mecha/mech_toggle_cabin_seal) in usr.actions
@@ -70,12 +80,16 @@
 		action.build_all_button_icons()
 
 /obj/item/mecha_parts/mecha_equipment/air_tank/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!chassis)
 		return
 	process_cabin_pressure()
 	process_pump()
 
 /obj/item/mecha_parts/mecha_equipment/air_tank/proc/process_cabin_pressure(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!chassis.cabin_sealed || !active)
 		return
 	var/datum/gas_mixture/external_air = chassis.loc.return_air()
@@ -88,6 +102,8 @@
 		cabin_air.pump_gas_to(external_air, PUMP_MAX_PRESSURE, /datum/gas/carbon_dioxide)
 
 /obj/item/mecha_parts/mecha_equipment/air_tank/proc/process_pump(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!tank_pump_active)
 		return
 	var/turf/local_turf = get_turf(chassis)
@@ -97,12 +113,16 @@
 		air_update_turf(FALSE, FALSE)
 
 /obj/item/mecha_parts/mecha_equipment/air_tank/proc/disconnect_air()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(connected_port && internal_tank.disconnect())
 		to_chat(chassis.occupants, "[icon2html(src, chassis.occupants)][span_warning("Air port connection has been severed!")]")
 		log_message("Lost connection to gas port.", LOG_MECHA)
 
 /obj/item/mecha_parts/mecha_equipment/air_tank/get_snowflake_data()
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/tank_air = internal_tank.return_air()
 	return list(
 		"snowflake_id" = MECHA_SNOWFLAKE_ID_AIR_TANK,
@@ -121,6 +141,8 @@
 	)
 
 /obj/item/mecha_parts/mecha_equipment/air_tank/handle_ui_act(action, list/params)
+	procstart = null
+	src.procstart = null
 	switch(action)
 		if("set_cabin_pressure")
 			var/new_pressure = text2num(params["new_pressure"])

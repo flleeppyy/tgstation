@@ -4,6 +4,8 @@
 	var/angle_spread = 0
 
 /datum/shuttle_event/simple_spawner/projectile/post_spawn(atom/movable/spawnee)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isprojectile(spawnee))

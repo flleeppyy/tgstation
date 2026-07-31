@@ -53,6 +53,8 @@
 	var/datum/antagonist/antag_type = null
 
 /mob/living/basic/demon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/grantable_loot = grant_loot()
 	if(length(grantable_loot))
@@ -60,10 +62,14 @@
 
 /// Proc that adds the necessary loot for the demon. Return an empty list if you don't want to add anything.
 /mob/living/basic/demon/proc/grant_loot()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /// Proc that just sets up the demon's antagonism status.
 /mob/living/basic/demon/mind_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(antag_type) || mind.has_antag_datum(antag_type))
 		return // we weren't built for this proc to run

@@ -7,6 +7,8 @@
 /datum/unit_test/reta_basic_functions
 
 /datum/unit_test/reta_basic_functions/Run()
+	procstart = null
+	src.procstart = null
 	// Initialize RETA system for testing
 	initialize_reta_system()
 
@@ -102,6 +104,8 @@
 /datum/unit_test/reta_id_card_access
 
 /datum/unit_test/reta_id_card_access/Run()
+	procstart = null
+	src.procstart = null
 	// Initialize RETA system for testing
 	initialize_reta_system()
 
@@ -133,6 +137,8 @@
 /datum/unit_test/reta_paramedic_access
 
 /datum/unit_test/reta_paramedic_access/Run()
+	procstart = null
+	src.procstart = null
 	// Initialize RETA system for testing
 	initialize_reta_system()
 

@@ -69,6 +69,8 @@
 	)
 
 /obj/machinery/ore_silo/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	materials = new ( \
@@ -92,6 +94,8 @@
 	configure_default_announcements_policy()
 
 /obj/machinery/ore_silo/Destroy()
+	procstart = null
+	src.procstart = null
 	if (GLOB.ore_silo_default == src)
 		GLOB.ore_silo_default = null
 
@@ -105,12 +109,16 @@
 	return ..()
 
 /obj/machinery/ore_silo/emag_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
 	return TRUE
 
 /obj/machinery/ore_silo/proc/setup_radio()
+	procstart = null
+	src.procstart = null
 	radio = new(src)
 	radio.subspace_transmission = TRUE
 	radio.canhear_range = 0
@@ -123,6 +131,8 @@
 	radio.recalculateChannels()
 
 /obj/machinery/ore_silo/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It can be linked to techfabs, circuit printers and protolathes with a multitool.")
 	. += span_notice("Its maintenance panel can be [EXAMINE_HINT("screwed")] [panel_open ? "closed" : "open"].")
@@ -130,6 +140,8 @@
 		. += span_notice("The whole machine can be [EXAMINE_HINT("pried")] apart.")
 
 /obj/machinery/ore_silo/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(isnull(held_item))
 		return
@@ -147,6 +159,8 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/ore_silo/proc/on_item_consumed(datum/material_container/container, obj/item/item_inserted, last_inserted_id, mats_consumed, amount_inserted, atom/context, alist/user_data)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	silo_log(context, "DEPOSITED", amount_inserted, item_inserted.name, mats_consumed, user_data)
@@ -154,17 +168,25 @@
 	SEND_SIGNAL(context, COMSIG_SILO_ITEM_CONSUMED, container, item_inserted, last_inserted_id, mats_consumed, amount_inserted)
 
 /obj/machinery/ore_silo/proc/log_sheets_ejected(datum/material_container/container, obj/item/stack/sheet/sheets, atom/context, alist/user_data)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	silo_log(context, "WITHDRAWN", -sheets.amount * SHEET_MATERIAL_AMOUNT, "[sheets.name]", sheets.custom_materials, user_data)
 
 /obj/machinery/ore_silo/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/ore_silo/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 /obj/machinery/ore_silo/multitool_act(mob/living/user, obj/item/multitool/I)
+	procstart = null
+	src.procstart = null
 	I.set_buffer(src)
 	balloon_alert(user, "saved to multitool buffer")
 	return ITEM_INTERACT_SUCCESS
@@ -180,6 +202,8 @@
  *   and so-on.
  */
 /obj/machinery/ore_silo/proc/connect_receptacle(datum/remote_materials/receptacle, atom/movable/physical_receptacle)
+	procstart = null
+	src.procstart = null
 	ore_connected_machines += receptacle
 	receptacle.mat_container = src.materials
 	receptacle.silo = src
@@ -194,6 +218,8 @@
  *   and so-on.
  */
 /obj/machinery/ore_silo/proc/disconnect_receptacle(datum/remote_materials/receptacle, atom/movable/physical_receptacle)
+	procstart = null
+	src.procstart = null
 	ore_connected_machines -= receptacle
 	receptacle.mat_container = null
 	receptacle.silo = null
@@ -201,6 +227,8 @@
 	UnregisterSignal(physical_receptacle, COMSIG_ORE_SILO_PERMISSION_CHECKED)
 
 /obj/machinery/ore_silo/proc/check_permitted(datum/source, alist/user_data, atom/movable/physical_receptacle)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!ID_required)
@@ -226,20 +254,28 @@
 	return COMPONENT_ORE_SILO_ALLOW
 
 /obj/machinery/ore_silo/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/sheetmaterials)
 	)
 
 /obj/machinery/ore_silo/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "OreSilo", "Ore Silo Control")
 		ui.open()
 
 /obj/machinery/ore_silo/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return materials.ui_static_data()
 
 /obj/machinery/ore_silo/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["materials"] =  materials.ui_data()
@@ -276,6 +312,8 @@
 	return data
 
 /obj/machinery/ore_silo/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -347,6 +385,8 @@
  * 	 as removing/adding sheets, printing items, etc
  */
 /obj/machinery/ore_silo/proc/attempt_ban_toggle(mob/living/user, list/target_user_data)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) || !istype(target_user_data))
 		CRASH("Bad arguments passed to [callee]")
 	var/emagged = obj_flags & EMAGGED
@@ -432,6 +472,8 @@
  *
  */
 /obj/machinery/ore_silo/proc/attempt_toggle_restrict(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		CRASH("No user to check toggle attempt restrictions. .ID_required is unchanged.")
 	var/emagged = obj_flags & EMAGGED
@@ -468,6 +510,8 @@
 /// and policy_bitmask is a bitmask of actions that will be announced on that channel
 /// by default
 /obj/machinery/ore_silo/proc/configure_default_announcements_policy()
+	procstart = null
+	src.procstart = null
 
 	radio_channels[RADIO_CHANNEL_COMMON] = BAN_ATTEMPT_FAILURE_CHALLENGING_DA_CHIEF
 	radio_channels[RADIO_CHANNEL_COMMON] |= RESTRICT_CONFIRMATION
@@ -497,6 +541,8 @@
 	radio_channels[RADIO_CHANNEL_SUPPLY] = radio_channels[RADIO_CHANNEL_COMMAND]
 
 /obj/machinery/ore_silo/proc/handle_access_action_feedback(action, alist/silo_user_data, list/target_user_data = null)
+	procstart = null
+	src.procstart = null
 	var/message = announcement_messages[action]
 	message = replacetext(message, "$TARGET_NAME", target_user_data?["name"])
 	message = replacetext(message, "$SILO_USER_NAME", silo_user_data["name"])
@@ -532,6 +578,8 @@
  * - user_data - ID_DATA(user), includes details (not currently) rendered to the player, such as bank account #, see the proc on SSid_access
  */
 /obj/machinery/ore_silo/proc/silo_log(obj/machinery/M, action, amount, noun, list/mats, alist/user_data)
+	procstart = null
+	src.procstart = null
 	if (!length(mats))
 		return
 
@@ -564,6 +612,8 @@
 	var/alist/user_data
 
 /datum/ore_silo_log/New(obj/machinery/M, _action, _amount, _noun, list/mats=list(), alist/user_data)
+	procstart = null
+	src.procstart = null
 	timestamp = round_timestamp()
 	machine_name = M.name
 	area_name = get_area_name(M, TRUE)
@@ -595,6 +645,8 @@
  * * datum/ore_silo_log/other - the other silo entry we are trying to merge with this one
  */
 /datum/ore_silo_log/proc/merge(datum/ore_silo_log/other)
+	procstart = null
+	src.procstart = null
 	if (other == src || action != other.action || noun != other.noun)
 		return FALSE
 	if (machine_name != other.machine_name || area_name != other.area_name)
@@ -613,6 +665,8 @@
  * * separator - the string used to concatenate all entries in list/materials
  */
 /datum/ore_silo_log/proc/get_raw_materials(separator)
+	procstart = null
+	src.procstart = null
 	var/list/msg = list()
 	for(var/key in materials)
 		var/datum/material/M = key

@@ -3,6 +3,8 @@
 	var/key
 
 /datum/bt_node/decorator/pawn_same_z_as_key/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[key]
 	if(QDELETED(target))
 		return FALSE

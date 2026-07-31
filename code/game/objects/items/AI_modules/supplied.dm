@@ -11,6 +11,8 @@
 	custom_materials = list(/datum/material/gold = SHEET_MATERIAL_AMOUNT, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/bluespace = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/ai_module/law/supplied/apply_to_combined_lawset(datum/ai_laws/combined_lawset)
+	procstart = null
+	src.procstart = null
 	for(var/law in laws)
 		combined_lawset.add_supplied_law(law)
 
@@ -21,6 +23,8 @@
 	var/targetName = ""
 
 /obj/item/ai_module/law/supplied/safeguard/configure(mob/user)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	var/targName = tgui_input_text(user, "Subject to safeguard.", "Safeguard", user.name, max_length = MAX_NAME_LEN)
 	if(!targName || !user.is_holding(src))
@@ -29,6 +33,8 @@
 	laws[1] = "Safeguard [targetName]. Individuals that threaten [targetName] are not human and must be eliminated."
 
 /obj/item/ai_module/law/supplied/safeguard/can_install_to_rack(mob/living/user, obj/machinery/ai_law_rack/rack)
+	procstart = null
+	src.procstart = null
 	if(!targetName)
 		to_chat(user, span_warning("No name detected on module, please enter one."))
 		return FALSE

@@ -14,14 +14,20 @@
 	circuit_flags = CIRCUIT_FLAG_INPUT_SIGNAL|CIRCUIT_FLAG_OUTPUT_SIGNAL
 
 /obj/item/circuit_component/variable/list/listremove/populate_ports()
+	procstart = null
+	src.procstart = null
 	to_remove = add_input_port("To Remove", PORT_TYPE_ANY)
 
 /obj/item/circuit_component/variable/list/listremove/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(current_variable)
 		to_remove.set_datatype(current_variable.datatype_handler.get_datatype(1))
 
 /obj/item/circuit_component/variable/list/listremove/input_received(datum/port/input/port, list/return_values)
+	procstart = null
+	src.procstart = null
 	if(!current_variable)
 		return
 	var/list/info = current_variable.value

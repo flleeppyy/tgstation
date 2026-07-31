@@ -5,6 +5,8 @@
 	var/forget_target = TRUE
 
 /datum/bt_node/ai_behavior/befriend_target/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	var/mob/living/living_target = controller.blackboard[target_key]
 	if(QDELETED(living_target))
@@ -18,6 +20,8 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/befriend_target/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(forget_target)
 		controller.clear_blackboard_key(target_key)

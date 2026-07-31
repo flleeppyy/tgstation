@@ -25,6 +25,8 @@
 	var/rod_damage_bonus = 0
 
 /datum/action/cooldown/spell/rod_form/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// The destination turf of the rod - just a bit over the max range we calculated, for safety
 	var/turf/distant_turf = get_ranged_target_turf(get_turf(cast_on), cast_on.dir, (rod_max_distance + 2))
@@ -40,6 +42,8 @@
 	)
 
 /datum/action/cooldown/spell/rod_form/level_spell(bypass_cap = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -49,6 +53,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/rod_form/delevel_spell()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -72,6 +78,8 @@
 	var/turf/start_turf
 
 /obj/effect/immovablerod/wizard/Initialize(mapload, atom/target_atom, atom/specific_target, force_looping = FALSE, mob/living/wizard, max_distance = BASE_WIZ_ROD_RANGE, damage_bonus = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(wizard)
 		set_wizard(wizard)
@@ -80,16 +88,22 @@
 	src.damage_bonus = damage_bonus
 
 /obj/effect/immovablerod/wizard/Destroy(force)
+	procstart = null
+	src.procstart = null
 	start_turf = null
 	return ..()
 
 /obj/effect/immovablerod/wizard/Move()
+	procstart = null
+	src.procstart = null
 	if(get_dist(start_turf, get_turf(src)) >= max_distance)
 		stop_travel()
 		return
 	return ..()
 
 /obj/effect/immovablerod/wizard/penetrate(mob/living/penetrated)
+	procstart = null
+	src.procstart = null
 	if(penetrated.can_block_magic())
 		penetrated.visible_message(
 			span_danger("[src] hits [penetrated], but it bounces back, then vanishes!"),
@@ -107,6 +121,8 @@
 	penetrated.adjust_brute_loss(70 + damage_bonus)
 
 /obj/effect/immovablerod/wizard/suplex_rod(mob/living/strongman)
+	procstart = null
+	src.procstart = null
 	var/mob/living/wizard = our_wizard?.resolve()
 	if(QDELETED(wizard))
 		return ..() // There's no wizard in this rod? It's pretty much a normal rod at this point
@@ -127,6 +143,8 @@
  * Dumps out the wizard, and deletes.
  */
 /obj/effect/immovablerod/wizard/proc/stop_travel()
+	procstart = null
+	src.procstart = null
 	eject_wizard()
 	qdel(src)
 
@@ -135,6 +153,8 @@
  * and preparing them for travel.
  */
 /obj/effect/immovablerod/wizard/proc/set_wizard(mob/living/wizard)
+	procstart = null
+	src.procstart = null
 	our_wizard = WEAKREF(wizard)
 
 	wizard.forceMove(src)
@@ -145,6 +165,8 @@
  * and fixing all of the variables we changed.
  */
 /obj/effect/immovablerod/wizard/proc/eject_wizard()
+	procstart = null
+	src.procstart = null
 	var/mob/living/wizard = our_wizard?.resolve()
 	if(QDELETED(wizard))
 		return

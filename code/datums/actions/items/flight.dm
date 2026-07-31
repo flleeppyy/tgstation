@@ -10,17 +10,23 @@
 	var/datum/looping_sound/burning_jet/burning_audio
 
 /datum/action/item_action/toggle_flight/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	jet_fire = mutable_appearance('icons/effects/effects.dmi', "jetfire")
 	jet_fire.pixel_z = -4
 	burning_audio = new(target)
 
 /datum/action/item_action/toggle_flight/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(jet_fire)
 	QDEL_NULL(burning_audio)
 
 /datum/action/item_action/toggle_flight/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	grant_to.AddComponent( \
 		/datum/component/jetpack, \
@@ -35,11 +41,15 @@
 	)
 
 /datum/action/item_action/toggle_flight/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT_FROM(remove_from, TRAIT_MOVE_FLOATING, SHOES_TRAIT))
 		switch_flight()
 
 /datum/action/item_action/toggle_flight/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(owner))
 		to_chat(owner, span_warning("Your shoes aren't built with you in mind, unfortunately."))
 		return FALSE
@@ -50,6 +60,8 @@
 
 /// Proc that toggles between flight behavior on the mob being on and off, including the mob's flight, gravity, passtable, and the sounds/visuals.
 /datum/action/item_action/toggle_flight/proc/switch_flight()
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/shoes/bhop/rocket/jet/target_shoes = target
 	var/mob/living/carbon/human/human_owner = owner
 
@@ -92,6 +104,8 @@
 
 /// Largely lifted off of wing's can_fly proc, tailored to the jet boots functionality.
 /datum/action/item_action/toggle_flight/proc/can_fly()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human = owner
 	if(IS_UNCONSCIOUS_OR_CRIT(human) || human.body_position == LYING_DOWN || isnull(human.client))
 		return FALSE

@@ -26,6 +26,8 @@ ADMIN_VERB(map_export, R_DEBUG, "Map Export", "Select a part of the map by coord
  * * map - text with DMM format
  */
 /proc/send_exported_map(user, name, map)
+	procstart = null
+	src.procstart = null
 	var/file_path = "data/[name].dmm"
 	rustg_file_write(map, file_path)
 	DIRECT_OUTPUT(user, ftp(file_path, "[name].dmm"))
@@ -33,9 +35,13 @@ ADMIN_VERB(map_export, R_DEBUG, "Map Export", "Select a part of the map by coord
 	fdel(file_to_delete)
 
 /proc/sanitize_filename(text)
+	procstart = null
+	src.procstart = null
 	return hashtag_newlines_and_tabs(text, list("\n"="", "\t"="", "/"="", "\\"="", "?"="", "%"="", "*"="", ":"="", "|"="", "\""="", "<"="", ">"=""))
 
 /proc/hashtag_newlines_and_tabs(text, list/repl_chars = list("\n"="#","\t"="#"))
+	procstart = null
+	src.procstart = null
 	for(var/char in repl_chars)
 		var/index = findtext(text, char)
 		while(index)
@@ -51,10 +57,14 @@ ADMIN_VERB(map_export, R_DEBUG, "Map Export", "Select a part of the map by coord
  * Saving objects inside of another object (ie. paper inside a noticeboard)
  */
 /obj/proc/on_object_saved()
+	procstart = null
+	src.procstart = null
 	return null
 
 // Save resources in silo
 /obj/machinery/ore_silo/on_object_saved()
+	procstart = null
+	src.procstart = null
 	var/data
 	var/datum/material_container/material_holder = materials
 	for(var/each in material_holder.materials)
@@ -77,6 +87,8 @@ ADMIN_VERB(map_export, R_DEBUG, "Map Export", "Select a part of the map by coord
 **/
 
 /atom/proc/get_save_vars()
+	procstart = null
+	src.procstart = null
 	. = list()
 	. += NAMEOF(src, color)
 	. += NAMEOF(src, dir)
@@ -99,11 +111,15 @@ ADMIN_VERB(map_export, R_DEBUG, "Map Export", "Select a part of the map by coord
 	return .
 
 /atom/movable/get_save_vars()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += NAMEOF(src, anchored)
 	return .
 
 /turf/open/get_save_vars()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/gas_mixture/turf_gasmix = return_air()
 	initial_gas_mix = turf_gasmix.to_string()
@@ -111,17 +127,23 @@ ADMIN_VERB(map_export, R_DEBUG, "Map Export", "Select a part of the map by coord
 	return .
 
 /obj/get_save_vars()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += NAMEOF(src, req_access)
 	. += NAMEOF(src, id_tag)
 	return .
 
 /obj/item/stack/get_save_vars()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += NAMEOF(src, amount)
 	return .
 
 /obj/docking_port/get_save_vars()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += NAMEOF(src, dheight)
 	. += NAMEOF(src, dwidth)
@@ -131,12 +153,16 @@ ADMIN_VERB(map_export, R_DEBUG, "Map Export", "Select a part of the map by coord
 	return .
 
 /obj/machinery/atmospherics/get_save_vars()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += NAMEOF(src, piping_layer)
 	. += NAMEOF(src, pipe_color)
 	return .
 
 /obj/item/pipe/get_save_vars()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += NAMEOF(src, piping_layer)
 	. += NAMEOF(src, pipe_color)
@@ -157,6 +183,8 @@ GLOBAL_LIST_INIT(save_file_chars, list(
 ))
 
 /proc/to_list_string(list/build_from)
+	procstart = null
+	src.procstart = null
 	var/list/build_into = list()
 	build_into += "list("
 	var/first_entry = TRUE
@@ -174,6 +202,8 @@ GLOBAL_LIST_INIT(save_file_chars, list(
 
 /// Takes a constant, encodes it into a TGM valid string
 /proc/tgm_encode(value)
+	procstart = null
+	src.procstart = null
 	if(istext(value))
 		//Prevent symbols from being because otherwise you can name something
 		// [";},/obj/item/gun/energy/laser/instakill{name="da epic gun] and spawn yourself an instakill gun.
@@ -323,6 +353,8 @@ GLOBAL_LIST_INIT(save_file_chars, list(
 	return "//[DMM2TGM_MESSAGE]\n[header.Join()][contents.Join()]"
 
 /proc/generate_tgm_metadata(atom/object)
+	procstart = null
+	src.procstart = null
 	var/list/data_to_add = list()
 	var/list/vars_to_save = object.get_save_vars()
 
@@ -348,6 +380,8 @@ GLOBAL_LIST_INIT(save_file_chars, list(
 // Could be inlined, not a massive cost tho so it's fine
 /// Generates a key matching our index
 /proc/calculate_tgm_header_index(index, key_length)
+	procstart = null
+	src.procstart = null
 	var/list/output = list()
 	// We want to stick the first one last, so we walk backwards
 	var/list/pull_from = GLOB.save_file_chars

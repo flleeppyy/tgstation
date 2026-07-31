@@ -28,6 +28,8 @@
 	var/datum/action/cooldown/mob_cooldown/hivelord_spawn/spawn_brood
 
 /mob/living/basic/mining/hivelord/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/relay_attackers)
 	AddElement(/datum/element/death_drops, /obj/item/organ/monster_core/regenerative_core)
@@ -38,10 +40,14 @@
 	ai_controller.set_blackboard_key(BB_TARGETED_ACTION, spawn_brood)
 
 /mob/living/basic/mining/hivelord/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(spawn_brood)
 	return ..()
 
 /mob/living/basic/mining/hivelord/death(gibbed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/safe_turfs = RANGE_TURFS(1, src) - get_turf(src)
 	for (var/turf/check_turf as anything in safe_turfs)
@@ -58,12 +64,16 @@
 
 /// Spawns a worm on the specified turf
 /mob/living/basic/mining/hivelord/proc/complete_spawn(turf/spawn_turf)
+	procstart = null
+	src.procstart = null
 	var/mob/living/brood = new death_spawn_type(spawn_turf)
 	SET_FACTION_AND_ALLIES_FROM(brood, src)
 	brood.ai_controller?.set_blackboard_key(ai_controller.blackboard[BB_CURRENT_TARGET])
 	brood.dir = get_dir(src, spawn_turf)
 
 /mob/living/basic/mining/hivelord/RangedAttack(atom/atom_target, modifiers)
+	procstart = null
+	src.procstart = null
 	spawn_brood?.Trigger(target = atom_target)
 
 /// Attack worms spawned by the hivelord
@@ -100,6 +110,8 @@
 	ai_controller = /datum/ai_controller/basic_controller/simple/simple_hostile
 
 /mob/living/basic/hivelord_brood/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_LAVA_IMMUNE, TRAIT_ASHSTORM_IMMUNE, TRAIT_PERMANENTLY_MORTAL), INNATE_TRAIT)
 	AddElement(/datum/element/simple_flying)
@@ -108,6 +120,8 @@
 	addtimer(CALLBACK(src, PROC_REF(death)), 10 SECONDS)
 
 /mob/living/basic/hivelord_brood/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if (!gibbed)
 		new /obj/effect/temp_visual/despawn_effect(get_turf(src), /* copy_from = */ src)
 	return ..()

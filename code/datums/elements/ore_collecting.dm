@@ -5,6 +5,8 @@
 
 
 /datum/element/ore_collecting/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isliving(target))
@@ -12,10 +14,14 @@
 	RegisterSignal(target, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(collect_ore))
 
 /datum/element/ore_collecting/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_HOSTILE_PRE_ATTACKINGTARGET)
 
 /datum/element/ore_collecting/proc/collect_ore(mob/living/source, atom/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(target, /obj/item/stack/ore))

@@ -5,6 +5,8 @@
 	var/static/list/fried_colors
 
 /datum/element/fried_item/Attach(datum/target, fry_time)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
@@ -54,6 +56,8 @@
 	SEND_SIGNAL(this_food, COMSIG_ITEM_FRIED, fry_time)
 
 /datum/element/fried_item/Detach(atom/source, ...)
+	procstart = null
+	src.procstart = null
 	for(var/color in fried_colors)
 		source.remove_atom_colour(FIXED_COLOUR_PRIORITY, color)
 	source.name = initial(source.name)

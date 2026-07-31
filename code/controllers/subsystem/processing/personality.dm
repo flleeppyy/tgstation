@@ -14,11 +14,15 @@ PROCESSING_SUBSYSTEM_DEF(personalities)
 	VAR_FINAL/list/processing_personalities
 
 /datum/controller/subsystem/processing/personalities/Initialize()
+	procstart = null
+	src.procstart = null
 	init_personalities()
 	return SS_INIT_SUCCESS
 
 /// Initialized personality singletons
 /datum/controller/subsystem/processing/personalities/proc/init_personalities()
+	procstart = null
+	src.procstart = null
 	if(length(personalities_by_type))
 		return // Already initialized
 
@@ -47,6 +51,8 @@ PROCESSING_SUBSYSTEM_DEF(personalities)
 
 /// Helper to check if the new personality type is incompatible with the passed list of personality types
 /datum/controller/subsystem/processing/personalities/proc/is_incompatible(list/personality_types, new_personality_type)
+	procstart = null
+	src.procstart = null
 	if(!length(incompatibilities_by_group))
 		stack_trace("Checking personality incompatibilities before the incompatibility list was initialized?")
 		return FALSE
@@ -67,6 +73,8 @@ PROCESSING_SUBSYSTEM_DEF(personalities)
 
 /// Helper to select a random list of personalities, respecting incompatibilities. REturns a list of typepaths
 /datum/controller/subsystem/processing/personalities/proc/select_random_personalities(lower_end = 1, upper_end = CONFIG_GET(number/max_personalities))
+	procstart = null
+	src.procstart = null
 	var/list/personality_pool = personalities_by_type.Copy()
 	var/list/selected_personalities = list()
 	var/num = rand(lower_end, upper_end)

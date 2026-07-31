@@ -8,6 +8,8 @@
  */
 
 /mob/living/carbon/proc/handle_dreams()
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_DREAMING) && prob(10))
 		dream()
 
@@ -20,6 +22,8 @@
  */
 
 /mob/living/carbon/proc/dream()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	var/list/dream_pool = list()
@@ -46,6 +50,8 @@
  */
 
 /mob/living/carbon/proc/dream_sequence(list/dream_fragments, datum/dream/current_dream)
+	procstart = null
+	src.procstart = null
 	if(!IS_UNCONSCIOUS(src) || stat >= HARD_CRIT)
 		REMOVE_TRAIT(src, TRAIT_DREAMING, DREAMING_SOURCE)
 		current_dream.OnDreamEnd(src)
@@ -76,6 +82,8 @@
 GLOBAL_LIST_INIT(dreams, populate_dream_list())
 
 /proc/populate_dream_list()
+	procstart = null
+	src.procstart = null
 	var/list/output = list()
 	for(var/datum/dream/dream_type as anything in subtypesof(/datum/dream))
 		output[new dream_type] = initial(dream_type.weight)
@@ -97,12 +105,16 @@ GLOBAL_LIST_INIT(dreams, populate_dream_list())
  * Gives back a list of dream events. Events can be text or callbacks that return text.
  */
 /datum/dream/proc/GenerateDream(mob/living/carbon/dreamer)
+	procstart = null
+	src.procstart = null
 	return list()
 
 /**
  * Called when the dream ends or is interrupted.
  */
 /datum/dream/proc/OnDreamEnd(mob/living/carbon/dreamer)
+	procstart = null
+	src.procstart = null
 	return
 
 /// The classic random dream of various words that might form a cohesive narrative, but usually wont
@@ -110,6 +122,8 @@ GLOBAL_LIST_INIT(dreams, populate_dream_list())
 	weight = 1000
 
 /datum/dream/random/GenerateDream(mob/living/carbon/dreamer)
+	procstart = null
+	src.procstart = null
 	var/list/custom_dream_nouns = get_dream_nouns(dreamer) || list()
 	var/fragment = ""
 
@@ -156,6 +170,8 @@ GLOBAL_LIST_INIT(dreams, populate_dream_list())
 	. += fragment
 
 /datum/dream/random/proc/get_dream_nouns(mob/living/carbon/dreamer)
+	procstart = null
+	src.procstart = null
 	var/list/custom_dream_nouns = list()
 	for(var/obj/item/bedsheet/sheet in dreamer.loc)
 		custom_dream_nouns += sheet.dream_messages
@@ -168,31 +184,43 @@ GLOBAL_LIST_INIT(dreams, populate_dream_list())
 	var/reserved_sound_channel
 
 /datum/dream/hear_something/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSsounds, COMSIG_SUBSYSTEM_POST_INITIALIZE, PROC_REF(ReserveSoundChannel))
 
 /datum/dream/hear_something/GenerateDream(mob/living/carbon/dreamer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += pick("you wind up a toy", "you hear something strange", "you pick out a record to play", "you hit shuffle on your music player")
 	. += CALLBACK(src, PROC_REF(PlayRandomSound))
 	. += "it reminds you of something"
 
 /datum/dream/hear_something/OnDreamEnd(mob/living/carbon/dreamer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// In case we play some long ass music track
 	addtimer(CALLBACK(src, PROC_REF(StopSound), dreamer), 5 SECONDS)
 
 /datum/dream/hear_something/proc/ReserveSoundChannel()
+	procstart = null
+	src.procstart = null
 	reserved_sound_channel = SSsounds.reserve_sound_channel_for_datum(src)
 	UnregisterSignal(SSsounds, COMSIG_SUBSYSTEM_POST_INITIALIZE)
 
 /datum/dream/hear_something/proc/PlayRandomSound(mob/living/carbon/dreamer)
+	procstart = null
+	src.procstart = null
 	var/sound/random_sound = sound(pick(SSsounds.all_sounds), channel=reserved_sound_channel)
 	random_sound.status = SOUND_STREAM
 	SEND_SOUND(dreamer, random_sound)
 	return "you hear something you weren't expecting!"
 
 /datum/dream/hear_something/proc/StopSound(mob/living/carbon/dreamer)
+	procstart = null
+	src.procstart = null
 	SEND_SOUND(dreamer, sound(channel=reserved_sound_channel))
 
 #undef DREAMING_SOURCE

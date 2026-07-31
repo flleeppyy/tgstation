@@ -7,6 +7,8 @@ All ShuttleMove procs go here
 // Called on every turf in the shuttle region, returns a bitflag for allowed movements of that turf
 // returns the new move_mode (based on the old)
 /turf/proc/fromShuttleMove(turf/newT, move_mode)
+	procstart = null
+	src.procstart = null
 	. = move_mode
 	if((move_mode & MOVE_AREA) && isshuttleturf(src))
 		. |= MOVE_TURF | MOVE_CONTENTS
@@ -17,6 +19,8 @@ All ShuttleMove procs go here
 // Only gets called if fromShuttleMove returns true first
 // returns the new move_mode (based on the old)
 /turf/proc/toShuttleMove(turf/oldT, move_mode, obj/docking_port/mobile/shuttle)
+	procstart = null
+	src.procstart = null
 	. = move_mode
 	if(!(. & MOVE_TURF))
 		return
@@ -45,6 +49,8 @@ All ShuttleMove procs go here
 
 // Called on the old turf to move the turf data
 /turf/proc/onShuttleMove(turf/new_turf, list/movement_force, move_dir, ignore_area_change = FALSE)
+	procstart = null
+	src.procstart = null
 	if(new_turf == src) // In case of in place shuttle rotation shenanigans.
 		return
 	// Destination turf changes.
@@ -67,6 +73,8 @@ All ShuttleMove procs go here
 
 // Called on the new turf after everything has been moved
 /turf/proc/afterShuttleMove(turf/oldT, rotation)
+	procstart = null
+	src.procstart = null
 	//Dealing with the turf we left behind
 	oldT.TransferComponents(src)
 
@@ -90,6 +98,8 @@ All ShuttleMove procs go here
 	return TRUE
 
 /turf/proc/lateShuttleMove(turf/oldT)
+	procstart = null
+	src.procstart = null
 	blocks_air = initial(blocks_air)
 	air_update_turf(TRUE, blocks_air)
 	oldT.blocks_air = initial(oldT.blocks_air)
@@ -101,17 +111,23 @@ All ShuttleMove procs go here
 // Return the move_move (based on the old), without any side effects.
 // This is for checking what would be moved if src is on a shuttle being moved.
 /atom/movable/proc/hypotheticalShuttleMove(rotation, move_mode, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	return move_mode
 
 // Called on every atom in shuttle turf contents before anything has been moved
 // returns the new move_mode (based on the old)
 // WARNING: Do not leave turf contents in beforeShuttleMove or dock() will runtime
 /atom/movable/proc/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	return SEND_SIGNAL(src, COMSIG_ATOM_BEFORE_SHUTTLE_MOVE, newT, rotation, move_mode, moving_dock) || move_mode
 
 /// Called on atoms to move the atom to the new location
 /atom/movable/proc/onShuttleMove(turf/newT, turf/oldT, list/movement_force, move_dir, obj/docking_port/stationary/old_dock, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	if(newT == oldT) // In case of in place shuttle rotation shenanigans.
 		return
 
@@ -124,6 +140,8 @@ All ShuttleMove procs go here
 
 // Called on atoms after everything has been moved
 /atom/movable/proc/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(light)
@@ -138,6 +156,8 @@ All ShuttleMove procs go here
 	return TRUE
 
 /atom/movable/proc/lateShuttleMove(turf/oldT, list/movement_force, move_dir)
+	procstart = null
+	src.procstart = null
 	if(!movement_force || anchored)
 		return
 	var/throw_force = movement_force["THROW"]
@@ -154,12 +174,16 @@ All ShuttleMove procs go here
 // Called on areas before anything has been moved
 // returns the new move_mode (based on the old)
 /area/proc/beforeShuttleMove(list/shuttle_areas)
+	procstart = null
+	src.procstart = null
 	if(!shuttle_areas[src])
 		return NONE
 	return MOVE_AREA
 
 // Called on areas to move their turf between areas
 /area/proc/onShuttleMove(turf/oldT, turf/newT, obj/docking_port/mobile/shuttle, area/fallback_area)
+	procstart = null
+	src.procstart = null
 	if(newT == oldT) // In case of in place shuttle rotation shenanigans.
 		return TRUE
 
@@ -176,10 +200,14 @@ All ShuttleMove procs go here
 
 // Called on areas after everything has been moved
 /area/proc/afterShuttleMove(new_parallax_dir)
+	procstart = null
+	src.procstart = null
 	parallax_movedir = new_parallax_dir
 	return TRUE
 
 /area/proc/lateShuttleMove()
+	procstart = null
+	src.procstart = null
 	return
 
 /************************************Turf move procs************************************/
@@ -189,6 +217,8 @@ All ShuttleMove procs go here
 /************************************Machinery move procs************************************/
 
 /obj/machinery/door/airlock/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (cycle_pump)
@@ -203,6 +233,8 @@ All ShuttleMove procs go here
 		INVOKE_ASYNC(other_airlock, TYPE_PROC_REF(/obj/machinery/door/, close), FALSE, TRUE) // force crush
 
 /obj/machinery/door/airlock/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/current_area = get_area(src)
 	var/turf/local_turf
@@ -240,30 +272,42 @@ All ShuttleMove procs go here
 
 
 /obj/machinery/camera/hypotheticalShuttleMove(rotation, move_mode, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & MOVE_AREA)
 		. |= MOVE_CONTENTS
 
 /obj/machinery/camera/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & MOVE_AREA)
 		. |= MOVE_CONTENTS
 		SScameras.remove_camera_from_chunk(src)
 
 /obj/machinery/camera/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SScameras.add_camera_to_chunk(src)
 
 /obj/machinery/mech_bay_recharge_port/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	recharging_turf = get_step(loc, dir)
 
 /obj/machinery/computer/auxiliary_base/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_mining_level(z)) //Avoids double logging and landing on other Z-levels due to badminnery
 		SSblackbox.record_feedback("associative", "colonies_dropped", 1, list("x" = x, "y" = y, "z" = z))
 
 /obj/machinery/atmospherics/lateShuttleMove(turf/oldT, list/movement_force, move_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(pipe_vision_img)
 		pipe_vision_img.loc = loc
@@ -296,11 +340,15 @@ All ShuttleMove procs go here
 		update_appearance()
 
 /obj/machinery/navbeacon/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.navbeacons["[z]"] -= src
 	GLOB.deliverybeacons -= src
 
 /obj/machinery/navbeacon/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(codes[NAVBEACON_PATROL_MODE])
@@ -314,11 +362,15 @@ All ShuttleMove procs go here
 /************************************Mob move procs************************************/
 
 /mob/onShuttleMove(turf/newT, turf/oldT, list/movement_force, move_dir, obj/docking_port/stationary/old_dock, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_BLOCK_SHUTTLE_MOVEMENT))
 		return
 	. = ..()
 
 /mob/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_BLOCK_SHUTTLE_MOVEMENT))
 		return
 	. = ..()
@@ -329,6 +381,8 @@ All ShuttleMove procs go here
 		shake_camera(src, shake_force, 1)
 
 /mob/living/lateShuttleMove(turf/oldT, list/movement_force, move_dir)
+	procstart = null
+	src.procstart = null
 	var/knockdown = movement_force["KNOCKDOWN"]
 	if(buckled && istype(get_area(src), /area/shuttle/arrival))
 		//if we're on the arrival shuttle, unbuckle so that new player's don't get stuck in there
@@ -343,65 +397,91 @@ All ShuttleMove procs go here
 
 
 /mob/living/simple_animal/hostile/megafauna/onShuttleMove(turf/newT, turf/oldT, list/movement_force, move_dir, obj/docking_port/stationary/old_dock, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	message_admins("Megafauna [src] [ADMIN_FLW(src)] moved via shuttle from [ADMIN_COORDJMP(oldT)] to [ADMIN_COORDJMP(loc)]")
 
 /mob/living/basic/boss/onShuttleMove(turf/newT, turf/oldT, list/movement_force, move_dir, obj/docking_port/stationary/old_dock, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	message_admins("Megafauna [src] [ADMIN_FLW(src)] moved via shuttle from [ADMIN_COORDJMP(oldT)] to [ADMIN_COORDJMP(loc)]")
 
 /************************************Structure move procs************************************/
 
 /obj/structure/grille/hypotheticalShuttleMove(rotation, move_mode, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & MOVE_AREA)
 		. |= MOVE_CONTENTS
 
 /obj/structure/grille/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & MOVE_AREA)
 		. |= MOVE_CONTENTS
 
 /obj/structure/lattice/hypotheticalShuttleMove(rotation, move_mode, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & MOVE_AREA)
 		. |= MOVE_CONTENTS
 
 /obj/structure/lattice/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & MOVE_AREA)
 		. |= MOVE_CONTENTS
 
 /obj/structure/cable/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cut_cable_from_powernet(FALSE)
 
 /obj/structure/cable/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	connect_cable(TRUE)
 	propagate_if_no_network()
 
 /obj/machinery/power/shuttle_engine/hypotheticalShuttleMove(move_mode)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & MOVE_AREA)
 		. |= MOVE_CONTENTS
 
 /obj/machinery/power/shuttle_engine/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & MOVE_AREA)
 		. |= MOVE_CONTENTS
 
 /obj/structure/ladder/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!(resistance_flags & INDESTRUCTIBLE))
 		disconnect()
 
 /obj/structure/ladder/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!(resistance_flags & INDESTRUCTIBLE))
 		LateInitialize()
 
 /obj/structure/ladder/onShuttleMove(turf/newT, turf/oldT, list/movement_force, move_dir, obj/docking_port/stationary/old_dock, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	if (resistance_flags & INDESTRUCTIBLE)
 		// simply don't be moved
 		return FALSE
@@ -410,28 +490,40 @@ All ShuttleMove procs go here
 /************************************Misc move procs************************************/
 
 /atom/movable/lighting_object/onShuttleMove()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/docking_port/mobile/hypotheticalShuttleMove(rotation, move_mode, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(moving_dock == src)
 		. |= MOVE_CONTENTS
 
 /obj/docking_port/mobile/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(moving_dock == src)
 		. |= MOVE_CONTENTS
 
 // Never move the stationary docking port, otherwise things get WEIRD
 /obj/docking_port/stationary/onShuttleMove()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 // Holy shit go away
 /obj/effect/abstract/z_holder/onShuttleMove()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 // Special movable stationary port, for your mothership shenanigans
 /obj/docking_port/stationary/movable/onShuttleMove(turf/newT, turf/oldT, list/movement_force, move_dir, obj/docking_port/stationary/old_dock, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	if(!moving_dock.can_move_docking_ports || old_dock == src)
 		return FALSE
 
@@ -446,4 +538,6 @@ All ShuttleMove procs go here
 	return TRUE
 
 /obj/docking_port/stationary/public_mining_dock/onShuttleMove(turf/newT, turf/oldT, list/movement_force, move_dir, obj/docking_port/stationary/old_dock, obj/docking_port/mobile/moving_dock)
+	procstart = null
+	src.procstart = null
 	shuttle_id = "mining_public" //It will not move with the base, but will become enabled as a docking point.

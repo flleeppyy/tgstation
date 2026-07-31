@@ -14,10 +14,14 @@ Stabilized extracts:
 	var/datum/status_effect/linked_effect
 
 /obj/item/slimecross/stabilized/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj,src)
 
 /obj/item/slimecross/stabilized/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj,src)
 	qdel(linked_effect)
 	return ..()
@@ -25,6 +29,8 @@ Stabilized extracts:
 /// Returns the mob that is currently holding us if we are either in their inventory or a backpack analogue.
 /// Returns null if it's in an invalid location, so that we can check explicitly for null later.
 /obj/item/slimecross/stabilized/proc/get_held_mob()
+	procstart = null
+	src.procstart = null
 	if(isnull(loc))
 		return null
 	if(isliving(loc))
@@ -40,6 +46,8 @@ Stabilized extracts:
 	return null
 
 /obj/item/slimecross/stabilized/process()
+	procstart = null
+	src.procstart = null
 	var/mob/living/holder = get_held_mob()
 	if(isnull(holder))
 		return
@@ -128,6 +136,8 @@ Stabilized extracts:
 	var/mob_name = "Familiar"
 
 /obj/item/slimecross/stabilized/gold/proc/generate_mobtype()
+	procstart = null
+	src.procstart = null
 	var/static/list/mob_spawn_pets = list()
 	if(!length(mob_spawn_pets))
 		for(var/mob/living/simple_animal/animal as anything in subtypesof(/mob/living/simple_animal))
@@ -139,10 +149,14 @@ Stabilized extracts:
 	mob_type = pick(mob_spawn_pets)
 
 /obj/item/slimecross/stabilized/gold/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	generate_mobtype()
 
 /obj/item/slimecross/stabilized/gold/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/choice = tgui_input_list(user, "Which do you want to reset?", "Familiar Adjustment", sort_list(list("Familiar Location", "Familiar Species", "Familiar Sentience", "Familiar Name")))
 	if(isnull(choice))
 		return
@@ -193,6 +207,8 @@ Stabilized extracts:
 	var/obj/item/slimecross/regenerative/regencore
 
 /obj/item/slimecross/stabilized/rainbow/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/slimecross/regenerative))
 		return NONE
 

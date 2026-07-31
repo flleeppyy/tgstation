@@ -29,6 +29,8 @@
 	acid = 50
 
 /obj/item/claymore/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	alt_continuous = string_list(alt_continuous)
 	alt_simple = string_list(alt_simple)
@@ -40,13 +42,19 @@
 
 // Applies alt sharpness component, for overrides
 /obj/item/claymore/proc/make_stabby()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/alternative_sharpness, SHARP_POINTY, alt_continuous, alt_simple, -15)
 
 /obj/item/claymore/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is falling on [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 
 /obj/item/claymore/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(attack_type == PROJECTILE_ATTACK || attack_type == LEAP_ATTACK || attack_type == OVERWHELMING_ATTACK)
 		final_block_chance = 0 //Don't bring a sword to a gunfight, and also you aren't going to really block someone full body tackling you with a sword. Or a road roller, if one happened to hit you.
 	return ..()
@@ -66,6 +74,8 @@
 	armour_penetration = 35
 
 /obj/item/claymore/cutlass/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/cuffable_item) //closed sword guard
 
@@ -117,11 +127,15 @@
 	var/obj/item/disk/nuclear/nuke_disk //OUR STORED NUKE DISK
 
 /obj/item/claymore/highlander/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, HIGHLANDER_TRAIT)
 	START_PROCESSING(SSobj, src)
 
 /obj/item/claymore/highlander/Destroy()
+	procstart = null
+	src.procstart = null
 	if(nuke_disk)
 		nuke_disk.forceMove(get_turf(src))
 		nuke_disk.visible_message(span_warning("The nuke disk is vulnerable!"))
@@ -130,6 +144,8 @@
 	return ..()
 
 /obj/item/claymore/highlander/process()
+	procstart = null
+	src.procstart = null
 	if(ishuman(loc))
 		var/mob/living/carbon/human/holder = loc
 		holder.layer = ABOVE_ALL_MOB_LAYER //NO HIDING BEHIND PLANTS FOR YOU, DICKWEED (HA GET IT, BECAUSE WEEDS ARE PLANTS)
@@ -140,6 +156,8 @@
 
 
 /obj/item/claymore/highlander/pickup(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(user, span_notice("The power of Scotland protects you! You are shielded from all stuns and knockdowns."))
 	user.ignore_slowdown(HIGHLANDER_TRAIT)
@@ -151,17 +169,23 @@
 	)
 
 /obj/item/claymore/highlander/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.unignore_slowdown(HIGHLANDER_TRAIT)
 	user.remove_stun_absorption(HIGHLANDER_TRAIT)
 
 /obj/item/claymore/highlander/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "It has [!notches ? "nothing" : "[notches] notches"] scratched into the blade."
 	if(nuke_disk)
 		. += span_boldwarning("It's holding the nuke disk!")
 
 /obj/item/claymore/highlander/attack(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!QDELETED(target) && target.stat == DEAD && target.mind?.has_antag_datum(/datum/antagonist/highlander))
 		user.fully_heal() //STEAL THE LIFE OF OUR FALLEN FOES
@@ -171,6 +195,8 @@
 		target.dust()
 
 /obj/item/claymore/highlander/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/closest_victim
 	var/closest_distance = 255
 	for(var/mob/living/carbon/human/scot in GLOB.player_list - user)
@@ -186,9 +212,13 @@
 	to_chat(user, span_danger("[src] thrums and points to the [dir2text(get_dir(user, closest_victim))]."))
 
 /obj/item/claymore/highlander/IsReflect()
+	procstart = null
+	src.procstart = null
 	return 1 //YOU THINK YOUR PUNY LASERS CAN STOP ME?
 
-/obj/item/claymore/highlander/proc/add_notch(mob/living/user) //DYNAMIC CLAYMORE PROGRESSION SYSTEM - THIS IS THE FUTURE
+/obj/item/claymore/highlander/proc/add_notch(mob/living/user)
+	procstart = null
+	src.procstart = null //DYNAMIC CLAYMORE PROGRESSION SYSTEM - THIS IS THE FUTURE
 	notches++
 	force++
 	var/new_name = name
@@ -248,11 +278,15 @@
 	icon_state = "claymore_cyborg"
 
 /obj/item/claymore/highlander/robot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscyborg(loc))
 		return INITIALIZE_HINT_QDEL
 
 /obj/item/claymore/highlander/robot/process()
+	procstart = null
+	src.procstart = null
 	loc.layer = ABOVE_ALL_MOB_LAYER
 
 /obj/item/claymore/gladius

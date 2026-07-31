@@ -26,6 +26,8 @@
 	pickup_sound = SFX_CLOTH_PICKUP
 
 /obj/item/pillow/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!pillow_trophy)
 		pillow_trophy = new(src)
@@ -45,10 +47,14 @@
 	)
 
 /obj/item/pillow/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(pillow_trophy)
 
 /obj/item/pillow/attack(mob/living/carbon/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscarbon(target_mob))
 		return
@@ -61,6 +67,8 @@
 	playsound(user, hit_sound, 80) //the basic 50 vol is barely audible
 
 /obj/item/pillow/attack_secondary(mob/living/carbon/victim, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(victim))
 		return
@@ -74,6 +82,8 @@
 		INVOKE_ASYNC(src, PROC_REF(smothering), user, victim)
 
 /obj/item/pillow/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!bricked && istype(tool, /obj/item/stack/sheet/mineral/sandstone))
 		var/obj/item/stack/sheet/mineral/sandstone/brick = tool
 		balloon_alert(user, "inserting brick...")
@@ -100,6 +110,8 @@
 	return NONE
 
 /obj/item/pillow/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(bricked)
 		. += span_info("[p_They()] feel[p_s()] unnaturally heavy.")
@@ -107,6 +119,8 @@
 		. += span_notice("Alt-click to remove the tag!")
 
 /obj/item/pillow/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.can_hold_items(src))
 		return CLICK_ACTION_BLOCKING
 	if(!pillow_trophy)
@@ -125,6 +139,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/pillow/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!pillow_trophy)
 		desc = "A soft and fluffy pillow. You can smack someone with this! [tag_desc]"
@@ -137,6 +153,8 @@
 
 /// Puts a brick inside the pillow, increasing its damage
 /obj/item/pillow/proc/become_bricked()
+	procstart = null
+	src.procstart = null
 	bricked = TRUE
 	var/datum/component/two_handed/two_handed = GetComponent(/datum/component/two_handed)
 	if(two_handed)
@@ -146,6 +164,8 @@
 
 /// Smothers the victim while the do_after succeeds and the victim is laying down or being strangled
 /obj/item/pillow/proc/smothering(mob/living/carbon/user, mob/living/carbon/victim)
+	procstart = null
+	src.procstart = null
 	while(victim)
 		if((victim.body_position != LYING_DOWN) && ((user.grab_state < GRAB_AGGRESSIVE) || (user.pulling != victim)))
 			break
@@ -157,6 +177,8 @@
 /obj/item/pillow/random
 
 /obj/item/pillow/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	variation = rand(1, 4)
 	icon_state = "pillow_[variation]_t"
@@ -182,11 +204,15 @@
 	acid = 75
 
 /obj/item/clothing/suit/pillow_suit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	unstoppably_plushed = new(src)
 	AddComponent(/datum/component/bumpattack, proxy_weapon = unstoppably_plushed, valid_inventory_slot = ITEM_SLOT_OCLOTHING)
 
 /obj/item/clothing/suit/pillow_suit/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_NULL(unstoppably_plushed)
 

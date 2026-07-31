@@ -8,6 +8,8 @@
 	var/datum/reagents/observed_holder = null
 
 /datum/bt_node/decorator/target_has_reagent/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	var/atom/target = owning_controller?.blackboard[key]
 	if(target?.reagents)
 		observed_holder = target.reagents
@@ -16,6 +18,8 @@
 	return TRUE
 
 /datum/bt_node/decorator/target_has_reagent/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	if(observed_holder)
 		UnregisterSignal(observed_holder, COMSIG_REAGENTS_HOLDER_UPDATED)
 		observed_holder = null
@@ -23,6 +27,8 @@
 
 /// Fires when the blackboard key changes. Rebinds the reagent holder observer to the new target and re-evaluates.
 /datum/bt_node/decorator/target_has_reagent/proc/on_target_key_changed(atom/source, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/target = owning_controller?.blackboard[key]
 	var/datum/reagents/new_holder = target?.reagents
@@ -38,6 +44,8 @@
 		on_observed_change(owning_controller, null)
 
 /datum/bt_node/decorator/target_has_reagent/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[key]
 	if(QDELETED(target) || !target.reagents)
 		return FALSE

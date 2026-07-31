@@ -2,6 +2,8 @@
 /datum/unit_test/client_colours
 
 /datum/unit_test/client_colours/Run()
+	procstart = null
+	src.procstart = null
 	for(var/datum/client_colour/colour as anything in subtypesof(/datum/client_colour))
 		// colours can be color matrices (lists), which initial() cannot read.
 		colour = new colour

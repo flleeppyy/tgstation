@@ -10,5 +10,7 @@
 	deactivate_message = span_notice("You suddenly feel like you should never perform surgery on yourself.")
 
 /obj/item/skillchip/self_surgery/Initialize(mapload, is_removable)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CONTRABAND, INNATE_TRAIT)

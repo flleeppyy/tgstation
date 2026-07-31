@@ -2,6 +2,8 @@
 /datum/unit_test/spritesheets
 
 /datum/unit_test/spritesheets/Run()
+	procstart = null
+	src.procstart = null
 	for(var/datum/asset/spritesheet/sheet as anything in valid_subtypesof(/datum/asset/spritesheet))
 		if(!initial(sheet.name)) //Ignore abstract types
 			continue

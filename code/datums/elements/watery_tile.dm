@@ -4,10 +4,14 @@
 	var/list/atom/movable/wet_dogs = list()
 
 /datum/element/watery_tile/Destroy(force)
+	procstart = null
+	src.procstart = null
 	wet_dogs = null
 	return ..()
 
 /datum/element/watery_tile/Attach(turf/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isturf(target))
 		return ELEMENT_INCOMPATIBLE
@@ -20,12 +24,16 @@
 		enter_water(target, movable)
 
 /datum/element/watery_tile/Detach(turf/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON, COMSIG_ATOM_EXITED))
 	for(var/atom/movable/movable as anything in source.contents)
 		out_of_water(source, movable)
 	return ..()
 
 /datum/element/watery_tile/proc/enter_water(atom/source, atom/movable/entered)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(QDELETED(entered) || HAS_TRAIT(entered, TRAIT_WALLMOUNTED))
@@ -44,6 +52,8 @@
 	wet_dogs |= entered
 
 /datum/element/watery_tile/proc/dip_in(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	source.extinguish()
 	if(!isliving(source))
@@ -53,17 +63,23 @@
 	our_mob.apply_status_effect(/datum/status_effect/watery_tile_wetness)
 
 /datum/element/watery_tile/proc/out_of_water(atom/source, atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	on_content_del(gone)
 	if(isliving(gone))
 		dip_out(gone)
 
 /datum/element/watery_tile/proc/on_content_del(atom/movable/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(source, list(SIGNAL_ADDTRAIT(TRAIT_IMMERSED), SIGNAL_REMOVETRAIT(TRAIT_IMMERSED), COMSIG_QDELETING))
 	wet_dogs -= source
 
 /datum/element/watery_tile/proc/dip_out(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	source.remove_status_effect(/datum/status_effect/watery_tile_wetness)
 
@@ -75,5 +91,7 @@
 	status_type = STATUS_EFFECT_UNIQUE
 
 /datum/status_effect/watery_tile_wetness/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.adjust_wet_stacks(1)

@@ -12,6 +12,8 @@
 	var/list/cached_overlays
 
 /datum/component/basic_inhands/Initialize(display_layer = 1, y_offset = 0, x_offset = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -21,21 +23,29 @@
 	cached_overlays = list()
 
 /datum/component/basic_inhands/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(on_updated_overlays))
 	RegisterSignal(parent, COMSIG_MOB_UPDATE_HELD_ITEMS, PROC_REF(on_updated_held_items))
 
 /datum/component/basic_inhands/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, list(COMSIG_ATOM_UPDATE_OVERLAYS, COMSIG_MOB_UPDATE_HELD_ITEMS))
 
 /// When your overlays update, add your held overlays
 /datum/component/basic_inhands/proc/on_updated_overlays(atom/parent_atom, list/overlays)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	overlays += cached_overlays
 
 /// When your number of held items changes, regenerate held icons
 /datum/component/basic_inhands/proc/on_updated_held_items(mob/living/holding_mob)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/list/held_overlays = list()
 	for(var/obj/item/held in holding_mob.held_items)

@@ -10,6 +10,8 @@
 	var/histamine_add = 0
 
 /datum/element/basic_allergenic_attack/Attach(datum/target, allergen = NONE, allergen_chance = 100, histamine_add = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isbasicmob(target))
 		return ELEMENT_INCOMPATIBLE
@@ -20,10 +22,14 @@
 	RegisterSignal(target, COMSIG_HOSTILE_POST_ATTACKINGTARGET, PROC_REF(trigger_allergy))
 
 /datum/element/basic_allergenic_attack/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_HOSTILE_POST_ATTACKINGTARGET)
 
 /datum/element/basic_allergenic_attack/proc/trigger_allergy(mob/living/source, mob/living/target, result)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(result <= 0 || !istype(target))

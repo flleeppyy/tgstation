@@ -16,6 +16,8 @@
 	spell_max_level = 1
 
 /datum/action/cooldown/spell/lichdom/can_cast_spell(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -29,9 +31,13 @@
 	return TRUE
 
 /datum/action/cooldown/spell/lichdom/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return isliving(cast_on) && !HAS_TRAIT(owner, TRAIT_NO_SOUL)
 
 /datum/action/cooldown/spell/lichdom/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	var/obj/item/marked_item = cast_on.get_active_held_item()
 	if(!marked_item || marked_item.item_flags & ABSTRACT)
 		return

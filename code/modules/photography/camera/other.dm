@@ -4,6 +4,8 @@
 	see_ghosts = CAMERA_SEE_GHOSTS_BASIC
 
 /obj/item/camera/spooky/steal_souls(list/victims)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/target in victims)
 		if(!(target.mob_biotypes & MOB_SPIRIT))
 			continue

@@ -29,14 +29,20 @@
 	var/infection_chance = 0
 
 /mob/living/basic/zombie/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	apply_dynamic_human_appearance(src, outfit, /datum/species/zombie, bloody_slots = ITEM_SLOT_OCLOTHING)
 	AddElement(/datum/element/death_drops, /obj/effect/decal/remains/human)
 
 /mob/living/basic/zombie/get_unconscious_appearance()
+	procstart = null
+	src.procstart = null
 	return get_generic_humanoid_static_appearance()
 
 /mob/living/basic/zombie/melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!. || !infection_chance || !ishuman(target) || !prob(infection_chance))
 		return

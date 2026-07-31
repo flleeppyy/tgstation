@@ -4,6 +4,8 @@
 /datum/unit_test/operating_table
 
 /datum/unit_test/operating_table/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/table/optable/table = allocate(/obj/structure/table/optable)
 	var/mob/living/carbon/human/human = allocate(/mob/living/carbon/human/consistent, get_step(table, NORTH))
 	var/mob/living/carbon/human/replacement_human = allocate(/mob/living/carbon/human/consistent, get_step(table, NORTH))

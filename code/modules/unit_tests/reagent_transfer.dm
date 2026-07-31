@@ -2,6 +2,8 @@
 /datum/unit_test/reagent_transfer
 
 /datum/unit_test/reagent_transfer/Run()
+	procstart = null
+	src.procstart = null
 	var/datum/reagents/source_reagents = allocate(/datum/reagents, 100)
 	var/datum/reagents/target_reagents = allocate(/datum/reagents, 100)
 

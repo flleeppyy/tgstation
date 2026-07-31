@@ -1,4 +1,6 @@
 /datum/tgs_api/v4/proc/ListCustomCommands()
+	procstart = null
+	src.procstart = null
 	var/results = list()
 	custom_commands = list()
 	for(var/I in typesof(/datum/tgs_chat_command) - /datum/tgs_chat_command)
@@ -24,6 +26,8 @@
 	text2file(json_encode(results), commands_file)
 
 /datum/tgs_api/v4/proc/HandleCustomCommand(command_json)
+	procstart = null
+	src.procstart = null
 	var/list/data = json_decode(command_json)
 	var/command = data["command"]
 	var/user = data["user"]

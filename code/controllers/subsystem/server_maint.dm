@@ -15,9 +15,13 @@ SUBSYSTEM_DEF(server_maint)
 	var/cleanup_ticker = 0
 
 /datum/controller/subsystem/server_maint/PreInit()
+	procstart = null
+	src.procstart = null
 	world.hub_password = "" //quickly! before the hubbies see us.
 
 /datum/controller/subsystem/server_maint/Initialize()
+	procstart = null
+	src.procstart = null
 	if (fexists("tmp/"))
 		fdel("tmp/")
 
@@ -41,6 +45,8 @@ SUBSYSTEM_DEF(server_maint)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/server_maint/fire(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!resumed)
 		if(list_clear_nulls(GLOB.clients))
 			log_world("Found a null in clients list!")
@@ -80,6 +86,8 @@ SUBSYSTEM_DEF(server_maint)
 			return
 
 /datum/controller/subsystem/server_maint/Shutdown()
+	procstart = null
+	src.procstart = null
 	if (fexists("tmp/"))
 		fdel("tmp/")
 	kick_clients_in_lobby(span_boldannounce("The round came to an end with you in the lobby."), TRUE) //second parameter ensures only afk clients are kicked
@@ -94,6 +102,8 @@ SUBSYSTEM_DEF(server_maint)
 
 
 /datum/controller/subsystem/server_maint/proc/UpdateHubStatus()
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(flag/hub) || !CONFIG_GET(number/max_hub_pop))
 		return FALSE //no point, hub / auto hub controls are disabled
 

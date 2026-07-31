@@ -22,6 +22,8 @@
 
 
 /datum/cogbar/New(mob/user, cogicon, cogiconstate)
+	procstart = null
+	src.procstart = null
 	src.user = user
 	src.user_client = user.client
 	src.cogicon = cogicon
@@ -43,6 +45,8 @@
 
 
 /datum/cogbar/Destroy()
+	procstart = null
+	src.procstart = null
 	if(user)
 		SSvis_overlays.remove_vis_overlay(user, user.managed_vis_overlays)
 		user_client?.images -= blank
@@ -57,6 +61,8 @@
 
 /// Adds the cog to the user, visible by other players
 /datum/cogbar/proc/add_cog_to_user()
+	procstart = null
+	src.procstart = null
 	cog = SSvis_overlays.add_vis_overlay(user,
 		icon = cogicon,
 		iconstate = cogiconstate,
@@ -81,6 +87,8 @@
 
 /// Removes the cog from the user
 /datum/cogbar/proc/remove()
+	procstart = null
+	src.procstart = null
 	if(isnull(cog))
 		qdel(src)
 		return
@@ -92,6 +100,8 @@
 
 /// When the user is deleted, remove the cog
 /datum/cogbar/proc/on_user_delete(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	qdel(src)

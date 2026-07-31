@@ -12,6 +12,8 @@
 	paint_jobs = null
 
 /obj/structure/closet/secure_closet/bar/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 10)
 		new /obj/item/reagent_containers/cup/glass/bottle/beer(src)
@@ -22,6 +24,8 @@
 	req_access = null
 
 /obj/structure/closet/secure_closet/bar/lavaland_bartender_booze/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/vending_refill/cigarette(src)
 	new /obj/item/vending_refill/boozeomat(src)
 	new /obj/item/storage/backpack/duffelbag(src)
@@ -35,6 +39,8 @@
 	name = "bartender's closet"
 
 /obj/structure/closet/secure_closet/bar/lavaland_bartender_clothes/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/neck/beads(src)
 	new /obj/item/clothing/glasses/sunglasses/reagent(src)
 	new /obj/item/clothing/suit/costume/hawaiian(src)

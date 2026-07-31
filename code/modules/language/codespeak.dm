@@ -8,6 +8,8 @@
 	always_use_default_namelist = TRUE // No syllables anyways
 
 /datum/language/codespeak/scramble_sentence(input, list/mutual_languages)
+	procstart = null
+	src.procstart = null
 	var/sentence = read_word_cache(input)
 	if(sentence)
 		return sentence

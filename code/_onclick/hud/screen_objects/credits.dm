@@ -5,6 +5,8 @@
 #define CREDITS_PATH "[global.config.directory]/contributors.dmi"
 
 /client/proc/RollCredits()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(!fexists(CREDITS_PATH))
 		return
@@ -37,6 +39,8 @@ GAME_VERB_PROC(/client, ClearCredits, "Hide Credits", "OOC")
 	var/client/parent
 
 /atom/movable/screen/credit/Initialize(mapload, datum/hud/hud_owner, credited, client/P, icon/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon = I
 	parent = P
@@ -55,6 +59,8 @@ GAME_VERB_PROC(/client, ClearCredits, "Hide Credits", "OOC")
 		parent.screen += src
 
 /atom/movable/screen/credit/Destroy()
+	procstart = null
+	src.procstart = null
 	icon = null
 	if(parent)
 		parent.screen -= src
@@ -63,6 +69,8 @@ GAME_VERB_PROC(/client, ClearCredits, "Hide Credits", "OOC")
 	return ..()
 
 /atom/movable/screen/credit/proc/FadeOut()
+	procstart = null
+	src.procstart = null
 	animate(src, alpha = 0, time = CREDIT_EASE_DURATION, flags = ANIMATION_PARALLEL)
 
 #undef CREDIT_ANIMATE_HEIGHT

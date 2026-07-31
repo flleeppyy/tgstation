@@ -8,5 +8,7 @@
 	mind_control_duration = 900
 
 /obj/item/organ/heart/gland/access/activate()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, span_notice("You feel like a VIP for some reason."))
 	owner.AddComponent(/datum/component/simple_access, SSid_access.get_region_access_list(list(REGION_ALL_GLOBAL)), src)

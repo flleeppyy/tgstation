@@ -32,6 +32,8 @@
 	)
 
 /obj/item/quantum_keycard/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(qpad)
 		. += "It's currently linked to a quantum pad."
@@ -45,6 +47,8 @@
 		. += span_notice("Insert [src] into an active quantum pad to link it.")
 
 /obj/item/quantum_keycard/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_notice("You start pressing [src]'s unlink button..."))
 	if(!do_after(user, 4 SECONDS, target = src))
 		return CLICK_ACTION_BLOCKING
@@ -53,6 +57,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/quantum_keycard/proc/set_pad(obj/machinery/quantumpad/new_pad)
+	procstart = null
+	src.procstart = null
 	qpad = new_pad
 
 	if(!istype(new_pad))

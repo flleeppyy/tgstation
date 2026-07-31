@@ -17,6 +17,8 @@
 	customization_options = list(/datum/preference/choiced/hemiplegic)
 
 /datum/quirk/hemiplegic/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/datum/brain_trauma/severe/paralysis/hemiplegic/side_choice = GLOB.side_choice_hemiplegic[client_source?.prefs?.read_preference(/datum/preference/choiced/hemiplegic)]
 	if(isnull(side_choice))  // Client gone or they chose a random side
 		side_choice = GLOB.side_choice_hemiplegic[pick(GLOB.side_choice_hemiplegic)]
@@ -27,5 +29,7 @@
 	human_holder.gain_trauma(side_choice, TRAUMA_RESILIENCE_ABSOLUTE)
 
 /datum/quirk/hemiplegic/remove()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	human_holder.cure_trauma_type(/datum/brain_trauma/severe/paralysis/hemiplegic, TRAUMA_RESILIENCE_ABSOLUTE)

@@ -31,10 +31,14 @@
 	wine_power = 90 //It burns going down, too.
 
 /obj/item/food/grown/gatfruit/Initialize(mapload, obj/item/seeds/new_seed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.flags &= ~INJECTABLE //id rather not have this be filled with initropidril without effort
 
 /obj/item/food/grown/gatfruit/generate_trash(atom/location)
+	procstart = null
+	src.procstart = null
 	//if you set this to anything but the revolver i will find you... and... downvote your pr...
 	var/obj/item/gun/ballistic/revolver/peashooter/gun = new trash_type(location || drop_location())
 	var/potency_percentage = CLAMP01(seed.potency / 100)

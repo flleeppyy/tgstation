@@ -12,6 +12,8 @@
 	max_charges = 8
 
 /obj/item/gun/magic/wand/freeze/zap_self(mob/living/user, suicide = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(user, span_warning("You freeze yourself in a block of ice!"))
 	var/obj/projectile/magic/freeze/ice = new(user.drop_location())
@@ -21,6 +23,8 @@
 	charges--
 
 /obj/item/gun/magic/wand/freeze/do_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	charges--
 	playsound(user, fire_sound, 50, TRUE)
 	var/obj/structure/statue/snow/snowman/snover = new(user.drop_location())
@@ -45,6 +49,8 @@
 	var/temperature = -350
 
 /obj/projectile/magic/freeze/on_hit(atom/target, blocked = 0, pierce_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/hit_turf = get_turf(target)
 	if (isfloorturf(hit_turf) && !isspaceturf(hit_turf) && !isindestructiblefloor(hit_turf))

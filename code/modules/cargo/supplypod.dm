@@ -89,6 +89,8 @@
 	specialised = TRUE
 
 /obj/structure/closet/supplypod/podspawn/deathmatch/pre_open()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/critter in contents)
 		critter.set_faction(list(FACTION_HOSTILE)) //No infighting, but also KILL!!
 	return ..()
@@ -159,6 +161,8 @@
 	acid = 80
 
 /obj/structure/closet/supplypod/Initialize(mapload, customStyle = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!loc)
 		var/shippingLane = GLOB.areas_by_type[/area/centcom/central_command_areas/supplypod/supplypod_temp_holding] //temporary holder for supplypods mid-transit
@@ -167,7 +171,9 @@
 		style = customStyle
 	set_style(style) //Upon initialization, give the supplypod an iconstate, name, and description based on the "style" variable. This system is important for the centcom_podlauncher to function correctly
 
-/obj/structure/closet/supplypod/proc/set_style(datum/pod_style/chosen_style) //Used to give the sprite an icon state, name, and description.
+/obj/structure/closet/supplypod/proc/set_style(datum/pod_style/chosen_style)
+	procstart = null
+	src.procstart = null //Used to give the sprite an icon state, name, and description.
 	style = chosen_style
 	icon_state = chosen_style::icon_state
 	decal = chosen_style::decal_icon
@@ -182,6 +188,8 @@
 	update_appearance()
 
 /obj/structure/closet/supplypod/proc/SetReverseIcon()
+	procstart = null
+	src.procstart = null
 	fin_mask = "bottomfin"
 	if (style::shape == POD_SHAPE_NORMAL)
 		icon_state = style::icon_state + "_reverse"
@@ -190,6 +198,8 @@
 	update_appearance()
 
 /obj/structure/closet/supplypod/proc/backToNonReverseIcon()
+	procstart = null
+	src.procstart = null
 	fin_mask = initial(fin_mask)
 	if (style::shape == POD_SHAPE_NORMAL)
 		icon_state = style::icon_state
@@ -198,9 +208,13 @@
 	update_appearance()
 
 /obj/structure/closet/supplypod/closet_update_overlays(list/new_overlays)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/closet/supplypod/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ispath(style, /datum/pod_style/invisible))
 		return
@@ -254,20 +268,30 @@
 		. += decal
 
 /obj/structure/closet/supplypod/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(bluespace) //We dont want to worry about interacting with bluespace pods, as they are due to delete themselves soon anyways.
 		return ITEM_INTERACT_BLOCKING
 	return ..()
 
-/obj/structure/closet/supplypod/ex_act() //Explosions dont do SHIT TO US! This is because supplypods create explosions when they land.
+/obj/structure/closet/supplypod/ex_act()
+	procstart = null
+	src.procstart = null //Explosions dont do SHIT TO US! This is because supplypods create explosions when they land.
 	return FALSE
 
-/obj/structure/closet/supplypod/contents_explosion() //Supplypods also protect their contents from the harmful effects of fucking exploding.
+/obj/structure/closet/supplypod/contents_explosion()
+	procstart = null
+	src.procstart = null //Supplypods also protect their contents from the harmful effects of fucking exploding.
 	return
 
 /obj/structure/closet/supplypod/toggle(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/closet/supplypod/open(mob/living/user, force = FALSE, special_effects = TRUE)
+	procstart = null
+	src.procstart = null
 	return
 
 ///Called by the drop pods that return captured crewmembers from the ninja den.
@@ -292,6 +316,8 @@
 	SEND_SIGNAL(victim, COMSIG_LIVING_RETURN_FROM_CAPTURE, destination)
 
 /obj/structure/closet/supplypod/proc/handleReturnAfterDeparting(atom/movable/holder = src)
+	procstart = null
+	src.procstart = null
 	reversing = FALSE //Now that we're done reversing, we set this to false (otherwise we would get stuck in an infinite loop of calling the close proc at the bottom of open_pod() )
 	bluespace = TRUE //Make it so that the pod doesn't stay in centcom forever
 	pod_flags &= ~FIRST_SOUNDS //Make it so we play sounds now
@@ -317,6 +343,8 @@
 	new /obj/effect/pod_landingzone(return_turf, src)
 
 /obj/structure/closet/supplypod/proc/pre_open() //Called before the open_pod() proc. Handles anything that occurs right as the pod lands.
+	procstart = null
+	src.procstart = null
 	var/turf/turf_underneath = get_turf(src)
 	var/list/boom = explosionSize
 	resistance_flags = initial(resistance_flags)
@@ -380,7 +408,9 @@
 	else
 		addtimer(CALLBACK(src, PROC_REF(open_pod), src), delays[POD_OPENING]) //After the opening delay passes, we use the open proc from this supplypod, while referencing this supplypod's contents
 
-/obj/structure/closet/supplypod/proc/open_pod(atom/movable/holder, broken = FALSE, forced = FALSE) //The holder var represents an atom whose contents we will be working with
+/obj/structure/closet/supplypod/proc/open_pod(atom/movable/holder, broken = FALSE, forced = FALSE)
+	procstart = null
+	src.procstart = null //The holder var represents an atom whose contents we will be working with
 	if (!holder)
 		return
 	if (opened) //This is to ensure we don't open something that has already been opened
@@ -411,6 +441,8 @@
 			addtimer(CALLBACK(src, PROC_REF(start_exit_sequence), holder), delays[POD_LEAVING]*(4/5)) //Finish up the pod's duties after a certain amount of time
 
 /obj/structure/closet/supplypod/proc/start_exit_sequence(atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	if (leavingSound)
 		playsound(get_turf(holder), leavingSound, soundVolume, FALSE, FALSE)
 	if (reversing) //If we're reversing, we call the close proc. This sends the pod back up to centcom
@@ -423,7 +455,9 @@
 		if (holder != src)
 			qdel(holder)
 
-/obj/structure/closet/supplypod/close(atom/movable/holder) //Closes the supplypod and sends it back to centcom. Should only ever be called if the "reversing" variable is true
+/obj/structure/closet/supplypod/close(atom/movable/holder)
+	procstart = null
+	src.procstart = null //Closes the supplypod and sends it back to centcom. Should only ever be called if the "reversing" variable is true
 	if (!holder)
 		return
 	take_contents(holder)
@@ -433,6 +467,8 @@
 	addtimer(CALLBACK(src, PROC_REF(pre_return), holder), delays[POD_LEAVING] * 0.2) //Start to leave a bit after closing for cinematic effect
 
 /obj/structure/closet/supplypod/take_contents(atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	var/turf/turf_underneath = holder.drop_location()
 	for(var/atom_to_check in turf_underneath)
 		if(atom_to_check != src && !insert(atom_to_check, holder)) // Can't insert that
@@ -440,6 +476,8 @@
 	insert(turf_underneath, holder)
 
 /obj/structure/closet/supplypod/insert(atom/to_insert, atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	if(!insertion_allowed(to_insert))
 		return FALSE
 
@@ -457,6 +495,8 @@
 	movable_to_insert.forceMove(holder)
 
 /obj/structure/closet/supplypod/insertion_allowed(atom/to_insert)
+	procstart = null
+	src.procstart = null
 	if(to_insert.invisibility == INVISIBILITY_ABSTRACT)
 		return FALSE
 	if(ismob(to_insert))
@@ -506,12 +546,16 @@
 	return TRUE
 
 /obj/structure/closet/supplypod/proc/pre_return(atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	delete_rubble()
 	animate(holder, alpha = 0, time = 8, easing = QUAD_EASING|EASE_IN, flags = ANIMATION_PARALLEL)
 	animate(holder, pixel_z = 400, time = 10, easing = QUAD_EASING|EASE_IN, flags = ANIMATION_PARALLEL) //Animate our rising pod
 	addtimer(CALLBACK(src, PROC_REF(handleReturnAfterDeparting), holder), 15) //Finish up the pod's duties after a certain amount of time
 
 /obj/structure/closet/supplypod/extractionpod/pre_return(atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	// Double ensure we're loaded, this SHOULD be here by now but you never know
 	SSmapping.lazy_load_template(LAZY_TEMPLATE_KEY_NINJA_HOLDING_FACILITY)
 	var/turf/picked_turf = pick(GLOB.holdingfacility)
@@ -519,24 +563,32 @@
 	return ..()
 
 /obj/structure/closet/supplypod/set_opened() //Proc exists here, as well as in any atom that can assume the role of a "holder" of a supplypod. Check the open_pod() proc for more details
+	procstart = null
+	src.procstart = null
 	opened = TRUE
 	set_density(FALSE)
 	update_appearance()
 	after_open(null, FALSE)
 
 /obj/structure/closet/supplypod/extractionpod/set_opened()
+	procstart = null
+	src.procstart = null
 	opened = TRUE
 	set_density(TRUE)
 	update_appearance()
 	after_open(null, FALSE)
 
-/obj/structure/closet/supplypod/set_closed() //Ditto
+/obj/structure/closet/supplypod/set_closed()
+	procstart = null
+	src.procstart = null //Ditto
 	opened = FALSE
 	set_density(TRUE)
 	update_appearance()
 	after_close(null, FALSE)
 
-/obj/structure/closet/supplypod/proc/try_make_rubble(turf/T) //Ditto
+/obj/structure/closet/supplypod/proc/try_make_rubble(turf/T)
+	procstart = null
+	src.procstart = null //Ditto
 	if (rubble_type == RUBBLE_NONE)
 		return
 	if (rubble)
@@ -550,15 +602,21 @@
 	update_appearance()
 
 /obj/structure/closet/supplypod/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	delete_rubble()
 	return ..()
 
 /obj/structure/closet/supplypod/proc/delete_rubble()
+	procstart = null
+	src.procstart = null
 	rubble?.fade_away()
 	rubble = null
 	update_appearance()
 
 /obj/structure/closet/supplypod/proc/add_glow()
+	procstart = null
+	src.procstart = null
 	if (style::shape != POD_SHAPE_NORMAL)
 		return
 	glow_effect = new(src)
@@ -569,6 +627,8 @@
 	RegisterSignal(glow_effect, COMSIG_QDELETING, PROC_REF(remove_glow))
 
 /obj/structure/closet/supplypod/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(same_z_layer)
 		return
@@ -576,6 +636,8 @@
 		SET_PLANE_EXPLICIT(glow_effect, ABOVE_GAME_PLANE, src)
 
 /obj/structure/closet/supplypod/proc/end_glow()
+	procstart = null
+	src.procstart = null
 	if(!glow_effect)
 		return
 	glow_effect.layer = LOW_ITEM_LAYER
@@ -583,12 +645,16 @@
 	//Trust the signals
 
 /obj/structure/closet/supplypod/proc/remove_glow()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(glow_effect, COMSIG_QDELETING)
 	vis_contents -= glow_effect
 	glow_effect = null
 
 /obj/structure/closet/supplypod/Destroy(force)
+	procstart = null
+	src.procstart = null
 	delete_rubble()
 	//Trust the signals even harder
 	qdel(glow_effect)
@@ -616,11 +682,15 @@
 	alpha = 255
 
 /obj/effect/engineglow/proc/fade_away(leaveTime)
+	procstart = null
+	src.procstart = null
 	var/duration = min(leaveTime, 25)
 	animate(src, alpha=0, time = duration)
 	QDEL_IN(src, duration + 5)
 
 /obj/effect/supplypod_smoke/proc/draw_self(amount)
+	procstart = null
+	src.procstart = null
 	alpha = max(0, 255-(amount*20))
 
 /obj/effect/supplypod_rubble
@@ -635,16 +705,22 @@
 	var/verticle_offset = 0
 
 /obj/effect/supplypod_rubble/proc/get_foreground(obj/structure/closet/supplypod/pod)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/rubble_overlay = mutable_appearance('icons/obj/supplypods.dmi', foreground)
 	rubble_overlay.appearance_flags = KEEP_APART|RESET_TRANSFORM
 	rubble_overlay.transform = matrix().Translate(SUPPLYPOD_X_OFFSET - pod.pixel_x, verticle_offset)
 	return rubble_overlay
 
 /obj/effect/supplypod_rubble/proc/fade_away()
+	procstart = null
+	src.procstart = null
 	animate(src, alpha=0, time = 30)
 	QDEL_IN(src, 35)
 
 /obj/effect/supplypod_rubble/proc/set_style(type, obj/structure/closet/supplypod/pod)
+	procstart = null
+	src.procstart = null
 	if (type == RUBBLE_WIDE)
 		icon_state += "_wide"
 		foreground += "_wide"
@@ -666,6 +742,8 @@
 	layer = PROJECTILE_HIT_THRESHHOLD_LAYER
 
 /obj/effect/pod_landingzone_effect/Initialize(mapload, obj/structure/closet/supplypod/pod)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!pod)
 		stack_trace("Pod landingzone effect created with no pod")
@@ -691,6 +769,8 @@
 	var/list/smoke_effects = new /list(13)
 
 /obj/effect/pod_landingzone/Initialize(mapload, podParam, single_order = null, clientman)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!podParam)
 		stack_trace("Pod landingzone created with no pod")
@@ -732,9 +812,13 @@
 	addtimer(CALLBACK(src, PROC_REF(begin_launch), pod.effectCircle), pod.delays[POD_TRANSIT])
 
 /obj/effect/pod_landingzone/proc/play_falling_sound()
+	procstart = null
+	src.procstart = null
 	playsound(src, pod.fallingSound, pod.soundVolume, TRUE, 6)
 
-/obj/effect/pod_landingzone/proc/begin_launch(effectCircle) //Begin the animation for the pod falling. The effectCircle param determines whether the pod gets to come in from any descent angle
+/obj/effect/pod_landingzone/proc/begin_launch(effectCircle)
+	procstart = null
+	src.procstart = null //Begin the animation for the pod falling. The effectCircle param determines whether the pod gets to come in from any descent angle
 	pod.add_glow()
 	pod.update_appearance()
 	pod.forceMove(drop_location())
@@ -753,6 +837,8 @@
 	addtimer(CALLBACK(src, PROC_REF(end_launch)), pod.delays[POD_FALLING], TIMER_CLIENT_TIME) //Go onto the last step after a very short falling animation
 
 /obj/effect/pod_landingzone/proc/setup_smoke(rotation)
+	procstart = null
+	src.procstart = null
 	if (ispath(pod.style, /datum/pod_style/invisible) || ispath(pod.style, /datum/pod_style/seethrough))
 		return
 	var/turf/our_turf = get_turf(drop_location())
@@ -772,6 +858,8 @@
 		QDEL_IN(smoke_part, pod.delays[POD_FALLING] + 35)
 
 /obj/effect/pod_landingzone/proc/draw_smoke()
+	procstart = null
+	src.procstart = null
 	if (ispath(pod.style, /datum/pod_style/invisible) || ispath(pod.style, /datum/pod_style/seethrough))
 		return
 	for (var/obj/effect/supplypod_smoke/smoke_part in smoke_effects)
@@ -779,6 +867,8 @@
 		animate(smoke_part.get_filter("smoke_blur"), size = 6, time = 15, easing = CUBIC_EASING|EASE_OUT, flags = ANIMATION_PARALLEL)
 
 /obj/effect/pod_landingzone/proc/end_launch()
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(drop_location())
 	pod.try_make_rubble(drop_location())
 	pod.layer = initial(pod.layer)
@@ -798,4 +888,6 @@
 	custom_materials = list(/datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/disk/cargo/bluespace_pod/setup_reskins()
+	procstart = null
+	src.procstart = null
 	return

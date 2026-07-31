@@ -20,28 +20,40 @@
 	COOLDOWN_DECLARE(message_cooldown)
 
 /obj/machinery/mod_installer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	occupant_typecache = typecacheof(/mob/living/carbon/human)
 	if(ispath(mod_unit))
 		mod_unit = new mod_unit()
 
 /obj/machinery/mod_installer/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(mod_unit)
 	return ..()
 
 /obj/machinery/mod_installer/proc/set_busy(status, working_icon)
+	procstart = null
+	src.procstart = null
 	busy = status
 	busy_icon_state = working_icon
 	update_appearance()
 
 /obj/machinery/mod_installer/proc/play_install_sound()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/items/tools/rped.ogg', 30, FALSE)
 
 /obj/machinery/mod_installer/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = busy ? busy_icon_state : "[base_icon_state][state_open ? "_open" : null]"
 	return ..()
 
 /obj/machinery/mod_installer/update_overlays()
+	procstart = null
+	src.procstart = null
 	var/list/overlays = ..()
 	if(machine_stat & (NOPOWER|BROKEN))
 		return overlays
@@ -49,6 +61,8 @@
 	return overlays
 
 /obj/machinery/mod_installer/proc/start_process()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (NOPOWER|BROKEN))
 		return
 	if(!occupant || !mod_unit || busy)
@@ -60,6 +74,8 @@
 	addtimer(CALLBACK(src, PROC_REF(complete_process)), 7.5 SECONDS)
 
 /obj/machinery/mod_installer/proc/complete_process()
+	procstart = null
+	src.procstart = null
 	set_busy(FALSE)
 	var/mob/living/carbon/human/human_occupant = occupant
 	if(!istype(human_occupant))
@@ -77,16 +93,22 @@
 	finish_completion()
 
 /obj/machinery/mod_installer/proc/finish_completion()
+	procstart = null
+	src.procstart = null
 	mod_unit = null
 	open_machine()
 
 /obj/machinery/mod_installer/open_machine(drop = TRUE, density_to_set = FALSE)
+	procstart = null
+	src.procstart = null
 	if(state_open)
 		return FALSE
 	..()
 	return TRUE
 
 /obj/machinery/mod_installer/close_machine(atom/movable/target, density_to_set = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!state_open)
 		return FALSE
 	..()
@@ -94,6 +116,8 @@
 	return TRUE
 
 /obj/machinery/mod_installer/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	var/message
 	if(busy)
 		message = "it won't budge!"
@@ -107,6 +131,8 @@
 	open_machine()
 
 /obj/machinery/mod_installer/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(state_open)
 		close_machine()
 		return

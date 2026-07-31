@@ -11,10 +11,14 @@
 	COOLDOWN_DECLARE(party_cooldown)
 
 /datum/station_trait/lucky_winner/on_round_start()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	COOLDOWN_START(src, party_cooldown, rand(PARTY_COOLDOWN_LENGTH_MIN, PARTY_COOLDOWN_LENGTH_MAX))
 
 /datum/station_trait/lucky_winner/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, party_cooldown))
 		return
 
@@ -49,6 +53,8 @@
 	report_message = "Your station has been selected for a special grant. Some extra funds has been made available to your cargo department."
 
 /datum/station_trait/galactic_grant/on_round_start()
+	procstart = null
+	src.procstart = null
 	var/datum/bank_account/cargo_bank = SSeconomy.get_dep_account(ACCOUNT_CAR)
 	cargo_bank.adjust_money(rand(2000, 5000))
 
@@ -69,6 +75,8 @@
 	report_message = "It seems collectors in this system are extra keen to on bounties, and will pay more to see their completion."
 
 /datum/station_trait/bountiful_bounties/on_round_start()
+	procstart = null
+	src.procstart = null
 	SSeconomy.bounty_modifier *= 1.2
 
 ///A positive station trait that scatters a bunch of lit glowsticks throughout maintenance
@@ -80,14 +88,20 @@
 	report_message = "We've glowsticks upon glowsticks to spare, so we scattered some around maintenance (plus a couple floor lights)."
 
 /datum/station_trait/glowsticks/New()
+	procstart = null
+	src.procstart = null
 	..()
 	RegisterSignal(SSticker, COMSIG_TICKER_ENTER_PREGAME, PROC_REF(on_pregame))
 
 /datum/station_trait/glowsticks/proc/on_pregame(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(light_up_the_night))
 
 /datum/station_trait/glowsticks/proc/light_up_the_night()
+	procstart = null
+	src.procstart = null
 	var/list/glowsticks = list(
 		/obj/item/flashlight/glowstick,
 		/obj/item/flashlight/glowstick/red,
@@ -128,6 +142,8 @@
 	blacklist = list(/datum/station_trait/distant_supply_lines)
 
 /datum/station_trait/strong_supply_lines/on_round_start()
+	procstart = null
+	src.procstart = null
 	SSeconomy.pack_price_modifier *= 0.8
 
 /datum/station_trait/filled_maint
@@ -152,6 +168,8 @@
 	blacklist = list(/datum/station_trait/slow_shuttle)
 
 /datum/station_trait/quick_shuttle/on_round_start()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSshuttle.supply.callTime *= 0.5
 
@@ -167,6 +185,8 @@
 	var/datum/deathrattle_group/deathrattle_group
 
 /datum/station_trait/deathrattle_department/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	deathrattle_group = new("[department_name] group")
 	blacklist += subtypesof(/datum/station_trait/deathrattle_department) - type //All but ourselves
@@ -175,6 +195,8 @@
 
 
 /datum/station_trait/deathrattle_department/proc/on_job_after_spawn(datum/source, datum/job/job, mob/living/spawned, client/player_client)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(job.departments_bitflags & department_to_apply_to))
@@ -236,12 +258,16 @@
 	var/datum/deathrattle_group/deathrattle_group
 
 /datum/station_trait/deathrattle_all/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	deathrattle_group = new("station group")
 	blacklist = subtypesof(/datum/station_trait/deathrattle_department)
 	RegisterSignal(SSdcs, COMSIG_GLOB_JOB_AFTER_SPAWN, PROC_REF(on_job_after_spawn))
 
 /datum/station_trait/deathrattle_all/proc/on_job_after_spawn(datum/source, datum/job/job, mob/living/spawned, client/player_client)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/implant/deathrattle/implant_to_give = new()
@@ -296,10 +322,14 @@
 	)
 
 /datum/station_trait/cybernetic_revolution/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSdcs, COMSIG_GLOB_JOB_AFTER_SPAWN, PROC_REF(on_job_after_spawn))
 
 /datum/station_trait/cybernetic_revolution/proc/on_job_after_spawn(datum/source, datum/job/job, mob/living/spawned, client/player_client)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/datum/quirk/body_purist/body_purist = /datum/quirk/body_purist
@@ -352,6 +382,8 @@
 	max_occurrences_modifier = 10 //lotta cows
 
 /datum/station_trait/random_event_weight_modifier/wise_cows/get_pulsar_message()
+	procstart = null
+	src.procstart = null
 	var/advisory_string = "Advisory Level: <b>Cow Planet</b></center><BR>" //We're gonna go fast and we're gonna go far.
 	advisory_string += "Your sector's advisory level is Cow Planet. We don't really know what this one means -- the model we use to create these threat reports hasn't produced this result before. Watch out for cows, I guess? Good luck!"
 	return advisory_string
@@ -382,6 +414,8 @@
 	show_in_report = TRUE
 
 /datum/station_trait/missing_wallet/on_round_start()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/obj/structure/closet/locker_to_fill = pick(GLOB.roundstart_station_closets)
@@ -424,6 +458,8 @@
 	blacklist = list(/datum/station_trait/colored_assistants)
 
 /datum/station_trait/random_event_weight_modifier/assistant_gimmicks/get_pulsar_message()
+	procstart = null
+	src.procstart = null
 	var/advisory_string = "Advisory Level: <b>Grey Sky</b></center><BR>"
 	advisory_string += "Your sector's advisory level is Grey Sky. Our sensors detect abnormal activity among the assistants assigned to your station. We advise you to closely monitor the Tool Storage, Bridge, Tech Storage, and Brig for gathering crowds or petty thievery."
 	return advisory_string

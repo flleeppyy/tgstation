@@ -5,6 +5,8 @@
 	r_pocket = /obj/item/knife/shiv
 
 /datum/outfit/prisoner/post_equip(mob/living/carbon/human/prisoner, visuals_only=FALSE)
+	procstart = null
+	src.procstart = null
 	// This outfit is used by the assets SS, which is ran before the atoms SS
 	if(SSatoms.initialized == INITIALIZATION_INSSATOMS)
 		prisoner.w_uniform?.update_greyscale()
@@ -31,6 +33,8 @@
 	glasses = /obj/item/clothing/glasses/regular/circle
 
 /datum/outfit/waldo/post_equip(mob/living/carbon/human/equipped_on, visuals_only=FALSE)
+	procstart = null
+	src.procstart = null
 	equipped_on.w_uniform?.update_greyscale()
 	equipped_on.update_worn_undersuit()
 	if(visuals_only)
@@ -63,6 +67,8 @@
 	ears = /obj/item/radio/headset
 
 /datum/outfit/synthetic/post_equip(mob/living/carbon/human/H, visuals_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visuals_only)
 		return
 	var/obj/item/organ/eyes/robotic/glow/eyes = new()
@@ -82,6 +88,8 @@
 	)
 
 /datum/outfit/invisible_man/post_equip(mob/living/carbon/human/equipee, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/obj/item/implant/camouflage/invisibility_implant = new(equipee)

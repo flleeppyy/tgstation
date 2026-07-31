@@ -4,6 +4,8 @@
 ///Draws power from its rightful source (area if its a computer, the cell otherwise)
 ///Takes into account special cases, like silicon PDAs through override, and nopower apps.
 /obj/item/modular_computer/proc/use_energy(amount = 0, check_programs = TRUE)
+	procstart = null
+	src.procstart = null
 	if(check_power_override(amount))
 		return TRUE
 	if(!internal_cell)
@@ -17,12 +19,16 @@
 	return FALSE
 
 /obj/item/modular_computer/proc/give_power(amount)
+	procstart = null
+	src.procstart = null
 	if(internal_cell)
 		return internal_cell.give(amount)
 	return 0
 
 ///Shuts down the computer from powerloss.
 /obj/item/modular_computer/proc/power_failure()
+	procstart = null
+	src.procstart = null
 	if(!enabled)
 		return
 	if(active_program)
@@ -36,6 +42,8 @@
 ///Takes the charge necessary from the Computer, shutting it off if it's unable to provide it.
 ///Charge depends on whether the PC is on, and what programs are running/idle on it.
 /obj/item/modular_computer/proc/handle_power(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/power_usage = screen_on ? base_active_power_usage : base_idle_power_usage
 	if(light_on)
 		power_usage *= FLASHLIGHT_DRAIN_MULTIPLIER
@@ -54,10 +62,14 @@
 
 ///Returns TRUE if the PC should not be using any power, FALSE otherwise.
 /obj/item/modular_computer/proc/check_power_override(amount)
+	procstart = null
+	src.procstart = null
 	return !amount && !internal_cell?.charge
 
 //Integrated (Silicon) tablets don't drain power, because the tablet is required to state laws, so it being disabled WILL cause problems.
 /obj/item/modular_computer/pda/silicon/check_power_override()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 #undef FLASHLIGHT_DRAIN_MULTIPLIER

@@ -14,6 +14,8 @@
 	mats_per_unit = list(/datum/material/telecrystal = SHEET_MATERIAL_AMOUNT)
 
 /obj/item/stack/telecrystal/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(interacting_with != user) // You can't go around smacking people with crystals to find out if they have an uplink or not.
 		return NONE
 

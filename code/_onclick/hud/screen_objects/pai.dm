@@ -6,6 +6,8 @@
 	var/required_software
 
 /atom/movable/screen/pai/Click()
+	procstart = null
+	src.procstart = null
 	if(isobserver(usr) || usr.incapacitated)
 		return FALSE
 	var/mob/living/silicon/pai/user = usr
@@ -20,6 +22,8 @@
 	screen_loc = ui_pai_software
 
 /atom/movable/screen/pai/software/Click()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/silicon/pai/pAI = usr
@@ -31,6 +35,8 @@
 	screen_loc = ui_pai_shell
 
 /atom/movable/screen/pai/shell/Click()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/silicon/pai/pAI = usr
@@ -45,6 +51,8 @@
 	screen_loc = ui_pai_chassis
 
 /atom/movable/screen/pai/chassis/Click()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/silicon/pai/pAI = usr
@@ -56,6 +64,8 @@
 	screen_loc = ui_pai_rest
 
 /atom/movable/screen/pai/rest/Click()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/silicon/pai/pAI = usr
@@ -67,6 +77,8 @@
 	screen_loc = ui_pai_light
 
 /atom/movable/screen/pai/light/Click()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/silicon/pai/pAI = usr
@@ -79,6 +91,8 @@
 	required_software = "Newscaster"
 
 /atom/movable/screen/pai/newscaster/Click()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/silicon/pai/pAI = usr
@@ -91,6 +105,8 @@
 	required_software = "Host Scan"
 
 /atom/movable/screen/pai/host_monitor/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -110,6 +126,8 @@
 	required_software = "Crew Manifest"
 
 /atom/movable/screen/pai/crew_manifest/Click()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/silicon/pai/pAI = usr
@@ -121,6 +139,8 @@
 	screen_loc = ui_pai_state_laws
 
 /atom/movable/screen/pai/state_laws/Click()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/silicon/pai/pAI = usr
@@ -133,6 +153,8 @@
 	required_software = "Digital Messenger"
 
 /atom/movable/screen/pai/modpc/Click()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.) // this works for some reason.
 		return
@@ -147,6 +169,8 @@
 	required_software = "Internal GPS"
 
 /atom/movable/screen/pai/internal_gps/Click()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -162,6 +186,8 @@
 	required_software = "Photography Module"
 
 /atom/movable/screen/pai/image_take/Click()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -175,6 +201,8 @@
 	required_software = "Photography Module"
 
 /atom/movable/screen/pai/image_view/Click()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/silicon/pai/pAI = usr
@@ -187,6 +215,8 @@
 	screen_loc = ui_pai_radio
 
 /atom/movable/screen/pai/radio/Click()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/silicon/pai/pAI = usr

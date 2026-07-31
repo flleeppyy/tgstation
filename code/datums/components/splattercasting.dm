@@ -12,10 +12,14 @@
 /datum/component/splattercasting
 
 /datum/component/splattercasting/Initialize()
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(parent))
 		return COMPONENT_INCOMPATIBLE
 
 /datum/component/splattercasting/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_SPECIES_LOSS, PROC_REF(on_species_change))
 	RegisterSignal(parent, COMSIG_MOB_SPELL_PROJECTILE, PROC_REF(on_spell_projectile))
@@ -24,17 +28,23 @@
 	ADD_TRAIT(parent, TRAIT_SPLATTERCASTER, REF(src))
 
 /datum/component/splattercasting/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, list(COMSIG_SPECIES_LOSS, COMSIG_MOB_SPELL_PROJECTILE, COMSIG_MOB_BEFORE_SPELL_CAST, COMSIG_MOB_AFTER_SPELL_CAST))
 	REMOVE_TRAIT(parent, TRAIT_SPLATTERCASTER, REF(src))
 
 ///signal sent when a spell casts a projectile
 /datum/component/splattercasting/proc/on_species_change(mob/living/carbon/source, datum/species/lost_species)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 ///signal sent when the parent casts a spell that has a projectile
 /datum/component/splattercasting/proc/on_spell_projectile(mob/living/carbon/source, datum/action/cooldown/spell/spell, atom/cast_on, obj/projectile/to_fire)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(spell.school == SCHOOL_SANGUINE)
@@ -48,6 +58,8 @@
 
 ///signal sent before parent casts a spell
 /datum/component/splattercasting/proc/on_before_spell_cast(mob/living/carbon/source, datum/action/cooldown/spell/spell, atom/cast_on)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/changed_spell = FALSE
@@ -66,6 +78,8 @@
 
 ///signal sent after parent casts a spell
 /datum/component/splattercasting/proc/on_after_spell_cast(mob/living/carbon/source, datum/action/cooldown/spell/spell, atom/cast_on)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(spell.school == SCHOOL_SANGUINE)

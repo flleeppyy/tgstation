@@ -30,6 +30,8 @@
 	var/obj/machinery/atmospherics/components/unary/thermomachine/connected_machine
 
 /obj/item/circuit_component/thermomachine/populate_ports()
+	procstart = null
+	src.procstart = null
 	temperature = add_input_port("Set Temperature", PORT_TYPE_NUMBER, trigger = PROC_REF(set_temperature))
 	on = add_input_port("Turn On", PORT_TYPE_SIGNAL, trigger = PROC_REF(set_machine_on))
 	off = add_input_port("Turn Off", PORT_TYPE_SIGNAL, trigger = PROC_REF(set_machine_off))
@@ -43,23 +45,31 @@
 	turned_off = add_output_port("Turned Off", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/thermomachine/register_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/machinery/atmospherics/components/unary/thermomachine))
 		connected_machine = shell
 		RegisterSignal(connected_machine, COMSIG_ATMOS_MACHINE_SET_ON, PROC_REF(handle_pump_activation))
 
 /obj/item/circuit_component/thermomachine/unregister_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(connected_machine, COMSIG_ATMOS_MACHINE_SET_ON)
 	connected_machine = null
 	return ..()
 
 /obj/item/circuit_component/thermomachine/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(connected_machine)
 		var/min = connected_machine.min_temperature
 		var/max = connected_machine.max_temperature
 		temperature.set_value(clamp(temperature.value, min, max))
 
 /obj/item/circuit_component/thermomachine/proc/handle_pump_activation(datum/source, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	is_active.set_output(active)
 	if(active)
@@ -68,6 +78,8 @@
 		turned_off.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/thermomachine/proc/set_temperature()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!connected_machine)
 		return
@@ -77,6 +89,8 @@
 	connected_machine.update_icon_state()
 
 /obj/item/circuit_component/thermomachine/proc/set_machine_on()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!connected_machine)
 		return
@@ -84,6 +98,8 @@
 	connected_machine.update_use_power(ACTIVE_POWER_USE)
 
 /obj/item/circuit_component/thermomachine/proc/set_machine_off()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!connected_machine)
 		return
@@ -92,6 +108,8 @@
 	connected_machine.update_appearance(UPDATE_ICON)
 
 /obj/item/circuit_component/thermomachine/proc/request_pump_data()
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!connected_machine)
 		return

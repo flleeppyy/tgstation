@@ -13,6 +13,8 @@
 	)
 
 /obj/item/book/granter/sign_language/can_learn(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (!iscarbon(user))
 		return
 	if (user.GetComponent(/datum/component/sign_language))
@@ -21,9 +23,13 @@
 	return TRUE
 
 /obj/item/book/granter/sign_language/recoil(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("You can't read it, the pages are too faded and smudged!"))
 
 /// Called when the reading is completely finished. This is where the actual granting should happen.
 /obj/item/book/granter/sign_language/on_reading_finished(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	user.AddComponent(/datum/component/sign_language)

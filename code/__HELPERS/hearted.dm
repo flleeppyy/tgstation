@@ -1,5 +1,7 @@
 /// Called when the shuttle starts launching back to centcom, polls a few random players who joined the round for commendations
 /datum/controller/subsystem/ticker/proc/poll_hearts()
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(number/commendation_percent_poll))
 		return
 
@@ -24,6 +26,8 @@
 
 /// Once the round is actually over, cycle through the ckeys in the hearts list and give them the hearted status
 /datum/controller/subsystem/ticker/proc/handle_hearts()
+	procstart = null
+	src.procstart = null
 	var/list/message = list("The following players were commended this round: ")
 	var/i = 0
 	for(var/hearted_ckey in hearts)
@@ -37,6 +41,8 @@
 
 /// Ask someone if they'd like to award a commendation for the round, 3 tries to get the name they want before we give up
 /mob/proc/query_heart(attempt=1)
+	procstart = null
+	src.procstart = null
 	if(!client || attempt > 3)
 		return
 	if(attempt == 1 && tgui_alert(src, "Was there another character you noticed being kind this round that you would like to anonymously thank?", "<3?", list("Yes", "No"), timeout = 30 SECONDS) != "Yes")
@@ -89,6 +95,8 @@
 * * instant: If TRUE (or if the round is already over), we'll give them the heart status now, if FALSE, we wait until the end of the round (which is the standard behavior)
 */
 /mob/proc/receive_heart(mob/heart_sender, duration = 24 HOURS, instant = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return
 	to_chat(heart_sender, span_nicegreen("Commendation sent!"))

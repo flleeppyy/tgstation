@@ -11,6 +11,8 @@
 	var/list/required_genes = list()
 
 /datum/experiment/scanning/random/plants/New(datum/techweb/techweb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(possible_plant_genes.len)
 		for(var/req_atom in required_atoms)
@@ -18,10 +20,14 @@
 			required_genes[req_atom] = chosen_gene
 
 /datum/experiment/scanning/random/plants/serialize_progress_stage(atom/target, list/seen_instances)
+	procstart = null
+	src.procstart = null
 	return EXPERIMENT_PROG_INT("Scan samples of a harvested plant.", \
 		traits & EXPERIMENT_TRAIT_DESTRUCTIVE ? scanned[target] : seen_instances.len, required_atoms[target])
 
 /datum/experiment/scanning/random/plants/traits/final_contributing_index_checks(datum/component/experiment_handler/experiment_handler, atom/target, typepath)
+	procstart = null
+	src.procstart = null
 	if(!istype(target, /obj/item/food/grown))
 		return FALSE
 	var/obj/item/food/grown/crop = target
@@ -32,10 +38,14 @@
 	return ..()
 
 /datum/experiment/scanning/random/plants/traits/serialize_progress_stage(atom/target, list/seen_instances)
+	procstart = null
+	src.procstart = null
 	if(possible_plant_genes.len)
 		var/datum/plant_gene/gene = required_genes[target]
 		return EXPERIMENT_PROG_INT("Scan samples of harvested plants with the trait: [initial(gene.name)].", \
 			traits & EXPERIMENT_TRAIT_DESTRUCTIVE ? scanned[target] : seen_instances.len, required_atoms[target])
 
 /datum/experiment/scanning/random/plants/wild/final_contributing_index_checks(datum/component/experiment_handler/experiment_handler, atom/target, typepath)
+	procstart = null
+	src.procstart = null
 	return ..() && HAS_TRAIT(target, TRAIT_PLANT_WILDMUTATE)

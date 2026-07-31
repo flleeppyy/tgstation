@@ -14,11 +14,15 @@
 	var/obj/machinery/modular_computer/machinery_computer
 
 /obj/item/modular_computer/processor/UpdateDisplay()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//update our name to match the computer's
 	name = machinery_computer.name
 
 /obj/item/modular_computer/processor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(!istype(loc, /obj/machinery/modular_computer))
 		CRASH("A non '/obj/machinery/modular_computer' had a [src] initialized in it!")
 
@@ -38,6 +42,8 @@
 	return ..()
 
 /obj/item/modular_computer/processor/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(machinery_computer && (machinery_computer.cpu == src))
 		machinery_computer.cpu = null
 		machinery_computer.UnregisterSignal(src, COMSIG_ATOM_UPDATED_ICON)
@@ -45,6 +51,8 @@
 	return ..()
 
 /obj/item/modular_computer/processor/use_energy(amount = 0, check_programs = TRUE)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/machine_holder = physical
 	if(machine_holder.powered())
 		machine_holder.use_energy(amount)
@@ -52,7 +60,11 @@
 	return ..()
 
 /obj/item/modular_computer/processor/relay_qdel()
+	procstart = null
+	src.procstart = null
 	qdel(machinery_computer)
 
 /obj/item/modular_computer/processor/get_messenger_ending()
+	procstart = null
+	src.procstart = null
 	return "Sent from my Desktop"

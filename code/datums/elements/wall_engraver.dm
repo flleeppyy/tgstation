@@ -2,6 +2,8 @@
 /datum/element/wall_engraver
 
 /datum/element/wall_engraver/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (!isitem(target))
@@ -11,17 +13,23 @@
 	RegisterSignal(target, COMSIG_ITEM_PRE_ATTACK_SECONDARY, PROC_REF(on_item_pre_attack_secondary))
 
 /datum/element/wall_engraver/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_ATOM_EXAMINE)
 	UnregisterSignal(source, COMSIG_ITEM_PRE_ATTACK_SECONDARY)
 
 ///signal called on parent being examined
 /datum/element/wall_engraver/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	examine_list += span_notice("You can engrave some walls with your secondary attack if you can think of something interesting to engrave.")
 
 ///signal called on parent being used to right click attack something
 /datum/element/wall_engraver/proc/on_item_pre_attack_secondary(datum/source, atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(try_chisel), source, target, user)
@@ -29,6 +37,8 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/element/wall_engraver/proc/try_chisel(obj/item/item, turf/closed/wall, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(wall) || !user.mind)
 		return
 	if(HAS_TRAIT_FROM(wall, TRAIT_NOT_ENGRAVABLE, ENGRAVED_TRAIT))

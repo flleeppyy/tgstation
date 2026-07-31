@@ -40,6 +40,8 @@
 	)
 
 /datum/unit_test/simple_animal_freeze/Run()
+	procstart = null
+	src.procstart = null
 	var/list/seen = list()
 
 	// Sanity check, to prevent people from just doing a mass find and replace

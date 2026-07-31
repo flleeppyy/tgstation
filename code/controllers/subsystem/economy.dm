@@ -64,6 +64,8 @@ SUBSYSTEM_DEF(economy)
 	var/ticks_per_mail = 2
 
 /datum/controller/subsystem/economy/Initialize()
+	procstart = null
+	src.procstart = null
 	//removes cargo from the split
 	var/budget_to_hand_out = round(budget_pool / department_accounts.len -1)
 	if(time2text(world.timeofday, "DDD") == SUNDAY)
@@ -76,6 +78,8 @@ SUBSYSTEM_DEF(economy)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/economy/Recover()
+	procstart = null
+	src.procstart = null
 	departmental_accounts = SSeconomy.departmental_accounts
 	bank_accounts_by_id = SSeconomy.bank_accounts_by_id
 	dep_cards = SSeconomy.dep_cards
@@ -86,6 +90,8 @@ SUBSYSTEM_DEF(economy)
 #define ECON_PRICE_UPDATE_STEP "econ_prc_stp"
 
 /datum/controller/subsystem/economy/fire(resumed = 0)
+	procstart = null
+	src.procstart = null
 	var/seconds_per_tick = wait / (5 MINUTES)
 	if(!resumed)
 		temporary_total = 0
@@ -122,6 +128,8 @@ SUBSYSTEM_DEF(economy)
  * Handy proc for obtaining a department's bank account, given the department ID, AKA the define assigned for what department they're under.
  */
 /datum/controller/subsystem/economy/proc/get_dep_account(dep_id) as /datum/bank_account/department
+	procstart = null
+	src.procstart = null
 	for(var/datum/bank_account/department/D in departmental_accounts)
 		if(D.department_id == dep_id)
 			return D
@@ -131,6 +139,8 @@ SUBSYSTEM_DEF(economy)
  * Iterates over every department account for the same payment.
  */
 /datum/controller/subsystem/economy/proc/departmental_payouts()
+	procstart = null
+	src.procstart = null
 	// son sonic speed? cache? hot over in cold food why? (datum var accesses are slow, cache lists for sonic speed)
 	var/list/cached_processing = src.cached_processing
 	for(var/i in 1 to length(cached_processing))
@@ -147,6 +157,8 @@ SUBSYSTEM_DEF(economy)
  * Issues all our bank-accounts paydays, and gets an idea of how much money is in circulation
  */
 /datum/controller/subsystem/economy/proc/issue_paydays()
+	procstart = null
+	src.procstart = null
 	var/list/cached_processing = src.cached_processing
 	for(var/i in 1 to length(cached_processing))
 		var/datum/bank_account/bank_account = cached_processing[cached_processing[i]]
@@ -163,6 +175,8 @@ SUBSYSTEM_DEF(economy)
  * Updates the the inflation_value, effecting newscaster alerts and the mail system.
  **/
 /datum/controller/subsystem/economy/proc/price_update()
+	procstart = null
+	src.procstart = null
 	var/fluff_string = ""
 	if(!HAS_TRAIT(SSeconomy, TRAIT_MARKET_CRASHING))
 		fluff_string = ", but company countermeasures protect <b>YOU</b> from being affected!"
@@ -195,6 +209,8 @@ SUBSYSTEM_DEF(economy)
  * The goal here is that if you want to spend money, you'll have to get it, and the most efficient method is typically from other players.
  **/
 /datum/controller/subsystem/economy/proc/inflation_value()
+	procstart = null
+	src.procstart = null
 	if(!bank_accounts_by_id.len)
 		return 1
 	if(HAS_TRAIT(SSeconomy, TRAIT_MARKET_CRASHING))
@@ -210,6 +226,8 @@ SUBSYSTEM_DEF(economy)
  * * vendor: The object or structure medium that is charging the user. For Vending machines that's the machine, for payment component that's the parent, cargo that's the crate, etc.
  */
 /datum/controller/subsystem/economy/proc/add_audit_entry(datum/bank_account/account, price_to_use, vendor)
+	procstart = null
+	src.procstart = null
 	if(isnull(account) || isnull(price_to_use) || !vendor)
 		CRASH("Track purchases was missing an argument! (Account, Price, or Vendor.)")
 
@@ -224,6 +242,8 @@ SUBSYSTEM_DEF(economy)
  * Iterates over the machines list for vending machines, resets their regular and premium product prices (Not contraband), and sends a message to the newscaster network.
  */
 /datum/controller/subsystem/economy/proc/update_vending_prices()
+	procstart = null
+	src.procstart = null
 	var/list/obj/machinery/vending/prices_to_update = list()
 	// Assoc list of "z level" -> if it's on the station
 	// Hack, is station z level is too expensive to do for each machine, I hate this place
@@ -252,6 +272,8 @@ SUBSYSTEM_DEF(economy)
  * * premiumlist - the list of premium product datums in the vendor to refresh their prices.
  */
 /obj/machinery/vending/proc/reset_prices(list/recordlist, list/premiumlist)
+	procstart = null
+	src.procstart = null
 	var/inflation_value = HAS_TRAIT(SSeconomy, TRAIT_MARKET_CRASHING) ? SSeconomy.inflation_value() : 1
 	default_price = round(initial(default_price) * inflation_value)
 	extra_price = round(initial(extra_price) * inflation_value)
@@ -270,6 +292,8 @@ SUBSYSTEM_DEF(economy)
 			premium_record.price = premium_custom_price || extra_price
 
 /datum/controller/subsystem/economy/proc/inflict_moneybags(datum/bank_account/moneybags)
+	procstart = null
+	src.procstart = null
 	if(!moneybags)
 		return FALSE
 	var/mob/living/card_holder

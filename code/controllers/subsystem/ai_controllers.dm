@@ -52,18 +52,24 @@ SUBSYSTEM_DEF(ai_controllers)
 	var/list/ai_controllers_by_zlevel = list()
 
 /datum/controller/subsystem/ai_controllers/Recover()
+	procstart = null
+	src.procstart = null
 	if(islist(SSai_controllers.ai_controllers_by_status))
 		ai_controllers_by_status = SSai_controllers.ai_controllers_by_status
 	if(islist(SSai_controllers.ai_controllers_by_zlevel))
 		ai_controllers_by_zlevel = SSai_controllers.ai_controllers_by_zlevel
 
 /datum/controller/subsystem/ai_controllers/Initialize()
+	procstart = null
+	src.procstart = null
 	setup_targeting_strats()
 	setup_target_priority_strats()
 	setup_target_sources()
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/ai_controllers/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg = "\n  Active:[length(SSai_controllers.ai_controllers_by_status[planning_status])]|Off:[length(SSai_controllers.ai_controllers_by_status[AI_STATUS_OFF])]"
 	msg += "\n  Pass:[pass_size - length(currentrun)]/[pass_size]|AvgPass:[round(average_pass_time * 0.1, 0.1)]s|WorstGap:[round(longest_tick_gap * 0.1, 0.1)]s"
 	if(length(most_expensive))
@@ -73,6 +79,8 @@ SUBSYSTEM_DEF(ai_controllers)
 	return ..()
 
 /datum/controller/subsystem/ai_controllers/fire(resumed)
+	procstart = null
+	src.procstart = null
 	if(!resumed)
 		var/list/planning_list = SSai_controllers.ai_controllers_by_status[planning_status]
 		currentrun = planning_list.Copy()
@@ -145,6 +153,8 @@ SUBSYSTEM_DEF(ai_controllers)
 
 ///Called when the max Z level was changed, updating our coverage.
 /datum/controller/subsystem/ai_controllers/proc/on_max_z_changed()
+	procstart = null
+	src.procstart = null
 	if(!length(ai_controllers_by_zlevel))
 		ai_controllers_by_zlevel = new /list(world.maxz,0)
 	while (ai_controllers_by_zlevel.len < world.maxz)
@@ -152,18 +162,24 @@ SUBSYSTEM_DEF(ai_controllers)
 		ai_controllers_by_zlevel[ai_controllers_by_zlevel.len] = list()
 
 /datum/controller/subsystem/ai_controllers/proc/setup_targeting_strats()
+	procstart = null
+	src.procstart = null
 	targeting_strategies = list()
 	for(var/target_type in subtypesof(/datum/targeting_strategy))
 		var/datum/targeting_strategy/target_start = new target_type
 		targeting_strategies[target_type] = target_start
 
 /datum/controller/subsystem/ai_controllers/proc/setup_target_priority_strats()
+	procstart = null
+	src.procstart = null
 	target_priority_strategies = list()
 	for(var/target_type in subtypesof(/datum/target_priority_strategy))
 		var/datum/target_priority_strategy/target_start = new target_type
 		target_priority_strategies[target_type] = target_start
 
 /datum/controller/subsystem/ai_controllers/proc/setup_target_sources()
+	procstart = null
+	src.procstart = null
 	target_sources = list()
 	for(var/source_type in subtypesof(/datum/target_source))
 		var/datum/target_source/source = new source_type

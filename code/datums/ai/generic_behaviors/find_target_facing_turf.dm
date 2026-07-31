@@ -7,6 +7,8 @@
 	var/set_key
 
 /datum/bt_node/ai_behavior/find_target_facing_turf/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[target_key]
 	if(QDELETED(target))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED

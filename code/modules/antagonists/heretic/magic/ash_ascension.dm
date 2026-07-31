@@ -20,13 +20,19 @@
 	var/duration = 1 MINUTES
 
 /datum/action/cooldown/spell/fire_sworn/Remove(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	remove_from.remove_status_effect(/datum/status_effect/fire_ring)
 	return ..()
 
 /datum/action/cooldown/spell/fire_sworn/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return isliving(cast_on)
 
 /datum/action/cooldown/spell/fire_sworn/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cast_on.apply_status_effect(/datum/status_effect/fire_ring, duration, fire_radius)
 
@@ -40,11 +46,15 @@
 	var/ring_radius = 1
 
 /datum/status_effect/fire_ring/on_creation(mob/living/new_owner, duration = 1 MINUTES, radius = 1)
+	procstart = null
+	src.procstart = null
 	src.duration = duration
 	src.ring_radius = radius
 	return ..()
 
 /datum/status_effect/fire_ring/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(owner) || owner.stat == DEAD)
 		qdel(src)
 		return
@@ -80,11 +90,15 @@
 	var/flame_radius = 4
 
 /datum/action/cooldown/spell/fire_cascade/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	INVOKE_ASYNC(src, PROC_REF(fire_cascade), get_turf(cast_on), flame_radius)
 
 /// Spreads a huge wave of fire in a radius around us, staggered between levels
 /datum/action/cooldown/spell/fire_cascade/proc/fire_cascade(atom/centre, flame_radius = 1)
+	procstart = null
+	src.procstart = null
 	for(var/i in 0 to flame_radius)
 		for(var/turf/nearby_turf as anything in spiral_range_turfs(i + 1, centre))
 			var/obj/effect/hotspot/flame_tile = (locate() in nearby_turf) || new(nearby_turf)
@@ -120,15 +134,21 @@
 	var/flame_line_length = 15
 
 /datum/action/cooldown/spell/pointed/ash_beams/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/action/cooldown/spell/pointed/ash_beams/cast(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/offsets = list(-25, -10, 0, 10, 25)
 	for(var/offset in offsets)
 		INVOKE_ASYNC(src, PROC_REF(fire_line), owner, line_target(offset, flame_line_length, target, owner))
 
 /datum/action/cooldown/spell/pointed/ash_beams/proc/line_target(offset, range, atom/at, atom/user)
+	procstart = null
+	src.procstart = null
 	var/turf/user_loc = get_turf(user)
 	if(!at)
 		return
@@ -142,6 +162,8 @@
 	return (get_line(user_loc, T) - user_loc)
 
 /datum/action/cooldown/spell/pointed/ash_beams/proc/fire_line(atom/source, list/turfs)
+	procstart = null
+	src.procstart = null
 	var/list/hit_list = list()
 	for(var/turf/T in turfs)
 		if(isclosedturf(T))

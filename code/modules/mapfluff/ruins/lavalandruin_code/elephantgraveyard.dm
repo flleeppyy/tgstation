@@ -10,6 +10,8 @@
 	abstract_type = /obj/structure/statue/bone
 
 /obj/structure/statue/bone/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddComponent(/datum/component/seethrough, SEE_THROUGH_MAP_DEFAULT)
@@ -53,9 +55,13 @@
 	floor_variance = 30
 
 /turf/open/misc/asteroid/basalt/wasteland/break_tile()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/misc/asteroid/basalt/wasteland/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	.=..()
 	if(prob(floor_variance))
 		icon_state = "[base_icon_state][rand(0,6)]"
@@ -76,6 +82,8 @@
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
 
 /turf/closed/mineral/strong/wasteland/drop_ores()
+	procstart = null
+	src.procstart = null
 	if(prob(10))
 		new /obj/item/stack/ore/iron(src)
 		new /obj/item/stack/ore/glass(src)
@@ -96,25 +104,35 @@
 	dispensedreagent = /datum/reagent/fuel/oil
 
 /obj/structure/sink/oil_well/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//I'm pretty much aware that, because how oil wells and sinks work, attackby() won't work unless in combat mode.
 	//Thankfully, the user can cast the line from a distance.
 	AddComponent(/datum/component/fishing_spot, /datum/fish_source/oil_well)
 
 /obj/structure/sink/oil_well/find_and_mount_on_atom(mark_for_late_init, late_init)
+	procstart = null
+	src.procstart = null
 	///Oil wells exist indepent of any wall structure
 	return FALSE
 
 /obj/structure/sink/oil_well/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	flick("puddle-oil-splash",src)
 	reagents.expose(user, TOUCH, 20) //Covers target in 20u of oil.
 	to_chat(user, span_notice("You touch the pool of oil, only to get oil all over yourself. It would be wise to wash this off with water."))
 
 /obj/structure/sink/oil_well/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	//we deconstruct with a shovel
 	return NONE
 
 /obj/structure/sink/oil_well/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	flick("puddle-oil-splash",src)
 	if(tool.tool_behaviour == TOOL_SHOVEL) //attempt to deconstruct the puddle with a shovel
 		to_chat(user, "You fill in the oil well with soil.")
@@ -125,6 +143,8 @@
 	return ..()
 
 /obj/structure/sink/oil_well/atom_deconstruct(dissambled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/decal/cleanable/blood/oil(loc)
 
 //***Grave mounds.
@@ -161,6 +181,8 @@
 	var/affect_mood = FALSE
 
 /obj/structure/closet/crate/grave/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(held_item))
 		return NONE
 
@@ -171,18 +193,24 @@
 	return NONE
 
 /obj/structure/closet/crate/grave/close(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// So that graves stay undense
 	set_density(FALSE)
 
 /obj/structure/closet/crate/grave/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It can be [EXAMINE_HINT((opened ? "closed" : "dug open"))] with a shovel.")
 
 /obj/structure/closet/crate/grave/filled
 	affect_mood = TRUE
 
-/obj/structure/closet/crate/grave/filled/PopulateContents()  //GRAVEROBBING IS NOW A FEATURE
+/obj/structure/closet/crate/grave/filled/PopulateContents()
+	procstart = null
+	src.procstart = null  //GRAVEROBBING IS NOW A FEATURE
 	..()
 	new /obj/effect/decal/remains/human(src)
 	switch(rand(1,8))
@@ -212,9 +240,13 @@
 			return
 
 /obj/structure/closet/crate/grave/closet_update_overlays(list/new_overlays)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/closet/crate/grave/before_open(mob/living/user, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -226,6 +258,8 @@
 	return TRUE
 
 /obj/structure/closet/crate/grave/before_close(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -238,6 +272,8 @@
 	return TRUE
 
 /obj/structure/closet/crate/grave/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	//anything that isn't a shovel does normal stuff to the grave[like putting stuff in]
 	if(tool.tool_behaviour != TOOL_SHOVEL)
 		return ..()
@@ -289,6 +325,8 @@
 
 
 /obj/structure/closet/crate/grave/container_resist_act(mob/living/user, loc_required = TRUE)
+	procstart = null
+	src.procstart = null
 	if(opened)
 		return
 	// The player is trying to dig themselves out of an early grave
@@ -327,7 +365,9 @@
 	lead_tomb = TRUE
 	first_open = TRUE
 
-/obj/structure/closet/crate/grave/filled/lead_researcher/PopulateContents()  //ADVANCED GRAVEROBBING
+/obj/structure/closet/crate/grave/filled/lead_researcher/PopulateContents()
+	procstart = null
+	src.procstart = null  //ADVANCED GRAVEROBBING
 	..()
 	new /obj/effect/decal/cleanable/blood/gibs/old(src)
 	new /obj/item/book/granter/crafting_recipe/boneyard_notes(src)

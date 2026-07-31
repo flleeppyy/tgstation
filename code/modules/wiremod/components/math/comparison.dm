@@ -18,6 +18,8 @@
 	var/current_type = PORT_TYPE_ANY
 
 /obj/item/circuit_component/compare/comparison/populate_options()
+	procstart = null
+	src.procstart = null
 	var/static/component_options = list(
 		COMP_COMPARISON_EQUAL,
 		COMP_COMPARISON_NOT_EQUAL,
@@ -29,10 +31,14 @@
 	comparison_option = add_option_port("Comparison Option", component_options)
 
 /obj/item/circuit_component/compare/comparison/populate_custom_ports()
+	procstart = null
+	src.procstart = null
 	first_port = add_input_port("A", PORT_TYPE_ANY)
 	second_port = add_input_port("B", PORT_TYPE_ANY)
 
 /obj/item/circuit_component/compare/comparison/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	switch(comparison_option.value)
 		if(COMP_COMPARISON_EQUAL, COMP_COMPARISON_NOT_EQUAL)
 			if(current_type != PORT_TYPE_ANY)
@@ -47,6 +53,8 @@
 
 
 /obj/item/circuit_component/compare/comparison/do_comparisons()
+	procstart = null
+	src.procstart = null
 	var/input1 = first_port.value
 	var/input2 = second_port.value
 	var/current_option = comparison_option.value

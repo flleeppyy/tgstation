@@ -13,6 +13,8 @@
 	custom_materials = list(/datum/material/plasma = SHEET_MATERIAL_AMOUNT * 2.5, /datum/material/iron = SHEET_MATERIAL_AMOUNT, /datum/material/gold = SHEET_MATERIAL_AMOUNT, /datum/material/uranium = SHEET_MATERIAL_AMOUNT)
 
 /obj/item/anomaly_neutralizer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Primarily used to delete and neutralize anomalies.
@@ -33,6 +35,8 @@
  * Callback for the effect remover component to handle neutralizing anomalies.
  */
 /obj/item/anomaly_neutralizer/proc/on_anomaly_neutralized(obj/effect/anomaly/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	target.anomalyNeutralize()
 	on_use(target, user)
 
@@ -40,5 +44,7 @@
  * Use up the anomaly neutralizer. Cause some sparks and delete it.
  */
 /obj/item/anomaly_neutralizer/proc/on_use(obj/effect/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	do_sparks(3, FALSE, user)
 	qdel(src)

@@ -5,6 +5,8 @@
 	var/move_flags = NONE
 
 /datum/ai_movement/basic_avoidance/start_moving_towards(datum/ai_controller/controller, atom/current_movement_target, min_distance, delay_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -16,6 +18,8 @@
 	RegisterSignal(loop, COMSIG_MOVELOOP_POSTPROCESS, PROC_REF(post_move))
 
 /datum/ai_movement/basic_avoidance/update_movement_target(datum/ai_controller/controller, atom/new_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/datum/move_loop/has_target/loop = GLOB.move_manager.processing_on(controller.pawn, SSai_movement)
@@ -23,6 +27,8 @@
 		loop.target = new_target
 
 /datum/ai_movement/basic_avoidance/allowed_to_move(datum/move_loop/has_target/dist_bound/source)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_step_towards(source.moving, source.target)
 	if(!target_turf?.can_cross_safely(source.moving))
 		return FALSE

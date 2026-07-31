@@ -34,6 +34,8 @@
 	var/list/true_cultists = list()
 
 /datum/team/cult/proc/check_size()
+	procstart = null
+	src.procstart = null
 	if(cult_ascendent)
 		return
 
@@ -72,6 +74,8 @@
 #endif
 
 /datum/team/cult/add_member(datum/mind/new_member)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// A little hacky, but this checks that cult ghosts don't contribute to the size at maximum value.
 	if(is_unassigned_job(new_member.assigned_role))
@@ -79,6 +83,8 @@
 	size_at_maximum++
 
 /datum/team/cult/proc/make_image(datum/objective/sacrifice/sac_objective)
+	procstart = null
+	src.procstart = null
 	var/datum/job/job_of_sacrifice = sac_objective.target.assigned_role
 	var/datum/preferences/prefs_of_sacrifice = sac_objective.target.current.client.prefs
 	var/icon/reshape = get_flat_human_icon(null, job_of_sacrifice, prefs_of_sacrifice, list(SOUTH))
@@ -89,6 +95,8 @@
 	sac_objective.sac_image = reshape
 
 /datum/team/cult/proc/setup_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/sacrifice/sacrifice_objective = new
 	sacrifice_objective.team = src
 	sacrifice_objective.find_target()
@@ -99,6 +107,8 @@
 	objectives += summon_objective
 
 /datum/team/cult/proc/check_cult_victory()
+	procstart = null
+	src.procstart = null
 	for(var/datum/objective/O in objectives)
 		if(O.check_completion() == CULT_NARSIE_KILLED)
 			return CULT_NARSIE_KILLED
@@ -107,6 +117,8 @@
 	return CULT_VICTORY
 
 /datum/team/cult/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 	var/victory = check_cult_victory()
 
@@ -134,6 +146,8 @@
 	return "<div class='panel redborder'>[parts.Join("<br>")]</div>"
 
 /datum/team/cult/proc/is_sacrifice_target(datum/mind/mind)
+	procstart = null
+	src.procstart = null
 
 	for(var/datum/objective/sacrifice/sac_objective in objectives)
 		if(mind == sac_objective.target)
@@ -142,6 +156,8 @@
 
 /// Sets a blood target for the cult.
 /datum/team/cult/proc/set_blood_target(atom/new_target, mob/marker, duration = 90 SECONDS)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(new_target))
 		CRASH("A null or invalid target was passed to set_blood_target.")
 
@@ -178,6 +194,8 @@
 
 /// Unsets out blood target, clearing the images from all the cultists.
 /datum/team/cult/proc/unset_blood_target()
+	procstart = null
+	src.procstart = null
 	blood_target_reset_timer = null
 
 	for(var/datum/mind/cultist as anything in members)
@@ -199,6 +217,8 @@
 
 /// Unsets our blood target when they get deleted.
 /datum/team/cult/proc/unset_blood_target_and_timer(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	deltimer(blood_target_reset_timer)

@@ -19,6 +19,8 @@
 	hunt_cooldown = 15 SECONDS
 
 /datum/bt_node/ai_behavior/hunt_target/deer_graze/target_caught(mob/living/hunter, atom/hunted)
+	procstart = null
+	src.procstart = null
 	var/static/list/possible_emotes = list("eats the grass!", "munches down the grass!", "chews on the grass!")
 	hunter.manual_emote(pick(possible_emotes))
 
@@ -29,6 +31,8 @@
 	hunt_cooldown = 20 SECONDS
 
 /datum/bt_node/ai_behavior/hunt_target/deer_drink/target_caught(mob/living/hunter, atom/hunted)
+	procstart = null
+	src.procstart = null
 	var/static/list/possible_emotes = list("drinks the water!", "dances in the water!", "splashes around happily!")
 	hunter.manual_emote(pick(possible_emotes))
 
@@ -39,6 +43,8 @@
 	hunt_cooldown = 15 SECONDS
 
 /datum/bt_node/ai_behavior/hunt_target/deer_mark/target_caught(mob/living/hunter, atom/hunted)
+	procstart = null
+	src.procstart = null
 	hunter.manual_emote("marks [hunted] with its hooves!")
 	hunter.ai_controller?.set_blackboard_key(BB_DEER_TREEHOME, hunted)
 
@@ -56,10 +62,14 @@
 	var/sleeping
 
 /datum/bt_node/ai_behavior/deer_rest/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	timerid = addtimer(CALLBACK(src, PROC_REF(finish_action), controller, TRUE), rest_duration, TIMER_UNIQUE | TIMER_STOPPABLE)
 
 /datum/bt_node/ai_behavior/deer_rest/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(sleeping)
 		return AI_BEHAVIOR_DELAY
 	var/mob/living/living_pawn = controller.pawn
@@ -69,6 +79,8 @@
 	return AI_BEHAVIOR_DELAY
 
 /datum/bt_node/ai_behavior/deer_rest/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	deltimer(timerid)
 	timerid = null
@@ -81,6 +93,8 @@
 	var/friend_key = BB_DEER_PLAYFRIEND
 
 /datum/bt_node/ai_behavior/deer_play/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/friend = controller.blackboard[friend_key]
 	if(QDELETED(friend))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
@@ -91,5 +105,7 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/deer_play/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(friend_key)

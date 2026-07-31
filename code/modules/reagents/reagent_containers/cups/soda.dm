@@ -30,17 +30,23 @@
 	var/fuse_timer = null
 
 /obj/item/reagent_containers/cup/soda_cans/Initialize(mapload, vol)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/slapcrafting, string_list(list(/datum/crafting_recipe/improv_explosive)))
 	AddElement(/datum/element/atmos_sensitive, mapload) //Enables soda cans to explode in vaccuum.
 
 /obj/item/reagent_containers/cup/soda_cans/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	var/T = pick(subtypesof(/obj/item/reagent_containers/cup/soda_cans) - /obj/item/reagent_containers/cup/soda_cans/random)
 	new T(loc)
 	return INITIALIZE_HINT_QDEL
 
 /obj/item/reagent_containers/cup/soda_cans/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!reagents.total_volume)
 		user.visible_message(span_warning("[user] is trying to take a big sip from [src]... The can is empty!"))
 		return SHAME
@@ -77,6 +83,8 @@
 	return TOXLOSS
 
 /obj/item/reagent_containers/cup/soda_cans/interact_with_atom(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(target) || reagents.total_volume || !user.combat_mode || user.zone_selected != BODY_ZONE_HEAD)
 		return ..()
 
@@ -97,6 +105,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/cup/soda_cans/bullet_act(obj/projectile/proj)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(src))
 		return
@@ -109,6 +119,8 @@
 	qdel(src)
 
 /obj/item/reagent_containers/cup/soda_cans/proc/open_soda(mob/user)
+	procstart = null
+	src.procstart = null
 	if(tape_color)
 		to_chat(user, "You rip off the tape covering [src]'s hole.")
 		playsound(user, 'sound/items/duct_tape/duct_tape_rip.ogg', 50, TRUE)
@@ -135,6 +147,8 @@
  * * hide_message - Stops the generic fizzing message, so you can do your own
  */
 /obj/item/reagent_containers/cup/soda_cans/proc/burst_soda(atom/target, hide_message = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return
 
@@ -154,6 +168,8 @@
 	throwforce = 0
 
 /obj/item/reagent_containers/cup/soda_cans/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if (!fuse_color)
 		return NONE
 	to_chat(user, span_notice("You snip [src]'s fuse off."))
@@ -169,6 +185,8 @@
 	update_appearance()
 
 /obj/item/reagent_containers/cup/soda_cans/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (istype(tool, /obj/item/stack/cable_coil))
 		if (fuse_color)
 			to_chat(user, span_warning("[src] already has a fuse attached to it!"))
@@ -232,6 +250,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/cup/soda_cans/proc/try_detonate()
+	procstart = null
+	src.procstart = null
 	var/spark_flags = SPARK_ACT_WEAKEN_COMMON
 	if (tape_color)
 		spark_flags |= SPARK_ACT_ENCLOSED
@@ -250,6 +270,8 @@
 	update_appearance()
 
 /obj/item/reagent_containers/cup/soda_cans/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (fuse_color)
 		var/mutable_appearance/fuse_overlay = mutable_appearance('icons/obj/weapons/grenade.dmi', "improvised_grenade_fuse")
@@ -265,6 +287,8 @@
 		. += mutable_appearance('icons/obj/weapons/grenade.dmi', "improvised_grenade_active")
 
 /obj/item/reagent_containers/cup/soda_cans/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || is_open_container() || !reagents.total_volume || tape_color) // if it was caught, already opened, or has nothing in it
 		return
@@ -281,6 +305,8 @@
 	QDEL_IN(src, 1 SECONDS) // give it a second so it can still be logged for the throw impact
 
 /obj/item/reagent_containers/cup/soda_cans/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(fuse_timer)
 		balloon_alert(user, "the fuse is on fire!")
 		return
@@ -292,6 +318,8 @@
 	return ..()
 
 /obj/item/reagent_containers/cup/soda_cans/attack_self_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!is_drainable())
 		playsound(src, 'sound/items/can/can_shake.ogg', 50, TRUE)
 		user.visible_message(span_danger("[user] shakes [src]!"), span_danger("You shake up [src]!"), vision_distance=2)
@@ -300,6 +328,8 @@
 	return ..()
 
 /obj/item/reagent_containers/cup/soda_cans/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!in_range(user, src))
 		return
@@ -308,9 +338,13 @@
 		. += "\t[span_warning("You get a menacing aura of fizziness from it...")]"
 
 /obj/item/reagent_containers/cup/soda_cans/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return ((air.return_pressure() <= SODA_EXPLOSION_PRESSURE) && !(reagents.flags & OPENCONTAINER))
 
 /obj/item/reagent_containers/cup/soda_cans/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	if(reagents.total_volume && !(reagents.flags & OPENCONTAINER))
 		burst_soda(loc)
 
@@ -348,6 +382,8 @@
 	drink_type = FRUIT
 
 /obj/item/reagent_containers/cup/soda_cans/lemon_lime/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "lemon-lime soda"
 
@@ -472,6 +508,8 @@
 	list_reagents = list(/datum/reagent/consumable/ethanol/rice_beer = 40)
 
 /obj/item/reagent_containers/cup/soda_cans/beer/rice/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/brand = pick("Ebisu Super Dry", "Shimauma Ichiban", "Moonlabor Malt's")
 	name = "[brand]"

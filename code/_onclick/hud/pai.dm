@@ -3,6 +3,8 @@
 	ui_style = 'icons/hud/screen_pai.dmi'
 
 /datum/hud/pai/initialize_screen_objects()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_screen_object(/atom/movable/screen/language_menu, HUD_MOB_LANGUAGE_MENU, ui_style, ui_pai_language_menu)
 	add_screen_object(/atom/movable/screen/navigate, HUD_MOB_NAVIGATE_MENU, ui_style, ui_pai_navigate_menu)
@@ -26,6 +28,8 @@
 	update_software_buttons()
 
 /datum/hud/pai/proc/update_software_buttons()
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/pai/owner = mymob
 	for(var/button_key in screen_objects)
 		var/atom/movable/screen/pai/button = screen_objects[button_key]

@@ -16,15 +16,23 @@
 	required_organ_flag = NONE
 
 /datum/surgery_operation/organ/fix_wings/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(icon = 'icons/mob/human/species/moth/moth_wings.dmi', icon_state = "m_moth_wings_monarch_BEHIND")
 
 /datum/surgery_operation/organ/fix_wings/all_required_strings()
+	procstart = null
+	src.procstart = null
 	return ..() + list("the wings must be burnt", "the patient must be dosed with >=5u [/datum/reagent/medicine/c2/synthflesh::name]")
 
 /datum/surgery_operation/organ/fix_wings/all_blocked_strings()
+	procstart = null
+	src.procstart = null
 	return ..() + list("if the limb has bones, they must be intact")
 
 /datum/surgery_operation/organ/fix_wings/state_check(obj/item/organ/wings/moth/organ)
+	procstart = null
+	src.procstart = null
 	if(!organ.burnt)
 		return FALSE
 	// If bones are sawed, prevent the operation (unless we're operating on a limb with no bones)
@@ -35,6 +43,8 @@
 	return TRUE
 
 /datum/surgery_operation/organ/fix_wings/on_preop(obj/item/organ/wings/moth/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		organ.owner,
@@ -45,6 +55,8 @@
 	display_pain(organ.owner, "Your wings sting like hell!")
 
 /datum/surgery_operation/organ/fix_wings/on_success(obj/item/organ/wings/moth/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		organ.owner,

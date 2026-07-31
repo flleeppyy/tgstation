@@ -10,6 +10,8 @@
 	var/traitor_moodlet
 
 /datum/unit_test/antag_moodlets/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/bad_man = allocate(/mob/living/carbon/human/consistent)
 	var/datum/antagonist/antag_heretic = /datum/antagonist/heretic
 	var/datum/antagonist/antag_traitor = /datum/antagonist/traitor
@@ -47,6 +49,8 @@
 	TEST_ASSERT(!HAS_TRAITOR_MOODLET(result), "After removing all antag datums, the dummy still had their traitor moodlet.")
 
 /datum/unit_test/antag_moodlets/proc/check_moodlets(list/in_mood_list)
+	procstart = null
+	src.procstart = null
 	var/results = NONE
 	for(var/category in in_mood_list)
 		var/datum/mood_event/moodie = in_mood_list[category]

@@ -1,6 +1,8 @@
 /datum/element/muffles_speech
 
 /datum/element/muffles_speech/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -9,10 +11,14 @@
 	RegisterSignal(target, COMSIG_ITEM_DROPPED, PROC_REF(dropped))
 
 /datum/element/muffles_speech/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED))
 
 /datum/element/muffles_speech/proc/equipped(obj/item/source, mob/user, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(source.slot_flags & slot)
 		RegisterSignal(user, COMSIG_MOB_SAY, PROC_REF(muzzle_talk))
@@ -20,10 +26,14 @@
 		RegisterSignal(user, COMSIG_MOB_BEFORE_SPELL_CAST, PROC_REF(try_spellcast))
 
 /datum/element/muffles_speech/proc/dropped(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(user, list(COMSIG_MOB_PRE_EMOTED, COMSIG_MOB_SAY, COMSIG_MOB_BEFORE_SPELL_CAST))
 
 /datum/element/muffles_speech/proc/emote_override(mob/living/source, key, params, type_override, intentional, datum/emote/emote)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!emote.hands_use_check && (emote.emote_type & EMOTE_AUDIBLE))
 		source.audible_message("makes a [pick("strong ", "weak ", "")]noise.", audible_message_flags = EMOTE_MESSAGE|ALWAYS_SHOW_SELF_MESSAGE)
@@ -31,6 +41,8 @@
 	return NONE
 
 /datum/element/muffles_speech/proc/muzzle_talk(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT(source, TRAIT_SIGN_LANG))
@@ -51,6 +63,8 @@
 	speech_args[SPEECH_MESSAGE] = spoken_message
 
 /datum/element/muffles_speech/proc/try_spellcast(mob/living/source, datum/action/cooldown/spell/spell, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(spell.invocation_type != INVOCATION_WHISPER && spell.invocation_type != INVOCATION_SHOUT)
@@ -60,6 +74,8 @@
 	return SPELL_CANCEL_CAST
 
 /datum/element/muffles_speech/proc/fail_spellcast(mob/living/source, datum/action/cooldown/spell/spell)
+	procstart = null
+	src.procstart = null
 	spell.invocation(source)
 	to_chat(source, span_warning("Your mouth covering is making it difficult to say the correct words to cast [spell]..."))
 	if(source.click_intercept == spell)

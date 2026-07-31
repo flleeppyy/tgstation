@@ -6,6 +6,8 @@
  * or scanning someone with a health analyzer
  */
 /atom/proc/base_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	PROTECTED_PROC(TRUE)
 
@@ -78,6 +80,8 @@
  * In other words, use sparingly. It's harder to use (correctly) than [item_interaction].
  */
 /atom/proc/tool_act(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	PROTECTED_PROC(TRUE)
 
@@ -139,6 +143,8 @@
  * Return NONE to allow default interaction / tool handling.
  */
 /atom/proc/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return NONE
 
 /**
@@ -150,6 +156,8 @@
  * Return NONE to allow default interaction / tool handling.
  */
 /atom/proc/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return item_interaction(user, tool, modifiers)
 
 /**
@@ -160,6 +168,8 @@
  * Return NONE to allow default interaction / tool handling.
  */
 /obj/item/proc/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return NONE
 
 /**
@@ -172,6 +182,8 @@
  * Return NONE to allow default interaction / tool handling.
  */
 /obj/item/proc/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return interact_with_atom(interacting_with, user, modifiers)
 
 /**
@@ -186,6 +198,8 @@
  * because a "combat use" of a gun is gun-butting.
  */
 /atom/proc/base_ranged_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	PROTECTED_PROC(TRUE)
 
@@ -226,6 +240,8 @@
  * Return an ITEM_INTERACT_ flag in the event the interaction was handled, to cancel further interaction code.
  */
 /atom/proc/ranged_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return NONE
 
 /**
@@ -237,6 +253,8 @@
  * Return an ITEM_INTERACT_ flag in the event the interaction was handled, to cancel further interaction code.
  */
 /atom/proc/ranged_item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return ranged_item_interaction(user, tool, modifiers)
 
 /**
@@ -249,6 +267,8 @@
  * Return an ITEM_INTERACT_ flag in the event the interaction was handled, to cancel further interaction code.
  */
 /obj/item/proc/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return NONE
 
 /**
@@ -258,6 +278,8 @@
  * Default behavior has it run the same code as left click.
  */
 /obj/item/proc/ranged_interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 /*
@@ -270,56 +292,84 @@
 
 /// Called on an object when a tool with crowbar capabilities is used to left click an object
 /atom/proc/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called on an object when a tool with crowbar capabilities is used to right click an object
 /atom/proc/crowbar_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called on an object when a tool with multitool capabilities is used to left click an object
 /atom/proc/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called on an object when a tool with multitool capabilities is used to right click an object
 /atom/proc/multitool_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called on an object when a tool with screwdriver capabilities is used to left click an object
 /atom/proc/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called on an object when a tool with screwdriver capabilities is used to right click an object
 /atom/proc/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called on an object when a tool with wrench capabilities is used to left click an object
 /atom/proc/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called on an object when a tool with wrench capabilities is used to right click an object
 /atom/proc/wrench_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called on an object when a tool with wirecutter capabilities is used to left click an object
 /atom/proc/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called on an object when a tool with wirecutter capabilities is used to right click an object
 /atom/proc/wirecutter_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called on an object when a tool with welder capabilities is used to left click an object
 /atom/proc/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called on an object when a tool with welder capabilities is used to right click an object
 /atom/proc/welder_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called on an object when a tool with analyzer capabilities is used to left click an object
 /atom/proc/analyzer_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called on an object when a tool with analyzer capabilities is used to right click an object
 /atom/proc/analyzer_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return

@@ -9,12 +9,18 @@
 	should_update_preview = FALSE
 
 /datum/preference/choiced/vampire_status/create_default_value()
+	procstart = null
+	src.procstart = null
 	return "Inoculated" //eh, have em try out the mechanic first
 
 /datum/preference/choiced/vampire_status/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list("Inoculated", "Outcast")
 
 /datum/preference/choiced/vampire_status/icon_for(value)
+	procstart = null
+	src.procstart = null
 	switch (value)
 		if ("Inoculated")
 			return uni_icon('icons/obj/drinks/drinks.dmi', "bloodglass")
@@ -25,6 +31,8 @@
 GLOBAL_LIST_EMPTY(vampire_houses)
 
 /datum/preference/choiced/vampire_status/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(target, TRAIT_BLOOD_CLANS))
 		return
 

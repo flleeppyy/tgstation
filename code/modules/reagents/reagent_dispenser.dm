@@ -40,9 +40,13 @@
 
 // This check is necessary for assemblies to automatically detect that we are compatible
 /obj/structure/reagent_dispensers/IsSpecialAssembly()
+	procstart = null
+	src.procstart = null
 	return accepts_rig
 
 /obj/structure/reagent_dispensers/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(rig)
 	return ..()
 
@@ -51,10 +55,14 @@
  *
  */
 /obj/structure/reagent_dispensers/proc/rig_boom()
+	procstart = null
+	src.procstart = null
 	log_bomber(last_rigger, "rigged [src] exploded", src)
 	boom()
 
 /obj/structure/reagent_dispensers/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(icon_state == "water" && check_holidays(APRIL_FOOLS))
@@ -64,6 +72,8 @@
 		AddElement(/datum/element/elevation, pixel_shift = 14)
 
 /obj/structure/reagent_dispensers/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(can_be_tanked)
 		. += span_notice("Use a sheet of iron to convert this into a plumbing-compatible tank.")
@@ -80,12 +90,16 @@
 
 
 /obj/structure/reagent_dispensers/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && atom_integrity > 0)
 		if(tank_volume && (damage_flag == BULLET || damage_flag == LASER))
 			boom()
 
 /obj/structure/reagent_dispensers/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/assembly_holder) && accepts_rig)
 		if(rig)
 			balloon_alert(user, "another device is in the way!")
@@ -126,11 +140,15 @@
 	return NONE
 
 /obj/structure/reagent_dispensers/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == rig)
 		rig = null
 
 /obj/structure/reagent_dispensers/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !rig)
 		return
@@ -152,6 +170,8 @@
 	UnregisterSignal(src, COMSIG_IGNITER_ACTIVATE)
 
 /obj/structure/reagent_dispensers/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	create_reagents(tank_volume, reagent_flags)
 	if(reagent_id)
 		reagents.add_reagent(reagent_id, tank_volume)
@@ -164,6 +184,8 @@
  * Other dispensers will scatter their contents within range.
  */
 /obj/structure/reagent_dispensers/proc/boom()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return // little bit of sanity sauce before we wreck ourselves somehow
 	var/datum/reagent/fuel/volatiles = reagents.has_reagent(/datum/reagent/fuel)
@@ -199,10 +221,14 @@
 	qdel(src)
 
 /obj/structure/reagent_dispensers/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!disassembled)
 		boom()
 
 /obj/structure/reagent_dispensers/proc/tank_leak()
+	procstart = null
+	src.procstart = null
 	if(leaking && reagents && reagents.total_volume >= amount_to_leak)
 		reagents.expose(get_turf(src), TOUCH, amount_to_leak / max(amount_to_leak, reagents.total_volume))
 		reagents.remove_reagent(reagent_id, amount_to_leak)
@@ -211,12 +237,16 @@
 	return FALSE
 
 /obj/structure/reagent_dispensers/proc/knock_down()
+	procstart = null
+	src.procstart = null
 	var/range = reagents.total_volume / REAGENT_SPILL_DIVISOR
 	do_chem_smoke(round(range), drop_location(), drop_location(), carry = reagents, silent = FALSE, log = TRUE)
 	reagents.clear_reagents()
 	qdel(src)
 
 /obj/structure/reagent_dispensers/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!openable)
 		return FALSE
@@ -227,6 +257,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/reagent_dispensers/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tank_leak()
 
@@ -262,27 +294,39 @@
 	climbable = TRUE
 
 /obj/structure/reagent_dispensers/fueltank/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(check_holidays(APRIL_FOOLS))
 		icon_state = "fuel_fools"
 
 /obj/structure/reagent_dispensers/fueltank/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	boom()
 
 /obj/structure/reagent_dispensers/fueltank/ex_act()
+	procstart = null
+	src.procstart = null
 	boom()
 	return TRUE
 
 /obj/structure/reagent_dispensers/fueltank/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	boom()
 
 /obj/structure/reagent_dispensers/fueltank/zap_act(power, zap_flags)
+	procstart = null
+	src.procstart = null
 	. = ..() //extend the zap
 	if(ZAP_OBJ_DAMAGE & zap_flags)
 		boom()
 
 /obj/structure/reagent_dispensers/fueltank/bullet_act(obj/projectile/hitting_projectile)
+	procstart = null
+	src.procstart = null
 	if(hitting_projectile.damage > 0 && ((hitting_projectile.damage_type == BURN) || (hitting_projectile.damage_type == BRUTE)))
 		log_bomber(hitting_projectile.firer, "detonated a", src, "via projectile")
 		boom()
@@ -293,6 +337,8 @@
 	return ..()
 
 /obj/structure/reagent_dispensers/fueltank/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	var/obj/item/weldingtool/refilling_welder = tool
 	if(istype(refilling_welder) && !refilling_welder.welding)
 		if(refilling_welder.reagents.has_reagent(/datum/reagent/fuel, refilling_welder.max_fuel))
@@ -345,6 +391,8 @@
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 30)
 
 /obj/structure/reagent_dispensers/wall/peppertank/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(1))
 		desc = "IT'S PEPPER TIME, BITCH!"
@@ -369,6 +417,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 	var/tipped = FALSE
 
 /obj/structure/reagent_dispensers/water_cooler/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(2) && mapload)
 		reagents.convert_reagent(/datum/reagent/water, /datum/reagent/consumable/fruit_punch)
@@ -376,10 +426,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 	update_appearance()
 
 /obj/structure/reagent_dispensers/water_cooler/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	our_jug = null
 
 /obj/structure/reagent_dispensers/water_cooler/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (paper_cups > 1)
 		. += "There are [paper_cups] paper cups left."
@@ -389,6 +443,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 		. += "There are no paper cups left."
 
 /obj/structure/reagent_dispensers/water_cooler/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -419,6 +475,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 	paper_cups--
 
 /obj/structure/reagent_dispensers/water_cooler/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(tipped)
 		icon_state = "water_cooler_disgraced"
@@ -429,6 +487,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 			icon_state = "water_cooler"
 
 /obj/structure/reagent_dispensers/water_cooler/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!reagents)
 		return
@@ -474,6 +534,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 		. += tank_overlay
 
 /obj/structure/reagent_dispensers/water_cooler/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 
@@ -482,6 +544,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 		return ITEM_INTERACT_SUCCESS
 
 /obj/structure/reagent_dispensers/water_cooler/attack_hand_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	if(tipped)
 		balloon_alert(user, "it's already tipped!")
 		return
@@ -496,6 +560,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/structure/reagent_dispensers/water_cooler/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/reagent_containers/cooler_jug))
 		return
 
@@ -521,6 +587,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/reagent_dispensers/water_cooler/boom()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	if(reagents.total_volume)
@@ -532,10 +600,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 
 ///Creates an empty jug inside of the cooler. Doesn't need to be filled bc it absorbs the cooler's reagent on eject.
 /obj/structure/reagent_dispensers/water_cooler/proc/create_jug()
+	procstart = null
+	src.procstart = null
 	our_jug = new /obj/item/reagent_containers/cooler_jug(src)
 
 ///Eject the jug in a variety of ways. If there is a user, the jug goes into their hands. throw_away is passed on tip, to empty and throw the jug away. We delete the reagents since we create a splash before this is called.
 /obj/structure/reagent_dispensers/water_cooler/proc/eject_jug(mob/living/user, throw_away = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!our_jug)
 		return
 
@@ -556,6 +628,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 
 ///Handles the visual stuff related to the cooler itself tipping.
 /obj/structure/reagent_dispensers/water_cooler/proc/tip_over()
+	procstart = null
+	src.procstart = null
 	tipped = TRUE
 	update_appearance()
 
@@ -566,10 +640,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 	anchored = FALSE
 
 /obj/structure/reagent_dispensers/water_cooler/fallen/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tip_over()
 
 /obj/structure/reagent_dispensers/water_cooler/fallen/create_jug()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/reagent_dispensers/water_cooler/jugless
@@ -577,6 +655,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 	anchored = FALSE
 
 /obj/structure/reagent_dispensers/water_cooler/jugless/create_jug()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Punch cooler. Starts full of healing juice. In case anyone wants to map one somewhere as a healing station.
@@ -593,15 +673,21 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 	var/keg_print
 
 /obj/structure/reagent_dispenders/keg/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/reagent_dispensers/keg/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(keg_print)
 		. += keg_print
 
 /obj/structure/reagent_dispensers/keg/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	explosion(src, heavy_impact_range = 3, light_impact_range = 5, flame_range = 10, flash_range = 7)
 	if(!QDELETED(src))
 		qdel(src)
@@ -641,6 +727,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 	keg_print = "keg_irish"
 
 /obj/structure/reagent_dispensers/keg/gold/irish/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	reagent_id = pick(
 		/datum/reagent/consumable/ethanol/irishcoffee,
 		/datum/reagent/consumable/ethanol/irish_cream,
@@ -664,6 +752,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/virusfood, 30)
 
 /obj/structure/reagent_dispensers/wall/virusfood/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		find_and_mount_on_atom()
@@ -684,6 +774,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/virusfood, 30
 	anchored = TRUE
 
 /obj/structure/reagent_dispensers/servingdish/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
@@ -699,10 +791,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/virusfood, 30
 	can_be_tanked = FALSE
 
 /obj/structure/reagent_dispensers/plumbed/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/plumbing/simple_supply)
 
 /obj/structure/reagent_dispensers/plumbed/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
@@ -713,11 +809,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/virusfood, 30
 	reagent_id = null //start empty
 
 /obj/structure/reagent_dispensers/plumbed/storage/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_rotation)
 
 
 /obj/structure/reagent_dispensers/plumbed/storage/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!reagents)
 		return

@@ -3,6 +3,8 @@
 	var/list/datum/computer_file/starting_programs = list()
 
 /obj/machinery/modular_computer/preset/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!cpu)
 		return
@@ -41,6 +43,8 @@
 	)
 
 /obj/machinery/modular_computer/preset/research/away/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cpu.device_theme = PDA_THEME_RETRO
 
@@ -68,6 +72,8 @@
 	desc = "A stationary computer. This one comes preloaded with CentCom identification modification programs."
 
 /obj/machinery/modular_computer/preset/id/centcom/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/computer_file/program/card_mod/card_mod_centcom = cpu.find_file_by_name("plexagonidwriter")
 	card_mod_centcom.is_centcom = TRUE
@@ -100,6 +106,8 @@
 	var/datum/job_department/department_type
 
 /obj/machinery/modular_computer/preset/cargochat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	add_starting_software()
 	. = ..()
 	setup_starting_software()
@@ -109,9 +117,13 @@
 		cpu.name = name
 
 /obj/machinery/modular_computer/preset/cargochat/proc/add_starting_software()
+	procstart = null
+	src.procstart = null
 	starting_programs += /datum/computer_file/program/department_order
 
 /obj/machinery/modular_computer/preset/cargochat/proc/setup_starting_software()
+	procstart = null
+	src.procstart = null
 	if(!department_type)
 		return
 
@@ -145,18 +157,24 @@
 	desc = "A stationary computer that comes pre-loaded with software to interface with incoming departmental cargo requests."
 
 /obj/machinery/modular_computer/preset/cargochat/cargo/add_starting_software()
+	procstart = null
+	src.procstart = null
 	starting_programs += /datum/computer_file/program/bounty_board
 	starting_programs += /datum/computer_file/program/budgetorders
 	starting_programs += /datum/computer_file/program/shipping
 	starting_programs += /datum/computer_file/program/restock_tracker
 
 /obj/machinery/modular_computer/preset/cargochat/cargo/setup_starting_software()
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/program/chatclient/chatprogram = cpu.find_file_by_name("ntnrc_client")
 	cpu.active_program = chatprogram
 	update_appearance(UPDATE_ICON)
 	// Rest of the chat program setup is done in LateInit
 
 /obj/machinery/modular_computer/preset/cargochat/cargo/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/computer_file/program/chatclient/chatprogram = cpu.find_file_by_name("ntnrc_client")
 	chatprogram.username = "cargo_requests_operator"

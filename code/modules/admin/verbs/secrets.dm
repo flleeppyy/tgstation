@@ -11,6 +11,8 @@ ADMIN_VERB(secrets, R_NONE, "Secrets", "Abuse harder than you ever have before w
 	var/is_funmin = FALSE
 
 /datum/secrets_menu/New(user)//user can either be a client or a mob due to byondcode(tm)
+	procstart = null
+	src.procstart = null
 	if (istype(user, /client))
 		var/client/user_client = user
 		holder = user_client //if its a client, assign it to holder
@@ -22,18 +24,26 @@ ADMIN_VERB(secrets, R_NONE, "Secrets", "Abuse harder than you ever have before w
 	is_funmin = check_rights(R_FUN)
 
 /datum/secrets_menu/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_NONE)
 
 /datum/secrets_menu/ui_close()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /datum/secrets_menu/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Secrets")
 		ui.open()
 
 /datum/secrets_menu/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["is_debugger"] = is_debugger
 	data["is_funmin"] = is_funmin
@@ -42,6 +52,8 @@ ADMIN_VERB(secrets, R_NONE, "Secrets", "Abuse harder than you ever have before w
 #define THUNDERDOME_TEMPLATE_FILE "admin_thunderdome.dmm"
 #define HIGHLANDER_DELAY_TEXT "40 seconds (crush the hope of a normal shift)"
 /datum/secrets_menu/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -727,6 +739,8 @@ ADMIN_VERB(secrets, R_NONE, "Secrets", "Abuse harder than you ever have before w
 #undef HIGHLANDER_DELAY_TEXT
 
 /proc/portal_announce(announcement, playlightning)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if (playlightning)
 		sound_to_playing_players('sound/effects/magic/lightning_chargeup.ogg')
@@ -739,6 +753,8 @@ ADMIN_VERB(secrets, R_NONE, "Secrets", "Abuse harder than you ever have before w
 /// Spawns a portal storm that spawns in sentient/non sentient mobs
 /// portal_appearance is a list in the form (turf's plane offset + 1) -> appearance to use
 /proc/do_portal_spawn(turf/loc, mobtype, numtospawn, list/portal_appearance, players, humanoutfit)
+	procstart = null
+	src.procstart = null
 	for (var/i in 1 to numtospawn)
 		var/mob/spawned_mob = new mobtype(loc)
 		if (length(players))
@@ -756,6 +772,8 @@ ADMIN_VERB(secrets, R_NONE, "Secrets", "Abuse harder than you ever have before w
 
 /// Docks the emergency shuttle back to the station and resets its state
 /proc/return_escape_shuttle(make_announcement)
+	procstart = null
+	src.procstart = null
 	if (SSshuttle.emergency.initiate_docking(SSshuttle.getDock("emergency_home"), force = TRUE) != DOCKING_SUCCESS)
 		message_admins("Emergency shuttle was unable to dock back to the station!")
 		SSshuttle.emergency.timer = 1 // Prevents softlocks
@@ -781,6 +799,8 @@ ADMIN_VERB(secrets, R_NONE, "Secrets", "Abuse harder than you ever have before w
 	var/keep_generic_objecives
 
 /datum/everyone_is_an_antag_controller/New(chosen_antag, objective, keep_generic_objecives)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.chosen_antag = chosen_antag
 	src.objective = objective
@@ -788,10 +808,14 @@ ADMIN_VERB(secrets, R_NONE, "Secrets", "Abuse harder than you ever have before w
 	RegisterSignal(SSdcs, COMSIG_GLOB_CREWMEMBER_JOINED, PROC_REF(make_antag_delay))
 
 /datum/everyone_is_an_antag_controller/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(SSdcs, COMSIG_GLOB_CREWMEMBER_JOINED)
 	return ..()
 
 /datum/everyone_is_an_antag_controller/proc/assign_admin_objective_and_antag(mob/living/player, datum/antagonist/antag_datum)
+	procstart = null
+	src.procstart = null
 	var/datum/objective/new_objective = new(objective)
 	new_objective.team = player
 	new_objective.team_explanation_text = objective
@@ -799,11 +823,15 @@ ADMIN_VERB(secrets, R_NONE, "Secrets", "Abuse harder than you ever have before w
 	player.mind.add_antag_datum(antag_datum)
 
 /datum/everyone_is_an_antag_controller/proc/make_antag_delay(datum/source, mob/living/player)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(make_antag), source, player)
 
 
 /datum/everyone_is_an_antag_controller/proc/make_antag(datum/source, mob/living/player)
+	procstart = null
+	src.procstart = null
 	if(player.stat == DEAD || !player.mind)
 		return
 	sleep(1)

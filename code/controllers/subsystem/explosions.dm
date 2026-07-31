@@ -45,6 +45,8 @@ SUBSYSTEM_DEF(explosions)
 
 
 /datum/controller/subsystem/explosions/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg += "\n  Cost:{"
 	msg += "LT:[round(cost_lowturf,1)]|"
 	msg += "MT:[round(cost_medturf,1)]|"
@@ -76,9 +78,13 @@ SUBSYSTEM_DEF(explosions)
 	return ..()
 
 /datum/controller/subsystem/explosions/proc/is_exploding()
+	procstart = null
+	src.procstart = null
 	return (lowturf.len || medturf.len || highturf.len || flameturf.len || throwturf.len || held_throwturf.len || low_mov_atom.len || med_mov_atom.len || high_mov_atom.len)
 
 /datum/controller/subsystem/explosions/proc/wipe_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	lowturf -= T
 	medturf -= T
 	highturf -= T
@@ -153,6 +159,8 @@ ADMIN_VERB(check_bomb_impacts, R_DEBUG, "Check Bomb Impact", "See what the effec
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(wipe_color_and_text), wipe_colours), 10 SECONDS)
 
 /proc/wipe_color_and_text(list/atom/wiping)
+	procstart = null
+	src.procstart = null
 	for(var/i in wiping)
 		var/atom/A = i
 		A.color = null
@@ -183,6 +191,8 @@ ADMIN_VERB(check_bomb_impacts, R_DEBUG, "Check Bomb Impact", "See what the effec
  * * explosion_cause: [Optional] The atom that caused the explosion, when different to the origin. Used for logging.
  */
 /proc/dyn_explosion(turf/epicenter, power, flame_range = 0, flash_range = null, adminlog = TRUE, ignorecap = TRUE, silent = FALSE, smoke = TRUE, atom/explosion_cause = null)
+	procstart = null
+	src.procstart = null
 	if(!power)
 		return
 	var/range = 0
@@ -211,6 +221,8 @@ ADMIN_VERB(check_bomb_impacts, R_DEBUG, "Check Bomb Impact", "See what the effec
  * - explosion_arc: The angle of the arc covered by a directional explosion (if 360 the explosion is non-directional.)
  */
 /proc/explosion(atom/origin, devastation_range = 0, heavy_impact_range = 0, light_impact_range = 0, flame_range = null, flash_range = null, adminlog = TRUE, ignorecap = FALSE, silent = FALSE, smoke = FALSE, protect_epicenter = FALSE, atom/explosion_cause = null, explosion_direction = 0, explosion_arc = 360)
+	procstart = null
+	src.procstart = null
 	. = SSexplosions.explode(arglist(args))
 
 
@@ -234,6 +246,8 @@ ADMIN_VERB(check_bomb_impacts, R_DEBUG, "Check Bomb Impact", "See what the effec
  * - explosion_arc: The angle of the arc covered by a directional explosion (if 360 the explosion is non-directional.)
  */
 /datum/controller/subsystem/explosions/proc/explode(atom/origin, devastation_range = 0, heavy_impact_range = 0, light_impact_range = 0, flame_range = null, flash_range = null, adminlog = TRUE, ignorecap = FALSE, silent = FALSE, smoke = FALSE, protect_epicenter = FALSE, atom/explosion_cause = null, explosion_direction = 0, explosion_arc = 360)
+	procstart = null
+	src.procstart = null
 	var/list/arguments = list(
 		EXARG_KEY_ORIGIN = origin,
 		EXARG_KEY_DEV_RANGE = devastation_range,
@@ -298,6 +312,8 @@ ADMIN_VERB(check_bomb_impacts, R_DEBUG, "Check Bomb Impact", "See what the effec
  * - explosion_arc: The angle of the arc covered by a directional explosion (if 360 the explosion is non-directional.)
  */
 /datum/controller/subsystem/explosions/proc/propagate_blastwave(atom/epicenter, devastation_range, heavy_impact_range, light_impact_range, flame_range, flash_range, adminlog, ignorecap, silent, smoke, protect_epicenter, atom/explosion_cause, explosion_direction, explosion_arc)
+	procstart = null
+	src.procstart = null
 	epicenter = get_turf(epicenter)
 	if(!epicenter)
 		return
@@ -520,6 +536,8 @@ ADMIN_VERB(check_bomb_impacts, R_DEBUG, "Check Bomb Impact", "See what the effec
  * - [hull_creaking_sound][/sound]: The sound that plays when the station creaks after the explosion.
  */
 /datum/controller/subsystem/explosions/proc/shake_the_room(turf/epicenter, near_distance, far_distance, quake_factor, echo_factor, creaking, sound/near_sound = sound(get_sfx(SFX_EXPLOSION)), sound/far_sound = sound('sound/effects/explosion/explosionfar.ogg'), sound/echo_sound = sound('sound/effects/explosion/explosion_distant.ogg'), sound/creaking_sound = sound(get_sfx(SFX_EXPLOSION_CREAKING)), hull_creaking_sound = sound(get_sfx(SFX_HULL_CREAKING)))
+	procstart = null
+	src.procstart = null
 	var/frequency = get_rand_frequency()
 	var/blast_z = epicenter.z
 	var/area/epicenter_area = get_area(epicenter)
@@ -588,6 +606,8 @@ ADMIN_VERB(check_bomb_impacts, R_DEBUG, "Check Bomb Impact", "See what the effec
 /// This is done to ensure our progressive cache of blast resistance is always valid
 /// This is quite fast
 /proc/prepare_explosion_turfs(range, turf/epicenter, protect_epicenter, explosion_direction, explosion_arc)
+	procstart = null
+	src.procstart = null
 	var/list/outlist = list()
 	var/list/candidates = list()
 	// Add in the center if it's not protected
@@ -665,6 +685,8 @@ ADMIN_VERB(check_bomb_impacts, R_DEBUG, "Check Bomb Impact", "See what the effec
 	return outlist
 
 /datum/controller/subsystem/explosions/fire(resumed = 0)
+	procstart = null
+	src.procstart = null
 	if (!is_exploding())
 		return
 	var/timer

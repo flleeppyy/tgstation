@@ -17,12 +17,16 @@
 	var/datum/port/output/current_state
 
 /obj/item/circuit_component/install_detector/populate_ports()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	current_state = add_output_port("Current State", PORT_TYPE_BOOLEAN)
 	implanted = add_output_port("Implanted", PORT_TYPE_SIGNAL)
 	removed = add_output_port("Removed", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/install_detector/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/item/organ/cyberimp/bci))
 		RegisterSignal(shell, COMSIG_ORGAN_IMPLANTED, PROC_REF(implanted))
@@ -32,6 +36,8 @@
 		RegisterSignal(shell, COMSIG_IMPLANT_REMOVED, PROC_REF(removed))
 
 /obj/item/circuit_component/install_detector/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/item/organ/cyberimp/bci))
 		UnregisterSignal(shell, list(
@@ -45,11 +51,15 @@
 		))
 
 /obj/item/circuit_component/install_detector/proc/implanted(datum/source, mob/living/owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	current_state.set_output(TRUE)
 	implanted.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/install_detector/proc/removed(datum/source, mob/living/owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	current_state.set_output(FALSE)
 	removed.set_output(COMPONENT_SIGNAL)

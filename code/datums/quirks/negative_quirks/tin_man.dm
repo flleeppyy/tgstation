@@ -9,6 +9,8 @@
 	mail_goodies = list(/obj/item/storage/organbox)
 
 /datum/quirk/tin_man/add_unique(client/client_source)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	var/static/list/organ_slots = list(
 		ORGAN_SLOT_HEART = /obj/item/organ/heart/cybernetic/surplus,
@@ -33,5 +35,7 @@
 		new_organ.Insert(human_holder, special = TRUE, movement_flags = DELETE_IF_REPLACED)
 
 /datum/quirk/tin_man/post_add()
+	procstart = null
+	src.procstart = null
 	to_chat(quirk_holder, span_bolddanger("Most of your internal organs have been replaced with surplus prosthetics. They are fragile and will easily come apart under duress. \
 	Additionally, any EMP will make them stop working entirely."))

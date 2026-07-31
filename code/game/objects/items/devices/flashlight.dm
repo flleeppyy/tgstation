@@ -48,6 +48,8 @@
 	var/has_closed_handle = TRUE
 
 /obj/item/flashlight/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(has_closed_handle)
 		AddElement(/datum/element/cuffable_item)
@@ -58,6 +60,8 @@
 	init_slapcrafting()
 
 /obj/item/flashlight/proc/init_slapcrafting()
+	procstart = null
+	src.procstart = null
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/flashlight_eyes)
 
 	AddElement(
@@ -66,6 +70,8 @@
 	)
 
 /obj/item/flashlight/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	// single use lights can be toggled on once
 	if(isnull(held_item) && (toggle_context || !light_on))
 		context[SCREENTIP_CONTEXT_RMB] = "Toggle light"
@@ -78,6 +84,8 @@
 	return NONE
 
 /obj/item/flashlight/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(light_on)
 		icon_state = "[initial(icon_state)]-on"
@@ -89,11 +97,15 @@
 			inhand_icon_state = initial(inhand_icon_state)
 
 /obj/item/flashlight/proc/update_brightness()
+	procstart = null
+	src.procstart = null
 	update_appearance(UPDATE_ICON)
 	if(light_system == COMPLEX_LIGHT)
 		update_light()
 
 /obj/item/flashlight/proc/toggle_light(mob/user)
+	procstart = null
+	src.procstart = null
 	playsound(src, light_on ? sound_off : sound_on, 40, TRUE)
 	if(!COOLDOWN_FINISHED(src, disabled_time))
 		if(user)
@@ -109,13 +121,19 @@
 	return light_on != old_light_on // If the value of light_on didn't change, return false. Otherwise true.
 
 /obj/item/flashlight/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	return toggle_light(user)
 
 /obj/item/flashlight/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	attack_self(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/flashlight/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (user.is_blind())
 		user.visible_message(span_suicide("[user] is putting [src] close to [user.p_their()] eyes and turning it on... but [user.p_theyre()] blind!"))
 		return SHAME
@@ -123,6 +141,8 @@
 	return FIRELOSS
 
 /obj/item/flashlight/proc/eye_examine(mob/living/carbon/human/patient, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if((patient.head && patient.head.flags_cover & HEADCOVERSEYES) || (patient.wear_mask && patient.wear_mask.flags_cover & MASKCOVERSEYES) || (patient.glasses && patient.glasses.flags_cover & GLASSESCOVERSEYES))
 		to_chat(user, span_warning("You're going to need to remove that [(patient.head && patient.head.flags_cover & HEADCOVERSEYES) ? "helmet" : (patient.wear_mask && patient.wear_mask.flags_cover & MASKCOVERSEYES) ? "mask": "glasses"] first!"))
@@ -171,6 +191,8 @@
 	return .
 
 /obj/item/flashlight/proc/mouth_examine(mob/living/carbon/human/patient, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(patient.is_mouth_covered())
 		to_chat(user, span_warning("You're going to need to remove that [(patient.head && patient.head.flags_cover & HEADCOVERSMOUTH) ? "helmet" : "mask"] first!"))
@@ -264,6 +286,8 @@
 
 
 /obj/item/flashlight/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(interacting_with))
 		return NONE
 	if(!light_on)
@@ -301,18 +325,24 @@
 
 /// for directional sprites - so we get the same sprite in the inventory each time we pick one up
 /obj/item/flashlight/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	setDir(initial(dir))
 	SEND_SIGNAL(user, COMSIG_ATOM_DIR_CHANGE, user.dir, user.dir) // This is dumb, but if we don't do this then the lighting overlay may be facing the wrong direction depending on how it is picked up
 
 /// for directional sprites - so when we drop the flashlight, it drops facing the same way the user is facing
 /obj/item/flashlight/dropped(mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(user) && dir != user.dir)
 		setDir(user.dir)
 
 /// when hit by a light disruptor - turns the light off, forces the light to be disabled for a few seconds
 /obj/item/flashlight/on_saboteur(datum/source, disrupt_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(light_on)
 		toggle_light()
@@ -320,6 +350,8 @@
 	return TRUE
 
 /obj/item/flashlight/update_atom_colour()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (ignore_base_color)
 		return
@@ -346,6 +378,8 @@
 	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 0.5)
 
 /obj/item/flashlight/pen/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, holosign_cooldown))
 		balloon_alert(user, "not ready!")
 		return ITEM_INTERACT_BLOCKING
@@ -382,6 +416,8 @@
 	duration = 30
 
 /obj/effect/temp_visual/medical_holosign/Initialize(mapload, creator)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(loc, 'sound/machines/ping.ogg', 50, FALSE) //make some noise!
 	if(creator)
@@ -472,6 +508,8 @@
 	var/datum/light_middleman/middleman
 
 /obj/item/flashlight/flare/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_OVERLAY_LIGHT_SYSTEM(light_system))
 		middleman = new(src, "flashlight")
@@ -488,18 +526,26 @@
 		update_brightness()
 
 /obj/item/flashlight/flare/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/sulfur = 15)
 
 /obj/item/flashlight/flare/init_slapcrafting()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/flashlight/flare/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	if(middleman)
 		QDEL_NULL(middleman)
 	return ..()
 
 /obj/item/flashlight/flare/afterattack(atom/target, mob/user, click_parameters)
+	procstart = null
+	src.procstart = null
 	if(!isliving(target))
 		return
 	var/mob/living/victim = target
@@ -508,6 +554,8 @@
 		user.log_message("set [key_name(victim)] on fire with [src]", LOG_ATTACK)
 
 /obj/item/flashlight/flare/toggle_light()
+	procstart = null
+	src.procstart = null
 	if(light_on || !fuel)
 		return FALSE
 	. = ..()
@@ -521,6 +569,8 @@
 
 
 /obj/item/flashlight/flare/proc/turn_off()
+	procstart = null
+	src.procstart = null
 	set_light_on(FALSE)
 	name = initial(name)
 	attack_verb_continuous = initial(attack_verb_continuous)
@@ -531,20 +581,28 @@
 	update_brightness()
 
 /obj/item/flashlight/flare/proc/light_updated(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	fire_flicker_middleman(middleman)
 
 /obj/item/flashlight/flare/extinguish()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((fuel != INFINITY) && can_be_extinguished)
 		turn_off()
 
 /obj/item/flashlight/flare/update_brightness()
+	procstart = null
+	src.procstart = null
 	..()
 	inhand_icon_state = "[initial(inhand_icon_state)]" + (light_on ? "-on" : "")
 	update_appearance()
 
 /obj/item/flashlight/flare/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	open_flame(heat)
 	fuel = max(fuel - seconds_per_tick * (1 SECONDS), 0)
 
@@ -557,6 +615,8 @@
 			qdel(src)
 
 /obj/item/flashlight/flare/proc/ignition(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!fuel)
 		if(user)
 			balloon_alert(user, "out of fuel!")
@@ -574,14 +634,20 @@
 	return SUCCESS
 
 /obj/item/flashlight/flare/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	ignition()
 	return ..()
 
 /obj/item/flashlight/flare/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ignition(user) == SUCCESS)
 		user.visible_message(span_notice("[user] lights \the [src]."), span_notice("You light \the [initial(src.name)]!"))
 
 /obj/item/flashlight/flare/get_temperature()
+	procstart = null
+	src.procstart = null
 	return light_on * heat
 
 /obj/item/flashlight/flare/candle
@@ -609,6 +675,8 @@
 	var/last_wax_level = 1
 
 /obj/item/flashlight/flare/candle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/floor_placeable)
 	AddElement(/datum/element/update_icon_updates_onmob)
@@ -619,6 +687,8 @@
  * This gets called in process() every tick. If the wax level has changed, then we call our update.
  */
 /obj/item/flashlight/flare/candle/proc/check_wax_level()
+	procstart = null
+	src.procstart = null
 	switch(fuel)
 		if(25 MINUTES to INFINITY)
 			current_wax_level = 1
@@ -632,6 +702,8 @@
 		update_appearance(UPDATE_ICON | UPDATE_NAME)
 
 /obj/item/flashlight/flare/candle/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "candle[current_wax_level][light_on ? "_lit" : ""]"
 	inhand_icon_state = "candle[light_on ? "_lit" : ""]"
@@ -647,6 +719,8 @@
  * * mob/user - the user to display a message to.
  */
 /obj/item/flashlight/flare/candle/proc/try_light_candle(obj/item/fire_starter, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(fire_starter))
 		return
 	if(!istype(user))
@@ -671,6 +745,8 @@
 			return NO_FUEL
 
 /obj/item/flashlight/flare/candle/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(get_temperature())
 		if(istype(tool, /obj/item/cigarette))
 			var/obj/item/cigarette/cig = tool
@@ -695,6 +771,8 @@
 	return NONE
 
 /obj/item/flashlight/flare/candle/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(get_temperature())
 		return NONE
 	if(try_light_candle(interacting_with, user))
@@ -702,6 +780,8 @@
 	return NONE
 
 /obj/item/flashlight/flare/candle/ignition_effect(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!get_temperature())
 		return ""
 	if(isitem(A) && A.loc == user)
@@ -709,11 +789,15 @@
 	return span_rose("[user] lights [A] ablaze with [src], like a true romantic.")
 
 /obj/item/flashlight/flare/candle/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(light_on && (fuel != INFINITY || !can_be_extinguished)) // can't extinguish eternal candles
 		turn_off()
 		user.visible_message(span_notice("[user] snuffs [src]."))
 
 /obj/item/flashlight/flare/candle/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	check_wax_level()
 
@@ -819,14 +903,20 @@
 	var/charge_delay = 20
 
 /obj/item/flashlight/emp/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/flashlight/emp/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/flashlight/emp/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	charge_timer += seconds_per_tick
 	if(charge_timer < charge_delay)
 		return FALSE
@@ -835,11 +925,15 @@
 	return TRUE
 
 /obj/item/flashlight/emp/attack(mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(light_on && (user.zone_selected in list(BODY_ZONE_PRECISE_EYES, BODY_ZONE_PRECISE_MOUTH))) // call original attack when examining organs
 		..()
 	return
 
 /obj/item/flashlight/emp/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return
@@ -861,6 +955,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/flashlight/emp/debug //for testing emp_act()
+	procstart = null
+	src.procstart = null
 	name = "debug EMP flashlight"
 	emp_max_charges = 100
 	emp_cur_charges = 100
@@ -897,6 +993,8 @@
 	var/timer_id = TIMER_ID_NULL
 
 /obj/item/flashlight/glowstick/Initialize(mapload, fuel_override = null, fuel_type_override = null)
+	procstart = null
+	src.procstart = null
 	max_fuel = isnull(fuel_override) ? rand(20, 25) : fuel_override
 	if (fuel_type_override)
 		fuel_type = fuel_type_override
@@ -914,16 +1012,22 @@
 	RegisterSignal(reagents, COMSIG_REAGENTS_HOLDER_UPDATED, PROC_REF(on_reagent_change))
 
 /obj/item/flashlight/glowstick/grind_results()
+	procstart = null
+	src.procstart = null
 	. = list(/datum/reagent/phenol = 15, /datum/reagent/hydrogen = 10)
 	if(!light_on)
 		.[/datum/reagent/oxygen] = 5
 
 /obj/item/flashlight/glowstick/proc/get_fuel()
+	procstart = null
+	src.procstart = null
 	return reagents.get_reagent_amount(fuel_type)
 
 /// Burns down the glowstick by the specified time
 /// Returns the amount of time we need to burn before a visual change will occur
 /obj/item/flashlight/glowstick/proc/burn_down(amount = 0)
+	procstart = null
+	src.procstart = null
 	if (!reagents.remove_all(amount))
 		turn_off()
 		return 0
@@ -949,6 +1053,8 @@
 	return round(reagents.total_volume * 0.1)
 
 /obj/item/flashlight/glowstick/proc/burn_loop(amount = 0)
+	procstart = null
+	src.procstart = null
 	timer_id = TIMER_ID_NULL
 	var/burn_next = burn_down(amount)
 	if(burn_next <= 0)
@@ -956,6 +1062,8 @@
 	timer_id = addtimer(CALLBACK(src, PROC_REF(burn_loop), burn_next), burn_next MINUTES, TIMER_UNIQUE|TIMER_STOPPABLE|TIMER_OVERRIDE)
 
 /obj/item/flashlight/glowstick/proc/turn_on()
+	procstart = null
+	src.procstart = null
 	reagents.add_reagent(/datum/reagent/oxygen, oxygen_added)
 	set_light_on(TRUE) // Just in case
 	var/datum/action/toggle = locate(/datum/action/item_action/toggle_light) in actions
@@ -965,6 +1073,8 @@
 	burn_loop(round(reagents.total_volume * 0.1))
 
 /obj/item/flashlight/glowstick/proc/turn_off()
+	procstart = null
+	src.procstart = null
 	var/datum/action/toggle = locate(/datum/action/item_action/toggle_light) in actions
 	if(get_fuel() && !toggle)
 		add_item_action(/datum/action/item_action/toggle_light)
@@ -975,17 +1085,23 @@
 	update_appearance(UPDATE_ICON)
 
 /obj/item/flashlight/glowstick/proc/on_reagent_change(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!get_fuel() && light_on)
 		turn_off()
 
 /obj/item/flashlight/glowstick/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state][(get_fuel() <= 0) ? "-empty" : ""]"
 	inhand_icon_state = "[base_icon_state][((get_fuel() > 0) && light_on) ? "-on" : ""]"
 
 /obj/item/flashlight/glowstick/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(get_fuel() <= 0 && !light_on)
 		return
@@ -995,6 +1111,8 @@
 	. += glowstick_overlay
 
 /obj/item/flashlight/glowstick/toggle_light(mob/user)
+	procstart = null
+	src.procstart = null
 	if(get_fuel() <= 0)
 		return FALSE
 	if(light_on)
@@ -1002,6 +1120,8 @@
 	return ..()
 
 /obj/item/flashlight/glowstick/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(get_fuel() <= 0)
 		balloon_alert(user, "glowstick is spent!")
 		return
@@ -1015,6 +1135,8 @@
 		turn_on()
 
 /obj/item/flashlight/glowstick/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!get_fuel())
 		user.visible_message(span_suicide("[user] is trying to squirt [src]'s fluids into [user.p_their()] eyes... but it's empty!"))
 		return SHAME
@@ -1076,6 +1198,8 @@
 	start_on = TRUE
 
 /obj/item/flashlight/spotlight/Initialize(mapload, _light_range, _light_power, _light_color)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnull(_light_range))
 		base_light_range = _light_range
@@ -1099,10 +1223,14 @@
 	var/dark_light_power = -3
 
 /obj/item/flashlight/flashdark/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/overlay_lighting, dark_light_range, dark_light_power, force = TRUE)
 
 /obj/item/flashlight/flashdark/update_brightness()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light(dark_light_range, dark_light_power)
 
@@ -1158,20 +1286,28 @@
 	var/datum/proximity_monitor/advanced/bubble/space_protection/space_bubble
 
 /obj/item/flashlight/lamp/space_bubble/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/update_icon_updates_onmob)
 	. = ..()
 	AddComponent(/datum/component/two_handed, require_twohands = TRUE)
 	update_appearance(UPDATE_DESC)
 
 /obj/item/flashlight/lamp/space_bubble/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(space_bubble)
 		QDEL_NULL(space_bubble)
 	return ..()
 
 /obj/item/flashlight/lamp/space_bubble/init_slapcrafting()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/flashlight/lamp/space_bubble/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(light_on)
 		worn_icon_state = "[initial(worn_icon_state)]-on"
@@ -1179,6 +1315,8 @@
 		worn_icon_state = initial(worn_icon_state)
 
 /obj/item/flashlight/lamp/space_bubble/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(installed_pyro_core)
 		desc = initial(desc)
@@ -1186,9 +1324,13 @@
 	desc = initial(desc) + " Requires a pyroclastic anomaly core to function."
 
 /obj/item/flashlight/lamp/space_bubble/get_temperature()
+	procstart = null
+	src.procstart = null
 	return light_on * heat
 
 /obj/item/flashlight/lamp/space_bubble/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(light_on && istype(tool, /obj/item/cigarette))
 		if(!astype(tool, /obj/item/cigarette).attempt_light(user, src, "[user] lights up \the [tool] using the burning coming out of the [src]. Damn."))
@@ -1204,6 +1346,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/flashlight/lamp/space_bubble/toggle_light(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!installed_pyro_core)
 		user.balloon_alert(user, "core missing!")
 		return FALSE
@@ -1226,6 +1370,8 @@
 
 ///Uses an arg for special flavortext to be balloon alerted to everyone, then gives an extra 5 seconds before killing the bubble.
 /obj/item/flashlight/lamp/space_bubble/proc/start_bubble_close(special_flavortext)
+	procstart = null
+	src.procstart = null
 	if(special_flavortext)
 		balloon_alert_to_viewers(special_flavortext)
 	var/mob/living/potential_mob = recursive_loc_check(src, /mob/living) || null
@@ -1233,6 +1379,8 @@
 
 ///Closes the bubble and cleans up after itself. Optional 'user' arg for the mob turning us off.
 /obj/item/flashlight/lamp/space_bubble/proc/close_bubble(mob/user)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(space_bubble)
 	if(bubble_timer)
 		deltimer(bubble_timer)

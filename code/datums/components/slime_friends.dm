@@ -28,6 +28,8 @@
 	)
 
 /datum/component/slime_friends/Initialize(...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -36,6 +38,8 @@
 	RegisterSignal(living_parent, COMSIG_ENTER_AREA, PROC_REF(start_slime_prodaction))
 
 /datum/component/slime_friends/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/living_parent = parent
 	living_parent.remove_faction(FACTION_SLIME)
@@ -43,6 +47,8 @@
 
 /// Start slime prodaction when we leave wizden.
 /datum/component/slime_friends/proc/start_slime_prodaction(mob/living/friend, area/new_area)
+	procstart = null
+	src.procstart = null
 	if(new_area == GLOB.areas_by_type[/area/centcom/wizard_station])
 		return
 	timer = addtimer(CALLBACK(src, PROC_REF(make_slime_friend), friend), 20 SECONDS)
@@ -50,6 +56,8 @@
 
 /// Slime prodactor proc.
 /datum/component/slime_friends/proc/make_slime_friend(mob/living/friend)
+	procstart = null
+	src.procstart = null
 	timer = addtimer(CALLBACK(src, PROC_REF(make_slime_friend), friend), 20 SECONDS)
 	if(get_area(friend) == GLOB.areas_by_type[/area/centcom/wizard_station])
 		return

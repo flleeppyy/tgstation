@@ -7,9 +7,13 @@
 	var/required_points
 
 /datum/experiment/scanning/points/is_complete()
+	procstart = null
+	src.procstart = null
 	return points >= required_points
 
 /datum/experiment/scanning/points/check_progress()
+	procstart = null
+	src.procstart = null
 	. = EXPERIMENT_PROG_INT("Scan samples of the following objects to accumulate enough points to complete this experiment.", points, required_points)
 	var/complete = is_complete()
 	var/point_val_cache = list()
@@ -25,6 +29,8 @@
 		. += EXPERIMENT_PROG_DETAIL("[text2num(point_amt)] point\s: [types_joined]", complete)
 
 /datum/experiment/scanning/points/experiment_requirements(datum/component/experiment_handler/experiment_handler, atom/target)
+	procstart = null
+	src.procstart = null
 	var/destructive = traits & EXPERIMENT_TRAIT_DESTRUCTIVE
 	for (var/req_atom in required_atoms)
 		if (!istype(target, req_atom))
@@ -42,5 +48,7 @@
 			return selected
 
 /datum/experiment/scanning/points/do_after_experiment(atom/target, typepath)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	points = min(required_points, points + required_atoms[typepath])

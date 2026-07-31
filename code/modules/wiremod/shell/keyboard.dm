@@ -12,6 +12,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5, /datum/material/glass = SHEET_MATERIAL_AMOUNT)
 
 /obj/item/keyboard_shell/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/shell, list(
 		new /obj/item/circuit_component/keyboard_shell()
@@ -29,23 +31,33 @@
 	var/datum/port/output/output
 
 /obj/item/circuit_component/keyboard_shell/populate_ports()
+	procstart = null
+	src.procstart = null
 	entity = add_output_port("User", PORT_TYPE_USER)
 	output = add_output_port("Message", PORT_TYPE_STRING)
 	signal = add_output_port("Signal", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/keyboard_shell/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(shell, COMSIG_ITEM_ATTACK_SELF, PROC_REF(send_trigger))
 
 /obj/item/circuit_component/keyboard_shell/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(shell, COMSIG_ITEM_ATTACK_SELF)
 	return ..()
 
 /obj/item/circuit_component/keyboard_shell/proc/send_trigger(atom/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(use_keyboard), user)
 
 /obj/item/circuit_component/keyboard_shell/proc/use_keyboard(mob/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(user, TRAIT_ILLITERATE))
 		to_chat(user, span_warning("You start mashing keys at random!"))
 		return

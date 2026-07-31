@@ -12,6 +12,8 @@
 
 
 /datum/outfit/echolocator/post_equip(mob/living/carbon/human/user, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.psykerize()
 
@@ -52,6 +54,8 @@
 
 
 /datum/outfit/beachbum_combat/post_equip(mob/living/carbon/human/bum, visuals_only)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/choice = rand(1, length(ranged_weaps))

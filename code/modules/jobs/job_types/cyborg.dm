@@ -23,6 +23,8 @@
 
 
 /datum/job/cyborg/after_spawn(mob/living/spawned, client/player_client)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscyborg(spawned))
 		return
@@ -35,10 +37,16 @@
 		robot_spawn.notify_ai(AI_NOTIFICATION_NEW_BORG)
 
 /datum/job/cyborg/get_radio_information()
+	procstart = null
+	src.procstart = null
 	return "<b>Prefix your message with :b to speak with other cyborgs and AI.</b>"
 
 /datum/job/cyborg/on_respawn(mob/new_character)
+	procstart = null
+	src.procstart = null
 	new_character.Robotize(TRUE)
 
 /datum/job/cyborg/get_lobby_icon()
+	procstart = null
+	src.procstart = null
 	return icon('icons/mob/huds/hud.dmi', "hudcyborg")

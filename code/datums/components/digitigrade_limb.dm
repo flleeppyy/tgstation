@@ -9,6 +9,8 @@
 	VAR_PRIVATE/list/squashing_us
 
 /datum/component/digitigrade_limb/Initialize(squashed_id, free_id)
+	procstart = null
+	src.procstart = null
 	if(!istype(parent, /obj/item/bodypart/leg))
 		return COMPONENT_INCOMPATIBLE
 
@@ -27,6 +29,8 @@
 		on_attach(limb, limb.owner)
 
 /datum/component/digitigrade_limb/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_BODYPART_UPDATED)
 	UnregisterSignal(parent, COMSIG_BODYPART_ATTACHED)
 	UnregisterSignal(parent, COMSIG_BODYPART_REMOVED)
@@ -39,6 +43,8 @@
 	return ..()
 
 /datum/component/digitigrade_limb/proc/on_attach(obj/item/bodypart/limb, mob/living/carbon/new_limb_owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	RegisterSignal(new_limb_owner, COMSIG_MOB_EQUIPPED_ITEM, PROC_REF(equipped_item))
@@ -49,6 +55,8 @@
 			LAZYOR(squashing_us, REF(equipped))
 
 /datum/component/digitigrade_limb/proc/on_remove(obj/item/bodypart/limb, mob/living/carbon/old_limb_owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(old_limb_owner, COMSIG_MOB_EQUIPPED_ITEM)
@@ -58,6 +66,8 @@
 	update_limb_id()
 
 /datum/component/digitigrade_limb/proc/equipped_item(mob/living/carbon/equipper, obj/item/equipped_item, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if((slot & equipped_item.slot_flags) && item_squishes_limb(equipped_item, equipper))
@@ -65,6 +75,8 @@
 		update_limb_id()
 
 /datum/component/digitigrade_limb/proc/unequipped_item(mob/living/carbon/equipper, obj/item/equipped_item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	LAZYREMOVE(squashing_us, REF(equipped_item))
@@ -72,6 +84,8 @@
 
 // Snowflake case for updating whether our jumpsuit should squish us
 /datum/component/digitigrade_limb/proc/coverage_changed(mob/living/carbon/equipper, added_slots, removed_slots)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!((added_slots|removed_slots) & HIDEJUMPSUIT))
@@ -93,6 +107,8 @@
 			update_limb_id()
 
 /datum/component/digitigrade_limb/proc/item_squishes_limb(obj/item/equipped_item, mob/living/carbon/equipper)
+	procstart = null
+	src.procstart = null
 	if(!(equipped_item.body_parts_covered & (LEGS|FEET)))
 		return FALSE
 
@@ -106,17 +122,23 @@
 
 /// This is just ran on update_limb() to ensure we always have the correct ID
 /datum/component/digitigrade_limb/proc/update_limb_id_comsig()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_limb_id(sprite_update = FALSE)
 
 /// Digitigrade limbs that are butchered add the component to the replacement limb
 /datum/component/digitigrade_limb/proc/on_butchered(datum/source, obj/item/bodypart/replacement)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	squashed_id = "[initial(replacement.limb_id)]_[BODYPART_ID_DIGITIGRADE]"
 	free_id = initial(replacement.limb_id)
 	replacement.TakeComponent(src)
 
 /datum/component/digitigrade_limb/proc/update_limb_id(sprite_update = TRUE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/limb = parent
 	var/old_id = limb.limb_id
 	if(LAZYLEN(squashing_us))

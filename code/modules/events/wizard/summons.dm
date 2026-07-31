@@ -7,11 +7,15 @@
 	description = "Summons a gun for everyone. Might turn people into survivalists."
 
 /datum/round_event_control/wizard/summonguns/New()
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/no_summon_guns))
 		weight = 0
 	return ..()
 
 /datum/round_event/wizard/summonguns/start()
+	procstart = null
+	src.procstart = null
 	summon_guns(survivor_probability = 10)
 
 /datum/round_event_control/wizard/summonmagic //The Somewhat Less Classic
@@ -23,9 +27,13 @@
 	description = "Summons a magic item for everyone. Might turn people into survivalists."
 
 /datum/round_event_control/wizard/summonmagic/New()
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/no_summon_magic))
 		weight = 0
 	return ..()
 
 /datum/round_event/wizard/summonmagic/start()
+	procstart = null
+	src.procstart = null
 	summon_magic(survivor_probability = 10)

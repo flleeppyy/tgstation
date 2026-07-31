@@ -14,6 +14,8 @@
 	var/charges = STARTING_VEST_AMOUNT
 
 /datum/mafia_ability/vest/set_target(datum/mafia_role/new_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -24,6 +26,8 @@
 	return TRUE
 
 /datum/mafia_ability/vest/perform_action_target(datum/mafia_controller/game, datum/mafia_role/day_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -32,16 +36,22 @@
 	return TRUE
 
 /datum/mafia_ability/vest/proc/self_defense(datum/source, datum/mafia_controller/game, datum/mafia_role/attacker, lynch)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	host_role.send_message_to_player(span_greentext("Your vest saved you!"))
 	return MAFIA_PREVENT_KILL
 
 /datum/mafia_ability/vest/proc/end_protection(datum/mafia_controller/game)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	UnregisterSignal(host_role, COMSIG_MAFIA_ON_KILL)
 
 /datum/mafia_ability/vest/clean_action_refs(datum/mafia_controller/game)
+	procstart = null
+	src.procstart = null
 	if(!charges)
 		host_role.role_unique_actions -= src
 		qdel(src)

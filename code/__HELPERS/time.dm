@@ -1,5 +1,7 @@
 /// Returns UTC timestamp with the specifified format, with optionally deciseconds or optional IC time (year offset), AKA Nanotrasen Standard Time (NST)
 /proc/server_timestamp(format = "hh:mm:ss", show_ds, ic_time, twelve_hour_clock)
+	procstart = null
+	src.procstart = null
 	var/time_string = twelve_hour_clock ? time_to_twelve_hour(format, world.timeofday, world.timezone) : time2text(world.timeofday, format, world.timezone)
 	if(ic_time && findtext(format, "YYYY")) //if we have a year, replace the year
 		time_string = replacetext_char(time_string, "[GLOB.year_integer]", CURRENT_STATION_YEAR)
@@ -7,16 +9,22 @@
 
 /// Returns timestamp since the round started, AKA Pay Time (PT)
 /proc/round_timestamp(format = "hh:mm:ss", wtime = STATION_TIME_PASSED())
+	procstart = null
+	src.procstart = null
 	return time2text(wtime, format, NO_TIMEZONE)
 
 ///returns timestamp in a sql and a not-quite-compliant ISO 8601 friendly format. Do not use for SQL, use NOW() instead
 /proc/ISOtime(timevar)
+	procstart = null
+	src.procstart = null
 	return time2text(timevar || world.timeofday, "YYYY-MM-DD hh:mm:ss", world.timezone)
 
 
 GLOBAL_VAR_INIT(midnight_rollovers, 0)
 GLOBAL_VAR_INIT(rollovercheck_last_timeofday, 0)
 /proc/update_midnight_rollover()
+	procstart = null
+	src.procstart = null
 	if (world.timeofday < GLOB.rollovercheck_last_timeofday) //TIME IS GOING BACKWARDS!
 		GLOB.midnight_rollovers++
 	GLOB.rollovercheck_last_timeofday = world.timeofday
@@ -25,6 +33,8 @@ GLOBAL_VAR_INIT(rollovercheck_last_timeofday, 0)
 
 ///Returns a string day as an integer in ISO format 1 (Monday) - 7 (Sunday)
 /proc/weekday_to_iso(ddd)
+	procstart = null
+	src.procstart = null
 	switch (ddd)
 		if (MONDAY)
 			return 1
@@ -43,6 +53,8 @@ GLOBAL_VAR_INIT(rollovercheck_last_timeofday, 0)
 
 ///Returns an integer in ISO format 1 (Monday) - 7 (Sunday) as a string day
 /proc/iso_to_weekday(ddd)
+	procstart = null
+	src.procstart = null
 	switch (ddd)
 		if (1)
 			return MONDAY
@@ -62,6 +74,8 @@ GLOBAL_VAR_INIT(rollovercheck_last_timeofday, 0)
 /// Returns the day (mon, tues, wen...) in number format, 1 (monday) - 7 (sunday) from the passed in date (year, month, day)
 /// All inputs are expected indexed at 1
 /proc/day_of_month(year, month, day)
+	procstart = null
+	src.procstart = null
 	// https://en.wikipedia.org/wiki/Zeller%27s_congruence
 	var/m = month < 3 ? month + 12 : month // month (march = 3, april = 4...february = 14)
 	var/K = year % 100 // year of century
@@ -72,11 +86,15 @@ GLOBAL_VAR_INIT(rollovercheck_last_timeofday, 0)
 	return ((h + 5) % 7) + 1
 
 /proc/first_day_of_month(year, month)
+	procstart = null
+	src.procstart = null
 	return day_of_month(year, month, 1)
 
 //Takes a value of time in deciseconds.
 //Returns a text value of that number in hours, minutes, or seconds.
 /proc/DisplayTimeText(time_value, round_seconds_to = 0.1)
+	procstart = null
+	src.procstart = null
 	var/second = FLOOR(time_value * 0.1, round_seconds_to)
 	if(!second)
 		return "right now"
@@ -105,6 +123,8 @@ GLOBAL_VAR_INIT(rollovercheck_last_timeofday, 0)
 
 
 /proc/daysSince(realtimev)
+	procstart = null
+	src.procstart = null
 	return round((world.realtime - realtimev) / (24 HOURS))
 
 /**
@@ -113,6 +133,8 @@ GLOBAL_VAR_INIT(rollovercheck_last_timeofday, 0)
  * the timezone is the time value offset from the local time. It's to be applied outside time2text() to get the AM/PM right.
  */
 /proc/time_to_twelve_hour(format = "hh:mm:ss", time = STATION_TIME_PASSED(), timezone = NO_TIMEZONE)
+	procstart = null
+	src.procstart = null
 	time = MODULUS(time + (timezone * (1 HOURS)), 24 HOURS)
 	var/am_pm = "AM"
 	if(time > 12 HOURS)

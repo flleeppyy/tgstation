@@ -38,6 +38,8 @@
 	var/bomb_timer_max = 20
 
 /obj/item/pizzabox/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(pizza)
 		pizza = new pizza(src)
@@ -46,11 +48,15 @@
 	register_context()
 
 /obj/item/pizzabox/proc/register_bomb(new_bomb)
+	procstart = null
+	src.procstart = null
 	bomb = new_bomb
 	if(istype(bomb))
 		RegisterSignal(bomb, COMSIG_QDELETING, PROC_REF(clear_bomb))
 
 /obj/item/pizzabox/proc/clear_bomb(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isnull(bomb))
 		return
@@ -58,11 +64,15 @@
 	bomb = null
 
 /obj/item/pizzabox/Destroy()
+	procstart = null
+	src.procstart = null
 	unprocess()
 	clear_bomb()
 	return ..()
 
 /obj/item/pizzabox/update_desc()
+	procstart = null
+	src.procstart = null
 	desc = initial(desc)
 	. = ..()
 	if(pizza && pizza.boxtag && !boxtag_set)
@@ -85,6 +95,8 @@
 			desc = "[desc] The [length(boxes) ? "top box" : "box"]'s tag reads: [box.boxtag]."
 
 /obj/item/pizzabox/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(!open)
 		icon_state = "[base_icon_state]"
 		return ..()
@@ -94,6 +106,8 @@
 	return ..()
 
 /obj/item/pizzabox/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(open)
 		if(pizza)
@@ -123,6 +137,8 @@
 		. += tag_overlay
 
 /obj/item/pizzabox/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/current_offset = 2
 	if(!isinhands)
@@ -135,6 +151,8 @@
 		. += M
 
 /obj/item/pizzabox/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(length(boxes) > 0)
 		return
 	open = !open
@@ -145,6 +163,8 @@
 	update_appearance()
 
 /obj/item/pizzabox/attack_self_secondary(mob/user)
+	procstart = null
+	src.procstart = null
 	if(length(boxes) > 0)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	if(pizza || bomb || !foldable)
@@ -156,6 +176,8 @@
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/pizzabox/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.get_inactive_held_item() != src)
 		if(open && pizza?.sliced && !isobj(loc))
 			pizza.produce_slice(user)
@@ -192,6 +214,8 @@
 		user.regenerate_icons()
 
 /obj/item/pizzabox/item_interaction(mob/living/user, obj/item/used_item, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(istype(used_item, /obj/item/pizzabox))
 		var/obj/item/pizzabox/newbox = used_item
@@ -261,6 +285,8 @@
 
 
 /obj/item/pizzabox/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(bomb_active && !bomb_defused && (bomb_timer > 0))
 		playsound(loc, 'sound/items/timer.ogg', 50, FALSE)
 		bomb_timer -= seconds_per_tick
@@ -277,15 +303,21 @@
 	return
 
 /obj/item/pizzabox/attack(mob/living/target, mob/living/user, def_zone)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(length(boxes) >= 3 && prob(25 * length(boxes)))
 		disperse_pizzas()
 
 /obj/item/pizzabox/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(length(boxes) >= 2 && prob(20 * length(boxes)))
 		disperse_pizzas()
 
 /obj/item/pizzabox/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isobserver(user))
 		if(bomb)
@@ -294,6 +326,8 @@
 			. += span_deadsay("The pizza in this pizza box contains nanomachines.")
 
 /obj/item/pizzabox/proc/disperse_pizzas()
+	procstart = null
+	src.procstart = null
 	visible_message(span_warning("The pizzas fall everywhere!"))
 	for(var/V in boxes)
 		var/obj/item/pizzabox/P = V
@@ -313,6 +347,8 @@
 		L.regenerate_icons()
 
 /obj/item/pizzabox/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone != pizza)
 		return
@@ -320,12 +356,16 @@
 	update_appearance()
 
 /obj/item/pizzabox/proc/unprocess()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	qdel(wires)
 	set_wires(null)
 	update_appearance()
 
 /obj/item/pizzabox/bomb/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!pizza)
 		var/randompizza = pick(subtypesof(/obj/item/food/pizza) - /obj/item/food/pizza/flatbread) //also disincludes another base type
@@ -380,11 +420,15 @@
 	var/static/list/pizza_preferences
 
 /obj/item/pizzabox/infinite/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!pizza_preferences)
 		pizza_preferences = list()
 
 /obj/item/pizzabox/infinite/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!open && ishuman(user))
 		attune_pizza(user) //pizza tag changes based on examiner
 	. = ..()
@@ -392,12 +436,16 @@
 		. += span_deadsay("This pizza box is anomalous, and will produce infinite pizza.")
 
 /obj/item/pizzabox/infinite/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(user))
 		attune_pizza(user)
 		to_chat(user, span_notice("Another pizza immediately appears in the box, what the hell?"))
 	return ..()
 
-/obj/item/pizzabox/infinite/proc/attune_pizza(mob/living/carbon/human/nommer) //tonight on "proc names I never thought I'd type"
+/obj/item/pizzabox/infinite/proc/attune_pizza(mob/living/carbon/human/nommer)
+	procstart = null
+	src.procstart = null //tonight on "proc names I never thought I'd type"
 	if(!nommer.ckey)
 		return
 
@@ -430,6 +478,8 @@
 
 ///screentips for pizzaboxes
 /obj/item/pizzabox/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!held_item)
 		if(user.get_inactive_held_item() != src)
 			return NONE

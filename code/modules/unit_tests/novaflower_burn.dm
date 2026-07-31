@@ -2,6 +2,8 @@
 /datum/unit_test/novaflower_burn
 
 /datum/unit_test/novaflower_burn/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/botanist = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/victim = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/grown/novaflower/weapon = allocate(/obj/item/grown/novaflower)

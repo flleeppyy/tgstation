@@ -30,17 +30,23 @@ SUBSYSTEM_DEF(machines)
 	var/list/datum/powernet/powernets = list()
 
 /datum/controller/subsystem/machines/Initialize()
+	procstart = null
+	src.procstart = null
 	makepowernets()
 	fire()
 	return SS_INIT_SUCCESS
 
 /// Registers a machine with the machine subsystem; should only be called by the machine itself during its creation.
 /datum/controller/subsystem/machines/proc/register_machine(obj/machinery/machine)
+	procstart = null
+	src.procstart = null
 	LAZYADD(machines_by_type[machine.type], machine)
 	all_machines |= machine
 
 /// Removes a machine from the machine subsystem; should only be called by the machine itself inside Destroy.
 /datum/controller/subsystem/machines/proc/unregister_machine(obj/machinery/machine)
+	procstart = null
+	src.procstart = null
 	var/list/existing = machines_by_type[machine.type]
 	existing -= machine
 	if(!length(existing))
@@ -49,6 +55,8 @@ SUBSYSTEM_DEF(machines)
 
 /// Gets a list of all machines that are either the passed type or a subtype.
 /datum/controller/subsystem/machines/proc/get_machines_by_type_and_subtypes(obj/machinery/machine_type)
+	procstart = null
+	src.procstart = null
 	if(!ispath(machine_type))
 		machine_type = machine_type.type
 	if(!ispath(machine_type, /obj/machinery))
@@ -63,6 +71,8 @@ SUBSYSTEM_DEF(machines)
 
 /// Gets a list of all machines that are the exact passed type.
 /datum/controller/subsystem/machines/proc/get_machines_by_type(obj/machinery/machine_type)
+	procstart = null
+	src.procstart = null
 	if(!ispath(machine_type))
 		machine_type = machine_type.type
 	if(!ispath(machine_type, /obj/machinery))
@@ -72,9 +82,13 @@ SUBSYSTEM_DEF(machines)
 	return machines?.Copy() || list()
 
 /datum/controller/subsystem/machines/proc/get_all_machines()
+	procstart = null
+	src.procstart = null
 	return all_machines.Copy()
 
 /datum/controller/subsystem/machines/proc/makepowernets()
+	procstart = null
+	src.procstart = null
 	for(var/datum/powernet/power_network as anything in powernets)
 		qdel(power_network)
 	powernets.Cut()
@@ -86,10 +100,14 @@ SUBSYSTEM_DEF(machines)
 			propagate_network(power_cable, power_cable.powernet)
 
 /datum/controller/subsystem/machines/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg = "\n  M:[length(all_machines)]|MT:[length(machines_by_type)]|PM:[length(processing)]|PN:[length(powernets)]"
 	return ..()
 
 /datum/controller/subsystem/machines/fire(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!resumed)
 		for(var/datum/powernet/powernet as anything in powernets)
 			powernet.reset() //reset the power state.
@@ -168,6 +186,8 @@ SUBSYSTEM_DEF(machines)
 				return
 
 /datum/controller/subsystem/machines/proc/setup_template_powernets(list/cables)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/cable/PC
 	for(var/A in 1 to cables.len)
 		PC = cables[A]
@@ -177,6 +197,8 @@ SUBSYSTEM_DEF(machines)
 			propagate_network(PC,PC.powernet)
 
 /datum/controller/subsystem/machines/Recover()
+	procstart = null
+	src.procstart = null
 	if(islist(SSmachines.processing))
 		processing = SSmachines.processing
 	if(islist(SSmachines.powernets))

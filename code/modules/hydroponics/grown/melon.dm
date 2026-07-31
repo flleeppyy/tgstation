@@ -18,12 +18,18 @@
 	var/slice_type = null
 
 /obj/item/food/grown/melonlike/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, slice_type, 5, 20, screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/grown/melonlike/make_dryable()
+	procstart = null
+	src.procstart = null
 	return //No drying
 
 /obj/item/food/grown/melonlike/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/kitchen/spoon))
 		return NONE
 
@@ -74,6 +80,8 @@
 	reagents_add = list(/datum/reagent/water = 0.2, /datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.2)
 
 /obj/item/seeds/watermelon/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] is swallowing [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	user.gib(DROP_ALL_REMAINS)
 	new product(drop_location())
@@ -99,6 +107,8 @@
 	slice_type = /obj/item/food/watermelonslice
 
 /obj/item/food/grown/melonlike/watermelon/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/watermelonjuice
 
 // Holymelon
@@ -135,9 +145,13 @@
 	slice_type = /obj/item/food/holymelonslice
 
 /obj/item/food/grown/melonlike/holymelon/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/water/holywater
 
 /obj/item/food/grown/melonlike/holymelon/make_edible()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponentFrom(SOURCE_EDIBLE_INNATE, /datum/component/edible, check_liked = CALLBACK(src, PROC_REF(check_holyness)))
 
@@ -147,6 +161,8 @@
  * is a holy_role (chaplain), as chaplains love holymelons.
  */
 /obj/item/food/grown/melonlike/holymelon/proc/check_holyness(mob/mob_eating)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(mob_eating))
 		return
 	var/mob/living/carbon/human/holy_person = mob_eating

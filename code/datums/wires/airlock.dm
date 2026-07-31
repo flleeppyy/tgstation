@@ -43,6 +43,8 @@
 	proper_name = "Cargo Airlock"
 
 /datum/wires/airlock/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(
 		WIRE_AI,
 		WIRE_BACKUP1,
@@ -64,6 +66,8 @@
 	..()
 
 /datum/wires/airlock/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/door/airlock/airlock_holder = holder
 	if (!HAS_SILICON_ACCESS(user) && airlock_holder.isElectrified() && airlock_holder.shock(user, 100))
 		return
@@ -71,6 +75,8 @@
 	return ..()
 
 /datum/wires/airlock/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/obj/machinery/door/airlock/airlock = holder
@@ -84,6 +90,8 @@
 		return TRUE
 
 /datum/wires/airlock/get_status()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/door/airlock/A = holder
 	var/list/status = list()
 	status += "The door bolts [A.locked ? "have engaged!" : "have disengaged."]"
@@ -102,6 +110,8 @@
 	return status
 
 /datum/wires/airlock/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	var/obj/machinery/door/airlock/A = holder
 	switch(wire)
@@ -156,12 +166,16 @@
 			A.update_appearance()
 
 /obj/machinery/door/airlock/proc/reset_ai_wire()
+	procstart = null
+	src.procstart = null
 	if(aiControlDisabled == AI_WIRE_DISABLED)
 		aiControlDisabled = AI_WIRE_NORMAL
 	else if(aiControlDisabled == AI_WIRE_HACKED)
 		aiControlDisabled = AI_WIRE_DISABLED_HACKED
 
 /datum/wires/airlock/on_cut(wire, mend, source)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/door/airlock/A = holder
 	switch(wire)
 		if(WIRE_POWER1, WIRE_POWER2) // Cut to lose power, repair all to gain power.
@@ -225,6 +239,8 @@
 
 
 /datum/wires/airlock/can_reveal_wires(mob/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(user, TRAIT_KNOW_ENGI_WIRES))
 		return TRUE
 

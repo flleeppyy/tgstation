@@ -11,7 +11,11 @@
 	quirk_flags = QUIRK_HUMAN_ONLY|QUIRK_TRAUMALIKE
 
 /datum/quirk/nyctophobia/add(client/client_source)
+	procstart = null
+	src.procstart = null
 	quirk_holder.AddComponentFrom(type, /datum/component/fearful, list(/datum/terror_handler/simple_source/nyctophobia))
 
 /datum/quirk/nyctophobia/remove()
+	procstart = null
+	src.procstart = null
 	quirk_holder.RemoveComponentSource(type, /datum/component/fearful)

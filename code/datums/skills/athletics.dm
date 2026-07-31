@@ -27,15 +27,21 @@
 	skill_item_path = /obj/item/clothing/gloves/boxing/golden
 
 /datum/skill/athletics/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	levelUpMessages[SKILL_LEVEL_NOVICE] = span_nicegreen("I am just getting started on my [name] journey! I think I should be able to identify other people who are working to improve their body by sight.")
 
 /datum/skill/athletics/level_gained(datum/mind/mind, new_level, old_level, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(new_level >= SKILL_LEVEL_NOVICE && old_level < SKILL_LEVEL_NOVICE)
 		ADD_TRAIT(mind, TRAIT_EXAMINE_FITNESS, SKILL_TRAIT)
 
 /datum/skill/athletics/level_lost(datum/mind/mind, new_level, old_level, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(old_level >= SKILL_LEVEL_NOVICE && new_level < SKILL_LEVEL_NOVICE)
 		REMOVE_TRAIT(mind, TRAIT_EXAMINE_FITNESS, SKILL_TRAIT)

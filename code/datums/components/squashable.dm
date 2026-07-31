@@ -15,6 +15,8 @@
 
 
 /datum/component/squashable/Initialize(squash_chance, squash_damage, squash_flags, squash_callback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -30,11 +32,15 @@
 	AddComponent(/datum/component/connect_loc_behalf, parent, loc_connections)
 
 /datum/component/squashable/Destroy(force)
+	procstart = null
+	src.procstart = null
 	on_squash_callback = null
 	return ..()
 
 ///Handles the squashing of the mob
 /datum/component/squashable/proc/on_entered(turf/source_turf, atom/movable/crossing_movable)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(parent == crossing_movable)
@@ -71,11 +77,15 @@
 			parent_as_living.visible_message(span_notice("[parent_as_living] avoids getting crushed."))
 
 /datum/component/squashable/proc/Squish(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(squash_flags & SQUASHED_SHOULD_BE_GIBBED)
 		target.gib(DROP_ALL_REMAINS)
 	else
 		target.adjust_brute_loss(squash_damage)
 
 /datum/component/squashable/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(GetComponent(/datum/component/connect_loc_behalf))

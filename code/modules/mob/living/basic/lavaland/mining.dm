@@ -25,6 +25,8 @@
 	var/kill_count = TRUE
 
 /mob/living/basic/mining/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_LAVA_IMMUNE, TRAIT_ASHSTORM_IMMUNE, TRAIT_SNOWSTORM_IMMUNE), INNATE_TRAIT)
 	if (kill_count)
@@ -47,6 +49,8 @@
 	AddElement(/datum/element/ai_retaliate) //Used by priority behaviors
 
 /mob/living/basic/mining/proc/add_ranged_armour(list/vulnerable_projectiles)
+	procstart = null
+	src.procstart = null
 	AddElement(\
 		/datum/element/ranged_armour,\
 		minimum_projectile_force = 30,\
@@ -57,6 +61,8 @@
 	)
 
 /mob/living/basic/mining/proc/on_attacked(datum/source, atom/attacker, attack_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!isashwalker(attacker) || !has_faction(FACTION_ASHWALKER))

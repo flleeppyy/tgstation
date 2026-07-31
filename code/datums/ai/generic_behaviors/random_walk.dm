@@ -4,9 +4,13 @@
 	var/walk_chance = 25
 
 /datum/bt_node/ai_behavior/idle_random_walk/proc/can_move(mob/living/living_pawn)
+	procstart = null
+	src.procstart = null
 	return living_pawn && (living_pawn.mobility_flags & MOBILITY_MOVE) && isturf(living_pawn.loc) && !living_pawn.pulledby
 
 /datum/bt_node/ai_behavior/idle_random_walk/proc/try_random_step(mob/living/living_pawn, seconds_per_tick, step_walk_chance)
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(living_pawn.do_afters))
 		return FALSE
 
@@ -22,6 +26,8 @@
 	return TRUE
 
 /datum/bt_node/ai_behavior/idle_random_walk/proc/try_near_target_step(mob/living/living_pawn, atom/target, seconds_per_tick, step_walk_chance, minimum_distance)
+	procstart = null
+	src.procstart = null
 	if(isnull(target) || !can_move(living_pawn) || LAZYLEN(living_pawn.do_afters))
 		return FALSE
 
@@ -49,6 +55,8 @@
 	return TRUE
 
 /datum/bt_node/ai_behavior/idle_random_walk/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	try_random_step(living_pawn, seconds_per_tick, walk_chance)
 	return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_SUCCEEDED
@@ -60,6 +68,8 @@
 	var/target_key = BB_CURRENT_TARGET
 
 /datum/bt_node/ai_behavior/idle_random_walk/no_target/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(controller.blackboard_key_exists(target_key))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED
 	return ..()
@@ -70,6 +80,8 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/idle_random_walk/not_while_on_target/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[target_key]
 	if(!QDELETED(target) && ((isturf(target) && controller.pawn.loc == target) || (target.loc == controller.pawn.loc)))
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED
@@ -79,6 +91,8 @@
 /datum/bt_node/ai_behavior/idle_random_walk/rust
 
 /datum/bt_node/ai_behavior/idle_random_walk/rust/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	var/turf/my_turf = get_turf(living_pawn)
 	var/on_rust = HAS_TRAIT(my_turf, TRAIT_RUSTY)
@@ -94,6 +108,8 @@
 	var/target_key
 
 /datum/bt_node/ai_behavior/idle_random_walk/walk_near_target/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/living_pawn = controller.pawn
 	var/atom/target = controller.blackboard[target_key]
 	if(QDELETED(target))

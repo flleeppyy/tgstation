@@ -30,6 +30,8 @@
 	var/content
 
 /datum/discord_embed/proc/convert_to_list()
+	procstart = null
+	src.procstart = null
 	if(color && !isnum(color))
 		CRASH("Color on [type] is not a number! Expected a number, got [color] instead.")
 	var/list/data_to_list = list()

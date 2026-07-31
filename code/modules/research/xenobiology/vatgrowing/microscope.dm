@@ -8,6 +8,8 @@
 	var/obj/item/petri_dish/current_dish
 
 /obj/structure/microscope/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/hovering_item_typechecks = list(
 		/obj/item/petri_dish = list(
@@ -18,22 +20,30 @@
 	AddElement(/datum/element/contextual_screentip_bare_hands, rmb_text = "Remove petri dish")
 
 /obj/structure/microscope/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(tool, /obj/item/petri_dish))
 		return add_dish(user, tool)
 
 /obj/structure/microscope/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(current_dish)
 		return remove_dish(user)
 
 /obj/structure/microscope/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Microscope", name)
 		ui.open()
 
 /obj/structure/microscope/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["has_dish"] = current_dish ? TRUE : FALSE
@@ -75,6 +85,8 @@
 	return data
 
 /obj/structure/microscope/proc/get_reagent_list(list/reagents)
+	procstart = null
+	src.procstart = null
 	var/list/reagent_list = list()
 	for(var/i in reagents) //Convert from assoc to normal. Yeah very shit.
 		var/datum/reagent/reagent = i
@@ -82,6 +94,8 @@
 	return reagent_list
 
 /obj/structure/microscope/ui_act(action, params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -94,6 +108,8 @@
 
 ///Insert a new dish, swapping the inserted one
 /obj/structure/microscope/proc/add_dish(mob/living/user, obj/item/petri_dish/new_dish)
+	procstart = null
+	src.procstart = null
 	var/obj/item/petri_dish/old_dish
 	if(current_dish)
 		old_dish = current_dish
@@ -112,6 +128,8 @@
 
 ///Take the inserted dish, or drop it on the floor
 /obj/structure/microscope/proc/remove_dish(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!current_dish)
 		return SECONDARY_ATTACK_CONTINUE_CHAIN
 	if(!user.put_in_hands(current_dish))

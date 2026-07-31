@@ -22,6 +22,8 @@
 	var/change_frequency = NONE
 
 /obj/machinery/telecomms/bus/receive_information(datum/signal/subspace/signal, obj/machinery/telecomms/machine_from)
+	procstart = null
+	src.procstart = null
 	if(!istype(signal) || !is_freq_listening(signal))
 		return
 
@@ -76,6 +78,8 @@
 	autolinkers = list("processor4", "engineering", "common", "messaging")
 
 /obj/machinery/telecomms/bus/preset_four/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// We want to include every freely-available frequency on this one, so they
 	// get processed quickly when used on-station.

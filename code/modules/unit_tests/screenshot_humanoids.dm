@@ -2,6 +2,8 @@
 /datum/unit_test/screenshot_humanoids
 
 /datum/unit_test/screenshot_humanoids/Run()
+	procstart = null
+	src.procstart = null
 	var/list/testable_species = subtypesof(/datum/species)
 
 	// Test lizards as their own thing so we can get more coverage on their features
@@ -48,6 +50,8 @@
 		test_screenshot("[species_type]", get_flat_icon_for_all_directions(make_dummy(species_type, /datum/outfit/job/assistant/consistent)))
 
 /datum/unit_test/screenshot_humanoids/proc/make_dummy(species, job_outfit)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy/consistent/dummy = allocate(/mob/living/carbon/human/dummy/consistent)
 	dummy.set_species(species)
 	dummy.equipOutfit(job_outfit, visuals_only = TRUE)

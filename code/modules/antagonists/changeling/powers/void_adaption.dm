@@ -17,11 +17,15 @@
 	var/currently_active = FALSE
 
 /datum/action/changeling/void_adaption/on_purchase(mob/user, is_respec)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.add_traits(gain_traits, REF(src))
 	RegisterSignal(user, COMSIG_LIVING_LIFE, PROC_REF(check_environment))
 
 /datum/action/changeling/void_adaption/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	remove_from.remove_traits(gain_traits, REF(src))
 	UnregisterSignal(remove_from, COMSIG_LIVING_LIFE)
 	if (currently_active)
@@ -30,6 +34,8 @@
 
 /// Checks if we would be providing any useful benefit at present
 /datum/action/changeling/void_adaption/proc/check_environment(mob/living/void_adapted)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/list/active_reasons = list()
@@ -64,6 +70,8 @@
 
 /// Called when we stop being adapted
 /datum/action/changeling/void_adaption/proc/on_removed_adaption(mob/living/former, message)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/changeling/changeling_data = IS_CHANGELING(former)
 	to_chat(former, span_changeling(message))
 	changeling_data?.chem_recharge_slowdown += recharge_slowdown

@@ -24,23 +24,31 @@
 	src.crit_refund = crit_refund
 
 /datum/component/recharging_attacks/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(recharged_action, COMSIG_QDELETING)
 	recharged_action = null
 	return ..()
 
 /datum/component/recharging_attacks/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(set_old_stat))
 	RegisterSignal(parent, COMSIG_HOSTILE_POST_ATTACKINGTARGET, PROC_REF(check_stat))
 	RegisterSignal(recharged_action, COMSIG_QDELETING, PROC_REF(on_action_qdel))
 
 /datum/component/recharging_attacks/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(parent, list(COMSIG_HOSTILE_PRE_ATTACKINGTARGET, COMSIG_HOSTILE_POST_ATTACKINGTARGET))
 	if(recharged_action)
 		UnregisterSignal(recharged_action, COMSIG_QDELETING)
 
 /datum/component/recharging_attacks/proc/set_old_stat(mob/attacker, mob/attacked)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isliving(attacked))
 		return
@@ -48,6 +56,8 @@
 	last_stat = attacked.stat
 
 /datum/component/recharging_attacks/proc/check_stat(mob/living/attacker, mob/living/attacked, success)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isliving(attacked) || attacked != last_target || attacker.faction_check_atom(attacked))
 		return
@@ -62,5 +72,7 @@
 	recharged_action.build_all_button_icons()
 
 /datum/component/recharging_attacks/proc/on_action_qdel()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)

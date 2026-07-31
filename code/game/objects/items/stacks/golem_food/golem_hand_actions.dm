@@ -18,6 +18,8 @@
 	var/obj/item/gibtonite/held_gibtonite
 
 /obj/item/gibtonite_hand/Initialize(mapload, obj/item/gibtonite/held_gibtonite)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!held_gibtonite)
 		return INITIALIZE_HINT_QDEL
@@ -27,9 +29,13 @@
 	addtimer(CALLBACK(src, PROC_REF(release_gibtonite)), GIBTONITE_GOLEM_HOLD_TIME, TIMER_DELETE_ME)
 
 /obj/item/gibtonite_hand/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/gibtonite_hand/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (!held_gibtonite)
 		to_chat(user, span_warning("[src] fizzles, it was a dud!"))
 		qdel(src)
@@ -46,12 +52,16 @@
 
 /// Called when you can't hold it in any longer and just drop it on the ground
 /obj/item/gibtonite_hand/proc/release_gibtonite()
+	procstart = null
+	src.procstart = null
 	held_gibtonite.forceMove(get_turf(src))
 	held_gibtonite.GibtoniteReaction(isliving(loc) ? loc : null, "A [src] has dropped and primed a")
 	held_gibtonite = null
 	qdel(src)
 
 /obj/item/gibtonite_hand/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(held_gibtonite)
 	return ..()
 
@@ -73,9 +83,13 @@
 	var/teleport_vary = 2
 
 /obj/item/bluespace_finger/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/bluespace_finger/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(interacting_with)
 	if (get_dist(target_turf, get_turf(src)) > teleport_range)
 		balloon_alert(user, "too far!")

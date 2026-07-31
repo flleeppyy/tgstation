@@ -35,6 +35,8 @@ GLOBAL_LIST_INIT(nanopaint_supported_filetypes, zebra_typecacheof(list(\
 	var/list/dialog
 
 /datum/computer_file/program/nanopaint/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		"templateSizes" = GLOB.canvas_dimensions,
 		"saveableTypes" = list(
@@ -54,6 +56,8 @@ GLOBAL_LIST_INIT(nanopaint_supported_filetypes, zebra_typecacheof(list(\
 	)
 
 /datum/computer_file/program/nanopaint/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["dialog"] = dialog
 	var/list/editor_data = list()
@@ -85,9 +89,13 @@ GLOBAL_LIST_INIT(nanopaint_supported_filetypes, zebra_typecacheof(list(\
 	return data
 
 /datum/computer_file/program/nanopaint/proc/check_dialog(act, modal_type)
+	procstart = null
+	src.procstart = null
 	return dialog && dialog["type"] == modal_type && (!act || dialog["action"] == act)
 
 /datum/computer_file/program/nanopaint/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/user = ui.user
 	switch(action)
@@ -221,9 +229,13 @@ GLOBAL_LIST_INIT(nanopaint_supported_filetypes, zebra_typecacheof(list(\
 			return TRUE
 
 /datum/computer_file/program/nanopaint/proc/new_workspace(width, height)
+	procstart = null
+	src.procstart = null
 	current_workspace = new(width, height)
 
 /datum/computer_file/program/nanopaint/proc/open_file(mob/user, uid, on_disk, file_name, datum/computer_file/file_type)
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/file_being_opened
 	var/full_file_name = file_name + file_type::filetype
 	if(on_disk)
@@ -271,6 +283,8 @@ GLOBAL_LIST_INIT(nanopaint_supported_filetypes, zebra_typecacheof(list(\
 	opened_file_type = base_supported_type
 
 /datum/computer_file/program/nanopaint/proc/write_to_file(mob/user, datum/computer_file/file)
+	procstart = null
+	src.procstart = null
 	switch(file.type)
 		if(/datum/computer_file/data/paint_project)
 			var/datum/computer_file/data/paint_project/project_file = file
@@ -291,6 +305,8 @@ GLOBAL_LIST_INIT(nanopaint_supported_filetypes, zebra_typecacheof(list(\
 				log_player_image_creation("[key_name(user)] has saved a custom image to [computer] as [file.filename].[file.filetype]", user, image_file.stored_icon)
 
 /datum/computer_file/program/nanopaint/proc/save_file(mob/user, name, file_type, obj/item/disk/computer/target_disk)
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/file = new file_type()
 	file.filename = name
 	var/file_stored
@@ -305,6 +321,8 @@ GLOBAL_LIST_INIT(nanopaint_supported_filetypes, zebra_typecacheof(list(\
 		SStgui.update_uis(computer)
 
 /datum/computer_file/program/nanopaint/proc/close_workspace()
+	procstart = null
+	src.procstart = null
 	backing_file = null
 	opened_file_name = null
 	opened_file_type = null
@@ -315,6 +333,8 @@ GLOBAL_LIST_INIT(nanopaint_supported_filetypes, zebra_typecacheof(list(\
 	current_color = "#ffffffff"
 
 /datum/computer_file/program/nanopaint/kill_program(mob/user)
+	procstart = null
+	src.procstart = null
 	close_workspace()
 	return ..()
 

@@ -4,18 +4,26 @@
 	randomize = TRUE // Prevents wires from showing up on blueprints
 
 /datum/wires/explosive/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	add_duds(duds_number) // Duds also explode here.
 	..()
 
 /datum/wires/explosive/on_pulse(index)
+	procstart = null
+	src.procstart = null
 	explode()
 
 /datum/wires/explosive/on_cut(index, mend, source)
+	procstart = null
+	src.procstart = null
 	if (!isnull(source))
 		log_combat(source, holder, "cut the detonation wire for")
 	explode()
 
 /datum/wires/explosive/proc/explode()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/wires/explosive/chem_grenade
@@ -24,6 +32,8 @@
 	var/fingerprint
 
 /datum/wires/explosive/chem_grenade/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/obj/item/grenade/chem_grenade/G = holder
@@ -31,18 +41,24 @@
 		return TRUE
 
 /datum/wires/explosive/chem_grenade/on_pulse(index)
+	procstart = null
+	src.procstart = null
 	var/obj/item/grenade/chem_grenade/grenade = holder
 	if(grenade.stage != GRENADE_READY)
 		return
 	. = ..()
 
 /datum/wires/explosive/chem_grenade/on_cut(index, mend, source)
+	procstart = null
+	src.procstart = null
 	var/obj/item/grenade/chem_grenade/grenade = holder
 	if(grenade.stage != GRENADE_READY)
 		return
 	. = ..()
 
 /datum/wires/explosive/chem_grenade/attach_assembly(color, obj/item/assembly/assembly)
+	procstart = null
+	src.procstart = null
 	fingerprint = assembly.fingerprintslast
 	var/obj/item/grenade/chem_grenade/grenade = holder
 	if(!assembly.secured)
@@ -69,6 +85,8 @@
 	return ..()
 
 /datum/wires/explosive/chem_grenade/explode()
+	procstart = null
+	src.procstart = null
 	var/obj/item/grenade/chem_grenade/grenade = holder
 	var/obj/item/assembly/pulser = get_attached(get_wire(1))
 	var/message = "\An [pulser] has pulsed [grenade] ([grenade.type]), which was installed by [fingerprint]"
@@ -86,6 +104,8 @@
 
 
 /datum/wires/explosive/chem_grenade/detach_assembly(color)
+	procstart = null
+	src.procstart = null
 	var/obj/item/assembly/assembly = get_attached(color)
 	if(!istype(assembly))
 		return
@@ -102,6 +122,8 @@
 	holder_type = /obj/item/grenade/c4
 
 /datum/wires/explosive/c4/explode()
+	procstart = null
+	src.procstart = null
 	var/obj/item/grenade/c4/bomb = holder
 	bomb.detonate()
 
@@ -109,6 +131,8 @@
 	holder_type = /obj/item/pizzabox
 
 /datum/wires/explosive/pizza/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(
 		WIRE_DISARM
 	)
@@ -116,6 +140,8 @@
 	..()
 
 /datum/wires/explosive/pizza/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/obj/item/pizzabox/pizza_bomb = holder
@@ -123,6 +149,8 @@
 		return TRUE
 
 /datum/wires/explosive/pizza/get_status()
+	procstart = null
+	src.procstart = null
 	var/obj/item/pizzabox/pizza_bomb = holder
 	var/list/status = list()
 	status += "The red light is [pizza_bomb.bomb_active ? "on" : "off"]."
@@ -130,6 +158,8 @@
 	return status
 
 /datum/wires/explosive/pizza/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	var/obj/item/pizzabox/pizza_bomb = holder
 	if(wire == WIRE_DISARM) // Pulse to toggle
 		pizza_bomb.bomb_defused = !pizza_bomb.bomb_defused
@@ -137,6 +167,8 @@
 		explode()
 
 /datum/wires/explosive/pizza/on_cut(wire, mend, source)
+	procstart = null
+	src.procstart = null
 	if (mend)
 		return
 
@@ -151,5 +183,7 @@
 		explode()
 
 /datum/wires/explosive/pizza/explode()
+	procstart = null
+	src.procstart = null
 	var/obj/item/pizzabox/pizza_bomb = holder
 	pizza_bomb.bomb.detonate()

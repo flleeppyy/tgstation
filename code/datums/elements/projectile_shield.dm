@@ -1,5 +1,7 @@
 ///Bullet shield element, spawns an anti-toolbox shield when hit by a bullet.
 /datum/element/projectile_shield/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismob(target))
 		return ELEMENT_INCOMPATIBLE
@@ -7,10 +9,14 @@
 	RegisterSignal(target, COMSIG_ATOM_BULLET_ACT, PROC_REF(on_bullet_act))
 
 /datum/element/projectile_shield/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(target, COMSIG_ATOM_BULLET_ACT)
 
 /datum/element/projectile_shield/proc/on_bullet_act(datum/source, obj/projectile/proj)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/movable_mob = source

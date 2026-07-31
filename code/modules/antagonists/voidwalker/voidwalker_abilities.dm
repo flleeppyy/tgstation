@@ -22,6 +22,8 @@
 	VAR_PRIVATE/in_combat = FALSE
 
 /datum/action/cooldown/spell/pointed/unsettle/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isliving(cast_on))
@@ -35,6 +37,8 @@
 	return .
 
 /datum/action/cooldown/spell/pointed/unsettle/cast(mob/living/carbon/human/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	RegisterSignals(owner, list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_LIVING_ATTACK_ATOM), PROC_REF(is_combatting))
@@ -48,6 +52,8 @@
 	UnregisterSignal(owner, list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_LIVING_ATTACK_ATOM))
 
 /datum/action/cooldown/spell/pointed/unsettle/proc/check_if_staring(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(target.is_blind() || !(owner in view(target, world.view)))
@@ -59,6 +65,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/pointed/unsettle/proc/spookify(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	target.Paralyze(stun_time)
 	target.adjust_stamina_loss(stamina_damage)
 	target.apply_status_effect(/datum/status_effect/speech/slurring/generic)
@@ -69,6 +77,8 @@
 	SEND_SIGNAL(owner, COMSIG_ATOM_REVEAL)
 
 /datum/action/cooldown/spell/pointed/unsettle/proc/is_combatting()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	in_combat = TRUE
@@ -96,17 +106,23 @@
 	destroy_objects = FALSE
 
 /datum/action/cooldown/mob_cooldown/charge/sunwalker/on_move(atom/source, atom/new_loc, atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	new /obj/effect/hotspot(get_turf(owner))
 
 /datum/action/cooldown/mob_cooldown/charge/sunwalker/charge_end(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	for(var/turf/open/tile in range(1, owner))
 		new /obj/effect/hotspot(tile)
 
 /datum/action/cooldown/mob_cooldown/charge/sunwalker/do_charge_indicator(atom/charger, atom/charge_target)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/action/cooldown/mob_cooldown/charge/voidwalker
@@ -124,13 +140,19 @@
 	var/turf/valid_target_turf = /turf/open/space
 
 /datum/action/cooldown/mob_cooldown/charge/voidwalker/do_charge_indicator(atom/charger, atom/charge_target)
+	procstart = null
+	src.procstart = null
 	playsound(owner, 'sound/effects/curse/curse1.ogg', 100)
 	return
 
 /datum/action/cooldown/mob_cooldown/charge/voidwalker/on_moved(atom/source)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/action/cooldown/mob_cooldown/charge/voidwalker/PreActivate(atom/target)
+	procstart = null
+	src.procstart = null
 	if(istype(get_turf(target), valid_target_turf))
 		return ..()
 

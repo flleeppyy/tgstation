@@ -9,6 +9,8 @@
 	var/static/list/possible_reagents
 
 /obj/item/organ/heart/gland/chem/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!LAZYLEN(possible_reagents))
 		LAZYINITLIST(possible_reagents)
@@ -16,6 +18,8 @@
 			possible_reagents += reagent_path
 
 /obj/item/organ/heart/gland/chem/activate()
+	procstart = null
+	src.procstart = null
 	var/chem_to_add = pick(possible_reagents)
 	owner.reagents.add_reagent(chem_to_add, 2)
 	owner.adjust_tox_loss(-5, forced = TRUE)

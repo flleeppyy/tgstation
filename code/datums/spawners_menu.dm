@@ -2,24 +2,34 @@
 	var/mob/dead/observer/owner
 
 /datum/spawners_menu/New(mob/dead/observer/new_owner)
+	procstart = null
+	src.procstart = null
 	if(!istype(new_owner))
 		qdel(src)
 	owner = new_owner
 
 /datum/spawners_menu/Destroy()
+	procstart = null
+	src.procstart = null
 	owner = null
 	return ..()
 
 /datum/spawners_menu/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.observer_state
 
 /datum/spawners_menu/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SpawnersMenu")
 		ui.open()
 
 /datum/spawners_menu/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["spawners"] = list()
 	for(var/spawner in GLOB.mob_spawners)
@@ -59,6 +69,8 @@
 	return data
 
 /datum/spawners_menu/ui_act(action, params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

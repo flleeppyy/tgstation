@@ -17,6 +17,8 @@
 	summon_type = list(/obj/item/food/cheese/wheel)
 
 /datum/action/cooldown/spell/conjure/cheese/New(Target, original)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(50))
 		return

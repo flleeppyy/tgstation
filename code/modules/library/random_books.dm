@@ -2,6 +2,8 @@
 	icon_state = "random_book"
 
 /obj/item/book/manual/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	var/newtype = get_random_manual()
 	new newtype(loc)
@@ -9,6 +11,8 @@
 
 /// Gets a random manuel book type excluding certain banned books
 /proc/get_random_manual()
+	procstart = null
+	src.procstart = null
 	var/list/options = list()
 	options += valid_subtypesof(/obj/item/book/manual)
 	options += valid_subtypesof(/obj/item/tgui_book/manual)
@@ -24,10 +28,14 @@
 	var/random_loaded = FALSE
 
 /obj/item/book/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	gen_random_icon_state()
 
 /obj/item/book/random/attack_self()
+	procstart = null
+	src.procstart = null
 	if(!random_loaded)
 		// Adult books are excluded unless explicitly set
 		var/loaded_category = random_category == BOOK_CATEGORY_RANDOM ? pick(BOOK_CATEGORY_FICTION, BOOK_CATEGORY_NONFICTION, BOOK_CATEGORY_RELIGION, BOOK_CATEGORY_REFERENCE) : random_category
@@ -41,6 +49,8 @@
 	icon_state = "random_bookcase"
 
 /obj/structure/bookcase/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(books_to_load && isnum(books_to_load))
 		books_to_load += pick(-1,-1,0,1,1)
@@ -58,6 +68,8 @@
  * Note passing any amount above 1 with an existing_book will still only create one book.
  */
 /proc/create_random_books(amount = 1, atom/location, fail_loud = FALSE, category = BOOK_CATEGORY_RANDOM, obj/item/book/existing_book)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(!isnum(amount) || amount<1)
 		return
@@ -96,6 +108,8 @@
 	var/static/chuuni_book_spawned = FALSE
 
 /obj/structure/bookcase/random/fiction/after_random_load()
+	procstart = null
+	src.procstart = null
 	if(!chuuni_book_spawned && is_station_level(z))
 		chuuni_book_spawned = TRUE
 		new /obj/item/book/granter/chuunibyou(src)
@@ -119,6 +133,8 @@
 	var/ref_book_prob = 20
 
 /obj/structure/bookcase/random/reference/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	while(books_to_load > 0 && prob(ref_book_prob))
 		books_to_load--
@@ -130,6 +146,8 @@
 	var/static/cheese_granter_spawned = FALSE
 
 /obj/structure/bookcase/random/reference/wizard/after_random_load()
+	procstart = null
+	src.procstart = null
 	if(cheese_granter_spawned)
 		return
 	cheese_granter_spawned = TRUE

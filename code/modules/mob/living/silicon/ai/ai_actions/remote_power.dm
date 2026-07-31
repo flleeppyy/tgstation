@@ -15,6 +15,8 @@
 	disable_text = span_notice("You stop focusing on powering APCs.")
 
 /datum/action/innate/ai/ranged/power_apc/do_ability(mob/living/clicker, atom/clicked_on)
+	procstart = null
+	src.procstart = null
 
 	if (!isAI(clicker))
 		return FALSE

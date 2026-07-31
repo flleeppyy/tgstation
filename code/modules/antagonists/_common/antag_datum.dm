@@ -71,9 +71,13 @@ GLOBAL_LIST_EMPTY(antagonists)
 	var/datum/weakref/team_hud_ref
 
 /datum/antagonist/New()
+	procstart = null
+	src.procstart = null
 	GLOB.antagonists += src
 
 /datum/antagonist/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.antagonists -= src
 	if(owner)
 		LAZYREMOVE(owner.antag_datums, src)
@@ -82,6 +86,8 @@ GLOBAL_LIST_EMPTY(antagonists)
 	return ..()
 
 /datum/antagonist/Topic(href,href_list)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_ADMIN))
 		return
 
@@ -103,12 +109,18 @@ GLOBAL_LIST_EMPTY(antagonists)
 	var/datum/team/custom_team
 
 /datum/antagonist/custom/create_team(datum/team/team)
+	procstart = null
+	src.procstart = null
 	custom_team = team
 
 /datum/antagonist/custom/get_team()
+	procstart = null
+	src.procstart = null
 	return custom_team
 
 /datum/antagonist/custom/admin_add(datum/mind/new_owner,mob/admin)
+	procstart = null
+	src.procstart = null
 	var/custom_name = stripped_input(admin, "Custom antagonist name:", "Custom antag", "Antagonist")
 	if(!custom_name)
 		return
@@ -118,12 +130,16 @@ GLOBAL_LIST_EMPTY(antagonists)
 ///ANTAGONIST UI STUFF
 
 /datum/antagonist/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, ui_name, name)
 		ui.open()
 
 /datum/antagonist/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || ui.user != owner.current)
 		return TRUE
@@ -133,14 +149,20 @@ GLOBAL_LIST_EMPTY(antagonists)
 			return TRUE
 
 /datum/antagonist/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 /datum/antagonist/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isobserver(user) && antag_flags & ANTAG_OBSERVER_VISIBLE_PANEL)
 		return UI_UPDATE
 
 /datum/antagonist/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["antag_name"] = name
 	data["objectives"] = get_objectives()
@@ -154,10 +176,14 @@ GLOBAL_LIST_EMPTY(antagonists)
 	show_to_observers = FALSE
 
 /datum/action/antag_info/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "Open [target] Information"
 
 /datum/action/antag_info/Trigger(mob/clicker, trigger_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -165,6 +191,8 @@ GLOBAL_LIST_EMPTY(antagonists)
 	target.ui_interact(clicker || owner)
 
 /datum/action/antag_info/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!target)
 		stack_trace("[type] was used without a target antag datum!")
 		return FALSE
@@ -176,16 +204,22 @@ GLOBAL_LIST_EMPTY(antagonists)
 	return TRUE
 
 /datum/antagonist/proc/can_be_owned(datum/mind/new_owner)
+	procstart = null
+	src.procstart = null
 	var/datum/mind/tested = new_owner || owner
 	return !tested.has_antag_datum(type)
 
 //This will be called in add_antag_datum before owner assignment.
 //Should return antag datum without owner.
 /datum/antagonist/proc/specialization(datum/mind/new_owner)
+	procstart = null
+	src.procstart = null
 	return src
 
 ///Called by the transfer_to() mind proc after the mind (mind.current and new_character.mind) has moved but before the player (key and client) is transferred.
 /datum/antagonist/proc/on_body_transfer(mob/living/old_body, mob/living/new_body)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(old_body)
 		remove_innate_effects(old_body)
@@ -206,24 +240,34 @@ GLOBAL_LIST_EMPTY(antagonists)
 
 //This handles the application of antag huds/special abilities
 /datum/antagonist/proc/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	return
 
 //This handles the removal of antag huds/special abilities
 /datum/antagonist/proc/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	return
 
 /// This is called when the antagonist is being mindshielded.
 /datum/antagonist/proc/pre_mindshield(mob/implanter, mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return COMPONENT_MINDSHIELD_PASSED
 
 /// This is called when the antagonist is successfully mindshielded.
 /datum/antagonist/proc/on_mindshield(mob/implanter, mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return
 
 /// Handles adding and removing the clumsy mutation from clown antags. Gets called in apply/remove_innate_effects
 /datum/antagonist/proc/handle_clown_mutation(mob/living/mob_override, message, removing = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(mob_override) || !is_clown_job(owner.assigned_role))
 		return
 	var/mob/living/carbon/human/human_override = mob_override
@@ -237,10 +281,14 @@ GLOBAL_LIST_EMPTY(antagonists)
 
 //Assign default team and creates one for one of a kind team antagonists
 /datum/antagonist/proc/create_team(datum/team/team)
+	procstart = null
+	src.procstart = null
 	return
 
 ///Called by the add_antag_datum() mind proc after the instanced datum is added to the mind's antag_datums list.
 /datum/antagonist/proc/on_gain()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	var/datum/action/antag_info/info_button
 	if(!owner)
@@ -290,6 +338,8 @@ GLOBAL_LIST_EMPTY(antagonists)
  *  * mob/player: The mob that you are looking for on the banlist.
  */
 /datum/antagonist/proc/is_banned(mob/player)
+	procstart = null
+	src.procstart = null
 	if(!player)
 		stack_trace("Called is_banned without a mob. This shouldn't happen.")
 		return FALSE
@@ -303,6 +353,8 @@ GLOBAL_LIST_EMPTY(antagonists)
  * Proc that replaces a player who cannot play a specific antagonist due to being banned via a poll, and alerts the player of their being on the banlist.
  */
 /datum/antagonist/proc/replace_banned_player()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	var/mob/chosen_one = SSpolling.poll_ghosts_for_target(check_jobban = jobban_flag || pref_flag, role = pref_flag, poll_time = 5 SECONDS, checked_target = owner.current, alert_pic = owner.current, role_name_text = name)
@@ -319,6 +371,8 @@ GLOBAL_LIST_EMPTY(antagonists)
  * Called by the remove_antag_datum() and remove_all_antag_datums() mind procs for the antag datum to handle its own removal and deletion.
  */
 /datum/antagonist/proc/on_removal()
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	if(!owner)
 		CRASH("Antag datum with no owner.")
@@ -349,12 +403,16 @@ GLOBAL_LIST_EMPTY(antagonists)
  * Use this proc for playing sounds, sending alerts, or helping to setup non-gameplay influencing aspects of the antagonist type.
  */
 /datum/antagonist/proc/greet()
+	procstart = null
+	src.procstart = null
 	if(!silent)
 		to_chat(owner.current, span_big("You are \the [src]."))
 		play_stinger()
 
 /// Plays the antag stinger sound, if we have one
 /datum/antagonist/proc/play_stinger()
+	procstart = null
+	src.procstart = null
 	if(isnull(stinger_sound))
 		return
 
@@ -365,6 +423,8 @@ GLOBAL_LIST_EMPTY(antagonists)
  * Use this proc for playing sounds, sending alerts, or otherwise informing the player that they're no longer a specific antagonist type.
  */
 /datum/antagonist/proc/farewell()
+	procstart = null
+	src.procstart = null
 	if(!silent && owner.current)
 		to_chat(owner.current, span_userdanger("You are no longer \the [src]!"))
 
@@ -372,6 +432,8 @@ GLOBAL_LIST_EMPTY(antagonists)
  * Proc that assigns this antagonist's ascribed moodlet to the player.
  */
 /datum/antagonist/proc/give_antag_moodies(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	if(!antag_moodlet)
 		return
 	var/mob/living/target = mob_override || owner.current
@@ -381,6 +443,8 @@ GLOBAL_LIST_EMPTY(antagonists)
  * Proc that removes this antagonist's ascribed moodlet from the player.
  */
 /datum/antagonist/proc/clear_antag_moodies(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	if(!antag_moodlet)
 		return
 	var/mob/living/target = mob_override || owner.current
@@ -390,6 +454,8 @@ GLOBAL_LIST_EMPTY(antagonists)
  * Proc that will return the team this antagonist belongs to, when called. Helpful with antagonists that may belong to multiple potential teams in a single round.
  */
 /datum/antagonist/proc/get_team()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -398,6 +464,8 @@ GLOBAL_LIST_EMPTY(antagonists)
  * This is the body of the message, sandwiched between roundend_report_header and roundend_report_footer.
  */
 /datum/antagonist/proc/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/report = list()
 
 	if(!owner)
@@ -426,6 +494,8 @@ GLOBAL_LIST_EMPTY(antagonists)
  * Appears at start of roundend_catagory section.
  */
 /datum/antagonist/proc/roundend_report_header()
+	procstart = null
+	src.procstart = null
 	return span_header("The [roundend_category] were:<br>")
 
 /**
@@ -434,6 +504,8 @@ GLOBAL_LIST_EMPTY(antagonists)
  * Appears at the end of the roundend_catagory section.
  */
 /datum/antagonist/proc/roundend_report_footer()
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -441,12 +513,16 @@ GLOBAL_LIST_EMPTY(antagonists)
 
 ///Called when using admin tools to give antag status
 /datum/antagonist/proc/admin_add(datum/mind/new_owner,mob/admin)
+	procstart = null
+	src.procstart = null
 	message_admins("[key_name_admin(admin)] made [key_name_admin(new_owner)] into [name].")
 	log_admin("[key_name(admin)] made [key_name(new_owner)] into [name].")
 	new_owner.add_antag_datum(src)
 
 ///Called when removing antagonist using admin tools
 /datum/antagonist/proc/admin_remove(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return
 	message_admins("[key_name_admin(user)] has removed [name] antagonist status from [key_name_admin(owner)].")
@@ -460,9 +536,13 @@ GLOBAL_LIST_EMPTY(antagonists)
  * For example, nuke disk code, genome count, etc
  */
 /datum/antagonist/proc/antag_panel_data()
+	procstart = null
+	src.procstart = null
 	return ""
 
 /datum/antagonist/proc/enabled_in_preferences(datum/mind/noggin)
+	procstart = null
+	src.procstart = null
 	if(pref_flag)
 		if(noggin.current && noggin.current.client && (pref_flag in noggin.current.client.prefs.be_special))
 			return TRUE
@@ -472,12 +552,16 @@ GLOBAL_LIST_EMPTY(antagonists)
 
 /// List of ["Command"] = CALLBACK(), user will be appeneded to callback arguments on execution
 /datum/antagonist/proc/get_admin_commands()
+	procstart = null
+	src.procstart = null
 	. = list()
 
 /// Creates a /datum/universal_icon from the preview outfit.
 /// Custom implementors of `get_preview_icon` should use this, as the
 /// result of `get_preview_icon` is expected to be the completed version.
 /datum/antagonist/proc/render_preview_outfit(datum/outfit/outfit, mob/living/carbon/human/dummy)
+	procstart = null
+	src.procstart = null
 	dummy = dummy || new /mob/living/carbon/human/dummy/consistent
 	dummy.equipOutfit(outfit, visuals_only = TRUE)
 	dummy.wear_suit?.update_greyscale()
@@ -492,6 +576,8 @@ GLOBAL_LIST_EMPTY(antagonists)
 /// Given a /datum/universal_icon, will crop it to be consistent of those in the preferences menu.
 /// Not necessary, and in fact will look bad if it's anything other than a human.
 /datum/antagonist/proc/finish_preview_icon(datum/universal_icon/antag_icon)
+	procstart = null
+	src.procstart = null
 	// Zoom in on the top of the head and the chest
 	// I have no idea how to do this dynamically.
 	antag_icon.scale(115, 115)
@@ -506,6 +592,8 @@ GLOBAL_LIST_EMPTY(antagonists)
 
 /// Returns the /datum/universal_icon to shown on the preferences menu.
 /datum/antagonist/proc/get_preview_icon()
+	procstart = null
+	src.procstart = null
 	if (isnull(preview_outfit))
 		return null
 
@@ -513,6 +601,8 @@ GLOBAL_LIST_EMPTY(antagonists)
 	return finish_preview_icon(preview_icon)
 
 /datum/antagonist/proc/edit_memory(mob/user)
+	procstart = null
+	src.procstart = null
 	var/new_memo = tgui_input_text(user, "Write a new memory", "Antag Memory", antag_memory, multiline = TRUE)
 	if (isnull(new_memo))
 		return
@@ -523,12 +613,16 @@ GLOBAL_LIST_EMPTY(antagonists)
  * Defaults to hijack_speed var, override for custom stuff like buffing hijack speed for hijack objectives or something.
  */
 /datum/antagonist/proc/hijack_speed()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/hijack/H = locate() in objectives
 	return H?.hijack_speed_override || hijack_speed
 
 /// Adds a HUD that will show you other members with the same antagonist.
 /// If an antag typepath is passed to `antag_to_check`, will check that, otherwise will use the source type.
 /datum/antagonist/proc/add_team_hud(mob/target, antag_to_check)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(team_hud_ref)
 
 	team_hud_ref = WEAKREF(target.add_alt_appearance(
@@ -545,12 +639,16 @@ GLOBAL_LIST_EMPTY(antagonists)
 
 /// Takes a location, returns an image drawing "on" it that matches this antag datum's hud icon
 /datum/antagonist/proc/hud_image_on(mob/hud_loc)
+	procstart = null
+	src.procstart = null
 	var/image/hud = image(hud_icon, hud_loc, antag_hud_name)
 	SET_PLANE_EXPLICIT(hud, ABOVE_GAME_PLANE, hud_loc)
 	return hud
 
 ///generic helper to send objectives as data through tgui.
 /datum/antagonist/proc/get_objectives()
+	procstart = null
+	src.procstart = null
 	var/objective_count = 1
 	var/list/objective_data = list()
 	//all obj
@@ -566,6 +664,8 @@ GLOBAL_LIST_EMPTY(antagonists)
 
 /// Used to create objectives for the antagonist.
 /datum/antagonist/proc/forge_objectives()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -576,6 +676,8 @@ GLOBAL_LIST_EMPTY(antagonists)
  * * force - Skips the check about whether this antagonist is supposed to set its own objectives, for badminning
  */
 /datum/antagonist/proc/submit_player_objective(retain_existing = FALSE, retain_escape = TRUE, force = FALSE)
+	procstart = null
+	src.procstart = null
 	if (isnull(owner) || isnull(owner.current))
 		return FALSE
 	var/mob/living/owner_mob = owner.current
@@ -626,10 +728,14 @@ GLOBAL_LIST_EMPTY(antagonists)
 
 /// Return TRUE to prevent the antag's job from handling the respawn
 /datum/antagonist/proc/on_respawn(mob/new_character)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// Dissassociates the antag datum from its owner, without deleting it - allowing one datum and its objectives to be reused for another mind
 /datum/antagonist/proc/store_datum()
+	procstart = null
+	src.procstart = null
 	if(isnull(owner))
 		stack_trace("Tried to store an antagonist datum that already has no owner.")
 		return FALSE
@@ -645,6 +751,8 @@ GLOBAL_LIST_EMPTY(antagonists)
 
 /// Reassociates the antag datum with a new mind - allowing one datum and its objectives to be reused for another mind
 /datum/antagonist/proc/restore_datum(datum/mind/new_owner)
+	procstart = null
+	src.procstart = null
 	if(!isnull(owner))
 		stack_trace("Tried to restore an antagonist datum that already has an owner.")
 		return FALSE

@@ -6,9 +6,13 @@
 	should_update_preview = FALSE
 
 /datum/preference/choiced/uplink_location/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list(UPLINK_PDA, UPLINK_RADIO, UPLINK_PEN, UPLINK_IMPLANT)
 
 /datum/preference/choiced/uplink_location/compile_constant_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 
 	data[CHOICED_PREFERENCE_DISPLAY_NAMES] = list(
@@ -21,7 +25,11 @@
 	return data
 
 /datum/preference/choiced/uplink_location/create_default_value()
+	procstart = null
+	src.procstart = null
 	return UPLINK_PDA
 
 /datum/preference/choiced/uplink_location/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	return

@@ -2,6 +2,8 @@
 /datum/unit_test/flyperson
 
 /datum/unit_test/flyperson/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/fly = allocate(__IMPLIED_TYPE__)
 	fly.set_species(/datum/species/fly)
 

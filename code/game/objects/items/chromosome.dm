@@ -20,6 +20,8 @@
 	var/weight = 5
 
 /obj/item/chromosome/proc/can_apply(datum/mutation/mutation)
+	procstart = null
+	src.procstart = null
 	if(!mutation || QDELETED(mutation.owner) || mutation.can_chromosome != CHROMOSOME_NONE)
 		return FALSE
 	if(!isnull(stabilizer_coeff) && (mutation.stabilizer_coeff != MUTATION_COEFFICIENT_UNMODIFIABLE))
@@ -32,6 +34,8 @@
 		return TRUE
 
 /obj/item/chromosome/proc/apply(datum/mutation/mutation)
+	procstart = null
+	src.procstart = null
 	if(mutation.stabilizer_coeff != MUTATION_COEFFICIENT_UNMODIFIABLE && stabilizer_coeff)
 		mutation.stabilizer_coeff = stabilizer_coeff
 	if(mutation.synchronizer_coeff != MUTATION_COEFFICIENT_UNMODIFIABLE && synchronizer_coeff)
@@ -46,6 +50,8 @@
 	qdel(src)
 
 /proc/generate_chromosome()
+	procstart = null
+	src.procstart = null
 	var/static/list/chromosomes
 	if(!chromosomes)
 		chromosomes = list()

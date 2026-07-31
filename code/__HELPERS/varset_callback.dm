@@ -6,6 +6,8 @@
 #define VARSET_WEAK_CALLBACK(datum, var, var_value) CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(___callbackvarset), WEAKREF(##datum), NAMEOF(##datum, ##var), ##var_value)
 
 /proc/___callbackvarset(list_or_datum, var_name, var_value)
+	procstart = null
+	src.procstart = null
 	if(length(list_or_datum))
 		list_or_datum[var_name] = var_value
 		return

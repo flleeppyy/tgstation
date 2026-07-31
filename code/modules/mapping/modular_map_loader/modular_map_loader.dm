@@ -14,11 +14,15 @@
 INITIALIZE_IMMEDIATE(/obj/modular_map_root)
 
 /obj/modular_map_root/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	INVOKE_ASYNC(src, PROC_REF(load_map))
 
 /// Randonly selects a map file from the TOML config specified in config_file, loads it, then deletes itself.
 /obj/modular_map_root/proc/load_map()
+	procstart = null
+	src.procstart = null
 	var/turf/spawn_area = get_turf(src)
 
 	var/datum/map_template/map_module/map = new()
@@ -44,6 +48,8 @@ INITIALIZE_IMMEDIATE(/obj/modular_map_root)
 	var/y_offset = 0
 
 /datum/map_template/map_module/load(turf/T, centered = FALSE, mapfile = null)
+	procstart = null
+	src.procstart = null
 
 	if(!mapfile)
 		return
@@ -56,6 +62,8 @@ INITIALIZE_IMMEDIATE(/obj/modular_map_root)
 	. = ..()
 
 /datum/map_template/map_module/preload_size(path, cache)
+	procstart = null
+	src.procstart = null
 	. = ..(path, TRUE) // Done this way because we still want to know if someone actualy wanted to cache the map
 	if(!cached_map)
 		return

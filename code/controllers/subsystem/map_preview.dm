@@ -7,6 +7,8 @@ SUBSYSTEM_DEF(map_previews)
 	)
 
 /datum/controller/subsystem/map_previews/Initialize()
+	procstart = null
+	src.procstart = null
 #ifndef UNIT_TESTS
 	if(!CONFIG_GET(flag/generate_assets_in_init))
 		return SS_INIT_SUCCESS
@@ -15,6 +17,8 @@ SUBSYSTEM_DEF(map_previews)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/map_previews/proc/generate_map_previews()
+	procstart = null
+	src.procstart = null
 	var/list/worklist = list()
 	var/list/already_generated = list()
 	var/static/list/preview_blacklist = list(

@@ -13,6 +13,8 @@
 	var/toggle_desc = "Allows you to listen to prayers"
 
 /datum/component/listen_prayers/Initialize(datum/callback/pre_prayer_callback, deity_name, toggle_desc)
+	procstart = null
+	src.procstart = null
 	if(!istype(parent, /datum/mind))
 		return COMPONENT_INCOMPATIBLE
 
@@ -24,10 +26,14 @@
 		src.toggle_desc = toggle_desc
 
 /datum/component/listen_prayers/Destroy()
+	procstart = null
+	src.procstart = null
 	pre_prayer_callback = null
 	return ..()
 
 /datum/component/listen_prayers/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(SSdcs, COMSIG_GLOB_SEND_PRAYER, PROC_REF(on_sent_prayer))
 	var/datum/mind/mind = parent
 	toggle = new(mind)
@@ -37,10 +43,14 @@
 		toggle.Grant(mind.current)
 
 /datum/component/listen_prayers/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(SSdcs, COMSIG_GLOB_SEND_PRAYER)
 	QDEL_NULL(toggle)
 
 /datum/component/listen_prayers/proc/on_sent_prayer(source, mob/praying, message, prayer_type, symbol, list/deities_that_listened)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/datum/mind/mind = parent
 	if(!mind.current || !mind.current.client || IS_UNCONSCIOUS(mind.current)) //You can't hear prayers if unconscious or disconnected
@@ -73,19 +83,27 @@
 	active = TRUE
 
 /datum/action/innate/listen_prayers/Destroy()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(owner, TRAIT_DONT_HEAR_PRAYERS, ACTION_TRAIT)
 	return ..()
 
 /datum/action/innate/listen_prayers/is_action_active(atom/movable/screen/movable/action_button/current_button)
+	procstart = null
+	src.procstart = null
 	return !HAS_TRAIT_FROM(owner, TRAIT_DONT_HEAR_PRAYERS, ACTION_TRAIT)
 
 /datum/action/innate/listen_prayers/Activate()
+	procstart = null
+	src.procstart = null
 	active = TRUE
 	REMOVE_TRAIT(owner, TRAIT_DONT_HEAR_PRAYERS, ACTION_TRAIT)
 	to_chat(owner, span_green("You are ready to listen to prayers once again."))
 	build_all_button_icons(UPDATE_BUTTON_BACKGROUND)
 
 /datum/action/innate/listen_prayers/Deactivate()
+	procstart = null
+	src.procstart = null
 	active = FALSE
 	ADD_TRAIT(owner, TRAIT_DONT_HEAR_PRAYERS, ACTION_TRAIT)
 	to_chat(owner, span_green("You stop listening to prayers."))

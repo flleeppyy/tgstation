@@ -1,13 +1,19 @@
 /obj/machinery/power/apc/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/machinery/power/apc/connect_to_network()
+	procstart = null
+	src.procstart = null
 	//Override because the APC does not directly connect to the network; it goes through a terminal.
 	//The terminal is what the power computer looks for anyway.
 	if(terminal)
 		terminal.connect_to_network()
 
 /obj/machinery/power/apc/proc/make_terminal(terminal_cable_layer = cable_layer)
+	procstart = null
+	src.procstart = null
 	//attempt to locate a terminal if mappers/map export placed it here
 	terminal = locate(/obj/machinery/power/terminal) in loc
 	// create a terminal object at the same position as original turf loc
@@ -18,6 +24,8 @@
 	terminal.master = src
 
 /obj/machinery/power/apc/proc/toggle_nightshift_lights(mob/user)
+	procstart = null
+	src.procstart = null
 	if(low_power_nightshift_lights)
 		balloon_alert(user, "power is too low!")
 		return
@@ -28,6 +36,8 @@
 	set_nightshift(!nightshift_lights)
 
 /obj/machinery/power/apc/proc/update()
+	procstart = null
+	src.procstart = null
 	if(operating && !shorted && !failure_timer)
 		area.power_light = (lighting > APC_CHANNEL_AUTO_OFF)
 		area.power_equip = (equipment > APC_CHANNEL_AUTO_OFF)
@@ -41,6 +51,8 @@
 	area.power_change()
 
 /obj/machinery/power/apc/proc/toggle_breaker(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!is_operational || failure_timer)
 		return
 	operating = !operating
@@ -54,23 +66,31 @@
 
 /// Returns the surplus energy from the terminal's grid.
 /obj/machinery/power/apc/surplus()
+	procstart = null
+	src.procstart = null
 	if(terminal)
 		return terminal.surplus()
 	return 0
 
 /// Adds load (energy) to the terminal's grid.
 /obj/machinery/power/apc/add_load(amount)
+	procstart = null
+	src.procstart = null
 	if(terminal?.powernet)
 		terminal.add_load(amount)
 
 /// Returns the amount of energy the terminal's grid has.
 /obj/machinery/power/apc/avail(amount)
+	procstart = null
+	src.procstart = null
 	if(terminal)
 		return terminal.avail(amount)
 	return 0
 
 /// Returns the surplus energy from the terminal's grid and the cell.
 /obj/machinery/power/apc/available_energy()
+	procstart = null
+	src.procstart = null
 	return charge() + surplus()
 
 /**
@@ -92,6 +112,8 @@
  *   - [AUTOSET_OFF]: The APC turns automatic channels off.
  */
 /obj/machinery/power/apc/proc/autoset(val, on)
+	procstart = null
+	src.procstart = null
 	switch(on)
 		if(AUTOSET_FORCE_OFF)
 			if(val == APC_CHANNEL_ON) // if on, return off
@@ -116,6 +138,8 @@
  *   - 3: Sets the APCs channel to be [APC_CHANNEL_AUTO_ON]. If the APC doesn't have enough power this defaults to [APC_CHANNEL_AUTO_OFF] instead.
  */
 /obj/machinery/power/apc/proc/setsubsystem(val)
+	procstart = null
+	src.procstart = null
 	if(cell && cell.charge > 0)
 		return (val == 1) ? APC_CHANNEL_OFF : val
 	if(val == 3)
@@ -123,6 +147,8 @@
 	return APC_CHANNEL_OFF
 
 /obj/machinery/power/apc/disconnect_terminal()
+	procstart = null
+	src.procstart = null
 	if(terminal)
 		terminal.master = null
 		terminal = null
@@ -135,11 +161,15 @@
  * * duration - the duration of the power failure in seconds (not deciseconds)
  */
 /obj/machinery/power/apc/proc/energy_fail(duration)
+	procstart = null
+	src.procstart = null
 	failure_timer = max(failure_timer, round(duration, SSMACHINES_DT))
 	update()
 	queue_icon_update()
 
 /obj/machinery/power/apc/proc/set_nightshift(on)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(low_power_nightshift_lights && !on)
 		return

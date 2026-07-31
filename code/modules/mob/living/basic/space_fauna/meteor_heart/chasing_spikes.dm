@@ -11,6 +11,8 @@
 	var/list/active_chasers
 
 /datum/action/cooldown/mob_cooldown/chasing_spikes/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(owner, 'sound/effects/magic/demon_attack1.ogg', vol = 100, vary = TRUE, pressure_affected = FALSE)
 	var/obj/effect/temp_visual/effect_trail/spike_chaser/chaser = new(get_turf(owner), target)
@@ -19,11 +21,15 @@
 
 /// Remove a spike trail from our list of active trails
 /datum/action/cooldown/mob_cooldown/chasing_spikes/proc/on_chaser_destroyed(atom/chaser)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	LAZYREMOVE(active_chasers, WEAKREF(chaser))
 
 // Clean up after ourselves
 /datum/action/cooldown/mob_cooldown/chasing_spikes/Remove(mob/removed_from)
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(active_chasers)
 	return ..()
 
@@ -59,6 +65,8 @@
 	)
 
 /obj/effect/temp_visual/emerging_ground_spike/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	damage_blacklist_typecache = typecacheof(damage_blacklist_typecache)
 	pixel_x += rand(-position_variance, position_variance)
@@ -67,6 +75,8 @@
 
 /// Stab people who are stood on us after a delay in the shins
 /obj/effect/temp_visual/emerging_ground_spike/proc/impale()
+	procstart = null
+	src.procstart = null
 	if (!isturf(loc))
 		return
 
@@ -82,6 +92,8 @@
 	return hit_someone
 
 /obj/effect/temp_visual/emerging_ground_spike/proc/harm_mob(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	if (is_type_in_typecache(victim, damage_blacklist_typecache))
 		return FALSE
 

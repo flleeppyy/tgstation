@@ -2,6 +2,8 @@
 /datum/unit_test/full_heal_heals_organs
 
 /datum/unit_test/full_heal_heals_organs/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 
 	for(var/obj/item/organ/organ in dummy.organs)
@@ -18,6 +20,8 @@
 /datum/unit_test/full_heal_regenerates_organs
 
 /datum/unit_test/full_heal_regenerates_organs/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 
 	var/list/we_started_with = list()
@@ -41,6 +45,8 @@
 /datum/unit_test/full_heal_damage_types
 
 /datum/unit_test/full_heal_damage_types/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 
 	dummy.apply_damages(brute = 10, burn = 10, tox = 10, oxy = 10, stamina = 10)

@@ -50,11 +50,15 @@
 	)
 
 /obj/structure/mounted_gun/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/simple_rotation)
 	register_context()
 
 /obj/structure/mounted_gun/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		return
 
@@ -70,10 +74,14 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/mounted_gun/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = base_icon_state + (is_firing ? fire_suffix : "")
 
 /obj/structure/mounted_gun/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!anchorable_gun) /// Can't anchor an unanchorable gun.
 		return FALSE
@@ -82,6 +90,8 @@
 
 ///Covers Reloading and lighting of the gun
 /obj/structure/mounted_gun/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode || !is_type_in_list(tool, accepted_ammo_types)) //see if the gun needs to be loaded in some way.
 		return NONE
 
@@ -105,6 +115,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/mounted_gun/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -115,11 +127,15 @@
 
 /// Start firing the weapon on interaction
 /obj/structure/mounted_gun/proc/try_firing(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.log_message("fired a [initial(name)]", LOG_ATTACK)
 	addtimer(CALLBACK(src, PROC_REF(fire_sequence), user), fire_delay)
 
 /// Loop firing until we are done
 /obj/structure/mounted_gun/proc/fire_sequence(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (!shots_in_gun)
 		balloon_alert(user, "not loaded!")
 		return
@@ -138,14 +154,20 @@
 
 /// Called when we run out of bullets
 /obj/structure/mounted_gun/proc/finish_firing()
+	procstart = null
+	src.procstart = null
 	is_firing = FALSE
 	update_appearance(UPDATE_ICON_STATE)
 
 /// Return
 /obj/structure/mounted_gun/proc/time_until_next_shot()
+	procstart = null
+	src.procstart = null
 	return shot_delay
 
 /obj/structure/mounted_gun/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	dump_contents()
 	var/droploc = drop_location()
@@ -157,10 +179,14 @@
 			new type(droploc)
 
 /obj/structure/mounted_gun/dump_contents()
+	procstart = null
+	src.procstart = null
 	return // Generally we don't have contents to dump but some children do.
 
 /// Perform the contents of the loop, return the amount of time until the next shot
 /obj/structure/mounted_gun/proc/fire_loop(mob/living/user)
+	procstart = null
+	src.procstart = null
 	for(var/mob/shaken_mob in urange(3, src))
 		if(!IS_UNCONSCIOUS_OR_CRIT(shaken_mob) && firing_shakes_camera) //is the mob awake to feel the shaking?
 			shake_camera(shaken_mob, 3, 1)
@@ -169,6 +195,8 @@
 
 /// Actually finally shoot the thing
 /obj/structure/mounted_gun/proc/fire_gun(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/projectile/fired_projectile = get_fired_projectile()
 	fired_projectile.firer = user
 	fired_projectile.fired_from = src
@@ -178,6 +206,8 @@
 
 /// What kind of ammo are we shooting
 /obj/structure/mounted_gun/proc/get_fired_projectile()
+	procstart = null
+	src.procstart = null
 	return new projectile_type(get_turf(src))
 
 /// Rapidly fires a barrage of random junk ammo
@@ -219,6 +249,8 @@
 	)
 
 /obj/structure/mounted_gun/organ_gun/examine_more(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("<b><i>Looking down at \the [src], you recall a tale told to you in some distant memory...</i></b>")
 
@@ -229,6 +261,8 @@
 	. += span_info("Vengeance persists to this day. It sometimes may slumber, seemingly content with having gorged itself, but in the end, its ceaseless hunger can be neither numbed nor sated.")
 
 /obj/structure/mounted_gun/organ_gun/get_fired_projectile()
+	procstart = null
+	src.procstart = null
 	var/random_type = pick_weight(list_of_projectiles)
 	return new random_type(get_turf(src))
 
@@ -293,6 +327,8 @@
 	)
 
 /obj/structure/mounted_gun/ratvarian_repeater/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		return
 
@@ -306,6 +342,8 @@
 
 // Charge the gun instead of firing it if it's not loaded
 /obj/structure/mounted_gun/ratvarian_repeater/try_firing(mob/user)
+	procstart = null
+	src.procstart = null
 	var/fully_loaded = shots_in_gun >= max_shots_per_fire
 	if(fully_loaded)
 		return ..()
@@ -319,6 +357,8 @@
 	playsound(src, 'sound/effects/magic/clockwork/fellowship_armory.ogg', 50, FALSE, 5)
 
 /obj/structure/mounted_gun/ratvarian_repeater/time_until_next_shot()
+	procstart = null
+	src.procstart = null
 	return shots_in_gun % 2 != 1 ? shot_delay * 2 : shot_delay
 
 /// A makeshift structure for firing spears with increased force
@@ -358,6 +398,8 @@
 	var/obj/item/loaded_spear
 
 /obj/structure/mounted_gun/ballista/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (loaded_spear)
 		icon_state = base_icon_state + (istype(loaded_spear, /obj/item/melee/baton/security/cattleprod) ? "_loaded_prod" : "_loaded")
@@ -365,6 +407,8 @@
 		icon_state = base_icon_state
 
 /obj/structure/mounted_gun/ballista/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!is_type_in_list(tool, accepted_ammo_types) || user.combat_mode)
 		return NONE
 
@@ -391,6 +435,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/mounted_gun/ballista/get_fired_projectile()
+	procstart = null
+	src.procstart = null
 	if (istype(loaded_spear, /obj/item/spear/dragonator))
 		return new /obj/projectile/bullet/ballista_spear/dragonator(get_turf(src))
 	if (istype(loaded_spear, /obj/item/melee/baton/security/cattleprod))
@@ -398,11 +444,15 @@
 	return ..()
 
 /obj/structure/mounted_gun/ballista/fire_gun(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/projectile/bullet/ballista_spear/fired_projectile = . = ..()
 	fired_projectile.attach_spear(loaded_spear)
 
 /// Called when our spear is not inside us any more
 /obj/structure/mounted_gun/ballista/proc/on_spear_left()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(loaded_spear, list(COMSIG_MOVABLE_MOVED, COMSIG_QDELETING))
 	shots_in_gun = 0
@@ -410,5 +460,7 @@
 	update_appearance(UPDATE_ICON_STATE)
 
 /obj/structure/mounted_gun/ballista/dump_contents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	loaded_spear?.forceMove(drop_location())

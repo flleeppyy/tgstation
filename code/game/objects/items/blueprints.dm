@@ -44,24 +44,34 @@
 	var/client/viewing
 
 /obj/item/blueprints/Destroy()
+	procstart = null
+	src.procstart = null
 	clear_viewer()
 	return ..()
 
 /obj/item/blueprints/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	clear_viewer()
 	legend_viewing = LEGEND_OFF
 
 /obj/item/blueprints/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Blueprints", name)
 		ui.open()
 
 /obj/item/blueprints/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.inventory_state
 
 /obj/item/blueprints/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	switch(get_area_type(user))
 		if(AREA_OUTDOORS)
@@ -93,6 +103,8 @@
 	return data
 
 /obj/item/blueprints/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["legend_viewing_list"] = LEGEND_VIEWING_LIST
 	data["legend_off"] = LEGEND_OFF
@@ -107,6 +119,8 @@
 	return data
 
 /obj/item/blueprints/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -166,6 +180,8 @@
  * - user: The person who's client we're giving images to.
  */
 /obj/item/blueprints/proc/set_viewer(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user || !user.client)
 		return
 	if(viewing)
@@ -179,6 +195,8 @@
  * we made to show them.
  */
 /obj/item/blueprints/proc/clear_viewer()
+	procstart = null
+	src.procstart = null
 	if(viewing)
 		viewing.images -= showing
 		viewing = null
@@ -191,6 +209,8 @@
  * - user: The person we're getting the area of to check if it's a special area.
  */
 /obj/item/blueprints/proc/get_area_type(mob/user)
+	procstart = null
+	src.procstart = null
 	var/area/area_checking = get_area(user)
 	if(area_checking.outdoors)
 		return AREA_OUTDOORS
@@ -212,6 +232,8 @@
  * Takes input from the player and renames the area the blueprints are currently in.
  */
 /obj/item/blueprints/proc/edit_area(mob/user)
+	procstart = null
+	src.procstart = null
 	var/area/area_editing = get_area(src)
 	var/prevname = "[area_editing.name]"
 	var/new_name = tgui_input_text(user, "New area name", "Area Creation", max_length = MAX_NAME_LEN)
@@ -244,6 +266,8 @@
 	color = "#2956B2"
 
 /obj/item/blueprints/slime/edit_area(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/area/area = get_area(src)
 	var/list/turf_matrix = color_transition_filter("#2956B2")

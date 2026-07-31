@@ -9,6 +9,8 @@
  * valid config entries are never ambiguous.
  */
 /datum/unit_test/species_config_sanity/Run()
+	procstart = null
+	src.procstart = null
 	var/datum/config_entry/keyed_list/roundstart_races/first_config_type = /datum/config_entry/keyed_list/roundstart_races
 	var/datum/config_entry/keyed_list/roundstart_no_hard_check/second_config_type = /datum/config_entry/keyed_list/roundstart_no_hard_check
 

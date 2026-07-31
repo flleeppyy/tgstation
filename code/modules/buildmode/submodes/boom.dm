@@ -16,6 +16,8 @@
 	)
 
 /datum/buildmode_mode/boom/show_help(client/builder)
+	procstart = null
+	src.procstart = null
 	to_chat(builder, span_purple(boxed_message(
 		"[span_bold("Set explosion destructiveness")] -> Right Mouse Button on buildmode button\n\
 		[span_bold("Kaboom")] -> Mouse Button on obj\n\n\
@@ -23,12 +25,16 @@
 	)
 
 /datum/buildmode_mode/boom/change_settings(client/c)
+	procstart = null
+	src.procstart = null
 	for (var/explosion_level in explosions)
 		explosions[explosion_level] = input(c, "Range of total [explosion_level]. 0 to none", "Input") as num|null
 		if(explosions[explosion_level] == null || explosions[explosion_level] < 0)
 			explosions[explosion_level] = 0
 
 /datum/buildmode_mode/boom/handle_click(client/c, params, obj/object)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 
 	var/value_valid = FALSE

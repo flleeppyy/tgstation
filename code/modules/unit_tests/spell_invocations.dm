@@ -5,6 +5,8 @@
 /datum/unit_test/spell_invocations
 
 /datum/unit_test/spell_invocations/Run()
+	procstart = null
+	src.procstart = null
 
 	var/list/types_to_test = subtypesof(/datum/action/cooldown/spell)
 

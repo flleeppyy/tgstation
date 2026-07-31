@@ -13,9 +13,13 @@
 	pass_flags = PASSTABLE
 
 /obj/effect/beam/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/beam/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/spawner
@@ -26,6 +30,8 @@
 // and do the absolute bare minimum
 // This is with the intent of optimizing mapload
 /obj/effect/spawner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	if(flags_1 & INITIALIZED_1)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
@@ -34,17 +40,23 @@
 	return INITIALIZE_HINT_QDEL
 
 /obj/effect/spawner/Destroy(force)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	moveToNullspace()
 	return QDEL_HINT_QUEUE
 
 /obj/effect/spawner/forceMove(atom/destination)
+	procstart = null
+	src.procstart = null
 	if(destination && QDELETED(src)) // throw a warning if we try to forceMove a qdeleted spawner to somewhere other than nullspace
 		stack_trace("Warning: something tried to forceMove() a qdeleted [src]([type]) to non-null destination [destination]([destination.type])!")
 	return ..()
 
 /// Override to define loot blacklist behavior
 /obj/effect/spawner/proc/can_spawn(atom/loot)
+	procstart = null
+	src.procstart = null
 	if(!ispath(loot))
 		// Means its something evil like /obj/item/stack/sheet/mineral/diamond{amount = 15}
 		// (modified instances?) which is not a path and cannot be checked as one
@@ -82,10 +94,14 @@
 	plane = ABOVE_GAME_PLANE
 
 /obj/effect/abstract/marker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.all_abstract_markers += src
 
 /obj/effect/abstract/marker/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.all_abstract_markers -= src
 	. = ..()
 

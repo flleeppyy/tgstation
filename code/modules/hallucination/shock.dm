@@ -9,10 +9,14 @@
 	var/image/electrocution_skeleton_anim
 
 /datum/hallucination/shock/New(mob/living/hallucinator)
+	procstart = null
+	src.procstart = null
 	electrocution_icon_state = ishuman(hallucinator) ? "electrocuted_base" : "electrocuted_generic"
 	return ..()
 
 /datum/hallucination/shock/Destroy()
+	procstart = null
+	src.procstart = null
 	if(shock_image)
 		hallucinator.client?.images -= shock_image
 		shock_image = null
@@ -23,6 +27,8 @@
 	return ..()
 
 /datum/hallucination/shock/start()
+	procstart = null
+	src.procstart = null
 	shock_image = image(hallucinator, hallucinator, dir = hallucinator.dir)
 	shock_image.appearance_flags |= KEEP_APART
 	shock_image.color = rgb(0, 0, 0)
@@ -54,6 +60,8 @@
 	return TRUE
 
 /datum/hallucination/shock/proc/reset_shock_animation()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(hallucinator))
 		return
 
@@ -64,6 +72,8 @@
 	electrocution_skeleton_anim = null
 
 /datum/hallucination/shock/proc/shock_drop()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(hallucinator))
 		return
 

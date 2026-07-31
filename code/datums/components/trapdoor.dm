@@ -39,6 +39,8 @@
 	var/on_shuttle = FALSE
 
 /datum/component/trapdoor/Initialize(starts_open, trapdoor_turf_path, trapdoor_baseturfs, assembly, conspicuous = TRUE, list/carried_decals = null, autoclose = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!isopenturf(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -66,6 +68,8 @@
 		try_opening()
 
 /datum/component/trapdoor/PostTransfer(datum/new_parent)
+	procstart = null
+	src.procstart = null
 	if(!isopenturf(new_parent))
 		if(isatom(new_parent))
 			var/atom/new_parent_atom = new_parent
@@ -77,17 +81,23 @@
 		on_shuttle = FALSE
 
 /datum/component/trapdoor/proc/is_under_shuttle()
+	procstart = null
+	src.procstart = null
 	var/turf/parent_turf = parent
 	var/shuttle_skipover_depth = parent_turf.depth_to_find_baseturf(/turf/baseturf_skipover/shuttle)
 	return shuttle_skipover_depth && parent_turf.depth_to_find_baseturf(/turf/baseturf_skipover/trapdoor) > shuttle_skipover_depth
 
 ///initializing as an opened trapdoor, we need to trust that we were given the data by a closed trapdoor
 /datum/component/trapdoor/proc/openspace_trapdoor_setup(trapdoor_turf_path, trapdoor_baseturfs)
+	procstart = null
+	src.procstart = null
 	src.trapdoor_turf_path = trapdoor_turf_path
 	src.trapdoor_baseturfs = trapdoor_baseturfs
 
 ///initializing as a closed trapdoor, we need to take data from the tile we're on to give it to the open state to store
 /datum/component/trapdoor/proc/tile_trapdoor_setup()
+	procstart = null
+	src.procstart = null
 	src.trapdoor_turf_path = parent.type
 	insert_trapdoor_skipover()
 	if(stored_decals.len)
@@ -97,12 +107,16 @@
 		parent_turf.add_overlay(trapdoor_overlay)
 
 /datum/component/trapdoor/proc/insert_trapdoor_skipover()
+	procstart = null
+	src.procstart = null
 	var/turf/parent_turf = parent
 	if(parent_turf.depth_to_find_baseturf(/turf/baseturf_skipover/trapdoor))
 		return
 	parent_turf.insert_baseturf((parent_turf.level_to_find_baseturf(/turf/baseturf_skipover/shuttle) || 1) + 1, /turf/baseturf_skipover/trapdoor)
 
 /datum/component/trapdoor/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(parent, COMSIG_TURF_CHANGE, PROC_REF(turf_changed_pre))
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
@@ -116,6 +130,8 @@
 	RegisterSignal(parent, COMSIG_SHUTTLE_TURF_ON_MOVE_SPECIAL, PROC_REF(on_move_special))
 
 /datum/component/trapdoor/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(SSdcs, COMSIG_GLOB_TRAPDOOR_LINK)
 	if(assembly)
@@ -128,6 +144,8 @@
 	UnregisterSignal(parent, COMSIG_SHUTTLE_TURF_ON_MOVE_SPECIAL)
 
 /datum/component/trapdoor/proc/try_unlink(turf/source, mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(is_under_shuttle())
 		return
@@ -141,6 +159,8 @@
 	return
 
 /datum/component/trapdoor/proc/try_link(turf/source, mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(is_under_shuttle())
 		return
@@ -160,6 +180,8 @@
 	INVOKE_ASYNC(src, PROC_REF(async_try_link), source, user, tool)
 
 /datum/component/trapdoor/proc/async_try_link(turf/source, mob/user, obj/item/trapdoor_remote/remote)
+	procstart = null
+	src.procstart = null
 	if(!do_after(user, 2 SECONDS, target=source))
 		return
 	if(QDELETED(src))
@@ -175,6 +197,8 @@
 	RegisterSignal(parent, COMSIG_ATOM_TOOL_ACT(TOOL_MULTITOOL), PROC_REF(try_unlink))
 
 /datum/component/trapdoor/proc/async_try_unlink(turf/source, mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!do_after(user, 5 SECONDS, target=source))
 		return
 	if(QDELETED(src))
@@ -191,6 +215,8 @@
 	source.balloon_alert(user, "trapdoor unlinked")
 
 /datum/component/trapdoor/proc/decal_detached(datum/source, description, cleanable, directional, pic)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	///so it adds the list to the list, not appending it to the end. thank you byond, very cool.
 	stored_decals += list(list(description, cleanable, directional, pic))
@@ -201,6 +227,8 @@
  * changing turfs does not bring over decals, so we must perform a little bit of element reapplication.
  */
 /datum/component/trapdoor/proc/reapply_all_decals()
+	procstart = null
+	src.procstart = null
 	if(is_under_shuttle())
 		return
 	for(var/list/element_data as anything in stored_decals)
@@ -209,10 +237,14 @@
 
 /// small proc that takes passed arguments and drops it into a new element
 /datum/component/trapdoor/proc/apply_decal(description, cleanable, directional, pic)
+	procstart = null
+	src.procstart = null
 	parent.AddElement(/datum/element/decal, _description = description, _cleanable = cleanable, _dir = directional, _pic = pic)
 
 ///called by linking remotes to tie an assembly to the trapdoor
 /datum/component/trapdoor/proc/on_link_requested(datum/source, obj/item/assembly/trapdoor/assembly)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(get_dist(parent, assembly) > TRAPDOOR_LINKING_SEARCH_RANGE)
 		return
@@ -225,6 +257,8 @@
 
 ///signal called by our assembly being pulsed
 /datum/component/trapdoor/proc/toggle_trapdoor(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(assembly)
 		autoclose = assembly.autoclose
@@ -235,6 +269,8 @@
 
 ///signal called by turf changing
 /datum/component/trapdoor/proc/turf_changed_pre(datum/source, path, list/new_baseturfs, flags, post_change_callbacks)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/turf/open/dying_trapdoor = parent
 	if((flags & CHANGETURF_TRAPDOOR_INDUCED) == 0) //not a process of the trapdoor
@@ -257,6 +293,8 @@
  * apparently callbacks with arguments on invoke and the callback itself have the callback args go first. interesting!
  */
 /datum/component/trapdoor/proc/carry_over_trapdoor(trapdoor_turf_path, trapdoor_baseturfs, conspicuous, assembly, turf/new_turf)
+	procstart = null
+	src.procstart = null
 	new_turf.AddComponent(/datum/component/trapdoor, FALSE, trapdoor_turf_path, trapdoor_baseturfs, assembly, conspicuous, stored_decals, autoclose)
 
 /**
@@ -265,6 +303,8 @@
  * examine message for conspicuous trapdoors that makes it obvious
  */
 /datum/component/trapdoor/proc/on_examine(datum/source, mob/user, list/examine_text)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(is_under_shuttle())
 		return
@@ -278,6 +318,8 @@
  * there are no checks for opening a trapdoor, but closed has some
  */
 /datum/component/trapdoor/proc/try_opening()
+	procstart = null
+	src.procstart = null
 	var/turf/open/trapdoor_turf = parent
 	var/opening_depth = trapdoor_turf.depth_to_find_baseturf(/turf/baseturf_skipover/trapdoor)
 	if(!opening_depth)
@@ -300,6 +342,8 @@
  * trapdoor can be blocked by building things on the openspace turf
  */
 /datum/component/trapdoor/proc/try_closing()
+	procstart = null
+	src.procstart = null
 	var/turf/open/trapdoor_turf = parent
 	var/obj/structure/lattice/blocking = locate() in trapdoor_turf.contents
 	if(blocking)
@@ -317,11 +361,15 @@
 	trapdoor_turf.ChangeTurf(trapdoor_turf_path, new_baseturfs, flags = CHANGETURF_INHERIT_AIR | CHANGETURF_TRAPDOOR_INDUCED)
 
 /datum/component/trapdoor/proc/should_move_special(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/turf/source_turf = source
 	return IS_OPEN(source_turf) && !is_under_shuttle()
 
 /datum/component/trapdoor/proc/on_move_special(datum/source, turf/new_turf)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	new_turf.TakeComponent(src)
 
@@ -342,6 +390,8 @@
 	var/autoclose = TRUE
 
 /obj/item/assembly/trapdoor/pulsed(mob/pulser)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(linked > 0)
 		return
@@ -353,6 +403,8 @@
 	COOLDOWN_START(src, search_cooldown, search_cooldown_time)
 
 /obj/item/assembly/trapdoor/proc/attempt_link_up()
+	procstart = null
+	src.procstart = null
 	var/turf/assembly_turf = get_turf(src)
 	if(!COOLDOWN_FINISHED(src, search_cooldown))
 		var/timeleft = DisplayTimeText(COOLDOWN_TIMELEFT(src, search_cooldown))
@@ -383,6 +435,8 @@
 	var/obj/item/assembly/trapdoor/internals
 
 /obj/item/trapdoor_remote/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!internals)
 		. += span_warning("[src] has no internals! It needs a trapdoor controller to function.")
@@ -400,6 +454,8 @@
 		. += span_warning("It is on a short cooldown.")
 
 /obj/item/trapdoor_remote/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!internals)
 		to_chat(user, span_warning("[src] has no internals!"))
@@ -409,6 +465,8 @@
 	internals = null
 
 /obj/item/trapdoor_remote/item_interaction(mob/living/user, obj/item/assembly/trapdoor/assembly, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(assembly))
 		return NONE
 	if(internals)
@@ -420,6 +478,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/trapdoor_remote/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -451,6 +511,8 @@
 	return TRUE
 
 /obj/item/trapdoor_remote/item_ctrl_click(mob/user)
+	procstart = null
+	src.procstart = null
 	if (!user.is_holding(src))
 		return CLICK_ACTION_BLOCKING
 	if(!internals)
@@ -468,6 +530,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2.6, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 1.1)
 
 /obj/item/trapdoor_remote/preloaded/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	internals = new(src)
 
@@ -481,13 +545,19 @@
 	var/in_use = FALSE
 
 /obj/item/trapdoor_kit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/openspace_item_click_handler)
 
 /obj/item/trapdoor_kit/handle_openspace_click(turf/target, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	interact_with_atom(target, user, modifiers)
 
 /obj/item/trapdoor_kit/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(interacting_with)
 	if(!isopenspaceturf(target_turf))
 		return NONE

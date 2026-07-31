@@ -12,6 +12,8 @@
 	description = "To quell the homeless uprising, Nanotrasen will be serving soup to all underpaid workers."
 
 /datum/bounty/reagent/chef/soup/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	required_volume = pick(10, 15, 20, 25)
 	wanted_reagent = pick(subtypesof(/datum/reagent/consumable/nutriment/soup))

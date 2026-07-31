@@ -9,19 +9,27 @@ SUBSYSTEM_DEF(augury)
 	var/list/observers_given_action = list()
 
 /datum/controller/subsystem/augury/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg = "W:[watchers.len]|D:[length(doombringers)]"
 	return ..()
 
 /datum/controller/subsystem/augury/proc/register_doom(atom/A, severity)
+	procstart = null
+	src.procstart = null
 	doombringers[A] = severity
 	RegisterSignal(A, COMSIG_QDELETING, PROC_REF(unregister_doom))
 
 /datum/controller/subsystem/augury/proc/unregister_doom(atom/A)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(A, COMSIG_QDELETING)
 	doombringers -= A
 
 /datum/controller/subsystem/augury/fire()
+	procstart = null
+	src.procstart = null
 	var/biggest_doom = null
 	var/biggest_threat = null
 
@@ -63,16 +71,22 @@ SUBSYSTEM_DEF(augury)
 	button_icon_state = "flaming"
 
 /datum/action/innate/augury/Destroy()
+	procstart = null
+	src.procstart = null
 	if(owner)
 		SSaugury.watchers -= owner
 	return ..()
 
 /datum/action/innate/augury/Activate()
+	procstart = null
+	src.procstart = null
 	SSaugury.watchers += owner
 	to_chat(owner, span_notice("You are now auto-following debris."))
 	active = TRUE
 
 /datum/action/innate/augury/Deactivate()
+	procstart = null
+	src.procstart = null
 	SSaugury.watchers -= owner
 	to_chat(owner, span_notice("You are no longer auto-following debris."))
 	active = FALSE

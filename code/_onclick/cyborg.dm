@@ -7,6 +7,8 @@
 */
 
 /mob/living/silicon/robot/ClickOn(atom/A, params)
+	procstart = null
+	src.procstart = null
 	if(world.time <= next_click)
 		return
 	next_click = world.time + 1
@@ -94,60 +96,86 @@
 //Give cyborgs hotkey clicks without breaking existing uses of hotkey clicks
 // for non-doors/apcs
 /mob/living/silicon/robot/CtrlShiftClickOn(atom/target)
+	procstart = null
+	src.procstart = null
 	target.BorgCtrlShiftClick(src)
 
 /mob/living/silicon/robot/ShiftClickOn(atom/target)
+	procstart = null
+	src.procstart = null
 	target.BorgShiftClick(src)
 
 /mob/living/silicon/robot/CtrlClickOn(atom/target)
+	procstart = null
+	src.procstart = null
 	target.BorgCtrlClick(src)
 
-/atom/proc/BorgCtrlShiftClick(mob/living/silicon/robot/user) //forward to human click if not overridden
+/atom/proc/BorgCtrlShiftClick(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null //forward to human click if not overridden
 	user.base_click_ctrl_shift(src)
 
-/obj/machinery/door/airlock/BorgCtrlShiftClick(mob/living/silicon/robot/user) // Sets/Unsets Emergency Access Override Forwards to AI code.
+/obj/machinery/door/airlock/BorgCtrlShiftClick(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null // Sets/Unsets Emergency Access Override Forwards to AI code.
 	if(get_dist(src, user) <= user.interaction_range && !(user.control_disabled))
 		AICtrlShiftClick(user)
 	else
 		..()
 
-/atom/proc/BorgShiftClick(mob/living/silicon/robot/user) //forward to human click if not overridden
+/atom/proc/BorgShiftClick(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null //forward to human click if not overridden
 	ShiftClick(user)
 
-/obj/machinery/door/airlock/BorgShiftClick(mob/living/silicon/robot/user)  // Opens and closes doors! Forwards to AI code.
+/obj/machinery/door/airlock/BorgShiftClick(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null  // Opens and closes doors! Forwards to AI code.
 	if(get_dist(src, user) <= user.interaction_range && !(user.control_disabled))
 		AIShiftClick(user)
 	else
 		..()
 
-/atom/proc/BorgCtrlClick(mob/living/silicon/robot/user) //forward to human click if not overridden
+/atom/proc/BorgCtrlClick(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null //forward to human click if not overridden
 	user.base_click_ctrl(src)
 
-/obj/machinery/door/airlock/BorgCtrlClick(mob/living/silicon/robot/user) // Bolts doors. Forwards to AI code.
+/obj/machinery/door/airlock/BorgCtrlClick(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null // Bolts doors. Forwards to AI code.
 	if(get_dist(src, user) <= user.interaction_range && !(user.control_disabled))
 		AICtrlClick(user)
 	else
 		..()
 
-/obj/machinery/power/apc/BorgCtrlClick(mob/living/silicon/robot/user) // turns off/on APCs. Forwards to AI code.
+/obj/machinery/power/apc/BorgCtrlClick(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null // turns off/on APCs. Forwards to AI code.
 	if(get_dist(src, user) <= user.interaction_range && !(user.control_disabled))
 		AICtrlClick(user)
 	else
 		..()
 
 /obj/machinery/power/apc/BorgCtrlShiftClick(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null
 	if(get_dist(src, user) <= user.interaction_range && !(user.control_disabled))
 		AICtrlShiftClick(user)
 	else
 		..()
 
 /obj/machinery/power/apc/BorgShiftClick(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null
 	if(get_dist(src, user) <= user.interaction_range && !(user.control_disabled))
 		AIShiftClick(user)
 	else
 		..()
 
 /obj/machinery/power/apc/borg_click_alt(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null
 	if(get_dist(src, user) <= user.interaction_range && !(user.control_disabled))
 		ai_click_alt(user)
 	else
@@ -155,28 +183,38 @@
 
 
 /obj/machinery/power/apc/attack_robot_secondary(mob/living/silicon/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(get_dist(src, user) <= user.interaction_range && !(user.control_disabled))
 		return attack_ai_secondary(user, modifiers)
 	else
 		..()
 
-/obj/machinery/turretid/BorgCtrlClick(mob/living/silicon/robot/user) //turret control on/off. Forwards to AI code.
+/obj/machinery/turretid/BorgCtrlClick(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null //turret control on/off. Forwards to AI code.
 	if(get_dist(src, user) <= user.interaction_range && !(user.control_disabled))
 		AICtrlClick(user)
 	else
 		..()
 
 /atom/proc/borg_click_alt(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null
 	user.base_click_alt(src)
 	return
 
-/obj/machinery/door/airlock/borg_click_alt(mob/living/silicon/robot/user) // Eletrifies doors. Forwards to AI code.
+/obj/machinery/door/airlock/borg_click_alt(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null // Eletrifies doors. Forwards to AI code.
 	if(get_dist(src, user) <= user.interaction_range && !(user.control_disabled))
 		ai_click_alt(user)
 	else
 		..()
 
-/obj/machinery/turretid/borg_click_alt(mob/living/silicon/robot/user) //turret lethal on/off. Forwards to AI code.
+/obj/machinery/turretid/borg_click_alt(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null //turret lethal on/off. Forwards to AI code.
 	if(get_dist(src, user) <= user.interaction_range && !(user.control_disabled))
 		ai_click_alt(user)
 	else
@@ -191,6 +229,8 @@
 	change attack_robot() above to the proper function
 */
 /mob/living/silicon/robot/UnarmedAttack(atom/A, proximity_flag, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!can_unarmed_attack())
 		return
 
@@ -207,6 +247,8 @@
  * * modifiers The list of the custom click modifiers
  */
 /atom/proc/attack_robot(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	if (SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_ROBOT, user, modifiers) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return
 
@@ -220,6 +262,8 @@
  * * modifiers The list of the custom click modifiers
  */
 /atom/proc/attack_robot_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_ROBOT_SECONDARY, user, modifiers) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 

@@ -22,6 +22,8 @@
  * * list/attack_modifiers - attack modifiers such as force, damage type, etc. Only used in attacks
  */
 /obj/item/proc/melee_attack_chain(mob/user, atom/target, list/modifiers, list/attack_modifiers = list())
+	procstart = null
+	src.procstart = null
 	//Proxy replaces src cause it returns an atom that will attack the target on our behalf
 	var/obj/item/source_atom = get_proxy_attacker_for(target, user)
 	if(source_atom != src) //if we are someone else then call that attack chain else we can proceed with the usual stuff
@@ -88,12 +90,16 @@
 
 /// Called when the item is in the active hand, and clicked; alternately, there is an 'activate held object' verb or you can hit pagedown.
 /obj/item/proc/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_ITEM_ATTACK_SELF, user) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return TRUE
 	interact(user)
 
 /// Called when the item is in the active hand, and right-clicked. Intended for alternate or opposite functions, such as lowering reagent transfer amount. At the moment, there is no verb or hotkey.
 /obj/item/proc/attack_self_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_ITEM_ATTACK_SELF_SECONDARY, user) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return TRUE
 
@@ -108,7 +114,9 @@
 
  * See: [/obj/item/proc/melee_attack_chain]
  */
-/obj/item/proc/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers) //do stuff before attackby!
+/obj/item/proc/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null //do stuff before attackby!
 	var/signal_result = SEND_SIGNAL(src, COMSIG_ITEM_PRE_ATTACK, target, user, modifiers, attack_modifiers) | SEND_SIGNAL(user, COMSIG_USER_PRE_ITEM_ATTACK, src, target, modifiers, attack_modifiers)
 	if(signal_result & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return TRUE
@@ -126,6 +134,8 @@
  * See: [/obj/item/proc/melee_attack_chain]
  */
 /obj/item/proc/pre_attack_secondary(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	var/signal_result = SEND_SIGNAL(src, COMSIG_ITEM_PRE_ATTACK_SECONDARY, target, user, modifiers, attack_modifiers) | SEND_SIGNAL(user, COMSIG_USER_PRE_ITEM_ATTACK_SECONDARY, src, target, modifiers, attack_modifiers)
 
 	if(signal_result & COMPONENT_SECONDARY_CANCEL_ATTACK_CHAIN)
@@ -148,6 +158,8 @@
  * See: [/obj/item/proc/melee_attack_chain]
  */
 /atom/proc/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_ATOM_ATTACKBY, attacking_item, user, modifiers, attack_modifiers) & COMPONENT_NO_AFTERATTACK)
 		return TRUE
 	return FALSE
@@ -164,6 +176,8 @@
  * See: [/obj/item/proc/melee_attack_chain]
  */
 /atom/proc/attackby_secondary(obj/item/weapon, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	var/signal_result = SEND_SIGNAL(src, COMSIG_ATOM_ATTACKBY_SECONDARY, weapon, user, modifiers, attack_modifiers)
 
 	if(signal_result & COMPONENT_SECONDARY_CANCEL_ATTACK_CHAIN)
@@ -175,6 +189,8 @@
 	return SECONDARY_ATTACK_CALL_NORMAL
 
 /obj/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 	if(!(obj_flags & CAN_BE_HIT))
@@ -182,6 +198,8 @@
 	return attacking_item.attack_atom(src, user, modifiers, attack_modifiers)
 
 /mob/living/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return NONE
 
@@ -198,12 +216,16 @@
 	return NONE
 
 /mob/living/attackby(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 	user.changeNext_move(attacking_item.attack_speed)
 	return attacking_item.attack(src, user, modifiers, attack_modifiers)
 
 /mob/living/attackby_secondary(obj/item/weapon, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	var/result = weapon.attack_secondary(src, user, modifiers, attack_modifiers)
 
 	// Normal attackby updates click cooldown, so we have to make up for it
@@ -225,6 +247,8 @@
  * * attack_modifiers - attack modifiers such as force, damage type, etc
  */
 /obj/item/proc/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	var/signal_return = SEND_SIGNAL(src, COMSIG_ITEM_ATTACK, target_mob, user, modifiers, attack_modifiers) || SEND_SIGNAL(user, COMSIG_MOB_ITEM_ATTACK, target_mob, user, modifiers, attack_modifiers)
 	if(signal_return & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return TRUE
@@ -266,6 +290,8 @@
 
 /// The equivalent of [/obj/item/proc/attack] but for alternate attacks, AKA right clicking
 /obj/item/proc/attack_secondary(mob/living/victim, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	var/signal_result = SEND_SIGNAL(src, COMSIG_ITEM_ATTACK_SECONDARY, victim, user, modifiers, attack_modifiers)
 
 	if(signal_result & COMPONENT_SECONDARY_CANCEL_ATTACK_CHAIN)
@@ -278,6 +304,8 @@
 
 /// The equivalent of the standard version of [/obj/item/proc/attack] but for non mob targets.
 /obj/item/proc/attack_atom(atom/attacked_atom, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	var/signal_return = SEND_SIGNAL(src, COMSIG_ITEM_ATTACK_ATOM, attacked_atom, user, modifiers, attack_modifiers) | SEND_SIGNAL(user, COMSIG_LIVING_ATTACK_ATOM, attacked_atom, modifiers, attack_modifiers)
 	if(signal_return & COMPONENT_SKIP_ATTACK)
 		return TRUE
@@ -297,6 +325,8 @@
 
 /// Called from [/obj/item/proc/attack_atom] and [/obj/item/proc/attack] if the attack succeeds
 /atom/proc/attacked_by(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!uses_integrity)
 		stack_trace("attacked_by() was called on an object that doesn't use integrity!")
 		return ATTACK_FAILED
@@ -313,10 +343,14 @@
 	return damage
 
 /area/attacked_by(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	stack_trace("areas are NOT supposed to have attacked_by() called on them!")
 	return ATTACK_FAILED
 
 /mob/living/attacked_by(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 
 	var/targeting = check_zone(user.zone_selected)
 	if(user != src)
@@ -382,6 +416,8 @@
  * Return TRUE if an effect was done, FALSE otherwise.
  */
 /mob/living/proc/attack_effects(damage_done, hit_zone, armor_block, obj/item/attacking_item, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	if(damage_done <= 0 || attacking_item.damtype != BRUTE || !prob(25 + damage_done * 2))
 		return FALSE
 
@@ -409,6 +445,8 @@
 	return TRUE
 
 /mob/living/carbon/attack_effects(damage_done, hit_zone, armor_block, obj/item/attacking_item, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/hit_bodypart = get_bodypart(hit_zone) || get_bodypart()
 	if(!hit_bodypart.can_bleed())
 		return FALSE
@@ -416,6 +454,8 @@
 	return ..()
 
 /mob/living/carbon/human/attack_effects(damage_done, hit_zone, armor_block, obj/item/attacking_item, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(hit_zone)
 		if(BODY_ZONE_HEAD)
@@ -474,10 +514,14 @@
  * * click_parameters - is the params string from byond [/atom/proc/Click] code, see that documentation.
  */
 /obj/item/proc/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	PROTECTED_PROC(TRUE)
 	return
 
 /obj/item/proc/get_clamped_volume()
+	procstart = null
+	src.procstart = null
 	if(w_class)
 		if(force)
 			return clamp((force + w_class) * 4, 30, 100)// Add the item's force to its weight class and multiply by 4, then clamp the value between 30 and 100
@@ -485,6 +529,8 @@
 			return clamp(w_class * 6, 10, 100) // Multiply the item's weight class by 6, then clamp the value between 10 and 100
 
 /mob/living/proc/send_item_attack_message(obj/item/weapon, mob/living/user, hit_area, def_zone)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(weapon, COMSIG_SEND_ITEM_ATTACK_MESSAGE_OBJECT, src, user) & SIGNAL_MESSAGE_MODIFIED)
 		return TRUE
 	if(SEND_SIGNAL(src, COMSIG_SEND_ITEM_ATTACK_MESSAGE_CARBON, weapon, user) & SIGNAL_MESSAGE_MODIFIED)
@@ -522,6 +568,8 @@
 
 /// Overridable proc so subtypes can have unique targetted strike zone messages, return a string.
 /mob/living/proc/get_hit_area_message(input_area)
+	procstart = null
+	src.procstart = null
 	if(input_area)
 		return " in the [input_area]"
 

@@ -5,12 +5,16 @@
 	var/generator_path
 
 /datum/buildmode_mode/mapgen/show_help(client/builder)
+	procstart = null
+	src.procstart = null
 	to_chat(builder, span_purple(boxed_message(
 		"[span_bold("Select corner")] -> Left Mouse Button on turf/obj/mob\n\
 		[span_bold("Select generator")] -> Right Mouse Button on buildmode button"))
 	)
 
 /datum/buildmode_mode/mapgen/change_settings(client/c)
+	procstart = null
+	src.procstart = null
 	var/list/gen_paths = subtypesof(/datum/map_generator)
 	var/list/options = list()
 	for(var/path in gen_paths)
@@ -24,6 +28,8 @@
 	deselect_region()
 
 /datum/buildmode_mode/mapgen/handle_click(client/c, params, obj/object)
+	procstart = null
+	src.procstart = null
 	if(isnull(generator_path))
 		to_chat(c, span_warning("Select generator type first."))
 		deselect_region()
@@ -31,6 +37,8 @@
 	..()
 
 /datum/buildmode_mode/mapgen/handle_selected_area(client/c, params)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 
 	if(LAZYACCESS(modifiers, LEFT_CLICK))

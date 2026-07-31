@@ -10,6 +10,8 @@
 	id = MATERIAL_FLAMMABILITY
 
 /datum/material_property/flammability/get_descriptor(value)
+	procstart = null
+	src.procstart = null
 	switch(value)
 		if (0)
 			return "fireproof"
@@ -29,17 +31,23 @@
 			return "insanely flammable"
 
 /datum/material_property/flammability/attach_to(datum/material/material)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(material, COMSIG_MATERIAL_APPLIED, PROC_REF(on_applied))
 	RegisterSignal(material, COMSIG_MATERIAL_REMOVED, PROC_REF(on_removed))
 
 /datum/material_property/flammability/proc/on_applied(datum/material/source, atom/new_atom, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (isobj(new_atom) && (new_atom.material_flags & MATERIAL_AFFECT_STATISTICS) && source.get_property(id) >= MINIMUM_FLAMMABILITY)
 		new_atom.resistance_flags |= FLAMMABLE
 
 /datum/material_property/flammability/proc/on_removed(datum/material/source, atom/old_atom, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (isobj(old_atom) && (old_atom.material_flags & MATERIAL_AFFECT_STATISTICS) && source.get_property(id) >= MINIMUM_FLAMMABILITY && !(initial(old_atom.resistance_flags) & FLAMMABLE))
@@ -55,6 +63,8 @@
 	id = MATERIAL_RADIOACTIVITY
 
 /datum/material_property/radioactivity/get_descriptor(value)
+	procstart = null
+	src.procstart = null
 	switch(value)
 		if (0)
 			return null
@@ -70,17 +80,23 @@
 			return "insanely radioactive"
 
 /datum/material_property/radioactivity/attach_to(datum/material/material)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(material, COMSIG_MATERIAL_APPLIED, PROC_REF(on_applied))
 	RegisterSignal(material, COMSIG_MATERIAL_REMOVED, PROC_REF(on_removed))
 
 /datum/material_property/radioactivity/proc/on_applied(datum/material/source, atom/new_atom, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Uranium structures should irradiate, but not items, because item irradiation is a lot more annoying.
 	if (!isitem(new_atom))
 		new_atom.AddElement(/datum/element/radioactive, chance = source.get_property(id) / URANIUM_RADIOACTIVITY * URANIUM_IRRADIATION_CHANCE * multiplier)
 
 /datum/material_property/radioactivity/proc/on_removed(datum/material/source, atom/old_atom, mat_amount, multiplier, from_slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!isitem(old_atom))
@@ -94,12 +110,18 @@
 	id = MATERIAL_FIRESTACKER
 
 /datum/material_property/firestacker/get_descriptor(value)
+	procstart = null
+	src.procstart = null
 	return "igniting"
 
 /datum/material_property/firestacker/get_tooltip(value)
+	procstart = null
+	src.procstart = null
 	return "Applies [value] firestacks to affected mobs"
 
 /datum/material_property/firestacker/attach_to(datum/material/material)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	material.track_flags |= MATERIAL_TRACK_CONTACT | MATERIAL_TRACK_IMPACT
 	var/static/list/interaction_signals = list(
@@ -111,6 +133,8 @@
 	RegisterSignals(material, interaction_signals, PROC_REF(on_contact))
 
 /datum/material_property/firestacker/proc/on_contact(datum/material/source, atom/object, mob/living/target, mob/living/user, def_zone, skin_contact)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// Floors don't trigger if you're wearing shoes because it'd be too cancer
@@ -126,12 +150,18 @@
 	id = MATERIAL_VAMPIRES_BANE
 
 /datum/material_property/vampires_bane/get_descriptor(value)
+	procstart = null
+	src.procstart = null
 	return "vampires' bane"
 
 /datum/material_property/vampires_bane/get_tooltip(value)
+	procstart = null
+	src.procstart = null
 	return "Deals [value * 0.5] to [value * 2] additional burn damage to vampires on contact (based on material volume)"
 
 /datum/material_property/vampires_bane/attach_to(datum/material/material)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	material.track_flags |= MATERIAL_TRACK_CONTACT | MATERIAL_TRACK_IMPACT
 	var/static/list/interaction_signals = list(
@@ -143,6 +173,8 @@
 	RegisterSignals(material, interaction_signals, PROC_REF(on_contact))
 
 /datum/material_property/vampires_bane/proc/on_contact(datum/material/source, atom/object, mob/living/target, mob/living/user, def_zone, skin_contact)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!isvampire(target))
@@ -166,12 +198,18 @@
 	id = MATERIAL_TELEPORTING
 
 /datum/material_property/teleporting/get_descriptor(value)
+	procstart = null
+	src.procstart = null
 	return "dimensionally unstable"
 
 /datum/material_property/teleporting/get_tooltip(value)
+	procstart = null
+	src.procstart = null
 	return "Randomly teleports whoever comes into contact with it in a [value] tile radius"
 
 /datum/material_property/teleporting/attach_to(datum/material/material)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	material.track_flags |= MATERIAL_TRACK_CONTACT | MATERIAL_TRACK_IMPACT
 	var/static/list/interaction_signals = list(
@@ -183,6 +221,8 @@
 	RegisterSignals(material, interaction_signals, PROC_REF(on_contact))
 
 /datum/material_property/teleporting/proc/on_contact(datum/material/source, atom/object, atom/target, mob/living/user, def_zone, skin_contact)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (!ismovable(target))
@@ -211,7 +251,11 @@
 	id = MATERIAL_PENETRATING
 
 /datum/material_property/penetrating/get_descriptor(value)
+	procstart = null
+	src.procstart = null
 	return "dimensionally penetrating"
 
 /datum/material_property/penetrating/get_tooltip(value)
+	procstart = null
+	src.procstart = null
 	return "Ignores all means of skin protection when triggering other material effects"

@@ -20,10 +20,14 @@
 	VAR_PRIVATE/datum/paintable_decal_category/current_category
 
 /obj/item/airlock_painter/decal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_category(GLOB.paintable_decals[1])
 
 /obj/item/airlock_painter/decal/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isfloorturf(interacting_with) && use_paint(user))
 		paint_floor(interacting_with)
 		return ITEM_INTERACT_SUCCESS
@@ -38,6 +42,8 @@
  * * target - The turf being painted to
 */
 /obj/item/airlock_painter/decal/proc/paint_floor(turf/open/floor/target)
+	procstart = null
+	src.procstart = null
 	var/list/decal_data = current_category.get_decal_info(
 		state = selected_decal_icon_state,
 		color = selected_color,
@@ -55,22 +61,30 @@
 	)
 
 /obj/item/airlock_painter/decal/proc/set_category(datum/paintable_decal_category/category)
+	procstart = null
+	src.procstart = null
 	current_category = category
 	selected_color = category.possible_colors?[category.possible_colors[1]]
 	selected_decal_icon_state = category.get_ui_data()["decal_list"][1]["icon_state"]
 	return TRUE
 
 /obj/item/airlock_painter/decal/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "DecalPainter", name)
 		ui.open()
 
 /obj/item/airlock_painter/decal/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += get_asset_datum(/datum/asset/spritesheet_batched/decals)
 
 /obj/item/airlock_painter/decal/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["categories"] = list()
@@ -89,6 +103,8 @@
 	return data
 
 /obj/item/airlock_painter/decal/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["current_decal"] = selected_decal_icon_state
 	data["current_color"] = selected_color
@@ -98,6 +114,8 @@
 	return data
 
 /obj/item/airlock_painter/decal/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -133,6 +151,8 @@
 			return TRUE
 
 /obj/item/airlock_painter/decal/set_painting_tool_color(chosen_color)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	selected_custom_color = chosen_color
 	selected_color = chosen_color
@@ -147,6 +167,8 @@
 	initial_ink_type = /obj/item/toner/infinite
 
 /obj/item/airlock_painter/decal/cyborg/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/silicon/robot/cyborg = user
 	if(!iscyborg(user) || !cyborg.cell)
@@ -158,4 +180,6 @@
 		return
 
 /obj/item/airlock_painter/decal/cyborg/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	return CLICK_ACTION_BLOCKING

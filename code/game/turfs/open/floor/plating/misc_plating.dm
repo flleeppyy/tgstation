@@ -22,10 +22,14 @@
 	rust_resistance = RUST_RESISTANCE_ORGANIC
 
 /turf/open/floor/plating/abductor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "alienpod[rand(1,9)]"
 
 /turf/open/floor/plating/abductor/break_tile()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/open/floor/plating/abductor2
@@ -37,12 +41,18 @@
 	damaged_dmi = null
 
 /turf/open/floor/plating/abductor2/break_tile()
+	procstart = null
+	src.procstart = null
 	return //unbreakable
 
 /turf/open/floor/plating/abductor2/burn_tile()
+	procstart = null
+	src.procstart = null
 	return //unburnable
 
 /turf/open/floor/plating/abductor2/try_replace_tile(obj/item/stack/tile/T, mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/floor/plating/snowed

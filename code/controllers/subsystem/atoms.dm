@@ -32,6 +32,8 @@ SUBSYSTEM_DEF(atoms)
 	initialized = INITIALIZATION_INSSATOMS
 
 /datum/controller/subsystem/atoms/Initialize()
+	procstart = null
+	src.procstart = null
 	init_start_time = world.time
 	setupGenetics() //to set the mutations' sequence
 
@@ -42,6 +44,8 @@ SUBSYSTEM_DEF(atoms)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/atoms/proc/InitializeAtoms(list/atoms, list/atoms_to_return)
+	procstart = null
+	src.procstart = null
 	if(initialized == INITIALIZATION_INSSATOMS)
 		return
 
@@ -82,6 +86,8 @@ SUBSYSTEM_DEF(atoms)
 
 /// Actually creates the list of atoms. Exists solely so a runtime in the creation logic doesn't cause initialized to totally break
 /datum/controller/subsystem/atoms/proc/CreateAtoms(list/atoms, list/atoms_to_return = null, mapload_source = null)
+	procstart = null
+	src.procstart = null
 	if (atoms_to_return)
 		LAZYINITLIST(created_atoms)
 
@@ -130,13 +136,19 @@ SUBSYSTEM_DEF(atoms)
 	testing("Initialized [count] atoms")
 
 /datum/controller/subsystem/atoms/proc/map_loader_begin(source)
+	procstart = null
+	src.procstart = null
 	set_tracked_initalized(INITIALIZATION_INSSATOMS, source)
 
 /datum/controller/subsystem/atoms/proc/map_loader_stop(source)
+	procstart = null
+	src.procstart = null
 	clear_tracked_initalize(source)
 
 /// Returns the source currently modifying SSatom's init behavior
 /datum/controller/subsystem/atoms/proc/get_initialized_source()
+	procstart = null
+	src.procstart = null
 	var/state_length = length(initialized_state)
 	if(!state_length)
 		return null
@@ -145,12 +157,16 @@ SUBSYSTEM_DEF(atoms)
 /// Use this to set initialized to prevent error states where the old initialized is overridden, and we end up losing all context
 /// Accepts a state and a source, the most recent state is used, sources exist to prevent overriding old values accidentally
 /datum/controller/subsystem/atoms/proc/set_tracked_initalized(state, source)
+	procstart = null
+	src.procstart = null
 	if(!length(initialized_state))
 		base_initialized = initialized
 	initialized_state += list(list(source, state))
 	initialized = state
 
 /datum/controller/subsystem/atoms/proc/clear_tracked_initalize(source)
+	procstart = null
+	src.procstart = null
 	if(!length(initialized_state))
 		return
 	for(var/i in length(initialized_state) to 1 step -1)
@@ -167,9 +183,13 @@ SUBSYSTEM_DEF(atoms)
 
 /// Returns TRUE if anything is currently being initialized
 /datum/controller/subsystem/atoms/proc/initializing_something()
+	procstart = null
+	src.procstart = null
 	return length(initialized_state) > 1
 
 /datum/controller/subsystem/atoms/Recover()
+	procstart = null
+	src.procstart = null
 	initialized = SSatoms.initialized
 	if(initialized == INITIALIZATION_INNEW_MAPLOAD)
 		InitializeAtoms()
@@ -177,6 +197,8 @@ SUBSYSTEM_DEF(atoms)
 	BadInitializeCalls = SSatoms.BadInitializeCalls
 
 /datum/controller/subsystem/atoms/proc/setupGenetics()
+	procstart = null
+	src.procstart = null
 	var/list/mutations = subtypesof(/datum/mutation)
 	shuffle_inplace(mutations)
 	for(var/i in 1 to LAZYLEN(mutations))
@@ -197,6 +219,8 @@ SUBSYSTEM_DEF(atoms)
 		CHECK_TICK
 
 /datum/controller/subsystem/atoms/proc/InitLog()
+	procstart = null
+	src.procstart = null
 	. = ""
 	for(var/path in BadInitializeCalls)
 		. += "Path : [path] \n"
@@ -212,6 +236,8 @@ SUBSYSTEM_DEF(atoms)
 
 /// Prepares an atom to be deleted once the atoms SS is initialized.
 /datum/controller/subsystem/atoms/proc/prepare_deletion(atom/target)
+	procstart = null
+	src.procstart = null
 	if (initialized == INITIALIZATION_INNEW_REGULAR)
 		// Atoms SS has already completed, just kill it now.
 		qdel(target)
@@ -219,6 +245,8 @@ SUBSYSTEM_DEF(atoms)
 		queued_deletions += WEAKREF(target)
 
 /datum/controller/subsystem/atoms/Shutdown()
+	procstart = null
+	src.procstart = null
 	var/initlog = InitLog()
 	if(initlog)
 		text2file(initlog, "[GLOB.log_directory]/initialize.log")

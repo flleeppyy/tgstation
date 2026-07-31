@@ -10,6 +10,8 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2.5, /datum/material/glass = SHEET_MATERIAL_AMOUNT)
 
 /obj/item/pipe_painter/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(interacting_with, /obj/machinery/atmospherics))
 		var/obj/machinery/atmospherics/target_pipe = interacting_with
 		target_pipe.paint(GLOB.pipe_paint_colors[paint_color])
@@ -29,8 +31,12 @@
 	return NONE
 
 /obj/item/pipe_painter/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	paint_color = tgui_input_list(user, "Which colour do you want to use?", "Pipe painter", GLOB.pipe_paint_colors)
 
 /obj/item/pipe_painter/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("It is set to [paint_color].")

@@ -18,6 +18,8 @@
 	var/list/valid_emotes = list(/datum/emote/living/carbon/human/blink, /datum/emote/living/carbon/human/blink_r)
 
 /datum/component/manual_blinking/Initialize(damage_rate = 1, warning_delay = 20 SECONDS, grace_period = 6 SECONDS, display_message = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -40,6 +42,8 @@
 		to_chat(carbon_parent, span_notice("You suddenly realize you're blinking manually."))
 
 /datum/component/manual_blinking/Destroy(force)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(parent, TRAIT_PREVENT_BLINK_LOOPS, REF(src))
 	parent_eyes = null
 	STOP_PROCESSING(SSdcs, src)
@@ -51,6 +55,8 @@
 	return ..()
 
 /datum/component/manual_blinking/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_MOB_EMOTE, PROC_REF(check_emote))
 	RegisterSignal(parent, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(check_added_organ))
 	RegisterSignal(parent, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(check_removed_organ))
@@ -59,19 +65,27 @@
 	RegisterSignal(parent, COMSIG_MOB_REAGENTS_DROPPED_INTO_EYES, PROC_REF(on_dropper))
 
 /datum/component/manual_blinking/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_MOB_EMOTE, COMSIG_CARBON_GAIN_ORGAN, COMSIG_CARBON_LOSE_ORGAN, COMSIG_LIVING_REVIVE, COMSIG_LIVING_DEATH, COMSIG_MOB_REAGENTS_DROPPED_INTO_EYES))
 
 /datum/component/manual_blinking/proc/restart()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	START_PROCESSING(SSdcs, src)
 
 /datum/component/manual_blinking/proc/pause()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	STOP_PROCESSING(SSdcs, src)
 
 /datum/component/manual_blinking/process()
+	procstart = null
+	src.procstart = null
 	if(world.time > (last_blink + warning_delay + grace_period))
 		if(!warn_dying)
 			to_chat(parent, span_userdanger("Your eyes begin to wither, you need to blink!"))
@@ -83,6 +97,8 @@
 			warn_grace = TRUE
 
 /datum/component/manual_blinking/proc/check_added_organ(mob/who_cares, obj/item/organ/added_organ)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(added_organ, /obj/item/organ/eyes))
@@ -94,6 +110,8 @@
 		START_PROCESSING(SSdcs, src)
 
 /datum/component/manual_blinking/proc/check_removed_organ(mob/who_cares, obj/item/organ/removed_organ)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(removed_organ == parent_eyes)
@@ -101,6 +119,8 @@
 		STOP_PROCESSING(SSdcs, src)
 
 /datum/component/manual_blinking/proc/check_emote(mob/living/carbon/user, datum/emote/emote)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!(emote.type in valid_emotes))
@@ -113,6 +133,8 @@
 	addtimer(CALLBACK(user, TYPE_PROC_REF(/mob/living, remove_status_effect), /datum/status_effect/grouped/blindness, REF(src)), 0.15 SECONDS)
 
 /datum/component/manual_blinking/proc/on_dropper(datum/source, mob/living/user, atom/dropper, datum/reagents/reagents, fraction)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/saline_amount = reagents.get_reagent_amount(/datum/reagent/medicine/salglu_solution) * fraction

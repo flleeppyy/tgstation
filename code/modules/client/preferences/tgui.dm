@@ -12,6 +12,8 @@
 	default_value = FALSE
 
 /datum/preference/toggle/tgui_input_large/apply_to_client(client/client, value)
+	procstart = null
+	src.procstart = null
 	for (var/datum/tgui/tgui as anything in client.mob?.tgui_open_uis)
 		// Force it to reload either way
 		tgui.send_full_update(client.mob)
@@ -23,6 +25,8 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/toggle/tgui_input_swapped/apply_to_client(client/client, value)
+	procstart = null
+	src.procstart = null
 	for (var/datum/tgui/tgui as anything in client.mob?.tgui_open_uis)
 		// Force it to reload either way
 		tgui.send_full_update(client.mob)
@@ -33,15 +37,21 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/choiced/tgui_layout/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list(
 		TGUI_LAYOUT_GRID,
 		TGUI_LAYOUT_LIST,
 	)
 
 /datum/preference/choiced/tgui_layout/create_default_value()
+	procstart = null
+	src.procstart = null
 	return TGUI_LAYOUT_LIST
 
 /datum/preference/choiced/tgui_layout/apply_to_client(client/client, value)
+	procstart = null
+	src.procstart = null
 	for (var/datum/tgui/tgui as anything in client.mob?.tgui_open_uis)
 		// Force it to reload either way
 		tgui.update_static_data(client.mob)
@@ -50,6 +60,8 @@
 	savefile_key = "tgui_layout_smartfridge"
 
 /datum/preference/choiced/tgui_layout/create_default_value()
+	procstart = null
+	src.procstart = null
 	return TGUI_LAYOUT_GRID
 
 /datum/preference/toggle/tgui_lock
@@ -59,6 +71,8 @@
 	default_value = FALSE
 
 /datum/preference/toggle/tgui_lock/apply_to_client(client/client, value)
+	procstart = null
+	src.procstart = null
 	for (var/datum/tgui/tgui as anything in client.mob?.tgui_open_uis)
 		// Force it to reload either way
 		tgui.update_static_data(client.mob)
@@ -71,6 +85,8 @@
 	default_value = FALSE
 
 /datum/preference/toggle/tgui_say_light_mode/apply_to_client(client/client)
+	procstart = null
+	src.procstart = null
 	client.tgui_say?.load()
 
 /datum/preference/toggle/ui_scale
@@ -80,6 +96,8 @@
 	default_value = TRUE
 
 /datum/preference/toggle/ui_scale/apply_to_client(client/client, value)
+	procstart = null
+	src.procstart = null
 	if(!istype(client))
 		return
 

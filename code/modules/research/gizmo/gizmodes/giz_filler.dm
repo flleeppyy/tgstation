@@ -16,6 +16,8 @@
 	var/oil_chance = 8
 
 /datum/gizpulse/sputter/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	playsound(holder, 'sound/effects/splat.ogg', 30)
 	for(var/turf/open/tile in oview(oil_range, holder))
 		if(prob(oil_chance))
@@ -24,6 +26,8 @@
 	holder.Shake()
 
 /datum/gizpulse/throw_self/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	holder.throw_at(get_edge_target_turf(holder, pick(GLOB.alldirs)), 50, 1)
 
 /// Spawn some item
@@ -60,6 +64,8 @@
 	var/next_object_position = 0
 
 /datum/gizpulse/dispense/activate(atom/movable/holder, datum/gizmodes/master, datum/gizmo_interface/interface)
+	procstart = null
+	src.procstart = null
 	if(!object_to_spawn)
 		object_to_spawn = pick_weight(possible_objects)
 
@@ -73,6 +79,8 @@
 	next_object_position++
 
 /datum/gizpulse/dispense/proc/modify(atom/movable/new_object)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Spawn fake goop food
@@ -96,6 +104,8 @@
 	)
 
 /datum/gizpulse/dispense/food/modify(atom/movable/new_object)
+	procstart = null
+	src.procstart = null
 	new_object.reagents.clear_reagents()
 	// its goop all the way down
 	new_object.reagents.add_reagent(/datum/reagent/consumable/gizmo_goop, 5)

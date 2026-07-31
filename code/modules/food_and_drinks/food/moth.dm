@@ -177,6 +177,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_5
 
 /obj/item/food/raw_green_lasagne/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/green_lasagne, rand(15 SECONDS, 25 SECONDS), TRUE, TRUE)
 
 /obj/item/food/green_lasagne
@@ -194,6 +196,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_5
 
 /obj/item/food/green_lasagne/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/green_lasagne_slice, 6, 3 SECONDS, table_required = TRUE,  screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/green_lasagne_slice
@@ -225,6 +229,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_5
 
 /obj/item/food/raw_baked_rice/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/big_baked_rice, rand(15 SECONDS, 25 SECONDS), TRUE, TRUE)
 
 /obj/item/food/big_baked_rice
@@ -243,6 +249,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_5
 
 /obj/item/food/big_baked_rice/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/lil_baked_rice, 6, 3 SECONDS, table_required = TRUE, screentip_verb = "Cut")
 
 /obj/item/food/lil_baked_rice
@@ -320,6 +328,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/raw_ratatouille/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/ratatouille, rand(15 SECONDS, 25 SECONDS), TRUE, TRUE)
 
 /obj/item/food/ratatouille
@@ -366,6 +376,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/raw_stuffed_peppers/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/stuffed_peppers, rand(10 SECONDS, 20 SECONDS), TRUE, TRUE)
 
 /obj/item/food/stuffed_peppers
@@ -551,6 +563,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_5
 
 /obj/item/food/raw_mothic_margherita/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/pizza/mothic_margherita, rand(15 SECONDS, 25 SECONDS), TRUE, TRUE)
 
 /obj/item/food/pizza/mothic_margherita
@@ -596,6 +610,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_5
 
 /obj/item/food/raw_mothic_firecracker/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/pizza/mothic_firecracker, rand(15 SECONDS, 25 SECONDS), TRUE, TRUE)
 
 /obj/item/food/pizza/mothic_firecracker
@@ -641,6 +657,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_5
 
 /obj/item/food/raw_mothic_five_cheese/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/pizza/mothic_five_cheese, rand(15 SECONDS, 25 SECONDS), TRUE, TRUE)
 
 /obj/item/food/pizza/mothic_five_cheese
@@ -685,6 +703,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_5
 
 /obj/item/food/raw_mothic_white_pie/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/pizza/mothic_white_pie, rand(15 SECONDS, 25 SECONDS), TRUE, TRUE)
 
 /obj/item/food/pizza/mothic_white_pie
@@ -729,6 +749,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_5
 
 /obj/item/food/raw_mothic_pesto/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/pizza/mothic_pesto, rand(15 SECONDS, 25 SECONDS), TRUE, TRUE)
 
 /obj/item/food/pizza/mothic_pesto
@@ -773,6 +795,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_4
 
 /obj/item/food/raw_mothic_garlic/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/pizza/mothic_garlic, rand(15 SECONDS, 25 SECONDS), TRUE, TRUE)
 
 /obj/item/food/pizza/mothic_garlic

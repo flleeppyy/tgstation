@@ -71,6 +71,8 @@
 	acid = 30
 
 /obj/item/tank/dropped(mob/living/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Close open air tank if its current user got sent to the shadowrealm.
 	if (QDELETED(breathing_mob))
@@ -82,6 +84,8 @@
 
 /// Closes the tank if given to another mob while open.
 /obj/item/tank/equipped(mob/living/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Close open air tank if it was equipped by a mob other than the current user.
 	if (breathing_mob && (user != breathing_mob))
@@ -89,6 +93,8 @@
 
 /// Called by carbons after they connect the tank to their breathing apparatus.
 /obj/item/tank/proc/after_internals_opened(mob/living/carbon/carbon_target)
+	procstart = null
+	src.procstart = null
 	breathing_mob = carbon_target
 	playsound(loc, 'sound/items/internals/internals_on.ogg', 15, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	var/pressure_on_open = air_contents.return_pressure() //we start off "full" when we toggle, and count down from there.
@@ -96,18 +102,26 @@
 
 /// Called by carbons after they disconnect the tank from their breathing apparatus.
 /obj/item/tank/proc/after_internals_closed(mob/living/carbon/carbon_target)
+	procstart = null
+	src.procstart = null
 	breathing_mob = null
 	playsound(loc, 'sound/items/internals/internals_off.ogg', 15, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	QDEL_NULL(volume_bar)
 
 /// Attempts to toggle the mob's internals on or off using this tank. Returns TRUE if successful.
 /obj/item/tank/proc/toggle_internals(mob/living/carbon/mob_target)
+	procstart = null
+	src.procstart = null
 	return mob_target.toggle_internals(src)
 
 /obj/item/tank/ui_action_click(mob/user)
+	procstart = null
+	src.procstart = null
 	toggle_internals(user)
 
 /obj/item/tank/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(tank_holder_icon_state)
@@ -130,9 +144,13 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/item/tank/proc/populate_gas()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/tank/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	air_contents = null
 	QDEL_NULL(tank_assembly)
@@ -140,6 +158,8 @@
 	return ..()
 
 /obj/item/tank/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(tank_assembly)
 		. += tank_assembly.icon_state
@@ -147,6 +167,8 @@
 		. += "bomb_assembly"
 
 /obj/item/tank/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/icon = src
 	. = ..()
 	if(istype(loc, /obj/item/assembly))
@@ -180,6 +202,8 @@
 		. += span_warning("There is some kind of device [EXAMINE_HINT("rigged")] to the tank!")
 
 /obj/item/tank/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/atom/location = loc
 	if(location)
 		location.assume_air(air_contents)
@@ -187,6 +211,8 @@
 	return ..()
 
 /obj/item/tank/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_user = user
 	user.visible_message(span_suicide("[user] is putting [src]'s valve to [user.p_their()] lips! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(loc, 'sound/effects/spray.ogg', 10, TRUE, -3)
@@ -200,6 +226,8 @@
 	return SHAME
 
 /obj/item/tank/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(!istype(tool, /obj/item/assembly_holder))
 		return NONE
@@ -210,6 +238,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/tank/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(tank_assembly)
 		tool.play_tool_sound(src)
 		bomb_disassemble(user)
@@ -217,6 +247,8 @@
 	return ..()
 
 /obj/item/tank/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(bomb_status)
 		balloon_alert(user, "already welded!")
 		return ITEM_INTERACT_BLOCKING
@@ -229,15 +261,21 @@
 	return ..()
 
 /obj/item/tank/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.hands_state
 
 /obj/item/tank/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Tank", name)
 		ui.open()
 
 /obj/item/tank/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list (
 		"defaultReleasePressure" = round(TANK_DEFAULT_RELEASE_PRESSURE),
 		"minReleasePressure" = round(TANK_MIN_RELEASE_PRESSURE),
@@ -247,6 +285,8 @@
 	)
 
 /obj/item/tank/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list(
 		"tankPressure" = round(air_contents.return_pressure()),
 		"releasePressure" = round(distribute_pressure)
@@ -259,6 +299,8 @@
 		.["connected"] = TRUE
 
 /obj/item/tank/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -281,17 +323,25 @@
 				distribute_pressure = clamp(round(pressure), TANK_MIN_RELEASE_PRESSURE, TANK_MAX_RELEASE_PRESSURE)
 
 /obj/item/tank/remove_air(amount)
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSobj, src)
 	return air_contents.remove(amount)
 
 /obj/item/tank/return_air()
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSobj, src)
 	return air_contents
 
 /obj/item/tank/return_analyzable_air()
+	procstart = null
+	src.procstart = null
 	return air_contents
 
 /obj/item/tank/assume_air(datum/gas_mixture/giver)
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSobj, src)
 	air_contents.merge(giver)
 	handle_tolerances(ASSUME_AIR_DT_FACTOR)
@@ -304,6 +354,8 @@
  * - volume_to_return: The amount of volume to remove from the tank.
  */
 /obj/item/tank/proc/remove_air_volume(volume_to_return)
+	procstart = null
+	src.procstart = null
 	if(!air_contents)
 		return null
 
@@ -322,6 +374,8 @@
 	return remove_air(moles_needed)
 
 /obj/item/tank/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!air_contents)
 		return
 	if(!QDELETED(volume_bar))
@@ -352,6 +406,8 @@
  * - seconds_per_tick: How long has passed between ticks.
  */
 /obj/item/tank/proc/handle_tolerances(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!air_contents)
 		return FALSE
 
@@ -371,6 +427,8 @@
 
 /// Handles the tank springing a leak.
 /obj/item/tank/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(leaking)
 		return
@@ -385,6 +443,8 @@
 
 /// Handles rupturing and fragmenting
 /obj/item/tank/atom_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!air_contents)
 		return ..()
 
@@ -404,54 +464,76 @@
 	return ..()
 
 /obj/item/tank/proc/merging_information()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(air_contents.return_pressure() > TANK_FRAGMENT_PRESSURE)
 		explosion_info += TANK_MERGE_OVERPRESSURE
 
 /obj/item/tank/proc/explosion_information()
+	procstart = null
+	src.procstart = null
 	return list(TANK_RESULTS_REACTION = reaction_info, TANK_RESULTS_MISC = explosion_info)
 
-/obj/item/tank/on_found(mob/finder) //for mousetraps
+/obj/item/tank/on_found(mob/finder)
+	procstart = null
+	src.procstart = null //for mousetraps
 	. = ..()
 	if(tank_assembly)
 		tank_assembly.on_found(finder)
 
-/obj/item/tank/attack_hand() //also for mousetraps
+/obj/item/tank/attack_hand()
+	procstart = null
+	src.procstart = null //also for mousetraps
 	if(..())
 		return
 	if(tank_assembly)
 		tank_assembly.attack_hand()
 
 /obj/item/tank/attack_self(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	if (tank_assembly)
 		tank_assembly.attack_self(user)
 		return TRUE
 	return ..()
 
 /obj/item/tank/attack_self_secondary(mob/user, modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui_interact(user)
 
 /obj/item/tank/Move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(tank_assembly)
 		tank_assembly.setDir(dir)
 
 /obj/item/tank/dropped()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(tank_assembly)
 		tank_assembly.dropped()
 
 /obj/item/tank/IsSpecialAssembly()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/item/tank/receive_signal() //This is mainly called by the sensor through sense() to the holder, and from the holder to here.
+	procstart = null
+	src.procstart = null
 	audible_message(span_warning("[icon2html(src, hearers(src))] *beep* *beep* *beep*"))
 	playsound(src, 'sound/machines/beep/triple_beep.ogg', ASSEMBLY_BEEP_VOLUME, TRUE)
 	addtimer(CALLBACK(src, PROC_REF(ignite)), 1 SECONDS)
 
 /// Attaches an assembly holder to the tank to create a bomb.
 /obj/item/tank/proc/bomb_assemble(obj/item/assembly_holder/assembly, mob/living/user)
+	procstart = null
+	src.procstart = null
 	//Check if either part of the assembly has an igniter, but if both parts are igniters, then fuck it
 	var/igniter_count = 0
 	for(var/obj/item/assembly/igniter/attached_assembly in assembly.assemblies)
@@ -486,6 +568,8 @@
 
 /// Detaches an assembly holder from the tank, disarming the bomb
 /obj/item/tank/proc/bomb_disassemble(mob/user)
+	procstart = null
+	src.procstart = null
 	bomb_status = FALSE
 	balloon_alert(user, "bomb disarmed")
 	if(!tank_assembly)
@@ -498,6 +582,8 @@
 
 /// Ignites the contents of the tank. Called when receiving a signal if the tank is welded and has an igniter attached.
 /obj/item/tank/proc/ignite()
+	procstart = null
+	src.procstart = null
 	if(!bomb_status) // if it isn't welded, release the gases instead
 		release()
 		return
@@ -567,6 +653,8 @@
 
 /// Releases air stored in the tank. Called when signaled without being welded, or when ignited without enough pressure to explode.
 /obj/item/tank/proc/release()
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/our_mix = return_air()
 	var/datum/gas_mixture/removed = remove_air(our_mix.total_moles())
 	var/turf/T = get_turf(src)

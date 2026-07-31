@@ -28,6 +28,8 @@
 	var/heal_oxy = 0
 
 /datum/component/manual_heart/Initialize(pump_delay = 3 SECONDS, blood_loss = BLOOD_VOLUME_NORMAL * 0.2, heal_brute = 0, heal_burn = 0, heal_oxy = 0)
+	procstart = null
+	src.procstart = null
 	//Non-Carbon mobs can't have hearts, and should never receive this component.
 	if (!iscarbon(parent))
 		stack_trace("Manual Heart component added to [parent] ([parent?.type]) which is not a /mob/living/carbon subtype.")
@@ -42,10 +44,14 @@
 	pump_action = new(src)
 
 /datum/component/manual_heart/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(pump_action)
 	return ..()
 
 /datum/component/manual_heart/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(check_removed_organ))
 	RegisterSignal(parent, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(check_added_organ))
 	RegisterSignal(parent, COMSIG_HEART_MANUAL_PULSE, PROC_REF(on_pump))
@@ -63,6 +69,8 @@
 	to_chat(parent, span_userdanger("Your heart no longer beats automatically! You have to pump it manually - otherwise you'll die!"))
 
 /datum/component/manual_heart/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_CARBON_GAIN_ORGAN, COMSIG_CARBON_LOSE_ORGAN, COMSIG_HEART_MANUAL_PULSE, COMSIG_LIVING_REVIVE, COMSIG_LIVING_DEATH, COMSIG_LIVING_UPDATE_BLOOD_STATUS))
 
 	to_chat(parent, span_userdanger("You feel your heart start beating normally again!"))
@@ -71,6 +79,8 @@
 		carbon_parent.remove_client_colour(REF(src))
 
 /datum/component/manual_heart/proc/restart()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!check_valid())
@@ -80,6 +90,8 @@
 	START_PROCESSING(SSdcs, src)
 
 /datum/component/manual_heart/proc/pause()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	pump_action.build_all_button_icons(UPDATE_BUTTON_STATUS)
 	var/mob/living/carbon/carbon_parent = parent
@@ -89,6 +101,8 @@
 
 /// Worker proc that checks logic for if a pump can happen, and applies effects from doing so
 /datum/component/manual_heart/proc/on_pump(mob/owner)
+	procstart = null
+	src.procstart = null
 	COOLDOWN_START(src, heart_timer, pump_delay)
 	playsound(owner,'sound/effects/singlebeat.ogg', 40, TRUE)
 
@@ -104,6 +118,8 @@
 	carbon_owner.adjust_oxy_loss(-heal_oxy)
 
 /datum/component/manual_heart/process()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/carbon_parent = parent
 
 	//If they aren't connected, don't kill them.
@@ -122,6 +138,8 @@
 		add_colour = FALSE
 
 /datum/component/manual_heart/proc/on_update_blood_status(datum/source, had_blood, has_blood, new_blood_volume, old_blood_volume)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (has_blood)
@@ -131,6 +149,8 @@
 
 ///If a new heart is added, start processing.
 /datum/component/manual_heart/proc/check_added_organ(mob/organ_owner, obj/item/organ/new_organ)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/organ/heart/new_heart = new_organ
@@ -146,6 +166,8 @@
 
 ///If the heart is removed, stop processing.
 /datum/component/manual_heart/proc/check_removed_organ(mob/organ_owner, obj/item/organ/removed_organ)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/obj/item/organ/heart/removed_heart = removed_organ
@@ -156,6 +178,8 @@
 
 ///Helper proc to check if processing can be restarted.
 /datum/component/manual_heart/proc/check_valid()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/carbon_parent = parent
 	var/obj/item/organ/heart/parent_heart = carbon_parent.get_organ_slot(ORGAN_SLOT_HEART)
 	return !isnull(parent_heart) && CAN_HAVE_BLOOD(carbon_parent) && carbon_parent.stat != DEAD
@@ -169,12 +193,16 @@
 	button_icon_state = "cursedheart-off"
 
 /datum/action/cooldown/manual_heart/Activate(atom/atom_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	SEND_SIGNAL(owner, COMSIG_HEART_MANUAL_PULSE)
 
 ///The action button is only available when you're a living carbon with blood and a heart.
 /datum/action/cooldown/manual_heart/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/heart_haver = owner
 	if(!istype(heart_haver) || !CAN_HAVE_BLOOD(heart_haver) || heart_haver.stat == DEAD)
 		return FALSE

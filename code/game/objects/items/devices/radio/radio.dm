@@ -98,6 +98,8 @@
 	COOLDOWN_DECLARE(important_audio_cooldown)
 
 /obj/item/radio/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	set_wires(new /datum/wires/radio(src))
 	. = ..()
 
@@ -125,12 +127,16 @@
 		make_silly()
 
 /obj/item/radio/Destroy()
+	procstart = null
+	src.procstart = null
 	remove_radio_all(src) //Just to be sure
 	if(istype(keyslot))
 		QDEL_NULL(keyslot)
 	return ..()
 
 /obj/item/radio/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(held_item?.tool_behaviour == TOOL_SCREWDRIVER)
 		context[SCREENTIP_CONTEXT_LMB] = "Remove encryption key"
@@ -141,12 +147,16 @@
 		. = CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/radio/on_saboteur(datum/source, disrupt_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(broadcasting) //no broadcasting but it can still be used to send radio messages.
 		set_broadcasting(FALSE)
 		return TRUE
 
 /obj/item/radio/proc/set_frequency(new_frequency)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_RADIO_NEW_FREQUENCY, args)
 	remove_radio(src, frequency)
 	if(new_frequency)
@@ -156,6 +166,8 @@
 		add_radio(src, new_frequency)
 
 /obj/item/radio/proc/recalculateChannels()
+	procstart = null
+	src.procstart = null
 	resetChannels()
 
 	if(keyslot)
@@ -172,6 +184,8 @@
 		remove_radio_all(src)
 
 /obj/item/radio/proc/resetChannels()
+	procstart = null
+	src.procstart = null
 	for(var/ch_name in channels)
 		SSradio.remove_object(src, GLOB.default_radio_channels[ch_name])
 
@@ -184,18 +198,24 @@
 
 ///goes through all radio channels we should be listening for and readds them to the global list
 /obj/item/radio/proc/readd_listening_radio_channels()
+	procstart = null
+	src.procstart = null
 	for(var/channel_name in channels)
 		add_radio(src, GLOB.default_radio_channels[channel_name])
 
 	add_radio(src, frequency)
 
-/obj/item/radio/proc/make_syndie() // Turns normal radios into Syndicate radios!
+/obj/item/radio/proc/make_syndie()
+	procstart = null
+	src.procstart = null // Turns normal radios into Syndicate radios!
 	qdel(keyslot)
 	keyslot = new /obj/item/encryptionkey/syndicate()
 	special_channels |= RADIO_SPECIAL_SYNDIE
 	recalculateChannels()
 
 /obj/item/radio/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(unscrewed && !isAI(user))
 		wires.interact(user)
 		add_fingerprint(user)
@@ -207,18 +227,26 @@
 
 ///simple getter for the on variable. necessary due to VAR_PROTECTED
 /obj/item/radio/proc/is_on()
+	procstart = null
+	src.procstart = null
 	return on
 
 ///simple getter for the frequency variable. necessary due to VAR_PROTECTED
 /obj/item/radio/proc/get_frequency()
+	procstart = null
+	src.procstart = null
 	return frequency
 
 ///simple getter for the broadcasting variable. necessary due to VAR_PROTECTED
 /obj/item/radio/proc/get_broadcasting()
+	procstart = null
+	src.procstart = null
 	return broadcasting
 
 ///simple getter for the listening variable. necessary due to VAR_PROTECTED
 /obj/item/radio/proc/get_listening()
+	procstart = null
+	src.procstart = null
 	return listening
 
 //now for setters for the above protected vars
@@ -230,6 +258,8 @@
  * * actual_setting - whether or not the radio is supposed to be listening, sets should_be_listening to the new listening value if true, otherwise just changes listening
  */
 /obj/item/radio/proc/set_listening(new_listening, actual_setting = TRUE)
+	procstart = null
+	src.procstart = null
 
 	listening = new_listening
 	if(actual_setting)
@@ -253,6 +283,8 @@
  * * actual_setting - whether or not the radio is supposed to be broadcasting, sets should_be_broadcasting to the new value if true, otherwise just changes broadcasting
  */
 /obj/item/radio/proc/set_broadcasting(new_broadcasting, actual_setting = TRUE)
+	procstart = null
+	src.procstart = null
 
 	broadcasting = new_broadcasting
 	if(actual_setting)
@@ -270,6 +302,8 @@
 
 ///setter for the on var that sets both broadcasting and listening to off or whatever they were supposed to be
 /obj/item/radio/proc/set_on(new_on)
+	procstart = null
+	src.procstart = null
 
 	on = new_on
 
@@ -281,6 +315,8 @@
 		set_listening(FALSE, actual_setting = FALSE)
 
 /obj/item/radio/talk_into(atom/movable/talking_movable, message, channel, list/spans, datum/language/language, list/message_mods)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(talking_movable, COMSIG_MOVABLE_USING_RADIO, src) & COMPONENT_CANNOT_USE_RADIO)
 		return NONE
 	if(SEND_SIGNAL(src, COMSIG_RADIO_NEW_MESSAGE, talking_movable, message, channel) & COMPONENT_CANNOT_USE_RADIO)
@@ -306,6 +342,8 @@
  * * message_mods - the message mods to be used, lazylist
  */
 /obj/item/radio/proc/talk_into_impl(atom/movable/talking_movable, message, channel, list/spans, datum/language/language, list/message_mods)
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return // the device has to be on
 	if(!talking_movable || !message)
@@ -387,6 +425,8 @@
 	addtimer(CALLBACK(src, PROC_REF(backup_transmission), signal), 2 SECONDS)
 
 /obj/item/radio/proc/backup_transmission(datum/signal/subspace/vocal/signal)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if (signal.data["done"] && (T.z in signal.levels))
 		return
@@ -398,6 +438,8 @@
 	signal.broadcast()
 
 /obj/item/radio/Hear(atom/movable/speaker, message_language, raw_message, radio_freq, radio_freq_name, radio_freq_color, list/spans, list/message_mods = list(), message_range)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(radio_freq || !broadcasting || get_dist(src, speaker) > canhear_range || message_mods[MODE_RELAY])
 		return
@@ -426,6 +468,8 @@
 
 /// Checks if this radio can receive on the given frequency.
 /obj/item/radio/proc/can_receive(input_frequency, list/levels)
+	procstart = null
+	src.procstart = null
 	// deny checks
 	if (levels != RADIO_NO_Z_LEVEL_RESTRICTION)
 		var/turf/position = get_turf(src)
@@ -445,6 +489,8 @@
 	return FALSE
 
 /obj/item/radio/proc/on_receive_message(list/data)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_RADIO_RECEIVE_MESSAGE, data)
 	if(!isliving(loc))
 		return
@@ -467,9 +513,13 @@
 		SEND_SOUND(holder, radio_important)
 
 /obj/item/radio/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.inventory_state
 
 /obj/item/radio/ui_interact(mob/user, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Radio", name)
@@ -478,6 +528,8 @@
 		ui.open()
 
 /obj/item/radio/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["broadcasting"] = broadcasting
@@ -498,6 +550,8 @@
 	return data
 
 /obj/item/radio/ui_act(action, params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -554,6 +608,8 @@
 				. = TRUE
 
 /obj/item/radio/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (frequency && in_range(src, user))
 		. += span_notice("It is set to broadcast over the [span_radio("[frequency/10]")] frequency.")
@@ -563,6 +619,8 @@
 		. += span_notice("It cannot be modified or attached.")
 
 /obj/item/radio/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(unscrewed)
 		return
@@ -572,6 +630,8 @@
 		. += overlay_speaker_idle
 
 /obj/item/radio/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode && tool.tool_behaviour == TOOL_SCREWDRIVER)
 		return screwdriver_act(user, tool)
 	if(istype(tool, /obj/item/encryptionkey))
@@ -579,6 +639,8 @@
 	return NONE
 
 /obj/item/radio/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	unscrewed = !unscrewed
 	tool.play_tool_sound(src, 10)
@@ -589,6 +651,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/radio/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	switch(keylock)
 		if(RADIO_KEYSLOT_LOCKED)
 			to_chat(user, span_warning("The screws locking [src]'s keyslot are stripped, and can't be removed."))
@@ -608,6 +672,8 @@
 	return TRUE
 
 /obj/item/radio/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(gone == keyslot)
 		keyslot = null
@@ -617,6 +683,8 @@
 /// Attempts to put all keys in the radio into the user's hands
 /// Returns a list of the removed keys
 /obj/item/radio/proc/remove_keys(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(!keyslot)
 		return
@@ -626,6 +694,8 @@
 
 /// Attempts to install the given encryption key into the radio
 /obj/item/radio/proc/install_key(mob/living/user, obj/item/encryptionkey/key)
+	procstart = null
+	src.procstart = null
 	if(keyslot)
 		loc.balloon_alert(user, "cannot hold a second key!")
 		return ITEM_INTERACT_BLOCKING
@@ -644,6 +714,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/radio/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. & EMP_PROTECT_SELF)
 		return
@@ -657,10 +729,14 @@
 	addtimer(CALLBACK(src, PROC_REF(end_emp_effect), curremp), 20 SECONDS)
 
 /obj/item/radio/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] starts bouncing [src] off [user.p_their()] head! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 
 /obj/item/radio/proc/end_emp_effect(curremp)
+	procstart = null
+	src.procstart = null
 	if(emped != curremp) //Don't fix it if it's been EMP'd again
 		return FALSE
 	emped = FALSE
@@ -668,6 +744,8 @@
 	return TRUE
 
 /obj/item/radio/proc/make_silly()
+	procstart = null
+	src.procstart = null
 	name = "\improper Little-Crew: Assistant's First Radio"
 	icon_state = "walkieian"
 	desc = "A Little-Crew branded toy radio in the shape of a lovable pet. After Little-Crew HQ was hit with a Donksoft Nuke, these have become collector's items!"
@@ -688,6 +766,8 @@
 	canhear_range = 0
 
 /obj/item/radio/borg/resetChannels()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!iscyborg(loc))
 		return
@@ -700,6 +780,8 @@
 	keyslot = /obj/item/encryptionkey/syndicate
 
 /obj/item/radio/borg/syndicate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_frequency(FREQ_SYNDICATE)
 
@@ -707,6 +789,8 @@
 	dog_fashion = /datum/dog_fashion/back
 
 /obj/item/radio/off/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_listening(FALSE)
 
@@ -719,6 +803,8 @@
 	radio_noise = FALSE
 
 /obj/item/radio/entertainment/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_frequency(FREQ_ENTERTAINMENT)
 
@@ -727,15 +813,21 @@
 	should_be_broadcasting = FALSE
 
 /obj/item/radio/entertainment/speakers/proc/toggle_mute()
+	procstart = null
+	src.procstart = null
 	should_be_listening = !should_be_listening
 
 /obj/item/radio/entertainment/speakers/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_broadcasting(FALSE)
 	set_listening(TRUE)
 	wires?.cut(WIRE_TX)
 
 /obj/item/radio/entertainment/speakers/on_receive_message(list/data)
+	procstart = null
+	src.procstart = null
 	playsound(src, SFX_MUFFLED_SPEECH, 60, TRUE, -4, ignore_walls = FALSE, volume_preference = /datum/preference/numeric/volume/sound_radio_noise)
 
 	return ..()
@@ -755,6 +847,8 @@
 	should_be_broadcasting = TRUE
 
 /obj/item/radio/entertainment/microphone/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_broadcasting(TRUE)
 	set_listening(FALSE)
@@ -772,6 +866,8 @@
 /obj/item/radio/toy
 
 /obj/item/radio/toy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	make_silly()
 

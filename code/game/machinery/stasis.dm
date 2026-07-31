@@ -24,11 +24,15 @@
 	var/obj/effect/overlay/vis/mattress_on
 
 /obj/machinery/stasis/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/elevation, pixel_shift = 6)
 	update_buckle_vars(dir)
 
 /obj/machinery/stasis/RefreshParts()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/energy_rating = 0
@@ -43,10 +47,14 @@
 	update_current_power_usage()
 
 /obj/machinery/stasis/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Alt-click to [stasis_enabled ? "turn off" : "turn on"] the machine.")
 
 /obj/machinery/stasis/proc/play_power_sound()
+	procstart = null
+	src.procstart = null
 	var/_running = stasis_running()
 	if(last_stasis_sound != _running)
 		var/sound_freq = rand(5120, 8800)
@@ -57,6 +65,8 @@
 		last_stasis_sound = _running
 
 /obj/machinery/stasis/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(world.time < stasis_can_toggle)
 		return CLICK_ACTION_BLOCKING
 	stasis_enabled = !stasis_enabled
@@ -70,6 +80,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/stasis/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if(gone == occupant)
 		var/mob/living/L = gone
 		if(HAS_TRAIT(L, TRAIT_STASIS))
@@ -77,16 +89,24 @@
 	return ..()
 
 /obj/machinery/stasis/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_buckle_vars(newdir)
 
 /obj/machinery/stasis/proc/update_buckle_vars(newdir)
+	procstart = null
+	src.procstart = null
 	buckle_lying = newdir & NORTHEAST ? 270 : 90
 
 /obj/machinery/stasis/proc/stasis_running()
+	procstart = null
+	src.procstart = null
 	return stasis_enabled && is_operational
 
 /obj/machinery/stasis/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & BROKEN)
 		icon_state = "[base_icon_state]_broken"
 		return ..()
@@ -97,6 +117,8 @@
 	return ..()
 
 /obj/machinery/stasis/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mattress_state)
 		return
@@ -116,21 +138,29 @@
 		animate(mattress_on, alpha = new_alpha, time = 50, easing = CUBIC_EASING|easing_direction)
 
 /obj/machinery/stasis/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	procstart = null
+	src.procstart = null
 	if(same_z_layer)
 		return ..()
 	SET_PLANE(mattress_on, PLANE_TO_TRUE(mattress_on.plane), new_turf)
 	return ..()
 
 /obj/machinery/stasis/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		play_power_sound()
 
 /obj/machinery/stasis/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	play_power_sound()
 
 /obj/machinery/stasis/proc/chill_out(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(target != occupant)
 		return
 	var/freq = rand(24750, 26550)
@@ -140,11 +170,15 @@
 	update_use_power(ACTIVE_POWER_USE)
 
 /obj/machinery/stasis/proc/thaw_them(mob/living/target)
+	procstart = null
+	src.procstart = null
 	target.remove_status_effect(/datum/status_effect/grouped/stasis, STASIS_MACHINE_EFFECT)
 	if(target == occupant)
 		update_use_power(IDLE_POWER_USE)
 
 /obj/machinery/stasis/post_buckle_mob(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(!can_be_occupant(L))
 		return
 	set_occupant(L)
@@ -154,6 +188,8 @@
 	L.AddComponentFrom(type, /datum/component/free_operation)
 
 /obj/machinery/stasis/post_unbuckle_mob(mob/living/L)
+	procstart = null
+	src.procstart = null
 	thaw_them(L)
 	if(L == occupant)
 		set_occupant(null)
@@ -161,6 +197,8 @@
 	L.RemoveComponentSource(type, /datum/component/free_operation)
 
 /obj/machinery/stasis/process()
+	procstart = null
+	src.procstart = null
 	if(!isliving(occupant))
 		update_use_power(IDLE_POWER_USE)
 		return
@@ -173,9 +211,13 @@
 		thaw_them(L_occupant)
 
 /obj/machinery/stasis/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/stasis/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return default_deconstruction_crowbar(user, tool)
 
 #undef STASIS_TOGGLE_COOLDOWN

@@ -21,6 +21,8 @@
 	var/do_after_key
 
 /datum/element/wall_tearer/Attach(datum/target, allow_reinforced = TRUE, tear_time = 2 SECONDS, reinforced_multiplier = 2, do_after_key = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -31,11 +33,15 @@
 	RegisterSignals(target, list(COMSIG_HOSTILE_PRE_ATTACKINGTARGET, COMSIG_LIVING_UNARMED_ATTACK), PROC_REF(on_attacked_wall))
 
 /datum/element/wall_tearer/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, list(COMSIG_HOSTILE_PRE_ATTACKINGTARGET, COMSIG_LIVING_UNARMED_ATTACK))
 
 /// Try to tear up a wall
 /datum/element/wall_tearer/proc/on_attacked_wall(mob/living/tearer, atom/target, proximity_flag)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (DOING_INTERACTION_WITH_TARGET(tearer, target) || (!isnull(do_after_key) && DOING_INTERACTION(tearer, do_after_key)))
 		tearer.balloon_alert(tearer, "busy!")
@@ -47,6 +53,8 @@
 	return COMPONENT_HOSTILE_NO_ATTACK
 
 /datum/element/wall_tearer/proc/rip_and_tear(mob/living/tearer, atom/target)
+	procstart = null
+	src.procstart = null
 	// We need to do this three times to actually destroy it
 	var/rip_time = (istype(target, /turf/closed/wall/r_wall) ? tear_time * reinforced_multiplier : tear_time) / 3
 	if (rip_time > 0)
@@ -68,6 +76,8 @@
 
 /// Check if the target atom is a wall we can actually rip up
 /datum/element/wall_tearer/proc/validate_target(atom/target, mob/living/tearer)
+	procstart = null
+	src.procstart = null
 	if (!isclosedturf(target) || isindestructiblewall(target))
 		return WALL_TEAR_INVALID
 

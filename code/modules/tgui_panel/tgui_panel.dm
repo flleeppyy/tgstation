@@ -16,11 +16,15 @@
 	var/static/admins_warned = FALSE
 
 /datum/tgui_panel/New(client/client, id)
+	procstart = null
+	src.procstart = null
 	src.client = client
 	window = new(client, id)
 	window.subscribe(src, PROC_REF(on_message))
 
 /datum/tgui_panel/Del()
+	procstart = null
+	src.procstart = null
 	window.unsubscribe(src)
 	window.close()
 	return ..()
@@ -31,6 +35,8 @@
  * TRUE if panel is initialized and ready to receive messages.
  */
 /datum/tgui_panel/proc/is_ready()
+	procstart = null
+	src.procstart = null
 	return !broken && window.is_ready()
 
 /**
@@ -39,6 +45,8 @@
  * Initializes tgui panel.
  */
 /datum/tgui_panel/proc/initialize(force = FALSE)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	// Minimal sleep to defer initialization to after client constructor
 	sleep(1 TICKS)
@@ -63,6 +71,8 @@
  * Called when initialization has timed out.
  */
 /datum/tgui_panel/proc/on_initialize_timed_out()
+	procstart = null
+	src.procstart = null
 	// Currently does nothing but sending a message to old chat.
 	SEND_TEXT(client, span_userdanger("Failed to load fancy chat, click <a href='byond://?src=[REF(src)];reload_tguipanel=1'>HERE</a> to attempt to reload it."))
 
@@ -72,6 +82,8 @@
  * Callback for handling incoming tgui messages.
  */
 /datum/tgui_panel/proc/on_message(type, payload)
+	procstart = null
+	src.procstart = null
 	if(type == "ready")
 		broken = FALSE
 		window.send_message("update", list(
@@ -113,6 +125,8 @@
  * Sends a round restart notification.
  */
 /datum/tgui_panel/proc/send_roundrestart()
+	procstart = null
+	src.procstart = null
 	window.send_message("roundrestart")
 
 /**
@@ -121,6 +135,8 @@
  * Sent when a client requests metadata - used for websocket stuff.
  */
 /datum/tgui_panel/proc/send_metadata()
+	procstart = null
+	src.procstart = null
 	var/static/list/webroot_asset_urls
 
 	var/list/metadata = list(

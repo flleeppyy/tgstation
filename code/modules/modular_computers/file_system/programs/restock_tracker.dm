@@ -11,6 +11,8 @@
 	tgui_id = "NtosRestock"
 
 /datum/computer_file/program/restock_tracker/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/vending_list = list()
 	var/id_increment = 1

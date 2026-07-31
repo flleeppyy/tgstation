@@ -21,11 +21,15 @@
 	var/catwalk_type = "maint"
 
 /turf/open/floor/catwalk_floor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	underlays += mutable_appearance(icon, "[catwalk_type]_below", LOW_FLOOR_LAYER, src, FLOOR_PLANE)
 	update_appearance()
 
 /turf/open/floor/catwalk_floor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(covered)
@@ -35,6 +39,8 @@
 		. += span_notice("There's a <b>small crack</b> on the edge of it.")
 
 /turf/open/floor/catwalk_floor/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	covered = !covered
 	if(!covered)
@@ -54,11 +60,15 @@
 	update_appearance()
 
 /turf/open/floor/catwalk_floor/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!covered)
 		. += mutable_appearance(icon, "[catwalk_type]_overlay", CATWALK_LAYER, src, FLOOR_PLANE, appearance_flags = KEEP_APART)
 
 /turf/open/floor/catwalk_floor/crowbar_act(mob/user, obj/item/crowbar)
+	procstart = null
+	src.procstart = null
 	if(covered)
 		user.balloon_alert(user, "remove cover first!")
 		return FALSE

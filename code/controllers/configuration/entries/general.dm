@@ -93,6 +93,8 @@
 	deprecated_by = /datum/config_entry/flag/log_silicon
 
 /datum/config_entry/flag/log_law/DeprecationUpdate(value)
+	procstart = null
+	src.procstart = null
 	return value
 
 /// log usage of tools
@@ -221,6 +223,8 @@
 	var/sync_validate = FALSE
 
 /datum/config_entry/number/fps/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		sync_validate = TRUE
@@ -233,12 +237,16 @@
 	integer = FALSE
 	var/sync_validate = FALSE
 
-/datum/config_entry/number/ticklag/New() //ticklag weirdly just mirrors fps
+/datum/config_entry/number/ticklag/New()
+	procstart = null
+	src.procstart = null //ticklag weirdly just mirrors fps
 	var/datum/config_entry/CE = /datum/config_entry/number/fps
 	default = 10 / initial(CE.default)
 	..()
 
 /datum/config_entry/number/ticklag/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	. = text2num(str_val) > 0 && ..()
 	if(.)
 		sync_validate = TRUE
@@ -275,6 +283,8 @@
 	default = RESPAWN_FLAG_DISABLED
 
 /datum/config_entry/flag/allow_respawn/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	if(!VASProcCallGuard(str_val))
 		return FALSE
 	var/val_as_num = text2num(str_val)
@@ -358,6 +368,8 @@
 	min_val = 0
 
 /datum/config_entry/number/inactivity_period/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		config_entry_value *= 10 //documented as seconds in config.txt
@@ -368,6 +380,8 @@
 	min_val = 0
 
 /datum/config_entry/number/afk_period/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		config_entry_value *= 10 //documented as seconds in config.txt
@@ -383,11 +397,15 @@
 /datum/config_entry/string/panic_server_name
 
 /datum/config_entry/string/panic_server_name/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	return str_val != "\[Put the name here\]" && ..()
 
 /datum/config_entry/string/panic_server_address //Reconnect a player this linked server if this server isn't accepting new players
 
 /datum/config_entry/string/panic_server_address/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	return str_val != "byond://address:port" && ..()
 
 /datum/config_entry/string/invoke_youtubedl
@@ -467,6 +485,8 @@
 /datum/config_entry/string/ipintel_email
 
 /datum/config_entry/string/ipintel_email/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	return str_val != "ch@nge.me" && (!length(str_val) || findtext(str_val, "@")) && ..()
 
 /datum/config_entry/number/ipintel_rating_bad
@@ -513,6 +533,8 @@
 	deprecated_by = /datum/config_entry/flag/preference_map_voting
 
 /datum/config_entry/flag/allow_map_voting/DeprecationUpdate(value)
+	procstart = null
+	src.procstart = null
 	return value
 
 /datum/config_entry/flag/preference_map_voting
@@ -586,12 +608,16 @@
 	deprecated_by = /datum/config_entry/str_list/channel_announce_new_game
 
 /datum/config_entry/flag/irc_announce_new_game/DeprecationUpdate(value)
+	procstart = null
+	src.procstart = null
 	return "" //default broadcast
 
 /datum/config_entry/string/chat_announce_new_game
 	deprecated_by = /datum/config_entry/str_list/channel_announce_new_game
 
 /datum/config_entry/string/chat_announce_new_game/DeprecationUpdate(value)
+	procstart = null
+	src.procstart = null
 	return "" //default broadcast
 
 /datum/config_entry/str_list/channel_announce_new_game
@@ -624,6 +650,8 @@
 	abstract_type = /datum/config_entry/number/mc_tick_rate
 
 /datum/config_entry/number/mc_tick_rate/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		Master.UpdateTickRate()
@@ -631,6 +659,8 @@
 /datum/config_entry/flag/resume_after_initializations
 
 /datum/config_entry/flag/resume_after_initializations/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && MC_RUNNING())
 		world.sleep_offline = !config_entry_value

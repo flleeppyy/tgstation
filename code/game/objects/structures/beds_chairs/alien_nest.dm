@@ -16,16 +16,22 @@
 	var/static/mutable_appearance/nest_overlay = mutable_appearance('icons/mob/nonhuman-player/alien.dmi', "nestoverlay", LYING_MOB_LAYER)
 
 /obj/structure/bed/nest/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_DANGEROUS_BUCKLE, INNATE_TRAIT)
 
 /obj/structure/bed/nest/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(held_item?.tool_behaviour == TOOL_WRENCH)
 		return NONE
 
 	return ..()
 
 /obj/structure/bed/nest/buckle_feedback(mob/living/being_buckled, mob/buckler)
+	procstart = null
+	src.procstart = null
 	if(being_buckled == buckler)
 		being_buckled.visible_message(
 			span_notice("[buckler] lays down on [src], wrapping [buckler.p_them()]self in a thick, sticky resin."),
@@ -40,6 +46,8 @@
 		)
 
 /obj/structure/bed/nest/unbuckle_feedback(mob/living/being_unbuckled, mob/unbuckler)
+	procstart = null
+	src.procstart = null
 	if(being_unbuckled == unbuckler)
 		being_unbuckled.visible_message(
 			span_notice("[unbuckler] pulls [unbuckler.p_them()]self free from the sticky nest!"),
@@ -54,6 +62,8 @@
 		)
 
 /obj/structure/bed/nest/user_unbuckle_mob(mob/living/captive, mob/living/hero)
+	procstart = null
+	src.procstart = null
 	if(!length(buckled_mobs))
 		return
 
@@ -87,6 +97,8 @@
 	add_fingerprint(hero)
 
 /obj/structure/bed/nest/user_buckle_mob(mob/living/M, mob/user, check_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	if ( !ismob(M) || (get_dist(src, user) > 1) || (M.loc != src.loc) || user.incapacitated || M.buckled )
 		return
 
@@ -104,6 +116,8 @@
 			span_hear("You hear squelching..."))
 
 /obj/structure/bed/nest/post_buckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(M, TRAIT_HANDS_BLOCKED, type)
 	M.add_offsets(type, x_add = 2)
 	M.layer = BELOW_MOB_LAYER
@@ -115,6 +129,8 @@
 			victim.apply_status_effect(/datum/status_effect/nest_sustenance)
 
 /obj/structure/bed/nest/post_unbuckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(M, TRAIT_HANDS_BLOCKED, type)
 	M.remove_offsets(type)
 	M.layer = initial(M.layer)
@@ -122,6 +138,8 @@
 	M.remove_status_effect(/datum/status_effect/nest_sustenance)
 
 /obj/structure/bed/nest/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			playsound(loc, 'sound/effects/blob/attackblob.ogg', 100, TRUE)
@@ -129,6 +147,8 @@
 			playsound(loc, 'sound/items/tools/welder.ogg', 100, TRUE)
 
 /obj/structure/bed/nest/attack_alien(mob/living/carbon/alien/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!user.combat_mode)
 		return attack_hand(user, modifiers)
 	else

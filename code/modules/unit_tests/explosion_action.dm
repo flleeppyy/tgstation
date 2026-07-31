@@ -8,6 +8,8 @@
 	var/alien_ear_damage = 0
 
 /datum/unit_test/explosion_action/Run()
+	procstart = null
+	src.procstart = null
 	// We split up this `Run()` into multiple parts based on the over-arching parent type. This is because all of them have different core implementations of `EX_ACT()`, and we want to test all.
 	// All procs also have varying levels of bulkiness to them, and it's valuable to have this level of organization because otherwise it would blend all-together and be an entangled mess.
 	execute_mob_tests()
@@ -19,6 +21,8 @@
 /// that may be done on the subtype-to-subtype basis. Any time we use an explicit subtype is to test that framework, so if you update that for some reason, you should also update this test.
 /// Like, if you balance aliens to take more ear damage and this test fails, just update the test to reflect that. That's it.
 /datum/unit_test/explosion_action/proc/execute_mob_tests()
+	procstart = null
+	src.procstart = null
 	// You may delete this entire section of the test when the entire `simple_animal` framework needs to be scrapped.
 	var/mob/living/simple_animal/test_simple_animal = allocate(/mob/living/simple_animal)
 	test_simple_animal.maxHealth = MAX_LIVING_HEALTH
@@ -114,6 +118,8 @@
 
 /// Tests the `EX_ACT()` macro on turf subtypes to ensure some level of the underlying framework still functions.
 /datum/unit_test/explosion_action/proc/execute_turf_tests()
+	procstart = null
+	src.procstart = null
 	var/turf/open/test_open_turf = run_loc_floor_bottom_left // we'll clean this up later like Create and Destroy dw
 	var/original_open_turf_type = run_loc_floor_bottom_left.type
 	var/original_open_baseturfs = islist(run_loc_floor_bottom_left.baseturfs) ? run_loc_floor_bottom_left.baseturfs.Copy() : run_loc_floor_bottom_left.baseturfs
@@ -165,6 +171,8 @@
 
 /// Tests the `EX_ACT()` macro on objs to ensure some level of the underlying framework still functions.
 /datum/unit_test/explosion_action/proc/execute_obj_tests()
+	procstart = null
+	src.procstart = null
 	// we're using the abstract type here because we don't need anything stronger for this test.
 	var/obj/test_object = allocate(/obj)
 	// cached integrity value for use throughout the proc.
@@ -189,6 +197,8 @@
 
 /// Sets up a fully armored corgi for testing purposes. Split out into its own proc as to not clutter up the main test.
 /datum/unit_test/explosion_action/proc/set_up_test_dog()
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/pet/dog/corgi/returnable_dog = allocate(/mob/living/basic/pet/dog/corgi)
 	returnable_dog.maxHealth = MAX_LIVING_HEALTH
 	returnable_dog.health = MAX_LIVING_HEALTH
@@ -205,6 +215,8 @@
 
 /// Proc to lessen the amount of copypasta we do for the alien tests, simply sets the rolling vars we have.
 /datum/unit_test/explosion_action/proc/read_alien_damages(mob/living/carbon/alien/subject)
+	procstart = null
+	src.procstart = null
 	alien_brute_loss = subject.get_brute_loss()
 	alien_burn_loss = subject.get_fire_loss()
 	alien_ear_damage = subject.get_organ_loss(ORGAN_SLOT_EARS)

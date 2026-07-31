@@ -8,9 +8,13 @@
 	maximum = MAX_EXPECTED_Z_DEPTH - 1
 
 /datum/preference/numeric/multiz_performance/create_default_value()
+	procstart = null
+	src.procstart = null
 	return -1
 
 /datum/preference/numeric/multiz_performance/apply_to_client(client/client, value)
+	procstart = null
+	src.procstart = null
 	// Update the plane master group's layering
 	var/datum/hud/my_hud = client.mob?.hud_used
 	if(!my_hud)

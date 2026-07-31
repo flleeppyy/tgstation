@@ -14,6 +14,8 @@
 	var/list/prize_override
 
 /obj/machinery/computer/arcade/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/stack/arcadeticket))
 		var/obj/item/stack/arcadeticket/tickets = tool
 		if(!tickets.use(2))
@@ -44,6 +46,8 @@
 	return NONE
 
 /obj/machinery/computer/arcade/screwdriver_act(mob/living/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	//you can't stop playing when you start.
 	if(obj_flags & EMAGGED)
 		return ITEM_INTERACT_BLOCKING
@@ -51,11 +55,15 @@
 
 ///Performs a factory reset of the cabinet and wipes all its stats.
 /obj/machinery/computer/arcade/proc/reset_cabinet(mob/living/user)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	obj_flags &= ~EMAGGED
 	SStgui.update_uis(src)
 
 /obj/machinery/computer/arcade/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if((machine_stat & (NOPOWER|BROKEN)) || (. & EMP_PROTECT_SELF))
 		return
@@ -77,6 +85,8 @@
 
 ///Dispenses the proper prizes and gives them a positive mood event. If valid, has a small chance to give a pulse rifle.
 /obj/machinery/computer/arcade/proc/prizevend(mob/living/user, prizes = 1)
+	procstart = null
+	src.procstart = null
 	if(user.mind?.get_skill_level(/datum/skill/gaming) >= SKILL_LEVEL_LEGENDARY && HAS_TRAIT(user, TRAIT_GAMERGOD))
 		visible_message(span_notice("[user] inputs an intense cheat code!"),\
 		span_notice("You hear a flurry of buttons being pressed."))
@@ -100,6 +110,8 @@
 		visible_message(span_notice("[src] dispenses [the_prize]!"), span_notice("You hear a chime and a clunk."))
 
 /obj/machinery/computer/arcade/proc/victory_tickets(tickets, sound = TRUE)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_ARCADE_VICTORY)
 	visible_message(span_notice("[src] dispenses [tickets] ticket\s!"))
 	new /obj/item/stack/arcadeticket((get_turf(src)), tickets)

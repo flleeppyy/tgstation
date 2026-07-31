@@ -60,6 +60,8 @@ GLOBAL_LIST_INIT(strippable_gorilla_items, create_strippable_list(list(
 	)
 
 /mob/living/basic/gorilla/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_ADVANCEDTOOLUSER, TRAIT_CAN_STRIP, TRAIT_CHUNKYFINGERS), ROUNDSTART_TRAIT)
 	AddElement(/datum/element/wall_tearer, allow_reinforced = FALSE)
@@ -78,6 +80,8 @@ GLOBAL_LIST_INIT(strippable_gorilla_items, create_strippable_list(list(
 	ai_controller?.set_blackboard_key(BB_BASIC_FOODS, typecacheof(gorilla_food))
 
 /mob/living/basic/gorilla/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!HAS_MIND_TRAIT(user, TRAIT_EXAMINE_FITNESS))
 		return
@@ -85,17 +89,23 @@ GLOBAL_LIST_INIT(strippable_gorilla_items, create_strippable_list(list(
 		The untapped potential is almost frightening.")
 
 /mob/living/basic/gorilla/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (is_holding_items())
 		. += "standing_overlay"
 
 /mob/living/basic/gorilla/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (stat == DEAD)
 		return
 	icon_state = is_holding_items() ? "standing" : "crawling"
 
 /mob/living/basic/gorilla/update_held_items()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance(UPDATE_ICON)
 	if (is_holding_items())
@@ -104,6 +114,8 @@ GLOBAL_LIST_INIT(strippable_gorilla_items, create_strippable_list(list(
 		remove_movespeed_modifier(/datum/movespeed_modifier/gorilla_standing)
 
 /mob/living/basic/gorilla/melee_attack(mob/living/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!. || !isliving(target))
 		return
@@ -115,6 +127,8 @@ GLOBAL_LIST_INIT(strippable_gorilla_items, create_strippable_list(list(
 		target.throw_at(get_edge_target_turf(target, dir), range = rand(1, 2), speed = 7, thrower = src)
 
 /mob/living/basic/gorilla/gib(drop_bitflags = DROP_BRAIN)
+	procstart = null
+	src.procstart = null
 	if(!(drop_bitflags & DROP_BRAIN))
 		return ..()
 	var/mob/living/brain/gorilla_brain = new(drop_location())
@@ -124,11 +138,15 @@ GLOBAL_LIST_INIT(strippable_gorilla_items, create_strippable_list(list(
 	return ..()
 
 /mob/living/basic/gorilla/can_use_guns(obj/item/gun)
+	procstart = null
+	src.procstart = null
 	to_chat(src, span_warning("Your meaty finger is much too large for the trigger guard!"))
 	return FALSE
 
 /// Assert your dominance with audio cues
 /mob/living/basic/gorilla/proc/ooga_ooga()
+	procstart = null
+	src.procstart = null
 	if (isnull(client))
 		return // Sorry NPCs
 	oogas -= 1
@@ -168,6 +186,8 @@ GLOBAL_LIST_INIT(strippable_gorilla_items, create_strippable_list(list(
 	ai_controller = null
 
 /mob/living/basic/gorilla/cargorilla/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_PACIFISM, INNATE_TRAIT)
 	AddComponent(/datum/component/crate_carrier)
@@ -184,6 +204,8 @@ GLOBAL_LIST_INIT(strippable_gorilla_items, create_strippable_list(list(
 
 
 /mob/living/basic/gorilla/bar/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_PAWN_POSSESSED_BY_AI_CONTROLLER, PROC_REF(on_possessed_by_ai_controller))
 	gorrilify_punpun_ai()
@@ -193,18 +215,24 @@ GLOBAL_LIST_INIT(strippable_gorilla_items, create_strippable_list(list(
 
 /// Signal handler for when an ai controller possesses us, reapplies our gorilla-specific ai tweaks if it's a monkey controller
 /mob/living/basic/gorilla/bar/proc/on_possessed_by_ai_controller(datum/source, datum/ai_controller/source_controller)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(source_controller, /datum/ai_controller/monkey))
 		return
 	gorrilify_punpun_ai()
 
 /mob/living/basic/gorilla/bar/proc/gorrilify_punpun_ai()
+	procstart = null
+	src.procstart = null
 	ai_controller?.override_blackboard_key(BB_SONG_LINES, GORILLA_SONG)
 	ai_controller?.override_blackboard_key(BB_EMOTE_KEY, "ooga")
 	ai_controller?.override_blackboard_key(BB_EMOTE_CHANCE, 50)
 	ai_controller?.set_behavior_tree_override(SUBPLAN_ID_MONKEY_COMBAT, /datum/bt_node/subtree/bar_gorilla_combat)
 
 /mob/living/basic/gorilla/bar/Destroy()
+	procstart = null
+	src.procstart = null
 	if(GLOB.the_one_and_only_punpun == src)
 		GLOB.the_one_and_only_punpun = null
 	return ..()
@@ -236,6 +264,8 @@ GLOBAL_LIST_INIT(strippable_gorilla_items, create_strippable_list(list(
 	faction = list(FACTION_HOSTILE)
 
 /mob/living/basic/gorilla/genetics/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(GetComponent(/datum/component/amputating_limbs))
 

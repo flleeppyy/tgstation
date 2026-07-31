@@ -36,6 +36,8 @@
 	locked_overlay = image('icons/mob/actions/actions_revenant.dmi', "locked")
 
 /datum/component/revenant_ability/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(var_name)
 		if(NAMEOF(src, unlock_amount))
@@ -48,6 +50,8 @@
 			update_spell_name()
 
 /datum/component/revenant_ability/proc/update_spell_name()
+	procstart = null
+	src.procstart = null
 	var/datum/action/cooldown/spell/spell = parent
 	if(locked)
 		spell.name = "[initial(spell.name)] ([unlock_amount]SE)"
@@ -56,18 +60,26 @@
 	spell.build_all_button_icons()
 
 /datum/component/revenant_ability/proc/set_unlock_amount(new_value)
+	procstart = null
+	src.procstart = null
 	unlock_amount = new_value
 	update_spell_name()
 
 /datum/component/revenant_ability/proc/set_cast_amount(new_value)
+	procstart = null
+	src.procstart = null
 	cast_amount = new_value
 	update_spell_name()
 
 /datum/component/revenant_ability/proc/set_durations(new_reveal_duration, new_stun_duration)
+	procstart = null
+	src.procstart = null
 	reveal_duration = new_reveal_duration
 	stun_duration = new_stun_duration
 
 /datum/component/revenant_ability/proc/can_cast(datum/action/cooldown/spell/source, feedback)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/basic/revenant/ghost = source.owner
@@ -87,6 +99,8 @@
 	return NONE
 
 /datum/component/revenant_ability/proc/before_cast(datum/action/cooldown/spell/source, atom/cast_on)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/basic/revenant/ghost = source.owner
@@ -108,6 +122,8 @@
 	return NONE
 
 /datum/component/revenant_ability/proc/after_cast(datum/action/cooldown/spell/source, atom/cast_on)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/caster = source.owner
@@ -117,6 +133,8 @@
 		caster.apply_status_effect(/datum/status_effect/incapacitating/paralyzed/revenant, stun_duration)
 
 /datum/component/revenant_ability/proc/add_locked_overlay(datum/action/cooldown/spell/source, atom/movable/screen/movable/action_button/current_button, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	current_button.cut_overlay(locked_overlay)

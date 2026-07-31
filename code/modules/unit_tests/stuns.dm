@@ -2,6 +2,8 @@
 /datum/unit_test/stun
 
 /datum/unit_test/stun/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/gets_stunned = allocate(/mob/living/carbon/human/consistent)
 
 	gets_stunned.Stun(1 SECONDS)
@@ -18,6 +20,8 @@
 /datum/unit_test/knockdown
 
 /datum/unit_test/knockdown/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/gets_knockdown = allocate(/mob/living/carbon/human/consistent)
 
 	gets_knockdown.Knockdown(1 SECONDS)
@@ -34,6 +38,8 @@
 /datum/unit_test/paralyze
 
 /datum/unit_test/paralyze/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/gets_paralyzed = allocate(/mob/living/carbon/human/consistent)
 
 	gets_paralyzed.Paralyze(1 SECONDS)
@@ -50,6 +56,8 @@
 /datum/unit_test/unconsciousness
 
 /datum/unit_test/unconsciousness/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/gets_unconscious = allocate(/mob/living/carbon/human/consistent)
 
 	gets_unconscious.Unconscious(1 SECONDS)
@@ -66,6 +74,8 @@
 /datum/unit_test/stun_absorb
 
 /datum/unit_test/stun_absorb/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/doesnt_get_stunned = allocate(/mob/living/carbon/human/consistent)
 	doesnt_get_stunned.add_stun_absorption(source = TRAIT_SOURCE_UNIT_TESTS)
 	doesnt_get_stunned.Stun(1 SECONDS)

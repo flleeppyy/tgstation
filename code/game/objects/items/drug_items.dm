@@ -20,6 +20,8 @@
 	food_reagents = list(/datum/reagent/drug/saturnx = 10)
 
 /obj/item/food/drug/saturnx/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CONTRABAND, INNATE_TRAIT)
 
@@ -30,6 +32,8 @@
 	food_reagents = list(/datum/reagent/drug/kronkaine = 10)
 
 /obj/item/food/drug/moon_rock/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = pick("moon_rock1", "moon_rock2", "moon_rock3")
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MOONICORN, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
@@ -48,6 +52,8 @@
 	consumption_sound = 'sound/effects/spray2.ogg'
 
 /obj/item/reagent_containers/cup/blastoff_ampoule/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!reagents.total_volume)
 		icon_state = "[base_icon_state]_empty"
@@ -57,6 +63,8 @@
 		icon_state = base_icon_state
 
 /obj/item/reagent_containers/cup/blastoff_ampoule/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.can_perform_action(src, NEED_DEXTERITY) || is_open_container())
 		return ..()
 	add_container_flags(OPENCONTAINER)
@@ -64,6 +72,8 @@
 	update_appearance()
 
 /obj/item/reagent_containers/cup/blastoff_ampoule/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum, do_splash = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -76,6 +86,8 @@
 	qdel(src)
 
 /obj/item/reagent_containers/cup/blastoff_ampoule/Initialize(mapload, vol)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_CONTRABAND, INNATE_TRAIT)
 
@@ -96,6 +108,8 @@
 	var/transfer_per_second = 0.5
 
 /datum/embedding/meth/process_effect(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	var/obj/item/rock = parent
 	if(!istype(rock, /obj/item/food/drug/meth_crystal))
 		return
@@ -114,6 +128,8 @@
 	)
 
 /obj/item/food/drug/meth_crystal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = pick("meth_crystal1", "meth_crystal2", "meth_crystal3", "meth_crystal4", "meth_crystal5")
 	ADD_TRAIT(src, TRAIT_CONTRABAND, INNATE_TRAIT)
@@ -131,25 +147,33 @@
 	)
 
 /obj/item/food/drug/opium/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(reagents.get_reagent_amount(/datum/reagent/medicine/morphine) >= 10)
 		. += span_notice("The opium is large and rich in fragrance; it needs no further refinement.")
 	else
 		. += span_notice("The opium is still small, and can be pressed together with more to increase its potency and richness.")
 
-/obj/item/food/drug/opium/Initialize(mapload) // For narcotics and black market purchases, pure and proper.
+/obj/item/food/drug/opium/Initialize(mapload)
+	procstart = null
+	src.procstart = null // For narcotics and black market purchases, pure and proper.
 	. = ..()
 	icon_state = pick("opium1", "opium2", "opium3", "opium4", "opium5")
 	ADD_TRAIT(src, TRAIT_CONTRABAND, INNATE_TRAIT)
 
-/obj/item/food/drug/opium/raw/Initialize(mapload, potency) // Randomizes amount depending upon potency.
+/obj/item/food/drug/opium/raw/Initialize(mapload, potency)
+	procstart = null
+	src.procstart = null // Randomizes amount depending upon potency.
 	. = ..()
 	reagents.clear_reagents()
 	var/mult = max(potency / 20, 1) // 20 = base, 100 = 5x, 200 = 10x
 	reagents.add_reagent(/datum/reagent/medicine/morphine, (rand(4, 25) / 10) * mult)
 	reagents.add_reagent(/datum/reagent/consumable/sugar, rand(1, 7) / 10)
 
-/obj/item/food/drug/opium/raw/interact_with_atom(obj/item/I, mob/user) // allows for combining opium up to 10u, refining it until rich and fragrant.
+/obj/item/food/drug/opium/raw/interact_with_atom(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null // allows for combining opium up to 10u, refining it until rich and fragrant.
 	if(istype(I, /obj/item/food/drug/opium/raw))
 		var/obj/item/food/drug/opium/raw/other = I
 

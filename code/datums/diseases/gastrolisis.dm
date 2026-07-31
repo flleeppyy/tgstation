@@ -14,6 +14,8 @@
 
 
 /datum/disease/gastrolosis/stage_act(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -82,6 +84,8 @@
 
 
 /datum/disease/gastrolosis/cure(add_resistance = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(affected_mob && !is_species(affected_mob, /datum/species/snail)) //undo all the snail fuckening
 		var/mob/living/carbon/human/H = affected_mob

@@ -18,6 +18,8 @@
 	resistance_flags = FIRE_PROOF
 
 /obj/item/clothing/suit/hooded/explorer/get_general_color(icon/base_icon)
+	procstart = null
+	src.procstart = null
 	return "#796755"
 
 /datum/armor/hooded_explorer
@@ -46,11 +48,15 @@
 	resistance_flags = FIRE_PROOF
 
 /obj/item/clothing/suit/hooded/explorer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/armor_plate)
 	allowed = GLOB.mining_suit_allowed
 
 /obj/item/clothing/head/hooded/explorer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/armor_plate)
 
@@ -81,18 +87,26 @@
 	starting_filter_type = /obj/item/gas_filter/plasmaman
 
 /obj/item/clothing/mask/gas/explorer/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	adjust_visor(user)
 
 /obj/item/clothing/mask/gas/explorer/visor_toggling()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// adjusted = out of the way = smaller = can fit in boxes
 	update_weight_class(up ? WEIGHT_CLASS_SMALL : WEIGHT_CLASS_NORMAL)
 
 /obj/item/clothing/mask/gas/explorer/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	inhand_icon_state = "[initial(inhand_icon_state)][up ? "_up" : ""]"
 
 /obj/item/clothing/mask/gas/explorer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(up || w_class == WEIGHT_CLASS_SMALL)
 		return
@@ -102,6 +116,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/clothing/mask/gas/explorer/folded/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	visor_toggling()
 
@@ -125,6 +141,8 @@
 	hoodtype = /obj/item/clothing/head/hooded/cloakhood/goliath
 
 /obj/item/clothing/suit/hooded/cloak/goliath/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed = GLOB.mining_suit_allowed
 
@@ -139,6 +157,8 @@
 	wound = 10
 
 /obj/item/clothing/suit/hooded/cloak/goliath/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user))
 		return NONE
 	var/mob/living/carbon/char = user
@@ -180,6 +200,8 @@
 	resistance_flags = FIRE_PROOF
 
 /obj/item/clothing/head/hooded/cloakhood/goliath/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 /obj/item/clothing/suit/armor/bone
@@ -198,6 +220,8 @@
 	custom_materials = list(/datum/material/bone = SHEET_MATERIAL_AMOUNT * 6)
 
 /obj/item/clothing/suit/armor/bone/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/armor_plate, upgrade_item = /obj/item/clothing/accessory/talisman)
 	allowed = GLOB.mining_suit_allowed
@@ -219,6 +243,8 @@
 	custom_materials = list(/datum/material/bone = SHEET_MATERIAL_AMOUNT * 4)
 
 /obj/item/clothing/head/helmet/skull/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/armor_plate, upgrade_item = /obj/item/clothing/accessory/talisman)
 

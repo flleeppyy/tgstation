@@ -8,6 +8,8 @@
 	var/glow_color = "#ececff"
 
 /obj/effect/floating_blade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/movetype_handler)
 	ADD_TRAIT(src, TRAIT_MOVE_FLYING, INNATE_TRAIT)

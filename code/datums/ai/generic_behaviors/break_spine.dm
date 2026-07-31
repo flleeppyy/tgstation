@@ -4,6 +4,8 @@
 	var/give_up_distance = 10
 
 /datum/bt_node/ai_behavior/break_spine/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/batman = controller.blackboard[target_key]
 	var/mob/living/big_guy = controller.pawn
 
@@ -22,6 +24,8 @@
 	return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/break_spine/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(succeeded)
 		var/mob/living/attacker = controller.pawn
@@ -33,6 +37,8 @@
 /datum/bt_node/ai_behavior/break_spine/bane
 
 /datum/bt_node/ai_behavior/break_spine/bane/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(succeeded)
 		var/mob/living/bane = controller.pawn

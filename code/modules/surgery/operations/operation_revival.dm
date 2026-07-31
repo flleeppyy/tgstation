@@ -20,12 +20,18 @@
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_BONE_SAWED
 
 /datum/surgery_operation/basic/revival/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(/obj/item/shockpaddles)
 
 /datum/surgery_operation/basic/revival/all_required_strings()
+	procstart = null
+	src.procstart = null
 	return ..() + list("the patient must be deceased", "the patient must be in a revivable state")
 
 /datum/surgery_operation/basic/revival/state_check(mob/living/patient)
+	procstart = null
+	src.procstart = null
 	if(patient.stat != DEAD)
 		return FALSE
 	if(HAS_TRAIT(patient, TRAIT_SUICIDED) || HAS_TRAIT(patient, TRAIT_HUSK) || HAS_TRAIT(patient, TRAIT_DEFIB_BLACKLISTED))
@@ -36,12 +42,18 @@
 	return mob_check(patient)
 
 /datum/surgery_operation/basic/revival/proc/brain_check(obj/item/organ/brain/brain)
+	procstart = null
+	src.procstart = null
 	return !IS_ROBOTIC_ORGAN(brain)
 
 /datum/surgery_operation/basic/revival/proc/mob_check(mob/living/patient)
+	procstart = null
+	src.procstart = null
 	return !(patient.mob_biotypes & MOB_ROBOTIC)
 
 /datum/surgery_operation/basic/revival/tool_check(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/shockpaddles))
 		var/obj/item/shockpaddles/paddles = tool
 		if((paddles.req_defib && !paddles.defib.powered) || !HAS_TRAIT(paddles, TRAIT_WIELDED) || paddles.cooldown || paddles.busy)
@@ -58,6 +70,8 @@
 	return TRUE
 
 /datum/surgery_operation/basic/revival/on_preop(mob/living/patient, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		patient,
@@ -68,6 +82,8 @@
 	patient.notify_revival("Someone is trying to zap your brain.", source = patient)
 
 /datum/surgery_operation/basic/revival/on_success(mob/living/patient, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		patient,
@@ -88,6 +104,8 @@
 
 /// Called when you have been successfully raised from the dead
 /datum/surgery_operation/basic/revival/proc/on_revived(mob/living/surgeon, mob/living/patient)
+	procstart = null
+	src.procstart = null
 	patient.visible_message(span_notice("...[patient] wakes up, alive and aware!"))
 	patient.emote("gasp")
 	if(HAS_MIND_TRAIT(surgeon, TRAIT_MORBID)) // Contrary to their typical hatred of resurrection, it wouldn't be very thematic if morbid people didn't love playing god
@@ -96,10 +114,14 @@
 
 /// Called when revival fails
 /datum/surgery_operation/basic/revival/proc/on_no_revive(mob/living/surgeon, mob/living/patient)
+	procstart = null
+	src.procstart = null
 	patient.visible_message(span_warning("...[patient.p_they()] convulse[patient.p_s()], then lie[patient.p_s()] still."))
 	patient.adjust_organ_loss(ORGAN_SLOT_BRAIN, 50, 199) // MAD SCIENCE
 
 /datum/surgery_operation/basic/revival/on_failure(mob/living/patient, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		patient,
@@ -113,7 +135,11 @@
 	required_biotype = MOB_ROBOTIC
 
 /datum/surgery_operation/basic/revival/mechanic/brain_check(obj/item/organ/brain/brain)
+	procstart = null
+	src.procstart = null
 	return !..()
 
 /datum/surgery_operation/basic/revival/mechanic/mob_check(mob/living/patient)
+	procstart = null
+	src.procstart = null
 	return !..()

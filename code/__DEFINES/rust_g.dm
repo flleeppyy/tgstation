@@ -19,6 +19,8 @@
 /* This comment bypasses grep checks */ /var/__rust_g
 
 /proc/__detect_rust_g()
+	procstart = null
+	src.procstart = null
 	var/arch_suffix = null
 	#ifdef OPENDREAM
 	arch_suffix = "64"
@@ -51,6 +53,8 @@
 
 /// Gets the version of rust_g
 /proc/rustg_get_version() return RUSTG_CALL(RUST_G, "get_version")()
+	procstart = null
+	src.procstart = null
 
 
 /**
@@ -217,6 +221,8 @@
  * Defaults to returning %F which is YYYY-MM-DD.
  */
 /proc/rustg_git_commit_date(rev, format = "%F")
+	procstart = null
+	src.procstart = null
 	return RUSTG_CALL(RUST_G, "rg_git_commit_date")(rev, format)
 
 /**
@@ -225,6 +231,8 @@
  * This is different to rustg_git_commit_date because it only needs the logs directory.
  */
 /proc/rustg_git_commit_date_head(format = "%F")
+	procstart = null
+	src.procstart = null
 	return RUSTG_CALL(RUST_G, "rg_git_commit_date_head")(format)
 
 #define rustg_hash_string(algorithm, text) RUSTG_CALL(RUST_G, "hash_string")(algorithm, text)
@@ -424,6 +432,8 @@
 
 #define rustg_log_write(fname, text, format) RUSTG_CALL(RUST_G, "log_write")(fname, text, format)
 /proc/rustg_log_close_all() return RUSTG_CALL(RUST_G, "log_close_all")()
+	procstart = null
+	src.procstart = null
 
 #define rustg_noise_get_at_coordinates(seed, x, y) RUSTG_CALL(RUST_G, "noise_get_at_coordinates")(seed, x, y)
 
@@ -486,6 +496,8 @@
 
 /// Provided a static RSC file path or a raw text file path, returns the duration of the file in deciseconds as a float.
 /proc/rustg_sound_length(file_path)
+	procstart = null
+	src.procstart = null
 	var/static/list/sound_cache
 	if(isnull(sound_cache))
 		sound_cache = list()
@@ -548,11 +560,15 @@
 
 /// Returns the timestamp as a string
 /proc/rustg_unix_timestamp()
+	procstart = null
+	src.procstart = null
 	return RUSTG_CALL(RUST_G, "unix_timestamp")()
 
 #define rustg_raw_read_toml_file(path) json_decode(RUSTG_CALL(RUST_G, "toml_file_to_json")(path) || "null")
 
 /proc/rustg_read_toml_file(path)
+	procstart = null
+	src.procstart = null
 	var/list/output = rustg_raw_read_toml_file(path)
 	if (output["success"])
 		return json_decode(output["content"])
@@ -562,6 +578,8 @@
 #define rustg_raw_toml_encode(value) json_decode(RUSTG_CALL(RUST_G, "toml_encode")(json_encode(value)))
 
 /proc/rustg_toml_encode(value)
+	procstart = null
+	src.procstart = null
 	var/list/output = rustg_raw_toml_encode(value)
 	if (output["success"])
 		return output["content"]

@@ -14,6 +14,8 @@
 	COOLDOWN_DECLARE(say_cooldown)
 
 /obj/machinery/mineral/labor_claim_console/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	locate_stacking_machine()
 	if(!SSshuttle.initialized)
@@ -25,6 +27,8 @@
 		return INITIALIZE_HINT_QDEL
 
 /obj/machinery/mineral/labor_claim_console/proc/register_shuttle_signal()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/obj/docking_port/mobile/laborshuttle = SSshuttle.getShuttle("laborcamp")
 	if(laborshuttle)
@@ -32,21 +36,29 @@
 	UnregisterSignal(SSshuttle, COMSIG_SUBSYSTEM_POST_INITIALIZE)
 
 /obj/machinery/mineral/labor_claim_console/Destroy()
+	procstart = null
+	src.procstart = null
 	if(stacking_machine)
 		stacking_machine.labor_console = null
 		stacking_machine = null
 	return ..()
 
 /proc/cmp_sheet_list(list/a, list/b)
+	procstart = null
+	src.procstart = null
 	return a["value"] - b["value"]
 
 /obj/machinery/mineral/labor_claim_console/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "LaborClaimConsole", name)
 		ui.open()
 
 /obj/machinery/mineral/labor_claim_console/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/can_go_home = FALSE
 
@@ -77,11 +89,15 @@
 	return data
 
 /obj/machinery/mineral/labor_claim_console/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["shuttle_exists"] = !isnull(SSshuttle.getShuttle("laborcamp"))
 	return data
 
 /obj/machinery/mineral/labor_claim_console/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -145,6 +161,8 @@
 					return TRUE
 
 /obj/machinery/mineral/labor_claim_console/proc/find_labor_shuttle_mobs()
+	procstart = null
+	src.procstart = null
 	var/list/prisoners = mobs_in_area_type(list(get_area(src)))
 
 	// security personnel and nonhumans do not count towards this
@@ -156,6 +174,8 @@
 	return prisoners
 
 /obj/machinery/mineral/labor_claim_console/proc/on_laborshuttle_can_move(obj/docking_port/mobile/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(initiated_launch && length(find_labor_shuttle_mobs()) > 1)
@@ -164,11 +184,15 @@
 		return BLOCK_SHUTTLE_MOVE
 
 /obj/machinery/mineral/labor_claim_console/proc/locate_stacking_machine()
+	procstart = null
+	src.procstart = null
 	stacking_machine = locate(/obj/machinery/mineral/stacking_machine) in dview(2, get_turf(src))
 	if(stacking_machine)
 		stacking_machine.labor_console = src
 
 /obj/machinery/mineral/labor_claim_console/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if (obj_flags & EMAGGED)
 		return FALSE
 
@@ -190,12 +214,16 @@
 	var/obj/machinery/mineral/labor_claim_console/labor_console
 
 /obj/machinery/mineral/stacking_machine/laborstacker/Destroy()
+	procstart = null
+	src.procstart = null
 	if(labor_console)
 		labor_console.stacking_machine = null
 		labor_console = null
 	return ..()
 
 /obj/machinery/mineral/stacking_machine/laborstacker/process_stack(obj/item/stack/input)
+	procstart = null
+	src.procstart = null
 	if (!istype(input, /obj/item/stack/sheet))
 		return ..()
 	var/obj/item/stack/sheet/sheet = input
@@ -204,6 +232,8 @@
 	return ..()
 
 /obj/machinery/mineral/stacking_machine/laborstacker/base_item_interaction(mob/living/user, obj/item/weapon, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if (is_type_in_typecache(weapon, accepted_types))
 		process_stack(weapon)
 		return ITEM_INTERACT_SUCCESS
@@ -219,12 +249,16 @@
 	density = FALSE
 
 /obj/machinery/mineral/labor_points_checker/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || user.is_blind())
 		return
 	user.examinate(src)
 
 /obj/machinery/mineral/labor_points_checker/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/card/id/advanced/prisoner))
 		return NONE
 

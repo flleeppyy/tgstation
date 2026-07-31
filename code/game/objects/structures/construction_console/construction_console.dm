@@ -27,6 +27,8 @@
 	var/obj/item/construction/rcd/internal/internal_rcd
 
 /obj/machinery/computer/camera_advanced/base_construction/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//Populate the actions list with the different action objects that will be granted to console users
 	populate_actions_list()
@@ -41,6 +43,8 @@
  * this console, and put it in the actions list
  */
 /obj/machinery/computer/camera_advanced/base_construction/proc/populate_actions_list()
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -51,15 +55,21 @@
  * giving the structures list default values.
  */
 /obj/machinery/computer/camera_advanced/base_construction/proc/restock_materials()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Find a spawn location for the eyeobj. If no allowed_area is defined, spawn ontop of the console.
 /obj/machinery/computer/camera_advanced/base_construction/proc/find_spawn_spot()
+	procstart = null
+	src.procstart = null
 	if (allowed_area)
 		return pick(get_area_turfs(allowed_area))
 	return get_turf(src)
 
 /obj/machinery/computer/camera_advanced/base_construction/CreateEye()
+	procstart = null
+	src.procstart = null
 	var/turf/spawn_spot = find_spawn_spot()
 	if (!spawn_spot)
 		return FALSE
@@ -67,6 +77,8 @@
 	return TRUE
 
 /obj/machinery/computer/camera_advanced/base_construction/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	//If we have an internal RCD, we can refill it by slapping the console with some materials
 	if(!internal_rcd || (!istype(tool, /obj/item/rcd_ammo) && !istype(tool, /obj/item/stack/sheet)))
 		return NONE
@@ -74,16 +86,22 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/computer/camera_advanced/base_construction/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(internal_rcd)
 	return ..()
 
 ///Go through every action object in the construction_action list (which should be fully initialized by now) and grant it to the user.
 /obj/machinery/computer/camera_advanced/base_construction/GrantActions(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	//When the eye is in use, make it visible to players so they know when someone is building.
 	eyeobj.SetInvisibility(INVISIBILITY_NONE, id=type)
 
 /obj/machinery/computer/camera_advanced/base_construction/remove_eye_control(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	//Set back to default invisibility when not in use.
 	eyeobj.RemoveInvisibility(type)
@@ -107,6 +125,8 @@
 	var/obj/machinery/computer/camera_advanced/base_construction/linked_console
 
 /mob/eye/camera/remote/base_construction/Initialize(mapload, obj/machinery/computer/camera_advanced/console_link)
+	procstart = null
+	src.procstart = null
 	linked_console = console_link
 	if(!linked_console)
 		stack_trace("A base consturuction drone was created with no linked console")
@@ -114,12 +134,16 @@
 	return ..()
 
 /mob/eye/camera/remote/base_construction/setLoc(turf/destination, force_update = FALSE)
+	procstart = null
+	src.procstart = null
 	var/area/curr_area = get_area(destination)
 	//Only move if we're in the allowed area. If no allowed area is defined, then we're free to move wherever.
 	if(!linked_console.allowed_area || istype(curr_area, linked_console.allowed_area))
 		return ..()
 
 /mob/eye/camera/remote/base_construction/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	//This camera eye is visible, and as such needs to keep its dir updated
 	dir = direction
 	return ..()

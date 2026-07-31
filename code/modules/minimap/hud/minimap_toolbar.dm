@@ -19,29 +19,41 @@
 	var/last_drag_y
 
 /atom/movable/screen/minimap_toolbar_button/Initialize(mapload, datum/hud/hud_owner, atom/movable/screen/minimap_display/minimap_display)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	display = minimap_display
 
 /atom/movable/screen/minimap_toolbar_button/Destroy()
+	procstart = null
+	src.procstart = null
 	display = null
 	return ..()
 
 /atom/movable/screen/minimap_toolbar_button/MouseEntered(location, control, params)
+	procstart = null
+	src.procstart = null
 	add_filter("mouseover", 1, outline_filter(1, COLOR_LIME))
 	if(desc)
 		openToolTip(usr, tip_src = display || src, params = params, title = name, content = desc)
 
 /atom/movable/screen/minimap_toolbar_button/MouseExited(location, control, params)
+	procstart = null
+	src.procstart = null
 	remove_filter("mouseover")
 	if(desc)
 		closeToolTip(usr)
 
 /// Returns TRUE if this button should be shown as active.
 /atom/movable/screen/minimap_toolbar_button/proc/is_active()
+	procstart = null
+	src.procstart = null
 	return display && display.active_button == src
 
 /// Updates the button's visual state to show if it's active.
 /atom/movable/screen/minimap_toolbar_button/proc/update_active_state()
+	procstart = null
+	src.procstart = null
 	if(is_active())
 		add_filter("active", 1, outline_filter(2, COLOR_YELLOW))
 	else
@@ -49,31 +61,43 @@
 
 /// Called when this button is activated as the active tool.
 /atom/movable/screen/minimap_toolbar_button/proc/on_activate()
+	procstart = null
+	src.procstart = null
 	display?.set_cursor_icon(mouse_icon)
 
 /// Called when this button is deactivated.
 /atom/movable/screen/minimap_toolbar_button/proc/on_deactivate()
+	procstart = null
+	src.procstart = null
 	display?.set_cursor_icon(null)
 	last_drag_x = null
 	last_drag_y = null
 
 /// Called during mouse drag on the map. Override to implement tool behavior.
 /atom/movable/screen/minimap_toolbar_button/proc/on_mouse_drag(x, y)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// Called on mouse up. Override to clean up tool state.
 /atom/movable/screen/minimap_toolbar_button/proc/on_mouse_up()
+	procstart = null
+	src.procstart = null
 	last_drag_x = null
 	last_drag_y = null
 
 /// Called on click. Override to implement click behavior like label placement.
 /atom/movable/screen/minimap_toolbar_button/proc/on_click(icon_x, icon_y, right_click)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /atom/movable/screen/minimap_toolbar_button/draw
 	desc = "Left-drag on the map to draw."
 
 /atom/movable/screen/minimap_toolbar_button/draw/on_mouse_drag(x, y)
+	procstart = null
+	src.procstart = null
 	if(isnull(display) || isnull(display.drawing))
 		return FALSE
 	var/icon_width = display.minimap?.base_map?.Width()
@@ -96,6 +120,8 @@
 	return TRUE
 
 /atom/movable/screen/minimap_toolbar_button/draw/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(usr == get_mob())
 		display?.activate_button(src)
 
@@ -131,6 +157,8 @@
 	mouse_icon = 'icons/ui_icons/minimap/minimap_mouse/draw_erase.dmi'
 
 /atom/movable/screen/minimap_toolbar_button/erase/on_mouse_drag(x, y)
+	procstart = null
+	src.procstart = null
 	if(isnull(display) || isnull(display.drawing))
 		return FALSE
 	var/icon_width = display.minimap?.base_map?.Width()
@@ -153,6 +181,8 @@
 	return TRUE
 
 /atom/movable/screen/minimap_toolbar_button/erase/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(usr == get_mob())
 		display?.activate_button(src)
 
@@ -163,9 +193,13 @@
 	desc = "Clear all drawings."
 
 /atom/movable/screen/minimap_toolbar_button/clear/is_active()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /atom/movable/screen/minimap_toolbar_button/clear/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(usr == get_mob())
 		display?.clear_canvas(usr)
 
@@ -177,6 +211,8 @@
 	mouse_icon = 'icons/ui_icons/minimap/minimap_mouse/label.dmi'
 
 /atom/movable/screen/minimap_toolbar_button/label/on_click(icon_x, icon_y, right_click)
+	procstart = null
+	src.procstart = null
 	if(isnull(display))
 		return FALSE
 	if(right_click)
@@ -187,6 +223,8 @@
 	return TRUE
 
 /atom/movable/screen/minimap_toolbar_button/label/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(usr != get_mob())
 		return
 	var/list/modifiers = params2list(params)

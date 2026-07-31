@@ -6,6 +6,8 @@
 	anomaly_core = /obj/item/assembly/signaler/anomaly/vortex
 
 /obj/effect/anomaly/bhole/anomalyEffect()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!isturf(loc)) //blackhole cannot be contained inside anything. Weird stuff might happen
 		qdel(src)
@@ -25,6 +27,8 @@
 			SSexplosions.med_mov_atom += O
 
 /obj/effect/anomaly/bhole/proc/grav(r, ex_act_force, pull_chance, turf_removal_chance)
+	procstart = null
+	src.procstart = null
 	for(var/t = -r, t < r, t++)
 		affect_coord(x+t, y-r, ex_act_force, pull_chance, turf_removal_chance)
 		affect_coord(x-t, y+r, ex_act_force, pull_chance, turf_removal_chance)
@@ -32,6 +36,8 @@
 		affect_coord(x-r, y-t, ex_act_force, pull_chance, turf_removal_chance)
 
 /obj/effect/anomaly/bhole/proc/affect_coord(x, y, ex_act_force, pull_chance, turf_removal_chance)
+	procstart = null
+	src.procstart = null
 	//Get turf at coordinate
 	var/turf/T = locate(x, y, z)
 	if(isnull(T))
@@ -64,5 +70,7 @@
 				SSexplosions.lowturf += T
 
 /obj/effect/anomaly/bhole/detonate()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/circle_wave/vortex/small(get_turf(src))
 	playsound(src, 'sound/effects/hallucinations/far_noise.ogg', vol = 50)

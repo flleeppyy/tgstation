@@ -20,6 +20,8 @@
 	var/mech_damage = 45
 
 /datum/action/cooldown/mob_cooldown/fire_breath/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	disable_cooldown_actions()
 	attack_sequence(target_atom)
 	StartCooldown()
@@ -28,11 +30,15 @@
 
 /// Apply our specific fire breathing shape, in proc form so we can override it in subtypes
 /datum/action/cooldown/mob_cooldown/fire_breath/proc/attack_sequence(atom/target)
+	procstart = null
+	src.procstart = null
 	playsound(owner.loc, fire_sound, 200, TRUE)
 	fire_line(target)
 
 /// Breathe fire in a line towards the target, optionally rotated at an offset from the target
 /datum/action/cooldown/mob_cooldown/fire_breath/proc/fire_line(atom/target, offset)
+	procstart = null
+	src.procstart = null
 	if (isnull(target))
 		return
 	var/turf/target_turf = get_ranged_target_turf_direct(owner, target, fire_range, offset)
@@ -41,6 +47,8 @@
 
 /// Creates fire with a delay on the list of targeted turfs
 /datum/action/cooldown/mob_cooldown/fire_breath/proc/progressive_fire_line(list/burn_turfs)
+	procstart = null
+	src.procstart = null
 	if (QDELETED(owner) || owner.stat == DEAD)
 		return
 	// Guys we have already hit, no double dipping
@@ -53,6 +61,8 @@
 
 /// Finally spawn the actual fire, spawns the fire hotspot in case you want to recolour it or something
 /datum/action/cooldown/mob_cooldown/fire_breath/proc/burn_turf(turf/fire_turf, list/hit_list, mob/living/source)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/hotspot/fire_hotspot = new /obj/effect/hotspot(fire_turf, fire_volume, fire_temperature)
 	fire_turf.hotspot_expose(fire_temperature, fire_volume, TRUE)
 
@@ -72,6 +82,8 @@
 
 /// Do something unpleasant to someone we set on fire
 /datum/action/cooldown/mob_cooldown/fire_breath/proc/on_burn_mob(mob/living/barbecued, mob/living/source)
+	procstart = null
+	src.procstart = null
 	if(fire_temperature <= TCMB)
 		barbecued.apply_status_effect(/datum/status_effect/ice_block_talisman, 2 SECONDS)
 		to_chat(barbecued, span_userdanger("You're frozen solid by [source]'s icy breath!"))
@@ -87,6 +99,8 @@
 	var/list/angles = list(-40, 0, 40)
 
 /datum/action/cooldown/mob_cooldown/fire_breath/cone/attack_sequence(atom/target)
+	procstart = null
+	src.procstart = null
 	playsound(owner.loc, fire_sound, 200, TRUE)
 	for(var/offset in angles)
 		fire_line(target, offset)
@@ -107,10 +121,14 @@
 	var/total_spins = 3
 
 /datum/action/cooldown/mob_cooldown/fire_breath/mass_fire/Activate(atom/target_atom)
+	procstart = null
+	src.procstart = null
 	target_atom = get_step(owner, owner.dir) // Just shoot it forwards, we don't need to click on someone for this one
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/fire_breath/mass_fire/attack_sequence(atom/target)
+	procstart = null
+	src.procstart = null
 	var/queued_spins = 0
 	for (var/i in 1 to total_spins)
 		var/delay = queued_spins * breath_delay
@@ -119,6 +137,8 @@
 
 /// Breathe fire in a circle, with a slight angle offset based on which of our several circles it is
 /datum/action/cooldown/mob_cooldown/fire_breath/mass_fire/proc/fire_spin(target, spin_count)
+	procstart = null
+	src.procstart = null
 	if (QDELETED(owner) || owner.stat == DEAD)
 		return // Too dead to spin
 	playsound(owner.loc, fire_sound, 200, TRUE)

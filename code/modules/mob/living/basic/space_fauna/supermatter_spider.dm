@@ -40,6 +40,8 @@
 	var/single_use = TRUE
 
 /mob/living/basic/supermatter_spider/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/swarming)
 
@@ -48,6 +50,8 @@
 
 /// Proc that we call on attacking something to dust 'em.
 /mob/living/basic/supermatter_spider/early_melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -70,6 +74,8 @@
 
 /// Simple proc that plays the supermatter dusting sound and sends a visible message.
 /mob/living/basic/supermatter_spider/proc/dust_feedback(atom/target)
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(src), 'sound/effects/supermatter.ogg', 10, TRUE)
 	visible_message(span_danger("[src] knocks into [target], turning [target.p_them()] to dust in a brilliant flash of light!"))
 

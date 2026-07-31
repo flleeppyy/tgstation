@@ -8,6 +8,8 @@
 	VAR_PRIVATE/locked = FALSE
 
 /datum/state_laws_ui/New(mob/living/silicon/owner)
+	procstart = null
+	src.procstart = null
 	src.owner = owner
 	if(owner.laws)
 		update_inherent_stated_laws(owner.laws)
@@ -15,13 +17,19 @@
 /// Used to update the to_state list to the passed ai law's inherent laws
 /// Call this when changing the AI's lawset entirely
 /datum/state_laws_ui/proc/update_inherent_stated_laws(datum/ai_laws/laws)
+	procstart = null
+	src.procstart = null
 	to_state = laws.inherent.Copy()
 
 /datum/state_laws_ui/Destroy()
+	procstart = null
+	src.procstart = null
 	owner = null
 	return ..()
 
 /datum/state_laws_ui/proc/get_laws_ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/law_data = list()
 	var/zeroth = iscyborg(owner) && owner.laws.zeroth_borg || owner.laws.zeroth
 	if(zeroth)
@@ -36,6 +44,8 @@
 	return law_data
 
 /datum/state_laws_ui/proc/law_to_ui_data(law_text, law_number, law_type)
+	procstart = null
+	src.procstart = null
 	return list(
 		"text" = law_text,
 		"number" = law_number,
@@ -43,12 +53,18 @@
 	)
 
 /datum/state_laws_ui/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	update_inherent_stated_laws(owner.laws)
 
 /datum/state_laws_ui/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.not_incapacitated_state
 
 /datum/state_laws_ui/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ASSERT(user == owner, "Non-owner [user] tried to access [owner]'s [type] UI.")
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -56,6 +72,8 @@
 		ui.open()
 
 /datum/state_laws_ui/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["locked"] = locked
@@ -65,6 +83,8 @@
 	return data
 
 /datum/state_laws_ui/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -83,6 +103,8 @@
 			return TRUE
 
 /datum/state_laws_ui/proc/state_laws(force_all_laws = FALSE)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	if(locked)

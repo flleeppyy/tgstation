@@ -16,16 +16,22 @@
 
 
 /obj/item/circuit_component/sdql_operation/populate_ports()
+	procstart = null
+	src.procstart = null
 	sdql_operation = add_input_port("SDQL String", PORT_TYPE_STRING)
 	results = add_output_port("Result", PORT_TYPE_LIST(PORT_TYPE_STRING))
 
 /obj/item/circuit_component/sdql_operation/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(GLOB.AdminProcCaller)
 		return TRUE
 
 	INVOKE_ASYNC(src, PROC_REF(execute_sdql), port)
 
 /obj/item/circuit_component/sdql_operation/proc/execute_sdql(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	var/operation = sdql_operation.value
 
 	if(!operation)

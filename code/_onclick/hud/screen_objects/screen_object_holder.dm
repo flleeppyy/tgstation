@@ -7,6 +7,8 @@
 		list/protected_screen_objects = list()
 
 /datum/screen_object_holder/New(client/client)
+	procstart = null
+	src.procstart = null
 	ASSERT(istype(client))
 
 	src.client = client
@@ -14,6 +16,8 @@
 	RegisterSignal(client, COMSIG_QDELETING, PROC_REF(on_parent_qdel))
 
 /datum/screen_object_holder/Destroy()
+	procstart = null
+	src.procstart = null
 	clear()
 	client = null
 
@@ -21,6 +25,8 @@
 
 /// Gives the screen object to the client, qdel'ing it when it's cleared
 /datum/screen_object_holder/proc/give_screen_object(atom/screen_object)
+	procstart = null
+	src.procstart = null
 	ASSERT(istype(screen_object))
 
 	screen_objects += screen_object
@@ -30,6 +36,8 @@
 /// Gives the screen object to the client, but does not qdel it when it's cleared,
 /// this is used for screen object instances you plan on giving to multiple mobs.
 /datum/screen_object_holder/proc/give_protected_screen_object(atom/screen_object)
+	procstart = null
+	src.procstart = null
 	ASSERT(istype(screen_object))
 
 	protected_screen_objects += screen_object
@@ -37,6 +45,8 @@
 	return screen_object
 
 /datum/screen_object_holder/proc/remove_screen_object(atom/screen_object)
+	procstart = null
+	src.procstart = null
 	ASSERT(istype(screen_object))
 	ASSERT((screen_object in screen_objects) || (screen_object in protected_screen_objects))
 
@@ -49,6 +59,8 @@
 		qdel(screen_object)
 
 /datum/screen_object_holder/proc/clear()
+	procstart = null
+	src.procstart = null
 	client?.screen -= screen_objects
 	client?.screen -= protected_screen_objects
 
@@ -59,6 +71,8 @@
 // Consumers ought to be qdel'ing this on their own Destroy, but we shouldn't
 // hard del because they aren't watching for the client, that's our job.
 /datum/screen_object_holder/proc/on_parent_qdel()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	SIGNAL_HANDLER
 

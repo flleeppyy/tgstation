@@ -102,6 +102,8 @@
 		toggle_active(parent)
 
 /datum/component/transforming/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	var/obj/item/item_parent = parent
 
 	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, PROC_REF(on_attack_self))
@@ -117,6 +119,8 @@
 	RegisterSignal(parent, COMSIG_ATOM_SINGLE_MATERIAL_EFFECT_REMOVE, PROC_REF(on_material_remove))
 
 /datum/component/transforming/proc/apply_fantasy_bonuses(obj/item/source, bonus)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	active = FALSE
 	set_inactive(source)
@@ -124,6 +128,8 @@
 	throwforce_on = source.modify_fantasy_variable("throwforce_on", throwforce_on, bonus)
 
 /datum/component/transforming/proc/remove_fantasy_bonuses(obj/item/source, bonus)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	active = FALSE
 	set_inactive(source)
@@ -131,6 +137,8 @@
 	throwforce_on = source.reset_fantasy_variable("throwforce_on", throwforce_on)
 
 /datum/component/transforming/proc/on_material_apply(obj/item/source, datum/material/material, amount, multiplier)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Opposite state's force needs to be calculated for each material's effect
 	if (active)
@@ -141,6 +149,8 @@
 		throwforce_on *= GET_MATERIAL_MODIFIER(source.get_material_throwforce_modifier(material, sharpness_on), multiplier)
 
 /datum/component/transforming/proc/on_material_remove(obj/item/source, datum/material/material, amount, multiplier)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Same as appliation but inversed
 	if (active)
@@ -151,6 +161,8 @@
 		throwforce_on /= GET_MATERIAL_MODIFIER(source.get_material_throwforce_modifier(material, sharpness_on), multiplier)
 
 /datum/component/transforming/proc/on_materials_updated(obj/item/source, list/materials, datum/material/main_material)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Current force can be set directly
 	if (active)
@@ -161,9 +173,13 @@
 		throwforce_off = source.throwforce
 
 /datum/component/transforming/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ITEM_ATTACK_SELF, COMSIG_ITEM_SHARPEN_ACT, COMSIG_DETECTIVE_SCANNED, COMSIG_ATOM_FINALIZE_MATERIAL_EFFECTS, COMSIG_ATOM_FINALIZE_REMOVE_MATERIAL_EFFECTS))
 
 /datum/component/transforming/proc/on_scan(datum/source, mob/user, datum/detective_scanner_log/entry)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	entry.add_data_entry(DETSCAN_CATEGORY_NOTES, "Readings suggest some form of state changing.")
@@ -179,6 +195,8 @@
  * user - the mob transforming the weapon
  */
 /datum/component/transforming/proc/on_attack_self(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!COOLDOWN_FINISHED(src, transform_cooldown))
@@ -204,6 +222,8 @@
  * returns TRUE.
  */
 /datum/component/transforming/proc/do_transform(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	toggle_active(source)
 	if(!(SEND_SIGNAL(source, COMSIG_TRANSFORMING_ON_TRANSFORM, user, active) & COMPONENT_NO_DEFAULT_MESSAGE))
 		default_transform_message(source, user)
@@ -222,6 +242,8 @@
  * user - the mob transforming the item
  */
 /datum/component/transforming/proc/default_transform_message(obj/item/source, mob/user)
+	procstart = null
+	src.procstart = null
 	if(user)
 		source.balloon_alert(user, "[active ? "enabled" : "disabled"] [source]")
 	playsound(source, 'sound/items/weapons/batonextend.ogg', 50, TRUE)
@@ -233,6 +255,8 @@
  * source - the item being transformed / parent
  */
 /datum/component/transforming/proc/toggle_active(obj/item/source)
+	procstart = null
+	src.procstart = null
 	active = !active
 	if(active)
 		set_active(source)
@@ -246,6 +270,8 @@
  * source - the item being transformed / parent
  */
 /datum/component/transforming/proc/set_active(obj/item/source)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(source, TRAIT_TRANSFORM_ACTIVE, REF(src))
 	if(!isnull(sharpness_on))
 		source.sharpness = sharpness_on
@@ -276,6 +302,8 @@
  * source - the item being un-transformed / parent
  */
 /datum/component/transforming/proc/set_inactive(obj/item/source)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(source, TRAIT_TRANSFORM_ACTIVE, REF(src))
 	if(!isnull(sharpness_on))
 		source.sharpness = sharpness_off
@@ -307,6 +335,8 @@
  * Returns TRUE if side effects happened, FALSE otherwise
  */
 /datum/component/transforming/proc/clumsy_transform_effect(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!clumsy_check)
 		return FALSE
 
@@ -349,6 +379,8 @@
  * Does not return naturally [COMPONENT_BLOCK_SHARPEN_APPLIED] as this is only to track our sharpened bonus between transformation.
  */
 /datum/component/transforming/proc/on_sharpen(obj/item/source, increment, max)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(sharpened_bonus)

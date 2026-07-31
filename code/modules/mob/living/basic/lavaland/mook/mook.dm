@@ -48,6 +48,8 @@
 	var/static/list/heal_targets = list(/mob/living/basic/mining/mook/worker)
 
 /mob/living/basic/mining/mook/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(\
 		/datum/element/change_force_on_death,\
@@ -71,12 +73,16 @@
 
 /// Returns a list of actions and blackboard keys to pass into `grant_actions_by_list`.
 /mob/living/basic/mining/mook/proc/get_innate_abilities()
+	procstart = null
+	src.procstart = null
 	var/static/list/innate_abilities = list(
 		/datum/action/cooldown/mob_cooldown/mook_ability/mook_jump = BB_MOOK_JUMP_ABILITY,
 	)
 	return innate_abilities
 
 /mob/living/basic/mining/mook/proc/grant_healer_abilities()
+	procstart = null
+	src.procstart = null
 	AddComponent(\
 		/datum/component/healing_touch,\
 		heal_brute = melee_damage_upper,\
@@ -86,6 +92,8 @@
 	)
 
 /mob/living/basic/mining/mook/Entered(atom/movable/mover)
+	procstart = null
+	src.procstart = null
 	if(istype(mover, /obj/item/stack/ore))
 		held_ore = mover
 		ai_controller?.set_blackboard_key(BB_SIMPLE_CARRY_ITEM, mover)
@@ -94,6 +102,8 @@
 	return ..()
 
 /mob/living/basic/mining/mook/Exited(atom/movable/mover)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(held_ore != mover)
 		return
@@ -101,12 +111,16 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /mob/living/basic/mining/mook/early_melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
 	return attack_sequence(target)
 
 /mob/living/basic/mining/mook/proc/attack_sequence(atom/target)
+	procstart = null
+	src.procstart = null
 	if(istype(target, /obj/item/stack/ore) && isnull(held_ore))
 		var/obj/item/ore_target = target
 		ore_target.forceMove(src)
@@ -124,14 +138,20 @@
 		return BASIC_MOB_END_ATTACK_CHAIN_COOLDOWN
 
 /mob/living/basic/mining/mook/proc/change_combatant_state(state)
+	procstart = null
+	src.procstart = null
 	attack_state = state
 	update_appearance()
 
 /mob/living/basic/mining/mook/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(held_ore)
 	return ..()
 
 /mob/living/basic/mining/mook/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat == DEAD)
 		return
@@ -146,6 +166,8 @@
 			icon_state = "mook_strike"
 
 /mob/living/basic/mining/mook/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat == DEAD)
 		return
@@ -156,14 +178,20 @@
 	. += ore_overlay
 
 /mob/living/basic/mining/mook/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback, force, gentle = FALSE, quickstart = TRUE, throw_type_path = /datum/thrownthing)
+	procstart = null
+	src.procstart = null
 	change_combatant_state(state = MOOK_ATTACK_ACTIVE)
 	return ..()
 
 /mob/living/basic/mining/mook/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	change_combatant_state(state = MOOK_ATTACK_NEUTRAL)
 
 /mob/living/basic/mining/mook/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(.)
@@ -177,6 +205,8 @@
 		return TRUE
 
 /mob/living/basic/mining/mook/proc/drop_ore(mob/living/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(isnull(held_ore))
@@ -185,10 +215,14 @@
 	return COMSIG_KB_ACTIVATED
 
 /mob/living/basic/mining/mook/death()
+	procstart = null
+	src.procstart = null
 	desc = "A deceased primitive. Upon closer inspection, it was suffering from severe cellular degeneration and its garments are machine made..." //Can you guess the twist
 	return ..()
 
 /mob/living/basic/mining/mook/proc/attack_intruder(mob/living/intruder)
+	procstart = null
+	src.procstart = null
 	if(istype(intruder, /mob/living/basic/mining/mook))
 		return
 	for(var/mob/living/basic/mining/mook/villager in oview(src, 9))
@@ -204,12 +238,16 @@
 	is_healer = FALSE
 
 /mob/living/basic/mining/mook/worker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	neutral_stance = mutable_appearance(icon, "mook_axe_overlay")
 	attack_stance = mutable_appearance(icon, "axe_strike_overlay")
 	update_appearance()
 
 /mob/living/basic/mining/mook/worker/get_innate_abilities()
+	procstart = null
+	src.procstart = null
 	var/static/list/worker_innate_abilites = null
 
 	if(isnull(worker_innate_abilites))
@@ -222,6 +260,8 @@
 	return worker_innate_abilites
 
 /mob/living/basic/mining/mook/worker/attack_sequence(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & COMPONENT_HOSTILE_NO_ATTACK)
 		return
@@ -233,6 +273,8 @@
 	addtimer(CALLBACK(src, PROC_REF(change_combatant_state), MOOK_ATTACK_NEUTRAL), 0.3 SECONDS)
 
 /mob/living/basic/mining/mook/worker/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat == DEAD)
 		return
@@ -255,6 +297,8 @@
 	var/obj/item/instrument/guitar/held_guitar
 
 /mob/living/basic/mining/mook/worker/bard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	neutral_stance = mutable_appearance(icon, "bard_overlay")
 	attack_stance = mutable_appearance(icon, "bard_strike")
@@ -263,6 +307,8 @@
 	update_appearance()
 
 /mob/living/basic/mining/mook/worker/bard/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(held_guitar)
 	. = ..()
 
@@ -284,11 +330,15 @@
 	var/static/list/bonfire_targets = list(/obj/structure/bonfire)
 
 /mob/living/basic/mining/mook/worker/tribal_chief/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 	ai_controller?.set_blackboard_key(BB_BONFIRE_TARGETS, typecacheof(bonfire_targets))
 
 /mob/living/basic/mining/mook/worker/tribal_chief/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat == DEAD)
 		return

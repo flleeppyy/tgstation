@@ -32,11 +32,15 @@ GLOBAL_PROTECT(lua_state_stack)
 	var/list/functions_to_execute = list()
 
 /datum/lua_state/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(var_name == NAMEOF(src, internal_id))
 		return FALSE
 
 /datum/lua_state/New(_name)
+	procstart = null
+	src.procstart = null
 	if(SSlua.initialized != TRUE)
 		qdel(src)
 		return
@@ -50,10 +54,14 @@ GLOBAL_PROTECT(lua_state_stack)
 		qdel(src)
 
 /datum/lua_state/proc/check_if_slept(result)
+	procstart = null
+	src.procstart = null
 	if(result["status"] == "sleep")
 		SSlua.sleeps += src
 
 /datum/lua_state/proc/log_result(result, verbose = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!islist(result))
 		return
 	var/status = result["status"]
@@ -84,12 +92,16 @@ GLOBAL_PROTECT(lua_state_stack)
 	return index_of_log
 
 /datum/lua_state/proc/parse_error(message, name)
+	procstart = null
+	src.procstart = null
 	if(copytext(message, 1, 7) == "PANIC:")
 		return list("status" = "panic", "message" = copytext(message, 7), "name" = name)
 	else
 		return list("status" = "error", "message" = message, "name" = name)
 
 /datum/lua_state/proc/load_script(script)
+	procstart = null
+	src.procstart = null
 	var/tmp_usr = GLOB.lua_usr
 	GLOB.lua_usr = usr
 	DREAMLUAU_SET_USR
@@ -112,6 +124,8 @@ GLOBAL_PROTECT(lua_state_stack)
 	return result
 
 /datum/lua_state/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(timer_enabled)
 		var/result = call_function("__Timer_timer_process", seconds_per_tick)
 		log_result(result, verbose = FALSE)
@@ -121,6 +135,8 @@ GLOBAL_PROTECT(lua_state_stack)
 		functions_to_execute.Cut()
 
 /datum/lua_state/proc/call_function(function, ...)
+	procstart = null
+	src.procstart = null
 	var/call_args = length(args) > 1 ? args.Copy(2) : list()
 	if(islist(function))
 		var/list/new_function_path = list()
@@ -154,6 +170,8 @@ GLOBAL_PROTECT(lua_state_stack)
 	return result
 
 /datum/lua_state/proc/call_function_return_first(function, ...)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_SLEEP(TRUE) // This function is meant to be used for signal handlers.
 	var/list/result = call_function(arglist(args))
 	INVOKE_ASYNC(src, PROC_REF(log_result), deep_copy_list(result), /*verbose = */FALSE)
@@ -166,6 +184,8 @@ GLOBAL_PROTECT(lua_state_stack)
 			return return_value
 
 /datum/lua_state/proc/awaken()
+	procstart = null
+	src.procstart = null
 	DREAMLUAU_SET_USR
 	GLOB.lua_state_stack += WEAKREF(src)
 	var/result = DREAMLUAU_AWAKEN(internal_id)
@@ -181,6 +201,8 @@ GLOBAL_PROTECT(lua_state_stack)
 
 /// Prefer calling SSlua.queue_resume over directly calling this
 /datum/lua_state/proc/resume(index, ...)
+	procstart = null
+	src.procstart = null
 	var/call_args = length(args) > 1 ? args.Copy(2) : list()
 
 	DREAMLUAU_SET_USR
@@ -197,6 +219,8 @@ GLOBAL_PROTECT(lua_state_stack)
 	return result
 
 /datum/lua_state/proc/get_globals()
+	procstart = null
+	src.procstart = null
 	var/result = DREAMLUAU_GET_GLOBALS(internal_id)
 	if(isnull(result))
 		CRASH("get_globals returned null")
@@ -209,6 +233,8 @@ GLOBAL_PROTECT(lua_state_stack)
 	globals = list("values" = weakrefify_list(values), "variants" = variants)
 
 /datum/lua_state/proc/get_tasks()
+	procstart = null
+	src.procstart = null
 	var/result = DREAMLUAU_LIST_THREADS(internal_id)
 	if(isnull(result))
 		CRASH("list_threads returned null")
@@ -217,16 +243,22 @@ GLOBAL_PROTECT(lua_state_stack)
 	return result
 
 /datum/lua_state/proc/kill_task(is_sleep, index)
+	procstart = null
+	src.procstart = null
 	var/result = is_sleep ? DREAMLUAU_KILL_SLEEPING_THREAD(internal_id, index) : DREAMLUAU_KILL_YIELDED_THREAD(internal_id, index)
 	SSlua.needs_gc_cycle |= src
 	return result
 
 /datum/lua_state/proc/collect_garbage()
+	procstart = null
+	src.procstart = null
 	var/result = DREAMLUAU_COLLECT_GARBAGE(internal_id)
 	if(!isnull(result))
 		CRASH(result)
 
 /datum/lua_state/proc/update_editors()
+	procstart = null
+	src.procstart = null
 	var/list/editor_list = LAZYACCESS(SSlua.editors, text_ref(src))
 	if(editor_list)
 		for(var/datum/lua_editor/editor as anything in editor_list)

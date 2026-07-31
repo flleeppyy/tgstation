@@ -1,6 +1,8 @@
 /// Creates a weakref to the given input.
 /// See /datum/weakref's documentation for more information.
 /proc/WEAKREF(datum/input)
+	procstart = null
+	src.procstart = null
 	if(istype(input) && !QDELETED(input))
 		if(isweakref(input))
 			return input
@@ -9,7 +11,9 @@
 			input.weak_reference = new /datum/weakref(input)
 		return input.weak_reference
 
-/datum/proc/create_weakref() //Forced creation for admin proccalls
+/datum/proc/create_weakref()
+	procstart = null
+	src.procstart = null //Forced creation for admin proccalls
 	return WEAKREF(src)
 
 /**
@@ -56,9 +60,13 @@
 	var/reference
 
 /datum/weakref/New(datum/thing)
+	procstart = null
+	src.procstart = null
 	reference = REF(thing)
 
 /datum/weakref/Destroy(force)
+	procstart = null
+	src.procstart = null
 	var/datum/target = resolve()
 	qdel(target)
 
@@ -73,6 +81,8 @@
  * This will return `null` if the datum was deleted. This MUST be respected.
  */
 /datum/weakref/proc/resolve()
+	procstart = null
+	src.procstart = null
 	var/datum/D = locate(reference)
 	return (!QDELETED(D) && D.weak_reference == src) ? D : null
 
@@ -91,15 +101,21 @@
  * just use resolve instead.
  */
 /datum/weakref/proc/hard_resolve()
+	procstart = null
+	src.procstart = null
 	var/datum/D = locate(reference)
 	return (D?.weak_reference == src) ? D : null
 
 /datum/weakref/vv_get_dropdown()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	VV_DROPDOWN_OPTION("", "--- /weakref ---")
 	VV_DROPDOWN_OPTION(VV_HK_WEAKREF_RESOLVE, "Go to reference")
 
 /datum/weakref/vv_do_topic(list/href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!.)

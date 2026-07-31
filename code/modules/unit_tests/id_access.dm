@@ -1,6 +1,8 @@
 /datum/unit_test/id_access
 
 /datum/unit_test/id_access/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/subject = EASY_ALLOCATE()
 	subject.equip_to_appropriate_slot(new /obj/item/clothing/under/color/grey)
 	var/obj/item/card/id/advanced/card = EASY_ALLOCATE()
@@ -46,6 +48,8 @@
 	subject.dropItemToGround(pda)
 
 /datum/unit_test/id_access/proc/check_access(mob/living/carbon/human/consistent/subject, expected)
+	procstart = null
+	src.procstart = null
 	var/list/subject_access = subject.get_access()
 	if(isnull(expected))
 		return length(subject_access) == 0

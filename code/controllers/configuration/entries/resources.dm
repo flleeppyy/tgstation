@@ -6,12 +6,16 @@
 
 /datum/config_entry/string/asset_transport
 /datum/config_entry/string/asset_transport/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	return (LOWER_TEXT(str_val) in list("simple", "webroot")) && ..(LOWER_TEXT(str_val))
 
 /datum/config_entry/string/asset_cdn_webroot
 	protection = CONFIG_ENTRY_LOCKED
 
 /datum/config_entry/string/asset_cdn_webroot/ValidateAndSet(str_var)
+	procstart = null
+	src.procstart = null
 	if (!str_var || trim(str_var) == "")
 		return FALSE
 	if (str_var && str_var[length(str_var)] != "/")
@@ -23,6 +27,8 @@
 	default = null
 
 /datum/config_entry/string/asset_cdn_url/ValidateAndSet(str_var)
+	procstart = null
+	src.procstart = null
 	if (!str_var || trim(str_var) == "")
 		return FALSE
 	if (str_var && str_var[length(str_var)] != "/")

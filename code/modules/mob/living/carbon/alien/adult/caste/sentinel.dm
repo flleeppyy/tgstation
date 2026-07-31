@@ -21,5 +21,7 @@
 	)
 
 /mob/living/carbon/alien/adult/sentinel/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	GRANT_ACTION(/datum/action/cooldown/mob_cooldown/sneak/alien)
 	return ..()

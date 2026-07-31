@@ -43,11 +43,15 @@
 	var/list/dispensable_reagents
 
 /obj/machinery/plumbing/synthesizer/Initialize(mapload, layer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/plumbing/simple_supply, layer)
 	dispensable_reagents = default_reagents
 
 /obj/machinery/plumbing/synthesizer/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!is_operational || !reagent_id || !amount)
 		return
 
@@ -59,16 +63,22 @@
 	use_energy(active_power_usage * seconds_per_tick)
 
 /obj/machinery/plumbing/synthesizer/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ChemSynthesizer", name)
 		ui.open()
 
 /obj/machinery/plumbing/synthesizer/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["possible_amounts"] = possible_amounts
 
 /obj/machinery/plumbing/synthesizer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["amount"] = amount
 
@@ -90,6 +100,8 @@
 	.["current_reagent"] = initial(reagent_id.name)
 
 /obj/machinery/plumbing/synthesizer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -111,6 +123,8 @@
 	reagents.clear_reagents()
 
 /obj/machinery/plumbing/synthesizer/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mutable_appearance/r_overlay = mutable_appearance(icon, "[icon_state]_overlay")
 	r_overlay.color = reagent_id ? initial(reagent_id.color) : COLOR_WHITE
@@ -149,6 +163,8 @@
 	)
 
 /obj/machinery/plumbing/synthesizer/soda/Initialize(mapload, bolt, layer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	dispensable_reagents = soda_reagents
@@ -186,6 +202,8 @@
 	)
 
 /obj/machinery/plumbing/synthesizer/beer/Initialize(mapload, bolt, layer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	dispensable_reagents = beer_reagents
@@ -207,6 +225,8 @@
 	)
 
 /obj/machinery/plumbing/synthesizer/mining/Initialize(mapload, layer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	dispensable_reagents = mining_chems

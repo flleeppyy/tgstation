@@ -21,6 +21,8 @@
 	var/maximum_teleports = 4
 
 /obj/effect/anomaly/dimensional/Initialize(mapload, new_lifespan)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	overlays += mutable_appearance('icons/effects/effects.dmi', "dimensional_overlay")
 
@@ -30,11 +32,15 @@
 	teleports_left = rand(minimum_teleports, maximum_teleports)
 
 /obj/effect/anomaly/dimensional/Destroy()
+	procstart = null
+	src.procstart = null
 	theme = null
 	target_turfs = null
 	return ..()
 
 /obj/effect/anomaly/dimensional/anomalyEffect(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transmute_area()
 
@@ -42,6 +48,8 @@
  * Transforms a turf in our prepared area.
  */
 /obj/effect/anomaly/dimensional/proc/transmute_area()
+	procstart = null
+	src.procstart = null
 	if (!theme)
 		prepare_area()
 	if (!target_turfs.len)
@@ -61,6 +69,8 @@
  * Optionally pass in the typepath of an anomaly theme to use that one.
  */
 /obj/effect/anomaly/dimensional/proc/prepare_area(new_theme_path)
+	procstart = null
+	src.procstart = null
 	if (!new_theme_path)
 		new_theme_path = pick(subtypesof(/datum/dimension_theme))
 	theme = SSmaterials.dimensional_themes[new_theme_path]
@@ -75,6 +85,8 @@
  * Applies an overlay icon based on the current theme.
  */
 /obj/effect/anomaly/dimensional/proc/apply_theme_icon()
+	procstart = null
+	src.procstart = null
 	overlays -= theme_icon
 	theme_icon = mutable_appearance(theme.icon, theme.icon_state, FLOAT_LAYER - 1, appearance_flags = appearance_flags | RESET_TRANSFORM)
 	theme_icon.blend_mode = BLEND_INSET_OVERLAY
@@ -84,6 +96,8 @@
  * Moves the anomaly somewhere else and announces it.
  */
 /obj/effect/anomaly/dimensional/proc/relocate()
+	procstart = null
+	src.procstart = null
 	var/datum/anomaly_placer/placer = new()
 	var/area/new_area = placer.findValidArea()
 	var/turf/new_turf = placer.findValidTurf(new_area)
@@ -93,6 +107,8 @@
 	prepare_area()
 
 /obj/effect/anomaly/dimensional/detonate()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /obj/effect/temp_visual/transmute_tile_flash

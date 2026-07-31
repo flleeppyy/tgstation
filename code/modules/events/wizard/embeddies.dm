@@ -10,6 +10,8 @@
 
 ///behold... the only reason sticky is a subtype...
 /datum/round_event_control/wizard/embedpocalypse/can_spawn_event(players_amt, allow_magic = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -19,6 +21,8 @@
 	return TRUE
 
 /datum/round_event/wizard/embedpocalypse/start()
+	procstart = null
+	src.procstart = null
 	GLOB.global_funny_embedding = new /datum/global_funny_embedding/pointy
 
 /datum/round_event_control/wizard/embedpocalypse/sticky
@@ -30,6 +34,8 @@
 	description = "Everything becomes sticky enough to be glued to people when thrown."
 
 /datum/round_event/wizard/embedpocalypse/sticky/start()
+	procstart = null
+	src.procstart = null
 	GLOB.global_funny_embedding = new /datum/global_funny_embedding/sticky
 
 ///set this to a new instance of a SUBTYPE of global_funny_embedding. The main type is a prototype and will runtime really hard
@@ -50,17 +56,23 @@ GLOBAL_DATUM(global_funny_embedding, /datum/global_funny_embedding)
 	ignore_throwspeed_threshold = TRUE
 
 /datum/global_funny_embedding/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//second operation takes MUCH longer, so lets set up signals first.
 	RegisterSignal(SSdcs, COMSIG_GLOB_NEW_ITEM, PROC_REF(on_new_item_in_existence))
 	handle_current_items()
 
 /datum/global_funny_embedding/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(SSdcs, COMSIG_GLOB_NEW_ITEM)
 
 ///signal sent by a new item being created.
 /datum/global_funny_embedding/proc/on_new_item_in_existence(datum/source, obj/item/created_item)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// this proc says it's for initializing components, but we're initializing elements too because it's you and me against the world >:)
@@ -76,6 +88,8 @@ GLOBAL_DATUM(global_funny_embedding, /datum/global_funny_embedding)
  * Gives every viable item in the world the embed_type, and the prefix prefixed to the name.
  */
 /datum/global_funny_embedding/proc/handle_current_items()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/embed_item in world)
 		CHECK_TICK
 		if(!(embed_item.flags_1 & INITIALIZED_1))

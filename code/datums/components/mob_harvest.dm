@@ -29,6 +29,8 @@
 
 //harvest_type, produced_item_typepath and speedup_type are typepaths, not reference
 /datum/component/mob_harvest/Initialize(harvest_tool, fed_item, produced_item_typepath, produced_item_desc, max_ready, item_generation_wait, item_reduction_time, item_harvest_time, item_harvest_sound)
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 	src.harvest_tool = harvest_tool
@@ -43,10 +45,14 @@
 	START_PROCESSING(SSobj, src)
 
 /datum/component/mob_harvest/Destroy(force)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /datum/component/mob_harvest/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	var/amount_changed
 	if(var_name == NAMEOF(src, max_ready))
 		var_value = max(0, var_value) //no negatives allowed
@@ -61,6 +67,8 @@
 		living_parent.update_appearance(UPDATE_ICON_STATE)
 
 /datum/component/mob_harvest/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	///only track time if we aren't dead and have room for more items
 	var/mob/living/harvest_mob = parent
 	if(harvest_mob.stat == DEAD || amount_ready >= max_ready)
@@ -79,6 +87,8 @@
 	living_parent.update_appearance(UPDATE_ICON_STATE)
 
 /datum/component/mob_harvest/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 	RegisterSignal(parent, COMSIG_ATOM_ATTACKBY, PROC_REF(on_attackby))
 
@@ -90,10 +100,14 @@
 		living_parent.update_appearance(UPDATE_ICON_STATE)
 
 /datum/component/mob_harvest/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ATOM_EXAMINE, COMSIG_ATOM_ATTACKBY, COMSIG_ATOM_UPDATE_ICON_STATE))
 
 ///signal called on parent being examined
 /datum/component/mob_harvest/proc/on_examine(datum/source, mob/user, list/examine_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(amount_ready < 1)
@@ -105,6 +119,8 @@
 
 ///signal called on parent being attacked with an item
 /datum/component/mob_harvest/proc/on_attackby(datum/source, obj/item/used_item, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(istype(used_item, harvest_tool))
@@ -118,6 +134,8 @@
 
 /// Signal proc for [COMSIG_ATOM_UPDATE_ICON_STATE]
 /datum/component/mob_harvest/proc/on_update_icon_state(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// If this is being used on a carbon or human, don't update any icon states, just leave it
@@ -137,6 +155,8 @@
  * * mob/user - who is trying to do this
  */
 /datum/component/mob_harvest/proc/remove_wait_time(mob/user)
+	procstart = null
+	src.procstart = null
 	if(amount_ready >= max_ready)
 		to_chat(user, span_warning("[parent] looks too full to keep feeding!"))
 		return
@@ -151,6 +171,8 @@
  * * mob/user - who is trying to do this
  */
 /datum/component/mob_harvest/proc/harvest_item(mob/user)
+	procstart = null
+	src.procstart = null
 	if(amount_ready < 1)
 		to_chat(user, span_warning("[parent] doesn't seem to have enough [produced_item_desc] to harvest."))
 		return

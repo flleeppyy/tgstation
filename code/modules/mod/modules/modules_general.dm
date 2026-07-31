@@ -14,12 +14,16 @@
 	var/datum/storage/storage_type = /datum/storage/mod_storage
 
 /obj/item/mod/module/storage/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(storage_type)
 		create_storage(storage_type = storage_type)
 		atom_storage.set_locked(STORAGE_FULLY_LOCKED)
 
 /obj/item/mod/module/storage/on_install()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/storage/modstorage = mod.create_storage(storage_type = storage_type)
 	modstorage.set_real_location(src)
@@ -29,6 +33,8 @@
 		RegisterSignal(suit, COMSIG_ITEM_PRE_UNEQUIP, PROC_REF(on_suit_unequip))
 
 /obj/item/mod/module/storage/on_uninstall(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	atom_storage.set_locked(STORAGE_FULLY_LOCKED)
 	QDEL_NULL(mod.atom_storage)
@@ -39,6 +45,8 @@
 		UnregisterSignal(suit, COMSIG_ITEM_PRE_UNEQUIP)
 
 /obj/item/mod/module/storage/proc/on_suit_unequip(obj/item/source, force, atom/newloc, no_move, invdrop, silent)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(source) || !invdrop || !mod.wearer || newloc == mod.wearer || !mod.wearer.s_store)
 		return
 	if(!atom_storage?.attempt_insert(mod.wearer.s_store, mod.wearer, override = TRUE))
@@ -109,11 +117,15 @@
 	var/drift_force = 1.5 NEWTONS
 
 /obj/item/mod/module/jetpack/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	thrust_callback = CALLBACK(src, PROC_REF(allow_thrust))
 	configure_jetpack(stabilize)
 
 /obj/item/mod/module/jetpack/Destroy()
+	procstart = null
+	src.procstart = null
 	thrust_callback = null
 	return ..()
 
@@ -124,6 +136,8 @@
  * stabilize - Should this jetpack be stabalized
  */
 /obj/item/mod/module/jetpack/proc/configure_jetpack(stabilize)
+	procstart = null
+	src.procstart = null
 	src.stabilize = stabilize
 
 	AddComponent( \
@@ -145,15 +159,21 @@
 			REMOVE_TRAIT(mod.wearer, TRAIT_NOGRAV_ALWAYS_DRIFT, REF(src))
 
 /obj/item/mod/module/jetpack/get_configuration()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["stabilizers"] = add_ui_configuration("Stabilizers", "bool", stabilize)
 
 /obj/item/mod/module/jetpack/configure_edit(key, value)
+	procstart = null
+	src.procstart = null
 	switch(key)
 		if("stabilizers")
 			configure_jetpack(text2num(value))
 
 /obj/item/mod/module/jetpack/proc/allow_thrust(use_fuel = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!use_fuel)
 		return check_power(use_energy_cost)
 	if(!drain_power(use_energy_cost))
@@ -161,11 +181,15 @@
 	return TRUE
 
 /obj/item/mod/module/jetpack/on_activation(mob/activator)
+	procstart = null
+	src.procstart = null
 	mod.wearer.add_movespeed_modifier(/datum/movespeed_modifier/jetpack/full_speed)
 	if (!stabilize)
 		ADD_TRAIT(mod.wearer, TRAIT_NOGRAV_ALWAYS_DRIFT, REF(src))
 
 /obj/item/mod/module/jetpack/on_deactivation(mob/activator, display_message = TRUE, deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	mod.wearer.remove_movespeed_modifier(/datum/movespeed_modifier/jetpack/full_speed)
 	REMOVE_TRAIT(mod.wearer, TRAIT_NOGRAV_ALWAYS_DRIFT, REF(src))
 
@@ -195,6 +219,8 @@
 	required_slots = list(ITEM_SLOT_BACK)
 
 /obj/item/mod/module/jump_jet/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	if (DOING_INTERACTION(mod.wearer, mod.wearer))
 		balloon_alert(activator, "busy!")
 		return
@@ -246,6 +272,8 @@
 	var/sensor_boost = TRUE
 
 /obj/item/mod/module/status_readout/add_ui_data()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["display_time"] = display_time
 	.["shift_time"] = round_timestamp()
@@ -279,12 +307,16 @@
 	return .
 
 /obj/item/mod/module/status_readout/get_configuration()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["display_detailed_vitals"] = add_ui_configuration("Detailed Vitals", "bool", display_detailed_vitals)
 	.["display_dna"] = add_ui_configuration("DNA Information", "bool", display_dna)
 	.["sensor_boost"] = add_ui_configuration("Suit Sensor Booster", "bool", sensor_boost)
 
 /obj/item/mod/module/status_readout/configure_edit(key, value)
+	procstart = null
+	src.procstart = null
 	switch(key)
 		if("display_detailed_vitals")
 			display_detailed_vitals = text2num(value)
@@ -295,20 +327,28 @@
 			update_sensor_booster()
 
 /obj/item/mod/module/status_readout/on_part_activation()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(mod.wearer, COMSIG_LIVING_DEATH, PROC_REF(death_sound))
 	update_sensor_booster()
 
 /obj/item/mod/module/status_readout/on_part_deactivation(deleting)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(mod.wearer, COMSIG_LIVING_DEATH)
 	REMOVE_TRAIT(mod.wearer, TRAIT_MULTIZ_SUIT_SENSORS, REF(src))
 
 /obj/item/mod/module/status_readout/proc/update_sensor_booster()
+	procstart = null
+	src.procstart = null
 	if(sensor_boost)
 		ADD_TRAIT(mod.wearer, TRAIT_MULTIZ_SUIT_SENSORS, REF(src))
 	else
 		REMOVE_TRAIT(mod.wearer, TRAIT_MULTIZ_SUIT_SENSORS, REF(src))
 
 /obj/item/mod/module/status_readout/proc/death_sound(mob/living/carbon/human/wearer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(death_sound && death_sound_volume)
 		playsound(wearer, death_sound, death_sound_volume, FALSE)
@@ -334,6 +374,8 @@
 	var/former_visor_mask_flags = NONE
 
 /obj/item/mod/module/mouthhole/on_install()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/clothing/helmet = mod.get_part_from_slot(ITEM_SLOT_HEAD)
 	if(istype(helmet))
@@ -349,6 +391,8 @@
 		mask.visor_flags_cover &= ~(MASKCOVERSMOUTH |PEPPERPROOF)
 
 /obj/item/mod/module/mouthhole/can_install(obj/item/mod/control/mod)
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/helmet = mod.get_part_from_slot(ITEM_SLOT_HEAD)
 	var/obj/item/clothing/mask = mod.get_part_from_slot(ITEM_SLOT_MASK)
 	if(istype(helmet) && ((helmet.flags_cover|helmet.visor_flags_cover) & (HEADCOVERSMOUTH|PEPPERPROOF)))
@@ -358,6 +402,8 @@
 	return FALSE
 
 /obj/item/mod/module/mouthhole/on_uninstall(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(deleting)
 		return
@@ -384,10 +430,14 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 5, /datum/material/plasma = SMALL_MATERIAL_AMOUNT * 5)
 
 /obj/item/mod/module/emp_shield/on_install()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	mod.AddElement(/datum/element/empprotection, EMP_PROTECT_ALL)
 
 /obj/item/mod/module/emp_shield/on_uninstall(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	mod.RemoveElement(/datum/element/empprotection, EMP_PROTECT_ALL)
 
@@ -399,9 +449,13 @@
 	complexity = 2
 
 /obj/item/mod/module/emp_shield/advanced/on_part_activation()
+	procstart = null
+	src.procstart = null
 	mod.wearer.AddElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_CONTENTS)
 
 /obj/item/mod/module/emp_shield/advanced/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	mod.wearer.RemoveElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_CONTENTS)
 
 ///Flashlight - Gives the suit a customizable flashlight.
@@ -431,25 +485,35 @@
 	var/max_range = 5
 
 /obj/item/mod/module/flashlight/on_activation(mob/activator)
+	procstart = null
+	src.procstart = null
 	set_light_flags(light_flags | LIGHT_ATTACHED)
 	set_light_on(active)
 	active_power_cost = base_power * light_range
 
 /obj/item/mod/module/flashlight/on_deactivation(mob/activator, display_message = TRUE, deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	set_light_flags(light_flags & ~LIGHT_ATTACHED)
 	set_light_on(active)
 
 /obj/item/mod/module/flashlight/on_saboteur(datum/source, disrupt_duration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		on_deactivation()
 		return TRUE
 
 /obj/item/mod/module/flashlight/on_process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	active_power_cost = base_power * light_range
 	return ..()
 
 /obj/item/mod/module/flashlight/generate_worn_overlay(obj/item/source, mutable_appearance/standing)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!active)
 		return
@@ -458,11 +522,15 @@
 	. += light_icon
 
 /obj/item/mod/module/flashlight/get_configuration()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["light_color"] = add_ui_configuration("Light Color", "color", light_color)
 	.["light_range"] = add_ui_configuration("Light Range", "number", light_range)
 
 /obj/item/mod/module/flashlight/configure_edit(key, value)
+	procstart = null
+	src.procstart = null
 	switch(key)
 		if("light_color")
 			value = tgui_color_picker(usr, "Pick new light color", "Flashlight Color")
@@ -488,6 +556,8 @@
 	max_range = 3
 
 /obj/item/mod/module/flashlight/darkness/get_configuration()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. -= "light_color"
 
@@ -511,6 +581,8 @@
 	var/dispense_time = 0 SECONDS
 
 /obj/item/mod/module/dispenser/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	if(dispense_time && !do_after(mod.wearer, dispense_time, target = mod))
 		balloon_alert(mod.wearer, "interrupted!")
 		return FALSE
@@ -536,12 +608,18 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 5)
 
 /obj/item/mod/module/longfall/on_part_activation()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(mod.wearer, COMSIG_LIVING_Z_IMPACT, PROC_REF(z_impact_react))
 
 /obj/item/mod/module/longfall/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(mod.wearer, COMSIG_LIVING_Z_IMPACT)
 
 /obj/item/mod/module/longfall/proc/z_impact_react(datum/source, levels, turf/fell_on)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!drain_power(use_energy_cost * levels))
 		return NONE
@@ -581,15 +659,21 @@
 	var/max_temp = 318.15
 
 /obj/item/mod/module/thermal_regulator/get_configuration()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["temperature_setting"] = add_ui_configuration("Temperature", "number", temperature_setting - T0C)
 
 /obj/item/mod/module/thermal_regulator/configure_edit(key, value)
+	procstart = null
+	src.procstart = null
 	switch(key)
 		if("temperature_setting")
 			temperature_setting = clamp(value + T0C, min_temp, max_temp)
 
 /obj/item/mod/module/thermal_regulator/on_active_process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	mod.wearer.adjust_bodytemperature(get_temp_change_amount((temperature_setting - mod.wearer.bodytemperature), 0.08 * seconds_per_tick))
 
 ///DNA Lock - Prevents people without the set DNA from activating the suit.
@@ -609,6 +693,8 @@
 	var/dna = null
 
 /obj/item/mod/module/dna_lock/on_install()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(mod, COMSIG_MOD_ACTIVATE, PROC_REF(on_mod_activation))
 	RegisterSignal(mod, COMSIG_MOD_MODULE_REMOVAL, PROC_REF(on_mod_removal))
@@ -616,6 +702,8 @@
 	RegisterSignal(mod, COMSIG_ATOM_EMAG_ACT, PROC_REF(on_emag))
 
 /obj/item/mod/module/dna_lock/on_uninstall(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(mod, COMSIG_MOD_ACTIVATE)
 	UnregisterSignal(mod, COMSIG_MOD_MODULE_REMOVAL)
@@ -623,19 +711,27 @@
 	UnregisterSignal(mod, COMSIG_ATOM_EMAG_ACT)
 
 /obj/item/mod/module/dna_lock/on_use(mob/activator)
+	procstart = null
+	src.procstart = null
 	dna = mod.wearer.dna.unique_enzymes
 	balloon_alert(activator, "dna updated")
 	drain_power(use_energy_cost)
 
 /obj/item/mod/module/dna_lock/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	on_emp(src, severity, .)
 
 /obj/item/mod/module/dna_lock/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return on_emag(src, user, emag_card)
 
 /obj/item/mod/module/dna_lock/proc/dna_check(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user))
 		return FALSE
 	var/mob/living/carbon/carbon_user = user
@@ -645,24 +741,32 @@
 	return FALSE
 
 /obj/item/mod/module/dna_lock/proc/on_emp(datum/source, severity, protection)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(protection & EMP_PROTECT_SELF)
 		return
 	dna = null
 
 /obj/item/mod/module/dna_lock/proc/on_emag(datum/source, mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	dna = null
 	return TRUE
 
 /obj/item/mod/module/dna_lock/proc/on_mod_activation(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!dna_check(user))
 		return MOD_CANCEL_ACTIVATE
 
 /obj/item/mod/module/dna_lock/proc/on_mod_removal(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!dna_check(user))
@@ -684,6 +788,8 @@
 	custom_materials = list(/datum/material/plasma = SMALL_MATERIAL_AMOUNT * 5, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 5)
 
 /obj/item/mod/module/plasma_stabilizer/generate_worn_overlay(obj/item/source, mutable_appearance/standing)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -694,9 +800,13 @@
 	. += visor_overlay
 
 /obj/item/mod/module/plasma_stabilizer/on_equip()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(mod.wearer, TRAIT_HEAD_ATMOS_SEALED, REF(src))
 
 /obj/item/mod/module/plasma_stabilizer/on_unequip()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(mod.wearer, TRAIT_HEAD_ATMOS_SEALED, REF(src))
 
 
@@ -718,6 +828,8 @@
 	var/former_visor_flags
 
 /obj/item/mod/module/hat_stabilizer/on_part_activation()
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/helmet = mod.get_part_from_slot(ITEM_SLOT_HEAD)
 	if(!istype(helmet))
 		return
@@ -725,6 +837,8 @@
 	helmet.AddComponent(/datum/component/hat_stabilizer, loose_hat = FALSE)
 
 /obj/item/mod/module/hat_stabilizer/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	if(deleting)
 		return
 	var/obj/item/clothing/helmet = mod.get_part_from_slot(ITEM_SLOT_HEAD)
@@ -756,9 +870,13 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 7.5, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 5)
 
 /obj/item/mod/module/signlang_radio/on_part_activation()
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(mod.wearer, TRAIT_CAN_SIGN_ON_COMMS, REF(src))
 
 /obj/item/mod/module/signlang_radio/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(mod.wearer, TRAIT_CAN_SIGN_ON_COMMS, REF(src))
 
 ///A module that recharges the suit by an itsy tiny bit whenever the user takes a step. Originally called "magneto module" but the videogame reference sounds cooler.
@@ -772,6 +890,8 @@
 	var/power_per_step = DEFAULT_CHARGE_DRAIN * 0.45
 
 /obj/item/mod/module/joint_torsion/on_part_activation()
+	procstart = null
+	src.procstart = null
 	if(!(mod.wearer.movement_type & (FLOATING|FLYING)))
 		RegisterSignal(mod.wearer, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved))
 	/// This way we don't even bother to call on_moved() while flying/floating
@@ -779,19 +899,27 @@
 	RegisterSignal(mod.wearer, COMSIG_MOVETYPE_FLAG_DISABLED, PROC_REF(on_movetype_flag_disabled))
 
 /obj/item/mod/module/joint_torsion/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(mod.wearer, list(COMSIG_MOVABLE_MOVED, COMSIG_MOVETYPE_FLAG_ENABLED, COMSIG_MOVETYPE_FLAG_DISABLED))
 
 /obj/item/mod/module/joint_torsion/proc/on_movetype_flag_enabled(datum/source, flag, old_state)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!(old_state & (FLOATING|FLYING)) && flag & (FLOATING|FLYING))
 		UnregisterSignal(mod.wearer, COMSIG_MOVABLE_MOVED)
 
 /obj/item/mod/module/joint_torsion/proc/on_movetype_flag_disabled(datum/source, flag, old_state)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(old_state & (FLOATING|FLYING) && !(mod.wearer.movement_type & (FLOATING|FLYING)))
 		RegisterSignal(mod.wearer, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved))
 
 /obj/item/mod/module/joint_torsion/proc/on_moved(mob/living/carbon/human/wearer, atom/old_loc, movement_dir, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	//Shouldn't work if the wearer isn't really walking/running around.
 	if(forced || wearer.throwing || wearer.body_position == LYING_DOWN || wearer.buckled || CHECK_MOVE_LOOP_FLAGS(wearer, MOVEMENT_LOOP_OUTSIDE_CONTROL))
@@ -829,6 +957,8 @@
 	var/datum/material_container/container
 
 /obj/item/mod/module/recycler/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!length(accepted_mats))
@@ -845,18 +975,26 @@
 	)
 
 /obj/item/mod/module/recycler/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(container)
 	return ..()
 
 /obj/item/mod/module/recycler/on_activation(mob/activator)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(mod.wearer, COMSIG_MOVABLE_MOVED, PROC_REF(on_wearer_moved))
 
 /obj/item/mod/module/recycler/on_deactivation(mob/activator, display_message, deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(mod.wearer, COMSIG_MOVABLE_MOVED)
 	if(mod.wearer.loc)
 		UnregisterSignal(mod.wearer.loc, list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON))
 
 /obj/item/mod/module/recycler/proc/on_wearer_moved(datum/source, atom/old_loc, dir, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(old_loc)
 		UnregisterSignal(mod.wearer.loc, list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON))
@@ -869,27 +1007,37 @@
 		insert_trash(item)
 
 /obj/item/mod/module/recycler/proc/on_obj_entered(atom/new_loc, atom/movable/arrived, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(is_type_in_list(arrived, allowed_item_types))
 		insert_trash(arrived)
 
 /obj/item/mod/module/recycler/proc/on_atom_initialized_on(atom/loc, atom/new_atom)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Give the new atom the time to fully initialize and maybe live if the wearer moves away.
 	if(is_type_in_list(new_atom, allowed_item_types))
 		addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/item/mod/module/recycler, insert_trash_if_nearby), new_atom), 0.5 SECONDS)
 
 /obj/item/mod/module/recycler/proc/insert_trash_if_nearby(atom/new_atom)
+	procstart = null
+	src.procstart = null
 	if(new_atom && mod?.wearer && new_atom.loc == mod.wearer.loc)
 		insert_trash(new_atom)
 
 /obj/item/mod/module/recycler/proc/insert_trash(obj/item/item)
+	procstart = null
+	src.procstart = null
 	var/retrieved = container.insert_item(item, multiplier = efficiency)
 	if(retrieved == MATERIAL_INSERT_ITEM_NO_MATS) //even if it doesn't have any material to give, trash is trash.
 		qdel(item)
 	playsound(src, SFX_RUSTLE, 50, TRUE, -5)
 
 /obj/item/mod/module/recycler/on_select_use(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -900,6 +1048,8 @@
 	dispense(target)
 
 /obj/item/mod/module/recycler/proc/dispense(atom/target)
+	procstart = null
+	src.procstart = null
 	if(container.retrieve_all(target))
 		balloon_alert(mod.wearer, "material dispensed")
 		playsound(src, 'sound/machines/microwave/microwave-end.ogg', 50, TRUE)
@@ -908,11 +1058,15 @@
 	playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50, TRUE)
 
 /obj/item/mod/module/recycler/proc/InsertSheets(obj/item/recycler, obj/item/stack/sheets, atom/context)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	attempt_insert_storage(sheets)
 
 /obj/item/mod/module/recycler/proc/attempt_insert_storage(obj/item/to_drop)
+	procstart = null
+	src.procstart = null
 	if(!isturf(to_drop.loc) && !to_drop.loc.atom_storage?.attempt_insert(to_drop, mod.wearer, override = TRUE))
 		to_drop.forceMove(to_drop.loc.drop_location())
 
@@ -932,6 +1086,8 @@
 	var/required_amount = SHEET_MATERIAL_AMOUNT*12.5
 
 /obj/item/mod/module/recycler/donk/dispense(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!container.use_amount_mat(required_amount, /datum/material/iron))
 		balloon_alert(mod.wearer, "not enough material")
 		playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50, TRUE)
@@ -953,10 +1109,14 @@
 	var/obj/item/fishing_rod/equipped
 
 /obj/item/mod/module/fishing_glove/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 
 /obj/item/mod/module/fishing_glove/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!held_item && equipped)
 		context[SCREENTIP_CONTEXT_RMB] = "Remove rod"
 		return CONTEXTUAL_SCREENTIP_SET
@@ -965,12 +1125,16 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/mod/module/fishing_glove/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_info("You can [EXAMINE_HINT("right-click")] the modsuit gloves to open the fishing rod interface once attached and activated.")
 	if(equipped)
 		. += span_info("it has a [icon2html(equipped, user)] installed. [EXAMINE_HINT("Right-Click")] to remove it.")
 
 /obj/item/mod/module/fishing_glove/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/fishing_rod))
 		return ..()
 	if(equipped)
@@ -983,6 +1147,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/mod/module/fishing_glove/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -994,6 +1160,8 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/mod/module/fishing_glove/Exited(atom/movable/gone)
+	procstart = null
+	src.procstart = null
 	if(gone == equipped)
 		equipped = null
 		var/obj/item/gloves = mod?.get_part_from_slot(ITEM_SLOT_GLOVES)
@@ -1002,6 +1170,8 @@
 	return ..()
 
 /obj/item/mod/module/fishing_glove/on_part_activation()
+	procstart = null
+	src.procstart = null
 	var/obj/item/gloves = mod.get_part_from_slot(ITEM_SLOT_GLOVES)
 	if(!gloves)
 		return
@@ -1010,6 +1180,8 @@
 		gloves.AddComponent(/datum/component/profound_fisher, equipped, delete_rod_when_deleted = FALSE)
 
 /obj/item/mod/module/fishing_glove/on_part_deactivation(deleting = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/gloves = mod.get_part_from_slot(ITEM_SLOT_GLOVES)
 	if(gloves && !deleting)
 		gloves.RemoveElement(/datum/element/adjust_fishing_difficulty)
@@ -1025,16 +1197,22 @@
 	required_slots = list(ITEM_SLOT_BACK|ITEM_SLOT_BELT)
 
 /obj/item/mod/module/shock_absorber/on_part_activation()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(mod.wearer, TRAIT_BATON_RESISTANCE, REF(src))
 	RegisterSignal(mod.wearer, COMSIG_MOB_BATONED, PROC_REF(mob_batoned))
 
 /obj/item/mod/module/shock_absorber/on_part_deactivation(deleting)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(mod.wearer, TRAIT_BATON_RESISTANCE, REF(src))
 	UnregisterSignal(mod.wearer, COMSIG_MOB_BATONED)
 
 /obj/item/mod/module/shock_absorber/proc/mob_batoned(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	drain_power(use_energy_cost)
 	do_sparks(5, TRUE, mod.wearer.loc)

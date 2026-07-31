@@ -32,6 +32,8 @@
 	COOLDOWN_DECLARE(spam_cd)
 
 /obj/item/grenade/iedcasing/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ispath(activator))
 		var/obj/item/assembly/new_activator = new activator(src)
@@ -40,6 +42,8 @@
 		attach_activator(new_activator)
 
 /obj/item/grenade/iedcasing/proc/setup_effects_from_contents()
+	procstart = null
+	src.procstart = null
 	for(var/item in contents)
 		for(var/effect_type in effects)
 			if(!istype(item, effect_type))
@@ -52,6 +56,8 @@
 			break
 
 /obj/item/grenade/iedcasing/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Using it in-hand activates the assembly, which means timers start timing and so on.")
 	. += span_notice("Using it off-hand allows you to configure the assembly, if possible.")
@@ -64,26 +70,38 @@
 // assembly handling
 
 /obj/item/grenade/iedcasing/IsAssemblyHolder()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/item/grenade/iedcasing/on_found(mob/finder)
+	procstart = null
+	src.procstart = null
 	if(activator)
 		activator.on_found(finder)
 
 /obj/item/grenade/iedcasing/Move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(activator)
 		activator.holder_movement()
 
 /obj/item/grenade/iedcasing/dropped(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(activator)
 		activator.dropped(user, silent)
 
 /obj/item/grenade/iedcasing/proc/process_activation(obj/item/assembly)
+	procstart = null
+	src.procstart = null
 	detonate()
 
 /obj/item/grenade/iedcasing/proc/attach_activator(obj/item/assembly/new_one)
+	procstart = null
+	src.procstart = null
 	if(activator)
 		return
 	activator = new_one
@@ -93,11 +111,15 @@
 	update_icon(UPDATE_ICON_STATE)
 
 /obj/item/grenade/iedcasing/change_det_time()
+	procstart = null
+	src.procstart = null
 	return
 
 //assembly handling end
 
 /obj/item/grenade/iedcasing/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(loc == user) //if we were picked up already, this opening whenever picked up is not ok
 		activator.ui_interact(user) //if any
 	. = ..()
@@ -108,6 +130,8 @@
 	activator.attack_hand()
 
 /obj/item/grenade/iedcasing/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(isnull(activator))
 		icon_state = "slicedapart" //this shouldnt happen but should prevent runtimes
 		return ..()
@@ -123,6 +147,8 @@
 	return ..()
 
 /obj/item/grenade/iedcasing/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(activator) || !COOLDOWN_FINISHED(src, spam_cd))
 		balloon_alert(user, isnull(activator) ? "you shouldnt be seeing this" : "on cooldown!")
 		return
@@ -135,7 +161,9 @@
 	user.balloon_alert_to_viewers("arming!")
 	COOLDOWN_START(src, spam_cd, 1 SECONDS)
 
-/obj/item/grenade/iedcasing/detonate(mob/living/lanced_by) //Blowing that can up
+/obj/item/grenade/iedcasing/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null //Blowing that can up
 	if(effects[/obj/item/shard]) //this has to be before so it initializes us a pellet cloud or something
 		shrapnel_radius = effects[/obj/item/shard]
 	. = ..()
@@ -160,6 +188,8 @@
 	qdel(src)
 
 /obj/item/grenade/iedcasing/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	activator = null
 
@@ -207,10 +237,14 @@
 	var/power = 5
 
 /obj/item/sliced_pipe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(20, OPENCONTAINER)
 
 /obj/item/sliced_pipe/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!wires_are_in)
 		. += span_notice("You could stuff something in, or fill it with fuel or some other volatile chemical..")
@@ -219,6 +253,8 @@
 		. += span_notice("The wires are just dangling from it, you need some sort of <i> activating assembly</i>.")
 
 /obj/item/sliced_pipe/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!wires_are_in)
 		// here we can stuff in additional objects for a cooler effect
 		if(is_type_in_typecache(tool, allowed) && contents.len < MAX_STUFFINGS)

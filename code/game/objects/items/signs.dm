@@ -22,15 +22,21 @@
 	actions_types = list(/datum/action/item_action/nano_picket_sign)
 
 /obj/item/picket_sign/nameformat(input, user)
+	procstart = null
+	src.procstart = null
 	playsound(src, SFX_WRITING_PEN, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, SOUND_FALLOFF_EXPONENT + 3, ignore_walls = FALSE)
 	label = input
 	AddComponent(/datum/component/rename, name, "It reads: [input]")
 	return "[input] sign"
 
 /obj/item/picket_sign/rename_reset()
+	procstart = null
+	src.procstart = null
 	label = initial(label)
 
 /obj/item/picket_sign/attack_self(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, picket_sign_cooldown))
 		return
 	COOLDOWN_START(src, picket_sign_cooldown, 5 SECONDS)
@@ -57,6 +63,8 @@
 	name = "Retext Nano Picket Sign"
 
 /datum/action/item_action/nano_picket_sign/do_effect(trigger_flags)
+	procstart = null
+	src.procstart = null
 	if(!istype(target, /obj/item/picket_sign))
 		return FALSE
 	var/obj/item/picket_sign/sign = target

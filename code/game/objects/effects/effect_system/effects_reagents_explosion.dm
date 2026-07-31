@@ -13,6 +13,8 @@
 	var/explosion_message = 1
 
 /datum/effect_system/reagents_explosion/New(turf/location, amount, flash_fact = null, flame_fact = null, message = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.amount = amount
 	explosion_message = message
@@ -23,6 +25,8 @@
 
 /// Starts the explosion. The explosion_source is as part of logging and identifying the source of the explosion for logs.
 /datum/effect_system/reagents_explosion/start(atom/explosion_source = null)
+	procstart = null
+	src.procstart = null
 	if(!explosion_source)
 		stack_trace("Reagent explosion triggered without a source atom. This explosion may have incomplete logging.")
 	if(explosion_message)

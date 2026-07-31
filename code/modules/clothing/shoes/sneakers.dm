@@ -18,16 +18,22 @@
 	interaction_flags_mouse_drop = NEED_HANDS
 
 /obj/item/clothing/shoes/sneakers/get_general_color(icon/base_icon)
+	procstart = null
+	src.procstart = null
 	var/colors = SSgreyscale.ParseColorString(greyscale_colors)
 	return colors ? colors[1] : ..()
 
 /obj/item/clothing/shoes/sneakers/generate_digitigrade_icons(icon/base_icon, greyscale_colors)
+	procstart = null
+	src.procstart = null
 	return icon(SSgreyscale.GetColoredIconByType(/datum/greyscale_config/digitigrade, greyscale_colors), "sneakers_worn")
 
 /obj/item/clothing/shoes/sneakers/random
 	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1 // same icon/color as base type
 
 /obj/item/clothing/shoes/sneakers/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	greyscale_colors = "#" + random_color() + "#" + random_color()
 	update_greyscale()
@@ -117,14 +123,20 @@
 	var/obj/item/restraints/handcuffs/attached_cuffs
 
 /obj/item/clothing/shoes/sneakers/orange/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDCUFFED)
 
 /obj/item/clothing/shoes/sneakers/orange/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(attached_cuffs)
 	return ..()
 
 /obj/item/clothing/shoes/sneakers/orange/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	if(gone == attached_cuffs)
 		attached_cuffs = null
 		slowdown = SHOES_SLOWDOWN
@@ -132,6 +144,8 @@
 	return ..()
 
 /obj/item/clothing/shoes/sneakers/orange/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	if(arrived.type == /obj/item/restraints/handcuffs)
 		attached_cuffs = arrived
 		slowdown = 15
@@ -139,6 +153,8 @@
 	return ..()
 
 /obj/item/clothing/shoes/sneakers/orange/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(attached_cuffs)
 		icon_state = inhand_icon_state = "sneakers_chained"
@@ -148,6 +164,8 @@
 	update_greyscale()
 
 /obj/item/clothing/shoes/sneakers/orange/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(attached_cuffs)
 		to_chat(user, span_notice("You remove [attached_cuffs] from [src]."))
 		if(Adjacent(user)) //tk is love, tk is life.
@@ -158,18 +176,24 @@
 	return ..()
 
 /obj/item/clothing/shoes/sneakers/orange/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(attached_cuffs || tool.type != /obj/item/restraints/handcuffs) 	// Note: not using istype here because we want to ignore all subtypes
 		return ..()
 	tool.forceMove(src)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/clothing/shoes/sneakers/orange/can_mob_unequip(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.get_item_by_slot(slot_flags) == src && attached_cuffs)
 		to_chat(user, span_warning("You need help taking these off!"))
 		return FALSE
 	return ..()
 
 /obj/item/clothing/shoes/sneakers/orange/mouse_drop_dragged(atom/over_object, mob/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(user))
 		var/mob/living/carbon/human/c = user
 		if(c.shoes == src && attached_cuffs)

@@ -10,6 +10,8 @@ It has a punishment variable that is what happens to the parent when they leave 
 	var/message = ""
 
 /datum/component/stationstuck/Initialize(_punishment = PUNISHMENT_GIB, _message = "")
+	procstart = null
+	src.procstart = null
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 	var/mob/living/L = parent
@@ -19,6 +21,8 @@ It has a punishment variable that is what happens to the parent when they leave 
 	stuck_zlevel = L.z
 
 /datum/component/stationstuck/InheritComponent(datum/component/stationstuck/newc, original, _punishment, _message)
+	procstart = null
+	src.procstart = null
 	if(newc)
 		punishment = newc.punishment
 		message = newc.message
@@ -36,6 +40,8 @@ It has a punishment variable that is what happens to the parent when they leave 
  * * PUNISHMENT_TELEPORT:  finds a safe turf if possible, or a completely random one if not.
  */
 /datum/component/stationstuck/proc/punish()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/escapee = parent

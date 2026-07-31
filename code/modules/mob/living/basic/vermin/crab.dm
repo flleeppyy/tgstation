@@ -29,6 +29,8 @@
 	ai_controller = /datum/ai_controller/basic_controller/crab
 
 /mob/living/basic/crab/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_NODROWN, TRAIT_SWIMMER, TRAIT_VENTCRAWLER_ALWAYS), INNATE_TRAIT)
 	AddElement(/datum/element/sideway_movement)

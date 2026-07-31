@@ -29,19 +29,27 @@
 	bomb = 10
 
 /obj/structure/grille/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/atmos_sensitive, mapload)
 	register_context()
 
 /obj/structure/grille/Destroy()
+	procstart = null
+	src.procstart = null
 	update_cable_icons_on_turf(get_turf(src))
 	return ..()
 
 /obj/structure/grille/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_appearance()
 
 /obj/structure/grille/update_appearance(updates)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	. = ..()
@@ -49,6 +57,8 @@
 		QUEUE_SMOOTH(src)
 
 /obj/structure/grille/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if (broken)
 		icon_state = "broken[base_icon_state]"
 	else
@@ -56,6 +66,8 @@
 	return ..()
 
 /obj/structure/grille/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(resistance_flags & INDESTRUCTIBLE)
 		return
@@ -65,6 +77,8 @@
 		. += span_notice("The anchoring screws are [EXAMINE_HINT("unscrewed")]. The rods look like they could be [EXAMINE_HINT("cut")] through.")
 
 /obj/structure/grille/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(held_item?.tool_behaviour == TOOL_WIRECUTTER)
 		context[SCREENTIP_CONTEXT_RMB] = "Deconstruct"
@@ -75,6 +89,8 @@
 	return .
 
 /obj/structure/grille/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	switch(the_rcd.mode)
 		if(RCD_DECONSTRUCT)
 			return list("delay" = 2 SECONDS, "cost" = 5)
@@ -104,6 +120,8 @@
 	return FALSE
 
 /obj/structure/grille/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	procstart = null
+	src.procstart = null
 	switch(rcd_data[RCD_DESIGN_MODE])
 		if(RCD_DECONSTRUCT)
 			qdel(src)
@@ -134,6 +152,8 @@
 	return FALSE
 
 /obj/structure/grille/proc/clear_tile(mob/user)
+	procstart = null
+	src.procstart = null
 	var/at_users_feet = get_turf(user)
 
 	var/unanchored_items_on_tile
@@ -157,12 +177,16 @@
 	return TRUE
 
 /obj/structure/grille/Bumped(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(!ismob(AM))
 		return
 	var/mob/M = AM
 	shock(M, 70)
 
 /obj/structure/grille/attack_animal(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -170,17 +194,25 @@
 		take_damage(rand(5,10), BRUTE, MELEE, 1)
 
 /obj/structure/grille/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/structure/grille/hulk_damage()
+	procstart = null
+	src.procstart = null
 	return 60
 
 /obj/structure/grille/attack_hulk(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(shock(user, 70))
 		return
 	. = ..()
 
 /obj/structure/grille/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -192,6 +224,8 @@
 		take_damage(rand(5,10), BRUTE, MELEE, 1)
 
 /obj/structure/grille/attack_alien(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	user.do_attack_animation(src)
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.visible_message(span_warning("[user] mangles [src]."), null, null, COMBAT_MESSAGE_RANGE)
@@ -199,11 +233,15 @@
 		take_damage(20, BRUTE, MELEE, 1)
 
 /obj/structure/grille/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. && isprojectile(mover))
 		return prob(30)
 
 /obj/structure/grille/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	procstart = null
+	src.procstart = null
 	if(!density)
 		return TRUE
 	if(pass_info.pass_flags & PASSGRILLE)
@@ -211,6 +249,8 @@
 	return FALSE
 
 /obj/structure/grille/wirecutter_act_secondary(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(shock(user, 100))
 		return
@@ -219,6 +259,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/grille/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!isturf(loc))
 		return FALSE
 	add_fingerprint(user)
@@ -232,6 +274,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/grille/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/stack/rods) && broken)
 		if(!do_after(user, 1 SECONDS, target = src))
 			return ITEM_INTERACT_BLOCKING
@@ -305,6 +349,8 @@
 	return NONE
 
 /obj/structure/grille/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(damage_amount)
@@ -316,10 +362,14 @@
 
 
 /obj/structure/grille/atom_deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/obj/rods = new rods_type(drop_location(), rods_amount)
 	transfer_fingerprints_to(rods)
 
 /obj/structure/grille/atom_break()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(broken)
 		return
@@ -332,6 +382,8 @@
 	update_appearance()
 
 /obj/structure/grille/proc/repair_grille()
+	procstart = null
+	src.procstart = null
 	if(!broken)
 		return FALSE
 
@@ -343,6 +395,8 @@
 	return TRUE
 
 /obj/structure/grille/shock(mob/living/shocking, chance = 100, shock_source, siemens_coeff = 1)
+	procstart = null
+	src.procstart = null
 	if(!anchored || broken) // anchored/broken grilles are never connected
 		return FALSE
 	var/turf/grill_loc = get_turf(src)
@@ -360,12 +414,18 @@
 	return TRUE
 
 /obj/structure/grille/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return exposed_temperature > T0C + 1500 && !broken
 
 /obj/structure/grille/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	take_damage(1, BURN, 0, 0)
 
 /obj/structure/grille/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(isobj(AM))
 		if(prob(50) && anchored && !broken)
 			var/obj/O = AM
@@ -381,9 +441,13 @@
 	return ..()
 
 /obj/structure/grille/get_dumping_location()
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/structure/grille/proc/temporary_shatter(time_to_go = 0 SECONDS, time_to_return = 4 SECONDS)
+	procstart = null
+	src.procstart = null
 	if(dramatically_disappearing)
 		return
 
@@ -398,6 +462,8 @@
 
 /// Do some very specific checks to see if we *would* get shocked. Returns TRUE if it's shocked
 /obj/structure/grille/proc/is_shocked()
+	procstart = null
+	src.procstart = null
 	var/turf/turf = get_turf(src)
 	var/obj/structure/cable/cable = turf.get_cable_node()
 	var/list/powernet_info = get_powernet_info_from_source(cable)
@@ -415,6 +481,8 @@
 	rods_amount = 1
 
 /obj/structure/grille/broken/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	take_damage(max_integrity * 0.6)
 

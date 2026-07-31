@@ -10,6 +10,8 @@
  * Only by doing the latter will [datum/tlv/proc/reset_value] work.
  */
 /datum/tlv/New(min2 as num, min1 as num, max1 as num, max2 as num)
+	procstart = null
+	src.procstart = null
 	if(min2)
 		hazard_min = min2
 	if(min1)
@@ -20,6 +22,8 @@
 		hazard_max = max2
 
 /datum/tlv/proc/check_value(val)
+	procstart = null
+	src.procstart = null
 	if(hazard_max != TLV_VALUE_IGNORE && val >= hazard_max)
 		return AIR_ALARM_ALERT_HAZARD
 	if(hazard_min != TLV_VALUE_IGNORE && val <= hazard_min)
@@ -38,6 +42,8 @@
  * * value: How much to set it to. Accepts a number or [TLV_VALUE_IGNORE]
  */
 /datum/tlv/proc/set_value(threshold_type, value)
+	procstart = null
+	src.procstart = null
 	if(threshold_type & TLV_VAR_WARNING_MIN)
 		warning_min = value
 	if(threshold_type & TLV_VAR_HAZARD_MIN)
@@ -53,6 +59,8 @@
  * * threshold_type: What kind of variable do we want to set. Accepts bitfield subsets of [TLV_VAR_ALL].
  */
 /datum/tlv/proc/reset_value(threshold_type)
+	procstart = null
+	src.procstart = null
 	if(threshold_type & TLV_VAR_WARNING_MIN)
 		warning_min = initial(warning_min)
 	if(threshold_type & TLV_VAR_HAZARD_MIN)

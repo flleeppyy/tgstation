@@ -11,6 +11,8 @@
 	var/sound_type
 
 /datum/hallucination/fake_sound/start()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(hallucinator, TRAIT_DEAF))
 		return FALSE
 
@@ -22,10 +24,14 @@
 
 /// Actually plays the fake sound.
 /datum/hallucination/fake_sound/proc/play_fake_sound(turf/source, sound_to_play = sound_type)
+	procstart = null
+	src.procstart = null
 	hallucinator.playsound_local(source, sound_to_play, volume, sound_vary)
 
 /// Used to queue additional, delayed fake sounds via a callback.
 /datum/hallucination/fake_sound/proc/queue_fake_sound(turf/source, sound_to_play, volume_override, vary_override, delay)
+	procstart = null
+	src.procstart = null
 	if(!delay)
 		CRASH("[type] queued a fake sound without a timer.")
 
@@ -45,6 +51,8 @@
 	sound_type = 'sound/machines/airlock/airlock_alien_prying.ogg'
 
 /datum/hallucination/fake_sound/normal/airlock_pry/play_fake_sound(turf/source, sound_to_play)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	queue_fake_sound(source, 'sound/machines/airlock/airlockforced.ogg', 50, TRUE, delay = 5 SECONDS)
 
@@ -80,10 +88,14 @@
 	var/steps_left = 0
 
 /datum/hallucination/fake_sound/normal/mech/Destroy()
+	procstart = null
+	src.procstart = null
 	mech_source = null
 	return ..()
 
 /datum/hallucination/fake_sound/normal/mech/start()
+	procstart = null
+	src.procstart = null
 	mech_dir = pick(GLOB.cardinals)
 	steps_left = rand(4, 9)
 	mech_source = random_far_turf()
@@ -92,6 +104,8 @@
 	return TRUE
 
 /datum/hallucination/fake_sound/normal/mech/proc/mech_walk()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 
@@ -113,6 +127,8 @@
 	sound_type = 'sound/items/tools/welder.ogg'
 
 /datum/hallucination/fake_sound/normal/wall_deconstruction/play_fake_sound(turf/source, sound_to_play)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	queue_fake_sound(source, 'sound/items/tools/welder2.ogg', delay = 10.5 SECONDS)
 	queue_fake_sound(source, 'sound/items/tools/ratchet.ogg', delay = 12 SECONDS)
@@ -122,6 +138,8 @@
 	volume = 30
 
 /datum/hallucination/fake_sound/normal/door_hacking/play_fake_sound(turf/source, sound_to_play)
+	procstart = null
+	src.procstart = null
 	// Make it sound like someone's pulsing a multitool one or multiple times.
 	// Screwdriver happens immediately...
 	. = ..()
@@ -156,6 +174,8 @@
 	volume = 50
 
 /datum/hallucination/fake_sound/normal/ringtone/New(mob/living/hallucinator)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(SSstation, STATION_TRAIT_PDA_GLITCHED))
 		sound_type = pick(
@@ -166,6 +186,8 @@
 		sound_type = 'sound/machines/beep/twobeep_high.ogg'
 
 /datum/hallucination/fake_sound/normal/ringtone/play_fake_sound(turf/source, sound_to_play = sound_type)
+	procstart = null
+	src.procstart = null
 	if(prob(33))
 		source = get_turf(hallucinator)
 		var/obj/item/modular_computer/pda/pda = locate() in hallucinator.get_all_contents()
@@ -182,6 +204,8 @@
 	var/no_source = FALSE
 
 /datum/hallucination/fake_sound/weird/play_fake_sound(turf/source, sound_to_play)
+	procstart = null
+	src.procstart = null
 	if(no_source)
 		return ..(null, sound_to_play)
 
@@ -216,6 +240,8 @@
 	hallucination_tier = HALLUCINATION_TIER_COMMON
 
 /datum/hallucination/fake_sound/weird/creepy/New(mob/living/hallucinator)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//These sounds are (mostly) taken from Hidden: Source
 	sound_type = GLOB.creepy_ambience
@@ -261,6 +287,8 @@
 	hallucination_tier = HALLUCINATION_TIER_RARE
 
 /datum/hallucination/fake_sound/weird/phone/play_fake_sound(turf/source, sound_to_play)
+	procstart = null
+	src.procstart = null
 	for(var/next_ring in 1 to 3)
 		queue_fake_sound(source, sound_to_play, delay = 2.5 SECONDS * next_ring)
 
@@ -293,6 +321,8 @@
 	hallucination_tier = HALLUCINATION_TIER_RARE
 
 /datum/hallucination/fake_sound/weird/tesloose/play_fake_sound(turf/source, sound_to_play)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/next_shock in 1 to rand(2, 4))
 		queue_fake_sound(source, sound_to_play, volume_override = volume + (15 * next_shock), delay = 3 SECONDS * next_shock)

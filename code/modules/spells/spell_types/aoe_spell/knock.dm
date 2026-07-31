@@ -14,15 +14,21 @@
 	aoe_radius = 3
 
 /datum/action/cooldown/spell/aoe/knock/get_caster_from_target(atom/target)
+	procstart = null
+	src.procstart = null
 	if(istype(target.loc, /obj/structure/closet))
 		return target
 
 	return ..()
 
 /datum/action/cooldown/spell/aoe/knock/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return ..() || istype(cast_on.loc, /obj/structure/closet)
 
 /datum/action/cooldown/spell/aoe/knock/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	if(istype(cast_on.loc, /obj/structure/closet))
 		var/obj/structure/closet/open_closet = cast_on.loc
 		open_closet.locked = FALSE
@@ -31,7 +37,11 @@
 	return ..()
 
 /datum/action/cooldown/spell/aoe/knock/get_things_to_cast_on(atom/center)
+	procstart = null
+	src.procstart = null
 	return RANGE_TURFS(aoe_radius, center)
 
 /datum/action/cooldown/spell/aoe/knock/cast_on_thing_in_aoe(turf/victim, atom/caster)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(victim, COMSIG_ATOM_MAGICALLY_UNLOCKED, src, caster)

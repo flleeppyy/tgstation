@@ -11,6 +11,8 @@
 	var/insisting = 0
 
 /obj/machinery/wish_granter/attack_hand(mob/living/carbon/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

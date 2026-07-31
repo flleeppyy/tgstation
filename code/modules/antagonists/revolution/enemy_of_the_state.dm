@@ -11,6 +11,8 @@
 	suicide_cry = "FOR THE ETERNAL REVOLUTION!!"
 
 /datum/antagonist/enemy_of_the_state/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/exile/exile_choice = new
 	exile_choice.owner = owner
 	exile_choice.objective_name = "Choice"
@@ -22,12 +24,16 @@
 	objectives += hijack_choice
 
 /datum/antagonist/enemy_of_the_state/on_gain()
+	procstart = null
+	src.procstart = null
 	owner.add_memory(/datum/memory/revolution_rev_defeat)
 	// LAZYADD(owner.special_statuses, "Exiled Head Revolutionary")
 	forge_objectives()
 	. = ..()
 
 /datum/antagonist/enemy_of_the_state/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(owner, span_userdanger("The revolution is dead."))
 	to_chat(owner, span_bolddanger("You're an enemy of the state to Nanotrasen. You're a loose end to the Syndicate."))
@@ -35,6 +41,8 @@
 	owner.announce_objectives()
 
 /datum/antagonist/enemy_of_the_state/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/report = list()
 
 	if(!owner)

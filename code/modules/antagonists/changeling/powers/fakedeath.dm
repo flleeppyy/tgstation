@@ -17,6 +17,8 @@
 
 //Fake our own death and fully heal. You will appear to be dead but regenerate fully after a short delay.
 /datum/action/changeling/fakedeath/sting_action(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(revive_ready)
 		INVOKE_ASYNC(src, PROC_REF(revive), user)
@@ -36,6 +38,8 @@
 
 /// Used to enable fakedeath and register relevant signals / start timers
 /datum/action/changeling/fakedeath/proc/enable_fakedeath(mob/living/changeling, duration_modifier = 1)
+	procstart = null
+	src.procstart = null
 	if(revive_ready || HAS_TRAIT_FROM(changeling, TRAIT_DEATHCOMA, CHANGELING_TRAIT))
 		return
 
@@ -51,6 +55,8 @@
 /// healing a changeling who went into stasis after actually dying, and
 /// also removes changeling stasis
 /datum/action/changeling/fakedeath/proc/disable_stasis_and_fakedeath(mob/living/changeling)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(changeling, TRAIT_STASIS, CHANGELING_TRAIT)
 	UnregisterSignal(changeling, SIGNAL_REMOVETRAIT(TRAIT_DEATHCOMA))
 	UnregisterSignal(changeling, COMSIG_MOB_STATCHANGE)
@@ -58,12 +64,16 @@
 /// This proc is called to reset the chemical cost of the revival
 /// as well as the revive ready flag and button states.
 /datum/action/changeling/fakedeath/proc/reset_chemical_cost()
+	procstart = null
+	src.procstart = null
 	chemical_cost = 15
 	revive_ready = FALSE
 	build_all_button_icons(UPDATE_BUTTON_NAME|UPDATE_BUTTON_ICON)
 
 /// Sets [revive_ready] to TRUE and updates the button icons.
 /datum/action/changeling/fakedeath/proc/enable_revive(mob/living/changeling)
+	procstart = null
+	src.procstart = null
 	if(revive_ready)
 		return
 
@@ -73,6 +83,8 @@
 
 /// Signal proc to stop the revival process if the changeling exits their stasis early.
 /datum/action/changeling/fakedeath/proc/fakedeath_reset(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT_FROM(source, TRAIT_DEATHCOMA, CHANGELING_TRAIT))
@@ -82,6 +94,8 @@
 
 /// Signal proc to exit fakedeath early if we're revived from being previously dead
 /datum/action/changeling/fakedeath/proc/on_stat_change(mob/living/source, new_stat, old_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(old_stat != DEAD)
@@ -92,6 +106,8 @@
 	reset_chemical_cost()
 
 /datum/action/changeling/fakedeath/proc/revive(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return
 	if(!HAS_TRAIT_FROM(user, TRAIT_DEATHCOMA, CHANGELING_TRAIT))
@@ -119,6 +135,8 @@
 	user.regenerate_limbs(dont_regenerate)
 
 /datum/action/changeling/fakedeath/proc/ready_to_regenerate(mob/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || QDELETED(user))
 		return
 
@@ -132,6 +150,8 @@
 	enable_revive(user)
 
 /datum/action/changeling/fakedeath/can_sting(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(revive_ready)
 		return ..()
 
@@ -149,18 +169,24 @@
 /// We wait until after we actually deduct chemical cost (or don't deduct
 /// if it's the 0 cost we get for revival) before we reset the chemical cost
 /datum/action/changeling/fakedeath/try_to_sting(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!. || !revive_ready)
 		return
 	reset_chemical_cost()
 
 /datum/action/changeling/fakedeath/proc/can_enter_stasis(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT_FROM(user, TRAIT_DEATHCOMA, CHANGELING_TRAIT))
 		user.balloon_alert(user, "already reviving!")
 		return FALSE
 	return TRUE
 
 /datum/action/changeling/fakedeath/update_button_name(atom/movable/screen/movable/action_button/button, force)
+	procstart = null
+	src.procstart = null
 	if(revive_ready)
 		name = "Revive"
 		desc = "We arise once more."
@@ -170,5 +196,7 @@
 	return ..()
 
 /datum/action/changeling/fakedeath/apply_button_icon(atom/movable/screen/movable/action_button/current_button, force)
+	procstart = null
+	src.procstart = null
 	button_icon_state = revive_ready ? "revive" : "fake_death"
 	return ..()

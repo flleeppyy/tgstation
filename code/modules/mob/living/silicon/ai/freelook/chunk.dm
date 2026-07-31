@@ -36,6 +36,8 @@
 
 /// Add a camera eye to the chunk, updating the chunk if necessary.
 /datum/camerachunk/proc/add(mob/eye/camera/eye)
+	procstart = null
+	src.procstart = null
 	eye.visibleCameraChunks += src
 	seenby += eye
 	force_update()
@@ -46,6 +48,8 @@
 
 /// Remove a camera eye from the chunk
 /datum/camerachunk/proc/remove(mob/eye/camera/ai/eye)
+	procstart = null
+	src.procstart = null
 	eye.visibleCameraChunks -= src
 	seenby -= eye
 
@@ -62,6 +66,8 @@
  * * update_delay_buffer - the delay before the update is performed. Defaults to 0 (instant).
  */
 /datum/camerachunk/proc/queue_update(atom/update_source, update_delay_buffer = 0)
+	procstart = null
+	src.procstart = null
 	// This chunk is being actively observed, skip queuing
 	if(length(seenby))
 		addtimer(CALLBACK(src, PROC_REF(update)), update_delay_buffer || 1, TIMER_UNIQUE)
@@ -98,6 +104,8 @@
 		addtimer(CALLBACK(src, PROC_REF(_queue_update)), update_delay_buffer, TIMER_UNIQUE)
 
 /datum/camerachunk/proc/_queue_update()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	// Something forced an update during the delay
 	if(!length(update_sources))
@@ -105,6 +113,8 @@
 	SScameras.chunks_to_update[src] = TRUE
 
 /datum/camerachunk/proc/_dequeue_update()
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	// Whelp
 	if(length(update_sources))
@@ -118,12 +128,16 @@
  * * only_if_necessary - if TRUE, will not update the chunk unless it's been marked to update.
  */
 /datum/camerachunk/proc/force_update(only_if_necessary = TRUE)
+	procstart = null
+	src.procstart = null
 	if(only_if_necessary && !length(update_sources))
 		return
 	update()
 
 /// Reset any in progress update
 /datum/camerachunk/proc/reset_update()
+	procstart = null
+	src.procstart = null
 	if(!currently_updating)
 		return
 
@@ -137,6 +151,8 @@
 /// Updates our chunk in a lazy fashion, so large amounts of cameras don't lead to overtime spikes
 /// Returns FALSE if the update is unfinished, TRUE if it's complete
 /datum/camerachunk/proc/yield_update()
+	procstart = null
+	src.procstart = null
 	if(SScameras.disable_camera_updates)
 		return TRUE
 
@@ -174,6 +190,8 @@
 
 /// Perfroms a full update of the chunk
 /datum/camerachunk/proc/update()
+	procstart = null
+	src.procstart = null
 	if(SScameras.disable_camera_updates)
 		return
 
@@ -200,6 +218,8 @@
 
 /// Takes a list of newly visible turfs, updates our static images to match
 /datum/camerachunk/proc/update_with_turfs(list/updated_visible_turfs)
+	procstart = null
+	src.procstart = null
 	///new turfs that we couldnt see last update but can now
 	var/list/newly_visible_turfs = updated_visible_turfs - visibleTurfs
 	///turfs that we could see last update but cant see now
@@ -242,6 +262,8 @@
 
 /// Create a new camera chunk, since the chunks are made as they are needed.
 /datum/camerachunk/New(x, y, lower_z)
+	procstart = null
+	src.procstart = null
 	x = GET_CHUNK_COORD(x)
 	y = GET_CHUNK_COORD(y)
 

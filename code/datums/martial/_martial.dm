@@ -44,6 +44,8 @@
 	var/grab_escape_chance_modifier = 0
 
 /datum/martial_art/serialize_list(list/options, list/semvers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	.["name"] = name
@@ -54,9 +56,13 @@
 	return .
 
 /datum/martial_art/New(datum/new_origin)
+	procstart = null
+	src.procstart = null
 	set_origin(new_origin)
 
 /datum/martial_art/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!isnull(holder))
 		unlearn(holder)
 	if(!isnull(origin))
@@ -64,6 +70,8 @@
 	return ..()
 
 /datum/martial_art/proc/set_origin(datum/new_origin)
+	procstart = null
+	src.procstart = null
 	if(origin)
 		UnregisterSignal(origin, COMSIG_QDELETING)
 		origin = null
@@ -73,15 +81,21 @@
 	RegisterSignal(origin, COMSIG_QDELETING, PROC_REF(clear_origin))
 
 /datum/martial_art/proc/clear_origin()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /datum/martial_art/proc/clear_holder(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	unlearn(holder)
 
 /// Signal proc for [COMSIG_LIVING_UNARMED_ATTACK] to hook into the appropriate proc
 /datum/martial_art/proc/unarmed_strike(mob/living/source, atom/attack_target, proximity, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!proximity || !isliving(attack_target))
@@ -106,6 +120,8 @@
 
 /// Signal proc for [COMSIG_LIVING_GRAB] to hook into the grab
 /datum/martial_art/proc/attempt_grab(mob/living/source, mob/living/grabbing)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT(grabbing, TRAIT_MARTIAL_ARTS_IMMUNE))
@@ -121,6 +137,8 @@
 
 /// Signal proc for [COMSIG_MOVABLE_GRABBED_RESISTING] to modify grab stats
 /datum/martial_art/proc/grabbed_resisting(mob/living/source, mob/living/grabbed, list/grab_stats)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!can_use(source))
@@ -149,6 +167,8 @@
  * * MARTIAL_ATTACK_SUCCESS - The attack is valid, and succeeded. No followup attack is made.
  */
 /datum/martial_art/proc/help_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	PROTECTED_PROC(TRUE)
 	return MARTIAL_ATTACK_INVALID
@@ -172,6 +192,8 @@
  * * MARTIAL_ATTACK_SUCCESS - The attack is valid, and succeeded. No followup attack is made.
  */
 /datum/martial_art/proc/disarm_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	PROTECTED_PROC(TRUE)
 	return MARTIAL_ATTACK_INVALID
@@ -195,6 +217,8 @@
  * * MARTIAL_ATTACK_SUCCESS - The attack is valid, and succeeded. No followup attack is made.
  */
 /datum/martial_art/proc/harm_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	PROTECTED_PROC(TRUE)
 	return MARTIAL_ATTACK_INVALID
@@ -218,6 +242,8 @@
  * * MARTIAL_ATTACK_SUCCESS - The attack is valid, and succeeded. No followup attack is made.
  */
 /datum/martial_art/proc/grab_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	PROTECTED_PROC(TRUE)
 	return MARTIAL_ATTACK_INVALID
@@ -233,6 +259,8 @@
  * * FALSE - The mob cannot use this martial art
  */
 /datum/martial_art/proc/can_use(mob/living/martial_artist)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /**
@@ -248,6 +276,8 @@
  * A bodypart, or null if we want to use default behavior (brain determines, or active hand).
  */
 /datum/martial_art/proc/get_attacking_limb(mob/living/martial_artist, mob/living/target)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if(!can_use(martial_artist))
 		return null
@@ -268,6 +298,8 @@
  * * A body zone, or null if we have no preference.
  */
 /datum/martial_art/proc/get_prefered_attacking_limb(mob/living/martial_artist, mob/living/target)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	PROTECTED_PROC(TRUE)
 	return null
@@ -280,6 +312,8 @@
  * * mob/living/defender - The mob being attacked
  */
 /datum/martial_art/proc/add_to_streak(element, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	if(!IS_WEAKREF_OF(defender, current_target))
 		reset_streak(defender)
 	streak += element
@@ -300,6 +334,8 @@
  * * update_icon - If TRUE, the combo display will be updated.
  */
 /datum/martial_art/proc/reset_streak(mob/living/new_target, update_icon = TRUE)
+	procstart = null
+	src.procstart = null
 	if(timerid)
 		deltimer(timerid)
 	current_target = WEAKREF(new_target)
@@ -309,6 +345,8 @@
 		combo_display.update_icon_state(streak)
 
 /datum/martial_art/proc/smash_table(mob/living/source, mob/living/pushed_mob, obj/structure/table/table)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(smashes_tables)
 		table.deconstruct(FALSE)
@@ -324,6 +362,8 @@
  * * FALSE - The mob failed to learn the martial art, for whatever reason.
  */
 /datum/martial_art/proc/teach(mob/living/new_holder)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(!can_teach(new_holder) || holder == new_holder)
@@ -360,6 +400,8 @@
  * * FALSE - The mob cannot be taught this martial art
  */
 /datum/martial_art/proc/can_teach(mob/living/new_holder)
+	procstart = null
+	src.procstart = null
 	return isliving(new_holder)
 
 /**
@@ -369,6 +411,8 @@
  * * mob/living/old_holder - The mob to remove this martial art from.
  */
 /datum/martial_art/proc/unlearn(mob/living/old_holder)
+	procstart = null
+	src.procstart = null
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(old_holder != holder)
@@ -391,6 +435,8 @@
  * Called when this martial art is added to a mob.
  */
 /datum/martial_art/proc/activate_style(mob/living/new_holder)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	active = TRUE
 	RegisterSignal(new_holder, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(unarmed_strike))
@@ -406,6 +452,8 @@
  * Called when this martial art is removed from a mob.
  */
 /datum/martial_art/proc/deactivate_style(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	active = FALSE
 	UnregisterSignal(remove_from, list(
@@ -420,10 +468,14 @@
 
 ///Gives the owner of the martial art the combo HUD.
 /datum/martial_art/proc/on_hud_created(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	source.hud_used.add_screen_object(/atom/movable/screen/combo, HUD_MOB_COMBO, HUD_GROUP_INFO, update_screen = TRUE)
 
 /mob/living/proc/cycle_style()
+	procstart = null
+	src.procstart = null
 	var/datum/martial_art/current = GET_ACTIVE_MARTIAL_ART(src)
 	var/datum/martial_art/next = GET_NEXT_MARTIAL_ART(src)
 
@@ -436,6 +488,8 @@
 
 /// Deactivates the current martial art and activates the next one.
 /mob/living/proc/switch_style(datum/martial_art/current_martial, datum/martial_art/next_martial)
+	procstart = null
+	src.procstart = null
 	if(current_martial.locked_to_use)
 		return
 	// something's wrong if this assertion fails, but not terribly wrong that we need a stack trace
@@ -456,4 +510,6 @@
 
 ///To be overwritten for artstyle help.
 /datum/martial_art/proc/get_style_help()
+	procstart = null
+	src.procstart = null
 	return FALSE

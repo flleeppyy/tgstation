@@ -204,13 +204,19 @@ world
 
 	// Multiply all alpha values by this float
 /icon/proc/ChangeOpacity(opacity = 1)
+	procstart = null
+	src.procstart = null
 	MapColors(1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,opacity, 0,0,0,0)
 
 // Convert to grayscale
 /icon/proc/GrayScale()
+	procstart = null
+	src.procstart = null
 	MapColors(0.3,0.3,0.3, 0.59,0.59,0.59, 0.11,0.11,0.11, 0,0,0)
 
 /icon/proc/ColorTone(tone)
+	procstart = null
+	src.procstart = null
 	GrayScale()
 
 	var/list/TONE = rgb2num(tone)
@@ -229,6 +235,8 @@ world
 
 // Take the minimum color of two icons; combine transparency as if blending with ICON_ADD
 /icon/proc/MinColors(icon)
+	procstart = null
+	src.procstart = null
 	var/icon/new_icon = new(src)
 	new_icon.Opaque()
 	new_icon.Blend(icon, ICON_SUBTRACT)
@@ -236,6 +244,8 @@ world
 
 // Take the maximum color of two icons; combine opacity as if blending with ICON_OR
 /icon/proc/MaxColors(icon)
+	procstart = null
+	src.procstart = null
 	var/icon/new_icon
 	if(isicon(icon))
 		new_icon = new(icon)
@@ -252,20 +262,28 @@ world
 
 // make this icon fully opaque--transparent pixels become black
 /icon/proc/Opaque(background = COLOR_BLACK)
+	procstart = null
+	src.procstart = null
 	SwapColor(null, background)
 	MapColors(1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,0, 0,0,0,1)
 
 // Change a grayscale icon into a white icon where the original color becomes the alpha
 // I.e., black -> transparent, gray -> translucent white, white -> solid white
 /icon/proc/BecomeAlphaMask()
+	procstart = null
+	src.procstart = null
 	SwapColor(null, "#000000ff") // don't let transparent become gray
 	MapColors(0,0,0,0.3, 0,0,0,0.59, 0,0,0,0.11, 0,0,0,0, 1,1,1,0)
 
 /icon/proc/UseAlphaMask(mask)
+	procstart = null
+	src.procstart = null
 	Opaque()
 	AddAlphaMask(mask)
 
 /icon/proc/AddAlphaMask(mask)
+	procstart = null
+	src.procstart = null
 	var/icon/mask_icon = new(mask)
 	mask_icon.Blend("#ffffff", ICON_SUBTRACT)
 	// apply mask
@@ -274,6 +292,8 @@ world
 /// Converts an rgb color into a list storing hsva
 /// Exists because it's useful to have a guaranteed alpha value
 /proc/rgb2hsv(rgb)
+	procstart = null
+	src.procstart = null
 	var/list/hsv = rgb2num(rgb, COLORSPACE_HSV)
 	if(length(hsv) < 4)
 		hsv += 255 // Max alpha, just to make life easy
@@ -281,6 +301,8 @@ world
 
 /// Converts a list storing hsva into an rgb color
 /proc/hsv2rgb(hsv)
+	procstart = null
+	src.procstart = null
 	if(length(hsv) < 3)
 		return COLOR_BLACK
 	if(length(hsv) == 3)
@@ -297,6 +319,8 @@ world
 	amount<0 or amount>1 are allowed
  */
 /proc/BlendHSV(hsv1, hsv2, amount)
+	procstart = null
+	src.procstart = null
 	return hsv_gradient(amount, 0, hsv1, 1, hsv2, "loop")
 
 /*
@@ -309,9 +333,13 @@ world
 	amount<0 or amount>1 are allowed
  */
 /proc/BlendRGB(rgb1, rgb2, amount)
+	procstart = null
+	src.procstart = null
 	return rgb_gradient(amount, 0, rgb1, 1, rgb2, "loop")
 
 /proc/HueToAngle(hue)
+	procstart = null
+	src.procstart = null
 	// normalize hsv in case anything is screwy
 	if(hue < 0 || hue >= 1536)
 		hue %= 1536
@@ -322,6 +350,8 @@ world
 	return hue / (1530/360)
 
 /proc/AngleToHue(angle)
+	procstart = null
+	src.procstart = null
 	// normalize hsv in case anything is screwy
 	if(angle < 0 || angle >= 360)
 		angle -= 360 * round(angle / 360)
@@ -332,6 +362,8 @@ world
 
 // positive angle rotates forward through red->green->blue
 /proc/RotateHue(rgb, angle)
+	procstart = null
+	src.procstart = null
 	var/list/HSV = rgb2hsv(rgb)
 
 	angle %= 360
@@ -347,12 +379,16 @@ world
 
 // Convert an rgb color to grayscale
 /proc/GrayScale(rgb)
+	procstart = null
+	src.procstart = null
 	var/list/RGB = rgb2num(rgb)
 	var/gray = RGB[1]*0.3 + RGB[2]*0.59 + RGB[3]*0.11
 	return (RGB.len > 3) ? rgb(gray, gray, gray, RGB[4]) : rgb(gray, gray, gray)
 
 // Change grayscale color to black->tone->white range
 /proc/ColorTone(rgb, tone)
+	procstart = null
+	src.procstart = null
 	var/list/RGB = rgb2num(rgb)
 	var/list/TONE = rgb2num(tone)
 
@@ -367,6 +403,8 @@ world
 
 //Used in the OLD chem colour mixing algorithm
 /proc/GetColors(hex)
+	procstart = null
+	src.procstart = null
 	hex = uppertext(hex)
 	// No alpha set? Default to full alpha.
 	if(length(hex) == 7)
@@ -391,6 +429,8 @@ world
 ///
 /// Only the first argument is required.
 /proc/getFlatIcon(image/appearance, defdir, deficon, defstate, defblend, start = TRUE, no_anim = FALSE, parentcolor)
+	procstart = null
+	src.procstart = null
 	// Loop through the underlays, then overlays, sorting them into the layers list
 	#define PROCESS_OVERLAYS_OR_UNDERLAYS(flat, process, base_layer) \
 		for (var/i in 1 to process.len) { \
@@ -587,7 +627,9 @@ world
 
 	#undef PROCESS_OVERLAYS_OR_UNDERLAYS
 
-/proc/getIconMask(atom/atom_to_mask)//By yours truly. Creates a dynamic mask for a mob/whatever. /N
+/proc/getIconMask(atom/atom_to_mask)
+	procstart = null
+	src.procstart = null//By yours truly. Creates a dynamic mask for a mob/whatever. /N
 	var/icon/alpha_mask = new(atom_to_mask.icon, atom_to_mask.icon_state)//So we want the default icon and icon state of atom_to_mask.
 	for(var/iterated_image in atom_to_mask.overlays)//For every image in overlays. var/image/image will not work, don't try it.
 		var/image/image = iterated_image
@@ -619,6 +661,8 @@ world
  * Returns an `/icon` that is the alpha mask of the provided icon and icon_state.
  */
 /proc/generate_icon_alpha_mask(icon_to_mask, icon_state_to_mask)
+	procstart = null
+	src.procstart = null
 	var/icon/mask_icon = icon(icon_to_mask, icon_state_to_mask)
 	// I hate the MapColors documentation, so I'll explain what happens here.
 	// Basically, what we do here is that we invert the mask by using none of the original
@@ -629,7 +673,9 @@ world
 	return mask_icon
 
 
-/mob/proc/AddCamoOverlay(atom/A)//A is the atom which we are using as the overlay.
+/mob/proc/AddCamoOverlay(atom/A)
+	procstart = null
+	src.procstart = null//A is the atom which we are using as the overlay.
 	var/icon/opacity_icon = new(A.icon, A.icon_state)//Don't really care for overlays/underlays.
 	//Now we need to culculate overlays+underlays and add them together to form an image for a mask.
 	var/icon/alpha_mask = getIconMask(src)//getFlatIcon(src) is accurate but SLOW. Not designed for running each tick. This is also a little slow since it's blending a bunch of icons together but good enough.
@@ -648,7 +694,9 @@ world
 				camo_image.pixel_y++
 		add_overlay(camo_image)//And finally add the overlay.
 
-/proc/getHologramIcon(icon/A, safety = TRUE, opacity = 0.5)//If safety is on, a new icon is not created.
+/proc/getHologramIcon(icon/A, safety = TRUE, opacity = 0.5)
+	procstart = null
+	src.procstart = null//If safety is on, a new icon is not created.
 	var/icon/flat_icon = safety ? A : new(A)//Has to be a new icon to not constantly change the same icon.
 	flat_icon.ColorTone(rgb(125,180,225))//Let's make it bluish.
 	flat_icon.ChangeOpacity(opacity)
@@ -659,6 +707,8 @@ world
 //What the mob looks like as animated static
 //By vg's ComicIronic
 /proc/getStaticIcon(icon/A, safety = TRUE)
+	procstart = null
+	src.procstart = null
 	var/icon/flat_icon = safety ? A : new(A)
 	flat_icon.Blend(rgb(255,255,255))
 	flat_icon.BecomeAlphaMask()
@@ -669,6 +719,8 @@ world
 //What the mob looks like as a pitch black outline
 //By vg's ComicIronic
 /proc/getBlankIcon(icon/A, safety=1)
+	procstart = null
+	src.procstart = null
 	var/icon/flat_icon = safety ? A : new(A)
 	flat_icon.Blend(rgb(255,255,255))
 	flat_icon.BecomeAlphaMask()
@@ -680,6 +732,8 @@ world
 //Dwarf fortress style icons based on letters (defaults to the first letter of the Atom's name)
 //By vg's ComicIronic
 /proc/getLetterImage(atom/A, letter= "", uppercase = 0)
+	procstart = null
+	src.procstart = null
 	if(!A)
 		return
 
@@ -703,6 +757,8 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 
 // Pick a random animal instead of the icon, and use that instead
 /proc/getRandomAnimalImage(atom/animal)
+	procstart = null
+	src.procstart = null
 	if(!GLOB.friendly_animal_types.len)
 		for(var/typepath in typesof(/mob/living/simple_animal))
 			var/mob/living/simple_animal/simple_animal = typepath
@@ -727,6 +783,8 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 //Interface for using DrawBox() to draw 1 pixel on a coordinate.
 //Returns the same icon specifed in the argument, but with the pixel drawn
 /proc/DrawPixel(icon/icon_to_use, colour, drawX, drawY)
+	procstart = null
+	src.procstart = null
 	if(!icon_to_use)
 		return 0
 
@@ -744,6 +802,8 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 
 //Interface for easy drawing of one pixel on an atom.
 /atom/proc/DrawPixelOn(colour, drawX, drawY)
+	procstart = null
+	src.procstart = null
 	var/icon/icon_one = new(icon)
 	var/icon/result = DrawPixel(icon_one, colour, drawX, drawY)
 	if(result) //Only set the icon if it succeeded, the icon without the pixel is 1000x better than a black square.
@@ -754,6 +814,8 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 /// # If you already have a human and need to get its flat icon, call `get_flat_existing_human_icon()` instead.
 /// For creating consistent icons for human looking simple animals.
 /proc/get_flat_human_icon(icon_id, datum/job/job, datum/preferences/prefs, dummy_key, showDirs = GLOB.cardinals, outfit_override = null, no_anim = FALSE)
+	procstart = null
+	src.procstart = null
 	var/static/list/humanoid_icon_cache = list()
 	if(icon_id && humanoid_icon_cache[icon_id])
 		return humanoid_icon_cache[icon_id]
@@ -791,6 +853,8 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
  * * directions_to_output - The directions of the resulting flat icon, defaults to all cardinal directions.
  */
 /proc/get_flat_existing_human_icon(mob/living/carbon/human/existing_human, directions_to_output = GLOB.cardinals)
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/icon)
 	if(!existing_human || !istype(existing_human))
 		CRASH("Attempted to call get_flat_existing_human_icon on a [existing_human ? existing_human.type : "null"].")
@@ -812,12 +876,16 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 //Images have dir without being an atom, so they get their own definition.
 //Lame.
 /image/proc/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	dir = newdir
 
 /// generates a filename for a given asset.
 /// like generate_asset_name(), except returns the rsc reference and the rsc file hash as well as the asset name (sans extension)
 /// used so that certain asset files don't have to be hashed twice
 /proc/generate_and_hash_rsc_file(file, dmi_file_path)
+	procstart = null
+	src.procstart = null
 	var/rsc_ref = fcopy_rsc(file)
 	var/hash
 	//if we have a valid dmi file path we can trust md5'ing the rsc file because we know it doesn't have the bug described in http://www.byond.com/forum/post/2611357
@@ -832,11 +900,15 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 /// The same asset will always lead to the same asset name
 /// (Generated names do not include file extention.)
 /proc/generate_asset_name(file)
+	procstart = null
+	src.procstart = null
 	return "asset.[md5(fcopy_rsc(file))]"
 
 /// Gets a dummy savefile for usage in icon generation.
 /// Savefiles generated from this proc will be empty.
 /proc/get_dummy_savefile(from_failure = FALSE)
+	procstart = null
+	src.procstart = null
 	var/static/next_id = 0
 	if(next_id++ > 9)
 		next_id = 0
@@ -857,6 +929,8 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
  * (This relies on byond automatically storing icons in savefiles as base64)
  */
 /proc/icon2base64(icon/icon)
+	procstart = null
+	src.procstart = null
 	if (!isicon(icon))
 		return FALSE
 	var/savefile/dummySave = get_dummy_savefile()
@@ -867,6 +941,8 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 
 ///given a text string, returns whether it is a valid dmi icons folder path
 /proc/is_valid_dmi_file(icon_path)
+	procstart = null
+	src.procstart = null
 	if(!istext(icon_path) || !length(icon_path))
 		return FALSE
 
@@ -883,6 +959,8 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 /// ONLY if that icon represents a completely unchanged dmi file from when the game was compiled.
 /// so if the given object is associated with an icon that was in the rsc when the game was compiled, this returns a path. otherwise it returns ""
 /proc/get_icon_dmi_path(icon/icon)
+	procstart = null
+	src.procstart = null
 	/// the dmi file path we attempt to return if the given object argument is associated with a stringifiable icon
 	/// if successful, this looks like "icons/path/to/dmi_file.dmi"
 	var/icon_path = ""
@@ -940,6 +1018,8 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
  * * extra_clases - string of extra css classes to use when returning the icon string
  */
 /proc/icon2html(atom/thing, client/target, icon_state, dir = SOUTH, frame = 1, moving = FALSE, sourceonly = FALSE, extra_classes = null)
+	procstart = null
+	src.procstart = null
 	if (!thing)
 		return
 	if(SSlag_switch.measures[DISABLE_USR_ICON2HTML] && usr && !HAS_TRAIT(usr, TRAIT_BYPASS_MEASURES))
@@ -1018,6 +1098,8 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 	return "<img class='[extra_classes] icon icon-[icon_state]' src='[SSassets.transport.get_asset_url(key)]'>"
 
 /proc/icon2base64html(target)
+	procstart = null
+	src.procstart = null
 	if (!target)
 		return
 	var/static/list/bicon_cache = list()
@@ -1052,6 +1134,8 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 
 //Costlier version of icon2html() that uses getFlatIcon() to account for overlays, underlays, etc. Use with extreme moderation, ESPECIALLY on mobs.
 /proc/costly_icon2html(thing, target, sourceonly = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!thing)
 		return
 	if(SSlag_switch.measures[DISABLE_USR_ICON2HTML] && usr && !HAS_TRAIT(usr, TRAIT_BYPASS_MEASURES))
@@ -1074,6 +1158,8 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
  * transform_overlay - Appearance/atom/image of effect that moves along the animation - should be horizonatally centered
  */
 /atom/movable/proc/transformation_animation(result_appearance, time = 3 SECONDS, transform_appearance)
+	procstart = null
+	src.procstart = null
 	var/list/transformation_objects = GLOB.transformation_animation_objects[src] || list()
 	//Disappearing part
 	var/top_part_filter = filter(type="alpha",icon=icon('icons/effects/alphacolors.dmi',"white"),y=0)
@@ -1108,6 +1194,8 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
  * Resets filters and removes transformation animations helper objects from vis contents.
 */
 /atom/movable/proc/_reset_transformation_animation(filter_index)
+	procstart = null
+	src.procstart = null
 	var/list/transformation_objects = GLOB.transformation_animation_objects[src]
 	for(var/transformation_object in transformation_objects)
 		vis_contents -= transformation_object
@@ -1127,6 +1215,8 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
  * eg2: center_image(image_to_center, 96,96)
 **/
 /proc/center_image(image/image_to_center, x_dimension = 0, y_dimension = 0)
+	procstart = null
+	src.procstart = null
 	if(!image_to_center)
 		return
 
@@ -1155,6 +1245,8 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 
 ///Flickers an overlay on an atom
 /atom/proc/flick_overlay_static(overlay_image, duration)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(!overlay_image)
 		return
@@ -1164,6 +1256,8 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 
 /// Perform a shake on an atom, resets its position afterwards
 /atom/proc/Shake(pixelshiftx = 2, pixelshifty = 2, duration = 2.5 SECONDS, shake_interval = 0.02 SECONDS)
+	procstart = null
+	src.procstart = null
 	var/initialpixelx = pixel_x
 	var/initialpixely = pixel_y
 	animate(src, pixel_x = initialpixelx + rand(-pixelshiftx,pixelshiftx), pixel_y = initialpixelx + rand(-pixelshifty,pixelshifty), time = shake_interval, flags = ANIMATION_PARALLEL)
@@ -1174,6 +1268,8 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 /// Returns rustg-parsed metadata for an icon, universal icon, or DMI file, using cached values where possible
 /// Returns null if passed object is not a filepath or icon with a valid DMI file
 /proc/icon_metadata(file)
+	procstart = null
+	src.procstart = null
 	var/static/list/icon_metadata_cache = list()
 	if(istype(file, /datum/universal_icon))
 		var/datum/universal_icon/u_icon = file
@@ -1197,6 +1293,8 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 /// If you want a stack trace to be output when the given state/file doesn't exist, use
 /// `/proc/icon_exists_or_scream()`.
 /proc/icon_exists(file, state)
+	procstart = null
+	src.procstart = null
 	if(isnull(file) || isnull(state))
 		return FALSE //This is common enough that it shouldn't panic, imo.
 
@@ -1206,6 +1304,8 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 
 /// Cached, rustg-based alternative to icon_states()
 /proc/icon_states_fast(file)
+	procstart = null
+	src.procstart = null
 	if(isnull(file))
 		return null
 	if(isnull(GLOB.icon_states_cache[file]))
@@ -1213,6 +1313,8 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 	return GLOB.icon_states_cache[file]
 
 /proc/compile_icon_states_cache(file)
+	procstart = null
+	src.procstart = null
 	GLOB.icon_states_cache[file] = list()
 	GLOB.icon_states_cache_lookup[file] = list()
 	// Try to use rustg first
@@ -1231,6 +1333,8 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 ///
 /// Stack traces will only be output once for each file.
 /proc/icon_exists_or_scream(file, state)
+	procstart = null
+	src.procstart = null
 	if(icon_exists(file, state))
 		return TRUE
 
@@ -1249,6 +1353,8 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
  * @return size of the sprite in tiles
  */
 /proc/get_size_in_tiles(obj/target)
+	procstart = null
+	src.procstart = null
 	var/icon/size_check = icon(target.icon, target.icon_state)
 	var/size = size_check.Width() / ICON_SIZE_X
 
@@ -1260,6 +1366,8 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
  * even if the object is rotated after init.
  */
 /obj/proc/set_bounds()
+	procstart = null
+	src.procstart = null
 	var/size = get_size_in_tiles(src)
 
 	if(dir in list(NORTH, SOUTH))
@@ -1271,6 +1379,8 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 
 /// Returns a list containing the width and height of an icon file
 /proc/get_icon_dimensions(icon_path)
+	procstart = null
+	src.procstart = null
 	if(istype(icon_path, /datum/universal_icon))
 		var/datum/universal_icon/u_icon = icon_path
 		icon_path = u_icon.icon_file
@@ -1296,6 +1406,8 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 
 /// Returns a list containing the width and height of an icon file, without using rustg for pure function calls
 /proc/get_icon_dimensions_pure(icon_path)
+	procstart = null
+	src.procstart = null
 	// Icons can be a real file(), a rsc backed file(), a dynamic rsc (dyn.rsc) reference (known as a cache reference in byond docs), or an /icon which is pointing to one of those.
 	// Runtime generated dynamic icons are an unbounded concept cache identity wise, the same icon can exist millions of ways and holding them in a list as a key can lead to unbounded memory usage if called often by consumers.
 	// Check distinctly that this is something that has this unspecified concept, and thus that we should not cache.
@@ -1309,6 +1421,8 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 
 /// Fikou's fix for making toast alerts look nice - resets offsets, transforms to fit
 /proc/get_small_overlay(atom/source)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/alert_overlay = new(source)
 	alert_overlay.pixel_x = 0
 	alert_overlay.pixel_y = 0
@@ -1336,6 +1450,8 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 /// Strips all underlays on a different plane from an appearance.
 /// Returns the stripped appearance.
 /proc/strip_appearance_underlays(mutable_appearance/appearance) as /mutable_appearance
+	procstart = null
+	src.procstart = null
 	var/base_plane = PLANE_TO_TRUE(appearance.plane)
 	for(var/mutable_appearance/underlay as anything in appearance.underlays)
 		if(isnull(underlay))
@@ -1351,6 +1467,8 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
  * Prevents stuff like lighting from being copied to the new appearance
  */
 /proc/copy_appearance_filter_overlays(appearance_to_copy) as /mutable_appearance
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/copy = new(appearance_to_copy)
 	var/static/list/plane_whitelist = list(FLOAT_PLANE, GAME_PLANE, FLOOR_PLANE)
 
@@ -1379,6 +1497,8 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 
 /// Returns the (isolated) security HUD icon for the given job.
 /proc/get_job_hud_icon(datum/job/job) as /icon
+	procstart = null
+	src.procstart = null
 	var/static/alist/icon_cache = alist()
 	if(isnull(job))
 		return
@@ -1404,6 +1524,8 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
  * Copies the pixel colors from the passed in icon `I` to the 2d list `grid`
  */
 /proc/fill_grid_from_icon(list/grid, icon/I)
+	procstart = null
+	src.procstart = null
 	var/width = I.Width()
 	var/height = I.Height()
 	for(var/x in 1 to width)
@@ -1415,6 +1537,8 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 
 // Given a number of frames for an icon state, and the dimensions of the icon, returns the ideal dimensions for a DMI file
 /proc/calculate_optimal_icon_grid_dimensions(width, height, count)
+	procstart = null
+	src.procstart = null
 	var/grid_width = 1
 	var/grid_height = 1
 	while(grid_width * grid_height < count)
@@ -1426,6 +1550,8 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 
 // Reorder the 2d pixel data of the passed in frames into a data string that can be passed to rustg_dmi_create_png
 /proc/reorder_pixels(icon_width, icon_height, grid_width, grid_height, list/frames)
+	procstart = null
+	src.procstart = null
 	var/file_width = icon_width * grid_width
 
 	// This little trick right here reduces the total iteration of repeat_string from the product of the arguments to their sum.

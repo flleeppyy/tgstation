@@ -15,6 +15,8 @@
 
 /// tries to damage mech equipment depending on damage and where is being targeted
 /obj/vehicle/sealed/mecha/proc/try_damage_component(damage, def_zone)
+	procstart = null
+	src.procstart = null
 	if(damage < component_damage_threshold)
 		return
 	var/obj/item/mecha_parts/mecha_equipment/gear
@@ -37,6 +39,8 @@
 		playsound(src, gear.destroy_sound, 50)
 
 /obj/vehicle/sealed/mecha/take_damage(damage_amount, damage_type = BRUTE, damage_flag = "", sound_effect = TRUE, attack_dir, armour_penetration = 0)
+	procstart = null
+	src.procstart = null
 	var/damage_taken = ..()
 	if(damage_taken <= 0 || atom_integrity < 0)
 		return damage_taken
@@ -51,6 +55,8 @@
 	return damage_taken
 
 /obj/vehicle/sealed/mecha/run_atom_armor(damage_amount, damage_type, damage_flag = 0, attack_dir, armour_penetration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(attack_dir)
 		var/facing_modifier = get_armour_facing(abs(dir2angle(dir) - dir2angle(attack_dir)))
@@ -58,6 +64,8 @@
 			. *= facing_modifier
 
 /obj/vehicle/sealed/mecha/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. || !user.combat_mode)
 		return
@@ -68,14 +76,20 @@
 	log_message("Attack by hand/paw (no damage). Attacker - [user].", LOG_MECHA, color="red")
 
 /obj/vehicle/sealed/mecha/attack_paw(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user, modifiers)
 
 /obj/vehicle/sealed/mecha/attack_alien(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	log_message("Attack by alien. Attacker - [user].", LOG_MECHA, color="red")
 	playsound(loc, 'sound/items/weapons/slash.ogg', 100, TRUE)
 	return attack_generic(user, rand(user.melee_damage_lower, user.melee_damage_upper), BRUTE, MELEE, 0)
 
 /obj/vehicle/sealed/mecha/attack_animal(mob/living/simple_animal/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	log_message("Attack by simple animal. Attacker - [user].", LOG_MECHA, color="red")
 	if(!user.melee_damage_upper && !user.obj_damage)
 		user.emote("custom", message = "[user.friendly_verb_continuous] [src].")
@@ -94,26 +108,38 @@
 	return attack_generic(user, animal_damage, user.melee_damage_type, MELEE, play_soundeffect)
 
 /obj/vehicle/sealed/mecha/hulk_damage()
+	procstart = null
+	src.procstart = null
 	return 15
 
 /obj/vehicle/sealed/mecha/attack_hulk(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		log_message("Attack by hulk. Attacker - [user].", LOG_MECHA, color="red")
 		log_combat(user, src, "punched", "hulk powers")
 
 /obj/vehicle/sealed/mecha/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	log_message("Attack by blob. Attacker - [B].", LOG_MECHA, color="red")
 	take_damage(30, BRUTE, MELEE, 0, get_dir(src, B))
 
 /obj/vehicle/sealed/mecha/attack_tk()
+	procstart = null
+	src.procstart = null
 	return
 
-/obj/vehicle/sealed/mecha/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum) //wrapper
+/obj/vehicle/sealed/mecha/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null //wrapper
 	log_message("Hit by [AM].", LOG_MECHA, color="red")
 	return ..()
 
 /obj/vehicle/sealed/mecha/projectile_hit(obj/projectile/hitting_projectile, def_zone, piercing_hit, blocked)
+	procstart = null
+	src.procstart = null
 	// Determine our potential to shoot through the mech and into the cockpit, hitting the pilot
 	var/kill_the_meat = clamp(hitting_projectile.armour_penetration - get_armor_rating(hitting_projectile.armor_flag), 0, 100)
 	// Allows bullets to hit the pilot of open-canopy mechs, or if the bullet penetrates to the pilot, or the bullet can pass through structures
@@ -127,6 +153,8 @@
 	return hitmob.projectile_hit(hitting_projectile, def_zone, piercing_hit) //If we've passed any of the above conditions, the pilot can be hit
 
 /obj/vehicle/sealed/mecha/bullet_act(obj/projectile/hitting_projectile, def_zone, piercing_hit, blocked = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	log_message("Hit by projectile. Type: [hitting_projectile]([hitting_projectile.damage_type]).", LOG_MECHA, color="red")
 	// yes we *have* to run the armor calc proc here I love tg projectile code too
@@ -139,10 +167,14 @@
 	), def_zone)
 
 /obj/vehicle/sealed/mecha/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	log_message("Affected by explosion of severity: [severity].", LOG_MECHA, color="red")
 	return ..()
 
 /obj/vehicle/sealed/mecha/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	severity--
 
 	switch(severity)
@@ -169,6 +201,8 @@
 				SSexplosions.low_mov_atom += occupants
 
 /obj/vehicle/sealed/mecha/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. & EMP_PROTECT_SELF)
 		return
@@ -203,13 +237,19 @@
 	set_mouse_pointer()
 
 /obj/vehicle/sealed/mecha/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	return exposed_temperature > max_temperature
 
 /obj/vehicle/sealed/mecha/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	log_message("Exposed to dangerous temperature.", LOG_MECHA, color="red")
 	take_damage(5, BURN, 0, 1)
 
-/obj/vehicle/sealed/mecha/fire_act() //Check if we should ignite the pilot of an open-canopy mech
+/obj/vehicle/sealed/mecha/fire_act()
+	procstart = null
+	src.procstart = null //Check if we should ignite the pilot of an open-canopy mech
 	. = ..()
 	if(mecha_flags & IS_ENCLOSED || mecha_flags & SILICON_PILOT)
 		return
@@ -219,12 +259,16 @@
 			cookedalive.ignite_mob()
 
 /obj/vehicle/sealed/mecha/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/mecha_parts))
 		var/obj/item/mecha_parts/parts = tool
 		return parts.try_attach_part(user, src, TRUE)
 	return ..()
 
 /obj/vehicle/sealed/mecha/attackby(obj/item/weapon, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//If our weapon that we are hitting the mech with has armour penetration, we could potentially get a hit in on the occupant
 	var/peeling_the_onion = clamp(weapon.armour_penetration - (get_armor_rating(MELEE)/2), 0, 100)
@@ -236,6 +280,8 @@
 		weapon.melee_attack_chain(user, hitmob, modifiers, list("[FORCE_MULTIPLIER]" = (peeling_the_onion/100), "[SILENCE_DEFAULT_MESSAGES]" = TRUE)) //Perform an extra attack on the occupant if all the above conditions pass
 
 /obj/vehicle/sealed/mecha/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/mmi))
 		if(!mmi_move_inside(tool,user))
 			balloon_alert(user, "initialization of MMI failed!")
@@ -279,6 +325,8 @@
 
 /// Try to insert a stock part into the mech
 /obj/vehicle/sealed/mecha/proc/try_insert_part(obj/item/stock_parts/tool, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!(mecha_flags & PANEL_OPEN))
 		balloon_alert(user, "open the panel first!")
 		return ITEM_INTERACT_BLOCKING
@@ -346,6 +394,8 @@
 	return NONE
 
 /obj/vehicle/sealed/mecha/attacked_by(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	var/final_force = CALCULATE_FORCE(attacking_item, attack_modifiers) * attacking_item.get_demolition_modifier(src)
 	if(!final_force)
 		return 0
@@ -366,12 +416,16 @@
 	return damage_taken
 
 /obj/vehicle/sealed/mecha/attack_generic(mob/user, damage_amount, damage_type, damage_flag, effects, armor_penetration)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		try_damage_component(., user.zone_selected)
 		diag_hud_set_mechhealth()
 
 /obj/vehicle/sealed/mecha/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mecha_flags & PANEL_OPEN)
 		. += span_notice("The panel is open. You could use a <b>crowbar</b> to eject parts or lock the panel back with a <b>screwdriver</b>.")
@@ -379,6 +433,8 @@
 		. += span_notice("You could unlock the maintenance cover with a <b>screwdriver</b>.")
 
 /obj/vehicle/sealed/mecha/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	..()
 	. = TRUE
 
@@ -391,6 +447,8 @@
 	tool.play_tool_sound(src)
 
 /obj/vehicle/sealed/mecha/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	..()
 	. = TRUE
 	if(istype(tool, /obj/item/crowbar/mechremoval))
@@ -433,6 +491,8 @@
 	tool.play_tool_sound(src)
 
 /obj/vehicle/sealed/mecha/welder_act(mob/living/user, obj/item/W)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode)
 		return
 	. = TRUE
@@ -461,6 +521,8 @@
 		user.balloon_alert_to_viewers("stopped welding [src]", "interrupted the repair!")
 
 /obj/vehicle/sealed/mecha/proc/full_repair(charge_cell)
+	procstart = null
+	src.procstart = null
 	repair_damage(max_integrity)
 	if(cell && charge_cell)
 		cell.charge = cell.maxcharge
@@ -477,13 +539,19 @@
 		clear_internal_damage(MECHA_INT_CONTROL_LOST)
 
 /obj/vehicle/sealed/mecha/repair_damage(amount)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	diag_hud_set_mechhealth()
 
 /obj/vehicle/sealed/mecha/narsie_act()
+	procstart = null
+	src.procstart = null
 	emp_act(EMP_HEAVY)
 
 /obj/vehicle/sealed/mecha/do_attack_animation(atom/A, visual_effect_icon, obj/item/used_item, no_effect)
+	procstart = null
+	src.procstart = null
 	if(!no_effect && !visual_effect_icon)
 		visual_effect_icon = ATTACK_EFFECT_SMASH
 		if(damtype == BURN)
@@ -493,6 +561,8 @@
 	return ..()
 
 /obj/vehicle/sealed/mecha/proc/ammo_resupply(obj/item/mecha_ammo/ammo, mob/user,fail_chat_override = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ammo.rounds)
 		if(!fail_chat_override)
 			balloon_alert(user, "the box is empty!")
@@ -559,6 +629,8 @@
 
 ///Upgrades any attached RCD equipment.
 /obj/vehicle/sealed/mecha/proc/upgrade_rcd(obj/item/rcd_upgrade/rcd_upgrade, mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/mecha_parts/mecha_equipment/rcd/rcd_equip in flat_equipment)
 		if(rcd_equip.internal_rcd.install_upgrade(rcd_upgrade, user))
 			return ITEM_INTERACT_SUCCESS
@@ -566,6 +638,8 @@
 
 
 /obj/vehicle/sealed/mecha/atom_destruction()
+	procstart = null
+	src.procstart = null
 	spark_system?.start()
 	loc.assume_air(cabin_air)
 

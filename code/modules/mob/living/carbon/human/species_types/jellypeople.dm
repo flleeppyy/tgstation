@@ -43,6 +43,8 @@
 	var/datum/action/innate/regenerate_limbs/regenerate_limbs
 
 /datum/species/jelly/on_species_gain(mob/living/carbon/new_jellyperson, datum/species/old_species, pref_load, regenerate_icons)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ishuman(new_jellyperson))
 		regenerate_limbs = new
@@ -51,6 +53,8 @@
 	RegisterSignal(new_jellyperson, COMSIG_HUMAN_ON_HANDLE_BLOOD, PROC_REF(slime_blood))
 
 /datum/species/jelly/on_species_loss(mob/living/carbon/former_jellyperson, datum/species/new_species, pref_load)
+	procstart = null
+	src.procstart = null
 	if(regenerate_limbs)
 		regenerate_limbs.Remove(former_jellyperson)
 	former_jellyperson.RemoveElement(/datum/element/soft_landing)
@@ -58,6 +62,8 @@
 	return ..()
 
 /datum/species/jelly/proc/slime_blood(mob/living/carbon/human/slime, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(slime.stat == DEAD)
@@ -92,6 +98,8 @@
 	return HANDLE_BLOOD_NO_NUTRITION_DRAIN|HANDLE_BLOOD_NO_OXYLOSS
 
 /datum/species/jelly/proc/Cannibalize_Body(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	var/list/limbs_to_consume = list(BODY_ZONE_R_ARM, BODY_ZONE_L_ARM, BODY_ZONE_R_LEG, BODY_ZONE_L_LEG) - H.get_missing_limbs()
 	var/obj/item/bodypart/consumed_limb
 	if(!length(limbs_to_consume))
@@ -106,14 +114,20 @@
 	H.adjust_blood_volume(20 * H.physiology.blood_regen_mod)
 
 /datum/species/jelly/get_species_description()
+	procstart = null
+	src.procstart = null
 	return "Jellypeople are a strange and alien species with three eyes, made entirely out of gel."
 
 /datum/species/jelly/get_species_lore()
+	procstart = null
+	src.procstart = null
 	return list(
 		"Jellypeople are actively being experimented on my Nanotrasen scientists, who are trying to unlock the secrets of their unique biology.",
 	)
 
 /datum/species/jelly/prepare_human_for_preview(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	human.dna.features[FEATURE_MUTANT_COLOR] = COLOR_PINK
 	human.hairstyle = "Bob Hair 2"
 	human.hair_color = COLOR_PINK
@@ -122,6 +136,8 @@
 // Unique handling for slime blood here, it's got some unique properties that warrant a more detailed desc.
 // They may not be roundstart but in the unlikely event they become one might as well not leave a glaring issue open.
 /datum/species/jelly/create_pref_blood_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 	var/datum/blood_type/blood_type = get_blood_type(exotic_bloodtype)
 
@@ -146,6 +162,8 @@
 	var/blood_per_limb = 40
 
 /datum/action/innate/regenerate_limbs/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -157,6 +175,8 @@
 		return TRUE
 
 /datum/action/innate/regenerate_limbs/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = owner
 	var/list/limbs_to_heal = H.get_missing_limbs()
 	if(!length(limbs_to_heal))
@@ -202,11 +222,15 @@
 	)
 
 /datum/species/jelly/slime/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "Slimepeople have jelly for blood and their vacuoles can extremely quickly convert plasma to it if they're breathing it in.\
 		They can then use the excess blood to split off an excess body, which their consciousness can transfer to at will or on death.\
 		Most things that are toxic heal them, but most things that prevent toxicity damage them!"
 
 /datum/species/jelly/slime/on_species_loss(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	if(slime_split)
 		slime_split.Remove(C)
 	if(swap_body)
@@ -222,6 +246,8 @@
 	..()
 
 /datum/species/jelly/slime/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load, regenerate_icons)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ishuman(C))
 		slime_split = new
@@ -238,6 +264,8 @@
 	RegisterSignal(C, COMSIG_LIVING_LIFE, PROC_REF(on_life))
 
 /datum/species/jelly/slime/proc/on_death_move_body(mob/living/carbon/human/source, gibbed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!slime_split)
@@ -257,9 +285,13 @@
 
 //If you're cloned you get your body pool back
 /datum/species/jelly/slime/copy_properties_from(datum/species/jelly/slime/old_species)
+	procstart = null
+	src.procstart = null
 	bodies = old_species.bodies
 
 /datum/species/jelly/slime/proc/on_life(mob/living/carbon/human/source, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(source.get_blood_volume() >= BLOOD_VOLUME_SLIME_SPLIT)
 		if(SPT_PROB(2.5, seconds_per_tick))
@@ -279,6 +311,8 @@
 	overlay_icon_state = "bg_alien_border"
 
 /datum/action/innate/split_body/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -288,6 +322,8 @@
 	return FALSE
 
 /datum/action/innate/split_body/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = owner
 	if(!isslimeperson(H))
 		return
@@ -310,6 +346,8 @@
 	REMOVE_TRAIT(src, TRAIT_NO_TRANSFORM, REF(src))
 
 /datum/action/innate/split_body/proc/make_dupe()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = owner
 	CHECK_DNA_AND_SPECIES(H)
 
@@ -350,6 +388,8 @@
 	overlay_icon_state = "bg_alien_border"
 
 /datum/action/innate/swap_body/Activate()
+	procstart = null
+	src.procstart = null
 	if(!isslimeperson(owner))
 		to_chat(owner, span_warning("You are not a slimeperson."))
 		Remove(owner)
@@ -357,18 +397,26 @@
 		ui_interact(owner)
 
 /datum/action/innate/swap_body/ui_host(mob/user)
+	procstart = null
+	src.procstart = null
 	return owner
 
 /datum/action/innate/swap_body/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 /datum/action/innate/swap_body/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SlimeBodySwapper", name)
 		ui.open()
 
 /datum/action/innate/swap_body/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = owner
 	if(!isslimeperson(H))
 		return
@@ -425,6 +473,8 @@
 	return data
 
 /datum/action/innate/swap_body/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -443,6 +493,8 @@
 			swap_to_dupe(H.mind, selected)
 
 /datum/action/innate/swap_body/proc/can_swap(mob/living/carbon/human/dupe)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = owner
 	if(!isslimeperson(H))
 		return FALSE
@@ -471,6 +523,8 @@
 	return TRUE
 
 /datum/action/innate/swap_body/proc/swap_to_dupe(datum/mind/M, mob/living/carbon/human/dupe)
+	procstart = null
+	src.procstart = null
 	if(!can_swap(dupe)) //sanity check
 		return
 	if(!IS_UNCONSCIOUS_OR_CRIT(M.current))
@@ -513,17 +567,23 @@
 	COOLDOWN_DECLARE(extract_cooldown)
 
 /datum/species/jelly/luminescent/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "Luminescent are able to integrate slime extracts into themselves for wondrous effects. \
 		Most things that are toxic heal them, but most things that prevent toxicity damage them!"
 
 //Species datums don't normally implement destroy, but JELLIES SUCK ASS OUT OF A STEEL STRAW and have to i guess
 /datum/species/jelly/luminescent/Destroy(force)
+	procstart = null
+	src.procstart = null
 	current_extract = null
 	QDEL_NULL(glow)
 	QDEL_LIST(luminescent_actions)
 	return ..()
 
 /datum/species/jelly/luminescent/on_species_gain(mob/living/carbon/new_jellyperson, datum/species/old_species, pref_load, regenerate_icons)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	glow = new_jellyperson.mob_light(light_type = /obj/effect/dummy/lighting_obj/moblight/species)
 	update_glow(new_jellyperson)
@@ -543,6 +603,8 @@
 	luminescent_actions += extract_major
 
 /datum/species/jelly/luminescent/on_species_loss(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(current_extract)
 		current_extract.forceMove(C.drop_location())
@@ -552,6 +614,8 @@
 
 /// Updates the glow of our internal glow object
 /datum/species/jelly/luminescent/proc/update_glow(mob/living/carbon/human/glowie, intensity)
+	procstart = null
+	src.procstart = null
 	if(intensity)
 		glow_intensity = intensity
 	glow.set_light_range_power_color(glow_intensity, glow_intensity, glowie.dna.features[FEATURE_MUTANT_COLOR])
@@ -566,11 +630,15 @@
 	overlay_icon_state = "bg_alien_border"
 
 /datum/action/innate/integrate_extract/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/action_item_overlay, item_callback = CALLBACK(src, PROC_REF(locate_extract)))
 
 /// Callback for /datum/component/action_item_overlay to find the slime extract from within the species
 /datum/action/innate/integrate_extract/proc/locate_extract()
+	procstart = null
+	src.procstart = null
 	var/datum/species/jelly/luminescent/species = target
 	if(!istype(species))
 		return null
@@ -578,6 +646,8 @@
 	return species.current_extract
 
 /datum/action/innate/integrate_extract/update_button_name(atom/movable/screen/movable/action_button/button, force = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/species/jelly/luminescent/species = target
 	if(!istype(species) || !species.current_extract)
 		name = "Integrate Extract"
@@ -589,6 +659,8 @@
 	return ..()
 
 /datum/action/innate/integrate_extract/apply_button_icon(atom/movable/screen/movable/action_button/current_button, force)
+	procstart = null
+	src.procstart = null
 	var/datum/species/jelly/luminescent/species = target
 	if(!istype(species) || !species.current_extract)
 		button_icon_state = "slimeconsume"
@@ -598,6 +670,8 @@
 	return ..()
 
 /datum/action/innate/integrate_extract/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_owner = owner
 	var/datum/species/jelly/luminescent/species = target
 	if(!istype(species))
@@ -636,11 +710,15 @@
 	var/activation_type = SLIME_ACTIVATE_MINOR
 
 /datum/action/innate/use_extract/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/action_item_overlay, item_callback = CALLBACK(src, PROC_REF(locate_extract)))
 
 /// Callback for /datum/component/action_item_overlay to find the slime extract from within the species
 /datum/action/innate/use_extract/proc/locate_extract()
+	procstart = null
+	src.procstart = null
 	var/datum/species/jelly/luminescent/species = target
 	if(!istype(species))
 		return null
@@ -648,6 +726,8 @@
 	return species.current_extract
 
 /datum/action/innate/use_extract/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -658,6 +738,8 @@
 	return FALSE
 
 /datum/action/innate/use_extract/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human_owner = owner
 	var/datum/species/jelly/luminescent/species = human_owner.dna?.species
 	if(!istype(species) || !species.current_extract)
@@ -686,10 +768,14 @@
 	var/datum/action/innate/project_thought/project_action
 
 /datum/species/jelly/stargazer/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "Stargazers can link others' minds with their own, creating a private communication channel. \
 		Most things that are toxic heal them, but most things that prevent toxicity damage them!"
 
 /datum/species/jelly/stargazer/on_species_gain(mob/living/carbon/grant_to, datum/species/old_species, pref_load, regenerate_icons)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	project_action = new(src)
 	project_action.Grant(grant_to)
@@ -704,10 +790,14 @@
 
 //Species datums don't normally implement destroy, but JELLIES SUCK ASS OUT OF A STEEL STRAW
 /datum/species/jelly/stargazer/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(project_action)
 	return ..()
 
 /datum/species/jelly/stargazer/on_species_loss(mob/living/carbon/remove_from)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(project_action)
 	return ..()
 
@@ -720,6 +810,8 @@
 	overlay_icon_state = "bg_alien_border"
 
 /datum/action/innate/project_thought/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/telepath = owner
 	if(telepath.stat == DEAD)
 		return
@@ -766,12 +858,16 @@
 	var/currently_linking = FALSE
 
 /datum/action/innate/link_minds/New(Target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(Target, /datum/component/mind_linker))
 		stack_trace("[name] ([type]) was instantiated on a non-mind_linker target, this doesn't work.")
 		qdel(src)
 
 /datum/action/innate/link_minds/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -783,6 +879,8 @@
 	return TRUE
 
 /datum/action/innate/link_minds/Activate()
+	procstart = null
+	src.procstart = null
 	if(!isliving(owner.pulling) || owner.grab_state < GRAB_AGGRESSIVE)
 		to_chat(owner, span_warning("You need to aggressively grab someone to link minds!"))
 		return
@@ -814,6 +912,8 @@
 
 /// Callback ran during the do_after of Activate() to see if we can keep linking with someone.
 /datum/action/innate/link_minds/proc/while_link_callback(mob/living/linkee)
+	procstart = null
+	src.procstart = null
 	if(!is_species(owner, req_species))
 		return FALSE
 	if(!owner.pulling)

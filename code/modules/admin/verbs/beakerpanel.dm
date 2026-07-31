@@ -1,18 +1,26 @@
 /datum/beaker_panel
 
 /datum/beaker_panel/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return ADMIN_STATE(R_ADMIN)
 
 /datum/beaker_panel/ui_close()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /datum/beaker_panel/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "BeakerPanel")
 		ui.open()
 
 /datum/beaker_panel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -32,6 +40,8 @@
 			return TRUE
 
 /datum/beaker_panel/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["reagents"] = list()
@@ -50,6 +60,8 @@
 	return data
 
 /datum/beaker_panel/proc/spawn_container_from_data(mob/user, list/spawn_info)
+	procstart = null
+	src.procstart = null
 	var/container_type = text2path(spawn_info["container"])
 	var/list/container_reagents = list()
 	for(var/reagent_string, reagent_amount in spawn_info["reagents"])
@@ -58,6 +70,8 @@
 	return spawn_container(user, container_type, container_reagents)
 
 /datum/beaker_panel/proc/spawn_container(mob/user, container_type, list/container_reagents)
+	procstart = null
+	src.procstart = null
 	var/obj/item/reagent_containers/container = new container_type(user.drop_location())
 	container.reagents.maximum_volume = INFINITY
 	container.reagents.clear_reagents()
@@ -66,6 +80,8 @@
 	return container
 
 /datum/beaker_panel/proc/spawn_grenade_from_data(mob/user, list/all_spawn_info, list/grenade_info)
+	procstart = null
+	src.procstart = null
 	var/list/containers = list()
 	for(var/list/container_info as anything in all_spawn_info)
 		containers += spawn_container_from_data(user, container_info)
@@ -73,6 +89,8 @@
 	return spawn_grenade(user, containers, grenade_info)
 
 /datum/beaker_panel/proc/spawn_grenade(mob/user, list/beakers, list/grenade_info)
+	procstart = null
+	src.procstart = null
 	var/obj/item/grenade/chem_grenade/grenade = new(user.drop_location())
 	grenade.beakers = beakers
 	grenade.stage_change(GRENADE_READY)

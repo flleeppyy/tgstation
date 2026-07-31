@@ -111,11 +111,15 @@
 	var/deaths_witnessed = 0
 
 /datum/mind/New(_key)
+	procstart = null
+	src.procstart = null
 	key = _key
 	init_known_skills()
 	set_assigned_role(SSjob.get_job_type(/datum/job/unassigned)) // Unassigned by default.
 
 /datum/mind/Destroy()
+	procstart = null
+	src.procstart = null
 	SSticker.minds -= src
 	QDEL_NULL(antag_hud)
 	QDEL_LIST_ASSOC_VAL(memories)
@@ -125,6 +129,8 @@
 	return ..()
 
 /datum/mind/serialize_list(list/options, list/semvers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	.["key"] = key
@@ -144,6 +150,8 @@
 	return .
 
 /datum/mind/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	switch(var_name)
 		if(NAMEOF(src, assigned_role))
 			set_assigned_role(var_value)
@@ -158,6 +166,8 @@
 
 
 /datum/mind/proc/set_current(mob/new_current)
+	procstart = null
+	src.procstart = null
 	if(new_current && QDELETED(new_current))
 		CRASH("Tried to set a mind's current var to a qdeleted mob, what the fuck")
 	if(current)
@@ -167,10 +177,14 @@
 		RegisterSignal(src, COMSIG_QDELETING, PROC_REF(clear_current))
 
 /datum/mind/proc/clear_current(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	set_current(null)
 
 /datum/mind/proc/transfer_to(mob/new_character, force_key_move = 0)
+	procstart = null
+	src.procstart = null
 	set_original_character(null)
 	if(current) // remove ourself from our old body's mind variable
 		current.mind = null
@@ -226,14 +240,20 @@
 
 //I cannot trust you fucks to do this properly
 /datum/mind/proc/set_original_character(new_original_character)
+	procstart = null
+	src.procstart = null
 	original_character = WEAKREF(new_original_character)
 
 /datum/mind/proc/set_death_time()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	last_death = world.time
 
 /datum/mind/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_ADMIN))
 		return
 
@@ -470,6 +490,8 @@
 
 
 /datum/mind/proc/get_ghost(even_if_they_cant_reenter, ghosts_with_clients)
+	procstart = null
+	src.procstart = null
 	for(var/mob/dead/observer/G in (ghosts_with_clients ? GLOB.player_list : GLOB.dead_mob_list))
 		if(G.mind == src)
 			if(G.can_reenter_corpse || even_if_they_cant_reenter)
@@ -478,6 +500,8 @@
 	return null
 
 /datum/mind/proc/grab_ghost(force)
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/G = get_ghost(even_if_they_cant_reenter = force)
 	. = G
 	if(G)
@@ -485,6 +509,8 @@
 
 ///Adds addiction points to the specified addiction
 /datum/mind/proc/add_addiction_points(type, amount)
+	procstart = null
+	src.procstart = null
 	var/last_amount = LAZYACCESS(addiction_points, type) || 0
 	LAZYSET(addiction_points, type, min(LAZYACCESS(addiction_points, type) + amount, MAX_ADDICTION_POINTS))
 	var/new_amount = LAZYACCESS(addiction_points, type)
@@ -492,6 +518,8 @@
 
 ///Adds addiction points to the specified addiction
 /datum/mind/proc/remove_addiction_points(type, amount)
+	procstart = null
+	src.procstart = null
 	var/last_amount = LAZYACCESS(addiction_points, type) || 0
 	LAZYSET(addiction_points, type, max(LAZYACCESS(addiction_points, type) - amount, 0))
 	var/new_amount = LAZYACCESS(addiction_points, type)
@@ -501,6 +529,8 @@
 
 /// Setter for the assigned_role job datum.
 /datum/mind/proc/set_assigned_role(datum/job/new_role)
+	procstart = null
+	src.procstart = null
 	if(assigned_role == new_role)
 		return
 	if(!is_job(new_role))
@@ -512,6 +542,8 @@
 
 ///Sets your holy role, giving/taking away traits related to if you're gaining/losing it.
 /datum/mind/proc/set_holy_role(new_holy_role)
+	procstart = null
+	src.procstart = null
 	if(holy_role == new_holy_role)
 		return
 	var/was_holy = holy_role
@@ -530,6 +562,8 @@
 /// Use this one for when you're assigning this mind to a new job for the first time,
 /// or for when someone's receiving a job they'd really want to be greeted to.
 /datum/mind/proc/set_assigned_role_with_greeting(datum/job/new_role, client/incoming_client)
+	procstart = null
+	src.procstart = null
 	. = set_assigned_role(new_role)
 	if(assigned_role != new_role)
 		return
@@ -539,17 +573,25 @@
 		to_chat(incoming_client, intro_message)
 
 /mob/proc/sync_mind()
+	procstart = null
+	src.procstart = null
 	mind_initialize() //updates the mind (or creates and initializes one if one doesn't exist)
 	mind.active = TRUE //indicates that the mind is currently synced with a client
 
 /mob/dead/new_player/sync_mind()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/dead/observer/sync_mind()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Iterates over this mind's assigned role's departments and returns a list of their primary work areas.
 /datum/mind/proc/get_work_areas()
+	procstart = null
+	src.procstart = null
 	var/list/work_areas = list()
 	for(var/department in assigned_role.departments_list)
 		var/datum/job_department/dep = SSjob.joinable_departments_by_type[department]
@@ -560,6 +602,8 @@
 
 /// Called when we witness the death of a humanoid mob.
 /datum/mind/proc/witnessed_death(mob/living/dead_mob)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(dead_mob, TRAIT_SPAWNED_MOB) || !ishuman(dead_mob) || (dead_mob.flags_1 & ADMIN_SPAWNED_1))
 		return
 
@@ -573,4 +617,6 @@
 
 /// Called when this mob is killed, but not gibbed or dusted
 /datum/mind/proc/experienced_death()
+	procstart = null
+	src.procstart = null
 	witnessed_death(current) // you get desensitized for your own death!

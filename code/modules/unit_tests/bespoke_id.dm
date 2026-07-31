@@ -1,4 +1,6 @@
 /datum/unit_test/bespoke_id/Run()
+	procstart = null
+	src.procstart = null
 	var/datum/element/base = /datum/element
 	var/base_index = initial(base.argument_hash_start_idx)
 

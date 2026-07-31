@@ -25,10 +25,14 @@
 	src.replace_default_death_sound = replace_default_death_sound
 
 /datum/component/item_killsound/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	var/obj/item/item_parent = parent
 	RegisterSignal(item_parent, COMSIG_ITEM_ATTACK, PROC_REF(on_attack))
 
 /datum/component/item_killsound/proc/on_attack(host, target_mob, user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!allowed_mobs || is_type_in_list(target_mob, allowed_mobs))

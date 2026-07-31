@@ -30,21 +30,31 @@
 	)
 
 /datum/surgery_operation/limb/organ_manipulation/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	implements = remove_implements + insert_implements
 
 /datum/surgery_operation/limb/organ_manipulation/get_recommended_tool()
+	procstart = null
+	src.procstart = null
 	return "[..()] / organ"
 
 /datum/surgery_operation/limb/organ_manipulation/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/obj/medical/surgery_ui.dmi', "surgery_any")
 
 /// Checks that the passed organ can be inserted/removed
 /datum/surgery_operation/limb/organ_manipulation/proc/organ_check(obj/item/bodypart/limb, obj/item/organ/organ)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Checks that the passed organ can be inserted/removed in the specified zones
 /datum/surgery_operation/limb/organ_manipulation/proc/zone_check(obj/item/organ/organ, limb_zone, operated_zone)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(LAZYLEN(organ.valid_zones))
@@ -66,6 +76,8 @@
 
 /// Get a list of organs that can be removed from the limb in the specified zone
 /datum/surgery_operation/limb/organ_manipulation/proc/get_removable_organs(obj/item/bodypart/limb, operated_zone)
+	procstart = null
+	src.procstart = null
 	var/list/removable_organs = list()
 	for(var/obj/item/organ/organ in limb)
 		if(!organ_check(limb, organ) || (organ.organ_flags & ORGAN_UNREMOVABLE))
@@ -78,10 +90,14 @@
 
 /// Check if removing an organ is possible
 /datum/surgery_operation/limb/organ_manipulation/proc/is_remove_available(obj/item/bodypart/limb, operated_zone)
+	procstart = null
+	src.procstart = null
 	return length(get_removable_organs(limb, operated_zone)) > 0
 
 /// Check if inserting an organ is possible
 /datum/surgery_operation/limb/organ_manipulation/proc/is_insert_available(obj/item/bodypart/limb, obj/item/organ/organ, operated_zone)
+	procstart = null
+	src.procstart = null
 	if(!organ_check(limb, organ) || (organ.organ_flags & ORGAN_UNUSABLE))
 		return FALSE
 
@@ -95,12 +111,18 @@
 	return TRUE
 
 /datum/surgery_operation/limb/organ_manipulation/snowflake_check_availability(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, operated_zone)
+	procstart = null
+	src.procstart = null
 	return isorgan(tool) ? is_insert_available(limb, tool, operated_zone) : is_remove_available(limb, operated_zone)
 
 /datum/surgery_operation/limb/organ_manipulation/get_radial_options(obj/item/bodypart/limb, obj/item/tool, operating_zone)
+	procstart = null
+	src.procstart = null
 	return isorgan(tool) ? get_insert_options(limb, tool, operating_zone) : get_remove_options(limb, operating_zone)
 
 /datum/surgery_operation/limb/organ_manipulation/proc/get_remove_options(obj/item/bodypart/limb, operating_zone)
+	procstart = null
+	src.procstart = null
 	var/list/options = list()
 	for(var/obj/item/organ/organ as anything in get_removable_organs(limb, operating_zone))
 		var/datum/radial_menu_choice/option = LAZYACCESS(cached_organ_manipulation_options, "[organ.type]_remove")
@@ -117,6 +139,8 @@
 	return options
 
 /datum/surgery_operation/limb/organ_manipulation/proc/get_insert_options(obj/item/bodypart/limb, obj/item/organ/organ)
+	procstart = null
+	src.procstart = null
 	var/datum/radial_menu_choice/option = LAZYACCESS(cached_organ_manipulation_options, "[organ.type]_insert")
 	if(!option)
 		option = new()
@@ -131,6 +155,8 @@
 	return result
 
 /datum/surgery_operation/limb/organ_manipulation/operate_check(mob/living/patient, obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 
@@ -148,6 +174,8 @@
 	return TRUE
 
 /datum/surgery_operation/limb/organ_manipulation/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	switch(operation_args[OPERATION_ACTION])
 		if("remove")
 			var/obj/item/organ = operation_args[OPERATION_REMOVED_ORGAN]
@@ -172,6 +200,8 @@
 			display_pain(limb.owner, "You can feel something being placed in your [limb.plaintext_zone]!")
 
 /datum/surgery_operation/limb/organ_manipulation/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	switch(operation_args[OPERATION_ACTION])
 		if("remove")
 			play_operation_sound(limb, surgeon, tool, remove_success_sound)
@@ -183,6 +213,8 @@
 		surgeon.add_mood_event("morbid_abominable_surgery_success", /datum/mood_event/morbid_abominable_surgery_success)
 
 /datum/surgery_operation/limb/organ_manipulation/proc/on_success_remove_organ(obj/item/bodypart/limb, mob/living/surgeon, obj/item/organ/organ, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -200,6 +232,8 @@
 	organ.on_surgical_removal(surgeon, limb, tool)
 
 /datum/surgery_operation/limb/organ_manipulation/proc/on_success_insert_organ(obj/item/bodypart/limb, mob/living/surgeon, obj/item/organ/organ)
+	procstart = null
+	src.procstart = null
 	surgeon.temporarilyRemoveItemFromInventory(organ, TRUE)
 	organ.pre_surgical_insertion(surgeon, limb, limb.body_zone)
 	if (limb.owner)
@@ -225,6 +259,8 @@
 	var/bone_locked_organs = "the brain or any chest organs"
 
 /datum/surgery_operation/limb/organ_manipulation/internal/organ_check(obj/item/bodypart/limb, obj/item/organ/organ)
+	procstart = null
+	src.procstart = null
 	if(organ.organ_flags & ORGAN_EXTERNAL)
 		return FALSE
 	// chest organs and the brain require bone sawed
@@ -233,6 +269,8 @@
 	return TRUE
 
 /datum/surgery_operation/limb/organ_manipulation/internal/any_required_strings()
+	procstart = null
+	src.procstart = null
 	return ..() + list(
 		"if operating on [bone_locked_organs], the bone MUST be sawed",
 		"otherwise, the state of the bone doesn't matter",
@@ -257,6 +295,8 @@
 	bone_locked_organs = "the brain or any chest organs EXCLUDING the heart"
 
 /datum/surgery_operation/limb/organ_manipulation/internal/abductor/organ_check(obj/item/bodypart/limb, obj/item/organ/organ)
+	procstart = null
+	src.procstart = null
 	return (organ.slot == ORGAN_SLOT_HEART) || ..() // Hearts can always be removed, it doesn't check for bone state
 
 // All external organ manipulation requires bones sawed
@@ -268,6 +308,8 @@
 	any_surgery_states_blocked = SURGERY_VESSELS_UNCLAMPED
 
 /datum/surgery_operation/limb/organ_manipulation/external/organ_check(obj/item/bodypart/limb, obj/item/organ/organ)
+	procstart = null
+	src.procstart = null
 	return (organ.organ_flags & ORGAN_EXTERNAL)
 
 /datum/surgery_operation/limb/organ_manipulation/external/mechanic

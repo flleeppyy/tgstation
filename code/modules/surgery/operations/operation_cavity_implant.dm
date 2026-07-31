@@ -12,15 +12,23 @@
 	any_surgery_states_blocked = SURGERY_CAVITY_WIDENED
 
 /datum/surgery_operation/limb/prepare_cavity/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(/obj/item/retractor)
 
 /datum/surgery_operation/limb/prepare_cavity/all_required_strings()
+	procstart = null
+	src.procstart = null
 	return list("operate on chest (target chest)") + ..()
 
 /datum/surgery_operation/limb/prepare_cavity/state_check(obj/item/bodypart/chest/limb)
+	procstart = null
+	src.procstart = null
 	return limb.body_zone == BODY_ZONE_CHEST
 
 /datum/surgery_operation/limb/prepare_cavity/on_preop(obj/item/bodypart/chest/limb, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -31,6 +39,8 @@
 	display_pain(limb.owner, "You can feel pressure as your [limb.plaintext_zone] is being opened wide!")
 
 /datum/surgery_operation/limb/prepare_cavity/on_success(obj/item/bodypart/chest/limb, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	limb.add_surgical_state(SURGERY_CAVITY_WIDENED)
 
@@ -47,15 +57,23 @@
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_ORGANS_CUT|SURGERY_CAVITY_WIDENED
 
 /datum/surgery_operation/limb/undo_prepare_cavity/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(/obj/item/retractor)
 
 /datum/surgery_operation/limb/undo_prepare_cavity/all_required_strings()
+	procstart = null
+	src.procstart = null
 	return list("operate on chest (target chest)") + ..()
 
 /datum/surgery_operation/limb/undo_prepare_cavity/state_check(obj/item/bodypart/chest/limb)
+	procstart = null
+	src.procstart = null
 	return limb.body_zone == BODY_ZONE_CHEST
 
 /datum/surgery_operation/limb/undo_prepare_cavity/on_preop(obj/item/bodypart/chest/limb, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -66,6 +84,8 @@
 	display_pain(limb.owner, "You can feel pressure as your [limb.plaintext_zone] is being closed!")
 
 /datum/surgery_operation/limb/undo_prepare_cavity/on_success(obj/item/bodypart/chest/limb, mob/living/surgeon, tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	limb.remove_surgical_state(SURGERY_CAVITY_WIDENED)
 
@@ -84,18 +104,26 @@
 	var/list/heavy_cavity_implants
 
 /datum/surgery_operation/limb/cavity_implant/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	heavy_cavity_implants = typecacheof(list(
 		/obj/item/transfer_valve,
 	))
 
 /datum/surgery_operation/limb/cavity_implant/all_required_strings()
+	procstart = null
+	src.procstart = null
 	return list("operate on chest (target chest)") + ..()
 
 /datum/surgery_operation/limb/cavity_implant/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/hud/screen_gen.dmi', "arrow_large_still")
 
 /datum/surgery_operation/limb/cavity_implant/state_check(obj/item/bodypart/chest/limb)
+	procstart = null
+	src.procstart = null
 	if(limb.body_zone != BODY_ZONE_CHEST)
 		return FALSE
 	if(!isnull(limb.cavity_item))
@@ -103,6 +131,8 @@
 	return TRUE
 
 /datum/surgery_operation/limb/cavity_implant/snowflake_check_availability(obj/item/bodypart/chest/limb, mob/living/surgeon, obj/item/tool, operated_zone)
+	procstart = null
+	src.procstart = null
 	if(!surgeon.canUnEquip(tool))
 		return FALSE
 	// Stops accidentally putting a tool you meant to operate with
@@ -114,6 +144,8 @@
 	return TRUE
 
 /datum/surgery_operation/limb/cavity_implant/tool_check(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(tool.w_class > WEIGHT_CLASS_NORMAL && !is_type_in_typecache(tool, heavy_cavity_implants))
 		return FALSE
 	if(tool.item_flags & (ABSTRACT|DROPDEL|HAND_ITEM))
@@ -123,6 +155,8 @@
 	return TRUE
 
 /datum/surgery_operation/limb/cavity_implant/on_preop(obj/item/bodypart/chest/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -133,6 +167,8 @@
 	display_pain(limb.owner, "You can feel something being inserted into your [limb.plaintext_zone], it hurts like hell!")
 
 /datum/surgery_operation/limb/cavity_implant/on_success(obj/item/bodypart/chest/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	if (!surgeon.transferItemToLoc(tool, limb.owner, force = TRUE)) // shouldn't fail but just in case
 		display_results(
 			surgeon,
@@ -170,12 +206,18 @@
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_ORGANS_CUT|SURGERY_CAVITY_WIDENED
 
 /datum/surgery_operation/limb/undo_cavity_implant/all_required_strings()
+	procstart = null
+	src.procstart = null
 	return list("operate on chest (target chest)") + ..()
 
 /datum/surgery_operation/limb/undo_cavity_implant/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image('icons/hud/screen_gen.dmi', "arrow_large_still")
 
 /datum/surgery_operation/limb/undo_cavity_implant/get_radial_options(obj/item/bodypart/chest/limb, obj/item/tool, operating_zone)
+	procstart = null
+	src.procstart = null
 	// Not bothering to cache this as the chance of hitting the same cavity item in the same round is rather low
 	var/datum/radial_menu_choice/option = new()
 	option.name = "remove [limb.cavity_item]"
@@ -185,6 +227,8 @@
 	return option
 
 /datum/surgery_operation/limb/undo_cavity_implant/state_check(obj/item/bodypart/chest/limb)
+	procstart = null
+	src.procstart = null
 	if(limb.body_zone != BODY_ZONE_CHEST)
 		return FALSE
 	// unlike implant removal, don't show the surgery as an option unless something is actually implanted
@@ -195,6 +239,8 @@
 	return TRUE
 
 /datum/surgery_operation/limb/undo_cavity_implant/on_preop(obj/item/bodypart/chest/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -205,6 +251,8 @@
 	display_pain(limb.owner, "You feel a serious pain in your [limb.plaintext_zone]!")
 
 /datum/surgery_operation/limb/undo_cavity_implant/on_success(obj/item/bodypart/chest/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	if(isnull(limb.cavity_item)) // something else could have removed it mid surgery?
 		display_results(
 			surgeon,

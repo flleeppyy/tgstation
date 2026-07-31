@@ -16,15 +16,23 @@
 	all_surgery_states_required = SURGERY_SKIN_OPEN
 
 /datum/surgery_operation/limb/plastic_surgery/all_required_strings()
+	procstart = null
+	src.procstart = null
 	return list("operate on head (target head)") + ..()
 
 /datum/surgery_operation/limb/plastic_surgery/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(/obj/item/scalpel)
 
 /datum/surgery_operation/limb/plastic_surgery/state_check(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	return limb.body_zone == BODY_ZONE_HEAD
 
 /datum/surgery_operation/limb/plastic_surgery/pre_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT_FROM(limb, TRAIT_DISFIGURED, TRAIT_GENERIC))
 		return TRUE //skip name selection if fixing disfigurement
 
@@ -58,6 +66,8 @@
 	return !!operation_args[OPERATION_NEW_NAME]
 
 /datum/surgery_operation/limb/plastic_surgery/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -68,6 +78,8 @@
 	display_pain(limb.owner, "You feel a slicing pain across your face!")
 
 /datum/surgery_operation/limb/plastic_surgery/on_success(obj/item/bodypart/head/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	if(!istype(limb))
 		CRASH("Plastic surgery finished on a non-head limb [limb]!")
 
@@ -105,6 +117,8 @@
 	limb.remove_surgical_state(SURGERY_PLASTIC_APPLIED)
 
 /datum/surgery_operation/limb/plastic_surgery/on_failure(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -132,12 +146,18 @@
 	any_surgery_states_blocked = SURGERY_PLASTIC_APPLIED|SURGERY_VESSELS_UNCLAMPED
 
 /datum/surgery_operation/limb/add_plastic/get_default_radial_image()
+	procstart = null
+	src.procstart = null
 	return image(/obj/item/stack/sheet/plastic)
 
 /datum/surgery_operation/limb/add_plastic/state_check(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	return limb.body_zone == BODY_ZONE_HEAD
 
 /datum/surgery_operation/limb/add_plastic/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	display_results(
 		surgeon,
 		limb.owner,
@@ -148,5 +168,7 @@
 	display_pain(limb.owner, "You feel a strange sensation as something is applied to your face!")
 
 /datum/surgery_operation/limb/add_plastic/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	limb.add_surgical_state(SURGERY_PLASTIC_APPLIED)

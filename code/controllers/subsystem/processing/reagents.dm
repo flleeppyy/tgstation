@@ -11,6 +11,8 @@ PROCESSING_SUBSYSTEM_DEF(reagents)
 	var/previous_world_time = 0
 
 /datum/controller/subsystem/processing/reagents/Initialize()
+	procstart = null
+	src.procstart = null
 	//So our first step isn't insane
 	previous_world_time = world.time
 	//Build GLOB lists - see holder.dm
@@ -18,6 +20,8 @@ PROCESSING_SUBSYSTEM_DEF(reagents)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/processing/reagents/fire(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!resumed)
 		currentrun = processing.Copy()
 	//cache for sanic speed (lists are references anyways)

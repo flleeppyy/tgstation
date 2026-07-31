@@ -19,6 +19,8 @@
 	var/chosen_meteor
 
 /datum/round_event/stray_meteor/start()
+	procstart = null
+	src.procstart = null
 	if(chosen_meteor)
 		var/list/chosen_meteor_list = list()
 		chosen_meteor_list[chosen_meteor] = 1
@@ -27,6 +29,8 @@
 		spawn_meteor(GLOB.meteors_stray)
 
 /datum/round_event/stray_meteor/announce(fake)
+	procstart = null
+	src.procstart = null
 	if(length(GLOB.meteor_list))
 		var/obj/effect/meteor/detected_meteor = pick(GLOB.meteor_list) //If we accidentally pick a meteor not spawned by the event, we're still technically not wrong
 		var/sensor_name = detected_meteor.signature
@@ -37,7 +41,11 @@
 	normal_run_option = "Random Meteor"
 
 /datum/event_admin_setup/listed_options/stray_meteor/get_list()
+	procstart = null
+	src.procstart = null
 	return subtypesof(/obj/effect/meteor)
 
 /datum/event_admin_setup/listed_options/stray_meteor/apply_to_event(datum/round_event/stray_meteor/event)
+	procstart = null
+	src.procstart = null
 	event.chosen_meteor = chosen

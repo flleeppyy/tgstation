@@ -15,6 +15,8 @@
 		larger restraints, such as straightjackets are too complex for the nanites to deal with."
 
 /obj/item/implant/freedom/implant(mob/living/target, mob/user, silent, force)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -24,6 +26,8 @@
 	return TRUE
 
 /obj/item/implant/freedom/activate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/carbon/carbon_imp_in = imp_in
 	if(!can_trigger(carbon_imp_in))
@@ -42,6 +46,8 @@
 		qdel(src)
 
 /obj/item/implant/freedom/proc/can_trigger(mob/living/carbon/implanted_in)
+	procstart = null
+	src.procstart = null
 	if(implanted_in.handcuffed || implanted_in.legcuffed)
 		return TRUE
 

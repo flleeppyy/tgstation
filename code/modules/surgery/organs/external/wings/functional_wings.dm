@@ -8,6 +8,8 @@
 	button_icon_state = "flight"
 
 /datum/action/innate/flight/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human = owner
 	var/obj/item/organ/wings/functional/wings = human.get_organ_slot(ORGAN_SLOT_EXTERNAL_WINGS)
 	if(wings?.can_fly())
@@ -30,6 +32,8 @@
 	var/drift_force = FUNCTIONAL_WING_FORCE
 
 /obj/item/organ/wings/functional/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/jetpack, \
@@ -43,13 +47,19 @@
 	)
 
 /obj/item/organ/wings/functional/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(fly)
 	return ..()
 
 /obj/item/organ/wings/functional/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/flightpotion = 5)
 
 /obj/item/organ/wings/functional/on_mob_insert(mob/living/carbon/receiver, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(QDELETED(fly))
@@ -57,17 +67,23 @@
 	fly.Grant(receiver)
 
 /obj/item/organ/wings/functional/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	fly?.Remove(organ_owner)
 	if(wings_open)
 		toggle_flight(organ_owner)
 
 /obj/item/organ/wings/functional/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	handle_flight(owner)
 
 ///Called on_life(). Handle flight code and check if we're still flying
 /obj/item/organ/wings/functional/proc/handle_flight(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT_FROM(human, TRAIT_MOVE_FLOATING, SPECIES_FLIGHT_TRAIT))
 		return FALSE
 	if(!can_fly())
@@ -77,6 +93,8 @@
 
 ///Check if we're still eligible for flight (wings covered, atmosphere too thin, etc)
 /obj/item/organ/wings/functional/proc/can_fly()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/human = owner
 	if(IS_UNCONSCIOUS_OR_CRIT(human) || human.body_position == LYING_DOWN || isnull(human.client))
 		return FALSE
@@ -96,6 +114,8 @@
 
 ///Slipping but in the air?
 /obj/item/organ/wings/functional/proc/fly_slip(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	var/obj/buckled_obj
 	if(human.buckled)
 		buckled_obj = human.buckled
@@ -119,6 +139,8 @@
 
 ///UNSAFE PROC, should only be called through the Activate or other sources that check for CanFly
 /obj/item/organ/wings/functional/proc/toggle_flight(mob/living/carbon/human/human)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT_FROM(human, TRAIT_MOVE_FLOATING, SPECIES_FLIGHT_TRAIT))
 		human.physiology.stun_mod *= 2
 		human.add_traits(list(TRAIT_MOVE_FLOATING, TRAIT_IGNORING_GRAVITY, TRAIT_NOGRAV_ALWAYS_DRIFT), SPECIES_FLIGHT_TRAIT)
@@ -142,6 +164,8 @@
 
 ///SPREAD OUR WINGS AND FLLLLLYYYYYY
 /obj/item/organ/wings/functional/proc/open_wings()
+	procstart = null
+	src.procstart = null
 	var/datum/bodypart_overlay/mutant/wings/functional/overlay = bodypart_overlay
 	overlay.open_wings()
 	wings_open = TRUE
@@ -150,6 +174,8 @@
 
 ///close our wings
 /obj/item/organ/wings/functional/proc/close_wings()
+	procstart = null
+	src.procstart = null
 	var/datum/bodypart_overlay/mutant/wings/functional/overlay = bodypart_overlay
 	wings_open = FALSE
 	overlay.close_wings()
@@ -167,23 +193,31 @@
 	VAR_PRIVATE/wings_open = FALSE
 
 /datum/bodypart_overlay/mutant/wings/functional/get_global_feature_list()
+	procstart = null
+	src.procstart = null
 	if(wings_open)
 		return SSaccessories.feature_list[FEATURE_WINGS_OPEN]
 	return ..()
 
 ///Update our wingsprite to the open wings variant
 /datum/bodypart_overlay/mutant/wings/functional/proc/open_wings()
+	procstart = null
+	src.procstart = null
 	wings_open = TRUE
 	feature_key = FEATURE_WINGS_OPEN
 	set_appearance_from_name(sprite_datum.name) //It'll look for the same name again, but this time from the open wings list
 
 ///Update our wingsprite to the closed wings variant
 /datum/bodypart_overlay/mutant/wings/functional/proc/close_wings()
+	procstart = null
+	src.procstart = null
 	wings_open = FALSE
 	feature_key = initial(feature_key)
 	set_appearance_from_name(sprite_datum.name)
 
 /datum/bodypart_overlay/mutant/wings/functional/icon_render_key(obj/item/bodypart/limb)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += wings_open ? "open" : "closed"
 
@@ -215,6 +249,8 @@
 	sprite_accessory_override = /datum/sprite_accessory/wings/skeleton
 
 /obj/item/organ/wings/functional/moth/make_flap_sound(mob/living/carbon/wing_owner)
+	procstart = null
+	src.procstart = null
 	playsound(wing_owner, 'sound/mobs/humanoids/moth/moth_flutter.ogg', 50, TRUE)
 
 ///mothra wings, which relate to moths.

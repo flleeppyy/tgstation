@@ -39,9 +39,13 @@
 	acid = 30
 
 /obj/item/melee/energy/get_all_tool_behaviours()
+	procstart = null
+	src.procstart = null
 	return list(TOOL_SAW)
 
 /obj/item/melee/energy/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	make_transformable()
 	AddElement(/datum/element/update_icon_updates_onmob)
@@ -52,6 +56,8 @@
 	)
 
 /obj/item/melee/energy/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
@@ -59,6 +65,8 @@
  * Gives our item the transforming component, passing in our various vars.
  */
 /obj/item/melee/energy/proc/make_transformable()
+	procstart = null
+	src.procstart = null
 	AddComponent( \
 		/datum/component/transforming, \
 		force_on = active_force, \
@@ -73,16 +81,22 @@
 	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
 /obj/item/melee/energy/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		attack_self(user)
 	user.visible_message(span_suicide("[user] is [pick("slitting [user.p_their()] stomach open with", "falling on")] [src]! It looks like [user.p_theyre()] trying to commit seppuku!"))
 	return (BRUTELOSS|FIRELOSS)
 
 /obj/item/melee/energy/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(heat)
 		open_flame()
 
 /obj/item/melee/energy/ignition_effect(atom/atom, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!heat && !HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		return ""
 
@@ -94,9 +108,13 @@
 	add_fingerprint(user)
 
 /obj/item/melee/energy/get_demolition_modifier(obj/target)
+	procstart = null
+	src.procstart = null
 	return HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE) ? demolition_mod : 1
 
 /obj/item/melee/energy/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!sword_color_icon)
 		return
@@ -115,6 +133,8 @@
  * Also gives feedback to the user and activates or deactives the glow.
  */
 /obj/item/melee/energy/proc/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(active)
@@ -159,6 +179,8 @@
 	active_w_class = WEIGHT_CLASS_HUGE
 
 /obj/item/melee/energy/axe/make_transformable()
+	procstart = null
+	src.procstart = null
 	AddComponent( \
 		/datum/component/transforming, \
 		force_on = active_force, \
@@ -170,6 +192,8 @@
 	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
 /obj/item/melee/energy/axe/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] swings [src] towards [user.p_their()] head! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return (BRUTELOSS|FIRELOSS)
 
@@ -202,12 +226,16 @@
 	var/alt_hitsound = null
 
 /obj/item/melee/energy/sword/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	alt_continuous = string_list(alt_continuous)
 	alt_simple = string_list(alt_simple)
 	AddComponent(/datum/component/alternative_sharpness, alt_sharpness, alt_continuous, alt_simple, alt_force_mod, TRAIT_TRANSFORM_ACTIVE, alt_hitsound)
 
 /obj/item/melee/energy/sword/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		return FALSE
 
@@ -233,6 +261,8 @@
 	var/hacked_color
 
 /obj/item/melee/energy/sword/saber/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/jousting, damage_boost_per_tile = 1, knockdown_chance_per_tile = 10)
 	if(!sword_color_icon && LAZYLEN(possible_sword_colors))
@@ -242,6 +272,8 @@
 		set_light_color(possible_sword_colors[sword_color_icon])
 
 /obj/item/melee/energy/sword/saber/process()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE) || !hacked)
 		return
@@ -272,6 +304,8 @@
 	sword_color_icon = "purple"
 
 /obj/item/melee/energy/sword/saber/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(hacked)
 		to_chat(user, span_warning("It's already fabulous!"))
 		return
@@ -288,10 +322,14 @@
 	var/hitcost = 0.05 * STANDARD_CELL_CHARGE
 
 /obj/item/melee/energy/sword/saber/cyborg/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light_range(5) //Cyborgs don't have inhand sprites, so we compensate by making it glow brightly.
 
 /obj/item/melee/energy/sword/saber/cyborg/attack(mob/target, mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null
 	if(!user.cell)
 		return
 
@@ -303,6 +341,8 @@
 	return ..()
 
 /obj/item/melee/energy/sword/saber/cyborg/cyborg_unequip(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		return
 	attack_self(user)
@@ -336,6 +376,8 @@
 	light_color = COLOR_RED
 
 /obj/item/melee/energy/sword/pirate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/cuffable_item) //closed sword guard
 
@@ -364,6 +406,8 @@
 
 //Most of the other special functions are handled in their own files. aka special snowflake code so kewl
 /obj/item/melee/energy/blade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	alt_continuous = string_list(alt_continuous)
 	alt_simple = string_list(alt_simple)
@@ -374,10 +418,14 @@
 	ADD_TRAIT(src, TRAIT_TRANSFORM_ACTIVE, INNATE_TRAIT) // Functions as an extended esword
 
 /obj/item/melee/energy/blade/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(spark_system)
 	return ..()
 
 /obj/item/melee/energy/blade/make_transformable()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/item/melee/energy/blade/hardlight
@@ -420,6 +468,8 @@
 	COOLDOWN_DECLARE(jiggle_cooldown)
 
 /obj/item/melee/energy/sword/surplus/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_TRANSFORMING_PRE_TRANSFORM, PROC_REF(check_power))
 	AddElement(/datum/element/examine_lore, \
@@ -436,6 +486,8 @@
 	)
 
 /obj/item/melee/energy/sword/surplus/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(charge)
 		. += span_notice("[src] has [charge] hits left before it must be recharged.")
@@ -445,6 +497,8 @@
 	. += span_info("You get the sense that this weapon isn't very effective unless you hit someone while they are exposed in some way, like attacking from behind or while they're staggered.")
 
 /obj/item/melee/energy/sword/surplus/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(charge < max_charge)
@@ -455,6 +509,8 @@
 
 // A weapon best employed by someone in a desperate struggle
 /obj/item/melee/energy/sword/surplus/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!isliving(target))
 		return ..()
 
@@ -482,6 +538,8 @@
 	return ..()
 
 /obj/item/melee/energy/sword/surplus/attack_self_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		return
@@ -504,12 +562,16 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/melee/energy/sword/surplus/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE) || charge <= 0)
 		return
 
 	expend_charge(user)
 
 /obj/item/melee/energy/sword/surplus/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		return FALSE
 
@@ -524,6 +586,8 @@
 		return TRUE
 
 /obj/item/melee/energy/sword/surplus/proc/expend_charge(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!charge) // not that this will ever get here without charge, but...
 		return
 
@@ -533,6 +597,8 @@
 		attack_self(user)
 
 /obj/item/melee/energy/sword/surplus/proc/check_power(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(charge <= 0 && !HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
@@ -540,6 +606,8 @@
 		return COMPONENT_BLOCK_TRANSFORM
 
 /obj/item/melee/energy/sword/surplus/proc/do_jiggle(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, jiggle_cooldown))
 		return TRUE
 
@@ -549,6 +617,8 @@
 	return TRUE
 
 /obj/item/melee/energy/sword/surplus/on_transform(obj/item/source, mob/user, active)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		slot_flags &= ~ITEM_SLOT_BELT
@@ -575,10 +645,14 @@
 	alt_force_mod = -3
 
 /obj/item/melee/energy/sword/nullrod/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/nullrod_core)
 
 /obj/item/melee/energy/sword/nullrod/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		return FALSE
 

@@ -14,6 +14,8 @@
 	penlight_message = "are rotten and decayed!"
 
 /obj/item/organ/eyes/zombie/penlight_examine(mob/living/viewer, obj/item/examtool)
+	procstart = null
+	src.procstart = null
 	return span_danger("[owner.p_Their()] eyes [penlight_message]")
 
 /obj/item/organ/eyes/alien
@@ -47,6 +49,8 @@
 	cooldown_time = 10 SECONDS
 
 /datum/action/cooldown/golem_ore_sight/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	mineral_scan_pulse(get_turf(target), scanner = target)
 

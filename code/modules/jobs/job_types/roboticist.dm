@@ -35,6 +35,8 @@
 
 
 /datum/job/roboticist/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	family_heirlooms += subtypesof(/obj/item/toy/mecha)
 

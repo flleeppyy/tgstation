@@ -39,6 +39,8 @@
 	var/disables_mail = FALSE
 
 /datum/security_level/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(lowering_to_configuration_key) // I'm not sure about you, but isn't there an easier way to do this?
 		lowering_to_announcement = global.config.Get(lowering_to_configuration_key)

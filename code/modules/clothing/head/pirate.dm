@@ -6,10 +6,14 @@
 	dog_fashion = /datum/dog_fashion/head/pirate
 
 /obj/item/clothing/head/costume/pirate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -5)
 
 /obj/item/clothing/head/costume/pirate/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(slot_flags & slot) || isdrone(user))
 		return
@@ -17,6 +21,8 @@
 	to_chat(user, span_boldnotice("You suddenly know how to speak like a pirate!"))
 
 /obj/item/clothing/head/costume/pirate/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(QDELETED(src)) //This can be called as a part of destroy
 		return

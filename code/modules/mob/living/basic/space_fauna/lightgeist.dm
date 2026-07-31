@@ -47,6 +47,8 @@
 	ai_controller = /datum/ai_controller/basic_controller/lightgeist
 
 /mob/living/basic/lightgeist/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_traits(list(TRAIT_VENTCRAWLER_ALWAYS, TRAIT_MEDICAL_HUD, TRAIT_EMOTEMUTE), INNATE_TRAIT)
 	AddElement(/datum/element/simple_flying)
@@ -61,11 +63,15 @@
 	)
 
 /mob/living/basic/lightgeist/melee_attack(atom/target, list/modifiers, ignore_cooldown = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. && isliving(target))
 		add_ally(target) // Anyone we heal will treat us as a friend
 
 /mob/living/basic/lightgeist/ghost()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		death()
@@ -87,6 +93,8 @@
 	var/required_bodytype = BODYTYPE_ORGANIC
 
 /datum/targeting_strategy/lightgeist/is_valid_target(mob/living/living_mob, mob/living/target, vision_range, datum/ai_controller/controller = null)
+	procstart = null
+	src.procstart = null
 	if (!isliving(target) || target.stat == DEAD)
 		return FALSE
 	if (!(heal_biotypes & target.mob_biotypes))

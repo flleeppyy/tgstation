@@ -50,6 +50,8 @@
 	var/return_timer
 
 /mob/living/basic/boss/thing/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddElement(/datum/element/death_drops, /obj/item/keycard/thing_boss, FALSE)
@@ -75,9 +77,13 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /mob/living/basic/boss/thing/LateInitialize()
+	procstart = null
+	src.procstart = null
 	SSqueuelinks.pop_link(RUIN_QUEUE)
 
 /mob/living/basic/boss/thing/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(IS_UNCONSCIOUS_OR_CRIT(src))
 		icon_state = "dead"
@@ -86,6 +92,8 @@
 	icon_living = icon_state
 
 /mob/living/basic/boss/thing/adjust_health(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(phase_invulnerability_timer || phase == 3 || IS_UNCONSCIOUS_OR_CRIT(src) || amount <= 0)
 		return ..()
 	var/potential_excess = bruteloss + amount - (maxHealth/3)*phase
@@ -96,6 +104,8 @@
 		phase_health_depleted()
 
 /mob/living/basic/boss/thing/proc/phase_health_depleted()
+	procstart = null
+	src.procstart = null
 	if(phase_invulnerability_timer)
 		return //wtf?
 
@@ -117,6 +127,8 @@
 
 /// Delete our return timer when we gain a target if we started premapped
 /mob/living/basic/boss/thing/proc/target_gained(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!return_timer)
 		return
@@ -125,6 +137,8 @@
 
 /// If we started premapped, and we lost our target, start a 3 minute timer to return to spawn turf unless we gain aggro again
 /mob/living/basic/boss/thing/proc/target_lost(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(IS_UNCONSCIOUS_OR_CRIT(src) || client || loc == spawn_loc || return_timer)
 		return
@@ -132,11 +146,15 @@
 
 /// Return us to our spawn loc (ruin boss only) if we are alive and have an ai controller and our loc isnt the spawn loc
 /mob/living/basic/boss/thing/proc/return_to_spawn_check()
+	procstart = null
+	src.procstart = null
 	if(isnull(ai_controller) || QDELETED(src) || loc == spawn_loc || IS_UNCONSCIOUS_OR_CRIT(src) || client)
 		return
 	return_to_spawnloc()
 
 /mob/living/basic/boss/thing/proc/return_to_spawnloc()
+	procstart = null
+	src.procstart = null
 	if(isnull(spawn_loc))
 		CRASH("The Thing tried to return to spawn_loc but it was null! This shouldnt happen")
 	for(var/turf/open/target in RANGE_TURFS(1, loc))
@@ -147,6 +165,8 @@
 
 /// The Thing is successfully hit by incendiary fire while downed by damage (alternatively takes too much damage if not ruin spawned)
 /mob/living/basic/boss/thing/proc/phase_successfully_depleted()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/pop_expl.ogg', 65)
 	ai_controller?.set_blackboard_key(BB_THETHING_NOAOE, FALSE)
 	remove_traits(list(TRAIT_GODMODE, TRAIT_IMMOBILIZED), MEGAFAUNA_TRAIT)
@@ -164,6 +184,8 @@
 	new /obj/effect/gibspawner/human/bodypartless(loc)
 
 /mob/living/basic/boss/thing/proc/phase_too_slow()
+	procstart = null
+	src.procstart = null
 	phase_invulnerability_timer = null
 	remove_traits(list(TRAIT_GODMODE, TRAIT_IMMOBILIZED), MEGAFAUNA_TRAIT)
 	balloon_alert_to_viewers("recovers!")
@@ -178,22 +200,30 @@
 
 /// Immediately set out blackboard target key (if empty) to whoever attacks us; this is primarily because it has a lowered aggro range and a high sight range
 /mob/living/basic/boss/thing/proc/immediate_aggro(datum/source, mob/attacker, flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isnull(ai_controller) || IS_UNCONSCIOUS_OR_CRIT(src) || !istype(attacker) || ai_controller.blackboard_key_exists(BB_CURRENT_TARGET))
 		return
 	ai_controller?.set_blackboard_key(BB_CURRENT_TARGET, attacker)
 
 /mob/living/basic/boss/thing/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vname == NAMEOF(src, phase))
 		ai_controller?.set_blackboard_key(BB_THETHING_NOAOE, phase > 1 ? FALSE : TRUE)
 		update_appearance()
 
 /mob/living/basic/boss/thing/Destroy()
+	procstart = null
+	src.procstart = null
 	spawn_loc = null
 	return ..()
 
 /mob/living/basic/boss/thing/with_ruin_loot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/death_drops, /obj/item/organ/brain/cybernetic/ai, FALSE)
 
@@ -213,11 +243,15 @@
 	var/datum/weakref/boss_weakref
 
 /obj/structure/thing_boss_phase_depleter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	go_in_floor()
 	SSqueuelinks.add_to_queue(src, RUIN_QUEUE, 0)
 
 /obj/structure/thing_boss_phase_depleter/MatchedLinks(id, list/partners)
+	procstart = null
+	src.procstart = null
 	if(id != RUIN_QUEUE)
 		return
 	var/mob/living/basic/boss/thing/thing = locate() in partners
@@ -228,6 +262,8 @@
 	RegisterSignal(thing, COMSIG_MEGAFAUNA_THETHING_PHASEUPDATED, PROC_REF(thing_phaseupdated))
 
 /obj/structure/thing_boss_phase_depleter/proc/thing_phaseupdated(mob/living/basic/boss/thing/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!functional)
 		return
@@ -237,15 +273,21 @@
 		go_in_floor()
 
 /obj/structure/thing_boss_phase_depleter/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += density ? span_boldnotice("It may be possible to overload this and destroy that things defenses...") : span_bolddanger("The machine is currently being restrained by tendrils.")
 
 /obj/structure/thing_boss_phase_depleter/proc/set_circuit_floor(state)
+	procstart = null
+	src.procstart = null
 	for(var/turf/open/floor/circuit/circuit in RANGE_TURFS(1, loc))
 		circuit.on = state
 		circuit.update_appearance()
 
 /obj/structure/thing_boss_phase_depleter/proc/go_in_floor()
+	procstart = null
+	src.procstart = null
 	if(!density)
 		return
 	density = FALSE
@@ -255,6 +297,8 @@
 	icon_state = "thingdepleter_infloor"
 
 /obj/structure/thing_boss_phase_depleter/proc/go_out_floor()
+	procstart = null
+	src.procstart = null
 	if(density)
 		return
 	density = TRUE
@@ -265,6 +309,8 @@
 	new /obj/effect/temp_visual/mook_dust(loc)
 
 /obj/structure/thing_boss_phase_depleter/interact(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/boss/thing/the_thing = boss_weakref?.resolve()
 	if(!the_thing || !functional || !density)
 		return
@@ -306,10 +352,14 @@
 	var/target_bb_key = BB_CURRENT_TARGET
 
 /obj/structure/aggro_gate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSqueuelinks.add_to_queue(src, queue_id)
 
 /obj/structure/aggro_gate/MatchedLinks(id, list/partners)
+	procstart = null
+	src.procstart = null
 	if(id != queue_id)
 		return
 	for(var/mob/living/partner in partners)
@@ -317,6 +367,8 @@
 		RegisterSignals(partner, list(COMSIG_AI_BLACKBOARD_KEY_CLEARED(target_bb_key), COMSIG_LIVING_DEATH, COMSIG_MOB_LOGIN), PROC_REF(open_gates))
 
 /obj/structure/aggro_gate/proc/bar_the_gates(mob/living/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/target = source.ai_controller?.blackboard[target_bb_key]
 	if (QDELETED(target))
@@ -327,6 +379,8 @@
 	do_sparks(3, cardinal_only = FALSE, source = src)
 
 /obj/structure/aggro_gate/proc/open_gates(mob/living/source)
+	procstart = null
+	src.procstart = null
 	playsound(src, SFX_SPARKS, 100, vary = TRUE, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
 	do_sparks(3, cardinal_only = FALSE, source = src)
 	density = FALSE

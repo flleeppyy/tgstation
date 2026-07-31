@@ -17,6 +17,8 @@
 	)
 
 /obj/effect/spawner/random/mod/maint/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(is_multi_z_level(z))
 		loot += list(/obj/item/mod/module/atrocinator = 3)
 	return ..()

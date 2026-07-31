@@ -5,5 +5,7 @@
 	resistance_flags = ACID_PROOF | FIRE_PROOF | LAVA_PROOF
 
 /obj/item/clothing/shoes/greaves_of_the_prophet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	attach_clothing_traits(list(TRAIT_NO_SLIP_WATER, TRAIT_NO_SLIP_ICE, TRAIT_NO_SLIP_SLIDE, TRAIT_NO_SLIP_ALL))

@@ -9,6 +9,8 @@
 	var/allowed_slots
 
 /datum/component/connect_inventory/Initialize(mob/living/tracked, connections, allowed_slots = ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(tracked))
 		return COMPONENT_INCOMPATIBLE
@@ -17,19 +19,27 @@
 	src.allowed_slots = allowed_slots
 
 /datum/component/connect_inventory/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(tracked, COMSIG_MOB_EQUIPPED_ITEM, PROC_REF(on_equipped_item))
 	RegisterSignal(tracked, COMSIG_QDELETING, PROC_REF(handle_tracked_qdel))
 	update_signals()
 
 /datum/component/connect_inventory/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	unregister_signals()
 	UnregisterSignal(tracked, list(COMSIG_MOB_EQUIPPED_ITEM, COMSIG_MOB_UNEQUIPPED_ITEM))
 
 /datum/component/connect_inventory/proc/handle_tracked_qdel()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /datum/component/connect_inventory/proc/update_signals()
+	procstart = null
+	src.procstart = null
 	unregister_signals()
 
 	for(var/obj/item/item as anything in tracked.get_equipped_items(INCLUDE_POCKETS|INCLUDE_HELD|INCLUDE_PROSTHETICS|INCLUDE_ABSTRACT))
@@ -40,11 +50,15 @@
 			parent.RegisterSignal(item, signal, connections[signal])
 
 /datum/component/connect_inventory/proc/unregister_signals()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/item as anything in tracked.get_equipped_items(INCLUDE_POCKETS|INCLUDE_HELD|INCLUDE_PROSTHETICS|INCLUDE_ABSTRACT))
 		UnregisterSignal(item, COMSIG_ITEM_DROPPED)
 		parent.UnregisterSignal(item, connections)
 
 /datum/component/connect_inventory/proc/on_equipped_item(datum/source, obj/item/equipped, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!(allowed_slots & slot))
 		return
@@ -54,6 +68,8 @@
 		parent.RegisterSignal(equipped, signal, connections[signal])
 
 /datum/component/connect_inventory/proc/on_unequipped_item(obj/item/unequipped)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(unequipped, COMSIG_ITEM_DROPPED)
 	parent.UnregisterSignal(unequipped, connections)

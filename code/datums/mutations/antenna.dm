@@ -17,10 +17,14 @@
 	icon_state = "walkietalkie"
 
 /obj/item/implant/radio/antenna/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	radio.name = "internal antenna"
 
 /datum/mutation/antenna/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -29,6 +33,8 @@
 	radio_weakref = WEAKREF(linked_radio)
 
 /datum/mutation/antenna/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/obj/item/implant/radio/antenna/linked_radio = radio_weakref.resolve()
@@ -60,6 +66,8 @@
 	ranged_mousepointer = 'icons/effects/mouse_pointers/mindswap_target.dmi'
 
 /datum/action/cooldown/spell/pointed/mindread/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!owner)
 		return
@@ -67,11 +75,15 @@
 	RegisterSignal(grant_to, COMSIG_MOB_EXAMINATE, PROC_REF(on_examining))
 
 /datum/action/cooldown/spell/pointed/mindread/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(remove_from, TRAIT_MIND_READER, GENETIC_MUTATION)
 	UnregisterSignal(remove_from, COMSIG_MOB_EXAMINATE)
 
 /datum/action/cooldown/spell/pointed/mindread/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	if(!isliving(cast_on))
 		return FALSE
 	var/mob/living/living_cast_on = cast_on
@@ -88,6 +100,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/pointed/mindread/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cast_on.can_block_magic(antimagic_flags, charge_cost = 0))
 		to_chat(owner, span_warning("As you reach into [cast_on]'s mind, \
@@ -137,6 +151,8 @@
 	log_combat(owner, cast_on, "mind read (cast intentionally)", null, "info: [english_list(log_info, and_text = ", ")]")
 
 /datum/action/cooldown/spell/pointed/mindread/proc/on_examining(mob/examiner, atom/examining)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isliving(examining) || examiner == examining)
 		return
@@ -144,6 +160,8 @@
 	INVOKE_ASYNC(src, PROC_REF(read_mind), examiner, examining)
 
 /datum/action/cooldown/spell/pointed/mindread/proc/read_mind(mob/living/examiner, mob/living/examined)
+	procstart = null
+	src.procstart = null
 	if(IS_UNCONSCIOUS(examined) || isnull(examined.mind) || (examined.mob_biotypes & MOB_ROBOTIC))
 		return
 

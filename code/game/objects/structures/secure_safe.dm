@@ -19,6 +19,8 @@
 	var/stored_lock_code
 
 /obj/item/wallframe/secure_safe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_storage(
 		max_specific_storage = WEIGHT_CLASS_GIGANTIC,
@@ -29,6 +31,8 @@
 	update_appearance()
 
 /obj/item/wallframe/secure_safe/update_icon_state()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(obj_flags & EMAGGED)
 		icon_state = "[base_icon_state]_broken"
@@ -36,6 +40,8 @@
 		icon_state = "[base_icon_state][stored_lock_code ? "_locked" : null]"
 
 /obj/item/wallframe/secure_safe/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(obj_flags & EMAGGED)
 		return FALSE
@@ -50,6 +56,8 @@
 	return TRUE
 
 /obj/item/wallframe/secure_safe/after_attach(obj/structure/secure_safe/safe)
+	procstart = null
+	src.procstart = null
 	if(!istype(safe))
 		return ..()
 
@@ -103,6 +111,8 @@
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/secure_safe, 32)
 
 /obj/structure/secure_safe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//this will create the storage for us.
 	AddComponent(/datum/component/lockable_storage, stored_lock_code)
@@ -112,10 +122,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/secure_safe, 32)
 	RegisterSignal(src, COMSIG_LOCKABLE_STORAGE_SET_CODE, PROC_REF(update_lock_code))
 
 /obj/structure/secure_safe/find_and_mount_on_atom(mark_for_late_init, late_init)
+	procstart = null
+	src.procstart = null
 	if(!density)
 		return ..()
 
 /obj/structure/secure_safe/atom_deconstruct(disassembled)
+	procstart = null
+	src.procstart = null
 	if(!density) //if we're a wall item, we'll drop a wall frame.
 		var/obj/item/wallframe/secure_safe/new_safe = new(get_turf(src))
 
@@ -133,15 +147,21 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/secure_safe, 32)
 			item.forceMove(new_safe)
 
 /obj/structure/secure_safe/proc/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/paper(src)
 	new /obj/item/pen(src)
 
 /obj/structure/secure_safe/proc/update_lock_code(obj/structure/secure_safe/safe, new_code)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	stored_lock_code = new_code
 
 /obj/structure/secure_safe/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(severity <= EXPLODE_LIGHT)
 		return FALSE
 	return ..()
@@ -186,6 +206,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/secure_safe, 32)
 	acid = 70
 
 /obj/structure/secure_safe/caps_spare/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	atom_storage.set_holdable(/obj/item/card/id)
 	AddComponent(/datum/component/lockable_storage, \
@@ -194,8 +216,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/secure_safe, 32)
 	)
 
 /obj/structure/secure_safe/caps_spare/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/card/id/advanced/gold/captains_spare(src)
 
 /obj/structure/secure_safe/caps_spare/rust_heretic_act()
+	procstart = null
+	src.procstart = null
 	take_damage(damage_amount = 100, damage_type = BRUTE, damage_flag = MELEE, armour_penetration = 100)
 	return TRUE

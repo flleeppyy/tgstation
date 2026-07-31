@@ -15,6 +15,8 @@
 	var/teleport_range = 7
 
 /obj/item/mecha_parts/mecha_equipment/teleporter/action(mob/source, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!action_checks(target) || !check_teleport_valid(source, target, TELEPORT_CHANNEL_BLUESPACE))
 		return
 	var/turf/T = get_turf(target)
@@ -37,6 +39,8 @@
 
 
 /obj/item/mecha_parts/mecha_equipment/wormhole_generator/action(mob/source, atom/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!action_checks(target) || !check_teleport_valid(source, target, TELEPORT_CHANNEL_WORMHOLE))
 		return
 	var/area/targetarea = pick(get_areas_in_range(100, chassis))
@@ -83,6 +87,8 @@
 
 
 /obj/item/mecha_parts/mecha_equipment/gravcatapult/action(mob/source, atom/movable/target, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!action_checks(target))
 		return
 	switch(mode)
@@ -128,11 +134,15 @@
 			return ..()
 
 /obj/item/mecha_parts/mecha_equipment/gravcatapult/proc/do_scatter(atom/movable/scatter, atom/movable/target)
+	procstart = null
+	src.procstart = null
 	var/dist = 5 - get_dist(scatter, target)
 	var/delay = 2
 	GLOB.move_manager.move_away(scatter, target, delay = delay, timeout = delay * dist, flags = MOVEMENT_LOOP_START_INSTANT, priority = MOVEMENT_ABOVE_SPACE_PRIORITY)
 
 /obj/item/mecha_parts/mecha_equipment/gravcatapult/get_snowflake_data()
+	procstart = null
+	src.procstart = null
 	return list(
 		"snowflake_id" = MECHA_SNOWFLAKE_ID_MODE,
 		"mode" = mode == GRAVPUSH_MODE ? "Push" : "Sling",
@@ -140,6 +150,8 @@
 	)
 
 /obj/item/mecha_parts/mecha_equipment/gravcatapult/handle_ui_act(action, list/params)
+	procstart = null
+	src.procstart = null
 	if(action == "change_mode")
 		mode++
 		if(mode > GRAVPUSH_MODE)
@@ -156,11 +168,15 @@
 	var/datum/armor/armor_mod
 
 /obj/item/mecha_parts/mecha_equipment/armor/attach(obj/vehicle/sealed/mecha/new_mecha, attach_right)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (armor_mod)
 		chassis.set_armor(chassis.get_armor().add_other_armor(armor_mod))
 
 /obj/item/mecha_parts/mecha_equipment/armor/detach(atom/moveto)
+	procstart = null
+	src.procstart = null
 	if (armor_mod)
 		chassis.set_armor(chassis.get_armor().subtract_other_armor(armor_mod))
 	return ..()
@@ -200,10 +216,14 @@
 	energy = 15
 
 /obj/item/mecha_parts/mecha_equipment/armor/antiemp_armor_booster/attach(obj/vehicle/sealed/mecha/new_mecha, attach_right)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	chassis.AddElement(/datum/element/empprotection, EMP_PROTECT_WIRES|EMP_NO_EXAMINE)
 
 /obj/item/mecha_parts/mecha_equipment/armor/antiemp_armor_booster/detach(atom/moveto)
+	procstart = null
+	src.procstart = null
 	chassis.RemoveElement(/datum/element/empprotection, EMP_PROTECT_WIRES|EMP_NO_EXAMINE)
 	return ..()
 
@@ -235,21 +255,29 @@
 	var/list/repairable_damage = list(MECHA_INT_TEMP_CONTROL,MECHA_CABIN_AIR_BREACH)
 
 /obj/item/mecha_parts/mecha_equipment/repair_droid/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	chassis?.cut_overlay(droid_overlay)
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/repair_droid/attach(obj/vehicle/sealed/mecha/new_mecha, attach_right = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	droid_overlay = new(src.icon, icon_state = "repair_droid")
 	new_mecha.add_overlay(droid_overlay)
 
 /obj/item/mecha_parts/mecha_equipment/repair_droid/detach()
+	procstart = null
+	src.procstart = null
 	chassis.cut_overlay(droid_overlay)
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/repair_droid/handle_ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(action != "toggle")
 		return
 	chassis.cut_overlay(droid_overlay)
@@ -265,6 +293,8 @@
 
 
 /obj/item/mecha_parts/mecha_equipment/repair_droid/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!chassis)
 		return PROCESS_KILL
 	var/h_boost = health_boost * seconds_per_tick
@@ -319,25 +349,35 @@
 	var/rechargerate = 0.05 * STANDARD_CELL_RATE
 
 /obj/item/mecha_parts/mecha_equipment/generator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	generator_init()
 
 /obj/item/mecha_parts/mecha_equipment/generator/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/generator/detach()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	active = FALSE
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/generator/get_snowflake_data()
+	procstart = null
+	src.procstart = null
 	return list(
 		"snowflake_id" = MECHA_SNOWFLAKE_ID_GENERATOR,
 		"fuel" = fuel.amount,
 	)
 
 /obj/item/mecha_parts/mecha_equipment/generator/handle_ui_act(action, list/params)
+	procstart = null
+	src.procstart = null
 	if(action == "toggle")
 		if(active)
 			to_chat(chassis.occupants, "[icon2html(src, chassis.occupants)][span_warning("Power generation enabled.")]")
@@ -350,12 +390,16 @@
 		return TRUE
 
 /obj/item/mecha_parts/mecha_equipment/generator/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, fuel_type))
 		return NONE
 	load_fuel(tool, user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/mecha_parts/mecha_equipment/generator/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!chassis)
 		active = FALSE
 		return PROCESS_KILL
@@ -379,6 +423,8 @@
 
 ///Try to insert more fuel into the generator
 /obj/item/mecha_parts/mecha_equipment/generator/proc/load_fuel(obj/item/stack/sheet/inserted_fuel, mob/user)
+	procstart = null
+	src.procstart = null
 	if(inserted_fuel.amount == 0) //if we somehow have a sheet of 0 fuel
 		to_chat(user, "[icon2html(src, user)][span_warning("[fuel] traces in target minimal! [inserted_fuel] cannot be used as fuel.")]")
 		return
@@ -398,12 +444,16 @@
 
 ///Introduces the actual fuel type to be used, as well as the starting amount of said fuel
 /obj/item/mecha_parts/mecha_equipment/generator/proc/generator_init()
+	procstart = null
+	src.procstart = null
 	fuel = new /obj/item/stack/sheet/mineral/plasma(src, 10)
 
 /// Version without the initial fuel
 /obj/item/mecha_parts/mecha_equipment/generator/printed
 
 /obj/item/mecha_parts/mecha_equipment/generator/printed/generator_init()
+	procstart = null
+	src.procstart = null
 	return
 
 /////////////////////////////////////////// THRUSTERS /////////////////////////////////////////////
@@ -419,6 +469,8 @@
 	var/effect_type = /obj/effect/particle_effect/sparks
 
 /obj/item/mecha_parts/mecha_equipment/thrusters/try_attach_part(mob/user, obj/vehicle/sealed/mecha/mecha, attach_right)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/part in mecha.equip_by_category[MECHA_UTILITY])
 		if(istype(part, src))
 			to_chat(user, span_warning("[mecha] already has this thruster package!"))
@@ -426,15 +478,21 @@
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/thrusters/attach(obj/vehicle/sealed/mecha/new_mecha, attach_right = FALSE)
+	procstart = null
+	src.procstart = null
 	new_mecha.active_thrusters = src //Enable by default
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/thrusters/detach(atom/moveto)
+	procstart = null
+	src.procstart = null
 	if(chassis.active_thrusters == src)
 		chassis.active_thrusters = null
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/thrusters/set_active(active)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		START_PROCESSING(SSobj, src)
@@ -446,24 +504,32 @@
 		log_message("Deactivated.", LOG_MECHA)
 
 /obj/item/mecha_parts/mecha_equipment/thrusters/proc/enable()
+	procstart = null
+	src.procstart = null
 	if (chassis.active_thrusters == src)
 		return
 	chassis.active_thrusters = src
 	to_chat(chassis.occupants, "[icon2html(src, chassis.occupants)][span_notice("[src] enabled.")]")
 
 /obj/item/mecha_parts/mecha_equipment/thrusters/proc/disable()
+	procstart = null
+	src.procstart = null
 	if(chassis.active_thrusters != src)
 		return
 	chassis.active_thrusters = null
 	to_chat(chassis.occupants, "[icon2html(src, chassis.occupants)][span_notice("[src] disabled.")]")
 
 /obj/item/mecha_parts/mecha_equipment/thrusters/proc/thrust(movement_dir)
+	procstart = null
+	src.procstart = null
 	if(!chassis)
 		return FALSE
 	generate_effect(movement_dir)
 	return TRUE //This parent should never exist in-game outside admeme use, so why not let it be a creative thruster?
 
 /obj/item/mecha_parts/mecha_equipment/thrusters/proc/generate_effect(movement_dir)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/particle_effect/E = new effect_type(get_turf(chassis))
 	E.dir = REVERSE_DIR(movement_dir)
 	step(E, REVERSE_DIR(movement_dir))
@@ -476,6 +542,8 @@
 	var/move_cost = 0.05 //moles per step (5 times more than human jetpacks)
 
 /obj/item/mecha_parts/mecha_equipment/thrusters/gas/thrust(movement_dir)
+	procstart = null
+	src.procstart = null
 	if(!chassis)
 		return FALSE
 	var/obj/machinery/portable_atmospherics/canister/internal_tank = chassis.get_internal_tank()
@@ -497,6 +565,8 @@
 	effect_type = /obj/effect/particle_effect/ion_trails
 
 /obj/item/mecha_parts/mecha_equipment/thrusters/ion/thrust(movement_dir)
+	procstart = null
+	src.procstart = null
 	if(!chassis)
 		return FALSE
 	if(chassis.use_energy(chassis.step_energy_drain))
@@ -512,12 +582,16 @@
 	icon_state = "mecha_weapon_bay"
 
 /obj/item/mecha_parts/mecha_equipment/concealed_weapon_bay/try_attach_part(mob/user, obj/vehicle/sealed/mecha/M)
+	procstart = null
+	src.procstart = null
 	if(M.mech_type & EXOSUIT_MODULE_COMBAT)
 		to_chat(user, span_warning("[M] does not have the correct bolt configuration!"))
 		return ITEM_INTERACT_BLOCKING
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/concealed_weapon_bay/special_attaching_interaction(attach_right = FALSE, obj/vehicle/sealed/mecha/mech, mob/user, checkonly = FALSE)
+	procstart = null
+	src.procstart = null
 	if(checkonly)
 		return TRUE
 	var/obj/item/mecha_parts/mecha_equipment/existing_equip
@@ -538,6 +612,8 @@
 	return TRUE
 
 /obj/item/mecha_parts/mecha_equipment/concealed_weapon_bay/detach(atom/moveto)
+	procstart = null
+	src.procstart = null
 	var/obj/vehicle/sealed/mecha/mech = chassis
 	. = ..()
 	name = initial(name)
@@ -555,6 +631,8 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 5, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 5, /datum/material/plasma = SMALL_MATERIAL_AMOUNT * 2, /datum/material/titanium = SMALL_MATERIAL_AMOUNT * 2)
 
 /obj/item/mecha_parts/camera_kit/try_attach_part(mob/user, obj/vehicle/sealed/mecha/mech, attach_right)
+	procstart = null
+	src.procstart = null
 	if(mech.chassis_camera)
 		balloon_alert(user, "already has a camera!")
 		return ITEM_INTERACT_BLOCKING

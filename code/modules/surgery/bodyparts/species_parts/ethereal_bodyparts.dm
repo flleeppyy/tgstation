@@ -10,6 +10,8 @@
 	head_flags = HEAD_HAIR|HEAD_FACIAL_HAIR|HEAD_EYESPRITES|HEAD_EYEHOLES|HEAD_DEBRAIN
 
 /obj/item/bodypart/head/ethereal/update_limb(dropping_limb, is_creating)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isethereal(owner))
 		var/mob/living/carbon/human/potato_oc = owner
@@ -26,6 +28,8 @@
 	bodypart_traits = list(TRAIT_NO_UNDERWEAR)
 
 /obj/item/bodypart/chest/ethereal/update_limb(dropping_limb, is_creating)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isethereal(owner))
 		var/mob/living/carbon/human/potato_oc = owner
@@ -46,6 +50,8 @@
 	brute_modifier = 1.25 //ethereal are weak to brute damage
 
 /obj/item/bodypart/arm/left/ethereal/update_limb(dropping_limb, is_creating)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isethereal(owner))
 		var/mob/living/carbon/human/potato_oc = owner
@@ -66,6 +72,8 @@
 	brute_modifier = 1.25 //ethereal are weak to brute damage
 
 /obj/item/bodypart/arm/right/ethereal/update_limb(dropping_limb, is_creating)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isethereal(owner))
 		var/mob/living/carbon/human/potato_oc = owner
@@ -82,6 +90,8 @@
 	brute_modifier = 1.25 //ethereal are weak to brute damage
 
 /obj/item/bodypart/leg/left/ethereal/update_limb(dropping_limb, is_creating)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isethereal(owner))
 		var/mob/living/carbon/human/potato_oc = owner
@@ -98,6 +108,8 @@
 	brute_modifier = 1.25 //ethereal are weak to brute damage
 
 /obj/item/bodypart/leg/right/ethereal/update_limb(dropping_limb, is_creating)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isethereal(owner))
 		var/mob/living/carbon/human/potato_oc = owner

@@ -1,5 +1,7 @@
 // Datum antag mind procs
 /datum/mind/proc/add_antag_datum(datum_type_or_instance, team)
+	procstart = null
+	src.procstart = null
 	if(!datum_type_or_instance)
 		return
 	var/datum/antagonist/A
@@ -28,6 +30,8 @@
 	return A
 
 /datum/mind/proc/remove_antag_datum(datum_type)
+	procstart = null
+	src.procstart = null
 	if(!datum_type)
 		return
 	var/datum/antagonist/antag = has_antag_datum(datum_type)
@@ -39,7 +43,9 @@
 	current?.log_message("has lost antag datum [antag] ([antag.type]).", LOG_GAME)
 	return TRUE
 
-/datum/mind/proc/remove_all_antag_datums() //For the Lazy amongst us.
+/datum/mind/proc/remove_all_antag_datums()
+	procstart = null
+	src.procstart = null //For the Lazy amongst us.
 	for(var/datum/antagonist/antag as anything in antag_datums)
 		antag.on_removal()
 		qdel(antag)
@@ -47,6 +53,8 @@
 	current?.log_message("has lost all antag datums.", LOG_GAME)
 
 /datum/mind/proc/has_antag_datum(datum_type, check_subtypes = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!datum_type)
 		return
 	for(var/a in antag_datums)
@@ -58,6 +66,8 @@
 
 /// Returns true if mind has any antag datum from a list of types
 /datum/mind/proc/has_antag_datum_in_list(list/antag_types)
+	procstart = null
+	src.procstart = null
 	for(var/antag_datum in antag_datums)
 		var/datum/antagonist/check_datum = antag_datum
 		if(is_type_in_list(check_datum, antag_types))
@@ -65,6 +75,8 @@
 	return FALSE
 
 /datum/mind/proc/remove_antag_equip()
+	procstart = null
+	src.procstart = null
 	if(!current)
 		return
 	var/list/Mob_Contents = current.get_contents()
@@ -75,6 +87,8 @@
 
 /// Remove the antagonists that should not persist when being borged
 /datum/mind/proc/remove_antags_for_borging()
+	procstart = null
+	src.procstart = null
 	remove_antag_datum(/datum/antagonist/cult)
 
 	var/datum/antagonist/rev/revolutionary = has_antag_datum(/datum/antagonist/rev)
@@ -89,6 +103,8 @@
  * Returns the item found, or null if no item was found.
  */
 /mob/living/carbon/proc/get_uplink_location(desired_location = UPLINK_PDA)
+	procstart = null
+	src.procstart = null
 	var/list/all_contents = get_all_contents()
 	var/obj/item/modular_computer/pda/my_pda = locate() in all_contents
 	var/obj/item/radio/my_radio = locate() in all_contents
@@ -115,6 +131,8 @@
  * * antag_datum: the antag datum of the uplink owner, for storing it in antag memory. optional!
  */
 /datum/mind/proc/give_uplink(silent = FALSE, datum/antagonist/antag_datum)
+	procstart = null
+	src.procstart = null
 	if(!isliving(current))
 		return
 	var/mob/living/carbon/human/traitor_mob = current
@@ -178,6 +196,8 @@
 
 /// Link a new mobs mind to the creator of said mob. They will join any team they are currently on, and will only switch teams when their creator does.
 /datum/mind/proc/enslave_mind_to_creator(mob/living/creator)
+	procstart = null
+	src.procstart = null
 	if(IS_CULTIST(creator))
 		add_antag_datum(/datum/antagonist/cult)
 
@@ -208,12 +228,16 @@
 		to_chat(current, span_userdanger("Despite your creator's current allegiances, your true master remains [creator.real_name]. If their loyalties change, so do yours. This will never change unless your creator's body is destroyed."))
 
 /datum/mind/proc/get_all_objectives()
+	procstart = null
+	src.procstart = null
 	var/list/all_objectives = list()
 	for(var/datum/antagonist/A in antag_datums)
 		all_objectives |= A.objectives
 	return all_objectives
 
 /datum/mind/proc/announce_objectives()
+	procstart = null
+	src.procstart = null
 	var/obj_count = 1
 	to_chat(current, span_notice("Your current objectives:"))
 	for(var/datum/objective/objective as anything in get_all_objectives())
@@ -224,6 +248,8 @@
 		antag.update_static_data(current)
 
 /datum/mind/proc/find_syndicate_uplink(check_unlocked)
+	procstart = null
+	src.procstart = null
 	var/list/L = current.get_all_contents()
 	for (var/i in L)
 		var/atom/movable/I = i
@@ -237,6 +263,8 @@
 * and gives them a fallback spell if no uplink was found
 */
 /datum/mind/proc/try_give_equipment_fallback()
+	procstart = null
+	src.procstart = null
 	var/uplink_exists
 	var/datum/antagonist/traitor/traitor_datum = has_antag_datum(/datum/antagonist/traitor)
 	if(traitor_datum)
@@ -248,9 +276,13 @@
 		fallback.Grant(current)
 
 /datum/mind/proc/take_uplink()
+	procstart = null
+	src.procstart = null
 	qdel(find_syndicate_uplink())
 
 /datum/mind/proc/make_wizard()
+	procstart = null
+	src.procstart = null
 	if(has_antag_datum(/datum/antagonist/wizard))
 		return
 	set_assigned_role(SSjob.get_job_type(/datum/job/space_wizard))
@@ -258,11 +290,15 @@
 
 /// Sets our can_hijack to the fastest speed our antag datums allow.
 /datum/mind/proc/get_hijack_speed()
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/datum/antagonist/A in antag_datums)
 		. = max(., A.hijack_speed())
 
 /datum/mind/proc/has_objective(objective_type)
+	procstart = null
+	src.procstart = null
 	for(var/datum/antagonist/A in antag_datums)
 		for(var/O in A.objectives)
 			if(istype(O,objective_type))

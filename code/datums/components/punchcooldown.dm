@@ -8,6 +8,8 @@
 	var/warcry = "AT"
 
 /datum/component/wearertargeting/punchcooldown/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == COMPONENT_INCOMPATIBLE)
 		return
@@ -15,6 +17,8 @@
 
 ///Called on COMSIG_LIVING_UNARMED_ATTACK. Yells the warcry and and reduces punch cooldown.
 /datum/component/wearertargeting/punchcooldown/proc/reducecooldown(mob/living/carbon/M, atom/target)
+	procstart = null
+	src.procstart = null
 	var/obj/item/used_item = M.get_active_held_item()
 	if((M.combat_mode && isliving(target)) || (used_item & HAND_ITEM))
 		M.changeNext_move(CLICK_CD_RAPID)
@@ -23,10 +27,14 @@
 
 ///Called on COMSIG_ITEM_ATTACK_SELF. Allows you to change the warcry.
 /datum/component/wearertargeting/punchcooldown/proc/changewarcry(datum/source, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(do_changewarcry), user)
 
 /datum/component/wearertargeting/punchcooldown/proc/do_changewarcry(mob/user)
+	procstart = null
+	src.procstart = null
 	var/input = tgui_input_text(user, "What do you want your battlecry to be?", "Battle Cry", max_length = 6)
 	if(!QDELETED(src) && !QDELETED(user) && !user.Adjacent(parent))
 		return

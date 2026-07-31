@@ -4,9 +4,13 @@
 /client/var/commandbar_typing = FALSE
 
 /client/proc/initialize_commandbar_spy()
+	procstart = null
+	src.procstart = null
 	src << output('html/typing_indicator.html', "commandbar_spy")
 
 /client/proc/handle_commandbar_typing(href_list)
+	procstart = null
+	src.procstart = null
 	if (!typing_indicators) //check pref
 		return
 	if (length(href_list["verb"]) < 1 || !(LOWER_TEXT(href_list["verb"]) in IC_VERBS) || text2num(href_list["argument_length"]) < 2)
@@ -30,6 +34,8 @@
 
 /** Sets the mob as "thinking" - with indicator and the TRAIT_THINKING_IN_CHARACTER trait */
 /client/proc/start_thinking()
+	procstart = null
+	src.procstart = null
 	if(!typing_indicators)
 		return FALSE
 	/// Special exemptions
@@ -40,6 +46,8 @@
 
 /** Removes typing/thinking indicators and flags the mob as not thinking */
 /client/proc/stop_thinking()
+	procstart = null
+	src.procstart = null
 	mob?.remove_all_indicators()
 
 /**
@@ -47,6 +55,8 @@
  * signals the client mob to revert to the "thinking" icon.
  */
 /client/proc/start_typing()
+	procstart = null
+	src.procstart = null
 	var/mob/client_mob = mob
 	client_mob.remove_thinking_indicator()
 	if(!typing_indicators || !HAS_TRAIT(client_mob, TRAIT_THINKING_IN_CHARACTER))
@@ -59,6 +69,8 @@
  * If the user was typing IC, the thinking indicator is shown.
  */
 /client/proc/stop_typing()
+	procstart = null
+	src.procstart = null
 	if(isnull(mob))
 		return FALSE
 	var/mob/client_mob = mob

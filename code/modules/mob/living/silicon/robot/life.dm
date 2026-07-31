@@ -1,4 +1,6 @@
 /mob/living/silicon/robot/Life(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
 
@@ -7,6 +9,8 @@
 	handle_robot_cell(seconds_per_tick)
 
 /mob/living/silicon/robot/proc/handle_robot_cell(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		return
 
@@ -17,6 +21,8 @@
 		use_energy(seconds_per_tick)
 
 /mob/living/silicon/robot/proc/use_energy(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(cell?.charge)
 		if(cell.charge <= 0.01 * STANDARD_CELL_CHARGE)
 			drop_all_held_items()
@@ -29,12 +35,16 @@
 	diag_hud_set_borgcell()
 
 /mob/living/silicon/robot/proc/handle_robot_hud_updates()
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return
 
 	update_cell_hud_icon()
 
 /mob/living/silicon/robot/update_health_hud()
+	procstart = null
+	src.procstart = null
 	if(!client || !hud_used)
 		return
 
@@ -60,6 +70,8 @@
 		healths.icon_state = "health6"
 
 /mob/living/silicon/robot/proc/update_cell_hud_icon()
+	procstart = null
+	src.procstart = null
 	if(cell)
 		var/cellcharge = cell.charge/cell.maxcharge
 		switch(cellcharge)

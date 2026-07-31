@@ -36,6 +36,8 @@
 	var/list/options_map
 
 /obj/item/circuit_component/object_overlay/populate_ports()
+	procstart = null
+	src.procstart = null
 	target = add_input_port("Target", PORT_TYPE_ATOM)
 
 	signal_on = add_input_port("Create Overlay", PORT_TYPE_SIGNAL)
@@ -46,10 +48,14 @@
 	image_rotation = add_input_port("Overlay Rotation", PORT_TYPE_NUMBER)
 
 /obj/item/circuit_component/object_overlay/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST_ASSOC_VAL(active_overlays)
 	return ..()
 
 /obj/item/circuit_component/object_overlay/populate_options()
+	procstart = null
+	src.procstart = null
 	var/static/component_options = list(
 		"Corners (Blue)" = "hud_corners",
 		"Corners (Red)" = "hud_corners_red",
@@ -66,15 +72,21 @@
 	options_map = component_options
 
 /obj/item/circuit_component/object_overlay/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	if(istype(shell, /obj/item/organ/cyberimp/bci))
 		bci = shell
 		RegisterSignal(shell, COMSIG_ORGAN_REMOVED, PROC_REF(on_organ_removed))
 
 /obj/item/circuit_component/object_overlay/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	bci = null
 	UnregisterSignal(shell, COMSIG_ORGAN_REMOVED)
 
 /obj/item/circuit_component/object_overlay/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!bci)
 		return
 
@@ -93,6 +105,8 @@
 		active_overlays -= REF(target_atom)
 
 /obj/item/circuit_component/object_overlay/proc/show_to_owner(atom/target_atom, mob/living/owner)
+	procstart = null
+	src.procstart = null
 	if(length(active_overlays) >= OBJECT_OVERLAY_LIMIT)
 		return
 
@@ -126,6 +140,8 @@
 	active_overlays[REF(target_atom)] = alt_appearance
 
 /obj/item/circuit_component/object_overlay/proc/on_organ_removed(datum/source, mob/living/carbon/owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	QDEL_LIST_ASSOC_VAL(active_overlays)

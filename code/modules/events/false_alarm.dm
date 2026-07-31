@@ -8,6 +8,8 @@
 	admin_setup = list(/datum/event_admin_setup/listed_options/false_alarm)
 
 /datum/round_event_control/falsealarm/can_spawn_event(players_amt, allow_magic = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return .
@@ -24,6 +26,8 @@
 	var/forced_type
 
 /datum/round_event/falsealarm/announce(fake)
+	procstart = null
+	src.procstart = null
 	if(fake) //What are you doing
 		return
 
@@ -66,6 +70,8 @@
 		qdel(ruleset)
 
 /proc/get_potential_false_alarm()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/datum/round_event_control/controller as anything in SSevents.control)
 		if(istype(controller, /datum/round_event_control/falsealarm))
@@ -84,7 +90,11 @@
 	normal_run_option = "Random Fake Event"
 
 /datum/event_admin_setup/listed_options/false_alarm/get_list()
+	procstart = null
+	src.procstart = null
 	return get_potential_false_alarm()
 
 /datum/event_admin_setup/listed_options/false_alarm/apply_to_event(datum/round_event/falsealarm/event)
+	procstart = null
+	src.procstart = null
 	event.forced_type = chosen

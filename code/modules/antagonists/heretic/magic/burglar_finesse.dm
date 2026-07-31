@@ -16,12 +16,16 @@
 	cast_range = 6
 
 /datum/action/cooldown/spell/pointed/burglar_finesse/is_valid_target(mob/living/carbon/human/cast_on)
+	procstart = null
+	src.procstart = null
 	if(!istype(cast_on))
 		return FALSE
 	var/obj/item/back_item = cast_on.get_item_by_slot(ITEM_SLOT_BACK)
 	return ..() && back_item?.atom_storage
 
 /datum/action/cooldown/spell/pointed/burglar_finesse/cast(mob/living/carbon/human/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cast_on.can_block_magic(antimagic_flags))
 		to_chat(cast_on, span_danger("You feel a light tug, but are otherwise fine, you were protected by holiness!"))

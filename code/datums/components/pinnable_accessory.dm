@@ -8,6 +8,8 @@
 	var/datum/callback/on_pre_pin
 
 /datum/component/pinnable_accessory/Initialize(silent = FALSE, pinning_time = 2 SECONDS, datum/callback/on_pre_pin = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!istype(parent, /obj/item/clothing/accessory))
 		return COMPONENT_INCOMPATIBLE
@@ -16,13 +18,19 @@
 	src.on_pre_pin = on_pre_pin
 
 /datum/component/pinnable_accessory/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ITEM_INTERACTING_WITH_ATOM, PROC_REF(on_atom_interact))
 
 /datum/component/pinnable_accessory/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, COMSIG_ITEM_INTERACTING_WITH_ATOM)
 
 /// Called when you whack someone with this accessory
 /datum/component/pinnable_accessory/proc/on_atom_interact(obj/item/clothing/accessory/badge, mob/living/user, atom/target, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!ishuman(target) || target == user)
 		return
@@ -32,6 +40,8 @@
 
 /// Actually try to pin it on
 /datum/component/pinnable_accessory/proc/try_to_pin(obj/item/clothing/accessory/badge, mob/living/carbon/human/distinguished, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/under/distinguished_uniform = distinguished.w_uniform
 	if(!istype(distinguished_uniform))
 		distinguished.balloon_alert(user, "no uniform to pin on!")
@@ -69,6 +79,8 @@
 
 /// Callback for do_after to check if we can still be pinned
 /datum/component/pinnable_accessory/proc/pin_checks(mob/living/pinner, mob/living/carbon/human/pinning_on)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(parent) || QDELETED(pinner) || QDELETED(pinning_on))
 		return FALSE
 	if(!pinner.is_holding(parent) || !pinner.Adjacent(pinning_on))

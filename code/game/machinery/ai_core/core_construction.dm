@@ -3,6 +3,8 @@
 #define CHECK_STATE_CALLBACK(maintained_state) CALLBACK(src, PROC_REF(check_state), maintained_state)
 
 /obj/structure/ai_core/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(state != CORE_STATE_EMPTY)
 		balloon_alert(user, "frame has to be empty!")
 		return ITEM_INTERACT_BLOCKING
@@ -17,6 +19,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/ai_core/can_be_unfasten_wrench(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	if(state >= CORE_STATE_FINISHED)
 		if(!silent)
 			balloon_alert(user, "can't be unanchored while operational!")
@@ -25,6 +29,8 @@
 	return ..()
 
 /obj/structure/ai_core/wrench_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	switch(default_unfasten_wrench(user, tool))
 		if(FAILED_UNFASTEN)
 			return ITEM_INTERACT_BLOCKING
@@ -34,6 +40,8 @@
 	return NONE
 
 /obj/structure/ai_core/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	switch(state)
 		if(CORE_STATE_EMPTY)
 			balloon_alert(user, "nothing to screw in there!")
@@ -92,6 +100,8 @@
 			return ITEM_INTERACT_SUCCESS
 
 /obj/structure/ai_core/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	switch(state)
 		if(CORE_STATE_EMPTY)
 			balloon_alert(user, "nothing to pry out!")
@@ -128,6 +138,8 @@
 			return ITEM_INTERACT_SUCCESS
 
 /obj/structure/ai_core/wirecutter_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	switch(state)
 		if(CORE_STATE_EMPTY to CORE_STATE_CIRCUIT)
 			balloon_alert(user, "nothing to cut!")
@@ -155,6 +167,8 @@
 
 /// Handles the interaction chain the same as item_interaction. Exists to isolate construction behaviour from other item behaviour.
 /obj/structure/ai_core/proc/construction_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/circuitboard/aicore))
 		return install_board(user, tool) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 
@@ -169,6 +183,8 @@
 	return NONE
 
 /obj/structure/ai_core/proc/install_board(mob/living/user, obj/item/circuitboard/aicore/circuit)
+	procstart = null
+	src.procstart = null
 	if(state != CORE_STATE_EMPTY)
 		return FALSE
 	if(!user.transferItemToLoc(circuit, src))
@@ -180,6 +196,8 @@
 	return TRUE
 
 /obj/structure/ai_core/proc/add_cabling(mob/living/user, obj/item/stack/cable_coil/cable)
+	procstart = null
+	src.procstart = null
 	if(state != CORE_STATE_SCREWED)
 		return FALSE
 
@@ -195,6 +213,8 @@
 	return TRUE
 
 /obj/structure/ai_core/proc/install_mmi(mob/living/user, obj/item/mmi/mmi)
+	procstart = null
+	src.procstart = null
 	if(state != CORE_STATE_CABLED)
 		return FALSE
 
@@ -224,6 +244,8 @@
 	return TRUE
 
 /obj/structure/ai_core/proc/install_glass(mob/living/user, obj/item/stack/sheet/rglass/glass)
+	procstart = null
+	src.procstart = null
 	if(state != CORE_STATE_CABLED)
 		return FALSE
 

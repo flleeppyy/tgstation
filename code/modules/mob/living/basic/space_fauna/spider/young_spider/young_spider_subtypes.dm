@@ -12,6 +12,8 @@
 	speed = 0.7
 
 /mob/living/basic/spider/growing/young/guard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddElement(/datum/element/web_walker, /datum/movespeed_modifier/average_web)
@@ -31,6 +33,8 @@
 	speed = 1
 
 /mob/living/basic/spider/growing/young/ambush/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	GRANT_ACTION(/datum/action/cooldown/mob_cooldown/sneak/spider)
@@ -54,6 +58,8 @@
 	sight = SEE_SELF|SEE_MOBS
 
 /mob/living/basic/spider/growing/young/scout/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 
@@ -73,6 +79,8 @@
 	poison_per_bite = 2
 
 /mob/living/basic/spider/growing/young/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddElement(/datum/element/web_walker, /datum/movespeed_modifier/fast_web)
@@ -94,6 +102,8 @@
 	web_type = /datum/action/cooldown/mob_cooldown/lay_web/sealer
 
 /mob/living/basic/spider/growing/young/nurse/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_MEDICAL_HUD, INNATE_TRAIT)
 
@@ -127,6 +137,8 @@
 	poison_type = /datum/reagent/toxin/acid
 
 /mob/living/basic/spider/growing/young/tangle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/healing_touch,\
 		heal_brute = 10,\
@@ -144,6 +156,8 @@
 
 /// Prevent you from healing other tangle spiders, or healing when on fire
 /mob/living/basic/spider/growing/young/tangle/proc/can_mend(mob/living/source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if (on_fire)
 		balloon_alert(src, "on fire!")
 		return FALSE
@@ -166,6 +180,8 @@
 	speed = 1
 
 /mob/living/basic/spider/growing/young/tank/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/healing_touch,\
 		heal_brute = 5,\
@@ -183,6 +199,8 @@
 
 /// Prevent you from healing when on fire
 /mob/living/basic/spider/growing/young/tank/proc/can_mend(mob/living/source, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if (on_fire)
 		balloon_alert(src, "on fire!")
 		return FALSE
@@ -203,6 +221,8 @@
 	speed = 1
 
 /mob/living/basic/spider/growing/young/breacher/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddElement(/datum/element/web_walker, /datum/movespeed_modifier/below_average_web)
@@ -224,6 +244,8 @@
 	web_type = /datum/action/cooldown/mob_cooldown/lay_web/sealer
 
 /mob/living/basic/spider/growing/young/midwife/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddElement(/datum/element/web_walker, /datum/movespeed_modifier/average_web)
@@ -260,6 +282,8 @@
 	obj_damage = 40
 
 /mob/living/basic/spider/growing/young/tarantula/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	AddElement(/datum/element/web_walker, /datum/movespeed_modifier/slow_web)

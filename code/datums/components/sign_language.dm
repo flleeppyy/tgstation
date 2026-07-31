@@ -42,9 +42,13 @@
 
 /// Replace specific characters in the input string with periods.
 /datum/component/sign_language/proc/sanitize_message(input)
+	procstart = null
+	src.procstart = null
 	return replacetext(input, omissions, ".")
 
 /datum/component/sign_language/Initialize()
+	procstart = null
+	src.procstart = null
 	// Non-Carbon mobs can't use sign language.
 	if (!iscarbon(parent))
 		stack_trace("Sign Language component added to [parent] ([parent?.type]) which is not a /mob/living/carbon subtype.")
@@ -52,16 +56,22 @@
 	linked_action = new(src)
 
 /datum/component/sign_language/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(linked_action)
 	return ..()
 
 /datum/component/sign_language/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	// Sign language is toggled on/off via adding/removing TRAIT_SIGN_LANG.
 	RegisterSignal(parent, SIGNAL_ADDTRAIT(TRAIT_SIGN_LANG), PROC_REF(enable_sign_language))
 	RegisterSignal(parent, SIGNAL_REMOVETRAIT(TRAIT_SIGN_LANG), PROC_REF(disable_sign_language))
 	linked_action.Grant(parent)
 
 /datum/component/sign_language/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	disable_sign_language()
 	UnregisterSignal(parent, list(
 		SIGNAL_ADDTRAIT(TRAIT_SIGN_LANG),
@@ -72,6 +82,8 @@
 /// Enables signing for the parent Carbon, stopping them from speaking vocally.
 /// This proc is only called directly after TRAIT_SIGN_LANG is added to the Carbon.
 /datum/component/sign_language/proc/enable_sign_language()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/carbon/carbon_parent = parent
@@ -99,6 +111,8 @@
 /// Disables signing for the parent Carbon, allowing them to speak vocally.
 /// This proc is only called directly after TRAIT_SIGN_LANG is removed from the Carbon.
 /datum/component/sign_language/proc/disable_sign_language()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/carbon/carbon_parent = parent
@@ -126,6 +140,8 @@
 ///Signal proc for [COMSIG_CARBON_GAIN_ORGAN]
 ///Applies the new say mod to any tongues that have appeared!
 /datum/component/sign_language/proc/on_added_organ(mob/living/source, obj/item/organ/new_organ)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(new_organ, /obj/item/organ/tongue))
@@ -136,6 +152,8 @@
 /// Signal proc for [COMSIG_MOB_TRY_SPEECH]
 /// Sign languagers can always speak regardless of they're mute (as long as they're not mimes)
 /datum/component/sign_language/proc/on_try_speech(mob/living/source, message, ignore_spam, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mob/living/carbon/carbon_parent = parent
@@ -175,6 +193,8 @@
 
 /// Checks to see what state this person is in and if they are able to sign or not.
 /datum/component/sign_language/proc/check_signables_state()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/carbon_parent = parent
 	// See how many hands we can actually use (this counts disabled / missing limbs for us)
 	var/total_hands = carbon_parent.usable_hands
@@ -226,6 +246,8 @@
  * * returns SPELL_INVOCATION_FAIL or SPELL_INVOCATION_SUCCESS
  */
 /datum/component/sign_language/proc/can_cast_spell(mob/living/carbon/source, datum/action/cooldown/spell/spell, feedback)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/mob/living/carbon/carbon_parent = parent
 	if(spell.invocation_type == INVOCATION_EMOTE) // Mime spells are not cast with signs
@@ -240,6 +262,8 @@
 /// Signal proc for [COMSIG_LIVING_TREAT_MESSAGE]
 /// Changes our message based on conditions that limit or alter our ability to communicate
 /datum/component/sign_language/proc/on_treat_living_message(atom/movable/source, list/message_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(check_signables_state() == SIGN_ONE_HAND)
@@ -253,6 +277,8 @@
 /// Signal proc for [COMSIG_MOVABLE_SAY_QUOTE]
 /// Removes exclamation/question marks.
 /datum/component/sign_language/proc/on_say_quote(atom/movable/source, list/message_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	message_args[MOVABLE_SAY_QUOTE_MESSAGE] = sanitize_message(message_args[MOVABLE_SAY_QUOTE_MESSAGE])
@@ -260,12 +286,16 @@
 /// Signal proc for [COMSIG_MOVABLE_USING_RADIO]
 /// Disallows us from speaking on comms if we don't have the special trait.
 /datum/component/sign_language/proc/on_using_radio(atom/movable/source, obj/item/radio/radio)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	return HAS_TRAIT(source, TRAIT_CAN_SIGN_ON_COMMS) ? NONE : COMPONENT_CANNOT_USE_RADIO
 
 /// Replaces emphatic punctuation with periods. Changes tonal indicator and emotes based on what is typed.
 /datum/component/sign_language/proc/on_say(mob/living/carbon/carbon_parent, list/speech_args)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	// The original message
@@ -310,6 +340,8 @@
 
 /// Send a visible message depending on the tone of the message that the sender is trying to convey to the world.
 /datum/component/sign_language/proc/emote_tone(mob/living/carbon/carbon_parent, emote_tone)
+	procstart = null
+	src.procstart = null
 	if(ishuman(carbon_parent))
 		var/mob/living/carbon/human/human_parent = carbon_parent
 		if(human_parent.is_face_obscured())
@@ -325,6 +357,8 @@
 
 /// Removes the tonal indicator overlay completely
 /datum/component/sign_language/proc/remove_tonal_indicator()
+	procstart = null
+	src.procstart = null
 	if(isnull(tonal_indicator))
 		return
 	var/mob/living/carbon/carbon_parent = parent

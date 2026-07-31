@@ -69,6 +69,8 @@
 	var/datum/material_container/materials
 
 /obj/machinery/drone_dispenser/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	materials = new ( \
 		src, \
@@ -84,6 +86,8 @@
 	REGISTER_REQUIRED_MAP_ITEM(1, 1)
 
 /obj/machinery/drone_dispenser/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(materials)
 	return ..()
 
@@ -169,6 +173,8 @@
 	end_create_message = "dispenses a pair of binoculars."
 
 /obj/machinery/drone_dispenser/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/material_requirement_string = "It needs "
 	if (iron_cost > 0)
@@ -184,6 +190,8 @@
 		. += span_warning("[recharging_text]")
 
 /obj/machinery/drone_dispenser/process()
+	procstart = null
+	src.procstart = null
 	if((machine_stat & (NOPOWER|BROKEN)) || !anchored)
 		return
 
@@ -235,6 +243,8 @@
 			update_appearance()
 
 /obj/machinery/drone_dispenser/proc/count_shells()
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/actual_shell in loc)
 		for(var/potential_item in dispense_type)
@@ -242,6 +252,8 @@
 				.++
 
 /obj/machinery/drone_dispenser/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & (BROKEN|NOPOWER))
 		icon_state = icon_off
 		return ..()
@@ -255,12 +267,16 @@
 	return ..()
 
 /obj/machinery/drone_dispenser/crowbar_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	materials.retrieve_all()
 	tool.play_tool_sound(src)
 	to_chat(user, span_notice("You retrieve the materials from [src]."))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/drone_dispenser/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!(machine_stat & BROKEN))
 		to_chat(user, span_warning("[src] doesn't need repairs."))
 		return ITEM_INTERACT_BLOCKING
@@ -285,6 +301,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/drone_dispenser/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

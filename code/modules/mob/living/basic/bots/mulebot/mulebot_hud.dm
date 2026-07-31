@@ -1,4 +1,6 @@
 /mob/living/basic/bot/mulebot/proc/set_cell_hud()
+	procstart = null
+	src.procstart = null
 	if(!has_power())
 		set_hud_image_state(DIAG_BATT_HUD, "hudnobatt")
 		return
@@ -21,6 +23,8 @@
 	var/hovering = FALSE
 
 /atom/movable/screen/mob_charge/proc/update_battery_overlay(atom/target_battery)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stock_parts/power_store/cell/my_cell = target_battery || (locate() in get_mob())
 	if(isnull(my_cell))
 		battery_overlay = null
@@ -29,6 +33,8 @@
 	update_appearance(UPDATE_ICON)
 
 /atom/movable/screen/mob_charge/proc/calculate_charge()
+	procstart = null
+	src.procstart = null
 	var/obj/item/stock_parts/power_store/cell/my_battery = locate() in get_mob()
 	var/charge_value = isnull(my_battery) ? 0 : round(my_battery.charge/my_battery.maxcharge * 100 , 1)
 	current_charge_level = round(charge_value * 4 / 100)
@@ -36,16 +42,22 @@
 	update_appearance(UPDATE_ICON)
 
 /atom/movable/screen/mob_charge/New(loc, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	charge_overlay = image(loc = src, layer = src.layer+0.2, pixel_y = -5)
 	update_battery_overlay()
 
 /atom/movable/screen/mob_charge/Destroy()
+	procstart = null
+	src.procstart = null
 	charge_overlay = null
 	battery_overlay = null
 	return ..()
 
 /atom/movable/screen/mob_charge/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += mutable_appearance(icon, "ccharger-o[current_charge_level]")
 	if(battery_overlay)
@@ -54,6 +66,8 @@
 		. |= charge_overlay
 
 /atom/movable/screen/mob_charge/MouseEntered(location,control,params)
+	procstart = null
+	src.procstart = null
 	if(usr != get_mob())
 		return
 	. = ..()
@@ -61,6 +75,8 @@
 	calculate_charge()
 
 /atom/movable/screen/mob_charge/MouseExited(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(usr != get_mob())
 		return
 	. = ..()
@@ -70,5 +86,7 @@
 /datum/hud/living/mulebot
 
 /datum/hud/living/mulebot/initialize_screen_objects()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_screen_object(/atom/movable/screen/mob_charge, HUD_MULEBOT_CHARGE, HUD_GROUP_INFO)

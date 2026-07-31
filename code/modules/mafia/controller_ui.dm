@@ -1,5 +1,7 @@
 // 'user' can be a modPC, hence why it's pathed to the atom
 /datum/mafia_controller/ui_static_data(atom/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	if(usr?.client?.holder)
@@ -24,6 +26,8 @@
 
 // 'user' can be a modPC, hence why it's pathed to the atom
 /datum/mafia_controller/ui_data(atom/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["phase"] = phase
@@ -77,11 +81,15 @@
 	return data
 
 /datum/mafia_controller/ui_assets(mob/user)
+	procstart = null
+	src.procstart = null
 	return list(
 		get_asset_datum(/datum/asset/spritesheet_batched/mafia),
 	)
 
 /datum/mafia_controller/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -257,9 +265,13 @@
 				judgement_guilty_votes += user_role
 
 /datum/mafia_controller/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 /datum/mafia_controller/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, null)
 	if(!ui)
 		ui = new(user, src, "MafiaPanel")

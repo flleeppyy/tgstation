@@ -8,6 +8,8 @@
 /// Equips the given Human with a new instance of the given tank type and a breathing mask.
 /// Returns the new equipped tank.
 /datum/unit_test/breath/proc/equip_labrat_internals(mob/living/carbon/human/lab_rat, tank_type)
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/mask/breath/mask = allocate(/obj/item/clothing/mask/breath)
 	var/obj/item/tank/internals/source = allocate(tank_type)
 	lab_rat.equip_to_slot_if_possible(mask, ITEM_SLOT_MASK)
@@ -15,6 +17,8 @@
 	return source
 
 /datum/unit_test/breath/breath_sanity/Run()
+	procstart = null
+	src.procstart = null
 	// Breathing from turf.
 	var/mob/living/carbon/human/lab_rat = allocate(/mob/living/carbon/human/consistent)
 	lab_rat.forceMove(run_loc_floor_bottom_left)
@@ -49,6 +53,8 @@
 	TEST_ASSERT(lab_rat.failed_last_breath && lab_rat.has_alert(ALERT_NOT_ENOUGH_OXYGEN), "Humans should suffocate from pure n2 tanks")
 
 /datum/unit_test/breath/breath_sanity/Destroy()
+	procstart = null
+	src.procstart = null
 	//Reset initial_gas_mix to avoid future issues on other tests
 	var/turf/open/to_fill = run_loc_floor_bottom_left
 	to_fill.initial_gas_mix = OPENTURF_DEFAULT_ATMOS
@@ -58,6 +64,8 @@
 /datum/unit_test/breath/breath_sanity_plasmamen
 
 /datum/unit_test/breath/breath_sanity_plasmamen/Run()
+	procstart = null
+	src.procstart = null
 	// Breathing from pure Plasma internals.
 	var/mob/living/carbon/human/species/plasma/lab_rat = allocate(/mob/living/carbon/human/species/plasma)
 	var/obj/item/tank/internals/plasmaman/source = equip_labrat_internals(lab_rat, /obj/item/tank/internals/plasmaman)
@@ -86,6 +94,8 @@
 /datum/unit_test/breath/breath_sanity_ashwalker
 
 /datum/unit_test/breath/breath_sanity_ashwalker/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/species/lizard/ashwalker/lab_rat = allocate(/mob/living/carbon/human/species/lizard/ashwalker)
 
 	turn_room_into_lavaland()
@@ -94,6 +104,8 @@
 
 /// Replaces the air mix in the entire room with lavaland air mix
 /datum/unit_test/breath/breath_sanity_ashwalker/proc/turn_room_into_lavaland()
+	procstart = null
+	src.procstart = null
 	var/area/unit_test_area = get_area(run_loc_floor_bottom_left)
 	var/list/turf/lavalandable_turfs = unit_test_area.get_turfs_from_all_zlevels()
 

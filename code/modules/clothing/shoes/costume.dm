@@ -20,6 +20,8 @@
 	bio = 10
 
 /obj/item/clothing/shoes/griffin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	create_storage(storage_type = /datum/storage/pockets/shoes)
@@ -51,6 +53,8 @@
 	custom_materials = list(/datum/material/bronze = SHEET_MATERIAL_AMOUNT)
 
 /obj/item/clothing/shoes/bronze/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/squeak, list('sound/machines/clockcult/integration_cog_install.ogg' = 1, 'sound/effects/magic/clockwork/fellowship_armory.ogg' = 1), 50, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
 	AddElement(/datum/element/adjust_fishing_difficulty, 4)
@@ -89,16 +93,22 @@
 	flags_1 = IS_PLAYER_COLORABLE_1
 
 /obj/item/clothing/shoes/glow/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/gags_recolorable)
 	update_icon(UPDATE_OVERLAYS)
 
 /obj/item/clothing/shoes/glow/worn_overlays(mutable_appearance/standing, isinhands, icon_file, bodyshape = NONE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(DEFAULT_SHOES_FILE, "glow_shoes_emissive", src, alpha = src.alpha)
 
 /obj/item/clothing/shoes/glow/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += emissive_appearance('icons/obj/clothing/shoes.dmi', "glow_shoes_emissive", offset_spokesman = src, alpha = src.alpha)
 
@@ -121,6 +131,8 @@
 	flags_1 = IS_PLAYER_COLORABLE_1
 
 /obj/item/clothing/shoes/jester_shoes/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	LoadComponent(/datum/component/squeak, list('sound/effects/jingle.ogg' = 1), 50, falloff_exponent = 20, step_delay_override = 0)
@@ -132,6 +144,8 @@
 	inhand_icon_state = "ducky_shoes"
 
 /obj/item/clothing/shoes/ducky_shoes/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	create_storage(storage_type = /datum/storage/pockets/shoes)
@@ -139,10 +153,14 @@
 	AddElement(/datum/element/adjust_fishing_difficulty, -7) //deploy tactical duckling lure
 
 /obj/item/clothing/shoes/ducky_shoes/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(slot & ITEM_SLOT_FEET)
 		user.AddElementTrait(TRAIT_WADDLING, SHOES_TRAIT, /datum/element/waddling)
 
 /obj/item/clothing/shoes/ducky_shoes/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	REMOVE_TRAIT(user, TRAIT_WADDLING, SHOES_TRAIT)

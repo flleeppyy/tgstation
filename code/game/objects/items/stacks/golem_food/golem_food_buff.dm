@@ -11,6 +11,8 @@
 
 /// Returns true if the passed mob can currently gain this buff
 /datum/golem_food_buff/proc/can_consume(mob/living/consumer)
+	procstart = null
+	src.procstart = null
 	if (!exclusive)
 		return TRUE
 	var/datum/status_effect/golem/existing = consumer.has_status_effect(/datum/status_effect/golem)
@@ -18,12 +20,16 @@
 
 /// Called when someone actually eats this
 /datum/golem_food_buff/proc/on_consumption(mob/living/carbon/consumer, atom/movable/consumed, multiplier = 1)
+	procstart = null
+	src.procstart = null
 	if (!HAS_TRAIT(consumer, TRAIT_ROCK_METAMORPHIC))
 		return
 	apply_effects(consumer, consumed, multiplier)
 
 /// Apply our desired effects to the eater
 /datum/golem_food_buff/proc/apply_effects(mob/living/carbon/consumer, atom/movable/consumed, multiplier = 1)
+	procstart = null
+	src.procstart = null
 	if (status_effect)
 		consumer.apply_status_effect(status_effect, multiplier)
 
@@ -43,6 +49,8 @@
 	var/list/damage_heal_order = list(BRUTE, BURN)
 
 /datum/golem_food_buff/iron/apply_effects(mob/living/carbon/consumer, atom/movable/consumed, multiplier = 1)
+	procstart = null
+	src.procstart = null
 	if (consumer.health == consumer.maxHealth)
 		return
 	consumer.heal_ordered_damage(healed_amount * multiplier, damage_heal_order)
@@ -91,6 +99,8 @@
 	added_info = "After consumption, you can launch this mineral like a rocket. It's a little hard to keep down."
 
 /datum/golem_food_buff/gibtonite/apply_effects(mob/living/carbon/human/consumer, atom/movable/consumed, multiplier = 1)
+	procstart = null
+	src.procstart = null
 	var/obj/item/gibtonite_hand/new_hand = new(null, /* held_gibtonite = */ consumed)
 
 	if(consumer.put_in_hands(new_hand))
@@ -109,6 +119,8 @@
 	added_info = "After consumption, you can use the stored power to teleport yourself."
 
 /datum/golem_food_buff/bluespace/apply_effects(mob/living/carbon/human/consumer, atom/movable/consumed, multiplier = 1)
+	procstart = null
+	src.procstart = null
 	if(multiplier <= 0.2)
 		return
 	var/obj/item/bluespace_finger/new_hand = new

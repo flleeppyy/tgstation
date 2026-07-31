@@ -16,6 +16,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/food/watermelonslice/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/watermelonjuice
 
 /obj/item/food/watermelonmush
@@ -34,6 +36,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/food/watermelonmush/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/watermelonjuice
 
 /obj/item/food/holymelonslice
@@ -52,6 +56,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/food/holymelonslice/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/water/holywater
 
 /obj/item/food/holymelonmush
@@ -70,6 +76,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/food/holymelonmush/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/water/holywater
 
 /obj/item/food/barrelmelonslice
@@ -88,6 +96,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/food/barrelmelonslice/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/ethanol/beer
 
 /obj/item/food/barrelmelonmush
@@ -106,6 +116,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/food/barrelmelonmush/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/ethanol/beer
 
 /obj/item/food/appleslice
@@ -124,6 +136,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/food/appleslice/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/applejuice
 
 /obj/item/food/hugemushroomslice
@@ -140,6 +154,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/food/hugemushroomslice/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_WALKING_MUSHROOM, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
@@ -205,6 +221,8 @@
 	var/stink_particles
 
 /obj/item/food/badrecipe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(src, COMSIG_ITEM_GRILL_PROCESS, PROC_REF(OnGrill))
 	RegisterSignals(src, list(COMSIG_ITEM_GRILLED_RESULT, COMSIG_ITEM_BAKED_RESULT, COMSIG_ITEM_MICROWAVE_COOKED_RESULT, COMSIG_OBJ_DECOMPOSITION_RESULT), PROC_REF(convert_to_bad_food))
@@ -213,6 +231,8 @@
 
 ///Prevents grilling burnt shit from well, burning.
 /obj/item/food/badrecipe/proc/OnGrill()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return COMPONENT_HANDLED_GRILLING
 
@@ -221,6 +241,8 @@
  * So we want to convert most of the consumable reagents into bad food, which is what makes the burned mess a bad thing to eat, taste aside.
  */
 /obj/item/food/badrecipe/proc/convert_to_bad_food(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/bad_food_amount = 0
 	for(var/datum/reagent/consumable/food_reagent in reagents.reagent_list)
@@ -231,14 +253,20 @@
 	reagents.add_reagent(/datum/reagent/toxin/bad_food, bad_food_amount, reagtemp = reagents.chem_temp)
 
 /obj/item/food/badrecipe/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if (stink_particles)
 		remove_shared_particles(stink_particles)
 	return ..()
 
 // We override the parent procs here to prevent burned messes from cooking into burned messes.
 /obj/item/food/badrecipe/make_grillable()
+	procstart = null
+	src.procstart = null
 	return
 /obj/item/food/badrecipe/make_bakeable()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/food/badrecipe/moldy
@@ -257,6 +285,8 @@
 		but it is also teeming with various microscopic cultures. <i>It moves when you're not looking.</i>"
 
 /obj/item/food/badrecipe/moldy/bacteria/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MOLD, CELL_VIRUS_TABLE_GENERIC, rand(2, 4), 25)
 
@@ -390,11 +420,15 @@
 	var/can_stick = TRUE
 
 /obj/item/food/butter/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (can_stick)
 		. += span_notice("If you had a rod you could make <b>butter on a stick</b>.")
 
 /obj/item/food/butter/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/stack/rods) || !can_stick)
 		return NONE
 
@@ -421,6 +455,8 @@
 	can_stick = FALSE
 
 /obj/item/food/butter/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/butterslice, 3, 3 SECONDS, table_required = TRUE, screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/butterslice
@@ -452,6 +488,8 @@
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/food/pineappleslice/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/pineapplejuice
 
 /obj/item/food/crab_rangoon
@@ -554,6 +592,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/food/seaweedsheet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ingredients_holder, /obj/item/food/sushi/empty, CUSTOM_INGREDIENT_ICON_FILL, max_ingredients = 6)
 
@@ -599,6 +639,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/onigiri/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ingredients_holder, /obj/item/food/onigiri/empty, CUSTOM_INGREDIENT_ICON_NOCHANGE, max_ingredients = 4)
 
@@ -641,13 +683,19 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/food/pickle/juice_typepath()
+	procstart = null
+	src.procstart = null
 	return /datum/reagent/consumable/pickle
 
 /obj/item/food/pickle/make_edible()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponentFrom(SOURCE_EDIBLE_INNATE, /datum/component/edible, check_liked = CALLBACK(src, PROC_REF(check_liked)))
 
 /obj/item/food/pickle/proc/check_liked(mob/living/carbon/human/consumer)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/liver/liver = consumer.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(!HAS_TRAIT(consumer, TRAIT_AGEUSIA) && liver && HAS_TRAIT(liver, TRAIT_CORONER_METABOLISM))
 		return FOOD_LIKED
@@ -725,6 +773,8 @@
 	custom_materials = list(/datum/material/meat = MEATDISH_MATERIAL_AMOUNT)
 
 /obj/item/food/moussaka/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE,  /obj/item/food/moussaka_slice, 4, 3 SECONDS, table_required = TRUE,  screentip_verb = "Cut")
 
 /obj/item/food/moussaka_slice
@@ -757,6 +807,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/candied_pineapple/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state]_[rand(1, 3)]"
 
@@ -775,9 +827,13 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/raw_pita_bread/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/pita_bread, rand(15 SECONDS, 30 SECONDS), TRUE, TRUE)
 
 /obj/item/food/raw_pita_bread/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/pita_bread, rand(15 SECONDS, 30 SECONDS), TRUE, TRUE)
 
 /obj/item/food/pita_bread
@@ -858,6 +914,8 @@
 	foodtypes = SEAFOOD|RAW
 
 /obj/item/food/ink_sac/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/splat, \
 		memory_type = /datum/memory/witnessed_inking, \
@@ -868,6 +926,8 @@
 	)
 
 /obj/item/food/ink_sac/proc/blind_em(mob/living/victim, can_splat_on)
+	procstart = null
+	src.procstart = null
 	if(can_splat_on)
 		victim.adjust_temp_blindness_up_to(2.5 SECONDS, 3 SECONDS)
 		victim.adjust_confusion_up_to(2.5 SECONDS, 3 SECONDS)

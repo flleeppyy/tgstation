@@ -10,6 +10,8 @@
 	var/mob/living/wearer
 
 /datum/component/clothing_fov_visor/Initialize(fov_angle)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isclothing(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -18,11 +20,15 @@
 	src.visor_up = clothing_parent.up //Initial values could vary, so we need to get it.
 
 /datum/component/clothing_fov_visor/RegisterWithParent()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equip))
 	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(on_drop))
 	RegisterSignal(parent, COMSIG_CLOTHING_VISOR_TOGGLE, PROC_REF(on_visor_toggle))
 
 /datum/component/clothing_fov_visor/UnregisterFromParent()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(parent, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED, COMSIG_CLOTHING_VISOR_TOGGLE))
 	if(wearer)
 		wearer.remove_fov_trait(src, fov_angle)
@@ -32,6 +38,8 @@
 
 /// On dropping the item, remove the FoV trait if visor was down.
 /datum/component/clothing_fov_visor/proc/on_drop(datum/source, mob/living/dropper)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	is_worn = FALSE
 	if(wearer) // Prevent any edge cases where on_drop is called with a different dropper to the one who equipped the visor.
@@ -45,6 +53,8 @@
 
 /// On equipping the item, add the FoV trait if visor isn't up.
 /datum/component/clothing_fov_visor/proc/on_equip(obj/item/source, mob/living/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!(source.slot_flags & slot)) //If EQUIPPED TO HANDS FOR EXAMPLE
 		return
@@ -60,12 +70,16 @@
 	equipper.update_fov()
 
 /datum/component/clothing_fov_visor/proc/on_wearer_deleted(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	wearer.remove_fov_trait(src, fov_angle)
 	wearer = null
 
 /// On toggling the visor, we may want to add or remove FOV trait from the wearer.
 /datum/component/clothing_fov_visor/proc/on_visor_toggle(datum/source, visor_state)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	visor_up = visor_state
 	if(!is_worn)

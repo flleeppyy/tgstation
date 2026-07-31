@@ -58,16 +58,22 @@
 	)
 
 /obj/item/modular_computer/pda/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(inserted_item)
 		inserted_item = new inserted_item(src)
 
 /obj/item/modular_computer/pda/Destroy()
+	procstart = null
+	src.procstart = null
 	if(istype(inserted_item))
 		QDEL_NULL(inserted_item)
 	return ..()
 
 /obj/item/modular_computer/pda/install_default_programs()
+	procstart = null
+	src.procstart = null
 	var/list/apps_to_download = list()
 	if(has_pda_programs)
 		apps_to_download += default_programs + pda_programs
@@ -78,6 +84,8 @@
 		store_file(program_type)
 
 /obj/item/modular_computer/pda/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stored_id)
 		. += mutable_appearance(overlays_icon, "id_overlay")
@@ -87,11 +95,15 @@
 		. += mutable_appearance(overlays_icon, "pai_inserted")
 
 /obj/item/modular_computer/pda/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(HAS_TRAIT(src, TRAIT_PDA_MESSAGE_MENU_RIGGED))
 		explode(user, from_message_menu = TRUE)
 
 /obj/item/modular_computer/pda/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	// bypass literacy checks to access syndicate uplink
 	var/datum/component/uplink/hidden_uplink = GetComponent(/datum/component/uplink)
 	if(hidden_uplink?.owner && HAS_TRAIT(user, TRAIT_ILLITERATE))
@@ -105,6 +117,8 @@
 	return ..()
 
 /obj/item/modular_computer/pda/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if(!inserted_disk || !ismachinery(target))
 		return ..()
 
@@ -133,6 +147,8 @@
 	return TRUE
 
 /obj/item/modular_computer/pda/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(inserted_item)
@@ -145,11 +161,15 @@
 	return . || NONE
 
 /obj/item/modular_computer/pda/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(iscash(interacting_with))
 		return money_act(user,interacting_with)
 	return NONE
 
 /obj/item/modular_computer/pda/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -170,11 +190,15 @@
 
 
 /obj/item/modular_computer/pda/item_ctrl_click(mob/user)
+	procstart = null
+	src.procstart = null
 	remove_pen(user)
 	return CLICK_ACTION_SUCCESS
 
 ///Finds how hard it is to send a virus to this tablet, checking all programs downloaded.
 /obj/item/modular_computer/pda/proc/get_detomatix_difficulty()
+	procstart = null
+	src.procstart = null
 	var/detomatix_difficulty
 
 	for(var/datum/computer_file/program/downloaded_apps in stored_files)
@@ -183,6 +207,8 @@
 	return detomatix_difficulty
 
 /obj/item/modular_computer/pda/proc/remove_pen(mob/user)
+	procstart = null
+	src.procstart = null
 
 	if(issilicon(user) || !user.can_perform_action(src, FORBID_TELEKINESIS_REACH | NEED_DEXTERITY)) //TK doesn't work even with this removed but here for readability
 		return
@@ -195,6 +221,8 @@
 		playsound(src, 'sound/machines/pda_button/pda_button2.ogg', 50, TRUE)
 
 /obj/item/modular_computer/pda/proc/swap_pen(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(inserted_item)
 		balloon_alert(user, "swapped pens")
 		user.put_in_hands(inserted_item)
@@ -203,6 +231,8 @@
 		playsound(src, 'sound/machines/pda_button/pda_button1.ogg', 50, TRUE)
 
 /obj/item/modular_computer/pda/proc/explode(mob/target, mob/bomber, from_message_menu = FALSE)
+	procstart = null
+	src.procstart = null
 	var/turf/current_turf = get_turf(src)
 
 	if(from_message_menu)
@@ -240,6 +270,8 @@
  * * owner_client - The client whose prefs we'll use to set the ringtone of this PDA.
  */
 /obj/item/modular_computer/pda/proc/update_pda_prefs(client/owner_client)
+	procstart = null
+	src.procstart = null
 	if(!owner_client)
 		return
 
@@ -261,6 +293,8 @@
 
 /// A simple proc to set the ringtone from a pda.
 /obj/item/modular_computer/pda/proc/update_ringtone(new_ringtone)
+	procstart = null
+	src.procstart = null
 	if(!istext(new_ringtone))
 		return
 	var/datum/computer_file/program/messenger/messenger_app = locate() in stored_files
@@ -287,6 +321,8 @@
 	)
 
 /obj/item/modular_computer/pda/nukeops/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	emag_act(forced = TRUE)
 	var/datum/computer_file/program/messenger/msg = locate() in stored_files
@@ -352,6 +388,8 @@
 	)
 
 /obj/item/modular_computer/pda/silicon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	vis_flags |= VIS_INHERIT_ID
 	silicon_owner = loc
@@ -361,20 +399,28 @@
 		return INITIALIZE_HINT_QDEL
 
 /obj/item/modular_computer/pda/silicon/Destroy()
+	procstart = null
+	src.procstart = null
 	silicon_owner = null
 	robotact = null
 	return ..()
 
 ///Silicons don't have the tools (or hands) to make circuits setups with their own PDAs.
 /obj/item/modular_computer/pda/silicon/add_shell_component(capacity)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/modular_computer/pda/silicon/turn_on(mob/user, open_ui = FALSE)
+	procstart = null
+	src.procstart = null
 	if(silicon_owner?.stat != DEAD)
 		return ..()
 	return FALSE
 
 /obj/item/modular_computer/pda/silicon/get_ntnet_status()
+	procstart = null
+	src.procstart = null
 	//No borg found
 	if(!silicon_owner)
 		return FALSE
@@ -402,6 +448,8 @@
  * RoboTact is supposed to be undeletable, so these will create runtime messages.
  */
 /obj/item/modular_computer/pda/silicon/proc/get_robotact()
+	procstart = null
+	src.procstart = null
 	if(robotact)
 		return robotact
 	robotact = find_file_by_name("robotact")
@@ -417,6 +465,8 @@
 
 //Makes the light settings reflect the borg's headlamp settings
 /obj/item/modular_computer/pda/silicon/cyborg/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["has_light"] = TRUE
 	if(iscyborg(silicon_owner))
@@ -426,6 +476,8 @@
 
 //Makes the flashlight button affect the borg rather than the tablet
 /obj/item/modular_computer/pda/silicon/toggle_flashlight(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!silicon_owner || QDELETED(silicon_owner))
 		return FALSE
 	if(iscyborg(silicon_owner))
@@ -435,6 +487,8 @@
 
 //Makes the flashlight color setting affect the borg rather than the tablet
 /obj/item/modular_computer/pda/silicon/set_flashlight_color(color)
+	procstart = null
+	src.procstart = null
 	if(!silicon_owner || QDELETED(silicon_owner) || !color)
 		return FALSE
 	if(iscyborg(silicon_owner))
@@ -444,6 +498,8 @@
 	return TRUE
 
 /obj/item/modular_computer/pda/silicon/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.deep_inventory_state
 
 /obj/item/modular_computer/pda/silicon/cyborg/syndicate
@@ -451,6 +507,8 @@
 	device_theme = PDA_THEME_SYNDICATE
 
 /obj/item/modular_computer/pda/silicon/cyborg/syndicate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscyborg(silicon_owner))
 		var/mob/living/silicon/robot/robo = silicon_owner

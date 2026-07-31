@@ -99,12 +99,16 @@
 	var/warn_admins_on_inject = FALSE
 
 /datum/mutation/Destroy()
+	procstart = null
+	src.procstart = null
 	power_path = null
 	dna = null
 	owner = null
 	return ..()
 
 /datum/mutation/proc/make_copy()
+	procstart = null
+	src.procstart = null
 	var/datum/mutation/copy = new type
 
 	copy.chromosome_name = chromosome_name
@@ -119,6 +123,8 @@
 	return copy
 
 /datum/mutation/proc/on_acquiring(mob/living/carbon/human/acquirer)
+	procstart = null
+	src.procstart = null
 	if(!istype(acquirer) || acquirer.stat == DEAD || (src in acquirer.dna.mutations))
 		return FALSE
 	if(LAZYLEN(species_allowed) && !LAZYFIND(species_allowed, acquirer.dna.species.id))
@@ -152,15 +158,23 @@
 
 /// Checks if the mob can acquire the mutation, returning FALSE prevents it
 /datum/mutation/proc/can_acquire(mob/living/carbon/human/acquirer)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/mutation/proc/get_visual_indicator()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/mutation/proc/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/mutation/proc/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(!istype(owner) || !(owner.dna.mutations?.Remove(src)))
 		return TRUE
 	. = FALSE
@@ -174,12 +188,16 @@
 		owner.remove_traits(mutation_traits, GENETIC_MUTATION)
 
 /datum/mutation/proc/on_species_change(datum/source, datum/species/new_species)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!LAZYFIND(species_allowed, new_species.id) || !can_acquire(owner))
 		dna.remove_mutation(src, src.sources) // shouldn't have this mutation at all
 
 /datum/mutation/proc/on_update_overlay(datum/source, list/overlay_list)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/mutable_appearance/mutation_appearance = mutable_appearance(mutation_icon, mutation_icon_state, -layer_used)
@@ -192,6 +210,8 @@
  * returns the instance of 'power_path' for children calls to use without calling locate() again.
  */
 /datum/mutation/proc/setup()
+	procstart = null
+	src.procstart = null
 	if(!power_path || QDELETED(owner))
 		return
 	var/datum/action/cooldown/modified_power = locate(power_path) in owner.actions
@@ -202,13 +222,19 @@
 
 /// Called before we apply a chromosome
 /datum/mutation/proc/pre_apply_chromosome()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called after we apply a chromosome
 /datum/mutation/proc/post_apply_chromosome()
+	procstart = null
+	src.procstart = null
 	setup()
 
 /datum/mutation/proc/grant_power()
+	procstart = null
+	src.procstart = null
 	if(!ispath(power_path) || !owner)
 		return FALSE
 
@@ -225,6 +251,8 @@
 // Runs through all the coefficients and uses this to determine which chromosomes the
 // mutation can take. Stores these as text strings in a list.
 /datum/mutation/proc/update_valid_chromosome_list()
+	procstart = null
+	src.procstart = null
 	valid_chrom_list.Cut()
 
 	if(can_chromosome == CHROMOSOME_NEVER)

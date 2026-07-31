@@ -6,6 +6,8 @@
 	var/writing_list_key
 
 /datum/bt_node/ai_behavior/write_on_paper/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/wizard = controller.pawn
 	var/obj/item/paper/target = controller.blackboard[paper_key]
 	if(QDELETED(target))
@@ -19,5 +21,7 @@
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/bt_node/ai_behavior/write_on_paper/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	controller.clear_blackboard_key(paper_key)

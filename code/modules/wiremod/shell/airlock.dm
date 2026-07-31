@@ -3,6 +3,8 @@
 	proper_name = "Circuit Airlock"
 
 /datum/wires/airlock/shell/on_cut(wire, mend, source)
+	procstart = null
+	src.procstart = null
 	// Don't allow them to re-enable autoclose.
 	if(wire == WIRE_TIMING)
 		return
@@ -13,6 +15,8 @@
 	autoclose = FALSE
 
 /obj/machinery/door/airlock/shell/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent( \
 		/datum/component/shell, \
@@ -22,20 +26,30 @@
 	)
 
 /obj/machinery/door/airlock/shell/check_access(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/door/airlock/shell/canAIControl(mob/user)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/door/airlock/shell/canAIHack(mob/user)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/door/airlock/shell/allowed(mob/user)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_AIRLOCK_SHELL_ALLOWED, user) & ACCESS_ALLOWED)
 		return TRUE
 	return isAdminGhostAI(user)
 
 /obj/machinery/door/airlock/shell/get_wires()
+	procstart = null
+	src.procstart = null
 	return new /datum/wires/airlock/shell(src)
 
 /obj/item/circuit_component/airlock
@@ -70,6 +84,8 @@
 	var/datum/port/output/unbolted
 
 /obj/item/circuit_component/airlock/populate_ports()
+	procstart = null
+	src.procstart = null
 	// Input Signals
 	bolt = add_input_port("Bolt", PORT_TYPE_SIGNAL)
 	unbolt = add_input_port("Unbolt", PORT_TYPE_SIGNAL)
@@ -85,6 +101,8 @@
 	unbolted = add_output_port("Unbolted", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/airlock/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/machinery/door/airlock))
 		attached_airlock = shell
@@ -93,6 +111,8 @@
 		RegisterSignal(shell, COMSIG_AIRLOCK_CLOSE, PROC_REF(on_airlock_closed))
 
 /obj/item/circuit_component/airlock/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	attached_airlock = null
 	UnregisterSignal(shell, list(
 		COMSIG_AIRLOCK_SET_BOLT,
@@ -102,6 +122,8 @@
 	return ..()
 
 /obj/item/circuit_component/airlock/proc/on_airlock_set_bolted(datum/source, should_bolt)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	is_bolted.set_output(should_bolt)
 	if(should_bolt)
@@ -110,16 +132,22 @@
 		unbolted.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/airlock/proc/on_airlock_open(datum/source, force)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	is_open.set_output(TRUE)
 	opened.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/airlock/proc/on_airlock_closed(datum/source, forced)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	is_open.set_output(FALSE)
 	closed.set_output(COMPONENT_SIGNAL)
 
 /obj/item/circuit_component/airlock/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 
 	if(!attached_airlock)
 		return
@@ -153,6 +181,8 @@
 
 
 /obj/item/circuit_component/airlock_access_event/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/machinery/door/airlock))
 		attached_airlock = shell
@@ -161,6 +191,8 @@
 		), PROC_REF(handle_allowed))
 
 /obj/item/circuit_component/airlock_access_event/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	attached_airlock = null
 	UnregisterSignal(shell, list(
 		COMSIG_AIRLOCK_SHELL_ALLOWED
@@ -169,18 +201,24 @@
 
 
 /obj/item/circuit_component/airlock_access_event/populate_ports()
+	procstart = null
+	src.procstart = null
 	open_airlock = add_input_port("Should Open Airlock", PORT_TYPE_RESPONSE_SIGNAL, trigger = PROC_REF(should_open_airlock))
 	accessing_entity = add_output_port("Accessing Entity", PORT_TYPE_ATOM)
 	event_triggered = add_output_port("Event Triggered", PORT_TYPE_INSTANT_SIGNAL)
 
 
 /obj/item/circuit_component/airlock_access_event/proc/should_open_airlock(datum/port/input/port, list/return_values)
+	procstart = null
+	src.procstart = null
 	CIRCUIT_TRIGGER
 	if(!return_values)
 		return
 	return_values["should_open"] = TRUE
 
 /obj/item/circuit_component/airlock_access_event/proc/handle_allowed(datum/source, mob/accesser)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!attached_airlock)
 		return

@@ -28,6 +28,8 @@
 	worn_icon = 'icons/mob/clothing/head/hydroponics.dmi'
 
 /obj/item/food/grown/wheat/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/flour = 0)
 
 // Oat
@@ -52,6 +54,8 @@
 	distill_reagent = /datum/reagent/consumable/ethanol/ale
 
 /obj/item/food/grown/oat/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/flour = 0)
 
 // Rice
@@ -80,6 +84,8 @@
 	distill_reagent = /datum/reagent/consumable/ethanol/sake
 
 /obj/item/food/grown/rice/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/rice = 0)
 
 //Meatwheat - grows into synthetic meat
@@ -106,9 +112,13 @@
 	worn_icon = 'icons/mob/clothing/head/hydroponics.dmi'
 
 /obj/item/food/grown/meatwheat/grind_results()
+	procstart = null
+	src.procstart = null
 	return list(/datum/reagent/consumable/flour = 0, /datum/reagent/blood = 0)
 
 /obj/item/food/grown/meatwheat/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_notice("[user] crushes [src] into meat."), span_notice("You crush [src] into something that resembles meat."))
 	playsound(user, 'sound/effects/blob/blobattack.ogg', 50, TRUE)
 	var/obj/item/food/meat/slab/meatwheat/meaties = new(null)

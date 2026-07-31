@@ -3,10 +3,14 @@
 	id = MARTIALART_MUSHPUNCH
 
 /datum/martial_art/mushpunch/harm_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	INVOKE_ASYNC(src, PROC_REF(charge_up_attack), attacker, defender)
 	return MARTIAL_ATTACK_SUCCESS
 
 /datum/martial_art/mushpunch/proc/charge_up_attack(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 
 	to_chat(attacker, span_spiderbroodmother("You begin to wind up an attack..."))
 	if(!do_after(attacker, 2.5 SECONDS, defender))
@@ -42,6 +46,8 @@
 	icon_state = "mycelium-angel"
 
 /obj/item/mushpunch/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return
 	to_chat(user, span_spiderbroodmother("You devour [src], \

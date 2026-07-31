@@ -25,18 +25,26 @@
 	var/obj/machinery/atmospherics/front_node = null
 
 /obj/machinery/atmospherics/pipe/multiz/Initialize(mapload, process, setdir, init_dir)
+	procstart = null
+	src.procstart = null
 	icon_state = ""
 	center = mutable_appearance(icon, "adapter_center", layer = HIGH_OBJ_LAYER)
 	pipe = mutable_appearance(icon, "pipe-[piping_layer]")
 	return ..()
 
 /obj/machinery/atmospherics/pipe/multiz/set_init_directions()
+	procstart = null
+	src.procstart = null
 	initialize_directions = dir
 
 /obj/machinery/atmospherics/pipe/multiz/update_layer()
+	procstart = null
+	src.procstart = null
 	return // Noop because we're moving this to /obj/machinery/atmospherics/pipe
 
 /obj/machinery/atmospherics/pipe/multiz/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pipe.appearance_flags |= RESET_COLOR|KEEP_APART
 	pipe.color = front_node ? front_node.pipe_color : ATMOS_COLOR_OMNI
@@ -47,6 +55,8 @@
 
 ///Attempts to locate a multiz pipe that's above us, if it finds one it merges us into its pipenet
 /obj/machinery/atmospherics/pipe/multiz/pipeline_expansion()
+	procstart = null
+	src.procstart = null
 	var/turf/local_turf = get_turf(src)
 	for(var/obj/machinery/atmospherics/pipe/multiz/above in GET_TURF_ABOVE(local_turf))
 		if(!is_connectable(above, piping_layer))

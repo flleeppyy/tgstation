@@ -7,6 +7,8 @@
 INITIALIZE_IMMEDIATE(/obj/effect/statclick)
 
 /obj/effect/statclick/Initialize(mapload, text, target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = text
 	src.target = target
@@ -14,14 +16,20 @@ INITIALIZE_IMMEDIATE(/obj/effect/statclick)
 		RegisterSignal(target, COMSIG_QDELETING, PROC_REF(cleanup))
 
 /obj/effect/statclick/Destroy()
+	procstart = null
+	src.procstart = null
 	target = null
 	return ..()
 
 /obj/effect/statclick/proc/cleanup()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 /obj/effect/statclick/proc/update(text)
+	procstart = null
+	src.procstart = null
 	name = text
 	return src
 
@@ -29,6 +37,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/statclick)
 	var/class
 
 /obj/effect/statclick/debug/Click()
+	procstart = null
+	src.procstart = null
 	if(!usr.client.holder || !target)
 		return
 	if(!class)

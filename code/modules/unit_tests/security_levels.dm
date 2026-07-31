@@ -6,6 +6,8 @@
 /datum/unit_test/security_levels
 
 /datum/unit_test/security_levels/Run()
+	procstart = null
+	src.procstart = null
 	var/list/comparison = subtypesof(/datum/security_level)
 
 	for(var/datum/security_level/iterating_level in comparison)

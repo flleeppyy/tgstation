@@ -57,6 +57,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/surimi/make_dryable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/dryable, /obj/item/food/kamaboko)
 
 /obj/item/food/kamaboko
@@ -74,12 +76,16 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/kamaboko/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/design = pick("smiling", "spiral", "star", "sunrise")
 	name = "[design] kamaboko"
 	icon_state = "kamaboko_[design]"
 
 /obj/item/food/kamaboko/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/kamaboko_slice, 4, 3 SECONDS, table_required = TRUE, screentip_verb = "Cut")
 
 /obj/item/food/kamaboko_slice
@@ -140,9 +146,13 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/rice_dough/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/bread/reispan, rand(30 SECONDS, 45 SECONDS), TRUE, TRUE)
 
 /obj/item/food/rice_dough/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/spaghetti/rawnoodles, 6, 3 SECONDS, table_required = TRUE)
 
 /obj/item/food/spaghetti/rawnoodles
@@ -209,6 +219,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/bread/reispan/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/breadslice/reispan, 5, 3 SECONDS, table_required = TRUE)
 
 /obj/item/food/breadslice/reispan
@@ -338,6 +350,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/salad/egg_fried_rice/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ingredients_holder, null, CUSTOM_INGREDIENT_ICON_STACK)
 
@@ -359,6 +373,8 @@
 	custom_materials = list(/datum/material/meat = MEATDISH_MATERIAL_AMOUNT)
 
 /obj/item/food/salad/bibimbap/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ingredients_holder, null, CUSTOM_INGREDIENT_ICON_STACK)
 
@@ -427,6 +443,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/salad/simple_fried_noodles/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ingredients_holder, null, CUSTOM_INGREDIENT_ICON_STACK)
 
@@ -624,6 +642,8 @@
 
 //hey, the name literally means "grilled how you like it", it'd be crazy to not make it customisable
 /obj/item/food/okonomiyaki/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/ingredients_holder, null, CUSTOM_INGREDIENT_ICON_STACK)
 
@@ -1086,6 +1106,8 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/cake/spekkoek/make_processable()
+	procstart = null
+	src.procstart = null
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/cakeslice/spekkoek, 5, 3 SECONDS, table_required = TRUE)
 
 /obj/item/food/cakeslice/spekkoek
@@ -1320,9 +1342,13 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/raw_ballpark_pretzel/make_bakeable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/bakeable, /obj/item/food/ballpark_pretzel, rand(15 SECONDS, 25 SECONDS), TRUE, TRUE)
 
 /obj/item/food/raw_ballpark_pretzel/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/ballpark_pretzel, rand(15 SECONDS, 25 SECONDS), TRUE, TRUE)
 
 /obj/item/food/ballpark_pretzel
@@ -1355,6 +1381,8 @@
 	custom_materials = list(/datum/material/meat = MEATDISH_MATERIAL_AMOUNT)
 
 /obj/item/food/kebab/raw_ballpark_tsukune/make_grillable()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/grillable, /obj/item/food/kebab/ballpark_tsukune, rand(15 SECONDS, 25 SECONDS), TRUE, TRUE)
 
 /obj/item/food/kebab/ballpark_tsukune

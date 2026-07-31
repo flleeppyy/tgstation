@@ -12,6 +12,8 @@
 	var/approach_movement_type = null
 
 /datum/bt_node/ai_behavior/maintain_distance/setup(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[target_key]
 	if(!isliving(target) || !can_see(controller.pawn, target, 10))
 		return FALSE
@@ -19,10 +21,14 @@
 	return TRUE
 
 /datum/bt_node/ai_behavior/maintain_distance/proc/on_movement_failed(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	movement_failed = TRUE
 
 /datum/bt_node/ai_behavior/maintain_distance/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	if(movement_failed)
 		return AI_BEHAVIOR_INSTANT | AI_BEHAVIOR_FAILED
 	var/atom/target = controller.blackboard[target_key]
@@ -47,6 +53,8 @@
 	return AI_BEHAVIOR_INSTANT
 
 /datum/bt_node/ai_behavior/maintain_distance/finish_action(datum/ai_controller/controller, succeeded)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(controller.pawn, COMSIG_MOB_AI_MOVEMENT_FAILED)
 	movement_failed = FALSE
 	controller.ai_movement.stop_moving_towards(controller)
@@ -55,6 +63,8 @@
 
 /// Steps one tile away from target using backstep avoidance, falling back to shuffled directions if blocked.
 /datum/bt_node/ai_behavior/maintain_distance/proc/retreat(datum/ai_controller/controller, atom/target, minimum_distance)
+	procstart = null
+	src.procstart = null
 	controller.change_ai_movement_type(/datum/ai_movement/basic_avoidance/backstep)
 	var/mob/pawn = controller.pawn
 	pawn.face_atom(target)
@@ -77,6 +87,8 @@
 /datum/bt_node/ai_behavior/maintain_distance/cover_minimum_distance
 
 /datum/bt_node/ai_behavior/maintain_distance/cover_minimum_distance/retreat(datum/ai_controller/controller, atom/target, minimum_distance)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/pawn = controller.pawn
 	var/required_distance = minimum_distance - get_dist(pawn, target)
 	var/best_distance = 0

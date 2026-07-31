@@ -12,6 +12,8 @@
 	var/datum/weakref/connect_ref
 
 /atom/movable/screen/minimap_element/blip/Initialize(mapload, datum/hud/hud_owner, atom/track_target, icon_state, icon, large = FALSE, blip_tag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.icon_state = icon_state
 	src.large = large
@@ -23,10 +25,14 @@
 		src.blip_tag = blip_tag
 
 /atom/movable/screen/minimap_element/blip/Destroy()
+	procstart = null
+	src.procstart = null
 	clear_tracking_signals()
 	return ..()
 
 /atom/movable/screen/minimap_element/blip/proc/register_target(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!isnull(track_target))
 		CRASH("[type] attempted to register [target] while already tracking [track_target].")
 	if(isnull(target))
@@ -36,6 +42,8 @@
 	name = target.name
 
 /atom/movable/screen/minimap_element/blip/proc/clear_tracking_signals()
+	procstart = null
+	src.procstart = null
 	tracking = FALSE
 	if(track_target)
 		UnregisterSignal(track_target, list(COMSIG_QDELETING, COMSIG_MOVABLE_Z_CHANGED, COMSIG_MOVABLE_MOVED))
@@ -44,6 +52,8 @@
 	QDEL_NULL(connect_ref)
 
 /atom/movable/screen/minimap_element/blip/proc/start_tracking_target()
+	procstart = null
+	src.procstart = null
 	if(tracking)
 		return
 	if(isnull(track_target))
@@ -60,11 +70,15 @@
 	INVOKE_ASYNC(src, PROC_REF(update_minimap))
 
 /atom/movable/screen/minimap_element/blip/proc/update_minimap()
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(track_target)
 	minimap = get_minimap_for_z(target_turf.z)
 	update_blip()
 
 /atom/movable/screen/minimap_element/blip/proc/on_target_z_changed(atom/movable/source, turf/old_turf, turf/new_turf, same_z_layer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isnull(track_target))
 		return
@@ -75,10 +89,14 @@
 		update_blip()
 
 /atom/movable/screen/minimap_element/blip/proc/on_tracked_or_container_moved(atom/movable/source, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	update_blip()
 
 /atom/movable/screen/minimap_element/blip/proc/update_blip()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isnull(track_target) || isnull(minimap))
 		return

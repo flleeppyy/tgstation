@@ -5,6 +5,8 @@
 	var/atom/observed_target = null
 
 /datum/bt_node/decorator/validate_target_on_turf/register_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	var/atom/target = owning_controller?.blackboard[key]
 	if(target)
 		observed_target = target
@@ -13,12 +15,16 @@
 	return TRUE
 
 /datum/bt_node/decorator/validate_target_on_turf/unregister_observe_signals(atom/pawn)
+	procstart = null
+	src.procstart = null
 	if(observed_target)
 		UnregisterSignal(observed_target, COMSIG_MOVABLE_MOVED)
 		observed_target = null
 	UnregisterSignal(pawn, list(COMSIG_AI_BLACKBOARD_KEY_SET(key), COMSIG_AI_BLACKBOARD_KEY_CLEARED(key)))
 
 /datum/bt_node/decorator/validate_target_on_turf/proc/on_key_changed(atom/pawn, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/atom/target = owning_controller?.blackboard[key]
 	if(target == observed_target)
@@ -33,6 +39,8 @@
 		on_observed_change(owning_controller, null)
 
 /datum/bt_node/decorator/validate_target_on_turf/check_condition(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[key]
 	if(QDELETED(target) || !isturf(target.loc))
 		controller.clear_blackboard_key(key)
@@ -41,5 +49,7 @@
 
 /// Check without side effects for observer path.
 /datum/bt_node/decorator/validate_target_on_turf/evaluate_for_observer(datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/atom/target = controller.blackboard[key]
 	return !QDELETED(target) && isturf(target.loc)

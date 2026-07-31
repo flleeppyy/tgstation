@@ -18,6 +18,8 @@
 	var/datum/callback/is_blocking_check
 
 /datum/component/bullet_intercepting/Initialize(block_chance = 2, list/block_type = list(BULLET), active_slots, datum/callback/on_intercepted, block_charges = INFINITY, datum/callback/is_blocking_check = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -32,12 +34,16 @@
 	RegisterSignal(parent, COMSIG_ITEM_PRE_UNEQUIP, PROC_REF(on_unequipped))
 
 /datum/component/bullet_intercepting/Destroy(force)
+	procstart = null
+	src.procstart = null
 	wearer = null
 	on_intercepted = null
 	return ..()
 
 /// Called when item changes slots, check if we're in a valid location to take bullets
 /datum/component/bullet_intercepting/proc/on_parent_equipped(obj/item/clothing/source, mob/equipper, slot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (wearer)
 		if (!(active_slots & slot))
@@ -52,6 +58,8 @@
 
 /// Called when item is unequipped, stop tracking bullets
 /datum/component/bullet_intercepting/proc/on_unequipped()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (!wearer)
 		return
@@ -60,6 +68,8 @@
 
 /// Called when wearer is shot, check if we're going to block the hit
 /datum/component/bullet_intercepting/proc/on_wearer_shot(mob/living/victim, obj/projectile/bullet)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!isnull(is_blocking_check) && !is_blocking_check.Invoke())
 		return NONE
@@ -76,5 +86,7 @@
 
 /// Called when wearer is deleted, stop tracking them
 /datum/component/bullet_intercepting/proc/on_wearer_deleted()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	wearer = null

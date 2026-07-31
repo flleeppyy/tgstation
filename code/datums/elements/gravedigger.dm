@@ -17,6 +17,8 @@
 	))
 
 /datum/element/gravedigger/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!isitem(target)) //Must be an item to use toolspeed variable.
@@ -25,10 +27,14 @@
 	RegisterSignal(target, COMSIG_ITEM_INTERACTING_WITH_ATOM_SECONDARY, PROC_REF(dig_checks))
 
 /datum/element/gravedigger/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_ITEM_INTERACTING_WITH_ATOM_SECONDARY)
 
 /datum/element/gravedigger/proc/dig_checks(datum/source, mob/living/user, atom/interacting_with, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!is_type_in_typecache(interacting_with, turfs_to_consider))
@@ -44,5 +50,7 @@
 	return ITEM_INTERACT_BLOCKING
 
 /datum/element/gravedigger/proc/perform_digging(mob/user, atom/dig_area, obj/item/our_tool)
+	procstart = null
+	src.procstart = null
 	if(our_tool.use_tool(dig_area, user, 10 SECONDS * (HAS_MIND_TRAIT(user, TRAIT_MORBID) ? 0.7 : 1) * our_tool.toolspeed))
 		new /obj/structure/closet/crate/grave/fresh(dig_area) //We don't get_turf for the location since this is guaranteed to be a turf at this point.

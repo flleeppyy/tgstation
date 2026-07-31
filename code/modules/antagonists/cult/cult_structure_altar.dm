@@ -15,6 +15,8 @@
 	custom_materials = list(/datum/material/runedmetal = SHEET_MATERIAL_AMOUNT * 3)
 
 /obj/structure/destructible/cult/item_dispenser/altar/setup_options()
+	procstart = null
+	src.procstart = null
 	var/static/list/altar_items = list(
 		ELDRITCH_WHETSTONE = list(
 			PREVIEW_IMAGE = image(icon = 'icons/obj/antags/cult/items.dmi', icon_state = "cult_sharpener"),
@@ -43,6 +45,8 @@
 		options += extra_item
 
 /obj/structure/destructible/cult/item_dispenser/altar/extra_options()
+	procstart = null
+	src.procstart = null
 	if(!cult_team?.unlocked_heretic_items[PROTEON_ORB_UNLOCKED])
 		return
 	return list(PROTEON_ORB = list(
@@ -53,6 +57,8 @@
 	)
 
 /obj/structure/destructible/cult/item_dispenser/altar/succcess_message(mob/living/user, obj/item/spawned_item)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_cult_italic("You kneel before [src] and your faith is rewarded with [spawned_item]!"))
 
 #undef ELDRITCH_WHETSTONE

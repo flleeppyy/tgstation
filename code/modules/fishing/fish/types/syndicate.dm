@@ -15,6 +15,8 @@
 	beauty = FISH_BEAUTY_BAD
 
 /obj/item/fish/emulsijack/get_fish_taste()
+	procstart = null
+	src.procstart = null
 	return list("raw fish" = 2, "acid" = 1) //no scales
 
 /obj/item/fish/donkfish
@@ -33,6 +35,8 @@
 	beauty = FISH_BEAUTY_EXCELLENT
 
 /obj/item/fish/donkfish/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] swallows [src] whole! It looks like [user.p_theyre()] trying to commit suicide!"))
 	if(!ishuman(user))
 		return TOXLOSS
@@ -68,10 +72,14 @@
 	beauty = FISH_BEAUTY_UGLY
 
 /obj/item/fish/jumpercable/get_export_price(price, elasticity_percent)
+	procstart = null
+	src.procstart = null
 	//without this, they'd sell for over 6000 each, minimum. That's a lot for a fish that requires no maintance nor partner to farm.
 	return ..() * 0.04
 
 /obj/item/fish/jumpercable/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(span_suicide("[user] hooks both ends of [src] to their chest! It looks like [user.p_theyre()] trying to commit suicide!"))
 	electrocute_mob(user, power_source = get_area(src), source = src, siemens_coeff = 1, dist_check = FALSE)
 	tesla_zap(source = user, zap_range = 4, power = electrogenesis_power, cutoff = 1e3, zap_flags = ZAP_LOW_POWER_GEN|ZAP_MOB_DAMAGE)
@@ -121,13 +129,19 @@
 	required_temperature_max = MIN_AQUARIUM_TEMP+26
 
 /obj/item/fish/chainsawfish/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 
 /obj/item/fish/chainsawfish/get_fish_taste()
+	procstart = null
+	src.procstart = null
 	return list("raw fish" = 2.5, "anger" = 1)
 
 /obj/item/fish/chainsawfish/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(status == FISH_DEAD)
 		inhand_icon_state = "chainsawfish_dead"
 	else
@@ -137,6 +151,8 @@
 	return ..()
 
 /obj/item/fish/chainsawfish/get_force_rank()
+	procstart = null
+	src.procstart = null
 	switch(w_class)
 		if(WEIGHT_CLASS_TINY)
 			force -= 10
@@ -193,6 +209,8 @@
 		toolspeed += 1
 
 /obj/item/fish/chainsawfish/calculate_fish_force_bonus(bonus_malus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	armour_penetration += bonus_malus * 3
 	wound_bonus += bonus_malus * 2
@@ -202,6 +220,8 @@
 
 // you suicide like a real chainsaw
 /obj/item/fish/chainsawfish/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(status == FISH_DEAD)
 		user.visible_message(span_suicide("[user] smashes [src] into [user.p_their()] neck, destroying [user.p_their()] esophagus! It looks like [user.p_theyre()] trying to commit suicide!"))
 		playsound(src, 'sound/items/weapons/genhit1.ogg', 100, TRUE)
@@ -252,12 +272,18 @@
 	)
 
 /obj/item/fish/pike/armored/get_fish_taste()
+	procstart = null
+	src.procstart = null
 	return list("raw fish" = 2.5, "metal" = 1)
 
 /obj/item/fish/pike/armored/get_fish_taste()
+	procstart = null
+	src.procstart = null
 	return list("cooked fish" = 2.5, "metal" = 1)
 
 /obj/item/fish/pike/armored/get_force_rank()
+	procstart = null
+	src.procstart = null
 	switch(w_class)
 		if(WEIGHT_CLASS_TINY)
 			force -= 11
@@ -305,6 +331,8 @@
 		exposed_wound_bonus -= 15
 
 /obj/item/fish/pike/armored/calculate_fish_force_bonus(bonus_malus)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	armour_penetration += bonus_malus * 3
 	wound_bonus += bonus_malus * 2

@@ -12,16 +12,22 @@
 	var/datum/round_event_control/scrubber_overflow/every_vent/overflow_control
 
 /obj/machinery/nuclearbomb/beer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	keg = new(src)
 	QDEL_NULL(core)
 	overflow_control = locate(/datum/round_event_control/scrubber_overflow/every_vent) in SSevents.control
 
 /obj/machinery/nuclearbomb/beer/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(overflow_control, COMSIG_CREATED_ROUND_EVENT)
 	. = ..()
 
 /obj/machinery/nuclearbomb/beer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(keg.reagents.total_volume)
 		. += span_notice("It has [keg.reagents.total_volume] unit\s left.")
@@ -29,12 +35,16 @@
 		. += span_danger("It's empty.")
 
 /obj/machinery/nuclearbomb/beer/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!tool.is_refillable())
 		return ..()
 	tool.interact_with_atom(keg, user) // redirect refillable containers to the keg, allowing them to be filled
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/nuclearbomb/beer/actually_explode()
+	procstart = null
+	src.procstart = null
 	if(core)
 		return ..()
 	//Unblock roundend, we're not actually exploding.
@@ -50,15 +60,21 @@
 		addtimer(CALLBACK(src, PROC_REF(local_foam)), 11 SECONDS)
 
 /obj/machinery/nuclearbomb/beer/disarm_nuke(mob/disarmer)
+	procstart = null
+	src.procstart = null
 	exploding = FALSE
 	exploded = TRUE
 	return ..()
 
 /obj/machinery/nuclearbomb/beer/proc/local_foam()
+	procstart = null
+	src.procstart = null
 	do_foam(200, src, get_turf(src), flood_reagent, 100)
 	disarm_nuke()
 
 /obj/machinery/nuclearbomb/beer/really_actually_explode(detonation_status)
+	procstart = null
+	src.procstart = null
 	if(core)
 		return ..()
 	//if it's always hooked in it'll override admin choices
@@ -68,6 +84,8 @@
 
 /// signal sent from overflow control when it fires an event
 /obj/machinery/nuclearbomb/beer/proc/on_created_round_event(datum/round_event_control/source_event_control, datum/round_event/scrubber_overflow/every_vent/created_event)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(overflow_control, COMSIG_CREATED_ROUND_EVENT)
 	created_event.forced_reagent_type = flood_reagent

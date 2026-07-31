@@ -45,17 +45,23 @@
 	var/close_sound = 'sound/items/handling/cardboard_box/cardboardbox_drop.ogg'
 
 /obj/item/pet_carrier/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	register_context()
 	AddElement(/datum/element/cuffable_item)
 
 /obj/item/pet_carrier/Destroy()
+	procstart = null
+	src.procstart = null
 	if(occupants.len)
 		for(var/V in occupants)
 			remove_occupant(V)
 	return ..()
 
 /obj/item/pet_carrier/Exited(atom/movable/gone, direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(gone) && (gone in occupants))
 		var/mob/living/living_gone = gone
@@ -63,6 +69,8 @@
 		occupant_weight -= living_gone.mob_size
 
 /obj/item/pet_carrier/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(occupants.len)
 		for(var/V in occupants)
@@ -77,6 +85,8 @@
 		. += span_notice("Alt-click to [locked ? "unlock" : "lock"] its door.")
 
 /obj/item/pet_carrier/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(open)
 		to_chat(user, span_notice("You close [src]'s door."))
 		playsound(user, close_sound, 50, TRUE)
@@ -91,6 +101,8 @@
 	update_appearance()
 
 /obj/item/pet_carrier/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(open || !allows_locking)
 		return CLICK_ACTION_BLOCKING
 	locked = !locked
@@ -103,6 +115,8 @@
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/pet_carrier/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(user.combat_mode || !isliving(interacting_with))
 		return NONE
 	if(!open)
@@ -126,6 +140,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/pet_carrier/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(open)
 		loc.visible_message(span_notice("[user] climbs out of [src]!"), \
 		span_warning("[user] jumps out of [src]!"))
@@ -141,6 +157,8 @@
 		container_resist_act(user)
 
 /obj/item/pet_carrier/container_resist_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_BREAKOUT)
 	user.last_special = world.time + CLICK_CD_BREAKOUT
 	if(user.mob_size <= MOB_SIZE_SMALL)
@@ -166,6 +184,8 @@
 		remove_occupant(user)
 
 /obj/item/pet_carrier/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(open)
 		icon_state = "[base_icon_state]_open"
 		return ..()
@@ -173,6 +193,8 @@
 	return ..()
 
 /obj/item/pet_carrier/mouse_drop_dragged(atom/over_atom, mob/user, src_location, over_location, params)
+	procstart = null
+	src.procstart = null
 	if(isopenturf(over_atom) && open && occupants.len)
 		user.visible_message(span_notice("[user] unloads [src]."), \
 		span_notice("You unload [src] onto [over_atom]."))
@@ -180,6 +202,8 @@
 			remove_occupant(V, over_atom)
 
 /obj/item/pet_carrier/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!locked)
@@ -190,6 +214,8 @@
 		return  TRUE
 
 /obj/item/pet_carrier/proc/load_occupant(mob/living/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(pet_carrier_full(src))
 		to_chat(user, span_warning("[src] is already carrying too much!"))
 		return
@@ -209,6 +235,8 @@
 	add_occupant(target)
 
 /obj/item/pet_carrier/proc/add_occupant(mob/living/occupant)
+	procstart = null
+	src.procstart = null
 	if((occupant in occupants) || !istype(occupant))
 		return
 	occupant.forceMove(src)
@@ -216,6 +244,8 @@
 	occupant_weight += occupant.mob_size
 
 /obj/item/pet_carrier/proc/remove_occupant(mob/living/occupant, turf/new_turf)
+	procstart = null
+	src.procstart = null
 	if(!(occupant in occupants) || !istype(occupant))
 		return
 	occupant.forceMove(new_turf ? new_turf : drop_location())
@@ -262,6 +292,8 @@
 	open = FALSE
 
 /obj/item/pet_carrier/small/mouse/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	var/mob/living/basic/mouse/hero_mouse = new /mob/living/basic/mouse(src)
 	add_occupant(hero_mouse) //mouse hero
 	return ..()

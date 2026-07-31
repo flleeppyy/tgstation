@@ -12,6 +12,8 @@
 	timeout = 2 MINUTES
 
 /datum/mood_event/maintenance_high/add_effects(param)
+	procstart = null
+	src.procstart = null
 	var/value = rand(-1, 6) // chance for it to suck
 	mood_change = value
 	if(value < 0)
@@ -39,24 +41,32 @@
 	timeout = 5 MINUTES
 
 /datum/mood_event/overdose/add_effects(drug_name)
+	procstart = null
+	src.procstart = null
 	description = "I think I took a bit too much of that [drug_name]!"
 
 /datum/mood_event/withdrawal_light
 	mood_change = -2
 
 /datum/mood_event/withdrawal_light/add_effects(drug_name)
+	procstart = null
+	src.procstart = null
 	description = "I could use some [drug_name]..."
 
 /datum/mood_event/withdrawal_medium
 	mood_change = -5
 
 /datum/mood_event/withdrawal_medium/add_effects(drug_name)
+	procstart = null
+	src.procstart = null
 	description = "I really need [drug_name]."
 
 /datum/mood_event/withdrawal_severe
 	mood_change = -8
 
 /datum/mood_event/withdrawal_severe/add_effects(drug_name)
+	procstart = null
+	src.procstart = null
 	description = "Oh god, I need some of that [drug_name]!"
 
 /datum/mood_event/happiness_drug
@@ -113,6 +123,8 @@
 	timeout = 10 MINUTES
 
 /datum/mood_event/eigentrip/add_effects(param)
+	procstart = null
+	src.procstart = null
 	var/value = rand(-EIGENTRIP_MOOD_RANGE,EIGENTRIP_MOOD_RANGE)
 	mood_change = value
 	if(value < 0)

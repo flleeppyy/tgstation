@@ -20,40 +20,58 @@
 
 /// Called before being installed into a law rack. Return FALSE to block installation.
 /obj/item/ai_module/proc/can_install_to_rack(mob/living/user, obj/machinery/ai_law_rack/rack)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /// Called right before the module is added to the rack by a living mob, allowing special handling
 /obj/item/ai_module/proc/pre_user_install_to_rack(mob/living/user, obj/machinery/ai_law_rack/rack)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called right before the module is removed from the rack by a living mob, allowing special handling
 /obj/item/ai_module/proc/pre_user_uninstall_from_rack(mob/living/user, obj/machinery/ai_law_rack/rack)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Logs the installation of this module to the law change log and silicon log.
 /obj/item/ai_module/proc/log_install(mob/living/user, obj/machinery/ai_law_rack/rack)
+	procstart = null
+	src.procstart = null
 	log_silicon("[key_name(user)] has installed [src] into [rack] ([rack.log_status()])")
 
 /// Logs the uninstallation of this module to the law change log and silicon log.
 /obj/item/ai_module/proc/log_uninstall(mob/living/user, obj/machinery/ai_law_rack/rack)
+	procstart = null
+	src.procstart = null
 	log_silicon("[key_name(user)] has removed [src] from [rack] ([rack.log_status()])")
 
 /// Called after a module is installed into a law rack.
 /obj/item/ai_module/proc/on_rack_install(obj/machinery/ai_law_rack/rack)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called when the law rack this is installed to has been linked to an AI.
 /// Also called when installed to a rack that already has an AI linked to it.
 /obj/item/ai_module/proc/silicon_linked_to_installed(mob/living/silicon/lawed)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called after a module is uninstalled from a law rack.
 /obj/item/ai_module/proc/on_rack_uninstall(obj/machinery/ai_law_rack/rack)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called with the law rack this is installed to is unlinked from an AI.
 /// Also called when uninstalled from a rack that has an AI linked to it.
 /obj/item/ai_module/proc/silicon_unlinked_from_installed(mob/living/silicon/lawed)
+	procstart = null
+	src.procstart = null
 	return
 
 /// When slotted into an AI law rack, adds laws! The bread and butter of AI modules.
@@ -70,6 +88,8 @@
 	var/ion_storm_immune = FALSE
 
 /obj/item/ai_module/law/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload && HAS_TRAIT(SSstation, STATION_TRAIT_UNIQUE_AI) && is_station_level(z))
 		var/delete_module = handle_unique_ai()
@@ -78,17 +98,23 @@
 
 /// Logs the installation of this module to the law change log and silicon log.
 /obj/item/ai_module/law/log_install(mob/living/user, obj/machinery/ai_law_rack/rack)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/law in laws)
 		log_law_change(user, "added law to [rack] ([rack.log_status()], text: [law])")
 
 /// Logs the uninstallation of this module to the law change log and silicon log.
 /obj/item/ai_module/law/log_uninstall(mob/living/user, obj/machinery/ai_law_rack/rack)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/law in laws)
 		log_law_change(user, "removed law from [rack] ([rack.log_status()], text: [law])")
 
 /obj/item/ai_module/law/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ioned)
 		. += "This module has been damaged and should be repaired with a [EXAMINE_HINT("multitool")]."
@@ -98,6 +124,8 @@
 		. += "<br>[examine_laws]"
 
 /obj/item/ai_module/law/multitool_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!ioned)
 		return NONE
 	balloon_alert(user, "repairing ion damage...")
@@ -111,21 +139,29 @@
 
 /// Helper to set the laws list and automatically update any racks we're installed in.
 /obj/item/ai_module/law/proc/set_laws(list/new_laws)
+	procstart = null
+	src.procstart = null
 	laws = new_laws
 	update_rack_laws()
 
 /// Removes a law by text from the module and updates any racks we're installed in.
 /obj/item/ai_module/law/proc/remove_law(law_text)
+	procstart = null
+	src.procstart = null
 	laws -= law_text
 	update_rack_laws()
 
 /// Adds a law to the module and updates any racks we're installed in.
 /obj/item/ai_module/law/proc/add_law(law_text)
+	procstart = null
+	src.procstart = null
 	laws += law_text
 	update_rack_laws()
 
 /// Adds a law to the module at a specific index and updates any racks we're installed in.
 /obj/item/ai_module/law/proc/add_law_to_index(law_text, index)
+	procstart = null
+	src.procstart = null
 	if(length(laws) <= index)
 		laws += law_text
 	else
@@ -134,10 +170,14 @@
 
 /// Update any racks we're installed in
 /obj/item/ai_module/law/proc/update_rack_laws()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/ai_law_rack/base/rack_parent = astype(loc, /obj/machinery/ai_law_rack)?.get_parent_rack()
 	rack_parent?.update_lawset()
 
 /obj/item/ai_module/law/proc/multitool_cb(atom/start_loc, mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	PRIVATE_PROC(TRUE)
 	if(!ioned)
 		return FALSE
@@ -147,6 +187,8 @@
 
 /// Updates the "ioned" stat of the module
 /obj/item/ai_module/law/proc/set_ioned(new_ioned)
+	procstart = null
+	src.procstart = null
 	if(!ioned)
 		save_laws()
 	var/old_ioned = ioned
@@ -162,9 +204,13 @@
 
 /// Saves whatever laws are currently programmed into the module, so they can be restored later.
 /obj/item/ai_module/law/proc/save_laws()
+	procstart = null
+	src.procstart = null
 	saved_laws = laws.Copy()
 
 /obj/item/ai_module/law/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -178,10 +224,14 @@
 
 /// Allows users to configure aspects of the module, if applicable.
 /obj/item/ai_module/law/proc/configure(mob/user)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /// Returns a text display of the laws for the module.
 /obj/item/ai_module/law/proc/display_laws()
+	procstart = null
+	src.procstart = null
 	var/assembled_laws = ""
 
 	for(var/law in laws)
@@ -194,9 +244,13 @@
 
 ///what this module should do if it is mapload spawning on a unique AI station trait round.
 /obj/item/ai_module/law/proc/handle_unique_ai()
+	procstart = null
+	src.procstart = null
 	return SHOULD_QDEL_MODULE //instead of the roundstart bid to un-unique the AI, there will be a research requirement for it.
 
 /obj/item/ai_module/law/proc/apply_to_combined_lawset(datum/ai_laws/combined_lawset)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/ai_module/law/core
@@ -204,10 +258,14 @@
 	custom_materials = list(/datum/material/diamond = SHEET_MATERIAL_AMOUNT, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/bluespace = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/ai_module/law/core/apply_to_combined_lawset(datum/ai_laws/combined_lawset)
+	procstart = null
+	src.procstart = null
 	for(var/law in laws)
 		combined_lawset.add_inherent_law(law)
 
 /obj/item/ai_module/law/core/pre_user_uninstall_from_rack(mob/living/user, obj/machinery/ai_law_rack/rack)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/ai_law_rack/base/parent_rack = rack.get_parent_rack()
 	if(isnull(parent_rack) || rack != parent_rack)
 		return // if we are a child, no stun
@@ -223,6 +281,8 @@
 	var/law_id // if non-null, loads the laws from the ai_laws datums
 
 /obj/item/ai_module/law/core/full/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!law_id)
 		return
@@ -233,6 +293,8 @@
 	laws = core_laws.inherent
 
 /obj/item/ai_module/law/core/full/handle_unique_ai()
+	procstart = null
+	src.procstart = null
 	var/datum/ai_laws/default_laws = get_round_default_lawset()
 	if(law_id == initial(default_laws.id))
 		return
@@ -245,6 +307,8 @@
 	color = COLOR_VIBRANT_LIME
 
 /obj/effect/spawner/round_default_module/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/ai_laws/default_laws = get_round_default_lawset()
 	//try to spawn a law board, since they may have special functionality (asimov setting subjects)
@@ -261,6 +325,8 @@
 /obj/item/ai_module/law/core/round_default_fallback
 
 /obj/item/ai_module/law/core/round_default_fallback/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/ai_laws/default_laws = get_round_default_lawset()
 	default_laws = new default_laws()
@@ -268,6 +334,8 @@
 	laws = default_laws.inherent
 
 /obj/item/ai_module/law/core/round_default_fallback/handle_unique_ai()
+	procstart = null
+	src.procstart = null
 	return
 
 #undef SHOULD_QDEL_MODULE

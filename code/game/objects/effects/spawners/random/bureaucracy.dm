@@ -81,6 +81,8 @@
 	)
 
 /obj/effect/spawner/random/bureaucracy/birthday_wrap/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(!HAS_TRAIT(SSstation, STATION_TRAIT_BIRTHDAY))
 		spawn_loot_chance = 0
 	return ..()

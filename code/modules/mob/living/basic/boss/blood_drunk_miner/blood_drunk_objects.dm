@@ -13,10 +13,14 @@
 	duration = 15
 
 /obj/effect/temp_visual/dir_setting/miner_death/Initialize(mapload, set_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	INVOKE_ASYNC(src, PROC_REF(fade_out))
 
 /obj/effect/temp_visual/dir_setting/miner_death/proc/fade_out()
+	procstart = null
+	src.procstart = null
 	var/matrix/our_matrix = new
 	our_matrix.Turn(pick(90, 270))
 	var/final_dir = dir

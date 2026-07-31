@@ -48,6 +48,8 @@
 	inhand_icon_state = "w_suit"
 
 /obj/item/clothing/under/rank/medical/chief_medical_officer/scrubs/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -3) //FISH DOCTOR?!
 
@@ -92,6 +94,8 @@
 	name = "medical scrubs"
 
 /obj/item/clothing/under/rank/medical/scrubs/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -3) //FISH DOCTOR?!
 

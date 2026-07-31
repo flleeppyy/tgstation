@@ -7,6 +7,8 @@
  * If not provided, it will default to a list of roundstart languages, with common being the most likely.
  */
 /proc/generate_random_name(gender, unique, list/language_weights)
+	procstart = null
+	src.procstart = null
 	if(isnull(language_weights))
 		language_weights = list()
 		for(var/lang_type in GLOB.uncommon_roundstart_languages)
@@ -29,6 +31,8 @@
  * Does this on a per-name basis, IE "Lizard first name, uncommon last name".
  */
 /proc/generate_random_name_species_based(gender, unique, datum/species/species_type, include_all = FALSE)
+	procstart = null
+	src.procstart = null
 	ASSERT(ispath(species_type, /datum/species))
 	var/datum/language_holder/holder = GLOB.prototype_language_holders[species_type::species_language_holder]
 
@@ -54,22 +58,34 @@
  * * unique - If the name should be unique, IE, avoid picking names that mobs already have.
  */
 /mob/proc/generate_random_mob_name(unique)
+	procstart = null
+	src.procstart = null
 	return generate_random_name_species_based(gender, unique, /datum/species/human)
 
 /mob/living/carbon/generate_random_mob_name(unique)
+	procstart = null
+	src.procstart = null
 	return generate_random_name_species_based(gender, unique, dna?.species?.type || /datum/species/human)
 
 /mob/living/silicon/generate_random_mob_name(unique)
+	procstart = null
+	src.procstart = null
 	return generate_random_name(gender, unique, list(/datum/language/machine = 1))
 
 /mob/living/basic/drone/generate_random_mob_name(unique)
+	procstart = null
+	src.procstart = null
 	return generate_random_name(gender, unique, list(/datum/language/machine = 1))
 
 /mob/living/basic/bot/generate_random_mob_name(unique)
+	procstart = null
+	src.procstart = null
 	return generate_random_name(gender, unique, list(/datum/language/machine = 1))
 
 GLOBAL_VAR(command_name)
 /proc/command_name()
+	procstart = null
+	src.procstart = null
 	if (GLOB.command_name)
 		return GLOB.command_name
 
@@ -79,12 +95,16 @@ GLOBAL_VAR(command_name)
 	return name
 
 /proc/change_command_name(name)
+	procstart = null
+	src.procstart = null
 
 	GLOB.command_name = name
 
 	return name
 
 /proc/station_name()
+	procstart = null
+	src.procstart = null
 	if(!GLOB.station_name)
 		var/newname
 		var/config_station_name = CONFIG_GET(string/stationname)
@@ -98,6 +118,8 @@ GLOBAL_VAR(command_name)
 	return GLOB.station_name
 
 /proc/set_station_name(new_name)
+	procstart = null
+	src.procstart = null
 	var/old_name = GLOB.station_name
 	GLOB.station_name = new_name
 
@@ -110,6 +132,8 @@ GLOBAL_VAR(command_name)
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_STATION_NAME_CHANGED, new_name, old_name)
 
 /proc/new_station_name()
+	procstart = null
+	src.procstart = null
 	var/random = rand(1,5)
 	var/new_station_name = ""
 
@@ -167,6 +191,8 @@ GLOBAL_VAR(command_name)
 	return new_station_name
 
 /proc/syndicate_name()
+	procstart = null
+	src.procstart = null
 	var/name = ""
 
 	// Prefix
@@ -205,7 +231,9 @@ GLOBAL_VAR(command_name)
 	/N
 	*/
 
-/proc/generate_code_phrase(return_list=FALSE)//Proc is used for phrase and response in master_controller.dm
+/proc/generate_code_phrase(return_list=FALSE)
+	procstart = null
+	src.procstart = null//Proc is used for phrase and response in master_controller.dm
 
 	if(!return_list)
 		. = ""
@@ -286,9 +314,13 @@ GLOBAL_VAR(command_name)
 				. += ", "
 
 /proc/odd_organ_name()
+	procstart = null
+	src.procstart = null
 	return "[pick(GLOB.gross_adjectives)], [pick(GLOB.gross_adjectives)] organ"
 
 /proc/hive_name()
+	procstart = null
+	src.procstart = null
 	return "[pick(GLOB.hive_names)]-hive"
 
 /**
@@ -305,6 +337,8 @@ GLOBAL_VAR(command_name)
  * Returns (string) The generated name
  */
 /proc/assign_random_name(len=5, prefix="", postfix="")
+	procstart = null
+	src.procstart = null
 	//DO NOT REMOVE NAMES HERE UNLESS YOU KNOW WHAT YOU'RE DOING
 	//All names already used
 	var/static/list/used_names = list()
@@ -331,6 +365,8 @@ GLOBAL_VAR(command_name)
  * * tool_behaviour: the tool described!
  */
 /proc/tool_behaviour_name(tool_behaviour)
+	procstart = null
+	src.procstart = null
 	switch(tool_behaviour)
 		if(TOOL_CROWBAR)
 			return "a crowbar"
@@ -377,18 +413,24 @@ GLOBAL_VAR(command_name)
 
 ///Find the first name of a mob from a passed string with regex
 /proc/first_name(given_name)
+	procstart = null
+	src.procstart = null
 	var/static/regex/firstname = new("^\[^\\s-\]+") //First word before whitespace or "-"
 	firstname.Find(given_name)
 	return firstname.match
 
 /// Find the last name of a mob from a passed string with regex
 /proc/last_name(given_name)
+	procstart = null
+	src.procstart = null
 	var/static/regex/lasttname = new("\[^\\s-\]+$") //First word before whitespace or "-"
 	lasttname.Find(given_name)
 	return lasttname.match
 
 /// Find whitespace or dashes in the passed string with regex and returns TRUE if found
 /proc/is_mononym(given_name)
+	procstart = null
+	src.procstart = null
 	var/static/regex/breaks = regex(@"\s")
 	if(breaks.Find(given_name))
 		return FALSE
@@ -396,6 +438,8 @@ GLOBAL_VAR(command_name)
 
 /// Generates and returns a list of both arabic and roman numerals for 1 through 99
 /proc/generate_number_strings()
+	procstart = null
+	src.procstart = null
 	var/list/numbers = list()
 	for(var/i in 1 to 99)
 		numbers += "[i]"

@@ -14,6 +14,8 @@
 	var/high_pressure_damage = 1
 
 /datum/element/pressure_sensitive/Attach(datum/target, min_pressure, max_pressure, low_pressure_damage, high_pressure_damage, mapload = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!isliving(target))
 		return ELEMENT_INCOMPATIBLE
@@ -33,11 +35,15 @@
 		check_safe_environment(target)
 
 /datum/element/pressure_sensitive/Detach(datum/target)
+	procstart = null
+	src.procstart = null
 	if(target)
 		UnregisterSignal(target, COMSIG_LIVING_LIFE)
 	return ..()
 
 /datum/element/pressure_sensitive/proc/on_life(mob/living/target, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if (HAS_TRAIT(target, TRAIT_STASIS))
@@ -74,6 +80,8 @@
 
 /// Ensures that the given mob is in a safe environment.
 /datum/element/pressure_sensitive/proc/check_safe_environment(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(target.stat == DEAD || isnull(target.loc))
 		return
 

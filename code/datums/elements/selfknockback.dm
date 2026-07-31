@@ -9,6 +9,8 @@ Important note: Force/Throw_Amount, is how far you want to throw a user. By defa
 Speed_Amount, is a measure of how long it will take a user to get thrown to the target. By default, it is calculated by
 clamping the Knockback_Force value below. */
 /datum/element/selfknockback/Attach(datum/target, throw_amount, speed_amount)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isitem(target))
 		RegisterSignal(target, COMSIG_ITEM_AFTERATTACK, PROC_REF(Item_SelfKnockback))
@@ -21,22 +23,30 @@ clamping the Knockback_Force value below. */
 	override_speed_val = speed_amount
 
 /datum/element/selfknockback/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, list(COMSIG_ITEM_AFTERATTACK, COMSIG_PROJECTILE_FIRE))
 
 /datum/element/selfknockback/proc/Get_Knockback_Force(default_force)
+	procstart = null
+	src.procstart = null
 	if(override_throw_val)
 		return override_throw_val
 	else
 		return default_force
 
 /datum/element/selfknockback/proc/Get_Knockback_Speed(default_speed)
+	procstart = null
+	src.procstart = null
 	if(override_speed_val)
 		return override_speed_val
 	else
 		return default_speed
 
 /datum/element/selfknockback/proc/Item_SelfKnockback(obj/item/I, atom/attacktarget, mob/usertarget)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	var/knockback_force = Get_Knockback_Force(clamp(CEILING((I.force / 10), 1), 1, 5))
@@ -48,6 +58,8 @@ clamping the Knockback_Force value below. */
 	usertarget.visible_message(span_warning("[usertarget] gets thrown back by the force of \the [I] impacting \the [attacktarget]!"), span_warning("The force of \the [I] impacting \the [attacktarget] sends you flying!"))
 
 /datum/element/selfknockback/proc/Projectile_SelfKnockback(obj/projectile/proj)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!proj.firer)

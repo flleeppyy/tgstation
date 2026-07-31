@@ -28,6 +28,8 @@
 	var/unsafe = FALSE //over the heat threshold
 
 /datum/symptom/fever/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -38,6 +40,8 @@
 		power = 2.5
 
 /datum/symptom/fever/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -57,6 +61,8 @@
  * * datum/disease/advance/A The disease applying the symptom
  */
 /datum/symptom/fever/proc/set_body_temp(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(unsafe) // when unsafe the fever can cause heat damage
 		M.add_body_temperature_change(FEVER_CHANGE, 6 * power * A.stage)
 	else
@@ -66,12 +72,16 @@
 
 /// Update the body temp change based on the new stage
 /datum/symptom/fever/on_stage_change(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		set_body_temp(A.affected_mob, A)
 
 /// remove the body temp change when removing symptom
 /datum/symptom/fever/End(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/M = A.affected_mob
 	if(M)
 		M.remove_body_temperature_change(FEVER_CHANGE)

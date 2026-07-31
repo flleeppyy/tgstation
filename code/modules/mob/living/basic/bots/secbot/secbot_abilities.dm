@@ -7,6 +7,8 @@
 	click_to_activate = FALSE
 
 /datum/action/cooldown/mob_cooldown/bot/sword/Activate(mob/living/firer, atom/target)
+	procstart = null
+	src.procstart = null
 	var/obj/item/melee/energy/sword/saber/my_sword = locate() in owner
 	INVOKE_ASYNC(my_sword, TYPE_PROC_REF(/obj/item, attack_self), owner)
 	return TRUE

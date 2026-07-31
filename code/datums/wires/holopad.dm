@@ -3,11 +3,15 @@
 	proper_name = "holopad"
 
 /datum/wires/holopad/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/holopad/holopad = holder
 
 	return holopad.panel_open ? ..() : FALSE
 
 /datum/wires/holopad/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(
 		WIRE_LOOP_MODE,
 		WIRE_REPLAY_MODE
@@ -15,6 +19,8 @@
 	return ..()
 
 /datum/wires/holopad/get_status()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/holopad/holopad = holder
 	var/list/status = list()
 	status += "The purple light is [holopad.loop_mode ? "on" : "off"]."
@@ -22,6 +28,8 @@
 	return status
 
 /datum/wires/holopad/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/holopad/holopad = holder
 	switch(wire)
 		if(WIRE_LOOP_MODE)
@@ -36,6 +44,8 @@
 	return ..()
 
 /datum/wires/holopad/on_cut(wire, mend, source)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/holopad/holopad = holder
 	if(wire == WIRE_REPLAY_MODE)
 		if(mend)

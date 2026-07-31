@@ -1,5 +1,7 @@
 ///Returns the src and all recursive contents as a list.
 /atom/proc/get_all_contents(ignore_flag_1)
+	procstart = null
+	src.procstart = null
 	. = list(src)
 	var/i = 0
 	while(i < length(.))
@@ -10,6 +12,8 @@
 
 ///identical to get_all_contents but returns a list of atoms of the type passed in the argument.
 /atom/proc/get_all_contents_type(type)
+	procstart = null
+	src.procstart = null
 	var/list/processing_list = list(src)
 	. = list()
 	while(length(processing_list))
@@ -21,6 +25,8 @@
 
 ///Like get_all_contents_type, but uses a typecache list as argument
 /atom/proc/get_all_contents_ignoring(list/ignore_typecache)
+	procstart = null
+	src.procstart = null
 	if(!length(ignore_typecache))
 		return get_all_contents()
 	var/list/processing = list(src)
@@ -35,6 +41,8 @@
 
 ///Returns the src and all recursive contents, but skipping going any deeper if an atom has a specific trait.
 /atom/proc/get_all_contents_skipping_traits(skipped_trait)
+	procstart = null
+	src.procstart = null
 	. = list(src)
 	if(!skipped_trait)
 		CRASH("get_all_contents_skipping_traits called without a skipped_trait")
@@ -47,6 +55,8 @@
 
 ///Returns a list of all locations (except the area) the movable is within.
 /proc/get_nested_locs(atom/movable/atom_on_location, include_turf = FALSE)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/atom/location = atom_on_location.loc
 	var/turf/our_turf = get_turf(atom_on_location)
@@ -58,7 +68,9 @@
 
 ///Step-towards method of determining whether one atom can see another. Similar to viewers()
 ///note: this is a line of sight algorithm, view() does not do any sort of raycasting and cannot be emulated by it accurately
-/proc/can_see(atom/source, atom/target, length=5) // I couldnt be arsed to do actual raycasting :I This is horribly inaccurate.
+/proc/can_see(atom/source, atom/target, length=5)
+	procstart = null
+	src.procstart = null // I couldnt be arsed to do actual raycasting :I This is horribly inaccurate.
 	var/turf/current = get_turf(source)
 	var/turf/target_turf = get_turf(target)
 	if(get_dist(source, target) > length)
@@ -80,6 +92,8 @@
 
 ///Get the cardinal direction between two atoms
 /proc/get_cardinal_dir(atom/start, atom/end)
+	procstart = null
+	src.procstart = null
 	var/dx = abs(end.x - start.x)
 	var/dy = abs(end.y - start.y)
 	return get_dir(start, end) & (rand() * (dx+dy) < dy ? 3 : 12)
@@ -91,6 +105,8 @@
  * of course mathematically this is just adding world.icon_size on again
 **/
 /proc/get_pixel_distance(atom/start, atom/end, centered = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!istype(start) || !istype(end))
 		return 0
 	. = bounds_dist(start, end) + sqrt((((start.pixel_x + end.pixel_x) ** 2) + ((start.pixel_y + end.pixel_y) ** 2)))
@@ -104,6 +120,8 @@
  * check_external = truthy if we should be checking against items coming out of the wall, rather than visually on top of the wall.
 **/
 /proc/check_wall_item(floor_loc, dir_toward_wall, check_external = 0)
+	procstart = null
+	src.procstart = null
 	var/wall_loc = get_step(floor_loc, dir_toward_wall)
 	for(var/obj/checked_object in floor_loc)
 		if(is_type_in_typecache(checked_object, GLOB.WALLITEMS_INTERIOR) && !check_external)
@@ -132,6 +150,8 @@
 
 ///Forces the atom to take a step in a random direction
 /proc/random_step(atom/movable/moving_atom, steps, chance)
+	procstart = null
+	src.procstart = null
 	var/initial_chance = chance
 	while(steps > 0)
 		if(prob(chance))
@@ -145,6 +165,8 @@
  * If one of them is a match, then source is facing target
 **/
 /proc/is_source_facing_target(atom/source,atom/target)
+	procstart = null
+	src.procstart = null
 	if(!istype(source) || !istype(target))
 		return FALSE
 	if(isliving(source))
@@ -181,6 +203,8 @@ rough example of the "cone" made by the 3 dirs checked
 
 ///ultra range (no limitations on distance, faster than range for distances > 8); including areas drastically decreases performance
 /proc/urange(dist = 0, atom/center = usr, orange = FALSE, areas = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!dist)
 		if(!orange)
 			return list(center)
@@ -199,6 +223,8 @@ rough example of the "cone" made by the 3 dirs checked
 
 ///similar function to range(), but with no limitations on the distance; will search spiralling outwards from the center
 /proc/spiral_range(dist = 0, center = usr, orange = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/atom_list = list()
 	var/turf/t_center = get_turf(center)
 	if(!t_center)
@@ -256,6 +282,8 @@ rough example of the "cone" made by the 3 dirs checked
 
 ///Returns the closest atom of a specific type in a list from a source
 /proc/get_closest_atom(type, list/atom_list, source)
+	procstart = null
+	src.procstart = null
 	var/closest_atom
 	var/closest_distance
 	for(var/atom in atom_list)
@@ -273,6 +301,8 @@ rough example of the "cone" made by the 3 dirs checked
 
 ///Returns a chosen path that is the closest to a list of matches
 /proc/pick_closest_path(value, list/matches = get_fancy_list_of_atom_types())
+	procstart = null
+	src.procstart = null
 	if (value == FALSE) //nothing should be calling us with a number, so this is safe
 		value = input("Enter type to find (blank for all, cancel to cancel)", "Search for type") as null|text
 		if (isnull(value))
@@ -304,12 +334,16 @@ rough example of the "cone" made by the 3 dirs checked
 
 ///Creates new items inside an atom based on a list
 /proc/generate_items_inside(list/items_list, where_to)
+	procstart = null
+	src.procstart = null
 	for(var/each_item in items_list)
 		for(var/i in 1 to items_list[each_item])
 			new each_item(where_to)
 
 ///Returns the atom type in the specified loc
 /proc/get(atom/loc, type)
+	procstart = null
+	src.procstart = null
 	while(loc)
 		if(istype(loc, type))
 			return loc
@@ -326,6 +360,8 @@ rough example of the "cone" made by the 3 dirs checked
  * * pass_args = pass_flags given to dummy object to allow it to ignore certain types of blockades.
  */
 /proc/los_check(atom/movable/user, mob/target, pass_args = PASSTABLE|PASSGLASS|PASSGRILLE, datum/callback/mid_check)
+	procstart = null
+	src.procstart = null
 	var/turf/user_turf = user.loc
 	if(!istype(user_turf))
 		return FALSE
@@ -358,6 +394,8 @@ rough example of the "cone" made by the 3 dirs checked
 
 ///Returns true if the src countain the atom target
 /atom/proc/contains(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return FALSE
 	for(var/atom/location = target.loc, location, location = location.loc)
@@ -366,10 +404,14 @@ rough example of the "cone" made by the 3 dirs checked
 
 ///A do nothing proc
 /proc/pass(...)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Returns an x and y value require to reverse the transformations made to center an oversized icon
 /atom/proc/get_oversized_icon_offsets()
+	procstart = null
+	src.procstart = null
 	if (!base_pixel_x && !base_pixel_y && !base_pixel_w && !base_pixel_z)
 		return list("x" = 0, "y" = 0)
 	var/list/icon_dimensions = get_icon_dimensions(icon)

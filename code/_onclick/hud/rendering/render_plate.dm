@@ -41,6 +41,8 @@
 	appearance_flags = PLANE_MASTER
 
 /atom/movable/screen/plane_master/rendering_plate/transparent/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Don't display us if we're below everything else yeah?
 	AddComponent(/datum/component/plane_hide_highest_offset)
@@ -55,6 +57,8 @@
 	blend_mode = BLEND_OVERLAY
 
 /atom/movable/screen/plane_master/rendering_plate/game_world/show_to(mob/mymob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -69,6 +73,8 @@
 	render_relay_planes = list(RENDER_PLANE_GAME)
 
 /atom/movable/screen/plane_master/rendering_plate/unlit_game_plate/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_relay_to(GET_NEW_PLANE(RENDER_PLANE_EMISSIVE_BLOOM, offset), blend_override = BLEND_MULTIPLY)
 
@@ -81,15 +87,21 @@
 	critical = PLANE_CRITICAL_DISPLAY
 
 /atom/movable/screen/plane_master/rendering_plate/particle_weather/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// We can actually do this just fine as we do not render anything onto ourselves but our particles
 	add_filter("weather_mask", 1, alpha_mask_filter(render_source = OFFSET_RENDER_TARGET(WEATHER_MASK_RENDER_TARGET, offset)))
 
 /atom/movable/screen/plane_master/rendering_plate/particle_weather/Destroy()
+	procstart = null
+	src.procstart = null
 	SSweather.particle_planemasters -= src
 	return ..()
 
 /atom/movable/screen/plane_master/rendering_plate/particle_weather/set_home(datum/plane_master_group/home)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -100,6 +112,8 @@
 	update_state(home.our_hud?.mymob)
 
 /atom/movable/screen/plane_master/rendering_plate/particle_weather/proc/hud_changed(datum/source, datum/hud/old_hud, datum/hud/new_hud)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if (old_hud)
 		UnregisterSignal(old_hud, COMSIG_HUD_Z_CHANGED)
@@ -107,6 +121,8 @@
 	update_state(new_hud?.mymob)
 
 /atom/movable/screen/plane_master/rendering_plate/particle_weather/proc/attach_hud(datum/hud/new_hud)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(new_hud, COMSIG_HUD_Z_CHANGED, PROC_REF(z_changed))
 	var/mob/eye = new_hud?.mymob?.client?.eye
 	var/turf/eye_location = get_turf(eye)
@@ -114,6 +130,8 @@
 
 /// Updates ourselves based on our mob's preferences state
 /atom/movable/screen/plane_master/rendering_plate/particle_weather/proc/update_state(mob/mymob)
+	procstart = null
+	src.procstart = null
 	SSweather.particle_planemasters -= src
 	vis_contents.Cut()
 
@@ -135,6 +153,8 @@
 				vis_contents += holder
 
 /atom/movable/screen/plane_master/rendering_plate/particle_weather/proc/z_changed(datum/source, new_z)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!SSmapping.initialized)
@@ -157,6 +177,8 @@
 	plane = RENDER_PLANE_EMISSIVE_PARTICLE_WEATHER
 
 /atom/movable/screen/plane_master/rendering_plate/particle_weather/emissive/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Render a copy of ourselves onto the emissive plane encoded into the bloom channel
 	add_relay_to(GET_NEW_PLANE(EMISSIVE_PLANE, offset), relay_color = GLOB.emissive_color)
@@ -170,6 +192,8 @@
 	critical = PLANE_CRITICAL_DISPLAY
 
 /atom/movable/screen/plane_master/rendering_plate/turf_lighting/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	/// We get affected by cutoff but not by the contrast that overlay lights get
 	/// So flashlights seem to reflect "better"
@@ -198,6 +222,8 @@
 	critical = PLANE_CRITICAL_DISPLAY
 
 /atom/movable/screen/plane_master/rendering_plate/emissive_slate/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_filter("em_block_masking", 2, color_matrix_filter(GLOB.em_mask_matrix))
 	if(offset != 0)
@@ -225,6 +251,8 @@
 	critical = PLANE_CRITICAL_DISPLAY
 
 /atom/movable/screen/plane_master/rendering_plate/emissive_bloom/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_filter("emissive_mask", 1, alpha_mask_filter(render_source = OFFSET_RENDER_TARGET(EMISSIVE_BLOOM_MASK_RENDER_TARGET, offset)))
 	var/bloom_scale = hud_owner?.mymob?.client?.prefs?.read_preference(/datum/preference/numeric/emissive_bloom)
@@ -256,6 +284,8 @@
 	critical = PLANE_CRITICAL_DISPLAY
 
 /atom/movable/screen/plane_master/rendering_plate/overlay_light/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// I'd love for this to be HSL but filters don't work with blend modes
 	add_relay_to(GET_NEW_PLANE(RENDER_PLANE_TURF_LIGHTING, offset), BLEND_MULTIPLY, relay_color = list(
@@ -284,6 +314,8 @@
 	critical = PLANE_CRITICAL_DISPLAY
 
 /atom/movable/screen/plane_master/rendering_plate/specular/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_filter("specular_mask", 1, alpha_mask_filter(render_source = OFFSET_RENDER_TARGET(SPECULAR_MASK_RENDER_TARGET, offset)))
 
@@ -316,17 +348,23 @@
  * This is then used to alpha mask the lighting plane.
  */
 /atom/movable/screen/plane_master/rendering_plate/lighting/Initialize(mapload, datum/hud/hud_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_filter("emissives", 1, alpha_mask_filter(render_source = OFFSET_RENDER_TARGET(EMISSIVE_RENDER_TARGET, offset), flags = MASK_INVERSE))
 	set_light_cutoff(10)
 
 /atom/movable/screen/plane_master/rendering_plate/lighting/set_home(datum/plane_master_group/home)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(home)
 		RegisterSignal(home, COMSIG_GROUP_HUD_CHANGED, PROC_REF(hud_changed))
 		hud_changed(null, null, home.our_hud)
 
 /atom/movable/screen/plane_master/rendering_plate/lighting/show_to(mob/mymob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -344,11 +382,15 @@
 	set_light_cutoff(mymob.lighting_cutoff, mymob.lighting_color_cutoffs)
 
 /atom/movable/screen/plane_master/rendering_plate/lighting/hide_from(mob/oldmob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	oldmob.clear_fullscreen("lighting_backdrop_lit_[home.key]#[offset]")
 	oldmob.clear_fullscreen("lighting_backdrop_unlit_[home.key]#[offset]")
 
 /atom/movable/screen/plane_master/rendering_plate/lighting/proc/hud_changed(datum/source, datum/hud/old_hud, datum/hud/new_hud)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(old_hud)
 		UnregisterSignal(old_hud, COMSIG_HUD_OFFSET_CHANGED, PROC_REF(on_offset_change))
@@ -357,10 +399,14 @@
 	offset_change(new_hud?.current_plane_offset || 0)
 
 /atom/movable/screen/plane_master/rendering_plate/lighting/proc/on_offset_change(datum/source, old_offset, new_offset)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	offset_change(new_offset)
 
 /atom/movable/screen/plane_master/rendering_plate/lighting/proc/offset_change(mob_offset)
+	procstart = null
+	src.procstart = null
 	// Offsets stack down remember. This implies that we're above the mob's view plane, and shouldn't render
 	if(offset < mob_offset)
 		disable_alpha()
@@ -368,6 +414,8 @@
 		enable_alpha()
 
 /atom/movable/screen/plane_master/rendering_plate/lighting/proc/set_light_cutoff(light_cutoff, list/color_cutoffs)
+	procstart = null
+	src.procstart = null
 	var/list/new_cutoffs = list(light_cutoff)
 	new_cutoffs += color_cutoffs
 	if(new_cutoffs ~= light_cutoffs)
@@ -403,6 +451,8 @@
 	render_relay_planes = list(RENDER_PLANE_GAME)
 
 /atom/movable/screen/plane_master/rendering_plate/light_mask/show_to(mob/mymob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -411,6 +461,8 @@
 	handle_sight(mymob, mymob.sight, NONE)
 
 /atom/movable/screen/plane_master/rendering_plate/light_mask/hide_from(mob/oldmob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/movable/screen/plane_master/emissive = home.get_plane(GET_NEW_PLANE(RENDER_PLANE_EMISSIVE, offset))
 	emissive.remove_filter("lighting_mask")
@@ -418,6 +470,8 @@
 	UnregisterSignal(oldmob, COMSIG_MOB_SIGHT_CHANGE)
 
 /atom/movable/screen/plane_master/rendering_plate/light_mask/proc/handle_sight(datum/source, new_sight, old_sight)
+	procstart = null
+	src.procstart = null
 	// If we can see something that shows "through" blackness, and we can't see turfs, disable our draw to the game plane
 	// And instead mask JUST the overlay lighting plane, since that will look fuckin wrong
 	var/atom/movable/screen/plane_master/emissive = home.get_plane(GET_NEW_PLANE(RENDER_PLANE_EMISSIVE, offset))
@@ -443,6 +497,8 @@
 	critical = PLANE_CRITICAL_DISPLAY
 
 /atom/movable/screen/plane_master/rendering_plate/game_plate/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(GLOB, SIGNAL_ADDTRAIT(TRAIT_DISTORTION_IN_USE(offset)), PROC_REF(distortion_enabled))
 	RegisterSignal(GLOB, SIGNAL_REMOVETRAIT(TRAIT_DISTORTION_IN_USE(offset)), PROC_REF(distortion_disabled))
@@ -450,14 +506,20 @@
 		distortion_enabled()
 
 /atom/movable/screen/plane_master/rendering_plate/game_plate/proc/distortion_enabled(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	add_filter("displacer", 1, displacement_map_filter(render_source = OFFSET_RENDER_TARGET(DISPLACEMENT_RENDER_TARGET, offset), size = 10))
 
 /atom/movable/screen/plane_master/rendering_plate/game_plate/proc/distortion_disabled(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	remove_filter("displacer")
 
 /atom/movable/screen/plane_master/rendering_plate/game_plate/show_to(mob/mymob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !mymob)
 		return .
@@ -469,12 +531,16 @@
 		fov_disabled(mymob)
 
 /atom/movable/screen/plane_master/rendering_plate/game_plate/proc/fov_enabled(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	add_relay_to(GET_NEW_PLANE(RENDER_PLANE_GAME_UNMASKED, offset))
 	add_relay_to(GET_NEW_PLANE(RENDER_PLANE_GAME_MASKED, offset))
 	remove_relay_from(GET_NEW_PLANE(RENDER_PLANE_MASTER, offset))
 
 /atom/movable/screen/plane_master/rendering_plate/game_plate/proc/fov_disabled(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	remove_relay_from(GET_NEW_PLANE(RENDER_PLANE_GAME_UNMASKED, offset))
 	remove_relay_from(GET_NEW_PLANE(RENDER_PLANE_GAME_MASKED, offset))
@@ -489,10 +555,14 @@
 	render_relay_planes = list(RENDER_PLANE_MASTER)
 
 /atom/movable/screen/plane_master/rendering_plate/unmasked_game_plate/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_filter("fov_handled", 1, alpha_mask_filter(render_source = OFFSET_RENDER_TARGET(FIELD_OF_VISION_BLOCKER_RENDER_TARGET, offset), flags = MASK_INVERSE))
 
 /atom/movable/screen/plane_master/rendering_plate/unmasked_game_plate/show_to(mob/mymob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !mymob)
 		return .
@@ -504,12 +574,16 @@
 		fov_disabled(mymob)
 
 /atom/movable/screen/plane_master/rendering_plate/unmasked_game_plate/proc/fov_enabled(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(force_hidden == FALSE)
 		return
 	unhide_plane(source)
 
 /atom/movable/screen/plane_master/rendering_plate/unmasked_game_plate/proc/fov_disabled(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	hide_plane(source)
 
@@ -522,12 +596,16 @@
 	render_relay_planes = list(RENDER_PLANE_MASTER)
 
 /atom/movable/screen/plane_master/rendering_plate/masked_game_plate/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_filter("fov_blur", 1, gauss_blur_filter(1.8))
 	add_filter("fov_handled_space", 2, alpha_mask_filter(render_source = OFFSET_RENDER_TARGET(FIELD_OF_VISION_BLOCKER_RENDER_TARGET, offset)))
 	add_filter("fov_matrix", 3, color_matrix_filter(list(0.5,-0.15,-0.15,0, -0.15,0.5,-0.15,0, -0.15,-0.15,0.5,0, 0,0,0,1, 0,0,0,0)))
 
 /atom/movable/screen/plane_master/rendering_plate/masked_game_plate/show_to(mob/mymob)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !mymob)
 		return .
@@ -539,12 +617,16 @@
 		fov_disabled(mymob)
 
 /atom/movable/screen/plane_master/rendering_plate/masked_game_plate/proc/fov_enabled(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(force_hidden == FALSE)
 		return
 	unhide_plane(source)
 
 /atom/movable/screen/plane_master/rendering_plate/masked_game_plate/proc/fov_disabled(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	hide_plane(source)
 
@@ -564,6 +646,8 @@
 	render_relay_planes = list()
 
 /atom/movable/screen/plane_master/rendering_plate/master/set_home(datum/plane_master_group/home)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Non 0 offset render plates will relay up to the transparent plane above them, assuming they're not on the same z level as their target of course
 	if(offset == 0)
@@ -573,6 +657,8 @@
 		hud_changed(null, null, home.our_hud)
 
 /atom/movable/screen/plane_master/rendering_plate/master/proc/hud_changed(datum/source, datum/hud/old_hud, datum/hud/new_hud)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(old_hud)
 		UnregisterSignal(old_hud, COMSIG_HUD_OFFSET_CHANGED, PROC_REF(on_offset_change))
@@ -581,10 +667,14 @@
 	offset_change(new_hud?.current_plane_offset || 0)
 
 /atom/movable/screen/plane_master/rendering_plate/master/proc/on_offset_change(datum/source, old_offset, new_offset)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	offset_change(new_offset)
 
 /atom/movable/screen/plane_master/rendering_plate/master/proc/offset_change(new_offset)
+	procstart = null
+	src.procstart = null
 	if(new_offset == offset) // If we're on our own z layer, relay to nothing, just draw
 		remove_relay_from(GET_NEW_PLANE(RENDER_PLANE_TRANSPARENT, offset - 1))
 	else // Otherwise, regenerate the relay
@@ -601,6 +691,8 @@
  * Other vars such as alpha will automatically be applied with the render source
  */
 /atom/movable/screen/plane_master/proc/generate_render_relays()
+	procstart = null
+	src.procstart = null
 	var/relay_loc = home?.relay_loc || "1,1"
 	// If we're using a submap (say for a popup window) make sure we draw onto it
 	if(home?.map)
@@ -621,6 +713,8 @@
 /// Helper for out of system code, shouldn't be used in this file
 /// Build system to differenchiate between generated and non generated render relays
 /atom/movable/screen/plane_master/proc/add_relay_to(target_plane, blend_override, relay_layer, relay_color)
+	procstart = null
+	src.procstart = null
 	if(get_relay_to(target_plane))
 		return
 	if(!offset_already_updated)
@@ -631,9 +725,13 @@
 	relay.color = relay_color
 
 /proc/get_plane_master_render_base(name)
+	procstart = null
+	src.procstart = null
 	return "*[name]: AUTOGENERATED RENDER TGT"
 
 /atom/movable/screen/plane_master/proc/generate_relay_to(target_plane, relay_loc, client/show_to, blend_override, relay_layer)
+	procstart = null
+	src.procstart = null
 	if(!length(relays) && !initial(render_target))
 		render_target = OFFSET_RENDER_TARGET(get_plane_master_render_base(name), offset)
 	if(!relay_loc)
@@ -671,6 +769,8 @@
 
 /// Breaks a connection between this plane master, and the passed in place
 /atom/movable/screen/plane_master/proc/remove_relay_from(target_plane)
+	procstart = null
+	src.procstart = null
 	render_relay_planes -= target_plane
 	var/atom/movable/render_plane_relay/existing_relay = get_relay_to(target_plane)
 	if(!existing_relay)
@@ -684,6 +784,8 @@
 
 /// Gets the relay atom we're using to connect to the target plane, if one exists
 /atom/movable/screen/plane_master/proc/get_relay_to(target_plane)
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/render_plane_relay/relay in relays)
 		if(relay.plane == target_plane)
 			return relay
@@ -702,6 +804,8 @@
  * - new_offset: the offset we will adjust our relays to
  */
 /atom/movable/screen/plane_master/proc/offset_relays_in_place(new_offset)
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/render_plane_relay/rpr in relays)
 		offset_relay(rpr, new_offset)
 
@@ -714,6 +818,8 @@
  * - new_offset: the offset we will adjust it by
  */
 /atom/movable/screen/plane_master/proc/offset_relay(atom/movable/render_plane_relay/rpr, new_offset)
+	procstart = null
+	src.procstart = null
 	var/base_relay_plane = PLANE_TO_TRUE(rpr.plane)
 	var/old_offset = PLANE_TO_OFFSET(rpr.plane)
 	rpr.plane = GET_NEW_PLANE(base_relay_plane, new_offset)

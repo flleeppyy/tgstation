@@ -7,27 +7,39 @@
 	var/report_message = "Complete this goal."
 
 /datum/station_goal/proc/send_report()
+	procstart = null
+	src.procstart = null
 	priority_announce("Priority Nanotrasen directive received. Project \"[name]\" details inbound.", "Incoming Priority Message", SSstation.announcer.get_rand_report_sound())
 	print_command_report(get_report(),"Nanotrasen Directive [pick(GLOB.phonetic_alphabet)] \Roman[rand(1,50)]", announce=FALSE)
 	on_report()
 
 /datum/station_goal/proc/on_report()
+	procstart = null
+	src.procstart = null
 	//Additional unlocks/changes go here
 	return
 
 /datum/station_goal/proc/get_report()
+	procstart = null
+	src.procstart = null
 	return report_message
 
 /datum/station_goal/proc/check_completion()
+	procstart = null
+	src.procstart = null
 	return completed
 
 /datum/station_goal/proc/get_result()
+	procstart = null
+	src.procstart = null
 	if(check_completion())
 		return "<li>[name] : [span_greentext("Completed!")]</li>"
 	else
 		return "<li>[name] : [span_redtext("Failed!")]</li>"
 
 /datum/station_goal/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!check_rights(R_ADMIN) || !usr.client.holder.CheckAdminHref(href, href_list))
 		return
@@ -39,6 +51,8 @@
 		qdel(src)
 
 /datum/station_goal/New()
+	procstart = null
+	src.procstart = null
 	if(type in SSstation.goals_by_type)
 		stack_trace("Creating a new station_goal of type [type] when one already exists in SSstation.goals_by_type this is not supported anywhere. I trust you tho")
 	else
@@ -46,6 +60,8 @@
 	return ..()
 
 /datum/station_goal/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(SSstation.goals_by_type[type] == src)
 		SSstation.goals_by_type -= type
 	return ..()

@@ -23,6 +23,8 @@
 	desc = "A folder stamped \"Top Secret - Property of Nanotrasen Corporation. Unauthorized distribution is punishable by death.\""
 
 /obj/item/folder/documents/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/documents/nanotrasen(src)
 	update_appearance()
@@ -37,6 +39,8 @@
 	icon_state = "folder_sred"
 
 /obj/item/folder/syndicate/red/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/documents/syndicate/red(src)
 	update_appearance()
@@ -45,16 +49,22 @@
 	icon_state = "folder_sblue"
 
 /obj/item/folder/syndicate/blue/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/documents/syndicate/blue(src)
 	update_appearance()
 
 /obj/item/folder/syndicate/mining/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/documents/syndicate/mining(src)
 	update_appearance()
 
 /obj/item/folder/ancient_paperwork/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/paperwork/ancient(src)
 	update_appearance()

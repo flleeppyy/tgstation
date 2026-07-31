@@ -2,6 +2,8 @@
 /datum/unit_test/crusher_projectile
 
 /datum/unit_test/crusher_projectile/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/consistent/attacker = EASY_ALLOCATE()
 	var/obj/item/kinetic_crusher/crusher = EASY_ALLOCATE()
 

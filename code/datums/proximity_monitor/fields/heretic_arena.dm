@@ -13,6 +13,8 @@ GLOBAL_LIST_EMPTY(heretic_arenas)
 	var/datum/proximity_monitor/advanced/heretic_arena/arena
 
 /obj/effect/abstract/heretic_arena/Initialize(mapload, range, duration, caster)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	arena = new(src, range)
 	QDEL_IN(src, duration)
@@ -20,6 +22,8 @@ GLOBAL_LIST_EMPTY(heretic_arenas)
 	GLOB.heretic_arenas += src
 
 /obj/effect/abstract/heretic_arena/Destroy(force)
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(arena)
 	GLOB.heretic_arenas -= src
 	. = ..()
@@ -53,6 +57,8 @@ GLOBAL_LIST_EMPTY(heretic_arenas)
 	)
 
 /datum/proximity_monitor/advanced/heretic_arena/New(atom/_host, range, _ignore_if_not_on_turf)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	recalculate_field(full_recalc = TRUE)
 	var/list/things_in_range = range(range)
@@ -72,6 +78,8 @@ GLOBAL_LIST_EMPTY(heretic_arenas)
 		RegisterSignal(human_in_range, COMSIG_MOVABLE_POST_TELEPORT, PROC_REF(on_teleport))
 
 /datum/proximity_monitor/advanced/heretic_arena/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/human/mob in contained_mobs)
 		mob.remove_traits(given_immunities, HERETIC_ARENA_TRAIT)
 		mob.remove_status_effect(/datum/status_effect/arena_tracker)
@@ -86,6 +94,8 @@ GLOBAL_LIST_EMPTY(heretic_arenas)
 	return ..()
 
 /datum/proximity_monitor/advanced/heretic_arena/setup_edge_turf(turf/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/old_turf = target.type
 	target.ChangeTurf(/turf/closed/indestructible/heretic_wall)
@@ -93,6 +103,8 @@ GLOBAL_LIST_EMPTY(heretic_arenas)
 	border_walls[target] += old_turf
 
 /datum/proximity_monitor/advanced/heretic_arena/field_edge_uncrossed(atom/movable/movable, turf/old_location, turf/new_location)
+	procstart = null
+	src.procstart = null
 	if(!isliving(movable))
 		return
 	var/mob/living/living_mob = movable
@@ -103,16 +115,22 @@ GLOBAL_LIST_EMPTY(heretic_arenas)
 
 /// Prevents using ladders
 /datum/proximity_monitor/advanced/heretic_arena/proc/on_try_ladder(mob/climber)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	return LADDER_TRAVEL_BLOCK
 
 /// If we try to enter a space turf that has a mirage, we will block the movement
 /datum/proximity_monitor/advanced/heretic_arena/proc/on_pre_move(atom/movable/mover, atom/newloc)
+	procstart = null
+	src.procstart = null
 	if(locate(/atom/movable/mirage_holder) in newloc.contents)
 		return COMPONENT_MOVABLE_BLOCK_PRE_MOVE
 
 /// Blocks Z movement to new z levels
 /datum/proximity_monitor/advanced/heretic_arena/proc/on_try_z_move(atom/movable/source, turf/start, turf/destination)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(start.z == destination.z)
 		return
@@ -120,10 +138,14 @@ GLOBAL_LIST_EMPTY(heretic_arenas)
 
 /// If our caster teleports away (after winning presumably) we'll collapse the arena so that it doens't needlessly linger
 /datum/proximity_monitor/advanced/heretic_arena/proc/on_teleport(atom/teleportee, atom/destination, channel)
+	procstart = null
+	src.procstart = null
 	if(teleportee == arena_caster)
 		qdel(host)
 
 /datum/proximity_monitor/advanced/heretic_arena/proc/set_caster(atom/caster)
+	procstart = null
+	src.procstart = null
 	arena_caster = caster
 
 /turf/closed/indestructible/heretic_wall
@@ -135,6 +157,8 @@ GLOBAL_LIST_EMPTY(heretic_arenas)
 	pass_flags_self = NONE // No PASSCLOSEDTURF because only arena victors are allowed to go in or out
 
 /turf/closed/indestructible/heretic_wall/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	if(isliving(mover))
 		var/mob/living/living_mover = mover
 		var/datum/status_effect/arena_tracker/tracker = living_mover.has_status_effect(/datum/status_effect/arena_tracker)
@@ -143,6 +167,8 @@ GLOBAL_LIST_EMPTY(heretic_arenas)
 	return ..()
 
 /turf/closed/indestructible/heretic_wall/Bumped(atom/movable/bumped_atom)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(bumped_atom))
 		return
@@ -153,6 +179,8 @@ GLOBAL_LIST_EMPTY(heretic_arenas)
 
 /// Called when you crit somebody to update your crown
 /datum/status_effect/arena_tracker/proc/on_crit_somebody()
+	procstart = null
+	src.procstart = null
 	owner.cut_overlay(crown_overlay)
 	crown_overlay = mutable_appearance('icons/mob/effects/crown.dmi', "arena_victor", -HALO_LAYER)
 	crown_overlay.pixel_z = 24
@@ -210,6 +238,8 @@ GLOBAL_LIST_EMPTY(heretic_arenas)
 	var/mutable_appearance/crown_overlay
 
 /datum/status_effect/arena_tracker/on_apply()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(owner, COMSIG_MOB_STATCHANGE, PROC_REF(on_enter_crit))
 	RegisterSignal(owner, COMSIG_MOVABLE_IMPACT_ZONE, PROC_REF(on_impact_zone))
 	RegisterSignal(owner, COMSIG_MOB_APPLY_DAMAGE, PROC_REF(damage_taken))
@@ -225,6 +255,8 @@ GLOBAL_LIST_EMPTY(heretic_arenas)
 	return TRUE
 
 /datum/status_effect/arena_tracker/on_remove()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(owner, list(COMSIG_MOB_STATCHANGE, COMSIG_MOB_APPLY_DAMAGE))
 	owner.remove_traits(list(TRAIT_ELDRITCH_ARENA_PARTICIPANT, TRAIT_NO_TELEPORT), TRAIT_STATUS_EFFECT(id))
 	owner.cut_overlay(crown_overlay)
@@ -232,6 +264,8 @@ GLOBAL_LIST_EMPTY(heretic_arenas)
 
 // If our last attacker is an arena participant, we let them know they've scored a critical hit
 /datum/status_effect/arena_tracker/proc/on_enter_crit(mob/owner, new_stat, old_stat)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(new_stat < SOFT_CRIT)
 		return
@@ -279,6 +313,8 @@ GLOBAL_LIST_EMPTY(heretic_arenas)
 
 ///Called when impacted by something thrown at us, setting the last attacker to the person throwing the item.
 /datum/status_effect/arena_tracker/proc/on_impact_zone(atom/source, mob/living/hitby, zone, blocked, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Track being hit by a mob throwing a stick
 	if(!isitem(throwingdatum.thrownthing))
@@ -296,10 +332,14 @@ GLOBAL_LIST_EMPTY(heretic_arenas)
 	antag_flags = ANTAG_FAKE
 
 /datum/antagonist/heretic_arena_participant/on_gain()
+	procstart = null
+	src.procstart = null
 	forge_objectives()
 	return ..()
 
 /datum/antagonist/heretic_arena_participant/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/survive = new /datum/objective
 	survive.owner = owner
 	survive.explanation_text = "You have been trapped in an arena. The only way out is to slaughter someone else. Kill your captor, or betray your friends - the choice is yours."

@@ -1,6 +1,8 @@
 /datum/unit_test/reachable_soup
 
 /datum/unit_test/reachable_soup/Run()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/oven/range/range = EASY_ALLOCATE()
 	var/obj/item/reagent_containers/cup/soup_pot/soup = EASY_ALLOCATE()
 	var/mob/living/carbon/human/dummy = EASY_ALLOCATE()

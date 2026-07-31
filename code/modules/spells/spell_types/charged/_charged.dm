@@ -31,6 +31,8 @@
 	var/sound/charge_sound_instance
 
 /datum/action/cooldown/spell/charged/New(Target, original)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!channel_message)
 		channel_message = span_notice("You start chanelling [src]...")
@@ -42,6 +44,8 @@
 		charge_overlay_instance = mutable_appearance(charge_overlay_icon, charge_overlay_state, EFFECTS_LAYER)
 
 /datum/action/cooldown/spell/charged/Destroy()
+	procstart = null
+	src.procstart = null
 	if(owner)
 		stop_channel_effect(owner)
 
@@ -50,13 +54,19 @@
 	return ..()
 
 /datum/action/cooldown/spell/charged/Remove(mob/living/remove_from)
+	procstart = null
+	src.procstart = null
 	stop_channel_effect(remove_from)
 	return ..()
 
 /datum/action/cooldown/spell/charged/is_action_active(atom/movable/screen/movable/action_button/current_button)
+	procstart = null
+	src.procstart = null
 	return currently_channeling
 
 /datum/action/cooldown/spell/charged/can_cast_spell(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -68,6 +78,8 @@
 	return TRUE
 
 /datum/action/cooldown/spell/charged/before_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & SPELL_CANCEL_CAST)
 		return
@@ -87,11 +99,15 @@
 		return . | SPELL_CANCEL_CAST
 
 /datum/action/cooldown/spell/charged/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	stop_channel_effect(cast_on)
 
 /// Interrupts the chanelling effect, removing any overlay or sound playing (for the passed mob)
 /datum/action/cooldown/spell/charged/proc/stop_channel_effect(mob/for_who)
+	procstart = null
+	src.procstart = null
 	if(charge_overlay_instance)
 		for_who.cut_overlay(charge_overlay_instance)
 
@@ -120,10 +136,14 @@
 	var/atom/initial_target
 
 /datum/action/cooldown/spell/charged/beam/Destroy()
+	procstart = null
+	src.procstart = null
 	initial_target = null // This like shouuld never hang references but I've seen some cursed things so let's be safe
 	return ..()
 
 /datum/action/cooldown/spell/charged/beam/before_cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & SPELL_CANCEL_CAST)
 		return
@@ -135,15 +155,21 @@
 		return . | SPELL_CANCEL_CAST
 
 /datum/action/cooldown/spell/charged/beam/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	send_beam(cast_on, initial_target, max_beam_bounces)
 	initial_target = null
 
 /datum/action/cooldown/spell/charged/beam/proc/send_beam(atom/origin, atom/to_beam, bounces)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("[type] did not implement send_beam and either has no effects or implemented the spell incorrectly.")
 
 /datum/action/cooldown/spell/charged/beam/proc/get_target(atom/center)
+	procstart = null
+	src.procstart = null
 	var/list/things = list()
 	for(var/atom/nearby_thing in range(target_radius, center))
 		if(nearby_thing == owner || nearby_thing == center)

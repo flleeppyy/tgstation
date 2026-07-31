@@ -52,11 +52,15 @@
 	pixel_x = -32
 
 /obj/machinery/computer/tram_controls/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/circuitboard/computer/tram_controls/my_circuit = circuit
 	split_mode = my_circuit.split_mode
 
 /obj/machinery/computer/tram_controls/post_machine_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!id_tag)
 		id_tag = assign_random_name()
@@ -69,6 +73,8 @@
 		RegisterSignal(SStransport, COMSIG_TRANSPORT_UPDATED, PROC_REF(update_display))
 
 /obj/machinery/computer/tram_controls/update_current_power_usage()
+	procstart = null
+	src.procstart = null
 	return // We get power from area rectifiers
 
 /**
@@ -77,15 +83,21 @@
  * Locates tram parts in the lift global list after everything is done.
  */
 /obj/machinery/computer/tram_controls/proc/find_tram()
+	procstart = null
+	src.procstart = null
 	for(var/datum/transport_controller/linear/transport as anything in SStransport.transports_by_type[TRANSPORT_TYPE_TRAM])
 		if(transport.specific_transport_id == specific_transport_id)
 			transport_ref = WEAKREF(transport)
 			return
 
 /obj/machinery/computer/tram_controls/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.not_incapacitated_state
 
 /obj/machinery/computer/tram_controls/ui_status(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	var/datum/transport_controller/linear/tram/tram = transport_ref?.resolve()
 
 	if(tram?.controller_active)
@@ -95,6 +107,8 @@
 	return ..()
 
 /obj/machinery/computer/tram_controls/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -102,6 +116,8 @@
 		ui.open()
 
 /obj/machinery/computer/tram_controls/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/transport_controller/linear/tram/tram_controller = transport_ref?.resolve()
 	var/list/data = list()
 	data["moving"] = tram_controller?.controller_active
@@ -112,6 +128,8 @@
 	return data
 
 /obj/machinery/computer/tram_controls/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["destinations"] = get_destinations()
 	return data
@@ -124,6 +142,8 @@
  * names for the tram console gui.
  */
 /obj/machinery/computer/tram_controls/proc/get_destinations()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/obj/effect/landmark/transport/nav_beacon/tram/platform/destination as anything in SStransport.nav_beacons[specific_transport_id])
 		var/list/this_destination = list()
@@ -133,6 +153,8 @@
 		. += list(this_destination)
 
 /obj/machinery/computer/tram_controls/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -152,6 +174,8 @@
 			update_appearance()
 
 /obj/machinery/computer/tram_controls/proc/update_display(datum/source, datum/transport_controller/linear/tram/controller, controller_active, controller_status, travel_direction, obj/effect/landmark/transport/nav_beacon/tram/platform/destination_platform)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(machine_stat & (NOPOWER|BROKEN))
@@ -189,6 +213,8 @@
 	update_appearance()
 
 /obj/machinery/computer/tram_controls/on_construction(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/circuitboard/computer/tram_controls/my_circuit = circuit
 	split_mode = my_circuit.split_mode
@@ -218,6 +244,8 @@
 				pixel_x = 32
 
 /obj/machinery/computer/tram_controls/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isnull(icon_screen))
@@ -226,6 +254,8 @@
 	. += emissive_appearance(icon, icon_screen, src, alpha = src.alpha)
 
 /obj/machinery/computer/tram_controls/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	var/datum/transport_controller/linear/tram/tram = transport_ref?.resolve()
 	if(isnull(tram))
@@ -236,6 +266,8 @@
 	update_display(src, tram, tram.controller_active, tram.controller_status, tram.travel_direction, tram.destination_platform)
 
 /obj/machinery/computer/tram_controls/proc/call_response(controller, list/relevant, response_code, response_info)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	var/datum/transport_controller/linear/tram/tram = transport_ref?.resolve()
 	if(tram)

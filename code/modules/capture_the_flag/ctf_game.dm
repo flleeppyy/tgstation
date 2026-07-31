@@ -19,6 +19,8 @@
 	var/datum/ctf_controller/ctf_game
 
 /obj/machinery/ctf/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ctf_game = create_ctf_game(game_id)
 
@@ -39,12 +41,16 @@
 	var/player_traits = list(TRAIT_NEVER_WOUNDED)
 
 /obj/machinery/ctf/spawner/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ctf_game.add_team(src)
 	SSpoints_of_interest.make_point_of_interest(src)
 	default_gear = ctf_gear
 
 /obj/machinery/ctf/spawner/Destroy()
+	procstart = null
+	src.procstart = null
 	ctf_game.remove_team(team)
 	return ..()
 
@@ -81,6 +87,8 @@
 	instagib_gear = list("Instagib" = /datum/outfit/ctf/yellow/instagib)
 
 /obj/machinery/ctf/spawner/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ctf_game.ctf_enabled == FALSE)
 		if(user.client && user.client.holder)
 			var/response = tgui_alert(user, "Enable this CTF game?", "CTF", list("Yes", "No"))
@@ -114,12 +122,16 @@
 		spawn_team_member(new_team_member)
 
 /obj/machinery/ctf/spawner/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(href_list["join"])
 		var/mob/dead/observer/ghost = usr
 		if(istype(ghost))
 			attack_ghost(ghost)
 
 /obj/machinery/ctf/spawner/proc/spawn_team_member(client/new_team_member, datum/component/ctf_player/ctf_player_component)
+	procstart = null
+	src.procstart = null
 	var/datum/outfit/chosen_class
 
 	if(ctf_gear.len == 1) //no choices to make
@@ -169,6 +181,8 @@
 	return player_mob //used in medisim_game.dm
 
 /obj/machinery/ctf/spawner/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/ctf_flag))
 		return NONE
 
@@ -213,6 +227,8 @@
 	var/flag_value = 1
 
 /obj/item/ctf_flag/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(reset))
 		reset = new(get_turf(src))
@@ -223,19 +239,27 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/item/ctf_flag/LateInitialize()
+	procstart = null
+	src.procstart = null
 	ctf_game = GLOB.ctf_games[game_id] //Flags don't create ctf games by themselves since you can get ctf flags from christmas trees.
 
 /obj/item/ctf_flag/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(reset)
 	return ..()
 
 /obj/item/ctf_flag/process()
+	procstart = null
+	src.procstart = null
 	if(is_ctf_target(loc)) //pickup code calls temporary drops to test things out, we need to make sure the flag doesn't reset from
 		return PROCESS_KILL
 	if(world.time > reset_cooldown)
 		reset_flag()
 
 /obj/item/ctf_flag/proc/reset_flag(capture = FALSE)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 
 	var/turf/our_turf = get_turf(src.reset)
@@ -247,6 +271,8 @@
 
 //working with attack hand feels like taking my brain and putting it through an industrial pill press so i'm gonna be a bit liberal with the comments //Mood
 /obj/item/ctf_flag/attack_hand(mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	//pre normal check item stuff, this is for our special flag checks
 	if(!is_ctf_target(user) && !anyonecanpickup)
 		to_chat(user, span_warning("Non-players shouldn't be moving the flag!"))
@@ -271,6 +297,8 @@
 	user.status_flags &= ~CANPUSH
 
 /obj/item/ctf_flag/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/ctf_flag))
 		return NONE
 
@@ -283,6 +311,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/ctf_flag/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	user.anchored = FALSE // Hacky usage that bypasses set_anchored()
 	user.status_flags |= CANPUSH
@@ -336,6 +366,8 @@
 	var/obj/item/ctf_flag/flag
 
 /obj/effect/ctf/flag_reset/Destroy()
+	procstart = null
+	src.procstart = null
 	if(flag)
 		flag.reset = null
 		flag = null
@@ -353,14 +385,20 @@
 	var/point_rate = 1
 
 /obj/machinery/ctf/control_point/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ctf_game.control_points += src
 
 /obj/machinery/ctf/control_point/Destroy()
+	procstart = null
+	src.procstart = null
 	ctf_game.control_points.Remove(src)
 	return ..()
 
 /obj/machinery/ctf/control_point/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(controlling_team)
 		ctf_game.control_point_scoring(controlling_team, point_rate * seconds_per_tick)
 
@@ -373,10 +411,14 @@
 		balloon_alert_to_viewers(scores)
 
 /obj/machinery/ctf/control_point/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	capture(user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/ctf/control_point/attack_hand(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -384,6 +426,8 @@
 
 ///Proc called when a player interacts with the control point to handle capturing it. Performs a do after and then verifies what team ther capturer belongs to.
 /obj/machinery/ctf/control_point/proc/capture(mob/user)
+	procstart = null
+	src.procstart = null
 	if(do_after(user, 3 SECONDS, target = src))
 		var/datum/component/ctf_player/ctf_player = user.mind.GetComponent(/datum/component/ctf_player)
 		if(isnull(ctf_player))
@@ -394,6 +438,8 @@
 		ctf_game.message_all_teams("<span class='userdanger [ctf_game.teams[controlling_team].team_span]'>[user.real_name] has captured \the [src], claiming it for [controlling_team]! Go take it back!</span>")
 
 /obj/machinery/ctf/control_point/proc/clear_point()
+	procstart = null
+	src.procstart = null
 	controlling_team = null
 	icon_state = "dominator"
 
@@ -409,9 +455,13 @@
 	alpha = 255
 
 /obj/structure/trap/ctf/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	return list()
 
 /obj/structure/trap/ctf/trap_effect(mob/living/living)
+	procstart = null
+	src.procstart = null
 	if(!is_ctf_target(living))
 		return
 	if(!living.has_faction(team))
@@ -441,6 +491,8 @@
 	desc = "A barrier. Provides cover in fire fights."
 
 /obj/structure/barricade/security/ctf/make_debris()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/ctf/dead_barricade(get_turf(src))
 
 /obj/effect/ctf/dead_barricade
@@ -452,15 +504,21 @@
 	var/datum/ctf_controller/ctf_game
 
 /obj/effect/ctf/dead_barricade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ctf_game = GLOB.ctf_games[game_id]
 	ctf_game?.barricades += src
 
 /obj/effect/ctf/dead_barricade/Destroy()
+	procstart = null
+	src.procstart = null
 	ctf_game?.barricades -= src
 	return ..()
 
 /obj/effect/ctf/dead_barricade/proc/respawn()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(src))
 		new /obj/structure/barricade/security/ctf(get_turf(src))
 		qdel(src)
@@ -469,6 +527,8 @@
 	resistance_flags = INDESTRUCTIBLE
 
 /obj/structure/table/reinforced/ctf/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/tool_blocker, TOOL_SCREWDRIVER, TOOL_ACT_SECONDARY)
 	AddElement(/datum/element/tool_blocker, TOOL_WRENCH, TOOL_ACT_SECONDARY)
@@ -479,6 +539,8 @@
 
 ///Proc that handles toggling and unloading CTF.
 /proc/toggle_id_ctf(user, activated_id, automated = FALSE, unload = FALSE, area/ctf_area = /area/centcom/ctf)
+	procstart = null
+	src.procstart = null
 	var/static/loading = CTF_LOADING_UNLOADED
 	var/datum/ctf_controller/ctf_controller = create_ctf_game(activated_id)
 	if(unload)
@@ -542,6 +604,8 @@
 
 ///Proc that identifies if something is a valid target for CTF related checks, checks if an object is a ctf barrier or has ctf component if they are a player.
 /proc/is_ctf_target(atom/target)
+	procstart = null
+	src.procstart = null
 	if(istype(target, /obj/structure/barricade/security/ctf))
 		return TRUE
 	if(ishuman(target))

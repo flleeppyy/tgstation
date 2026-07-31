@@ -26,11 +26,15 @@
 	var/servant_title = "Servant"
 
 /datum/action/cooldown/spell/summon_mob/Grant(mob/grant_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.balloon_alert(owner, "conjuring a new [servant_title]...")
 	find_servant()
 
 /datum/action/cooldown/spell/summon_mob/before_cast(mob/living/invoker, feedback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!selected_summon)
 		if(summoning_servant)
@@ -47,6 +51,8 @@
 		return SPELL_CANCEL_CAST
 
 /datum/action/cooldown/spell/summon_mob/cast()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/mob/living/to_summon = summon_weakref?.resolve()
@@ -63,6 +69,8 @@
 	)
 
 /datum/action/cooldown/spell/summon_mob/proc/find_servant()
+	procstart = null
+	src.procstart = null
 	summoning_servant = TRUE //If we find a candidate, this stays true and locks in the summoned servant.
 	var/list/candidate_list = SSpolling.poll_ghost_candidates("Do you want to play as [span_danger("[owner.real_name]'s")] [span_notice("[servant_title]")]?", check_jobban = ROLE_WIZARD, role = ROLE_WIZARD, poll_time = 15 SECONDS, alert_pic = owner, role_name_text = "[servant_title]")
 	if(!length(candidate_list))

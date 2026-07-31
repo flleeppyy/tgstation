@@ -10,6 +10,8 @@ GLOBAL_LIST_INIT(circuit_dupe_whitelisted_types, list(
 
 /// Loads a circuit based on json data at a location. Can also load usb connections, such as arrest consoles.
 /obj/item/integrated_circuit/proc/load_circuit_data(json_data, list/errors)
+	procstart = null
+	src.procstart = null
 	var/list/general_data = json_decode(json_data)
 
 	if(!general_data)
@@ -128,6 +130,8 @@ GLOBAL_LIST_INIT(circuit_dupe_whitelisted_types, list(
 
 /// Converts a circuit into json.
 /obj/item/integrated_circuit/proc/convert_to_json()
+	procstart = null
+	src.procstart = null
 	var/list/circuit_to_identifiers = list()
 	var/list/identifiers = list()
 	var/list/external_objects = list() // Objects that are connected to a component. These objects will be linked to the components.
@@ -206,17 +210,23 @@ GLOBAL_LIST_INIT(circuit_dupe_whitelisted_types, list(
 	return json_encode(general_data)
 
 /obj/item/integrated_circuit/proc/load_component(type)
+	procstart = null
+	src.procstart = null
 	var/obj/item/circuit_component/component = new type(src)
 	add_component(component)
 	return component
 
 /// Saves data to a list. Shouldn't be used unless you are quite literally saving the data of a component to a list. Input value is the list to save the data to
 /obj/item/circuit_component/proc/save_data_to_list(list/component_data)
+	procstart = null
+	src.procstart = null
 	component_data["rel_x"] = rel_x
 	component_data["rel_y"] = rel_y
 
 /// Loads data from a list
 /obj/item/circuit_component/proc/load_data_from_list(list/component_data)
+	procstart = null
+	src.procstart = null
 	rel_x = component_data["rel_x"]
 	rel_y = component_data["rel_y"]
 

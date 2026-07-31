@@ -34,6 +34,8 @@
 	var/list/no_coexistence_typecache
 
 /datum/spellbook_entry/New()
+	procstart = null
+	src.procstart = null
 	no_coexistence_typecache = typecacheof(no_coexistence_typecache)
 
 	if(ispath(spell_type))
@@ -49,6 +51,8 @@
  * Return FALSE to prevent the entry from being added to wizard spellbooks, TRUE otherwise
  */
 /datum/spellbook_entry/proc/can_be_purchased()
+	procstart = null
+	src.procstart = null
 	if(!name || !desc || !category) // Erroneously set or abstract
 		return FALSE
 	return TRUE
@@ -63,6 +67,8 @@
  * Return TRUE if it can be bought, FALSE otherwise
  */
 /datum/spellbook_entry/proc/can_buy(mob/living/carbon/human/user, obj/item/spellbook/book)
+	procstart = null
+	src.procstart = null
 	if(book.uses < cost)
 		return FALSE
 	if(!isnull(limit) && times >= limit)
@@ -91,6 +97,8 @@
  * Return truthy if the purchase was successful, FALSE otherwise
  */
 /datum/spellbook_entry/proc/buy_spell(mob/living/carbon/human/user, obj/item/spellbook/book, log_buy = TRUE)
+	procstart = null
+	src.procstart = null
 	var/datum/action/cooldown/spell/existing = locate(spell_type) in user.actions
 	if(existing)
 		var/before_name = existing.name
@@ -122,6 +130,8 @@
 	return new_spell
 
 /datum/spellbook_entry/proc/log_purchase(key)
+	procstart = null
+	src.procstart = null
 	if(!islist(GLOB.wizard_spellbook_purchases_by_key[key]))
 		GLOB.wizard_spellbook_purchases_by_key[key] = list()
 
@@ -146,6 +156,8 @@
  * Return TRUE if it can refunded, FALSE otherwise
  */
 /datum/spellbook_entry/proc/can_refund(mob/living/carbon/human/user, obj/item/spellbook/book)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(user, TRAIT_SPELLS_LOTTERY))
 		to_chat(user, span_notice("No refund."))
 		return FALSE
@@ -170,6 +182,8 @@
  * Return -1 on failure, or return the point value of the refund on success
  */
 /datum/spellbook_entry/proc/refund_spell(mob/living/carbon/human/user, obj/item/spellbook/book)
+	procstart = null
+	src.procstart = null
 	var/area/centcom/wizard_station/wizard_home = GLOB.areas_by_type[/area/centcom/wizard_station]
 	if(get_area(user) != wizard_home)
 		to_chat(user, span_warning("You can only refund spells at the wizard lair!"))
@@ -197,6 +211,8 @@
  * For example, updating the cooldown after upgrading it
  */
 /datum/spellbook_entry/proc/set_spell_info()
+	procstart = null
+	src.procstart = null
 	if(!spell_type)
 		return
 
@@ -210,6 +226,8 @@
 	var/obj/item/item_path
 
 /datum/spellbook_entry/item/buy_spell(mob/living/carbon/human/user, obj/item/spellbook/book, log_buy = TRUE)
+	procstart = null
+	src.procstart = null
 	var/atom/spawned_path = new item_path(user.loc)
 	if(log_buy)
 		log_spellbook("[key_name(user)] bought [src] for [cost] points")
@@ -225,10 +243,14 @@
 
 /// Attempts to give the item to the buyer on purchase.
 /datum/spellbook_entry/item/proc/try_equip_item(mob/living/carbon/human/user, obj/item/to_equip)
+	procstart = null
+	src.procstart = null
 	var/was_put_in_hands = user.put_in_hands(to_equip)
 	to_chat(user, span_notice("\A [to_equip.name] has been summoned [was_put_in_hands ? "in your hands" : "at your feet"]."))
 
 /datum/spellbook_entry/item/can_refund(mob/living/carbon/human/user, obj/item/spellbook/book, obj/item/refunding_item)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(user, TRAIT_SPELLS_LOTTERY))
 		to_chat(user, span_notice("No refund."))
 		return FALSE
@@ -246,6 +268,8 @@
 	buy_word = "Cast"
 
 /datum/spellbook_entry/summon/buy_spell(mob/living/carbon/human/user, obj/item/spellbook/book, log_buy = TRUE)
+	procstart = null
+	src.procstart = null
 	if(log_buy)
 		log_spellbook("[key_name(user)] cast [src] for [cost] points")
 		SSblackbox.record_feedback("tally", "wizard_spell_learned", 1, name)
@@ -262,4 +286,6 @@
 
 // See, non-purchasable.
 /datum/spellbook_entry/challenge/can_buy(mob/living/carbon/human/user, obj/item/spellbook/book)
+	procstart = null
+	src.procstart = null
 	return FALSE

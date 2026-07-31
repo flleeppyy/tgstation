@@ -67,6 +67,8 @@
 	var/seed_flags = MUTATE_EARLY
 
 /obj/item/seeds/Initialize(mapload, nogenes = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = base_pixel_x + rand(-8, 8)
 	pixel_y = base_pixel_y + rand(-8, 8)
@@ -104,6 +106,8 @@
 	AddElement(/datum/element/contextual_screentip_item_typechecks, hovering_item_typechecks)
 
 /obj/item/seeds/Destroy()
+	procstart = null
+	src.procstart = null
 	// No AS ANYTHING here, because the list/genes could have typepaths in it.
 	for(var/datum/plant_gene/gene in genes)
 		gene.on_removed(src)
@@ -113,6 +117,8 @@
 	return ..()
 
 /obj/item/seeds/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += span_notice("Use a pen on it to rename it or change its description.")
 	if(reagents_add && user.can_see_reagents())
@@ -122,6 +128,8 @@
 
 /// Copy all the variables from one seed to a new instance of the same seed and return it.
 /obj/item/seeds/proc/Copy()
+	procstart = null
+	src.procstart = null
 	var/obj/item/seeds/copy_seed = new type(null, TRUE)
 	// Copy all the stats
 	copy_seed.lifespan = lifespan
@@ -147,14 +155,20 @@
 	return copy_seed
 
 /obj/item/seeds/proc/get_gene(typepath)
+	procstart = null
+	src.procstart = null
 	return (locate(typepath) in genes)
 
 /obj/item/seeds/proc/reagents_from_genes()
+	procstart = null
+	src.procstart = null
 	reagents_add = list()
 	for(var/datum/plant_gene/reagent/R in genes)
 		reagents_add[R.reagent_id] = R.rate
 
 /obj/item/seeds/proc/mutate(lifemut = 2, endmut = 5, productmut = 1, yieldmut = 2, potmut = 25, wrmut = 2, wcmut = 5, traitmut = 0, stabmut = 3)
+	procstart = null
+	src.procstart = null
 	adjust_lifespan(rand(-lifemut,lifemut))
 	adjust_endurance(rand(-endmut,endmut))
 	adjust_production(rand(-productmut,productmut))
@@ -171,7 +185,9 @@
 
 
 
-/obj/item/seeds/bullet_act(obj/projectile/proj) //Works with the Somatoray to modify plant variables.
+/obj/item/seeds/bullet_act(obj/projectile/proj)
+	procstart = null
+	src.procstart = null //Works with the Somatoray to modify plant variables.
 	if(!istype(proj, /obj/projectile/energy/flora/yield))
 		return ..()
 	var/rating = 1
@@ -186,6 +202,8 @@
 
 // Harvest procs
 /obj/item/seeds/proc/getYield()
+	procstart = null
+	src.procstart = null
 	var/return_yield = yield
 	var/obj/machinery/hydroponics/parent = loc
 	// Handle hydroponics malus for soil lovers like rootcrops.
@@ -206,6 +224,8 @@
 
 
 /obj/item/seeds/proc/harvest(mob/user)
+	procstart = null
+	src.procstart = null
 	///Reference to the tray/soil the seeds are planted in.
 	var/obj/machinery/hydroponics/parent = loc //for ease of access
 	///Count used for creating the correct amount of results to the harvest.
@@ -272,6 +292,8 @@
  * This is where chemical reactions can occur, and the heating / cooling traits effect the reagent container.
  */
 /obj/item/seeds/proc/prepare_result(obj/item/T)
+	procstart = null
+	src.procstart = null
 	if(!T.reagents)
 		CRASH("[T] has no reagents.")
 	var/reagent_max = 0
@@ -319,6 +341,8 @@
 
 /// Returns reagent purity based on seed stats
 /obj/item/seeds/proc/get_reagent_purity()
+	procstart = null
+	src.procstart = null
 	var/purity_from_lifespan = lifespan / 400 //up to +25% for lifespan
 	var/purity_from_endurance = endurance / 400 //up to +25% for endurance
 	var/purity_from_instability = rand(-instability, instability) / 400  //up to +-25% at random for instability
@@ -331,6 +355,8 @@
  * Adjusts seed yield up or down according to adjustamt. (Max 10)
  */
 /obj/item/seeds/proc/adjust_yield(adjustamt)
+	procstart = null
+	src.procstart = null
 	if(yield == -1) // Unharvestable shouldn't suddenly turn harvestable
 		return
 
@@ -349,18 +375,24 @@
  * Adjusts seed lifespan up or down according to adjustamt. (Max 100)
  */
 /obj/item/seeds/proc/adjust_lifespan(adjustamt)
+	procstart = null
+	src.procstart = null
 	lifespan = clamp(lifespan + adjustamt, 10, MAX_PLANT_LIFESPAN)
 
 /**
  * Adjusts seed endurance up or down according to adjustamt. (Max 100)
  */
 /obj/item/seeds/proc/adjust_endurance(adjustamt)
+	procstart = null
+	src.procstart = null
 	endurance = clamp(endurance + adjustamt, MIN_PLANT_ENDURANCE, MAX_PLANT_ENDURANCE)
 
 /**
  * Adjusts seed production seed up or down according to adjustamt. (Max 10)
  */
 /obj/item/seeds/proc/adjust_production(adjustamt)
+	procstart = null
+	src.procstart = null
 	if(yield == -1)
 		return
 	production = clamp(production + adjustamt, 1, MAX_PLANT_PRODUCTION)
@@ -369,6 +401,8 @@
  * Adjusts seed potency up or down according to adjustamt. (Max 100)
  */
 /obj/item/seeds/proc/adjust_potency(adjustamt)
+	procstart = null
+	src.procstart = null
 	if(potency == -1)
 		return
 	potency = clamp(potency + adjustamt, 0, MAX_PLANT_POTENCY)
@@ -377,6 +411,8 @@
  * Adjusts seed instability up or down according to adjustamt. (Max 100)
  */
 /obj/item/seeds/proc/adjust_instability(adjustamt)
+	procstart = null
+	src.procstart = null
 	if(instability == -1)
 		return
 	instability = clamp(instability + adjustamt, 0, MAX_PLANT_INSTABILITY)
@@ -385,12 +421,16 @@
  * Adjusts seed weed grwoth speed up or down according to adjustamt. (Max 10)
  */
 /obj/item/seeds/proc/adjust_weed_rate(adjustamt)
+	procstart = null
+	src.procstart = null
 	weed_rate = clamp(weed_rate + adjustamt, 0, MAX_PLANT_WEEDRATE)
 
 /**
  * Adjusts seed weed chance up or down according to adjustamt. (Max 67%)
  */
 /obj/item/seeds/proc/adjust_weed_chance(adjustamt)
+	procstart = null
+	src.procstart = null
 	weed_chance = clamp(weed_chance + adjustamt, 0, MAX_PLANT_WEEDCHANCE)
 
 //Directly setting stats
@@ -399,6 +439,8 @@
  * Sets the plant's yield stat to the value of adjustamt. (Max 10, or 5 with some traits)
  */
 /obj/item/seeds/proc/set_yield(adjustamt)
+	procstart = null
+	src.procstart = null
 	if(yield == -1) // Unharvestable shouldn't suddenly turn harvestable
 		return
 
@@ -417,18 +459,24 @@
  * Sets the plant's lifespan stat to the value of adjustamt. (Max 100)
  */
 /obj/item/seeds/proc/set_lifespan(adjustamt)
+	procstart = null
+	src.procstart = null
 	lifespan = clamp(adjustamt, 10, MAX_PLANT_LIFESPAN)
 
 /**
  * Sets the plant's endurance stat to the value of adjustamt. (Max 100)
  */
 /obj/item/seeds/proc/set_endurance(adjustamt)
+	procstart = null
+	src.procstart = null
 	endurance = clamp(adjustamt, MIN_PLANT_ENDURANCE, MAX_PLANT_ENDURANCE)
 
 /**
  * Sets the plant's production stat to the value of adjustamt. (Max 10)
  */
 /obj/item/seeds/proc/set_production(adjustamt)
+	procstart = null
+	src.procstart = null
 	if(yield == -1)
 		return
 	production = clamp(adjustamt, 1, MAX_PLANT_PRODUCTION)
@@ -437,6 +485,8 @@
  * Sets the plant's potency stat to the value of adjustamt. (Max 100)
  */
 /obj/item/seeds/proc/set_potency(adjustamt)
+	procstart = null
+	src.procstart = null
 	if(potency == -1)
 		return
 	potency = clamp(adjustamt, 0, MAX_PLANT_POTENCY)
@@ -445,6 +495,8 @@
  * Sets the plant's instability stat to the value of adjustamt. (Max 100)
  */
 /obj/item/seeds/proc/set_instability(adjustamt)
+	procstart = null
+	src.procstart = null
 	if(instability == -1)
 		return
 	instability = clamp(adjustamt, 0, MAX_PLANT_INSTABILITY)
@@ -453,12 +505,16 @@
  * Sets the plant's weed production rate to the value of adjustamt. (Max 10)
  */
 /obj/item/seeds/proc/set_weed_rate(adjustamt)
+	procstart = null
+	src.procstart = null
 	weed_rate = clamp(adjustamt, 0, MAX_PLANT_WEEDRATE)
 
 /**
  * Sets the plant's weed growth percentage to the value of adjustamt. (Max 67%)
  */
 /obj/item/seeds/proc/set_weed_chance(adjustamt)
+	procstart = null
+	src.procstart = null
 	weed_chance = clamp(adjustamt, 0, MAX_PLANT_WEEDCHANCE)
 
 /**
@@ -468,19 +524,27 @@
  * Return an assoc list (label = list(text = tooltip, text = tooltip)) to add a new collapsible section to the analyzer
  */
 /obj/item/seeds/proc/get_unique_analyzer_data()
+	procstart = null
+	src.procstart = null
 	return null
 
 /**
  * Override for seeds with special chem reactions.
  */
 /obj/item/seeds/proc/on_chem_reaction(datum/reagents/reagents)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/seeds/nameformat(input, user)
+	procstart = null
+	src.procstart = null
 	plantname = input
 	return "[LOWER_TEXT(input)]"
 
 /obj/item/seeds/descformat(input, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = input
 	if(product && !productdesc)
 		productdesc = initial(product.desc)
@@ -492,10 +556,14 @@
 	productdesc = newproductdesc
 
 /obj/item/seeds/rename_reset()
+	procstart = null
+	src.procstart = null
 	plantname = initial(plantname)
 	productdesc = initial(productdesc)
 
 /obj/item/seeds/proc/randomize_stats()
+	procstart = null
+	src.procstart = null
 	set_lifespan(rand(25, 60))
 	set_endurance(rand(15, 35))
 	set_production(rand(2, 10))
@@ -506,6 +574,8 @@
 	maturation = rand(6, 12)
 
 /obj/item/seeds/proc/add_random_reagents(lower = 0, upper = 2)
+	procstart = null
+	src.procstart = null
 	var/amount_random_reagents = rand(lower, upper)
 	for(var/i in 1 to amount_random_reagents)
 		var/random_amount = rand(4, 15) * 0.01 // this must be multiplied by 0.01, otherwise, it will not properly associate
@@ -518,6 +588,8 @@
 	reagents_from_genes()
 
 /obj/item/seeds/proc/add_random_traits(lower = 0, upper = 2)
+	procstart = null
+	src.procstart = null
 	var/amount_random_traits = rand(lower, upper)
 	for(var/i in 1 to amount_random_traits)
 		var/random_trait = pick(subtypesof(/datum/plant_gene/trait))
@@ -528,6 +600,8 @@
 			qdel(picked_random_trait)
 
 /obj/item/seeds/proc/add_random_plant_type(normal_plant_chance = 75)
+	procstart = null
+	src.procstart = null
 	if(prob(normal_plant_chance))
 		var/random_plant_type = pick(subtypesof(/datum/plant_gene/trait/plant_type))
 		var/datum/plant_gene/trait/plant_type/P = new random_plant_type
@@ -537,6 +611,8 @@
 			qdel(P)
 
 /obj/item/seeds/proc/remove_random_reagents(lower = 0, upper = 2)
+	procstart = null
+	src.procstart = null
 	var/amount_random_reagents = rand(lower, upper)
 	for(var/i in 1 to amount_random_reagents)
 		var/datum/reagent/chemical = pick(reagents_add)
@@ -550,6 +626,8 @@
  * Returns the created graft.
  */
 /obj/item/seeds/proc/create_graft()
+	procstart = null
+	src.procstart = null
 	var/obj/item/graft/snip = new(loc, src)
 	return snip
 
@@ -565,6 +643,8 @@
  * - [snip][/obj/item/graft]: The graft being used applied to this plant.
  */
 /obj/item/seeds/proc/apply_graft(obj/item/graft/snip)
+	procstart = null
+	src.procstart = null
 	var/datum/plant_gene/new_trait = snip.plant_dna.graft_gene || /datum/plant_gene/trait/repeated_harvest
 	new_trait = new new_trait()
 	if(new_trait?.can_add(src))
@@ -595,15 +675,23 @@
  * Returns null if it is not a plant.
  */
 /obj/item/proc/get_plant_seed()
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/item/food/grown/get_plant_seed()
+	procstart = null
+	src.procstart = null
 	return seed
 
 /obj/item/grown/get_plant_seed()
+	procstart = null
+	src.procstart = null
 	return seed
 
 /obj/item/seeds/proc/perform_reagent_pollination(obj/item/seeds/donor)
+	procstart = null
+	src.procstart = null
 	var/list/datum/plant_gene/reagent/valid_reagents = list()
 	for(var/datum/plant_gene/reagent/donor_reagent in donor.genes)
 		var/repeated = FALSE
@@ -629,6 +717,8 @@
 
 /// Returns a mutable appearance to be used as an overlay for the plant in hydro trays.
 /obj/item/seeds/proc/get_tray_overlay(age, status, tray_offset)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/plant_overlay = mutable_appearance(growing_icon, layer = OBJ_LAYER + 0.01)
 	switch(status)
 		if(HYDROTRAY_PLANT_DEAD)
@@ -643,8 +733,12 @@
 
 /// Called when the seed is set in a tray
 /obj/item/seeds/proc/on_planted(obj/machinery/hydroponics/parent)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Called when the seed is removed from a tray - possibly from being harvested, possibly from being uprooted
 /obj/item/seeds/proc/on_unplanted(obj/machinery/hydroponics/parent)
+	procstart = null
+	src.procstart = null
 	return

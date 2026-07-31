@@ -18,12 +18,18 @@
 	cast_range = 6
 
 /datum/action/cooldown/spell/pointed/blood_siphon/can_cast_spell(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	return ..() && isliving(owner)
 
 /datum/action/cooldown/spell/pointed/blood_siphon/is_valid_target(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	return ..() && isliving(cast_on)
 
 /datum/action/cooldown/spell/pointed/blood_siphon/cast(mob/living/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(owner, 'sound/effects/magic/demon_attack1.ogg', 75, TRUE)
 	if(cast_on.can_block_magic())

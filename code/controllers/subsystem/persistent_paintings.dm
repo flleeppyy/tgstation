@@ -57,6 +57,8 @@
 	var/loaded_from_json = FALSE
 
 /datum/painting/proc/load_from_json(list/json_data)
+	procstart = null
+	src.procstart = null
 	md5 = json_data["md5"]
 	title = json_data["title"]
 	creator_ckey = json_data["creator_ckey"]
@@ -74,6 +76,8 @@
 	loaded_from_json = TRUE
 
 /datum/painting/proc/to_json()
+	procstart = null
+	src.procstart = null
 	var/list/new_data = list()
 	new_data["md5"] = md5
 	new_data["title"] = title
@@ -92,9 +96,13 @@
 	return new_data
 
 /datum/painting/proc/get_icon()
+	procstart = null
+	src.procstart = null
 	return icon("data/paintings/images/[md5].png")
 
 /datum/painting/proc/spawn_canvas(spawn_loc)
+	procstart = null
+	src.procstart = null
 	var/icon/art_icon = get_icon()
 	var/art_width = art_icon.Width()
 	var/art_height = art_icon.Height()
@@ -108,6 +116,8 @@
 	return printed_canvas
 
 /datum/painting/proc/fill_canvas(obj/item/canvas/canvas, icon = get_icon())
+	procstart = null
+	src.procstart = null
 	canvas.painting_metadata = src
 	canvas.fill_grid_from_icon(icon)
 	canvas.generated_icon = icon
@@ -156,6 +166,8 @@ SUBSYSTEM_DEF(persistent_paintings)
 	)
 
 /datum/controller/subsystem/persistent_paintings/Initialize()
+	procstart = null
+	src.procstart = null
 	var/json_file = file("data/paintings.json")
 	if(fexists(json_file))
 		var/list/raw_data = update_format(json_decode(file2text(json_file)))
@@ -172,6 +184,8 @@ SUBSYSTEM_DEF(persistent_paintings)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/persistent_paintings/proc/cache_paintings()
+	procstart = null
+	src.procstart = null
 	cached_painting_data = list()
 	admin_painting_data = list()
 
@@ -198,6 +212,8 @@ SUBSYSTEM_DEF(persistent_paintings)
  * * search_text : text to search for if the PAINTINGS_FILTER_SEARCH_TITLE or PAINTINGS_FILTER_SEARCH_CREATOR filters are enabled.
  */
 /datum/controller/subsystem/persistent_paintings/proc/painting_ui_data(filter=NONE, admin=FALSE, search_text)
+	procstart = null
+	src.procstart = null
 	var/searching = filter & (PAINTINGS_FILTER_SEARCH_TITLE|PAINTINGS_FILTER_SEARCH_CREATOR) && search_text
 	var/list/paintings = admin ? admin_painting_data : cached_painting_data
 
@@ -222,6 +238,8 @@ SUBSYSTEM_DEF(persistent_paintings)
 
 /// Returns paintings with given tag.
 /datum/controller/subsystem/persistent_paintings/proc/get_paintings_with_tag(tag_name)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/datum/painting/painting as anything in paintings)
 		if(!painting.tags || !(tag_name in painting.tags))
@@ -230,6 +248,8 @@ SUBSYSTEM_DEF(persistent_paintings)
 
 /// Updates paintings data format to latest if necessary
 /datum/controller/subsystem/persistent_paintings/proc/update_format(current_data)
+	procstart = null
+	src.procstart = null
 	if(current_data["version"] && current_data["version"] == PAINTINGS_DATA_FORMAT_VERSION)
 		return current_data
 
@@ -247,6 +267,8 @@ SUBSYSTEM_DEF(persistent_paintings)
 	return current_data
 
 /datum/controller/subsystem/persistent_paintings/proc/migrate_to_version_1(list/current_data)
+	procstart = null
+	src.procstart = null
 	fcopy("data/paintings.json","data/paintings_migration_backup_0.json") //Better safe than losing all metadata
 	var/list/result = list()
 	result["version"] = 1
@@ -292,6 +314,8 @@ SUBSYSTEM_DEF(persistent_paintings)
 	return result
 
 /datum/controller/subsystem/persistent_paintings/proc/migrate_to_version_2(list/current_data)
+	procstart = null
+	src.procstart = null
 	fcopy("data/paintings.json","data/paintings_migration_backup_1.json") //Better safe than sorry
 	current_data["version"] = 2
 	for(var/painting_data in current_data["paintings"])
@@ -306,6 +330,8 @@ SUBSYSTEM_DEF(persistent_paintings)
  * If only_current_tier is TRUE, the list will be populated only by the ones from the highest tier.
  */
 /datum/controller/subsystem/persistent_paintings/proc/get_available_frames(credit_value, only_current_tier = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/frame_candidates = list()
 	var/current_tier_patronage = 0
 	for(var/frametype in frame_types_by_patronage_tier)
@@ -319,6 +345,8 @@ SUBSYSTEM_DEF(persistent_paintings)
 
 /// Saves all persistent paintings
 /datum/controller/subsystem/persistent_paintings/proc/save_paintings()
+	procstart = null
+	src.procstart = null
 	// Collect new painting data
 	for(var/obj/structure/sign/painting/painting_frame as anything in painting_frames)
 		painting_frame.save_persistent()
@@ -327,6 +355,8 @@ SUBSYSTEM_DEF(persistent_paintings)
 
 /// Saves all currently tracked painting data to file
 /datum/controller/subsystem/persistent_paintings/proc/save_to_file()
+	procstart = null
+	src.procstart = null
 	var/json_file = file("data/paintings.json")
 
 	var/list/collated_data = list()

@@ -19,6 +19,8 @@
 	playstyle_string = span_bold("You are a Wraith. Though relatively fragile, you are fast, deadly, and can phase through walls. Your attacks will lower the cooldown on phasing, moreso for fatal blows.")
 
 /mob/living/basic/construct/wraith/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_SEE_BLESSED_TILES, INNATE_TRAIT)
 	var/datum/action/cooldown/spell/jaunt/ethereal_jaunt/shift/jaunt = locate() in actions
@@ -41,6 +43,8 @@
 	)
 
 /mob/living/basic/construct/wraith/angelic/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_ANGELIC, INNATE_TRAIT)
 

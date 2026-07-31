@@ -7,6 +7,8 @@
 	hair_mask = /datum/hair_mask/standard_hat_low
 
 /obj/item/clothing/head/fedora/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	create_storage(storage_type = /datum/storage/pockets/small/fedora)
@@ -22,6 +24,8 @@
 	inhand_icon_state = null
 
 /obj/item/clothing/head/fedora/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.gender == FEMALE)
 		return
 	var/mob/living/carbon/human/H = user
@@ -37,6 +41,8 @@
 	inhand_icon_state = null
 
 /obj/item/clothing/head/fedora/carpskin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/adjust_fishing_difficulty, -6)
 

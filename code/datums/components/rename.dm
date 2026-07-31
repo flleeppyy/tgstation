@@ -20,6 +20,8 @@
 	var/original_desc
 
 /datum/component/rename/Initialize(custom_name, custom_desc)
+	procstart = null
+	src.procstart = null
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -34,6 +36,8 @@
 	The name and description changes will be merged or overwritten.
 */
 /datum/component/rename/InheritComponent(datum/component/rename/new_comp , i_am_original, custom_name, custom_desc)
+	procstart = null
+	src.procstart = null
 	revert_rename()
 	if(new_comp)
 		src.custom_name = new_comp.custom_name
@@ -45,6 +49,8 @@
 
 ///Saves the current name and description before changing them to the player's inputs.
 /datum/component/rename/proc/apply_rename()
+	procstart = null
+	src.procstart = null
 	var/atom/owner = parent
 	original_name = owner.name
 	original_desc = owner.desc
@@ -53,15 +59,21 @@
 
 ///Reverts the name and description to the state before they were changed.
 /datum/component/rename/proc/revert_rename()
+	procstart = null
+	src.procstart = null
 	var/atom/owner = parent
 	owner.name = original_name
 	owner.desc = original_desc
 
 /datum/component/rename/proc/remove_component()
+	procstart = null
+	src.procstart = null
 	revert_rename()
 	qdel(src)
 
 /datum/component/rename/Destroy()
+	procstart = null
+	src.procstart = null
 	revert_rename()
 	REMOVE_TRAIT(parent, TRAIT_WAS_RENAMED, type)
 	return ..()

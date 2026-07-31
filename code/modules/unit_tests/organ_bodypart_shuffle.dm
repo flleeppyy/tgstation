@@ -2,6 +2,8 @@
 /datum/unit_test/organ_bodypart_shuffle
 
 /datum/unit_test/organ_bodypart_shuffle/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/hollow_boy = allocate(/mob/living/carbon/human/consistent) //freshly filled with wet insides
 
 	// Test if organs are all properly updating when forcefully removed
@@ -40,6 +42,8 @@
 /datum/unit_test/gibbing_organ_transfer
 
 /datum/unit_test/gibbing_organ_transfer/Run()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 	var/list/bodyparts_for_cleanup = dummy.bodyparts.Copy()
 	var/list/organs_for_cleanup = dummy.organs.Copy()

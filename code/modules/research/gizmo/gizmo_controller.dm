@@ -9,6 +9,8 @@
 
 /// Generate interfaces for interacting with the gizmo
 /datum/gizmo_controller/proc/generate_interfaces(atom/movable/holder)
+	procstart = null
+	src.procstart = null
 	for(var/interface_define, interface_type in interfaces)
 
 		var/list/callbacks = list()

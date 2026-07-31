@@ -3,6 +3,8 @@
 	var/list/already_generated_tools = list()
 
 /datum/autowiki/surgery/generate()
+	procstart = null
+	src.procstart = null
 	var/output = ""
 
 	var/list/unlocked_operations_alpha = list()
@@ -64,6 +66,8 @@
 	return include_template("Autowiki/SurgeryTableTemplate", list("content" = output))
 
 /datum/autowiki/surgery/proc/format_requirement_list(list/requirements)
+	procstart = null
+	src.procstart = null
 	var/output
 	for(var/requirement in requirements)
 		output += "<li>[escape_value(capitalize(requirement))]</li>"
@@ -71,6 +75,8 @@
 	return output ? "<ul>[output]</ul>" : ""
 
 /datum/autowiki/surgery/proc/format_tool_list(datum/surgery_operation/operation)
+	procstart = null
+	src.procstart = null
 	var/output = ""
 
 	// tools which should not show up in the tools list
@@ -103,6 +109,8 @@
 	return output
 
 /datum/autowiki/surgery/proc/get_tool_name(datum/surgery_operation/operation, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(istext(tool))
 		return capitalize(tool)
 	if(tool == /obj/item)
@@ -110,6 +118,8 @@
 	return capitalize(format_text(tool::name))
 
 /datum/autowiki/surgery/proc/get_tool_icon(obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(tool == IMPLEMENT_HAND)
 		return image(/obj/item/hand_item)
 	if(istext(tool))

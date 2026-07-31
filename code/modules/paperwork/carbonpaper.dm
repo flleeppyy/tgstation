@@ -6,6 +6,8 @@
 	var/copied = FALSE
 
 /obj/item/paper/carbon/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(copied)
 		icon_state = "paper"
 	else
@@ -15,18 +17,24 @@
 	return ..()
 
 /obj/item/paper/carbon/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(copied)
 		return
 	. += span_notice("Right-click to tear off the carbon-copy (you must use both hands).")
 
 /obj/item/paper/carbon/click_alt(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!copied)
 		to_chat(user, span_notice("Take off the carbon copy first."))
 		return CLICK_ACTION_BLOCKING
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/paper/carbon/proc/removecopy(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(copied)
 		to_chat(user, span_notice("There are no more carbon copies attached to this paper!"))
 		return
@@ -39,6 +47,8 @@
 	user.put_in_hands(copy)
 
 /obj/item/paper/carbon/attack_hand_secondary(mob/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return

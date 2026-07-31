@@ -47,12 +47,18 @@
 	associated_safe_turfs = list(/turf/open/floor/holofloor/beach/water)
 
 /datum/fish_source/holographic/on_fishing_spot_init(datum/component/fishing_spot/spot)
+	procstart = null
+	src.procstart = null
 	ADD_TRAIT(spot.parent, TRAIT_UNLINKABLE_FISHING_SPOT, REF(src)) //You would have to be inside the holodeck anyway...
 
 /datum/fish_source/holographic/on_fishing_spot_del(datum/component/fishing_spot/spot)
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAIT(spot.parent, TRAIT_UNLINKABLE_FISHING_SPOT, REF(src))
 
 /datum/fish_source/holographic/generate_wiki_contents(datum/autowiki/fish_sources/wiki)
+	procstart = null
+	src.procstart = null
 	var/obj/item/fish/prototype = /obj/item/fish/holo/checkered
 	return LIST_VALUE_WRAP_LISTS(list(
 		FISH_SOURCE_AUTOWIKI_NAME = "Holographic Fish",
@@ -62,19 +68,27 @@
 	))
 
 /datum/fish_source/holographic/reason_we_cant_fish(obj/item/fishing_rod/rod, mob/fisherman, atom/parent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(get_area(fisherman), /area/station/holodeck))
 		return "You need to be inside the Holodeck to catch holographic fish."
 
 /datum/fish_source/holographic/pre_challenge_started(obj/item/fishing_rod/rod, mob/user, datum/fishing_challenge/challenge)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(check_area))
 
 /datum/fish_source/holographic/proc/check_area(mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(get_area(user), /area/station/holodeck))
 		interrupt_challenge("exited holodeck")
 
 /datum/fish_source/holographic/on_challenge_completed(datum/fishing_challenge/source, mob/user, success)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(user, COMSIG_MOVABLE_MOVED)
 
@@ -104,6 +118,8 @@
 	fishing_difficulty = FISHING_EASY_DIFFICULTY + 5
 
 /datum/fish_source/hydro_tray/generate_wiki_contents(datum/autowiki/fish_sources/wiki)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/total_weight = 0
 	var/critter_weight = 0
@@ -146,6 +162,8 @@
 	return data
 
 /datum/fish_source/hydro_tray/reason_we_cant_fish(obj/item/fishing_rod/rod, mob/fisherman, atom/parent)
+	procstart = null
+	src.procstart = null
 	if(!istype(parent, /obj/machinery/hydroponics/constructable))
 		return ..()
 
@@ -158,6 +176,8 @@
 	return ..()
 
 /datum/fish_source/hydro_tray/spawn_reward_from_explosion(atom/location, severity)
+	procstart = null
+	src.procstart = null
 	if(!istype(location, /obj/machinery/hydroponics/constructable))
 		return ..()
 
@@ -167,6 +187,8 @@
 	return ..()
 
 /datum/fish_source/hydro_tray/spawn_reward(reward_path, atom/spawn_location, atom/fishing_spot, obj/item/fishing_rod/used_rod)
+	procstart = null
+	src.procstart = null
 	if(reward_path != FISHING_RANDOM_SEED)
 		var/mob/living/created_reward = ..()
 		if(istype(created_reward))
@@ -227,6 +249,8 @@
 #undef RANDOM_AQUARIUM_FISH
 
 /datum/fish_source/aquarium/get_fish_table(atom/location, from_explosion = FALSE)
+	procstart = null
+	src.procstart = null
 	if(istype(location, /obj/machinery/fishing_portal_generator))
 		var/obj/machinery/fishing_portal_generator/portal = location
 		location = portal.current_linked_atom
@@ -240,6 +264,8 @@
 	return table
 
 /datum/fish_source/aquarium/generate_wiki_contents(datum/autowiki/fish_sources/wiki)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data += LIST_VALUE_WRAP_LISTS(list(
@@ -263,6 +289,8 @@
 	fishing_difficulty = FISHING_EASY_DIFFICULTY //with some equipment and just enough dosh, you should be able to skip the minigame
 
 /datum/fish_source/vending/generate_wiki_contents(datum/autowiki/fish_sources/wiki)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data += LIST_VALUE_WRAP_LISTS(list(
@@ -275,6 +303,8 @@
 	return data
 
 /datum/fish_source/vending/get_modified_fish_table(obj/item/fishing_rod/rod, mob/fisherman, atom/location)
+	procstart = null
+	src.procstart = null
 	if(istype(location, /obj/machinery/fishing_portal_generator))
 		var/obj/machinery/fishing_portal_generator/portal = location
 		location = portal.current_linked_atom
@@ -284,6 +314,8 @@
 	return get_vending_table(rod, fisherman, location)
 
 /datum/fish_source/vending/proc/get_vending_table(obj/item/fishing_rod/rod, mob/fisherman, obj/machinery/vending/location)
+	procstart = null
+	src.procstart = null
 	var/list/table = list()
 	///Create a list of products, ordered by price from highest to lowest
 	var/list/products = location.product_records + location.coin_records + location.hidden_records
@@ -309,6 +341,8 @@
 	return table
 
 /datum/fish_source/vending/proc/add_risks(list/table, bait_value, highest_price, malus_multiplier)
+	procstart = null
+	src.procstart = null
 	///Using more than the money needed to buy the most expensive item (why would you do it?!) will remove the dud chance.
 	if(bait_value > highest_price)
 		table -= FISHING_DUD
@@ -322,12 +356,16 @@
 #define FISHING_PRODUCT_DIFFICULTY_MULT 1.6
 
 /datum/fish_source/vending/calculate_difficulty(datum/fishing_challenge/challenge, result, obj/item/fishing_rod/rod, mob/fisherman)
+	procstart = null
+	src.procstart = null
 	//Using less than a minimum paycheck is going to make the challenge a tad harder.
 	var/bait_value = rod.bait?.get_item_credit_value()
 	var/base_diff = PAYCHECK_LOWER - bait_value
 	return ..() + get_product_difficulty(base_diff, result) * FISHING_PRODUCT_DIFFICULTY_MULT
 
 /datum/fish_source/vending/proc/get_product_difficulty(diff, datum/result)
+	procstart = null
+	src.procstart = null
 	if(istype(result, /datum/data/vending_product))
 		var/datum/data/vending_product/product = result
 		diff = min(diff, product.price) // low priced items are easier to catch anyway
@@ -336,6 +374,8 @@
 #undef FISHING_PRODUCT_DIFFICULTY_MULT
 
 /datum/fish_source/vending/dispense_reward(reward_path, mob/fisherman, atom/fishing_spot, obj/item/fishing_rod/rod)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/vending/vending = fishing_spot
 	if(istype(fishing_spot, /obj/machinery/fishing_portal_generator))
 		var/obj/machinery/fishing_portal_generator/portal = fishing_spot
@@ -356,6 +396,8 @@
 	return reward
 
 /datum/fish_source/vending/spawn_reward(reward_path, atom/spawn_location, obj/machinery/vending/fishing_spot, obj/item/fishing_rod/used_rod)
+	procstart = null
+	src.procstart = null
 	if(istype(fishing_spot, /obj/machinery/fishing_portal_generator))
 		var/obj/machinery/fishing_portal_generator/portal = fishing_spot
 		fishing_spot = portal.current_linked_atom
@@ -364,19 +406,27 @@
 	return spawn_vending_reward(reward_path, spawn_location, fishing_spot)
 
 /datum/fish_source/vending/proc/spawn_vending_reward(reward_path, atom/spawn_location, obj/machinery/vending/fishing_spot)
+	procstart = null
+	src.procstart = null
 	var/datum/data/vending_product/product_record = reward_path
 	if(!istype(product_record) || product_record.amount <= 0)
 		return null
 	return fishing_spot.dispense(product_record, spawn_location)
 
 /datum/fish_source/vending/pre_challenge_started(obj/item/fishing_rod/rod, mob/user, datum/fishing_challenge/challenge)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(rod, COMSIG_FISHING_ROD_CAUGHT_FISH, PROC_REF(on_reward))
 
 /datum/fish_source/vending/on_challenge_completed(mob/user, datum/fishing_challenge/challenge, success)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(challenge.used_rod, COMSIG_FISHING_ROD_CAUGHT_FISH)
 
 /datum/fish_source/vending/proc/on_reward(obj/item/fishing_rod/rod, atom/movable/reward, mob/user)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(reward && !QDELETED(rod.bait) && rod.bait.get_item_credit_value()) //you pay for what you get
 		qdel(rod.bait) // fishing_rod.Exited() will handle clearing the hard ref.
@@ -386,6 +436,8 @@
 	catalog_description = null //no duplicate entries on autowiki or catalog
 
 /datum/fish_source/vending/custom/get_vending_table(obj/item/fishing_rod/rod, mob/fisherman, obj/machinery/vending/custom/location)
+	procstart = null
+	src.procstart = null
 	var/list/table = list()
 	///Create a list of products, ordered by price from highest to lowest
 	var/list/products = location.contents - location.component_parts
@@ -416,12 +468,16 @@
 	return table
 
 /datum/fish_source/vending/custom/get_product_difficulty(diff, datum/result)
+	procstart = null
+	src.procstart = null
 	if(isitem(result))
 		var/obj/item/product = result
 		diff = min(diff, product.custom_price)
 	return diff
 
 /datum/fish_source/vending/custom/spawn_vending_reward(obj/item/reward, atom/spawn_location, obj/machinery/vending/fishing_spot)
+	procstart = null
+	src.procstart = null
 	if(!isitem(reward))
 		return null
 	reward.forceMove(spawn_location)

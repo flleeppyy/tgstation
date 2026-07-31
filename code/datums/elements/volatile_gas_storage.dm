@@ -11,6 +11,8 @@
 	var/max_explosive_force
 
 /datum/element/volatile_gas_storage/Attach(datum/target, minimum_explosive_pressure=5000, max_explosive_pressure=100000, max_explosive_force=9)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(target, /obj/machinery/atmospherics/components))
 		RegisterSignal(target, COMSIG_ATOM_BREAK, PROC_REF(AtmosComponentBreak))
@@ -24,10 +26,14 @@
 	src.max_explosive_force = max_explosive_force
 
 /datum/element/volatile_gas_storage/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_ATOM_BREAK)
 
 /datum/element/volatile_gas_storage/proc/Break(atom/origin, datum/gas_mixture/released_gas)
+	procstart = null
+	src.procstart = null
 	var/expelled_pressure = min(released_gas?.return_pressure(), max_explosive_pressure)
 
 	if(expelled_pressure < minimum_explosive_pressure)
@@ -39,6 +45,8 @@
 	explosion(get_turf(origin), light_impact_range=explosive_force, smoke=FALSE, explosion_cause = origin)
 
 /datum/element/volatile_gas_storage/proc/AtmosComponentBreak(obj/machinery/atmospherics/components/owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	for(var/datum/gas_mixture/gas_contents as anything in owner.airs)
 		if(!gas_contents)
@@ -46,5 +54,7 @@
 		Break(owner, gas_contents)
 
 /datum/element/volatile_gas_storage/proc/ObjBreak(obj/owner)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	Break(owner, owner.return_air())

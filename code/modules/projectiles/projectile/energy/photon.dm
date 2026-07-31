@@ -17,6 +17,8 @@
 
 
 /obj/projectile/energy/photon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignals(src, list(COMSIG_MOVABLE_CROSS, COMSIG_MOVABLE_CROSS_OVER), PROC_REF(blast_touched))
 	RegisterSignal(src, COMSIG_ATOM_ENTERED, PROC_REF(scorch_earth))
@@ -27,6 +29,8 @@
  * behaves like a higher power direct flash if hit, and sparks silicons like they're getting microwaved.
  */
 /obj/projectile/energy/photon/proc/blast_touched(datum/source, atom/flashed)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isliving(flashed))
 		var/mob/living/flashed_creature = flashed
@@ -39,15 +43,21 @@
  * When traveling to a new turf, throws a probability to generate a hotspot across its path.
  */
 /obj/projectile/energy/photon/proc/scorch_earth(turf/open/floor/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(prob(40))
 		new /obj/effect/hotspot(arrived)
 
 /obj/projectile/energy/photon/reduce_range()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	speed *= MULTIPLY_SPEED
 
 /obj/projectile/energy/photon/on_range()
+	procstart = null
+	src.procstart = null
 	do_sparks(rand(4, 9), FALSE, src)
 	playsound(loc, 'sound/items/weapons/solarflare.ogg', 100, FALSE, 8, 0.9)
 	for(var/mob/living/flashed_mob in viewers(5, loc))

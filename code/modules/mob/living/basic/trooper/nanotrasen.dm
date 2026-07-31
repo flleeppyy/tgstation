@@ -9,6 +9,8 @@
 	mob_spawner = /obj/effect/mob_spawn/corpse/human/nanotrasensoldier
 
 /mob/living/basic/trooper/nanotrasen/assess_threat(judgement_criteria, lasercolor, datum/callback/weaponcheck)
+	procstart = null
+	src.procstart = null
 	return -10 // Respect our troops
 
 /// A variant that calls for reinforcements on spotting a target
@@ -28,6 +30,8 @@
 	var/ranged_cooldown = 1 SECONDS
 
 /mob/living/basic/trooper/nanotrasen/ranged/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(\
 		/datum/component/ranged_attacks,\
@@ -81,6 +85,8 @@
 	ai_controller = /datum/ai_controller/basic_controller/trooper/peaceful
 
 /mob/living/basic/trooper/nanotrasen/peaceful/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/callback/retaliate_callback = CALLBACK(src, PROC_REF(ai_retaliate_behaviour))
 	AddComponent(/datum/component/ai_retaliate_advanced, retaliate_callback)
@@ -90,11 +96,15 @@
 	ai_controller = /datum/ai_controller/basic_controller/trooper/ranged/burst/peaceful_burst
 
 /mob/living/basic/trooper/nanotrasen/ranged/smg/peaceful/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/callback/retaliate_callback = CALLBACK(src, PROC_REF(ai_retaliate_behaviour))
 	AddComponent(/datum/component/ai_retaliate_advanced, retaliate_callback)
 
 /mob/living/basic/trooper/nanotrasen/proc/ai_retaliate_behaviour(mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	if (!istype(attacker))
 		return
 	for (var/mob/living/basic/trooper/nanotrasen/potential_trooper in oview(src, 7))

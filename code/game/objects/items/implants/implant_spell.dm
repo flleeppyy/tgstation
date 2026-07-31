@@ -21,6 +21,8 @@
 		intact."
 
 /obj/item/implant/spell/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!spell_type)
 		return
@@ -34,10 +36,14 @@
 		[make_robeless ? ", without needing appropriate wizard garb" : " if dressed in appropriate garb"]."
 
 /obj/item/implant/spell/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(spell_to_give)
 	return ..()
 
 /obj/item/implant/spell/implant(mob/living/target, mob/user, silent = FALSE, force = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return
@@ -49,6 +55,8 @@
 	return TRUE
 
 /obj/item/implant/spell/removed(mob/living/source, silent = FALSE, special = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!.)
 		return FALSE

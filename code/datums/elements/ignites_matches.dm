@@ -2,14 +2,20 @@
 /datum/element/ignites_matches
 
 /datum/element/ignites_matches/Attach(datum/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(target, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(on_interact))
 
 /datum/element/ignites_matches/Detach(datum/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, COMSIG_ATOM_ITEM_INTERACTION)
 	return ..()
 
 /datum/element/ignites_matches/proc/on_interact(atom/source, mob/living/user, obj/item/match/match, ...)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(!istype(match) || match.lit || match.burnt || match.broken)
 		return NONE

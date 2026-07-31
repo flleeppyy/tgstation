@@ -12,6 +12,8 @@
 	var/length_of_message = 4
 
 /datum/bt_node/ai_behavior/relay_message/perform(seconds_per_tick, datum/ai_controller/controller)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = controller.blackboard[target_key]
 	var/mob/living/living_pawn = controller.pawn
 
@@ -29,4 +31,6 @@
 	always_reset_target = TRUE
 
 /datum/bt_node/ai_behavior/hunt_target/repair_machines/target_caught(mob/living/basic/hivebot/mechanic/hunter, obj/machinery/repair_target)
+	procstart = null
+	src.procstart = null
 	hunter.repair_machine(repair_target)

@@ -31,6 +31,8 @@
 	organ_traits = list(TRAIT_UNNATURAL_RED_GLOWY_EYES)
 
 /obj/item/organ/eyes/night_vision/goliath/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_Their eyes are blood red and stone-like.", BODY_ZONE_PRECISE_EYES)
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/goliath)
@@ -47,6 +49,8 @@
 	greyscale_colors = GOLIATH_COLORS
 
 /obj/item/organ/lungs/lavaland/goliath/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_Their back is covered in small tendrils.", BODY_ZONE_CHEST)
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/goliath)
@@ -67,11 +71,15 @@
 	var/obj/item/goliath_infuser_hammer/hammer
 
 /obj/item/organ/brain/goliath/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_Their arm is just a mass of plate and tendrils.", BODY_ZONE_CHEST)
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/goliath)
 
 /obj/item/organ/brain/goliath/on_mob_insert(mob/living/carbon/brain_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ishuman(brain_owner))
 		return
@@ -84,6 +92,8 @@
 	brain_owner.put_in_hands(hammer)
 
 /obj/item/organ/brain/goliath/on_mob_remove(mob/living/carbon/brain_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(brain_owner)
 	if(!ishuman(brain_owner))
@@ -124,14 +134,20 @@
 	COOLDOWN_DECLARE(tendril_hammer_cd)
 
 /obj/item/goliath_infuser_hammer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, HAND_REPLACEMENT_TRAIT)
 
 /obj/item/goliath_infuser_hammer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "You can use your tendril hammer arm to deliver a devastating blow against mining fauna, but only once every two seconds."
 
 /obj/item/goliath_infuser_hammer/attack(mob/living/target, mob/living/carbon/human/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	//If we're on cooldown, we'll do a normal attack.
@@ -157,6 +173,8 @@
 	COOLDOWN_START(src, tendril_hammer_cd, 2 SECONDS)
 
 /obj/item/goliath_infuser_hammer/proc/nemesis_effects(mob/living/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(istype(target, /mob/living/simple_animal/hostile/asteroid/elite))
 		return
 	///we obtain the relative direction from the bat itself to the target
@@ -177,6 +195,8 @@
 	organ_traits = list(TRAIT_ASHSTORM_IMMUNE)
 
 /obj/item/organ/heart/goliath/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/noticable_organ, "%PRONOUN_Their skin has visible hard plates growing from within.", BODY_ZONE_CHEST)
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/goliath)

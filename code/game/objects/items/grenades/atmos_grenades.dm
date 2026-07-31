@@ -7,6 +7,8 @@
 	resistance_flags = FIRE_PROOF
 
 /obj/item/grenade/gas_crystal/arm_grenade(mob/user, delayoverride, msg = TRUE, volume = 60)
+	procstart = null
+	src.procstart = null
 	log_grenade(user) //Inbuilt admin procs already handle null users
 	if(user)
 		add_fingerprint(user)
@@ -31,6 +33,8 @@
 	var/fix_range = 7
 
 /obj/item/grenade/gas_crystal/healium_crystal/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -58,6 +62,8 @@
 	var/o2_gas_amount = 30
 
 /obj/item/grenade/gas_crystal/proto_nitrate_crystal/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -82,6 +88,8 @@
 	var/n2o_gas_amount = 10
 
 /obj/item/grenade/gas_crystal/nitrous_oxide_crystal/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -103,6 +111,8 @@
 	var/breach_range = 7
 
 /obj/item/grenade/gas_crystal/crystal_foam/detonate(mob/living/lanced_by)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/datum/reagents/first_batch = new

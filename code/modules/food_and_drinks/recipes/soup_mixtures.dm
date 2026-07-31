@@ -55,6 +55,8 @@
 	var/percentage_of_nutriment_converted = 0.25
 
 /datum/chemical_reaction/food/soup/pre_reaction_other_checks(datum/reagents/holder)
+	procstart = null
+	src.procstart = null
 	var/obj/item/reagent_containers/cup/soup_pot/pot = holder.my_atom
 	if(!istype(pot))
 		return FALSE
@@ -102,6 +104,8 @@
 	return completed_ingredients == reqs_copy.len
 
 /datum/chemical_reaction/food/soup/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	procstart = null
+	src.procstart = null
 	if(!length(required_ingredients))
 		return
 
@@ -159,6 +163,8 @@
 	testing("Soup reaction started of type [type]! [length(pot.added_ingredients)] inside.")
 
 /datum/chemical_reaction/food/soup/reaction_step(datum/reagents/holder, datum/equilibrium/reaction, delta_t, delta_ph, step_reaction_vol)
+	procstart = null
+	src.procstart = null
 	if(!length(required_ingredients))
 		return
 	testing("Soup reaction step progressing with an increment volume of [step_reaction_vol] and delta_t of [delta_t].")
@@ -211,6 +217,8 @@
 			holder.update_total()
 
 /datum/chemical_reaction/food/soup/reaction_finish(datum/reagents/holder, datum/equilibrium/reaction, react_vol)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/cup/soup_pot/pot = holder.my_atom
 	if(!istype(pot))
@@ -227,6 +235,8 @@
  * * react_vol: How much soup was produced
  */
 /datum/chemical_reaction/food/soup/proc/clean_up(datum/reagents/holder, datum/equilibrium/reaction, react_vol)
+	procstart = null
+	src.procstart = null
 	var/obj/item/reagent_containers/cup/soup_pot/pot = holder.my_atom
 
 	reaction?.data["ingredients"] = null
@@ -268,6 +278,8 @@
  * * amount - The amount of reagents to transfer, if null will transfer all reagents
  */
 /datum/chemical_reaction/food/soup/proc/transfer_ingredient_reagents(obj/item/ingredient, datum/reagents/holder, amount)
+	procstart = null
+	src.procstart = null
 	if(ingredient_reagent_multiplier <= 0)
 		return FALSE
 	var/datum/reagents/ingredient_pool = ingredient.reagents
@@ -290,16 +302,22 @@
 /// Adds text to the requirements list of the recipe
 /// Return a list of strings, each string will be a new line in the requirements list
 /datum/chemical_reaction/food/soup/proc/describe_recipe_details()
+	procstart = null
+	src.procstart = null
 	return
 
 /// Adds text to the results list of the recipe
 /// Return a list of strings, each string will be a new line in the results list
 /datum/chemical_reaction/food/soup/proc/describe_result()
+	procstart = null
+	src.procstart = null
 	return
 
 #ifdef TESTING
 
 /obj/item/soup_test_kit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/food/meatball(loc)
 	new /obj/item/food/grown/carrotlike/carrot(loc)
@@ -316,6 +334,8 @@
 	var/initial_portion = SOUP_SERVING_SIZE
 
 /obj/item/reagent_containers/cup/bowl/soup/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(initial_reagent)
 		reagents.add_reagent(initial_reagent, initial_portion)
@@ -330,12 +350,16 @@
 	icon_state = "wishsoup"
 
 /datum/glass_style/has_foodtype/soup/watery_soup/set_name(obj/item/thing)
+	procstart = null
+	src.procstart = null
 	if(length(thing.reagents.reagent_list) <= 2)
 		return ..()
 
 	thing.name = "Watery bowl of something"
 
 /datum/glass_style/has_foodtype/soup/watery_soup/set_desc(obj/item/thing)
+	procstart = null
+	src.procstart = null
 	if(length(thing.reagents.reagent_list) <= 2)
 		return ..()
 
@@ -359,6 +383,8 @@
 	var/num_ingredients_needed = 3
 
 /datum/chemical_reaction/food/soup/custom/pre_reaction_other_checks(datum/reagents/holder)
+	procstart = null
+	src.procstart = null
 	var/obj/item/reagent_containers/cup/soup_pot/pot = holder.my_atom
 	if(!istype(pot))
 		return FALSE // Not a pot
@@ -369,9 +395,13 @@
 	return TRUE
 
 /datum/chemical_reaction/food/soup/custom/describe_recipe_details()
+	procstart = null
+	src.procstart = null
 	return list("Created from burning soup with at least [num_ingredients_needed] ingredients present")
 
 /datum/chemical_reaction/food/soup/custom/describe_result()
+	procstart = null
+	src.procstart = null
 	return list("Whatever's in the pot")
 
 // Meatball Soup
@@ -534,6 +564,8 @@
 /datum/chemical_reaction/food/soup/hotchili/ghost
 
 /datum/chemical_reaction/food/soup/hotchili/ghost/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	required_ingredients[/obj/item/food/grown/ghost_chili] = required_ingredients[/obj/item/food/grown/chili]
 	required_ingredients -= /obj/item/food/grown/chili
@@ -643,6 +675,8 @@
 /datum/chemical_reaction/food/soup/chili_sin_carne/ghost
 
 /datum/chemical_reaction/food/soup/chili_sin_carne/ghost/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	required_ingredients[/obj/item/food/grown/ghost_chili] = required_ingredients[/obj/item/food/grown/chili]
 	required_ingredients -= /obj/item/food/grown/chili
@@ -804,6 +838,8 @@
 	required_ingredients = null
 
 /datum/chemical_reaction/food/soup/slimesoup/alt/pre_reaction_other_checks(datum/reagents/holder)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 // Clown Tear soup
@@ -879,10 +915,14 @@
 	)
 
 /datum/chemical_reaction/food/soup/mysterysoup/reaction_finish(datum/reagents/holder, datum/equilibrium/reaction, react_vol)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	holder.add_reagent(pick(extra_reagent_types), num_bonus)
 
 /datum/chemical_reaction/food/soup/mysterysoup/describe_result()
+	procstart = null
+	src.procstart = null
 	var/list/extra_sublist = list()
 	for(var/datum/reagent/extra_type as anything in extra_reagent_types)
 		extra_sublist += "[initial(extra_type.name)]"
@@ -924,6 +964,8 @@
 	)
 
 /datum/chemical_reaction/food/soup/monkey/describe_result()
+	procstart = null
+	src.procstart = null
 	return list("May contain a monkey.")
 
 // Cream of mushroom soup
@@ -967,6 +1009,8 @@
 	drink_type = VEGETABLES | DAIRY
 
 /datum/glass_style/has_foodtype/soup/white_beet/set_name(obj/item/thing)
+	procstart = null
+	src.procstart = null
 	var/how_do_you_spell_it = pick("borsch", "bortsch", "borstch", "borsh", "borshch", "borscht")
 	thing.name = how_do_you_spell_it
 
@@ -995,6 +1039,8 @@
 	percentage_of_nutriment_converted = 0.1
 
 /datum/chemical_reaction/food/soup/beetsoup/describe_result()
+	procstart = null
+	src.procstart = null
 	return list("Changes name randomly to a common misspelling of \"Borscht\".")
 
 // Stew
@@ -1794,6 +1840,8 @@
 	)
 
 /datum/chemical_reaction/food/soup/cornmeal_porridge/pre_reaction_other_checks(datum/reagents/holder)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 // Cheese Porridge (Soup-ish)

@@ -25,15 +25,21 @@
 	var/datum/port/output/output_value
 
 /obj/item/circuit_component/get_variable/populate_options()
+	procstart = null
+	src.procstart = null
 	getvar_options = add_option_port("Variable Options", list("Object", "Global"))
 	expected_output_type = add_option_port("Expected Output Type", GLOB.wiremod_fundamental_types)
 
 /obj/item/circuit_component/get_variable/populate_ports()
+	procstart = null
+	src.procstart = null
 	entity = add_input_port("Target", PORT_TYPE_DATUM)
 	variable_name = add_input_port("Variable Name", PORT_TYPE_STRING, order = 2)
 	output_value = add_output_port("Output Value", PORT_TYPE_ANY, order = 2)
 
 /obj/item/circuit_component/get_variable/pre_input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(port == getvar_options)
 		remove_input_port(entity)
 		entity = null
@@ -45,6 +51,8 @@
 			output_value.set_datatype(expected_output_type.value)
 
 /obj/item/circuit_component/get_variable/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	var/datum/object = entity?.value
 	if(getvar_options.value == "Global")
 		object = GLOB

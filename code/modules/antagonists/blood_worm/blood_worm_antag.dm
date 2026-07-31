@@ -13,10 +13,14 @@
 	var/datum/team/blood_worm/team = null
 
 /datum/antagonist/blood_worm/Destroy()
+	procstart = null
+	src.procstart = null
 	team = null
 	return ..()
 
 /datum/antagonist/blood_worm/greet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	to_chat(owner, span_bold("A species of space-faring leech, massive in size and ferocious in hunting. \
@@ -28,25 +32,37 @@
 	owner.announce_objectives()
 
 /datum/antagonist/blood_worm/forge_objectives()
+	procstart = null
+	src.procstart = null
 	objectives |= team.objectives
 
 /datum/antagonist/blood_worm/create_team(datum/team/new_team)
+	procstart = null
+	src.procstart = null
 	GLOB.blood_worm_team ||= new()
 	team = GLOB.blood_worm_team
 
 /datum/antagonist/blood_worm/get_team()
+	procstart = null
+	src.procstart = null
 	return team
 
 /datum/antagonist/blood_worm/on_gain()
+	procstart = null
+	src.procstart = null
 	forge_objectives()
 	ADD_TRAIT(owner, TRAIT_UNCONVERTABLE, REF(src)) // No blood cultist worms or whatever the fuck
 	return ..()
 
 /datum/antagonist/blood_worm/on_removal()
+	procstart = null
+	src.procstart = null
 	REMOVE_TRAITS_IN(owner, REF(src))
 	return ..()
 
 /datum/antagonist/blood_worm/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = mob_override || owner.current
 
 	add_team_hud(target)
@@ -59,6 +75,8 @@
 	target.add_traits(list(TRAIT_APATHETIC, TRAIT_FEARLESS), REF(src))
 
 /datum/antagonist/blood_worm/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target = mob_override || owner.current
 
 	if (!istype(target, /mob/living/basic/blood_worm))
@@ -67,6 +85,8 @@
 	REMOVE_TRAITS_IN(target, REF(src))
 
 /datum/antagonist/blood_worm/admin_add(datum/mind/new_owner, mob/admin)
+	procstart = null
+	src.procstart = null
 	if (!new_owner.current)
 		return
 
@@ -81,6 +101,8 @@
 	return ..()
 
 /datum/antagonist/blood_worm/get_preview_icon()
+	procstart = null
+	src.procstart = null
 	var/datum/universal_icon/icon = uni_icon('icons/mob/nonhuman-player/blood_worm_32x32.dmi', "juvenile")
 
 	icon.crop(1, 1, 32, 32)
@@ -90,6 +112,8 @@
 	return icon
 
 /datum/antagonist/blood_worm/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/team_data = list()
 	team_data["blood_consumed_total"] = floor(team.blood_consumed_total)

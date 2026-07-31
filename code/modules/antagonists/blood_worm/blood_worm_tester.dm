@@ -14,20 +14,28 @@
 	var/spent = FALSE
 
 /obj/item/blood_worm_tester/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 	update_appearance(UPDATE_ICON_STATE | UPDATE_DESC)
 
 /obj/item/blood_worm_tester/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = spent ? "tester_spent" : "tester"
 	inhand_icon_state = spent ? "blood_worm_tester_spent" : "blood_worm_tester"
 	return ..()
 
 /obj/item/blood_worm_tester/update_desc(updates)
+	procstart = null
+	src.procstart = null
 	desc = "[initial(desc)] [spent ? "This one is spent." : "It's loaded for a single use."]"
 	return ..()
 
 /obj/item/blood_worm_tester/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
+	procstart = null
+	src.procstart = null
 	if (spent)
 		target_mob.balloon_alert(user, "already spent!")
 		return
@@ -76,9 +84,13 @@
 	update_appearance(UPDATE_ICON_STATE | UPDATE_DESC)
 
 /obj/item/blood_worm_tester/proc/can_inject(mob/living/target_mob, mob/living/user, target_zone)
+	procstart = null
+	src.procstart = null
 	return target_mob.try_inject(user, target_zone, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE)
 
 /obj/item/blood_worm_tester/proc/report_results(is_worm)
+	procstart = null
+	src.procstart = null
 	if (is_worm)
 		say("Active hemoparasite presence detected!")
 		playsound(src, 'sound/machines/beep/twobeep.ogg', vol = 50, vary = TRUE)

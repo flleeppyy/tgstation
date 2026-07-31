@@ -19,6 +19,8 @@
 	var/inverted = FALSE
 
 /obj/effect/lock_portal/Initialize(mapload, target, invert = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(target)
 		our_airlock = target
@@ -32,16 +34,22 @@
 
 ///Deletes us and our destination portal if our_airlock is destroyed
 /obj/effect/lock_portal/proc/delete_on_door_delete(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)
 
 ///Signal handler for when our location is entered, calls teleport on the victim, if their old_loc didnt contain a portal already (to prevent loops)
 /obj/effect/lock_portal/proc/on_entered(datum/source, mob/living/loser, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(istype(loser) && !(locate(type) in old_loc))
 		teleport(loser)
 
 /obj/effect/lock_portal/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!isnull(destination) && !QDELING(destination))
 		QDEL_NULL(destination)
 
@@ -51,6 +59,8 @@
 
 ///Teleports the teleportee, to a random airlock if the teleportee isnt a heretic, or the other portal if they are one
 /obj/effect/lock_portal/proc/teleport(mob/living/teleportee)
+	procstart = null
+	src.procstart = null
 	if(isnull(destination)) //dumbass
 		qdel(src)
 		return
@@ -74,6 +84,8 @@
 
 ///Returns a random airlock on the same Z level as our portal, that isnt our airlock
 /obj/effect/lock_portal/proc/find_random_airlock()
+	procstart = null
+	src.procstart = null
 	var/list/turf/possible_destinations = list()
 	for(var/obj/airlock as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/door/airlock))
 		if(airlock.z != z)
@@ -88,6 +100,8 @@
 
 ///Asynchronous proc to unbolt, then open the passed door
 /obj/effect/lock_portal/proc/async_opendoor(obj/machinery/door/door)
+	procstart = null
+	src.procstart = null
 	if(istype(door, /obj/machinery/door/airlock)) //they can create portals on ANY door, but we should unlock airlocks so they can actually open
 		var/obj/machinery/door/airlock/as_airlock = door
 		as_airlock.unbolt()
@@ -108,6 +122,8 @@
 	var/inverted = FALSE
 
 /obj/item/card/id/advanced/heretic/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!IS_HERETIC_OR_MONSTER(user))
 		return
@@ -118,6 +134,8 @@
 	. += span_hypnophrase("<b>Ctrl-clicking the ID</b>, makes the ID make inverted portals instead, which teleport you onto a random airlock onstation, while heathens are teleported to the destination.")
 
 /obj/item/card/id/advanced/heretic/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!IS_HERETIC(user))
 		return
@@ -129,6 +147,8 @@
 	shapeshift(card)
 
 /obj/item/card/id/advanced/heretic/item_ctrl_click(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!IS_HERETIC(user))
 		return CLICK_ACTION_BLOCKING
 	inverted = !inverted
@@ -137,6 +157,8 @@
 
 ///Changes our appearance to the passed ID card
 /obj/item/card/id/advanced/heretic/proc/shapeshift(obj/item/card/id/advanced/card)
+	procstart = null
+	src.procstart = null
 	trim = card.trim
 	if(ishuman(loc))
 		var/mob/living/carbon/human/wearing = loc
@@ -152,17 +174,23 @@
 
 ///Deletes and nulls our portal pair
 /obj/item/card/id/advanced/heretic/proc/clear_portals()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(portal_one)
 	QDEL_NULL(portal_two)
 
 ///Clears portal references
 /obj/item/card/id/advanced/heretic/proc/clear_portal_refs()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	portal_one = null
 	portal_two = null
 
 ///Creates a portal pair at door1 and door2, displays a balloon alert to user
 /obj/item/card/id/advanced/heretic/proc/make_portal(mob/user, obj/machinery/door/door1, obj/machinery/door/door2)
+	procstart = null
+	src.procstart = null
 	var/message = "linked"
 	if(portal_one || portal_two)
 		clear_portals()
@@ -176,12 +204,16 @@
 	balloon_alert(user, "[message]")
 
 /obj/item/card/id/advanced/heretic/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/card/id/advanced) || !IS_HERETIC(user))
 		return ..()
 	eat_card(tool, user)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/card/id/advanced/heretic/proc/eat_card(obj/item/card/id/card, mob/user)
+	procstart = null
+	src.procstart = null
 	if(card == src)
 		return //no self vore
 	fused_ids[card.name] = card
@@ -192,6 +224,8 @@
 		balloon_alert(user, "consumed card")
 
 /obj/item/card/id/advanced/heretic/interact_with_atom(atom/target, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!IS_HERETIC(user))
 		return NONE
 	if(istype(target, /obj/item/card/id/advanced))
@@ -219,6 +253,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/card/id/advanced/heretic/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST_ASSOC_VAL(fused_ids)
 	link = null
 	clear_portals()

@@ -6,27 +6,39 @@
 	var/mob/living/silicon/ai/ai_user
 
 /datum/ai_core_display_picker/New(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	ai_user = user
 
 /datum/ai_core_display_picker/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(!ai_user || user != ai_user || ai_user.incapacitated)
 		return UI_CLOSE
 	return ..()
 
 /datum/ai_core_display_picker/ui_state(mob/user)
+	procstart = null
+	src.procstart = null
 	return GLOB.always_state
 
 /datum/ai_core_display_picker/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AiCoreDisplayPicker")
 		ui.open()
 
 /datum/ai_core_display_picker/ui_close(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ai_user)
 		ai_user.core_display_picker = null
 
 /datum/ai_core_display_picker/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	// If no override is set, find the actual current display from the AI's icon state
@@ -66,6 +78,8 @@
 	return data
 
 /datum/ai_core_display_picker/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return

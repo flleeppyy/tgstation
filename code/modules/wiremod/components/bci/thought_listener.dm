@@ -24,6 +24,8 @@
 	var/ready = TRUE
 
 /obj/item/circuit_component/thought_listener/populate_ports()
+	procstart = null
+	src.procstart = null
 	input_name = add_input_port("Input Name", PORT_TYPE_STRING)
 	input_desc = add_input_port("Input Description", PORT_TYPE_STRING)
 	output = add_output_port("Received Thought", PORT_TYPE_STRING)
@@ -31,13 +33,19 @@
 	failure = add_output_port("On Failure", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/thought_listener/register_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	if(istype(shell, /obj/item/organ/cyberimp/bci))
 		bci = shell
 
 /obj/item/circuit_component/thought_listener/unregister_shell(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	bci = null
 
 /obj/item/circuit_component/thought_listener/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!ready)
 		failure.set_output(COMPONENT_SIGNAL)
 		return
@@ -56,6 +64,8 @@
 	ready = FALSE
 
 /obj/item/circuit_component/thought_listener/proc/thought_listen(mob/living/owner)
+	procstart = null
+	src.procstart = null
 	var/message = tgui_input_text(owner, input_desc.value ? input_desc.value : "", input_name.value ? input_name.value : "Thought Listener", "", max_length = MAX_MESSAGE_LEN)
 	if(QDELETED(owner) || IS_UNCONSCIOUS_OR_CRIT(owner))
 		return

@@ -19,11 +19,15 @@
 	var/wave_name = "normal"
 
 /datum/round_event/meteor_wave/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!wave_type)
 		determine_wave_type()
 
 /datum/round_event/meteor_wave/proc/determine_wave_type()
+	procstart = null
+	src.procstart = null
 	if(!wave_name)
 		wave_name = pick_weight(list(
 			"normal" = 50,
@@ -50,9 +54,13 @@
 			kill()
 
 /datum/round_event/meteor_wave/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("Meteors have been detected on collision course with the station.", "Meteor Alert", ANNOUNCER_METEORS)
 
 /datum/round_event/meteor_wave/tick()
+	procstart = null
+	src.procstart = null
 	if(ISMULTIPLE(activeFor, 3))
 		spawn_meteors(5, wave_type) //meteor list types defined in gamemode/meteor/meteors.dm
 
@@ -91,6 +99,8 @@
 	wave_name = "meaty"
 
 /datum/round_event/meteor_wave/meaty/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("Meaty ores have been detected on collision course with the station.", "Oh crap, get the mop.", ANNOUNCER_METEORS)
 
 /datum/round_event_control/meteor_wave/dust_storm
@@ -107,6 +117,8 @@
 	wave_name = "space dust"
 
 /datum/round_event/meteor_wave/dust_storm/announce(fake)
+	procstart = null
+	src.procstart = null
 	var/list/reasons = list()
 
 	reasons += "[station_name()] is passing through a debris cloud, expect minor damage \

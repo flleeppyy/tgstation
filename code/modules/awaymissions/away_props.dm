@@ -7,6 +7,8 @@
 	anchored = TRUE
 
 /obj/effect/oneway/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return . && (REVERSE_DIR(border_dir) == dir || get_turf(mover) == get_turf(src))
 
@@ -20,10 +22,14 @@
 	var/strength = 30
 
 /obj/effect/wind/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj,src)
 
 /obj/effect/wind/process()
+	procstart = null
+	src.procstart = null
 	var/turf/open/T = get_turf(src)
 	if(istype(T))
 		T.consider_pressure_difference(get_step(T,dir),strength)
@@ -39,11 +45,15 @@
 	var/reverse = FALSE //Block if path not present
 
 /obj/effect/path_blocker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(blocked_types.len)
 		blocked_types = typecacheof(blocked_types)
 
 /obj/effect/path_blocker/CanAllowThrough(atom/movable/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(blocked_types.len)
 		var/list/mover_contents = mover.get_all_contents()
@@ -65,18 +75,24 @@
 	var/hidden = FALSE
 
 /obj/structure/pitgrate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(SSdcs,COMSIG_GLOB_BUTTON_PRESSED, PROC_REF(OnButtonPressed))
 	if(hidden)
 		update_openspace()
 
 /obj/structure/pitgrate/proc/OnButtonPressed(datum/source,obj/machinery/button/button)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(button.id == id) //No range checks because this is admin abuse mostly.
 		toggle()
 
 /obj/structure/pitgrate/proc/update_openspace()
+	procstart = null
+	src.procstart = null
 	var/turf/open/openspace/T = get_turf(src)
 	if(!istype(T))
 		return
@@ -87,6 +103,8 @@
 		T.RemoveInvisibility(type)
 
 /obj/structure/pitgrate/proc/toggle()
+	procstart = null
+	src.procstart = null
 	open = !open
 	var/talpha
 	if(open)
@@ -107,10 +125,14 @@
 			T.zFall(AM)
 
 /obj/structure/pitgrate/proc/reset_plane()
+	procstart = null
+	src.procstart = null
 	SET_PLANE_IMPLICIT(src, FLOOR_PLANE)
 	layer = BELOW_CATWALK_LAYER
 
 /obj/structure/pitgrate/Destroy()
+	procstart = null
+	src.procstart = null
 	if(hidden)
 		open = TRUE
 		update_openspace()
@@ -133,6 +155,8 @@
 	var/reverse = FALSE //Block if has ckey
 
 /obj/effect/playeronly_barrier/CanAllowThrough(mob/living/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(mover))
 		return
@@ -148,5 +172,7 @@
 	anchored = TRUE
 
 /obj/effect/invisible_wall/CanAllowThrough(mob/living/mover, border_dir)
+	procstart = null
+	src.procstart = null
 	..()
 	return FALSE // NO

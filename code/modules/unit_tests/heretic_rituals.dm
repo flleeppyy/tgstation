@@ -12,6 +12,8 @@
 /datum/unit_test/heretic_rituals
 
 /datum/unit_test/heretic_rituals/Run()
+	procstart = null
+	src.procstart = null
 
 	// Gotta create ourselves a rune and a user to start.
 	var/obj/effect/heretic_rune/big/our_rune = allocate(/obj/effect/heretic_rune/big)

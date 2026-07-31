@@ -15,10 +15,14 @@
 	var/list/mob/swimmers = list()
 
 /datum/element/swimming_tile/Destroy(force)
+	procstart = null
+	src.procstart = null
 	swimmers = null
 	return ..()
 
 /datum/element/swimming_tile/Attach(turf/target, stamina_entry_cost = 7, ticking_stamina_cost = 5, ticking_oxy_damage = 2, exhaust_swimmer_prob = 30)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isturf(target))
 		return ELEMENT_INCOMPATIBLE
@@ -37,6 +41,8 @@
 		enter_water(target, drownee)
 
 /datum/element/swimming_tile/Detach(turf/source)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(source, list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON, COMSIG_ATOM_EXITED))
 	for(var/mob/living/dry_guy in source.contents)
 		out_of_water(source, dry_guy)
@@ -44,6 +50,8 @@
 
 /// When something enters the water set up to start drowning it
 /datum/element/swimming_tile/proc/enter_water(atom/source, mob/living/swimmer)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(!istype(swimmer))
@@ -64,16 +72,22 @@
 
 /// When something exits the water it probably shouldn't drowning
 /datum/element/swimming_tile/proc/out_of_water(atom/source, mob/living/landlubber)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(landlubber, list(SIGNAL_ADDTRAIT(TRAIT_IMMERSED), COMSIG_QDELETING))
 	swimmers -= landlubber
 
 /datum/element/swimming_tile/proc/on_swimmer_del(atom/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	out_of_water(null, source)
 
 /// When we've validated that someone is actually in the water start drowning the-I mean, start swimming!
 /datum/element/swimming_tile/proc/dip_in(mob/living/floater)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT(floater, TRAIT_SWIMMER) || (isvehicle(floater.buckled) || ismob(floater.buckled)) || !prob(exhaust_swimmer_prob))
@@ -102,6 +116,8 @@
 
 /// The weight of our swimmers clothing, including slowdown, impacts the amount of stamina damage dealt on dipping in.
 /datum/element/swimming_tile/proc/clothing_weight(mob/living/floater)
+	procstart = null
+	src.procstart = null
 	var/extra_stamina_weight = 0
 	for(var/obj/item/equipped_item in floater.get_equipped_items())
 		if(ispath(equipped_item, /obj/item/clothing/under/shorts))
@@ -124,6 +140,8 @@
 	var/drowning_process_probability = 20
 
 /datum/status_effect/swimming/on_creation(mob/living/new_owner, ticking_stamina_cost = 7, ticking_oxy_damage = 2)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	stamina_per_interval = ticking_stamina_cost
 	oxygen_per_interval = ticking_oxy_damage
@@ -132,10 +150,14 @@
 	RegisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_IMMERSED), PROC_REF(stop_swimming))
 
 /datum/status_effect/swimming/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/swimming_deep)
 	UnregisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_IMMERSED))
 
 /datum/status_effect/swimming/tick(seconds_between_ticks)
+	procstart = null
+	src.procstart = null
 	if (HAS_TRAIT(owner, TRAIT_MOB_ELEVATED))
 		return
 	if (owner.buckled) // We're going to generously assume that being buckled to any mob or vehicle leaves you above water
@@ -169,5 +191,7 @@
 
 /// When we're not in the water any more this don't matter
 /datum/status_effect/swimming/proc/stop_swimming()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	qdel(src)

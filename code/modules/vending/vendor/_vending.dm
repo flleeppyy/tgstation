@@ -25,6 +25,8 @@
 	var/list/returned_products
 
 /datum/data/vending_product/Destroy(force)
+	procstart = null
+	src.procstart = null
 	returned_products = null
 	return ..()
 
@@ -203,6 +205,8 @@
  * * TRUE - all other cases
  */
 /obj/machinery/vending/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	//means we produce products with fixed amounts
 	if(!refill_canister)
 		circuit = null
@@ -245,6 +249,8 @@
 		AddComponent(/datum/component/fishing_spot, fish_source_path)
 
 /obj/machinery/vending/atom_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -277,6 +283,8 @@
 				return
 
 /obj/machinery/vending/on_deconstruction(disassembled)
+	procstart = null
+	src.procstart = null
 	var/obj/item/vending_refill/installed_refill = locate() in component_parts
 	if(!installed_refill)
 		return
@@ -302,12 +310,16 @@
 				canister_list[record.product_path] = stock
 
 /obj/machinery/vending/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(product_records)
 	QDEL_LIST(hidden_records)
 	QDEL_LIST(coin_records)
 	return ..()
 
 /obj/machinery/vending/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	procstart = null
+	src.procstart = null
 	. = NONE
 	if(tilted && !held_item)
 		context[SCREENTIP_CONTEXT_LMB] = "Right machine"
@@ -340,6 +352,8 @@
  * * contraband - should we count contrabrand as well
 */
 /obj/machinery/vending/proc/total_stock(contrabrand = TRUE)
+	procstart = null
+	src.procstart = null
 	SHOULD_BE_PURE(TRUE)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	RETURN_TYPE(/list)
@@ -355,6 +369,8 @@
 	return list(total_loaded, total_max)
 
 /obj/machinery/vending/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnull(refill_canister))
 		return // you can add the comment here instead
@@ -375,6 +391,8 @@
 		. += span_notice("It should have at least a full paycheck worth of [MONEY_NAME] inside!")
 
 /obj/machinery/vending/update_appearance(updates = ALL)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machine_stat & BROKEN)
 		set_light(0)
@@ -382,6 +400,8 @@
 	set_light(powered() ? MINIMUM_USEFUL_LIGHT_RANGE : 0)
 
 /obj/machinery/vending/update_icon_state()
+	procstart = null
+	src.procstart = null
 	if(machine_stat & BROKEN)
 		icon_state = "[initial(icon_state)]-broken"
 		return ..()
@@ -389,6 +409,8 @@
 	return ..()
 
 /obj/machinery/vending/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(panel_open)
 		. += panel_type
@@ -396,6 +418,8 @@
 		. += emissive_appearance(icon, light_mask, src)
 
 /obj/machinery/vending/vv_edit_var(vname, vval)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(vname == NAMEOF(src, all_products_free))
 		if (all_products_free)
@@ -405,6 +429,8 @@
 		update_static_data_for_all_viewers()
 
 /obj/machinery/vending/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/language_holder/vending_languages = get_language_holder()
 	var/datum/wires/vending/vending_wires = wires
@@ -412,11 +438,15 @@
 	vending_languages.selected_language = vending_languages.spoken_languages[vending_wires.language_iterator]
 
 /obj/machinery/vending/unbuckle_mob(mob/living/buckled_mob, force = FALSE, can_fall = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!force)
 		return
 	. = ..()
 
 /obj/machinery/vending/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
@@ -425,11 +455,15 @@
 
 
 /obj/machinery/vending/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(powered())
 		START_PROCESSING(SSmachines, src)
 
 /obj/machinery/vending/process(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(!is_operational)
 		return PROCESS_KILL
 
@@ -447,6 +481,8 @@
 
 //===============================SPEACH===================================================
 /obj/machinery/vending/can_speak(allow_mimes)
+	procstart = null
+	src.procstart = null
 	return is_operational && !shut_up && ..()
 
 
@@ -458,6 +494,8 @@
  * * message - the message to speak
  */
 /obj/machinery/vending/proc/speak(message)
+	procstart = null
+	src.procstart = null
 	if(!is_operational)
 		return
 	if(!message)

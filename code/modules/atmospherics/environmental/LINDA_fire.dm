@@ -1,5 +1,7 @@
 /// Returns reactions which will contribute to a hotspot's size.
 /proc/init_hotspot_reactions()
+	procstart = null
+	src.procstart = null
 	var/list/fire_reactions = list()
 	for (var/datum/gas_reaction/reaction as anything in subtypesof(/datum/gas_reaction))
 		if(initial(reaction.expands_hotspot))
@@ -8,11 +10,15 @@
 	return fire_reactions
 
 /atom/proc/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	return null
 
 
 
 /turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
+	procstart = null
+	src.procstart = null
 	return
 
 /**
@@ -21,6 +27,8 @@
  * is handled by the hotspot itself, specifically perform_exposure().
  */
 /turf/open/hotspot_expose(exposed_temperature, exposed_volume, soh)
+	procstart = null
+	src.procstart = null
 	if(exposed_temperature < TCMB)
 		exposed_temperature = TCMB
 		CRASH("[src].hotspot_expose() called with exposed_temperature < [TCMB]")
@@ -96,6 +104,8 @@
 	var/datum/hot_group/our_hot_group
 
 /obj/effect/hotspot/Initialize(mapload, starting_volume, starting_temperature)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSair.hotspots += src
 	if(!isnull(starting_volume))
@@ -149,6 +159,8 @@
 	update_color()
 
 /obj/effect/hotspot/set_smoothed_icon_state(new_junction)
+	procstart = null
+	src.procstart = null
 
 	smoothing_junction = new_junction
 
@@ -169,6 +181,8 @@
  * Returns TRUE if exposed successfully, and FALSE if the hotspot should delete itself
  */
 /obj/effect/hotspot/proc/perform_exposure()
+	procstart = null
+	src.procstart = null
 	var/turf/open/location = loc
 	var/datum/gas_mixture/reference
 	if(!istype(location) || !location.air)
@@ -216,11 +230,15 @@
 
 /// Mathematics to be used for color calculation.
 /obj/effect/hotspot/proc/gauss_lerp(x, x1, x2)
+	procstart = null
+	src.procstart = null
 	var/b = (x1 + x2) * 0.5
 	var/c = (x2 - x1) / 6
 	return NUM_E ** -((x - b) ** 2 / (2 * c) ** 2)
 
 /obj/effect/hotspot/proc/update_color()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 
 	var/heat_r = heat2colour_r(temperature)
@@ -288,6 +306,8 @@
  * And some visual stuffs too! Colors and fainter icons for specific conditions.
  */
 /obj/effect/hotspot/process()
+	procstart = null
+	src.procstart = null
 	if(just_spawned)
 		just_spawned = FALSE
 		return
@@ -342,6 +362,8 @@
 	return TRUE
 
 /obj/effect/hotspot/proc/set_fire_stage(stage)
+	procstart = null
+	src.procstart = null
 	if(fire_stage == stage)
 		return
 	fire_stage = stage
@@ -350,6 +372,8 @@
 	update_color()
 
 /obj/effect/hotspot/Destroy()
+	procstart = null
+	src.procstart = null
 	SSair.hotspots -= src
 	var/turf/open/cur_turf = loc
 	if(our_hot_group)
@@ -360,12 +384,16 @@
 	return ..()
 
 /obj/effect/hotspot/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(isliving(arrived) && !cold_fire)
 		var/mob/living/immolated = arrived
 		immolated.fire_act(temperature, volume)
 
 /obj/effect/hotspot/singularity_pull(atom/singularity, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/looping_sound/fire
@@ -396,12 +424,16 @@
 
 
 /datum/hot_group/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	current_sound_loc = null
 	spot_list = null
 	qdel(sound)
 
 /datum/hot_group/proc/remove_from_group(obj/effect/hotspot/target)
+	procstart = null
+	src.procstart = null
 	spot_list -= target
 	var/turf/open/target_turf = target.loc
 	if(target_turf)
@@ -412,6 +444,8 @@
 		return
 
 /datum/hot_group/proc/add_to_group(obj/effect/hotspot/target)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target))
 		return
 	spot_list += target
@@ -425,6 +459,8 @@
 		COOLDOWN_START(src, update_sound_center, 5 SECONDS)
 
 /datum/hot_group/proc/merge_hot_groups(datum/hot_group/enemy_group)
+	procstart = null
+	src.procstart = null
 	if(length(spot_list) >= tiles_limit || length(enemy_group.spot_list) >= tiles_limit)
 		return
 	var/datum/hot_group/saving_group
@@ -446,6 +482,8 @@
 		COOLDOWN_START(src, update_sound_center, 5 SECONDS)
 
 /datum/hot_group/proc/update_sound()
+	procstart = null
+	src.procstart = null
 	//we can draw a cross around the average middle of any globs of group, curves or hollow groups may cause issues with this
 	average_x = round((max(x_coord) + min(x_coord))/2)
 	average_y = round((max(y_coord) + min(y_coord))/2)

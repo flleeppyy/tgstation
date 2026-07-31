@@ -6,6 +6,8 @@
 	)
 
 /datum/preference_middleware/names/get_constant_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/list/types = list()
@@ -26,6 +28,8 @@
 	return data
 
 /datum/preference_middleware/names/get_ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["name_to_use"] = get_name_to_use()
@@ -33,6 +37,8 @@
 	return data
 
 /datum/preference_middleware/names/proc/get_name_to_use()
+	procstart = null
+	src.procstart = null
 	var/highest_priority_job = preferences.get_highest_priority_job()
 
 	for (var/preference_type in GLOB.preference_entries)
@@ -49,6 +55,8 @@
 	return "real_name"
 
 /datum/preference_middleware/names/proc/randomize_name(list/params, mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/preference/name/name_preference = GLOB.preference_entries_by_key[params["preference"]]
 	if (!istype(name_preference))
 		return FALSE

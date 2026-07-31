@@ -47,6 +47,8 @@
 	var/active_icon_state
 
 /datum/action/cooldown/New(Target, original = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active_background_icon_state)
 		base_background_icon_state ||= background_icon_state
@@ -62,6 +64,8 @@
 		create_sequence_actions()
 
 /datum/action/cooldown/create_button(mob/viewer)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/screen/movable/action_button/button = ..()
 	button.maptext = ""
 	button.maptext_x = 4
@@ -71,6 +75,8 @@
 	return button
 
 /datum/action/cooldown/update_button_status(atom/movable/screen/movable/action_button/button, force = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/time_left = max(next_use_time - world.time, 0)
 	if(!text_cooldown || !owner || time_left == 0 || time_left >= COOLDOWN_NO_DISPLAY_TIME)
@@ -90,28 +96,40 @@
 	button.color = COLOR_GREEN
 
 /datum/action/cooldown/apply_button_background(atom/movable/screen/movable/action_button/current_button, force)
+	procstart = null
+	src.procstart = null
 	if(active_background_icon_state)
 		background_icon_state = is_action_active(current_button) ? active_background_icon_state : base_background_icon_state
 	return ..()
 
 /datum/action/cooldown/apply_button_icon(atom/movable/screen/movable/action_button/current_button, force)
+	procstart = null
+	src.procstart = null
 	if(active_icon_state)
 		button_icon_state = is_action_active(current_button) ? active_icon_state : base_icon_state
 	return ..()
 
 /datum/action/cooldown/apply_button_overlay(atom/movable/screen/movable/action_button/current_button, force)
+	procstart = null
+	src.procstart = null
 	if(active_overlay_icon_state)
 		overlay_icon_state = is_action_active(current_button) ? active_overlay_icon_state : base_overlay_icon_state
 	return ..()
 
 /datum/action/cooldown/is_action_active(atom/movable/screen/movable/action_button/current_button)
+	procstart = null
+	src.procstart = null
 	return click_to_activate && current_button.our_hud?.mymob?.click_intercept == src
 
 /datum/action/cooldown/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(initialized_actions)
 	return ..()
 
 /datum/action/cooldown/Grant(mob/granted_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!owner)
 		return
@@ -123,6 +141,8 @@
 		ability.Grant(granted_to)
 
 /datum/action/cooldown/Remove(mob/removed_from)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(removed_from, COMSIG_HOSTILE_PRE_ATTACKINGTARGET)
 	if(click_to_activate && removed_from.click_intercept == src)
 		unset_click_ability(removed_from, refund_cooldown = FALSE)
@@ -131,10 +151,14 @@
 	return ..()
 
 /datum/action/cooldown/IsAvailable(feedback = FALSE)
+	procstart = null
+	src.procstart = null
 	return ..() && (next_use_time <= world.time)
 
 /// Initializes any sequence actions
 /datum/action/cooldown/proc/create_sequence_actions()
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(sequence_actions))
 		return
 	// remove existing actions if any
@@ -150,6 +174,8 @@
 /// Starts a cooldown time to be shared with similar abilities
 /// Will use default cooldown time if an override is not specified
 /datum/action/cooldown/proc/StartCooldown(override_cooldown_time, override_melee_cooldown_time)
+	procstart = null
+	src.procstart = null
 	// "Shared cooldowns" covers actions which are not the same type,
 	// but have the same cooldown group and are on the same mob
 	if(shared_cooldown != NONE)
@@ -165,6 +191,8 @@
 /// Starts a cooldown time for this ability only
 /// Will use default cooldown time if an override is not specified
 /datum/action/cooldown/proc/StartCooldownSelf(override_cooldown_time)
+	procstart = null
+	src.procstart = null
 	if(isnum(override_cooldown_time))
 		next_use_time = world.time + override_cooldown_time
 	else
@@ -178,6 +206,8 @@
 /// Starts a cooldown time for other abilities that share a cooldown with this. Has some niche usage with more complicated attack ai!
 /// Will use default cooldown time if an override is not specified
 /datum/action/cooldown/proc/StartCooldownOthers(override_cooldown_time)
+	procstart = null
+	src.procstart = null
 	if(!length(owner?.actions))
 		return // Possible if they have an action they don't control
 	for(var/datum/action/cooldown/shared_ability in owner.actions - src)
@@ -190,30 +220,42 @@
 
 /// Resets the cooldown of this ability
 /datum/action/cooldown/proc/ResetCooldown()
+	procstart = null
+	src.procstart = null
 	next_use_time = world.time
 	build_all_button_icons(UPDATE_BUTTON_STATUS)
 
 /// Re-enables this cooldown action
 /datum/action/cooldown/proc/enable()
+	procstart = null
+	src.procstart = null
 	action_disabled = FALSE
 	build_all_button_icons(UPDATE_BUTTON_STATUS)
 
 /// Disables this cooldown action
 /datum/action/cooldown/proc/disable()
+	procstart = null
+	src.procstart = null
 	action_disabled = TRUE
 	build_all_button_icons(UPDATE_BUTTON_STATUS)
 
 /// Re-enables all cooldown actions
 /datum/action/cooldown/proc/enable_cooldown_actions()
+	procstart = null
+	src.procstart = null
 	for(var/datum/action/cooldown/cd_action in owner.actions)
 		cd_action.enable()
 
 /// Disables all cooldown actions
 /datum/action/cooldown/proc/disable_cooldown_actions()
+	procstart = null
+	src.procstart = null
 	for(var/datum/action/cooldown/cd_action in owner.actions)
 		cd_action.disable()
 
 /datum/action/cooldown/Trigger(mob/clicker, trigger_flags, atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -249,6 +291,8 @@
 
 /// Intercepts client owner clicks to activate the ability
 /datum/action/cooldown/proc/InterceptClickOn(mob/living/clicker, params, atom/target)
+	procstart = null
+	src.procstart = null
 	if(!IsAvailable(feedback = TRUE))
 		return FALSE
 	if(!target)
@@ -266,6 +310,8 @@
 
 /// For signal calling
 /datum/action/cooldown/proc/PreActivate(atom/target)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(owner, COMSIG_MOB_ABILITY_STARTED, src, target) & COMPONENT_BLOCK_ABILITY_START)
 		return
 	// Note, that PreActivate handles no cooldowns at all by default.
@@ -277,6 +323,8 @@
 
 /// To be implemented by subtypes (if not generic)
 /datum/action/cooldown/proc/Activate(atom/target)
+	procstart = null
+	src.procstart = null
 	var/total_delay = 0
 	for(var/datum/action/cooldown/ability as anything in initialized_actions)
 		if(LAZYLEN(ability.initialized_actions) > 0)
@@ -287,11 +335,15 @@
 
 /// Cancels melee attacks if they are on cooldown.
 /datum/action/cooldown/proc/handle_melee_attack(mob/source, mob/target)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(next_melee_use_time > world.time)
 		return COMPONENT_HOSTILE_NO_ATTACK
 
 /datum/action/cooldown/process()
+	procstart = null
+	src.procstart = null
 	if(!owner || (next_use_time - world.time) <= 0)
 		build_all_button_icons(UPDATE_BUTTON_STATUS)
 		STOP_PROCESSING(SSfastprocess, src)
@@ -303,6 +355,8 @@
  * Set our action as the click override on the passed mob.
  */
 /datum/action/cooldown/proc/set_click_ability(mob/on_who)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	on_who.click_intercept = src
@@ -319,6 +373,8 @@
  * if refund_cooldown is FALSE, we are being forcefully unset, likely by someone actually using the action
  */
 /datum/action/cooldown/proc/unset_click_ability(mob/on_who, refund_cooldown = TRUE)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 
 	on_who.click_intercept = null

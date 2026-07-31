@@ -40,12 +40,16 @@
 	var/datum/action/innate/dash/ninja/jaunt
 
 /obj/item/energy_katana/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	jaunt = new(src)
 	spark_system = new(src, 5, FALSE)
 	spark_system.attach(src)
 
 /obj/item/energy_katana/ranged_interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(isliving(interacting_with))
 		jaunt.attack_teleport(user, interacting_with)
 		return ITEM_INTERACT_SUCCESS
@@ -54,16 +58,22 @@
 	return NONE
 
 /obj/item/energy_katana/equipped(mob/user, slot, initial)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!QDELETED(jaunt))
 		jaunt.Grant(user, src)
 
 /obj/item/energy_katana/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!QDELETED(jaunt))
 		jaunt.Remove(user)
 
 /obj/item/energy_katana/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(spark_system)
 	QDEL_NULL(jaunt)
 	return ..()
@@ -75,14 +85,20 @@
 	beam_length = 1 SECONDS
 	recharge_sound = null
 
-/datum/action/innate/dash/ninja/GiveAction(mob/viewer) //this action should be invisible, as its handled by right-click
+/datum/action/innate/dash/ninja/GiveAction(mob/viewer)
+	procstart = null
+	src.procstart = null //this action should be invisible, as its handled by right-click
 	return
 
 /datum/action/innate/dash/ninja/HideFrom(mob/viewer)
+	procstart = null
+	src.procstart = null
 	return
 
 /// Teleports to a tile adjacent to a mob, then attacks it
 /datum/action/innate/dash/ninja/proc/attack_teleport(mob/living/user, mob/living/stabbing)
+	procstart = null
+	src.procstart = null
 	var/list/turf/line = get_line(user, stabbing)
 	var/obj/item/sword = target
 	if(length(line) <= 1 || !teleport(user, line[length(line) - 1])) // teleports to the second last turf, should be adjacent to the target

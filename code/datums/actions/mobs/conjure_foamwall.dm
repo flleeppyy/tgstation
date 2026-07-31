@@ -12,6 +12,8 @@
 	summon_type = list(/obj/structure/foamedmetal)
 
 /datum/action/cooldown/spell/conjure/foam_wall/can_cast_spell(feedback = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE

@@ -19,6 +19,8 @@
 	)
 
 /datum/signal/subspace/New(data)
+	procstart = null
+	src.procstart = null
 	src.data = data || list()
 
 /**
@@ -26,6 +28,8 @@
  * to this current signal via the `original` value, so that it can be traced back.
  */
 /datum/signal/subspace/proc/copy()
+	procstart = null
+	src.procstart = null
 	var/datum/signal/subspace/copy = new
 	copy.original = src
 	copy.source = source
@@ -41,6 +45,8 @@
  * and their original signals (recursively) as done, in their `data["done"]`.
  */
 /datum/signal/subspace/proc/mark_done()
+	procstart = null
+	src.procstart = null
 	var/datum/signal/subspace/current = src
 	while (current)
 		current.data["done"] = TRUE
@@ -50,6 +56,8 @@
  * Handles sending this signal to every available receiver and mainframe.
  */
 /datum/signal/subspace/proc/send_to_receivers()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/telecomms/receiver/receiver in GLOB.telecomm_machines)
 		receiver.receive_signal(src)
 	for(var/obj/machinery/telecomms/allinone/all_in_one_receiver in GLOB.telecomm_machines)
@@ -57,6 +65,8 @@
 
 /// Handles broadcasting this signal out, to be implemented by subtypes.
 /datum/signal/subspace/proc/broadcast()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 // Vocal transmissions (i.e. using saycode).
@@ -100,6 +110,8 @@
 #undef COMPRESSION_VOCAL_SIGNAL_MAX
 
 /datum/signal/subspace/vocal/copy()
+	procstart = null
+	src.procstart = null
 	var/datum/signal/subspace/vocal/copy = new(source, frequency, virt, language)
 	copy.original = src
 	copy.data = data.Copy()
@@ -108,6 +120,8 @@
 
 /// This is the meat function for making radios hear vocal transmissions.
 /datum/signal/subspace/vocal/broadcast()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	// Perform final composition steps on the message.

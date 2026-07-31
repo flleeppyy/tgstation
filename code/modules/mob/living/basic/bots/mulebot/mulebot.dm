@@ -62,6 +62,8 @@
 	var/home_destination = ""
 
 /mob/living/basic/bot/mulebot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(prob(replacement_chance) && mapload)
@@ -86,12 +88,16 @@
 	update_appearance()
 
 /mob/living/basic/bot/mulebot/Destroy()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(src, COMSIG_MOVABLE_PRE_MOVE)
 	unload()
 	QDEL_NULL(cell)
 	return ..()
 
 /mob/living/basic/bot/mulebot/proc/assign_cell(atom/new_cell)
+	procstart = null
+	src.procstart = null
 	cell = new_cell
 	var/atom/movable/screen/mob_charge/charge_hud = hud_used?.screen_objects[HUD_MULEBOT_CHARGE]
 	charge_hud?.update_battery_overlay(new_cell)
@@ -99,6 +105,8 @@
 
 
 /mob/living/basic/bot/mulebot/attack_hand(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(bot_access_flags & BOT_COVER_MAINTS_OPEN && !HAS_AI_ACCESS(user))
 		wires.interact(user)
 		return
@@ -108,6 +116,8 @@
 	return ..()
 
 /mob/living/basic/bot/mulebot/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(bot_access_flags & BOT_COVER_MAINTS_OPEN)
 		if(cell)
@@ -119,9 +129,13 @@
 		. += span_notice("\A [isobserver(load) ? "ghostly figure" : load] is on its load platform.")
 
 /mob/living/basic/bot/mulebot/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /mob/living/basic/bot/mulebot/melee_attack(atom/target, list/modifiers, ignore_cooldown = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!can_unarmed_attack())
 		return
 	if(isturf(target) && isturf(loc) && loc.Adjacent(target) && load)
@@ -130,6 +144,8 @@
 		return ..()
 
 /mob/living/basic/bot/mulebot/turn_on(mob/user)
+	procstart = null
+	src.procstart = null
 	if(bot_access_flags & BOT_COVER_MAINTS_OPEN)
 		if(user)
 			to_chat(user, span_warning("[src]'s maintenance panel is open!"))
@@ -140,11 +156,15 @@
 		return FALSE
 	return ..()
 
-/mob/living/basic/bot/mulebot/update_icon_state() //if you change the icon_state names, please make sure to update /datum/wires/mulebot/on_pulse() as well. <3
+/mob/living/basic/bot/mulebot/update_icon_state() //if you change the icon_state names, please make sure to update /datum/wires/mulebot/on_pulse()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[base_icon_state][(bot_mode_flags & BOT_MODE_ON) ? wires?.is_cut(WIRE_AVOIDANCE) : "0"]"
 
 /mob/living/basic/bot/mulebot/update_overlays()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(bot_access_flags & BOT_COVER_MAINTS_OPEN)
 		. += "[base_icon_state]-hatch"
@@ -155,13 +175,17 @@
 	. += load_overlay
 
 /mob/living/basic/bot/mulebot/proc/handle_buzzing(datum/move_loop/has_target/jps/frustrations/source, frustration_counter)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	update_bot_mode(new_mode = BOT_BLOCKED)
 	var/buzz_mode = frustration_counter >= source.maximum_frustrations ? MULEBOT_MOOD_ANNOYED : MULEBOT_MOOD_SIGH
 	buzz(buzz_mode)
 
-/mob/living/basic/bot/mulebot/handle_loop_movement(atom/movable/source, atom/oldloc, dir, forced) //incase we start moving again after being previously blocked, update our mode
+/mob/living/basic/bot/mulebot/handle_loop_movement(atom/movable/source, atom/oldloc, dir, forced)
+	procstart = null
+	src.procstart = null //incase we start moving again after being previously blocked, update our mode
 	. = ..()
 	if(mode != BOT_BLOCKED)
 		return
@@ -173,6 +197,8 @@
 
 ///Noises that mulebots make
 /mob/living/basic/bot/mulebot/proc/buzz(type)
+	procstart = null
+	src.procstart = null
 	switch(type)
 		if(MULEBOT_MOOD_SIGH)
 			audible_message(span_hear("[src] makes a sighing buzz."))
@@ -190,4 +216,6 @@
 
 /// returns true if the bot is fully powered.
 /mob/living/basic/bot/mulebot/proc/has_power()
+	procstart = null
+	src.procstart = null
 	return cell && cell.charge > 0 && (!wires.is_cut(WIRE_POWER1) && !wires.is_cut(WIRE_POWER2))

@@ -27,10 +27,14 @@
 	var/max_range = 5
 
 /obj/item/circuit_component/health/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_ui_notice("Maximum Range: [max_range] tiles", "orange", "info")
 
 /obj/item/circuit_component/health/populate_ports()
+	procstart = null
+	src.procstart = null
 	input_port = add_input_port("Organism", PORT_TYPE_ATOM)
 
 	brute = add_output_port("Brute Damage", PORT_TYPE_NUMBER)
@@ -40,6 +44,8 @@
 	health = add_output_port("Overall Health", PORT_TYPE_NUMBER)
 
 /obj/item/circuit_component/health/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 
 	var/mob/living/organism = input_port.value
 	var/turf/current_turf = get_location()

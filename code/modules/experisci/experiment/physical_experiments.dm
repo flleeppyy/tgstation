@@ -3,6 +3,8 @@
 	description = "There has been interest in using our engineering equipment to see what kind of new cooking appliances we can create"
 
 /datum/experiment/physical/meat_wall_explosion/register_events()
+	procstart = null
+	src.procstart = null
 	if(!iswallturf(currently_scanned_atom))
 		linked_experiment_handler.announce_message("Incorrect object for experiment.")
 		return FALSE
@@ -16,18 +18,26 @@
 	return TRUE
 
 /datum/experiment/physical/meat_wall_explosion/unregister_events()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(currently_scanned_atom, COMSIG_ATOM_BULLET_ACT)
 
 /datum/experiment/physical/meat_wall_explosion/check_progress()
+	procstart = null
+	src.procstart = null
 	. += EXPERIMENT_PROG_BOOL("Fire an emitter at a tracked meat wall", is_complete())
 
 /datum/experiment/physical/meat_wall_explosion/proc/check_experiment(datum/source, obj/projectile/proj)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(istype(proj, /obj/projectile/beam/emitter))
 		UnregisterSignal(currently_scanned_atom, COMSIG_ATOM_BULLET_ACT)
 		finish_experiment(linked_experiment_handler)
 
 /datum/experiment/physical/meat_wall_explosion/finish_experiment(datum/component/experiment_handler/experiment_handler, datum/techweb/linked_web_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/gibspawner/generic(currently_scanned_atom)
 	var/turf/meat_wall = currently_scanned_atom
@@ -40,6 +50,8 @@
 	description = "How do they make these arcade games so fun? Let's play one and win it to find out."
 
 /datum/experiment/physical/arcade_winner/register_events()
+	procstart = null
+	src.procstart = null
 	if(!istype(currently_scanned_atom, /obj/machinery/computer/arcade))
 		linked_experiment_handler.announce_message("Incorrect object for experiment.")
 		return FALSE
@@ -49,12 +61,18 @@
 	return TRUE
 
 /datum/experiment/physical/arcade_winner/unregister_events()
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(currently_scanned_atom, COMSIG_ARCADE_VICTORY)
 
 /datum/experiment/physical/arcade_winner/check_progress()
+	procstart = null
+	src.procstart = null
 	. += EXPERIMENT_PROG_BOOL("Win an arcade game at a tracked arcade cabinet.", is_complete())
 
 /datum/experiment/physical/arcade_winner/proc/win_arcade(datum/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	UnregisterSignal(currently_scanned_atom, COMSIG_ARCADE_VICTORY)
 	finish_experiment(linked_experiment_handler)

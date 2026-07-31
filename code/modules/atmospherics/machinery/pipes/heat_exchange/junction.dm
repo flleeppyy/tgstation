@@ -18,6 +18,8 @@
 	has_gas_visuals = FALSE
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/junction/set_init_directions()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH, SOUTH)
 			initialize_directions = SOUTH|NORTH
@@ -25,14 +27,20 @@
 			initialize_directions = WEST|EAST
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/junction/get_node_connects()
+	procstart = null
+	src.procstart = null
 	return list(REVERSE_DIR(dir), dir)
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/junction/is_connectable(obj/machinery/atmospherics/target, given_layer, he_type_check)
+	procstart = null
+	src.procstart = null
 	if(dir == get_dir(target, src))
 		return ..(target, given_layer, FALSE) //we want a normal pipe instead
 	return ..(target, given_layer, TRUE)
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/junction/update_pipe_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "pipe[nodes[1] ? "1" : "0"][nodes[2] ? "1" : "0"]-[piping_layer]"
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/junction/layer2

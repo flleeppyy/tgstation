@@ -10,17 +10,23 @@
 	var/transform_instantly = FALSE
 
 /datum/action/changeling/lesserform/Grant(mob/granted_to)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!owner)
 		return
 	RegisterSignals(granted_to, list(COMSIG_HUMAN_MONKEYIZE, COMSIG_MONKEY_HUMANIZE), PROC_REF(changed_form))
 
 /datum/action/changeling/lesserform/Remove(mob/remove_from)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(remove_from, list(COMSIG_HUMAN_MONKEYIZE, COMSIG_MONKEY_HUMANIZE))
 	return ..()
 
 //Transform into a monkey.
 /datum/action/changeling/lesserform/sting_action(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!user || HAS_TRAIT(user, TRAIT_NO_TRANSFORM))
 		return FALSE
 	..()
@@ -28,6 +34,8 @@
 
 /// Stop being a monkey
 /datum/action/changeling/lesserform/proc/unmonkey(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(user.movement_type & VENTCRAWLING)
 		user.balloon_alert(user, "can't transform in pipes!")
 		return FALSE
@@ -45,6 +53,8 @@
 
 /// Returns the form to transform back into, automatically selects your only profile if you only have one
 /datum/action/changeling/lesserform/proc/select_form(datum/antagonist/changeling/changeling, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if (!changeling)
 		return
 	if (length(changeling.stored_profiles) == 1)
@@ -53,16 +63,22 @@
 
 /// Become a monkey
 /datum/action/changeling/lesserform/proc/become_monkey(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, span_warning("Our genes cry out!"))
 	user.monkeyize(instant = transform_instantly)
 	return TRUE
 
 /// Called when you become a human or monkey, whether or not it was voluntary
 /datum/action/changeling/lesserform/proc/changed_form()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	build_all_button_icons(update_flags = UPDATE_BUTTON_NAME | UPDATE_BUTTON_ICON)
 
 /datum/action/changeling/lesserform/update_button_name(atom/movable/screen/movable/action_button/button, force)
+	procstart = null
+	src.procstart = null
 	if (ismonkey(owner))
 		name = "Human Form"
 		desc = "We change back into a human. Costs 5 chemicals."
@@ -72,5 +88,7 @@
 	return ..()
 
 /datum/action/changeling/lesserform/apply_button_icon(atom/movable/screen/movable/action_button/current_button, force)
+	procstart = null
+	src.procstart = null
 	button_icon_state = ismonkey(owner) ? "human_form" : initial(button_icon_state)
 	return ..()

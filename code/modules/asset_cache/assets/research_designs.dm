@@ -3,6 +3,8 @@
 	name = "design"
 
 /datum/asset/spritesheet_batched/research_designs/create_spritesheets()
+	procstart = null
+	src.procstart = null
 	for (var/datum/design/path as anything in subtypesof(/datum/design))
 		if(initial(path.id) == DESIGN_ID_IGNORE)
 			continue

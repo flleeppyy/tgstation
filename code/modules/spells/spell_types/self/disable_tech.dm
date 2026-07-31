@@ -12,6 +12,8 @@
 	var/emp_light = 3
 
 /datum/action/cooldown/spell/emp/cast(atom/cast_on)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	empulse(get_turf(cast_on), emp_heavy, emp_light, emp_source = src)
 

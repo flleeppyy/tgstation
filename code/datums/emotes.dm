@@ -77,6 +77,8 @@
 	var/use_sound_tokens = FALSE
 
 /datum/emote/New()
+	procstart = null
+	src.procstart = null
 	switch(mob_type_allowed_typecache)
 		if(/mob)
 			mob_type_allowed_typecache = GLOB.typecache_mob
@@ -102,6 +104,8 @@
  *
  */
 /datum/emote/proc/run_emote(mob/user, params, type_override, intentional = FALSE)
+	procstart = null
+	src.procstart = null
 	var/msg = select_message_type(user, message, intentional)
 	if(params)
 		if(message_param)
@@ -236,6 +240,8 @@
  * Returns FALSE if the cooldown is not over, TRUE if the cooldown is over.
  */
 /datum/emote/proc/check_cooldown(mob/user, intentional)
+	procstart = null
+	src.procstart = null
 
 	if(SEND_SIGNAL(user, COMSIG_MOB_EMOTE_COOLDOWN_CHECK, src.key, intentional) & COMPONENT_EMOTE_COOLDOWN_BYPASS)
 		intentional = FALSE
@@ -262,6 +268,8 @@
  * Returns the sound that will be made while sending the emote.
  */
 /datum/emote/proc/get_sound(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return sound //by default just return this var.
 
 /**
@@ -273,6 +281,8 @@
  * Returns the additional message flags we should be using, if any.
  */
 /datum/emote/proc/get_message_flags(intentional)
+	procstart = null
+	src.procstart = null
 	// If we did it, we most often already know what's in it, so we try to avoid highlight clutter.
 	return intentional ? BLOCK_SELF_HIGHLIGHT_MESSAGE : NONE
 
@@ -286,6 +296,8 @@
  * Returns the modified msg string.
  */
 /datum/emote/proc/replace_pronoun(mob/user, msg)
+	procstart = null
+	src.procstart = null
 	if(findtext(msg, "their"))
 		msg = replacetext(msg, "their", user.p_their())
 	if(findtext(msg, "them"))
@@ -307,6 +319,8 @@
  * Returns the new message, or msg directly, if no change was needed.
  */
 /datum/emote/proc/select_message_type(mob/user, msg, intentional)
+	procstart = null
+	src.procstart = null
 	// Basically, we don't care that the others can use datum variables, because they're never going to change.
 	. = msg
 	if(!isliving(user))
@@ -340,6 +354,8 @@
  * Returns the modified string.
  */
 /datum/emote/proc/select_param(mob/user, params)
+	procstart = null
+	src.procstart = null
 	return replacetext(message_param, "%t", params)
 
 /**
@@ -354,6 +370,8 @@
  * Returns a bool about whether or not the user can run the emote.
  */
 /datum/emote/proc/can_run_emote(mob/user, status_check = TRUE, intentional = FALSE, params)
+	procstart = null
+	src.procstart = null
 	if(trait_required && !HAS_TRAIT(user, trait_required))
 		return FALSE
 	if(!is_type_in_typecache(user, mob_type_allowed_typecache))
@@ -402,6 +420,8 @@
  * Returns a bool about whether or not the user should play a sound when performing the emote.
  */
 /datum/emote/proc/should_play_sound(mob/user, intentional = FALSE)
+	procstart = null
+	src.procstart = null
 	if(emote_type & EMOTE_AUDIBLE && !hands_use_check)
 		if(HAS_TRAIT(user, TRAIT_MUTE))
 			return FALSE
@@ -426,6 +446,8 @@
 * Returns TRUE if it was able to run the emote, FALSE otherwise.
 */
 /atom/proc/manual_emote(text, log_emote = TRUE)
+	procstart = null
+	src.procstart = null
 	if (!text)
 		CRASH("Someone passed nothing to manual_emote(), fix it")
 
@@ -435,6 +457,8 @@
 	return TRUE
 
 /mob/manual_emote(text, log_emote = null)
+	procstart = null
+	src.procstart = null
 	if (IS_UNCONSCIOUS_OR_CRIT(src))
 		return FALSE
 	if (isnull(log_emote))

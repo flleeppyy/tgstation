@@ -112,6 +112,8 @@ GLOBAL_LIST_INIT(command_strings, list(
 	var/list/facepaint_overlays
 
 /mob/living/basic/bot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	add_traits(list(TRAIT_REAGENT_SCANNER, TRAIT_UNOBSERVANT), INNATE_TRAIT)
@@ -165,11 +167,15 @@ GLOBAL_LIST_INIT(command_strings, list(
 	update_appearance()
 
 /mob/living/basic/bot/proc/set_mode_flags(mode_flags)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(TRUE)
 	bot_mode_flags = mode_flags
 	SEND_SIGNAL(src, COMSIG_BOT_MODE_FLAGS_SET, mode_flags)
 
 /mob/living/basic/bot/proc/get_mode()
+	procstart = null
+	src.procstart = null
 	if(client) //Player bots do not have modes, thus the override. Also an easy way for PDA users/AI to know when a bot is a player.
 		return span_bold("[paicard ? "pAI Controlled" : "Autonomous"]")
 
@@ -182,6 +188,8 @@ GLOBAL_LIST_INIT(command_strings, list(
  * Returns a status string about the bot's current status, if it's moving, manually controlled, or idle.
  */
 /mob/living/basic/bot/proc/get_mode_ui()
+	procstart = null
+	src.procstart = null
 	if(client)
 		return paicard ? "pAI Controlled" : "Autonomous"
 
@@ -194,9 +202,13 @@ GLOBAL_LIST_INIT(command_strings, list(
  * Returns a string of flavor text for emagged bots as defined by policy.
  */
 /mob/living/basic/bot/proc/get_emagged_message()
+	procstart = null
+	src.procstart = null
 	return get_policy(ROLE_EMAGGED_BOT) || "You are a malfunctioning bot! Disrupt everyone and cause chaos!"
 
 /mob/living/basic/bot/proc/turn_on(mob/user)
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		return FALSE
 	set_mode_flags(bot_mode_flags | BOT_MODE_ON)
@@ -208,6 +220,8 @@ GLOBAL_LIST_INIT(command_strings, list(
 	return TRUE
 
 /mob/living/basic/bot/proc/turn_off()
+	procstart = null
+	src.procstart = null
 	set_mode_flags(bot_mode_flags & ~BOT_MODE_ON)
 	add_traits(on_toggle_traits, POWER_LACK_TRAIT)
 	set_light_on(bot_mode_flags & BOT_MODE_ON ? TRUE : FALSE)
@@ -216,6 +230,8 @@ GLOBAL_LIST_INIT(command_strings, list(
 	update_appearance()
 
 /mob/living/basic/bot/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.bots_list -= src
 	calling_ai_ref = null
 	clear_path_hud()
@@ -227,6 +243,8 @@ GLOBAL_LIST_INIT(command_strings, list(
 
 /// Allows this bot to be controlled by a ghost, who will become its mind
 /mob/living/basic/bot/proc/enable_possession(user, mapload = FALSE)
+	procstart = null
+	src.procstart = null
 	if (paicard)
 		balloon_alert(user, "already sapient!")
 		return
@@ -249,6 +267,8 @@ GLOBAL_LIST_INIT(command_strings, list(
 
 /// Disables this bot from being possessed by ghosts
 /mob/living/basic/bot/proc/disable_possession(mob/user)
+	procstart = null
+	src.procstart = null
 	if (user)
 		log_silicon("[key_name(user)] disabled sapience for [src] ([initial(src.name)])")
 	can_be_possessed = FALSE
@@ -264,18 +284,24 @@ GLOBAL_LIST_INIT(command_strings, list(
 
 /// Returns true if this mob can be controlled
 /mob/living/basic/bot/proc/check_possession(mob/potential_possessor)
+	procstart = null
+	src.procstart = null
 	if (!can_be_possessed)
 		to_chat(potential_possessor, span_warning("The bot's personality download has been disabled!"))
 	return can_be_possessed
 
 /// Fired after something takes control of this mob
 /mob/living/basic/bot/proc/post_possession()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/machines/ping.ogg', 30, TRUE)
 	speak("New personality installed successfully!")
 	rename(src)
 
 /// Allows renaming the bot to something else
 /mob/living/basic/bot/proc/rename(mob/user)
+	procstart = null
+	src.procstart = null
 	var/new_name = sanitize_name(
 		reject_bad_text(tgui_input_text(
 			user = user,
@@ -300,20 +326,28 @@ GLOBAL_LIST_INIT(command_strings, list(
 	fully_replace_character_name(real_name, new_name)
 
 /mob/living/basic/bot/allowed(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!(bot_access_flags & BOT_COVER_LOCKED)) // Unlocked.
 		return TRUE
 	return ..()
 
 /mob/living/basic/bot/bee_friendly()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /mob/living/basic/bot/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(paicard)
 		ejectpai()
 	explode()
 	return ..()
 
 /mob/living/basic/bot/proc/explode()
+	procstart = null
+	src.procstart = null
 	visible_message(span_boldnotice("[src] blows apart!"))
 	do_sparks(3, TRUE, src)
 	var/atom/location_destroyed = drop_location()
@@ -321,6 +355,8 @@ GLOBAL_LIST_INIT(command_strings, list(
 		drop_part(robot_arm, location_destroyed)
 
 /mob/living/basic/bot/emag_act(mob/user, obj/item/card/emag/emag_card)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(bot_access_flags & BOT_COVER_LOCKED) //First emag application unlocks the bot's interface. Apply a screwdriver to use the emag again.
 		bot_access_flags &= ~BOT_COVER_LOCKED
@@ -342,6 +378,8 @@ GLOBAL_LIST_INIT(command_strings, list(
 	return TRUE
 
 /mob/living/basic/bot/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(health < maxHealth)
 		if(health > (maxHealth * 0.3))
@@ -365,38 +403,54 @@ GLOBAL_LIST_INIT(command_strings, list(
 		. += span_info("You can use a <b>hemostat</b> to remove it.")
 
 /mob/living/basic/bot/updatehealth()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	diag_hud_set_bothealth()
 
 /mob/living/basic/bot/med_hud_set_health()
+	procstart = null
+	src.procstart = null
 	return //we use a different hud
 
 /mob/living/basic/bot/med_hud_set_status()
+	procstart = null
+	src.procstart = null
 	return //we use a different hud
 
 /mob/living/basic/bot/attack_hand(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!user.combat_mode)
 		ui_interact(user)
 		return
 	return ..()
 
 /mob/living/basic/bot/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!topic_denied(user))
 		ui_interact(user)
 		return
 	to_chat(user, span_warning("[src]'s interface is not responding!"))
 
 /mob/living/basic/bot/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, bot_ui, name)
 		ui.open()
 
 /mob/living/basic/bot/click_alt(mob/user)
+	procstart = null
+	src.procstart = null
 	unlock_with_id(user)
 	return CLICK_ACTION_SUCCESS
 
 /mob/living/basic/bot/proc/unlock_with_id(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(bot_access_flags & BOT_COVER_EMAGGED)
 		balloon_alert(user, "error!")
 		return
@@ -411,6 +465,8 @@ GLOBAL_LIST_INIT(command_strings, list(
 	return TRUE
 
 /mob/living/basic/bot/screwdriver_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = ITEM_INTERACT_SUCCESS
 	if(bot_access_flags & BOT_COVER_LOCKED)
 		to_chat(user, span_warning("The maintenance panel is locked!"))
@@ -421,6 +477,8 @@ GLOBAL_LIST_INIT(command_strings, list(
 	to_chat(user, span_notice("The maintenance panel is now [bot_access_flags & BOT_COVER_MAINTS_OPEN ? "opened" : "closed"]."))
 
 /mob/living/basic/bot/welder_act(mob/living/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE)
 	if(user.combat_mode)
 		return FALSE
@@ -442,6 +500,8 @@ GLOBAL_LIST_INIT(command_strings, list(
 	user.visible_message(span_notice("[user] repairs [src]!"),span_notice("You repair [src]."))
 
 /mob/living/basic/bot/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(tool.GetID())
 		unlock_with_id(user)
 		return ITEM_INTERACT_SUCCESS
@@ -470,12 +530,16 @@ GLOBAL_LIST_INIT(command_strings, list(
 	return ITEM_INTERACT_SUCCESS
 
 /mob/living/basic/bot/attack_effects(damage_done, hit_zone, armor_block, obj/item/attacking_item, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	if(damage_done > 0 && attacking_item.damtype != STAMINA && stat != DEAD)
 		do_sparks(5, TRUE, src)
 		. = TRUE
 	return ..() || .
 
 /mob/living/basic/bot/bullet_act(obj/projectile/hitting_projectile, def_zone, piercing_hit = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(25) || . != BULLET_ACT_HIT)
 		return
@@ -486,6 +550,8 @@ GLOBAL_LIST_INIT(command_strings, list(
 	do_sparks(5, TRUE, src)
 
 /mob/living/basic/bot/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -514,11 +580,15 @@ GLOBAL_LIST_INIT(command_strings, list(
  * Optionally pass a frequency to say it on the radio.
  */
 /mob/living/basic/bot/proc/speak(message, channel)
+	procstart = null
+	src.procstart = null
 	if(!message)
 		return
 	pa_system.announce(message, channel)
 
 /mob/living/basic/bot/radio(message, list/message_mods = list(), list/spans, language)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -534,6 +604,8 @@ GLOBAL_LIST_INIT(command_strings, list(
 		return REDUCE_RANGE
 
 /mob/living/basic/bot/proc/drop_part(obj/item/drop_item, dropzone)
+	procstart = null
+	src.procstart = null
 	var/obj/item/item_to_drop
 	if(ispath(drop_item))
 		item_to_drop = new drop_item(dropzone)
@@ -557,6 +629,8 @@ GLOBAL_LIST_INIT(command_strings, list(
 	dropped_gun.update_appearance()
 
 /mob/living/basic/bot/proc/bot_reset(bypass_ai_reset = FALSE)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_BOT_RESET)
 	access_card.set_access(initial_access)
 	update_bot_mode(new_mode = src::mode)
@@ -573,6 +647,8 @@ GLOBAL_LIST_INIT(command_strings, list(
 
 //PDA control. Some bots, especially MULEs, may have more parameters.
 /mob/living/basic/bot/proc/bot_control(command, mob/user, list/user_access = list())
+	procstart = null
+	src.procstart = null
 	if(!(bot_mode_flags & BOT_MODE_ON) || bot_access_flags & BOT_COVER_EMAGGED || !(bot_mode_flags & BOT_MODE_REMOTE_ENABLED)) //Emagged bots do not respect anyone's authority! Bots with their remote controls off cannot get commands.
 		return TRUE //ACCESS DENIED
 	if(client && command != "ejectpai")
@@ -589,15 +665,21 @@ GLOBAL_LIST_INIT(command_strings, list(
 			eject_pai_remote(user)
 
 /mob/living/basic/bot/proc/set_patrol_off()
+	procstart = null
+	src.procstart = null
 	bot_reset()
 	set_mode_flags(bot_mode_flags & ~BOT_MODE_AUTOPATROL)
 
 /mob/living/basic/bot/proc/bot_control_message(command, user)
+	procstart = null
+	src.procstart = null
 	if(command == "summon")
 		return "PRIORITY ALERT:[user] in [get_area_name(user)]!"
 	return GLOB.command_strings[command] || "Unidentified control sequence received:[command]"
 
 /mob/living/basic/bot/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["can_hack"] = HAS_SILICON_ACCESS(user)
 	data["custom_controls"] = list()
@@ -617,6 +699,8 @@ GLOBAL_LIST_INIT(command_strings, list(
 
 // Actions received from TGUI
 /mob/living/basic/bot/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -677,11 +761,15 @@ GLOBAL_LIST_INIT(command_strings, list(
 			rename(the_user)
 
 /mob/living/basic/bot/update_icon_state()
+	procstart = null
+	src.procstart = null
 	icon_state = "[isnull(base_icon_state) ? initial(icon_state) : base_icon_state][bot_mode_flags & BOT_MODE_ON]"
 	return ..()
 
 /// Access check proc for bot topics! Remember to place in a bot's individual Topic if desired.
 /mob/living/basic/bot/proc/topic_denied(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.can_perform_action(src, ALLOW_SILICON_REACH))
 		return TRUE
 	// 0 for access, 1 for denied.
@@ -696,6 +784,8 @@ GLOBAL_LIST_INIT(command_strings, list(
 
 /// Places a pAI in control of this mob
 /mob/living/basic/bot/proc/insertpai(mob/user, obj/item/pai_card/card)
+	procstart = null
+	src.procstart = null
 	if(paicard)
 		balloon_alert(user, "slot occupied!")
 		return
@@ -729,6 +819,8 @@ GLOBAL_LIST_INIT(command_strings, list(
 	return TRUE
 
 /mob/living/basic/bot/ghost()
+	procstart = null
+	src.procstart = null
 	if(stat != DEAD) // Only ghost if we're doing this while alive, the pAI probably isn't dead yet.
 		return ..()
 	if(paicard && (!client || stat == DEAD))
@@ -736,6 +828,8 @@ GLOBAL_LIST_INIT(command_strings, list(
 
 /// Ejects a pAI from this bot
 /mob/living/basic/bot/proc/ejectpai(mob/user = null, announce = TRUE)
+	procstart = null
+	src.procstart = null
 	if(isnull(paicard))
 		return
 
@@ -762,12 +856,16 @@ GLOBAL_LIST_INIT(command_strings, list(
 
 /// Ejects the pAI remotely.
 /mob/living/basic/bot/proc/eject_pai_remote(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!allowed(user) || !paicard)
 		return
 	speak("Ejecting personality chip.", radio_channel)
 	ejectpai(user)
 
 /mob/living/basic/bot/Login()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || isnull(client))
 		return FALSE
@@ -778,29 +876,41 @@ GLOBAL_LIST_INIT(command_strings, list(
 	clear_path_hud()
 
 /mob/living/basic/bot/Logout()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	bot_reset()
 	speed = initial(speed)
 	ADD_TRAIT(src, TRAIT_NO_GLIDE, INNATE_TRAIT)
 
 /mob/living/basic/bot/revive(full_heal_flags = NONE, excess_healing = 0, force_grab_ghost = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
 	update_appearance()
 
 /mob/living/basic/bot/rust_heretic_act()
+	procstart = null
+	src.procstart = null
 	adjust_brute_loss(400)
 	return TRUE
 
 /mob/living/basic/bot/proc/retrieve_access(mob/bot, list/player_access)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	player_access += access_card.GetAccess()
 
 /mob/living/basic/bot/proc/generate_speak_list()
+	procstart = null
+	src.procstart = null
 	return null
 
 /mob/living/basic/bot/proc/provide_additional_access()
+	procstart = null
+	src.procstart = null
 	var/datum/id_trim/additional_trim = SSid_access.trim_singletons_by_path[additional_access]
 	if(isnull(additional_trim))
 		return
@@ -809,6 +919,8 @@ GLOBAL_LIST_INIT(command_strings, list(
 
 
 /mob/living/basic/bot/proc/summon_bot(atom/summoner, turf/turf_destination, user_access = list(), grant_all_access = FALSE)
+	procstart = null
+	src.procstart = null
 	if(isAI(summoner) && !set_ai_caller(summoner))
 		return FALSE
 	bot_reset(bypass_ai_reset = isAI(summoner))
@@ -823,6 +935,8 @@ GLOBAL_LIST_INIT(command_strings, list(
 	return TRUE
 
 /mob/living/basic/bot/proc/set_ai_caller(mob/living/ai_caller)
+	procstart = null
+	src.procstart = null
 	var/atom/calling_ai = calling_ai_ref?.resolve()
 	if(!isnull(calling_ai) && calling_ai != src)
 		return FALSE
@@ -830,26 +944,36 @@ GLOBAL_LIST_INIT(command_strings, list(
 	return TRUE
 
 /mob/living/basic/bot/proc/update_bot_mode(new_mode, update_hud = TRUE)
+	procstart = null
+	src.procstart = null
 	mode = new_mode
 	update_appearance()
 	if(update_hud)
 		diag_hud_set_botmode()
 
 /mob/living/basic/bot/proc/after_attacked(datum/source, atom/attacker, attack_flags)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(attack_flags & ATTACKER_DAMAGING_ATTACK)
 		do_sparks(number = 5, cardinal_only = TRUE, source = src)
 
 /mob/living/basic/bot/proc/emag_effects(user)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/basic/bot/get_hit_area_message(input_area)
+	procstart = null
+	src.procstart = null
 	// we just get hit, there's no complexity for hitting an arm (if it exists) or anything.
 	// we also need to return an empty string as otherwise it would falsely say that we get hit in the chest or something strange like that (bots don't have "chests")
 	return ""
 
 /mob/living/basic/bot/proc/on_bot_movement(atom/movable/source, atom/oldloc, dir, forced)
+	procstart = null
+	src.procstart = null
 	return
 
 #undef SENTIENT_BOT_RESET_TIMER

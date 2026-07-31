@@ -20,6 +20,8 @@
 	var/poll_time = 20 SECONDS
 
 /datum/brain_trauma/severe/split_personality/on_gain()
+	procstart = null
+	src.procstart = null
 	var/mob/living/brain_owner = owner
 	if(brain_owner.stat == DEAD || !GET_CLIENT(brain_owner) || istype(get_area(brain_owner), /area/deathmatch) || HAS_TRAIT(brain_owner, TRAIT_NO_SPLIT_PERSONALITY)) //No use assigning people to a corpse or braindead
 		return FALSE
@@ -33,6 +35,8 @@
 	get_ghost()
 
 /datum/brain_trauma/severe/split_personality/proc/make_backseats()
+	procstart = null
+	src.procstart = null
 	stranger_backseat = new(owner, src)
 	var/datum/action/personality_commune/stranger_spell = new(src)
 	stranger_spell.Grant(stranger_backseat)
@@ -43,6 +47,8 @@
 
 /// Attempts to get a ghost to play the personality
 /datum/brain_trauma/severe/split_personality/proc/get_ghost()
+	procstart = null
+	src.procstart = null
 	var/mob/chosen_one = SSpolling.poll_ghosts_for_target(
 		question = "Do you want to play as [span_danger("[owner.real_name]'s")] [span_notice(poll_role)]?",
 		check_jobban = ROLE_PAI,
@@ -56,6 +62,8 @@
 
 /// Ghost poll has concluded
 /datum/brain_trauma/severe/split_personality/proc/schism(mob/dead/observer/ghost)
+	procstart = null
+	src.procstart = null
 	if(isnull(ghost))
 		qdel(src)
 		return
@@ -66,6 +74,8 @@
 
 
 /datum/brain_trauma/severe/split_personality/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(owner.stat == DEAD)
 		if(current_controller != OWNER)
 			switch_personalities(TRUE)
@@ -75,6 +85,8 @@
 	..()
 
 /datum/brain_trauma/severe/split_personality/on_lose()
+	procstart = null
+	src.procstart = null
 	if(current_controller != OWNER) //it would be funny to cure a guy only to be left with the other personality, but it seems too cruel
 		switch_personalities(TRUE)
 	QDEL_NULL(stranger_backseat)
@@ -83,6 +95,8 @@
 
 
 /datum/brain_trauma/severe/split_personality/proc/switch_personalities(reset_to_owner = FALSE)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(owner) || QDELETED(stranger_backseat) || QDELETED(owner_backseat))
 		return
 
@@ -151,6 +165,8 @@
 	var/datum/brain_trauma/severe/split_personality/trauma
 
 /mob/living/split_personality/Initialize(mapload, _trauma)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(loc))
 		body = loc
 		name = body.real_name
@@ -159,6 +175,8 @@
 	return ..()
 
 /mob/living/split_personality/Life(seconds_per_tick = SSMOBS_DT)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(body))
 		qdel(src) //in case trauma deletion doesn't already do it
 
@@ -174,6 +192,8 @@
 	..()
 
 /mob/living/split_personality/Login()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !client)
 		return FALSE
@@ -181,11 +201,15 @@
 	to_chat(src, span_warning("<b>Do not commit suicide or put the body in a deadly position. Behave like you care about it as much as the owner.</b>"))
 
 /mob/living/split_personality/try_speak(message, ignore_spam, forced, filterproof)
+	procstart = null
+	src.procstart = null
 	SHOULD_CALL_PARENT(FALSE)
 	to_chat(src, span_warning("You cannot speak, your other self is controlling your body!"))
 	return FALSE
 
 /mob/living/split_personality/emote(act, type_override = NONE, message = null, intentional = FALSE, force_silence = FALSE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 ///////////////BRAINWASHING////////////////////
@@ -202,6 +226,8 @@
 	var/objective
 
 /datum/brain_trauma/severe/split_personality/brainwashing/New(obj/item/organ/brain/B, _permanent, _codeword, _objective)
+	procstart = null
+	src.procstart = null
 	..()
 	if(_codeword)
 		codeword = _codeword
@@ -214,16 +240,22 @@
 			| strings("ion_laws.json", "iondrinks"))
 
 /datum/brain_trauma/severe/split_personality/brainwashing/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/split_personality/traitor/traitor_backseat = stranger_backseat
 	traitor_backseat.codeword = codeword
 	traitor_backseat.objective = objective
 
 /datum/brain_trauma/severe/split_personality/brainwashing/make_backseats()
+	procstart = null
+	src.procstart = null
 	stranger_backseat = new /mob/living/split_personality/traitor(owner, src, codeword, objective)
 	owner_backseat = new(owner, src)
 
 /datum/brain_trauma/severe/split_personality/brainwashing/get_ghost()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	var/mob/chosen_one = SSpolling.poll_ghosts_for_target("Do you want to play as [span_danger("[owner.real_name]'s")] brainwashed mind?", poll_time = 7.5 SECONDS, checked_target = stranger_backseat, alert_pic = owner, role_name_text = "brainwashed mind")
 	if(chosen_one)
@@ -232,9 +264,13 @@
 		qdel(src)
 
 /datum/brain_trauma/severe/split_personality/brainwashing/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	return //no random switching
 
 /datum/brain_trauma/severe/split_personality/brainwashing/handle_hearing(datum/source, list/hearing_args)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(owner, TRAIT_DEAF) || owner == hearing_args[HEARING_SPEAKER] || !owner.has_language(hearing_args[HEARING_LANGUAGE]))
 		return
 
@@ -244,6 +280,8 @@
 		addtimer(CALLBACK(src, TYPE_PROC_REF(/datum/brain_trauma/severe/split_personality, switch_personalities)), 1 SECONDS)
 
 /datum/brain_trauma/severe/split_personality/brainwashing/handle_speech(datum/source, list/speech_args)
+	procstart = null
+	src.procstart = null
 	if(findtext(speech_args[SPEECH_MESSAGE], codeword))
 		speech_args[SPEECH_MESSAGE] = "" //oh hey did you want to tell people about the secret word to bring you back?
 
@@ -254,6 +292,8 @@
 	var/codeword
 
 /mob/living/split_personality/traitor/Login()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !client)
 		return FALSE
@@ -278,6 +318,8 @@
 	var/duration_in_seconds = 180
 
 /datum/brain_trauma/severe/split_personality/blackout/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(QDELETED(src))
@@ -294,6 +336,8 @@
 	inebriation?.iron_liver = TRUE
 
 /datum/brain_trauma/severe/split_personality/blackout/on_lose()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.add_mood_event("hang_over", /datum/mood_event/hang_over)
 	UnregisterSignal(owner, COMSIG_ATOM_SPLASHED)
@@ -301,11 +345,15 @@
 	inebriation?.iron_liver = FALSE
 
 /datum/brain_trauma/severe/split_personality/blackout/proc/on_splashed()
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(prob(20))//we don't want every single splash to wake them up now do we
 		qdel(src)
 
 /datum/brain_trauma/severe/split_personality/blackout/on_life(seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	if(current_controller == OWNER && stranger_backseat)//we should only start transitioning after the other personality has entered
 		owner.overlay_fullscreen("fade_to_black", /atom/movable/screen/fullscreen/blind)
 		owner.clear_fullscreen("fade_to_black", animated = 4 SECONDS)
@@ -340,6 +388,8 @@
 	real_name = "drunken consciousness"
 
 /mob/living/split_personality/blackout/Login()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. || !client)
 		return FALSE

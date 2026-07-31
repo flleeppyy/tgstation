@@ -4,15 +4,23 @@
 	pacifist_style = TRUE
 
 /datum/martial_art/psychotic_brawling/disarm_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	return psycho_attack(attacker, defender)
 
 /datum/martial_art/psychotic_brawling/grab_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	return psycho_attack(attacker, defender, TRUE)
 
 /datum/martial_art/psychotic_brawling/harm_act(mob/living/attacker, mob/living/defender)
+	procstart = null
+	src.procstart = null
 	return psycho_attack(attacker, defender)
 
 /datum/martial_art/psychotic_brawling/proc/psycho_attack(mob/living/attacker, mob/living/defender, grab_attack)
+	procstart = null
+	src.procstart = null
 	var/atk_verb
 	switch(rand(1,8))
 		if(1)

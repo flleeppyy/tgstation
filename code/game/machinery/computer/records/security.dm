@@ -36,6 +36,8 @@
 	req_one_access = list(ACCESS_SYNDICATE)
 
 /obj/machinery/computer/records/security/Initialize(mapload, obj/item/circuitboard/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/usb_port, \
 		typecacheof(list(
@@ -45,6 +47,8 @@
 	)
 
 /obj/machinery/computer/records/security/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(machine_stat & (BROKEN|NOPOWER) || . & EMP_PROTECT_SELF)
@@ -71,12 +75,16 @@
 			continue
 
 /obj/machinery/computer/records/security/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool, /obj/item/photo))
 		return NONE
 	insert_new_record(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/computer/records/security/ui_interact(mob/user, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -87,6 +95,8 @@
 		ui.open()
 
 /obj/machinery/computer/records/security/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 
 	data["available_statuses"] = WANTED_STATUSES()
@@ -141,12 +151,16 @@
 	return data
 
 /obj/machinery/computer/records/security/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["min_age"] = AGE_MIN
 	data["max_age"] = AGE_MAX
 	return data
 
 /obj/machinery/computer/records/security/ui_act(action, list/params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -205,6 +219,8 @@
 
 /// Handles adding a crime to a particular record.
 /obj/machinery/computer/records/security/proc/add_crime(mob/user, datum/record/crew/target, list/params)
+	procstart = null
+	src.procstart = null
 	var/input_name = strip_html_full(params["name"], MAX_CRIME_NAME_LEN)
 	if(!input_name)
 		to_chat(usr, span_warning("You must enter a name for the crime."))
@@ -243,6 +259,8 @@
 
 /// Handles editing a crime on a particular record.
 /obj/machinery/computer/records/security/proc/edit_crime(mob/user, datum/record/crew/target, list/params)
+	procstart = null
+	src.procstart = null
 	var/datum/crime/editing_crime = locate(params["crime_ref"]) in target.crimes
 	if(!editing_crime?.valid)
 		return FALSE
@@ -269,6 +287,8 @@
 
 /// Deletes security information from a record.
 /obj/machinery/computer/records/security/expunge_record_info(datum/record/crew/target)
+	procstart = null
+	src.procstart = null
 	target.citations.Cut()
 	target.crimes.Cut()
 	target.security_note = null
@@ -278,6 +298,8 @@
 
 /// Only qualified personnel can edit records.
 /obj/machinery/computer/records/security/proc/has_armory_access(mob/user)
+	procstart = null
+	src.procstart = null
 	if (HAS_SILICON_ACCESS(user))
 		return TRUE
 
@@ -296,6 +318,8 @@
 
 /// Voids crimes, or sets someone to discharged if they have none left.
 /obj/machinery/computer/records/security/proc/invalidate_crime(mob/user, datum/record/crew/target, list/params)
+	procstart = null
+	src.procstart = null
 	var/datum/crime/to_void = locate(params["crime_ref"]) in target.crimes
 	var/acquitted = TRUE
 	if(!to_void)
@@ -327,6 +351,8 @@
 
 /// Finishes printing, resets the printer.
 /obj/machinery/computer/records/security/proc/print_finish(obj/item/printable)
+	procstart = null
+	src.procstart = null
 	printing = FALSE
 	playsound(src, 'sound/machines/terminal/terminal_eject.ogg', 100, TRUE)
 	printable.forceMove(loc)
@@ -335,6 +361,8 @@
 
 /// Handles printing records via UI. Takes the params from UI_act.
 /obj/machinery/computer/records/security/proc/print_record(mob/user, datum/record/crew/target, list/params)
+	procstart = null
+	src.procstart = null
 	if(printing)
 		balloon_alert(user, "printer busy")
 		playsound(src, 'sound/machines/terminal/terminal_error.ogg', 100, TRUE)
@@ -405,19 +433,27 @@
 	var/obj/machinery/computer/records/security/attached_console
 
 /obj/item/circuit_component/arrest_console_data/populate_ports()
+	procstart = null
+	src.procstart = null
 	records = add_output_port("Security Records", PORT_TYPE_TABLE)
 	on_fail = add_output_port("Failed", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/arrest_console_data/register_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/machinery/computer/records/security))
 		attached_console = shell
 
 /obj/item/circuit_component/arrest_console_data/unregister_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	attached_console = null
 	return ..()
 
 /obj/item/circuit_component/arrest_console_data/get_ui_notices()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += create_table_notices(list(
 		"name",
@@ -431,6 +467,8 @@
 	))
 
 /obj/item/circuit_component/arrest_console_data/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!attached_console || !attached_console.authenticated)
 		on_fail.set_output(COMPONENT_SIGNAL)
 		return
@@ -474,26 +512,36 @@
 	var/obj/machinery/computer/records/security/attached_console
 
 /obj/item/circuit_component/arrest_console_arrest/register_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(shell, /obj/machinery/computer/records/security))
 		attached_console = shell
 
 /obj/item/circuit_component/arrest_console_arrest/unregister_usb_parent(atom/movable/shell)
+	procstart = null
+	src.procstart = null
 	attached_console = null
 	return ..()
 
 /obj/item/circuit_component/arrest_console_arrest/populate_options()
+	procstart = null
+	src.procstart = null
 	if(!attached_console)
 		return
 	var/list/available_statuses = WANTED_STATUSES()
 	new_status = add_option_port("Arrest Options", available_statuses)
 
 /obj/item/circuit_component/arrest_console_arrest/populate_ports()
+	procstart = null
+	src.procstart = null
 	targets = add_input_port("Targets", PORT_TYPE_TABLE)
 	new_status_set = add_output_port("Set Status", PORT_TYPE_STRING)
 	on_fail = add_output_port("Failed", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/arrest_console_arrest/input_received(datum/port/input/port)
+	procstart = null
+	src.procstart = null
 	if(!attached_console || !attached_console.authenticated)
 		on_fail.set_output(COMPONENT_SIGNAL)
 		return

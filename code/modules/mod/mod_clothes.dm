@@ -12,6 +12,8 @@
 
 // Even without a hat stabilizer, hats can be worn - however, they'll fall off very easily
 /obj/item/clothing/head/mod/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_SPEED_POTION, INNATE_TRAIT)
 	AddComponent(/datum/component/hat_stabilizer, loose_hat = TRUE)
@@ -36,6 +38,8 @@
 	drop_sound = null
 
 /obj/item/clothing/suit/mod/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_SPEED_POTION, INNATE_TRAIT)
 
@@ -55,6 +59,8 @@
 	drop_sound = null
 
 /obj/item/clothing/gloves/mod/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_SPEED_POTION, INNATE_TRAIT)
 
@@ -74,6 +80,8 @@
 	equip_sound = null
 
 /obj/item/clothing/shoes/mod/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_SPEED_POTION, INNATE_TRAIT)
 
@@ -90,6 +98,8 @@
 	drop_sound = null
 
 /obj/item/clothing/glasses/mod/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_SPEED_POTION, INNATE_TRAIT)
 
@@ -106,5 +116,7 @@
 	drop_sound = null
 
 /obj/item/clothing/neck/mod/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_SPEED_POTION, INNATE_TRAIT)

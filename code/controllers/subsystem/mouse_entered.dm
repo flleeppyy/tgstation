@@ -9,6 +9,8 @@ SUBSYSTEM_DEF(mouse_entered)
 	var/list/hovers = list()
 
 /datum/controller/subsystem/mouse_entered/fire()
+	procstart = null
+	src.procstart = null
 	for (var/hovering_client in hovers)
 		var/atom/hovering_atom = hovers[hovering_client]
 		if (isnull(hovering_atom))

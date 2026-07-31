@@ -1,5 +1,7 @@
 
 /mob/living/proc/run_armor_check(def_zone = null, attack_flag = MELEE, absorb_text = null, soften_text = null, armour_penetration, penetrated_text, silent=FALSE, weak_against_armour = FALSE)
+	procstart = null
+	src.procstart = null
 	var/our_armor = getarmor(def_zone, attack_flag)
 
 	if(our_armor <= 0)
@@ -29,18 +31,26 @@
 	return our_armor
 
 /mob/living/proc/getarmor(def_zone, type)
+	procstart = null
+	src.procstart = null
 	return 0
 
 //this returns the mob's protection against eye damage (number between -1 and 2) from bright lights
 /mob/living/proc/get_eye_protection()
+	procstart = null
+	src.procstart = null
 	return 0
 
 ///A easy to use proc to apply both organ damage and temporary deafness at once, so you don't have to get the ears everytime.
 /mob/living/proc/sound_damage(damage, deafen)
+	procstart = null
+	src.procstart = null
 	return
 
 //this returns the mob's protection against ear damage (0:no protection; 1: some ear protection; 2: has no ears)
 /mob/living/proc/get_ear_protection(ignore_deafness = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ignore_deafness && HAS_TRAIT(src, TRAIT_DEAF))
 		return INFINITY //For all my homies that can not hear in the world
 	var/list/sig_protection = list(0)
@@ -65,6 +75,8 @@
  * Retuns a truthy value (a ref to what is covering mouth), or a falsy value (null)
  */
 /mob/living/proc/is_mouth_covered(check_flags = ALL)
+	procstart = null
+	src.procstart = null
 	return null
 
 /**
@@ -79,6 +91,8 @@
  * Retuns a truthy value (a ref to what is covering eyes), or a falsy value (null)
  */
 /mob/living/proc/is_eyes_covered(check_flags = ALL)
+	procstart = null
+	src.procstart = null
 	return null
 
 /**
@@ -93,11 +107,15 @@
  * Retuns a truthy value (a ref to what is protecting us), or a falsy value (null)
  */
 /mob/living/proc/is_pepper_proof(check_flags = ALL)
+	procstart = null
+	src.procstart = null
 	return null
 
 /// Checks if the mob's ears (BOTH EARS, BOWMANS NEED NOT APPLY) are covered by something.
 /// Returns the atom covering the mob's ears, or null if their ears are uncovered.
 /mob/living/proc/is_ears_covered()
+	procstart = null
+	src.procstart = null
 	return null
 
 /**
@@ -112,9 +130,13 @@
  * Returns FALSE if the location is covered by something
  */
 /mob/living/proc/is_location_accessible(location, exluded_equipment_slots = NONE)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /mob/living/bullet_act(obj/projectile/proj, def_zone, piercing_hit = FALSE, blocked = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. != BULLET_ACT_HIT)
 		return .
@@ -142,6 +164,8 @@
 		apply_projectile_effects(proj, def_zone, blocked)
 
 /mob/living/proc/apply_projectile_effects(obj/projectile/proj, def_zone, armor_check)
+	procstart = null
+	src.procstart = null
 	var/damage_dealt = apply_damage(
 		damage = proj.damage,
 		damagetype = proj.damage_type,
@@ -184,6 +208,8 @@
 	SEND_SIGNAL(proj, COMSIG_PROJECTILE_SELF_POST_HIT_LIVING, src, def_zone, armor_check)
 
 /mob/living/proc/create_projectile_hit_effects(obj/projectile/proj, def_zone, blocked)
+	procstart = null
+	src.procstart = null
 	if (proj.damage_type != BRUTE)
 		return
 
@@ -203,12 +229,18 @@
 			do_sparks(spark_amount, FALSE, src)
 
 /mob/living/check_projectile_armor(def_zone, obj/projectile/impacting_projectile, is_silent)
+	procstart = null
+	src.procstart = null
 	return run_armor_check(def_zone, impacting_projectile.armor_flag, "","",impacting_projectile.armour_penetration, "", is_silent, impacting_projectile.weak_against_armour)
 
 /mob/living/proc/check_projectile_dismemberment(obj/projectile/proj, def_zone)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/proc/get_volume_by_throwforce_and_or_w_class()
+	procstart = null
+	src.procstart = null
 	if(throwforce && w_class)
 		return clamp((throwforce + w_class) * 5, 30, 100)// Add the item's throwforce to its weight class and multiply by 5, then clamp the value between 30 and 100
 	if(w_class)
@@ -216,6 +248,8 @@
 	return 0 // plays no sound
 
 /mob/living/proc/set_combat_mode(new_mode, silent = TRUE)
+	procstart = null
+	src.procstart = null
 
 	if(HAS_TRAIT(src, TRAIT_COMBAT_MODE_LOCK))
 		return
@@ -234,6 +268,8 @@
 		SEND_SOUND(src, sound('sound/misc/ui_toggleoffcombat.ogg', volume = 25)) //Slightly modified version of the above
 
 /mob/living/hitby(atom/movable/AM, skipcatch, hitpush = TRUE, blocked = FALSE, datum/thrownthing/throwingdatum)
+	procstart = null
+	src.procstart = null
 	if(!isitem(AM))
 		// Filled with made up numbers for non-items.
 		if(check_block(AM, 30, "\the [AM.name]", THROWN_PROJECTILE_ATTACK, 0, BRUTE) & SUCCESSFUL_BLOCK)
@@ -296,12 +332,16 @@
 	return ..()
 
 /mob/living/proc/log_hit_combat(mob/thrown_by, obj/item/thrown_item)
+	procstart = null
+	src.procstart = null
 	if(thrown_by)
 		return log_combat(thrown_by, src, "threw and hit", thrown_item)
 	return log_combat(thrown_item, src, "hit ")
 
 ///The core of catching thrown items, which non-carbons cannot without the help of items or abilities yet, as they've no throw mode.
 /mob/living/proc/try_catch_item(obj/item/item, skip_throw_mode_check = FALSE, try_offhand = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!can_catch_item(skip_throw_mode_check, try_offhand) || !isitem(item) || HAS_TRAIT(item, TRAIT_UNCATCHABLE) || !isturf(item.loc))
 		return FALSE
 	if(!can_hold_items(item))
@@ -314,6 +354,8 @@
 
 ///Checks the requites for catching a throw item.
 /mob/living/proc/can_catch_item(skip_throw_mode_check = FALSE, try_offhand = FALSE)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
 		return FALSE
 	if(get_active_held_item() && (!try_offhand || get_inactive_held_item() || !swap_hand()))
@@ -321,6 +363,8 @@
 	return TRUE
 
 /mob/living/fire_act()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	adjust_fire_stacks(3)
 	ignite_mob()
@@ -329,6 +373,8 @@
  * Called when a mob is grabbing another mob.
  */
 /mob/living/proc/grab(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(!istype(target))
 		return GRAB_SKIP
 	if(SEND_SIGNAL(src, COMSIG_LIVING_GRAB, target) & (COMPONENT_CANCEL_ATTACK_CHAIN|COMPONENT_SKIP_ATTACK))
@@ -342,6 +388,8 @@
  * Called when this mob is grabbed by another mob.
  */
 /mob/living/proc/grabbedby(mob/living/user, supress_message = FALSE)
+	procstart = null
+	src.procstart = null
 	if(user == src || anchored || !isturf(user.loc))
 		return FALSE
 
@@ -362,6 +410,8 @@
 
 //proc to upgrade a simple pull into a more aggressive grab.
 /mob/living/proc/grippedby(mob/living/user, instant = FALSE)
+	procstart = null
+	src.procstart = null
 	if(user.grab_state >= user.max_grab)
 		return
 	user.changeNext_move(CLICK_CD_GRABBING)
@@ -420,6 +470,8 @@
 	return TRUE
 
 /mob/living/attack_animal(mob/living/simple_animal/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return FALSE // looks wrong, but if the attack chain was cancelled we don't propogate it up to children calls. Yeah it's cringe.
@@ -476,6 +528,8 @@
 	return damage_done
 
 /mob/living/attack_hand(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return TRUE
@@ -486,6 +540,8 @@
 	return FALSE
 
 /mob/living/attack_paw(mob/living/carbon/human/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(LAZYACCESS(modifiers, RIGHT_CLICK))
 		user.disarm(src)
 		return TRUE
@@ -520,6 +576,8 @@
 	return FALSE
 
 /mob/living/attack_larva(mob/living/carbon/alien/larva/L, list/modifiers)
+	procstart = null
+	src.procstart = null
 	if(L.combat_mode)
 		if(HAS_TRAIT(L, TRAIT_PACIFISM))
 			to_chat(L, span_warning("You don't want to hurt anyone!"))
@@ -548,6 +606,8 @@
 	return FALSE
 
 /mob/living/attack_alien(mob/living/carbon/alien/adult/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	SEND_SIGNAL(src, COMSIG_MOB_ATTACK_ALIEN, user, modifiers)
 	if(LAZYACCESS(modifiers, RIGHT_CLICK))
 		if(check_block(user, 0, "[user]'s tackle", UNARMED_ATTACK, 0, BRUTE))
@@ -570,6 +630,8 @@
 	return FALSE
 
 /mob/living/attack_hulk(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
 		to_chat(user, span_warning("You don't want to hurt [src]!"))
@@ -577,16 +639,22 @@
 	return TRUE
 
 /mob/living/ex_act(severity, target, origin)
+	procstart = null
+	src.procstart = null
 	if(origin && istype(origin, /datum/spacevine_mutation) && isvineimmune(src))
 		return FALSE
 	return ..()
 
 /mob/living/acid_act(acidpwr, acid_volume)
+	procstart = null
+	src.procstart = null
 	take_bodypart_damage(acidpwr * min(1, acid_volume * 0.1))
 	return TRUE
 
 ///As the name suggests, this should be called to apply electric shocks.
 /mob/living/proc/electrocute_act(shock_damage, source, siemens_coeff = 1, flags = NONE)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_LIVING_ELECTROCUTE_ACT, shock_damage, source, siemens_coeff, flags) & COMPONENT_LIVING_BLOCK_SHOCK)
 		return FALSE
 	shock_damage *= siemens_coeff
@@ -612,6 +680,8 @@
 	return shock_damage
 
 /mob/living/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & EMP_PROTECT_CONTENTS)
 		return
@@ -620,12 +690,16 @@
 
 ///Logs, gibs and returns point values of whatever mob is unfortunate enough to get eaten.
 /mob/living/singularity_act()
+	procstart = null
+	src.procstart = null
 	investigate_log("has been consumed by the singularity.", INVESTIGATE_ENGINE) //Oh that's where the clown ended up!
 	investigate_log("has been gibbed by the singularity.", INVESTIGATE_DEATHS)
 	gib()
 	return 20
 
 /mob/living/narsie_act()
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_GODMODE) || QDELETED(src))
 		return
 
@@ -656,6 +730,8 @@
 
 //called when the mob receives a bright flash
 /mob/living/proc/flash_act(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0, type = /atom/movable/screen/fullscreen/flash, length = 2.5 SECONDS)
+	procstart = null
+	src.procstart = null
 	if(HAS_TRAIT(src, TRAIT_NOFLASH))
 		return FALSE
 	if(get_eye_protection() >= intensity)
@@ -676,6 +752,8 @@
 
 //called when the mob receives a loud bang
 /mob/living/proc/soundbang_act(intensity = SOUNDBANG_NORMAL, stun_pwr = 2 SECONDS, damage_pwr = 5, deafen_pwr = 1.5 SECONDS, ignore_deafness = FALSE, send_sound = TRUE)
+	procstart = null
+	src.procstart = null
 	var/protection = get_ear_protection(ignore_deafness)
 	if(protection >= intensity)
 		return FALSE
@@ -710,10 +788,14 @@
 
 //to damage the clothes worn by a mob
 /mob/living/proc/damage_clothes(damage_amount, damage_type = BRUTE, damage_flag = 0, def_zone)
+	procstart = null
+	src.procstart = null
 	return
 
 
 /mob/living/do_attack_animation(atom/A, visual_effect_icon, obj/item/used_item, no_effect)
+	procstart = null
+	src.procstart = null
 	if(!used_item)
 		used_item = get_active_held_item()
 	..()
@@ -727,6 +809,8 @@
  * * atom/A - atom being slapped
  */
 /mob/living/proc/do_slap_animation(atom/slapped)
+	procstart = null
+	src.procstart = null
 	do_attack_animation(slapped, no_effect=TRUE)
 	var/mutable_appearance/glove_appearance = mutable_appearance('icons/effects/effects.dmi', "slapglove")
 	glove_appearance.pixel_z = 10 // should line up with head
@@ -744,6 +828,8 @@
  * If the methods include VAPOR or TOUCH it incorporates permiability protection.
  */
 /mob/living/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. & COMPONENT_NO_EXPOSE_REAGENTS)
 		return
@@ -759,6 +845,8 @@
 
 /// Simplified ricochet angle calculation for mobs (also the base version doesn't work on mobs)
 /mob/living/handle_ricochet(obj/projectile/ricocheting_projectile)
+	procstart = null
+	src.procstart = null
 	var/face_angle = get_angle_raw(ricocheting_projectile.x, ricocheting_projectile.pixel_x, ricocheting_projectile.pixel_y, ricocheting_projectile.p_y, x, y, pixel_x, pixel_y)
 	var/new_angle_s = SIMPLIFY_DEGREES(face_angle + GET_ANGLE_OF_INCIDENCE(face_angle, (ricocheting_projectile.angle + 180)))
 	ricocheting_projectile.set_angle(new_angle_s)
@@ -770,6 +858,8 @@
  * or another carbon.
 */
 /mob/living/proc/disarm(mob/living/target, obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	if(!can_disarm(target))
 		return
 	var/shove_flags = target.get_shove_flags(src, weapon)
@@ -857,12 +947,16 @@
 
 ///Check if the universal conditions for disarming/shoving are met.
 /mob/living/proc/can_disarm(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(body_position != STANDING_UP || src == target || loc == target.loc)
 		return FALSE
 	return TRUE
 
 ///Check if there's anything that could stop the knockdown from being shoved into something or someone.
 /mob/living/proc/get_shove_flags(mob/living/shover, obj/item/weapon)
+	procstart = null
+	src.procstart = null
 	if(shover.move_force >= move_resist)
 		. |= SHOVE_CAN_MOVE
 		if(!buckled)
@@ -872,17 +966,23 @@
 
 ///Send the chat feedback message for shoving
 /mob/living/proc/get_shoving_message(mob/living/shover, obj/item/weapon, shove_flags)
+	procstart = null
+	src.procstart = null
 	visible_message(span_danger("[shover] shoves [name][weapon ? " with [weapon]" : ""]!"),
 		span_userdanger("You're shoved by [shover][weapon ? " with [weapon]" : ""]!"), span_hear("You hear aggressive shuffling!"), COMBAT_MESSAGE_RANGE, shover)
 	to_chat(shover, span_danger("You shove [name][weapon ? " with [weapon]" : ""]!"))
 
 /mob/living/proc/check_block(atom/hit_by, damage, attack_text = "the attack", attack_type = MELEE_ATTACK, armour_penetration = 0, damage_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(SEND_SIGNAL(src, COMSIG_LIVING_CHECK_BLOCK, hit_by, damage, attack_text, attack_type, armour_penetration, damage_type) & SUCCESSFUL_BLOCK)
 		return SUCCESSFUL_BLOCK
 
 	return FAILED_BLOCK
 
 /mob/living/proc/hypnosis_vulnerable()
+	procstart = null
+	src.procstart = null
 	if(HAS_MIND_TRAIT(src, TRAIT_UNCONVERTABLE))
 		return FALSE
 	if(has_status_effect(/datum/status_effect/hallucination) || has_status_effect(/datum/status_effect/drugginess))

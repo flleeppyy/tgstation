@@ -43,6 +43,8 @@ ADMIN_VERB(generate_wikichem_list, R_DEBUG, "Parse Wikichems", "Parse and genera
 
 /// Generate the big list of reagent based reactions.
 /proc/generate_chemwiki_line(datum/reagent/reagent, datum/chemical_reaction/reaction)
+	procstart = null
+	src.procstart = null
 	//name | Reagent pH | reagents | reaction temp | Overheat temp | pH range | Kinetics | description | OD level | Addiction level | Metabolism rate | impure chem | inverse chem
 
 	//NAME

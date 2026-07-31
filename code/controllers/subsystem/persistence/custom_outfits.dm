@@ -1,5 +1,7 @@
 ///Loads the custom outfits of every admin.
 /datum/controller/subsystem/persistence/proc/load_custom_outfits()
+	procstart = null
+	src.procstart = null
 	var/file = file("data/custom_outfits.json")
 	if(!fexists(file))
 		return
@@ -22,6 +24,8 @@
 
 ///Saves each admin's custom outfit list
 /datum/controller/subsystem/persistence/proc/save_custom_outfits()
+	procstart = null
+	src.procstart = null
 	var/file = file("data/custom_outfits.json")
 	fdel(file)
 

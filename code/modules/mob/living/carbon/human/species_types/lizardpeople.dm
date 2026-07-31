@@ -48,14 +48,20 @@
 
 /// Lizards are cold blooded and do not stabilize body temperature naturally
 /datum/species/lizard/body_temperature_core(mob/living/carbon/human/humi, seconds_per_tick)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/species/lizard/randomize_features()
+	procstart = null
+	src.procstart = null
 	var/list/features = ..()
 	features[FEATURE_LIZARD_MARKINGS] = pick(SSaccessories.feature_list[FEATURE_LIZARD_MARKINGS])
 	return features
 
 /datum/species/lizard/get_scream_sound(mob/living/carbon/human/lizard)
+	procstart = null
+	src.procstart = null
 	return pick(
 		'sound/mobs/humanoids/lizard/lizard_scream_1.ogg',
 		'sound/mobs/humanoids/lizard/lizard_scream_2.ogg',
@@ -63,6 +69,8 @@
 	)
 
 /datum/species/lizard/get_cough_sound(mob/living/carbon/human/lizard)
+	procstart = null
+	src.procstart = null
 	if(lizard.physique == FEMALE)
 		return pick(
 			'sound/mobs/humanoids/human/cough/female_cough1.ogg',
@@ -83,6 +91,8 @@
 
 
 /datum/species/lizard/get_cry_sound(mob/living/carbon/human/lizard)
+	procstart = null
+	src.procstart = null
 	if(lizard.physique == FEMALE)
 		return pick(
 			'sound/mobs/humanoids/human/cry/female_cry1.ogg',
@@ -96,42 +106,60 @@
 
 
 /datum/species/lizard/get_sneeze_sound(mob/living/carbon/human/lizard)
+	procstart = null
+	src.procstart = null
 	if(lizard.physique == FEMALE)
 		return 'sound/mobs/humanoids/human/sneeze/female_sneeze1.ogg'
 	return 'sound/mobs/humanoids/human/sneeze/male_sneeze1.ogg'
 
 /datum/species/lizard/get_laugh_sound(mob/living/carbon/human/lizard)
+	procstart = null
+	src.procstart = null
 	return 'sound/mobs/humanoids/lizard/lizard_laugh1.ogg'
 
 /datum/species/lizard/get_sigh_sound(mob/living/carbon/human/lizard)
+	procstart = null
+	src.procstart = null
 	if(lizard.physique == FEMALE)
 		return SFX_FEMALE_SIGH
 	return SFX_MALE_SIGH
 
 /datum/species/lizard/get_sniff_sound(mob/living/carbon/human/lizard)
+	procstart = null
+	src.procstart = null
 	if(lizard.physique == FEMALE)
 		return 'sound/mobs/humanoids/human/sniff/female_sniff.ogg'
 	return 'sound/mobs/humanoids/human/sniff/male_sniff.ogg'
 
 /datum/species/lizard/get_snore_sound(mob/living/carbon/human/lizard)
+	procstart = null
+	src.procstart = null
 	if(lizard.physique == FEMALE)
 		return SFX_SNORE_FEMALE
 	return SFX_SNORE_MALE
 
 /datum/species/lizard/get_hiss_sound(mob/living/carbon/human/lizard)
+	procstart = null
+	src.procstart = null
 	return 'sound/mobs/humanoids/lizard/lizard_hiss.ogg'
 
 /datum/species/lizard/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "Lizardpeople can withstand slightly higher temperatures than most species, but they are very vulnerable to the cold \
 		and can't regulate their body-temperature internally, making the vacuum of space extremely deadly to them."
 
 /datum/species/lizard/get_species_description()
+	procstart = null
+	src.procstart = null
 	return "The militaristic Lizardpeople hail originally from Tizira, but have grown \
 		throughout their centuries in the stars to possess a large spacefaring \
 		empire: though now they must contend with their younger, more \
 		technologically advanced Human neighbours."
 
 /datum/species/lizard/get_species_lore()
+	procstart = null
+	src.procstart = null
 	return list(
 		"The face of conspiracy theory was changed forever the day mankind met the lizards.",
 
@@ -152,6 +180,8 @@
 
 // Override for the default temperature perks, so we can give our specific "cold blooded" perk.
 /datum/species/lizard/create_pref_temperature_perks()
+	procstart = null
+	src.procstart = null
 	var/list/to_add = list()
 
 	to_add += list(list(
@@ -192,6 +222,8 @@ Lizard subspecies: ASHWALKERS
 	)
 
 /datum/species/lizard/ashwalker/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "Ash Walkers are identical to lizardpeople in almost all aspects. \
 		Unlike them, they're always digitigrade, they can breathe Lavaland's often noxious atmosphere and resist viruses. They are usually illiterate."
 
@@ -221,11 +253,15 @@ Lizard subspecies: SILVER SCALED
 	var/old_mutcolor
 
 /datum/species/lizard/silverscale/get_physical_attributes()
+	procstart = null
+	src.procstart = null
 	return "Silver Scales are to lizardpeople what angels are to humans. \
 		Mostly identical, they are holy, don't breathe, don't get viruses, their hide cannot be pierced, love the taste of wine, \
 		and their tongue allows them to turn into a statue, for some reason."
 
 /datum/species/lizard/silverscale/on_species_gain(mob/living/carbon/human/new_silverscale, datum/species/old_species, pref_load, regenerate_icons)
+	procstart = null
+	src.procstart = null
 	old_mutcolor = new_silverscale.dna.features[FEATURE_MUTANT_COLOR]
 	new_silverscale.dna.features[FEATURE_MUTANT_COLOR] = "#eeeeee"
 	new_silverscale.add_eye_color("#0000a0", EYE_COLOR_SPECIES_PRIORITY)
@@ -233,6 +269,8 @@ Lizard subspecies: SILVER SCALED
 	new_silverscale.add_filter("silver_glint", 2, list("type" = "outline", "color" = "#ffffff63", "size" = 2))
 
 /datum/species/lizard/silverscale/on_species_loss(mob/living/carbon/human/was_silverscale, datum/species/new_species, pref_load)
+	procstart = null
+	src.procstart = null
 	was_silverscale.dna.features[FEATURE_MUTANT_COLOR] = old_mutcolor
 	was_silverscale.remove_eye_color(EYE_COLOR_SPECIES_PRIORITY)
 	was_silverscale.remove_filter("silver_glint")

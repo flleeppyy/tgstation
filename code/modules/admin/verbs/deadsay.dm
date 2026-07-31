@@ -24,6 +24,8 @@ ADMIN_VERB(dsay, R_NONE, "DSay", "Speak to the dead.", ADMIN_CATEGORY_GAME, mess
 	BLACKBOX_LOG_ADMIN_VERB("Dsay")
 
 /client/proc/get_dead_say()
+	procstart = null
+	src.procstart = null
 	var/msg = input(src, null, "dsay \"text\"") as text|null
 	if (isnull(msg))
 		return

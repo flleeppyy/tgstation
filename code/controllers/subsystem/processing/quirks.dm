@@ -32,6 +32,8 @@ GLOBAL_LIST_INIT_TYPED(quirk_blacklist, /list/datum/quirk, list(
 GLOBAL_LIST_INIT(quirk_string_blacklist, generate_quirk_string_blacklist())
 
 /proc/generate_quirk_string_blacklist()
+	procstart = null
+	src.procstart = null
 	var/list/string_blacklist = list()
 	for(var/blacklist in GLOB.quirk_blacklist)
 		var/list/string_list = list()
@@ -62,6 +64,8 @@ PROCESSING_SUBSYSTEM_DEF(quirks)
 	var/default_quirk_points
 
 /datum/controller/subsystem/processing/quirks/Initialize()
+	procstart = null
+	src.procstart = null
 	points_enabled = !CONFIG_GET(flag/disable_quirk_points)
 	max_positive_quirks = CONFIG_GET(number/max_positive_quirks)
 	default_quirk_points = CONFIG_GET(number/default_quirk_points)
@@ -70,6 +74,8 @@ PROCESSING_SUBSYSTEM_DEF(quirks)
 
 /// Returns the list of possible quirks
 /datum/controller/subsystem/processing/quirks/proc/get_quirks()
+	procstart = null
+	src.procstart = null
 	RETURN_TYPE(/list)
 	if (!quirks.len)
 		SetupQuirks()
@@ -77,6 +83,8 @@ PROCESSING_SUBSYSTEM_DEF(quirks)
 	return quirks
 
 /datum/controller/subsystem/processing/quirks/proc/SetupQuirks()
+	procstart = null
+	src.procstart = null
 	// Sort by Positive, Negative, Neutral; and then by name
 	var/list/quirk_list = sort_list(valid_subtypesof(/datum/quirk), GLOBAL_PROC_REF(cmp_quirk_asc))
 
@@ -94,6 +102,8 @@ PROCESSING_SUBSYSTEM_DEF(quirks)
 		hardcore_quirks[quirk_type] += hardcore_value
 
 /datum/controller/subsystem/processing/quirks/proc/AssignQuirks(mob/living/user, client/applied_client)
+	procstart = null
+	src.procstart = null
 	var/badquirk = FALSE
 	for(var/quirk_name in applied_client.prefs.all_quirks)
 		var/datum/quirk/quirk_type = quirks[quirk_name]
@@ -111,6 +121,8 @@ PROCESSING_SUBSYSTEM_DEF(quirks)
  *Randomises the quirks for a specified mob
  */
 /datum/controller/subsystem/processing/quirks/proc/randomise_quirks(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/bonus_quirks = max((LAZYLEN(user.quirks) + rand(-RANDOM_QUIRK_BONUS, RANDOM_QUIRK_BONUS)), MINIMUM_RANDOM_QUIRKS)
 	var/added_quirk_count = 0 //How many we've added
 	var/list/quirks_to_add = list() //Quirks we're adding
@@ -180,6 +192,8 @@ PROCESSING_SUBSYSTEM_DEF(quirks)
 /// If no changes need to be made, will return the same list.
 /// Expects all quirk names to be unique, but makes no other expectations.
 /datum/controller/subsystem/processing/quirks/proc/filter_invalid_quirks(list/quirks)
+	procstart = null
+	src.procstart = null
 	var/list/new_quirks = list()
 	var/list/positive_quirks = list()
 	var/balance = -default_quirk_points

@@ -46,6 +46,8 @@
 	max_stamina_slowdown = 12
 
 /mob/living/basic/flesh_spider/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ADD_TRAIT(src, TRAIT_WEB_SURFER, INNATE_TRAIT)
 	AddElement(/datum/element/cliff_walking)

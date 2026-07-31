@@ -3,6 +3,8 @@
 	proper_name = "Fire Alarm"
 
 /datum/wires/firealarm/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(
 		WIRE_FIRE_DETECT, // toggles whether it can activate automatically
 		WIRE_FIRE_RESET, // resets fire alarm
@@ -12,16 +14,22 @@
 	return ..()
 
 /datum/wires/firealarm/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/firealarm/alarm = holder
 	return ..() && alarm.panel_open && alarm.buildstage == FIRE_ALARM_BUILD_SECURED
 
 /datum/wires/firealarm/get_status()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/airalarm/alarm = holder
 	var/list/status = list()
 	status += "The thermal sensor light is [alarm.my_area?.fire_detect ? "on" : "off"]."
 	return status
 
 /datum/wires/firealarm/on_pulse(wire, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/firealarm/alarm = holder
 	switch(wire)
 		if(WIRE_FIRE_DETECT)
@@ -32,6 +40,8 @@
 			alarm.reset(user, silent = TRUE)
 
 /datum/wires/firealarm/on_cut(wire, mend, mob/living/source)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/firealarm/alarm = holder
 	switch(wire)
 		if(WIRE_FIRE_DETECT)
@@ -55,5 +65,7 @@
 			alarm.can_reset = !mend
 
 /datum/wires/firealarm/always_reveal_wire(color)
+	procstart = null
+	src.procstart = null
 	// to maintain previous behavior of "anyone can multitool a fire alarm to disable it"
 	return get_color_of_wire(WIRE_FIRE_DETECT) == color

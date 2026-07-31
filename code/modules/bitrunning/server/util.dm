@@ -3,6 +3,8 @@
 
 /// Resets the cooldown state and updates icons
 /obj/machinery/quantum_server/proc/cool_off()
+	procstart = null
+	src.procstart = null
 	is_ready = TRUE
 	update_appearance()
 	aas_config_announce(/datum/aas_config_entry/bitrunning_QS_ready_announcement, list(), src, list(RADIO_CHANNEL_SUPPLY))
@@ -10,6 +12,8 @@
 
 /// If there are hosted minds, attempts to get a list of their current virtual bodies w/ vitals
 /obj/machinery/quantum_server/proc/get_avatar_data()
+	procstart = null
+	src.procstart = null
 	var/list/hosted_avatars = list()
 
 	for(var/datum/weakref/avatar_ref in avatar_connection_refs)
@@ -35,7 +39,9 @@
 
 
 /// I grab the atom here so I can signal it / manipulate spawners etc
-/obj/machinery/quantum_server/proc/get_avatar_destination() as /atom
+/obj/machinery/quantum_server/proc/get_avatar_destination()  as /atom
+	procstart = null
+	src.procstart = null
 	// Branch A: Custom spawns
 	if(length(generated_domain.custom_spawns))
 		var/atom/valid_spawner
@@ -78,6 +84,8 @@
 
 /// Locates any turfs with forges on them, returns a random one
 /obj/machinery/quantum_server/proc/get_random_nearby_forge()
+	procstart = null
+	src.procstart = null
 	var/list/nearby_forges = list()
 
 	for(var/obj/machinery/byteforge/forge in oview(MAX_DISTANCE, src))
@@ -88,6 +96,8 @@
 
 /// Gets a random available domain given the current points.
 /obj/machinery/quantum_server/proc/get_random_domain_id()
+	procstart = null
+	src.procstart = null
 	if(points < 1)
 		return
 
@@ -112,6 +122,8 @@
 
 /// Removes all blacklisted items from a mob and returns them to base state
 /obj/machinery/quantum_server/proc/reset_equipment(mob/living/carbon/human/person)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item in person.get_equipped_items(INCLUDE_POCKETS | INCLUDE_ACCESSORIES))
 		qdel(item)
 
@@ -126,6 +138,8 @@
 
 /// Severs any connected users
 /obj/machinery/quantum_server/proc/sever_connections()
+	procstart = null
+	src.procstart = null
 	if(isnull(generated_domain) || !length(avatar_connection_refs))
 		return
 
@@ -134,6 +148,8 @@
 
 /// Do some magic teleport sparks
 /obj/machinery/quantum_server/proc/spark_at_location(obj/cache)
+	procstart = null
+	src.procstart = null
 	playsound(cache, 'sound/effects/magic/blink.ogg', 50, vary = TRUE)
 	do_sparks(5, FALSE, get_turf(cache), spark_type = /datum/effect_system/basic/spark_spread/quantum)
 
@@ -142,6 +158,8 @@
 /// Called by netpods when they don't have a current avatar.
 /// This is a procedural proc which links several others together.
 /obj/machinery/quantum_server/proc/start_new_connection(mob/living/carbon/human/neo, datum/outfit/netsuit) as /mob/living/carbon/human
+	procstart = null
+	src.procstart = null
 	var/atom/entry_atom = get_avatar_destination()
 	if(isnull(entry_atom))
 		return
@@ -167,6 +185,8 @@
 
 /// Toggles broadcast on and off
 /obj/machinery/quantum_server/proc/toggle_broadcast()
+	procstart = null
+	src.procstart = null
 	if(!COOLDOWN_FINISHED(src, broadcast_toggle_cd))
 		return FALSE
 
@@ -182,6 +202,8 @@
 
 /// Returns a turf if it's not dense, else will find a neighbor.
 /obj/machinery/quantum_server/proc/validate_turf(turf/chosen_turf)
+	procstart = null
+	src.procstart = null
 	if(!chosen_turf.is_blocked_turf())
 		return chosen_turf
 

@@ -54,6 +54,8 @@ GLOBAL_LIST_EMPTY(lighting_sheets)
 
 
 /datum/light_source/New(atom/owner, atom/top)
+	procstart = null
+	src.procstart = null
 	source_atom = owner // Set our new owner.
 	add_to_light_sources(source_atom)
 	top_atom = top
@@ -73,6 +75,8 @@ GLOBAL_LIST_EMPTY(lighting_sheets)
 		source_atom.debug_lights()
 
 /datum/light_source/Destroy(force)
+	procstart = null
+	src.procstart = null
 	remove_lum()
 	if (source_atom)
 		remove_from_light_sources(source_atom)
@@ -92,6 +96,8 @@ GLOBAL_LIST_EMPTY(lighting_sheets)
 
 ///add this light source to new_atom_host's light_sources list. updating movement registrations as needed
 /datum/light_source/proc/add_to_light_sources(atom/new_atom_host)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(new_atom_host))
 		return FALSE
 
@@ -104,6 +110,8 @@ GLOBAL_LIST_EMPTY(lighting_sheets)
 
 ///remove this light source from old_atom_host's light_sources list, unsetting movement registrations
 /datum/light_source/proc/remove_from_light_sources(atom/old_atom_host)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(old_atom_host))
 		return FALSE
 
@@ -126,6 +134,8 @@ GLOBAL_LIST_EMPTY(lighting_sheets)
 
 ///signal handler for when our host atom moves and we need to update our effects
 /datum/light_source/proc/update_host_lights(atom/movable/host)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	if(QDELETED(host))
 		return
@@ -140,6 +150,8 @@ GLOBAL_LIST_EMPTY(lighting_sheets)
 
 /// This proc will cause the light source to update the top atom, and add itself to the update queue.
 /datum/light_source/proc/update(atom/new_top_atom)
+	procstart = null
+	src.procstart = null
 	// This top atom is different.
 	if (new_top_atom && new_top_atom != top_atom)
 		if(top_atom != source_atom && top_atom.light_sources) // Remove ourselves from the light sources of that top atom.
@@ -154,10 +166,14 @@ GLOBAL_LIST_EMPTY(lighting_sheets)
 
 // Will force an update without checking if it's actually needed.
 /datum/light_source/proc/force_update()
+	procstart = null
+	src.procstart = null
 	EFFECT_UPDATE(LIGHTING_FORCE_UPDATE)
 
 // Will cause the light source to recalculate turfs that were removed or added to visibility only.
 /datum/light_source/proc/vis_update()
+	procstart = null
+	src.procstart = null
 	EFFECT_UPDATE(LIGHTING_VIS_UPDATE)
 
 // This exists so we can cache the vars used in this macro, and save MASSIVE time :)
@@ -226,6 +242,8 @@ GLOBAL_LIST_EMPTY(lighting_sheets)
 /// If the requested sheet is multiz, this will be 3 lists deep, first handling z level then x and y
 /// otherwise it's just two, x then y
 /datum/light_source/proc/get_sheet(multiz = FALSE)
+	procstart = null
+	src.procstart = null
 	var/range = max(1, light_range);
 	var/key = "[range]-[visual_offset]-[offset_x]-[offset_y]-[light_dir]-[light_angle]-[light_height]-[multiz]"
 	var/list/hand_back = GLOB.lighting_sheets[key]
@@ -241,6 +259,8 @@ GLOBAL_LIST_EMPTY(lighting_sheets)
 /// Takes anything that impacts our generation as input
 /// This function should be "pure", no side effects or reads from the source object
 /datum/light_source/proc/generate_sheet(range, visual_offset, x_offset, y_offset, center_dir, angle, height, z_level = 0)
+	procstart = null
+	src.procstart = null
 	var/list/encode = list()
 	// How far away the turfs we get are, and how many there are are often not the same calculation
 	// So we need to include the visual offset, so we can ensure our sheet is large enough to accept all the distance differences
@@ -259,6 +279,8 @@ GLOBAL_LIST_EMPTY(lighting_sheets)
 /// Takes anything that impacts our generation as input
 /// This function should be "pure", no side effects or reads from the passed object
 /datum/light_source/proc/generate_sheet_multiz(range, visual_offset, x_offset, y_offset, center_dir, angle, height)
+	procstart = null
+	src.procstart = null
 	var/list/encode = list()
 	var/z_range = SSmapping.max_plane_offset // Let's just be safe yeah?
 	for(var/z in -z_range to z_range)
@@ -269,6 +291,8 @@ GLOBAL_LIST_EMPTY(lighting_sheets)
 /// Takes x y and z offsets from the source as input, alongside our source's range
 /// Returns a value between 0 and 1, 0 being dark on that tile, 1 being fully lit
 /datum/light_source/proc/falloff_at_coord(x, y, z, range, center_dir, angle, height)
+	procstart = null
+	src.procstart = null
 	var/range_divisor = max(1, range)
 
 	// You may notice we use squares here even though there are three components
@@ -296,6 +320,8 @@ GLOBAL_LIST_EMPTY(lighting_sheets)
 
 /// Dumps the content of a lighting sheet to chat, for debugging
 /datum/light_source/proc/print_sheet()
+	procstart = null
+	src.procstart = null
 	var/list/sheet = get_sheet()
 	var/list/output = list()
 	var/multiz_depth = 1
@@ -320,6 +346,8 @@ GLOBAL_LIST_EMPTY(lighting_sheets)
 /// alongside x and y delta values and the sheet's "offset", which is the amount required to ensure everything indexes at 1
 /// Optionally, you can pass similar values for multiz stuff
 /proc/read_sheet(list/sheet, x, y, offset, z, z_offset)
+	procstart = null
+	src.procstart = null
 	var/list/working = sheet
 	var/offset_x = x + offset
 	var/offset_y = y + offset
@@ -332,6 +360,8 @@ GLOBAL_LIST_EMPTY(lighting_sheets)
 
 /// This is the define used to calculate falloff.
 /datum/light_source/proc/remove_lum()
+	procstart = null
+	src.procstart = null
 	SETUP_CORNERS_REMOVAL_CACHE(src)
 	applied = FALSE
 	for (var/datum/lighting_corner/corner as anything in effect_str)
@@ -341,6 +371,8 @@ GLOBAL_LIST_EMPTY(lighting_sheets)
 	effect_str = null
 
 /datum/light_source/proc/recalc_corner(datum/lighting_corner/corner)
+	procstart = null
+	src.procstart = null
 	SETUP_CORNERS_CACHE(src)
 	LAZYINITLIST(effect_str)
 	if (effect_str[corner]) // Already have one.
@@ -379,6 +411,8 @@ GLOBAL_LIST_EMPTY(lighting_sheets)
 /// Refreshes our lighting source to match its parent atom
 /// Returns TRUE if an update is needed, FALSE otherwise
 /datum/light_source/proc/refresh_values()
+	procstart = null
+	src.procstart = null
 	var/update = FALSE
 	var/atom/source_atom = src.source_atom
 	var/turf/old_source_turf = source_turf
@@ -463,6 +497,8 @@ GLOBAL_LIST_EMPTY(lighting_sheets)
 
 /// Returns a list of lighting corners this source impacts
 /datum/light_source/proc/impacted_corners()
+	procstart = null
+	src.procstart = null
 	var/list/datum/lighting_corner/corners = list()
 	if (!source_turf)
 		return list()
@@ -514,6 +550,8 @@ GLOBAL_LIST_EMPTY(lighting_sheets)
 	return corners
 
 /datum/light_source/proc/update_corners()
+	procstart = null
+	src.procstart = null
 	if(!refresh_values())
 		return
 

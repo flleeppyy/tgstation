@@ -6,6 +6,8 @@
 	var/required_temp = 480
 
 /datum/element/easy_ignite/Attach(datum/target, required_temp = 480)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isatom(target) || isarea(target))
 		return ELEMENT_INCOMPATIBLE
@@ -19,6 +21,8 @@
 		RegisterSignal(target, COMSIG_TURF_EXPOSE, PROC_REF(hotspots_react))
 
 /datum/element/easy_ignite/Detach(datum/source, ...)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	UnregisterSignal(source, COMSIG_ATOM_ITEM_INTERACTION)
 	UnregisterSignal(source, COMSIG_ATOM_FIRE_ACT)
@@ -28,6 +32,8 @@
 		UnregisterSignal(source, COMSIG_TURF_EXPOSE)
 
 /datum/element/easy_ignite/proc/ignite(atom/igniting, mob/user)
+	procstart = null
+	src.procstart = null
 	var/delete_after = TRUE
 
 	igniting.visible_message(span_warning("[igniting] catch[igniting.p_es()] fire!"), span_warning("You ignite into flames!"))
@@ -51,18 +57,24 @@
 		qdel(igniting)
 
 /datum/element/easy_ignite/proc/flame_react(obj/item/source, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(exposed_temperature > required_temp)
 		ignite(source)
 
 /datum/element/easy_ignite/proc/hotspots_react(obj/item/source, air, exposed_temperature)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(exposed_temperature > required_temp)
 		ignite(source)
 
 /datum/element/easy_ignite/proc/attackby_react(obj/item/source, mob/user, obj/item/tool, modifiers)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(tool.get_temperature() < FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
@@ -75,12 +87,16 @@
 	return ITEM_INTERACT_SUCCESS
 
 /datum/element/easy_ignite/proc/projectile_react(obj/item/source, obj/projectile/shot)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(shot.damage_type == BURN && shot.damage > 0)
 		ignite(source, shot.firer)
 
 /datum/element/easy_ignite/proc/welder_react(obj/item/source, mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 
 	if(tool.get_temperature() < FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
@@ -91,6 +107,8 @@
 	return ITEM_INTERACT_SUCCESS
 
 /datum/element/easy_ignite/proc/item_ignition(obj/item/source, obj/item/tool, mob/user)
+	procstart = null
+	src.procstart = null
 	if(tool.get_temperature() >= required_temp)
 		source.visible_message(
 			span_warning("[user] ignites [source] with [tool]!"),

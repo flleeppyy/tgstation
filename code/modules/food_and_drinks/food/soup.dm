@@ -9,6 +9,8 @@
 	venue_value = FOOD_PRICE_CHEAP
 
 /obj/item/food/bowled/make_germ_sensitive(mapload)
+	procstart = null
+	src.procstart = null
 	return // It's in a bowl
 
 /obj/item/food/bowled/wish
@@ -20,6 +22,8 @@
 	trash_type = /obj/item/reagent_containers/cup/bowl
 
 /obj/item/food/bowled/wish/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(25))
 		desc = "A wish come true!"

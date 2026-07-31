@@ -1,4 +1,6 @@
 /proc/generate_lizard_side_shot(datum/sprite_accessory/sprite_accessory, key, include_snout = TRUE)
+	procstart = null
+	src.procstart = null
 	var/static/datum/universal_icon/lizard
 	var/static/datum/universal_icon/lizard_with_snout
 
@@ -32,6 +34,8 @@
 	relevant_body_markings = /datum/bodypart_overlay/simple/body_marking/lizard
 
 /datum/preference/choiced/species_feature/lizard_body_markings/icon_for(value)
+	procstart = null
+	src.procstart = null
 	var/datum/sprite_accessory/sprite_accessory = get_accessory_for_value(value)
 
 	var/datum/universal_icon/final_icon = uni_icon('icons/mob/human/species/lizard/bodyparts.dmi', "lizard_chest_m")
@@ -60,6 +64,8 @@
 	relevant_organ = /obj/item/organ/frills
 
 /datum/preference/choiced/species_feature/lizard_frills/icon_for(value)
+	procstart = null
+	src.procstart = null
 	return generate_lizard_side_shot(get_accessory_for_value(value), "frills")
 
 /datum/preference/choiced/species_feature/lizard_horns
@@ -71,6 +77,8 @@
 	relevant_organ = /obj/item/organ/horns
 
 /datum/preference/choiced/species_feature/lizard_horns/icon_for(value)
+	procstart = null
+	src.procstart = null
 	return generate_lizard_side_shot(get_accessory_for_value(value), "horns")
 
 /datum/preference/choiced/lizard_legs
@@ -79,9 +87,13 @@
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 
 /datum/preference/choiced/lizard_legs/init_possible_values()
+	procstart = null
+	src.procstart = null
 	return list(NORMAL_LEGS, DIGITIGRADE_LEGS)
 
 /datum/preference/choiced/lizard_legs/apply_to_human(mob/living/carbon/human/target, value)
+	procstart = null
+	src.procstart = null
 	target.dna.features[FEATURE_LEGS] = value
 	// Hack to update the dummy in the preference menu
 	// (Because digi legs are ONLY handled on species change)
@@ -107,6 +119,8 @@
 		qdel(old_part)
 
 /datum/preference/choiced/lizard_legs/is_accessible(datum/preferences/preferences)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/datum/species/species_type = preferences.read_preference(/datum/preference/choiced/species)
@@ -121,6 +135,8 @@
 	relevant_organ = /obj/item/organ/snout
 
 /datum/preference/choiced/species_feature/lizard_snout/icon_for(value)
+	procstart = null
+	src.procstart = null
 	return generate_lizard_side_shot(get_accessory_for_value(value), "snout", include_snout = FALSE)
 
 /datum/preference/choiced/species_feature/lizard_spines

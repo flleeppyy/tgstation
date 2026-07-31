@@ -17,6 +17,8 @@
 	var/ready = FALSE
 
 /datum/pai_candidate/New(ckey)
+	procstart = null
+	src.procstart = null
 	src.ckey = ckey
 
 /**
@@ -26,6 +28,8 @@
  * @returns {boolean} - TRUE if the candidate is ready, FALSE if not
  */
 /datum/pai_candidate/proc/check_ready()
+	procstart = null
+	src.procstart = null
 	var/mob/candidate_mob = get_mob_by_key(ckey)
 	if(!candidate_mob?.client || !isobserver(candidate_mob) || is_banned_from(ckey, ROLE_PAI))
 		SSpai.candidates -= ckey

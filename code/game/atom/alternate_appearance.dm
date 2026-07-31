@@ -4,6 +4,8 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 	var/list/alternate_appearances
 
 /atom/proc/remove_alt_appearance(key)
+	procstart = null
+	src.procstart = null
 	if(alternate_appearances)
 		for(var/K in alternate_appearances)
 			var/datum/atom_hud/alternate_appearance/AA = alternate_appearances[K]
@@ -12,6 +14,8 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 				break
 
 /atom/proc/add_alt_appearance(type, key, ...)
+	procstart = null
+	src.procstart = null
 	if(!type || !key)
 		return
 	if(alternate_appearances && alternate_appearances[key])
@@ -27,6 +31,8 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 	var/transfer_overlays = FALSE
 
 /datum/atom_hud/alternate_appearance/New(key)
+	procstart = null
+	src.procstart = null
 	// We use hud_icons to register our hud, so we need to do this before the parent call
 	appearance_key = key
 	hud_icons = list(appearance_key)
@@ -38,11 +44,15 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 		apply_to_new_mob(mob)
 
 /datum/atom_hud/alternate_appearance/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.active_alternate_appearances -= src
 	return ..()
 
 /// Wrapper for applying this alt hud to the passed mob (if they should see it)
 /datum/atom_hud/alternate_appearance/proc/apply_to_new_mob(mob/applying_to)
+	procstart = null
+	src.procstart = null
 	if(mobShouldSee(applying_to))
 		if(!hud_users_all_z_levels[applying_to])
 			show_to(applying_to)
@@ -51,9 +61,13 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 
 /// Checks if the passed mob should be seeing this hud
 /datum/atom_hud/alternate_appearance/proc/mobShouldSee(mob/M)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /datum/atom_hud/alternate_appearance/show_to(mob/new_viewer)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!new_viewer)
 		return
@@ -61,9 +75,13 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 
 /// Registers some signals to track the mob's state to determine if they should be seeing the hud still
 /datum/atom_hud/alternate_appearance/proc/track_mob(mob/new_viewer)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/atom_hud/alternate_appearance/hide_from(mob/former_viewer, absolute)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!former_viewer || hud_atoms_all_z_levels[former_viewer] >= 1)
 		return
@@ -71,9 +89,13 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 
 /// Unregisters the signals that were tracking the mob's state
 /datum/atom_hud/alternate_appearance/proc/untrack_mob(mob/former_viewer)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/atom_hud/alternate_appearance/proc/check_hud(mob/source)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	// Attempt to re-apply the hud entirely
 	if(!apply_to_new_mob(source))
@@ -81,17 +103,23 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 		hide_from(source, absolute = TRUE)
 
 /datum/atom_hud/alternate_appearance/add_atom_to_hud(atom/A, image/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		LAZYINITLIST(A.alternate_appearances)
 		A.alternate_appearances[appearance_key] = src
 
 /datum/atom_hud/alternate_appearance/remove_atom_from_hud(atom/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		LAZYREMOVE(A.alternate_appearances, appearance_key)
 
 /datum/atom_hud/alternate_appearance/proc/copy_overlays(atom/other, cut_old)
+	procstart = null
+	src.procstart = null
 	return
 
 //an alternate appearance that attaches a single image to a single atom
@@ -110,6 +138,8 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 	)
 
 /datum/atom_hud/alternate_appearance/basic/New(key, image/I, options = AA_TARGET_SEE_APPEARANCE)
+	procstart = null
+	src.procstart = null
 	signals_registering = string_list(signals_registering)
 	..()
 	transfer_overlays = options & AA_MATCH_TARGET_OVERLAYS
@@ -131,6 +161,8 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 		ghost_appearance = new /datum/atom_hud/alternate_appearance/basic/observers(key + "_observer", ghost_image, NONE)
 
 /datum/atom_hud/alternate_appearance/basic/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	LAZYREMOVE(target.update_on_z, image)
 	QDEL_NULL(image)
@@ -139,17 +171,25 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 		QDEL_NULL(ghost_appearance)
 
 /datum/atom_hud/alternate_appearance/basic/track_mob(mob/new_viewer)
+	procstart = null
+	src.procstart = null
 	RegisterSignals(new_viewer, signals_registering, PROC_REF(check_hud), override = TRUE)
 
 /datum/atom_hud/alternate_appearance/basic/untrack_mob(mob/former_viewer)
+	procstart = null
+	src.procstart = null
 	UnregisterSignal(former_viewer, signals_registering)
 
 /datum/atom_hud/alternate_appearance/basic/add_atom_to_hud(atom/A)
+	procstart = null
+	src.procstart = null
 	LAZYINITLIST(A.hud_list)
 	A.hud_list[appearance_key] = image
 	. = ..()
 
 /datum/atom_hud/alternate_appearance/basic/remove_atom_from_hud(atom/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	LAZYREMOVE(A.hud_list, appearance_key)
 	A.set_hud_image_inactive(appearance_key)
@@ -157,17 +197,23 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 		qdel(src)
 
 /datum/atom_hud/alternate_appearance/basic/copy_overlays(atom/other, cut_old)
+	procstart = null
+	src.procstart = null
 	image.copy_overlays(other, cut_old)
 
 /datum/atom_hud/alternate_appearance/basic/everyone
 	add_ghost_version = TRUE
 
 /datum/atom_hud/alternate_appearance/basic/everyone/mobShouldSee(mob/M)
+	procstart = null
+	src.procstart = null
 	return !isdead(M)
 
 /datum/atom_hud/alternate_appearance/basic/silicons
 
 /datum/atom_hud/alternate_appearance/basic/silicons/mobShouldSee(mob/M)
+	procstart = null
+	src.procstart = null
 	if(issilicon(M))
 		return TRUE
 	return FALSE
@@ -175,17 +221,23 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 /datum/atom_hud/alternate_appearance/basic/ais
 
 /datum/atom_hud/alternate_appearance/basic/ais/mobShouldSee(mob/M)
+	procstart = null
+	src.procstart = null
 	return isAI(M)
 
 /datum/atom_hud/alternate_appearance/basic/observers
 	add_ghost_version = FALSE //just in case, to prevent infinite loops
 
 /datum/atom_hud/alternate_appearance/basic/observers/mobShouldSee(mob/M)
+	procstart = null
+	src.procstart = null
 	return isobserver(M)
 
 /datum/atom_hud/alternate_appearance/basic/noncult
 
 /datum/atom_hud/alternate_appearance/basic/noncult/mobShouldSee(mob/M)
+	procstart = null
+	src.procstart = null
 	return !IS_CULTIST(M)
 
 /datum/atom_hud/alternate_appearance/basic/has_antagonist/cult
@@ -201,6 +253,8 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 	)
 
 /datum/atom_hud/alternate_appearance/basic/blessed_aware/mobShouldSee(mob/viewing_mob)
+	procstart = null
+	src.procstart = null
 	if(!viewing_mob.mind)
 		return FALSE
 	if(HAS_MIND_TRAIT(viewing_mob, TRAIT_SEE_BLESSED_TILES))
@@ -213,9 +267,13 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 	var/mob/seer
 
 /datum/atom_hud/alternate_appearance/basic/one_person/mobShouldSee(mob/M)
+	procstart = null
+	src.procstart = null
 	return M == seer
 
 /datum/atom_hud/alternate_appearance/basic/one_person/New(key, image/I, options = NONE, mob/living/seer)
+	procstart = null
+	src.procstart = null
 	src.seer = seer
 	return ..()
 
@@ -223,6 +281,8 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 /datum/atom_hud/alternate_appearance/basic/one_person/reversed
 
 /datum/atom_hud/alternate_appearance/basic/one_person/reversed/mobShouldSee(mob/M)
+	procstart = null
+	src.procstart = null
 	return M != seer
 
 /datum/atom_hud/alternate_appearance/basic/food_demands
@@ -230,6 +290,8 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 /datum/atom_hud/alternate_appearance/basic/heretic
 
 /datum/atom_hud/alternate_appearance/basic/heretic/mobShouldSee(mob/viewer)
+	procstart = null
+	src.procstart = null
 	if(IS_HERETIC_OR_MONSTER(viewer))
 		return TRUE
 	return FALSE

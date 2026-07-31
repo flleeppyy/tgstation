@@ -16,6 +16,8 @@
 	COOLDOWN_DECLARE(respawn_cooldown)
 
 /obj/effect/powerup/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(lifetime)
 		QDEL_IN(src, lifetime)
@@ -25,17 +27,25 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/effect/powerup/proc/on_entered(datum/source, atom/movable/movable_atom)
+	procstart = null
+	src.procstart = null
 	SIGNAL_HANDLER
 	trigger(movable_atom)
 
 /obj/effect/powerup/Bump(atom/bumped_atom)
+	procstart = null
+	src.procstart = null
 	trigger(bumped_atom)
 
 /obj/effect/powerup/Bumped(atom/movable/movable_atom)
+	procstart = null
+	src.procstart = null
 	trigger(movable_atom)
 
 /// Triggers the effect of the powerup on the target, returns FALSE if the target is not /mob/living, is dead or the cooldown hasn't finished, returns TRUE otherwise
 /obj/effect/powerup/proc/trigger(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(!istype(target) || target.stat == DEAD)
 		return FALSE
 	if(respawn_time)
@@ -68,6 +78,8 @@
 	var/heal_flags = HEAL_ALL
 
 /obj/effect/powerup/health/trigger(mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -92,6 +104,8 @@
 	pickup_sound = 'sound/items/weapons/gun/shotgun/rack.ogg'
 
 /obj/effect/powerup/ammo/trigger(mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -113,6 +127,8 @@
 	pickup_sound = 'sound/effects/magic/lightningshock.ogg'
 
 /obj/effect/powerup/speed/trigger(mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -124,6 +140,8 @@
 	icon_state = "impact_laser"
 
 /obj/effect/powerup/mayhem/trigger(mob/living/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

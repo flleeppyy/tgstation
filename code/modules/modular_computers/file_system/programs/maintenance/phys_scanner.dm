@@ -11,6 +11,8 @@
 	var/last_record = ""
 
 /datum/computer_file/program/maintenance/phys_scanner/tap(atom/tapped_atom, mob/living/user, list/modifiers)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!iscarbon(tapped_atom))
@@ -23,6 +25,8 @@
 		active_ui.send_full_update(force = TRUE)
 
 /datum/computer_file/program/maintenance/phys_scanner/ui_static_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["last_record"] = last_record
 	return data
